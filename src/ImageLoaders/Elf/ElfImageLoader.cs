@@ -23,6 +23,7 @@
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -38,6 +39,7 @@ namespace Reko.ImageLoaders.Elf
     /// </summary>
     public class ElfImageLoader : ImageLoader
     {
+        #region Constants
         private const int ELF_MAGIC = 0x7F454C46;         // "\x7FELF"
         private const byte LITTLE_ENDIAN = 1;
         private const byte BIG_ENDIAN = 2;
@@ -45,236 +47,212 @@ namespace Reko.ImageLoaders.Elf
         private const byte ELFCLASS64 = 2;              // 64-bit object file
         private const int HEADER_OFFSET = 0x0010;
 
-        private const int ELFOSABI_NONE = 0x00;         // No specific ABI specified.
-        private const int ELFOSABI_CELL_LV2 = 0x66;     // PS/3 has this in its files
+        public const ushort EM_NONE = 0;           // No machine 
+        public const ushort EM_M32 = 1;            // AT&T WE 32100 
+        public const ushort EM_SPARC = 2;          // SPARC 
+        public const ushort EM_386 = 3;            // Intel 80386 
+        public const ushort EM_68K = 4;            // Motorola 68000 
+        public const ushort EM_88K = 5;            // Motorola 88000 
+        //public const ushort RESERVED 6 Reserved for future use 
+        public const ushort EM_860 = 7;            // Intel 80860 
+        public const ushort EM_MIPS = 8;           // MIPS I Architecture 
+        public const ushort EM_S370 = 9;           // IBM System/370 Processor 
+        public const ushort EM_MIPS_RS3_LE = 10;   // MIPS RS3000 Little-endian 
+        //public const ushort RESERVED 11-14 Reserved for future use 
+        public const ushort EM_PARISC = 15;        // Hewlett-Packard PA-RISC 
+        //public const ushort RESERVED 16 Reserved for future use 
+        public const ushort EM_VPP500 = 17;        // Fujitsu VPP500 
+        public const ushort EM_SPARC32PLUS = 18;   // Enhanced instruction set SPARC 
+        public const ushort EM_960 = 19;           // Intel 80960 
+        public const ushort EM_PPC = 20;           // PowerPC 
+        public const ushort EM_PPC64 = 21;         // 64-bit PowerPC 
+        //public const ushort RESERVED 22-35 Reserved for future use 
+        public const ushort EM_V800 = 36;          // NEC V800 
+        public const ushort EM_FR20 = 37;          // Fujitsu FR20 
+        public const ushort EM_RH32 = 38;          // TRW RH-32 
+        public const ushort EM_RCE = 39;           // Motorola RCE 
+        public const ushort EM_ARM = 40;           // Advanced RISC Machines ARM 
+        public const ushort EM_ALPHA = 41;         // Digital Alpha 
+        public const ushort EM_SH = 42;            // Hitachi SH 
+        public const ushort EM_SPARCV9 = 43;       // SPARC Version 9 
+        public const ushort EM_TRICORE = 44;       // Siemens Tricore embedded processor 
+        public const ushort EM_ARC = 45;           // Argonaut RISC Core, Argonaut Technologies Inc. 
+        public const ushort EM_H8_300 = 46;        // Hitachi H8/300 
+        public const ushort EM_H8_300H = 47;       // Hitachi H8/300H 
+        public const ushort EM_H8S = 48;           // Hitachi H8S 
+        public const ushort EM_H8_500 = 49;        // Hitachi H8/500 
+        public const ushort EM_IA_64 = 50;         // Intel IA-64 processor architecture 
+        public const ushort EM_MIPS_X = 51;        // Stanford MIPS-X 
+        public const ushort EM_COLDFIRE = 52;      // Motorola ColdFire 
+        public const ushort EM_68HC12 = 53;        // Motorola M68HC12 
+        public const ushort EM_MMA = 54;           // Fujitsu MMA Multimedia Accelerator 
+        public const ushort EM_PCP = 55;           // Siemens PCP 
+        public const ushort EM_NCPU = 56;          // Sony nCPU embedded RISC processor 
+        public const ushort EM_NDR1 = 57;          // Denso NDR1 microprocessor 
+        public const ushort EM_STARCORE = 58;      // Motorola Star*Core processor 
+        public const ushort EM_ME16 = 59;          // Toyota ME16 processor 
+        public const ushort EM_ST100 = 60;         // STMicroelectronics ST100 processor 
+        public const ushort EM_TINYJ = 61;         // Advanced Logic Corp. TinyJ embedded processor family 
+        public const ushort EM_X86_64 = 62;        // AMD x86-64 architecture
+        //public const ushort Reserved 63-65 Reserved for future use 
+        public const ushort EM_FX66 = 66;          // Siemens FX66 microcontroller 
+        public const ushort EM_ST9PLUS = 67;       // STMicroelectronics ST9+ 8/16 bit microcontroller 
+        public const ushort EM_ST7 = 68;           // STMicroelectronics ST7 8-bit microcontroller 
+        public const ushort EM_68HC16 = 69;        // Motorola MC68HC16 Microcontroller 
+        public const ushort EM_68HC11 = 70;        // Motorola MC68HC11 Microcontroller 
+        public const ushort EM_68HC08 = 71;        // Motorola MC68HC08 Microcontroller 
+        public const ushort EM_68HC05 = 72;        // Motorola MC68HC05 Microcontroller 
+        public const ushort EM_SVX = 73;           // Silicon Graphics SVx 
+        public const ushort EM_ST19 = 74;          // STMicroelectronics ST19 8-bit microcontroller 
+        public const ushort EM_VAX = 75;           // Digital VAX  
+        public const ushort EM_CRIS = 76;          // Axis Communications 32-bit embedded processor 
+        public const ushort EM_JAVELIN = 77;       // Infineon Technologies 32-bit embedded processor 
+        public const ushort EM_FIREPATH = 78;      // Element 14 64-bit DSP Processor 
+        public const ushort EM_ZSP = 79;           // LSI Logic 16-bit DSP Processor 
+        public const ushort EM_MMIX = 80;          // Donald Knuth's educational 64-bit processor 
+        public const ushort EM_HUANY = 81;         // Harvard University machine-independent object files 
+        public const ushort EM_PRISM = 82;         // SiTera Prism 
+        public const ushort EM_AVR = 83; // Atmel AVR 8-bit microcontroller
+        public const ushort EM_FR30 = 84; // Fujitsu FR30
+        public const ushort EM_D10V = 85; // Mitsubishi D10V
+        public const ushort EM_D30V = 86; // Mitsubishi D30V
+        public const ushort EM_V850 = 87; // NEC v850
+        public const ushort EM_M32R = 88; // Mitsubishi M32R
+        public const ushort EM_MN10300 = 89; // Matsushita MN10300
+        public const ushort EM_MN10200 = 90; // Matsushita MN10200
+        public const ushort EM_PJ = 91; // picoJava
+        public const ushort EM_OPENRISC = 92; // OpenRISC 32-bit embedded processor
+        public const ushort EM_ARC_COMPACT = 93; // ARC International ARCompact processor (old
+                                                 // spelling/synonym: EM_ARC_A5)
+        public const ushort EM_XTENSA = 94; // Tensilica Xtensa Architecture
+        public const ushort EM_VIDEOCORE = 95; // Alphamosaic VideoCore processor
+        public const ushort EM_TMM_GPP = 96; // Thompson Multimedia General Purpose Processor
+        public const ushort EM_NS32K = 97; // National Semiconductor 32000 series
+        public const ushort EM_TPC = 98; // Tenor Network TPC processor
+        public const ushort EM_SNP1K = 99; // Trebia SNP 1000 processor
+        public const ushort EM_ST200 = 100; // STMicroelectronics (www.st.com) ST200
+        public const ushort EM_IP2K = 101; // Ubicom IP2xxx microcontroller family
+        public const ushort EM_MAX = 102; // MAX Processor
+        public const ushort EM_CR = 103; // National Semiconductor CompactRISC microprocessor
+        public const ushort EM_F2MC16 = 104; // Fujitsu F2MC16
+        public const ushort EM_MSP430 = 105; // Texas Instruments embedded microcontroller msp430
+        public const ushort EM_BLACKFIN = 106; // Analog Devices Blackfin (DSP) processor
+        public const ushort EM_SE_C33 = 107; // S1C33 Family of Seiko Epson processors
+        public const ushort EM_SEP = 108; // Sharp embedded microprocessor
+        public const ushort EM_ARCA = 109; // Arca RISC Microprocessor
+        public const ushort EM_UNICORE = 110; // Microprocessor series from PKU-Unity Ltd. and MPRC
+                                              // of Peking University
+        public const ushort EM_EXCESS = 111; // eXcess: 16/32/64-bit configurable embedded CPU
+        public const ushort EM_DXP = 112; // Icera Semiconductor Inc. Deep Execution Processor
+        public const ushort EM_ALTERA_NIOS2 = 113; // Altera Nios II soft-core processor
+        public const ushort EM_CRX = 114; // National Semiconductor CompactRISC CRX
+        public const ushort EM_XGATE = 115; // Motorola XGATE embedded processor
+        public const ushort EM_C166 = 116; // Infineon C16x/XC16x processor
+        public const ushort EM_M16C = 117; // Renesas M16C series microprocessors
+        public const ushort EM_DSPIC30F = 118; // Microchip Technology dsPIC30F Digital Signal
+                                               // Controller
+        public const ushort EM_CE = 119; // Freescale Communication Engine RISC core
+        public const ushort EM_M32C = 120; // Renesas M32C series microprocessors
+        public const ushort EM_TSK3000 = 131; // Altium TSK3000 core
+        public const ushort EM_RS08 = 132; // Freescale RS08 embedded processor
+        public const ushort EM_SHARC = 133; // Analog Devices SHARC family of 32-bit DSP
+                                            // processors
+        public const ushort EM_ECOG2 = 134; // Cyan Technology eCOG2 microprocessor
+        public const ushort EM_SCORE7 = 135; // Sunplus S+core7 RISC processor
+        public const ushort EM_DSP24 = 136; // New Japan Radio (NJR) 24-bit DSP Processor
+        public const ushort EM_VIDEOCORE3 = 137; // Broadcom VideoCore III processor
+        public const ushort EM_LATTICEMICO32 = 138; // RISC processor for Lattice FPGA architecture
+        public const ushort EM_SE_C17 = 139; // Seiko Epson C17 family
+        public const ushort EM_TI_C6000 = 140; // The Texas Instruments TMS320C6000 DSP family
+        public const ushort EM_TI_C2000 = 141; // The Texas Instruments TMS320C2000 DSP family
+        public const ushort EM_TI_C5500 = 142; // The Texas Instruments TMS320C55x DSP family
+        public const ushort EM_MMDSP_PLUS = 160; // STMicroelectronics 64bit VLIW Data Signal Processor
+        public const ushort EM_CYPRESS_M8C = 161; // Cypress M8C microprocessor
+        public const ushort EM_R32C = 162; // Renesas R32C series microprocessors
+        public const ushort EM_TRIMEDIA = 163; // NXP Semiconductors TriMedia architecture family
+        public const ushort EM_HEXAGON = 164; // Qualcomm Hexagon processor
+        public const ushort EM_8051 = 165; // Intel 8051 and variants
+        public const ushort EM_STXP7X = 166; // STMicroelectronics STxP7x family of configurable
+                                             // and extensible RISC processors
+        public const ushort EM_NDS32 = 167; // Andes Technology compact code size embedded RISC
+                                            // processor family
+        public const ushort EM_ECOG1 = 168; // Cyan Technology eCOG1X family
+        public const ushort EM_ECOG1X = 168; // Cyan Technology eCOG1X family
+        public const ushort EM_MAXQ30 = 169; // Dallas Semiconductor MAXQ30 Core Micro-controllers
+        public const ushort EM_XIMO16 = 170; // New Japan Radio (NJR) 16-bit DSP Processor
+        public const ushort EM_MANIK = 171; // M2000 Reconfigurable RISC Microprocessor
+        public const ushort EM_CRAYNV2 = 172; // Cray Inc. NV2 vector architecture
+        public const ushort EM_RX = 173; // Renesas RX family
+        public const ushort EM_METAG = 174; // Imagination Technologies META processor
+                                            // architecture
+        public const ushort EM_MCST_ELBRUS = 175; // MCST Elbrus general purpose hardware architecture
+        public const ushort EM_ECOG16 = 176; // Cyan Technology eCOG16 family
+        public const ushort EM_CR16 = 177; // National Semiconductor CompactRISC CR16 16-bit
+                                           // microprocessor
+        public const ushort EM_ETPU = 178; // Freescale Extended Time Processing Unit
+        public const ushort EM_SLE9X = 179; // Infineon Technologies SLE9X core
+        public const ushort EM_L10M = 180; // Intel L10M
+        public const ushort EM_K10M = 181; // Intel K10M
+        public const ushort EM_AARCH64 = 183; // ARM AArch64
+        public const ushort EM_AVR32 = 185; // Atmel Corporation 32-bit microprocessor family
+        public const ushort EM_STM8 = 186; // STMicroeletronics STM8 8-bit microcontroller
+        public const ushort EM_TILE64 = 187; // Tilera TILE64 multicore architecture family
+        public const ushort EM_TILEPRO = 188; // Tilera TILEPro multicore architecture family
+        public const ushort EM_CUDA = 190; // NVIDIA CUDA architecture
+        public const ushort EM_TILEGX = 191; // Tilera TILE-Gx multicore architecture family
+        public const ushort EM_CLOUDSHIELD = 192; // CloudShield architecture family
+        public const ushort EM_COREA_1ST = 193; // KIPO-KAIST Core-A 1st generation processor family
+        public const ushort EM_COREA_2ND = 194; // KIPO-KAIST Core-A 2nd generation processor family
+        public const ushort EM_ARC_COMPACT2 = 195; // Synopsys ARCompact V2
+        public const ushort EM_OPEN8 = 196; // Open8 8-bit RISC soft processor core
+        public const ushort EM_RL78 = 197; // Renesas RL78 family
+        public const ushort EM_VIDEOCORE5 = 198; // Broadcom VideoCore V processor
+        public const ushort EM_78KOR = 199; // Renesas 78KOR family
+        public const ushort EM_56800EX = 200; // Freescale 56800EX Digital Signal Controller (DSC)
+        public const ushort EM_BA1 = 201; // Beyond BA1 CPU architecture
+        public const ushort EM_BA2 = 202; // Beyond BA2 CPU architecture
+        public const ushort EM_XCORE = 203; // XMOS xCORE processor family
+        public const ushort EM_MCHP_PIC = 204; // Microchip 8-bit PIC(r) family
+        public const ushort EM_INTEL205 = 205; // Reserved by Intel
+        public const ushort EM_INTEL206 = 206; // Reserved by Intel
+        public const ushort EM_INTEL207 = 207; // Reserved by Intel
+        public const ushort EM_INTEL208 = 208; // Reserved by Intel
+        public const ushort EM_INTEL209 = 209; // Reserved by Intel
+        public const ushort EM_KM32 = 210; // KM211 KM32 32-bit processor
+        public const ushort EM_KMX32 = 211; // KM211 KMX32 32-bit processor
+        public const ushort EM_KMX16 = 212; // KM211 KMX16 16-bit processor
+        public const ushort EM_KMX8 = 213; // KM211 KMX8 8-bit processor
+        public const ushort EM_KVARC = 214; // KM211 KVARC processor
+        public const ushort EM_CDP = 215; // Paneve CDP architecture family
+        public const ushort EM_COGE = 216; // Cognitive Smart Memory Processor
+        public const ushort EM_COOL = 217; // iCelero CoolEngine
+        public const ushort EM_NORC = 218; // Nanoradio Optimized RISC
+        public const ushort EM_CSR_KALIMBA = 219; // CSR Kalimba architecture family
+        public const ushort EM_AMDGPU = 224;  // AMD GPU architecture
 
-        private const ushort EM_NONE = 0;           // No machine 
-        private const ushort EM_M32 = 1;            // AT&T WE 32100 
-        private const ushort EM_SPARC = 2;          // SPARC 
-        private const ushort EM_386 = 3;            // Intel 80386 
-        private const ushort EM_68K = 4;            // Motorola 68000 
-        private const ushort EM_88K = 5;            // Motorola 88000 
-        //private const ushort RESERVED 6 Reserved for future use 
-        private const ushort EM_860 = 7;            // Intel 80860 
-        private const ushort EM_MIPS = 8;           // MIPS I Architecture 
-        private const ushort EM_S370 = 9;           // IBM System/370 Processor 
-        private const ushort EM_MIPS_RS3_LE = 10;   // MIPS RS3000 Little-endian 
-        //private const ushort RESERVED 11-14 Reserved for future use 
-        private const ushort EM_PARISC = 15;        // Hewlett-Packard PA-RISC 
-        //private const ushort RESERVED 16 Reserved for future use 
-        private const ushort EM_VPP500 = 17;        // Fujitsu VPP500 
-        private const ushort EM_SPARC32PLUS = 18;   // Enhanced instruction set SPARC 
-        private const ushort EM_960 = 19;           // Intel 80960 
-        private const ushort EM_PPC = 20;           // PowerPC 
-        private const ushort EM_PPC64 = 21;         // 64-bit PowerPC 
-        //private const ushort RESERVED 22-35 Reserved for future use 
-        private const ushort EM_V800 = 36;          // NEC V800 
-        private const ushort EM_FR20 = 37;          // Fujitsu FR20 
-        private const ushort EM_RH32 = 38;          // TRW RH-32 
-        private const ushort EM_RCE = 39;           // Motorola RCE 
-        private const ushort EM_ARM = 40;           // Advanced RISC Machines ARM 
-        private const ushort EM_ALPHA = 41;         // Digital Alpha 
-        private const ushort EM_SH = 42;            // Hitachi SH 
-        private const ushort EM_SPARCV9 = 43;       // SPARC Version 9 
-        private const ushort EM_TRICORE = 44;       // Siemens Tricore embedded processor 
-        private const ushort EM_ARC = 45;           // Argonaut RISC Core, Argonaut Technologies Inc. 
-        private const ushort EM_H8_300 = 46;        // Hitachi H8/300 
-        private const ushort EM_H8_300H = 47;       // Hitachi H8/300H 
-        private const ushort EM_H8S = 48;           // Hitachi H8S 
-        private const ushort EM_H8_500 = 49;        // Hitachi H8/500 
-        private const ushort EM_IA_64 = 50;         // Intel IA-64 processor architecture 
-        private const ushort EM_MIPS_X = 51;        // Stanford MIPS-X 
-        private const ushort EM_COLDFIRE = 52;      // Motorola ColdFire 
-        private const ushort EM_68HC12 = 53;        // Motorola M68HC12 
-        private const ushort EM_MMA = 54;           // Fujitsu MMA Multimedia Accelerator 
-        private const ushort EM_PCP = 55;           // Siemens PCP 
-        private const ushort EM_NCPU = 56;          // Sony nCPU embedded RISC processor 
-        private const ushort EM_NDR1 = 57;          // Denso NDR1 microprocessor 
-        private const ushort EM_STARCORE = 58;      // Motorola Star*Core processor 
-        private const ushort EM_ME16 = 59;          // Toyota ME16 processor 
-        private const ushort EM_ST100 = 60;         // STMicroelectronics ST100 processor 
-        private const ushort EM_TINYJ = 61;         // Advanced Logic Corp. TinyJ embedded processor family 
-        private const ushort EM_X86_64 = 62;        // AMD x86-64 architecture
-        //private const ushort Reserved 63-65 Reserved for future use 
-        private const ushort EM_FX66 = 66;          // Siemens FX66 microcontroller 
-        private const ushort EM_ST9PLUS = 67;       // STMicroelectronics ST9+ 8/16 bit microcontroller 
-        private const ushort EM_ST7 = 68;           // STMicroelectronics ST7 8-bit microcontroller 
-        private const ushort EM_68HC16 = 69;        // Motorola MC68HC16 Microcontroller 
-        private const ushort EM_68HC11 = 70;        // Motorola MC68HC11 Microcontroller 
-        private const ushort EM_68HC08 = 71;        // Motorola MC68HC08 Microcontroller 
-        private const ushort EM_68HC05 = 72;        // Motorola MC68HC05 Microcontroller 
-        private const ushort EM_SVX = 73;           // Silicon Graphics SVx 
-        private const ushort EM_ST19 = 74;          // STMicroelectronics ST19 8-bit microcontroller 
-        private const ushort EM_VAX = 75;           // Digital VAX  
-        private const ushort EM_CRIS = 76;          // Axis Communications 32-bit embedded processor 
-        private const ushort EM_JAVELIN = 77;       // Infineon Technologies 32-bit embedded processor 
-        private const ushort EM_FIREPATH = 78;      // Element 14 64-bit DSP Processor 
-        private const ushort EM_ZSP = 79;           // LSI Logic 16-bit DSP Processor 
-        private const ushort EM_MMIX = 80;          // Donald Knuth's educational 64-bit processor 
-        private const ushort EM_HUANY = 81;         // Harvard University machine-independent object files 
-        private const ushort EM_PRISM = 82;         // SiTera Prism 
-        private const ushort EM_AVR           = 83; // Atmel AVR 8-bit microcontroller
-        private const ushort EM_FR30          = 84; // Fujitsu FR30
-        private const ushort EM_D10V          = 85; // Mitsubishi D10V
-        private const ushort EM_D30V          = 86; // Mitsubishi D30V
-        private const ushort EM_V850          = 87; // NEC v850
-        private const ushort EM_M32R          = 88; // Mitsubishi M32R
-        private const ushort EM_MN10300       = 89; // Matsushita MN10300
-        private const ushort EM_MN10200       = 90; // Matsushita MN10200
-        private const ushort EM_PJ            = 91; // picoJava
-        private const ushort EM_OPENRISC      = 92; // OpenRISC 32-bit embedded processor
-        private const ushort EM_ARC_COMPACT   = 93; // ARC International ARCompact processor (old
-                                                    // spelling/synonym: EM_ARC_A5)
-        private const ushort EM_XTENSA        = 94; // Tensilica Xtensa Architecture
-        private const ushort EM_VIDEOCORE     = 95; // Alphamosaic VideoCore processor
-        private const ushort EM_TMM_GPP       = 96; // Thompson Multimedia General Purpose Processor
-        private const ushort EM_NS32K         = 97; // National Semiconductor 32000 series
-        private const ushort EM_TPC           = 98; // Tenor Network TPC processor
-        private const ushort EM_SNP1K         = 99; // Trebia SNP 1000 processor
-        private const ushort EM_ST200         = 100; // STMicroelectronics (www.st.com) ST200
-        private const ushort EM_IP2K          = 101; // Ubicom IP2xxx microcontroller family
-        private const ushort EM_MAX           = 102; // MAX Processor
-        private const ushort EM_CR            = 103; // National Semiconductor CompactRISC microprocessor
-        private const ushort EM_F2MC16        = 104; // Fujitsu F2MC16
-        private const ushort EM_MSP430        = 105; // Texas Instruments embedded microcontroller msp430
-        private const ushort EM_BLACKFIN      = 106; // Analog Devices Blackfin (DSP) processor
-        private const ushort EM_SE_C33        = 107; // S1C33 Family of Seiko Epson processors
-        private const ushort EM_SEP           = 108; // Sharp embedded microprocessor
-        private const ushort EM_ARCA          = 109; // Arca RISC Microprocessor
-        private const ushort EM_UNICORE       = 110; // Microprocessor series from PKU-Unity Ltd. and MPRC
-                                                     // of Peking University
-        private const ushort EM_EXCESS        = 111; // eXcess: 16/32/64-bit configurable embedded CPU
-        private const ushort EM_DXP           = 112; // Icera Semiconductor Inc. Deep Execution Processor
-        private const ushort EM_ALTERA_NIOS2  = 113; // Altera Nios II soft-core processor
-        private const ushort EM_CRX           = 114; // National Semiconductor CompactRISC CRX
-        private const ushort EM_XGATE         = 115; // Motorola XGATE embedded processor
-        private const ushort EM_C166          = 116; // Infineon C16x/XC16x processor
-        private const ushort EM_M16C          = 117; // Renesas M16C series microprocessors
-        private const ushort EM_DSPIC30F      = 118; // Microchip Technology dsPIC30F Digital Signal
-                                                     // Controller
-        private const ushort EM_CE            = 119; // Freescale Communication Engine RISC core
-        private const ushort EM_M32C          = 120; // Renesas M32C series microprocessors
-        private const ushort EM_TSK3000       = 131; // Altium TSK3000 core
-        private const ushort EM_RS08          = 132; // Freescale RS08 embedded processor
-        private const ushort EM_SHARC         = 133; // Analog Devices SHARC family of 32-bit DSP
-                                                     // processors
-        private const ushort EM_ECOG2         = 134; // Cyan Technology eCOG2 microprocessor
-        private const ushort EM_SCORE7        = 135; // Sunplus S+core7 RISC processor
-        private const ushort EM_DSP24         = 136; // New Japan Radio (NJR) 24-bit DSP Processor
-        private const ushort EM_VIDEOCORE3    = 137; // Broadcom VideoCore III processor
-        private const ushort EM_LATTICEMICO32 = 138; // RISC processor for Lattice FPGA architecture
-        private const ushort EM_SE_C17        = 139; // Seiko Epson C17 family
-        private const ushort EM_TI_C6000      = 140; // The Texas Instruments TMS320C6000 DSP family
-        private const ushort EM_TI_C2000      = 141; // The Texas Instruments TMS320C2000 DSP family
-        private const ushort EM_TI_C5500      = 142; // The Texas Instruments TMS320C55x DSP family
-        private const ushort EM_MMDSP_PLUS    = 160; // STMicroelectronics 64bit VLIW Data Signal Processor
-        private const ushort EM_CYPRESS_M8C   = 161; // Cypress M8C microprocessor
-        private const ushort EM_R32C          = 162; // Renesas R32C series microprocessors
-        private const ushort EM_TRIMEDIA      = 163; // NXP Semiconductors TriMedia architecture family
-        private const ushort EM_HEXAGON       = 164; // Qualcomm Hexagon processor
-        private const ushort EM_8051          = 165; // Intel 8051 and variants
-        private const ushort EM_STXP7X        = 166; // STMicroelectronics STxP7x family of configurable
-                                                     // and extensible RISC processors
-        private const ushort EM_NDS32         = 167; // Andes Technology compact code size embedded RISC
-                                                     // processor family
-        private const ushort EM_ECOG1         = 168; // Cyan Technology eCOG1X family
-        private const ushort EM_ECOG1X        = 168; // Cyan Technology eCOG1X family
-        private const ushort EM_MAXQ30        = 169; // Dallas Semiconductor MAXQ30 Core Micro-controllers
-        private const ushort EM_XIMO16        = 170; // New Japan Radio (NJR) 16-bit DSP Processor
-        private const ushort EM_MANIK         = 171; // M2000 Reconfigurable RISC Microprocessor
-        private const ushort EM_CRAYNV2       = 172; // Cray Inc. NV2 vector architecture
-        private const ushort EM_RX            = 173; // Renesas RX family
-        private const ushort EM_METAG         = 174; // Imagination Technologies META processor
-                                                     // architecture
-        private const ushort EM_MCST_ELBRUS   = 175; // MCST Elbrus general purpose hardware architecture
-        private const ushort EM_ECOG16        = 176; // Cyan Technology eCOG16 family
-        private const ushort EM_CR16          = 177; // National Semiconductor CompactRISC CR16 16-bit
-                                                     // microprocessor
-        private const ushort EM_ETPU          = 178; // Freescale Extended Time Processing Unit
-        private const ushort EM_SLE9X         = 179; // Infineon Technologies SLE9X core
-        private const ushort EM_L10M          = 180; // Intel L10M
-        private const ushort EM_K10M          = 181; // Intel K10M
-        private const ushort EM_AARCH64       = 183; // ARM AArch64
-        private const ushort EM_AVR32         = 185; // Atmel Corporation 32-bit microprocessor family
-        private const ushort EM_STM8          = 186; // STMicroeletronics STM8 8-bit microcontroller
-        private const ushort EM_TILE64        = 187; // Tilera TILE64 multicore architecture family
-        private const ushort EM_TILEPRO       = 188; // Tilera TILEPro multicore architecture family
-        private const ushort EM_CUDA          = 190; // NVIDIA CUDA architecture
-        private const ushort EM_TILEGX        = 191; // Tilera TILE-Gx multicore architecture family
-        private const ushort EM_CLOUDSHIELD   = 192; // CloudShield architecture family
-        private const ushort EM_COREA_1ST     = 193; // KIPO-KAIST Core-A 1st generation processor family
-        private const ushort EM_COREA_2ND     = 194; // KIPO-KAIST Core-A 2nd generation processor family
-        private const ushort EM_ARC_COMPACT2  = 195; // Synopsys ARCompact V2
-        private const ushort EM_OPEN8         = 196; // Open8 8-bit RISC soft processor core
-        private const ushort EM_RL78          = 197; // Renesas RL78 family
-        private const ushort EM_VIDEOCORE5    = 198; // Broadcom VideoCore V processor
-        private const ushort EM_78KOR         = 199; // Renesas 78KOR family
-        private const ushort EM_56800EX       = 200; // Freescale 56800EX Digital Signal Controller (DSC)
-        private const ushort EM_BA1           = 201; // Beyond BA1 CPU architecture
-        private const ushort EM_BA2           = 202; // Beyond BA2 CPU architecture
-        private const ushort EM_XCORE         = 203; // XMOS xCORE processor family
-        private const ushort EM_MCHP_PIC      = 204; // Microchip 8-bit PIC(r) family
-        private const ushort EM_INTEL205      = 205; // Reserved by Intel
-        private const ushort EM_INTEL206      = 206; // Reserved by Intel
-        private const ushort EM_INTEL207      = 207; // Reserved by Intel
-        private const ushort EM_INTEL208      = 208; // Reserved by Intel
-        private const ushort EM_INTEL209      = 209; // Reserved by Intel
-        private const ushort EM_KM32          = 210; // KM211 KM32 32-bit processor
-        private const ushort EM_KMX32         = 211; // KM211 KMX32 32-bit processor
-        private const ushort EM_KMX16         = 212; // KM211 KMX16 16-bit processor
-        private const ushort EM_KMX8          = 213; // KM211 KMX8 8-bit processor
-        private const ushort EM_KVARC         = 214; // KM211 KVARC processor
-        private const ushort EM_CDP           = 215; // Paneve CDP architecture family
-        private const ushort EM_COGE          = 216; // Cognitive Smart Memory Processor
-        private const ushort EM_COOL          = 217; // iCelero CoolEngine
-        private const ushort EM_NORC          = 218; // Nanoradio Optimized RISC
-        private const ushort EM_CSR_KALIMBA   = 219; // CSR Kalimba architecture family
-        private const ushort EM_AMDGPU        = 224;  // AMD GPU architecture
-  
-        private const uint SHF_WRITE = 0x1;
-        private const uint SHF_ALLOC = 0x2;
-        private const uint SHF_EXECINSTR = 0x4;
+        public const int ET_REL = 0x01;
 
-        private const int ET_REL = 0x01;
-
-        private int ELF32_R_SYM(int info) { return ((info) >> 8); }
-        private int ELF32_ST_BIND(int i) { return ((i) >> 4); }
-        private int ELF32_ST_TYPE(int i) { return ((i) & 0xf); }
-        private int ELF32_ST_INFO(int b, int t) { return (((b) << 4) + ((t) & 0xf)); }
-
-        const int STT_NOTYPE = 0;			// Symbol table type: none
-        const int STT_FUNC = 2;				// Symbol table type: function
-        const int STT_SECTION = 3;
-        const int STT_FILE = 4;
-        const int STB_GLOBAL = 1;
-        const int STB_WEAK = 2;
+        #endregion
 
         private byte fileClass;             // 0x2 = 
         private byte endianness;
         private byte fileVersion;
         private byte osAbi;
-        private IProcessorArchitecture arch;
-        private IPlatform platform;
         private Address addrPreferred;
         private MemoryArea mem;
         private ImageMap imageMap;
         private Dictionary<Address, ImportReference> importReferences;
-        private ulong m_uPltMin;
-        private ulong m_uPltMax;
+
+        protected ElfLoader innerLoader;
 
         public ElfImageLoader(IServiceProvider services, string filename, byte[] rawBytes)
             : base(services, filename, rawBytes)
         {
         }
 
-        public Elf32_EHdr Header32 { get; set; }
-        public Elf64_EHdr Header64 { get; set; }
-        public List<Elf32_SHdr> SectionHeaders { get; private set; }
-        public List<Elf64_SHdr> SectionHeaders64 { get; private set; }
-        public List<Elf32_PHdr> ProgramHeaders { get; private set; }
-        public List<Elf64_PHdr> ProgramHeaders64 { get; private set; }
 
-        public override Address PreferredBaseAddress { 
+        public override Address PreferredBaseAddress
+        {
             get { return addrPreferred; }
             set { addrPreferred = value; }
         }
@@ -282,51 +260,20 @@ namespace Reko.ImageLoaders.Elf
         public override Program Load(Address addrLoad)
         {
             LoadElfIdentification();
-            LoadHeader();
-            this.platform = CreatePlatform(osAbi);
-            LoadProgramHeaderTable();
+            this.innerLoader = CreateLoader();
+            var arch = innerLoader.CreateArchitecture();
+            var platform = innerLoader.CreatePlatform(osAbi, arch);
+            int cHeaders = innerLoader.LoadProgramHeaderTable();
+            innerLoader.LoadSectionHeaders();
 
-            LoadSectionHeaders();
-
-            GetPltLimits();
-            //LoadSymbols();
-            addrPreferred = ComputeBaseAddress();
-            var addrMax = ComputeMaxAddress();
-            Dump();
-            return LoadImageBytes(addrPreferred, addrMax);
-        }
-
-        private void LoadSymbols()
-        {
-            // Add symbol info. Some symbols will be in the main table only, and others in the dynamic table only.
-            // The best idea is to add symbols for all sections of the appropriate type
-            foreach (var sec in SectionHeaders)
+            if (cHeaders > 0)
             {
-                if (sec.sh_type == SectionHeaderType.SHT_SYMTAB || sec.sh_type == SectionHeaderType.SHT_DYNSYM)
-                    AddSyms(sec);
-            }
-        }
-
-        // Find the PLT limits. Required for IsDynamicLinkedProc(), e.g.
-        private void GetPltLimits()
-        {
-            if (fileClass == ELFCLASS64)
-            {
-                var pPlt = GetSectionInfoByName64(".plt");
-                if (pPlt != null)
-                {
-                    m_uPltMin = pPlt.sh_addr;
-                    m_uPltMax = pPlt.sh_addr + pPlt.sh_size; ;
-                }
+                return innerLoader.LoadImage(platform, RawImage);
             }
             else
             {
-                var pPlt = GetSectionInfoByName32(".plt");
-                if (pPlt != null)
-                {
-                    m_uPltMin = pPlt.sh_addr;
-                    m_uPltMax = pPlt.sh_addr + pPlt.sh_size; ;
-                }
+                var linker = innerLoader.CreateLinker();
+                return linker.LinkObject(platform, RawImage);
             }
         }
 
@@ -340,251 +287,6 @@ namespace Reko.ImageLoaders.Elf
             this.endianness = rdr.ReadByte();
             this.fileVersion = rdr.ReadByte();
             this.osAbi = rdr.ReadByte();
-        }
-
-        private Program LoadImageBytes(Address addrPreferred, Address addrMax)
-        {
-            var bytes = new byte[addrMax - addrPreferred];
-            var v_base = addrPreferred.ToLinear();
-            this.mem = new MemoryArea(addrPreferred, bytes);
-            this.imageMap = mem.CreateImageMap();
-
-            if (fileClass == ELFCLASS64)
-            {
-                foreach (var ph in ProgramHeaders64)
-                {
-                    if (ph.p_vaddr > 0 && ph.p_filesz > 0)
-                        Array.Copy(RawImage, (long)ph.p_offset, bytes, (long)(ph.p_vaddr - v_base), (long)ph.p_filesz);
-                }
-                foreach (var segment in SectionHeaders64)
-                {
-                    if (segment.sh_name == 0 || segment.sh_addr == 0)
-                        continue;
-                    AccessMode mode = AccessMode.Read;
-                    if ((segment.sh_flags & SHF_WRITE) != 0)
-                        mode |= AccessMode.Write;
-                    if ((segment.sh_flags & SHF_EXECINSTR) != 0)
-                        mode |= AccessMode.Execute;
-                    var seg = imageMap.AddSegment(
-                        platform.MakeAddressFromLinear(segment.sh_addr),
-                        GetSectionName(segment.sh_name),
-                        mode,
-                        (uint)segment.sh_size);
-                    seg.MemoryArea = mem;
-                    seg.Designer = CreateRenderer64(segment);
-                }
-            }
-            else
-            {
-                foreach (var ph in ProgramHeaders)
-                {
-                    if (ph.p_vaddr > 0 && ph.p_filesz > 0)
-                        Array.Copy(RawImage, (long)ph.p_offset, bytes, (long)(ph.p_vaddr - v_base), (long)ph.p_filesz);
-                    Debug.Print("ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.p_vaddr, ph.p_filesz, ph.p_pmemsz);
-                }
-                foreach (var segment in SectionHeaders)
-                {
-                    if (segment.sh_name == 0 || segment.sh_addr == 0)
-                        continue;
-                    AccessMode mode = AccessMode.Read;
-                    if ((segment.sh_flags & SHF_WRITE) != 0)
-                        mode |= AccessMode.Write;
-                    if ((segment.sh_flags & SHF_EXECINSTR) != 0)
-                        mode |= AccessMode.Execute;
-                    var seg = imageMap.AddSegment(
-                        Address.Ptr32(segment.sh_addr),
-                        GetSectionName(segment.sh_name),
-                        mode, 
-                        segment.sh_size);
-                    seg.MemoryArea = mem;
-                    seg.Designer = CreateRenderer(segment);
-                }
-                imageMap.DumpSections();
-            }
-            var program = new Program(
-                this.imageMap,
-                this.arch,
-                this.platform);
-            importReferences = program.ImportReferences;
-            return program;
-        }
-
-        public IPlatform CreatePlatform(byte osAbi)
-        {
-            string envName;
-            var cfgSvc = Services.RequireService<IConfigurationService>();
-            switch (osAbi)
-            {
-            case ELFOSABI_NONE: // Unspecified ABI
-                envName = "elf-neutral";
-                break;
-            case ELFOSABI_CELL_LV2: // PS/3
-                envName = "elf-cell-lv2";
-                break;
-            default:
-                throw new NotSupportedException(string.Format("Unsupported ELF ABI 0x{0:X2}.", osAbi));
-            }
-            return cfgSvc.GetEnvironment(envName).Load(Services, arch);
-        }
-
-        private ImageSegmentRenderer CreateRenderer64(Elf64_SHdr shdr)
-        {
-            switch (shdr.sh_type)
-            {
-            case SectionHeaderType.SHT_DYNAMIC:
-                return new DynamicSectionRenderer64(this, shdr);
-            case SectionHeaderType.SHT_RELA:
-                return new RelaSegmentRenderer64(this, shdr);
-            case SectionHeaderType.SHT_SYMTAB:
-            case SectionHeaderType.SHT_DYNSYM:
-                return new SymtabSegmentRenderer64(this, shdr);
-            default: return null;
-            }
-        }
-
-        private ImageSegmentRenderer CreateRenderer(Elf32_SHdr shdr)
-        {
-            switch (shdr.sh_type)
-            {
-            case SectionHeaderType.SHT_DYNAMIC:
-                return new DynamicSectionRenderer(this, shdr);
-            case SectionHeaderType.SHT_RELA:
-                return new RelaSegmentRenderer(this, shdr);
-            default: return null;
-            }
-        }
-
-        public void LoadProgramHeaderTable()
-        {
-            if (fileClass == ELFCLASS64)
-            {
-                this.ProgramHeaders64 = new List<Elf64_PHdr>();
-                var rdr = CreateReader(Header64.e_phoff);
-                for (int i = 0; i < Header64.e_phnum; ++i)
-                {
-                    ProgramHeaders64.Add(Elf64_PHdr.Load(rdr));
-                }
-            }
-            else
-            {
-                this.ProgramHeaders = new List<Elf32_PHdr>();
-                var rdr = CreateReader(Header32.e_phoff);
-                for (int i = 0; i < Header32.e_phnum; ++i)
-                {
-                    ProgramHeaders.Add(Elf32_PHdr.Load(rdr));
-                }
-            }
-        }
-
-        public void LoadSectionHeaders()
-        {
-            if (fileClass == ELFCLASS64)
-            {
-                this.SectionHeaders64 = new List<Elf64_SHdr>();
-                var rdr = CreateReader(Header64.e_shoff);
-                for (int i = 0; i < Header64.e_shnum; ++i)
-                {
-                    SectionHeaders64.Add(Elf64_SHdr.Load(rdr));
-                }
-            }
-            else
-            {
-                this.SectionHeaders = new List<Elf32_SHdr>();
-                var rdr = CreateReader(Header32.e_shoff);
-                for (int i = 0; i < Header32.e_shnum; ++i)
-                {
-                    SectionHeaders.Add(Elf32_SHdr.Load(rdr));
-                }
-            }
-        }
-
-        public void LoadHeader()
-        {
-            var rdr = CreateReader(HEADER_OFFSET);
-            if (fileClass == ELFCLASS64)
-            {
-                this.Header64 = Elf64_EHdr.Load(rdr);
-                arch = CreateArchitecture(Header64.e_machine);
-            }
-            else
-            {
-                this.Header32 = Elf32_EHdr.Load(rdr);
-                arch = CreateArchitecture(Header32.e_machine);
-            }
-        }
-
-        public Address ComputeBaseAddress()
-        {
-            if (fileClass == ELFCLASS64)
-            {
-                ulong uBaseAddr = ProgramHeaders64
-                    .Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0)
-                    .Min(ph => ph.p_vaddr);
-                return platform.MakeAddressFromLinear(uBaseAddr);
-            }
-            else
-            {
-                if (ProgramHeaders.Count > 0)
-                {
-                    return Address.Ptr32(
-                        ProgramHeaders
-                        .Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0)
-                        .Min(ph => ph.p_vaddr));
-                }
-                else
-                {
-                    return Address.Ptr32(0x00100000);
-                }
-            }
-        }
-
-        private Address ComputeMaxAddress()
-        {
-            if (fileClass == ELFCLASS64)
-            {
-                ulong uMaxAddress = 
-                    ProgramHeaders64
-                    .Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0)
-                    .Select(ph => ph.p_vaddr + ph.p_pmemsz)
-                    .Max();
-                return platform.MakeAddressFromLinear(uMaxAddress);
-            }
-            else
-            {
-                if (ProgramHeaders.Count != 0)
-                {
-                    return Address.Ptr32(
-                        ProgramHeaders
-                        .Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0)
-                        .Select(ph => ph.p_vaddr + ph.p_pmemsz)
-                        .Max());
-                }
-                else
-                {
-                    return addrPreferred + this.RawImage.Length;
-                }
-            }
-        }
-
-        private IProcessorArchitecture CreateArchitecture(ushort machineType)
-        {
-            var cfgSvc = Services.RequireService<IConfigurationService>();
-            string arch;
-            switch (machineType)
-            {
-            case EM_NONE: return null; // No machine
-            case EM_SPARC: arch = "sparc32"; break;
-            case EM_386: arch = "x86-protected-32"; break;
-            case EM_X86_64: arch = "x86-protected-64"; break;
-            case EM_68K: arch = "m68k"; break;
-            case EM_MIPS: arch = "mips-be-32"; break;
-            case EM_PPC: arch = "ppc32"; break;
-            case EM_PPC64: arch = "ppc64"; break;
-            case EM_ARM: arch = "arm"; break;
-            default:
-                throw new NotSupportedException(string.Format("Processor format {0} is not supported.", machineType));
-            }
-            return cfgSvc.GetArchitecture(arch);
         }
 
         public ImageReader CreateReader(ulong fileOffset)
@@ -607,7 +309,7 @@ namespace Reko.ImageLoaders.Elf
             }
         }
 
-        private ImageWriter CreateWriter(uint fileOffset)
+        public ImageWriter CreateWriter(uint fileOffset)
         {
             switch (endianness)
             {
@@ -617,24 +319,163 @@ namespace Reko.ImageLoaders.Elf
             }
         }
 
-        public string GetSectionName(uint idxString)
+        public ElfLoader CreateLoader()
         {
-            int offset;
+            var rdr = CreateReader(HEADER_OFFSET);
             if (fileClass == ELFCLASS64)
             {
-                offset = (int)(SectionHeaders64[Header64.e_shstrndx].sh_offset + idxString);
+                var header64 = Elf64_EHdr.Load(rdr);
+                return new ElfLoader64(this, header64, osAbi);
             }
             else
             {
-                offset = (int)(SectionHeaders[Header32.e_shstrndx].sh_offset + idxString);
+                var header32 = Elf32_EHdr.Load(rdr);
+                return new ElfLoader32(this, header32);
             }
-
-            var i = offset;
-            for (; i < RawImage.Length && RawImage[i] != 0; ++i)
-                ;
-            return Encoding.ASCII.GetString(RawImage, (int)offset, i - offset);
         }
 
+        public override RelocationResults Relocate(Program program, Address addrLoad)
+        {
+            if (mem == null)
+                throw new InvalidOperationException(); // No file loaded
+            return innerLoader.Relocate(program, addrLoad);
+        }
+
+        public string ReadAsciiString(ulong fileOffset)
+        {
+            var bytes = RawImage;
+            int u = (int)fileOffset;
+            while (bytes[u] != 0)
+            {
+                ++u;
+            }
+            return Encoding.ASCII.GetString(bytes, (int)fileOffset, u - (int)fileOffset);
+        }
+    }
+
+    public abstract class ElfLoader
+    {
+        public const int ELFOSABI_NONE = 0x00;         // No specific ABI specified.
+        public const int ELFOSABI_CELL_LV2 = 0x66;     // PS/3 has this in its files
+        public const uint SHF_WRITE = 0x1;
+        public const uint SHF_ALLOC = 0x2;
+        public const uint SHF_EXECINSTR = 0x4;
+        public const int DT_NULL = 0;
+        public const int DT_NEEDED = 1;
+        public const int DT_STRTAB = 5;
+        public const int STT_NOTYPE = 0;			// Symbol table type: none
+        public const int STT_FUNC = 2;				// Symbol table type: function
+        public const int STT_SECTION = 3;
+        public const int STT_FILE = 4;
+        public const int STB_GLOBAL = 1;
+        public const int STB_WEAK = 2;
+
+        protected ElfImageLoader imgLoader;
+        protected ulong m_uPltMin;
+        protected ulong m_uPltMax;
+
+        protected ElfLoader(ElfImageLoader imgLoader)
+        {
+            this.imgLoader = imgLoader;
+        }
+
+        public IServiceProvider Services { get { return imgLoader.Services; } }
+
+        public abstract IProcessorArchitecture CreateArchitecture();
+
+        protected IProcessorArchitecture CreateArchitecture(ushort machineType)
+        {
+            var cfgSvc = Services.RequireService<IConfigurationService>();
+            string arch;
+            switch (machineType)
+            {
+            case ElfImageLoader.EM_NONE: return null; // No machine
+            case ElfImageLoader.EM_SPARC: arch = "sparc32"; break;
+            case ElfImageLoader.EM_386: arch = "x86-protected-32"; break;
+            case ElfImageLoader.EM_X86_64: arch = "x86-protected-64"; break;
+            case ElfImageLoader.EM_68K: arch = "m68k"; break;
+            case ElfImageLoader.EM_MIPS: arch = "mips-be-32"; break;
+            case ElfImageLoader.EM_PPC: arch = "ppc32"; break;
+            case ElfImageLoader.EM_PPC64: arch = "ppc64"; break;
+            case ElfImageLoader.EM_ARM: arch = "arm"; break;
+            default:
+                throw new NotSupportedException(string.Format("Processor format {0} is not supported.", machineType));
+            }
+            return cfgSvc.GetArchitecture(arch);
+        }
+
+        public IPlatform CreatePlatform(byte osAbi, IProcessorArchitecture arch)
+        {
+            string envName;
+            var cfgSvc = Services.RequireService<IConfigurationService>();
+            switch (osAbi)
+            {
+            case ELFOSABI_NONE: // Unspecified ABI
+                envName = "elf-neutral";
+                break;
+            case ELFOSABI_CELL_LV2: // PS/3
+                envName = "elf-cell-lv2";
+                break;
+            default:
+                throw new NotSupportedException(string.Format("Unsupported ELF ABI 0x{0:X2}.", osAbi));
+            }
+            return cfgSvc.GetEnvironment(envName).Load(Services, arch);
+        }
+
+        public Program LoadImage(IPlatform platform, byte[] rawImage)
+        {
+            GetPltLimits();
+            //LoadSymbols();
+            var addrPreferred = ComputeBaseAddress(platform);
+            var addrMax = ComputeMaxAddress(platform);
+            Dump();
+            var imageMap = LoadImageBytes(platform, rawImage, addrPreferred, addrMax);
+            var program = new Program(
+               imageMap,
+               platform.Architecture,
+               platform);
+            this.importReferences = program.ImportReferences;
+            return program;
+        }
+
+        public abstract ElfObjectLinker CreateLinker();
+
+        public abstract void GetPltLimits();
+
+#if LATER
+        private void LoadSymbols()
+        {
+            // Add symbol info. Some symbols will be in the main table only, and others in the dynamic table only.
+            // The best idea is to add symbols for all sections of the appropriate type
+            foreach (var sec in SectionHeaders)
+            {
+                if (sec.sh_type == SectionHeaderType.SHT_SYMTAB || sec.sh_type == SectionHeaderType.SHT_DYNSYM)
+                    AddSyms(sec);
+            }
+        }
+#endif
+
+        public abstract ImageMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred, Address addrMax);
+
+        public ImageReader CreateReader(ulong fileOffset)
+        {
+            return imgLoader.CreateReader(fileOffset);
+        }
+
+        public abstract Address ComputeBaseAddress(IPlatform platform);
+        public abstract Address ComputeMaxAddress(IPlatform platform);
+        public abstract int LoadProgramHeaderTable();
+        public abstract void LoadSectionHeaders();
+
+        public string GetSectionName(uint idxString)
+        {
+            ulong offset = (ulong) GetSectionNameOffset(idxString);
+            return imgLoader.ReadAsciiString(offset);
+        }
+
+        protected abstract int GetSectionNameOffset(uint idxString);
+     
+   
         public void Dump()
         {
             var sw = new StringWriter();
@@ -644,7 +485,7 @@ namespace Reko.ImageLoaders.Elf
 
         public void Dump(TextWriter writer)
         {
-#if !NOT
+#if NOT
             writer.WriteLine("Entry: {0:X}", Header32.e_entry);
             writer.WriteLine("Sections:");
             foreach (var sh in SectionHeaders)
@@ -692,28 +533,7 @@ namespace Reko.ImageLoaders.Elf
 #endif
         }
 
-        private void DumpRela(Elf32_SHdr sh)
-        {
-            var entries = sh.sh_size / sh.sh_entsize;
-            var symtab = sh.sh_link;
-            var rdr = CreateReader(sh.sh_offset);
-            for (int i = 0; i < entries; ++i)
-            {
-                uint offset;
-                if (!rdr.TryReadUInt32(out offset))
-                    return;
-                uint info;
-                if (!rdr.TryReadUInt32(out info))
-                    return;
-                int addend;
-                if (!rdr.TryReadInt32(out addend))
-                    return;
 
-                uint sym = info >> 8;
-                string symStr = GetStrPtr((int)symtab, sym);
-                Debug.Print("  RELA {0:X8} {1,3} {2:X8} {3:X8} {4}", offset, info&0xFF, sym, addend, symStr);
-            }
-        }
 
         private string DumpShFlags(uint shf)
         {
@@ -723,367 +543,21 @@ namespace Reko.ImageLoaders.Elf
                 ((shf & SHF_WRITE) != 0) ? "w" : " ");
         }
 
-        public override RelocationResults Relocate(Program program, Address addrLoad)
-        {
-            if (mem == null)
-                throw new InvalidOperationException(); // No file loaded
-            var entryPoints = new List<EntryPoint>();
-            var relocations = new RelocationDictionary();
-            var addrEntry = GetEntryPointAddress();
-            if (addrEntry != null)
-            {
-                var ep = new EntryPoint(addrEntry, arch.CreateProcessorState());
-                entryPoints.Add(ep);
-            }
-            if (fileClass == ELFCLASS64)
-            {
-                if (Header64.e_machine == EM_PPC64)
-                {
-                    //$TODO
-                }
-                else if (Header64.e_machine == EM_X86_64)
-                {
-                    RelocateX86_64();
-                }
-                else
-                    throw new NotImplementedException(string.Format("Relocations for architecture {0} not implemented.", Header64.e_machine));
-            }
-            else
-            {
-                switch (Header32.e_machine)
-                {
-                case EM_386:
-                    RelocateI386();
-                    break;
-                case EM_PPC:
-                    RelocatePpc32();
-                    break;
-                case EM_MIPS:
-                case EM_ARM:
-                case EM_SPARC:
-                    break;
-                default:
-                    throw new NotImplementedException();
-                }
-            }
-            return new RelocationResults(entryPoints, relocations, new List<Address>());
-        }
-
-        private Address GetEntryPointAddress()
-        {
-            Address addr = null;
-            if (fileClass == ELFCLASS64)
-            {
-                //$REVIEW: should really have a subclassed "Ps3ElfLoader"
-                if (osAbi == ELFOSABI_CELL_LV2)
-                {
-                    // The Header64.e_entry field actually points to a 
-                    // "function descriptor" consisiting of two 32-bit 
-                    // pointers.
-                    var rdr = CreateReader(Header64.e_entry - mem.BaseAddress.ToLinear());
-                    uint uAddr;
-                    if (rdr.TryReadUInt32(out uAddr))
-                        addr = Address.Ptr32(uAddr);
-                }
-                else
-                {
-                    addr = Address.Ptr64(Header64.e_entry);
-                }
-            }
-            else
-            {
-                addr = Address.Ptr32(Header32.e_entry);
-            }
-            return addr;
-        }
-
-        private void RelocateI386()
-        {
-            uint nextFakeLibAddr = ~1u; // See R_386_PC32 below; -1 sometimes used for main
-            for (int i = 1; i < this.SectionHeaders.Count; ++i)
-            {
-                var ps = SectionHeaders[i];
-                if (ps.sh_type == SectionHeaderType.SHT_REL)
-                {
-                    // A section such as .rel.dyn or .rel.plt (without an addend field).
-                    // Each entry has 2 words: r_offset and r_info. The r_offset is just the offset from the beginning
-                    // of the section (section given by the section header's sh_info) to the word to be modified.
-                    // r_info has the type in the bottom byte, and a symbol table index in the top 3 bytes.
-                    // A symbol table offset of 0 (STN_UNDEF) means use value 0. The symbol table involved comes from
-                    // the section header's sh_link field.
-                    var pReloc = CreateReader(ps.sh_offset);
-                    uint size = ps.sh_size;
-                    // NOTE: the r_offset is different for .o files (ET_REL in the e_type header field) than for exe's
-                    // and shared objects!
-                    uint destNatOrigin = 0;
-                    uint destHostOrigin = 0;
-                    if (Header32.e_type == ET_REL)
-                    {
-                        int destSection = (int)SectionHeaders[i].sh_info;
-                        destNatOrigin = SectionHeaders[destSection].sh_addr;
-                        destHostOrigin = SectionHeaders[destSection].sh_offset;
-                    }
-                    int symSection = (int)SectionHeaders[i].sh_link; // Section index for the associated symbol table
-                    int strSection = (int)SectionHeaders[symSection].sh_link; // Section index for the string section assoc with this
-                    uint pStrSection = SectionHeaders[strSection].sh_offset;
-                    var symOrigin = SectionHeaders[symSection].sh_offset;
-                    var relocR = CreateReader(0);
-                    var relocW = CreateWriter(0);
-                    for (uint u = 0; u < size; u += 2 * sizeof(uint))
-                    {
-                        uint r_offset = pReloc.ReadUInt32();
-                        uint info = pReloc.ReadUInt32();
-
-                        byte relType = (byte)info;
-                        uint symTabIndex = info >> 8;
-                        uint pRelWord; // Pointer to the word to be relocated
-                        if (Header32.e_type == ET_REL)
-                        {
-                            pRelWord = destHostOrigin + r_offset;
-                        }
-                        else
-                        {
-                            if (r_offset == 0)
-                                continue;
-                            var destSec = GetSectionInfoByAddr(r_offset);
-                            pRelWord = ~0u; // destSec.uHostAddr - destSec.uNativeAddr + r_offset;
-                            destNatOrigin = 0;
-                        }
-                        uint A, S = 0, P;
-                        int nsec;
-                        var sym = Elf32_Sym.Load(CreateReader(symOrigin + symTabIndex * Elf32_Sym.Size));
-                        switch (relType)
-                        {
-                        case 0: // R_386_NONE: just ignore (common)
-                            break;
-                        case 1: // R_386_32: S + A
-                            // Read the symTabIndex'th symbol.
-                            S = sym.st_value;
-                            if (Header32.e_type == ET_REL)
-                            {
-                                nsec = sym.st_shndx;
-                                if (nsec >= 0 && nsec < SectionHeaders.Count)
-                                    S += SectionHeaders[nsec].sh_addr;
-                            }
-                            A = relocR.ReadUInt32(pRelWord);
-                            relocW.WriteUInt32(pRelWord, S + A);
-                            break;
-                        case 2: // R_386_PC32: S + A - P
-                            if (ELF32_ST_TYPE(sym.st_info) == STT_SECTION)
-                            {
-                                nsec = sym.st_shndx;
-                                if (nsec >= 0 && nsec < SectionHeaders.Count)
-                                    S = SectionHeaders[nsec].sh_addr;
-                            }
-                            else
-                            {
-                                S = sym.st_value;
-                                if (S == 0)
-                                {
-                                    // This means that the symbol doesn't exist in this module, and is not accessed
-                                    // through the PLT, i.e. it will be statically linked, e.g. strcmp. We have the
-                                    // name of the symbol right here in the symbol table entry, but the only way
-                                    // to communicate with the loader is through the target address of the call.
-                                    // So we use some very improbable addresses (e.g. -1, -2, etc) and give them entries
-                                    // in the symbol table
-                                    uint nameOffset = sym.st_name;
-                                    string pName = ReadAsciiString(mem.Bytes, pStrSection + nameOffset);
-                                    // this is too slow, I'm just going to assume it is 0
-                                    //S = GetAddressByName(pName);
-                                    //if (S == (e_type == E_REL ? 0x8000000 : 0)) {
-                                    S = nextFakeLibAddr--; // Allocate a new fake address
-                                    AddSymbol(S, pName);
-                                    //}
-                                }
-                                else if (Header32.e_type == ET_REL)
-                                {
-                                    nsec = sym.st_shndx;
-                                    if (nsec >= 0 && nsec < SectionHeaders.Count)
-                                        S += SectionHeaders[nsec].sh_addr;
-                                }
-                            }
-                            A = relocR.ReadUInt32(pRelWord);
-                            P = destNatOrigin + r_offset;
-                            relocW.WriteUInt32(pRelWord, S + A - P);
-                            break;
-                        case 7:
-                        case 8: // R_386_RELATIVE
-                            break; // No need to do anything with these, if a shared object
-                        default:
-                            throw new NotSupportedException("Relocation type " + (int)relType + " not handled yet");
-                        }
-                    }
-                }
-            }
-        }
-
-        /// <remarks>
-        /// According to the ELF PPC32 documentation, the .rela.plt and .plt tables 
-        /// should contain the same number of entries, even if the individual entry 
-        /// sizes are distinct. The entries in .real.plt refer to symbols while the
-        /// entries in .plt are (writeable) pointers.  Any caller that jumps to one
-        /// of pointers in the .plt table is a "trampoline", and should be replaced
-        /// in the decompiled code with just a call to the symbol obtained from the
-        /// .real.plt section.
-        /// </remarks>
-        public void RelocatePpc32()
-        {
-            var rela_plt = GetSectionInfoByName32(".rela.plt");
-            var plt = GetSectionInfoByName32(".plt");
-            var relaRdr = CreateReader(rela_plt.sh_offset);
-            var pltRdr = CreateReader(plt.sh_offset);
-            for (int i =0; i < rela_plt.sh_size / rela_plt.sh_entsize; ++i)
-            {
-                // Read the .rela.plt entry
-                uint offset;
-                if (!relaRdr.TryReadUInt32(out offset))
-                    return;
-                uint info;
-                if (!relaRdr.TryReadUInt32(out info))
-                    return;
-                int addend;
-                if (!relaRdr.TryReadInt32(out addend))
-                    return;
-
-                // Read the .plt entry. We don't care about its contents,
-                // only its address. Anyone accessing that address is
-                // trying to access the symbol.
-
-                uint thunkAddress;
-                if (!pltRdr.TryReadUInt32(out thunkAddress))
-                    break;
-
-                uint sym = info >> 8;
-                string symStr = GetSymbol((int)rela_plt.sh_link, (int)sym);
-
-                var addr = Address.Ptr32(plt.sh_addr + (uint)i * 4);
-                importReferences.Add(
-                    addr,
-                    new NamedImportReference(addr, null, symStr));
-            }
-        }
-
-        /// <remarks>
-        /// According to the ELF PPC32 documentation, the .rela.plt and .plt tables 
-        /// should contain the same number of entries, even if the individual entry 
-        /// sizes are distinct. The entries in .real.plt refer to symbols while the
-        /// entries in .plt are (writeable) pointers.  Any caller that jumps to one
-        /// of pointers in the .plt table is a "trampoline", and should be replaced
-        /// in the decompiled code with just a call to the symbol obtained from the
-        /// .real.plt section.
-        /// </remarks>
-        public void RelocateX86_64()
-        {
-            var rela_plt = GetSectionInfoByName64(".rela.plt");
-            var plt = GetSectionInfoByName64(".plt");
-            var relaRdr = CreateReader(rela_plt.sh_offset);
-            for (ulong i = 0; i < rela_plt.sh_size / rela_plt.sh_entsize; ++i)
-            {
-                // Read the .rela.plt entry
-                ulong offset;
-                if (!relaRdr.TryReadUInt64(out offset))
-                    return;
-                ulong info;
-                if (!relaRdr.TryReadUInt64(out info))
-                    return;
-                long addend;
-                if (!relaRdr.TryReadInt64(out addend))
-                    return;
-
-                ulong sym = info >> 32;
-                string symStr = GetSymbol64((int)rela_plt.sh_link, (int)sym);
-
-                var addr = Address.Ptr64(plt.sh_addr + (uint)(i + 1) * plt.sh_entsize);
-                importReferences.Add(
-                    addr,
-                    new NamedImportReference(addr, null, symStr));
-            }
-        }
-
-        public Elf64_SHdr GetSectionInfoByName64(string sectionName)
-        {
-            return
-                (from sh in this.SectionHeaders64
-                 let name = GetSectionName(sh.sh_name)
-                 where name == sectionName
-                 select sh)
-                .FirstOrDefault();
-        }
-
-        private Elf32_SHdr GetSectionInfoByName32(string sectionName)
-        {
-            return
-                (from sh in this.SectionHeaders
-                 let name = GetSectionName(sh.sh_name)
-                 where name == sectionName
-                 select sh)
-                .FirstOrDefault();
-        }
-
-        internal Elf64_SHdr GetSectionInfoByAddr64(ulong r_offset)
-        {
-            return
-                (from sh in this.SectionHeaders64
-                 where sh.sh_addr <= r_offset && r_offset < sh.sh_addr + sh.sh_size
-                 select sh)
-                .FirstOrDefault();
-        }
-
-        internal Elf32_SHdr GetSectionInfoByAddr(uint r_offset)
-        {
-            return
-                (from sh in this.SectionHeaders
-                 where sh.sh_addr <= r_offset && r_offset < sh.sh_addr + sh.sh_size
-                 select sh)
-                .FirstOrDefault();
-        }
-
-        internal string ReadAsciiString(byte [] bytes, ulong fileOffset)
-        {
-            int u = (int)fileOffset;
-            while (bytes[u] != 0)
-            {
-                ++u;
-            }
-            return Encoding.ASCII.GetString(bytes, (int)fileOffset, u - (int)fileOffset);
-        }
+        public abstract Address GetEntryPointAddress(Address addrBase);
 
         // A map for extra symbols, those not in the usual Elf symbol tables
 
-        private void AddSymbol(uint uNative, string pName)
+        public void AddSymbol(uint uNative, string pName)
         {
             //m_SymTab[uNative] = pName;
         }
 
-
-        public string GetSymbol(int iSymbolSection, int symbolNo)
-        {
-            var symSection = SectionHeaders[iSymbolSection];
-            var strSection = SectionHeaders[(int)symSection.sh_link];
-            uint offset = symSection.sh_offset + (uint)symbolNo * symSection.sh_entsize;
-            var rdr = CreateReader(offset);
-            rdr.TryReadUInt32(out offset);
-            return GetStrPtr((int)symSection.sh_link, offset);
-        }
-
-        public string GetSymbol64(int iSymbolSection, int symbolNo)
-        {
-            var symSection = SectionHeaders64[iSymbolSection];
-            var strSection = SectionHeaders64[(int)symSection.sh_link];
-            ulong offset = symSection.sh_offset + (ulong)symbolNo * symSection.sh_entsize;
-            var rdr = CreateReader(offset);
-            rdr.TryReadUInt64(out offset);
-            return GetStrPtr64((int)symSection.sh_link, (uint)offset);
-        }
-
-        const int DT_NULL = 0;
-        const int DT_NEEDED = 1;
-        const int DT_STRTAB = 5;
+        protected Dictionary<Address, ImportReference> importReferences;
 
         public IEnumerable<Elf64_Dyn> GetDynEntries64(ulong offset)
         {
-            var rdr = CreateReader(offset);
-            for (; ; )
+            var rdr = imgLoader.CreateReader(offset);
+            for (;;)
             {
                 var dyn = new Elf64_Dyn();
                 if (!rdr.TryReadInt64(out dyn.d_tag))
@@ -1100,7 +574,7 @@ namespace Reko.ImageLoaders.Elf
 
         public IEnumerable<Elf32_Dyn> GetDynEntries(uint offset)
         {
-            var rdr = CreateReader(offset);
+            var rdr = imgLoader.CreateReader(offset);
             for (;;)
             {
                 var dyn = new Elf32_Dyn();
@@ -1120,63 +594,7 @@ namespace Reko.ImageLoaders.Elf
         /// Find the names of all shared objects this image depends on.
         /// </summary>
         /// <returns></returns>
-        public List<string> GetDependencyList()
-        {
-            var result = new List<string>();
-            if (fileClass == ELFCLASS64)
-            {
-                var dynsect = GetSectionInfoByName64(".dynamic");
-                if (dynsect == null)
-                    return result; // no dynamic section = statically linked 
-
-                var dynStrtab = GetDynEntries64(dynsect.sh_offset).Where(d => d.d_tag == DT_STRTAB).FirstOrDefault();
-                if (dynStrtab == null)
-                    return result;
-                var section = GetSectionInfoByAddr64(dynStrtab.d_ptr);
-                foreach (var dynEntry in GetDynEntries64(dynsect.sh_offset).Where(d => d.d_tag == DT_NEEDED))
-                {
-                    result.Add(ReadAsciiString(RawImage, section.sh_offset + dynEntry.d_ptr));
-                }
-            }
-            else
-            {
-                var dynsect = GetSectionInfoByName32(".dynamic");
-                if (dynsect == null)
-                    return result; // no dynamic section = statically linked 
-
-                var dynStrtab = GetDynEntries(dynsect.sh_offset).Where(d => d.d_tag == DT_STRTAB).FirstOrDefault();
-                if (dynStrtab == null)
-                    return result;
-                var section = GetSectionInfoByAddr(dynStrtab.d_ptr);
-                foreach (var dynEntry in GetDynEntries(dynsect.sh_offset).Where(d => d.d_tag == DT_NEEDED))
-                {
-                    result.Add(ReadAsciiString(RawImage, section.sh_offset + dynEntry.d_ptr));
-                }
-            }
-            return result;
-            /*
-            var section = GetSectionInfoByAddr(dynStrtab);
-            stringtab = NativeToHostAddress(stringtab);
-            var rdr = CreateReader(dynsect.sh_offset);
-            for (; ; )
-            {
-                Elf32_Dyn dyn = ReadDynEntry(rdr);
-                if (dyn.d_tag == DT_NULL)
-                    break;
-                if (dyn.d_tag == DT_NEEDED)
-                    for (dyn = (Elf32_Dyn*)dynsect.uHostAddr; dyn.d_tag != DT_NULL; dyn++)
-                    {
-                        if (dyn.d_tag == DT_NEEDED)
-                        {
-                            string need = (byte*)stringtab + dyn.d_un.d_val;
-                            if (need != null)
-                                result.Add(need);
-                        }
-                    }
-                return result;
-            }
-             * */
-        }
+        public abstract List<string> GetDependencyList(byte [] rawImage);
 
         /*==============================================================================
          * FUNCTION:	  ElfBinaryFile::GetImportStubs
@@ -1227,113 +645,6 @@ namespace Reko.ImageLoaders.Elf
             return 0; //m_pImportStubs[];
         }
 
-        // Add appropriate symbols to the symbol table.  secIndex is the section index of the symbol table.
-        private void AddSyms(Elf32_SHdr pSect)
-        {
-            int e_type = this.Header32.e_type;
-            // Calc number of symbols
-            uint nSyms = pSect.sh_size / pSect.sh_entsize;
-            uint offSym = pSect.sh_offset;
-            //m_pSym = (Elf32_Sym*)pSect.uHostAddr; // Pointer to symbols
-            uint strIdx = pSect.sh_link; // sh_link points to the string table
-
-            var siPlt = GetSectionInfoByName32(".plt");
-            uint addrPlt = siPlt!=null ? siPlt.sh_addr : 0;
-            var siRelPlt = GetSectionInfoByName32(".rel.plt");
-            uint sizeRelPlt = 8; // Size of each entry in the .rel.plt table
-            if (siRelPlt == null)
-            {
-                siRelPlt = GetSectionInfoByName32(".rela.plt");
-                sizeRelPlt = 12; // Size of each entry in the .rela.plt table is 12 bytes
-            }
-            uint addrRelPlt = 0;
-            uint numRelPlt = 0;
-            if (siRelPlt != null)
-            {
-                addrRelPlt = siRelPlt.sh_addr;
-                numRelPlt = sizeRelPlt != 0 ? siRelPlt.sh_size / sizeRelPlt : 0u;
-            }
-            // Number of entries in the PLT:
-            // int max_i_for_hack = siPlt ? (int)siPlt.uSectionSize / 0x10 : 0;
-            // Index 0 is a dummy entry
-            var symRdr = CreateReader(offSym);
-            for (int i = 1; i < nSyms; i++)
-            {
-                uint name;
-                if (!symRdr.TryReadUInt32(out name))
-                    break;
-                uint val;
-                if (!symRdr.TryReadUInt32(out val)) //= (ADDRESS)elfRead4((int)m_pSym[i].st_value);
-                    break;
-                uint size;
-                if (!symRdr.TryReadUInt32(out size))
-                    break;
-                byte info;
-                if (!symRdr.TryReadByte(out info))
-                    break;
-                byte other;
-                if (!symRdr.TryReadByte(out other))
-                    break;
-                ushort shndx;
-                if (!symRdr.TryReadLeUInt16(out shndx))
-                    break;
-
-                if (name == 0)
-                    continue; // Weird: symbol w no name.
-
-                if (shndx >= SectionHeaders.Count)
-                {
-
-                }
-                else
-                {
-                    var otherSection = SectionHeaders[shndx];
-                }
-                string str = GetStrPtr((int)strIdx, name);
-                // Hack off the "@@GLIBC_2.0" of Linux, if present
-                int pos;
-                if ((pos = str.IndexOf("@@")) >= 0)
-                    str = str.Remove(pos);
-                // Ensure no overwriting (except functions)
-#if Nilx
-                if (@m_SymTab.ContainsKey(val) || ELF32_ST_TYPE(m_pSym[i].st_info) == STT_FUNC)
-                {
-                    if (val == 0 && siPlt != null)
-                    { //&& i < max_i_for_hack) {
-                        throw new NotImplementedException();
-                        // Special hack for gcc circa 3.3.3: (e.g. test/pentium/settest).  The value in the dynamic symbol table
-                        // is zero!  I was assuming that index i in the dynamic symbol table would always correspond to index i
-                        // in the .plt section, but for fedora2_true, this doesn't work. So we have to look in the .rel[a].plt
-                        // section. Thanks, gcc!  Note that this hack can cause strange symbol names to appear
-                        //val = findRelPltOffset(i, addrRelPlt, sizeRelPlt, numRelPlt, addrPlt);
-                    }
-                    else if (e_type == ET_REL)
-                    {
-                        throw new NotImplementedException();
-#if NYI
-                        int nsec = elfRead2(m_pSym[i].st_shndx);
-                        if (nsec >= 0 && nsec < m_iNumSections)
-                            val += GetSectionInfo(nsec)->uNativeAddr;
-#endif
-                    }
-
-                    m_SymTab[val] = str;
-                }
-#endif
-                Debug.Print("  Symbol {0} ({0:X}) with address {1:X} (segment {2} {2:X}): {3}", i, val, shndx, str);
-            }
-#if NYI
-            ADDRESS uMain = GetMainEntryPoint();
-            if (uMain != NO_ADDRESS && m_SymTab.find(uMain) == m_SymTab.end())
-            {
-                // Ugh - main mustn't have the STT_FUNC attribute. Add it
-                string sMain = "main";
-                m_SymTab[uMain] = sMain;
-            }
-            return;
-#endif
-        }
-
         public string GetStrPtr(Elf32_SHdr sect, uint offset)
         {
             if (sect == null)
@@ -1342,7 +653,7 @@ namespace Reko.ImageLoaders.Elf
                 throw new ArgumentException("GetStrPtr passed null section.");
             }
             // Get a pointer to the start of the string table and add the offset
-            return ReadAsciiString( RawImage, sect.sh_offset + offset);
+            return imgLoader.ReadAsciiString(sect.sh_offset + offset);
         }
 
         public string GetStrPtr64(Elf64_SHdr sect, uint offset)
@@ -1353,30 +664,15 @@ namespace Reko.ImageLoaders.Elf
                 throw new ArgumentException("GetStrPtr passed null section.");
             }
             // Get a pointer to the start of the string table and add the offset
-            return ReadAsciiString(RawImage, sect.sh_offset + offset);
+            return imgLoader.ReadAsciiString(sect.sh_offset + offset);
         }
 
-        public string GetStrPtr(int idx, uint offset)
+        public string ReadAsciiString(ulong v)
         {
-            if (idx < 0)
-            {
-                // Most commonly, this will be an index of -1, because a call to GetSectionIndexByName() failed
-                throw new ArgumentException(string.Format("GetStrPtr passed index of {0}.", idx));
-            }
-            // Get a pointer to the start of the string table and add the offset
-            return ReadAsciiString(RawImage, SectionHeaders[idx].sh_offset + offset);
+            return imgLoader.ReadAsciiString(v);
         }
 
-        public string GetStrPtr64(int idx, uint offset)
-        {
-            if (idx < 0)
-            {
-                // Most commonly, this will be an index of -1, because a call to GetSectionIndexByName() failed
-                throw new ArgumentException(string.Format("GetStrPtr passed index of {0}.", idx));
-            }
-            // Get a pointer to the start of the string table and add the offset
-            return ReadAsciiString(RawImage, SectionHeaders64[idx].sh_offset + offset);
-        }
+        public abstract RelocationResults Relocate(Program program, Address addrLoad);
 #if ZLON
     public class ElfObsolete
     {
@@ -2647,4 +1943,791 @@ namespace Reko.ImageLoaders.Elf
 
     }
 
+    public class ElfLoader64 : ElfLoader
+    {
+        private byte osAbi;
+        private IProcessorArchitecture arch;
+        public Elf64_EHdr Header64 { get; set; }
+        public List<Elf64_PHdr> ProgramHeaders64 { get; private set; }
+        public List<Elf64_SHdr> SectionHeaders64 { get; private set; }
+
+        public ElfLoader64(ElfImageLoader imgLoader, Elf64_EHdr elfHeader, byte osAbi)
+            : base(imgLoader)
+        {
+            this.Header64 = elfHeader;
+            this.osAbi = osAbi;
+        }
+
+        public override Address ComputeBaseAddress(IPlatform platform)
+        {
+            ulong uBaseAddr = ProgramHeaders64
+                .Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0)
+                .Min(ph => ph.p_vaddr);
+            return platform.MakeAddressFromLinear(uBaseAddr);
+        }
+
+        public override Address ComputeMaxAddress(IPlatform platform)
+        {
+            ulong uMaxAddress =
+                   ProgramHeaders64
+                   .Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0)
+                   .Select(ph => ph.p_vaddr + ph.p_pmemsz)
+                   .Max();
+            return platform.MakeAddressFromLinear(uMaxAddress);
+        }
+
+        public override IProcessorArchitecture CreateArchitecture()
+        {
+            arch = CreateArchitecture(Header64.e_machine);
+            return arch;
+        }
+
+        public override ElfObjectLinker CreateLinker()
+        {
+            return new ElfObjectLinker64(this);
+        }
+
+        private ImageSegmentRenderer CreateRenderer64(Elf64_SHdr shdr)
+        {
+            switch (shdr.sh_type)
+            {
+            case SectionHeaderType.SHT_DYNAMIC:
+                return new DynamicSectionRenderer64(this, shdr);
+            case SectionHeaderType.SHT_RELA:
+                return new RelaSegmentRenderer64(this, shdr);
+            case SectionHeaderType.SHT_SYMTAB:
+            case SectionHeaderType.SHT_DYNSYM:
+                return new SymtabSegmentRenderer64(this, shdr);
+            default: return null;
+            }
+        }
+
+        public override List<string> GetDependencyList(byte[] rawImage)
+        {
+            var result = new List<string>();
+            var dynsect = GetSectionInfoByName64(".dynamic");
+            if (dynsect == null)
+                return result; // no dynamic section = statically linked 
+
+            var dynStrtab = GetDynEntries64(dynsect.sh_offset).Where(d => d.d_tag == DT_STRTAB).FirstOrDefault();
+            if (dynStrtab == null)
+                return result;
+            var section = GetSectionInfoByAddr64(dynStrtab.d_ptr);
+            foreach (var dynEntry in GetDynEntries64(dynsect.sh_offset).Where(d => d.d_tag == DT_NEEDED))
+            {
+                result.Add(imgLoader.ReadAsciiString(section.sh_offset + dynEntry.d_ptr));
+            }
+            return result;
+        }
+
+
+        public override Address GetEntryPointAddress(Address addrBase)
+        {
+            Address addr = null;
+            //$REVIEW: should really have a subclassed "Ps3ElfLoader"
+            if (osAbi == ElfLoader.ELFOSABI_CELL_LV2)
+            {
+                // The Header64.e_entry field actually points to a 
+                // "function descriptor" consisiting of two 32-bit 
+                // pointers.
+                var rdr = imgLoader.CreateReader(Header64.e_entry - addrBase.ToLinear());
+                uint uAddr;
+                if (rdr.TryReadUInt32(out uAddr))
+                    addr = Address.Ptr32(uAddr);
+            }
+            else
+            {
+                addr = Address.Ptr64(Header64.e_entry);
+            }
+            return addr;
+        }
+
+        // Find the PLT limits. Required for IsDynamicLinkedProc(), e.g.
+        public override void GetPltLimits()
+        {
+            var pPlt = GetSectionInfoByName64(".plt");
+            if (pPlt != null)
+            {
+                m_uPltMin = pPlt.sh_addr;
+                m_uPltMax = pPlt.sh_addr + pPlt.sh_size; ;
+            }
+        }
+
+        public Elf64_SHdr GetSectionInfoByName64(string sectionName)
+        {
+            return
+                (from sh in this.SectionHeaders64
+                 let name = GetSectionName(sh.sh_name)
+                 where name == sectionName
+                 select sh)
+                .FirstOrDefault();
+        }
+
+        internal Elf64_SHdr GetSectionInfoByAddr64(ulong r_offset)
+        {
+            return
+                (from sh in this.SectionHeaders64
+                 where sh.sh_addr <= r_offset && r_offset < sh.sh_addr + sh.sh_size
+                 select sh)
+                .FirstOrDefault();
+        }
+
+        protected override int GetSectionNameOffset(uint idxString)
+        {
+            return (int)(SectionHeaders64[Header64.e_shstrndx].sh_offset + idxString);
+        }
+
+        public string GetStrPtr64(int idx, uint offset)
+        {
+            if (idx < 0)
+            {
+                // Most commonly, this will be an index of -1, because a call to GetSectionIndexByName() failed
+                throw new ArgumentException(string.Format("GetStrPtr passed index of {0}.", idx));
+            }
+            // Get a pointer to the start of the string table and add the offset
+            return imgLoader.ReadAsciiString(SectionHeaders64[idx].sh_offset + offset);
+        }
+
+        public string GetSymbol64(int iSymbolSection, int symbolNo)
+        {
+            var symSection = SectionHeaders64[iSymbolSection];
+            var strSection = SectionHeaders64[(int)symSection.sh_link];
+            ulong offset = symSection.sh_offset + (ulong)symbolNo * symSection.sh_entsize;
+            var rdr = imgLoader.CreateReader(offset);
+            rdr.TryReadUInt64(out offset);
+            return GetStrPtr64((int)symSection.sh_link, (uint)offset);
+        }
+
+        public override ImageMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred, Address addrMax)
+        {
+            var bytes = new byte[addrMax - addrPreferred];
+            var mem = new MemoryArea(addrPreferred, bytes);
+            var imageMap = mem.CreateImageMap();
+
+            var v_base = addrPreferred.ToLinear();
+            foreach (var ph in ProgramHeaders64)
+            {
+                if (ph.p_vaddr > 0 && ph.p_filesz > 0)
+                    Array.Copy(rawImage, (long)ph.p_offset, bytes, (long)(ph.p_vaddr - v_base), (long)ph.p_filesz);
+            }
+            foreach (var segment in SectionHeaders64)
+            {
+                if (segment.sh_name == 0 || segment.sh_addr == 0)
+                    continue;
+                AccessMode mode = AccessMode.Read;
+                if ((segment.sh_flags & SHF_WRITE) != 0)
+                    mode |= AccessMode.Write;
+                if ((segment.sh_flags & SHF_EXECINSTR) != 0)
+                    mode |= AccessMode.Execute;
+                var seg = imageMap.AddSegment(
+                    platform.MakeAddressFromLinear(segment.sh_addr),
+                    GetSectionName(segment.sh_name),
+                    mode,
+                    (uint)segment.sh_size);
+                seg.MemoryArea = mem;
+                seg.Designer = CreateRenderer64(segment);
+            }
+            return imageMap;
+        }
+
+        public override int LoadProgramHeaderTable()
+        {
+            this.ProgramHeaders64 = new List<Elf64_PHdr>();
+            var rdr = imgLoader.CreateReader(Header64.e_phoff);
+            for (int i = 0; i < Header64.e_phnum; ++i)
+            {
+                ProgramHeaders64.Add(Elf64_PHdr.Load(rdr));
+            }
+            return ProgramHeaders64.Count;
+        }
+
+        public override void LoadSectionHeaders()
+        {
+                this.SectionHeaders64 = new List<Elf64_SHdr>();
+                var rdr = imgLoader.CreateReader(Header64.e_shoff);
+                for (int i = 0; i < Header64.e_shnum; ++i)
+                {
+                    SectionHeaders64.Add(Elf64_SHdr.Load(rdr));
+                }
+        }
+
+        public override RelocationResults Relocate(Program program, Address addrLoad)
+        {
+            var entryPoints = new List<EntryPoint>();
+            var relocations = new RelocationDictionary();
+            var addrEntry = GetEntryPointAddress(addrLoad);
+            if (addrEntry != null)
+            {
+                var ep = new EntryPoint(addrEntry, arch.CreateProcessorState());
+                entryPoints.Add(ep);
+            }
+            if (Header64.e_machine == ElfImageLoader.EM_PPC64)
+            {
+                //$TODO
+            }
+            else if (Header64.e_machine == ElfImageLoader.EM_X86_64)
+            {
+                RelocateX86_64();
+            }
+            else
+                throw new NotImplementedException(string.Format("Relocations for architecture {0} not implemented.", Header64.e_machine));
+            return new RelocationResults(entryPoints, relocations, new List<Address>());
+        }
+
+        /// <remarks>
+        /// According to the ELF PPC32 documentation, the .rela.plt and .plt tables 
+        /// should contain the same number of entries, even if the individual entry 
+        /// sizes are distinct. The entries in .real.plt refer to symbols while the
+        /// entries in .plt are (writeable) pointers.  Any caller that jumps to one
+        /// of pointers in the .plt table is a "trampoline", and should be replaced
+        /// in the decompiled code with just a call to the symbol obtained from the
+        /// .real.plt section.
+        /// </remarks>
+        public void RelocateX86_64()
+        {
+            var rela_plt = GetSectionInfoByName64(".rela.plt");
+            var plt = GetSectionInfoByName64(".plt");
+            var relaRdr = imgLoader.CreateReader(rela_plt.sh_offset);
+            for (ulong i = 0; i < rela_plt.sh_size / rela_plt.sh_entsize; ++i)
+            {
+                // Read the .rela.plt entry
+                ulong offset;
+                if (!relaRdr.TryReadUInt64(out offset))
+                    return;
+                ulong info;
+                if (!relaRdr.TryReadUInt64(out info))
+                    return;
+                long addend;
+                if (!relaRdr.TryReadInt64(out addend))
+                    return;
+
+                ulong sym = info >> 32;
+                string symStr = GetSymbol64((int)rela_plt.sh_link, (int)sym);
+
+                var addr = Address.Ptr64(plt.sh_addr + (uint)(i + 1) * plt.sh_entsize);
+                importReferences.Add(
+                    addr,
+                    new NamedImportReference(addr, null, symStr));
+            }
+        }
+    }
+
+
+
+    public class ElfLoader32 : ElfLoader
+    {
+        private Elf32_EHdr header32;
+        private IProcessorArchitecture arch;
+        public List<Elf32_PHdr> ProgramHeaders { get; private set; }
+        public List<Elf32_SHdr> SectionHeaders { get; private set; }
+
+        public ElfLoader32(ElfImageLoader imgLoader, Elf32_EHdr header32)
+            : base(imgLoader)
+        {
+            this.header32 = header32;
+        }
+
+        public int ELF32_R_SYM(int info) { return ((info) >> 8); }
+        public int ELF32_ST_BIND(int i) { return ((i) >> 4); }
+        public int ELF32_ST_TYPE(int i) { return ((i) & 0xf); }
+        public int ELF32_ST_INFO(int b, int t) { return (((b) << 4) + ((t) & 0xf)); }
+
+        // Add appropriate symbols to the symbol table.  secIndex is the section index of the symbol table.
+        private void AddSyms(Elf32_SHdr pSect)
+        {
+            int e_type = this.header32.e_type;
+            // Calc number of symbols
+            uint nSyms = pSect.sh_size / pSect.sh_entsize;
+            uint offSym = pSect.sh_offset;
+            //m_pSym = (Elf32_Sym*)pSect.uHostAddr; // Pointer to symbols
+            uint strIdx = pSect.sh_link; // sh_link points to the string table
+
+            var siPlt = GetSectionInfoByName32(".plt");
+            uint addrPlt = siPlt != null ? siPlt.sh_addr : 0;
+            var siRelPlt = GetSectionInfoByName32(".rel.plt");
+            uint sizeRelPlt = 8; // Size of each entry in the .rel.plt table
+            if (siRelPlt == null)
+            {
+                siRelPlt = GetSectionInfoByName32(".rela.plt");
+                sizeRelPlt = 12; // Size of each entry in the .rela.plt table is 12 bytes
+            }
+            uint addrRelPlt = 0;
+            uint numRelPlt = 0;
+            if (siRelPlt != null)
+            {
+                addrRelPlt = siRelPlt.sh_addr;
+                numRelPlt = sizeRelPlt != 0 ? siRelPlt.sh_size / sizeRelPlt : 0u;
+            }
+            // Number of entries in the PLT:
+            // int max_i_for_hack = siPlt ? (int)siPlt.uSectionSize / 0x10 : 0;
+            // Index 0 is a dummy entry
+            var symRdr = imgLoader.CreateReader(offSym);
+            for (int i = 1; i < nSyms; i++)
+            {
+                uint name;
+                if (!symRdr.TryReadUInt32(out name))
+                    break;
+                uint val;
+                if (!symRdr.TryReadUInt32(out val)) //= (ADDRESS)elfRead4((int)m_pSym[i].st_value);
+                    break;
+                uint size;
+                if (!symRdr.TryReadUInt32(out size))
+                    break;
+                byte info;
+                if (!symRdr.TryReadByte(out info))
+                    break;
+                byte other;
+                if (!symRdr.TryReadByte(out other))
+                    break;
+                ushort shndx;
+                if (!symRdr.TryReadLeUInt16(out shndx))
+                    break;
+
+                if (name == 0)
+                    continue; // Weird: symbol w no name.
+
+                if (shndx >= SectionHeaders.Count)
+                {
+
+                }
+                else
+                {
+                    var otherSection = SectionHeaders[shndx];
+                }
+                string str = GetStrPtr((int)strIdx, name);
+                // Hack off the "@@GLIBC_2.0" of Linux, if present
+                int pos;
+                if ((pos = str.IndexOf("@@")) >= 0)
+                    str = str.Remove(pos);
+                // Ensure no overwriting (except functions)
+#if Nilx
+                if (@m_SymTab.ContainsKey(val) || ELF32_ST_TYPE(m_pSym[i].st_info) == STT_FUNC)
+                {
+                    if (val == 0 && siPlt != null)
+                    { //&& i < max_i_for_hack) {
+                        throw new NotImplementedException();
+                        // Special hack for gcc circa 3.3.3: (e.g. test/pentium/settest).  The value in the dynamic symbol table
+                        // is zero!  I was assuming that index i in the dynamic symbol table would always correspond to index i
+                        // in the .plt section, but for fedora2_true, this doesn't work. So we have to look in the .rel[a].plt
+                        // section. Thanks, gcc!  Note that this hack can cause strange symbol names to appear
+                        //val = findRelPltOffset(i, addrRelPlt, sizeRelPlt, numRelPlt, addrPlt);
+                    }
+                    else if (e_type == ET_REL)
+                    {
+                        throw new NotImplementedException();
+#if NYI
+                        int nsec = elfRead2(m_pSym[i].st_shndx);
+                        if (nsec >= 0 && nsec < m_iNumSections)
+                            val += GetSectionInfo(nsec)->uNativeAddr;
+#endif
+                    }
+
+                    m_SymTab[val] = str;
+                }
+#endif
+                Debug.Print("  Symbol {0} ({0:X}) with address {1:X} (segment {2} {2:X}): {3}", i, val, shndx, str);
+            }
+#if NYI
+            ADDRESS uMain = GetMainEntryPoint();
+            if (uMain != NO_ADDRESS && m_SymTab.find(uMain) == m_SymTab.end())
+            {
+                // Ugh - main mustn't have the STT_FUNC attribute. Add it
+                string sMain = "main";
+                m_SymTab[uMain] = sMain;
+            }
+            return;
+#endif
+        }
+
+        public override Address ComputeBaseAddress(IPlatform platform)
+        {
+            return Address.Ptr32(
+                ProgramHeaders
+                .Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0)
+                .Min(ph => ph.p_vaddr));
+        }
+
+        public override Address ComputeMaxAddress(IPlatform platform)
+        {
+            return Address.Ptr32(
+                ProgramHeaders
+                .Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0)
+                .Select(ph => ph.p_vaddr + ph.p_pmemsz)
+                .Max());
+        }
+
+        public override IProcessorArchitecture CreateArchitecture()
+        {
+            arch = CreateArchitecture(header32.e_machine);
+            return arch;
+        }
+
+        public override ElfObjectLinker CreateLinker()
+        {
+            return new ElfObjectLinker32(this);
+        }
+
+        public ImageSegmentRenderer CreateRenderer(Elf32_SHdr shdr)
+        {
+            switch (shdr.sh_type)
+            {
+            case SectionHeaderType.SHT_DYNAMIC:
+                return new DynamicSectionRenderer(this, shdr);
+            case SectionHeaderType.SHT_RELA:
+                return new RelaSegmentRenderer(this, shdr);
+            default: return null;
+            }
+        }
+
+        private void DumpRela(Elf32_SHdr sh)
+        {
+            var entries = sh.sh_size / sh.sh_entsize;
+            var symtab = sh.sh_link;
+            var rdr = imgLoader.CreateReader(sh.sh_offset);
+            for (int i = 0; i < entries; ++i)
+            {
+                uint offset;
+                if (!rdr.TryReadUInt32(out offset))
+                    return;
+                uint info;
+                if (!rdr.TryReadUInt32(out info))
+                    return;
+                int addend;
+                if (!rdr.TryReadInt32(out addend))
+                    return;
+
+                uint sym = info >> 8;
+                string symStr = GetStrPtr((int)symtab, sym);
+                Debug.Print("  RELA {0:X8} {1,3} {2:X8} {3:X8} {4}", offset, info & 0xFF, sym, addend, symStr);
+            }
+        }
+
+        public override List<string> GetDependencyList(byte[] rawImage)
+        {
+            var result = new List<string>();
+            var dynsect = GetSectionInfoByName32(".dynamic");
+            if (dynsect == null)
+                return result; // no dynamic section = statically linked 
+
+            var dynStrtab = GetDynEntries(dynsect.sh_offset).Where(d => d.d_tag == DT_STRTAB).FirstOrDefault();
+            if (dynStrtab == null)
+                return result;
+            var section = GetSectionInfoByAddr(dynStrtab.d_ptr);
+            foreach (var dynEntry in GetDynEntries(dynsect.sh_offset).Where(d => d.d_tag == DT_NEEDED))
+            {
+                result.Add(imgLoader.ReadAsciiString(section.sh_offset + dynEntry.d_ptr));
+            }
+            return result;
+        }
+
+        public override Address GetEntryPointAddress(Address addrBase)
+        {
+            return Address.Ptr32(header32.e_entry);
+        }
+
+        public override void GetPltLimits()
+        {
+            var pPlt = GetSectionInfoByName32(".plt");
+            if (pPlt != null)
+            {
+                m_uPltMin = pPlt.sh_addr;
+                m_uPltMax = pPlt.sh_addr + pPlt.sh_size; ;
+            }
+        }
+
+        private Elf32_SHdr GetSectionInfoByName32(string sectionName)
+        {
+            return
+                (from sh in this.SectionHeaders
+                 let name = GetSectionName(sh.sh_name)
+                 where name == sectionName
+                 select sh)
+                .FirstOrDefault();
+        }
+
+        internal Elf32_SHdr GetSectionInfoByAddr(uint r_offset)
+        {
+            return
+                (from sh in this.SectionHeaders
+                 where sh.sh_addr <= r_offset && r_offset < sh.sh_addr + sh.sh_size
+                 select sh)
+                .FirstOrDefault();
+        }
+
+        protected override int GetSectionNameOffset(uint idxString)
+        {
+            return (int)(SectionHeaders[header32.e_shstrndx].sh_offset + idxString);
+        }
+
+        public string GetStrPtr(int idx, uint offset)
+        {
+            if (idx < 0)
+            {
+                // Most commonly, this will be an index of -1, because a call to GetSectionIndexByName() failed
+                throw new ArgumentException(string.Format("GetStrPtr passed index of {0}.", idx));
+            }
+            // Get a pointer to the start of the string table and add the offset
+            return imgLoader.ReadAsciiString(SectionHeaders[idx].sh_offset + offset);
+        }
+
+        public string GetSymbolName(int iSymbolSection, int symbolNo)
+        {
+            var symSection = SectionHeaders[iSymbolSection];
+            var strSection = SectionHeaders[(int)symSection.sh_link];
+            uint offset = symSection.sh_offset + (uint)symbolNo * symSection.sh_entsize;
+            var rdr = imgLoader.CreateReader(offset);
+            rdr.TryReadUInt32(out offset);
+            return GetStrPtr((int)symSection.sh_link, offset);
+        }
+
+        public override ImageMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred, Address addrMax)
+        {
+            var bytes = new byte[addrMax - addrPreferred];
+            var mem = new MemoryArea(addrPreferred, bytes);
+            var imageMap = mem.CreateImageMap();
+            var v_base = addrPreferred.ToLinear();
+            foreach (var ph in ProgramHeaders)
+            {
+                if (ph.p_vaddr > 0 && ph.p_filesz > 0)
+                    Array.Copy(rawImage, (long)ph.p_offset, bytes, (long)(ph.p_vaddr - v_base), (long)ph.p_filesz);
+                Debug.Print("ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.p_vaddr, ph.p_filesz, ph.p_pmemsz);
+            }
+            foreach (var segment in SectionHeaders)
+            {
+                if (segment.sh_name == 0 || segment.sh_addr == 0)
+                    continue;
+                AccessMode mode = AccessMode.Read;
+                if ((segment.sh_flags & SHF_WRITE) != 0)
+                    mode |= AccessMode.Write;
+                if ((segment.sh_flags & SHF_EXECINSTR) != 0)
+                    mode |= AccessMode.Execute;
+                var seg = imageMap.AddSegment(
+                    Address.Ptr32(segment.sh_addr),
+                    GetSectionName(segment.sh_name),
+                    mode,
+                    segment.sh_size);
+                seg.MemoryArea = mem;
+                seg.Designer = CreateRenderer(segment);
+            }
+            imageMap.DumpSections();
+            return imageMap;
+        }
+
+        public override int LoadProgramHeaderTable()
+        {
+            this.ProgramHeaders = new List<Elf32_PHdr>();
+            var rdr = imgLoader.CreateReader(header32.e_phoff);
+            for (int i = 0; i < header32.e_phnum; ++i)
+            {
+                ProgramHeaders.Add(Elf32_PHdr.Load(rdr));
+            }
+            return ProgramHeaders.Count;
+        }
+
+        public override void LoadSectionHeaders()
+        {
+            this.SectionHeaders = new List<Elf32_SHdr>();
+            var rdr = imgLoader.CreateReader(header32.e_shoff);
+            for (int i = 0; i < header32.e_shnum; ++i)
+            {
+                SectionHeaders.Add(Elf32_SHdr.Load(rdr));
+            }
+        }
+
+        public override RelocationResults Relocate(Program program, Address addrLoad)
+        {
+            var entryPoints = new List<EntryPoint>();
+            var relocations = new RelocationDictionary();
+            var addrEntry = GetEntryPointAddress(addrLoad);
+            if (addrEntry != null)
+            {
+                var ep = new EntryPoint(addrEntry, arch.CreateProcessorState());
+                entryPoints.Add(ep);
+            }
+
+            switch (header32.e_machine)
+            {
+            case ElfImageLoader.EM_386:
+                RelocateI386();
+                break;
+            case ElfImageLoader.EM_PPC:
+                RelocatePpc32();
+                break;
+            case ElfImageLoader.EM_MIPS:
+            case ElfImageLoader.EM_ARM:
+            case ElfImageLoader.EM_SPARC:
+                break;
+            default:
+                throw new NotImplementedException();
+            }
+            return new RelocationResults(entryPoints, relocations, new List<Address>());
+        }
+
+        private void RelocateI386()
+        {
+            uint nextFakeLibAddr = ~1u; // See R_386_PC32 below; -1 sometimes used for main
+            for (int i = 1; i < this.SectionHeaders.Count; ++i)
+            {
+                var ps = SectionHeaders[i];
+                if (ps.sh_type == SectionHeaderType.SHT_REL)
+                {
+                    // A section such as .rel.dyn or .rel.plt (without an addend field).
+                    // Each entry has 2 words: r_offset and r_info. The r_offset is just the offset from the beginning
+                    // of the section (section given by the section header's sh_info) to the word to be modified.
+                    // r_info has the type in the bottom byte, and a symbol table index in the top 3 bytes.
+                    // A symbol table offset of 0 (STN_UNDEF) means use value 0. The symbol table involved comes from
+                    // the section header's sh_link field.
+                    var pReloc = imgLoader.CreateReader(ps.sh_offset);
+                    uint size = ps.sh_size;
+                    // NOTE: the r_offset is different for .o files (ET_REL in the e_type header field) than for exe's
+                    // and shared objects!
+                    uint destNatOrigin = 0;
+                    uint destHostOrigin = 0;
+                    if (header32.e_type == ElfImageLoader.ET_REL)
+                    {
+                        int destSection = (int)SectionHeaders[i].sh_info;
+                        destNatOrigin = SectionHeaders[destSection].sh_addr;
+                        destHostOrigin = SectionHeaders[destSection].sh_offset;
+                    }
+                    int symSection = (int)SectionHeaders[i].sh_link; // Section index for the associated symbol table
+                    int strSection = (int)SectionHeaders[symSection].sh_link; // Section index for the string section assoc with this
+                    uint pStrSection = SectionHeaders[strSection].sh_offset;
+                    var symOrigin = SectionHeaders[symSection].sh_offset;
+                    var relocR = imgLoader.CreateReader(0);
+                    var relocW = imgLoader.CreateWriter(0);
+                    for (uint u = 0; u < size; u += 2 * sizeof(uint))
+                    {
+                        uint r_offset = pReloc.ReadUInt32();
+                        uint info = pReloc.ReadUInt32();
+
+                        byte relType = (byte)info;
+                        uint symTabIndex = info >> 8;
+                        uint pRelWord; // Pointer to the word to be relocated
+                        if (header32.e_type == ElfImageLoader.ET_REL)
+                        {
+                            pRelWord = destHostOrigin + r_offset;
+                        }
+                        else
+                        {
+                            if (r_offset == 0)
+                                continue;
+                            var destSec = GetSectionInfoByAddr(r_offset);
+                            pRelWord = ~0u; // destSec.uHostAddr - destSec.uNativeAddr + r_offset;
+                            destNatOrigin = 0;
+                        }
+                        uint A, S = 0, P;
+                        int nsec;
+                        var sym = Elf32_Sym.Load(imgLoader.CreateReader(symOrigin + symTabIndex * Elf32_Sym.Size));
+                        switch (relType)
+                        {
+                        case 0: // R_386_NONE: just ignore (common)
+                            break;
+                        case 1: // R_386_32: S + A
+                            // Read the symTabIndex'th symbol.
+                            S = sym.st_value;
+                            if (header32.e_type == ElfImageLoader.ET_REL)
+                            {
+                                nsec = sym.st_shndx;
+                                if (nsec >= 0 && nsec < SectionHeaders.Count)
+                                    S += SectionHeaders[nsec].sh_addr;
+                            }
+                            A = relocR.ReadUInt32(pRelWord);
+                            relocW.WriteUInt32(pRelWord, S + A);
+                            break;
+                        case 2: // R_386_PC32: S + A - P
+                            if (ELF32_ST_TYPE(sym.st_info) == STT_SECTION)
+                            {
+                                nsec = sym.st_shndx;
+                                if (nsec >= 0 && nsec < SectionHeaders.Count)
+                                    S = SectionHeaders[nsec].sh_addr;
+                            }
+                            else
+                            {
+                                S = sym.st_value;
+                                if (S == 0)
+                                {
+                                    // This means that the symbol doesn't exist in this module, and is not accessed
+                                    // through the PLT, i.e. it will be statically linked, e.g. strcmp. We have the
+                                    // name of the symbol right here in the symbol table entry, but the only way
+                                    // to communicate with the loader is through the target address of the call.
+                                    // So we use some very improbable addresses (e.g. -1, -2, etc) and give them entries
+                                    // in the symbol table
+                                    uint nameOffset = sym.st_name;
+                                    string pName = imgLoader.ReadAsciiString(pStrSection + nameOffset);
+                                    // this is too slow, I'm just going to assume it is 0
+                                    //S = GetAddressByName(pName);
+                                    //if (S == (e_type == E_REL ? 0x8000000 : 0)) {
+                                    S = nextFakeLibAddr--; // Allocate a new fake address
+                                    AddSymbol(S, pName);
+                                    //}
+                                }
+                                else if (header32.e_type == ElfImageLoader.ET_REL)
+                                {
+                                    nsec = sym.st_shndx;
+                                    if (nsec >= 0 && nsec < SectionHeaders.Count)
+                                        S += SectionHeaders[nsec].sh_addr;
+                                }
+                            }
+                            A = relocR.ReadUInt32(pRelWord);
+                            P = destNatOrigin + r_offset;
+                            relocW.WriteUInt32(pRelWord, S + A - P);
+                            break;
+                        case 7:
+                        case 8: // R_386_RELATIVE
+                            break; // No need to do anything with these, if a shared object
+                        default:
+                            throw new NotSupportedException("Relocation type " + (int)relType + " not handled yet");
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <remarks>
+        /// According to the ELF PPC32 documentation, the .rela.plt and .plt tables 
+        /// should contain the same number of entries, even if the individual entry 
+        /// sizes are distinct. The entries in .real.plt refer to symbols while the
+        /// entries in .plt are (writeable) pointers.  Any caller that jumps to one
+        /// of pointers in the .plt table is a "trampoline", and should be replaced
+        /// in the decompiled code with just a call to the symbol obtained from the
+        /// .real.plt section.
+        /// </remarks>
+        public void RelocatePpc32()
+        {
+            var rela_plt = GetSectionInfoByName32(".rela.plt");
+            var plt = GetSectionInfoByName32(".plt");
+            var relaRdr = imgLoader.CreateReader(rela_plt.sh_offset);
+            var pltRdr = imgLoader.CreateReader(plt.sh_offset);
+            for (int i = 0; i < rela_plt.sh_size / rela_plt.sh_entsize; ++i)
+            {
+                // Read the .rela.plt entry
+                uint offset;
+                if (!relaRdr.TryReadUInt32(out offset))
+                    return;
+                uint info;
+                if (!relaRdr.TryReadUInt32(out info))
+                    return;
+                int addend;
+                if (!relaRdr.TryReadInt32(out addend))
+                    return;
+
+                // Read the .plt entry. We don't care about its contents,
+                // only its address. Anyone accessing that address is
+                // trying to access the symbol.
+
+                uint thunkAddress;
+                if (!pltRdr.TryReadUInt32(out thunkAddress))
+                    break;
+
+                uint sym = info >> 8;
+                string symStr = GetSymbolName((int)rela_plt.sh_link, (int)sym);
+
+                var addr = Address.Ptr32(plt.sh_addr + (uint)i * 4);
+                importReferences.Add(
+                    addr,
+                    new NamedImportReference(addr, null, symStr));
+            }
+        }
+
+    }
 }

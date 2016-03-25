@@ -29,10 +29,10 @@ namespace Reko.ImageLoaders.Elf
 {
     public class DynamicSectionRenderer : ImageSegmentRenderer
     {
-        private ElfImageLoader loader;
+        private ElfLoader32 loader;
         private  Elf32_SHdr shdr;
 
-        public DynamicSectionRenderer(ElfImageLoader loader, Elf32_SHdr shdr)
+        public DynamicSectionRenderer(ElfLoader32 loader, Elf32_SHdr shdr)
         {
             this.loader = loader;
             this.shdr = shdr;
@@ -92,7 +92,7 @@ namespace Reko.ImageLoaders.Elf
                     formatter.WriteHyperlink(string.Format("{0:X8}", entry.d_ptr), Address.Ptr32(entry.d_ptr));
                     break;
                 case DT_NEEDED:
-                    formatter.Write("{0,-12} {1}", "DT_NEEDED", loader.ReadAsciiString(loader.RawImage, strtabSection.sh_offset + entry.d_ptr));
+                    formatter.Write("{0,-12} {1}", "DT_NEEDED", loader.ReadAsciiString(strtabSection.sh_offset + entry.d_ptr));
                     break;
                 case DT_STRSZ:
                     formatter.Write("{0,-12} {1:X}", "DT_STRSZ", entry.d_val);
@@ -143,10 +143,10 @@ namespace Reko.ImageLoaders.Elf
 
     public class DynamicSectionRenderer64 : ImageSegmentRenderer
     {
-        private ElfImageLoader loader;
+        private ElfLoader64 loader;
         private Elf64_SHdr shdr;
 
-        public DynamicSectionRenderer64(ElfImageLoader loader, Elf64_SHdr shdr)
+        public DynamicSectionRenderer64(ElfLoader64 loader, Elf64_SHdr shdr)
         {
             this.loader = loader;
             this.shdr = shdr;
@@ -214,7 +214,7 @@ namespace Reko.ImageLoaders.Elf
                     formatter.WriteHyperlink(string.Format("{0:X16}", entry.d_ptr), Address.Ptr64(entry.d_ptr));
                     break;
                 case DT_NEEDED:
-                    formatter.Write("{0,-12} {1}", "DT_NEEDED", loader.ReadAsciiString(loader.RawImage, strtabSection.sh_offset + entry.d_ptr));
+                    formatter.Write("{0,-12} {1}", "DT_NEEDED", loader.ReadAsciiString(strtabSection.sh_offset + entry.d_ptr));
                     break;
                 case DT_STRSZ:
                     formatter.Write("{0,-12} {1:X}", "DT_STRSZ", entry.d_val);

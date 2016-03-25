@@ -29,10 +29,10 @@ namespace Reko.ImageLoaders.Elf
 {
     public class SymtabSegmentRenderer32 : ImageSegmentRenderer
     {
-        private ElfImageLoader loader;
+        private ElfLoader32 loader;
         private Elf32_SHdr shdr;
 
-        public SymtabSegmentRenderer32(ElfImageLoader loader, Elf32_SHdr shdr)
+        public SymtabSegmentRenderer32(ElfLoader32 loader, Elf32_SHdr shdr)
         {
             this.loader = loader;
             this.shdr = shdr;
@@ -74,10 +74,10 @@ namespace Reko.ImageLoaders.Elf
 
     public class SymtabSegmentRenderer64 : ImageSegmentRenderer
     {
-        private ElfImageLoader loader;
+        private ElfLoader64 loader;
         private Elf64_SHdr shdr;
 
-        public SymtabSegmentRenderer64(ElfImageLoader loader, Elf64_SHdr shdr)
+        public SymtabSegmentRenderer64(ElfLoader64 loader, Elf64_SHdr shdr)
         {
             this.loader = loader;
             this.shdr = shdr;

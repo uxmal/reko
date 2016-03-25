@@ -91,7 +91,7 @@ namespace Reko.Arch.Mips
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
-            throw new NotImplementedException();
+            return Registers.mpNameToReg.TryGetValue(name, out reg);
         }
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
@@ -107,11 +107,6 @@ namespace Reko.Arch.Mips
         public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
-        }
-
-        public override Address MakeAddressFromConstant(Constant c)
-        {
-            return Address.Ptr32(c.ToUInt32());
         }
 
         public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
@@ -148,6 +143,11 @@ namespace Reko.Arch.Mips
         {
             return new BeImageReader(image, addrBegin, addrEnd);
         }
+
+        public override Address MakeAddressFromConstant(Constant c)
+        {
+            return Address.Ptr32(c.ToUInt32());
+        }
     }
 
     public class MipsLe32Architecture : MipsProcessorArchitecture
@@ -165,6 +165,11 @@ namespace Reko.Arch.Mips
         public override ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
         {
             return new LeImageReader(image, addrBegin, addrEnd);
+        }
+
+        public override Address MakeAddressFromConstant(Constant c)
+        {
+            return Address.Ptr32(c.ToUInt32());
         }
     }
 }

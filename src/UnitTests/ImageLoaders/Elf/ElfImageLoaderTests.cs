@@ -380,7 +380,8 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         {
             mr.ReplayAll();
 
-            var el = new ElfImageLoader(services, "foo", rawImg);
+            var eil = new ElfImageLoader(services, "foo", rawImg);
+            var el = new ElfLoader32(eil, null);
             el.Load(Address.Ptr32(0));
             Assert.AreEqual(".symtab", el.GetSectionName(1));
         }
@@ -390,7 +391,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         {
             mr.ReplayAll();
 
-            var el = new ElfImageLoader(services, "foo", rawImg);
+            var eil = new ElfImageLoader(services, "foo", rawImg);
             el.Load(Address.Ptr32(0));
 
             Assert.AreEqual("", el.GetSectionName(el.SectionHeaders[0].sh_name));

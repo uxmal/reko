@@ -30,12 +30,12 @@ namespace Reko.ImageLoaders.Elf
 {
     public class RelaSegmentRenderer : ImageSegmentRenderer
     {
-        private ElfImageLoader loader;
+        private ElfLoader32 loader;
         private Elf32_SHdr shdr;
 
-        public RelaSegmentRenderer(ElfImageLoader loader, Elf32_SHdr shdr)
+        public RelaSegmentRenderer(ElfLoader32 imgLoader, Elf32_SHdr shdr)
         {
-            this.loader = loader;
+            this.loader = imgLoader;
             this.shdr = shdr;
         }
 
@@ -57,7 +57,7 @@ namespace Reko.ImageLoaders.Elf
                     return;
 
                 uint sym = info >> 8;
-                string symStr = loader.GetSymbol(symtab, (int)sym);
+                string symStr = loader.GetSymbolName(symtab, (int)sym);
                 formatter.Write("{0:X8} {1,3} {2:X8} {3:X8} {4} ({5})", offset, info & 0xFF, sym, addend, symStr, sym);
                 formatter.WriteLine();
             }
@@ -66,10 +66,10 @@ namespace Reko.ImageLoaders.Elf
 
     public class RelaSegmentRenderer64 : ImageSegmentRenderer
     {
-        private ElfImageLoader loader;
+        private ElfLoader64 loader;
         private Elf64_SHdr shdr;
 
-        public RelaSegmentRenderer64(ElfImageLoader loader, Elf64_SHdr shdr)
+        public RelaSegmentRenderer64(ElfLoader64 loader, Elf64_SHdr shdr)
         {
             this.loader = loader;
             this.shdr = shdr;
