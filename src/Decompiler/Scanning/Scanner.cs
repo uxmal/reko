@@ -99,7 +99,6 @@ namespace Reko.Scanning
         private Map<Address, BlockRange> blocks;
         private Dictionary<Block, Address> blockStarts;
         private Dictionary<string, PseudoProcedure> pseudoProcs;
-        private IDictionary<Address, ProcedureSignature> callSigs;
         private Dictionary<Address, ImportReference> importReferences;
         private DecompilerEventListener eventListener;
         private HashSet<Procedure> visitedProcs;
@@ -123,7 +122,6 @@ namespace Reko.Scanning
             this.program = program;
             this.imageMap = program.ImageMap;
             this.importResolver = importResolver;
-            this.callSigs = program.User.Calls.ToDictionary(k => k.Key, v => v.Value.Signature);
             this.eventListener = services.RequireService<DecompilerEventListener>();
             this.cancelSvc = services.GetService<CancellationTokenSource>();
             if (imageMap == null)

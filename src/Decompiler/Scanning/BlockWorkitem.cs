@@ -496,33 +496,43 @@ namespace Reko.Scanning
 
         private bool OnAfterCall(ProcedureSignature sigCallee, ProcedureCharacteristics characteristics)
         {
-            if (sigCallee == null)
-                return true;
-            if (sigCallee.StackDelta != 0)
+            UserCallData userCall;
+            program.User.Calls.TryGetValue(ric.Address, out userCall);
+
+            if (sigCallee != null)
             {
-                Expression newVal = new BinaryExpression(
-                        Operator.IAdd,
-                        stackReg.DataType,
-                        stackReg,
-                        Constant.Create(
-                            PrimitiveType.CreateWord(stackReg.DataType.Size),
-                            sigCallee.StackDelta));
-                newVal = newVal.Accept(eval);
-                SetValue(stackReg, newVal);
+                if (sigCallee.StackDelta != 0)
+                {
+                    Expression newVal = new BinaryExpression(
+                            Operator.IAdd,
+                            stackReg.DataType,
+                            stackReg,
+                            Constant.Create(
+                                PrimitiveType.CreateWord(stackReg.DataType.Size),
+                                sigCallee.StackDelta));
+                    newVal = newVal.Accept(eval);
+                    SetValue(stackReg, newVal);
+                }
             }
             state.OnAfterCall(sigCallee);
-            if (characteristics != null && characteristics.Terminates)
+            if ((characteristics != null && characteristics.Terminates) ||
+                (userCall != null && userCall.NoReturn))
             {
                 scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
                 return false;
             }
-            int delta = sigCallee.StackDelta - sigCallee.ReturnAddressOnStack;
-            if (delta != 0)
+
+            // Adjust stack after call
+            if (sigCallee != null)
             {
-                var d = Constant.Create(stackReg.DataType, delta);
-                this.Emit(new Assignment(
-                    stackReg,
-                    new BinaryExpression(Operator.IAdd, stackReg.DataType, stackReg, d)));
+                int delta = sigCallee.StackDelta - sigCallee.ReturnAddressOnStack;
+                if (delta != 0)
+                {
+                    var d = Constant.Create(stackReg.DataType, delta);
+                    this.Emit(new Assignment(
+                        stackReg,
+                        new BinaryExpression(Operator.IAdd, stackReg.DataType, stackReg, d)));
+                }
             }
             return true;
         }
