@@ -257,12 +257,12 @@ namespace Reko.UnitTests.Environments.SysV
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             var args = sig.Parameters;
-            Assert.AreEqual("o0", args[0].Storage.ToString());
-            Assert.AreEqual("o1", args[1].Storage.ToString());
-            Assert.AreEqual("o2", args[2].Storage.ToString());
-            Assert.AreEqual("o3", args[3].Storage.ToString());
-            Assert.AreEqual("o4", args[4].Storage.ToString());
-            Assert.AreEqual("o5", args[5].Storage.ToString());
+            Assert.AreEqual("rdi", args[0].Storage.ToString());
+            Assert.AreEqual("rsi", args[1].Storage.ToString());
+            Assert.AreEqual("rdx", args[2].Storage.ToString());
+            Assert.AreEqual("rcx", args[3].Storage.ToString());
+            Assert.AreEqual("r8", args[4].Storage.ToString());
+            Assert.AreEqual("r9", args[5].Storage.ToString());
             Assert.AreEqual("Stack +0000", args[6].Storage.ToString());
         }
     }
