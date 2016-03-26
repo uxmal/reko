@@ -371,6 +371,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             mr.ReplayAll();
 
             var el = new ElfImageLoader(services, "foo", rawImg);
+            el.LoadElfIdentification();
             var lr = el.Load(Address.Ptr32(0));
             Assert.AreSame(arch, lr.Architecture);
         }
@@ -381,9 +382,9 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             mr.ReplayAll();
 
             var eil = new ElfImageLoader(services, "foo", rawImg);
-            var el = new ElfLoader32(eil, null);
-            el.Load(Address.Ptr32(0));
-            Assert.AreEqual(".symtab", el.GetSectionName(1));
+            eil.LoadElfIdentification();
+            var el = (ElfLoader32)eil.CreateLoader();
+            el.LoadSectionHeaders();
         }
 
         [Test]
@@ -392,7 +393,9 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             mr.ReplayAll();
 
             var eil = new ElfImageLoader(services, "foo", rawImg);
-            el.Load(Address.Ptr32(0));
+            eil.LoadElfIdentification();
+            var el = (ElfLoader32)eil.CreateLoader();
+            el.LoadSectionHeaders();
 
             Assert.AreEqual("", el.GetSectionName(el.SectionHeaders[0].sh_name));
             Assert.AreEqual(".interp", el.GetSectionName(el.SectionHeaders[1].sh_name));
@@ -429,8 +432,10 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         {
             mr.ReplayAll();
 
-            var el = new ElfImageLoader(services, "foo", rawImg);
-            el.Load(Address.Ptr32(0));
+            var eil = new ElfImageLoader(services, "foo", rawImg);
+            eil.LoadElfIdentification();
+            var el = (ElfLoader32)eil.CreateLoader();
+            el.LoadProgramHeaderTable();
             el.Dump(Console.Out);
         }
 
@@ -443,8 +448,10 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             opEl.Expect(o => o.Load(null, null)).IgnoreArguments().Return(platform);
             mr.ReplayAll();
             
-            var el = new ElfImageLoader(services, "foo", rawImg);
-            el.CreatePlatform(0x66);        // ELFOSABI_CELL_LV2;
+            var eil = new ElfImageLoader(services, "foo", rawImg);
+            eil.LoadElfIdentification();
+            var el = eil.CreateLoader();
+            el.CreatePlatform(0x66, arch);        // ELFOSABI_CELL_LV2;
 
             mr.VerifyAll();
         }
