@@ -361,7 +361,7 @@ namespace Reko.Core.Serialization
                 int offset = (int)kv.Key.ToLinear();
                 program.GlobalFields.Fields.Add(offset, dt, kv.Value.Name);
             }
-
+          
             if (sUser.Heuristics != null)
             {
                 user.Heuristics.UnionWith(sUser.Heuristics.Select(h => h.Name));
@@ -380,6 +380,37 @@ namespace Reko.Core.Serialization
                 user.TextEncoding = enc;
             }
             program.EnvironmentMetadata = project.LoadedMetadata;
+            if (sUser.Calls != null)
+            {
+                program.User.Calls = sUser.Calls
+                    .Select(c => LoadUserCall(c, program))
+                    .Where(c => c != null)
+                    .ToSortedList(k => k.Address, v => v);
+            }
+        }
+
+        private UserCallData LoadUserCall(SerializedCall_v1 call, Program program)
+        {
+            //$BUG: we need platform here to deserialize the address
+            Address addr;
+            if (!Address.TryParse32(call.InstructionAddress, out addr))
+                return null;
+
+            var procSer = program.CreateProcedureSerializer();
+            ProcedureSignature sig = null;
+            if (call.Signature != null)
+            {
+                sig = procSer.Deserialize(
+                   call.Signature,
+                   program.Architecture.CreateFrame());
+            }
+            return new UserCallData
+            {
+                Address = addr,
+                Comment = call.Comment,
+                NoReturn = call.NoReturn,
+                Signature = sig,
+            };
         }
 
         public void LoadUserData(UserData_v3 sUser, Program program, UserData user)

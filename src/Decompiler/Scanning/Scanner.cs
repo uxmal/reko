@@ -117,14 +117,13 @@ namespace Reko.Scanning
 
         public Scanner(
             Program program, 
-            IDictionary<Address, ProcedureSignature> callSigs,
             IImportResolver importResolver,
             IServiceProvider services)
         {
             this.program = program;
             this.imageMap = program.ImageMap;
             this.importResolver = importResolver;
-            this.callSigs = callSigs;
+            this.callSigs = program.User.Calls.ToDictionary(k => k.Key, v => v.Value.Signature);
             this.eventListener = services.RequireService<DecompilerEventListener>();
             this.cancelSvc = services.GetService<CancellationTokenSource>();
             if (imageMap == null)

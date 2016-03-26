@@ -108,7 +108,6 @@ namespace Reko.UnitTests.Structure
             importResolver.Replay();
             var scan = new Scanner(
                 program,
-                new Dictionary<Address, ProcedureSignature>(),
                 importResolver,
                 sc);
             foreach (EntryPoint ep in program.EntryPoints)

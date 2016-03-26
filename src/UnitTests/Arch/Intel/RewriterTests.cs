@@ -94,7 +94,8 @@ namespace Reko.UnitTests.Arch.Intel
 
             Project project = LoadProject();
             project.Programs.Add(this.program);
-            scanner = new Scanner(this.program, new Dictionary<Address, ProcedureSignature>(),
+            scanner = new Scanner(
+                this.program, 
                 new ImportResolver(project, this.program, eventListener),
                 sc);
             EntryPoint ep = new EntryPoint(baseAddress, this.program.Architecture.CreateProcessorState());

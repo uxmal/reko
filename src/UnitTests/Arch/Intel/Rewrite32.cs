@@ -150,7 +150,6 @@ namespace Reko.UnitTests.Arch.Intel
             var project = new Project { Programs = { program } };
             Scanner scan = new Scanner(
                 program,
-                new Dictionary<Address, ProcedureSignature>(),
                 new ImportResolver(project, program, new FakeDecompilerEventListener()),
                 services);
             foreach (var ep in asm.EntryPoints)

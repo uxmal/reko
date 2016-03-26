@@ -176,6 +176,23 @@ namespace Reko.Gui.Windows
                     case CmdIds.EditAnnotation:
                         status.Status = instr != null ? MenuStatus.Visible | MenuStatus.Enabled : 0;
                         return true;
+                    case CmdIds.ActionCallTerminates:
+                        if (instr != null)
+                        {
+                            if ((instr.InstructionClass &  InstructionClass.Call) != 0)
+                            {
+                                status.Status = MenuStatus.Visible | MenuStatus.Enabled;
+                            }
+                            else
+                            {
+                                status.Status = MenuStatus.Visible;
+                            }
+                        }
+                        else
+                        {
+                            status.Status = 0;
+                        }
+                        return true;
                     case CmdIds.TextEncodingChoose:
                         return true;
                     }

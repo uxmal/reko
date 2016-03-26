@@ -71,12 +71,23 @@ namespace Reko.UnitTests.Core.Serialization
             Debug.Assert(arch != null, "Must call Given_Architecture first.");
             // A very simple dumb platform with no intelligent behaviour.
             this.platform = mr.Stub<IPlatform>();
+            var procser = mr.Stub<ProcedureSerializer>(arch, null, "");
             var oe = mr.Stub<OperatingEnvironment>();
             this.platform.Stub(p => p.Name).Return("testOS");
             this.platform.Stub(p => p.SaveUserOptions()).Return(null);
             this.platform.Stub(p => p.Architecture).Return(arch);
             this.platform.Stub(p => p.CreateMetadata()).Return(new TypeLibrary());
+            this.platform.Stub(p => p.DefaultCallingConvention).Return("");
+            this.platform.Stub(p => p.CreateProcedureSerializer(null, null))
+                .IgnoreArguments()
+                .Return(procser);
             this.cfgSvc.Stub(c => c.GetEnvironment("testOS")).Return(oe);
+            procser.Stub(p => p.Serialize(null)).IgnoreArguments()
+                .Return(new SerializedSignature
+                {
+                });
+            procser.Stub(p => p.Deserialize(null, null)).IgnoreArguments()
+                .Return(new ProcedureSignature());
             oe.Stub(e => e.Load(sc, arch)).Return(platform);
         }
 
@@ -191,6 +202,17 @@ namespace Reko.UnitTests.Core.Serialization
                                            CharType = new PrimitiveType_v1 { Domain = Domain.Character, ByteSize = 1 }
                                        }
                                   }
+                                }
+                            },
+                            Calls =
+                            {
+                                {
+                                    Address.SegPtr(0x1000, 0x0320),
+                                    new UserCallData
+                                    {
+                                        Address = Address.SegPtr(0x1000, 0x0320),
+                                        NoReturn = true,
+                                    }
                                 }
                             }
                         }
@@ -385,7 +407,15 @@ namespace Reko.UnitTests.Core.Serialization
                         User = new UserData_v4
                         {
                             Heuristics = { new Heuristic_v3 { Name="HeuristicScanning" } },
-                            TextEncoding = "windows-1251"
+                            TextEncoding = "windows-1251",
+                            Calls =
+                            {
+                                new SerializedCall_v1
+                                {
+                                    InstructionAddress = "0041230",
+                                    NoReturn = true, 
+                                }
+                            }
                         }
                     }
                 }
@@ -398,7 +428,10 @@ namespace Reko.UnitTests.Core.Serialization
                 .Return(new byte[10]);
             loader.Stub(l => l.LoadExecutable(null, null, null))
                 .IgnoreArguments()
-                .Return(new Program());
+                .Return(new Program
+                {
+                    Platform = this.platform,
+                });
             mr.ReplayAll();
 
             var ploader = new ProjectLoader(sc, loader);

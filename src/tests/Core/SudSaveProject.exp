@@ -22,6 +22,11 @@
         </signature>
         <address>1000:0010</address>
       </procedure>
+      <call>
+        <address>1000:0320</address>
+        <signature />
+        <noreturn>true</noreturn>
+      </call>
       <global>
         <Address>2000:0000</Address>
         <str term="z">

@@ -242,6 +242,9 @@ namespace Reko.Gui.Windows.Forms
             CommandMenuItem slActionMarkProcedure = new CommandMenuItem("Mark _Procedure Entry", new Guid(CmdSets.Reko), CmdIds.ActionMarkProcedure);
             slActionMarkProcedure.IsDynamic = false;
             
+            CommandMenuItem slActionCallTerminates = new CommandMenuItem("Mark call as _terminating", new Guid(CmdSets.Reko), CmdIds.ActionCallTerminates);
+            slActionCallTerminates.IsDynamic = false;
+            slGrpDisassemblerEdit.Add(0, slActionCallTerminates);
             CommandMenuItem slActionScanHeuristically = new CommandMenuItem("Scan _heuristically", new Guid(CmdSets.Reko), CmdIds.ActionScanHeuristically);
             slActionScanHeuristically.IsDynamic = false;
             

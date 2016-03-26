@@ -209,7 +209,6 @@ namespace Reko.UnitTests.Analysis
                 : new ProjectLoader(sc, loader).LoadProject(FileUnitTester.MapTestPath(configFile));
             var scan = new Scanner(
                 program,
-                new Dictionary<Address, ProcedureSignature>(),
                 new ImportResolver(project, program, eventListener),
                 sc);
             

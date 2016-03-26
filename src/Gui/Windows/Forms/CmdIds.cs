@@ -127,18 +127,19 @@ namespace Reko.Gui
 		public const int ActionNextPhase = 37 + 2000;
 		public const int ActionFinishDecompilation = 38 + 2000;
 		public const int ActionMarkProcedure = 39 + 2000;
-		public const int ActionScanHeuristically = 40 + 2000;
-		public const int ActionEditSignature = 41 + 2000;
-		public const int ActionMarkType = 42 + 2000;
-		public const int ActionAssumeRegisterValues = 43 + 2000;
-		public const int ToolsOptions = 44 + 2000;
-		public const int WindowsCascade = 45 + 2000;
-		public const int WindowsTileVertical = 46 + 2000;
-		public const int WindowsTileHorizontal = 47 + 2000;
-		public const int WindowsCloseAll = 48 + 2000;
-		public const int HelpAbout = 49 + 2000;
-		public const int ShowProcedureCallHierarchy = 50 + 2000;
-		public const int CollapseAllNodes = 51 + 2000;
+		public const int ActionCallTerminates = 40 + 2000;
+		public const int ActionScanHeuristically = 41 + 2000;
+		public const int ActionEditSignature = 42 + 2000;
+		public const int ActionMarkType = 43 + 2000;
+		public const int ActionAssumeRegisterValues = 44 + 2000;
+		public const int ToolsOptions = 45 + 2000;
+		public const int WindowsCascade = 46 + 2000;
+		public const int WindowsTileVertical = 47 + 2000;
+		public const int WindowsTileHorizontal = 48 + 2000;
+		public const int WindowsCloseAll = 49 + 2000;
+		public const int HelpAbout = 50 + 2000;
+		public const int ShowProcedureCallHierarchy = 51 + 2000;
+		public const int CollapseAllNodes = 52 + 2000;
 		public const int FileMru = 2200;
 	}
 }

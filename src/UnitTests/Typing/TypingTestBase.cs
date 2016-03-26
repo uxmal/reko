@@ -67,7 +67,6 @@ namespace Reko.UnitTests.Typing
             var project = new Project { Programs = { program } };
             var scan = new Scanner(
                 program,
-                new Dictionary<Address, ProcedureSignature>(),
                 new ImportResolver(project, program, eventListener),
                 sc);
 			scan.EnqueueEntryPoint(ep);
@@ -93,7 +92,7 @@ namespace Reko.UnitTests.Typing
             var project = new Project { Programs = { program } };
             var ep = new EntryPoint(program.ImageMap.BaseAddress, program.Architecture.CreateProcessorState());
             var importResolver = new ImportResolver(project, program, eventListener);
-            var scan = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), importResolver, svc);
+            var scan = new Scanner(program, importResolver, svc);
             scan.EnqueueEntryPoint(ep);
             scan.ScanImage();
 
