@@ -20,6 +20,7 @@
 
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,12 +53,13 @@ namespace Reko.ImageLoaders.Coff
         {
             var rdr = new LeImageReader(RawImage, 0);
             var magic = rdr.ReadLeUInt16();
+            var cfgSvc = Services.RequireService<IConfigurationService>();
             switch (magic)
             {
-            case 0x014C: arch = new IntelArchitecture(ProcessorMode.Protected32); break;
+            case 0x014C: arch = cfgSvc.GetArchitecture("x86-real-16"); break;
             default: throw new NotSupportedException();
             }
-            return  new FileHeader
+            return new FileHeader
             {
                 f_magic = magic,
                 f_nscns = rdr.ReadUInt16(),

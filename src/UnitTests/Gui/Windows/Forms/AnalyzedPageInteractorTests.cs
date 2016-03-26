@@ -75,7 +75,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             var platform = mr.Stub<IPlatform>();
             var loadAddress = Address.Ptr32(0x100000);
             var bytes = new byte[4711];
-            var arch = new IntelArchitecture(ProcessorMode.Protected32);
+            var arch = new X86ArchitectureFlat32();
             var mem = new MemoryArea(loadAddress, bytes);
             Program prog = new Program
             {

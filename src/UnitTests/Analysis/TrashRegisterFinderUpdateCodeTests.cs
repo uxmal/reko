@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Analysis
         [SetUp]
         public void Setup()
         {
-            arch = new IntelArchitecture(ProcessorMode.Protected32);
+            arch = new X86ArchitectureFlat32();
             p = new ProgramBuilder();
         }
 

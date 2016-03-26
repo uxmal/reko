@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Core
                     }
                 }
             };
-            var arch = new IntelArchitecture(ProcessorMode.Protected32);
+            var arch = new X86ArchitectureFlat32();
             var platform = new SysVPlatform(null, arch);
             var tldser = new TypeLibraryDeserializer(platform, true, new TypeLibrary());
             var lib = tldser.Load(slib);

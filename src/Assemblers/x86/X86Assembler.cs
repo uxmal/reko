@@ -1100,13 +1100,13 @@ namespace Reko.Assemblers.x86
 
         public void i386()
         {
-            arch = new IntelArchitecture(ProcessorMode.Protected32);
+            arch = new X86ArchitectureFlat32();
             SetDefaultWordWidth(PrimitiveType.Word32);
         }
 
         public void i86()
         {
-            arch = new IntelArchitecture(ProcessorMode.Real);
+            arch = new X86ArchitectureReal();
             Platform = new MsdosPlatform(services, arch);
             SetDefaultWordWidth(PrimitiveType.Word16);
         }

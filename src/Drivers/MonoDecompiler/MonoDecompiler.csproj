@@ -193,6 +193,7 @@
     <Environments Include="$(ProjectDir)..\..\Environments\Cpm\$(OutDir)Reko.Environments.Cpm.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\MacOS\$(OutDir)Reko.Environments.MacOS.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\MsDos\$(OutDir)Reko.Environments.Msdos.*" />
+    <Environments Include="$(ProjectDir)..\..\Environments\MsDos.Design\$(OutDir)Reko.Environments.Msdos.Design.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\Ps3\$(OutDir)Reko.Environments.Ps3.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\RiscOS\$(OutDir)Reko.Environments.RiscOS.*" />
     <Environments Include="$(ProjectDir)..\..\SegaGenesis\$(OutDir)Reko.Environments.SegaGenesis.*" />

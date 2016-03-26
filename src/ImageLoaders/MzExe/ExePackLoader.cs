@@ -54,9 +54,9 @@ namespace Reko.ImageLoaders.MzExe
         public ExePackLoader(IServiceProvider services, string filename, byte[] imgRaw)
             : base(services, filename, imgRaw)
         {
-            arch = new IntelArchitecture(ProcessorMode.Real);
-            platform = services.RequireService<IConfigurationService>()
-                .GetEnvironment("ms-dos")
+            var cfgSvc = services.RequireService<IConfigurationService>();
+            arch = cfgSvc.GetArchitecture("x86-real-16");
+            platform =cfgSvc.GetEnvironment("ms-dos")
                 .Load(Services, arch);
 
             var exe = new ExeImageLoader(services, filename, imgRaw);
@@ -137,7 +137,10 @@ namespace Reko.ImageLoaders.MzExe
                 }
             } while ((op & 1) == 0);
             imageMap = imgU.CreateImageMap();
-            return new Program(new ImageMap(imgU.BaseAddress, imgU.Length), new X86ArchitectureReal(), platform);
+            return new Program(
+                new ImageMap(imgU.BaseAddress, imgU.Length), 
+                arch,
+                platform);
         }
 
         public override Address PreferredBaseAddress

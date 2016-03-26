@@ -53,9 +53,9 @@ namespace Reko.UnitTests.Arch.Intel
 
         public X86RewriterTests()
         {
-            arch16 = new IntelArchitecture(ProcessorMode.Real);
-            arch32 = new IntelArchitecture(ProcessorMode.Protected32);
-            arch64 = new IntelArchitecture(ProcessorMode.Protected64);
+            arch16 = new X86ArchitectureReal();
+            arch32 = new X86ArchitectureFlat32();
+            arch64 = new X86ArchitectureFlat64();
             baseAddr16 = Address.SegPtr(0x0C00, 0x0000);
             baseAddr32 = Address.Ptr32(0x10000000);
             baseAddr64 = Address.Ptr64(0x140000000ul);

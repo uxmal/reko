@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Environments.Windows
         {
             mr = new MockRepository();
             sc = new ServiceContainer();
-            arch = new IntelArchitecture(ProcessorMode.Protected32);
+            arch = new X86ArchitectureFlat32();
             dcSvc = mr.StrictMock<IConfigurationService>();
         }
 

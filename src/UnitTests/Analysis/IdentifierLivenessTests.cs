@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Analysis
 
 		public IdentifierLivenessTests()
 		{
-			arch = new IntelArchitecture(ProcessorMode.Real);
+			arch = new X86ArchitectureReal();
 		}
 
 		[SetUp]

@@ -70,7 +70,7 @@ namespace Reko.UnitTests.Arch.Intel
             services.Stub(s => s.GetService(typeof(IDiagnosticsService))).Return(new FakeDiagnosticsService());
             services.Replay();
             configSvc.Replay();
-            arch = new IntelArchitecture(ProcessorMode.Protected32);
+            arch = new X86ArchitectureFlat32();
             win32 = new Reko.Environments.Windows.Win32Platform(services, arch);
         }
 

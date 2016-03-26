@@ -67,7 +67,7 @@ namespace Reko.UnitTests
         [Test]
         public void Dec_LoadCallSignatures()
         {
-            var arch = new IntelArchitecture(ProcessorMode.Real);
+            var arch = new X86ArchitectureReal();
             Program program = new Program { 
                 Architecture = arch,
                 Platform = new MsdosPlatform(sc, arch)

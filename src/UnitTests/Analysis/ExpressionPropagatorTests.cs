@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Analysis
             });
 
             var proc = p.BuildProgram().Procedures.Values.First();
-            var arch = new IntelArchitecture(ProcessorMode.Protected32);
+            var arch = new X86ArchitectureFlat32();
             var ctx = new SymbolicEvaluationContext(arch, proc.Frame);
             var simplifier = new ExpressionSimplifier(ctx);
             var ep = new ExpressionPropagator(null, simplifier, ctx, new ProgramDataFlow());
@@ -57,7 +57,6 @@ namespace Reko.UnitTests.Analysis
             var newInstr = proc.EntryBlock.Succ[0].Statements[0].Instruction.Accept(ep);
             Assert.AreEqual("branch Test(EQ,Z) foo", newInstr.ToString());
         }
-    
 
         [Test]
         public void EP_ConditionOf()
@@ -75,7 +74,7 @@ namespace Reko.UnitTests.Analysis
                 m.Return();
             });
 
-            var arch = new IntelArchitecture(ProcessorMode.Protected32);
+            var arch = new X86ArchitectureFlat32();
             var ctx = new SymbolicEvaluationContext(arch, proc.Frame);
             var simplifier = new ExpressionSimplifier(ctx);
             var ep = new ExpressionPropagator(arch, simplifier, ctx, new ProgramDataFlow());

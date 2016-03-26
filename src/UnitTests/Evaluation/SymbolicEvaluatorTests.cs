@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Evaluation
         [SetUp]
         public void Setup()
         {
-            arch = new IntelArchitecture(ProcessorMode.Protected32);
+            arch = new X86ArchitectureFlat32();
             frame = new Frame(arch.FramePointerType);
         }
 

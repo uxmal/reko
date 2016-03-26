@@ -60,7 +60,7 @@ namespace Reko.UnitTests.Typing
             ILoader ldr = new Loader(sc);
             var program = ldr.AssembleExecutable(
                 FileUnitTester.MapTestPath(relativePath),
-                new X86TextAssembler(sc, new IntelArchitecture(ProcessorMode.Real)),
+                new X86TextAssembler(sc, new X86ArchitectureReal()),
                 addrBase);
             program.Platform = new DefaultPlatform(sc, program.Architecture);
             var ep = new EntryPoint(program.ImageMap.BaseAddress, program.Architecture.CreateProcessorState());
