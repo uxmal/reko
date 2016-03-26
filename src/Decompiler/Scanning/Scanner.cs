@@ -766,9 +766,10 @@ namespace Reko.Scanning
 
         public ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction)
         {
-            ProcedureSignature sig = null;
-            callSigs.TryGetValue(addrCallInstruction, out sig);
-            return sig;
+            UserCallData call = null;
+            if (!program.User.Calls.TryGetValue(addrCallInstruction, out call))
+                return null;
+            return call.Signature;
         }
 
         public void SetAssumedRegisterValues(Address addr, ProcessorState st)
