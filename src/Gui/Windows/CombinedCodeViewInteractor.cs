@@ -47,6 +47,8 @@ namespace Reko.Gui.Windows
         private NestedTextModel nestedTextModel;
         private GViewer gViewer;
 
+        private DeclarationTextBox declarationTextBox;
+
         public CombinedCodeViewInteractor()
         {
         }
@@ -154,6 +156,7 @@ namespace Reko.Gui.Windows
             this.combinedCodeView.MixedCodeDataView.VScrollValueChanged += MixedCodeDataView_VScrollValueChanged;
             this.combinedCodeView.MixedCodeDataView.Services = services;
             this.combinedCodeView.MixedCodeDataView.MouseDown += MixedCodeDataView_MouseDown;
+            this.combinedCodeView.MixedCodeDataView.MouseUp += MixedCodeDataView_MouseUp;
 
             this.combinedCodeView.CodeView.VScrollValueChanged += CodeView_VScrollValueChanged;
             this.combinedCodeView.CodeView.Services = services;
@@ -187,6 +190,8 @@ namespace Reko.Gui.Windows
 
             this.navInteractor = new NavigationInteractor<Address>();
             this.navInteractor.Attach(this.combinedCodeView);
+
+            declarationTextBox = new DeclarationTextBox(combinedCodeView);
 
             return combinedCodeView;
         }
@@ -299,12 +304,39 @@ namespace Reko.Gui.Windows
             return true;
         }
 
-        private void MixedCodeDataView_MouseDown(object sender, EventArgs e)
+        private void MixedCodeDataView_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Left && 
+                combinedCodeView.MixedCodeDataView.IsSelectionEmpty())
+            {
+                var anchorPos = combinedCodeView.MixedCodeDataView.anchorPos;
+                var addr = (Address)anchorPos.Line;
+                ImageMapItem item;
+                if (program.ImageMap.TryFindItem(addr, out item))
+                {
+                    GlobalDataItem_v2 globalDataItem;
+                    var blockItem = item as ImageMapBlock;
+                    if (blockItem != null)
+                    {
+                        addr = program.GetProcedureAddress(blockItem.Block.Procedure);
+                    }
+                    else if (program.User.Globals.TryGetValue(item.Address, out globalDataItem))
+                    {
+                        addr = item.Address;
+                    }
+                }
+                var screenPoint = combinedCodeView.MixedCodeDataView.PointToScreen(e.Location);
+                var clientPoint = combinedCodeView.PointToClient(screenPoint);
+                declarationTextBox.Show(clientPoint, program, addr);
+            }
+        }
+
+        private void MixedCodeDataView_MouseDown(object sender, MouseEventArgs e)
         {
             combinedCodeView.CodeView.ClearSelection();
         }
 
-        private void CodeView_MouseDown(object sender, EventArgs e)
+        private void CodeView_MouseDown(object sender, MouseEventArgs e)
         {
             combinedCodeView.MixedCodeDataView.ClearSelection();
         }
