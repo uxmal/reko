@@ -113,6 +113,7 @@
   <cmd id="ViewAsData" cmdSet="Reko" container="GrpAddressSearchView">View as _data</cmd>
   <cmd id="ViewCfgCode" cmdSet="Reko" container="GrpCodeViewMode" priority="1">View _code</cmd>
   <cmd id="ViewCfgGraph" cmdSet="Reko" container="GrpCodeViewMode" priority="2">View control _graph</cmd>
+  <cmd id="EditDeclaration" cmdSet="Reko" container="GrpCodeView" priority="1">Edit declaration</cmd>
 
   <cmd id="ActionNextSearchHit" cmdSet="Reko" key1="F8" />
   <cmd id="ActionPrevSearchHit" cmdSet="Reko" key1="F8" alt1="Shift" />
@@ -164,7 +165,7 @@
   <placement item="ActionScanHeuristically" container="GrpActionsScanned"/>
   
   <placement item="EditCopy" container="GrpMemoryControl"/>
-  <placement item="EditCopy" container="GrpCodeView "/>
+  <placement item="EditCopy" container="GrpCodeView" priority="2"/>
   <placement item="ViewGoToAddress" container="GrpMemoryControl"/>
 	<placement item="ActionMarkProcedure" container="GrpMemoryControl"/>
   <placement item="ActionMarkType" container="GrpMemoryControl"/>
@@ -195,6 +196,7 @@
   <!-- Accelerators ================================================== -->
 
   <keybinding id="ActionMarkType" cmdSet="Reko" editor="Reko.Gui.Windows.LowLevelViewInteractor" key1="T" alt1="Control" />
+  <keybinding id="EditDeclaration" cmdSet="Reko" editor="Reko.Gui.Windows.CombinedCodeViewInteractor"  key1="D" alt1="Control" />
   <keybinding id="ActionNextSearchHit" cmdSet="Reko" editor="" key1="F8" />
   <keybinding id="ActionPrevSearchHit" cmdSet="Reko" editor="" key1="F8" alt1="Shift" />
   <keybinding id="EditCopy" cmdSet="Reko" editor="" key1="C" alt1="Control" />

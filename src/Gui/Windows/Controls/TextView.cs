@@ -344,6 +344,23 @@ namespace Reko.Gui.Windows.Controls
             }
         }
 
+        private RectangleF LogicalPositionToClient(TextPointer pos)
+        {
+            using (var g = CreateGraphics())
+            {
+                GetStyleStack().PushStyle(StyleClass);
+                var ptr = layout.LogicalPositionToClient(g, pos, styleStack);
+                styleStack.PopStyle();
+                return ptr;
+            }
+        }
+
+        public Point GetAnchorTopPoint()
+        {
+            var rect = LogicalPositionToClient(anchorPos);
+            return new Point((int)rect.Left, (int)rect.Top);
+        }
+
         /// <summary>
         /// Returns the span located at the point <paramref name="pt"/>.
         /// </summary>
@@ -367,15 +384,6 @@ namespace Reko.Gui.Windows.Controls
                     return span;
             }
             return null;
-        }
-
-        [Obsolete("remove when layout refactored")]
-        private Size MeasureText(Graphics g, string text, Font font)
-        {
-            var sz = TextRenderer.MeasureText(
-                g, text, font, new Size(0, 0), 
-                TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix);
-            return sz;
         }
 
         /// <summary>
@@ -544,7 +552,7 @@ namespace Reko.Gui.Windows.Controls
         {
             var frac = model.GetPositionAsFraction();
             this.ignoreScroll = true;
-            vScroll.Value = (int)(Math.BigMul(frac.Item1, model.LineCount) / frac.Item2);
+            vScroll.Value = (int)(Math.BigMul(frac.Item1, vScroll.Maximum) / frac.Item2);
             this.ignoreScroll = false;
         }
 

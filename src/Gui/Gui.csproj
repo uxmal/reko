@@ -281,6 +281,7 @@
     </Compile>
     <Compile Include="Windows\Controls\TextViewLayout.cs" />
     <Compile Include="Windows\Controls\TextViewPainter.cs" />
+    <Compile Include="Windows\Controls\DeclarationTextBox.cs" />
     <Compile Include="Windows\GlobalVariablesPane.cs" />
     <Compile Include="Windows\Forms\TextEncodingDialog.cs">
       <SubType>Form</SubType>

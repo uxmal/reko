@@ -47,6 +47,8 @@ namespace Reko.Gui.Windows
         private NestedTextModel nestedTextModel;
         private GViewer gViewer;
 
+        private DeclarationTextBox declarationTextBox;
+
         public CombinedCodeViewInteractor()
         {
         }
@@ -188,6 +190,8 @@ namespace Reko.Gui.Windows
             this.navInteractor = new NavigationInteractor<Address>();
             this.navInteractor.Attach(this.combinedCodeView);
 
+            declarationTextBox = new DeclarationTextBox(combinedCodeView);
+
             return combinedCodeView;
         }
 
@@ -224,24 +228,27 @@ namespace Reko.Gui.Windows
             {
                 switch (cmdId.ID)
                 {
-                case CmdIds.TextEncodingChoose:
-                    status.Status = MenuStatus.Enabled | MenuStatus.Visible;
-                    return true;
-                case CmdIds.EditCopy:
-                    status.Status = FocusedTextView == null || FocusedTextView.Selection.IsEmpty
-                        ? MenuStatus.Visible
-                        : MenuStatus.Visible | MenuStatus.Enabled;
-                    return true;
-                case CmdIds.ViewCfgGraph:
-                    status.Status = gViewer.Visible
-                        ? MenuStatus.Visible | MenuStatus.Enabled | MenuStatus.Checked
-                        : MenuStatus.Visible | MenuStatus.Enabled;
-                    return true;
-                case CmdIds.ViewCfgCode:
-                    status.Status = gViewer.Visible
-                        ? MenuStatus.Visible | MenuStatus.Enabled
-                        : MenuStatus.Visible | MenuStatus.Enabled | MenuStatus.Checked;
-                    return true;
+                    case CmdIds.TextEncodingChoose:
+                        status.Status = MenuStatus.Enabled | MenuStatus.Visible;
+                        return true;
+                    case CmdIds.EditCopy:
+                        status.Status = FocusedTextView == null || FocusedTextView.Selection.IsEmpty
+                            ? MenuStatus.Visible
+                            : MenuStatus.Visible | MenuStatus.Enabled;
+                        return true;
+                    case CmdIds.ViewCfgGraph:
+                        status.Status = gViewer.Visible
+                            ? MenuStatus.Visible | MenuStatus.Enabled | MenuStatus.Checked
+                            : MenuStatus.Visible | MenuStatus.Enabled;
+                        return true;
+                    case CmdIds.ViewCfgCode:
+                        status.Status = gViewer.Visible
+                            ? MenuStatus.Visible | MenuStatus.Enabled
+                            : MenuStatus.Visible | MenuStatus.Enabled | MenuStatus.Checked;
+                        return true;
+                    case CmdIds.EditDeclaration:
+                        status.Status = MenuStatus.Enabled | MenuStatus.Visible;
+                        return true;
                 }
             }
             return false;
@@ -253,17 +260,20 @@ namespace Reko.Gui.Windows
             {
                 switch (cmdId.ID)
                 {
-                case CmdIds.EditCopy:
-                    Copy();
-                    return true;
-                case CmdIds.ViewCfgGraph:
-                    ViewGraph();
-                    return true;
-                case CmdIds.ViewCfgCode:
-                    ViewCode();
-                    return true;
-                case CmdIds.TextEncodingChoose:
-                    return ChooseTextEncoding();
+                    case CmdIds.EditCopy:
+                        Copy();
+                        return true;
+                    case CmdIds.ViewCfgGraph:
+                        ViewGraph();
+                        return true;
+                    case CmdIds.ViewCfgCode:
+                        ViewCode();
+                        return true;
+                    case CmdIds.TextEncodingChoose:
+                        return ChooseTextEncoding();
+                    case CmdIds.EditDeclaration:
+                        EditDeclaration();
+                        return true;
                 }
             }
             return false;
@@ -299,12 +309,36 @@ namespace Reko.Gui.Windows
             return true;
         }
 
-        private void MixedCodeDataView_MouseDown(object sender, EventArgs e)
+        private void EditDeclaration()
+        {
+            var anchorPos = combinedCodeView.MixedCodeDataView.anchorPos;
+            var addr = (Address)anchorPos.Line;
+            ImageMapItem item;
+            if (program.ImageMap.TryFindItem(addr, out item))
+            {
+                GlobalDataItem_v2 globalDataItem;
+                var blockItem = item as ImageMapBlock;
+                if (blockItem != null)
+                {
+                    addr = program.GetProcedureAddress(blockItem.Block.Procedure);
+                }
+                else if (program.User.Globals.TryGetValue(item.Address, out globalDataItem))
+                {
+                    addr = item.Address;
+                }
+            }
+            var anchorPt = combinedCodeView.MixedCodeDataView.GetAnchorTopPoint();
+            var screenPoint = combinedCodeView.MixedCodeDataView.PointToScreen(anchorPt);
+            var clientPoint = combinedCodeView.PointToClient(screenPoint);
+            declarationTextBox.Show(clientPoint, program, addr);
+        }
+
+        private void MixedCodeDataView_MouseDown(object sender, MouseEventArgs e)
         {
             combinedCodeView.CodeView.ClearSelection();
         }
 
-        private void CodeView_MouseDown(object sender, EventArgs e)
+        private void CodeView_MouseDown(object sender, MouseEventArgs e)
         {
             combinedCodeView.MixedCodeDataView.ClearSelection();
         }
