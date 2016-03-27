@@ -496,8 +496,21 @@ namespace Reko.Scanning
 
         private bool OnAfterCall(ProcedureSignature sigCallee, ProcedureCharacteristics characteristics)
         {
-            UserCallData userCall;
-            program.User.Calls.TryGetValue(ric.Address, out userCall);
+            UserCallData userCall = null;
+            if (program.User.Calls.TryGetUpperBound(ric.Address, out userCall))
+            {
+                var linStart = ric.Address.ToLinear();
+                var linEnd = linStart + ric.Length;
+                var linUserCall = userCall.Address.ToLinear();
+                if (linStart > linUserCall || linUserCall >= linEnd)
+                    userCall = null;
+            }
+            if ((characteristics != null && characteristics.Terminates) ||
+                (userCall != null && userCall.NoReturn))
+            {
+                scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
+                return false;
+            }
 
             if (sigCallee != null)
             {
@@ -515,12 +528,6 @@ namespace Reko.Scanning
                 }
             }
             state.OnAfterCall(sigCallee);
-            if ((characteristics != null && characteristics.Terminates) ||
-                (userCall != null && userCall.NoReturn))
-            {
-                scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
-                return false;
-            }
 
             // Adjust stack after call
             if (sigCallee != null)

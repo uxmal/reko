@@ -24,7 +24,6 @@
       </procedure>
       <call>
         <address>1000:0320</address>
-        <signature />
         <noreturn>true</noreturn>
       </call>
       <global>

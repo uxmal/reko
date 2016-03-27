@@ -106,7 +106,11 @@ namespace Reko.Core.Serialization
             if (uc == null || uc.Address == null)
                 return null;
             var procser = program.CreateProcedureSerializer();
-            var ssig = procser.Serialize(uc.Signature);
+            SerializedSignature ssig = null;
+            if (uc.Signature != null)
+            {
+                ssig = procser.Serialize(uc.Signature);
+            }
             return new SerializedCall_v1
             {
                 InstructionAddress = uc.Address.ToString(),

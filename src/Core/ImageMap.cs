@@ -225,8 +225,6 @@ namespace Reko.Core
 
         public ImageSegment AddSegment(ImageSegment segNew)
         {
-            if (segNew.Address.ToString().Contains("17B4")) //$DEBUG
-                segNew.ToString();
             ImageSegment seg;
             if (!TryFindSegment(segNew.Address, out seg))
             {

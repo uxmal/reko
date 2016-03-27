@@ -386,15 +386,15 @@ namespace Reko.Core.Serialization
                 program.User.Calls = sUser.Calls
                     .Select(c => LoadUserCall(c, program))
                     .Where(c => c != null)
-                    .ToSortedList(k => k.Address, v => v);
+                    .ToMap(k => k.Address, v => v);
+                
             }
         }
 
         private UserCallData LoadUserCall(SerializedCall_v1 call, Program program)
         {
-            //$BUG: we need platform here to deserialize the address
             Address addr;
-            if (!Address.TryParse32(call.InstructionAddress, out addr))
+            if (!program.Platform.TryParseAddress(call.InstructionAddress, out addr))
                 return null;
 
             var procSer = program.CreateProcedureSerializer();

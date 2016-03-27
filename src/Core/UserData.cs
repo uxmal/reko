@@ -18,7 +18,8 @@
  */
 #endregion
 
- using System;
+using Reko.Core.Lib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,7 +34,7 @@ namespace Reko.Core
         public UserData()
         {
             this.Procedures = new SortedList<Address, Serialization.Procedure_v1>();
-            this.Calls = new SortedList<Address, UserCallData>();
+            this.Calls = new Map<Address, UserCallData>();
             this.Globals = new SortedList<Address, Serialization.GlobalDataItem_v2>();
             this.Heuristics = new SortedSet<string>();
             this.Annotations = new List<Annotation>();
@@ -45,7 +46,7 @@ namespace Reko.Core
         public string Environment { get; set; }
         public Address LoadAddress { get; set; }
         public SortedList<Address, Serialization.Procedure_v1> Procedures { get; set; }
-        public SortedList<Address, UserCallData> Calls { get; set; }
+        public Map<Address, UserCallData> Calls { get; set; }
         public SortedList<Address, Serialization.GlobalDataItem_v2> Globals { get; set; }
         public List<Annotation> Annotations { get; set; }
 

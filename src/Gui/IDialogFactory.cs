@@ -30,6 +30,7 @@ namespace Reko.Gui
         IAssembleFileDialog CreateAssembleFileDialog();
         IAssumedRegisterValuesDialog CreateAssumedRegisterValuesDialog(IProcessorArchitecture arch);
         IAddressPromptDialog CreateAddressPromptDialog();
+        ICallSiteDialog CreateCallSiteDialog(Program program, UserCallData ucd);
         IFindStringsDialog CreateFindStringDialog();
         IMainForm CreateMainForm();
         IOpenAsDialog CreateOpenAsDialog();

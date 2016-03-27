@@ -152,8 +152,18 @@ namespace Reko.UnitTests.Core
 			Assert.AreEqual("100", s);
 			Assert.IsTrue(m.TryGetLowerBound(200, out s));
 			Assert.AreEqual("150", s);
-
 		}
+
+        [Test]
+        public void UpperBoundTest()
+        {
+            Map<int, string> m = new Map<int, string>();
+            m.Add(250, "250");
+
+            string s;
+            Assert.IsTrue(m.TryGetUpperBound(249, out s));
+            Assert.AreEqual("250", s);
+        }
 
 		private string Dump(Map<int,string> t)
 		{

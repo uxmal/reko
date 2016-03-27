@@ -227,6 +227,7 @@ namespace Reko.Gui.Windows
                     {
                     case CmdIds.EditAnnotation: return EditDasmAnnotation();
                     case CmdIds.TextEncodingChoose: return ChooseTextEncoding();
+                    case CmdIds.ActionCallTerminates: return EditCallSite();
                     }
                 }
             }
@@ -421,6 +422,38 @@ namespace Reko.Gui.Windows
         public bool EditDasmAnnotation()
         {
             return true;
+        }
+
+        public bool EditCallSite()
+        {
+            var instr = (MachineInstruction)Control.DisassemblyView.SelectedObject;
+            var dlgFactory = services.RequireService<IDialogFactory>();
+            var uiSvc = services.RequireService<IDecompilerShellUiService>();
+            var ucd = GetUserCallDataFromAddress(instr.Address);
+            using (var dlg = dlgFactory.CreateCallSiteDialog(this.program, ucd))
+            {
+                if (DialogResult.OK == uiSvc.ShowModalDialog(dlg))
+                {
+                    ucd = dlg.GetUserCallData(null);
+                    SetUserCallData(ucd);
+                }
+            }
+            return true;
+        }
+
+        private UserCallData GetUserCallDataFromAddress(Address addr)
+        {
+            UserCallData ucd;
+            if (!program.User.Calls.TryGetValue(addr, out ucd))
+            {
+                ucd = new UserCallData { Address = addr };
+            }
+            return ucd;
+        }
+
+        private void SetUserCallData(UserCallData ucd)
+        {
+            program.User.Calls[ucd.Address] = ucd;
         }
 
         private string SelectionToHex(AddressRange addr)

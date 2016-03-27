@@ -76,6 +76,36 @@ namespace Reko.Core.Lib
             return set;
         }
 
+        public bool TryGetUpperBound(K key, out V value)
+        {
+            int lo = 0;
+            int hi = base.Count - 1;
+            value = default(V);
+            bool set = false;
+            while (lo <= hi)
+            {
+                int mid = (hi - lo) / 2 + lo;
+                K k = base.Keys[mid];
+                int c = cmp.Compare(k, key);
+                if (c == 0)
+                {
+                    value = Values[mid];
+                    return true;
+                }
+                if (c > 0)
+                {
+                    value = Values[mid];
+                    set = true;
+                    hi = mid - 1;
+                }
+                else
+                {
+                    lo = mid + 1;
+                }
+            }
+            return set;
+        }
+
         public bool TryGetLowerBoundKey(K key, out K closestKey)
         {
             int lo = 0;

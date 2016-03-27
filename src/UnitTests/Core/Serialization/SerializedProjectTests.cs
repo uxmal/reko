@@ -422,6 +422,9 @@ namespace Reko.UnitTests.Core.Serialization
             };
             Given_Architecture();
             Given_TestOS_Platform();
+            platform.Stub(p => p.TryParseAddress(
+                Arg<string>.Is.Equal("0041230"),
+                out Arg<Address>.Out(Address.Ptr32(0x0041230)).Dummy)).Return(true);
             var loader = mr.Stub<ILoader>();
             loader.Stub(l => l.LoadImageBytes(null, 0))
                 .IgnoreArguments()

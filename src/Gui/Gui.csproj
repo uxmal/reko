@@ -123,6 +123,7 @@
     <Compile Include="Design\PlatformDesigner.cs" />
     <Compile Include="Design\ProgramResourceGroupDesigner.cs" />
     <Compile Include="Design\ProgramResourceInstanceDesigner.cs" />
+    <Compile Include="Forms\CallSiteInteractor.cs" />
     <Compile Include="Forms\IAssumedRegisterValuesDialog.cs" />
     <Compile Include="Forms\IResourceEditor.cs" />
     <Compile Include="Forms\ResourceEditorInteractor.cs" />
@@ -264,6 +265,13 @@
     <Compile Include="Windows\Controls\RegexValidator.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Windows\Forms\CallSiteDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\CallSiteDialog.Designer.cs">
+      <DependentUpon>CallSiteDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ICallSiteDialog.cs" />
     <Compile Include="Windows\Forms\TextEncodingDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -552,6 +560,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Forms\AssumedRegisterValuesDialog.resx">
       <DependentUpon>AssumedRegisterValuesDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\Forms\CallSiteDialog.resx">
+      <DependentUpon>CallSiteDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Forms\EditProjectDialog.resx">
       <DependentUpon>EditProjectDialog.cs</DependentUpon>

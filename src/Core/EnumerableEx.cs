@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Reko.Core.Lib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,20 @@ namespace Reko.Core
     /// </summary>
     public static class EnumerableEx
     {
+        public static Map<TKey, TValue> ToMap<TSource, TKey, TValue>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TValue> valueSelector)
+        {
+            var map = new Map<TKey, TValue>();
+            foreach (TSource item in source)
+            {
+                map.Add(keySelector(item), valueSelector( item));
+            }
+            return map;
+        }
+
+
         public static SortedList<TKey, TSource> ToSortedList<TSource, TKey>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector)
@@ -47,6 +62,8 @@ namespace Reko.Core
             }
             return list;
         }
+
+
 
         public static SortedList<TKey, TValue> ToSortedList<TSource, TKey, TValue>(
             this IEnumerable<TSource> source,

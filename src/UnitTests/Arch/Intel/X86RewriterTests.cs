@@ -195,6 +195,13 @@ namespace Reko.UnitTests.Arch.Intel
             image = m.GetImage().ImageMap.Segments.Values.First().MemoryArea;
         }
 
+        private void Run16bitTest(params byte[] bytes)
+        {
+            arch = arch16;
+            image = new MemoryArea(baseAddr16, bytes);
+            host = new RewriterHost(null);
+        }
+
         private void Run32bitTest(params byte[] bytes)
         {
             arch = arch32;
@@ -1343,6 +1350,16 @@ namespace Reko.UnitTests.Arch.Intel
             AssertCode(
                 "0|---|10000000(0): 1 instructions",
                 "1|---|<invalid>");
+        }
+
+        [Test]
+        public void X86rw_push_cs_call_near()
+        {
+            Run16bitTest(0x0E, 0xE8, 0x42, 0x32);
+            AssertCode(
+                "0|T--|0C00:0000(4): 2 instructions",
+                "1|L--|sp = sp - 0x0002",
+                "2|T--|call 0C00:3246 (2)");
         }
     }
 }

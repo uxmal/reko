@@ -603,6 +603,7 @@ namespace Reko.Arch.X86
                     dasm.MoveNext();
                     emitter.Assign(StackPointer(), emitter.ISub(StackPointer(), reg.Register.DataType.Size));
                     RewriteCall(dasm.Current.op1, dasm.Current.op1.Width);
+                    ric.Length = (byte) (ric.Length + dasm.Current.Length);
                     return;
                 }
 
