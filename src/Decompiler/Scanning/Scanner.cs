@@ -96,7 +96,7 @@ namespace Reko.Scanning
         private PriorityQueue<WorkItem> queue;
         private ImageMap imageMap;
         private IImportResolver importResolver;
-        private Map<Address, BlockRange> blocks;
+        private SortedList<Address, BlockRange> blocks;
         private Dictionary<Block, Address> blockStarts;
         private Dictionary<string, PseudoProcedure> pseudoProcs;
         private Dictionary<Address, ImportReference> importReferences;
@@ -127,7 +127,7 @@ namespace Reko.Scanning
             if (imageMap == null)
                 throw new InvalidOperationException("Program must have an image map.");
             this.queue = new PriorityQueue<WorkItem>();
-            this.blocks = new Map<Address, BlockRange>();
+            this.blocks = new SortedList<Address, BlockRange>();
             this.blockStarts = new Dictionary<Block, Address>();
             this.pseudoProcs = program.PseudoProcedures;
             this.importReferences = program.ImportReferences;

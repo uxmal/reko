@@ -36,16 +36,16 @@ namespace Reko.Core
 	{
         public event EventHandler MapChanged;
 
-		private Map<Address,ImageMapItem> items;
-        private Map<Address,ImageSegment> segments;
+		private SortedList<Address,ImageMapItem> items;
+        private SortedList<Address,ImageSegment> segments;
 
 		public ImageMap(Address addrBase, long imageSize)
 		{
             if (addrBase == null)
                 throw new ArgumentNullException("addrBase");
             this.BaseAddress = addrBase;
-            items = new Map<Address, ImageMapItem>(new ItemComparer());
-            segments = new Map<Address, ImageSegment>(new ItemComparer());
+            items = new SortedList<Address, ImageMapItem>(new ItemComparer());
+            segments = new SortedList<Address, ImageSegment>(new ItemComparer());
 			SetAddressSpan(addrBase, (uint) imageSize);
 		}
 
@@ -54,8 +54,8 @@ namespace Reko.Core
             if (addrBase == null)
                 throw new ArgumentNullException("addrBase");
             this.BaseAddress = addrBase;
-            this.items = new Map<Address, ImageMapItem>(new ItemComparer());
-            this.segments = new Map<Address, ImageSegment>(new ItemComparer());
+            this.items = new SortedList<Address, ImageMapItem>(new ItemComparer());
+            this.segments = new SortedList<Address, ImageSegment>(new ItemComparer());
             foreach (var seg in segments)
             {
                 this.AddSegment(seg);
@@ -354,12 +354,12 @@ namespace Reko.Core
 
         public ImageSegmentRenderer Renderer { get; set; }
 
-		public Map<Address, ImageMapItem> Items
+		public SortedList<Address, ImageMapItem> Items
 		{
 			get { return items; }
 		}
 
-        public Map<Address, ImageSegment> Segments
+        public SortedList<Address, ImageSegment> Segments
 		{
 			get { return segments; }
 		}

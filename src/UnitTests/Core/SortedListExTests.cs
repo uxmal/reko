@@ -27,9 +27,9 @@ using System.Collections.Generic;
 namespace Reko.UnitTests.Core
 {
 	[TestFixture]
-	public class MapTests
+	public class SortedListExTests
 	{
-		public MapTests()
+		public SortedListExTests()
 		{
 
 		}
@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void CreationTest()
 		{
-			Map<int,string> t = new Map<int,string>();
+			SortedList<int,string> t = new SortedList<int,string>();
 			Assert.IsTrue(t.Count == 0);
 			Assert.AreEqual("", Dump(t));
 		}
@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void AddOne()
 		{
-			Map<int,string> t = new Map<int,string>();
+			SortedList<int,string> t = new SortedList<int,string>();
 			t.Add(1, "one");
 			Assert.IsTrue("one " == Dump(t));
 			Assert.AreEqual(1, t.Count);
@@ -54,7 +54,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void AddOneDeleteOne()
 		{
-			Map<int,string> t = new Map<int,string>();
+			SortedList<int,string> t = new SortedList<int,string>();
 			t.Add(1, "one");
 			t.Remove(1);
 			Assert.AreEqual("" ,Dump(t));
@@ -64,7 +64,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void AddMany()
 		{
-			Map<int,string> t = new Map<int,string>();
+			SortedList<int,string> t = new SortedList<int,string>();
 			for (int i = 100; i >= 0; --i)
 			{
 				t.Add(i, i.ToString());
@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void DeleteTest()
 		{
-			Map<int,string> t = new Map<int,string>();
+			SortedList<int,string> t = new SortedList<int,string>();
 			t.Add(0, "0");
 			t.Add(10, "10");
 			t.Add(-10, "-10");
@@ -97,7 +97,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void AddThreeDeleteOne()
 		{
-			Map<int,string> t = new Map<int,string>();
+			SortedList<int,string> t = new SortedList<int,string>();
 			t.Add(1, "one");
 			t.Add(2, "two");
 			t.Add(3, "three");
@@ -111,7 +111,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void CopyToTest()
 		{
-			Map<int,string> t = new Map<int,string>();
+			SortedList<int,string> t = new SortedList<int,string>();
 			t.Add(3, "3");
 			t.Add(2, "2");
 			t.Add(4, "4");
@@ -125,7 +125,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void LowerBoundTest()
 		{
-			Map<int,string> m = new Map<int,string>();
+			SortedList<int,string> m = new SortedList<int,string>();
 			m.Add(100, "100");
 			m.Add(0, "0");
 			m.Add(70, "70");
@@ -157,7 +157,7 @@ namespace Reko.UnitTests.Core
         [Test]
         public void UpperBoundTest()
         {
-            Map<int, string> m = new Map<int, string>();
+            var m = new SortedList<int, string>();
             m.Add(250, "250");
 
             string s;
@@ -165,7 +165,7 @@ namespace Reko.UnitTests.Core
             Assert.AreEqual("250", s);
         }
 
-		private string Dump(Map<int,string> t)
+		private string Dump(SortedList<int,string> t)
 		{
 			StringBuilder sb = new StringBuilder();
 			foreach (KeyValuePair<int,string> de in t)

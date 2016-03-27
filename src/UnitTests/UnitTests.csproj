@@ -302,7 +302,7 @@
     <Compile Include="Core\Lib\DominatorGraphTests.cs" />
     <Compile Include="Core\Lib\PriorityQueueTests.cs" />
     <Compile Include="Core\Lib\LookaheadEnumeratorTests.cs" />
-    <Compile Include="Core\MapTests.cs" />
+    <Compile Include="Core\SortedListExTests.cs" />
     <Compile Include="Core\OperatorTests.cs" />
     <Compile Include="Core\Output\MockGeneratorTests.cs" />
     <Compile Include="Core\Output\PrettyPrinterTests.cs" />

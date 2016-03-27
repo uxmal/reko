@@ -386,7 +386,7 @@ namespace Reko.Core.Serialization
                 program.User.Calls = sUser.Calls
                     .Select(c => LoadUserCall(c, program))
                     .Where(c => c != null)
-                    .ToMap(k => k.Address, v => v);
+                    .ToSortedList(k => k.Address, v => v);
                 
             }
         }
