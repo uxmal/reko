@@ -439,7 +439,7 @@
     <Compile Include="Lib\IntSet.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Lib\Map.cs">
+    <Compile Include="Lib\SortedListEx.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Lib\SccFinder.cs">

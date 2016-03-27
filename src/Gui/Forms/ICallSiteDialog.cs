@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2016 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,27 +18,25 @@
  */
 #endregion
 
-using Reko.Arch.X86;
 using Reko.Core;
-using Reko.Core.Code;
-using Reko.Core.Types;
-using Reko.Analysis;
-using NUnit.Framework;
+using Reko.Core.Serialization;
+using Reko.Gui.Controls;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-namespace Reko.UnitTests.Analysis
+namespace Reko.Gui.Forms
 {
-	[TestFixture]
-	public class SignatureBuilderTests
-	{
-		[Test]
-		public void TestGrfWithOneBit()
-		{
-			IProcessorArchitecture arch = new X86ArchitectureReal();
-			SignatureBuilder sb = new SignatureBuilder(null, arch);
-            sb.AddFlagGroupReturnValue((uint) FlagM.CF, arch.CreateFrame());
-			ProcedureSignature sig = sb.BuildSignature();
-			Assert.AreEqual("bool", sig.ReturnValue.DataType.ToString());
-		}
-	}
+    public interface ICallSiteDialog : IDialog
+    {
+        IButton OkButton { get; }
+        IButton CancellationButton { get; }
+        ITextBox Signature { get; }
+        ICheckBox NoReturn { get; }
+        Address Address { get; }
+
+        UserCallData GetUserCallData(ProcedureSerializer procSer);
+
+    }
 }

@@ -52,6 +52,7 @@ namespace Reko.Arch.X86.Design
         public Control CreateControl()
         {
             Control = new X86ArchitecturePanel();
+            Control.Emulate8087Checkbox.Checked = arch.Options.Emulate8087;
             Control.Emulate8087Checkbox.CheckedChanged += Emulate8087Checkbox_CheckedChanged;
 
             return Control;

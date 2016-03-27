@@ -310,7 +310,7 @@ namespace Reko.Analysis
         }
 
         [Conditional("DEBUG")]
-        private void Dump(Map<int, Expression> map)
+        private void Dump(SortedList<int, Expression> map)
         {
             var sort = new SortedList<string, string>();
             foreach (var de in map)

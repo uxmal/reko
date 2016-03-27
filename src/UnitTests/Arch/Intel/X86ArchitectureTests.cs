@@ -41,17 +41,17 @@ namespace Reko.UnitTests.Arch.Intel
 
 		public X86ArchitectureTests()
 		{
-			arch = new IntelArchitecture(ProcessorMode.Real);
+			arch = new X86ArchitectureReal();
 		}
 
 		[Test]
 		public void IaCreate()
 		{
-			arch = new IntelArchitecture(ProcessorMode.Real);
+			arch = new X86ArchitectureReal();
 			Assert.AreEqual(PrimitiveType.Word16, arch.WordWidth);
-			arch = new IntelArchitecture(ProcessorMode.Protected32);
+			arch = new X86ArchitectureFlat32();
 			Assert.AreEqual(PrimitiveType.Word32, arch.WordWidth);
-			arch = new IntelArchitecture(ProcessorMode.ProtectedSegmented);
+            arch = new X86ArchitectureProtected16();
 			Assert.AreEqual(PrimitiveType.Word16, arch.WordWidth);
 		}
 
@@ -202,7 +202,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void ReadCodeAddress_RealMode_Offset()
         {
-            arch = new IntelArchitecture(ProcessorMode.Real);
+            arch = new X86ArchitectureReal();
             var rdr = CreateImageReader(0x78, 0x56);
             var state = arch.CreateProcessorState();
             state.SetRegister(Registers.cs, Constant.Word16(0x1234));
@@ -215,7 +215,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void ReadCodeAddress_RealMode_SegOffset()
         {
-            arch = new IntelArchitecture(ProcessorMode.Real);
+            arch = new X86ArchitectureReal();
             var rdr = CreateImageReader(0x78, 0x56, 0x34, 0x12);
             var state = arch.CreateProcessorState();
             state.SetRegister(Registers.cs, Constant.Word16(0x1111));
@@ -227,7 +227,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void ReadCodeAddress_ProtectedMode16_Offset()
         {
-            arch = new IntelArchitecture(ProcessorMode.ProtectedSegmented);
+            arch = new X86ArchitectureProtected16();
             var rdr = CreateImageReader(0x78, 0x56);
             var state = arch.CreateProcessorState();
             state.SetRegister(Registers.cs, Constant.Word16(0x1234));
@@ -239,7 +239,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86arch_ReadCodeAddress_ProtectedMode16_SegOffset()
         {
-            arch = new IntelArchitecture(ProcessorMode.ProtectedSegmented);
+            arch = new X86ArchitectureProtected16();
             var rdr = CreateImageReader(0x78, 0x56, 0x34, 0x12);
             var state = arch.CreateProcessorState();
             state.SetRegister(Registers.cs, Constant.Word16(0x1111));
@@ -251,7 +251,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86arch_ReadCodeAddress_ProtectedFlatMode32()
         {
-            arch = new IntelArchitecture(ProcessorMode.Protected32);
+            arch = new X86ArchitectureFlat32();
             var rdr = CreateImageReader(0x78, 0x56, 0x34, 0x12);
             var state = arch.CreateProcessorState();
             state.SetRegister(Registers.cs, Constant.Word16(0x1111));
@@ -263,7 +263,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86arch_SetAxAliasesTrue()
         {
-            arch = new IntelArchitecture(ProcessorMode.Protected32);
+            arch = new X86ArchitectureFlat32();
             var aliases = arch.GetAliases(Registers.ax).ToHashSet();
             Assert.IsTrue(aliases.Contains(Registers.ax), "Expected ax set");
             Assert.IsTrue(aliases.Contains(Registers.ah), "Expected ah set");

@@ -67,7 +67,7 @@ namespace Reko.UnitTests
         [Test]
         public void Dec_LoadCallSignatures()
         {
-            var arch = new IntelArchitecture(ProcessorMode.Real);
+            var arch = new X86ArchitectureReal();
             Program program = new Program { 
                 Architecture = arch,
                 Platform = new MsdosPlatform(sc, arch)
@@ -76,7 +76,6 @@ namespace Reko.UnitTests
             {
                 Programs = { program },
             };
-            List<SerializedCall_v1> al = new List<SerializedCall_v1>();
             SerializedSignature sig = new SerializedSignature();
             sig.Arguments = new Argument_v1[] {
 			    new Argument_v1 {
@@ -86,7 +85,9 @@ namespace Reko.UnitTests
 			        Kind = new Register_v1("bx"),
                 }
             };
-            al.Add(new SerializedCall_v1(Address.SegPtr(0x0C32, 0x3200), sig));
+            var al = new List<SerializedCall_v1> {
+                new SerializedCall_v1(Address.SegPtr(0x0C32, 0x3200), sig)
+            };
             var sigs = decompiler.LoadCallSignatures(program, al);
 
             ProcedureSignature ps = sigs[Address.SegPtr(0x0C32, 0x3200)];

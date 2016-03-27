@@ -68,6 +68,7 @@ namespace Reko.Arch.X86
             this.WordWidth = mode.WordWidth;
             this.FramePointerType = mode.FramePointerType;
             this.StackRegister = mode.StackRegister;
+            this.Options = new X86Options();
         }
 
 		public Address AddressFromSegOffset(X86State state, RegisterStorage seg, uint offset)

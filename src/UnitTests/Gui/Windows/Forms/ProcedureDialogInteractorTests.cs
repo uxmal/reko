@@ -149,7 +149,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private class TestProcedureDialogInteractor : ProcedureDialogInteractor
         {
             public TestProcedureDialogInteractor(Procedure_v1 proc)
-                : base(new IntelArchitecture(ProcessorMode.Protected32), proc)
+                : base(new X86ArchitectureFlat32(), proc)
             {
             }
 

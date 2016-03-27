@@ -96,10 +96,9 @@ namespace Reko.Scanning
         private PriorityQueue<WorkItem> queue;
         private ImageMap imageMap;
         private IImportResolver importResolver;
-        private Map<Address, BlockRange> blocks;
+        private SortedList<Address, BlockRange> blocks;
         private Dictionary<Block, Address> blockStarts;
         private Dictionary<string, PseudoProcedure> pseudoProcs;
-        private IDictionary<Address, ProcedureSignature> callSigs;
         private Dictionary<Address, ImportReference> importReferences;
         private DecompilerEventListener eventListener;
         private HashSet<Procedure> visitedProcs;
@@ -117,20 +116,18 @@ namespace Reko.Scanning
 
         public Scanner(
             Program program, 
-            IDictionary<Address, ProcedureSignature> callSigs,
             IImportResolver importResolver,
             IServiceProvider services)
         {
             this.program = program;
             this.imageMap = program.ImageMap;
             this.importResolver = importResolver;
-            this.callSigs = callSigs;
             this.eventListener = services.RequireService<DecompilerEventListener>();
             this.cancelSvc = services.GetService<CancellationTokenSource>();
             if (imageMap == null)
                 throw new InvalidOperationException("Program must have an image map.");
             this.queue = new PriorityQueue<WorkItem>();
-            this.blocks = new Map<Address, BlockRange>();
+            this.blocks = new SortedList<Address, BlockRange>();
             this.blockStarts = new Dictionary<Block, Address>();
             this.pseudoProcs = program.PseudoProcedures;
             this.importReferences = program.ImportReferences;
@@ -406,6 +403,7 @@ namespace Reko.Scanning
                 GenerateBlockName(addrFrom),
                 procNew.Name);
             var callRetThunkBlock = procOld.AddBlock(blockName);
+            callRetThunkBlock.IsSynthesized = true;
             callRetThunkBlock.Statements.Add(0, new CallInstruction(
                     new ProcedureConstant(program.Platform.PointerType, procNew),
                     new CallSite(procNew.Signature.ReturnAddressOnStack, 0)));
@@ -769,9 +767,10 @@ namespace Reko.Scanning
 
         public ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction)
         {
-            ProcedureSignature sig = null;
-            callSigs.TryGetValue(addrCallInstruction, out sig);
-            return sig;
+            UserCallData call = null;
+            if (!program.User.Calls.TryGetValue(addrCallInstruction, out call))
+                return null;
+            return call.Signature;
         }
 
         public void SetAssumedRegisterValues(Address addr, ProcessorState st)
