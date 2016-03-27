@@ -270,7 +270,7 @@ namespace Reko.Scanning
 
             // Now, switch to the fallthru block and keep rewriting.
             blockCur = blockElse;
-            return true;
+            return !blockElse.IsSynthesized;
         }
 
         /// <summary>

@@ -403,6 +403,7 @@ namespace Reko.Scanning
                 GenerateBlockName(addrFrom),
                 procNew.Name);
             var callRetThunkBlock = procOld.AddBlock(blockName);
+            callRetThunkBlock.IsSynthesized = true;
             callRetThunkBlock.Statements.Add(0, new CallInstruction(
                     new ProcedureConstant(program.Platform.PointerType, procNew),
                     new CallSite(procNew.Signature.ReturnAddressOnStack, 0)));
