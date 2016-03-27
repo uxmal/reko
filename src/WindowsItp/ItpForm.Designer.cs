@@ -37,6 +37,7 @@
             this.disassemblyControlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.codeViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.byteMapViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dialogsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projectBrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,7 +47,7 @@
             this.loadingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.emulatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ollyScriptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.byteMapViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.procedureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -127,6 +128,13 @@
             this.codeViewToolStripMenuItem.Text = "&Code View";
             this.codeViewToolStripMenuItem.Click += new System.EventHandler(this.codeViewToolStripMenuItem_Click);
             // 
+            // byteMapViewToolStripMenuItem
+            // 
+            this.byteMapViewToolStripMenuItem.Name = "byteMapViewToolStripMenuItem";
+            this.byteMapViewToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.byteMapViewToolStripMenuItem.Text = "&Byte Map View";
+            this.byteMapViewToolStripMenuItem.Click += new System.EventHandler(this.byteMapViewToolStripMenuItem_Click);
+            // 
             // dialogsToolStripMenuItem
             // 
             this.dialogsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -134,7 +142,8 @@
             this.projectBrowserToolStripMenuItem,
             this.activationToolStripMenuItem,
             this.preferencesToolStripMenuItem,
-            this.assumeRegistesToolStripMenuItem});
+            this.assumeRegistesToolStripMenuItem,
+            this.procedureToolStripMenuItem});
             this.dialogsToolStripMenuItem.Name = "dialogsToolStripMenuItem";
             this.dialogsToolStripMenuItem.Size = new System.Drawing.Size(58, 20);
             this.dialogsToolStripMenuItem.Text = "&Dialogs";
@@ -197,12 +206,12 @@
             this.ollyScriptToolStripMenuItem.Text = "&OllyScript";
             this.ollyScriptToolStripMenuItem.Click += new System.EventHandler(this.ollyScriptToolStripMenuItem_Click);
             // 
-            // byteMapViewToolStripMenuItem
+            // procedureToolStripMenuItem
             // 
-            this.byteMapViewToolStripMenuItem.Name = "byteMapViewToolStripMenuItem";
-            this.byteMapViewToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
-            this.byteMapViewToolStripMenuItem.Text = "&Byte Map View";
-            this.byteMapViewToolStripMenuItem.Click += new System.EventHandler(this.byteMapViewToolStripMenuItem_Click);
+            this.procedureToolStripMenuItem.Name = "procedureToolStripMenuItem";
+            this.procedureToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.procedureToolStripMenuItem.Text = "P&rocedure...";
+            this.procedureToolStripMenuItem.Click += new System.EventHandler(this.procedureToolStripMenuItem_Click);
             // 
             // ItpForm
             // 
@@ -241,6 +250,7 @@
         private System.Windows.Forms.ToolStripMenuItem textViewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem codeViewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem byteMapViewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem procedureToolStripMenuItem;
     }
 }
 

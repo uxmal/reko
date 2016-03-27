@@ -212,7 +212,8 @@ namespace Reko.Core.Serialization
             var sUser = sInput.User;
             var address = LoadAddress(sUser, this.arch);
             Program program;
-            if (sUser.Processor != null &&
+            if (address != null && 
+                sUser.Processor != null &&
                 (sUser.PlatformOptions == null ||
                 sUser.PlatformOptions.Name != null))
             {
