@@ -18,20 +18,21 @@
  */
 #endregion
 
+using Microsoft.Msagl.Drawing;
+using Microsoft.Msagl.GraphViewerGdi;
 using Reko.Core;
 using Reko.Core.Lib;
-using Reko.Core.Serialization;
 using Reko.Core.Output;
+using Reko.Core.Serialization;
+using Reko.Gui.Forms;
 using Reko.Gui.Windows.Controls;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using Microsoft.Msagl.GraphViewerGdi;
-using System.ComponentModel.Design;
-using System.Diagnostics;
-using Microsoft.Msagl.Drawing;
-using Reko.Gui.Forms;
 
 namespace Reko.Gui.Windows
 {
@@ -43,7 +44,7 @@ namespace Reko.Gui.Windows
         private CombinedCodeView combinedCodeView;
         private NavigationInteractor<Address> navInteractor;
 
-        private Map<Address, MixedCodeDataModel.DataItemNode> nodeByAddress;
+        private SortedList<Address, MixedCodeDataModel.DataItemNode> nodeByAddress;
         private NestedTextModel nestedTextModel;
         private GViewer gViewer;
 
@@ -97,12 +98,12 @@ namespace Reko.Gui.Windows
 
         private void CreateNestedTextModel()
         {
-            nestedTextModel = new NestedTextModel();
+            this.nestedTextModel = new NestedTextModel();
 
             var mixedCodeDataModel = (MixedCodeDataModel)combinedCodeView.MixedCodeDataView.Model;
             var dataItemNodes = mixedCodeDataModel.GetDataItemNodes();
 
-            this.nodeByAddress = new Map<Address, MixedCodeDataModel.DataItemNode>();
+            this.nodeByAddress = new SortedList<Address, MixedCodeDataModel.DataItemNode>();
 
             foreach (var dataItemNode in dataItemNodes)
             {
@@ -195,8 +196,6 @@ namespace Reko.Gui.Windows
             return combinedCodeView;
         }
 
-
-
         public void SetSite(IServiceProvider sp)
         {
             this.services = sp;
@@ -228,27 +227,27 @@ namespace Reko.Gui.Windows
             {
                 switch (cmdId.ID)
                 {
-                    case CmdIds.TextEncodingChoose:
-                        status.Status = MenuStatus.Enabled | MenuStatus.Visible;
-                        return true;
-                    case CmdIds.EditCopy:
-                        status.Status = FocusedTextView == null || FocusedTextView.Selection.IsEmpty
-                            ? MenuStatus.Visible
-                            : MenuStatus.Visible | MenuStatus.Enabled;
-                        return true;
-                    case CmdIds.ViewCfgGraph:
-                        status.Status = gViewer.Visible
-                            ? MenuStatus.Visible | MenuStatus.Enabled | MenuStatus.Checked
-                            : MenuStatus.Visible | MenuStatus.Enabled;
-                        return true;
-                    case CmdIds.ViewCfgCode:
-                        status.Status = gViewer.Visible
-                            ? MenuStatus.Visible | MenuStatus.Enabled
-                            : MenuStatus.Visible | MenuStatus.Enabled | MenuStatus.Checked;
-                        return true;
-                    case CmdIds.EditDeclaration:
-                        status.Status = MenuStatus.Enabled | MenuStatus.Visible;
-                        return true;
+                case CmdIds.TextEncodingChoose:
+                    status.Status = MenuStatus.Enabled | MenuStatus.Visible;
+                    return true;
+                case CmdIds.EditCopy:
+                    status.Status = FocusedTextView == null || FocusedTextView.Selection.IsEmpty
+                        ? MenuStatus.Visible
+                        : MenuStatus.Visible | MenuStatus.Enabled;
+                    return true;
+                case CmdIds.ViewCfgGraph:
+                    status.Status = gViewer.Visible
+                        ? MenuStatus.Visible | MenuStatus.Enabled | MenuStatus.Checked
+                        : MenuStatus.Visible | MenuStatus.Enabled;
+                    return true;
+                case CmdIds.ViewCfgCode:
+                    status.Status = gViewer.Visible
+                        ? MenuStatus.Visible | MenuStatus.Enabled
+                        : MenuStatus.Visible | MenuStatus.Enabled | MenuStatus.Checked;
+                    return true;
+                case CmdIds.EditDeclaration:
+                    status.Status = MenuStatus.Enabled | MenuStatus.Visible;
+                    return true;
                 }
             }
             return false;
@@ -260,20 +259,20 @@ namespace Reko.Gui.Windows
             {
                 switch (cmdId.ID)
                 {
-                    case CmdIds.EditCopy:
-                        Copy();
-                        return true;
-                    case CmdIds.ViewCfgGraph:
-                        ViewGraph();
-                        return true;
-                    case CmdIds.ViewCfgCode:
-                        ViewCode();
-                        return true;
-                    case CmdIds.TextEncodingChoose:
-                        return ChooseTextEncoding();
-                    case CmdIds.EditDeclaration:
-                        EditDeclaration();
-                        return true;
+                case CmdIds.EditCopy:
+                    Copy();
+                    return true;
+                case CmdIds.ViewCfgGraph:
+                    ViewGraph();
+                    return true;
+                case CmdIds.ViewCfgCode:
+                    ViewCode();
+                    return true;
+                case CmdIds.TextEncodingChoose:
+                    return ChooseTextEncoding();
+                case CmdIds.EditDeclaration:
+                    EditDeclaration();
+                    return true;
                 }
             }
             return false;

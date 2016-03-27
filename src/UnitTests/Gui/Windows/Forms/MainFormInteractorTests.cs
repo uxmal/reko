@@ -236,6 +236,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
   <input>
     <filename>foo.exe</filename>
     <user>
+      <processor />
       <procedure name=""MyProc"">
         <address>00012345</address>
       </procedure>
