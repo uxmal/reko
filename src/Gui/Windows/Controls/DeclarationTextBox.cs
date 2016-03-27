@@ -86,9 +86,9 @@ namespace Reko.Gui.Windows.Controls
             this.program = program;
             this.address = address;
             label.Text = LabelText();
-            label.Location = new Point(location.X, location.Y - text.Height - label.Height - 9);
+            label.Location = new Point(location.X, location.Y - text.Height - label.Height);
             text.Text = GetDeclarationText();
-            text.Location = new Point(location.X, location.Y - text.Height - 9);
+            text.Location = new Point(location.X, location.Y - text.Height);
             text.Width = label.Width;
             label.BringToFront();
             text.Visible = true;

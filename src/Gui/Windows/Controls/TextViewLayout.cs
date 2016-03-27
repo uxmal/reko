@@ -186,6 +186,44 @@ namespace Reko.Gui.Windows.Controls
             return sz;
         }
 
+        public RectangleF LogicalPositionToClient(Graphics g, TextPointer pos, StyleStack styleStack)
+        {
+            foreach (var line in this.visibleLines.Values)
+            {
+                if (line.Position == pos.Line)
+                {
+                    return SpanPositionToClient(g, pos, line, styleStack);
+                }
+            }
+            return new RectangleF(new PointF(0, 0), CalculateExtent());
+        }
+
+        private RectangleF SpanPositionToClient(Graphics g, TextPointer pos, LayoutLine line, StyleStack styleStack)
+        {
+            var iSpan = pos.Span;
+            if (iSpan < 0 || iSpan >= line.Spans.Length)
+                return line.Extent;
+            var span = line.Spans[iSpan];
+            return CharPositionToClient(g, pos, span, styleStack);
+        }
+
+        private RectangleF CharPositionToClient(Graphics g, TextPointer pos, LayoutSpan span, StyleStack styleStack)
+        {
+            var iChar = pos.Character;
+
+            styleStack.PushStyle(span.Style);
+            var font = styleStack.GetFont(defaultFont);
+
+            var textStub = span.Text.Substring(0, iChar);
+            var sz = MeasureText(g, textStub, font);
+            var x = sz.Width + span.Extent.Left;
+            var width = 1;
+
+            styleStack.PopStyle();
+
+            return new RectangleF(x, span.Extent.Top, width, span.Extent.Height);
+        }
+
 
         private class Builder
         {
