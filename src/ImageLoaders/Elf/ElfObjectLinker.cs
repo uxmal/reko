@@ -85,8 +85,34 @@ namespace Reko.ImageLoaders.Elf
 
     public class ElfObjectLinker32 : ElfObjectLinker
     {
-        public ElfObjectLinker32(ElfLoader32 loader) : base(loader)
-        { }
+        private ElfLoader32 loader;
 
+        public ElfObjectLinker32(ElfLoader32 loader) : base(loader)
+        {
+            this.loader = loader;
+        }
+
+        public Dictionary<Elf32_SHdr, Elf32_PHdr> CollectNeededSegments()
+        {
+            var segments = new List<Elf32_PHdr>();
+            var mpToSegment = new Dictionary<uint, Elf32_PHdr>();
+            var mpSectionToSegment = new Dictionary<Elf32_SHdr, Elf32_PHdr>();
+            foreach (var section in loader.SectionHeaders
+                .Where(s =>( s.sh_flags & ElfLoader.SHF_ALLOC) != 0))
+            {
+                Elf32_PHdr segment;
+                if (!mpToSegment.TryGetValue(section.sh_flags, out segment))
+                {
+                    segment = new Elf32_PHdr();
+                    mpToSegment.Add(section.sh_flags, segment);
+                }
+                mpSectionToSegment.Add(section, segment);
+                segment.p_pmemsz += section.sh_size;
+                segment.p_filesz += section.sh_type != SectionHeaderType.SHT_NOBITS
+                    ? section.sh_size
+                    : 0;
+            }
+            return mpSectionToSegment;  
+        }
     }
 }

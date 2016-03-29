@@ -30,6 +30,8 @@ namespace Reko.Core
     /// </summary>
     public abstract class ImageWriter
     {
+        private int himark;
+
         public ImageWriter() : this(new byte[16])
         {
         }
@@ -50,6 +52,13 @@ namespace Reko.Core
 
         public byte[] Bytes { get; private set;}
         public int Position { get; set; }
+
+        public byte[] ToArray()
+        {
+            var b = new byte[Position];
+            Array.Copy(Bytes, b, Position);
+            return b;
+        }
 
         public ImageWriter WriteByte(byte b)
         {

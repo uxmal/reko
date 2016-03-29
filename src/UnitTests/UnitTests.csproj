@@ -242,6 +242,7 @@
     <Compile Include="Gui\Windows\ProjectBrowserServiceTests.cs" />
     <Compile Include="Gui\Windows\WindowsFormsSettingsServiceTests.cs" />
     <Compile Include="ImageLoaders\Elf\ElfImageLoaderTests.cs" />
+    <Compile Include="ImageLoaders\Elf\ElfObjectLinkerTests.cs" />
     <Compile Include="ImageLoaders\Hunk\HunkFileParserTests.cs" />
     <Compile Include="ImageLoaders\Hunk\HunkLoaderTests.cs" />
     <Compile Include="ImageLoaders\Hunk\HunkMaker.cs" />

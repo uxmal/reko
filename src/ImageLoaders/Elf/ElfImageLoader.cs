@@ -265,7 +265,7 @@ namespace Reko.ImageLoaders.Elf
             var platform = innerLoader.CreatePlatform(osAbi, arch);
             int cHeaders = innerLoader.LoadProgramHeaderTable();
             innerLoader.LoadSectionHeaders();
-
+            innerLoader.Dump();
             if (cHeaders > 0)
             {
                 return innerLoader.LoadImage(platform, RawImage);
@@ -373,6 +373,9 @@ namespace Reko.ImageLoaders.Elf
         protected ElfImageLoader imgLoader;
         protected ulong m_uPltMin;
         protected ulong m_uPltMax;
+        protected Dictionary<Address, ImportReference> importReferences;
+        protected IPlatform platform;
+        protected byte[] rawImage;
 
         protected ElfLoader(ElfImageLoader imgLoader)
         {
@@ -424,6 +427,8 @@ namespace Reko.ImageLoaders.Elf
 
         public Program LoadImage(IPlatform platform, byte[] rawImage)
         {
+            this.platform = platform;
+            this.rawImage = rawImage;
             GetPltLimits();
             //LoadSymbols();
             var addrPreferred = ComputeBaseAddress(platform);
@@ -431,9 +436,9 @@ namespace Reko.ImageLoaders.Elf
             Dump();
             var imageMap = LoadImageBytes(platform, rawImage, addrPreferred, addrMax);
             var program = new Program(
-               imageMap,
-               platform.Architecture,
-               platform);
+                imageMap,
+                platform.Architecture,
+                platform);
             this.importReferences = program.ImportReferences;
             return program;
         }
@@ -483,59 +488,9 @@ namespace Reko.ImageLoaders.Elf
             Debug.Print(sw.ToString());
         }
 
-        public void Dump(TextWriter writer)
-        {
-#if NOT
-            writer.WriteLine("Entry: {0:X}", Header32.e_entry);
-            writer.WriteLine("Sections:");
-            foreach (var sh in SectionHeaders)
-            {
-                writer.WriteLine("{0,-18} sh_type: {1,-12} sh_flags: {2,-4} sh_addr; {3:X8} sh_offset: {4:X8} sh_size: {5:X8} sh_link: {6:X8} sh_info: {7:X8} sh_addralign: {8:X8} sh_entsize: {9:X8}",
-                    GetSectionName(sh.sh_name),
-                    sh.sh_type,
-                    DumpShFlags(sh.sh_flags),
-                    sh.sh_addr,
-                    sh.sh_offset,
-                    sh.sh_size,
-                    sh.sh_link,
-                    sh.sh_info,
-                    sh.sh_addralign,
-                    sh.sh_entsize);
-            }
-            writer.WriteLine();
-            writer.WriteLine("Program headers:");
-            foreach (var ph in ProgramHeaders)
-            {
-                writer.WriteLine("p_type:{0,-12} p_offset: {1:X8} p_vaddr:{2:X8} p_paddr:{3:X8} p_filesz:{4:X8} p_pmemsz:{5:X8} p_flags:{6:X8} p_align:{7:X8}",
-                    ph.p_type,
-                    ph.p_offset,
-                    ph.p_vaddr,
-                    ph.p_paddr,
-                    ph.p_filesz,
-                    ph.p_pmemsz,
-                    ph.p_flags,
-                    ph.p_align);
-            }
-            writer.WriteLine("Base address: {0:X8}", ComputeBaseAddress());
-            writer.WriteLine();
-            writer.WriteLine("Dependencies");
-            foreach (var dep in GetDependencyList())
-            {
-                writer.WriteLine("  {0}", dep);
-            }
+        public abstract void Dump(TextWriter writer);
 
-            writer.WriteLine();
-            writer.WriteLine("Relocations");
-            foreach (var sh in SectionHeaders.Where(sh => sh.sh_type == SectionHeaderType.SHT_RELA))
-            {
-                DumpRela(sh);
-            }
-#endif
-        }
-
-
-
-        private string DumpShFlags(uint shf)
+        protected string DumpShFlags(ulong shf)
         {
             return string.Format("{0}{1}{2}",
                 ((shf & SHF_EXECINSTR) != 0) ? "x" : " ",
@@ -552,7 +507,6 @@ namespace Reko.ImageLoaders.Elf
             //m_SymTab[uNative] = pName;
         }
 
-        protected Dictionary<Address, ImportReference> importReferences;
 
         public IEnumerable<Elf64_Dyn> GetDynEntries64(ulong offset)
         {
@@ -2002,6 +1956,54 @@ namespace Reko.ImageLoaders.Elf
             }
         }
 
+        public override void Dump(TextWriter writer)
+        {
+            writer.WriteLine("Entry: {0:X}", Header64.e_entry);
+            writer.WriteLine("Sections:");
+            foreach (var sh in SectionHeaders64)
+            {
+                writer.WriteLine("{0,-18} sh_type: {1,-12} sh_flags: {2,-4} sh_addr; {3:X8} sh_offset: {4:X8} sh_size: {5:X8} sh_link: {6:X8} sh_info: {7:X8} sh_addralign: {8:X8} sh_entsize: {9:X8}",
+                    GetSectionName(sh.sh_name),
+                    sh.sh_type,
+                    DumpShFlags(sh.sh_flags),
+                    sh.sh_addr,
+                    sh.sh_offset,
+                    sh.sh_size,
+                    sh.sh_link,
+                    sh.sh_info,
+                    sh.sh_addralign,
+                    sh.sh_entsize);
+            }
+            writer.WriteLine();
+            writer.WriteLine("Program headers:");
+            foreach (var ph in ProgramHeaders64)
+            {
+                writer.WriteLine("p_type:{0,-12} p_offset: {1:X8} p_vaddr:{2:X8} p_paddr:{3:X8} p_filesz:{4:X8} p_pmemsz:{5:X8} p_flags:{6:X8} p_align:{7:X8}",
+                    ph.p_type,
+                    ph.p_offset,
+                    ph.p_vaddr,
+                    ph.p_paddr,
+                    ph.p_filesz,
+                    ph.p_pmemsz,
+                    ph.p_flags,
+                    ph.p_align);
+            }
+            writer.WriteLine("Base address: {0:X8}", ComputeBaseAddress(platform));
+            writer.WriteLine();
+            writer.WriteLine("Dependencies");
+            foreach (var dep in GetDependencyList(imgLoader.RawImage))
+            {
+                writer.WriteLine("  {0}", dep);
+            }
+
+            writer.WriteLine();
+            writer.WriteLine("Relocations");
+            foreach (var sh in SectionHeaders64.Where(sh => sh.sh_type == SectionHeaderType.SHT_RELA))
+            {
+                // DumpRela(sh);
+            }
+        }
+
         public override List<string> GetDependencyList(byte[] rawImage)
         {
             var result = new List<string>();
@@ -2019,7 +2021,6 @@ namespace Reko.ImageLoaders.Elf
             }
             return result;
         }
-
 
         public override Address GetEntryPointAddress(Address addrBase)
         {
@@ -2212,8 +2213,6 @@ namespace Reko.ImageLoaders.Elf
         }
     }
 
-
-
     public class ElfLoader32 : ElfLoader
     {
         private Elf32_EHdr header32;
@@ -2341,6 +2340,9 @@ namespace Reko.ImageLoaders.Elf
 
         public override Address ComputeBaseAddress(IPlatform platform)
         {
+            if (ProgramHeaders.Count == 0)
+                return Address.Ptr32(0);
+
             return Address.Ptr32(
                 ProgramHeaders
                 .Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0)
@@ -2376,6 +2378,54 @@ namespace Reko.ImageLoaders.Elf
             case SectionHeaderType.SHT_RELA:
                 return new RelaSegmentRenderer(this, shdr);
             default: return null;
+            }
+        }
+
+        public override void Dump(TextWriter writer)
+        {
+            writer.WriteLine("Entry: {0:X}", header32.e_entry);
+            writer.WriteLine("Sections:");
+            foreach (var sh in SectionHeaders)
+            {
+                writer.WriteLine("{0,-18} sh_type: {1,-12} sh_flags: {2,-4} sh_addr; {3:X8} sh_offset: {4:X8} sh_size: {5:X8} sh_link: {6:X8} sh_info: {7:X8} sh_addralign: {8:X8} sh_entsize: {9:X8}",
+                    GetSectionName(sh.sh_name),
+                    sh.sh_type,
+                    DumpShFlags(sh.sh_flags),
+                    sh.sh_addr,
+                    sh.sh_offset,
+                    sh.sh_size,
+                    sh.sh_link,
+                    sh.sh_info,
+                    sh.sh_addralign,
+                    sh.sh_entsize);
+            }
+            writer.WriteLine();
+            writer.WriteLine("Program headers:");
+            foreach (var ph in ProgramHeaders)
+            {
+                writer.WriteLine("p_type:{0,-12} p_offset: {1:X8} p_vaddr:{2:X8} p_paddr:{3:X8} p_filesz:{4:X8} p_pmemsz:{5:X8} p_flags:{6:X8} p_align:{7:X8}",
+                    ph.p_type,
+                    ph.p_offset,
+                    ph.p_vaddr,
+                    ph.p_paddr,
+                    ph.p_filesz,
+                    ph.p_pmemsz,
+                    ph.p_flags,
+                    ph.p_align);
+            }
+            writer.WriteLine("Base address: {0:X8}", ComputeBaseAddress(platform));
+            writer.WriteLine();
+            writer.WriteLine("Dependencies");
+            foreach (var dep in GetDependencyList(rawImage))
+            {
+                writer.WriteLine("  {0}", dep);
+            }
+
+            writer.WriteLine();
+            writer.WriteLine("Relocations");
+            foreach (var sh in SectionHeaders.Where(sh => sh.sh_type == SectionHeaderType.SHT_RELA))
+            {
+                DumpRela(sh);
             }
         }
 
@@ -2728,6 +2778,5 @@ namespace Reko.ImageLoaders.Elf
                     new NamedImportReference(addr, null, symStr));
             }
         }
-
     }
 }
