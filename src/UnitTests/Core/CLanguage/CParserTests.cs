@@ -1144,16 +1144,15 @@ MemoryBarrier (
         }
 
         [Test]
-        public void CParser_IncorrectStatement()
+        public void CParser_Typedef_using_undefinedType()
         {
+            // Even though 'a' is not defined, it should still be parseable. 
+            // We make the assumption in a typedef that if it is followed by 
+            // an id, the id is a reference to a type.
             LexUnknownIds("typedef a b;");
-            Decl decl;
-            try {
-                decl = parser.Parse_ExternalDecl();
-            } catch (Exception) {
-                decl = null;
-            }
-            Assert.IsNull(decl);
+            var decl = parser.Parse_ExternalDecl();
+            var sExp = "(decl Typedef a ((init-decl b)))";
+            Assert.AreEqual(sExp, decl.ToString());
         }
     }
 }
