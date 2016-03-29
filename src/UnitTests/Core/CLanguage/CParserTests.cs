@@ -49,6 +49,12 @@ namespace Reko.Core.CLanguage.UnitTests
             parser = new CParser(parserState, lexer);
         }
 
+        private void LexUnknownIds(string str)
+        {
+            lexer = new CLexer(new StringReader(str));
+            parser = new CParser(parserState, lexer);
+        }
+
         [Test]
         public void CParser_decl()
         {
@@ -1138,10 +1144,9 @@ MemoryBarrier (
         }
 
         [Test]
-        [Ignore("uxmal to get this to work.")]
         public void CParser_IncorrectStatement()
         {
-            Lex("typedef a b;");
+            LexUnknownIds("typedef a b;");
             Decl decl;
             try {
                 decl = parser.Parse_ExternalDecl();

@@ -686,15 +686,15 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <DecompilerMetadata Include="%24%28SolutionDir%29Environments\MsDos\*.xml" />
-    <DecompilerMetadata Include="%24%28SolutionDir%29Environments\Windows\*.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\MsDos\*.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\*.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Lib\Bits.Tests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ExternalAssemblies Include="%24%28SolutionDir%29..\external\Capstone.NET\*.dll" />
-    <ExternalAssemblies Include="%24%28SolutionDir%29..\external\Capstone.NET\*.pdb" />
+    <ExternalAssemblies Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
+    <ExternalAssemblies Include="$(SolutionDir)..\external\Capstone.NET\*.pdb" />
   </ItemGroup>
   <Target Name="BeforeBuild">
     <Message Importance="normal" Text="Copying Decompiler metadata files to $(TargetDir)" />

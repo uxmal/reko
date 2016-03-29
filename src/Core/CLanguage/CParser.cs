@@ -357,7 +357,7 @@ IGNORE tab + cr + lf
         }
 
         //ExternalDecl = 
-        //  [ AttributeSequence]
+        //  [ AttributeSequence ]
         //  DeclSpecifierList 
         //  ( Declarator 
         //    ( {Decl} '{' {IF(IsDecl()) Decl | Stat} '}'   // FunctionDef
@@ -365,7 +365,6 @@ IGNORE tab + cr + lf
         //    )
         //  | ';'                                           // Decl
         //  ).
-
         public Decl Parse_ExternalDecl()
         {
             var attrs = Parse_AttributeSpecifierSeq();
@@ -502,7 +501,7 @@ IGNORE tab + cr + lf
                 {
                     if (startOfDeclarator[(int) token.Type])
                         break;
-                    if (token.Type == CTokenType.Id && (!IsTypeName(token) || typeDeclsSeen > 0))
+                    if (token.Type == CTokenType.Id && typeDeclsSeen > 0)
                         break;
                 }
                 else
