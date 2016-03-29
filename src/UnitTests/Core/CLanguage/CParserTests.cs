@@ -49,12 +49,6 @@ namespace Reko.Core.CLanguage.UnitTests
             parser = new CParser(parserState, lexer);
         }
 
-        private void LexUnknownIds(string str)
-        {
-            lexer = new CLexer(new StringReader(str));
-            parser = new CParser(parserState, lexer);
-        }
-
         [Test]
         public void CParser_decl()
         {
@@ -1149,7 +1143,7 @@ MemoryBarrier (
             // Even though 'a' is not defined, it should still be parseable. 
             // We make the assumption in a typedef that if it is followed by 
             // an id, the id is a reference to a type.
-            LexUnknownIds("typedef a b;");
+            Lex("typedef a b;");
             var decl = parser.Parse_ExternalDecl();
             var sExp = "(decl Typedef a ((init-decl b)))";
             Assert.AreEqual(sExp, decl.ToString());
