@@ -94,6 +94,34 @@ namespace Reko.Core.Output
             formatter.Terminate(";");
         }
 
+        public void WriteGlobalVariable(Address address, DataType dataType, string name, Formatter formatter)
+        {
+            this.formatter = formatter;
+            this.codeFormatter = new CodeFormatter(formatter);
+            this.tw = new TypeReferenceFormatter(formatter, true);
+            this.globals = new StructureType();
+            this.queue = new Queue<StructureField>(globals.Fields);
+            try
+            {
+                tw.WriteDeclaration(dataType, name);
+                if (program.ImageMap.IsValidAddress(address))
+                {
+                    formatter.Write(" = ");
+                    this.rdr = program.CreateImageReader(address);
+                    dataType.Accept(this);
+                }
+            }
+            catch (Exception ex)
+            {
+                var dc = services.RequireService<DecompilerEventListener>();
+                dc.Error(
+                    dc.CreateAddressNavigator(program, address),
+                    ex,
+                    string.Format("Failed to write global variable {0}.", name));
+            }
+            formatter.Terminate(";");
+        }
+
         public CodeFormatter VisitArray(ArrayType at)
         {
             Debug.Assert(at.Length != 0, "Expected sizes of arrays to have been determined by now");

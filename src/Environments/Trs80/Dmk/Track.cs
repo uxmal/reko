@@ -7,8 +7,6 @@ namespace Reko.Environments.Trs80.Dmk
 {
     internal class Track
     {
-        public event EventHandler LengthChanged;
-
         private List<Sector> m_sectors = new List<Sector>();
 
         private int m_dmkOffset = -1;

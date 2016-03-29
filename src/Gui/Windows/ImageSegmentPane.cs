@@ -35,6 +35,8 @@ namespace Reko.Gui.Windows
         private IServiceProvider services;
         private Program program;
 
+        public IWindowFrame Frame { get; set; }
+
         public Control CreateControl()
         {
             this.segmentView = new ImageSegmentView();

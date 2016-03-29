@@ -111,6 +111,12 @@ namespace Reko.Core.Expressions
             Add(typeof(Address64),
                 addrComp,
                 addrHash);
+            Add(typeof(ProtectedSegmentedAddress),
+                addrComp,
+                addrHash);
+            Add(typeof(RealSegmentedAddress),
+                addrComp,
+                addrHash);
 
             Add(typeof(Constant),
                 delegate(Expression ea, Expression eb)

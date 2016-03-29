@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Microsoft.Msagl.Drawing;
 using Microsoft.Msagl.GraphViewerGdi;
 using Reko.Analysis;
 using Reko.Core;
@@ -35,7 +36,7 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-
+using Color = System.Drawing.Color;
 
 namespace Reko.Gui.Windows
 {
@@ -60,6 +61,7 @@ namespace Reko.Gui.Windows
         {
         }
 
+        public IWindowFrame Frame { get; set; }
         public TextView TextView { get { return codeView.TextView; } }
         public GViewer GraphView { get { return gViewer; } }
         public TextBox Declaration { get { return codeView.ProcedureDeclaration; } }
@@ -76,7 +78,6 @@ namespace Reko.Gui.Windows
 
         public Control CreateControl()
         {
-            var uiPrefsSvc = services.RequireService<IUiPreferencesService>();
             var uiSvc = services.RequireService<IDecompilerShellUiService>();
 
             this.codeView = new CodeView();
@@ -96,15 +97,25 @@ namespace Reko.Gui.Windows
             this.gViewer.Visible = false;
             this.gViewer.PanButtonPressed = true;
             this.gViewer.ToolBarIsVisible = true;
+            this.gViewer.LayoutAlgorithmSettingsButtonVisible = false;
+            this.gViewer.LayoutEditingEnabled = false;
+            this.gViewer.SaveButtonVisible = false;
+            this.gViewer.SaveGraphButtonVisible = false;
+            this.gViewer.UndoRedoButtonsVisible = false;
             this.gViewer.KeyDown += GViewer_KeyDown;
             this.gViewer.ContextMenu = uiSvc.GetContextMenu(MenuIds.CtxCodeView);
+            this.gViewer.MouseUp += GViewer_MouseUp;
+            this.gViewer.DrawingPanel.MouseUp += GViewer_MouseUp;
+            this.gViewer.ViewChangeEvent += GViewer_ViewChangeEvent;
+            var iViewer = (IViewer)gViewer;
+            iViewer.MouseUp += IViewer_MouseUp;
+            iViewer.MouseDown += IViewer_MouseDown;
 
             this.navInteractor = new NavigationInteractor<Procedure>();
             this.navInteractor.Attach(codeView);
             this.TextView.Navigate += textView_Navigate;
             return this.codeView;
         }
-
 
         private void EnableControls()
         {
@@ -201,7 +212,11 @@ namespace Reko.Gui.Windows
         public void ViewGraph()
         {
             gViewer.Parent = codeView.Parent;
-            gViewer.Graph = CfgGraphGenerator.Generate(proc);
+            using (var g = codeView.CreateGraphics())
+            {
+                var uiPrefs = services.RequireService<IUiPreferencesService>();
+                gViewer.Graph = CfgGraphGenerator.Generate(uiPrefs, proc, g, codeView.Font);
+            }
             codeView.Visible = false;
             gViewer.Visible = true;
             gViewer.BringToFront();
@@ -412,6 +427,27 @@ namespace Reko.Gui.Windows
                 gViewer.ZoomF /= 1.2;
                 e.Handled = true;
             }
+        }
+
+        private void GViewer_MouseUp(object sender, MouseEventArgs e)
+        {
+            var g = gViewer.Graph;
+            Debug.Print("hello");
+        }
+
+        private void GViewer_ViewChangeEvent(object sender, EventArgs e)
+        {
+            Debug.Print("view changed");
+        }
+
+        private void IViewer_MouseUp(object sender, MsaglMouseEventArgs e)
+        {
+            Debug.Print("Iviewer changed");
+        }
+
+        private void IViewer_MouseDown(object sender, MsaglMouseEventArgs e)
+        {
+            Debug.Print("Iviewer changed");
         }
     }
 }

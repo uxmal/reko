@@ -409,7 +409,11 @@ namespace Reko.UnitTests.Gui.Windows
                     "<node " + 
                         "text=\".text\" " +
                         "tip=\".text" + cr + "Address: 12340000" + cr + "Size: 1000" + cr + "r-x" + "\" " +
-                        "tag=\"ImageMapSegmentNodeDesigner\" />" +
+                        "tag=\"ImageMapSegmentNodeDesigner\">" +
+                            "<node " +
+                                "text=\"Global variables\" " +
+                                "tag=\"GlobalVariablesNodeDesigner\" />" +
+                    "</node>" +
                     "<node tag=\"ProgramResourceGroupDesigner\" />" +
                 "</node>" +
                 "</root>");
@@ -439,7 +443,9 @@ namespace Reko.UnitTests.Gui.Windows
                 "<root><node text=\"foo.exe\" tip=\"c:\\test\\foo.exe" + cr + "12300000\" tag=\"ProgramDesigner\">" +
                     "<node text=\"Foo Processor\" tag=\"ArchitectureDesigner\" />" +
                     "<node text=\"(Unknown operating environment)\" tag=\"PlatformDesigner\" />" +
-                    "<node text=\".text\" tip=\".text" + cr + "Address: 12340000&#xD;&#xA;Size: 1000" + cr + "r-x\" tag=\"ImageMapSegmentNodeDesigner\" />" +
+                    "<node text=\".text\" tip=\".text" + cr + "Address: 12340000&#xD;&#xA;Size: 1000" + cr + "r-x\" tag=\"ImageMapSegmentNodeDesigner\">" +
+                        "<node text=\"Global variables\" tag=\"GlobalVariablesNodeDesigner\" />" +
+                    "</node>" +
                     "<node tag=\"ProgramResourceGroupDesigner\" />" +
                  "</node>" +
                  "</root>");
@@ -487,6 +493,9 @@ namespace Reko.UnitTests.Gui.Windows
                         "text=\".text\" " +
                         "tip=\".text" + cr + "Address: 12340000" + cr + "Size: 1000" + cr + "r-x" + "\" " +
                         "tag=\"ImageMapSegmentNodeDesigner\">" +
+                        "<node " +
+                            "text=\"Global variables\" " +
+                            "tag=\"GlobalVariablesNodeDesigner\" />" +
                         "<node " +
                             "text=\"MyFoo\" " +
                             "tip=\"12340500\" " +

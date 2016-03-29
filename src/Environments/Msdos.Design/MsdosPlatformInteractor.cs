@@ -38,6 +38,7 @@ namespace Reko.Environments.Msdos.Design
 
         public MsdosPropertiesPanel Control { get; private set; }
         public IServiceProvider Services { get; private set; }
+        public IWindowFrame Frame { get; set; }
 
         public void SetSite(IServiceProvider sp)
         {

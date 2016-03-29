@@ -40,9 +40,10 @@ namespace Reko.Gui.Windows.Controls
         public event EventHandler ModelChanged;
         public event EventHandler<EditorNavigationArgs> Navigate;
         public event EventHandler SelectionChanged; // Fired whenever the selection changes.
+        public event EventHandler VScrollValueChanged;
 
         private StringFormat stringFormat;
-        private SortedList<float, LayoutLine> visibleLines;
+        private TextViewLayout layout;
         private bool ignoreScroll;
         internal TextPointer cursorPos;
         internal TextPointer anchorPos;
@@ -52,10 +53,11 @@ namespace Reko.Gui.Windows.Controls
         {
             InitializeComponent();
 
+            base.DoubleBuffered = true;
             this.Selection = new TextSelection(this);
             this.model = new EmptyEditorModel();
             this.stringFormat = StringFormat.GenericTypographic;
-            this.visibleLines = new SortedList<float, LayoutLine>();
+            this.layout = new TextViewLayout(model, this.Font);
             this.vScroll.ValueChanged += vScroll_ValueChanged;
         }
 
@@ -117,7 +119,7 @@ namespace Reko.Gui.Windows.Controls
         private SizeF GetSize(TextSpan span, string text, Font font, Graphics g)
         {
             var size = span.GetSize(text, font, g);
-            int? width = styleStack.GetWidth(this);
+            int? width = styleStack.GetWidth();
             if (width.HasValue)
             {
                 size.Width = width.Value;
@@ -167,7 +169,7 @@ namespace Reko.Gui.Windows.Controls
                 // to drag it.
                 dragging = true;
             }
-            else if (ComparePositions(pos, cursorPos) != 0)
+            else if (layout.ComparePositions(pos, cursorPos) != 0)
             {
                 Focus();
 
@@ -189,7 +191,7 @@ namespace Reko.Gui.Windows.Controls
             {
                 // We're extending the selection
                 var pos = ClientToLogicalPosition(e.Location);
-                if (ComparePositions(cursorPos, pos) != 0)
+                if (layout.ComparePositions(cursorPos, pos) != 0)
                 {
                     this.cursorPos = pos;
                     Invalidate();
@@ -256,65 +258,58 @@ namespace Reko.Gui.Windows.Controls
             OnScroll();
         }
 
-        /// <summary>
-        /// Line of spans.
-        /// </summary>
-        private class LayoutLine
+        protected override void OnPaint(PaintEventArgs e)
         {
-            public LayoutLine(object Position) { this.Position = Position; }
-            public object Position;
-            public RectangleF Extent;
-            public LayoutSpan[] Spans;
+            if (Services == null)
+            {
+                Debug.Print("TextView.OnPaint: Services property must be set");
+                return;
+            }
+            GetStyleStack().PushStyle(StyleClass);
+            var painter = new TextViewPainter(layout, e.Graphics, ForeColor, BackColor, Font, styleStack);
+            painter.SetSelection(GetStartSelection(), GetEndSelection());
+
+            painter.PaintGdi();
+            GetStyleStack().PopStyle();
         }
 
-        /// <summary>
-        /// Horizontal span of text
-        /// </summary>
-        protected class LayoutSpan
+        // Disable background painting to avoid the horrible flicker.
+        // We draw our own background anyway.
+        protected override void OnPaintBackground(PaintEventArgs pevent)
         {
-            public RectangleF Extent;
-            public string Text;
-            public string Style;
-            public object Tag;
-            public int ContextMenuID;
         }
 
-        private int ComparePositions(TextPointer a, TextPointer b)
+        public TextPointer GetStartSelection()
         {
-            var d = model.ComparePositions(a.Line, b.Line);
-            if (d != 0)
-                return d;
-            d = a.Span.CompareTo(b.Span);
-            if (d != 0)
-                return d;
-            return a.Character.CompareTo(b.Character);
-        }
-
-        internal TextPointer GetStartSelection()
-        {
-            if (ComparePositions(cursorPos, anchorPos) <= 0)
+            if (layout.ComparePositions(cursorPos, anchorPos) <= 0)
                 return cursorPos;
             else
                 return anchorPos;
         }
 
-        internal TextPointer GetEndSelection()
+        public TextPointer GetEndSelection()
         {
-            if (ComparePositions(cursorPos, anchorPos) > 0)
+            if (layout.ComparePositions(cursorPos, anchorPos) > 0)
                 return cursorPos;
             else
                 return anchorPos;
         }
 
-        internal bool IsSelectionEmpty() {
-            return ComparePositions(cursorPos, anchorPos) == 0;
+        public bool IsSelectionEmpty() {
+            return  layout.ComparePositions(cursorPos, anchorPos) == 0;
         }
-    
+
         internal bool IsInsideSelection(TextPointer pos)
         {
             return
-                ComparePositions(GetStartSelection(), pos) <= 0 &&
-                ComparePositions(pos, GetEndSelection()) < 0;
+                layout.ComparePositions(GetStartSelection(), pos) <= 0 &&
+                layout.ComparePositions(pos, GetEndSelection()) < 0;
+        }
+
+        public void ClearSelection()
+        {
+            anchorPos = cursorPos;
+            Invalidate();
         }
 
         /// <summary>
@@ -324,77 +319,12 @@ namespace Reko.Gui.Windows.Controls
         /// <param name="g"></param>
         protected void ComputeLayout(Graphics g)
         {
-            GetStyleStack().PushStyle(StyleClass);
-            this.visibleLines = new SortedList<float, LayoutLine>();
-            SizeF szClient = new SizeF(ClientSize);
-            var rcLine = new RectangleF(0, 0, szClient.Width, 0);
-
-            // Get the lines.
-            object oldPos = null;
             var m = model ?? new EmptyEditorModel();
-            oldPos = model.CurrentPosition;
-            var lines = m.GetLineSpans(1);
-            while (rcLine.Top < szClient.Height && 
-                   lines != null && lines.Length == 1)
-            {
-                var line = lines[0];
-                float cyLine = MeasureLineHeight(line);
-                rcLine.Height = cyLine;
-                var ll = new LayoutLine(line.Position) { 
-                    Extent = rcLine,
-                    Spans = ComputeSpanLayouts(line.TextSpans, rcLine, g)
-                };
-                this.visibleLines.Add(rcLine.Top, ll);
-                lines = m.GetLineSpans(1);
-                rcLine.Offset(0, cyLine);
-            }
+            var oldPos = m.CurrentPosition;
+            GetStyleStack().PushStyle(StyleClass);
+            this.layout = TextViewLayout.VisibleLines(m, ClientSize, g, Font, GetStyleStack());
             GetStyleStack().PopStyle();
-            model.MoveToLine(oldPos, 0);
-        }
-
-        private float MeasureLineHeight(LineSpan line)
-        {
-            float height = 0.0F;
-            foreach (var span in line.TextSpans)
-            {
-                GetStyleStack().PushStyle(span.Style);
-                var font = styleStack.GetFont(this);
-                height = Math.Max(height, font.Height);
-                styleStack.PopStyle();
-            }
-            return height;
-        }
-
-        /// <summary>
-        /// Computes the layout for a line of spans.
-        /// </summary>
-        /// <param name="spans"></param>
-        /// <param name="rcLine"></param>
-        /// <param name="g"></param>
-        /// <returns></returns>
-        private LayoutSpan[] ComputeSpanLayouts(IEnumerable<TextSpan> spans, RectangleF rcLine, Graphics g)
-        {
-            var spanLayouts = new List<LayoutSpan>();
-            var pt = new PointF(rcLine.Left, rcLine.Top);
-            foreach (var span in spans)
-            {
-                GetStyleStack().PushStyle(span.Style);
-                var text = span.GetText();
-                var font = styleStack.GetFont(this);
-                var szText = GetSize(span, text, font, g);
-                var rc = new RectangleF(pt, szText);
-                spanLayouts.Add(new LayoutSpan
-                {
-                    Extent = rc,
-                    Style = span.Style,
-                    Text = text,
-                    ContextMenuID = span.ContextMenuID,
-                    Tag = span.Tag,
-                });
-                pt.X = pt.X + szText.Width;
-                GetStyleStack().PopStyle();
-            }
-            return spanLayouts.ToArray();
+            m.MoveToLine(oldPos, 0);
         }
 
         protected override void OnResize(EventArgs e)
@@ -405,16 +335,30 @@ namespace Reko.Gui.Windows.Controls
 
         private TextPointer ClientToLogicalPosition(Point pt)
         {
-            GetStyleStack().PushStyle(StyleClass);
-            foreach (var line in this.visibleLines.Values)
+            using (var g = CreateGraphics())
             {
-                if (line.Extent.Top <= pt.Y && pt.Y < line.Extent.Bottom)
-                {
-                    return FindSpanPosition(pt, line);
-                }
+                GetStyleStack().PushStyle(StyleClass);
+                var ptr = layout.ClientToLogicalPosition(g, pt, styleStack);
+                styleStack.PopStyle();
+                return ptr;
             }
-            styleStack.PopStyle();
-            return new TextPointer { Line = Model.EndPosition, Span = 0, Character = 0 };
+        }
+
+        private RectangleF LogicalPositionToClient(TextPointer pos)
+        {
+            using (var g = CreateGraphics())
+            {
+                GetStyleStack().PushStyle(StyleClass);
+                var ptr = layout.LogicalPositionToClient(g, pos, styleStack);
+                styleStack.PopStyle();
+                return ptr;
+            }
+        }
+
+        public Point GetAnchorTopPoint()
+        {
+            var rect = LogicalPositionToClient(anchorPos);
+            return new Point((int)rect.Left, (int)rect.Top);
         }
 
         /// <summary>
@@ -424,7 +368,7 @@ namespace Reko.Gui.Windows.Controls
         /// <returns></returns>
         protected LayoutSpan GetSpan(Point pt)
         {
-            foreach (var line in this.visibleLines.Values)
+            foreach (var line in this.layout.LayoutLines)
             {
                 if (line.Extent.Contains(pt))
                     return FindSpan(pt, line);
@@ -440,70 +384,6 @@ namespace Reko.Gui.Windows.Controls
                     return span;
             }
             return null;
-        }
-
-        private TextPointer FindSpanPosition(Point ptClient, LayoutLine line)
-        {
-            int iSpan = 0;
-            foreach (var span in line.Spans)
-            {
-                if (span.Extent.Contains(ptClient))
-                {
-                    int iChar = GetCharPosition(ptClient, span);
-                    return new TextPointer
-                    {
-                        Line = line.Position,
-                        Span = iSpan,
-                        Character = iChar
-                    };
-                }
-                ++iSpan;
-            }
-            return new TextPointer { Line = line.Position, Span = iSpan, Character = 0 };
-        }
-
-        private int GetCharPosition(Point ptClient, LayoutSpan span)
-        {
-            var x = ptClient.X - span.Extent.Left;
-            var g = CreateGraphics();
-            var textStub = span.Text;
-            int iLow = 0;
-            int iHigh = textStub.Length;
-            styleStack.PushStyle(span.Style);
-            var font = styleStack.GetFont(this);
-            var sz = MeasureText(g, textStub, font);
-            float xLow = 0;
-            float xHigh = sz.Width;
-            while (iLow < iHigh-1)
-            {
-                int iMid = iLow + (iHigh - iLow) / 2;
-                textStub = span.Text.Substring(0, iMid);
-                sz = MeasureText(g, textStub, font);
-                if (x < sz.Width)
-                {
-                    iHigh = iMid;
-                    xHigh = sz.Width;
-                }
-                else
-                {
-                    iLow = iMid;
-                    xLow = sz.Width;
-                }
-            }
-            styleStack.PopStyle();
-            var cx = xHigh - xLow;
-            if (x - xLow > cx)
-                return iHigh;
-            else
-                return iLow;
-        }
-
-        private Size MeasureText(Graphics g, string text, Font font)
-        {
-            var sz = TextRenderer.MeasureText(
-                g, text, font, new Size(0, 0), 
-                TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix);
-            return sz;
         }
 
         /// <summary>
@@ -571,12 +451,10 @@ namespace Reko.Gui.Windows.Controls
 
         private int GetFullyVisibleLines()
         {
-            if (visibleLines == null)
-                return 0;
-            int cLines = visibleLines.Count;
+            int cLines = layout.LayoutLines.Count;
             if (cLines == 0)
                 return 0;
-            if (visibleLines.Values[cLines - 1].Extent.Bottom > ClientRectangle.Bottom)
+            if (layout.LayoutLines[cLines - 1].Extent.Bottom > ClientRectangle.Bottom)
                 return cLines - 1;
             else
                 return cLines;
@@ -596,11 +474,18 @@ namespace Reko.Gui.Windows.Controls
             OnScroll();
         }
 
+        protected override void OnFontChanged(EventArgs e)
+        {
+            RecomputeLayout();
+            base.OnFontChanged(e);
+        }
+
         /// <summary>
         /// Called when the view is scrolled. 
         /// </summary>
         protected virtual void OnScroll()
         {
+            VScrollValueChanged.Fire(this);
         }
 
         public void RecomputeLayout()
@@ -613,7 +498,7 @@ namespace Reko.Gui.Windows.Controls
             g.Dispose();
         }
 
-        internal void SaveSelectionToStream(Stream stream, string cfFormat)
+        internal void SaveSelectionToStream(Stream stream)
         {
             var modelPos = model.CurrentPosition;
             try
@@ -621,7 +506,7 @@ namespace Reko.Gui.Windows.Controls
                 var writer = new StreamWriter(stream, Encoding.Unicode);
                 var start = GetStartSelection();
                 var end = GetEndSelection();
-                if (ComparePositions(start, end) == 0)
+                if (layout.ComparePositions(start, end) == 0)
                     return;
                 model.MoveToLine(start.Line, 0);
                 var spans = model.GetLineSpans(1);
@@ -667,8 +552,15 @@ namespace Reko.Gui.Windows.Controls
         {
             var frac = model.GetPositionAsFraction();
             this.ignoreScroll = true;
-            vScroll.Value = (int)(Math.BigMul(frac.Item1, model.LineCount) / frac.Item2);
+            vScroll.Value = (int)(Math.BigMul(frac.Item1, vScroll.Maximum) / frac.Item2);
             this.ignoreScroll = false;
+        }
+
+        public void InvalidateModel()
+        {
+            RecomputeLayout();
+            UpdateScrollbar();
+            Invalidate();
         }
     }
 

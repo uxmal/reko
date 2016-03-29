@@ -50,6 +50,13 @@ namespace Reko.Core.Machine
         /// </summary>
         public abstract bool IsValid { get; }
 
+        public bool Contains(Address addr)
+        {
+            ulong ulInstr = Address.ToLinear();
+            ulong ulAddr = addr.ToLinear();
+            return ulInstr <= ulAddr && ulAddr < ulInstr + (uint)Length;
+        }
+
         public virtual void Render(MachineInstructionWriter writer)
         {
         }

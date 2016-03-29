@@ -1,7 +1,7 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
- *
+ * Copyright (C) 1999-2016 John KÃ¤llÃ©n.
+ .
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2, or (at your option)
@@ -19,17 +19,18 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-namespace Reko.Gui.Windows.Controls
+namespace Reko.Scanning.Vsa
 {
-	/// <summary>
-	/// Displays IL codes. This could be raw blocks, in which case a pseudo-assembler
-	/// look results, or more strucured
-	/// </summary>
-	public class CodeControl
-	{
-		public CodeControl()
-		{
-		}
-	}
+    public class ReducedIntervalCongruence
+    {
+        public int Scale;
+        public int First;
+        public int Last;
+        public long Base;
+
+    }
 }

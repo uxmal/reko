@@ -39,7 +39,7 @@ namespace Reko.Arch.X86.Design
 
         public X86ArchitecturePanel Control { get; private set; }
         public IServiceProvider Services { get; private set; }
-
+        public IWindowFrame Frame { get; set; }
         public void SetSite(IServiceProvider sp)
         {
             this.Services = sp;

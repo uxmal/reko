@@ -40,6 +40,8 @@ namespace Reko.Gui.Forms
             this.resource = resource;
         }
 
+        public IWindowFrame Frame { get; set; }
+
         public void Close()
         {
             if (dlg != null)

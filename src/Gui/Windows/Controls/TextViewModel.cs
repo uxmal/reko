@@ -69,7 +69,8 @@ namespace Reko.Gui.Windows.Controls
         /// </remarks>
         /// <param name="position"></param>
         /// <param name="offset"></param>
-        void MoveToLine(object position, int offset);
+        /// <returns>The number of lines actually moved</returns>
+        int MoveToLine(object position, int offset);
 
         /// <summary>
         /// Read <paramref name="count"/> lines, starting at the current position. As a side
@@ -103,8 +104,9 @@ namespace Reko.Gui.Windows.Controls
         public object EndPosition{ get { return this; } }
         public int LineCount { get { return 0; } }
 
-        public void MoveToLine(object position, int offset)
+        public int MoveToLine(object position, int offset)
         {
+            return 0;
         }
 
         public int ComparePositions(object a, object b)

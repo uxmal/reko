@@ -162,19 +162,21 @@ namespace Reko.Gui.Windows
                 return ((int)a).CompareTo((int)b);
             }
 
-            public object CurrentPosition { get { return 0; } }
+            public object CurrentPosition { get { return position; } }
 
-            public object StartPosition { get { return position; } }
+            public object StartPosition { get { return 0; } }
 
             public object EndPosition { get { return lines.Length; } }
 
-            public void MoveToLine(object position, int offset)
+            public int MoveToLine(object position, int offset)
             {
-                this.position = (int)position + offset;
+                int orig = (int)position;
+                this.position = orig + offset;
                 if (this.position < 0)
                     this.position = 0;
                 if (this.position >= lines.Length)
                     this.position = lines.Length;
+                return this.position - orig;
             }
 
             public LineSpan[] GetLineSpans(int count)

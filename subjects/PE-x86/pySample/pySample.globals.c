@@ -17,43 +17,12 @@ char g_str10002174[] = "pySample";
 ui32 g_dw10003000 = 0xBB40E64E;
 word32 g_dw10003004 = 0x44BF19B1;
 Eq_146 g_t10003008 = ;
- PyMethodDef g_methods[5] = 
+Eq_108 g_t10003010 = 
 	{
-		
-		{
-			&g_str10002140,
-			fn10001000,
-			1,
-			&g_str1000212C,
-		},
-		
-		{
-			&g_str10002128,
-			fn10001050,
-			1,
-			&g_str10002114,
-		},
-		
-		{
-			&g_str10002110,
-			fn100010A0,
-			1,
-			&g_str100020FC,
-		},
-		
-		{
-			&g_str100020F4,
-			fn100010F0,
-			1,
-			&g_str100020E0,
-		},
-		
-		{
-			null,
-			null,
-			0,
-			null,
-		},
+		&g_b10002140,
+		fn10001000,
+		1,
+		&g_b1000212C,
 	};
 int32 g_dw10003070 = 0;
 word32 g_dw100033A4 = 0x00000000;
@@ -62,12 +31,6 @@ Eq_163 g_t100033AC = ;
 Eq_146 g_t100033B0 = ;
 Eq_146 g_t100033B4 = ;
  <anonymous> * g_ptr100033B8 = null;
-char g_str10002140[] = "sum";
-char g_str1000212C[] = "sum(a, b) = a + b";
-char g_str10002128[] = "dif";
-char g_str10002114[] = "dif(a, b) = a - b";
-char g_str10002110[] = "div";
-char g_str100020FC[] = "div(a, b) = a / b";
-char g_str100020F4[] = "fdiv";
-char g_str100020E0[] = "fdiv(a, b) = a / b";
+char g_b10002140 = 's';
+char g_b1000212C = 's';
 
