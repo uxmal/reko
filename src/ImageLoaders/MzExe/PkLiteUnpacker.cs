@@ -35,7 +35,7 @@ namespace Reko.ImageLoaders.MzExe
 	/// </summary>
 	public class PkLiteUnpacker : ImageLoader
 	{
-        private IntelArchitecture arch;
+        private IProcessorArchitecture arch;
         private IPlatform platform;
 
 		private byte [] abU;
@@ -51,9 +51,9 @@ namespace Reko.ImageLoaders.MzExe
 		public PkLiteUnpacker(IServiceProvider services, string filename, byte [] rawImg) : base(services, filename, rawImg)
 		{
             var exe = new ExeImageLoader(services, filename, rawImg);
-            arch = new IntelArchitecture(ProcessorMode.Real);
-            platform = services.RequireService<IConfigurationService>()
-                .GetEnvironment("ms-dos")
+            var cfgSvc = services.RequireService<IConfigurationService>();
+            this.arch = cfgSvc.GetArchitecture("x86-real-16");
+            platform = cfgSvc.GetEnvironment("ms-dos")
                 .Load(services, arch);
 
 			uint pkLiteHdrOffset = (uint) (exe.e_cparHeader * 0x10);

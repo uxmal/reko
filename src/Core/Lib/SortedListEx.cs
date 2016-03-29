@@ -25,46 +25,31 @@ using System.Collections.Generic;
 namespace Reko.Core.Lib
 {
 	/// <summary>
-	/// Represents a collection of key-and-value pairs in sorted order, with support for lower bound
-    /// searches.
+	/// Extension methods on SortedList that provide support for lower- and
+    /// upper bound searchers.
 	/// </summary>
-    public class Map<K,V> : SortedList<K,V>
+    public static class SortedListEx
     {
-        private IComparer<K> cmp;
-
-        public Map() : this(Comparer<K>.Default)
+        public static bool TryGetLowerBound<K,V>(this SortedList<K, V> list, K key, out V value)
         {
-        }
-
-        public Map(Map<K, V> old) : base(old, old.Comparer)
-        {
-            this.cmp = old.cmp;
-        }
-
-        public Map(IComparer<K> cmp) : base(cmp)
-        {
-            this.cmp = cmp;
-        }
-
-        public bool TryGetLowerBound(K key, out V value)
-        {
+            var cmp = list.Comparer;
             int lo = 0;
-            int hi = base.Count - 1;
+            int hi = list.Count - 1;
             value = default(V);
             bool set = false;
             while (lo <= hi)
             {
                 int mid = (hi - lo) / 2 + lo;
-                K k = base.Keys[mid];
+                K k = list.Keys[mid];
                 int c = cmp.Compare(k, key);
                 if (c == 0)
                 {
-                    value = base.Values[mid];
+                    value = list.Values[mid];
                     return true;
                 }
                 if (c < 0)
                 {
-                    value = base.Values[mid];
+                    value = list.Values[mid];
                     set = true;
                     lo = mid + 1;
                 }
@@ -76,16 +61,48 @@ namespace Reko.Core.Lib
             return set;
         }
 
-        public bool TryGetLowerBoundKey(K key, out K closestKey)
+        public static bool TryGetUpperBound<K,V>(this SortedList<K, V> list, K key, out V value)
         {
+            var cmp = list.Comparer;
             int lo = 0;
-            int hi = base.Count - 1;
+            int hi = list.Count - 1;
+            value = default(V);
+            bool set = false;
+            while (lo <= hi)
+            {
+                int mid = (hi - lo) / 2 + lo;
+                K k = list.Keys[mid];
+                int c = cmp.Compare(k, key);
+                if (c == 0)
+                {
+                    value = list.Values[mid];
+                    return true;
+                }
+                if (c > 0)
+                {
+                    value = list.Values[mid];
+                    set = true;
+                    hi = mid - 1;
+                }
+                else
+                {
+                    lo = mid + 1;
+                }
+            }
+            return set;
+        }
+
+        public static bool TryGetLowerBoundKey<K, V>(this SortedList<K, V> list, K key, out K closestKey)
+        {
+            var cmp = list.Comparer;
+            int lo = 0;
+            int hi = list.Count - 1;
             closestKey = default(K);
             bool set = false;
             while (lo <= hi)
             {
                 int mid = (hi - lo) / 2 + lo;
-                K k = base.Keys[mid];
+                K k = list.Keys[mid];
                 int c = cmp.Compare(k, key);
                 if (c == 0)
                 {
@@ -106,16 +123,17 @@ namespace Reko.Core.Lib
             return set;
         }
 
-        public bool TryGetUpperBoundKey(K key, out K closestKey)
+        public static bool TryGetUpperBoundKey<K,V>(this SortedList<K, V> list, K key, out K closestKey)
         {
+            var cmp = list.Comparer;
             int lo = 0;
-            int hi = base.Count - 1;
+            int hi = list.Count - 1;
             closestKey = default(K);
             bool set = false;
             while (lo <= hi)
             {
                 int mid = (hi - lo) / 2 + lo;
-                K k = base.Keys[mid];
+                K k = list.Keys[mid];
                 int c = cmp.Compare(k, key);
                 if (c == 0)
                 {
@@ -136,16 +154,17 @@ namespace Reko.Core.Lib
             return set;
         }
 
-        public bool TryGetLowerBoundIndex(K key, out int closestIndex)
+        public static bool TryGetLowerBoundIndex<K, V>(this SortedList<K, V> list, K key, out int closestIndex)
         {
+            var cmp = list.Comparer;
             int lo = 0;
-            int hi = base.Count - 1;
+            int hi = list.Count - 1;
             closestIndex = -1;
             bool set = false;
             while (lo <= hi)
             {
                 int mid = (hi - lo) / 2 + lo;
-                K k = base.Keys[mid];
+                K k = list.Keys[mid];
                 int c = cmp.Compare(k, key);
                 if (c == 0)
                 {
@@ -166,16 +185,17 @@ namespace Reko.Core.Lib
             return set;
         }
 
-        public bool TryGetUpperBoundIndex(K key, out int closestIndex)
+        public static bool TryGetUpperBoundIndex<K, V>(this SortedList<K, V> list, K key, out int closestIndex)
         {
+            var cmp = list.Comparer;
             int lo = 0;
-            int hi = base.Count - 1;
+            int hi = list.Count - 1;
             closestIndex = -1;
             bool set = false;
             while (lo <= hi)
             {
                 int mid = (hi - lo) / 2 + lo;
-                K k = base.Keys[mid];
+                K k = list.Keys[mid];
                 int c = cmp.Compare(k, key);
                 if (c == 0)
                 {

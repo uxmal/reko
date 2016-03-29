@@ -245,7 +245,7 @@ namespace Reko.UnitTests.Scanning
         public void Bwi_CallingAllocaWithConstant()
         {
             scanner = mr.StrictMock<IScanner>();
-            program.Architecture = new IntelArchitecture(ProcessorMode.Protected32);
+            program.Architecture = new X86ArchitectureFlat32();
             program.Platform = new DefaultPlatform(null, program.Architecture);
             var sig = CreateSignature(Registers.esp, Registers.eax);
             var alloca = new ExternalProcedure("alloca", sig);
@@ -278,7 +278,7 @@ namespace Reko.UnitTests.Scanning
         public void Bwi_CallingAllocaWithNonConstant()
         {
             scanner = mr.StrictMock<IScanner>();
-            arch = new IntelArchitecture(ProcessorMode.Protected32);
+            arch = new X86ArchitectureFlat32();
             program.Platform = new DefaultPlatform(null, arch);
 
             var sig = CreateSignature(Registers.esp, Registers.eax);

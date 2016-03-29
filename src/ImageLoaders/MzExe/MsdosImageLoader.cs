@@ -42,9 +42,9 @@ namespace Reko.ImageLoaders.MzExe
 		public MsdosImageLoader(IServiceProvider services, string filename, ExeImageLoader exe) : base(services, filename, exe.RawImage)
 		{
 			this.exe = exe;
-            this.arch = new IntelArchitecture(ProcessorMode.Real);
-            this.platform = this.platform = services.RequireService<IConfigurationService>()
-                .GetEnvironment("ms-dos")
+            var cfgSvc = services.RequireService<IConfigurationService>();
+            this.arch = cfgSvc.GetArchitecture("x86-real-16");
+            this.platform = cfgSvc.GetEnvironment("ms-dos")
                 .Load(services, arch);
 		}
 

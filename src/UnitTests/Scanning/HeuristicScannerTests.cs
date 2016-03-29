@@ -75,7 +75,7 @@ namespace Reko.UnitTests.Scanning
             {
                 Image = image,
                 ImageMap = image.CreateImageMap(),
-                Architecture = new IntelArchitecture(ProcessorMode.Protected32),
+                Architecture = new X86ArchitectureFlat32(),
             };
 #else
             Given_Image32(0x001000, 

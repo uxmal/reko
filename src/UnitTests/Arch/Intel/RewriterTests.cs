@@ -54,7 +54,7 @@ namespace Reko.UnitTests.Arch.Intel
 		[SetUp]
 		public void SetUp()
 		{
-            var arch = new IntelArchitecture(ProcessorMode.Real);
+            var arch = new X86ArchitectureReal();
             program = new Program() { Architecture = arch };
             sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
@@ -94,7 +94,8 @@ namespace Reko.UnitTests.Arch.Intel
 
             Project project = LoadProject();
             project.Programs.Add(this.program);
-            scanner = new Scanner(this.program, new Dictionary<Address, ProcedureSignature>(),
+            scanner = new Scanner(
+                this.program, 
                 new ImportResolver(project, this.program, eventListener),
                 sc);
             EntryPoint ep = new EntryPoint(baseAddress, this.program.Architecture.CreateProcessorState());

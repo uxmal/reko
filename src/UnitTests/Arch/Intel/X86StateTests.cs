@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86St_OnBeforeCall_DecrementStackRegister()
         {
-            var arch = new IntelArchitecture(ProcessorMode.Protected32);
+            var arch = new X86ArchitectureFlat32();
             var state = new X86State(arch);
             var esp = CreateId(Registers.esp);
             state.SetRegister(Registers.esp, Constant.Word32(-4));
@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86St_Simple()
         {
-            var arch = new IntelArchitecture(ProcessorMode.Real);
+            var arch = new X86ArchitectureReal();
 
             X86State st = new X86State(arch);
             st.SetRegister(Registers.cs, Constant.Word16(0xC00));

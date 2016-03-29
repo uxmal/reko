@@ -461,10 +461,10 @@ namespace Reko
 
         public IDictionary<Address, ProcedureSignature> LoadCallSignatures(
             Program program, 
-            ICollection<SerializedCall_v1> serializedCalls)
+            ICollection<SerializedCall_v1> userCalls)
         {
             return
-                serializedCalls
+                userCalls
                 .Where(sc => sc != null && sc.Signature != null)
                 .Select(sc =>
                 {
@@ -487,7 +487,6 @@ namespace Reko
         {
             return new Scanner(
                 program, 
-                LoadCallSignatures(program, program.User.Calls.Values),
                 new ImportResolver(project, program, eventListener),
                 services);
         }

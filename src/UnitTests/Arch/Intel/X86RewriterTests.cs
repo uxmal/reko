@@ -53,9 +53,9 @@ namespace Reko.UnitTests.Arch.Intel
 
         public X86RewriterTests()
         {
-            arch16 = new IntelArchitecture(ProcessorMode.Real);
-            arch32 = new IntelArchitecture(ProcessorMode.Protected32);
-            arch64 = new IntelArchitecture(ProcessorMode.Protected64);
+            arch16 = new X86ArchitectureReal();
+            arch32 = new X86ArchitectureFlat32();
+            arch64 = new X86ArchitectureFlat64();
             baseAddr16 = Address.SegPtr(0x0C00, 0x0000);
             baseAddr32 = Address.Ptr32(0x10000000);
             baseAddr64 = Address.Ptr64(0x140000000ul);
@@ -193,6 +193,13 @@ namespace Reko.UnitTests.Arch.Intel
             var m = Create32bitAssembler();
             fn(m);
             image = m.GetImage().ImageMap.Segments.Values.First().MemoryArea;
+        }
+
+        private void Run16bitTest(params byte[] bytes)
+        {
+            arch = arch16;
+            image = new MemoryArea(baseAddr16, bytes);
+            host = new RewriterHost(null);
         }
 
         private void Run32bitTest(params byte[] bytes)
@@ -1343,6 +1350,16 @@ namespace Reko.UnitTests.Arch.Intel
             AssertCode(
                 "0|---|10000000(0): 1 instructions",
                 "1|---|<invalid>");
+        }
+
+        [Test]
+        public void X86rw_push_cs_call_near()
+        {
+            Run16bitTest(0x0E, 0xE8, 0x42, 0x32);
+            AssertCode(
+                "0|T--|0C00:0000(4): 2 instructions",
+                "1|L--|sp = sp - 0x0002",
+                "2|T--|call 0C00:3246 (2)");
         }
     }
 }

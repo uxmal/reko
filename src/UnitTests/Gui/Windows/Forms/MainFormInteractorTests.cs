@@ -498,7 +498,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private Program CreateFakeProgram()
         {
             Program prog = new Program();
-            prog.Architecture = new IntelArchitecture(ProcessorMode.Real);
+            prog.Architecture = new X86ArchitectureReal();
             var mem = new MemoryArea(Address.SegPtr(0xC00, 0), new byte[300]);
             prog.ImageMap = new ImageMap(
                 mem.BaseAddress,

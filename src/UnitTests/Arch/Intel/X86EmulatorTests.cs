@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Arch.Intel
         public void Setup()
         {
             mr = new MockRepository();
-            arch = new IntelArchitecture(ProcessorMode.Protected32);
+            arch = new X86ArchitectureFlat32();
             importReferences = new Dictionary<Address, ImportReference>();
             sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());

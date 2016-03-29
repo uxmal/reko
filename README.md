@@ -24,7 +24,10 @@ decompiler only if you have legal rights to decompiler the binary
 You should be able to build reko by simply cloning https://github.com/uxmal/reko
 and opening the `reko-decompiler.sln` solution file with Visual 
 Studio 2012 or later, or MonoDevelop. All external dependencies 
-are included in the `external` directory. **Note:** please let us 
+are included in the `external` directory. The solution folder `Drivers`
+contains the executables that act as user interfaces: `WindowsDecompiler`  is the
+GUI client for Windows; `MonoDecompiler` is the GUI client for Mono users; `CmdLine` is
+a command line driver. (**Note:** please let us 
 know if you are not able to compile, so we can fix the issue for 
 you.
 

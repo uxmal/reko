@@ -115,6 +115,12 @@
     <Compile Include="MemoryControlDialog.Designer.cs">
       <DependentUpon>MemoryControlDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProcedurePropertiesDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProcedurePropertiesDialog.Designer.cs">
+      <DependentUpon>ProcedurePropertiesDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="ProjectBrowserDialog.cs">
       <SubType>Form</SubType>
@@ -136,6 +142,9 @@
     <EmbeddedResource Include="MemoryControlDialog.resx">
       <DependentUpon>MemoryControlDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProcedurePropertiesDialog.resx">
+      <DependentUpon>ProcedurePropertiesDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProjectBrowserDialog.resx">
       <DependentUpon>ProjectBrowserDialog.cs</DependentUpon>

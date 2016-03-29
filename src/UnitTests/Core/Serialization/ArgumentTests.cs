@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Core.Serialization
 
 		public ArgumentTests()
 		{
-			arch = new IntelArchitecture(ProcessorMode.Real);
+			arch = new X86ArchitectureReal();
 		}
 
 		[Test]

@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
             var platform = mr.Stub<IPlatform>();
             program = new Program();
-            program.Architecture = new IntelArchitecture(ProcessorMode.Real);
+            program.Architecture = new X86ArchitectureReal();
             program.Platform = platform;
             var mem = new MemoryArea(Address.SegPtr(0xC00, 0), new byte[10000]);
             program.ImageMap = new ImageMap(

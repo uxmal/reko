@@ -1442,7 +1442,7 @@ namespace Reko.ImageLoaders.Elf
         {
             switch ((MachineType) pHeader.e_machine)
             {
-            case MachineType.EM_386: return new IntelArchitecture(ProcessorMode.ProtectedFlat);
+            case MachineType.EM_386: return new X86ArchitectureFlat32(ProcessorMode.ProtectedFlat);
             case MachineType.EM_68K: return new M68kArchitecture();
             case MachineType.EM_SPARC:
             case MachineType.EM_SPARC32PLUS: return new SparcArchitecture();

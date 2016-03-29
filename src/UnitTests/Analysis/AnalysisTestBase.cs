@@ -123,7 +123,7 @@ namespace Reko.UnitTests.Analysis
 
         protected static Program RewriteMsdosAssembler(string relativePath, string configFile)
         {
-            var arch = new IntelArchitecture(ProcessorMode.Real);
+            var arch = new X86ArchitectureReal();
             var sc = new ServiceContainer();
             var cfgSvc = MockRepository.GenerateStub<IConfigurationService>();
             var env = MockRepository.GenerateStub<OperatingEnvironment>();
@@ -209,7 +209,6 @@ namespace Reko.UnitTests.Analysis
                 : new ProjectLoader(sc, loader).LoadProject(FileUnitTester.MapTestPath(configFile));
             var scan = new Scanner(
                 program,
-                new Dictionary<Address, ProcedureSignature>(),
                 new ImportResolver(project, program, eventListener),
                 sc);
             
