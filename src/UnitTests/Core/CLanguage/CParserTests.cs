@@ -1148,5 +1148,37 @@ MemoryBarrier (
             var sExp = "(decl Typedef a ((init-decl b)))";
             Assert.AreEqual(sExp, decl.ToString());
         }
+
+        [Test]
+        public void CParser_IncorrectStatement1()
+        {
+            Lex("int a()b;");
+            Decl decl;
+            try
+            {
+                decl = parser.Parse_ExternalDecl();
+            }
+            catch (Exception)
+            {
+                decl = null;
+            }
+            Assert.IsNull(decl);
+        }
+
+        [Test]
+        public void CParser_IncorrectStatement2()
+        {
+            Lex("int a);");
+            Decl decl;
+            try
+            {
+                decl = parser.Parse_ExternalDecl();
+            }
+            catch (Exception)
+            {
+                decl = null;
+            }
+            Assert.IsNull(decl);
+        }
     }
 }
