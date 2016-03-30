@@ -242,6 +242,11 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             var segs = linker.CollectNeededSegments();
             var imageMap = linker.CreateSegments(Address.Ptr32(0x00800000), segs);
             Assert.AreEqual(2, imageMap.Segments.Count);
+            Assert.AreEqual("00800000", imageMap.Segments.ElementAt(0).Value.MemoryArea.BaseAddress.ToString());
+            Assert.AreEqual("00800001", imageMap.Segments.ElementAt(0).Value.MemoryArea.EndAddress.ToString());
+            Assert.AreEqual("00801000", imageMap.Segments.ElementAt(1).Value.MemoryArea.BaseAddress.ToString());
+            Assert.AreEqual("00801004", imageMap.Segments.ElementAt(1).Value.MemoryArea.EndAddress.ToString());
+            Assert.AreEqual(0x1, imageMap.Segments.ElementAt(1).Value.MemoryArea.Bytes[0]);
         }
     }
 }
