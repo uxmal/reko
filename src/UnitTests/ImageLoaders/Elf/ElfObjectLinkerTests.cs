@@ -38,6 +38,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         private MemoryStream binaryContents;
         private List<ObjectSection> objectSections;
         private byte[] rawBytes;
+        private ElfObjectLinker32 linker;
 
         public class ObjectSection
         {
@@ -46,7 +47,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             public uint Flags;
             public SectionHeaderType Type;
 
-            public int Offset { get; internal set; }
+            public uint Offset { get; internal set; }
         }
 
         [SetUp]
@@ -83,9 +84,10 @@ namespace Reko.UnitTests.ImageLoaders.Elf
                 Flags = flags,
                 Content = blob,
             };
+            objectSections.Add(os);
         }
 
-        private void Given_ObjectFile()
+        private void BuildObjectFile()
         {
             var bin = new BeImageWriter();
             bin.WriteByte(0x7F);
@@ -111,7 +113,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             bin.WriteBeUInt16(0);   // e_phentsize;
             bin.WriteBeUInt16(0);   // e_phnum;
             bin.WriteBeUInt16(0);   // e_shentsize;
-            bin.WriteBeUInt16(0);   // e_shnum;
+            bin.WriteBeUInt16((ushort)objectSections.Count);   // e_shnum;
             bin.WriteBeUInt16(1);   // e_shstrndx;
 
             // Build string table.
@@ -127,30 +129,62 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             }
 
             // Reserve place for section table
-            var iShTable = bin.Position;
-            bin.WriteBytes(0, (uint)(40 * objectSections.Count));
+            var iShTable = (uint) bin.Position;
+            var iStrTable = iShTable + (uint)(40 * objectSections.Count);
 
             // Write string table
-            objectSections[1].Offset = bin.Position;
-            bin.WriteBytes(strtab.ToArray());
-            Align(bin);
+            var aStrtable = strtab.ToArray();
+            objectSections[1].Content = aStrtable;
+            var iContent = iStrTable;
 
             // write remaining sections.
-            foreach (var section in objectSections.Skip(2))
+            foreach (var section in objectSections.Skip(1))
             {
-                section.Offset = bin.Position;
+                section.Offset = iContent;
+                iContent = Align((uint)(iContent + section.Content.Length));
+            }
+
+            // Write the section table.
+            foreach (var os in this.objectSections)
+            {
+                bin.WriteBeUInt32((uint)mpOsToiName[os]);
+                bin.WriteBeUInt32((uint)os.Type);
+                bin.WriteBeUInt32(os.Flags);
+                bin.WriteBeUInt32(0);
+
+                bin.WriteBeUInt32(os.Offset);
+                bin.WriteBeUInt32(os.Content != null ? (uint)os.Content.Length : 0u);
+                bin.WriteBeUInt32(0);
+                bin.WriteBeUInt32(0);
+
+                bin.WriteBeUInt32(0);
+                bin.WriteBeUInt32(0);
+            }
+
+            // write the non-null sections.
+            foreach (var section in objectSections.Skip(1))
+            {
                 bin.WriteBytes(section.Content);
                 Align(bin);
             }
-
-            // Update the section table.
-            bin.Position = iShTable + 16;
-            foreach (var os in this.objectSections)
-            {
-                bin.WriteBeUInt32((uint)os.Offset);
-                bin.Position += 36;
-            }
             this.rawBytes = bin.ToArray();
+        }
+
+        private void Given_Linker()
+        {
+            BuildObjectFile();
+
+            var eil = new ElfImageLoader(null, "foo.o", rawBytes);
+            eil.LoadElfIdentification();
+            var eh = Elf32_EHdr.Load(new BeImageReader(rawBytes, ElfImageLoader.HEADER_OFFSET));
+            var el = new ElfLoader32(eil, eh);
+            el.LoadSectionHeaders();
+            this.linker = new ElfObjectLinker32(el);
+        }
+
+        private static uint Align(uint n)
+        {
+            return 4 * (((n + 3) / 4));
         }
 
         private static void Align(ImageWriter strtab)
@@ -177,21 +211,34 @@ namespace Reko.UnitTests.ImageLoaders.Elf
 //.strtab            sh_type: SHT_STRTAB   sh_flags:  a   sh_addr; 00000000 sh_offset: 00002638 sh_size: 00000232 sh_link: 00000000 sh_info: 00000000 sh_addralign: 00000001 sh_entsize: 00000000
 //.rela.text         sh_type: SHT_RELA     sh_flags:  a   sh_addr; 00000000 sh_offset: 0000286C sh_size: 00000150 sh_link: 00000007 sh_info: 00000002 sh_addralign: 00000004 sh_entsize: 0000000C
         [Test]
-        public void Eol32_ComputeSegmentSize()
+        public void Eol32_CollectNeededSegments()
         {
             int iText = Given_SegName(".text");
             int iData = Given_SegName(".data");
-            Given_Section(".text", SectionHeaderType.SHT_PROGBITS, ElfLoader.SHF_EXECINSTR, new byte[] { 0xc3 });
-            Given_Section(".data", SectionHeaderType.SHT_PROGBITS, ElfLoader.SHF_WRITE, new byte[] { 0x01, 0x02, 0x03, 0x04 });
-            Given_ObjectFile();
+            Given_Section(".text", SectionHeaderType.SHT_PROGBITS, ElfLoader.SHF_ALLOC | ElfLoader.SHF_EXECINSTR, new byte[] { 0xc3 });
+            Given_Section(".data", SectionHeaderType.SHT_PROGBITS, ElfLoader.SHF_ALLOC | ElfLoader.SHF_WRITE, new byte[] { 0x01, 0x02, 0x03, 0x04 });
 
-            var eil = new ElfImageLoader(null, "foo.o", rawBytes);
-            var eh = Elf32_EHdr.Load(new BeImageReader(rawBytes, 0));
-            var el = new ElfLoader32(eil, eh);
-            var linker = new ElfObjectLinker32(el);
+            Given_Linker();
 
             var segs = linker.CollectNeededSegments();
             Assert.AreEqual(2, segs.Count);
         }
+
+        [Test]
+        [Ignore("Not ready yet")]
+        public void Eol32_CreateSegmentHeaders()
+        {
+            int iText = Given_SegName(".text");
+            int iData = Given_SegName(".data");
+            Given_Section(".text", SectionHeaderType.SHT_PROGBITS, ElfLoader.SHF_ALLOC | ElfLoader.SHF_EXECINSTR, new byte[] { 0xc3 });
+            Given_Section(".data", SectionHeaderType.SHT_PROGBITS, ElfLoader.SHF_ALLOC | ElfLoader.SHF_WRITE, new byte[] { 0x01, 0x02, 0x03, 0x04 });
+
+            Given_Linker();
+
+            var segs = linker.CollectNeededSegments();
+            var hdrs = linker.CreateSegmentHeaders();
+            Assert.AreEqual(2, segs.Count);
+        }
+
     }
 }

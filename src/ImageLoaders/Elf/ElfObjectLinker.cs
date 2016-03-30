@@ -114,5 +114,10 @@ namespace Reko.ImageLoaders.Elf
             }
             return mpSectionToSegment;  
         }
+
+        public object CreateSegmentHeaders()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

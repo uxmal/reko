@@ -45,7 +45,7 @@ namespace Reko.ImageLoaders.Elf
         private const byte BIG_ENDIAN = 2;
         private const byte ELFCLASS32 = 1;              // 32-bit object file
         private const byte ELFCLASS64 = 2;              // 64-bit object file
-        private const int HEADER_OFFSET = 0x0010;
+        public const int HEADER_OFFSET = 0x0010;
 
         public const ushort EM_NONE = 0;           // No machine 
         public const ushort EM_M32 = 1;            // AT&T WE 32100 
