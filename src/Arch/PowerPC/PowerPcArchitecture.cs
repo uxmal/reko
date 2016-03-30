@@ -140,6 +140,12 @@ namespace Reko.Arch.PowerPC
             return new BeImageReader(image, offset);
         }
 
+        public override ImageWriter CreateImageWriter()
+        {
+            //$TODO: PowerPC is bi-endian.
+            return new BeImageWriter();
+        }
+
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             throw new NotImplementedException();

@@ -76,6 +76,11 @@ namespace Reko.Environments.C64
             throw new NotImplementedException();
         }
 
+        public override ImageWriter CreateImageWriter()
+        {
+            return new LeImageWriter();
+        }
+
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             throw new NotImplementedException();

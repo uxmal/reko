@@ -120,6 +120,11 @@ namespace Reko.UnitTests.Mocks
             return new LeImageReader(image, offset);
         }
 
+        public ImageWriter CreateImageWriter()
+        {
+            return new LeImageWriter();
+        }
+
         public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
         {
             throw new NotImplementedException();

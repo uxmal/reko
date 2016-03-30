@@ -63,6 +63,11 @@ namespace Reko.Arch.Arm
             throw new NotImplementedException();
         }
 
+        public override ImageWriter CreateImageWriter()
+        {
+            return new LeImageWriter();
+        }
+
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             throw new NotImplementedException();

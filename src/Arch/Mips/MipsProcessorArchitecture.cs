@@ -144,6 +144,11 @@ namespace Reko.Arch.Mips
             return new BeImageReader(image, addrBegin, addrEnd);
         }
 
+        public override ImageWriter CreateImageWriter()
+        {
+            return new BeImageWriter();
+        }
+
         public override Address MakeAddressFromConstant(Constant c)
         {
             return Address.Ptr32(c.ToUInt32());
@@ -165,6 +170,11 @@ namespace Reko.Arch.Mips
         public override ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
         {
             return new LeImageReader(image, addrBegin, addrEnd);
+        }
+
+        public override ImageWriter CreateImageWriter()
+        {
+            return new LeImageWriter();
         }
 
         public override Address MakeAddressFromConstant(Constant c)

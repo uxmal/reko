@@ -64,6 +64,11 @@ namespace Reko.Arch.Sparc
             return new BeImageReader(image, offset);
         }
 
+        public override ImageWriter CreateImageWriter()
+        {
+            return new BeImageWriter();
+        }
+
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             throw new NotImplementedException();

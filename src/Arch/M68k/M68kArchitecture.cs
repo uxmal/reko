@@ -88,6 +88,11 @@ namespace Reko.Arch.M68k
             return new BeImageReader(image, offset);
         }
 
+        public override ImageWriter CreateImageWriter()
+        {
+            return new BeImageWriter();
+        }
+
         public override RegisterStorage GetRegister(int i)
         {
             return Registers.GetRegister(i);

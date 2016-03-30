@@ -33,11 +33,13 @@ namespace Reko.ImageLoaders.Elf
     // https://sourceware.org/gdb/onlinedocs/stabs/Stab-Section-Basics.html#Stab-Section-Basics
     public abstract class ElfObjectLinker
     {
+        protected IProcessorArchitecture arch;
         private ElfLoader loader;
 
-        public ElfObjectLinker(ElfLoader loader)
+        public ElfObjectLinker(ElfLoader loader, IProcessorArchitecture arch)
         {
             this.loader = loader;
+            this.arch = arch;
         }
 
         public Program LinkObject(IPlatform platform, byte[] rawImage)
@@ -78,7 +80,8 @@ namespace Reko.ImageLoaders.Elf
 
     public class ElfObjectLinker64 : ElfObjectLinker
     {
-        public ElfObjectLinker64(ElfLoader64 loader) : base(loader)
+        public ElfObjectLinker64(ElfLoader64 loader, IProcessorArchitecture arch) 
+            : base(loader, arch)
         { }
 
     }
@@ -87,14 +90,17 @@ namespace Reko.ImageLoaders.Elf
     {
         private ElfLoader32 loader;
 
-        public ElfObjectLinker32(ElfLoader32 loader) : base(loader)
+        public ElfObjectLinker32(ElfLoader32 loader, IProcessorArchitecture arch) 
+            : base(loader, arch)
         {
             this.loader = loader;
+            this.Segments = new List<Elf32_PHdr>();
         }
+
+        public List<Elf32_PHdr> Segments { get; private set; }
 
         public Dictionary<Elf32_SHdr, Elf32_PHdr> CollectNeededSegments()
         {
-            var segments = new List<Elf32_PHdr>();
             var mpToSegment = new Dictionary<uint, Elf32_PHdr>();
             var mpSectionToSegment = new Dictionary<Elf32_SHdr, Elf32_PHdr>();
             foreach (var section in loader.SectionHeaders
@@ -115,9 +121,28 @@ namespace Reko.ImageLoaders.Elf
             return mpSectionToSegment;  
         }
 
-        public object CreateSegmentHeaders()
+        public ImageMap CreateSegments(Address addrBase, Dictionary<Elf32_SHdr,Elf32_PHdr> mpSections)
         {
-            throw new NotImplementedException();
+            var imageMap = new ImageMap(addrBase);
+            var addr = addrBase;
+            foreach (var segment in Segments)
+            {
+                segment.p_paddr = (uint)addr.ToLinear();
+                //$REVIEW: 4096 byte alignment should be enough for everyone - Bill Gates III
+                addr = (addr + segment.p_pmemsz).Align(0x1000);
+            }
+
+            var psegAlloc = Segments.ToDictionary(k => k, v => v.p_paddr);
+            var psegMem = Segments.ToDictionary(k => k, v => arch.CreateImageWriter());
+            foreach (var section in loader.SectionHeaders)
+            {
+                Elf32_PHdr segment;
+                if (!mpSections.TryGetValue(section, out segment))
+                    continue;
+
+
+            }
+            return imageMap;
         }
     }
 }

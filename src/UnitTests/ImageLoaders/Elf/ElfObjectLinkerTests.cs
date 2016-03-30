@@ -39,6 +39,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         private List<ObjectSection> objectSections;
         private byte[] rawBytes;
         private ElfObjectLinker32 linker;
+        private IProcessorArchitecture arch;
 
         public class ObjectSection
         {
@@ -64,6 +65,10 @@ namespace Reko.UnitTests.ImageLoaders.Elf
                 new ObjectSection { Name = "" },        // dummy section always present
                 new ObjectSection { Name = ".shstrtab", Type = SectionHeaderType.SHT_STRTAB, Flags = 0 },
             };
+
+            this.arch = mr.Stub<IProcessorArchitecture>();
+            this.arch.Stub(a => a.CreateImageWriter()).Do(new Func<ImageWriter>(() => new BeImageWriter()));
+            this.arch.Replay();
         }
 
         private int Given_SegName(string segname)
@@ -179,7 +184,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             var eh = Elf32_EHdr.Load(new BeImageReader(rawBytes, ElfImageLoader.HEADER_OFFSET));
             var el = new ElfLoader32(eil, eh);
             el.LoadSectionHeaders();
-            this.linker = new ElfObjectLinker32(el);
+            this.linker = new ElfObjectLinker32(el, arch);
         }
 
         private static uint Align(uint n)
@@ -225,7 +230,6 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         }
 
         [Test]
-        [Ignore("Not ready yet")]
         public void Eol32_CreateSegmentHeaders()
         {
             int iText = Given_SegName(".text");
@@ -236,9 +240,8 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             Given_Linker();
 
             var segs = linker.CollectNeededSegments();
-            var hdrs = linker.CreateSegmentHeaders();
+            var hdrs = linker.CreateSegments(Address.Ptr32(0x00800000), segs);
             Assert.AreEqual(2, segs.Count);
         }
-
     }
 }

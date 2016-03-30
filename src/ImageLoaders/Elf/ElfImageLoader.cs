@@ -1938,7 +1938,7 @@ namespace Reko.ImageLoaders.Elf
 
         public override ElfObjectLinker CreateLinker()
         {
-            return new ElfObjectLinker64(this);
+            return new ElfObjectLinker64(this, arch);
         }
 
         private ImageSegmentRenderer CreateRenderer64(Elf64_SHdr shdr)
@@ -2366,7 +2366,7 @@ namespace Reko.ImageLoaders.Elf
 
         public override ElfObjectLinker CreateLinker()
         {
-            return new ElfObjectLinker32(this);
+            return new ElfObjectLinker32(this, arch);
         }
 
         public ImageSegmentRenderer CreateRenderer(Elf32_SHdr shdr)

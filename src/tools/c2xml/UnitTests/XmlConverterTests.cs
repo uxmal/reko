@@ -65,6 +65,11 @@ namespace Reko.Tools.C2Xml.UnitTests
                 throw new NotImplementedException();
             }
 
+            public override ImageWriter CreateImageWriter()
+            {
+                throw new NotImplementedException();
+            }
+
             public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
             {
                 throw new NotImplementedException();
