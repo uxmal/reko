@@ -399,10 +399,16 @@ IGNORE tab + cr + lf
             else if (token != CTokenType.EOF)
             {
                 // Function definition
-                while (lexer.Peek(0).Type != CTokenType.LBrace)
+                CToken tok;
+                for(;;)
                 {
+                    tok = lexer.Peek(0);
+                    if (tok.Type == CTokenType.EOF || tok.Type == CTokenType.LBrace)
+                        break;
                     // Old-style C definition.
-                    Parse_Decl();
+                    var decl = Parse_Decl();
+                    if (decl == null)
+                        break;
                 }
                 ExpectToken(CTokenType.LBrace);
                 var statements = new List<Stat>();
