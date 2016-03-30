@@ -1153,32 +1153,30 @@ MemoryBarrier (
         public void CParser_IncorrectStatement1()
         {
             Lex("int a()b;");
-            Decl decl;
             try
             {
-                decl = parser.Parse_ExternalDecl();
+                parser.Parse_ExternalDecl();
             }
-            catch (Exception)
+            catch (CParserException)
             {
-                decl = null;
+                return;
             }
-            Assert.IsNull(decl);
+            Assert.Fail("Should have failed to parse");
         }
 
         [Test]
         public void CParser_IncorrectStatement2()
         {
             Lex("int a);");
-            Decl decl;
             try
             {
-                decl = parser.Parse_ExternalDecl();
+                parser.Parse_ExternalDecl();
             }
-            catch (Exception)
+            catch (CParserException)
             {
-                decl = null;
+                return;
             }
-            Assert.IsNull(decl);
+            Assert.Fail("Should have failed to parse");
         }
     }
 }
