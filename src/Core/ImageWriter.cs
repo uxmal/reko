@@ -70,7 +70,7 @@ namespace Reko.Core
                     newSize *= 2;
                 }
                 var bytes = Bytes;
-                Array.Resize<byte>(ref bytes, newSize);
+                Array.Resize(ref bytes, newSize);
                 Bytes = bytes;
             }
             Bytes[Position++] = b;
@@ -91,6 +91,28 @@ namespace Reko.Core
         {
             foreach (byte b in bytes)
                 WriteByte(b);
+            return this;
+        }
+
+        public ImageWriter WriteBytes(byte[] bytes, uint offset, uint count)
+        {
+            while (count > 0)
+            {
+                WriteByte(bytes[offset]);
+                ++offset;
+                --count;
+            }
+            return this;
+        }
+
+        public ImageWriter WriteBytes(byte[] bytes, int offset, int count)
+        {
+            while (count > 0)
+            {
+                WriteByte(bytes[offset]);
+                ++offset;
+                --count;
+            }
             return this;
         }
 

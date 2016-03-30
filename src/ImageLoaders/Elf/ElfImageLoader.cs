@@ -384,6 +384,16 @@ namespace Reko.ImageLoaders.Elf
 
         public IServiceProvider Services { get { return imgLoader.Services; } }
 
+        public static AccessMode AccessModeOf(uint sh_flags)
+        {
+            AccessMode mode = AccessMode.Read;
+            if ((sh_flags & SHF_WRITE) != 0)
+                mode |= AccessMode.Write;
+            if ((sh_flags & SHF_EXECINSTR) != 0)
+                mode |= AccessMode.Execute;
+            return mode;
+        }
+
         public abstract IProcessorArchitecture CreateArchitecture();
 
         protected IProcessorArchitecture CreateArchitecture(ushort machineType)
@@ -1938,7 +1948,7 @@ namespace Reko.ImageLoaders.Elf
 
         public override ElfObjectLinker CreateLinker()
         {
-            return new ElfObjectLinker64(this, arch);
+            return new ElfObjectLinker64(this, arch, rawImage);
         }
 
         private ImageSegmentRenderer CreateRenderer64(Elf64_SHdr shdr)
@@ -2115,11 +2125,7 @@ namespace Reko.ImageLoaders.Elf
             {
                 if (segment.sh_name == 0 || segment.sh_addr == 0)
                     continue;
-                AccessMode mode = AccessMode.Read;
-                if ((segment.sh_flags & SHF_WRITE) != 0)
-                    mode |= AccessMode.Write;
-                if ((segment.sh_flags & SHF_EXECINSTR) != 0)
-                    mode |= AccessMode.Execute;
+                AccessMode mode = AccessModeOf((uint)segment.sh_flags);
                 var seg = imageMap.AddSegment(
                     platform.MakeAddressFromLinear(segment.sh_addr),
                     GetSectionName(segment.sh_name),
@@ -2366,7 +2372,7 @@ namespace Reko.ImageLoaders.Elf
 
         public override ElfObjectLinker CreateLinker()
         {
-            return new ElfObjectLinker32(this, arch);
+            return new ElfObjectLinker32(this, arch, rawImage);
         }
 
         public ImageSegmentRenderer CreateRenderer(Elf32_SHdr shdr)
@@ -2546,11 +2552,8 @@ namespace Reko.ImageLoaders.Elf
             {
                 if (segment.sh_name == 0 || segment.sh_addr == 0)
                     continue;
-                AccessMode mode = AccessMode.Read;
-                if ((segment.sh_flags & SHF_WRITE) != 0)
-                    mode |= AccessMode.Write;
-                if ((segment.sh_flags & SHF_EXECINSTR) != 0)
-                    mode |= AccessMode.Execute;
+                
+                AccessMode mode = AccessModeOf(segment.sh_flags);
                 var seg = imageMap.AddSegment(
                     Address.Ptr32(segment.sh_addr),
                     GetSectionName(segment.sh_name),

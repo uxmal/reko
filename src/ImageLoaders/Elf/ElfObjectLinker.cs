@@ -35,11 +35,13 @@ namespace Reko.ImageLoaders.Elf
     {
         protected IProcessorArchitecture arch;
         private ElfLoader loader;
+        protected byte[] rawImage;
 
-        public ElfObjectLinker(ElfLoader loader, IProcessorArchitecture arch)
+        public ElfObjectLinker(ElfLoader loader, IProcessorArchitecture arch, byte[] rawImage)
         {
             this.loader = loader;
             this.arch = arch;
+            this.rawImage = rawImage;
         }
 
         public Program LinkObject(IPlatform platform, byte[] rawImage)
@@ -80,8 +82,8 @@ namespace Reko.ImageLoaders.Elf
 
     public class ElfObjectLinker64 : ElfObjectLinker
     {
-        public ElfObjectLinker64(ElfLoader64 loader, IProcessorArchitecture arch) 
-            : base(loader, arch)
+        public ElfObjectLinker64(ElfLoader64 loader, IProcessorArchitecture arch, byte[] rawImage) 
+            : base(loader, arch, rawImage)
         { }
 
     }
@@ -90,8 +92,8 @@ namespace Reko.ImageLoaders.Elf
     {
         private ElfLoader32 loader;
 
-        public ElfObjectLinker32(ElfLoader32 loader, IProcessorArchitecture arch) 
-            : base(loader, arch)
+        public ElfObjectLinker32(ElfLoader32 loader, IProcessorArchitecture arch, byte[] rawImage)
+            : base(loader, arch, rawImage)
         {
             this.loader = loader;
             this.Segments = new List<Elf32_PHdr>();
@@ -111,6 +113,7 @@ namespace Reko.ImageLoaders.Elf
                 {
                     segment = new Elf32_PHdr();
                     mpToSegment.Add(section.sh_flags, segment);
+                    Segments.Add(segment);
                 }
                 mpSectionToSegment.Add(section, segment);
                 segment.p_pmemsz += section.sh_size;
@@ -123,7 +126,6 @@ namespace Reko.ImageLoaders.Elf
 
         public ImageMap CreateSegments(Address addrBase, Dictionary<Elf32_SHdr,Elf32_PHdr> mpSections)
         {
-            var imageMap = new ImageMap(addrBase);
             var addr = addrBase;
             foreach (var segment in Segments)
             {
@@ -139,9 +141,24 @@ namespace Reko.ImageLoaders.Elf
                 Elf32_PHdr segment;
                 if (!mpSections.TryGetValue(section, out segment))
                     continue;
-
-
+                section.sh_addr = psegAlloc[segment];
+                psegMem[segment].WriteBytes(rawImage, section.sh_offset, section.sh_size);
+                psegAlloc[segment] += section.sh_size;
             }
+
+            var mpMemoryAreas = psegMem.ToDictionary(
+                k => k.Key,
+                v => new MemoryArea(
+                    Address.Ptr32(v.Key.p_paddr),
+                    v.Value.ToArray()));
+            var imageMap = new ImageMap(
+                addrBase,
+                mpSections
+                    .Select(s => new ImageSegment(
+                        loader.GetSectionName(s.Key.sh_name),
+                        mpMemoryAreas[s.Value],
+                        ElfLoader.AccessModeOf(s.Key.sh_flags)))
+                    .ToArray());
             return imageMap;
         }
     }

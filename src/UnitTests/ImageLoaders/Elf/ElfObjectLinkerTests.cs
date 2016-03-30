@@ -184,7 +184,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             var eh = Elf32_EHdr.Load(new BeImageReader(rawBytes, ElfImageLoader.HEADER_OFFSET));
             var el = new ElfLoader32(eil, eh);
             el.LoadSectionHeaders();
-            this.linker = new ElfObjectLinker32(el, arch);
+            this.linker = new ElfObjectLinker32(el, arch, rawBytes);
         }
 
         private static uint Align(uint n)
@@ -240,8 +240,8 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             Given_Linker();
 
             var segs = linker.CollectNeededSegments();
-            var hdrs = linker.CreateSegments(Address.Ptr32(0x00800000), segs);
-            Assert.AreEqual(2, segs.Count);
+            var imageMap = linker.CreateSegments(Address.Ptr32(0x00800000), segs);
+            Assert.AreEqual(2, imageMap.Segments.Count);
         }
     }
 }
