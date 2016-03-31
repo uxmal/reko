@@ -120,6 +120,20 @@ namespace Reko.Core
             return up;
         }
 
+        public GlobalDataItem_v2 EnsureUserGlobal(Address address)
+        {
+            GlobalDataItem_v2 gbl;
+            if (!User.Globals.TryGetValue(address, out gbl))
+            {
+                gbl = new GlobalDataItem_v2()
+                {
+                    Address = address.ToString(),
+                };
+                User.Globals.Add(address, gbl);
+            }
+            return gbl;
+        }
+
         /// <summary>
         /// Represents a _pointer_ to a structure that contains all the 
         /// global variables of the program. 
