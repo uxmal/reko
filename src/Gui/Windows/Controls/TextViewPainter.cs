@@ -33,7 +33,8 @@ namespace Reko.Gui.Windows.Controls
         private Graphics graphics;
         private TextPointer selStart;
         private TextPointer selEnd;
-        private RectangleF rcText;
+        private RectangleF rcContent;
+        private RectangleF rcTotal;
         private LayoutSpan span;
         private StyleStack styleStack;
         private Color fg;
@@ -94,7 +95,7 @@ namespace Reko.Gui.Windows.Controls
             float xMax = 0;
             if (line.Spans.Length > 0)
             {
-                xMax = line.Spans[line.Spans.Length - 1].Extent.Right;
+                xMax = line.Spans[line.Spans.Length - 1].ContentExtent.Right;
             }
             var cx = extent.Width - xMax;
             if (cx > 0)
@@ -120,7 +121,8 @@ namespace Reko.Gui.Windows.Controls
                 this.bg = styleStack.GetBackground(defaultBgColor);
                 this.font = styleStack.GetFont(defaultFont);
 
-                this.rcText = span.Extent;
+                this.rcContent = span.ContentExtent;
+                this.rcTotal = span.PaddedExtent;
                 if (!insideSelection)
                 {
                     if (selStart.Line == line.Position && selStart.Span == iSpan)
@@ -175,7 +177,7 @@ namespace Reko.Gui.Windows.Controls
                     var sz = outer.MeasureText(graphics, textFrag, font);
                     graphics.FillRectangle(
                         Brushes.Red,
-                        span.Extent.Left + sz.Width, line.Extent.Top,
+                        span.ContentExtent.Left + sz.Width, line.Extent.Top,
                         1, line.Extent.Height);
                 }
                 if (line.Position == selEnd.Line &&
@@ -185,7 +187,7 @@ namespace Reko.Gui.Windows.Controls
                     var sz = outer.MeasureText(graphics, textFrag, font);
                     graphics.FillRectangle(
                         Brushes.Blue,
-                        span.Extent.Left + sz.Width, line.Extent.Top,
+                        span.ContentExtent.Left + sz.Width, line.Extent.Top,
                         1, line.Extent.Height);
                 }
 #endif
@@ -197,10 +199,12 @@ namespace Reko.Gui.Windows.Controls
         {
             var textStub = span.Text.Substring(iStart, iEnd);
             var sz = outer.MeasureText(graphics, textStub, font);
-            var oldWidth = rcText.Width;
-            rcText.Width = sz.Width;
+            var oldWidth = rcContent.Width;
+            rcContent.Width = sz.Width;
+            rcTotal.Width = sz.Width;
             DrawText(textStub, selected);
-            rcText.Width = oldWidth - sz.Width;
+            rcContent.Width = oldWidth - sz.Width;
+            rcTotal.Width = oldWidth - sz.Width;
         }
 
         private void DrawTrailingTextSegment(int iStart, bool selected)
@@ -218,7 +222,7 @@ namespace Reko.Gui.Windows.Controls
         {
             graphics.FillRectangle(
                 selected ? SystemBrushes.Highlight : bg,
-                rcText);
+                rcTotal);
             if (useGdiPlus)
             {
                 var brush = new SolidBrush(selected ? SystemColors.HighlightText : fg);
@@ -226,14 +230,14 @@ namespace Reko.Gui.Windows.Controls
                     text,
                     this.font,
                     brush,
-                    rcText.Left,
-                    rcText.Top,
+                    rcContent.Left,
+                    rcContent.Top,
                     StringFormat.GenericTypographic);
                 brush.Dispose();
             }
             else
             {
-                var pt = new Point((int)rcText.X, (int)rcText.Y);
+                var pt = new Point((int)rcContent.X, (int)rcContent.Y);
                 TextRenderer.DrawText(
                     this.graphics,
                     text,
@@ -242,7 +246,7 @@ namespace Reko.Gui.Windows.Controls
                     selected ? SystemColors.HighlightText : fg,
                     TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix);
             }
-            rcText.X += rcText.Width;
+            rcContent.X += rcContent.Width;
         }
     }
 }

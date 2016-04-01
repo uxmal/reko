@@ -48,6 +48,7 @@ namespace Reko.Gui.Windows.Controls
         internal TextPointer cursorPos;
         internal TextPointer anchorPos;
         private StyleStack styleStack;
+        private bool dragging;
 
         public TextView()
         {
@@ -74,16 +75,7 @@ namespace Reko.Gui.Windows.Controls
         public event EventHandler StyleClassChanged;
         private string styleClass;
 
-        protected override void OnKeyDown(KeyEventArgs e)
-        {
-            if (e.KeyData == (Keys.Shift|Keys.F10))
-            {
-                e.Handled = true;
-                ContextMenu.Show(this, new Point(0, 0));
-                return;
-            }
-            base.OnKeyDown(e);
-        }
+
 
         /// <summary>
         /// The ClientSize is the client area minus the space taken up by
@@ -150,6 +142,17 @@ namespace Reko.Gui.Windows.Controls
 
         private void ClearCaret()
         {
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            if (e.KeyData == (Keys.Shift | Keys.F10))
+            {
+                e.Handled = true;
+                ContextMenu.Show(this, new Point(0, 0));
+                return;
+            }
+            base.OnKeyDown(e);
         }
 
         protected override void OnLostFocus(EventArgs e)
@@ -295,7 +298,8 @@ namespace Reko.Gui.Windows.Controls
                 return anchorPos;
         }
 
-        public bool IsSelectionEmpty() {
+        public bool IsSelectionEmpty()
+        {
             return  layout.ComparePositions(cursorPos, anchorPos) == 0;
         }
 
@@ -380,7 +384,7 @@ namespace Reko.Gui.Windows.Controls
         {
             foreach (var span in line.Spans)
             {
-                if (span.Extent.Contains(ptClient))
+                if (span.ContentExtent.Contains(ptClient))
                     return span;
             }
             return null;
@@ -391,7 +395,6 @@ namespace Reko.Gui.Windows.Controls
         /// </summary>
         public TextViewModel Model { get { return model; } set { this.model = value; OnModelChanged(EventArgs.Empty); }  }
         private TextViewModel model;
-        private bool dragging;
         protected virtual void OnModelChanged(EventArgs e)
         {
             this.cursorPos = new TextPointer

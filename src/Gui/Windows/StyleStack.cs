@@ -142,5 +142,40 @@ namespace Reko.Gui.Windows.Controls
             }
             return null;
         }
+
+        public float GetNumber(Func<UiStyle, float> fn)
+        {
+            for (int i = stack.Count - 1; i >= 0; --i)
+            {
+                var style = stack[i];
+                if (style != null)
+                {
+                    float n = fn(style);
+                    if (n != 0)
+                        return n;
+                }
+            }
+            return 0;
+        }
+
+        /// <summary>
+        /// Given a rectangle <paramref name="rc"/>, creates a padded rectangle
+        /// <paramref name="rcPadded"/> and 
+        /// </summary>
+        /// <param name="rc"></param>
+        /// <param name="rcPadded"></param>
+        public void PadRectangle(ref RectangleF rc, ref RectangleF rcPadded)
+        {
+            float top = GetNumber(s => s.PaddingTop);
+            float left = GetNumber(s => s.PaddingLeft);
+            float bottom = GetNumber(s => s.PaddingBottom);
+            float right = GetNumber(s => s.PaddingRight);
+            rcPadded.X = rc.X;
+            rcPadded.Width = rc.Width + left + right;
+            rcPadded.Y = rc.Y;
+            rcPadded.Height = rc.Height + top + bottom;
+
+            rc.Offset(left, top);
+        }
     }
 }

@@ -41,6 +41,10 @@ namespace Reko.Gui
         public Cursor Cursor { get; set; }
         public string TextAlign { get; set; }
         public int? Width { get; set; } // If set, the width is fixed at a certain size.
+        public float PaddingTop { get; set; }
+        public float PaddingLeft { get; set; }
+        public float PaddingBottom { get; set; }
+        public float PaddingRight { get; set; }
 
         public UiStyle Clone()
         {
@@ -235,6 +239,11 @@ namespace Reko.Gui
                 int w;
                 if (Int32.TryParse(dStyle.Width, out w))
                     width = w;
+                float padTop, padLeft, padRight, padBottom;
+                float.TryParse(dStyle.PaddingTop, out padTop);
+                float.TryParse(dStyle.PaddingLeft, out padLeft);
+                float.TryParse(dStyle.PaddingBottom, out padBottom);
+                float.TryParse(dStyle.PaddingRight, out padRight);
                 AddStyle(new UiStyle
                 {
                     Name = dStyle.Name,
@@ -243,6 +252,10 @@ namespace Reko.Gui
                     Font = GetFont(dStyle.FontName),
                     Width = width,
                     Cursor = GetCursor(dStyle.Cursor),
+                    PaddingTop = padTop,
+                    PaddingLeft = padLeft,
+                    PaddingBottom = padBottom,
+                    PaddingRight = padRight,
                 });
             }
 

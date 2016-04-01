@@ -35,6 +35,10 @@ namespace Reko.Core.Configuration
         string Cursor { get; }
         string Width { get; }
         string TextAlign { get; }
+        string PaddingTop { get; }
+        string PaddingLeft { get; }
+        string PaddingBottom { get; }
+        string PaddingRight { get; }
     }
 
     public class UiStyleElement : ConfigurationElement, UiStyle
@@ -87,6 +91,34 @@ namespace Reko.Core.Configuration
         {
             get { return (string)this["TextAlign"]; }
             set { this["TextAlign"] = value; }
+        }
+
+        [ConfigurationProperty("PaddingTop", IsRequired = false)]
+        public string PaddingTop
+        {
+            get { return (string) this["PaddingTop"]; }
+            set { this["PaddingTop"] = value; }
+        }
+
+        [ConfigurationProperty("PaddingLeft", IsRequired = false)]
+        public string PaddingLeft
+        {
+            get { return (string)this["PaddingLeft"]; }
+            set { this["PaddingLeft"] = value; }
+        }
+
+        [ConfigurationProperty("PaddingBottom", IsRequired = false)]
+        public string PaddingBottom
+        {
+            get { return (string)this["PaddingBottom"]; }
+            set { this["PaddingBottom"] = value; }
+        }
+
+        [ConfigurationProperty("PaddingRight", IsRequired = false)]
+        public string PaddingRight
+        {
+            get { return (string)this["PaddingRight"]; }
+            set { this["PaddingRight"] = value; }
         }
     }
 }
