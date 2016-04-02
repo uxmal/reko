@@ -161,6 +161,13 @@ namespace Reko.Environments.Windows
                 case 8: return "unsigned __int64";
                 }
                 break;
+            case Domain.Real:
+                switch (pt.Size)
+                {
+                case 4: return "float";
+                case 8: return "double";
+                }
+                break;
             }
             return null;
         }
