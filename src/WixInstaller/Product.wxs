@@ -81,6 +81,8 @@
         <File Source="$(var.WindowsDecompiler.TargetPath)" Id="F_DecompilerExecutable"/>
         <File Source="$(var.WindowsDecompiler.TargetPath).config" Id="F_WindowsDecompilerConfig" />
         <File Source="$(var.WindowsDecompiler.ProjectDir)app.config" Name="decompile.exe.config" />
+        <File Source="$(var.WindowsDecompiler.ProjectDir)..\reko.config" Name="reko.config" />
+
         <File Source="$(var.CmdLine.TargetPath)" />
         
         <!-- Image loaders -->

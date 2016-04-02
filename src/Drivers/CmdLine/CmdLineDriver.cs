@@ -43,7 +43,7 @@ namespace Reko.CmdLine
         {
             var services = new ServiceContainer();
             var listener = new CmdLineListener();
-            var config = new DecompilerConfiguration();
+            var config = DecompilerConfiguration.Load();
             var diagnosticSvc = new CmdLineDiagnosticsService(Console.Out);
             services.AddService<DecompilerEventListener>(listener);
             services.AddService<IConfigurationService>(config);

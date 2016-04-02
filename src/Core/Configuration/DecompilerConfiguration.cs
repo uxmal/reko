@@ -26,6 +26,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace Reko.Core.Configuration
 {
@@ -60,6 +61,37 @@ namespace Reko.Core.Configuration
 
     public class DecompilerConfiguration : IConfigurationService
     {
+        private RekoConfiguration_v1 config;
+
+        [Obsolete("", true)]
+        public DecompilerConfiguration()
+        {
+        }
+
+        public DecompilerConfiguration(RekoConfiguration_v1 config)
+        {
+            this.config = config;
+        }
+
+        public static DecompilerConfiguration Load()
+        {
+            var cur = Directory.GetCurrentDirectory();
+            var appConfig = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
+            var appDir = Path.GetDirectoryName(appConfig);
+            var configFileName = ConfigurationManager.AppSettings["RekoConfiguration"];
+            if (configFileName == null)
+                throw new ApplicationException("Missing app setting 'RekoConfiguration' in configuration file.");
+            configFileName = Path.Combine(appDir, configFileName);
+            Console.Error.WriteLine("CONFIG FILE NAME {0}", configFileName);
+
+            using (var stm = File.Open(configFileName, FileMode.Open))
+            {
+                var ser = new XmlSerializer(typeof(RekoConfiguration_v1));
+                var sConfig = (RekoConfiguration_v1)ser.Deserialize(stm);
+                return new DecompilerConfiguration(sConfig);
+            }
+        }
+
         public virtual ICollection GetImageLoaders()
         {
             var handler = (LoaderSectionHandler) ConfigurationManager.GetSection("Reko/Loaders");
