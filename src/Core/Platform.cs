@@ -68,6 +68,16 @@ namespace Reko.Core
         /// </returns>
         int GetByteSizeFromCBasicType(CBasicType cb);
 
+        /// <summary>
+        /// Given a primitive type <paramref name="t"/> returns the
+        /// rendering of that primitive in the programming language
+        /// <paramref name="language"/>
+        /// </summary>
+        /// <param name="t">Primitive type</param>
+        /// <param name="language">Programming language to use</param>
+        /// <returns></returns>
+        string GetPrimitiveTypeName(PrimitiveType t, string v);
+
         ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host);
         SystemService FindService(int vector, ProcessorState state);
         SystemService FindService(RtlInstruction call, ProcessorState state);
@@ -222,6 +232,11 @@ namespace Reko.Core
         }
 
         public abstract int GetByteSizeFromCBasicType(CBasicType cb);
+
+        public virtual string GetPrimitiveTypeName(PrimitiveType pt, string language)
+        {
+            return null;
+        }
 
         public abstract SystemService FindService(int vector, ProcessorState state);
 
