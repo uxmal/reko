@@ -43,24 +43,24 @@ namespace Reko.UnitTests.Core.Configuration
                 {
                     new RekoLoader
                     {
-                         MagicNumber = "4D5A",
-                          Type = "mzexeloader,mzexeloader"
+                        MagicNumber = "4D5A",
+                        Type = "mzexeloader,mzexeloader"
                     }
                 },
                 RawFiles = new []
                 {
-                    new RekoRawFilesRawFile
+                    new RawFile_v1
                     {
                         Name="ms-dos-com",
                         Description="MS-DOS COM executable",
-                        Arch="x86-real-16",
-                        Env="ms-dos",
+                        Architecture="x86-real-16",
+                        Environment="ms-dos",
                         Base="0C00:0100",
-                        Entry = new []
+                        Entries = new []
                         {
-                            new RekoRawFilesRawFileEntry
+                            new EntryPoint_v1
                             {
-                                Addr = "0C00:0100",
+                                Address = "0C00:0100",
                                 Name = "MsDosCom_Start",
                             }
                         }
@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Core.Configuration
                 },
                 SignatureFiles = new []
                 {
-                    new RekoSignatureFilesSignatureFile
+                    new SignatureFile_v1
                     {
                         Filename="IMAGE_FILE_MACHINE_I386.xml",
                         Type ="Reko.Loading.UnpackerSignatureLoader,Reko"
@@ -76,7 +76,7 @@ namespace Reko.UnitTests.Core.Configuration
                 },
                 Environments = new []
                 {
-                    new RekoEnvironmentsEnvironment {
+                    new Environment_v1 {
                         Name="elf-neutral",
                         Description ="Unspecified ELF ABI",
                         Type ="Reko.Environments.SysV.SysVPlatform,Reko.Environments.SysV",
@@ -92,7 +92,7 @@ namespace Reko.UnitTests.Core.Configuration
                 },
                 Architectures = new[]
                 {
-                    new RekoArchitecture
+                    new Architecture_v1
                     {
                         Name="x86-real-16",
                         Description = "x86 16-bit Real Mode",
@@ -101,7 +101,7 @@ namespace Reko.UnitTests.Core.Configuration
                 },
                 Assemblers = new []
                 {
-                    new RekoAssemblersAssembler
+                    new Assembler_v1
                     {
                         Name="pdp11-mac",
                         Description = "PDP-11 MACRO assembler",
@@ -112,11 +112,11 @@ namespace Reko.UnitTests.Core.Configuration
                 {
                     Styles = new []
                     {
-                        new RekoUiPreferencesStyle
+                        new StyleDefinition_v1
                         {
                           Name="mem", Font="Lucida Console, 9pt"
                         },
-                        new RekoUiPreferencesStyle
+                        new StyleDefinition_v1
                         {
                             Name ="mem-code", ForeColor="#000000", BackColor="#FFC0C0"
                         }

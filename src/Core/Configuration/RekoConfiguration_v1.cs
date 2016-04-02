@@ -19,57 +19,38 @@
 #endregion
 
 using System;
+using System.ComponentModel;
 using System.Xml.Serialization;
 
 namespace Reko.Core.Configuration
 {
     [Serializable]
-    [XmlType(AnonymousType = true, Namespace = "http://schemata.jklnet.org/Reko/Config/v1")]
-    public partial class TypeLibraryReference_v1
-    {
-        [XmlAttribute]
-        public string Name;
-
-        [XmlAttribute]
-        public string Arch;
-
-        [XmlAttribute]
-        public string Loader;
-
-        [XmlAttribute]
-        public string Module;
-    }
-
-    [Serializable]
-    [XmlType(AnonymousType = true, Namespace = "http://schemata.jklnet.org/Reko/Config/v1")]
     [XmlRoot(ElementName="Reko", Namespace = "http://schemata.jklnet.org/Reko/Config/v1", IsNullable = false)]
     public partial class RekoConfiguration_v1
     {
-        private object[] itemsField;
-
         [XmlArray(ElementName = "Loaders")]
         [XmlArrayItem(ElementName = "Loader")]
         public RekoLoader[] Loaders;
 
         [XmlArray("RawFiles")]
-        [XmlArrayItem("RawFile", typeof(RekoRawFilesRawFile))]
-        public RekoRawFilesRawFile[] RawFiles;
+        [XmlArrayItem("RawFile")]
+        public RawFile_v1[] RawFiles;
 
         [XmlArray("SignatureFiles")]
         [XmlArrayItem("SignatureFile")]
-        public RekoSignatureFilesSignatureFile[] SignatureFiles;
+        public SignatureFile_v1[] SignatureFiles;
 
         [XmlArray("Environments")]
         [XmlArrayItem("Environment")]
-        public RekoEnvironmentsEnvironment[] Environments;
+        public Environment_v1[] Environments;
 
         [XmlArray("Architectures")]
         [XmlArrayItem("Architecture")]
-        public RekoArchitecture[] Architectures;
+        public Architecture_v1[] Architectures;
 
         [XmlArray("Assemblers")]
         [XmlArrayItem("Assembler")]
-        public RekoAssemblersAssembler[] Assemblers;
+        public Assembler_v1[] Assemblers;
 
         [XmlElement("UiPreferences")]
         public RekoUiPreferences UiPreferences;
@@ -77,388 +58,164 @@ namespace Reko.Core.Configuration
 
     [Serializable]
     [XmlType(AnonymousType = true, Namespace = "http://schemata.jklnet.org/Reko/Config/v1")]
-    public partial class RekoArchitectures
+    public partial class Architecture_v1
     {
-        private RekoArchitecture[] architectureField;
-
-        [XmlElement("Architecture")]
-        public RekoArchitecture[] Architecture
-        {
-            get
-            {
-                return this.architectureField;
-            }
-            set
-            {
-                this.architectureField = value;
-            }
-        }
-    }
-
-    [Serializable]
-    [XmlType(AnonymousType = true, Namespace = "http://schemata.jklnet.org/Reko/Config/v1")]
-    public partial class RekoArchitecture
-    {
-
-        private string nameField;
-
-        private string descriptionField;
-
-        private string typeField;
-
-        /// <remarks/>
-        [XmlAttribute]
-        public string Name
-        {
-            get
-            {
-                return this.nameField;
-            }
-            set
-            {
-                this.nameField = value;
-            }
-        }
-
-        /// <remarks/>
-        [XmlAttribute]
-        public string Description
-        {
-            get
-            {
-                return this.descriptionField;
-            }
-            set
-            {
-                this.descriptionField = value;
-            }
-        }
-
-        /// <remarks/>
-        [XmlAttribute]
-        public string Type
-        {
-            get
-            {
-                return this.typeField;
-            }
-            set
-            {
-                this.typeField = value;
-            }
-        }
-    }
-
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "2.0.50727.3038")]
-    [Serializable]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [XmlType(AnonymousType = true, Namespace = "http://schemata.jklnet.org/Reko/Config/v1")]
-    public partial class RekoAssemblers
-    {
-
-        private RekoAssemblersAssembler[] assemblerField;
-
-        /// <remarks/>
-        [XmlElement("Assembler")]
-        public RekoAssemblersAssembler[] Assembler
-        {
-            get
-            {
-                return this.assemblerField;
-            }
-            set
-            {
-                this.assemblerField = value;
-            }
-        }
-    }
-
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "2.0.50727.3038")]
-    [Serializable]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [XmlType(AnonymousType = true, Namespace = "http://schemata.jklnet.org/Reko/Config/v1")]
-    public partial class RekoAssemblersAssembler
-    {
-        /// <remarks/>
-        [XmlAttribute]
+        [XmlAttribute("Name")]
         public string Name;
 
-        /// <remarks/>
-        [XmlAttribute]
+        [XmlAttribute("Description")]
         public string Description;
 
-        /// <remarks/>
-        [XmlAttribute]
+        [XmlAttribute("Type")]
         public string Type;
     }
 
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "2.0.50727.3038")]
     [Serializable]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [XmlType(AnonymousType = true, Namespace = "http://schemata.jklnet.org/Reko/Config/v1")]
-    public partial class RekoEnvironmentsEnvironment
+    public partial class Assembler_v1
     {
-        [System.Xml.Serialization.XmlArrayItemAttribute("TypeLibrary", typeof(TypeLibraryReference_v1), IsNullable = false)]
+        [XmlAttribute("Name")]
+        public string Name;
+
+        [XmlAttribute("Description")]
+        public string Description;
+
+        [XmlAttribute("Type")]
+        public string Type;
+    }
+
+    [Serializable]
+    public partial class Environment_v1
+    {
+        [XmlArray("TypeLibraries")]
+        [XmlArrayItem("TypeLibrary")]
         public TypeLibraryReference_v1[] TypeLibraries;
 
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("TypeLibrary", typeof(TypeLibraryReference_v1), IsNullable = false)]
+        [XmlArray("Characteristics")]
+        [XmlArrayItem("TypeLibrary")]
         public TypeLibraryReference_v1[] Characteristics;
 
-        /// <remarks/>
-        [XmlAttribute]
+        [XmlAttribute("Name")]
         public string Name;
 
-        /// <remarks/>
-        [XmlAttribute]
+        [XmlAttribute("Description")]
         public string Description;
 
-        /// <remarks/>
-        [XmlAttribute]
+        [XmlAttribute("Type")]
         public string Type;
 
-        /// <remarks/>
-        [XmlAttribute]
+        [XmlAttribute("MemoryMap")]
         public string MemoryMap;
     }
 
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "2.0.50727.3038")]
     [Serializable]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [XmlType(AnonymousType = true, Namespace = "http://schemata.jklnet.org/Reko/Config/v1")]
     public partial class RekoLoader
     {
-        [XmlAttribute]
+        [XmlAttribute("MagicNumber")]
         public string MagicNumber;
 
-        [XmlAttribute]
+        [XmlAttribute("Type")]
         public string Type;
 
-        [XmlAttribute]
+        [XmlAttribute("Offset")]
         public string Offset;
 
-        /// <remarks/>
-        [XmlAttribute]
+        [XmlAttribute("Extension")]
         public string Extension;
 
-        /// <remarks/>
-        [XmlAttribute]
+        [XmlAttribute("Label")]
         public string Label;
 
-        [XmlAttribute]
+        [XmlAttribute("Argument")]
         public string Argument;
     }
 
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "2.0.50727.3038")]
     [Serializable]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [XmlType(AnonymousType = true, Namespace = "http://schemata.jklnet.org/Reko/Config/v1")]
-    public partial class RekoRawFiles
-    {
-
-        private RekoRawFilesRawFile[] rawFileField;
-
-        /// <remarks/>
-        [XmlElement("RawFile")]
-        public RekoRawFilesRawFile[] RawFile
-        {
-            get
-            {
-                return this.rawFileField;
-            }
-            set
-            {
-                this.rawFileField = value;
-            }
-        }
-    }
-
-    [Serializable]
-    public partial class RekoRawFilesRawFile
+    public partial class RawFile_v1
     {
         [XmlElement("Entry")]
-        public RekoRawFilesRawFileEntry[] Entry;
+        public EntryPoint_v1[] Entries;
 
-        [XmlAttribute]
+        [XmlAttribute("Name")]
         public string Name;
 
-        [XmlAttribute]
+        [XmlAttribute("Description")]
         public string Description;
 
-        [XmlAttribute]
-        public string Arch;
+        [XmlAttribute("Arch")]
+        public string Architecture;
 
-        [XmlAttribute]
-        public string Env;
+        [XmlAttribute("Env")]
+        public string Environment;
 
-        [XmlAttribute]
+        [XmlAttribute("Base")]
         public string Base;
     }
 
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "2.0.50727.3038")]
     [Serializable]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [XmlType(AnonymousType = true, Namespace = "http://schemata.jklnet.org/Reko/Config/v1")]
-    public partial class RekoRawFilesRawFileEntry
+    public partial class EntryPoint_v1
     {
+        [XmlAttribute("Addr")]
+        public string Address;
 
-        private string addrField;
+        [XmlAttribute("Name")]
+        public string Name;
 
-        private string nameField;
-
-        private string followField;
-
-        /// <remarks/>
-        [XmlAttribute]
-        public string Addr
-        {
-            get
-            {
-                return this.addrField;
-            }
-            set
-            {
-                this.addrField = value;
-            }
-        }
-
-        /// <remarks/>
-        [XmlAttribute]
-        public string Name
-        {
-            get
-            {
-                return this.nameField;
-            }
-            set
-            {
-                this.nameField = value;
-            }
-        }
-
-        /// <remarks/>
-        [XmlAttribute]
-        public string Follow
-        {
-            get
-            {
-                return this.followField;
-            }
-            set
-            {
-                this.followField = value;
-            }
-        }
+        [XmlAttribute("Follow")]
+        [DefaultValue(false)]
+        public bool Follow;
     }
 
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "2.0.50727.3038")]
     [Serializable]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [XmlType(AnonymousType = true, Namespace = "http://schemata.jklnet.org/Reko/Config/v1")]
-    public partial class RekoSignatureFiles
+    public partial class SignatureFile_v1
     {
+        [XmlAttribute("Filename")]
+        public string Filename;
 
-        private RekoSignatureFilesSignatureFile[] signatureFileField;
-
-        /// <remarks/>
-        [XmlElement("SignatureFile")]
-        public RekoSignatureFilesSignatureFile[] SignatureFile
-        {
-            get
-            {
-                return this.signatureFileField;
-            }
-            set
-            {
-                this.signatureFileField = value;
-            }
-        }
-    }
-
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "2.0.50727.3038")]
-    [Serializable]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [XmlType(AnonymousType = true, Namespace = "http://schemata.jklnet.org/Reko/Config/v1")]
-    public partial class RekoSignatureFilesSignatureFile
-    {
-
-        private string filenameField;
-
-        private string typeField;
-
-        /// <remarks/>
-        [XmlAttribute]
-        public string Filename
-        {
-            get
-            {
-                return this.filenameField;
-            }
-            set
-            {
-                this.filenameField = value;
-            }
-        }
-
-        /// <remarks/>
-        [XmlAttribute]
-        public string Type
-        {
-            get
-            {
-                return this.typeField;
-            }
-            set
-            {
-                this.typeField = value;
-            }
-        }
+        [XmlAttribute("Type")]
+        public string Type;
     }
 
     public partial class RekoUiPreferences
     {
         [XmlElement("Style")]
-        public RekoUiPreferencesStyle[] Styles;
+        public StyleDefinition_v1[] Styles;
     }
 
     [Serializable]
-    public partial class RekoUiPreferencesStyle
+    public partial class StyleDefinition_v1
     {
-        /// <remarks/>
-        [XmlAttribute]
+        [XmlAttribute("Name")]
         public string Name;
 
-        /// <remarks/>
-        [XmlAttribute]
+        [XmlAttribute("Font")]
         public string Font;
 
-        /// <remarks/>
-        [XmlAttribute]
+        [XmlAttribute("ForeColor")]
         public string ForeColor;
 
-        [XmlAttribute]
+        [XmlAttribute("BackColor")]
         public string BackColor;
 
-        [XmlAttribute]
+        [XmlAttribute("Width")]
         public string Width;
 
-        [XmlAttribute]
+        [XmlAttribute("Cursor")]
         public string Cursor;
+    }
+
+    [Serializable]
+    public partial class TypeLibraryReference_v1
+    {
+        [XmlAttribute("Name")]
+        public string Name;
+
+        [XmlAttribute("Arch")]
+        public string Arch;
+
+        [XmlAttribute("Loader")]
+        public string Loader;
+
+        [XmlAttribute("Module")]
+        public string Module;
     }
 }
