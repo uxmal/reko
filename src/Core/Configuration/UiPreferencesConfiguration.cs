@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2016 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,26 +20,17 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
+using System.Drawing;
+using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace Reko.Core.Configuration
 {
-    public class OperatingEnvironmentElementCollection : ConfigurationElementCollection
+    public class UiPreferencesConfiguration
     {
-        public OperatingEnvironmentElementCollection()
-        {
-            AddElementName = "Environment";
-        }
-
-        protected override ConfigurationElement CreateNewElement()
-        {
-            return new OperatingEnvironmentElement();
-        }
-
-        protected override object GetElementKey(ConfigurationElement element)
-        {
-            return ((OperatingEnvironmentElement) element).Name;
-        }
+        public List<UiStyle> Styles { get; internal set; }
     }
 }

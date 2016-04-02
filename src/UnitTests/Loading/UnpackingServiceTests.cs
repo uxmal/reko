@@ -31,10 +31,10 @@ namespace Reko.UnitTests.Loading
         {
             var image = new byte[] { 0x00, 0x00, 0x00, 0x00, 0x12, 0x34, 0x00, 0x00 };
           
-            var le = mr.Stub<LoaderElement>();
+            var le = mr.Stub<LoaderConfiguration>();
             le.Label = "LoaderKey";
             le.TypeName = typeof(TestImageLoader).AssemblyQualifiedName;
-            cfgSvc.Stub(c => c.GetImageLoaders()).Return(new List<LoaderElement> { le });
+            cfgSvc.Stub(c => c.GetImageLoaders()).Return(new List<LoaderConfiguration> { le });
             sc.AddService(typeof(IConfigurationService), cfgSvc);
             mr.ReplayAll();
 

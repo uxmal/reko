@@ -133,7 +133,7 @@ namespace Reko.Core.Configuration
     public partial class RawFile_v1
     {
         [XmlElement("Entry")]
-        public EntryPoint_v1[] Entries;
+        public EntryPoint_v1 Entry;
 
         [XmlAttribute("Name")]
         public string Name;
@@ -201,6 +201,9 @@ namespace Reko.Core.Configuration
 
         [XmlAttribute("Cursor")]
         public string Cursor;
+
+        [XmlAttribute("TextAlign")]
+        public string TextAlign;
     }
 
     [Serializable]

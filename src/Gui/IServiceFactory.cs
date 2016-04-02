@@ -73,7 +73,7 @@ namespace Reko.Gui
 
         public IConfigurationService CreateDecompilerConfiguration()
         {
-            return DecompilerConfiguration.Load();
+            return RekoConfigurationService.Load();
         }
 
         public IDiagnosticsService CreateDiagnosticsService(ListView list)

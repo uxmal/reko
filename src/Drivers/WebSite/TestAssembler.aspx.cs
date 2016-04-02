@@ -82,7 +82,7 @@ namespace Reko.WebSite
 
 		private void DecompileAssembler(string asmLabel, Address loadAddress)
 		{
-            var cfg = DecompilerConfiguration.Load();
+            var cfg = RekoConfigurationService.Load();
             var asm = cfg.GetAssembler(asmLabel);
             var prog = asm.AssembleFragment(loadAddress, txtAssembler.Text + Environment.NewLine);
             var sc = new ServiceContainer();

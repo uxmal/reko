@@ -59,7 +59,7 @@ Options:
             TextReader input = Console.In;
             TextWriter output = Console.Out;
             var sc = new ServiceContainer();
-            var rekoCfg = DecompilerConfiguration.Load();
+            var rekoCfg = RekoConfigurationService.Load();
 
             var docopt = new Docopt();
             IDictionary<string, ValueObject> options;

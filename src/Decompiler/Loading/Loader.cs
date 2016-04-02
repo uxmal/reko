@@ -189,7 +189,7 @@ namespace Reko.Loading
                 Address entryAddr;
                 if (arch.TryParseAddress(rawFile.EntryPoint.Address, out entryAddr))
                 {
-                    if (!string.IsNullOrEmpty(rawFile.EntryPoint.Follow))
+                    if (rawFile.EntryPoint.Follow)
                     {
                         var rdr = arch.CreateImageReader(new MemoryArea(baseAddr, image), entryAddr);
                         return arch.ReadCodeAddress(0, rdr, arch.CreateProcessorState());
@@ -200,7 +200,6 @@ namespace Reko.Loading
                     return baseAddr;
                 }
             }
-
             return baseAddr;
         }
 
@@ -244,7 +243,7 @@ namespace Reko.Loading
         /// <returns>An appropriate image loader if known, a NullLoader if the image format is unknown.</returns>
         public T FindImageLoader<T>(string filename, byte[] rawBytes, Func<T> defaultLoader)
         {
-            foreach (LoaderElement e in cfgSvc.GetImageLoaders())
+            foreach (LoaderConfiguration e in cfgSvc.GetImageLoaders())
             {
                 if (!string.IsNullOrEmpty(e.MagicNumber) &&
                     ImageHasMagicNumber(rawBytes, e.MagicNumber, e.Offset)

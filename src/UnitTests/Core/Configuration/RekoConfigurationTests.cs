@@ -56,13 +56,10 @@ namespace Reko.UnitTests.Core.Configuration
                         Architecture="x86-real-16",
                         Environment="ms-dos",
                         Base="0C00:0100",
-                        Entries = new []
+                        Entry = new EntryPoint_v1
                         {
-                            new EntryPoint_v1
-                            {
-                                Address = "0C00:0100",
-                                Name = "MsDosCom_Start",
-                            }
+                            Address = "0C00:0100",
+                            Name = "MsDosCom_Start",
                         }
                     }
                 },

@@ -27,7 +27,7 @@ using System.Text;
 
 namespace Reko.Core.Configuration
 {
-    public interface LoaderElement
+    public interface LoaderConfiguration
     {
         string MagicNumber { get; }
         string TypeName { get; set; }
@@ -38,7 +38,7 @@ namespace Reko.Core.Configuration
         string Argument { get; set; }
     }
 
-    public class LoaderElementImpl : ConfigurationElement, LoaderElement
+    public class LoaderElementImpl : LoaderConfiguration
     {
         /// <summary>
         /// The first few bytes of an image file expressed as a hexadecimal string. The presence of such a
@@ -47,63 +47,33 @@ namespace Reko.Core.Configuration
         /// <remarks>
         /// For instance, the 'MZ' signature of MS-DOS executables is expressed as the hexadecimal string 4D5A.
         /// </remarks>
-        [ConfigurationProperty("MagicNumber", IsRequired = false)]
-        public string MagicNumber
-        {
-            get { return (string)this["MagicNumber"]; }
-            set { this["MagicNumber"] = value; }
-        }
+        public string MagicNumber { get; set; } 
 
         /// <summary>
         /// The offset at which to look for the magic number. By default, a missing value means
         /// offset 0.
         /// </summary>
-        [ConfigurationProperty("Offset", IsRequired = false)]
-        public string Offset
-        {
-            get { return (string) this["Offset"]; }
-            set { this["Offset"] = value; }
-        }
+        public string Offset { get; set; }
 
         /// <summary>
         /// The assembly-qualified name for the .NET type that is responsible for handling this
         /// format.
         /// </summary>
-        [ConfigurationProperty("Type", IsRequired = false)]
-        public string TypeName
-        {
-            get { return (string)this["Type"]; }
-            set { this["Type"] = value; }
-        }
+        public string TypeName { get; set; }
 
         /// <summary>
         /// If the file being opened has this file extension, this loader will be used.
         /// </summary>
-        [ConfigurationProperty("Extension", IsRequired = false)]
-        public string Extension
-        {
-            get { return (string) this["Extension"]; }
-            set { this["Extension"] = value; }
-        }
+        public string Extension { get; set; }
 
         /// <summary>
         /// A string label used to refer to specific loaders.
         /// </summary>
-        [ConfigurationProperty("Label", IsRequired = false)]
-        public string Label
-        {
-            get { return (string) this["Label"]; }
-            set { this["Label"] = value; }
-        }
+        public string Label { get; set; }
 
         /// <summary>
         /// A format string that can be used to pass parameters to a loader implemented as an executable.
         /// </summary>
-        [ConfigurationProperty("Argument", IsRequired = false)]
-        public string Argument
-        {
-            get { return (string) this["Argument"]; }
-            set { this["Argument"] = value; }
-        }
+        public string Argument { get; set; }
     }
 }

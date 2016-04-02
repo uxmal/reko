@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Loading
         private IServiceContainer sc;
         private FakeDecompilerEventListener eventListener;
         private IConfigurationService cfgSvc;
-        private List<SignatureFileElement> signatureFiles;
+        private List<SignatureFile> signatureFiles;
         private IProcessorArchitecture x86arch;
         private IPlatform msdosPlatform;
         private byte[] testImage;
@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Loading
             sc = new ServiceContainer();
             eventListener = new FakeDecompilerEventListener();
             cfgSvc = mr.Stub<IConfigurationService>();
-            signatureFiles = new List<SignatureFileElement>();
+            signatureFiles = new List<SignatureFile>();
             sc.AddService<DecompilerEventListener>(eventListener);
             sc.AddService<IConfigurationService>(cfgSvc);
             cfgSvc.Stub(d => d.GetSignatureFiles()).Return(signatureFiles);
@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Loading
         [Test(Description="Unless otherwise specified, fail loading unknown file formats.")]
         public void Ldr_UnknownImageType()
         {
-            cfgSvc.Stub(d => d.GetImageLoaders()).Return(new ArrayList());
+            cfgSvc.Stub(d => d.GetImageLoaders()).Return(new List<LoaderConfiguration>());
             cfgSvc.Stub(d => d.GetRawFile(null)).IgnoreArguments().Return(null);
             var testImage = new byte[] { 42, 42, 42, 42, };
             mr.ReplayAll();
@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Loading
         public void Ldr_UnknownImageType_DefaultSpecified()
         {
             Given_MsDosRawFileFormat();
-            cfgSvc.Stub(d => d.GetImageLoaders()).Return(new ArrayList());
+            cfgSvc.Stub(d => d.GetImageLoaders()).Return(new List<LoaderConfiguration>());
 
             var testImage = new byte[] { 42, 42, 42, 42, };
             mr.ReplayAll();
@@ -136,7 +136,7 @@ namespace Reko.UnitTests.Loading
         [Test]
         public void Ldr_AtOffset()
         {
-            cfgSvc.Stub(d => d.GetImageLoaders()).Return(new ArrayList
+            cfgSvc.Stub(d => d.GetImageLoaders()).Return(new List<LoaderConfiguration>
             {
                 new LoaderElementImpl {
                     Offset = "0002",
@@ -185,7 +185,7 @@ namespace Reko.UnitTests.Loading
 
         private void Given_ImageLoader()
         {
-            var ldrs = new List<LoaderElement>{
+            var ldrs = new List<LoaderConfiguration>{
                 new LoaderElementImpl {
                     MagicNumber = "2A2A",
                     TypeName = typeof(FakeImageLoader).AssemblyQualifiedName,

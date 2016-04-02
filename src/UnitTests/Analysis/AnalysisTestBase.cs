@@ -130,8 +130,8 @@ namespace Reko.UnitTests.Analysis
             var tlSvc = MockRepository.GenerateStub<ITypeLibraryLoaderService>();
             cfgSvc.Stub(c => c.GetEnvironment("ms-dos")).Return(env);
             cfgSvc.Replay();
-            env.Stub(e => e.TypeLibraries).Return(new TypeLibraryElementCollection());
-            env.CharacteristicsLibraries = new TypeLibraryElementCollection();
+            env.Stub(e => e.TypeLibraries).Return(new List<ITypeLibraryElement>());
+            env.Stub(e => e.CharacteristicsLibraries).Return(new List<ITypeLibraryElement>());
             env.Replay();
             tlSvc.Replay();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
