@@ -197,9 +197,6 @@ namespace Reko.Analysis
             }
             catch (Exception ex)
             {
-                //$TODO: if user has supplied a global variable that can't parse,
-                // we must notify them in the diagnostics window with a 
-                // WARNING.
                 Debug.Print("{0}\r\n{1}", ex.Message, ex.StackTrace);
                 return null;
             }
