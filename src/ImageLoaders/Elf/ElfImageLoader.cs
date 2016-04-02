@@ -2221,16 +2221,19 @@ namespace Reko.ImageLoaders.Elf
 
     public class ElfLoader32 : ElfLoader
     {
-        private Elf32_EHdr header32;
         private IProcessorArchitecture arch;
-        public List<Elf32_PHdr> ProgramHeaders { get; private set; }
-        public List<Elf32_SHdr> SectionHeaders { get; private set; }
 
         public ElfLoader32(ElfImageLoader imgLoader, Elf32_EHdr header32)
             : base(imgLoader)
         {
-            this.header32 = header32;
+            this.Header = header32;
+            this.Relocator = CreateRelocator(header32.e_machine);
         }
+
+        public Elf32_EHdr Header { get; private set; }
+        public List<Elf32_PHdr> ProgramHeaders { get; private set; }
+        public List<Elf32_SHdr> SectionHeaders { get; private set; }
+        public ElfRelocator Relocator { get; private set; }
 
         public int ELF32_R_SYM(int info) { return ((info) >> 8); }
         public int ELF32_ST_BIND(int i) { return ((i) >> 4); }
@@ -2240,7 +2243,7 @@ namespace Reko.ImageLoaders.Elf
         // Add appropriate symbols to the symbol table.  secIndex is the section index of the symbol table.
         private void AddSyms(Elf32_SHdr pSect)
         {
-            int e_type = this.header32.e_type;
+            int e_type = this.Header.e_type;
             // Calc number of symbols
             uint nSyms = pSect.sh_size / pSect.sh_entsize;
             uint offSym = pSect.sh_offset;
@@ -2366,13 +2369,22 @@ namespace Reko.ImageLoaders.Elf
 
         public override IProcessorArchitecture CreateArchitecture()
         {
-            arch = CreateArchitecture(header32.e_machine);
+            arch = CreateArchitecture(Header.e_machine);
             return arch;
         }
 
         public override ElfObjectLinker CreateLinker()
         {
             return new ElfObjectLinker32(this, arch, rawImage);
+        }
+
+        public ElfRelocator CreateRelocator(uint machine)
+        {
+            switch (machine)
+            {
+            case ElfImageLoader.EM_SPARC: return new SparcRelocator(this);
+            }
+            throw new NotSupportedException();
         }
 
         public ImageSegmentRenderer CreateRenderer(Elf32_SHdr shdr)
@@ -2389,7 +2401,7 @@ namespace Reko.ImageLoaders.Elf
 
         public override void Dump(TextWriter writer)
         {
-            writer.WriteLine("Entry: {0:X}", header32.e_entry);
+            writer.WriteLine("Entry: {0:X}", Header.e_entry);
             writer.WriteLine("Sections:");
             foreach (var sh in SectionHeaders)
             {
@@ -2478,7 +2490,7 @@ namespace Reko.ImageLoaders.Elf
 
         public override Address GetEntryPointAddress(Address addrBase)
         {
-            return Address.Ptr32(header32.e_entry);
+            return Address.Ptr32(Header.e_entry);
         }
 
         public override void GetPltLimits()
@@ -2512,7 +2524,7 @@ namespace Reko.ImageLoaders.Elf
 
         protected override int GetSectionNameOffset(uint idxString)
         {
-            return (int)(SectionHeaders[header32.e_shstrndx].sh_offset + idxString);
+            return (int)(SectionHeaders[Header.e_shstrndx].sh_offset + idxString);
         }
 
         public string GetStrPtr(int idx, uint offset)
@@ -2569,8 +2581,8 @@ namespace Reko.ImageLoaders.Elf
         public override int LoadProgramHeaderTable()
         {
             this.ProgramHeaders = new List<Elf32_PHdr>();
-            var rdr = imgLoader.CreateReader(header32.e_phoff);
-            for (int i = 0; i < header32.e_phnum; ++i)
+            var rdr = imgLoader.CreateReader(Header.e_phoff);
+            for (int i = 0; i < Header.e_phnum; ++i)
             {
                 ProgramHeaders.Add(Elf32_PHdr.Load(rdr));
             }
@@ -2580,8 +2592,8 @@ namespace Reko.ImageLoaders.Elf
         public override void LoadSectionHeaders()
         {
             this.SectionHeaders = new List<Elf32_SHdr>();
-            var rdr = imgLoader.CreateReader(header32.e_shoff);
-            for (int i = 0; i < header32.e_shnum; ++i)
+            var rdr = imgLoader.CreateReader(Header.e_shoff);
+            for (int i = 0; i < Header.e_shnum; ++i)
             {
                 SectionHeaders.Add(Elf32_SHdr.Load(rdr));
             }
@@ -2598,7 +2610,7 @@ namespace Reko.ImageLoaders.Elf
                 entryPoints.Add(ep);
             }
 
-            switch (header32.e_machine)
+            switch (Header.e_machine)
             {
             case ElfImageLoader.EM_386:
                 RelocateI386();
@@ -2636,7 +2648,7 @@ namespace Reko.ImageLoaders.Elf
                     // and shared objects!
                     uint destNatOrigin = 0;
                     uint destHostOrigin = 0;
-                    if (header32.e_type == ElfImageLoader.ET_REL)
+                    if (Header.e_type == ElfImageLoader.ET_REL)
                     {
                         int destSection = (int)SectionHeaders[i].sh_info;
                         destNatOrigin = SectionHeaders[destSection].sh_addr;
@@ -2656,7 +2668,7 @@ namespace Reko.ImageLoaders.Elf
                         byte relType = (byte)info;
                         uint symTabIndex = info >> 8;
                         uint pRelWord; // Pointer to the word to be relocated
-                        if (header32.e_type == ElfImageLoader.ET_REL)
+                        if (Header.e_type == ElfImageLoader.ET_REL)
                         {
                             pRelWord = destHostOrigin + r_offset;
                         }
@@ -2678,7 +2690,7 @@ namespace Reko.ImageLoaders.Elf
                         case 1: // R_386_32: S + A
                             // Read the symTabIndex'th symbol.
                             S = sym.st_value;
-                            if (header32.e_type == ElfImageLoader.ET_REL)
+                            if (Header.e_type == ElfImageLoader.ET_REL)
                             {
                                 nsec = sym.st_shndx;
                                 if (nsec >= 0 && nsec < SectionHeaders.Count)
@@ -2714,7 +2726,7 @@ namespace Reko.ImageLoaders.Elf
                                     AddSymbol(S, pName);
                                     //}
                                 }
-                                else if (header32.e_type == ElfImageLoader.ET_REL)
+                                else if (Header.e_type == ElfImageLoader.ET_REL)
                                 {
                                     nsec = sym.st_shndx;
                                     if (nsec >= 0 && nsec < SectionHeaders.Count)

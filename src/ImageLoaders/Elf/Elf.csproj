@@ -81,6 +81,7 @@
     <Compile Include="ElfHeaderRenderer.cs" />
     <Compile Include="ElfImageLoader.cs" />
     <Compile Include="ElfObjectLinker.cs" />
+    <Compile Include="ElfRelocator.cs" />
     <Compile Include="ElfSymbol.cs" />
     <Compile Include="ProgramHeaderType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

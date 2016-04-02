@@ -209,10 +209,12 @@ namespace Reko.UnitTests.ImageLoaders.Elf
 //.shstrtab          sh_type: SHT_STRTAB   sh_flags:      sh_addr; 00000000 sh_offset: 00000034 sh_size: 00000052 sh_link: 00000000 sh_info: 00000000 sh_addralign: 00000001 sh_entsize: 00000000
 //.text              sh_type: SHT_PROGBITS sh_flags: xa   sh_addr; 00000000 sh_offset: 00000088 sh_size: 00002154 sh_link: 00000000 sh_info: 00000000 sh_addralign: 00000008 sh_entsize: 00000000
 //.data              sh_type: SHT_PROGBITS sh_flags:  aw  sh_addr; 00000000 sh_offset: 000021E0 sh_size: 000000B4 sh_link: 00000000 sh_info: 00000000 sh_addralign: 00000008 sh_entsize: 00000000
+
 //.bss               sh_type: SHT_NOBITS   sh_flags:  aw  sh_addr; 00000000 sh_offset: 00002298 sh_size: 0000012C sh_link: 00000000 sh_info: 00000000 sh_addralign: 00000008 sh_entsize: 00000000
 //.stab.index        sh_type: SHT_PROGBITS sh_flags:      sh_addr; 00000000 sh_offset: 00002298 sh_size: 00000024 sh_link: 00000006 sh_info: 00000000 sh_addralign: 00000004 sh_entsize: 0000000C
 //.stab.indexstr     sh_type: SHT_STRTAB   sh_flags:      sh_addr; 00000000 sh_offset: 000022BC sh_size: 00000079 sh_link: 00000000 sh_info: 00000000 sh_addralign: 00000001 sh_entsize: 00000000
 //.symtab            sh_type: SHT_SYMTAB   sh_flags:  a   sh_addr; 00000000 sh_offset: 00002338 sh_size: 00000300 sh_link: 00000008 sh_info: 00000023 sh_addralign: 00000004 sh_entsize: 00000010
+
 //.strtab            sh_type: SHT_STRTAB   sh_flags:  a   sh_addr; 00000000 sh_offset: 00002638 sh_size: 00000232 sh_link: 00000000 sh_info: 00000000 sh_addralign: 00000001 sh_entsize: 00000000
 //.rela.text         sh_type: SHT_RELA     sh_flags:  a   sh_addr; 00000000 sh_offset: 0000286C sh_size: 00000150 sh_link: 00000007 sh_info: 00000002 sh_addralign: 00000004 sh_entsize: 0000000C
         [Test]

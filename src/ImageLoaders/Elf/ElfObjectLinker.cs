@@ -46,7 +46,7 @@ namespace Reko.ImageLoaders.Elf
 
         public Program LinkObject(IPlatform platform, byte[] rawImage)
         {
-            throw new NotImplementedException();
+            return new Program();
         }
 #if NYI
         public List<ElfSymbol> LoadSymbols(Elf32_SHdr section)
