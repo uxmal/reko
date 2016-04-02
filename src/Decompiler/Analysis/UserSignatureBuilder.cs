@@ -29,6 +29,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Reko.Analysis
 {
@@ -159,6 +160,52 @@ namespace Reko.Analysis
                 Debug.Print("{0}\r\n{1}", ex.Message, ex.StackTrace);
                 return null;
             }
+        }
+
+        //$BUG failed on "int var[6]"
+        public GlobalDataItem_v2 ParseGlobalDeclaration(string txtGlobal)
+        {
+            try
+            {
+                var tokens = txtGlobal.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                if (tokens.Length <= 1)
+                    return null;
+                var name = tokens[tokens.Length - 1];
+                if (!IsValidCIdentifier(name))
+                    return null;
+                var lexer = new CLexer(new StringReader("typedef " + txtGlobal + ";"));
+                var symbols = program.CreateSymbolTable();
+                var oldNamedTypes = symbols.NamedTypes.Count;
+                var cstate = new ParserState(symbols.NamedTypes.Keys);
+                var cParser = new CParser(cstate, lexer);
+                var decl = cParser.Parse_ExternalDecl();
+                if (decl == null)
+                    return null;
+
+                //$HACK: Relying on a side effect here to
+                // get both the global type. Ew.
+                symbols.AddDeclaration(decl);
+                if (symbols.NamedTypes.Count == oldNamedTypes)
+                    return null;
+                var type = symbols.NamedTypes[name];
+                var global = new GlobalDataItem_v2()
+                {
+                    Name = name,
+                    DataType = type,
+                };
+                return global;
+            }
+            catch (Exception ex)
+            {
+                Debug.Print("{0}\r\n{1}", ex.Message, ex.StackTrace);
+                return null;
+            }
+        }
+
+        //$REFACTOR: this is language and platform dependent.
+        public static bool IsValidCIdentifier(string id)
+        {
+            return Regex.IsMatch(id, "^[_a-zA-Z][_a-zA-Z0-9]*$");
         }
     }
 }

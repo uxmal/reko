@@ -18,26 +18,30 @@
  */
 #endregion
 
-using Reko.Gui.Controls;
 using Reko.Core;
+using Reko.Core.Output;
 using Reko.Core.Serialization;
 using Reko.Analysis;
 using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Diagnostics;
 using System.Drawing;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace Reko.Gui.Windows.Controls
 {
     public class DeclarationTextBox : IDisposable
     {
+        public event EventHandler<DeclarationEventArgs> ProcedureAdded;
+        public event EventHandler<DeclarationEventArgs> GlobalEdited;
+
         private TextBox text;
         private Label label;
 
         private Program program;
         private Address address;
+
+        private bool editProcedure;
 
         public DeclarationTextBox(Control bgControl)
         {
@@ -66,13 +70,17 @@ namespace Reko.Gui.Windows.Controls
         private string LabelText()
         {
             var addrStr = (address == null) ? "<null>" : address.ToString();
-            return "Enter procedure or global variable declaration at address " + addrStr;
+            var titleStr = editProcedure ? 
+                "Enter procedure declaration at the address" : 
+                "Enter procedure or global variable declaration at the address";
+            return titleStr + " " + addrStr;
         }
 
         void text_KeyDown(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
+                case Keys.Enter:
                 case Keys.Escape:
                     HideControls();
                     e.SuppressKeyPress = true;
@@ -85,6 +93,7 @@ namespace Reko.Gui.Windows.Controls
         {
             this.program = program;
             this.address = address;
+            this.editProcedure = program.Procedures.ContainsKey(address);
             label.Text = LabelText();
             label.Location = new Point(location.X, location.Y - text.Height - label.Height);
             text.Text = GetDeclarationText();
@@ -104,14 +113,31 @@ namespace Reko.Gui.Windows.Controls
             Procedure_v1 uProc;
             if (program.User.Procedures.TryGetValue(address, out uProc))
             {
-                return uProc.CSignature;
+                if (!string.IsNullOrEmpty(uProc.CSignature))
+                    return uProc.CSignature;
             }
             Procedure proc;
             if (program.Procedures.TryGetValue(address, out proc))
             {
                 return proc.Name;
             }
+            GlobalDataItem_v2 global;
+            if(program.User.Globals.TryGetValue(address, out global))
+            {
+                return GetGlobalDeclaration(global.DataType, global.Name);
+            }
             return null;
+        }
+
+        private string GetGlobalDeclaration(SerializedType dataType, string name)
+        {
+            var tlDeser = program.CreateTypeLibraryDeserializer();
+            var dt = dataType.Accept(tlDeser);
+            var sw = new StringWriter();
+            var tf = new TextFormatter(sw);
+            var tyreffo = new CTypeReferenceFormatter(program.Platform, tf, true);
+            tyreffo.WriteDeclaration(dt, name);
+            return sw.ToString();
         }
 
         public void HideControls()
@@ -123,12 +149,12 @@ namespace Reko.Gui.Windows.Controls
         void text_TextChanged(object sender, EventArgs e)
         {
             EnableControls();
-            ModifyDeclaration();
         }
 
         void text_LostFocus(object sender, EventArgs e)
         {
             HideControls();
+            ModifyDeclaration();
         }
 
         public void Dispose()
@@ -142,23 +168,26 @@ namespace Reko.Gui.Windows.Controls
         private void EnableControls()
         {
             ProcedureBase_v1 sProc;
+            GlobalDataItem_v2 global;
             var procText = text.Text;
-            if (!TryParseSignature(procText, out sProc))
+            if (TryParseSignature(procText, out sProc))
             {
-                // If parser failed, perhaps it's simply a valid name? 
-                if (!IsValidCIdentifier(procText))
-                {
-                    // Not valid name either, die.
-                    text.ForeColor = Color.Red;
-                    return;
-                }
+                text.ForeColor = SystemColors.ControlText;
+                return;
             }
-            text.ForeColor = SystemColors.ControlText;
-        }
-
-        private bool IsValidCIdentifier(string id)
-        {
-            return Regex.IsMatch(id, "^[_a-zA-Z][_a-zA-Z0-9]*$");
+            if (!editProcedure && TryParseGlobal(procText, out global))
+            {
+                text.ForeColor = SystemColors.ControlText;
+                return;
+            }
+            // If parser failed, perhaps it's simply a valid name? 
+            if (UserSignatureBuilder.IsValidCIdentifier(procText))
+            {
+                text.ForeColor = SystemColors.ControlText; ;
+                return;
+            }
+            // Not valid name either, die.
+            text.ForeColor = Color.Red;
         }
 
         private bool TryParseSignature(string txtSignature, out ProcedureBase_v1 sProc)
@@ -175,26 +204,70 @@ namespace Reko.Gui.Windows.Controls
             return sProc != null;
         }
 
+        private bool TryParseGlobal(string txtGlobal, out GlobalDataItem_v2 global)
+        {
+            global = null;
+            if (program == null || program.Platform == null)
+            {
+                return false;
+            }
+
+            // Attempt to parse the global declaration.
+            var usb = new UserSignatureBuilder(program);
+            global = usb.ParseGlobalDeclaration(txtGlobal);
+            return global != null;
+        }
+
         private void ModifyDeclaration()
         {
-            var addr = address;
             var declText = text.Text.Trim();
             Procedure proc;
-            if (!program.Procedures.TryGetValue(addr, out proc))
-                return;
+            if (!program.Procedures.TryGetValue(address, out proc))
+                proc = null;
             ProcedureBase_v1 sProc;
+            GlobalDataItem_v2 parsedGlobal;
+            string procName = null;
+            string CSignature = null;
             if (TryParseSignature(declText, out sProc))
             {
-                var up = program.EnsureUserProcedure(addr, sProc.Name);
-                up.CSignature = declText;
-                proc.Name = sProc.Name;
+                procName = sProc.Name;
+                CSignature = declText;
             }
-            else if (IsValidCIdentifier(declText) &&
-                     proc.Name != declText)
+            else if (UserSignatureBuilder.IsValidCIdentifier(declText) &&
+                    (proc == null || proc.Name != declText))
             {
-                var up = program.EnsureUserProcedure(addr, proc.Name);
-                proc.Name = declText;
+                procName = declText;
+            }
+            else if (!editProcedure && TryParseGlobal(declText, out parsedGlobal))
+            {
+                program.User.Procedures.Remove(address);
+                program.ModifyUserGlobal(
+                    address, parsedGlobal.DataType, parsedGlobal.Name
+                );
+                GlobalEdited.Fire(this, new DeclarationEventArgs(address));
+            }
+
+            if (procName != null)
+            {
+                program.User.Globals.Remove(address);
+                var up = program.EnsureUserProcedure(address, procName);
+                if (CSignature != null)
+                    up.CSignature = CSignature;
+                if (proc != null)
+                    proc.Name = procName;
+                else
+                    ProcedureAdded.Fire(this, new DeclarationEventArgs(address));
             }
         }
+    }
+
+    public class DeclarationEventArgs : EventArgs
+    {
+        public DeclarationEventArgs(Address address)
+        {
+            this.Address = address;
+        }
+
+        public Address Address { get; private set; }
     }
 }
