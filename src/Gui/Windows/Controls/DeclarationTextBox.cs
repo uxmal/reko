@@ -32,6 +32,9 @@ namespace Reko.Gui.Windows.Controls
 {
     public class DeclarationTextBox : IDisposable
     {
+        public event EventHandler<DeclarationEventArgs> ProcedureAdded;
+        public event EventHandler<DeclarationEventArgs> GlobalEdited;
+
         private TextBox text;
         private Label label;
 
@@ -77,6 +80,7 @@ namespace Reko.Gui.Windows.Controls
         {
             switch (e.KeyCode)
             {
+                case Keys.Enter:
                 case Keys.Escape:
                     HideControls();
                     e.SuppressKeyPress = true;
@@ -109,7 +113,8 @@ namespace Reko.Gui.Windows.Controls
             Procedure_v1 uProc;
             if (program.User.Procedures.TryGetValue(address, out uProc))
             {
-                return uProc.CSignature;
+                if (!string.IsNullOrEmpty(uProc.CSignature))
+                    return uProc.CSignature;
             }
             Procedure proc;
             if (program.Procedures.TryGetValue(address, out proc))
@@ -119,7 +124,6 @@ namespace Reko.Gui.Windows.Controls
             GlobalDataItem_v2 global;
             if(program.User.Globals.TryGetValue(address, out global))
             {
-
                 return GetGlobalDeclaration(global.DataType, global.Name);
             }
             return null;
@@ -145,12 +149,12 @@ namespace Reko.Gui.Windows.Controls
         void text_TextChanged(object sender, EventArgs e)
         {
             EnableControls();
-            ModifyDeclaration();
         }
 
         void text_LostFocus(object sender, EventArgs e)
         {
             HideControls();
+            ModifyDeclaration();
         }
 
         public void Dispose()
@@ -237,9 +241,10 @@ namespace Reko.Gui.Windows.Controls
             else if (!editProcedure && TryParseGlobal(declText, out parsedGlobal))
             {
                 program.User.Procedures.Remove(address);
-                var gbl = program.EnsureUserGlobal(address);
-                gbl.Name = parsedGlobal.Name;
-                gbl.DataType = parsedGlobal.DataType;
+                program.ModifyUserGlobal(
+                    address, parsedGlobal.DataType, parsedGlobal.Name
+                );
+                GlobalEdited.Fire(this, new DeclarationEventArgs(address));
             }
 
             if (procName != null)
@@ -248,8 +253,21 @@ namespace Reko.Gui.Windows.Controls
                 var up = program.EnsureUserProcedure(address, procName);
                 if (CSignature != null)
                     up.CSignature = CSignature;
-                proc.Name = procName;
+                if (proc != null)
+                    proc.Name = procName;
+                else
+                    ProcedureAdded.Fire(this, new DeclarationEventArgs(address));
             }
         }
+    }
+
+    public class DeclarationEventArgs : EventArgs
+    {
+        public DeclarationEventArgs(Address address)
+        {
+            this.Address = address;
+        }
+
+        public Address Address { get; private set; }
     }
 }

@@ -216,6 +216,37 @@ namespace Reko.Core
             item.Size = (uint)delta;
         }
 
+        public void RemoveItem(Address addr)
+        {
+            ImageMapItem item;
+            if (!TryFindItemExact(addr, out item))
+                return;
+
+            item.DataType = new UnknownType();
+
+            ImageMapItem mergedItem = item;
+
+            // Merge with previous item
+            ImageMapItem prevItem;
+            if (items.TryGetLowerBound((addr - 1), out prevItem) &&
+                prevItem.DataType is UnknownType)
+            {
+                mergedItem = prevItem;
+
+                mergedItem.Size = (uint)(item.EndAddress - mergedItem.Address);
+                items.Remove(item.Address);
+            }
+
+            // Merge with next item
+            ImageMapItem nextItem;
+            if (items.TryGetUpperBound((addr + 1), out nextItem) &&
+                nextItem.DataType is UnknownType)
+            {
+                mergedItem.Size = (uint)(nextItem.EndAddress - mergedItem.Address);
+                items.Remove(nextItem.Address);
+            }
+        }
+
         public ImageSegment AddSegment(MemoryArea mem, string segmentName, AccessMode mode)
         {
             var segment = new ImageSegment(

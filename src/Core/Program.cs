@@ -120,7 +120,7 @@ namespace Reko.Core
             return up;
         }
 
-        public GlobalDataItem_v2 EnsureUserGlobal(Address address)
+        public GlobalDataItem_v2 ModifyUserGlobal(Address address, SerializedType dataType, string name)
         {
             GlobalDataItem_v2 gbl;
             if (!User.Globals.TryGetValue(address, out gbl))
@@ -131,6 +131,27 @@ namespace Reko.Core
                 };
                 User.Globals.Add(address, gbl);
             }
+            else
+            {
+                this.ImageMap.RemoveItem(address);
+            }
+            gbl.Name = name;
+            gbl.DataType = dataType;
+
+            var tlDeser = CreateTypeLibraryDeserializer();
+            var dt = dataType.Accept(tlDeser);
+            var size = GetDataSize(address, dt);
+            var item = new ImageMapItem
+            {
+                Address = address,
+                Size = size,
+                DataType = dt,
+            };
+            if (size != 0)
+                this.ImageMap.AddItemWithSize(address, item);
+            else
+                this.ImageMap.AddItem(address, item);
+
             return gbl;
         }
 

@@ -96,6 +96,14 @@ namespace Reko.Gui.Windows
             combinedCodeView.CodeView.Model = nestedTextModel;
         }
 
+        private void RefreshProgram()
+        {
+            var topAddress = combinedCodeView.MixedCodeDataView.TopAddress;
+            ProgramChanged();
+            combinedCodeView.MixedCodeDataView.TopAddress = topAddress;
+            MixedCodeDataView_TopAddressChanged();
+        }
+
         private void CreateNestedTextModel()
         {
             this.nestedTextModel = new NestedTextModel();
@@ -192,6 +200,8 @@ namespace Reko.Gui.Windows
             this.navInteractor.Attach(this.combinedCodeView);
 
             declarationTextBox = new DeclarationTextBox(combinedCodeView);
+            declarationTextBox.ProcedureAdded += DeclarationTextBox_ProcedureAdded;
+            declarationTextBox.GlobalEdited += DeclarationTextBox_GlobalEdited;
 
             return combinedCodeView;
         }
@@ -331,6 +341,19 @@ namespace Reko.Gui.Windows
             var clientPoint = combinedCodeView.PointToClient(screenPoint);
             declarationTextBox.Show(clientPoint, program, addr);
         }
+
+        private void DeclarationTextBox_ProcedureAdded(object sender, DeclarationEventArgs e)
+        {
+            var address = new ProgramAddress(program, e.Address);
+            services.RequireService<ICommandFactory>().MarkProcedure(address).Do();
+            RefreshProgram();
+        }
+
+        private void DeclarationTextBox_GlobalEdited(object sender, DeclarationEventArgs e)
+        {
+            RefreshProgram();
+        }
+
 
         private void MixedCodeDataView_MouseDown(object sender, MouseEventArgs e)
         {
