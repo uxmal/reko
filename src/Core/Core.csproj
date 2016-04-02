@@ -203,6 +203,7 @@
     <Compile Include="Configuration\RawFileElement.cs" />
     <Compile Include="Configuration\RawFileElementCollection.cs" />
     <Compile Include="Configuration\RawFileSectionHandler.cs" />
+    <Compile Include="Configuration\RekoConfiguration_v1.cs" />
     <Compile Include="Configuration\SignatureFileElement.cs" />
     <Compile Include="Configuration\SignatureFileSectionHandler.cs" />
     <Compile Include="Configuration\TypeLibraryElement.cs" />

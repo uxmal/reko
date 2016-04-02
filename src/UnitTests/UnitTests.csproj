@@ -110,6 +110,7 @@
     <Compile Include="Core\CLanguage\LookAheadLexerTests.cs" />
     <Compile Include="Core\CLanguage\NamedDataTypeExtractorTests.cs" />
     <Compile Include="Core\CLanguage\TypedefTests.cs" />
+    <Compile Include="Core\Configuration\RekoConfigurationTests.cs" />
     <Compile Include="Core\Output\CTypeReferenceFormatterTests.cs" />
     <Compile Include="Core\Serialization\ArgumentDeserializerTests.cs" />
     <Compile Include="Core\Serialization\ArgumentSerializerTests.cs" />
