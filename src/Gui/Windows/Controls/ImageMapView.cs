@@ -328,7 +328,7 @@ namespace Reko.Gui.Windows.Controls
         void imageMap_MapChanged(object sender, EventArgs e)
         {
             if (InvokeRequired)
-                Invoke(new Action(Invalidate));
+                BeginInvoke(new Action(Invalidate));
             else
                 Invalidate();
         }

@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Core.Output
         {
             Debug.Assert(platform != null);
             Debug.Assert(formatter != null);
-            this.ctrf = new CTypeReferenceFormatter(platform, formatter, true);
+            this.ctrf = new CTypeReferenceFormatter(platform, formatter);
         }
 
         [Test]

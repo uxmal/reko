@@ -53,7 +53,7 @@ namespace Reko.Core.Output
         {
             this.formatter = formatter;
             this.codeFormatter = new CodeFormatter(formatter);
-            this.tw = new TypeReferenceFormatter(formatter, true);
+            this.tw = new TypeReferenceFormatter(formatter);
             var eqGlobalStruct = program.Globals.TypeVariable.Class;
             this.globals = eqGlobalStruct.ResolveAs<StructureType>();
             if (this.globals == null)
@@ -98,7 +98,7 @@ namespace Reko.Core.Output
         {
             this.formatter = formatter;
             this.codeFormatter = new CodeFormatter(formatter);
-            this.tw = new TypeReferenceFormatter(formatter, true);
+            this.tw = new TypeReferenceFormatter(formatter);
             this.globals = new StructureType();
             this.queue = new Queue<StructureField>(globals.Fields);
             try

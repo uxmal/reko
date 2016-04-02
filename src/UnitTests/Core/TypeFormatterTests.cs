@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Core
             var tf = new TextFormatter(sw) { Indentation = 0 };
             tyfo = new TypeFormatter(tf, false);
             tf = new TextFormatter(sw) { Indentation = 0 };
-            tyreffo = new TypeReferenceFormatter(tf, false);
+            tyreffo = new TypeReferenceFormatter(tf);
         }
         
         [Test]
@@ -180,7 +180,7 @@ struct a {
         [Test]
         public void TypeReference()
         {
-            tyreffo = new TypeReferenceFormatter(new TextFormatter(sw), true);
+            tyreffo = new TypeReferenceFormatter(new TextFormatter(sw));
             EquivalenceClass b = new EquivalenceClass(new TypeVariable(1));
             b.DataType = new StructureType("b", 0) { Fields = { { 4, PrimitiveType.Word32 } } };
 
@@ -195,7 +195,8 @@ struct a {
 
             StructureType s = new StructureType("s", 0);
             s.Fields.Add(
-                42, new MemberPointer(seg, PrimitiveType.Word32, 2));
+                42,
+                new MemberPointer(seg, PrimitiveType.Word32, 2));
             tyfo.Write(s, "meeble");
             string sExp = 
 @"struct s {

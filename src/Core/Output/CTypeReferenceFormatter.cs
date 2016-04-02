@@ -33,8 +33,8 @@ namespace Reko.Core.Output
     {
         private IPlatform platform;
 
-        public CTypeReferenceFormatter(IPlatform platform, Formatter writer, bool typeReference)
-            : base(writer, typeReference)
+        public CTypeReferenceFormatter(IPlatform platform, Formatter writer)
+            : base(writer)
         {
             this.platform = platform;
         }
