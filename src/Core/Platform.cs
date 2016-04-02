@@ -81,6 +81,7 @@ namespace Reko.Core
         ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host);
         SystemService FindService(int vector, ProcessorState state);
         SystemService FindService(RtlInstruction call, ProcessorState state);
+        string FormatProcedureName(Program program, Procedure proc);
         void LoadUserOptions(Dictionary<string, object> options);
         ExternalProcedure LookupProcedureByName(string moduleName, string procName);
         ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal);
@@ -230,6 +231,22 @@ namespace Reko.Core
                     .Where(cl => cl != null).ToArray();
             }
         }
+
+        /// <summary>
+        /// Formats a program/module and a procedure name together.
+        /// </summary>
+        /// <remarks>
+        /// This is done in the Windows way {module}!{procname}. Other platforms
+        /// may have other conventions. Please override this in the other platforms
+        /// to give the correct output.</remarks>
+        /// <param name="program"></param>
+        /// <param name="proc"></param>
+        /// <returns></returns>
+        public virtual string FormatProcedureName(Program program, Procedure proc)
+        {
+            return string.Format("{0}!{1}", program.Name, proc.Name);
+        }
+        
 
         public abstract int GetByteSizeFromCBasicType(CBasicType cb);
 

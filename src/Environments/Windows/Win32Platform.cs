@@ -36,8 +36,6 @@ namespace Reko.Environments.Windows
 {
 	public class Win32Platform : Platform
 	{
-		private SystemService int3svc;
-        private SystemService int29svc;
         private Dictionary<int, SystemService> services;
 
         //$TODO: http://www.delorie.com/djgpp/doc/rbinter/ix/29.html int 29 for console apps!
@@ -113,7 +111,7 @@ namespace Reko.Environments.Windows
             return new X86ProcedureSerializer((IntelArchitecture) Architecture, typeLoader, defaultConvention);
         }
 
-        //$REVIEW: should fetch this from config file?
+        //$REFACTOR: should be loaded from config file.
         public override int GetByteSizeFromCBasicType(CBasicType cb)
         {
             switch (cb)
@@ -131,7 +129,7 @@ namespace Reko.Environments.Windows
             }
         }
 
-        //$REVIEW: should fetch this from config file?
+        //$REFACTOR: should fetch this from config file?
         public override string GetPrimitiveTypeName(PrimitiveType pt, string language)
         {
             if (language != "C")

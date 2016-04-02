@@ -52,6 +52,8 @@ namespace Reko.Gui.Windows
             SetSearchResults(new EmptyResult());
         }
 
+        public IWindowFrame Frame { get; set; }
+
         public Control CreateControl()
         {
             return this.listView;

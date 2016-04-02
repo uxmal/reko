@@ -23,6 +23,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace Reko.Gui.Windows
 {
@@ -39,10 +40,22 @@ namespace Reko.Gui.Windows
         {
             if (proc == null)
                 return;
+#if OLD
             var pane = new CodeViewerPane();
             var frame = ShowWindow("codeViewerWindow", proc.Name, proc, pane);
             pane.FrameWindow = frame;
             pane.DisplayProcedure(program, proc);
+#else
+            var windowType = typeof(CombinedCodeViewInteractor).Name;
+            var frame = ShellUiSvc.FindDocumentWindow(windowType, proc);
+            if (frame == null)
+            {
+                var pane = new CombinedCodeViewInteractor();
+                frame = ShellUiSvc.CreateDocumentWindow(windowType, proc, proc.Name, pane);
+            }
+            frame.Show();
+            ((CombinedCodeViewInteractor)frame.Pane).DisplayProcedure(program, proc);
+#endif
         }
 
         public void DisplayDataType(Program program, DataType dt)

@@ -37,6 +37,7 @@ namespace Reko.Environments.AmigaOS.Design
         }
 
         public AmigaOSProperties Control { get; private set; }
+        public IWindowFrame Frame { get; set; }
         public IServiceProvider Services { get; private set; }
 
         public void SetSite(IServiceProvider sp)
