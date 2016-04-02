@@ -86,7 +86,7 @@ namespace Reko.Loading
             if (signature == null)
                 return null;
             var loaders = Services.RequireService<IConfigurationService>().GetImageLoaders();
-            var le = loaders.Cast<LoaderElement>().Where(l => l.Label == signature.Name).FirstOrDefault();  //$REVIEW: all of themn?
+            var le = loaders.Cast<LoaderConfiguration>().Where(l => l.Label == signature.Name).FirstOrDefault();  //$REVIEW: all of themn?
             if (le == null)
                 return null;
             var loader = Loader.CreateImageLoader<ImageLoader>(Services, le.TypeName, filename, image);

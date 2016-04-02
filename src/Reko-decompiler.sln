@@ -114,6 +114,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Installers", "Installers", "{2426E4D6-D2C7-4F06-B54C-5CFEA0804F02}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Drivers", "Drivers", "{583D1273-7630-480B-9020-D16B3A15D15D}"
+	ProjectSection(SolutionItems) = preProject
+		Drivers\reko.config = Drivers\reko.config
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsDecompiler", "Drivers\WindowsDecompiler\WindowsDecompiler.csproj", "{1C5DAC93-1202-4704-ABD5-3E49ADCF0E81}"
 	ProjectSection(ProjectDependencies) = postProject

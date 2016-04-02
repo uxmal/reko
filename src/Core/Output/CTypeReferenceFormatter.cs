@@ -20,27 +20,37 @@
 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Text;
+using Reko.Core.Types;
 
-namespace Reko.Core.Configuration
+namespace Reko.Core.Output
 {
-    public class RawFileElementCollection : ConfigurationElementCollection
+    /// <summary>
+    /// Outputs types specifically for the C programming language.
+    /// </summary>
+    public class CTypeReferenceFormatter : TypeReferenceFormatter
     {
-        public RawFileElementCollection()
+        private IPlatform platform;
+
+        public CTypeReferenceFormatter(IPlatform platform, Formatter writer)
+            : base(writer)
         {
-            AddElementName = "RawFile";
+            this.platform = platform;
         }
 
-        protected override ConfigurationElement CreateNewElement()
+        public override void WritePrimitiveTypeName(PrimitiveType t)
         {
-            return new RawFileElementImpl();
+            var keywordName = platform.GetPrimitiveTypeName(t, "C");
+            if (keywordName != null)
+                this.Formatter.WriteKeyword(keywordName);
+            else
+                this.Formatter.WriteType(t.Name, t);
         }
 
-        protected override object GetElementKey(ConfigurationElement element)
+        public override void WriteVoidType(VoidType t)
         {
-            return ((RawFileElement)element).Name;
+            this.Formatter.WriteKeyword("void");
         }
     }
 }

@@ -1,4 +1,24 @@
-﻿using System;
+﻿#region License
+/* 
+ * Copyright (C) 1999-2016 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,13 +31,13 @@ namespace Reko.Core.Output
         private Formatter fmt;
         private bool declaration;
         private string declaredName;
-        private bool typeReference;
 
-        public TypeReferenceFormatter(Formatter writer, bool typeReference)
+        public TypeReferenceFormatter(Formatter writer)
         {
             this.fmt = writer;
-            this.typeReference = typeReference;
         }
+
+        public Formatter Formatter { get { return fmt; } }
 
         public void WriteTypeReference(DataType dt)
         {
@@ -190,8 +210,7 @@ namespace Reko.Core.Output
                 fmt.Write(t.Name);
                 return;
             }
-            else if (t is PrimitiveType || t is VoidType)
-            {
+            else if (t is PrimitiveType) {
                 //case tree_code.VOID_TYPE:
                 //case tree_code.BOOLEAN_TYPE:
                 //case tree_code.CHAR_TYPE:
@@ -201,9 +220,14 @@ namespace Reko.Core.Output
                 //    t = TYPE_NAME(t);
                 //else
                 //    t = c_common_type_for_mode(TYPE_MODE(t), TREE_UNSIGNED(t));
-                fmt.Write(t.Name);
+                WritePrimitiveTypeName((PrimitiveType)t);
                 //if (declaration && !string.IsNullOrEmpty(declaredName))
                 //    fmt.Write(' ');
+                return;
+            }
+            else if (t is VoidType)
+            {
+                WriteVoidType((VoidType)t);
                 return;
             }
             else if (t is UnionType)
@@ -223,6 +247,16 @@ namespace Reko.Core.Output
                 fmt.Write("<anonymous>");
             else
                 fmt.Write(t.Name);
+        }
+
+        public virtual void WritePrimitiveTypeName(PrimitiveType t)
+        {
+            fmt.Write(t.Name);
+        }
+
+        public virtual void WriteVoidType(VoidType t)
+        {
+            fmt.Write(t.Name);
         }
 
         /* specifier-qualifier-list:

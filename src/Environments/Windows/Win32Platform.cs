@@ -129,6 +129,42 @@ namespace Reko.Environments.Windows
             }
         }
 
+        //$REFACTOR: should fetch this from config file?
+        public override string GetPrimitiveTypeName(PrimitiveType pt, string language)
+        {
+            if (language != "C")
+                return null;
+            switch (pt.Domain)
+            {
+            case Domain.Character:
+                switch (pt.Size)
+                {
+                case 1: return "char";
+                case 2: return "wchar_t";
+                }
+                break;
+            case Domain.SignedInt:
+                switch (pt.Size)
+                {
+                case 1: return "signed char";
+                case 2: return "short";
+                case 4: return "int";
+                case 8: return "__int64";
+                }
+                break;
+            case Domain.UnsignedInt:
+                switch (pt.Size)
+                {
+                case 1: return "unsigned char";
+                case 2: return "unsigned short";
+                case 4: return "unsigned int";
+                case 8: return "unsigned __int64";
+                }
+                break;
+            }
+            return null;
+        }
+
         public override ProcedureBase GetTrampolineDestination(ImageReader rdr, IRewriterHost host)
         {
             var rw = Architecture.CreateRewriter(

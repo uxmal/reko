@@ -18,8 +18,10 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Gui;
+using NUnit.Framework;
+using Reko.Core.Configuration;
+using Reko.ImageLoaders.Elf;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -27,21 +29,28 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Gui.Design
+namespace Reko.UnitTests.ImageLoaders.Elf
 {
-    public class PlatformDesigner : TreeNodeDesigner
+    [TestFixture]
+    public class SparcRelocatorTests
     {
-        public override void Initialize(object obj)
-        {
-            base.Initialize(obj);
-            SetTreeNodeProperties();
-        }
+        private MockRepository mr;
 
-        private void SetTreeNodeProperties()
+        [Test]
+        public void SparcRel_Test()
         {
-            TreeNode.Text = ((IPlatform)this.Component).Description;
-            TreeNode.ImageName = "Platform.ico";
-            TreeNode.ToolTipText = null;
+            this.mr = new MockRepository();
+            var sc = new ServiceContainer();
+            var cfgSvc = mr.Stub<IConfigurationService>();
+            sc.AddService(typeof(IConfigurationService), cfgSvc);
+            var file = @"D:\dev\uxmal\reko\master\subjects\Elf-Sparc\t5mat.o";
+            var bin = File.ReadAllBytes(file);
+            var elf = new ElfImageLoader(null, file, bin);
+            elf.LoadElfIdentification();
+            var loader = (ElfLoader32) elf.CreateLoader();
+            var sparc = (SparcRelocator)loader.Relocator;
+            loader.LoadSectionHeaders();
+            sparc.Relocate();
         }
     }
 }

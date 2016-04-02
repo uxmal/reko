@@ -357,7 +357,7 @@ IGNORE tab + cr + lf
         }
 
         //ExternalDecl = 
-        //  [ AttributeSequence]
+        //  [ AttributeSequence ]
         //  DeclSpecifierList 
         //  ( Declarator 
         //    ( {Decl} '{' {IF(IsDecl()) Decl | Stat} '}'   // FunctionDef
@@ -365,7 +365,6 @@ IGNORE tab + cr + lf
         //    )
         //  | ';'                                           // Decl
         //  ).
-
         public Decl Parse_ExternalDecl()
         {
             var attrs = Parse_AttributeSpecifierSeq();
@@ -400,10 +399,16 @@ IGNORE tab + cr + lf
             else if (token != CTokenType.EOF)
             {
                 // Function definition
-                while (lexer.Peek(0).Type != CTokenType.LBrace)
+                CToken tok;
+                for(;;)
                 {
+                    tok = lexer.Peek(0);
+                    if (tok.Type == CTokenType.EOF || tok.Type == CTokenType.LBrace)
+                        break;
                     // Old-style C definition.
-                    Parse_Decl();
+                    var decl = Parse_Decl();
+                    if (decl == null)
+                        break;
                 }
                 ExpectToken(CTokenType.LBrace);
                 var statements = new List<Stat>();
@@ -502,7 +507,7 @@ IGNORE tab + cr + lf
                 {
                     if (startOfDeclarator[(int) token.Type])
                         break;
-                    if (token.Type == CTokenType.Id && (!IsTypeName(token) || typeDeclsSeen > 0))
+                    if (token.Type == CTokenType.Id && typeDeclsSeen > 0)
                         break;
                 }
                 else

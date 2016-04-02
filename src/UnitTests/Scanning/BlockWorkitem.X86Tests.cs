@@ -63,8 +63,8 @@ namespace Reko.UnitTests.Scanning
             var env = mr.Stub<OperatingEnvironment>();
             var tlSvc = mr.Stub<ITypeLibraryLoaderService>();
             cfgSvc.Stub(c => c.GetEnvironment("ms-dos")).Return(env);
-            env.Stub(c => c.TypeLibraries).Return(new TypeLibraryElementCollection());
-            env.CharacteristicsLibraries = new TypeLibraryElementCollection();
+            env.Stub(c => c.TypeLibraries).Return(new List<ITypeLibraryElement>());
+            env.Stub(c => c.CharacteristicsLibraries).Return(new List<ITypeLibraryElement>());
             sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             sc.AddService<IConfigurationService>(cfgSvc);

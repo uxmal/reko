@@ -34,36 +34,21 @@ namespace Reko.Core.Configuration
         string TypeName { get; }
     }
 
-    public class ArchitectureElement : ConfigurationElement, Architecture
+    public class ArchitectureElement : Architecture
     {
         /// <summary>
         /// Short abbreviation for the architecture.
         /// </summary>
-        [ConfigurationProperty("Name", IsRequired = true)]
-        public string Name
-        {
-            get { return (string)this["Name"]; }
-            set { this["Name"] = value; }
-        }
+        public string Name { get; set; }
 
         /// <summary>
         /// Human-readable description of the processor architecture
         /// </summary>
-        [ConfigurationProperty("Description", IsRequired = true)]
-        public string Description
-        {
-            get { return (string)this["Description"]; }
-            set { this["Description"] = value; }
-        }
+        public string Description { get; set; }
 
         /// <summary>
         /// .NET type name for the architecture.
         /// </summary>
-        [ConfigurationProperty("Type", IsRequired = true)]
-        public string TypeName
-        {
-            get { return (string)this["Type"]; }
-            set { this["Type"] = value; }
-        }
+        public string TypeName { get; set; }
     }
 }

@@ -45,9 +45,9 @@ namespace Reko.UnitTests.Structure
             var env = MockRepository.GenerateStub<OperatingEnvironment>();
             var tlSvc = MockRepository.GenerateStub<ITypeLibraryLoaderService>();
             cfgSvc.Stub(c => c.GetEnvironment("ms-dos")).Return(env);
-            cfgSvc.Stub(c => c.GetSignatureFiles()).Return(new List<SignatureFileElement>());
-            env.Stub(e => e.TypeLibraries).Return(new TypeLibraryElementCollection());
-            env.CharacteristicsLibraries = new TypeLibraryElementCollection();
+            cfgSvc.Stub(c => c.GetSignatureFiles()).Return(new List<SignatureFile>());
+            env.Stub(e => e.TypeLibraries).Return(new List<ITypeLibraryElement>());
+            env.Stub(e => e.CharacteristicsLibraries).Return(new List<ITypeLibraryElement>());
             sc = new ServiceContainer();
             sc.AddService<IConfigurationService>(cfgSvc);
             sc.AddService<DecompilerHost>(new FakeDecompilerHost());

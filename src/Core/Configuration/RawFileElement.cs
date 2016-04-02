@@ -45,48 +45,19 @@ namespace Reko.Core.Configuration
     //  </RawFile>
     //</RawFiles>
 
-    public class RawFileElementImpl : ConfigurationElement, RawFileElement
+    public class RawFileElementImpl : RawFileElement
     {
-        [ConfigurationProperty("Name", IsRequired = true)]
-        public string Name
-        {
-            get { return (string)this["Name"]; }
-            set { this["Name"] = value; }
-        }
+        public string Name { get; set; }
 
-        [ConfigurationProperty("Description", IsRequired = true)]
-        public string Description
-        {
-            get { return (string)this["Description"]; }
-            set { this["Description"] = value; }
-        }
+        public string Description { get; set; }
 
-        [ConfigurationProperty("Arch", IsRequired = true)]
-        public string Architecture
-        {
-            get { return (string)this["Arch"]; }
-            set { this["Arch"] = value; }
-        }
+        public string Architecture { get; set; }
 
-        [ConfigurationProperty("Env", IsRequired = false)]
-        public string Environment
-        {
-            get { return (string)this["Env"]; }
-            set { this["Env"] = value; }
-        }
+        public string Environment { get; set; }
 
-        [ConfigurationProperty("Base", IsRequired = true)]
-        public string BaseAddress
-        {
-            get { return (string)this["Base"]; }
-            set { this["Base"] = value; }
-        }
+        public string BaseAddress { get; set; }
 
-        [ConfigurationProperty("Entry")]
-        public EntryPointElement EntryPoint 
-        {
-            get { return (EntryPointElement)this["Entry"];}
-        }
+        public EntryPointElement EntryPoint { get; set; }
     }
 
     //    <Entry Addr="0C00:0000" Name="MsDosCom_Start">
@@ -94,25 +65,10 @@ namespace Reko.Core.Configuration
     //    </Entry>
     public class EntryPointElement : ConfigurationElement
     {
-        [ConfigurationProperty("Name", IsRequired=true)]
-        public string Name
-        {
-            get { return (string)this["Name"]; }
-            set { this["Name"] = value; }
-        }
+        public string Name { get; set; }
 
-        [ConfigurationProperty("Addr", IsRequired = true)]
-        public string Address
-        {
-            get { return (string)this["Addr"]; }
-            set { this["Addr"] = value; }
-        }
+        public string Address { get; set; }
 
-        [ConfigurationProperty("Follow", IsRequired = false)]
-        public string Follow
-        {
-            get { return (string)this["Follow"]; }
-            set { this["Follow"] = value; }
-        }
+        public bool Follow { get; set; }
     }
 }
