@@ -135,7 +135,7 @@ namespace Reko.Gui.Windows.Controls
             var dt = dataType.Accept(tlDeser);
             var sw = new StringWriter();
             var tf = new TextFormatter(sw);
-            var tyreffo = new TypeReferenceFormatter(tf, true);
+            var tyreffo = new CTypeReferenceFormatter(program.Platform, tf, true);
             tyreffo.WriteDeclaration(dt, name);
             return sw.ToString();
         }
