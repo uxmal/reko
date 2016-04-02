@@ -162,6 +162,7 @@ namespace Reko.Analysis
             }
         }
 
+        //$BUG failed on "int var[6]"
         public GlobalDataItem_v2 ParseGlobalDeclaration(string txtGlobal)
         {
             try
@@ -204,6 +205,7 @@ namespace Reko.Analysis
             }
         }
 
+        //$REFACTOR: this is language and platform dependent.
         public static bool IsValidCIdentifier(string id)
         {
             return Regex.IsMatch(id, "^[_a-zA-Z][_a-zA-Z0-9]*$");
