@@ -155,6 +155,12 @@ namespace Reko.Core
             return gbl;
         }
 
+        public void RemoveUserGlobal(Address address)
+        {
+            User.Globals.Remove(address);
+            ImageMap.RemoveItem(address);
+        }
+
         /// <summary>
         /// Represents a _pointer_ to a structure that contains all the 
         /// global variables of the program. 

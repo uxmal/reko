@@ -365,6 +365,12 @@ namespace Reko.Gui.Windows.Controls
             return new Point((int)rect.Left, (int)rect.Top);
         }
 
+        public Point GetAnchorMiddlePoint()
+        {
+            var rect = LogicalPositionToClient(anchorPos);
+            return new Point((int)rect.Left, (int)((rect.Top + rect.Bottom) / 2));
+        }
+
         /// <summary>
         /// Returns the span located at the point <paramref name="pt"/>.
         /// </summary>
@@ -404,8 +410,8 @@ namespace Reko.Gui.Windows.Controls
                 Character = 0
             };
             this.anchorPos = cursorPos;
-            vScroll.Value = 0;
             ChangeLayout();
+            UpdateScrollbar();
             ModelChanged.Fire(this);
         }
 

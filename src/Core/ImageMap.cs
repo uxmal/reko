@@ -245,6 +245,8 @@ namespace Reko.Core
                 mergedItem.Size = (uint)(nextItem.EndAddress - mergedItem.Address);
                 items.Remove(nextItem.Address);
             }
+
+            MapChanged.Fire(this);
         }
 
         public ImageSegment AddSegment(MemoryArea mem, string segmentName, AccessMode mode)

@@ -32,8 +32,7 @@ namespace Reko.Gui.Windows.Controls
 {
     public class DeclarationTextBox : IDisposable
     {
-        public event EventHandler<DeclarationEventArgs> ProcedureAdded;
-        public event EventHandler<DeclarationEventArgs> GlobalEdited;
+        private IServiceProvider services;
 
         private TextBox text;
         private Label label;
@@ -43,7 +42,7 @@ namespace Reko.Gui.Windows.Controls
 
         private bool editProcedure;
 
-        public DeclarationTextBox(Control bgControl)
+        public DeclarationTextBox(Control bgControl, IServiceProvider services)
         {
             Debug.Print(bgControl.GetType().FullName);
             text = new TextBox
@@ -65,6 +64,8 @@ namespace Reko.Gui.Windows.Controls
             text.LostFocus += text_LostFocus;
             text.TextChanged += text_TextChanged;
             text.KeyDown += text_KeyDown;
+
+            this.services = services;
         }
 
         private string LabelText()
@@ -244,30 +245,22 @@ namespace Reko.Gui.Windows.Controls
                 program.ModifyUserGlobal(
                     address, parsedGlobal.DataType, parsedGlobal.Name
                 );
-                GlobalEdited.Fire(this, new DeclarationEventArgs(address));
             }
 
             if (procName != null)
             {
-                program.User.Globals.Remove(address);
+                program.RemoveUserGlobal(address);
                 var up = program.EnsureUserProcedure(address, procName);
                 if (CSignature != null)
                     up.CSignature = CSignature;
                 if (proc != null)
                     proc.Name = procName;
                 else
-                    ProcedureAdded.Fire(this, new DeclarationEventArgs(address));
+                {
+                    var pAddr = new ProgramAddress(program, address);
+                    services.RequireService<ICommandFactory>().MarkProcedure(pAddr).Do();
+                }
             }
         }
-    }
-
-    public class DeclarationEventArgs : EventArgs
-    {
-        public DeclarationEventArgs(Address address)
-        {
-            this.Address = address;
-        }
-
-        public Address Address { get; private set; }
     }
 }

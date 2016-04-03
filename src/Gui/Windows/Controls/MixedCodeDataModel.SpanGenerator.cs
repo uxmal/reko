@@ -163,7 +163,6 @@ namespace Reko.Gui.Windows.Controls
                 var cbBytes = linEnd - addr.ToLinear();
                 var cbPadding = BytesPerLine - (cbFiller + cbBytes);
 
-                var sb = new StringBuilder();
                 var abCode = new List<byte>();
 
                 // Do any filler first
@@ -178,8 +177,9 @@ namespace Reko.Gui.Windows.Controls
                 {
                     if (rdr.IsValid)
                     {
+                        var addr = rdr.Address;
                         byte b = rdr.ReadByte();
-                        sb.AppendFormat(" {0:X2}", b);
+                        line.Add(new MemoryTextSpan(addr, string.Format(" {0:X2}", b), UiStyles.MemoryWindow));
                         //$BUG: should use platform.Encoding
                         abCode.Add(b);
                     }
@@ -190,7 +190,6 @@ namespace Reko.Gui.Windows.Controls
                         break;
                     }
                 }
-                line.Add(new MemoryTextSpan(sb.ToString(), UiStyles.MemoryWindow));
 
                 // Do any padding after.
 
@@ -242,10 +241,18 @@ namespace Reko.Gui.Windows.Controls
         {
             private string text;
 
+            public Address Address { get; private set; }
+
             public MemoryTextSpan(string text, string style)
             {
                 this.text = text;
                 base.Style = style;
+            }
+
+            public MemoryTextSpan(Address address, string text, string style) : this(text, style)
+            {
+                this.Tag = this;
+                this.Address = address;
             }
 
             public override string GetText()
