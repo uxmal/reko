@@ -404,8 +404,8 @@ namespace Reko.Gui.Windows.Controls
                 Character = 0
             };
             this.anchorPos = cursorPos;
-            vScroll.Value = 0;
             ChangeLayout();
+            UpdateScrollbar();
             ModelChanged.Fire(this);
         }
 

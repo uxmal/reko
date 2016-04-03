@@ -38,7 +38,22 @@ namespace Reko.Gui.Windows.Controls
             OnProgramChanged();
         }
 
-        public Program Program { get { return program; } set { program = value; ProgramChanged.Fire(this); } }
+        public Program Program {
+            get
+            {
+                return program;
+            }
+            set
+            {
+                if (program != null)
+                    program.ImageMap.MapChanged -= ImageMap_MapChanged;
+                program = value;
+                if (program != null)
+                    program.ImageMap.MapChanged += ImageMap_MapChanged;
+                ProgramChanged.Fire(this);
+            }
+        }
+
         private Program program;
         public event EventHandler ProgramChanged;
 
@@ -75,6 +90,15 @@ namespace Reko.Gui.Windows.Controls
         {
             addrTop = (Address)Model.CurrentPosition;
             base.OnScroll();
+        }
+
+        private void ImageMap_MapChanged(object sender, EventArgs e)
+        {
+            var currentAddress = (Address)Model.CurrentPosition;
+            var model = new MixedCodeDataModel(program);
+            model.MoveToLine(currentAddress, 0);
+            this.addrTop = (Address)model.CurrentPosition;
+            this.Model = model;
         }
     }
 }

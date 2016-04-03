@@ -91,16 +91,15 @@ namespace Reko.Gui.Windows
                 return;
 
             combinedCodeView.MixedCodeDataView.Program = program;
-
-            CreateNestedTextModel();
-            combinedCodeView.CodeView.Model = nestedTextModel;
         }
 
-        private void RefreshProgram()
+        private void MixedCodeDataView_ModelChanged(object sender, EventArgs e)
         {
-            var topAddress = combinedCodeView.MixedCodeDataView.TopAddress;
-            ProgramChanged();
-            combinedCodeView.MixedCodeDataView.TopAddress = topAddress;
+            if (combinedCodeView == null)
+                return;
+
+            CreateNestedTextModel();
+
             MixedCodeDataView_TopAddressChanged();
         }
 
@@ -151,6 +150,8 @@ namespace Reko.Gui.Windows
                     this.nodeByAddress[curAddr] = dataItemNode;
                 }
             }
+
+            combinedCodeView.CodeView.Model = nestedTextModel;
         }
 
         public Control CreateControl()
@@ -165,6 +166,7 @@ namespace Reko.Gui.Windows
             this.combinedCodeView.MixedCodeDataView.VScrollValueChanged += MixedCodeDataView_VScrollValueChanged;
             this.combinedCodeView.MixedCodeDataView.Services = services;
             this.combinedCodeView.MixedCodeDataView.MouseDown += MixedCodeDataView_MouseDown;
+            this.combinedCodeView.MixedCodeDataView.ModelChanged += MixedCodeDataView_ModelChanged;
 
             this.combinedCodeView.CodeView.VScrollValueChanged += CodeView_VScrollValueChanged;
             this.combinedCodeView.CodeView.Services = services;
@@ -199,9 +201,7 @@ namespace Reko.Gui.Windows
             this.navInteractor = new NavigationInteractor<Address>();
             this.navInteractor.Attach(this.combinedCodeView);
 
-            declarationTextBox = new DeclarationTextBox(combinedCodeView);
-            declarationTextBox.ProcedureAdded += DeclarationTextBox_ProcedureAdded;
-            declarationTextBox.GlobalEdited += DeclarationTextBox_GlobalEdited;
+            declarationTextBox = new DeclarationTextBox(combinedCodeView, services);
 
             return combinedCodeView;
         }
@@ -341,19 +341,6 @@ namespace Reko.Gui.Windows
             var clientPoint = combinedCodeView.PointToClient(screenPoint);
             declarationTextBox.Show(clientPoint, program, addr);
         }
-
-        private void DeclarationTextBox_ProcedureAdded(object sender, DeclarationEventArgs e)
-        {
-            var address = new ProgramAddress(program, e.Address);
-            services.RequireService<ICommandFactory>().MarkProcedure(address).Do();
-            RefreshProgram();
-        }
-
-        private void DeclarationTextBox_GlobalEdited(object sender, DeclarationEventArgs e)
-        {
-            RefreshProgram();
-        }
-
 
         private void MixedCodeDataView_MouseDown(object sender, MouseEventArgs e)
         {
