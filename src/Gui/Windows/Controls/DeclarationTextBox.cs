@@ -249,7 +249,7 @@ namespace Reko.Gui.Windows.Controls
 
             if (procName != null)
             {
-                program.User.Globals.Remove(address);
+                program.RemoveUserGlobal(address);
                 var up = program.EnsureUserProcedure(address, procName);
                 if (CSignature != null)
                     up.CSignature = CSignature;
