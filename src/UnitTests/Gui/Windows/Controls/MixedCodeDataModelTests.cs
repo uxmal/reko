@@ -173,16 +173,19 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             // Read the first instruction
             var lines = mcdm.GetLineSpans(1);
             Assert.AreEqual(1, lines.Length);
+            Assert.AreEqual("00041000", lines[0].Position.ToString());
             Assert.AreEqual("00041002", mcdm.CurrentPosition.ToString());
 
             // Read the second and last instruction.
             lines = mcdm.GetLineSpans(1);
             Assert.AreEqual(1, lines.Length);
+            Assert.AreEqual("00041002", lines[0].Position.ToString());
             Assert.AreEqual("00042000", mcdm.CurrentPosition.ToString());
 
             // Read the 8 remaining bytes from .data
             lines = mcdm.GetLineSpans(1);
             Assert.AreEqual(1, lines.Length);
+            Assert.AreEqual("00042000", lines[0].Position.ToString());
             Assert.AreEqual("00042008", mcdm.CurrentPosition.ToString());
         }
 
@@ -210,6 +213,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             // This should return the first line of the .data segment.
             var lines = mcdm.GetLineSpans(1);
             Assert.AreEqual(1, lines.Length);
+            Assert.AreEqual("00042000", lines[0].Position.ToString());
             Assert.AreEqual("00042008", mcdm.CurrentPosition.ToString());
         }
 
