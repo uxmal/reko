@@ -109,6 +109,14 @@ namespace Reko.UnitTests.Core
             Assert.AreEqual("<unknown>", lastItem.DataType.ToString());
             Assert.AreEqual("00010004", lastItem.Address.ToString());
             Assert.AreEqual(4, lastItem.Size);
+
+            program.RemoveUserGlobal(addrBase);
+            Assert.AreEqual(0, program.User.Globals.Count);
+            Assert.AreEqual(1, program.ImageMap.Items.Count);
+            item = program.ImageMap.Items.Values[0];
+            Assert.AreEqual("<unknown>", item.DataType.ToString());
+            Assert.AreEqual("00010000", item.Address.ToString());
+            Assert.AreEqual(8, item.Size);
         }
 
         [Test]
