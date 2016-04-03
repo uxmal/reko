@@ -233,22 +233,14 @@ namespace Reko.Gui.Windows.Controls
                 i => i.Contains(addr));
         }
 
-        public class MemoryTextSpanTag
-        {
-            public Address Address { get; private set; }
-
-            public MemoryTextSpanTag(Address address)
-            {
-                this.Address = address;
-            }
-        }
-
         /// <summary>
         /// An segment of memory
         /// </summary>
         public class MemoryTextSpan : TextSpan
         {
             private string text;
+
+            public Address Address { get; private set; }
 
             public MemoryTextSpan(string text, string style)
             {
@@ -258,7 +250,8 @@ namespace Reko.Gui.Windows.Controls
 
             public MemoryTextSpan(Address address, string text, string style) : this(text, style)
             {
-                Tag = new MemoryTextSpanTag(address);
+                this.Tag = this;
+                this.Address = address;
             }
 
             public override string GetText()

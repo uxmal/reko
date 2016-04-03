@@ -104,10 +104,10 @@ namespace Reko.Gui.Windows.Controls
         public Address GetAnchorAddress()
         {
             var pt = GetAnchorMiddlePoint();
-            var tag = GetTagFromPoint(pt) as MixedCodeDataModel.MemoryTextSpanTag;
-            if (tag == null)
+            var memoryTextSpan = GetTagFromPoint(pt) as MixedCodeDataModel.MemoryTextSpan;
+            if (memoryTextSpan == null || memoryTextSpan.Address == null)
                 return (Address)anchorPos.Line;
-            return tag.Address;
+            return memoryTextSpan.Address;
         }
     }
 }
