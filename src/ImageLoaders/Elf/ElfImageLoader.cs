@@ -47,189 +47,6 @@ namespace Reko.ImageLoaders.Elf
         private const byte ELFCLASS64 = 2;              // 64-bit object file
         public const int HEADER_OFFSET = 0x0010;
 
-        public const ushort EM_NONE = 0;           // No machine 
-        public const ushort EM_M32 = 1;            // AT&T WE 32100 
-        public const ushort EM_SPARC = 2;          // SPARC 
-        public const ushort EM_386 = 3;            // Intel 80386 
-        public const ushort EM_68K = 4;            // Motorola 68000 
-        public const ushort EM_88K = 5;            // Motorola 88000 
-        //public const ushort RESERVED 6 Reserved for future use 
-        public const ushort EM_860 = 7;            // Intel 80860 
-        public const ushort EM_MIPS = 8;           // MIPS I Architecture 
-        public const ushort EM_S370 = 9;           // IBM System/370 Processor 
-        public const ushort EM_MIPS_RS3_LE = 10;   // MIPS RS3000 Little-endian 
-        //public const ushort RESERVED 11-14 Reserved for future use 
-        public const ushort EM_PARISC = 15;        // Hewlett-Packard PA-RISC 
-        //public const ushort RESERVED 16 Reserved for future use 
-        public const ushort EM_VPP500 = 17;        // Fujitsu VPP500 
-        public const ushort EM_SPARC32PLUS = 18;   // Enhanced instruction set SPARC 
-        public const ushort EM_960 = 19;           // Intel 80960 
-        public const ushort EM_PPC = 20;           // PowerPC 
-        public const ushort EM_PPC64 = 21;         // 64-bit PowerPC 
-        //public const ushort RESERVED 22-35 Reserved for future use 
-        public const ushort EM_V800 = 36;          // NEC V800 
-        public const ushort EM_FR20 = 37;          // Fujitsu FR20 
-        public const ushort EM_RH32 = 38;          // TRW RH-32 
-        public const ushort EM_RCE = 39;           // Motorola RCE 
-        public const ushort EM_ARM = 40;           // Advanced RISC Machines ARM 
-        public const ushort EM_ALPHA = 41;         // Digital Alpha 
-        public const ushort EM_SH = 42;            // Hitachi SH 
-        public const ushort EM_SPARCV9 = 43;       // SPARC Version 9 
-        public const ushort EM_TRICORE = 44;       // Siemens Tricore embedded processor 
-        public const ushort EM_ARC = 45;           // Argonaut RISC Core, Argonaut Technologies Inc. 
-        public const ushort EM_H8_300 = 46;        // Hitachi H8/300 
-        public const ushort EM_H8_300H = 47;       // Hitachi H8/300H 
-        public const ushort EM_H8S = 48;           // Hitachi H8S 
-        public const ushort EM_H8_500 = 49;        // Hitachi H8/500 
-        public const ushort EM_IA_64 = 50;         // Intel IA-64 processor architecture 
-        public const ushort EM_MIPS_X = 51;        // Stanford MIPS-X 
-        public const ushort EM_COLDFIRE = 52;      // Motorola ColdFire 
-        public const ushort EM_68HC12 = 53;        // Motorola M68HC12 
-        public const ushort EM_MMA = 54;           // Fujitsu MMA Multimedia Accelerator 
-        public const ushort EM_PCP = 55;           // Siemens PCP 
-        public const ushort EM_NCPU = 56;          // Sony nCPU embedded RISC processor 
-        public const ushort EM_NDR1 = 57;          // Denso NDR1 microprocessor 
-        public const ushort EM_STARCORE = 58;      // Motorola Star*Core processor 
-        public const ushort EM_ME16 = 59;          // Toyota ME16 processor 
-        public const ushort EM_ST100 = 60;         // STMicroelectronics ST100 processor 
-        public const ushort EM_TINYJ = 61;         // Advanced Logic Corp. TinyJ embedded processor family 
-        public const ushort EM_X86_64 = 62;        // AMD x86-64 architecture
-        //public const ushort Reserved 63-65 Reserved for future use 
-        public const ushort EM_FX66 = 66;          // Siemens FX66 microcontroller 
-        public const ushort EM_ST9PLUS = 67;       // STMicroelectronics ST9+ 8/16 bit microcontroller 
-        public const ushort EM_ST7 = 68;           // STMicroelectronics ST7 8-bit microcontroller 
-        public const ushort EM_68HC16 = 69;        // Motorola MC68HC16 Microcontroller 
-        public const ushort EM_68HC11 = 70;        // Motorola MC68HC11 Microcontroller 
-        public const ushort EM_68HC08 = 71;        // Motorola MC68HC08 Microcontroller 
-        public const ushort EM_68HC05 = 72;        // Motorola MC68HC05 Microcontroller 
-        public const ushort EM_SVX = 73;           // Silicon Graphics SVx 
-        public const ushort EM_ST19 = 74;          // STMicroelectronics ST19 8-bit microcontroller 
-        public const ushort EM_VAX = 75;           // Digital VAX  
-        public const ushort EM_CRIS = 76;          // Axis Communications 32-bit embedded processor 
-        public const ushort EM_JAVELIN = 77;       // Infineon Technologies 32-bit embedded processor 
-        public const ushort EM_FIREPATH = 78;      // Element 14 64-bit DSP Processor 
-        public const ushort EM_ZSP = 79;           // LSI Logic 16-bit DSP Processor 
-        public const ushort EM_MMIX = 80;          // Donald Knuth's educational 64-bit processor 
-        public const ushort EM_HUANY = 81;         // Harvard University machine-independent object files 
-        public const ushort EM_PRISM = 82;         // SiTera Prism 
-        public const ushort EM_AVR = 83; // Atmel AVR 8-bit microcontroller
-        public const ushort EM_FR30 = 84; // Fujitsu FR30
-        public const ushort EM_D10V = 85; // Mitsubishi D10V
-        public const ushort EM_D30V = 86; // Mitsubishi D30V
-        public const ushort EM_V850 = 87; // NEC v850
-        public const ushort EM_M32R = 88; // Mitsubishi M32R
-        public const ushort EM_MN10300 = 89; // Matsushita MN10300
-        public const ushort EM_MN10200 = 90; // Matsushita MN10200
-        public const ushort EM_PJ = 91; // picoJava
-        public const ushort EM_OPENRISC = 92; // OpenRISC 32-bit embedded processor
-        public const ushort EM_ARC_COMPACT = 93; // ARC International ARCompact processor (old
-                                                 // spelling/synonym: EM_ARC_A5)
-        public const ushort EM_XTENSA = 94; // Tensilica Xtensa Architecture
-        public const ushort EM_VIDEOCORE = 95; // Alphamosaic VideoCore processor
-        public const ushort EM_TMM_GPP = 96; // Thompson Multimedia General Purpose Processor
-        public const ushort EM_NS32K = 97; // National Semiconductor 32000 series
-        public const ushort EM_TPC = 98; // Tenor Network TPC processor
-        public const ushort EM_SNP1K = 99; // Trebia SNP 1000 processor
-        public const ushort EM_ST200 = 100; // STMicroelectronics (www.st.com) ST200
-        public const ushort EM_IP2K = 101; // Ubicom IP2xxx microcontroller family
-        public const ushort EM_MAX = 102; // MAX Processor
-        public const ushort EM_CR = 103; // National Semiconductor CompactRISC microprocessor
-        public const ushort EM_F2MC16 = 104; // Fujitsu F2MC16
-        public const ushort EM_MSP430 = 105; // Texas Instruments embedded microcontroller msp430
-        public const ushort EM_BLACKFIN = 106; // Analog Devices Blackfin (DSP) processor
-        public const ushort EM_SE_C33 = 107; // S1C33 Family of Seiko Epson processors
-        public const ushort EM_SEP = 108; // Sharp embedded microprocessor
-        public const ushort EM_ARCA = 109; // Arca RISC Microprocessor
-        public const ushort EM_UNICORE = 110; // Microprocessor series from PKU-Unity Ltd. and MPRC
-                                              // of Peking University
-        public const ushort EM_EXCESS = 111; // eXcess: 16/32/64-bit configurable embedded CPU
-        public const ushort EM_DXP = 112; // Icera Semiconductor Inc. Deep Execution Processor
-        public const ushort EM_ALTERA_NIOS2 = 113; // Altera Nios II soft-core processor
-        public const ushort EM_CRX = 114; // National Semiconductor CompactRISC CRX
-        public const ushort EM_XGATE = 115; // Motorola XGATE embedded processor
-        public const ushort EM_C166 = 116; // Infineon C16x/XC16x processor
-        public const ushort EM_M16C = 117; // Renesas M16C series microprocessors
-        public const ushort EM_DSPIC30F = 118; // Microchip Technology dsPIC30F Digital Signal
-                                               // Controller
-        public const ushort EM_CE = 119; // Freescale Communication Engine RISC core
-        public const ushort EM_M32C = 120; // Renesas M32C series microprocessors
-        public const ushort EM_TSK3000 = 131; // Altium TSK3000 core
-        public const ushort EM_RS08 = 132; // Freescale RS08 embedded processor
-        public const ushort EM_SHARC = 133; // Analog Devices SHARC family of 32-bit DSP
-                                            // processors
-        public const ushort EM_ECOG2 = 134; // Cyan Technology eCOG2 microprocessor
-        public const ushort EM_SCORE7 = 135; // Sunplus S+core7 RISC processor
-        public const ushort EM_DSP24 = 136; // New Japan Radio (NJR) 24-bit DSP Processor
-        public const ushort EM_VIDEOCORE3 = 137; // Broadcom VideoCore III processor
-        public const ushort EM_LATTICEMICO32 = 138; // RISC processor for Lattice FPGA architecture
-        public const ushort EM_SE_C17 = 139; // Seiko Epson C17 family
-        public const ushort EM_TI_C6000 = 140; // The Texas Instruments TMS320C6000 DSP family
-        public const ushort EM_TI_C2000 = 141; // The Texas Instruments TMS320C2000 DSP family
-        public const ushort EM_TI_C5500 = 142; // The Texas Instruments TMS320C55x DSP family
-        public const ushort EM_MMDSP_PLUS = 160; // STMicroelectronics 64bit VLIW Data Signal Processor
-        public const ushort EM_CYPRESS_M8C = 161; // Cypress M8C microprocessor
-        public const ushort EM_R32C = 162; // Renesas R32C series microprocessors
-        public const ushort EM_TRIMEDIA = 163; // NXP Semiconductors TriMedia architecture family
-        public const ushort EM_HEXAGON = 164; // Qualcomm Hexagon processor
-        public const ushort EM_8051 = 165; // Intel 8051 and variants
-        public const ushort EM_STXP7X = 166; // STMicroelectronics STxP7x family of configurable
-                                             // and extensible RISC processors
-        public const ushort EM_NDS32 = 167; // Andes Technology compact code size embedded RISC
-                                            // processor family
-        public const ushort EM_ECOG1 = 168; // Cyan Technology eCOG1X family
-        public const ushort EM_ECOG1X = 168; // Cyan Technology eCOG1X family
-        public const ushort EM_MAXQ30 = 169; // Dallas Semiconductor MAXQ30 Core Micro-controllers
-        public const ushort EM_XIMO16 = 170; // New Japan Radio (NJR) 16-bit DSP Processor
-        public const ushort EM_MANIK = 171; // M2000 Reconfigurable RISC Microprocessor
-        public const ushort EM_CRAYNV2 = 172; // Cray Inc. NV2 vector architecture
-        public const ushort EM_RX = 173; // Renesas RX family
-        public const ushort EM_METAG = 174; // Imagination Technologies META processor
-                                            // architecture
-        public const ushort EM_MCST_ELBRUS = 175; // MCST Elbrus general purpose hardware architecture
-        public const ushort EM_ECOG16 = 176; // Cyan Technology eCOG16 family
-        public const ushort EM_CR16 = 177; // National Semiconductor CompactRISC CR16 16-bit
-                                           // microprocessor
-        public const ushort EM_ETPU = 178; // Freescale Extended Time Processing Unit
-        public const ushort EM_SLE9X = 179; // Infineon Technologies SLE9X core
-        public const ushort EM_L10M = 180; // Intel L10M
-        public const ushort EM_K10M = 181; // Intel K10M
-        public const ushort EM_AARCH64 = 183; // ARM AArch64
-        public const ushort EM_AVR32 = 185; // Atmel Corporation 32-bit microprocessor family
-        public const ushort EM_STM8 = 186; // STMicroeletronics STM8 8-bit microcontroller
-        public const ushort EM_TILE64 = 187; // Tilera TILE64 multicore architecture family
-        public const ushort EM_TILEPRO = 188; // Tilera TILEPro multicore architecture family
-        public const ushort EM_CUDA = 190; // NVIDIA CUDA architecture
-        public const ushort EM_TILEGX = 191; // Tilera TILE-Gx multicore architecture family
-        public const ushort EM_CLOUDSHIELD = 192; // CloudShield architecture family
-        public const ushort EM_COREA_1ST = 193; // KIPO-KAIST Core-A 1st generation processor family
-        public const ushort EM_COREA_2ND = 194; // KIPO-KAIST Core-A 2nd generation processor family
-        public const ushort EM_ARC_COMPACT2 = 195; // Synopsys ARCompact V2
-        public const ushort EM_OPEN8 = 196; // Open8 8-bit RISC soft processor core
-        public const ushort EM_RL78 = 197; // Renesas RL78 family
-        public const ushort EM_VIDEOCORE5 = 198; // Broadcom VideoCore V processor
-        public const ushort EM_78KOR = 199; // Renesas 78KOR family
-        public const ushort EM_56800EX = 200; // Freescale 56800EX Digital Signal Controller (DSC)
-        public const ushort EM_BA1 = 201; // Beyond BA1 CPU architecture
-        public const ushort EM_BA2 = 202; // Beyond BA2 CPU architecture
-        public const ushort EM_XCORE = 203; // XMOS xCORE processor family
-        public const ushort EM_MCHP_PIC = 204; // Microchip 8-bit PIC(r) family
-        public const ushort EM_INTEL205 = 205; // Reserved by Intel
-        public const ushort EM_INTEL206 = 206; // Reserved by Intel
-        public const ushort EM_INTEL207 = 207; // Reserved by Intel
-        public const ushort EM_INTEL208 = 208; // Reserved by Intel
-        public const ushort EM_INTEL209 = 209; // Reserved by Intel
-        public const ushort EM_KM32 = 210; // KM211 KM32 32-bit processor
-        public const ushort EM_KMX32 = 211; // KM211 KMX32 32-bit processor
-        public const ushort EM_KMX16 = 212; // KM211 KMX16 16-bit processor
-        public const ushort EM_KMX8 = 213; // KM211 KMX8 8-bit processor
-        public const ushort EM_KVARC = 214; // KM211 KVARC processor
-        public const ushort EM_CDP = 215; // Paneve CDP architecture family
-        public const ushort EM_COGE = 216; // Cognitive Smart Memory Processor
-        public const ushort EM_COOL = 217; // iCelero CoolEngine
-        public const ushort EM_NORC = 218; // Nanoradio Optimized RISC
-        public const ushort EM_CSR_KALIMBA = 219; // CSR Kalimba architecture family
-        public const ushort EM_AMDGPU = 224;  // AMD GPU architecture
-
         public const int ET_REL = 0x01;
 
         #endregion
@@ -239,8 +56,6 @@ namespace Reko.ImageLoaders.Elf
         private byte fileVersion;
         private byte osAbi;
         private Address addrPreferred;
-        private MemoryArea mem;
-        private ImageMap imageMap;
         private Dictionary<Address, ImportReference> importReferences;
 
         protected ElfLoader innerLoader;
@@ -251,7 +66,7 @@ namespace Reko.ImageLoaders.Elf
         }
 
 
-        public override Address PreferredBaseAddress
+        public override Address PreferredBaseAddress 
         {
             get { return addrPreferred; }
             set { addrPreferred = value; }
@@ -261,8 +76,9 @@ namespace Reko.ImageLoaders.Elf
         {
             LoadElfIdentification();
             this.innerLoader = CreateLoader();
-            var arch = innerLoader.CreateArchitecture();
-            var platform = innerLoader.CreatePlatform(osAbi, arch);
+            if (addrLoad == null)
+                addrLoad = innerLoader.DefaultAddress;
+            var platform = innerLoader.CreatePlatform(osAbi, innerLoader.Architecture);
             int cHeaders = innerLoader.LoadProgramHeaderTable();
             innerLoader.LoadSectionHeaders();
             innerLoader.Dump();
@@ -273,7 +89,7 @@ namespace Reko.ImageLoaders.Elf
             else
             {
                 var linker = innerLoader.CreateLinker();
-                return linker.LinkObject(platform, RawImage);
+                return linker.LinkObject(platform, addrLoad, RawImage);
             }
         }
 
@@ -325,19 +141,17 @@ namespace Reko.ImageLoaders.Elf
             if (fileClass == ELFCLASS64)
             {
                 var header64 = Elf64_EHdr.Load(rdr);
-                return new ElfLoader64(this, header64, osAbi);
+                return new ElfLoader64(this, header64, RawImage, osAbi);
             }
             else
             {
                 var header32 = Elf32_EHdr.Load(rdr);
-                return new ElfLoader32(this, header32);
+                return new ElfLoader32(this, header32, RawImage);
             }
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            if (mem == null)
-                throw new InvalidOperationException(); // No file loaded
             return innerLoader.Relocate(program, addrLoad);
         }
 
@@ -377,12 +191,16 @@ namespace Reko.ImageLoaders.Elf
         protected IPlatform platform;
         protected byte[] rawImage;
 
-        protected ElfLoader(ElfImageLoader imgLoader)
+        protected ElfLoader(ElfImageLoader imgLoader, ushort machine)
         {
             this.imgLoader = imgLoader;
+            this.Architecture = CreateArchitecture(machine);
         }
 
+        public IProcessorArchitecture Architecture { get; private set; }
         public IServiceProvider Services { get { return imgLoader.Services; } }
+        public ElfRelocator Relocator { get; protected set; }
+        public abstract Address DefaultAddress { get; }
 
         public static AccessMode AccessModeOf(uint sh_flags)
         {
@@ -394,23 +212,21 @@ namespace Reko.ImageLoaders.Elf
             return mode;
         }
 
-        public abstract IProcessorArchitecture CreateArchitecture();
-
         protected IProcessorArchitecture CreateArchitecture(ushort machineType)
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
             string arch;
-            switch (machineType)
+            switch ((ElfMachine)machineType)
             {
-            case ElfImageLoader.EM_NONE: return null; // No machine
-            case ElfImageLoader.EM_SPARC: arch = "sparc32"; break;
-            case ElfImageLoader.EM_386: arch = "x86-protected-32"; break;
-            case ElfImageLoader.EM_X86_64: arch = "x86-protected-64"; break;
-            case ElfImageLoader.EM_68K: arch = "m68k"; break;
-            case ElfImageLoader.EM_MIPS: arch = "mips-be-32"; break;
-            case ElfImageLoader.EM_PPC: arch = "ppc32"; break;
-            case ElfImageLoader.EM_PPC64: arch = "ppc64"; break;
-            case ElfImageLoader.EM_ARM: arch = "arm"; break;
+            case ElfMachine.EM_NONE: return null; // No machine
+            case ElfMachine.EM_SPARC: arch = "sparc32"; break;
+            case ElfMachine.EM_386: arch = "x86-protected-32"; break;
+            case ElfMachine.EM_X86_64: arch = "x86-protected-64"; break;
+            case ElfMachine.EM_68K: arch = "m68k"; break;
+            case ElfMachine.EM_MIPS: arch = "mips-be-32"; break;
+            case ElfMachine.EM_PPC: arch = "ppc32"; break;
+            case ElfMachine.EM_PPC64: arch = "ppc64"; break;
+            case ElfMachine.EM_ARM: arch = "arm"; break;
             default:
                 throw new NotSupportedException(string.Format("Processor format {0} is not supported.", machineType));
             }
@@ -435,6 +251,9 @@ namespace Reko.ImageLoaders.Elf
             return cfgSvc.GetEnvironment(envName).Load(Services, arch);
         }
 
+
+        public abstract ElfRelocator CreateRelocator(ElfMachine machine);
+
         public Program LoadImage(IPlatform platform, byte[] rawImage)
         {
             this.platform = platform;
@@ -445,10 +264,7 @@ namespace Reko.ImageLoaders.Elf
             var addrMax = ComputeMaxAddress(platform);
             Dump();
             var imageMap = LoadImageBytes(platform, rawImage, addrPreferred, addrMax);
-            var program = new Program(
-                imageMap,
-                platform.Architecture,
-                platform);
+            var program = new Program(imageMap, platform.Architecture, platform);
             this.importReferences = program.ImportReferences;
             return program;
         }
@@ -475,6 +291,11 @@ namespace Reko.ImageLoaders.Elf
         public ImageReader CreateReader(ulong fileOffset)
         {
             return imgLoader.CreateReader(fileOffset);
+        }
+
+        public ImageWriter CreateWriter(uint fileOffset)
+        {
+            return imgLoader.CreateWriter(fileOffset);
         }
 
         public abstract Address ComputeBaseAddress(IPlatform platform);
@@ -1765,23 +1586,6 @@ namespace Reko.ImageLoaders.Elf
 
         // Internal elf info
 
-
-
-
-        enum MachineType
-        {
-            EM_M32 = 1,
-            EM_SPARC = 2,			// Sun SPARC
-            EM_386 = 3,			// Intel 80386 or higher
-            EM_68K = 4,			// Motorola 68000
-            EM_MIPS = 8,			// MIPS
-            EM_PA_RISC = 15,			// HP PA-RISC
-            EM_SPARC32PLUS = 18,			// Sun SPARC 32+
-            EM_PPC = 20,			// PowerPC
-            EM_X86_64 = 62,
-            EM_ST20 = 0xA8,			// ST20 (made up... there is no official value?)
-        }
-
         public enum SectionType
         {
             SHT_NULL = 0,
@@ -1910,17 +1714,19 @@ namespace Reko.ImageLoaders.Elf
     public class ElfLoader64 : ElfLoader
     {
         private byte osAbi;
-        private IProcessorArchitecture arch;
-        public Elf64_EHdr Header64 { get; set; }
-        public List<Elf64_PHdr> ProgramHeaders64 { get; private set; }
-        public List<Elf64_SHdr> SectionHeaders64 { get; private set; }
-
-        public ElfLoader64(ElfImageLoader imgLoader, Elf64_EHdr elfHeader, byte osAbi)
-            : base(imgLoader)
+      
+        public ElfLoader64(ElfImageLoader imgLoader, Elf64_EHdr elfHeader, byte[] rawImage, byte osAbi)
+            : base(imgLoader, elfHeader.e_machine)
         {
             this.Header64 = elfHeader;
             this.osAbi = osAbi;
+            base.rawImage = rawImage;
         }
+
+        public Elf64_EHdr Header64 { get; set; }
+        public List<Elf64_PHdr> ProgramHeaders64 { get; private set; }
+        public List<Elf64_SHdr> SectionHeaders64 { get; private set; }
+        public override Address DefaultAddress { get { return Address.Ptr64(0x8048000); } }
 
         public override Address ComputeBaseAddress(IPlatform platform)
         {
@@ -1940,15 +1746,9 @@ namespace Reko.ImageLoaders.Elf
             return platform.MakeAddressFromLinear(uMaxAddress);
         }
 
-        public override IProcessorArchitecture CreateArchitecture()
-        {
-            arch = CreateArchitecture(Header64.e_machine);
-            return arch;
-        }
-
         public override ElfObjectLinker CreateLinker()
         {
-            return new ElfObjectLinker64(this, arch, rawImage);
+            return new ElfObjectLinker64(this, Architecture, rawImage);
         }
 
         private ImageSegmentRenderer CreateRenderer64(Elf64_SHdr shdr)
@@ -1964,6 +1764,11 @@ namespace Reko.ImageLoaders.Elf
                 return new SymtabSegmentRenderer64(this, shdr);
             default: return null;
             }
+        }
+
+        public override ElfRelocator CreateRelocator(ElfMachine machine)
+        {
+            throw new NotImplementedException();
         }
 
         public override void Dump(TextWriter writer)
@@ -2165,76 +1970,31 @@ namespace Reko.ImageLoaders.Elf
             var addrEntry = GetEntryPointAddress(addrLoad);
             if (addrEntry != null)
             {
-                var ep = new EntryPoint(addrEntry, arch.CreateProcessorState());
+                var ep = new EntryPoint(addrEntry, Architecture.CreateProcessorState());
                 entryPoints.Add(ep);
             }
-            if (Header64.e_machine == ElfImageLoader.EM_PPC64)
-            {
-                //$TODO
-            }
-            else if (Header64.e_machine == ElfImageLoader.EM_X86_64)
-            {
-                RelocateX86_64();
-            }
-            else
-                throw new NotImplementedException(string.Format("Relocations for architecture {0} not implemented.", Header64.e_machine));
+            this.Relocator.Relocate();
             return new RelocationResults(entryPoints, relocations, new List<Address>());
-        }
-
-        /// <remarks>
-        /// According to the ELF PPC32 documentation, the .rela.plt and .plt tables 
-        /// should contain the same number of entries, even if the individual entry 
-        /// sizes are distinct. The entries in .real.plt refer to symbols while the
-        /// entries in .plt are (writeable) pointers.  Any caller that jumps to one
-        /// of pointers in the .plt table is a "trampoline", and should be replaced
-        /// in the decompiled code with just a call to the symbol obtained from the
-        /// .real.plt section.
-        /// </remarks>
-        public void RelocateX86_64()
-        {
-            var rela_plt = GetSectionInfoByName64(".rela.plt");
-            var plt = GetSectionInfoByName64(".plt");
-            var relaRdr = imgLoader.CreateReader(rela_plt.sh_offset);
-            for (ulong i = 0; i < rela_plt.sh_size / rela_plt.sh_entsize; ++i)
-            {
-                // Read the .rela.plt entry
-                ulong offset;
-                if (!relaRdr.TryReadUInt64(out offset))
-                    return;
-                ulong info;
-                if (!relaRdr.TryReadUInt64(out info))
-                    return;
-                long addend;
-                if (!relaRdr.TryReadInt64(out addend))
-                    return;
-
-                ulong sym = info >> 32;
-                string symStr = GetSymbol64((int)rela_plt.sh_link, (int)sym);
-
-                var addr = Address.Ptr64(plt.sh_addr + (uint)(i + 1) * plt.sh_entsize);
-                importReferences.Add(
-                    addr,
-                    new NamedImportReference(addr, null, symStr));
-            }
         }
     }
 
     public class ElfLoader32 : ElfLoader
     {
-        private IProcessorArchitecture arch;
-
-        public ElfLoader32(ElfImageLoader imgLoader, Elf32_EHdr header32)
-            : base(imgLoader)
+        public ElfLoader32(ElfImageLoader imgLoader, Elf32_EHdr header32, byte[] rawImage)
+            : base(imgLoader, header32.e_machine)
         {
+            if (header32 == null)
+                throw new ArgumentNullException("header32");
             this.Header = header32;
-            this.Relocator = CreateRelocator(header32.e_machine);
+            this.Relocator = CreateRelocator((ElfMachine) header32.e_machine);
+            this.rawImage = rawImage;
         }
 
         public Elf32_EHdr Header { get; private set; }
         public List<Elf32_PHdr> ProgramHeaders { get; private set; }
         public List<Elf32_SHdr> SectionHeaders { get; private set; }
-        public ElfRelocator Relocator { get; private set; }
-
+        public override Address DefaultAddress { get { return Address.Ptr32(0x8048000); } }
+        
         public int ELF32_R_SYM(int info) { return ((info) >> 8); }
         public int ELF32_ST_BIND(int i) { return ((i) >> 4); }
         public int ELF32_ST_TYPE(int i) { return ((i) & 0xf); }
@@ -2367,24 +2127,22 @@ namespace Reko.ImageLoaders.Elf
                 .Max());
         }
 
-        public override IProcessorArchitecture CreateArchitecture()
-        {
-            arch = CreateArchitecture(Header.e_machine);
-            return arch;
-        }
-
         public override ElfObjectLinker CreateLinker()
         {
-            return new ElfObjectLinker32(this, arch, rawImage);
+            return new ElfObjectLinker32(this, Architecture, rawImage);
         }
 
-        public ElfRelocator CreateRelocator(uint machine)
+        public override ElfRelocator CreateRelocator(ElfMachine machine)
         {
             switch (machine)
             {
-            case ElfImageLoader.EM_SPARC: return new SparcRelocator(this);
+            case ElfMachine.EM_386: return new x86Relocator(this, importReferences);
+            case ElfMachine.EM_PPC: return new PpcRelocator(this, importReferences);
+            case ElfMachine.EM_SPARC: return new SparcRelocator(this);
             }
-            throw new NotSupportedException();
+            throw new NotSupportedException(
+                string.Format("Relocator for architecture {0} not implemented yet.",
+                machine));
         }
 
         public ImageSegmentRenderer CreateRenderer(Elf32_SHdr shdr)
@@ -2503,7 +2261,7 @@ namespace Reko.ImageLoaders.Elf
             }
         }
 
-        private Elf32_SHdr GetSectionInfoByName32(string sectionName)
+        public Elf32_SHdr GetSectionInfoByName32(string sectionName)
         {
             return
                 (from sh in this.SectionHeaders
@@ -2606,25 +2364,11 @@ namespace Reko.ImageLoaders.Elf
             var addrEntry = GetEntryPointAddress(addrLoad);
             if (addrEntry != null)
             {
-                var ep = new EntryPoint(addrEntry, arch.CreateProcessorState());
+                var ep = new EntryPoint(addrEntry, Architecture.CreateProcessorState());
                 entryPoints.Add(ep);
             }
 
-            switch (Header.e_machine)
-            {
-            case ElfImageLoader.EM_386:
-                RelocateI386();
-                break;
-            case ElfImageLoader.EM_PPC:
-                RelocatePpc32();
-                break;
-            case ElfImageLoader.EM_MIPS:
-            case ElfImageLoader.EM_ARM:
-            case ElfImageLoader.EM_SPARC:
-                break;
-            default:
-                throw new NotImplementedException();
-            }
+            Relocator.Relocate();
             return new RelocationResults(entryPoints, relocations, new List<Address>());
         }
 
@@ -2748,50 +2492,6 @@ namespace Reko.ImageLoaders.Elf
             }
         }
 
-        /// <remarks>
-        /// According to the ELF PPC32 documentation, the .rela.plt and .plt tables 
-        /// should contain the same number of entries, even if the individual entry 
-        /// sizes are distinct. The entries in .real.plt refer to symbols while the
-        /// entries in .plt are (writeable) pointers.  Any caller that jumps to one
-        /// of pointers in the .plt table is a "trampoline", and should be replaced
-        /// in the decompiled code with just a call to the symbol obtained from the
-        /// .real.plt section.
-        /// </remarks>
-        public void RelocatePpc32()
-        {
-            var rela_plt = GetSectionInfoByName32(".rela.plt");
-            var plt = GetSectionInfoByName32(".plt");
-            var relaRdr = imgLoader.CreateReader(rela_plt.sh_offset);
-            var pltRdr = imgLoader.CreateReader(plt.sh_offset);
-            for (int i = 0; i < rela_plt.sh_size / rela_plt.sh_entsize; ++i)
-            {
-                // Read the .rela.plt entry
-                uint offset;
-                if (!relaRdr.TryReadUInt32(out offset))
-                    return;
-                uint info;
-                if (!relaRdr.TryReadUInt32(out info))
-                    return;
-                int addend;
-                if (!relaRdr.TryReadInt32(out addend))
-                    return;
 
-                // Read the .plt entry. We don't care about its contents,
-                // only its address. Anyone accessing that address is
-                // trying to access the symbol.
-
-                uint thunkAddress;
-                if (!pltRdr.TryReadUInt32(out thunkAddress))
-                    break;
-
-                uint sym = info >> 8;
-                string symStr = GetSymbolName((int)rela_plt.sh_link, (int)sym);
-
-                var addr = Address.Ptr32(plt.sh_addr + (uint)i * 4);
-                importReferences.Add(
-                    addr,
-                    new NamedImportReference(addr, null, symStr));
-            }
-        }
     }
 }

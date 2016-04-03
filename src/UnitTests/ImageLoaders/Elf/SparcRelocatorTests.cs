@@ -43,9 +43,11 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             var sc = new ServiceContainer();
             var cfgSvc = mr.Stub<IConfigurationService>();
             sc.AddService(typeof(IConfigurationService), cfgSvc);
+            mr.ReplayAll();
+
             var file = @"D:\dev\uxmal\reko\master\subjects\Elf-Sparc\t5mat.o";
             var bin = File.ReadAllBytes(file);
-            var elf = new ElfImageLoader(null, file, bin);
+            var elf = new ElfImageLoader(sc, file, bin);
             elf.LoadElfIdentification();
             var loader = (ElfLoader32) elf.CreateLoader();
             var sparc = (SparcRelocator)loader.Relocator;

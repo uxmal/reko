@@ -26,8 +26,10 @@ using System.Text;
 
 namespace Reko.ImageLoaders.Elf
 {
-    public class ElfRelocator
+    public abstract class ElfRelocator
     {
+        public abstract void Relocate();
+
     }
 
     public class SparcRelocator : ElfRelocator
@@ -39,7 +41,7 @@ namespace Reko.ImageLoaders.Elf
             this.loader = loader;
         }
 
-        public void Relocate()
+        public override void Relocate()
         {
             foreach (var section in loader.SectionHeaders.Where(s => s.sh_type == SectionHeaderType.SHT_RELA))
             {

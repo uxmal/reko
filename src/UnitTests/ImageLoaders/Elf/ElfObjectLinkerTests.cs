@@ -20,10 +20,12 @@
 
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Configuration;
 using Reko.ImageLoaders.Elf;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -40,6 +42,8 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         private byte[] rawBytes;
         private ElfObjectLinker32 linker;
         private IProcessorArchitecture arch;
+        private ServiceContainer sc;
+        private IConfigurationService cfgSvc;
 
         public class ObjectSection
         {
@@ -55,6 +59,10 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         public void Setup()
         {
             this.mr = new MockRepository();
+            this.sc = new ServiceContainer();
+            this.cfgSvc = mr.Stub<IConfigurationService>();
+            this.sc.AddService(typeof(IConfigurationService), cfgSvc);
+
             this.segnametab = new MemoryStream();
             this.segnametab.WriteByte(0);
 
@@ -107,7 +115,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             // ELF header
 
             bin.WriteBeUInt16(1);   // relocatable
-            bin.WriteBeUInt16(4);   // 68k
+            bin.WriteBeUInt16((ushort)ElfMachine.EM_SPARC);
             bin.WriteBeUInt32(1);   // version
             bin.WriteBeUInt32(0);   // entry point (none in reloc file)
             bin.WriteBeUInt32(0);   // program segment table offset (none in reloc file)
@@ -178,8 +186,9 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         private void Given_Linker()
         {
             BuildObjectFile();
+            mr.ReplayAll();
 
-            var eil = new ElfImageLoader(null, "foo.o", rawBytes);
+            var eil = new ElfImageLoader(sc, "foo.o", rawBytes);
             eil.LoadElfIdentification();
             var eh = Elf32_EHdr.Load(new BeImageReader(rawBytes, ElfImageLoader.HEADER_OFFSET));
             var el = new ElfLoader32(eil, eh);

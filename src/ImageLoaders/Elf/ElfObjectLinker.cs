@@ -39,15 +39,15 @@ namespace Reko.ImageLoaders.Elf
 
         public ElfObjectLinker(ElfLoader loader, IProcessorArchitecture arch, byte[] rawImage)
         {
+            if (rawImage == null)
+                throw new ArgumentNullException("rawImage");
             this.loader = loader;
             this.arch = arch;
             this.rawImage = rawImage;
         }
 
-        public Program LinkObject(IPlatform platform, byte[] rawImage)
-        {
-            return new Program();
-        }
+        public abstract Program LinkObject(IPlatform platform, Address addrLoad, byte[] rawImage);
+        
 #if NYI
         public List<ElfSymbol> LoadSymbols(Elf32_SHdr section)
         {
@@ -86,6 +86,10 @@ namespace Reko.ImageLoaders.Elf
             : base(loader, arch, rawImage)
         { }
 
+        public override Program LinkObject(IPlatform platform, Address addrLoad, byte[] rawImage)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class ElfObjectLinker32 : ElfObjectLinker
@@ -100,6 +104,13 @@ namespace Reko.ImageLoaders.Elf
         }
 
         public List<Elf32_PHdr> Segments { get; private set; }
+
+        public override Program LinkObject(IPlatform platform, Address addrLoad, byte[] rawImage)
+        {
+            var segments = CollectNeededSegments();
+            var imageMap = CreateSegments(addrLoad, segments);
+            return new Program(imageMap, platform.Architecture, platform);
+        }
 
         public Dictionary<Elf32_SHdr, Elf32_PHdr> CollectNeededSegments()
         {

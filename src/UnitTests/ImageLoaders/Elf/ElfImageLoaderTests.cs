@@ -436,6 +436,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             eil.LoadElfIdentification();
             var el = (ElfLoader32)eil.CreateLoader();
             el.LoadProgramHeaderTable();
+            el.LoadSectionHeaders();
             el.Dump(Console.Out);
         }
 
