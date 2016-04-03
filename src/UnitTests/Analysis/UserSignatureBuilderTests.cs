@@ -213,5 +213,32 @@ test_exit:
             m.Procedure.Write(false, sb);
             Assert.AreEqual(sExp, sb.ToString());
         }
+
+        [Test]
+        public void Usb_ParseGlobalDeclaration_Int()
+        {
+            var usb = new UserSignatureBuilder(program);
+            var gbl = usb.ParseGlobalDeclaration("int test123");
+            Assert.AreEqual("test123", gbl.Name);
+            Assert.AreEqual("prim(SignedInt,4)", gbl.DataType.ToString());
+        }
+
+        [Test]
+        public void Usb_ParseGlobalDeclaration_ArrayOfDouble()
+        {
+            var usb = new UserSignatureBuilder(program);
+            var gbl = usb.ParseGlobalDeclaration("double dArr[12]");
+            Assert.AreEqual("dArr", gbl.Name);
+            Assert.AreEqual("arr(prim(Real,8),12)", gbl.DataType.ToString());
+        }
+
+        [Test]
+        public void Usb_ParseGlobalDeclaration_PointerToUnsignedInt()
+        {
+            var usb = new UserSignatureBuilder(program);
+            var gbl = usb.ParseGlobalDeclaration("unsigned int *uiPtr");
+            Assert.AreEqual("uiPtr", gbl.Name);
+            Assert.AreEqual("ptr(prim(UnsignedInt,4))", gbl.DataType.ToString());
+        }
     }
 }
