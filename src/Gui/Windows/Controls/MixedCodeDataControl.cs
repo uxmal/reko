@@ -92,13 +92,21 @@ namespace Reko.Gui.Windows.Controls
             base.OnScroll();
         }
 
-        private void ImageMap_MapChanged(object sender, EventArgs e)
+        private void RefreshModel()
         {
             var currentAddress = (Address)Model.CurrentPosition;
             var model = new MixedCodeDataModel(program);
             model.MoveToLine(currentAddress, 0);
             this.addrTop = (Address)model.CurrentPosition;
             this.Model = model;
+        }
+
+        private void ImageMap_MapChanged(object sender, EventArgs e)
+        {
+            if (InvokeRequired)
+                BeginInvoke(new Action(RefreshModel));
+            else
+                RefreshModel();
         }
 
         public Address GetAnchorAddress()
