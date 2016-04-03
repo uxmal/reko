@@ -320,8 +320,7 @@ namespace Reko.Gui.Windows
 
         private void EditDeclaration()
         {
-            var anchorPos = combinedCodeView.MixedCodeDataView.anchorPos;
-            var addr = (Address)anchorPos.Line;
+            var addr = combinedCodeView.MixedCodeDataView.GetAnchorAddress();
             ImageMapItem item;
             if (program.ImageMap.TryFindItem(addr, out item))
             {

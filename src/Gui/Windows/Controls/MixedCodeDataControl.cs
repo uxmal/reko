@@ -100,5 +100,14 @@ namespace Reko.Gui.Windows.Controls
             this.addrTop = (Address)model.CurrentPosition;
             this.Model = model;
         }
+
+        public Address GetAnchorAddress()
+        {
+            var pt = GetAnchorMiddlePoint();
+            var tag = GetTagFromPoint(pt) as MixedCodeDataModel.MemoryTextSpanTag;
+            if (tag == null)
+                return (Address)anchorPos.Line;
+            return tag.Address;
+        }
     }
 }
