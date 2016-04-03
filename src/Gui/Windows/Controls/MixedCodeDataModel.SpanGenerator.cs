@@ -204,10 +204,11 @@ namespace Reko.Gui.Windows.Controls
                 line.Add(new MemoryTextSpan(" ", UiStyles.MemoryWindow));
                 line.Add(new MemoryTextSpan(sBytes, UiStyles.MemoryWindow));
 
+                var linePos = this.addr;
                 this.addr = addrEnd;
                 return Tuple.Create(
                     addrEnd,
-                    new LineSpan(addr, line.ToArray()));
+                    new LineSpan(linePos, line.ToArray()));
             }
 
             private string RenderBytesAsText(byte[] abCode)
