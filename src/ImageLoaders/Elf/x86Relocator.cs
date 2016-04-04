@@ -37,6 +37,11 @@ namespace Reko.ImageLoaders.Elf
             this.importReferences = importReferences;
         }
 
+        public override List<ElfSymbol> LoadSymbols(uint iSymbolSection)
+        {
+            return LoadSymbols32(loader, iSymbolSection);
+        }
+
         public override void Relocate()
         {
             uint nextFakeLibAddr = ~1u; // See R_386_PC32 below; -1 sometimes used for main

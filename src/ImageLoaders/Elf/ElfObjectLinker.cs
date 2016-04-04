@@ -81,6 +81,7 @@ namespace Reko.ImageLoaders.Elf
         {
             var segments = ComputeSegmentSizes();
             var imageMap = CreateSegments(addrLoad, segments);
+            loader.Relocator.Relocate();
             return new Program(imageMap, platform.Architecture, platform);
         }
 

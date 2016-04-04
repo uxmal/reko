@@ -290,7 +290,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             Given_Linker();
 
             var segs = linker.ComputeSegmentSizes();
-            Assert.AreEqual(2, segs.Count);
+            Assert.AreEqual(4, segs.Count);
         }
 
         [Test]
@@ -305,7 +305,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
 
             var segs = linker.ComputeSegmentSizes();
             var imageMap = linker.CreateSegments(Address.Ptr32(0x00800000), segs);
-            Assert.AreEqual(2, imageMap.Segments.Count);
+            Assert.AreEqual(3, imageMap.Segments.Count);
             Assert.AreEqual("00800000", imageMap.Segments.ElementAt(0).Value.MemoryArea.BaseAddress.ToString());
             Assert.AreEqual("00800001", imageMap.Segments.ElementAt(0).Value.MemoryArea.EndAddress.ToString());
             Assert.AreEqual("00801000", imageMap.Segments.ElementAt(1).Value.MemoryArea.BaseAddress.ToString());
