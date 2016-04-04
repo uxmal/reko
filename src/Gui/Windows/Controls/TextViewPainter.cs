@@ -247,6 +247,7 @@ namespace Reko.Gui.Windows.Controls
                     TextFormatFlags.NoPadding | TextFormatFlags.NoPrefix);
             }
             rcContent.X += rcContent.Width;
+            rcTotal.X += rcContent.Width;
         }
     }
 }
