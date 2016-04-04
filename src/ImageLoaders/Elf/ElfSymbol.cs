@@ -31,5 +31,6 @@ namespace Reko.ImageLoaders.Elf
         public uint Value;
         public byte Info;
         public uint SegmentIndex;
+        public uint Size;
     }
 }

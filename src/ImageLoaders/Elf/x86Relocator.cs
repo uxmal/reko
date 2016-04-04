@@ -109,7 +109,7 @@ namespace Reko.ImageLoaders.Elf
                             relocW.WriteUInt32(pRelWord, S + A);
                             break;
                         case 2: // R_386_PC32: S + A - P
-                            if (loader.ELF32_ST_TYPE(sym.st_info) == ElfLoader.STT_SECTION)
+                            if (ElfLoader32.ELF32_ST_TYPE(sym.st_info) == ElfLoader.STT_SECTION)
                             {
                                 nsec = sym.st_shndx;
                                 if (nsec >= 0 && nsec < loader.SectionHeaders.Count)

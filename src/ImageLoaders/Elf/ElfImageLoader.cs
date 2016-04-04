@@ -184,6 +184,10 @@ namespace Reko.ImageLoaders.Elf
         public const int STB_GLOBAL = 1;
         public const int STB_WEAK = 2;
 
+        public const uint PF_R = 4;
+        public const uint PF_W = 2;
+        public const uint PF_X = 1;
+
         protected ElfImageLoader imgLoader;
         protected ulong m_uPltMin;
         protected ulong m_uPltMax;
@@ -1995,10 +1999,10 @@ namespace Reko.ImageLoaders.Elf
         public List<Elf32_SHdr> SectionHeaders { get; private set; }
         public override Address DefaultAddress { get { return Address.Ptr32(0x8048000); } }
         
-        public int ELF32_R_SYM(int info) { return ((info) >> 8); }
-        public int ELF32_ST_BIND(int i) { return ((i) >> 4); }
-        public int ELF32_ST_TYPE(int i) { return ((i) & 0xf); }
-        public int ELF32_ST_INFO(int b, int t) { return (((b) << 4) + ((t) & 0xf)); }
+        public static int ELF32_R_SYM(int info) { return ((info) >> 8); }
+        public static int ELF32_ST_BIND(int i) { return ((i) >> 4); }
+        public static int ELF32_ST_TYPE(int i) { return ((i) & 0x0F); }
+        public static byte ELF32_ST_INFO(int b, SymbolType t) { return (byte)(((b) << 4) + ((byte)t & 0xF)); }
 
         // Add appropriate symbols to the symbol table.  secIndex is the section index of the symbol table.
         private void AddSyms(Elf32_SHdr pSect)
@@ -2491,7 +2495,5 @@ namespace Reko.ImageLoaders.Elf
                 }
             }
         }
-
-
     }
 }

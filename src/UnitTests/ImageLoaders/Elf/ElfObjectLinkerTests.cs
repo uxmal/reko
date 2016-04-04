@@ -38,7 +38,9 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         private MockRepository mr;
         private MemoryStream segnametab;
         private MemoryStream binaryContents;
+        private MemoryStream symbolStringtab;
         private List<ObjectSection> objectSections;
+        private List<Elf32_Sym> symbols;
         private byte[] rawBytes;
         private ElfObjectLinker32 linker;
         private IProcessorArchitecture arch;
@@ -50,9 +52,10 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             public string Name;
             public byte[] Content;
             public uint Flags;
+            public ushort Link;
             public SectionHeaderType Type;
-
-            public uint Offset { get; internal set; }
+            public uint Offset;
+            public uint ElementSize;
         }
 
         [SetUp]
@@ -65,6 +68,10 @@ namespace Reko.UnitTests.ImageLoaders.Elf
 
             this.segnametab = new MemoryStream();
             this.segnametab.WriteByte(0);
+
+            this.symbolStringtab = new MemoryStream();
+            this.symbolStringtab.WriteByte(0);
+            this.symbols = new List<Elf32_Sym> { new Elf32_Sym() };
 
             this.binaryContents = new MemoryStream();
 
@@ -81,11 +88,32 @@ namespace Reko.UnitTests.ImageLoaders.Elf
 
         private int Given_SegName(string segname)
         {
-            int i = (int) segnametab.Position;
+            int i = (int)segnametab.Position;
             var bytes = Encoding.ASCII.GetBytes(segname);
             segnametab.Write(bytes, 0, bytes.Length);
             segnametab.WriteByte(0);
             return i;
+        }
+
+        private void Given_Symbol(
+            string name,
+            uint st_value,
+            uint st_size,
+            byte st_info,
+            ushort st_shndx)
+        {
+            var iName = (uint)symbolStringtab.Position;
+            var bytes = Encoding.ASCII.GetBytes(name);
+            symbolStringtab.Write(bytes, 0, bytes.Length);
+            symbolStringtab.WriteByte(0);
+            symbols.Add(new Elf32_Sym
+            {
+                st_name = iName,
+                st_value = st_value,
+                st_size = st_size,
+                st_info = st_info,
+                st_shndx = st_shndx
+            });
         }
 
         private void Given_Section(string name, SectionHeaderType type, uint flags, byte[] blob)
@@ -102,6 +130,16 @@ namespace Reko.UnitTests.ImageLoaders.Elf
 
         private void BuildObjectFile()
         {
+            // Add symbol table
+            if (symbols.Count > 0)
+            {
+                Given_Section(".symtab", SectionHeaderType.SHT_SYMTAB, ElfLoader.SHF_ALLOC, FlattenSymbolTable());
+                var os = objectSections[objectSections.Count - 1];
+                os.ElementSize = Elf32_Sym.Size;
+                os.Link = (ushort)objectSections.Count;
+                Given_Section(".strtab", SectionHeaderType.SHT_STRTAB, ElfLoader.SHF_ALLOC, symbolStringtab.ToArray());
+            }
+
             var bin = new BeImageWriter();
             bin.WriteByte(0x7F);
             bin.WriteBytes(new byte[] { 0x45, 0x4C, 0x46 });
@@ -167,11 +205,11 @@ namespace Reko.UnitTests.ImageLoaders.Elf
 
                 bin.WriteBeUInt32(os.Offset);
                 bin.WriteBeUInt32(os.Content != null ? (uint)os.Content.Length : 0u);
-                bin.WriteBeUInt32(0);
+                bin.WriteBeUInt32(os.Link);
                 bin.WriteBeUInt32(0);
 
                 bin.WriteBeUInt32(0);
-                bin.WriteBeUInt32(0);
+                bin.WriteBeUInt32(os.ElementSize);
             }
 
             // write the non-null sections.
@@ -183,6 +221,21 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             this.rawBytes = bin.ToArray();
         }
 
+        private byte[] FlattenSymbolTable()
+        {
+            var syms = new BeImageWriter();
+            foreach (var sym in symbols)
+            {
+                syms.WriteBeUInt32(sym.st_name);
+                syms.WriteBeUInt32(sym.st_value);
+                syms.WriteBeUInt32(sym.st_size);
+                syms.WriteByte(sym.st_info);
+                syms.WriteByte(sym.st_other);
+                syms.WriteBeUInt16(sym.st_shndx);
+            }
+            return syms.ToArray();
+        }
+
         private void Given_Linker()
         {
             BuildObjectFile();
@@ -191,7 +244,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             var eil = new ElfImageLoader(sc, "foo.o", rawBytes);
             eil.LoadElfIdentification();
             var eh = Elf32_EHdr.Load(new BeImageReader(rawBytes, ElfImageLoader.HEADER_OFFSET));
-            var el = new ElfLoader32(eil, eh);
+            var el = new ElfLoader32(eil, eh, rawBytes);
             el.LoadSectionHeaders();
             this.linker = new ElfObjectLinker32(el, arch, rawBytes);
         }
@@ -236,7 +289,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
 
             Given_Linker();
 
-            var segs = linker.CollectNeededSegments();
+            var segs = linker.ComputeSegmentSizes();
             Assert.AreEqual(2, segs.Count);
         }
 
@@ -250,7 +303,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
 
             Given_Linker();
 
-            var segs = linker.CollectNeededSegments();
+            var segs = linker.ComputeSegmentSizes();
             var imageMap = linker.CreateSegments(Address.Ptr32(0x00800000), segs);
             Assert.AreEqual(2, imageMap.Segments.Count);
             Assert.AreEqual("00800000", imageMap.Segments.ElementAt(0).Value.MemoryArea.BaseAddress.ToString());
@@ -258,6 +311,24 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             Assert.AreEqual("00801000", imageMap.Segments.ElementAt(1).Value.MemoryArea.BaseAddress.ToString());
             Assert.AreEqual("00801004", imageMap.Segments.ElementAt(1).Value.MemoryArea.EndAddress.ToString());
             Assert.AreEqual(0x1, imageMap.Segments.ElementAt(1).Value.MemoryArea.Bytes[0]);
+        }
+
+        [Test(Description = "SHN_COMMON symbols should be added to the rw segment")]
+        public void Eol32_CommonSymbol()
+        {
+            int iText = Given_SegName(".text");
+            int iData = Given_SegName(".data");
+            Given_Section(".text", SectionHeaderType.SHT_PROGBITS, ElfLoader.SHF_ALLOC | ElfLoader.SHF_EXECINSTR, new byte[] { 0xc3 });
+            Given_Section(".data", SectionHeaderType.SHT_PROGBITS, ElfLoader.SHF_ALLOC | ElfLoader.SHF_WRITE, new byte[] { 0x01, 0x02, 0x03, 0x04 });
+            Given_Symbol(
+                "shared_global", 8, 0x4000,
+                ElfLoader32.ELF32_ST_INFO(0, SymbolType.STT_OBJECT),
+                0xFFF2);
+
+            Given_Linker();
+
+            var segs = linker.ComputeSegmentSizes();
+            Assert.AreEqual(0x4008, linker.Segments[1].p_pmemsz);
         }
     }
 }

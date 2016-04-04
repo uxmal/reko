@@ -48,36 +48,6 @@ namespace Reko.ImageLoaders.Elf
 
         public abstract Program LinkObject(IPlatform platform, Address addrLoad, byte[] rawImage);
         
-#if NYI
-        public List<ElfSymbol> LoadSymbols(Elf32_SHdr section)
-        {
-            var strTable = loader.SectionHeaders[(int)section.sh_link];
-            uint nSymbols = section.sh_size / section.sh_entsize;
-            var rdr = loader.CreateReader(section.sh_offset);
-            var list = new List<ElfSymbol>();
-            for (int iSymbol = 0; iSymbol < nSymbols; ++iSymbol)
-            {
-                var iName = rdr.ReadUInt32();
-                var rdrName = loader.CreateReader(strTable.sh_offset + iName);
-                var name = rdrName.ReadCString(PrimitiveType.Char, Encoding.UTF8);
-
-                var value = rdr.ReadUInt32();
-                var size = rdr.ReadUInt32();
-                var info = rdr.ReadByte();
-                rdr.ReadByte();         // skip unused st_other
-                var iSegment = rdr.ReadByte();
-
-                list.Add(new ElfSymbol
-                {
-                    Name = name.ToString(),
-                    Value = value,
-                    SegmentIndex = iSegment,
-                    Info = info,
-                });
-            }
-            return list;
-        }
-#endif
     }
 
     public class ElfObjectLinker64 : ElfObjectLinker
@@ -95,24 +65,31 @@ namespace Reko.ImageLoaders.Elf
     public class ElfObjectLinker32 : ElfObjectLinker
     {
         private ElfLoader32 loader;
+        private List<ElfSymbol> symbols;
 
         public ElfObjectLinker32(ElfLoader32 loader, IProcessorArchitecture arch, byte[] rawImage)
             : base(loader, arch, rawImage)
         {
             this.loader = loader;
             this.Segments = new List<Elf32_PHdr>();
+            this.symbols = LoadSymbols();
         }
 
         public List<Elf32_PHdr> Segments { get; private set; }
 
         public override Program LinkObject(IPlatform platform, Address addrLoad, byte[] rawImage)
         {
-            var segments = CollectNeededSegments();
+            var segments = ComputeSegmentSizes();
             var imageMap = CreateSegments(addrLoad, segments);
             return new Program(imageMap, platform.Architecture, platform);
         }
 
-        public Dictionary<Elf32_SHdr, Elf32_PHdr> CollectNeededSegments()
+        /// <summary>
+        /// Collects all required segments from the sections and determines
+        /// their total size.
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<Elf32_SHdr, Elf32_PHdr> ComputeSegmentSizes()
         {
             var mpToSegment = new Dictionary<uint, Elf32_PHdr>();
             var mpSectionToSegment = new Dictionary<Elf32_SHdr, Elf32_PHdr>();
@@ -123,6 +100,7 @@ namespace Reko.ImageLoaders.Elf
                 if (!mpToSegment.TryGetValue(section.sh_flags, out segment))
                 {
                     segment = new Elf32_PHdr();
+                    segment.p_flags = SegmentAccess(section.sh_flags);
                     mpToSegment.Add(section.sh_flags, segment);
                     Segments.Add(segment);
                 }
@@ -132,7 +110,31 @@ namespace Reko.ImageLoaders.Elf
                     ? section.sh_size
                     : 0;
             }
+
+            // Collect SHN_COMMON symbols
+            var rwaSegment = Segments.Single(s => s.p_flags == (ElfLoader.PF_R | ElfLoader.PF_W));
+            foreach (var sym in symbols.Where(s => s.SegmentIndex == 0xFFF2))
+            {
+                rwaSegment.p_pmemsz = Align(rwaSegment.p_pmemsz, sym.Value);
+                sym.Value = rwaSegment.p_pmemsz;
+                rwaSegment.p_pmemsz += sym.Size;
+            }
             return mpSectionToSegment;  
+        }
+
+        private uint Align(uint p_pmemsz, uint value)
+        {
+            return value * ((p_pmemsz + value - 1) / value);
+        }
+
+        private uint SegmentAccess(uint sectionFlags)
+        {
+            uint segFlags = ElfLoader.PF_R;
+            if ((sectionFlags & ElfLoader.SHF_WRITE) != 0)
+                segFlags |= ElfLoader.PF_W;
+            if ((sectionFlags & ElfLoader.SHF_EXECINSTR) != 0)
+                segFlags |= ElfLoader.PF_X;
+            return segFlags;
         }
 
         public ImageMap CreateSegments(Address addrBase, Dictionary<Elf32_SHdr,Elf32_PHdr> mpSections)
@@ -171,6 +173,37 @@ namespace Reko.ImageLoaders.Elf
                         ElfLoader.AccessModeOf(s.Key.sh_flags)))
                     .ToArray());
             return imageMap;
+        }
+
+        public List<ElfSymbol> LoadSymbols()
+        {
+            Elf32_SHdr section = loader.SectionHeaders.Single(s => s.sh_type == SectionHeaderType.SHT_SYMTAB);
+            var strTable = loader.SectionHeaders[(int)section.sh_link];
+            uint nSymbols = section.sh_size / section.sh_entsize;
+            var rdr = loader.CreateReader(section.sh_offset);
+            var list = new List<ElfSymbol>();
+            for (int iSymbol = 0; iSymbol < nSymbols; ++iSymbol)
+            {
+                var iName = rdr.ReadUInt32();
+                var rdrName = loader.CreateReader(strTable.sh_offset + iName);
+                var name = rdrName.ReadCString(PrimitiveType.Char, Encoding.UTF8);
+
+                var value = rdr.ReadUInt32();
+                var size = rdr.ReadUInt32();
+                var info = rdr.ReadByte();
+                rdr.ReadByte();         // skip unused st_other
+                var iSegment = rdr.ReadUInt16();
+
+                list.Add(new ElfSymbol
+                {
+                    Name = name.ToString(),
+                    Value = value,
+                    Size = size,
+                    SegmentIndex = iSegment,
+                    Info = info,
+                });
+            }
+            return list;
         }
     }
 }
