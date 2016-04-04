@@ -167,10 +167,13 @@ namespace Reko.Gui.Windows
             this.combinedCodeView.MixedCodeDataView.Services = services;
             this.combinedCodeView.MixedCodeDataView.MouseDown += MixedCodeDataView_MouseDown;
             this.combinedCodeView.MixedCodeDataView.ModelChanged += MixedCodeDataView_ModelChanged;
+            this.combinedCodeView.MixedCodeDataView.Navigate += TextView_Navigate;
 
             this.combinedCodeView.CodeView.VScrollValueChanged += CodeView_VScrollValueChanged;
             this.combinedCodeView.CodeView.Services = services;
             this.combinedCodeView.CodeView.MouseDown += CodeView_MouseDown;
+            this.combinedCodeView.CodeView.Navigate += TextView_Navigate;
+
             this.combinedCodeView.ContextMenu = uiSvc.GetContextMenu(MenuIds.CtxCodeView);
 
             this.combinedCodeView.ToolBarGoButton.Click += ToolBarGoButton_Click;
@@ -461,6 +464,20 @@ namespace Reko.Gui.Windows
         void ToolBarGoButton_Click(object sender, EventArgs e)
         {
             NavigateToToolbarAddress();
+        }
+
+        void TextView_Navigate(object sender, EditorNavigationArgs e)
+        {
+            var addr = e.Destination as Address;
+            var proc = e.Destination as Procedure;
+
+            if (proc != null)
+                addr = program.GetProcedureAddress(proc);
+
+            if (addr == null)
+                return;
+
+            UserNavigateToAddress(combinedCodeView.MixedCodeDataView.TopAddress, addr);
         }
 
         private void GViewer_KeyDown(object sender, KeyEventArgs e)
