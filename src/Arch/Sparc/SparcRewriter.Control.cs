@@ -47,7 +47,15 @@ namespace Reko.Arch.Sparc
             var rtlClass = RtlClass.ConditionalTransfer | RtlClass.Delay;
             if (instrCur.Annul)
                 rtlClass |= RtlClass.Annul;
-            emitter.Branch(cond, ((AddressOperand) instrCur.Op1).Address, rtlClass);
+            Constant c;
+            if (cond.As(out c) && c.ToBoolean())
+            {
+                emitter.Goto(((AddressOperand)instrCur.Op1).Address, rtlClass);
+            }
+            else
+            {
+                emitter.Branch(cond, ((AddressOperand)instrCur.Op1).Address, rtlClass);
+            }
         }
 
         private void RewriteCall()

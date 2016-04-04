@@ -77,7 +77,8 @@ namespace Reko.ImageLoaders.Elf
                 symbols.Add(new ElfSymbol
                 {
                     Name = loader.ReadAsciiString(stringtableSection.sh_offset + sym.st_name),
-                    SegmentIndex = 0
+                    Value = sym.st_value,
+                    SegmentIndex = sym.st_shndx
                 });
             }
             return symbols;

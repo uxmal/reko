@@ -122,6 +122,9 @@ namespace Reko.Arch.Sparc
                     case 'f':       // FPU register
                         ops.Add(GetFpuRegisterOperand(wInstr, ref i));
                         break;
+                    case 'A':
+                        ops.Add(GetAlternateSpaceOperand(wInstr, GetOperandSize(ref i)));
+                        break;
                     case 'I':       // 22-bit immediate value
                         ops.Add(GetImmOperand(wInstr, 22));
                         break;
@@ -132,7 +135,7 @@ namespace Reko.Arch.Sparc
                         ops.Add(GetMemoryOperand(wInstr, GetOperandSize(ref i)));
                         break;
                     case 'R':       // Register or simm13.
-                                   // if 's', return a signed immediate operand where relevant.
+                                    // if 's', return a signed immediate operand where relevant.
                         ops.Add(GetRegImmOperand(wInstr, fmt[i++] == 's', 13));
                         break;
                     case 'S':       // Register or uimm5
@@ -181,6 +184,14 @@ namespace Reko.Arch.Sparc
             {
                 int offset = SignExtend(wInstr, 22) << 2;
                 return new AddressOperand(addr + (offset - 4));
+            }
+
+            private MachineOperand GetAlternateSpaceOperand(uint wInstr, PrimitiveType type)
+            {
+                RegisterStorage b = Registers.GetRegister(wInstr >> 14);
+                RegisterStorage idx = Registers.GetRegister(wInstr);
+                var asi = (wInstr >> 4) & 0xFF;
+                return new MemoryOperand(b, Constant.Int32((int)asi), type);
             }
 
             private MachineOperand GetMemoryOperand(uint wInstr, PrimitiveType type)
@@ -461,7 +472,7 @@ namespace Reko.Arch.Sparc
             new OpRec { code=Opcode.illegal, },
             new OpRec { code=Opcode.ldstub,  },
             new OpRec { code=Opcode.illegal, },
-            new OpRec { code=Opcode.swap,    fmt="Ew,r25" },
+            new OpRec { code=Opcode.swap,    fmt="Mw,r25" },
 
             // 10
             new OpRec { code=Opcode.lda,  fmt="Aw,r25" },

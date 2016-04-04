@@ -144,7 +144,6 @@ namespace Reko.UnitTests.Core
                 return null;
             }
 
-
             public RegisterStorage GetRegister(int i)
             {
                 throw new NotImplementedException();
