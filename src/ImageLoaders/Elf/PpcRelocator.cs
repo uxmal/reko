@@ -37,11 +37,6 @@ namespace Reko.ImageLoaders.Elf
             this.importReferences = importReferences;
         }
 
-        public override List<ElfSymbol> LoadSymbols(uint iSymbolSection)
-        {
-            return LoadSymbols32(loader, iSymbolSection);
-        }
-
         /// <remarks>
         /// According to the ELF PPC32 documentation, the .rela.plt and .plt tables 
         /// should contain the same number of entries, even if the individual entry 

@@ -41,7 +41,7 @@ namespace Reko.ImageLoaders.Elf
             DumpRela32(loader);
             foreach (var relSection in loader.SectionHeaders.Where(s => s.sh_type == SectionHeaderType.SHT_RELA))
             {
-                var symbols = LoadSymbols(relSection.sh_link);
+                var symbols = loader.LoadSymbols32(relSection.sh_link);
                 var referringSection = loader.SectionHeaders[(int)relSection.sh_info];
                 var rdr = loader.CreateReader(relSection.sh_offset);
                 for (uint i = 0; i < relSection.sh_size / relSection.sh_entsize; ++i)
@@ -92,11 +92,6 @@ namespace Reko.ImageLoaders.Elf
             }
         }
 
-        public override List<ElfSymbol> LoadSymbols(uint iSymbolSection)
-        {
-            return LoadSymbols32(loader, iSymbolSection);
-        }
-
         private string LoadString(uint symtabOffset, uint sym)
         {
             return loader.ReadAsciiString(symtabOffset + sym);
@@ -105,26 +100,26 @@ namespace Reko.ImageLoaders.Elf
 
     public enum SparcRt
     {
-        R_SPARC_NONE = 0, //none none
-        R_SPARC_8 = 1, //V-byte8 S + A
-        R_SPARC_16 = 2, //V-half16 S + A
-        R_SPARC_32 = 3, //V-word32 S + A
-        R_SPARC_DISP8 = 4, //V-byte8 S + A - P
-        R_SPARC_DISP16 = 5, //V-half16 S + A - P
-        R_SPARC_DISP32 = 6, //V-word32 S + A - P
-        R_SPARC_WDISP30 = 7, //V-disp30 ( S + A - P ) > > 2
-        R_SPARC_WDISP22 = 8, //V-disp22 ( S + A - P ) > > 2
-        R_SPARC_HI22 = 9, //T-imm22 ( S + A ) > > 1 0
-        R_SPARC_22 = 10, // V-imm22 S + A
-        R_SPARC_13 = 11, // V-simm13 S + A
-        R_SPARC_LO10 = 12, // T-simm13 ( S + A ) & 0 x 3 f f
-        R_SPARC_GOT10 = 13, // T-simm13 G & 0 x 3 f f
-        R_SPARC_GOT13 = 14, // V-simm13 G
-        R_SPARC_GOT22 = 15, // T-imm22 G > > 1 0
-        R_SPARC_PC10 = 16, // T-simm13 ( S + A - P ) & 0 x 3 f f
-        R_SPARC_PC22 = 17, // V-disp22 ( S + A - P ) > > 1 0
-        R_SPARC_WPLT30 = 18, // V-disp30 ( L + A - P ) > > 2
-        R_SPARC_COPY = 19, // none none
+        R_SPARC_NONE = 0,     // none none
+        R_SPARC_8 = 1,        // V-byte8 S + A
+        R_SPARC_16 = 2,       // V-half16 S + A
+        R_SPARC_32 = 3,       // V-word32 S + A
+        R_SPARC_DISP8 = 4,    // V-byte8 S + A - P
+        R_SPARC_DISP16 = 5,   // V-half16 S + A - P
+        R_SPARC_DISP32 = 6,   // V-word32 S + A - P
+        R_SPARC_WDISP30 = 7,  // V-disp30 ( S + A - P ) >> 2
+        R_SPARC_WDISP22 = 8,  // V-disp22 ( S + A - P ) >> 2
+        R_SPARC_HI22 = 9,     // T-imm22 ( S + A ) >> 10
+        R_SPARC_22 = 10,      // V-imm22 S + A
+        R_SPARC_13 = 11,      // V-simm13 S + A
+        R_SPARC_LO10 = 12,    // T-simm13 ( S + A ) & 0x3FF
+        R_SPARC_GOT10 = 13,   // T-simm13 G & 0x3FF
+        R_SPARC_GOT13 = 14,   // V-simm13 G
+        R_SPARC_GOT22 = 15,   // T-imm22 G >> 1 0
+        R_SPARC_PC10 = 16,    // T-simm13 ( S + A - P ) & 0x3ff
+        R_SPARC_PC22 = 17,    // V-disp22 ( S + A - P ) > > 1 0
+        R_SPARC_WPLT30 = 18,  // V-disp30 ( L + A - P ) > > 2
+        R_SPARC_COPY = 19,    // none none
         R_SPARC_GLOBDAT = 20, // V-word32 S + A
         R_SPARC_JMPSLOT = 21, // none
     }

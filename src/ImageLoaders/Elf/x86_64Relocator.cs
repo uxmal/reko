@@ -37,11 +37,6 @@ namespace Reko.ImageLoaders.Elf
             this.importReferences = importReferences;
         }
 
-        public override List<ElfSymbol> LoadSymbols(uint iSymbolSection)
-        {
-            throw new NotImplementedException();
-        }
-
         /// <remarks>
         /// According to the ELF x86_64 documentation, the .rela.plt and .plt tables 
         /// should contain the same number of entries, even if the individual entry 

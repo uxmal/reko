@@ -30,7 +30,6 @@ namespace Reko.ImageLoaders.Elf
     public abstract class ElfRelocator
     {
         public abstract void Relocate(Program program);
-        public abstract List<ElfSymbol> LoadSymbols(uint iSymbolSection);
 
         [Conditional("DEBUG")]
         protected void DumpRela32(ElfLoader32 loader)
@@ -41,7 +40,7 @@ namespace Reko.ImageLoaders.Elf
                     section.sh_offset,
                     loader.GetSectionName(loader.SectionHeaders[(int)section.sh_link].sh_name));
 
-                var symbols = LoadSymbols(section.sh_link);
+                var symbols = loader.LoadSymbols32(section.sh_link);
                 var rdr = loader.CreateReader(section.sh_offset);
                 for (uint i = 0; i < section.sh_size / section.sh_entsize; ++i)
                 {
@@ -52,51 +51,6 @@ namespace Reko.ImageLoaders.Elf
                         symbols[(int)(rela.r_info >> 8)].Name,
                         rela.r_addend,
                         (int)(rela.r_info >> 8));
-                }
-            }
-        }
-
-        protected List<ElfSymbol> LoadSymbols32(ElfLoader32 loader, uint iSymbolSection)
-        {
-            Debug.Print("Symbols");
-            var symSection = loader.SectionHeaders[(int)iSymbolSection];
-            var stringtableSection = loader.SectionHeaders[(int)symSection.sh_link];
-            var rdr = loader.CreateReader(symSection.sh_offset);
-            var symbols = new List<ElfSymbol>();
-            for (uint i = 0; i < symSection.sh_size / symSection.sh_entsize; ++i)
-            {
-                var sym = Elf32_Sym.Load(rdr);
-                Debug.Print("  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
-                    i,
-                    loader.ReadAsciiString(stringtableSection.sh_offset + sym.st_name),
-                    (SymbolType)(sym.st_info & 0xF),
-                    sym.st_shndx,
-                    SectionName(loader, sym.st_shndx),
-                    sym.st_value,
-                    sym.st_size);
-                symbols.Add(new ElfSymbol
-                {
-                    Name = loader.ReadAsciiString(stringtableSection.sh_offset + sym.st_name),
-                    Value = sym.st_value,
-                    SegmentIndex = sym.st_shndx
-                });
-            }
-            return symbols;
-        }
-
-        private string SectionName(ElfLoader32 loader, ushort st_shndx)
-        {
-            if (st_shndx < 0xFF00)
-            {
-                return loader.GetSectionName(loader.SectionHeaders[(int)st_shndx].sh_name);
-            }
-            else
-            {
-                switch (st_shndx)
-                {
-                case 0xFFF1: return "SHN_ABS";
-                case 0xFFF2: return "SHN_COMMON";
-                default: return st_shndx.ToString("X4");
                 }
             }
         }
