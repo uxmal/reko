@@ -69,6 +69,11 @@ namespace Reko.Arch.Sparc
             return new BeImageWriter();
         }
 
+        public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
+        {
+            return new BeImageWriter(mem.Bytes, (uint)(addr.ToLinear() - mem.BaseAddress.ToLinear()));
+        }
+
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             throw new NotImplementedException();

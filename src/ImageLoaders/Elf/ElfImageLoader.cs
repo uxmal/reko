@@ -1977,7 +1977,7 @@ namespace Reko.ImageLoaders.Elf
                 var ep = new EntryPoint(addrEntry, Architecture.CreateProcessorState());
                 entryPoints.Add(ep);
             }
-            this.Relocator.Relocate();
+            this.Relocator.Relocate(program);
             return new RelocationResults(entryPoints, relocations, new List<Address>());
         }
     }
@@ -2372,7 +2372,7 @@ namespace Reko.ImageLoaders.Elf
                 entryPoints.Add(ep);
             }
 
-            Relocator.Relocate();
+            Relocator.Relocate(program);
             return new RelocationResults(entryPoints, relocations, new List<Address>());
         }
 

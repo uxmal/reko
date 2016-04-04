@@ -51,7 +51,7 @@ namespace Reko.ImageLoaders.Elf
         /// in the decompiled code with just a call to the symbol obtained from the
         /// .real.plt section.
         /// </remarks>
-        public override void Relocate()
+        public override void Relocate(Program program)
         {
             var rela_plt = loader.GetSectionInfoByName64(".rela.plt");
             var plt = loader.GetSectionInfoByName64(".plt");

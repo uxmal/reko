@@ -107,6 +107,7 @@ namespace Reko.Core
         /// </summary>
         /// <returns></returns>
         ImageWriter CreateImageWriter();
+        ImageWriter CreateImageWriter(MemoryArea memoryArea, Address addr);
 
         /// <summary>
         /// Creates a comparer that compares instructions for equality. 
@@ -168,7 +169,6 @@ namespace Reko.Core
         void LoadUserOptions(Dictionary<string, object> options);
 
         Dictionary<string, object> SaveUserOptions();
-
     }
 
     /// <summary>
@@ -200,6 +200,7 @@ namespace Reko.Core
         public abstract ImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd);
         public abstract ImageReader CreateImageReader(MemoryArea img, ulong off);
         public abstract ImageWriter CreateImageWriter();
+        public abstract ImageWriter CreateImageWriter(MemoryArea img, Address addr);
         public abstract IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm);
         public abstract ProcessorState CreateProcessorState();
         public abstract IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);

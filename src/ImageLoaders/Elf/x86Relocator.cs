@@ -42,7 +42,7 @@ namespace Reko.ImageLoaders.Elf
             return LoadSymbols32(loader, iSymbolSection);
         }
 
-        public override void Relocate()
+        public override void Relocate(Program program)
         {
             uint nextFakeLibAddr = ~1u; // See R_386_PC32 below; -1 sometimes used for main
             for (int i = 1; i < loader.SectionHeaders.Count; ++i)

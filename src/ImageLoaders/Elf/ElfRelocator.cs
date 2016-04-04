@@ -23,14 +23,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using Reko.Core;
 
 namespace Reko.ImageLoaders.Elf
 {
     public abstract class ElfRelocator
     {
-        public abstract void Relocate();
+        public abstract void Relocate(Program program);
         public abstract List<ElfSymbol> LoadSymbols(uint iSymbolSection);
-
 
         [Conditional("DEBUG")]
         protected void DumpRela32(ElfLoader32 loader)

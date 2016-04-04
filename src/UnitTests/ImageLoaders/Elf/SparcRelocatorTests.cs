@@ -19,6 +19,7 @@
 #endregion
 
 using NUnit.Framework;
+using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.ImageLoaders.Elf;
 using Rhino.Mocks;
@@ -52,7 +53,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             var loader = (ElfLoader32) elf.CreateLoader();
             var sparc = (SparcRelocator)loader.Relocator;
             loader.LoadSectionHeaders();
-            sparc.Relocate();
+            sparc.Relocate(new Program());
         }
     }
 }

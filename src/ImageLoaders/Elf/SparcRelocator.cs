@@ -18,8 +18,10 @@
  */
 #endregion
 
+using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -34,9 +36,45 @@ namespace Reko.ImageLoaders.Elf
             this.loader = loader;
         }
 
-        public override void Relocate()
+        public override void Relocate(Program program)
         {
             DumpRela32(loader);
+            foreach (var relSection in loader.SectionHeaders.Where(s => s.sh_type == SectionHeaderType.SHT_RELA))
+            {
+                var symbols = LoadSymbols(relSection.sh_link);
+                var rdr = loader.CreateReader(relSection.sh_offset);
+                for (uint i = 0; i < relSection.sh_size / relSection.sh_entsize; ++i)
+                {
+                    var rela = Elf32_Rela.Read(rdr);
+                    Debug.Print("  off:{0:X8} type:{1,-16} add:{3,-20} {4,3} {2}",
+                        rela.r_offset,
+                        (SparcRt)(rela.r_info & 0xFF),
+                        symbols[(int)(rela.r_info >> 8)].Name,
+                        rela.r_addend,
+                        (int)(rela.r_info >> 8));
+                    var sym = symbols[(int)(rela.r_info >> 8)];
+                    var section = loader.SectionHeaders[(int)sym.SegmentIndex];
+                    uint S = sym.Value;
+                    int A = 0;
+                    int sh = 0;
+                    var addr = Address.Ptr32(section.sh_addr + rela.r_offset);
+                    var relR = program.CreateImageReader(addr);
+                    var relW = program.CreateImageWriter(addr);
+                    
+                    switch ((SparcRt)(rela.r_info & 0xFF))
+                    {
+                    case SparcRt.R_SPARC_HI22:
+                        S = sym.Value;
+                        A = rela.r_addend;
+                        sh = 10;
+                        break;
+                    }
+                    var w = relR.ReadBeUInt32();
+                    w += (uint)(S + A) >> sh;
+                    relW.WriteBeUInt32(w);
+
+                }
+            }
         }
 
         public override List<ElfSymbol> LoadSymbols(uint iSymbolSection)
