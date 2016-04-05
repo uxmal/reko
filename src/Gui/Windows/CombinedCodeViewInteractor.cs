@@ -50,6 +50,9 @@ namespace Reko.Gui.Windows
 
         private DeclarationTextBox declarationTextBox;
 
+        private ImageSegment segment;
+        private bool hideProcedures;
+
         public CombinedCodeViewInteractor()
         {
         }
@@ -66,6 +69,7 @@ namespace Reko.Gui.Windows
         {
             this.program = program;
             this.proc = proc;
+            this.hideProcedures = false;
             ProgramChanged();
             if (program != null)
             {
@@ -83,6 +87,15 @@ namespace Reko.Gui.Windows
                 }
                 SelectedAddress = addr;
             }
+        }
+
+        public void DisplayGlobals(Program program, ImageSegment segment)
+        {
+            this.program = program;
+            this.segment = segment;
+            this.hideProcedures = true;
+            ProgramChanged();
+            SelectedAddress = segment.Address;
         }
 
         private void ProgramChanged()
@@ -120,7 +133,10 @@ namespace Reko.Gui.Windows
 
                 GlobalDataItem_v2 globalDataItem;
                 Procedure proc = dataItemNode.Proc;
-                if (proc != null)
+                if (!ShowItem(dataItemNode))
+                {
+                }
+                else if (proc != null)
                 {
                     var tsf = new TextSpanFormatter();
                     var fmt = new AbsynCodeFormatter(tsf);
@@ -152,6 +168,22 @@ namespace Reko.Gui.Windows
             }
 
             combinedCodeView.CodeView.Model = nestedTextModel;
+        }
+
+        private bool ShowItem(MixedCodeDataModel.DataItemNode item)
+        {
+            if (hideProcedures && item.Proc != null)
+                return false;
+
+            if (segment != null && !segment.IsInRange(item.StartAddress))
+                return false;
+
+            return true;
+        }
+
+        private bool ShowAllItems()
+        {
+            return (segment == null && !hideProcedures);
         }
 
         public Control CreateControl()
@@ -238,6 +270,16 @@ namespace Reko.Gui.Windows
         {
             if (cmdId.Guid == CmdSets.GuidReko)
             {
+                if (!ShowAllItems())
+                {
+                    switch (cmdId.ID)
+                    {
+                    case CmdIds.EditDeclaration:
+                    case CmdIds.ViewCfgGraph:
+                        status.Status = MenuStatus.Visible;
+                        return true;
+                    }
+                }
                 switch (cmdId.ID)
                 {
                 case CmdIds.TextEncodingChoose:
