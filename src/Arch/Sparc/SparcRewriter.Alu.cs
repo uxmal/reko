@@ -118,9 +118,18 @@ namespace Reko.Arch.Sparc
 
         private void RewriteSethi()
         {
-            var dst = RewriteOp(instrCur.Op2);
-            var src = (ImmediateOperand) instrCur.Op1;
-            emitter.Assign(dst, Constant.Word32(src.Value.ToUInt32() << 10));
+            var rDst = (RegisterOperand)instrCur.Op2;
+            if (rDst.Register == Registers.g0)
+            {
+                emitter.Nop();
+            }
+            else
+            {
+                //$TODO: check relocations for a symbol at instrCur.Address.
+                var dst = frame.EnsureRegister(rDst.Register);
+                var src = (ImmediateOperand)instrCur.Op1;
+                emitter.Assign(dst, Constant.Word32(src.Value.ToUInt32() << 10));
+            }
         }
 
         private void RewriteStore(PrimitiveType size)

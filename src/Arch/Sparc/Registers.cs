@@ -56,7 +56,7 @@ namespace Reko.Arch.Sparc
         public static RegisterStorage l3;
         public static RegisterStorage l4;
         public static RegisterStorage l5;
-        public static RegisterStorage lp;
+        public static RegisterStorage l6;
         public static RegisterStorage l7;
 
         public static RegisterStorage i0;   // incoming parameters / return value to caller
@@ -149,7 +149,7 @@ namespace Reko.Arch.Sparc
             l3 = new RegisterStorage("l3", 19, 0, PrimitiveType.Word32);
             l4 = new RegisterStorage("l4", 20, 0, PrimitiveType.Word32);
             l5 = new RegisterStorage("l5", 21, 0, PrimitiveType.Word32);
-            lp = new RegisterStorage("lp", 22, 0, PrimitiveType.Word32);
+            l6 = new RegisterStorage("l6", 22, 0, PrimitiveType.Word32);
             l7 = new RegisterStorage("l7", 23, 0, PrimitiveType.Word32);
 
             i0 = new RegisterStorage("i0", 24, 0, PrimitiveType.Word32);   // incoming parameters / return value to caller
@@ -241,7 +241,7 @@ namespace Reko.Arch.Sparc
                 l3, 
                 l4, 
                 l5, 
-                lp, 
+                l6, 
                 l7, 
 
                 i0,  

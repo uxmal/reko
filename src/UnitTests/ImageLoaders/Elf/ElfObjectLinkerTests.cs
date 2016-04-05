@@ -331,5 +331,23 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             var segs = linker.ComputeSegmentSizes();
             Assert.AreEqual(0x4000, linker.Segments[3].p_pmemsz);
         }
+
+        [Test(Description = "Unresolved symbols of STT_NOTYPE should live in their own segment.")]
+        public void Eol32_UnresolvedExternals_OwnSegment()
+        {
+            int iText = Given_SegName(".text");
+            int iData = Given_SegName(".data");
+            Given_Section(".text", SectionHeaderType.SHT_PROGBITS, ElfLoader.SHF_ALLOC | ElfLoader.SHF_EXECINSTR, new byte[] { 0xc3 });
+            Given_Section(".data", SectionHeaderType.SHT_PROGBITS, ElfLoader.SHF_ALLOC | ElfLoader.SHF_WRITE, new byte[] { 0x01, 0x02, 0x03, 0x04 });
+            Given_Symbol(
+                "shared_global", 8, 0x4000,
+                ElfLoader32.ELF32_ST_INFO(0, SymbolType.STT_OBJECT),
+                0xFFF2);
+
+            Given_Linker();
+
+            var segs = linker.ComputeSegmentSizes();
+            Assert.AreEqual(0x4000, linker.Segments[3].p_pmemsz);
+        }
     }
 }

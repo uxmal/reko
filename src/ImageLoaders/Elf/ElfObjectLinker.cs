@@ -47,7 +47,6 @@ namespace Reko.ImageLoaders.Elf
         }
 
         public abstract Program LinkObject(IPlatform platform, Address addrLoad, byte[] rawImage);
-        
     }
 
     public class ElfObjectLinker64 : ElfObjectLinker
@@ -80,7 +79,6 @@ namespace Reko.ImageLoaders.Elf
             var segments = ComputeSegmentSizes();
             var imageMap = CreateSegments(addrLoad, segments);
             var program = new Program(imageMap, platform.Architecture, platform);
-            loader.Relocator.Relocate(program);
             return program;
         }
 

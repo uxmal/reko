@@ -2395,7 +2395,7 @@ namespace Reko.ImageLoaders.Elf
         {
             return Symbols.Values.SelectMany(v => v)
                 .Where(sym => sym.Type == SymbolType.STT_FUNC)
-                .Select(sym => MakeEntryPoint(sym));
+                .Select(MakeEntryPoint);
         }
 
         private EntryPoint MakeEntryPoint(ElfSymbol sym)

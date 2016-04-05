@@ -51,15 +51,8 @@ namespace Reko.ImageLoaders.Elf
                     if (loader.SectionHeaders.Count <= sym.SectionIndex)
                         continue;       //$DEBUG
                     if (sym.SectionIndex == 0)
-                        continue;       //$DEBUG
+                        continue;
                     var symSection = loader.SectionHeaders[(int)sym.SectionIndex];
-                    Debug.Print("  off:{0:X8} type:{1,-16} add:{3,-20} {4,3} {2} {5}",
-                        rela.r_offset,
-                        (SparcRt)(rela.r_info & 0xFF),
-                        symbols[(int)(rela.r_info >> 8)].Name,
-                        rela.r_addend,
-                        (int)(rela.r_info >> 8),
-                        loader.GetSectionName(symSection.sh_name));
                     uint S = sym.Value + symSection.sh_addr;
                     int A = 0;
                     int sh = 0;
@@ -68,6 +61,15 @@ namespace Reko.ImageLoaders.Elf
                     var addr = Address.Ptr32(P);
                     var relR = program.CreateImageReader(addr);
                     var relW = program.CreateImageWriter(addr);
+
+                    Debug.Print("  off:{0:X8} type:{1,-16} add:{3,-20} {4,3} {2} {5} {6}",
+                        rela.r_offset,
+                        (SparcRt)(rela.r_info & 0xFF),
+                        symbols[(int)(rela.r_info >> 8)].Name,
+                        rela.r_addend,
+                        (int)(rela.r_info >> 8),
+                        addr,
+                        loader.GetSectionName(symSection.sh_name));
 
                     var rt = (SparcRt)(rela.r_info & 0xFF);
                     switch (rt)
@@ -94,6 +96,10 @@ namespace Reko.ImageLoaders.Elf
                     var w = relR.ReadBeUInt32();
                     w += ((uint)(S + A + P) >> sh) & mask;
                     relW.WriteBeUInt32(w);
+
+                    //$DEBUG:
+                    w = program.CreateImageReader(Address.Ptr32(0x0804802C)).ReadBeUInt32();
+                    Debug.Print("    w = {0:X8}", w);
 
                 }
             }
