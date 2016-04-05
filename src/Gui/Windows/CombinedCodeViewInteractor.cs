@@ -51,7 +51,7 @@ namespace Reko.Gui.Windows
         private DeclarationTextBox declarationTextBox;
 
         private ImageSegment segment;
-        private bool hideProcedures;
+        private bool showProcedures;
 
         public CombinedCodeViewInteractor()
         {
@@ -69,7 +69,7 @@ namespace Reko.Gui.Windows
         {
             this.program = program;
             this.proc = proc;
-            this.hideProcedures = false;
+            this.showProcedures = true;
             ProgramChanged();
             if (program != null)
             {
@@ -93,7 +93,7 @@ namespace Reko.Gui.Windows
         {
             this.program = program;
             this.segment = segment;
-            this.hideProcedures = true;
+            this.showProcedures = false;
             ProgramChanged();
             SelectedAddress = segment.Address;
         }
@@ -172,7 +172,7 @@ namespace Reko.Gui.Windows
 
         private bool ShowItem(MixedCodeDataModel.DataItemNode item)
         {
-            if (hideProcedures && item.Proc != null)
+            if (!showProcedures && item.Proc != null)
                 return false;
 
             if (segment != null && !segment.IsInRange(item.StartAddress))
@@ -183,7 +183,7 @@ namespace Reko.Gui.Windows
 
         private bool ShowAllItems()
         {
-            return (segment == null && !hideProcedures);
+            return (segment == null && showProcedures);
         }
 
         public Control CreateControl()
