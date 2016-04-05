@@ -47,6 +47,11 @@ namespace Reko.Arch.Sparc
             EmitCc(dst);
         }
 
+        private void RewriteDLoad(PrimitiveType size)
+        {
+            throw new NotImplementedException();
+        }
+
         private void RewriteLoad(PrimitiveType size)
         {
             var dst = RewriteOp(instrCur.Op2);

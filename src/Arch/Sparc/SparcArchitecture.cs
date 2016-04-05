@@ -34,12 +34,15 @@ namespace Reko.Arch.Sparc
 {
     public class SparcArchitecture : ProcessorArchitecture
     {
+        private Dictionary<uint, FlagGroupStorage> flagGroups;
+
         public SparcArchitecture(PrimitiveType wordWidth)
         {
             this.WordWidth = wordWidth;
             this.PointerType = PrimitiveType.Create(Domain.Pointer, wordWidth.Size);
             this.FramePointerType = PointerType;
             this.InstructionBitSize = 32;
+            this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
         }
 
         #region IProcessorArchitecture Members
@@ -121,12 +124,36 @@ namespace Reko.Arch.Sparc
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
-            throw new NotImplementedException();
+            FlagGroupStorage fl;
+            if (flagGroups.TryGetValue(grf, out fl))
+                return fl;
+
+            PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            fl = new FlagGroupStorage(Registers.psr, grf, GrfToString(grf), dt);
+            flagGroups.Add(grf, fl);
+            return fl;
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
         {
-            throw new NotImplementedException();
+            FlagM grf = 0;
+            for (int i = 0; i < name.Length; ++i)
+            {
+                switch (name[i])
+                {
+                case 'N': grf |= FlagM.NF; break;
+                case 'C': grf |= FlagM.CF; break;
+                case 'Z': grf |= FlagM.ZF; break;
+                case 'V': grf |= FlagM.VF; break;
+
+                case 'E': grf |= FlagM.EF; break;
+                case 'L': grf |= FlagM.LF; break;
+                case 'G': grf |= FlagM.GF; break;
+                case 'U': grf |= FlagM.UF; break;
+                default: return null;
+                }
+            }
+            return GetFlagGroup((uint)grf);
         }
 
         public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)

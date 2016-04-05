@@ -81,6 +81,7 @@ namespace Reko.ImageLoaders.Elf
             var platform = innerLoader.CreatePlatform(osAbi, innerLoader.Architecture);
             int cHeaders = innerLoader.LoadProgramHeaderTable();
             innerLoader.LoadSectionHeaders();
+            innerLoader.LoadSymbols();
             innerLoader.Dump();
             if (cHeaders > 0)
             {
@@ -174,6 +175,7 @@ namespace Reko.ImageLoaders.Elf
         public const uint SHF_WRITE = 0x1;
         public const uint SHF_ALLOC = 0x2;
         public const uint SHF_EXECINSTR = 0x4;
+        public const uint SHF_REKOCOMMON = 0x08000000;  // A hack until we determine what should happen with SHN_COMMON symbols
         public const int DT_NULL = 0;
         public const int DT_NEEDED = 1;
         public const int DT_STRTAB = 5;
@@ -199,12 +201,14 @@ namespace Reko.ImageLoaders.Elf
         {
             this.imgLoader = imgLoader;
             this.Architecture = CreateArchitecture(machine);
+            this.Symbols = new SortedList<int, List<ElfSymbol>>();
         }
 
         public IProcessorArchitecture Architecture { get; private set; }
         public IServiceProvider Services { get { return imgLoader.Services; } }
         public ElfRelocator Relocator { get; protected set; }
         public abstract Address DefaultAddress { get; }
+        public SortedList<int, List<ElfSymbol>> Symbols { get; }
 
         public static AccessMode AccessModeOf(uint sh_flags)
         {
@@ -255,7 +259,6 @@ namespace Reko.ImageLoaders.Elf
             return cfgSvc.GetEnvironment(envName).Load(Services, arch);
         }
 
-
         public abstract ElfRelocator CreateRelocator(ElfMachine machine);
 
         public Program LoadImage(IPlatform platform, byte[] rawImage)
@@ -263,7 +266,6 @@ namespace Reko.ImageLoaders.Elf
             this.platform = platform;
             this.rawImage = rawImage;
             GetPltLimits();
-            //LoadSymbols();
             var addrPreferred = ComputeBaseAddress(platform);
             var addrMax = ComputeMaxAddress(platform);
             Dump();
@@ -276,19 +278,6 @@ namespace Reko.ImageLoaders.Elf
         public abstract ElfObjectLinker CreateLinker();
 
         public abstract void GetPltLimits();
-
-#if LATER
-        private void LoadSymbols()
-        {
-            // Add symbol info. Some symbols will be in the main table only, and others in the dynamic table only.
-            // The best idea is to add symbols for all sections of the appropriate type
-            foreach (var sec in SectionHeaders)
-            {
-                if (sec.sh_type == SectionHeaderType.SHT_SYMTAB || sec.sh_type == SectionHeaderType.SHT_DYNSYM)
-                    AddSyms(sec);
-            }
-        }
-#endif
 
         public abstract ImageMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred, Address addrMax);
 
@@ -306,6 +295,12 @@ namespace Reko.ImageLoaders.Elf
         public abstract Address ComputeMaxAddress(IPlatform platform);
         public abstract int LoadProgramHeaderTable();
         public abstract void LoadSectionHeaders();
+        public abstract void LoadSymbols();
+
+        public IEnumerable<ElfSymbol> GetAllSymbols()
+        {
+            return Symbols.Values.SelectMany(s => s);
+        }
 
         public string GetSectionName(uint idxString)
         {
@@ -1649,51 +1644,6 @@ namespace Reko.ImageLoaders.Elf
             public uint p_align; /* memory/file alignment */
         }
 
-        // Section header
-
-        public class Elf32_Shdr
-        {
-            public uint sh_name;
-            public SectionType sh_type;
-            public SectionFlags sh_flags;
-            public uint sh_addr;
-            public uint sh_offset;
-            public uint sh_size;
-            public int sh_link;
-            public int sh_info;
-            public int sh_addralign;
-            public uint sh_entsize;
-        }
-
-        const int SHF_WRITE = 1;		// Writeable
-        const int SHF_ALLOC = 2;		// Consumes memory in exe
-        const int SHF_EXECINSTR = 4;		// Executable
-
-        const int SHT_NOBITS = 8;		// Bss
-        const int SHT_REL = 9;		// Relocation table (no addend)
-        const int SHT_RELA = 4;		// Relocation table (with addend, e.g. RISC)
-        const int SHT_SYMTAB = 2;		// Symbol table
-        const int SHT_DYNSYM = 11;		// Dynamic symbol table
-
-        public class Elf32_Sym
-        {
-            public int st_name;
-            public uint st_value;
-            public int st_size;
-            public byte st_info;
-            public byte st_other;
-            public short st_shndx;
-        }
-
-        public class Elf32_Rel
-        {
-            public uint r_offset;
-            public int r_info;
-        }
-
-
- 
-
 
         // Tag values
         const int DT_NULL = 0;		// Last entry in list
@@ -1963,6 +1913,11 @@ namespace Reko.ImageLoaders.Elf
                 {
                     SectionHeaders64.Add(Elf64_SHdr.Load(rdr));
                 }
+        }
+
+        public override void LoadSymbols()
+        {
+            throw new NotImplementedException();
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
@@ -2378,10 +2333,21 @@ namespace Reko.ImageLoaders.Elf
             }
         }
 
-        public List<ElfSymbol> LoadSymbols32(uint iSymbolSection)
+        public override void LoadSymbols()
+        {
+            for (int i = 0; i < SectionHeaders.Count; ++i)
+            {
+                if (SectionHeaders[i].sh_type == SectionHeaderType.SHT_SYMTAB)
+                {
+                    Symbols[i] = LoadSymbols32(i);
+                }
+            }
+        }
+
+        private List<ElfSymbol> LoadSymbols32(int iSymbolSection)
         {
             Debug.Print("Symbols");
-            var symSection = SectionHeaders[(int)iSymbolSection];
+            var symSection = SectionHeaders[iSymbolSection];
             var stringtableSection = SectionHeaders[(int)symSection.sh_link];
             var rdr = CreateReader(symSection.sh_offset);
             var symbols = new List<ElfSymbol>();
@@ -2400,8 +2366,9 @@ namespace Reko.ImageLoaders.Elf
                 {
                     Name = ReadAsciiString(stringtableSection.sh_offset + sym.st_name),
                     Type = (SymbolType)(sym.st_info & 0xF),
+                    SectionIndex = sym.st_shndx,
                     Value = sym.st_value,
-                    SegmentIndex = sym.st_shndx
+                    Size = sym.st_size,
                 });
             }
             return symbols;
@@ -2426,21 +2393,16 @@ namespace Reko.ImageLoaders.Elf
 
         private IEnumerable<EntryPoint> CollectFunctionSymbols()
         {
-            for (int i = 0; i < SectionHeaders.Count; ++i)
-            {
-                var section = SectionHeaders[i];
-                if (section.sh_type != SectionHeaderType.SHT_SYMTAB)
-                    continue;
-                foreach (var sym in LoadSymbols32((uint)i))
-                {
-                    if (sym.Type == SymbolType.STT_FUNC)
-                    {
-                        var symSection = SectionHeaders[(int)sym.SegmentIndex];
-                        var addr = Address.Ptr32(symSection.sh_addr + sym.Value);
-                        yield return new EntryPoint(addr, sym.Name, state: Architecture.CreateProcessorState());
-                    }
-                }
-            }
+            return Symbols.Values.SelectMany(v => v)
+                .Where(sym => sym.Type == SymbolType.STT_FUNC)
+                .Select(sym => MakeEntryPoint(sym));
+        }
+
+        private EntryPoint MakeEntryPoint(ElfSymbol sym)
+        {
+            var symSection = SectionHeaders[(int)sym.SectionIndex];
+            var addr = Address.Ptr32(symSection.sh_addr + sym.Value);
+            return new EntryPoint(addr, sym.Name, state: Architecture.CreateProcessorState());
         }
     }
 }

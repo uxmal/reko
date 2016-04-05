@@ -81,7 +81,6 @@ namespace Reko.Scanning
         /// calls to procedures that terminate the thread of executationresult in the 
         /// termination of processing.
         /// </summary>
-        /// 
         public override void Process()
         {
             state.ErrorListener = (message) => { scanner.Warn(ric.Address, message); };
@@ -97,6 +96,8 @@ namespace Reko.Scanning
             while (rtlStream.MoveNext())
             {
                 this.ric = rtlStream.Current;
+                if (this.ric.Address.ToString().EndsWith("48290"))  //$DEBUG
+                    this.ric.ToString();
                 if (blockCur != scanner.FindContainingBlock(ric.Address))
                     break;  // Fell off the end of this block.
                 if (!ProcessRtlCluster(ric))

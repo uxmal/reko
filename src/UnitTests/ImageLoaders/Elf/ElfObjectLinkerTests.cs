@@ -246,6 +246,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             var eh = Elf32_EHdr.Load(new BeImageReader(rawBytes, ElfImageLoader.HEADER_OFFSET));
             var el = new ElfLoader32(eil, eh, rawBytes);
             el.LoadSectionHeaders();
+            el.LoadSymbols();
             this.linker = new ElfObjectLinker32(el, arch, rawBytes);
         }
 
@@ -328,7 +329,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             Given_Linker();
 
             var segs = linker.ComputeSegmentSizes();
-            Assert.AreEqual(0x4008, linker.Segments[1].p_pmemsz);
+            Assert.AreEqual(0x4000, linker.Segments[3].p_pmemsz);
         }
     }
 }

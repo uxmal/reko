@@ -35,13 +35,13 @@ namespace Reko.Core.Rtl
             this.Class = RtlClass.Linear;
         }
 
+        public Expression Dst { get; private set; }
+        public Expression Src { get; private set; }
+
         public override T Accept<T>(RtlInstructionVisitor<T> visitor)
         {
             return visitor.VisitAssignment(this);
         }
-
-        public Expression Dst { get; private set; }
-        public Expression Src { get; private set; }
 
         protected override void WriteInner(TextWriter writer)
         {
