@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Output;
 using Reko.Core.Serialization;
+using Reko.Core.Types;
 using Reko.Gui.Forms;
 using Reko.Gui.Windows.Controls;
 using System;
@@ -131,7 +132,7 @@ namespace Reko.Gui.Windows
 
                 bool nodeCreated = false;
 
-                GlobalDataItem_v2 globalDataItem;
+                ImageMapItem item;
                 Procedure proc = dataItemNode.Proc;
                 if (!ShowItem(dataItemNode))
                 {
@@ -145,11 +146,11 @@ namespace Reko.Gui.Windows
                     nestedTextModel.Nodes.Add(tsf.GetModel());
                     nodeCreated = true;
                 }
-                else if (program.User.Globals.TryGetValue(curAddr, out globalDataItem))
+                else if (program.ImageMap.TryFindItem(curAddr, out item) &&
+                         !(item.DataType is UnknownType))
                 {
-                    var tlDeser = program.CreateTypeLibraryDeserializer();
-                    var dt = globalDataItem.DataType.Accept(tlDeser);
-                    var name = globalDataItem.Name;
+                    var dt = item.DataType;
+                    var name = item.Name ?? "<unnamed>";
 
                     var tsf = new TextSpanFormatter();
                     var fmt = new AbsynCodeFormatter(tsf);
@@ -375,7 +376,7 @@ namespace Reko.Gui.Windows
                 {
                     addr = program.GetProcedureAddress(blockItem.Block.Procedure);
                 }
-                else if (program.User.Globals.TryGetValue(item.Address, out globalDataItem))
+                else if (!(item.DataType is UnknownType))
                 {
                     addr = item.Address;
                 }

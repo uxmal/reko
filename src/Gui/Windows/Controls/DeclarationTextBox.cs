@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Types;
 using Reko.Core.Output;
 using Reko.Core.Serialization;
 using Reko.Analysis;
@@ -122,22 +123,21 @@ namespace Reko.Gui.Windows.Controls
             {
                 return proc.Name;
             }
-            GlobalDataItem_v2 global;
-            if(program.User.Globals.TryGetValue(address, out global))
+            ImageMapItem item;
+            if (program.ImageMap.TryFindItemExact(address, out item) &&
+                !(item.DataType is UnknownType))
             {
-                return GetGlobalDeclaration(global.DataType, global.Name);
+                return GetGlobalDeclaration(item.DataType, item.Name ?? "<unnamed>");
             }
             return null;
         }
 
-        private string GetGlobalDeclaration(SerializedType dataType, string name)
+        private string GetGlobalDeclaration(DataType dataType, string name)
         {
-            var tlDeser = program.CreateTypeLibraryDeserializer();
-            var dt = dataType.Accept(tlDeser);
             var sw = new StringWriter();
             var tf = new TextFormatter(sw);
             var tyreffo = new CTypeReferenceFormatter(program.Platform, tf, true);
-            tyreffo.WriteDeclaration(dt, name);
+            tyreffo.WriteDeclaration(dataType, name);
             return sw.ToString();
         }
 

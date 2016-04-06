@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -101,7 +102,8 @@ namespace Reko.Gui.Design
         private TreeNodeDesigner[] GetGlobalVariables(ImageMap imageMap, ImageSegment segment)
         {
             if (imageMap.Items.Values
-                .Where(i => !(i is ImageMapBlock))
+                .Where(i => !(i is ImageMapBlock) && 
+                            !(i.DataType is UnknownType))
                 .Any(i => segment.IsInRange(i.Address)))
             {
                 return new TreeNodeDesigner[]
