@@ -90,6 +90,7 @@ namespace Reko.ImageLoaders.Elf
         public Dictionary<Elf32_SHdr, Elf32_PHdr> ComputeSegmentSizes()
         {
             CollectCommonSymbolsIntoSection();
+            CollectUndefinedSymbolsIntoSection();
 
             var mpToSegment = new Dictionary<uint, Elf32_PHdr>();
             var mpSectionToSegment = new Dictionary<Elf32_SHdr, Elf32_PHdr>();
@@ -143,6 +144,33 @@ namespace Reko.ImageLoaders.Elf
             if (rekoCommon.sh_size > 0)
             {
                 loader.SectionHeaders.Add(rekoCommon);
+            }
+        }
+
+        /// <summary>
+        /// Allocate an arbitrary 16 bytes for each unresolved
+        /// external symbol.
+        /// </summary>
+        private void CollectUndefinedSymbolsIntoSection()
+        {
+            var rekoExtfn = new Elf32_SHdr
+            {
+                sh_type = SectionHeaderType.SHT_NOBITS,
+                sh_flags = ElfLoader.SHF_ALLOC | ElfLoader.SHF_EXECINSTR,
+                sh_offset = 0,
+                sh_size = 0,
+                sh_addralign = 0x10,
+            };
+            foreach (var sym in loader.GetAllSymbols().Where(s => s.Type == SymbolType.STT_NOTYPE))
+            {
+                rekoExtfn.sh_size = Align(rekoExtfn.sh_size, 0x10);
+                sym.Value = rekoExtfn.sh_size;
+                sym.SectionIndex = (uint)loader.SectionHeaders.Count;
+                rekoExtfn.sh_size += 0x10;
+            }
+            if (rekoExtfn.sh_size > 0)
+            {
+                loader.SectionHeaders.Add(rekoExtfn);
             }
         }
 

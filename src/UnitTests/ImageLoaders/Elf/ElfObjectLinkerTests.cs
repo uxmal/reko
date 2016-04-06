@@ -340,14 +340,18 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             Given_Section(".text", SectionHeaderType.SHT_PROGBITS, ElfLoader.SHF_ALLOC | ElfLoader.SHF_EXECINSTR, new byte[] { 0xc3 });
             Given_Section(".data", SectionHeaderType.SHT_PROGBITS, ElfLoader.SHF_ALLOC | ElfLoader.SHF_WRITE, new byte[] { 0x01, 0x02, 0x03, 0x04 });
             Given_Symbol(
-                "shared_global", 8, 0x4000,
-                ElfLoader32.ELF32_ST_INFO(0, SymbolType.STT_OBJECT),
-                0xFFF2);
+                "unresolved_global1", 0, 0,
+                ElfLoader32.ELF32_ST_INFO(0, SymbolType.STT_NOTYPE),
+                0);
+            Given_Symbol(
+                "unresolved_global2", 0, 0,
+                ElfLoader32.ELF32_ST_INFO(0, SymbolType.STT_NOTYPE),
+                0);
 
             Given_Linker();
 
             var segs = linker.ComputeSegmentSizes();
-            Assert.AreEqual(0x4000, linker.Segments[3].p_pmemsz);
+            Assert.AreEqual(0x0020, linker.Segments[3].p_pmemsz, "Each external symbol is simualted with 16 bytes");
         }
     }
 }
