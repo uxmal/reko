@@ -28,13 +28,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Reko.UnitTests.Mocks;
+using Reko.Core;
 
 namespace Reko.UnitTests.Core.CLanguage
 {
     [TestFixture]
     public class NamedDataTypeExtractorTests
     {
-        private Platform platform;
+        private IPlatform platform;
         private NamedDataType nt;
         private SymbolTable symbolTable;
         private FakeArchitecture arch;

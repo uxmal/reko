@@ -34,15 +34,15 @@ namespace Reko.ImageLoaders.Elf
         [Conditional("DEBUG")]
         protected void DumpRela32(ElfLoader32 loader)
         {
-            foreach (var section in loader.SectionHeaders.Where(s => s.sh_type == SectionHeaderType.SHT_RELA))
+            foreach (var section in loader.Sections.Where(s => s.Type == SectionHeaderType.SHT_RELA))
             {
                 Debug.Print("RELA: offset {0:X} link section {1}",
-                    section.sh_offset,
-                    loader.GetSectionName(loader.SectionHeaders[(int)section.sh_link].sh_name));
+                    section.FileOffset,
+                    section.LinkedSection.Name);
 
-                var symbols = loader.Symbols[(int)section.sh_link];
-                var rdr = loader.CreateReader(section.sh_offset);
-                for (uint i = 0; i < section.sh_size / section.sh_entsize; ++i)
+                var symbols = loader.Symbols[section];
+                var rdr = loader.CreateReader(section.FileOffset);
+                for (uint i = 0; i < section.EntryCount(); ++i)
                 {
                     var rela = Elf32_Rela.Read(rdr);
                     Debug.Print("  off:{0:X8} type:{1,-16} add:{3,-20} {4,3} {2}",

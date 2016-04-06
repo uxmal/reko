@@ -39,26 +39,26 @@ namespace Reko.ImageLoaders.Elf
         public override void Relocate(Program program)
         {
             DumpRela32(loader);
-            foreach (var relSection in loader.SectionHeaders.Where(s => s.sh_type == SectionHeaderType.SHT_RELA))
+            foreach (var relSection in loader.Sections.Where(s => s.Type == SectionHeaderType.SHT_RELA))
             {
-                var symbols = loader.Symbols[(int)relSection.sh_link];
-                var referringSection = loader.SectionHeaders[(int)relSection.sh_info];
-                var rdr = loader.CreateReader(relSection.sh_offset);
-                for (uint i = 0; i < relSection.sh_size / relSection.sh_entsize; ++i)
+                var symbols = loader.Symbols[relSection.LinkedSection];
+                var referringSection = relSection.RelocatedSection;
+                var rdr = loader.CreateReader(relSection.FileOffset);
+                for (uint i = 0; i < relSection.EntryCount(); ++i)
                 {
                     var rela = Elf32_Rela.Read(rdr);
                     var sym = symbols[(int)(rela.r_info >> 8)];
-                    if (loader.SectionHeaders.Count <= sym.SectionIndex)
+                    if (loader.Sections.Count <= sym.SectionIndex)
                         continue;       //$DEBUG
                     if (sym.SectionIndex == 0)
                         continue;
-                    var symSection = loader.SectionHeaders[(int)sym.SectionIndex];
-                    uint S = sym.Value + symSection.sh_addr;
+                    var symSection = loader.Sections[(int)sym.SectionIndex];
+                    uint S = sym.Value + symSection.Address.ToUInt32();
                     int A = 0;
                     int sh = 0;
                     uint mask = ~0u;
-                    uint P = referringSection.sh_addr + rela.r_offset;
-                    var addr = Address.Ptr32(P);
+                    var addr = referringSection.Address + rela.r_offset;
+                    uint P = (uint)addr.ToLinear(); 
                     var relR = program.CreateImageReader(addr);
                     var relW = program.CreateImageWriter(addr);
 
@@ -68,7 +68,7 @@ namespace Reko.ImageLoaders.Elf
                         symbols[(int)(rela.r_info >> 8)].Name,
                         rela.r_addend,
                         (int)(rela.r_info >> 8),
-                        loader.GetSectionName(symSection.sh_name));
+                        symSection.Name);
 
                     var rt = (SparcRt)(rela.r_info & 0xFF);
                     switch (rt)

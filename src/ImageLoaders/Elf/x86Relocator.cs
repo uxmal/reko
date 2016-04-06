@@ -40,10 +40,10 @@ namespace Reko.ImageLoaders.Elf
         public override void Relocate(Program program)
         {
             uint nextFakeLibAddr = ~1u; // See R_386_PC32 below; -1 sometimes used for main
-            for (int i = 1; i < loader.SectionHeaders.Count; ++i)
+            for (int i = 1; i < loader.Sections.Count; ++i)
             {
-                var ps = loader.SectionHeaders[i];
-                if (ps.sh_type == SectionHeaderType.SHT_REL)
+                var ps = loader.Sections[i];
+                if (ps.Type == SectionHeaderType.SHT_REL)
                 {
                     // A section such as .rel.dyn or .rel.plt (without an addend field).
                     // Each entry has 2 words: r_offset and r_info. The r_offset is just the offset from the beginning
@@ -51,22 +51,22 @@ namespace Reko.ImageLoaders.Elf
                     // r_info has the type in the bottom byte, and a symbol table index in the top 3 bytes.
                     // A symbol table offset of 0 (STN_UNDEF) means use value 0. The symbol table involved comes from
                     // the section header's sh_link field.
-                    var pReloc = loader.CreateReader(ps.sh_offset);
-                    uint size = ps.sh_size;
+                    var pReloc = loader.CreateReader(ps.FileOffset);
+                    ulong  size = ps.Size;
                     // NOTE: the r_offset is different for .o files (ET_REL in the e_type header field) than for exe's
                     // and shared objects!
                     uint destNatOrigin = 0;
                     uint destHostOrigin = 0;
                     if ( loader.Header.e_type == ElfImageLoader.ET_REL)
                     {
-                        int destSection = (int)loader.SectionHeaders[i].sh_info;
-                        destNatOrigin = loader.SectionHeaders[destSection].sh_addr;
-                        destHostOrigin = loader.SectionHeaders[destSection].sh_offset;
+                        var destSection = loader.Sections[i].RelocatedSection;
+                        destNatOrigin = destSection.Address.ToUInt32();
+                        destHostOrigin = (uint) destSection.FileOffset;
                     }
-                    int symSection = (int)loader.SectionHeaders[i].sh_link; // Section index for the associated symbol table
-                    int strSection = (int)loader.SectionHeaders[symSection].sh_link; // Section index for the string section assoc with this
-                    uint pStrSection = loader. SectionHeaders[strSection].sh_offset;
-                    var symOrigin = loader.SectionHeaders[symSection].sh_offset;
+                    var symSection = loader.Sections[i].LinkedSection; // associated symbol table
+                    var strSection = symSection.LinkedSection; // Section index for the string section assoc with this
+                    var pStrSection = strSection.FileOffset;
+                    var symOrigin = symSection.FileOffset;
                     var relocR = loader.CreateReader(0);
                     var relocW = loader.CreateWriter(0);
                     for (uint u = 0; u < size; u += 2 * sizeof(uint))
@@ -102,8 +102,8 @@ namespace Reko.ImageLoaders.Elf
                             if (loader.Header.e_type == ElfImageLoader.ET_REL)
                             {
                                 nsec = sym.st_shndx;
-                                if (nsec >= 0 && nsec < loader.SectionHeaders.Count)
-                                    S += loader.SectionHeaders[nsec].sh_addr;
+                                if (nsec >= 0 && nsec < loader.Sections.Count)
+                                    S += loader.Sections[nsec].Address.ToUInt32();
                             }
                             A = relocR.ReadUInt32(pRelWord);
                             relocW.WriteUInt32(pRelWord, S + A);
@@ -112,8 +112,8 @@ namespace Reko.ImageLoaders.Elf
                             if (ElfLoader32.ELF32_ST_TYPE(sym.st_info) == ElfLoader.STT_SECTION)
                             {
                                 nsec = sym.st_shndx;
-                                if (nsec >= 0 && nsec < loader.SectionHeaders.Count)
-                                    S = loader.SectionHeaders[nsec].sh_addr;
+                                if (nsec >= 0 && nsec < loader.Sections.Count)
+                                    S = loader.Sections[nsec].Address.ToUInt32();
                             }
                             else
                             {
@@ -138,8 +138,8 @@ namespace Reko.ImageLoaders.Elf
                                 else if (loader.Header.e_type == ElfImageLoader.ET_REL)
                                 {
                                     nsec = sym.st_shndx;
-                                    if (nsec >= 0 && nsec < loader.SectionHeaders.Count)
-                                        S += loader.SectionHeaders[nsec].sh_addr;
+                                    if (nsec >= 0 && nsec < loader.Sections.Count)
+                                        S += loader.Sections[nsec].Address.ToUInt32();
                                 }
                             }
                             A = relocR.ReadUInt32(pRelWord);
@@ -156,6 +156,5 @@ namespace Reko.ImageLoaders.Elf
                 }
             }
         }
-
     }
 }

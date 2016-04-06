@@ -191,8 +191,8 @@ namespace Reko.ImageLoaders.Elf
         public const uint PF_X = 1;
 
         protected ElfImageLoader imgLoader;
-        protected ulong m_uPltMin;
-        protected ulong m_uPltMax;
+        protected Address m_uPltMin;
+        protected Address m_uPltMax;
         protected Dictionary<Address, ImportReference> importReferences;
         protected IPlatform platform;
         protected byte[] rawImage;
@@ -201,14 +201,16 @@ namespace Reko.ImageLoaders.Elf
         {
             this.imgLoader = imgLoader;
             this.Architecture = CreateArchitecture(machine);
-            this.Symbols = new SortedList<int, List<ElfSymbol>>();
+            this.Symbols = new Dictionary<ElfSection, List<ElfSymbol>>();
+            this.Sections = new List<ElfSection>();
         }
 
         public IProcessorArchitecture Architecture { get; private set; }
         public IServiceProvider Services { get { return imgLoader.Services; } }
         public ElfRelocator Relocator { get; protected set; }
         public abstract Address DefaultAddress { get; }
-        public SortedList<int, List<ElfSymbol>> Symbols { get; }
+        public List<ElfSection> Sections { get; }
+        public Dictionary<ElfSection, List<ElfSymbol>> Symbols { get; }
 
         public static AccessMode AccessModeOf(uint sh_flags)
         {
@@ -354,7 +356,7 @@ namespace Reko.ImageLoaders.Elf
             }
         }
 
-        public IEnumerable<Elf32_Dyn> GetDynEntries(uint offset)
+        public IEnumerable<Elf32_Dyn> GetDynEntries(ulong offset)
         {
             var rdr = imgLoader.CreateReader(offset);
             for (;;)
@@ -1816,8 +1818,8 @@ namespace Reko.ImageLoaders.Elf
             var pPlt = GetSectionInfoByName64(".plt");
             if (pPlt != null)
             {
-                m_uPltMin = pPlt.sh_addr;
-                m_uPltMax = pPlt.sh_addr + pPlt.sh_size; ;
+                m_uPltMin = Address.Ptr64(pPlt.sh_addr);
+                m_uPltMax = Address.Ptr64(pPlt.sh_addr + pPlt.sh_size);
             }
         }
 
@@ -1907,12 +1909,12 @@ namespace Reko.ImageLoaders.Elf
 
         public override void LoadSectionHeaders()
         {
-                this.SectionHeaders64 = new List<Elf64_SHdr>();
-                var rdr = imgLoader.CreateReader(Header64.e_shoff);
-                for (int i = 0; i < Header64.e_shnum; ++i)
-                {
-                    SectionHeaders64.Add(Elf64_SHdr.Load(rdr));
-                }
+            this.SectionHeaders64 = new List<Elf64_SHdr>();
+            var rdr = imgLoader.CreateReader(Header64.e_shoff);
+            for (int i = 0; i < Header64.e_shnum; ++i)
+            {
+                SectionHeaders64.Add(Elf64_SHdr.Load(rdr));
+            }
         }
 
         public override void LoadSymbols()
@@ -1949,7 +1951,6 @@ namespace Reko.ImageLoaders.Elf
 
         public Elf32_EHdr Header { get; private set; }
         public List<Elf32_PHdr> ProgramHeaders { get; private set; }
-        public List<Elf32_SHdr> SectionHeaders { get; private set; }
         public override Address DefaultAddress { get { return Address.Ptr32(0x8048000); } }
         
         public static int ELF32_R_SYM(int info) { return ((info) >> 8); }
@@ -1968,7 +1969,7 @@ namespace Reko.ImageLoaders.Elf
             uint strIdx = pSect.sh_link; // sh_link points to the string table
 
             var siPlt = GetSectionInfoByName32(".plt");
-            uint addrPlt = siPlt != null ? siPlt.sh_addr : 0;
+            Address addrPlt = siPlt != null ? siPlt.Address : null;
             var siRelPlt = GetSectionInfoByName32(".rel.plt");
             uint sizeRelPlt = 8; // Size of each entry in the .rel.plt table
             if (siRelPlt == null)
@@ -1976,12 +1977,12 @@ namespace Reko.ImageLoaders.Elf
                 siRelPlt = GetSectionInfoByName32(".rela.plt");
                 sizeRelPlt = 12; // Size of each entry in the .rela.plt table is 12 bytes
             }
-            uint addrRelPlt = 0;
-            uint numRelPlt = 0;
+            Address addrRelPlt = null;
+            ulong numRelPlt = 0;
             if (siRelPlt != null)
             {
-                addrRelPlt = siRelPlt.sh_addr;
-                numRelPlt = sizeRelPlt != 0 ? siRelPlt.sh_size / sizeRelPlt : 0u;
+                addrRelPlt = siRelPlt.Address;
+                numRelPlt = sizeRelPlt != 0 ? siRelPlt.Size / sizeRelPlt : 0u;
             }
             // Number of entries in the PLT:
             // int max_i_for_hack = siPlt ? (int)siPlt.uSectionSize / 0x10 : 0;
@@ -2011,13 +2012,13 @@ namespace Reko.ImageLoaders.Elf
                 if (name == 0)
                     continue; // Weird: symbol w no name.
 
-                if (shndx >= SectionHeaders.Count)
+                if (shndx >= Sections.Count)
                 {
 
                 }
                 else
                 {
-                    var otherSection = SectionHeaders[shndx];
+                    var otherSection = Sections[shndx];
                 }
                 string str = GetStrPtr((int)strIdx, name);
                 // Hack off the "@@GLIBC_2.0" of Linux, if present
@@ -2102,9 +2103,9 @@ namespace Reko.ImageLoaders.Elf
                 machine));
         }
 
-        public ImageSegmentRenderer CreateRenderer(Elf32_SHdr shdr)
+        public ImageSegmentRenderer CreateRenderer(ElfSection shdr)
         {
-            switch (shdr.sh_type)
+            switch (shdr.Type)
             {
             case SectionHeaderType.SHT_DYNAMIC:
                 return new DynamicSectionRenderer(this, shdr);
@@ -2118,19 +2119,19 @@ namespace Reko.ImageLoaders.Elf
         {
             writer.WriteLine("Entry: {0:X}", Header.e_entry);
             writer.WriteLine("Sections:");
-            foreach (var sh in SectionHeaders)
+            foreach (var sh in Sections)
             {
-                writer.WriteLine("{0,-18} sh_type: {1,-12} sh_flags: {2,-4} sh_addr; {3:X8} sh_offset: {4:X8} sh_size: {5:X8} sh_link: {6:X8} sh_info: {7:X8} sh_addralign: {8:X8} sh_entsize: {9:X8}",
-                    GetSectionName(sh.sh_name),
-                    sh.sh_type,
-                    DumpShFlags(sh.sh_flags),
-                    sh.sh_addr,
-                    sh.sh_offset,
-                    sh.sh_size,
-                    sh.sh_link,
-                    sh.sh_info,
-                    sh.sh_addralign,
-                    sh.sh_entsize);
+                writer.WriteLine("{0,-18} sh_type: {1,-12} sh_flags: {2,-4} sh_addr; {3:X8} sh_offset: {4:X8} sh_size: {5:X8} sh_link: {6,-18} sh_info: {7,-18} sh_addralign: {8:X8} sh_entsize: {9:X8}",
+                    sh.Name,
+                    sh.Type,
+                    DumpShFlags(sh.Flags),
+                    sh.Address,
+                    sh.FileOffset,
+                    sh.Size,
+                    sh.LinkedSection != null ? sh.LinkedSection.Name : "",
+                    sh.RelocatedSection != null ? sh.RelocatedSection.Name : "",
+                    sh.Alignment,
+                    sh.EntrySize);
             }
             writer.WriteLine();
             writer.WriteLine("Program headers:");
@@ -2156,18 +2157,18 @@ namespace Reko.ImageLoaders.Elf
 
             writer.WriteLine();
             writer.WriteLine("Relocations");
-            foreach (var sh in SectionHeaders.Where(sh => sh.sh_type == SectionHeaderType.SHT_RELA))
+            foreach (var sh in Sections.Where(sh => sh.Type == SectionHeaderType.SHT_RELA))
             {
                 DumpRela(sh);
             }
         }
 
-        private void DumpRela(Elf32_SHdr sh)
+        private void DumpRela(ElfSection sh)
         {
-            var entries = sh.sh_size / sh.sh_entsize;
-            var symtab = sh.sh_link;
-            var rdr = imgLoader.CreateReader(sh.sh_offset);
-            for (int i = 0; i < entries; ++i)
+            var entries = sh.Size / sh.EntrySize;
+            var symtab = sh.LinkedSection;
+            var rdr = imgLoader.CreateReader(sh.FileOffset);
+            for (ulong i = 0; i < entries; ++i)
             {
                 uint offset;
                 if (!rdr.TryReadUInt32(out offset))
@@ -2180,7 +2181,7 @@ namespace Reko.ImageLoaders.Elf
                     return;
 
                 uint sym = info >> 8;
-                string symStr = GetStrPtr((int)symtab, sym);
+                string symStr = GetStrPtr(symtab, sym);
                 Debug.Print("  RELA {0:X8} {1,3} {2:X8} {3:X8} {4}", offset, info & 0xFF, sym, addend, symStr);
             }
         }
@@ -2192,13 +2193,13 @@ namespace Reko.ImageLoaders.Elf
             if (dynsect == null)
                 return result; // no dynamic section = statically linked 
 
-            var dynStrtab = GetDynEntries(dynsect.sh_offset).Where(d => d.d_tag == DT_STRTAB).FirstOrDefault();
+            var dynStrtab = GetDynEntries(dynsect.FileOffset).Where(d => d.d_tag == DT_STRTAB).FirstOrDefault();
             if (dynStrtab == null)
                 return result;
             var section = GetSectionInfoByAddr(dynStrtab.d_ptr);
-            foreach (var dynEntry in GetDynEntries(dynsect.sh_offset).Where(d => d.d_tag == DT_NEEDED))
+            foreach (var dynEntry in GetDynEntries(dynsect.FileOffset).Where(d => d.d_tag == DT_NEEDED))
             {
-                result.Add(imgLoader.ReadAsciiString(section.sh_offset + dynEntry.d_ptr));
+                result.Add(imgLoader.ReadAsciiString(section.FileOffset + dynEntry.d_ptr));
             }
             return result;
         }
@@ -2215,7 +2216,7 @@ namespace Reko.ImageLoaders.Elf
         {
             if (st_shndx < 0xFF00)
             {
-                return GetSectionName(SectionHeaders[(int)st_shndx].sh_name);
+                return Sections[st_shndx].Name;
             }
             else
             {
@@ -2232,33 +2233,31 @@ namespace Reko.ImageLoaders.Elf
             var pPlt = GetSectionInfoByName32(".plt");
             if (pPlt != null)
             {
-                m_uPltMin = pPlt.sh_addr;
-                m_uPltMax = pPlt.sh_addr + pPlt.sh_size; ;
+                m_uPltMin = pPlt.Address;
+                m_uPltMax = pPlt.Address + pPlt.Size; ;
             }
         }
 
-        public Elf32_SHdr GetSectionInfoByName32(string sectionName)
+        public ElfSection GetSectionInfoByName32(string sectionName)
         {
-            return
-                (from sh in this.SectionHeaders
-                 let name = GetSectionName(sh.sh_name)
-                 where name == sectionName
-                 select sh)
-                .FirstOrDefault();
+            return Sections.FirstOrDefault(s => s.Name == sectionName);
         }
 
-        internal Elf32_SHdr GetSectionInfoByAddr(uint r_offset)
+        internal ElfSection GetSectionInfoByAddr(uint r_offset)
         {
             return
-                (from sh in this.SectionHeaders
-                 where sh.sh_addr <= r_offset && r_offset < sh.sh_addr + sh.sh_size
+                (from sh in this.Sections
+                 let addr = sh.Address != null ? sh.Address.ToLinear() : 0
+                 where 
+                    r_offset != 0 &&
+                    addr <= r_offset && r_offset < addr + sh.Size
                  select sh)
                 .FirstOrDefault();
         }
 
         protected override int GetSectionNameOffset(uint idxString)
         {
-            return (int)(SectionHeaders[Header.e_shstrndx].sh_offset + idxString);
+            return (int)(Sections[Header.e_shstrndx].FileOffset + idxString);
         }
 
         public string GetStrPtr(int idx, uint offset)
@@ -2269,17 +2268,33 @@ namespace Reko.ImageLoaders.Elf
                 throw new ArgumentException(string.Format("GetStrPtr passed index of {0}.", idx));
             }
             // Get a pointer to the start of the string table and add the offset
-            return imgLoader.ReadAsciiString(SectionHeaders[idx].sh_offset + offset);
+            return imgLoader.ReadAsciiString(Sections[idx].FileOffset + offset);
         }
 
-        public string GetSymbolName(int iSymbolSection, int symbolNo)
+        public string GetStrPtr(ElfSection section, uint offset)
         {
-            var symSection = SectionHeaders[iSymbolSection];
-            var strSection = SectionHeaders[(int)symSection.sh_link];
-            uint offset = symSection.sh_offset + (uint)symbolNo * symSection.sh_entsize;
+            if (section == null)
+            {
+                // Most commonly, this will be an index of -1, because a call to GetSectionIndexByName() failed
+                throw new ArgumentNullException("section");
+            }
+            // Get a pointer to the start of the string table and add the offset
+            return imgLoader.ReadAsciiString(section.FileOffset + offset);
+        }
+
+        public string GetSymbolName(int iSymbolSection, uint symbolNo)
+        {
+            var symSection = Sections[iSymbolSection];
+            return GetSymbolName(symSection, symbolNo);
+        }
+
+        public string GetSymbolName(ElfSection symSection, uint symbolNo)
+        {
+            var strSection = symSection.LinkedSection;
+            uint offset = (uint)(symSection.FileOffset + symbolNo * symSection.EntrySize);
             var rdr = imgLoader.CreateReader(offset);
             rdr.TryReadUInt32(out offset);
-            return GetStrPtr((int)symSection.sh_link, offset);
+            return GetStrPtr(strSection, offset);
         }
 
         public override ImageMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred, Address addrMax)
@@ -2294,19 +2309,19 @@ namespace Reko.ImageLoaders.Elf
                     Array.Copy(rawImage, (long)ph.p_offset, bytes, (long)(ph.p_vaddr - v_base), (long)ph.p_filesz);
                 Debug.Print("ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.p_vaddr, ph.p_filesz, ph.p_pmemsz);
             }
-            foreach (var segment in SectionHeaders)
+            foreach (var section in Sections)
             {
-                if (segment.sh_name == 0 || segment.sh_addr == 0)
+                if (section.Name == null || section.Address == null)
                     continue;
                 
-                AccessMode mode = AccessModeOf(segment.sh_flags);
+                AccessMode mode = AccessModeOf(section.Flags);
                 var seg = imageMap.AddSegment(
-                    Address.Ptr32(segment.sh_addr),
-                    GetSectionName(segment.sh_name),
+                    section.Address,
+                    section.Name,
                     mode,
-                    segment.sh_size);
+                    (uint) section.Size);
                 seg.MemoryArea = mem;
-                seg.Designer = CreateRenderer(segment);
+                seg.Designer = CreateRenderer(section);
             }
             imageMap.DumpSections();
             return imageMap;
@@ -2325,38 +2340,93 @@ namespace Reko.ImageLoaders.Elf
 
         public override void LoadSectionHeaders()
         {
-            this.SectionHeaders = new List<Elf32_SHdr>();
+            // Create the sections.
+            var inames = new List<uint>();
+            var links = new List<uint>();
+            var infos = new List<uint>();
             var rdr = imgLoader.CreateReader(Header.e_shoff);
-            for (int i = 0; i < Header.e_shnum; ++i)
+            for (uint i = 0; i < Header.e_shnum; ++i)
             {
-                SectionHeaders.Add(Elf32_SHdr.Load(rdr));
+                var shdr = Elf32_SHdr.Load(rdr);
+                var section = new ElfSection
+                {
+                    Number = i,
+                    Type = shdr.sh_type,
+                    Flags = shdr.sh_flags,
+                    Address = shdr.sh_addr != 0
+                        ? Address.Ptr32(shdr.sh_addr)
+                        : null,
+                    FileOffset = shdr.sh_offset,
+                    Size = shdr.sh_size,
+                    Alignment = shdr.sh_addralign,
+                    EntrySize = shdr.sh_entsize,
+                };
+                Sections.Add(section);
+                inames.Add(shdr.sh_name);
+                links.Add(shdr.sh_link);
+                infos.Add(shdr.sh_info);
+            }
+
+            // Get section names and crosslink sections.
+
+            for (int i = 0; i < Sections.Count; ++i)
+            {
+                var section = Sections[i];
+                section.Name = GetSectionName(inames[i]);
+
+                ElfSection linkSection = null;
+                ElfSection relSection = null;
+                switch (section.Type)
+                {
+                case SectionHeaderType.SHT_REL:
+                case SectionHeaderType.SHT_RELA:
+                    linkSection = GetSection(links[i]);
+                    relSection = GetSection(infos[i]);
+                    break;
+                case SectionHeaderType.SHT_DYNAMIC:
+                case SectionHeaderType.SHT_HASH:
+                case SectionHeaderType.SHT_SYMTAB:
+                case SectionHeaderType.SHT_DYNSYM:
+                    linkSection = GetSection(links[i]);
+                    break;
+                }
+                section.LinkedSection = linkSection;
+                section.RelocatedSection = relSection;
+            }
+        }
+
+        private ElfSection GetSection(uint shidx)
+        {
+            if (0 <= shidx  && shidx < Sections.Count)
+            {
+                return Sections[(int)shidx];
+            }
+            else
+            {
+                return null;
             }
         }
 
         public override void LoadSymbols()
         {
-            for (int i = 0; i < SectionHeaders.Count; ++i)
+            foreach (var section in Sections.Where(s => s.Type == SectionHeaderType.SHT_SYMTAB))
             {
-                if (SectionHeaders[i].sh_type == SectionHeaderType.SHT_SYMTAB)
-                {
-                    Symbols[i] = LoadSymbols32(i);
-                }
+                Symbols[section] = LoadSymbols32(section);
             }
         }
 
-        private List<ElfSymbol> LoadSymbols32(int iSymbolSection)
+        private List<ElfSymbol> LoadSymbols32(ElfSection symSection)
         {
             Debug.Print("Symbols");
-            var symSection = SectionHeaders[iSymbolSection];
-            var stringtableSection = SectionHeaders[(int)symSection.sh_link];
-            var rdr = CreateReader(symSection.sh_offset);
+            var stringtableSection = symSection.LinkedSection;
+            var rdr = CreateReader(symSection.FileOffset);
             var symbols = new List<ElfSymbol>();
-            for (uint i = 0; i < symSection.sh_size / symSection.sh_entsize; ++i)
+            for (ulong i = 0; i < symSection.Size / symSection.EntrySize; ++i)
             {
                 var sym = Elf32_Sym.Load(rdr);
                 Debug.Print("  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
                     i,
-                    ReadAsciiString(stringtableSection.sh_offset + sym.st_name),
+                    ReadAsciiString(stringtableSection.FileOffset + sym.st_name),
                     (SymbolType)(sym.st_info & 0xF),
                     sym.st_shndx,
                     GetSectionNameQ(sym.st_shndx),
@@ -2364,7 +2434,7 @@ namespace Reko.ImageLoaders.Elf
                     sym.st_size);
                 symbols.Add(new ElfSymbol
                 {
-                    Name = ReadAsciiString(stringtableSection.sh_offset + sym.st_name),
+                    Name = ReadAsciiString(stringtableSection.FileOffset + sym.st_name),
                     Type = (SymbolType)(sym.st_info & 0xF),
                     SectionIndex = sym.st_shndx,
                     Value = sym.st_value,
@@ -2400,8 +2470,8 @@ namespace Reko.ImageLoaders.Elf
 
         private EntryPoint MakeEntryPoint(ElfSymbol sym)
         {
-            var symSection = SectionHeaders[(int)sym.SectionIndex];
-            var addr = Address.Ptr32(symSection.sh_addr + sym.Value);
+            var symSection = Sections[(int)sym.SectionIndex];
+            var addr = symSection.Address + sym.Value;
             return new EntryPoint(addr, sym.Name, state: Architecture.CreateProcessorState());
         }
     }

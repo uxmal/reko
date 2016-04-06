@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Arch.M68k;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Environments.SegaGenesis;
 using Rhino.Mocks;

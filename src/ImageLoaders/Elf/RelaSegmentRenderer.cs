@@ -31,9 +31,9 @@ namespace Reko.ImageLoaders.Elf
     public class RelaSegmentRenderer : ImageSegmentRenderer
     {
         private ElfLoader32 loader;
-        private Elf32_SHdr shdr;
+        private ElfSection shdr;
 
-        public RelaSegmentRenderer(ElfLoader32 imgLoader, Elf32_SHdr shdr)
+        public RelaSegmentRenderer(ElfLoader32 imgLoader, ElfSection shdr)
         {
             this.loader = imgLoader;
             this.shdr = shdr;
@@ -41,10 +41,10 @@ namespace Reko.ImageLoaders.Elf
 
         public override void Render(ImageSegment segment, Program program, Formatter formatter)
         {
-            var entries = shdr.sh_size / shdr.sh_entsize;
-            var symtab = (int)shdr.sh_link;
-            var rdr = loader.CreateReader(shdr.sh_offset);
-            for (int i = 0; i < entries; ++i)
+            var entries = shdr.Size / shdr.EntrySize;
+            var symtab = shdr.LinkedSection;
+            var rdr = loader.CreateReader(shdr.FileOffset);
+            for (ulong i = 0; i < entries; ++i)
             {
                 uint offset;
                 if (!rdr.TryReadUInt32(out offset))
@@ -57,7 +57,7 @@ namespace Reko.ImageLoaders.Elf
                     return;
 
                 uint sym = info >> 8;
-                string symStr = loader.GetSymbolName(symtab, (int)sym);
+                string symStr = loader.GetSymbolName(symtab, sym);
                 formatter.Write("{0:X8} {1,3} {2:X8} {3:X8} {4} ({5})", offset, info & 0xFF, sym, addend, symStr, sym);
                 formatter.WriteLine();
             }

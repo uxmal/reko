@@ -19,6 +19,7 @@
 #endregion
 
 using NUnit.Framework;
+using Reko.Core;
 using Reko.Core.CLanguage;
 using Rhino.Mocks;
 using System;

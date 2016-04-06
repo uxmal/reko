@@ -50,9 +50,9 @@ namespace Reko.ImageLoaders.Elf
         {
             var rela_plt = loader.GetSectionInfoByName32(".rela.plt");
             var plt = loader.GetSectionInfoByName32(".plt");
-            var relaRdr = loader.CreateReader(rela_plt.sh_offset);
-            var pltRdr = loader.CreateReader(plt.sh_offset);
-            for (int i = 0; i < rela_plt.sh_size / rela_plt.sh_entsize; ++i)
+            var relaRdr = loader.CreateReader(rela_plt.FileOffset);
+            var pltRdr = loader.CreateReader(plt.FileOffset);
+            for (int i = 0; i < rela_plt.EntryCount(); ++i)
             {
                 // Read the .rela.plt entry
                 uint offset;
@@ -74,9 +74,9 @@ namespace Reko.ImageLoaders.Elf
                     break;
 
                 uint sym = info >> 8;
-                string symStr = loader.GetSymbolName((int)rela_plt.sh_link, (int)sym);
+                string symStr = loader.GetSymbolName(rela_plt.LinkedSection, sym);
 
-                var addr = Address.Ptr32(plt.sh_addr + (uint)i * 4);
+                var addr = plt.Address + (uint)i * 4;
                 importReferences.Add(
                     addr,
                     new NamedImportReference(addr, null, symStr));
