@@ -34,7 +34,7 @@ using System.Text;
 namespace Reko.UnitTests.Arch.Sparc
 {
     [TestFixture]
-    class SparcRewriterTests : RewriterTestBase 
+    class SparcRewriterTests : RewriterTestBase
     {
         private SparcArchitecture arch = new SparcArchitecture(PrimitiveType.Word32);
         private Address baseAddr = Address.Ptr32(0x00100000);
@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Arch.Sparc
         [SetUp]
         public void Setup()
         {
-            state = (SparcProcessorState) arch.CreateProcessorState();
+            state = (SparcProcessorState)arch.CreateProcessorState();
             repository = new MockRepository();
             host = repository.StrictMock<IRewriterHost>();
         }
@@ -324,7 +324,7 @@ namespace Reko.UnitTests.Arch.Sparc
             BuildTest(0xC248A044); //ldsb\t[%g2+68],%g1");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|g1 = (int32) Mem0[g2 + 68:int8]"); 
+                "1|L--|g1 = (int32) Mem0[g2 + 68:int8]");
         }
 
         [Test]
@@ -333,7 +333,7 @@ namespace Reko.UnitTests.Arch.Sparc
             BuildTest(0xC230BFF0);// sth\t%g1,[%g2+68]
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[g2 + -16:word16] = (word16) g1"); 
+                "1|L--|Mem0[g2 + -16:word16] = (word16) g1");
         }
 
         [Test]
@@ -362,6 +362,16 @@ namespace Reko.UnitTests.Arch.Sparc
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|g1 = 0x00000000 | 0x00000003");      // Simplification happens later in the decompiler.
+        }
+
+        [Test]
+        public void SparcRw_subcc_g0()
+        {
+            BuildTest(0x80a22003);   // subcc %o0, 3, %g0
+            AssertCode(
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|g0 = o0 - 0x00000003",
+                "2|L--|NZVC = cond(g0)");
         }
     }
 }

@@ -234,6 +234,11 @@ namespace Reko.Arch.Sparc
             throw new NotImplementedException(string.Format("Unsupported operand {0} ({1})", op, op.GetType().Name));
         }
 
+        private Expression RewriteRegister(MachineOperand op)
+        {
+            return frame.EnsureRegister(((RegisterOperand)op).Register);
+        }
+        
         private Expression RewriteMemOp(MachineOperand op, PrimitiveType size)
         {
             var m = op as MemoryOperand;

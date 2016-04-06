@@ -34,7 +34,7 @@ namespace Reko.Arch.Sparc
     {
         private void RewriteAlu(Operator op)
         {
-            var dst = RewriteOp(instrCur.Op3);
+            var dst = RewriteRegister(instrCur.Op3);
             var src1 = RewriteOp(instrCur.Op1);
             var src2 = RewriteOp(instrCur.Op2);
             emitter.Assign(dst, new BinaryExpression(op, PrimitiveType.Word32, src1, src2));
@@ -43,7 +43,7 @@ namespace Reko.Arch.Sparc
         private void RewriteAluCc(Operator op)
         {
             RewriteAlu(op);
-            var dst = RewriteOp(instrCur.Op3);
+            var dst = RewriteRegister(instrCur.Op3);
             EmitCc(dst);
         }
 
