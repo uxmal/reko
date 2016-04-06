@@ -138,7 +138,7 @@ namespace Reko.Gui.Windows.Controls
         /// <param name="dataType"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        private string GetGlobalDeclaration(DataType dataType, string name)
+        private string RenderGlobalDeclaration(DataType dataType, string name)
         {
             var sw = new StringWriter();
             var tf = new TextFormatter(sw);
