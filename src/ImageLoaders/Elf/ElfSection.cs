@@ -31,7 +31,7 @@ namespace Reko.ImageLoaders.Elf
         public string Name;
         public uint Number;
         public SectionHeaderType Type;
-        public uint Flags;
+        public ulong Flags;
         public Address Address;
         public ulong FileOffset;
         public ulong Size;

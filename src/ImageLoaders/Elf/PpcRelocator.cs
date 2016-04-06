@@ -48,8 +48,8 @@ namespace Reko.ImageLoaders.Elf
         /// </remarks>
         public override void Relocate(Program program)
         {
-            var rela_plt = loader.GetSectionInfoByName32(".rela.plt");
-            var plt = loader.GetSectionInfoByName32(".plt");
+            var rela_plt = loader.GetSectionInfoByName(".rela.plt");
+            var plt = loader.GetSectionInfoByName(".plt");
             var relaRdr = loader.CreateReader(rela_plt.FileOffset);
             var pltRdr = loader.CreateReader(plt.FileOffset);
             for (int i = 0; i < rela_plt.EntryCount(); ++i)

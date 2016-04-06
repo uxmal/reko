@@ -79,6 +79,7 @@ namespace Reko.ImageLoaders.Elf
             var segments = ComputeSegmentSizes();
             var imageMap = CreateSegments(addrLoad, segments);
             var program = new Program(imageMap, platform.Architecture, platform);
+            LoadExternalProcedures(program.InterceptedCalls);;
             return program;
         }
 
@@ -92,7 +93,7 @@ namespace Reko.ImageLoaders.Elf
             CollectCommonSymbolsIntoSection();
             CollectUndefinedSymbolsIntoSection();
 
-            var mpToSegment = new Dictionary<uint, Elf32_PHdr>();
+            var mpToSegment = new Dictionary<ulong, Elf32_PHdr>();
             var mpSectionToSegment = new Dictionary<ElfSection, Elf32_PHdr>();
             foreach (var section in loader.Sections
                 .Where(s => (s.Flags & ElfLoader.SHF_ALLOC) != 0))
@@ -196,7 +197,7 @@ namespace Reko.ImageLoaders.Elf
             return value * ((p_pmemsz + value - 1) / value);
         }
 
-        private uint SegmentAccess(uint sectionFlags)
+        private uint SegmentAccess(ulong sectionFlags)
         {
             uint segFlags = ElfLoader.PF_R;
             if ((sectionFlags & ElfLoader.SHF_WRITE) != 0)
@@ -249,6 +250,20 @@ namespace Reko.ImageLoaders.Elf
                         ElfLoader.AccessModeOf(s.Key.Flags)))
                     .ToArray());
             return imageMap;
+        }
+
+        public void LoadExternalProcedures(Dictionary<Address, ExternalProcedure> interceptedCalls)
+        {
+            // Find all unresolved symbols and add them as external procedures.
+            foreach (var sym in loader.GetAllSymbols().Where(s =>
+                s.Type == SymbolType.STT_NOTYPE &&
+                !string.IsNullOrEmpty(s.Name)))
+            {
+                var addr =
+                    loader.Sections[(int)sym.SectionIndex].Address +
+                    sym.Value;
+                interceptedCalls.Add(addr, new ExternalProcedure(sym.Name, null));
+            }
         }
     }
 }

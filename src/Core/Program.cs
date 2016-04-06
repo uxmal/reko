@@ -48,7 +48,7 @@ namespace Reko.Core
 
         public Program()
         {
-            this.EntryPoints = new List<EntryPoint>();
+            this.EntryPoints = new SortedList<Address, EntryPoint>();
             this.FunctionHints = new List<Address>();
             this.Procedures = new SortedList<Address, Procedure>();
             this.CallGraph = new CallGraph();
@@ -191,9 +191,9 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// The list of known entry points to the program.
+        /// The entry points to the program.
         /// </summary>
-        public List<EntryPoint> EntryPoints { get; private set; }
+        public SortedList<Address, EntryPoint> EntryPoints { get; private set; }
 
         /// <summary>
         /// List of function hints.

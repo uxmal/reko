@@ -410,7 +410,7 @@ namespace Reko
                     var dt = global.Value.DataType.Accept(tlDeser);
                     scanner.EnqueueUserGlobalData(addr, dt);
                 }
-                foreach (EntryPoint ep in program.EntryPoints)
+                foreach (EntryPoint ep in program.EntryPoints.Values)
                 {
                     scanner.EnqueueEntryPoint(ep);
                 }

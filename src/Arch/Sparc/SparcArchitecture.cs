@@ -109,7 +109,9 @@ namespace Reko.Arch.Sparc
 
         public override RegisterStorage[] GetRegisters()
         {
-            throw new NotImplementedException();
+            return
+                Registers.IntegerRegisters
+                .Concat(Registers.FloatRegisters).ToArray();
         }
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
@@ -119,7 +121,10 @@ namespace Reko.Arch.Sparc
 
         public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
         {
-            throw new NotImplementedException();
+            if (offset == 0)
+                return reg;
+            else
+                return null;
         }
 
         public override FlagGroupStorage GetFlagGroup(uint grf)

@@ -40,7 +40,7 @@ namespace Reko.ImageLoaders.Elf
                     section.FileOffset,
                     section.LinkedSection.Name);
 
-                var symbols = loader.Symbols[section];
+                var symbols = loader.Symbols[section.LinkedSection];
                 var rdr = loader.CreateReader(section.FileOffset);
                 for (uint i = 0; i < section.EntryCount(); ++i)
                 {

@@ -144,9 +144,9 @@ namespace Reko.ImageLoaders.Elf
     public class DynamicSectionRenderer64 : ImageSegmentRenderer
     {
         private ElfLoader64 loader;
-        private Elf64_SHdr shdr;
+        private ElfSection shdr;
 
-        public DynamicSectionRenderer64(ElfLoader64 loader, Elf64_SHdr shdr)
+        public DynamicSectionRenderer64(ElfLoader64 loader, ElfSection shdr)
         {
             this.loader = loader;
             this.shdr = shdr;
@@ -180,11 +180,11 @@ namespace Reko.ImageLoaders.Elf
         public override void Render(ImageSegment segment, Program program, Formatter formatter)
         {
             // Get the entry that has the segment# for the string table.
-            var dynStrtab = loader.GetDynEntries64(shdr.sh_offset).Where(d => d.d_tag == DT_STRTAB).FirstOrDefault();
+            var dynStrtab = loader.GetDynEntries64(shdr.FileOffset).Where(d => d.d_tag == DT_STRTAB).FirstOrDefault();
             if (dynStrtab == null)
                 return;
             var strtabSection = loader.GetSectionInfoByAddr64(dynStrtab.d_ptr);
-            foreach (var entry in loader.GetDynEntries64(shdr.sh_offset))
+            foreach (var entry in loader.GetDynEntries64(shdr.FileOffset))
             {
                 switch (entry.d_tag)
                 {
@@ -214,7 +214,7 @@ namespace Reko.ImageLoaders.Elf
                     formatter.WriteHyperlink(string.Format("{0:X16}", entry.d_ptr), Address.Ptr64(entry.d_ptr));
                     break;
                 case DT_NEEDED:
-                    formatter.Write("{0,-12} {1}", "DT_NEEDED", loader.ReadAsciiString(strtabSection.sh_offset + entry.d_ptr));
+                    formatter.Write("{0,-12} {1}", "DT_NEEDED", loader.ReadAsciiString(strtabSection.FileOffset + entry.d_ptr));
                     break;
                 case DT_STRSZ:
                     formatter.Write("{0,-12} {1:X}", "DT_STRSZ", entry.d_val);

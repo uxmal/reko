@@ -345,7 +345,10 @@ namespace Reko.Arch.PowerPC
 
         public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
         {
-            throw new NotImplementedException();
+            if (offset == 0)
+                return reg;
+            else
+                return null;
         }
 
         public override Address MakeAddressFromConstant(Constant c)

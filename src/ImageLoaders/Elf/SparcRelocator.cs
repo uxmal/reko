@@ -86,6 +86,7 @@ namespace Reko.ImageLoaders.Elf
                     case SparcRt.R_SPARC_WDISP30:
                         A = rela.r_addend;
                         P = ~P + 1;
+                        sh = 2;
                         break;
                     default:
                         throw new NotImplementedException(string.Format(

@@ -95,6 +95,8 @@ namespace Reko.Gui.Windows.Controls
 
         public SizeF CalculateExtent()
         {
+            if (visibleLines.Count == 0)
+                return new SizeF(0, 0);
             var width = visibleLines.Values.Max(l => l.Extent.Width);
             var height = visibleLines.Values.Select(l => l.Extent.Bottom).LastOrDefault();
             return new SizeF(width, height);

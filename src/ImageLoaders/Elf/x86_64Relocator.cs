@@ -48,10 +48,10 @@ namespace Reko.ImageLoaders.Elf
         /// </remarks>
         public override void Relocate(Program program)
         {
-            var rela_plt = loader.GetSectionInfoByName64(".rela.plt");
-            var plt = loader.GetSectionInfoByName64(".plt");
-            var relaRdr = loader.CreateReader(rela_plt.sh_offset);
-            for (ulong i = 0; i < rela_plt.sh_size / rela_plt.sh_entsize; ++i)
+            var rela_plt = loader.GetSectionInfoByName(".rela.plt");
+            var plt = loader.GetSectionInfoByName(".plt");
+            var relaRdr = loader.CreateReader(rela_plt.FileOffset);
+            for (ulong i = 0; i < rela_plt.EntryCount(); ++i)
             {
                 // Read the .rela.plt entry
                 ulong offset;
@@ -65,9 +65,9 @@ namespace Reko.ImageLoaders.Elf
                     return;
 
                 ulong sym = info >> 32;
-                string symStr = loader.GetSymbol64((int)rela_plt.sh_link, (int)sym);
+                string symStr = loader.GetSymbol64(rela_plt.LinkedSection, sym);
 
-                var addr = Address.Ptr64(plt.sh_addr + (uint)(i + 1) * plt.sh_entsize);
+                var addr = plt.Address + (uint)(i + 1) * plt.EntrySize;
                 importReferences.Add(
                     addr,
                     new NamedImportReference(addr, null, symStr));
