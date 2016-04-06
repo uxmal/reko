@@ -35,7 +35,7 @@ namespace Reko.Core
         {
             for (;;)
             {
-                var instr = DisassembleInstruction();
+                TInstr instr = DisassembleInstruction();
                 if (instr == null)
                     break;
                 yield return instr;

@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Arch.Intel
                         MemoryArea = mem
                     }),
                 arch,
-                null);
+                new DefaultPlatform(null, arch));
 			var procAddress = Address.Ptr32(0x10000000);
             instr = new X86Instruction(Opcode.nop, PrimitiveType.Word16, PrimitiveType.Word16)
             {

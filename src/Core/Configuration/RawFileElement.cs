@@ -47,6 +47,11 @@ namespace Reko.Core.Configuration
 
     public class RawFileElementImpl : RawFileElement
     {
+        public RawFileElementImpl()
+        {
+            this.EntryPoint = new EntryPointElement();
+        }
+
         public string Name { get; set; }
 
         public string Description { get; set; }

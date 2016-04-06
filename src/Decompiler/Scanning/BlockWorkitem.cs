@@ -81,7 +81,6 @@ namespace Reko.Scanning
         /// calls to procedures that terminate the thread of executationresult in the 
         /// termination of processing.
         /// </summary>
-        /// 
         public override void Process()
         {
             state.ErrorListener = (message) => { scanner.Warn(ric.Address, message); };
@@ -253,6 +252,7 @@ namespace Reko.Scanning
                 blockDsT.IsSynthesized = true;
                 blockCur = blockDsF;
                 ProcessRtlCluster(ricDelayed);
+
                 blockCur = blockDsT;
                 ProcessRtlCluster(ricDelayed);
                 EnsureEdge(proc, blockDsF, blockElse);

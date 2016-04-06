@@ -86,7 +86,9 @@ namespace Reko.UnitTests.Structure
             var asm = new X86TextAssembler(sc, new X86ArchitectureReal());
             program = asm.AssembleFragment(addrBase, asmFragment);
             program.Platform = new DefaultPlatform(null, program.Architecture);
-            program.EntryPoints.Add(new EntryPoint(addrBase, program.Architecture.CreateProcessorState()));
+            program.EntryPoints.Add(
+                addrBase,
+                new EntryPoint(addrBase, program.Architecture.CreateProcessorState()));
             return RewriteProgram();
         }
 
@@ -97,7 +99,9 @@ namespace Reko.UnitTests.Structure
             var asm = new X86TextAssembler(sc, new X86ArchitectureFlat32());
             program = asm.AssembleFragment(addrBase, asmFragment);
             program.Platform = new DefaultPlatform(null, program.Architecture);
-            program.EntryPoints.Add(new EntryPoint(addrBase, program.Architecture.CreateProcessorState()));
+            program.EntryPoints.Add(
+                addrBase,
+                new EntryPoint(addrBase, program.Architecture.CreateProcessorState()));
             return RewriteProgram();
         }
 
@@ -110,7 +114,7 @@ namespace Reko.UnitTests.Structure
                 program,
                 importResolver,
                 sc);
-            foreach (EntryPoint ep in program.EntryPoints)
+            foreach (EntryPoint ep in program.EntryPoints.Values)
             {
                 scan.EnqueueEntryPoint(ep);
             }

@@ -19,6 +19,7 @@
 #endregion
 
 using NUnit.Framework;
+using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.ImageLoaders.Elf;
 using Rhino.Mocks;
@@ -36,21 +37,13 @@ namespace Reko.UnitTests.ImageLoaders.Elf
     {
         private MockRepository mr;
 
-        [Test]
         public void SparcRel_Test()
         {
             this.mr = new MockRepository();
             var sc = new ServiceContainer();
             var cfgSvc = mr.Stub<IConfigurationService>();
             sc.AddService(typeof(IConfigurationService), cfgSvc);
-            var file = @"D:\dev\uxmal\reko\master\subjects\Elf-Sparc\t5mat.o";
-            var bin = File.ReadAllBytes(file);
-            var elf = new ElfImageLoader(null, file, bin);
-            elf.LoadElfIdentification();
-            var loader = (ElfLoader32) elf.CreateLoader();
-            var sparc = (SparcRelocator)loader.Relocator;
-            loader.LoadSectionHeaders();
-            sparc.Relocate();
+            mr.ReplayAll();
         }
     }
 }

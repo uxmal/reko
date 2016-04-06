@@ -226,6 +226,7 @@
     <Compile Include="Expressions\TestCondition.cs" />
     <Compile Include="Expressions\UnaryExpression.cs" />
     <Compile Include="FieldAttribute.cs" />
+    <Compile Include="ImageSymbol.cs" />
     <Compile Include="Output\CTypeReferenceFormatter.cs" />
     <Compile Include="Rational.cs" />
     <Compile Include="Serialization\ArgumentDeserializer.cs" />

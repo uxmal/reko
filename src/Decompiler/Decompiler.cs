@@ -410,7 +410,7 @@ namespace Reko
                     var dt = global.Value.DataType.Accept(tlDeser);
                     scanner.EnqueueUserGlobalData(addr, dt);
                 }
-                foreach (EntryPoint ep in program.EntryPoints)
+                foreach (EntryPoint ep in program.EntryPoints.Values)
                 {
                     scanner.EnqueueEntryPoint(ep);
                 }
@@ -454,6 +454,7 @@ namespace Reko
             }
             finally
             {
+                eventListener.ShowStatus("Writing .asm and .dis files.");
                 host.WriteDisassembly(program, w => DumpAssembler(program, w));
                 host.WriteIntermediateCode(program, w => EmitProgram(program, null, w));
             }

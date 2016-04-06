@@ -211,7 +211,6 @@ namespace Reko.Core.Configuration
             if (configFileName == null)
                 throw new ApplicationException("Missing app setting 'RekoConfiguration' in configuration file.");
             configFileName = Path.Combine(appDir, configFileName);
-            Console.Error.WriteLine("CONFIG FILE NAME {0}", configFileName);
 
             using (var stm = File.Open(configFileName, FileMode.Open))
             {

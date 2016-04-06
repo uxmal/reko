@@ -19,6 +19,7 @@
 #endregion
 
 using NUnit.Framework;
+using Reko.Core;
 using Reko.Core.CLanguage;
 using Rhino.Mocks;
 using System;
@@ -28,7 +29,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Core.CLanguage.UnitTests
+namespace Reko.UnitTests.Core.CLanguage
 {
     [TestFixture]
     public class CConstantEvaluatorTests
