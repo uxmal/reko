@@ -56,7 +56,7 @@ namespace Reko.Arch.Sparc
         public static RegisterStorage l3;
         public static RegisterStorage l4;
         public static RegisterStorage l5;
-        public static RegisterStorage lp;
+        public static RegisterStorage l6;
         public static RegisterStorage l7;
 
         public static RegisterStorage i0;   // incoming parameters / return value to caller
@@ -118,8 +118,10 @@ namespace Reko.Arch.Sparc
         public static FlagGroupStorage G;
         public static FlagGroupStorage U;
 
-        private static RegisterStorage[] iRegs;
-        private static RegisterStorage[] fRegs;
+        public static RegisterStorage[] IntegerRegisters;
+        public static RegisterStorage[] FloatRegisters;
+
+        private static Dictionary<string, RegisterStorage> mpNameToReg;
 
         static Registers()
         {
@@ -147,7 +149,7 @@ namespace Reko.Arch.Sparc
             l3 = new RegisterStorage("l3", 19, 0, PrimitiveType.Word32);
             l4 = new RegisterStorage("l4", 20, 0, PrimitiveType.Word32);
             l5 = new RegisterStorage("l5", 21, 0, PrimitiveType.Word32);
-            lp = new RegisterStorage("lp", 22, 0, PrimitiveType.Word32);
+            l6 = new RegisterStorage("l6", 22, 0, PrimitiveType.Word32);
             l7 = new RegisterStorage("l7", 23, 0, PrimitiveType.Word32);
 
             i0 = new RegisterStorage("i0", 24, 0, PrimitiveType.Word32);   // incoming parameters / return value to caller
@@ -213,7 +215,7 @@ namespace Reko.Arch.Sparc
             G = new FlagGroupStorage(psr, (uint) FlagM.GF, "G", PrimitiveType.Bool);
             U = new FlagGroupStorage(psr, (uint) FlagM.UF, "U", PrimitiveType.Bool);
 
-            iRegs = new RegisterStorage[]
+            IntegerRegisters = new RegisterStorage[]
             {
                 g0, 
                 g1, 
@@ -239,7 +241,7 @@ namespace Reko.Arch.Sparc
                 l3, 
                 l4, 
                 l5, 
-                lp, 
+                l6, 
                 l7, 
 
                 i0,  
@@ -254,7 +256,7 @@ namespace Reko.Arch.Sparc
                 y,
             };
 
-            fRegs = new RegisterStorage[] {
+            FloatRegisters = new RegisterStorage[] {
                 f0 ,
                 f1 ,
                 f2 ,
@@ -291,21 +293,31 @@ namespace Reko.Arch.Sparc
                 f30,
                 f31,
             };
+            mpNameToReg = IntegerRegisters.Concat(FloatRegisters).ToDictionary(k => k.Name, v => v);
         }
 
         public static RegisterStorage GetRegister(uint r)
         {
-            return iRegs[r & 0x1F];
+            return IntegerRegisters[r & 0x1F];
         }
 
         public static RegisterStorage GetFpuRegister(int f)
         {
-            return fRegs[f];
+            return FloatRegisters[f];
         }
 
         public static RegisterStorage GetFpuRegister(uint f)
         {
-            return fRegs[f];
+            return FloatRegisters[f];
+        }
+
+        public static RegisterStorage GetRegister(string regName)
+        {
+            RegisterStorage reg;
+            if (mpNameToReg.TryGetValue(regName, out reg))
+                return reg;
+            else
+                return null;
         }
     }
 

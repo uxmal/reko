@@ -48,7 +48,7 @@ namespace Reko.Core
 
         public Program()
         {
-            this.EntryPoints = new List<EntryPoint>();
+            this.EntryPoints = new SortedList<Address, EntryPoint>();
             this.FunctionHints = new List<Address>();
             this.Procedures = new SortedList<Address, Procedure>();
             this.CallGraph = new CallGraph();
@@ -232,9 +232,9 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// The list of known entry points to the program.
+        /// The entry points to the program.
         /// </summary>
-        public List<EntryPoint> EntryPoints { get; private set; }
+        public SortedList<Address, EntryPoint> EntryPoints { get; private set; }
 
         /// <summary>
         /// List of function hints.
@@ -336,6 +336,14 @@ namespace Reko.Core
             if (!ImageMap.TryFindSegment(addr, out segment))
                 throw new ArgumentException(string.Format("The address {0} is invalid.", addr));
             return Architecture.CreateImageReader(segment.MemoryArea, addr);
+        }
+
+        public ImageWriter CreateImageWriter(Address addr)
+        {
+            ImageSegment segment;
+            if (!ImageMap.TryFindSegment(addr, out segment))
+                throw new ArgumentException(string.Format("The address {0} is invalid.", addr));
+            return Architecture.CreateImageWriter(segment.MemoryArea, addr);
         }
 
         public IEnumerable<MachineInstruction> CreateDisassembler(Address addr)

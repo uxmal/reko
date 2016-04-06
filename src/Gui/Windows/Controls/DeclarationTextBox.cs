@@ -81,12 +81,12 @@ namespace Reko.Gui.Windows.Controls
         {
             switch (e.KeyCode)
             {
-                case Keys.Enter:
-                case Keys.Escape:
-                    HideControls();
-                    e.SuppressKeyPress = true;
-                    e.Handled = true;
-                    break;
+            case Keys.Enter:
+            case Keys.Escape:
+                HideControls();
+                e.SuppressKeyPress = true;
+                e.Handled = true;
+                break;
             }
         }
 
@@ -125,18 +125,24 @@ namespace Reko.Gui.Windows.Controls
             GlobalDataItem_v2 global;
             if(program.User.Globals.TryGetValue(address, out global))
             {
-                return GetGlobalDeclaration(global.DataType, global.Name);
+                return RenderGlobalDeclaration(global.DataType, global.Name);
             }
             return null;
         }
 
-        private string GetGlobalDeclaration(SerializedType dataType, string name)
+        /// <summary>
+        /// Convert a declaration to its C string representation.
+        /// </summary>
+        /// <param name="dataType"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        private string RenderGlobalDeclaration(SerializedType dataType, string name)
         {
             var tlDeser = program.CreateTypeLibraryDeserializer();
             var dt = dataType.Accept(tlDeser);
             var sw = new StringWriter();
             var tf = new TextFormatter(sw);
-            var tyreffo = new CTypeReferenceFormatter(program.Platform, tf, true);
+            var tyreffo = new CTypeReferenceFormatter(program.Platform, tf);
             tyreffo.WriteDeclaration(dt, name);
             return sw.ToString();
         }

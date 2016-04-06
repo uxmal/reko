@@ -221,32 +221,32 @@ namespace Reko.UnitTests.Environments.SysV
                     },
                     new Argument_v1
                     {
-                        Name = "foo",
+                        Name = "b2",
                         Type = new PrimitiveType_v1 { Domain=Domain.SignedInt, ByteSize= 1 },
                     },
                        new Argument_v1
                     {
-                        Name = "foo",
+                        Name = "w3",
                         Type = new PrimitiveType_v1 { Domain=Domain.SignedInt, ByteSize= 4 },
                     },
                        new Argument_v1
                     {
-                        Name = "foo",
+                        Name = "h4",
                         Type = new PrimitiveType_v1 { Domain=Domain.SignedInt, ByteSize=2 },
                     },
                        new Argument_v1
                     {
-                        Name = "foo",
+                        Name = "b5",
                         Type = new PrimitiveType_v1 { Domain=Domain.SignedInt, ByteSize= 1 },
                     },
                     new Argument_v1
                     {
-                        Name = "foo",
+                        Name = "i6",
                         Type = new PrimitiveType_v1 { Domain=Domain.SignedInt, ByteSize= 4 },
                     },
                     new Argument_v1
                     {
-                        Name = "foo",
+                        Name = "b7",
                         Type = new PrimitiveType_v1 { Domain=Domain.SignedInt, ByteSize= 1 },
                     }
                 }

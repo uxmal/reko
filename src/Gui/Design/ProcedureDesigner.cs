@@ -214,7 +214,7 @@ namespace Reko.Gui.Design
                 .ToArray();
         }
 
-        void tv_BeforeLabelEdit(object sender, System.Windows.Forms.NodeLabelEditEventArgs e)
+        void tv_BeforeLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
             throw new NotImplementedException();
         }

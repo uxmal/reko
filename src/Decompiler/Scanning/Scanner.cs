@@ -495,6 +495,9 @@ namespace Reko.Scanning
         public ProcedureBase ScanProcedure(Address addr, string procedureName, ProcessorState state)
         {
             TerminateAnyBlockAt(addr);
+            ExternalProcedure ep;
+            if (program.InterceptedCalls.TryGetValue(addr, out ep))
+                return ep;
             var trampoline = GetTrampoline(addr);
             if (trampoline != null)
                 return trampoline;
@@ -617,9 +620,13 @@ namespace Reko.Scanning
                     new AddressContext(program, addrInstruction, this.eventListener));
                 return extProc;
             }
+
+            ExternalProcedure ep;
+            if (program.InterceptedCalls.TryGetValue(addrImportThunk, out ep))
+                return ep;
             return GetInterceptedCall(addrImportThunk);
         }
-        
+
         /// <summary>
         /// This method is used to detect if a trampoline (call [foo] where foo: jmp bar)
         /// is jumping into the body of a procedure that was loaded with GetProcAddress or 
@@ -629,6 +636,7 @@ namespace Reko.Scanning
         /// <returns></returns>
         public ExternalProcedure GetInterceptedCall(Address addrImportThunk)
         {
+            ExternalProcedure ep;
             if (!imageMap.IsValidAddress(addrImportThunk))
                 return null;
             var rdr= program.CreateImageReader(addrImportThunk);
@@ -636,7 +644,6 @@ namespace Reko.Scanning
             if (!rdr.TryReadUInt32(out uDest))
                 return null;
             var addrDest = Address.Ptr32(uDest);
-            ExternalProcedure ep;
             program.InterceptedCalls.TryGetValue(addrDest, out ep);
             return ep;
         }
@@ -711,6 +718,11 @@ namespace Reko.Scanning
             Procedure proc;
             if (program.Procedures.TryGetValue(addr, out proc))
                 return proc;
+            EntryPoint ep;          //$REVIEW: should be ImageSymbol.
+            if (procedureName == null && program.EntryPoints.TryGetValue(addr, out ep))
+            {
+                procedureName = ep.Name;
+            }
             proc = Procedure.Create(procedureName, addr, program.Architecture.CreateFrame());
             program.Procedures.Add(addr, proc);
             program.CallGraph.AddProcedure(proc);

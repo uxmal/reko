@@ -84,8 +84,8 @@ namespace Reko.Core
         ImageReader CreateImageReader(MemoryArea img, Address addr);
 
         /// <summary>
-        /// Creates an <see cref="ImageReader" /> with the preferred endianness of the
-        /// processor, limited to the specified address range.
+        /// Creates an <see cref="ImageReader" /> with the preferred 
+        /// endianness of the processor, limited to the specified address range.
         /// </summary>
         /// <param name="img">Program image to read</param>
         /// <param name="addr">Address at which to start</param>
@@ -93,7 +93,8 @@ namespace Reko.Core
         ImageReader CreateImageReader(MemoryArea memoryArea, Address addrBegin, Address addrEnd);
 
         /// <summary>
-        /// Creates an <see cref="ImageReader" /> with the preferred endianness of the processor.
+        /// Creates an <see cref="ImageReader" /> with the preferred
+        /// endianness of the processor.
         /// </summary>
         /// <param name="img">Program image to read</param>
         /// <param name="addr">offset from the start of the image</param>
@@ -101,8 +102,17 @@ namespace Reko.Core
         ImageReader CreateImageReader(MemoryArea img, ulong off);
 
         /// <summary>
-        /// Creates a comparer that compares instructions for equality. Normalization means
-        /// some attributes of the instruction are trated as wildcards.
+        /// Creates an <see cref="ImageWriter" /> with the preferred 
+        /// endianness of the processor.
+        /// </summary>
+        /// <returns></returns>
+        ImageWriter CreateImageWriter();
+        ImageWriter CreateImageWriter(MemoryArea memoryArea, Address addr);
+
+        /// <summary>
+        /// Creates a comparer that compares instructions for equality. 
+        /// Normalization means some attributes of the instruction are 
+        /// trated as wildcards.
         /// </summary>
         /// <param name="norm"></param>
         /// <returns></returns>
@@ -159,7 +169,6 @@ namespace Reko.Core
         void LoadUserOptions(Dictionary<string, object> options);
 
         Dictionary<string, object> SaveUserOptions();
-
     }
 
     /// <summary>
@@ -190,6 +199,8 @@ namespace Reko.Core
         public abstract ImageReader CreateImageReader(MemoryArea img, Address addr);
         public abstract ImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd);
         public abstract ImageReader CreateImageReader(MemoryArea img, ulong off);
+        public abstract ImageWriter CreateImageWriter();
+        public abstract ImageWriter CreateImageWriter(MemoryArea img, Address addr);
         public abstract IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm);
         public abstract ProcessorState CreateProcessorState();
         public abstract IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);

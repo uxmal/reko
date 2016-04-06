@@ -232,6 +232,7 @@
     <Environments Include="$(SolutionDir)Environments\Trs80\$(OutDir)Reko.Environments.Trs80.*" />
     <Environments Include="$(SolutionDir)Environments\Windows\$(OutDir)Reko.Environments.Windows.*" />
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
+    <ConfigurationFiles Include="$(SolutionDir)Drivers\reko.config" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
@@ -258,4 +259,7 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
+  <Target Name="BeforeBuild">
+    <Copy SourceFiles="@(ConfigurationFiles)" DestinationFolder="$(ProjectDir)" SkipUnchangedFiles="true" />
+  </Target>
 </Project>

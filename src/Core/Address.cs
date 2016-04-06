@@ -147,7 +147,7 @@ namespace Reko.Core
 			return a.ToLinear() > b.ToLinear();
 		}
 
-		public static bool operator >= (Address a, Address b)
+        public static bool operator >= (Address a, Address b)
 		{
 			return a.ToLinear() >= b.ToLinear();
 		}
@@ -164,7 +164,9 @@ namespace Reko.Core
 
         public abstract Address Add(long offset);
 
-		public static Address operator - (Address a, int delta)
+        public abstract Address Align(int alignment);
+
+        public static Address operator - (Address a, int delta)
 		{
 			return a.Add(-delta);
 		}
@@ -272,6 +274,11 @@ namespace Reko.Core
             return new Address16((ushort)((int)uValue + (int)offset));
         }
 
+        public override Address Align(int alignment)
+        {
+            return new Address16((ushort)(alignment * ((uValue + alignment - 1) / alignment)));
+        }
+
         public override Expression CloneExpression()
         {
             return new Address16(uValue);
@@ -326,6 +333,11 @@ namespace Reko.Core
         {
             var uNew = uValue + offset;
             return new Address32((uint)uNew);
+        }
+
+        public override Address Align(int alignment)
+        {
+            return new Address32((uint)(alignment * ((uValue + alignment - 1) / alignment)));
         }
 
         public override Expression CloneExpression()
@@ -392,6 +404,11 @@ namespace Reko.Core
 			return new RealSegmentedAddress(sel, (ushort) newOff);
 		}
 
+        public override Address Align(int alignment)
+        {
+            return new RealSegmentedAddress(uSegment, ((ushort)(alignment * ((uOffset + alignment - 1) / alignment))));
+        }
+
         public override Expression CloneExpression()
         {
             return new RealSegmentedAddress(uSegment, uOffset);
@@ -456,6 +473,11 @@ namespace Reko.Core
             return new ProtectedSegmentedAddress(sel, (ushort)newOff);
         }
 
+        public override Address Align(int alignment)
+        {
+            return new RealSegmentedAddress(uSegment, ((ushort)(alignment * ((uOffset + alignment - 1) / alignment))));
+        }
+
         public override Expression CloneExpression()
         {
             return new ProtectedSegmentedAddress(uSegment, uOffset);
@@ -509,6 +531,14 @@ namespace Reko.Core
         public override Address Add(long offset)
         {
             return new Address64(uValue + (ulong)offset);
+        }
+
+        public override Address Align(int alignment)
+        {
+            if (alignment <= 0)
+                throw new ArgumentOutOfRangeException("alignment");
+            var uAl = (uint)alignment;
+            return new Address64(uAl * ((uValue + uAl - 1) / uAl));
         }
 
         public override Expression CloneExpression()

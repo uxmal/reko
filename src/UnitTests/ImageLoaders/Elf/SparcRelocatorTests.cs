@@ -18,29 +18,32 @@
  */
 #endregion
 
+using NUnit.Framework;
+using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.ImageLoaders.Elf;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
+using System.ComponentModel.Design;
+using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Core.Configuration
+namespace Reko.UnitTests.ImageLoaders.Elf
 {
-    public class RawFileElementCollection : ConfigurationElementCollection
+    [TestFixture]
+    public class SparcRelocatorTests
     {
-        public RawFileElementCollection()
-        {
-            AddElementName = "RawFile";
-        }
+        private MockRepository mr;
 
-        protected override ConfigurationElement CreateNewElement()
+        public void SparcRel_Test()
         {
-            return new RawFileElementImpl();
-        }
-
-        protected override object GetElementKey(ConfigurationElement element)
-        {
-            return ((RawFileElement)element).Name;
+            this.mr = new MockRepository();
+            var sc = new ServiceContainer();
+            var cfgSvc = mr.Stub<IConfigurationService>();
+            sc.AddService(typeof(IConfigurationService), cfgSvc);
+            mr.ReplayAll();
         }
     }
 }

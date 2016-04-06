@@ -110,6 +110,12 @@ namespace Reko.Core.Rtl
             return this;
         }
 
+        public RtlEmitter Goto(Expression target, RtlClass rtlClass)
+        {
+            instrs.Add(new RtlGoto(target, rtlClass));
+            return this;
+        }
+
         /// <summary>
         /// Delayed goto (for RISC architectures with delay slots)
         /// </summary>

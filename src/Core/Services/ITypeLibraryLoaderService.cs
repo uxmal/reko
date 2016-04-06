@@ -90,7 +90,7 @@ namespace Reko.Core.Services
                 var cfgSvc = services.RequireService<IConfigurationService>();
                 var diagSvc = services.RequireService<IDiagnosticsService>();
                 var ldrElement = cfgSvc.GetImageLoaders()
-                    .OfType<LoaderElement>()
+                    .OfType<LoaderConfiguration>()
                     .Where(le => le.Label == tlElement.Loader)
                     .FirstOrDefault();
                 if (ldrElement != null && !string.IsNullOrEmpty(ldrElement.TypeName)) 

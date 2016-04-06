@@ -182,7 +182,7 @@ namespace Reko.Scanning
             foreach (var range in ranges)
             {
                 var possibleEntries = FindPossibleProcedureEntries(range.Item1, range.Item2, range.Item3)
-                    .Concat(program.EntryPoints.Select(ep => ep.Address))
+                    .Concat(program.EntryPoints.Keys)
                     .ToSortedSet();
                 var e = possibleEntries.GetEnumerator();
                 Address aEnd = range.Item2;

@@ -89,7 +89,7 @@ namespace Reko.Core
                 }
                 else
                 {
-                    var segLast = segment.Address + segment.ContentSize;
+                    var segLast = segment.Address + segment.Size;
                     var size = segLast - i.Address;
                     size = Math.Min(i.Size, size);
                     DumpData(program.ImageMap, i.Address, size, stm);

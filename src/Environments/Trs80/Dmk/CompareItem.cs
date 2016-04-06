@@ -1,6 +1,6 @@
 using System;
 
-namespace DMKViewer
+namespace Reko.Environments.Trs80 // DMKViewer
 {
 	internal class CompareItem
 	{

@@ -21,7 +21,6 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 using System.Text;
 
 namespace Reko.Core.Configuration
@@ -33,39 +32,24 @@ namespace Reko.Core.Configuration
         string TypeName { get; }
     }
 
-    public class AssemblerElementImpl : ConfigurationElement, AssemblerElement
+    public class AssemblerElementImpl : AssemblerElement
     {
         /// <summary>
         /// Short, technical name for the assembler.
         /// the assembler.
         /// </summary>
-        [ConfigurationProperty("Name", IsRequired = false)]
-        public string Name
-        {
-            get { return (string)this["Name"]; }
-            set { this["Name"] = value; }
-        }
+        public string Name { get; set; }
 
         /// <summary>
         /// Human friendly description of the assembler.
         /// the assembler.
         /// </summary>
-        [ConfigurationProperty("Description", IsRequired = false)]
-        public string Description
-        {
-            get { return (string)this["Description"]; }
-            set { this["Description"] = value; }
-        }
+        public string Description { get; set; }
 
         /// <summary>
         /// The assembly-qualified name for the .NET type that implements
         /// the assembler.
         /// </summary>
-        [ConfigurationProperty("Type", IsRequired = false)]
-        public string TypeName
-        {
-            get { return (string)this["Type"]; }
-            set { this["Type"] = value; }
-        }
+        public string TypeName { get; set; }
     }
 }

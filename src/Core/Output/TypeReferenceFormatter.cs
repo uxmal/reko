@@ -31,12 +31,10 @@ namespace Reko.Core.Output
         private Formatter fmt;
         private bool declaration;
         private string declaredName;
-        private bool typeReference;
 
-        public TypeReferenceFormatter(Formatter writer, bool typeReference)
+        public TypeReferenceFormatter(Formatter writer)
         {
             this.fmt = writer;
-            this.typeReference = typeReference;
         }
 
         public Formatter Formatter { get { return fmt; } }

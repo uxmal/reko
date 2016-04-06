@@ -204,6 +204,7 @@
     <Environments Include="$(SolutionDir)Environments\Trs80\$(OutDir)Reko.Environments.Trs80.*" />
     <Environments Include="$(SolutionDir)Environments\Windows\$(OutDir)Reko.Environments.Windows.*" />
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
+    <ConfigurationFiles Include="$(SolutionDir)Drivers\reko.config" />
   </ItemGroup>
   <Target Name="BeforeBuild">
     <Message Importance="high" Text="Copying Decompiler metadata files to $(TargetDir)" />
@@ -221,6 +222,8 @@
     <Copy SourceFiles="@(OdbgScripts)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Copying external binaries to $(TargetDir)" />
     <Copy SourceFiles="@(ExternalComponents)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <Message Importance="high" Text="Copying configuration files to $(TargetDir)" />
+    <Copy SourceFiles="@(ConfigurationFiles)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
   </Target>
   <PropertyGroup>
     <PreBuildEvent>

@@ -31,7 +31,6 @@ using Reko.Core.Expressions;
 
 namespace Reko.Environments.Windows
 {
-
     /// <summary>
     /// Emulates the Win32 operating environment. In particular, intercepts calls to GetProcAddress
     /// so that the procedures used by the decompiled program can be gleaned. 

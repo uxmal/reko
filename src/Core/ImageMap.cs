@@ -29,8 +29,9 @@ using System.Text;
 namespace Reko.Core
 {
 	/// <summary>
-	/// Describes the contents of the image in terms of regions. The image map is two-tier:
-	/// Segments lie on the first level, and under these, we find the procedures.
+	/// Describes the contents of the image in terms of regions. The image map
+    /// is two-tier: Segments lie on the first level, and under these, we find
+    /// the procedures.
 	/// </summary>
 	public class ImageMap
 	{

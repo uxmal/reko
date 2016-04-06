@@ -136,7 +136,6 @@ namespace Reko.Gui.Windows
         }
 #endregion
 
-
         public void ShowMessage(string msg)
         {
             form.Invoke(new Action<string>(delegate(string s)

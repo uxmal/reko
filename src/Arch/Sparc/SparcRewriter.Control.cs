@@ -47,7 +47,15 @@ namespace Reko.Arch.Sparc
             var rtlClass = RtlClass.ConditionalTransfer | RtlClass.Delay;
             if (instrCur.Annul)
                 rtlClass |= RtlClass.Annul;
-            emitter.Branch(cond, ((AddressOperand) instrCur.Op1).Address, rtlClass);
+            Constant c;
+            if (cond.As(out c) && c.ToBoolean())
+            {
+                emitter.Goto(((AddressOperand)instrCur.Op1).Address, rtlClass);
+            }
+            else
+            {
+                emitter.Branch(cond, ((AddressOperand)instrCur.Op1).Address, rtlClass);
+            }
         }
 
         private void RewriteCall()
@@ -59,11 +67,15 @@ namespace Reko.Arch.Sparc
         private void RewriteJmpl()
         {
             ric.Class = RtlClass.Transfer;
+            var q = instrCur.Op3.GetType();
             var rDst = instrCur.Op3 as RegisterOperand;
-            var dst = RewriteOp(instrCur.Op3, true);
-            var src1 = RewriteOp(instrCur.Op1, true);
-            var src2 = RewriteOp(instrCur.Op2, true);
-            emitter.Assign(dst, instrCur.Address);
+            var src1 = RewriteOp(instrCur.Op1);
+            var src2 = RewriteOp(instrCur.Op2);
+            if (rDst.Register != Registers.g0)
+            {
+                var dst = RewriteOp(instrCur.Op3);
+                emitter.Assign(dst, instrCur.Address);
+            }
             var target = SimplifySum(src1, src2);
             if (rDst.Register == Registers.o7)
             {

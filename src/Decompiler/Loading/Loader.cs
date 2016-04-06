@@ -72,8 +72,12 @@ namespace Reko.Loading
         {
             var program = asm.Assemble(addrLoad, new StreamReader(new MemoryStream(image), Encoding.UTF8));
             program.Name = Path.GetFileName(fileName);
-            program.EntryPoints.AddRange(asm.EntryPoints);
-            program.EntryPoints.Add(new EntryPoint(asm.StartAddress, program.Architecture.CreateProcessorState()));
+            foreach (var ep in asm.EntryPoints)
+            {
+                program.EntryPoints[ep.Address] = ep;
+            }
+            program.EntryPoints[asm.StartAddress] = 
+                new EntryPoint(asm.StartAddress, program.Architecture.CreateProcessorState());
             CopyImportReferences(asm.ImportReferences, program);
             return program;
         }
@@ -86,7 +90,7 @@ namespace Reko.Loading
         /// <param name="addrLoad">Address into which to load the file.</param>
         public Program LoadExecutable(string filename, byte[] image, Address addrLoad)
         {
-            ImageLoader imgLoader = FindImageLoader<ImageLoader>(
+            ImageLoader imgLoader = FindImageLoader(
                 filename, 
                 image,
                 () => CreateDefaultImageLoader(filename, image));
@@ -98,7 +102,10 @@ namespace Reko.Loading
             var program = imgLoader.Load(addrLoad);
             program.Name = Path.GetFileName(filename);
             var relocations = imgLoader.Relocate(program, addrLoad);
-            program.EntryPoints.AddRange(relocations.EntryPoints);
+            foreach (var ep in relocations.EntryPoints)
+            {
+                program.EntryPoints[ep.Address] = ep;
+            }
             program.FunctionHints.AddRange(relocations.Functions);
             return program;
         }
@@ -127,7 +134,10 @@ namespace Reko.Loading
             program.ImageMap = CreatePlatformMemoryMap(program.Platform, imgLoader.PreferredBaseAddress, image);
             program.Name = Path.GetFileName(filename);
             var relocations = imgLoader.Relocate(program, imgLoader.PreferredBaseAddress);
-            program.EntryPoints.AddRange(relocations.EntryPoints);
+            foreach (var ep in relocations.EntryPoints)
+            {
+                program.EntryPoints.Add(ep.Address, ep);
+            }
             program.FunctionHints.AddRange(relocations.Functions);
             return program;
         }
@@ -189,7 +199,7 @@ namespace Reko.Loading
                 Address entryAddr;
                 if (arch.TryParseAddress(rawFile.EntryPoint.Address, out entryAddr))
                 {
-                    if (!string.IsNullOrEmpty(rawFile.EntryPoint.Follow))
+                    if (rawFile.EntryPoint.Follow)
                     {
                         var rdr = arch.CreateImageReader(new MemoryArea(baseAddr, image), entryAddr);
                         return arch.ReadCodeAddress(0, rdr, arch.CreateProcessorState());
@@ -200,7 +210,6 @@ namespace Reko.Loading
                     return baseAddr;
                 }
             }
-
             return baseAddr;
         }
 
@@ -244,7 +253,7 @@ namespace Reko.Loading
         /// <returns>An appropriate image loader if known, a NullLoader if the image format is unknown.</returns>
         public T FindImageLoader<T>(string filename, byte[] rawBytes, Func<T> defaultLoader)
         {
-            foreach (LoaderElement e in cfgSvc.GetImageLoaders())
+            foreach (LoaderConfiguration e in cfgSvc.GetImageLoaders())
             {
                 if (!string.IsNullOrEmpty(e.MagicNumber) &&
                     ImageHasMagicNumber(rawBytes, e.MagicNumber, e.Offset)

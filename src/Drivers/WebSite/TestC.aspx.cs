@@ -147,7 +147,7 @@ namespace Reko.WebSite
 				{
                     var sc = new ServiceContainer();
                     var ldr = new Loader(sc);
-                    var cfg = new DecompilerConfiguration();
+                    var cfg = RekoConfigurationService.Load();
                     var asm = cfg.GetAssembler("x86-masm");
                     var program = asm.AssembleFragment(Address.Ptr32(0x10000000), txtAssembler.Text + Environment.NewLine);
 					DecompilerDriver decomp = new DecompilerDriver(ldr, sc);
