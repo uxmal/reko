@@ -62,13 +62,12 @@ namespace Reko.ImageLoaders.Elf
                     var relR = program.CreateImageReader(addr);
                     var relW = program.CreateImageWriter(addr);
 
-                    Debug.Print("  off:{0:X8} type:{1,-16} add:{3,-20} {4,3} {2} {5} {6}",
+                    Debug.Print("  off:{0:X8} type:{1,-16} add:{3,-20} {4,3} {2} {5}",
                         rela.r_offset,
                         (SparcRt)(rela.r_info & 0xFF),
                         symbols[(int)(rela.r_info >> 8)].Name,
                         rela.r_addend,
                         (int)(rela.r_info >> 8),
-                        addr,
                         loader.GetSectionName(symSection.sh_name));
 
                     var rt = (SparcRt)(rela.r_info & 0xFF);
@@ -96,11 +95,6 @@ namespace Reko.ImageLoaders.Elf
                     var w = relR.ReadBeUInt32();
                     w += ((uint)(S + A + P) >> sh) & mask;
                     relW.WriteBeUInt32(w);
-
-                    //$DEBUG:
-                    w = program.CreateImageReader(Address.Ptr32(0x0804802C)).ReadBeUInt32();
-                    Debug.Print("    w = {0:X8}", w);
-
                 }
             }
         }

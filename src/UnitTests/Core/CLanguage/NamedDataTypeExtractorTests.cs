@@ -29,7 +29,7 @@ using System.Linq;
 using System.Text;
 using Reko.UnitTests.Mocks;
 
-namespace Reko.Core.CLanguage.UnitTests
+namespace Reko.UnitTests.Core.CLanguage
 {
     [TestFixture]
     public class NamedDataTypeExtractorTests
