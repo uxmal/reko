@@ -252,6 +252,7 @@ namespace Reko.Scanning
                 blockDsT.IsSynthesized = true;
                 blockCur = blockDsF;
                 ProcessRtlCluster(ricDelayed);
+
                 blockCur = blockDsT;
                 ProcessRtlCluster(ricDelayed);
                 EnsureEdge(proc, blockDsF, blockElse);
