@@ -233,32 +233,35 @@ namespace Reko.Scanning
             var blockElse = FallthroughBlock(ric.Address, proc, fallthruAddress);
             var branchingBlock = scanner.FindContainingBlock(ric.Address);
 
-            // If the else and then differ, we have a "real" branch. If they're the same
-            // it should just be a goto.
-
-            if (true && blockElse != blockThen)
-            {
-                Emit(branch, branchingBlock);
-            }
+            Emit(branch, branchingBlock);
 
             if ((b.Class & RtlClass.Delay) != 0 &&
                 ricDelayed.Instructions.Count > 0)
             {
                 // Introduce stubs for the delay slot, but only
                 // if the delay slot isn't empty.
-                var blockDsF = proc.AddBlock(branchingBlock.Name + "_ds_f");
-                var blockDsT = proc.AddBlock(branchingBlock.Name + "_ds_t");
-                blockDsF.IsSynthesized = true;
-                blockDsT.IsSynthesized = true;
-                blockCur = blockDsF;
-                ProcessRtlCluster(ricDelayed);
 
+                if ((b.Class & RtlClass.Annul) != 0)
+                {
+                    EnsureEdge(proc, branchingBlock, blockElse);
+                }
+                else
+                {
+                    Block blockDsF = null;
+                    blockDsF = proc.AddBlock(branchingBlock.Name + "_ds_f");
+                    blockDsF.IsSynthesized = true;
+                    blockCur = blockDsF;
+                    ProcessRtlCluster(ricDelayed);
+                    EnsureEdge(proc, blockDsF, blockElse);
+                    EnsureEdge(proc, branchingBlock, blockDsF);
+                }
+
+                Block blockDsT = proc.AddBlock(branchingBlock.Name + "_ds_t");
+                blockDsT.IsSynthesized = true;
                 blockCur = blockDsT;
                 ProcessRtlCluster(ricDelayed);
-                EnsureEdge(proc, blockDsF, blockElse);
                 EnsureEdge(proc, blockDsT, blockThen);
                 branch.Target = blockDsT;
-                EnsureEdge(proc, branchingBlock, blockDsF);
                 EnsureEdge(proc, branchingBlock, blockDsT);
             }
             else

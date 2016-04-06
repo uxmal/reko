@@ -592,7 +592,6 @@ testProc_exit:
             mr.VerifyAll();
         }
 
-
         [Test]
         public void Bwi_Return_DelaySlot()
         {
@@ -618,5 +617,50 @@ testProc_exit:
             Assert.AreEqual("return", block.Statements[1].ToString());
             mr.VerifyAll();
         }
+
+        [Test(Description = "Test for when a delay slot is anulled (SPARC)")]
+        public void Bwi_Branch_DelaySlotAnulled()
+        {
+            var l00100008 = new Block(proc, "l00100008");
+            var l00100100 = new Block(proc, "l00101000");
+            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100000))).Return(block);
+            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100004))).Return(block);
+            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x100008))).Return(l00100008);
+            scanner.Stub(f => f.FindContainingBlock(Address.Ptr32(0x10000C))).Return(null);
+            scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
+            scanner.Stub(s => s.EnqueueJumpTarget(
+                Arg<Address>.Is.Equal(Address.Ptr32(0x00100004)),
+                Arg<Address>.Is.Equal(Address.Ptr32(0x00101000)),
+                Arg<Procedure>.Is.Equal(proc),
+                Arg<ProcessorState>.Is.NotNull)).Return(l00100100);
+            scanner.Stub(s => s.EnqueueJumpTarget(
+                Arg<Address>.Is.Equal(Address.Ptr32(0x00100004)),
+                Arg<Address>.Is.Equal(Address.Ptr32(0x00100008)),
+                Arg<Procedure>.Is.Equal(proc),
+                Arg<ProcessorState>.Is.NotNull)).Return(l00100008);
+            mr.ReplayAll();
+
+            trace.Add(m => m.Branch(r1, Address.Ptr32(0x101000), RtlClass.ConditionalTransfer | RtlClass.Delay | RtlClass.Annul));
+            trace.Add(m => m.Assign(r0, r1));   // 100004
+            trace.Add(m => m.Assign(r2, r1));   // 100008
+
+            var wi = CreateWorkItem(Address.Ptr32(0x100000), new FakeProcessorState(arch));
+            wi.Process();
+
+            Assert.AreEqual("branch r1 l00100000_ds_t", block.Statements[0].ToString());
+            var blFalse = block.ElseBlock;
+            var blTrue = block.ThenBlock;
+            proc.Dump(true);
+            Assert.AreEqual("l00100008", blFalse.Name);     // delay-slot was anulled.
+            Assert.AreEqual(1, blFalse.Statements.Count);
+            Assert.AreEqual("r2 = r1", blFalse.Statements[0].ToString());
+
+            Assert.AreEqual("l00100000_ds_t", blTrue.Name);      // delay-slot-true
+            Assert.AreEqual(1, blTrue.Statements.Count);
+            Assert.AreEqual("r0 = r1", blTrue.Statements[0].ToString());
+            Assert.AreEqual(1, blTrue.Succ.Count);
+            Assert.AreEqual("l00101000", blTrue.Succ[0].Name);
+        }
+
     }
 }
