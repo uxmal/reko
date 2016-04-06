@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Types;
 using Reko.Core.Output;
 using Reko.Core.Serialization;
 using Reko.Analysis;
@@ -81,12 +82,12 @@ namespace Reko.Gui.Windows.Controls
         {
             switch (e.KeyCode)
             {
-            case Keys.Enter:
-            case Keys.Escape:
-                HideControls();
-                e.SuppressKeyPress = true;
-                e.Handled = true;
-                break;
+                case Keys.Enter:
+                case Keys.Escape:
+                    HideControls();
+                    e.SuppressKeyPress = true;
+                    e.Handled = true;
+                    break;
             }
         }
 
@@ -122,10 +123,11 @@ namespace Reko.Gui.Windows.Controls
             {
                 return proc.Name;
             }
-            GlobalDataItem_v2 global;
-            if(program.User.Globals.TryGetValue(address, out global))
+            ImageMapItem item;
+            if (program.ImageMap.TryFindItemExact(address, out item) &&
+                !(item.DataType is UnknownType))
             {
-                return RenderGlobalDeclaration(global.DataType, global.Name);
+                return RenderGlobalDeclaration(item.DataType, item.Name ?? "<unnamed>");
             }
             return null;
         }
@@ -136,14 +138,12 @@ namespace Reko.Gui.Windows.Controls
         /// <param name="dataType"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        private string RenderGlobalDeclaration(SerializedType dataType, string name)
+        private string GetGlobalDeclaration(DataType dataType, string name)
         {
-            var tlDeser = program.CreateTypeLibraryDeserializer();
-            var dt = dataType.Accept(tlDeser);
             var sw = new StringWriter();
             var tf = new TextFormatter(sw);
             var tyreffo = new CTypeReferenceFormatter(program.Platform, tf);
-            tyreffo.WriteDeclaration(dt, name);
+            tyreffo.WriteDeclaration(dataType, name);
             return sw.ToString();
         }
 

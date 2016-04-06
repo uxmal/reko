@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Types;
 using Reko.Gui;
 using Reko.Gui.Controls;
 using System.ComponentModel;
@@ -377,6 +378,12 @@ namespace Reko.UnitTests.Gui.Windows
             var mem = new MemoryArea(Address.Ptr32(0x12340000), new byte[0x1000]);
             var imageMap = new ImageMap(Address.Ptr32(0x12300000));
             imageMap.AddSegment(mem, ".text", AccessMode.ReadExecute);
+            imageMap.AddItemWithSize(Address.Ptr32(0x12340000), new ImageMapItem
+            {
+                Address = Address.Ptr32(0x12340000),
+                Size = 4,
+                DataType = PrimitiveType.Int32,
+            });
             var arch = mr.StrictMock<ProcessorArchitecture>();
             arch.Description = "Foo Processor";
             var platform = new DefaultPlatform(sc, arch);

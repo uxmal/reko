@@ -55,14 +55,39 @@ namespace Reko.Core.Configuration
 
         public string Width { get; set; }
 
-        public string TextAlign { get; set; }
+        [ConfigurationProperty("TextAlign", IsRequired = false)]
+        public string TextAlign
+        {
+            get { return (string)this["TextAlign"]; }
+            set { this["TextAlign"] = value; }
+        }
 
-        public string PaddingTop { get; set; }
+        [ConfigurationProperty("PaddingTop", IsRequired = false)]
+        public string PaddingTop
+        {
+            get { return (string) this["PaddingTop"]; }
+            set { this["PaddingTop"] = value; }
+        }
 
-        public string PaddingLeft { get; set; }
+        [ConfigurationProperty("PaddingLeft", IsRequired = false)]
+        public string PaddingLeft
+        {
+            get { return (string)this["PaddingLeft"]; }
+            set { this["PaddingLeft"] = value; }
+        }
 
-        public string PaddingBottom { get; set; }
+        [ConfigurationProperty("PaddingBottom", IsRequired = false)]
+        public string PaddingBottom
+        {
+            get { return (string)this["PaddingBottom"]; }
+            set { this["PaddingBottom"] = value; }
+        }
 
-        public string PaddingRight { get; set; }
+        [ConfigurationProperty("PaddingRight", IsRequired = false)]
+        public string PaddingRight
+        {
+            get { return (string)this["PaddingRight"]; }
+            set { this["PaddingRight"] = value; }
+        }
     }
 }
