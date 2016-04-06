@@ -131,12 +131,11 @@ namespace Reko.Core
                 };
                 User.Globals.Add(address, gbl);
             }
-            else
-            {
-                this.ImageMap.RemoveItem(address);
-            }
+
             gbl.Name = name;
             gbl.DataType = dataType;
+
+            this.ImageMap.RemoveItem(address);
 
             var tlDeser = CreateTypeLibraryDeserializer();
             var dt = dataType.Accept(tlDeser);
@@ -145,6 +144,7 @@ namespace Reko.Core
             {
                 Address = address,
                 Size = size,
+                Name = name,
                 DataType = dt,
             };
             if (size != 0)

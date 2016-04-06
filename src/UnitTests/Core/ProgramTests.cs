@@ -88,6 +88,7 @@ namespace Reko.UnitTests.Core
             Assert.AreSame(gbl1, program.User.Globals.Values[0]);
             Assert.AreEqual(1, program.ImageMap.Items.Count);
             var item = program.ImageMap.Items.Values[0];
+            Assert.AreEqual("dValue", item.Name);
             Assert.AreEqual("real64", item.DataType.ToString());
             Assert.AreEqual("00010000", item.Address.ToString());
             Assert.AreEqual(8, item.Size);
@@ -102,6 +103,7 @@ namespace Reko.UnitTests.Core
             Assert.AreSame(gbl2, program.User.Globals.Values[0]);
             Assert.AreEqual(2, program.ImageMap.Items.Count);
             var firstItem = program.ImageMap.Items.Values[0];
+            Assert.AreEqual("fValue", firstItem.Name);
             Assert.AreEqual("real32", firstItem.DataType.ToString());
             Assert.AreEqual("00010000", firstItem.Address.ToString());
             Assert.AreEqual(4, firstItem.Size);

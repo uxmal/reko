@@ -349,6 +349,7 @@ namespace Reko.Core.Serialization
                 {
                     Address = kv.Key,
                     DataType = dt,
+                    Name = kv.Value.Name,
                 };
                 if (item.Size > 0)
                 {
@@ -583,6 +584,7 @@ namespace Reko.Core.Serialization
                 {
                     Address = kv.Key,
                     DataType = dt,
+                    Name = kv.Value.Name,
                 };
                 if (item.Size > 0)
                 {
