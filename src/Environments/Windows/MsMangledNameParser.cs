@@ -542,7 +542,7 @@ namespace Reko.Environments.Windows
             case '7': return compoundArgs[7].Type;
             case '8': return compoundArgs[8].Type;
             case '9': return compoundArgs[9].Type;
-            case 'A': return ParsePointer(compoundArgs);        //$TODO: really is a reference but is implemented as a pointer on Win32...
+            case 'A': return ParsePointer(compoundArgs);        //$TODO: really is a lvalue reference but is implemented as a pointer on Win32...
             case 'C': return new PrimitiveType_v1(Domain.Character | Domain.SignedInt, 1);
             case 'D': return new PrimitiveType_v1(Domain.Character, 1);
             case 'E': return new PrimitiveType_v1(Domain.Character | Domain.UnsignedInt, 1);
@@ -575,7 +575,21 @@ namespace Reko.Environments.Windows
                 }
                 compoundArgs.Add(new Argument_v1 { Type = prim });
                 return prim;
-            default: Error("Unsupported type code '{0}'.", str[i - 1]); return null;
+            case '$':
+                switch (str[i++])
+                {
+                case '$':
+                    switch (str[i++])
+                    {
+                    case 'Q': return ParsePointer(compoundArgs); //$ rvalue reference
+                    }
+                    Error("Unsupported type code '{0}'.", str[i - 1]); return null;
+                default:
+                    Error("Unsupported type code '{0}'.", str[i - 1]); return null;
+                }
+            default:
+                Error("Unsupported type code '{0}'.", str[i - 1]);
+                return null;
             }
         }
 

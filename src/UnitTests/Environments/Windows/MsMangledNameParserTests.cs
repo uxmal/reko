@@ -503,6 +503,13 @@ namespace Reko.UnitTests.Environments.Windows
                 "nothrow_t std::nothrow",
                 "?nothrow@std@@3Unothrow_t@1@B");
         }
-       
+
+        [Test]
+        public void PMNP_regression14()
+        {
+            RunTest(
+                "__thiscall public: QString * QT::QString::operator =(QString *)",
+                "??4QString@QT@@QAEAAV01@$$QAV01@@Z");
+        }
     }
 }
