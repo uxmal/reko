@@ -289,6 +289,11 @@ namespace Reko.Gui
 
             var snames = this.SettingNames[name];
 
+            float padTop, padLeft, padRight, padBottom;
+            float.TryParse(defStyle.PaddingTop, out padTop);
+            float.TryParse(defStyle.PaddingLeft, out padLeft);
+            float.TryParse(defStyle.PaddingBottom, out padBottom);
+            float.TryParse(defStyle.PaddingRight, out padRight);
             var uiStyle = new UiStyle
             {
                 Name = snames.Name,
@@ -296,6 +301,10 @@ namespace Reko.Gui
                 Background = GetBrush((string)settingsSvc.Get(snames.BackColor, defStyle.BackColor)),
                 Font = GetFont((string)settingsSvc.Get(snames.FontName, defStyle.FontName)),
                 Width = string.IsNullOrEmpty(defStyle.Width) ? default(int?) : Convert.ToInt32(defStyle.Width),
+                PaddingLeft = padLeft,
+                PaddingTop = padTop,
+                PaddingRight = padRight,
+                PaddingBottom = padBottom,
             };
             AddStyle(uiStyle);
         }

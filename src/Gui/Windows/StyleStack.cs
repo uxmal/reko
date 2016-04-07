@@ -56,6 +56,8 @@ namespace Reko.Gui.Windows.Controls
 
         public void PushStyle(string styleSelector)
         {
+            if (styleSelector == UiStyles.DisassemblerOpcode)
+                styleSelector.ToCharArray();    //$DEBUG
             UiStyle style = null;
             if (!string.IsNullOrEmpty(styleSelector))
             {

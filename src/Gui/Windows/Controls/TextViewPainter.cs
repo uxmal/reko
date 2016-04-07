@@ -46,6 +46,7 @@ namespace Reko.Gui.Windows.Controls
         private Color defaultBgColor;
         private Font defaultFont;
         private bool useGdiPlus;
+        private LayoutLine line;
 
         public TextViewPainter(TextViewLayout outer, Graphics g, Color fgColor, Color bgColor, Font defaultFont, StyleStack styleStack)
         {
@@ -90,6 +91,8 @@ namespace Reko.Gui.Windows.Controls
 
         private void PaintLine(LayoutLine line)
         {
+            this.line = line;
+
             // Paint the last piece of the line
             RectangleF rcTrailer = line.Extent;
             float xMax = 0;
@@ -223,6 +226,15 @@ namespace Reko.Gui.Windows.Controls
             graphics.FillRectangle(
                 selected ? SystemBrushes.Highlight : bg,
                 rcTotal);
+
+            if (rcTotal.Bottom < line.Extent.Bottom)
+            {
+                graphics.FillRectangle(
+                    bg,
+                    rcTotal.Left, rcTotal.Bottom,
+                    rcTotal.Width, line.Extent.Bottom - rcTotal.Bottom);
+            }
+
             if (useGdiPlus)
             {
                 var brush = new SolidBrush(selected ? SystemColors.HighlightText : fg);
