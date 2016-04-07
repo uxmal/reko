@@ -50,18 +50,18 @@ namespace Reko.ImageLoaders.MzExe
 		public LzExeUnpacker(IServiceProvider services, string filename, byte [] rawImg) : base(services, filename, rawImg)
         {
             var exe = new ExeImageLoader(services, filename, rawImg);
-            this.arch = new IntelArchitecture(ProcessorMode.Real);
-            this.platform = services.RequireService<IConfigurationService>()
-                .GetEnvironment("ms-dos")
+            var cfgSvc = services.RequireService<IConfigurationService>();
+            this.arch = cfgSvc.GetArchitecture("x86-real-16");
+            this.platform = cfgSvc.GetEnvironment("ms-dos")
                 .Load(services, arch);
             Validate(exe);
         }
 
 		public LzExeUnpacker(IServiceProvider services, ExeImageLoader exe, string filename, byte [] rawImg) : base(services, filename, rawImg)
 		{
-            this.arch = new IntelArchitecture(ProcessorMode.Real);
-            this.platform = services.RequireService<IConfigurationService>()
-                .GetEnvironment("ms-dos")
+            var cfgSvc = services.RequireService<IConfigurationService>();
+            this.arch = cfgSvc.GetArchitecture("x86-real-16");
+            this.platform = cfgSvc.GetEnvironment("ms-dos")
                 .Load(services, arch);
             Validate(exe);
 		}

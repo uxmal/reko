@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -31,62 +32,30 @@ namespace Reko.Core.Configuration
         string Description { get; }
         string TypeName { get; }
         string MemoryMapFile { get; }
-        TypeLibraryElementCollection TypeLibraries { get; }
-        TypeLibraryElementCollection CharacteristicsLibraries { get; set; }
+        List<ITypeLibraryElement> TypeLibraries { get; }
+        List<ITypeLibraryElement> CharacteristicsLibraries { get; }
 
         IPlatform Load(IServiceProvider services, IProcessorArchitecture arch);
     }
 
-    public class OperatingEnvironmentElement : ConfigurationElement, OperatingEnvironment
+    public class OperatingEnvironmentElement : OperatingEnvironment
     {
         public OperatingEnvironmentElement()
         {
-            this["TypeLibraries"] = new TypeLibraryElementCollection();
+            this.TypeLibraries = new List<ITypeLibraryElement>();
+            this.CharacteristicsLibraries = new List<ITypeLibraryElement>();
         }
 
-        [ConfigurationProperty("Name", IsRequired = true)]
-        public string Name
-        {
-            get { return (string) this["Name"]; }
-            set { this["Name"] = value; }
-        }
+        public string Name { get; set; }
 
-        [ConfigurationProperty("Description", IsRequired = true)]
-        public string Description
-        {
-            get { return (string) this["Description"]; }
-            set { this["Description"] = value; }
-        }
+        public string Description { get; set; }
 
-        [ConfigurationProperty("Type", IsRequired = false)]
-        public string TypeName
-        {
-            get { return (string) this["Type"]; }
-            set { this["Type"] = value; }
-        }
+        public string TypeName { get; set; }
 
-        [ConfigurationProperty("MemoryMap", IsRequired = false)]
-        public string MemoryMapFile
-        {
-            get { return (string)this["MemoryMap"]; }
-            set { this["MemoryMap"] = value; }
-        }
+        public string MemoryMapFile { get; set; }
 
-        [ConfigurationProperty("TypeLibraries", IsDefaultCollection = false, IsRequired = false)]
-        [ConfigurationCollection(typeof(TypeLibraryElement))]
-        public TypeLibraryElementCollection TypeLibraries
-        {
-            get { return (TypeLibraryElementCollection) this["TypeLibraries"]; }
-            set { this["TypeLibraries"] = value; }
-        }
-
-        [ConfigurationProperty("Characteristics", IsDefaultCollection = false, IsRequired = false)]
-        [ConfigurationCollection(typeof(TypeLibraryElement))]
-        public TypeLibraryElementCollection CharacteristicsLibraries
-        {
-            get { return (TypeLibraryElementCollection)this["Characteristics"]; }
-            set { this["Characteristics"] = value; }
-        }
+        public List<ITypeLibraryElement> TypeLibraries { get; internal set; }
+        public List<ITypeLibraryElement> CharacteristicsLibraries { get; internal set; }
 
         public IPlatform Load(IServiceProvider services, IProcessorArchitecture arch)
         {

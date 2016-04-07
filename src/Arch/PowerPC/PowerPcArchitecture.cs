@@ -140,6 +140,18 @@ namespace Reko.Arch.PowerPC
             return new BeImageReader(image, offset);
         }
 
+        public override ImageWriter CreateImageWriter()
+        {
+            //$TODO: PowerPC is bi-endian.
+            return new BeImageWriter();
+        }
+
+        public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
+        {
+            //$TODO: PowerPC is bi-endian.
+            return new BeImageWriter(mem.Bytes, (uint)(addr.ToLinear() - mem.BaseAddress.ToLinear()));
+        }
+
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             throw new NotImplementedException();
@@ -333,7 +345,10 @@ namespace Reko.Arch.PowerPC
 
         public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
         {
-            throw new NotImplementedException();
+            if (offset == 0)
+                return reg;
+            else
+                return null;
         }
 
         public override Address MakeAddressFromConstant(Constant c)

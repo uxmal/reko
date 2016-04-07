@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Analysis
 		[SetUp]
 		public void Setup()
 		{
-            var arch = new IntelArchitecture(ProcessorMode.Protected32);
+            var arch = new X86ArchitectureFlat32();
 			f = arch.CreateFrame();
             liveness = new IdentifierLiveness(arch);
 			isLiveHelper = new RegisterLiveness.IsLiveHelper(arch);

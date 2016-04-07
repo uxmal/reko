@@ -83,9 +83,8 @@ namespace Reko.UnitTests.Scanning
             var project = new Project { Programs = { program } };
 			var scan = new Scanner(
                 program, 
-                new Dictionary<Address, ProcedureSignature>(), 
                 new ImportResolver(project, program, null), null);
-			foreach (EntryPoint ep in program.EntryPoints)
+			foreach (EntryPoint ep in program.EntryPoints.Values)
 			{
 				scan.EnqueueEntryPoint(ep);
 			}

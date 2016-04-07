@@ -251,7 +251,7 @@ namespace Reko.Typing
         private Expression ReadNullTerminatedString(Constant c, DataType dt)
         {
             var rdr = program.CreateImageReader(platform.MakeAddressFromConstant(c));
-            return rdr.ReadCString(dt);
+            return rdr.ReadCString(dt, program.TextEncoding);
         }
 
         void PromoteToCString(Constant c, DataType charType)

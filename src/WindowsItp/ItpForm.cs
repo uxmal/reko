@@ -40,6 +40,8 @@ namespace Reko.WindowsItp
 {
     public partial class ItpForm : Form
     {
+        private ProcedurePropertiesDialog procDlg;
+
         public ItpForm()
         {
             InitializeComponent();
@@ -249,6 +251,16 @@ namespace Reko.WindowsItp
                 .Select(n => (byte)n)
                 .ToArray();
 #endif
+        }
+
+        private void procedureToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.procDlg == null)
+            {
+                this.procDlg = new ProcedurePropertiesDialog();
+                this.procDlg.FormClosed += delegate { this.procDlg = null; };
+            }
+            this.procDlg.Show();
         }
     }
 }

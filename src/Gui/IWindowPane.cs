@@ -27,6 +27,8 @@ namespace Reko.Gui
 {
     public interface IWindowPane
     {
+        IWindowFrame Frame { get; set; }
+
         Control CreateControl();
         void SetSite(IServiceProvider sp);
 

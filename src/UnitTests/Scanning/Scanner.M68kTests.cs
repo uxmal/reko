@@ -98,7 +98,6 @@ namespace Reko.UnitTests.Scanning
             var project = new Project { Programs = { program } };
             scanner = new Scanner(
                 program,
-                new Dictionary<Address, ProcedureSignature>(),
                 new ImportResolver(project, program, new FakeDecompilerEventListener()),
                 sc);
             scanner.EnqueueEntryPoint(new EntryPoint(addrBase, arch.CreateProcessorState()));

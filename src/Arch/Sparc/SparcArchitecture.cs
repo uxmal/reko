@@ -34,12 +34,16 @@ namespace Reko.Arch.Sparc
 {
     public class SparcArchitecture : ProcessorArchitecture
     {
+        private Dictionary<uint, FlagGroupStorage> flagGroups;
+
         public SparcArchitecture(PrimitiveType wordWidth)
         {
             this.WordWidth = wordWidth;
             this.PointerType = PrimitiveType.Create(Domain.Pointer, wordWidth.Size);
+            this.StackRegister = Registers.sp;
             this.FramePointerType = PointerType;
             this.InstructionBitSize = 32;
+            this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
         }
 
         #region IProcessorArchitecture Members
@@ -62,6 +66,16 @@ namespace Reko.Arch.Sparc
         public override ImageReader CreateImageReader(MemoryArea image, ulong offset)
         {
             return new BeImageReader(image, offset);
+        }
+
+        public override ImageWriter CreateImageWriter()
+        {
+            return new BeImageWriter();
+        }
+
+        public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
+        {
+            return new BeImageWriter(mem.Bytes, (uint)(addr.ToLinear() - mem.BaseAddress.ToLinear()));
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -91,12 +105,14 @@ namespace Reko.Arch.Sparc
 
         public override RegisterStorage GetRegister(string name)
         {
-            throw new NotImplementedException();
+            return Registers.GetRegister(name);
         }
 
         public override RegisterStorage[] GetRegisters()
         {
-            throw new NotImplementedException();
+            return
+                Registers.IntegerRegisters
+                .Concat(Registers.FloatRegisters).ToArray();
         }
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
@@ -106,17 +122,44 @@ namespace Reko.Arch.Sparc
 
         public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
         {
-            throw new NotImplementedException();
+            if (offset == 0)
+                return reg;
+            else
+                return null;
         }
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
-            throw new NotImplementedException();
+            FlagGroupStorage fl;
+            if (flagGroups.TryGetValue(grf, out fl))
+                return fl;
+
+            PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            fl = new FlagGroupStorage(Registers.psr, grf, GrfToString(grf), dt);
+            flagGroups.Add(grf, fl);
+            return fl;
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
         {
-            throw new NotImplementedException();
+            FlagM grf = 0;
+            for (int i = 0; i < name.Length; ++i)
+            {
+                switch (name[i])
+                {
+                case 'N': grf |= FlagM.NF; break;
+                case 'C': grf |= FlagM.CF; break;
+                case 'Z': grf |= FlagM.ZF; break;
+                case 'V': grf |= FlagM.VF; break;
+
+                case 'E': grf |= FlagM.EF; break;
+                case 'L': grf |= FlagM.LF; break;
+                case 'G': grf |= FlagM.GF; break;
+                case 'U': grf |= FlagM.UF; break;
+                default: return null;
+                }
+            }
+            return GetFlagGroup((uint)grf);
         }
 
         public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
@@ -156,5 +199,19 @@ namespace Reko.Arch.Sparc
             return Address.TryParse32(txtAddress, out addr);
         }
         #endregion
+    }
+
+    public class SparcArchitecture32 : SparcArchitecture
+    {
+        public SparcArchitecture32() : base(PrimitiveType.Word32)
+        {
+        }
+    }
+
+    public class SparcArchitecture64 : SparcArchitecture
+    {
+        public SparcArchitecture64() : base(PrimitiveType.Word64)
+        {
+        }
     }
 }

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Operators;
@@ -33,7 +34,7 @@ namespace Reko.Arch.Sparc
     {
         private void RewriteAlu(Operator op)
         {
-            var dst = RewriteOp(instrCur.Op3);
+            var dst = RewriteRegister(instrCur.Op3);
             var src1 = RewriteOp(instrCur.Op1);
             var src2 = RewriteOp(instrCur.Op2);
             emitter.Assign(dst, new BinaryExpression(op, PrimitiveType.Word32, src1, src2));
@@ -42,8 +43,13 @@ namespace Reko.Arch.Sparc
         private void RewriteAluCc(Operator op)
         {
             RewriteAlu(op);
-            var dst = RewriteOp(instrCur.Op3);
+            var dst = RewriteRegister(instrCur.Op3);
             EmitCc(dst);
+        }
+
+        private void RewriteDLoad(PrimitiveType size)
+        {
+            throw new NotImplementedException();
         }
 
         private void RewriteLoad(PrimitiveType size)
@@ -69,11 +75,61 @@ namespace Reko.Arch.Sparc
             EmitCc(dst);
         }
 
+        private void RewriteRestore()
+        {
+            var dst = RewriteOp(instrCur.Op3);
+            var src1 = RewriteOp(instrCur.Op1);
+            var src2 = (Constant)RewriteOp(instrCur.Op2);
+            var tmp = frame.CreateTemporary(dst.DataType);
+            emitter.Assign(tmp, emitter.IAdd(src1, -src2.ToInt32()));
+            Copy(Registers.i0, Registers.o0);
+            Copy(Registers.i1, Registers.o1);
+            Copy(Registers.i2, Registers.o2);
+            Copy(Registers.i3, Registers.o3);
+            Copy(Registers.i4, Registers.o4);
+            Copy(Registers.i5, Registers.o5);
+            Copy(Registers.i6, Registers.sp);
+            Copy(Registers.i7, Registers.o7);
+        }
+
+        private void RewriteSave()
+        {
+            var dst = RewriteOp(instrCur.Op3);
+            var src1 = RewriteOp(instrCur.Op1);
+            var src2 = (Constant) RewriteOp(instrCur.Op2);
+            var tmp = frame.CreateTemporary(dst.DataType);
+            emitter.Assign(tmp, emitter.ISub(src1, -src2.ToInt32()));
+            Copy(Registers.o0, Registers.i0);
+            Copy(Registers.o1, Registers.i1);
+            Copy(Registers.o2, Registers.i2);
+            Copy(Registers.o3, Registers.i3);
+            Copy(Registers.o4, Registers.i4);
+            Copy(Registers.o5, Registers.i5);
+            Copy(Registers.sp, Registers.i6);
+            Copy(Registers.o7, Registers.i7);
+        }
+
+        private void Copy(RegisterStorage src, RegisterStorage dst)
+        {
+            emitter.Assign(
+                frame.EnsureRegister(dst),
+                frame.EnsureRegister(src));
+        }
+
         private void RewriteSethi()
         {
-            var dst = RewriteOp(instrCur.Op2);
-            var src = (ImmediateOperand) instrCur.Op1;
-            emitter.Assign(dst, Constant.Word32(src.Value.ToUInt32() << 10));
+            var rDst = (RegisterOperand)instrCur.Op2;
+            if (rDst.Register == Registers.g0)
+            {
+                emitter.Nop();
+            }
+            else
+            {
+                //$TODO: check relocations for a symbol at instrCur.Address.
+                var dst = frame.EnsureRegister(rDst.Register);
+                var src = (ImmediateOperand)instrCur.Op1;
+                emitter.Assign(dst, Constant.Word32(src.Value.ToUInt32() << 10));
+            }
         }
 
         private void RewriteStore(PrimitiveType size)

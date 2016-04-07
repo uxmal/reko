@@ -43,6 +43,8 @@ namespace Reko.Gui.Windows
         public CommandID GetCommandID(int i)
         {
             var item = (CommandMenuItem) menuItems[i];
+            if (item.MenuCommand == null)
+                return null;
             return item.MenuCommand.CommandID;
         }
 

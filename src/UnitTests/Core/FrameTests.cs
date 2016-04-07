@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Core
         [SetUp]
         public void Setup()
         {
-            arch = new IntelArchitecture(ProcessorMode.Real);
+            arch = new X86ArchitectureReal();
         }
 		[Test]
 		public void RegisterTest()
@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void SequenceTest()
 		{
-			IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
+			IntelArchitecture arch = new X86ArchitectureReal();
 			Frame f = new Frame(PrimitiveType.Word16);
 			Identifier ax = f.EnsureRegister(Registers.ax);
 			Identifier dx = f.EnsureRegister(Registers.dx);
@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void FrGrfTest()
 		{
-			IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
+			IntelArchitecture arch = new X86ArchitectureReal();
 			Frame f = new Frame(PrimitiveType.Word16);
 			uint iSz = (uint) (FlagM.ZF|FlagM.SF);
 			Identifier grfSz = f.EnsureFlagGroup(Registers.eflags, iSz, arch.GrfToString(iSz), PrimitiveType.Byte);

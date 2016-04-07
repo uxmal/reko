@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Arch.Intel
 		[TestFixtureSetUp]
 		public void Setup()
 		{
-			arch = new IntelArchitecture(ProcessorMode.Real);
+			arch = new X86ArchitectureReal();
             var mem = new MemoryArea(Address.Ptr32(0x10000), new byte[4]);
 			var prog = new Program(
                 new ImageMap(
@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Arch.Intel
                         MemoryArea = mem
                     }),
                 arch,
-                null);
+                new DefaultPlatform(null, arch));
 			var procAddress = Address.Ptr32(0x10000000);
             instr = new X86Instruction(Opcode.nop, PrimitiveType.Word16, PrimitiveType.Word16)
             {

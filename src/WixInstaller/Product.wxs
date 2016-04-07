@@ -81,6 +81,8 @@
         <File Source="$(var.WindowsDecompiler.TargetPath)" Id="F_DecompilerExecutable"/>
         <File Source="$(var.WindowsDecompiler.TargetPath).config" Id="F_WindowsDecompilerConfig" />
         <File Source="$(var.WindowsDecompiler.ProjectDir)app.config" Name="decompile.exe.config" />
+        <File Source="$(var.WindowsDecompiler.ProjectDir)..\reko.config" Name="reko.config" />
+
         <File Source="$(var.CmdLine.TargetPath)" />
         
         <!-- Image loaders -->
@@ -130,6 +132,7 @@
         <File Source="$(var.Sparc.TargetPath)" />
         <File Source="$(var.Vax.TargetPath)" />
         <File Source="$(var.X86.TargetPath)" />
+        <File Source="$(var.X86.Design.TargetPath)" />
         <File Source="$(var.Z80.TargetPath)" />
 
         <!-- Assemblers -->

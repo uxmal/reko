@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Environments.Windows
         {
             mr = new MockRepository();
             sc = new ServiceContainer();
-            arch = new IntelArchitecture(ProcessorMode.Protected32);
+            arch = new X86ArchitectureFlat32();
             dcSvc = mr.StrictMock<IConfigurationService>();
         }
 
@@ -210,6 +210,20 @@ namespace Reko.UnitTests.Environments.Windows
             Assert.AreEqual("byte", (sig.ReturnValue.DataType as TypeReference).Referent.ToString());
             Assert.AreEqual("int16", (sig.Parameters[0].DataType as TypeReference).Referent.ToString());
             Assert.AreEqual("int32", (sig.Parameters[1].DataType as TypeReference).Referent.ToString());
+        }
+
+        [Test]
+        public void Win32_GetPrimitiveTypeNames_C()
+        {
+            When_Creating_Win32_Platform();
+
+            Assert.AreEqual("char",  win32.GetPrimitiveTypeName(PrimitiveType.Char, "C"));
+            Assert.AreEqual("short", win32.GetPrimitiveTypeName(PrimitiveType.Int16, "C"));
+            Assert.AreEqual("unsigned short",  win32.GetPrimitiveTypeName(PrimitiveType.UInt16, "C"));
+            Assert.AreEqual("int",  win32.GetPrimitiveTypeName(PrimitiveType.Int32, "C"));
+            Assert.AreEqual("unsigned int",  win32.GetPrimitiveTypeName(PrimitiveType.UInt32, "C"));
+            Assert.AreEqual("__int64",  win32.GetPrimitiveTypeName(PrimitiveType.Int64, "C"));
+            Assert.AreEqual("unsigned __int64",  win32.GetPrimitiveTypeName(PrimitiveType.UInt64, "C"));
         }
     }
 }

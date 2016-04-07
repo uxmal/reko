@@ -30,10 +30,10 @@ namespace Reko.ImageLoaders.Elf
 {
     public class RelSegmentRenderer : ImageSegmentRenderer
     {
-        private ElfImageLoader loader;
+        private ElfLoader32 loader;
         private Elf32_SHdr shdr;
 
-        public RelSegmentRenderer(ElfImageLoader loader, Elf32_SHdr shdr)
+        public RelSegmentRenderer(ElfLoader32 loader, Elf32_SHdr shdr)
         {
             this.loader = loader;
             this.shdr = shdr;
@@ -54,7 +54,7 @@ namespace Reko.ImageLoaders.Elf
                     return;
 
                 uint sym = info >> 8;
-                string symStr = loader.GetSymbol(symtab, (int)sym);
+                string symStr = loader.GetSymbolName(symtab, sym);
                 formatter.Write("{0:X8} {1,3} {2:X8} {3}", offset, info & 0xFF, sym, symStr);
                 formatter.WriteLine();
             }

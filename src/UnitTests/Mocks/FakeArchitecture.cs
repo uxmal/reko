@@ -120,6 +120,16 @@ namespace Reko.UnitTests.Mocks
             return new LeImageReader(image, offset);
         }
 
+        public ImageWriter CreateImageWriter()
+        {
+            return new LeImageWriter();
+        }
+
+        public ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
+        {
+            return new LeImageWriter(mem.Bytes, (uint)(addr.ToLinear() - mem.BaseAddress.ToLinear()));
+        }
+
         public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
         {
             throw new NotImplementedException();
@@ -289,6 +299,16 @@ namespace Reko.UnitTests.Mocks
         public void RemoveAliases(ISet<RegisterStorage> ids, RegisterStorage reg)
         {
             ids.Remove(reg);
+        }
+
+        public void LoadUserOptions(Dictionary<string, object> options)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Dictionary<string, object> SaveUserOptions()
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

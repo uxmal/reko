@@ -31,6 +31,7 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml.Serialization;
 
 namespace Reko.UnitTests.Core.Serialization
@@ -61,6 +62,7 @@ namespace Reko.UnitTests.Core.Serialization
         {
             this.arch = mr.StrictMock<IProcessorArchitecture>();
             this.arch.Stub(a => a.Name).Return("testArch");
+            this.arch.Stub(a => a.SaveUserOptions()).Return(null);
             this.cfgSvc.Stub(c => c.GetArchitecture("testArch")).Return(arch);
         }
 
@@ -69,12 +71,23 @@ namespace Reko.UnitTests.Core.Serialization
             Debug.Assert(arch != null, "Must call Given_Architecture first.");
             // A very simple dumb platform with no intelligent behaviour.
             this.platform = mr.Stub<IPlatform>();
+            var procser = mr.Stub<ProcedureSerializer>(arch, null, "");
             var oe = mr.Stub<OperatingEnvironment>();
             this.platform.Stub(p => p.Name).Return("testOS");
             this.platform.Stub(p => p.SaveUserOptions()).Return(null);
             this.platform.Stub(p => p.Architecture).Return(arch);
             this.platform.Stub(p => p.CreateMetadata()).Return(new TypeLibrary());
+            this.platform.Stub(p => p.DefaultCallingConvention).Return("");
+            this.platform.Stub(p => p.CreateProcedureSerializer(null, null))
+                .IgnoreArguments()
+                .Return(procser);
             this.cfgSvc.Stub(c => c.GetEnvironment("testOS")).Return(oe);
+            procser.Stub(p => p.Serialize(null)).IgnoreArguments()
+                .Return(new SerializedSignature
+                {
+                });
+            procser.Stub(p => p.Deserialize(null, null)).IgnoreArguments()
+                .Return(new ProcedureSignature());
             oe.Stub(e => e.Load(sc, arch)).Return(platform);
         }
 
@@ -189,6 +202,17 @@ namespace Reko.UnitTests.Core.Serialization
                                            CharType = new PrimitiveType_v1 { Domain = Domain.Character, ByteSize = 1 }
                                        }
                                   }
+                                }
+                            },
+                            Calls =
+                            {
+                                {
+                                    Address.SegPtr(0x1000, 0x0320),
+                                    new UserCallData
+                                    {
+                                        Address = Address.SegPtr(0x1000, 0x0320),
+                                        NoReturn = true,
+                                    }
                                 }
                             }
                         }
@@ -382,25 +406,41 @@ namespace Reko.UnitTests.Core.Serialization
                     {
                         User = new UserData_v4
                         {
-                            Heuristics = { new Heuristic_v3 { Name="HeuristicScanning" } }
+                            Heuristics = { new Heuristic_v3 { Name="HeuristicScanning" } },
+                            TextEncoding = "windows-1251",
+                            Calls =
+                            {
+                                new SerializedCall_v1
+                                {
+                                    InstructionAddress = "0041230",
+                                    NoReturn = true, 
+                                }
+                            }
                         }
                     }
                 }
             };
             Given_Architecture();
             Given_TestOS_Platform();
+            platform.Stub(p => p.TryParseAddress(
+                Arg<string>.Is.Equal("0041230"),
+                out Arg<Address>.Out(Address.Ptr32(0x0041230)).Dummy)).Return(true);
             var loader = mr.Stub<ILoader>();
             loader.Stub(l => l.LoadImageBytes(null, 0))
                 .IgnoreArguments()
                 .Return(new byte[10]);
             loader.Stub(l => l.LoadExecutable(null, null, null))
                 .IgnoreArguments()
-                .Return(new Program());
+                .Return(new Program
+                {
+                    Platform = this.platform,
+                });
             mr.ReplayAll();
 
             var ploader = new ProjectLoader(sc, loader);
             var project = ploader.LoadProject("c:\\tmp\\foo\\bar.proj", sProject);
             Assert.IsTrue(project.Programs[0].User.Heuristics.Contains("HeuristicScanning"));
+            Assert.AreEqual("windows-1251", project.Programs[0].User.TextEncoding.WebName);
         }
 
         [Test]
@@ -408,11 +448,13 @@ namespace Reko.UnitTests.Core.Serialization
         {
             var program = new Program();
             program.User.Heuristics.Add("shingle");
+            program.User.TextEncoding = Encoding.GetEncoding("windows-1251");
             
             var pSaver = new ProjectSaver(sc);
             var file = pSaver.VisitProgram("foo.proj", program);
             var ip = (DecompilerInput_v4)file;
             Assert.IsTrue(ip.User.Heuristics.Any(h => h.Name == "shingle"));
+            Assert.AreEqual("windows-1251", ip.User.TextEncoding);
         }
 
         private void When_SaveToTextWriter(Program program, TextWriter sw)

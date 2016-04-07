@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Gui.Forms;
 using Reko.Gui.Windows.Forms;
 using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace Reko.Gui.Windows
@@ -63,6 +64,15 @@ namespace Reko.Gui.Windows
             {
                 Architecture = arch,
             };
+        }
+
+        public ICallSiteDialog CreateCallSiteDialog(Program program, UserCallData ucd)
+        {
+            Debug.Assert(ucd != null && ucd.Address != null);
+            var dlg = new CallSiteDialog();
+            dlg.Address = ucd.Address;
+            dlg.NoReturn.Checked = ucd.NoReturn;
+            return dlg;
         }
 
         public IFindStringsDialog CreateFindStringDialog()
@@ -128,6 +138,11 @@ namespace Reko.Gui.Windows
             { 
                 return new WorkerDialog();
             }
+        }
+
+        public ITextEncodingDialog CreateTextEncodingDialog()
+        {
+            return new TextEncodingDialog();
         }
     }
 }

@@ -22,35 +22,55 @@ using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Configuration;
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Reko.UnitTests.Mocks
 {
     public class FakeDecompilerConfiguration : IConfigurationService
     {
-        private ArrayList imageLoaders = new ArrayList();
+        private List<LoaderConfiguration> imageLoaders = new List<LoaderConfiguration>();
 
-        public System.Collections.ICollection GetImageLoaders()
+        public ICollection<LoaderConfiguration> GetImageLoaders()
         {
             return imageLoaders;
         }
 
-        public System.Collections.ICollection GetArchitectures()
+        public ICollection<Architecture> GetArchitectures()
         {
             throw new NotImplementedException();
         }
 
-        public ICollection GetAssemblers()
+        public ICollection<AssemblerElement> GetAssemblers()
         {
             throw new NotImplementedException();
         }
 
-        public ICollection GetRawFiles()
+        public ICollection<RawFileElement> GetRawFiles()
         {
             throw new NotImplementedException();
 
         }
+        public ICollection<OperatingEnvironment> GetEnvironments()
+        {
+            throw new NotImplementedException();
+        }
+
+        public RawFileElement GetRawFile(string rawFileFormat)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICollection<SignatureFile> GetSignatureFiles()
+        {
+            return new SignatureFileElement[0];
+        }
+
+        public string GetInstallationRelativePath(string path)
+        {
+            throw new NotImplementedException();
+        }
+
         public IProcessorArchitecture GetArchitecture(string sArch)
         {
             throw new NotImplementedException();
@@ -61,34 +81,12 @@ namespace Reko.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
-        public System.Collections.ICollection GetEnvironments()
-        {
-            throw new NotImplementedException();
-        }
-
         public OperatingEnvironment GetEnvironment(string envName)
         {
             return null;
         }
 
-        public RawFileElement GetRawFile(string rawFileFormat)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ICollection GetSignatureFiles()
-        {
-            return new SignatureFileElement[0];
-        }
-
-
-        public string GetInstallationRelativePath(string path)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        System.Collections.Generic.IEnumerable<UiStyle> IConfigurationService.GetDefaultPreferences()
+        IEnumerable<UiStyle> IConfigurationService.GetDefaultPreferences()
         {
             throw new NotImplementedException();
         }

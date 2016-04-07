@@ -53,6 +53,7 @@ namespace Reko.Gui.Windows.Controls
         private IProcessorArchitecture arch;
         private MemoryArea mem;
         private ImageMap imageMap;
+        private Encoding encoding;
         private Address addrSelected;
         private Address addrAnchor;
         private Address addrMin;
@@ -80,6 +81,7 @@ namespace Reko.Gui.Windows.Controls
             vscroller.Scroll += vscroller_Scroll;
             wordSize = 1;
             cbRow = 16;
+            encoding = Encoding.ASCII;
         }
 
         public IServiceProvider Services { get; set; }
@@ -409,6 +411,17 @@ namespace Reko.Gui.Windows.Controls
             set { arch = value; Invalidate(); }
         }
 
+        [Browsable(false)]
+        public Encoding Encoding
+        {
+            get { return encoding; }
+            set {
+                encoding = (Encoding)value.Clone();
+                encoding.DecoderFallback = new DecoderReplacementFallback(".");
+                Invalidate();
+            }
+        }
+
         private Address RoundToNearestRow(Address addr)
         {
             ulong rows = addr.ToLinear() / cbRow;
@@ -589,7 +602,8 @@ namespace Reko.Gui.Windows.Controls
             /// <param name="rdr"></param>
             private Address PaintLine(Graphics g, Rectangle rc, ImageReader rdr, Point ptAddr, bool render)
             {
-                StringBuilder sbCode = new StringBuilder(" ");
+                StringBuilder sxbCode = new StringBuilder(" ");
+                var abCode = new List<byte>();
 
                 // Draw the address part.
 
@@ -643,13 +657,12 @@ namespace Reko.Gui.Windows.Controls
                         {
                             byte b = rdr.ReadByte();
                             s = string.Format("{0:X2}", b);
-                            char ch = (char)b;
-                            sbCode.Append(Char.IsControl(ch) ? '.' : ch);
+                            abCode.Add(b);
                         }
                         else
                         {
                             s = "  ";
-                            sbCode.Append(' ');
+                            abCode.Add(0x20);   //$BUG: encoding? What about Ebcdic?
                             rdr.Offset += 1;
                         }
 
@@ -693,9 +706,22 @@ namespace Reko.Gui.Windows.Controls
                 if (render)
                 {
                     g.FillRectangle(this.defaultTheme.Background, rc);
-                    g.DrawString(sbCode.ToString(), ctrl.Font, this.defaultTheme.Foreground, rc.X + cellSize.Width, rc.Top, StringFormat.GenericTypographic);
+                    sxbCode.Append(RenderCode(abCode.ToArray()));
+                    g.DrawString(sxbCode.ToString(), ctrl.Font, this.defaultTheme.Foreground, rc.X + cellSize.Width, rc.Top, StringFormat.GenericTypographic);
                 }
                 return null;
+            }
+
+            private string RenderCode(byte[] bytes)
+            {
+                var chars = this.ctrl.encoding.GetChars(bytes);
+                for (int i = 0; i < chars.Length; ++i)
+                {
+                    char ch = chars[i];
+                    if (char.IsControl(ch))
+                        chars[i] = '.';
+                }
+                return new string(chars);
             }
 
             private BrushTheme GetBrushTheme(ImageMapItem item, bool selected)

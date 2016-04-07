@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Machine;
 using Reko.Core.Types;
+using Reko.Gui.Forms;
 using Reko.Gui.Windows.Controls;
 using System;
 using System.ComponentModel.Design;
@@ -47,6 +48,7 @@ namespace Reko.Gui.Windows
         private NavigationInteractor<Address> navInteractor;
 
         public LowLevelView Control { get { return control; } }
+        public IWindowFrame Frame { get; set; }
 
         public Program Program
         {
@@ -149,6 +151,7 @@ namespace Reko.Gui.Windows
                     case CmdIds.ActionMarkType:
                     case CmdIds.ViewFindWhatPointsHere:
                     case CmdIds.ActionMarkProcedure:
+                    case CmdIds.TextEncodingChoose:
                         status.Status = MenuStatus.Visible | MenuStatus.Enabled; return true;
                     case CmdIds.EditCopy:
                     case CmdIds.ViewFindPattern:
@@ -174,6 +177,25 @@ namespace Reko.Gui.Windows
                     case CmdIds.EditAnnotation:
                         status.Status = instr != null ? MenuStatus.Visible | MenuStatus.Enabled : 0;
                         return true;
+                    case CmdIds.ActionCallTerminates:
+                        if (instr != null)
+                        {
+                            if ((instr.InstructionClass &  InstructionClass.Call) != 0)
+                            {
+                                status.Status = MenuStatus.Visible | MenuStatus.Enabled;
+                            }
+                            else
+                            {
+                                status.Status = MenuStatus.Visible;
+                            }
+                        }
+                        else
+                        {
+                            status.Status = 0;
+                        }
+                        return true;
+                    case CmdIds.TextEncodingChoose:
+                        return true;
                     }
                 }
             }
@@ -194,6 +216,7 @@ namespace Reko.Gui.Windows
                     case CmdIds.ActionMarkProcedure: MarkAndScanProcedure(); return true;
                     case CmdIds.ViewFindWhatPointsHere: return ViewWhatPointsHere();
                     case CmdIds.ViewFindPattern: return ViewFindPattern();
+                    case CmdIds.TextEncodingChoose: return ChooseTextEncoding();
                     }
                 }
             }
@@ -204,6 +227,8 @@ namespace Reko.Gui.Windows
                     switch (cmdId.ID)
                     {
                     case CmdIds.EditAnnotation: return EditDasmAnnotation();
+                    case CmdIds.TextEncodingChoose: return ChooseTextEncoding();
+                    case CmdIds.ActionCallTerminates: return EditCallSite();
                     }
                 }
             }
@@ -378,9 +403,58 @@ namespace Reko.Gui.Windows
             return true;
         }
 
+        public bool ChooseTextEncoding()
+        {
+            var dlgFactory = services.RequireService<IDialogFactory>();
+            var uiSvc = services.RequireService<IDecompilerShellUiService>();
+            using (ITextEncodingDialog dlg = dlgFactory.CreateTextEncodingDialog())
+            {
+                if (uiSvc.ShowModalDialog(dlg) == DialogResult.OK)
+                {
+                    var enc = dlg.GetSelectedTextEncoding();
+                    this.control.MemoryView.Encoding = enc;
+                    program.User.TextEncoding = enc;
+                    this.control.DisassemblyView.RecomputeLayout();
+                }
+            }
+            return true;
+        }
+
         public bool EditDasmAnnotation()
         {
             return true;
+        }
+
+        public bool EditCallSite()
+        {
+            var instr = (MachineInstruction)Control.DisassemblyView.SelectedObject;
+            var dlgFactory = services.RequireService<IDialogFactory>();
+            var uiSvc = services.RequireService<IDecompilerShellUiService>();
+            var ucd = GetUserCallDataFromAddress(instr.Address);
+            using (var dlg = dlgFactory.CreateCallSiteDialog(this.program, ucd))
+            {
+                if (DialogResult.OK == uiSvc.ShowModalDialog(dlg))
+                {
+                    ucd = dlg.GetUserCallData(null);
+                    SetUserCallData(ucd);
+                }
+            }
+            return true;
+        }
+
+        private UserCallData GetUserCallDataFromAddress(Address addr)
+        {
+            UserCallData ucd;
+            if (!program.User.Calls.TryGetValue(addr, out ucd))
+            {
+                ucd = new UserCallData { Address = addr };
+            }
+            return ucd;
+        }
+
+        private void SetUserCallData(UserCallData ucd)
+        {
+            program.User.Calls[ucd.Address] = ucd;
         }
 
         private string SelectionToHex(AddressRange addr)
@@ -405,8 +479,14 @@ namespace Reko.Gui.Windows
             this.ignoreAddressChange = true;
             this.Control.MemoryView.SelectedAddress = addr;
             this.Control.MemoryView.TopAddress = addr;
-            this.Control.DisassemblyView.SelectedObject = addr;
-            this.control.DisassemblyView.TopAddress = addr;
+
+            ImageSegment seg;
+            if (program.ImageMap.TryFindSegment(addr, out seg))
+            {
+                this.Control.DisassemblyView.Model  = new DisassemblyTextModel(program, seg);
+                this.Control.DisassemblyView.SelectedObject = addr;
+                this.control.DisassemblyView.TopAddress = addr;
+            }
             this.SelectionChanged.Fire(this, new SelectionChangedEventArgs(new AddressRange(addr, addr)));
             UserNavigateToAddress(Control.MemoryView.TopAddress, addr);
             this.ignoreAddressChange = false;

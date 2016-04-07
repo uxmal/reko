@@ -28,6 +28,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using Reko.Core.Services;
 using System.Diagnostics;
+using System.Text;
 
 namespace Reko.Core.Serialization
 {
@@ -211,7 +212,8 @@ namespace Reko.Core.Serialization
             var sUser = sInput.User;
             var address = LoadAddress(sUser, this.arch);
             Program program;
-            if (sUser.Processor != null &&
+            if (address != null && 
+                sUser.Processor != null &&
                 (sUser.PlatformOptions == null ||
                 sUser.PlatformOptions.Name != null))
             {
@@ -305,7 +307,7 @@ namespace Reko.Core.Serialization
                 {
                     program.Architecture = Services.RequireService<IConfigurationService>().GetArchitecture(program.User.Processor);
                 }
-                //program.Architecture.LoadUserOptions();       //$TODO
+                program.Architecture.LoadUserOptions(LoadWeaklyTypedOptions(sUser.Processor.Options));
             }
             if (sUser.Procedures != null)
             {
@@ -323,7 +325,7 @@ namespace Reko.Core.Serialization
             if (sUser.PlatformOptions != null)
             {
                 program.User.Environment = sUser.PlatformOptions.Name;
-                program.Platform.LoadUserOptions(LoadPlatformOptions(sUser.PlatformOptions.Options));
+                program.Platform.LoadUserOptions(LoadWeaklyTypedOptions(sUser.PlatformOptions.Options));
             }
             if (sUser.GlobalData != null)
             {
@@ -360,12 +362,56 @@ namespace Reko.Core.Serialization
                 int offset = (int)kv.Key.ToLinear();
                 program.GlobalFields.Fields.Add(offset, dt, kv.Value.Name);
             }
-
+          
             if (sUser.Heuristics != null)
             {
                 user.Heuristics.UnionWith(sUser.Heuristics.Select(h => h.Name));
             }
+            if (sUser.TextEncoding != null)
+            {
+                Encoding enc = null;
+                try
+                {
+                    enc = Encoding.GetEncoding(sUser.TextEncoding);
+                } catch
+                {
+                    var diagSvc = Services.RequireService<IDiagnosticsService>();
+                    diagSvc.Warn(string.Format("Unknown text encoding '{0}'. Defaulting to platform text encoding.", sUser.TextEncoding));
+                }
+                user.TextEncoding = enc;
+            }
             program.EnvironmentMetadata = project.LoadedMetadata;
+            if (sUser.Calls != null)
+            {
+                program.User.Calls = sUser.Calls
+                    .Select(c => LoadUserCall(c, program))
+                    .Where(c => c != null)
+                    .ToSortedList(k => k.Address, v => v);
+                
+            }
+        }
+
+        private UserCallData LoadUserCall(SerializedCall_v1 call, Program program)
+        {
+            Address addr;
+            if (!program.Platform.TryParseAddress(call.InstructionAddress, out addr))
+                return null;
+
+            var procSer = program.CreateProcedureSerializer();
+            ProcedureSignature sig = null;
+            if (call.Signature != null)
+            {
+                sig = procSer.Deserialize(
+                   call.Signature,
+                   program.Architecture.CreateFrame());
+            }
+            return new UserCallData
+            {
+                Address = addr,
+                Comment = call.Comment,
+                NoReturn = call.NoReturn,
+                Signature = sig,
+            };
         }
 
         public void LoadUserData(UserData_v3 sUser, Program program, UserData user)
@@ -398,7 +444,7 @@ namespace Reko.Core.Serialization
             if (sUser.PlatformOptions != null)
             {
                 program.User.Environment = sUser.PlatformOptions.Name;
-                program.Platform.LoadUserOptions(LoadPlatformOptions(sUser.PlatformOptions.Options));
+                program.Platform.LoadUserOptions(LoadWeaklyTypedOptions(sUser.PlatformOptions.Options));
             }
             if (sUser.GlobalData != null)
             {
@@ -477,7 +523,7 @@ namespace Reko.Core.Serialization
                 e => ReadItem(e));
         }
 
-        private Dictionary<string, object> LoadPlatformOptions(XmlElement[] options)
+        private Dictionary<string, object> LoadWeaklyTypedOptions(XmlElement[] options)
         {
             if (options == null)
                 return new Dictionary<string, object>();

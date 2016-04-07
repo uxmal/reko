@@ -37,7 +37,7 @@ namespace Reko.Core
 		public EntryPoint(
             Address addr,
             string name,
-            ProcessorState state, 
+            ProcessorState state = null, 
             SerializedSignature sig = null)
 		{
             if (addr == null)

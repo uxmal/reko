@@ -114,7 +114,7 @@ namespace Reko.ImageLoaders.MzExe
                     throw new BadImageFormatException();
                 var e = new ProgramResourceGroup
                 {
-                    Name = ReadResourceString(rvaName),
+                    Name = ReadResourceString(rvaName  & ~DIR_MASK),
                 };
                 e.Resources.AddRange(ReadLanguageDirectory(subRdr, resourceType, e.Name));
                 entries.Add(e);
@@ -192,7 +192,7 @@ namespace Reko.ImageLoaders.MzExe
         private string GetLocaleName(string langId)
         {
             int localeId;
-            if (Int32.TryParse(langId, out localeId))
+            if (Int32.TryParse(langId, out localeId) && localeId > 0)
             {
                 var ci = CultureInfo.GetCultureInfo(localeId);
                 return ci.EnglishName;

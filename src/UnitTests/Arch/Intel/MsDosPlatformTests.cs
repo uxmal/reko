@@ -28,6 +28,7 @@ using Reko.Core.Types;
 using Reko.Environments.Msdos;
 using Rhino.Mocks;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Arch.Intel
@@ -45,8 +46,8 @@ namespace Reko.UnitTests.Arch.Intel
             var cfgSvc = mr.Stub<IConfigurationService>();
             var tlSvc = mr.Stub<ITypeLibraryLoaderService>();
             var env = mr.Stub<OperatingEnvironment>();
-            env.Stub(e => e.TypeLibraries).Return(new TypeLibraryElementCollection());
-            env.CharacteristicsLibraries = new TypeLibraryElementCollection();
+            env.Stub(e => e.TypeLibraries).Return(new List<ITypeLibraryElement>());
+            env.Stub(e => e.CharacteristicsLibraries).Return(new List<ITypeLibraryElement>());
             cfgSvc.Stub(c => c.GetEnvironment("ms-dos")).Return(env);
             sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
@@ -58,7 +59,7 @@ namespace Reko.UnitTests.Arch.Intel
 		public void MspRealModeServices()
 		{
             mr.ReplayAll();
-			IntelArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
+			IntelArchitecture arch = new X86ArchitectureReal();
 			IPlatform platform = new MsdosPlatform(sc, arch);
 
 			var state = arch.CreateProcessorState();

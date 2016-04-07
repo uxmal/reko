@@ -77,13 +77,12 @@ namespace Reko.ImageLoaders.MachO
         {
             ldr = CreateParser();
             uint ncmds = ldr.ParseHeader(addrLoad);
-            ldr.ParseLoadCommands(ncmds);
+            ImageMap imageMap = ldr.ParseLoadCommands(ncmds, addrLoad);
             var image = new MemoryArea(addrLoad, RawImage);
-            return new Program {
-                Architecture = ldr.arch,
-                ImageMap = image.CreateImageMap(),
-                Platform = new DefaultPlatform(Services, ldr.arch)
-            };
+            return new Program(
+                imageMap,
+                ldr.arch,
+                new DefaultPlatform(Services, ldr.arch));
         }
 
         public class mach_header_32
@@ -175,8 +174,9 @@ namespace Reko.ImageLoaders.MachO
             const uint LC_DYSYMTAB = 0xb;
             const uint LC_SEGMENT_64 = 0x19;
 
-            public void ParseLoadCommands(uint ncmds)
+            public ImageMap ParseLoadCommands(uint ncmds, Address addrLoad)
             {
+                var imageMap = new ImageMap(addrLoad);
                 Debug.Print("Parsing load commands, {0} of them.", ncmds);
 
                 for (uint i = 0; i < ncmds; ++i)
@@ -201,7 +201,7 @@ namespace Reko.ImageLoaders.MachO
                     //    parseSegmentCommand<segment_command, section>();
                     //    break;
                     case LC_SEGMENT_64:
-                        parseSegmentCommand64();
+                        parseSegmentCommand64(imageMap);
                         break;
                     //case LC_SYMTAB:
                     //    parseSymtabCommand<Mach>();
@@ -210,6 +210,7 @@ namespace Reko.ImageLoaders.MachO
 
                     rdr.Offset = pos + cmdsize;
                 }
+                return imageMap;
             }
 
             private static string ReadSectionName(ImageReader rdr, int maxSize)
@@ -229,7 +230,7 @@ namespace Reko.ImageLoaders.MachO
                 return new String(chars, 0, i);
             }
 
-            void parseSegmentCommand64()
+            void parseSegmentCommand64(ImageMap imageMap)
             {
                 var abSegname = rdr.ReadBytes(16);
                 var cChars = Array.IndexOf<byte>(abSegname, 0);
@@ -260,7 +261,7 @@ namespace Reko.ImageLoaders.MachO
                 for (uint i = 0; i < nsects; ++i)
                 {
                     Debug.Print("Parsing section number {0}.", i);
-                    parseSection64(initprot);
+                    parseSection64(initprot, imageMap);
                 }
             }
 
@@ -276,7 +277,7 @@ namespace Reko.ImageLoaders.MachO
             const uint VM_PROT_WRITE = 0x02;
             const uint VM_PROT_EXECUTE = 0x04;
 
-            void parseSection64(uint protection)
+            void parseSection64(uint protection, ImageMap imageMap)
             {
                 var abSectname = rdr.ReadBytes(16);
                 var abSegname = rdr.ReadBytes(16);
@@ -322,11 +323,15 @@ namespace Reko.ImageLoaders.MachO
                 if ((protection & VM_PROT_EXECUTE) != 0)
                     am |= AccessMode.Execute;
 
+                var bytes = rdr.CreateNew(this.ldr.RawImage, offset);
+                var mem = new MemoryArea(
+                    Address.Ptr64(addr),
+                    bytes.ReadBytes((uint)size));
                 var imageSection = new ImageSegment(
                     string.Format("{0},{1}", segmentName, sectionName),
-                    null,
-                    (uint)size,
-                    am);        //imageSection.setData(!imageSection->isCode());
+                    mem,
+                    am);
+
                 //imageSection.setBss((section.flags & SECTION_TYPE) == S_ZEROFILL);
 
                 //if (!imageSection.isBss()) {
@@ -345,6 +350,7 @@ namespace Reko.ImageLoaders.MachO
 
                 //sections_.push_back(imageSection.get());
                 //image_->addSection(std::move(imageSection));
+                imageMap.AddSegment(imageSection);
             }
         }
 

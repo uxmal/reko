@@ -104,6 +104,7 @@ namespace Reko.Core.Serialization
             GlobalData = new List<GlobalDataItem_v2>();
             Heuristics = new List<Heuristic_v3>();
             Annotations = new List<Annotation_v3>();
+            Calls = new List<SerializedCall_v1>();
         }
 
         [XmlElement("address")]
@@ -132,6 +133,9 @@ namespace Reko.Core.Serialization
 
         [XmlElement("annotation")]
         public List<Annotation_v3> Annotations;
+
+        [XmlElement("textEncoding")]
+        public string TextEncoding;
     }
 
     public class PlatformOptions_v4
@@ -147,5 +151,8 @@ namespace Reko.Core.Serialization
     {
         [XmlAttribute("name")]
         public string Name;
+
+        [XmlAnyElement]
+        public XmlElement[] Options;
     }
 }

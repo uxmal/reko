@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.ComponentModel;
 using System.Xml.Serialization;
 
 namespace Reko.Core.Serialization
@@ -42,6 +43,10 @@ namespace Reko.Core.Serialization
 
         [XmlElement("comment")]
         public string Comment;
+
+        [XmlElement("noreturn")]
+        [DefaultValue(false)]
+        public bool NoReturn;
 
 		public SerializedCall_v1()
 		{

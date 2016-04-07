@@ -62,7 +62,7 @@ namespace Reko.Arch.X86
 
         public abstract IEnumerable<Address> CreateInstructionScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
 
-        public abstract X86Disassembler CreateDisassembler(ImageReader rdr);
+        public abstract X86Disassembler CreateDisassembler(ImageReader rdr, X86Options options);
 
         public abstract OperandRewriter CreateOperandRewriter(IntelArchitecture arch, Frame frame, IRewriterHost host);
 
@@ -130,9 +130,14 @@ namespace Reko.Arch.X86
             return new X86RealModePointerScanner(rdr, knownLinAddresses, flags).Select(li => map.MapLinearAddressToAddress(li));
         }
 
-        public override X86Disassembler CreateDisassembler(ImageReader rdr)
+        public override X86Disassembler CreateDisassembler(ImageReader rdr, X86Options options)
         {
-            return new X86Disassembler(this, rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
+            var dasm = new X86Disassembler(this, rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
+            if (options != null)
+            {
+                dasm.Emulate8087 = options.Emulate8087;
+            }
+            return dasm;
         }
 
         public override OperandRewriter CreateOperandRewriter(IntelArchitecture arch, Frame frame, IRewriterHost host)
@@ -168,7 +173,7 @@ namespace Reko.Arch.X86
         {
         }
 
-        public override X86Disassembler CreateDisassembler(ImageReader rdr)
+        public override X86Disassembler CreateDisassembler(ImageReader rdr, X86Options options)
         {
             return new X86Disassembler(this, rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
         }
@@ -237,7 +242,7 @@ namespace Reko.Arch.X86
             return new X86PointerScanner32(rdr, knownLinaddresses, flags).Select(li => map.MapLinearAddressToAddress(li));
         }
 
-        public override X86Disassembler CreateDisassembler(ImageReader rdr)
+        public override X86Disassembler CreateDisassembler(ImageReader rdr, X86Options options)
         {
             return new X86Disassembler(this, rdr, PrimitiveType.Word32, PrimitiveType.Word32, false);
         }
@@ -297,7 +302,7 @@ namespace Reko.Arch.X86
             return new X86PointerScanner64(rdr, knownLinAddresses, flags).Select(li => map.MapLinearAddressToAddress(li));
         }
 
-        public override X86Disassembler CreateDisassembler(ImageReader rdr)
+        public override X86Disassembler CreateDisassembler(ImageReader rdr, X86Options options)
         {
             return new X86Disassembler(this, rdr, PrimitiveType.Word32, PrimitiveType.Word64, true);
         }

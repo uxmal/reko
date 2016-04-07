@@ -123,15 +123,15 @@ namespace Reko.UnitTests.Analysis
 
         protected static Program RewriteMsdosAssembler(string relativePath, string configFile)
         {
-            var arch = new IntelArchitecture(ProcessorMode.Real);
+            var arch = new X86ArchitectureReal();
             var sc = new ServiceContainer();
             var cfgSvc = MockRepository.GenerateStub<IConfigurationService>();
             var env = MockRepository.GenerateStub<OperatingEnvironment>();
             var tlSvc = MockRepository.GenerateStub<ITypeLibraryLoaderService>();
             cfgSvc.Stub(c => c.GetEnvironment("ms-dos")).Return(env);
             cfgSvc.Replay();
-            env.Stub(e => e.TypeLibraries).Return(new TypeLibraryElementCollection());
-            env.CharacteristicsLibraries = new TypeLibraryElementCollection();
+            env.Stub(e => e.TypeLibraries).Return(new List<ITypeLibraryElement>());
+            env.Stub(e => e.CharacteristicsLibraries).Return(new List<ITypeLibraryElement>());
             env.Replay();
             tlSvc.Replay();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
@@ -209,7 +209,6 @@ namespace Reko.UnitTests.Analysis
                 : new ProjectLoader(sc, loader).LoadProject(FileUnitTester.MapTestPath(configFile));
             var scan = new Scanner(
                 program,
-                new Dictionary<Address, ProcedureSignature>(),
                 new ImportResolver(project, program, eventListener),
                 sc);
             

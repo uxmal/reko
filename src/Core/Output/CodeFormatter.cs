@@ -115,7 +115,6 @@ namespace Reko.Core.Output
                 Assoc.Right,    // Unary
                 Assoc.Left,     // member pointer deref
                 Assoc.Left,     // mul
-
             };
 		}
 

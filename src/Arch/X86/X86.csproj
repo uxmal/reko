@@ -100,6 +100,7 @@
   <ItemGroup>
     <Compile Include="X86Disassembler.0F3A.cs" />
     <Compile Include="X86Emulator.cs" />
+    <Compile Include="X86Options.cs" />
     <Compile Include="X86PointerScanner.cs" />
     <Compile Include="X86AddressOperand.cs" />
     <Compile Include="FstswChainMatcher.cs" />
@@ -121,7 +122,7 @@
     <Compile Include="X86Disassembler.OneByte.cs" />
     <Compile Include="X86Disassembler.TwoByte.cs" />
     <Compile Include="X86Disassembler.x87.cs" />
-    <Compile Include="X86lProcessorArchitecture.cs" />
+    <Compile Include="X86ProcessorArchitecture.cs" />
     <Compile Include="X86ProcedureSerializer.cs" />
     <Compile Include="X86Rewriter.Ext.cs" />
     <Compile Include="X86Rewriter.Fpu.cs" />

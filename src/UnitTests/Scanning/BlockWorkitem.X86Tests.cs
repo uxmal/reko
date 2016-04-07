@@ -63,8 +63,8 @@ namespace Reko.UnitTests.Scanning
             var env = mr.Stub<OperatingEnvironment>();
             var tlSvc = mr.Stub<ITypeLibraryLoaderService>();
             cfgSvc.Stub(c => c.GetEnvironment("ms-dos")).Return(env);
-            env.Stub(c => c.TypeLibraries).Return(new TypeLibraryElementCollection());
-            env.CharacteristicsLibraries = new TypeLibraryElementCollection();
+            env.Stub(c => c.TypeLibraries).Return(new List<ITypeLibraryElement>());
+            env.Stub(c => c.CharacteristicsLibraries).Return(new List<ITypeLibraryElement>());
             sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             sc.AddService<IConfigurationService>(cfgSvc);
@@ -73,13 +73,13 @@ namespace Reko.UnitTests.Scanning
 
         private void BuildTest32(Action<X86Assembler> m)
         {
-            var arch = new IntelArchitecture(ProcessorMode.Protected32);
+            var arch = new X86ArchitectureFlat32();
             BuildTest(arch, Address.Ptr32(0x10000), new FakePlatform(sc, arch), m);
         }
 
         private void BuildTest16(Action<X86Assembler> m)
         {
-            var arch = new IntelArchitecture(ProcessorMode.Real);
+            var arch = new X86ArchitectureReal();
             BuildTest(arch, Address.SegPtr(0x0C00, 0x000), new MsdosPlatform(sc, arch), m);
         }
 
@@ -163,7 +163,7 @@ namespace Reko.UnitTests.Scanning
 
         private void BuildTest(IntelArchitecture arch, Address addr, IPlatform platform, Action<X86Assembler> m)
         {
-            this.arch = new IntelArchitecture(ProcessorMode.Protected32);
+            this.arch = new X86ArchitectureFlat32();
             proc = new Procedure("test", arch.CreateFrame());
             block = proc.AddBlock("testblock");
             this.state = arch.CreateProcessorState();

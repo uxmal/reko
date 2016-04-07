@@ -93,6 +93,7 @@ namespace Reko.Gui.Design
                 {
                 case CmdIds.ViewGoToAddress:
                 case CmdIds.ViewFindWhatPointsHere:
+                case CmdIds.ViewMixedView:
                 case CmdIds.ActionEditSignature:
                 case CmdIds.EditRename:
                     status.Status = MenuStatus.Visible | MenuStatus.Enabled;
@@ -113,6 +114,10 @@ namespace Reko.Gui.Design
                 {
                 case CmdIds.ViewGoToAddress:
                     Services.RequireService<ILowLevelViewService>().ShowMemoryAtAddress(program, Address);
+                    return true;
+                case CmdIds.ViewMixedView:
+                    Services.RequireService<IMixedCodeDataViewService>().Show(
+                        new ProgramAddress(program, Address));
                     return true;
                 case CmdIds.ActionEditSignature:
                     EditSignature();
@@ -209,7 +214,7 @@ namespace Reko.Gui.Design
                 .ToArray();
         }
 
-        void tv_BeforeLabelEdit(object sender, System.Windows.Forms.NodeLabelEditEventArgs e)
+        void tv_BeforeLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
             throw new NotImplementedException();
         }

@@ -410,7 +410,7 @@ namespace Reko
                     var dt = global.Value.DataType.Accept(tlDeser);
                     scanner.EnqueueUserGlobalData(addr, dt);
                 }
-                foreach (EntryPoint ep in program.EntryPoints)
+                foreach (EntryPoint ep in program.EntryPoints.Values)
                 {
                     scanner.EnqueueEntryPoint(ep);
                 }
@@ -454,6 +454,7 @@ namespace Reko
             }
             finally
             {
+                eventListener.ShowStatus("Writing .asm and .dis files.");
                 host.WriteDisassembly(program, w => DumpAssembler(program, w));
                 host.WriteIntermediateCode(program, w => EmitProgram(program, null, w));
             }
@@ -461,10 +462,10 @@ namespace Reko
 
         public IDictionary<Address, ProcedureSignature> LoadCallSignatures(
             Program program, 
-            ICollection<SerializedCall_v1> serializedCalls)
+            ICollection<SerializedCall_v1> userCalls)
         {
             return
-                serializedCalls
+                userCalls
                 .Where(sc => sc != null && sc.Signature != null)
                 .Select(sc =>
                 {
@@ -487,7 +488,6 @@ namespace Reko
         {
             return new Scanner(
                 program, 
-                LoadCallSignatures(program, program.User.Calls.Values),
                 new ImportResolver(project, program, eventListener),
                 services);
         }

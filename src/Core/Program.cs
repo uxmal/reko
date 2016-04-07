@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Core
@@ -47,7 +48,7 @@ namespace Reko.Core
 
         public Program()
         {
-            this.EntryPoints = new List<EntryPoint>();
+            this.EntryPoints = new SortedList<Address, EntryPoint>();
             this.FunctionHints = new List<Address>();
             this.Procedures = new SortedList<Address, Procedure>();
             this.CallGraph = new CallGraph();
@@ -142,6 +143,16 @@ namespace Reko.Core
 
         public StructureType GlobalFields { get; private set; }
 
+        public Encoding TextEncoding
+        {
+            get
+            {
+                if (User.TextEncoding != null)
+                    return User.TextEncoding;
+                return Platform.DefaultTextEncoding;
+            }
+        }
+
         private void EnsureGlobals()
         {
             if (Architecture == null)
@@ -180,9 +191,9 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// The list of known entry points to the program.
+        /// The entry points to the program.
         /// </summary>
-        public List<EntryPoint> EntryPoints { get; private set; }
+        public SortedList<Address, EntryPoint> EntryPoints { get; private set; }
 
         /// <summary>
         /// List of function hints.
@@ -286,6 +297,14 @@ namespace Reko.Core
             return Architecture.CreateImageReader(segment.MemoryArea, addr);
         }
 
+        public ImageWriter CreateImageWriter(Address addr)
+        {
+            ImageSegment segment;
+            if (!ImageMap.TryFindSegment(addr, out segment))
+                throw new ArgumentException(string.Format("The address {0} is invalid.", addr));
+            return Architecture.CreateImageWriter(segment.MemoryArea, addr);
+        }
+
         public IEnumerable<MachineInstruction> CreateDisassembler(Address addr)
         {
             ImageSegment segment;
@@ -320,7 +339,7 @@ namespace Reko.Core
             this.User.Globals.Add(address, new Serialization.GlobalDataItem_v2
             {
                 Address = address.ToString(),
-                DataType = dataType.Accept(new  Serialization.DataTypeSerializer()),
+                DataType = dataType.Accept(new Serialization.DataTypeSerializer()),
             });
             return item;
         }
@@ -334,15 +353,22 @@ namespace Reko.Core
             {
                 // Zero-terminated string.
                 var rdr = this.CreateImageReader(addr);
-                while (rdr.IsValid)
-                {
-                    var ch = rdr.ReadChar(strDt.ElementType);
-                    if (ch == 0)
-                        break;
-                }
+                while (rdr.IsValid && !rdr.ReadNullCharTerminator(strDt.ElementType))
+                    ;
                 return (uint)(rdr.Address - addr);
             }
+            else
+            {
+                return (uint)(strDt.Size + strDt.Size);
+            }
             throw new NotImplementedException();
+        }
+
+        public Address GetProcedureAddress(Procedure proc)
+        {
+            return Procedures.Where(de => de.Value == proc)
+                .Select(de => de.Key)
+                .FirstOrDefault();
         }
 
         public void Reset()

@@ -36,42 +36,23 @@ namespace Reko.UnitTests.Gui.Windows
     {
         private ServiceContainer sc;
         private Program program;
+        private MockRepository mr;
 
         [SetUp]
         public void Setup()
         {
+            mr = new MockRepository();
             sc = new ServiceContainer();
-            this.program = new Program();
+            this.program = new Program
+            {
+                ImageMap = new ImageMap(Address.Ptr32(0x0040000), 0x400)
+            };
         }
 
-        [Test]
-        public void Cvp_CreateViewerIfNotVisible()
-        {
-            var m = new ProcedureBuilder();
-            m.Return();
-
-            var uiSvc = AddMockService<IDecompilerShellUiService>();
-            uiSvc.Expect(s => s.FindDocumentWindow(
-                    "codeViewerWindow" , m.Procedure))
-                .Return(null);
-            var windowFrame = MockRepository.GenerateStub<IWindowFrame>();
-            uiSvc.Expect(s => s.CreateDocumentWindow(
-                    Arg<string>.Is.Equal("codeViewerWindow"),
-                Arg<string>.Is.Equal(m.Procedure),
-                Arg<string>.Is.Equal(m.Procedure.Name),
-                Arg<IWindowPane>.Is.Anything))
-                .Return(windowFrame);
-            windowFrame.Expect(s => s.Show());
-
-            var codeViewerSvc = new CodeViewerServiceImpl(sc);
-            codeViewerSvc.DisplayProcedure(program, m.Procedure);
-
-            uiSvc.VerifyAllExpectations();
-        }
 
         private T AddMockService<T>() where T : class
         {
-            var svc = MockRepository.GenerateMock<T>();
+            var svc = mr.StrictMock<T>();
             sc.AddService(typeof (T), svc);
             return svc;
         }

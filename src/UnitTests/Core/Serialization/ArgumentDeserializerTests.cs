@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Core.Serialization
         {
             var sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
-            arch = new IntelArchitecture(ProcessorMode.Real);
+            arch = new X86ArchitectureReal();
             platform = new MsdosPlatform(sc, arch);
             sigser = new X86ProcedureSerializer(
                 arch,

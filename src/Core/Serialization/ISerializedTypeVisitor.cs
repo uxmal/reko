@@ -41,6 +41,5 @@ namespace Reko.Core.Serialization
         T VisitTemplate(SerializedTemplate serializedTemplate);
         T VisitVoidType(VoidType_v1 serializedVoidType);
         T VisitString(StringType_v2 str);
-
     }
 }

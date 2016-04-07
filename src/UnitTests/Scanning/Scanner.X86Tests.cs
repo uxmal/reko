@@ -46,13 +46,13 @@ namespace Reko.UnitTests.Scanning
         {
             sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
-            arch = new IntelArchitecture(ProcessorMode.Real);
+            arch = new X86ArchitectureReal();
             BuildTest(Address.SegPtr(0x0C00, 0x0000), new MsdosPlatform(sc, arch), asmProg);
         }
 
         private void BuildTest32(Action<X86Assembler> asmProg)
         {
-            arch = new IntelArchitecture(ProcessorMode.Protected32);
+            arch = new X86ArchitectureFlat32();
             BuildTest(Address.Ptr32(0x00100000), new FakePlatform(sc, null), asmProg);
         }
 
@@ -77,7 +77,6 @@ namespace Reko.UnitTests.Scanning
             var project = new Project { Programs = { program } };
             scanner = new Scanner(
                 program,
-                new Dictionary<Address, ProcedureSignature>(),
                 new ImportResolver(project, program, eventListener),
                 sc);
             scanner.EnqueueEntryPoint(new EntryPoint(addrBase, arch.CreateProcessorState()));

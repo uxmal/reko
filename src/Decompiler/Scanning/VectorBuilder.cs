@@ -95,6 +95,8 @@ namespace Reko.Scanning
         {
             int[] map = new int[limit];
             var addrTableStart = Address.Ptr32((uint)deref.TableOffset); //$BUG: breaks on 64- and 16-bit platforms.
+            if (!program.ImageMap.IsValidAddress(addrTableStart))
+                return new int[0];      //$DEBUG: look into this case.
             var rdr = program.CreateImageReader(addrTableStart);
             for (int i = 0; i < limit; ++i)
             {

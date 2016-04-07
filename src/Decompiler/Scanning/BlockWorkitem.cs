@@ -81,7 +81,6 @@ namespace Reko.Scanning
         /// calls to procedures that terminate the thread of executationresult in the 
         /// termination of processing.
         /// </summary>
-        /// 
         public override void Process()
         {
             state.ErrorListener = (message) => { scanner.Warn(ric.Address, message); };
@@ -233,31 +232,35 @@ namespace Reko.Scanning
             var blockElse = FallthroughBlock(ric.Address, proc, fallthruAddress);
             var branchingBlock = scanner.FindContainingBlock(ric.Address);
 
-            // If the else and then differ, we have a "real" branch. If they're the same
-            // it should just be a goto.
-
-            if (true && blockElse != blockThen)
-            {
-                Emit(branch, branchingBlock);
-            }
+            Emit(branch, branchingBlock);
 
             if ((b.Class & RtlClass.Delay) != 0 &&
                 ricDelayed.Instructions.Count > 0)
             {
                 // Introduce stubs for the delay slot, but only
                 // if the delay slot isn't empty.
-                var blockDsF = proc.AddBlock(branchingBlock.Name + "_ds_f");
-                var blockDsT = proc.AddBlock(branchingBlock.Name + "_ds_t");
-                blockDsF.IsSynthesized = true;
+
+                if ((b.Class & RtlClass.Annul) != 0)
+                {
+                    EnsureEdge(proc, branchingBlock, blockElse);
+                }
+                else
+                {
+                    Block blockDsF = null;
+                    blockDsF = proc.AddBlock(branchingBlock.Name + "_ds_f");
+                    blockDsF.IsSynthesized = true;
+                    blockCur = blockDsF;
+                    ProcessRtlCluster(ricDelayed);
+                    EnsureEdge(proc, blockDsF, blockElse);
+                    EnsureEdge(proc, branchingBlock, blockDsF);
+                }
+
+                Block blockDsT = proc.AddBlock(branchingBlock.Name + "_ds_t");
                 blockDsT.IsSynthesized = true;
-                blockCur = blockDsF;
-                ProcessRtlCluster(ricDelayed);
                 blockCur = blockDsT;
                 ProcessRtlCluster(ricDelayed);
-                EnsureEdge(proc, blockDsF, blockElse);
                 EnsureEdge(proc, blockDsT, blockThen);
                 branch.Target = blockDsT;
-                EnsureEdge(proc, branchingBlock, blockDsF);
                 EnsureEdge(proc, branchingBlock, blockDsT);
             }
             else
@@ -269,7 +272,7 @@ namespace Reko.Scanning
 
             // Now, switch to the fallthru block and keep rewriting.
             blockCur = blockElse;
-            return true;
+            return !blockElse.IsSynthesized;
         }
 
         /// <summary>
@@ -494,33 +497,50 @@ namespace Reko.Scanning
 
         private bool OnAfterCall(ProcedureSignature sigCallee, ProcedureCharacteristics characteristics)
         {
-            if (sigCallee == null)
-                return true;
-            if (sigCallee.StackDelta != 0)
+            UserCallData userCall = null;
+            if (program.User.Calls.TryGetUpperBound(ric.Address, out userCall))
             {
-                Expression newVal = new BinaryExpression(
-                        Operator.IAdd,
-                        stackReg.DataType,
-                        stackReg,
-                        Constant.Create(
-                            PrimitiveType.CreateWord(stackReg.DataType.Size),
-                            sigCallee.StackDelta));
-                newVal = newVal.Accept(eval);
-                SetValue(stackReg, newVal);
+                var linStart = ric.Address.ToLinear();
+                var linEnd = linStart + ric.Length;
+                var linUserCall = userCall.Address.ToLinear();
+                if (linStart > linUserCall || linUserCall >= linEnd)
+                    userCall = null;
             }
-            state.OnAfterCall(sigCallee);
-            if (characteristics != null && characteristics.Terminates)
+            if ((characteristics != null && characteristics.Terminates) ||
+                (userCall != null && userCall.NoReturn))
             {
                 scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
                 return false;
             }
-            int delta = sigCallee.StackDelta - sigCallee.ReturnAddressOnStack;
-            if (delta != 0)
+
+            if (sigCallee != null)
             {
-                var d = Constant.Create(stackReg.DataType, delta);
-                this.Emit(new Assignment(
-                    stackReg,
-                    new BinaryExpression(Operator.IAdd, stackReg.DataType, stackReg, d)));
+                if (sigCallee.StackDelta != 0)
+                {
+                    Expression newVal = new BinaryExpression(
+                            Operator.IAdd,
+                            stackReg.DataType,
+                            stackReg,
+                            Constant.Create(
+                                PrimitiveType.CreateWord(stackReg.DataType.Size),
+                                sigCallee.StackDelta));
+                    newVal = newVal.Accept(eval);
+                    SetValue(stackReg, newVal);
+                }
+            }
+            state.OnAfterCall(sigCallee);
+
+            // Adjust stack after call
+            if (sigCallee != null)
+            {
+                int delta = sigCallee.StackDelta - sigCallee.ReturnAddressOnStack;
+                if (delta != 0)
+                {
+                    var d = Constant.Create(stackReg.DataType, delta);
+                    this.Emit(new Assignment(
+                        stackReg,
+                        new BinaryExpression(Operator.IAdd, stackReg.DataType, stackReg, d)));
+                }
             }
             return true;
         }

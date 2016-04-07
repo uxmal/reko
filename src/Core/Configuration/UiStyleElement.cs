@@ -34,51 +34,23 @@ namespace Reko.Core.Configuration
         string BackColor { get; }
         string Cursor { get; }
         string Width { get; }
+        string TextAlign { get; }
     }
 
-    public class UiStyleElement : ConfigurationElement, UiStyle
+    public class UiStyleElement : UiStyle
     {
-        [ConfigurationProperty("Name", IsRequired = true)]
-        public string Name
-        {
-            get { return (string)this["Name"]; }
-            set { this["Name"] = value; }
-        }
+        public string Name { get; set; }
 
-        [ConfigurationProperty("Font", IsRequired = false)]
-        public string FontName
-        {
-            get { return (string)this["Font"]; }
-            set { this["Font"] = value; }
-        }
+        public string FontName { get; set; }
 
-        [ConfigurationProperty("ForeColor", IsRequired = false)]
-        public string ForeColor
-        {
-            get { return (string)this["ForeColor"]; }
-            set { this["ForeColor"] = value; }
-        }
+        public string ForeColor { get; set; }
 
-        [ConfigurationProperty("BackColor", IsRequired = false)]
-        public string BackColor
-        {
-            get { return (string)this["BackColor"]; }
-            set { this["BackColor"] = value; }
-        }
+        public string BackColor { get; set; }
 
-        [ConfigurationProperty("Cursor", IsRequired = false)]
-        public string Cursor
-        {
-            get { return (string)this["Cursor"]; }
-            set { this["Cursor"] = value; }
-        }
+        public string Cursor { get; set; }
 
+        public string Width { get; set; }
 
-        [ConfigurationProperty("Width", IsRequired = false)]
-        public string Width
-        {
-            get { return (string)this["Width"]; }
-            set { this["Width"] = value; }
-        }
+        public string TextAlign { get; set; }
     }
 }

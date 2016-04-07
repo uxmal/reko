@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void TestGrfWithOneBit()
 		{
-			IProcessorArchitecture arch = new IntelArchitecture(ProcessorMode.Real);
+			IProcessorArchitecture arch = new X86ArchitectureReal();
 			SignatureBuilder sb = new SignatureBuilder(null, arch);
             sb.AddFlagGroupReturnValue((uint) FlagM.CF, arch.CreateFrame());
 			ProcedureSignature sig = sb.BuildSignature();

@@ -34,11 +34,11 @@ namespace Reko.UnitTests.Core
         public void ReadCString()
         {
             var img = new LeImageReader(new byte[] {
-                0x12, 0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21, 0x00, 0x12 },
+                0x12, 0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x20, 0x77, 0x6f, 0x72,
+                0x6c, 0x64, 0x21, 0x00, 0x12 },
                 1);
-            StringConstant str = img.ReadCString(PrimitiveType.Char);
+            StringConstant str = img.ReadCString(PrimitiveType.Char, Encoding.UTF8);
             Assert.AreEqual("Hello world!", str.ToString());
-
         }
 
         [Test]
@@ -48,9 +48,11 @@ namespace Reko.UnitTests.Core
                 new LeImageReader(
                     new MemoryArea(
                         Address.Ptr32(0x10000),
-                        new byte[] { 0x12, 0x34, 0x03, 0x00, 0x00, 0x00, 0x46, 0x00, 0x6f, 0x00, 0x6f, 0x00, 0x02, 0x02}),
+                        new byte[] {
+                            0x12, 0x34, 0x03, 0x00, 0x00, 0x00, 0x46, 0x00,
+                            0x6f, 0x00, 0x6f, 0x00, 0x02, 0x02}),
                     2);
-            StringConstant str = img.ReadLengthPrefixedString(PrimitiveType.Int32, PrimitiveType.WChar);
+            StringConstant str = img.ReadLengthPrefixedString(PrimitiveType.Int32, PrimitiveType.WChar, Encoding.Unicode);
             Assert.AreEqual("Foo", str.ToString());
         }
 

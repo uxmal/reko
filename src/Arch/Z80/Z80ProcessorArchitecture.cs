@@ -64,6 +64,16 @@ namespace Reko.Arch.Z80
             return new LeImageReader(image, offset);
         }
 
+        public override ImageWriter CreateImageWriter()
+        {
+            return new LeImageWriter();
+        }
+
+        public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
+        {
+            return new LeImageWriter(mem.Bytes, (uint)(addr.ToLinear() - mem.BaseAddress.ToLinear()));
+        }
+
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             throw new NotImplementedException();

@@ -57,9 +57,9 @@ namespace Reko.UnitTests.Scanning
 
         public class TestScanner : Scanner
         {
-            public TestScanner(Program prog, IDictionary<Address, ProcedureSignature> callSigs, IImportResolver importResolver,
+            public TestScanner(Program prog, IImportResolver importResolver,
                 IServiceProvider services)
-                : base(prog, callSigs, importResolver, services)
+                : base(prog, importResolver, services)
             {
             }
 
@@ -142,7 +142,6 @@ namespace Reko.UnitTests.Scanning
 
             var sc = new Scanner(
                 this.program,
-                null,
                 new ImportResolver(project, program, eventListener),
                 this.sc);
             sc.EnqueueEntryPoint(
@@ -208,7 +207,6 @@ namespace Reko.UnitTests.Scanning
             };
             return new TestScanner(
                 program,
-                callSigs,
                 importResolver,
                 sc);
         }
@@ -218,7 +216,6 @@ namespace Reko.UnitTests.Scanning
             this.program = prog;
             return new TestScanner(
                 prog, 
-                callSigs, 
                 importResolver,
                 sc);
         }
@@ -232,7 +229,7 @@ namespace Reko.UnitTests.Scanning
             prog.ImageMap = new ImageMap(
                 mem.BaseAddress,
                 new ImageSegment("progseg", this.mem, AccessMode.ReadExecute));
-            return new TestScanner(prog, callSigs, importResolver, sc);
+            return new TestScanner(prog, importResolver, sc);
         }
 
         [Test]
@@ -322,7 +319,6 @@ namespace Reko.UnitTests.Scanning
 
             var scan = new Scanner(
                 program, 
-                new Dictionary<Address, ProcedureSignature>(), 
                 new ImportResolver(project, program, eventListener),
                 sc);
             var ep = new EntryPoint(addr, program.Architecture.CreateProcessorState());

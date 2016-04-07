@@ -53,7 +53,7 @@ namespace Reko.Core.Output
         {
             this.formatter = formatter;
             this.codeFormatter = new CodeFormatter(formatter);
-            this.tw = new TypeReferenceFormatter(formatter, true);
+            this.tw = new TypeReferenceFormatter(formatter);
             var eqGlobalStruct = program.Globals.TypeVariable.Class;
             this.globals = eqGlobalStruct.ResolveAs<StructureType>();
             if (this.globals == null)
@@ -88,6 +88,34 @@ namespace Reko.Core.Output
                 var dc = services.RequireService<DecompilerEventListener>();
                 dc.Error(
                     dc.CreateAddressNavigator(program, addr),
+                    ex,
+                    string.Format("Failed to write global variable {0}.", name));
+            }
+            formatter.Terminate(";");
+        }
+
+        public void WriteGlobalVariable(Address address, DataType dataType, string name, Formatter formatter)
+        {
+            this.formatter = formatter;
+            this.codeFormatter = new CodeFormatter(formatter);
+            this.tw = new TypeReferenceFormatter(formatter);
+            this.globals = new StructureType();
+            this.queue = new Queue<StructureField>(globals.Fields);
+            try
+            {
+                tw.WriteDeclaration(dataType, name);
+                if (program.ImageMap.IsValidAddress(address))
+                {
+                    formatter.Write(" = ");
+                    this.rdr = program.CreateImageReader(address);
+                    dataType.Accept(this);
+                }
+            }
+            catch (Exception ex)
+            {
+                var dc = services.RequireService<DecompilerEventListener>();
+                dc.Error(
+                    dc.CreateAddressNavigator(program, address),
                     ex,
                     string.Format("Failed to write global variable {0}.", name));
             }
@@ -217,7 +245,7 @@ namespace Reko.Core.Output
         public CodeFormatter VisitString(StringType str)
         {
             var offset = rdr.Offset;
-            var s = rdr.ReadCString(str.ElementType, Encoding.UTF8);    //$BUG: should get this from platform / user-setting.
+            var s = rdr.ReadCString(str.ElementType, program.TextEncoding);
             var fmt = codeFormatter.InnerFormatter;
             fmt.Write('"');
             foreach (var ch in s.ToString())

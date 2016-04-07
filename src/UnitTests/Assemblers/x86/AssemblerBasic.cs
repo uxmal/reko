@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Assemblers.x86
 		{
             this.sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
-            arch = new IntelArchitecture(ProcessorMode.Real);
+            arch = new X86ArchitectureReal();
             asm = new X86TextAssembler(sc, arch);
         }
 
@@ -136,7 +136,7 @@ hello	endp
             var segment = program.ImageMap.Segments.Values.First();
 			using (FileUnitTester fut = new FileUnitTester("Intel/AsFragment.txt"))
 			{
-				var arch = new IntelArchitecture(ProcessorMode.Real);
+				var arch = new X86ArchitectureReal();
 				var d = new Dumper(arch);
 				d.DumpData(program.ImageMap, segment.Address, segment.ContentSize, fut.TextWriter);
 				fut.AssertFilesEqual();

@@ -28,7 +28,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Core.CLanguage.UnitTests
+namespace Reko.UnitTests.Core.CLanguage
 {
     [TestFixture]
     public class CParserTests
@@ -1135,6 +1135,48 @@ MemoryBarrier (
             var decl = parser.Parse_ExternalDecl();
             var sExp = "(decl Char ((init-decl (ptr (func get ((Int n)))))))";
             Assert.AreEqual(sExp, decl.ToString());
+        }
+
+        [Test]
+        public void CParser_Typedef_using_undefinedType()
+        {
+            // Even though 'a' is not defined, it should still be parseable. 
+            // We make the assumption in a typedef that if it is followed by 
+            // an id, the id is a reference to a type.
+            Lex("typedef a b;");
+            var decl = parser.Parse_ExternalDecl();
+            var sExp = "(decl Typedef a ((init-decl b)))";
+            Assert.AreEqual(sExp, decl.ToString());
+        }
+
+        [Test]
+        public void CParser_IncorrectStatement1()
+        {
+            Lex("int a()b;");
+            try
+            {
+                parser.Parse_ExternalDecl();
+            }
+            catch (CParserException)
+            {
+                return;
+            }
+            Assert.Fail("Should have failed to parse");
+        }
+
+        [Test]
+        public void CParser_IncorrectStatement2()
+        {
+            Lex("int a);");
+            try
+            {
+                parser.Parse_ExternalDecl();
+            }
+            catch (CParserException)
+            {
+                return;
+            }
+            Assert.Fail("Should have failed to parse");
         }
     }
 }
