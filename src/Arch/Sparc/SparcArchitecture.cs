@@ -40,6 +40,7 @@ namespace Reko.Arch.Sparc
         {
             this.WordWidth = wordWidth;
             this.PointerType = PrimitiveType.Create(Domain.Pointer, wordWidth.Size);
+            this.StackRegister = Registers.sp;
             this.FramePointerType = PointerType;
             this.InstructionBitSize = 32;
             this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
