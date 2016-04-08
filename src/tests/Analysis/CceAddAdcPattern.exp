@@ -1,53 +1,53 @@
 r1:r1
     def:  def r1
-    uses: r1_2 = r1 + r2
-r2:r2
-    def:  def r2
-    uses: r1_2 = r1 + r2
-r1_2: orig: r1
-    def:  r1_2 = r1 + r2
-    uses: r3_r1_4 = SEQ(r3, r1_2) (alias)
+    uses: r3_r1_3 = SEQ(r3, r1) (alias)
+SZC_1: orig: SZC
 r3:r3
     def:  def r3
-    uses: r3_r1_4 = SEQ(r3, r1_2) (alias)
-r3_r1_4: orig: r3_r1
-    def:  r3_r1_4 = SEQ(r3, r1_2) (alias)
-    uses: r3_r1_7 = r3_r1_4 + r4_r2
-SZC_5: orig: SZC
-r4_r2:Sequence r4:r2
-    def:  def r4_r2
-    uses: r3_r1_7 = r3_r1_4 + r4_r2
+    uses: r3_r1_3 = SEQ(r3, r1) (alias)
+r3_r1_3: orig: r3_r1
+    def:  r3_r1_3 = SEQ(r3, r1) (alias)
+    uses: r3_r1_7 = r3_r1_3 + r4_r2_6
+r4:r4
+    def:  def r4
+    uses: r4_r2_6 = SEQ(r4, r2) (alias)
+r2:r2
+    def:  def r2
+    uses: r4_r2_6 = SEQ(r4, r2) (alias)
+r4_r2_6: orig: r4_r2
+    def:  r4_r2_6 = SEQ(r4, r2) (alias)
+    uses: r3_r1_7 = r3_r1_3 + r4_r2_6
 r3_r1_7: orig: r3_r1
-    def:  r3_r1_7 = r3_r1_4 + r4_r2
+    def:  r3_r1_7 = r3_r1_3 + r4_r2_6
     uses: r1_8 = (word32) r3_r1_7 (alias)
-          r3_9 = SLICE(r3_r1_7, word32, 32) (alias)
+          r3_10 = SLICE(r3_r1_7, word32, 32) (alias)
 r1_8: orig: r1
     def:  r1_8 = (word32) r3_r1_7 (alias)
-    uses: Mem10[0x00444400:word32] = r1_8
-r3_9: orig: r3
-    def:  r3_9 = SLICE(r3_r1_7, word32, 32) (alias)
-    uses: Mem11[0x00444404:word32] = r3_9
-Mem10: orig: Mem0
-    def:  Mem10[0x00444400:word32] = r1_8
+    uses: Mem9[0x00444400:word32] = r1_8
+Mem9: orig: Mem0
+    def:  Mem9[0x00444400:word32] = r1_8
+r3_10: orig: r3
+    def:  r3_10 = SLICE(r3_r1_7, word32, 32) (alias)
+    uses: Mem11[0x00444404:word32] = r3_10
 Mem11: orig: Mem0
-    def:  Mem11[0x00444404:word32] = r3_9
+    def:  Mem11[0x00444404:word32] = r3_10
 // main
 // Return size: 0
 void main(word32 r1, word32 r2, word32 r3, word32 r4)
 main_entry:
 	def r1
-	def r2
 	def r3
-	def r4_r2
+	r3_r1_3 = SEQ(r3, r1) (alias)
+	def r4
+	def r2
+	r4_r2_6 = SEQ(r4, r2) (alias)
 	// succ:  l1
 l1:
-	r1_2 = r1 + r2
-	r3_r1_4 = SEQ(r3, r1_2) (alias)
-	r3_r1_7 = r3_r1_4 + r4_r2
+	r3_r1_7 = r3_r1_3 + r4_r2_6
 	r1_8 = (word32) r3_r1_7 (alias)
-	r3_9 = SLICE(r3_r1_7, word32, 32) (alias)
-	Mem10[0x00444400:word32] = r1_8
-	Mem11[0x00444404:word32] = r3_9
+	r3_10 = SLICE(r3_r1_7, word32, 32) (alias)
+	Mem9[0x00444400:word32] = r1_8
+	Mem11[0x00444404:word32] = r3_10
 	return
 	// succ:  main_exit
 main_exit:

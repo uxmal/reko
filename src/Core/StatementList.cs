@@ -33,9 +33,11 @@ namespace Reko.Core
 			this.block = block;
 		}
 
-        public void Add(ulong linearAddress, Instruction instr)
+        public Statement Add(ulong linearAddress, Instruction instr)
         {
-            Add(new Statement(linearAddress, instr, block));
+            var stm = new Statement(linearAddress, instr, block);
+            Add(stm);
+            return stm;
         }
 
         public void Insert(int position, ulong linearAddress, Instruction instr)

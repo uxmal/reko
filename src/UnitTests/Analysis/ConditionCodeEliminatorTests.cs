@@ -380,10 +380,10 @@ done:
             var p = new ProgramBuilder(new FakeArchitecture());
             p.Add("main", (m) =>
             {
-                var r1 = MockReg(m, 1);
-                var r2 = MockReg(m, 2);
-                var r3 = MockReg(m, 3);
-                var r4 = MockReg(m, 4);
+                var r1 = m.Reg32("r1", 1);
+                var r2 = m.Reg32("r2", 2);
+                var r3 = m.Reg32("r3", 3);
+                var r4 = m.Reg32("r4", 4);
                 var flags = new FlagRegister("flags", 0, PrimitiveType.Word32);
                 var SCZ = m.Frame.EnsureFlagGroup(flags, 0x7, "SZC", PrimitiveType.Byte);
                 var C = m.Frame.EnsureFlagGroup(flags, 0x4, "C", PrimitiveType.Byte);

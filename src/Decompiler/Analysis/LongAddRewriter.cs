@@ -146,6 +146,7 @@ namespace Reko.Analysis
 
         public void ReplaceLongAdditions(Block block)
         {
+            var listIstmsToKill = new List<int>();
             for (int i = 0; i < block.Statements.Count; ++i)
             {
                 var loInstr = MatchAddSub(block.Statements[i].Instruction);
@@ -162,6 +163,7 @@ namespace Reko.Analysis
                 var longInstr = CreateLongInstruction(loInstr, hiInstr);
                 if (longInstr != null)
                 {
+                    listIstmsToKill.Add(loInstr.StatementIndex);
                     block.Statements[hiInstr.StatementIndex].Instruction = longInstr;
                     cond = FindConditionOf(block.Statements, hiInstr.StatementIndex, hiInstr.Dst);
                     if (cond != null)
@@ -172,6 +174,10 @@ namespace Reko.Analysis
                         i = cond.StatementIndex;
                     }
                 }
+            }
+            foreach (var i in Enumerable.Reverse(listIstmsToKill))
+            {
+                block.Statements.RemoveAt(i);
             }
         }
 

@@ -1505,7 +1505,6 @@ namespace Reko.Analysis
             /// <returns></returns>
             public SsaIdentifier ReadVariable(SsaBlockState bs, bool aliasProbe)
             {
-                if (id.Name == "bx") id.ToString(); //$DEBUG
                 var sid = ReadBlockLocalVariable(bs, aliasProbe);
                 if (sid != null)
                     return sid;
@@ -1670,62 +1669,62 @@ namespace Reko.Analysis
                         phi.Identifier.DataType,
                         sids.Select(s => s.Identifier).ToArray());
                 return TryRemoveTrivial(phi, aliasProbe);
-        }
+            }
 
-        /// <summary>
-        /// If the phi function is trivial, remove it.
-        /// </summary>
-        /// <param name="phi"></param>
-        /// <returns></returns>
-        private SsaIdentifier TryRemoveTrivial(SsaIdentifier phi, bool aliasProbe)
-        {
+            /// <summary>
+            /// If the phi function is trivial, remove it.
+            /// </summary>
+            /// <param name="phi"></param>
+            /// <returns></returns>
+            private SsaIdentifier TryRemoveTrivial(SsaIdentifier phi, bool aliasProbe)
+            {
                 bool firstTime = true;
-            Identifier same = null;
+                Identifier same = null;
                 var phiFunc = ((PhiAssignment)phi.DefStatement.Instruction).Src;
                 foreach (Identifier op in phiFunc.Arguments)
-            {
-                    if (!firstTime && (op != same && op != phi.Identifier))
                 {
+                    if (!firstTime && (op != same && op != phi.Identifier))
+                    {
                         // A real phi; use all its arguments.
                         UsePhiArguments(phi, phiFunc);
                         return phi;
-                }
+                    }
                     firstTime = false;
                     if (op != phi.Identifier)
-                {
+                    {
                         same = op;
+                    }
                 }
-            }
-            SsaIdentifier sid;
-            if (same == null)
-            {
-                // Undef'ined or unreachable parameter; assume it's a def.
+                SsaIdentifier sid;
+                if (same == null)
+                {
+                    // Undef'ined or unreachable parameter; assume it's a def.
                     sid = NewDefInstruction(phi.OriginalIdentifier, phi.DefStatement.Block);
-            }
-            else
-            {
+                }
+                else
+                {
                     sid = ssaIds[same];
-            }
+                }
 
-            // Remember all users except for phi
-            var users = phi.Uses.Where(u => u != phi.DefStatement).ToList();
+                // Remember all users except for phi
+                var users = phi.Uses.Where(u => u != phi.DefStatement).ToList();
 
-            // Reroute all uses of phi to use same. Remove phi.
+                // Reroute all uses of phi to use same. Remove phi.
                 ReplaceBy(phi, same);
 
-            // Remove all phi uses which may have become trivial now.
-            foreach (var use in users)
-            {
-                var phiAss = use.Instruction as PhiAssignment;
-                if (phiAss != null)
+                // Remove all phi uses which may have become trivial now.
+                foreach (var use in users)
                 {
+                    var phiAss = use.Instruction as PhiAssignment;
+                    if (phiAss != null)
+                    {
                         TryRemoveTrivial(ssaIds[phiAss.Dst], aliasProbe);
+                    }
                 }
-            }
                 phi.DefStatement.Block.Statements.Remove(phi.DefStatement);
                 ssaIds.Remove(phi);
-            return sid;
-        }
+                return sid;
+            }
 
             private void UsePhiArguments(SsaIdentifier phi, PhiFunction phiFunc)
             {
@@ -1736,12 +1735,12 @@ namespace Reko.Analysis
             }
 
             private SsaIdentifier NewDefInstruction(Identifier id, Block b)
-        {
+            {
                 var sid = ssaIds.Add(id, null, null, false);
-            sid.DefStatement = new Statement(0, new DefInstruction(id), b);
-            b.Statements.Add(sid.DefStatement);
-            return sid;
-        }
+                sid.DefStatement = new Statement(0, new DefInstruction(id), b);
+                b.Statements.Add(sid.DefStatement);
+                return sid;
+            }
 
             private void ReplaceBy(SsaIdentifier sidOld, Identifier idNew)
             {
@@ -1932,6 +1931,7 @@ namespace Reko.Analysis
                 if (head.DefStatement.Instruction.As(out assHead) &&
                     tail.DefStatement.Instruction.As(out assTail))
                 {
+                    // 
                     Slice eHead;
                     Cast eTail;
                     if (assHead.Src.As(out eHead) && assTail.Src.As(out eTail))
@@ -1939,6 +1939,22 @@ namespace Reko.Analysis
                         return ssaIds[(Identifier)eHead.Expression];
                     }
                 }
+                DefInstruction defHead, defTail;
+                if (head.DefStatement.Instruction.As(out defHead) &&
+                    tail.DefStatement.Instruction.As(out defTail))
+                {
+                    // All subregisters came in from caller, so create an
+                    // alias statement.
+                    var seq = new MkSequence(this.id.DataType, head.Identifier, tail.Identifier);
+                    var ass = new AliasAssignment(id, seq);
+                    var stm = head.DefStatement.Block.Statements.Add(0, ass);
+                    var sidTo = ssaIds.Add(ass.Dst, stm, ass.Src, false);
+                    ass.Dst = sidTo.Identifier;
+                    head.Uses.Add(stm);
+                    tail.Uses.Add(stm);
+                    return sidTo;
+                }
+
                 throw new NotImplementedException();
             }
 
