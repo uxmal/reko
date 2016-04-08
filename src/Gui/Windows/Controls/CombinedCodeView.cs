@@ -51,10 +51,9 @@ namespace Reko.Gui.Windows.Controls
 
         public Address CurrentAddress
         {
-            get { return addrCurrent; }
-            set { addrCurrent = value; CurrentAddressChanged.Fire(this); }
+            get { return MixedCodeDataView.TopAddress; }
+            set { MixedCodeDataView.TopAddress = value; CurrentAddressChanged.Fire(this); }
         }
         public event EventHandler CurrentAddressChanged;
-        private Address addrCurrent;
     }
 }
