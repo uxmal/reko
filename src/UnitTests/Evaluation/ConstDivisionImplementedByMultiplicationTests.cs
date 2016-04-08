@@ -46,6 +46,8 @@ namespace Reko.UnitTests.Evaluation
             var ass = m.Assign(r2_r1, m.SMul(r1, c));
             if (shift != 0)
                 m.Assign(r2, m.Sar(r2, shift));
+            m.Store(m.Word32(0x0402000), r2);       // Force use of r2
+            m.Return();
 
             var proc = m.Procedure;
             var flow = new DataFlow2();
@@ -57,7 +59,7 @@ namespace Reko.UnitTests.Evaluation
             var ctx = new SsaEvaluationContext(m.Architecture, sst.SsaState.Identifiers);
             var rule = new ConstDivisionImplementedByMultiplication(sst.SsaState);
             ctx.Statement = proc.EntryBlock.Succ[0].Statements[0];
-            Assert.IsTrue(rule.Match(ass));
+            Assert.IsTrue(rule.Match(ctx.Statement.Instruction));
             ass = rule.TransformInstruction();
             Assert.AreEqual(sExp, ass.Src.ToString());
         }

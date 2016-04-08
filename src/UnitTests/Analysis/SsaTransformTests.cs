@@ -2006,7 +2006,39 @@ ProcedureBuilder_exit:
         {
             var sExp =
             #region Expected
-                @"@@@";
+@"r1:r1
+    def:  def r1
+    uses: r2_r1_1 = r1 *s 1431655765
+          r2_2 = SLICE(r1 *s 1431655765, word32, 32) (alias)
+r2_r1_1: orig: r2_r1
+    def:  r2_r1_1 = r1 *s 1431655765
+    uses: r1_4 = (word32) r2_r1_1 (alias)
+r2_2: orig: r2
+    def:  r2_2 = SLICE(r1 *s 1431655765, word32, 32) (alias)
+    uses: Mem3[0x00040000:word32] = r2_2
+          use r2_2
+Mem3: orig: Mem0
+    def:  Mem3[0x00040000:word32] = r2_2
+r1_4: orig: r1
+    def:  r1_4 = (word32) r2_r1_1 (alias)
+    uses: use r1_4
+// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def r1
+	// succ:  l1
+l1:
+	r2_r1_1 = r1 *s 1431655765
+	r2_2 = SLICE(r1 *s 1431655765, word32, 32) (alias)
+	r1_4 = (word32) r2_r1_1 (alias)
+	Mem3[0x00040000:word32] = r2_2
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+	use r1_4
+	use r2_2
+";
             #endregion
 
             RunTest_FrameAccesses(sExp, m =>
@@ -2019,11 +2051,6 @@ ProcedureBuilder_exit:
                 m.Assign(r2_r1, m.SMul(r1, c));
                 m.Store(m.Word32(0x0040000), r2);
                 m.Return();
-
-                var proc = m.Procedure;
-                var flow = new DataFlow2();
-                var sst = new SsaTransform2(m.Architecture, proc, null, flow);
-                sst.Transform();
             });
         }
     }

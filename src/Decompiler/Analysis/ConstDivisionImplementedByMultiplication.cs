@@ -151,7 +151,7 @@ namespace Reko.Analysis
             }
 
             this.idOrig = ass.Dst;
-            this.idDst = FindAlias(ass.Dst, dst.Head);
+            this.idDst = FindAlias(ass.Dst, dst.Head.Storage);
             if (idDst == null)
                 return false;
 
@@ -176,12 +176,12 @@ namespace Reko.Analysis
             return true;
         }
 
-        private Identifier FindAlias(Identifier id, Identifier idHead)
+        private Identifier FindAlias(Identifier id, Storage regHead)
         {
             return (ssa.Identifiers[id].Uses
                 .Select(u => u.Instruction)
                 .OfType<AliasAssignment>()
-                .Where(a => a.Dst.Storage == idHead.Storage)
+                .Where(a => a.Dst.Storage == regHead)
                 .Select(a => a.Dst)
                 .FirstOrDefault());
         }
