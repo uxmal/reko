@@ -491,7 +491,7 @@ namespace Reko.Gui.Windows
         {
             if (!program.ImageMap.IsValidAddress(addrTo))
                 return;
-            navInteractor.RememberAddress(addrFrom);
+            navInteractor.RememberAddress(addrTo);
             this.SelectedAddress = addrTo;        // ...and move to the new position.
         }
 
