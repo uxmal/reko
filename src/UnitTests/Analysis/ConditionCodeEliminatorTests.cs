@@ -86,11 +86,9 @@ namespace Reko.UnitTests.Analysis
                 var larw = new LongAddRewriter(proc, prog.Architecture);
                 larw.Transform();
 
-                Aliases alias = new Aliases(proc, prog.Architecture, dfa.ProgramDataFlow);
-                alias.Transform();
-                var sst = new SsaTransform(dfa.ProgramDataFlow, proc, importResolver, proc.CreateBlockDominatorGraph());
+                var sst = new SsaTransform2(prog.Architecture, proc, importResolver, dfa.ProgramDataFlow.ToDataFlow2());
                 SsaState ssa = sst.SsaState;
-
+                sst.Transform();
                 proc.Dump(true);
 
                 var vp = new ValuePropagator(prog.Architecture, ssa);
@@ -401,7 +399,6 @@ done:
         }
 
         [Test]
-        [Ignore("Get this working once SsaTransform2 is used")]
         public void CceShrRcrPattern()
         {
             var p = new ProgramBuilder(new FakeArchitecture());

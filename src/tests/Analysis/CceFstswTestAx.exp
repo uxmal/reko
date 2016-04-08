@@ -14,15 +14,9 @@ Mem0:Global memory
     uses: branch rArg0 < Mem0[ds:bx:real32] l0C00_000C
 FPUF_6: orig: FPUF
 SCZO_7: orig: SCZO
-ecx:ecx
-SZO:Flags
-C:Flags
-ecx_11: orig: ecx
-SZO_12: orig: SZO
-C_13: orig: C
-ecx_14: orig: ecx
-SZO_15: orig: SZO
-C_16: orig: C
+ecx_8: orig: ecx
+SZO_9: orig: SZO
+C_10: orig: C
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(word16 bx, selector ds, real64 rArg0)
