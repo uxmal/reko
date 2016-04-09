@@ -158,6 +158,12 @@ namespace Reko.Core
         public void RemoveUserGlobal(Address address)
         {
             User.Globals.Remove(address);
+            // Do not remove block data item
+            ImageMapItem item;
+            if (ImageMap.TryFindItemExact(address, out item) &&
+                item is ImageMapBlock
+            )
+                return;
             ImageMap.RemoveItem(address);
         }
 
