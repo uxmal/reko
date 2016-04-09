@@ -387,13 +387,13 @@ namespace Reko.UnitTests.Gui.Windows
             project.Programs.Add(program);
         }
 
-        private void Given_ImageMapItem()
+        private void Given_ImageMapItem(uint address)
         {
             this.program.ImageMap.AddItemWithSize(
-                Address.Ptr32(0x12340000),
+                Address.Ptr32(address),
                 new ImageMapItem
                 {
-                    Address = Address.Ptr32(0x12340000),
+                    Address = Address.Ptr32(address),
                     Size = 4,
                     DataType = PrimitiveType.Int32,
                 });
@@ -405,7 +405,7 @@ namespace Reko.UnitTests.Gui.Windows
             var pbs = new ProjectBrowserService(sc, fakeTree);
             Given_Project();
             Given_ProgramWithOneSegment();
-            Given_ImageMapItem();
+            Given_ImageMapItem(0x12340000);
 
             pbs.Load(project);
 
@@ -468,7 +468,7 @@ namespace Reko.UnitTests.Gui.Windows
             var pbs = new ProjectBrowserService(sc, fakeTree);
             Given_Project();
             Given_ProgramWithOneSegment();
-            Given_ImageMapItem();
+            Given_ImageMapItem(0x12340000);
             mr.ReplayAll();
 
             pbs.Load(project);
@@ -519,7 +519,7 @@ namespace Reko.UnitTests.Gui.Windows
             var pbs = new ProjectBrowserService(sc, fakeTree);
             Given_Project();
             Given_ProgramWithOneSegment();
-            Given_ImageMapItem();
+            Given_ImageMapItem(0x12340000);
             Given_UserProcedure(0x12340500, "MyFoo");
             mr.ReplayAll();
 
