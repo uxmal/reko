@@ -142,7 +142,6 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        [Ignore("scanning-development")]
         public void CceReg00005()
 		{
 			RunFileTest("Fragments/regressions/r00005.asm", "Analysis/CceReg00005.txt");

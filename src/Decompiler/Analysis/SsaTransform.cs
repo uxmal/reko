@@ -805,6 +805,7 @@ namespace Reko.Analysis
         private SsaState ssa;
         private TransformerFactory factory;
         public readonly HashSet<SsaIdentifier> incompletePhis;
+        private HashSet<SsaIdentifier> sidsToRemove;
 
         public SsaTransform2(IProcessorArchitecture arch, Procedure proc, IImportResolver importResolver, DataFlow2 programFlow)
         {
@@ -835,6 +836,8 @@ namespace Reko.Analysis
         /// <param name="proc"></param>
         public void Transform()
         {
+            this.sidsToRemove = new HashSet<SsaIdentifier>();
+
             // Visit blocks in RPO order so that we are guaranteed that a 
             // block with predecessors is always visited after them.
 
@@ -855,6 +858,10 @@ namespace Reko.Analysis
             // Optionally, add Use instructions in the exit block.
             if (this.AddUseInstructions)
                 AddUsesToExitBlock();
+            foreach (var sid in sidsToRemove)
+            {
+                ssa.Identifiers.Remove(sid);
+            }
         }
 
         /// <summary>
@@ -910,7 +917,7 @@ namespace Reko.Analysis
                     yield return id;
                 }
             }
-                }
+        }
 
         public static IEnumerable<Identifier> ResolveOverlaps(IEnumerable<Identifier> ids)
         {
@@ -927,12 +934,12 @@ namespace Reko.Analysis
                         aliases.RemoveWhere(a => id.Storage.Covers(a.Storage));
                         if (!aliases.Any(a => a.Storage.Covers(id.Storage)))
                             aliases.Add(id);
-            }
+                    }
                     else
                     {
                         aliases = new HashSet<Identifier> { id };
                         registerBag.Add(dom, aliases);
-        }
+                    }
                 }
                 else
                 {
@@ -1722,7 +1729,7 @@ namespace Reko.Analysis
                     }
                 }
                 phi.DefStatement.Block.Statements.Remove(phi.DefStatement);
-                ssaIds.Remove(phi);
+                this.outer.sidsToRemove.Add(phi);
                 return sid;
             }
 
