@@ -347,8 +347,6 @@ namespace Reko.Gui.Windows.Controls
                 return new TextViewLayout(model, defaultFont, visibleLines);
             }
         }
-
-
     }
 
     /// <summary>

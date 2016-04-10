@@ -75,6 +75,7 @@ namespace Reko.Gui.Windows.Controls
             {
                 PaintLine(line);
             }
+            PaintUnusedBackground();
         }
 
         // Use the GDI+ text renderer, which scales correctly but doesn't
@@ -87,6 +88,7 @@ namespace Reko.Gui.Windows.Controls
             {
                 PaintLine(line);
             }
+            PaintUnusedBackground();
         }
 
         private void PaintLine(LayoutLine line)
@@ -195,6 +197,15 @@ namespace Reko.Gui.Windows.Controls
                 }
 #endif
                 styleStack.PopStyle();
+            }
+        }
+
+        private void PaintUnusedBackground()
+        {
+            using (var brBg = new SolidBrush(defaultBgColor))
+            {
+                var rc = graphics.ClipBounds;
+                graphics.FillRectangle(brBg, 0, extent.Height, rc.Width, rc.Bottom - extent.Height);
             }
         }
 
