@@ -255,10 +255,12 @@ namespace Reko.Gui.Windows.Controls
 
         protected override void OnMouseWheel(MouseEventArgs e)
         {
-            model.MoveToLine(model.CurrentPosition, (e.Delta < 0 ? 1 : -1));
-            RecomputeLayout();
-            UpdateScrollbar();
-            OnScroll();
+            var wheelChange = 3;
+            var newValue = vScroll.Value +
+                (e.Delta < 0 ? wheelChange : -wheelChange);
+            vScroll.Value = Math.Max(
+                Math.Min(newValue, vScroll.Maximum),
+                vScroll.Minimum);
         }
 
         protected override void OnPaint(PaintEventArgs e)
