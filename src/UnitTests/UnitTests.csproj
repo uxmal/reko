@@ -235,6 +235,7 @@
     <Compile Include="Gui\Windows\Controls\ImageMapViewTests.cs" />
     <Compile Include="Gui\Windows\Controls\MixedCodeDataModelTests.cs" />
     <Compile Include="Gui\Windows\Controls\NestedTextModelTests.cs" />
+    <Compile Include="Gui\Windows\Controls\StyleStackTests.cs" />
     <Compile Include="Gui\Windows\DisassemblyFormatterTests.cs" />
     <Compile Include="Gui\HungarianParserTests.cs" />
     <Compile Include="Gui\TabControlHostTests.cs" />

@@ -87,7 +87,8 @@ namespace Reko.Gui.Windows.Controls
                 }
             }
             addrCur = SanitizeAddress(addrCur);
-            return spans.ToArray();
+            var aSpans = spans.ToArray();
+            return aSpans;
         }
 
         private SpanGenerator CreateSpanifier(ImageMapItem item, Address addr)
@@ -102,13 +103,24 @@ namespace Reko.Gui.Windows.Controls
             {
                 sp = new MemSpanifyer(program, item, addr);
             }
-
             return sp;
         }
 
         public abstract class SpanGenerator
         {
             public abstract Tuple<Address, LineSpan> GenerateSpan();
+
+            public void DecorateLastLine(LineSpan line)
+            {
+                for (int i = 0; i < line.TextSpans.Length; ++i)
+                {
+                    var span = line.TextSpans[i];
+                    if (span.Style == null)
+                        span.Style = "lastLine";
+                    else
+                        span.Style = span.Style + " lastLine";
+                }
+            }
         }
 
         public class AsmSpanifyer : SpanGenerator
@@ -130,9 +142,12 @@ namespace Reko.Gui.Windows.Controls
                     return null;
                 var instr = instrs[offset];
                 ++offset;
-                return Tuple.Create(
-                    instr.Address + instr.Length,
-                    DisassemblyTextModel.RenderAsmLine(program, instr));
+                var asmLine = DisassemblyTextModel.RenderAsmLine(program, instr);
+                if (offset == instrs.Length)
+                {
+                    DecorateLastLine(asmLine);
+                }
+                return Tuple.Create(instr.Address + instr.Length, asmLine);
             }
         }
 
@@ -205,9 +220,12 @@ namespace Reko.Gui.Windows.Controls
 
                 var linePos = this.addr;
                 this.addr = addrEnd;
-                return Tuple.Create(
-                    addrEnd,
-                    new LineSpan(linePos, line.ToArray()));
+                var memLine = new LineSpan(linePos, line.ToArray());
+                if (rdr.Address >= item.EndAddress)
+                {
+                    DecorateLastLine(memLine);
+                }
+                return Tuple.Create(addrEnd, memLine);
             }
 
             private string RenderBytesAsText(byte[] abCode)
