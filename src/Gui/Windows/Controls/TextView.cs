@@ -276,12 +276,6 @@ namespace Reko.Gui.Windows.Controls
             GetStyleStack().PopStyle();
         }
 
-        // Disable background painting to avoid the horrible flicker.
-        // We draw our own background anyway.
-        protected override void OnPaintBackground(PaintEventArgs pevent)
-        {
-        }
-
         public TextPointer GetStartSelection()
         {
             if (layout.ComparePositions(cursorPos, anchorPos) <= 0)
