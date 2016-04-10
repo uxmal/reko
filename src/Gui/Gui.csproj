@@ -131,7 +131,6 @@
     <Compile Include="ICallGraphViewService.cs" />
     <Compile Include="ICommandFactory.cs" />
     <Compile Include="IFindStringsDialog.cs" />
-    <Compile Include="IMixedCodeDataViewService.cs" />
     <Compile Include="IResourceEditorService.cs" />
     <Compile Include="Forms\IWorkerDialog.cs" />
     <Compile Include="Forms\ITextEncodingDialog.cs" />
@@ -299,8 +298,6 @@
     <Compile Include="Forms\TextEncodingInteractor.cs" />
     <Compile Include="Windows\LabelWrapper.cs" />
     <Compile Include="Windows\ListboxWrapper.cs" />
-    <Compile Include="Windows\MixedCodeDataViewInteractor.cs" />
-    <Compile Include="Windows\MixedCodeDataViewService.cs" />
     <Compile Include="Windows\ProgressbarWrapper.cs" />
     <Compile Include="Windows\StyleStack.cs" />
     <Compile Include="Windows\Controls\TextBuffer.cs" />
