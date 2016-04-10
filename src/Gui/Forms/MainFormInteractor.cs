@@ -162,8 +162,6 @@ namespace Reko.Gui.Forms
 
             var codeViewSvc = new CodeViewerServiceImpl(sc);
             sc.AddService<ICodeViewerService>(codeViewSvc);
-            var mixedSvc = new MixedCodeDataViewService(sc);
-            sc.AddService<IMixedCodeDataViewService>(mixedSvc);
             var segmentViewSvc = new ImageSegmentServiceImpl(sc);
             sc.AddService(typeof(ImageSegmentService), segmentViewSvc);
 
