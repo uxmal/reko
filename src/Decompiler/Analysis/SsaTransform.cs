@@ -1671,11 +1671,21 @@ namespace Reko.Analysis
                 }
                 if (aliasProbe && sids.Any(s => s == null))
                     return null;
+                GeneratePhiFunction(phi, sids);
+
+                return TryRemoveTrivial(phi, aliasProbe);
+            }
+
+            private static void GeneratePhiFunction(SsaIdentifier phi, SsaIdentifier[] sids)
+            {
                 ((PhiAssignment)phi.DefStatement.Instruction).Src =
                 new PhiFunction(
                         phi.Identifier.DataType,
                         sids.Select(s => s.Identifier).ToArray());
-                return TryRemoveTrivial(phi, aliasProbe);
+                foreach (var sid in sids)
+                {
+                    sid.Uses.Add(phi.DefStatement);
+                }
             }
 
             /// <summary>
