@@ -33,6 +33,7 @@ using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Reko.Gui.Windows
@@ -344,7 +345,8 @@ namespace Reko.Gui.Windows
 
             var ms = new MemoryStream();
             FocusedTextView.Selection.Save(ms, DataFormats.UnicodeText);
-            Clipboard.SetData(DataFormats.UnicodeText, ms);
+            var text = new string(Encoding.Unicode.GetChars(ms.ToArray()));
+            Clipboard.SetData(DataFormats.UnicodeText, text);
         }
 
         public bool ChooseTextEncoding()
