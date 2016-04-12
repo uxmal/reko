@@ -528,18 +528,18 @@ namespace Reko.Gui.Windows.Controls
                 {
                     var span = (iSpan < spans[0].TextSpans.Length) ?
                         spans[0].TextSpans[iSpan] : null;
-                    if (span == null)
+                    if (span != null)
                     {
-                    }
-                    else if (model.ComparePositions(spans[0].Position, end.Line) == 0 &&
-                        iSpan == end.Span)
-                    {
-                        writer.Write(span.GetText().Substring(iChar, end.Character-iChar));
-                        writer.Flush();
-                        return;
-                    }
-                    else {
-                        writer.Write(span.GetText().Substring(iChar));
+                        if (model.ComparePositions(spans[0].Position, end.Line) == 0 &&
+                            iSpan == end.Span)
+                        {
+                            writer.Write(span.GetText().Substring(iChar, end.Character - iChar));
+                            writer.Flush();
+                            return;
+                        }
+                        else {
+                            writer.Write(span.GetText().Substring(iChar));
+                        }
                     }
                     ++iSpan;
                     iChar = 0;
