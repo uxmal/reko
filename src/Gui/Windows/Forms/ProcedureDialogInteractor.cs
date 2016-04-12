@@ -50,7 +50,6 @@ namespace Reko.Gui.Windows.Forms
         {
             dlg = new ProcedureDialog();
             PopulateFields();
-            dlg.ArgumentList.SelectedIndexChanged += ArgumentList_SelectedIndexChanged;
             dlg.Signature.TextChanged += Signature_TextChanged;
             return dlg;
         }
@@ -63,24 +62,6 @@ namespace Reko.Gui.Windows.Forms
             if (proc.Signature != null)
             {
                 dlg.Signature.Text = SignatureParser.UnparseSignature(proc.Signature, proc.Name);
-                PopulateSignatureFields(proc.Signature);
-            }
-        }
-
-
-
-        private string StringizeSignature(SerializedSignature sig, string name)
-        {
-            return SignatureParser.UnparseSignature(sig, name);
-        }
-
-        private void PopulateSignatureFields(SerializedSignature sig)
-        {
-            if (sig.ReturnValue != null)
-            {
-                ListViewItem item = new ListViewItem("<Return value>"); 
-                item.Tag = sig.ReturnValue;
-                dlg.ArgumentList.Items.Add(item);
             }
         }
 
@@ -97,18 +78,6 @@ namespace Reko.Gui.Windows.Forms
         {
             dlg.OkButton.Enabled = signatureIsValid;
             dlg.Signature.ForeColor = signatureIsValid ? SystemColors.WindowText : Color.Red;
-        }
-
-        protected void ArgumentList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (dlg.ArgumentList.SelectedItems.Count != 0)
-            {
-                dlg.ArgumentProperties.SelectedObjects = new object[] {
-                    dlg.ArgumentList.SelectedItems[0].Tag
-                };
-            }
-            else
-                dlg.ArgumentProperties.SelectedObjects = new object[0];
         }
 
         protected void Signature_TextChanged(object sender, EventArgs e)

@@ -45,35 +45,6 @@ namespace Reko.Gui.Windows.Forms
             get { return txtSignature; }
         }
 
-
-        public ListView ArgumentList
-        {
-            get { return listArguments; }
-        }
-
-        public PropertyGrid ArgumentProperties
-        {
-            get { return propArgument; }
-        }
-
-        public TabControl TabControl
-        {
-            get { return tabControl1; }
-        }
-
         public Button OkButton { get { return btnOK; } }
-
-
-        private void txtComment_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
     }
 }
