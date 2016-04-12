@@ -526,8 +526,12 @@ namespace Reko.Gui.Windows.Controls
                 int iChar = start.Character;
                 for (;;)
                 {
-                    var span = spans[0].TextSpans[iSpan];
-                    if (model.ComparePositions(spans[0].Position, end.Line) == 0 &&
+                    var span = (iSpan < spans[0].TextSpans.Length) ?
+                        spans[0].TextSpans[iSpan] : null;
+                    if (span == null)
+                    {
+                    }
+                    else if (model.ComparePositions(spans[0].Position, end.Line) == 0 &&
                         iSpan == end.Span)
                     {
                         writer.Write(span.GetText().Substring(iChar, end.Character-iChar));
@@ -542,6 +546,12 @@ namespace Reko.Gui.Windows.Controls
                     if (iSpan >= spans[0].TextSpans.Length)
                     {
                         writer.WriteLine();
+                        if (model.ComparePositions(
+                            spans[0].Position, end.Line) >= 0)
+                        {
+                            writer.Flush();
+                            return;
+                        }
                         spans = model.GetLineSpans(1);
                         if (spans.Length == 0)
                         {
