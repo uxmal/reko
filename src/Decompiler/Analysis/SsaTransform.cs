@@ -1634,7 +1634,6 @@ namespace Reko.Analysis
                 var phiAss = new PhiAssignment(id, 0);
                 var stm = new Statement(0, phiAss, b);
                 b.Statements.Insert(0, stm);
-
                 var sid = ssaIds.Add(phiAss.Dst, stm, phiAss.Src, false);
                 phiAss.Dst = sid.Identifier;
                 return sid;

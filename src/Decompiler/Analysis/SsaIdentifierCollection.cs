@@ -34,8 +34,7 @@ namespace Reko.Analysis
 
 		public SsaIdentifier Add(Identifier idOld, Statement stmDef, Expression exprDef, bool isSideEffect)
 		{
-			int i = serialNumber;
-            ++serialNumber;
+			int i = ++serialNumber;
 			Identifier idNew;
 			if (stmDef != null)
 			{

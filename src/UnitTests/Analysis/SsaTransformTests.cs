@@ -2053,5 +2053,67 @@ ProcedureBuilder_exit:
                 m.Return();
             });
         }
+
+        [Test]
+        public void SsaWhile_TwoLoopExits()
+        {
+            var sExp =
+            #region Expected
+@"Mem1: orig: Mem0
+    def:  Mem1 = PHI(Mem0, Mem5)
+    uses: branch Mem1[0x00004010:bool] m4
+          branch Mem1[0x00004011:bool] m4
+r1_1: orig: r1
+    def:  r1_1 = 0x00000003
+Mem2: orig: Mem0
+    def:  Mem2[0x00004020:bool] = true
+    uses: Mem0 = PHI(Mem0, Mem2)
+Mem0:Global memory
+    def:  def Mem0
+    uses: Mem0 = PHI(Mem0, Mem2)
+// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def Mem0
+	// succ:  m1
+m1:
+	Mem0 = PHI(Mem0, Mem2)
+	branch Mem0[0x00004010:bool] m4
+	// succ:  m2 m4
+m2:
+	branch Mem0[0x00004011:bool] m4
+	// succ:  m3 m4
+m3:
+	Mem2[0x00004020:bool] = true
+	goto m1
+	// succ:  m1
+m4:
+	r1_1 = 0x00000003
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                var r1 = m.Reg32("r1", 1);
+
+                m.Label("m1");
+                m.BranchIf(m.Load(PrimitiveType.Bool, m.Word32(0x04010)), "m4");
+
+                m.Label("m2");
+                m.BranchIf(m.Load(PrimitiveType.Bool, m.Word32(0x04011)), "m4");
+
+                m.Label("m3");
+                m.Store(m.Word32(0x04020), Constant.True());
+                m.Goto("m1");
+
+                m.Label("m4");
+                m.Assign(r1, 3);
+                m.Return();
+            });
+        }
     }
 }
