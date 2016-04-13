@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Arch.X86;
+using Reko.Environments.Windows;
 using Reko.Core;
 using Reko.Core.Serialization;
 using Reko.Gui.Windows.Forms;
@@ -33,24 +34,33 @@ namespace Reko.UnitTests.Gui.Windows.Forms
     [Category(Categories.UserInterface)]
     public class ProcedureDialogInteractorTests
     {
-        private TestProcedureDialogInteractor interactor;
+        private ProcedureDialogInteractor interactor;
         private Procedure_v1 proc;
- 
+
         [SetUp]
         public void Setup()
         {
             proc = new Procedure_v1();
-            interactor = new TestProcedureDialogInteractor(proc);
+            var arch = new X86ArchitectureFlat32();
+            var platform = new Win32Platform(null, arch);
+            var program = new Program
+            {
+                Architecture = arch,
+                Platform = platform
+            };
+            interactor = new ProcedureDialogInteractor(program, proc);
         }
 
         [Test]
         public void OnProcedure()
         {
-            proc.Name = " foo ";
+            proc.Name = "foo";
             using (ProcedureDialog dlg = interactor.CreateDialog())
             {
                 dlg.Show();
-                Assert.AreEqual("foo", dlg.ProcedureName.Text); 
+                Assert.AreEqual("foo", dlg.ProcedureName.Text);
+                Assert.IsTrue(dlg.ProcedureName.Enabled);
+                Assert.AreEqual("", dlg.Signature.Text);
             }
         }
 
@@ -58,11 +68,12 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         public void PopulateWithEmptySignature()
         {
             proc.Name = "foo";
-            proc.Signature = new SerializedSignature();
-            proc.Signature.Arguments = new Argument_v1[0];
+            proc.CSignature = "void foo()";
             using (ProcedureDialog dlg = interactor.CreateDialog())
             {
                 dlg.Show();
+                Assert.AreEqual("foo", dlg.ProcedureName.Text);
+                Assert.IsFalse(dlg.ProcedureName.Enabled);
                 Assert.AreEqual("void foo()", dlg.Signature.Text);
             }
         }
@@ -71,14 +82,13 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         public void InvalidSignatureText()
         {
             proc.Name = "foo";
-            proc.Signature = new SerializedSignature();
-            proc.Signature.Arguments = new Argument_v1[0];
+            proc.CSignature = "void foo()";
             using (ProcedureDialog dlg = interactor.CreateDialog())
             {
                 dlg.Show();
                 Assert.AreEqual("void foo()", dlg.Signature.Text);
-                interactor.UserChangeSignatureText("void fbn(");
-                Assert.AreEqual(System.Drawing.Color.Red, dlg.Signature.ForeColor);
+                dlg.Signature.Text = "void fbn(";
+                Assert.AreEqual(Color.Red, dlg.Signature.ForeColor);
                 Assert.IsFalse(dlg.OkButton.Enabled);
             }
         }
@@ -87,29 +97,38 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         public void ValidSignatureText()
         {
             proc.Name = "foo";
-            proc.Signature = new SerializedSignature();
-            proc.Signature.Arguments = new Argument_v1[0];
+            proc.CSignature = "void foo()";
             using (ProcedureDialog dlg = interactor.CreateDialog())
             {
                 dlg.Show();
                 Assert.AreEqual("void foo()", dlg.Signature.Text);
-                interactor.UserChangeSignatureText("void foo(word32 eax)");
+                dlg.Signature.Text = "void foo_new(int eax)";
                 Assert.AreEqual(SystemColors.WindowText, dlg.Signature.ForeColor);
                 Assert.IsTrue(dlg.OkButton.Enabled);
+                interactor.ApplyChanges();
+                Assert.AreEqual("void foo_new(int eax)", proc.CSignature);
+                Assert.AreEqual("foo_new", proc.Name);
             }
         }
 
-        private class TestProcedureDialogInteractor : ProcedureDialogInteractor
+        [Test]
+        public void EnterProcedureName()
         {
-            public TestProcedureDialogInteractor(Procedure_v1 proc)
-                : base(new Program(), proc)
+            proc.Name = "foo";
+            proc.CSignature = "void foo()";
+            using (ProcedureDialog dlg = interactor.CreateDialog())
             {
-            }
-
-            internal void UserChangeSignatureText( string text)
-            {
-                dlg.Signature.Text = text;
-                base.Signature_TextChanged(dlg.Signature, EventArgs.Empty);
+                dlg.Show();
+                Assert.AreEqual("void foo()", dlg.Signature.Text);
+                Assert.IsFalse(dlg.ProcedureName.Enabled);
+                dlg.Signature.Text = "";
+                Assert.IsTrue(dlg.ProcedureName.Enabled);
+                dlg.ProcedureName.Text = "test123";
+                Assert.AreEqual(SystemColors.WindowText, dlg.Signature.ForeColor);
+                Assert.IsTrue(dlg.OkButton.Enabled);
+                interactor.ApplyChanges();
+                Assert.IsNull(proc.CSignature);
+                Assert.AreEqual("test123", proc.Name);
             }
         }
     }
