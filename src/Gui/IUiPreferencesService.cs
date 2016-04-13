@@ -274,8 +274,8 @@ namespace Reko.Gui
             SetStyle(UiStyles.Browser);
             SetStyle(UiStyles.List);
 
-            this.WindowSize = ConvertFrom<Size>(sizeCvt, settingsSvc.Get("WindowSize", null));
-            this.WindowState = ConvertFrom<FormWindowState>(fwsCvt, settingsSvc.Get("WindowState", "Normal"));
+            this.WindowSize = ConvertFrom<Size>(sizeCvt, (string)settingsSvc.Get("WindowSize", null));
+            this.WindowState = ConvertFrom<FormWindowState>(fwsCvt, (string) settingsSvc.Get("WindowState", "Normal"));
 
             UiPreferencesChanged.Fire(this);
         }
@@ -422,13 +422,13 @@ namespace Reko.Gui
             UiPreferencesChanged.Fire(this);
         }
 
-        private T ConvertFrom<T>(TypeConverter conv, object value)
+        private T ConvertFrom<T>(TypeConverter conv, string value)
         {
             if (value == null)
                 return default(T);
             try
             {
-                return (T) conv.ConvertFrom(value);
+                return (T) conv.ConvertFromInvariantString(value);
             }
             catch
             {
