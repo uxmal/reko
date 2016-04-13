@@ -207,7 +207,7 @@ namespace Reko.Gui.Windows.Controls
 
             // Attempt to parse the signature.
             var usb = new UserSignatureBuilder(program);
-            sProc = usb.ParseFunctionDeclaration(txtSignature, program.Architecture.CreateFrame());
+            sProc = usb.ParseFunctionDeclaration(txtSignature);
             return sProc != null;
         }
 
