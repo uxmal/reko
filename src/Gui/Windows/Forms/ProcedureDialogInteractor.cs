@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Serialization;
 using System;
@@ -33,17 +34,13 @@ namespace Reko.Gui.Windows.Forms
     {
         protected ProcedureDialog dlg;
 
-        private IProcessorArchitecture arch;
+        private Program program;
         private Procedure_v1 proc;
 
-        public ProcedureDialogInteractor(IProcessorArchitecture arch, Procedure_v1 proc)
+        public ProcedureDialogInteractor(Program program, Procedure_v1 proc)
         {
-            this.arch = arch;
+            this.program = program;
             this.proc = proc;
-            if (proc.Signature != null && proc.Signature.Arguments == null)
-            {
-                proc.Signature.Arguments = new Argument_v1[0];
-            }
         }
 
         public ProcedureDialog CreateDialog()
@@ -54,24 +51,26 @@ namespace Reko.Gui.Windows.Forms
             return dlg;
         }
 
-        public Procedure_v1 SerializedProcedure { get { return proc; } }
-
         private void PopulateFields()
         {
-            dlg.ProcedureName.Text = proc.Name.Trim();
-            if (proc.Signature != null)
-            {
-                dlg.Signature.Text = SignatureParser.UnparseSignature(proc.Signature, proc.Name);
-            }
+            dlg.Signature.Text = proc.CSignature;
+            dlg.ProcedureName.Text = proc.Name;
+            EnableProcedureName();
         }
 
-        public void ApplyChangesToProcedure(Program program, Procedure procedure)
+        private void EnableProcedureName()
         {
-            var ser = program.CreateProcedureSerializer();
-            var sp = new SignatureParser(arch);
-            sp.Parse(dlg.Signature.Text);
-            Debug.Assert(sp.IsValid);
-            procedure.Signature = ser.Deserialize(sp.Signature, procedure.Frame);
+            dlg.ProcedureName.Enabled = string.IsNullOrEmpty(dlg.Signature.Text) ?
+                true: false;
+        }
+
+        public void ApplyChanges()
+        {
+            var CSignature = dlg.Signature.Text.Trim();
+            if (string.IsNullOrEmpty(CSignature))
+                CSignature = null;
+            proc.CSignature = CSignature;
+            proc.Name = dlg.ProcedureName.Text;
         }
 
         private void EnableControls(bool signatureIsValid)
@@ -82,12 +81,26 @@ namespace Reko.Gui.Windows.Forms
 
         protected void Signature_TextChanged(object sender, EventArgs e)
         {
-            var parser = new SignatureParser(arch);
-            parser.Parse(dlg.Signature.Text);
-            EnableControls(parser.IsValid);
-            if (parser.IsValid)
+            // Attempt to parse the signature.
+            var CSignature = dlg.Signature.Text.Trim();
+            ProcedureBase_v1 sProc = null;
+            bool isValid;
+            if (!string.IsNullOrEmpty(CSignature))
             {
-                proc.Signature = parser.Signature;
+                var usb = new UserSignatureBuilder(program);
+                sProc = usb.ParseFunctionDeclaration(CSignature);
+                isValid = (sProc != null);
+            } else
+            {
+                CSignature = null;
+                isValid = true;
+            }
+            EnableControls(isValid);
+            if (isValid)
+            {
+                if (sProc != null)
+                    dlg.ProcedureName.Text = sProc.Name;
+                EnableProcedureName();
             }
         }
 
