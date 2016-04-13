@@ -82,7 +82,7 @@ namespace Reko.Analysis
         {
             if (!string.IsNullOrEmpty(userProc.CSignature))
             {
-                return ParseFunctionDeclaration(userProc.CSignature, proc.Frame);
+                return ParseFunctionDeclaration(userProc.CSignature);
             }
             return null;
         }
@@ -133,7 +133,7 @@ namespace Reko.Analysis
             return new Assignment(dst, param);
         }
 
-        public ProcedureBase_v1 ParseFunctionDeclaration(string fnDecl, Frame frame)
+        public ProcedureBase_v1 ParseFunctionDeclaration(string fnDecl)
         {
             try {
                 var lexer = new CLexer(new StringReader(fnDecl + ";"));

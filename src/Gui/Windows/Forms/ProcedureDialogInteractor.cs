@@ -88,7 +88,7 @@ namespace Reko.Gui.Windows.Forms
             if (!string.IsNullOrEmpty(CSignature))
             {
                 var usb = new UserSignatureBuilder(program);
-                sProc = usb.ParseFunctionDeclaration(CSignature, program.Architecture.CreateFrame());
+                sProc = usb.ParseFunctionDeclaration(CSignature);
                 isValid = (sProc != null);
             } else
             {
