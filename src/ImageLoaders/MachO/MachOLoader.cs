@@ -258,6 +258,9 @@ namespace Reko.ImageLoaders.MachO
                     //case LC_SYMTAB:
                     //    parseSymtabCommand<Mach>();
                     //    break;
+                    case LC_FUNCTION_STARTS:
+                        parseFunctionStarts(rdr.Clone());
+                        break;
                     }
                     rdr.Offset = pos + cmdsize;
                 }
@@ -313,6 +316,25 @@ namespace Reko.ImageLoaders.MachO
                 {
                     Debug.Print("Parsing section number {0}.", i);
                     parseSection64(initprot, imageMap);
+                }
+            }
+
+            void parseFunctionStarts(ImageReader rdr)
+            {
+                uint dataoff;
+                uint datasize;
+                if (!rdr.TryReadUInt32(out dataoff) ||
+                    !rdr.TryReadUInt32(out datasize))
+                {
+                    throw new BadImageFormatException("Couldn't read LC_FUNCTIONSTARTS command");
+                }
+                Debug.Print(" LC_FUNCTIONSTARTS {0:X8} {1:X8}", dataoff, datasize);
+                rdr.Offset = dataoff;
+                var endoff = dataoff + datasize;
+                while (rdr.Offset < endoff)
+                {
+                    uint fn = rdr.ReadUInt32();
+                    Debug.Print("  fn: {0:X}", fn);
                 }
             }
 
@@ -404,7 +426,6 @@ namespace Reko.ImageLoaders.MachO
                 imageMap.AddSegment(imageSection);
             }
         }
-
 
         public class Loader32 : Parser
         {
