@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace Reko.ImageLoaders.MachO
@@ -169,20 +170,71 @@ namespace Reko.ImageLoaders.MachO
 
             const uint LC_REQ_DYLD = 0x80000000;
 
-            const uint LC_SEGMENT = 0x1;
-            const uint LC_SYMTAB = 0x2;
-            const uint LC_DYSYMTAB = 0xb;
-            const uint LC_SEGMENT_64 = 0x19;
+            // http://llvm.org/docs/doxygen/html/Support_2MachO_8h_source.html
+            // http://opensource.apple.com//source/clang/clang-503.0.38/src/tools/macho-dump/macho-dump.cpp
+            public const uint LC_SEGMENT              = 0x00000001u;
+            public const uint LC_SYMTAB               = 0x00000002u;
+            public const uint LC_SYMSEG               = 0x00000003u;
+            public const uint LC_THREAD               = 0x00000004u;
+            public const uint LC_UNIXTHREAD           = 0x00000005u;
+            public const uint LC_LOADFVMLIB           = 0x00000006u;
+            public const uint LC_IDFVMLIB             = 0x00000007u;
+            public const uint LC_IDENT                = 0x00000008u;
+            public const uint LC_FVMFILE              = 0x00000009u;
+            public const uint LC_PREPAGE              = 0x0000000Au;
+            public const uint LC_DYSYMTAB             = 0x0000000Bu;
+            public const uint LC_LOAD_DYLIB           = 0x0000000Cu;
+            public const uint LC_ID_DYLIB             = 0x0000000Du;
+            public const uint LC_LOAD_DYLINKER        = 0x0000000Eu;
+            public const uint LC_ID_DYLINKER          = 0x0000000Fu;
+            public const uint LC_PREBOUND_DYLIB       = 0x00000010u;
+            public const uint LC_ROUTINES             = 0x00000011u;
+            public const uint LC_SUB_FRAMEWORK        = 0x00000012u;
+            public const uint LC_SUB_UMBRELLA         = 0x00000013u;
+            public const uint LC_SUB_CLIENT           = 0x00000014u;
+            public const uint LC_SUB_LIBRARY          = 0x00000015u;
+            public const uint LC_TWOLEVEL_HINTS       = 0x00000016u;
+            public const uint LC_PREBIND_CKSUM        = 0x00000017u;
+            public const uint LC_LOAD_WEAK_DYLIB      = 0x80000018u;
+            public const uint LC_SEGMENT_64           = 0x00000019u;
+            public const uint LC_ROUTINES_64          = 0x0000001Au;
+            public const uint LC_UUID                 = 0x0000001Bu;
+            public const uint LC_RPATH                = 0x8000001Cu;
+            public const uint LC_CODE_SIGNATURE       = 0x0000001Du;
+            public const uint LC_SEGMENT_SPLIT_INFO   = 0x0000001Eu;
+            public const uint LC_REEXPORT_DYLIB       = 0x8000001Fu;
+            public const uint LC_LAZY_LOAD_DYLIB      = 0x00000020u;
+            public const uint LC_ENCRYPTION_INFO      = 0x00000021u;
+            public const uint LC_DYLD_INFO            = 0x00000022u;
+            public const uint LC_DYLD_INFO_ONLY       = 0x80000022u;
+            public const uint LC_LOAD_UPWARD_DYLIB    = 0x80000023u;
+            public const uint LC_VERSION_MIN_MACOSX   = 0x00000024u;
+            public const uint LC_VERSION_MIN_IPHONEOS = 0x00000025u;
+            public const uint LC_FUNCTION_STARTS      = 0x00000026u;
+            public const uint LC_DYLD_ENVIRONMENT     = 0x00000027u;
+            public const uint LC_MAIN                 = 0x80000028u;
+            public const uint LC_DATA_IN_CODE         = 0x00000029u;
+            public const uint LC_SOURCE_VERSION       = 0x0000002Au;
+            public const uint LC_DYLIB_CODE_SIGN_DRS  = 0x0000002Bu;
+            public const uint LC_ENCRYPTION_INFO_64   = 0x0000002Cu;
+            public const uint LC_LINKER_OPTION        = 0x0000002Du;
+            public const uint LC_LINKER_OPTIMIZATION_HINT = 0x0000002Eu;
+            public const uint LC_VERSION_MIN_TVOS     = 0x0000002Fu;
+            public const uint LC_VERSION_MIN_WATCHOS  = 0x00000030u;
 
             public ImageMap ParseLoadCommands(uint ncmds, Address addrLoad)
             {
                 var imageMap = new ImageMap(addrLoad);
                 Debug.Print("Parsing load commands, {0} of them.", ncmds);
 
+                var lookup = GetType()
+                    .GetFields(
+                        BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
+                    .Where(fi => fi.IsLiteral && !fi.IsInitOnly && fi.Name.StartsWith("LC_"))
+                    .ToDictionary(fi => (uint)fi.GetValue(null), fi => fi.Name);
+
                 for (uint i = 0; i < ncmds; ++i)
                 {
-                    Debug.Print("Parsing load command number {0}.", i);
-
                     var pos = rdr.Offset;
                     uint cmd;
                     uint cmdsize;
@@ -193,7 +245,7 @@ namespace Reko.ImageLoaders.MachO
                             "Unable to read Mach-O command ({0:X}).",
                             rdr.Offset));
                     }
-                    Debug.Print("Read load command 0x{0:X} of size {1}.", cmd, cmdsize);
+                    Debug.Print("{0,3}: Read load command 0x{1:X} {2} of size {3}.", i, cmd, lookup[cmd], cmdsize);
 
                     switch (cmd & ~LC_REQ_DYLD)
                     {
@@ -207,7 +259,6 @@ namespace Reko.ImageLoaders.MachO
                     //    parseSymtabCommand<Mach>();
                     //    break;
                     }
-
                     rdr.Offset = pos + cmdsize;
                 }
                 return imageMap;
