@@ -1,38 +1,38 @@
 fp:fp
-sp_1: orig: sp
+sp_2: orig: sp
 bx:bx
     def:  def bx
     uses: branch bx == 0x0000 l0C00_0013
           branch bx > 0x0000 l0C00_000D
-SCZO_3: orig: SCZO
-Z_4: orig: Z
-SZO_5: orig: SZO
-C_6: orig: C
-SZO_7: orig: SZO
-Z_8: orig: Z
-C_9: orig: C
-SCZO_10: orig: SCZO
-ax_11: orig: ax
-    def:  ax_11 = PHI(ax_14, ax_16, ax_15)
-    uses: Mem12[ds:0x0100:word16] = ax_11
-Mem12: orig: Mem0
-    def:  Mem12[ds:0x0100:word16] = ax_11
+SCZO_4: orig: SCZO
+Z_5: orig: Z
+SZO_6: orig: SZO
+C_7: orig: C
+SZO_8: orig: SZO
+Z_9: orig: Z
+C_10: orig: C
+SCZO_11: orig: SCZO
+ax_12: orig: ax
+    def:  ax_12 = PHI(ax_15, ax_17, ax_16)
+    uses: Mem13[ds:0x0100:word16] = ax_12
+Mem13: orig: Mem0
+    def:  Mem13[ds:0x0100:word16] = ax_12
 ds:ds
     def:  def ds
-    uses: Mem12[ds:0x0100:word16] = ax_11
-ax_14: orig: ax
-    def:  ax_14 = 0xFFFF
-    uses: ax_11 = PHI(ax_14, ax_16, ax_15)
+    uses: Mem13[ds:0x0100:word16] = ax_12
 ax_15: orig: ax
-    def:  ax_15 = 0x0001
-    uses: ax_11 = PHI(ax_14, ax_16, ax_15)
+    def:  ax_15 = 0xFFFF
+    uses: ax_12 = PHI(ax_15, ax_17, ax_16)
 ax_16: orig: ax
-    def:  ax_16 = 0x0000
-    uses: ax_11 = PHI(ax_14, ax_16, ax_15)
-SZO_17: orig: SZO
-Z_18: orig: Z
-C_19: orig: C
-SCZO_20: orig: SCZO
+    def:  ax_16 = 0x0001
+    uses: ax_12 = PHI(ax_15, ax_17, ax_16)
+ax_17: orig: ax
+    def:  ax_17 = 0x0000
+    uses: ax_12 = PHI(ax_15, ax_17, ax_16)
+SZO_18: orig: SZO
+Z_19: orig: Z
+C_20: orig: C
+SCZO_21: orig: SCZO
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(word16 bx, selector ds)
@@ -47,19 +47,19 @@ l0C00_0005:
 	branch bx > 0x0000 l0C00_000D
 	// succ:  l0C00_0007 l0C00_000D
 l0C00_0007:
-	ax_14 = 0xFFFF
+	ax_15 = 0xFFFF
 	goto l0C00_0015
 	// succ:  l0C00_0015
 l0C00_000D:
-	ax_15 = 0x0001
+	ax_16 = 0x0001
 	goto l0C00_0015
 	// succ:  l0C00_0015
 l0C00_0013:
-	ax_16 = 0x0000
+	ax_17 = 0x0000
 	// succ:  l0C00_0015
 l0C00_0015:
-	ax_11 = PHI(ax_14, ax_16, ax_15)
-	Mem12[ds:0x0100:word16] = ax_11
+	ax_12 = PHI(ax_15, ax_17, ax_16)
+	Mem13[ds:0x0100:word16] = ax_12
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

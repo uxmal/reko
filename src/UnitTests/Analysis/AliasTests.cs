@@ -73,6 +73,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Ignore("Alias class will go away")]
         public void AlAddSubCarries()
         {
             RunFileTest("Fragments/addsubcarries.asm", "Analysis/AlAddSubCarries.txt");

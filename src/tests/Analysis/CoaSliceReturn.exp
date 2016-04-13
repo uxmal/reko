@@ -1,20 +1,20 @@
 fp:fp
-sp_1: orig: sp
-si_2: orig: si
+sp_2: orig: sp
+si_3: orig: si
 ds:ds
     def:  def ds
-    uses: Mem5[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
-          Mem5[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
-          Mem9[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
-          Mem9[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
-ax_4: orig: ax
-Mem5: orig: Mem0
-    def:  Mem5[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
-si_6: orig: si
-ax_7: orig: ax
-al_8: orig: al
-Mem9: orig: Mem0
-    def:  Mem9[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
+    uses: Mem6[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
+          Mem6[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
+          Mem10[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
+          Mem10[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
+ax_5: orig: ax
+Mem6: orig: Mem0
+    def:  Mem6[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
+si_7: orig: si
+ax_8: orig: ax
+al_9: orig: al
+Mem10: orig: Mem0
+    def:  Mem10[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(selector ds)
@@ -22,14 +22,14 @@ fn0C00_0000_entry:
 	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem5[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
-	Mem9[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
+	Mem6[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
+	Mem10[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 
 fp:fp
-sp_1: orig: sp
+sp_2: orig: sp
 ds:ds
     def:  def ds
     uses: return Mem0[ds:si:word16]
@@ -39,7 +39,7 @@ si:si
 Mem0:Global memory
     def:  def Mem0
     uses: return Mem0[ds:si:word16]
-ax_5: orig: ax
+ax_6: orig: ax
 // fn0C00_0015
 // Return size: 0
 word16 fn0C00_0015(word16 si, selector ds)

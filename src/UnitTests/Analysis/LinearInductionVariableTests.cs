@@ -94,9 +94,9 @@ namespace Reko.UnitTests.Analysis
             */
             ssaIds = ssa.SsaState.Identifiers;
             List<SsaIdentifier> list = new List<SsaIdentifier> {
-                ssaIds.Where(i => i.Identifier.Name == "a_0").Single(),
                 ssaIds.Where(i => i.Identifier.Name == "a_1").Single(),
                 ssaIds.Where(i => i.Identifier.Name == "a_2").Single(),
+                ssaIds.Where(i => i.Identifier.Name == "a_3").Single(),
             };
 			return list;
 		}
@@ -117,7 +117,7 @@ namespace Reko.UnitTests.Analysis
 			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, null, dom);
 			Constant c = liv.FindLinearIncrement(a);
 			Assert.AreEqual(4, c.ToInt32());
-            Assert.AreEqual("a_2 = a_1 + 0x00000004", liv.Context.DeltaStatement.ToString());
+            Assert.AreEqual("a_3 = a_2 + 0x00000004", liv.Context.DeltaStatement.ToString());
 		}
 
 		[Test]
@@ -128,7 +128,7 @@ namespace Reko.UnitTests.Analysis
 			PhiFunction phi = liv.FindPhiFunction(a);
 			Constant c = liv.FindInitialValue(phi);
             Assert.AreEqual(0, c.ToInt32());
-            Assert.AreEqual("a_0 = 0x00000000", liv.Context.InitialStatement.ToString());
+            Assert.AreEqual("a_1 = 0x00000000", liv.Context.InitialStatement.ToString());
 		}
 
 		[Test]
@@ -137,11 +137,11 @@ namespace Reko.UnitTests.Analysis
 			Prepare(new ByteArrayLoopMock().Procedure);
 			var liv = new LinearInductionVariableFinder(proc, ssaIds, null);
 			var a = new List<SsaIdentifier>();
-			a.Add(ssaIds.Where(s => s.Identifier.Name == "i_1").Single());
-			a.Add(ssaIds.Where(s => s.Identifier.Name == "i_4").Single());
+			a.Add(ssaIds.Where(s => s.Identifier.Name == "i_2").Single());
+			a.Add(ssaIds.Where(s => s.Identifier.Name == "i_5").Single());
 			Constant c = liv.FindFinalValue(a);
 			Assert.AreEqual(10, c.ToInt32());
-            Assert.AreEqual("branch i_1 < 0x0000000A body", liv.Context.TestStatement.ToString());
+            Assert.AreEqual("branch i_2 < 0x0000000A body", liv.Context.TestStatement.ToString());
 		}
 
 		[Test]

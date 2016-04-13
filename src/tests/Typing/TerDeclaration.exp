@@ -6,7 +6,7 @@ proc1_entry:
 	// succ:  l1
 l1:
 	word16 ax = rand()
-	Mem1[0x1300:word16] = ax
+	Mem2[0x1300:word16] = ax
 	return
 	// succ:  proc1_exit
 proc1_exit:
@@ -55,7 +55,7 @@ T_6: (in 0x1300 : word16)
   Class: Eq_6
   DataType: (ptr int16)
   OrigDataType: (ptr (struct (0 T_7 t0000)))
-T_7: (in Mem1[0x1300:word16] : word16)
+T_7: (in Mem2[0x1300:word16] : word16)
   Class: Eq_2
   DataType: int16
   OrigDataType: word16

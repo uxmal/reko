@@ -19,7 +19,7 @@ ds:ds
           Mem26[ds:0x021A:word16] = dx_24
           cl_30 = Mem26[ds:0x0220:byte]
           cl_35 = Mem26[ds:0x0221:byte]
-          Mem40[ds:0x0222:word16] = ax_38
+          Mem41[ds:0x0222:word16] = ax_39
 Mem0:Global memory
     def:  def Mem0
     uses: ax_5 = Mem0[ds:0x0200:word16]
@@ -114,6 +114,7 @@ C_29: orig: C
 cl_30: orig: cl
     def:  cl_30 = Mem26[ds:0x0220:byte]
     uses: SCZO_32 = cond(cl_30 - 0x30)
+          cl_36 = DPB(cl_30, cl_35, 0) (alias)
 es_cx_31: orig: es_cx
     def:  es_cx_31 = DPB(es_cx_17, cl_30, 0) (alias)
 SCZO_32: orig: SCZO
@@ -122,35 +123,37 @@ SCZO_32: orig: SCZO
 ax_33: orig: ax
     def:  ax_33 = ax_27 + ax_27 + SCZO_32
     uses: SCZO_34 = cond(ax_33)
-          ax_38 = ax_33 + ax_33 + C_37
-          ax_38 = ax_33 + ax_33 + C_37
+          ax_39 = ax_33 + ax_33 + C_38
+          ax_39 = ax_33 + ax_33 + C_38
 SCZO_34: orig: SCZO
     def:  SCZO_34 = cond(ax_33)
 cl_35: orig: cl
     def:  cl_35 = Mem26[ds:0x0221:byte]
-    uses: SCZO_36 = cond(cl_35 - 0x3A)
-SCZO_36: orig: SCZO
-    def:  SCZO_36 = cond(cl_35 - 0x3A)
-    uses: C_37 = !SCZO_36
-C_37: orig: C
-    def:  C_37 = !SCZO_36
-    uses: ax_38 = ax_33 + ax_33 + C_37
-ax_38: orig: ax
-    def:  ax_38 = ax_33 + ax_33 + C_37
-    uses: SCZO_39 = cond(ax_38)
-          Mem40[ds:0x0222:word16] = ax_38
-          use ax_38
-SCZO_39: orig: SCZO
-    def:  SCZO_39 = cond(ax_38)
-    uses: use SCZO_39
-Mem40: orig: Mem0
-    def:  Mem40[ds:0x0222:word16] = ax_38
+cl_36: orig: cl
+    def:  cl_36 = DPB(cl_30, cl_35, 0) (alias)
+    uses: SCZO_37 = cond(cl_36 - 0x3A)
+SCZO_37: orig: SCZO
+    def:  SCZO_37 = cond(cl_36 - 0x3A)
+    uses: C_38 = !SCZO_37
+C_38: orig: C
+    def:  C_38 = !SCZO_37
+    uses: ax_39 = ax_33 + ax_33 + C_38
+ax_39: orig: ax
+    def:  ax_39 = ax_33 + ax_33 + C_38
+    uses: SCZO_40 = cond(ax_39)
+          Mem41[ds:0x0222:word16] = ax_39
+          use ax_39
+SCZO_40: orig: SCZO
+    def:  SCZO_40 = cond(ax_39)
+    uses: use SCZO_40
+Mem41: orig: Mem0
+    def:  Mem41[ds:0x0222:word16] = ax_39
 cx:cx
     def:  def cx
-    uses: cx_42 = DPB(cx, cl_35, 0) (alias)
-cx_42: orig: cx
-    def:  cx_42 = DPB(cx, cl_35, 0) (alias)
-    uses: use cx_42
+    uses: cx_43 = DPB(cx, cl_36, 0) (alias)
+cx_43: orig: cx
+    def:  cx_43 = DPB(cx, cl_36, 0) (alias)
+    uses: use cx_43
 // fn0C00_0000
 // Return size: 2
 void fn0C00_0000()
@@ -193,20 +196,21 @@ l0C00_0000:
 	ax_33 = ax_27 + ax_27 + SCZO_32
 	SCZO_34 = cond(ax_33)
 	cl_35 = Mem26[ds:0x0221:byte]
-	cx_42 = DPB(cx, cl_35, 0) (alias)
-	SCZO_36 = cond(cl_35 - 0x3A)
-	C_37 = !SCZO_36
-	ax_38 = ax_33 + ax_33 + C_37
-	SCZO_39 = cond(ax_38)
-	Mem40[ds:0x0222:word16] = ax_38
+	cl_36 = DPB(cl_30, cl_35, 0) (alias)
+	cx_43 = DPB(cx, cl_36, 0) (alias)
+	SCZO_37 = cond(cl_36 - 0x3A)
+	C_38 = !SCZO_37
+	ax_39 = ax_33 + ax_33 + C_38
+	SCZO_40 = cond(ax_39)
+	Mem41[ds:0x0222:word16] = ax_39
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
-	use ax_38
+	use ax_39
 	use bx_19
-	use cx_42
+	use cx_43
 	use dx_24
 	use es_18
-	use SCZO_39
+	use SCZO_40
 	use sp_2
 

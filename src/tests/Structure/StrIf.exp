@@ -15,7 +15,7 @@ l0C00_000B:
 	bx_10 = 0x1211
 	// succ:  l0C00_000E
 l0C00_000E:
-	Mem6[ds:si:word16] = bx_10
+	Mem7[ds:si:word16] = bx_10
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -27,7 +27,7 @@ void fn0C00_0000(word16 ax, word16 si, selector ds)
 		bx_10 = 0x1234;
 	else
 		bx_10 = 0x1211;
-	Mem6[ds:si:word16] = bx_10;
+	Mem7[ds:si:word16] = bx_10;
 	return;
 }
 ===========================

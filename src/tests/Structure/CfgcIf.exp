@@ -15,7 +15,7 @@ l0C00_000B:
 	bx_10 = 0x1211
 	// succ:  l0C00_000E
 l0C00_000E:
-	Mem6[ds:si:word16] = bx_10
+	Mem7[ds:si:word16] = bx_10
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -37,7 +37,7 @@ l0C00_000B:
 	bx_10 = 0x1211
 	// succ:  l0C00_000E
 l0C00_000E:
-	Mem6[ds:si:word16] = bx_10
+	Mem7[ds:si:word16] = bx_10
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

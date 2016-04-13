@@ -208,8 +208,8 @@ namespace Reko.UnitTests.Analysis
 
             rw.ReplaceLongAdditions(block);
 
+            //$TODO: remove the C = cond(ax)
             var sExp = @"l1:
-	ax = ax + Mem0[bx + 0x0300:word16]
 	C = cond(ax)
 	dx_ax = dx_ax + Mem0[bx + 0x0300:ui32]
 	C = cond(dx_ax)

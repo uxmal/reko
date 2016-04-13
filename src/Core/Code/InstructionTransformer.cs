@@ -85,7 +85,8 @@ namespace Reko.Core.Code
 		{
 			for (int i = 0; i < phi.Src.Arguments.Length; ++i)
 			{
-				phi.Src.Arguments[i] = phi.Src.Arguments[i].Accept(this);
+                var v = phi.Src.Arguments[i].Accept(this);
+                phi.Src.Arguments[i] = v;
 			}
 			phi.Dst = (Identifier) phi.Dst.Accept(this);
 			return phi;

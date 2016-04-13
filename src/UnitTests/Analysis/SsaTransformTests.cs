@@ -105,8 +105,6 @@ namespace Reko.UnitTests.Analysis
             sst.AddUseInstructions = false;
             sst.Transform();
 
-            proc.Dump(true);
-
             // Propagate values and simplify the results.
             // We hope the the sequence
             //   esp = fp - 4
@@ -272,18 +270,18 @@ ProcedureBuilder_exit:
     uses: r63_2 = fp
           r63_3 = fp - 0x00000004
           bp_6 = fp - 0x00000004
-          r63_14 = fp
+          r63_13 = fp
 r63_2: orig: r63
     def:  r63_2 = fp
 r63_3: orig: r63
     def:  r63_3 = fp - 0x00000004
 bp:bp
     def:  def bp
-    uses: dwLoc04_15 = bp
+    uses: dwLoc04_14 = bp
 Mem5: orig: Mem0
-    def:  dwLoc04_15 = bp
+    def:  dwLoc04_14 = bp
     uses: CZS_7 = cond(wArg04 - 0x0003)
-          bp_12 = dwLoc04_15
+          bp_12 = dwLoc04_14
 bp_6: orig: bp
     def:  bp_6 = fp - 0x00000004
 CZS_7: orig: CZS
@@ -292,25 +290,25 @@ CZS_7: orig: CZS
           use CZS_7
 r1_8: orig: r1
     def:  r1_8 = 0x00000001
-    uses: r1_20 = PHI(r1_9, r1_8)
+    uses: r1_19 = PHI(r1_9, r1_8)
 r1_9: orig: r1
     def:  r1_9 = 0x00000000
-    uses: r1_20 = PHI(r1_9, r1_8)
+    uses: r1_19 = PHI(r1_9, r1_8)
 wArg04:Stack +0004
     def:  def wArg04
     uses: CZS_7 = cond(wArg04 - 0x0003)
+dwLoc04_14: orig: dwLoc04
+    def:  dwLoc04_14 = bp
+    uses: bp_12 = dwLoc04_14
 bp_12: orig: bp
-    def:  bp_12 = dwLoc04_15
+    def:  bp_12 = dwLoc04_14
     uses: use bp_12
-dwLoc04_15: orig: dwLoc04
-    def:  dwLoc04_15 = bp
-    uses: bp_12 = dwLoc04_15
-r63_14: orig: r63
-    def:  r63_14 = fp
-    uses: use r63_14
-r1_20: orig: r1
-    def:  r1_20 = PHI(r1_9, r1_8)
-    uses: use r1_20
+r63_13: orig: r63
+    def:  r63_13 = fp
+    uses: use r63_13
+r1_19: orig: r1
+    def:  r1_19 = PHI(r1_9, r1_8)
+    uses: use r1_19
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -321,9 +319,9 @@ ProcedureBuilder_entry:
 	goto l1
 	// succ:  l1
 done:
-	r1_20 = PHI(r1_9, r1_8)
-	bp_12 = dwLoc04_15
-	r63_14 = fp
+	r1_19 = PHI(r1_9, r1_8)
+	bp_12 = dwLoc04_14
+	r63_13 = fp
 	return
 	// succ:  ProcedureBuilder_exit
 ge3:
@@ -333,7 +331,7 @@ ge3:
 l1:
 	r63_2 = fp
 	r63_3 = fp - 0x00000004
-	dwLoc04_15 = bp
+	dwLoc04_14 = bp
 	bp_6 = fp - 0x00000004
 	CZS_7 = cond(wArg04 - 0x0003)
 	branch Test(GE,CZS_7) ge3
@@ -345,8 +343,8 @@ l2:
 ProcedureBuilder_exit:
 	use bp_12
 	use CZS_7
-	use r1_20
-	use r63_14
+	use r1_19
+	use r63_13
 ";
             #endregion
 
@@ -388,16 +386,16 @@ ProcedureBuilder_exit:
     uses: r63_2 = fp
           r63_3 = fp - 0x00000004
           bp_6 = fp - 0x00000004
-          r63_15 = fp
+          r63_14 = fp
 r63_2: orig: r63
     def:  r63_2 = fp
 r63_3: orig: r63
     def:  r63_3 = fp - 0x00000004
 bp:bp
     def:  def bp
-    uses: dwLoc04_16 = bp
+    uses: dwLoc04_15 = bp
 Mem5: orig: Mem0
-    def:  dwLoc04_16 = bp
+    def:  dwLoc04_15 = bp
     uses: CZS_7 = wArg04 - 0x0003
 bp_6: orig: bp
     def:  bp_6 = fp - 0x00000004
@@ -406,39 +404,39 @@ CZS_7: orig: CZS
     uses: branch Test(GE,CZS_7) ge3
           use CZS_7
 Mem8: orig: Mem0
-    def:  wArg04_18 = -3
+    def:  wArg04_17 = -3
     uses: Mem12 = PHI(Mem10, Mem8)
 r1_9: orig: r1
     def:  r1_9 = 0x00000001
-    uses: r1_23 = PHI(r1, r1_9)
+    uses: r1_22 = PHI(r1, r1_9)
 Mem10: orig: Mem0
-    def:  wArg04_19 = 0x0003
+    def:  wArg04_18 = 0x0003
     uses: Mem12 = PHI(Mem10, Mem8)
+dwLoc04_15: orig: dwLoc04
+    def:  dwLoc04_15 = bp
+    uses: bp_13 = dwLoc04_15
+Mem12: orig: Mem0
+    def:  Mem12 = PHI(Mem10, Mem8)
+    uses: bp_13 = dwLoc04_15
+bp_13: orig: bp
+    def:  bp_13 = dwLoc04_15
+    uses: use bp_13
+r63_14: orig: r63
+    def:  r63_14 = fp
+    uses: use r63_14
 wArg04:Stack +0004
     def:  def wArg04
     uses: CZS_7 = wArg04 - 0x0003
-Mem12: orig: Mem0
-    def:  Mem12 = PHI(Mem10, Mem8)
-    uses: bp_13 = dwLoc04_16
-bp_13: orig: bp
-    def:  bp_13 = dwLoc04_16
-    uses: use bp_13
-dwLoc04_16: orig: dwLoc04
-    def:  dwLoc04_16 = bp
-    uses: bp_13 = dwLoc04_16
-r63_15: orig: r63
-    def:  r63_15 = fp
-    uses: use r63_15
+wArg04_17: orig: wArg04
+    def:  wArg04_17 = -3
 wArg04_18: orig: wArg04
-    def:  wArg04_18 = -3
-wArg04_19: orig: wArg04
-    def:  wArg04_19 = 0x0003
-r1_23: orig: r1
-    def:  r1_23 = PHI(r1, r1_9)
-    uses: use r1_23
+    def:  wArg04_18 = 0x0003
+r1_22: orig: r1
+    def:  r1_22 = PHI(r1, r1_9)
+    uses: use r1_22
 r1:r1
     def:  def r1
-    uses: r1_23 = PHI(r1, r1_9)
+    uses: r1_22 = PHI(r1, r1_9)
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -450,34 +448,34 @@ ProcedureBuilder_entry:
 	goto l1
 	// succ:  l1
 done:
-	r1_23 = PHI(r1, r1_9)
+	r1_22 = PHI(r1, r1_9)
 	Mem12 = PHI(Mem10, Mem8)
-	bp_13 = dwLoc04_16
-	r63_15 = fp
+	bp_13 = dwLoc04_15
+	r63_14 = fp
 	return
 	// succ:  ProcedureBuilder_exit
 ge3:
-	wArg04_18 = -3
+	wArg04_17 = -3
 	r1_9 = 0x00000001
 	goto done
 	// succ:  done
 l1:
 	r63_2 = fp
 	r63_3 = fp - 0x00000004
-	dwLoc04_16 = bp
+	dwLoc04_15 = bp
 	bp_6 = fp - 0x00000004
 	CZS_7 = wArg04 - 0x0003
 	branch Test(GE,CZS_7) ge3
 	// succ:  l2 ge3
 l2:
-	wArg04_19 = 0x0003
+	wArg04_18 = 0x0003
 	goto done
 	// succ:  done
 ProcedureBuilder_exit:
 	use bp_13
 	use CZS_7
-	use r1_23
-	use r63_15
+	use r1_22
+	use r63_14
 ";
             #endregion
 
@@ -578,20 +576,20 @@ ProcedureBuilder_exit:
     uses: r63_2 = fp
           r63_3 = fp - 0x00000004
           bp_6 = fp - 0x00000004
-          r63_18 = fp
+          r63_17 = fp
 r63_2: orig: r63
     def:  r63_2 = fp
 r63_3: orig: r63
     def:  r63_3 = fp - 0x00000004
 bp:bp
     def:  def bp
-    uses: dwLoc04_19 = bp
+    uses: dwLoc04_18 = bp
 Mem5: orig: Mem0
-    def:  dwLoc04_19 = bp
+    def:  dwLoc04_18 = bp
 bp_6: orig: bp
     def:  bp_6 = fp - 0x00000004
 Mem7: orig: Mem0
-    def:  dwLoc0C_20 = 0x00000000
+    def:  dwLoc0C_19 = 0x00000000
     uses: CZS_8 = wArg04 - 0x0003
 CZS_8: orig: CZS
     def:  CZS_8 = wArg04 - 0x0003
@@ -599,44 +597,44 @@ CZS_8: orig: CZS
           use CZS_8
 r1:r1
     def:  def r1
-    uses: dwLoc0C_22 = r1
-          dwLoc0C_23 = r1
+    uses: dwLoc0C_21 = r1
+          dwLoc0C_22 = r1
 Mem10: orig: Mem0
-    def:  dwLoc0C_22 = r1
+    def:  dwLoc0C_21 = r1
     uses: Mem13 = PHI(Mem11, Mem10)
 Mem11: orig: Mem0
-    def:  dwLoc0C_23 = r1
+    def:  dwLoc0C_22 = r1
     uses: Mem13 = PHI(Mem11, Mem10)
+dwLoc0C_19: orig: dwLoc0C
+    def:  dwLoc0C_19 = 0x00000000
+Mem13: orig: Mem0
+    def:  Mem13 = PHI(Mem11, Mem10)
+    uses: r1_14 = dwLoc0C_23
+          bp_16 = dwLoc04_18
+r1_14: orig: r1
+    def:  r1_14 = dwLoc0C_23
+    uses: use r1_14
+dwLoc04_18: orig: dwLoc04
+    def:  dwLoc04_18 = bp
+    uses: bp_16 = dwLoc04_18
+bp_16: orig: bp
+    def:  bp_16 = dwLoc04_18
+    uses: use bp_16
+r63_17: orig: r63
+    def:  r63_17 = fp
+    uses: use r63_17
 wArg04:Stack +0004
     def:  def wArg04
     uses: CZS_8 = wArg04 - 0x0003
-Mem13: orig: Mem0
-    def:  Mem13 = PHI(Mem11, Mem10)
-    uses: r1_14 = dwLoc0C_24
-          bp_17 = dwLoc04_19
-r1_14: orig: r1
-    def:  r1_14 = dwLoc0C_24
-    uses: use r1_14
-dwLoc0C_20: orig: dwLoc0C
-    def:  dwLoc0C_20 = 0x00000000
-dwLoc04_19: orig: dwLoc04
-    def:  dwLoc04_19 = bp
-    uses: bp_17 = dwLoc04_19
-bp_17: orig: bp
-    def:  bp_17 = dwLoc04_19
-    uses: use bp_17
-r63_18: orig: r63
-    def:  r63_18 = fp
-    uses: use r63_18
+dwLoc0C_21: orig: dwLoc0C
+    def:  dwLoc0C_21 = r1
+    uses: dwLoc0C_23 = PHI(dwLoc0C_22, dwLoc0C_21)
 dwLoc0C_22: orig: dwLoc0C
     def:  dwLoc0C_22 = r1
-    uses: dwLoc0C_24 = PHI(dwLoc0C_23, dwLoc0C_22)
+    uses: dwLoc0C_23 = PHI(dwLoc0C_22, dwLoc0C_21)
 dwLoc0C_23: orig: dwLoc0C
-    def:  dwLoc0C_23 = r1
-    uses: dwLoc0C_24 = PHI(dwLoc0C_23, dwLoc0C_22)
-dwLoc0C_24: orig: dwLoc0C
-    def:  dwLoc0C_24 = PHI(dwLoc0C_23, dwLoc0C_22)
-    uses: r1_14 = dwLoc0C_24
+    def:  dwLoc0C_23 = PHI(dwLoc0C_22, dwLoc0C_21)
+    uses: r1_14 = dwLoc0C_23
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -648,35 +646,35 @@ ProcedureBuilder_entry:
 	goto l1
 	// succ:  l1
 done:
-	dwLoc0C_24 = PHI(dwLoc0C_23, dwLoc0C_22)
+	dwLoc0C_23 = PHI(dwLoc0C_22, dwLoc0C_21)
 	Mem13 = PHI(Mem11, Mem10)
-	r1_14 = dwLoc0C_24
-	bp_17 = dwLoc04_19
-	r63_18 = fp
+	r1_14 = dwLoc0C_23
+	bp_16 = dwLoc04_18
+	r63_17 = fp
 	return
 	// succ:  ProcedureBuilder_exit
 ge3:
-	dwLoc0C_22 = r1
+	dwLoc0C_21 = r1
 	goto done
 	// succ:  done
 l1:
 	r63_2 = fp
 	r63_3 = fp - 0x00000004
-	dwLoc04_19 = bp
+	dwLoc04_18 = bp
 	bp_6 = fp - 0x00000004
-	dwLoc0C_20 = 0x00000000
+	dwLoc0C_19 = 0x00000000
 	CZS_8 = wArg04 - 0x0003
 	branch Test(GE,CZS_8) ge3
 	// succ:  l2 ge3
 l2:
-	dwLoc0C_23 = r1
+	dwLoc0C_22 = r1
 	goto done
 	// succ:  done
 ProcedureBuilder_exit:
-	use bp_17
+	use bp_16
 	use CZS_8
 	use r1_14
-	use r63_18
+	use r63_17
 ";
             #endregion
 
@@ -1896,18 +1894,19 @@ SCZO_4: orig: SCZO
     uses: branch Test(UGT,SCZO_4) m2
 bh_5: orig: bh
     def:  bh_5 = 0x00
+    uses: bh_5 = DPB(bx_7, bh_5, 8) (alias)
 bx:bx
     def:  def bx
     uses: bx_7 = DPB(bx, bl_3, 0) (alias)
 bx_7: orig: bx
     def:  bx_7 = DPB(bx, bl_3, 0) (alias)
     uses: bx_8 = DPB(bx_7, bh_5, 8) (alias)
+          bx_9 = bx_8 + bx_7
 bx_8: orig: bx
     def:  bx_8 = DPB(bx_7, bh_5, 8) (alias)
-    uses: bx_9 = bx_8 + bx_8
-          bx_9 = bx_8 + bx_8
+    uses: bx_9 = bx_8 + bx_7
 bx_9: orig: bx
-    def:  bx_9 = bx_8 + bx_8
+    def:  bx_9 = bx_8 + bx_7
     uses: Mem10[bx_9:word16] = 0x0000
 Mem10: orig: Mem0
     def:  Mem10[bx_9:word16] = 0x0000
@@ -1928,7 +1927,7 @@ m0:
 m1:
 	bh_5 = 0x00
 	bx_8 = DPB(bx_7, bh_5, 8) (alias)
-	bx_9 = bx_8 + bx_8
+	bx_9 = bx_8 + bx_7
 	Mem10[bx_9:word16] = 0x0000
 	// succ:  m2
 m2:
@@ -2062,35 +2061,32 @@ ProcedureBuilder_exit:
             var sExp =
             #region Expected
 @"Mem1: orig: Mem0
-    def:  Mem1 = PHI(Mem0, Mem5)
+    def:  Mem1 = PHI(Mem0, Mem3)
     uses: branch Mem1[0x00004010:bool] m4
           branch Mem1[0x00004011:bool] m4
 r1_2: orig: r1
     def:  r1_2 = 0x00000003
-Mem5: orig: Mem0
-    def:  Mem5[0x00004020:bool] = true
-    uses: Mem1 = PHI(Mem0, Mem5)
+Mem3: orig: Mem0
+    def:  Mem3[0x00004020:bool] = true
+    uses: Mem1 = PHI(Mem0, Mem3)
 Mem0:Global memory
     def:  def Mem0
-    uses: Mem1 = PHI(Mem0, Mem5)
-r1:r1
-    def:  def r1
+    uses: Mem1 = PHI(Mem0, Mem3)
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
 	def Mem0
-	def r1
 	// succ:  m1
 m1:
-	Mem1 = PHI(Mem0, Mem5)
+	Mem1 = PHI(Mem0, Mem3)
 	branch Mem1[0x00004010:bool] m4
 	// succ:  m2 m4
 m2:
 	branch Mem1[0x00004011:bool] m4
 	// succ:  m3 m4
 m3:
-	Mem5[0x00004020:bool] = true
+	Mem3[0x00004020:bool] = true
 	goto m1
 	// succ:  m1
 m4:

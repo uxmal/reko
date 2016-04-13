@@ -7,13 +7,13 @@ LiveLoopMock_entry:
 	goto loop
 	// succ:  loop
 l1:
-	return i_5
+	return i_6
 	// succ:  LiveLoopMock_exit
 loop:
-	i_1 = PHI(i, i_3)
-	i_3 = i_5 + 0x00000001
-	i_5 = i_1
-	branch Mem0[i_3:byte] != 0 loop
+	i_2 = PHI(i, i_4)
+	i_4 = i_6 + 0x00000001
+	i_6 = i_2
+	branch Mem0[i_4:byte] != 0 loop
 	goto l1
 	// succ:  l1 loop
 LiveLoopMock_exit:

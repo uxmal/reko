@@ -4,23 +4,23 @@ void fn0C00_0000(word16 si, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	word16 dx_11 = 0x0000
-	word16 cx_12 = 0x0004
-	word16 di_13 = 0x0004
+	word16 dx_12 = 0x0000
+	word16 cx_13 = 0x0004
+	word16 di_14 = 0x0004
 	// succ:  l0C00_0008
 l0C00_0008:
 	si = si + 0x0002
-	dx_11 = dx_11 + Mem0[ds:si:word16]
-	cx_12 = cx_12 - 0x0001
-	branch cx_12 != 0x0000 l0C00_0008
+	dx_12 = dx_12 + Mem0[ds:si:word16]
+	cx_13 = cx_13 - 0x0001
+	branch cx_13 != 0x0000 l0C00_0008
 	// succ:  l0C00_000D l0C00_0008
 l0C00_000D:
-	cx_12 = 0x0004
-	di_13 = di_13 - 0x0001
-	branch di_13 != 0x0000 l0C00_0008
+	cx_13 = 0x0004
+	di_14 = di_14 - 0x0001
+	branch di_14 != 0x0000 l0C00_0008
 	// succ:  l0C00_0013 l0C00_0008
 l0C00_0013:
-	Mem29[ds:0x0300:word16] = dx_11
+	Mem30[ds:0x0300:word16] = dx_12
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

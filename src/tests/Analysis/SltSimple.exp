@@ -1,15 +1,15 @@
 a:Local -0004
     def:  def a
-    uses: Mem3[0x10000000:word32] = a + b
-          Mem4[0x10000004:word32] = a
+    uses: Mem4[0x10000000:word32] = a + b
+          Mem5[0x10000004:word32] = a
 b:Local -0008
     def:  def b
-    uses: Mem3[0x10000000:word32] = a + b
-c_2: orig: c
-Mem3: orig: Mem0
-    def:  Mem3[0x10000000:word32] = a + b
+    uses: Mem4[0x10000000:word32] = a + b
+c_3: orig: c
 Mem4: orig: Mem0
-    def:  Mem4[0x10000004:word32] = a
+    def:  Mem4[0x10000000:word32] = a + b
+Mem5: orig: Mem0
+    def:  Mem5[0x10000004:word32] = a
 // SimpleMock
 void SimpleMock()
 	// liveIn: 
@@ -19,8 +19,8 @@ SimpleMock_entry:
 	// liveOut: a b
 	// liveIn: a b
 l1:
-	Mem3[0x10000000:word32] = a + b
-	Mem4[0x10000004:word32] = a
+	Mem4[0x10000000:word32] = a + b
+	Mem5[0x10000004:word32] = a
 	// liveOut: 
 	// liveIn: 
 SimpleMock_exit:

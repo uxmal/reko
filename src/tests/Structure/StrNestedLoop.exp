@@ -2,24 +2,24 @@
 // Return size: 0
 void fn0C00_0000(word16 bx, word16 si, word16 di, selector ds)
 fn0C00_0000_entry:
-	word16 dx_15 = 0x0004
+	word16 dx_16 = 0x0004
 	goto l0C00_0003
 	// succ:  l0C00_0003
 l0C00_0000:
 l0C00_0003:
-	word16 cx_18 = 0x0004
+	word16 cx_19 = 0x0004
 	// succ:  l0C00_0006
 l0C00_0006:
-	Mem28[ds:di:word32] = Mem0[ds:si:word32] + Mem0[ds:bx:word32]
+	Mem29[ds:di:word32] = Mem0[ds:si:word32] + Mem0[ds:bx:word32]
 	si = si + 0x0004
 	bx = bx + 0x0004
 	di = di + 0x0004
-	cx_18 = cx_18 - 0x0001
-	branch cx_18 != 0x0000 l0C00_0006
+	cx_19 = cx_19 - 0x0001
+	branch cx_19 != 0x0000 l0C00_0006
 	// succ:  l0C00_001A l0C00_0006
 l0C00_001A:
-	dx_15 = dx_15 - 0x0001
-	branch dx_15 != 0x0000 l0C00_0003
+	dx_16 = dx_16 - 0x0001
+	branch dx_16 != 0x0000 l0C00_0003
 	// succ:  l0C00_001D l0C00_0003
 l0C00_001D:
 	return
@@ -28,20 +28,20 @@ fn0C00_0000_exit:
 
 void fn0C00_0000(word16 bx, word16 si, word16 di, selector ds)
 {
-	word16 dx_15 = 0x0004;
+	word16 dx_16 = 0x0004;
 	do
 	{
-		word16 cx_18 = 0x0004;
+		word16 cx_19 = 0x0004;
 		do
 		{
-			Mem28[ds:di:word32] = Mem0[ds:si:word32] + Mem0[ds:bx:word32];
+			Mem29[ds:di:word32] = Mem0[ds:si:word32] + Mem0[ds:bx:word32];
 			si = si + 0x0004;
 			bx = bx + 0x0004;
 			di = di + 0x0004;
-			cx_18 = cx_18 - 0x0001;
-		} while (cx_18 != 0x0000);
-		dx_15 = dx_15 - 0x0001;
-	} while (dx_15 != 0x0000);
+			cx_19 = cx_19 - 0x0001;
+		} while (cx_19 != 0x0000);
+		dx_16 = dx_16 - 0x0001;
+	} while (dx_16 != 0x0000);
 	return;
 }
 ===========================

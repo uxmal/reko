@@ -123,11 +123,11 @@ void test()
 test_entry:
 	// succ:  l1
 l1:
-	r1_0 = 0x00000003
+	r1_1 = 0x00000003
 	return
 	// succ:  test_exit
 test_exit:
-	use r1_0
+	use r1_1
 
 test:
     Preserved: 
@@ -159,12 +159,12 @@ test_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	r1_1 = Mem0[0x00003000:word32]
+	r1_2 = Mem0[0x00003000:word32]
 	return
 	// succ:  test_exit
 test_exit:
 	use Mem0
-	use r1_1
+	use r1_2
 
 test:
     Preserved: Global memory
@@ -205,15 +205,15 @@ l1:
 	goto m_lt
 	// succ:  m_lt m_ge
 m_ge:
-	r1_1 = PHI(r1, r1_2)
+	r1_2 = PHI(r1, r1_3)
 	return
 	// succ:  test_exit
 m_lt:
-	r1_2 = 0x00000000
+	r1_3 = 0x00000000
 	goto m_ge
 	// succ:  m_ge
 test_exit:
-	use r1_1
+	use r1_2
 
 test:
     Preserved: 
@@ -260,25 +260,25 @@ test_entry:
 	def r1
 	// succ:  l1
 l1:
-	r2_1 = r1
+	r2_2 = r1
 	branch r1 >= 0x00000000 m_ge
 	goto m_lt
 	// succ:  m_lt m_ge
 m_done:
-	r1_2 = PHI(r1_3, r1_4)
+	r1_3 = PHI(r1_4, r1_5)
 	return
 	// succ:  test_exit
 m_ge:
-	r1_4 = r2_1
+	r1_5 = r2_2
 	goto m_done
 	// succ:  m_done
 m_lt:
-	r1_3 = r2_1
+	r1_4 = r2_2
 	goto m_done
 	// succ:  m_done
 test_exit:
-	use r1_2
-	use r2_1
+	use r1_3
+	use r2_2
 
 test:
     Preserved: r1
@@ -326,29 +326,29 @@ test_entry:
 	def r1
 	// succ:  l1
 l1:
-	r2_1 = r1
-	r3_2 = r2_1
-	r1_3 = 0x0000000A
+	r2_2 = r1
+	r3_3 = r2_2
+	r1_4 = 0x0000000A
 	// succ:  m_loopHead
 m_loopHead:
-	r2_4 = PHI(r2_1, r2_8)
-	r1_5 = PHI(r1_3, r1_7)
-	branch r1_5 >= 0x00000000 m_loopStatements
+	r2_5 = PHI(r2_2, r2_9)
+	r1_6 = PHI(r1_4, r1_8)
+	branch r1_6 >= 0x00000000 m_loopStatements
 	goto m_xit
 	// succ:  m_xit m_loopStatements
 m_loopStatements:
-	r1_7 = r1_5 - 0x00000001
-	r2_8 = r3_2
+	r1_8 = r1_6 - 0x00000001
+	r2_9 = r3_3
 	goto m_loopHead
 	// succ:  m_loopHead
 m_xit:
-	r1_6 = r2_4
+	r1_7 = r2_5
 	return
 	// succ:  test_exit
 test_exit:
-	use r1_6
-	use r2_4
-	use r3_2
+	use r1_7
+	use r2_5
+	use r3_3
 
 test:
     Preserved: r1

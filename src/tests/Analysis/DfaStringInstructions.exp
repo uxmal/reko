@@ -10,11 +10,11 @@ void fn0C00_0000(word32 eax, word16 si, selector es, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem4[ds:0x02FC:word32] = eax * 0x00000005
-	Mem9[ds:0x0300:word32] = Mem4[ds:si:word32]
-	Mem12[ds:0x0304:word32] = Mem9[ds:si + 0x0004:word32]
-	Mem15[ds:0x0308:word16] = Mem12[ds:si + 0x0008:word16]
-	Mem18[ds:0x030A:word16] = Mem15[ds:si + 0x000A:word16]
+	Mem5[ds:0x02FC:word32] = eax * 0x00000005
+	Mem10[ds:0x0300:word32] = Mem5[ds:si:word32]
+	Mem13[ds:0x0304:word32] = Mem10[ds:si + 0x0004:word32]
+	Mem16[ds:0x0308:word16] = Mem13[ds:si + 0x0008:word16]
+	Mem19[ds:0x030A:word16] = Mem16[ds:si + 0x000A:word16]
 	fn0C00_0026(es, ds)
 	return
 	// succ:  fn0C00_0000_exit
@@ -32,19 +32,19 @@ void fn0C00_0026(selector es, selector ds)
 fn0C00_0026_entry:
 	// succ:  l0C00_0026
 l0C00_0026:
-	word16 cx_12 = Mem0[ds:0x0400:word16]
-	word16 di_11 = Mem0[ds:0x0402:word16]
+	word16 cx_13 = Mem0[ds:0x0400:word16]
+	word16 di_12 = Mem0[ds:0x0402:word16]
 	// succ:  l0C00_0030
 l0C00_0030:
-	branch cx_12 == 0x0000 l0C00_0032
+	branch cx_13 == 0x0000 l0C00_0032
 	// succ:  l0C00_0030_1 l0C00_0032
 l0C00_0030_1:
-	di_11 = di_11 + 0x0001
-	cx_12 = cx_12 - 0x0001
-	branch 0x00 != Mem0[es:di_11:byte] l0C00_0030
+	di_12 = di_12 + 0x0001
+	cx_13 = cx_13 - 0x0001
+	branch 0x00 != Mem0[es:di_12:byte] l0C00_0030
 	// succ:  l0C00_0032 l0C00_0030
 l0C00_0032:
-	Mem17[ds:0x0404:word16] = di_11
+	Mem18[ds:0x0404:word16] = di_12
 	return
 	// succ:  fn0C00_0026_exit
 fn0C00_0026_exit:

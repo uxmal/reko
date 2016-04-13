@@ -22,7 +22,7 @@ ax_6: orig: ax
 ax_7: orig: ax
     def:  ax_7 = ax_6 | ax_6
     uses: SZO_8 = cond(ax_7)
-          ax_14 = PHI(ax_7, ax_10)
+          ax_13 = PHI(ax_7, ax_10)
 SZO_8: orig: SZO
     def:  SZO_8 = cond(ax_7)
     uses: branch Test(NE,SZO_8) l0C00_000C
@@ -32,13 +32,13 @@ C_9: orig: C
     uses: use C_9 | SZO_8
 ax_10: orig: ax
     def:  ax_10 = 0xFFFF
-    uses: ax_14 = PHI(ax_7, ax_10)
+    uses: ax_13 = PHI(ax_7, ax_10)
 sp_12: orig: sp
     def:  sp_12 = bp_3
     uses: use sp_12
-ax_14: orig: ax
-    def:  ax_14 = PHI(ax_7, ax_10)
-    uses: use ax_14
+ax_13: orig: ax
+    def:  ax_13 = PHI(ax_7, ax_10)
+    uses: use ax_13
 // fn0C00_0000
 // Return size: 2
 void fn0C00_0000()
@@ -60,12 +60,12 @@ l0C00_0009:
 	ax_10 = 0xFFFF
 	// succ:  l0C00_000C
 l0C00_000C:
-	ax_14 = PHI(ax_7, ax_10)
+	ax_13 = PHI(ax_7, ax_10)
 	sp_12 = bp_3
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
-	use ax_14
+	use ax_13
 	use bp_3
 	use C_9 | SZO_8
 	use sp_12

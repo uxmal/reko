@@ -285,7 +285,7 @@ namespace Reko.UnitTests.Analysis
             var vp = new ValuePropagator(arch, sst.SsaState);
             var stm = m.Procedure.EntryBlock.Succ[0].Statements.Last;
 			vp.Transform(stm);
-			Assert.AreEqual("branch x_1 == 0x00000002 test", stm.Instruction.ToString());
+			Assert.AreEqual("branch x_2 == 0x00000002 test", stm.Instruction.ToString());
 		}
 
 		[Test]
@@ -308,26 +308,26 @@ namespace Reko.UnitTests.Analysis
             sst.Transform();
             ssaIds = sst.SsaState.Identifiers;
             var stms = m.Procedure.EntryBlock.Succ[0].Statements;
-			Assert.AreEqual("x_1 = Mem0[0x10004000:word32]", stms[0].ToString());
-			Assert.AreEqual("y_2 = x_1", stms[1].ToString());
-			Assert.AreEqual("z_3 = y_2 + 0x00000002", stms[2].ToString());
-			Assert.AreEqual("w_4 = y_2", stms[3].ToString());
-            Debug.Print("{0}", string.Join(", ", ssaIds.Single(i => i.Identifier.Name == "x_1").Uses));
-            Debug.Print("{0}", string.Join(", ", ssaIds.Single(i => i.Identifier.Name == "y_2").Uses));
-            Debug.Print("{0}", string.Join(", ", ssaIds.Single(i => i.Identifier.Name == "z_3").Uses));
-            Debug.Print("{0}", string.Join(", ", ssaIds.Single(i => i.Identifier.Name == "w_4").Uses));
+			Assert.AreEqual("x_2 = Mem0[0x10004000:word32]", stms[0].ToString());
+			Assert.AreEqual("y_3 = x_2", stms[1].ToString());
+			Assert.AreEqual("z_4 = y_3 + 0x00000002", stms[2].ToString());
+			Assert.AreEqual("w_5 = y_3", stms[3].ToString());
+            //Debug.Print("{0}", string.Join(", ", ssaIds.Single(i => i.Identifier.Name == "x_1").Uses));
+            //Debug.Print("{0}", string.Join(", ", ssaIds.Single(i => i.Identifier.Name == "y_2").Uses));
+            //Debug.Print("{0}", string.Join(", ", ssaIds.Single(i => i.Identifier.Name == "z_3").Uses));
+            //Debug.Print("{0}", string.Join(", ", ssaIds.Single(i => i.Identifier.Name == "w_4").Uses));
 
 
             ValuePropagator vp = new ValuePropagator(arch, sst.SsaState);
             stms.ForEach(s => vp.Transform(s));
 
-			Assert.AreEqual("x_1 = Mem0[0x10004000:word32]", stms[0].ToString());
-			Assert.AreEqual("y_2 = x_1", stms[1].ToString());
-			Assert.AreEqual("z_3 = x_1 + 0x00000002", stms[2].ToString());
-			Assert.AreEqual("w_4 = x_1", stms[3].ToString());
+			Assert.AreEqual("x_2 = Mem0[0x10004000:word32]", stms[0].ToString());
+			Assert.AreEqual("y_3 = x_2", stms[1].ToString());
+			Assert.AreEqual("z_4 = x_2 + 0x00000002", stms[2].ToString());
+			Assert.AreEqual("w_5 = x_2", stms[3].ToString());
 
-            Assert.AreEqual(3, ssaIds.Single(i => i.Identifier.Name == "x_1").Uses.Count);
-			Assert.AreEqual(0, ssaIds.Single(i => i.Identifier.Name == "y_2").Uses.Count);
+            Assert.AreEqual(3, ssaIds.Single(i => i.Identifier.Name == "x_2").Uses.Count);
+			Assert.AreEqual(0, ssaIds.Single(i => i.Identifier.Name == "y_3").Uses.Count);
 		}
 
 		[Test]
@@ -530,22 +530,22 @@ namespace Reko.UnitTests.Analysis
             #region Expected
 @"a2:a2
     def:  def a2
-    uses: tmp_2 = Mem0[a2:byte]
-          Mem5[a2 + 0x00000004:byte] = tmp_2
+    uses: tmp_3 = Mem0[a2:byte]
+          Mem6[a2 + 0x00000004:byte] = tmp_3
 Mem0:Global memory
     def:  def Mem0
-    uses: tmp_2 = Mem0[a2:byte]
-tmp_2: orig: tmp
-    def:  tmp_2 = Mem0[a2:byte]
-    uses: d3_4 = DPB(d3, tmp_2, 0)
-          Mem5[a2 + 0x00000004:byte] = tmp_2
+    uses: tmp_3 = Mem0[a2:byte]
+tmp_3: orig: tmp
+    def:  tmp_3 = Mem0[a2:byte]
+    uses: d3_5 = DPB(d3, tmp_3, 0)
+          Mem6[a2 + 0x00000004:byte] = tmp_3
 d3:d3
     def:  def d3
-    uses: d3_4 = DPB(d3, tmp_2, 0)
-d3_4: orig: d3
-    def:  d3_4 = DPB(d3, tmp_2, 0)
-Mem5: orig: Mem0
-    def:  Mem5[a2 + 0x00000004:byte] = tmp_2
+    uses: d3_5 = DPB(d3, tmp_3, 0)
+d3_5: orig: d3
+    def:  d3_5 = DPB(d3, tmp_3, 0)
+Mem6: orig: Mem0
+    def:  Mem6[a2 + 0x00000004:byte] = tmp_3
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -555,9 +555,9 @@ ProcedureBuilder_entry:
 	def d3
 	// succ:  l1
 l1:
-	tmp_2 = Mem0[a2:byte]
-	d3_4 = DPB(d3, tmp_2, 0)
-	Mem5[a2 + 0x00000004:byte] = tmp_2
+	tmp_3 = Mem0[a2:byte]
+	d3_5 = DPB(d3, tmp_3, 0)
+	Mem6[a2 + 0x00000004:byte] = tmp_3
 ProcedureBuilder_exit:
 ";
             #endregion
@@ -583,22 +583,22 @@ ProcedureBuilder_exit:
             #region Expected
 @"a2:a2
     def:  def a2
-    uses: tmp_2 = Mem0[a2:word16]
-          Mem5[a2 + 0x00000004:byte] = (byte) tmp_2
+    uses: tmp_3 = Mem0[a2:word16]
+          Mem6[a2 + 0x00000004:byte] = (byte) tmp_3
 Mem0:Global memory
     def:  def Mem0
-    uses: tmp_2 = Mem0[a2:word16]
-tmp_2: orig: tmp
-    def:  tmp_2 = Mem0[a2:word16]
-    uses: d3_4 = DPB(d3, tmp_2, 0)
-          Mem5[a2 + 0x00000004:byte] = (byte) tmp_2
+    uses: tmp_3 = Mem0[a2:word16]
+tmp_3: orig: tmp
+    def:  tmp_3 = Mem0[a2:word16]
+    uses: d3_5 = DPB(d3, tmp_3, 0)
+          Mem6[a2 + 0x00000004:byte] = (byte) tmp_3
 d3:d3
     def:  def d3
-    uses: d3_4 = DPB(d3, tmp_2, 0)
-d3_4: orig: d3
-    def:  d3_4 = DPB(d3, tmp_2, 0)
-Mem5: orig: Mem0
-    def:  Mem5[a2 + 0x00000004:byte] = (byte) tmp_2
+    uses: d3_5 = DPB(d3, tmp_3, 0)
+d3_5: orig: d3
+    def:  d3_5 = DPB(d3, tmp_3, 0)
+Mem6: orig: Mem0
+    def:  Mem6[a2 + 0x00000004:byte] = (byte) tmp_3
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -608,9 +608,9 @@ ProcedureBuilder_entry:
 	def d3
 	// succ:  l1
 l1:
-	tmp_2 = Mem0[a2:word16]
-	d3_4 = DPB(d3, tmp_2, 0)
-	Mem5[a2 + 0x00000004:byte] = (byte) tmp_2
+	tmp_3 = Mem0[a2:word16]
+	d3_5 = DPB(d3, tmp_3, 0)
+	Mem6[a2 + 0x00000004:byte] = (byte) tmp_3
 ProcedureBuilder_exit:
 ";
             #endregion

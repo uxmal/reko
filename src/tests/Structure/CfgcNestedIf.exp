@@ -4,11 +4,11 @@ void fn0C00_0000(word16 ax, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	byte cl_13
+	byte cl_14
 	branch ax < 0x0000 l0C00_0012
 	// succ:  l0C00_0005 l0C00_0012
 l0C00_0005:
-	cl_13 = 0x00
+	cl_14 = 0x00
 	branch ax <= 0x000C l0C00_000F
 	// succ:  l0C00_000C l0C00_000F
 l0C00_000C:
@@ -18,15 +18,15 @@ l0C00_000F:
 	goto l0C00_001C
 	// succ:  l0C00_001C
 l0C00_0012:
-	cl_13 = 0x01
+	cl_14 = 0x01
 	branch ax >= 0xFFF4 l0C00_001C
 	// succ:  l0C00_0019 l0C00_001C
 l0C00_0019:
 	ax = 0xFFF4
 	// succ:  l0C00_001C
 l0C00_001C:
-	Mem10[ds:0x0300:word16] = ax
-	Mem12[ds:0x0302:byte] = cl_13
+	Mem11[ds:0x0300:word16] = ax
+	Mem13[ds:0x0302:byte] = cl_14
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -35,13 +35,13 @@ fn0C00_0000_exit:
 // Return size: 0
 void fn0C00_0000(word16 ax, selector ds)
 fn0C00_0000_entry:
-	byte cl_13
+	byte cl_14
 	branch ax < 0x0000 l0C00_0012
 	goto l0C00_0005
 	// succ:  l0C00_0005 l0C00_0012
 l0C00_0000:
 l0C00_0005:
-	cl_13 = 0x00
+	cl_14 = 0x00
 	branch ax <= 0x000C l0C00_000F
 	// succ:  l0C00_000C l0C00_000F
 l0C00_000C:
@@ -51,15 +51,15 @@ l0C00_000F:
 	goto l0C00_001C
 	// succ:  l0C00_001C
 l0C00_0012:
-	cl_13 = 0x01
+	cl_14 = 0x01
 	branch ax >= 0xFFF4 l0C00_001C
 	// succ:  l0C00_0019 l0C00_001C
 l0C00_0019:
 	ax = 0xFFF4
 	// succ:  l0C00_001C
 l0C00_001C:
-	Mem10[ds:0x0300:word16] = ax
-	Mem12[ds:0x0302:byte] = cl_13
+	Mem11[ds:0x0300:word16] = ax
+	Mem13[ds:0x0302:byte] = cl_14
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

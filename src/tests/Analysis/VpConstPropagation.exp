@@ -1,26 +1,26 @@
 = fn0C00_0000 ========================
 fp:fp
     def:  def fp
-    uses: sp_1 = fp
-sp_1: orig: sp
-    def:  sp_1 = fp
-ax_2: orig: ax
-    def:  ax_2 = 0x0000
-SZO_3: orig: SZO
-    def:  SZO_3 = cond(0x0000)
-C_4: orig: C
-    def:  C_4 = false
-Mem5: orig: Mem0
-    def:  Mem5[ds:0x0300:word16] = 0x0000
+    uses: sp_2 = fp
+sp_2: orig: sp
+    def:  sp_2 = fp
+ax_3: orig: ax
+    def:  ax_3 = 0x0000
+SZO_4: orig: SZO
+    def:  SZO_4 = cond(0x0000)
+C_5: orig: C
+    def:  C_5 = false
+Mem6: orig: Mem0
+    def:  Mem6[ds:0x0300:word16] = 0x0000
 ds:ds
     def:  def ds
-    uses: Mem5[ds:0x0300:word16] = 0x0000
-          Mem7[ds:0x0302:word16] = 0x0000
-          Mem8[ds:0x0304:word16] = 0x0000
-Mem7: orig: Mem0
-    def:  Mem7[ds:0x0302:word16] = 0x0000
+    uses: Mem6[ds:0x0300:word16] = 0x0000
+          Mem8[ds:0x0302:word16] = 0x0000
+          Mem9[ds:0x0304:word16] = 0x0000
 Mem8: orig: Mem0
-    def:  Mem8[ds:0x0304:word16] = 0x0000
+    def:  Mem8[ds:0x0302:word16] = 0x0000
+Mem9: orig: Mem0
+    def:  Mem9[ds:0x0304:word16] = 0x0000
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(selector ds)
@@ -29,39 +29,39 @@ fn0C00_0000_entry:
 	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp_1 = fp
-	ax_2 = 0x0000
-	SZO_3 = cond(0x0000)
-	C_4 = false
-	Mem5[ds:0x0300:word16] = 0x0000
-	Mem7[ds:0x0302:word16] = 0x0000
-	Mem8[ds:0x0304:word16] = 0x0000
+	sp_2 = fp
+	ax_3 = 0x0000
+	SZO_4 = cond(0x0000)
+	C_5 = false
+	Mem6[ds:0x0300:word16] = 0x0000
+	Mem8[ds:0x0302:word16] = 0x0000
+	Mem9[ds:0x0304:word16] = 0x0000
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 
 fp:fp
     def:  def fp
-    uses: sp_1 = fp
-sp_1: orig: sp
-    def:  sp_1 = fp
-ax_2: orig: ax
-    def:  ax_2 = 0x0000
-SZO_3: orig: SZO
-    def:  SZO_3 = cond(0x0000)
-C_4: orig: C
-    def:  C_4 = false
-Mem5: orig: Mem0
-    def:  Mem5[ds:0x0300:word16] = 0x0000
+    uses: sp_2 = fp
+sp_2: orig: sp
+    def:  sp_2 = fp
+ax_3: orig: ax
+    def:  ax_3 = 0x0000
+SZO_4: orig: SZO
+    def:  SZO_4 = cond(0x0000)
+C_5: orig: C
+    def:  C_5 = false
+Mem6: orig: Mem0
+    def:  Mem6[ds:0x0300:word16] = 0x0000
 ds:ds
     def:  def ds
-    uses: Mem5[ds:0x0300:word16] = 0x0000
-          Mem7[ds:0x0302:word16] = 0x0000
-          Mem8[ds:0x0304:word16] = 0x0000
-Mem7: orig: Mem0
-    def:  Mem7[ds:0x0302:word16] = 0x0000
+    uses: Mem6[ds:0x0300:word16] = 0x0000
+          Mem8[ds:0x0302:word16] = 0x0000
+          Mem9[ds:0x0304:word16] = 0x0000
 Mem8: orig: Mem0
-    def:  Mem8[ds:0x0304:word16] = 0x0000
+    def:  Mem8[ds:0x0302:word16] = 0x0000
+Mem9: orig: Mem0
+    def:  Mem9[ds:0x0304:word16] = 0x0000
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(selector ds)
@@ -70,13 +70,13 @@ fn0C00_0000_entry:
 	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp_1 = fp
-	ax_2 = 0x0000
-	SZO_3 = cond(0x0000)
-	C_4 = false
-	Mem5[ds:0x0300:word16] = 0x0000
-	Mem7[ds:0x0302:word16] = 0x0000
-	Mem8[ds:0x0304:word16] = 0x0000
+	sp_2 = fp
+	ax_3 = 0x0000
+	SZO_4 = cond(0x0000)
+	C_5 = false
+	Mem6[ds:0x0300:word16] = 0x0000
+	Mem8[ds:0x0302:word16] = 0x0000
+	Mem9[ds:0x0304:word16] = 0x0000
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

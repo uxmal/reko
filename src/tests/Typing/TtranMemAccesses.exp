@@ -6,7 +6,7 @@ fn0C00_0000_entry:
 l0C00_0000:
 	fn0C00_000C(ds)
 	fn0C00_0015(ds)
-	Mem3[ds:0x0100:word16] = 0x0000
+	Mem4[ds:0x0100:word16] = 0x0000
 	// succ:  l0C00_0006_thunk_fn0C00_000C
 l0C00_0006_thunk_fn0C00_000C:
 	fn0C00_000C(ds)
@@ -20,7 +20,7 @@ void fn0C00_000C(selector ds)
 fn0C00_000C_entry:
 	// succ:  l0C00_000C
 l0C00_000C:
-	Mem5[ds:0x0302:word16] = Mem0[ds:0x0300:word16]
+	Mem6[ds:0x0302:word16] = Mem0[ds:0x0300:word16]
 	return
 	// succ:  fn0C00_000C_exit
 fn0C00_000C_exit:
@@ -31,7 +31,7 @@ void fn0C00_0015(selector ds)
 fn0C00_0015_entry:
 	// succ:  l0C00_0015
 l0C00_0015:
-	Mem5[ds:0x0202:word16] = Mem0[ds:0x0200:word16]
+	Mem6[ds:0x0202:word16] = Mem0[ds:0x0200:word16]
 	return
 	// succ:  fn0C00_0015_exit
 fn0C00_0015_exit:
@@ -99,7 +99,7 @@ T_12: (in 0x0100 : word16)
   Class: Eq_12
   DataType: (memptr (ptr Eq_2) word16)
   OrigDataType: (memptr T_2 (struct (0 T_13 t0000)))
-T_13: (in Mem3[ds:0x0100:word16] : word16)
+T_13: (in Mem4[ds:0x0100:word16] : word16)
   Class: Eq_11
   DataType: word16
   OrigDataType: word16
@@ -123,7 +123,7 @@ T_18: (in 0x0302 : word16)
   Class: Eq_18
   DataType: (memptr (ptr Eq_2) word16)
   OrigDataType: (memptr T_5 (struct (0 T_19 t0000)))
-T_19: (in Mem5[ds:0x0302:word16] : word16)
+T_19: (in Mem6[ds:0x0302:word16] : word16)
   Class: Eq_17
   DataType: word16
   OrigDataType: word16
@@ -139,7 +139,7 @@ T_22: (in 0x0202 : word16)
   Class: Eq_22
   DataType: (memptr (ptr Eq_2) word16)
   OrigDataType: (memptr T_9 (struct (0 T_23 t0000)))
-T_23: (in Mem5[ds:0x0202:word16] : word16)
+T_23: (in Mem6[ds:0x0202:word16] : word16)
   Class: Eq_21
   DataType: word16
   OrigDataType: word16

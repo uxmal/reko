@@ -1,43 +1,43 @@
 r0:r0
     def:  def r0
-    uses: r0_1 = PHI(r0, r0_9, r0_12)
-r0_1: orig: r0
-    def:  r0_1 = PHI(r0, r0_9, r0_12)
-    uses: r1_3 = Mem0[r0_1:byte]
-          r0_4 = r0_1 + 0x00000001
+    uses: r0_2 = PHI(r0, r0_10, r0_13)
+r0_2: orig: r0
+    def:  r0_2 = PHI(r0, r0_10, r0_13)
+    uses: r1_4 = Mem0[r0_2:byte]
+          r0_5 = r0_2 + 0x00000001
 Mem0:Global memory
     def:  def Mem0
-    uses: r1_3 = Mem0[r0_1:byte]
-          Mem7[0x33333330:word32] = Mem0[r0_4:byte]
-          Mem13[0x33333330:word32] = Mem0[r0_4:byte]
-r1_3: orig: r1
-    def:  r1_3 = Mem0[r0_1:byte]
-    uses: branch r1_3 != 1 not1
-          branch r1_3 != 2 done
-r0_4: orig: r0
-    def:  r0_4 = r0_1 + 0x00000001
-    uses: Mem7[0x33333330:word32] = Mem0[r0_4:byte]
-          Mem13[0x33333330:word32] = Mem0[r0_4:byte]
-          r0_12 = r0_4 + 0x00000001
-          Mem10[0x33333331:word32] = Mem7[r0_4 + 0x00000001:byte]
-          r0_9 = r0_4 + 0x00000002
-r1_5: orig: r1
-r0_6: orig: r0
-Mem7: orig: Mem0
-    def:  Mem7[0x33333330:word32] = Mem0[r0_4:byte]
-    uses: Mem10[0x33333331:word32] = Mem7[r0_4 + 0x00000001:byte]
-r1_8: orig: r1
-r0_9: orig: r0
-    def:  r0_9 = r0_4 + 0x00000002
-    uses: r0_1 = PHI(r0, r0_9, r0_12)
-Mem10: orig: Mem0
-    def:  Mem10[0x33333331:word32] = Mem7[r0_4 + 0x00000001:byte]
-r1_11: orig: r1
-r0_12: orig: r0
-    def:  r0_12 = r0_4 + 0x00000001
-    uses: r0_1 = PHI(r0, r0_9, r0_12)
-Mem13: orig: Mem0
-    def:  Mem13[0x33333330:word32] = Mem0[r0_4:byte]
+    uses: r1_4 = Mem0[r0_2:byte]
+          Mem8[0x33333330:word32] = Mem0[r0_5:byte]
+          Mem14[0x33333330:word32] = Mem0[r0_5:byte]
+r1_4: orig: r1
+    def:  r1_4 = Mem0[r0_2:byte]
+    uses: branch r1_4 != 1 not1
+          branch r1_4 != 2 done
+r0_5: orig: r0
+    def:  r0_5 = r0_2 + 0x00000001
+    uses: Mem8[0x33333330:word32] = Mem0[r0_5:byte]
+          Mem14[0x33333330:word32] = Mem0[r0_5:byte]
+          r0_13 = r0_5 + 0x00000001
+          Mem11[0x33333331:word32] = Mem8[r0_5 + 0x00000001:byte]
+          r0_10 = r0_5 + 0x00000002
+r1_6: orig: r1
+r0_7: orig: r0
+Mem8: orig: Mem0
+    def:  Mem8[0x33333330:word32] = Mem0[r0_5:byte]
+    uses: Mem11[0x33333331:word32] = Mem8[r0_5 + 0x00000001:byte]
+r1_9: orig: r1
+r0_10: orig: r0
+    def:  r0_10 = r0_5 + 0x00000002
+    uses: r0_2 = PHI(r0, r0_10, r0_13)
+Mem11: orig: Mem0
+    def:  Mem11[0x33333331:word32] = Mem8[r0_5 + 0x00000001:byte]
+r1_12: orig: r1
+r0_13: orig: r0
+    def:  r0_13 = r0_5 + 0x00000001
+    uses: r0_2 = PHI(r0, r0_10, r0_13)
+Mem14: orig: Mem0
+    def:  Mem14[0x33333330:word32] = Mem0[r0_5:byte]
 // ManyIncrements
 // Return size: 0
 void ManyIncrements()
@@ -50,39 +50,39 @@ done:
 	return
 	// succ:  ManyIncrements_exit
 l1:
-	Mem7[0x33333330:word32] = Mem0[r0_4:byte]
-	Mem10[0x33333331:word32] = Mem7[r0_4 + 0x00000001:byte]
-	r0_9 = r0_4 + 0x00000002
+	Mem8[0x33333330:word32] = Mem0[r0_5:byte]
+	Mem11[0x33333331:word32] = Mem8[r0_5 + 0x00000001:byte]
+	r0_10 = r0_5 + 0x00000002
 	goto loopTop
 	// succ:  loopTop
 l2:
-	Mem13[0x33333330:word32] = Mem0[r0_4:byte]
-	r0_12 = r0_4 + 0x00000001
+	Mem14[0x33333330:word32] = Mem0[r0_5:byte]
+	r0_13 = r0_5 + 0x00000001
 	// succ:  loopTop
 loopTop:
-	r0_1 = PHI(r0, r0_9, r0_12)
-	r1_3 = Mem0[r0_1:byte]
-	r0_4 = r0_1 + 0x00000001
-	branch r1_3 != 1 not1
+	r0_2 = PHI(r0, r0_10, r0_13)
+	r1_4 = Mem0[r0_2:byte]
+	r0_5 = r0_2 + 0x00000001
+	branch r1_4 != 1 not1
 	goto l1
 	// succ:  l1 not1
 not1:
-	branch r1_3 != 2 done
+	branch r1_4 != 2 done
 	goto l2
 	// succ:  l2 done
 ManyIncrements_exit:
 - Interference graph -------------------
-Mem0 interferes with Mem10
-Mem0 interferes with Mem13
-Mem0 interferes with Mem7
+Mem0 interferes with Mem11
+Mem0 interferes with Mem14
+Mem0 interferes with Mem8
 Mem0 interferes with r0
-Mem0 interferes with r0_1
-Mem0 interferes with r0_12
-Mem0 interferes with r0_4
-Mem0 interferes with r0_9
-Mem0 interferes with r1_3
-Mem10 interferes with r0_4
-Mem13 interferes with r0_4
-Mem7 interferes with r0_4
-r0_1 interferes with r1_3
-r0_4 interferes with r1_3
+Mem0 interferes with r0_10
+Mem0 interferes with r0_13
+Mem0 interferes with r0_2
+Mem0 interferes with r0_5
+Mem0 interferes with r1_4
+Mem11 interferes with r0_5
+Mem14 interferes with r0_5
+Mem8 interferes with r0_5
+r0_2 interferes with r1_4
+r0_5 interferes with r1_4

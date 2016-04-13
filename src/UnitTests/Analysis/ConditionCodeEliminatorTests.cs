@@ -96,6 +96,11 @@ namespace Reko.UnitTests.Analysis
 
                 var cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Platform);
                 cce.Transform();
+
+                sst.AddUseInstructions = true;
+                sst.RenameFrameAccesses = true;
+                sst.Transform();
+
                 DeadCode.Eliminate(proc, ssa);
 
                 ssa.Write(writer);

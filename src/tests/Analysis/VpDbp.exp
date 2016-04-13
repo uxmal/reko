@@ -5,12 +5,12 @@ DpbMock_entry:
 	def dl
 	// succ:  l1
 l1:
-	edx_0 = 0x0AAA00AA
-	edx_1 = 0x0AAA55AA
-	Mem2[0x01000000:word32] = 0x0AAA55AA
-	edx_3 = 0x00000000
-	edx_5 = (word32) dl
-	return edx_5
+	edx_1 = 0x0AAA00AA
+	edx_2 = 0x0AAA55AA
+	Mem3[0x01000000:word32] = 0x0AAA55AA
+	edx_4 = 0x00000000
+	edx_6 = (word32) dl
+	return edx_6
 	// succ:  DpbMock_exit
 DpbMock_exit:
 

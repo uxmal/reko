@@ -5,7 +5,7 @@ void proc1()
 proc1_entry:
 	// succ:  l1
 l1:
-	Mem6[0x00001234:word32] = (int32) Mem0[Mem0[fp + 0x00000004:word32] + Mem0[fp + 0x00000008:word32] * 0x00000002:int16]
+	Mem7[0x00001234:word32] = (int32) Mem0[Mem0[fp + 0x00000004:word32] + Mem0[fp + 0x00000008:word32] * 0x00000002:int16]
 proc1_exit:
 
 // After ///////
@@ -76,7 +76,7 @@ T_13: (in 0x00001234 : word32)
   Class: Eq_13
   DataType: (ptr int32)
   OrigDataType: (ptr (struct (0 T_14 t0000)))
-T_14: (in Mem6[0x00001234:word32] : word32)
+T_14: (in Mem7[0x00001234:word32] : word32)
   Class: Eq_12
   DataType: int32
   OrigDataType: word32

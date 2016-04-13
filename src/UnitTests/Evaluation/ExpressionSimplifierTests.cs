@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Evaluation
                     Constant.Word32(4)),
                 Constant.Word32(1));
             var result = expr.Accept(simplifier);
-            Assert.AreEqual("foo_0 - 0x00000003", result.ToString());
+            Assert.AreEqual("foo_1 - 0x00000003", result.ToString());
         }
 
 		private void BuildExpressionSimplifier()
