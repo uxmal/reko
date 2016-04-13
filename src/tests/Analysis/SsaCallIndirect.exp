@@ -1,18 +1,18 @@
 r2:r2
     def:  def r2
-    uses: r1_2 = Mem0[r2:word32]
-          call r1_2 (retsize: 4;)	uses: r1_2,r2	defs: r1_3,r2_4
+    uses: r1_3 = Mem0[r2:word32]
+          call r1_3 (retsize: 4;)	uses: r1_3,r2	defs: r1_4,r2_5
 Mem0:Global memory
     def:  def Mem0
-    uses: r1_2 = Mem0[r2:word32]
-r1_2: orig: r1
-    def:  r1_2 = Mem0[r2:word32]
-    uses: call r1_2 (retsize: 4;)	uses: r1_2,r2	defs: r1_3,r2_4
-          call r1_2 (retsize: 4;)	uses: r1_2,r2	defs: r1_3,r2_4
+    uses: r1_3 = Mem0[r2:word32]
 r1_3: orig: r1
-    def:  call r1_2 (retsize: 4;)	uses: r1_2,r2	defs: r1_3,r2_4
-r2_4: orig: r2
-    def:  call r1_2 (retsize: 4;)	uses: r1_2,r2	defs: r1_3,r2_4
+    def:  r1_3 = Mem0[r2:word32]
+    uses: call r1_3 (retsize: 4;)	uses: r1_3,r2	defs: r1_4,r2_5
+          call r1_3 (retsize: 4;)	uses: r1_3,r2	defs: r1_4,r2_5
+r1_4: orig: r1
+    def:  call r1_3 (retsize: 4;)	uses: r1_3,r2	defs: r1_4,r2_5
+r2_5: orig: r2
+    def:  call r1_3 (retsize: 4;)	uses: r1_3,r2	defs: r1_4,r2_5
 // SsaCallIndirect
 // Return size: 0
 void SsaCallIndirect()
@@ -21,10 +21,10 @@ SsaCallIndirect_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	r1_2 = Mem0[r2:word32]
-	call r1_2 (retsize: 4;)
-		uses: r1_2,r2
-		defs: r1_3,r2_4
+	r1_3 = Mem0[r2:word32]
+	call r1_3 (retsize: 4;)
+		uses: r1_3,r2
+		defs: r1_4,r2_5
 	return
 	// succ:  SsaCallIndirect_exit
 SsaCallIndirect_exit:

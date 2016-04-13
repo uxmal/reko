@@ -1681,10 +1681,6 @@ namespace Reko.Analysis
                 new PhiFunction(
                         phi.Identifier.DataType,
                         sids.Select(s => s.Identifier).ToArray());
-                foreach (var sid in sids)
-                {
-                    sid.Uses.Add(phi.DefStatement);
-                }
             }
 
             /// <summary>

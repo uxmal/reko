@@ -1,8 +1,8 @@
 wArg04:Stack +0004
     def:  def wArg04
-    uses: ax_1 = wArg04
-ax_1: orig: ax
-    def:  ax_1 = wArg04
+    uses: ax_2 = wArg04
+ax_2: orig: ax
+    def:  ax_2 = wArg04
 // SsaStackReference
 // Return size: 0
 void SsaStackReference()
@@ -10,7 +10,7 @@ SsaStackReference_entry:
 	def wArg04
 	// succ:  l1
 l1:
-	ax_1 = wArg04
+	ax_2 = wArg04
 	return
 	// succ:  SsaStackReference_exit
 SsaStackReference_exit:

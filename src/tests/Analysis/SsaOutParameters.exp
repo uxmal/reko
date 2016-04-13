@@ -1,17 +1,17 @@
-r4_0: orig: r4
-    def:  Mem1[0x00000400:word32] = foo(out r4_0)
-    uses: use r4_0
-Mem1: orig: Mem0
-    def:  Mem1[0x00000400:word32] = foo(out r4_0)
+r4_1: orig: r4
+    def:  Mem2[0x00000400:word32] = foo(out r4_1)
+    uses: use r4_1
+Mem2: orig: Mem0
+    def:  Mem2[0x00000400:word32] = foo(out r4_1)
 // foo
 // Return size: 0
 void foo()
 foo_entry:
 	// succ:  l1
 l1:
-	Mem1[0x00000400:word32] = foo(out r4_0)
+	Mem2[0x00000400:word32] = foo(out r4_1)
 	return
 	// succ:  foo_exit
 foo_exit:
-	use r4_0
+	use r4_1
 

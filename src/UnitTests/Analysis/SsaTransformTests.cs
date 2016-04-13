@@ -138,13 +138,13 @@ namespace Reko.UnitTests.Analysis
             #region Expected
 @"r1:r1
     def:  def r1
-    uses: r1_2 = r1 + r2
+    uses: r1_3 = r1 + r2
 r2:r2
     def:  def r2
-    uses: r1_2 = r1 + r2
-r1_2: orig: r1
-    def:  r1_2 = r1 + r2
-    uses: use r1_2
+    uses: r1_3 = r1 + r2
+r1_3: orig: r1
+    def:  r1_3 = r1 + r2
+    uses: use r1_3
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -153,11 +153,11 @@ ProcedureBuilder_entry:
 	def r2
 	// succ:  l1
 l1:
-	r1_2 = r1 + r2
+	r1_3 = r1 + r2
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
-	use r1_2
+	use r1_3
 ";
             #endregion
 
@@ -177,47 +177,47 @@ ProcedureBuilder_exit:
             var sExp = 
 @"fp:fp
     def:  def fp
-    uses: r63_1 = fp
-          r63_2 = fp - 0x00000004
-          r63_5 = fp - 0x00000008
-r63_1: orig: r63
-    def:  r63_1 = fp
+    uses: r63_2 = fp
+          r63_3 = fp - 0x00000004
+          r63_6 = fp - 0x00000008
 r63_2: orig: r63
-    def:  r63_2 = fp - 0x00000004
+    def:  r63_2 = fp
+r63_3: orig: r63
+    def:  r63_3 = fp - 0x00000004
 r1:r1
     def:  def r1
-    uses: dwLoc04_12 = r1
-Mem4: orig: Mem0
-    def:  dwLoc04_12 = r1
-r63_5: orig: r63
-    def:  r63_5 = fp - 0x00000008
-    uses: use r63_5
+    uses: dwLoc04_13 = r1
+Mem5: orig: Mem0
+    def:  dwLoc04_13 = r1
+r63_6: orig: r63
+    def:  r63_6 = fp - 0x00000008
+    uses: use r63_6
 r2:r2
     def:  def r2
-    uses: dwLoc08_13 = r2
-Mem7: orig: Mem0
-    def:  dwLoc08_13 = r2
-    uses: r1_8 = dwLoc04_12
-          r2_9 = dwLoc08_13
-r1_8: orig: r1
-    def:  r1_8 = dwLoc04_12
-    uses: r1_10 = r1_8 + r2_9
-r2_9: orig: r2
-    def:  r2_9 = dwLoc08_13
-    uses: r1_10 = r1_8 + r2_9
-          use r2_9
-r1_10: orig: r1
-    def:  r1_10 = r1_8 + r2_9
-    uses: Mem11[0x00010008:word32] = r1_10
-          use r1_10
-Mem11: orig: Mem0
-    def:  Mem11[0x00010008:word32] = r1_10
-dwLoc04_12: orig: dwLoc04
-    def:  dwLoc04_12 = r1
-    uses: r1_8 = dwLoc04_12
-dwLoc08_13: orig: dwLoc08
-    def:  dwLoc08_13 = r2
-    uses: r2_9 = dwLoc08_13
+    uses: dwLoc08_14 = r2
+Mem8: orig: Mem0
+    def:  dwLoc08_14 = r2
+    uses: r1_9 = dwLoc04_13
+          r2_10 = dwLoc08_14
+r1_9: orig: r1
+    def:  r1_9 = dwLoc04_13
+    uses: r1_11 = r1_9 + r2_10
+r2_10: orig: r2
+    def:  r2_10 = dwLoc08_14
+    uses: r1_11 = r1_9 + r2_10
+          use r2_10
+r1_11: orig: r1
+    def:  r1_11 = r1_9 + r2_10
+    uses: Mem12[0x00010008:word32] = r1_11
+          use r1_11
+Mem12: orig: Mem0
+    def:  Mem12[0x00010008:word32] = r1_11
+dwLoc04_13: orig: dwLoc04
+    def:  dwLoc04_13 = r1
+    uses: r1_9 = dwLoc04_13
+dwLoc08_14: orig: dwLoc08
+    def:  dwLoc08_14 = r2
+    uses: r2_10 = dwLoc08_14
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -227,21 +227,21 @@ ProcedureBuilder_entry:
 	def r2
 	// succ:  l1
 l1:
-	r63_1 = fp
-	r63_2 = fp - 0x00000004
-	dwLoc04_12 = r1
-	r63_5 = fp - 0x00000008
-	dwLoc08_13 = r2
-	r1_8 = dwLoc04_12
-	r2_9 = dwLoc08_13
-	r1_10 = r1_8 + r2_9
-	Mem11[0x00010008:word32] = r1_10
+	r63_2 = fp
+	r63_3 = fp - 0x00000004
+	dwLoc04_13 = r1
+	r63_6 = fp - 0x00000008
+	dwLoc08_14 = r2
+	r1_9 = dwLoc04_13
+	r2_10 = dwLoc08_14
+	r1_11 = r1_9 + r2_10
+	Mem12[0x00010008:word32] = r1_11
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
-	use r1_10
-	use r2_9
-	use r63_5
+	use r1_11
+	use r2_10
+	use r63_6
 ";
             addUseInstructions = true;
             RunTest_FrameAccesses(sExp, m =>
@@ -269,48 +269,48 @@ ProcedureBuilder_exit:
             #region Expected
 @"fp:fp
     def:  def fp
-    uses: r63_1 = fp
-          r63_2 = fp - 0x00000004
-          bp_5 = fp - 0x00000004
-          r63_13 = fp
-r63_1: orig: r63
-    def:  r63_1 = fp
+    uses: r63_2 = fp
+          r63_3 = fp - 0x00000004
+          bp_6 = fp - 0x00000004
+          r63_14 = fp
 r63_2: orig: r63
-    def:  r63_2 = fp - 0x00000004
+    def:  r63_2 = fp
+r63_3: orig: r63
+    def:  r63_3 = fp - 0x00000004
 bp:bp
     def:  def bp
-    uses: dwLoc04_14 = bp
-Mem4: orig: Mem0
-    def:  dwLoc04_14 = bp
-    uses: CZS_6 = cond(wArg04 - 0x0003)
-          bp_11 = dwLoc04_14
-bp_5: orig: bp
-    def:  bp_5 = fp - 0x00000004
-CZS_6: orig: CZS
-    def:  CZS_6 = cond(wArg04 - 0x0003)
-    uses: branch Test(GE,CZS_6) ge3
-          use CZS_6
-r1_7: orig: r1
-    def:  r1_7 = 0x00000001
-    uses: r1_19 = PHI(r1_8, r1_7)
+    uses: dwLoc04_15 = bp
+Mem5: orig: Mem0
+    def:  dwLoc04_15 = bp
+    uses: CZS_7 = cond(wArg04 - 0x0003)
+          bp_12 = dwLoc04_15
+bp_6: orig: bp
+    def:  bp_6 = fp - 0x00000004
+CZS_7: orig: CZS
+    def:  CZS_7 = cond(wArg04 - 0x0003)
+    uses: branch Test(GE,CZS_7) ge3
+          use CZS_7
 r1_8: orig: r1
-    def:  r1_8 = 0x00000000
-    uses: r1_19 = PHI(r1_8, r1_7)
-bp_11: orig: bp
-    def:  bp_11 = dwLoc04_14
-    uses: use bp_11
-r63_13: orig: r63
-    def:  r63_13 = fp
-    uses: use r63_13
-dwLoc04_14: orig: dwLoc04
-    def:  dwLoc04_14 = bp
-    uses: bp_11 = dwLoc04_14
+    def:  r1_8 = 0x00000001
+    uses: r1_20 = PHI(r1_9, r1_8)
+r1_9: orig: r1
+    def:  r1_9 = 0x00000000
+    uses: r1_20 = PHI(r1_9, r1_8)
 wArg04:Stack +0004
     def:  def wArg04
-    uses: CZS_6 = cond(wArg04 - 0x0003)
-r1_19: orig: r1
-    def:  r1_19 = PHI(r1_8, r1_7)
-    uses: use r1_19
+    uses: CZS_7 = cond(wArg04 - 0x0003)
+bp_12: orig: bp
+    def:  bp_12 = dwLoc04_15
+    uses: use bp_12
+dwLoc04_15: orig: dwLoc04
+    def:  dwLoc04_15 = bp
+    uses: bp_12 = dwLoc04_15
+r63_14: orig: r63
+    def:  r63_14 = fp
+    uses: use r63_14
+r1_20: orig: r1
+    def:  r1_20 = PHI(r1_9, r1_8)
+    uses: use r1_20
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -321,32 +321,32 @@ ProcedureBuilder_entry:
 	goto l1
 	// succ:  l1
 done:
-	r1_19 = PHI(r1_8, r1_7)
-	bp_11 = dwLoc04_14
-	r63_13 = fp
+	r1_20 = PHI(r1_9, r1_8)
+	bp_12 = dwLoc04_15
+	r63_14 = fp
 	return
 	// succ:  ProcedureBuilder_exit
 ge3:
-	r1_7 = 0x00000001
+	r1_8 = 0x00000001
 	goto done
 	// succ:  done
 l1:
-	r63_1 = fp
-	r63_2 = fp - 0x00000004
-	dwLoc04_14 = bp
-	bp_5 = fp - 0x00000004
-	CZS_6 = cond(wArg04 - 0x0003)
-	branch Test(GE,CZS_6) ge3
+	r63_2 = fp
+	r63_3 = fp - 0x00000004
+	dwLoc04_15 = bp
+	bp_6 = fp - 0x00000004
+	CZS_7 = cond(wArg04 - 0x0003)
+	branch Test(GE,CZS_7) ge3
 	// succ:  l2 ge3
 l2:
-	r1_8 = 0x00000000
+	r1_9 = 0x00000000
 	goto done
 	// succ:  done
 ProcedureBuilder_exit:
-	use bp_11
-	use CZS_6
-	use r1_19
-	use r63_13
+	use bp_12
+	use CZS_7
+	use r1_20
+	use r63_14
 ";
             #endregion
 
@@ -381,62 +381,64 @@ ProcedureBuilder_exit:
         [Test]
         public void SsaDiamondFrame()
         {
-            var sExp = @"fp:fp
+            var sExp =
+            #region Expected
+@"fp:fp
     def:  def fp
-    uses: r63_1 = fp
-          r63_2 = fp - 0x00000004
-          bp_5 = fp - 0x00000004
-          r63_14 = fp
-r63_1: orig: r63
-    def:  r63_1 = fp
+    uses: r63_2 = fp
+          r63_3 = fp - 0x00000004
+          bp_6 = fp - 0x00000004
+          r63_15 = fp
 r63_2: orig: r63
-    def:  r63_2 = fp - 0x00000004
+    def:  r63_2 = fp
+r63_3: orig: r63
+    def:  r63_3 = fp - 0x00000004
 bp:bp
     def:  def bp
-    uses: dwLoc04_15 = bp
-Mem4: orig: Mem0
-    def:  dwLoc04_15 = bp
-    uses: CZS_6 = wArg04 - 0x0003
-bp_5: orig: bp
-    def:  bp_5 = fp - 0x00000004
-CZS_6: orig: CZS
-    def:  CZS_6 = wArg04 - 0x0003
-    uses: branch Test(GE,CZS_6) ge3
-          use CZS_6
-Mem7: orig: Mem0
-    def:  wArg04_17 = -3
-    uses: Mem11 = PHI(Mem9, Mem7)
-r1_8: orig: r1
-    def:  r1_8 = 0x00000001
-    uses: r1_22 = PHI(r1, r1_8)
-Mem9: orig: Mem0
-    def:  wArg04_18 = 0x0003
-    uses: Mem11 = PHI(Mem9, Mem7)
-Mem11: orig: Mem0
-    def:  Mem11 = PHI(Mem9, Mem7)
-    uses: bp_12 = dwLoc04_15
-bp_12: orig: bp
-    def:  bp_12 = dwLoc04_15
-    uses: use bp_12
-r63_14: orig: r63
-    def:  r63_14 = fp
-    uses: use r63_14
-dwLoc04_15: orig: dwLoc04
-    def:  dwLoc04_15 = bp
-    uses: bp_12 = dwLoc04_15
+    uses: dwLoc04_16 = bp
+Mem5: orig: Mem0
+    def:  dwLoc04_16 = bp
+    uses: CZS_7 = wArg04 - 0x0003
+bp_6: orig: bp
+    def:  bp_6 = fp - 0x00000004
+CZS_7: orig: CZS
+    def:  CZS_7 = wArg04 - 0x0003
+    uses: branch Test(GE,CZS_7) ge3
+          use CZS_7
+Mem8: orig: Mem0
+    def:  wArg04_18 = -3
+    uses: Mem12 = PHI(Mem10, Mem8)
+r1_9: orig: r1
+    def:  r1_9 = 0x00000001
+    uses: r1_23 = PHI(r1, r1_9)
+Mem10: orig: Mem0
+    def:  wArg04_19 = 0x0003
+    uses: Mem12 = PHI(Mem10, Mem8)
 wArg04:Stack +0004
     def:  def wArg04
-    uses: CZS_6 = wArg04 - 0x0003
-wArg04_17: orig: wArg04
-    def:  wArg04_17 = -3
+    uses: CZS_7 = wArg04 - 0x0003
+Mem12: orig: Mem0
+    def:  Mem12 = PHI(Mem10, Mem8)
+    uses: bp_13 = dwLoc04_16
+bp_13: orig: bp
+    def:  bp_13 = dwLoc04_16
+    uses: use bp_13
+dwLoc04_16: orig: dwLoc04
+    def:  dwLoc04_16 = bp
+    uses: bp_13 = dwLoc04_16
+r63_15: orig: r63
+    def:  r63_15 = fp
+    uses: use r63_15
 wArg04_18: orig: wArg04
-    def:  wArg04_18 = 0x0003
-r1_22: orig: r1
-    def:  r1_22 = PHI(r1, r1_8)
-    uses: use r1_22
+    def:  wArg04_18 = -3
+wArg04_19: orig: wArg04
+    def:  wArg04_19 = 0x0003
+r1_23: orig: r1
+    def:  r1_23 = PHI(r1, r1_9)
+    uses: use r1_23
 r1:r1
     def:  def r1
-    uses: r1_22 = PHI(r1, r1_8)
+    uses: r1_23 = PHI(r1, r1_9)
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -448,35 +450,36 @@ ProcedureBuilder_entry:
 	goto l1
 	// succ:  l1
 done:
-	r1_22 = PHI(r1, r1_8)
-	Mem11 = PHI(Mem9, Mem7)
-	bp_12 = dwLoc04_15
-	r63_14 = fp
+	r1_23 = PHI(r1, r1_9)
+	Mem12 = PHI(Mem10, Mem8)
+	bp_13 = dwLoc04_16
+	r63_15 = fp
 	return
 	// succ:  ProcedureBuilder_exit
 ge3:
-	wArg04_17 = -3
-	r1_8 = 0x00000001
+	wArg04_18 = -3
+	r1_9 = 0x00000001
 	goto done
 	// succ:  done
 l1:
-	r63_1 = fp
-	r63_2 = fp - 0x00000004
-	dwLoc04_15 = bp
-	bp_5 = fp - 0x00000004
-	CZS_6 = wArg04 - 0x0003
-	branch Test(GE,CZS_6) ge3
+	r63_2 = fp
+	r63_3 = fp - 0x00000004
+	dwLoc04_16 = bp
+	bp_6 = fp - 0x00000004
+	CZS_7 = wArg04 - 0x0003
+	branch Test(GE,CZS_7) ge3
 	// succ:  l2 ge3
 l2:
-	wArg04_18 = 0x0003
+	wArg04_19 = 0x0003
 	goto done
 	// succ:  done
 ProcedureBuilder_exit:
-	use bp_12
-	use CZS_6
-	use r1_22
-	use r63_14
+	use bp_13
+	use CZS_7
+	use r1_23
+	use r63_15
 ";
+            #endregion
 
             RunTest_FrameAccesses(sExp, m =>
             {
@@ -522,33 +525,33 @@ ProcedureBuilder_exit:
 
             var sExp =
             #region Expected
-@"r1_0: orig: r1
-    def:  r1_0 = 0x00000003
-r2_1: orig: r2
-    def:  r2_1 = 0x00000004
-    uses: use r2_1
-r1_2: orig: r1
-    def:  call Adder (retsize: 4;)	defs: r1_2
-    uses: Mem3[0x00012300:word32] = r1_2
-          use r1_2
-Mem3: orig: Mem0
-    def:  Mem3[0x00012300:word32] = r1_2
+@"r1_1: orig: r1
+    def:  r1_1 = 0x00000003
+r2_2: orig: r2
+    def:  r2_2 = 0x00000004
+    uses: use r2_2
+r1_3: orig: r1
+    def:  call Adder (retsize: 4;)	defs: r1_3
+    uses: Mem4[0x00012300:word32] = r1_3
+          use r1_3
+Mem4: orig: Mem0
+    def:  Mem4[0x00012300:word32] = r1_3
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
 	// succ:  l1
 l1:
-	r1_0 = 0x00000003
-	r2_1 = 0x00000004
+	r1_1 = 0x00000003
+	r2_2 = 0x00000004
 	call Adder (retsize: 4;)
-		defs: r1_2
-	Mem3[0x00012300:word32] = r1_2
+		defs: r1_3
+	Mem4[0x00012300:word32] = r1_3
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
-	use r1_2
-	use r2_1
+	use r1_3
+	use r2_2
 ";
             #endregion
 
@@ -572,68 +575,68 @@ ProcedureBuilder_exit:
             #region Expected
 @"fp:fp
     def:  def fp
-    uses: r63_1 = fp
-          r63_2 = fp - 0x00000004
-          bp_5 = fp - 0x00000004
-          r63_17 = fp
-r63_1: orig: r63
-    def:  r63_1 = fp
+    uses: r63_2 = fp
+          r63_3 = fp - 0x00000004
+          bp_6 = fp - 0x00000004
+          r63_18 = fp
 r63_2: orig: r63
-    def:  r63_2 = fp - 0x00000004
+    def:  r63_2 = fp
+r63_3: orig: r63
+    def:  r63_3 = fp - 0x00000004
 bp:bp
     def:  def bp
-    uses: dwLoc04_18 = bp
-Mem4: orig: Mem0
-    def:  dwLoc04_18 = bp
-bp_5: orig: bp
-    def:  bp_5 = fp - 0x00000004
-Mem6: orig: Mem0
-    def:  dwLoc0C_19 = 0x00000000
-    uses: CZS_7 = wArg04 - 0x0003
-CZS_7: orig: CZS
-    def:  CZS_7 = wArg04 - 0x0003
-    uses: branch Test(GE,CZS_7) ge3
-          use CZS_7
+    uses: dwLoc04_19 = bp
+Mem5: orig: Mem0
+    def:  dwLoc04_19 = bp
+bp_6: orig: bp
+    def:  bp_6 = fp - 0x00000004
+Mem7: orig: Mem0
+    def:  dwLoc0C_20 = 0x00000000
+    uses: CZS_8 = wArg04 - 0x0003
+CZS_8: orig: CZS
+    def:  CZS_8 = wArg04 - 0x0003
+    uses: branch Test(GE,CZS_8) ge3
+          use CZS_8
 r1:r1
     def:  def r1
-    uses: dwLoc0C_21 = r1
-          dwLoc0C_22 = r1
-Mem9: orig: Mem0
-    def:  dwLoc0C_21 = r1
-    uses: Mem12 = PHI(Mem10, Mem9)
+    uses: dwLoc0C_22 = r1
+          dwLoc0C_23 = r1
 Mem10: orig: Mem0
     def:  dwLoc0C_22 = r1
-    uses: Mem12 = PHI(Mem10, Mem9)
-Mem12: orig: Mem0
-    def:  Mem12 = PHI(Mem10, Mem9)
-    uses: r1_13 = dwLoc0C_23
-          bp_16 = dwLoc04_18
-r1_13: orig: r1
-    def:  r1_13 = dwLoc0C_23
-    uses: use r1_13
-bp_16: orig: bp
-    def:  bp_16 = dwLoc04_18
-    uses: use bp_16
-r63_17: orig: r63
-    def:  r63_17 = fp
-    uses: use r63_17
-dwLoc04_18: orig: dwLoc04
-    def:  dwLoc04_18 = bp
-    uses: bp_16 = dwLoc04_18
-dwLoc0C_19: orig: dwLoc0C
-    def:  dwLoc0C_19 = 0x00000000
+    uses: Mem13 = PHI(Mem11, Mem10)
+Mem11: orig: Mem0
+    def:  dwLoc0C_23 = r1
+    uses: Mem13 = PHI(Mem11, Mem10)
 wArg04:Stack +0004
     def:  def wArg04
-    uses: CZS_7 = wArg04 - 0x0003
-dwLoc0C_21: orig: dwLoc0C
-    def:  dwLoc0C_21 = r1
-    uses: dwLoc0C_23 = PHI(dwLoc0C_22, dwLoc0C_21)
+    uses: CZS_8 = wArg04 - 0x0003
+Mem13: orig: Mem0
+    def:  Mem13 = PHI(Mem11, Mem10)
+    uses: r1_14 = dwLoc0C_24
+          bp_17 = dwLoc04_19
+r1_14: orig: r1
+    def:  r1_14 = dwLoc0C_24
+    uses: use r1_14
+dwLoc0C_20: orig: dwLoc0C
+    def:  dwLoc0C_20 = 0x00000000
+dwLoc04_19: orig: dwLoc04
+    def:  dwLoc04_19 = bp
+    uses: bp_17 = dwLoc04_19
+bp_17: orig: bp
+    def:  bp_17 = dwLoc04_19
+    uses: use bp_17
+r63_18: orig: r63
+    def:  r63_18 = fp
+    uses: use r63_18
 dwLoc0C_22: orig: dwLoc0C
     def:  dwLoc0C_22 = r1
-    uses: dwLoc0C_23 = PHI(dwLoc0C_22, dwLoc0C_21)
+    uses: dwLoc0C_24 = PHI(dwLoc0C_23, dwLoc0C_22)
 dwLoc0C_23: orig: dwLoc0C
-    def:  dwLoc0C_23 = PHI(dwLoc0C_22, dwLoc0C_21)
-    uses: r1_13 = dwLoc0C_23
+    def:  dwLoc0C_23 = r1
+    uses: dwLoc0C_24 = PHI(dwLoc0C_23, dwLoc0C_22)
+dwLoc0C_24: orig: dwLoc0C
+    def:  dwLoc0C_24 = PHI(dwLoc0C_23, dwLoc0C_22)
+    uses: r1_14 = dwLoc0C_24
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -645,35 +648,35 @@ ProcedureBuilder_entry:
 	goto l1
 	// succ:  l1
 done:
-	dwLoc0C_23 = PHI(dwLoc0C_22, dwLoc0C_21)
-	Mem12 = PHI(Mem10, Mem9)
-	r1_13 = dwLoc0C_23
-	bp_16 = dwLoc04_18
-	r63_17 = fp
+	dwLoc0C_24 = PHI(dwLoc0C_23, dwLoc0C_22)
+	Mem13 = PHI(Mem11, Mem10)
+	r1_14 = dwLoc0C_24
+	bp_17 = dwLoc04_19
+	r63_18 = fp
 	return
 	// succ:  ProcedureBuilder_exit
 ge3:
-	dwLoc0C_21 = r1
-	goto done
-	// succ:  done
-l1:
-	r63_1 = fp
-	r63_2 = fp - 0x00000004
-	dwLoc04_18 = bp
-	bp_5 = fp - 0x00000004
-	dwLoc0C_19 = 0x00000000
-	CZS_7 = wArg04 - 0x0003
-	branch Test(GE,CZS_7) ge3
-	// succ:  l2 ge3
-l2:
 	dwLoc0C_22 = r1
 	goto done
 	// succ:  done
+l1:
+	r63_2 = fp
+	r63_3 = fp - 0x00000004
+	dwLoc04_19 = bp
+	bp_6 = fp - 0x00000004
+	dwLoc0C_20 = 0x00000000
+	CZS_8 = wArg04 - 0x0003
+	branch Test(GE,CZS_8) ge3
+	// succ:  l2 ge3
+l2:
+	dwLoc0C_23 = r1
+	goto done
+	// succ:  done
 ProcedureBuilder_exit:
-	use bp_16
-	use CZS_7
-	use r1_13
-	use r63_17
+	use bp_17
+	use CZS_8
+	use r1_14
+	use r63_18
 ";
             #endregion
 
@@ -715,16 +718,16 @@ ProcedureBuilder_exit:
             #region Expected
 @"esi:esi
     def:  def esi
-    uses: SZ_1 = cond(esi & esi)
-          SZ_1 = cond(esi & esi)
-SZ_1: orig: SZ
-    def:  SZ_1 = cond(esi & esi)
-    uses: al_3 = Test(ULE,C_2 | SZ_1)
-C_2: orig: C
-    def:  C_2 = false
-    uses: al_3 = Test(ULE,C_2 | SZ_1)
-al_3: orig: al
-    def:  al_3 = Test(ULE,C_2 | SZ_1)
+    uses: SZ_2 = cond(esi & esi)
+          SZ_2 = cond(esi & esi)
+SZ_2: orig: SZ
+    def:  SZ_2 = cond(esi & esi)
+    uses: al_4 = Test(ULE,C_3 | SZ_2)
+C_3: orig: C
+    def:  C_3 = false
+    uses: al_4 = Test(ULE,C_3 | SZ_2)
+al_4: orig: al
+    def:  al_4 = Test(ULE,C_3 | SZ_2)
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -732,9 +735,9 @@ ProcedureBuilder_entry:
 	def esi
 	// succ:  l1
 l1:
-	SZ_1 = cond(esi & esi)
-	C_2 = false
-	al_3 = Test(ULE,C_2 | SZ_1)
+	SZ_2 = cond(esi & esi)
+	C_3 = false
+	al_4 = Test(ULE,C_3 | SZ_2)
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
@@ -764,29 +767,29 @@ ProcedureBuilder_exit:
 @"r1:r1
     def:  def r1
     uses: branch r1 true
-          call r3 (retsize: 4;)	uses: r1,r2_6,r3	defs: r1_5,r2_8,r3_9
-r2_1: orig: r2
-    def:  r2_1 = 0x00000010
-    uses: r2_6 = PHI(r2, r2_1)
-r1_5: orig: r1
-    def:  call r3 (retsize: 4;)	uses: r1,r2_6,r3	defs: r1_5,r2_8,r3_9
-    uses: use r1_5
+          call r3 (retsize: 4;)	uses: r1,r2_7,r3	defs: r1_6,r2_9,r3_10
+r2_2: orig: r2
+    def:  r2_2 = 0x00000010
+    uses: r2_7 = PHI(r2, r2_2)
 r3:r3
     def:  def r3
-    uses: call r3 (retsize: 4;)	uses: r1,r2_6,r3	defs: r1_5,r2_8,r3_9
-          call r3 (retsize: 4;)	uses: r1,r2_6,r3	defs: r1_5,r2_8,r3_9
-r2_6: orig: r2
-    def:  r2_6 = PHI(r2, r2_1)
-    uses: call r3 (retsize: 4;)	uses: r1,r2_6,r3	defs: r1_5,r2_8,r3_9
+    uses: call r3 (retsize: 4;)	uses: r1,r2_7,r3	defs: r1_6,r2_9,r3_10
+          call r3 (retsize: 4;)	uses: r1,r2_7,r3	defs: r1_6,r2_9,r3_10
+r1_6: orig: r1
+    def:  call r3 (retsize: 4;)	uses: r1,r2_7,r3	defs: r1_6,r2_9,r3_10
+    uses: use r1_6
+r2_7: orig: r2
+    def:  r2_7 = PHI(r2, r2_2)
+    uses: call r3 (retsize: 4;)	uses: r1,r2_7,r3	defs: r1_6,r2_9,r3_10
 r2:r2
     def:  def r2
-    uses: r2_6 = PHI(r2, r2_1)
-r2_8: orig: r2
-    def:  call r3 (retsize: 4;)	uses: r1,r2_6,r3	defs: r1_5,r2_8,r3_9
-    uses: use r2_8
-r3_9: orig: r3
-    def:  call r3 (retsize: 4;)	uses: r1,r2_6,r3	defs: r1_5,r2_8,r3_9
-    uses: use r3_9
+    uses: r2_7 = PHI(r2, r2_2)
+r2_9: orig: r2
+    def:  call r3 (retsize: 4;)	uses: r1,r2_7,r3	defs: r1_6,r2_9,r3_10
+    uses: use r2_9
+r3_10: orig: r3
+    def:  call r3 (retsize: 4;)	uses: r1,r2_7,r3	defs: r1_6,r2_9,r3_10
+    uses: use r3_10
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -799,19 +802,19 @@ l1:
 	branch r1 true
 	// succ:  l2 true
 l2:
-	r2_1 = 0x00000010
+	r2_2 = 0x00000010
 	// succ:  true
 true:
-	r2_6 = PHI(r2, r2_1)
+	r2_7 = PHI(r2, r2_2)
 	call r3 (retsize: 4;)
-		uses: r1,r2_6,r3
-		defs: r1_5,r2_8,r3_9
+		uses: r1,r2_7,r3
+		defs: r1_6,r2_9,r3_10
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
-	use r1_5
-	use r2_8
-	use r3_9
+	use r1_6
+	use r2_9
+	use r3_10
 ";
             #endregion
 
@@ -835,66 +838,66 @@ ProcedureBuilder_exit:
             #region Expected
 @"fp:fp
     def:  def fp
-    uses: r63_1 = fp
-          r63_6 = fp - 0x00000004
-r63_1: orig: r63
-    def:  r63_1 = fp
-    uses: r63_18 = PHI(r63_13, r63_1)
+    uses: r63_2 = fp
+          r63_7 = fp - 0x00000004
+r63_2: orig: r63
+    def:  r63_2 = fp
+    uses: r63_19 = PHI(r63_14, r63_2)
 Mem0:Global memory
     def:  def Mem0
-    uses: r4_3 = dwArg04
-          r4_5 = Mem0[r4_3 + 0x00000004:word32]
-r4_3: orig: r4
-    def:  r4_3 = dwArg04
-    uses: branch r4_3 == 0x00000000 m1Base
-          r4_5 = Mem0[r4_3 + 0x00000004:word32]
+    uses: r4_4 = dwArg04
+          r4_6 = Mem0[r4_4 + 0x00000004:word32]
 r4_4: orig: r4
-    def:  r4_4 = 0x00000000
-    uses: r4_17 = PHI(r4_12, r4_4)
+    def:  r4_4 = dwArg04
+    uses: branch r4_4 == 0x00000000 m1Base
+          r4_6 = Mem0[r4_4 + 0x00000004:word32]
 r4_5: orig: r4
-    def:  r4_5 = Mem0[r4_3 + 0x00000004:word32]
-    uses: dwLoc04_15 = r4_5
-          call ProcedureBuilder (retsize: 0;)	uses: dwArg04,dwLoc04_15,r3,r4_5,r63_6	defs: r3_10,r4_11,r63_8
-r63_6: orig: r63
-    def:  r63_6 = fp - 0x00000004
-    uses: call ProcedureBuilder (retsize: 0;)	uses: dwArg04,dwLoc04_15,r3,r4_5,r63_6	defs: r3_10,r4_11,r63_8
-Mem7: orig: Mem0
-    def:  dwLoc04_15 = r4_5
-r63_8: orig: r63
-    def:  call ProcedureBuilder (retsize: 0;)	uses: dwArg04,dwLoc04_15,r3,r4_5,r63_6	defs: r3_10,r4_11,r63_8
-    uses: r63_13 = r63_8 + 0x00000004
+    def:  r4_5 = 0x00000000
+    uses: r4_18 = PHI(r4_13, r4_5)
+r4_6: orig: r4
+    def:  r4_6 = Mem0[r4_4 + 0x00000004:word32]
+    uses: dwLoc04_16 = r4_6
+          call ProcedureBuilder (retsize: 0;)	uses: dwArg04,dwLoc04_16,r3,r4_6,r63_7	defs: r3_11,r4_12,r63_9
+r63_7: orig: r63
+    def:  r63_7 = fp - 0x00000004
+    uses: call ProcedureBuilder (retsize: 0;)	uses: dwArg04,dwLoc04_16,r3,r4_6,r63_7	defs: r3_11,r4_12,r63_9
+Mem8: orig: Mem0
+    def:  dwLoc04_16 = r4_6
+r63_9: orig: r63
+    def:  call ProcedureBuilder (retsize: 0;)	uses: dwArg04,dwLoc04_16,r3,r4_6,r63_7	defs: r3_11,r4_12,r63_9
+    uses: r63_14 = r63_9 + 0x00000004
 r3:r3
     def:  def r3
-    uses: call ProcedureBuilder (retsize: 0;)	uses: dwArg04,dwLoc04_15,r3,r4_5,r63_6	defs: r3_10,r4_11,r63_8
-          r3_16 = PHI(r3_10, r3)
-r3_10: orig: r3
-    def:  call ProcedureBuilder (retsize: 0;)	uses: dwArg04,dwLoc04_15,r3,r4_5,r63_6	defs: r3_10,r4_11,r63_8
-    uses: r3_16 = PHI(r3_10, r3)
-r4_11: orig: r4
-    def:  call ProcedureBuilder (retsize: 0;)	uses: dwArg04,dwLoc04_15,r3,r4_5,r63_6	defs: r3_10,r4_11,r63_8
-    uses: r4_12 = r4_11 + 0x00000001
+    uses: call ProcedureBuilder (retsize: 0;)	uses: dwArg04,dwLoc04_16,r3,r4_6,r63_7	defs: r3_11,r4_12,r63_9
+          r3_17 = PHI(r3_11, r3)
+r3_11: orig: r3
+    def:  call ProcedureBuilder (retsize: 0;)	uses: dwArg04,dwLoc04_16,r3,r4_6,r63_7	defs: r3_11,r4_12,r63_9
+    uses: r3_17 = PHI(r3_11, r3)
 r4_12: orig: r4
-    def:  r4_12 = r4_11 + 0x00000001
-    uses: r4_17 = PHI(r4_12, r4_4)
-r63_13: orig: r63
-    def:  r63_13 = r63_8 + 0x00000004
-    uses: r63_18 = PHI(r63_13, r63_1)
+    def:  call ProcedureBuilder (retsize: 0;)	uses: dwArg04,dwLoc04_16,r3,r4_6,r63_7	defs: r3_11,r4_12,r63_9
+    uses: r4_13 = r4_12 + 0x00000001
+r4_13: orig: r4
+    def:  r4_13 = r4_12 + 0x00000001
+    uses: r4_18 = PHI(r4_13, r4_5)
+r63_14: orig: r63
+    def:  r63_14 = r63_9 + 0x00000004
+    uses: r63_19 = PHI(r63_14, r63_2)
 dwArg04:Stack +0004
     def:  def dwArg04
-    uses: r4_3 = dwArg04
-          call ProcedureBuilder (retsize: 0;)	uses: dwArg04,dwLoc04_15,r3,r4_5,r63_6	defs: r3_10,r4_11,r63_8
-dwLoc04_15: orig: dwLoc04
-    def:  dwLoc04_15 = r4_5
-    uses: call ProcedureBuilder (retsize: 0;)	uses: dwArg04,dwLoc04_15,r3,r4_5,r63_6	defs: r3_10,r4_11,r63_8
-r3_16: orig: r3
-    def:  r3_16 = PHI(r3_10, r3)
-    uses: use r3_16
-r4_17: orig: r4
-    def:  r4_17 = PHI(r4_12, r4_4)
-    uses: use r4_17
-r63_18: orig: r63
-    def:  r63_18 = PHI(r63_13, r63_1)
-    uses: use r63_18
+    uses: r4_4 = dwArg04
+          call ProcedureBuilder (retsize: 0;)	uses: dwArg04,dwLoc04_16,r3,r4_6,r63_7	defs: r3_11,r4_12,r63_9
+dwLoc04_16: orig: dwLoc04
+    def:  dwLoc04_16 = r4_6
+    uses: call ProcedureBuilder (retsize: 0;)	uses: dwArg04,dwLoc04_16,r3,r4_6,r63_7	defs: r3_11,r4_12,r63_9
+r3_17: orig: r3
+    def:  r3_17 = PHI(r3_11, r3)
+    uses: use r3_17
+r4_18: orig: r4
+    def:  r4_18 = PHI(r4_13, r4_5)
+    uses: use r4_18
+r63_19: orig: r63
+    def:  r63_19 = PHI(r63_14, r63_2)
+    uses: use r63_19
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -905,34 +908,34 @@ ProcedureBuilder_entry:
 	def dwArg04
 	// succ:  l1
 l1:
-	r63_1 = fp
-	r4_3 = dwArg04
-	branch r4_3 == 0x00000000 m1Base
+	r63_2 = fp
+	r4_4 = dwArg04
+	branch r4_4 == 0x00000000 m1Base
 	// succ:  m0Induction m1Base
 m0Induction:
-	r4_5 = Mem0[r4_3 + 0x00000004:word32]
-	r63_6 = fp - 0x00000004
-	dwLoc04_15 = r4_5
+	r4_6 = Mem0[r4_4 + 0x00000004:word32]
+	r63_7 = fp - 0x00000004
+	dwLoc04_16 = r4_6
 	call ProcedureBuilder (retsize: 0;)
-		uses: dwArg04,dwLoc04_15,r3,r4_5,r63_6
-		defs: r3_10,r4_11,r63_8
-	r4_12 = r4_11 + 0x00000001
-	r63_13 = r63_8 + 0x00000004
+		uses: dwArg04,dwLoc04_16,r3,r4_6,r63_7
+		defs: r3_11,r4_12,r63_9
+	r4_13 = r4_12 + 0x00000001
+	r63_14 = r63_9 + 0x00000004
 	goto m2Done
 	// succ:  m2Done
 m1Base:
-	r4_4 = 0x00000000
+	r4_5 = 0x00000000
 	// succ:  m2Done
 m2Done:
-	r63_18 = PHI(r63_13, r63_1)
-	r4_17 = PHI(r4_12, r4_4)
-	r3_16 = PHI(r3_10, r3)
+	r63_19 = PHI(r63_14, r63_2)
+	r4_18 = PHI(r4_13, r4_5)
+	r3_17 = PHI(r3_11, r3)
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
-	use r3_16
-	use r4_17
-	use r63_18
+	use r3_17
+	use r4_18
+	use r63_19
 ";
             #endregion
 
@@ -968,19 +971,19 @@ ProcedureBuilder_exit:
         {
             var sExp =
             #region Expected
-@"a_0: orig: a
-    def:  a_0 = 0x00000003
-    uses: b_1 = a_0
-b_1: orig: b
-    def:  b_1 = a_0
+@"a_1: orig: a
+    def:  a_1 = 0x00000003
+    uses: b_2 = a_1
+b_2: orig: b
+    def:  b_2 = a_1
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
 	// succ:  l1
 l1:
-	a_0 = 0x00000003
-	b_1 = a_0
+	a_1 = 0x00000003
+	b_2 = a_1
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
@@ -1006,9 +1009,9 @@ ProcedureBuilder_exit:
             #region Expected
 @"a:a
     def:  def a
-    uses: Mem1[0x00123400:word32] = a
-Mem1: orig: Mem0
-    def:  Mem1[0x00123400:word32] = a
+    uses: Mem2[0x00123400:word32] = a
+Mem2: orig: Mem0
+    def:  Mem2[0x00123400:word32] = a
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -1016,7 +1019,7 @@ ProcedureBuilder_entry:
 	def a
 	// succ:  l1
 l1:
-	Mem1[0x00123400:word32] = a
+	Mem2[0x00123400:word32] = a
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
@@ -1035,21 +1038,20 @@ ProcedureBuilder_exit:
         [Test]
         public void SsaIfThen()
         {
-
             var sExp =
             #region Expected
-                @"a:a
+@"a:a
     def:  def a
     uses: branch a == 0x00000000 m_2
-b_1: orig: b
-    def:  b_1 = 0xFFFFFFFF
-    uses: b_2 = PHI(b, b_1)
 b_2: orig: b
-    def:  b_2 = PHI(b, b_1)
-    uses: return b_2
+    def:  b_2 = 0xFFFFFFFF
+    uses: b_3 = PHI(b, b_2)
+b_3: orig: b
+    def:  b_3 = PHI(b, b_2)
+    uses: return b_3
 b:b
     def:  def b
-    uses: b_2 = PHI(b, b_1)
+    uses: b_3 = PHI(b, b_2)
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -1061,11 +1063,11 @@ l1:
 	branch a == 0x00000000 m_2
 	// succ:  m_1 m_2
 m_1:
-	b_1 = 0xFFFFFFFF
+	b_2 = 0xFFFFFFFF
 	// succ:  m_2
 m_2:
-	b_2 = PHI(b, b_1)
-	return b_2
+	b_3 = PHI(b, b_2)
+	return b_3
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
 ";
@@ -1093,19 +1095,19 @@ ProcedureBuilder_exit:
             #region Expected
 @"eax:eax
     def:  def eax
-    uses: eax_2 = Mem0[eax:word32]
+    uses: eax_3 = Mem0[eax:word32]
 Mem0:Global memory
     def:  def Mem0
-    uses: eax_2 = Mem0[eax:word32]
-eax_2: orig: eax
-    def:  eax_2 = Mem0[eax:word32]
-    uses: ah_3 = SLICE(eax_2, byte, 8) (alias)
-          use eax_2
-ah_3: orig: ah
-    def:  ah_3 = SLICE(eax_2, byte, 8) (alias)
-    uses: Mem4[0x00001234:byte] = ah_3
-Mem4: orig: Mem0
-    def:  Mem4[0x00001234:byte] = ah_3
+    uses: eax_3 = Mem0[eax:word32]
+eax_3: orig: eax
+    def:  eax_3 = Mem0[eax:word32]
+    uses: ah_4 = SLICE(eax_3, byte, 8) (alias)
+          use eax_3
+ah_4: orig: ah
+    def:  ah_4 = SLICE(eax_3, byte, 8) (alias)
+    uses: Mem5[0x00001234:byte] = ah_4
+Mem5: orig: Mem0
+    def:  Mem5[0x00001234:byte] = ah_4
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -1114,13 +1116,13 @@ ProcedureBuilder_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	eax_2 = Mem0[eax:word32]
-	ah_3 = SLICE(eax_2, byte, 8) (alias)
-	Mem4[0x00001234:byte] = ah_3
+	eax_3 = Mem0[eax:word32]
+	ah_4 = SLICE(eax_3, byte, 8) (alias)
+	Mem5[0x00001234:byte] = ah_4
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
-	use eax_2
+	use eax_3
 ";
             #endregion
 
@@ -1143,24 +1145,24 @@ ProcedureBuilder_exit:
             #region Expected
 @"Mem0:Global memory
     def:  def Mem0
-    uses: ecx_1 = Mem0[0x00542300:word32]
+    uses: ecx_2 = Mem0[0x00542300:word32]
           branch Mem0[0x00010042:bool] mBranch2
-ecx_1: orig: ecx
-    def:  ecx_1 = Mem0[0x00542300:word32]
-    uses: ecx_4 = DPB(ecx_1, cl_3, 0) (alias)
 ecx_2: orig: ecx
-    def:  ecx_2 = 0x00000020
-    uses: ecx_5 = PHI(ecx_4, ecx_2)
-cl_3: orig: cl
-    def:  cl_3 = 0x2A
-ecx_4: orig: ecx
-    def:  ecx_4 = DPB(ecx_1, cl_3, 0) (alias)
-    uses: ecx_5 = PHI(ecx_4, ecx_2)
+    def:  ecx_2 = Mem0[0x00542300:word32]
+    uses: ecx_5 = DPB(ecx_2, cl_4, 0) (alias)
+ecx_3: orig: ecx
+    def:  ecx_3 = 0x00000020
+    uses: ecx_6 = PHI(ecx_5, ecx_3)
+cl_4: orig: cl
+    def:  cl_4 = 0x2A
 ecx_5: orig: ecx
-    def:  ecx_5 = PHI(ecx_4, ecx_2)
-    uses: Mem6[0x00010232:word32] = ecx_5
-Mem6: orig: Mem0
-    def:  Mem6[0x00010232:word32] = ecx_5
+    def:  ecx_5 = DPB(ecx_2, cl_4, 0) (alias)
+    uses: ecx_6 = PHI(ecx_5, ecx_3)
+ecx_6: orig: ecx
+    def:  ecx_6 = PHI(ecx_5, ecx_3)
+    uses: Mem7[0x00010232:word32] = ecx_6
+Mem7: orig: Mem0
+    def:  Mem7[0x00010232:word32] = ecx_6
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -1168,20 +1170,20 @@ ProcedureBuilder_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	ecx_1 = Mem0[0x00542300:word32]
+	ecx_2 = Mem0[0x00542300:word32]
 	branch Mem0[0x00010042:bool] mBranch2
 	// succ:  mBranch1 mBranch2
 mBranch1:
-	cl_3 = 0x2A
-	ecx_4 = DPB(ecx_1, cl_3, 0) (alias)
+	cl_4 = 0x2A
+	ecx_5 = DPB(ecx_2, cl_4, 0) (alias)
 	goto mCommon
 	// succ:  mCommon
 mBranch2:
-	ecx_2 = 0x00000020
+	ecx_3 = 0x00000020
 	// succ:  mCommon
 mCommon:
-	ecx_5 = PHI(ecx_4, ecx_2)
-	Mem6[0x00010232:word32] = ecx_5
+	ecx_6 = PHI(ecx_5, ecx_3)
+	Mem7[0x00010232:word32] = ecx_6
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
@@ -1215,19 +1217,19 @@ ProcedureBuilder_exit:
             #region Expected
 @"Mem0:Global memory
     def:  def Mem0
-    uses: eax_1 = Mem0[0x00543200:word32]
-          edx_2 = Mem0[0x00543208:word32]
-eax_1: orig: eax
-    def:  eax_1 = Mem0[0x00543200:word32]
-    uses: eax_3 = eax_1 + edx_2
-edx_2: orig: edx
-    def:  edx_2 = Mem0[0x00543208:word32]
-    uses: eax_3 = eax_1 + edx_2
-eax_3: orig: eax
-    def:  eax_3 = eax_1 + edx_2
-    uses: Mem4[0x00642300:word32] = eax_3
-Mem4: orig: Mem0
-    def:  Mem4[0x00642300:word32] = eax_3
+    uses: eax_2 = Mem0[0x00543200:word32]
+          edx_3 = Mem0[0x00543208:word32]
+eax_2: orig: eax
+    def:  eax_2 = Mem0[0x00543200:word32]
+    uses: eax_4 = eax_2 + edx_3
+edx_3: orig: edx
+    def:  edx_3 = Mem0[0x00543208:word32]
+    uses: eax_4 = eax_2 + edx_3
+eax_4: orig: eax
+    def:  eax_4 = eax_2 + edx_3
+    uses: Mem5[0x00642300:word32] = eax_4
+Mem5: orig: Mem0
+    def:  Mem5[0x00642300:word32] = eax_4
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -1235,10 +1237,10 @@ ProcedureBuilder_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	eax_1 = Mem0[0x00543200:word32]
-	edx_2 = Mem0[0x00543208:word32]
-	eax_3 = eax_1 + edx_2
-	Mem4[0x00642300:word32] = eax_3
+	eax_2 = Mem0[0x00543200:word32]
+	edx_3 = Mem0[0x00543208:word32]
+	eax_4 = eax_2 + edx_3
+	Mem5[0x00642300:word32] = eax_4
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
@@ -1265,24 +1267,24 @@ ProcedureBuilder_exit:
             #region Expected
 @"Mem0:Global memory
     def:  def Mem0
-    uses: edx_1 = Mem0[0x00543200:word32]
-edx_1: orig: edx
-    def:  edx_1 = Mem0[0x00543200:word32]
-    uses: dl_2 = (byte) edx_1 (alias)
-dl_2: orig: dl
-    def:  dl_2 = (byte) edx_1 (alias)
-    uses: Mem3[0x00642300:byte] = dl_2
-Mem3: orig: Mem0
-    def:  Mem3[0x00642300:byte] = dl_2
-    uses: edx_4 = Mem3[0x00543208:word32]
-edx_4: orig: edx
-    def:  edx_4 = Mem3[0x00543208:word32]
-    uses: dl_5 = (byte) edx_4 (alias)
-dl_5: orig: dl
-    def:  dl_5 = (byte) edx_4 (alias)
-    uses: Mem6[0x00642308:byte] = dl_5
-Mem6: orig: Mem0
-    def:  Mem6[0x00642308:byte] = dl_5
+    uses: edx_2 = Mem0[0x00543200:word32]
+edx_2: orig: edx
+    def:  edx_2 = Mem0[0x00543200:word32]
+    uses: dl_3 = (byte) edx_2 (alias)
+dl_3: orig: dl
+    def:  dl_3 = (byte) edx_2 (alias)
+    uses: Mem4[0x00642300:byte] = dl_3
+Mem4: orig: Mem0
+    def:  Mem4[0x00642300:byte] = dl_3
+    uses: edx_5 = Mem4[0x00543208:word32]
+edx_5: orig: edx
+    def:  edx_5 = Mem4[0x00543208:word32]
+    uses: dl_6 = (byte) edx_5 (alias)
+dl_6: orig: dl
+    def:  dl_6 = (byte) edx_5 (alias)
+    uses: Mem7[0x00642308:byte] = dl_6
+Mem7: orig: Mem0
+    def:  Mem7[0x00642308:byte] = dl_6
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -1290,12 +1292,12 @@ ProcedureBuilder_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	edx_1 = Mem0[0x00543200:word32]
-	dl_2 = (byte) edx_1 (alias)
-	Mem3[0x00642300:byte] = dl_2
-	edx_4 = Mem3[0x00543208:word32]
-	dl_5 = (byte) edx_4 (alias)
-	Mem6[0x00642308:byte] = dl_5
+	edx_2 = Mem0[0x00543200:word32]
+	dl_3 = (byte) edx_2 (alias)
+	Mem4[0x00642300:byte] = dl_3
+	edx_5 = Mem4[0x00543208:word32]
+	dl_6 = (byte) edx_5 (alias)
+	Mem7[0x00642308:byte] = dl_6
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
@@ -1322,14 +1324,14 @@ ProcedureBuilder_exit:
             #region Expected
 @"ebx:ebx
     def:  def ebx
-    uses: C_2 = os_service(ebx, out ebx_1)
-ebx_1: orig: ebx
-    def:  C_2 = os_service(ebx, out ebx_1)
-    uses: Mem3[0x00123400:word32] = ebx_1
-C_2: orig: C
-    def:  C_2 = os_service(ebx, out ebx_1)
-Mem3: orig: Mem0
-    def:  Mem3[0x00123400:word32] = ebx_1
+    uses: C_3 = os_service(ebx, out ebx_2)
+ebx_2: orig: ebx
+    def:  C_3 = os_service(ebx, out ebx_2)
+    uses: Mem4[0x00123400:word32] = ebx_2
+C_3: orig: C
+    def:  C_3 = os_service(ebx, out ebx_2)
+Mem4: orig: Mem0
+    def:  Mem4[0x00123400:word32] = ebx_2
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -1337,8 +1339,8 @@ ProcedureBuilder_entry:
 	def ebx
 	// succ:  l1
 l1:
-	C_2 = os_service(ebx, out ebx_1)
-	Mem3[0x00123400:word32] = ebx_1
+	C_3 = os_service(ebx, out ebx_2)
+	Mem4[0x00123400:word32] = ebx_2
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
@@ -1364,28 +1366,28 @@ ProcedureBuilder_exit:
             #region Expected
 @"es:es
     def:  def es
-    uses: es_bx_3 = Mem0[es:bx:word32]
+    uses: es_bx_4 = Mem0[es:bx:word32]
 bx:bx
     def:  def bx
-    uses: es_bx_3 = Mem0[es:bx:word32]
+    uses: es_bx_4 = Mem0[es:bx:word32]
 Mem0:Global memory
     def:  def Mem0
-    uses: es_bx_3 = Mem0[es:bx:word32]
-          bx_6 = Mem0[es_4:bx_5 + 0x0010:word32]
-es_bx_3: orig: es_bx
-    def:  es_bx_3 = Mem0[es:bx:word32]
-    uses: es_4 = SLICE(es_bx_3, word16, 16) (alias)
-          bx_5 = (word16) es_bx_3 (alias)
-es_4: orig: es
-    def:  es_4 = SLICE(es_bx_3, word16, 16) (alias)
-    uses: bx_6 = Mem0[es_4:bx_5 + 0x0010:word32]
-          use es_4
-bx_5: orig: bx
-    def:  bx_5 = (word16) es_bx_3 (alias)
-    uses: bx_6 = Mem0[es_4:bx_5 + 0x0010:word32]
+    uses: es_bx_4 = Mem0[es:bx:word32]
+          bx_7 = Mem0[es_5:bx_6 + 0x0010:word32]
+es_bx_4: orig: es_bx
+    def:  es_bx_4 = Mem0[es:bx:word32]
+    uses: es_5 = SLICE(es_bx_4, word16, 16) (alias)
+          bx_6 = (word16) es_bx_4 (alias)
+es_5: orig: es
+    def:  es_5 = SLICE(es_bx_4, word16, 16) (alias)
+    uses: bx_7 = Mem0[es_5:bx_6 + 0x0010:word32]
+          use es_5
 bx_6: orig: bx
-    def:  bx_6 = Mem0[es_4:bx_5 + 0x0010:word32]
-    uses: use bx_6
+    def:  bx_6 = (word16) es_bx_4 (alias)
+    uses: bx_7 = Mem0[es_5:bx_6 + 0x0010:word32]
+bx_7: orig: bx
+    def:  bx_7 = Mem0[es_5:bx_6 + 0x0010:word32]
+    uses: use bx_7
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -1395,15 +1397,15 @@ ProcedureBuilder_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	es_bx_3 = Mem0[es:bx:word32]
-	es_4 = SLICE(es_bx_3, word16, 16) (alias)
-	bx_5 = (word16) es_bx_3 (alias)
-	bx_6 = Mem0[es_4:bx_5 + 0x0010:word32]
+	es_bx_4 = Mem0[es:bx:word32]
+	es_5 = SLICE(es_bx_4, word16, 16) (alias)
+	bx_6 = (word16) es_bx_4 (alias)
+	bx_7 = Mem0[es_5:bx_6 + 0x0010:word32]
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
-	use bx_6
-	use es_4
+	use bx_7
+	use es_5
 ";
             #endregion
 
@@ -1426,21 +1428,21 @@ ProcedureBuilder_exit:
             #region Expected
 @"eax:eax
     def:  def eax
-    uses: eax_2 = Mem0[eax:word32]
+    uses: eax_3 = Mem0[eax:word32]
 Mem0:Global memory
     def:  def Mem0
-    uses: eax_2 = Mem0[eax:word32]
-eax_2: orig: eax
-    def:  eax_2 = Mem0[eax:word32]
-    uses: al_3 = (byte) eax_2 (alias)
-al_3: orig: al
-    def:  al_3 = (byte) eax_2 (alias)
-    uses: Mem4[0x00123100:byte] = al_3
-          Mem5[0x00123108:byte] = al_3
-Mem4: orig: Mem0
-    def:  Mem4[0x00123100:byte] = al_3
+    uses: eax_3 = Mem0[eax:word32]
+eax_3: orig: eax
+    def:  eax_3 = Mem0[eax:word32]
+    uses: al_4 = (byte) eax_3 (alias)
+al_4: orig: al
+    def:  al_4 = (byte) eax_3 (alias)
+    uses: Mem5[0x00123100:byte] = al_4
+          Mem6[0x00123108:byte] = al_4
 Mem5: orig: Mem0
-    def:  Mem5[0x00123108:byte] = al_3
+    def:  Mem5[0x00123100:byte] = al_4
+Mem6: orig: Mem0
+    def:  Mem6[0x00123108:byte] = al_4
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -1449,10 +1451,10 @@ ProcedureBuilder_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	eax_2 = Mem0[eax:word32]
-	al_3 = (byte) eax_2 (alias)
-	Mem4[0x00123100:byte] = al_3
-	Mem5[0x00123108:byte] = al_3
+	eax_3 = Mem0[eax:word32]
+	al_4 = (byte) eax_3 (alias)
+	Mem5[0x00123100:byte] = al_4
+	Mem6[0x00123108:byte] = al_4
 ProcedureBuilder_exit:
 ";
             #endregion
@@ -1483,16 +1485,16 @@ ProcedureBuilder_exit:
             // 0x00031234
             //this.importReferences
             var sExp =
-@"r13_0: orig: r13
-    def:  r13_0 = 0x00030000
-r12_1: orig: r12
-    def:  r12_1 = ImportedFunc
-    uses: r14_2 = ImportedFunc(r6)
-r14_2: orig: r14
-    def:  r14_2 = ImportedFunc(r6)
+@"r13_1: orig: r13
+    def:  r13_1 = 0x00030000
+r12_2: orig: r12
+    def:  r12_2 = ImportedFunc
+    uses: r14_3 = ImportedFunc(r6)
+r14_3: orig: r14
+    def:  r14_3 = ImportedFunc(r6)
 r6:r6
     def:  def r6
-    uses: r14_2 = ImportedFunc(r6)
+    uses: r14_3 = ImportedFunc(r6)
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -1500,9 +1502,9 @@ ProcedureBuilder_entry:
 	def r6
 	// succ:  l1
 l1:
-	r13_0 = 0x00030000
-	r12_1 = ImportedFunc
-	r14_2 = ImportedFunc(r6)
+	r13_1 = 0x00030000
+	r12_2 = ImportedFunc
+	r14_3 = ImportedFunc(r6)
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
@@ -1536,30 +1538,30 @@ ProcedureBuilder_exit:
         {
             var sExp =
             #region Expected
-@"eax_0: orig: eax
-    def:  eax_0 = 0x00000000
-    uses: eax_3 = PHI(eax_0, eax_5)
-ebx_1: orig: ebx
-    def:  ebx_1 = PHI(ebx, ebx_6)
-    uses: SCZ_2 = cond(ebx_1 - 0x00000000)
-          eax_5 = eax_3 + Mem0[ebx_1:word32]
-          ebx_6 = Mem0[ebx_1 + 0x00000004:word32]
-SCZ_2: orig: SCZ
-    def:  SCZ_2 = cond(ebx_1 - 0x00000000)
-    uses: branch Test(NE,SCZ_2) l2Body
-eax_3: orig: eax
-    def:  eax_3 = PHI(eax_0, eax_5)
-    uses: eax_5 = eax_3 + Mem0[ebx_1:word32]
-          return eax_3
-eax_5: orig: eax
-    def:  eax_5 = eax_3 + Mem0[ebx_1:word32]
-    uses: eax_3 = PHI(eax_0, eax_5)
-ebx_6: orig: ebx
-    def:  ebx_6 = Mem0[ebx_1 + 0x00000004:word32]
-    uses: ebx_1 = PHI(ebx, ebx_6)
+@"eax_1: orig: eax
+    def:  eax_1 = 0x00000000
+    uses: eax_4 = PHI(eax_1, eax_6)
+ebx_2: orig: ebx
+    def:  ebx_2 = PHI(ebx, ebx_7)
+    uses: SCZ_3 = cond(ebx_2 - 0x00000000)
+          eax_6 = eax_4 + Mem0[ebx_2:word32]
+          ebx_7 = Mem0[ebx_2 + 0x00000004:word32]
+SCZ_3: orig: SCZ
+    def:  SCZ_3 = cond(ebx_2 - 0x00000000)
+    uses: branch Test(NE,SCZ_3) l2Body
+eax_4: orig: eax
+    def:  eax_4 = PHI(eax_1, eax_6)
+    uses: eax_6 = eax_4 + Mem0[ebx_2:word32]
+          return eax_4
+eax_6: orig: eax
+    def:  eax_6 = eax_4 + Mem0[ebx_2:word32]
+    uses: eax_4 = PHI(eax_1, eax_6)
+ebx_7: orig: ebx
+    def:  ebx_7 = Mem0[ebx_2 + 0x00000004:word32]
+    uses: ebx_2 = PHI(ebx, ebx_7)
 ebx:ebx
     def:  def ebx
-    uses: ebx_1 = PHI(ebx, ebx_6)
+    uses: ebx_2 = PHI(ebx, ebx_7)
 Mem0:Global memory
     def:  def Mem0
 // ProcedureBuilder
@@ -1570,21 +1572,21 @@ ProcedureBuilder_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	eax_0 = 0x00000000
+	eax_1 = 0x00000000
 	goto l3Head
 	// succ:  l3Head
 l2Body:
-	eax_5 = eax_3 + Mem0[ebx_1:word32]
-	ebx_6 = Mem0[ebx_1 + 0x00000004:word32]
+	eax_6 = eax_4 + Mem0[ebx_2:word32]
+	ebx_7 = Mem0[ebx_2 + 0x00000004:word32]
 	// succ:  l3Head
 l3Head:
-	eax_3 = PHI(eax_0, eax_5)
-	ebx_1 = PHI(ebx, ebx_6)
-	SCZ_2 = cond(ebx_1 - 0x00000000)
-	branch Test(NE,SCZ_2) l2Body
+	eax_4 = PHI(eax_1, eax_6)
+	ebx_2 = PHI(ebx, ebx_7)
+	SCZ_3 = cond(ebx_2 - 0x00000000)
+	branch Test(NE,SCZ_3) l2Body
 	// succ:  l4Exit l2Body
 l4Exit:
-	return eax_3
+	return eax_4
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
 ";
@@ -1620,28 +1622,28 @@ ProcedureBuilder_exit:
             #region Expected
 @"Mem0:Global memory
     def:  def Mem0
-    uses: cx_1 = Mem0[0x1234:word16]
-cx_1: orig: cx
-    def:  cx_1 = Mem0[0x1234:word16]
-    uses: Mem2[0x00001236:word16] = cx_1
-Mem2: orig: Mem0
-    def:  Mem2[0x00001236:word16] = cx_1
-    uses: es_cx_3 = Mem2[0x00001238:word32]
-es_cx_3: orig: es_cx
-    def:  es_cx_3 = Mem2[0x00001238:word32]
-    uses: es_cx_5 = DPB(es_cx_3, 0x2D, 0) (alias)
-          es_7 = SLICE(es_cx_3, word16, 16) (alias)
-cl_4: orig: cl
-    def:  cl_4 = 0x2D
-es_cx_5: orig: es_cx
-    def:  es_cx_5 = DPB(es_cx_3, 0x2D, 0) (alias)
-    uses: cx_6 = (word16) es_cx_5 (alias)
-cx_6: orig: cx
-    def:  cx_6 = (word16) es_cx_5 (alias)
-    uses: use cx_6
-es_7: orig: es
-    def:  es_7 = SLICE(es_cx_3, word16, 16) (alias)
-    uses: use es_7
+    uses: cx_2 = Mem0[0x1234:word16]
+cx_2: orig: cx
+    def:  cx_2 = Mem0[0x1234:word16]
+    uses: Mem3[0x00001236:word16] = cx_2
+Mem3: orig: Mem0
+    def:  Mem3[0x00001236:word16] = cx_2
+    uses: es_cx_4 = Mem3[0x00001238:word32]
+es_cx_4: orig: es_cx
+    def:  es_cx_4 = Mem3[0x00001238:word32]
+    uses: es_cx_6 = DPB(es_cx_4, 0x2D, 0) (alias)
+          es_8 = SLICE(es_cx_4, word16, 16) (alias)
+cl_5: orig: cl
+    def:  cl_5 = 0x2D
+es_cx_6: orig: es_cx
+    def:  es_cx_6 = DPB(es_cx_4, 0x2D, 0) (alias)
+    uses: cx_7 = (word16) es_cx_6 (alias)
+cx_7: orig: cx
+    def:  cx_7 = (word16) es_cx_6 (alias)
+    uses: use cx_7
+es_8: orig: es
+    def:  es_8 = SLICE(es_cx_4, word16, 16) (alias)
+    uses: use es_8
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -1649,18 +1651,18 @@ ProcedureBuilder_entry:
 	def Mem0
 	// succ:  m0
 m0:
-	cx_1 = Mem0[0x1234:word16]
-	Mem2[0x00001236:word16] = cx_1
-	es_cx_3 = Mem2[0x00001238:word32]
-	es_7 = SLICE(es_cx_3, word16, 16) (alias)
-	cl_4 = 0x2D
-	es_cx_5 = DPB(es_cx_3, 0x2D, 0) (alias)
-	cx_6 = (word16) es_cx_5 (alias)
+	cx_2 = Mem0[0x1234:word16]
+	Mem3[0x00001236:word16] = cx_2
+	es_cx_4 = Mem3[0x00001238:word32]
+	es_8 = SLICE(es_cx_4, word16, 16) (alias)
+	cl_5 = 0x2D
+	es_cx_6 = DPB(es_cx_4, 0x2D, 0) (alias)
+	cx_7 = (word16) es_cx_6 (alias)
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
-	use cx_6
-	use es_7
+	use cx_7
+	use es_8
 ";
             #endregion
 
@@ -1685,21 +1687,21 @@ ProcedureBuilder_exit:
         {
             var sExp =
             #region Expected
-@"r1_0: orig: r1
-    def:  r1_0 = PHI(r1, r1_3)
-    uses: branch r1_0 == 0x00000000 m3done
-          r1_3 = r1_0 + Mem0[r2:word32]
-          use r1_0
-Mem0:Global memory
-    def:  def Mem0
-r1_3: orig: r1
-    def:  r1_3 = r1_0 + Mem0[r2:word32]
-    uses: r1_0 = PHI(r1, r1_3)
+@"r1_1: orig: r1
+    def:  r1_1 = PHI(r1, r1_4)
+    uses: branch r1_1 == 0x00000000 m3done
+          r1_4 = r1_1 + Mem0[r2:word32]
+          use r1_1
+r1_4: orig: r1
+    def:  r1_4 = r1_1 + Mem0[r2:word32]
+    uses: r1_1 = PHI(r1, r1_4)
 r1:r1
     def:  def r1
-    uses: r1_0 = PHI(r1, r1_3)
+    uses: r1_1 = PHI(r1, r1_4)
 r2:r2
     def:  def r2
+Mem0:Global memory
+    def:  def Mem0
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -1709,18 +1711,18 @@ ProcedureBuilder_entry:
 	def Mem0
 	// succ:  m0
 m0:
-	r1_0 = PHI(r1, r1_3)
-	branch r1_0 == 0x00000000 m3done
+	r1_1 = PHI(r1, r1_4)
+	branch r1_1 == 0x00000000 m3done
 	// succ:  m1notdone m3done
 m1notdone:
-	r1_3 = r1_0 + Mem0[r2:word32]
+	r1_4 = r1_1 + Mem0[r2:word32]
 	goto m0
 	// succ:  m0
 m3done:
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
-	use r1_0
+	use r1_1
 ";
             #endregion
 
@@ -1748,23 +1750,23 @@ ProcedureBuilder_exit:
             #region Expected
 @"Mem0:Global memory
     def:  def Mem0
-    uses: bl_1 = Mem0[0x1234:word16]
-bl_1: orig: bl
-    def:  bl_1 = Mem0[0x1234:word16]
-bh_2: orig: bh
-    def:  bh_2 = 0x00
+    uses: bl_2 = Mem0[0x1234:word16]
+bl_2: orig: bl
+    def:  bl_2 = Mem0[0x1234:word16]
+bh_3: orig: bh
+    def:  bh_3 = 0x00
 bx:bx
     def:  def bx
-    uses: bx_4 = DPB(bx, bl_1, 0) (alias)
-bx_4: orig: bx
-    def:  bx_4 = DPB(bx, bl_1, 0) (alias)
-    uses: bx_5 = DPB(bx_4, 0x00, 8) (alias)
+    uses: bx_5 = DPB(bx, bl_2, 0) (alias)
 bx_5: orig: bx
-    def:  bx_5 = DPB(bx_4, 0x00, 8) (alias)
-    uses: Mem6[0x1236:word16] = bx_5
-          use bx_5
-Mem6: orig: Mem0
-    def:  Mem6[0x1236:word16] = bx_5
+    def:  bx_5 = DPB(bx, bl_2, 0) (alias)
+    uses: bx_6 = DPB(bx_5, 0x00, 8) (alias)
+bx_6: orig: bx
+    def:  bx_6 = DPB(bx_5, 0x00, 8) (alias)
+    uses: Mem7[0x1236:word16] = bx_6
+          use bx_6
+Mem7: orig: Mem0
+    def:  Mem7[0x1236:word16] = bx_6
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -1773,17 +1775,17 @@ ProcedureBuilder_entry:
 	def bx
 	// succ:  m0
 m0:
-	bl_1 = Mem0[0x1234:word16]
-	bx_4 = DPB(bx, bl_1, 0) (alias)
+	bl_2 = Mem0[0x1234:word16]
+	bx_5 = DPB(bx, bl_2, 0) (alias)
 	// succ:  m1
 m1:
-	bh_2 = 0x00
-	bx_5 = DPB(bx_4, 0x00, 8) (alias)
-	Mem6[0x1236:word16] = bx_5
+	bh_3 = 0x00
+	bx_6 = DPB(bx_5, 0x00, 8) (alias)
+	Mem7[0x1236:word16] = bx_6
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
-	use bx_5
+	use bx_6
 ";
             #endregion
 
@@ -1809,28 +1811,28 @@ ProcedureBuilder_exit:
             #region Expected
 @"Mem0:Global memory
     def:  def Mem0
-    uses: bl_1 = Mem0[0x1234:word16]
-bl_1: orig: bl
-    def:  bl_1 = Mem0[0x1234:word16]
-    uses: branch bl_1 > 0x00000003 m2
-bh_2: orig: bh
-    def:  bh_2 = 0x00
+    uses: bl_2 = Mem0[0x1234:word16]
+bl_2: orig: bl
+    def:  bl_2 = Mem0[0x1234:word16]
+    uses: branch bl_2 > 0x00000003 m2
+bh_3: orig: bh
+    def:  bh_3 = 0x00
 bx:bx
     def:  def bx
-    uses: bx_4 = DPB(bx, bl_1, 0) (alias)
-          bx_7 = PHI(bx, bx_5)
-bx_4: orig: bx
-    def:  bx_4 = DPB(bx, bl_1, 0) (alias)
-    uses: bx_5 = DPB(bx_4, 0x00, 8) (alias)
+    uses: bx_5 = DPB(bx, bl_2, 0) (alias)
+          bx_8 = PHI(bx, bx_6)
 bx_5: orig: bx
-    def:  bx_5 = DPB(bx_4, 0x00, 8) (alias)
-    uses: Mem6[0x1236:word16] = bx_5
-          bx_7 = PHI(bx, bx_5)
-Mem6: orig: Mem0
-    def:  Mem6[0x1236:word16] = bx_5
-bx_7: orig: bx
-    def:  bx_7 = PHI(bx, bx_5)
-    uses: use bx_7
+    def:  bx_5 = DPB(bx, bl_2, 0) (alias)
+    uses: bx_6 = DPB(bx_5, 0x00, 8) (alias)
+bx_6: orig: bx
+    def:  bx_6 = DPB(bx_5, 0x00, 8) (alias)
+    uses: Mem7[0x1236:word16] = bx_6
+          bx_8 = PHI(bx, bx_6)
+Mem7: orig: Mem0
+    def:  Mem7[0x1236:word16] = bx_6
+bx_8: orig: bx
+    def:  bx_8 = PHI(bx, bx_6)
+    uses: use bx_8
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -1839,21 +1841,21 @@ ProcedureBuilder_entry:
 	def bx
 	// succ:  m0
 m0:
-	bl_1 = Mem0[0x1234:word16]
-	bx_4 = DPB(bx, bl_1, 0) (alias)
-	branch bl_1 > 0x00000003 m2
+	bl_2 = Mem0[0x1234:word16]
+	bx_5 = DPB(bx, bl_2, 0) (alias)
+	branch bl_2 > 0x00000003 m2
 	// succ:  m1 m2
 m1:
-	bh_2 = 0x00
-	bx_5 = DPB(bx_4, 0x00, 8) (alias)
-	Mem6[0x1236:word16] = bx_5
+	bh_3 = 0x00
+	bx_6 = DPB(bx_5, 0x00, 8) (alias)
+	Mem7[0x1236:word16] = bx_6
 	// succ:  m2
 m2:
-	bx_7 = PHI(bx, bx_5)
+	bx_8 = PHI(bx, bx_6)
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
-	use bx_7
+	use bx_8
 ";
             #endregion
 
@@ -1882,33 +1884,33 @@ ProcedureBuilder_exit:
             var sExp =
 @"si:si
     def:  def si
-    uses: bl_2 = Mem0[si:byte]
+    uses: bl_3 = Mem0[si:byte]
 Mem0:Global memory
     def:  def Mem0
-    uses: bl_2 = Mem0[si:byte]
-bl_2: orig: bl
-    def:  bl_2 = Mem0[si:byte]
-    uses: SCZO_3 = cond(bl_2 - 0x02)
-SCZO_3: orig: SCZO
-    def:  SCZO_3 = cond(bl_2 - 0x02)
-    uses: branch Test(UGT,SCZO_3) m2
-bh_4: orig: bh
-    def:  bh_4 = 0x00
+    uses: bl_3 = Mem0[si:byte]
+bl_3: orig: bl
+    def:  bl_3 = Mem0[si:byte]
+    uses: SCZO_4 = cond(bl_3 - 0x02)
+SCZO_4: orig: SCZO
+    def:  SCZO_4 = cond(bl_3 - 0x02)
+    uses: branch Test(UGT,SCZO_4) m2
+bh_5: orig: bh
+    def:  bh_5 = 0x00
 bx:bx
     def:  def bx
-    uses: bx_6 = DPB(bx, bl_2, 0) (alias)
-bx_6: orig: bx
-    def:  bx_6 = DPB(bx, bl_2, 0) (alias)
-    uses: bx_7 = DPB(bx_6, bh_4, 8) (alias)
+    uses: bx_7 = DPB(bx, bl_3, 0) (alias)
 bx_7: orig: bx
-    def:  bx_7 = DPB(bx_6, bh_4, 8) (alias)
-    uses: bx_8 = bx_7 + bx_7
-          bx_8 = bx_7 + bx_7
+    def:  bx_7 = DPB(bx, bl_3, 0) (alias)
+    uses: bx_8 = DPB(bx_7, bh_5, 8) (alias)
 bx_8: orig: bx
-    def:  bx_8 = bx_7 + bx_7
-    uses: Mem9[bx_8:word16] = 0x0000
-Mem9: orig: Mem0
-    def:  Mem9[bx_8:word16] = 0x0000
+    def:  bx_8 = DPB(bx_7, bh_5, 8) (alias)
+    uses: bx_9 = bx_8 + bx_8
+          bx_9 = bx_8 + bx_8
+bx_9: orig: bx
+    def:  bx_9 = bx_8 + bx_8
+    uses: Mem10[bx_9:word16] = 0x0000
+Mem10: orig: Mem0
+    def:  Mem10[bx_9:word16] = 0x0000
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -1918,16 +1920,16 @@ ProcedureBuilder_entry:
 	def bx
 	// succ:  m0
 m0:
-	bl_2 = Mem0[si:byte]
-	bx_6 = DPB(bx, bl_2, 0) (alias)
-	SCZO_3 = cond(bl_2 - 0x02)
-	branch Test(UGT,SCZO_3) m2
+	bl_3 = Mem0[si:byte]
+	bx_7 = DPB(bx, bl_3, 0) (alias)
+	SCZO_4 = cond(bl_3 - 0x02)
+	branch Test(UGT,SCZO_4) m2
 	// succ:  m1 m2
 m1:
-	bh_4 = 0x00
-	bx_7 = DPB(bx_6, bh_4, 8) (alias)
-	bx_8 = bx_7 + bx_7
-	Mem9[bx_8:word16] = 0x0000
+	bh_5 = 0x00
+	bx_8 = DPB(bx_7, bh_5, 8) (alias)
+	bx_9 = bx_8 + bx_8
+	Mem10[bx_9:word16] = 0x0000
 	// succ:  m2
 m2:
 	return
@@ -1964,15 +1966,15 @@ ProcedureBuilder_exit:
         {
             var sExp =
             #region Expected
-                @"r1:r1
+@"r1:r1
     def:  def r1
-    uses: SZ_1 = cond(r1)
-SZ_1: orig: SZ
-    def:  SZ_1 = cond(r1)
-    uses: use C_2 | SZ_1
-C_2: orig: C
-    def:  C_2 = false
-    uses: use C_2 | SZ_1
+    uses: SZ_2 = cond(r1)
+SZ_2: orig: SZ
+    def:  SZ_2 = cond(r1)
+    uses: use C_3 | SZ_2
+C_3: orig: C
+    def:  C_3 = false
+    uses: use C_3 | SZ_2
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -1980,12 +1982,12 @@ ProcedureBuilder_entry:
 	def r1
 	// succ:  m0
 m0:
-	SZ_1 = cond(r1)
-	C_2 = false
+	SZ_2 = cond(r1)
+	C_3 = false
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
-	use C_2 | SZ_1
+	use C_3 | SZ_2
 ";
             #endregion
             RunTest_FrameAccesses(sExp, m =>
@@ -2008,20 +2010,20 @@ ProcedureBuilder_exit:
             #region Expected
 @"r1:r1
     def:  def r1
-    uses: r2_r1_1 = r1 *s 1431655765
-          r2_2 = SLICE(r1 *s 1431655765, word32, 32) (alias)
-r2_r1_1: orig: r2_r1
-    def:  r2_r1_1 = r1 *s 1431655765
-    uses: r1_4 = (word32) r2_r1_1 (alias)
-r2_2: orig: r2
-    def:  r2_2 = SLICE(r1 *s 1431655765, word32, 32) (alias)
-    uses: Mem3[0x00040000:word32] = r2_2
-          use r2_2
-Mem3: orig: Mem0
-    def:  Mem3[0x00040000:word32] = r2_2
-r1_4: orig: r1
-    def:  r1_4 = (word32) r2_r1_1 (alias)
-    uses: use r1_4
+    uses: r2_r1_2 = r1 *s 1431655765
+          r2_3 = SLICE(r1 *s 1431655765, word32, 32) (alias)
+r2_r1_2: orig: r2_r1
+    def:  r2_r1_2 = r1 *s 1431655765
+    uses: r1_5 = (word32) r2_r1_2 (alias)
+r2_3: orig: r2
+    def:  r2_3 = SLICE(r1 *s 1431655765, word32, 32) (alias)
+    uses: Mem4[0x00040000:word32] = r2_3
+          use r2_3
+Mem4: orig: Mem0
+    def:  Mem4[0x00040000:word32] = r2_3
+r1_5: orig: r1
+    def:  r1_5 = (word32) r2_r1_2 (alias)
+    uses: use r1_5
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -2029,15 +2031,15 @@ ProcedureBuilder_entry:
 	def r1
 	// succ:  l1
 l1:
-	r2_r1_1 = r1 *s 1431655765
-	r2_2 = SLICE(r1 *s 1431655765, word32, 32) (alias)
-	r1_4 = (word32) r2_r1_1 (alias)
-	Mem3[0x00040000:word32] = r2_2
+	r2_r1_2 = r1 *s 1431655765
+	r2_3 = SLICE(r1 *s 1431655765, word32, 32) (alias)
+	r1_5 = (word32) r2_r1_2 (alias)
+	Mem4[0x00040000:word32] = r2_3
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
-	use r1_4
-	use r2_2
+	use r1_5
+	use r2_3
 ";
             #endregion
 
@@ -2063,33 +2065,36 @@ ProcedureBuilder_exit:
     def:  Mem1 = PHI(Mem0, Mem5)
     uses: branch Mem1[0x00004010:bool] m4
           branch Mem1[0x00004011:bool] m4
-r1_1: orig: r1
-    def:  r1_1 = 0x00000003
-Mem2: orig: Mem0
-    def:  Mem2[0x00004020:bool] = true
-    uses: Mem0 = PHI(Mem0, Mem2)
+r1_2: orig: r1
+    def:  r1_2 = 0x00000003
+Mem5: orig: Mem0
+    def:  Mem5[0x00004020:bool] = true
+    uses: Mem1 = PHI(Mem0, Mem5)
 Mem0:Global memory
     def:  def Mem0
-    uses: Mem0 = PHI(Mem0, Mem2)
+    uses: Mem1 = PHI(Mem0, Mem5)
+r1:r1
+    def:  def r1
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
 	def Mem0
+	def r1
 	// succ:  m1
 m1:
-	Mem0 = PHI(Mem0, Mem2)
-	branch Mem0[0x00004010:bool] m4
+	Mem1 = PHI(Mem0, Mem5)
+	branch Mem1[0x00004010:bool] m4
 	// succ:  m2 m4
 m2:
-	branch Mem0[0x00004011:bool] m4
+	branch Mem1[0x00004011:bool] m4
 	// succ:  m3 m4
 m3:
-	Mem2[0x00004020:bool] = true
+	Mem5[0x00004020:bool] = true
 	goto m1
 	// succ:  m1
 m4:
-	r1_1 = 0x00000003
+	r1_2 = 0x00000003
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
