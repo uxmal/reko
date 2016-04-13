@@ -34,6 +34,13 @@ a command line driver. (**Note:** please let us
 know if you are not able to compile, so we can fix the issue for 
 you.
 
+You will receive warnings when loading the solution in Visual Studio
+if you haven't installed the WiX toolset on your development machine.
+You can safely ignore the warnings; the WiX toolset only used when making
+MSI installer packages. You will not need to do this if you're already able
+to compile the project. If you do want to build an MSI installer with
+the WiX toolchain, you can download it here: http://wixtoolset.org/releases/
+
 If you're interested in contributing code, see the 
 [road map](https://github.com/uxmal/reko/wiki/Roadmap) for areas to explore.
 The [Wiki](https://github.com/uxmal/reko/wiki) has more information 
