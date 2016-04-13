@@ -1759,10 +1759,10 @@ bx:bx
 bx_5: orig: bx
     def:  bx_5 = DPB(bx, bl_2, 0) (alias)
     uses: bx_6 = DPB(bx_5, 0x00, 8) (alias)
+          use bx_5
 bx_6: orig: bx
     def:  bx_6 = DPB(bx_5, 0x00, 8) (alias)
     uses: Mem7[0x1236:word16] = bx_6
-          use bx_6
 Mem7: orig: Mem0
     def:  Mem7[0x1236:word16] = bx_6
 // ProcedureBuilder
@@ -1783,7 +1783,7 @@ m1:
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
-	use bx_6
+	use bx_5
 ";
             #endregion
 
