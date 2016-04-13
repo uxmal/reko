@@ -25,8 +25,8 @@ using System.Diagnostics;
 namespace Reko.Core.Types
 {
 	/// <summary>
-	/// Compares two data types to see if they are equal or
-	/// less than each other.
+	/// Imposes a total ordering of DataTypes and compares two data types to 
+    /// see if they are equal or less than each other.
 	/// </summary>
 	public class DataTypeComparer : IComparer<DataType>, IDataTypeVisitor<int>
 	{

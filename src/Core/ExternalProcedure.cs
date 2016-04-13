@@ -27,8 +27,8 @@ using System.IO;
 namespace Reko.Core
 {
     /// <summary>
-    /// Models a procedure in an external API, whose signature is known, but whose code is 
-    /// irrelevant to the decompilation.
+    /// Models a procedure in an external API, whose signature is known, but 
+    /// whose code is irrelevant to the decompilation.
     /// </summary>
 	public class ExternalProcedure : ProcedureBase
 	{

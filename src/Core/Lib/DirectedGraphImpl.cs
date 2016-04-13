@@ -25,7 +25,8 @@ namespace Reko.Core.Lib
 {
 	/// <summary>
 	/// A directed graph implementation.
-	/// $TODO: recover lost space from deleted nodes and edges if this proves necessary.
+	/// $TODO: recover lost space from deleted nodes and edges if this 
+    /// proves necessary.
 	/// </summary>
 	public class DirectedGraphImpl<T> : DirectedGraph<T>
         where T : class

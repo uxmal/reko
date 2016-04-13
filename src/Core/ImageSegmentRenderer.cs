@@ -27,9 +27,9 @@ using System.Text;
 namespace Reko.Core
 {
     /// <summary>
-    /// Base class for optional renderers for image segments. It is used to render
-    /// the contents of a loaded image segment differently from just dumping its contents
-    /// as a bunch of bytes.
+    /// Base class for optional renderers for image segments. It is used to 
+    /// render the contents of a loaded image segment differently from just 
+    /// dumping its contents as a bunch of bytes.
     /// </summary>
     public abstract class ImageSegmentRenderer
     {

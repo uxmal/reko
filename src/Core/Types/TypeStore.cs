@@ -28,8 +28,8 @@ using System.IO;
 namespace Reko.Core.Types
 {
     /// <summary>
-    /// Stores, for a particular program, all type variables, equivalence classes, and their mappings to
-    /// each other.
+    /// Stores, for a particular program, all type variables, equivalence 
+    /// classes, and their mappings to each other.
     /// </summary>
     public interface ITypeStore
     {

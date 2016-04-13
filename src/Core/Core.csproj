@@ -424,9 +424,6 @@
     </Compile>
     <Compile Include="Lib\DisjointPartition.cs" />
     <Compile Include="Lib\DominatorGraph.cs" />
-    <Compile Include="Lib\IntSet.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Lib\SortedListEx.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -34,8 +34,9 @@ using System.Text;
 namespace Reko.Core
 {
     /// <summary>
-    /// Contains information about one input file, gathered during loading, scanning and data analysis,
-    /// as well as storing any user-specified information.
+    /// Contains information about one input file, gathered during loading, 
+    /// scanning and data analysis, as well as storing any user-specified 
+    /// information.
     /// </summary>
     /// <remarks>
     /// A Decompiler project may consist of several of these Programs.

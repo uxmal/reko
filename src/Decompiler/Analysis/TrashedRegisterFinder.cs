@@ -37,8 +37,8 @@ namespace Reko.Analysis
 {
 	/// <summary>
 	/// Uses an interprocedural reaching definition analysis to detect which 
-	/// registers are modified by the procedures, which registers are constant at block
-    /// exits, and which registers have their values preserved.
+	/// registers are modified by the procedures, which registers are constant
+    /// at block exits, and which registers have their values preserved.
     /// <para>
     /// The results of the analysis are stored in the ProgramDataFlow.</para>
 	/// </summary>

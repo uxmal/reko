@@ -29,7 +29,7 @@ using System.Text;
 namespace Reko.Core.Output
 {
     /// <summary>
-    /// Writes out global initialized data.
+    /// Writes out initialized global variables.
     /// </summary>
     public class GlobalDataWriter : IDataTypeVisitor<CodeFormatter>
     {

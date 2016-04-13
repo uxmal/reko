@@ -29,7 +29,8 @@ using System.Text;
 namespace Reko.Core.Expressions
 {
     /// <summary>
-    /// Used to match expressions to a pattern and possibly capture identifiers and constants.
+    /// Used to match expressions to a pattern and possibly capture 
+    /// identifiers and constants.
     /// </summary>
     public class ExpressionMatcher : ExpressionVisitor<bool>
     {

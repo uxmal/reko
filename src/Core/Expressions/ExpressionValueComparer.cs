@@ -25,7 +25,7 @@ using System.Text;
 namespace Reko.Core.Expressions
 {
     /// <summary>
-    /// Deep-compares expressions.
+    /// Deep-compares expressions; i.e. treats expressions as values.
     /// </summary>
     public class ExpressionValueComparer : IEqualityComparer<Expression>
     {

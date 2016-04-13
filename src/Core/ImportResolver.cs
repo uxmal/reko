@@ -35,9 +35,10 @@ namespace Reko.Core
     }
 
     /// <summary>
-    /// An import resolver tries to resolve a reference to external code or data  by consulting the 
-    /// current project first hand, and the platform in second hand. Doing it that way allows users to
-    /// override platform definitions as the need arises.
+    /// An import resolver tries to resolve a reference to external code or
+    /// data by consulting the current project first hand, and the platform
+    /// in second hand. Doing it that way allows users to override platform
+    /// definitions as the need arises.
     /// </summary>
     public class ImportResolver : IImportResolver
     {
