@@ -45,6 +45,21 @@ namespace Reko.Gui.Windows.Forms
             get { return txtSignature; }
         }
 
+        public CheckBox Decompile
+        {
+            get { return chkDecompile; }
+        }
+
+        public CheckBox Allocator
+        {
+            get { return chkMalloc; }
+        }
+
+        public CheckBox Terminates
+        {
+            get { return chkTerminates; }
+        }
+
         public Button OkButton { get { return btnOK; } }
     }
 }
