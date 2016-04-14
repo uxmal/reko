@@ -144,6 +144,7 @@ namespace Reko.Gui.Windows
                     var fmt = new AbsynCodeFormatter(tsf);
                     fmt.InnerFormatter.UseTabs = false;
                     fmt.Write(proc);
+                    tsf.WriteLine("");
                     nestedTextModel.Nodes.Add(tsf.GetModel());
                     nodeCreated = true;
                 }
@@ -158,6 +159,7 @@ namespace Reko.Gui.Windows
                     fmt.InnerFormatter.UseTabs = false;
                     var gdw = new GlobalDataWriter(program, services);
                     gdw.WriteGlobalVariable(curAddr, dt, name, tsf);
+                    tsf.WriteLine("");
                     nestedTextModel.Nodes.Add(tsf.GetModel());
                     nodeCreated = true;
                 }
