@@ -458,7 +458,6 @@ namespace Reko.ImageLoaders.MachO
             }
         }
 
-
         public class Loader64 : Parser
         {
             public Loader64(MachOLoader ldr, ImageReader rdr)
