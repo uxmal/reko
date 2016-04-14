@@ -29,12 +29,10 @@ namespace Reko.ImageLoaders.Elf
     class x86Relocator : ElfRelocator
     {
         private ElfLoader32 loader;
-        private Dictionary<Address, ImportReference> importReferences;
 
-        public x86Relocator(ElfLoader32 loader, Dictionary<Address, ImportReference> importReferences)
+        public x86Relocator(ElfLoader32 loader)
         {
             this.loader = loader;
-            this.importReferences = importReferences;
         }
 
         public override void Relocate(Program program)
@@ -156,5 +154,11 @@ namespace Reko.ImageLoaders.Elf
                 }
             }
         }
+
+        public override void RelocateEntry(List<ElfSymbol> symbols, ElfSection referringSection, Elf32_Rela rela)
+        {
+            throw new NotImplementedException();
+        }
     }
+
 }

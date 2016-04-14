@@ -193,7 +193,6 @@ namespace Reko.ImageLoaders.Elf
         protected ElfImageLoader imgLoader;
         protected Address m_uPltMin;
         protected Address m_uPltMax;
-        protected Dictionary<Address, ImportReference> importReferences;
         protected IPlatform platform;
         protected byte[] rawImage;
 
@@ -283,7 +282,6 @@ namespace Reko.ImageLoaders.Elf
             Dump();
             var imageMap = LoadImageBytes(platform, rawImage, addrPreferred, addrMax);
             var program = new Program(imageMap, platform.Architecture, platform);
-            this.importReferences = program.ImportReferences;
             return program;
         }
 
@@ -1781,7 +1779,7 @@ namespace Reko.ImageLoaders.Elf
             switch (machine)
             {
             case ElfMachine.EM_X86_64:
-                return new x86_64Relocator(this, importReferences);
+                return new x86_64Relocator(this);
             }
             return base.CreateRelocator(machine);
         }
@@ -2231,8 +2229,9 @@ namespace Reko.ImageLoaders.Elf
         {
             switch (machine)
             {
-            case ElfMachine.EM_386: return new x86Relocator(this, importReferences);
-            case ElfMachine.EM_PPC: return new PpcRelocator(this, importReferences);
+            case ElfMachine.EM_386: return new x86Relocator(this);
+            case ElfMachine.EM_MIPS: return new MipsRelocator(this);
+            case ElfMachine.EM_PPC: return new PpcRelocator(this);
             case ElfMachine.EM_SPARC: return new SparcRelocator(this);
             }
             return base.CreateRelocator(machine);

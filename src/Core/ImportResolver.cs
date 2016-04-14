@@ -56,16 +56,19 @@ namespace Reko.Core
 
         public ExternalProcedure ResolveProcedure(string moduleName, string importName, IPlatform platform)
         {
-            foreach (var program in project.Programs)
+            if (!string.IsNullOrEmpty(moduleName))
             {
-                ModuleDescriptor mod;
-                if (!program.EnvironmentMetadata.Modules.TryGetValue(moduleName, out mod))
-                    continue;
-
-                SystemService svc;
-                if (mod.ServicesByName.TryGetValue(importName, out svc))
+                foreach (var program in project.Programs)
                 {
-                    return new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);
+                    ModuleDescriptor mod;
+                    if (!program.EnvironmentMetadata.Modules.TryGetValue(moduleName, out mod))
+                        continue;
+
+                    SystemService svc;
+                    if (mod.ServicesByName.TryGetValue(importName, out svc))
+                    {
+                        return new ExternalProcedure(svc.Name, svc.Signature, svc.Characteristics);
+                    }
                 }
             }
 

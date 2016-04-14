@@ -38,8 +38,6 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         private byte[] rawBytes;
         private ElfObjectLinker32 linker;
 
-
-
         [SetUp]
         public override void Setup()
         {
@@ -47,7 +45,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             Given_BeArchitecture();
         }
 
-        private void BuildObjectFile()
+        private void BuildObjectFile32()
         {
             // Add symbol table
             if (symbols.Count > 0)
@@ -157,7 +155,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
 
         private void Given_Linker()
         {
-            BuildObjectFile();
+            BuildObjectFile32();
             mr.ReplayAll();
 
             var eil = new ElfImageLoader(sc, "foo.o", rawBytes);
@@ -168,8 +166,6 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             el.LoadSymbols();
             this.linker = new ElfObjectLinker32(el, arch, rawBytes);
         }
-
-
 
 //                   sh_type: SHT_NULL     sh_flags:      sh_addr; 00000000 sh_offset: 00000000 sh_size: 00000000 sh_link: 00000000 sh_info: 00000000 sh_addralign: 00000000 sh_entsize: 00000000
 //.shstrtab          sh_type: SHT_STRTAB   sh_flags:      sh_addr; 00000000 sh_offset: 00000034 sh_size: 00000052 sh_link: 00000000 sh_info: 00000000 sh_addralign: 00000001 sh_entsize: 00000000
