@@ -245,7 +245,7 @@ namespace Reko.ImageLoaders.MachO
                             "Unable to read Mach-O command ({0:X}).",
                             rdr.Offset));
                     }
-                    Debug.Print("{0,3}: Read load command 0x{1:X} {2} of size {3}.", i, cmd, lookup[cmd], cmdsize);
+                    Debug.Print("{0,3}: Read load command 0x{1:X} {2} of size {3}.", i, cmd, lookup.ContainsKey(cmd) ? lookup[cmd] : "", cmdsize);
 
                     switch (cmd & ~LC_REQ_DYLD)
                     {
@@ -457,7 +457,6 @@ namespace Reko.ImageLoaders.MachO
                 throw new BadImageFormatException("Invalid Mach-O header.");
             }
         }
-
 
         public class Loader64 : Parser
         {
