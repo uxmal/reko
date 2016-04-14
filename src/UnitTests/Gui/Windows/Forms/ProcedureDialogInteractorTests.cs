@@ -131,5 +131,80 @@ namespace Reko.UnitTests.Gui.Windows.Forms
                 Assert.AreEqual("test123", proc.Name);
             }
         }
+
+        [Test]
+        public void CheckBoxesDefault()
+        {
+            using (ProcedureDialog dlg = interactor.CreateDialog())
+            {
+                dlg.Show();
+                Assert.IsTrue(dlg.Decompile.Checked);
+                Assert.IsFalse(dlg.Allocator.Checked);
+                Assert.IsFalse(dlg.Terminates.Checked);
+                dlg.Decompile.Checked = false;
+                interactor.ApplyChanges();
+            }
+            Assert.IsFalse(proc.Decompile);
+            Assert.IsFalse(proc.Characteristics.Allocator);
+            Assert.IsFalse(proc.Characteristics.Terminates);
+        }
+
+        [Test]
+        public void CheckBoxesTerminates()
+        {
+            proc.Characteristics = new ProcedureCharacteristics();
+            proc.Characteristics.Terminates = true;
+            using (ProcedureDialog dlg = interactor.CreateDialog())
+            {
+                dlg.Show();
+                Assert.IsTrue(dlg.Decompile.Checked);
+                Assert.IsFalse(dlg.Allocator.Checked);
+                Assert.IsTrue(dlg.Terminates.Checked);
+                dlg.Allocator.Checked = true;
+                interactor.ApplyChanges();
+            }
+            Assert.IsTrue(proc.Decompile);
+            Assert.IsTrue(proc.Characteristics.Allocator);
+            Assert.IsTrue(proc.Characteristics.Terminates);
+        }
+
+        [Test]
+        public void CheckBoxesAllChecked()
+        {
+            proc.Decompile = false;
+            proc.Characteristics = new ProcedureCharacteristics();
+            proc.Characteristics.Terminates = true;
+            proc.Characteristics.Allocator = true;
+            using (ProcedureDialog dlg = interactor.CreateDialog())
+            {
+                dlg.Show();
+                Assert.IsFalse(dlg.Decompile.Checked);
+                Assert.IsTrue(dlg.Allocator.Checked);
+                Assert.IsTrue(dlg.Terminates.Checked);
+                dlg.Terminates.Checked = false;
+                interactor.ApplyChanges();
+            }
+            Assert.IsFalse(proc.Decompile);
+            Assert.IsTrue(proc.Characteristics.Allocator);
+            Assert.IsFalse(proc.Characteristics.Terminates);
+        }
+
+        [Test]
+        public void CheckBoxesCanceled()
+        {
+            proc.Decompile = false;
+            using (ProcedureDialog dlg = interactor.CreateDialog())
+            {
+                dlg.Show();
+                Assert.IsFalse(dlg.Decompile.Checked);
+                Assert.IsFalse(dlg.Allocator.Checked);
+                Assert.IsFalse(dlg.Terminates.Checked);
+                dlg.Allocator.Checked = true;
+                dlg.Terminates.Checked = true;
+                dlg.Decompile.Checked = true;
+            }
+            Assert.IsFalse(proc.Decompile);
+            Assert.IsNull(proc.Characteristics);
+        }
     }
 }
