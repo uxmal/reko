@@ -56,6 +56,11 @@ namespace Reko.Gui.Windows.Forms
             dlg.Signature.Text = proc.CSignature;
             dlg.ProcedureName.Text = proc.Name;
             EnableProcedureName();
+            dlg.Decompile.Checked = proc.Decompile;
+            var characteristics = (proc.Characteristics != null) ?
+                proc.Characteristics : DefaultProcedureCharacteristics.Instance;
+            dlg.Allocator.Checked = characteristics.Allocator;
+            dlg.Terminates.Checked = characteristics.Terminates;
         }
 
         private void EnableProcedureName()
@@ -71,6 +76,11 @@ namespace Reko.Gui.Windows.Forms
                 CSignature = null;
             proc.CSignature = CSignature;
             proc.Name = dlg.ProcedureName.Text;
+            proc.Decompile = dlg.Decompile.Checked;
+            if (proc.Characteristics == null)
+                proc.Characteristics = new ProcedureCharacteristics();
+            proc.Characteristics.Allocator = dlg.Allocator.Checked;
+            proc.Characteristics.Terminates = dlg.Terminates.Checked;
         }
 
         private void EnableControls(bool signatureIsValid)

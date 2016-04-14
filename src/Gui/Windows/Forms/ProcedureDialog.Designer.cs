@@ -58,7 +58,7 @@ namespace Reko.Gui.Windows.Forms
             this.txtSignature = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.chkTerminates = new System.Windows.Forms.CheckBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.chkDecompile = new System.Windows.Forms.CheckBox();
             this.chkMalloc = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txtComment = new System.Windows.Forms.TextBox();
@@ -153,7 +153,7 @@ namespace Reko.Gui.Windows.Forms
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.chkTerminates);
-            this.groupBox1.Controls.Add(this.checkBox1);
+            this.groupBox1.Controls.Add(this.chkDecompile);
             this.groupBox1.Controls.Add(this.chkMalloc);
             this.groupBox1.Location = new System.Drawing.Point(6, 219);
             this.groupBox1.Name = "groupBox1";
@@ -172,15 +172,15 @@ namespace Reko.Gui.Windows.Forms
             this.chkTerminates.Text = "Procedure terminates process or thread";
             this.chkTerminates.UseVisualStyleBackColor = true;
             // 
-            // checkBox1
+            // chkDecompile
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(6, 43);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(102, 17);
-            this.checkBox1.TabIndex = 7;
-            this.checkBox1.Text = "Decompile body";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.chkDecompile.AutoSize = true;
+            this.chkDecompile.Location = new System.Drawing.Point(6, 43);
+            this.chkDecompile.Name = "chkDecompile";
+            this.chkDecompile.Size = new System.Drawing.Size(102, 17);
+            this.chkDecompile.TabIndex = 7;
+            this.chkDecompile.Text = "Decompile body";
+            this.chkDecompile.UseVisualStyleBackColor = true;
             // 
             // chkMalloc
             // 
@@ -249,7 +249,7 @@ namespace Reko.Gui.Windows.Forms
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtSignature;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox chkDecompile;
         private System.Windows.Forms.CheckBox chkTerminates;
     }
 }
