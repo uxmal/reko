@@ -95,10 +95,11 @@ namespace Reko.ImageLoaders.MzExe
 			// Found the start address.
 
 			Address addrStart = Address.SegPtr((ushort)(exe.e_cs + addrLoad.Selector.Value), exe.e_ip);
-			imageMap.AddSegment(
-                Address.SegPtr(addrStart.Selector.Value, 0),
+			imageMap.AddSegment(new ImageSegment(
                 addrStart.Selector.Value.ToString("X4"),
-                AccessMode.ReadWriteExecute, 0);
+                Address.SegPtr(addrStart.Selector.Value, 0),
+                imgLoaded,
+                AccessMode.ReadWriteExecute));
             DumpSegments(imageMap);
             return new RelocationResults(
                 new List<EntryPoint> { new EntryPoint(addrStart, arch.CreateProcessorState()) },
