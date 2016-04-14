@@ -53,7 +53,7 @@ namespace Reko.ImageLoaders.Elf
                     if (sym.SectionIndex == 0)
                         continue;
                     var symSection = loader.Sections[(int)sym.SectionIndex];
-                    uint S = sym.Value + symSection.Address.ToUInt32();
+                    uint S = (uint) sym.Value + symSection.Address.ToUInt32();
                     int A = 0;
                     int sh = 0;
                     uint mask = ~0u;

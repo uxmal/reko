@@ -33,99 +33,18 @@ using System.Text;
 namespace Reko.UnitTests.ImageLoaders.Elf
 {
     [TestFixture]
-    public class ElfObjectLinkerTests
+    public class ElfObjectLinkerTests : ElfTests
     {
-        private MockRepository mr;
-        private MemoryStream segnametab;
-        private MemoryStream binaryContents;
-        private MemoryStream symbolStringtab;
-        private List<ObjectSection> objectSections;
-        private List<Elf32_Sym> symbols;
         private byte[] rawBytes;
         private ElfObjectLinker32 linker;
-        private IProcessorArchitecture arch;
-        private ServiceContainer sc;
-        private IConfigurationService cfgSvc;
 
-        public class ObjectSection
-        {
-            public string Name;
-            public byte[] Content;
-            public uint Flags;
-            public ushort Link;
-            public SectionHeaderType Type;
-            public uint Offset;
-            public uint ElementSize;
-        }
+
 
         [SetUp]
-        public void Setup()
+        public override void Setup()
         {
-            this.mr = new MockRepository();
-            this.sc = new ServiceContainer();
-            this.cfgSvc = mr.Stub<IConfigurationService>();
-            this.sc.AddService(typeof(IConfigurationService), cfgSvc);
-
-            this.segnametab = new MemoryStream();
-            this.segnametab.WriteByte(0);
-
-            this.symbolStringtab = new MemoryStream();
-            this.symbolStringtab.WriteByte(0);
-            this.symbols = new List<Elf32_Sym> { new Elf32_Sym() };
-
-            this.binaryContents = new MemoryStream();
-
-            this.objectSections = new List<ObjectSection>
-            {
-                new ObjectSection { Name = "" },        // dummy section always present
-                new ObjectSection { Name = ".shstrtab", Type = SectionHeaderType.SHT_STRTAB, Flags = 0 },
-            };
-
-            this.arch = mr.Stub<IProcessorArchitecture>();
-            this.arch.Stub(a => a.CreateImageWriter()).Do(new Func<ImageWriter>(() => new BeImageWriter()));
-            this.arch.Replay();
-        }
-
-        private int Given_SegName(string segname)
-        {
-            int i = (int)segnametab.Position;
-            var bytes = Encoding.ASCII.GetBytes(segname);
-            segnametab.Write(bytes, 0, bytes.Length);
-            segnametab.WriteByte(0);
-            return i;
-        }
-
-        private void Given_Symbol(
-            string name,
-            uint st_value,
-            uint st_size,
-            byte st_info,
-            ushort st_shndx)
-        {
-            var iName = (uint)symbolStringtab.Position;
-            var bytes = Encoding.ASCII.GetBytes(name);
-            symbolStringtab.Write(bytes, 0, bytes.Length);
-            symbolStringtab.WriteByte(0);
-            symbols.Add(new Elf32_Sym
-            {
-                st_name = iName,
-                st_value = st_value,
-                st_size = st_size,
-                st_info = st_info,
-                st_shndx = st_shndx
-            });
-        }
-
-        private void Given_Section(string name, SectionHeaderType type, uint flags, byte[] blob)
-        {
-            var os = new ObjectSection
-            {
-                Name = name,
-                Type = type,
-                Flags = flags,
-                Content = blob,
-            };
-            objectSections.Add(os);
+            base.Setup();
+            Given_BeArchitecture();
         }
 
         private void BuildObjectFile()
@@ -250,23 +169,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             this.linker = new ElfObjectLinker32(el, arch, rawBytes);
         }
 
-        private static uint Align(uint n)
-        {
-            return 4 * (((n + 3) / 4));
-        }
 
-        private static void Align(ImageWriter strtab)
-        {
-            while (strtab.Position % 4 != 0)
-                strtab.WriteByte(0);
-        }
-
-        private static void Align(MemoryStream strtab)
-        {
-            // Align the string table.
-            while (strtab.Position % 4 != 0)
-                strtab.WriteByte(0);
-        }
 
 //                   sh_type: SHT_NULL     sh_flags:      sh_addr; 00000000 sh_offset: 00000000 sh_size: 00000000 sh_link: 00000000 sh_info: 00000000 sh_addralign: 00000000 sh_entsize: 00000000
 //.shstrtab          sh_type: SHT_STRTAB   sh_flags:      sh_addr; 00000000 sh_offset: 00000034 sh_size: 00000052 sh_link: 00000000 sh_info: 00000000 sh_addralign: 00000001 sh_entsize: 00000000

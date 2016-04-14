@@ -78,7 +78,7 @@ namespace Reko.ImageLoaders.Elf
             this.innerLoader = CreateLoader();
             if (addrLoad == null)
                 addrLoad = innerLoader.DefaultAddress;
-            var platform = innerLoader.CreatePlatform(osAbi, innerLoader.Architecture);
+            var platform = innerLoader.LoadPlatform(osAbi, innerLoader.Architecture);
             int cHeaders = innerLoader.LoadProgramHeaderTable();
             innerLoader.LoadSectionHeaders();
             innerLoader.LoadSymbols();
@@ -245,7 +245,7 @@ namespace Reko.ImageLoaders.Elf
             return cfgSvc.GetArchitecture(arch);
         }
 
-        public IPlatform CreatePlatform(byte osAbi, IProcessorArchitecture arch)
+        public IPlatform LoadPlatform(byte osAbi, IProcessorArchitecture arch)
         {
             string envName;
             var cfgSvc = Services.RequireService<IConfigurationService>();
@@ -260,13 +260,21 @@ namespace Reko.ImageLoaders.Elf
             default:
                 throw new NotSupportedException(string.Format("Unsupported ELF ABI 0x{0:X2}.", osAbi));
             }
-            return cfgSvc.GetEnvironment(envName).Load(Services, arch);
+            var env = cfgSvc.GetEnvironment(envName);
+            this.platform = env.Load(Services, arch);
+            return platform;
         }
 
-        public abstract ElfRelocator CreateRelocator(ElfMachine machine);
+        public virtual ElfRelocator CreateRelocator(ElfMachine machine)
+        {
+            throw new NotSupportedException(
+                string.Format("Relocator for architecture {0} not implemented yet.",
+                machine));
+        }
 
         public Program LoadImage(IPlatform platform, byte[] rawImage)
         {
+            Debug.Assert(platform != null);
             this.platform = platform;
             this.rawImage = rawImage;
             GetPltLimits();
@@ -457,6 +465,23 @@ namespace Reko.ImageLoaders.Elf
 #endif
             numImports = n;
             return 0; //m_pImportStubs[];
+        }
+
+        protected string GetSectionNameQ(ushort st_shndx)
+        {
+            if (st_shndx < 0xFF00)
+            {
+                return Sections[st_shndx].Name;
+            }
+            else
+            {
+                switch (st_shndx)
+                {
+                case 0xFFF1: return "SHN_ABS";
+                case 0xFFF2: return "SHN_COMMON";
+                default: return st_shndx.ToString("X4");
+                }
+            }
         }
 
         public string GetStrPtr(Elf32_SHdr sect, uint offset)
@@ -1705,6 +1730,7 @@ namespace Reko.ImageLoaders.Elf
             this.Header64 = elfHeader;
             this.osAbi = osAbi;
             base.rawImage = rawImage;
+            this.Relocator = CreateRelocator((ElfMachine)elfHeader.e_machine);
         }
 
         public Elf64_EHdr Header64 { get; set; }
@@ -1752,7 +1778,12 @@ namespace Reko.ImageLoaders.Elf
 
         public override ElfRelocator CreateRelocator(ElfMachine machine)
         {
-            throw new NotImplementedException();
+            switch (machine)
+            {
+            case ElfMachine.EM_X86_64:
+                return new x86_64Relocator(this, importReferences);
+            }
+            return base.CreateRelocator(machine);
         }
 
         public override void Dump(TextWriter writer)
@@ -1993,7 +2024,39 @@ namespace Reko.ImageLoaders.Elf
 
         public override void LoadSymbols()
         {
-            throw new NotImplementedException();
+            foreach (var section in Sections.Where(s => s.Type == SectionHeaderType.SHT_SYMTAB))
+            {
+                Symbols[section] = LoadSymbols64(section);
+            }
+        }
+
+        private List<ElfSymbol> LoadSymbols64(ElfSection symSection)
+        {
+            Debug.Print("Symbols");
+            var stringtableSection = symSection.LinkedSection;
+            var rdr = CreateReader(symSection.FileOffset);
+            var symbols = new List<ElfSymbol>();
+            for (ulong i = 0; i < symSection.Size / symSection.EntrySize; ++i)
+            {
+                var sym = Elf64_Sym.Load(rdr);
+                Debug.Print("  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
+                    i,
+                    ReadAsciiString(stringtableSection.FileOffset + sym.st_name),
+                    (SymbolType)(sym.st_info & 0xF),
+                    sym.st_shndx,
+                    GetSectionNameQ(sym.st_shndx),
+                    sym.st_value,
+                    sym.st_size);
+                symbols.Add(new ElfSymbol
+                {
+                    Name = ReadAsciiString(stringtableSection.FileOffset + sym.st_name),
+                    Type = (SymbolType)(sym.st_info & 0xF),
+                    SectionIndex = sym.st_shndx,
+                    Value = sym.st_value,
+                    Size = sym.st_size,
+                });
+            }
+            return symbols;
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
@@ -2172,9 +2235,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_PPC: return new PpcRelocator(this, importReferences);
             case ElfMachine.EM_SPARC: return new SparcRelocator(this);
             }
-            throw new NotSupportedException(
-                string.Format("Relocator for architecture {0} not implemented yet.",
-                machine));
+            return base.CreateRelocator(machine);
         }
 
         public ImageSegmentRenderer CreateRenderer(ElfSection shdr)
@@ -2286,22 +2347,6 @@ namespace Reko.ImageLoaders.Elf
                 return Address.Ptr32(Header.e_entry);
         }
 
-        private string GetSectionNameQ(ushort st_shndx)
-        {
-            if (st_shndx < 0xFF00)
-            {
-                return Sections[st_shndx].Name;
-            }
-            else
-            {
-                switch (st_shndx)
-                {
-                case 0xFFF1: return "SHN_ABS";
-                case 0xFFF2: return "SHN_COMMON";
-                default: return st_shndx.ToString("X4");
-                }
-            }
-        }
         public override void GetPltLimits()
         {
             var pPlt = GetSectionInfoByName(".plt");
