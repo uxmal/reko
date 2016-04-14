@@ -164,10 +164,7 @@ namespace Reko.Environments.C64
                 return new Program(
                     new ImageMap(
                         mem.BaseAddress,
-                        new ImageSegment("c64", mem.BaseAddress, mem.Length, AccessMode.ReadWriteExecute)
-                        {
-                            MemoryArea = mem,
-                        }),
+                        new ImageSegment("c64", mem, AccessMode.ReadWriteExecute)),
                     arch,
                     new DefaultPlatform(Services, arch));
             default:
@@ -202,11 +199,7 @@ namespace Reko.Environments.C64
             var program = new Program(
                 new ImageMap(
                     image.BaseAddress,
-                    new ImageSegment(
-                        "code", image.BaseAddress, image.Length, AccessMode.ReadWriteExecute)
-                    {
-                        MemoryArea = image
-                    }),
+                    new ImageSegment("code", image, AccessMode.ReadWriteExecute)),
                 arch,
                 new C64Platform(Services, null));
             program.EntryPoints.Add(

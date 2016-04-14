@@ -88,7 +88,6 @@ namespace Reko.ImageLoaders.MzExe
                     imgLoaded, 
                     AccessMode.ReadWriteExecute);
                 segment = imageMap.AddSegment(segment);
-                segment.MemoryArea = imgLoaded;
 				--i;
 			}
 		

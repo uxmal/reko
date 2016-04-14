@@ -1913,12 +1913,11 @@ namespace Reko.ImageLoaders.Elf
                 if (string.IsNullOrEmpty(segment.Name) || segment.Address == null)
                     continue;
                 AccessMode mode = AccessModeOf((uint)segment.Flags);
-                var seg = imageMap.AddSegment(
-                    segment.Address,
+                var seg = imageMap.AddSegment(new ImageSegment(
                     segment.Name,
-                    mode,
-                    (uint)segment.Size);
-                seg.MemoryArea = mem;
+                    segment.Address,
+                    mem,
+                    mode));
                 seg.Designer = CreateRenderer64(segment);
             }
             return imageMap;
@@ -2374,12 +2373,13 @@ namespace Reko.ImageLoaders.Elf
                     continue;
                 
                 AccessMode mode = AccessModeOf(section.Flags);
-                var seg = imageMap.AddSegment(
-                    section.Address,
+                var seg = imageMap.AddSegment(new ImageSegment(
                     section.Name,
-                    mode,
-                    (uint) section.Size);
-                seg.MemoryArea = mem;
+                    section.Address,
+                    mem, mode)
+                    {
+                        Size = (uint)section.Size
+                    });
                 seg.Designer = CreateRenderer(section);
             }
             imageMap.DumpSections();
