@@ -16,7 +16,7 @@
 // esi:esi
 // edi:edi
 // rLoc2:FPU stack
-// FPUF:Flags
+// FPUF:FPUF
 // rLoc3:FPU stack
 // SO:Flags
 // return address size: 4

@@ -520,7 +520,7 @@ namespace Reko.Arch.X86
 
         public void RewriteLahf()
         {
-            emitter.Assign(orw.AluRegister(Registers.ah), orw.FlagGroup(FlagM.FPUF));
+            emitter.Assign(orw.AluRegister(Registers.ah), orw.AluRegister(Registers.FPUF));
         }
 
         public void RewriteLea()

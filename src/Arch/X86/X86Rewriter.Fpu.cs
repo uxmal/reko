@@ -130,7 +130,7 @@ namespace Reko.Arch.X86
                 ? FpuRegister(1)
                 : SrcOp(instrCur.op1);
             emitter.Assign(
-                orw.FlagGroup(FlagM.FPUF),
+                frame.EnsureRegister(Registers.FPUF),
                 new ConditionOf(
                     new BinaryExpression(Operator.FSub, instrCur.dataWidth, op1, op2)));
             state.ShrinkFpuStack(pops);
@@ -159,7 +159,7 @@ namespace Reko.Arch.X86
         private void RewriteFicom(bool pop)
         {
             emitter.Assign(
-                orw.FlagGroup(FlagM.FPUF),
+                orw.AluRegister(Registers.FPUF),
                 emitter.Cond(
                     emitter.FSub(
                         orw.FpuRegister(0, state),
@@ -313,7 +313,7 @@ namespace Reko.Arch.X86
             emitter.Assign(
                 SrcOp(instrCur.op1),
                 new BinaryExpression(Operator.Shl, PrimitiveType.Word16,
-                        new Cast(PrimitiveType.Word16, orw.FlagGroup(FlagM.FPUF)),
+                        new Cast(PrimitiveType.Word16, orw.AluRegister(Registers.FPUF)),
                         Constant.Int16(8)));
         }
 
@@ -326,7 +326,7 @@ namespace Reko.Arch.X86
                 dasm.Skip(1);
                 emitter.Assign(
                     orw.FlagGroup(FlagM.ZF | FlagM.CF | FlagM.SF | FlagM.OF),
-                    orw.FlagGroup(FlagM.FPUF));
+                    orw.AluRegister(Registers.FPUF));
                 return true;
             }
             if (nextInstr.code == Opcode.test)
@@ -343,7 +343,8 @@ namespace Reko.Arch.X86
                 ric.Length += (byte) nextInstr.Length;
                 dasm.Skip(1);
                 emitter.Assign(
-                    orw.FlagGroup(FlagM.ZF | FlagM.CF | FlagM.SF | FlagM.OF), orw.FlagGroup(FlagM.FPUF));
+                    orw.FlagGroup(FlagM.ZF | FlagM.CF | FlagM.SF | FlagM.OF),
+                    frame.EnsureRegister(Registers.FPUF));
                 if (!dasm.MoveNext())
                     throw new AddressCorrelatedException(nextInstr.Address, "Expected instruction after fstsw;test {0},{1}.", acc.Register, imm.Value);
                 nextInstr = dasm.Current;
@@ -382,7 +383,7 @@ namespace Reko.Arch.X86
 
         private void Branch(ConditionCode code, MachineOperand op)
         {
-            emitter.Branch(emitter.Test(code, orw.FlagGroup(FlagM.FPUF)), OperandAsCodeAddress( op), RtlClass.ConditionalTransfer);
+            emitter.Branch(emitter.Test(code, frame.EnsureRegister(Registers.FPUF)), OperandAsCodeAddress( op), RtlClass.ConditionalTransfer);
         }
 
         private void RewriteFtst()
@@ -393,7 +394,7 @@ namespace Reko.Arch.X86
 
         private void RewriteFxam()
         {
-            emitter.Assign(orw.FlagGroup(FlagM.FPUF), emitter.Cond(FpuRegister(0)));
+            emitter.Assign(orw.AluRegister(Registers.FPUF), emitter.Cond(FpuRegister(0)));
         }
 
         private void RewriteFyl2x()

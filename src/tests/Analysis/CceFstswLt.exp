@@ -1,46 +1,69 @@
 fp:fp
-sp_1: orig: sp
-rLoc1_2: orig: rLoc1
+    def:  def fp
+    uses: sp_2 = fp
+sp_2: orig: sp
+    def:  sp_2 = fp
+    uses: use sp_2
+rLoc1_3: orig: rLoc1
+    def:  rLoc1_3 = 0
+    uses: use rLoc1_3
 ds:ds
     def:  def ds
-    uses: Mem9[ds:di:word16] = 0x0000
-          Mem10[ds:di:word16] = 0x0001
+    uses: FPUF_7 = cond(0 - Mem0[ds:si:real64])
+          Mem10[ds:di:word16] = 0x0000
+          Mem11[ds:di:word16] = 0x0001
           branch 0 >= Mem0[ds:si:real64] l0C00_0010
 si:si
     def:  def si
-    uses: branch 0 >= Mem0[ds:si:real64] l0C00_0010
+    uses: FPUF_7 = cond(0 - Mem0[ds:si:real64])
+          branch 0 >= Mem0[ds:si:real64] l0C00_0010
 Mem0:Global memory
     def:  def Mem0
-    uses: branch 0 >= Mem0[ds:si:real64] l0C00_0010
-FPUF_6: orig: FPUF
-SCZO_7: orig: SCZO
+    uses: FPUF_7 = cond(0 - Mem0[ds:si:real64])
+          branch 0 >= Mem0[ds:si:real64] l0C00_0010
+FPUF_7: orig: FPUF
+    def:  FPUF_7 = cond(0 - Mem0[ds:si:real64])
+    uses: SCZO_8 = FPUF_7
+          use FPUF_7
+SCZO_8: orig: SCZO
+    def:  SCZO_8 = FPUF_7
+    uses: use SCZO_8
 di:di
     def:  def di
-    uses: Mem9[ds:di:word16] = 0x0000
-          Mem10[ds:di:word16] = 0x0001
-Mem9: orig: Mem0
-    def:  Mem9[ds:di:word16] = 0x0000
+    uses: Mem10[ds:di:word16] = 0x0000
+          Mem11[ds:di:word16] = 0x0001
 Mem10: orig: Mem0
-    def:  Mem10[ds:di:word16] = 0x0001
+    def:  Mem10[ds:di:word16] = 0x0000
+Mem11: orig: Mem0
+    def:  Mem11[ds:di:word16] = 0x0001
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(word16 si, word16 di, selector ds)
 fn0C00_0000_entry:
+	def fp
 	def ds
 	def si
 	def Mem0
 	def di
 	// succ:  l0C00_0000
 l0C00_0000:
+	sp_2 = fp
+	rLoc1_3 = 0
+	FPUF_7 = cond(0 - Mem0[ds:si:real64])
+	SCZO_8 = FPUF_7
 	branch 0 >= Mem0[ds:si:real64] l0C00_0010
 	// succ:  l0C00_000B l0C00_0010
 l0C00_000B:
-	Mem10[ds:di:word16] = 0x0001
+	Mem11[ds:di:word16] = 0x0001
 	return
 	// succ:  fn0C00_0000_exit
 l0C00_0010:
-	Mem9[ds:di:word16] = 0x0000
+	Mem10[ds:di:word16] = 0x0000
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
+	use FPUF_7
+	use rLoc1_3
+	use SCZO_8
+	use sp_2
 

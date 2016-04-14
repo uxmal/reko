@@ -128,7 +128,8 @@ namespace Reko.Core
     }
 
     /// <summary>
-    /// A flag register can store one or more bit registers.
+    /// A flag register is a special kind of register that can store one 
+    /// or more bit registers.
     /// </summary>
     public class FlagRegister : RegisterStorage
     {

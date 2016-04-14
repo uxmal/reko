@@ -44,8 +44,6 @@ namespace Reko.Arch.X86
 		
         OF = 16,            // overflow
         PF = 32,            // parity
-
-        FPUF = 64,          // FPU flags
 	}
 
     /// <summary>

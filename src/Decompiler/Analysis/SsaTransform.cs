@@ -868,9 +868,11 @@ namespace Reko.Analysis
         /// Adds a UseInstruction for each SsaIdentifier.
         /// </summary>
         /// <remarks>
-        /// Doing this will allow us to detect what definitions reach the end of the function.
+        /// Doing this will allow us to detect what definitions reach the end
+        /// of the function.
         /// //$TODO: what about functions that don't terminate, or have branches that don't terminate? In such cases,
-        /// the identifiers should be removed.</remarks>
+        /// the identifiers should be removed.
+        /// </remarks>
         private void AddUsesToExitBlock()
         {
             //$TODO: flag groups need to be grouped on exit
@@ -1377,12 +1379,12 @@ namespace Reko.Analysis
 
             public SsaIdentifierTransformer VisitFlagGroupStorage(FlagGroupStorage grf)
             {
-                return new SsaFlagTransformer(id, grf, stm, transform);
+                return new FlagGroupTransformer(id, grf, stm, transform);
             }
 
             public SsaIdentifierTransformer VisitFlagRegister(FlagRegister freg)
             {
-                throw new NotImplementedException();
+                return new SsaRegisterTransformer(id, stm, transform);
             }
 
             public SsaIdentifierTransformer VisitFpuStackStorage(FpuStackStorage fpu)
@@ -1813,12 +1815,12 @@ namespace Reko.Analysis
             }
         }
 
-        public class SsaFlagTransformer : SsaIdentifierTransformer
+        public class FlagGroupTransformer : SsaIdentifierTransformer
         {
             private uint flagMask;
             private FlagGroupStorage flagGroup;
 
-            public SsaFlagTransformer(Identifier id, FlagGroupStorage flagGroup, Statement stm, SsaTransform2 outer)
+            public FlagGroupTransformer(Identifier id, FlagGroupStorage flagGroup, Statement stm, SsaTransform2 outer)
                 : base(id, stm, outer)
             {
                 this.flagGroup = flagGroup;
