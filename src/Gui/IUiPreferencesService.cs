@@ -57,6 +57,10 @@ namespace Reko.Gui
                 Cursor = Cursor,
                 Width = Width,
                 TextAlign = TextAlign,
+                PaddingTop = PaddingTop,
+                PaddingLeft = PaddingLeft,
+                PaddingBottom = PaddingBottom,
+                PaddingRight = PaddingRight,
             };
         }
     }
