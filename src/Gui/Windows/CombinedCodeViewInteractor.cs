@@ -144,6 +144,8 @@ namespace Reko.Gui.Windows
                     var fmt = new AbsynCodeFormatter(tsf);
                     fmt.InnerFormatter.UseTabs = false;
                     fmt.Write(proc);
+                    //$TODO: make spacing between globals / procedures user adjustable
+                    tsf.WriteLine("");
                     tsf.WriteLine("");
                     nestedTextModel.Nodes.Add(tsf.GetModel());
                     nodeCreated = true;
@@ -159,6 +161,7 @@ namespace Reko.Gui.Windows
                     fmt.InnerFormatter.UseTabs = false;
                     var gdw = new GlobalDataWriter(program, services);
                     gdw.WriteGlobalVariable(curAddr, dt, name, tsf);
+                    //$TODO: make spacing between globals / procedures user adjustable
                     tsf.WriteLine("");
                     nestedTextModel.Nodes.Add(tsf.GetModel());
                     nodeCreated = true;
