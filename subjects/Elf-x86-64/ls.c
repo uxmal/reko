@@ -4,8 +4,10 @@
 
 #include "ls.h"
 
-void fn0000000000404890(word64 qwArg00, word32 dwArg04)
+void fn0000000000404890(word64 rax, word64 rdx, word64 qwArg00, word32 dwArg04)
 {
 	__align(fp + 0x08);
+	word64 rax_20 = DPB(rax, __libc_start_main(0x004028C0, qwArg00, fp + 0x08, 4267616, 0x00411ED0, rdx, DPB(qwArg00, fp, 0)), 0);
+	__hlt();
 }
 
