@@ -69,6 +69,11 @@ namespace Reko.Core.Types
             }
         }
 
+        public FunctionType(SerializedSignature signature) : base()
+        {
+            this.Signature = signature;
+        }
+
         public override void Accept(IDataTypeVisitor v)
         {
             v.VisitFunctionType(this);
@@ -82,8 +87,19 @@ namespace Reko.Core.Types
 		public override DataType Clone()
 		{
 			DataType ret = (ReturnType != null) ? ReturnType.Clone() : null;
-			DataType [] types = new DataType[ArgumentTypes.Length];
-			string [] names = new string[ArgumentTypes.Length];
+
+            DataType[] types;
+            string[] names;
+            if (ArgumentTypes != null)
+            {
+                types = new DataType[ArgumentTypes.Length];
+                names = new string[ArgumentTypes.Length];
+            }
+            else
+            {
+                types = new DataType[0];
+                names = new string[0];
+            }
 			for (int i = 0; i < types.Length; ++i)
 			{
 				types[i] = ArgumentTypes[i].Clone();

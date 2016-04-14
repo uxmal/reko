@@ -185,7 +185,8 @@ namespace Reko.Core.Output
 
         public CodeFormatter VisitFunctionType(FunctionType ft)
         {
-            throw new NotImplementedException();
+            codeFormatter.InnerFormatter.WriteLine("Unexpected function type {0}", ft);
+            return codeFormatter;
         }
 
         public CodeFormatter VisitPrimitive(PrimitiveType pt)

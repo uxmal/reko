@@ -217,30 +217,7 @@ namespace Reko.Core
 
         public DataType VisitSignature(SerializedSignature signature)
         {
-            DataType [] argTypes;
-            string [] argNames;
-            if (signature.Arguments != null)
-            {
-                argTypes = signature.Arguments
-                   .Select(a => a.Type.Accept(this))
-                   .ToArray();
-                argNames = signature.Arguments
-                   .Select(a => a.Name)
-                   .ToArray();
-            }
-            else
-            {
-                argTypes = new DataType[0];
-                argNames = new string[0];
-            }
-            //$TODO: low level info like storages and stack offsets?
-            return new FunctionType(
-                null,
-                signature.ReturnValue != null && signature.ReturnValue.Type != null
-                    ? signature.ReturnValue.Type.Accept(this)
-                    : VoidType.Instance,
-                argTypes,
-                argNames);
+            return new FunctionType(signature);
         }
 
         public DataType VisitStructure(StructType_v1 structure)
