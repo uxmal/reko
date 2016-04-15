@@ -56,7 +56,6 @@ namespace Reko.ImageLoaders.Elf
         private byte fileVersion;
         private byte osAbi;
         private Address addrPreferred;
-        private Dictionary<Address, ImportReference> importReferences;
 
         protected ElfLoader innerLoader;
 
@@ -64,7 +63,6 @@ namespace Reko.ImageLoaders.Elf
             : base(services, filename, rawBytes)
         {
         }
-
 
         public override Address PreferredBaseAddress 
         {
@@ -2555,7 +2553,8 @@ namespace Reko.ImageLoaders.Elf
         private IEnumerable<EntryPoint> CollectFunctionSymbols()
         {
             return Symbols.Values.SelectMany(v => v)
-                .Where(sym => sym.Type == SymbolType.STT_FUNC)
+                .Where(sym => sym.Type == SymbolType.STT_FUNC &&
+                              sym.SectionIndex != 0)
                 .Select(MakeEntryPoint);
         }
 
