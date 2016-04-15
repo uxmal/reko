@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Reko/v3">
+  <input>
+    <filename>ROUND42.COM</filename>
+    <disassembly>ROUND42.asm</disassembly>
+    <intermediate-code>ROUND42.dis</intermediate-code>
+    <output>ROUND42.c</output>
+    <types-file>ROUND42.h</types-file>
+    <global-vars>ROUND42.globals.c</global-vars>
+    <user>
+      <address>0800:0100</address>
+      <processor name="x86-real-16" />
+      <platform name="ms-dos" />
+      <procedure>
+        <address>0800:0100</address>
+      </procedure>
+    </user>
+  </input>
+</project>

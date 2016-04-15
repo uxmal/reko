@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="Reko" targetNamespace="http://schemata.jklnet.org/Reko/Config/v1" xmlns:mstns="http://schemata.jklnet.org/Reko/Config/v1" xmlns="http://schemata.jklnet.org/Reko/Config/v1" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:element name="TypeLibrary">
+    <xs:complexType>
+      <xs:attribute name="Name" form="unqualified" type="xs:string" />
+      <xs:attribute name="Arch" form="unqualified" type="xs:string" />
+      <xs:attribute name="Loader" form="unqualified" type="xs:string" />
+      <xs:attribute name="Module" form="unqualified" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Reko" msdata:IsDataSet="true" msdata:UseCurrentLocale="true">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="TypeLibrary" />
+        <xs:element name="Loaders">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Loader" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="MagicNumber" form="unqualified" type="xs:string" />
+                  <xs:attribute name="Type" form="unqualified" type="xs:string" />
+                  <xs:attribute name="Offset" form="unqualified" type="xs:string" />
+                  <xs:attribute name="Extension" form="unqualified" type="xs:string" />
+                  <xs:attribute name="Label" form="unqualified" type="xs:string" />
+                  <xs:attribute name="Argument" form="unqualified" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="RawFiles">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="RawFile" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Entry" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:attribute name="Addr" form="unqualified" type="xs:string" />
+                        <xs:attribute name="Name" form="unqualified" type="xs:string" />
+                        <xs:attribute name="Follow" form="unqualified" type="xs:string" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="Name" form="unqualified" type="xs:string" />
+                  <xs:attribute name="Description" form="unqualified" type="xs:string" />
+                  <xs:attribute name="Arch" form="unqualified" type="xs:string" />
+                  <xs:attribute name="Env" form="unqualified" type="xs:string" />
+                  <xs:attribute name="Base" form="unqualified" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="SignatureFiles">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="SignatureFile" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="Filename" form="unqualified" type="xs:string" />
+                  <xs:attribute name="Type" form="unqualified" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Environments">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Environment" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="TypeLibraries" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element ref="TypeLibrary" minOccurs="0" maxOccurs="unbounded" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Characteristics" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element ref="TypeLibrary" minOccurs="0" maxOccurs="unbounded" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="Name" form="unqualified" type="xs:string" />
+                  <xs:attribute name="Description" form="unqualified" type="xs:string" />
+                  <xs:attribute name="Type" form="unqualified" type="xs:string" />
+                  <xs:attribute name="MemoryMap" form="unqualified" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Architectures">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Architecture" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="Name" form="unqualified" type="xs:string" />
+                  <xs:attribute name="Description" form="unqualified" type="xs:string" />
+                  <xs:attribute name="Type" form="unqualified" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Assemblers">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Assembler" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="Name" form="unqualified" type="xs:string" />
+                  <xs:attribute name="Description" form="unqualified" type="xs:string" />
+                  <xs:attribute name="Type" form="unqualified" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="UiPreferences">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Style" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="Name" form="unqualified" type="xs:string" />
+                  <xs:attribute name="Font" form="unqualified" type="xs:string" />
+                  <xs:attribute name="ForeColor" form="unqualified" type="xs:string" />
+                  <xs:attribute name="BackColor" form="unqualified" type="xs:string" />
+                  <xs:attribute name="Width" form="unqualified" type="xs:string" />
+                  <xs:attribute name="Cursor" form="unqualified" type="xs:string" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

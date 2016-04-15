@@ -1,0 +1,748 @@
+// Reset
+// Return size: 0
+void Reset()
+Reset_entry:
+	// succ:  l00000206
+l00000206:
+	a7 = fp
+	ZN = cond(Mem0[0x00A10008:word32] - 0x00000000)
+	C = false
+	V = false
+	branch Test(NE,Z) l00000214
+	// succ:  l0000020E l00000214
+l0000020E:
+	ZN = cond(Mem0[0x00A1000C:word16] - 0x0000)
+	C = false
+	V = false
+	// succ:  l00000214
+l00000214:
+	branch Test(NE,Z) l00000292
+	// succ:  l00000216 l00000292
+l00000216:
+	a5 = 0x00000294
+	d5 = Mem0[a5:word16]
+	a5 = a5 + 0x00000002
+	d6 = Mem0[a5:word16]
+	a5 = a5 + 0x00000002
+	d7 = Mem0[a5:word16]
+	a5 = a5 + 0x00000002
+	a0 = Mem0[a5:word32]
+	a5 = a5 + 0x00000004
+	a1 = Mem0[a5:word32]
+	a5 = a5 + 0x00000004
+	a2 = Mem0[a5:word32]
+	a5 = a5 + 0x00000004
+	a3 = Mem0[a5:word32]
+	a5 = a5 + 0x00000004
+	a4 = Mem0[a5:word32]
+	a5 = a5 + 0x00000004
+	v17 = Mem0[a1 + -4351:byte]
+	d0 = DPB(d0, v17, 0)
+	CVZN = cond(v17)
+	v19 = (byte) d0 & 0x0F
+	d0 = DPB(d0, v19, 0)
+	ZN = cond(v19)
+	C = false
+	V = false
+	branch Test(EQ,Z) l00000234
+	// succ:  l0000022C l00000234
+l0000022C:
+	v20 = 0x53454741
+	Mem0[a1 + 12032:word32] = v20
+	CVZN = cond(v20)
+	// succ:  l00000234
+l00000234:
+	v21 = Mem0[a4:word16]
+	d0 = DPB(d0, v21, 0)
+	CVZN = cond(v21)
+	d0 = 0
+	CVZN = cond(d0)
+	a6 = d0
+	usp = a6
+	CVZN = cond(usp)
+	d1 = 23
+	CVZN = cond(d1)
+	// succ:  l0000023E
+l0000023E:
+	v25 = Mem0[a5:byte]
+	a5 = a5 + 0x00000001
+	d5 = DPB(d5, v25, 0)
+	CVZN = cond(v25)
+	v26 = (word16) d5
+	Mem0[a4:word16] = v26
+	CVZN = cond(v26)
+	v27 = (word16) d5 + (word16) d7
+	d5 = DPB(d5, v27, 0)
+	CVZNX = cond(v27)
+	d1 = d1 - 0x00000001
+	branch d1 != 0xFFFFFFFF l0000023E
+	// succ:  l00000248 l0000023E
+l00000248:
+	v29 = Mem0[a5:word32]
+	a5 = a5 + 0x00000004
+	v30 = v29
+	Mem0[a4:word32] = v30
+	CVZN = cond(v30)
+	v31 = (word16) d0
+	Mem0[a3:word16] = v31
+	CVZN = cond(v31)
+	v32 = (word16) d7
+	Mem0[a1:word16] = v32
+	CVZN = cond(v32)
+	v33 = (word16) d7
+	Mem0[a2:word16] = v33
+	CVZN = cond(v33)
+	// succ:  l00000250
+l00000250:
+	Z = __btst(Mem0[a1:word32], d0)
+	branch Test(NE,Z) l00000250
+	// succ:  l00000254 l00000250
+l00000254:
+	d2 = 37
+	CVZN = cond(d2)
+	// succ:  l00000256
+l00000256:
+	v35 = Mem0[a5:byte]
+	a5 = a5 + 0x00000001
+	v36 = v35
+	Mem0[a0:byte] = v36
+	a0 = a0 + 0x00000001
+	CVZN = cond(v36)
+	d2 = d2 - 0x00000001
+	branch d2 != 0xFFFFFFFF l00000256
+	// succ:  l0000025C l00000256
+l0000025C:
+	v37 = (word16) d0
+	Mem0[a2:word16] = v37
+	CVZN = cond(v37)
+	v38 = (word16) d0
+	Mem0[a1:word16] = v38
+	CVZN = cond(v38)
+	v39 = (word16) d7
+	Mem0[a2:word16] = v39
+	CVZN = cond(v39)
+	// succ:  l00000262
+l00000262:
+	a6 = a6 - 0x00000004
+	v40 = d0
+	Mem0[a6:word32] = v40
+	CVZN = cond(v40)
+	d6 = d6 - 0x00000001
+	branch d6 != 0xFFFFFFFF l00000262
+	// succ:  l00000268 l00000262
+l00000268:
+	v41 = Mem0[a5:word32]
+	a5 = a5 + 0x00000004
+	v42 = v41
+	Mem0[a4:word32] = v42
+	CVZN = cond(v42)
+	v43 = Mem0[a5:word32]
+	a5 = a5 + 0x00000004
+	v44 = v43
+	Mem0[a4:word32] = v44
+	CVZN = cond(v44)
+	d3 = 31
+	CVZN = cond(d3)
+	// succ:  l0000026E
+l0000026E:
+	v46 = d0
+	Mem0[a3:word32] = v46
+	CVZN = cond(v46)
+	d3 = d3 - 0x00000001
+	branch d3 != 0xFFFFFFFF l0000026E
+	// succ:  l00000274 l0000026E
+l00000274:
+	v47 = Mem0[a5:word32]
+	a5 = a5 + 0x00000004
+	v48 = v47
+	Mem0[a4:word32] = v48
+	CVZN = cond(v48)
+	d4 = 19
+	CVZN = cond(d4)
+	// succ:  l00000278
+l00000278:
+	v50 = d0
+	Mem0[a3:word32] = v50
+	CVZN = cond(v50)
+	d4 = d4 - 0x00000001
+	branch d4 != 0xFFFFFFFF l00000278
+	// succ:  l0000027E l00000278
+l0000027E:
+	d5 = 3
+	CVZN = cond(d5)
+	// succ:  l00000280
+l00000280:
+	v51 = Mem0[a5:byte]
+	a5 = a5 + 0x00000001
+	v52 = v51
+	Mem0[a3 + 17:byte] = v52
+	CVZN = cond(v52)
+	d5 = d5 - 0x00000001
+	branch d5 != 0xFFFFFFFF l00000280
+	// succ:  l00000288 l00000280
+l00000288:
+	v53 = (word16) d0
+	Mem0[a2:word16] = v53
+	CVZN = cond(v53)
+	v54 = a6
+	d0 = Mem0[v54:word32]
+	v54 = v54 + 0x00000004
+	d1 = Mem0[v54:word32]
+	v54 = v54 + 0x00000004
+	d2 = Mem0[v54:word32]
+	v54 = v54 + 0x00000004
+	d3 = Mem0[v54:word32]
+	v54 = v54 + 0x00000004
+	d4 = Mem0[v54:word32]
+	v54 = v54 + 0x00000004
+	d5 = Mem0[v54:word32]
+	v54 = v54 + 0x00000004
+	d6 = Mem0[v54:word32]
+	v54 = v54 + 0x00000004
+	d7 = Mem0[v54:word32]
+	v54 = v54 + 0x00000004
+	a0 = Mem0[v54:word32]
+	v54 = v54 + 0x00000004
+	a1 = Mem0[v54:word32]
+	v54 = v54 + 0x00000004
+	a2 = Mem0[v54:word32]
+	v54 = v54 + 0x00000004
+	a3 = Mem0[v54:word32]
+	v54 = v54 + 0x00000004
+	a4 = Mem0[v54:word32]
+	v54 = v54 + 0x00000004
+	a5 = Mem0[v54:word32]
+	v54 = v54 + 0x00000004
+	a6 = Mem0[v54:word32]
+	v54 = v54 + 0x00000004
+	sr = 0x2700
+	CVZN = cond(sr)
+	// succ:  l00000292
+l00000292:
+	// succ:  l00000300
+l00000300:
+	ZN = cond(Mem0[0x00C00004:word16] - 0x0000)
+	C = false
+	V = false
+	Z = __btst(Mem0[0x00A1000D:byte], 0x0006)
+	branch Test(EQ,Z) l0000031C
+	// succ:  l00000310 l0000031C
+l00000310:
+	v56 = Mem0[0x0000FFFC:word32] - 0x696E6974
+	CVZN = cond(v56)
+	branch Test(EQ,Z) l00000364
+	// succ:  l0000031C l00000364
+l0000031C:
+	a0 = 0x00000200
+	a1 = 0x000001A4
+	d0 = Mem0[a1:word32]
+	CVZN = cond(d0)
+	d1 = 0
+	CVZN = cond(d1)
+	// succ:  l0000032C
+l0000032C:
+	v57 = Mem0[a0:word16]
+	a0 = a0 + 0x00000002
+	v58 = (word16) d1 + v57
+	d1 = DPB(d1, v58, 0)
+	CVZNX = cond(v58)
+	v59 = d0 - a0
+	CVZN = cond(v59)
+	branch Test(UGE,C) l0000032C
+	// succ:  l00000332 l0000032C
+l00000332:
+	a1 = 0x0000018E
+	v60 = (word16) d1 - Mem0[a1:word16]
+	CVZN = cond(v60)
+	branch Test(NE,Z) l000003B8
+	// succ:  l0000033E l000003B8
+l0000033E:
+	a6 = 0x0000FE00
+	d7 = 0
+	CVZN = cond(d7)
+	d6 = DPB(d6, 0x007F, 0)
+	CVZN = cond(0x007F)
+	// succ:  l00000348
+l00000348:
+	v61 = d7
+	Mem0[a6:word32] = v61
+	a6 = a6 + 0x00000004
+	CVZN = cond(v61)
+	d6 = d6 - 0x00000001
+	branch d6 != 0xFFFFFFFF l00000348
+	// succ:  l0000034E l00000348
+l0000034E:
+	v62 = Mem0[0x00A10001:byte]
+	d0 = DPB(d0, v62, 0)
+	CVZN = cond(v62)
+	v63 = (byte) d0 & 0xC0
+	d0 = DPB(d0, v63, 0)
+	ZN = cond(v63)
+	C = false
+	V = false
+	v64 = (byte) d0
+	Mem0[0x0000FFF8:byte] = v64
+	CVZN = cond(v64)
+	v65 = 0x696E6974
+	Mem0[0x0000FFFC:word32] = v65
+	CVZN = cond(v65)
+	// succ:  l00000364
+l00000364:
+	a6 = 0x00FF0000
+	d7 = 0
+	CVZN = cond(d7)
+	d6 = DPB(d6, 0x3F7F, 0)
+	CVZN = cond(0x3F7F)
+	// succ:  l00000370
+l00000370:
+	v68 = d7
+	Mem0[a6:word32] = v68
+	a6 = a6 + 0x00000004
+	CVZN = cond(v68)
+	d6 = d6 - 0x00000001
+	branch d6 != 0xFFFFFFFF l00000370
+	// succ:  l00000376 l00000370
+l00000376:
+	call fn00001222 (retsize: 4;)
+	call fn00001352 (retsize: 4;)
+	call fn000011B6 (retsize: 4;)
+	v69 = 0x00
+	Mem0[0x0000F600:byte] = v69
+	CVZN = cond(v69)
+	// succ:  l00000388
+l00000388:
+	v70 = Mem0[0x0000F600:byte]
+	d0 = DPB(d0, v70, 0)
+	CVZN = cond(v70)
+	v71 = (word16) d0 & 0x001C
+	d0 = DPB(d0, v71, 0)
+	ZN = cond(v71)
+	C = false
+	V = false
+	call 0x00000396 + d0 (retsize: 4;)
+	goto l00000388
+	// succ:  l00000388
+l000003B8:
+	call fn00001222 (retsize: 4;)
+	v66 = 0xC0000000
+	Mem0[0x00C00004:word32] = v66
+	CVZN = cond(v66)
+	d7 = 63
+	CVZN = cond(d7)
+	// succ:  l000003C8
+l000003C8:
+	v67 = 0x000E
+	Mem0[0x00C00000:word16] = v67
+	CVZN = cond(v67)
+	d7 = d7 - 0x00000001
+	branch d7 != 0xFFFFFFFF l000003C8
+	// succ:  l000003D4 l000003C8
+l000003D4:
+	goto l000003D4
+	// succ:  l000003D4
+Reset_exit:
+
+
+// fn000011B6
+// Return size: 4
+void fn000011B6()
+fn000011B6_entry:
+	// succ:  l000011B6
+l000011B6:
+	a7 = fp
+	v3 = 0x0100
+	Mem0[0x00A11100:word16] = v3
+	CVZN = cond(v3)
+	// succ:  l000011BE
+l000011BE:
+	Z = __btst(Mem0[0x00A11100:byte], 0x0000)
+	branch Test(NE,Z) l000011BE
+	// succ:  l000011C8 l000011BE
+l000011C8:
+	d0 = 64
+	CVZN = cond(d0)
+	v7 = (byte) d0
+	Mem0[0x00A10009:byte] = v7
+	CVZN = cond(v7)
+	v8 = (byte) d0
+	Mem0[0x00A1000B:byte] = v8
+	CVZN = cond(v8)
+	v9 = (byte) d0
+	Mem0[0x00A1000D:byte] = v9
+	CVZN = cond(v9)
+	v10 = 0x0000
+	Mem0[0x00A11100:word16] = v10
+	CVZN = cond(v10)
+	return
+	// succ:  fn000011B6_exit
+fn000011B6_exit:
+
+
+// fn00001222
+// Return size: 4
+void fn00001222()
+fn00001222_entry:
+	// succ:  l00001222
+l00001222:
+	a7 = fp
+	a0 = 0x00C00004
+	a1 = 0x00C00000
+	a2 = 0x0000129E
+	d7 = 18
+	CVZN = cond(d7)
+	// succ:  l00001236
+l00001236:
+	v8 = Mem0[a2:word16]
+	a2 = a2 + 0x00000002
+	v9 = v8
+	Mem0[a0:word16] = v9
+	CVZN = cond(v9)
+	d7 = d7 - 0x00000001
+	branch d7 != 0xFFFFFFFF l00001236
+	// succ:  l0000123C l00001236
+l0000123C:
+	v11 = Mem0[0x000012A0:word16]
+	d0 = DPB(d0, v11, 0)
+	CVZN = cond(v11)
+	v12 = (word16) d0
+	Mem0[0x0000F60C:word16] = v12
+	CVZN = cond(v12)
+	v13 = 0x8ADF
+	Mem0[0x0000F624:word16] = v13
+	CVZN = cond(v13)
+	d0 = 0
+	CVZN = cond(d0)
+	v14 = 0xC0000000
+	Mem0[0x00C00004:word32] = v14
+	CVZN = cond(v14)
+	d7 = DPB(d7, 0x003F, 0)
+	CVZN = cond(0x003F)
+	// succ:  l0000125C
+l0000125C:
+	v15 = (word16) d0
+	Mem0[a1:word16] = v15
+	CVZN = cond(v15)
+	d7 = d7 - 0x00000001
+	branch d7 != 0xFFFFFFFF l0000125C
+	// succ:  l00001262 l0000125C
+l00001262:
+	Mem0[0x0000F616:word32] = 0x00000000
+	Z = true
+	C = false
+	N = false
+	V = false
+	Mem0[0x0000F61A:word32] = 0x00000000
+	Z = true
+	C = false
+	N = false
+	V = false
+	a7 = a7 - 0x00000004
+	v21 = d1
+	Mem0[a7:word32] = v21
+	CVZN = cond(v21)
+	a5 = 0x00C00004
+	v23 = 0x8F01
+	Mem0[a5:word16] = v23
+	CVZN = cond(v23)
+	v24 = 0x94FF93FF
+	Mem0[a5:word32] = v24
+	CVZN = cond(v24)
+	v25 = 0x9780
+	Mem0[a5:word16] = v25
+	CVZN = cond(v25)
+	v26 = 0x40000080
+	Mem0[a5:word32] = v26
+	CVZN = cond(v26)
+	v27 = 0x0000
+	Mem0[0x00C00000:word16] = v27
+	CVZN = cond(v27)
+	// succ:  l0000128E
+l0000128E:
+	v28 = Mem0[a5:word16]
+	d1 = DPB(d1, v28, 0)
+	CVZN = cond(v28)
+	Z = __btst((byte) d1, 0x0001)
+	branch Test(NE,Z) l0000128E
+	// succ:  l00001296 l0000128E
+l00001296:
+	v29 = 0x8F02
+	Mem0[a5:word16] = v29
+	CVZN = cond(v29)
+	v30 = Mem0[a7:word32]
+	a7 = a7 + 0x00000004
+	d1 = v30
+	CVZN = cond(d1)
+	return
+	// succ:  fn00001222_exit
+fn00001222_exit:
+
+
+// fn00001352
+// Return size: 4
+void fn00001352()
+fn00001352_entry:
+	// succ:  l00001352
+l00001352:
+	a7 = fp
+	v3 = 0x0100
+	Mem0[0x00A11100:word16] = v3
+	CVZN = cond(v3)
+	v5 = 0x0100
+	Mem0[0x00A11200:word16] = v5
+	CVZN = cond(v5)
+	a0 = 0x00072E7C
+	a1 = 0x00A00000
+	call fn0000189C (retsize: 4;)
+	v8 = 0x0000
+	Mem0[0x00A11200:word16] = v8
+	CVZN = cond(v8)
+	v9 = 0x0100
+	Mem0[0x00A11200:word16] = v9
+	CVZN = cond(v9)
+	v10 = 0x0000
+	Mem0[0x00A11100:word16] = v10
+	CVZN = cond(v10)
+	return
+	// succ:  fn00001352_exit
+fn00001352_exit:
+
+
+// fn0000189C
+// Return size: 4
+void fn0000189C()
+fn0000189C_entry:
+	// succ:  l0000189C
+l0000189C:
+	a7 = fp
+	a7 = a7 - 0x00000002
+	v4 = Mem0[a0:byte]
+	a0 = a0 + 0x00000001
+	v5 = v4
+	Mem0[a7 + 1:byte] = v5
+	CVZN = cond(v5)
+	v7 = Mem0[a0:byte]
+	a0 = a0 + 0x00000001
+	v8 = v7
+	Mem0[a7:byte] = v8
+	CVZN = cond(v8)
+	v10 = Mem0[a7:word16]
+	d5 = DPB(d5, v10, 0)
+	CVZN = cond(v10)
+	d4 = 15
+	CVZN = cond(d4)
+	// succ:  l000018A8
+l000018A8:
+	v12 = (word16) d5 >>u 0x0001
+	d5 = DPB(d5, v12, 0)
+	CVZNX = cond(v12)
+	d6 = sr
+	CVZN = cond(d6)
+	d4 = d4 - 0x00000001
+	branch d4 != 0xFFFFFFFF l000018BA
+	// succ:  l000018B0 l000018BA
+l000018B0:
+	v16 = Mem0[a0:byte]
+	a0 = a0 + 0x00000001
+	v17 = v16
+	Mem0[a7 + 1:byte] = v17
+	CVZN = cond(v17)
+	v18 = Mem0[a0:byte]
+	a0 = a0 + 0x00000001
+	v19 = v18
+	Mem0[a7:byte] = v19
+	CVZN = cond(v19)
+	v20 = Mem0[a7:word16]
+	d5 = DPB(d5, v20, 0)
+	CVZN = cond(v20)
+	d4 = 15
+	CVZN = cond(d4)
+	// succ:  l000018BA
+l000018BA:
+	ccr = d6
+	CVZN = cond(ccr)
+	branch Test(UGE,C) l000018C2
+	// succ:  l000018BE l000018C2
+l000018BE:
+	v23 = Mem0[a0:byte]
+	a0 = a0 + 0x00000001
+	v25 = v23
+	Mem0[a1:byte] = v25
+	a1 = a1 + 0x00000001
+	CVZN = cond(v25)
+	goto l000018A8
+	// succ:  l000018A8
+l000018C2:
+	d3 = 0
+	CVZN = cond(d3)
+	v27 = (word16) d5 >>u 0x0001
+	d5 = DPB(d5, v27, 0)
+	CVZNX = cond(v27)
+	d6 = sr
+	CVZN = cond(d6)
+	d4 = d4 - 0x00000001
+	branch d4 != 0xFFFFFFFF l000018D6
+	// succ:  l000018CC l000018D6
+l000018CC:
+	v28 = Mem0[a0:byte]
+	a0 = a0 + 0x00000001
+	v29 = v28
+	Mem0[a7 + 1:byte] = v29
+	CVZN = cond(v29)
+	v30 = Mem0[a0:byte]
+	a0 = a0 + 0x00000001
+	v31 = v30
+	Mem0[a7:byte] = v31
+	CVZN = cond(v31)
+	v32 = Mem0[a7:word16]
+	d5 = DPB(d5, v32, 0)
+	CVZN = cond(v32)
+	d4 = 15
+	CVZN = cond(d4)
+	// succ:  l000018D6
+l000018D6:
+	ccr = d6
+	CVZN = cond(ccr)
+	branch Test(ULT,C) l00001906
+	// succ:  l000018DA l00001906
+l000018DA:
+	v33 = (word16) d5 >>u 0x0001
+	d5 = DPB(d5, v33, 0)
+	CVZNX = cond(v33)
+	d4 = d4 - 0x00000001
+	branch d4 != 0xFFFFFFFF l000018EA
+	// succ:  l000018E0 l000018EA
+l000018E0:
+	v34 = Mem0[a0:byte]
+	a0 = a0 + 0x00000001
+	v35 = v34
+	Mem0[a7 + 1:byte] = v35
+	CVZN = cond(v35)
+	v36 = Mem0[a0:byte]
+	a0 = a0 + 0x00000001
+	v37 = v36
+	Mem0[a7:byte] = v37
+	CVZN = cond(v37)
+	v38 = Mem0[a7:word16]
+	d5 = DPB(d5, v38, 0)
+	CVZN = cond(v38)
+	d4 = 15
+	CVZN = cond(d4)
+	// succ:  l000018EA
+l000018EA:
+	v59 = __rcl((word16) d3, 0x0001, X)
+	d3 = DPB(d3, v59, 0)
+	CZNX = cond(v59)
+	V = false
+	v61 = (word16) d5 >>u 0x0001
+	d5 = DPB(d5, v61, 0)
+	CVZNX = cond(v61)
+	d4 = d4 - 0x00000001
+	branch d4 != 0xFFFFFFFF l000018FC
+	// succ:  l000018F2 l000018FC
+l000018F2:
+	v62 = Mem0[a0:byte]
+	a0 = a0 + 0x00000001
+	v63 = v62
+	Mem0[a7 + 1:byte] = v63
+	CVZN = cond(v63)
+	v64 = Mem0[a0:byte]
+	a0 = a0 + 0x00000001
+	v65 = v64
+	Mem0[a7:byte] = v65
+	CVZN = cond(v65)
+	v66 = Mem0[a7:word16]
+	d5 = DPB(d5, v66, 0)
+	CVZN = cond(v66)
+	d4 = 15
+	CVZN = cond(d4)
+	// succ:  l000018FC
+l000018FC:
+	v67 = __rcl((word16) d3, 0x0001, X)
+	d3 = DPB(d3, v67, 0)
+	CZNX = cond(v67)
+	V = false
+	v68 = (word16) d3 + 0x0001
+	d3 = DPB(d3, v68, 0)
+	CVZNX = cond(v68)
+	d2 = -1
+	CVZN = cond(d2)
+	v69 = Mem0[a0:byte]
+	a0 = a0 + 0x00000001
+	d2 = DPB(d2, v69, 0)
+	CVZN = cond(v69)
+	goto l0000191C
+	// succ:  l0000191C
+l00001906:
+	v39 = Mem0[a0:byte]
+	a0 = a0 + 0x00000001
+	d0 = DPB(d0, v39, 0)
+	CVZN = cond(v39)
+	v41 = Mem0[a0:byte]
+	a0 = a0 + 0x00000001
+	d1 = DPB(d1, v41, 0)
+	CVZN = cond(v41)
+	d2 = -1
+	CVZN = cond(d2)
+	v44 = (byte) d1
+	d2 = DPB(d2, v44, 0)
+	CVZN = cond(v44)
+	v45 = (word16) d2 << 0x0005
+	d2 = DPB(d2, v45, 0)
+	CVZNX = cond(v45)
+	v46 = (byte) d0
+	d2 = DPB(d2, v46, 0)
+	CVZN = cond(v46)
+	v47 = (word16) d1 & 0x0007
+	d1 = DPB(d1, v47, 0)
+	ZN = cond(v47)
+	C = false
+	V = false
+	branch Test(EQ,Z) l00001928
+	// succ:  l00001918 l00001928
+l00001918:
+	v51 = (byte) d1
+	d3 = DPB(d3, v51, 0)
+	CVZN = cond(v51)
+	v52 = (word16) d3 + 0x0001
+	d3 = DPB(d3, v52, 0)
+	CVZNX = cond(v52)
+	// succ:  l0000191C
+l0000191C:
+	v53 = Mem0[a1 + d2:byte]
+	d0 = DPB(d0, v53, 0)
+	CVZN = cond(v53)
+	v54 = (byte) d0
+	Mem0[a1:byte] = v54
+	a1 = a1 + 0x00000001
+	CVZN = cond(v54)
+	d3 = d3 - 0x00000001
+	branch d3 != 0xFFFFFFFF l0000191C
+	// succ:  l00001926 l0000191C
+l00001926:
+	goto l000018A8
+	// succ:  l000018A8
+l00001928:
+	v55 = Mem0[a0:byte]
+	a0 = a0 + 0x00000001
+	d1 = DPB(d1, v55, 0)
+	CVZN = cond(v55)
+	branch Test(EQ,Z) l00001938
+	// succ:  l0000192C l00001938
+l0000192C:
+	v56 = (byte) d1 - 0x01
+	CVZN = cond(v56)
+	branch Test(EQ,Z) l000018A8
+	// succ:  l00001934 l000018A8
+l00001934:
+	v57 = (byte) d1
+	d3 = DPB(d3, v57, 0)
+	CVZN = cond(v57)
+	goto l0000191C
+	// succ:  l0000191C
+l00001938:
+	a7 = a7 + 0x00000002
+	return
+	// succ:  fn0000189C_exit
+fn0000189C_exit:
+
+

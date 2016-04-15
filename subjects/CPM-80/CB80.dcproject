@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Reko/v4">
+  <arch>z80</arch>
+  <platform>cpm</platform>
+  <input>
+    <filename>D:\dev\uxmal\reko\master\subjects\CPM-80\CB80.COM</filename>
+    <disassembly>D:\dev\uxmal\reko\master\subjects\CPM-80\CB80.asm</disassembly>
+    <intermediate-code>D:\dev\uxmal\reko\master\subjects\CPM-80\CB80.dis</intermediate-code>
+    <output>D:\dev\uxmal\reko\master\subjects\CPM-80\CB80.c</output>
+    <types-file>D:\dev\uxmal\reko\master\subjects\CPM-80\CB80.h</types-file>
+    <global-vars>D:\dev\uxmal\reko\master\subjects\CPM-80\CB80.globals.c</global-vars>
+    <user>
+      <address>0100</address>
+      <processor name="z80" />
+      <platform name="cpm" />
+    </user>
+  </input>
+</project>

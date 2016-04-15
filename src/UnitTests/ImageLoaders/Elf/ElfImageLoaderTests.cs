@@ -349,6 +349,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         {
             base.Setup();
             this.arch = mr.Stub<IProcessorArchitecture>();
+            this.arch32be = mr.Stub<IProcessorArchitecture>();
             this.tlSvc = mr.Stub<ITypeLibraryLoaderService>(); 
             sc.AddService<ITypeLibraryLoaderService>(tlSvc);
             cfgSvc.Stub(d => d.GetArchitecture("x86-protected-32")).Return(arch);
@@ -450,6 +451,12 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             el.LoadPlatform(0x66, arch);        // ELFOSABI_CELL_LV2;
 
             mr.VerifyAll();
+        }
+
+        private void Given_Image()
+        {
+            BuildObjectFile32();
+            mr.ReplayAll();
         }
     }
 }

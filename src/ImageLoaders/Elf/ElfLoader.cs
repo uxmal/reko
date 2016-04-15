@@ -734,6 +734,7 @@ namespace Reko.ImageLoaders.Elf
             if (header32 == null)
                 throw new ArgumentNullException("header32");
             this.Header = header32;
+            this.ProgramHeaders = new List<Elf32_PHdr>();
             this.Relocator = CreateRelocator((ElfMachine)header32.e_machine);
             this.rawImage = rawImage;
         }
@@ -1086,7 +1087,6 @@ namespace Reko.ImageLoaders.Elf
 
         public override int LoadProgramHeaderTable()
         {
-            this.ProgramHeaders = new List<Elf32_PHdr>();
             var rdr = imgLoader.CreateReader(Header.e_phoff);
             for (int i = 0; i < Header.e_phnum; ++i)
             {

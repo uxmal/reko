@@ -36,21 +36,36 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         protected MockRepository mr;
 
         protected IProcessorArchitecture arch;
+        protected IProcessorArchitecture arch32be;
+
         private MemoryStream segnametab;
         protected MemoryStream symbolStringtab;
         protected List<Elf32_Sym> symbols;
         protected ServiceContainer sc;
+        protected List<ProgramHeader> progHeaders;
         protected List<ObjectSection> objectSections;
         protected IConfigurationService cfgSvc;
         private MemoryStream binaryContents;
+        protected byte[] rawBytes;
+
+        public class ProgramHeader
+        {
+            public ProgramHeaderType Type;
+            public uint Offset;
+            public uint VirtualAddress;
+            public byte[] Content;
+            public uint AllocateSize;
+            public uint Flags;
+            public uint Alignment;
+        }
 
         public class ObjectSection
         {
+            public SectionHeaderType Type;
             public string Name;
             public byte[] Content;
             public uint Flags;
             public ushort Link;
-            public SectionHeaderType Type;
             public uint Offset;
             public uint ElementSize;
         }
@@ -71,6 +86,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
 
             this.binaryContents = new MemoryStream();
 
+            this.progHeaders = new List<ProgramHeader>();
 
             this.objectSections = new List<ObjectSection>
             {
@@ -116,7 +132,6 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             });
         }
 
-
         protected void Given_Section(string name, SectionHeaderType type, uint flags, byte[] blob)
         {
             var os = new ObjectSection
@@ -127,6 +142,129 @@ namespace Reko.UnitTests.ImageLoaders.Elf
                 Content = blob,
             };
             objectSections.Add(os);
+        }
+
+        protected void BuildObjectFile32()
+        {
+            // Add symbol table
+            if (symbols.Count > 0)
+            {
+                Given_Section(".symtab", SectionHeaderType.SHT_SYMTAB, ElfLoader.SHF_ALLOC, FlattenSymbolTable());
+                var os = objectSections[objectSections.Count - 1];
+                os.ElementSize = Elf32_Sym.Size;
+                os.Link = (ushort)objectSections.Count;
+                Given_Section(".strtab", SectionHeaderType.SHT_STRTAB, ElfLoader.SHF_ALLOC, symbolStringtab.ToArray());
+            }
+
+            var bin = new BeImageWriter();
+            bin.WriteByte(0x7F);
+            bin.WriteBytes(new byte[] { 0x45, 0x4C, 0x46 });
+            bin.WriteByte(1);    // 32-bit
+            bin.WriteByte(2);    // big-endian
+            bin.WriteByte(1);    // ELF version
+            bin.WriteByte(0);    // OS ABI
+            bin.WriteByte(0);    // OS version
+            bin.WriteBytes(0, 7); // pad
+
+            // ELF header
+
+            bin.WriteBeUInt16(1);   // relocatable
+            bin.WriteBeUInt16((ushort)ElfMachine.EM_SPARC);
+            bin.WriteBeUInt32(1);   // version
+            bin.WriteBeUInt32(0);   // entry point (none in reloc file)
+            bin.WriteBeUInt32(0);   // program segment table offset (none in reloc file)
+            bin.WriteBeUInt32((uint)bin.Position + 20); // point to section table.
+
+            bin.WriteBeUInt32(0);   // e_flags;
+            bin.WriteBeUInt16(0);   // e_ehsize;
+            bin.WriteBeUInt16((ushort)Elf32_PHdr.Size);   // e_phentsize;
+            bin.WriteBeUInt16((ushort)progHeaders.Count);   // e_phnum;
+            bin.WriteBeUInt16(0);   // e_shentsize;
+            bin.WriteBeUInt16((ushort)objectSections.Count);   // e_shnum;
+            bin.WriteBeUInt16(1);   // e_shstrndx;
+
+            // Build string table.
+
+            var strtab = new MemoryStream();
+            var mpOsToiName = new Dictionary<ObjectSection, int>();
+            foreach (var os in this.objectSections)
+            {
+                mpOsToiName[os] = (int)strtab.Position;
+                var bytes = Encoding.ASCII.GetBytes(os.Name);
+                strtab.Write(bytes, 0, bytes.Length);
+                strtab.WriteByte(0);
+            }
+
+            // Reserve space for program header table and 
+            // section table.
+            var iProgHdrTable = (uint)bin.Position;
+            var iShTable = (uint)bin.Position + (uint)(progHeaders.Count * Elf32_PHdr.Size);
+            var iStrTable = iShTable + (uint)(40 * objectSections.Count);
+
+            // Write string table
+            var aStrtable = strtab.ToArray();
+            objectSections[1].Content = aStrtable;
+            var iContent = iStrTable;
+
+            // Place remaining sections.
+            foreach (var section in objectSections.Skip(1))
+            {
+                section.Offset = iContent;
+                iContent = Align((uint)(iContent + section.Content.Length));
+            }
+
+            // Write the program header table
+            foreach (var ph in this.progHeaders)
+            {
+                bin.WriteBeUInt32((uint)ph.Type);
+                bin.WriteBeUInt32(ph.Offset);
+                bin.WriteBeUInt32(ph.VirtualAddress);
+                bin.WriteBeUInt32(0);
+                bin.WriteBeUInt32((uint)ph.Content.Length);
+                bin.WriteBeUInt32(ph.AllocateSize);
+                bin.WriteBeUInt32(ph.Flags);
+                bin.WriteBeUInt32(ph.Alignment);
+            }
+
+            // Write the section table.
+            foreach (var os in this.objectSections)
+            {
+                bin.WriteBeUInt32((uint)mpOsToiName[os]);
+                bin.WriteBeUInt32((uint)os.Type);
+                bin.WriteBeUInt32(os.Flags);
+                bin.WriteBeUInt32(0);
+
+                bin.WriteBeUInt32(os.Offset);
+                bin.WriteBeUInt32(os.Content != null ? (uint)os.Content.Length : 0u);
+                bin.WriteBeUInt32(os.Link);
+                bin.WriteBeUInt32(0);
+
+                bin.WriteBeUInt32(0);
+                bin.WriteBeUInt32(os.ElementSize);
+            }
+
+            // write the non-null sections.
+            foreach (var section in objectSections.Skip(1))
+            {
+                bin.WriteBytes(section.Content);
+                Align(bin);
+            }
+            this.rawBytes = bin.ToArray();
+        }
+
+        private byte[] FlattenSymbolTable()
+        {
+            var syms = new BeImageWriter();
+            foreach (var sym in symbols)
+            {
+                syms.WriteBeUInt32(sym.st_name);
+                syms.WriteBeUInt32(sym.st_value);
+                syms.WriteBeUInt32(sym.st_size);
+                syms.WriteByte(sym.st_info);
+                syms.WriteByte(sym.st_other);
+                syms.WriteBeUInt16(sym.st_shndx);
+            }
+            return syms.ToArray();
         }
 
         protected static uint Align(uint n)

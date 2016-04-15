@@ -1,0 +1,46 @@
+// MsDosCom_Start
+// Return size: 0
+void MsDosCom_Start()
+MsDosCom_Start_entry:
+	// succ:  l0C00_0100
+l0C00_0100:
+	si = 0x2A84
+	di = 0x3D29
+	cx = 0x14AC
+	SCZO = cond(di - sp)
+	branch Test(ULT,C) l0C00_0111
+	// succ:  l0C00_010D l0C00_0111
+l0C00_010D:
+	ah = 0x4C
+	msdos_terminate(al)
+	goto MsDosCom_Start_exit
+	// succ:  MsDosCom_Start_exit
+l0C00_0111:
+	D = true
+	// succ:  l0C00_0112
+l0C00_0112:
+	branch cx == 0x0000 l0C00_0114
+	// succ:  l0C00_0112_1 l0C00_0114
+l0C00_0112_1:
+	v11 = Mem0[ds:si:word16]
+	Mem0[es:di:word16] = v11
+	si = si - 0x0002
+	di = di - 0x0002
+	cx = cx - 0x0001
+	goto l0C00_0112
+	// succ:  l0C00_0112
+l0C00_0114:
+	D = false
+	si = di
+	di = 0x0100
+	ax = Mem0[ds:si:word16]
+	si = si + 0x0002
+	ax = Mem0[ds:si:word16]
+	si = si + 0x0002
+	bp = ax
+	dl = 0x10
+	// succ:  l0C00_3CDE
+l0C00_3CDE:
+MsDosCom_Start_exit:
+
+

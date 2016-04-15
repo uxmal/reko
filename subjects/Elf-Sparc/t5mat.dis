@@ -1,0 +1,2789 @@
+// t5mat_
+// Return size: 0
+void t5mat_()
+t5mat__entry:
+	// succ:  l08048028
+l08048028:
+	sp = fp
+	v3 = sp - 0x000000E8
+	i0 = o0
+	i1 = o1
+	i2 = o2
+	i3 = o3
+	i4 = o4
+	i5 = o5
+	i6 = sp
+	i7 = o7
+	o0 = 0x0804B000
+	l7 = o0 + 0x000000D0
+	o0 = 0x08607800
+	l4 = o0 + 0x000001A4
+	o0 = 0x0804EC00
+	o0 = o0 + 0x00000024
+	Mem0[sp + 192:word32] = o0
+	o0 = 0x0804AC00
+	l2 = o0 + 0x000003FE
+	o0 = 0x0804B000
+	l5 = o0 + 0x00000000
+	o0 = 0x0804D000
+	l6 = o0 + 0x00000008
+	i4 = Mem0[l5:word32]
+	o0 = Mem0[l6:word32]
+	l3 = l7 + 0x00000000
+	g0 = i4 - o0
+	NZVC = cond(g0)
+	branch Test(EQ,Z) l08048028_ds_t
+	goto l08048078
+	// succ:  l08048078 l08048028_ds_t
+l08048028_ds_t:
+	l0 = Mem0[l3 + 12:word32]
+	goto l080480D0
+	// succ:  l080480D0
+l08048078:
+	o2 = 0x00000000 - i4
+	o1 = Mem0[l6:word32]
+	l1 = 0x00000000 | 0x00000006
+	g0 = o2 - o1
+	NZVC = cond(g0)
+	branch Test(EQ,Z) l08048078_ds_t
+	goto l08048090
+	// succ:  l08048090 l08048078_ds_t
+l08048078_ds_t:
+	Mem0[l5:word32] = i4
+	goto l08048290
+	// succ:  l08048290
+l08048090:
+	i4 = 0x00000000 | 0x00000001
+	i5 = 0x00000000 | 0x00000004
+	goto l08048098
+	// succ:  l08048098
+l08048090_ds_f:
+	i5 = i5 + 0x00000004
+	goto l080480B8
+	// succ:  l080480B8
+l08048090_ds_t:
+	i5 = i5 + 0x00000004
+	goto l08048298
+	// succ:  l08048298
+l08048098:
+	o0 = l2 + l1
+	o1 = l3 + i5
+	o2 = 0x00000000 | 0x00000006
+	call apcad_ (retsize: 0;)
+	l0 = Mem0[l3 + i5:word32]
+	g0 = l0 - 0x00000000
+	NZVC = cond(g0)
+	branch Test(LE,NZV) l08048090_ds_t
+	goto l08048090_ds_f
+	// succ:  l08048090_ds_f l08048090_ds_t
+l080480B8:
+	i4 = i4 + 0x00000001
+	g0 = i4 - 0x0000001B
+	NZVC = cond(g0)
+	branch Test(LE,NZV) l080480B8_ds_t
+	// succ:  l080480B8_ds_f l080480B8_ds_t
+l080480B8_ds_f:
+	l1 = l1 + 0x00000006
+	goto l080480C8
+	// succ:  l080480C8
+l080480B8_ds_t:
+	l1 = l1 + 0x00000006
+	goto l08048098
+	// succ:  l08048098
+l080480C8:
+	i4 = Mem0[l6:word32]
+	l0 = Mem0[l3 + 12:word32]
+	// succ:  l080480D0
+l080480D0:
+	o0 = Mem0[sp + 192:word32]
+	l0 = l0 << 0x00000002
+	l0 = o0 + l0
+	Mem0[sp + 92:word32] = l0
+	l1 = Mem0[l3 + 16:word32]
+	o1 = 0x00000000 | i1
+	l1 = l1 << 0x00000002
+	l1 = o0 + l1
+	Mem0[sp + 96:word32] = l1
+	o2 = 0x00000000 | i2
+	l0 = Mem0[l3 + 20:word32]
+	l0 = l0 << 0x00000002
+	l0 = o0 + l0
+	Mem0[sp + 100:word32] = l0
+	l1 = Mem0[l3 + 24:word32]
+	l1 = l1 << 0x00000002
+	l1 = o0 + l1
+	Mem0[sp + 104:word32] = l1
+	l0 = Mem0[l3 + 28:word32]
+	l0 = l0 << 0x00000002
+	l0 = o0 + l0
+	Mem0[sp + 108:word32] = l0
+	l1 = Mem0[l3 + 32:word32]
+	l1 = l1 << 0x00000002
+	l1 = o0 + l1
+	Mem0[sp + 112:word32] = l1
+	l0 = Mem0[l3 + 36:word32]
+	l0 = l0 << 0x00000002
+	l0 = l4 + l0
+	Mem0[sp + 116:word32] = l0
+	l1 = Mem0[l3 + 40:word32]
+	l1 = l1 << 0x00000002
+	l1 = l4 + l1
+	Mem0[sp + 120:word32] = l1
+	l0 = Mem0[l3 + 44:word32]
+	l0 = l0 << 0x00000002
+	l0 = l4 + l0
+	Mem0[sp + 124:word32] = l0
+	l1 = Mem0[l3 + 48:word32]
+	l1 = l1 << 0x00000002
+	l1 = l4 + l1
+	Mem0[sp + 128:word32] = l1
+	l0 = Mem0[l3 + 52:word32]
+	l0 = l0 << 0x00000002
+	l0 = l4 + l0
+	Mem0[sp + 132:word32] = l0
+	l1 = Mem0[l3 + 56:word32]
+	l1 = l1 << 0x00000002
+	l1 = l4 + l1
+	Mem0[sp + 136:word32] = l1
+	l0 = Mem0[l3 + 60:word32]
+	l0 = l0 << 0x00000002
+	l0 = l4 + l0
+	Mem0[sp + 140:word32] = l0
+	l1 = Mem0[l3 + 64:word32]
+	l1 = l1 << 0x00000002
+	l1 = l4 + l1
+	Mem0[sp + 144:word32] = l1
+	l0 = Mem0[l3 + 68:word32]
+	l0 = l0 << 0x00000002
+	l0 = l4 + l0
+	Mem0[sp + 148:word32] = l0
+	l1 = Mem0[l3 + 72:word32]
+	l1 = l1 << 0x00000002
+	l1 = l4 + l1
+	Mem0[sp + 152:word32] = l1
+	l0 = Mem0[l3 + 76:word32]
+	l0 = l0 << 0x00000002
+	l0 = l4 + l0
+	Mem0[sp + 156:word32] = l0
+	l1 = Mem0[l3 + 80:word32]
+	l1 = l1 << 0x00000002
+	l1 = l4 + l1
+	Mem0[sp + 160:word32] = l1
+	l0 = Mem0[l3 + 84:word32]
+	l0 = l0 << 0x00000002
+	l0 = l4 + l0
+	Mem0[sp + 164:word32] = l0
+	l1 = Mem0[l3 + 88:word32]
+	l1 = l1 << 0x00000002
+	l1 = l4 + l1
+	Mem0[sp + 168:word32] = l1
+	l0 = Mem0[l3 + 92:word32]
+	l0 = l0 << 0x00000002
+	l0 = l4 + l0
+	Mem0[sp + 172:word32] = l0
+	l1 = Mem0[l3 + 96:word32]
+	l1 = l1 << 0x00000002
+	l1 = l4 + l1
+	Mem0[sp + 176:word32] = l1
+	l0 = Mem0[l3 + 100:word32]
+	l0 = l0 << 0x00000002
+	l0 = l4 + l0
+	Mem0[sp + 180:word32] = l0
+	l1 = Mem0[l3 + 104:word32]
+	l1 = l1 << 0x00000002
+	l1 = o0 + l1
+	Mem0[sp + 184:word32] = l1
+	l0 = Mem0[l3 + 108:word32]
+	l0 = l0 << 0x00000002
+	l0 = o0 + l0
+	Mem0[sp + 188:word32] = l0
+	l0 = Mem0[l3 + 8:word32]
+	l1 = Mem0[l3 + 4:word32]
+	l0 = l0 << 0x00000002
+	o5 = o0 + l0
+	l1 = l1 << 0x00000002
+	o0 = 0x00000000 | i0
+	o4 = l4 + l1
+	o3 = 0x00000000 | i3
+	call t5matp_ (retsize: 0;)
+	Mem0[l5:word32] = i4
+	// succ:  l08048290
+l08048290:
+	v31 = 0x00000000 + 0x00000000
+	o0 = i0
+	o1 = i1
+	o2 = i2
+	o3 = i3
+	o4 = i4
+	o5 = i5
+	sp = i6
+	o7 = i7
+	return
+	// succ:  t5mat__exit
+l08048298:
+	l1 = i4 << 0x00000002
+	o0 = 0x08048000
+	l3 = o0 + 0x00000010
+	l1 = l1 - i4
+	o0 = 0x00000000 | 0x00000006
+	l0 = i6 + 0xFFFFFFE8
+	l1 = l1 << 0x00000001
+	Mem0[l0:word32] = o0
+	l1 = l2 + l1
+	l0 = i6 + 0xFFFFFFE0
+	Mem0[l0:word32] = l1
+	l0 = i6 + 0xFFFFFFEC
+	l2 = 0x00000000 | 0x00000007
+	Mem0[l0:word32] = l2
+	l1 = 0x08048000
+	o0 = l7 + 0xFFFFFFE4
+	o3 = l3 + 0xFFFFFFF8
+	o1 = i6 + 0xFFFFFFE0
+	o2 = i6 + 0xFFFFFFE8
+	o4 = 0x00000000 | 0x00000018
+	l0 = i6 + 0xFFFFFFE4
+	l1 = l1 + 0x00000000
+	Mem0[l0:word32] = l1
+	call __s_cat (retsize: 0;)
+	o0 = l3 + 0xFFFFFFFC
+	o1 = l3 + 0x00000000
+	o2 = l7 + 0xFFFFFFE4
+	o3 = 0x00000000 | 0x00000018
+	call aperss_ (retsize: 0;)
+	l0 = Mem0[l6:word32]
+	i4 = 0x00000000 - l0
+	Mem0[l5:word32] = i4
+	goto l08048290
+	// succ:  l08048290
+t5mat__exit:
+
+
+// t5matp_
+// Return size: 0
+void t5matp_()
+t5matp__entry:
+	// succ:  l08048520
+l08048520:
+	sp = fp
+	v3 = sp - 0x00000118
+	i0 = o0
+	i1 = o1
+	i2 = o2
+	i3 = o3
+	i4 = o4
+	i5 = o5
+	i6 = sp
+	i7 = o7
+	o0 = 0x00000000 | i1
+	Mem0[sp + 108:word32] = o0
+	o0 = i3 + 0xFFFFFFF4
+	Mem0[i6 + 68:word32] = i0
+	Mem0[sp + 100:word32] = o0
+	Mem0[i6 + 76:word32] = i2
+	o0 = Mem0[i6 + 116:word32]
+	l3 = o0 + 0xFFFFFFFC
+	o0 = Mem0[i6 + 120:word32]
+	i2 = o0 + 0xFFFFFFFC
+	o0 = Mem0[i6 + 124:word32]
+	l4 = o0 + 0xFFFFFFFC
+	o0 = Mem0[i6 + 128:word32]
+	g1 = o0 + 0xFFFFFFFC
+	o0 = Mem0[i6 + 132:word32]
+	l7 = o0 + 0xFFFFFFFC
+	o0 = Mem0[i6 + 136:word32]
+	l2 = o0 + 0xFFFFFFFC
+	o0 = Mem0[i6 + 140:word32]
+	l0 = o0 + 0xFFFFFFFC
+	o0 = Mem0[i6 + 144:word32]
+	i4 = o0 + 0xFFFFFFFC
+	o0 = Mem0[i6 + 148:word32]
+	i1 = o0 + 0xFFFFFFFC
+	o0 = Mem0[i6 + 152:word32]
+	i0 = o0 + 0xFFFFFFFC
+	o0 = Mem0[i6 + 156:word32]
+	l1 = o0 + 0xFFFFFFFC
+	o0 = Mem0[i6 + 160:word32]
+	i3 = o0 + 0xFFFFFFFC
+	o0 = Mem0[i6 + 164:word32]
+	l6 = o0 + 0xFFFFFFFC
+	o0 = Mem0[i6 + 168:word32]
+	o7 = o0 + 0xFFFFFFFC
+	o0 = Mem0[i6 + 172:word32]
+	l5 = o0 + 0xFFFFFFFC
+	o0 = Mem0[i6 + 176:word32]
+	o5 = o0 + 0xFFFFFFFC
+	o0 = Mem0[i6 + 180:word32]
+	o1 = o0 + 0xFFFFFFFC
+	o0 = Mem0[i6 + 92:word32]
+	o0 = Mem0[o0:word32]
+	g0 = o0 - 0x00000000
+	NZVC = cond(g0)
+	branch Test(GT,NZV) l08048520_ds_t
+	// succ:  l08048520_ds_f l08048520_ds_t
+l08048520_ds_f:
+	o0 = 0x08048000
+	goto l080485D8
+	// succ:  l080485D8
+l08048520_ds_t:
+	o0 = 0x08048000
+	goto l080486D8
+	// succ:  l080486D8
+l080485D8:
+	o3 = o0 + 0x00000328
+	o0 = 0x0804B000
+	o4 = o0 + 0x000000A8
+	o0 = Mem0[i6 + 76:word32]
+	Mem0[sp + 104:word32] = o0
+	o0 = Mem0[i6 + 68:word32]
+	o2 = Mem0[o4:word32]
+	o0 = Mem0[o0:word32]
+	g0 = o0 - 0x00000003
+	NZVC = cond(g0)
+	Mem0[sp + 116:word32] = o0
+	branch Test(GE,NV) l080485D8_ds_t
+	// succ:  l080485D8_ds_f l080485D8_ds_t
+l080485D8_ds_f:
+	g0 = o0 - 0x00000001
+	NZVC = cond(g0)
+	goto l08048608
+	// succ:  l08048608
+l080485D8_ds_t:
+	g0 = o0 - 0x00000001
+	NZVC = cond(g0)
+	goto l08048620
+	// succ:  l08048620
+l08048608:
+	branch Test(EQ,Z) l08048608_ds_t
+	// succ:  l08048608_ds_f l08048608_ds_t
+l08048608_ds_f:
+	g0 = o0 - 0x00000002
+	NZVC = cond(g0)
+	goto l08048610
+	// succ:  l08048610
+l08048608_ds_t:
+	g0 = o0 - 0x00000002
+	NZVC = cond(g0)
+	goto l080486E0
+	// succ:  l080486E0
+l08048610:
+	branch Test(EQ,Z) l08048610_ds_t
+	goto l08048618
+	// succ:  l08048618 l08048610_ds_t
+l08048610_ds_t:
+	o0 = 0x0804B000
+	goto l08048640
+	// succ:  l08048640
+l08048618:
+	o0 = Mem0[sp + 104:word32]
+	goto l080486E4
+	// succ:  l080486E4
+l08048620:
+	o0 = Mem0[sp + 116:word32]
+	g0 = o0 - 0x00000003
+	NZVC = cond(g0)
+	branch Test(EQ,Z) l08048620_ds_t
+	// succ:  l08048620_ds_f l08048620_ds_t
+l08048620_ds_f:
+	g0 = o0 - 0x00000004
+	NZVC = cond(g0)
+	goto l08048630
+	// succ:  l08048630
+l08048620_ds_t:
+	g0 = o0 - 0x00000004
+	NZVC = cond(g0)
+	goto l08049250
+	// succ:  l08049250
+l08048630:
+	branch Test(EQ,Z) l08048630_ds_t
+	goto l08048638
+	// succ:  l08048638 l08048630_ds_t
+l08048630_ds_t:
+	o0 = 0x0804B000
+	goto l0804869C
+	// succ:  l0804869C
+l08048638:
+	o0 = Mem0[sp + 104:word32]
+	goto l080486E4
+	// succ:  l080486E4
+l08048640:
+	o2 = o0 + 0x000001A4
+	o0 = Mem0[sp + 104:word32]
+	f5 = Mem0[o3 + 24:real32]
+	o5 = Mem0[o0:word32]
+	o0 = Mem0[sp + 108:word32]
+	f7 = Mem0[o3 + 28:real32]
+	o1 = Mem0[o0:word32]
+	g0 = o5 - o1
+	NZVC = cond(g0)
+	branch Test(LT,NZV) l08048640_ds_t
+	// succ:  l08048640_ds_f l08048640_ds_t
+l08048640_ds_f:
+	g1 = 0x00000000 | o1
+	goto l08048668
+	// succ:  l08048668
+l08048640_ds_t:
+	g1 = 0x00000000 | o1
+	goto l080486D8
+	// succ:  l080486D8
+l08048668:
+	g0 = o1 - o5
+	NZVC = cond(g0)
+	branch Test(GT,NZV) l08048668_ds_t
+	// succ:  l08048668_ds_f l08048668_ds_t
+l08048668_ds_f:
+	o1 = o1 << 0x00000003
+	goto l08048674
+	// succ:  l08048674
+l08048668_ds_t:
+	o1 = o1 << 0x00000003
+	goto l080486D8
+	// succ:  l080486D8
+l08048674:
+	Mem0[i6 + -124:real32] = f5
+	Mem0[i6 + -128:real32] = f7
+	f5 = Mem0[o3 + 32:real32]
+	f7 = Mem0[o3 + 36:real32]
+	o0 = Mem0[sp + 100:word32]
+	Mem0[i6 + -132:real32] = f5
+	l2 = o0 + 0x00000008
+	Mem0[i6 + -136:real32] = f7
+	o0 = Mem0[l2 + o1:word32]
+	goto l08048D44
+	// succ:  l08048D44
+l0804869C:
+	o5 = o0 + 0x000001A4
+	o0 = Mem0[sp + 104:word32]
+	o1 = Mem0[sp + 108:word32]
+	o0 = Mem0[o0:word32]
+	o1 = Mem0[o1:word32]
+	g0 = o0 - o1
+	NZVC = cond(g0)
+	Mem0[sp + 92:word32] = o0
+	branch Test(LT,NZV) l0804869C_ds_t
+	// succ:  l0804869C_ds_f l0804869C_ds_t
+l0804869C_ds_f:
+	Mem0[sp + 112:word32] = o1
+	goto l080486C0
+	// succ:  l080486C0
+l0804869C_ds_t:
+	Mem0[sp + 112:word32] = o1
+	goto l080486D8
+	// succ:  l080486D8
+l080486C0:
+	o1 = Mem0[sp + 112:word32]
+	o0 = Mem0[sp + 92:word32]
+	i5 = 0x00000000 | o1
+	g0 = o1 - o0
+	NZVC = cond(g0)
+	branch Test(LE,NZV) l080486C0_ds_t
+	goto l080486D8
+	// succ:  l080486D8 l080486C0_ds_t
+l080486C0_ds_t:
+	f5 = Mem0[o3 + 200:real32]
+	goto l08049590
+	// succ:  l08049590
+l080486D8:
+	v33 = 0x00000000 + 0x00000000
+	o0 = i0
+	o1 = i1
+	o2 = i2
+	o3 = i3
+	o4 = i4
+	o5 = i5
+	sp = i6
+	o7 = i7
+	return
+	v55 = 0x00000000 + 0x00000000
+	o0 = i0
+	o1 = i1
+	o2 = i2
+	o3 = i3
+	o4 = i4
+	o5 = i5
+	sp = i6
+	o7 = i7
+	return
+	// succ:  t5matp__exit t5matp__exit
+l080486E0:
+	o0 = Mem0[sp + 104:word32]
+	// succ:  l080486E4
+l080486E4:
+	g1 = Mem0[o0:word32]
+	o0 = Mem0[sp + 108:word32]
+	f5 = Mem0[o3 + -12:real32]
+	o2 = Mem0[o0:word32]
+	g0 = g1 - o2
+	NZVC = cond(g0)
+	branch Test(LT,NZV) l080486E4_ds_t
+	// succ:  l080486E4_ds_f l080486E4_ds_t
+l080486E4_ds_f:
+	l1 = 0x00000000 | o2
+	goto l08048700
+	// succ:  l08048700
+l080486E4_ds_t:
+	l1 = 0x00000000 | o2
+	goto l080486D8
+	// succ:  l080486D8
+l08048700:
+	g0 = o2 - g1
+	NZVC = cond(g0)
+	f7 = Mem0[o3 + -8:real32]
+	branch Test(GT,NZV) l08048700_ds_t
+	// succ:  l08048700_ds_f l08048700_ds_t
+l08048700_ds_f:
+	o2 = o2 << 0x00000003
+	goto l08048710
+	// succ:  l08048710
+l08048700_ds_t:
+	o2 = o2 << 0x00000003
+	goto l080486D8
+	// succ:  l080486D8
+l08048710:
+	Mem0[i6 + -140:real32] = f5
+	Mem0[i6 + -144:real32] = f7
+	f5 = Mem0[o3 + -4:real32]
+	f7 = Mem0[o3:real32]
+	o0 = Mem0[sp + 100:word32]
+	Mem0[i6 + -148:real32] = f5
+	l0 = o0 + 0x00000008
+	Mem0[i6 + -152:real32] = f7
+	o0 = Mem0[l0 + o2:word32]
+	goto l08048750
+	// succ:  l08048750
+l08048738:
+	Mem0[o5 + o0:real32] = f5
+	// succ:  l0804873C
+l0804873C:
+	l1 = l1 + 0x00000001
+	g0 = l1 - g1
+	NZVC = cond(g0)
+	branch Test(GT,NZV) l0804873C_ds_t
+	// succ:  l0804873C_ds_f l0804873C_ds_t
+l0804873C_ds_f:
+	o2 = o2 + 0x00000008
+	goto l0804874C
+	// succ:  l0804874C
+l0804873C_ds_t:
+	o2 = o2 + 0x00000008
+	goto l080486D8
+	// succ:  l080486D8
+l0804874C:
+	o0 = Mem0[l0 + o2:word32]
+	// succ:  l08048750
+l08048750:
+	o0 = o0 << 0x00000002
+	f7 = Mem0[i6 + -144:real32]
+	f5 = Mem0[l4 + o0:real32]
+	ELGU = cond(f2 - f3)
+	f0 = f2
+	f15 = Mem0[i2 + o0:real32]
+	branch Test(GT,G) l08048750_ds_t
+	goto l08048770
+	// succ:  l08048770 l08048750_ds_t
+l08048750_ds_t:
+	f0 = f3
+	// succ:  l08048770
+l08048770:
+	f2 = f0 * f0
+	f9 = Mem0[o3 + 4:real32]
+	f7 = Mem0[i6 + -148:real32]
+	f3 = f0 * f3
+	f11 = Mem0[i6 + -152:real32]
+	f2 = f2 * f4
+	f4 = f0 * f0
+	f3 = f5 - f3
+	f4 = f4 * f0
+	f2 = f3 - f2
+	f11 = Mem0[o3 + 8:real32]
+	f4 = f4 * f5
+	f7 = Mem0[o3 + 12:real32]
+	f3 = f7 * f3
+	f2 = f2 - f4
+	f2 = f2 + f3
+	f9 = Mem0[o3 + 16:real32]
+	f4 = f4 - f0
+	Mem0[l6 + o0:real32] = f5
+	f5 = Mem0[o3 + 20:real32]
+	ELGU = cond(f2 - f4)
+	branch Test(LT,GU) l08048770_ds_t
+	goto l080487D0
+	// succ:  l080487D0 l08048770_ds_t
+l08048770_ds_t:
+	f2 = f4
+	// succ:  l080487D0
+l080487D0:
+	f7 = Mem0[o3 + 24:real32]
+	f2 = f2 * f3
+	f9 = Mem0[l6 + o0:real32]
+	f2 = f4 - f2
+	f7 = Mem0[l3 + o0:real32]
+	Mem0[l6 + o0:real32] = f5
+	f5 = Mem0[o3 + 32:real32]
+	ELGU = cond(f3 - f2)
+	f17 = Mem0[o3 + 28:real32]
+	branch Test(GT,GU) l080487D0_ds_t
+	goto l080487FC
+	// succ:  l080487FC l080487D0_ds_t
+l080487D0_ds_t:
+	f3 = Mem0[l5 + o0:real32]
+	goto l08048858
+	// succ:  l08048858
+l080487FC:
+	f5 = Mem0[l7 + o0:real32]
+	f7 = Mem0[i4 + o0:real32]
+	f2 = f2 / f3
+	f9 = Mem0[o3 + 36:real32]
+	f11 = Mem0[o3 + 40:real32]
+	f13 = Mem0[l3 + o0:real32]
+	f5 = f6 + f5
+	f2 = f2 + f4
+	f7 = Mem0[o3 + 44:real32]
+	f2 = f2 * f5
+	f9 = Mem0[o3 + 28:real32]
+	f2 = f2 * f3
+	f2 = f2 + f4
+	ELGU = cond(f8 - f2)
+	f0 = f8
+	branch Test(LT,GU) l080487FC_ds_t
+	goto l08048840
+	// succ:  l08048840 l080487FC_ds_t
+l080487FC_ds_t:
+	f0 = f2
+	// succ:  l08048840
+l08048840:
+	f7 = Mem0[o3 + 36:real32]
+	f3 = f0 + f3
+	f5 = Mem0[o3 + 48:real32]
+	f3 = Mem0[l5 + o0:real32]
+	f2 = f3 * f2
+	f8 = f2 + f4
+	// succ:  l08048858
+l08048858:
+	f7 = Mem0[o3 + 28:real32]
+	f3 = f3 - f1
+	f5 = Mem0[o3 + 52:real32]
+	f0 = f1 * f2
+	f9 = Mem0[o3 + 56:real32]
+	f3 = f3 * f4
+	f13 = Mem0[o3 + 28:real32]
+	f5 = Mem0[o3 + 60:real32]
+	f3 = f0 + f3
+	f9 = Mem0[o3 + 76:real32]
+	ELGU = cond(f7 - f2)
+	f1 = f0 / f3
+	branch Test(GE,EGU) l08048858_ds_t
+	// succ:  l08048858_ds_f l08048858_ds_t
+l08048858_ds_f:
+	f1 = Mem0[l3 + o0:real32]
+	goto l08048890
+	// succ:  l08048890
+l08048858_ds_t:
+	f1 = Mem0[l3 + o0:real32]
+	goto l080488F0
+	// succ:  l080488F0
+l08048890:
+	f6 = f6 - f1
+	f5 = Mem0[o4 + 8:real32]
+	f7 = Mem0[o4 + 4:real32]
+	f2 = f2 / f3
+	f11 = Mem0[i0 + o0:real32]
+	f4 = f5 + f4
+	f7 = Mem0[o3 + 80:real32]
+	f3 = f6 * f3
+	f2 = f2 / f4
+	f11 = Mem0[o3 + 12:real32]
+	f3 = f3 / f8
+	f13 = Mem0[l6 + o0:real32]
+	f2 = f2 * f1
+	f9 = Mem0[o7 + o0:real32]
+	f2 = f3 + f2
+	f7 = Mem0[o3 + 28:real32]
+	f3 = f3 - f0
+	f2 = f0 * f2
+	f3 = f3 * f5
+	f2 = f2 / f4
+	f3 = f3 / f6
+	f2 = f2 + f3
+	Mem0[o1 + o0:real32] = f5
+	goto l0804896C
+	// succ:  l0804896C
+l080488F0:
+	f5 = Mem0[o3 + 68:real32]
+	f2 = f7 * f2
+	f5 = f7 * f7
+	f7 = Mem0[o3 + 64:real32]
+	f9 = Mem0[o3 + 72:real32]
+	f2 = f3 - f2
+	f19 = Mem0[o3 + 28:real32]
+	f4 = f5 * f4
+	f13 = Mem0[i0 + o0:real32]
+	f3 = f9 - f1
+	f2 = f2 + f4
+	f11 = Mem0[o4 + 4:real32]
+	f2 = f2 * f3
+	f9 = Mem0[o4 + 8:real32]
+	f4 = f4 / f5
+	f7 = Mem0[o3 + 76:real32]
+	f3 = f6 + f3
+	f2 = f2 / f8
+	f11 = Mem0[o7 + o0:real32]
+	f3 = f4 / f3
+	f13 = Mem0[l6 + o0:real32]
+	f3 = f3 * f1
+	f9 = Mem0[o3 + 12:real32]
+	f2 = f2 + f3
+	f3 = f9 - f0
+	f2 = f0 * f2
+	f3 = f3 * f4
+	f2 = f2 / f5
+	f3 = f3 / f6
+	f2 = f2 + f3
+	Mem0[o1 + o0:real32] = f5
+	// succ:  l0804896C
+l0804896C:
+	f5 = Mem0[o3 + 84:real32]
+	f7 = Mem0[i2 + o0:real32]
+	f0 = f3 * f2
+	f9 = Mem0[o3 + 88:real32]
+	f11 = Mem0[o3 + 92:real32]
+	f6 = f0 + f4
+	f7 = Mem0[o3 + 28:real32]
+	ELGU = cond(f6 - f5)
+	f9 = Mem0[o3 + 180:real32]
+	branch Test(NE,U) l0804896C_ds_t
+	goto l0804899C
+	// succ:  l0804899C l0804896C_ds_t
+l0804896C_ds_t:
+	f5 = Mem0[i6 + -140:real32]
+	goto l08048738
+	// succ:  l08048738
+l0804899C:
+	f5 = Mem0[o3 + 28:real32]
+	ELGU = cond(f0 - f2)
+	branch Test(GE,EGU) l0804899C_ds_t
+	goto l080489B0
+	// succ:  l080489B0 l0804899C_ds_t
+l0804899C_ds_t:
+	f5 = Mem0[o3 + 100:real32]
+	goto l080489E8
+	// succ:  l080489E8
+l080489B0:
+	f5 = Mem0[o3 + 172:real32]
+	f2 = f0 * f2
+	f5 = f2 + f3
+	f5 = Mem0[o3 + 172:real32]
+	f2 = f4 * f2
+	f7 = Mem0[o3 + 176:real32]
+	Mem0[i6 + -76:real32] = f11
+	f5 = f5 * f5
+	f2 = f3 - f2
+	f2 = f2 / f5
+	f7 = Mem0[o3 + 84:real32]
+	f2 = f2 * f3
+	Mem0[o5 + o0:real32] = f5
+	goto l0804873C
+	// succ:  l0804873C
+l080489E8:
+	f7 = Mem0[o3 + 96:real32]
+	f3 = f6 * f3
+	f9 = Mem0[o3 + 104:real32]
+	f11 = Mem0[o3 + 136:real32]
+	f5 = f6 * f5
+	f3 = f3
+	f1 = Mem0[o3 + 128:real32]
+	f5 = f5
+	f2 = f3 + f2
+	f2 = f2 * f6
+	f7 = Mem0[o3 + 108:real32]
+	f2 = f2 + f4
+	f2 = f2 * f6
+	f9 = Mem0[o3 + 112:real32]
+	f2 = f2 + f3
+	f2 = f2 * f6
+	f7 = Mem0[o3 + 116:real32]
+	f2 = f2 + f4
+	f2 = f2 * f6
+	f9 = Mem0[o3 + 120:real32]
+	f2 = f2 + f3
+	f2 = f2 * f6
+	f7 = Mem0[o3 + 124:real32]
+	f2 = f2 + f4
+	f2 = f2 * f6
+	f9 = Mem0[o3 + 140:real32]
+	f4 = f5 + f4
+	f2 = f2 + f3
+	f4 = f4 * f6
+	f11 = Mem0[o3 + 28:real32]
+	f2 = f2 * f6
+	f7 = Mem0[o3 + 132:real32]
+	f2 = f2 + f0
+	f2 = f2 * f6
+	f1 = f2 + f3
+	f5 = Mem0[o3 + 144:real32]
+	f2 = f4 + f2
+	f7 = Mem0[o3 + 148:real32]
+	f2 = f2 * f6
+	f9 = Mem0[o3 + 152:real32]
+	f2 = f2 + f3
+	f2 = f2 * f6
+	f7 = Mem0[o3 + 156:real32]
+	f2 = f2 + f4
+	f2 = f2 * f6
+	f9 = Mem0[o3 + 160:real32]
+	f2 = f2 + f3
+	f2 = f2 * f6
+	f7 = Mem0[o3 + 164:real32]
+	f2 = f2 + f4
+	f2 = f2 * f6
+	f9 = Mem0[o3 + 168:real32]
+	f2 = f2 + f3
+	f3 = f6 * f4
+	f4 = f4 * f1
+	f2 = f2 * f6
+	f2 = f2 + f0
+	f0 = f3 + f5
+	f2 = f2 * f0
+	f11 = Mem0[o3 + 84:real32]
+	f3 = f0 * f0
+	f2 = f2 - f4
+	f2 = f2 / f3
+	f2 = f2 * f5
+	Mem0[o5 + o0:real32] = f5
+	goto l0804873C
+	// succ:  l0804873C
+l08048AF0:
+	f5 = Mem0[o3 + 224:real32]
+	f2 = f1 * f2
+	f7 = Mem0[o3 + 228:real32]
+	f9 = Mem0[o3 + 232:real32]
+	f2 = f2 + f3
+	f11 = Mem0[o3 + 28:real32]
+	f2 = f2 * f1
+	f7 = Mem0[o3 + 236:real32]
+	f2 = f2 + f4
+	f2 = f2 * f1
+	f9 = Mem0[o3 + 240:real32]
+	f2 = f2 + f3
+	f2 = f2 * f1
+	f7 = Mem0[o3 + 244:real32]
+	f2 = f2 + f4
+	f2 = f2 * f1
+	f9 = Mem0[o3 + 248:real32]
+	f2 = f2 + f3
+	f2 = f2 * f1
+	f7 = Mem0[o3 + 252:real32]
+	f2 = f2 + f4
+	f2 = f2 * f1
+	f9 = Mem0[o3 + 256:real32]
+	f2 = f2 + f3
+	f2 = f2 * f1
+	f7 = Mem0[o3 + 260:real32]
+	f2 = f2 + f4
+	f9 = Mem0[o3 + 264:real32]
+	f4 = f1 * f4
+	f2 = f2 * f1
+	f4 = f4 + f5
+	f2 = f2 + f3
+	f2 = f2 / f4
+	f7 = Mem0[o3 + 268:real32]
+	f0 = f2 + f3
+	// succ:  l08048B7C
+l08048B7C:
+	f5 = Mem0[o3 + 280:real32]
+	f2 = f0 * f2
+	f7 = Mem0[o3 + 28:real32]
+	f9 = Mem0[i2 + o0:real32]
+	Mem0[l0 + o0:real32] = f5
+	f5 = Mem0[l5 + o0:real32]
+	f2 = f3 - f2
+	f11 = Mem0[o3 + 284:real32]
+	f1 = f4 * f2
+	f7 = Mem0[o3 + 288:real32]
+	ELGU = cond(f1 - f5)
+	f9 = Mem0[o3 + 296:real32]
+	branch Test(GT,GU) l08048B7C_ds_t
+	goto l08048BB8
+	// succ:  l08048BB8 l08048B7C_ds_t
+l08048B7C_ds_t:
+	f5 = Mem0[o3 + 60:real32]
+	goto l080491E0
+	// succ:  l080491E0
+l08048BB8:
+	f3 = f1 * f3
+	f5 = f1 * f1
+	f5 = Mem0[o3 + 292:real32]
+	f0 = f1 * f1
+	f2 = f3 + f2
+	f4 = f5 * f4
+	f7 = f0 * f1
+	f7 = Mem0[o3 + 300:real32]
+	f6 = f1 * f1
+	f2 = f2 - f4
+	f11 = Mem0[o3 + 28:real32]
+	f3 = f7 * f3
+	Mem0[i6 + -156:real32] = f15
+	f9 = Mem0[o3 + 304:real32]
+	f4 = f1 * f4
+	f2 = f2 + f3
+	f4 = f4 + f5
+	f7 = Mem0[o3 + 308:real32]
+	f3 = f6 * f3
+	f11 = Mem0[o3 + 312:real32]
+	f5 = f7 * f5
+	f3 = f4 - f3
+	f3 = f3 + f5
+	f9 = Mem0[o3 + 316:real32]
+	ELGU = cond(f1 - f4)
+	f2 = f2 / f3
+	Mem0[i4 + o0:real32] = f5
+	branch Test(LE,ELU) l08048BB8_ds_t
+	goto l08048C30
+	// succ:  l08048C30 l08048BB8_ds_t
+l08048BB8_ds_t:
+	f13 = Mem0[i2 + o0:real32]
+	goto l08048C58
+	// succ:  l08048C58
+l08048C30:
+	f5 = Mem0[o3 + 348:real32]
+	f2 = f1 + f2
+	f9 = Mem0[i4 + o0:real32]
+	f13 = Mem0[i2 + o0:real32]
+	f3 = f2 * f2
+	Mem0[i6 + -80:real32] = f5
+	f5 = Mem0[o3 + 352:real32]
+	f2 = f3 * f2
+	f2 = f4 - f2
+	Mem0[i4 + o0:real32] = f5
+	// succ:  l08048C58
+l08048C58:
+	f7 = Mem0[o3 + 356:real32]
+	f2 = f6 * f3
+	f5 = f6 * f6
+	f9 = Mem0[o3 + 360:real32]
+	Mem0[i6 + -160:real32] = f13
+	f7 = Mem0[o3 + 364:real32]
+	f2 = f2 + f4
+	f3 = f5 * f3
+	f9 = Mem0[o3 + 368:real32]
+	f2 = f2 + f3
+	ELGU = cond(f2 - f4)
+	f0 = f2
+	branch Test(GT,G) l08048C58_ds_t
+	goto l08048C90
+	// succ:  l08048C90 l08048C58_ds_t
+l08048C58_ds_t:
+	f0 = f4
+	// succ:  l08048C90
+l08048C90:
+	f11 = Mem0[o2:real32]
+	f5 = f5 * f0
+	f5 = Mem0[i4 + o0:real32]
+	f7 = Mem0[o3 + -8:real32]
+	f2 = f2 + f5
+	Mem0[i4 + o0:real32] = f5
+	f5 = Mem0[l4 + o0:real32]
+	ELGU = cond(f2 - f3)
+	f0 = f2
+	branch Test(GT,G) l08048C90_ds_t
+	goto l08048CBC
+	// succ:  l08048CBC l08048C90_ds_t
+l08048C90_ds_t:
+	f0 = f3
+	// succ:  l08048CBC
+l08048CBC:
+	f9 = Mem0[o3 + -4:real32]
+	f4 = f0 * f4
+	f5 = Mem0[o3:real32]
+	f5 = f0 * f0
+	f7 = Mem0[o3 + 4:real32]
+	f2 = f2 - f4
+	f4 = f0 * f0
+	f3 = f5 * f3
+	f4 = f4 * f0
+	f2 = f2 - f3
+	f11 = Mem0[o3 + 8:real32]
+	f4 = f4 * f5
+	f7 = Mem0[o3 + 12:real32]
+	f3 = f6 * f3
+	f2 = f2 - f4
+	f2 = f2 + f3
+	f9 = Mem0[o3 + 16:real32]
+	f4 = f4 - f0
+	Mem0[l6 + o0:real32] = f5
+	f5 = Mem0[o3 + 20:real32]
+	ELGU = cond(f2 - f4)
+	branch Test(LT,GU) l08048CBC_ds_t
+	goto l08048D1C
+	// succ:  l08048D1C l08048CBC_ds_t
+l08048CBC_ds_t:
+	f2 = f4
+	// succ:  l08048D1C
+l08048D1C:
+	f7 = Mem0[i6 + -124:real32]
+	f2 = f2 * f3
+	g1 = g1 + 0x00000001
+	f9 = Mem0[l6 + o0:real32]
+	g0 = g1 - o5
+	NZVC = cond(g0)
+	o1 = o1 + 0x00000008
+	f2 = f4 - f2
+	branch Test(GT,NZV) l08048D1C_ds_t
+	// succ:  l08048D1C_ds_f l08048D1C_ds_t
+l08048D1C_ds_f:
+	Mem0[l6 + o0:real32] = f5
+	goto l08048D40
+	// succ:  l08048D40
+l08048D1C_ds_t:
+	Mem0[l6 + o0:real32] = f5
+	goto l080486D8
+	// succ:  l080486D8
+l08048D40:
+	o0 = Mem0[l2 + o1:word32]
+	// succ:  l08048D44
+l08048D44:
+	o0 = o0 << 0x00000002
+	f7 = Mem0[i6 + -132:real32]
+	f5 = Mem0[l3 + o0:real32]
+	ELGU = cond(f2 - f3)
+	f1 = Mem0[i6 + -128:real32]
+	f17 = Mem0[i2 + o0:real32]
+	f5 = Mem0[o3 + 40:real32]
+	branch Test(GT,GU) l08048D44_ds_t
+	goto l08048D68
+	// succ:  l08048D68 l08048D44_ds_t
+l08048D44_ds_t:
+	f15 = Mem0[l5 + o0:real32]
+	goto l08048DC4
+	// succ:  l08048DC4
+l08048D68:
+	f9 = Mem0[l7 + o0:real32]
+	f11 = Mem0[i4 + o0:real32]
+	f4 = f4 / f5
+	f7 = Mem0[l3 + o0:real32]
+	f2 = f3 + f2
+	f13 = Mem0[o3 + 44:real32]
+	f7 = Mem0[i6 + -136:real32]
+	f5 = f3
+	f3 = f4 + f3
+	f2 = f3 * f2
+	f9 = Mem0[o3 + 28:real32]
+	f2 = f2 * f6
+	f7 = Mem0[i6 + -128:real32]
+	f2 = f2 + f4
+	ELGU = cond(f3 - f2)
+	f0 = f3
+	branch Test(LT,GU) l08048D68_ds_t
+	goto l08048DB0
+	// succ:  l08048DB0 l08048D68_ds_t
+l08048D68_ds_t:
+	f0 = f2
+	// succ:  l08048DB0
+l08048DB0:
+	f5 = f0 + f5
+	f5 = Mem0[o3 + 48:real32]
+	f15 = Mem0[l5 + o0:real32]
+	f2 = f5 * f2
+	f0 = f2 + f4
+	// succ:  l08048DC4
+l08048DC4:
+	f5 = Mem0[o3 + 52:real32]
+	f1 = f7 * f2
+	f7 = Mem0[o3 + 28:real32]
+	f3 = f3 - f7
+	f9 = Mem0[o3 + 56:real32]
+	f5 = Mem0[o3 + 60:real32]
+	f3 = f3 * f4
+	f11 = Mem0[o3 + 76:real32]
+	ELGU = cond(f8 - f2)
+	f3 = f1 + f3
+	f13 = Mem0[o3 + 80:real32]
+	branch Test(GE,EGU) l08048DC4_ds_t
+	// succ:  l08048DC4_ds_f l08048DC4_ds_t
+l08048DC4_ds_f:
+	f1 = f1 / f3
+	goto l08048DF8
+	// succ:  l08048DF8
+l08048DC4_ds_t:
+	f1 = f1 / f3
+	goto l08048E44
+	// succ:  l08048E44
+l08048DF8:
+	f5 = Mem0[i2 + o0:real32]
+	f9 = Mem0[o4 + 4:real32]
+	f6 = f8 * f6
+	f7 = Mem0[o4 + 8:real32]
+	f2 = f2 * f3
+	f2 = f2 / f4
+	f7 = Mem0[i0 + o0:real32]
+	f3 = f3 + f5
+	f9 = Mem0[o3 + 200:real32]
+	f4 = f6 + f4
+	f11 = Mem0[o3 + 28:real32]
+	f5 = f5 - f1
+	f2 = f2 / f3
+	f4 = f4 * f5
+	f2 = f2 * f1
+	f4 = f4 / f0
+	f2 = f4 + f2
+	Mem0[o7 + o0:real32] = f5
+	goto l08048EB8
+	// succ:  l08048EB8
+l08048E44:
+	f5 = Mem0[o3 + 184:real32]
+	f2 = f8 * f2
+	f7 = Mem0[o3 + 188:real32]
+	f5 = f8 * f8
+	f9 = Mem0[o3 + 192:real32]
+	f2 = f2 + f3
+	f13 = Mem0[o3 + 76:real32]
+	f3 = f8 * f8
+	f4 = f5 * f4
+	f3 = f3 * f8
+	f11 = Mem0[o3 + 196:real32]
+	f2 = f2 - f4
+	f3 = f3 * f5
+	f9 = Mem0[o3 + 28:real32]
+	f4 = f4 - f1
+	f2 = f2 + f3
+	f11 = Mem0[o4 + 8:real32]
+	f2 = f2 / f0
+	f7 = Mem0[i2 + o0:real32]
+	f3 = f3 * f5
+	f2 = f2 * f4
+	f11 = Mem0[i0 + o0:real32]
+	f5 = f5 + f6
+	f9 = Mem0[o4 + 4:real32]
+	f3 = f3 / f4
+	f3 = f3 / f5
+	f3 = f3 * f1
+	f2 = f2 + f3
+	Mem0[o7 + o0:real32] = f5
+	// succ:  l08048EB8
+l08048EB8:
+	f13 = Mem0[i2 + o0:real32]
+	f5 = Mem0[o3 + 84:real32]
+	f0 = f6 * f2
+	f7 = Mem0[o3 + 88:real32]
+	f9 = Mem0[o3 + 92:real32]
+	f1 = f0 + f3
+	ELGU = cond(f1 - f4)
+	f7 = Mem0[o3 + 180:real32]
+	f9 = Mem0[o3 + 172:real32]
+	branch Test(NE,U) l08048EB8_ds_t
+	goto l08048EE8
+	// succ:  l08048EE8 l08048EB8_ds_t
+l08048EB8_ds_t:
+	f5 = Mem0[o3 + 208:real32]
+	goto l08048FB8
+	// succ:  l08048FB8
+l08048EE8:
+	f5 = Mem0[o3 + 28:real32]
+	ELGU = cond(f0 - f2)
+	f5 = Mem0[o3 + 176:real32]
+	branch Test(GE,EGU) l08048EE8_ds_t
+	// succ:  l08048EE8_ds_f l08048EE8_ds_t
+l08048EE8_ds_f:
+	f11 = Mem0[o3 + 28:real32]
+	goto l08048F00
+	// succ:  l08048F00
+l08048EE8_ds_t:
+	f11 = Mem0[o3 + 28:real32]
+	goto l08048F20
+	// succ:  l08048F20
+l08048F00:
+	f2 = f0 * f2
+	f4 = f0 * f4
+	f2 = f2 + f3
+	f4 = f4 + f5
+	f2 = f2 / f4
+	Mem0[l1 + o0:real32] = f5
+	f5 = Mem0[l1 + o0:real32]
+	goto l08048FD4
+	// succ:  l08048FD4
+l08048F20:
+	f7 = Mem0[o3 + 96:real32]
+	f3 = f1 * f3
+	f5 = Mem0[o3 + 100:real32]
+	f9 = Mem0[o3 + 104:real32]
+	f3 = f3
+	f2 = f3 + f2
+	f2 = f2 * f1
+	f7 = Mem0[o3 + 108:real32]
+	f2 = f2 + f4
+	f2 = f2 * f1
+	f9 = Mem0[o3 + 112:real32]
+	f2 = f2 + f3
+	f2 = f2 * f1
+	f7 = Mem0[o3 + 116:real32]
+	f2 = f2 + f4
+	f2 = f2 * f1
+	f9 = Mem0[o3 + 120:real32]
+	f2 = f2 + f3
+	f2 = f2 * f1
+	f7 = Mem0[o3 + 124:real32]
+	f2 = f2 + f4
+	f2 = f2 * f1
+	f9 = Mem0[o3 + 128:real32]
+	f2 = f2 + f3
+	f2 = f2 * f1
+	f7 = Mem0[o3 + 132:real32]
+	f2 = f2 + f4
+	f9 = Mem0[o3 + 168:real32]
+	f4 = f1 * f4
+	f2 = f2 * f1
+	f4 = f4 + f5
+	f2 = f2 + f3
+	f2 = f2 / f4
+	f7 = Mem0[o3 + 204:real32]
+	f2 = f2 + f3
+	Mem0[l1 + o0:real32] = f5
+	f5 = Mem0[l1 + o0:real32]
+	goto l08048FD4
+	// succ:  l08048FD4
+l08048FB8:
+	f2 = f1 + f2
+	f7 = Mem0[o3 + 212:real32]
+	f9 = Mem0[o3 + 216:real32]
+	f2 = f2 * f3
+	f2 = f2 + f4
+	Mem0[l1 + o0:real32] = f5
+	f5 = Mem0[l1 + o0:real32]
+	// succ:  l08048FD4
+l08048FD4:
+	f7 = Mem0[o3 + 20:real32]
+	Mem0[o2:real32] = f7
+	Mem0[i3 + o0:real32] = f5
+	f7 = Mem0[l5 + o0:real32]
+	f5 = Mem0[o3 + 220:real32]
+	ELGU = cond(f3 - f2)
+	f9 = Mem0[o3 + 56:real32]
+	f7 = Mem0[o3 + 28:real32]
+	branch Test(GT,GU) l08048FD4_ds_t
+	goto l08049000
+	// succ:  l08049000 l08048FD4_ds_t
+l08048FD4_ds_t:
+	f5 = Mem0[o3 + 84:real32]
+	goto l080491A8
+	// succ:  l080491A8
+l08049000:
+	f3 = f3 - f7
+	f5 = Mem0[o3 + 52:real32]
+	f0 = f7 * f2
+	f3 = f3 * f4
+	f5 = Mem0[o3 + 84:real32]
+	f3 = f0 + f3
+	f9 = Mem0[o3 + 28:real32]
+	f1 = f0 / f3
+	f0 = f6 * f2
+	f4 = f4 - f1
+	f7 = Mem0[o3 + 92:real32]
+	f5 = Mem0[o3 + 88:real32]
+	f0 = f0 * f4
+	f1 = f0 + f2
+	f9 = Mem0[o3 + 172:real32]
+	ELGU = cond(f1 - f3)
+	f7 = Mem0[o3 + 180:real32]
+	branch Test(NE,U) l08049000_ds_t
+	goto l08049050
+	// succ:  l08049050 l08049000_ds_t
+l08049000_ds_t:
+	f5 = Mem0[o3 + 208:real32]
+	goto l08049168
+	// succ:  l08049168
+l08049050:
+	f5 = Mem0[o3 + 28:real32]
+	ELGU = cond(f0 - f2)
+	f5 = Mem0[o3 + 176:real32]
+	branch Test(GE,EGU) l08049050_ds_t
+	// succ:  l08049050_ds_f l08049050_ds_t
+l08049050_ds_f:
+	f11 = Mem0[o3 + 28:real32]
+	goto l08049068
+	// succ:  l08049068
+l08049050_ds_t:
+	f11 = Mem0[o3 + 28:real32]
+	goto l080490AC
+	// succ:  l080490AC
+l08049068:
+	f2 = f0 * f2
+	f4 = f0 * f4
+	f2 = f2 + f3
+	f4 = f4 + f5
+	f7 = Mem0[i1 + o0:real32]
+	f2 = f2 / f4
+	f11 = Mem0[o3 + 20:real32]
+	Mem0[i3 + o0:real32] = f5
+	f5 = Mem0[i3 + o0:real32]
+	f2 = f3 - f2
+	ELGU = cond(f2 - f5)
+	branch Test(LT,GU) l08049068_ds_t
+	goto l080490A0
+	// succ:  l080490A0 l08049068_ds_t
+l08049068_ds_t:
+	f2 = f5
+	// succ:  l080490A0
+l080490A0:
+	Mem0[o2:real32] = f5
+	f5 = Mem0[o3 + 84:real32]
+	goto l080491A8
+	// succ:  l080491A8
+l080490AC:
+	f7 = Mem0[o3 + 96:real32]
+	f3 = f1 * f3
+	f5 = Mem0[o3 + 100:real32]
+	f9 = Mem0[o3 + 104:real32]
+	f3 = f3
+	f2 = f3 + f2
+	f2 = f2 * f1
+	f7 = Mem0[o3 + 108:real32]
+	f2 = f2 + f4
+	f2 = f2 * f1
+	f9 = Mem0[o3 + 112:real32]
+	f2 = f2 + f3
+	f2 = f2 * f1
+	f7 = Mem0[o3 + 116:real32]
+	f2 = f2 + f4
+	f2 = f2 * f1
+	f9 = Mem0[o3 + 120:real32]
+	f2 = f2 + f3
+	f2 = f2 * f1
+	f7 = Mem0[o3 + 124:real32]
+	f2 = f2 + f4
+	f2 = f2 * f1
+	f9 = Mem0[o3 + 128:real32]
+	f2 = f2 + f3
+	f2 = f2 * f1
+	f7 = Mem0[o3 + 132:real32]
+	f2 = f2 + f4
+	f9 = Mem0[o3 + 168:real32]
+	f4 = f1 * f4
+	f2 = f2 * f1
+	f4 = f4 + f5
+	f2 = f2 + f3
+	f11 = Mem0[i1 + o0:real32]
+	f2 = f2 / f4
+	f7 = Mem0[o3 + 204:real32]
+	f2 = f2 + f3
+	Mem0[i3 + o0:real32] = f5
+	f5 = Mem0[i3 + o0:real32]
+	f2 = f5 - f2
+	f7 = Mem0[o3 + 20:real32]
+	ELGU = cond(f2 - f3)
+	branch Test(LT,GU) l080490AC_ds_t
+	goto l0804915C
+	// succ:  l0804915C l080490AC_ds_t
+l080490AC_ds_t:
+	f2 = f3
+	// succ:  l0804915C
+l0804915C:
+	Mem0[o2:real32] = f5
+	f5 = Mem0[o3 + 84:real32]
+	goto l080491A8
+	// succ:  l080491A8
+l08049168:
+	f2 = f1 + f2
+	f7 = Mem0[o3 + 212:real32]
+	f9 = Mem0[o3 + 216:real32]
+	f2 = f2 * f3
+	f2 = f2 + f4
+	f7 = Mem0[i1 + o0:real32]
+	Mem0[i3 + o0:real32] = f5
+	f5 = Mem0[i3 + o0:real32]
+	f2 = f3 - f2
+	f9 = Mem0[o3 + 20:real32]
+	ELGU = cond(f2 - f4)
+	branch Test(LT,GU) l08049168_ds_t
+	goto l080491A0
+	// succ:  l080491A0 l08049168_ds_t
+l08049168_ds_t:
+	f2 = f4
+	// succ:  l080491A0
+l080491A0:
+	Mem0[o2:real32] = f5
+	f5 = Mem0[o3 + 84:real32]
+	// succ:  l080491A8
+l080491A8:
+	f0 = f6 * f2
+	f9 = Mem0[o3 + 28:real32]
+	ELGU = cond(f0 - f4)
+	f7 = Mem0[o3 + 88:real32]
+	f5 = Mem0[o3 + 276:real32]
+	f9 = Mem0[o3 + 272:real32]
+	branch Test(GE,EGU) l080491A8_ds_t
+	// succ:  l080491A8_ds_f l080491A8_ds_t
+l080491A8_ds_f:
+	f1 = f0 + f3
+	goto l080491C8
+	// succ:  l080491C8
+l080491A8_ds_t:
+	f1 = f0 + f3
+	goto l08048AF0
+	// succ:  l08048AF0
+l080491C8:
+	f2 = f0 * f2
+	f4 = f0 * f4
+	f7 = Mem0[o3 + 28:real32]
+	f2 = f2 + f3
+	f0 = f4 / f2
+	goto l08048B7C
+	// succ:  l08048B7C
+l080491E0:
+	ELGU = cond(f1 - f2)
+	f7 = Mem0[o3 + 324:real32]
+	branch Test(GT,GU) l080491E0_ds_t
+	goto l080491F4
+	// succ:  l080491F4 l080491E0_ds_t
+l080491E0_ds_t:
+	f5 = Mem0[o3 + 328:real32]
+	goto l0804920C
+	// succ:  l0804920C
+l080491F4:
+	f5 = Mem0[o3 + 320:real32]
+	f2 = f1 * f2
+	f2 = f2 + f3
+	Mem0[i4 + o0:real32] = f5
+	f13 = Mem0[i2 + o0:real32]
+	goto l08048C58
+	// succ:  l08048C58
+l0804920C:
+	ELGU = cond(f1 - f2)
+	f7 = Mem0[o3 + 336:real32]
+	branch Test(GT,GU) l0804920C_ds_t
+	goto l08049220
+	// succ:  l08049220 l0804920C_ds_t
+l0804920C_ds_t:
+	f5 = Mem0[o3 + 340:real32]
+	goto l08049238
+	// succ:  l08049238
+l08049220:
+	f5 = Mem0[o3 + 332:real32]
+	f2 = f1 * f2
+	f2 = f2 + f3
+	Mem0[i4 + o0:real32] = f5
+	f13 = Mem0[i2 + o0:real32]
+	goto l08048C58
+	// succ:  l08048C58
+l08049238:
+	f2 = f1 * f2
+	f7 = Mem0[o3 + 344:real32]
+	f2 = f2 + f3
+	Mem0[i4 + o0:real32] = f5
+	f13 = Mem0[i2 + o0:real32]
+	goto l08048C58
+	// succ:  l08048C58
+l08049250:
+	o0 = Mem0[sp + 104:word32]
+	f5 = Mem0[o3 + 28:real32]
+	o5 = Mem0[o0:word32]
+	o0 = Mem0[sp + 108:word32]
+	f7 = Mem0[o3 + 372:real32]
+	o1 = Mem0[o0:word32]
+	g0 = o5 - o1
+	NZVC = cond(g0)
+	branch Test(LT,NZV) l08049250_ds_t
+	// succ:  l08049250_ds_f l08049250_ds_t
+l08049250_ds_f:
+	l0 = 0x00000000 | o1
+	goto l08049274
+	// succ:  l08049274
+l08049250_ds_t:
+	l0 = 0x00000000 | o1
+	goto l080486D8
+	// succ:  l080486D8
+l08049274:
+	g0 = o1 - o5
+	NZVC = cond(g0)
+	branch Test(GT,NZV) l08049274_ds_t
+	// succ:  l08049274_ds_f l08049274_ds_t
+l08049274_ds_f:
+	o1 = o1 << 0x00000003
+	goto l08049280
+	// succ:  l08049280
+l08049274_ds_t:
+	o1 = o1 << 0x00000003
+	goto l080486D8
+	// succ:  l080486D8
+l08049280:
+	Mem0[i6 + -108:real32] = f5
+	Mem0[i6 + -112:real32] = f7
+	f5 = Mem0[o3 + 376:real32]
+	f7 = Mem0[o3 + 380:real32]
+	o0 = Mem0[sp + 100:word32]
+	Mem0[i6 + -116:real32] = f5
+	o4 = o0 + 0x00000008
+	Mem0[i6 + -120:real32] = f7
+	o0 = Mem0[o4 + o1:word32]
+	goto l08049480
+	// succ:  l08049480
+l080492A8:
+	f3 = Mem0[l4 + o0:real32]
+	f5 = Mem0[o3 + 412:real32]
+	f2 = f1 * f2
+	f7 = Mem0[o3 + 416:real32]
+	f11 = Mem0[i2 + o0:real32]
+	f6 = f2 + f3
+	f9 = Mem0[o3 + 84:real32]
+	f4 = f5 * f4
+	f7 = Mem0[o3 + 424:real32]
+	f3 = f6 * f3
+	f11 = Mem0[o3 + 428:real32]
+	f5 = Mem0[o3 + 420:real32]
+	f0 = f4 + f2
+	f3 = f3 + f5
+	f5 = Mem0[o3 + 432:real32]
+	f3 = f3 * f6
+	f9 = Mem0[o3 + 436:real32]
+	f4 = f6 * f4
+	f11 = Mem0[o3 + 444:real32]
+	f2 = f3 + f2
+	f7 = Mem0[o3 + 440:real32]
+	f3 = f4 + f3
+	f2 = f2 * f0
+	f3 = f3 * f6
+	f9 = Mem0[o3 + 448:real32]
+	f3 = f3 + f5
+	f3 = f3 * f6
+	f11 = Mem0[o3 + 452:real32]
+	f5 = f0 * f5
+	f2 = f2 + f3
+	f7 = Mem0[o3 + 456:real32]
+	f3 = f6 * f3
+	f2 = f2 + f4
+	f3 = f5 + f3
+	f9 = Mem0[o3 + 28:real32]
+	f3 = f3 + f4
+	f11 = Mem0[o3 + 460:real32]
+	f2 = f2 / f3
+	f9 = Mem0[i6 + -116:real32]
+	ELGU = cond(f1 - f4)
+	f0 = f2 + f5
+	f9 = Mem0[o3 + 408:real32]
+	branch Test(LE,ELU) l080492A8_ds_t
+	goto l08049358
+	// succ:  l08049358 l080492A8_ds_t
+l080492A8_ds_t:
+	Mem0[i1 + o0:real32] = f1
+	goto l0804937C
+	// succ:  l0804937C
+l08049358:
+	f7 = Mem0[l4 + o0:real32]
+	f5 = Mem0[o3 + 24:real32]
+	f2 = f3 * f2
+	f2 = f2 + f4
+	ELGU = cond(f0 - f2)
+	branch Test(LT,GU) l08049358_ds_t
+	goto l08049378
+	// succ:  l08049378 l08049358_ds_t
+l08049358_ds_t:
+	f0 = f2
+	// succ:  l08049378
+l08049378:
+	Mem0[i1 + o0:real32] = f1
+	// succ:  l0804937C
+l0804937C:
+	f1 = Mem0[i2 + o0:real32]
+	// succ:  l08049380
+l08049380:
+	f5 = Mem0[o3 + 356:real32]
+	f2 = f0 * f2
+	f5 = f0 * f0
+	f7 = Mem0[o3 + 360:real32]
+	f9 = Mem0[o3 + 364:real32]
+	f2 = f2 + f3
+	f4 = f5 * f4
+	f7 = Mem0[o3 + 368:real32]
+	f2 = f2 + f4
+	ELGU = cond(f2 - f3)
+	f0 = f2
+	branch Test(GT,G) l08049380_ds_t
+	goto l080493B4
+	// succ:  l080493B4 l08049380_ds_t
+l08049380_ds_t:
+	f0 = f3
+	// succ:  l080493B4
+l080493B4:
+	f7 = Mem0[l3 + o0:real32]
+	f5 = Mem0[o3 + 32:real32]
+	ELGU = cond(f3 - f2)
+	f19 = Mem0[o3 + 464:real32]
+	branch Test(GE,EGU) l080493B4_ds_t
+	goto l080493CC
+	// succ:  l080493CC l080493B4_ds_t
+l080493B4_ds_t:
+	f17 = Mem0[l5 + o0:real32]
+	goto l080493F0
+	// succ:  l080493F0
+l080493CC:
+	f5 = Mem0[l3 + o0:real32]
+	f7 = Mem0[o7 + o0:real32]
+	f2 = f2 * f3
+	f9 = Mem0[o3 + 468:real32]
+	ELGU = cond(f2 - f4)
+	branch Test(GT,GU) l080493CC_ds_t
+	goto l080493EC
+	// succ:  l080493EC l080493CC_ds_t
+l080493CC_ds_t:
+	f3 = Mem0[l5 + o0:real32]
+	goto l0804954C
+	// succ:  l0804954C
+l080493EC:
+	f17 = Mem0[l5 + o0:real32]
+	// succ:  l080493F0
+l080493F0:
+	f15 = Mem0[i3 + o0:real32]
+	f3 = f7 * f0
+	f13 = Mem0[i4 + o0:real32]
+	f4 = f8 * f9
+	f5 = Mem0[i6 + -108:real32]
+	f1 = f2 - f8
+	f3 = f3 - f6
+	f5 = f1 * f0
+	f5 = Mem0[g1 + o0:real32]
+	f3 = f1 * f3
+	f4 = f4 + f5
+	f2 = f2 + f3
+	f2 = f2 / f4
+	f7 = Mem0[i6 + -108:real32]
+	f1 = f3 - f8
+	Mem0[i0 + o0:real32] = f5
+	f5 = Mem0[l1 + o0:real32]
+	f2 = f1 * f2
+	f11 = Mem0[i0 + o0:real32]
+	ELGU = cond(f2 - f5)
+	branch Test(LT,GU) l080493F0_ds_t
+	goto l0804944C
+	// succ:  l0804944C l080493F0_ds_t
+l080493F0_ds_t:
+	f2 = f5
+	// succ:  l0804944C
+l0804944C:
+	Mem0[i0 + o0:real32] = f5
+	f3 = Mem0[i0 + o0:real32]
+	f3 = f1 - f7
+	f2 = f1 * f9
+	f3 = f3 * f0
+	Mem0[l2 + o0:real32] = f5
+	f3 = f6 + f3
+	Mem0[l7 + o0:real32] = f7
+	goto l0804946C
+	// succ:  l0804946C
+l0804944C_ds_f:
+	o1 = o1 + 0x00000008
+	goto l0804947C
+	// succ:  l0804947C
+l0804944C_ds_t:
+	o1 = o1 + 0x00000008
+	goto l080486D8
+	// succ:  l080486D8
+l0804946C:
+	l0 = l0 + 0x00000001
+	g0 = l0 - o5
+	NZVC = cond(g0)
+	branch Test(GT,NZV) l0804944C_ds_t
+	goto l0804944C_ds_f
+	// succ:  l0804944C_ds_f l0804944C_ds_t
+l0804947C:
+	o0 = Mem0[o4 + o1:word32]
+	// succ:  l08049480
+l08049480:
+	g0 = o2 - 0x00000002
+	NZVC = cond(g0)
+	branch Test(EQ,Z) l08049480_ds_t
+	// succ:  l08049480_ds_f l08049480_ds_t
+l08049480_ds_f:
+	o0 = o0 << 0x00000002
+	goto l0804948C
+	// succ:  l0804948C
+l08049480_ds_t:
+	o0 = o0 << 0x00000002
+	goto l080492A8
+	// succ:  l080492A8
+l0804948C:
+	f5 = Mem0[i6 + -112:real32]
+	f1 = Mem0[l4 + o0:real32]
+	ELGU = cond(f0 - f2)
+	f7 = Mem0[o3 + 408:real32]
+	branch Test(GT,GU) l0804948C_ds_t
+	goto l080494A8
+	// succ:  l080494A8 l0804948C_ds_t
+l0804948C_ds_t:
+	f5 = Mem0[o3 + 404:real32]
+	goto l0804953C
+	// succ:  l0804953C
+l080494A8:
+	f5 = Mem0[i6 + -116:real32]
+	ELGU = cond(f0 - f2)
+	branch Test(LE,ELU) l080494A8_ds_t
+	goto l080494BC
+	// succ:  l080494BC l080494A8_ds_t
+l080494A8_ds_t:
+	f5 = Mem0[i6 + -120:real32]
+	goto l080494D4
+	// succ:  l080494D4
+l080494BC:
+	f5 = Mem0[o3 + 24:real32]
+	f2 = f0 * f2
+	f2 = f2 + f3
+	Mem0[i1 + o0:real32] = f5
+	f1 = Mem0[i2 + o0:real32]
+	goto l08049380
+	// succ:  l08049380
+l080494D4:
+	f2 = f0 * f2
+	f7 = Mem0[o3 + 204:real32]
+	f5 = f0 * f0
+	f9 = Mem0[o3 + 384:real32]
+	f6 = f0 * f0
+	f2 = f2 + f3
+	f3 = f0 * f0
+	f4 = f5 * f4
+	f3 = f3 * f0
+	f11 = Mem0[o3 + 388:real32]
+	f2 = f2 + f4
+	f3 = f3 * f5
+	f9 = Mem0[o3 + 392:real32]
+	f4 = f0 * f4
+	f2 = f2 - f3
+	f11 = Mem0[o3 + 28:real32]
+	f4 = f4 + f5
+	f7 = Mem0[o3 + 396:real32]
+	f3 = f6 * f3
+	f11 = Mem0[o3 + 400:real32]
+	f3 = f4 - f3
+	f2 = f2 / f3
+	f2 = f2 + f5
+	Mem0[i1 + o0:real32] = f5
+	f1 = Mem0[i2 + o0:real32]
+	goto l08049380
+	// succ:  l08049380
+l0804953C:
+	f2 = f0 / f2
+	Mem0[i1 + o0:real32] = f5
+	f1 = Mem0[i2 + o0:real32]
+	goto l08049380
+	// succ:  l08049380
+l0804954C:
+	f7 = Mem0[i6 + -108:real32]
+	f3 = f3 - f1
+	f9 = Mem0[i3 + o0:real32]
+	f5 = Mem0[i1 + o0:real32]
+	f2 = f1 * f2
+	f3 = f3 * f4
+	f2 = f2 + f3
+	Mem0[i0 + o0:real32] = f5
+	f3 = Mem0[i0 + o0:real32]
+	f3 = f1 - f4
+	f2 = f1 * f9
+	f3 = f3 * f0
+	Mem0[l2 + o0:real32] = f5
+	f5 = Mem0[i4 + o0:real32]
+	f2 = f2 + f3
+	Mem0[l7 + o0:real32] = f5
+	goto l0804946C
+	// succ:  l0804946C
+l08049590:
+	o0 = Mem0[sp + 100:word32]
+	f7 = Mem0[o3 + 84:real32]
+	o0 = o0 + 0x00000008
+	Mem0[sp + 96:word32] = o0
+	Mem0[i6 + -96:real32] = f7
+	Mem0[i6 + -92:real32] = f5
+	o0 = Mem0[sp + 112:word32]
+	f7 = Mem0[o3 + 28:real32]
+	o1 = o0 << 0x00000003
+	f5 = Mem0[o3 + 88:real32]
+	Mem0[i6 + -104:real32] = f7
+	Mem0[i6 + -100:real32] = f5
+	o0 = Mem0[sp + 96:word32]
+	goto l08049654
+	// succ:  l08049654
+l080495C8:
+	f5 = Mem0[o3 + 184:real32]
+	f2 = f7 * f2
+	f7 = Mem0[o3 + 188:real32]
+	f5 = f7 * f7
+	f9 = Mem0[o3 + 192:real32]
+	f2 = f2 + f3
+	f13 = Mem0[o3 + 76:real32]
+	f3 = f7 * f7
+	f4 = f5 * f4
+	f3 = f3 * f7
+	f11 = Mem0[o3 + 196:real32]
+	f2 = f2 - f4
+	f3 = f3 * f5
+	f9 = Mem0[i6 + -104:real32]
+	f4 = f4 - f0
+	f2 = f2 + f3
+	f11 = Mem0[o4 + 8:real32]
+	f2 = f2 / f8
+	f7 = Mem0[i2 + o0:real32]
+	f3 = f3 * f5
+	f2 = f2 * f4
+	f11 = Mem0[i0 + o0:real32]
+	f5 = f5 + f6
+	f9 = Mem0[o4 + 4:real32]
+	f3 = f3 / f4
+	f3 = f3 / f5
+	f3 = f3 * f0
+	f2 = f2 + f3
+	Mem0[o7 + o0:real32] = f5
+	// succ:  l0804963C
+l0804963C:
+	o0 = Mem0[sp + 92:word32]
+	i5 = i5 + 0x00000001
+	g0 = i5 - o0
+	NZVC = cond(g0)
+	branch Test(GT,NZV) l0804963C_ds_t
+	// succ:  l0804963C_ds_f l0804963C_ds_t
+l0804963C_ds_f:
+	o1 = o1 + 0x00000008
+	goto l08049650
+	// succ:  l08049650
+l0804963C_ds_t:
+	o1 = o1 + 0x00000008
+	goto l080486D8
+	// succ:  l080486D8
+l08049650:
+	o0 = Mem0[sp + 96:word32]
+	// succ:  l08049654
+l08049654:
+	o0 = Mem0[o0 + o1:word32]
+	o0 = o0 << 0x00000002
+	f5 = Mem0[i6 + -96:real32]
+	f1 = Mem0[i2 + o0:real32]
+	f0 = f0 * f2
+	f9 = Mem0[i6 + -104:real32]
+	ELGU = cond(f0 - f4)
+	f7 = Mem0[i6 + -100:real32]
+	f5 = Mem0[o3 + 276:real32]
+	f9 = Mem0[o3 + 272:real32]
+	branch Test(GE,EGU) l08049654_ds_t
+	// succ:  l08049654_ds_f l08049654_ds_t
+l08049654_ds_f:
+	f1 = f0 + f3
+	goto l08049684
+	// succ:  l08049684
+l08049654_ds_t:
+	f1 = f0 + f3
+	goto l0804969C
+	// succ:  l0804969C
+l08049684:
+	f2 = f0 * f2
+	f4 = f0 * f4
+	f7 = Mem0[i6 + -104:real32]
+	f2 = f2 + f3
+	f0 = f4 / f2
+	goto l08049728
+	// succ:  l08049728
+l0804969C:
+	f5 = Mem0[o3 + 224:real32]
+	f2 = f1 * f2
+	f7 = Mem0[o3 + 228:real32]
+	f9 = Mem0[o3 + 232:real32]
+	f2 = f2 + f3
+	f11 = Mem0[o3 + 28:real32]
+	f2 = f2 * f1
+	f7 = Mem0[o3 + 236:real32]
+	f2 = f2 + f4
+	f2 = f2 * f1
+	f9 = Mem0[o3 + 240:real32]
+	f2 = f2 + f3
+	f2 = f2 * f1
+	f7 = Mem0[o3 + 244:real32]
+	f2 = f2 + f4
+	f2 = f2 * f1
+	f9 = Mem0[o3 + 248:real32]
+	f2 = f2 + f3
+	f2 = f2 * f1
+	f7 = Mem0[o3 + 252:real32]
+	f2 = f2 + f4
+	f2 = f2 * f1
+	f9 = Mem0[o3 + 256:real32]
+	f2 = f2 + f3
+	f2 = f2 * f1
+	f7 = Mem0[o3 + 260:real32]
+	f2 = f2 + f4
+	f9 = Mem0[o3 + 264:real32]
+	f4 = f1 * f4
+	f2 = f2 * f1
+	f4 = f4 + f5
+	f2 = f2 + f3
+	f2 = f2 / f4
+	f7 = Mem0[o3 + 268:real32]
+	f0 = f2 + f3
+	// succ:  l08049728
+l08049728:
+	f5 = Mem0[o3 + 280:real32]
+	f2 = f0 * f2
+	f7 = Mem0[o3 + 472:real32]
+	f9 = Mem0[l4 + o0:real32]
+	Mem0[l0 + o0:real32] = f5
+	f5 = Mem0[l0 + o0:real32]
+	f2 = f2 * f3
+	ELGU = cond(f4 - f2)
+	branch Test(LE,ELU) l08049728_ds_t
+	goto l08049754
+	// succ:  l08049754 l08049728_ds_t
+l08049728_ds_t:
+	f3 = Mem0[i2 + o0:real32]
+	goto l08049760
+	// succ:  l08049760
+l08049754:
+	f5 = Mem0[l0 + o0:real32]
+	f3 = Mem0[i2 + o0:real32]
+	Mem0[l4 + o0:real32] = f5
+	// succ:  l08049760
+l08049760:
+	f7 = Mem0[l4 + o0:real32]
+	f5 = Mem0[o3 + -8:real32]
+	ELGU = cond(f3 - f2)
+	f0 = f3
+	branch Test(GT,G) l08049760_ds_t
+	goto l08049778
+	// succ:  l08049778 l08049760_ds_t
+l08049760_ds_t:
+	f0 = f2
+	// succ:  l08049778
+l08049778:
+	f9 = Mem0[o3 + -4:real32]
+	f4 = f0 * f4
+	f5 = Mem0[o3:real32]
+	f5 = f0 * f0
+	f7 = Mem0[o3 + 4:real32]
+	f2 = f2 - f4
+	f4 = f0 * f0
+	f3 = f5 * f3
+	f4 = f4 * f0
+	f2 = f2 - f3
+	f11 = Mem0[o3 + 8:real32]
+	f4 = f4 * f5
+	f7 = Mem0[o3 + 12:real32]
+	f3 = f1 * f3
+	f2 = f2 - f4
+	f2 = f2 + f3
+	f9 = Mem0[o3 + 16:real32]
+	f4 = f4 - f0
+	Mem0[l6 + o0:real32] = f5
+	f5 = Mem0[o3 + 20:real32]
+	ELGU = cond(f2 - f4)
+	branch Test(LT,GU) l08049778_ds_t
+	goto l080497D8
+	// succ:  l080497D8 l08049778_ds_t
+l08049778_ds_t:
+	f2 = f4
+	// succ:  l080497D8
+l080497D8:
+	f7 = Mem0[o3 + 24:real32]
+	f2 = f2 * f3
+	f9 = Mem0[l6 + o0:real32]
+	f2 = f4 - f2
+	f7 = Mem0[i6 + -96:real32]
+	f0 = f1 * f3
+	Mem0[l6 + o0:real32] = f5
+	f5 = Mem0[i6 + -100:real32]
+	f1 = f0 + f2
+	f9 = Mem0[o3 + 92:real32]
+	ELGU = cond(f1 - f4)
+	branch Test(NE,U) l080497D8_ds_t
+	goto l08049810
+	// succ:  l08049810 l080497D8_ds_t
+l080497D8_ds_t:
+	f5 = Mem0[o3 + 208:real32]
+	goto l080498E4
+	// succ:  l080498E4
+l08049810:
+	f5 = Mem0[i6 + -104:real32]
+	ELGU = cond(f0 - f2)
+	f9 = Mem0[o3 + 172:real32]
+	f7 = Mem0[o3 + 180:real32]
+	f11 = Mem0[i6 + -104:real32]
+	branch Test(GE,EGU) l08049810_ds_t
+	goto l08049830
+	// succ:  l08049830 l08049810_ds_t
+l08049810_ds_t:
+	f5 = Mem0[o3 + 100:real32]
+	goto l08049850
+	// succ:  l08049850
+l08049830:
+	f4 = f0 * f4
+	f5 = Mem0[o3 + 176:real32]
+	f2 = f0 * f2
+	f4 = f4 + f5
+	f2 = f2 + f3
+	f2 = f2 / f4
+	Mem0[l1 + o0:real32] = f5
+	goto l080498FC
+	// succ:  l080498FC
+l08049850:
+	f7 = Mem0[o3 + 96:real32]
+	f3 = f1 * f3
+	f9 = Mem0[o3 + 104:real32]
+	f11 = Mem0[o3 + 28:real32]
+	f3 = f3
+	f2 = f3 + f2
+	f2 = f2 * f1
+	f7 = Mem0[o3 + 108:real32]
+	f2 = f2 + f4
+	f2 = f2 * f1
+	f9 = Mem0[o3 + 112:real32]
+	f2 = f2 + f3
+	f2 = f2 * f1
+	f7 = Mem0[o3 + 116:real32]
+	f2 = f2 + f4
+	f2 = f2 * f1
+	f9 = Mem0[o3 + 120:real32]
+	f2 = f2 + f3
+	f2 = f2 * f1
+	f7 = Mem0[o3 + 124:real32]
+	f2 = f2 + f4
+	f2 = f2 * f1
+	f9 = Mem0[o3 + 128:real32]
+	f2 = f2 + f3
+	f2 = f2 * f1
+	f7 = Mem0[o3 + 132:real32]
+	f2 = f2 + f4
+	f9 = Mem0[o3 + 168:real32]
+	f4 = f1 * f4
+	f2 = f2 * f1
+	f4 = f4 + f5
+	f2 = f2 + f3
+	f2 = f2 / f4
+	f7 = Mem0[o3 + 204:real32]
+	f2 = f2 + f3
+	Mem0[l1 + o0:real32] = f5
+	goto l080498FC
+	// succ:  l080498FC
+l080498E4:
+	f2 = f1 + f2
+	f7 = Mem0[o3 + 212:real32]
+	f9 = Mem0[o3 + 216:real32]
+	f2 = f2 * f3
+	f2 = f2 + f4
+	Mem0[l1 + o0:real32] = f5
+	// succ:  l080498FC
+l080498FC:
+	g0 = o2 - 0x00000002
+	NZVC = cond(g0)
+	branch Test(EQ,Z) l080498FC_ds_t
+	goto l08049908
+	// succ:  l08049908 l080498FC_ds_t
+l080498FC_ds_t:
+	f3 = Mem0[l4 + o0:real32]
+	goto l080499F0
+	// succ:  l080499F0
+l08049908:
+	f7 = Mem0[l0 + o0:real32]
+	f5 = Mem0[o3 + 472:real32]
+	f2 = f3 * f2
+	f9 = Mem0[l4 + o0:real32]
+	ELGU = cond(f4 - f2)
+	branch Test(LE,ELU) l08049908_ds_t
+	goto l08049928
+	// succ:  l08049928 l08049908_ds_t
+l08049908_ds_t:
+	f1 = Mem0[l4 + o0:real32]
+	goto l08049934
+	// succ:  l08049934
+l08049928:
+	f5 = Mem0[l0 + o0:real32]
+	Mem0[l4 + o0:real32] = f5
+	f1 = Mem0[l4 + o0:real32]
+	// succ:  l08049934
+l08049934:
+	f5 = Mem0[o3 + 372:real32]
+	ELGU = cond(f0 - f2)
+	f7 = Mem0[o3 + 408:real32]
+	branch Test(GT,GU) l08049934_ds_t
+	goto l0804994C
+	// succ:  l0804994C l08049934_ds_t
+l08049934_ds_t:
+	f5 = Mem0[o3 + 404:real32]
+	goto l080499E0
+	// succ:  l080499E0
+l0804994C:
+	f5 = Mem0[o3 + 376:real32]
+	ELGU = cond(f0 - f2)
+	branch Test(LE,ELU) l0804994C_ds_t
+	goto l08049960
+	// succ:  l08049960 l0804994C_ds_t
+l0804994C_ds_t:
+	f5 = Mem0[o3 + 380:real32]
+	goto l08049978
+	// succ:  l08049978
+l08049960:
+	f5 = Mem0[o3 + 24:real32]
+	f2 = f0 * f2
+	f2 = f2 + f3
+	Mem0[i1 + o0:real32] = f5
+	f11 = Mem0[i2 + o0:real32]
+	goto l08049AC4
+	// succ:  l08049AC4
+l08049978:
+	f2 = f0 * f2
+	f7 = Mem0[o3 + 204:real32]
+	f5 = f0 * f0
+	f9 = Mem0[o3 + 384:real32]
+	f6 = f0 * f0
+	f2 = f2 + f3
+	f3 = f0 * f0
+	f4 = f5 * f4
+	f3 = f3 * f0
+	f11 = Mem0[o3 + 388:real32]
+	f2 = f2 + f4
+	f3 = f3 * f5
+	f9 = Mem0[o3 + 392:real32]
+	f4 = f0 * f4
+	f2 = f2 - f3
+	f11 = Mem0[o3 + 28:real32]
+	f4 = f4 + f5
+	f7 = Mem0[o3 + 396:real32]
+	f3 = f6 * f3
+	f11 = Mem0[o3 + 400:real32]
+	f3 = f4 - f3
+	f2 = f2 / f3
+	f2 = f2 + f5
+	Mem0[i1 + o0:real32] = f5
+	f11 = Mem0[i2 + o0:real32]
+	goto l08049AC4
+	// succ:  l08049AC4
+l080499E0:
+	f2 = f0 / f2
+	Mem0[i1 + o0:real32] = f5
+	f11 = Mem0[i2 + o0:real32]
+	goto l08049AC4
+	// succ:  l08049AC4
+l080499F0:
+	f5 = Mem0[o3 + 412:real32]
+	f2 = f1 * f2
+	f7 = Mem0[o3 + 416:real32]
+	f9 = Mem0[i2 + o0:real32]
+	f6 = f2 + f3
+	f11 = Mem0[i6 + -96:real32]
+	f4 = f4 * f5
+	f7 = Mem0[o3 + 424:real32]
+	f3 = f6 * f3
+	f11 = Mem0[o3 + 428:real32]
+	f5 = Mem0[o3 + 420:real32]
+	f0 = f4 + f2
+	f3 = f3 + f5
+	f5 = Mem0[o3 + 432:real32]
+	f3 = f3 * f6
+	f9 = Mem0[o3 + 436:real32]
+	f4 = f6 * f4
+	f11 = Mem0[o3 + 444:real32]
+	f2 = f3 + f2
+	f7 = Mem0[o3 + 440:real32]
+	f3 = f4 + f3
+	f2 = f2 * f0
+	f3 = f3 * f6
+	f9 = Mem0[o3 + 448:real32]
+	f3 = f3 + f5
+	f3 = f3 * f6
+	f11 = Mem0[o3 + 452:real32]
+	f5 = f0 * f5
+	f2 = f2 + f3
+	f7 = Mem0[o3 + 456:real32]
+	f3 = f6 * f3
+	f2 = f2 + f4
+	f3 = f5 + f3
+	f9 = Mem0[o3 + 28:real32]
+	f3 = f3 + f4
+	f11 = Mem0[o3 + 460:real32]
+	f2 = f2 / f3
+	f9 = Mem0[o3 + 376:real32]
+	ELGU = cond(f1 - f4)
+	f0 = f2 + f5
+	f9 = Mem0[o3 + 408:real32]
+	branch Test(LE,ELU) l080499F0_ds_t
+	goto l08049A9C
+	// succ:  l08049A9C l080499F0_ds_t
+l080499F0_ds_t:
+	Mem0[i1 + o0:real32] = f1
+	goto l08049AC0
+	// succ:  l08049AC0
+l08049A9C:
+	f7 = Mem0[l4 + o0:real32]
+	f5 = Mem0[o3 + 24:real32]
+	f2 = f3 * f2
+	f2 = f2 + f4
+	ELGU = cond(f0 - f2)
+	branch Test(LT,GU) l08049A9C_ds_t
+	goto l08049ABC
+	// succ:  l08049ABC l08049A9C_ds_t
+l08049A9C_ds_t:
+	f0 = f2
+	// succ:  l08049ABC
+l08049ABC:
+	Mem0[i1 + o0:real32] = f1
+	// succ:  l08049AC0
+l08049AC0:
+	f11 = Mem0[i2 + o0:real32]
+	// succ:  l08049AC4
+l08049AC4:
+	f5 = Mem0[l1 + o0:real32]
+	f7 = Mem0[o3 + 20:real32]
+	Mem0[i3 + o0:real32] = f5
+	Mem0[o5:real32] = f7
+	f5 = Mem0[o3 + 220:real32]
+	f7 = Mem0[l5 + o0:real32]
+	ELGU = cond(f3 - f2)
+	f9 = Mem0[o3 + 56:real32]
+	f7 = Mem0[i6 + -104:real32]
+	branch Test(GT,GU) l08049AC4_ds_t
+	goto l08049AF4
+	// succ:  l08049AF4 l08049AC4_ds_t
+l08049AC4_ds_t:
+	f5 = Mem0[l5 + o0:real32]
+	goto l08049CA4
+	// succ:  l08049CA4
+l08049AF4:
+	f3 = Mem0[l5 + o0:real32]
+	f3 = f3 - f1
+	f5 = Mem0[o3 + 52:real32]
+	f0 = f1 * f2
+	f3 = f3 * f4
+	f5 = Mem0[i6 + -96:real32]
+	f2 = f5 * f2
+	f3 = f0 + f3
+	f9 = Mem0[i6 + -104:real32]
+	f11 = Mem0[i6 + -100:real32]
+	f0 = f0 / f3
+	f4 = f4 - f0
+	f7 = Mem0[o3 + 92:real32]
+	f0 = f2 * f4
+	f1 = f0 + f5
+	f9 = Mem0[o3 + 172:real32]
+	ELGU = cond(f1 - f3)
+	f11 = Mem0[i6 + -104:real32]
+	f7 = Mem0[o3 + 180:real32]
+	branch Test(NE,U) l08049AF4_ds_t
+	goto l08049B4C
+	// succ:  l08049B4C l08049AF4_ds_t
+l08049AF4_ds_t:
+	f5 = Mem0[o3 + 208:real32]
+	goto l08049C64
+	// succ:  l08049C64
+l08049B4C:
+	f5 = Mem0[i6 + -104:real32]
+	ELGU = cond(f0 - f2)
+	branch Test(GE,EGU) l08049B4C_ds_t
+	goto l08049B60
+	// succ:  l08049B60 l08049B4C_ds_t
+l08049B4C_ds_t:
+	f5 = Mem0[o3 + 100:real32]
+	goto l08049BA8
+	// succ:  l08049BA8
+l08049B60:
+	f4 = f0 * f4
+	f5 = Mem0[o3 + 176:real32]
+	f2 = f0 * f2
+	f4 = f4 + f5
+	f2 = f2 + f3
+	f11 = Mem0[o3 + 20:real32]
+	f2 = f2 / f4
+	f7 = Mem0[i1 + o0:real32]
+	Mem0[i3 + o0:real32] = f5
+	f5 = Mem0[i3 + o0:real32]
+	f2 = f3 - f2
+	ELGU = cond(f2 - f5)
+	branch Test(LT,GU) l08049B60_ds_t
+	goto l08049B9C
+	// succ:  l08049B9C l08049B60_ds_t
+l08049B60_ds_t:
+	f2 = f5
+	// succ:  l08049B9C
+l08049B9C:
+	Mem0[o5:real32] = f5
+	f5 = Mem0[l5 + o0:real32]
+	goto l08049CA4
+	// succ:  l08049CA4
+l08049BA8:
+	f7 = Mem0[o3 + 96:real32]
+	f3 = f1 * f3
+	f9 = Mem0[o3 + 104:real32]
+	f11 = Mem0[o3 + 28:real32]
+	f3 = f3
+	f2 = f3 + f2
+	f2 = f2 * f1
+	f7 = Mem0[o3 + 108:real32]
+	f2 = f2 + f4
+	f2 = f2 * f1
+	f9 = Mem0[o3 + 112:real32]
+	f2 = f2 + f3
+	f2 = f2 * f1
+	f7 = Mem0[o3 + 116:real32]
+	f2 = f2 + f4
+	f2 = f2 * f1
+	f9 = Mem0[o3 + 120:real32]
+	f2 = f2 + f3
+	f2 = f2 * f1
+	f7 = Mem0[o3 + 124:real32]
+	f2 = f2 + f4
+	f2 = f2 * f1
+	f9 = Mem0[o3 + 128:real32]
+	f2 = f2 + f3
+	f2 = f2 * f1
+	f7 = Mem0[o3 + 132:real32]
+	f2 = f2 + f4
+	f9 = Mem0[o3 + 168:real32]
+	f4 = f1 * f4
+	f2 = f2 * f1
+	f4 = f4 + f5
+	f2 = f2 + f3
+	f11 = Mem0[i1 + o0:real32]
+	f2 = f2 / f4
+	f7 = Mem0[o3 + 204:real32]
+	f2 = f2 + f3
+	Mem0[i3 + o0:real32] = f5
+	f5 = Mem0[i3 + o0:real32]
+	f2 = f5 - f2
+	f7 = Mem0[o3 + 20:real32]
+	ELGU = cond(f2 - f3)
+	branch Test(LT,GU) l08049BA8_ds_t
+	goto l08049C58
+	// succ:  l08049C58 l08049BA8_ds_t
+l08049BA8_ds_t:
+	f2 = f3
+	// succ:  l08049C58
+l08049C58:
+	Mem0[o5:real32] = f5
+	f5 = Mem0[l5 + o0:real32]
+	goto l08049CA4
+	// succ:  l08049CA4
+l08049C64:
+	f2 = f1 + f2
+	f7 = Mem0[o3 + 212:real32]
+	f9 = Mem0[o3 + 216:real32]
+	f2 = f2 * f3
+	f2 = f2 + f4
+	f7 = Mem0[i1 + o0:real32]
+	Mem0[i3 + o0:real32] = f5
+	f5 = Mem0[i3 + o0:real32]
+	f2 = f3 - f2
+	f9 = Mem0[o3 + 20:real32]
+	ELGU = cond(f2 - f4)
+	branch Test(LT,GU) l08049C64_ds_t
+	goto l08049C9C
+	// succ:  l08049C9C l08049C64_ds_t
+l08049C64_ds_t:
+	f2 = f4
+	// succ:  l08049C9C
+l08049C9C:
+	Mem0[o5:real32] = f5
+	f5 = Mem0[l5 + o0:real32]
+	// succ:  l08049CA4
+l08049CA4:
+	f7 = Mem0[i6 + -104:real32]
+	f2 = f3 - f2
+	f9 = Mem0[i2 + o0:real32]
+	f11 = Mem0[o3 + 284:real32]
+	f1 = f4 * f2
+	f7 = Mem0[o3 + 288:real32]
+	ELGU = cond(f1 - f5)
+	f9 = Mem0[o3 + 296:real32]
+	branch Test(GT,GU) l08049CA4_ds_t
+	goto l08049CD0
+	// succ:  l08049CD0 l08049CA4_ds_t
+l08049CA4_ds_t:
+	f5 = Mem0[o3 + 60:real32]
+	goto l08049F5C
+	// succ:  l08049F5C
+l08049CD0:
+	f3 = f1 * f3
+	f5 = f1 * f1
+	f5 = Mem0[o3 + 292:real32]
+	f0 = f1 * f1
+	f2 = f3 + f2
+	f4 = f5 * f4
+	f7 = f0 * f1
+	f7 = Mem0[o3 + 300:real32]
+	f6 = f1 * f1
+	f2 = f2 - f4
+	f11 = Mem0[o3 + 28:real32]
+	f3 = f7 * f3
+	Mem0[i6 + -156:real32] = f15
+	f9 = Mem0[o3 + 304:real32]
+	f4 = f1 * f4
+	f2 = f2 + f3
+	f4 = f4 + f5
+	f7 = Mem0[o3 + 308:real32]
+	f3 = f6 * f3
+	f11 = Mem0[o3 + 312:real32]
+	f5 = f7 * f5
+	f3 = f4 - f3
+	f3 = f3 + f5
+	f9 = Mem0[o3 + 316:real32]
+	ELGU = cond(f1 - f4)
+	f2 = f2 / f3
+	Mem0[i4 + o0:real32] = f5
+	branch Test(LE,ELU) l08049CD0_ds_t
+	goto l08049D48
+	// succ:  l08049D48 l08049CD0_ds_t
+l08049CD0_ds_t:
+	f1 = Mem0[i2 + o0:real32]
+	goto l08049D70
+	// succ:  l08049D70
+l08049D48:
+	f5 = Mem0[o3 + 348:real32]
+	f2 = f1 + f2
+	f9 = Mem0[i4 + o0:real32]
+	f1 = Mem0[i2 + o0:real32]
+	f3 = f2 * f2
+	Mem0[i6 + -84:real32] = f5
+	f5 = Mem0[o3 + 352:real32]
+	f2 = f3 * f2
+	f2 = f4 - f2
+	Mem0[i4 + o0:real32] = f5
+	// succ:  l08049D70
+l08049D70:
+	f5 = Mem0[o3 + 356:real32]
+	f2 = f0 * f2
+	f5 = f0 * f0
+	f7 = Mem0[o3 + 360:real32]
+	f9 = Mem0[o3 + 364:real32]
+	f2 = f2 + f3
+	f4 = f5 * f4
+	f7 = Mem0[o3 + 368:real32]
+	f2 = f2 + f4
+	ELGU = cond(f2 - f3)
+	f0 = f2
+	branch Test(GT,G) l08049D70_ds_t
+	goto l08049DA4
+	// succ:  l08049DA4 l08049D70_ds_t
+l08049D70_ds_t:
+	f0 = f3
+	// succ:  l08049DA4
+l08049DA4:
+	f11 = Mem0[o5:real32]
+	f5 = f5 * f0
+	f5 = Mem0[i4 + o0:real32]
+	f7 = Mem0[o3 + 280:real32]
+	f2 = f2 + f5
+	Mem0[i4 + o0:real32] = f5
+	f5 = Mem0[l7 + o0:real32]
+	ELGU = cond(f2 - f3)
+	branch Test(GE,EGU) l08049DA4_ds_t
+	goto l08049DD0
+	// succ:  l08049DD0 l08049DA4_ds_t
+l08049DA4_ds_t:
+	f5 = Mem0[o3 + 280:real32]
+	goto l08049DDC
+	// succ:  l08049DDC
+l08049DD0:
+	f5 = Mem0[i4 + o0:real32]
+	Mem0[l7 + o0:real32] = f5
+	f5 = Mem0[o3 + 280:real32]
+	// succ:  l08049DDC
+l08049DDC:
+	f7 = Mem0[l7 + o0:real32]
+	ELGU = cond(f3 - f2)
+	branch Test(GE,EGU) l08049DDC_ds_t
+	goto l08049DF0
+	// succ:  l08049DF0 l08049DDC_ds_t
+l08049DDC_ds_t:
+	f5 = Mem0[l5 + o0:real32]
+	goto l08049DFC
+	// succ:  l08049DFC
+l08049DF0:
+	f5 = Mem0[g1 + o0:real32]
+	Mem0[l7 + o0:real32] = f5
+	f5 = Mem0[l5 + o0:real32]
+	// succ:  l08049DFC
+l08049DFC:
+	f7 = Mem0[i6 + -104:real32]
+	f2 = f3 - f2
+	f11 = Mem0[o3 + 476:real32]
+	f0 = f2 * f3
+	f7 = Mem0[i4 + o0:real32]
+	f3 = f3 * f5
+	f5 = Mem0[l7 + o0:real32]
+	f3 = f3 * f0
+	ELGU = cond(f2 - f3)
+	branch Test(LT,GU) l08049DFC_ds_t
+	goto l08049E2C
+	// succ:  l08049E2C l08049DFC_ds_t
+l08049DFC_ds_t:
+	f2 = f3
+	// succ:  l08049E2C
+l08049E2C:
+	Mem0[l7 + o0:real32] = f5
+	f5 = Mem0[o3 + 356:real32]
+	f1 = Mem0[i2 + o0:real32]
+	f2 = f0 * f2
+	f5 = f0 * f0
+	f7 = Mem0[o3 + 360:real32]
+	f9 = Mem0[o3 + 364:real32]
+	f2 = f2 + f3
+	f4 = f5 * f4
+	f7 = Mem0[o3 + 368:real32]
+	f2 = f2 + f4
+	ELGU = cond(f2 - f3)
+	f0 = f2
+	branch Test(GT,G) l08049E2C_ds_t
+	goto l08049E68
+	// succ:  l08049E68 l08049E2C_ds_t
+l08049E2C_ds_t:
+	f0 = f3
+	// succ:  l08049E68
+l08049E68:
+	f5 = Mem0[o3 + 32:real32]
+	f7 = Mem0[l3 + o0:real32]
+	ELGU = cond(f3 - f2)
+	f13 = Mem0[o3 + 464:real32]
+	branch Test(GE,EGU) l08049E68_ds_t
+	goto l08049E80
+	// succ:  l08049E80 l08049E68_ds_t
+l08049E68_ds_t:
+	f5 = Mem0[o3 + 280:real32]
+	goto l08049EA4
+	// succ:  l08049EA4
+l08049E80:
+	f5 = Mem0[l3 + o0:real32]
+	f7 = Mem0[o7 + o0:real32]
+	f2 = f2 * f3
+	f9 = Mem0[o3 + 468:real32]
+	ELGU = cond(f2 - f4)
+	f5 = Mem0[o3 + 280:real32]
+	branch Test(GT,GU) l08049E80_ds_t
+	goto l08049EA4
+	// succ:  l08049EA4 l08049E80_ds_t
+l08049E80_ds_t:
+	f3 = Mem0[l5 + o0:real32]
+	goto l0804A10C
+	// succ:  l0804A10C
+l08049EA4:
+	f7 = Mem0[g1 + o0:real32]
+	ELGU = cond(f3 - f2)
+	branch Test(GT,GU) l08049EA4_ds_t
+	goto l08049EB8
+	// succ:  l08049EB8 l08049EA4_ds_t
+l08049EA4_ds_t:
+	f5 = Mem0[l7 + o0:real32]
+	goto l08049FCC
+	// succ:  l08049FCC
+l08049EB8:
+	f5 = Mem0[o3 + 280:real32]
+	f7 = Mem0[l2 + o0:real32]
+	ELGU = cond(f3 - f2)
+	branch Test(GT,GU) l08049EB8_ds_t
+	goto l08049ED0
+	// succ:  l08049ED0 l08049EB8_ds_t
+l08049EB8_ds_t:
+	f5 = Mem0[l7 + o0:real32]
+	goto l08049FCC
+	// succ:  l08049FCC
+l08049ED0:
+	f7 = Mem0[i3 + o0:real32]
+	f3 = f3 * f0
+	f9 = Mem0[i4 + o0:real32]
+	f5 = Mem0[i6 + -104:real32]
+	f3 = f3 - f4
+	f11 = Mem0[l5 + o0:real32]
+	f4 = f5 * f6
+	f1 = f2 - f5
+	f5 = f1 * f0
+	f5 = Mem0[g1 + o0:real32]
+	f3 = f1 * f3
+	f4 = f4 + f5
+	f2 = f2 + f3
+	f11 = Mem0[o3 + 480:real32]
+	f1 = f2 / f4
+	f7 = Mem0[i0 + o0:real32]
+	f3 = f1 - f3
+	Mem0[i6 + -88:real32] = f7
+	f3 = fabs(f3)
+	ELGU = cond(f3 - f5)
+	branch Test(NE,U) l08049ED0_ds_t
+	goto l08049F2C
+	// succ:  l08049F2C l08049ED0_ds_t
+l08049ED0_ds_t:
+	f5 = Mem0[l7 + o0:real32]
+	goto l08049FCC
+	// succ:  l08049FCC
+l08049F2C:
+	Mem0[i0 + o0:real32] = f3
+	f3 = Mem0[i0 + o0:real32]
+	f2 = f1 * f6
+	f7 = Mem0[i3 + o0:real32]
+	f3 = f1 - f3
+	Mem0[l2 + o0:real32] = f5
+	f3 = f3 * f0
+	f5 = Mem0[i4 + o0:real32]
+	f2 = f2 + f3
+	Mem0[l7 + o0:real32] = f5
+	f5 = Mem0[i0 + o0:real32]
+	goto l08049FE8
+	// succ:  l08049FE8
+l08049F5C:
+	ELGU = cond(f1 - f2)
+	f7 = Mem0[o3 + 324:real32]
+	branch Test(GT,GU) l08049F5C_ds_t
+	goto l08049F70
+	// succ:  l08049F70 l08049F5C_ds_t
+l08049F5C_ds_t:
+	f5 = Mem0[o3 + 328:real32]
+	goto l08049F88
+	// succ:  l08049F88
+l08049F70:
+	f5 = Mem0[o3 + 320:real32]
+	f2 = f1 * f2
+	f2 = f2 + f3
+	Mem0[i4 + o0:real32] = f5
+	f1 = Mem0[i2 + o0:real32]
+	goto l08049D70
+	// succ:  l08049D70
+l08049F88:
+	ELGU = cond(f1 - f2)
+	f7 = Mem0[o3 + 336:real32]
+	branch Test(GT,GU) l08049F88_ds_t
+	goto l08049F9C
+	// succ:  l08049F9C l08049F88_ds_t
+l08049F88_ds_t:
+	f5 = Mem0[o3 + 340:real32]
+	goto l08049FB4
+	// succ:  l08049FB4
+l08049F9C:
+	f5 = Mem0[o3 + 332:real32]
+	f2 = f1 * f2
+	f2 = f2 + f3
+	Mem0[i4 + o0:real32] = f5
+	f1 = Mem0[i2 + o0:real32]
+	goto l08049D70
+	// succ:  l08049D70
+l08049FB4:
+	f2 = f1 * f2
+	f7 = Mem0[o3 + 344:real32]
+	f2 = f2 + f3
+	Mem0[i4 + o0:real32] = f5
+	f1 = Mem0[i2 + o0:real32]
+	goto l08049D70
+	// succ:  l08049D70
+l08049FCC:
+	f7 = Mem0[i4 + o0:real32]
+	f1 = f2 - f3
+	f9 = Mem0[i3 + o0:real32]
+	f5 = f1 / f0
+	f4 = f4 + f5
+	Mem0[i0 + o0:real32] = f9
+	f5 = Mem0[i0 + o0:real32]
+	// succ:  l08049FE8
+l08049FE8:
+	f2 = f2 * f6
+	f1 = Mem0[l5 + o0:real32]
+	f7 = Mem0[l7 + o0:real32]
+	f15 = Mem0[i2 + o0:real32]
+	Mem0[l2 + o0:real32] = f5
+	f5 = Mem0[i6 + -104:real32]
+	f2 = f2 - f0
+	f9 = Mem0[l2 + o0:real32]
+	f4 = f0 * f4
+	f11 = Mem0[o3 + 40:real32]
+	f2 = f2 * f3
+	f2 = f4 + f2
+	f7 = Mem0[l3 + o0:real32]
+	Mem0[g1 + o0:real32] = f5
+	f5 = Mem0[o3 + 32:real32]
+	ELGU = cond(f3 - f2)
+	f17 = Mem0[o3 + 28:real32]
+	f9 = Mem0[o3 + 36:real32]
+	branch Test(GT,GU) l08049FE8_ds_t
+	goto l0804A038
+	// succ:  l0804A038 l08049FE8_ds_t
+l08049FE8_ds_t:
+	f3 = Mem0[l5 + o0:real32]
+	goto l0804A08C
+	// succ:  l0804A08C
+l0804A038:
+	f5 = Mem0[l7 + o0:real32]
+	f7 = Mem0[i4 + o0:real32]
+	f2 = f2 / f3
+	f13 = Mem0[l3 + o0:real32]
+	f5 = f6 + f5
+	f2 = f2 + f4
+	f7 = Mem0[o3 + 44:real32]
+	f2 = f2 * f5
+	f9 = Mem0[i6 + -104:real32]
+	f2 = f2 * f3
+	f2 = f2 + f4
+	ELGU = cond(f8 - f2)
+	f0 = f8
+	branch Test(LT,GU) l0804A038_ds_t
+	goto l0804A074
+	// succ:  l0804A074 l0804A038_ds_t
+l0804A038_ds_t:
+	f0 = f2
+	// succ:  l0804A074
+l0804A074:
+	f7 = Mem0[o3 + 36:real32]
+	f3 = f0 + f3
+	f5 = Mem0[o3 + 48:real32]
+	f3 = Mem0[l5 + o0:real32]
+	f2 = f3 * f2
+	f8 = f2 + f4
+	// succ:  l0804A08C
+l0804A08C:
+	f5 = Mem0[o3 + 52:real32]
+	f0 = f1 * f2
+	f7 = Mem0[i6 + -104:real32]
+	f3 = f3 - f1
+	f9 = Mem0[o3 + 56:real32]
+	f5 = Mem0[o3 + 60:real32]
+	f3 = f3 * f4
+	f11 = Mem0[o3 + 76:real32]
+	ELGU = cond(f7 - f2)
+	f3 = f0 + f3
+	f13 = Mem0[o3 + 80:real32]
+	branch Test(GE,EGU) l0804A08C_ds_t
+	// succ:  l0804A08C_ds_f l0804A08C_ds_t
+l0804A08C_ds_f:
+	f0 = f0 / f3
+	goto l0804A0C0
+	// succ:  l0804A0C0
+l0804A08C_ds_t:
+	f0 = f0 / f3
+	goto l080495C8
+	// succ:  l080495C8
+l0804A0C0:
+	f5 = Mem0[i2 + o0:real32]
+	f9 = Mem0[o4 + 4:real32]
+	f6 = f7 * f6
+	f7 = Mem0[o4 + 8:real32]
+	f2 = f2 * f3
+	f2 = f2 / f4
+	f7 = Mem0[i0 + o0:real32]
+	f3 = f3 + f5
+	f9 = Mem0[i6 + -92:real32]
+	f4 = f6 + f4
+	f11 = Mem0[i6 + -104:real32]
+	f5 = f5 - f0
+	f2 = f2 / f3
+	f4 = f4 * f5
+	f2 = f2 * f0
+	f4 = f4 / f8
+	f2 = f4 + f2
+	Mem0[o7 + o0:real32] = f5
+	goto l0804963C
+	// succ:  l0804963C
+l0804A10C:
+	f7 = Mem0[i6 + -104:real32]
+	f3 = f3 - f1
+	f9 = Mem0[i3 + o0:real32]
+	f5 = Mem0[i1 + o0:real32]
+	f2 = f1 * f2
+	f3 = f3 * f4
+	f2 = f2 + f3
+	Mem0[i0 + o0:real32] = f5
+	f3 = Mem0[i0 + o0:real32]
+	f3 = f1 - f4
+	f2 = f1 * f6
+	f3 = f3 * f0
+	Mem0[l2 + o0:real32] = f5
+	f5 = Mem0[i4 + o0:real32]
+	f2 = f2 + f3
+	Mem0[l7 + o0:real32] = f5
+	f5 = Mem0[i0 + o0:real32]
+	goto l08049FE8
+	// succ:  l08049FE8
+t5matp__exit:
+
+

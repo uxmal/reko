@@ -35,7 +35,6 @@ namespace Reko.UnitTests.ImageLoaders.Elf
     [TestFixture]
     public class ElfObjectLinkerTests : ElfTests
     {
-        private byte[] rawBytes;
         private ElfObjectLinker32 linker;
 
         [SetUp]
@@ -45,113 +44,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             Given_BeArchitecture();
         }
 
-        private void BuildObjectFile32()
-        {
-            // Add symbol table
-            if (symbols.Count > 0)
-            {
-                Given_Section(".symtab", SectionHeaderType.SHT_SYMTAB, ElfLoader.SHF_ALLOC, FlattenSymbolTable());
-                var os = objectSections[objectSections.Count - 1];
-                os.ElementSize = Elf32_Sym.Size;
-                os.Link = (ushort)objectSections.Count;
-                Given_Section(".strtab", SectionHeaderType.SHT_STRTAB, ElfLoader.SHF_ALLOC, symbolStringtab.ToArray());
-            }
 
-            var bin = new BeImageWriter();
-            bin.WriteByte(0x7F);
-            bin.WriteBytes(new byte[] { 0x45, 0x4C, 0x46 });
-            bin.WriteByte(1);    // 32-bit
-            bin.WriteByte(2);    // big-endian
-            bin.WriteByte(1);    // ELF version
-            bin.WriteByte(0);    // OS ABI
-            bin.WriteByte(0);    // OS version
-            bin.WriteBytes(0, 7); // pad
-
-            // ELF header
-
-            bin.WriteBeUInt16(1);   // relocatable
-            bin.WriteBeUInt16((ushort)ElfMachine.EM_SPARC);
-            bin.WriteBeUInt32(1);   // version
-            bin.WriteBeUInt32(0);   // entry point (none in reloc file)
-            bin.WriteBeUInt32(0);   // program segment table offset (none in reloc file)
-            bin.WriteBeUInt32((uint)bin.Position + 20); // point to section table.
-
-            bin.WriteBeUInt32(0);   // e_flags;
-            bin.WriteBeUInt16(0);   // e_ehsize;
-            bin.WriteBeUInt16(0);   // e_phentsize;
-            bin.WriteBeUInt16(0);   // e_phnum;
-            bin.WriteBeUInt16(0);   // e_shentsize;
-            bin.WriteBeUInt16((ushort)objectSections.Count);   // e_shnum;
-            bin.WriteBeUInt16(1);   // e_shstrndx;
-
-            // Build string table.
-
-            var strtab = new MemoryStream();
-            var mpOsToiName = new Dictionary<ObjectSection, int>();
-            foreach (var os in this.objectSections)
-            {
-                mpOsToiName[os] = (int)strtab.Position;
-                var bytes = Encoding.ASCII.GetBytes(os.Name);
-                strtab.Write(bytes, 0, bytes.Length);
-                strtab.WriteByte(0);
-            }
-
-            // Reserve place for section table
-            var iShTable = (uint) bin.Position;
-            var iStrTable = iShTable + (uint)(40 * objectSections.Count);
-
-            // Write string table
-            var aStrtable = strtab.ToArray();
-            objectSections[1].Content = aStrtable;
-            var iContent = iStrTable;
-
-            // write remaining sections.
-            foreach (var section in objectSections.Skip(1))
-            {
-                section.Offset = iContent;
-                iContent = Align((uint)(iContent + section.Content.Length));
-            }
-
-            // Write the section table.
-            foreach (var os in this.objectSections)
-            {
-                bin.WriteBeUInt32((uint)mpOsToiName[os]);
-                bin.WriteBeUInt32((uint)os.Type);
-                bin.WriteBeUInt32(os.Flags);
-                bin.WriteBeUInt32(0);
-
-                bin.WriteBeUInt32(os.Offset);
-                bin.WriteBeUInt32(os.Content != null ? (uint)os.Content.Length : 0u);
-                bin.WriteBeUInt32(os.Link);
-                bin.WriteBeUInt32(0);
-
-                bin.WriteBeUInt32(0);
-                bin.WriteBeUInt32(os.ElementSize);
-            }
-
-            // write the non-null sections.
-            foreach (var section in objectSections.Skip(1))
-            {
-                bin.WriteBytes(section.Content);
-                Align(bin);
-            }
-            this.rawBytes = bin.ToArray();
-        }
-
-        private byte[] FlattenSymbolTable()
-        {
-            var syms = new BeImageWriter();
-            foreach (var sym in symbols)
-            {
-                syms.WriteBeUInt32(sym.st_name);
-                syms.WriteBeUInt32(sym.st_value);
-                syms.WriteBeUInt32(sym.st_size);
-                syms.WriteByte(sym.st_info);
-                syms.WriteByte(sym.st_other);
-                syms.WriteBeUInt16(sym.st_shndx);
-            }
-            return syms.ToArray();
-        }
 
         private void Given_Linker()
         {
