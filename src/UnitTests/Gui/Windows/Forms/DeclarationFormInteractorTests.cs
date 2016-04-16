@@ -30,7 +30,7 @@ using Reko.Core.Serialization;
 using Reko.Gui;
 using Reko.Gui.Controls;
 using Reko.Gui.Forms;
-using Reko.Gui.Windows.Controls;
+using Reko.Gui.Windows.Forms;
 using System.ComponentModel.Design;
 using NUnit.Framework;
 
@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
     class DeclarationFormInteractorTests
     {
         MockRepository mr;
-        private DeclarationTextBox interactor;
+        private DeclarationFormInteractor interactor;
         private IDeclarationForm declarationForm;
         private FakeTextBox textBox;
         private Program program;
@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             dlgFactory.Stub(f => f.CreateDeclarationForm()).Return(declarationForm);
             services.AddService<IDialogFactory>(dlgFactory);
             mr.ReplayAll();
-            interactor = new DeclarationTextBox(services);
+            interactor = new DeclarationFormInteractor(services);
             var mem = new MemoryArea(Address32.Ptr32(0x10), new byte[40]);
             var seg = new ImageSegment(".text", mem, AccessMode.ReadWrite);
             var imageMap = new ImageMap(Address32.Ptr32(0x05), seg);

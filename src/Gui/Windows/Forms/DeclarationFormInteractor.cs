@@ -29,9 +29,9 @@ using System.IO;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Reko.Gui.Windows.Controls
+namespace Reko.Gui.Windows.Forms
 {
-    public class DeclarationTextBox
+    public class DeclarationFormInteractor
     {
         private IServiceProvider services;
 
@@ -43,7 +43,7 @@ namespace Reko.Gui.Windows.Controls
 
         private bool editProcedure;
 
-        public DeclarationTextBox(IServiceProvider services)
+        public DeclarationFormInteractor(IServiceProvider services)
         {
             this.services = services;
         }
