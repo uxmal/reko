@@ -4,5 +4,5 @@
 
 #include "redir.h"
 
- <anonymous> * g_ptrFC00690 = null;
+ <anonymous> g_tFFFFFFFF;
 
