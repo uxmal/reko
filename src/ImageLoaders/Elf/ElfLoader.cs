@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -1056,30 +1057,42 @@ namespace Reko.ImageLoaders.Elf
 
         public override ImageMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred, Address addrMax)
         {
-            var bytes = new byte[addrMax - addrPreferred];
-            var mem = new MemoryArea(addrPreferred, bytes);
-            var imageMap = mem.CreateImageMap();
-            var v_base = addrPreferred.ToLinear();
+            var segMap = new SortedList<Address, MemoryArea>();
             foreach (var ph in ProgramHeaders)
             {
-                if (ph.p_vaddr > 0 && ph.p_filesz > 0)
-                    Array.Copy(rawImage, (long)ph.p_offset, bytes, (long)(ph.p_vaddr - v_base), (long)ph.p_filesz);
                 Debug.Print("ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.p_vaddr, ph.p_filesz, ph.p_pmemsz);
+                if (ph.p_vaddr == 0)
+                    continue;
+                var mem = new MemoryArea(
+                    Address.Ptr32(ph.p_vaddr),
+                    new byte[ph.p_pmemsz]);
+                if (ph.p_filesz > 0)
+                    Array.Copy(rawImage, (long)ph.p_offset, mem.Bytes, 0, (long)ph.p_filesz);
+                segMap.Add(mem.BaseAddress, mem);
             }
+            var imageMap = new ImageMap(addrPreferred);
             foreach (var section in Sections)
             {
                 if (section.Name == null || section.Address == null)
                     continue;
 
-                AccessMode mode = AccessModeOf(section.Flags);
-                var seg = imageMap.AddSegment(new ImageSegment(
-                    section.Name,
-                    section.Address,
-                    mem, mode)
+                MemoryArea mem;
+                if (segMap.TryGetLowerBound(section.Address, out mem) &&
+                    section.Address < mem.EndAddress)
                 {
-                    Size = (uint)section.Size
-                });
-                seg.Designer = CreateRenderer(section);
+                    AccessMode mode = AccessModeOf(section.Flags);
+                    var seg = imageMap.AddSegment(new ImageSegment(
+                        section.Name,
+                        section.Address,
+                        mem, mode)
+                    {
+                        Size = (uint)section.Size
+                    });
+                    seg.Designer = CreateRenderer(section);
+                } else
+                {
+                    //$TODO: warn
+                }
             }
             imageMap.DumpSections();
             return imageMap;

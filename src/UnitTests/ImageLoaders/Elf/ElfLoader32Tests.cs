@@ -129,14 +129,19 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             Given_RawImage("C0 DE 00 00 00 00 00 00 DA 7A 00 00");
             Given_ImageHeader(ElfMachine.EM_386);
             Given_ProgramHeader(ProgramHeaderType.PT_LOAD, 0, 0x1000, 8, 8);
-            Given_ProgramHeader(ProgramHeaderType.PT_LOAD, 8, 0x2000, 8, 16);
+            Given_ProgramHeader(ProgramHeaderType.PT_LOAD, 8, 0x2000, 4, 16);
             Given_Section(".text", 0x1000, "rx");
             Given_Section(".data", 0x2000, "rw");
             Given_Section(".bss", 0x2008, "rw");
             mr.ReplayAll();
 
             When_CreateLoader32();
-            el32.LoadImageBytes(platform, this.bytes, Address.Ptr32(0x1000), null);
+            var imageMap = el32.LoadImageBytes(platform, this.bytes, Address.Ptr32(0x1000), null);
+
+            ImageSegment segText;
+            Assert.IsTrue(imageMap.TryFindSegment(Address.Ptr32(0x1001), out segText));
+            Assert.AreEqual(".text", segText.Name);
+            Assert.AreEqual(8, segText.Size);
         }
     }
 }
