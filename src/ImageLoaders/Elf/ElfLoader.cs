@@ -366,6 +366,14 @@ namespace Reko.ImageLoaders.Elf
             return imgLoader.ReadAsciiString(sect.sh_offset + offset);
         }
 
+        protected bool IsLoadable(ulong p_vaddr, ProgramHeaderType p_type)
+        {
+            if (p_vaddr == 0)
+                return false;
+            return (p_type == ProgramHeaderType.PT_LOAD ||
+                    p_type == ProgramHeaderType.PT_DYNAMIC);
+        }
+
         public string ReadAsciiString(ulong v)
         {
             return imgLoader.ReadAsciiString(v);
@@ -587,7 +595,7 @@ namespace Reko.ImageLoaders.Elf
             foreach (var ph in ProgramHeaders64)
             {
                 Debug.Print("ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.p_vaddr, ph.p_filesz, ph.p_pmemsz);
-                if (ph.p_vaddr == 0)
+                if (!IsLoadable(ph.p_vaddr, ph.p_type))
                     continue;
                 var mem = new MemoryArea(
                     Address.Ptr64(ph.p_vaddr),
@@ -601,6 +609,8 @@ namespace Reko.ImageLoaders.Elf
             {
                 if (section.Name == null || section.Address == null)
                     continue;
+                if (section.Name == ".text")
+                    section.ToString();//$DEBUG
 
                 MemoryArea mem;
                 if (segMap.TryGetLowerBound(section.Address, out mem) &&
@@ -1073,13 +1083,44 @@ namespace Reko.ImageLoaders.Elf
             return GetStrPtr(strSection, offset);
         }
 
+        public static SortedList<Address, Tuple<Address,uint>> GetMemoryAreas(IEnumerable<Tuple<Address,uint>> segments)
+        {
+            var mems = new SortedList<Address, Tuple<Address,uint>>();
+            Address addr = null;
+            Address addrEnd = null;
+            foreach (var pair in segments)
+            {
+                if (addr == null)
+                {
+                    addr = pair.Item1;
+                    addrEnd = pair.Item1 + pair.Item2;
+                }
+                else if (addrEnd < pair.Item1)
+                {
+                    var size = (uint)(addrEnd - addr);
+                    mems.Add(addr, Tuple.Create(addr, size));
+                    addr = pair.Item1;
+                    addrEnd = pair.Item1 + pair.Item2;
+                } else
+                {
+                    addrEnd = Address.Max(addrEnd, pair.Item1 + pair.Item2);
+                }
+            }
+            if (addr != null)
+            {
+                    var size = (uint)(addrEnd - addr);
+                mems.Add(addr, Tuple.Create(addr, size));
+            }
+            return mems;
+        }
+
         public override ImageMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred, Address addrMax)
         {
             var segMap = new SortedList<Address, MemoryArea>();
             foreach (var ph in ProgramHeaders)
             {
                 Debug.Print("ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.p_vaddr, ph.p_filesz, ph.p_pmemsz);
-                if (ph.p_vaddr == 0)
+                if (!IsLoadable(ph.p_vaddr, ph.p_type))
                     continue;
                 var mem = new MemoryArea(
                     Address.Ptr32(ph.p_vaddr),
@@ -1093,6 +1134,9 @@ namespace Reko.ImageLoaders.Elf
             {
                 if (section.Name == null || section.Address == null)
                     continue;
+
+                if (section.Name == ".text")
+                    section.ToString();//$DEBUG
 
                 MemoryArea mem;
                 if (segMap.TryGetLowerBound(section.Address, out mem) &&

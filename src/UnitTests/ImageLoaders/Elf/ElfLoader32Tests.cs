@@ -143,5 +143,70 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             Assert.AreEqual(".text", segText.Name);
             Assert.AreEqual(8, segText.Size);
         }
+
+        private Tuple<Address, uint> ElfSeg(uint addr, uint size)
+        {
+            return Tuple.Create(Address.Ptr32(addr), size);
+        }
+
+        [Test]
+        public void El32_SegmentSequence()
+        {
+            var mems = ElfLoader32.GetMemoryAreas(new[]
+            {
+                ElfSeg(1000, 10)
+            });
+            Assert.AreEqual(1, mems.Count);
+        }
+
+        [Test]
+        public void El32_SegmentSequence_Disjoint()
+        {
+            var mems = ElfLoader32.GetMemoryAreas(new[]
+            {
+                ElfSeg(1000, 10),
+                ElfSeg(1020, 10),
+
+            });
+            Assert.AreEqual(2, mems.Count);
+        }
+
+        [Test]
+        public void El32_SegmentSequence_Overlap()
+        {
+            var mems = ElfLoader32.GetMemoryAreas(new[]
+            {
+                ElfSeg(1000, 20),
+                ElfSeg(1010, 20),
+
+            });
+            Assert.AreEqual(1, mems.Count);
+            Assert.AreEqual(30u, mems.Values[0].Item2);
+        }
+
+        [Test]
+        public void El32_SegmentSequence_Overlap3()
+        {
+            var mems = ElfLoader32.GetMemoryAreas(new[]
+            {
+                ElfSeg(1000, 20),
+                ElfSeg(1010, 20),
+                ElfSeg(1020, 20),
+            });
+            Assert.AreEqual(1, mems.Count);
+            Assert.AreEqual(40u, mems.Values[0].Item2);
+        }
+
+        [Test]
+        public void El32_SegmentSequence_Adjacent()
+        {
+            var mems = ElfLoader32.GetMemoryAreas(new[]
+            {
+                ElfSeg(1000, 10),
+                ElfSeg(1010, 20),
+            });
+            Assert.AreEqual(1, mems.Count);
+            Assert.AreEqual(30u, mems.Values[0].Item2);
+        }
     }
 }
