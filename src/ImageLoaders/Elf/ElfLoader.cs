@@ -384,6 +384,7 @@ namespace Reko.ImageLoaders.Elf
             this.Header64 = elfHeader;
             this.osAbi = osAbi;
             base.rawImage = rawImage;
+            this.ProgramHeaders64 = new List<Elf64_PHdr>();
             this.Relocator = CreateRelocator((ElfMachine)elfHeader.e_machine);
         }
 
@@ -582,34 +583,51 @@ namespace Reko.ImageLoaders.Elf
 
         public override ImageMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred, Address addrMax)
         {
-            var bytes = new byte[addrMax - addrPreferred];
-            var mem = new MemoryArea(addrPreferred, bytes);
-            var imageMap = mem.CreateImageMap();
-
-            var v_base = addrPreferred.ToLinear();
+            var segMap = new SortedList<Address, MemoryArea>();
             foreach (var ph in ProgramHeaders64)
             {
-                if (ph.p_vaddr > 0 && ph.p_filesz > 0)
-                    Array.Copy(rawImage, (long)ph.p_offset, bytes, (long)(ph.p_vaddr - v_base), (long)ph.p_filesz);
-            }
-            foreach (var segment in Sections)
-            {
-                if (string.IsNullOrEmpty(segment.Name) || segment.Address == null)
+                Debug.Print("ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.p_vaddr, ph.p_filesz, ph.p_pmemsz);
+                if (ph.p_vaddr == 0)
                     continue;
-                AccessMode mode = AccessModeOf((uint)segment.Flags);
-                var seg = imageMap.AddSegment(new ImageSegment(
-                    segment.Name,
-                    segment.Address,
-                    mem,
-                    mode));
-                seg.Designer = CreateRenderer64(segment);
+                var mem = new MemoryArea(
+                    Address.Ptr64(ph.p_vaddr),
+                    new byte[ph.p_pmemsz]);
+                if (ph.p_filesz > 0)
+                    Array.Copy(rawImage, (long)ph.p_offset, mem.Bytes, 0, (long)ph.p_filesz);
+                segMap.Add(mem.BaseAddress, mem);
             }
+            var imageMap = new ImageMap(addrPreferred);
+            foreach (var section in Sections)
+            {
+                if (section.Name == null || section.Address == null)
+                    continue;
+
+                MemoryArea mem;
+                if (segMap.TryGetLowerBound(section.Address, out mem) &&
+                    section.Address < mem.EndAddress)
+                {
+                    AccessMode mode = AccessModeOf(section.Flags);
+                    var seg = imageMap.AddSegment(new ImageSegment(
+                        section.Name,
+                        section.Address,
+                        mem, mode)
+                    {
+                        Size = (uint)section.Size
+                    });
+                    seg.Designer = CreateRenderer64(section);
+                }
+                else
+                {
+                    //$TODO: warn
+                }
+            }
+            imageMap.DumpSections();
             return imageMap;
+
         }
 
         public override int LoadProgramHeaderTable()
         {
-            this.ProgramHeaders64 = new List<Elf64_PHdr>();
             var rdr = imgLoader.CreateReader(Header64.e_phoff);
             for (int i = 0; i < Header64.e_phnum; ++i)
             {

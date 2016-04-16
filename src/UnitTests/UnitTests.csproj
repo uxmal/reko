@@ -247,6 +247,7 @@
     <Compile Include="Gui\Windows\ProjectBrowserServiceTests.cs" />
     <Compile Include="Gui\Windows\WindowsFormsSettingsServiceTests.cs" />
     <Compile Include="ImageLoaders\Elf\ElfImageLoaderTests.cs" />
+    <Compile Include="ImageLoaders\Elf\ElfLoader64Tests.cs" />
     <Compile Include="ImageLoaders\Elf\ElfLoader32Tests.cs" />
     <Compile Include="ImageLoaders\Elf\ElfObjectLinkerTests.cs" />
     <Compile Include="ImageLoaders\Elf\ElfTests.cs" />
