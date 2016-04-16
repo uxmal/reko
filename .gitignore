@@ -12,3 +12,5 @@ TestResults
 /src/.vs/config
 /src/UnitTests/UnitTests.csproj.VisualState.xml
 /src/UnitTests/TestResult.xml
+/src/tools/reko.config
+
