@@ -29,6 +29,7 @@ using Reko.Core.Types;
 using Reko.Core.Serialization;
 using Reko.Gui;
 using Reko.Gui.Controls;
+using Reko.Gui.Commands;
 using Reko.Gui.Forms;
 using Reko.Gui.Windows.Forms;
 using System.ComponentModel.Design;
@@ -39,6 +40,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
     class DeclarationFormInteractorTests
     {
         MockRepository mr;
+        private ServiceContainer services;
         private DeclarationFormInteractor interactor;
         private IDeclarationForm declarationForm;
         private FakeTextBox textBox;
@@ -48,7 +50,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         public void Setup()
         {
             mr = new MockRepository();
-            var services = new ServiceContainer();
+            services = new ServiceContainer();
             declarationForm = mr.Stub<IDeclarationForm>();
             textBox = new FakeTextBox();
             declarationForm.Stub(f => f.TextBox).Return(textBox);
@@ -68,7 +70,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             program = new Program(imageMap, arch, platform);
         }
 
-        private void CloseForm()
+        private void When_FormClosed()
         {
             textBox.FireLostFocus();
         }
@@ -95,6 +97,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
         private void Given_ProcedureSignature(uint addr, string CSignature)
         {
+            Given_ProcedureName(addr, "<unnamed>");
+
             var address = Address32.Ptr32(addr);
             var sProc = new Procedure_v1()
             {
@@ -103,16 +107,50 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             program.User.Procedures[address] = sProc;
         }
 
+        private void Given_CommandFactory()
+        {
+            var markProcedureCmd = mr.Stub<ICommand>();
+            markProcedureCmd.Stub(c => c.Do()).Do(new Action(() => 
+            {
+                program.Procedures.Values[0].Name = 
+                    program.User.Procedures.Values[0].Name;
+            }));
+
+            var cmdFactory = mr.Stub<ICommandFactory>();
+            cmdFactory.Stub(f => f.MarkProcedure(null)).IgnoreArguments().Do(
+                new Func<ProgramAddress, ICommand>((pa) => 
+            {
+                var program = pa.Program;
+                var addr = pa.Address;
+                program.Procedures[addr] = new Procedure("<unnamed>", null);
+                return markProcedureCmd;
+            })); 
+
+            services.AddService<ICommandFactory>(cmdFactory);
+            mr.ReplayAll();
+        }
+
+        private void When_DeclarationFormCreated(uint addr)
+        {
+            interactor.Show(new Point(0, 0), program, Address32.Ptr32(addr));
+        }
+
         [Test]
         public void Dfi_CreateGlobalInt32()
         {
-            interactor.Show(new Point(0, 0), program, Address32.Ptr32(0x13));
+            When_DeclarationFormCreated(0x13);
+
+            Assert.AreEqual(
+                "Enter procedure or global variable declaration at the address 00000013",
+                declarationForm.HintText);
+
             Assert.AreEqual("", declarationForm.TextBox.Text);
             declarationForm.TextBox.Text = "int a(";
             Assert.AreEqual(Color.Red, declarationForm.TextBox.ForeColor);
             declarationForm.TextBox.Text = "int a";
             Assert.AreEqual(SystemColors.ControlText, declarationForm.TextBox.ForeColor);
-            CloseForm();
+            When_FormClosed();
+            Assert.AreEqual(3, program.ImageMap.Items.Count);
             Assert.AreEqual(1, program.User.Globals.Count);
             Assert.AreEqual("00000013", program.User.Globals.Keys[0].ToString());
             Assert.AreEqual("prim(SignedInt,4)", program.User.Globals.Values[0].DataType.ToString());
@@ -123,7 +161,12 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         public void Dfi_EditGlobalReal64()
         {
             Given_ImageMapItem(0x14, PrimitiveType.Real64, "DB");
-            interactor.Show(new Point(0, 0), program, Address32.Ptr32(0x14));
+            When_DeclarationFormCreated(0x14);
+
+            Assert.AreEqual(
+                "Enter procedure or global variable declaration at the address 00000014",
+                declarationForm.HintText);
+
             Assert.AreEqual("double DB", declarationForm.TextBox.Text);
         }
 
@@ -131,7 +174,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         public void Dfi_EditProcedureSignature()
         {
             Given_ProcedureSignature(0x16, "float test(float b)");
-            interactor.Show(new Point(0, 0), program, Address32.Ptr32(0x16));
+            When_DeclarationFormCreated(0x16);
             Assert.AreEqual("float test(float b)", declarationForm.TextBox.Text);
             declarationForm.TextBox.Text = "float test(floatb b)";
             Assert.AreEqual(Color.Red, declarationForm.TextBox.ForeColor);
@@ -141,15 +184,163 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         public void Dfi_EditProcedureName()
         {
             Given_ProcedureName(0x15, "fn123");
-            interactor.Show(new Point(0, 0), program, Address32.Ptr32(0x15));
+            When_DeclarationFormCreated(0x15);
             Assert.AreEqual("fn123", declarationForm.TextBox.Text);
             declarationForm.TextBox.Text = "fn123456";
             Assert.AreEqual(SystemColors.ControlText, declarationForm.TextBox.ForeColor);
-            CloseForm();
+            When_FormClosed();
             Assert.AreEqual(1, program.User.Procedures.Count);
             Assert.AreEqual(1, program.Procedures.Count);
             Assert.AreEqual("fn123456", program.User.Procedures.Values[0].Name);
             Assert.AreEqual("fn123456", program.Procedures.Values[0].Name);
+        }
+
+        [Test(Description = "When a previously uncustomized procedure is displayed, show its name in the " +
+    "declaration box")]
+        public void Dfi_EditProcedure_ShowFnName()
+        {
+            Given_ProcedureName(0x17, "fnName");
+
+            When_DeclarationFormCreated(0x17);
+
+            Assert.AreEqual("fnName", declarationForm.TextBox.Text);
+        }
+
+        [Test(Description = "Just entering a (valid) name should be OK.")]
+        public void Dfi_Accept_JustName()
+        {
+            Given_ProcedureName(0x17, "fnName");
+
+            When_DeclarationFormCreated(0x17);
+
+            Assert.AreEqual(
+                "Enter procedure declaration at the address 00000017",
+                declarationForm.HintText);
+
+            declarationForm.TextBox.Text = "foo";
+            Assert.AreEqual(SystemColors.ControlText, declarationForm.TextBox.ForeColor);
+            When_FormClosed();
+
+            Assert.AreEqual("foo", program.Procedures.Values[0].Name);
+            Assert.AreEqual("foo", program.User.Procedures.Values[0].Name);
+            Assert.IsNull(program.User.Procedures.Values[0].CSignature);
+        }
+
+        [Test(Description = "Entering an invalid name should change nothing.")]
+        public void Dfi_Reject_Invalid_Name()
+        {
+            Given_ProcedureName(0x18, "fnTest");
+
+            When_DeclarationFormCreated(0x18);
+
+            Assert.AreEqual(
+                "Enter procedure declaration at the address 00000018",
+                 declarationForm.HintText);
+
+            declarationForm.TextBox.Text = "f@oo";
+            Assert.AreEqual(Color.Red, declarationForm.TextBox.ForeColor);
+            When_FormClosed();
+
+            Assert.AreEqual("fnTest", program.Procedures.Values[0].Name);
+        }
+
+        [Test(Description = "Entering an valid function declaration should change both name and signature.")]
+        public void Dfi_Accept_Declaration()
+        {
+            Given_ProcedureSignature(0x17, "int fnTest()");
+
+            When_DeclarationFormCreated(0x17);
+
+            declarationForm.TextBox.Text = "int foo(char *, float)";
+            When_FormClosed();
+
+            Assert.AreEqual("foo", program.Procedures.Values[0].Name);
+            Assert.AreEqual("int foo(char *, float)", program.User.Procedures.Values[0].CSignature);
+        }
+
+        [Test(Description = "Char * functions are valid, of course")]
+        public void Dfi_Accept_Declaration_Returning_CharPtr()
+        {
+            Given_ProcedureSignature(0x17, "int fnTest()");
+
+            When_DeclarationFormCreated(0x17);
+
+            declarationForm.TextBox.Text = "char * test(int)";
+            When_FormClosed();
+
+            Assert.AreEqual("test", program.Procedures.Values[0].Name);
+            Assert.AreEqual("char * test(int)", program.User.Procedures.Values[0].CSignature);
+        }
+
+        [Test]
+        public void Dfi_Accept_Declaration_PlatformTypes()
+        {
+            program.EnvironmentMetadata.Types.Add(
+                    "BYTE",
+                    PrimitiveType.Create(PrimitiveType.Byte.Domain, 1));
+            Given_ProcedureName(0x17, "fnTest");
+
+            When_DeclarationFormCreated(0x17);
+
+            declarationForm.TextBox.Text = "BYTE foo(BYTE a, BYTE b)";
+            When_FormClosed();
+
+            Assert.AreEqual("foo", program.Procedures.Values[0].Name);
+            Assert.AreEqual("BYTE foo(BYTE a, BYTE b)", program.User.Procedures.Values[0].CSignature);
+        }
+
+        [Test]
+        public void Dfi_CreateProcedure()
+        {
+            Given_CommandFactory();
+
+            When_DeclarationFormCreated(0x20);
+
+            declarationForm.TextBox.Text = "int funcA(double v)";
+            When_FormClosed();
+
+            Assert.AreEqual(1, program.User.Procedures.Count);
+            Assert.AreEqual(1, program.Procedures.Count);
+            Assert.AreEqual("funcA", program.Procedures.Values[0].Name);
+            Assert.AreEqual("funcA", program.User.Procedures.Values[0].Name);
+            Assert.AreEqual("int funcA(double v)", program.User.Procedures.Values[0].CSignature);
+        }
+
+        [Test]
+        public void Dfi_ReplaceGlobalWithProcedure()
+        {
+            Given_ImageMapItem(0x21, PrimitiveType.Real32, "rVal");
+            Given_CommandFactory();
+
+            When_DeclarationFormCreated(0x21);
+
+            Assert.AreEqual("float rVal", declarationForm.TextBox.Text);
+
+            declarationForm.TextBox.Text = "float abc(char ch)";
+            When_FormClosed();
+
+            Assert.AreEqual(1, program.ImageMap.Items.Count);
+            Assert.AreEqual(1, program.User.Procedures.Count);
+            Assert.AreEqual(1, program.Procedures.Count);
+            Assert.AreEqual("abc", program.Procedures.Values[0].Name);
+            Assert.AreEqual("abc", program.User.Procedures.Values[0].Name);
+            Assert.AreEqual("float abc(char ch)", program.User.Procedures.Values[0].CSignature);
+        }
+
+        [Test(Description = "Reject global variable declartion if there is procedure at the same address.")]
+        public void Dfi_ReplaceProcedureWithGlobal()
+        {
+            Given_ProcedureSignature(0x19, "int fn19()");
+
+            When_DeclarationFormCreated(0x19);
+
+            declarationForm.TextBox.Text = "int a";
+            Assert.AreEqual(Color.Red, declarationForm.TextBox.ForeColor);
+            When_FormClosed();
+
+            Assert.AreEqual(0, program.User.Globals.Count);
+            Assert.AreEqual(1, program.User.Procedures.Count);
+            Assert.AreEqual(1, program.Procedures.Count);
         }
 
         private class FakeTextBox : ITextBox
