@@ -1083,9 +1083,9 @@ namespace Reko.ImageLoaders.Elf
             return GetStrPtr(strSection, offset);
         }
 
-        public static SortedList<Address, Tuple<Address,uint>> GetMemoryAreas(IEnumerable<Tuple<Address,uint>> segments)
+        public static SortedList<Address, MemoryArea> GetMemoryAreas(IEnumerable<Tuple<Address,uint>> segments)
         {
-            var mems = new SortedList<Address, Tuple<Address,uint>>();
+            var mems = new SortedList<Address, MemoryArea>();
             Address addr = null;
             Address addrEnd = null;
             foreach (var pair in segments)
@@ -1098,7 +1098,7 @@ namespace Reko.ImageLoaders.Elf
                 else if (addrEnd < pair.Item1)
                 {
                     var size = (uint)(addrEnd - addr);
-                    mems.Add(addr, Tuple.Create(addr, size));
+                    mems.Add(addr, new MemoryArea(addr, new byte[size]));
                     addr = pair.Item1;
                     addrEnd = pair.Item1 + pair.Item2;
                 } else
@@ -1108,8 +1108,8 @@ namespace Reko.ImageLoaders.Elf
             }
             if (addr != null)
             {
-                    var size = (uint)(addrEnd - addr);
-                mems.Add(addr, Tuple.Create(addr, size));
+                var size = (uint)(addrEnd - addr);
+                mems.Add(addr, new MemoryArea(addr, new byte[size]));
             }
             return mems;
         }

@@ -181,7 +181,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
 
             });
             Assert.AreEqual(1, mems.Count);
-            Assert.AreEqual(30u, mems.Values[0].Item2);
+            Assert.AreEqual(30, mems.Values[0].Length);
         }
 
         [Test]
@@ -194,7 +194,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
                 ElfSeg(1020, 20),
             });
             Assert.AreEqual(1, mems.Count);
-            Assert.AreEqual(40u, mems.Values[0].Item2);
+            Assert.AreEqual(40, mems.Values[0].Length);
         }
 
         [Test]
@@ -206,7 +206,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
                 ElfSeg(1010, 20),
             });
             Assert.AreEqual(1, mems.Count);
-            Assert.AreEqual(30u, mems.Values[0].Item2);
+            Assert.AreEqual(30, mems.Values[0].Length);
         }
     }
 }
