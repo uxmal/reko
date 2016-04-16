@@ -144,6 +144,11 @@ namespace Reko.Gui.Windows
         {
             return new TextEncodingDialog();
         }
+
+        public IDeclarationForm CreateDeclarationForm()
+        {
+            return new DeclarationForm();
+        }
     }
 }
 

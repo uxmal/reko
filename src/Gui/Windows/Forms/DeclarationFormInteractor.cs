@@ -22,51 +22,40 @@ using Reko.Core;
 using Reko.Core.Types;
 using Reko.Core.Output;
 using Reko.Core.Serialization;
+using Reko.Gui.Forms;
 using Reko.Analysis;
 using System;
 using System.IO;
-using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Reko.Gui.Windows.Controls
+namespace Reko.Gui.Windows.Forms
 {
-    public class DeclarationTextBox : IDisposable
+    public class DeclarationFormInteractor
     {
         private IServiceProvider services;
 
-        private TextBox text;
-        private Label label;
+        private IDeclarationForm declarationForm;
+        private bool closing;
 
         private Program program;
         private Address address;
 
         private bool editProcedure;
 
-        public DeclarationTextBox(Control bgControl, IServiceProvider services)
+        public DeclarationFormInteractor(IServiceProvider services)
         {
-            Debug.Print(bgControl.GetType().FullName);
-            text = new TextBox
-            {
-                BorderStyle = BorderStyle.FixedSingle,
-                Parent = bgControl,
-                Visible = false,
-            };
-            label = new Label
-            {
-                ForeColor = SystemColors.ControlText,
-                BackColor = SystemColors.Info,
-                BorderStyle = BorderStyle.FixedSingle,
-                AutoSize = true,
-                Parent = bgControl,
-                Visible = false,
-            };
-
-            text.LostFocus += text_LostFocus;
-            text.TextChanged += text_TextChanged;
-            text.KeyDown += text_KeyDown;
-
             this.services = services;
+        }
+
+        private void CreateDeclarationForm()
+        {
+            var dlgFactory = services.RequireService<IDialogFactory>();
+            this.declarationForm = dlgFactory.CreateDeclarationForm();
+
+            declarationForm.TextBox.LostFocus += text_LostFocus;
+            declarationForm.TextBox.TextChanged += text_TextChanged;
+            declarationForm.TextBox.KeyDown += text_KeyDown;
         }
 
         private string LabelText()
@@ -84,7 +73,7 @@ namespace Reko.Gui.Windows.Controls
             {
                 case Keys.Enter:
                 case Keys.Escape:
-                    HideControls();
+                    SaveAndClose();
                     e.SuppressKeyPress = true;
                     e.Handled = true;
                     break;
@@ -96,16 +85,10 @@ namespace Reko.Gui.Windows.Controls
             this.program = program;
             this.address = address;
             this.editProcedure = program.Procedures.ContainsKey(address);
-            label.Text = LabelText();
-            label.Location = new Point(location.X, location.Y - text.Height - label.Height);
-            text.Text = GetDeclarationText();
-            text.Location = new Point(location.X, location.Y - text.Height);
-            text.Width = label.Width;
-            label.BringToFront();
-            text.Visible = true;
-            label.Visible = true;
-            text.BringToFront();
-            text.Focus();
+            CreateDeclarationForm();
+            declarationForm.HintText = LabelText();
+            declarationForm.TextBox.Text = GetDeclarationText();
+            declarationForm.ShowAt(location);
         }
 
         private string GetDeclarationText()
@@ -149,8 +132,19 @@ namespace Reko.Gui.Windows.Controls
 
         public void HideControls()
         {
-            text.Visible = false;
-            label.Visible = false;
+            declarationForm.Hide();
+            declarationForm.Dispose();
+            declarationForm = null;
+        }
+
+        private void SaveAndClose()
+        {
+            if (closing)
+                return;
+            closing = true;
+            ModifyDeclaration();
+            HideControls();
+            closing = false;
         }
 
         void text_TextChanged(object sender, EventArgs e)
@@ -160,41 +154,32 @@ namespace Reko.Gui.Windows.Controls
 
         void text_LostFocus(object sender, EventArgs e)
         {
-            HideControls();
-            ModifyDeclaration();
-        }
-
-        public void Dispose()
-        {
-            if (text != null) text.Dispose();
-            if (label != null) label.Dispose();
-            text = null;
-            label = null;
+            SaveAndClose();
         }
 
         private void EnableControls()
         {
             ProcedureBase_v1 sProc;
             GlobalDataItem_v2 global;
-            var procText = text.Text;
+            var procText = declarationForm.TextBox.Text;
             if (TryParseSignature(procText, out sProc))
             {
-                text.ForeColor = SystemColors.ControlText;
+                declarationForm.TextBox.ForeColor = SystemColors.ControlText;
                 return;
             }
             if (!editProcedure && TryParseGlobal(procText, out global))
             {
-                text.ForeColor = SystemColors.ControlText;
+                declarationForm.TextBox.ForeColor = SystemColors.ControlText;
                 return;
             }
             // If parser failed, perhaps it's simply a valid name? 
             if (UserSignatureBuilder.IsValidCIdentifier(procText))
             {
-                text.ForeColor = SystemColors.ControlText; ;
+                declarationForm.TextBox.ForeColor = SystemColors.ControlText; ;
                 return;
             }
             // Not valid name either, die.
-            text.ForeColor = Color.Red;
+            declarationForm.TextBox.ForeColor = Color.Red;
         }
 
         private bool TryParseSignature(string txtSignature, out ProcedureBase_v1 sProc)
@@ -227,7 +212,7 @@ namespace Reko.Gui.Windows.Controls
 
         private void ModifyDeclaration()
         {
-            var declText = text.Text.Trim();
+            var declText = declarationForm.TextBox.Text.Trim();
             Procedure proc;
             if (!program.Procedures.TryGetValue(address, out proc))
                 proc = null;

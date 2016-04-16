@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2016 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,25 +18,16 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
+using System.Drawing;
+using Reko.Gui.Controls;
 
-namespace Reko.Gui.Controls
+namespace Reko.Gui.Forms
 {
-    public interface ITextBox : IControl
+    public interface IDeclarationForm : IDialog
     {
-        event EventHandler TextChanged;
-        event KeyEventHandler KeyDown;
-        event EventHandler LostFocus;
-
-        bool Enabled { get; set; }
-        string Text { get; set; }
-
-        void SelectAll();
-
-        void Focus();
+        string HintText { get; set; }
+        ITextBox TextBox { get; }
+        void ShowAt(Point location);
+        void Hide();
     }
 }

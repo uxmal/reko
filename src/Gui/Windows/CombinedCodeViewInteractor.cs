@@ -27,6 +27,7 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Gui.Forms;
 using Reko.Gui.Windows.Controls;
+using Reko.Gui.Windows.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -50,7 +51,7 @@ namespace Reko.Gui.Windows
         private NestedTextModel nestedTextModel;
         private GViewer gViewer;
 
-        private DeclarationTextBox declarationTextBox;
+        private DeclarationFormInteractor declarationFormInteractor;
 
         private ImageSegment segment;
         private bool showProcedures;
@@ -243,7 +244,7 @@ namespace Reko.Gui.Windows
             this.navInteractor = new NavigationInteractor<Address>();
             this.navInteractor.Attach(this.combinedCodeView);
 
-            declarationTextBox = new DeclarationTextBox(combinedCodeView, services);
+            declarationFormInteractor = new DeclarationFormInteractor(services);
 
             return combinedCodeView;
         }
@@ -390,8 +391,7 @@ namespace Reko.Gui.Windows
             }
             var anchorPt = combinedCodeView.MixedCodeDataView.GetAnchorTopPoint();
             var screenPoint = combinedCodeView.MixedCodeDataView.PointToScreen(anchorPt);
-            var clientPoint = combinedCodeView.PointToClient(screenPoint);
-            declarationTextBox.Show(clientPoint, program, addr);
+            declarationFormInteractor.Show(screenPoint, program, addr);
         }
 
         private void MixedCodeDataView_MouseDown(object sender, MouseEventArgs e)

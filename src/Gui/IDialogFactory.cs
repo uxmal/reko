@@ -40,5 +40,6 @@ namespace Reko.Gui
         IUserPreferencesDialog CreateUserPreferencesDialog();
         IWorkerDialog CreateWorkerDialog();
         ITextEncodingDialog CreateTextEncodingDialog();
+        IDeclarationForm CreateDeclarationForm();
     }
 }
