@@ -55,6 +55,9 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             this.sc = new ServiceContainer();
             var cfgSvc = mr.Stub<IConfigurationService>();
             var arch = mr.Stub<IProcessorArchitecture>();
+            platform.Stub(p => p.MakeAddressFromLinear(0))
+                .IgnoreArguments()
+                .Do(new Func<ulong, Address>(u => Address.Ptr64(u)));
             cfgSvc.Stub(c => c.GetArchitecture("x86-protected-64")).Return(arch);
             sc.AddService<IConfigurationService>(cfgSvc);
         }
@@ -136,7 +139,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             mr.ReplayAll();
 
             When_CreateLoader64();
-            var imageMap = el64.LoadImageBytes(platform, this.bytes, Address.Ptr64(0x1000), null);
+            var imageMap = el64.LoadImageBytes(platform, this.bytes, Address.Ptr64(0x1000));
 
             ImageSegment segText;
             Assert.IsTrue(imageMap.TryFindSegment(Address.Ptr64(0x1001), out segText));

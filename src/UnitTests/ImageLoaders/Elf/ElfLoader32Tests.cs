@@ -136,7 +136,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             mr.ReplayAll();
 
             When_CreateLoader32();
-            var imageMap = el32.LoadImageBytes(platform, this.bytes, Address.Ptr32(0x1000), null);
+            var imageMap = el32.LoadImageBytes(platform, this.bytes, Address.Ptr32(0x1000));
 
             ImageSegment segText;
             Assert.IsTrue(imageMap.TryFindSegment(Address.Ptr32(0x1001), out segText));
@@ -152,7 +152,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         [Test]
         public void El32_SegmentSequence()
         {
-            var mems = ElfLoader32.GetMemoryAreas(new[]
+            var mems = ElfLoader32.AllocateMemoryAreas(new[]
             {
                 ElfSeg(1000, 10)
             });
@@ -162,7 +162,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         [Test]
         public void El32_SegmentSequence_Disjoint()
         {
-            var mems = ElfLoader32.GetMemoryAreas(new[]
+            var mems = ElfLoader32.AllocateMemoryAreas(new[]
             {
                 ElfSeg(1000, 10),
                 ElfSeg(1020, 10),
@@ -174,7 +174,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         [Test]
         public void El32_SegmentSequence_Overlap()
         {
-            var mems = ElfLoader32.GetMemoryAreas(new[]
+            var mems = ElfLoader32.AllocateMemoryAreas(new[]
             {
                 ElfSeg(1000, 20),
                 ElfSeg(1010, 20),
@@ -187,7 +187,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         [Test]
         public void El32_SegmentSequence_Overlap3()
         {
-            var mems = ElfLoader32.GetMemoryAreas(new[]
+            var mems = ElfLoader32.AllocateMemoryAreas(new[]
             {
                 ElfSeg(1000, 20),
                 ElfSeg(1010, 20),
@@ -200,7 +200,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         [Test]
         public void El32_SegmentSequence_Adjacent()
         {
-            var mems = ElfLoader32.GetMemoryAreas(new[]
+            var mems = ElfLoader32.AllocateMemoryAreas(new[]
             {
                 ElfSeg(1000, 10),
                 ElfSeg(1010, 20),

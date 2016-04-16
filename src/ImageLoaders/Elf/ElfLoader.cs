@@ -85,6 +85,38 @@ namespace Reko.ImageLoaders.Elf
             return mode;
         }
 
+        public static SortedList<Address, MemoryArea> AllocateMemoryAreas(IEnumerable<Tuple<Address, uint>> segments)
+        {
+            var mems = new SortedList<Address, MemoryArea>();
+            Address addr = null;
+            Address addrEnd = null;
+            foreach (var pair in segments)
+            {
+                if (addr == null)
+                {
+                    addr = pair.Item1;
+                    addrEnd = pair.Item1 + pair.Item2;
+                }
+                else if (addrEnd < pair.Item1)
+                {
+                    var size = (uint)(addrEnd - addr);
+                    mems.Add(addr, new MemoryArea(addr, new byte[size]));
+                    addr = pair.Item1;
+                    addrEnd = pair.Item1 + pair.Item2;
+                }
+                else
+                {
+                    addrEnd = Address.Max(addrEnd, pair.Item1 + pair.Item2);
+                }
+            }
+            if (addr != null)
+            {
+                var size = (uint)(addrEnd - addr);
+                mems.Add(addr, new MemoryArea(addr, new byte[size]));
+            }
+            return mems;
+        }
+
         protected IProcessorArchitecture CreateArchitecture(ushort machineType)
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
@@ -140,9 +172,8 @@ namespace Reko.ImageLoaders.Elf
             this.rawImage = rawImage;
             GetPltLimits();
             var addrPreferred = ComputeBaseAddress(platform);
-            var addrMax = ComputeMaxAddress(platform);
             Dump();
-            var imageMap = LoadImageBytes(platform, rawImage, addrPreferred, addrMax);
+            var imageMap = LoadImageBytes(platform, rawImage, addrPreferred);
             var program = new Program(imageMap, platform.Architecture, platform);
             return program;
         }
@@ -151,7 +182,7 @@ namespace Reko.ImageLoaders.Elf
 
         public abstract void GetPltLimits();
 
-        public abstract ImageMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred, Address addrMax);
+        public abstract ImageMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred);
 
         public ImageReader CreateReader(ulong fileOffset)
         {
@@ -164,7 +195,6 @@ namespace Reko.ImageLoaders.Elf
         }
 
         public abstract Address ComputeBaseAddress(IPlatform platform);
-        public abstract Address ComputeMaxAddress(IPlatform platform);
         public abstract int LoadProgramHeaderTable();
         public abstract void LoadSectionHeaders();
         public abstract void LoadSymbols();
@@ -408,16 +438,6 @@ namespace Reko.ImageLoaders.Elf
             return platform.MakeAddressFromLinear(uBaseAddr);
         }
 
-        public override Address ComputeMaxAddress(IPlatform platform)
-        {
-            ulong uMaxAddress =
-                   ProgramHeaders64
-                   .Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0)
-                   .Select(ph => ph.p_vaddr + ph.p_pmemsz)
-                   .Max();
-            return platform.MakeAddressFromLinear(uMaxAddress);
-        }
-
         public override ElfObjectLinker CreateLinker()
         {
             return new ElfObjectLinker64(this, Architecture, rawImage);
@@ -589,20 +609,27 @@ namespace Reko.ImageLoaders.Elf
             return GetStrPtr(symSection.LinkedSection, (uint)offset);
         }
 
-        public override ImageMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred, Address addrMax)
+        public override ImageMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred)
         {
-            var segMap = new SortedList<Address, MemoryArea>();
+            var segMap = AllocateMemoryAreas(
+                ProgramHeaders64
+                    .Where(p => IsLoadable(p.p_vaddr, p.p_type))
+                    .Select(p => Tuple.Create(
+                        platform.MakeAddressFromLinear(p.p_vaddr),
+                        (uint)p.p_pmemsz)));
             foreach (var ph in ProgramHeaders64)
             {
                 Debug.Print("ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.p_vaddr, ph.p_filesz, ph.p_pmemsz);
                 if (!IsLoadable(ph.p_vaddr, ph.p_type))
                     continue;
-                var mem = new MemoryArea(
-                    Address.Ptr64(ph.p_vaddr),
-                    new byte[ph.p_pmemsz]);
+                var vaddr = platform.MakeAddressFromLinear(ph.p_vaddr);
+                MemoryArea mem;
+                segMap.TryGetLowerBound(vaddr, out mem);
                 if (ph.p_filesz > 0)
-                    Array.Copy(rawImage, (long)ph.p_offset, mem.Bytes, 0, (long)ph.p_filesz);
-                segMap.Add(mem.BaseAddress, mem);
+                    Array.Copy(
+                        rawImage,
+                        (long)ph.p_offset, mem.Bytes,
+                        vaddr - mem.BaseAddress, (long)ph.p_filesz);
             }
             var imageMap = new ImageMap(addrPreferred);
             foreach (var section in Sections)
@@ -662,7 +689,7 @@ namespace Reko.ImageLoaders.Elf
                     Type = shdr.sh_type,
                     Flags = shdr.sh_flags,
                     Address = shdr.sh_addr != 0
-                        ? Address.Ptr64(shdr.sh_addr)
+                        ? platform.MakeAddressFromLinear(shdr.sh_addr)
                         : null,
                     FileOffset = shdr.sh_offset,
                     Size = shdr.sh_size,
@@ -895,15 +922,6 @@ namespace Reko.ImageLoaders.Elf
                 .Min(ph => ph.p_vaddr));
         }
 
-        public override Address ComputeMaxAddress(IPlatform platform)
-        {
-            return Address.Ptr32(
-                ProgramHeaders
-                .Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0)
-                .Select(ph => ph.p_vaddr + ph.p_pmemsz)
-                .Max());
-        }
-
         public override ElfObjectLinker CreateLinker()
         {
             return new ElfObjectLinker32(this, Architecture, rawImage);
@@ -1083,60 +1101,34 @@ namespace Reko.ImageLoaders.Elf
             return GetStrPtr(strSection, offset);
         }
 
-        public static SortedList<Address, MemoryArea> GetMemoryAreas(IEnumerable<Tuple<Address,uint>> segments)
+        public override ImageMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred)
         {
-            var mems = new SortedList<Address, MemoryArea>();
-            Address addr = null;
-            Address addrEnd = null;
-            foreach (var pair in segments)
-            {
-                if (addr == null)
-                {
-                    addr = pair.Item1;
-                    addrEnd = pair.Item1 + pair.Item2;
-                }
-                else if (addrEnd < pair.Item1)
-                {
-                    var size = (uint)(addrEnd - addr);
-                    mems.Add(addr, new MemoryArea(addr, new byte[size]));
-                    addr = pair.Item1;
-                    addrEnd = pair.Item1 + pair.Item2;
-                } else
-                {
-                    addrEnd = Address.Max(addrEnd, pair.Item1 + pair.Item2);
-                }
-            }
-            if (addr != null)
-            {
-                var size = (uint)(addrEnd - addr);
-                mems.Add(addr, new MemoryArea(addr, new byte[size]));
-            }
-            return mems;
-        }
+            var segMap = AllocateMemoryAreas(
+                ProgramHeaders
+                    .Where(p => IsLoadable(p.p_vaddr, p.p_type))
+                    .Select(p => Tuple.Create(
+                        Address.Ptr32(p.p_vaddr),
+                        p.p_pmemsz)));
 
-        public override ImageMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred, Address addrMax)
-        {
-            var segMap = new SortedList<Address, MemoryArea>();
             foreach (var ph in ProgramHeaders)
             {
                 Debug.Print("ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.p_vaddr, ph.p_filesz, ph.p_pmemsz);
                 if (!IsLoadable(ph.p_vaddr, ph.p_type))
                     continue;
-                var mem = new MemoryArea(
-                    Address.Ptr32(ph.p_vaddr),
-                    new byte[ph.p_pmemsz]);
+                var vaddr = Address.Ptr32(ph.p_vaddr);
+                MemoryArea mem;
+                segMap.TryGetLowerBound(vaddr, out mem);
                 if (ph.p_filesz > 0)
-                    Array.Copy(rawImage, (long)ph.p_offset, mem.Bytes, 0, (long)ph.p_filesz);
-                segMap.Add(mem.BaseAddress, mem);
+                    Array.Copy(
+                        rawImage,
+                        (long)ph.p_offset, mem.Bytes,
+                        vaddr - mem.BaseAddress, (long)ph.p_filesz);
             }
             var imageMap = new ImageMap(addrPreferred);
             foreach (var section in Sections)
             {
                 if (section.Name == null || section.Address == null)
                     continue;
-
-                if (section.Name == ".text")
-                    section.ToString();//$DEBUG
 
                 MemoryArea mem;
                 if (segMap.TryGetLowerBound(section.Address, out mem) &&
@@ -1292,7 +1284,13 @@ namespace Reko.ImageLoaders.Elf
         private EntryPoint MakeEntryPoint(ElfSymbol sym)
         {
             var symSection = Sections[(int)sym.SectionIndex];
-            var addr = symSection.Address + sym.Value;
+            // If this is a relocatable file, the symbol value is 
+            // an offset from the section's virtual address. 
+            // If this is an executable file, the symbol value is
+            // the virtual address.
+            var addr = Header.e_type == ElfImageLoader.ET_REL
+                ? symSection.Address + sym.Value
+                : platform.MakeAddressFromLinear(sym.Value);
             return new EntryPoint(addr, sym.Name, state: Architecture.CreateProcessorState());
         }
     }
