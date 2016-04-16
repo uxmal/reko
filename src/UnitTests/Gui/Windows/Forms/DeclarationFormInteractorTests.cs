@@ -20,10 +20,7 @@
  
 using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using Reko.Gui.Windows.Forms;
 using Rhino.Mocks;
 using Reko.Arch.X86;
 using Reko.Environments.Windows;
@@ -51,16 +48,18 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         public void Setup()
         {
             mr = new MockRepository();
-            var bgControl = new TextBox();
             var services = new ServiceContainer();
-            declarationForm = mr.Stub<DeclarationForm>();
+            declarationForm = mr.Stub<IDeclarationForm>();
             textBox = new FakeTextBox();
             declarationForm.Stub(f => f.TextBox).Return(textBox);
+            declarationForm.Stub(f => f.ShowAt(new Point()));
+            declarationForm.Stub(f => f.Hide());
+            declarationForm.Stub(f => f.Dispose());
             var dlgFactory = mr.Stub<IDialogFactory>();
             dlgFactory.Stub(f => f.CreateDeclarationForm()).Return(declarationForm);
             services.AddService<IDialogFactory>(dlgFactory);
             mr.ReplayAll();
-            interactor = new DeclarationTextBox(bgControl, services);
+            interactor = new DeclarationTextBox(services);
             var mem = new MemoryArea(Address32.Ptr32(0x10), new byte[40]);
             var seg = new ImageSegment(".text", mem, AccessMode.ReadWrite);
             var imageMap = new ImageMap(Address32.Ptr32(0x05), seg);

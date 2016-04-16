@@ -243,7 +243,7 @@ namespace Reko.Gui.Windows
             this.navInteractor = new NavigationInteractor<Address>();
             this.navInteractor.Attach(this.combinedCodeView);
 
-            declarationTextBox = new DeclarationTextBox(combinedCodeView, services);
+            declarationTextBox = new DeclarationTextBox(services);
 
             return combinedCodeView;
         }
@@ -390,8 +390,7 @@ namespace Reko.Gui.Windows
             }
             var anchorPt = combinedCodeView.MixedCodeDataView.GetAnchorTopPoint();
             var screenPoint = combinedCodeView.MixedCodeDataView.PointToScreen(anchorPt);
-            var clientPoint = combinedCodeView.PointToClient(screenPoint);
-            declarationTextBox.Show(clientPoint, program, addr);
+            declarationTextBox.Show(screenPoint, program, addr);
         }
 
         private void MixedCodeDataView_MouseDown(object sender, MouseEventArgs e)

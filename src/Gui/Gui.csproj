@@ -290,7 +290,12 @@
     <Compile Include="Windows\Controls\TextViewLayout.cs" />
     <Compile Include="Windows\Controls\TextViewPainter.cs" />
     <Compile Include="Windows\Controls\DeclarationTextBox.cs" />
-    <Compile Include="Windows\Forms\DeclarationForm.cs" />
+    <Compile Include="Windows\Forms\DeclarationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\DeclarationForm.Designer.cs">
+      <DependentUpon>DeclarationForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Forms\TextEncodingDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -583,6 +588,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Forms\CallSiteDialog.resx">
       <DependentUpon>CallSiteDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\Forms\DeclarationForm.resx">
+      <DependentUpon>DeclarationForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Forms\EditProjectDialog.resx">
       <DependentUpon>EditProjectDialog.cs</DependentUpon>

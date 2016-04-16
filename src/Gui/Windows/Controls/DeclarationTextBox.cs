@@ -22,12 +22,10 @@ using Reko.Core;
 using Reko.Core.Types;
 using Reko.Core.Output;
 using Reko.Core.Serialization;
-using Reko.Gui.Windows.Forms;
 using Reko.Gui.Forms;
 using Reko.Analysis;
 using System;
 using System.IO;
-using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -37,8 +35,6 @@ namespace Reko.Gui.Windows.Controls
     {
         private IServiceProvider services;
 
-        private Control bgControl;// $TODO remove
-
         private IDeclarationForm declarationForm;
         private bool closing;
 
@@ -47,17 +43,15 @@ namespace Reko.Gui.Windows.Controls
 
         private bool editProcedure;
 
-        public DeclarationTextBox(Control bgControl, IServiceProvider services)
+        public DeclarationTextBox(IServiceProvider services)
         {
             this.services = services;
-            this.bgControl = bgControl;
         }
 
         private void CreateDeclarationForm()
         {
             var dlgFactory = services.RequireService<IDialogFactory>();
             this.declarationForm = dlgFactory.CreateDeclarationForm();
-            ((DeclarationForm)declarationForm).SetBgControl(bgControl);
 
             declarationForm.TextBox.LostFocus += text_LostFocus;
             declarationForm.TextBox.TextChanged += text_TextChanged;
