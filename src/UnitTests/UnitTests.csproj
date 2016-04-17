@@ -232,6 +232,7 @@
     <Compile Include="Gui\Commands\Cmd_WhatPointsHereTests.cs" />
     <Compile Include="Gui\Design\ImageMapSegmentDesignerTests.cs" />
     <Compile Include="Gui\Design\ProcedureDesignerTests.cs" />
+    <Compile Include="Gui\Windows\CombinedCodeViewInteractorTests.cs" />
     <Compile Include="Gui\Windows\Controls\ImageMapViewTests.cs" />
     <Compile Include="Gui\Windows\Controls\MixedCodeDataModelTests.cs" />
     <Compile Include="Gui\Windows\Controls\NestedTextModelTests.cs" />
