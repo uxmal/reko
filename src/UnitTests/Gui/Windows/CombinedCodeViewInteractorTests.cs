@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Gui.Windows
 {
     class CombinedCodeViewInteractorTests
     {
-        private CombinedCodeViewInteractor combinedCodeViewInteractor;
+        private CombinedCodeViewInteractor interactor;
         private CombinedCodeView combinedCodeView;
         private MockRepository mr;
         private MockFactory mockFactory;
@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Gui.Windows
             var platform = mockFactory.CreatePlatform();
             var imageMap = new ImageMap(Address32.Ptr32(0x05));
             program = new Program(imageMap, platform.Architecture, platform);
-            combinedCodeViewInteractor = new CombinedCodeViewInteractor();
+            interactor = new CombinedCodeViewInteractor();
             var uiPreferencesSvc = mr.Stub<IUiPreferencesService>();
             var uiSvc = mr.Stub<IDecompilerShellUiService>();
 
@@ -70,13 +70,13 @@ namespace Reko.UnitTests.Gui.Windows
             var sc = new ServiceContainer();
             sc.AddService<IUiPreferencesService>(uiPreferencesSvc);
             sc.AddService<IDecompilerShellUiService>(uiSvc);
-            combinedCodeViewInteractor.SetSite(sc);
+            interactor.SetSite(sc);
         }
 
         [TearDown]
         public void TearDown()
         {
-            combinedCodeViewInteractor.Close();
+            interactor.Close();
         }
 
         private string Flatten(TextViewModel model)
@@ -110,12 +110,12 @@ namespace Reko.UnitTests.Gui.Windows
 
         private void When_CombinedCodeViewCreated()
         {
-            combinedCodeView = (CombinedCodeView) combinedCodeViewInteractor.CreateControl();
+            combinedCodeView = (CombinedCodeView) interactor.CreateControl();
         }
 
         private void When_MovedTo(uint addr)
         {
-            combinedCodeViewInteractor.SelectedAddress = Address32.Ptr32(addr);
+            interactor.SelectedAddress = Address32.Ptr32(addr);
         }
 
         private void Given_ImageSegment(uint addr, params byte[] bytes)
@@ -169,7 +169,7 @@ namespace Reko.UnitTests.Gui.Windows
             mr.ReplayAll();
 
             When_CombinedCodeViewCreated();
-            combinedCodeViewInteractor.DisplayProcedure(this.program, this.proc);
+            interactor.DisplayProcedure(this.program, this.proc);
 
             var sExp =
 @"void fnTest()
@@ -226,7 +226,7 @@ int32 iVar = 1000;
 
             When_CombinedCodeViewCreated();
             var segment = this.program.ImageMap.Segments.Values[0];
-            combinedCodeViewInteractor.DisplayGlobals(this.program, segment);
+            interactor.DisplayGlobals(this.program, segment);
 
             var sExp =
 @"int32 iVar = 1000;
