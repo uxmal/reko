@@ -105,6 +105,7 @@ namespace Reko.Analysis
                 var mediant = Rational.FromIntegers(
                     lower.Numerator + upper.Numerator,
                     lower.Denominator + upper.Denominator);
+                Debug.Print("mediant: {0}", mediant);
                 yield return mediant;
                 var approx = mediant.ToDouble();
                 if (fraction < approx)
@@ -231,7 +232,7 @@ namespace Reko.Analysis
                     Operator.IMul,
                     eNum.DataType,
                     eNum,
-                    Constant.Int32(bestRational.Numerator));
+                    Constant.Int32((int)bestRational.Numerator));
             }
             var sidOrig = ssa.Identifiers[idOrig];
             var sidDst = ssa.Identifiers[idDst];
@@ -243,8 +244,37 @@ namespace Reko.Analysis
                     Operator.SDiv,
                     eNum.DataType,
                     eNum,
-                    Constant.Int32(bestRational.Denominator)));
+                    Constant.Int32((int)bestRational.Denominator)));
             return sidDst.DefStatement.Instruction as Assignment;
+        }
+
+        public static Rational ContinuedFraction(double x)
+        {
+            Debug.Assert(0 <= x && x < 1.0);
+            int scale = 1;
+            while (x < 0.5)
+            {
+                x *= 2.0;
+                scale *= 2;
+            }
+            var a = new List<int>();
+            while (x > 1e-6 && a.Count < 10)
+            {
+                var r = 1.0 / x;
+                int a1 = (int)r;
+                x = r - a1;
+                a.Add(a1);
+            }
+            Debug.Print("cfrac [{0}]", string.Join(", ", a));
+            var rat = new Rational(0, 1);
+            for (int i = a.Count-1; i >= 0; --i)
+            {
+                rat = a[i] + rat;
+                rat = rat.Reciprocal();
+            }
+            rat = rat / scale;
+            Debug.Print("crat: {0}", rat);
+            return rat;
         }
     }
 }
