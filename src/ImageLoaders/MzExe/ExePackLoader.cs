@@ -164,8 +164,11 @@ namespace Reko.ImageLoaders.MzExe
                     {
                         ushort relocOff = rdr.ReadLeUInt16();
                         ushort seg = imgU.FixupLeUInt16(relocBase + relocOff, segCode);
-                        var segment = imageMap.AddSegment(Address.SegPtr(seg, 0), seg.ToString("X4"), AccessMode.ReadWriteExecute, 0);
-                        segment.MemoryArea = imgU;
+                        var segment = imageMap.AddSegment(new ImageSegment(
+                            seg.ToString("X4"), 
+                            Address.SegPtr(seg, 0),
+                            imgU,
+                            AccessMode.ReadWriteExecute));
                     } while (--cx != 0);
                 }
                 if (dx == 0xF000)

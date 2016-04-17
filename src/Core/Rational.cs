@@ -30,7 +30,7 @@ namespace Reko.Core
     /// </summary>
     public struct Rational
     {
-        public static Rational FromIntegers(int num, int den)
+        public static Rational FromIntegers(long num, long den)
         {
             var g = gcd(num, den);
             if (g > 1)
@@ -41,29 +41,44 @@ namespace Reko.Core
             return new Rational(num, den);
         }
 
-        public readonly int Numerator;
-        public readonly int Denominator;
+        public readonly long Numerator;
+        public readonly long Denominator;
 
-        public Rational(int num, int den)
+        public Rational(long num, long den)
         {
             this.Numerator = num;
             this.Denominator = den;
         }
 
-        public static Rational operator /(Rational r, int n)
+        public static Rational operator +(Rational r, long n)
+        {
+            return FromIntegers(r.Numerator + n * r.Denominator, r.Denominator);
+        }
+
+        public static Rational operator +(int n, Rational r)
+        {
+            return FromIntegers(r.Numerator + n * r.Denominator, r.Denominator);
+        }
+
+        public static Rational operator /(Rational r, long n)
         {
             return FromIntegers(r.Numerator, r.Denominator * n);
         }
 
-        private static int gcd(int a, int b)
+        private static long gcd(long a, long b)
         {
             while (b != 0)
             {
-                int t = b;
+                long t = b;
                 b = a % b;
                 a = t;
             }
             return a;
+        }
+
+        public Rational Reciprocal()
+        {
+            return FromIntegers(Denominator, Numerator);
         }
 
         public double ToDouble()

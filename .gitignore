@@ -7,8 +7,11 @@
 TestResults
 /src/Samples/TravisRelease
 *.VC.opendb
+*.VC.db
 /src/UpgradeLog.htm
-/src/Reko-decompiler.VC.db
+/src/.vs/config
 /src/UnitTests/UnitTests.csproj.VisualState.xml
 /src/UnitTests/TestResult.xml
-/src/.vs/config
+/src/tools/reko.config
+/src/Reko-decompiler.VC.db
+

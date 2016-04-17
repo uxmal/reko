@@ -493,8 +493,14 @@ namespace Reko.ImageLoaders.MzExe
                 {
                     acc |= AccessMode.Execute;
                 }
-                var seg = imageMap.AddSegment(addrLoad + s.VirtualAddress, s.Name, acc, s.VirtualSize);
-                seg.MemoryArea = imgLoaded;
+                var seg = imageMap.AddSegment(new ImageSegment(
+                    s.Name,
+                    addrLoad + s.VirtualAddress, 
+                    imgLoaded, 
+                    acc)
+                {
+                    Size = s.VirtualSize
+                });
                 seg.IsDiscardable = s.IsDiscardable;
             }
         }

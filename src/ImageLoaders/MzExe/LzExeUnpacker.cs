@@ -185,7 +185,12 @@ namespace Reko.ImageLoaders.MzExe
 				ushort seg = (ushort) (pgmImgNew.ReadLeUInt16((uint)rel_off) + segReloc);
 				pgmImgNew.WriteLeUInt16((uint)rel_off, seg);
 				relocations.AddSegmentReference((uint)rel_off, seg);
-				imageMap.AddSegment(Address.SegPtr(seg, 0), seg.ToString("X4"), AccessMode.ReadWriteExecute, 0);
+				imageMap.AddSegment(
+                    new ImageSegment(
+                        seg.ToString("X4"),
+                        Address.SegPtr(seg, 0),
+                        this.imgLoaded,
+                        AccessMode.ReadWriteExecute));
 			}
 			return imageMap;
 		}

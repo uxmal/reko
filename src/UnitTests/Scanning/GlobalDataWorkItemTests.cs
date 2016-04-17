@@ -87,16 +87,20 @@ namespace Reko.UnitTests.Scanning
             Given_Program(Address.Ptr32(0x43210000), bytes);
             var project = new Project { Programs = { program } };
 
-            var sSig1 = new SerializedSignature()
-            {
-                ReturnValue = new Argument_v1(null, new PrimitiveType_v1(Domain.Integer, 4), null, false),
-            };
             var sSig2 = new SerializedSignature()
             {
                 ReturnValue = new Argument_v1(null, new PrimitiveType_v1(Domain.Character, 1), null, false),
             };
-            var ft1 = new FunctionType(sSig1);
-            var ft2 = new FunctionType(sSig2);
+            var ft1 = new FunctionType(
+                null,
+                PrimitiveType.Int32,
+                new DataType[0],
+                new string[0]);
+            var ft2 = new FunctionType(
+                null,
+                PrimitiveType.Char,
+                new DataType[0],
+                new string[0]);
             var str = new StructureType();
             var fields = new StructureField[] {
                 new StructureField(0, new Pointer(ft1, 4), "A"),
@@ -139,11 +143,11 @@ namespace Reko.UnitTests.Scanning
             };
             Given_Program(Address.Ptr32(0x43210000), bytes);
 
-            var sSig = new SerializedSignature()
-            {
-                ReturnValue = new Argument_v1(null, new PrimitiveType_v1(Domain.Real, 4), null, false),
-            };
-            var ft = new FunctionType(sSig);
+            var ft = new FunctionType(
+                null,
+                PrimitiveType.Real32,
+                new DataType[0],
+                new string[0]);
             var str = new StructureType("str", 0);
             var fields = new StructureField[] {
                 new StructureField(0, new Pointer(ft,  4), "func"),
@@ -176,10 +180,11 @@ namespace Reko.UnitTests.Scanning
             };
             Given_Program(Address.Ptr32(0x43210000), bytes);
 
-            var ft = new FunctionType(new SerializedSignature
-            {
-                ReturnValue = new Argument_v1(null, new PrimitiveType_v1(Domain.Real, 4), null, false),
-            });
+            var ft = new FunctionType(
+                null,
+                PrimitiveType.Real32, 
+                new DataType[0], 
+                new string[0]);
             var str = new StructureType();
             str.Fields.AddRange(new StructureField[]
             {
@@ -200,10 +205,11 @@ namespace Reko.UnitTests.Scanning
         public void Gdwi_FunctionType()
         {
             Given_Program(Address.Ptr32(0x12340000), new byte[4]);
-            var ft = new FunctionType(new SerializedSignature
-            {
-                ReturnValue = new Argument_v1(null, new PrimitiveType_v1(Domain.Real, 8), null, false),
-            });
+            var ft = new FunctionType(
+               null,
+               PrimitiveType.Real32,
+               new DataType[0],
+               new string[0]);
             scanner.Expect(s => s.EnqueueUserProcedure(
                 Arg<Procedure_v1>.Matches(up => up.Address == "12340000")));
             mr.ReplayAll();

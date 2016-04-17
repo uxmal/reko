@@ -4,4 +4,10 @@
 
 #include "ls.h"
 
+Eq_14 g_t4028C0 = Unexpected function type (fn void ())
+;
+Eq_17 g_t411E60 = Unexpected function type (fn void ())
+;
+Eq_18 g_t411ED0 = Unexpected function type (fn void ())
+;
 

@@ -106,11 +106,11 @@ namespace Reko.UnitTests.Core
             {
                 Types = new SerializedType[]
                 {
-                    new SerializedTypedef { 
-                        Name="pint", 
+                    new SerializedTypedef {
+                        Name="pint",
                         DataType= new PointerType_v1
                         {
-                            DataType = new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize=4 } 
+                            DataType = new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize=4 }
                         }
                     }
                 }
@@ -130,7 +130,7 @@ namespace Reko.UnitTests.Core
             var slib = new SerializedLibrary
             {
                 Procedures = {
-                    new Procedure_v1 { 
+                    new Procedure_v1 {
                         Name="foo",
                         Signature = new SerializedSignature
                         {
@@ -152,11 +152,12 @@ namespace Reko.UnitTests.Core
 
         [Test]
         public void Tlldr_BothOrdinalAndName()
-        {  
+        {
             Given_ArchitectureStub();
             mr.ReplayAll();
             var tlLDr = new TypeLibraryDeserializer(platform, true, new TypeLibrary());
-            var slib = new SerializedLibrary {
+            var slib = new SerializedLibrary
+            {
                 Procedures = {
                     new SerializedService {
                         Name="foo",
@@ -238,7 +239,7 @@ namespace Reko.UnitTests.Core
                 }
             }.Accept(tlldr);
 
-            var str = (StructureType) typelib.Types["_locale_tstruct"];
+            var str = (StructureType)typelib.Types["_locale_tstruct"];
             Assert.AreEqual("(struct \"localeinfo_struct\" (0 ui32 foo))", str.ToString());
         }
 
@@ -276,6 +277,34 @@ namespace Reko.UnitTests.Core
 
             var str = (UnionType)typelib.Types["variant_t"];
             Assert.AreEqual("(union \"variant_union\" (ui32 foo) (real32 bar))", str.ToString());
+        }
+
+        [Test(Description = "Load a serialized signature")]
+        [Ignore("Needs to wait until we reach convergence Functype / ProcedureSignature")]
+        public void Tlldr_signature()
+        {
+            Given_ArchitectureStub();
+            mr.ReplayAll();
+
+            var typelib = new TypeLibrary();
+            var tlldr = new TypeLibraryDeserializer(platform, true, typelib);
+            var fn = tlldr.VisitSignature(new SerializedSignature
+            {
+                Arguments = new[]
+                {
+                    new Argument_v1 {
+                        Name = "reg1",
+                        Type = new PrimitiveType_v1 { Domain =Domain.Real, ByteSize = 4 },
+                        Kind = new Register_v1 { Name = "r3" }
+                    }
+                },
+                ReturnValue = new Argument_v1
+                {
+                    Type = new PrimitiveType_v1 { Domain = Domain.Integer, ByteSize = 4 },
+                    Kind = new Register_v1 { Name = "r3" }
+                }
+            });
+            Assert.AreEqual("(fn ui32 (real32))", fn.ToString());
         }
     }
 }

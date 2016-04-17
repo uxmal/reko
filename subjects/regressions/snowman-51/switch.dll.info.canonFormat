@@ -1,0 +1,3 @@
+[dataRanges]
+0x10071030-0x10071040;jump+table+4+4-byte+entries
+

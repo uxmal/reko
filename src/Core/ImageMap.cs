@@ -260,7 +260,6 @@ namespace Reko.Core
             return segment;
         }
 
-
         public ImageSegment AddSegment(Address addr, string segmentName, AccessMode access, uint contentSize)
         {
             return AddSegment(new ImageSegment(segmentName, addr, contentSize, access));

@@ -38,66 +38,61 @@ namespace Reko.ImageLoaders.Elf
 
         public override void Relocate(Program program)
         {
-            DumpRela32(loader);
-            foreach (var relSection in loader.Sections.Where(s => s.Type == SectionHeaderType.SHT_RELA))
+            base.Relocate32(loader);
+        }
+
+        public override void RelocateEntry(List<ElfSymbol> symbols, ElfSection referringSection, Elf32_Rela rela)
+        {
+            var sym = symbols[(int)(rela.r_info >> 8)];
+            if (loader.Sections.Count <= sym.SectionIndex)
+                return;       //$DEBUG
+            if (sym.SectionIndex == 0)
+                return;
+            var symSection = loader.Sections[(int)sym.SectionIndex];
+            uint S = (uint)sym.Value + symSection.Address.ToUInt32();
+            int A = 0;
+            int sh = 0;
+            uint mask = ~0u;
+            var addr = referringSection.Address + rela.r_offset;
+            uint P = (uint)addr.ToLinear();
+            var relR = loader.CreateReader(P);
+            var relW = loader.CreateWriter(P);
+
+            Debug.Print("  off:{0:X8} type:{1,-16} add:{3,-20} {4,3} {2} {5}",
+                rela.r_offset,
+                (SparcRt)(rela.r_info & 0xFF),
+                symbols[(int)(rela.r_info >> 8)].Name,
+                rela.r_addend,
+                (int)(rela.r_info >> 8),
+                symSection.Name);
+
+            var rt = (SparcRt)(rela.r_info & 0xFF);
+            switch (rt)
             {
-                var symbols = loader.Symbols[relSection.LinkedSection];
-                var referringSection = relSection.RelocatedSection;
-                var rdr = loader.CreateReader(relSection.FileOffset);
-                for (uint i = 0; i < relSection.EntryCount(); ++i)
-                {
-                    var rela = Elf32_Rela.Read(rdr);
-                    var sym = symbols[(int)(rela.r_info >> 8)];
-                    if (loader.Sections.Count <= sym.SectionIndex)
-                        continue;       //$DEBUG
-                    if (sym.SectionIndex == 0)
-                        continue;
-                    var symSection = loader.Sections[(int)sym.SectionIndex];
-                    uint S = sym.Value + symSection.Address.ToUInt32();
-                    int A = 0;
-                    int sh = 0;
-                    uint mask = ~0u;
-                    var addr = referringSection.Address + rela.r_offset;
-                    uint P = (uint)addr.ToLinear(); 
-                    var relR = program.CreateImageReader(addr);
-                    var relW = program.CreateImageWriter(addr);
-
-                    Debug.Print("  off:{0:X8} type:{1,-16} add:{3,-20} {4,3} {2} {5}",
-                        rela.r_offset,
-                        (SparcRt)(rela.r_info & 0xFF),
-                        symbols[(int)(rela.r_info >> 8)].Name,
-                        rela.r_addend,
-                        (int)(rela.r_info >> 8),
-                        symSection.Name);
-
-                    var rt = (SparcRt)(rela.r_info & 0xFF);
-                    switch (rt)
-                    {
-                    case SparcRt.R_SPARC_HI22:
-                        A = rela.r_addend;
-                        sh = 10;
-                        P = 0;
-                        break;
-                    case SparcRt.R_SPARC_LO10:
-                        A = rela.r_addend;
-                        mask = 0x3FF;
-                        P = 0;
-                        break;
-                    case SparcRt.R_SPARC_WDISP30:
-                        A = rela.r_addend;
-                        P = ~P + 1;
-                        sh = 2;
-                        break;
-                    default:
-                        throw new NotImplementedException(string.Format(
-                            "SPARC relocation type {0} not implemented yet.",
-                            rt));
-                    }
-                    var w = relR.ReadBeUInt32();
-                    w += ((uint)(S + A + P) >> sh) & mask;
-                    relW.WriteBeUInt32(w);
-                }
+            case SparcRt.R_SPARC_HI22:
+                A = rela.r_addend;
+                sh = 10;
+                P = 0;
+                break;
+            case SparcRt.R_SPARC_LO10:
+                A = rela.r_addend;
+                mask = 0x3FF;
+                P = 0;
+                break;
+            case SparcRt.R_SPARC_WDISP30:
+                A = rela.r_addend;
+                P = ~P + 1;
+                sh = 2;
+                break;
+            default:
+                throw new NotImplementedException(string.Format(
+                    "SPARC relocation type {0} not implemented yet.",
+                    rt));
             }
+            var w = relR.ReadBeUInt32();
+            w += ((uint)(S + A + P) >> sh) & mask;
+            relW.WriteBeUInt32(w);
+            return;
         }
 
         private string LoadString(uint symtabOffset, uint sym)

@@ -59,7 +59,6 @@ namespace Reko.UnitTests.Mocks
         #region IndependentDeserializer
         public class IndependentDeserializer : ISerializedTypeVisitor<DataType>
         {
-
             public DataType VisitArray(ArrayType_v1 array)
             {
                 throw new NotImplementedException();
