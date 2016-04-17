@@ -58,6 +58,20 @@ namespace Reko.Gui.Windows
 #endif
         }
 
+        public void DisplayGlobals(Program program, ImageSegment segment)
+        {
+            var windowType = typeof(CombinedCodeViewInteractor).Name;
+            var frame = ShellUiSvc.FindDocumentWindow(windowType, segment);
+            if (frame == null)
+            {
+                var pane = new CombinedCodeViewInteractor();
+                var label = string.Format(Resources.SegmentGlobalsFmt, segment.Name);
+                frame = ShellUiSvc.CreateDocumentWindow(windowType, segment, label, pane);
+            }
+            frame.Show();
+            ((CombinedCodeViewInteractor)frame.Pane).DisplayGlobals(program, segment);
+        }
+
         public void DisplayDataType(Program program, DataType dt)
         {
             if (dt == null)
