@@ -421,5 +421,12 @@ namespace Reko.UnitTests.Arch.Mips
             var instr = DisassembleWord(0x40024800);
             Assert.AreEqual("mfc0\tr2,r9", instr.ToString());
         }
+
+        [Test]
+        public void MipsDis_mtc1()
+        {
+            var instr = DisassembleWord(0x448C0800);
+            Assert.AreEqual("mtc1\tr12,f1", instr.ToString());
+        }
     }
 }

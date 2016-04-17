@@ -126,11 +126,11 @@ namespace Reko.Arch.Mips
                 new AOpRec(Opcode.illegal, "")),
 
             new CoprocessorOpRec(
+                new AOpRec(Opcode.mfc1, "R2,F3"),
                 new AOpRec(Opcode.illegal, ""),
                 new AOpRec(Opcode.illegal, ""),
                 new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.mtc1, "R2,F3"),
                 new AOpRec(Opcode.illegal, ""),
                 new AOpRec(Opcode.illegal, ""),
                 new AOpRec(Opcode.illegal, ""),
@@ -275,6 +275,16 @@ namespace Reko.Arch.Mips
                     default: throw new NotImplementedException(string.Format("Register field {0}.", opFmt[i]));
                     }
                     break;
+                case 'F':
+                    switch (opFmt[++i])
+                    {
+                    case '1': op = FReg(wInstr >> 21); break;
+                    case '2': op = FReg(wInstr >> 16); break;
+                    case '3': op = FReg(wInstr >> 11); break;
+                    //case '4': op = MemOff(wInstr >> 6, wInstr); break;
+                    default: throw new NotImplementedException(string.Format("Register field {0}.", opFmt[i]));
+                    }
+                    break;
                 case 'I':
                     op = ImmediateOperand.Int32((short) wInstr);
                     break;
@@ -319,6 +329,11 @@ namespace Reko.Arch.Mips
         private RegisterOperand Reg(uint regNumber)
         {
             return new RegisterOperand(arch.GetRegister((int) regNumber & 0x1F));
+        }
+
+        private RegisterOperand FReg(uint regNumber)
+        {
+            return new RegisterOperand(Registers.fpuRegs[regNumber & 0x1F]);
         }
 
         private AddressOperand RelativeBranch(uint wInstr)

@@ -313,5 +313,13 @@ namespace Reko.UnitTests.Arch.Mips
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|hi_lo = r23 *s r16");
         }
+
+        [Test]
+        public void MipsRw_mtc1()
+        {
+            AssertCode(0x448C0800,  // mtc1 r12,f1
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f1 = r12");
+        }
     }
 }
