@@ -44,9 +44,15 @@ namespace Reko.Gui.Windows.Controls
             SpanGenerator sp = CreateSpanifier(item, addrCur);
             while (count != 0 && seg != null && item != null)
             {
-                bool memValid =
-                    seg.MemoryArea.IsValidAddress(addrCur) &&
-                    item.IsInRange(addrCur);
+                bool memValid = true;
+                if (!item.IsInRange(addrCur))
+                {
+                    memValid = program.ImageMap.TryFindItem(addrCur, out item)
+                        && addrCur < item.EndAddress;
+                    if (memValid)
+                        sp = CreateSpanifier(item, addrCur);
+                }
+                memValid &= seg.MemoryArea.IsValidAddress(addrCur);
 
                 if (memValid)
                 {
@@ -64,7 +70,7 @@ namespace Reko.Gui.Windows.Controls
                 }
                 if (sp == null || !memValid)
                 {
-                    if (!memValid || !program.ImageMap.TryFindItem(addrCur, out item))
+                    if (!memValid)
                     {
                         // Find next segment.
                         Address addrSeg;
@@ -73,7 +79,6 @@ namespace Reko.Gui.Windows.Controls
                             program.ImageMap.TryFindSegment(addrSeg, out seg);
                             program.ImageMap.TryFindItem(addrSeg, out item);
                             addrCur = addrSeg;
-                            sp = CreateSpanifier(item, addrCur);
                         }
                         else
                         {
