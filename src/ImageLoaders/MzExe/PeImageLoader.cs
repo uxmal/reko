@@ -463,18 +463,11 @@ namespace Reko.ImageLoaders.MzExe
             }
             else
             {
-                name = "WinMain";
+                name = "Win32CrtStartup";
                 ssig = new SerializedSignature
                 {
-                    Convention = "stdapi",
-                    Arguments = new Argument_v1[]
-                    {
-                        Arg("hInstance",     "HINSTANCE"),
-                        Arg("hPrevInstance", "HINSTANCE"),
-                        Arg("lpCmdLine",     "LPSTR"),
-                        Arg("nCmdShow",      "INT"),
-                    },
-                    ReturnValue = Arg(null, "INT")
+                    Convention = "__cdecl",
+                    ReturnValue = Arg(null, "DWORD")
                 };
             }
             return new EntryPoint(addrEp, name, arch.CreateProcessorState(), ssig);
