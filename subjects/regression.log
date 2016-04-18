@@ -1,8 +1,15 @@
 === CB80.dcproject
 === redir
 *** redir
-0040991C: error: Rewriting of MIPS instruction illegal not implemented yet.
 __start: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+__divdf3: error: An error occurred while rewriting procedure to high-level language.
+    The method or operation is not implemented.
+       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1120
+   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 973
+   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 144
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 67
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 515
 
 === const.o
 === ls
@@ -12,11 +19,11 @@ __start: warning: Structure analysis stopped making progress, quitting. Please r
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
     Not implemented: 1 /u (uint16) dwArg10
-       at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 137
+       at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 138
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 186
+   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 187
    at Reko.Core.Expressions.Cast.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 45
-   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 186
+   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 187
    at Reko.Core.Expressions.Cast.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 45
    at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 89
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
@@ -30,11 +37,11 @@ __start: warning: Structure analysis stopped making progress, quitting. Please r
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
     Not implemented: 1 /u (uint16) dwArg10
-       at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 137
+       at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 138
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 186
+   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 187
    at Reko.Core.Expressions.Cast.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 45
-   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 186
+   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 187
    at Reko.Core.Expressions.Cast.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 45
    at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 89
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
@@ -48,11 +55,11 @@ __start: warning: Structure analysis stopped making progress, quitting. Please r
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
     Not implemented: 1 /u (uint16) dwArg10
-       at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 137
+       at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 138
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 186
+   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 187
    at Reko.Core.Expressions.Cast.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 45
-   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 186
+   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 187
    at Reko.Core.Expressions.Cast.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 45
    at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 89
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
@@ -66,11 +73,11 @@ __start: warning: Structure analysis stopped making progress, quitting. Please r
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
     Not implemented: 1 /u (uint16) dwArg10
-       at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 137
+       at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 138
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 186
+   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 187
    at Reko.Core.Expressions.Cast.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 45
-   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 186
+   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 187
    at Reko.Core.Expressions.Cast.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 45
    at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 89
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
@@ -85,9 +92,9 @@ __start: warning: Structure analysis stopped making progress, quitting. Please r
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
     Not implemented: d2_38 /u (uint16) d1_28
-       at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 137
+       at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 138
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 186
+   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 187
    at Reko.Core.Expressions.Cast.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 45
    at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 124
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
@@ -102,29 +109,17 @@ __start: warning: Structure analysis stopped making progress, quitting. Please r
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
     Not implemented: 1 /u (uint16) dwArg10
-       at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 137
+       at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 138
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 186
+   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 187
    at Reko.Core.Expressions.Cast.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 45
-   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 186
+   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 187
    at Reko.Core.Expressions.Cast.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 45
    at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 89
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 63
    at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 101
    at Reko.DecompilerDriver.ReconstructTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 305
-
-=== ROUND42.dcproject
-*** ROUND42.dcproject
-ROUND42.dcproject: error: An internal error occurred while decompiling.
-    Object reference not set to an instance of an object.
-       at Reko.Core.Serialization.ProjectLoader.LoadProject(String filename, Project_v3 sp) in D:\dev\uxmal\reko\master\src\Core\Serialization\ProjectLoader.cs:line 187
-   at Reko.Core.Serialization.ProjectLoader.Deserializer.VisitProject_v3(Project_v3 sProject) in D:\dev\uxmal\reko\master\src\Core\Serialization\ProjectLoader.cs:line 143
-   at Reko.Core.Serialization.Project_v3.Accept[T](ISerializedProjectVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Serialization\Project_v3.cs:line 55
-   at Reko.Core.Serialization.ProjectLoader.LoadProject(String filename, Stream stm) in D:\dev\uxmal\reko\master\src\Core\Serialization\ProjectLoader.cs:line 126
-   at Reko.Core.Serialization.ProjectLoader.LoadProject(String fileName, Byte[] image) in D:\dev\uxmal\reko\master\src\Core\Serialization\ProjectLoader.cs:line 73
-   at Reko.DecompilerDriver.Load(String fileName) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 199
-   at Reko.DecompilerDriver.Decompile(String filename) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 97
 
 === BENCHFN.dcproject
 *** BENCHFN.dcproject
@@ -134,7 +129,7 @@ ROUND42.dcproject: error: An internal error occurred while decompiling.
 BENCHFN.dcproject: error: An internal error occurred while decompiling.
     Specified argument was out of the range of valid values.
 Parameter name: Linear address 00000000 is not in known segment.
-       at Reko.Core.ImageMap.MapLinearAddressToAddress(UInt64 linearAddress) in D:\dev\uxmal\reko\master\src\Core\ImageMap.cs:line 362
+       at Reko.Core.ImageMap.MapLinearAddressToAddress(UInt64 linearAddress) in D:\dev\uxmal\reko\master\src\Core\ImageMap.cs:line 395
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 217
    at Reko.Analysis.TrashedRegisterFinder.RewriteBasicBlocks() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 126
    at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 193
@@ -149,7 +144,7 @@ Parameter name: Linear address 00000000 is not in known segment.
 BENCHFN.EXE: error: An internal error occurred while decompiling.
     Specified argument was out of the range of valid values.
 Parameter name: Linear address 00000000 is not in known segment.
-       at Reko.Core.ImageMap.MapLinearAddressToAddress(UInt64 linearAddress) in D:\dev\uxmal\reko\master\src\Core\ImageMap.cs:line 362
+       at Reko.Core.ImageMap.MapLinearAddressToAddress(UInt64 linearAddress) in D:\dev\uxmal\reko\master\src\Core\ImageMap.cs:line 395
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 217
    at Reko.Analysis.TrashedRegisterFinder.RewriteBasicBlocks() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 126
    at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 193
@@ -162,56 +157,56 @@ Parameter name: Linear address 00000000 is not in known segment.
 10003008: error: Failed to write global variable g_t10003008.
     The method or operation is not implemented.
        at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 310
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 78
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 80
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 174
    at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 53
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
 100033AC: error: Failed to write global variable g_t100033AC.
     The method or operation is not implemented.
        at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 310
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 78
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 80
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 174
    at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 53
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
 100033B0: error: Failed to write global variable g_t100033B0.
     The method or operation is not implemented.
        at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 310
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 78
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 80
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 174
    at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 53
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
 100033B4: error: Failed to write global variable g_t100033B4.
     The method or operation is not implemented.
        at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 310
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 78
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 80
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 174
    at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 53
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
 10003008: error: Failed to write global variable g_t10003008.
     The method or operation is not implemented.
        at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 310
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 78
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 80
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 174
    at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 53
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
 100033AC: error: Failed to write global variable g_t100033AC.
     The method or operation is not implemented.
        at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 310
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 78
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 80
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 174
    at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 53
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
 100033B0: error: Failed to write global variable g_t100033B0.
     The method or operation is not implemented.
        at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 310
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 78
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 80
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 174
    at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 53
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
 100033B4: error: Failed to write global variable g_t100033B4.
     The method or operation is not implemented.
        at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 310
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 78
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 80
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 174
    at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 53
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83

@@ -4,5 +4,9 @@
 
 #include "redir.h"
 
+Eq_5412 g_tFFFFFEB8;
+int8 g_aFFFFFFEC[];
  <anonymous> g_tFFFFFFFF;
+byte g_b0002;
+Eq_293 g_t0695;
 

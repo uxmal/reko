@@ -186,10 +186,10 @@ namespace Reko.Arch.X86
                 case Opcode.fstcw: RewriterFstcw(); break;
                 case Opcode.fstp: RewriteFst(true); break;
                 case Opcode.fstsw: RewriteFstsw(); break;
-                case Opcode.fsub: EmitCommonFpuInstruction(Operator.ISub, false, false); break;
-                case Opcode.fsubp: EmitCommonFpuInstruction(Operator.ISub, false, true); break;
-                case Opcode.fsubr: EmitCommonFpuInstruction(Operator.ISub, true, false); break;
-                case Opcode.fsubrp: EmitCommonFpuInstruction(Operator.ISub, true, true); break;
+                case Opcode.fsub: EmitCommonFpuInstruction(Operator.FSub, false, false); break;
+                case Opcode.fsubp: EmitCommonFpuInstruction(Operator.FSub, false, true); break;
+                case Opcode.fsubr: EmitCommonFpuInstruction(Operator.FSub, true, false); break;
+                case Opcode.fsubrp: EmitCommonFpuInstruction(Operator.FSub, true, true); break;
                 case Opcode.ftst: RewriteFtst(); break;
                 case Opcode.fucompp: RewriteFcom(2); break;
                 case Opcode.fxam: RewriteFxam(); break;
