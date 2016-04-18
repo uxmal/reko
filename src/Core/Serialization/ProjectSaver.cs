@@ -84,7 +84,7 @@ namespace Reko.Core.Serialization
                         {
                             Address = de.Key.ToString(),
                             DataType = de.Value.DataType,
-                            Name = string.Format("g_{0:X}", de.Key.ToLinear())
+                            Name = GlobalName(de),
                         })
                         .ToList(),
                     OnLoadedScript = program.User.OnLoadedScript,
@@ -99,6 +99,11 @@ namespace Reko.Core.Serialization
                 TypesFilename =        ConvertToProjectRelativePath(projectAbsPath, program.TypesFilename),
                 GlobalsFilename =      ConvertToProjectRelativePath(projectAbsPath, program.GlobalsFilename),
             };
+        }
+
+        private string GlobalName(KeyValuePair<Address, GlobalDataItem_v2> de)
+        {
+            return string.Format("g_{0:X}", de.Key.ToLinear())
         }
 
         private SerializedCall_v1 SerializeUserCall(Program program, UserCallData uc)
