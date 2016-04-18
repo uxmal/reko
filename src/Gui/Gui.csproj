@@ -213,7 +213,6 @@
     <Compile Include="Windows\CfgBlockNode.cs" />
     <Compile Include="Windows\CheckBoxWrapper.cs" />
     <Compile Include="Windows\CfgGraphGenerator.cs" />
-    <Compile Include="Windows\CodeViewerPane.cs" />
     <Compile Include="Windows\CodeViewerServiceImpl.cs" />
     <Compile Include="Windows\CombinedCodeViewInteractor.cs" />
     <Compile Include="Windows\ComboBoxWrapper.cs" />
@@ -224,12 +223,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Windows\Controls\MixedCodeDataModel.cs" />
-    <Compile Include="Windows\Controls\CodeView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Windows\Controls\CodeView.Designer.cs">
-      <DependentUpon>CodeView.cs</DependentUpon>
-    </Compile>
     <Compile Include="Windows\Controls\CommandMenuItem.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -544,9 +537,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources.sv-SE.resx" />
-    <EmbeddedResource Include="Windows\Controls\CodeView.resx">
-      <DependentUpon>CodeView.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Windows\Controls\CombinedCodeView.resx">
       <DependentUpon>CombinedCodeView.cs</DependentUpon>
     </EmbeddedResource>
