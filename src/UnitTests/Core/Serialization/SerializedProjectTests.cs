@@ -629,7 +629,7 @@ namespace Reko.UnitTests.Core.Serialization
         <Address>00001234</Address>
         <prim domain=""Real"" size=""4"" />
         <Name>pi</Name>
-      </platform>
+      </global>
     </user>
   </input>
 </project>";

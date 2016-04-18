@@ -103,7 +103,12 @@ namespace Reko.Core.Serialization
 
         private string GlobalName(KeyValuePair<Address, GlobalDataItem_v2> de)
         {
-            return string.Format("g_{0:X}", de.Key.ToLinear())
+            var name = de.Value.Name;
+            if (string.IsNullOrEmpty(name))
+            {
+                name = string.Format("g_{0:X}", de.Key.ToLinear());
+            }
+            return name;
         }
 
         private SerializedCall_v1 SerializeUserCall(Program program, UserCallData uc)
