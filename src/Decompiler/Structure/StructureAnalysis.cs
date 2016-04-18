@@ -114,6 +114,7 @@ namespace Reko.Structure
                     eventListener.Warn(
                         eventListener.CreateProcedureNavigator(program, proc),
                         "Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko");
+                    DumpGraph();
                     break;
                 }
 

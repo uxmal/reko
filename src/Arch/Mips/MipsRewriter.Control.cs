@@ -98,8 +98,8 @@ namespace Reko.Arch.Mips
             //emitter.Assign( frame.EnsureRegister(Registers.ra), instr.Address + 8);
             cluster.Class = RtlClass.Transfer;
             var dst = RewriteOperand(instr.op2);
-            var lr = RewriteOperand(instr.op1);
-            if (((Identifier)lr).Storage == Registers.ra)
+            var lr = ((RegisterOperand)instr.op1).Register;
+            if (lr == Registers.ra)
             {
                 emitter.CallD(dst, 0);
                 return;
