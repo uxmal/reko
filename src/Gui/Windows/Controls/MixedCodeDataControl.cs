@@ -36,6 +36,8 @@ namespace Reko.Gui.Windows.Controls
             this.ProgramChanged += delegate { OnProgramChanged(); };
 
             OnProgramChanged();
+
+            this.Disposed += MixedCodeDataControl_Disposed;
         }
 
         public Program Program {
@@ -107,6 +109,12 @@ namespace Reko.Gui.Windows.Controls
                 BeginInvoke(new Action(RefreshModel));
             else
                 RefreshModel();
+        }
+
+        private void MixedCodeDataControl_Disposed(object sender, EventArgs e)
+        {
+            if (program != null)
+                program.ImageMap.MapChanged -= ImageMap_MapChanged;
         }
 
         public Address GetAnchorAddress()
