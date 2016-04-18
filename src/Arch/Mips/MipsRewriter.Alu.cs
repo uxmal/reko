@@ -170,7 +170,7 @@ namespace Reko.Arch.Mips
             var opDst = RewriteOperand(instr.op1);
             var opSrc = RewriteOperand(instr.op2);
             var opShift = RewriteOperand(instr.op3);
-            emitter.Assign(opDst, emitter.Shr(opSrc, opShift));
+            emitter.Assign(opDst, emitter.Sar(opSrc, opShift));
         }
 
         private void RewriteSrl(MipsInstruction instr)

@@ -500,7 +500,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
 
 
         [Test]
-        public void Pil32_WinMain()
+        public void Pil32_Win32CrtStartup()
         {
             Given_Pe32Header(0x00100000);
 
@@ -509,8 +509,8 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             Given_PeLoader();
             var ep = peldr.CreateMainEntryPoint(false, Address.Ptr32(0x10000000), this.win32);
 
-            Assert.AreEqual("WinMain", ep.Name);
-            Assert.AreEqual("fn(stdapi,arg(INT),(arg(hInstance,HINSTANCE),arg(hPrevInstance,HINSTANCE),arg(lpCmdLine,LPSTR),arg(nCmdShow,INT))", ep.Signature.ToString());
+            Assert.AreEqual("Win32CrtStartup", ep.Name);
+            Assert.AreEqual("fn(__cdecl,arg(DWORD),()", ep.Signature.ToString());
         }
     }
 }

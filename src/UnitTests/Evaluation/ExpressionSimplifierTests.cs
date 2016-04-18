@@ -29,6 +29,7 @@ using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using Reko.UnitTests.Mocks;
 
 namespace Reko.UnitTests.Evaluation
 {
@@ -39,9 +40,16 @@ namespace Reko.UnitTests.Evaluation
 		private ExpressionSimplifier simplifier;
 		private Identifier foo;
 		private Identifier bar;
+        private ProcedureBuilder m;
+
+        [SetUp]
+        public void Setup()
+        {
+            m = new ProcedureBuilder();
+        }
 
 		[Test]
-		public void ExsConstants()
+		public void Exs_Constants()
 		{
 			BuildExpressionSimplifier();
 			Expression expr = new BinaryExpression(Operator.IAdd, PrimitiveType.Word32, 
@@ -61,7 +69,7 @@ namespace Reko.UnitTests.Evaluation
         }
 
         [Test]
-        public void ExsAddPositiveConstantToNegative()
+        public void Exs_AddPositiveConstantToNegative()
         {
             BuildExpressionSimplifier();
             var expr = new BinaryExpression(
@@ -96,5 +104,14 @@ namespace Reko.UnitTests.Evaluation
             foo = coll.Add(foo, new Statement(0, new Assignment(foo, src), null), src, false).Identifier;
 			return coll;
 		}
-	}
+
+        [Test]
+        public void Exs_FloatIeeeConstant_Cmp()
+        {
+            BuildExpressionSimplifier();
+            var expr = m.FLt(foo, Constant.Word32( 0xC0B00000));
+            var result = expr.Accept(simplifier);
+            Assert.AreEqual("foo_0 < -5.5F", result.ToString());
+        }
+    }
 }

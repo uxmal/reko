@@ -31,7 +31,8 @@ using System.Diagnostics;
 namespace Reko.Typing
 {
     /// <summary>
-    /// Collect type information by pulling type information from the leaves of expression trees to their roots.
+    /// Collect type information by pulling type information from
+    /// the leaves of expression trees to their roots.
     /// </summary>
     public class ExpressionTypeAscender : ExpressionVisitor<DataType>
     {

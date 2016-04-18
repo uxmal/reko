@@ -109,7 +109,7 @@ namespace Reko.Arch.Mips
                 case Opcode.bnel:
                     RewriteBranch(instr, Operator.Ne, true); break;
                 case Opcode.@break: RewriteBreak(instr); break;
-                case Opcode.c_le_d: RewriteFpuCmpD(instr, Operator.Rle); break;
+                case Opcode.c_le_d: RewriteFpuCmpD(instr, Operator.Fle); break;
                 case Opcode.cfc1: RewriteCfc1(instr); break;
                 case Opcode.ctc1: RewriteCtc1(instr); break;
                 case Opcode.cvt_w_d: RewriteCvtD(instr, PrimitiveType.Int32); break;
