@@ -100,8 +100,21 @@ namespace Reko.Arch.Mips
         public readonly static RegisterStorage f30 = new RegisterStorage("f30", 94, 0, PrimitiveType.Word32);
         public readonly static RegisterStorage f31 = new RegisterStorage("f31", 95, 0, PrimitiveType.Word32);
 
+        public readonly static RegisterStorage FCSR = new RegisterStorage("FCSR", 0x201F, 0, PrimitiveType.Word32);
+
+        public readonly static RegisterStorage cc0 = new RegisterStorage("cc0", 0x3000, 0, PrimitiveType.Bool);
+        public readonly static RegisterStorage cc1 = new RegisterStorage("cc1", 0x3000, 0, PrimitiveType.Bool);
+        public readonly static RegisterStorage cc2 = new RegisterStorage("cc2", 0x3000, 0, PrimitiveType.Bool);
+        public readonly static RegisterStorage cc3 = new RegisterStorage("cc3", 0x3000, 0, PrimitiveType.Bool);
+        public readonly static RegisterStorage cc4 = new RegisterStorage("cc4", 0x3000, 0, PrimitiveType.Bool);
+        public readonly static RegisterStorage cc5 = new RegisterStorage("cc5", 0x3000, 0, PrimitiveType.Bool);
+        public readonly static RegisterStorage cc6 = new RegisterStorage("cc6", 0x3000, 0, PrimitiveType.Bool);
+        public readonly static RegisterStorage cc7 = new RegisterStorage("cc7", 0x3000, 0, PrimitiveType.Bool);
+
         internal readonly static RegisterStorage[] generalRegs;
         internal readonly static RegisterStorage[] fpuRegs;
+        internal readonly static Dictionary<uint, RegisterStorage> fpuCtrlRegs;
+        internal readonly static RegisterStorage[] ccRegs;
 
         internal static readonly Dictionary<string, RegisterStorage> mpNameToReg;
 
@@ -181,6 +194,17 @@ namespace Reko.Arch.Mips
                 f30,
                 f31,
             };
+
+            fpuCtrlRegs = new Dictionary<uint, RegisterStorage>
+            {
+                { 0x1F, FCSR }
+            };
+
+            ccRegs = new[]
+            {
+                cc0,cc1,cc2,cc3, cc4,cc5,cc6,cc7,
+            };
+
             mpNameToReg = generalRegs.Concat(fpuRegs).ToDictionary(r => r.Name);
         }
     }

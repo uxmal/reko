@@ -428,5 +428,38 @@ namespace Reko.UnitTests.Arch.Mips
             var instr = DisassembleWord(0x448C0800);
             Assert.AreEqual("mtc1\tr12,f1", instr.ToString());
         }
+
+        [Test]
+        public void MipsDis_swc1()
+        {
+            var instr = DisassembleWord(0xE7AC0030);
+            Assert.AreEqual("swc1\tf12,0030(sp)", instr.ToString());
+        }
+
+        [Test]
+        public void MipsDis_cle_d()
+        {
+            var instr = DisassembleWord(0x462C003E);
+            Assert.AreEqual("c.le.d\tcc0,f0,f12", instr.ToString());
+        }
+
+        [Test]
+        public void MipsDis_cfc1()
+        {
+            var instr = DisassembleWord(0x4443F800);
+            Assert.AreEqual("cfc1\tr3,FCSR", instr.ToString());
+        }
+
+        [Test]
+        public void MipsDis_instrs1()
+        {
+            Assert.AreEqual("ctc1\tr1,FCSR", DisassembleWord(0x44C1F800).ToString());
+            Assert.AreEqual("cvt.w.d\tf0,f12", DisassembleWord(0x46206024).ToString());
+            Assert.AreEqual("ctc1\tr3,FCSR", DisassembleWord(0x44C3F800).ToString());
+            Assert.AreEqual("bc1f\tcc0,0010004C", DisassembleWord(0x45000012).ToString());
+            Assert.AreEqual("add.d\tf0,f12,f0", DisassembleWord(0x46206000).ToString());
+            Assert.AreEqual("cfc1\tr3,FCSR", DisassembleWord(0x4443F800).ToString());
+            Assert.AreEqual("cvt.w.d\tf2,f0", DisassembleWord(0x462000A4).ToString());
+        }
     }
 }
