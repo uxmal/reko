@@ -8,7 +8,8 @@ using System.Linq;
 namespace Reko.Core.Lib
 {
     /// <summary> 
-    /// Represents a dynamic data collection that provides notifications when items get added, removed, or when the whole list is refreshed. 
+    /// Represents a dynamic data collection that provides notifications
+    /// when items get added, removed, or when the whole list is refreshed. 
     /// </summary> 
     /// <typeparam name="T"></typeparam> 
     public class ObservableRangeCollection<T> : ObservableCollection<T>

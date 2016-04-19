@@ -43,6 +43,5 @@ namespace Reko.Gui.Design
             TreeNode.ImageName = "Platform.ico";
             TreeNode.ToolTipText = null;
         }
-
     }
 }

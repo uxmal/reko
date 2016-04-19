@@ -23,6 +23,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace Reko.Gui.Windows
 {
@@ -39,20 +40,24 @@ namespace Reko.Gui.Windows
         {
             if (proc == null)
                 return;
-            var pane = new CodeViewerPane();
-            var frame = ShowWindow("codeViewerWindow", proc.Name, proc, pane);
-            pane.FrameWindow = frame;
-            pane.DisplayProcedure(program, proc);
+            var pane = new CombinedCodeViewInteractor();
+            var windowType = typeof(CombinedCodeViewInteractor).Name;
+            var frame = ShowWindow(windowType, proc.Name, proc, pane);
+            ((CombinedCodeViewInteractor)frame.Pane).DisplayProcedure(program, proc);
+        }
+
+        public void DisplayGlobals(Program program, ImageSegment segment)
+        {
+            var pane = new CombinedCodeViewInteractor();
+            var windowType = typeof(CombinedCodeViewInteractor).Name;
+            var label = string.Format(Resources.SegmentGlobalsFmt, segment.Name);
+            var frame = ShowWindow(windowType, label, segment, pane);
+            ((CombinedCodeViewInteractor)frame.Pane).DisplayGlobals(program, segment);
         }
 
         public void DisplayDataType(Program program, DataType dt)
         {
-            if (dt == null)
-                return;
-            var pane = new CodeViewerPane();
-            var frame = ShowWindow("codeViewerWindow", dt.Name, dt, pane);
-            pane.FrameWindow = frame;
-            pane.DisplayDataType(program, dt);
+            throw new NotImplementedException();
         }
     }
 }

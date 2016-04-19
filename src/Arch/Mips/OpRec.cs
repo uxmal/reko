@@ -220,4 +220,39 @@ namespace Reko.Arch.Mips
             return oprecs[(wInstr>>21) & 0x1F].Decode(wInstr, dasm);
         }
     }
+
+    internal class FpuOpRec : OpRec
+    {
+        private OpRec[] oprecs;
+        private PrimitiveType size;
+
+        public FpuOpRec(PrimitiveType size, params OpRec[] oprecs)
+        {
+            this.size = size;
+            this.oprecs = oprecs;
+        }
+
+        internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
+        {
+            return oprecs[wInstr & 0x3F].Decode(wInstr, dasm);
+        }
+    }
+
+    internal class BcNRec : OpRec
+    {
+        private Opcode opFalse;
+        private Opcode opTrue;
+
+        public BcNRec(Opcode f, Opcode t)
+        {
+            this.opFalse = f;
+            this.opTrue = t;
+        }
+
+        internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
+        {
+            var opcode = ((wInstr & (1u << 16)) != 0) ? opTrue : opFalse;
+            return dasm.DecodeOperands(opcode, wInstr, "c18,j");
+        }
+    }
 }

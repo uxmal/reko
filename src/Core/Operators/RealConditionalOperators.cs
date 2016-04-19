@@ -28,7 +28,33 @@ namespace Reko.Core.Operators
 	{
 	}
 
-	public class RltOperator : RealConditionalOperator
+    public class ReqOperator : RealConditionalOperator
+    {
+        public override Constant ApplyConstants(Constant c1, Constant c2)
+        {
+            return Constant.Bool(c1.ToInt32() == c2.ToInt32());
+        }
+
+        public override string ToString()
+        {
+            return " = ";
+        }
+    }
+
+    public class RneOperator : RealConditionalOperator
+    {
+        public override Constant ApplyConstants(Constant c1, Constant c2)
+        {
+            return Constant.Bool(c1.ToInt32() != c2.ToInt32());
+        }
+
+        public override string ToString()
+        {
+            return " != ";
+        }
+    }
+
+    public class RltOperator : RealConditionalOperator
 	{
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{

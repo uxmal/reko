@@ -1,5 +1,4 @@
-﻿
-#region License
+﻿#region License
 /* 
  * Copyright (C) 1999-2016 John Källén.
  *
@@ -21,7 +20,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Reko.Gui.Windows.Controls
@@ -29,15 +30,16 @@ namespace Reko.Gui.Windows.Controls
     public class StyleStack : IDisposable
     {
         private IUiPreferencesService uiPrefSvc;
-        private List<UiStyle> stack;
+        private List<string[]> stack;
         private SolidBrush fg;
         private SolidBrush bg;
         private Font font;
 
         public StyleStack(IUiPreferencesService uiPrefSvc)
         {
+            if (uiPrefSvc == null) throw new ArgumentNullException("uiPrefSvc");
             this.uiPrefSvc = uiPrefSvc;
-            this.stack = new List<UiStyle>();
+            this.stack = new List<string[]>();
         }
 
         public void Dispose()
@@ -55,12 +57,10 @@ namespace Reko.Gui.Windows.Controls
 
         public void PushStyle(string styleSelector)
         {
-            UiStyle style = null;
-            if (!string.IsNullOrEmpty(styleSelector))
-            {
-                uiPrefSvc.Styles.TryGetValue(styleSelector, out style);
-            }
-            stack.Add(style);       // May be null if we can't find the style.
+            if (styleSelector == null)
+                stack.Add(new string[0]);
+            else
+                stack.Add(styleSelector.Split(' '));
         }
 
         internal void PopStyle()
@@ -76,70 +76,119 @@ namespace Reko.Gui.Windows.Controls
             return brNew;
         }
 
+        private IEnumerable<UiStyle> GetStyles(string[] styles)
+        {
+            foreach (var styleName in styles)
+            {
+                UiStyle style;
+                if (uiPrefSvc.Styles.TryGetValue(styleName, out style))
+                    yield return style;
+            }
+        }
+
         public SolidBrush GetForeground(Control ctrl)
         {
             for (int i = stack.Count - 1; i >= 0; --i)
             {
-                var style = stack[i];
-                if (style != null && style.Foreground != null)
-                    return style.Foreground;
+                var styles = GetStyles(stack[i]);
+                var ff = styles.Select(s => s.Foreground).LastOrDefault(f => f != null);
+                if (ff != null)
+                    return ff;
             }
             return CacheBrush(ref fg, new SolidBrush(ctrl.ForeColor));
         }
 
         public Cursor GetCursor(Control ctrl)
         {
+            Cursor cu;
             for (int i = stack.Count - 1; i>=0; --i)
             {
-                var style = stack[i];
-                if (style != null && style.Cursor != null)
-                    return style.Cursor;
+                var styles = GetStyles(stack[i]);
+                cu = styles.Select(s => s.Cursor).LastOrDefault(c => c != null);
+                if (cu != null)
+                    return cu;
             }
             return Cursors.Default;
         }
 
-        public Color GetForegroundColor(Control ctrl)
+        public Color GetForegroundColor(Color fgColor)
         {
            for(int i = stack.Count - 1; i >= 0; --i)
             {
-                var style = stack[i];
-                if (style != null && style.Foreground != null)
-                    return style.Foreground.Color;
+                var styles = GetStyles(stack[i]);
+                var fg = styles.Select(s => s.Foreground).LastOrDefault(f => f != null);
+                if (fg != null)
+                    return fg.Color;
             }
-            return ctrl.ForeColor;
+            return fgColor;
         }
 
-        public SolidBrush GetBackground(Control ctrl)
+        public SolidBrush GetBackground(Color bgColor)
         {
             for (int i = stack.Count - 1; i >= 0; --i)
             {
-                var style = stack[i];
-                if (style != null && style.Background != null)
-                    return style.Background;
+                var styles = GetStyles(stack[i]);
+                var back = styles.Select(s => s.Background).LastOrDefault(b => b != null);
+                if (back != null)
+                    return back;
             }
-            return CacheBrush(ref bg, new SolidBrush(ctrl.BackColor));
+            return CacheBrush(ref bg, new SolidBrush(bgColor));
         }
 
-        public Font GetFont(Control ctrl)
+        public Font GetFont(Font defaultFont)
         {
             for (int i = stack.Count - 1; i >= 0; --i)
             {
-                var style = stack[i];
-                if (style != null && style.Font != null)
-                    return style.Font;
+                var styles = GetStyles(stack[i]);
+                var font = styles.Select(s => s.Font).LastOrDefault(f => f != null);
+                if (font != null)
+                    return font;
             }
-            return ctrl.Font;
+            return defaultFont;
         }
 
-        public int? GetWidth(TextView textView)
+        public int? GetWidth()
         {
             for (int i = stack.Count - 1; i >= 0; --i)
             {
-                var style = stack[i];
-                if (style != null && style.Width.HasValue)
-                    return style.Width;
+                var styles = GetStyles(stack[i]);
+                var width = styles.Select(s => s.Width).LastOrDefault(w => w.HasValue);
+                if (width.HasValue)
+                    return width;
             }
             return null;
+        }
+
+        public float GetNumber(Func<UiStyle, float> fn)
+        {
+            for (int i = stack.Count - 1; i >= 0; --i)
+            {
+                var styles = GetStyles(stack[i]);
+                var value = styles.Select(fn).LastOrDefault(n => n != 0);
+                if (value != 0)
+                    return value;
+            }
+            return 0;
+        }
+
+        /// <summary>
+        /// Given a rectangle <paramref name="rc"/>, creates a padded rectangle
+        /// <paramref name="rcPadded"/> and 
+        /// </summary>
+        /// <param name="rc"></param>
+        /// <param name="rcPadded"></param>
+        public void PadRectangle(ref RectangleF rc, ref RectangleF rcPadded)
+        {
+            float top = GetNumber(s => s.PaddingTop);
+            float left = GetNumber(s => s.PaddingLeft);
+            float bottom = GetNumber(s => s.PaddingBottom);
+            float right = GetNumber(s => s.PaddingRight);
+            rcPadded.X = rc.X;
+            rcPadded.Width = rc.Width + left + right;
+            rcPadded.Y = rc.Y;
+            rcPadded.Height = rc.Height + top + bottom;
+
+            rc.Offset(left, top);
         }
     }
 }

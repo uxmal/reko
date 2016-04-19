@@ -27,7 +27,8 @@ using System.Linq;
 namespace Reko.Core.Output
 {
 	/// <summary>
-	/// Formats type declarations using indentation settings specified by caller.
+	/// Formats type declarations using indentation settings specified by
+    /// caller.
 	/// </summary>
 	public class TypeFormatter : IDataTypeVisitor<Formatter>
 	{
@@ -204,7 +205,7 @@ namespace Reko.Core.Output
             foreach (var f in fields)
             {
                 BeginLine();
-                var trf = new TypeReferenceFormatter(writer, true);
+                var trf = new TypeReferenceFormatter(writer);
                 trf.WriteDeclaration(f.DataType, f.Name);
                 EndLine(";", string.Format("{0:X}", f.Offset));
             }
@@ -312,7 +313,7 @@ namespace Reko.Core.Output
 						foreach (StructureField f in str.Fields)
 						{
 							BeginLine();
-                            var trf = new TypeReferenceFormatter(writer, true);
+                            var trf = new TypeReferenceFormatter(writer);
                             trf.WriteDeclaration(f.DataType, f.Name);
 							EndLine(";", string.Format("{0:X}", f.Offset));
 						}
@@ -453,7 +454,7 @@ namespace Reko.Core.Output
 			foreach (UnionAlternative alt in ut.Alternatives.Values)
 			{
 				BeginLine();
-                var trf = new TypeReferenceFormatter(writer, true);
+                var trf = new TypeReferenceFormatter(writer);
                 trf.WriteDeclaration(alt.DataType, alt.Name);
 				EndLine(";");
 				++i;

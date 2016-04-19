@@ -56,6 +56,7 @@
   <group id="GrpDisassemblerNav" cmdSet="Reko" container="CtxDisassembler" />
   <group id="GrpDisassemblerEdit" cmdSet="Reko" container="CtxDisassembler" />
   <group id="GrpCodeView" cmdSet="Reko" container="CtxCodeView" />
+  <group id="GrpCodeViewMode" cmdSet="Reko" container="CtxCodeView" />
   <group id="GrpBrowser" cmdSet="Reko" container="CtxBrowser"/>
   <group id="GrpBrowserProc" cmdSet="Reko" container="CtxBrowser"/>
 
@@ -98,7 +99,7 @@
   
   <cmd id="OpenLink" cmdSet="Reko" container="OpenLink">_Open</cmd>
   <cmd id="OpenLinkInNewWindow" cmdSet="Reko" container="OpenLinkInNewWindow">Open in ne_w window</cmd>
-  
+
   <cmd id="ViewGoToAddress" cmdSet="Reko" container="GrpViewScanned">_Go to Address...</cmd>
   <cmd id="ViewFindAllProcedures" cmdSet="Reko" container="GrpViewScanned">Find all _procedures</cmd>
 	<cmd id="ViewShowAllFragments" cmdSet="Reko" container="GrpViewScanned">Show _all fragments</cmd>
@@ -109,8 +110,9 @@
   <cmd id="ViewAsCode" cmdSet="Reko" container="GrpAddressSearchView">View as _code</cmd>
   <cmd id="ViewAsStrings" cmdSet="Reko" container="GrpAddressSearchView">View as _strings</cmd>
   <cmd id="ViewAsData" cmdSet="Reko" container="GrpAddressSearchView">View as _data</cmd>
-  <cmd id="ViewCfgCode" cmdSet="Reko" container="GrpCodeView" priority="1">View _code</cmd>
-  <cmd id="ViewCfgGraph" cmdSet="Reko" container="GrpCodeView" priority="2">View control _graph</cmd>
+  <cmd id="ViewCfgCode" cmdSet="Reko" container="GrpCodeViewMode" priority="1">View _code</cmd>
+  <cmd id="ViewCfgGraph" cmdSet="Reko" container="GrpCodeViewMode" priority="2">View control _graph</cmd>
+  <cmd id="EditDeclaration" cmdSet="Reko" container="GrpCodeView" priority="1">Edit declaration</cmd>
 
   <cmd id="ActionNextSearchHit" cmdSet="Reko" key1="F8" />
   <cmd id="ActionPrevSearchHit" cmdSet="Reko" key1="F8" alt1="Shift" />
@@ -120,6 +122,7 @@
   <cmd id="ActionFinishDecompilation" cmdSet="Reko" container="GrpActions" image="4">Finish _Decompilation</cmd>
 
   <cmd id="ActionMarkProcedure" cmdSet="Reko" container="ActionMarkProcedure">Mark _Procedure Entry</cmd>
+  <cmd id="ActionCallTerminates" cmdSet="Reko" container="GrpDisassemblerEdit">Mark call as _terminating</cmd>
   <cmd id="ActionScanHeuristically" cmdSet="Reko" container="ActionScanHeuristically">Scan _heuristically</cmd>
   <cmd id="ActionEditSignature" cmdSet="Reko" container="ActionEditSignature">Edit _Signature...</cmd>
   <cmd id="ActionMarkType" cmdSet="Reko" container="ActionMarkType">Mark _Type</cmd>
@@ -162,7 +165,7 @@
   <placement item="ActionScanHeuristically" container="GrpActionsScanned"/>
   
   <placement item="EditCopy" container="GrpMemoryControl"/>
-  <placement item="EditCopy" container="GrpCodeView "/>
+  <placement item="EditCopy" container="GrpCodeView" priority="2"/>
   <placement item="ViewGoToAddress" container="GrpMemoryControl"/>
 	<placement item="ActionMarkProcedure" container="GrpMemoryControl"/>
   <placement item="ActionMarkType" container="GrpMemoryControl"/>
@@ -192,6 +195,7 @@
   <!-- Accelerators ================================================== -->
 
   <keybinding id="ActionMarkType" cmdSet="Reko" editor="Reko.Gui.Windows.LowLevelViewInteractor" key1="T" alt1="Control" />
+  <keybinding id="EditDeclaration" cmdSet="Reko" editor="Reko.Gui.Windows.CombinedCodeViewInteractor"  key1="D" alt1="Control" />
   <keybinding id="ActionNextSearchHit" cmdSet="Reko" editor="" key1="F8" />
   <keybinding id="ActionPrevSearchHit" cmdSet="Reko" editor="" key1="F8" alt1="Shift" />
   <keybinding id="EditCopy" cmdSet="Reko" editor="" key1="C" alt1="Control" />

@@ -33,20 +33,10 @@ namespace Reko.Core.Configuration
         string Type { get; }
     }
 
-    public class SignatureFileElement : ConfigurationElement, SignatureFile
+    public class SignatureFileElement : SignatureFile
     {
-        [ConfigurationProperty("Filename", IsRequired = true)]
-        public string Filename
-        {
-            get { return (string)this["Filename"]; }
-            set { this["Filename"] = value; }
-        }
+        public string Filename { get; set; }
 
-        [ConfigurationProperty("Type", IsRequired = true)]
-        public string Type
-        {
-            get { return (string)this["Type"]; }
-            set { this["Type"] = value; }
-        }
+        public string Type { get; set; }
     }
 }

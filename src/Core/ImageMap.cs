@@ -29,23 +29,24 @@ using System.Text;
 namespace Reko.Core
 {
 	/// <summary>
-	/// Describes the contents of the image in terms of regions. The image map is two-tier:
-	/// Segments lie on the first level, and under these, we find the procedures.
+	/// Describes the contents of the image in terms of regions. The image map
+    /// is two-tier: Segments lie on the first level, and under these, we find
+    /// the procedures.
 	/// </summary>
 	public class ImageMap
 	{
         public event EventHandler MapChanged;
 
-		private Map<Address,ImageMapItem> items;
-        private Map<Address,ImageSegment> segments;
+		private SortedList<Address,ImageMapItem> items;
+        private SortedList<Address,ImageSegment> segments;
 
 		public ImageMap(Address addrBase, long imageSize)
 		{
             if (addrBase == null)
                 throw new ArgumentNullException("addrBase");
             this.BaseAddress = addrBase;
-            items = new Map<Address, ImageMapItem>(new ItemComparer());
-            segments = new Map<Address, ImageSegment>(new ItemComparer());
+            items = new SortedList<Address, ImageMapItem>(new ItemComparer());
+            segments = new SortedList<Address, ImageSegment>(new ItemComparer());
 			SetAddressSpan(addrBase, (uint) imageSize);
 		}
 
@@ -54,8 +55,8 @@ namespace Reko.Core
             if (addrBase == null)
                 throw new ArgumentNullException("addrBase");
             this.BaseAddress = addrBase;
-            this.items = new Map<Address, ImageMapItem>(new ItemComparer());
-            this.segments = new Map<Address, ImageSegment>(new ItemComparer());
+            this.items = new SortedList<Address, ImageMapItem>(new ItemComparer());
+            this.segments = new SortedList<Address, ImageSegment>(new ItemComparer());
             foreach (var seg in segments)
             {
                 this.AddSegment(seg);
@@ -93,19 +94,28 @@ namespace Reko.Core
                 Debug.Assert(delta >= 0, "TryFindItem is supposed to find a block whose address is <= the supplied address");
                 if (delta > 0)
                 {
-                    // Need to split the item.
+                    if (delta < item.Size)
+                    {
+                        // Need to split the item.
 
-                    itemNew.Size = (uint) (item.Size - delta);
-                    item.Size = (uint) delta;
-                    items.Add(itemNew.Address, itemNew);
-                    MapChanged.Fire(this);
-                    return itemNew;
+                        itemNew.Size = (uint)(item.Size - delta);
+                        item.Size = (uint)delta;
+                        items.Add(itemNew.Address, itemNew);
+                        MapChanged.Fire(this);
+                        return itemNew;
+                    }
+                    else
+                    {
+                        items.Add(itemNew.Address, itemNew);
+                        MapChanged.Fire(this);
+                        return itemNew;
+                    }
                 }
                 else
                 {
-                    if (itemNew.Size > 0)
+                    if (itemNew.Size > 0 && itemNew.Size != item.Size)
                     {
-                        Debug.Assert(item.Size > itemNew.Size);
+                        Debug.Assert(item.Size >= itemNew.Size);
                         item.Size -= itemNew.Size;
                         item.Address += itemNew.Size;
                         items[itemNew.Address] = itemNew;
@@ -207,6 +217,39 @@ namespace Reko.Core
             item.Size = (uint)delta;
         }
 
+        public void RemoveItem(Address addr)
+        {
+            ImageMapItem item;
+            if (!TryFindItemExact(addr, out item))
+                return;
+
+            item.DataType = new UnknownType();
+
+            ImageMapItem mergedItem = item;
+
+            // Merge with previous item
+            ImageMapItem prevItem;
+            if (items.TryGetLowerBound((addr - 1), out prevItem) &&
+                prevItem.DataType is UnknownType)
+            {
+                mergedItem = prevItem;
+
+                mergedItem.Size = (uint)(item.EndAddress - mergedItem.Address);
+                items.Remove(item.Address);
+            }
+
+            // Merge with next item
+            ImageMapItem nextItem;
+            if (items.TryGetUpperBound((addr + 1), out nextItem) &&
+                nextItem.DataType is UnknownType)
+            {
+                mergedItem.Size = (uint)(nextItem.EndAddress - mergedItem.Address);
+                items.Remove(nextItem.Address);
+            }
+
+            MapChanged.Fire(this);
+        }
+
         public ImageSegment AddSegment(MemoryArea mem, string segmentName, AccessMode mode)
         {
             var segment = new ImageSegment(
@@ -217,7 +260,6 @@ namespace Reko.Core
             return segment;
         }
 
-
         public ImageSegment AddSegment(Address addr, string segmentName, AccessMode access, uint contentSize)
         {
             return AddSegment(new ImageSegment(segmentName, addr, contentSize, access));
@@ -225,8 +267,6 @@ namespace Reko.Core
 
         public ImageSegment AddSegment(ImageSegment segNew)
         {
-            if (segNew.Address.ToString().Contains("17B4")) //$DEBUG
-                segNew.ToString();
             ImageSegment seg;
             if (!TryFindSegment(segNew.Address, out seg))
             {
@@ -356,12 +396,12 @@ namespace Reko.Core
 
         public ImageSegmentRenderer Renderer { get; set; }
 
-		public Map<Address, ImageMapItem> Items
+		public SortedList<Address, ImageMapItem> Items
 		{
 			get { return items; }
 		}
 
-        public Map<Address, ImageSegment> Segments
+        public SortedList<Address, ImageSegment> Segments
 		{
 			get { return segments; }
 		}
@@ -401,27 +441,30 @@ namespace Reko.Core
 	/// </summary>
 	public class ImageMapItem
 	{
-		public Address Address;
 		public uint Size;
         public string Name;
         public DataType DataType;
 
-		public ImageMapItem(uint size)
+        public ImageMapItem(uint size)
 		{
 			this.Size = size;
-		}
+            DataType = new UnknownType();
+        }
 
-		public ImageMapItem()
+        public ImageMapItem()
 		{
             DataType = new UnknownType();
 		}
 
-		public bool IsInRange(Address addr)
+        public Address Address { get; set; }
+        public Address EndAddress { get { return Address + Size; } }
+
+        public bool IsInRange(Address addr)
 		{
 			return IsInRange(addr.ToLinear());
 		}
 
-		public virtual bool IsInRange(ulong linearAddress)
+		public bool IsInRange(ulong linearAddress)
 		{
             ulong linItem = this.Address.ToLinear();
 			return (linItem <= linearAddress && linearAddress < linItem + Size);

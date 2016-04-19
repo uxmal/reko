@@ -110,12 +110,16 @@
     <Compile Include="Core\CLanguage\LookAheadLexerTests.cs" />
     <Compile Include="Core\CLanguage\NamedDataTypeExtractorTests.cs" />
     <Compile Include="Core\CLanguage\TypedefTests.cs" />
+    <Compile Include="Core\Configuration\RekoConfigurationTests.cs" />
+    <Compile Include="Core\Output\CTypeReferenceFormatterTests.cs" />
     <Compile Include="Core\Serialization\ArgumentDeserializerTests.cs" />
     <Compile Include="Core\Serialization\ArgumentSerializerTests.cs" />
     <Compile Include="Core\Serialization\ProjectLoaderTests.cs" />
     <Compile Include="Core\Serialization\ProjectPersisterTests.cs" />
     <Compile Include="Core\Services\FileSystemServiceTests.cs" />
     <Compile Include="Environments\SegaGenesis\RomLoaderTests.cs" />
+    <Compile Include="Environments\SysV\MipsProcedureSerializerTests.cs" />
+    <Compile Include="Environments\SysV\SparcProcedureSerializerTests.cs" />
     <Compile Include="Environments\SysV\X86_64ProcedureSerializerTests.cs" />
     <Compile Include="Environments\Windows\MipsProcedureSerializerTests.cs" />
     <Compile Include="Environments\Windows\ModuleDefinitionLoaderTests.cs" />
@@ -229,7 +233,11 @@
     <Compile Include="Gui\Commands\Cmd_WhatPointsHereTests.cs" />
     <Compile Include="Gui\Design\ImageMapSegmentDesignerTests.cs" />
     <Compile Include="Gui\Design\ProcedureDesignerTests.cs" />
+    <Compile Include="Gui\Windows\CombinedCodeViewInteractorTests.cs" />
     <Compile Include="Gui\Windows\Controls\ImageMapViewTests.cs" />
+    <Compile Include="Gui\Windows\Controls\MixedCodeDataModelTests.cs" />
+    <Compile Include="Gui\Windows\Controls\NestedTextModelTests.cs" />
+    <Compile Include="Gui\Windows\Controls\StyleStackTests.cs" />
     <Compile Include="Gui\Windows\DisassemblyFormatterTests.cs" />
     <Compile Include="Gui\HungarianParserTests.cs" />
     <Compile Include="Gui\TabControlHostTests.cs" />
@@ -238,9 +246,15 @@
     <Compile Include="Gui\Windows\TextSpanFormatterTests.cs" />
     <Compile Include="Gui\Windows\Forms\OpenAsInteractorTests.cs" />
     <Compile Include="Gui\Windows\Forms\SearchDialogInteractorTests.cs" />
+    <Compile Include="Gui\Windows\Forms\DeclarationFormInteractorTests.cs" />
     <Compile Include="Gui\Windows\ProjectBrowserServiceTests.cs" />
     <Compile Include="Gui\Windows\WindowsFormsSettingsServiceTests.cs" />
     <Compile Include="ImageLoaders\Elf\ElfImageLoaderTests.cs" />
+    <Compile Include="ImageLoaders\Elf\ElfLoader64Tests.cs" />
+    <Compile Include="ImageLoaders\Elf\ElfLoader32Tests.cs" />
+    <Compile Include="ImageLoaders\Elf\ElfObjectLinkerTests.cs" />
+    <Compile Include="ImageLoaders\Elf\ElfTests.cs" />
+    <Compile Include="ImageLoaders\Elf\SparcRelocatorTests.cs" />
     <Compile Include="ImageLoaders\Hunk\HunkFileParserTests.cs" />
     <Compile Include="ImageLoaders\Hunk\HunkLoaderTests.cs" />
     <Compile Include="ImageLoaders\Hunk\HunkMaker.cs" />
@@ -302,7 +316,7 @@
     <Compile Include="Core\Lib\DominatorGraphTests.cs" />
     <Compile Include="Core\Lib\PriorityQueueTests.cs" />
     <Compile Include="Core\Lib\LookaheadEnumeratorTests.cs" />
-    <Compile Include="Core\MapTests.cs" />
+    <Compile Include="Core\SortedListExTests.cs" />
     <Compile Include="Core\OperatorTests.cs" />
     <Compile Include="Core\Output\MockGeneratorTests.cs" />
     <Compile Include="Core\Output\PrettyPrinterTests.cs" />
@@ -353,7 +367,6 @@
     <Compile Include="Gui\SignatureParserTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gui\Windows\CodeViewerPaneTests.cs" />
     <Compile Include="Gui\Windows\CodeViewerServiceTests.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -684,15 +697,15 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <DecompilerMetadata Include="%24%28SolutionDir%29Environments\MsDos\*.xml" />
-    <DecompilerMetadata Include="%24%28SolutionDir%29Environments\Windows\*.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\MsDos\*.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\*.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Lib\Bits.Tests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ExternalAssemblies Include="%24%28SolutionDir%29..\external\Capstone.NET\*.dll" />
-    <ExternalAssemblies Include="%24%28SolutionDir%29..\external\Capstone.NET\*.pdb" />
+    <ExternalAssemblies Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
+    <ExternalAssemblies Include="$(SolutionDir)..\external\Capstone.NET\*.pdb" />
   </ItemGroup>
   <Target Name="BeforeBuild">
     <Message Importance="normal" Text="Copying Decompiler metadata files to $(TargetDir)" />

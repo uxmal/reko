@@ -27,8 +27,9 @@ using System.Text;
 namespace Reko.Core.Expressions
 {
     /// <summary>
-    /// Marks an argument as being a 'defined' parameter, or out parameter. The
-    /// back end should convert these to the appropriate syntax for the output language.
+    /// Marks an argument as being a 'defined' parameter, or out parameter. 
+    /// The back end should convert these to the appropriate syntax for the
+    /// output language.
     /// </summary>
     public class OutArgument : Expression
     {

@@ -101,7 +101,7 @@ namespace Reko.UnitTests.Scanning
         [SetUp]
         public void Setup()
         {
-            arch = new IntelArchitecture(ProcessorMode.Protected32);
+            arch = new X86ArchitectureFlat32();
             m = new ProcedureBuilder();
             state = arch.CreateProcessorState();
             expSimp = new ExpressionSimplifier(arch.CreateProcessorState());
@@ -125,7 +125,7 @@ namespace Reko.UnitTests.Scanning
                 asm.Platform = platform;
                 program = asm.Assemble(Address.Ptr32(0x10000000), rdr);
             }
-            var scanner = new Scanner(program, new Dictionary<Address, ProcedureSignature>(), null, sc);
+            var scanner = new Scanner(program, null, sc);
             scanner.EnqueueEntryPoint(new EntryPoint(program.ImageMap.BaseAddress, arch.CreateProcessorState()));
             scanner.ScanImage();
             using (var fut = new FileUnitTester(outputFile))
@@ -311,7 +311,7 @@ namespace Reko.UnitTests.Scanning
             //m.Label("dummy");
             //m.Dd(0);
 
-            RunTest(new IntelArchitecture(ProcessorMode.Protected32),
+            RunTest(new X86ArchitectureFlat32(),
                 new RtlGoto(m.LoadDw(m.IAdd(m.IMul(edx, 4), 0x10010)), RtlClass.Transfer),
                 "Scanning/BwSwitch32.txt");
         }
@@ -340,7 +340,7 @@ namespace Reko.UnitTests.Scanning
             m.Assign(bx, m.IAdd(bx, bx));
             m.Assign(SCZO, new ConditionOf(bx));
 
-            RunTest(new IntelArchitecture(ProcessorMode.Real),
+            RunTest(new X86ArchitectureReal(),
                 new RtlGoto(m.LoadW(m.IAdd(bx, 0x1234)), RtlClass.Transfer),
                 "Scanning/BwSwitch16.txt");
         }

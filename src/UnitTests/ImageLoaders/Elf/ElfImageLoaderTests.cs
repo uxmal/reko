@@ -34,7 +34,7 @@ using Reko.Environments.SysV;
 namespace Reko.UnitTests.ImageLoaders.Elf
 {
     [TestFixture]
-    public class ElfImageLoaderTests
+    public class ElfImageLoaderTests : ElfTests
     {
         // bswap 
         private byte[] rawImg = {
@@ -342,27 +342,21 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         #endregion
         };
 
-        private MockRepository mr;
-        private IProcessorArchitecture arch;
-        private IServiceProvider services;
-        private IConfigurationService dcSvc;
         private ITypeLibraryLoaderService tlSvc;
 
         [SetUp]
-        public void Setup()
+        public override void Setup()
         {
-            this.mr = new MockRepository();
+            base.Setup();
             this.arch = mr.Stub<IProcessorArchitecture>();
-            this.services = mr.Stub<IServiceProvider>();
-            this.dcSvc = mr.Stub<IConfigurationService>();
+            this.arch32be = mr.Stub<IProcessorArchitecture>();
             this.tlSvc = mr.Stub<ITypeLibraryLoaderService>(); 
-            services.Stub(s => s.GetService(typeof(IConfigurationService))).Return(dcSvc);
-            services.Stub(s => s.GetService(typeof(ITypeLibraryLoaderService))).Return(tlSvc);
-            dcSvc.Stub(d => d.GetArchitecture("x86-protected-32")).Return(arch);
-            dcSvc.Stub(d => d.GetEnvironment("elf-neutral")).Return(new OperatingEnvironmentElement
-                {
-                    TypeName = typeof(SysVPlatform).AssemblyQualifiedName
-                });
+            sc.AddService<ITypeLibraryLoaderService>(tlSvc);
+            cfgSvc.Stub(d => d.GetArchitecture("x86-protected-32")).Return(arch);
+            cfgSvc.Stub(d => d.GetEnvironment("elf-neutral")).Return(new OperatingEnvironmentElement
+            {
+                TypeName = typeof(SysVPlatform).AssemblyQualifiedName
+            });
         }
 
         [Test]
@@ -370,7 +364,8 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         {
             mr.ReplayAll();
 
-            var el = new ElfImageLoader(services, "foo", rawImg);
+            var el = new ElfImageLoader(sc, "foo", rawImg);
+            el.LoadElfIdentification();
             var lr = el.Load(Address.Ptr32(0));
             Assert.AreSame(arch, lr.Architecture);
         }
@@ -380,9 +375,10 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         {
             mr.ReplayAll();
 
-            var el = new ElfImageLoader(services, "foo", rawImg);
-            el.Load(Address.Ptr32(0));
-            Assert.AreEqual(".symtab", el.GetSectionName(1));
+            var eil = new ElfImageLoader(sc, "foo", rawImg);
+            eil.LoadElfIdentification();
+            var el = (ElfLoader32)eil.CreateLoader();
+            el.LoadSectionHeaders();
         }
 
         [Test]
@@ -390,37 +386,39 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         {
             mr.ReplayAll();
 
-            var el = new ElfImageLoader(services, "foo", rawImg);
-            el.Load(Address.Ptr32(0));
+            var eil = new ElfImageLoader(sc, "foo", rawImg);
+            eil.LoadElfIdentification();
+            var el = (ElfLoader32)eil.CreateLoader();
+            el.LoadSectionHeaders();
 
-            Assert.AreEqual("", el.GetSectionName(el.SectionHeaders[0].sh_name));
-            Assert.AreEqual(".interp", el.GetSectionName(el.SectionHeaders[1].sh_name));
-            Assert.AreEqual(".note.ABI-tag", el.GetSectionName(el.SectionHeaders[2].sh_name));
-            Assert.AreEqual(".hash", el.GetSectionName(el.SectionHeaders[3].sh_name));
-            Assert.AreEqual(".dynsym", el.GetSectionName(el.SectionHeaders[4].sh_name));
-            Assert.AreEqual(".dynstr", el.GetSectionName(el.SectionHeaders[5].sh_name));
-            Assert.AreEqual(".gnu.version", el.GetSectionName(el.SectionHeaders[6].sh_name));
-            Assert.AreEqual(".gnu.version_r", el.GetSectionName(el.SectionHeaders[7].sh_name));
-            Assert.AreEqual(".rel.dyn", el.GetSectionName(el.SectionHeaders[8].sh_name));
-            Assert.AreEqual(".rel.plt", el.GetSectionName(el.SectionHeaders[9].sh_name));
-            Assert.AreEqual(".init", el.GetSectionName(el.SectionHeaders[10].sh_name));
-            Assert.AreEqual(".plt", el.GetSectionName(el.SectionHeaders[11].sh_name));
-            Assert.AreEqual(".text", el.GetSectionName(el.SectionHeaders[12].sh_name));
-            Assert.AreEqual(".fini", el.GetSectionName(el.SectionHeaders[13].sh_name));
-            Assert.AreEqual(".rodata", el.GetSectionName(el.SectionHeaders[14].sh_name));
-            Assert.AreEqual(".eh_frame", el.GetSectionName(el.SectionHeaders[15].sh_name));
-            Assert.AreEqual(".ctors", el.GetSectionName(el.SectionHeaders[16].sh_name));
-            Assert.AreEqual(".dtors", el.GetSectionName(el.SectionHeaders[17].sh_name));
-            Assert.AreEqual(".jcr", el.GetSectionName(el.SectionHeaders[18].sh_name));
-            Assert.AreEqual(".dynamic", el.GetSectionName(el.SectionHeaders[19].sh_name));
-            Assert.AreEqual(".got", el.GetSectionName(el.SectionHeaders[20].sh_name));
-            Assert.AreEqual(".got.plt", el.GetSectionName(el.SectionHeaders[21].sh_name));
-            Assert.AreEqual(".data", el.GetSectionName(el.SectionHeaders[22].sh_name));
-            Assert.AreEqual(".bss", el.GetSectionName(el.SectionHeaders[23].sh_name));
-            Assert.AreEqual(".comment", el.GetSectionName(el.SectionHeaders[24].sh_name));
-            Assert.AreEqual(".shstrtab", el.GetSectionName(el.SectionHeaders[25].sh_name));
-            Assert.AreEqual(".symtab", el.GetSectionName(el.SectionHeaders[26].sh_name));
-            Assert.AreEqual(".strtab", el.GetSectionName(el.SectionHeaders[27].sh_name));
+            Assert.AreEqual("", el.Sections[0].Name);
+            Assert.AreEqual(".interp", el.Sections[1].Name);
+            Assert.AreEqual(".note.ABI-tag", el.Sections[2].Name);
+            Assert.AreEqual(".hash", el.Sections[3].Name);
+            Assert.AreEqual(".dynsym", el.Sections[4].Name);
+            Assert.AreEqual(".dynstr", el.Sections[5].Name);
+            Assert.AreEqual(".gnu.version", el.Sections[6].Name);
+            Assert.AreEqual(".gnu.version_r", el.Sections[7].Name);
+            Assert.AreEqual(".rel.dyn", el.Sections[8].Name);
+            Assert.AreEqual(".rel.plt", el.Sections[9].Name);
+            Assert.AreEqual(".init", el.Sections[10].Name);
+            Assert.AreEqual(".plt", el.Sections[11].Name);
+            Assert.AreEqual(".text", el.Sections[12].Name);
+            Assert.AreEqual(".fini", el.Sections[13].Name);
+            Assert.AreEqual(".rodata", el.Sections[14].Name);
+            Assert.AreEqual(".eh_frame", el.Sections[15].Name);
+            Assert.AreEqual(".ctors", el.Sections[16].Name);
+            Assert.AreEqual(".dtors", el.Sections[17].Name);
+            Assert.AreEqual(".jcr", el.Sections[18].Name);
+            Assert.AreEqual(".dynamic", el.Sections[19].Name);
+            Assert.AreEqual(".got", el.Sections[20].Name);
+            Assert.AreEqual(".got.plt", el.Sections[21].Name);
+            Assert.AreEqual(".data", el.Sections[22].Name);
+            Assert.AreEqual(".bss", el.Sections[23].Name);
+            Assert.AreEqual(".comment", el.Sections[24].Name);
+            Assert.AreEqual(".shstrtab", el.Sections[25].Name);
+            Assert.AreEqual(".symtab", el.Sections[26].Name);
+            Assert.AreEqual(".strtab", el.Sections[27].Name);
         }
 
         [Test]
@@ -428,24 +426,37 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         {
             mr.ReplayAll();
 
-            var el = new ElfImageLoader(services, "foo", rawImg);
-            el.Load(Address.Ptr32(0));
+            var eil = new ElfImageLoader(sc, "foo", rawImg);
+            eil.LoadElfIdentification();
+            var el = (ElfLoader32)eil.CreateLoader();
+            el.LoadProgramHeaderTable();
+            el.LoadSectionHeaders();
             el.Dump(Console.Out);
+
+            mr.VerifyAll();
         }
 
         [Test]
         public void EIL_LoadCellLv2()
         {
             var opEl = mr.Stub<OperatingEnvironment>();
-            var platform = new DefaultPlatform(services, arch);
-            dcSvc.Stub(d => d.GetEnvironment("elf-cell-lv2")).Return(opEl);
+            var platform = new DefaultPlatform(sc, arch);
+            cfgSvc.Stub(d => d.GetEnvironment("elf-cell-lv2")).Return(opEl);
             opEl.Expect(o => o.Load(null, null)).IgnoreArguments().Return(platform);
             mr.ReplayAll();
             
-            var el = new ElfImageLoader(services, "foo", rawImg);
-            el.CreatePlatform(0x66);        // ELFOSABI_CELL_LV2;
+            var eil = new ElfImageLoader(sc, "foo", rawImg);
+            eil.LoadElfIdentification();
+            var el = eil.CreateLoader();
+            el.LoadPlatform(0x66, arch);        // ELFOSABI_CELL_LV2;
 
             mr.VerifyAll();
+        }
+
+        private void Given_Image()
+        {
+            BuildObjectFile32();
+            mr.ReplayAll();
         }
     }
 }

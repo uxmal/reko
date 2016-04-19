@@ -39,6 +39,7 @@ namespace Reko.Gui.Windows
         }
 
         public GViewer Control { get; private set; }
+        public IWindowFrame Frame { get; set; }
 
         public void Close()
         {

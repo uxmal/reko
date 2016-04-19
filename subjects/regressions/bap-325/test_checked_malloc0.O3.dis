@@ -1,0 +1,10 @@
+// fn000083A4
+// Return size: 0
+void fn000083A4()
+fn000083A4_entry:
+	// succ:  l000083A4
+l000083A4:
+	sp = fp
+fn000083A4_exit:
+
+

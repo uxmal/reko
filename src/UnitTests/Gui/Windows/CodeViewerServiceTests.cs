@@ -36,32 +36,41 @@ namespace Reko.UnitTests.Gui.Windows
     {
         private ServiceContainer sc;
         private Program program;
+        private MockRepository mr;
 
         [SetUp]
         public void Setup()
         {
+            mr = new MockRepository();
             sc = new ServiceContainer();
-            this.program = new Program();
+            this.program = new Program
+            {
+                ImageMap = new ImageMap(Address.Ptr32(0x0040000), 0x400)
+            };
         }
 
         [Test]
-        public void Cvp_CreateViewerIfNotVisible()
+        public void Cvp_CreateProcedureViewerIfNotVisible()
         {
             var m = new ProcedureBuilder();
             m.Return();
 
             var uiSvc = AddMockService<IDecompilerShellUiService>();
             uiSvc.Expect(s => s.FindDocumentWindow(
-                    "codeViewerWindow" , m.Procedure))
+                    "CombinedCodeViewInteractor", m.Procedure))
                 .Return(null);
-            var windowFrame = MockRepository.GenerateStub<IWindowFrame>();
+            var windowPane = mr.Stub<CombinedCodeViewInteractor>();
+            var windowFrame = mr.StrictMock<IWindowFrame>();
+            windowFrame.Stub(f => f.Pane).Return(windowPane);
             uiSvc.Expect(s => s.CreateDocumentWindow(
-                    Arg<string>.Is.Equal("codeViewerWindow"),
+                    Arg<string>.Is.Equal("CombinedCodeViewInteractor"),
                 Arg<string>.Is.Equal(m.Procedure),
                 Arg<string>.Is.Equal(m.Procedure.Name),
                 Arg<IWindowPane>.Is.Anything))
                 .Return(windowFrame);
             windowFrame.Expect(s => s.Show());
+
+            mr.ReplayAll();
 
             var codeViewerSvc = new CodeViewerServiceImpl(sc);
             codeViewerSvc.DisplayProcedure(program, m.Procedure);
@@ -69,9 +78,39 @@ namespace Reko.UnitTests.Gui.Windows
             uiSvc.VerifyAllExpectations();
         }
 
+        [Test]
+        public void Cvp_CreateGlobalsViewerIfNotVisible()
+        {
+            var segment = new ImageSegment(
+                ".seg", Address32.Ptr32(0x17), 0, AccessMode.ReadWrite);
+            var label = ".seg global variables";
+
+            var uiSvc = AddMockService<IDecompilerShellUiService>();
+            uiSvc.Expect(s => s.FindDocumentWindow(
+                    "CombinedCodeViewInteractor", segment))
+                .Return(null);
+            var windowPane = mr.Stub<CombinedCodeViewInteractor>();
+            var windowFrame = mr.StrictMock<IWindowFrame>();
+            windowFrame.Stub(f => f.Pane).Return(windowPane);
+            uiSvc.Expect(s => s.CreateDocumentWindow(
+                    Arg<string>.Is.Equal("CombinedCodeViewInteractor"),
+                Arg<string>.Is.Equal(segment),
+                Arg<string>.Is.Equal(label),
+                Arg<IWindowPane>.Is.Anything))
+                .Return(windowFrame);
+            windowFrame.Expect(s => s.Show());
+
+            mr.ReplayAll();
+
+            var codeViewerSvc = new CodeViewerServiceImpl(sc);
+            codeViewerSvc.DisplayGlobals(program, segment);
+
+            uiSvc.VerifyAllExpectations();
+        }
+
         private T AddMockService<T>() where T : class
         {
-            var svc = MockRepository.GenerateMock<T>();
+            var svc = mr.StrictMock<T>();
             sc.AddService(typeof (T), svc);
             return svc;
         }

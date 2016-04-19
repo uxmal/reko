@@ -20,10 +20,7 @@
 
 using Reko.Gui.Controls;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Reko.Gui.Windows
@@ -39,6 +36,8 @@ namespace Reko.Gui.Windows
 
         public bool Enabled { get { return textbox.Enabled; } set { textbox.Enabled = value; } }
         public string Text { get { return textbox.Text; } set { textbox.Text = value; } }
+        public Color BackColor { get { return textbox.BackColor; } set { textbox.BackColor = value; } }
+        public Color ForeColor { get { return textbox.ForeColor; } set { textbox.ForeColor = value; } }
 
         public void SelectAll()
         {
@@ -60,6 +59,12 @@ namespace Reko.Gui.Windows
         {
             add { textbox.TextChanged += value; }
             remove { textbox.TextChanged -= value; }
+        }
+
+        public event EventHandler LostFocus
+        {
+            add { textbox.LostFocus += value; }
+            remove { textbox.LostFocus -= value; }
         }
     }
 }

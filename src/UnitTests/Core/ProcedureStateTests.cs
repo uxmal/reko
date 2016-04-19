@@ -124,6 +124,16 @@ namespace Reko.UnitTests.Core
                 return new LeImageReader(image, offset);
             }
 
+            public ImageWriter CreateImageWriter()
+            {
+                return new LeImageWriter();
+            }
+
+            public ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
+            {
+                return new LeImageWriter(mem.Bytes, (uint)(addr.ToLinear() - mem.BaseAddress.ToLinear()));
+            }
+
             public ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
             {
                 throw new NotImplementedException();
@@ -133,7 +143,6 @@ namespace Reko.UnitTests.Core
             {
                 return null;
             }
-
 
             public RegisterStorage GetRegister(int i)
             {

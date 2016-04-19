@@ -374,12 +374,15 @@ namespace Reko
         /// <param name="addr"></param>
         /// <returns>a ProcedureBase, because the target procedure may have been a thunk or 
         /// an linked procedure the user has decreed not decompileable.</returns>
-		public ProcedureBase ScanProcedure(ProgramAddress paddr)
-		{
-			if (scanner == null)        //$TODO: it's unfortunate that we depend on the scanner of the Decompiler class.
-				scanner = CreateScanner(paddr.Program);
-			return scanner.ScanProcedure(paddr.Address, null, paddr.Program.Architecture.CreateProcessorState());
-		}
+        public ProcedureBase ScanProcedure(ProgramAddress paddr)
+        {
+            if (scanner == null)        //$TODO: it's unfortunate that we depend on the scanner of the Decompiler class.
+                scanner = CreateScanner(paddr.Program);
+            Procedure_v1 sProc;
+            var procName = paddr.Program.User.Procedures.TryGetValue(
+                paddr.Address, out sProc) ? sProc.Name : null;
+            return scanner.ScanProcedure(paddr.Address, procName, paddr.Program.Architecture.CreateProcessorState());
+        }
 
 		/// <summary>
 		/// Generates the control flow graph and finds executable code in each program.
@@ -410,7 +413,7 @@ namespace Reko
                     var dt = global.Value.DataType.Accept(tlDeser);
                     scanner.EnqueueUserGlobalData(addr, dt);
                 }
-                foreach (EntryPoint ep in program.EntryPoints)
+                foreach (EntryPoint ep in program.EntryPoints.Values)
                 {
                     scanner.EnqueueEntryPoint(ep);
                 }
@@ -454,6 +457,7 @@ namespace Reko
             }
             finally
             {
+                eventListener.ShowStatus("Writing .asm and .dis files.");
                 host.WriteDisassembly(program, w => DumpAssembler(program, w));
                 host.WriteIntermediateCode(program, w => EmitProgram(program, null, w));
             }
@@ -461,10 +465,10 @@ namespace Reko
 
         public IDictionary<Address, ProcedureSignature> LoadCallSignatures(
             Program program, 
-            ICollection<SerializedCall_v1> serializedCalls)
+            ICollection<SerializedCall_v1> userCalls)
         {
             return
-                serializedCalls
+                userCalls
                 .Where(sc => sc != null && sc.Signature != null)
                 .Select(sc =>
                 {
@@ -487,7 +491,6 @@ namespace Reko
         {
             return new Scanner(
                 program, 
-                LoadCallSignatures(program, program.User.Calls.Values),
                 new ImportResolver(project, program, eventListener),
                 services);
         }

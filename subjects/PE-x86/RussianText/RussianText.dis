@@ -1,0 +1,198 @@
+// WinMain
+// Return size: 4
+INT WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, INT nCmdShow)
+WinMain_entry:
+	// succ:  l00401018
+l00401018:
+	esp = fp
+	// succ:  l0040102A
+l0040102A:
+	eax = Mem0[0x0040208B:word32]
+	eax = eax << 0x00000002
+	SCZO = cond(eax)
+	Mem0[0x0040208F:word32] = eax
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = edx
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x00000000
+	eax = GetModuleHandleA(Mem0[esp:LPCSTR])
+	esp = esp + 0x00000004
+	edx = eax
+	call fn0040117C (retsize: 4;)
+	edx = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	call __CRTL_MEM_UseBorMM (retsize: 4;)
+	esp = esp + 0xFFFFFFFC
+	call fn00401180 (retsize: 4;)
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x00000000
+	call fn004011B0 (retsize: 4;)
+	ecx = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x00402034
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x00000000
+	eax = GetModuleHandleA(Mem0[esp:LPCSTR])
+	esp = esp + 0x00000004
+	Mem0[0x00402093:word32] = eax
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x00000000
+	// succ:  l004012DE
+l004012DE:
+	call _startup (retsize: 4;)
+	return
+	// succ:  WinMain_exit
+WinMain_exit:
+
+
+// _GetExceptDLLinfo
+// Return size: 4
+void _GetExceptDLLinfo()
+__GetExceptDLLinfo_entry:
+	// succ:  l00401071
+l00401071:
+	esp = fp
+	// succ:  l00401071_thunk_fn004011FC
+l00401071_thunk_fn004011FC:
+	call fn004011FC (retsize: 4;)
+	return
+	// succ:  __GetExceptDLLinfo_exit
+__GetExceptDLLinfo_exit:
+
+
+// fn00401158
+// Return size: 4
+void fn00401158()
+fn00401158_entry:
+	// succ:  l00401158
+l00401158:
+	esp = fp
+	eax = Mem0[0x0040208B:word32]
+	edx = Mem0[fs:0x002C:word32]
+	eax = Mem0[edx + eax * 0x00000004:word32]
+	return
+	// succ:  fn00401158_exit
+fn00401158_exit:
+
+
+// fn0040117C
+// Return size: 4
+void fn0040117C()
+fn0040117C_entry:
+	// succ:  l0040117C
+l0040117C:
+	esp = fp
+	return
+	// succ:  fn0040117C_exit
+fn0040117C_exit:
+
+
+// fn00401180
+// Return size: 4
+void fn00401180()
+fn00401180_entry:
+	// succ:  l00401180
+l00401180:
+	esp = fp
+	return
+	// succ:  fn00401180_exit
+fn00401180_exit:
+
+
+// fn004011B0
+// Return size: 4
+void fn004011B0()
+fn004011B0_entry:
+	// succ:  l004011B0
+l004011B0:
+	esp = fp
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebp
+	ebp = esp
+	esp = esp + 0xFFFFFFF8
+	SCZO = cond(esp)
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebx
+	ebx = Mem0[ebp + 0x00000008:word32]
+	SZO = cond(ebx & ebx)
+	C = false
+	al = Test(NE,Z)
+	eax = eax & 0x00000001
+	SZO = cond(eax)
+	C = false
+	SZO = cond(ebx & ebx)
+	C = false
+	branch Test(NE,Z) l004011D7
+	// succ:  l004011C6 l004011D7
+l004011C6:
+	SZO = cond(ebx & ebx)
+	C = false
+	branch Test(NE,Z) l004011D7
+	// succ:  l004011CA l004011D7
+l004011CA:
+	edx = ebp - 0x00000008
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = edx
+	call fn004011FC (retsize: 4;)
+	ecx = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	ebx = Mem0[ebp - 0x00000004:word32]
+	// succ:  l004011D7
+l004011D7:
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x0000009C
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebx
+	call fn00401158 (retsize: 4;)
+	eax = eax + 0x00000000
+	SCZO = cond(eax)
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = eax
+	call memcpy (retsize: 4;)
+	esp = esp + 0xFFFFFFFC
+	esp = esp + 0x0000000C
+	SCZO = cond(esp)
+	call _InitTermAndUnexPtrs$qv (retsize: 4;)
+	esp = esp + 0xFFFFFFFC
+	ebx = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	ecx = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	ecx = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	ebp = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	return
+	// succ:  fn004011B0_exit
+fn004011B0_exit:
+
+
+// fn004011FC
+// Return size: 4
+void fn004011FC()
+fn004011FC_entry:
+	// succ:  l004011FC
+l004011FC:
+	esp = fp
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebp
+	ebp = esp
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebx
+	ebx = Mem0[ebp + 0x00000008:word32]
+	call fn00401158 (retsize: 4;)
+	eax = eax + 0x0000001C
+	SCZO = cond(eax)
+	Mem0[0x004020F8:word32] = eax
+	Mem0[ebx:word32] = 0x82727349
+	Mem0[ebx + 0x00000004:word32] = 0x004020E4
+	ebx = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	ebp = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	return
+	// succ:  fn004011FC_exit
+fn004011FC_exit:
+
+

@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Types;
+using Reko.Core.Serialization;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
@@ -56,8 +57,31 @@ namespace Reko.UnitTests.Core
             arch.Stub(a => a.CreateImageReader(mem, addrBase)).Return(new LeImageReader(mem, 0));
         }
 
-		[Test]
-		public void ProgEnsurePseudoProc()
+        private void Given_ImageMapItem(Address address, DataType dataType)
+        {
+            this.program.ImageMap.AddItemWithSize(
+                address,
+                new ImageMapItem
+                {
+                    Address = address,
+                    Size = (uint)dataType.Size,
+                    DataType = dataType,
+                });
+        }
+
+        private void Given_ImageMapBlock(Address address, uint size)
+        {
+            this.program.ImageMap.AddItemWithSize(
+                address,
+                new ImageMapBlock
+                {
+                    Address = address,
+                    Size = size,
+                });
+        }
+
+        [Test]
+		public void Prog_EnsurePseudoProc()
 		{
 			PseudoProcedure ppp = program.EnsurePseudoProcedure("foo", VoidType.Instance, 3);
 			Assert.IsNotNull(ppp);
@@ -70,6 +94,117 @@ namespace Reko.UnitTests.Core
 			Assert.AreEqual("foo", ppp.Name);
 			Assert.AreEqual(1, program.PseudoProcedures.Count);
 		}
+
+        [Test]
+        public void Prog_ModifyUserGlobal()
+        {
+            Given_Architecture();
+            Given_Image(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
+            mr.ReplayAll();
+
+            var gbl1 = program.ModifyUserGlobal(addrBase, new PrimitiveType_v1 { Domain = Domain.Real, ByteSize = 8 }, "dValue");
+            Assert.IsNotNull(gbl1);
+            Assert.AreEqual("dValue", gbl1.Name);
+            Assert.AreEqual(addrBase.ToString(), gbl1.Address.ToString());
+            Assert.AreEqual("prim(Real,8)", gbl1.DataType.ToString());
+            Assert.AreEqual(1, program.User.Globals.Count);
+            Assert.AreSame(gbl1, program.User.Globals.Values[0]);
+            Assert.AreEqual(1, program.ImageMap.Items.Count);
+            var item = program.ImageMap.Items.Values[0];
+            Assert.AreEqual("dValue", item.Name);
+            Assert.AreEqual("real64", item.DataType.ToString());
+            Assert.AreEqual("00010000", item.Address.ToString());
+            Assert.AreEqual(8, item.Size);
+
+            var gbl2 = program.ModifyUserGlobal(addrBase, new PrimitiveType_v1 { Domain = Domain.Real, ByteSize = 4 }, "fValue");
+            Assert.IsNotNull(gbl2);
+            Assert.AreSame(gbl1, gbl2);
+            Assert.AreEqual("fValue", gbl2.Name);
+            Assert.AreEqual(addrBase.ToString(), gbl2.Address.ToString());
+            Assert.AreEqual("prim(Real,4)", gbl2.DataType.ToString());
+            Assert.AreEqual(1, program.User.Globals.Count);
+            Assert.AreSame(gbl2, program.User.Globals.Values[0]);
+            Assert.AreEqual(2, program.ImageMap.Items.Count);
+            var firstItem = program.ImageMap.Items.Values[0];
+            Assert.AreEqual("fValue", firstItem.Name);
+            Assert.AreEqual("real32", firstItem.DataType.ToString());
+            Assert.AreEqual("00010000", firstItem.Address.ToString());
+            Assert.AreEqual(4, firstItem.Size);
+            var lastItem = program.ImageMap.Items.Values[1];
+            Assert.AreEqual("<unknown>", lastItem.DataType.ToString());
+            Assert.AreEqual("00010004", lastItem.Address.ToString());
+            Assert.AreEqual(4, lastItem.Size);
+
+            program.RemoveUserGlobal(addrBase);
+            Assert.AreEqual(0, program.User.Globals.Count);
+            Assert.AreEqual(1, program.ImageMap.Items.Count);
+            item = program.ImageMap.Items.Values[0];
+            Assert.AreEqual("<unknown>", item.DataType.ToString());
+            Assert.AreEqual("00010000", item.Address.ToString());
+            Assert.AreEqual(8, item.Size);
+        }
+
+        [Test]
+        public void Prog_ModifyUserGlobal_Int32Item()
+        {
+            Given_Architecture();
+            Given_Image(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
+            Given_ImageMapItem(addrBase, PrimitiveType.Int32);
+            mr.ReplayAll();
+
+            var gbl = program.ModifyUserGlobal(
+                addrBase,
+                new PrimitiveType_v1
+                {
+                    Domain = Domain.Character,
+                    ByteSize = 1
+                },
+                "ch");
+            Assert.IsNotNull(gbl);
+            var item = program.ImageMap.Items.Values[0];
+            Assert.AreEqual(2, program.ImageMap.Items.Count);
+            Assert.AreEqual("ch", item.Name);
+            Assert.AreEqual("char", item.DataType.ToString());
+            Assert.AreEqual("00010000", item.Address.ToString());
+            Assert.AreEqual(1, item.Size);
+        }
+
+        [Test]
+        public void Prog_RemoveUserGlobal()
+        {
+            Given_Architecture();
+            Given_Image(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
+            Given_ImageMapItem(addrBase, PrimitiveType.Int32);
+            mr.ReplayAll();
+
+            program.RemoveUserGlobal(addrBase);
+            Assert.AreEqual(1, program.ImageMap.Items.Count);
+            var item = program.ImageMap.Items.Values[0];
+            Assert.AreEqual("<unknown>", item.DataType.ToString());
+            Assert.AreEqual("00010000", item.Address.ToString());
+            Assert.AreEqual(8, item.Size);
+        }
+
+        [Test]
+        public void Prog_RemoveUserGlobal_BlockItem()
+        {
+            Given_Architecture();
+            Given_Image(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
+            Given_ImageMapBlock(addrBase, 5);
+            mr.ReplayAll();
+
+            program.RemoveUserGlobal(addrBase);
+            /* block items should not be removed*/
+            Assert.AreEqual(2, program.ImageMap.Items.Count);
+            var firstItem = program.ImageMap.Items.Values[0];
+            Assert.AreEqual("code", firstItem.DataType.ToString());
+            Assert.AreEqual("00010000", firstItem.Address.ToString());
+            Assert.AreEqual(5, firstItem.Size);
+            var lastItem = program.ImageMap.Items.Values[1];
+            Assert.AreEqual("<unknown>", lastItem.DataType.ToString());
+            Assert.AreEqual("00010005", lastItem.Address.ToString());
+            Assert.AreEqual(3, lastItem.Size);
+        }
 
         [Test]
         public void Prog_GetDataSize_of_Integer()

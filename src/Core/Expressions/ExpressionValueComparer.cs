@@ -25,7 +25,7 @@ using System.Text;
 namespace Reko.Core.Expressions
 {
     /// <summary>
-    /// Deep-compares expressions.
+    /// Deep-compares expressions; i.e. treats expressions as values.
     /// </summary>
     public class ExpressionValueComparer : IEqualityComparer<Expression>
     {
@@ -109,6 +109,12 @@ namespace Reko.Core.Expressions
                 addrComp,
                 addrHash);
             Add(typeof(Address64),
+                addrComp,
+                addrHash);
+            Add(typeof(ProtectedSegmentedAddress),
+                addrComp,
+                addrHash);
+            Add(typeof(RealSegmentedAddress),
                 addrComp,
                 addrHash);
 

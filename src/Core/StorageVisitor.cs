@@ -23,7 +23,8 @@ using System;
 namespace Reko.Core
 {
     /// <summary>
-    /// Visitor pattern for storages, parametrized by the returned value of all the visitor methods.
+    /// Visitor pattern for storages, parametrized by the returned value of
+    /// all the visitor methods.
     /// </summary>
     /// <typeparam name="T">Returned value</typeparam>
 	public interface StorageVisitor<T>

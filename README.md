@@ -24,9 +24,19 @@ decompiler only if you have legal rights to decompiler the binary
 You should be able to build reko by simply cloning https://github.com/uxmal/reko
 and opening the `reko-decompiler.sln` solution file with Visual 
 Studio 2012 or later, or MonoDevelop. All external dependencies 
-are included in the `external` directory. **Note:** please let us 
+are included in the `external` directory. The solution folder `Drivers`
+contains the executables that act as user interfaces: `WindowsDecompiler`  is the
+GUI client for Windows; `MonoDecompiler` is the GUI client for Mono users; `CmdLine` is
+a command line driver. (**Note:** please let us 
 know if you are not able to compile, so we can fix the issue for 
 you.
+
+You will receive warnings when loading the solution in Visual Studio
+if you haven't installed the WiX toolset on your development machine.
+You can safely ignore the warnings; the WiX toolset only used when making
+MSI installer packages. You will not need to do this if you're already able
+to compile the project. If you do want to build an MSI installer with
+the WiX toolchain, you can download it here: http://wixtoolset.org/releases/
 
 If you're interested in contributing code, see the 
 [road map](https://github.com/uxmal/reko/wiki/Roadmap) for areas to explore.

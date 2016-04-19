@@ -54,9 +54,9 @@ namespace Reko.ImageLoaders.MzExe
         public ExePackLoader(IServiceProvider services, string filename, byte[] imgRaw)
             : base(services, filename, imgRaw)
         {
-            arch = new IntelArchitecture(ProcessorMode.Real);
-            platform = services.RequireService<IConfigurationService>()
-                .GetEnvironment("ms-dos")
+            var cfgSvc = services.RequireService<IConfigurationService>();
+            arch = cfgSvc.GetArchitecture("x86-real-16");
+            platform =cfgSvc.GetEnvironment("ms-dos")
                 .Load(Services, arch);
 
             var exe = new ExeImageLoader(services, filename, imgRaw);
@@ -137,7 +137,10 @@ namespace Reko.ImageLoaders.MzExe
                 }
             } while ((op & 1) == 0);
             imageMap = imgU.CreateImageMap();
-            return new Program(new ImageMap(imgU.BaseAddress, imgU.Length), new X86ArchitectureReal(), platform);
+            return new Program(
+                new ImageMap(imgU.BaseAddress, imgU.Length), 
+                arch,
+                platform);
         }
 
         public override Address PreferredBaseAddress
@@ -161,8 +164,11 @@ namespace Reko.ImageLoaders.MzExe
                     {
                         ushort relocOff = rdr.ReadLeUInt16();
                         ushort seg = imgU.FixupLeUInt16(relocBase + relocOff, segCode);
-                        var segment = imageMap.AddSegment(Address.SegPtr(seg, 0), seg.ToString("X4"), AccessMode.ReadWriteExecute, 0);
-                        segment.MemoryArea = imgU;
+                        var segment = imageMap.AddSegment(new ImageSegment(
+                            seg.ToString("X4"), 
+                            Address.SegPtr(seg, 0),
+                            imgU,
+                            AccessMode.ReadWriteExecute));
                     } while (--cx != 0);
                 }
                 if (dx == 0xF000)

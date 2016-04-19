@@ -31,7 +31,8 @@ using System.Text;
 namespace Reko.Analysis
 {
     /// <summary>
-    /// Propagates expressions used in TrashedRegisters to replace expressions of the type
+    /// Propagates expressions used in TrashedRegisters to replace expressions
+    /// of the type
     ///     mem[fp + c]
     /// with
     ///     idC

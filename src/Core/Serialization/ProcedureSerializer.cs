@@ -65,7 +65,7 @@ namespace Reko.Core.Serialization
 
         public abstract Storage GetReturnRegister(Argument_v1 sArg, int bitSize);
 
-        public SerializedSignature Serialize(ProcedureSignature sig)
+        public virtual SerializedSignature Serialize(ProcedureSignature sig)
         {
             SerializedSignature ssig = new SerializedSignature();
             if (!sig.ParametersValid)

@@ -76,18 +76,27 @@
     <Compile Include="Elf32_EHdr.cs" />
     <Compile Include="Elf32_PHdr.cs" />
     <Compile Include="Elf32_Rel.cs" />
-    <Compile Include="Elf32_SHdr.cs" />
+    <Compile Include="ElfLoader.cs" />
+    <Compile Include="ElfSection.cs" />
     <Compile Include="Elf32_Sym.cs" />
     <Compile Include="ElfHeaderRenderer.cs" />
     <Compile Include="ElfImageLoader.cs" />
+    <Compile Include="ElfMachine.cs" />
+    <Compile Include="ElfObjectLinker.cs" />
+    <Compile Include="ElfRelocator.cs" />
     <Compile Include="ElfSymbol.cs" />
+    <Compile Include="MipsRelocator.cs" />
+    <Compile Include="PpcRelocator.cs" />
     <Compile Include="ProgramHeaderType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RelaSegmentRenderer.cs" />
     <Compile Include="RelSegmentRenderer.cs" />
     <Compile Include="SectionHeaderType.cs" />
     <Compile Include="SectionInfo.cs" />
+    <Compile Include="SparcRelocator.cs" />
     <Compile Include="SymtabSegmentRenderer.cs" />
+    <Compile Include="x86Relocator.cs" />
+    <Compile Include="x86_64Relocator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">

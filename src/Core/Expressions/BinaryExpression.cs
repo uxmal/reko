@@ -119,7 +119,20 @@ namespace Reko.Core.Expressions
                 return new BinaryExpression(Operators.Operator.Ne, this.DataType, Left, Right);
             if (Operator == Operators.Operator.Ne)
                 return new BinaryExpression(Operators.Operator.Eq, this.DataType, Left, Right);
-			throw new NotImplementedException();
+            if (Operator == Operators.Operator.Feq)
+                return new BinaryExpression(Operators.Operator.Fne, this.DataType, Left, Right);
+            if (Operator == Operators.Operator.Fne)
+                return new BinaryExpression(Operators.Operator.Feq, this.DataType, Left, Right);
+            if (Operator == Operators.Operator.Fle)
+                return new BinaryExpression(Operators.Operator.Fgt, this.DataType, Left, Right);
+            if (Operator == Operators.Operator.Flt)
+                return new BinaryExpression(Operators.Operator.Fge, this.DataType, Left, Right);
+            if (Operator == Operators.Operator.Fge)
+                return new BinaryExpression(Operators.Operator.Flt, this.DataType, Left, Right);
+            if (Operator == Operators.Operator.Fgt)
+                return new BinaryExpression(Operators.Operator.Fle, this.DataType, Left, Right);
+
+            throw new NotImplementedException();
 		}
 	}
 }

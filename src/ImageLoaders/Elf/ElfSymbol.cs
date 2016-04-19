@@ -28,7 +28,10 @@ namespace Reko.ImageLoaders.Elf
     public class ElfSymbol
     {
         public string Name;
-        public uint Value;
+        public SymbolType Type;
+        public ulong Value;
         public byte Info;
+        public uint SectionIndex;
+        public ulong Size;
     }
 }

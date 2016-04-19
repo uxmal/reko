@@ -29,7 +29,8 @@ using System.Collections.Generic;
 namespace Reko.Core
 {
     /// <summary>
-    /// ProcessorState simulates the state of the processor and a part of the stack during scanning.
+    /// ProcessorState simulates the state of the processor and a part of the
+    /// stack during scanning.
     /// </summary>
     public abstract class ProcessorState : EvaluationContext
     {

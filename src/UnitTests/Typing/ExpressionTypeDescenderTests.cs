@@ -199,5 +199,13 @@ namespace Reko.UnitTests.Typing
                 Test(m.LoadDw(m.IAdd(p, 12)), PrimitiveType.Int32),
                 Test(m.LoadDw(m.IAdd(p, 12)), PrimitiveType.Real32));
         }
+
+        [Test]
+        public void ExdFloatCmp()
+        {
+            var p = Id("p", PrimitiveType.Word32);
+            RunTest(
+                Test(m.FGe(p, Constant.Real32(-5.5F)), PrimitiveType.Bool));
+        }
     }
 }

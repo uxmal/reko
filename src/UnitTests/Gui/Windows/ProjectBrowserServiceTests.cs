@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Types;
 using Reko.Gui;
 using Reko.Gui.Controls;
 using System.ComponentModel;
@@ -386,12 +387,25 @@ namespace Reko.UnitTests.Gui.Windows
             project.Programs.Add(program);
         }
 
+        private void Given_ImageMapItem(uint address)
+        {
+            this.program.ImageMap.AddItemWithSize(
+                Address.Ptr32(address),
+                new ImageMapItem
+                {
+                    Address = Address.Ptr32(address),
+                    Size = 4,
+                    DataType = PrimitiveType.Int32,
+                });
+        }
+
         [Test]
         public void PBS_SingleBinary()
         {
             var pbs = new ProjectBrowserService(sc, fakeTree);
             Given_Project();
             Given_ProgramWithOneSegment();
+            Given_ImageMapItem(0x12340000);
 
             pbs.Load(project);
 
@@ -409,6 +423,39 @@ namespace Reko.UnitTests.Gui.Windows
                     "<node " + 
                         "text=\".text\" " +
                         "tip=\".text" + cr + "Address: 12340000" + cr + "Size: 1000" + cr + "r-x" + "\" " +
+                        "tag=\"ImageMapSegmentNodeDesigner\">" +
+                            "<node " +
+                                "text=\"Global variables\" " +
+                                "tag=\"GlobalVariablesNodeDesigner\" />" +
+                    "</node>" +
+                    "<node tag=\"ProgramResourceGroupDesigner\" />" +
+                "</node>" +
+                "</root>");
+        }
+
+        [Test]
+        public void PBS_SingleBinary_NoGlobals()
+        {
+            var pbs = new ProjectBrowserService(sc, fakeTree);
+            Given_Project();
+            Given_ProgramWithOneSegment();
+
+            pbs.Load(project);
+
+            Assert.IsTrue(fakeTree.ShowNodeToolTips);
+
+            Expect(
+                "<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
+                "<root>" +
+                "<node " +
+                    "text=\"foo.exe\" " +
+                    "tip=\"c:\\test\\foo.exe" + cr + "12300000\" " +
+                    "tag=\"ProgramDesigner\">" +
+                    "<node text=\"Foo Processor\" tag=\"ArchitectureDesigner\" />" +
+                    "<node text=\"(Unknown operating environment)\" tag=\"PlatformDesigner\" />" +
+                    "<node " +
+                        "text=\".text\" " +
+                        "tip=\".text" + cr + "Address: 12340000" + cr + "Size: 1000" + cr + "r-x" + "\" " +
                         "tag=\"ImageMapSegmentNodeDesigner\" />" +
                     "<node tag=\"ProgramResourceGroupDesigner\" />" +
                 "</node>" +
@@ -421,6 +468,7 @@ namespace Reko.UnitTests.Gui.Windows
             var pbs = new ProjectBrowserService(sc, fakeTree);
             Given_Project();
             Given_ProgramWithOneSegment();
+            Given_ImageMapItem(0x12340000);
             mr.ReplayAll();
 
             pbs.Load(project);
@@ -439,7 +487,9 @@ namespace Reko.UnitTests.Gui.Windows
                 "<root><node text=\"foo.exe\" tip=\"c:\\test\\foo.exe" + cr + "12300000\" tag=\"ProgramDesigner\">" +
                     "<node text=\"Foo Processor\" tag=\"ArchitectureDesigner\" />" +
                     "<node text=\"(Unknown operating environment)\" tag=\"PlatformDesigner\" />" +
-                    "<node text=\".text\" tip=\".text" + cr + "Address: 12340000&#xD;&#xA;Size: 1000" + cr + "r-x\" tag=\"ImageMapSegmentNodeDesigner\" />" +
+                    "<node text=\".text\" tip=\".text" + cr + "Address: 12340000&#xD;&#xA;Size: 1000" + cr + "r-x\" tag=\"ImageMapSegmentNodeDesigner\">" +
+                        "<node text=\"Global variables\" tag=\"GlobalVariablesNodeDesigner\" />" +
+                    "</node>" +
                     "<node tag=\"ProgramResourceGroupDesigner\" />" +
                  "</node>" +
                  "</root>");
@@ -469,6 +519,7 @@ namespace Reko.UnitTests.Gui.Windows
             var pbs = new ProjectBrowserService(sc, fakeTree);
             Given_Project();
             Given_ProgramWithOneSegment();
+            Given_ImageMapItem(0x12340000);
             Given_UserProcedure(0x12340500, "MyFoo");
             mr.ReplayAll();
 
@@ -487,6 +538,9 @@ namespace Reko.UnitTests.Gui.Windows
                         "text=\".text\" " +
                         "tip=\".text" + cr + "Address: 12340000" + cr + "Size: 1000" + cr + "r-x" + "\" " +
                         "tag=\"ImageMapSegmentNodeDesigner\">" +
+                        "<node " +
+                            "text=\"Global variables\" " +
+                            "tag=\"GlobalVariablesNodeDesigner\" />" +
                         "<node " +
                             "text=\"MyFoo\" " +
                             "tip=\"12340500\" " +

@@ -104,6 +104,7 @@ namespace Reko.Core.Serialization
             GlobalData = new List<GlobalDataItem_v2>();
             Heuristics = new List<Heuristic_v3>();
             Annotations = new List<Annotation_v3>();
+            Calls = new List<SerializedCall_v1>();
         }
 
         [XmlElement("address")]

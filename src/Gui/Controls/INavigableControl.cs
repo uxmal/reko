@@ -26,6 +26,11 @@ using System.Text;
 
 namespace Reko.Gui.Controls
 {
+    /// <summary>
+    /// Implementing this interface on a control makes it possible to be 
+    /// manipulated by the [Back][Forward] navigation buttons.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public interface INavigableControl<T>
     {
         IButton BackButton { get; }

@@ -37,34 +37,14 @@ namespace Reko.Core.Configuration
         string Loader { get; set; }
     }
 
-    public class TypeLibraryElement : ConfigurationElement, ITypeLibraryElement
+    public class TypeLibraryElement : ITypeLibraryElement
     {
-        [ConfigurationProperty("Name", IsRequired = true)]
-        public string Name
-        {
-            get { return (string) this["Name"]; }
-            set { this["Name"] = value; }
-        }
+        public string Name { get; set; }
 
-        [ConfigurationProperty("Arch", IsRequired=false)]
-        public string Architecture
-        {
-            get { return (string) this["Arch"]; }
-            set { this["Arch"] = value; }
-        }
+        public string Architecture { get; set; }
 
-        [ConfigurationProperty("Module", IsRequired = false)]
-        public string Module
-        {
-            get { return (string)this["Module"]; }
-            set { this["Module"] = value; }
-        }
+        public string Module { get; set; }
 
-        [ConfigurationProperty("Loader", IsRequired = false)]
-        public string Loader
-        {
-            get { return (string)this["Loader"]; }
-            set { this["Loader"] = value; }
-        }
+        public string Loader { get; set; }
     }
 }

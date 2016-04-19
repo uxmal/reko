@@ -186,30 +186,16 @@
     <Compile Include="Code\GotoInstruction.cs" />
     <Compile Include="Code\SwitchInstruction.cs" />
     <Compile Include="Configuration\ArchitectureElement.cs" />
-    <Compile Include="Configuration\ArchitectureElementCollection.cs" />
-    <Compile Include="Configuration\ArchitectureReferenceElement.cs" />
-    <Compile Include="Configuration\ArchitectureReferenceElementCollection.cs" />
-    <Compile Include="Configuration\ArchitectureSectionHandler.cs" />
     <Compile Include="Configuration\AssemblerElement.cs" />
-    <Compile Include="Configuration\AssemblerElementCollection.cs" />
-    <Compile Include="Configuration\AssemblerSectionHandler.cs" />
-    <Compile Include="Configuration\DecompilerConfiguration.cs" />
+    <Compile Include="Configuration\RekoConfigurationService.cs" />
     <Compile Include="Configuration\LoaderElement.cs" />
-    <Compile Include="Configuration\LoaderElementCollection.cs" />
-    <Compile Include="Configuration\LoaderSectionHandler.cs" />
     <Compile Include="Configuration\OperatingEnvironmentElement.cs" />
-    <Compile Include="Configuration\OperatingEnvironmentElementCollection.cs" />
-    <Compile Include="Configuration\OperatingEnvironmentSectionHandler.cs" />
     <Compile Include="Configuration\RawFileElement.cs" />
-    <Compile Include="Configuration\RawFileElementCollection.cs" />
-    <Compile Include="Configuration\RawFileSectionHandler.cs" />
+    <Compile Include="Configuration\RekoConfiguration_v1.cs" />
     <Compile Include="Configuration\SignatureFileElement.cs" />
-    <Compile Include="Configuration\SignatureFileSectionHandler.cs" />
     <Compile Include="Configuration\TypeLibraryElement.cs" />
-    <Compile Include="Configuration\TypeLibraryElementCollection.cs" />
-    <Compile Include="Configuration\UiPreferencesSectionHandler.cs" />
+    <Compile Include="Configuration\UiPreferencesConfiguration.cs" />
     <Compile Include="Configuration\UiStyleElement.cs" />
-    <Compile Include="Configuration\UiStyleCollection.cs" />
     <Compile Include="EnumerableEx.cs" />
     <Compile Include="EvaluationContext.cs" />
     <Compile Include="EventEx.cs" />
@@ -240,6 +226,8 @@
     <Compile Include="Expressions\TestCondition.cs" />
     <Compile Include="Expressions\UnaryExpression.cs" />
     <Compile Include="FieldAttribute.cs" />
+    <Compile Include="ImageSymbol.cs" />
+    <Compile Include="Output\CTypeReferenceFormatter.cs" />
     <Compile Include="Rational.cs" />
     <Compile Include="Serialization\ArgumentDeserializer.cs" />
     <Compile Include="Serialization\GlobalDataItem_v2.cs" />
@@ -436,10 +424,7 @@
     </Compile>
     <Compile Include="Lib\DisjointPartition.cs" />
     <Compile Include="Lib\DominatorGraph.cs" />
-    <Compile Include="Lib\IntSet.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Lib\Map.cs">
+    <Compile Include="Lib\SortedListEx.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Lib\SccFinder.cs">

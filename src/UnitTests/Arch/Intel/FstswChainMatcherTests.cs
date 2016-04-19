@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Arch.Intel
         [SetUp]
         public void Fstsw_Setup()
         {
-            arch = new IntelArchitecture(ProcessorMode.Protected32);
+            arch = new X86ArchitectureFlat32();
             asm = new X86Assembler(null, new DefaultPlatform(null, new X86ArchitectureFlat32()), Address.Ptr32(0x10000), new List<EntryPoint>());
             Procedure proc = new Procedure("test", arch.CreateFrame());
             orw = new OperandRewriter32(arch, proc.Frame, null);

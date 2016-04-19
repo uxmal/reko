@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             mr = new MockRepository();
             mockFactory = new MockFactory(mr);
-            arch = new IntelArchitecture(ProcessorMode.Protected32);
+            arch = new X86ArchitectureFlat32();
             platform = new Win32Platform(null, arch);
         }
 

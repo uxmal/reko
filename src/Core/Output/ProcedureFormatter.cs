@@ -96,7 +96,7 @@ namespace Reko.Core.Output
             }
         }
 
-        private void WriteBlock(Block block, CodeFormatter writer)
+        public void WriteBlock(Block block, CodeFormatter writer)
         {
             if (!string.IsNullOrEmpty(block.Name))
             {

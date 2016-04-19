@@ -64,7 +64,7 @@ namespace Reko.Gui.Windows
         private void EnableControls()
         {
             navControl.BackButton.Enabled = stackPosition > 0;
-            navControl.ForwardButton.Enabled = stackPosition < navStack.Count;
+            navControl.ForwardButton.Enabled = stackPosition < (navStack.Count - 1);
         }
 
         /// <summary>
@@ -77,11 +77,19 @@ namespace Reko.Gui.Windows
             int itemsAhead = navStack.Count - stackPosition;
             if (stackPosition >= 0 && itemsAhead > 0)
             {
+                var stackAddress = navStack[stackPosition];
+                if (stackAddress != null && 
+                    !stackAddress.Equals(navControl.CurrentAddress))
+                {
+                    stackPosition++;
+                    itemsAhead--;
+                }
                 Debug.Print("Removing {0}:{1}", stackPosition, itemsAhead);
                 navStack.RemoveRange(stackPosition, itemsAhead);
             }
             navStack.Add(navControl.CurrentAddress);    // Remember where we were...
             ++stackPosition;
+            navStack.Add(address);    // Remember where we will be...
             EnableControls();
         }
 
@@ -98,10 +106,9 @@ namespace Reko.Gui.Windows
         {
             if (stackPosition >= navStack.Count)
                 return;
-            var loc = Location;
             ++stackPosition;
             EnableControls();
-            navControl.CurrentAddress = loc;        // ...and move to the new position.
+            navControl.CurrentAddress = Location;        // ...and move to the new position.
         }
     }
 }

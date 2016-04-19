@@ -31,8 +31,10 @@ namespace Reko.Gui.Windows.Controls
 	/// Base class for obtaining menus for this application. 
 	/// </summary>
 	/// <remarks>
-	/// Menus are defined in an XML file called command-definitions. Menus are then generated from that file by generating 
-	/// C# code from the XML file via XSLT. This is done to avoid locking to a particular GUI platform.
+	/// Menus are defined in an XML file called command-definitions. Menus
+    /// are then generated from that file by generating C# code from the XML
+    /// file via XSLT. This is done to avoid locking to a particular GUI
+    /// platform.
 	/// </remarks>
 	public abstract class MenuSystem
 	{

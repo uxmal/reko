@@ -56,10 +56,12 @@ namespace Reko.Core.Operators
 		public static readonly BinaryOperator Le = new LeOperator();
 		public static readonly BinaryOperator Ge = new GeOperator();
 
-		public static readonly BinaryOperator Rlt = new RltOperator();
-		public static readonly BinaryOperator Rgt = new RgtOperator();
-		public static readonly BinaryOperator Rle = new RleOperator();
-		public static readonly BinaryOperator Rge = new RgeOperator();
+        public static readonly BinaryOperator Feq= new ReqOperator();
+        public static readonly BinaryOperator Fne = new RneOperator();
+        public static readonly BinaryOperator Flt = new RltOperator();
+		public static readonly BinaryOperator Fgt = new RgtOperator();
+		public static readonly BinaryOperator Fle = new RleOperator();
+		public static readonly BinaryOperator Fge = new RgeOperator();
 
 		public static readonly BinaryOperator Ult = new UltOperator();
 		public static readonly BinaryOperator Ugt = new UgtOperator();

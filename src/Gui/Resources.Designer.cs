@@ -109,6 +109,15 @@ namespace Reko.Gui {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Global variables.
+        /// </summary>
+        internal static string Node_GlobalVariables {
+            get {
+                return ResourceManager.GetString("Node_GlobalVariables", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reco&amp;nstruct data types.
         /// </summary>
         internal static string ReconstructDataTypes {
@@ -123,6 +132,33 @@ namespace Reko.Gui {
         internal static string ScanBinaries {
             get {
                 return ResourceManager.GetString("ScanBinaries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string Segment_ {
+            get {
+                return ResourceManager.GetString("Segment:", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} global variables.
+        /// </summary>
+        internal static string SegmentGlobalsFmt {
+            get {
+                return ResourceManager.GetString("SegmentGlobalsFmt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} [segment].
+        /// </summary>
+        internal static string SegmentViewerFmt {
+            get {
+                return ResourceManager.GetString("SegmentViewerFmt", resourceCulture);
             }
         }
     }

@@ -47,6 +47,7 @@ namespace Reko.Core.CLanguage
             this.EnumsSeen = new Dictionary<string, SerializedEnumType>();
             this.Constants = new Dictionary<string, int>();
             this.Procedures = new List<ProcedureBase_v1>();
+            this.Variables = new List<GlobalDataItem_v2>();
             this.NamedTypes = namedTypes;
             this.Sizer = new TypeSizer(this.NamedTypes);
         }
@@ -58,6 +59,7 @@ namespace Reko.Core.CLanguage
         public Dictionary<string, int> Constants { get; private set; }
         public Dictionary<string, SerializedType> NamedTypes { get; private set; }
         public List<ProcedureBase_v1> Procedures { get; private set; }
+        public List<GlobalDataItem_v2> Variables { get; private set; }
 
         public TypeSizer Sizer { get; private set; }
 
@@ -98,6 +100,16 @@ namespace Reko.Core.CLanguage
                         Signature = sSig,
                     });
                     types.Add(sSig);
+                }
+                else if (!isTypedef)
+                {
+                    var variable = new GlobalDataItem_v2
+                    {
+                        Name = nt.Name,
+                        DataType = serType,
+                    };
+                    Variables.Add(variable);
+                    types.Add(serType);
                 }
                 if (isTypedef)
                 {

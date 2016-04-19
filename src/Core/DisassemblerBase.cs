@@ -26,7 +26,8 @@ using System.Collections.Generic;
 namespace Reko.Core
 {
     /// <summary>
-    /// A disassembler can be considered an enumerator of disassembled instructions.
+    /// A disassembler can be considered an enumerator of disassembled
+    /// instructions.
     /// </summary>
     /// <typeparam name="TInstr"></typeparam>
     public abstract class DisassemblerBase<TInstr> : IDisposable, IEnumerable<TInstr>
@@ -35,7 +36,7 @@ namespace Reko.Core
         {
             for (;;)
             {
-                var instr = DisassembleInstruction();
+                TInstr instr = DisassembleInstruction();
                 if (instr == null)
                     break;
                 yield return instr;

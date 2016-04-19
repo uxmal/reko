@@ -37,7 +37,6 @@ namespace Reko.Environments.SysV
     //$TODO: rename to Elf-Neutral? Or Posix?
     public class SysVPlatform : Platform
     {
-
         public SysVPlatform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch, "elf-neutral")
         {
@@ -50,7 +49,17 @@ namespace Reko.Environments.SysV
 
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
-            return new X86_64ProcedureSerializer(Architecture, typeLoader, defaultConvention);
+            switch (Architecture.Name)
+            {
+            case "mips-be-32":
+                return new MipsProcedureSerializer(Architecture, typeLoader, defaultConvention);
+            case "sparc32":
+                return new SparcProcedureSerializer(Architecture, typeLoader, defaultConvention);
+            case "x86-protected-64":
+                return new X86_64ProcedureSerializer(Architecture, typeLoader, defaultConvention);
+            default:
+                throw new NotImplementedException(string.Format("Procedure serializer for {0} not implemented yet.", Architecture.Description));
+            }
         }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()

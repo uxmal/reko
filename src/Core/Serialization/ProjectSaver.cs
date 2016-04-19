@@ -76,14 +76,15 @@ namespace Reko.Core.Serialization
                     PlatformOptions = SerializePlatformOptions(program.User, program.Platform),
                     LoadAddress = program.User.LoadAddress != null ? program.User.LoadAddress.ToString() : null,
                     Calls = program.User.Calls
-                        .Select(uc => uc.Value)
+                        .Select(uc => SerializeUserCall(program, uc.Value))
+                        .Where(uc => uc != null)
                         .ToList(),
                     GlobalData = program.User.Globals
                         .Select(de => new GlobalDataItem_v2
                         {
                             Address = de.Key.ToString(),
                             DataType = de.Value.DataType,
-                            Name = string.Format("g_{0:X}", de.Key.ToLinear())
+                            Name = GlobalName(de),
                         })
                         .ToList(),
                     OnLoadedScript = program.User.OnLoadedScript,
@@ -97,6 +98,35 @@ namespace Reko.Core.Serialization
                 OutputFilename =       ConvertToProjectRelativePath(projectAbsPath, program.OutputFilename),
                 TypesFilename =        ConvertToProjectRelativePath(projectAbsPath, program.TypesFilename),
                 GlobalsFilename =      ConvertToProjectRelativePath(projectAbsPath, program.GlobalsFilename),
+            };
+        }
+
+        private string GlobalName(KeyValuePair<Address, GlobalDataItem_v2> de)
+        {
+            var name = de.Value.Name;
+            if (string.IsNullOrEmpty(name))
+            {
+                name = string.Format("g_{0:X}", de.Key.ToLinear());
+            }
+            return name;
+        }
+
+        private SerializedCall_v1 SerializeUserCall(Program program, UserCallData uc)
+        {
+            if (uc == null || uc.Address == null)
+                return null;
+            var procser = program.CreateProcedureSerializer();
+            SerializedSignature ssig = null;
+            if (uc.Signature != null)
+            {
+                ssig = procser.Serialize(uc.Signature);
+            }
+            return new SerializedCall_v1
+            {
+                InstructionAddress = uc.Address.ToString(),
+                Comment = uc.Comment,
+                NoReturn = uc.NoReturn,
+                Signature = ssig,
             };
         }
 

@@ -43,15 +43,8 @@ namespace Reko.Environments.Trs80
 
         public override Address PreferredBaseAddress
         {
-            get
-            {
-                return Address.Ptr16(0x4000);
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get { return Address.Ptr16(0x4000); }
+            set { throw new NotImplementedException(); }
         }
 
         public override Program Load(Address addrLoad)

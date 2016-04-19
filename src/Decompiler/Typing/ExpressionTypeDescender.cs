@@ -255,6 +255,14 @@ namespace Reko.Typing
             {
                 // Not much can be deduced here, except that the operands should have the same size. Earlier passes
                 // already did that work, so just continue with the operands.
+            } 
+            else if (binExp.Operator is RealConditionalOperator)
+            {
+                // We know leaves must be floats
+                var dt = PrimitiveType.Create(Domain.Real, eLeft.DataType.Size);
+                MeetDataType(eLeft, dt);
+                dt = PrimitiveType.Create(Domain.Real, eLeft.DataType.Size);
+                MeetDataType(eRight, dt);
             }
             else if (binExp.Operator == Operator.Shl)
             {

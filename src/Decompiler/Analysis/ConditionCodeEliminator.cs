@@ -248,10 +248,10 @@ namespace Reko.Analysis
 			case ConditionCode.UGE: cmpOp = Operator.Uge; break;
 			case ConditionCode.ULE: cmpOp = Operator.Ule; break;
 			case ConditionCode.ULT: cmpOp = Operator.Ult; break;
-			case ConditionCode.GT:  cmpOp = isReal ? Operator.Rgt : Operator.Gt; break;
-			case ConditionCode.GE:  cmpOp = isReal ? Operator.Rge : Operator.Ge; break;
-			case ConditionCode.LE:  cmpOp = isReal ? Operator.Rle : Operator.Le; break;
-			case ConditionCode.LT:  cmpOp = isReal ? Operator.Rlt : Operator.Lt; break;
+			case ConditionCode.GT:  cmpOp = isReal ? Operator.Fgt : Operator.Gt; break;
+			case ConditionCode.GE:  cmpOp = isReal ? Operator.Fge : Operator.Ge; break;
+			case ConditionCode.LE:  cmpOp = isReal ? Operator.Fle : Operator.Le; break;
+			case ConditionCode.LT:  cmpOp = isReal ? Operator.Flt : Operator.Lt; break;
 			case ConditionCode.NE:  cmpOp = Operator.Ne; break;
 			case ConditionCode.EQ:  cmpOp = Operator.Eq; break;
 			case ConditionCode.SG:  cmpOp = Operator.Lt; break;

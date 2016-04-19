@@ -40,7 +40,22 @@ namespace Reko.Core.Serialization
 		{
 		}
 
-		public PrimitiveType_v1(Domain domain, int byteSize)
+        public static SerializedType Int32()
+        {
+            return new PrimitiveType_v1 { Domain = Domain.Integer, ByteSize = 4 };
+        }
+
+        public static SerializedType Real32()
+        {
+            return new PrimitiveType_v1 { Domain = Domain.Real, ByteSize = 4 };
+        }
+
+        public static SerializedType Real64()
+        {
+            return new PrimitiveType_v1 { Domain = Domain.Real, ByteSize = 8 };
+        }
+
+        public PrimitiveType_v1(Domain domain, int byteSize)
 		{
 			this.Domain = domain;	
 			this.ByteSize = byteSize;

@@ -25,10 +25,12 @@ using System.IO;
 namespace Reko.Core.Types
 {
 	/// <summary>
-	/// Represents concrete C-like data types inferred by the decompiler as part of the decompilation process.
+	/// Represents concrete C-like data types inferred by the decompiler as 
+    /// part of the decompilation process.
 	/// </summary>
 	/// <remarks>
-	/// The name 'DataType' is used to avoid conflicts with 'System.Type', which is part of the CLR.
+	/// The name 'DataType' is used to avoid conflicts with 'System.Type',
+    /// which is part of the CLR.
 	/// </remarks>
 	public abstract class DataType : ICloneable
 	{

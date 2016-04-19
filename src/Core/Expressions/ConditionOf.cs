@@ -25,7 +25,8 @@ namespace Reko.Core.Expressions
 {
     /// <summary>
     /// Models the common occurrence of CPU condition codes. The return
-    /// value is the condition codes that were set when the Expression was evaluated.
+    /// value is the condition codes that were set when the Expression 
+    /// was evaluated.
     /// </summary>
     /// <remarks>
     /// For instance, the x86 instruction 
@@ -37,12 +38,13 @@ namespace Reko.Core.Expressions
     ///     eax = eax + ebx
     ///     SZCO = COND(eax)
     /// </code>
-    /// which models the fact that the SZCO condition codes are set by the ADD instruction
-    /// that produced eax.
+    /// which models the fact that the SZCO condition codes are set by the
+    /// ADD instruction that produced eax.
     /// <para>
-    /// ConditionOf instances only exist early in the decompilation process, and are replaced
-    /// with boolean conditions as the decompiler starts building expressions. Any surviving 
-    /// ConditionOf instances at the end of the decompilation are considered bugs.</para>
+    /// ConditionOf instances only exist early in the decompilation process,
+    /// and are replaced with boolean conditions as the decompiler starts 
+    /// building expressions. Any surviving ConditionOf instances at the end
+    /// of the decompilation are considered bugs.</para>
     /// </remarks>
 	public class ConditionOf : Expression
 	{

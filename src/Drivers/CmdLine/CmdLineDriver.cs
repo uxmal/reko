@@ -37,13 +37,13 @@ namespace Reko.CmdLine
     public class CmdLineDriver
     {
         private IServiceProvider services;
-        private DecompilerConfiguration config;
+        private RekoConfigurationService config;
 
         public static void Main(string[] args)
         {
             var services = new ServiceContainer();
             var listener = new CmdLineListener();
-            var config = new DecompilerConfiguration();
+            var config = RekoConfigurationService.Load();
             var diagnosticSvc = new CmdLineDiagnosticsService(Console.Out);
             services.AddService<DecompilerEventListener>(listener);
             services.AddService<IConfigurationService>(config);
@@ -55,7 +55,7 @@ namespace Reko.CmdLine
             driver.Execute(args);
         }
 
-        public CmdLineDriver(IServiceProvider services, DecompilerConfiguration config)
+        public CmdLineDriver(IServiceProvider services, RekoConfigurationService config)
         {
             this.services = services;
             this.config = config;
@@ -148,7 +148,9 @@ namespace Reko.CmdLine
 
             var state = CreateInitialState(arch, pArgs);
             dec.LoadRawImage((string)pArgs["filename"], (string)pArgs["--arch"], (string) sEnv, addrBase);
-            dec.Project.Programs[0].EntryPoints.Add(new EntryPoint(addrEntry, state));
+            dec.Project.Programs[0].EntryPoints.Add(
+                addrEntry,
+                new EntryPoint(addrEntry, state));
             object oHeur;
             if (pArgs.TryGetValue("heuristics", out oHeur))
             {
@@ -296,7 +298,7 @@ namespace Reko.CmdLine
             w.WriteLine("    shingle               Use shingle assembler to discard data ");
         }
 
-        private static void DumpArchitectures(DecompilerConfiguration config, TextWriter w, string fmtString)
+        private static void DumpArchitectures(RekoConfigurationService config, TextWriter w, string fmtString)
         {
             foreach (var arch in config.GetArchitectures()
                 .OfType<ArchitectureElement>()
@@ -306,7 +308,7 @@ namespace Reko.CmdLine
             }
         }
 
-        private static void DumpEnvironments(DecompilerConfiguration config, TextWriter w, string fmtString)
+        private static void DumpEnvironments(RekoConfigurationService config, TextWriter w, string fmtString)
         {
             foreach (var arch in config.GetEnvironments()
                 .OfType<OperatingEnvironmentElement>()
@@ -316,7 +318,7 @@ namespace Reko.CmdLine
             }
         }
 
-        private static void DumpRawFiles(DecompilerConfiguration config, TextWriter w, string fmtString)
+        private static void DumpRawFiles(RekoConfigurationService config, TextWriter w, string fmtString)
         {
             foreach (var raw in config.GetRawFiles()
                 .OfType<RawFileElement>()

@@ -68,9 +68,20 @@ namespace Reko.Core
         /// </returns>
         int GetByteSizeFromCBasicType(CBasicType cb);
 
+        /// <summary>
+        /// Given a primitive type <paramref name="t"/> returns the
+        /// rendering of that primitive in the programming language
+        /// <paramref name="language"/>
+        /// </summary>
+        /// <param name="t">Primitive type</param>
+        /// <param name="language">Programming language to use</param>
+        /// <returns></returns>
+        string GetPrimitiveTypeName(PrimitiveType t, string v);
+
         ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host);
         SystemService FindService(int vector, ProcessorState state);
         SystemService FindService(RtlInstruction call, ProcessorState state);
+        string FormatProcedureName(Program program, Procedure proc);
         void LoadUserOptions(Dictionary<string, object> options);
         ExternalProcedure LookupProcedureByName(string moduleName, string procName);
         ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal);
@@ -209,6 +220,8 @@ namespace Reko.Core
                 var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
                 this.Metadata = new TypeLibrary();
                 foreach (var tl in envCfg.TypeLibraries
+                    .Where(t => t.Architecture == null ||
+                                t.Architecture == Architecture.Name)
                     .OfType<ITypeLibraryElement>())
                 {
                     Debug.Print("Loading {0}", tl.Name);
@@ -221,7 +234,28 @@ namespace Reko.Core
             }
         }
 
+        /// <summary>
+        /// Formats a program/module and a procedure name together.
+        /// </summary>
+        /// <remarks>
+        /// This is done in the Windows way {module}!{procname}. Other platforms
+        /// may have other conventions. Please override this in the other platforms
+        /// to give the correct output.</remarks>
+        /// <param name="program"></param>
+        /// <param name="proc"></param>
+        /// <returns></returns>
+        public virtual string FormatProcedureName(Program program, Procedure proc)
+        {
+            return string.Format("{0}!{1}", program.Name, proc.Name);
+        }
+        
+
         public abstract int GetByteSizeFromCBasicType(CBasicType cb);
+
+        public virtual string GetPrimitiveTypeName(PrimitiveType pt, string language)
+        {
+            return null;
+        }
 
         public abstract SystemService FindService(int vector, ProcessorState state);
 

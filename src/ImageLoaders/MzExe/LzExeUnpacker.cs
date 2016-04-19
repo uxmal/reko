@@ -50,18 +50,18 @@ namespace Reko.ImageLoaders.MzExe
 		public LzExeUnpacker(IServiceProvider services, string filename, byte [] rawImg) : base(services, filename, rawImg)
         {
             var exe = new ExeImageLoader(services, filename, rawImg);
-            this.arch = new IntelArchitecture(ProcessorMode.Real);
-            this.platform = services.RequireService<IConfigurationService>()
-                .GetEnvironment("ms-dos")
+            var cfgSvc = services.RequireService<IConfigurationService>();
+            this.arch = cfgSvc.GetArchitecture("x86-real-16");
+            this.platform = cfgSvc.GetEnvironment("ms-dos")
                 .Load(services, arch);
             Validate(exe);
         }
 
 		public LzExeUnpacker(IServiceProvider services, ExeImageLoader exe, string filename, byte [] rawImg) : base(services, filename, rawImg)
 		{
-            this.arch = new IntelArchitecture(ProcessorMode.Real);
-            this.platform = services.RequireService<IConfigurationService>()
-                .GetEnvironment("ms-dos")
+            var cfgSvc = services.RequireService<IConfigurationService>();
+            this.arch = cfgSvc.GetArchitecture("x86-real-16");
+            this.platform = cfgSvc.GetEnvironment("ms-dos")
                 .Load(services, arch);
             Validate(exe);
 		}
@@ -185,7 +185,12 @@ namespace Reko.ImageLoaders.MzExe
 				ushort seg = (ushort) (pgmImgNew.ReadLeUInt16((uint)rel_off) + segReloc);
 				pgmImgNew.WriteLeUInt16((uint)rel_off, seg);
 				relocations.AddSegmentReference((uint)rel_off, seg);
-				imageMap.AddSegment(Address.SegPtr(seg, 0), seg.ToString("X4"), AccessMode.ReadWriteExecute, 0);
+				imageMap.AddSegment(
+                    new ImageSegment(
+                        seg.ToString("X4"),
+                        Address.SegPtr(seg, 0),
+                        this.imgLoaded,
+                        AccessMode.ReadWriteExecute));
 			}
 			return imageMap;
 		}

@@ -30,6 +30,13 @@ using System.Text;
 
 namespace Reko.Core.Output
 {
+    /// <summary>
+    /// Generates source code from Reko.Code that can be fed back into
+    /// ProcedureBuilder.
+    /// </summary>
+    /// <remarks>
+    /// Useful for generating unit tests.
+    /// </remarks>
     public class MockGenerator : InstructionVisitor, IExpressionVisitor, IDataTypeVisitor<int>
     {
         private IndentingTextWriter writer;

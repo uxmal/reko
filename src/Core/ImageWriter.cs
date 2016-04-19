@@ -26,10 +26,13 @@ using System.Text;
 namespace Reko.Core
 {
     /// <summary>
-    /// This class is used to write bytes to arrays of bytes. It knows all about endian conventions.
+    /// This class is used to write bytes to arrays of bytes. It knows all 
+    /// about endian conventions.
     /// </summary>
     public abstract class ImageWriter
     {
+        private int himark;
+
         public ImageWriter() : this(new byte[16])
         {
         }
@@ -51,6 +54,13 @@ namespace Reko.Core
         public byte[] Bytes { get; private set;}
         public int Position { get; set; }
 
+        public byte[] ToArray()
+        {
+            var b = new byte[Position];
+            Array.Copy(Bytes, b, Position);
+            return b;
+        }
+
         public ImageWriter WriteByte(byte b)
         {
             if (Position >= Bytes.Length)
@@ -61,7 +71,7 @@ namespace Reko.Core
                     newSize *= 2;
                 }
                 var bytes = Bytes;
-                Array.Resize<byte>(ref bytes, newSize);
+                Array.Resize(ref bytes, newSize);
                 Bytes = bytes;
             }
             Bytes[Position++] = b;
@@ -82,6 +92,28 @@ namespace Reko.Core
         {
             foreach (byte b in bytes)
                 WriteByte(b);
+            return this;
+        }
+
+        public ImageWriter WriteBytes(byte[] bytes, uint offset, uint count)
+        {
+            while (count > 0)
+            {
+                WriteByte(bytes[offset]);
+                ++offset;
+                --count;
+            }
+            return this;
+        }
+
+        public ImageWriter WriteBytes(byte[] bytes, int offset, int count)
+        {
+            while (count > 0)
+            {
+                WriteByte(bytes[offset]);
+                ++offset;
+                --count;
+            }
             return this;
         }
 

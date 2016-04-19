@@ -45,35 +45,21 @@ namespace Reko.Gui.Windows.Forms
             get { return txtSignature; }
         }
 
-
-        public ListView ArgumentList
+        public CheckBox Decompile
         {
-            get { return listArguments; }
+            get { return chkDecompile; }
         }
 
-        public PropertyGrid ArgumentProperties
+        public CheckBox Allocator
         {
-            get { return propArgument; }
+            get { return chkMalloc; }
         }
 
-        public TabControl TabControl
+        public CheckBox Terminates
         {
-            get { return tabControl1; }
+            get { return chkTerminates; }
         }
 
         public Button OkButton { get { return btnOK; } }
-
-
-        private void txtComment_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
     }
 }

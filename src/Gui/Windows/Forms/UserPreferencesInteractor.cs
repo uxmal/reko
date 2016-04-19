@@ -306,9 +306,11 @@ namespace Reko.Gui.Windows.Forms
                     Enumerable.Repeat(
                         row,
                         40).SelectMany(r => r).ToArray());
-            var imageMap = image.CreateImageMap();
             var addrCode = Address.Ptr32(0x0010008);
             var addrData = Address.Ptr32(0x001001A);
+            var imageMap = new ImageMap(
+                image.BaseAddress,
+                new ImageSegment("code", image,  AccessMode.ReadWriteExecute));
             imageMap.AddItemWithSize(addrCode, new ImageMapBlock { Address = addrCode, Size = 0x0E });
             imageMap.AddItemWithSize(addrData, new ImageMapItem { Address = addrData, DataType = PrimitiveType.Byte, Size = 0x0E });
             var arch = dlg.Services.RequireService<IConfigurationService>().GetArchitecture("x86-protected-32");

@@ -37,6 +37,8 @@ namespace Reko.Arch.M68k.Design
             this.arch = arch;
         }
 
+        public IWindowFrame Frame { get; set; }
+
         public Control CreateControl()
         {
             this.control = new M68kPropertiesControl();
