@@ -4,10 +4,10 @@
 __start: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 __divdf3: error: An error occurred while rewriting procedure to high-level language.
     The method or operation is not implemented.
-       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1120
-   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 973
-   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 261
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 144
+       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1121
+   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 974
+   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 262
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 145
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 67
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 515
 
