@@ -9,9 +9,9 @@ TestResults
 *.VC.opendb
 *.VC.db
 /src/UpgradeLog.htm
+/src/.vs
 /src/.vs/config
 /src/UnitTests/UnitTests.csproj.VisualState.xml
 /src/UnitTests/TestResult.xml
 /src/tools/reko.config
 /src/Reko-decompiler.VC.db
-
