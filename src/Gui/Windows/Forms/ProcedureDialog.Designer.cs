@@ -52,31 +52,19 @@ namespace Reko.Gui.Windows.Forms
             this.btnCancel = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.txtName = new System.Windows.Forms.TextBox();
-            this.listArguments = new System.Windows.Forms.ListView();
-            this.propArgument = new System.Windows.Forms.PropertyGrid();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabProcedure = new System.Windows.Forms.TabPage();
             this.label4 = new System.Windows.Forms.Label();
             this.txtSignature = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.chkTerminates = new System.Windows.Forms.CheckBox();
+            this.chkDecompile = new System.Windows.Forms.CheckBox();
             this.chkMalloc = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txtComment = new System.Windows.Forms.TextBox();
-            this.tabParameters = new System.Windows.Forms.TabPage();
-            this.label2 = new System.Windows.Forms.Label();
-            this.btnRemoveArgument = new System.Windows.Forms.Button();
-            this.btnAddArgument = new System.Windows.Forms.Button();
-            this.chkTerminates = new System.Windows.Forms.CheckBox();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabProcedure.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.tabParameters.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOK
@@ -112,65 +100,16 @@ namespace Reko.Gui.Windows.Forms
             // 
             // txtName
             // 
-            this.txtName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtName.Location = new System.Drawing.Point(6, 28);
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(394, 20);
             this.txtName.TabIndex = 1;
             // 
-            // listArguments
-            // 
-            this.listArguments.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listArguments.Location = new System.Drawing.Point(0, 0);
-            this.listArguments.Name = "listArguments";
-            this.listArguments.Size = new System.Drawing.Size(164, 230);
-            this.listArguments.TabIndex = 4;
-            this.listArguments.UseCompatibleStateImageBehavior = false;
-            this.listArguments.View = System.Windows.Forms.View.List;
-            // 
-            // propArgument
-            // 
-            this.propArgument.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.propArgument.Location = new System.Drawing.Point(0, 0);
-            this.propArgument.Name = "propArgument";
-            this.propArgument.Size = new System.Drawing.Size(233, 230);
-            this.propArgument.TabIndex = 6;
-            this.propArgument.ToolbarVisible = false;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox2.Enabled = false;
-            this.textBox2.Location = new System.Drawing.Point(0, 288);
-            this.textBox2.Multiline = true;
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(401, 90);
-            this.textBox2.TabIndex = 7;
-            // 
-            // splitContainer1
-            // 
-            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Name = "splitContainer1";
-            // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.Controls.Add(this.listArguments);
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.Controls.Add(this.propArgument);
-            this.splitContainer1.Size = new System.Drawing.Size(401, 230);
-            this.splitContainer1.SplitterDistance = 164;
-            this.splitContainer1.TabIndex = 9;
-            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabProcedure);
-            this.tabControl1.Controls.Add(this.tabParameters);
             this.tabControl1.Location = new System.Drawing.Point(1, 3);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -214,7 +153,7 @@ namespace Reko.Gui.Windows.Forms
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.chkTerminates);
-            this.groupBox1.Controls.Add(this.checkBox1);
+            this.groupBox1.Controls.Add(this.chkDecompile);
             this.groupBox1.Controls.Add(this.chkMalloc);
             this.groupBox1.Location = new System.Drawing.Point(6, 219);
             this.groupBox1.Name = "groupBox1";
@@ -223,15 +162,25 @@ namespace Reko.Gui.Windows.Forms
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "C&haracteristics";
             // 
-            // checkBox1
+            // chkTerminates
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(6, 43);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(102, 17);
-            this.checkBox1.TabIndex = 7;
-            this.checkBox1.Text = "Decompile body";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.chkTerminates.AutoSize = true;
+            this.chkTerminates.Location = new System.Drawing.Point(7, 67);
+            this.chkTerminates.Name = "chkTerminates";
+            this.chkTerminates.Size = new System.Drawing.Size(211, 17);
+            this.chkTerminates.TabIndex = 8;
+            this.chkTerminates.Text = "Procedure terminates process or thread";
+            this.chkTerminates.UseVisualStyleBackColor = true;
+            // 
+            // chkDecompile
+            // 
+            this.chkDecompile.AutoSize = true;
+            this.chkDecompile.Location = new System.Drawing.Point(6, 43);
+            this.chkDecompile.Name = "chkDecompile";
+            this.chkDecompile.Size = new System.Drawing.Size(102, 17);
+            this.chkDecompile.TabIndex = 7;
+            this.chkDecompile.Text = "Decompile body";
+            this.chkDecompile.UseVisualStyleBackColor = true;
             // 
             // chkMalloc
             // 
@@ -251,7 +200,6 @@ namespace Reko.Gui.Windows.Forms
             this.label3.Size = new System.Drawing.Size(54, 13);
             this.label3.TabIndex = 4;
             this.label3.Text = "&Comment:";
-            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // txtComment
             // 
@@ -260,59 +208,6 @@ namespace Reko.Gui.Windows.Forms
             this.txtComment.Name = "txtComment";
             this.txtComment.Size = new System.Drawing.Size(395, 45);
             this.txtComment.TabIndex = 5;
-            this.txtComment.TextChanged += new System.EventHandler(this.txtComment_TextChanged);
-            // 
-            // tabParameters
-            // 
-            this.tabParameters.Controls.Add(this.label2);
-            this.tabParameters.Controls.Add(this.btnRemoveArgument);
-            this.tabParameters.Controls.Add(this.btnAddArgument);
-            this.tabParameters.Controls.Add(this.textBox2);
-            this.tabParameters.Controls.Add(this.splitContainer1);
-            this.tabParameters.Location = new System.Drawing.Point(4, 22);
-            this.tabParameters.Name = "tabParameters";
-            this.tabParameters.Padding = new System.Windows.Forms.Padding(3);
-            this.tabParameters.Size = new System.Drawing.Size(407, 384);
-            this.tabParameters.TabIndex = 0;
-            this.tabParameters.Text = "Parameters";
-            this.tabParameters.UseVisualStyleBackColor = true;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 272);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(48, 13);
-            this.label2.TabIndex = 12;
-            this.label2.Text = "Previe&w:";
-            // 
-            // btnRemoveArgument
-            // 
-            this.btnRemoveArgument.Location = new System.Drawing.Point(81, 236);
-            this.btnRemoveArgument.Name = "btnRemoveArgument";
-            this.btnRemoveArgument.Size = new System.Drawing.Size(75, 23);
-            this.btnRemoveArgument.TabIndex = 11;
-            this.btnRemoveArgument.Text = "&Remove";
-            this.btnRemoveArgument.UseVisualStyleBackColor = true;
-            // 
-            // btnAddArgument
-            // 
-            this.btnAddArgument.Location = new System.Drawing.Point(0, 236);
-            this.btnAddArgument.Name = "btnAddArgument";
-            this.btnAddArgument.Size = new System.Drawing.Size(75, 23);
-            this.btnAddArgument.TabIndex = 10;
-            this.btnAddArgument.Text = "&Add";
-            this.btnAddArgument.UseVisualStyleBackColor = true;
-            // 
-            // chkTerminates
-            // 
-            this.chkTerminates.AutoSize = true;
-            this.chkTerminates.Location = new System.Drawing.Point(7, 67);
-            this.chkTerminates.Name = "chkTerminates";
-            this.chkTerminates.Size = new System.Drawing.Size(211, 17);
-            this.chkTerminates.TabIndex = 8;
-            this.chkTerminates.Text = "Procedure terminates process or thread";
-            this.chkTerminates.UseVisualStyleBackColor = true;
             // 
             // ProcedureDialog
             // 
@@ -331,16 +226,11 @@ namespace Reko.Gui.Windows.Forms
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Edit Procedure";
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            this.splitContainer1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabProcedure.ResumeLayout(false);
             this.tabProcedure.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.tabParameters.ResumeLayout(false);
-            this.tabParameters.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -351,23 +241,15 @@ namespace Reko.Gui.Windows.Forms
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtName;
-        private System.Windows.Forms.ListView listArguments;
-        private System.Windows.Forms.PropertyGrid propArgument;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabProcedure;
-        private System.Windows.Forms.TabPage tabParameters;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button btnRemoveArgument;
-        private System.Windows.Forms.Button btnAddArgument;
         private System.Windows.Forms.TextBox txtComment;
         private System.Windows.Forms.CheckBox chkMalloc;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtSignature;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox chkDecompile;
         private System.Windows.Forms.CheckBox chkTerminates;
     }
 }

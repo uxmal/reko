@@ -220,6 +220,8 @@ namespace Reko.Core
                 var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
                 this.Metadata = new TypeLibrary();
                 foreach (var tl in envCfg.TypeLibraries
+                    .Where(t => t.Architecture == null ||
+                                t.Architecture == Architecture.Name)
                     .OfType<ITypeLibraryElement>())
                 {
                     Debug.Print("Loading {0}", tl.Name);

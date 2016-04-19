@@ -49,6 +49,64 @@ namespace Reko.UnitTests.Gui.Windows
             };
         }
 
+        [Test]
+        public void Cvp_CreateProcedureViewerIfNotVisible()
+        {
+            var m = new ProcedureBuilder();
+            m.Return();
+
+            var uiSvc = AddMockService<IDecompilerShellUiService>();
+            uiSvc.Expect(s => s.FindDocumentWindow(
+                    "CombinedCodeViewInteractor", m.Procedure))
+                .Return(null);
+            var windowPane = mr.Stub<CombinedCodeViewInteractor>();
+            var windowFrame = mr.StrictMock<IWindowFrame>();
+            windowFrame.Stub(f => f.Pane).Return(windowPane);
+            uiSvc.Expect(s => s.CreateDocumentWindow(
+                    Arg<string>.Is.Equal("CombinedCodeViewInteractor"),
+                Arg<string>.Is.Equal(m.Procedure),
+                Arg<string>.Is.Equal(m.Procedure.Name),
+                Arg<IWindowPane>.Is.Anything))
+                .Return(windowFrame);
+            windowFrame.Expect(s => s.Show());
+
+            mr.ReplayAll();
+
+            var codeViewerSvc = new CodeViewerServiceImpl(sc);
+            codeViewerSvc.DisplayProcedure(program, m.Procedure);
+
+            uiSvc.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void Cvp_CreateGlobalsViewerIfNotVisible()
+        {
+            var segment = new ImageSegment(
+                ".seg", Address32.Ptr32(0x17), 0, AccessMode.ReadWrite);
+            var label = ".seg global variables";
+
+            var uiSvc = AddMockService<IDecompilerShellUiService>();
+            uiSvc.Expect(s => s.FindDocumentWindow(
+                    "CombinedCodeViewInteractor", segment))
+                .Return(null);
+            var windowPane = mr.Stub<CombinedCodeViewInteractor>();
+            var windowFrame = mr.StrictMock<IWindowFrame>();
+            windowFrame.Stub(f => f.Pane).Return(windowPane);
+            uiSvc.Expect(s => s.CreateDocumentWindow(
+                    Arg<string>.Is.Equal("CombinedCodeViewInteractor"),
+                Arg<string>.Is.Equal(segment),
+                Arg<string>.Is.Equal(label),
+                Arg<IWindowPane>.Is.Anything))
+                .Return(windowFrame);
+            windowFrame.Expect(s => s.Show());
+
+            mr.ReplayAll();
+
+            var codeViewerSvc = new CodeViewerServiceImpl(sc);
+            codeViewerSvc.DisplayGlobals(program, segment);
+
+            uiSvc.VerifyAllExpectations();
+        }
 
         private T AddMockService<T>() where T : class
         {

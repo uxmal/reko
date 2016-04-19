@@ -31,7 +31,6 @@ namespace Reko.Core
         public string Name { get; set; }
     }
 
-
     [Designer("Reko.Gui.Design.ProgramResourceGroupDesigner,Reko.Gui")]
     public class ProgramResourceGroup : ProgramResource
     {

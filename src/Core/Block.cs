@@ -45,7 +45,8 @@ namespace Reko.Core
 		}
 
         /// <summary>
-        /// The starting address of the Block. Blocks are _not_ guaranteed to have a starting address. 
+        /// The starting address of the Block. Blocks are _not_ guaranteed 
+        /// to have a starting address. 
         /// </summary>
         public Address Address { get; set; }
         public string Name { get; private set; }

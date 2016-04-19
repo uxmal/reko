@@ -47,19 +47,8 @@ namespace Reko.Gui.Design
 
         public override void DoDefaultAction()
         {
-            var uiSvc = Services.RequireService<IDecompilerShellUiService>();
-            var frame = uiSvc.FindDocumentWindow(typeof(GlobalVariablesPane).Name, segment);
-            if (frame == null)
-            {
-                var program = Host.GetAncestorOfType<Program>(this);
-                var label = string.Format(Resources.SegmentGlobalsFmt, segment.Name);
-                frame = uiSvc.CreateDocumentWindow(
-                    typeof(GlobalVariablesPane).Name,
-                    segment, 
-                    label,
-                    new GlobalVariablesPane(program, segment));
-            }
-            frame.Show();
+            var program = Host.GetAncestorOfType<Program>(this);
+            Services.RequireService<ICodeViewerService>().DisplayGlobals(program, segment);
         }
     }
 }

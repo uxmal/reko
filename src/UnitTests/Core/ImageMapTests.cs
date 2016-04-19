@@ -37,7 +37,61 @@ namespace Reko.UnitTests.Core
 		{
 		}
 
-		[Test]
+
+        private ImageMapItem GetNextMapItem(IEnumerator<KeyValuePair<Address, ImageMapItem>> e)
+        {
+            Assert.IsTrue(e.MoveNext());
+            return e.Current.Value;
+        }
+
+        private ImageSegment GetNextMapSegment(IEnumerator<KeyValuePair<Address, ImageSegment>> e)
+        {
+            Assert.IsTrue(e.MoveNext());
+            return e.Current.Value;
+        }
+
+        private void CheckImageMapTypes(ImageMap map, params string[] types)
+        {
+            int length = types.Length;
+            Assert.AreEqual(length, map.Items.Count);
+            for (int i = 0; i < length; i++)
+                Assert.AreEqual(types[i], map.Items.Values[i].DataType.ToString());
+        }
+
+        private void CheckImageMapSizes(ImageMap map, params int[] sizes)
+        {
+            int length = sizes.Length;
+            Assert.AreEqual(length, map.Items.Count);
+            for (int i = 0; i < length; i++)
+                Assert.AreEqual(sizes[i], map.Items.Values[i].Size);
+        }
+
+        private void CheckImageMapAddresses(ImageMap map, params string[] addresses)
+        {
+            int length = addresses.Length;
+            Assert.AreEqual(length, map.Items.Count);
+            for (int i = 0; i < length; i++)
+            {
+                Assert.AreEqual(addresses[i], map.Items.Keys[i].ToString());
+                Assert.AreEqual(addresses[i], map.Items.Values[i].Address.ToString());
+            }
+        }
+
+        private Address CreateImageMapItem(ImageMap map, DataType dt, Address addr = null)
+        {
+            addr = (addr != null) ? addr : map.Items.Keys.LastOrDefault();
+            var curAddr = (addr != null) ? addr : map.BaseAddress;
+
+            var size = (uint)dt.Size;
+
+            var imageMapItem = new ImageMapItem(size) { Address = curAddr };
+            if (dt != null)
+                imageMapItem.DataType = dt;
+            map.AddItemWithSize(curAddr, imageMapItem);
+            return imageMapItem.EndAddress;
+        }
+
+        [Test]
 		public void Im_Creation()
 		{
 			ImageMap im = new ImageMap(addrBase, img.Length);
@@ -86,19 +140,7 @@ namespace Reko.UnitTests.Core
             im.AddSegment(seg);
 		}
 
-		private ImageMapItem GetNextMapItem(IEnumerator<KeyValuePair<Address, ImageMapItem>> e)
-		{
-			Assert.IsTrue(e.MoveNext());
-            return e.Current.Value;
-		}
-
-		private ImageSegment GetNextMapSegment(IEnumerator<KeyValuePair<Address, ImageSegment>> e)
-		{
-			Assert.IsTrue(e.MoveNext());
-            return e.Current.Value;
-		}
-
-		[Test]
+        [Test]
 		public void Im_AddNamedSegment()
 		{
 			ImageMap map = new ImageMap(Address.SegPtr(0x0B00, 0), 40000);
@@ -140,6 +182,61 @@ namespace Reko.UnitTests.Core
             Assert.AreEqual("(arr byte 16)", item.DataType.ToString());
             Assert.IsTrue(map.TryFindItemExact(addrBase + 0x10, out item));
             Assert.IsInstanceOf<UnknownType>(item.DataType);
+        }
+
+        [Test]
+        public void Im_RemoveItem()
+        {
+            var map = new ImageMap(addrBase, 0x0100);
+            map.AddSegment(addrBase, "code", AccessMode.ReadWrite, 0x100);
+            var curAddr = addrBase;
+
+            var itemAddress1 = addrBase;
+            var itemAddress2 = CreateImageMapItem(map, PrimitiveType.Int32);
+            var itemAddress3 = CreateImageMapItem(map, PrimitiveType.Int32);
+            var itemAddress4 = CreateImageMapItem(map, PrimitiveType.Int32);
+            var itemAddress5 = CreateImageMapItem(map, PrimitiveType.Int32);
+
+            map.Dump();
+
+            Assert.AreEqual(5, map.Items.Count);
+
+            map.RemoveItem(itemAddress5);
+            CheckImageMapTypes(map, "int32", "int32", "int32", "int32", "<unknown>");
+            CheckImageMapAddresses(map, "8000:0000", "8000:0004", "8000:0008", "8000:000C", "8000:0010");
+            CheckImageMapSizes(map, 4, 4, 4, 4, 240);
+
+            map.RemoveItem(itemAddress1);
+            CheckImageMapTypes(map, "<unknown>", "int32", "int32", "int32", "<unknown>");
+            CheckImageMapAddresses(map, "8000:0000", "8000:0004", "8000:0008", "8000:000C", "8000:0010");
+            CheckImageMapSizes(map, 4, 4, 4, 4, 240);
+
+            map.RemoveItem(itemAddress3);
+            CheckImageMapTypes(map, "<unknown>", "int32", "<unknown>", "int32", "<unknown>");
+            CheckImageMapAddresses(map, "8000:0000", "8000:0004", "8000:0008", "8000:000C", "8000:0010");
+            CheckImageMapSizes(map, 4, 4, 4, 4, 240);
+
+            map.RemoveItem(itemAddress2);
+            CheckImageMapTypes(map, "<unknown>", "int32", "<unknown>");
+            CheckImageMapAddresses(map, "8000:0000", "8000:000C", "8000:0010");
+            CheckImageMapSizes(map, 12, 4, 240);
+
+            CreateImageMapItem(map, PrimitiveType.Int32, itemAddress3);
+            map.RemoveItem(itemAddress4);
+            CheckImageMapTypes(map, "<unknown>", "int32", "<unknown>");
+            CheckImageMapAddresses(map, "8000:0000", "8000:0008", "8000:000C");
+            CheckImageMapSizes(map, 8, 4, 244);
+
+            CreateImageMapItem(map, PrimitiveType.Int32, itemAddress4);
+            map.RemoveItem(itemAddress3);
+            CheckImageMapTypes(map, "<unknown>", "int32", "<unknown>");
+            CheckImageMapAddresses(map, "8000:0000", "8000:000C", "8000:0010");
+            CheckImageMapSizes(map, 12, 4, 240);
+
+            map.RemoveItem(itemAddress4);
+            CheckImageMapTypes(map, "<unknown>");
+            CheckImageMapAddresses(map, "8000:0000");
+            CheckImageMapSizes(map, 256);
         }
 
         [Test]

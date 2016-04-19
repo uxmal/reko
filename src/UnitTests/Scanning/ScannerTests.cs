@@ -644,5 +644,162 @@ fn00001200_exit:
             Assert.AreEqual(1, program.Procedures.Count);
             Assert.AreEqual("test", program.Procedures[Address.Ptr32(0x1000)].Name);
         }
+
+        [Test]
+        public void Scanner_GlobalData()
+        {
+            var bytes = new byte[] {
+                0x48, 0x00, 0x21, 0x43, 0x00, 0x00, 0x00, 0x01, 0x53, 0x00, 0x21, 0x43,
+                0x28, 0x00, 0x21, 0x43, 0x00, 0x00, 0x00, 0x02, 0x63, 0x00, 0x21, 0x43,
+                0x38, 0x00, 0x21, 0x43, 0x00, 0x00, 0x00, 0x03, 0x73, 0x00, 0x21, 0x43,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            };
+            Given_Program(Address.Ptr32(0x43210000), bytes);
+            var project = new Project { Programs = { program } };
+
+            var sc = new Scanner(
+                this.program,
+                new ImportResolver(project, program, eventListener),
+                this.sc
+            );
+
+            var ft1 = new FunctionType(new SerializedSignature
+            {
+                ReturnValue = new Argument_v1 { Type = Int32() }
+            });
+            var ft2 = new FunctionType(new SerializedSignature
+            {
+                ReturnValue = new Argument_v1 { Type = Char() }
+            });
+            var str = new StructureType();
+            var fields = new StructureField[] {
+                new StructureField(0, new Pointer(ft1, 4), "A"),
+                new StructureField(4, PrimitiveType.Int32, "B"),
+                new StructureField(8, new Pointer(ft2, 4), "C"),
+            };
+            str.Fields.AddRange(fields);
+            var elementType = new TypeReference("test", str);
+            var arrayType = new ArrayType(elementType, 3);
+
+            sc.EnqueueUserGlobalData(Address.Ptr32(0x43210000), arrayType);
+            sc.ScanImage();
+
+            var sExpSig1 =
+@"Register ui32 ()()
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+";
+            var sExpSig2 =
+@"Register char ()()
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+";
+            Assert.AreEqual(6, program.Procedures.Count);
+            Assert.AreEqual(sExpSig1, program.Procedures[Address.Ptr32(0x43210028)].Signature.ToString());
+            Assert.AreEqual(sExpSig1, program.Procedures[Address.Ptr32(0x43210038)].Signature.ToString());
+            Assert.AreEqual(sExpSig1, program.Procedures[Address.Ptr32(0x43210048)].Signature.ToString());
+            Assert.AreEqual(sExpSig2, program.Procedures[Address.Ptr32(0x43210053)].Signature.ToString());
+            Assert.AreEqual(sExpSig2, program.Procedures[Address.Ptr32(0x43210063)].Signature.ToString());
+            Assert.AreEqual(sExpSig2, program.Procedures[Address.Ptr32(0x43210073)].Signature.ToString());
+        }
+
+        private SerializedType Char()
+        {
+            return new PrimitiveType_v1 { Domain = Domain.Character, ByteSize = 1 };
+        }
+
+        private SerializedType Int32()
+        {
+            return new PrimitiveType_v1 { Domain = Domain.Integer, ByteSize = 4 };
+        }
+
+        private SerializedType Real32()
+        {
+            return new PrimitiveType_v1 { Domain = Domain.Real, ByteSize = 4 };
+        }
+
+        [Test]
+        public void Scanner_GlobalDataRecursiveStructs()
+        {
+            var bytes = new byte[] {
+                0x17, 0x00, 0x21, 0x43, 0x00, 0x00, 0x21, 0x43,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            };
+            Given_Program(Address.Ptr32(0x43210000), bytes);
+            Given_Project();
+
+            var sc = new Scanner(
+                this.program,
+                new ImportResolver(project, program, eventListener),
+                this.sc
+            );
+
+            var ft = new FunctionType(new SerializedSignature
+            { 
+                 ReturnValue = new Argument_v1 { Type = Real32() },
+            });
+            var str = new StructureType();
+            var fields = new StructureField[] {
+                new StructureField(0, new Pointer(ft,  4), "func"),
+                new StructureField(4, new Pointer(str, 4), "next"),
+            };
+            str.Fields.AddRange(fields);
+
+            sc.EnqueueUserGlobalData(Address.Ptr32(0x43210000), str);
+            sc.ScanImage();
+
+            var sExpSig =
+@"Register real32 ()()
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+";
+            Assert.AreEqual(1, program.Procedures.Count);
+            Assert.AreEqual(sExpSig, program.Procedures[Address.Ptr32(0x43210017)].Signature.ToString());
+        }
+
+        [Test(Description = "Scanner should be able to handle structures with padding 'holes'")]
+        [Ignore("@ptomin: see if you can get this to work.")]
+        public void Scanner_GlobalData_StructWithPadding()
+        {
+            var bytes = new byte[]
+            {
+                0x03, 0x00,             // Type field (halfword)
+                0x00, 0x00,             // ...alignment padding
+
+                0x08, 0x0, 0x21, 0x43,  // pointer to function
+
+                0xC3,                   // function code.
+            };
+            Given_Program(Address.Ptr32(0x43210000), bytes);
+            Given_Project();
+
+            var ft = new FunctionType(
+                null,
+                PrimitiveType.Real32,
+                new DataType[0],
+                new string[0]);
+            var str = new StructureType();
+            str.Fields.AddRange(new StructureField[]
+            {
+                new StructureField(0, PrimitiveType.Word16, "typeField"),
+                // two-byte gap here.
+                new StructureField(4, new Pointer(ft, 4), "pfn")
+            });
+
+            var scanner = new Scanner(
+                this.program,
+                new ImportResolver(project, program, eventListener),
+                this.sc);
+            scanner.EnqueueUserGlobalData(Address.Ptr32(0x43210000), str);
+            scanner.ScanImage();
+
+            Assert.AreEqual(1, program.Procedures.Count, "Scanner should have detected the pointer to function correctly.");
+            Assert.AreEqual(Address.Ptr32(0x43210017), program.Procedures.Keys.First());
+        }
     }
 }

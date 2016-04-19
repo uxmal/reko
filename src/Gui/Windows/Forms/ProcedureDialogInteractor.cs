@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Serialization;
 using System;
@@ -33,64 +34,53 @@ namespace Reko.Gui.Windows.Forms
     {
         protected ProcedureDialog dlg;
 
-        private IProcessorArchitecture arch;
+        private Program program;
         private Procedure_v1 proc;
 
-        public ProcedureDialogInteractor(IProcessorArchitecture arch, Procedure_v1 proc)
+        public ProcedureDialogInteractor(Program program, Procedure_v1 proc)
         {
-            this.arch = arch;
+            this.program = program;
             this.proc = proc;
-            if (proc.Signature != null && proc.Signature.Arguments == null)
-            {
-                proc.Signature.Arguments = new Argument_v1[0];
-            }
         }
 
         public ProcedureDialog CreateDialog()
         {
             dlg = new ProcedureDialog();
             PopulateFields();
-            dlg.ArgumentList.SelectedIndexChanged += ArgumentList_SelectedIndexChanged;
             dlg.Signature.TextChanged += Signature_TextChanged;
             return dlg;
         }
 
-        public Procedure_v1 SerializedProcedure { get { return proc; } }
-
         private void PopulateFields()
         {
-            dlg.ProcedureName.Text = proc.Name.Trim();
-            if (proc.Signature != null)
-            {
-                dlg.Signature.Text = SignatureParser.UnparseSignature(proc.Signature, proc.Name);
-                PopulateSignatureFields(proc.Signature);
-            }
+            dlg.Signature.Text = proc.CSignature;
+            dlg.ProcedureName.Text = proc.Name;
+            EnableProcedureName();
+            dlg.Decompile.Checked = proc.Decompile;
+            var characteristics = (proc.Characteristics != null) ?
+                proc.Characteristics : DefaultProcedureCharacteristics.Instance;
+            dlg.Allocator.Checked = characteristics.Allocator;
+            dlg.Terminates.Checked = characteristics.Terminates;
         }
 
-
-
-        private string StringizeSignature(SerializedSignature sig, string name)
+        private void EnableProcedureName()
         {
-            return SignatureParser.UnparseSignature(sig, name);
+            dlg.ProcedureName.Enabled = string.IsNullOrEmpty(dlg.Signature.Text) ?
+                true: false;
         }
 
-        private void PopulateSignatureFields(SerializedSignature sig)
+        public void ApplyChanges()
         {
-            if (sig.ReturnValue != null)
-            {
-                ListViewItem item = new ListViewItem("<Return value>"); 
-                item.Tag = sig.ReturnValue;
-                dlg.ArgumentList.Items.Add(item);
-            }
-        }
-
-        public void ApplyChangesToProcedure(Program program, Procedure procedure)
-        {
-            var ser = program.CreateProcedureSerializer();
-            var sp = new SignatureParser(arch);
-            sp.Parse(dlg.Signature.Text);
-            Debug.Assert(sp.IsValid);
-            procedure.Signature = ser.Deserialize(sp.Signature, procedure.Frame);
+            var CSignature = dlg.Signature.Text.Trim();
+            if (string.IsNullOrEmpty(CSignature))
+                CSignature = null;
+            proc.CSignature = CSignature;
+            proc.Name = dlg.ProcedureName.Text;
+            proc.Decompile = dlg.Decompile.Checked;
+            if (proc.Characteristics == null)
+                proc.Characteristics = new ProcedureCharacteristics();
+            proc.Characteristics.Allocator = dlg.Allocator.Checked;
+            proc.Characteristics.Terminates = dlg.Terminates.Checked;
         }
 
         private void EnableControls(bool signatureIsValid)
@@ -99,26 +89,28 @@ namespace Reko.Gui.Windows.Forms
             dlg.Signature.ForeColor = signatureIsValid ? SystemColors.WindowText : Color.Red;
         }
 
-        protected void ArgumentList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (dlg.ArgumentList.SelectedItems.Count != 0)
-            {
-                dlg.ArgumentProperties.SelectedObjects = new object[] {
-                    dlg.ArgumentList.SelectedItems[0].Tag
-                };
-            }
-            else
-                dlg.ArgumentProperties.SelectedObjects = new object[0];
-        }
-
         protected void Signature_TextChanged(object sender, EventArgs e)
         {
-            var parser = new SignatureParser(arch);
-            parser.Parse(dlg.Signature.Text);
-            EnableControls(parser.IsValid);
-            if (parser.IsValid)
+            // Attempt to parse the signature.
+            var CSignature = dlg.Signature.Text.Trim();
+            ProcedureBase_v1 sProc = null;
+            bool isValid;
+            if (!string.IsNullOrEmpty(CSignature))
             {
-                proc.Signature = parser.Signature;
+                var usb = new UserSignatureBuilder(program);
+                sProc = usb.ParseFunctionDeclaration(CSignature);
+                isValid = (sProc != null);
+            } else
+            {
+                CSignature = null;
+                isValid = true;
+            }
+            EnableControls(isValid);
+            if (isValid)
+            {
+                if (sProc != null)
+                    dlg.ProcedureName.Text = sProc.Name;
+                EnableProcedureName();
             }
         }
 

@@ -88,13 +88,20 @@ namespace Reko.Evaluation
             return op == Operator.IAdd || op == Operator.ISub;
         }
 
-        private bool IsComparison(Operator op)
+        private bool IsIntComparison(Operator op)
         {
             return op == Operator.Eq || op == Operator.Ne ||
                    op == Operator.Ge || op == Operator.Gt ||
                    op == Operator.Le || op == Operator.Lt ||
                    op == Operator.Uge || op == Operator.Ugt ||
                    op == Operator.Ule || op == Operator.Ult;
+        }
+
+        private bool IsFloatComparison(Operator op)
+        {
+            return op == Operator.Feq || op == Operator.Fne ||
+                   op == Operator.Fge || op == Operator.Fgt ||
+                   op == Operator.Fle || op == Operator.Flt;
         }
 
         public static Constant SimplifyTwoConstants(BinaryOperator op, Constant l, Constant r)
@@ -170,6 +177,7 @@ namespace Reko.Evaluation
                 Changed = true;
                 return left;
             }
+            //$REVIEW: this is evaluation! Shouldn't the be done by the evaluator?
             if (left == Constant.Invalid || right == Constant.Invalid)
                 return Constant.Invalid;
 
@@ -185,8 +193,16 @@ namespace Reko.Evaluation
 
             // (rel? id1 c) should just pass.
 
-            if (IsComparison(binExp.Operator) && cRight != null && idLeft != null)
+            if (IsIntComparison(binExp.Operator) && cRight != null && idLeft != null)
                 return binExp;
+
+            // Floating point expressions with "integer" constants 
+            if (IsFloatComparison(binExp.Operator) && IsNonFloatConstant(cRight))
+            {
+                cRight = ReinterpretAsIeeeFloat(cRight);
+                right = cRight;
+                binExp.Right = cRight;
+            }
 
             var binLeft = left as BinaryExpression;
             var cLeftRight = (binLeft != null) ? binLeft.Right as Constant : null;
@@ -230,7 +246,7 @@ namespace Reko.Evaluation
             // (== (- e c1) c2) => (== e c1+c2)
 
             if (binLeft != null && cLeftRight != null && cRight != null &&
-                IsComparison(binExp.Operator) && IsAddOrSub(binLeft.Operator) &&
+                IsIntComparison(binExp.Operator) && IsAddOrSub(binLeft.Operator) &&
                 !cLeftRight.IsReal && !cRight.IsReal)
             {
                 Changed = true;
@@ -261,6 +277,29 @@ namespace Reko.Evaluation
             // No change, just return as is.
 
             return binExp;
+        }
+
+        private Constant ReinterpretAsIeeeFloat(Constant c)
+        {
+            if (c.DataType.Size == 4)
+            {
+                return Constant.FloatFromBitpattern(c.ToInt32());
+            }
+            else if (c.DataType.Size == 8)
+            {
+                return Constant.FloatFromBitpattern(c.ToInt64());
+            }
+            throw new NotImplementedException(string.Format(
+                "Unsupported IEEE floating point size {0}.",
+                c.DataType.Size));
+        }
+
+        private bool IsNonFloatConstant(Constant cRight)
+        {
+            if (cRight == null)
+                return false;
+            var pt = cRight.DataType as PrimitiveType;
+            return (pt.Domain != Domain.Real);
         }
 
         public static Constant SimplifyTwoConstants(Operator op, Constant l, Constant r)

@@ -36,9 +36,26 @@ namespace Reko.Gui.Windows.Controls
             this.ProgramChanged += delegate { OnProgramChanged(); };
 
             OnProgramChanged();
+
+            this.Disposed += MixedCodeDataControl_Disposed;
         }
 
-        public Program Program { get { return program; } set { program = value; ProgramChanged.Fire(this); } }
+        public Program Program {
+            get
+            {
+                return program;
+            }
+            set
+            {
+                if (program != null)
+                    program.ImageMap.MapChanged -= ImageMap_MapChanged;
+                program = value;
+                if (program != null)
+                    program.ImageMap.MapChanged += ImageMap_MapChanged;
+                ProgramChanged.Fire(this);
+            }
+        }
+
         private Program program;
         public event EventHandler ProgramChanged;
 
@@ -75,6 +92,38 @@ namespace Reko.Gui.Windows.Controls
         {
             addrTop = (Address)Model.CurrentPosition;
             base.OnScroll();
+        }
+
+        private void RefreshModel()
+        {
+            var currentAddress = (Address)Model.CurrentPosition;
+            var model = new MixedCodeDataModel(program);
+            model.MoveToLine(currentAddress, 0);
+            this.addrTop = (Address)model.CurrentPosition;
+            this.Model = model;
+        }
+
+        private void ImageMap_MapChanged(object sender, EventArgs e)
+        {
+            if (InvokeRequired)
+                BeginInvoke(new Action(RefreshModel));
+            else
+                RefreshModel();
+        }
+
+        private void MixedCodeDataControl_Disposed(object sender, EventArgs e)
+        {
+            if (program != null)
+                program.ImageMap.MapChanged -= ImageMap_MapChanged;
+        }
+
+        public Address GetAnchorAddress()
+        {
+            var pt = GetAnchorMiddlePoint();
+            var memoryTextSpan = GetTagFromPoint(pt) as MixedCodeDataModel.MemoryTextSpan;
+            if (memoryTextSpan == null || memoryTextSpan.Address == null)
+                return (Address)anchorPos.Line;
+            return memoryTextSpan.Address;
         }
     }
 }

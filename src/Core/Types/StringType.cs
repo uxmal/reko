@@ -26,16 +26,19 @@ using System.Text;
 namespace Reko.Core.Types
 {
     /// <summary>
-    /// This class is used to model strings, including size prefix and null termination.
+    /// This class is used to model strings, including size prefix and null 
+    /// termination.
     /// </summary>
     /// <remarks>
-    /// Strings are variable-length arrays of characters, commonly either length-prefixed (as is the case in many Pascal implementations
-    /// and Visual Basic, for instance) or zero-terminated (as is the case for C). They share
-    /// a lot of properties with ArrayType.
+    /// Strings are variable-length arrays of characters, commonly either 
+    /// length-prefixed (as is the case in many Pascal implementations
+    /// and Visual Basic, for instance) or zero-terminated (as is the case 
+    /// for C). They share a lot of properties with ArrayType.
     /// <para>
-    /// Sometimes, strings are stored in field of well-known size. In those cases, the size property
-    /// will be non-zero. Otherwise, the string size will be zero and the length of the string
-    /// must be discovered by walking it.</para>
+    /// Sometimes, strings are stored in field of well-known size. In those
+    /// cases, the size property will be non-zero. Otherwise, the string 
+    /// size will be zero and the length of the stringmust be discovered 
+    /// by walking it.</para>
     ///$TODO: what about strings where the last ASCII character has its MSBit set?
     /// </remarks>
     public class StringType : ArrayType

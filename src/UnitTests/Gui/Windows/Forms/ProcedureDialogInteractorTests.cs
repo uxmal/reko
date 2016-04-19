@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Arch.X86;
+using Reko.Environments.Windows;
 using Reko.Core;
 using Reko.Core.Serialization;
 using Reko.Gui.Windows.Forms;
@@ -33,71 +34,33 @@ namespace Reko.UnitTests.Gui.Windows.Forms
     [Category(Categories.UserInterface)]
     public class ProcedureDialogInteractorTests
     {
-        private TestProcedureDialogInteractor interactor;
+        private ProcedureDialogInteractor interactor;
         private Procedure_v1 proc;
- 
+
         [SetUp]
         public void Setup()
         {
             proc = new Procedure_v1();
-            interactor = new TestProcedureDialogInteractor(proc);
+            var arch = new X86ArchitectureFlat32();
+            var platform = new Win32Platform(null, arch);
+            var program = new Program
+            {
+                Architecture = arch,
+                Platform = platform
+            };
+            interactor = new ProcedureDialogInteractor(program, proc);
         }
 
         [Test]
         public void OnProcedure()
         {
-            proc.Name = " foo ";
+            proc.Name = "foo";
             using (ProcedureDialog dlg = interactor.CreateDialog())
             {
                 dlg.Show();
-                Assert.AreEqual("foo", dlg.ProcedureName.Text); 
-            }
-        }
-
-        [Test]
-        public void ReturnValue()
-        {
-            proc.Name = "x";
-            proc.Signature = new SerializedSignature();
-            proc.Signature.Arguments = new Argument_v1[0];
-            CreateReturnValue(proc.Signature);
-            //proc.Signature.Arguments = new SerializedArgument[1];
-            //proc.Signature.Arguments[0] = new SerializedArgument();
-            //proc.Signature.Arguments[0].Name = "arg0";
-            //proc.Signature.Arguments[0].Kind = new SerializedStackVariable(4);
-            //proc.Signature.Arguments[0].Type = "int32";
-
-            using (ProcedureDialog dlg = interactor.CreateDialog())
-            {
-                dlg.Show();
-                Assert.AreEqual(1, dlg.ArgumentList.Items.Count);
-                Assert.AreEqual("<Return value>", dlg.ArgumentList.Items[0].Text);
-            }
-        }
-
-        private static void CreateReturnValue(SerializedSignature sig)
-        {
-            sig.ReturnValue = new Argument_v1();
-            sig.ReturnValue.Kind = new Register_v1("eax");
-            sig.ReturnValue.Type = new TypeReference_v1("int32");
-        }
-
-        [Test]
-        public void SelectReturnValue()
-        {
-            proc.Name = "x";
-            proc.Signature = new SerializedSignature();
-            proc.Signature.Arguments = new Argument_v1[0];
-            CreateReturnValue(proc.Signature);
-            using (ProcedureDialog dlg = interactor.CreateDialog())
-            {
-                dlg.Show();
-                interactor.UserSwitchTab(1);
-                interactor.UserSelectedItem(dlg.ArgumentList, 0);
-
-                ListViewItem item = dlg.ArgumentList.Items[0];
-                Assert.AreEqual("<Return value>", item.Text);
-                Assert.AreSame(item.Tag, dlg.ArgumentProperties.SelectedObject);
+                Assert.AreEqual("foo", dlg.ProcedureName.Text);
+                Assert.IsTrue(dlg.ProcedureName.Enabled);
+                Assert.AreEqual("", dlg.Signature.Text);
             }
         }
 
@@ -105,11 +68,12 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         public void PopulateWithEmptySignature()
         {
             proc.Name = "foo";
-            proc.Signature = new SerializedSignature();
-            proc.Signature.Arguments = new Argument_v1[0];
+            proc.CSignature = "void foo()";
             using (ProcedureDialog dlg = interactor.CreateDialog())
             {
                 dlg.Show();
+                Assert.AreEqual("foo", dlg.ProcedureName.Text);
+                Assert.IsFalse(dlg.ProcedureName.Enabled);
                 Assert.AreEqual("void foo()", dlg.Signature.Text);
             }
         }
@@ -118,14 +82,13 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         public void InvalidSignatureText()
         {
             proc.Name = "foo";
-            proc.Signature = new SerializedSignature();
-            proc.Signature.Arguments = new Argument_v1[0];
+            proc.CSignature = "void foo()";
             using (ProcedureDialog dlg = interactor.CreateDialog())
             {
                 dlg.Show();
                 Assert.AreEqual("void foo()", dlg.Signature.Text);
-                interactor.UserChangeSignatureText("void fbn(");
-                Assert.AreEqual(System.Drawing.Color.Red, dlg.Signature.ForeColor);
+                dlg.Signature.Text = "void fbn(";
+                Assert.AreEqual(Color.Red, dlg.Signature.ForeColor);
                 Assert.IsFalse(dlg.OkButton.Enabled);
             }
         }
@@ -134,41 +97,114 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         public void ValidSignatureText()
         {
             proc.Name = "foo";
-            proc.Signature = new SerializedSignature();
-            proc.Signature.Arguments = new Argument_v1[0];
+            proc.CSignature = "void foo()";
             using (ProcedureDialog dlg = interactor.CreateDialog())
             {
                 dlg.Show();
                 Assert.AreEqual("void foo()", dlg.Signature.Text);
-                interactor.UserChangeSignatureText("void foo(word32 eax)");
+                dlg.Signature.Text = "void foo_new(int eax)";
                 Assert.AreEqual(SystemColors.WindowText, dlg.Signature.ForeColor);
                 Assert.IsTrue(dlg.OkButton.Enabled);
+                interactor.ApplyChanges();
+                Assert.AreEqual("void foo_new(int eax)", proc.CSignature);
+                Assert.AreEqual("foo_new", proc.Name);
             }
         }
 
-        private class TestProcedureDialogInteractor : ProcedureDialogInteractor
+        [Test]
+        public void EnterProcedureName()
         {
-            public TestProcedureDialogInteractor(Procedure_v1 proc)
-                : base(new X86ArchitectureFlat32(), proc)
+            proc.Name = "foo";
+            proc.CSignature = "void foo()";
+            using (ProcedureDialog dlg = interactor.CreateDialog())
             {
+                dlg.Show();
+                Assert.AreEqual("void foo()", dlg.Signature.Text);
+                Assert.IsFalse(dlg.ProcedureName.Enabled);
+                dlg.Signature.Text = "";
+                Assert.IsTrue(dlg.ProcedureName.Enabled);
+                dlg.ProcedureName.Text = "test123";
+                Assert.AreEqual(SystemColors.WindowText, dlg.Signature.ForeColor);
+                Assert.IsTrue(dlg.OkButton.Enabled);
+                interactor.ApplyChanges();
+                Assert.IsNull(proc.CSignature);
+                Assert.AreEqual("test123", proc.Name);
             }
+        }
 
-            public void UserSelectedItem(ListView listView, int p)
+        [Test]
+        public void CheckBoxesDefault()
+        {
+            using (ProcedureDialog dlg = interactor.CreateDialog())
             {
-                listView.Items[0].Selected = true;
-                base.ArgumentList_SelectedIndexChanged(listView, EventArgs.Empty);
+                dlg.Show();
+                Assert.IsTrue(dlg.Decompile.Checked);
+                Assert.IsFalse(dlg.Allocator.Checked);
+                Assert.IsFalse(dlg.Terminates.Checked);
+                dlg.Decompile.Checked = false;
+                interactor.ApplyChanges();
             }
+            Assert.IsFalse(proc.Decompile);
+            Assert.IsFalse(proc.Characteristics.Allocator);
+            Assert.IsFalse(proc.Characteristics.Terminates);
+        }
 
-            internal void UserChangeSignatureText( string text)
+        [Test]
+        public void CheckBoxesTerminates()
+        {
+            proc.Characteristics = new ProcedureCharacteristics();
+            proc.Characteristics.Terminates = true;
+            using (ProcedureDialog dlg = interactor.CreateDialog())
             {
-                dlg.Signature.Text = text;
-                base.Signature_TextChanged(dlg.Signature, EventArgs.Empty);
+                dlg.Show();
+                Assert.IsTrue(dlg.Decompile.Checked);
+                Assert.IsFalse(dlg.Allocator.Checked);
+                Assert.IsTrue(dlg.Terminates.Checked);
+                dlg.Allocator.Checked = true;
+                interactor.ApplyChanges();
             }
+            Assert.IsTrue(proc.Decompile);
+            Assert.IsTrue(proc.Characteristics.Allocator);
+            Assert.IsTrue(proc.Characteristics.Terminates);
+        }
 
-            internal void UserSwitchTab(int p)
+        [Test]
+        public void CheckBoxesAllChecked()
+        {
+            proc.Decompile = false;
+            proc.Characteristics = new ProcedureCharacteristics();
+            proc.Characteristics.Terminates = true;
+            proc.Characteristics.Allocator = true;
+            using (ProcedureDialog dlg = interactor.CreateDialog())
             {
-                dlg.TabControl.SelectedIndex = p;
+                dlg.Show();
+                Assert.IsFalse(dlg.Decompile.Checked);
+                Assert.IsTrue(dlg.Allocator.Checked);
+                Assert.IsTrue(dlg.Terminates.Checked);
+                dlg.Terminates.Checked = false;
+                interactor.ApplyChanges();
             }
+            Assert.IsFalse(proc.Decompile);
+            Assert.IsTrue(proc.Characteristics.Allocator);
+            Assert.IsFalse(proc.Characteristics.Terminates);
+        }
+
+        [Test]
+        public void CheckBoxesCanceled()
+        {
+            proc.Decompile = false;
+            using (ProcedureDialog dlg = interactor.CreateDialog())
+            {
+                dlg.Show();
+                Assert.IsFalse(dlg.Decompile.Checked);
+                Assert.IsFalse(dlg.Allocator.Checked);
+                Assert.IsFalse(dlg.Terminates.Checked);
+                dlg.Allocator.Checked = true;
+                dlg.Terminates.Checked = true;
+                dlg.Decompile.Checked = true;
+            }
+            Assert.IsFalse(proc.Decompile);
+            Assert.IsNull(proc.Characteristics);
         }
     }
 }

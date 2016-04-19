@@ -126,12 +126,12 @@
     <Compile Include="Design\ProgramResourceInstanceDesigner.cs" />
     <Compile Include="Forms\CallSiteInteractor.cs" />
     <Compile Include="Forms\IAssumedRegisterValuesDialog.cs" />
+    <Compile Include="Forms\IDeclarationForm.cs" />
     <Compile Include="Forms\IResourceEditor.cs" />
     <Compile Include="Forms\ResourceEditorInteractor.cs" />
     <Compile Include="ICallGraphViewService.cs" />
     <Compile Include="ICommandFactory.cs" />
     <Compile Include="IFindStringsDialog.cs" />
-    <Compile Include="IMixedCodeDataViewService.cs" />
     <Compile Include="IResourceEditorService.cs" />
     <Compile Include="Forms\IWorkerDialog.cs" />
     <Compile Include="Forms\ITextEncodingDialog.cs" />
@@ -213,7 +213,6 @@
     <Compile Include="Windows\CfgBlockNode.cs" />
     <Compile Include="Windows\CheckBoxWrapper.cs" />
     <Compile Include="Windows\CfgGraphGenerator.cs" />
-    <Compile Include="Windows\CodeViewerPane.cs" />
     <Compile Include="Windows\CodeViewerServiceImpl.cs" />
     <Compile Include="Windows\CombinedCodeViewInteractor.cs" />
     <Compile Include="Windows\ComboBoxWrapper.cs" />
@@ -224,12 +223,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Windows\Controls\MixedCodeDataModel.cs" />
-    <Compile Include="Windows\Controls\CodeView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Windows\Controls\CodeView.Designer.cs">
-      <DependentUpon>CodeView.cs</DependentUpon>
-    </Compile>
     <Compile Include="Windows\Controls\CommandMenuItem.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -289,8 +282,13 @@
     </Compile>
     <Compile Include="Windows\Controls\TextViewLayout.cs" />
     <Compile Include="Windows\Controls\TextViewPainter.cs" />
-    <Compile Include="Windows\Controls\DeclarationTextBox.cs" />
-    <Compile Include="Windows\GlobalVariablesPane.cs" />
+    <Compile Include="Windows\Forms\DeclarationFormInteractor.cs" />
+    <Compile Include="Windows\Forms\DeclarationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\DeclarationForm.Designer.cs">
+      <DependentUpon>DeclarationForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Forms\TextEncodingDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -300,8 +298,6 @@
     <Compile Include="Forms\TextEncodingInteractor.cs" />
     <Compile Include="Windows\LabelWrapper.cs" />
     <Compile Include="Windows\ListboxWrapper.cs" />
-    <Compile Include="Windows\MixedCodeDataViewInteractor.cs" />
-    <Compile Include="Windows\MixedCodeDataViewService.cs" />
     <Compile Include="Windows\ProgressbarWrapper.cs" />
     <Compile Include="Windows\StyleStack.cs" />
     <Compile Include="Windows\Controls\TextBuffer.cs" />
@@ -541,9 +537,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources.sv-SE.resx" />
-    <EmbeddedResource Include="Windows\Controls\CodeView.resx">
-      <DependentUpon>CodeView.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Windows\Controls\CombinedCodeView.resx">
       <DependentUpon>CombinedCodeView.cs</DependentUpon>
     </EmbeddedResource>
@@ -585,6 +578,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Forms\CallSiteDialog.resx">
       <DependentUpon>CallSiteDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\Forms\DeclarationForm.resx">
+      <DependentUpon>DeclarationForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Forms\EditProjectDialog.resx">
       <DependentUpon>EditProjectDialog.cs</DependentUpon>

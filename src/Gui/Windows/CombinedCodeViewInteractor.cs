@@ -24,14 +24,17 @@ using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Output;
 using Reko.Core.Serialization;
+using Reko.Core.Types;
 using Reko.Gui.Forms;
 using Reko.Gui.Windows.Controls;
+using Reko.Gui.Windows.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Reko.Gui.Windows
@@ -48,7 +51,10 @@ namespace Reko.Gui.Windows
         private NestedTextModel nestedTextModel;
         private GViewer gViewer;
 
-        private DeclarationTextBox declarationTextBox;
+        private DeclarationFormInteractor declarationFormInteractor;
+
+        private ImageSegment segment;
+        private bool showProcedures;
 
         public CombinedCodeViewInteractor()
         {
@@ -66,6 +72,7 @@ namespace Reko.Gui.Windows
         {
             this.program = program;
             this.proc = proc;
+            this.showProcedures = true;
             ProgramChanged();
             if (program != null)
             {
@@ -85,15 +92,31 @@ namespace Reko.Gui.Windows
             }
         }
 
+        public void DisplayGlobals(Program program, ImageSegment segment)
+        {
+            this.program = program;
+            this.segment = segment;
+            this.showProcedures = false;
+            ProgramChanged();
+            SelectedAddress = segment.Address;
+        }
+
         private void ProgramChanged()
         {
             if (combinedCodeView == null)
                 return;
 
             combinedCodeView.MixedCodeDataView.Program = program;
+        }
+
+        private void MixedCodeDataView_ModelChanged(object sender, EventArgs e)
+        {
+            if (combinedCodeView == null)
+                return;
 
             CreateNestedTextModel();
-            combinedCodeView.CodeView.Model = nestedTextModel;
+
+            MixedCodeDataView_TopAddressChanged();
         }
 
         private void CreateNestedTextModel()
@@ -111,30 +134,38 @@ namespace Reko.Gui.Windows
 
                 bool nodeCreated = false;
 
-                GlobalDataItem_v2 globalDataItem;
+                ImageMapItem item;
                 Procedure proc = dataItemNode.Proc;
-                if (proc != null)
+                if (ShowItem(dataItemNode))
                 {
-                    var tsf = new TextSpanFormatter();
-                    var fmt = new AbsynCodeFormatter(tsf);
-                    fmt.InnerFormatter.UseTabs = false;
-                    fmt.Write(proc);
-                    nestedTextModel.Nodes.Add(tsf.GetModel());
-                    nodeCreated = true;
-                }
-                else if (program.User.Globals.TryGetValue(curAddr, out globalDataItem))
-                {
-                    var tlDeser = program.CreateTypeLibraryDeserializer();
-                    var dt = globalDataItem.DataType.Accept(tlDeser);
-                    var name = globalDataItem.Name;
+                    if (proc != null)
+                    {
+                        var tsf = new TextSpanFormatter();
+                        var fmt = new AbsynCodeFormatter(tsf);
+                        fmt.InnerFormatter.UseTabs = false;
+                        fmt.Write(proc);
+                        //$TODO: make spacing between globals / procedures user adjustable
+                        tsf.WriteLine("");
+                        tsf.WriteLine("");
+                        nestedTextModel.Nodes.Add(tsf.GetModel());
+                        nodeCreated = true;
+                    }
+                    else if (program.ImageMap.TryFindItem(curAddr, out item) &&
+                            !(item.DataType is UnknownType))
+                    {
+                        var dt = item.DataType;
+                        var name = item.Name ?? "<unnamed>";
 
-                    var tsf = new TextSpanFormatter();
-                    var fmt = new AbsynCodeFormatter(tsf);
-                    fmt.InnerFormatter.UseTabs = false;
-                    var gdw = new GlobalDataWriter(program, services);
-                    gdw.WriteGlobalVariable(curAddr, dt, name, tsf);
-                    nestedTextModel.Nodes.Add(tsf.GetModel());
-                    nodeCreated = true;
+                        var tsf = new TextSpanFormatter();
+                        var fmt = new AbsynCodeFormatter(tsf);
+                        fmt.InnerFormatter.UseTabs = false;
+                        var gdw = new GlobalDataWriter(program, services);
+                        gdw.WriteGlobalVariable(curAddr, dt, name, tsf);
+                        //$TODO: make spacing between globals / procedures user adjustable
+                        tsf.WriteLine("");
+                        nestedTextModel.Nodes.Add(tsf.GetModel());
+                        nodeCreated = true;
+                    }
                 }
 
                 if (nodeCreated)
@@ -143,6 +174,24 @@ namespace Reko.Gui.Windows
                     this.nodeByAddress[curAddr] = dataItemNode;
                 }
             }
+
+            combinedCodeView.CodeView.Model = nestedTextModel;
+        }
+
+        private bool ShowItem(MixedCodeDataModel.DataItemNode item)
+        {
+            if (!showProcedures && item.Proc != null)
+                return false;
+
+            if (segment != null && !segment.IsInRange(item.StartAddress))
+                return false;
+
+            return true;
+        }
+
+        private bool ShowAllItems()
+        {
+            return (segment == null && showProcedures);
         }
 
         public Control CreateControl()
@@ -157,10 +206,14 @@ namespace Reko.Gui.Windows
             this.combinedCodeView.MixedCodeDataView.VScrollValueChanged += MixedCodeDataView_VScrollValueChanged;
             this.combinedCodeView.MixedCodeDataView.Services = services;
             this.combinedCodeView.MixedCodeDataView.MouseDown += MixedCodeDataView_MouseDown;
+            this.combinedCodeView.MixedCodeDataView.ModelChanged += MixedCodeDataView_ModelChanged;
+            this.combinedCodeView.MixedCodeDataView.Navigate += TextView_Navigate;
 
             this.combinedCodeView.CodeView.VScrollValueChanged += CodeView_VScrollValueChanged;
             this.combinedCodeView.CodeView.Services = services;
             this.combinedCodeView.CodeView.MouseDown += CodeView_MouseDown;
+            this.combinedCodeView.CodeView.Navigate += TextView_Navigate;
+
             this.combinedCodeView.ContextMenu = uiSvc.GetContextMenu(MenuIds.CtxCodeView);
 
             this.combinedCodeView.ToolBarGoButton.Click += ToolBarGoButton_Click;
@@ -191,7 +244,7 @@ namespace Reko.Gui.Windows
             this.navInteractor = new NavigationInteractor<Address>();
             this.navInteractor.Attach(this.combinedCodeView);
 
-            declarationTextBox = new DeclarationTextBox(combinedCodeView);
+            declarationFormInteractor = new DeclarationFormInteractor(services);
 
             return combinedCodeView;
         }
@@ -225,6 +278,16 @@ namespace Reko.Gui.Windows
         {
             if (cmdId.Guid == CmdSets.GuidReko)
             {
+                if (!ShowAllItems())
+                {
+                    switch (cmdId.ID)
+                    {
+                    case CmdIds.EditDeclaration:
+                    case CmdIds.ViewCfgGraph:
+                        status.Status = MenuStatus.Visible;
+                        return true;
+                    }
+                }
                 switch (cmdId.ID)
                 {
                 case CmdIds.TextEncodingChoose:
@@ -288,7 +351,8 @@ namespace Reko.Gui.Windows
 
             var ms = new MemoryStream();
             FocusedTextView.Selection.Save(ms, DataFormats.UnicodeText);
-            Clipboard.SetData(DataFormats.UnicodeText, ms);
+            var text = new string(Encoding.Unicode.GetChars(ms.ToArray()));
+            Clipboard.SetData(DataFormats.UnicodeText, text);
         }
 
         public bool ChooseTextEncoding()
@@ -310,8 +374,7 @@ namespace Reko.Gui.Windows
 
         private void EditDeclaration()
         {
-            var anchorPos = combinedCodeView.MixedCodeDataView.anchorPos;
-            var addr = (Address)anchorPos.Line;
+            var addr = combinedCodeView.MixedCodeDataView.GetAnchorAddress();
             ImageMapItem item;
             if (program.ImageMap.TryFindItem(addr, out item))
             {
@@ -321,15 +384,14 @@ namespace Reko.Gui.Windows
                 {
                     addr = program.GetProcedureAddress(blockItem.Block.Procedure);
                 }
-                else if (program.User.Globals.TryGetValue(item.Address, out globalDataItem))
+                else if (!(item.DataType is UnknownType))
                 {
                     addr = item.Address;
                 }
             }
             var anchorPt = combinedCodeView.MixedCodeDataView.GetAnchorTopPoint();
             var screenPoint = combinedCodeView.MixedCodeDataView.PointToScreen(anchorPt);
-            var clientPoint = combinedCodeView.PointToClient(screenPoint);
-            declarationTextBox.Show(clientPoint, program, addr);
+            declarationFormInteractor.Show(screenPoint, program, addr);
         }
 
         private void MixedCodeDataView_MouseDown(object sender, MouseEventArgs e)
@@ -436,7 +498,7 @@ namespace Reko.Gui.Windows
         {
             if (!program.ImageMap.IsValidAddress(addrTo))
                 return;
-            navInteractor.RememberAddress(addrFrom);
+            navInteractor.RememberAddress(addrTo);
             this.SelectedAddress = addrTo;        // ...and move to the new position.
         }
 
@@ -452,6 +514,20 @@ namespace Reko.Gui.Windows
         void ToolBarGoButton_Click(object sender, EventArgs e)
         {
             NavigateToToolbarAddress();
+        }
+
+        void TextView_Navigate(object sender, EditorNavigationArgs e)
+        {
+            var addr = e.Destination as Address;
+            var proc = e.Destination as Procedure;
+
+            if (proc != null)
+                addr = program.GetProcedureAddress(proc);
+
+            if (addr == null)
+                return;
+
+            UserNavigateToAddress(combinedCodeView.MixedCodeDataView.TopAddress, addr);
         }
 
         private void GViewer_KeyDown(object sender, KeyEventArgs e)

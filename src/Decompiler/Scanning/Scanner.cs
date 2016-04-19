@@ -516,6 +516,7 @@ namespace Reko.Scanning
             var oldQueue = queue;
             queue = new PriorityQueue<WorkItem>();
             var st = state.Clone();
+            st.SetInstructionPointer(addr);
             st.OnProcedureEntered();
             var sp = proc.Frame.EnsureRegister(program.Architecture.StackRegister);
             st.SetValue(sp, proc.Frame.FramePointer);

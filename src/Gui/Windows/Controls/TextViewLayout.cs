@@ -130,7 +130,7 @@ namespace Reko.Gui.Windows.Controls
             int iSpan = 0;
             foreach (var span in line.Spans)
             {
-                if (span.Extent.Contains(ptClient))
+                if (span.ContentExtent.Contains(ptClient))
                 {
                     int iChar = GetCharPosition(g, ptClient, span, styleStack);
                     return new TextPointer
@@ -147,7 +147,7 @@ namespace Reko.Gui.Windows.Controls
 
         private int GetCharPosition(Graphics g, Point ptClient, LayoutSpan span, StyleStack styleStack)
         {
-            var x = ptClient.X - span.Extent.Left;
+            var x = ptClient.X - span.ContentExtent.Left;
             var textStub = span.Text;
             int iLow = 0;
             int iHigh = textStub.Length;
@@ -218,12 +218,12 @@ namespace Reko.Gui.Windows.Controls
 
             var textStub = span.Text.Substring(0, iChar);
             var sz = MeasureText(g, textStub, font);
-            var x = sz.Width + span.Extent.Left;
+            var x = sz.Width + span.ContentExtent.Left;
             var width = 1;
 
             styleStack.PopStyle();
 
-            return new RectangleF(x, span.Extent.Top, width, span.Extent.Height);
+            return new RectangleF(x, span.ContentExtent.Top, width, span.ContentExtent.Height);
         }
 
 
@@ -263,7 +263,7 @@ namespace Reko.Gui.Windows.Controls
                 var r = rcLine.Right;
                 if (spans.Length > 0)
                 {
-                    r = Math.Max(r, spans[spans.Length - 1].Extent.Right);
+                    r = Math.Max(r, spans[spans.Length - 1].ContentExtent.Right);
                 }
                 return new RectangleF(rcLine.X, rcLine.Y, r - rcLine.X, rcLine.Height);
             }
@@ -275,7 +275,10 @@ namespace Reko.Gui.Windows.Controls
                 {
                     styleStack.PushStyle(span.Style);
                     var font = styleStack.GetFont(defaultFont);
-                    height = Math.Max(height, font.Height);
+                    height = Math.Max(
+                        height,
+                        font.Height + styleStack.GetNumber(s => s.PaddingTop) +
+                        styleStack.GetNumber(s => s.PaddingBottom));
                     styleStack.PopStyle();
                 }
                 return height;
@@ -299,15 +302,18 @@ namespace Reko.Gui.Windows.Controls
                     var font = styleStack.GetFont(defaultFont);
                     var szText = GetSize(span, text, font, g);
                     var rc = new RectangleF(pt, szText);
+                    var rcPadded = rc;
+                    styleStack.PadRectangle(ref rc, ref rcPadded);
                     spanLayouts.Add(new LayoutSpan
                     {
-                        Extent = rc,
+                        ContentExtent = rc,
+                        PaddedExtent = rcPadded,
                         Style = span.Style,
                         Text = text,
                         ContextMenuID = span.ContextMenuID,
                         Tag = span.Tag,
                     });
-                    pt.X = pt.X + szText.Width;
+                    pt.X = pt.X + rcPadded.Width;
                     styleStack.PopStyle();
                 }
                 return spanLayouts.ToArray();
@@ -341,8 +347,6 @@ namespace Reko.Gui.Windows.Controls
                 return new TextViewLayout(model, defaultFont, visibleLines);
             }
         }
-
-
     }
 
     /// <summary>
@@ -361,7 +365,8 @@ namespace Reko.Gui.Windows.Controls
     /// </summary>
     public class LayoutSpan
     {
-        public RectangleF Extent;
+        public RectangleF ContentExtent;
+        public RectangleF PaddedExtent;
         public string Text;
         public string Style;
         public object Tag;

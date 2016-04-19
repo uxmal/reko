@@ -26,10 +26,11 @@ using System.Windows.Forms;
 
 namespace Reko.Gui.Controls
 {
-    public interface ITextBox
+    public interface ITextBox : IControl
     {
         event EventHandler TextChanged;
         event KeyEventHandler KeyDown;
+        event EventHandler LostFocus;
 
         bool Enabled { get; set; }
         string Text { get; set; }

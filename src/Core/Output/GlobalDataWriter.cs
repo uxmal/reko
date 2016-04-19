@@ -29,7 +29,7 @@ using System.Text;
 namespace Reko.Core.Output
 {
     /// <summary>
-    /// Writes out global initialized data.
+    /// Writes out initialized global variables.
     /// </summary>
     public class GlobalDataWriter : IDataTypeVisitor<CodeFormatter>
     {
@@ -185,7 +185,8 @@ namespace Reko.Core.Output
 
         public CodeFormatter VisitFunctionType(FunctionType ft)
         {
-            throw new NotImplementedException();
+            codeFormatter.InnerFormatter.WriteLine("Unexpected function type {0}", ft);
+            return codeFormatter;
         }
 
         public CodeFormatter VisitPrimitive(PrimitiveType pt)

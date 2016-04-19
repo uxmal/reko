@@ -34,8 +34,9 @@ using System.Text;
 namespace Reko.Core
 {
     /// <summary>
-    /// Contains information about one input file, gathered during loading, scanning and data analysis,
-    /// as well as storing any user-specified information.
+    /// Contains information about one input file, gathered during loading, 
+    /// scanning and data analysis, as well as storing any user-specified 
+    /// information.
     /// </summary>
     /// <remarks>
     /// A Decompiler project may consist of several of these Programs.
@@ -118,6 +119,53 @@ namespace Reko.Core
                 User.Procedures.Add(address, up);
             }
             return up;
+        }
+
+        public GlobalDataItem_v2 ModifyUserGlobal(Address address, SerializedType dataType, string name)
+        {
+            GlobalDataItem_v2 gbl;
+            if (!User.Globals.TryGetValue(address, out gbl))
+            {
+                gbl = new GlobalDataItem_v2()
+                {
+                    Address = address.ToString(),
+                };
+                User.Globals.Add(address, gbl);
+            }
+
+            gbl.Name = name;
+            gbl.DataType = dataType;
+
+            this.ImageMap.RemoveItem(address);
+
+            var tlDeser = CreateTypeLibraryDeserializer();
+            var dt = dataType.Accept(tlDeser);
+            var size = GetDataSize(address, dt);
+            var item = new ImageMapItem
+            {
+                Address = address,
+                Size = size,
+                Name = name,
+                DataType = dt,
+            };
+            if (size != 0)
+                this.ImageMap.AddItemWithSize(address, item);
+            else
+                this.ImageMap.AddItem(address, item);
+
+            return gbl;
+        }
+
+        public void RemoveUserGlobal(Address address)
+        {
+            User.Globals.Remove(address);
+            // Do not remove block data item
+            ImageMapItem item;
+            if (ImageMap.TryFindItemExact(address, out item) &&
+                item is ImageMapBlock
+            )
+                return;
+            ImageMap.RemoveItem(address);
         }
 
         /// <summary>
@@ -374,6 +422,7 @@ namespace Reko.Core
         public void Reset()
         {
             Procedures.Clear();
+            ImageMap.Items.Clear();
             globals = null;
             TypeFactory = new TypeFactory();
             TypeStore = new TypeStore();

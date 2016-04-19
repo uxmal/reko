@@ -161,6 +161,36 @@ namespace Reko.Core.Expressions
             return new Application(new ProcedureConstant(PrimitiveType.Pointer32, ppp), ppp.ReturnType, args);
         }
 
+        public Expression FEq(Expression a, Expression b)
+        {
+            return new BinaryExpression(Operator.Feq, PrimitiveType.Bool, a, b);
+        }
+
+        public Expression FNe(Expression a, Expression b)
+        {
+            return new BinaryExpression(Operator.Fne, PrimitiveType.Bool, a, b);
+        }
+
+        public Expression FGe(Expression a, Expression b)
+        {
+            return new BinaryExpression(Operator.Fge, PrimitiveType.Bool, a, b);
+        }
+
+        public Expression FGt(Expression a, Expression b)
+        {
+            return new BinaryExpression(Operator.Fgt, PrimitiveType.Bool, a, b);
+        }
+
+        public Expression FLe(Expression a, Expression b)
+        {
+            return new BinaryExpression(Operator.Fle, PrimitiveType.Bool, a, b);
+        }
+
+        public Expression FLt(Expression a, Expression b)
+        {
+            return new BinaryExpression(Operator.Flt, PrimitiveType.Bool, a, b);
+        }
+
         public Expression FSub(Expression a, Expression b)
         {
             return new BinaryExpression(Operator.FSub, PrimitiveType.Real64, a, b);

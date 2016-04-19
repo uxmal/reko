@@ -37,11 +37,13 @@ using UseInstruction = Reko.Core.Code.UseInstruction;
 namespace Reko.Analysis
 {
 	/// <summary>
-	/// Rewrites a program, based on summary live-in and live-out information, so that all
-	/// CALL codes are converted into procedure calls, with the appropriate parameter lists.
+	/// Rewrites a program, based on summary live-in and live-out
+    /// information, so that all CALL codes are converted into procedure 
+    /// calls, with the appropriate parameter lists.
 	/// </summary>
 	/// <remarks>
-	/// Call Rewriting should take place before SSA conversion and dead code removal.
+	/// Call Rewriting should take place before SSA conversion and dead 
+    /// code removal.
 	/// </remarks>
 	public class GlobalCallRewriter : CallRewriter
 	{

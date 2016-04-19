@@ -69,7 +69,7 @@ namespace Reko.Arch.Mips
 
         public override void Render(MachineInstructionWriter writer)
         {
-            writer.WriteOpcode(opcode.ToString());
+            writer.WriteOpcode(GetOpcodeString(opcode));
             if (op1 != null)
             {
                 writer.Tab();
@@ -84,6 +84,17 @@ namespace Reko.Arch.Mips
                         op3.Write(true, writer);
                     }
                 }
+            }
+        }
+
+        private string GetOpcodeString(Opcode opcode)
+        {
+            switch (opcode)
+            {
+            case Opcode.add_d: return "add.d";
+            case Opcode.c_le_d: return "c.le.d";
+            case Opcode.cvt_w_d: return "cvt.w.d";
+            default: return opcode.ToString();
             }
         }
 

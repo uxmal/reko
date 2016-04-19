@@ -28,9 +28,10 @@ using System;
 namespace Reko.Analysis
 {
 	/// <summary>
-	/// Placeholder that replaces MEM nodes with C-like equivalents. It's placeholder because 
-	/// it does no real intelligent work trying to figure out what types the objects have. 
-	/// When type analysis is complete, this class should be removed.
+	/// Placeholder that replaces MEM nodes with C-like equivalents. It's
+    /// placeholder because it does no real intelligent work trying to figure
+    /// out what types the objects have. When type analysis is complete, this
+    /// class should be removed.
 	/// </summary>
 	public class MemReplacer : InstructionTransformer
 	{

@@ -71,8 +71,9 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// Use this constructor when the segment is completely disjoint from
-        /// other segments. This is usually the case in PE or ELF binaries.
+        /// Use this constructor when the segment's memory area is completely 
+        /// disjoint fromother segments. This is usually the case in PE or ELF
+        /// binaries.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="mem"></param>
@@ -105,7 +106,6 @@ namespace Reko.Core
         public MemoryArea MemoryArea { get; set; }
 
 		public AccessMode Access { get; set; }
-
 
         public bool IsDiscardable { get; set; }
 

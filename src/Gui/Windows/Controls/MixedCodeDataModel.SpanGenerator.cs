@@ -44,9 +44,15 @@ namespace Reko.Gui.Windows.Controls
             SpanGenerator sp = CreateSpanifier(item, addrCur);
             while (count != 0 && seg != null && item != null)
             {
-                bool memValid =
-                    seg.MemoryArea.IsValidAddress(addrCur) &&
-                    item.IsInRange(addrCur);
+                bool memValid = true;
+                if (!item.IsInRange(addrCur))
+                {
+                    memValid = program.ImageMap.TryFindItem(addrCur, out item)
+                        && addrCur < item.EndAddress;
+                    if (memValid)
+                        sp = CreateSpanifier(item, addrCur);
+                }
+                memValid &= seg.MemoryArea.IsValidAddress(addrCur);
 
                 if (memValid)
                 {
@@ -64,7 +70,7 @@ namespace Reko.Gui.Windows.Controls
                 }
                 if (sp == null || !memValid)
                 {
-                    if (!memValid || !program.ImageMap.TryFindItem(addrCur, out item))
+                    if (!memValid)
                     {
                         // Find next segment.
                         Address addrSeg;
@@ -73,7 +79,6 @@ namespace Reko.Gui.Windows.Controls
                             program.ImageMap.TryFindSegment(addrSeg, out seg);
                             program.ImageMap.TryFindItem(addrSeg, out item);
                             addrCur = addrSeg;
-                            sp = CreateSpanifier(item, addrCur);
                         }
                         else
                         {
@@ -87,7 +92,8 @@ namespace Reko.Gui.Windows.Controls
                 }
             }
             addrCur = SanitizeAddress(addrCur);
-            return spans.ToArray();
+            var aSpans = spans.ToArray();
+            return aSpans;
         }
 
         private SpanGenerator CreateSpanifier(ImageMapItem item, Address addr)
@@ -102,13 +108,24 @@ namespace Reko.Gui.Windows.Controls
             {
                 sp = new MemSpanifyer(program, item, addr);
             }
-
             return sp;
         }
 
         public abstract class SpanGenerator
         {
             public abstract Tuple<Address, LineSpan> GenerateSpan();
+
+            public void DecorateLastLine(LineSpan line)
+            {
+                for (int i = 0; i < line.TextSpans.Length; ++i)
+                {
+                    var span = line.TextSpans[i];
+                    if (span.Style == null)
+                        span.Style = "lastLine";
+                    else
+                        span.Style = span.Style + " lastLine";
+                }
+            }
         }
 
         public class AsmSpanifyer : SpanGenerator
@@ -130,9 +147,12 @@ namespace Reko.Gui.Windows.Controls
                     return null;
                 var instr = instrs[offset];
                 ++offset;
-                return Tuple.Create(
-                    instr.Address + instr.Length,
-                    DisassemblyTextModel.RenderAsmLine(program, instr));
+                var asmLine = DisassemblyTextModel.RenderAsmLine(program, instr);
+                if (offset == instrs.Length)
+                {
+                    DecorateLastLine(asmLine);
+                }
+                return Tuple.Create(instr.Address + instr.Length, asmLine);
             }
         }
 
@@ -163,7 +183,6 @@ namespace Reko.Gui.Windows.Controls
                 var cbBytes = linEnd - addr.ToLinear();
                 var cbPadding = BytesPerLine - (cbFiller + cbBytes);
 
-                var sb = new StringBuilder();
                 var abCode = new List<byte>();
 
                 // Do any filler first
@@ -178,8 +197,9 @@ namespace Reko.Gui.Windows.Controls
                 {
                     if (rdr.IsValid)
                     {
+                        var addr = rdr.Address;
                         byte b = rdr.ReadByte();
-                        sb.AppendFormat(" {0:X2}", b);
+                        line.Add(new MemoryTextSpan(addr, string.Format(" {0:X2}", b), UiStyles.MemoryWindow));
                         //$BUG: should use platform.Encoding
                         abCode.Add(b);
                     }
@@ -190,7 +210,6 @@ namespace Reko.Gui.Windows.Controls
                         break;
                     }
                 }
-                line.Add(new MemoryTextSpan(sb.ToString(), UiStyles.MemoryWindow));
 
                 // Do any padding after.
 
@@ -204,10 +223,14 @@ namespace Reko.Gui.Windows.Controls
                 line.Add(new MemoryTextSpan(" ", UiStyles.MemoryWindow));
                 line.Add(new MemoryTextSpan(sBytes, UiStyles.MemoryWindow));
 
+                var linePos = this.addr;
                 this.addr = addrEnd;
-                return Tuple.Create(
-                    addrEnd,
-                    new LineSpan(addr, line.ToArray()));
+                var memLine = new LineSpan(linePos, line.ToArray());
+                if (rdr.Address >= item.EndAddress)
+                {
+                    DecorateLastLine(memLine);
+                }
+                return Tuple.Create(addrEnd, memLine);
             }
 
             private string RenderBytesAsText(byte[] abCode)
@@ -241,10 +264,18 @@ namespace Reko.Gui.Windows.Controls
         {
             private string text;
 
+            public Address Address { get; private set; }
+
             public MemoryTextSpan(string text, string style)
             {
                 this.text = text;
                 base.Style = style;
+            }
+
+            public MemoryTextSpan(Address address, string text, string style) : this(text, style)
+            {
+                this.Tag = this;
+                this.Address = address;
             }
 
             public override string GetText()

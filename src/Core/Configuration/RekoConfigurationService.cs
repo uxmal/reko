@@ -187,6 +187,10 @@ namespace Reko.Core.Configuration
                 ForeColor = sUiStyle.ForeColor,
                 TextAlign = sUiStyle.TextAlign,
                 Width = sUiStyle.Width,
+                PaddingTop = sUiStyle.PaddingTop,
+                PaddingLeft = sUiStyle.PaddingLeft,
+                PaddingBottom = sUiStyle.PaddingBottom,
+                PaddingRight = sUiStyle.PaddingRight,
             };
         }
 

@@ -374,12 +374,15 @@ namespace Reko
         /// <param name="addr"></param>
         /// <returns>a ProcedureBase, because the target procedure may have been a thunk or 
         /// an linked procedure the user has decreed not decompileable.</returns>
-		public ProcedureBase ScanProcedure(ProgramAddress paddr)
-		{
-			if (scanner == null)        //$TODO: it's unfortunate that we depend on the scanner of the Decompiler class.
-				scanner = CreateScanner(paddr.Program);
-			return scanner.ScanProcedure(paddr.Address, null, paddr.Program.Architecture.CreateProcessorState());
-		}
+        public ProcedureBase ScanProcedure(ProgramAddress paddr)
+        {
+            if (scanner == null)        //$TODO: it's unfortunate that we depend on the scanner of the Decompiler class.
+                scanner = CreateScanner(paddr.Program);
+            Procedure_v1 sProc;
+            var procName = paddr.Program.User.Procedures.TryGetValue(
+                paddr.Address, out sProc) ? sProc.Name : null;
+            return scanner.ScanProcedure(paddr.Address, procName, paddr.Program.Architecture.CreateProcessorState());
+        }
 
 		/// <summary>
 		/// Generates the control flow graph and finds executable code in each program.

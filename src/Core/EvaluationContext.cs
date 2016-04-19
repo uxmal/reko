@@ -26,12 +26,13 @@ using System.Text;
 namespace Reko.Core
 {
     /// <summary>
-    /// An EvaluationContext is used by the SymbolicEvaluator to provide a statement context for the
-    /// evaluation.
+    /// An EvaluationContext is used by the SymbolicEvaluator to provide a 
+    /// statement context for the evaluation.
     /// </summary>
     /// <remarks>
-    /// For instance, it might be interesting to find the expression currently bound to 
-    /// an identifier, to see if a simplification could be made. The statements
+    /// For instance, it might be interesting to find the expression currently
+    /// bound to an identifier, to see if a simplification could be made. The
+    /// statements
     /// <code>
     ///     a = constant
     ///     b = a + 3

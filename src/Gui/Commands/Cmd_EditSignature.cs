@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Services;
+using Reko.Core.Serialization;
 using Reko.Gui.Windows.Forms;
 using System;
 using System.Collections.Generic;
@@ -47,21 +48,21 @@ namespace Reko.Gui.Commands
         {
             var dlgFactory = Services.RequireService<IDialogFactory>();
             var uiSvc = Services.RequireService<IDecompilerShellUiService>();
-            var ser = program.CreateProcedureSerializer();
-            var sProc = ser.Serialize(procedure, address);
+            Procedure_v1 sProc;
+            if (!program.User.Procedures.TryGetValue(address, out sProc))
+                sProc = new Procedure_v1
+                {
+                    Name = procedure.Name
+                };
             //$REVIEW: use dialog factory.
-            var i = new ProcedureDialogInteractor(program.Platform.Architecture, sProc);
+            var i = new ProcedureDialogInteractor(program, sProc);
             using (ProcedureDialog dlg = i.CreateDialog())
             {
                 if (DialogResult.OK == uiSvc.ShowModalDialog(dlg))
                 {
-                    program.User.Procedures[address] =
-                        i.SerializedProcedure;
-                    ser = program.CreateProcedureSerializer();
-                    procedure.Signature =
-                        ser.Deserialize(i.SerializedProcedure.Signature, procedure.Frame);
-
-                    // canAdvance = false;
+                    i.ApplyChanges();
+                    program.User.Procedures[address] = sProc;
+                    procedure.Name = sProc.Name;
                 }
             }
         }

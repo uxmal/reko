@@ -48,10 +48,7 @@ namespace Reko.UnitTests.Arch.Intel
                 new ImageMap(
                     mem.BaseAddress,
                     new ImageSegment(
-                        "code", mem, AccessMode.ReadWriteExecute)
-                    {
-                        MemoryArea = mem
-                    }),
+                        "code", mem, AccessMode.ReadWriteExecute)),
                 arch,
                 new DefaultPlatform(null, arch));
 			var procAddress = Address.Ptr32(0x10000000);

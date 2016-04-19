@@ -37,6 +37,10 @@ namespace Reko.Core.Output
 			this.Indentation = 4;
 		}
 
+        /// <summary>
+        /// This method is used to indent with spaces or tabs before the
+        /// code on this line.
+        /// </summary>
 		public void Indent()
 		{
 			int n = Indentation;

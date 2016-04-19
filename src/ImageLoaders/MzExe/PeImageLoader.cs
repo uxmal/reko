@@ -463,18 +463,11 @@ namespace Reko.ImageLoaders.MzExe
             }
             else
             {
-                name = "WinMain";
+                name = "Win32CrtStartup";
                 ssig = new SerializedSignature
                 {
-                    Convention = "stdapi",
-                    Arguments = new Argument_v1[]
-                    {
-                        Arg("hInstance",     "HINSTANCE"),
-                        Arg("hPrevInstance", "HINSTANCE"),
-                        Arg("lpCmdLine",     "LPSTR"),
-                        Arg("nCmdShow",      "INT"),
-                    },
-                    ReturnValue = Arg(null, "INT")
+                    Convention = "__cdecl",
+                    ReturnValue = Arg(null, "DWORD")
                 };
             }
             return new EntryPoint(addrEp, name, arch.CreateProcessorState(), ssig);
@@ -493,8 +486,14 @@ namespace Reko.ImageLoaders.MzExe
                 {
                     acc |= AccessMode.Execute;
                 }
-                var seg = imageMap.AddSegment(addrLoad + s.VirtualAddress, s.Name, acc, s.VirtualSize);
-                seg.MemoryArea = imgLoaded;
+                var seg = imageMap.AddSegment(new ImageSegment(
+                    s.Name,
+                    addrLoad + s.VirtualAddress, 
+                    imgLoaded, 
+                    acc)
+                {
+                    Size = s.VirtualSize
+                });
                 seg.IsDiscardable = s.IsDiscardable;
             }
         }

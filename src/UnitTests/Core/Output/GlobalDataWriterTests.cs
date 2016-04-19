@@ -321,7 +321,7 @@ struct test g_t1004 =
                     {
                         { 0, PrimitiveType.Int32 },
                         { 4, PrimitiveType.Int32 },
-                        { 8, new Pointer(new FunctionType(new SerializedSignature()), 4) }
+                        { 8, new Pointer(new FunctionType(new ProcedureSignature()), 4) }
                     }
                 })));
             Given_ProcedureAtAddress(0x2000, "funcTest");

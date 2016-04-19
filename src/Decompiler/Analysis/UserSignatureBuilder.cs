@@ -29,6 +29,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Reko.Analysis
 {
@@ -81,7 +82,7 @@ namespace Reko.Analysis
         {
             if (!string.IsNullOrEmpty(userProc.CSignature))
             {
-                return ParseFunctionDeclaration(userProc.CSignature, proc.Frame);
+                return ParseFunctionDeclaration(userProc.CSignature);
             }
             return null;
         }
@@ -132,7 +133,7 @@ namespace Reko.Analysis
             return new Assignment(dst, param);
         }
 
-        public ProcedureBase_v1 ParseFunctionDeclaration(string fnDecl, Frame frame)
+        public ProcedureBase_v1 ParseFunctionDeclaration(string fnDecl)
         {
             try {
                 var lexer = new CLexer(new StringReader(fnDecl + ";"));
@@ -159,6 +160,39 @@ namespace Reko.Analysis
                 Debug.Print("{0}\r\n{1}", ex.Message, ex.StackTrace);
                 return null;
             }
+        }
+
+        public GlobalDataItem_v2 ParseGlobalDeclaration(string txtGlobal)
+        {
+            try
+            {
+                var lexer = new CLexer(new StringReader(txtGlobal + ";"));
+                var symbols = program.CreateSymbolTable();
+                var oldVars = symbols.Variables.Count;
+                var cstate = new ParserState(symbols.NamedTypes.Keys);
+                var cParser = new CParser(cstate, lexer);
+                var decl = cParser.Parse_ExternalDecl();
+                if (decl == null)
+                    return null;
+
+                //$HACK: Relying on a side effect here to
+                // get both the global type. Ew.
+                symbols.AddDeclaration(decl);
+                if (symbols.Variables.Count == oldVars)
+                    return null;
+                return symbols.Variables.Last();
+            }
+            catch (Exception ex)
+            {
+                Debug.Print("{0}\r\n{1}", ex.Message, ex.StackTrace);
+                return null;
+            }
+        }
+
+        //$REFACTOR: this is language and platform dependent.
+        public static bool IsValidCIdentifier(string id)
+        {
+            return Regex.IsMatch(id, "^[_a-zA-Z][_a-zA-Z0-9]*$");
         }
     }
 }

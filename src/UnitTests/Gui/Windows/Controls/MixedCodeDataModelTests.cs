@@ -173,16 +173,50 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             // Read the first instruction
             var lines = mcdm.GetLineSpans(1);
             Assert.AreEqual(1, lines.Length);
+            Assert.AreEqual("00041000", lines[0].Position.ToString());
             Assert.AreEqual("00041002", mcdm.CurrentPosition.ToString());
 
             // Read the second and last instruction.
             lines = mcdm.GetLineSpans(1);
             Assert.AreEqual(1, lines.Length);
+            Assert.AreEqual("00041002", lines[0].Position.ToString());
             Assert.AreEqual("00042000", mcdm.CurrentPosition.ToString());
 
             // Read the 8 remaining bytes from .data
             lines = mcdm.GetLineSpans(1);
             Assert.AreEqual(1, lines.Length);
+            Assert.AreEqual("00042000", lines[0].Position.ToString());
+            Assert.AreEqual("00042008", mcdm.CurrentPosition.ToString());
+        }
+
+        [Test]
+        public void Mcdm_GetLineSpans_AllLines()
+        {
+            var addrBase = Address.Ptr32(0x40000);
+
+            var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[100]);
+            var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[8]);
+            this.imageMap = new ImageMap(
+                addrBase,
+                new ImageSegment(".text", memText, AccessMode.ReadExecute) { Size = 4 },
+                new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
+            var program = new Program(imageMap, arch, platform);
+
+            Given_CodeBlock(memText.BaseAddress, 4);
+            Given_CodeBlock(Address.Ptr32(0x42004), 4);
+
+            mr.ReplayAll();
+
+            var mcdm = new MixedCodeDataModel(program);
+
+            // Read all lines
+            var lines = mcdm.GetLineSpans(5);
+            Assert.AreEqual(5, lines.Length);
+            Assert.AreEqual("00041000", lines[0].Position.ToString());
+            Assert.AreEqual("00041002", lines[1].Position.ToString());
+            Assert.AreEqual("00042000", lines[2].Position.ToString());
+            Assert.AreEqual("00042004", lines[3].Position.ToString());
+            Assert.AreEqual("00042006", lines[4].Position.ToString());
             Assert.AreEqual("00042008", mcdm.CurrentPosition.ToString());
         }
 
@@ -210,6 +244,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             // This should return the first line of the .data segment.
             var lines = mcdm.GetLineSpans(1);
             Assert.AreEqual(1, lines.Length);
+            Assert.AreEqual("00042000", lines[0].Position.ToString());
             Assert.AreEqual("00042008", mcdm.CurrentPosition.ToString());
         }
 

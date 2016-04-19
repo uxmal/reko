@@ -26,6 +26,7 @@ using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -79,12 +80,50 @@ namespace Reko.UnitTests.Evaluation
             AssertSmallConst("r1 / 6", 0, 0x2aaaaaab);
             AssertSmallConst("r1 / 5", 1, 0x66666667);
             AssertSmallConst("r1 / 3", 0, 0x55555556);
+            AssertSmallConst("r1 / 1000", 6, 0x10624dd3);
         }
 
         [Test]
         public void Cdiv_TwoThirds()
         {
             AssertSmallConst("r1 * 2 / 3", 0, 0xAAAAAAAA);
+        }
+
+        private void Frac(int num, int denom)
+        {
+            var q = (double)num / denom;
+            var n = (uint) Math.Round(q * Math.Pow(2.0, 32));
+            var f = n * Math.Pow(2.0, -32);
+
+            var rat = ConstDivisionImplementedByMultiplication.ContinuedFraction(f);
+            if (num != rat.Numerator || 
+               denom != rat.Denominator)
+            {
+                Debug.Print("***** inexact *****");
+            }
+
+        }
+        [Test]
+        public void Cdiv_ContinuedFraction()
+        {
+            Frac(1, 3);
+            Frac(2, 3);
+            Frac(1, 5);
+            Frac(2, 5);
+            Frac(3, 5);
+            Frac(4, 5);
+            Frac(1, 7);
+            Frac(2, 7);
+            Frac(3, 7);
+            Frac(4, 7);
+            Frac(5, 7);
+            Frac(6, 7);
+            Frac(1, 22);
+            Frac(3, 100);
+            Frac(1, 1000);
+            Frac(7, 1000);
+            Frac(13, 10000);
+            Frac(7, 100000);
         }
     }
 }

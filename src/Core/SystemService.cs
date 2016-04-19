@@ -27,10 +27,10 @@ using System.ComponentModel;
 namespace Reko.Core
 {
     /// <summary>
-    /// Models a system service. The syscallinfo member indicates how the system service
-    /// is selected (typically by loading specific values in processor registers).
+    /// Models a system service. The syscallinfo member indicates how the
+    /// system service is selected (typically by loading specific values in
+    /// processor registers).
     /// </summary>
-    
     [Designer("Reko.Gui.Design.SystemServiceDesigner,Reko.Gui")]
 	public class SystemService
 	{

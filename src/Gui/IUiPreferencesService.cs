@@ -41,6 +41,10 @@ namespace Reko.Gui
         public Cursor Cursor { get; set; }
         public string TextAlign { get; set; }
         public int? Width { get; set; } // If set, the width is fixed at a certain size.
+        public float PaddingTop { get; set; }
+        public float PaddingLeft { get; set; }
+        public float PaddingBottom { get; set; }
+        public float PaddingRight { get; set; }
 
         public UiStyle Clone()
         {
@@ -53,6 +57,10 @@ namespace Reko.Gui
                 Cursor = Cursor,
                 Width = Width,
                 TextAlign = TextAlign,
+                PaddingTop = PaddingTop,
+                PaddingLeft = PaddingLeft,
+                PaddingBottom = PaddingBottom,
+                PaddingRight = PaddingRight,
             };
         }
     }
@@ -235,6 +243,11 @@ namespace Reko.Gui
                 int w;
                 if (Int32.TryParse(dStyle.Width, out w))
                     width = w;
+                float padTop, padLeft, padRight, padBottom;
+                float.TryParse(dStyle.PaddingTop, out padTop);
+                float.TryParse(dStyle.PaddingLeft, out padLeft);
+                float.TryParse(dStyle.PaddingBottom, out padBottom);
+                float.TryParse(dStyle.PaddingRight, out padRight);
                 AddStyle(new UiStyle
                 {
                     Name = dStyle.Name,
@@ -243,6 +256,10 @@ namespace Reko.Gui
                     Font = GetFont(dStyle.FontName),
                     Width = width,
                     Cursor = GetCursor(dStyle.Cursor),
+                    PaddingTop = padTop,
+                    PaddingLeft = padLeft,
+                    PaddingBottom = padBottom,
+                    PaddingRight = padRight,
                 });
             }
 
@@ -261,8 +278,8 @@ namespace Reko.Gui
             SetStyle(UiStyles.Browser);
             SetStyle(UiStyles.List);
 
-            this.WindowSize = ConvertFrom<Size>(sizeCvt, settingsSvc.Get("WindowSize", null));
-            this.WindowState = ConvertFrom<FormWindowState>(fwsCvt, settingsSvc.Get("WindowState", "Normal"));
+            this.WindowSize = ConvertFrom<Size>(sizeCvt, (string)settingsSvc.Get("WindowSize", null));
+            this.WindowState = ConvertFrom<FormWindowState>(fwsCvt, (string) settingsSvc.Get("WindowState", "Normal"));
 
             UiPreferencesChanged.Fire(this);
         }
@@ -276,6 +293,11 @@ namespace Reko.Gui
 
             var snames = this.SettingNames[name];
 
+            float padTop, padLeft, padRight, padBottom;
+            float.TryParse(defStyle.PaddingTop, out padTop);
+            float.TryParse(defStyle.PaddingLeft, out padLeft);
+            float.TryParse(defStyle.PaddingBottom, out padBottom);
+            float.TryParse(defStyle.PaddingRight, out padRight);
             var uiStyle = new UiStyle
             {
                 Name = snames.Name,
@@ -283,6 +305,10 @@ namespace Reko.Gui
                 Background = GetBrush((string)settingsSvc.Get(snames.BackColor, defStyle.BackColor)),
                 Font = GetFont((string)settingsSvc.Get(snames.FontName, defStyle.FontName)),
                 Width = string.IsNullOrEmpty(defStyle.Width) ? default(int?) : Convert.ToInt32(defStyle.Width),
+                PaddingLeft = padLeft,
+                PaddingTop = padTop,
+                PaddingRight = padRight,
+                PaddingBottom = padBottom,
             };
             AddStyle(uiStyle);
         }
@@ -400,13 +426,13 @@ namespace Reko.Gui
             UiPreferencesChanged.Fire(this);
         }
 
-        private T ConvertFrom<T>(TypeConverter conv, object value)
+        private T ConvertFrom<T>(TypeConverter conv, string value)
         {
             if (value == null)
                 return default(T);
             try
             {
-                return (T) conv.ConvertFrom(value);
+                return (T) conv.ConvertFromInvariantString(value);
             }
             catch
             {

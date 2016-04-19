@@ -38,7 +38,7 @@ namespace Reko.Analysis
 	public class BlockFlow : DataFlow
 	{
 		public Block Block;
-		public HashSet<RegisterStorage> DataOut;						    // each bit corresponds to a register that is live at the end of the
+		public HashSet<RegisterStorage> DataOut;		// each bit corresponds to a register that is live at the end of the
 		public uint grfOut;							    // each bit corresponds to a condition code register that is live at the end of the block
 		public Dictionary<Storage,int> StackVarsOut;    // stack-based storages that are live at the end of the block.
 		public uint grfTrashedIn;					    // each bit corresponds to a condition code register that is trashed on entrance (fwd analysis)

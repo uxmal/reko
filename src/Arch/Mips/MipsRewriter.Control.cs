@@ -72,6 +72,16 @@ namespace Reko.Arch.Mips
                 throw new NotImplementedException("Linked branches not implemented yet.");
         }
 
+        private void RewriteBc1f(MipsInstruction instr, bool opTrue)
+        {
+            var cond = RewriteOperand(instr.op1);
+            if (!opTrue)
+                cond = emitter.Not(cond);
+            var addr = (Address)RewriteOperand(instr.op2);
+            cluster.Class = RtlClass.ConditionalTransfer | RtlClass.Delay;
+            emitter.Branch(cond, addr, cluster.Class);
+        }
+    
         private void RewriteJal(MipsInstruction instr)
         {
             //$TODO: if we want explicit representation of the continuation of call
@@ -88,8 +98,8 @@ namespace Reko.Arch.Mips
             //emitter.Assign( frame.EnsureRegister(Registers.ra), instr.Address + 8);
             cluster.Class = RtlClass.Transfer;
             var dst = RewriteOperand(instr.op2);
-            var lr = RewriteOperand(instr.op1);
-            if (((Identifier)lr).Storage == Registers.ra)
+            var lr = ((RegisterOperand)instr.op1).Register;
+            if (lr == Registers.ra)
             {
                 emitter.CallD(dst, 0);
                 return;

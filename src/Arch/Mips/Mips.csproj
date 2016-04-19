@@ -59,6 +59,7 @@
     <Compile Include="MipsProcessorState.cs" />
     <Compile Include="MipsRewriter.Alu.cs" />
     <Compile Include="MipsRewriter.cs" />
+    <Compile Include="MipsRewriter.Fpu.cs" />
     <Compile Include="MipsRewriter.System.cs" />
     <Compile Include="Opcode.cs" />
     <Compile Include="OpRec.cs" />

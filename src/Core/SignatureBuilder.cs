@@ -28,9 +28,10 @@ using System.Collections.Generic;
 namespace Reko.Core
 {
 	/// <summary>
-	/// Builds a procedure signature argument by argument. In particular, keeps track of how many
-	/// output registers/FPU stack registers have been seen, and makes them either the return 
-	/// value of the ProcedureSignature or an "out" parameter.
+	/// Builds a procedure signature argument by argument. In particular, keeps
+    /// track of how many output registers/FPU stack registers have been seen,
+    /// and makes them either the return value of the ProcedureSignature or an
+    /// "out" parameter.
 	/// </summary>
 	public class SignatureBuilder
 	{

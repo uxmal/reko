@@ -35,6 +35,10 @@ namespace Reko.Core.Configuration
         string Cursor { get; }
         string Width { get; }
         string TextAlign { get; }
+        string PaddingTop { get; }
+        string PaddingLeft { get; }
+        string PaddingBottom { get; }
+        string PaddingRight { get; }
     }
 
     public class UiStyleElement : UiStyle
@@ -52,5 +56,13 @@ namespace Reko.Core.Configuration
         public string Width { get; set; }
 
         public string TextAlign { get; set; }
+
+        public string PaddingTop { get; set; }
+
+        public string PaddingLeft { get; set; }
+
+        public string PaddingBottom { get; set; }
+
+        public string PaddingRight { get; set; }
     }
 }

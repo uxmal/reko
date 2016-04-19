@@ -26,7 +26,8 @@ using System.Collections.Generic;
 namespace Reko.Analysis
 {
 	/// <summary>
-	/// Contains dataflow information for each procedure and each block of the program.
+	/// Contains dataflow information for each procedure and each block of 
+    /// the program.
 	/// </summary>
 	public class ProgramDataFlow
 	{

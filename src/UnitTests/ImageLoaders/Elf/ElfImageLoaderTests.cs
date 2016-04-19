@@ -34,7 +34,7 @@ using Reko.Environments.SysV;
 namespace Reko.UnitTests.ImageLoaders.Elf
 {
     [TestFixture]
-    public class ElfImageLoaderTests
+    public class ElfImageLoaderTests : ElfTests
     {
         // bswap 
         private byte[] rawImg = {
@@ -342,27 +342,21 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         #endregion
         };
 
-        private MockRepository mr;
-        private IProcessorArchitecture arch;
-        private IServiceProvider services;
-        private IConfigurationService dcSvc;
         private ITypeLibraryLoaderService tlSvc;
 
         [SetUp]
-        public void Setup()
+        public override void Setup()
         {
-            this.mr = new MockRepository();
+            base.Setup();
             this.arch = mr.Stub<IProcessorArchitecture>();
-            this.services = mr.Stub<IServiceProvider>();
-            this.dcSvc = mr.Stub<IConfigurationService>();
+            this.arch32be = mr.Stub<IProcessorArchitecture>();
             this.tlSvc = mr.Stub<ITypeLibraryLoaderService>(); 
-            services.Stub(s => s.GetService(typeof(IConfigurationService))).Return(dcSvc);
-            services.Stub(s => s.GetService(typeof(ITypeLibraryLoaderService))).Return(tlSvc);
-            dcSvc.Stub(d => d.GetArchitecture("x86-protected-32")).Return(arch);
-            dcSvc.Stub(d => d.GetEnvironment("elf-neutral")).Return(new OperatingEnvironmentElement
-                {
-                    TypeName = typeof(SysVPlatform).AssemblyQualifiedName
-                });
+            sc.AddService<ITypeLibraryLoaderService>(tlSvc);
+            cfgSvc.Stub(d => d.GetArchitecture("x86-protected-32")).Return(arch);
+            cfgSvc.Stub(d => d.GetEnvironment("elf-neutral")).Return(new OperatingEnvironmentElement
+            {
+                TypeName = typeof(SysVPlatform).AssemblyQualifiedName
+            });
         }
 
         [Test]
@@ -370,7 +364,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         {
             mr.ReplayAll();
 
-            var el = new ElfImageLoader(services, "foo", rawImg);
+            var el = new ElfImageLoader(sc, "foo", rawImg);
             el.LoadElfIdentification();
             var lr = el.Load(Address.Ptr32(0));
             Assert.AreSame(arch, lr.Architecture);
@@ -381,7 +375,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         {
             mr.ReplayAll();
 
-            var eil = new ElfImageLoader(services, "foo", rawImg);
+            var eil = new ElfImageLoader(sc, "foo", rawImg);
             eil.LoadElfIdentification();
             var el = (ElfLoader32)eil.CreateLoader();
             el.LoadSectionHeaders();
@@ -392,7 +386,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         {
             mr.ReplayAll();
 
-            var eil = new ElfImageLoader(services, "foo", rawImg);
+            var eil = new ElfImageLoader(sc, "foo", rawImg);
             eil.LoadElfIdentification();
             var el = (ElfLoader32)eil.CreateLoader();
             el.LoadSectionHeaders();
@@ -432,29 +426,37 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         {
             mr.ReplayAll();
 
-            var eil = new ElfImageLoader(services, "foo", rawImg);
+            var eil = new ElfImageLoader(sc, "foo", rawImg);
             eil.LoadElfIdentification();
             var el = (ElfLoader32)eil.CreateLoader();
             el.LoadProgramHeaderTable();
             el.LoadSectionHeaders();
             el.Dump(Console.Out);
+
+            mr.VerifyAll();
         }
 
         [Test]
         public void EIL_LoadCellLv2()
         {
             var opEl = mr.Stub<OperatingEnvironment>();
-            var platform = new DefaultPlatform(services, arch);
-            dcSvc.Stub(d => d.GetEnvironment("elf-cell-lv2")).Return(opEl);
+            var platform = new DefaultPlatform(sc, arch);
+            cfgSvc.Stub(d => d.GetEnvironment("elf-cell-lv2")).Return(opEl);
             opEl.Expect(o => o.Load(null, null)).IgnoreArguments().Return(platform);
             mr.ReplayAll();
             
-            var eil = new ElfImageLoader(services, "foo", rawImg);
+            var eil = new ElfImageLoader(sc, "foo", rawImg);
             eil.LoadElfIdentification();
             var el = eil.CreateLoader();
-            el.CreatePlatform(0x66, arch);        // ELFOSABI_CELL_LV2;
+            el.LoadPlatform(0x66, arch);        // ELFOSABI_CELL_LV2;
 
             mr.VerifyAll();
+        }
+
+        private void Given_Image()
+        {
+            BuildObjectFile32();
+            mr.ReplayAll();
         }
     }
 }

@@ -38,6 +38,8 @@ namespace Reko.ImageLoaders.Elf
         public uint p_flags;
         public uint p_align;
 
+        public const int Size = 32;
+
         public static Elf32_PHdr Load(ImageReader rdr)
         {
             var hdr = new Elf32_PHdr

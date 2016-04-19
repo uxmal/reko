@@ -29,12 +29,10 @@ namespace Reko.ImageLoaders.Elf
     public class PpcRelocator : ElfRelocator
     {
         private ElfLoader32 loader;
-        private Dictionary<Address, ImportReference> importReferences;
 
-        public PpcRelocator(ElfLoader32 loader, Dictionary<Address, ImportReference> importReferences)
+        public PpcRelocator(ElfLoader32 loader)
         {
             this.loader = loader;
-            this.importReferences = importReferences;
         }
 
         /// <remarks>
@@ -77,10 +75,15 @@ namespace Reko.ImageLoaders.Elf
                 string symStr = loader.GetSymbolName(rela_plt.LinkedSection, sym);
 
                 var addr = plt.Address + (uint)i * 4;
-                importReferences.Add(
+                program.ImportReferences.Add(
                     addr,
                     new NamedImportReference(addr, null, symStr));
             }
+        }
+
+        public override void RelocateEntry(List<ElfSymbol> symbols, ElfSection referringSection, Elf32_Rela rela)
+        {
+            throw new NotImplementedException();
         }
     }
 }

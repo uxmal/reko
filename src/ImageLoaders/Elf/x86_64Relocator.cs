@@ -31,10 +31,9 @@ namespace Reko.ImageLoaders.Elf
         private ElfLoader64 loader;
         private Dictionary<Address, ImportReference> importReferences;
 
-        public x86_64Relocator(ElfLoader64 loader, Dictionary<Address, ImportReference> importReferences)
+        public x86_64Relocator(ElfLoader64 loader)
         {
             this.loader = loader;
-            this.importReferences = importReferences;
         }
 
         /// <remarks>
@@ -48,6 +47,8 @@ namespace Reko.ImageLoaders.Elf
         /// </remarks>
         public override void Relocate(Program program)
         {
+            this.importReferences = program.ImportReferences;
+
             var rela_plt = loader.GetSectionInfoByName(".rela.plt");
             var plt = loader.GetSectionInfoByName(".plt");
             var relaRdr = loader.CreateReader(rela_plt.FileOffset);
@@ -74,5 +75,9 @@ namespace Reko.ImageLoaders.Elf
             }
         }
 
+        public override void RelocateEntry(List<ElfSymbol> symbols, ElfSection referringSection, Elf32_Rela rela)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

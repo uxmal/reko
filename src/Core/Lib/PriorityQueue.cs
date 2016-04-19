@@ -22,6 +22,10 @@ using System.Collections.Generic;
 
 namespace Reko.Core.Lib
 {
+    /// <summary>
+    /// Implementation of the priority queue ADT.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class PriorityQueue<T> : ICollection<T>
     {
         HeapItem[] heap;

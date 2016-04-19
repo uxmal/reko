@@ -39,6 +39,33 @@ namespace Reko.Gui.Windows
         private TextBox txtDisassembly;
         private IServiceProvider sp;
 
+        public DisassemblyViewInteractor()
+        {
+
+        }
+
+        public IWindowFrame Frame { get; set; }
+
+        public Program Program
+        {
+            get { return program; }
+            set
+            {
+                program = value;
+                DumpAssembler();
+            }
+        }
+
+        public Address StartAddress
+        {
+            get { return startAddress; }
+            set
+            {
+                startAddress = value;
+                DumpAssembler();
+            }
+        }
+
         public void DumpAssembler()
         {
             var decSvc = sp.GetService<IDecompilerService>();
@@ -75,28 +102,6 @@ namespace Reko.Gui.Windows
                     }
                     txtDisassembly.Text = writer.ToString();
                 }
-            }
-        }
-
-        public IWindowFrame Frame { get; set; }
-
-        public Program Program
-        {
-            get { return program; }
-            set
-            {
-                program = value;
-                DumpAssembler();
-            }
-        }
-
-        public Address StartAddress
-        {
-            get { return startAddress; }
-            set
-            {
-                startAddress = value;
-                DumpAssembler();
             }
         }
 

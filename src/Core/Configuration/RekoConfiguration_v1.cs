@@ -204,6 +204,18 @@ namespace Reko.Core.Configuration
 
         [XmlAttribute("TextAlign")]
         public string TextAlign;
+
+        [XmlAttribute("PaddingTop")]
+        public string PaddingTop;
+
+        [XmlAttribute("PaddingBottom")]
+        public string PaddingBottom;
+
+        [XmlAttribute("PaddingLeft")]
+        public string PaddingLeft;
+
+        [XmlAttribute("PaddingRight")]
+        public string PaddingRight;
     }
 
     [Serializable]

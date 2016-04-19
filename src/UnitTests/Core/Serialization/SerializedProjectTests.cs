@@ -594,5 +594,49 @@ namespace Reko.UnitTests.Core.Serialization
             Assert.AreEqual(sExp, sw.ToString());
         }
 
+        [Test]
+        public void SudSave_UserGlobal_issue_201()
+        {
+            var platform = new TestPlatform
+            {
+            };
+            var program = new Program
+            {
+                Platform = platform,
+                User = new UserData
+                {
+                    Globals =
+                    {
+                        {
+                            Address.Ptr32(0x01234),
+                            new GlobalDataItem_v2
+                            {
+                                 DataType = PrimitiveType_v1.Real32(),
+                                 Name = "pi"
+                            }
+                        }
+                    }
+                }
+            };
+            var sw = new StringWriter();
+            When_SaveToTextWriter(program, sw);
+            var sExp =
+@"<?xml version=""1.0"" encoding=""utf-16""?>
+<project xmlns=""http://schemata.jklnet.org/Reko/v4"">
+  <input>
+    <user>
+      <global>
+        <Address>00001234</Address>
+        <prim domain=""Real"" size=""4"" />
+        <Name>pi</Name>
+      </global>
+    </user>
+  </input>
+</project>";
+            if (sw.ToString() != sExp)
+                Debug.Print("{0}", sw.ToString());
+            Assert.AreEqual(sExp, sw.ToString());
+        }
+
     }
 }

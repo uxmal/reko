@@ -25,10 +25,12 @@ using System.IO;
 namespace Reko.Core.Types
 {
 	/// <summary>
-	/// Represents a union of non-compatible types such as int and reals, or pointers and ints, or differently sized integers.
+	/// Represents a union of non-compatible types such as int and reals, or
+    /// pointers and ints, or differently sized integers.
 	/// </summary>
 	/// <remarks>
-	/// Union alternatives are required to be inserted in-order according to the total ordering introduced by DataTypeComparer.
+	/// Union alternatives are required to be inserted in-order according to
+    /// the total ordering introduced by DataTypeComparer.
 	/// </remarks>
 	public class UnionType : DataType
 	{

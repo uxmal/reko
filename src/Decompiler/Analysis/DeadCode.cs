@@ -28,8 +28,9 @@ using System.Diagnostics;
 namespace Reko.Analysis
 {
 	/// <summary>
-	/// Performs dead code elimination. Statements that define an identifier that has no uses are removed,
-	/// unless they are marked as critical. Critical statemets are always retained, even if they define dead 
+	/// Performs dead code elimination. Statements that define an identifier
+    /// that has no uses are removed, unless they are marked as critical.
+    /// Critical statemets are always retained, even if they define dead 
     /// identifiers.
 	/// </summary>
 	public class DeadCode : InstructionVisitorBase

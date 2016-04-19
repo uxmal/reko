@@ -87,7 +87,7 @@ namespace Reko.UnitTests.Analysis
             Given_Procedure(0x1000);
 
             var usb = new UserSignatureBuilder(program);
-            var sProc = usb.ParseFunctionDeclaration("int foo(char *)", proc.Frame);
+            var sProc = usb.ParseFunctionDeclaration("int foo(char *)");
 
             Assert.AreEqual(
                 "fn(arg(prim(SignedInt,4)),(arg(ptr(prim(Character,1))))",
@@ -103,7 +103,7 @@ namespace Reko.UnitTests.Analysis
             Given_Procedure(0x1000);
 
             var usb = new UserSignatureBuilder(program);
-            var sProc = usb.ParseFunctionDeclaration("BYTE foo(BYTE a, BYTE b)", proc.Frame);
+            var sProc = usb.ParseFunctionDeclaration("BYTE foo(BYTE a, BYTE b)");
 
             Assert.AreEqual(
                 "fn(arg(BYTE),(arg(a,BYTE),arg(b,BYTE))",
@@ -124,14 +124,14 @@ namespace Reko.UnitTests.Analysis
             program.EnvironmentMetadata.Types.Add(
                 "USRDEF1", PrimitiveType.Create(PrimitiveType.Int16.Domain, 2));
 
-            var sProc = usb.ParseFunctionDeclaration("BYTE foo(USRDEF1 a, BYTE b)", proc.Frame);
+            var sProc = usb.ParseFunctionDeclaration("BYTE foo(USRDEF1 a, BYTE b)");
 
             Assert.AreEqual(
                 "fn(arg(BYTE),(arg(a,USRDEF1),arg(b,BYTE))",
                 sProc.Signature.ToString());
 
             //should not accept undefined type USRDEF2
-            sProc = usb.ParseFunctionDeclaration("BYTE foo(USRDEF1 a, USRDEF2 b)", proc.Frame);
+            sProc = usb.ParseFunctionDeclaration("BYTE foo(USRDEF1 a, USRDEF2 b)");
             Assert.AreEqual(null, sProc);
 
             //define USRDEF2 so parser should accept it
@@ -139,7 +139,7 @@ namespace Reko.UnitTests.Analysis
             program.EnvironmentMetadata.Types.Add(
                "USRDEF2", PrimitiveType.Create(PrimitiveType.Int16.Domain, 2));
 
-            sProc = usb.ParseFunctionDeclaration("BYTE foo(USRDEF1 a, USRDEF2 b)", proc.Frame);
+            sProc = usb.ParseFunctionDeclaration("BYTE foo(USRDEF1 a, USRDEF2 b)");
 
             Assert.AreEqual(
                 "fn(arg(BYTE),(arg(a,USRDEF1),arg(b,USRDEF2))",
@@ -212,6 +212,33 @@ test_exit:
             var sb = new StringWriter();
             m.Procedure.Write(false, sb);
             Assert.AreEqual(sExp, sb.ToString());
+        }
+
+        [Test]
+        public void Usb_ParseGlobalDeclaration_Int()
+        {
+            var usb = new UserSignatureBuilder(program);
+            var gbl = usb.ParseGlobalDeclaration("int test123");
+            Assert.AreEqual("test123", gbl.Name);
+            Assert.AreEqual("prim(SignedInt,4)", gbl.DataType.ToString());
+        }
+
+        [Test]
+        public void Usb_ParseGlobalDeclaration_ArrayOfDouble()
+        {
+            var usb = new UserSignatureBuilder(program);
+            var gbl = usb.ParseGlobalDeclaration("double dArr[12]");
+            Assert.AreEqual("dArr", gbl.Name);
+            Assert.AreEqual("arr(prim(Real,8),12)", gbl.DataType.ToString());
+        }
+
+        [Test]
+        public void Usb_ParseGlobalDeclaration_PointerToUnsignedInt()
+        {
+            var usb = new UserSignatureBuilder(program);
+            var gbl = usb.ParseGlobalDeclaration("unsigned int *uiPtr");
+            Assert.AreEqual("uiPtr", gbl.Name);
+            Assert.AreEqual("ptr(prim(UnsignedInt,4))", gbl.DataType.ToString());
         }
     }
 }

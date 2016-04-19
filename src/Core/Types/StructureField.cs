@@ -26,6 +26,7 @@ namespace Reko.Core.Types
 {
     /// <summary>
     /// Describes a field of a structure.
+    /// //$REVIEW: investigate the similarities with ImageMapItem.
     /// </summary>
 	public class StructureField : Field
 	{

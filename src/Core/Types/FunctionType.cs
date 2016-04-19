@@ -31,8 +31,8 @@ namespace Reko.Core.Types
 	public class FunctionType : DataType
 	{
 		public DataType ReturnType;
-		public DataType [] ArgumentTypes;
-		public string [] ArgumentNames;
+		public readonly DataType [] ArgumentTypes;
+		public readonly string [] ArgumentNames;
         //$REVIEW: unify ProcedureSignature and FunctionType.
         public SerializedSignature Signature { get; private set; }
 
@@ -57,8 +57,16 @@ namespace Reko.Core.Types
             this.ReturnType = sig.ReturnValue != null
                 ? sig.ReturnValue.DataType
                 : VoidType.Instance;
-            this.ArgumentTypes = sig.Parameters.Select(a => a.DataType).ToArray();
-            this.ArgumentNames = sig.Parameters.Select(a => a.Name).ToArray();
+            if (sig.Parameters != null)
+            {
+                this.ArgumentTypes = sig.Parameters.Select(a => a.DataType).ToArray();
+                this.ArgumentNames = sig.Parameters.Select(a => a.Name).ToArray();
+            }
+            else
+            {
+                this.ArgumentTypes = new DataType[0];
+                this.ArgumentNames = new string[0];
+            }
         }
 
         public FunctionType(SerializedSignature signature) : base()
@@ -79,8 +87,19 @@ namespace Reko.Core.Types
 		public override DataType Clone()
 		{
 			DataType ret = (ReturnType != null) ? ReturnType.Clone() : null;
-			DataType [] types = new DataType[ArgumentTypes.Length];
-			string []   names = new string[ArgumentTypes.Length];
+
+            DataType[] types;
+            string[] names;
+            if (ArgumentTypes != null)
+            {
+                types = new DataType[ArgumentTypes.Length];
+                names = new string[ArgumentTypes.Length];
+            }
+            else
+            {
+                types = new DataType[0];
+                names = new string[0];
+            }
 			for (int i = 0; i < types.Length; ++i)
 			{
 				types[i] = ArgumentTypes[i].Clone();

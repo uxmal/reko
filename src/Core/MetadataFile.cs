@@ -38,6 +38,5 @@ namespace Reko.Core
         }
 
         public string ModuleName { get; set; }
-
     }
 }
