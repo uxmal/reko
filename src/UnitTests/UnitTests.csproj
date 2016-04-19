@@ -367,7 +367,6 @@
     <Compile Include="Gui\SignatureParserTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Gui\Windows\CodeViewerPaneTests.cs" />
     <Compile Include="Gui\Windows\CodeViewerServiceTests.cs">
       <SubType>Code</SubType>
     </Compile>

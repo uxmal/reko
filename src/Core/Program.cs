@@ -422,6 +422,7 @@ namespace Reko.Core
         public void Reset()
         {
             Procedures.Clear();
+            ImageMap.Items.Clear();
             globals = null;
             TypeFactory = new TypeFactory();
             TypeStore = new TypeStore();

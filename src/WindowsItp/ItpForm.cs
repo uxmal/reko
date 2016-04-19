@@ -222,8 +222,7 @@ namespace Reko.WindowsItp
 
         private void codeViewToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var dlg = new CodeViewerFrame();
-            dlg.ShowDialog();
+            throw new NotImplementedException();
         }
 
         private void byteMapViewToolStripMenuItem_Click(object sender, EventArgs e)
