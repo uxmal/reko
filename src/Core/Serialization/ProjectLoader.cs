@@ -139,7 +139,7 @@ namespace Reko.Core.Serialization
             {
                 this.outer = outer; this.filename = filename;
             }
-            public Project VisitProject_v2(Project_v2 sProject) { return outer.LoadProject(sProject); }
+            public Project VisitProject_v2(Project_v2 sProject) { return outer.LoadProject(filename, sProject); }
             public Project VisitProject_v3(Project_v3 sProject) { return outer.LoadProject(filename, sProject); }
             public Project VisitProject_v4(Project_v4 sProject) { return outer.LoadProject(filename, sProject); }
         }
@@ -196,10 +196,10 @@ namespace Reko.Core.Serialization
         /// </summary>
         /// <param name="sp"></param>
         /// <returns></returns>
-        public Project LoadProject(Project_v2 sp)
+        public Project LoadProject(string projectFilePath, Project_v2 sp)
         {
             var typelibs = sp.Inputs.OfType<MetadataFile_v2>().Select(m => VisitMetadataFile(m));
-            var programs = sp.Inputs.OfType<DecompilerInput_v2>().Select(s => VisitInputFile(s));
+            var programs = sp.Inputs.OfType<DecompilerInput_v2>().Select(s => VisitInputFile(projectFilePath, s));
             var asm = sp.Inputs.OfType<AssemblerFile_v2>().Select(s => VisitAssemblerFile(s));
             project.MetadataFiles.AddRange(typelibs);
             project.Programs.AddRange(programs);
@@ -531,11 +531,12 @@ namespace Reko.Core.Serialization
             return ReadDictionaryElements(options);
         }
 
-        public Program VisitInputFile(DecompilerInput_v2 sInput)
+        public Program VisitInputFile(string projectFilePath, DecompilerInput_v2 sInput)
         {
-            var bytes = loader.LoadImageBytes(sInput.Filename, 0);
-            var program = loader.LoadExecutable(sInput.Filename, bytes, null);
-            program.Filename = sInput.Filename;
+            var binFilename = ConvertToAbsolutePath(projectFilePath, sInput.Filename);
+            var bytes = loader.LoadImageBytes(binFilename, 0);
+            var program = loader.LoadExecutable(binFilename, bytes, null);
+            program.Filename = binFilename;
             LoadUserData(sInput, program, program.User);
 
             program.DisassemblyFilename = sInput.DisassemblyFilename;

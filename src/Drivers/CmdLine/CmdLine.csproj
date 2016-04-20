@@ -133,6 +133,7 @@
     <Environments Include="$(SolutionDir)Environments\SysV\$(OutDir)Reko.Environments.SysV.*" />
     <Environments Include="$(SolutionDir)Environments\Trs80\$(OutDir)Reko.Environments.Trs80.*" />
     <Environments Include="$(SolutionDir)Environments\Windows\$(OutDir)Reko.Environments.Windows.*" />
+    <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
     <ConfigurationFiles Include="$(SolutionDir)Drivers\reko.config" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
