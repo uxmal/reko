@@ -65,8 +65,20 @@ namespace Reko.Core
 
         public Address BaseAddress { get; private set; }
 
+        public SortedList<Address, ImageMapItem> Items
+        {
+            get { return items; }
+        }
+
+        public SortedList<Address, ImageSegment> Segments
+        {
+            get { return segments; }
+        }
+
         public long GetExtent()
         {
+            if (segments.Count == 0)
+                return 0;
             var lastMem = segments.Values.Last().MemoryArea;
             return (lastMem.BaseAddress - BaseAddress) + lastMem.Length;
         }
@@ -394,18 +406,6 @@ namespace Reko.Core
                 linearAddress));
 		}
 
-        public ImageSegmentRenderer Renderer { get; set; }
-
-		public SortedList<Address, ImageMapItem> Items
-		{
-			get { return items; }
-		}
-
-        public SortedList<Address, ImageSegment> Segments
-		{
-			get { return segments; }
-		}
-
         // class ItemComparer //////////////////////////////////////////////////
 
         private class ItemComparer : IComparer<Address>
@@ -438,6 +438,7 @@ namespace Reko.Core
 	/// <summary>
 	/// Represents a span of memory. 
     /// //$REVIEW: note the similarity to StructureField. It is not coincidental.
+    /// Can these be merged?
 	/// </summary>
 	public class ImageMapItem
 	{
