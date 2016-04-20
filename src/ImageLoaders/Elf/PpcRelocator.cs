@@ -86,4 +86,24 @@ namespace Reko.ImageLoaders.Elf
             throw new NotImplementedException();
         }
     }
+
+    public class PpcRelocator64 : ElfRelocator
+    {
+        private ElfLoader64 loader;
+
+        public PpcRelocator64(ElfLoader64 loader)
+        {
+            this.loader = loader;
+        }
+
+        public override void Relocate(Program program)
+        {
+            Relocate64(loader);
+        }
+
+        public override void RelocateEntry(List<ElfSymbol> symbols, ElfSection referringSection, Elf32_Rela rela)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
