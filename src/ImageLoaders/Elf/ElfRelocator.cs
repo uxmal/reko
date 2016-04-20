@@ -18,12 +18,12 @@
  */
 #endregion
 
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using Reko.Core;
 
 namespace Reko.ImageLoaders.Elf
 {

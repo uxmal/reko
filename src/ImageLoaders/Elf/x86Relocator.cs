@@ -144,6 +144,13 @@ namespace Reko.ImageLoaders.Elf
                             P = destNatOrigin + r_offset;
                             relocW.WriteUInt32(pRelWord, S + A - P);
                             break;
+                        case 6: // R_386_GLOB_DAT
+                            // This relocation type is used to set a global offset table entry to the address of the
+                            // specified symbol. The special relocation type allows one to determine the
+                            // correspondence between symbols and global offset table entries.
+                            S = sym.st_value;
+                            relocW.WriteUInt32(pRelWord, S);
+                            break;
                         case 7:
                         case 8: // R_386_RELATIVE
                             break; // No need to do anything with these, if a shared object
