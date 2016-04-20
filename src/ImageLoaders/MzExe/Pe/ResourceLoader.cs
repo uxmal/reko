@@ -26,9 +26,9 @@ using System.Text;
 using Reko.Core;
 using System.IO;
 
-namespace Reko.ImageLoaders.MzExe
+namespace Reko.ImageLoaders.MzExe.Pe
 {
-    public class PeResourceLoader
+    public class ResourceLoader
     {
         const uint RT_BITMAP = 2;
         const uint RT_ICON = 3;
@@ -42,7 +42,7 @@ namespace Reko.ImageLoaders.MzExe
         private MemoryArea imgLoaded;
         private uint rvaResources;
 
-        public PeResourceLoader(MemoryArea imgLoaded, uint rvaResources)
+        public ResourceLoader(MemoryArea imgLoaded, uint rvaResources)
         {
             this.imgLoaded = imgLoaded;
             this.rvaResources = rvaResources;

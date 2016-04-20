@@ -212,7 +212,7 @@ namespace Reko.ImageLoaders.MzExe
             this.program = new Program(ImageMap, arch, platform);
             this.importReferences = program.ImportReferences;
 
-            var rsrcLoader = new PeResourceLoader(this.imgLoaded, rvaResources);
+            var rsrcLoader = new ResourceLoader(this.imgLoaded, rvaResources);
             List<ProgramResource> items = rsrcLoader.Load();
             program.Resources.Resources.AddRange(items);
             program.Resources.Name = "PE resources";
