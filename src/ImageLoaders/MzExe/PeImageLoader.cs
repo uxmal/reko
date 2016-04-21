@@ -443,7 +443,7 @@ namespace Reko.ImageLoaders.MzExe
             AddExportedEntryPoints(addrLoad, ImageMap, entryPoints);
 			ReadImportDescriptors(addrLoad);
             ReadDeferredLoadDescriptors(addrLoad);
-            return new RelocationResults(entryPoints, relocations, functions);
+            return new RelocationResults(entryPoints, functions);
 		}
 
         public EntryPoint CreateMainEntryPoint(bool isDll, Address addrEp, IPlatform platform)

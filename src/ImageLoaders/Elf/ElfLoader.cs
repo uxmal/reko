@@ -770,7 +770,6 @@ namespace Reko.ImageLoaders.Elf
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             var entryPoints = new List<EntryPoint>();
-            var relocations = new RelocationDictionary();
             var addrEntry = GetEntryPointAddress(addrLoad);
             if (addrEntry != null)
             {
@@ -778,7 +777,7 @@ namespace Reko.ImageLoaders.Elf
                 entryPoints.Add(ep);
             }
             this.Relocator.Relocate(program);
-            return new RelocationResults(entryPoints, relocations, new List<Address>());
+            return new RelocationResults(entryPoints, new List<Address>());
         }
     }
 
@@ -1271,7 +1270,7 @@ namespace Reko.ImageLoaders.Elf
             entryPoints.AddRange(CollectFunctionSymbols());
 
             Relocator.Relocate(program);
-            return new RelocationResults(entryPoints, relocations, new List<Address>());
+            return new RelocationResults(entryPoints, new List<Address>());
         }
 
         private IEnumerable<EntryPoint> CollectFunctionSymbols()

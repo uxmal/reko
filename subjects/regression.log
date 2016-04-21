@@ -4,7 +4,7 @@
 __start: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 __divdf3: error: An error occurred while rewriting procedure to high-level language.
     The method or operation is not implemented.
-       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1121
+       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1120
    at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 974
    at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 262
    at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 145
@@ -19,7 +19,7 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
     Not implemented: 1 /u (uint16) dwArg10
-       at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 138
+       at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 137
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 187
    at Reko.Core.Expressions.Cast.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 45
@@ -37,7 +37,7 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
     Not implemented: 1 /u (uint16) dwArg10
-       at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 138
+       at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 137
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 187
    at Reko.Core.Expressions.Cast.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 45
@@ -55,7 +55,7 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
     Not implemented: 1 /u (uint16) dwArg10
-       at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 138
+       at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 137
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 187
    at Reko.Core.Expressions.Cast.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 45
@@ -73,7 +73,7 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
     Not implemented: 1 /u (uint16) dwArg10
-       at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 138
+       at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 137
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 187
    at Reko.Core.Expressions.Cast.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 45
@@ -92,7 +92,7 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
     Not implemented: d2_38 /u (uint16) d1_28
-       at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 138
+       at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 137
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 187
    at Reko.Core.Expressions.Cast.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 45
@@ -109,7 +109,7 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
     Not implemented: 1 /u (uint16) dwArg10
-       at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 138
+       at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 137
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 187
    at Reko.Core.Expressions.Cast.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 45
@@ -129,7 +129,7 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
 BENCHFN.dcproject: error: An internal error occurred while decompiling.
     Specified argument was out of the range of valid values.
 Parameter name: Linear address 00000000 is not in known segment.
-       at Reko.Core.ImageMap.MapLinearAddressToAddress(UInt64 linearAddress) in D:\dev\uxmal\reko\master\src\Core\ImageMap.cs:line 395
+       at Reko.Core.ImageMap.MapLinearAddressToAddress(UInt64 linearAddress) in D:\dev\uxmal\reko\master\src\Core\ImageMap.cs:line 392
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 217
    at Reko.Analysis.TrashedRegisterFinder.RewriteBasicBlocks() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 126
    at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 193
@@ -144,7 +144,7 @@ Parameter name: Linear address 00000000 is not in known segment.
 BENCHFN.EXE: error: An internal error occurred while decompiling.
     Specified argument was out of the range of valid values.
 Parameter name: Linear address 00000000 is not in known segment.
-       at Reko.Core.ImageMap.MapLinearAddressToAddress(UInt64 linearAddress) in D:\dev\uxmal\reko\master\src\Core\ImageMap.cs:line 395
+       at Reko.Core.ImageMap.MapLinearAddressToAddress(UInt64 linearAddress) in D:\dev\uxmal\reko\master\src\Core\ImageMap.cs:line 392
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 217
    at Reko.Analysis.TrashedRegisterFinder.RewriteBasicBlocks() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 126
    at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 193

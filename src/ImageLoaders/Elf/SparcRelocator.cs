@@ -45,7 +45,7 @@ namespace Reko.ImageLoaders.Elf
         {
             var sym = symbols[(int)(rela.r_info >> 8)];
             if (loader.Sections.Count <= sym.SectionIndex)
-                return;       //$DEBUG
+                return; 
             if (sym.SectionIndex == 0)
                 return;
             var symSection = loader.Sections[(int)sym.SectionIndex];
@@ -55,6 +55,7 @@ namespace Reko.ImageLoaders.Elf
             uint mask = ~0u;
             var addr = referringSection.Address + rela.r_offset;
             uint P = (uint)addr.ToLinear();
+            uint PP = P;
             var relR = loader.CreateReader(P);
             var relW = loader.CreateWriter(P);
 

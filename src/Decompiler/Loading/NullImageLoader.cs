@@ -65,7 +65,7 @@ namespace Reko.Loading
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            return new RelocationResults(EntryPoints, new RelocationDictionary(), new List<Address>());
+            return new RelocationResults(EntryPoints, new List<Address>());
         }
     }
 }

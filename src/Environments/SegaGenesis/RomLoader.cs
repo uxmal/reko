@@ -74,7 +74,7 @@ namespace Reko.Environments.SegaGenesis
             {
                 eps.Add(new EntryPoint(addrReset, "Reset", program.Architecture.CreateProcessorState()));
             }
-            return new RelocationResults(eps, new RelocationDictionary(), new List<Address>());
+            return new RelocationResults(eps, new List<Address>());
         }
     }
 }
