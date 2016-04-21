@@ -63,7 +63,7 @@ namespace Reko.ImageLoaders.MzExe.Pe
                 dcSvc.Warn(
                     dcSvc.CreateAddressNavigator(program, Address.Ptr32(offset)),
                     string.Format(
-                        "Unsupported PE fixup type: {0:X}",
+                        "Unsupported i386 PE fixup type: {0:X}",
                         fixup >> 12));
                 break;
 			}

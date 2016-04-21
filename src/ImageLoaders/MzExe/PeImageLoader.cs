@@ -180,7 +180,7 @@ namespace Reko.ImageLoaders.MzExe
             {
             case MACHINE_ARMNT: return new ArmRelocator(program);
             case MACHINE_i386: return new i386Relocator(Services, program);
-            case MACHINE_R4000: return new MipsRelocator(program);
+            case MACHINE_R4000: return new MipsRelocator(Services, program);
             case MACHINE_x86_64: return new x86_64Relocator(program);
             default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE hader.", peMachineType));
             }
@@ -525,25 +525,6 @@ const static final ushort IMAGE_REL_I386_TOKEN           = 0x000C;  // clr token
 const static final ushort IMAGE_REL_I386_SECREL7         = 0x000D;  // 7 bit offset from base of section containing target
 const static final ushort IMAGE_REL_I386_REL32           = 0x0014;  // PC-relative 32-bit reference to the symbols virtual address
 #endif
-
-#if MIPS
-public static final  short 	IMAGE_REL_MIPS_ABSOLUTE    	=  0x0000; // This relocation is ignored. 
-public static final  short 	IMAGE_REL_MIPS_REFHALF    	=  0x0001; // The high 16 bits of the target's 32-bit virtual address. 
-public static final  short 	IMAGE_REL_MIPS_REFWORD    	=  0x0002; // The target's 32-bit virtual address. 
-public static final  short 	IMAGE_REL_MIPS_JMPADDR    	=  0x0003; // The low 26 bits of the target's virtual address. This supports the MIPS J and JAL instructions. 
-public static final  short 	IMAGE_REL_MIPS_REFHI    	=  0x0004; // The high 16 bits of the target's 32-bit virtual address. Used for the first instruction in a two-instruction sequence that loads a full address. This relocation must be immediately followed by a PAIR relocations whose SymbolTableIndex contains a signed 16-bit displacement which is added to the upper 16 bits taken from the location being relocated. 
-public static final  short 	IMAGE_REL_MIPS_REFLO    	=  0x0005; // The low 16 bits of the target's virtual address. 
-public static final  short 	IMAGE_REL_MIPS_GPREL    	=  0x0006; // 16-bit signed displacement of the target relative to the Global Pointer (GP) register. 
-public static final  short 	IMAGE_REL_MIPS_LITERAL    	=  0x0007; // Same as IMAGE_REL_MIPS_GPREL. 
-public static final  short 	IMAGE_REL_MIPS_SECTION    	=  0x000A; // The 16-bit section index of the section containing the target. This is used to support debugging information. 
-public static final  short 	IMAGE_REL_MIPS_SECREL    	=  0x000B; // The 32-bit offset of the target from the beginning of its section. This is used to support debugging information as well as static thread local storage. 
-public static final  short 	IMAGE_REL_MIPS_SECRELLO    	=  0x000C; // The low 16 bits of the 32-bit offset of the target from the beginning of its section. 
-public static final  short 	IMAGE_REL_MIPS_SECRELHI    	=  0x000D; // The high 16 bits of the 32-bit offset of the target from the beginning of its section. A PAIR relocation must immediately follow this on. The SymbolTableIndex of the PAIR relocation contains a signed 16-bit displacement, which is added to the upper 16 bits taken from the location being relocated. 
-public static final  short  IMAGE_REL_MIPS_TOKEN        =  0x000E; // clr token
-public static final  short 	IMAGE_REL_MIPS_JMPADDR16    =  0x0010; // The low 26 bits of the target's virtual address. This supports the MIPS16 JAL instruction. 
-public static final  short 	IMAGE_REL_MIPS_REFWORDNB    =  0x0022; // The target's 32-bit relative virtual address. 
-public static final  short 	IMAGE_REL_MIPS_PAIR    	    =  0x0025; // This relocation is only valid when it immediately follows a REFHI or SECRELHI relocation. Its SymbolTableIndex contains a displacement and not an index into the symbol table. 
-#endif                                                     
 
 #if ARM
 public static final  short 	IMAGE_REL_ARM_ABSOLUTE    	This relocation is ignored. 
