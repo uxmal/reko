@@ -30,6 +30,7 @@ namespace Reko.ImageLoaders.Elf
     public class SparcRelocator : ElfRelocator
     {
         private ElfLoader32 loader;
+        private Program program;
 
         public SparcRelocator(ElfLoader32 loader)
         {
@@ -38,6 +39,7 @@ namespace Reko.ImageLoaders.Elf
 
         public override void Relocate(Program program)
         {
+            this.program = program;
             base.Relocate32(loader);
         }
 
@@ -56,8 +58,8 @@ namespace Reko.ImageLoaders.Elf
             var addr = referringSection.Address + rela.r_offset;
             uint P = (uint)addr.ToLinear();
             uint PP = P;
-            var relR = loader.CreateReader(P);
-            var relW = loader.CreateWriter(P);
+            var relR = program.CreateImageReader(addr);
+            var relW = program.CreateImageWriter(addr);
 
             Debug.Print("  off:{0:X8} type:{1,-16} add:{3,-20} {4,3} {2} {5}",
                 rela.r_offset,

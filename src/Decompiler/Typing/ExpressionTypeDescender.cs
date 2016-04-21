@@ -229,6 +229,7 @@ namespace Reko.Typing
                 MeetDataType(eRight, dt);
             }
             else if (binExp.Operator == Operator.FAdd ||
+                    binExp.Operator == Operator.FSub ||
                     binExp.Operator == Operator.FMul ||
                     binExp.Operator == Operator.FDiv)
             {
