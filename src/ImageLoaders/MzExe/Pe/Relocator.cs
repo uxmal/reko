@@ -28,7 +28,12 @@ namespace Reko.ImageLoaders.MzExe.Pe
 {
     public abstract class Relocator
     {
-        public Program Program { get; set; }
+        protected Program program;
+
+        public Relocator(Program program)
+        {
+            this.program = program;
+        }
 
         public abstract void ApplyRelocation(uint baseOfImage, uint page, ImageReader rdr, RelocationDictionary relocations);
     }

@@ -33,7 +33,8 @@ namespace Reko.ImageLoaders.MzExe.Pe
 
         private DecompilerEventListener dcSvc;
 
-        public i386Relocator(IServiceProvider services)
+        public i386Relocator(IServiceProvider services, Program program)
+         : base(program)
         {
             this.dcSvc = services.RequireService<DecompilerEventListener>();
         }
@@ -41,9 +42,9 @@ namespace Reko.ImageLoaders.MzExe.Pe
         public override void ApplyRelocation(uint baseOfImage, uint page, ImageReader rdr, RelocationDictionary relocations)
 		{
 			ushort fixup = rdr.ReadLeUInt16();
-			uint offset = page + (fixup & 0x0FFFu);
-            var imgR = Program.CreateImageReader(Address.Ptr32(offset));
-            var imgW = Program.CreateImageWriter(Address.Ptr32(offset));
+			uint offset = baseOfImage + page + (fixup & 0x0FFFu);
+            var imgR = program.CreateImageReader(Address.Ptr32(offset));
+            var imgW = program.CreateImageWriter(Address.Ptr32(offset));
             switch (fixup >> 12)
 			{
 			case RelocationAbsolute:
@@ -51,8 +52,8 @@ namespace Reko.ImageLoaders.MzExe.Pe
 				break;
 			case RelocationHighLow:
 			{
-				uint n = (uint) (imgR.ReadUInt32() + (baseOfImage - Program.ImageMap.BaseAddress.ToLinear()));
-				imgW.WriteUInt32(offset, n);
+				uint n = (uint) (imgR.ReadUInt32() + (baseOfImage - program.ImageMap.BaseAddress.ToLinear()));
+				imgW.WriteUInt32(n);
 				relocations.AddPointerReference(offset, n);
 				break;
 			}
@@ -60,7 +61,7 @@ namespace Reko.ImageLoaders.MzExe.Pe
             break;
 			default:
                 dcSvc.Warn(
-                    dcSvc.CreateAddressNavigator(Program, Address.Ptr32(offset)),
+                    dcSvc.CreateAddressNavigator(program, Address.Ptr32(offset)),
                     string.Format(
                         "Unsupported PE fixup type: {0:X}",
                         fixup >> 12));

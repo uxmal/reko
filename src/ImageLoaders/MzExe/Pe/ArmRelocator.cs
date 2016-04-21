@@ -25,7 +25,7 @@ namespace Reko.ImageLoaders.MzExe.Pe
 {
     public class ArmRelocator : Relocator
     {
-        public ArmRelocator()
+        public ArmRelocator(Program program) : base(program)
         {
         }
 

@@ -25,7 +25,7 @@ namespace Reko.ImageLoaders.MzExe.Pe
 {
     public class MipsRelocator : Relocator
     {
-        public MipsRelocator()
+        public MipsRelocator(Program program) : base(program)
         {
         }
 

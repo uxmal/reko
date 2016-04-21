@@ -25,6 +25,10 @@ namespace Reko.ImageLoaders.MzExe.Pe
 {
     public class x86_64Relocator : Relocator
     {
+        public x86_64Relocator(Program program) : base(program)
+        {
+        }
+
         public override void ApplyRelocation(uint baseOfImage, uint page, ImageReader rdr, RelocationDictionary relocations)
         {
             throw new NotImplementedException();

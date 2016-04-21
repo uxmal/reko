@@ -174,14 +174,14 @@ namespace Reko.ImageLoaders.MzExe
             }
         }
 
-        private Relocator CreateRelocator(ushort peMachineType)
+        private Relocator CreateRelocator(ushort peMachineType, Program program)
         {
             switch (peMachineType)
             {
-            case MACHINE_ARMNT: return new ArmRelocator();
-            case MACHINE_i386: return new i386Relocator(Services);
-            case MACHINE_R4000: return new MipsRelocator();
-            case MACHINE_x86_64: return new x86_64Relocator();
+            case MACHINE_ARMNT: return new ArmRelocator(program);
+            case MACHINE_i386: return new i386Relocator(Services, program);
+            case MACHINE_R4000: return new MipsRelocator(program);
+            case MACHINE_x86_64: return new x86_64Relocator(program);
             default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE hader.", peMachineType));
             }
         }
@@ -283,7 +283,6 @@ namespace Reko.ImageLoaders.MzExe
             arch = CreateArchitecture(machine);
 			platform = CreatePlatform(machine, Services, arch);
             innerLoader = CreateInnerLoader(machine);
-            relocator = CreateRelocator(machine);
 
 			sections = rdr.ReadLeInt16();
 			rdr.ReadLeUInt32();		// timestamp.
@@ -426,6 +425,7 @@ namespace Reko.ImageLoaders.MzExe
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
 		{
+            relocator = CreateRelocator(machine, program);
             var relocations = imgLoaded.Relocations;
 			Section relocSection;
             if (sectionMap.TryGetValue(".reloc", out relocSection))
