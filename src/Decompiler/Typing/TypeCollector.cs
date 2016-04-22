@@ -129,7 +129,6 @@ namespace Reko.Typing
 
         public void VisitDefInstruction(DefInstruction def)
         {
-            throw new NotImplementedException();
         }
 
         public void VisitGotoInstruction(GotoInstruction gotoInstruction)

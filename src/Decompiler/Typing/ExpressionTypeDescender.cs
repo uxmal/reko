@@ -207,21 +207,27 @@ namespace Reko.Typing
                 MeetDataType(eLeft, dt);
                 MeetDataType(eRight, dt);
             }
-            else if (binExp.Operator == Operator.IMul)
+            else if (
+                binExp.Operator == Operator.IMul ||
+                binExp.Operator == Operator.IMod)
             {
                 var dt = PrimitiveType.CreateWord(DataTypeOf(eLeft).Size).MaskDomain(Domain.Boolean | Domain.Integer );
                 MeetDataType(eLeft, dt);
                 dt = PrimitiveType.CreateWord(DataTypeOf(eRight).Size).MaskDomain(Domain.Boolean | Domain.Integer);
                 MeetDataType(eRight, dt);
             }
-            else if (binExp.Operator == Operator.SMul)
+            else if (
+                binExp.Operator == Operator.SMul ||
+                binExp.Operator == Operator.SDiv)
             {
                 var dt = PrimitiveType.CreateWord(DataTypeOf(eLeft).Size).MaskDomain(Domain.Boolean | Domain.SignedInt);
                 MeetDataType(eLeft, dt);
                 dt = PrimitiveType.CreateWord(DataTypeOf(eRight).Size).MaskDomain(Domain.Boolean | Domain.SignedInt);
                 MeetDataType(eRight, dt);
             }
-            else if (binExp.Operator == Operator.UMul)
+            else if (
+                binExp.Operator == Operator.UMul ||
+                binExp.Operator == Operator.UDiv)
             {
                 var dt = PrimitiveType.CreateWord(DataTypeOf(eLeft).Size).MaskDomain(Domain.Boolean | Domain.UnsignedInt);
                 MeetDataType(eLeft, dt);
