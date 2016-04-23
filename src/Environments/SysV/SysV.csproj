@@ -54,6 +54,7 @@
     <Compile Include="MipsProcedureSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SparcProcedureSerializer.cs" />
+    <Compile Include="X86ProcedureSerializer.cs" />
     <Compile Include="X86_64ProcedureSerializer.cs" />
     <Content Include="sysvcharacteristics.xml">
       <SubType>Designer</SubType>

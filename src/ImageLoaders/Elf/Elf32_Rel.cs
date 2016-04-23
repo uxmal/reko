@@ -59,12 +59,12 @@ namespace Reko.ImageLoaders.Elf
         public ulong r_info;
         public long r_addend;
 
-        public static Elf32_Rela Read(ImageReader rdr)
+        public static Elf64_Rela Read(ImageReader rdr)
         {
             var o = rdr.ReadUInt32();
             var i = rdr.ReadUInt32();
             var a = rdr.ReadInt32();
-            return new Elf32_Rela
+            return new Elf64_Rela
             {
                 r_offset = o,
                 r_info = i,

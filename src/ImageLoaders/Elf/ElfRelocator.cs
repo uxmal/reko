@@ -31,7 +31,11 @@ namespace Reko.ImageLoaders.Elf
     {
         public abstract void Relocate(Program program);
 
-        public abstract void RelocateEntry(List<ElfSymbol> symbols, ElfSection referringSection, Elf32_Rela rela);
+        public abstract void RelocateEntry(ElfSymbol symbol, ElfSection referringSection, Elf32_Rela rela);
+        public virtual void RelocateEntry(ElfSymbol symbol, ElfSection referringSection, Elf64_Rela rela)
+        {
+            throw new NotImplementedException();
+        }
 
         [Conditional("DEBUG")]
         protected void DumpRela32(ElfLoader32 loader)
@@ -92,7 +96,8 @@ namespace Reko.ImageLoaders.Elf
                 for (uint i = 0; i < relSection.EntryCount(); ++i)
                 {
                     var rela = Elf32_Rela.Read(rdr);
-                    RelocateEntry(symbols, referringSection, rela);
+                    var sym = symbols[(int)(rela.r_info >> 8)];
+                    RelocateEntry(sym, referringSection, rela);
                 }
             }
         }
@@ -107,11 +112,11 @@ namespace Reko.ImageLoaders.Elf
                 var rdr = loader.CreateReader(relSection.FileOffset);
                 for (uint i = 0; i < relSection.EntryCount(); ++i)
                 {
-                    var rela = Elf32_Rela.Read(rdr);
-                    RelocateEntry(symbols, referringSection, rela);
+                    var rela = Elf64_Rela.Read(rdr);
+                    var sym = symbols[(int)(rela.r_info >> 8)];
+                    RelocateEntry(sym, referringSection, rela);
                 }
             }
         }
-
     }
 }

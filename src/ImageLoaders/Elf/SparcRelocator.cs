@@ -43,9 +43,8 @@ namespace Reko.ImageLoaders.Elf
             base.Relocate32(loader);
         }
 
-        public override void RelocateEntry(List<ElfSymbol> symbols, ElfSection referringSection, Elf32_Rela rela)
+        public override void RelocateEntry(ElfSymbol sym, ElfSection referringSection, Elf32_Rela rela)
         {
-            var sym = symbols[(int)(rela.r_info >> 8)];
             if (loader.Sections.Count <= sym.SectionIndex)
                 return; 
             if (sym.SectionIndex == 0)
@@ -64,7 +63,7 @@ namespace Reko.ImageLoaders.Elf
             Debug.Print("  off:{0:X8} type:{1,-16} add:{3,-20} {4,3} {2} {5}",
                 rela.r_offset,
                 (SparcRt)(rela.r_info & 0xFF),
-                symbols[(int)(rela.r_info >> 8)].Name,
+                sym.Name,
                 rela.r_addend,
                 (int)(rela.r_info >> 8),
                 symSection.Name);
@@ -72,6 +71,8 @@ namespace Reko.ImageLoaders.Elf
             var rt = (SparcRt)(rela.r_info & 0xFF);
             switch (rt)
             {
+            case 0:
+                return;
             case SparcRt.R_SPARC_HI22:
                 A = rela.r_addend;
                 sh = 10;
@@ -89,13 +90,12 @@ namespace Reko.ImageLoaders.Elf
                 break;
             default:
                 throw new NotImplementedException(string.Format(
-                    "SPARC relocation type {0} not implemented yet.",
+                    "SPARC ELF relocation type {0} not implemented yet.",
                     rt));
             }
             var w = relR.ReadBeUInt32();
             w += ((uint)(S + A + P) >> sh) & mask;
             relW.WriteBeUInt32(w);
-            return;
         }
 
         private string LoadString(uint symtabOffset, uint sym)

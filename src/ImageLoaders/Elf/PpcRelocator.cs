@@ -81,7 +81,7 @@ namespace Reko.ImageLoaders.Elf
             }
         }
 
-        public override void RelocateEntry(List<ElfSymbol> symbols, ElfSection referringSection, Elf32_Rela rela)
+        public override void RelocateEntry(ElfSymbol symbol, ElfSection referringSection, Elf32_Rela rela)
         {
             throw new NotImplementedException();
         }
@@ -101,7 +101,7 @@ namespace Reko.ImageLoaders.Elf
             Relocate64(loader);
         }
 
-        public override void RelocateEntry(List<ElfSymbol> symbols, ElfSection referringSection, Elf32_Rela rela)
+        public override void RelocateEntry(ElfSymbol symbol, ElfSection referringSection, Elf32_Rela rela)
         {
             throw new NotImplementedException();
         }
