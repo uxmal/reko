@@ -102,7 +102,7 @@ namespace Reko.Environments.SysV
                 }
                 else
                 {
-                    arg = argser.Deserialize(sArg, new Register_v1 { Name= fregs[fr] });
+                    arg = argser.Deserialize(sArg, new Register_v1 { Name = fregs[fr] });
                 }
                 ++this.fr;
                 return arg;

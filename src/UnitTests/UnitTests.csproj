@@ -121,6 +121,7 @@
     <Compile Include="Environments\SysV\MipsProcedureSerializerTests.cs" />
     <Compile Include="Environments\SysV\SparcProcedureSerializerTests.cs" />
     <Compile Include="Environments\SysV\X86_64ProcedureSerializerTests.cs" />
+    <Compile Include="Environments\SysV\X86ProcedureSerializerTests.cs" />
     <Compile Include="Environments\Windows\MipsProcedureSerializerTests.cs" />
     <Compile Include="Environments\Windows\ModuleDefinitionLoaderTests.cs" />
     <Compile Include="Environments\Windows\MsMangledNameParserTests.cs" />

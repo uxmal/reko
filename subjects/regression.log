@@ -18,13 +18,11 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
-    Not implemented: 1 /u (uint16) dwArg10
-       at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 137
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 187
-   at Reko.Core.Expressions.Cast.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 45
-   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 187
-   at Reko.Core.Expressions.Cast.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 45
+    The method or operation is not implemented.
+       at Reko.Typing.ExpressionTypeAscender.VisitConditionOf(ConditionOf cof) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 201
+   at Reko.Core.Expressions.ConditionOf.Accept[T](ExpressionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Expressions\ConditionOf.cs:line 63
+   at Reko.Typing.ExpressionTypeAscender.VisitApplication(Application appl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 63
+   at Reko.Core.Expressions.Application.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 48
    at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 89
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 63
@@ -36,13 +34,11 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
-    Not implemented: 1 /u (uint16) dwArg10
-       at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 137
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 187
-   at Reko.Core.Expressions.Cast.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 45
-   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 187
-   at Reko.Core.Expressions.Cast.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 45
+    The method or operation is not implemented.
+       at Reko.Typing.ExpressionTypeAscender.VisitConditionOf(ConditionOf cof) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 201
+   at Reko.Core.Expressions.ConditionOf.Accept[T](ExpressionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Expressions\ConditionOf.cs:line 63
+   at Reko.Typing.ExpressionTypeAscender.VisitApplication(Application appl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 63
+   at Reko.Core.Expressions.Application.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 48
    at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 89
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 63
@@ -54,13 +50,11 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
-    Not implemented: 1 /u (uint16) dwArg10
-       at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 137
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 187
-   at Reko.Core.Expressions.Cast.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 45
-   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 187
-   at Reko.Core.Expressions.Cast.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 45
+    The method or operation is not implemented.
+       at Reko.Typing.ExpressionTypeAscender.VisitConditionOf(ConditionOf cof) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 201
+   at Reko.Core.Expressions.ConditionOf.Accept[T](ExpressionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Expressions\ConditionOf.cs:line 63
+   at Reko.Typing.ExpressionTypeAscender.VisitApplication(Application appl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 63
+   at Reko.Core.Expressions.Application.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 48
    at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 89
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 63
@@ -72,13 +66,11 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
-    Not implemented: 1 /u (uint16) dwArg10
-       at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 137
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 187
-   at Reko.Core.Expressions.Cast.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 45
-   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 187
-   at Reko.Core.Expressions.Cast.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 45
+    The method or operation is not implemented.
+       at Reko.Typing.ExpressionTypeAscender.VisitConditionOf(ConditionOf cof) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 201
+   at Reko.Core.Expressions.ConditionOf.Accept[T](ExpressionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Expressions\ConditionOf.cs:line 63
+   at Reko.Typing.ExpressionTypeAscender.VisitApplication(Application appl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 63
+   at Reko.Core.Expressions.Application.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 48
    at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 89
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 63
@@ -91,13 +83,11 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
-    Not implemented: d2_38 /u (uint16) d1_28
-       at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 137
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 187
-   at Reko.Core.Expressions.Cast.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 45
-   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 124
-   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
+    The method or operation is not implemented.
+       at Reko.Typing.ExpressionTypeAscender.VisitTestCondition(TestCondition tc) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 342
+   at Reko.Core.Expressions.TestCondition.Accept[T](ExpressionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 56
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 101
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 63
    at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 101
    at Reko.DecompilerDriver.ReconstructTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 305
@@ -108,13 +98,11 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
-    Not implemented: 1 /u (uint16) dwArg10
-       at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 137
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 187
-   at Reko.Core.Expressions.Cast.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 45
-   at Reko.Typing.ExpressionTypeAscender.VisitCast(Cast cast) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 187
-   at Reko.Core.Expressions.Cast.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Cast.cs:line 45
+    The method or operation is not implemented.
+       at Reko.Typing.ExpressionTypeAscender.VisitConditionOf(ConditionOf cof) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 201
+   at Reko.Core.Expressions.ConditionOf.Accept[T](ExpressionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Expressions\ConditionOf.cs:line 63
+   at Reko.Typing.ExpressionTypeAscender.VisitApplication(Application appl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 63
+   at Reko.Core.Expressions.Application.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 48
    at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 89
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 63
@@ -132,7 +120,7 @@ Parameter name: Linear address 00000000 is not in known segment.
        at Reko.Core.ImageMap.MapLinearAddressToAddress(UInt64 linearAddress) in D:\dev\uxmal\reko\master\src\Core\ImageMap.cs:line 392
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 217
    at Reko.Analysis.TrashedRegisterFinder.RewriteBasicBlocks() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 126
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 193
+   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 203
    at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 129
    at Reko.DecompilerDriver.Decompile(String filename) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 99
 
@@ -147,7 +135,7 @@ Parameter name: Linear address 00000000 is not in known segment.
        at Reko.Core.ImageMap.MapLinearAddressToAddress(UInt64 linearAddress) in D:\dev\uxmal\reko\master\src\Core\ImageMap.cs:line 392
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 217
    at Reko.Analysis.TrashedRegisterFinder.RewriteBasicBlocks() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 126
-   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 193
+   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 203
    at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 129
    at Reko.DecompilerDriver.Decompile(String filename) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 99
 

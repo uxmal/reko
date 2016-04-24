@@ -97,6 +97,7 @@ namespace Reko.Environments.SysV
             var dtArg = sArg.Type.Accept(TypeLoader) as PrimitiveType;
             if (dtArg != null && dtArg.Domain == Domain.Real)
             {
+                return argser.Deserialize(new FpuStackVariable_v1 { ByteSize = dtArg.Size }).Storage;
             }
             var eax = Architecture.GetRegister("eax");
             if (bitSize <= 32)
