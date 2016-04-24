@@ -26,21 +26,21 @@ using System.Text;
 
 namespace Reko.ImageLoaders.Elf
 {
-    public class ArmRelocator : ElfRelocator
+    public class ArmRelocator : ElfRelocator32
     {
         private ElfLoader32 loader;
 
-        public ArmRelocator(ElfLoader32 loader)
+        public ArmRelocator(ElfLoader32 loader) : base(loader)
         {
             this.loader = loader;
         }
 
-        public override void Relocate(Program program)
+        public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, Elf32_Rela rela)
         {
-            Relocate32(loader);
+            throw new NotImplementedException();
         }
 
-        public override void RelocateEntry(ElfSymbol symbol, ElfSection referringSection, Elf32_Rela rela)
+        public override string RelocationTypeToString(uint type)
         {
             throw new NotImplementedException();
         }

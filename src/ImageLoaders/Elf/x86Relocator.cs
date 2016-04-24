@@ -26,24 +26,16 @@ using System.Text;
 
 namespace Reko.ImageLoaders.Elf
 {
-    class x86Relocator : ElfRelocator
+    class x86Relocator : ElfRelocator32
     {
         private ElfLoader32 loader;
-        private Program program;
 
-        public x86Relocator(ElfLoader32 loader)
+        public x86Relocator(ElfLoader32 loader) : base(loader)
         {
             this.loader = loader;
         }
 
-        public override void Relocate(Program program)
-        {
-            this.program = program;
-            base.Relocate32(loader);
-
-        }
-
-        public override void RelocateEntry(ElfSymbol sym, ElfSection referringSection, Elf32_Rela rela)
+        public override void RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, Elf32_Rela rela)
         {
             if (loader.Sections.Count <= sym.SectionIndex)
                 return;
@@ -99,6 +91,11 @@ namespace Reko.ImageLoaders.Elf
             var w = relR.ReadBeUInt32();
             w += ((uint)(S + A + P) >> sh) & mask;
             relW.WriteBeUInt32(w);
+        }
+
+        public override string RelocationTypeToString(uint type)
+        {
+            return ((i386Rt)type).ToString();
         }
 
         public void RelocateOld(Program program)
@@ -227,8 +224,6 @@ namespace Reko.ImageLoaders.Elf
                 }
             }
         }
-
-     
     }
 
     public enum i386Rt

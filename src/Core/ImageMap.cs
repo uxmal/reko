@@ -274,8 +274,8 @@ namespace Reko.Core
                 segments.Add(segNew.Address, segNew);
                 AddItem(segNew.Address, new ImageMapItem(segNew.Size) { DataType = new UnknownType() });
                 MapChanged.Fire(this);
-                Debug.Print("== New segment {0}", segNew.Name);
-                DumpSections();
+                //Debug.Print("== New segment {0}", segNew.Name);
+                //DumpSections();
                 return segNew;
             }
             long delta = segNew.Address - seg.Address;
@@ -293,8 +293,8 @@ namespace Reko.Core
 
 				AddItem(segSplit.Address, new ImageMapItem());
                 MapChanged.Fire(this);
-                Debug.Print("== Split segment into {0} and {1}", seg.Name, segSplit.Name);
-                DumpSections();
+                //Debug.Print("== Split segment into {0} and {1}", seg.Name, segSplit.Name);
+                //DumpSections();
                 return segSplit;
             }
 			return seg;

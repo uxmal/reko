@@ -27,23 +27,17 @@ using System.Text;
 
 namespace Reko.ImageLoaders.Elf
 {
-    public class SparcRelocator : ElfRelocator
+    public class SparcRelocator : ElfRelocator32
     {
         private ElfLoader32 loader;
         private Program program;
 
-        public SparcRelocator(ElfLoader32 loader)
+        public SparcRelocator(ElfLoader32 loader) : base(loader)
         {
             this.loader = loader;
         }
 
-        public override void Relocate(Program program)
-        {
-            this.program = program;
-            base.Relocate32(loader);
-        }
-
-        public override void RelocateEntry(ElfSymbol sym, ElfSection referringSection, Elf32_Rela rela)
+        public override void RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, Elf32_Rela rela)
         {
             if (loader.Sections.Count <= sym.SectionIndex)
                 return; 
@@ -101,6 +95,11 @@ namespace Reko.ImageLoaders.Elf
         private string LoadString(uint symtabOffset, uint sym)
         {
             return loader.ReadAsciiString(symtabOffset + sym);
+        }
+
+        public override string RelocationTypeToString(uint type)
+        {
+            return ((SparcRt)type).ToString();
         }
     }
 

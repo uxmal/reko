@@ -176,6 +176,7 @@ namespace Reko.Core
 
         public abstract ImageWriter WriteUInt32(uint w);
         public abstract ImageWriter WriteUInt32(uint offset, uint w);
+        public abstract ImageWriter WriteUInt64(ulong w);
 
         public ImageWriter WriteLeUInt32(uint ui)
         {
@@ -187,6 +188,19 @@ namespace Reko.Core
         public ImageWriter WriteLeInt32(int i)
         {
             return WriteLeUInt32((uint)i);
+        }
+
+        public ImageWriter WriteBeUInt64(ulong qw)
+        {
+            WriteByte((byte)(qw >> 56));
+            WriteByte((byte)(qw >> 48));
+            WriteByte((byte)(qw >> 40));
+            WriteByte((byte)(qw >> 32));
+            WriteByte((byte)(qw >> 24));
+            WriteByte((byte)(qw >> 16));
+            WriteByte((byte)(qw >> 8));
+            WriteByte((byte)qw);
+            return this;
         }
 
         public ImageWriter WriteLeUInt64(uint offset, ulong qw)
@@ -245,6 +259,7 @@ namespace Reko.Core
 
         public override ImageWriter WriteUInt32(uint w) { return WriteBeUInt32(w); }
         public override ImageWriter WriteUInt32(uint offset, uint w) { return WriteBeUInt32(offset, w); }
+        public override ImageWriter WriteUInt64(ulong w) { return WriteBeUInt64(w); }
     }
 
     public class LeImageWriter : ImageWriter
@@ -277,5 +292,6 @@ namespace Reko.Core
 
         public override ImageWriter WriteUInt32(uint w) { return WriteLeUInt32(w); }
         public override ImageWriter WriteUInt32(uint offset, uint w) { return WriteLeUInt32(offset, w); }
+        public override ImageWriter WriteUInt64(ulong w) { return WriteLeUInt64(w); }
     }
 }
