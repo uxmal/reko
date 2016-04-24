@@ -1,3 +1,4 @@
+typedef long BPTR;
 [[reko::amiga_function_vector(ExecLibrary,-480)]] BYTE[[reko::reg("D0")]]  AbortIO([[reko::reg("A1")]] struct IORequest * iORequest);
 [[reko::amiga_function_vector(ExecLibrary,-432)]] void AddDevice([[reko::reg("A1")]] struct Device * device);
 [[reko::amiga_function_vector(ExecLibrary,-240)]] void AddHead([[reko::reg("A0")]] struct List * list,[[reko::reg("A1")]] struct Node * node);
