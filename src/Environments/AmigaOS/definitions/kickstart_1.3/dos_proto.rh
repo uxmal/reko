@@ -1,3 +1,4 @@
+typedef long BPTR;
  [[reko::amiga_function_vector(DosLibrary,-36)]]  void  Close( [[reko::reg("D1")]] struct FileHandle *file );
  [[reko::amiga_function_vector(DosLibrary,-120)]]  struct FileLock * [[reko::reg("D0")]]  CreateDir( [[reko::reg("D1")]] char *name );
  [[reko::amiga_function_vector(DosLibrary,-138)]]  struct Process * [[reko::reg("D0")]]  CreateProc( [[reko::reg("D1")]] char *name,[[reko::reg("D2")]] LONG pri,[[reko::reg("D3")]] BPTR *segment,[[reko::reg("D4")]] LONG stackSize );
