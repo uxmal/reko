@@ -24,7 +24,6 @@ using Reko.Core.Lib;
 using NUnit.Framework;
 using System;
 using System.Linq;
-using Rhino.Mocks;
 using System.Collections.Generic;
 
 namespace Reko.UnitTests.Analysis
@@ -32,7 +31,6 @@ namespace Reko.UnitTests.Analysis
 	[TestFixture]
 	public class DeclarationInserterTests
 	{
-        private MockRepository mr;
 		private Procedure proc;
 		private BlockDominatorGraph doms;
 		private SsaIdentifierCollection ssaIds;
@@ -55,10 +53,8 @@ namespace Reko.UnitTests.Analysis
 
 		private void Build(Procedure proc)
 		{
-            var platform = mr.Stub<IPlatform>();
 			this.proc = proc;
 			this.doms = proc.CreateBlockDominatorGraph();
-            mr.ReplayAll();
 
 			SsaTransform sst = new SsaTransform(
                 new ProgramDataFlow(), 
