@@ -84,7 +84,7 @@ namespace Reko.Arch.Arm
                 default:
                     throw new AddressCorrelatedException(
                       instrs.Current.Address,
-                      "Rewriting ARM opcode '{0}' ({1}) is not supported yet.",
+                      "Rewriting ARM Thumb opcode '{0}' ({1}) is not supported yet.",
                       instr.Mnemonic, instr.Id);
                 case ArmInstruction.ADD: RewriteBinop((a, b) => emitter.IAdd(a, b)); break;
                 case ArmInstruction.ADDW: RewriteAddw(); break;

@@ -237,7 +237,7 @@ l01C8:
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
 		{
-            var relocations = new RelocationDictionary();
+            var relocations = imgU.Relocations;
 			ushort segCode = (ushort) (addrLoad.Selector.Value + (PspSize >> 4));
 			for (;;)
 			{
@@ -278,7 +278,6 @@ l01C8:
 
             return new RelocationResults(
                 new List<EntryPoint> {new EntryPoint(Address.SegPtr(pklCs, pklIp), state) },
-                relocations,
                 new List<Address>());
 		}
 

@@ -268,7 +268,7 @@ namespace Reko.UnitTests.Core.Serialization
             mr.ReplayAll();
 
             var ps = new ProjectLoader(sc, loader);
-            var project = ps.LoadProject(sProject);
+            var project = ps.LoadProject("project.dcproj", sProject);
             Assert.AreEqual(2, project.Programs.Count);
             var input0 = project.Programs[0];
             Assert.AreEqual(1, input0.User.Globals.Count);
@@ -292,10 +292,10 @@ namespace Reko.UnitTests.Core.Serialization
                         AccessMode.ReadWriteExecute))
             };
             loader.Stub(l => l.LoadImageBytes(
-                Arg<string>.Is.Equal(exeName),
+                Arg<string>.Matches(s => s.EndsWith(exeName)),
                 Arg<int>.Is.Anything)).Return(bytes);
             loader.Stub(l => l.LoadExecutable(
-                Arg<string>.Is.Equal(exeName),
+                Arg<string>.Matches(s => s.EndsWith(exeName)),
                 Arg<byte[]>.Is.NotNull,
                 Arg<Address>.Is.Null)).Return(program);
         }
@@ -313,10 +313,10 @@ namespace Reko.UnitTests.Core.Serialization
                     new ImageSegment(".text", mem, AccessMode.ReadWriteExecute))
             };
             loader.Stub(l => l.LoadImageBytes(
-                Arg<string>.Is.Equal(exeName),
+                Arg<string>.Matches(s => s.EndsWith(exeName)),
                 Arg<int>.Is.Anything)).Return(bytes);
             loader.Stub(l => l.LoadExecutable(
-                Arg<string>.Is.Equal(exeName),
+                Arg<string>.Matches(s => s.EndsWith(exeName)),
                 Arg<byte[]>.Is.NotNull,
                 Arg<Address>.Is.Null)).Return(program);
         }
@@ -388,7 +388,7 @@ namespace Reko.UnitTests.Core.Serialization
             mr.ReplayAll();
 
             var ploader = new ProjectLoader(sc, loader);
-            var project = ploader.LoadProject(sProject);
+            var project = ploader.LoadProject("c:\\bar\\bar.dcproj", sProject);
             Assert.AreEqual(1, project.MetadataFiles.Count);
             Assert.AreEqual("c:\\tmp\\foo.def", project.MetadataFiles[0].Filename);
         }

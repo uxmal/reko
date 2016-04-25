@@ -275,4 +275,25 @@
     </signature>
   </procedure>
 
+  <procedure name="_assert">
+    <signature convention="__cdecl">
+      <return>
+        <void />
+      </return>
+      <arg name="cond">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="file">
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
+      </arg>
+      <arg name="line">
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+
 </library>

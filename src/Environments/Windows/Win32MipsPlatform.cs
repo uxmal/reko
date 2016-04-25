@@ -163,7 +163,17 @@ namespace Reko.Environments.Windows
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
-            throw new NotImplementedException();
+            EnsureTypeLibraries(PlatformIdentifier);
+            ModuleDescriptor mod;
+            if (!Metadata.Modules.TryGetValue(moduleName.ToUpper(), out mod))
+                return null;
+            SystemService svc;
+            if (mod.ServicesByName.TryGetValue(moduleName, out svc))
+            {
+                return new ExternalProcedure(svc.Name, svc.Signature);
+            }
+            else
+                throw new NotImplementedException();
         }
     }
 }

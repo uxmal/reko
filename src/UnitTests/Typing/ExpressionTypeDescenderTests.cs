@@ -207,5 +207,14 @@ namespace Reko.UnitTests.Typing
             RunTest(
                 Test(m.FGe(p, Constant.Real32(-5.5F)), PrimitiveType.Bool));
         }
+
+
+        [Test]
+        public void ExdFloatSub()
+        {
+            var p = Id("p", PrimitiveType.Word32);
+            RunTest(
+                Test(m.FSub(p, Constant.Real32(-5.5F)), PrimitiveType.Real32));
+        }
     }
 }

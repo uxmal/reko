@@ -479,7 +479,6 @@ namespace Reko.Arch.Arm
         case Opcode.CBZ:
         case Opcode.MOVS:
         case Opcode.POP:
-        case Opcode.PUSH:
         case Opcode.YIELD:
         case Opcode.WFE:
         case Opcode.WFI:
@@ -511,6 +510,7 @@ namespace Reko.Arch.Arm
                 case Opcode.MOV: RewriteMov(); break;
                 case Opcode.MVN: RewriteUnaryOp(Operator.Not); break;
                 case Opcode.ORR: RewriteBinOp(Operator.Or, false); break;
+                case Opcode.PUSH: RewritePush(); break;
                 case Opcode.RSB: RewriteRevBinOp(Operator.ISub, instr.ArchitectureDetail.UpdateFlags); break;
                 case Opcode.STM: RewriteStm(); break;
                 case Opcode.STMDB: RewriteStm(); break;

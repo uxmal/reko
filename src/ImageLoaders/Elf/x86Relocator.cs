@@ -26,16 +26,79 @@ using System.Text;
 
 namespace Reko.ImageLoaders.Elf
 {
-    class x86Relocator : ElfRelocator
+    class x86Relocator : ElfRelocator32
     {
         private ElfLoader32 loader;
 
-        public x86Relocator(ElfLoader32 loader)
+        public x86Relocator(ElfLoader32 loader) : base(loader)
         {
             this.loader = loader;
         }
 
-        public override void Relocate(Program program)
+        public override void RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, Elf32_Rela rela)
+        {
+            if (loader.Sections.Count <= sym.SectionIndex)
+                return;
+            if (sym.SectionIndex == 0)
+                return;
+            var symSection = loader.Sections[(int)sym.SectionIndex];
+            uint S = (uint)sym.Value + symSection.Address.ToUInt32();
+            int A = 0;
+            int sh = 0;
+            uint mask = ~0u;
+            var addr = referringSection.Address + rela.r_offset;
+            uint P = (uint)addr.ToLinear();
+            uint PP = P;
+            var relR = program.CreateImageReader(addr);
+            var relW = program.CreateImageWriter(addr);
+            var rt = (i386Rt)(rela.r_info & 0xFF);
+            switch (rt)
+            {
+            case i386Rt.R_386_NONE: //  just ignore (common)
+                break;
+            case i386Rt.R_386_32: // S + A
+                                  // Read the symTabIndex'th symbol.
+                A = rela.r_addend;
+                P = 0;
+                break;
+            case i386Rt.R_386_PC32: // S + A - P
+                if (sym.Value == 0)
+                {
+                    // This means that the symbol doesn't exist in this module, and is not accessed
+                    // through the PLT, i.e. it will be statically linked, e.g. strcmp. We have the
+                    // name of the symbol right here in the symbol table entry, but the only way
+                    // to communicate with the loader is through the target address of the call.
+                    // So we use some very improbable addresses (e.g. -1, -2, etc) and give them entries
+                    // in the symbol table
+                    //S = nextFakeLibAddr--; // Allocate a new fake address
+                    //loader.AddSymbol(S, sym.Name);
+                    //}
+                }
+                A = rela.r_addend;
+                P = ~P + 1;
+                break;
+            case i386Rt.R_386_GLOB_DAT:
+                // This relocation type is used to set a global offset table entry to the address of the
+                // specified symbol. The special relocation type allows one to determine the
+                // correspondence between symbols and global offset table entries.
+                P = 0;
+                break;
+            default:
+                throw new NotImplementedException(string.Format(
+                    "i386 ELF relocation type {0} not implemented yet.",
+                    rt));
+            }
+            var w = relR.ReadBeUInt32();
+            w += ((uint)(S + A + P) >> sh) & mask;
+            relW.WriteBeUInt32(w);
+        }
+
+        public override string RelocationTypeToString(uint type)
+        {
+            return ((i386Rt)type).ToString();
+        }
+
+        public void RelocateOld(Program program)
         {
             uint nextFakeLibAddr = ~1u; // See R_386_PC32 below; -1 sometimes used for main
             for (int i = 1; i < loader.Sections.Count; ++i)
@@ -144,6 +207,13 @@ namespace Reko.ImageLoaders.Elf
                             P = destNatOrigin + r_offset;
                             relocW.WriteUInt32(pRelWord, S + A - P);
                             break;
+                        case 6: // R_386_GLOB_DAT
+                            // This relocation type is used to set a global offset table entry to the address of the
+                            // specified symbol. The special relocation type allows one to determine the
+                            // correspondence between symbols and global offset table entries.
+                            S = sym.st_value;
+                            relocW.WriteUInt32(pRelWord, S);
+                            break;
                         case 7:
                         case 8: // R_386_RELATIVE
                             break; // No need to do anything with these, if a shared object
@@ -154,11 +224,15 @@ namespace Reko.ImageLoaders.Elf
                 }
             }
         }
-
-        public override void RelocateEntry(List<ElfSymbol> symbols, ElfSection referringSection, Elf32_Rela rela)
-        {
-            throw new NotImplementedException();
-        }
     }
 
+    public enum i386Rt
+    {
+
+        R_386_NONE, // just ignore (common)
+        R_386_32 = 1, // S + A
+        R_386_PC32 = 2, // S + A - P
+        R_386_GLOB_DAT = 6,
+        R_386_RELATIVE = 8
+    }
 }

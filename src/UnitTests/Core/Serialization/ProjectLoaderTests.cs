@@ -97,14 +97,16 @@ namespace Reko.UnitTests.Core.Serialization
             mr.ReplayAll();
 
             var prld = new ProjectLoader(sc, ldr);
-            prld.LoadProject(new Project_v2
-            {
-                Inputs = {
+            prld.LoadProject(
+                "project.dcproj",
+                new Project_v2
+                {
+                    Inputs = {
                         new MetadataFile_v2 {
                             Filename = "foo",
                         }
                     }
-            });
+                });
             mr.VerifyAll();
         }
 
@@ -122,9 +124,11 @@ namespace Reko.UnitTests.Core.Serialization
             mr.ReplayAll();
 
             var prld = new ProjectLoader(sc, ldr);
-            prld.LoadProject(new Project_v2
-            {
-                Inputs = {
+            prld.LoadProject(
+                "project.dcproj",
+                new Project_v2
+                {
+                    Inputs = {
                     new DecompilerInput_v2 {
                         Filename = "foo.exe",
                     },
@@ -132,7 +136,7 @@ namespace Reko.UnitTests.Core.Serialization
                         Filename = "foo",
                     }
                 }
-            });
+                });
             mr.VerifyAll();
         }
 

@@ -74,6 +74,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             fileImage = new byte[0x4000];
             writer = new LeImageWriter(fileImage);
             var cfgSvc = mr.StrictMock<IConfigurationService>();
+            var dcSvc = mr.Stub<DecompilerEventListener>();
             Given_i386_Architecture();
             this.win32 = new Win32Platform(sc, arch_386);
             var win32Env = mr.Stub<OperatingEnvironment>();
@@ -81,6 +82,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             cfgSvc.Stub(c => c.GetEnvironment("win32")).Return(win32Env);
             win32Env.Stub(w => w.Load(null, null)).IgnoreArguments().Return(win32);
             sc.AddService<IConfigurationService>(cfgSvc);
+            sc.AddService<DecompilerEventListener>(dcSvc);
         }
 
         private void Given_i386_Architecture()

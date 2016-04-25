@@ -71,9 +71,18 @@ namespace Reko.Analysis
         public void Transform(Statement stm)
         {
             evalCtx.Statement = stm;
-            if (trace.TraceVerbose) Debug.WriteLine(string.Format("From: {0}", stm.Instruction.ToString()));
-            stm.Instruction = stm.Instruction.Accept(this);
-            if (trace.TraceVerbose) Debug.WriteLine(string.Format("  To: {0}", stm.Instruction.ToString()));
+            try
+            {
+                if (trace.TraceVerbose) Debug.WriteLine(string.Format("From: {0}", stm.Instruction.ToString()));
+                stm.Instruction = stm.Instruction.Accept(this);
+                if (trace.TraceVerbose) Debug.WriteLine(string.Format("  To: {0}", stm.Instruction.ToString()));
+            } catch (Exception ex)
+            {
+                throw new StatementCorrelatedException(
+                    stm, 
+                    string.Format("An error occurred while processing the statement {0}.", stm),
+                    ex);
+            }
         }
 
         #region InstructionVisitor<Instruction> Members

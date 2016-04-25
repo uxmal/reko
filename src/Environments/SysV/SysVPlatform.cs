@@ -53,8 +53,12 @@ namespace Reko.Environments.SysV
             {
             case "mips-be-32":
                 return new MipsProcedureSerializer(Architecture, typeLoader, defaultConvention);
+            case "ppc32":
+                return new PowerPcProcedureSerializer(Architecture, typeLoader, defaultConvention);
             case "sparc32":
                 return new SparcProcedureSerializer(Architecture, typeLoader, defaultConvention);
+            case "x86-protected-32":
+                return new X86ProcedureSerializer(Architecture, typeLoader, defaultConvention);
             case "x86-protected-64":
                 return new X86_64ProcedureSerializer(Architecture, typeLoader, defaultConvention);
             default:
