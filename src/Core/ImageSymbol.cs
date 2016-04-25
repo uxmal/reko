@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,17 +27,26 @@ using System.Text;
 namespace Reko.Core
 {
     /// <summary>
-    /// Represents a location  in an image whose name or size is 
-    /// known. ImageSymbols are used to "seed" the Scanner
-    /// phase of the decompiler.
+    /// Represents a location in an image whose name or size is known. 
+    /// ImageSymbols are used to "seed" the Scanner phase of the decompiler.
     /// </summary>
+    /// <remarks>
+    /// This information is derived purely from what the image loader can 
+    /// garner from an input binary file. Any user-provided information must
+    /// be specified separately and will then override this information.
+    /// </remarks>
     public class ImageSymbol
     {
-        public ImageSymbol(Address address)
+        public ImageSymbol(Address address, string name, DataType dataType)
         {
             this.Address = address;
+            this.Name = name;
+            this.DataType = dataType;
         }
 
+        /// <summary>
+        /// The location the symbol refers to.
+        /// </summary>
         public Address Address { get; private set; }
 
         /// <summary>
@@ -45,18 +55,8 @@ namespace Reko.Core
         public string Name { get; set; }
 
         /// <summary>
-        /// The size of the object referred to by the symbol, or 0 if 
-        /// unknown.
+        /// The data type of the symbol if it known.
         /// </summary>
-        public uint Size { get; set; }
-
-        public SymbolTypeq Type { get; set; }
-    }
-
-    public enum SymbolTypeq
-    {
-        Unknown,        // Unknown type
-        Code,           // executable code
-        Data,           // non-executable data.
+        public DataType DataType { get; set; }
     }
 }

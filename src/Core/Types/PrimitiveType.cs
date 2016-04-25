@@ -29,10 +29,12 @@ namespace Reko.Core.Types
     /// A Domain specifies the possible interpretation of a chunk of bytes.
     /// </summary>
     /// <remarks>
-    /// A 32-bit load from memory could mean that the variable could be treated as an signed int, unsigned int,
-    /// floating point number, a pointer to something. As the decompiler records how the value is used,
-    /// some of these alternatives will be discarded. For instance, if the 32-bit word is used in a memory access,
-    /// it is certain that it is a pointer to (something), and it can't be a float.
+    /// A 32-bit load from memory could mean that the variable could be 
+    /// treated as an signed int, unsigned int, floating point number, a 
+    /// pointer to something. As the decompiler records how the value is used,
+    /// some of these alternatives will be discarded. For instance, if the
+    /// 32-bit word is used in a memory access, it is certain that it is a
+    /// pointer to (something), and it can't be a float.
     /// </remarks>
 	[Flags]
 	public enum Domain
@@ -56,9 +58,10 @@ namespace Reko.Core.Types
 	/// Represents a primitive machine data type, with no internal structure.
 	/// </summary>
 	/// <remarks>
-	/// Examples of primitives are integers of different signedness and sizes, as well as real types and booleans.
-	/// Pointers to types are not considered primitives, as they are type constructors. Primitives are implemented
-	/// as immutable flyweights since there are so many of them.
+	/// Examples of primitives are integers of different signedness and sizes,
+    /// as well as real types and booleans. Pointers to types are not 
+    /// considered primitives, as they are type constructors. Primitives are
+    /// implemented as immutable flyweights since there are so many of them.
 	/// </remarks>
 	public class PrimitiveType : DataType
 	{
@@ -164,6 +167,17 @@ namespace Reko.Core.Types
 			return p.Domain == Domain && p.byteSize == byteSize;
 		}
 	
+        /// <summary>
+        /// Generates a string based on domain and bitsize
+        /// </summary>
+        /// <remarks>
+        /// Note that these are not C data types, but Reko internal types.
+        /// The Reko output formatters are responsible for translation to
+        /// C (or whatever output language has been chosen by the user).
+        /// </remarks>
+        /// <param name="dom"></param>
+        /// <param name="bitSize"></param>
+        /// <returns></returns>
 		public static string GenerateName(Domain dom, int bitSize)
 		{
 			StringBuilder sb;
@@ -221,7 +235,7 @@ namespace Reko.Core.Types
 		}
 
         /// <summary>
-        /// True if the type can only be some kind of numeric type
+        /// True if the type can only be some kind of integral numeric type
         /// </summary>
 		public bool IsIntegral
 		{

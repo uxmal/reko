@@ -120,13 +120,13 @@ namespace Reko.ImageLoaders.MzExe
 
         private EntryPoint LoadEntryPoint(Address addrLoad, ImageReader rdrAddrs, ImageReader rdrNames)
         {
-            uint addr = rdrAddrs.ReadLeUInt32();
+            uint rvaAddr = rdrAddrs.ReadLeUInt32();
             int iNameMin = rdrNames.ReadLeInt32();
             int j;
             for (j = iNameMin; imgLoaded.Bytes[j] != 0; ++j)
                 ;
             char[] chars = Encoding.ASCII.GetChars(imgLoaded.Bytes, iNameMin, j - iNameMin);
-            return new EntryPoint(addrLoad + addr, new string(chars), arch.CreateProcessorState());
+            return new EntryPoint(addrLoad + rvaAddr, new string(chars), arch.CreateProcessorState());
         }
 
 		public IProcessorArchitecture CreateArchitecture(ushort peMachineType)
