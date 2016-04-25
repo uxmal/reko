@@ -32,6 +32,7 @@ using System;
 using System.IO;
 using Rhino.Mocks;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -88,7 +89,8 @@ namespace Reko.UnitTests.Analysis
 				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, null, gr);
+                SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, null, gr,
+                    new HashSet<RegisterStorage>());
 				SsaState ssa = sst.SsaState;
                 var cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Platform);
                 cce.Transform();
@@ -205,7 +207,8 @@ namespace Reko.UnitTests.Analysis
 		{
 			Procedure proc = new DpbMock().Procedure;
 			var gr = proc.CreateBlockDominatorGraph();
-			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc,  null, gr);
+			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc,  null, gr,
+                new HashSet<RegisterStorage>());
 			SsaState ssa = sst.SsaState;
 
             ssa.DebugDump(true);
@@ -475,7 +478,7 @@ namespace Reko.UnitTests.Analysis
 			var gr = proc.CreateBlockDominatorGraph();
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             importResolver.Replay();
-			var sst = new SsaTransform(new ProgramDataFlow(), proc, importResolver, gr);
+			var sst = new SsaTransform(new ProgramDataFlow(), proc, importResolver, gr, new HashSet<RegisterStorage>());
 			var ssa = sst.SsaState;
 
 			var vp = new ValuePropagator(arch, ssa.Identifiers, proc);
@@ -493,7 +496,7 @@ namespace Reko.UnitTests.Analysis
         {
             var proc = m.Procedure;
             var gr = proc.CreateBlockDominatorGraph();
-            var sst = new SsaTransform(new ProgramDataFlow(), proc, null, gr);
+            var sst = new SsaTransform(new ProgramDataFlow(), proc, null, gr, new HashSet<RegisterStorage>());
             var ssa = sst.SsaState;
 
             var vp = new ValuePropagator(arch, ssa.Identifiers, proc);

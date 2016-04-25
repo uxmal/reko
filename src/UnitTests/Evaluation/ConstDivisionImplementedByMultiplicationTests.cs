@@ -50,7 +50,12 @@ namespace Reko.UnitTests.Evaluation
                 m.Assign(r2, m.Sar(r2, shift));
 
             var proc = m.Procedure;
-            var ssa = new SsaTransform(null, proc, null, proc.CreateBlockDominatorGraph()).Transform();
+            var ssa = new SsaTransform(
+                null, 
+                proc,
+                null,
+                proc.CreateBlockDominatorGraph(),
+                new HashSet<RegisterStorage>()).Transform();
             var ctx = new SsaEvaluationContext(null, ssa.Identifiers);
             var rule = new ConstDivisionImplementedByMultiplication(ssa);
             ctx.Statement = proc.EntryBlock.Succ[0].Statements[0];
@@ -58,7 +63,6 @@ namespace Reko.UnitTests.Evaluation
             ass = rule.TransformInstruction();
             Assert.AreEqual(sExp, ass.Src.ToString());
         }
-
 
         [Test]
         public void Cdiv_SmallConstants()

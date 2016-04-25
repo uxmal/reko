@@ -26,6 +26,7 @@ using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.IO;
+using System.Collections.Generic;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -111,24 +112,24 @@ namespace Reko.UnitTests.Analysis
             RunFileTest("Fragments/multiple/sideeffectcalls.asm", "Analysis/CoaSideEffectCalls.txt");
         }
 
-		protected override void RunTest(Program prog, TextWriter fut)
+		protected override void RunTest(Program program, TextWriter fut)
 		{
             IImportResolver importResolver = null;
-			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, importResolver, new FakeDecompilerEventListener());
+			DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
 			dfa.UntangleProcedures();
 			
-			foreach (Procedure proc in prog.Procedures.Values)
+			foreach (Procedure proc in program.Procedures.Values)
 			{
-				Aliases alias = new Aliases(proc, prog.Architecture);
+				Aliases alias = new Aliases(proc, program.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, importResolver, proc.CreateBlockDominatorGraph());
+				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, importResolver, proc.CreateBlockDominatorGraph(), new HashSet<RegisterStorage>());
 				SsaState ssa = sst.SsaState;
 				
-                ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Platform);
+                ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa.Identifiers, program.Platform);
 				cce.Transform();
 				DeadCode.Eliminate(proc, ssa);
 
-				ValuePropagator vp = new ValuePropagator(prog.Architecture, ssa.Identifiers, proc);
+				ValuePropagator vp = new ValuePropagator(program.Architecture, ssa.Identifiers, proc);
 				vp.Transform();
 				DeadCode.Eliminate(proc, ssa);
 				Coalescer co = new Coalescer(proc, ssa);

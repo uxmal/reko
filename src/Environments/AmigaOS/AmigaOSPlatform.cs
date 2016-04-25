@@ -90,7 +90,7 @@ namespace Reko.Environments.AmigaOS
             throw new NotImplementedException();
         }
 
-        public override HashSet<RegisterStorage>  CreateImplicitArgumentRegisters()
+        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
             return new HashSet<RegisterStorage> { Registers.a7 };
         }
@@ -114,6 +114,7 @@ namespace Reko.Environments.AmigaOS
             SystemService svc;
             return funcs.TryGetValue(offset, out svc) ? svc : null;
         }
+
         private String GetLibraryBaseName(String name_with_version) 
         {
             int idx_of_version_str = name_with_version.IndexOf("_v");
@@ -121,20 +122,21 @@ namespace Reko.Environments.AmigaOS
                 return name_with_version;
             return name_with_version.Substring(0, idx_of_version_str);
         }
+
         /// <summary>
         /// Gets the list of libraries for given kickstart version.
         /// </summary>
         /// <returns>The library list for kickstart version.</returns>
         /// <remarks> This will always try to build maximum list of libraries, using older versions where possible </remarks>
         /// <param name="ver">Kickstart version</param>
-        public List<String> GetLibrarySetForKickstartVersion(int ver)
+        public List<string> GetLibrarySetForKickstartVersion(int ver)
         {
             //$TODO: needs cleanup ?
             var result_list = new List<String>();
             var selected_librarties = new Dictionary<String,String>();
 
             var keys = mapKickstartToListOfLibraries.Keys.ToList();
-            keys.Sort ();
+            keys.Sort();
 
             int idx_version_to_select = keys.BinarySearch(ver);
             if (idx_version_to_select<0) 
@@ -150,9 +152,9 @@ namespace Reko.Environments.AmigaOS
             for (int ver_idx = idx_version_to_select; ver_idx >= 0; --ver_idx) 
             {
                 int try_version = keys.ElementAt(ver_idx);
-                foreach(String lib in mapKickstartToListOfLibraries[try_version]) 
+                foreach (string lib in mapKickstartToListOfLibraries[try_version]) 
                 {
-                    String base_libname = GetLibraryBaseName(lib);
+                    string base_libname = GetLibraryBaseName(lib);
                     if (selected_librarties.ContainsKey(base_libname))
                         continue;
                     selected_librarties.Add(base_libname, lib);

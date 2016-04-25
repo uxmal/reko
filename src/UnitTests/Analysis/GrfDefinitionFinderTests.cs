@@ -26,6 +26,7 @@ using System;
 using System.IO;
 using Reko.Core.Expressions;
 using Rhino.Mocks;
+using System.Collections.Generic;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -50,17 +51,22 @@ namespace Reko.UnitTests.Analysis
 			RunFileTest(new CmpMock(), "Analysis/GrfdCmpMock.txt");
 		}
 
-		protected override void RunTest(Program prog, TextWriter writer)
+		protected override void RunTest(Program program, TextWriter writer)
 		{
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             importResolver.Replay();
-            var dfa = new DataFlowAnalysis(prog, importResolver, new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
 			dfa.UntangleProcedures();
-			foreach (Procedure proc in prog.Procedures.Values)
+			foreach (Procedure proc in program.Procedures.Values)
 			{
-				Aliases alias = new Aliases(proc, prog.Architecture);
+				Aliases alias = new Aliases(proc, program.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, importResolver, proc.CreateBlockDominatorGraph());
+				SsaTransform sst = new SsaTransform(
+                    dfa.ProgramDataFlow,
+                    proc,
+                    importResolver,
+                    proc.CreateBlockDominatorGraph(),
+                    new HashSet<RegisterStorage>());
 				SsaState ssa = sst.SsaState;
 				GrfDefinitionFinder grfd = new GrfDefinitionFinder(ssa.Identifiers);
 				foreach (SsaIdentifier sid in ssa.Identifiers)

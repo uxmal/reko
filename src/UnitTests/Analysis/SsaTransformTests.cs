@@ -67,7 +67,18 @@ namespace Reko.UnitTests.Analysis
                 project,
                 this.pb.Program,
                 new FakeDecompilerEventListener());
-            this.pb.Program.Platform = new FakePlatform(null, new FakeArchitecture());
+            var arch = new FakeArchitecture();
+            
+            var platform = new FakePlatform(null, arch);
+
+            // Register r1 is assumed to always be implicit when calling
+            // another procedure.
+            var implicitRegs = new HashSet<RegisterStorage>
+            {
+                arch.GetRegister(1)
+            };
+            Debug.Print("GetRegister(1) {0}", arch.GetRegister(1));
+            this.pb.Program.Platform = platform;
             this.pb.Program.ImageMap = new ImageMap(
                 Address.Ptr32(0x0000),
                 new ImageSegment(
@@ -77,7 +88,7 @@ namespace Reko.UnitTests.Analysis
                     AccessMode.ReadWriteExecute));
 
             // Perform the initial transformation
-            var ssa = new SsaTransform(programFlow, proc, importResolver, dg);
+            var ssa = new SsaTransform(programFlow, proc, importResolver, dg, implicitRegs);
 
             // Propagate values and simplify the results.
             // We hope the the sequence
@@ -516,18 +527,18 @@ l1:
 	branch r1 true
 	// succ:  l2 true
 l2:
-	r2_5 = 0x00000010
+	r2_4 = 0x00000010
 	// succ:  true
 true:
 	call r3 (retsize: 4;)
-		uses: r1,r2,r3
-		defs: r1_2,r2_3,r3_4
+		uses: r2,r3
+		defs: r2_2,r3_3
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
-	use r1_2
-	use r2_3
-	use r3_4
+	use r1
+	use r2_2
+	use r3_3
 ";
             RunTest(sExp, m =>
             {

@@ -204,7 +204,8 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// Utility function for subclasses that loads all type libraries and characteristics libraries 
+        /// Utility function for subclasses that loads all type libraries and
+        /// characteristics libraries defined in the Reko configuration file.
         /// </summary>
         /// <param name="envName"></param>
         public virtual void EnsureTypeLibraries(string envName)
