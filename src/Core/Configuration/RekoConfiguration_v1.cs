@@ -20,6 +20,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace Reko.Core.Configuration
@@ -105,6 +106,10 @@ namespace Reko.Core.Configuration
 
         [XmlAttribute("MemoryMap")]
         public string MemoryMap;
+
+        // Collect any other platform-specific elements in "Options"
+        [XmlAnyElement]
+        public XmlElement[] Options;
     }
 
     [Serializable]

@@ -45,7 +45,7 @@ namespace Reko.Environments.AmigaOS
     {
         private RtlInstructionMatcher a6Pattern;
         private Dictionary<int, SystemService> funcs; //$TODO: This should take a type of base pointer the reference is from ?
-        private static Dictionary<int, List<String>> mapKickstartToListOfLibraries = new Dictionary<int, List<String>>
+        private static Dictionary<int, List<string>> mapKickstartToListOfLibraries = new Dictionary<int, List<string>>
         {
             {
                 33, new List<String>
@@ -77,7 +77,7 @@ namespace Reko.Environments.AmigaOS
                     RtlClass.Transfer));
         }
 
-        public static Dictionary<int, List<String>> MapKickstartToListOfLibraries
+        public static Dictionary<int, List<string>> MapKickstartToListOfLibraries
         {
             get
             {
@@ -85,7 +85,9 @@ namespace Reko.Environments.AmigaOS
             }
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        public override ProcedureSerializer CreateProcedureSerializer(
+            ISerializedTypeVisitor<DataType> typeLoader, 
+            string defaultConvention)
         {
             throw new NotImplementedException();
         }
@@ -127,7 +129,8 @@ namespace Reko.Environments.AmigaOS
         /// Gets the list of libraries for given kickstart version.
         /// </summary>
         /// <returns>The library list for kickstart version.</returns>
-        /// <remarks> This will always try to build maximum list of libraries, using older versions where possible </remarks>
+        /// <remarks> This will always try to build maximum list of libraries, using older
+        /// versions where possible </remarks>
         /// <param name="ver">Kickstart version</param>
         public List<string> GetLibrarySetForKickstartVersion(int ver)
         {

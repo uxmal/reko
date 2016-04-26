@@ -679,6 +679,7 @@
     <Compile Include="WorkList.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="XmlOptions.cs" />
     <Content Include="Serialization\test.xml" />
   </ItemGroup>
   <ItemGroup>

@@ -128,7 +128,8 @@ namespace Reko.Core.Configuration
                 MemoryMapFile = env.MemoryMap,
                 TypeName = env.Type,
                 TypeLibraries = LoadCollection(env.TypeLibraries, LoadTypeLibraryReference),
-                CharacteristicsLibraries = LoadCollection(env.Characteristics, LoadTypeLibraryReference)
+                CharacteristicsLibraries = LoadCollection(env.Characteristics, LoadTypeLibraryReference),
+                Options = XmlOptions.LoadIntoDictionary(env.Options)
             };
         }
 

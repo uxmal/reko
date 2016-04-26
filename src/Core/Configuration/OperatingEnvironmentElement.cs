@@ -32,6 +32,8 @@ namespace Reko.Core.Configuration
         string Description { get; }
         string TypeName { get; }
         string MemoryMapFile { get; }
+        Dictionary<string, object> Options { get; }
+
         List<ITypeLibraryElement> TypeLibraries { get; }
         List<ITypeLibraryElement> CharacteristicsLibraries { get; }
 
@@ -56,6 +58,7 @@ namespace Reko.Core.Configuration
 
         public List<ITypeLibraryElement> TypeLibraries { get; internal set; }
         public List<ITypeLibraryElement> CharacteristicsLibraries { get; internal set; }
+        public Dictionary<string, object> Options { get; internal set; }
 
         public IPlatform Load(IServiceProvider services, IProcessorArchitecture arch)
         {
