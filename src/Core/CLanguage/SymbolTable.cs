@@ -63,13 +63,18 @@ namespace Reko.Core.CLanguage
 
         public TypeSizer Sizer { get; private set; }
 
+        /// <summary>
+        /// Given a C declaration, adds it to the symbol table 
+        /// as a function or a type declaration.
+        /// </summary>
+        /// <param name="decl"></param>
         public List<SerializedType> AddDeclaration(Decl decl)
         {
             var types = new List<SerializedType>();
             var fndec = decl as FunctionDecl;
             if (fndec != null)
             {
-                return types; 
+                return types;
             }
 
             IEnumerable<DeclSpec> declspecs = decl.decl_specs;

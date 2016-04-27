@@ -117,6 +117,7 @@
     <Compile Include="Core\Serialization\ProjectLoaderTests.cs" />
     <Compile Include="Core\Serialization\ProjectPersisterTests.cs" />
     <Compile Include="Core\Services\FileSystemServiceTests.cs" />
+    <Compile Include="Environments\AmigaOS\AmigaHeaderLoaderTests.cs" />
     <Compile Include="Environments\SegaGenesis\RomLoaderTests.cs" />
     <Compile Include="Environments\SysV\MipsProcedureSerializerTests.cs" />
     <Compile Include="Environments\SysV\SparcProcedureSerializerTests.cs" />

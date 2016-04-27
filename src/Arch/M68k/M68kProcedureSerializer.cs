@@ -66,6 +66,11 @@ namespace Reko.Arch.M68k
 
         public override Storage GetReturnRegister(Argument_v1 sArg, int bitSize)
         {
+            if (sArg.Kind == null)
+                throw new NotImplementedException();
+            var reg = sArg.Kind as Register_v1;
+            if (reg != null)
+                return Architecture.GetRegister(reg.Name);
             throw new NotImplementedException();
         }
     }

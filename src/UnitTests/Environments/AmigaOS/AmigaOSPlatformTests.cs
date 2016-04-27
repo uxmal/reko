@@ -101,6 +101,7 @@ namespace Reko.UnitTests.Environments.AmigaOS
             Assert.IsTrue (libs_v999.Contains ("exec_v34")); //TODO: should select version from highest availalbe kickstart version
             mr.VerifyAll();
         }
+
         private void Given_Func(string fileContents)
         {
             var stm = new MemoryStream(Encoding.ASCII.GetBytes(fileContents));

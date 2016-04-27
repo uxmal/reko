@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AmigaHeaderLoader.cs" />
     <Compile Include="AmigaOSPlatform.cs" />
     <Compile Include="AmigaSystemFunction.cs" />
     <Compile Include="FuncsFileParser.cs" />

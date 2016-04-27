@@ -228,8 +228,7 @@ namespace Reko.Core
                     Debug.Print("Loading {0}", tl.Name);
                     Metadata = tlSvc.LoadMetadataIntoLibrary(this, tl, Metadata); 
                 }
-                this.CharacteristicsLibs = ((System.Collections.IEnumerable)envCfg.CharacteristicsLibraries)
-                    .OfType<ITypeLibraryElement>()
+                this.CharacteristicsLibs = envCfg.CharacteristicsLibraries
                     .Select(cl => tlSvc.LoadCharacteristics(cl.Name))
                     .Where(cl => cl != null).ToArray();
             }

@@ -29,6 +29,10 @@ using System.Text;
 
 namespace Reko.Core.CLanguage
 {
+    /// <summary>
+    /// Extracts the name of the declared entity from a C declaration. C is a 
+    /// hairy language....
+    /// </summary>
     public class NamedDataTypeExtractor :
         DeclaratorVisitor<Func<NamedDataType,NamedDataType>>,
         DeclSpecVisitor<SerializedType>

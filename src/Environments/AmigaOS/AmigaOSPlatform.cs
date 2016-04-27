@@ -86,10 +86,13 @@ namespace Reko.Environments.AmigaOS
         }
 
         public override ProcedureSerializer CreateProcedureSerializer(
-            ISerializedTypeVisitor<DataType> typeLoader, 
+            ISerializedTypeVisitor<DataType> typeLoader,
             string defaultConvention)
         {
-            throw new NotImplementedException();
+            return new M68kProcedureSerializer(
+                (M68kArchitecture)Architecture,
+                typeLoader,
+                defaultConvention);
         }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
@@ -117,7 +120,7 @@ namespace Reko.Environments.AmigaOS
             return funcs.TryGetValue(offset, out svc) ? svc : null;
         }
 
-        private String GetLibraryBaseName(String name_with_version) 
+        private string GetLibraryBaseName(string name_with_version) 
         {
             int idx_of_version_str = name_with_version.IndexOf("_v");
             if (-1 == idx_of_version_str) // no version, assuming the base name of library is same as name_with_version
@@ -212,12 +215,8 @@ namespace Reko.Environments.AmigaOS
         {
             var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
             var fsSvc = Services.RequireService<IFileSystemService>();
-            var sser = new M68kProcedureSerializer(
-                (M68kArchitecture)Architecture,
-                new TypeLibraryDeserializer(this, true, libDst),
-                DefaultCallingConvention);
-
-            using (var rdr = new StreamReader(fsSvc.CreateFileStream(tlSvc.InstalledFileLocation( lib_name + ".funcs"), FileMode.Open, FileAccess.Read)))
+            var sser = this.CreateProcedureSerializer(new TypeLibraryDeserializer(this, true, libDst), DefaultCallingConvention);
+            using (var rdr = new StreamReader(fsSvc.CreateFileStream(tlSvc.InstalledFileLocation(lib_name + ".funcs"), FileMode.Open, FileAccess.Read)))
             {
                 var fpp = new FuncsFileParser((M68kArchitecture)this.Architecture, rdr);
                 fpp.Parse();
