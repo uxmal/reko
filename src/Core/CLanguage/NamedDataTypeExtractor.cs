@@ -222,12 +222,15 @@ namespace Reko.Core.CLanguage
             foreach (var attr in attrs)
             {
                 if (attr.Name.Components == null || attr.Name.Components.Length != 2 ||
-                    attr.Name.Components[0] != "reko" || attr.Name.Components[1] != "reg")
+                    attr.Name.Components[0] != "reko" || attr.Name.Components[1] != "arg")
                     continue;
-                // We have a reko::reg; get the register.
-                if (attr.Tokens.Count < 1 || attr.Tokens[0].Type != CTokenType.StringLiteral)
-                    throw new FormatException("[[reko::reg]] attribute expects a register name.");
-                kind = new Register_v1 { Name = (string)attr.Tokens[0].Value };
+                if (attr.Tokens[0].Type != CTokenType.Register ||
+                    attr.Tokens[1].Type != CTokenType.Comma)
+                    continue;
+                // We have a reko::arg(register, prefix; get the register.
+                if (attr.Tokens.Count < 1 || attr.Tokens[2].Type != CTokenType.StringLiteral)
+                    throw new FormatException("[[reko::arg(register,<name>)]] attribute expects a register name.");
+                kind = new Register_v1 { Name = (string)attr.Tokens[2].Value };
             }
             return kind;
         }

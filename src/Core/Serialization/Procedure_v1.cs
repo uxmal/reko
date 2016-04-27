@@ -81,7 +81,7 @@ namespace Reko.Core.Serialization
 
         /// <summary>
         /// The signature of the function as specified by the user. It is written
-        /// in C syntax, with the [[reko::reg({regname})]] extension for specifying
+        /// in C syntax, with the [[reko::arg(register,{name})]] extension for specifying
         /// values passed or returned in parameters.
         /// </summary>
         public string CSignature;

@@ -41,7 +41,9 @@ namespace Reko.UnitTests.Environments.AmigaOS
                 "[[reko::amiga_function_vector(ExecLibrary, -432)]] [[reko::returns(register,\"A0\")]] " +
                 "void * FlobDevice([[reko::arg(register, \"A1\")]] struct Device * device);"));
             var Q = ahl.Load(platform, new TypeLibrary());
-            Assert.AreEqual(1, ahl.SystemServices.Count);
+            var svc = ahl.SystemServices[-432];
+            Assert.AreEqual("a0", svc.Signature.ReturnValue.Storage.ToString());
+            Assert.AreEqual("a1", svc.Signature.Parameters[0].Storage.ToString());
         }
     }
 }
