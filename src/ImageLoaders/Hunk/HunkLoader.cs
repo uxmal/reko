@@ -64,14 +64,14 @@ namespace Reko.ImageLoaders.Hunk
             this.hunkFile = parse.Parse();
             BuildSegments();
             this.firstCodeHunk = parse.FindFirstCodeHunk();
+            var platform = cfgSvc.GetEnvironment("amigaOS").Load(Services, arch);
+            var imageMap = platform.CreateAbsoluteMemoryMap();
             var mem = new MemoryArea(addrLoad, RelocateBytes(addrLoad));
+            imageMap.AddSegment(mem, "code", AccessMode.ReadWriteExecute);
             return new Program(
-                new ImageMap(
-                    mem.BaseAddress,
-                    new ImageSegment(
-                        "code", mem, AccessMode.ReadWriteExecute)),
+                imageMap,
                 arch,
-                cfgSvc.GetEnvironment("amigaOS").Load(Services, arch));
+                platform);
         }
 
         public bool BuildLoadSegments()

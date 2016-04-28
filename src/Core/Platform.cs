@@ -189,7 +189,7 @@ namespace Reko.Core
         /// of each resulting ImageSegment.
         /// </summary>
         /// <returns></returns>
-        public ImageMap CreateAbsoluteMemoryMap()
+        public virtual ImageMap CreateAbsoluteMemoryMap()
         {
             if (this.MemoryMap == null ||
                   this.MemoryMap.Segments == null)
@@ -248,7 +248,6 @@ namespace Reko.Core
         {
             return string.Format("{0}!{1}", program.Name, proc.Name);
         }
-        
 
         public abstract int GetByteSizeFromCBasicType(CBasicType cb);
 

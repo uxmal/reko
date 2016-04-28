@@ -81,6 +81,33 @@ namespace Reko.Environments.AmigaOS
             return mapKickstartToListOfLibraries;
         }
 
+        /// <summary>
+        /// Creates the Amiga absolute memory map.
+        /// </summary>
+        /// <returns>
+        /// ...which is trivial on the Amiga since the only known address
+        /// is the pointer at 0x00000004 that points to the ExecBase.
+        /// </returns>
+        public override ImageMap CreateAbsoluteMemoryMap()
+        {
+            EnsureTypeLibraries(base.PlatformIdentifier);
+            var imageMap = new ImageMap(
+                Address.Ptr32(0),
+                new ImageSegment(
+                    "interrupts",
+                    new MemoryArea(Address.Ptr32(0), new byte[0x100]),
+                    AccessMode.Read));
+            //$TODO: once we're guaranteed the correct Kickstart version
+            // has been loaded, we can execute the below.
+            //imageMap.AddItemWithSize(
+            //    Address.Ptr32(4),
+            //    new ImageMapItem(4)
+            //    {
+            //        DataType = new Pointer(Metadata.Types["ExecBase"], 4)
+            //    });
+            return imageMap;
+        }
+
         public override ProcedureSerializer CreateProcedureSerializer(
             ISerializedTypeVisitor<DataType> typeLoader,
             string defaultConvention)
