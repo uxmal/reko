@@ -129,7 +129,7 @@ namespace Reko.UnitTests.Core.CLanguage
         public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_OtherAttrs()
         {
             var ndte = new NamedDataTypeExtractor(platform, new DeclSpec[0], symbolTable);
-            var kind = ndte.GetArgumentKindFromAttributes(null);
+            var kind = ndte.GetArgumentKindFromAttributes("arg", null);
             Assert.IsNull(kind);
         }
 
@@ -137,12 +137,14 @@ namespace Reko.UnitTests.Core.CLanguage
         public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_null()
         {
             var ndte = new NamedDataTypeExtractor(platform, new DeclSpec[0], symbolTable);
-            var kind = ndte.GetArgumentKindFromAttributes(new List<CAttribute>
-            {
-                new CAttribute {
-                     Name = new QualifiedName { Components = new[] { "foo", "bar"} }
-                }
-            });
+            var kind = ndte.GetArgumentKindFromAttributes(
+                "arg",
+                new List<CAttribute>
+                {
+                    new CAttribute {
+                         Name = new QualifiedName { Components = new[] { "foo", "bar"} }
+                    }
+                });
             Assert.IsNull(kind);
         }
 
@@ -150,17 +152,19 @@ namespace Reko.UnitTests.Core.CLanguage
         public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_reko_reg()
         {
             var ndte = new NamedDataTypeExtractor(platform, new DeclSpec[0], symbolTable);
-            var kind = ndte.GetArgumentKindFromAttributes(new List<CAttribute>
-            {
-                new CAttribute {
-                     Name = new QualifiedName("reko", "arg"),
-                     Tokens = new List<CToken> {
-                         new CToken(CTokenType.Register),
-                         new CToken(CTokenType.Comma),
-                         new CToken(CTokenType.StringLiteral, "D0")
-                     }
-                }
-            });
+            var kind = ndte.GetArgumentKindFromAttributes(
+                "arg", 
+                new List<CAttribute>
+                {
+                    new CAttribute {
+                         Name = new QualifiedName("reko", "arg"),
+                         Tokens = new List<CToken> {
+                             new CToken(CTokenType.Register),
+                             new CToken(CTokenType.Comma),
+                             new CToken(CTokenType.StringLiteral, "D0")
+                         }
+                    }
+                });
             Assert.IsNotNull(kind);
             var sReg = (Register_v1)kind;
             Assert.AreEqual("D0", sReg.Name);

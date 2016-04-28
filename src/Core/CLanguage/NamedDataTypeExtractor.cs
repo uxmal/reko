@@ -198,7 +198,7 @@ namespace Reko.Core.CLanguage
             {
                 var ntde = new NamedDataTypeExtractor(platform, decl.DeclSpecs, symbolTable);
                 var nt = ConvertArrayToPointer(ntde.GetNameAndType(decl.Declarator));
-                var kind = GetArgumentKindFromAttributes(decl.Attributes);
+                var kind = GetArgumentKindFromAttributes("arg", decl.Attributes);
                 return new Argument_v1
                 {
                     Kind = kind,
@@ -214,7 +214,7 @@ namespace Reko.Core.CLanguage
         /// </summary>
         /// <param name="attrs"></param>
         /// <returns></returns>
-        public SerializedKind GetArgumentKindFromAttributes(List<CAttribute> attrs)
+        public SerializedKind GetArgumentKindFromAttributes(string paramType, List<CAttribute> attrs)
         {
             if (attrs == null)
                 return null;
@@ -222,7 +222,7 @@ namespace Reko.Core.CLanguage
             foreach (var attr in attrs)
             {
                 if (attr.Name.Components == null || attr.Name.Components.Length != 2 ||
-                    attr.Name.Components[0] != "reko" || attr.Name.Components[1] != "arg")
+                    attr.Name.Components[0] != "reko" || attr.Name.Components[1] != paramType)
                     continue;
                 if (attr.Tokens[0].Type != CTokenType.Register ||
                     attr.Tokens[1].Type != CTokenType.Comma)

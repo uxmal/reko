@@ -272,7 +272,6 @@ namespace Reko.Core.Serialization
             return program;
         }
 
-
         private Address LoadAddress(UserData_v4 user, IProcessorArchitecture arch)
         {
             if (user == null || user.LoadAddress == null)

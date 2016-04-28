@@ -26,6 +26,14 @@ using System.Xml;
 
 namespace Reko.Core
 {
+    /// <summary>
+    /// Reads XML into a Dictionary&lt;string,object&gt; (JSON envy!)
+    /// Handles the following XML as follows:
+    /// &lt;dict&gt;
+    ///   &lt;item key="UK"&gt;United Kingdom&lt/item&gt;
+    ///   &lt;item key="FR"&gt;France&lt;/item&gt;
+    /// &lt;/dict&gt;
+    /// </summary>
     public class XmlOptions
     {
         private static object ReadItem(XmlElement element)
@@ -46,7 +54,7 @@ namespace Reko.Core
                 return ReadDictionaryElements(
                     element.ChildNodes.OfType<XmlElement>());
             }
-            throw new NotSupportedException();
+            throw new NotSupportedException(element.Name);
         }
 
         private static Dictionary<string, object> ReadDictionaryElements(IEnumerable<XmlElement> elements)

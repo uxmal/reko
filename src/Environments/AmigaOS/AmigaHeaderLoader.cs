@@ -74,7 +74,10 @@ namespace Reko.Environments.AmigaOS
                     var nt = ntde.GetNameAndType(declarator.Declarator);
                     var ssig = (SerializedSignature)nt.DataType;
                     if (ssig.ReturnValue != null)
-                        ssig.ReturnValue.Kind = GetReturnRegister(declaration);
+                    {
+                        ssig.ReturnValue.Kind = ntde.GetArgumentKindFromAttributes(
+                            "returns", declaration.attribute_list);
+                    }
                     var sser = platform.CreateProcedureSerializer(tldser, platform.DefaultCallingConvention);
                     var sig = sser.Deserialize(ssig, platform.Architecture.CreateFrame());
                     SystemServices.Add(
@@ -90,18 +93,6 @@ namespace Reko.Environments.AmigaOS
                         });
                 }
             }
-        }
-
-        private Register_v1 GetReturnRegister(Decl declaration)
-        {
-            if (declaration.attribute_list == null)
-                return null;
-            return declaration.attribute_list
-                .Where(a =>
-                    a.Name.Components[0] == "reko" &&
-                    a.Name.Components[1] == "returns")
-                .Select(a => new Register_v1 { Name = (string)a.Tokens[2].Value })
-                .FirstOrDefault();
         }
 
         private int? GetVectorOffset(Decl declaration)

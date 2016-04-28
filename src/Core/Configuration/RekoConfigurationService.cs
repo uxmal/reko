@@ -26,6 +26,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace Reko.Core.Configuration
@@ -129,7 +130,11 @@ namespace Reko.Core.Configuration
                 TypeName = env.Type,
                 TypeLibraries = LoadCollection(env.TypeLibraries, LoadTypeLibraryReference),
                 CharacteristicsLibraries = LoadCollection(env.Characteristics, LoadTypeLibraryReference),
-                Options = XmlOptions.LoadIntoDictionary(env.Options)
+                Options = env.Options != null
+                    ? XmlOptions.LoadIntoDictionary(env.Options
+                        .SelectMany(o => o.ChildNodes.OfType<XmlElement>())
+                        .ToArray())
+                    : new Dictionary<string,object>()
             };
         }
 

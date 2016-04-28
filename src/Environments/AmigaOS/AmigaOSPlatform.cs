@@ -34,6 +34,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Reko.Core.CLanguage;
+using Reko.Core.Configuration;
 
 namespace Reko.Environments.AmigaOS
 {
@@ -45,23 +46,7 @@ namespace Reko.Environments.AmigaOS
     {
         private RtlInstructionMatcher a6Pattern;
         private Dictionary<int, SystemService> funcs; //$TODO: This should take a type of base pointer the reference is from ?
-        private static Dictionary<int, List<string>> mapKickstartToListOfLibraries = new Dictionary<int, List<string>>
-        {
-            {
-                33, new List<String>
-                {
-                    "exec_v33",
-                    "dos_v33"
-                }
-            },
-            {
-                34, new List<String>
-                {
-                    "exec_v34",
-                    "dos_v34"
-                }
-            }
-        }; //$TODO: Load available kickstart -> libraries mappings from disk ?
+        private static Dictionary<string, object> mapKickstartToListOfLibraries;
 
         public AmigaOSPlatform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch, "amigaOS")
@@ -77,12 +62,23 @@ namespace Reko.Environments.AmigaOS
                     RtlClass.Transfer));
         }
 
-        public static Dictionary<int, List<string>> MapKickstartToListOfLibraries
+        public Dictionary<string, object> MapKickstartToListOfLibraries
         {
             get
             {
-                return mapKickstartToListOfLibraries;
+                return EnsureMapKickstartToListOfLibraries();
             }
+        }
+
+        private Dictionary<string, object> EnsureMapKickstartToListOfLibraries()
+        {
+            if (mapKickstartToListOfLibraries != null)
+                return mapKickstartToListOfLibraries;
+
+            var cfgSvc = Services.RequireService<IConfigurationService>();
+            var env = cfgSvc.GetEnvironment(this.PlatformIdentifier);
+            mapKickstartToListOfLibraries = (Dictionary<string,object>)env.Options["versionDependentLibraries"];
+            return mapKickstartToListOfLibraries;
         }
 
         public override ProcedureSerializer CreateProcedureSerializer(
@@ -141,7 +137,7 @@ namespace Reko.Environments.AmigaOS
             var result_list = new List<String>();
             var selected_librarties = new Dictionary<String,String>();
 
-            var keys = mapKickstartToListOfLibraries.Keys.ToList();
+            var keys = EnsureMapKickstartToListOfLibraries().Keys.Select(k => Convert.ToInt32(k)).ToList();
             keys.Sort();
 
             int idx_version_to_select = keys.BinarySearch(ver);
@@ -158,7 +154,7 @@ namespace Reko.Environments.AmigaOS
             for (int ver_idx = idx_version_to_select; ver_idx >= 0; --ver_idx) 
             {
                 int try_version = keys.ElementAt(ver_idx);
-                foreach (string lib in mapKickstartToListOfLibraries[try_version]) 
+                foreach (string lib in (IEnumerable<object>)mapKickstartToListOfLibraries[try_version.ToString()])
                 {
                     string base_libname = GetLibraryBaseName(lib);
                     if (selected_librarties.ContainsKey(base_libname))
@@ -168,11 +164,15 @@ namespace Reko.Environments.AmigaOS
             }
             return selected_librarties.Values.ToList();
         }
+
         public void SetKickstartVersion(int v)
         {
-            List<String> lib_list = GetLibrarySetForKickstartVersion (v);
-
+            List<String> lib_list = GetLibrarySetForKickstartVersion(v);
         }
+
+        /// <summary>
+        /// AmigaOS doesn't appear to define a calling convention; each fn is ad-hoc.
+        /// </summary>
         public override string DefaultCallingConvention
         {
             get { return ""; }

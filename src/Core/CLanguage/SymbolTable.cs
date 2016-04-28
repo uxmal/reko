@@ -97,7 +97,8 @@ namespace Reko.Core.CLanguage
                 {
                     if (sSig.ReturnValue != null)
                     {
-                        sSig.ReturnValue.Kind = ntde.GetArgumentKindFromAttributes(decl.attribute_list);
+                        sSig.ReturnValue.Kind = ntde.GetArgumentKindFromAttributes(
+                            "returns", decl.attribute_list);
                     }
                     Procedures.Add(new Procedure_v1
                     {
