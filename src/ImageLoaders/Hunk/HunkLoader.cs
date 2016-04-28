@@ -630,7 +630,7 @@ print arg_mem
                 //$TODO: what are the registers on entry?
                 new EntryPoint(addrLoad, arch.CreateProcessorState())
             };
-            return new RelocationResults(entries, new RelocationDictionary(), new List<Address>());
+            return new RelocationResults(entries, new List<Address>());
         }
 
         private byte[] RelocateBytes(Address addrLoad)

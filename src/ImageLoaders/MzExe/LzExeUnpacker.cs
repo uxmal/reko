@@ -1,4 +1,3 @@
-
 #region License
 /* 
  * Copyright (C) 1999-2016 John Källén.
@@ -112,22 +111,23 @@ namespace Reko.ImageLoaders.MzExe
             List<EntryPoint> entryPoints = new List<EntryPoint>() {
 			    new EntryPoint(Address.SegPtr((ushort) (lzCs + addrLoad.Selector), lzIp), arch.CreateProcessorState()),
             };
-            var relocations = new RelocationDictionary();
 			if (isLz91)
 			{
-				Relocate91(RawImage, addrLoad.Selector.Value, imgLoaded, relocations);
+				Relocate91(RawImage, addrLoad.Selector.Value, imgLoaded);
 			}
 			else
 			{
-				Relocate90(RawImage, addrLoad.Selector.Value, imgLoaded, relocations);
+				Relocate90(RawImage, addrLoad.Selector.Value, imgLoaded);
 			}
-            return new RelocationResults(entryPoints, relocations, new List<Address>());
+            return new RelocationResults(entryPoints, new List<Address>());
 		}
 
 		// for LZEXE ver 0.90 
-		private  ImageMap Relocate90(byte [] pgmImg, ushort segReloc, MemoryArea pgmImgNew, RelocationDictionary relocations)
-		{
-			int ifile = lzHdrOffset + 0x19D;
+		private  ImageMap Relocate90(byte [] pgmImg, ushort segReloc, MemoryArea pgmImgNew)
+        {
+            var relocations = pgmImgNew.Relocations;
+
+            int ifile = lzHdrOffset + 0x19D;
 
 			// 0x19d=compressed relocation table address 
 
@@ -157,9 +157,10 @@ namespace Reko.ImageLoaders.MzExe
 
 		// Unpacks the relocation entries in a LzExe 0.91 binary
 
-		private ImageMap Relocate91(byte [] abUncompressed, ushort segReloc, MemoryArea pgmImgNew, RelocationDictionary relocations)
+		private ImageMap Relocate91(byte [] abUncompressed, ushort segReloc, MemoryArea pgmImgNew)
 		{
             const int CompressedRelocationTableAddress = 0x0158;
+            var relocations = pgmImgNew.Relocations;
 			int ifile = lzHdrOffset + CompressedRelocationTableAddress;
 
 			int rel_off=0;

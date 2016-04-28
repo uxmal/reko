@@ -30,9 +30,6 @@ namespace Reko.Core
         // Collection into which any found entry points found should be added.
         public readonly List<EntryPoint> EntryPoints;
 
-        // Each relocation is a potential constant pointer. Some platforms only relocate _segments_, though.
-        public readonly RelocationDictionary Relocations;
-
         // Some platforms oblige and give us the locations of all the functions.
         public readonly List<Address> Functions;
 
@@ -41,11 +38,9 @@ namespace Reko.Core
 
         public RelocationResults(
             List<EntryPoint> entryPoints, 
-            RelocationDictionary relocations,
             List<Address> functions)
         {
             this.EntryPoints = entryPoints;
-            this.Relocations = relocations;
             this.Functions = functions;
             this.Symbols = new SortedList<Address, ImageSymbol>();
         }

@@ -95,7 +95,7 @@ namespace Reko.Arch.M68k
 
         public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
         {
-            return new BeImageWriter(mem.Bytes, (uint)(addr.ToLinear() - mem.BaseAddress.ToLinear()));
+            return new BeImageWriter(mem, addr);
         }
 
         public override RegisterStorage GetRegister(int i)

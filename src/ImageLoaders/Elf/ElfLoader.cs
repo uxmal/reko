@@ -197,7 +197,7 @@ namespace Reko.ImageLoaders.Elf
         public abstract Address ComputeBaseAddress(IPlatform platform);
         public abstract int LoadProgramHeaderTable();
         public abstract void LoadSectionHeaders();
-        public abstract void LoadSymbols();
+        public abstract List<ElfSymbol> LoadSymbolsSection(ElfSection symSection);
 
         public IEnumerable<ElfSymbol> GetAllSymbols()
         {
@@ -404,6 +404,16 @@ namespace Reko.ImageLoaders.Elf
                     p_type == ProgramHeaderType.PT_DYNAMIC);
         }
 
+        public void LoadSymbols()
+        {
+            foreach (var section in Sections.Where(s =>
+                s.Type == SectionHeaderType.SHT_SYMTAB ||
+                s.Type == SectionHeaderType.SHT_DYNSYM))
+            {
+                Symbols[section] = LoadSymbolsSection(section);
+            }
+        }
+
         public string ReadAsciiString(ulong v)
         {
             return imgLoader.ReadAsciiString(v);
@@ -462,8 +472,8 @@ namespace Reko.ImageLoaders.Elf
         {
             switch (machine)
             {
-            case ElfMachine.EM_X86_64:
-                return new x86_64Relocator(this);
+            case ElfMachine.EM_X86_64: return new x86_64Relocator(this);
+            case ElfMachine.EM_PPC64: return new PpcRelocator64(this);
             }
             return base.CreateRelocator(machine);
         }
@@ -474,7 +484,7 @@ namespace Reko.ImageLoaders.Elf
             writer.WriteLine("Sections:");
             foreach (var sh in Sections)
             {
-                writer.WriteLine("{0,-18} sh_type: {1,-12} sh_flags: {2,-4} sh_addr; {3:X8} sh_offset: {4:X8} sh_size: {5:X8} sh_link: {6:X8} sh_info: {7:X8} sh_addralign: {8:X8} sh_entsize: {9:X8}",
+                writer.WriteLine("{0,-18} sh_type: {1,-12} sh_flags: {2,-4} sh_addr; {3:X8} sh_offset: {4:X8} sh_size: {5:X8} sh_link: {6,-18} sh_info: {7,-18} sh_addralign: {8:X8} sh_entsize: {9:X8}",
                     sh.Name,
                     sh.Type,
                     DumpShFlags(sh.Flags),
@@ -636,9 +646,6 @@ namespace Reko.ImageLoaders.Elf
             {
                 if (section.Name == null || section.Address == null)
                     continue;
-                if (section.Name == ".text")
-                    section.ToString();//$DEBUG
-
                 MemoryArea mem;
                 if (segMap.TryGetLowerBound(section.Address, out mem) &&
                     section.Address < mem.EndAddress)
@@ -730,15 +737,7 @@ namespace Reko.ImageLoaders.Elf
             }
         }
 
-        public override void LoadSymbols()
-        {
-            foreach (var section in Sections.Where(s => s.Type == SectionHeaderType.SHT_SYMTAB))
-            {
-                Symbols[section] = LoadSymbols64(section);
-            }
-        }
-
-        private List<ElfSymbol> LoadSymbols64(ElfSection symSection)
+        public override List<ElfSymbol> LoadSymbolsSection(ElfSection symSection)
         {
             Debug.Print("Symbols");
             var stringtableSection = symSection.LinkedSection;
@@ -770,7 +769,6 @@ namespace Reko.ImageLoaders.Elf
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             var entryPoints = new List<EntryPoint>();
-            var relocations = new RelocationDictionary();
             var addrEntry = GetEntryPointAddress(addrLoad);
             if (addrEntry != null)
             {
@@ -778,7 +776,7 @@ namespace Reko.ImageLoaders.Elf
                 entryPoints.Add(ep);
             }
             this.Relocator.Relocate(program);
-            return new RelocationResults(entryPoints, relocations, new List<Address>());
+            return new RelocationResults(entryPoints, new List<Address>());
         }
     }
 
@@ -932,6 +930,7 @@ namespace Reko.ImageLoaders.Elf
             switch (machine)
             {
             case ElfMachine.EM_386: return new x86Relocator(this);
+            case ElfMachine.EM_ARM: return new ArmRelocator(this);
             case ElfMachine.EM_MIPS: return new MipsRelocator(this);
             case ElfMachine.EM_PPC: return new PpcRelocator(this);
             case ElfMachine.EM_SPARC: return new SparcRelocator(this);
@@ -1219,15 +1218,7 @@ namespace Reko.ImageLoaders.Elf
             }
         }
 
-        public override void LoadSymbols()
-        {
-            foreach (var section in Sections.Where(s => s.Type == SectionHeaderType.SHT_SYMTAB))
-            {
-                Symbols[section] = LoadSymbols32(section);
-            }
-        }
-
-        private List<ElfSymbol> LoadSymbols32(ElfSection symSection)
+        public override List<ElfSymbol> LoadSymbolsSection(ElfSection symSection)
         {
             Debug.Print("Symbols");
             var stringtableSection = symSection.LinkedSection;
@@ -1270,7 +1261,7 @@ namespace Reko.ImageLoaders.Elf
             entryPoints.AddRange(CollectFunctionSymbols());
 
             Relocator.Relocate(program);
-            return new RelocationResults(entryPoints, relocations, new List<Address>());
+            return new RelocationResults(entryPoints, new List<Address>());
         }
 
         private IEnumerable<EntryPoint> CollectFunctionSymbols()

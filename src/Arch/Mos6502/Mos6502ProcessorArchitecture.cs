@@ -71,7 +71,7 @@ namespace Reko.Arch.Mos6502
 
         public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
         {
-            return new LeImageWriter(mem.Bytes, (uint)(addr.ToLinear() - mem.BaseAddress.ToLinear()));
+            return new LeImageWriter(mem, addr);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)

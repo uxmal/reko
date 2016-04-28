@@ -410,7 +410,6 @@ namespace Reko.ImageLoaders.MzExe
             entryPoints.Add(new EntryPoint(addrEntry, arch.CreateProcessorState()));
             return new RelocationResults(
                 entryPoints,
-                new RelocationDictionary(),
                 new List<Address>());
         }
 

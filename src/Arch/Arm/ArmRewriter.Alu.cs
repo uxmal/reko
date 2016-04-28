@@ -189,6 +189,22 @@ namespace Reko.Arch.Arm
 #endif
         }
 
+        private void RewritePush()
+        {
+            int offset = 0;
+            var dst = frame.EnsureRegister(A32Registers.sp);
+            foreach (var op in instr.ArchitectureDetail.Operands)
+            {
+                Expression ea = offset != 0
+                    ? emitter.ISub(dst, offset)
+                    : (Expression)dst;
+                var reg = frame.EnsureRegister(A32Registers.RegisterByCapstoneID[op.RegisterValue.Value]);
+                emitter.Assign(emitter.LoadDw(ea), reg);
+                offset += reg.DataType.Size;
+            }
+            emitter.Assign(dst, emitter.ISub(dst, offset));
+        }
+
         private void RewriteStm()
         {
             var dst = this.Operand(Dst);

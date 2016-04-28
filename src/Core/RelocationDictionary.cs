@@ -49,16 +49,16 @@ namespace Reko.Core
             }
         }
 
-		public void AddPointerReference(ulong imageOffset, uint pointer)
+        public void AddPointerReference(ulong linAddress, uint pointer)
 		{
 			var c = Constant.Create(PrimitiveType.Pointer32, pointer);
-			map.Add(imageOffset, c);
+			map.Add(linAddress, c);
 		}
 
-		public void AddSegmentReference(ulong imageOffset, ushort segmentSelector)
+		public void AddSegmentReference(ulong linAddress, ushort segmentSelector)
 		{
             var c = Constant.Create(PrimitiveType.SegmentSelector, segmentSelector);
-			map.Add(imageOffset, c);
+			map.Add(linAddress, c);
 		}
 
 		public bool Contains(uint imageOffset)

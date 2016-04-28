@@ -1,5 +1,20 @@
 ## Recent versions of Reko
 
+### Version 0.6.0.0
+* Combined code and low-level viewer, to allow users to compare Reko's output
+  with the original binary.
+* A graph viewer, to help users to visualize procedure call graph 
+* Image map view shows an overview of the image bytes as pixels 
+* Allow user to specify the encoding used for text when displaying character data
+* New reko configuration and project file formats
+* Improvements in user-specified data types
+* More MIPS instructions supported
+* SPARC support greatly expanded
+* Added initial support for DEC VAX processor architecture
+* Support for SEGA Genesis platform added
+* Much better support for ELF binaries, both executables and relocatable object files
+* Refactored central ImageMap class to support binaries with large address space "gaps" 
+
 ### Version 0.5.5.0
 * Shingled disassembler implementation, in preparation for heuristic discovery of code.
 * Support for WinCE / MIPS

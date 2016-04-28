@@ -200,6 +200,7 @@
     <Environments Include="$(ProjectDir)..\..\Environments\SysV\$(OutDir)Reko.Environments.SysV.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\Trs80\$(OutDir)Reko.Environments.Trs80.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\Windows\$(OutDir)Reko.Environments.Windows.*" />
+    <Environments Include="$(ProjectDir)..\..\Environments\ZX81\$(OutDir)Reko.Environments.ZX81.*" />
     <ConfigurationFiles Include="$(ProjectDir)..\..\Drivers\reko.config" />
   </ItemGroup>
   <Target Name="BeforeBuild">

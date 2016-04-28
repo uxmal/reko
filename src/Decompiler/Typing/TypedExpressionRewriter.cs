@@ -60,6 +60,7 @@ namespace Reko.Typing
                 RewriteFormals(proc.Signature);
                 foreach (Statement stm in proc.Statements)
                 {
+                    Debug.Print("{0:X8} {1}", stm.LinearAddress, stm.Instruction);
                     try
                     {
                         stm.Instruction = stm.Instruction.Accept(this);

@@ -51,4 +51,25 @@ namespace Reko.ImageLoaders.Elf
             };
         }
     }
+
+
+    public class Elf64_Rela
+    {
+        public ulong r_offset;
+        public ulong r_info;
+        public long r_addend;
+
+        public static Elf64_Rela Read(ImageReader rdr)
+        {
+            var o = rdr.ReadUInt64();
+            var i = rdr.ReadUInt64();
+            var a = rdr.ReadInt64();
+            return new Elf64_Rela
+            {
+                r_offset = o,
+                r_info = i,
+                r_addend = a
+            };
+        }
+    }
 }

@@ -149,7 +149,7 @@ namespace Reko.Arch.PowerPC
         public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
         {
             //$TODO: PowerPC is bi-endian.
-            return new BeImageWriter(mem.Bytes, (uint)(addr.ToLinear() - mem.BaseAddress.ToLinear()));
+            return new BeImageWriter(mem, addr);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)

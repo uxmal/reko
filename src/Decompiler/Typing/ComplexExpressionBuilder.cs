@@ -52,6 +52,7 @@ namespace Reko.Typing
         private DataType enclosingPtr;
         private bool dereferenced;          // True if expComplex was dereferenced (Mem0[expComplex])
         private bool dereferenceGenerated;       // True if a dereferencing expression has been emitted (field access or the like.
+        private int depth;
 
         public ComplexExpressionBuilder(
             DataType dtResult,
@@ -74,6 +75,7 @@ namespace Reko.Typing
         /// <returns>The rewritten expression.</returns>
         public Expression BuildComplex(bool dereferenced)
         {
+            depth = 0; //$DEBUG;
             this.enclosingPtr = null;
             if (expComplex.TypeVariable != null)
             {
@@ -171,6 +173,11 @@ namespace Reko.Typing
 
         private Expression RewritePointer(DataType ptr, DataType dtPointee, DataType dtOrigPointee)
         {
+            if (++depth > 20)
+            {
+                Debug.Print("*** Quitting; determine cause of recursion"); //$DEBUG
+                return expComplex;
+            }
             enclosingPtr = ptr;
             this.dtComplex = dtPointee;
             this.dtComplexOrig = dtOrigPointee;
@@ -221,6 +228,11 @@ namespace Reko.Typing
 
         public Expression VisitStructure(StructureType str)
         {
+            if (++depth > 20)
+            {
+                Debug.Print("*** recursion too deep, quitting. Determine error then remove this"); //$DEBUG
+                return expComplex;
+            }
             if (enclosingPtr != null)
             {
                 int strSize = str.GetInferredSize();
@@ -229,13 +241,16 @@ namespace Reko.Typing
                 {
                     var exp = CreateArrayAccess(str, enclosingPtr, offset / strSize, index);
                     index = null;
+                    --depth;
                     return exp;
                 }
                 else if (index != null && offset == 0)
                 {
                     var idx = this.ScaleDownIndex(index, strSize);
                     index = null;
-                    return CreateArrayAccess(str, enclosingPtr, 0, idx);
+                    var exp = CreateArrayAccess(str, enclosingPtr, 0, idx);
+                    --depth;
+                    return exp;
                 }
             }
             StructureField field = str.Fields.LowerBound(this.offset);
@@ -246,7 +261,9 @@ namespace Reko.Typing
             dtComplexOrig = field.DataType.ResolveAs<DataType>();
             this.expComplex = CreateFieldAccess(str, field.DataType, expComplex, field);
             offset -= field.Offset;
-            return dtComplex.Accept(this);
+            var e = dtComplex.Accept(this);
+            --depth;
+            return e;
         }
 
         public Expression VisitTypeReference(TypeReference typeref)
