@@ -353,6 +353,9 @@ namespace Reko.Typing
 
         public DataType VisitStructure(StructureType str)
 		{
+            // Do not transform user-defined types
+            if (str.UserDefined)
+                return str;
             if (visitedTypes.Contains(str))
                 return str;
             visitedTypes.Add(str);
@@ -382,6 +385,9 @@ namespace Reko.Typing
 
 		public DataType VisitUnion(UnionType ut)
 		{
+            // Do not transform user-defined types
+            if (ut.UserDefined)
+                return ut;
             foreach (var alt in ut.Alternatives.Values)
             {
                 alt.DataType = alt.DataType.Accept(this);
