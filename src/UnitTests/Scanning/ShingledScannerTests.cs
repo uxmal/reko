@@ -225,5 +225,24 @@ namespace Reko.UnitTests.Scanning
                 },
                 pointedTo.Values.First());
         }
+
+        [Test(Description ="Instructions whose extent overlaps a relocation are not valid.")]
+        public void Shsc_Relocation_CrossesInstruction()
+        {
+            var rd = new RelocationDictionary();
+            rd.AddPointerReference(0x10000001, 0x11000000);
+            Given_x86_Image(
+                0x01, 0x02, 0xC3, 0x04, 0x4);
+            Given_Scanner();
+
+            var seg = program.ImageMap.Segments.Values.First();
+            var by = this.sh.ScanSegment(seg);
+            Assert.AreEqual(new byte[]
+                {
+                    1, 0, 1, 0, 0
+                },
+                by);
+
+        }
     }
 }
