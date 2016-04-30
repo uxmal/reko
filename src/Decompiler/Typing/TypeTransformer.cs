@@ -60,7 +60,8 @@ namespace Reko.Typing
 			this.eventListener = eventListener;
 			this.unifier = new Unifier(factory);
 			this.comparer = new DataTypeComparer();
-		}
+            this.visitedTypes = new HashSet<DataType>();
+        }
 
 		public bool Changed
 		{

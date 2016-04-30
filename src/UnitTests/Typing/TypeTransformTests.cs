@@ -369,5 +369,31 @@ namespace Reko.UnitTests.Typing
         {
             RunTest(Fragments.MemStore, "Typing/TtranMemStore.txt");
         }
+
+        [Test]
+        public void TtranUserStruct()
+        {
+            var t1 = new StructureType("T1", 4, true);
+            var t2 = new StructureType("T2", 0, true)
+            {
+                Fields = { { 0, t1 } }
+            };
+            var ttran = new TypeTransformer(factory, store, null);
+            var dt = t2.Accept(ttran);
+            Assert.AreSame(t2, dt, "Should not affect user-defined types");
+        }
+
+        [Test]
+        public void TtranNonUserStruct()
+        {
+            var t1 = new StructureType("T1", 4, true);
+            var t2 = new StructureType("T2", 0, false)
+            {
+                Fields = { { 0, t1 } }
+            };
+            var ttran = new TypeTransformer(factory, store, null);
+            var dt = t2.Accept(ttran);
+            Assert.AreSame(t1, dt, "Should reduce fields at offset 0 ");
+        }
     }
 }
