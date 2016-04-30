@@ -115,7 +115,7 @@ namespace Reko.Scanning
                     inDelaySlot = false;
                     break;
                 }
-                if (i.InstructionClass == InstructionClass.Invalid)
+                if (IsInvalid(segment.MemoryArea, i))
                 {
                     AddEdge(G, bad, i.Address);
                     inDelaySlot = false;
@@ -138,7 +138,7 @@ namespace Reko.Scanning
                             }
                         }
                     }
-                    if ((i.InstructionClass & InstructionClass.Transfer) != 0) 
+                    if ((i.InstructionClass & InstructionClass.Transfer) != 0)
                     {
                         var addrDest = DestinationAddress(i);
                         if (addrDest != null)
@@ -180,6 +180,17 @@ namespace Reko.Scanning
                 }
             }
             return y;
+        }
+
+        private bool IsInvalid(MemoryArea mem, MachineInstruction instr)
+        {
+            if (instr.InstructionClass == InstructionClass.Invalid)
+                return true;
+            // If an instruction straddles a relocation, it can't be 
+            // a real instruction.
+            if (mem.Relocations.Overlaps(instr.Address, (uint)instr.Length))
+                return true;
+            return false;
         }
 
         /// <summary>

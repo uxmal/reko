@@ -39,11 +39,13 @@ namespace Reko.UnitTests.Scanning
         private MockRepository mr;
         private Program program;
         private ShingledScanner sh;
+        private RelocationDictionary rd;
 
         [SetUp]
         public void Setup()
         {
             mr = new MockRepository();
+            rd = null;
         }
 
         private void Given_Mips_Image(params uint[] words)
@@ -68,6 +70,7 @@ namespace Reko.UnitTests.Scanning
             var image = new MemoryArea(
                 Address.Ptr32(0x10000),
                 bytes);
+            this.rd = image.Relocations;
             var arch = new X86ArchitectureFlat32();
             CreateProgram(image, arch);
         }
@@ -229,20 +232,18 @@ namespace Reko.UnitTests.Scanning
         [Test(Description ="Instructions whose extent overlaps a relocation are not valid.")]
         public void Shsc_Relocation_CrossesInstruction()
         {
-            var rd = new RelocationDictionary();
-            rd.AddPointerReference(0x10000001, 0x11000000);
             Given_x86_Image(
                 0x01, 0x02, 0xC3, 0x04, 0x4);
+            rd.AddPointerReference(0x10001, 0x11000000);
             Given_Scanner();
 
             var seg = program.ImageMap.Segments.Values.First();
             var by = this.sh.ScanSegment(seg);
             Assert.AreEqual(new byte[]
                 {
-                    1, 0, 1, 0, 0
+                    0, 0, 0, 0, 0
                 },
                 by);
-
         }
     }
 }
