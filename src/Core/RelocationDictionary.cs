@@ -76,23 +76,28 @@ namespace Reko.Core
         public bool Overlaps(Address addr, uint length)
         {
             ulong linAddr = addr.ToLinear();
-            ulong linAddrReloc;
-            if (map.TryGetLowerBoundKey(linAddr, out linAddrReloc))
+            ulong linAddrEnd = linAddr + length;
+            ulong linReloc;
+            if (map.TryGetLowerBoundKey(linAddr, out linReloc))
             {
-                var relocLength = (uint)map[linAddrReloc].DataType.Size;
-                if (linAddrReloc + relocLength > linAddr)
+                // |-reloc----|
+                //      |-addr----|
+                var linRelocEnd = linReloc + (uint)map[linReloc].DataType.Size;
+                if (linReloc < linAddr && linAddr < linRelocEnd)
                 {
-                    if (linAddrReloc + relocLength <= linAddr + length)
-                        return true;
+                    return true;
                 }
             }
-            if (map.TryGetUpperBoundKey(linAddr, out linAddrReloc))
+            if (map.TryGetUpperBoundKey(linAddr, out linReloc))
             {
-                Debug.Assert(linAddr < linAddrReloc);
-                var relocLength = (uint)map[linAddrReloc].DataType.Size;
-                return
-                    linAddr + length > linAddrReloc &&
-                    linAddr + length < linAddrReloc + relocLength;
+                //     |-reloc----|
+                // |-addr----|
+                var linRelocEnd = linReloc + (uint)map[linReloc].DataType.Size;
+                if (linReloc < linAddrEnd)
+                {
+                    if (linAddrEnd < linRelocEnd)
+                        return true;
+                }
             }
             return false;
         }

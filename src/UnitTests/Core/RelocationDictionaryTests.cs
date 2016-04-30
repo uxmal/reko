@@ -81,6 +81,9 @@ namespace Reko.UnitTests.Core
             Assert.IsTrue(rd.Overlaps(Address.Ptr32(0x2003), 1));
             Assert.IsTrue(rd.Overlaps(Address.Ptr32(0x1FFC), 5));
             Assert.IsFalse(rd.Overlaps(Address.Ptr32(0x1FFF), 5));
+            Assert.IsFalse(rd.Overlaps(Address.Ptr32(0x2000), 4));
+            Assert.IsFalse(rd.Overlaps(Address.Ptr32(0x2000), 8));
+            Assert.IsFalse(rd.Overlaps(Address.Ptr32(0x1FFC), 8));
         }
 	}
 }
