@@ -222,6 +222,7 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Loading\DccSignatureLoader.cs" />
     <Compile Include="Decompiler.cs">
       <SubType>Code</SubType>
     </Compile>

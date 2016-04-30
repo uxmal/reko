@@ -168,6 +168,14 @@ namespace Reko.Core
             }
             else
             {
+                if (itemNew.Address.ToLinear() == 0x081B991C)  //$DEBUG
+                {
+                    ImageMapItem x;
+                    items.TryGetValue(item.Address, out x);
+                    x.ToString();
+                    Debug.Print("Item:    {0} {1} {2}", item.Address, item.DataType, item.Size);
+                    Debug.Print("ItemNew: {0} {1} {2}", itemNew.Address, itemNew.DataType, itemNew.Size);
+                }
                 if (!(item.DataType is UnknownType))
                     throw new NotSupportedException("Haven't handled this case yet.");
                 items.Remove(item.Address);

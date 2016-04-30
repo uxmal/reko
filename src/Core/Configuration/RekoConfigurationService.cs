@@ -51,12 +51,12 @@ namespace Reko.Core.Configuration
          IEnumerable<UiStyle> GetDefaultPreferences ();
 
          /// <summary>
-         /// Given a relative path with respect to the intallation directory, 
+         /// Given a relative path with respect to the installation directory, 
          /// returns the absolute path.
          /// </summary>
          /// <param name="path"></param>
          /// <returns></returns>
-         string GetInstallationRelativePath(string path);
+         string GetInstallationRelativePath(params string [] pathComponents);
     }
 
     public class RekoConfigurationService : IConfigurationService
@@ -305,8 +305,9 @@ namespace Reko.Core.Configuration
             return uiPreferences.Styles;
         }
 
-        public string GetInstallationRelativePath(string filename)
+        public string GetInstallationRelativePath(string [] pathComponents)
         {
+            var filename = Path.Combine(pathComponents);
             if (!Path.IsPathRooted(filename))
             {
                 return Path.Combine(

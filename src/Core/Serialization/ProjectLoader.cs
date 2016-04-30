@@ -113,7 +113,9 @@ namespace Reko.Core.Serialization
         /// Loads a .dcproject from a stream.
         /// </summary>
         /// <param name="stm"></param>
-        /// <returns>The Project if the file format was recognized, otherwise null.</returns>
+        /// <returns>
+        /// The Project if the file format was recognized, otherwise null.
+        /// </returns>
         public Project LoadProject(string filename, Stream stm)
         {
             var rdr = new XmlTextReader(stm);
