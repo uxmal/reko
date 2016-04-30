@@ -328,36 +328,36 @@ namespace Reko.Core.Types
             Word256 = CreateWord(32);
         }
 
-		public static PrimitiveType Bool {get; private set; }
+		public static PrimitiveType Bool { get; private set; }
 
-		public static PrimitiveType Byte {get; private set; }
+		public static PrimitiveType Byte { get; private set; }
         // 8-bit character
         public static PrimitiveType Char { get; private set; }
-		public static PrimitiveType SByte {get; private set; }
-		public static PrimitiveType UInt8 {get; private set; }
+		public static PrimitiveType SByte { get; private set; }
+		public static PrimitiveType UInt8 { get; private set; }
 
-		public static PrimitiveType Word16 {get; private set; }
-		public static PrimitiveType Int16 {get; private set; }
-		public static PrimitiveType UInt16 {get; private set; }
+		public static PrimitiveType Word16 { get; private set; }
+		public static PrimitiveType Int16 { get; private set; }
+		public static PrimitiveType UInt16 { get; private set; }
         public static PrimitiveType Ptr16 { get; private set; }
 
-		public static PrimitiveType SegmentSelector {get; private set; }
+		public static PrimitiveType SegmentSelector  {get; private set; }
 
-		public static PrimitiveType Word32 {get; private set; }
-		public static PrimitiveType Int32 {get; private set; }
-		public static PrimitiveType UInt32 {get; private set; }
-		public static PrimitiveType Pointer32 {get; private set; }
-		public static PrimitiveType Real32 {get; private set; }
+		public static PrimitiveType Word32 { get; private set; }
+		public static PrimitiveType Int32 { get; private set; }
+		public static PrimitiveType UInt32 { get; private set; }
+		public static PrimitiveType Pointer32 { get; private set; }
+		public static PrimitiveType Real32 { get; private set; }
         public static PrimitiveType SegPtr32 { get; private set; }
 
-		public static PrimitiveType Word64 {get; private set; }
-		public static PrimitiveType Int64 {get; private set; }
-		public static PrimitiveType UInt64 {get; private set; }
-		public static PrimitiveType Pointer64 {get; private set; }
+		public static PrimitiveType Word64 { get; private set; }
+		public static PrimitiveType Int64 { get; private set; }
+		public static PrimitiveType UInt64 { get; private set; }
+		public static PrimitiveType Pointer64 { get; private set; }
         public static PrimitiveType Real64 { get; private set; }
 
         public static PrimitiveType Word80 { get; private set; }
-		public static PrimitiveType Real80 {get; private set; }
+		public static PrimitiveType Real80 { get; private set; }
         public static PrimitiveType Bcd80 { get; private set; }
 
         public static PrimitiveType Word128 { get; private set; }
@@ -366,6 +366,5 @@ namespace Reko.Core.Types
         public static PrimitiveType Word256 { get; private set; }
 
         public static PrimitiveType WChar { get; private set; }
-
     }
 }

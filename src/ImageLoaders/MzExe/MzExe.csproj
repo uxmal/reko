@@ -77,7 +77,12 @@
     <Compile Include="MsdosImageLoader.cs" />
     <Compile Include="NeImageLoader.cs" />
     <Compile Include="PeImageLoader.cs" />
-    <Compile Include="PeResourceLoader.cs" />
+    <Compile Include="Pe\ResourceLoader.cs" />
+    <Compile Include="Pe\ArmRelocator.cs" />
+    <Compile Include="Pe\i386Relocator.cs" />
+    <Compile Include="Pe\MipsRelocator.cs" />
+    <Compile Include="Pe\Relocator.cs" />
+    <Compile Include="Pe\x86_64Relocator.cs" />
     <Compile Include="PkLiteUnpacker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

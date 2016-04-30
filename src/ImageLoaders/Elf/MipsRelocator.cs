@@ -24,21 +24,21 @@ using Reko.Core;
 
 namespace Reko.ImageLoaders.Elf
 {
-    public class MipsRelocator : ElfRelocator
+    public class MipsRelocator : ElfRelocator32
     {
         private ElfLoader32 elfLoader;
 
-        public MipsRelocator(ElfLoader32 elfLoader)
+        public MipsRelocator(ElfLoader32 elfLoader) : base(elfLoader)
         {
             this.elfLoader = elfLoader;
         }
 
-        public override void Relocate(Program program)
+        public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, Elf32_Rela rela)
         {
-            Relocate32(elfLoader);
+            throw new NotImplementedException();
         }
 
-        public override void RelocateEntry(List<ElfSymbol> symbols, ElfSection referringSection, Elf32_Rela rela)
+        public override string RelocationTypeToString(uint type)
         {
             throw new NotImplementedException();
         }

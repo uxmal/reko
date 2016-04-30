@@ -95,8 +95,9 @@ namespace Reko.ImageLoaders.MzExe
 		}
 
 		/// <summary>
-		/// Loads a Microsoft .EXE file. There are several widely varying sub-formats,
-		/// so we need to discover what flavour it is before we can proceed.
+		/// Loads a Microsoft .EXE file. There are several widely varying 
+        /// sub-formats, so we need to discover what flavour it is before we
+        /// can proceed.
 		/// </summary>
         public override Program Load(Address addrLoad)
 		{
@@ -105,9 +106,9 @@ namespace Reko.ImageLoaders.MzExe
 
         private ImageLoader CreateDeferredLoader()
         {
-            // The image may have been packed. We ask the unpacker service whether
-            // it can determine if the image is packed, and if so provide us with an
-            // image loader that knows how to do unpacking.
+            // The image may have been packed. We ask the unpacker service 
+            // whether it can determine if the image is packed, and if so 
+            // provide us with an image loader that knows how to do unpacking.
 
             var loaderSvc = services.RequireService<IUnpackerService>();
             if (IsPortableExecutable)

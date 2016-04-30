@@ -212,7 +212,6 @@ namespace Reko.Environments.C64
         {
             return new RelocationResults(
                 new List<EntryPoint>(),
-                new RelocationDictionary(),
                 new List<Address>());
         }
 

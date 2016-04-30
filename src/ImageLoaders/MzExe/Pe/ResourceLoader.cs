@@ -26,9 +26,9 @@ using System.Text;
 using Reko.Core;
 using System.IO;
 
-namespace Reko.ImageLoaders.MzExe
+namespace Reko.ImageLoaders.MzExe.Pe
 {
-    public class PeResourceLoader
+    public class ResourceLoader
     {
         const uint RT_BITMAP = 2;
         const uint RT_ICON = 3;
@@ -42,7 +42,7 @@ namespace Reko.ImageLoaders.MzExe
         private MemoryArea imgLoaded;
         private uint rvaResources;
 
-        public PeResourceLoader(MemoryArea imgLoaded, uint rvaResources)
+        public ResourceLoader(MemoryArea imgLoaded, uint rvaResources)
         {
             this.imgLoaded = imgLoaded;
             this.rvaResources = rvaResources;
@@ -72,12 +72,16 @@ namespace Reko.ImageLoaders.MzExe
                 var subRdr = new LeImageReader(imgLoaded, rvaResources + (rvaEntry & ~DIR_MASK));
                 if ((rvaEntry & DIR_MASK) == 0)
                     throw new BadImageFormatException();
-                var e = new ProgramResourceGroup
+                if ((rvaName & DIR_MASK) != 0)
                 {
-                    Name = ReadResourceString(rvaName),
-                };
-                e.Resources.AddRange(ReadNameDirectory(subRdr, 0));
-                entries.Add(e);
+                    var e = new ProgramResourceGroup
+                    {
+                        //Name = ReadResourceString(rvaName),
+                        Name = ReadResourceUtf16leString(rvaResources + (rvaName & ~DIR_MASK)),
+                    };
+                    e.Resources.AddRange(ReadNameDirectory(subRdr, 0));
+                    entries.Add(e);
+                }
             }
             for (int i = 0; i < cIdEntries; ++i)
             {
@@ -114,7 +118,7 @@ namespace Reko.ImageLoaders.MzExe
                     throw new BadImageFormatException();
                 var e = new ProgramResourceGroup
                 {
-                    Name = ReadResourceString(rvaName  & ~DIR_MASK),
+                    Name = ReadResourceUtf16leString(rvaResources + (rvaName  & ~DIR_MASK)),
                 };
                 e.Resources.AddRange(ReadLanguageDirectory(subRdr, resourceType, e.Name));
                 entries.Add(e);
@@ -257,5 +261,42 @@ namespace Reko.ImageLoaders.MzExe
             return Encoding.ASCII.GetString(abStr);
         }
 
+        public string ReadResourceUtf16leString(uint rva)
+        {
+            var rdr = new LeImageReader(imgLoaded, rva);
+            var len = rdr.ReadLeInt16();
+            var abStr = rdr.ReadBytes(len * 2);
+            return Encoding.Unicode.GetString(abStr);
+        }
     }
+
+#if NIZ
+        /**
+     * Recursively load resources.  Currently the only resource type that is fully implemented is VS_VERSIONINFO.
+     */
+    private void traverse(String path, ImageResourceDirectory dir, IRandomAccess ra, long rba, long rva) throws IOException {
+        ImageResourceDirectoryEntry[] entries = dir.getChildEntries();
+        for (int i=0; i < entries.length; i++) {
+            ImageResourceDirectoryEntry entry = entries[i];
+            String name = entry.getName(ra, rba);
+            if (entry.isDir()) {
+                int type = entry.getType();
+                if (path.length() == 0 && type >= 0 && type < Types.NAMES.length) {
+                    name = Types.NAMES[type];
+                }
+                ra.seek(rba + entry.getOffset());
+                traverse(path + name + "/", new ImageResourceDirectory(ra), ra, rba, rva);
+            } else {
+                ImageResourceDataEntry de = entry.getDataEntry(ra, rba, rva);
+		if (path.startsWith(Types.NAMES[Types.RT_VERSION])) {
+		    ra.seek(de.getDataAddress());
+		    versionInfo = new VsVersionInfo(ra);
+		    resources.putData(path + name, versionInfo);
+		} else {
+		    resources.putData(path + name, de);
+		}
+            }
+        }
+    }
+#endif
 }

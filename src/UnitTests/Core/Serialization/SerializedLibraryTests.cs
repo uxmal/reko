@@ -73,7 +73,7 @@ namespace Reko.UnitTests.Core.Serialization
 			{
 				lib = (SerializedLibrary) ser.Deserialize(stm);
 			}
-			Assert.AreEqual(20, lib.Procedures.Count);
+			Assert.AreEqual(21, lib.Procedures.Count);
 		}
 
 		[Test]

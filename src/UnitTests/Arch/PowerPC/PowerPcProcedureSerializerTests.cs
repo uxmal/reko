@@ -31,6 +31,7 @@ using Rhino.Mocks;
 using System;
 using System.Xml;
 using System.Xml.Serialization;
+using PowerPcProcedureSerializer = Reko.Arch.PowerPC.PowerPcProcedureSerializer;
 
 namespace Reko.UnitTests.Arch.PowerPC
 {

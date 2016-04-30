@@ -96,15 +96,22 @@ namespace Reko.Typing
             {
                 dt = PrimitiveType.CreateWord(dtLeft.Size).MaskDomain(Domain.Boolean | Domain.Integer | Domain.Character);
             }
-            else if (binExp.Operator == Operator.IMul || binExp.Operator == Operator.Shl)
+            else if (
+                binExp.Operator == Operator.IMul ||
+                binExp.Operator == Operator.Shl ||
+                binExp.Operator == Operator.IMod)
             {
                 dt = PrimitiveType.CreateWord(binExp.DataType.Size).MaskDomain(Domain.Integer);
             }
-            else if (binExp.Operator == Operator.SMul)
+            else if (
+                binExp.Operator == Operator.SMul ||
+                binExp.Operator == Operator.SDiv)
             {
                 dt = PrimitiveType.CreateWord(binExp.DataType.Size).MaskDomain(Domain.SignedInt);
             }
-            else if (binExp.Operator == Operator.UMul)
+            else if (
+                binExp.Operator == Operator.UMul ||
+                binExp.Operator == Operator.UDiv)
             {
                 dt = PrimitiveType.CreateWord(binExp.DataType.Size).MaskDomain(Domain.UnsignedInt);
             }

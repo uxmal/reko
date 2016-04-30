@@ -95,7 +95,7 @@ namespace Reko.Analysis
                     vp.Transform();
                     DeadCode.Eliminate(proc, ssa);
 
-              
+
                     // Build expressions. A definition with a single use can be subsumed
                     // into the using expression. 
 
@@ -124,11 +124,21 @@ namespace Reko.Analysis
                     web.Transform();
                     ssa.ConvertBack(false);
                 }
+                catch (StatementCorrelatedException stex)
+                {
+                    eventListener.Error(
+                        eventListener.CreateBlockNavigator(program, stex.Statement.Block),
+                        stex, 
+                        "An error occurred during data flow analysis.");
+                }
                 catch (Exception ex)
                 {
-                    eventListener.Error(new NullCodeLocation(proc.Name), ex, "An error occurred during data flow analysis.");
+                    eventListener.Error(
+                        new NullCodeLocation(proc.Name),
+                        ex,
+                        "An error occurred during data flow analysis.");
                 }
-			} 
+			}
 		}
 
 		public void DumpProgram()

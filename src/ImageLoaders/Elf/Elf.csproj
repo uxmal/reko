@@ -71,6 +71,7 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArmRelocator.cs" />
     <Compile Include="DynamicSectionRenderer.cs" />
     <Compile Include="Elf32_Dyn.cs" />
     <Compile Include="Elf32_EHdr.cs" />

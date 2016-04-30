@@ -55,16 +55,19 @@ namespace Reko.Core.Types
 		}
 
         public virtual DataType VisitFunctionType(FunctionType ft)
-		{
-			if (ft.ReturnType != null)
-				ft.ReturnType = ft.ReturnType.Accept(this);
+        {
+            if (ft.ReturnType != null)
+                ft.ReturnType = ft.ReturnType.Accept(this);
 
-			DataType [] p = ft.ArgumentTypes;
-			for (int i = 0; i < p.Length; ++i)
-			{
-				DataType dt = p[i].Accept(this);
-				p[i] = dt;
-			}
+            DataType[] p = ft.ArgumentTypes;
+            if (p != null)
+            { 
+                for (int i = 0; i < p.Length; ++i)
+                {
+                    DataType dt = p[i].Accept(this);
+                    p[i] = dt;
+                }
+            }
 			return ft;
 		}
 

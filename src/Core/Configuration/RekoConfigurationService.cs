@@ -216,7 +216,7 @@ namespace Reko.Core.Configuration
                 throw new ApplicationException("Missing app setting 'RekoConfiguration' in configuration file.");
             configFileName = Path.Combine(appDir, configFileName);
 
-            using (var stm = File.Open(configFileName, FileMode.Open))
+            using (var stm = File.Open(configFileName, FileMode.Open, FileAccess.Read))
             {
                 var ser = new XmlSerializer(typeof(RekoConfiguration_v1));
                 var sConfig = (RekoConfiguration_v1)ser.Deserialize(stm);

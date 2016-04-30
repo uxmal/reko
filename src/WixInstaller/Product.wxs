@@ -105,6 +105,7 @@
         <File Source="$(var.MacOS.ProjectDir)macos_classic.xml" />
         <File Source="$(var.Msdos.TargetPath)" />
         <File Source="$(var.Msdos.ProjectDir)realmodeintservices.xml" />
+        <File Source="$(var.Msdos.Design.TargetPath)" />
         <File Source="$(var.Ps3.TargetPath)" />
         <File Source="$(var.RiscOS.TargetPath)" />
         <File Source="$(var.SegaGenesis.TargetPath)" />

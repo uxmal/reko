@@ -70,7 +70,7 @@ namespace Reko.ImageLoaders.MzExe
 		{
 			ImageMap imageMap = imgLoadedMap;
 			ImageReader rdr = new LeImageReader(exe.RawImage, (uint) exe.e_lfaRelocations);
-            var relocations = new RelocationDictionary();
+            var relocations = imgLoaded.Relocations;
 			int i = exe.e_cRelocations;
 			while (i != 0)
 			{
@@ -102,7 +102,6 @@ namespace Reko.ImageLoaders.MzExe
             DumpSegments(imageMap);
             return new RelocationResults(
                 new List<EntryPoint> { new EntryPoint(addrStart, arch.CreateProcessorState()) },
-                relocations,
                 new List<Address>());
 		}
 

@@ -27,25 +27,20 @@ using System.Text;
 
 namespace Reko.ImageLoaders.Elf
 {
-    public class SparcRelocator : ElfRelocator
+    public class SparcRelocator : ElfRelocator32
     {
         private ElfLoader32 loader;
+        private Program program;
 
-        public SparcRelocator(ElfLoader32 loader)
+        public SparcRelocator(ElfLoader32 loader) : base(loader)
         {
             this.loader = loader;
         }
 
-        public override void Relocate(Program program)
+        public override void RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, Elf32_Rela rela)
         {
-            base.Relocate32(loader);
-        }
-
-        public override void RelocateEntry(List<ElfSymbol> symbols, ElfSection referringSection, Elf32_Rela rela)
-        {
-            var sym = symbols[(int)(rela.r_info >> 8)];
             if (loader.Sections.Count <= sym.SectionIndex)
-                return;       //$DEBUG
+                return; 
             if (sym.SectionIndex == 0)
                 return;
             var symSection = loader.Sections[(int)sym.SectionIndex];
@@ -55,13 +50,14 @@ namespace Reko.ImageLoaders.Elf
             uint mask = ~0u;
             var addr = referringSection.Address + rela.r_offset;
             uint P = (uint)addr.ToLinear();
-            var relR = loader.CreateReader(P);
-            var relW = loader.CreateWriter(P);
+            uint PP = P;
+            var relR = program.CreateImageReader(addr);
+            var relW = program.CreateImageWriter(addr);
 
             Debug.Print("  off:{0:X8} type:{1,-16} add:{3,-20} {4,3} {2} {5}",
                 rela.r_offset,
                 (SparcRt)(rela.r_info & 0xFF),
-                symbols[(int)(rela.r_info >> 8)].Name,
+                sym.Name,
                 rela.r_addend,
                 (int)(rela.r_info >> 8),
                 symSection.Name);
@@ -69,6 +65,8 @@ namespace Reko.ImageLoaders.Elf
             var rt = (SparcRt)(rela.r_info & 0xFF);
             switch (rt)
             {
+            case 0:
+                return;
             case SparcRt.R_SPARC_HI22:
                 A = rela.r_addend;
                 sh = 10;
@@ -86,18 +84,22 @@ namespace Reko.ImageLoaders.Elf
                 break;
             default:
                 throw new NotImplementedException(string.Format(
-                    "SPARC relocation type {0} not implemented yet.",
+                    "SPARC ELF relocation type {0} not implemented yet.",
                     rt));
             }
             var w = relR.ReadBeUInt32();
             w += ((uint)(S + A + P) >> sh) & mask;
             relW.WriteBeUInt32(w);
-            return;
         }
 
         private string LoadString(uint symtabOffset, uint sym)
         {
             return loader.ReadAsciiString(symtabOffset + sym);
+        }
+
+        public override string RelocationTypeToString(uint type)
+        {
+            return ((SparcRt)type).ToString();
         }
     }
 
