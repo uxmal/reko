@@ -339,6 +339,9 @@ namespace Reko.Scanning
         /// <returns></returns>
         public bool VisitGoto(RtlGoto g)
         {
+            var blockFrom = blockCur;
+            Debug.Print("old:    {0}", blockFrom.Name);
+            Debug.Print("  prev: {0}", string.Join(", ", blockFrom.Pred));
             if ((g.Class & RtlClass.Delay) != 0)
             {
                 // Get next instruction cluster.
@@ -352,6 +355,11 @@ namespace Reko.Scanning
                 var blockTarget = BlockFromAddress(ric.Address, addrTarget, blockCur.Procedure, state);
                 var blockSource = scanner.FindContainingBlock(ric.Address);
                 EnsureEdge(blockSource.Procedure, blockSource, blockTarget);
+                if (ric.Address == addrTarget)
+                {
+                    var bt = BlockFromAddress(ric.Address, addrTarget, blockCur.Procedure, state);
+                    EnsureEdge(blockSource.Procedure, blockFrom, bt);
+                }
                 return false;
             }
             CallSite site;
