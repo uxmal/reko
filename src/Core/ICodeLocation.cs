@@ -26,8 +26,8 @@ using System.Text;
 namespace Reko.Core
 {
     /// <summary>
-    /// A LocationNavigator is used by the GUI front-end to navigate to a given location. Locations can be Addresses,
-    /// Procedures, or blocks.
+    /// A LocationNavigator is used by the GUI front-end to navigate to a 
+    /// given location. Locations can be Addresses, Procedures, or blocks.
     /// </summary>
     public interface ICodeLocation
     {

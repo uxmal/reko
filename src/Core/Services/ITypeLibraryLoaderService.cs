@@ -99,7 +99,9 @@ namespace Reko.Core.Services
                 }
                 if (loaderType == null)
                 {
-                    diagSvc.Warn(string.Format("Metadata loader type {0} is unknown.", tlElement.Loader));
+                    diagSvc.Warn(
+                        "Metadata loader type {0} is unknown.", 
+                        tlElement.Loader);
                     return null;
                 }
             }

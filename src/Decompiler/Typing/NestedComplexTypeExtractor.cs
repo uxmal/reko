@@ -90,6 +90,9 @@ namespace Reko.Typing
 
 		public override DataType VisitStructure(StructureType str)
 		{
+            // Do not transform user-defined types
+            if (str.UserDefined)
+                return str;
             if (visitedTypes.Contains(str))
                 return str;
             visitedTypes.Add(str);
@@ -109,7 +112,10 @@ namespace Reko.Typing
 
 		public override DataType VisitUnion(UnionType ut)
 		{
-			if (insideComplexType)
+            // Do not transform user-defined types
+            if (ut.UserDefined)
+                return ut;
+            if (insideComplexType)
 			{
 				changed = true;
 				NestedComplexTypeExtractor nctr = new NestedComplexTypeExtractor(factory, store);

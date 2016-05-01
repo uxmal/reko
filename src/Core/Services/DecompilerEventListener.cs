@@ -32,8 +32,11 @@ namespace Reko.Core.Services
         ICodeLocation CreateProcedureNavigator(Program program, Procedure proc);
         ICodeLocation CreateBlockNavigator(Program program, Block block);
         void Warn(ICodeLocation location, string message);
+        void Warn(ICodeLocation location, string message, params object[] args);
         void Error(ICodeLocation location, string message);
+        void Error(ICodeLocation location, string message, params object[] args);
         void Error(ICodeLocation location, Exception ex, string message);
+        void Error(ICodeLocation location, Exception ex, string message, params object[] args);
 
         void ShowStatus(string caption);
         void ShowProgress(string caption, int numerator, int denominator);
@@ -52,14 +55,34 @@ namespace Reko.Core.Services
             Debug.Print("Warning: {0}: {1}", location, message);
         }
 
+        public void Warn(ICodeLocation location, string message, params object[] args)
+        {
+            Debug.Print("Warning: {0}: {1}", location,
+                string.Format(message, args));
+        }
+
         public void Error(ICodeLocation location, string message)
         {
             Debug.Print("Error: {0}: {1}", location, message);
         }
 
+        public void Error(ICodeLocation location, string message, params object [] args)
+        {
+            Debug.Print("Error: {0}: {1}", location,
+                string.Format(message, args));
+        }
+
         public void Error(ICodeLocation location, Exception ex, string message)
         {
             Debug.Print("Error: {0}: {1} {2}", location, message, ex.Message);
+        }
+
+        public void Error(ICodeLocation location, Exception ex, string message, params object[] args)
+        { 
+            Debug.Print("Error: {0}: {1} {2}", 
+                location, 
+                string.Format(message, args),
+                ex.Message);
         }
 
         public void AddDiagnostic(Diagnostic d)

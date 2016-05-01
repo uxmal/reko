@@ -73,20 +73,18 @@ namespace Reko.Core.Serialization
             if (!platform.TryParseAddress(segment.Address, out addr))
             {
                 diagSvc.Warn(
-                    string.Format(
-                        "Unable to parse address '{0}' in memory map segment {1}.",
-                        segment.Address,
-                        segment.Name));
+                    "Unable to parse address '{0}' in memory map segment {1}.",
+                    segment.Address,
+                    segment.Name);
                 return null;
             }
             uint size;
             if (!uint.TryParse(segment.Size, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out size))
             {
                 diagSvc.Warn(
-                    string.Format(
-                        "Unable to parse hexadecimal size '{0}' in memory map segment {1}.",
-                        segment.Size,
-                        segment.Name));
+                    "Unable to parse hexadecimal size '{0}' in memory map segment {1}.",
+                    segment.Size,
+                    segment.Name);
                 return null;
             }
             return new ImageSegment(segment.Name, addr, size, ConvertAccess(segment.Attributes));

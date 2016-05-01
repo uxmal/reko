@@ -518,6 +518,79 @@ fn00001100_exit:
         }
 
         [Test]
+        public void Scanner_NoDecompledProcedure()
+        {
+            Given_Program(Address.Ptr32(0x1000), new byte[0x2000]);
+            program.User.Procedures.Add(
+                Address.Ptr32(0x2000),
+                new Procedure_v1()
+                {
+                    Name = "ndProc",
+                    CSignature = "int ndProc(double dVal)",
+                    Decompile = false,
+                }
+            );
+
+            var sc = CreateScanner(program);
+            var proc = sc.ScanProcedure(Address.Ptr32(0x2000), "fn000020", arch.CreateProcessorState());
+            Assert.AreEqual("ndProc", proc.Name);
+            Assert.AreEqual("int32", proc.Signature.ReturnValue.DataType.ToString());
+            Assert.AreEqual("eax", proc.Signature.ReturnValue.Name);
+            Assert.AreEqual(1, proc.Signature.Parameters.Length);
+            Assert.AreEqual("real64", proc.Signature.Parameters[0].DataType.ToString());
+            Assert.AreEqual("dVal", proc.Signature.Parameters[0].Name);
+        }
+
+        [Test]
+        public void Scanner_EnqueueUserProcedure()
+        {
+            Given_Program(Address.Ptr32(0x1000), new byte[0x2000]);
+
+            var sc = CreateScanner(program);
+            sc.EnqueueUserProcedure(new Procedure_v1
+            {
+                Address = "0x1010",
+                Name = "proc1",
+                Decompile = false
+            });
+            sc.EnqueueUserProcedure(new Procedure_v1
+            {
+                Address = "0x1020",
+                Name = "proc2",
+            });
+            sc.ScanImage();
+            Assert.AreEqual(1, program.Procedures.Count);
+            Assert.AreEqual("proc2", program.Procedures.Values[0].Name);
+        }
+
+        [Test]
+        public void Scanner_NoDecompiledEntryPoint()
+        {
+            Given_Program(Address.Ptr32(0x12314), new byte[20]);
+            program.User.Procedures.Add(
+                Address.Ptr32(0x12314),
+                new Procedure_v1()
+                {
+                    Decompile = false,
+                }
+            );
+
+            var sc = CreateScanner(program);
+            sc.EnqueueEntryPoint(
+                new EntryPoint(
+                    Address.Ptr32(0x12314),
+                    program.Architecture.CreateProcessorState()));
+            sc.EnqueueEntryPoint(
+                new EntryPoint(
+                    Address.Ptr32(0x12324),
+                    program.Architecture.CreateProcessorState()));
+            sc.ScanImage();
+
+            Assert.AreEqual(1, program.Procedures.Count);
+            Assert.AreEqual(0x12324, program.Procedures.Keys[0].Offset);
+        }
+
+        [Test]
         public void Scanner_EvenOdd()
         {
             var scan = CreateScanner(0x1000, 0x2000);
@@ -763,7 +836,6 @@ fn00001200_exit:
         }
 
         [Test(Description = "Scanner should be able to handle structures with padding 'holes'")]
-        [Ignore("@ptomin: see if you can get this to work.")]
         public void Scanner_GlobalData_StructWithPadding()
         {
             var bytes = new byte[]
@@ -799,7 +871,7 @@ fn00001200_exit:
             scanner.ScanImage();
 
             Assert.AreEqual(1, program.Procedures.Count, "Scanner should have detected the pointer to function correctly.");
-            Assert.AreEqual(Address.Ptr32(0x43210017), program.Procedures.Keys.First());
+            Assert.AreEqual(Address.Ptr32(0x43210008), program.Procedures.Keys.First());
         }
     }
 }

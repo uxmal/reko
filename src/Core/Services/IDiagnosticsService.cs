@@ -28,11 +28,14 @@ namespace Reko.Core.Services
     public interface IDiagnosticsService
     {
         void Error(string message);
+        void Error(string message, params object[] args);
         void Error(Exception ex, string message);
         void Error(ICodeLocation location, string message);
+        void Error(ICodeLocation location, string message, params object[] args);
         void Error(ICodeLocation location, Exception ex, string message);
         void Error(ICodeLocation location, Exception ex, string message, params object [] args);
         void Warn(string message);
+        void Warn(string message, params object[] args);
         void Warn(ICodeLocation location, string message);
         void Warn(ICodeLocation location, string message, params object[] args);
         void ClearDiagnostics();

@@ -89,7 +89,7 @@ namespace Reko.Core.Output
                 dc.Error(
                     dc.CreateAddressNavigator(program, addr),
                     ex,
-                    string.Format("Failed to write global variable {0}.", name));
+                    "Failed to write global variable {0}.", name);
             }
             formatter.Terminate(";");
         }
@@ -117,14 +117,21 @@ namespace Reko.Core.Output
                 dc.Error(
                     dc.CreateAddressNavigator(program, address),
                     ex,
-                    string.Format("Failed to write global variable {0}.", name));
+                    "Failed to write global variable {0}.",
+                    name);
             }
             formatter.Terminate(";");
         }
 
         public CodeFormatter VisitArray(ArrayType at)
         {
-            Debug.Assert(at.Length != 0, "Expected sizes of arrays to have been determined by now");
+            if (at.Length == 0)
+            {
+                var dc = services.RequireService<DecompilerEventListener>();
+                dc.Warn(
+                    dc.CreateAddressNavigator(program, rdr.Address),
+                    "Expected sizes of arrays to have been determined by now");
+            }
             var fmt = codeFormatter.InnerFormatter;
             fmt.Terminate();
             fmt.Indent();
