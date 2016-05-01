@@ -166,7 +166,6 @@ namespace Reko.UnitTests.Scanning
         }
 
         [Test(Description = "Scanner should be able to handle structures with padding 'holes'")]
-        [Ignore("Disabled until #141 has been fixed")]
         public void Gdwi_StructWithPadding()
         {
             var bytes = new byte[]
@@ -192,7 +191,7 @@ namespace Reko.UnitTests.Scanning
                 // two-byte gap here.
                 new StructureField(4, new Pointer(ft, 4), "pfn")
             });
-            Expect_ScannerGlobalData(0x43210008, str);
+            Expect_ScannerGlobalData(0x43210008, ft);
             mr.ReplayAll();
 
             var gdwi = new GlobalDataWorkItem(scanner, program, program.ImageMap.BaseAddress, str);
