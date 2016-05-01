@@ -124,7 +124,13 @@ namespace Reko.Core.Output
 
         public CodeFormatter VisitArray(ArrayType at)
         {
-            Debug.Assert(at.Length != 0, "Expected sizes of arrays to have been determined by now");
+            if (at.Length == 0)
+            {
+                var dc = services.RequireService<DecompilerEventListener>();
+                dc.Warn(
+                    dc.CreateAddressNavigator(program, rdr.Address),
+                    "Expected sizes of arrays to have been determined by now");
+            }
             var fmt = codeFormatter.InnerFormatter;
             fmt.Terminate();
             fmt.Indent();
