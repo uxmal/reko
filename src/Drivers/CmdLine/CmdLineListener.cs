@@ -57,9 +57,19 @@ namespace Reko.CmdLine
             Console.Out.WriteLine("{0}: warning: {1}", location.Text, message);
         }
 
+        public void Warn(ICodeLocation location, string message, params object[] args)
+        {
+            Warn(location, string.Format(message, args));
+        }
+
         public void Error(ICodeLocation location, string message)
         {
             Console.Out.WriteLine("{0}: error: {1}", location.Text, message);
+        }
+
+        public void Error(ICodeLocation location, string message, params object[] args)
+        {
+            Error(location, string.Format(message, args));
         }
 
         public void Error(ICodeLocation location, Exception ex, string message)
@@ -71,6 +81,11 @@ namespace Reko.CmdLine
                 Console.Out.WriteLine("    {0}", ex.StackTrace);
                 ex = ex.InnerException;
             }
+        }
+
+        public void Error(ICodeLocation location, Exception ex, string message, params object[] args)
+        {
+            Error(location, ex, string.Format(message, args));
         }
 
         public void ShowStatus(string caption)

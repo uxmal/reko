@@ -89,7 +89,7 @@ namespace Reko.Core.Output
                 dc.Error(
                     dc.CreateAddressNavigator(program, addr),
                     ex,
-                    string.Format("Failed to write global variable {0}.", name));
+                    "Failed to write global variable {0}.", name);
             }
             formatter.Terminate(";");
         }
@@ -117,7 +117,8 @@ namespace Reko.Core.Output
                 dc.Error(
                     dc.CreateAddressNavigator(program, address),
                     ex,
-                    string.Format("Failed to write global variable {0}.", name));
+                    "Failed to write global variable {0}.",
+                    name);
             }
             formatter.Terminate(";");
         }

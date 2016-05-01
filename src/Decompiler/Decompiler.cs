@@ -227,7 +227,7 @@ namespace Reko
             }
             catch (Exception ex)
             {
-                eventListener.Error(new NullCodeLocation(""), ex, string.Format("Unable to load script interpreter {0}."));
+                eventListener.Error(new NullCodeLocation(""), ex, "Unable to load script interpreter {0}.");
                 return;
             }
 
@@ -237,7 +237,7 @@ namespace Reko
                 interpreter.Run();
             } catch (Exception ex)
             {
-                eventListener.Error(new NullCodeLocation(""), ex, string.Format("An error occurred while running the script."));
+                eventListener.Error(new NullCodeLocation(""), ex, "An error occurred while running the script.");
             }
         }
 
