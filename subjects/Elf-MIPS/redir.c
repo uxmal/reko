@@ -36,6 +36,8 @@ void __start(Eq_23 * ra, word32 dwArg00)
 	word32 r2_26;
 	word32 r25_27;
 	r25_18();
+	while (true)
+		;
 }
 
 void __do_global_dtors_aux(Eq_39 * r25)

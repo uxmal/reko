@@ -49,11 +49,6 @@ void __start(word32 ra, word32 dwArg00)
 // Preserved:
 // Stack args: Stack +0000(32)
 // Terminates process
-l00400284:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
 __start_exit:
 // DataOut:
 // DataOut (flags): 
@@ -101,6 +96,11 @@ l00400238:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
+
+l00400284:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp r28:ra + 0x0FC08628 ra:0x00000000 r4:<invalid> r5:fp + 4 r6:<invalid> r7:<invalid> r2:<invalid> r25:<invalid> -8(fp):<invalid>
 
 
 

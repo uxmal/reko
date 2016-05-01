@@ -340,8 +340,6 @@ namespace Reko.Scanning
         public bool VisitGoto(RtlGoto g)
         {
             var blockFrom = blockCur;
-            Debug.Print("old:    {0}", blockFrom.Name);
-            Debug.Print("  prev: {0}", string.Join(", ", blockFrom.Pred));
             if ((g.Class & RtlClass.Delay) != 0)
             {
                 // Get next instruction cluster.
