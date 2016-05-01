@@ -60,10 +60,12 @@ namespace Reko.Core.Operators
 
 	public class LeOperator : SignedIntOperator
 	{
-		public override Constant ApplyConstants(Constant c1, Constant c2)
-		{
-            return Constant.Invalid;
-		}
+        public override Constant ApplyConstants(Constant c1, Constant c2)
+        {
+            return c1.ToInt32() <= c2.ToInt32()
+                ? Constant.True()
+                : Constant.False();
+        }
 
 		public override string ToString()
 		{
@@ -73,10 +75,12 @@ namespace Reko.Core.Operators
 
 	public class GeOperator : SignedIntOperator
 	{
-		public override Constant ApplyConstants(Constant c1, Constant c2)
-		{
-            return Constant.Invalid;
-		}
+        public override Constant ApplyConstants(Constant c1, Constant c2)
+        {
+            return c1.ToInt32() >= c2.ToInt32()
+                ? Constant.True()
+                : Constant.False();
+        }
 
 		public override string ToString()
 		{
