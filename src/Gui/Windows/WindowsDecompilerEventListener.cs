@@ -195,6 +195,8 @@ namespace Reko.Gui.Windows
             diagnosticSvc.Warn(location, message, args);
         }
 
+
+
         public void Error(ICodeLocation location, string message)
         {
             diagnosticSvc.Error(location, message);
@@ -208,6 +210,11 @@ namespace Reko.Gui.Windows
         public void Error(ICodeLocation location, Exception ex, string message)
         {
             diagnosticSvc.Error(location, ex, message);
+        }
+
+        public void Error(ICodeLocation location, Exception ex, string message, params object[] args)
+        {
+            diagnosticSvc.Error(location, ex, message, args);
         }
 
         void DecompilerEventListener.ShowStatus(string caption)
@@ -247,13 +254,6 @@ namespace Reko.Gui.Windows
             if (percentDone < 0)
                 percentDone.ToString();
             dlg.Worker.ReportProgress(percentDone);
-        }
-
- 
-
-        public void Error(ICodeLocation location, Exception ex, string message, params object[] args)
-        {
-            throw new NotImplementedException();
         }
 
         #endregion
