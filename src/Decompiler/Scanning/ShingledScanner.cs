@@ -45,7 +45,7 @@ namespace Reko.Scanning
         {
             this.program = program;
             this.host = host;
-            this.bad = program.Platform.MakeAddressFromLinear(~0u);
+            this.bad = program.Platform.MakeAddressFromLinear(~0ul);
             this.possibleCallDestinationTallies = new Dictionary<Address,int>();
             this.possiblePointerTargetTallies = new Dictionary<Address, int>();
         }
@@ -57,7 +57,8 @@ namespace Reko.Scanning
         /// <returns></returns>
         public IEnumerable<Address> Scan()
         {
-            try {
+            try
+            {
                 Dictionary<ImageSegment, byte[]> map = ScanExecutableSegments();
                 return SpeculateCallDests(map);
             }

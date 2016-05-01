@@ -168,7 +168,8 @@ namespace Reko.Core
             }
             else
             {
-                if (!(item.DataType is UnknownType))
+                if (!(item.DataType is UnknownType) &&
+                    !(item.DataType is CodeType))
                     throw new NotSupportedException("Haven't handled this case yet.");
                 items.Remove(item.Address);
                 item.Address += itemNew.Size;
