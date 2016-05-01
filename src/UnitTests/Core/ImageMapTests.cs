@@ -240,6 +240,42 @@ namespace Reko.UnitTests.Core
         }
 
         [Test]
+        public void Im_RemoveItem_DoNotMergeDisjoinedItems()
+        {
+            var map = new ImageMap(addrBase, 0x0100);
+            var codeAddr = addrBase;
+            var dataAddr = addrBase + 0x1000;
+            var textAddr = addrBase + 0x2000;
+            map.AddSegment(codeAddr, "code", AccessMode.ReadWrite, 0x100);
+            map.AddSegment(dataAddr, "data", AccessMode.ReadWrite, 0x4);
+            map.AddSegment(textAddr, "text", AccessMode.ReadWrite, 0x100);
+            var curAddr = addrBase;
+
+            CreateImageMapItem(map, PrimitiveType.Int32, addrBase + 0x1000);
+
+            map.Dump();
+
+            CheckImageMapTypes(map, "<unknown>", "int32", "<unknown>");
+            CheckImageMapAddresses(map, "8000:0000", "8000:1000", "8000:2000");
+            CheckImageMapSizes(map, 0x100, 0x4, 0x100);
+
+            map.RemoveItem(codeAddr);
+            CheckImageMapTypes(map, "<unknown>", "int32", "<unknown>");
+            CheckImageMapAddresses(map, "8000:0000", "8000:1000", "8000:2000");
+            CheckImageMapSizes(map, 0x100, 0x4, 0x100);
+
+            map.RemoveItem(dataAddr);
+            CheckImageMapTypes(map, "<unknown>", "<unknown>", "<unknown>");
+            CheckImageMapAddresses(map, "8000:0000", "8000:1000", "8000:2000");
+            CheckImageMapSizes(map, 0x100, 0x4, 0x100);
+
+            map.RemoveItem(textAddr);
+            CheckImageMapTypes(map, "<unknown>", "<unknown>", "<unknown>");
+            CheckImageMapAddresses(map, "8000:0000", "8000:1000", "8000:2000");
+            CheckImageMapSizes(map, 0x100, 0x4, 0x100);
+        }
+
+        [Test]
         public void Im_FireChangeEvent()
         {
             var map = new ImageMap(addrBase, 0x100);
