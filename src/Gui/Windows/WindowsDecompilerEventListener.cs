@@ -195,8 +195,6 @@ namespace Reko.Gui.Windows
             diagnosticSvc.Warn(location, message, args);
         }
 
-
-
         public void Error(ICodeLocation location, string message)
         {
             diagnosticSvc.Error(location, message);
