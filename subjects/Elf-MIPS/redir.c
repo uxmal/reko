@@ -21,14 +21,13 @@ void _init(Eq_2 * r25)
 	return;
 }
 
-void __start(Eq_23 * ra, word32 dwArg00)
+void __start(word32 dwArg00)
 {
-	if (true)
-		;
-	code * r25_18 = ra->ptrFC00690;
+	Eq_24 * ra_2 = &globals->t400238;
+	code * r25_18 = ra_2->ptrFC00690;
 	word32 sp_19;
-	word32 r28_20;
-	word32 ra_21;
+	word32 ra_20;
+	word32 r28_21;
 	word32 r4_22;
 	word32 r5_23;
 	word32 r6_24;
