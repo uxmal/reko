@@ -30,6 +30,8 @@ namespace Reko.Core.Operators
 	{
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
+            if (!ValidArgs(c1, c2))
+                return Constant.Invalid;
 			try
 			{
 				return BuildConstant(c1.DataType, c2.DataType, unchecked((int) (c1.ToUInt32() * c2.ToUInt32())));
