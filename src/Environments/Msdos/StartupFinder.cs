@@ -259,7 +259,9 @@ namespace Reko.Environments.Msdos
             //        chVersion, /* Add version */
             //        chModel); /* Add model */
             //Debug.Print("Signature file: {0}", sSigName);
-            return new EntryPoint(addrEntry, this.state);
+            return new EntryPoint(addrEntry, "main", this.state)
+            {
+            };
         }
 
         private Address ReadSegPtr(MemoryArea mem, uint offset)

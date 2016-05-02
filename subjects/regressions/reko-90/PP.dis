@@ -173,10 +173,10 @@ l0800_023C:
 fn0800_01E6_exit:
 
 
-// fn0800_025E
+// main
 // Return size: 2
-void fn0800_025E()
-fn0800_025E_entry:
+void main()
+main_entry:
 	// succ:  l0800_025E
 l0800_025E:
 	sp = fp
@@ -425,8 +425,8 @@ l0800_0338:
 	bp = Mem0[ss:sp:word16]
 	sp = sp + 0x0002
 	return
-	// succ:  fn0800_025E_exit
-fn0800_025E_exit:
+	// succ:  main_exit
+main_exit:
 
 
 // fn0800_0402
