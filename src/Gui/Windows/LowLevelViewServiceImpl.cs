@@ -62,6 +62,9 @@ namespace Reko.Gui.Windows
             if (mvi == null || mvi.Program != program)
             {
                 ViewImage(program);
+            } else
+            {
+                ShowWindow(program);
             }
             mvi.SelectedAddress = addr;
         }
