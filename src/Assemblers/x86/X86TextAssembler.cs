@@ -42,14 +42,15 @@ namespace Reko.Assemblers.x86
 		private Lexer lexer;
 		private Address addrBase;
 		private Address addrStart;
-        private List<EntryPoint> entryPoints;
+        private List<ImageSymbol> entryPoints;
         private X86Assembler asm;
         private IntelArchitecture arch;
 
 		public X86TextAssembler(IServiceProvider services, IntelArchitecture arch)
 		{
             this.services = services;
-            this.entryPoints = new List<EntryPoint>();
+            this.entryPoints = new List<ImageSymbol>();
+            this.ImageSymbols = new List<ImageSymbol>();
             this.arch = arch;
         }
 
@@ -90,10 +91,12 @@ namespace Reko.Assemblers.x86
             get { return arch; }
         }
 
-        public ICollection<EntryPoint> EntryPoints
+        public ICollection<ImageSymbol> EntryPoints
         {
             get { return entryPoints; }
         }
+
+        public ICollection<ImageSymbol> ImageSymbols { get; private set; }
 
         public Address StartAddress
         {

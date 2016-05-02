@@ -49,7 +49,7 @@ namespace Reko.Core
 
         public Program()
         {
-            this.EntryPoints = new SortedList<Address, EntryPoint>();
+            this.EntryPoints = new SortedList<Address, ImageSymbol>();
             this.ImageSymbols = new SortedList<Address, ImageSymbol>();
             this.FunctionHints = new List<Address>();
             this.Procedures = new SortedList<Address, Procedure>();
@@ -169,11 +169,12 @@ namespace Reko.Core
         /// <summary>
         /// The entry points to the program.
         /// </summary>
-        public SortedList<Address, EntryPoint> EntryPoints { get; private set; }
+        public SortedList<Address, ImageSymbol> EntryPoints { get; private set; }
 
         /// <summary>
         /// List of function hints.
         /// </summary>
+        [Obsolete("Use ImageSymbols instead")]
         public List<Address> FunctionHints
         {
             get; private set;

@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             arch = arch16;
             baseAddr = baseAddr16;
-            var asm = new X86Assembler(sc, new MsdosPlatform(sc, arch), baseAddr16, new List<EntryPoint>());
+            var asm = new X86Assembler(sc, new MsdosPlatform(sc, arch), baseAddr16, new List<ImageSymbol>());
             host = new RewriterHost(asm.ImportReferences);
             return asm;
         }
@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             arch = arch32;
             baseAddr = baseAddr32;
-            var asm = new X86Assembler(sc, new DefaultPlatform(sc, arch), baseAddr32, new List<EntryPoint>());
+            var asm = new X86Assembler(sc, new DefaultPlatform(sc, arch), baseAddr32, new List<ImageSymbol>());
             host = new RewriterHost(asm.ImportReferences);
             return asm;
         }

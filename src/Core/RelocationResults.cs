@@ -28,16 +28,17 @@ namespace Reko.Core
     public class RelocationResults
     {
         // Collection into which any found entry points found should be added.
-        public readonly List<EntryPoint> EntryPoints;
+        public readonly List<ImageSymbol> EntryPoints;
 
         // Some platforms oblige and give us the locations of all the functions.
+        [Obsolete("Use ImageSymbol")]
         public readonly List<Address> Functions;
 
         // Symbols whose addresses are known.
         public SortedList<Address, ImageSymbol> Symbols;
 
         public RelocationResults(
-            List<EntryPoint> entryPoints, 
+            List<ImageSymbol> entryPoints, 
             List<Address> functions)
         {
             this.EntryPoints = entryPoints;

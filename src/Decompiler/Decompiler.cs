@@ -413,13 +413,17 @@ namespace Reko
                     var dt = global.Value.DataType.Accept(tlDeser);
                     scanner.EnqueueUserGlobalData(addr, dt);
                 }
-                foreach (EntryPoint ep in program.EntryPoints.Values)
+                foreach (ImageSymbol ep in program.EntryPoints.Values)
                 {
-                    scanner.EnqueueEntryPoint(ep);
+                    scanner.EnqueueImageSymbol(ep, true);
                 }
                 foreach (Procedure_v1 up in program.User.Procedures.Values)
                 {
                     scanner.EnqueueUserProcedure(up);
+                }
+                foreach (ImageSymbol sym in program.ImageSymbols.Values.Where(s => s.Type == SymbolType.Procedure))
+                {
+                    scanner.EnqueueImageSymbol(sym, false);
                 }
                 foreach (var addr in program.FunctionHints)
                 {

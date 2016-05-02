@@ -72,15 +72,16 @@ namespace Reko.Loading
         {
             var program = asm.Assemble(addrLoad, new StreamReader(new MemoryStream(image), Encoding.UTF8));
             program.Name = Path.GetFileName(fileName);
+            foreach (var sym in asm.ImageSymbols)
+            {
+                program.ImageSymbols[sym.Address] = sym;
+            }
             foreach (var ep in asm.EntryPoints)
             {
                 program.EntryPoints[ep.Address] = ep;
             }
-            program.EntryPoints[asm.StartAddress] = 
-                new EntryPoint(
-                    asm.StartAddress,
-                    null,
-                    program.Architecture.CreateProcessorState());
+            program.EntryPoints[asm.StartAddress] =
+                new ImageSymbol(asm.StartAddress);
             CopyImportReferences(asm.ImportReferences, program);
             return program;
         }
@@ -105,6 +106,10 @@ namespace Reko.Loading
             var program = imgLoader.Load(addrLoad);
             program.Name = Path.GetFileName(filename);
             var relocations = imgLoader.Relocate(program, addrLoad);
+            foreach (var sym in relocations.Symbols.Values)
+            {
+                program.ImageSymbols[sym.Address] = sym;
+            }
             foreach (var ep in relocations.EntryPoints)
             {
                 program.EntryPoints[ep.Address] = ep;
@@ -137,6 +142,10 @@ namespace Reko.Loading
             program.ImageMap = CreatePlatformMemoryMap(program.Platform, imgLoader.PreferredBaseAddress, image);
             program.Name = Path.GetFileName(filename);
             var relocations = imgLoader.Relocate(program, imgLoader.PreferredBaseAddress);
+            foreach (var sym in relocations.Symbols.Values)
+            {
+                program.ImageSymbols[sym.Address] = sym;
+            }
             foreach (var ep in relocations.EntryPoints)
             {
                 program.EntryPoints.Add(ep.Address, ep);
@@ -183,10 +192,11 @@ namespace Reko.Loading
                 imgLoader.PreferredBaseAddress = baseAddr;
                 entryAddr = GetRawBinaryEntryAddress(rawFile, image, arch, baseAddr);
                 var state = arch.CreateProcessorState();
-                imgLoader.EntryPoints.Add(new EntryPoint(
-                    entryAddr,
-                    rawFile.EntryPoint.Name,
-                    state));
+                imgLoader.EntryPoints.Add(new ImageSymbol(entryAddr)
+                {
+                    Name = rawFile.EntryPoint.Name,
+                    ProcessorState = state
+                });
             }
             return imgLoader;
         }

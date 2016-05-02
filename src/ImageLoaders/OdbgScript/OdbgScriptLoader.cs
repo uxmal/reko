@@ -100,9 +100,14 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            var eps = new List<EntryPoint>();
+            var eps = new List<ImageSymbol>();
             if (OriginalEntryPoint != null)
-                eps.Add(new EntryPoint(OriginalEntryPoint, null, Architecture.CreateProcessorState()));
+            {
+                eps.Add(new ImageSymbol(OriginalEntryPoint)
+                {
+                    ProcessorState = Architecture.CreateProcessorState()
+                });
+            }
             return new RelocationResults(eps, new List<Address>());
         }
 

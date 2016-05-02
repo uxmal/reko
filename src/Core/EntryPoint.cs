@@ -24,9 +24,15 @@ using System;
 
 namespace Reko.Core
 {
+    [Obsolete("", true)]
 	public class EntryPoint
 	{
-		public EntryPoint(
+        public EntryPoint(ImageSymbol s)
+            : this(s.Address, s.Name, s.ProcessorState, s.Signature)
+        {
+        }
+
+        public EntryPoint(
             Address addr,
             string name = null,
             ProcessorState state = null, 

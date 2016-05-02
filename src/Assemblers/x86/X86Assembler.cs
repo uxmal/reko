@@ -47,13 +47,13 @@ namespace Reko.Assemblers.x86
         private AssembledSegment currentSegment;
         private AssembledSegment unknownSegment;
         private SymbolTable symtab;
-        private List<EntryPoint> entryPoints;
+        private List<ImageSymbol> entryPoints;
         private Dictionary<Address, ImportReference> importReferences;
         private List<AssembledSegment> segments;
         private Dictionary<string, AssembledSegment> mpNameToSegment;
         private Dictionary<Symbol, AssembledSegment> symbolSegments;        // The segment to which a symbol belongs.
 
-        public X86Assembler(IServiceProvider services, IPlatform platform, Address addrBase, List<EntryPoint> entryPoints)
+        public X86Assembler(IServiceProvider services, IPlatform platform, Address addrBase, List<ImageSymbol> entryPoints)
         {
             this.services = services;
             this.arch = platform.Architecture;
@@ -1282,11 +1282,10 @@ namespace Reko.Assemblers.x86
         public void Proc(string procName)
         {
             DefineSymbol(procName);
+            //$BUG: should be symbols. the ORG directive specifies the start symbol.
             if (entryPoints != null && entryPoints.Count == 0)
                 entryPoints.Add(
-                    new EntryPoint(addrBase + emitter.Position,
-                    null, 
-                    arch.CreateProcessorState()));
+                    new ImageSymbol(addrBase + emitter.Position));
         }
 
         public void Push(ParsedOperand op)

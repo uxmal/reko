@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Assemblers.M68k
         public void Setup()
         {
             arch = new M68kArchitecture();
-            asm = new M68kAssembler(arch, Address.Ptr32(0x00010000), new List<EntryPoint>());
+            asm = new M68kAssembler(arch, Address.Ptr32(0x00010000), new List<ImageSymbol>());
         }
 
         private void BuildTest(Action<M68kAssembler> builder)

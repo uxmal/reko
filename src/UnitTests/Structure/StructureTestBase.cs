@@ -88,7 +88,7 @@ namespace Reko.UnitTests.Structure
             program.Platform = new DefaultPlatform(null, program.Architecture);
             program.EntryPoints.Add(
                 addrBase,
-                new EntryPoint(addrBase, null, program.Architecture.CreateProcessorState()));
+                new ImageSymbol(addrBase));
             return RewriteProgram();
         }
 
@@ -101,7 +101,7 @@ namespace Reko.UnitTests.Structure
             program.Platform = new DefaultPlatform(null, program.Architecture);
             program.EntryPoints.Add(
                 addrBase,
-                new EntryPoint(addrBase, null, program.Architecture.CreateProcessorState()));
+                new ImageSymbol(addrBase));
             return RewriteProgram();
         }
 
@@ -114,9 +114,9 @@ namespace Reko.UnitTests.Structure
                 program,
                 importResolver,
                 sc);
-            foreach (EntryPoint ep in program.EntryPoints.Values)
+            foreach (ImageSymbol ep in program.EntryPoints.Values)
             {
-                scan.EnqueueEntryPoint(ep);
+                scan.EnqueueImageSymbol(ep, true);
             }
             scan.ScanImage();
 

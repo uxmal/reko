@@ -211,11 +211,8 @@ namespace Reko.UnitTests.Analysis
                 program,
                 new ImportResolver(project, program, eventListener),
                 sc);
-            
-            scan.EnqueueEntryPoint(new EntryPoint(
-                asm.StartAddress, 
-                null,
-                program.Architecture.CreateProcessorState()));
+
+            scan.EnqueueImageSymbol(new ImageSymbol(asm.StartAddress), true);
             foreach (var f in project.Programs)
             {
                 foreach (var sp in f.User.Procedures.Values)

@@ -407,7 +407,7 @@ namespace Reko.ImageLoaders.MzExe
         {
             var entryNames = LoadEntryNames();
             var entryPoints = LoadEntryPoints(entryNames);
-            entryPoints.Add(new EntryPoint(addrEntry, null, arch.CreateProcessorState()));
+            entryPoints.Add(new ImageSymbol(addrEntry));
             return new RelocationResults(
                 entryPoints,
                 new List<Address>());
@@ -430,10 +430,10 @@ namespace Reko.ImageLoaders.MzExe
             return dict;
         }
 
-        public List<EntryPoint> LoadEntryPoints(Dictionary<int, string> names)
+        public List<ImageSymbol> LoadEntryPoints(Dictionary<int, string> names)
         {
             var rdr = new LeImageReader(RawImage, this.lfaNew + this.offEntryTable);
-            var entries = new List<EntryPoint>();
+            var entries = new List<ImageSymbol>();
             for (;;)
             {
                 var cEntries = rdr.ReadByte();
@@ -448,15 +448,13 @@ namespace Reko.ImageLoaders.MzExe
                     string name;
                     var addr = seg.Address + offset;
                     var state = arch.CreateProcessorState();
-                    EntryPoint ep;
+
+                    ImageSymbol ep = new ImageSymbol(addr);
                     if (names.TryGetValue(entries.Count, out name))
                     {
-                        ep = new EntryPoint(addr, name, state);
+                        ep.Name = name;
                     }
-                    else
-                    {
-                        ep = new EntryPoint(addr, null, state);
-                    }
+                    ep.ProcessorState = state;
                     entries.Add(ep);
                 }
             }

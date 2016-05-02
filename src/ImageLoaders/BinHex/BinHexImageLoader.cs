@@ -96,7 +96,7 @@ namespace Reko.ImageLoaders.BinHex
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            var entryPoints = new List<EntryPoint>();
+            var entryPoints = new List<ImageSymbol>();
             if (rsrcFork != null)
             {
                 rsrcFork.Dump();

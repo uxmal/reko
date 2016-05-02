@@ -27,7 +27,7 @@ using System.Text;
 namespace Reko.Core
 {
     /// <summary>
-    /// Represents a location  in an image whose name or size is 
+    /// Represents a location in an image whose name or size is 
     /// known. ImageSymbols are used to "seed" the Scanner
     /// phase of the decompiler.
     /// </summary>
@@ -66,18 +66,19 @@ namespace Reko.Core
         /// If non-null, the state of the processor at the time when
         /// the signature is referred.
         /// </summary>
-        public ProcessorState ProcessorState { get; private set; }
+        public ProcessorState ProcessorState { get; set; }
 
         /// <summary>
         /// If non-null, the signature of this symbol (if it is a function)
         /// </summary>
-        public SerializedSignature Signature { get; private set; }
+        public SerializedSignature Signature { get; set; }
     }
 
     public enum SymbolType
     {
         Unknown,        // Unknown type
         Code,           // executable code
-        Data,           // non-executable data.
+        Data,           // non-executable data
+        Procedure,      // Something that is called.
     }
 }

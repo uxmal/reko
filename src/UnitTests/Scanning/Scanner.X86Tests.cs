@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Scanning
             sc.AddService<DecompilerEventListener>(eventListener);
             sc.AddService<DecompilerHost>(new FakeDecompilerHost());
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
-            var entryPoints = new List<EntryPoint>();
+            var entryPoints = new List<ImageSymbol>();
             var asm = new X86Assembler(sc, platform, addrBase, entryPoints);
             asmProg(asm);
 
@@ -79,7 +79,7 @@ namespace Reko.UnitTests.Scanning
                 program,
                 new ImportResolver(project, program, eventListener),
                 sc);
-            scanner.EnqueueEntryPoint(new EntryPoint(addrBase, null, arch.CreateProcessorState()));
+            scanner.EnqueueImageSymbol(new ImageSymbol(addrBase), true);
             scanner.ScanImage();
         }
 

@@ -27,7 +27,8 @@ namespace Reko.Core.Assemblers
 	public interface Assembler
 	{
         Address StartAddress { get; }
-        ICollection<EntryPoint> EntryPoints { get; }
+        ICollection<ImageSymbol> EntryPoints { get; }
+        ICollection<ImageSymbol> ImageSymbols { get; }
         Dictionary<Address, ImportReference> ImportReferences { get; }
 
         Program Assemble(Address baseAddress, TextReader reader);

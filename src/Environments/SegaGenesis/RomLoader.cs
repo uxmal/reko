@@ -69,10 +69,14 @@ namespace Reko.Environments.SegaGenesis
         {
             // Get the Reset address from offset $0004 of the interrupt vector.
             var addrReset = Address.Ptr32(MemoryArea.ReadBeUInt32(RawImage, 4));
-            var eps = new List<EntryPoint>();
+            var eps = new List<ImageSymbol>();
             if (program.ImageMap.IsValidAddress(addrReset))
             {
-                eps.Add(new EntryPoint(addrReset, "Reset", program.Architecture.CreateProcessorState()));
+                eps.Add(new ImageSymbol(addrReset)
+                {
+                    Name = "Reset",
+                    ProcessorState = program.Architecture.CreateProcessorState()
+                });
             }
             return new RelocationResults(eps, new List<Address>());
         }
