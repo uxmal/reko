@@ -72,6 +72,16 @@ namespace Reko.UnitTests.Mocks
             Debug.Print("{0}: warning: {1}", location, string.Format(message, args));
         }
 
+        public void Inform(string message)
+        {
+            Debug.WriteLine(message);
+        }
+
+        public void Inform(string message, params object[] args)
+        {
+            Debug.WriteLine(message, args);
+        }
+
         public void ClearDiagnostics()
         {
         }

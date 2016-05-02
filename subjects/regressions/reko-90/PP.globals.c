@@ -4,5 +4,4 @@
 
 #include "PP.h"
 
- T_7 g_t8000 = ;
 

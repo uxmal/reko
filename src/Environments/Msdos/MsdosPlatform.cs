@@ -34,8 +34,11 @@ using System.Reflection;
 
 namespace Reko.Environments.Msdos
 {
+    /// <summary>
+    /// Platform services for the MS-DOS real-mode operating environment.
+    /// </summary>
     [Designer("Reko.Environments.Msdos.Design.MsdosPlatformDesigner,Reko.Environments.Msdos.Design")]
-    public class MsdosPlatform : Platform
+    public partial class MsdosPlatform : Platform
 	{
 		private SystemService [] realModeServices; 
 
@@ -64,6 +67,12 @@ namespace Reko.Environments.Msdos
         {
             base.EnsureTypeLibraries(envName);
             LoadRealmodeServices(Architecture);
+        }
+
+        public override EntryPoint FindMainProcedure(Program program, Address addrStart)
+        {
+            var sf = new StartupFinder(Services, program, addrStart);
+            return sf.FindMainAddress();
         }
 
         public override SystemService FindService(int vector, ProcessorState state)

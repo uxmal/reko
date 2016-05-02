@@ -84,6 +84,16 @@ namespace Reko.CmdLine
             throw new NotImplementedException();
         }
 
+        public void Inform(string message)
+        {
+            writer.WriteLine(message);
+        }
+
+        public void Inform(string message, params object[] args)
+        {
+            writer.WriteLine(message, args);
+        }
+
         public void ClearDiagnostics()
         {
             throw new NotImplementedException();

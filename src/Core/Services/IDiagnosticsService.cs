@@ -35,6 +35,8 @@ namespace Reko.Core.Services
         void Warn(string message);
         void Warn(ICodeLocation location, string message);
         void Warn(ICodeLocation location, string message, params object[] args);
+        void Inform(string message);
+        void Inform(string message, params object[] args);
         void ClearDiagnostics();
     }
 }

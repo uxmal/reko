@@ -102,9 +102,13 @@ namespace Reko.ImageLoaders.MzExe
                 AccessMode.ReadWriteExecute));
             DumpSegments(imageMap);
 
-            Address addrMain = platform.FindMainAddress(program, addrStart);
+            EntryPoint ep = platform.FindMainProcedure(program, addrStart);
+            if (ep == null)
+            {
+                ep = new EntryPoint(addrStart, arch.CreateProcessorState());
+            }
             return new RelocationResults(
-                new List<EntryPoint> { new EntryPoint(addrStart, arch.CreateProcessorState()) },
+                new List<EntryPoint> { ep },
                 new List<Address>());
 		}
 
