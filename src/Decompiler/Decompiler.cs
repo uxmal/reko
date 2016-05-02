@@ -423,7 +423,10 @@ namespace Reko
                 }
                 foreach (ImageSymbol sym in program.ImageSymbols.Values.Where(s => s.Type == SymbolType.Procedure))
                 {
-                    scanner.EnqueueImageSymbol(sym, false);
+                    if (sym.NoDecompile)
+                        program.EnsureUserProcedure(sym.Address, sym.Name, false);
+                    else
+                        scanner.EnqueueImageSymbol(sym, false);
                 }
                 foreach (var addr in program.FunctionHints)
                 {
