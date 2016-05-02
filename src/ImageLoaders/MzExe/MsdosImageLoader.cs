@@ -102,15 +102,22 @@ namespace Reko.ImageLoaders.MzExe
                 AccessMode.ReadWriteExecute));
             DumpSegments(imageMap);
 
-            EntryPoint ep = platform.FindMainProcedure(program, addrStart);
-            if (ep == null)
+            var ep = new ImageSymbol(addrStart)
             {
-                ep = new EntryPoint(addrStart, arch.CreateProcessorState());
-            }
-            return new RelocationResults(
-                new List<EntryPoint> { ep },
-                new List<ImageSymbol> { new ImageSymbol(addrStart) },
+                Type = SymbolType.Procedure,
+                ProcessorState = arch.CreateProcessorState()
+            };
+            var sym = platform.FindMainProcedure(program, addrStart);
+            var results = new RelocationResults(
+                new List<ImageSymbol> { ep },
+                new SortedList<Address, ImageSymbol> { { ep.Address, ep } },
                 new List<Address>());
+            if (sym != null)
+            {
+                results.Symbols[sym.Address] = sym;
+                ep.NoDecompile = true;
+            }
+            return results;
 		}
 
         [Conditional("DEBUG")]

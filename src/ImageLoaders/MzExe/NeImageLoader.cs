@@ -77,6 +77,7 @@ namespace Reko.ImageLoaders.MzExe
         private ushort offRsrcTable;
         private Address addrImportStubs;
         private Dictionary<uint, Tuple<Address, ImportReference>> importStubs;
+        private SortedList<Address, ImageSymbol> imageSymbols;
         private IProcessorArchitecture arch;
         private Address addrEntry;
 
@@ -87,6 +88,7 @@ namespace Reko.ImageLoaders.MzExe
             diags = Services.RequireService<IDiagnosticsService>();
             this.lfaNew = e_lfanew;
             this.importStubs = new Dictionary<uint, Tuple<Address, ImportReference>>();
+            this.imageSymbols = new SortedList<Address, ImageSymbol>();
             if (!LoadNeHeader(rdr))
                 throw new BadImageFormatException("Unable to read NE header.");
         }
@@ -410,6 +412,7 @@ namespace Reko.ImageLoaders.MzExe
             entryPoints.Add(new ImageSymbol(addrEntry));
             return new RelocationResults(
                 entryPoints,
+                imageSymbols,
                 new List<Address>());
         }
 
@@ -454,7 +457,9 @@ namespace Reko.ImageLoaders.MzExe
                     {
                         ep.Name = name;
                     }
+                    ep.Type = SymbolType.Procedure;
                     ep.ProcessorState = state;
+                    imageSymbols[ep.Address] = ep;
                     entries.Add(ep);
                 }
             }

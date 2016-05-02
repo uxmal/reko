@@ -60,6 +60,7 @@ namespace Reko.ImageLoaders.MzExe
         private uint rvaSectionTable;
 		private MemoryArea imgLoaded;
 		private Address preferredBaseOfImage;
+        private SortedList<Address, ImageSymbol> imageSymbols;
 		private SortedDictionary<string, Section> sectionMap;
         private Dictionary<uint, PseudoProcedure> importThunks;
 		private uint rvaStartAddress;		// unrelocated start address of the image.
@@ -85,6 +86,7 @@ namespace Reko.ImageLoaders.MzExe
 			}
             importThunks = new Dictionary<uint, PseudoProcedure>();
             importReferences = new Dictionary<Address, ImportReference>();
+            imageSymbols = new SortedList<Address, ImageSymbol>();
 			short expectedMagic = ReadCoffHeader(rdr);
 			ReadOptionalHeader(rdr, expectedMagic);
 		}
@@ -113,6 +115,7 @@ namespace Reko.ImageLoaders.MzExe
                 ImageSymbol ep = LoadEntryPoint(addrLoad, rdrAddrs, rdrNames);
 				if (imageMap.IsExecutableAddress(ep.Address))
 				{
+                    imageSymbols[ep.Address] = ep;
 					entryPoints.Add(ep);
 				}
 			}
@@ -129,7 +132,8 @@ namespace Reko.ImageLoaders.MzExe
             return new ImageSymbol(addrLoad + addr)
             {
                 Name = new string(chars),
-                ProcessorState = arch.CreateProcessorState()
+                ProcessorState = arch.CreateProcessorState(),
+                Type = SymbolType.Procedure,
             };
         }
 
@@ -437,17 +441,17 @@ namespace Reko.ImageLoaders.MzExe
                 ApplyRelocations(relocSection.OffsetRawData, relocSection.SizeRawData, (uint)addrLoad.ToLinear(), relocations);
 			}
             var addrEp = platform.AdjustProcedureAddress(addrLoad + rvaStartAddress);
-            var entryPoints = new List<ImageSymbol> {
-                CreateMainEntryPoint(
-                    (this.fileFlags & ImageFileDll)!=0,
+            var entrySym = CreateMainEntryPoint(
+                    (this.fileFlags & ImageFileDll) != 0,
                     addrEp,
-                    platform)
-            };
+                    platform);
+            imageSymbols[entrySym.Address] = entrySym;
+            var entryPoints = new List<ImageSymbol> { entrySym };
             var functions = ReadExceptionRecords(addrLoad, rvaExceptionTable, sizeExceptionTable);
             AddExportedEntryPoints(addrLoad, ImageMap, entryPoints);
 			ReadImportDescriptors(addrLoad);
             ReadDeferredLoadDescriptors(addrLoad);
-            return new RelocationResults(entryPoints, functions);
+            return new RelocationResults(entryPoints, imageSymbols, functions);
 		}
 
         public ImageSymbol CreateMainEntryPoint(bool isDll, Address addrEp, IPlatform platform)
@@ -488,7 +492,8 @@ namespace Reko.ImageLoaders.MzExe
             {
                 Name = name,
                 ProcessorState = arch.CreateProcessorState(),
-                Signature = ssig
+                Signature = ssig,
+                Type = SymbolType.Procedure
             };
         }
 

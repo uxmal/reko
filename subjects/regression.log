@@ -135,7 +135,35 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
    at Reko.DecompilerDriver.ReconstructTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 305
 
 === BENCHFN.dcproject
+*** BENCHFN.dcproject
+0800:1140: warning: Can't determine size of jump vector; probing only one entry.
+0800:17B2: warning: Can't determine size of jump vector; probing only one entry.
+0800:011E: warning: Procedure fn0800_0000 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+BENCHFN.dcproject: error: An internal error occurred while decompiling.
+    Specified argument was out of the range of valid values.
+Parameter name: Linear address 00000000 is not in known segment.
+       at Reko.Core.ImageMap.MapLinearAddressToAddress(UInt64 linearAddress) in D:\dev\uxmal\reko\master\src\Core\ImageMap.cs:line 394
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 217
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBasicBlocks() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 126
+   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 203
+   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 129
+   at Reko.DecompilerDriver.Decompile(String filename) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 99
+
 === BENCHFN.EXE
+*** BENCHFN.EXE
+0800:1140: warning: Can't determine size of jump vector; probing only one entry.
+0800:17B2: warning: Can't determine size of jump vector; probing only one entry.
+0800:011E: warning: Procedure fn0800_0000 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+BENCHFN.EXE: error: An internal error occurred while decompiling.
+    Specified argument was out of the range of valid values.
+Parameter name: Linear address 00000000 is not in known segment.
+       at Reko.Core.ImageMap.MapLinearAddressToAddress(UInt64 linearAddress) in D:\dev\uxmal\reko\master\src\Core\ImageMap.cs:line 394
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 217
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBasicBlocks() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 126
+   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 203
+   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 129
+   at Reko.DecompilerDriver.Decompile(String filename) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 99
+
 === pySample.dcproject
 *** pySample.dcproject
 : warning: Type transformer has looped 51 times, quitting prematurely.
@@ -197,6 +225,28 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
 
 === m68k_jump.dcproject
+=== PP.EXE
+*** PP.EXE
+Borland C v3 runtime detected
+0800:98F9: warning: Can't determine size of jump vector; probing only one entry.
+0800:8BC5: warning: Procedure fn0800_8BC2 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0800:9F9D: warning: Procedure fn0800_9F89 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0800:9F9D: warning: Procedure fn0800_9F89 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0800:9F8F: warning: Procedure fn0800_9F89 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0800:0EEA: warning: Can't determine size of jump vector; probing only one entry.
+0800:0EEA: warning: Unable to determine index variable for indirect jump.
+0800:0318: warning: Procedure fn0800_0000 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+0800:0318: warning: Procedure fn0800_0000 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+PP.EXE: error: An internal error occurred while decompiling.
+    Specified argument was out of the range of valid values.
+Parameter name: Linear address 00000000 is not in known segment.
+       at Reko.Core.ImageMap.MapLinearAddressToAddress(UInt64 linearAddress) in D:\dev\uxmal\reko\master\src\Core\ImageMap.cs:line 394
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 217
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBasicBlocks() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 126
+   at Reko.Analysis.DataFlowAnalysis.UntangleProcedures() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 203
+   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 129
+   at Reko.DecompilerDriver.Decompile(String filename) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 99
+
 === switch.dcproject
 === int16.dll
 === flags

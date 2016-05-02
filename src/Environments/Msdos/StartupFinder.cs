@@ -62,7 +62,7 @@ namespace Reko.Environments.Msdos
         /// successful, sets the DS register to the appropriate value.
         /// </summary>
         /// <returns></returns>
-        public EntryPoint FindMainAddress()
+        public ImageSymbol FindMainAddress()
         {
             var diagSvc = services.RequireService<IDiagnosticsService>();
             Address addrEntry;
@@ -259,8 +259,11 @@ namespace Reko.Environments.Msdos
             //        chVersion, /* Add version */
             //        chModel); /* Add model */
             //Debug.Print("Signature file: {0}", sSigName);
-            return new EntryPoint(addrEntry, "main", this.state)
-            {
+            return new ImageSymbol(addrEntry)
+            { 
+                Name ="main",
+                ProcessorState = this.state,
+                Type = SymbolType.Procedure,
             };
         }
 

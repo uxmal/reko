@@ -625,15 +625,20 @@ print arg_mem
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
+            var sym = new ImageSymbol(addrLoad)
+            {
+                Type = SymbolType.Procedure,
+                ProcessorState = arch.CreateProcessorState()
+            };
+
             var entries = new List<ImageSymbol>
             {
                 //$TODO: what are the registers on entry?
-                new ImageSymbol(addrLoad)
-                {
-                    ProcessorState = arch.CreateProcessorState()
-                }
             };
-            return new RelocationResults(entries, new List<Address>());
+            return new RelocationResults(
+                new List<ImageSymbol> { sym },
+                new SortedList<Address, ImageSymbol> { { sym.Address, sym } },
+                new List<Address>());
         }
 
         private byte[] RelocateBytes(Address addrLoad)

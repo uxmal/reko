@@ -101,14 +101,17 @@ namespace Reko.ImageLoaders.OdbgScript
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             var eps = new List<ImageSymbol>();
+            var syms = new SortedList<Address, ImageSymbol>();
             if (OriginalEntryPoint != null)
             {
-                eps.Add(new ImageSymbol(OriginalEntryPoint)
+                var sym = new ImageSymbol(OriginalEntryPoint)
                 {
                     ProcessorState = Architecture.CreateProcessorState()
-                });
+                };
+                syms.Add(sym.Address, sym);
+                eps.Add(sym);
             }
-            return new RelocationResults(eps, new List<Address>());
+            return new RelocationResults(eps, syms, new List<Address>());
         }
 
         public virtual PeImageLoader CreatePeImageLoader()

@@ -69,7 +69,7 @@ namespace Reko.Environments.Msdos
             LoadRealmodeServices(Architecture);
         }
 
-        public override EntryPoint FindMainProcedure(Program program, Address addrStart)
+        public override ImageSymbol FindMainProcedure(Program program, Address addrStart)
         {
             var sf = new StartupFinder(Services, program, addrStart);
             return sf.FindMainAddress();

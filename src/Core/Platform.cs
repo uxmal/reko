@@ -87,8 +87,8 @@ namespace Reko.Core
         /// <param name="imageMap">Program image in which to search</param>
         /// <param name="addrStart">The entrypoint according to the image.</param>
         /// <returns>null if no known runtime code was found, otherwise the 
-        /// an EntryPoint corresponding to the "real" user main procedure.</returns>
-        EntryPoint FindMainProcedure(Program program, Address addrStart);
+        /// an ImageSymbol corresponding to the "real" user main procedure.</returns>
+        ImageSymbol FindMainProcedure(Program program, Address addrStart);
 
         SystemService FindService(int vector, ProcessorState state);
         SystemService FindService(RtlInstruction call, ProcessorState state);
@@ -267,11 +267,11 @@ namespace Reko.Core
             return null;
         }
 
-        public virtual EntryPoint FindMainProcedure(Program program, Address addrStart)
+        public virtual ImageSymbol FindMainProcedure(Program program, Address addrStart)
         {
             // By default, we don't provide this service, but individual platforms 
             // may have the knowledge of how to find the "real" main program.
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public abstract SystemService FindService(int vector, ProcessorState state);

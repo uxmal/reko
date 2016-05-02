@@ -276,13 +276,14 @@ l01C8:
 			state.SetRegister(Registers.si, Constant.Word16(0));
 			state.SetRegister(Registers.di, Constant.Word16(0));
 
+            var sym = new ImageSymbol(Address.SegPtr(pklCs, pklIp))
+            {
+                Type = SymbolType.Procedure,
+                ProcessorState = state
+            };
             return new RelocationResults(
-                new List<ImageSymbol> {
-                    new ImageSymbol(Address.SegPtr(pklCs, pklIp))
-                    {
-                        ProcessorState = state
-                    }
-                },
+                new List<ImageSymbol> { sym },
+                new SortedList<Address, ImageSymbol> { { sym.Address, sym } },
                 new List<Address>());
 		}
 

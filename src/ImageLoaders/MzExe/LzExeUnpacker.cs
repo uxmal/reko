@@ -108,12 +108,13 @@ namespace Reko.ImageLoaders.MzExe
 		{
             // Seed the scanner with the start location.
 
-            List<ImageSymbol> entryPoints = new List<ImageSymbol>() {
-                new ImageSymbol(Address.SegPtr((ushort) (lzCs + addrLoad.Selector), lzIp))
-                {
-                    ProcessorState = arch.CreateProcessorState()
-                }
+            var sym = new ImageSymbol(Address.SegPtr((ushort)(lzCs + addrLoad.Selector), lzIp))
+            {
+                Type = SymbolType.Procedure,
+                ProcessorState = arch.CreateProcessorState()
             };
+            var imageSymbols = new SortedList<Address, ImageSymbol> { { sym.Address, sym } };
+            List<ImageSymbol> entryPoints = new List<ImageSymbol>() { sym };
 			if (isLz91)
 			{
 				Relocate91(RawImage, addrLoad.Selector.Value, imgLoaded);
@@ -122,7 +123,7 @@ namespace Reko.ImageLoaders.MzExe
 			{
 				Relocate90(RawImage, addrLoad.Selector.Value, imgLoaded);
 			}
-            return new RelocationResults(entryPoints, new List<Address>());
+            return new RelocationResults(entryPoints, imageSymbols, new List<Address>());
 		}
 
 		// for LZEXE ver 0.90 

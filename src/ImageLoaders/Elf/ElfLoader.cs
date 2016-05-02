@@ -799,14 +799,16 @@ namespace Reko.ImageLoaders.Elf
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
+            Relocator.Relocate(program);
+
             var entryPoints = new List<ImageSymbol>();
-            var result = new RelocationResults(entryPoints, new List<Address>());
+            var symbols = new SortedList<Address, ImageSymbol>();
             foreach (var sym in Symbols.Values.SelectMany(seg => seg))
             {
                 var imgSym = CreateImageSymbol(sym, Header64.e_type);
                 if (imgSym != null)
                 {
-                    result.Symbols[imgSym.Address] = imgSym;
+                    symbols[imgSym.Address] = imgSym;
                 }
             }
 
@@ -814,7 +816,7 @@ namespace Reko.ImageLoaders.Elf
             if (addrEntry != null)
             {
                 ImageSymbol entrySymbol;
-                if (result.Symbols.TryGetValue(addrEntry, out entrySymbol))
+                if (symbols.TryGetValue(addrEntry, out entrySymbol))
                 {
                     entryPoints.Add(entrySymbol);
                 }
@@ -827,9 +829,7 @@ namespace Reko.ImageLoaders.Elf
                     entryPoints.Add(ep);
                 }
             }
-
-            Relocator.Relocate(program);
-            return result;
+            return new RelocationResults(entryPoints, symbols, new List<Address>());
         }
     }
 
@@ -1302,14 +1302,16 @@ namespace Reko.ImageLoaders.Elf
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
+            Relocator.Relocate(program);
+
             var entryPoints = new List<ImageSymbol>();
-            var result = new RelocationResults(entryPoints, new List<Address>());
+            var symbols = new SortedList<Address, ImageSymbol>();
             foreach (var sym in Symbols.Values.SelectMany(seg => seg))
             {
                 var imgSym = CreateImageSymbol(sym, Header.e_type);
                 if (imgSym != null)
                 {
-                    result.Symbols[imgSym.Address] = imgSym;
+                    symbols[imgSym.Address] = imgSym;
                 }
             }
 
@@ -1317,7 +1319,7 @@ namespace Reko.ImageLoaders.Elf
             if (addrEntry != null)
             {
                 ImageSymbol entrySymbol;
-                if (result.Symbols.TryGetValue(addrEntry, out entrySymbol))
+                if (symbols.TryGetValue(addrEntry, out entrySymbol))
                 {
                     entryPoints.Add(entrySymbol);
                 }
@@ -1330,9 +1332,7 @@ namespace Reko.ImageLoaders.Elf
                     entryPoints.Add(ep);
                 }
             }
-
-            Relocator.Relocate(program);
-            return result;
+            return new RelocationResults(entryPoints, symbols, new List<Address>());
         }
     }
 
