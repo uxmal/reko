@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Evaluation
 		}
 
 		[Test]
-		public void ConstantPropagate()
+		public void Idc_ConstantPropagate()
 		{
 			Identifier ds = m.Frame.EnsureRegister(Registers.ds);
             var c = Constant.Word16(0x1234);
@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Evaluation
 		}
 
         [Test]
-        public void ConstantReferenceInt()
+        public void Idc_ConstantReferenceInt()
         {
             var dword = new TypeReference("DWORD", PrimitiveType.Int32);
             Identifier edx = new Identifier("edx", dword, Registers.edx);
@@ -82,7 +82,7 @@ namespace Reko.UnitTests.Evaluation
         }
 
         [Test]
-        public void ConstantReferencePointerToInt()
+        public void Idc_ConstantReferencePointerToInt()
         {
             var intptr = new TypeReference("INTPTR", new Pointer(PrimitiveType.Int32, 4));
             Identifier edx = new Identifier("edx", intptr, Registers.edx);
