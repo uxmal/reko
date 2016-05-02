@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Arch.Intel
 
         private void Given_Code(Action<X86Assembler> coder)
         {
-            var asm = new X86Assembler(sc, new DefaultPlatform(sc, arch), Address.Ptr32(0x00100000), new List<EntryPoint>());
+            var asm = new X86Assembler(sc, new DefaultPlatform(sc, arch), Address.Ptr32(0x00100000), new List<ImageSymbol>());
             coder(asm);
             var program = asm.GetImage();
             this.imageMap = program.ImageMap;

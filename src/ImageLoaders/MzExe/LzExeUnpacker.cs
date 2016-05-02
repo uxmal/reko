@@ -106,10 +106,13 @@ namespace Reko.ImageLoaders.MzExe
 
 		public override RelocationResults Relocate(Program program, Address addrLoad)
 		{
-			// Seed the scanner with the start location.
+            // Seed the scanner with the start location.
 
-            List<EntryPoint> entryPoints = new List<EntryPoint>() {
-			    new EntryPoint(Address.SegPtr((ushort) (lzCs + addrLoad.Selector), lzIp), arch.CreateProcessorState()),
+            List<ImageSymbol> entryPoints = new List<ImageSymbol>() {
+                new ImageSymbol(Address.SegPtr((ushort) (lzCs + addrLoad.Selector), lzIp))
+                {
+                    ProcessorState = arch.CreateProcessorState()
+                }
             };
 			if (isLz91)
 			{

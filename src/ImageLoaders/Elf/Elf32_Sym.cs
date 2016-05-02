@@ -55,7 +55,7 @@ namespace Reko.ImageLoaders.Elf
     }
 
 
-    public enum SymbolType
+    public enum ElfSymbolType
     {
         STT_NOTYPE = 0,
         STT_OBJECT = 1,

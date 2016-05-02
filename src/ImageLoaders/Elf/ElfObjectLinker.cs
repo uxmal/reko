@@ -169,7 +169,7 @@ namespace Reko.ImageLoaders.Elf
                 Alignment = 0x10,
             };
             foreach (var sym in loader.GetAllSymbols().Where(s => 
-                s.Type == SymbolType.STT_NOTYPE &&
+                s.Type == ElfSymbolType.STT_NOTYPE &&
                 !string.IsNullOrEmpty(s.Name)))
             {
                 rekoExtfn.Size = Align(rekoExtfn.Size, 0x10);
@@ -256,7 +256,7 @@ namespace Reko.ImageLoaders.Elf
         {
             // Find all unresolved symbols and add them as external procedures.
             foreach (var sym in loader.GetAllSymbols().Where(s =>
-                s.Type == SymbolType.STT_NOTYPE &&
+                s.Type == ElfSymbolType.STT_NOTYPE &&
                 !string.IsNullOrEmpty(s.Name)))
             {
                 var addr =

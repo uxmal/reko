@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Scanning
 
         private void BuildTest(Address addrBase, IPlatform platform, Action<M68kAssembler> asmProg)
         {
-            var entryPoints = new List<EntryPoint>();
+            var entryPoints = new List<ImageSymbol>();
             var asm = new M68kAssembler(arch, addrBase, entryPoints);
             asmProg(asm);
 
@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Scanning
                 program,
                 new ImportResolver(project, program, new FakeDecompilerEventListener()),
                 sc);
-            scanner.EnqueueEntryPoint(new EntryPoint(addrBase, arch.CreateProcessorState()));
+            scanner.EnqueueImageSymbol(new ImageSymbol(addrBase), true);
             scanner.ScanImage();
         }
 

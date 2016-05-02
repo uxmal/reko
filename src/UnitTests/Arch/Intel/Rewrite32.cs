@@ -154,7 +154,7 @@ namespace Reko.UnitTests.Arch.Intel
                 services);
             foreach (var ep in asm.EntryPoints)
             {
-                scan.EnqueueEntryPoint(ep);
+                scan.EnqueueImageSymbol(ep, true);
             }
             scan.ScanImage();
 

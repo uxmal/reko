@@ -202,16 +202,18 @@ namespace Reko.Environments.C64
                     new ImageSegment("code", image, AccessMode.ReadWriteExecute)),
                 arch,
                 new C64Platform(Services, null));
-            program.EntryPoints.Add(
-                image.BaseAddress,
-                new EntryPoint(image.BaseAddress, arch.CreateProcessorState()));
+            var sym = new ImageSymbol(image.BaseAddress)
+            {
+                ProcessorState = arch.CreateProcessorState()
+            };
+            program.EntryPoints.Add(sym.Address, sym);
             return program;
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
             return new RelocationResults(
-                new List<EntryPoint>(),
+                new List<ImageSymbol>(),
                 new List<Address>());
         }
 

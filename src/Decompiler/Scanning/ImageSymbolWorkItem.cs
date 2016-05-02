@@ -25,22 +25,31 @@ using System.Text;
 
 namespace Reko.Scanning
 {
-    public class EntryPointWorkitem : WorkItem
+    public class ImageSymbolWorkItem : WorkItem
     {
         private Scanner scanner;
         private Program program;
-        private EntryPoint ep;
+        private ImageSymbol sym;
+        private bool isEntryPoint;
 
-        public EntryPointWorkitem(Scanner scanner, Program program, EntryPoint ep) : base(ep.Address)
+        public ImageSymbolWorkItem(Scanner scanner, Program program, ImageSymbol sym, bool isEntryPoint) : base(sym.Address)
         {
             this.scanner = scanner;
             this.program = program;
-            this.ep = ep;
+            this.sym = sym;
+            this.isEntryPoint = isEntryPoint;
         }
 
         public override void Process()
         {
-            scanner.ScanEntryPoint(program, ep);
+            scanner.ScanImageSymbol(program, sym, isEntryPoint);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("Symbol: {0}{1}",
+                sym.Name ?? sym.Address.ToString(),
+                isEntryPoint ? " entry" : "");
         }
     }
 }

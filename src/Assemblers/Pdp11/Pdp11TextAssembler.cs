@@ -44,6 +44,7 @@ namespace Reko.Assemblers.Pdp11
         public Pdp11TextAssembler(IEmitter emitter)
         {
             this.emitter = emitter;
+            this.ImageSymbols = new List<ImageSymbol>();
         }
 
         public Program Assemble(Address addrBase, TextReader reader)
@@ -240,10 +241,12 @@ namespace Reko.Assemblers.Pdp11
 
         public Address StartAddress { get; private set; }
 
-        public ICollection<EntryPoint> EntryPoints
+        public ICollection<ImageSymbol> EntryPoints
         {
             get { throw new NotImplementedException(); }
         }
+        
+        public ICollection<ImageSymbol> ImageSymbols { get; private set; }
 
         public Dictionary<Address, ImportReference> ImportReferences
         {

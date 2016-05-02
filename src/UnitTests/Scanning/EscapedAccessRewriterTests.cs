@@ -84,9 +84,9 @@ namespace Reko.UnitTests.Scanning
 			var scan = new Scanner(
                 program, 
                 new ImportResolver(project, program, null), null);
-			foreach (EntryPoint ep in program.EntryPoints.Values)
+			foreach (ImageSymbol ep in program.EntryPoints.Values)
 			{
-				scan.EnqueueEntryPoint(ep);
+				scan.EnqueueImageSymbol(ep, true);
 			}
 			scan.ScanImage();
 			return program;

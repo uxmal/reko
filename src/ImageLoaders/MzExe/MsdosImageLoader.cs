@@ -109,6 +109,7 @@ namespace Reko.ImageLoaders.MzExe
             }
             return new RelocationResults(
                 new List<EntryPoint> { ep },
+                new List<ImageSymbol> { new ImageSymbol(addrStart) },
                 new List<Address>());
 		}
 

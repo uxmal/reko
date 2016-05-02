@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Arch.M68k
 
         private void Rewrite(Action<M68kAssembler> build)
         {
-            var asm = new M68kAssembler(arch, addrBase, new List<EntryPoint>());
+            var asm = new M68kAssembler(arch, addrBase, new List<ImageSymbol>());
             build(asm);
             mem = asm.GetImage().ImageMap.Segments.Values.First().MemoryArea;
         }
