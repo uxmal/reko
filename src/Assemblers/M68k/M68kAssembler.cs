@@ -41,14 +41,14 @@ namespace Reko.Assemblers.M68k
     public class M68kAssembler
     {
         private M68kArchitecture arch;
-        private List<EntryPoint> entryPoints;
+        private List<ImageSymbol> entryPoints;
         private List<ushort> constants;
 
-        public M68kAssembler(M68kArchitecture arch, Address addrBase, List<EntryPoint> entryPoints)
+        public M68kAssembler(M68kArchitecture arch, Address addrBase, List<ImageSymbol> entryPoints)
         {
             this.arch = arch;
             this.BaseAddress = addrBase;
-            this.entryPoints = new List<EntryPoint>();
+            this.entryPoints = new List<ImageSymbol>();
             this.Emitter = new Emitter();
             this.constants = new List<ushort>();
             this.Symbols = new SymbolTable();

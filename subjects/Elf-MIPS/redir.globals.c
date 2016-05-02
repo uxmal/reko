@@ -9,4 +9,7 @@ int8 g_aFFFFFFEC[];
  <anonymous> g_tFFFFFFFF;
 byte g_b0002;
 Eq_293 g_t0695;
+struct Eq_24 g_t400238 = 
+	{
+		;
 

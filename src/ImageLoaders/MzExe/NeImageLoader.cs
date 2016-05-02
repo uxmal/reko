@@ -77,6 +77,7 @@ namespace Reko.ImageLoaders.MzExe
         private ushort offRsrcTable;
         private Address addrImportStubs;
         private Dictionary<uint, Tuple<Address, ImportReference>> importStubs;
+        private SortedList<Address, ImageSymbol> imageSymbols;
         private IProcessorArchitecture arch;
         private Address addrEntry;
 
@@ -87,6 +88,7 @@ namespace Reko.ImageLoaders.MzExe
             diags = Services.RequireService<IDiagnosticsService>();
             this.lfaNew = e_lfanew;
             this.importStubs = new Dictionary<uint, Tuple<Address, ImportReference>>();
+            this.imageSymbols = new SortedList<Address, ImageSymbol>();
             if (!LoadNeHeader(rdr))
                 throw new BadImageFormatException("Unable to read NE header.");
         }
@@ -407,9 +409,10 @@ namespace Reko.ImageLoaders.MzExe
         {
             var entryNames = LoadEntryNames();
             var entryPoints = LoadEntryPoints(entryNames);
-            entryPoints.Add(new EntryPoint(addrEntry, arch.CreateProcessorState()));
+            entryPoints.Add(new ImageSymbol(addrEntry));
             return new RelocationResults(
                 entryPoints,
+                imageSymbols,
                 new List<Address>());
         }
 
@@ -430,10 +433,10 @@ namespace Reko.ImageLoaders.MzExe
             return dict;
         }
 
-        public List<EntryPoint> LoadEntryPoints(Dictionary<int, string> names)
+        public List<ImageSymbol> LoadEntryPoints(Dictionary<int, string> names)
         {
             var rdr = new LeImageReader(RawImage, this.lfaNew + this.offEntryTable);
-            var entries = new List<EntryPoint>();
+            var entries = new List<ImageSymbol>();
             for (;;)
             {
                 var cEntries = rdr.ReadByte();
@@ -448,15 +451,15 @@ namespace Reko.ImageLoaders.MzExe
                     string name;
                     var addr = seg.Address + offset;
                     var state = arch.CreateProcessorState();
-                    EntryPoint ep;
+
+                    ImageSymbol ep = new ImageSymbol(addr);
                     if (names.TryGetValue(entries.Count, out name))
                     {
-                        ep = new EntryPoint(addr, name, state);
+                        ep.Name = name;
                     }
-                    else
-                    {
-                        ep = new EntryPoint(addr, state);
-                    }
+                    ep.Type = SymbolType.Procedure;
+                    ep.ProcessorState = state;
+                    imageSymbols[ep.Address] = ep;
                     entries.Add(ep);
                 }
             }
@@ -827,10 +830,10 @@ namespace Reko.ImageLoaders.MzExe
 
             unknown:
             var svc = Services.RequireService<IDiagnosticsService>();
-            svc.Warn(string.Format("{0}: unknown ADDR TYPE {1},  " +
+            svc.Warn("{0}: unknown ADDR TYPE {1},  " +
                 "TYPE {2},  OFFSET {3:X4},  TARGET {4:X4} {5:X4}",
                 seg.Address.Selector, rep.address_type, rep.relocation_type,
-                rep.offset, rep.target1, rep.target2));
+                rep.offset, rep.target1, rep.target2);
             return false;
         }
 

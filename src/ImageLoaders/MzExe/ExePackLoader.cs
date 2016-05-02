@@ -37,6 +37,7 @@ namespace Reko.ImageLoaders.MzExe
     {
         private IProcessorArchitecture arch;
         private IPlatform platform;
+        private ImageMap imageMap;
 
         private uint exeHdrSize;
         private uint hdrOffset;
@@ -185,11 +186,13 @@ namespace Reko.ImageLoaders.MzExe
             state.SetRegister(Registers.cs, Constant.Word16(cs));
             state.SetRegister(Registers.ss, Constant.Word16(ss));
             state.SetRegister(Registers.bx, Constant.Word16(0));
-            var entryPoints = new List<EntryPoint> 
+            var ep = new ImageSymbol(Address.SegPtr(cs, ip))
             {
-                new EntryPoint(Address.SegPtr(cs, ip), state)
+                ProcessorState = state
             };
-            return new RelocationResults(entryPoints, new List<Address>());
+            var entryPoints = new List<ImageSymbol> { ep };
+            var imageSymbols = entryPoints.ToSortedList(e => e.Address, e => e);
+            return new RelocationResults(entryPoints, imageSymbols, new List<Address>());
         }
 
         private static byte[] signature = 
@@ -223,6 +226,5 @@ namespace Reko.ImageLoaders.MzExe
             0x03, 0xF0, 0x01, 0x06, 0x02, 0x00, 0x2D, 0x10, 0x00, 0x8E, 0xD8, 0x8E, 0xC0, 0xBB, 0x00, 0x00,
             0xFA, 0x8E, 0xD6, 0x8B, 0xE7, 0xFB, 0x2E, 0xFF, 0x2F,        
         };
-        private ImageMap imageMap;
     }
 }

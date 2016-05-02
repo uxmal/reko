@@ -227,7 +227,7 @@ namespace Reko
             }
             catch (Exception ex)
             {
-                eventListener.Error(new NullCodeLocation(""), ex, string.Format("Unable to load script interpreter {0}."));
+                eventListener.Error(new NullCodeLocation(""), ex, "Unable to load script interpreter {0}.");
                 return;
             }
 
@@ -237,7 +237,7 @@ namespace Reko
                 interpreter.Run();
             } catch (Exception ex)
             {
-                eventListener.Error(new NullCodeLocation(""), ex, string.Format("An error occurred while running the script."));
+                eventListener.Error(new NullCodeLocation(""), ex, "An error occurred while running the script.");
             }
         }
 
@@ -413,13 +413,17 @@ namespace Reko
                     var dt = global.Value.DataType.Accept(tlDeser);
                     scanner.EnqueueUserGlobalData(addr, dt);
                 }
-                foreach (EntryPoint ep in program.EntryPoints.Values)
+                foreach (ImageSymbol ep in program.EntryPoints.Values)
                 {
-                    scanner.EnqueueEntryPoint(ep);
+                    scanner.EnqueueImageSymbol(ep, true);
                 }
                 foreach (Procedure_v1 up in program.User.Procedures.Values)
                 {
                     scanner.EnqueueUserProcedure(up);
+                }
+                foreach (ImageSymbol sym in program.ImageSymbols.Values.Where(s => s.Type == SymbolType.Procedure))
+                {
+                    scanner.EnqueueImageSymbol(sym, false);
                 }
                 foreach (var addr in program.FunctionHints)
                 {

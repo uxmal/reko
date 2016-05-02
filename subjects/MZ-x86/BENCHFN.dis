@@ -188,7 +188,7 @@ l0800_00F3:
 	Mem0[ss:sp:word16] = Mem0[ds:0x0086:word16]
 	sp = sp - 0x0002
 	Mem0[ss:sp:word16] = Mem0[ds:0x0084:word16]
-	call fn0800_0265 (retsize: 2;)
+	call main (retsize: 2;)
 	sp = sp - 0x0002
 	Mem0[ss:sp:word16] = ax
 	call fn0800_0301 (retsize: 2;)
@@ -455,10 +455,10 @@ l0800_0245:
 fn0800_0245_exit:
 
 
-// fn0800_0265
+// main
 // Return size: 2
-void fn0800_0265()
-fn0800_0265_entry:
+void main()
+main_entry:
 	// succ:  l0800_0265
 l0800_0265:
 	sp = fp
@@ -531,8 +531,8 @@ l0800_02B9:
 	bp = Mem0[ss:sp:word16]
 	sp = sp + 0x0002
 	return
-	// succ:  fn0800_0265_exit
-fn0800_0265_exit:
+	// succ:  main_exit
+main_exit:
 
 
 // fn0800_0301

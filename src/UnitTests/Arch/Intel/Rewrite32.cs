@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Arch.Intel
             };
             configSvc.Stub(c => c.GetEnvironment("win32")).Return(win32env);
             configSvc.Stub(c => c.GetInstallationRelativePath(null)).IgnoreArguments()
-                .Do(new Func<string, string>(s => s));
+                .Do(new Func<string[], string>(s => string.Join("/", s)));
             services.Stub(s => s.GetService(typeof(ITypeLibraryLoaderService))).Return(tlSvc);
             services.Stub(s => s.GetService(typeof(IConfigurationService))).Return(configSvc);
             services.Stub(s => s.GetService(typeof(DecompilerEventListener))).Return(new FakeDecompilerEventListener());
@@ -154,7 +154,7 @@ namespace Reko.UnitTests.Arch.Intel
                 services);
             foreach (var ep in asm.EntryPoints)
             {
-                scan.EnqueueEntryPoint(ep);
+                scan.EnqueueImageSymbol(ep, true);
             }
             scan.ScanImage();
 

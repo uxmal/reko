@@ -242,7 +242,8 @@ namespace Reko.Core
             // Merge with previous item
             ImageMapItem prevItem;
             if (items.TryGetLowerBound((addr - 1), out prevItem) &&
-                prevItem.DataType is UnknownType)
+                prevItem.DataType is UnknownType &&
+                prevItem.EndAddress.Equals(item.Address))
             {
                 mergedItem = prevItem;
 
@@ -253,7 +254,8 @@ namespace Reko.Core
             // Merge with next item
             ImageMapItem nextItem;
             if (items.TryGetUpperBound((addr + 1), out nextItem) &&
-                nextItem.DataType is UnknownType)
+                nextItem.DataType is UnknownType &&
+                mergedItem.EndAddress.Equals(nextItem.Address))
             {
                 mergedItem.Size = (uint)(nextItem.EndAddress - mergedItem.Address);
                 items.Remove(nextItem.Address);

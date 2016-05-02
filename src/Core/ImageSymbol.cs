@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -27,8 +28,9 @@ using System.Text;
 namespace Reko.Core
 {
     /// <summary>
-    /// Represents a location in an image whose name or size is known. 
-    /// ImageSymbols are used to "seed" the Scanner phase of the decompiler.
+    /// Represents a location in an image whose name or size is 
+    /// known. ImageSymbols are used to "seed" the Scanner
+    /// phase of the decompiler.
     /// </summary>
     /// <remarks>
     /// This information is derived purely from what the image loader can 
@@ -44,8 +46,10 @@ namespace Reko.Core
             this.DataType = dataType;
         }
 
+        public SymbolType Type { get; set; }
+
         /// <summary>
-        /// The location the symbol refers to.
+        /// The location of the object referred to by the symbol.
         /// </summary>
         public Address Address { get; private set; }
 
@@ -57,6 +61,33 @@ namespace Reko.Core
         /// <summary>
         /// The data type of the symbol if it known.
         /// </summary>
+        public uint Size { get; set; }
+
+        /// <summary>
+        /// If set, Reko should just make not of the symbol and not 
+        /// attempt to decompile it.
+        /// </summary>
+        public bool NoDecompile { get; set; }
+
+        /// <summary>
+        /// If non-null, the state of the processor at the time when
+        /// the signature is referred.
+        /// </summary>
+        public ProcessorState ProcessorState { get; set; }
+
+        /// <summary>
+        /// If non-null, the signature of this symbol (if it is a function)
+        /// </summary>
+        public SerializedSignature Signature { get; set; }
+
         public DataType DataType { get; set; }
+    }
+
+    public enum SymbolType
+    {
+        Unknown,        // Unknown type
+        Code,           // executable code
+        Data,           // non-executable data
+        Procedure,      // Something that is called.
     }
 }

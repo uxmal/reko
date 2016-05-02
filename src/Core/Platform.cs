@@ -79,6 +79,17 @@ namespace Reko.Core
         string GetPrimitiveTypeName(PrimitiveType t, string v);
 
         ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host);
+
+        /// <summary>
+        /// Given an executable entry point, find the location of the "main" program,
+        /// bypassing any runtime startup code.
+        /// </summary>
+        /// <param name="imageMap">Program image in which to search</param>
+        /// <param name="addrStart">The entrypoint according to the image.</param>
+        /// <returns>null if no known runtime code was found, otherwise the 
+        /// an ImageSymbol corresponding to the "real" user main procedure.</returns>
+        ImageSymbol FindMainProcedure(Program program, Address addrStart);
+
         SystemService FindService(int vector, ProcessorState state);
         SystemService FindService(RtlInstruction call, ProcessorState state);
         string FormatProcedureName(Program program, Procedure proc);
@@ -116,7 +127,7 @@ namespace Reko.Core
         public virtual TypeLibrary Metadata { get; protected set; }
         public CharacteristicsLibrary[] CharacteristicsLibs { get; protected set; }
         public string Description { get; set; }
-        public PlatformHeuristics Heuristics { get; private set; }
+        public PlatformHeuristics Heuristics { get; set; }
         public string Name { get; set; }
         public MemoryMap_v1 MemoryMap { get; set; }
         public virtual PrimitiveType FramePointerType { get { return Architecture.FramePointerType; } }
@@ -248,13 +259,19 @@ namespace Reko.Core
         {
             return string.Format("{0}!{1}", program.Name, proc.Name);
         }
-        
 
         public abstract int GetByteSizeFromCBasicType(CBasicType cb);
 
         public virtual string GetPrimitiveTypeName(PrimitiveType pt, string language)
         {
             return null;
+        }
+
+        public virtual ImageSymbol FindMainProcedure(Program program, Address addrStart)
+        {
+            // By default, we don't provide this service, but individual platforms 
+            // may have the knowledge of how to find the "real" main program.
+            throw new NotSupportedException();
         }
 
         public abstract SystemService FindService(int vector, ProcessorState state);

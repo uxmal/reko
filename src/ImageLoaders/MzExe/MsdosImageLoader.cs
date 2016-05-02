@@ -29,7 +29,8 @@ using System.Diagnostics;
 namespace Reko.ImageLoaders.MzExe
 {
 	/// <summary>
-	/// Loads MS-DOS binary executables.
+	/// Loads MS-DOS binary executables that haven't had any packing or encryption
+    /// done to them.
 	/// </summary>
 	public class MsdosImageLoader : ImageLoader
 	{
@@ -100,9 +101,23 @@ namespace Reko.ImageLoaders.MzExe
                 imgLoaded,
                 AccessMode.ReadWriteExecute));
             DumpSegments(imageMap);
-            return new RelocationResults(
-                new List<EntryPoint> { new EntryPoint(addrStart, arch.CreateProcessorState()) },
+
+            var ep = new ImageSymbol(addrStart)
+            {
+                Type = SymbolType.Procedure,
+                ProcessorState = arch.CreateProcessorState()
+            };
+            var sym = platform.FindMainProcedure(program, addrStart);
+            var results = new RelocationResults(
+                new List<ImageSymbol> { ep },
+                new SortedList<Address, ImageSymbol> { { ep.Address, ep } },
                 new List<Address>());
+            if (sym != null)
+            {
+                results.Symbols[sym.Address] = sym;
+                ep.NoDecompile = true;
+            }
+            return results;
 		}
 
         [Conditional("DEBUG")]
