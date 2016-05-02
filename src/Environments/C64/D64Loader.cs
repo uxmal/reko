@@ -204,7 +204,9 @@ namespace Reko.Environments.C64
                 new C64Platform(Services, null));
             program.EntryPoints.Add(
                 image.BaseAddress,
-                new EntryPoint(image.BaseAddress, arch.CreateProcessorState()));
+                new EntryPoint(image.BaseAddress, 
+                null,
+                arch.CreateProcessorState()));
             return program;
         }
 

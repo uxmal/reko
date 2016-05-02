@@ -628,7 +628,10 @@ print arg_mem
             var entries = new List<EntryPoint>
             {
                 //$TODO: what are the registers on entry?
-                new EntryPoint(addrLoad, arch.CreateProcessorState())
+                new EntryPoint(
+                    addrLoad,
+                    null,
+                    arch.CreateProcessorState())
             };
             return new RelocationResults(entries, new List<Address>());
         }

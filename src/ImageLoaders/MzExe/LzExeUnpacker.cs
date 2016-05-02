@@ -109,7 +109,10 @@ namespace Reko.ImageLoaders.MzExe
 			// Seed the scanner with the start location.
 
             List<EntryPoint> entryPoints = new List<EntryPoint>() {
-			    new EntryPoint(Address.SegPtr((ushort) (lzCs + addrLoad.Selector), lzIp), arch.CreateProcessorState()),
+			    new EntryPoint(
+                    Address.SegPtr((ushort) (lzCs + addrLoad.Selector), lzIp), 
+                    null,
+                    arch.CreateProcessorState()),
             };
 			if (isLz91)
 			{

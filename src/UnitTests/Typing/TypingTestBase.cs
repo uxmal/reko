@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Typing
                 new X86TextAssembler(sc, new X86ArchitectureReal()),
                 addrBase);
             program.Platform = new DefaultPlatform(sc, program.Architecture);
-            var ep = new EntryPoint(program.ImageMap.BaseAddress, program.Architecture.CreateProcessorState());
+            var ep = new EntryPoint(program.ImageMap.BaseAddress, null, program.Architecture.CreateProcessorState());
             var project = new Project { Programs = { program } };
             var scan = new Scanner(
                 program,
@@ -90,7 +90,7 @@ namespace Reko.UnitTests.Typing
             var imgLoader = new DchexLoader(FileUnitTester.MapTestPath( hexFile), svc, null);
             var program = imgLoader.Load(null);
             var project = new Project { Programs = { program } };
-            var ep = new EntryPoint(program.ImageMap.BaseAddress, program.Architecture.CreateProcessorState());
+            var ep = new EntryPoint(program.ImageMap.BaseAddress, null, program.Architecture.CreateProcessorState());
             var importResolver = new ImportResolver(project, program, eventListener);
             var scan = new Scanner(program, importResolver, svc);
             scan.EnqueueEntryPoint(ep);

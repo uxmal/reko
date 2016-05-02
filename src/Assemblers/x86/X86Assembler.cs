@@ -1283,7 +1283,10 @@ namespace Reko.Assemblers.x86
         {
             DefineSymbol(procName);
             if (entryPoints != null && entryPoints.Count == 0)
-                entryPoints.Add(new EntryPoint(addrBase + emitter.Position, arch.CreateProcessorState()));
+                entryPoints.Add(
+                    new EntryPoint(addrBase + emitter.Position,
+                    null, 
+                    arch.CreateProcessorState()));
         }
 
         public void Push(ParsedOperand op)

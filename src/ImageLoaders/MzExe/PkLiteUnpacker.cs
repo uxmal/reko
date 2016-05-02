@@ -277,7 +277,10 @@ l01C8:
 			state.SetRegister(Registers.di, Constant.Word16(0));
 
             return new RelocationResults(
-                new List<EntryPoint> {new EntryPoint(Address.SegPtr(pklCs, pklIp), state) },
+                new List<EntryPoint> {
+                    new EntryPoint(Address.SegPtr(pklCs, pklIp), 
+                    null,
+                    state) },
                 new List<Address>());
 		}
 

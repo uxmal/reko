@@ -407,7 +407,7 @@ namespace Reko.ImageLoaders.MzExe
         {
             var entryNames = LoadEntryNames();
             var entryPoints = LoadEntryPoints(entryNames);
-            entryPoints.Add(new EntryPoint(addrEntry, arch.CreateProcessorState()));
+            entryPoints.Add(new EntryPoint(addrEntry, null, arch.CreateProcessorState()));
             return new RelocationResults(
                 entryPoints,
                 new List<Address>());
@@ -455,7 +455,7 @@ namespace Reko.ImageLoaders.MzExe
                     }
                     else
                     {
-                        ep = new EntryPoint(addr, state);
+                        ep = new EntryPoint(addr, null, state);
                     }
                     entries.Add(ep);
                 }

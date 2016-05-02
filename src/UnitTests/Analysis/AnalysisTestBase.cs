@@ -212,7 +212,10 @@ namespace Reko.UnitTests.Analysis
                 new ImportResolver(project, program, eventListener),
                 sc);
             
-            scan.EnqueueEntryPoint(new EntryPoint(asm.StartAddress, program.Architecture.CreateProcessorState()));
+            scan.EnqueueEntryPoint(new EntryPoint(
+                asm.StartAddress, 
+                null,
+                program.Architecture.CreateProcessorState()));
             foreach (var f in project.Programs)
             {
                 foreach (var sp in f.User.Procedures.Values)

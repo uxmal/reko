@@ -88,7 +88,7 @@ namespace Reko.UnitTests.Structure
             program.Platform = new DefaultPlatform(null, program.Architecture);
             program.EntryPoints.Add(
                 addrBase,
-                new EntryPoint(addrBase, program.Architecture.CreateProcessorState()));
+                new EntryPoint(addrBase, null, program.Architecture.CreateProcessorState()));
             return RewriteProgram();
         }
 
@@ -101,7 +101,7 @@ namespace Reko.UnitTests.Structure
             program.Platform = new DefaultPlatform(null, program.Architecture);
             program.EntryPoints.Add(
                 addrBase,
-                new EntryPoint(addrBase, program.Architecture.CreateProcessorState()));
+                new EntryPoint(addrBase, null, program.Architecture.CreateProcessorState()));
             return RewriteProgram();
         }
 

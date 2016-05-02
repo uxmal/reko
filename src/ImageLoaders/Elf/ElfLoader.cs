@@ -772,7 +772,10 @@ namespace Reko.ImageLoaders.Elf
             var addrEntry = GetEntryPointAddress(addrLoad);
             if (addrEntry != null)
             {
-                var ep = new EntryPoint(addrEntry, Architecture.CreateProcessorState());
+                var ep = new EntryPoint(
+                    addrEntry,
+                    null,
+                    Architecture.CreateProcessorState());
                 entryPoints.Add(ep);
             }
             this.Relocator.Relocate(program);
@@ -1254,7 +1257,10 @@ namespace Reko.ImageLoaders.Elf
             var addrEntry = GetEntryPointAddress(addrLoad);
             if (addrEntry != null)
             {
-                var ep = new EntryPoint(addrEntry, Architecture.CreateProcessorState());
+                var ep = new EntryPoint(
+                    addrEntry, 
+                    null,
+                    Architecture.CreateProcessorState());
                 entryPoints.Add(ep);
             }
 

@@ -150,7 +150,7 @@ namespace Reko.CmdLine
             dec.LoadRawImage((string)pArgs["filename"], (string)pArgs["--arch"], (string) sEnv, addrBase);
             dec.Project.Programs[0].EntryPoints.Add(
                 addrEntry,
-                new EntryPoint(addrEntry, state));
+                new EntryPoint(addrEntry, null, state));
             object oHeur;
             if (pArgs.TryGetValue("heuristics", out oHeur))
             {

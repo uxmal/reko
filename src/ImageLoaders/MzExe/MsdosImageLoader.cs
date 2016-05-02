@@ -101,7 +101,10 @@ namespace Reko.ImageLoaders.MzExe
                 AccessMode.ReadWriteExecute));
             DumpSegments(imageMap);
             return new RelocationResults(
-                new List<EntryPoint> { new EntryPoint(addrStart, arch.CreateProcessorState()) },
+                new List<EntryPoint> { new EntryPoint(
+                    addrStart,
+                    null,
+                    arch.CreateProcessorState()) },
                 new List<Address>());
 		}
 

@@ -100,7 +100,10 @@ namespace Reko.UnitTests.Scanning
                 program,
                 new ImportResolver(project, program, new FakeDecompilerEventListener()),
                 sc);
-            scanner.EnqueueEntryPoint(new EntryPoint(addrBase, arch.CreateProcessorState()));
+            scanner.EnqueueEntryPoint(new EntryPoint(
+                addrBase, 
+                null, 
+                arch.CreateProcessorState()));
             scanner.ScanImage();
         }
 

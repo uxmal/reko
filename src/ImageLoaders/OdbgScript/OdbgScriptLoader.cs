@@ -102,7 +102,7 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             var eps = new List<EntryPoint>();
             if (OriginalEntryPoint != null)
-                eps.Add(new EntryPoint(OriginalEntryPoint, Architecture.CreateProcessorState()));
+                eps.Add(new EntryPoint(OriginalEntryPoint, null, Architecture.CreateProcessorState()));
             return new RelocationResults(eps, new List<Address>());
         }
 

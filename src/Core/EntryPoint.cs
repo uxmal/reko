@@ -26,17 +26,9 @@ namespace Reko.Core
 {
 	public class EntryPoint
 	{
-		public EntryPoint(Address addr, ProcessorState state) : this(addr, null, state)
-		{
-		}
-
-        public EntryPoint(Address addr, string name, SerializedSignature ssig) : this(addr, name, null, ssig)
-        {
-        }
-
 		public EntryPoint(
             Address addr,
-            string name,
+            string name = null,
             ProcessorState state = null, 
             SerializedSignature sig = null)
 		{

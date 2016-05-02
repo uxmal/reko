@@ -306,7 +306,10 @@ namespace Reko.Environments.MacOS
                         }
                         else
                         {
-                            entryPoints.Add(new EntryPoint(addrSegment + 4, arch.CreateProcessorState()));
+                            entryPoints.Add(new EntryPoint(
+                                addrSegment + 4,
+                                null,
+                                arch.CreateProcessorState()));
                         }
                     }
                 }

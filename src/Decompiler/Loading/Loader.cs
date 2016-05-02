@@ -77,7 +77,10 @@ namespace Reko.Loading
                 program.EntryPoints[ep.Address] = ep;
             }
             program.EntryPoints[asm.StartAddress] = 
-                new EntryPoint(asm.StartAddress, program.Architecture.CreateProcessorState());
+                new EntryPoint(
+                    asm.StartAddress,
+                    null,
+                    program.Architecture.CreateProcessorState());
             CopyImportReferences(asm.ImportReferences, program);
             return program;
         }

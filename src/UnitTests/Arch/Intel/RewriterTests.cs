@@ -98,7 +98,10 @@ namespace Reko.UnitTests.Arch.Intel
                 this.program, 
                 new ImportResolver(project, this.program, eventListener),
                 sc);
-            EntryPoint ep = new EntryPoint(baseAddress, this.program.Architecture.CreateProcessorState());
+            EntryPoint ep = new EntryPoint(
+                baseAddress, 
+                null, 
+                this.program.Architecture.CreateProcessorState());
             scanner.EnqueueEntryPoint(ep);
             var program =  project.Programs[0];
             foreach (Procedure_v1 sp in program.User.Procedures.Values)

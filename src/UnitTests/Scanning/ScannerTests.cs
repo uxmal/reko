@@ -110,7 +110,7 @@ namespace Reko.UnitTests.Scanning
             test(m);
             this.program = m.GetImage();
             this.scan = this.CreateScanner(this.program);
-            EntryPoint ep = new EntryPoint(addr, this.program.Architecture.CreateProcessorState());
+            EntryPoint ep = new EntryPoint(addr, null, this.program.Architecture.CreateProcessorState());
             scan.EnqueueEntryPoint(ep);
         }
 
@@ -147,6 +147,7 @@ namespace Reko.UnitTests.Scanning
             sc.EnqueueEntryPoint(
                 new EntryPoint(
                     Address.Ptr32(0x12314),
+                    null,
                     program.Architecture.CreateProcessorState()));
             sc.ScanImage();
 
@@ -321,7 +322,7 @@ namespace Reko.UnitTests.Scanning
                 program, 
                 new ImportResolver(project, program, eventListener),
                 sc);
-            var ep = new EntryPoint(addr, program.Architecture.CreateProcessorState());
+            var ep = new EntryPoint(addr, null, program.Architecture.CreateProcessorState());
             scan.EnqueueEntryPoint(ep);
             scan.ScanImage();
 
@@ -457,8 +458,8 @@ fn0C00_0000_exit:
                 m => { m.Goto(Address.Ptr32(0x1004)); },
             });
 
-            scan.EnqueueEntryPoint(new EntryPoint(Address.Ptr32(0x1000), arch.CreateProcessorState()));
-            scan.EnqueueEntryPoint(new EntryPoint(Address.Ptr32(0x1100), arch.CreateProcessorState()));
+            scan.EnqueueEntryPoint(new EntryPoint(Address.Ptr32(0x1000), null, arch.CreateProcessorState()));
+            scan.EnqueueEntryPoint(new EntryPoint(Address.Ptr32(0x1100), null, arch.CreateProcessorState()));
             scan.ScanImage();
 
             var sExp =
@@ -579,10 +580,12 @@ fn00001100_exit:
             sc.EnqueueEntryPoint(
                 new EntryPoint(
                     Address.Ptr32(0x12314),
+                    null,
                     program.Architecture.CreateProcessorState()));
             sc.EnqueueEntryPoint(
                 new EntryPoint(
                     Address.Ptr32(0x12324),
+                    null,
                     program.Architecture.CreateProcessorState()));
             sc.ScanImage();
 

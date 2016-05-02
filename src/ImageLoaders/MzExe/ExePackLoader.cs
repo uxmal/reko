@@ -187,7 +187,7 @@ namespace Reko.ImageLoaders.MzExe
             state.SetRegister(Registers.bx, Constant.Word16(0));
             var entryPoints = new List<EntryPoint> 
             {
-                new EntryPoint(Address.SegPtr(cs, ip), state)
+                new EntryPoint(Address.SegPtr(cs, ip), null, state)
             };
             return new RelocationResults(entryPoints, new List<Address>());
         }
