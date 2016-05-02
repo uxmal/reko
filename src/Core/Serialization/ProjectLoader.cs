@@ -379,7 +379,9 @@ namespace Reko.Core.Serialization
                 } catch
                 {
                     var diagSvc = Services.RequireService<IDiagnosticsService>();
-                    diagSvc.Warn(string.Format("Unknown text encoding '{0}'. Defaulting to platform text encoding.", sUser.TextEncoding));
+                    diagSvc.Warn(
+                        "Unknown text encoding '{0}'. Defaulting to platform text encoding.", 
+                        sUser.TextEncoding);
                 }
                 user.TextEncoding = enc;
             }

@@ -62,7 +62,8 @@ namespace Reko.Gui.Commands
                 {
                     i.ApplyChanges();
                     program.User.Procedures[address] = sProc;
-                    procedure.Name = sProc.Name;
+                    if (procedure != null)
+                        procedure.Name = sProc.Name;
                 }
             }
         }

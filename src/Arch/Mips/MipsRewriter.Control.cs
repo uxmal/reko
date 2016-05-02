@@ -60,16 +60,25 @@ namespace Reko.Arch.Mips
 
         private void RewriteBranch0(MipsInstruction instr, BinaryOperator condOp, bool link)
         {
-            if (!link)
+            if (link)
             {
-                var reg = RewriteOperand(instr.op1);
-                var addr = (Address)RewriteOperand(instr.op2);
-                var cond = new BinaryExpression(condOp, PrimitiveType.Bool, reg, Constant.Zero(reg.DataType));
-                cluster.Class = RtlClass.ConditionalTransfer;
-                emitter.Branch(cond, addr, RtlClass.ConditionalTransfer | RtlClass.Delay);
+                emitter.Assign(
+                    frame.EnsureRegister(Registers.ra),
+                    instr.Address + 8);
             }
-            else
-                throw new NotImplementedException("Linked branches not implemented yet.");
+            var reg = RewriteOperand(instr.op1);
+            var addr = (Address)RewriteOperand(instr.op2);
+            if (reg is Constant)
+            {
+                // r0 has been replaced with '0'.
+                if (condOp == Operator.Lt)
+                {
+                    return; // Branch will never be taken
+                }
+            }
+            var cond = new BinaryExpression(condOp, PrimitiveType.Bool, reg, Constant.Zero(reg.DataType));
+            cluster.Class = RtlClass.ConditionalTransfer;
+            emitter.Branch(cond, addr, RtlClass.ConditionalTransfer | RtlClass.Delay);
         }
 
         private void RewriteBc1f(MipsInstruction instr, bool opTrue)

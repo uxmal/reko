@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
@@ -276,6 +277,8 @@ namespace Reko.Scanning
             Procedure proc;
             if (program.Procedures.TryGetValue(addr, out proc))
                 return; // Already scanned. Do nothing.
+            if (!sp.Decompile)
+                return;
             proc = EnsureProcedure(addr, sp.Name);
             if (sp.Signature != null)
             {
@@ -442,8 +445,11 @@ namespace Reko.Scanning
             {
                 Address addr = ep.Address;
                 Procedure proc;
+                ExternalProcedure extProc;
                 if (program.Procedures.TryGetValue(addr, out proc))
                     return; // Already scanned. Do nothing.
+                if (TryGetNoDecompiledProcedure(addr, out extProc))
+                    return;
 
                 proc = EnsureProcedure(addr, ep.Name);
                 if (ep.Signature != null)
@@ -496,6 +502,8 @@ namespace Reko.Scanning
         {
             TerminateAnyBlockAt(addr);
             ExternalProcedure ep;
+            if (TryGetNoDecompiledProcedure(addr, out ep))
+                return ep;
             if (program.InterceptedCalls.TryGetValue(addr, out ep))
                 return ep;
             var trampoline = GetTrampoline(addr);
@@ -543,6 +551,34 @@ namespace Reko.Scanning
         {
             var stmts = proc.EntryBlock.Succ[0].Statements;
             stmts.Insert(0, addr.ToLinear(), new Assignment(sp, proc.Frame.FramePointer));
+        }
+
+        private bool TryGetNoDecompiledProcedure(Address addr, out ExternalProcedure ep)
+        {
+            Procedure_v1 sProc;
+            if (!program.User.Procedures.TryGetValue(addr, out sProc) ||
+                sProc.Decompile)
+            {
+                ep = null;
+                return false;
+            }
+
+            ProcedureSignature sig = null;
+            if (!string.IsNullOrEmpty(sProc.CSignature))
+            {
+                var usb = new UserSignatureBuilder(program);
+                var procDecl = usb.ParseFunctionDeclaration(sProc.CSignature);
+                if (procDecl != null)
+                {
+                    var ser = program.CreateProcedureSerializer();
+                    sig = ser.Deserialize(
+                        procDecl.Signature,
+                        program.Architecture.CreateFrame());
+                }
+            }
+
+            ep = new ExternalProcedure(sProc.Name, sig);
+            return true;
         }
 
         public void EnqueueUserGlobalData(Address addr, DataType dt)

@@ -61,6 +61,8 @@ namespace Reko.Core.Operators
 	{
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
+            if (!ValidArgs(c1, c2))
+                return Constant.Invalid;
             return c1.ToInt32() == c2.ToInt32() ? Constant.True() : Constant.False();
 		}
 
@@ -74,7 +76,9 @@ namespace Reko.Core.Operators
 	{
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
-			return c1.ToInt32() != c2.ToInt32()
+            if (!ValidArgs(c1, c2))
+                return Constant.Invalid;
+            return c1.ToInt32() != c2.ToInt32()
 				? Constant.True() 
 				: Constant.False();
 

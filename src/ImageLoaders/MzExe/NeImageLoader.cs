@@ -827,10 +827,10 @@ namespace Reko.ImageLoaders.MzExe
 
             unknown:
             var svc = Services.RequireService<IDiagnosticsService>();
-            svc.Warn(string.Format("{0}: unknown ADDR TYPE {1},  " +
+            svc.Warn("{0}: unknown ADDR TYPE {1},  " +
                 "TYPE {2},  OFFSET {3:X4},  TARGET {4:X4} {5:X4}",
                 seg.Address.Selector, rep.address_type, rep.relocation_type,
-                rep.offset, rep.target1, rep.target2));
+                rep.offset, rep.target1, rep.target2);
             return false;
         }
 
