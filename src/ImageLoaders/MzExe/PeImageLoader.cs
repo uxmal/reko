@@ -60,7 +60,6 @@ namespace Reko.ImageLoaders.MzExe
         private uint rvaSectionTable;
 		private MemoryArea imgLoaded;
 		private Address preferredBaseOfImage;
-        private SortedList<Address, ImageSymbol> imageSymbols;
 		private SortedDictionary<string, Section> sectionMap;
         private Dictionary<uint, PseudoProcedure> importThunks;
 		private uint rvaStartAddress;		// unrelocated start address of the image.
@@ -86,13 +85,12 @@ namespace Reko.ImageLoaders.MzExe
 			}
             importThunks = new Dictionary<uint, PseudoProcedure>();
             importReferences = new Dictionary<Address, ImportReference>();
-            imageSymbols = new SortedList<Address, ImageSymbol>();
+            ImageSymbols = new SortedList<Address, ImageSymbol>();
 			short expectedMagic = ReadCoffHeader(rdr);
 			ReadOptionalHeader(rdr, expectedMagic);
 		}
 
-        [Obsolete("create symbols instead")]
-        public ImageMap ImageMap { get; private set; }
+        public SortedList<Address, ImageSymbol> ImageSymbols { get; private set; }
         public SegmentMap SegmentMap { get; private set; }
 
 		private void AddExportedEntryPoints(Address addrLoad, SegmentMap imageMap, List<ImageSymbol> entryPoints)
@@ -117,7 +115,7 @@ namespace Reko.ImageLoaders.MzExe
                 ImageSymbol ep = LoadEntryPoint(addrLoad, rdrAddrs, rdrNames);
 				if (imageMap.IsExecutableAddress(ep.Address))
 				{
-                    imageSymbols[ep.Address] = ep;
+                    ImageSymbols[ep.Address] = ep;
 					entryPoints.Add(ep);
 				}
 			}
@@ -447,13 +445,13 @@ namespace Reko.ImageLoaders.MzExe
                     (this.fileFlags & ImageFileDll) != 0,
                     addrEp,
                     platform);
-            imageSymbols[entrySym.Address] = entrySym;
+            ImageSymbols[entrySym.Address] = entrySym;
             var entryPoints = new List<ImageSymbol> { entrySym };
             var functions = ReadExceptionRecords(addrLoad, rvaExceptionTable, sizeExceptionTable);
             AddExportedEntryPoints(addrLoad, SegmentMap, entryPoints);
 			ReadImportDescriptors(addrLoad);
             ReadDeferredLoadDescriptors(addrLoad);
-            return new RelocationResults(entryPoints, imageSymbols, functions);
+            return new RelocationResults(entryPoints, ImageSymbols, functions);
 		}
 
         public ImageSymbol CreateMainEntryPoint(bool isDll, Address addrEp, IPlatform platform)
@@ -710,25 +708,19 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 var addrIlt = rdrIlt.Address;
                 if (!innerLoader.ResolveImportDescriptorEntry(dllName, rdrIlt, rdrIat))
                     break;
+                ImageSymbols[addrIat] = new ImageSymbol(addrIat)
+                {
+                    Type = SymbolType.Data,
+                    DataType = new Pointer(new CodeType(), ptrSize),
+                    Size = (uint) ptrSize
+                };
 
-                throw new NotImplementedException();
-                // should be added to the symbols table
-                //ImageMap.AddItemWithSize(
-                //    addrIat,
-                //    new ImageMapItem
-                //    {
-                //        Address = addrIat,
-                //        DataType = new Pointer(new CodeType(), ptrSize),
-                //        Size = (uint)ptrSize,
-                //    });
-                //ImageMap.AddItemWithSize(
-                //    addrIlt,
-                //    new ImageMapItem
-                //    {
-                //        Address = addrIlt,
-                //        DataType = PrimitiveType.CreateWord(ptrSize),
-                //        Size = (uint)ptrSize,
-                //    });
+                ImageSymbols[addrIlt] = new ImageSymbol(addrIlt)
+                {
+                    Type = SymbolType.Data,
+                    DataType = PrimitiveType.CreateWord(ptrSize),
+                    Size = (uint)ptrSize
+                };
             } 
             return true;
         }
