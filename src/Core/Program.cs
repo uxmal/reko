@@ -372,15 +372,16 @@ namespace Reko.Core
             return p;
         }
 
-        public Serialization.Procedure_v1 EnsureUserProcedure(Address address, string name)
+        public Procedure_v1 EnsureUserProcedure(Address address, string name, bool decompile = true)
         {
-            Serialization.Procedure_v1 up;
+            Procedure_v1 up;
             if (!User.Procedures.TryGetValue(address, out up))
             {
-                up = new Serialization.Procedure_v1
+                up = new Procedure_v1
                 {
                     Address = address.ToString(),
                     Name = name,
+                    Decompile = decompile,
                 };
                 User.Procedures.Add(address, up);
             }
