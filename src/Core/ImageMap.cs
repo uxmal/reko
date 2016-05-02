@@ -39,6 +39,7 @@ namespace Reko.Core
 
 		private SortedList<Address,ImageMapItem> items;
 
+        [Obsolete("Use other ctor")]
 		public ImageMap(Address addrBase, long imageSize)
 		{
             if (addrBase == null)
@@ -48,7 +49,7 @@ namespace Reko.Core
 			SetAddressSpan(addrBase, (uint) imageSize);
 		}
 
-        public ImageMap(Address addrBase, params ImageSegment [] segments)
+        public ImageMap(Address addrBase)
         {
             if (addrBase == null)
                 throw new ArgumentNullException("addrBase");

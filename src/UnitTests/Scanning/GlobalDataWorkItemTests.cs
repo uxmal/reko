@@ -60,10 +60,12 @@ namespace Reko.UnitTests.Scanning
         {
             var mem = new MemoryArea(address, bytes);
             var segmentMap = new SegmentMap(address, new ImageSegment(".text", mem, AccessMode.ReadExecute));
+            var imageMap = segmentMap.CreateImageMap();
             this.program = new Program
             {
                 Architecture = arch,
                 SegmentMap = segmentMap,
+                ImageMap = imageMap,
                 Platform = platform
             };
         }

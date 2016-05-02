@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Lib;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -43,12 +44,6 @@ namespace Reko.Core
             {
                 this.AddSegment(seg);
             }
-        }
-
-        [Obsolete]
-        public SegmentMap(Address addrBase, long imageSize)
-        {
-            throw new NotImplementedException();
         }
 
         public Address BaseAddress { get; private set; }
@@ -80,7 +75,6 @@ namespace Reko.Core
             {
                 EnsureSegmentSize(segNew);
                 segments.Add(segNew.Address, segNew);
-                //AddItem(segNew.Address, new ImageMapItem(segNew.Size) { DataType = new UnknownType() });
                 MapChanged.Fire(this);
                 //DumpSections();
                 return segNew;
@@ -98,7 +92,6 @@ namespace Reko.Core
 
                 // And split any items in the segment
 
-                //AddItem(segSplit.Address, new ImageMapItem());
                 MapChanged.Fire(this);
                 //DumpSections();
                 return segSplit;
@@ -196,7 +189,12 @@ namespace Reko.Core
 
         public ImageMap CreateImageMap()
         {
-            throw new NotImplementedException();
+            var imageMap = new ImageMap(this.BaseAddress);
+            foreach (var segment in segments.Values)
+            {
+                imageMap.AddItem(segment.Address, new ImageMapItem(segment.Size) { DataType = new UnknownType() });
+            }
+            return imageMap;
         }
     }
 }

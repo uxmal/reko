@@ -44,12 +44,6 @@ namespace Reko.UnitTests.Core
             return e.Current.Value;
         }
 
-        private ImageSegment GetNextMapSegment(IEnumerator<KeyValuePair<Address, ImageSegment>> e)
-        {
-            Assert.IsTrue(e.MoveNext());
-            return e.Current.Value;
-        }
-
         private void CheckImageMapTypes(ImageMap map, params string[] types)
         {
             int length = types.Length;
@@ -94,7 +88,8 @@ namespace Reko.UnitTests.Core
         [Test]
 		public void Im_Creation()
 		{
-			SegmentMap im = new SegmentMap(addrBase, img.Length);
+			SegmentMap im = new SegmentMap(addrBase, 
+                new ImageSegment("", new MemoryArea(addrBase, img), AccessMode.ReadWriteExecute));
 
 			im.AddSegment(Address.SegPtr(0x8000, 2), "",  AccessMode.ReadWrite, 10);
 			im.AddSegment(Address.SegPtr(0x8000, 3), "", AccessMode.ReadWrite, 10);
@@ -141,12 +136,13 @@ namespace Reko.UnitTests.Core
 		}
 
         [Test]
-		public void Im_AddNamedSegment()
+		public void Sm_AddNamedSegment()
 		{
-			SegmentMap map = new SegmentMap(Address.SegPtr(0x0B00, 0), 40000);
-			map.AddSegment(Address.SegPtr(0xC00, 0), "0C00", AccessMode.ReadWrite, 6000);
-			IEnumerator<KeyValuePair<Address,ImageSegment>> e = map.Segments.GetEnumerator();
-			ImageSegment s = GetNextMapSegment(e);
+            var mem = new MemoryArea(Address.SegPtr(0x0B00, 0), new byte[40000]);
+            SegmentMap segmentMap = new SegmentMap(mem.BaseAddress,
+                new ImageSegment("base", mem, AccessMode.ReadWriteExecute));
+			segmentMap.AddSegment(Address.SegPtr(0xC00, 0), "0C00", AccessMode.ReadWrite, 6000);
+            ImageSegment s = segmentMap.Segments.Values.ElementAt(1);
 			Assert.AreEqual("0C00", s.Name);
 			Assert.AreEqual(6000, s.Size);
 		}
@@ -243,9 +239,11 @@ namespace Reko.UnitTests.Core
         }
 
         [Test]
-        public void Im_RemoveItem_DoNotMergeDisjoinedItems()
+        public void Im_RemoveItem_DoNotMergeDisjointItems()
         {
-            var segmentMap = new SegmentMap(addrBase, 0x0100);
+            var mem = new MemoryArea(addrBase, new byte[0x0100]);
+            var segmentMap = new SegmentMap(addrBase,
+                new ImageSegment("", mem, AccessMode.ReadWriteExecute));
             var codeAddr = addrBase;
             var dataAddr = addrBase + 0x1000;
             var textAddr = addrBase + 0x2000;

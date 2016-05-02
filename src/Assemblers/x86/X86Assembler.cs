@@ -56,6 +56,7 @@ namespace Reko.Assemblers.x86
         public X86Assembler(IServiceProvider services, IPlatform platform, Address addrBase, List<ImageSymbol> entryPoints)
         {
             this.services = services;
+            this.Platform = platform;
             this.arch = platform.Architecture;
             this.addrBase = addrBase;
             this.entryPoints = entryPoints;

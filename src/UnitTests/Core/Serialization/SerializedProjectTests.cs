@@ -304,13 +304,14 @@ namespace Reko.UnitTests.Core.Serialization
         {
             var bytes = new byte[0x1000];
             var mem = new MemoryArea(address, bytes);
-
+            var segmentMap = new SegmentMap(address,
+                    new ImageSegment(".text", mem, AccessMode.ReadWriteExecute));
             var program = new Program
             {
                 Architecture = arch,
                 Platform = mockFactory.CreatePlatform(),
-                SegmentMap = new SegmentMap(address, 
-                    new ImageSegment(".text", mem, AccessMode.ReadWriteExecute))
+                SegmentMap = segmentMap,
+                ImageMap = segmentMap.CreateImageMap()
             };
             loader.Stub(l => l.LoadImageBytes(
                 Arg<string>.Matches(s => s.EndsWith(exeName)),

@@ -69,6 +69,7 @@ namespace Reko.Core
         public Program(SegmentMap segmentMap, IProcessorArchitecture arch, IPlatform platform) : this()
         {
             this.SegmentMap = segmentMap;
+            this.ImageMap = segmentMap.CreateImageMap();
             this.Architecture = arch;
             this.Platform = platform;
         }

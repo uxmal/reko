@@ -89,7 +89,7 @@ namespace Reko.Gui.Windows.Controls
             }
         }
         public event EventHandler SegmentMapChanged;
-        public SegmentMap segmentMap;
+        private SegmentMap segmentMap;
 
 
         [Browsable(false)]
@@ -130,7 +130,7 @@ namespace Reko.Gui.Windows.Controls
         private void BoundGranularity(long value)
         {
             granularity = Math.Max(1L, value);
-            if (ImageMap == null)
+            if (ImageMap == null || SegmentMap == null)
             {
                 return;
             }

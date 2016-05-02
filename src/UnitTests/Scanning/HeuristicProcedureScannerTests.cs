@@ -58,10 +58,10 @@ namespace Reko.UnitTests.Scanning
 
         private void When_DisassembleProcedure()
         {
-            var hsc = new HeuristicScanner(prog, host, eventListener);
+            var hsc = new HeuristicScanner(program, host, eventListener);
             this.proc = hsc.DisassembleProcedure(
-                prog.ImageMap.BaseAddress,
-                prog.ImageMap.BaseAddress + prog.SegmentMap.GetExtent());
+                program.ImageMap.BaseAddress,
+                program.ImageMap.BaseAddress + program.SegmentMap.GetExtent());
         }
 
         [Test]
@@ -120,7 +120,7 @@ namespace Reko.UnitTests.Scanning
             mr.ReplayAll();
 
             When_DisassembleProcedure();
-            var hps = new HeuristicProcedureScanner(prog, proc, host);
+            var hps = new HeuristicProcedureScanner(program, proc, host);
             hps.BlockConflictResolution();
 
             var sExp =
@@ -158,7 +158,7 @@ l00010009:  // pred: l00010008
             mr.ReplayAll();
 
             When_DisassembleProcedure();
-            var hps = new HeuristicProcedureScanner(prog, proc, host);
+            var hps = new HeuristicProcedureScanner(program, proc, host);
             hps.BlockConflictResolution();
 
             var sExp =

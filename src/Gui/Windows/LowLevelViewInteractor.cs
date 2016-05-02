@@ -59,12 +59,14 @@ namespace Reko.Gui.Windows
                 if (value != null)
                 {
                     control.MemoryView.ImageMap = value.ImageMap;
+                    control.MemoryView.SegmentMap = value.SegmentMap;
                     control.MemoryView.Architecture = value.Architecture;
                     control.DisassemblyView.Program = value;
                     var seg = program.SegmentMap.Segments.Values.First();
                     control.DisassemblyView.Program = value;
                     control.DisassemblyView.Model = new DisassemblyTextModel(value, seg);
                     control.ImageMapView.ImageMap = value.ImageMap;
+                    control.ImageMapView.SegmentMap = value.SegmentMap;
                     control.ImageMapView.Granularity = value.SegmentMap.GetExtent();
                     control.ByteMapView.SegmentMap = value.SegmentMap;
                 }

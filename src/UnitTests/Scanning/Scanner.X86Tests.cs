@@ -67,13 +67,7 @@ namespace Reko.UnitTests.Scanning
             var asm = new X86Assembler(sc, platform, addrBase, entryPoints);
             asmProg(asm);
 
-            var lr = asm.GetImage();
-            program = new Program
-            {
-                ImageMap = lr.ImageMap,
-                Architecture = arch,
-                Platform = platform
-            };
+            program = asm.GetImage();
             var project = new Project { Programs = { program } };
             scanner = new Scanner(
                 program,

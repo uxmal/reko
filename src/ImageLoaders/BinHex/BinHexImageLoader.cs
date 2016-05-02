@@ -34,9 +34,8 @@ namespace Reko.ImageLoaders.BinHex
     public class BinHexImageLoader : ImageLoader
     {
         private ResourceFork rsrcFork;
-        private MemoryArea image;
-        private SegmentMap segmentMap;
         private MemoryArea mem;
+        private SegmentMap segmentMap;
 
         public BinHexImageLoader(IServiceProvider services, string filename, byte [] imgRaw) : base(services, filename, imgRaw)
         {
@@ -64,15 +63,20 @@ namespace Reko.ImageLoaders.BinHex
                     {
                         var image = selectedFile.GetBytes();
                         this.rsrcFork = new ResourceFork(image, arch);
-                        this.image = new MemoryArea(addrLoad, image);
-                        this.segmentMap = new SegmentMap(addrLoad, image.Length);
+                        this.mem = new MemoryArea(addrLoad, image);
+                        this.segmentMap = new SegmentMap(addrLoad,
+                            new ImageSegment("", mem, AccessMode.ReadWriteExecute)); 
                         return new Program(this.segmentMap, arch, platform);
                     }
                 }
             }
 
             this.mem = new MemoryArea(addrLoad, dataFork);
-            return new Program(new SegmentMap(image.BaseAddress, image.Length), arch, platform);
+            return new Program(
+                new SegmentMap(mem.BaseAddress,
+                    new ImageSegment("", mem, AccessMode.ReadWriteExecute)),
+                arch,
+                platform);
         }
 
         private byte[] LoadFork(int size, IEnumerator<byte> stm)

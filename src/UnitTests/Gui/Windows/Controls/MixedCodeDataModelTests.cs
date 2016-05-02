@@ -64,7 +64,9 @@ namespace Reko.UnitTests.Gui.Windows.Controls
 
         private void Given_Program()
         {
+            this.imageMap = segmentMap.CreateImageMap();
             this.program = new Program(segmentMap, arch, platform);
+            this.program.ImageMap = imageMap;
         }
 
         private FakeInstruction Instr(uint addr)
@@ -162,7 +164,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute) { Size = 4 },
                 new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
-            var program = new Program(segmentMap, arch, platform);
+            Given_Program();
 
             Given_CodeBlock(memText.BaseAddress, 4);
 
@@ -200,8 +202,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute) { Size = 4 },
                 new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
-            var program = new Program(segmentMap, arch, platform);
-
+            Given_Program();
             Given_CodeBlock(memText.BaseAddress, 4);
             Given_CodeBlock(Address.Ptr32(0x42004), 4);
 
@@ -284,7 +285,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute),
                 new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
-            var program = new Program(segmentMap, arch, platform);
+            Given_Program();
 
             Given_CodeBlock(memText.BaseAddress, 4);
 
@@ -384,7 +385,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute),
                 new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
-            var program = new Program(segmentMap, arch, platform);
+            Given_Program();
             Given_CodeBlock(memText.BaseAddress, 4);
             mr.ReplayAll();
 
@@ -415,8 +416,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute) { Size = 4 },
                 new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
-            var program = new Program(segmentMap, arch, platform);
-
+            Given_Program();
             Given_CodeBlock(memText.BaseAddress, 4);
 
             mr.ReplayAll();

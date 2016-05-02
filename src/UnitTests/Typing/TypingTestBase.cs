@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Typing
                 new X86TextAssembler(sc, new X86ArchitectureReal()),
                 addrBase);
             program.Platform = new DefaultPlatform(sc, program.Architecture);
-            var ep = new ImageSymbol(program.ImageMap.BaseAddress);
+            var ep = new ImageSymbol(program.SegmentMap.BaseAddress);
             var project = new Project { Programs = { program } };
             var scan = new Scanner(
                 program,

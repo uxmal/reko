@@ -82,13 +82,7 @@ namespace Reko.UnitTests.Scanning
             var asm = new M68kAssembler(arch, addrBase, entryPoints);
             asmProg(asm);
 
-            var lr = asm.GetImage();
-            program = new Program
-            {
-                Architecture = arch,
-                ImageMap = lr.ImageMap,
-                Platform = platform,
-            };
+            program = asm.GetImage();
 
             RunTest(addrBase);
         }

@@ -123,12 +123,16 @@ namespace Reko.Scanning
         {
             this.program = program;
             this.segmentMap = program.SegmentMap;
-            this.imageMap = program.ImageMap;
             this.importResolver = importResolver;
             this.eventListener = services.RequireService<DecompilerEventListener>();
             this.cancelSvc = services.GetService<CancellationTokenSource>();
-            if (imageMap == null)
-                throw new InvalidOperationException("Program must have an image map.");
+            if (segmentMap == null)
+                throw new InvalidOperationException("Program must have an segment map.");
+            if (program.ImageMap == null)
+            {
+                program.ImageMap = segmentMap.CreateImageMap();
+            }
+            this.imageMap = program.ImageMap;
             this.queue = new PriorityQueue<WorkItem>();
             this.blocks = new SortedList<Address, BlockRange>();
             this.blockStarts = new Dictionary<Block, Address>();

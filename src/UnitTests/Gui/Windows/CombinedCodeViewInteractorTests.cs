@@ -123,6 +123,7 @@ namespace Reko.UnitTests.Gui.Windows
             var mem = new MemoryArea(Address32.Ptr32(addr), bytes);
             var seg = new ImageSegment(".text", mem, AccessMode.ReadWrite);
             program.SegmentMap.AddSegment(seg);
+            program.ImageMap = program.SegmentMap.CreateImageMap();
         }
 
         private void Given_StubProcedure(uint addr, uint size)

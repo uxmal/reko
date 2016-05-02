@@ -64,10 +64,11 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             interactor = new DeclarationFormInteractor(services);
             var mem = new MemoryArea(Address32.Ptr32(0x10), new byte[40]);
             var seg = new ImageSegment(".text", mem, AccessMode.ReadWrite);
-            var imageMap = new SegmentMap(Address32.Ptr32(0x05), seg);
+            var segmentMap = new SegmentMap(Address32.Ptr32(0x05), seg);
             var arch = new X86ArchitectureFlat32();
             var platform = new Win32Platform(null, arch);
-            program = new Program(imageMap, arch, platform);
+            program = new Program(segmentMap, arch, platform);
+            program.ImageMap = segmentMap.CreateImageMap();
         }
 
         private void When_FormClosed()

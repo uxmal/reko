@@ -50,12 +50,11 @@ namespace Reko.UnitTests.Scanning
                 .Do(new Func<int, ImageReader, ProcessorState, Address>(
                     (s, r, st) => Address.Ptr32(r.ReadLeUInt32())));
             mem = new MemoryArea(Address.Ptr32(0x00010000), bytes);
-            this.program = new Program
-            {
-                Architecture = arch,
-                SegmentMap = new SegmentMap(mem.BaseAddress, 
+            this.program = new Program(
+                new SegmentMap(mem.BaseAddress,
                     new ImageSegment(".text", mem, AccessMode.ReadExecute)),
-            };
+                arch,
+                null);
         }
 
         [Test(Description = "Should create a list of vector destinations")]

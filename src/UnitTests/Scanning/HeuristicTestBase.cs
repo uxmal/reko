@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Scanning
 {
     public class HeuristicTestBase
     {
-        protected Program prog;
+        protected Program program;
         protected ImageSegment segment;
         protected MockRepository mr;
         protected IRewriterHost host;
@@ -75,13 +75,14 @@ namespace Reko.UnitTests.Scanning
         {
             var bytes = HexStringToBytes(sBytes);
             mem = new MemoryArea(Address.Ptr32(addr), bytes);
-            prog = new Program
+            program = new Program
             {
                 SegmentMap = new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment("prôg", mem, AccessMode.ReadExecute))
             };
-            segment = prog.SegmentMap.Segments.Values.First();
+            program.ImageMap = program.SegmentMap.CreateImageMap();
+            segment = program.SegmentMap.Segments.Values.First();
         }
 
         private static byte[] HexStringToBytes(string sBytes)
@@ -98,9 +99,9 @@ namespace Reko.UnitTests.Scanning
 
         protected void Given_x86_32()
         {
-            prog.Architecture = new X86ArchitectureFlat32();
-            prog.Platform = new DefaultPlatform(null, prog.Architecture);
-            prog.Platform.Heuristics.ProcedurePrologs = new BytePattern[] {
+            program.Architecture = new X86ArchitectureFlat32();
+            program.Platform = new DefaultPlatform(null, program.Architecture);
+            program.Platform.Heuristics.ProcedurePrologs = new BytePattern[] {
                 new BytePattern
                 {   
                     Bytes = new byte[] {0x55, 0x8B, 0xEC },
@@ -111,7 +112,7 @@ namespace Reko.UnitTests.Scanning
 
         internal void Given_x86_16()
         {
-            prog.Architecture = new X86ArchitectureReal();
+            program.Architecture = new X86ArchitectureReal();
         }
 
         internal void Given_ImageSeg(ushort seg, ushort offset, string sBytes)
@@ -119,7 +120,7 @@ namespace Reko.UnitTests.Scanning
             var bytes = HexStringToBytes(sBytes);
             mem = new MemoryArea(Address.SegPtr(seg, offset), bytes);
             segment = new ImageSegment("prôg", mem, AccessMode.ReadExecute);
-            prog = new Program
+            program = new Program
             {
                 SegmentMap = new SegmentMap(
                     mem.BaseAddress,
@@ -139,8 +140,8 @@ namespace Reko.UnitTests.Scanning
                 }
                 sb.AppendLine();
                 var lastAddr = hblock.GetEndAddress();
-                var dasm = prog.Architecture.CreateDisassembler(
-                    prog.Architecture.CreateImageReader(mem, hblock.Address));
+                var dasm = program.Architecture.CreateDisassembler(
+                    program.Architecture.CreateImageReader(mem, hblock.Address));
                 foreach (var instr in dasm.TakeWhile(i => i.Address < lastAddr))
                 {
                     sb.AppendFormat("    {0}", instr);

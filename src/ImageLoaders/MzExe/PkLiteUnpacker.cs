@@ -208,7 +208,8 @@ l01C8:
 */
 			l01C8:
 			imgU = new MemoryArea(addrLoad, abU);
-            segmentMap = new SegmentMap(imgU.BaseAddress, imgU.Length);
+            segmentMap = new SegmentMap(imgU.BaseAddress,
+                new ImageSegment("image", imgU, AccessMode.ReadWriteExecute));
 			return new Program(segmentMap, arch, platform);
 		}
 

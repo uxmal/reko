@@ -177,10 +177,12 @@ namespace Reko.UnitTests.Gui.Windows
                     mem.BaseAddress,
                     new ImageSegment(
                         "code", mem, AccessMode.ReadWriteExecute));
+            this.imageMap = segmentMap.CreateImageMap();
             this.program = new Program(
                 segmentMap,
                 arch, 
                 new DefaultPlatform(null, arch));
+            this.program.ImageMap = imageMap;
         }
 
         [Test]

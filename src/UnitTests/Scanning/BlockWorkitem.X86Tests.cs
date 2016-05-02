@@ -198,6 +198,7 @@ namespace Reko.UnitTests.Scanning
             var prog = new Program
             {
                 Architecture = arch,
+                SegmentMap = lr.SegmentMap,
                 ImageMap = lr.ImageMap,
                 Platform = platform,
             };
