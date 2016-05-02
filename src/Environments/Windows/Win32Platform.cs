@@ -46,8 +46,8 @@ namespace Reko.Environments.Windows
         public Win32Platform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "win32")
         {
             //$REVIEW: should be loaded from configuration file.
-            Heuristics.ProcedurePrologs = new BytePattern[] {
-                new BytePattern
+            Heuristics.ProcedurePrologs = new Core.BytePattern[] {
+                new Core.BytePattern
                 {
                     Bytes = new byte[]{ 0x55, 0x8B, 0xEC },
                     Mask =  new byte[]{ 0xFF, 0xFF, 0xFF }

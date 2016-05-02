@@ -127,7 +127,7 @@ namespace Reko.Core
         public virtual TypeLibrary Metadata { get; protected set; }
         public CharacteristicsLibrary[] CharacteristicsLibs { get; protected set; }
         public string Description { get; set; }
-        public PlatformHeuristics Heuristics { get; private set; }
+        public PlatformHeuristics Heuristics { get; set; }
         public string Name { get; set; }
         public MemoryMap_v1 MemoryMap { get; set; }
         public virtual PrimitiveType FramePointerType { get { return Architecture.FramePointerType; } }

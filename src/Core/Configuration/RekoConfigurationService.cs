@@ -70,7 +70,7 @@ namespace Reko.Core.Configuration
         private List<RawFileElement> rawFiles;
         private UiPreferencesConfiguration uiPreferences;
 
-        private RekoConfigurationService(RekoConfiguration_v1 config)
+        public RekoConfigurationService(RekoConfiguration_v1 config)
         {
             this.config = config;
             this.loaders = LoadCollection(config.Loaders, LoadLoaderConfiguration);
@@ -127,6 +127,7 @@ namespace Reko.Core.Configuration
                 Description = env.Description,
                 MemoryMapFile = env.MemoryMap,
                 TypeName = env.Type,
+                Heuristics = env.Heuristics,
                 TypeLibraries = LoadCollection(env.TypeLibraries, LoadTypeLibraryReference),
                 CharacteristicsLibraries = LoadCollection(env.Characteristics, LoadTypeLibraryReference)
             };
