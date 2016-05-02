@@ -115,7 +115,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             Given_Section(".data", SectionHeaderType.SHT_PROGBITS, ElfLoader.SHF_ALLOC | ElfLoader.SHF_WRITE, new byte[] { 0x01, 0x02, 0x03, 0x04 });
             Given_Symbol(
                 "shared_global", 8, 0x4000,
-                ElfLoader32.ELF32_ST_INFO(0, SymbolType.STT_OBJECT),
+                ElfLoader32.ELF32_ST_INFO(0, ElfSymbolType.STT_OBJECT),
                 0xFFF2);
 
             Given_Linker();
@@ -133,11 +133,11 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             Given_Section(".data", SectionHeaderType.SHT_PROGBITS, ElfLoader.SHF_ALLOC | ElfLoader.SHF_WRITE, new byte[] { 0x01, 0x02, 0x03, 0x04 });
             Given_Symbol(
                 "unresolved_global1", 0, 0,
-                ElfLoader32.ELF32_ST_INFO(0, SymbolType.STT_NOTYPE),
+                ElfLoader32.ELF32_ST_INFO(0, ElfSymbolType.STT_NOTYPE),
                 0);
             Given_Symbol(
                 "unresolved_global2", 0, 0,
-                ElfLoader32.ELF32_ST_INFO(0, SymbolType.STT_NOTYPE),
+                ElfLoader32.ELF32_ST_INFO(0, ElfSymbolType.STT_NOTYPE),
                 0);
 
             Given_Linker();

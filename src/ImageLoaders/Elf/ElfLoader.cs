@@ -749,7 +749,7 @@ namespace Reko.ImageLoaders.Elf
                 Debug.Print("  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
                     i,
                     ReadAsciiString(stringtableSection.FileOffset + sym.st_name),
-                    (SymbolType)(sym.st_info & 0xF),
+                    (ElfSymbolType)(sym.st_info & 0xF),
                     sym.st_shndx,
                     GetSectionNameQ(sym.st_shndx),
                     sym.st_value,
@@ -757,7 +757,7 @@ namespace Reko.ImageLoaders.Elf
                 symbols.Add(new ElfSymbol
                 {
                     Name = ReadAsciiString(stringtableSection.FileOffset + sym.st_name),
-                    Type = (SymbolType)(sym.st_info & 0xF),
+                    Type = (ElfSymbolType)(sym.st_info & 0xF),
                     SectionIndex = sym.st_shndx,
                     Value = sym.st_value,
                     Size = sym.st_size,
@@ -800,7 +800,7 @@ namespace Reko.ImageLoaders.Elf
         public static int ELF32_R_SYM(int info) { return ((info) >> 8); }
         public static int ELF32_ST_BIND(int i) { return ((i) >> 4); }
         public static int ELF32_ST_TYPE(int i) { return ((i) & 0x0F); }
-        public static byte ELF32_ST_INFO(int b, SymbolType t) { return (byte)(((b) << 4) + ((byte)t & 0xF)); }
+        public static byte ELF32_ST_INFO(int b, ElfSymbolType t) { return (byte)(((b) << 4) + ((byte)t & 0xF)); }
 
         // Add appropriate symbols to the symbol table.  secIndex is the section index of the symbol table.
         private void AddSyms(Elf32_SHdr pSect)
@@ -1230,7 +1230,7 @@ namespace Reko.ImageLoaders.Elf
                 Debug.Print("  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
                     i,
                     ReadAsciiString(stringtableSection.FileOffset + sym.st_name),
-                    (SymbolType)(sym.st_info & 0xF),
+                    (ElfSymbolType)(sym.st_info & 0xF),
                     sym.st_shndx,
                     GetSectionNameQ(sym.st_shndx),
                     sym.st_value,
@@ -1238,7 +1238,7 @@ namespace Reko.ImageLoaders.Elf
                 symbols.Add(new ElfSymbol
                 {
                     Name = ReadAsciiString(stringtableSection.FileOffset + sym.st_name),
-                    Type = (SymbolType)(sym.st_info & 0xF),
+                    Type = (ElfSymbolType)(sym.st_info & 0xF),
                     SectionIndex = sym.st_shndx,
                     Value = sym.st_value,
                     Size = sym.st_size,
@@ -1267,7 +1267,7 @@ namespace Reko.ImageLoaders.Elf
         private IEnumerable<EntryPoint> CollectFunctionSymbols()
         {
             return Symbols.Values.SelectMany(v => v)
-                .Where(sym => sym.Type == SymbolType.STT_FUNC &&
+                .Where(sym => sym.Type == ElfSymbolType.STT_FUNC &&
                               sym.SectionIndex != 0)
                 .Select(MakeEntryPoint);
         }

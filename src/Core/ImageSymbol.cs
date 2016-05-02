@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,11 @@ namespace Reko.Core
             this.Address = address;
         }
 
+        public SymbolType Type { get; set; }
+
+        /// <summary>
+        /// The location of the object referred to by the symbol.
+        /// </summary>
         public Address Address { get; private set; }
 
         /// <summary>
@@ -50,10 +56,25 @@ namespace Reko.Core
         /// </summary>
         public uint Size { get; set; }
 
-        public SymbolTypeq Type { get; set; }
+        /// <summary>
+        /// If set, Reko should just make not of the symbol and not 
+        /// attempt to decompile it.
+        /// </summary>
+        public bool NoDecompile { get; set; }
+
+        /// <summary>
+        /// If non-null, the state of the processor at the time when
+        /// the signature is referred.
+        /// </summary>
+        public ProcessorState ProcessorState { get; private set; }
+
+        /// <summary>
+        /// If non-null, the signature of this symbol (if it is a function)
+        /// </summary>
+        public SerializedSignature Signature { get; private set; }
     }
 
-    public enum SymbolTypeq
+    public enum SymbolType
     {
         Unknown,        // Unknown type
         Code,           // executable code
