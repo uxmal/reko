@@ -40,7 +40,7 @@ namespace Reko.Scanning
             if (vector.Count == 0)
             {
                 Address addrNext = Table.TableAddress + Stride.Size;
-                if (program.ImageMap.IsValidAddress(addrNext))
+                if (program.SegmentMap.IsValidAddress(addrNext))
                 {
                     // Can't determine the size of the table, but surely it has one entry?
                    program.ImageMap.AddItem(addrNext, new ImageMapItem());

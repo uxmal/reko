@@ -97,13 +97,13 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             Given_Linker();
 
             var segs = linker.ComputeSegmentSizes();
-            var imageMap = linker.CreateSegments(Address.Ptr32(0x00800000), segs);
-            Assert.AreEqual(3, imageMap.Segments.Count);
-            Assert.AreEqual("00800000", imageMap.Segments.ElementAt(0).Value.MemoryArea.BaseAddress.ToString());
-            Assert.AreEqual("00800001", imageMap.Segments.ElementAt(0).Value.MemoryArea.EndAddress.ToString());
-            Assert.AreEqual("00801000", imageMap.Segments.ElementAt(1).Value.MemoryArea.BaseAddress.ToString());
-            Assert.AreEqual("00801004", imageMap.Segments.ElementAt(1).Value.MemoryArea.EndAddress.ToString());
-            Assert.AreEqual(0x1, imageMap.Segments.ElementAt(1).Value.MemoryArea.Bytes[0]);
+            var segmentMap = linker.CreateSegments(Address.Ptr32(0x00800000), segs);
+            Assert.AreEqual(3, segmentMap.Segments.Count);
+            Assert.AreEqual("00800000", segmentMap.Segments.ElementAt(0).Value.MemoryArea.BaseAddress.ToString());
+            Assert.AreEqual("00800001", segmentMap.Segments.ElementAt(0).Value.MemoryArea.EndAddress.ToString());
+            Assert.AreEqual("00801000", segmentMap.Segments.ElementAt(1).Value.MemoryArea.BaseAddress.ToString());
+            Assert.AreEqual("00801004", segmentMap.Segments.ElementAt(1).Value.MemoryArea.EndAddress.ToString());
+            Assert.AreEqual(0x1, segmentMap.Segments.ElementAt(1).Value.MemoryArea.Bytes[0]);
         }
 
         [Test(Description = "SHN_COMMON symbols should be added to the rw segment")]

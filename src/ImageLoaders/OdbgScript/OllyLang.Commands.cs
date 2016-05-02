@@ -1197,7 +1197,7 @@ string filename;
 
                 var ea = Address.Ptr32((uint)addr);
                 ImageSegment segment;
-                if (!Host.ImageMap.TryFindSegment(ea, out segment))
+                if (!Host.SegmentMap.TryFindSegment(ea, out segment))
                     throw new AccessViolationException();
                 byte[] membuf = new byte[memlen];
                 if (segment.MemoryArea.TryReadBytes(ea, memlen, membuf))
@@ -3453,7 +3453,7 @@ string param;
                 {
                     var ea = Address.Ptr32((uint)CSP);
                     ImageSegment segment;
-                    if (!Host.ImageMap.TryFindSegment(ea, out segment))
+                    if (!Host.SegmentMap.TryFindSegment(ea, out segment))
                         throw new AccessViolationException();
                     dw = segment.MemoryArea.ReadLeUInt32(ea);
                     return SetRulong(args[0], dw);

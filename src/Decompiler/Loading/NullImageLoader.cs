@@ -56,7 +56,7 @@ namespace Reko.Loading
                 addrLoad = PreferredBaseAddress;
             var mem = new MemoryArea(addrLoad, imageBytes);
             return new Program(
-                new ImageMap(
+                new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute)),
                 Architecture,

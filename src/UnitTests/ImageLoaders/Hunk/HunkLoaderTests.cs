@@ -82,8 +82,8 @@ namespace Reko.UnitTests.ImageLoaders.Hunk
                 0);
             var ldr = new HunkLoader(sc, "foo.bar", bytes);
             var ldImg = ldr.Load(Address.Ptr32(0x00010000));
-            Assert.AreEqual(1, ldImg.ImageMap.Segments.Count);
-            Assert.AreEqual(Address.Ptr32(0x00010000), ldImg.ImageMap.Segments.Values[0].Address);
+            Assert.AreEqual(1, ldImg.SegmentMap.Segments.Count);
+            Assert.AreEqual(Address.Ptr32(0x00010000), ldImg.SegmentMap.Segments.Values[0].Address);
         }
 
         [Test]

@@ -47,6 +47,7 @@ namespace Reko.UnitTests.Gui.Windows
         private Address addrBase;
         private LowLevelView control;
         private MemoryArea mem;
+        private SegmentMap segmentMap;
         private ImageMap imageMap;
         private IUiPreferencesService uiPrefsSvc;
         private Program program;
@@ -172,12 +173,12 @@ namespace Reko.UnitTests.Gui.Windows
         {
             var addr = Address.Ptr32(0x1000);
             var mem = new MemoryArea(addr, bytes);
-            this.imageMap = new ImageMap(
+            this.segmentMap = new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment(
                         "code", mem, AccessMode.ReadWriteExecute));
             this.program = new Program(
-                imageMap,
+                segmentMap,
                 arch, 
                 new DefaultPlatform(null, arch));
         }
@@ -223,11 +224,11 @@ namespace Reko.UnitTests.Gui.Windows
         private void Given_Image(params byte[] bytes)
         {
             mem = new MemoryArea(addrBase, bytes);
-            imageMap = new ImageMap(
+            segmentMap = new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment(
                         "code", mem, AccessMode.ReadWriteExecute));
-            program = new Program(imageMap, arch, null);
+            program = new Program(segmentMap, arch, null);
             interactor.Program = program;
         }
 

@@ -181,7 +181,7 @@ namespace Reko.UnitTests.Mocks
 
             var program = CreateProgram();
             var mem = new MemoryArea(Address.Ptr32(0x10000000), new byte[1000]);
-            program.ImageMap = new ImageMap(
+            program.SegmentMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment(".text", mem, AccessMode.ReadExecute));
 

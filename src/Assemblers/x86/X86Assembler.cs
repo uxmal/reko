@@ -90,7 +90,7 @@ namespace Reko.Assemblers.x86
             var mem = new MemoryArea(addrBase, stm.ToArray());
             RelocateSegmentReferences(mem);
             return new Program(
-                new ImageMap(
+                new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute)),
                 arch,

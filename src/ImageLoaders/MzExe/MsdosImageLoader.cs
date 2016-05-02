@@ -38,7 +38,7 @@ namespace Reko.ImageLoaders.MzExe
         private IPlatform platform;
 		private ExeImageLoader exe;
 		private MemoryArea imgLoaded;
-        private ImageMap imgLoadedMap;
+        private SegmentMap segmentMap;
 
 		public MsdosImageLoader(IServiceProvider services, string filename, ExeImageLoader exe) : base(services, filename, exe.RawImage)
 		{
@@ -63,13 +63,13 @@ namespace Reko.ImageLoaders.MzExe
             int cbCopy = Math.Min(cbImageSize, RawImage.Length - iImageStart);
             Array.Copy(RawImage, iImageStart, bytes, 0, cbCopy);
             imgLoaded = new MemoryArea(addrLoad, bytes);
-            imgLoadedMap = new ImageMap(addrLoad);
-            return new Program(imgLoadedMap, arch, platform);
+            segmentMap = new SegmentMap(addrLoad);
+            return new Program(segmentMap, arch, platform);
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
 		{
-			ImageMap imageMap = imgLoadedMap;
+			SegmentMap imageMap = segmentMap;
 			ImageReader rdr = new LeImageReader(exe.RawImage, (uint) exe.e_lfaRelocations);
             var relocations = imgLoaded.Relocations;
 			int i = exe.e_cRelocations;
@@ -88,14 +88,14 @@ namespace Reko.ImageLoaders.MzExe
                     Address.SegPtr(seg, 0),
                     imgLoaded, 
                     AccessMode.ReadWriteExecute);
-                segment = imageMap.AddSegment(segment);
+                segment = segmentMap.AddSegment(segment);
 				--i;
 			}
 		
 			// Found the start address.
 
 			Address addrStart = Address.SegPtr((ushort)(exe.e_cs + addrLoad.Selector.Value), exe.e_ip);
-			imageMap.AddSegment(new ImageSegment(
+			segmentMap.AddSegment(new ImageSegment(
                 addrStart.Selector.Value.ToString("X4"),
                 Address.SegPtr(addrStart.Selector.Value, 0),
                 imgLoaded,
@@ -121,9 +121,9 @@ namespace Reko.ImageLoaders.MzExe
 		}
 
         [Conditional("DEBUG")]
-        public void DumpSegments(ImageMap imageMap)
+        public void DumpSegments(SegmentMap segmentMap)
         {
-            foreach (var seg in imageMap.Segments.Values)
+            foreach (var seg in this.segmentMap.Segments.Values)
             {
                 Debug.Print("{0} {1} size:{2}", seg.Name, seg.Address, seg.Size);
             }

@@ -91,9 +91,11 @@ namespace Reko.ImageLoaders.MzExe
 			ReadOptionalHeader(rdr, expectedMagic);
 		}
 
+        [Obsolete("create symbols instead")]
         public ImageMap ImageMap { get; private set; }
+        public SegmentMap SegmentMap { get; private set; }
 
-		private void AddExportedEntryPoints(Address addrLoad, ImageMap imageMap, List<ImageSymbol> entryPoints)
+		private void AddExportedEntryPoints(Address addrLoad, SegmentMap imageMap, List<ImageSymbol> entryPoints)
 		{
 			ImageReader rdr = imgLoaded.CreateLeReader(rvaExportTable);
 			rdr.ReadLeUInt32();	// Characteristics
@@ -212,12 +214,12 @@ namespace Reko.ImageLoaders.MzExe
         {
             if (sections > 0)
             {
-                ImageMap = new ImageMap(addrLoad);
+                SegmentMap = new SegmentMap(addrLoad);
                 sectionMap = LoadSections(addrLoad, rvaSectionTable, sections);
                 imgLoaded = LoadSectionBytes(addrLoad, sectionMap);
-                AddSectionsToImageMap(addrLoad, ImageMap);
+                AddSectionsToImageMap(addrLoad, SegmentMap);
             }
-            this.program = new Program(ImageMap, arch, platform);
+            this.program = new Program(SegmentMap, arch, platform);
             this.importReferences = program.ImportReferences;
 
             var rsrcLoader = new ResourceLoader(this.imgLoaded, rvaResources);
@@ -448,7 +450,7 @@ namespace Reko.ImageLoaders.MzExe
             imageSymbols[entrySym.Address] = entrySym;
             var entryPoints = new List<ImageSymbol> { entrySym };
             var functions = ReadExceptionRecords(addrLoad, rvaExceptionTable, sizeExceptionTable);
-            AddExportedEntryPoints(addrLoad, ImageMap, entryPoints);
+            AddExportedEntryPoints(addrLoad, SegmentMap, entryPoints);
 			ReadImportDescriptors(addrLoad);
             ReadDeferredLoadDescriptors(addrLoad);
             return new RelocationResults(entryPoints, imageSymbols, functions);
@@ -497,7 +499,7 @@ namespace Reko.ImageLoaders.MzExe
             };
         }
 
-        public void AddSectionsToImageMap(Address addrLoad, ImageMap imageMap)
+        public void AddSectionsToImageMap(Address addrLoad, SegmentMap imageMap)
         {
             foreach (Section s in sectionMap.Values)
             {
@@ -510,7 +512,7 @@ namespace Reko.ImageLoaders.MzExe
                 {
                     acc |= AccessMode.Execute;
                 }
-                var seg = imageMap.AddSegment(new ImageSegment(
+                var seg = SegmentMap.AddSegment(new ImageSegment(
                     s.Name,
                     addrLoad + s.VirtualAddress, 
                     imgLoaded, 
@@ -709,22 +711,24 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 if (!innerLoader.ResolveImportDescriptorEntry(dllName, rdrIlt, rdrIat))
                     break;
 
-                ImageMap.AddItemWithSize(
-                    addrIat,
-                    new ImageMapItem
-                    {
-                        Address = addrIat,
-                        DataType = new Pointer(new CodeType(), ptrSize),
-                        Size = (uint)ptrSize,
-                    });
-                ImageMap.AddItemWithSize(
-                    addrIlt,
-                    new ImageMapItem
-                    {
-                        Address = addrIlt,
-                        DataType = PrimitiveType.CreateWord(ptrSize),
-                        Size = (uint)ptrSize,
-                    });
+                throw new NotImplementedException();
+                // should be added to the symbols table
+                //ImageMap.AddItemWithSize(
+                //    addrIat,
+                //    new ImageMapItem
+                //    {
+                //        Address = addrIat,
+                //        DataType = new Pointer(new CodeType(), ptrSize),
+                //        Size = (uint)ptrSize,
+                //    });
+                //ImageMap.AddItemWithSize(
+                //    addrIlt,
+                //    new ImageMapItem
+                //    {
+                //        Address = addrIlt,
+                //        DataType = PrimitiveType.CreateWord(ptrSize),
+                //        Size = (uint)ptrSize,
+                //    });
             } 
             return true;
         }

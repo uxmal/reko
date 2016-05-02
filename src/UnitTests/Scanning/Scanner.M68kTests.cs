@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Scanning
             arch = new M68kArchitecture();
             var mem = new MemoryArea(addrBase, bytes);
             program = new Program(
-                new ImageMap(
+                new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment(
                         "code", mem, AccessMode.ReadWriteExecute)),

@@ -123,7 +123,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             Program lr = asm.GetImage();
             var dasm = arch.CreateDisassembler(
-                lr.ImageMap.Segments.Values.First().MemoryArea.CreateLeReader(0));
+                lr.SegmentMap.Segments.Values.First().MemoryArea.CreateLeReader(0));
             instrs = new List<X86Instruction>();
             return new FstswChainMatcher(dasm.Cast<X86Instruction>().ToArray(), orw);
         }

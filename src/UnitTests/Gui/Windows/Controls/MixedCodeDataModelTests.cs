@@ -39,6 +39,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
         private MockRepository mr;
         private IProcessorArchitecture arch;
         private IPlatform platform;
+        private SegmentMap segmentMap;
         private ImageMap imageMap;
         private Program program;
 
@@ -63,7 +64,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
 
         private void Given_Program()
         {
-            this.program = new Program(imageMap, arch, platform);
+            this.program = new Program(segmentMap, arch, platform);
         }
 
         private FakeInstruction Instr(uint addr)
@@ -93,7 +94,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
 
             var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[8]);
             var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[8]);
-            this.imageMap = new ImageMap(
+            this.segmentMap = new SegmentMap(
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute),
                 new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
@@ -101,7 +102,6 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             Given_CodeBlock(memText.BaseAddress, 2);
             mr.ReplayAll();
 
-            this.imageMap.Dump();
             var mcdm = new MixedCodeDataModel(program);
             var lines = mcdm.GetLineSpans(2);
             Assert.AreEqual(2, lines.Length);
@@ -114,11 +114,11 @@ namespace Reko.UnitTests.Gui.Windows.Controls
 
             var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[8]);
             var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[8]);
-            this.imageMap = new ImageMap(
+            this.segmentMap = new SegmentMap(
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute),
                 new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
-            var program = new Program(imageMap, arch, platform);
+            var program = new Program(segmentMap, arch, platform);
 
             Given_CodeBlock(memText.BaseAddress, 4);
 
@@ -136,11 +136,11 @@ namespace Reko.UnitTests.Gui.Windows.Controls
 
             var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[8]);
             var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[8]);
-            this.imageMap = new ImageMap(
+            this.segmentMap = new SegmentMap(
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute),
                 new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
-            var program = new Program(imageMap, arch, platform);
+            var program = new Program(segmentMap, arch, platform);
 
             Given_CodeBlock(memText.BaseAddress, 4);
 
@@ -158,11 +158,11 @@ namespace Reko.UnitTests.Gui.Windows.Controls
 
             var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[100]);
             var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[8]);
-            this.imageMap = new ImageMap(
+            this.segmentMap = new SegmentMap(
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute) { Size = 4 },
                 new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
-            var program = new Program(imageMap, arch, platform);
+            var program = new Program(segmentMap, arch, platform);
 
             Given_CodeBlock(memText.BaseAddress, 4);
 
@@ -196,11 +196,11 @@ namespace Reko.UnitTests.Gui.Windows.Controls
 
             var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[100]);
             var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[8]);
-            this.imageMap = new ImageMap(
+            this.segmentMap = new SegmentMap(
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute) { Size = 4 },
                 new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
-            var program = new Program(imageMap, arch, platform);
+            var program = new Program(segmentMap, arch, platform);
 
             Given_CodeBlock(memText.BaseAddress, 4);
             Given_CodeBlock(Address.Ptr32(0x42004), 4);
@@ -227,11 +227,11 @@ namespace Reko.UnitTests.Gui.Windows.Controls
 
             var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[8]);
             var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[8]);
-            this.imageMap = new ImageMap(
+            this.segmentMap = new SegmentMap(
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute),
                 new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
-            var program = new Program(imageMap, arch, platform);
+            var program = new Program(segmentMap, arch, platform);
 
             mr.ReplayAll();
 
@@ -280,17 +280,15 @@ namespace Reko.UnitTests.Gui.Windows.Controls
 
             var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[4]);
             var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[32]);
-            this.imageMap = new ImageMap(
+            this.segmentMap = new SegmentMap(
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute),
                 new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
-            var program = new Program(imageMap, arch, platform);
+            var program = new Program(segmentMap, arch, platform);
 
             Given_CodeBlock(memText.BaseAddress, 4);
 
             mr.ReplayAll();
-
-            imageMap.Dump();
 
             var mcdm = new MixedCodeDataModel(program);
             // Advance 1 line into another piece of code.
@@ -320,11 +318,11 @@ namespace Reko.UnitTests.Gui.Windows.Controls
 
             var memText = new MemoryArea(Address.Ptr32(0x40FD5), new byte[64]);
             var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[32]);
-            this.imageMap = new ImageMap(
+            this.segmentMap = new SegmentMap(
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute),
                 new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
-            var program = new Program(imageMap, arch, platform);
+            var program = new Program(segmentMap, arch, platform);
 
             Given_CodeBlock(Address.Ptr32(0x40FF9), 4);
 
@@ -355,11 +353,11 @@ namespace Reko.UnitTests.Gui.Windows.Controls
 
             var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[4]);
             var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[32]);
-            this.imageMap = new ImageMap(
+            this.segmentMap = new SegmentMap(
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute),
                 new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
-            var program = new Program(imageMap, arch, platform);
+            var program = new Program(segmentMap, arch, platform);
 
             Given_CodeBlock(memText.BaseAddress, 4);
 
@@ -382,11 +380,11 @@ namespace Reko.UnitTests.Gui.Windows.Controls
 
             var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[4]);
             var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[32]);
-            this.imageMap = new ImageMap(
+            this.segmentMap = new SegmentMap(
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute),
                 new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
-            var program = new Program(imageMap, arch, platform);
+            var program = new Program(segmentMap, arch, platform);
             Given_CodeBlock(memText.BaseAddress, 4);
             mr.ReplayAll();
 
@@ -413,11 +411,11 @@ namespace Reko.UnitTests.Gui.Windows.Controls
 
             var memText = new MemoryArea(Address.Ptr32(0x41000), new byte[100]);
             var memData = new MemoryArea(Address.Ptr32(0x42000), new byte[8]);
-            this.imageMap = new ImageMap(
+            this.segmentMap = new SegmentMap(
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute) { Size = 4 },
                 new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
-            var program = new Program(imageMap, arch, platform);
+            var program = new Program(segmentMap, arch, platform);
 
             Given_CodeBlock(memText.BaseAddress, 4);
 

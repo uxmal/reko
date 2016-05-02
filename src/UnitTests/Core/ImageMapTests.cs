@@ -94,7 +94,7 @@ namespace Reko.UnitTests.Core
         [Test]
 		public void Im_Creation()
 		{
-			ImageMap im = new ImageMap(addrBase, img.Length);
+			SegmentMap im = new SegmentMap(addrBase, img.Length);
 
 			im.AddSegment(Address.SegPtr(0x8000, 2), "",  AccessMode.ReadWrite, 10);
 			im.AddSegment(Address.SegPtr(0x8000, 3), "", AccessMode.ReadWrite, 10);
@@ -119,12 +119,12 @@ namespace Reko.UnitTests.Core
         [Test(Description = "Newly created segments should be covered by an item that covers the memory area.")]
         public void Im_CreateCoveringItem()
         {
-            var map = new ImageMap(Address.Ptr32(0x01000));
-            map.AddSegment(
-                new MemoryArea(Address.Ptr32(0x01010), new byte[0x10]),
-                ".text",
-                AccessMode.ReadExecute);
-
+            var segmentMap = new SegmentMap(Address.Ptr32(0x01000),
+                new ImageSegment(
+                    ".text", 
+                    new MemoryArea(Address.Ptr32(0x01010), new byte[0x10]),
+                    AccessMode.ReadExecute));
+            var map = segmentMap.CreateImageMap();
             Assert.AreEqual(1, map.Items.Count);
             var item = map.Items.Values.First();
             Assert.AreEqual(Address.Ptr32(0x1010), item.Address);
@@ -134,7 +134,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void Im_Overlaps()
 		{
-			ImageMap im = new ImageMap(Address.SegPtr(0x8000, 0));
+			SegmentMap im = new SegmentMap(Address.SegPtr(0x8000, 0));
             var mem = new MemoryArea(im.BaseAddress, new byte[40]);
             var seg = new ImageSegment("8000", Address.SegPtr(0x8000, 10), mem, AccessMode.ReadWrite);
             im.AddSegment(seg);
@@ -143,7 +143,7 @@ namespace Reko.UnitTests.Core
         [Test]
 		public void Im_AddNamedSegment()
 		{
-			ImageMap map = new ImageMap(Address.SegPtr(0x0B00, 0), 40000);
+			SegmentMap map = new SegmentMap(Address.SegPtr(0x0B00, 0), 40000);
 			map.AddSegment(Address.SegPtr(0xC00, 0), "0C00", AccessMode.ReadWrite, 6000);
 			IEnumerator<KeyValuePair<Address,ImageSegment>> e = map.Segments.GetEnumerator();
 			ImageSegment s = GetNextMapSegment(e);
@@ -155,8 +155,9 @@ namespace Reko.UnitTests.Core
         public void Im_CreateItem_MiddleOfEmptyRange()
         {
             var mem = new MemoryArea(addrBase, new byte[0x100]);
-            var map = new ImageMap(addrBase,
+            var segmentMap = new SegmentMap(addrBase,
                 new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
+            var map = segmentMap.CreateImageMap();
             map.AddItemWithSize(
                 addrBase + 0x10,
                 new ImageMapItem(0x10) { DataType = new ArrayType(PrimitiveType.Byte, 10) });
@@ -171,8 +172,9 @@ namespace Reko.UnitTests.Core
         [Test]
         public void Im_CreateItem_AtExistingRange()
         {
-            var map = new ImageMap(addrBase, 0x0100);
-            map.AddSegment(addrBase, "8000", AccessMode.ReadWrite, 0x100);
+            var segmentMap = new SegmentMap(addrBase,
+                new ImageSegment("code", addrBase, 0x100, AccessMode.ReadWrite));
+            var map = segmentMap.CreateImageMap();
             map.AddItemWithSize(
                 addrBase,
                 new ImageMapItem(0x10) { DataType = new ArrayType(PrimitiveType.Byte, 0x10) });
@@ -187,8 +189,9 @@ namespace Reko.UnitTests.Core
         [Test]
         public void Im_RemoveItem()
         {
-            var map = new ImageMap(addrBase, 0x0100);
-            map.AddSegment(addrBase, "code", AccessMode.ReadWrite, 0x100);
+            var segmentMap = new SegmentMap(addrBase,
+                new ImageSegment("code", addrBase, 0x100, AccessMode.ReadWrite));
+            var map = segmentMap.CreateImageMap();
             var curAddr = addrBase;
 
             var itemAddress1 = addrBase;
@@ -242,13 +245,15 @@ namespace Reko.UnitTests.Core
         [Test]
         public void Im_RemoveItem_DoNotMergeDisjoinedItems()
         {
-            var map = new ImageMap(addrBase, 0x0100);
+            var segmentMap = new SegmentMap(addrBase, 0x0100);
             var codeAddr = addrBase;
             var dataAddr = addrBase + 0x1000;
             var textAddr = addrBase + 0x2000;
-            map.AddSegment(codeAddr, "code", AccessMode.ReadWrite, 0x100);
-            map.AddSegment(dataAddr, "data", AccessMode.ReadWrite, 0x4);
-            map.AddSegment(textAddr, "text", AccessMode.ReadWrite, 0x100);
+            segmentMap.AddSegment(codeAddr, "code", AccessMode.ReadWrite, 0x100);
+            segmentMap.AddSegment(dataAddr, "data", AccessMode.ReadWrite, 0x4);
+            segmentMap.AddSegment(textAddr, "text", AccessMode.ReadWrite, 0x100);
+
+            var map = segmentMap.CreateImageMap();
             var curAddr = addrBase;
 
             CreateImageMapItem(map, PrimitiveType.Int32, addrBase + 0x1000);
@@ -286,9 +291,9 @@ namespace Reko.UnitTests.Core
         }
 
         [Test]
-        public void Im_AddSegment()
+        public void Sm_AddSegment()
         {
-            var map = new ImageMap(addrBase);
+            var map = new SegmentMap(addrBase);
             var mem = new MemoryArea(addrBase, new byte[0x4000]);
             var seg = new ImageSegment("8100", Address.SegPtr(0x8100, 0), mem, AccessMode.ReadWriteExecute);
             map.AddSegment(seg);

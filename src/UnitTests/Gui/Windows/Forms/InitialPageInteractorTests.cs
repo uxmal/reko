@@ -62,7 +62,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             host = mr.StrictMock<DecompilerHost>();
             memSvc = mr.StrictMock<ILowLevelViewService>();
             var mem = new MemoryArea(Address.Ptr32(0x10000), new byte[1000]);
-            var imageMap = new ImageMap(
+            var imageMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
             var arch = mr.StrictMock<IProcessorArchitecture>();

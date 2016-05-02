@@ -80,7 +80,7 @@ namespace Reko.Assemblers.M68k
         {
             var mem = new MemoryArea(BaseAddress, Emitter.GetBytes());
             return new Program(
-                new ImageMap(
+                new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute)),
                 arch, 

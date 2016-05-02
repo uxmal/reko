@@ -53,8 +53,8 @@ namespace Reko.UnitTests.Scanning
             this.program = new Program
             {
                 Architecture = arch,
-                ImageMap = new ImageMap(mem.BaseAddress, 
-                new ImageSegment(".text", mem, AccessMode.ReadExecute)),
+                SegmentMap = new SegmentMap(mem.BaseAddress, 
+                    new ImageSegment(".text", mem, AccessMode.ReadExecute)),
             };
         }
 
@@ -70,14 +70,14 @@ namespace Reko.UnitTests.Scanning
                 0xC3, 0xC3, 0xC3, 0xCC,
             });
             var scanner = mr.Stub<IScanner>();
-            scanner.Stub(s => s.CreateReader(program.ImageMap.BaseAddress))
-                .Return(mem.CreateLeReader(0));
+            scanner.Stub((Function<IScanner, ImageReader>)(s => s.CreateReader((Address)this.program.ImageMap.BaseAddress)))
+                .Return(this.mem.CreateLeReader(0));
             var state = mr.Stub<ProcessorState>();
         
             mr.ReplayAll();
 
             var vb = new VectorBuilder(scanner, program, new DirectedGraphImpl<object>());
-            var vector = vb.BuildTable(program.ImageMap.BaseAddress, 12, null, 4, state);
+            var vector = vb.BuildTable((Address)this.program.ImageMap.BaseAddress, 12, null, 4, state);
             Assert.AreEqual(3, vector.Count);
         }
     }

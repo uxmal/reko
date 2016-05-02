@@ -66,9 +66,9 @@ namespace Reko.Core
             this.GlobalFields = TypeFactory.CreateStructureType("Globals", 0);
         }
 
-        public Program(ImageMap imageMap, IProcessorArchitecture arch, IPlatform platform) : this()
+        public Program(SegmentMap segmentMap, IProcessorArchitecture arch, IPlatform platform) : this()
         {
-            this.ImageMap = imageMap;
+            this.SegmentMap = segmentMap;
             this.Architecture = arch;
             this.Platform = platform;
         }
@@ -83,6 +83,7 @@ namespace Reko.Core
         public IPlatform Platform { get; set; }
 
         public ImageMap ImageMap { get; set; }
+        public SegmentMap SegmentMap { get; set; }
 
         /// <summary>
         /// Metadata obtained from the environment -- not
@@ -251,7 +252,7 @@ namespace Reko.Core
         public string DisassemblyFilename { get; set; }
 
         /// <summary>
-        /// The name of the file in which intermediate results are stored.
+        /// The nsame of the file in which intermediate results are stored.
         /// </summary>
         public string IntermediateFilename { get; set; }
 
@@ -282,7 +283,7 @@ namespace Reko.Core
         public ImageReader CreateImageReader(Address addr)
         {
             ImageSegment segment;
-            if (!ImageMap.TryFindSegment(addr, out segment))
+            if (!SegmentMap.TryFindSegment(addr, out segment))
                 throw new ArgumentException(string.Format("The address {0} is invalid.", addr));
             return Architecture.CreateImageReader(segment.MemoryArea, addr);
         }
@@ -290,7 +291,7 @@ namespace Reko.Core
         public ImageWriter CreateImageWriter(Address addr)
         {
             ImageSegment segment;
-            if (!ImageMap.TryFindSegment(addr, out segment))
+            if (!SegmentMap.TryFindSegment(addr, out segment))
                 throw new ArgumentException(string.Format("The address {0} is invalid.", addr));
             return Architecture.CreateImageWriter(segment.MemoryArea, addr);
         }
@@ -298,7 +299,7 @@ namespace Reko.Core
         public IEnumerable<MachineInstruction> CreateDisassembler(Address addr)
         {
             ImageSegment segment;
-            if (!ImageMap.TryFindSegment(addr, out segment))
+            if (!SegmentMap.TryFindSegment(addr, out segment))
                 throw new ArgumentException(string.Format("The address {0} is invalid.", addr));
             return Architecture.CreateDisassembler(
                 Architecture.CreateImageReader(segment.MemoryArea, addr));

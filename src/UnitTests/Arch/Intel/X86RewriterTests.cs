@@ -185,14 +185,14 @@ namespace Reko.UnitTests.Arch.Intel
         {
             var m = Create16bitAssembler();
             fn(m);
-            image = m.GetImage().ImageMap.Segments.Values.First().MemoryArea;
+            image = m.GetImage().SegmentMap.Segments.Values.First().MemoryArea;
         }
 
         private void Run32bitTest(Action<X86Assembler> fn)
         {
             var m = Create32bitAssembler();
             fn(m);
-            image = m.GetImage().ImageMap.Segments.Values.First().MemoryArea;
+            image = m.GetImage().SegmentMap.Segments.Values.First().MemoryArea;
         }
 
         private void Run16bitTest(params byte[] bytes)
@@ -235,7 +235,7 @@ namespace Reko.UnitTests.Arch.Intel
                 arch32, 
                 host, 
                 state, 
-                m.GetImage().ImageMap.Segments.Values.First().MemoryArea.CreateLeReader(0),
+                m.GetImage().SegmentMap.Segments.Values.First().MemoryArea.CreateLeReader(0),
                 new Frame(arch32.WordWidth));
         }
 

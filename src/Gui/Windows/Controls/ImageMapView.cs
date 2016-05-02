@@ -75,6 +75,24 @@ namespace Reko.Gui.Windows.Controls
         public ImageMap imageMap;
 
         [Browsable(false)]
+        public SegmentMap SegmentMap
+        {
+            get { return segmentMap; }
+            set
+            {
+                if (segmentMap != null)
+                    imageMap.MapChanged -= imageMap_MapChanged;
+                segmentMap = value;
+                if (segmentMap != null)
+                    segmentMap.MapChanged += imageMap_MapChanged;
+                OnImageMapChanged();
+            }
+        }
+        public event EventHandler SegmentMapChanged;
+        public SegmentMap segmentMap;
+
+
+        [Browsable(false)]
         public Address SelectedAddress { get { return selectedAddress; } set { selectedAddress = value; SelectedAddressChanged.Fire(this); } }
         public event EventHandler SelectedAddressChanged;
         private Address selectedAddress;
@@ -120,8 +138,8 @@ namespace Reko.Gui.Windows.Controls
             int cxAvailable = ClientSize.Width - 2 * CxScroll;
             int cxConstant = 0;             // pixels always needed
             int cxConstantPerSegment = CxSegmentBorder; // constant pixel overhead per segment
-            int cSeg = ImageMap.Segments.Count;
-            long cbTotal = ImageMap.Segments.Values.Sum(s => s.Size);
+            int cSeg = SegmentMap.Segments.Count;
+            long cbTotal = SegmentMap.Segments.Values.Sum(s => s.Size);
             granularity = (long)Math.Ceiling(
                cbTotal /
                (double)(cxAvailable - cxConstant - cxConstantPerSegment * cSeg));

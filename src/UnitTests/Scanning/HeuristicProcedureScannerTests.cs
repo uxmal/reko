@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Scanning
             var hsc = new HeuristicScanner(prog, host, eventListener);
             this.proc = hsc.DisassembleProcedure(
                 prog.ImageMap.BaseAddress,
-                prog.ImageMap.BaseAddress + prog.ImageMap.GetExtent());
+                prog.ImageMap.BaseAddress + prog.SegmentMap.GetExtent());
         }
 
         [Test]

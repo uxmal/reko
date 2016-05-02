@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Arch.Intel
                 arch,
                 host, 
                 new X86State(arch),
-                asmResult.ImageMap.Segments.Values.First().MemoryArea.CreateLeReader(0), frame);
+                asmResult.SegmentMap.Segments.Values.First().MemoryArea.CreateLeReader(0), frame);
         }
 
         public override Address LoadAddress

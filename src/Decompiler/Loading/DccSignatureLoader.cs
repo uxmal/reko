@@ -490,7 +490,7 @@ static char [] buf= new char[100];                       /* A general purpose bu
             }
 
             ImageSegment segment;
-            if (!prog.ImageMap.TryFindSegment(addr, out segment))
+            if (!prog.SegmentMap.TryFindSegment(addr, out segment))
                 return false;
             
 
@@ -693,7 +693,7 @@ static char [] buf= new char[100];                       /* A general purpose bu
             /* Check the Turbo Pascal signatures first, since they involve only the
                         first 3 bytes, and false positives may be founf with the others later */
             ImageSegment segment;
-            prog.ImageMap.TryFindSegment(start, out segment);
+            prog.SegmentMap.TryFindSegment(start, out segment);
             var image = segment.MemoryArea;
             var startOff = (uint)(start - image.BaseAddress);   /* Offset into the Image of the initial CS:IP */
             if (locatePattern(image.Bytes,

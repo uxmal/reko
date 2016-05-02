@@ -500,7 +500,7 @@ namespace Reko.Gui.Forms
                         return;
                     var hits = this.decompilerSvc.Decompiler.Project.Programs
                         .SelectMany(program => 
-                            program.ImageMap.Segments.Values.SelectMany(seg =>
+                            program.SegmentMap.Segments.Values.SelectMany(seg =>
                             {
                                 return re.GetMatches(
                                         seg.MemoryArea.Bytes,
@@ -509,7 +509,7 @@ namespace Reko.Gui.Forms
                                     .Where(o => filter(o, program))
                                     .Select(offset => new ProgramAddress(
                                         program,
-                                        program.ImageMap.MapLinearAddressToAddress(
+                                        program.SegmentMap.MapLinearAddressToAddress(
                                             seg.MemoryArea.BaseAddress.ToLinear() + (ulong)offset)));
                             }));
                     srSvc.ShowAddressSearchResults(hits, AddressSearchDetails.Code);
@@ -526,9 +526,9 @@ namespace Reko.Gui.Forms
                 else
                     return (o, program) =>
                     {
-                        var addr = program.ImageMap.MapLinearAddressToAddress(
+                        var addr = program.SegmentMap.MapLinearAddressToAddress(
                             (ulong)
-                             ((long)program.ImageMap.BaseAddress.ToLinear() + o));
+                             ((long)program.SegmentMap.BaseAddress.ToLinear() + o));
                         ImageMapItem item;
                         return program.ImageMap.TryFindItem(addr, out item)
                             && item.DataType != null &&
@@ -539,8 +539,8 @@ namespace Reko.Gui.Forms
             {
                 return (o, program) =>
                     {
-                        var addr = program.ImageMap.MapLinearAddressToAddress(
-                              (uint)((long) program.ImageMap.BaseAddress.ToLinear() + o));
+                        var addr = program.SegmentMap.MapLinearAddressToAddress(
+                              (uint)((long) program.SegmentMap.BaseAddress.ToLinear() + o));
                         ImageMapItem item;
                         return program.ImageMap.TryFindItem(addr, out item)
                             && item.DataType == null ||

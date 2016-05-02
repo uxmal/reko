@@ -67,7 +67,7 @@ namespace Reko.Core
         /// <param name="knownAddresses"></param>
         /// <param name="flags"></param>
         /// <returns></returns>
-        IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
+        IEnumerable<Address> CreatePointerScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
 
         /// <summary>
         /// Creates a Frame instance appropriate for this architecture type.
@@ -203,7 +203,7 @@ namespace Reko.Core
         public abstract ImageWriter CreateImageWriter(MemoryArea img, Address addr);
         public abstract IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm);
         public abstract ProcessorState CreateProcessorState();
-        public abstract IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
+        public abstract IEnumerable<Address> CreatePointerScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
         public abstract IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host);
         public abstract Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType);
 

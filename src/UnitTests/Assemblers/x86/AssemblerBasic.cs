@@ -92,12 +92,12 @@ namespace Reko.UnitTests.Assemblers.x86
 				Dumper dumper = new Dumper(program.Architecture);
 				dumper.ShowAddresses = true;
 				dumper.ShowCodeBytes = true;
-                foreach (var segment in program.ImageMap.Segments.Values)
+                foreach (var segment in program.SegmentMap.Segments.Values)
                 {
                     var mem = segment.MemoryArea;
-                    dumper.DumpData(program.ImageMap, mem.BaseAddress, mem.Length, fut.TextWriter);
+                    dumper.DumpData(program.SegmentMap, mem.BaseAddress, mem.Length, fut.TextWriter);
                     fut.TextWriter.WriteLine();
-                    dumper.DumpAssembler(program.ImageMap, mem.BaseAddress, mem.EndAddress, fut.TextWriter);
+                    dumper.DumpAssembler(program.SegmentMap, mem.BaseAddress, mem.EndAddress, fut.TextWriter);
                     if (program.ImportReferences.Count > 0)
                     {
                         foreach (var de in program.ImportReferences.OrderBy(d => d.Key))
@@ -120,7 +120,7 @@ namespace Reko.UnitTests.Assemblers.x86
         private void AssembleFragment(string asmSrc)
         {
             program = asm.AssembleFragment(Address.SegPtr(0x0C00, 0), asmSrc);
-            mem = program.ImageMap.Segments.Values.First().MemoryArea;
+            mem = program.SegmentMap.Segments.Values.First().MemoryArea;
         }
 
 		[Test]
@@ -133,12 +133,12 @@ hello	proc
 		mov	bx,0x40
 hello	endp
 ");
-            var segment = program.ImageMap.Segments.Values.First();
+            var segment = program.SegmentMap.Segments.Values.First();
 			using (FileUnitTester fut = new FileUnitTester("Intel/AsFragment.txt"))
 			{
 				var arch = new X86ArchitectureReal();
 				var d = new Dumper(arch);
-				d.DumpData(program.ImageMap, segment.Address, segment.ContentSize, fut.TextWriter);
+				d.DumpData(program.SegmentMap, segment.Address, segment.ContentSize, fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
 		}
@@ -246,8 +246,8 @@ foo		endp
 			using (FileUnitTester fut = new FileUnitTester("Intel/AsCarryInstructions.txt"))
 			{
 				Dumper dump = new Dumper(arch);
-                var mem = program.ImageMap.Segments.Values.First().MemoryArea;
-				dump.DumpData(program.ImageMap, mem.BaseAddress, mem.Length, fut.TextWriter);
+                var mem = program.SegmentMap.Segments.Values.First().MemoryArea;
+				dump.DumpData(program.SegmentMap, mem.BaseAddress, mem.Length, fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
 		}
@@ -353,7 +353,7 @@ foo		endp
         {
             Address addr = Address.SegPtr(0x0C00, 0);
             var program = asm.AssembleFragment(addr, "mov [0x400],0x1234\n");
-            var mem = program.ImageMap.Segments.Values.First().MemoryArea;
+            var mem = program.SegmentMap.Segments.Values.First().MemoryArea;
             var dasm = new X86Disassembler(
                 ProcessorMode.Real,
                 mem.CreateLeReader(addr),
@@ -379,12 +379,12 @@ foo		endp
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
 				Dumper dump = new Dumper(asm.Architecture);
-                var mem = program.ImageMap.Segments.Values.First().MemoryArea;
-				dump.DumpData(program.ImageMap, mem.BaseAddress, mem.Bytes.Length, fut.TextWriter);
+                var mem = program.SegmentMap.Segments.Values.First().MemoryArea;
+				dump.DumpData(program.SegmentMap, mem.BaseAddress, mem.Bytes.Length, fut.TextWriter);
 				fut.TextWriter.WriteLine();
 				dump.ShowAddresses = true;
 				dump.ShowCodeBytes = true;
-				dump.DumpAssembler(program.ImageMap, mem.BaseAddress, mem.EndAddress, fut.TextWriter);
+				dump.DumpAssembler(program.SegmentMap, mem.BaseAddress, mem.EndAddress, fut.TextWriter);
 
 				fut.AssertFilesEqual();
 			}	

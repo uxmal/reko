@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Arch.Intel
             var mem = new MemoryArea(Address.Ptr32(0x10000), new byte[4]);
             program = new Program
             {
-                ImageMap = new ImageMap(
+                SegmentMap = new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment(".text", mem, AccessMode.ReadExecute))
             };

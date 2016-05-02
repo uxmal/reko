@@ -95,6 +95,7 @@ namespace Reko.Scanning
     {
         private Program program;
         private PriorityQueue<WorkItem> queue;
+        private SegmentMap segmentMap;
         private ImageMap imageMap;
         private IImportResolver importResolver;
         private SortedList<Address, BlockRange> blocks;
@@ -121,6 +122,7 @@ namespace Reko.Scanning
             IServiceProvider services)
         {
             this.program = program;
+            this.segmentMap = program.SegmentMap;
             this.imageMap = program.ImageMap;
             this.importResolver = importResolver;
             this.eventListener = services.RequireService<DecompilerEventListener>();
@@ -168,7 +170,7 @@ namespace Reko.Scanning
         public Block AddBlock(Address addr, Procedure proc, string blockName)
         {
             Block b = new Block(proc, blockName) { Address = addr };
-            var lastMem = imageMap.Segments.Values.Last().MemoryArea;
+            var lastMem = segmentMap.Segments.Values.Last().MemoryArea;
             blocks.Add(addr, new BlockRange(b, addr.ToLinear(), lastMem.BaseAddress.ToLinear() + (uint)lastMem.Length));
             blockStarts.Add(b, addr);
             proc.ControlGraph.Blocks.Add(b);
@@ -680,7 +682,7 @@ namespace Reko.Scanning
         public ExternalProcedure GetInterceptedCall(Address addrImportThunk)
         {
             ExternalProcedure ep;
-            if (!imageMap.IsValidAddress(addrImportThunk))
+            if (!segmentMap.IsValidAddress(addrImportThunk))
                 return null;
             var rdr= program.CreateImageReader(addrImportThunk);
             uint uDest;

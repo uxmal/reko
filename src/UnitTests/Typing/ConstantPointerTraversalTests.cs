@@ -40,7 +40,7 @@ namespace Reko.UnitTests.Typing
         private StructureType globalStruct;
         private EquivalenceClass eqLink;
         private IProcessorArchitecture arch;
-        private ImageMap imageMap;
+        private SegmentMap imageMap;
 
         [SetUp]
         public void Setup()
@@ -69,7 +69,7 @@ namespace Reko.UnitTests.Typing
         private ImageWriter Memory(uint address)
         {
             mem = new MemoryArea(Address.Ptr32(address), new byte[1024]);
-            imageMap = new ImageMap(
+            imageMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment(".data", mem, AccessMode.ReadWrite));
             var writer = new LeImageWriter(mem.Bytes);

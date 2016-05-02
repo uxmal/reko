@@ -54,7 +54,7 @@ namespace Reko.UnitTests.Mocks
         {
             Program = new Program
             {
-                ImageMap = new ImageMap(
+                SegmentMap = new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute)),
                 Architecture = new FakeArchitecture()
@@ -159,9 +159,9 @@ namespace Reko.UnitTests.Mocks
             Program.Architecture = arch;
             ResolveUnresolved();
 			BuildCallgraph();
-            if (Program.ImageMap == null)
-                Program.ImageMap = new ImageMap(Address.Ptr16(0x1000));
-            var seg = Program.ImageMap.AddSegment(Address.Ptr32(0x1000), ".text", AccessMode.Execute, (uint) Program.Procedures.Count * 0x1000);
+            if (Program.SegmentMap == null)
+                Program.SegmentMap = new SegmentMap(Address.Ptr16(0x1000));
+            var seg = Program.SegmentMap.AddSegment(Address.Ptr32(0x1000), ".text", AccessMode.Execute, (uint) Program.Procedures.Count * 0x1000);
             Program.Platform = new DefaultPlatform(null, arch);
 			return Program;
 		}

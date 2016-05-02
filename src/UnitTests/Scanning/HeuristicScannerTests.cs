@@ -143,12 +143,12 @@ namespace Reko.UnitTests.Scanning
                 0xEBFFFFFD,
                 0xEBFFFFFC);
             this.segment = new ImageSegment(".text", mem, AccessMode.ReadExecute);
-            var imageMap = new ImageMap(
+            var imageMap = new SegmentMap(
                 mem.BaseAddress,
                 segment);
             prog = new Program
             {
-                ImageMap = imageMap,
+                SegmentMap = imageMap,
                 Architecture = new Arm32ProcessorArchitecture(),
             };
             var host = mr.Stub<IRewriterHost>();
@@ -194,7 +194,7 @@ namespace Reko.UnitTests.Scanning
                 .Return(null);
             mr.ReplayAll();
 
-            var segment = prog.ImageMap.Segments.Values.First();
+            var segment = prog.SegmentMap.Segments.Values.First();
             var hsc = new HeuristicScanner(prog, host, eventListener);
             var proc = hsc.DisassembleProcedure(
                 segment.MemoryArea.BaseAddress,

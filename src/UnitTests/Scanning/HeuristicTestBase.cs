@@ -77,11 +77,11 @@ namespace Reko.UnitTests.Scanning
             mem = new MemoryArea(Address.Ptr32(addr), bytes);
             prog = new Program
             {
-                ImageMap = new ImageMap(
+                SegmentMap = new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment("prôg", mem, AccessMode.ReadExecute))
             };
-            segment = prog.ImageMap.Segments.Values.First();
+            segment = prog.SegmentMap.Segments.Values.First();
         }
 
         private static byte[] HexStringToBytes(string sBytes)
@@ -121,7 +121,7 @@ namespace Reko.UnitTests.Scanning
             segment = new ImageSegment("prôg", mem, AccessMode.ReadExecute);
             prog = new Program
             {
-                ImageMap = new ImageMap(
+                SegmentMap = new SegmentMap(
                     mem.BaseAddress,
                     segment)
             };

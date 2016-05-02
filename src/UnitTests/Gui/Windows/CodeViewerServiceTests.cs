@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Gui.Windows
             sc = new ServiceContainer();
             this.program = new Program
             {
-                ImageMap = new ImageMap(Address.Ptr32(0x0040000), 0x400)
+                SegmentMap = new SegmentMap(Address.Ptr32(0x0040000), 0x400)
             };
         }
 

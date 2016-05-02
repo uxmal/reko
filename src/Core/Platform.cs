@@ -54,10 +54,10 @@ namespace Reko.Core
 
         Address AdjustProcedureAddress(Address addrCode);
         HashSet<RegisterStorage> CreateImplicitArgumentRegisters();
-        IEnumerable<Address> CreatePointerScanner(ImageMap imageMap, ImageReader rdr, IEnumerable<Address> address, PointerScannerFlags pointerScannerFlags);
+        IEnumerable<Address> CreatePointerScanner(SegmentMap segmentMap, ImageReader rdr, IEnumerable<Address> address, PointerScannerFlags pointerScannerFlags);
         ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
         TypeLibrary CreateMetadata();
-        ImageMap CreateAbsoluteMemoryMap();
+        SegmentMap CreateAbsoluteMemoryMap();
 
         /// <summary>
         /// Given a C basic type, returns the number of bytes that type is
@@ -172,12 +172,12 @@ namespace Reko.Core
         public abstract HashSet<RegisterStorage> CreateImplicitArgumentRegisters();
 
         public IEnumerable<Address> CreatePointerScanner(
-            ImageMap imageMap,
+            SegmentMap segmentMap,
             ImageReader rdr,
             IEnumerable<Address> address,
             PointerScannerFlags pointerScannerFlags)
         {
-            return Architecture.CreatePointerScanner(imageMap, rdr, address, pointerScannerFlags);
+            return Architecture.CreatePointerScanner(segmentMap, rdr, address, pointerScannerFlags);
         }
 
         public TypeLibrary CreateMetadata()
@@ -200,7 +200,7 @@ namespace Reko.Core
         /// of each resulting ImageSegment.
         /// </summary>
         /// <returns></returns>
-        public ImageMap CreateAbsoluteMemoryMap()
+        public SegmentMap CreateAbsoluteMemoryMap()
         {
             if (this.MemoryMap == null ||
                   this.MemoryMap.Segments == null)
@@ -209,7 +209,7 @@ namespace Reko.Core
             var segs = MemoryMap.Segments.Select(s => MemoryMap_v1.LoadSegment(s, this, diagSvc))
                 .Where(s => s != null)
                 .ToSortedList(s => s.Address);
-            return new ImageMap(
+            return new SegmentMap(
                 segs.Values.First().Address,
                 segs.Values.ToArray());
         }

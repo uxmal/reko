@@ -39,6 +39,11 @@ namespace Reko.Core
     /// </remarks>
     public class ImageSymbol
     {
+        public ImageSymbol(Address address)
+        {
+            this.Address = address;
+        }
+
         public ImageSymbol(Address address, string name, DataType dataType)
         {
             this.Address = address;

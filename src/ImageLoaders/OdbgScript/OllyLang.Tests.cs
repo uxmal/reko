@@ -38,7 +38,7 @@ namespace Reko.ImageLoaders.OdbgScript
         private IHost host;
         private OllyLang engine;
         private MemoryArea mem;
-        private ImageMap imageMap;
+        private SegmentMap imageMap;
 
         [SetUp]
         public void Setup()
@@ -75,10 +75,10 @@ namespace Reko.ImageLoaders.OdbgScript
         private void Given_Image(uint addr, params byte[] bytes)
         {
             mem = new MemoryArea(Address.Ptr32(addr), bytes);
-            imageMap = new ImageMap(
+            imageMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment(".text", mem, AccessMode.ReadExecute));
-            host.Stub(h => h.ImageMap).Return(imageMap);
+            host.Stub(h => h.SegmentMap).Return(imageMap);
             host.Stub(h => h.TE_GetMemoryInfo(
                 Arg<ulong>.Is.Anything,
                 out Arg<MEMORY_BASIC_INFORMATION>.Out(new MEMORY_BASIC_INFORMATION

@@ -85,7 +85,7 @@ namespace Reko.UnitTests.Scanning
 
         private void DumpProgram(Scanner scanner)
         {
-            var dasm = arch.CreateDisassembler(program.ImageMap.Segments.Values.First().MemoryArea.CreateLeReader(0));
+            var dasm = arch.CreateDisassembler(program.SegmentMap.Segments.Values.First().MemoryArea.CreateLeReader(0));
             foreach (var instr in dasm)
             {
                 Console.Out.WriteLine("{0} {1}", instr.Address, instr);
