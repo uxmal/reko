@@ -264,14 +264,18 @@ namespace Reko.Analysis
 			}
 
 			Expression e;
-			if (bin.Operator == Operator.ISub || bin.Operator == Operator.FSub)
-			{
-				e = new BinaryExpression(cmpOp, PrimitiveType.Bool, bin.Left, bin.Right);
-			}
-			else
-			{
-				e = new BinaryExpression(cmpOp, PrimitiveType.Bool, bin, Constant.Zero(bin.Left.DataType));
-			}		
+            if (bin.Operator == Operator.ISub || bin.Operator == Operator.FSub)
+            {
+                e = new BinaryExpression(cmpOp, PrimitiveType.Bool, bin.Left, bin.Right);
+            }
+            else
+            {
+                var dt = bin.Left.DataType;
+                var typeref = dt as TypeReference;
+                if (typeref != null)
+                    dt = typeref.Referent;
+                e = new BinaryExpression(cmpOp, PrimitiveType.Bool, bin, Constant.Zero(dt));
+            }
 			return e;
 		}
 
