@@ -1,3 +1,4 @@
+**/src/*.exe
 **/src/*.exp
 **/src/*.dep
 **/src/*.dll
@@ -8,4 +9,7 @@
 **/src/*.ncb
 **/src/*.obj
 **/src/*.pdb
+**/src/*.res
+**/src/*.tds
 **/src/*.user
+**/src/*.*~*
