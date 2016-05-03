@@ -1,0 +1,11 @@
+**/src/*.exp
+**/src/*.dep
+**/src/*.dll
+**/src/*.htm
+**/src/*.intermediate.manifest
+**/src/*.idb
+**/src/*.lib
+**/src/*.ncb
+**/src/*.obj
+**/src/*.pdb
+**/src/*.user
