@@ -336,6 +336,26 @@ namespace Reko.Core
             return item;
         }
 
+        /// <summary>
+        /// Seed the imagemap with image symbols 
+        /// </summary>
+        public void BuildImageMap()
+        {
+            this.ImageMap = SegmentMap.CreateImageMap();
+            foreach (var sym in this.ImageSymbols.Values.Where(
+                s => s.Type == SymbolType.Data && s.Size != 0))
+            {
+                this.ImageMap.AddItemWithSize(
+                    sym.Address,
+                    new ImageMapItem
+                    {
+                        Address = sym.Address,
+                        DataType = sym.DataType,
+                        Size = sym.Size,
+                    });
+            }
+        }
+
         public uint GetDataSize(Address addr, DataType dt)
         {
             var strDt = dt as StringType;

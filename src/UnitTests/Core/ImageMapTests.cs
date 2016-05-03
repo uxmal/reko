@@ -37,7 +37,6 @@ namespace Reko.UnitTests.Core
 		{
 		}
 
-
         private ImageMapItem GetNextMapItem(IEnumerator<KeyValuePair<Address, ImageMapItem>> e)
         {
             Assert.IsTrue(e.MoveNext());
@@ -85,32 +84,6 @@ namespace Reko.UnitTests.Core
             return imageMapItem.EndAddress;
         }
 
-        [Test]
-		public void Im_Creation()
-		{
-			SegmentMap im = new SegmentMap(addrBase, 
-                new ImageSegment("", new MemoryArea(addrBase, img), AccessMode.ReadWriteExecute));
-
-			im.AddSegment(Address.SegPtr(0x8000, 2), "",  AccessMode.ReadWrite, 10);
-			im.AddSegment(Address.SegPtr(0x8000, 3), "", AccessMode.ReadWrite, 10);
-			im.AddSegment(Address.SegPtr(0x8000, 0), "", AccessMode.ReadWrite, 10);
-
-			// Verify
-
-			var e = im.Segments.Values.ToArray();
-			ImageSegment seg = e[0];
-            Assert.AreEqual(Address.SegPtr(0x8000, 0), seg.Address);
-			Assert.AreEqual(10, seg.Size);
-
-            seg = e[1];
-			Assert.AreEqual(1, seg.Size);
-			
-            seg = e[2];
-			Assert.AreEqual(9, seg.Size);
-
-            Assert.IsTrue(e.Length == 3);
-		}
-
         [Test(Description = "Newly created segments should be covered by an item that covers the memory area.")]
         public void Im_CreateCoveringItem()
         {
@@ -125,27 +98,6 @@ namespace Reko.UnitTests.Core
             Assert.AreEqual(Address.Ptr32(0x1010), item.Address);
             Assert.AreEqual(16, item.Size);
         }
-
-		[Test]
-		public void Im_Overlaps()
-		{
-			SegmentMap im = new SegmentMap(Address.SegPtr(0x8000, 0));
-            var mem = new MemoryArea(im.BaseAddress, new byte[40]);
-            var seg = new ImageSegment("8000", Address.SegPtr(0x8000, 10), mem, AccessMode.ReadWrite);
-            im.AddSegment(seg);
-		}
-
-        [Test]
-		public void Sm_AddNamedSegment()
-		{
-            var mem = new MemoryArea(Address.SegPtr(0x0B00, 0), new byte[40000]);
-            SegmentMap segmentMap = new SegmentMap(mem.BaseAddress,
-                new ImageSegment("base", mem, AccessMode.ReadWriteExecute));
-			segmentMap.AddSegment(Address.SegPtr(0xC00, 0), "0C00", AccessMode.ReadWrite, 6000);
-            ImageSegment s = segmentMap.Segments.Values.ElementAt(1);
-			Assert.AreEqual("0C00", s.Name);
-			Assert.AreEqual(6000, s.Size);
-		}
 
         [Test]
         public void Im_CreateItem_MiddleOfEmptyRange()
@@ -288,14 +240,6 @@ namespace Reko.UnitTests.Core
             Assert.IsTrue(mapChangedFired, "ImageMap should have fired MapChanged event");
         }
 
-        [Test]
-        public void Sm_AddSegment()
-        {
-            var map = new SegmentMap(addrBase);
-            var mem = new MemoryArea(addrBase, new byte[0x4000]);
-            var seg = new ImageSegment("8100", Address.SegPtr(0x8100, 0), mem, AccessMode.ReadWriteExecute);
-            map.AddSegment(seg);
-            Assert.AreEqual(0x3000, seg.Size);
-        }
+
 	}
 }

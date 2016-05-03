@@ -120,7 +120,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
                 addrBase,
                 new ImageSegment(".text", memText, AccessMode.ReadExecute),
                 new ImageSegment(".data", memData, AccessMode.ReadWriteExecute));
-            var program = new Program(segmentMap, arch, platform);
+            Given_Program();
 
             Given_CodeBlock(memText.BaseAddress, 4);
 

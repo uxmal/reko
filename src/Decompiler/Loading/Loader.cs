@@ -115,6 +115,7 @@ namespace Reko.Loading
                 program.EntryPoints[ep.Address] = ep;
             }
             program.FunctionHints.AddRange(relocations.Functions);
+            program.ImageMap = program.SegmentMap.CreateImageMap();
             return program;
         }
 
@@ -151,6 +152,7 @@ namespace Reko.Loading
                 program.EntryPoints.Add(ep.Address, ep);
             }
             program.FunctionHints.AddRange(relocations.Functions);
+            program.ImageMap = program.SegmentMap.CreateImageMap();
             return program;
         }
 
@@ -252,7 +254,7 @@ namespace Reko.Loading
             var fsSvc = Services.RequireService<IFileSystemService>();
             using (var stm = fsSvc.CreateFileStream(fileName, FileMode.Open, FileAccess.Read))
             {
-                byte[] bytes = new Byte[stm.Length + offset];
+                byte[] bytes = new byte[stm.Length + offset];
                 stm.Read(bytes, offset, (int)stm.Length);
                 return bytes;
             }

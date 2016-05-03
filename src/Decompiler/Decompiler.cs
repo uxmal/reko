@@ -210,8 +210,21 @@ namespace Reko
                 program.EnvironmentMetadata = Project.LoadedMetadata;
                 isProject = false;
             }
+            BuildImageMaps();
             eventListener.ShowStatus("Source program loaded.");
             return isProject;
+        }
+
+        /// <summary>
+        /// Build image maps for each program in preparation of the scanning
+        /// phase.
+        /// </summary>
+        private void BuildImageMaps()
+        {
+            foreach (var program in this.Project.Programs)
+            {
+                program.BuildImageMap();
+            }
         }
 
         public void RunScriptOnProgramImage(Program program, Script_v2 script)
