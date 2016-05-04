@@ -155,7 +155,7 @@ namespace Reko.UnitTests.Scanning
         private void Given_Program(Address address, byte[] bytes)
         {
             var mem = new MemoryArea(address, bytes);
-            var imageMap = new ImageMap(
+            var segmentMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment("proggie", mem, AccessMode.ReadExecute));
             var arch = new X86ArchitectureFlat32();
@@ -163,7 +163,7 @@ namespace Reko.UnitTests.Scanning
             this.program = new Program
             {
                 Architecture = arch,
-                ImageMap = imageMap,
+                SegmentMap = segmentMap,
                 Platform = platform
             };
             platform.Test_CreateProcedureSerializer = (t, d) =>
@@ -197,7 +197,7 @@ namespace Reko.UnitTests.Scanning
             mem = new MemoryArea(Address.Ptr32(startAddress), new byte[imageSize]);
             program = new Program
             {
-                ImageMap = new ImageMap(mem.BaseAddress,
+                SegmentMap = new SegmentMap(mem.BaseAddress,
                     new ImageSegment("progseg", mem, AccessMode.ReadExecute)),
                 Architecture = arch,
                 Platform = new FakePlatform(null, arch)
@@ -223,7 +223,7 @@ namespace Reko.UnitTests.Scanning
             prog.Architecture = arch;
             prog.Platform = new FakePlatform(null, arch);
             this.mem = new MemoryArea(Address.Ptr32(startAddress), new byte[imageSize]);
-            prog.ImageMap = new ImageMap(
+            prog.SegmentMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment("progseg", this.mem, AccessMode.ReadExecute));
             return new TestScanner(prog, importResolver, sc);

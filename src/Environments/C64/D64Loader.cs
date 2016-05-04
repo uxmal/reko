@@ -142,10 +142,10 @@ namespace Reko.Environments.C64
             }
             var arch = new Mos6502ProcessorArchitecture();
             var mem = new MemoryArea(Address.Ptr16(0), RawImage);
-            var imageMap = new ImageMap(mem.BaseAddress);
-            imageMap.AddSegment(mem, "code", AccessMode.ReadWriteExecute);
+            var segmentMap = new SegmentMap(mem.BaseAddress);
+            segmentMap.AddSegment(mem, "code", AccessMode.ReadWriteExecute);
             return new Program {
-                ImageMap = imageMap,
+                SegmentMap = segmentMap,
                 Architecture = arch,
                 Platform = new DefaultPlatform(Services, arch)
             };
@@ -162,7 +162,7 @@ namespace Reko.Environments.C64
                 var mem = new MemoryArea(addrPreferred, imageBytes);
                 var arch = new Mos6502ProcessorArchitecture();
                 return new Program(
-                    new ImageMap(
+                    new SegmentMap(
                         mem.BaseAddress,
                         new ImageSegment("c64", mem, AccessMode.ReadWriteExecute)),
                     arch,
@@ -197,7 +197,7 @@ namespace Reko.Environments.C64
                 Address.Ptr16(prog.Keys[0]),
                 new byte[0xFFFF]);
             var program = new Program(
-                new ImageMap(
+                new SegmentMap(
                     image.BaseAddress,
                     new ImageSegment("code", image, AccessMode.ReadWriteExecute)),
                 arch,

@@ -59,10 +59,12 @@ namespace Reko.UnitTests.Scanning
         private void Given_Program(Address address, byte[] bytes)
         {
             var mem = new MemoryArea(address, bytes);
-            var imageMap = new ImageMap(address, new ImageSegment(".text", mem, AccessMode.ReadExecute));
+            var segmentMap = new SegmentMap(address, new ImageSegment(".text", mem, AccessMode.ReadExecute));
+            var imageMap = segmentMap.CreateImageMap();
             this.program = new Program
             {
                 Architecture = arch,
+                SegmentMap = segmentMap,
                 ImageMap = imageMap,
                 Platform = platform
             };

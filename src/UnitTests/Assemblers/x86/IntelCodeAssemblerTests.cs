@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Assemblers.x86
 
         private byte[] GetBytes(X86Assembler m)
         {
-            return m.GetImage().ImageMap.Segments.Values.First().MemoryArea.Bytes;
+            return m.GetImage().SegmentMap.Segments.Values.First().MemoryArea.Bytes;
         }
 
         [Test]

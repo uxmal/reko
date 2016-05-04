@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Arch.Intel
         private MockRepository mr;
         private IntelArchitecture arch;
         private X86Emulator emu;
-        private ImageMap imageMap;
+        private SegmentMap segmentMap;
         private Dictionary<Address, ImportReference> importReferences;
         private IPlatform platform;
         private ServiceContainer sc;
@@ -64,13 +64,13 @@ namespace Reko.UnitTests.Arch.Intel
             var asm = new X86Assembler(sc, new DefaultPlatform(sc, arch), Address.Ptr32(0x00100000), new List<ImageSymbol>());
             coder(asm);
             var program = asm.GetImage();
-            this.imageMap = program.ImageMap;
+            this.segmentMap = program.SegmentMap;
 
             Given_Platform();
 
-            var win32 = new Win32Emulator(program.ImageMap, platform, importReferences);
+            var win32 = new Win32Emulator(program.SegmentMap, platform, importReferences);
             
-            emu = new X86Emulator(arch, program.ImageMap, win32);
+            emu = new X86Emulator(arch, program.SegmentMap, win32);
             emu.InstructionPointer = program.ImageMap.BaseAddress;
             emu.WriteRegister(Registers.esp, (uint)program.ImageMap.BaseAddress.ToLinear() + 0x0FFC);
             emu.ExceptionRaised += delegate { throw new Exception(); };
@@ -206,7 +206,7 @@ namespace Reko.UnitTests.Arch.Intel
             emu.InstructionPointer += 4;
             emu.Start();
 
-            Assert.AreEqual(0x12345620u, imageMap.Segments.Values.First().MemoryArea.ReadLeUInt32(0));
+            Assert.AreEqual(0x12345620u, segmentMap.Segments.Values.First().MemoryArea.ReadLeUInt32(0));
         }
 
         [Test]
@@ -288,7 +288,7 @@ namespace Reko.UnitTests.Arch.Intel
                 m.Dd(0); m.Dd(0); m.Dd(0); m.Dd(0); 
                 m.Dd(0); m.Dd(0); m.Dd(0); m.Dd(0); 
             });
-            emu.WriteRegister(Registers.esp, (uint)imageMap.BaseAddress.ToLinear() + 0x24u);
+            emu.WriteRegister(Registers.esp, (uint)segmentMap.BaseAddress.ToLinear() + 0x24u);
 
             emu.Start();
 

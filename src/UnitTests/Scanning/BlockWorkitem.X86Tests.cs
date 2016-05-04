@@ -191,13 +191,14 @@ namespace Reko.UnitTests.Scanning
                 }
               });
             var rw = arch.CreateRewriter(
-                lr.ImageMap.Segments.Values.First().MemoryArea.CreateLeReader(addr), 
+                lr.SegmentMap.Segments.Values.First().MemoryArea.CreateLeReader(addr), 
                 this.state, 
                 proc.Frame,
                 host);
             var prog = new Program
             {
                 Architecture = arch,
+                SegmentMap = lr.SegmentMap,
                 ImageMap = lr.ImageMap,
                 Platform = platform,
             };

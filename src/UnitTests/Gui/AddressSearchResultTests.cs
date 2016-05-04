@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Gui
             mr = new MockRepository();
             sc = new ServiceContainer();
             var mem = new MemoryArea(Address.SegPtr(0xC00, 0), Enumerable.Range(0x0, 0x100).Select(b => (byte)b).ToArray());
-            var imageMap = new ImageMap(
+            var imageMap = new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment(
                         "code", mem, AccessMode.ReadWriteExecute));

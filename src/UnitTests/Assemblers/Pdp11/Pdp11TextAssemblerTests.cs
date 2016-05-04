@@ -98,7 +98,7 @@ c = a + b");
         public void Pdp11Tasm_LabelledWord()
         {
             var ldr = asm.AssembleFragment(Address.Ptr16(0x0100), "label1: .word 14");
-            var mem = ldr.ImageMap.Segments.Values.First().MemoryArea;
+            var mem = ldr.SegmentMap.Segments.Values.First().MemoryArea;
             Assert.AreEqual(2,  mem.Bytes.Length);
             Assert.AreEqual(12, mem.ReadLeInt16(0));
         }
@@ -107,7 +107,7 @@ c = a + b");
         public void Pdp11Tasm_Dot()
         {
             var ldr = asm.AssembleFragment(Address.Ptr16(0x100), "label1: .word .");
-            var mem = ldr.ImageMap.Segments.Values.First().MemoryArea;
+            var mem = ldr.SegmentMap.Segments.Values.First().MemoryArea;
             Assert.AreEqual(0x100, mem.ReadLeUInt16(0));
         }
 
@@ -115,7 +115,7 @@ c = a + b");
         public void Pdp11Tasm_ReserveIdiom()
         {
             var ldr = asm.AssembleFragment(Address.Ptr16(0x100), ".=.+10");
-            var mem = ldr.ImageMap.Segments.Values.First().MemoryArea;
+            var mem = ldr.SegmentMap.Segments.Values.First().MemoryArea;
             Assert.AreEqual(8, mem.Bytes.Length);
         }
 
@@ -123,7 +123,7 @@ c = a + b");
         public void Pdp11Tasm_Reset()
         {
             var ldr = asm.AssembleFragment(Address.Ptr16(0x100), " rEsEt");
-            var mem = ldr.ImageMap.Segments.Values.First().MemoryArea;
+            var mem = ldr.SegmentMap.Segments.Values.First().MemoryArea;
             Assert.AreEqual(0x0005, mem.ReadLeUInt16(0));
         }
 
@@ -133,7 +133,7 @@ c = a + b");
             var ldr = asm.AssembleFragment(Address.Ptr16(0x100), @"
 sav: .word
     mov sp,sav");
-            var mem = ldr.ImageMap.Segments.Values.First().MemoryArea;
+            var mem = ldr.SegmentMap.Segments.Values.First().MemoryArea;
             AssertWords(mem.Bytes, 0x0000, 0x119F, 0x0100);
         }
 
@@ -145,14 +145,14 @@ sav: .word
 power:  .word 666
 sav:    .word 777";
             Assemble(assemblerFragment);
-            var mem = ldr.ImageMap.Segments.Values.First().MemoryArea;
+            var mem = ldr.SegmentMap.Segments.Values.First().MemoryArea;
             AssertWords(mem.Bytes, 0x15DF, 0x0106, 0x0108, 0x1B6, 0x1FF);
         }
 
         private void Assemble(string assemblerFragment)
         {
             ldr = asm.AssembleFragment(Address.Ptr16(0x100), assemblerFragment);
-            mem = ldr.ImageMap.Segments.Values.First().MemoryArea;
+            mem = ldr.SegmentMap.Segments.Values.First().MemoryArea;
         }
 
         [Test]

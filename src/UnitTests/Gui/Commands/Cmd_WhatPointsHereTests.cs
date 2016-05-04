@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Gui.Commands
     {
         private MockRepository mr;
         private MemoryArea mem;
-        private ImageMap imageMap;
+        private SegmentMap segmentMap;
         private ServiceContainer sc;
         private Program program;
         private IProcessorArchitecture arch;
@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Gui.Commands
             mr = new MockRepository();
             sc = new ServiceContainer();
             mem = new MemoryArea(Address.Ptr32(0x00400000), new byte[2000]);
-            imageMap = new ImageMap(mem.BaseAddress);
+            segmentMap = new SegmentMap(mem.BaseAddress);
             arch = mr.Stub<IProcessorArchitecture>();
             platform = mr.Stub<IPlatform>();
             searchSvc = mr.Stub<ISearchResultService>();
@@ -60,13 +60,13 @@ namespace Reko.UnitTests.Gui.Commands
             {
                 Architecture = arch,
                 Platform = platform,
-                ImageMap = imageMap,
+                SegmentMap = segmentMap,
             };
         }
 
         private void Given_Segment(string name, Address address, uint size)
         {
-            imageMap.AddSegment(new ImageSegment(name, address, mem, AccessMode.ReadWriteExecute)
+            segmentMap.AddSegment(new ImageSegment(name, address, mem, AccessMode.ReadWriteExecute)
             {
                 Size = size, 
             });

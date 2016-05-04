@@ -204,8 +204,8 @@ namespace Reko.ImageLoaders.Elf
             GetPltLimits();
             var addrPreferred = ComputeBaseAddress(platform);
             Dump();
-            var imageMap = LoadImageBytes(platform, rawImage, addrPreferred);
-            var program = new Program(imageMap, platform.Architecture, platform);
+            var segmentMap = LoadImageBytes(platform, rawImage, addrPreferred);
+            var program = new Program(segmentMap, platform.Architecture, platform);
             return program;
         }
 
@@ -213,7 +213,7 @@ namespace Reko.ImageLoaders.Elf
 
         public abstract void GetPltLimits();
 
-        public abstract ImageMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred);
+        public abstract SegmentMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred);
 
         public ImageReader CreateReader(ulong fileOffset)
         {
@@ -650,7 +650,7 @@ namespace Reko.ImageLoaders.Elf
             return GetStrPtr(symSection.LinkedSection, (uint)offset);
         }
 
-        public override ImageMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred)
+        public override SegmentMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred)
         {
             var segMap = AllocateMemoryAreas(
                 ProgramHeaders64
@@ -672,7 +672,7 @@ namespace Reko.ImageLoaders.Elf
                         (long)ph.p_offset, mem.Bytes,
                         vaddr - mem.BaseAddress, (long)ph.p_filesz);
             }
-            var imageMap = new ImageMap(addrPreferred);
+            var segmentMap = new SegmentMap(addrPreferred);
             foreach (var section in Sections)
             {
                 if (section.Name == null || section.Address == null)
@@ -682,7 +682,7 @@ namespace Reko.ImageLoaders.Elf
                     section.Address < mem.EndAddress)
                 {
                     AccessMode mode = AccessModeOf(section.Flags);
-                    var seg = imageMap.AddSegment(new ImageSegment(
+                    var seg = segmentMap.AddSegment(new ImageSegment(
                         section.Name,
                         section.Address,
                         mem, mode)
@@ -696,8 +696,8 @@ namespace Reko.ImageLoaders.Elf
                     //$TODO: warn
                 }
             }
-            imageMap.DumpSections();
-            return imageMap;
+            segmentMap.DumpSections();
+            return segmentMap;
 
         }
 
@@ -1153,7 +1153,7 @@ namespace Reko.ImageLoaders.Elf
             return GetStrPtr(strSection, offset);
         }
 
-        public override ImageMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred)
+        public override SegmentMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred)
         {
             var segMap = AllocateMemoryAreas(
                 ProgramHeaders
@@ -1176,7 +1176,7 @@ namespace Reko.ImageLoaders.Elf
                         (long)ph.p_offset, mem.Bytes,
                         vaddr - mem.BaseAddress, (long)ph.p_filesz);
             }
-            var imageMap = new ImageMap(addrPreferred);
+            var segmentMap = new SegmentMap(addrPreferred);
             foreach (var section in Sections)
             {
                 if (section.Name == null || section.Address == null)
@@ -1187,7 +1187,7 @@ namespace Reko.ImageLoaders.Elf
                     section.Address < mem.EndAddress)
                 {
                     AccessMode mode = AccessModeOf(section.Flags);
-                    var seg = imageMap.AddSegment(new ImageSegment(
+                    var seg = segmentMap.AddSegment(new ImageSegment(
                         section.Name,
                         section.Address,
                         mem, mode)
@@ -1200,8 +1200,8 @@ namespace Reko.ImageLoaders.Elf
                     //$TODO: warn
                 }
             }
-            imageMap.DumpSections();
-            return imageMap;
+            segmentMap.DumpSections();
+            return segmentMap;
         }
 
         public override int LoadProgramHeaderTable()

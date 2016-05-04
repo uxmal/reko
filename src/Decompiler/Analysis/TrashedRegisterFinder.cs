@@ -218,7 +218,7 @@ namespace Reko.Analysis
                         location,
                         ex,
                         "An error occurred while processing instruction at address {0:X}.",
-                            program.ImageMap.MapLinearAddressToAddress(stm.LinearAddress));
+                            program.SegmentMap.MapLinearAddressToAddress(stm.LinearAddress));
                 }
             }
         }

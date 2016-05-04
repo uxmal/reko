@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Core.Output
         {
             var arch = new Mocks.FakeArchitecture();
             this.program = new Program(
-                new ImageMap(
+                new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute)),
                 arch,

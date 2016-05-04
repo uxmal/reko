@@ -47,7 +47,7 @@ namespace Reko.UnitTests
             }
             var mem = new MemoryArea(addrStart, memStm.ToArray());
             results = new Program(
-                new ImageMap(
+                new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute)),
                 arch,

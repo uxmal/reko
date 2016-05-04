@@ -42,7 +42,7 @@ namespace Reko.Gui.Design
             if (program.Platform != null)
                 Host.AddComponent(program, program.Platform);
             if (program.ImageMap != null)
-                Host.AddComponents(program, program.ImageMap.Segments.Values);
+                Host.AddComponents(program, program.SegmentMap.Segments.Values);
             Host.AddComponent(program, program.Resources);
             SetTreeNodeProperties(program);
         }

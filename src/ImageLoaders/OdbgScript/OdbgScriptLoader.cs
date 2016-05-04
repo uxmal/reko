@@ -56,7 +56,7 @@ namespace Reko.ImageLoaders.OdbgScript
             set { throw new NotImplementedException(); }
         }
 
-        public ImageMap ImageMap { get; set; }
+        public SegmentMap ImageMap { get; set; }
         public IntelArchitecture Architecture { get; set; }
 
         /// <summary>
@@ -71,12 +71,12 @@ namespace Reko.ImageLoaders.OdbgScript
             var pe = CreatePeImageLoader();
             var program = pe.Load(pe.PreferredBaseAddress);
             var rr = pe.Relocate(program, pe.PreferredBaseAddress);
-            this.ImageMap = program.ImageMap;
+            this.ImageMap = program.SegmentMap;
             this.Architecture = (IntelArchitecture)program.Architecture;
 
-            var win32 = new Win32Emulator(program.ImageMap, program.Platform, program.ImportReferences);
+            var win32 = new Win32Emulator(program.SegmentMap, program.Platform, program.ImportReferences);
             var state = (X86State)program.Architecture.CreateProcessorState();
-            var emu = new X86Emulator((IntelArchitecture) program.Architecture, program.ImageMap, win32);
+            var emu = new X86Emulator((IntelArchitecture) program.Architecture, program.SegmentMap, win32);
             this.debugger = new Debugger(emu);
             this.scriptInterpreter = new OllyLang(Services);
             this.scriptInterpreter.Host = new Host(this);

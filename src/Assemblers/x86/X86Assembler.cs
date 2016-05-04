@@ -56,6 +56,7 @@ namespace Reko.Assemblers.x86
         public X86Assembler(IServiceProvider services, IPlatform platform, Address addrBase, List<ImageSymbol> entryPoints)
         {
             this.services = services;
+            this.Platform = platform;
             this.arch = platform.Architecture;
             this.addrBase = addrBase;
             this.entryPoints = entryPoints;
@@ -90,7 +91,7 @@ namespace Reko.Assemblers.x86
             var mem = new MemoryArea(addrBase, stm.ToArray());
             RelocateSegmentReferences(mem);
             return new Program(
-                new ImageMap(
+                new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute)),
                 arch,

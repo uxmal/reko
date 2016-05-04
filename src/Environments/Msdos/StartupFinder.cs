@@ -81,7 +81,7 @@ namespace Reko.Environments.Msdos
             char[] temp = new char[4];
 
             ImageSegment segment;
-            prog.ImageMap.TryFindSegment(start, out segment);
+            prog.SegmentMap.TryFindSegment(start, out segment);
             var image = segment.MemoryArea;
             var startOff = (uint)(start - image.BaseAddress);   /* Offset into the Image of the initial CS:IP */
 

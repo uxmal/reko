@@ -69,7 +69,7 @@ namespace Reko.UnitTests.Arch.M68k
         {
             var asm = new M68kAssembler(arch, addrBase, new List<ImageSymbol>());
             build(asm);
-            mem = asm.GetImage().ImageMap.Segments.Values.First().MemoryArea;
+            mem = asm.GetImage().SegmentMap.Segments.Values.First().MemoryArea;
         }
 
         [Test]

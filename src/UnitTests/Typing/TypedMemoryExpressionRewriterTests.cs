@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Typing
             program = new Program
             {
                 Architecture = arch,
-                ImageMap = new ImageMap(
+                SegmentMap = new SegmentMap(
                     mem.BaseAddress, 
                     new ImageSegment(".text", mem, AccessMode.ReadWriteExecute)),
                 Platform = new DefaultPlatform(null, arch)

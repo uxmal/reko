@@ -207,7 +207,7 @@ namespace Reko.ImageLoaders.Elf
             return segFlags;
         }
 
-        public ImageMap CreateSegments(Address addrBase, Dictionary<ElfSection,Elf32_PHdr> mpSections)
+        public SegmentMap CreateSegments(Address addrBase, Dictionary<ElfSection,Elf32_PHdr> mpSections)
         {
             var addr = addrBase;
             foreach (var segment in Segments)
@@ -241,7 +241,7 @@ namespace Reko.ImageLoaders.Elf
                 v => new MemoryArea(
                     Address.Ptr32(v.Key.p_paddr),
                     v.Value.ToArray()));
-            var imageMap = new ImageMap(
+            var imageMap = new SegmentMap(
                 addrBase,
                 mpSections
                     .Select(s => new ImageSegment(

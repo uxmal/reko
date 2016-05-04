@@ -231,6 +231,7 @@
     <Compile Include="Lib\PerfectHash.cs" />
     <Compile Include="Output\CTypeReferenceFormatter.cs" />
     <Compile Include="Rational.cs" />
+    <Compile Include="SegmentMap.cs" />
     <Compile Include="Serialization\ArgumentDeserializer.cs" />
     <Compile Include="Serialization\GlobalDataItem_v2.cs" />
     <Compile Include="IByteSource.cs" />

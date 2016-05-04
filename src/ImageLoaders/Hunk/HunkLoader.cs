@@ -66,7 +66,7 @@ namespace Reko.ImageLoaders.Hunk
             this.firstCodeHunk = parse.FindFirstCodeHunk();
             var mem = new MemoryArea(addrLoad, RelocateBytes(addrLoad));
             return new Program(
-                new ImageMap(
+                new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment(
                         "code", mem, AccessMode.ReadWriteExecute)),

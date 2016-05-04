@@ -26,13 +26,13 @@ namespace Reko.WindowsItp
                 Enumerable.Range(0, 10000)
                 .Select(i => (byte)random.Next(256)).ToArray());
             var seg = new ImageSegment(".text", mem, AccessMode.ReadExecute);
-            var imageMap = new ImageMap(mem.BaseAddress, seg);
+            var segmentMap = new SegmentMap(mem.BaseAddress, seg);
             disassemblyControl1.Model = new DisassemblyTextModel(
                 new CoreProgram
                 {
                     //new Decompiler.Arch.X86.X86ArchitectureFlat32();
                     Architecture = new Reko.Arch.PowerPC.PowerPcArchitecture32(),
-                    ImageMap = imageMap
+                    SegmentMap = segmentMap
                 },
                 seg);
             disassemblyControl1.StartAddress = mem.BaseAddress;

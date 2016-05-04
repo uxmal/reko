@@ -37,7 +37,7 @@ namespace Reko.ImageLoaders.MzExe
     {
         private IProcessorArchitecture arch;
         private IPlatform platform;
-        private ImageMap imageMap;
+        private SegmentMap segmentMap;
 
         private uint exeHdrSize;
         private uint hdrOffset;
@@ -137,9 +137,15 @@ namespace Reko.ImageLoaders.MzExe
                     }
                 }
             } while ((op & 1) == 0);
-            imageMap = imgU.CreateImageMap();
+            segmentMap = new SegmentMap(
+                imgU.BaseAddress,
+                new ImageSegment(
+                    "code",
+                    imgU.BaseAddress,
+                    imgU.Length,
+                    AccessMode.ReadWriteExecute));
             return new Program(
-                new ImageMap(imgU.BaseAddress, imgU.Length), 
+                segmentMap,
                 arch,
                 platform);
         }
@@ -165,7 +171,7 @@ namespace Reko.ImageLoaders.MzExe
                     {
                         ushort relocOff = rdr.ReadLeUInt16();
                         ushort seg = imgU.FixupLeUInt16(relocBase + relocOff, segCode);
-                        var segment = imageMap.AddSegment(new ImageSegment(
+                        var segment = segmentMap.AddSegment(new ImageSegment(
                             seg.ToString("X4"), 
                             Address.SegPtr(seg, 0),
                             imgU,
@@ -178,7 +184,7 @@ namespace Reko.ImageLoaders.MzExe
             }
 
             this.cs += segCode;
-            imageMap.AddSegment(Address.SegPtr(cs, 0), cs.ToString("X4"), AccessMode.ReadWriteExecute, 0);
+            segmentMap.AddSegment(Address.SegPtr(cs, 0), cs.ToString("X4"), AccessMode.ReadWriteExecute, 0);
             this.ss += segCode;
             var state = arch.CreateProcessorState();
             state.SetRegister(Registers.ds, Constant.Word16(addrLoad.Selector.Value));

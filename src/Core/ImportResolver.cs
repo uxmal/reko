@@ -105,7 +105,7 @@ namespace Reko.Core
 
         public ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c)
         {
-            var addrInstruction = program.ImageMap.MapLinearAddressToAddress(stm.LinearAddress);
+            var addrInstruction = program.SegmentMap.MapLinearAddressToAddress(stm.LinearAddress);
             var addrImportThunk = program.Platform.MakeAddressFromConstant(c);
             ImportReference impref;
             if (!program.ImportReferences.TryGetValue(addrImportThunk, out impref))

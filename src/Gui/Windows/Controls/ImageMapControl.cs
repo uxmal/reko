@@ -32,7 +32,7 @@ namespace Reko.Gui.Windows.Controls
 	/// </summary>
 	public class ImageMapControl : Control
 	{
-		private ImageMap map;
+		private SegmentMap map;
 		private ImageSegment segSelected;
 
 		public event EventHandler SelectedItemChanged;
@@ -41,7 +41,7 @@ namespace Reko.Gui.Windows.Controls
 		{
 		}
 
-		public ImageMap ImageMap
+		public SegmentMap ImageMap
 		{
 			get { return map; }
 			set 

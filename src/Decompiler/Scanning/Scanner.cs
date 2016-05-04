@@ -95,6 +95,7 @@ namespace Reko.Scanning
     {
         private Program program;
         private PriorityQueue<WorkItem> queue;
+        private SegmentMap segmentMap;
         private ImageMap imageMap;
         private IImportResolver importResolver;
         private SortedList<Address, BlockRange> blocks;
@@ -121,12 +122,17 @@ namespace Reko.Scanning
             IServiceProvider services)
         {
             this.program = program;
-            this.imageMap = program.ImageMap;
+            this.segmentMap = program.SegmentMap;
             this.importResolver = importResolver;
             this.eventListener = services.RequireService<DecompilerEventListener>();
             this.cancelSvc = services.GetService<CancellationTokenSource>();
-            if (imageMap == null)
-                throw new InvalidOperationException("Program must have an image map.");
+            if (segmentMap == null)
+                throw new InvalidOperationException("Program must have an segment map.");
+            if (program.ImageMap == null)
+            {
+                program.ImageMap = segmentMap.CreateImageMap();
+            }
+            this.imageMap = program.ImageMap;
             this.queue = new PriorityQueue<WorkItem>();
             this.blocks = new SortedList<Address, BlockRange>();
             this.blockStarts = new Dictionary<Block, Address>();
@@ -168,7 +174,7 @@ namespace Reko.Scanning
         public Block AddBlock(Address addr, Procedure proc, string blockName)
         {
             Block b = new Block(proc, blockName) { Address = addr };
-            var lastMem = imageMap.Segments.Values.Last().MemoryArea;
+            var lastMem = segmentMap.Segments.Values.Last().MemoryArea;
             blocks.Add(addr, new BlockRange(b, addr.ToLinear(), lastMem.BaseAddress.ToLinear() + (uint)lastMem.Length));
             blockStarts.Add(b, addr);
             proc.ControlGraph.Blocks.Add(b);
@@ -680,7 +686,7 @@ namespace Reko.Scanning
         public ExternalProcedure GetInterceptedCall(Address addrImportThunk)
         {
             ExternalProcedure ep;
-            if (!imageMap.IsValidAddress(addrImportThunk))
+            if (!segmentMap.IsValidAddress(addrImportThunk))
                 return null;
             var rdr= program.CreateImageReader(addrImportThunk);
             uint uDest;

@@ -132,6 +132,7 @@ namespace Reko.UnitTests.Arch.Intel
             using (var stm = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
                 var lr = asm.Assemble(baseAddress, stm);
+                program.SegmentMap = lr.SegmentMap;
                 program.ImageMap = lr.ImageMap;
                 program.Platform = lr.Platform ?? new DefaultPlatform(null, lr.Architecture);
             }

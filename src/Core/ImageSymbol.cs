@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,11 +32,23 @@ namespace Reko.Core
     /// known. ImageSymbols are used to "seed" the Scanner
     /// phase of the decompiler.
     /// </summary>
+    /// <remarks>
+    /// This information is derived purely from what the image loader can 
+    /// garner from an input binary file. Any user-provided information must
+    /// be specified separately and will then override this information.
+    /// </remarks>
     public class ImageSymbol
     {
         public ImageSymbol(Address address)
         {
             this.Address = address;
+        }
+
+        public ImageSymbol(Address address, string name, DataType dataType)
+        {
+            this.Address = address;
+            this.Name = name;
+            this.DataType = dataType;
         }
 
         public SymbolType Type { get; set; }
@@ -51,8 +64,7 @@ namespace Reko.Core
         public string Name { get; set; }
 
         /// <summary>
-        /// The size of the object referred to by the symbol, or 0 if 
-        /// unknown.
+        /// The data type of the symbol if it known.
         /// </summary>
         public uint Size { get; set; }
 
@@ -72,6 +84,8 @@ namespace Reko.Core
         /// If non-null, the signature of this symbol (if it is a function)
         /// </summary>
         public SerializedSignature Signature { get; set; }
+
+        public DataType DataType { get; set; }
     }
 
     public enum SymbolType

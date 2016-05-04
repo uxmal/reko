@@ -195,7 +195,7 @@ namespace Reko.Typing
 
                 var addr = program.Platform.MakeAddressFromConstant(c);
                 // An invalid pointer -- often used as sentinels in code.
-                if (!program.ImageMap.IsValidAddress(addr))
+                if (!program.SegmentMap.IsValidAddress(addr))
                 {
                     //$TODO: probably should use a reinterpret_cast here.
                     var ce = new Cast(c.DataType, c);
@@ -243,7 +243,7 @@ namespace Reko.Typing
             if (addr == null)
                 return false;
             ImageSegment seg;
-            if (!program.ImageMap.TryFindSegment(addr, out seg))
+            if (!program.SegmentMap.TryFindSegment(addr, out seg))
                 return false;
             return (seg.Access & AccessMode.ReadWrite) == AccessMode.Read;
         }

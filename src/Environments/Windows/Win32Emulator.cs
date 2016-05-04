@@ -39,10 +39,10 @@ namespace Reko.Environments.Windows
     {
         private Dictionary<string, Module> modules;
         private TWord uPseudoFn;
-        private ImageMap map;
+        private SegmentMap map;
         private IPlatform platform;
 
-        public Win32Emulator(ImageMap map, IPlatform platform, Dictionary<Address, ImportReference> importReferences)
+        public Win32Emulator(SegmentMap map, IPlatform platform, Dictionary<Address, ImportReference> importReferences)
         {
             this.map = map;
             this.platform = platform;

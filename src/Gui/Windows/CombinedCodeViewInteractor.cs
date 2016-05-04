@@ -79,7 +79,7 @@ namespace Reko.Gui.Windows
                 var addr = program.GetProcedureAddress(proc);
                 if (addr == null)
                 {
-                    addr = program.ImageMap.Segments.Values
+                    addr = program.SegmentMap.Segments.Values
                         .Where(s => s.MemoryArea != null)
                         .Select(s => Address.Max(s.Address, s.MemoryArea.BaseAddress))
                         .FirstOrDefault();
@@ -496,7 +496,7 @@ namespace Reko.Gui.Windows
 
         private void UserNavigateToAddress(Address addrFrom, Address addrTo)
         {
-            if (!program.ImageMap.IsValidAddress(addrTo))
+            if (!program.SegmentMap.IsValidAddress(addrTo))
                 return;
             navInteractor.RememberAddress(addrTo);
             this.SelectedAddress = addrTo;        // ...and move to the new position.

@@ -52,8 +52,9 @@ namespace Reko.UnitTests.Core
         {
             addrBase = Address.Ptr32(0x00010000);
             var mem = new MemoryArea(addrBase, bytes);
-            program.ImageMap = new ImageMap(addrBase);
-            program.ImageMap.AddSegment(mem, ".text", AccessMode.ReadWriteExecute);
+            program.SegmentMap = new SegmentMap(addrBase);
+            program.SegmentMap.AddSegment(mem, ".text", AccessMode.ReadWriteExecute);
+            program.ImageMap = program.SegmentMap.CreateImageMap();
             arch.Stub(a => a.CreateImageReader(mem, addrBase)).Return(new LeImageReader(mem, 0));
         }
 

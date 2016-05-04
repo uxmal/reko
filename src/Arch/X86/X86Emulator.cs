@@ -43,7 +43,7 @@ namespace Reko.Arch.X86
         public const uint Omask = 1u << 11;
 
         private IntelArchitecture arch;
-        private ImageMap map;
+        private SegmentMap map;
         private IPlatformEmulator envEmulator;
         private IEnumerator<X86Instruction> dasm;
         private bool running;
@@ -57,10 +57,10 @@ namespace Reko.Arch.X86
         private bool stepInto;
         private TWord stepOverAddress;
 
-        public X86Emulator(IntelArchitecture arch, ImageMap imageMap, IPlatformEmulator envEmulator)
+        public X86Emulator(IntelArchitecture arch, SegmentMap segmentMap, IPlatformEmulator envEmulator)
         {
             this.arch = arch;
-            this.map = imageMap;
+            this.map = segmentMap;
             this.Registers = new ulong[40];
             this.Valid = new bool[40];
             this.envEmulator = envEmulator;

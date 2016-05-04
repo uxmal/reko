@@ -49,20 +49,20 @@ namespace Reko.Environments.SegaGenesis
             var env = cfgService.GetEnvironment("sega-genesis");
             var platform = env.Load(Services, arch);
 
-            var imageMap = CreateImageMap(mem, platform);
+            var imageMap = CreateSegmentMap(mem, platform);
 
             return new Program(imageMap, arch, platform);
         }
 
-        private ImageMap CreateImageMap(MemoryArea mem, IPlatform platform)
+        private SegmentMap CreateSegmentMap(MemoryArea mem, IPlatform platform)
         {
-            var imageMap = platform.CreateAbsoluteMemoryMap();
-            var romSegment = imageMap.Segments.Values.First(s => s.Name == ".text");
+            var segmentMap = platform.CreateAbsoluteMemoryMap();
+            var romSegment = segmentMap.Segments.Values.First(s => s.Name == ".text");
             romSegment.ContentSize = (uint)mem.Length;
             romSegment.MemoryArea = mem;
-            var ramSegment = imageMap.Segments.Values.First(s => s.Name == ".data");
+            var ramSegment = segmentMap.Segments.Values.First(s => s.Name == ".data");
             ramSegment.MemoryArea = new MemoryArea(ramSegment.Address, new byte[ramSegment.Size]);
-            return imageMap;
+            return segmentMap;
         }
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
@@ -71,7 +71,7 @@ namespace Reko.Environments.SegaGenesis
             var addrReset = Address.Ptr32(MemoryArea.ReadBeUInt32(RawImage, 4));
             var syms = new SortedList<Address, ImageSymbol>();
             var eps = new List<ImageSymbol>();
-            if (program.ImageMap.IsValidAddress(addrReset))
+            if (program.SegmentMap.IsValidAddress(addrReset))
             {
                 var sym = new ImageSymbol(addrReset)
                 {
