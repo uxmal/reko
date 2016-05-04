@@ -1,1967 +1,905 @@
-// fn0800_0000
-// Return size: 2
-void fn0800_0000()
-fn0800_0000_entry:
-	// succ:  l0800_0000
-l0800_0000:
-	sp = fp
-	dx = 0x09DB
-	Mem0[0x0800:0x01F8:word16] = dx
-	ah = 0x30
-	al = msdos_get_dos_version(out ah)
-	bp = Mem0[ds:0x0002:word16]
-	bx = Mem0[ds:0x002C:word16]
-	ds = dx
-	Mem0[ds:0x0092:word16] = ax
-	Mem0[ds:0x0090:word16] = es
-	Mem0[ds:0x008C:word16] = bx
-	Mem0[ds:0x00AC:word16] = bp
-	Mem0[ds:0x0096:word16] = 0xFFFF
-	call fn0800_0162 (retsize: 2;)
-	es_di = Mem0[ds:0x008A:segptr32]
-	ax = di
-	bx = ax
-	cx = 0x7FFF
-	// succ:  l0800_0039
-l0800_0039:
-	SCZO = cond(Mem0[es:di:word16] - 0x3738)
-	branch Test(NE,Z) l0800_0059
-	// succ:  l0800_0040 l0800_0059
-l0800_0040:
-	dx = Mem0[es:di + 0x0002:word16]
-	SCZO = cond(dl - 0x3D)
-	branch Test(NE,Z) l0800_0059
-	// succ:  l0800_0049 l0800_0059
-l0800_0049:
-	dh = dh & 0xDF
-	SZO = cond(dh)
-	C = false
-	v20 = Mem0[ds:0x0096:word16] + 0x0001
-	Mem0[ds:0x0096:word16] = v20
-	SZO = cond(v20)
-	SCZO = cond(dh - 0x59)
-	branch Test(NE,Z) l0800_0059
-	// succ:  l0800_0055 l0800_0059
-l0800_0055:
-	v21 = Mem0[ds:0x0096:word16] + 0x0001
-	Mem0[ds:0x0096:word16] = v21
-	SZO = cond(v21)
-	// succ:  l0800_0059
-l0800_0059:
-	branch cx == 0x0000 l0800_005B
-	// succ:  l0800_0059_1 l0800_005B
-l0800_0059_1:
-	SCZO = cond(al - Mem0[es:di:byte])
-	di = di + 0x0001
-	cx = cx - 0x0001
-	branch Test(NE,Z) l0800_0059
-	// succ:  l0800_005B l0800_0059
-l0800_005B:
-	branch cx == 0x0000 l0800_00BE
-	// succ:  l0800_005D l0800_00BE
-l0800_005D:
-	bx = bx + 0x0001
-	SZO = cond(bx)
-	SCZO = cond(Mem0[es:di:byte] - al)
-	branch Test(NE,Z) l0800_0039
-	// succ:  l0800_0063 l0800_0039
-l0800_0063:
-	ch = ch | 0x80
-	SZO = cond(ch)
-	C = false
-	cx = -cx
-	SCZO = cond(cx)
-	C = cx == 0x0000
-	Mem0[ds:0x008A:word16] = cx
-	cx = 0x0001
-	bx = bx << cl
-	SCZO = cond(bx)
-	bx = bx + 0x0008
-	SCZO = cond(bx)
-	bx = bx & 0xFFF8
-	SZO = cond(bx)
-	C = false
-	Mem0[ds:0x008E:word16] = bx
-	dx = ds
-	bp = bp - dx
-	SCZO = cond(bp)
-	di = Mem0[ds:0x023C:word16]
-	SCZO = cond(di - 0x0200)
-	branch Test(UGE,C) l0800_0090
-	// succ:  l0800_0089 l0800_0090
-l0800_0089:
-	di = 0x0200
-	Mem0[ds:0x023C:word16] = di
-	// succ:  l0800_0090
-l0800_0090:
-	di = di + 0x062E
-	SCZO = cond(di)
-	branch Test(ULT,C) l0800_00BE
-	// succ:  l0800_0096 l0800_00BE
-l0800_0096:
-	di = di + Mem0[ds:0x023A:word16]
-	SCZO = cond(di)
-	branch Test(ULT,C) l0800_00BE
-	// succ:  l0800_009C l0800_00BE
-l0800_009C:
-	cl = 0x04
-	di = di >>u cl
-	SCZO = cond(di)
-	di = di + 0x0001
-	SZO = cond(di)
-	SCZO = cond(bp - di)
-	branch Test(ULT,C) l0800_00BE
-	// succ:  l0800_00A5 l0800_00BE
-l0800_00A5:
-	SCZO = cond(Mem0[ds:0x023C:word16] - 0x0000)
-	branch Test(EQ,Z) l0800_00B3
-	// succ:  l0800_00AC l0800_00B3
-l0800_00AC:
-	SCZO = cond(Mem0[ds:0x023A:word16] - 0x0000)
-	branch Test(NE,Z) l0800_00C1
-	// succ:  l0800_00B3 l0800_00C1
-l0800_00B3:
-	di = 0x1000
-	SCZO = cond(bp - di)
-	branch Test(UGT,CZ) l0800_00C1
-	// succ:  l0800_00BA l0800_00C1
-l0800_00BA:
-	di = bp
-	goto l0800_00C1
-	// succ:  l0800_00C1
-l0800_00BE:
-	goto l0800_01E2
-	// succ:  l0800_01E2
-l0800_00C1:
-	bx = di
-	bx = bx + dx
-	SCZO = cond(bx)
-	Mem0[ds:0x00A4:word16] = bx
-	Mem0[ds:0x00A8:word16] = bx
-	ax = Mem0[ds:0x0090:word16]
-	bx = bx - ax
-	SCZO = cond(bx)
-	es = ax
-	ah = 0x4A
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = di
-	C = msdos_resize_memory_block(es, bx, out bx)
-	di = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	di = di << cl
-	SCZO = cond(di)
-	__cli()
-	ss = dx
-	sp = di
-	__sti()
-	ax = ax ^ ax
-	SZO = cond(ax)
-	C = false
-	es = Mem0[0x0800:0x01F8:selector]
-	di = 0x05E8
-	cx = 0x062E
-	cx = cx - di
-	SCZO = cond(cx)
-	// succ:  l0800_00F1
-l0800_00F1:
-	branch cx == 0x0000 l0800_00F3
-	// succ:  l0800_00F1_1 l0800_00F3
-l0800_00F1_1:
-	Mem0[es:di:byte] = al
-	di = di + 0x0001
-	cx = cx - 0x0001
-	goto l0800_00F1
-	// succ:  l0800_00F1
-l0800_00F3:
-	sp = sp - 0x0002
-	call SEQ(cs, Mem0[ds:0x05DA:word16]) (retsize: 2;)
-	call fn0800_0336 (retsize: 2;)
-	call fn0800_0421 (retsize: 2;)
-	ah = 0x00
-	cx = bios_get_system_time(out dx)
-	Mem0[ds:0x0098:word16] = dx
-	Mem0[ds:0x009A:word16] = cx
-	call SEQ(cs, Mem0[ds:0x05DE:word16]) (retsize: 2;)
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = Mem0[ds:0x0088:word16]
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = Mem0[ds:0x0086:word16]
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = Mem0[ds:0x0084:word16]
-	call main (retsize: 2;)
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = ax
-	call fn0800_0301 (retsize: 2;)
-	// succ:  l0800_011E_thunk_fn0800_0121
-l0800_011E_thunk_fn0800_0121:
-	call fn0800_0121 (retsize: 0;)
-	return
-	// succ:  fn0800_0000_exit
-l0800_01E2:
-	cx = 0x001E
-	dx = 0x0056
-	ds = Mem0[0x0800:0x01F8:selector]
-	call fn0800_01DA (retsize: 2;)
-	ax = 0x0003
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = ax
-	call fn0800_0121 (retsize: 2;)
-	v27 = Mem0[ds:bx + si:byte] + al
-	Mem0[ds:bx + si:byte] = v27
-	SCZO = cond(v27)
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = bp
-	bp = sp
-	bp = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	return
-	// succ:  fn0800_0000_exit
-fn0800_0000_exit:
-
-
-// fn0800_0121
-// Return size: 0
-void fn0800_0121()
-fn0800_0121_entry:
-	// succ:  l0800_0121
-l0800_0121:
-	sp = fp
-	ds = Mem0[0x0800:0x01F8:selector]
-	call fn0800_01A5 (retsize: 2;)
-	sp = sp - 0x0002
-	call SEQ(cs, Mem0[ds:0x05DC:word16]) (retsize: 2;)
-	ax = ax ^ ax
-	SZO = cond(ax)
-	C = false
-	si = ax
-	cx = 0x002F
-	D = false
-	// succ:  l0800_0137
-l0800_0137:
-	al = al + Mem0[ds:si:byte]
-	SCZO = cond(al)
-	ah = ah + 0x00 + C
-	SCZO = cond(ah)
-	si = si + 0x0001
-	SZO = cond(si)
-	cx = cx - 0x0001
-	branch cx != 0x0000 l0800_0137
-	// succ:  l0800_013F l0800_0137
-l0800_013F:
-	ax = ax - 0x0D37
-	SCZO = cond(ax)
-	branch Test(EQ,Z) l0800_014F
-	// succ:  l0800_0145 l0800_014F
-l0800_0145:
-	cx = 0x0019
-	dx = 0x002F
-	call fn0800_01DA (retsize: 2;)
-	// succ:  l0800_014F
-l0800_014F:
-	bp = sp
-	ah = 0x4C
-	al = Mem0[ss:bp + 0x0002:byte]
-	msdos_terminate(al)
-	// succ:  fn0800_0121_exit
-fn0800_0121_exit:
-
-
-// fn0800_0162
-// Return size: 2
-void fn0800_0162()
-fn0800_0162_entry:
-	// succ:  l0800_0162
-l0800_0162:
-	sp = fp
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = ds
-	ax = 0x3500
-	es_bx = msdos_get_interrupt_vector(al)
-	Mem0[ds:0x0074:word16] = bx
-	Mem0[ds:0x0076:word16] = es
-	ax = 0x3504
-	es_bx = msdos_get_interrupt_vector(al)
-	Mem0[ds:0x0078:word16] = bx
-	Mem0[ds:0x007A:word16] = es
-	ax = 0x3505
-	es_bx = msdos_get_interrupt_vector(al)
-	Mem0[ds:0x007C:word16] = bx
-	Mem0[ds:0x007E:word16] = es
-	ax = 0x3506
-	es_bx = msdos_get_interrupt_vector(al)
-	Mem0[ds:0x0080:word16] = bx
-	Mem0[ds:0x0082:word16] = es
-	ax = 0x2500
-	dx = cs
-	ds = dx
-	dx = 0x0158
-	msdos_set_interrupt_vector(al, ds_dx)
-	ds = Mem0[ss:sp:selector]
-	sp = sp + 0x0002
-	return
-	// succ:  fn0800_0162_exit
-fn0800_0162_exit:
-
-
-// fn0800_01A5
-// Return size: 2
-void fn0800_01A5()
-fn0800_01A5_entry:
-	// succ:  l0800_01A5
-l0800_01A5:
-	sp = fp
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = ds
-	ax = 0x2500
-	ds_dx = Mem0[ds:0x0074:segptr32]
-	msdos_set_interrupt_vector(al, ds_dx)
-	ds = Mem0[ss:sp:selector]
-	sp = sp + 0x0002
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = ds
-	ax = 0x2504
-	ds_dx = Mem0[ds:0x0078:segptr32]
-	msdos_set_interrupt_vector(al, ds_dx)
-	ds = Mem0[ss:sp:selector]
-	sp = sp + 0x0002
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = ds
-	ax = 0x2505
-	ds_dx = Mem0[ds:0x007C:segptr32]
-	msdos_set_interrupt_vector(al, ds_dx)
-	ds = Mem0[ss:sp:selector]
-	sp = sp + 0x0002
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = ds
-	ax = 0x2506
-	ds_dx = Mem0[ds:0x0080:segptr32]
-	msdos_set_interrupt_vector(al, ds_dx)
-	ds = Mem0[ss:sp:selector]
-	sp = sp + 0x0002
-	return
-	// succ:  fn0800_01A5_exit
-fn0800_01A5_exit:
-
-
-// fn0800_01DA
-// Return size: 2
-void fn0800_01DA()
-fn0800_01DA_entry:
-	// succ:  l0800_01DA
-l0800_01DA:
-	sp = fp
-	ah = 0x40
-	bx = 0x0002
-	C = msdos_write_file(bx, cx, ds_dx, out ax)
-	return
-	// succ:  fn0800_01DA_exit
-fn0800_01DA_exit:
-
-
-// fn0800_01FA
-// Return size: 2
 void fn0800_01FA()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: bp sp
 fn0800_01FA_entry:
-	// succ:  l0800_01FA
+// DataOut: ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16)
+
 l0800_01FA:
-	sp = fp
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = bp
-	bp = sp
-	bp = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
 	return
-	// succ:  fn0800_01FA_exit
+// DataOut: ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
 fn0800_01FA_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp bp:bp -2(fp):bp
 
 
-// fn0800_01FF
-// Return size: 2
+
 void fn0800_01FF()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: bp sp
 fn0800_01FF_entry:
-	// succ:  l0800_01FF
+// DataOut: ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16)
+
 l0800_01FF:
-	sp = fp
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = bp
-	bp = sp
-	call fn0800_01FA (retsize: 2;)
-	call fn0800_01FA (retsize: 2;)
-	call fn0800_01FA (retsize: 2;)
-	call fn0800_01FA (retsize: 2;)
-	call fn0800_01FA (retsize: 2;)
-	call fn0800_01FA (retsize: 2;)
-	call fn0800_01FA (retsize: 2;)
-	call fn0800_01FA (retsize: 2;)
-	call fn0800_01FA (retsize: 2;)
-	call fn0800_01FA (retsize: 2;)
-	bp = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
+	fn0800_01FA()
+	fn0800_01FA()
+	fn0800_01FA()
+	fn0800_01FA()
+	fn0800_01FA()
+	fn0800_01FA()
+	fn0800_01FA()
+	fn0800_01FA()
+	fn0800_01FA()
+	fn0800_01FA()
 	return
-	// succ:  fn0800_01FF_exit
+// DataOut: ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
 fn0800_01FF_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp bp:bp -2(fp):bp
 
 
-// fn0800_0222
-// Return size: 2
+
 void fn0800_0222()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: bp sp
 fn0800_0222_entry:
-	// succ:  l0800_0222
+// DataOut: ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16)
+
 l0800_0222:
-	sp = fp
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = bp
-	bp = sp
-	call fn0800_01FF (retsize: 2;)
-	call fn0800_01FF (retsize: 2;)
-	call fn0800_01FF (retsize: 2;)
-	call fn0800_01FF (retsize: 2;)
-	call fn0800_01FF (retsize: 2;)
-	call fn0800_01FF (retsize: 2;)
-	call fn0800_01FF (retsize: 2;)
-	call fn0800_01FF (retsize: 2;)
-	call fn0800_01FF (retsize: 2;)
-	call fn0800_01FF (retsize: 2;)
-	bp = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
+	fn0800_01FF()
+	fn0800_01FF()
+	fn0800_01FF()
+	fn0800_01FF()
+	fn0800_01FF()
+	fn0800_01FF()
+	fn0800_01FF()
+	fn0800_01FF()
+	fn0800_01FF()
+	fn0800_01FF()
 	return
-	// succ:  fn0800_0222_exit
+// DataOut: ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
 fn0800_0222_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp bp:bp -2(fp):bp
 
 
-// fn0800_0245
-// Return size: 2
+
 void fn0800_0245()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed:
+// Preserved: bp sp
 fn0800_0245_entry:
-	// succ:  l0800_0245
+// DataOut: ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16)
+
 l0800_0245:
-	sp = fp
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = bp
-	bp = sp
-	call fn0800_0222 (retsize: 2;)
-	call fn0800_0222 (retsize: 2;)
-	call fn0800_0222 (retsize: 2;)
-	call fn0800_0222 (retsize: 2;)
-	call fn0800_0222 (retsize: 2;)
-	call fn0800_0222 (retsize: 2;)
-	call fn0800_0222 (retsize: 2;)
-	call fn0800_0222 (retsize: 2;)
-	call fn0800_0222 (retsize: 2;)
-	bp = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
+	fn0800_0222()
+	fn0800_0222()
+	fn0800_0222()
+	fn0800_0222()
+	fn0800_0222()
+	fn0800_0222()
+	fn0800_0222()
+	fn0800_0222()
+	fn0800_0222()
 	return
-	// succ:  fn0800_0245_exit
+// DataOut: ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
 fn0800_0245_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp bp:bp -2(fp):bp
 
 
-// main
-// Return size: 2
-void main()
+
+void main(selector ds)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  ds ss
+// LiveOut:
+// Trashed: SCZDO ah al ax bh bl bx ch cl cx dh di dil dl dx eax ebx ecx edi edx es esi rax rbx rcx rdi rdx rsi si sil
+// Preserved: bp sp
 main_entry:
-	// succ:  l0800_0265
+// DataOut: ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16) Local -0004(0) Local -0006(16) Local -000E(16) Local -0010(16)
+
 l0800_0265:
-	sp = fp
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = bp
-	bp = sp
-	sp = sp - 0x0008
-	SCZO = cond(sp)
-	ax = 0x0194
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = ax
-	call fn0800_0E4B (retsize: 2;)
-	cx = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	ax = bp - 0x0004
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = ax
-	ax = 0x01B0
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = ax
-	call fn0800_16D4 (retsize: 2;)
-	cx = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	cx = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = Mem0[ss:bp - 0x0002:word16]
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = Mem0[ss:bp - 0x0004:word16]
-	ax = 0x01B4
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = ax
-	call fn0800_0E4B (retsize: 2;)
-	sp = sp + 0x0006
-	SCZO = cond(sp)
-	Mem0[ss:bp - 0x0006:word16] = 0x0000
-	Mem0[ss:bp - 0x0008:word16] = 0x0001
-	goto l0800_02A7
-	// succ:  l0800_02A7
-l0800_029C:
-	call fn0800_0245 (retsize: 2;)
-	v12 = Mem0[ss:bp - 0x0008:word16] + 0x0001
-	Mem0[ss:bp - 0x0008:word16] = v12
-	SCZO = cond(v12)
-	v14 = Mem0[ss:bp - 0x0006:word16] + 0x00 + C
-	Mem0[ss:bp - 0x0006:word16] = v14
-	SCZO = cond(v14)
-	// succ:  l0800_02A7
+	word16 di_12
+	word16 bx_13 = fn0800_0E4B(ds, 0x0194, out di_12)
+	fn0800_16D4(bx_13, di_12, ds, 0x01B0)
+	word16 di_35
+	fn0800_0E4B(ds, 0x01B4, out di_35)
+	word16 wLoc08_39 = 0x0000
+	word16 wLoc0A_40 = 0x0001
+// DataOut: ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16) Local -0004(0) Local -0006(0) Local -0008(16) Local -000A(8) Local -000E(16)
+
 l0800_02A7:
-	dx = Mem0[ss:bp - 0x0006:word16]
-	ax = Mem0[ss:bp - 0x0008:word16]
-	SCZO = cond(dx - Mem0[ss:bp - 0x0002:word16])
-	branch Test(LT,SO) l0800_029C
-	// succ:  l0800_02B2 l0800_029C
+	branch wLoc08_39 < wLoc04 l0800_029C
+// DataOut: ax ds ss
+// DataOut (flags): SZO
+// SymbolicIn: sp:fp - 0x000A bp:fp - 0x0002 ax:<invalid> cx:<invalid> dx:<invalid> al:<invalid> di:<invalid> si:<invalid> es:<invalid> bx:<invalid> bl:<invalid> bh:<invalid> ah:<invalid> -16(fp):0x01B4 -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -2(fp):bp
+// LocalsOut: fp(16) Local -0004(0) Local -0006(0) Local -0008(16) Local -000A(8) Local -000E(16)
+
 l0800_02B2:
-	branch Test(GT,SZO) l0800_02B9
-	// succ:  l0800_02B4 l0800_02B9
+	branch wLoc08_39 > wLoc04 l0800_02B9
+// DataOut: ax ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x000A bp:fp - 0x0002 ax:<invalid> cx:<invalid> dx:<invalid> al:<invalid> di:<invalid> si:<invalid> es:<invalid> bx:<invalid> bl:<invalid> bh:<invalid> ah:<invalid> -16(fp):0x01B4 -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -2(fp):bp
+// LocalsOut: fp(16) Local -0004(0) Local -0006(0) Local -0008(16) Local -000A(8) Local -000E(16)
+
 l0800_02B4:
-	SCZO = cond(ax - Mem0[ss:bp - 0x0004:word16])
-	branch Test(ULE,CZ) l0800_029C
-	// succ:  l0800_02B9 l0800_029C
+	branch wLoc0A_40 <=u wLoc06 l0800_029C
+// DataOut: ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x000A bp:fp - 0x0002 ax:<invalid> cx:<invalid> dx:<invalid> al:<invalid> di:<invalid> si:<invalid> es:<invalid> bx:<invalid> bl:<invalid> bh:<invalid> ah:<invalid> -16(fp):0x01B4 -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -2(fp):bp
+// LocalsOut: fp(16) Local -0004(0) Local -0006(0) Local -0008(16) Local -000A(8) Local -000E(16)
+
+l0800_029C:
+	fn0800_0245()
+	wLoc0A_40 = wLoc0A_40 + 0x0001
+	wLoc08_39 = v14
+// DataOut: ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x000A bp:fp - 0x0002 ax:<invalid> cx:<invalid> dx:<invalid> al:<invalid> di:<invalid> si:<invalid> es:<invalid> bx:<invalid> bl:<invalid> bh:<invalid> ah:<invalid> -16(fp):0x01B4 -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -2(fp):bp
+// LocalsOut: fp(16) Local -0004(0) Local -0006(0) Local -0008(16) Local -000A(8) Local -000E(16)
+
 l0800_02B9:
-	ax = 0x01CE
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = ax
-	call fn0800_0E4B (retsize: 2;)
-	cx = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	sp = bp
-	bp = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
+	word16 di_68
+	fn0800_0E4B(ds, 0x01CE, out di_68)
 	return
-	// succ:  main_exit
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x000A bp:fp - 0x0002 ax:<invalid> cx:<invalid> dx:<invalid> al:<invalid> di:<invalid> si:<invalid> es:<invalid> bx:<invalid> bl:<invalid> bh:<invalid> ah:<invalid> -16(fp):0x01B4 -14(fp):<invalid> -12(fp):<invalid> -10(fp):<invalid> -8(fp):<invalid> -2(fp):bp
+
 main_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp bp:bp ax:<invalid> cx:0x01CE dx:<invalid> di:<invalid> si:<invalid> al:<invalid> es:<invalid> bx:<invalid> bl:<invalid> bh:<invalid> ah:<invalid> -16(fp):0x01B4 -14(fp):<invalid> -12(fp):0x01CE -10(fp):<invalid> -8(fp):<invalid> -2(fp):bp
 
 
-// fn0800_0301
-// Return size: 2
-void fn0800_0301()
-fn0800_0301_entry:
-	// succ:  l0800_0301
-l0800_0301:
-	sp = fp
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = bp
-	bp = sp
-	goto l0800_0310
-	// succ:  l0800_0310
-l0800_0306:
-	bx = Mem0[ds:0x023E:word16]
-	bx = bx << 0x0001
-	SCZO = cond(bx)
-	call SEQ(cs, Mem0[ds:bx + 0x05E8:word16]) (retsize: 2;)
-	// succ:  l0800_0310
-l0800_0310:
-	ax = Mem0[ds:0x023E:word16]
-	v7 = Mem0[ds:0x023E:word16] - 0x0001
-	Mem0[ds:0x023E:word16] = v7
-	SZO = cond(v7)
-	ax = ax | ax
-	SZO = cond(ax)
-	C = false
-	branch Test(NE,Z) l0800_0306
-	// succ:  l0800_031B l0800_0306
-l0800_031B:
-	call SEQ(cs, Mem0[ds:0x0234:word16]) (retsize: 2;)
-	call SEQ(cs, Mem0[ds:0x0236:word16]) (retsize: 2;)
-	call SEQ(cs, Mem0[ds:0x0238:word16]) (retsize: 2;)
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = Mem0[ss:bp + 0x0004:word16]
-	call fn0800_0121 (retsize: 2;)
-	cx = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	bp = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	return
-	// succ:  fn0800_0301_exit
-fn0800_0301_exit:
 
+word16 fn0800_0E4B(selector ds, word16 wArg02, ptr16 diOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// fn0800_0336
-// Return size: 0
-void fn0800_0336()
-fn0800_0336_entry:
-	goto l0800_0336
-	// succ:  l0800_0336
-l0800_01E2_in_fn0800_0336:
-	cx = 0x001E
-	dx = 0x0056
-	ds = Mem0[0x0800:0x01F8:selector]
-	call fn0800_01DA (retsize: 2;)
-	ax = 0x0003
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = ax
-	call fn0800_0121 (retsize: 2;)
-	v27 = Mem0[ds:bx + si:byte] + al
-	Mem0[ds:bx + si:byte] = v27
-	SCZO = cond(v27)
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = bp
-	bp = sp
-	bp = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	return
-	// succ:  fn0800_0336_exit
-l0800_01E2_in_fn0800_0336:
-	cx = 0x001E
-	dx = 0x0056
-	ds = Mem0[0x0800:0x01F8:selector]
-	call fn0800_01DA (retsize: 2;)
-	ax = 0x0003
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = ax
-	call fn0800_0121 (retsize: 2;)
-	v27 = Mem0[ds:bx + si:byte] + al
-	Mem0[ds:bx + si:byte] = v27
-	SCZO = cond(v27)
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = bp
-	bp = sp
-	bp = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	return
-	// succ:  fn0800_0336_exit
-l0800_0336:
-	sp = fp
-	Mem0[0x0800:0x0330:word16] = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	Mem0[0x0800:0x0332:word16] = ds
-	D = false
-	es = Mem0[ds:0x0090:selector]
-	si = 0x0080
-	ah = ah ^ ah
-	SZO = cond(ah)
-	C = false
-	al = Mem0[ds:si:byte]
-	si = si + 0x0001
-	ax = ax + 0x0001
-	SZO = cond(ax)
-	bp = es
-	v14 = si
-	si = dx
-	dx = v14
-	v16 = ax
-	ax = bx
-	bx = v16
-	si = Mem0[ds:0x008A:word16]
-	si = si + 0x0002
-	SCZO = cond(si)
-	cx = 0x0001
-	SCZO = cond(Mem0[ds:0x0092:byte] - 0x03)
-	branch Test(ULT,C) l0800_0374
-	// succ:  l0800_0363 l0800_0374
-l0800_0363:
-	es = Mem0[ds:0x008C:selector]
-	di = si
-	cl = 0x7F
-	al = al ^ al
-	SZO = cond(al)
-	C = false
-	// succ:  l0800_036D
-l0800_036D:
-	branch cx == 0x0000 l0800_036F
-	// succ:  l0800_036D_1 l0800_036F
-l0800_036D_1:
-	SCZO = cond(al - Mem0[es:di:byte])
-	di = di + 0x0001
-	cx = cx - 0x0001
-	branch Test(NE,Z) l0800_036D
-	// succ:  l0800_036F l0800_036D
-l0800_036F:
-	branch cx == 0x0000 l0800_03E7
-	// succ:  l0800_0371 l0800_03E7
-l0800_0371:
-	cl = cl ^ 0x7F
-	SZO = cond(cl)
-	C = false
-	// succ:  l0800_0374
-l0800_0374:
-	sp = sp - 0x0002
-	SCZO = cond(sp)
-	ax = 0x0001
-	ax = ax + bx
-	SCZO = cond(ax)
-	ax = ax + cx
-	SCZO = cond(ax)
-	ax = ax & 0xFFFE
-	SZO = cond(ax)
-	C = false
-	di = sp
-	di = di - ax
-	SCZO = cond(di)
-	branch Test(ULT,C) l0800_03E7
-	// succ:  l0800_0387 l0800_03E7
-l0800_0387:
-	sp = di
-	ax = es
-	ds = ax
-	ax = ss
-	es = ax
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = cx
-	cx = cx - 0x0001
-	SZO = cond(cx)
-	// succ:  l0800_0393
-l0800_0393:
-	branch cx == 0x0000 l0800_0395
-	// succ:  l0800_0393_1 l0800_0395
-l0800_0393_1:
-	v23 = Mem0[ds:si:byte]
-	Mem0[es:di:byte] = v23
-	si = si + 0x0001
-	di = di + 0x0001
-	cx = cx - 0x0001
-	goto l0800_0393
-	// succ:  l0800_0393
-l0800_0395:
-	al = al ^ al
-	SZO = cond(al)
-	C = false
-	Mem0[es:di:byte] = al
-	di = di + 0x0001
-	ds = bp
-	v24 = dx
-	dx = si
-	si = v24
-	v25 = cx
-	cx = bx
-	bx = v25
-	ax = bx
-	dx = ax
-	bx = bx + 0x0001
-	SZO = cond(bx)
-	// succ:  l0800_03A3
-l0800_03A3:
-	call fn0800_03BF (retsize: 2;)
-	branch Test(UGT,CZ) l0800_03AF
-	// succ:  l0800_03A8 l0800_03AF
-l0800_03A8:
-	branch Test(ULT,C) l0800_03EA
-	// succ:  l0800_03AA l0800_03EA
-l0800_03AA:
-	call fn0800_03BF (retsize: 2;)
-	branch Test(UGT,CZ) l0800_03A8
-	// succ:  l0800_03AF l0800_03A8
-l0800_03AF:
-	SCZO = cond(al - 0x20)
-	branch Test(EQ,Z) l0800_03BB
-	// succ:  l0800_03B3 l0800_03BB
-l0800_03B3:
-	SCZO = cond(al - 0x0D)
-	branch Test(EQ,Z) l0800_03BB
-	// succ:  l0800_03B7 l0800_03BB
-l0800_03B7:
-	SCZO = cond(al - 0x09)
-	branch Test(NE,Z) l0800_03A3
-	// succ:  l0800_03BB l0800_03A3
-l0800_03BB:
-	al = al ^ al
-	SZO = cond(al)
-	C = false
-	goto l0800_03A3
-	// succ:  l0800_03A3
-l0800_03E7:
-	// succ:  l0800_01E2_in_fn0800_0336 l0800_01E2_in_fn0800_0336
-l0800_03EA:
-	cx = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	cx = cx + dx
-	SCZO = cond(cx)
-	ds = Mem0[0x0800:0x0332:selector]
-	Mem0[ds:0x0084:word16] = bx
-	bx = bx + 0x0001
-	SZO = cond(bx)
-	bx = bx + bx
-	SCZO = cond(bx)
-	si = sp
-	bp = sp
-	bp = bp - bx
-	SCZO = cond(bp)
-	branch Test(ULT,C) l0800_03E7
-	// succ:  l0800_0401 l0800_03E7
-l0800_0401:
-	sp = bp
-	Mem0[ds:0x0086:word16] = bp
-	// succ:  l0800_0407
-l0800_0407:
-	branch cx == 0x0000 l0800_0417
-	// succ:  l0800_0409 l0800_0417
-l0800_0409:
-	Mem0[ss:bp + 0x0000:word16] = si
-	bp = bp + 0x0002
-	SCZO = cond(bp)
-	// succ:  l0800_040F
-l0800_040F:
-	al = Mem0[ds:si:byte]
-	si = si + 0x0001
-	al = al | al
-	SZO = cond(al)
-	C = false
-	cx = cx - 0x0001
-	branch Test(NE,Z) && cx != 0x0000 l0800_040F
-	// succ:  l0800_0415 l0800_040F
-l0800_0415:
-	branch Test(EQ,Z) l0800_0407
-	// succ:  l0800_0417 l0800_0407
-l0800_0417:
-	ax = ax ^ ax
-	SZO = cond(ax)
-	C = false
-	Mem0[ss:bp + 0x0000:word16] = ax
-	call Mem0[0x0800:0x0330:word16] (retsize: 4;)
-	return
-	// succ:  fn0800_0336_exit
-fn0800_0336_exit:
-
-
-// fn0800_03BF
-// Return size: 2
-void fn0800_03BF()
-fn0800_03BF_entry:
-	// succ:  l0800_03BF
-l0800_03BF:
-	sp = fp
-	ax = ax | ax
-	SZO = cond(ax)
-	C = false
-	branch Test(EQ,Z) l0800_03CA
-	// succ:  l0800_03C3 l0800_03CA
-l0800_03C3:
-	dx = dx + 0x0001
-	SZO = cond(dx)
-	Mem0[es:di:byte] = al
-	di = di + 0x0001
-	al = al | al
-	SZO = cond(al)
-	C = false
-	branch Test(NE,Z) l0800_03CA
-	// succ:  l0800_03C9 l0800_03CA
-l0800_03C9:
-	bx = bx + 0x0001
-	SZO = cond(bx)
-	// succ:  l0800_03CA
-l0800_03CA:
-	v12 = al
-	al = ah
-	ah = v12
-	al = al ^ al
-	SZO = cond(al)
-	C = false
-	C = true
-	branch cx == 0x0000 l0800_03E6
-	// succ:  l0800_03D1 l0800_03E6
-l0800_03D1:
-	al = Mem0[ds:si:byte]
-	si = si + 0x0001
-	cx = cx - 0x0001
-	SZO = cond(cx)
-	al = al - 0x22
-	SCZO = cond(al)
-	branch Test(EQ,Z) l0800_03E6
-	// succ:  l0800_03D7 l0800_03E6
-l0800_03D7:
-	al = al + 0x22
-	SCZO = cond(al)
-	SCZO = cond(al - 0x5C)
-	branch Test(NE,Z) l0800_03E4
-	// succ:  l0800_03DD l0800_03E4
-l0800_03DD:
-	SCZO = cond(Mem0[ds:si:byte] - 0x22)
-	branch Test(NE,Z) l0800_03E4
-	// succ:  l0800_03E2 l0800_03E4
-l0800_03E2:
-	al = Mem0[ds:si:byte]
-	si = si + 0x0001
-	cx = cx - 0x0001
-	SZO = cond(cx)
-	// succ:  l0800_03E4
-l0800_03E4:
-	si = si | si
-	SZO = cond(si)
-	C = false
-	// succ:  l0800_03E6
-l0800_03E6:
-	return
-	// succ:  fn0800_03BF_exit
-fn0800_03BF_exit:
-
-
-// fn0800_0421
-// Return size: 2
-void fn0800_0421()
-fn0800_0421_entry:
-	goto l0800_0421
-	// succ:  l0800_0421
-l0800_01E2_in_fn0800_0421:
-	cx = 0x001E
-	dx = 0x0056
-	ds = Mem0[0x0800:0x01F8:selector]
-	call fn0800_01DA (retsize: 2;)
-	ax = 0x0003
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = ax
-	call fn0800_0121 (retsize: 2;)
-	v27 = Mem0[ds:bx + si:byte] + al
-	Mem0[ds:bx + si:byte] = v27
-	SCZO = cond(v27)
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = bp
-	bp = sp
-	bp = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	return
-	// succ:  fn0800_0421_exit
-l0800_01E2_in_fn0800_0421:
-	cx = 0x001E
-	dx = 0x0056
-	ds = Mem0[0x0800:0x01F8:selector]
-	call fn0800_01DA (retsize: 2;)
-	ax = 0x0003
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = ax
-	call fn0800_0121 (retsize: 2;)
-	v27 = Mem0[ds:bx + si:byte] + al
-	Mem0[ds:bx + si:byte] = v27
-	SCZO = cond(v27)
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = bp
-	bp = sp
-	bp = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	return
-	// succ:  fn0800_0421_exit
-l0800_01E2_in_fn0800_0421:
-	cx = 0x001E
-	dx = 0x0056
-	ds = Mem0[0x0800:0x01F8:selector]
-	call fn0800_01DA (retsize: 2;)
-	ax = 0x0003
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = ax
-	call fn0800_0121 (retsize: 2;)
-	v27 = Mem0[ds:bx + si:byte] + al
-	Mem0[ds:bx + si:byte] = v27
-	SCZO = cond(v27)
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = bp
-	bp = sp
-	bp = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	return
-	// succ:  fn0800_0421_exit
-l0800_0421:
-	sp = fp
-	cx = Mem0[ds:0x008A:word16]
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = cx
-	call fn0800_0570 (retsize: 2;)
-	cx = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	di = ax
-	ax = ax | ax
-	SZO = cond(ax)
-	C = false
-	branch Test(EQ,Z) l0800_0454
-	// succ:  l0800_0430 l0800_0454
-l0800_0430:
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = ds
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = ds
-	es = Mem0[ss:sp:selector]
-	sp = sp + 0x0002
-	ds = Mem0[ds:0x008C:selector]
-	si = si ^ si
-	SZO = cond(si)
-	C = false
-	D = false
-	// succ:  l0800_043A
-l0800_043A:
-	branch cx == 0x0000 l0800_043C
-	// succ:  l0800_043A_1 l0800_043C
-l0800_043A_1:
-	v14 = Mem0[ds:si:byte]
-	Mem0[es:di:byte] = v14
-	si = si + 0x0001
-	di = di + 0x0001
-	cx = cx - 0x0001
-	goto l0800_043A
-	// succ:  l0800_043A
-l0800_043C:
-	ds = Mem0[ss:sp:selector]
-	sp = sp + 0x0002
-	di = ax
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = es
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = Mem0[ds:0x008E:word16]
-	call fn0800_0570 (retsize: 2;)
-	sp = sp + 0x0002
-	SCZO = cond(sp)
-	bx = ax
-	es = Mem0[ss:sp:selector]
-	sp = sp + 0x0002
-	Mem0[ds:0x0088:word16] = ax
-	ax = ax | ax
-	SZO = cond(ax)
-	C = false
-	branch Test(NE,Z) l0800_0457
-	// succ:  l0800_0454 l0800_0457
-l0800_0454:
-	// succ:  l0800_01E2_in_fn0800_0421 l0800_01E2_in_fn0800_0421 l0800_01E2_in_fn0800_0421
-l0800_0457:
-	ax = ax ^ ax
-	SZO = cond(ax)
-	C = false
-	cx = 0xFFFF
-	// succ:  l0800_045C
-l0800_045C:
-	Mem0[ds:bx:word16] = di
-	bx = bx + 0x0002
-	SCZO = cond(bx)
-	// succ:  l0800_0461
-l0800_0461:
-	branch cx == 0x0000 l0800_0463
-	// succ:  l0800_0461_1 l0800_0463
-l0800_0461_1:
-	SCZO = cond(al - Mem0[es:di:byte])
-	di = di + 0x0001
-	cx = cx - 0x0001
-	branch Test(NE,Z) l0800_0461
-	// succ:  l0800_0463 l0800_0461
-l0800_0463:
-	SCZO = cond(Mem0[es:di:byte] - al)
-	branch Test(NE,Z) l0800_045C
-	// succ:  l0800_0468 l0800_045C
-l0800_0468:
-	Mem0[ds:bx:word16] = ax
-	return
-	// succ:  fn0800_0421_exit
-fn0800_0421_exit:
-
-
-// fn0800_0491
-// Return size: 2
-void fn0800_0491()
-fn0800_0491_entry:
-	// succ:  l0800_0491
-l0800_0491:
-	sp = fp
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = bp
-	bp = sp
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = si
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = di
-	di = Mem0[ss:bp + 0x0004:word16]
-	ax = Mem0[ds:di + 0x0006:word16]
-	Mem0[ds:0x062A:word16] = ax
-	SCZO = cond(ax - di)
-	branch Test(NE,Z) l0800_04AB
-	// succ:  l0800_04A3 l0800_04AB
-l0800_04A3:
-	Mem0[ds:0x062A:word16] = 0x0000
-	goto l0800_04BB
-	// succ:  l0800_04BB
-l0800_04AB:
-	si = Mem0[ds:di + 0x0004:word16]
-	bx = Mem0[ds:0x062A:word16]
-	Mem0[ds:bx + 0x0004:word16] = si
-	ax = Mem0[ds:0x062A:word16]
-	Mem0[ds:si + 0x0006:word16] = ax
-	// succ:  l0800_04BB
-l0800_04BB:
-	di = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	si = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	bp = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	return
-	// succ:  fn0800_0491_exit
-fn0800_0491_exit:
-
-
-// fn0800_04BF
-// Return size: 2
-void fn0800_04BF()
-fn0800_04BF_entry:
-	// succ:  l0800_04BF
-l0800_04BF:
-	sp = fp
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = bp
-	bp = sp
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = si
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = di
-	di = Mem0[ss:bp + 0x0004:word16]
-	ax = Mem0[ss:bp + 0x0006:word16]
-	v9 = Mem0[ds:di:word16] - ax
-	Mem0[ds:di:word16] = v9
-	SCZO = cond(v9)
-	si = Mem0[ds:di:word16]
-	si = si + di
-	SCZO = cond(si)
-	ax = Mem0[ss:bp + 0x0006:word16]
-	ax = ax + 0x0001
-	SZO = cond(ax)
-	Mem0[ds:si:word16] = ax
-	Mem0[ds:si + 0x0002:word16] = di
-	ax = Mem0[ds:0x0628:word16]
-	SCZO = cond(ax - di)
-	branch Test(NE,Z) l0800_04E6
-	// succ:  l0800_04E0 l0800_04E6
-l0800_04E0:
-	Mem0[ds:0x0628:word16] = si
-	goto l0800_04EE
-	// succ:  l0800_04EE
-l0800_04E6:
-	di = si
-	di = di + Mem0[ss:bp + 0x0006:word16]
-	SCZO = cond(di)
-	Mem0[ds:di + 0x0002:word16] = si
-	// succ:  l0800_04EE
-l0800_04EE:
-	ax = si
-	ax = ax + 0x0004
-	SCZO = cond(ax)
-	// succ:  l0800_04F5
-l0800_04F5:
-	di = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	si = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	bp = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	return
-	// succ:  fn0800_04BF_exit
-fn0800_04BF_exit:
-
-
-// fn0800_04F9
-// Return size: 2
-void fn0800_04F9()
-fn0800_04F9_entry:
-	// succ:  l0800_04F9
-l0800_04F9:
-	sp = fp
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = bp
-	bp = sp
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = si
-	ax = Mem0[ss:bp + 0x0004:word16]
-	dx = dx ^ dx
-	SZO = cond(dx)
-	C = false
-	ax = ax & 0xFFFF
-	SZO = cond(ax)
-	C = false
-	dx = dx & 0x0000
-	SZO = cond(dx)
-	C = false
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = dx
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = ax
-	call fn0800_0607 (retsize: 2;)
-	cx = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	cx = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	si = ax
-	SCZO = cond(si - 0xFFFF)
-	branch Test(NE,Z) l0800_051B
-	// succ:  l0800_0517 l0800_051B
-l0800_0517:
-	ax = ax ^ ax
-	SZO = cond(ax)
-	C = false
-	goto l0800_0533
-	// succ:  l0800_0533
-l0800_051B:
-	ax = Mem0[ds:0x0628:word16]
-	Mem0[ds:si + 0x0002:word16] = ax
-	ax = Mem0[ss:bp + 0x0004:word16]
-	ax = ax + 0x0001
-	SZO = cond(ax)
-	Mem0[ds:si:word16] = ax
-	Mem0[ds:0x0628:word16] = si
-	ax = Mem0[ds:0x0628:word16]
-	ax = ax + 0x0004
-	SCZO = cond(ax)
-	// succ:  l0800_0533
-l0800_0533:
-	si = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	bp = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	return
-	// succ:  fn0800_04F9_exit
-fn0800_04F9_exit:
-
-
-// fn0800_0536
-// Return size: 2
-void fn0800_0536()
-fn0800_0536_entry:
-	// succ:  l0800_0536
-l0800_0536:
-	sp = fp
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = bp
-	bp = sp
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = si
-	ax = Mem0[ss:bp + 0x0004:word16]
-	dx = dx ^ dx
-	SZO = cond(dx)
-	C = false
-	ax = ax & 0xFFFF
-	SZO = cond(ax)
-	C = false
-	dx = dx & 0x0000
-	SZO = cond(dx)
-	C = false
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = dx
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = ax
-	call fn0800_0607 (retsize: 2;)
-	cx = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	cx = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	si = ax
-	SCZO = cond(si - 0xFFFF)
-	branch Test(NE,Z) l0800_0558
-	// succ:  l0800_0554 l0800_0558
-l0800_0554:
-	ax = ax ^ ax
-	SZO = cond(ax)
-	C = false
-	goto l0800_056D
-	// succ:  l0800_056D
-l0800_0558:
-	Mem0[ds:0x062C:word16] = si
-	Mem0[ds:0x0628:word16] = si
-	ax = Mem0[ss:bp + 0x0004:word16]
-	ax = ax + 0x0001
-	SZO = cond(ax)
-	Mem0[ds:si:word16] = ax
-	ax = si
-	ax = ax + 0x0004
-	SCZO = cond(ax)
-	// succ:  l0800_056D
-l0800_056D:
-	si = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	bp = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	return
-	// succ:  fn0800_0536_exit
-fn0800_0536_exit:
-
-
-// fn0800_0570
-// Return size: 2
-void fn0800_0570()
-fn0800_0570_entry:
-	// succ:  l0800_0570
-l0800_0570:
-	sp = fp
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = bp
-	bp = sp
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = si
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = di
-	di = Mem0[ss:bp + 0x0004:word16]
-	di = di | di
-	SZO = cond(di)
-	C = false
-	branch Test(EQ,Z) l0800_0581
-	// succ:  l0800_057C l0800_0581
-l0800_057C:
-	SCZO = cond(di - 0xFFF4)
-	branch Test(ULE,CZ) l0800_0585
-	// succ:  l0800_0581 l0800_0585
-l0800_0581:
-	ax = ax ^ ax
-	SZO = cond(ax)
-	C = false
-	goto l0800_05DF
-	// succ:  l0800_05DF
-l0800_0585:
-	ax = di
-	ax = ax + 0x000B
-	SCZO = cond(ax)
-	ax = ax & 0xFFF8
-	SZO = cond(ax)
-	C = false
-	di = ax
-	SCZO = cond(Mem0[ds:0x062C:word16] - 0x0000)
-	branch Test(NE,Z) l0800_059D
-	// succ:  l0800_0596 l0800_059D
-l0800_0596:
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = di
-	call fn0800_0536 (retsize: 2;)
-	cx = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	goto l0800_05DF
-	// succ:  l0800_05DF
-l0800_059D:
-	si = Mem0[ds:0x062A:word16]
-	ax = si
-	ax = ax | ax
-	SZO = cond(ax)
-	C = false
-	branch Test(EQ,Z) l0800_05D8
-	// succ:  l0800_05A7 l0800_05D8
-l0800_05A7:
-	ax = Mem0[ds:si:word16]
-	dx = di
-	dx = dx + 0x0028
-	SCZO = cond(dx)
-	SCZO = cond(ax - dx)
-	branch Test(ULT,C) l0800_05BB
-	// succ:  l0800_05B2 l0800_05BB
-l0800_05B2:
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = di
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = si
-	call fn0800_04BF (retsize: 2;)
-	cx = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	cx = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	goto l0800_05DF
-	// succ:  l0800_05DF
-l0800_05BB:
-	ax = Mem0[ds:si:word16]
-	SCZO = cond(ax - di)
-	branch Test(ULT,C) l0800_05CF
-	// succ:  l0800_05C1 l0800_05CF
-l0800_05C1:
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = si
-	call fn0800_0491 (retsize: 2;)
-	cx = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	v16 = Mem0[ds:si:word16] + 0x0001
-	Mem0[ds:si:word16] = v16
-	SZO = cond(v16)
-	ax = si
-	ax = ax + 0x0004
-	SCZO = cond(ax)
-	goto l0800_05DF
-	// succ:  l0800_05DF
-l0800_05CF:
-	si = Mem0[ds:si + 0x0006:word16]
-	SCZO = cond(si - Mem0[ds:0x062A:word16])
-	branch Test(NE,Z) l0800_05A7
-	// succ:  l0800_05D8 l0800_05A7
-l0800_05D8:
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = di
-	call fn0800_04F9 (retsize: 2;)
-	cx = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = di
-	call fn0800_04F9 (retsize: 2;)
-	cx = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	// succ:  l0800_05DF
-l0800_05DF:
-	di = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	si = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	bp = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	return
-	// succ:  fn0800_0570_exit
-fn0800_0570_exit:
-
-
-// fn0800_0607
-// Return size: 2
-void fn0800_0607()
-fn0800_0607_entry:
-	// succ:  l0800_0607
-l0800_0607:
-	sp = fp
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = bp
-	bp = sp
-	ax = Mem0[ss:bp + 0x0004:word16]
-	dx = Mem0[ss:bp + 0x0006:word16]
-	ax = ax + Mem0[ds:0x009E:word16]
-	SCZO = cond(ax)
-	dx = dx + 0x00 + C
-	SCZO = cond(dx)
-	cx = ax
-	cx = cx + 0x0100
-	SCZO = cond(cx)
-	dx = dx + 0x00 + C
-	SCZO = cond(dx)
-	dx = dx | dx
-	SZO = cond(dx)
-	C = false
-	branch Test(NE,Z) l0800_062E
-	// succ:  l0800_0624 l0800_062E
-l0800_0624:
-	SCZO = cond(cx - sp)
-	branch Test(UGE,C) l0800_062E
-	// succ:  l0800_0628 l0800_062E
-l0800_0628:
-	v13 = Mem0[ds:0x009E:word16]
-	Mem0[ds:0x009E:word16] = ax
-	ax = v13
-	goto l0800_0639
-	// succ:  l0800_0639
-l0800_062E:
-	Mem0[ds:0x0094:word16] = 0x0008
-	ax = 0xFFFF
-	// succ:  l0800_0639
-l0800_0639:
-	bp = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	return
-	// succ:  fn0800_0607_exit
-fn0800_0607_exit:
-
-
-// fn0800_0E4B
-// Return size: 2
-void fn0800_0E4B()
+// MayUse:  ds ss
+// LiveOut: bx di
+// Trashed: SCZDO ah al ax bh bl bx ch cl cx dh di dil dl dx eax ebx ecx edi edx es esi rax rbx rcx rdi rdx rsi si sil
+// Preserved: bp sp
+// Stack args: Stack +0002(16)
 fn0800_0E4B_entry:
-	// succ:  l0800_0E4B
+// DataOut: ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16) Stack +0002(16)
+
 l0800_0E4B:
-	sp = fp
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = bp
-	bp = sp
-	ax = 0x0F81
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = ax
-	ax = 0x0352
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = ax
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = Mem0[ss:bp + 0x0004:word16]
-	ax = bp + 0x0006
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = ax
-	call fn0800_1073 (retsize: 2;)
-	sp = sp + 0x0008
-	// succ:  l0800_0E62
+	word16 di_19
+	word16 bx_20 = fn0800_1073(ds, wArg02, out di_19)
+// DataOut: bx di ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
 l0800_0E62:
-	bp = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	return
-	// succ:  fn0800_0E4B_exit
+	return bx_20
+// DataOut: bx di ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0002 bp:fp - 0x0002 ax:<invalid> di:<invalid> si:<invalid> al:<invalid> es:<invalid> dx:<invalid> cx:<invalid> bx:<invalid> ah:<invalid> bl:<invalid> -10(fp):fp + 0x0004 -8(fp):<invalid> -6(fp):0x0352 -4(fp):0x0F81 -2(fp):bp
+
 fn0800_0E4B_exit:
+// DataOut: bx di
+// DataOut (flags): 
+// SymbolicIn: sp:fp bp:bp ax:<invalid> di:<invalid> si:<invalid> al:<invalid> es:<invalid> dx:<invalid> cx:<invalid> bx:<invalid> ah:<invalid> bl:<invalid> -10(fp):fp + 0x0004 -8(fp):<invalid> -6(fp):0x0352 -4(fp):0x0F81 -2(fp):bp
 
 
-// fn0800_1073
-// Return size: 2
-void fn0800_1073()
+
+word16 fn0800_1073(selector ds, word16 wArg04, ptr16 diOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  ds ss
+// LiveOut: bx di
+// Trashed: SCZDO ah al ax bh bl bx ch cl cx dh di dil dl dx eax ebx ecx edi edx es esi rax rbx rcx rdi rdx rsi si sil
+// Preserved: bp sp
+// Stack args: Stack +0004(16)
 fn0800_1073_entry:
-	// succ:  l0800_1073
+// DataOut: bx ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16) Stack +0004(16)
+
 l0800_1073:
-	sp = fp
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = bp
-	bp = sp
-	sp = sp - 0x0098
-	SCZO = cond(sp)
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = si
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = di
-	Mem0[ss:bp - 0x0058:word16] = 0x0000
-	Mem0[ss:bp - 0x0055:byte] = 0x50
-	Mem0[ss:bp - 0x0002:word16] = 0x0000
-	// succ:  l0800_10CD
+	byte bLoc57_109 = 0x50
+// DataOut: bp bx ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16) Local -0057(8) Stack +0004(16)
+
 l0800_10CD:
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = es
-	D = false
-	di = bp - 0x0054
-	Mem0[ss:bp - 0x0096:word16] = di
-	di = Mem0[ss:bp - 0x0096:word16]
-	si = Mem0[ss:bp + 0x0006:word16]
-	// succ:  l0800_10DD
+	word16 sp_161 = fp - 0x00A0
+	word16 di_107 = fp - 0x0056
+	word16 si_105 = wArg04
+// DataOut: bp bx di ds si sp ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x009E bp:fp - 0x0002 -158(fp):di -156(fp):si -90(fp):0x0000 -87(fp):0x50 -4(fp):0x0000 -2(fp):bp
+// LocalsOut: fp(16) Local -0057(8)
+
 l0800_10DD:
-	al = Mem0[ds:si:byte]
-	si = si + 0x0001
-	al = al | al
-	SZO = cond(al)
-	C = false
-	branch Test(EQ,Z) l0800_10F3
-	// succ:  l0800_10E2 l0800_10F3
-l0800_10E2:
-	SCZO = cond(al - 0x25)
-	branch Test(EQ,Z) l0800_10F6
-	// succ:  l0800_10E6 l0800_10F6
-l0800_10E6:
-	Mem0[ds:di:byte] = al
-	di = di + 0x0001
-	SZO = cond(di)
-	v15 = Mem0[ss:bp - 0x0055:byte] - 0x01
-	Mem0[ss:bp - 0x0055:byte] = v15
-	SZO = cond(v15)
-	branch Test(GT,SZO) l0800_10DD
-	// succ:  l0800_10EE l0800_10DD
-l0800_10EE:
-	call fn0800_10A1 (retsize: 2;)
-	goto l0800_10DD
-	// succ:  l0800_10DD
+	byte al_40 = Mem0[ds:si_105:byte]
+	si_105 = si_105 + 0x0001
+	byte al_101 = al_40
+	ax = DPB(ax, al_40, 0) (alias)
+	branch al_40 == 0x00 l0800_10F3
+// DataOut: al bp bx di ds si sp ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> bp:fp - 0x0002 di:<invalid> si:<invalid> al:<invalid> ax:<invalid> es:<invalid> dx:<invalid> cx:<invalid> bx:<invalid> -160(fp):es -158(fp):di -156(fp):si -152(fp):fp - 0x0056 -140(fp):<invalid> -90(fp):0x0000 -87(fp):<invalid> -86(fp):<invalid> -4(fp):0x0000 -2(fp):bp
+// LocalsOut: fp(16) Local -0057(8)
+
 l0800_10F3:
-	goto l0800_1572
-	// succ:  l0800_1572
+// DataOut: bp bx di ds sp ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> bp:fp - 0x0002 di:<invalid> si:<invalid> al:<invalid> ax:<invalid> es:<invalid> dx:<invalid> cx:<invalid> bx:<invalid> -160(fp):es -158(fp):di -156(fp):si -152(fp):fp - 0x0056 -140(fp):<invalid> -90(fp):0x0000 -87(fp):<invalid> -86(fp):<invalid> -4(fp):0x0000 -2(fp):bp
+// LocalsOut: fp(16) Local -0057(0)
+
+l0800_10E2:
+	branch al_40 == 0x25 l0800_10F6
+// DataOut: al bp bx di ds si sp ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> bp:fp - 0x0002 di:<invalid> si:<invalid> al:<invalid> ax:<invalid> es:<invalid> dx:<invalid> cx:<invalid> bx:<invalid> -160(fp):es -158(fp):di -156(fp):si -152(fp):fp - 0x0056 -140(fp):<invalid> -90(fp):0x0000 -87(fp):<invalid> -86(fp):<invalid> -4(fp):0x0000 -2(fp):bp
+// LocalsOut: fp(16) Local -0057(8)
+
 l0800_10F6:
-	Mem0[ss:bp - 0x008A:word16] = si
-	al = Mem0[ds:si:byte]
-	si = si + 0x0001
-	SCZO = cond(al - 0x25)
-	branch Test(EQ,Z) l0800_10E6
-	// succ:  l0800_10FF l0800_10E6
+	al_101 = Mem0[ds:si_105:byte]
+	ax = DPB(ax, al_101, 0) (alias)
+	si_105 = si_105 + 0x0001
+	branch al_101 == 0x25 l0800_10E6
+// DataOut: al bp bx di ds si sp ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> bp:fp - 0x0002 di:<invalid> si:<invalid> al:<invalid> ax:<invalid> es:<invalid> dx:<invalid> cx:<invalid> bx:<invalid> -160(fp):es -158(fp):di -156(fp):si -152(fp):fp - 0x0056 -140(fp):<invalid> -90(fp):0x0000 -87(fp):<invalid> -86(fp):<invalid> -4(fp):0x0000 -2(fp):bp
+// LocalsOut: fp(16) Local -0057(8) Local -008C(16)
+
 l0800_10FF:
-	Mem0[ss:bp - 0x0096:word16] = di
-	cx = cx ^ cx
-	SZO = cond(cx)
-	C = false
-	Mem0[ss:bp - 0x008C:word16] = cx
-	Mem0[ss:bp - 0x0098:word16] = cx
-	Mem0[ss:bp - 0x008D:byte] = cl
-	Mem0[ss:bp - 0x0092:word16] = 0xFFFF
-	Mem0[ss:bp - 0x0090:word16] = 0xFFFF
-	goto l0800_1120
-	// succ:  l0800_1120
-l0800_111F:
-	al = Mem0[ds:si:byte]
-	si = si + 0x0001
-	// succ:  l0800_1120
+	byte bLoc8F_128 = 0x00
+// DataOut: al bp ch ds si ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> bp:fp - 0x0002 di:<invalid> si:<invalid> al:<invalid> ax:<invalid> es:<invalid> dx:<invalid> cx:<invalid> bx:<invalid> -160(fp):es -158(fp):di -156(fp):si -152(fp):fp - 0x0056 -140(fp):<invalid> -90(fp):0x0000 -87(fp):<invalid> -86(fp):<invalid> -4(fp):0x0000 -2(fp):bp
+// LocalsOut: fp(16) Local -0057(0) Local -008C(16) Local -008F(0) Local -0098(16)
+
 l0800_1120:
-	ah = ah ^ ah
-	SZO = cond(ah)
-	C = false
-	dx = ax
-	bx = ax
-	bl = bl - 0x20
-	SCZO = cond(bl)
-	SCZO = cond(bl - 0x60)
-	branch Test(UGE,C) l0800_1175
-	// succ:  l0800_112E l0800_1175
+	word16 ax_139 = DPB(ax, 0x00, 8)
+	byte bl_143 = (byte) ax_139
+	byte dl_141 = (byte) ax_139
+	word16 bx_145 = DPB(ax_139, bl_143 - 0x20, 0)
+	branch bl_143 >=u 0x80 l0800_1175
+// DataOut: bp bx ch dl ds si ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> bp:fp - 0x0002 di:<invalid> si:<invalid> al:<invalid> cx:<invalid> ax:<invalid> es:<invalid> dx:<invalid> bx:<invalid> ah:<invalid> bl:<invalid> -160(fp):es -158(fp):di -156(fp):si -154(fp):<invalid> -152(fp):<invalid> -148(fp):0xFFFF -146(fp):0xFFFF -143(fp):<invalid> -142(fp):<invalid> -140(fp):<invalid> -90(fp):0x0000 -87(fp):<invalid> -86(fp):<invalid> -4(fp):0x0000 -2(fp):bp
+// LocalsOut: fp(16) Local -0057(0) Local -008C(16) Local -008F(0) Local -0098(16)
+
 l0800_112E:
-	bl = Mem0[ds:bx + 0x04F9:byte]
-	ax = bx
-	SCZO = cond(ax - 0x0017)
-	branch Test(ULE,CZ) l0800_113C
-	// succ:  l0800_1139 l0800_113C
-l0800_1139:
-	goto l0800_1560
-	// succ:  l0800_1560
+	word16 bx_182 = DPB(ax_139, Mem0[ds:bx_145 + 0x04F9:byte], 0)
+	branch bx_182 <=u 0x0017 l0800_113C
+// DataOut: ax bp ch dl ds si ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> bp:fp - 0x0002 di:<invalid> si:<invalid> al:<invalid> cx:<invalid> ah:<invalid> dx:<invalid> bx:<invalid> bl:<invalid> ax:<invalid> es:<invalid> -160(fp):es -158(fp):di -156(fp):si -154(fp):<invalid> -152(fp):<invalid> -148(fp):0xFFFF -146(fp):0xFFFF -143(fp):<invalid> -142(fp):<invalid> -140(fp):<invalid> -90(fp):0x0000 -87(fp):<invalid> -86(fp):<invalid> -4(fp):0x0000 -2(fp):bp
+// LocalsOut: fp(16) Local -0057(0) Local -008C(16) Local -008F(0) Local -0098(16)
+
 l0800_113C:
-	bx = ax
-	bx = bx << 0x0001
-	SCZO = cond(bx)
-	switch (bx) { l0800_1190 }
-	goto l0800_1190
-	// succ:  l0800_1190
-l0800_1175:
-	goto l0800_1560
-	// succ:  l0800_1560
+	switch (bx_182 << 0x0001) { l0800_1190 }
+// DataOut: bp ch dl ds si ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> bp:fp - 0x0002 di:<invalid> si:<invalid> al:<invalid> cx:<invalid> ah:<invalid> dx:<invalid> bx:<invalid> bl:<invalid> ax:<invalid> es:<invalid> -160(fp):es -158(fp):di -156(fp):si -154(fp):<invalid> -152(fp):<invalid> -148(fp):0xFFFF -146(fp):0xFFFF -143(fp):<invalid> -142(fp):<invalid> -140(fp):<invalid> -90(fp):0x0000 -87(fp):<invalid> -86(fp):<invalid> -4(fp):0x0000 -2(fp):bp
+// LocalsOut: fp(16) Local -0057(0) Local -008C(16) Local -008F(0) Local -0098(16)
+
 l0800_1190:
-	SCZO = cond(ch - 0x00)
-	branch Test(UGT,CZ) l0800_1175
-	// succ:  l0800_1195 l0800_1175
+	branch true l0800_1175
+// DataOut: bp ch dl ds si ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> bp:fp - 0x0002 di:<invalid> si:<invalid> al:<invalid> cx:<invalid> ah:<invalid> dx:<invalid> bx:<invalid> bl:<invalid> ax:<invalid> es:<invalid> -160(fp):es -158(fp):di -156(fp):si -154(fp):<invalid> -152(fp):<invalid> -148(fp):0xFFFF -146(fp):0xFFFF -143(fp):<invalid> -142(fp):<invalid> -140(fp):<invalid> -90(fp):0x0000 -87(fp):<invalid> -86(fp):<invalid> -4(fp):0x0000 -2(fp):bp
+// LocalsOut: fp(16) Local -0057(0) Local -008C(16) Local -008F(0) Local -0098(16)
+
+l0800_1175:
+// DataOut: bp ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> bp:fp - 0x0002 di:<invalid> si:<invalid> al:<invalid> cx:<invalid> ah:<invalid> dx:<invalid> bx:<invalid> bl:<invalid> ax:<invalid> es:<invalid> -160(fp):es -158(fp):di -156(fp):si -154(fp):<invalid> -152(fp):<invalid> -148(fp):0xFFFF -146(fp):0xFFFF -143(fp):<invalid> -142(fp):<invalid> -140(fp):<invalid> -90(fp):0x0000 -87(fp):<invalid> -86(fp):<invalid> -4(fp):0x0000 -2(fp):bp
+// LocalsOut: fp(16) Local -0057(0) Local -008C(16) Local -0098(16)
+
 l0800_1195:
-	SCZO = cond(Mem0[ss:bp - 0x008D:byte] - 0x2B)
-	branch Test(EQ,Z) l0800_11A0
-	// succ:  l0800_119C l0800_11A0
+	branch bLoc8F_128 == 0x2B l0800_11A0
+// DataOut: bp ch dl ds si ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> bp:fp - 0x0002 di:<invalid> si:<invalid> al:<invalid> cx:<invalid> ah:<invalid> dx:<invalid> bx:<invalid> bl:<invalid> ax:<invalid> es:<invalid> -160(fp):es -158(fp):di -156(fp):si -154(fp):<invalid> -152(fp):<invalid> -148(fp):0xFFFF -146(fp):0xFFFF -143(fp):<invalid> -142(fp):<invalid> -140(fp):<invalid> -90(fp):0x0000 -87(fp):<invalid> -86(fp):<invalid> -4(fp):0x0000 -2(fp):bp
+// LocalsOut: fp(16) Local -0057(0) Local -008C(16) Local -008F(0) Local -0098(16)
+
 l0800_119C:
-	Mem0[ss:bp - 0x008D:byte] = dl
-	// succ:  l0800_11A0
+	bLoc8F_128 = dl_141
+// DataOut: bp ch ds si ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> bp:fp - 0x0002 di:<invalid> si:<invalid> al:<invalid> cx:<invalid> ah:<invalid> dx:<invalid> bx:<invalid> bl:<invalid> ax:<invalid> es:<invalid> -160(fp):es -158(fp):di -156(fp):si -154(fp):<invalid> -152(fp):<invalid> -148(fp):0xFFFF -146(fp):0xFFFF -143(fp):<invalid> -142(fp):<invalid> -140(fp):<invalid> -90(fp):0x0000 -87(fp):<invalid> -86(fp):<invalid> -4(fp):0x0000 -2(fp):bp
+// LocalsOut: fp(16) Local -0057(0) Local -008C(16) Local -008F(0) Local -0098(16)
+
 l0800_11A0:
-	goto l0800_111F
-	// succ:  l0800_111F
+// DataOut: bp ch ds si ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> bp:fp - 0x0002 di:<invalid> si:<invalid> al:<invalid> cx:<invalid> ah:<invalid> dx:<invalid> bx:<invalid> bl:<invalid> ax:<invalid> es:<invalid> -160(fp):es -158(fp):di -156(fp):si -154(fp):<invalid> -152(fp):<invalid> -148(fp):0xFFFF -146(fp):0xFFFF -143(fp):<invalid> -142(fp):<invalid> -140(fp):<invalid> -90(fp):0x0000 -87(fp):<invalid> -86(fp):<invalid> -4(fp):0x0000 -2(fp):bp
+// LocalsOut: fp(16) Local -0057(0) Local -008C(16) Local -008F(0) Local -0098(16)
+
+l0800_111F:
+	ax = DPB(ax_139, Mem0[ds:si_105:byte], 0) (alias)
+	si_105 = si_105 + 0x0001
+// DataOut: al bp ch ds si ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> bp:fp - 0x0002 di:<invalid> si:<invalid> al:<invalid> cx:<invalid> ah:<invalid> dx:<invalid> bx:<invalid> bl:<invalid> ax:<invalid> es:<invalid> -160(fp):es -158(fp):di -156(fp):si -154(fp):<invalid> -152(fp):<invalid> -148(fp):0xFFFF -146(fp):0xFFFF -143(fp):<invalid> -142(fp):<invalid> -140(fp):<invalid> -90(fp):0x0000 -87(fp):<invalid> -86(fp):<invalid> -4(fp):0x0000 -2(fp):bp
+// LocalsOut: fp(16) Local -0057(0) Local -008C(16) Local -008F(0) Local -0098(16)
+
+l0800_1139:
+// DataOut: bp ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> bp:fp - 0x0002 di:<invalid> si:<invalid> al:<invalid> cx:<invalid> ah:<invalid> dx:<invalid> bx:<invalid> bl:<invalid> ax:<invalid> es:<invalid> -160(fp):es -158(fp):di -156(fp):si -154(fp):<invalid> -152(fp):<invalid> -148(fp):0xFFFF -146(fp):0xFFFF -143(fp):<invalid> -142(fp):<invalid> -140(fp):<invalid> -90(fp):0x0000 -87(fp):<invalid> -86(fp):<invalid> -4(fp):0x0000 -2(fp):bp
+// LocalsOut: fp(16) Local -0057(0) Local -008C(16) Local -0098(16)
+
 l0800_1560:
-	si = Mem0[ss:bp - 0x008A:word16]
-	di = Mem0[ss:bp - 0x0096:word16]
-	al = 0x25
-	// succ:  l0800_156A
+	word16 si_154 = si_105
+	byte al_156 = 0x25
+// DataOut: al bp di ds si ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> bp:fp - 0x0002 di:<invalid> si:<invalid> al:<invalid> cx:<invalid> ah:<invalid> dx:<invalid> bx:<invalid> bl:<invalid> ax:<invalid> es:<invalid> -160(fp):es -158(fp):di -156(fp):si -154(fp):<invalid> -152(fp):<invalid> -148(fp):0xFFFF -146(fp):0xFFFF -143(fp):<invalid> -142(fp):<invalid> -140(fp):<invalid> -90(fp):0x0000 -87(fp):<invalid> -86(fp):<invalid> -4(fp):0x0000 -2(fp):bp
+// LocalsOut: fp(16) Local -0057(0)
+
 l0800_156A:
-	call fn0800_1099 (retsize: 2;)
-	sp = sp + 0xFFFE
-	al = Mem0[ds:si:byte]
-	si = si + 0x0001
-	al = al | al
-	SZO = cond(al)
-	C = false
-	branch Test(NE,Z) l0800_156A
-	// succ:  l0800_1572 l0800_156A
+	bx = fn0800_1099(al_156, fp - 0x0002, di_107, ds, out di_107)
+	byte al_167 = Mem0[ds:si_154:byte]
+	sp_161 = sp_161 + 0xFFFE
+	si_154 = si_154 + 0x0001
+	al_156 = al_167
+	branch al_167 != 0x00 l0800_156A
+// DataOut: al bp bx di ds si sp ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> bp:fp - 0x0002 di:<invalid> si:<invalid> al:<invalid> cx:<invalid> ah:<invalid> dx:<invalid> bx:<invalid> bl:<invalid> ax:<invalid> es:<invalid> -160(fp):es -158(fp):di -156(fp):si -154(fp):<invalid> -152(fp):<invalid> -148(fp):0xFFFF -146(fp):0xFFFF -143(fp):<invalid> -142(fp):<invalid> -140(fp):<invalid> -90(fp):0x0000 -87(fp):<invalid> -86(fp):<invalid> -4(fp):0x0000 -2(fp):bp
+// LocalsOut: fp(16) Local -0057(0)
+
 l0800_1572:
-	SCZO = cond(Mem0[ss:bp - 0x0055:byte] - 0x50)
-	branch Test(GE,SO) l0800_157B
-	SCZO = cond(Mem0[ss:bp - 0x0055:byte] - 0x50)
-	branch Test(GE,SO) l0800_157B
-	// succ:  l0800_1578 l0800_157B
+	branch bLoc57_109 >= 0x50 l0800_157B
+	branch bLoc57_109 >= 0x50 l0800_157B
+// DataOut: bp bx di ds sp ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> bp:fp - 0x0002 di:<invalid> si:<invalid> al:<invalid> ax:<invalid> es:<invalid> dx:<invalid> cx:<invalid> bx:<invalid> ah:<invalid> bl:<invalid> -160(fp):es -158(fp):di -156(fp):si -154(fp):<invalid> -152(fp):<invalid> -148(fp):0xFFFF -146(fp):0xFFFF -143(fp):<invalid> -142(fp):<invalid> -140(fp):<invalid> -90(fp):0x0000 -87(fp):<invalid> -86(fp):<invalid> -4(fp):0x0000 -2(fp):bp
+// LocalsOut: fp(16)
+
 l0800_1578:
-	call fn0800_10A1 (retsize: 2;)
-	call fn0800_10A1 (retsize: 2;)
-	// succ:  l0800_157B
+	word16 di_93
+	fn0800_10A1(fp - 0x0002, di_107, out di_93)
+	word16 di_95
+	bx = fn0800_10A1(fp - 0x0002, di_93, out di_95)
+// DataOut: bx ds sp ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> bp:fp - 0x0002 di:<invalid> si:<invalid> al:<invalid> ax:<invalid> es:<invalid> dx:<invalid> cx:<invalid> bx:<invalid> ah:<invalid> bl:<invalid> -160(fp):es -158(fp):di -156(fp):si -154(fp):<invalid> -152(fp):<invalid> -148(fp):0xFFFF -146(fp):0xFFFF -143(fp):<invalid> -142(fp):<invalid> -140(fp):<invalid> -90(fp):0x0000 -87(fp):<invalid> -86(fp):<invalid> -4(fp):0x0000 -2(fp):bp
+// LocalsOut: fp(16)
+
 l0800_157B:
-	es = Mem0[ss:sp:selector]
-	sp = sp + 0x0002
-	SCZO = cond(Mem0[ss:bp - 0x0002:word16] - 0x0000)
-	branch Test(EQ,Z) l0800_1589
-	// succ:  l0800_1582 l0800_1589
-l0800_1582:
-	ax = 0xFFFF
-	goto l0800_158E
-	// succ:  l0800_158E
+	word16 sp_80 = sp_161 + 0x0002
+	branch 0x0000 == 0x0000 l0800_1589
+// DataOut: bx ds sp ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> bp:fp - 0x0002 di:<invalid> si:<invalid> al:<invalid> ax:<invalid> es:<invalid> dx:<invalid> cx:<invalid> bx:<invalid> ah:<invalid> bl:<invalid> -160(fp):es -158(fp):di -156(fp):si -154(fp):<invalid> -152(fp):<invalid> -148(fp):0xFFFF -146(fp):0xFFFF -143(fp):<invalid> -142(fp):<invalid> -140(fp):<invalid> -90(fp):0x0000 -87(fp):<invalid> -86(fp):<invalid> -4(fp):0x0000 -2(fp):bp
+// LocalsOut: fp(16)
+
 l0800_1589:
-	ax = Mem0[ss:bp - 0x0058:word16]
-	// succ:  l0800_158E
+// DataOut: bx ds sp ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> bp:fp - 0x0002 di:<invalid> si:<invalid> al:<invalid> ax:<invalid> es:<invalid> dx:<invalid> cx:<invalid> bx:<invalid> ah:<invalid> bl:<invalid> -160(fp):es -158(fp):di -156(fp):si -154(fp):<invalid> -152(fp):<invalid> -148(fp):0xFFFF -146(fp):0xFFFF -143(fp):<invalid> -142(fp):<invalid> -140(fp):<invalid> -90(fp):0x0000 -87(fp):<invalid> -86(fp):<invalid> -4(fp):0x0000 -2(fp):bp
+// LocalsOut: fp(16)
+
+l0800_1582:
+// DataOut: bx ds sp ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> bp:fp - 0x0002 di:<invalid> si:<invalid> al:<invalid> ax:<invalid> es:<invalid> dx:<invalid> cx:<invalid> bx:<invalid> ah:<invalid> bl:<invalid> -160(fp):es -158(fp):di -156(fp):si -154(fp):<invalid> -152(fp):<invalid> -148(fp):0xFFFF -146(fp):0xFFFF -143(fp):<invalid> -142(fp):<invalid> -140(fp):<invalid> -90(fp):0x0000 -87(fp):<invalid> -86(fp):<invalid> -4(fp):0x0000 -2(fp):bp
+// LocalsOut: fp(16)
+
 l0800_158E:
-	di = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	si = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	sp = bp
-	bp = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	return
-	// succ:  fn0800_1073_exit
+	word16 di_84
+	*diOut = Mem0[ss:sp_80:word16]
+	return bx
+// DataOut: bx di ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> bp:fp - 0x0002 di:<invalid> si:<invalid> al:<invalid> ax:<invalid> es:<invalid> dx:<invalid> cx:<invalid> bx:<invalid> ah:<invalid> bl:<invalid> -160(fp):es -158(fp):di -156(fp):si -154(fp):<invalid> -152(fp):<invalid> -148(fp):0xFFFF -146(fp):0xFFFF -143(fp):<invalid> -142(fp):<invalid> -140(fp):<invalid> -90(fp):0x0000 -87(fp):<invalid> -86(fp):<invalid> -4(fp):0x0000 -2(fp):bp
+
 fn0800_1073_exit:
+// DataOut: bx di
+// DataOut (flags): 
+// SymbolicIn: sp:fp bp:bp di:<invalid> si:<invalid> al:<invalid> ax:<invalid> es:<invalid> dx:<invalid> cx:<invalid> bx:<invalid> ah:<invalid> bl:<invalid> -160(fp):es -158(fp):di -156(fp):si -154(fp):<invalid> -152(fp):<invalid> -148(fp):0xFFFF -146(fp):0xFFFF -143(fp):<invalid> -142(fp):<invalid> -140(fp):<invalid> -90(fp):0x0000 -87(fp):<invalid> -86(fp):<invalid> -4(fp):0x0000 -2(fp):bp
+
+l0800_10E6:
+	Mem106[ds:di_107:byte] = al_101
+	byte v15_108 = bLoc57_109 - 0x01
+	di_107 = di_107 + 0x0001
+	bLoc57_109 = v15_108
+	branch v15_108 > 0x00 l0800_10DD
+// DataOut: bp bx di ds si sp ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> bp:fp - 0x0002 di:<invalid> si:<invalid> al:<invalid> ax:<invalid> es:<invalid> dx:<invalid> cx:<invalid> bx:<invalid> -160(fp):es -158(fp):di -156(fp):si -152(fp):fp - 0x0056 -140(fp):<invalid> -90(fp):0x0000 -87(fp):<invalid> -86(fp):<invalid> -4(fp):0x0000 -2(fp):bp
+// LocalsOut: fp(16) Local -0057(8)
+
+l0800_10EE:
+	bx = fn0800_10A1(fp - 0x0002, di_107, out di_107)
+// DataOut: bp bx di ds si sp ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> bp:fp - 0x0002 di:<invalid> si:<invalid> al:<invalid> ax:<invalid> es:<invalid> dx:<invalid> cx:<invalid> bx:<invalid> -160(fp):es -158(fp):di -156(fp):si -152(fp):fp - 0x0056 -140(fp):<invalid> -90(fp):0x0000 -87(fp):<invalid> -86(fp):<invalid> -4(fp):0x0000 -2(fp):bp
+// LocalsOut: fp(16) Local -0057(8)
 
 
-// fn0800_1099
-// Return size: 2
-void fn0800_1099()
+
+word16 fn0800_1099(byte al, word16 bp, word16 di, selector ds, ptr16 diOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  al bp di ds ss
+// LiveOut: bx di
+// Trashed: SCZO ah al ax bh bl bx ch cl cx dh di dil dl dx eax ebx ecx edi edx es esp rax rbx rcx rdi rdx rsp sp spl
+// Preserved: sp
 fn0800_1099_entry:
-	// succ:  l0800_1099
+// DataOut: al bp bx di ds si ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
 l0800_1099:
-	sp = fp
-	Mem0[ds:di:byte] = al
-	di = di + 0x0001
-	SZO = cond(di)
-	v9 = Mem0[ss:bp - 0x0055:byte] - 0x01
-	Mem0[ss:bp - 0x0055:byte] = v9
-	SZO = cond(v9)
-	branch Test(LE,SZO) l0800_10CC_in_fn0800_1099
-	// succ:  l0800_109F_thunk_fn0800_10A1 l0800_10CC_in_fn0800_1099
-l0800_109F_thunk_fn0800_10A1:
-	call fn0800_10A1 (retsize: 2;)
-	return
-	// succ:  fn0800_1099_exit
+	Mem3[ds:di:byte] = al
+	byte v9_9 = Mem3[ss:bp - 0x0055:byte] - 0x01
+	Mem10[ss:bp - 0x0055:byte] = v9_9
+	word16 di_6
+	*diOut = di + 0x0001
+	branch v9_9 <= 0x00 l0800_10CC_in_fn0800_1099
+// DataOut: bp bx di ds si ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
 l0800_10CC_in_fn0800_1099:
-	return
-	// succ:  fn0800_1099_exit
+	return bx
+// DataOut: bp bx di ds si ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp di:di + 0x0001
+
+l0800_109F_thunk_fn0800_10A1:
+	word16 di_15
+	return fn0800_10A1(bp, di + 0x0001, out di_15)
+// DataOut: bp bx di ds si ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp di:di + 0x0001
+
 fn0800_1099_exit:
+// DataOut: bx di
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> di:<invalid> ax:<invalid> es:<invalid> dx:<invalid> cx:<invalid> bx:<invalid>
 
 
-// fn0800_10A1
-// Return size: 2
-void fn0800_10A1()
+
+word16 fn0800_10A1(word16 bp, word16 di, ptr16 diOut)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  bp di ss
+// LiveOut: bx di sp
+// Trashed: SCZO ah al ax bh bl bx ch cl cx dh di dil dl dx eax ebx ecx edi edx es esp rax rbx rcx rdi rdx rsp sp spl
+// Preserved:
 fn0800_10A1_entry:
-	// succ:  l0800_10A1
+// DataOut: bp di ds es si ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16)
+
 l0800_10A1:
-	sp = fp
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = bx
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = cx
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = dx
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = es
-	ax = bp - 0x0054
-	di = di - ax
-	SCZO = cond(di)
-	ax = bp - 0x0054
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = ax
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = di
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = Mem0[ss:bp + 0x0008:word16]
-	call SEQ(cs, Mem0[ss:bp + 0x000A:word16]) (retsize: 2;)
-	ax = ax | ax
-	SZO = cond(ax)
-	C = false
-	branch Test(NE,Z) l0800_10BE
-	// succ:  l0800_10B9 l0800_10BE
+	word16 sp_29
+	word16 bx_30
+	selector ss_31
+	word16 cx_32
+	word16 dx_33
+	selector es_34
+	word16 bp_35
+	word16 ax_36
+	word16 di_37
+	byte SCZO_38
+	selector cs_39
+	byte SZO_40
+	byte C_41
+	byte Z_42
+	call SEQ(cs, Mem0[ss:bp + 0x000A:word16]) (retsize: 2; depth: 16)
+		uses: ax_19,bp,bx,cs,cx,di_17,dx,es,SCZO_18,sp_24,ss,wLoc02_4,wLoc04_7,wLoc06_10,wLoc08_13,wLoc0A_21,wLoc0C_23,wLoc0E_27
+		defs: ax_36,bp_35,bx_30,C_41,cs_39,cx_32,di_37,dx_33,es_34,SCZO_38,sp_29,ss_31,SZO_40,Z_42
+	branch ax_36 != 0x0000 l0800_10BE
+// DataOut: bp di ds si ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16) Local -0008(16)
+
 l0800_10B9:
-	Mem0[ss:bp - 0x0002:word16] = 0x0001
-	// succ:  l0800_10BE
+	Mem61[ss_31:bp_35 - 0x0002:word16] = 0x0001
+// DataOut: bp di ds si ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x000E ax:bp - 0x0054 | bp - 0x0054 di:di - (bp - 0x0054) -14(fp):<invalid> -12(fp):di - (bp - 0x0054) -10(fp):bp - 0x0054 -8(fp):es -6(fp):dx -4(fp):cx -2(fp):bx
+// LocalsOut: fp(16) Local -0008(16)
+
 l0800_10BE:
-	Mem0[ss:bp - 0x0055:byte] = 0x50
-	v16 = Mem0[ss:bp - 0x0058:word16] + di
-	Mem0[ss:bp - 0x0058:word16] = v16
-	SCZO = cond(v16)
-	di = bp - 0x0054
-	es = Mem0[ss:sp:selector]
-	sp = sp + 0x0002
-	dx = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	cx = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	bx = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	// succ:  l0800_10CC
+	Mem47[ss_31:bp_35 - 0x0055:byte] = 0x50
+	Mem49[ss_31:bp_35 - 0x0058:word16] = Mem47[ss_31:bp_35 - 0x0058:word16] + di_37
+	word16 di_51
+	*diOut = bp_35 - 0x0054
+// DataOut: bp bx di ds si sp ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x000E ax:bp - 0x0054 | bp - 0x0054 di:di - (bp - 0x0054) -14(fp):<invalid> -12(fp):di - (bp - 0x0054) -10(fp):bp - 0x0054 -8(fp):es -6(fp):dx -4(fp):cx -2(fp):bx
+
 l0800_10CC:
-	return
-	// succ:  fn0800_10A1_exit
+	return es
+// DataOut: bp bx di ds si sp ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0006 ax:bp - 0x0054 | bp - 0x0054 di:bp - 0x0054 es:<invalid> dx:di - (bp - 0x0054) cx:bp - 0x0054 bx:es -14(fp):<invalid> -12(fp):di - (bp - 0x0054) -10(fp):bp - 0x0054 -8(fp):es -6(fp):dx -4(fp):cx -2(fp):bx
+
 fn0800_10A1_exit:
+// DataOut: bx di sp
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0006 ax:bp - 0x0054 | bp - 0x0054 di:bp - 0x0054 es:<invalid> dx:di - (bp - 0x0054) cx:bp - 0x0054 bx:es -14(fp):<invalid> -12(fp):di - (bp - 0x0054) -10(fp):bp - 0x0054 -8(fp):es -6(fp):dx -4(fp):cx -2(fp):bx
 
 
-// fn0800_16D4
-// Return size: 2
-void fn0800_16D4()
+
+void fn0800_16D4(word16 bx, word16 di, selector ds, word16 wArg02)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  bx di ds ss
+// LiveOut:
+// Trashed: SCZDO ah al ax bh bl bx ch cl cx eax ebx ecx rax rbx rcx
+// Preserved: bp sp
+// Stack args: Stack +0002(16)
 fn0800_16D4_entry:
-	// succ:  l0800_16D4
+// DataOut: bx di ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16) Stack +0002(16)
+
 l0800_16D4:
-	sp = fp
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = bp
-	bp = sp
-	ax = bp + 0x0006
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = ax
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = Mem0[ss:bp + 0x0004:word16]
-	ax = 0x0342
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = ax
-	ax = 0x1D65
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = ax
-	ax = 0x07F2
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = ax
-	call fn0800_16F3 (retsize: 2;)
-	sp = bp
-	// succ:  l0800_16F1
+	fn0800_16F3(bx, di, ds, 0x0342, wArg02)
+// DataOut: ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
 l0800_16F1:
-	bp = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
 	return
-	// succ:  fn0800_16D4_exit
+// DataOut: ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0002 bp:fp - 0x0002 ax:<invalid> al:<invalid> cx:<invalid> bl:<invalid> bh:<invalid> bx:<invalid> -12(fp):0x07F2 -10(fp):0x1D65 -8(fp):0x0342 -6(fp):<invalid> -4(fp):fp + 0x0004 -2(fp):bp
+
 fn0800_16D4_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp bp:bp ax:<invalid> al:<invalid> cx:<invalid> bl:<invalid> bh:<invalid> bx:<invalid> -12(fp):0x07F2 -10(fp):0x1D65 -8(fp):0x0342 -6(fp):<invalid> -4(fp):fp + 0x0004 -2(fp):bp
 
 
-// fn0800_16F3
-// Return size: 2
-void fn0800_16F3()
+
+void fn0800_16F3(word16 bx, word16 di, selector ds, word16 wArg06, word16 wArg08)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse:  bx di ds ss
+// LiveOut:
+// Trashed: SCZDO ah al ax bh bl bx ch cl cx eax ebx ecx rax rbx rcx
+// Preserved: bp di es si sp
+// Stack args: Stack +0008(16)
 fn0800_16F3_entry:
-	// succ:  l0800_16F3
+// DataOut: bx di ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16) Stack +0008(16)
+
 l0800_16F3:
-	sp = fp
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = bp
-	bp = sp
-	sp = sp - 0x002A
-	SCZO = cond(sp)
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = si
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = di
-	Mem0[ss:bp - 0x0028:word16] = 0x0000
-	Mem0[ss:bp - 0x0026:word16] = 0x0000
-	// succ:  l0800_1721
+	word16 bp_153 = fp - 0x0002
+// DataOut: bp bx di ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(16) Local -0028(8) Stack +0008(16)
+
 l0800_1721:
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = es
-	D = false
-	si = Mem0[ss:bp + 0x000A:word16]
-	// succ:  l0800_1726
+	word16 si_156 = wArg08
+// DataOut: bp bx di ds si ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0030 bp:fp - 0x0002 -48(fp):di -46(fp):si -42(fp):0x0000 -40(fp):0x0000 -2(fp):bp
+// LocalsOut: fp(16) Local -0028(8)
+
 l0800_1726:
-	al = Mem0[ds:si:byte]
-	si = si + 0x0001
-	al = al | al
-	SZO = cond(al)
-	C = false
-	branch Test(EQ,Z) l0800_1788
-	// succ:  l0800_172B l0800_1788
-l0800_172B:
-	SCZO = cond(al - 0x25)
-	branch Test(EQ,Z) l0800_178B
-	// succ:  l0800_172F l0800_178B
-l0800_172F:
-	ax = (int16) al
-	v16 = ax
-	ax = di
-	di = v16
-	v17 = Mem0[ss:bp - 0x0026:word16] + 0x0001
-	Mem0[ss:bp - 0x0026:word16] = v17
-	SZO = cond(v17)
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = Mem0[ss:bp + 0x0008:word16]
-	call SEQ(cs, Mem0[ss:bp + 0x0004:word16]) (retsize: 2;)
-	cx = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	ax = ax | ax
-	SZO = cond(ax)
-	C = false
-	branch Test(LT,SO) l0800_1764
-	// succ:  l0800_173F l0800_1764
-l0800_173F:
-	di = di | di
-	SZO = cond(di)
-	C = false
-	branch Test(SG,S) l0800_1775
-	// succ:  l0800_1743 l0800_1775
-l0800_1743:
-	SCZO = cond(Mem0[ds:di + 0x055A:byte] - 0x01)
-	branch Test(NE,Z) l0800_1775
-	// succ:  l0800_174A l0800_1775
-l0800_174A:
-	v22 = ax
-	ax = bx
-	bx = v22
-	bl = bl | bl
-	SZO = cond(bl)
-	C = false
-	branch Test(SG,S) l0800_1767
-	// succ:  l0800_174F l0800_1767
-l0800_174F:
-	SCZO = cond(Mem0[ds:bx + 0x055A:byte] - 0x01)
-	branch Test(NE,Z) l0800_1767
-	// succ:  l0800_1756 l0800_1767
-l0800_1756:
-	v25 = Mem0[ss:bp - 0x0026:word16] + 0x0001
-	Mem0[ss:bp - 0x0026:word16] = v25
-	SZO = cond(v25)
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = Mem0[ss:bp + 0x0008:word16]
-	call SEQ(cs, Mem0[ss:bp + 0x0004:word16]) (retsize: 2;)
-	cx = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	ax = ax | ax
-	SZO = cond(ax)
-	C = false
-	branch Test(GT,SZO) l0800_174A
-	// succ:  l0800_1764 l0800_174A
-l0800_1764:
-	goto l0800_1AEB
-	// succ:  l0800_1AEB
-l0800_1767:
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = Mem0[ss:bp + 0x0008:word16]
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = bx
-	call SEQ(cs, Mem0[ss:bp + 0x0006:word16]) (retsize: 2;)
-	cx = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	cx = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	v27 = Mem0[ss:bp - 0x0026:word16] - 0x0001
-	Mem0[ss:bp - 0x0026:word16] = v27
-	SZO = cond(v27)
-	goto l0800_1726
-	// succ:  l0800_1726
-l0800_1775:
-	SCZO = cond(ax - di)
-	branch Test(EQ,Z) l0800_1726
-	// succ:  l0800_1779 l0800_1726
-l0800_1779:
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = Mem0[ss:bp + 0x0008:word16]
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = ax
-	call SEQ(cs, Mem0[ss:bp + 0x0006:word16]) (retsize: 2;)
-	cx = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	cx = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	v28 = Mem0[ss:bp - 0x0026:word16] - 0x0001
-	Mem0[ss:bp - 0x0026:word16] = v28
-	SZO = cond(v28)
-	goto l0800_1AFF
-	// succ:  l0800_1AFF
+	byte al_57 = Mem0[ds:si_156:byte]
+	word16 si_58 = si_156 + 0x0001
+	branch al_57 == 0x00 l0800_1788
+// DataOut: al bp bx di ds si ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0032 bp:fp - 0x0002 si:<invalid> al:<invalid> ax:<invalid> di:<invalid> cx:<invalid> bx:<invalid> bl:<invalid> -54(fp):<invalid> -52(fp):<invalid> -50(fp):es -48(fp):di -46(fp):si -42(fp):0x0000 -40(fp):<invalid> -2(fp):bp
+// LocalsOut: fp(16) Local -0028(8)
+
 l0800_1788:
-	goto l0800_1AFF
-	// succ:  l0800_1AFF
+// DataOut: ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0032 bp:fp - 0x0002 si:<invalid> al:<invalid> ax:<invalid> di:<invalid> cx:<invalid> bx:<invalid> bl:<invalid> -54(fp):<invalid> -52(fp):<invalid> -50(fp):es -48(fp):di -46(fp):si -42(fp):0x0000 -40(fp):<invalid> -2(fp):bp
+// LocalsOut: fp(16)
+
+l0800_172B:
+	branch al_57 == 0x25 l0800_178B
+// DataOut: al bp bx di ds si ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0032 bp:fp - 0x0002 si:<invalid> al:<invalid> ax:<invalid> di:<invalid> cx:<invalid> bx:<invalid> bl:<invalid> -54(fp):<invalid> -52(fp):<invalid> -50(fp):es -48(fp):di -46(fp):si -42(fp):0x0000 -40(fp):<invalid> -2(fp):bp
+// LocalsOut: fp(16) Local -0028(8)
+
 l0800_178B:
-	Mem0[ss:bp - 0x0022:word16] = 0xFFFF
-	Mem0[ss:bp - 0x0029:byte] = 0x00
-	al = Mem0[ds:si:byte]
-	si = si + 0x0001
-	ax = (int16) al
-	Mem0[ss:bp + 0x000A:word16] = si
-	v29 = ax
-	ax = di
-	di = v29
-	di = di | di
-	SZO = cond(di)
-	C = false
-	branch Test(LT,SO) l0800_17E6
-	// succ:  l0800_179E l0800_17E6
+	word16 ax_347 = (int16) Mem0[ds:si_58:byte]
+	branch ax_347 < 0x0000 l0800_17E6
+// DataOut: bp di ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0032 bp:fp - 0x0002 si:<invalid> al:<invalid> ax:<invalid> di:<invalid> cx:<invalid> bx:<invalid> bl:<invalid> -54(fp):<invalid> -52(fp):<invalid> -50(fp):es -48(fp):di -46(fp):si -42(fp):0x0000 -40(fp):<invalid> -2(fp):bp
+// LocalsOut: fp(16)
+
 l0800_179E:
-	bl = Mem0[ds:di + 0x055A:byte]
-	bh = bh ^ bh
-	SZO = cond(bh)
-	C = false
-	ax = bx
-	SCZO = cond(ax - 0x0015)
-	branch Test(ULE,CZ) l0800_17AE
-	// succ:  l0800_17AB l0800_17AE
-l0800_17AB:
-	goto l0800_1AEB
-	// succ:  l0800_1AEB
+	branch DPB(bx, 0x00, 8) <=u 0x0015 l0800_17AE
+// DataOut: ax bp di ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0032 bp:fp - 0x0002 si:<invalid> al:<invalid> ax:<invalid> di:<invalid> cx:<invalid> bx:<invalid> bl:<invalid> -54(fp):<invalid> -52(fp):<invalid> -50(fp):es -48(fp):di -46(fp):si -43(fp):0x00 -42(fp):0x0000 -40(fp):<invalid> -36(fp):0xFFFF -2(fp):bp 8(fp):<invalid>
+// LocalsOut: fp(16)
+
 l0800_17AE:
-	bx = ax
-	bx = bx << 0x0001
-	SCZO = cond(bx)
-	switch (di) { l0800_17E6 }
-	// succ:  l0800_17E6
+	switch (ax_347) { l0800_17E6 }
+// DataOut: ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0032 bp:fp - 0x0002 si:<invalid> al:<invalid> ax:<invalid> di:<invalid> bl:<invalid> bh:0x00 cx:<invalid> bx:<invalid> -54(fp):<invalid> -52(fp):<invalid> -50(fp):es -48(fp):di -46(fp):si -43(fp):0x00 -42(fp):0x0000 -40(fp):<invalid> -36(fp):0xFFFF -2(fp):bp 8(fp):<invalid>
+// LocalsOut: fp(16)
+
 l0800_17E6:
-	goto l0800_1AFF
-	// succ:  l0800_1AFF
+// DataOut: ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0032 bp:fp - 0x0002 si:<invalid> al:<invalid> ax:<invalid> di:<invalid> bl:<invalid> bh:<invalid> bx:<invalid> cx:<invalid> -54(fp):<invalid> -52(fp):<invalid> -50(fp):es -48(fp):di -46(fp):si -43(fp):0x00 -42(fp):0x0000 -40(fp):<invalid> -36(fp):0xFFFF -2(fp):bp 8(fp):<invalid>
+// LocalsOut: fp(16)
+
+l0800_17AB:
+// DataOut: bp ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0032 bp:fp - 0x0002 si:<invalid> al:<invalid> ax:<invalid> di:<invalid> bl:<invalid> bh:0x00 cx:<invalid> bx:<invalid> -54(fp):<invalid> -52(fp):<invalid> -50(fp):es -48(fp):di -46(fp):si -43(fp):0x00 -42(fp):0x0000 -40(fp):<invalid> -36(fp):0xFFFF -2(fp):bp 8(fp):<invalid>
+// LocalsOut: fp(16)
+
+l0800_172F:
+	word16 sp_152
+	byte SCZO_155
+	word16 di_157
+	selector es_158
+	byte D_159
+	byte al_160
+	byte SZO_162
+	byte C_163
+	byte Z_164
+	word16 ax_165
+	word16 cx_167
+	byte SO_168
+	byte S_169
+	byte bl_171
+	byte bh_172
+	byte CZ_173
+	call SEQ(cs, Mem0[ss:bp_153 + 0x0004:word16]) (retsize: 2; depth: 54)
+		uses: al_59,ax_143,bh_39,bl_40,bLoc2B,bp_54,bx_41,C_63,cs_44,cx_48,CZ_38,D_46,di_144,ds_45,es_50,S_42,SCZO_98,si_58,SO_43,sp_148,ss_47,SZO_147,wLoc02_4,wLoc24,wLoc28_146,wLoc2A_14,wLoc2E_10,wLoc30_13,wLoc32_18,wLoc34_149,wLoc36_37,Z_99
+		defs: al_160,ax_165,bh_172,bl_171,bp_153,bx_170,C_163,cs_166,cx_167,CZ_173,D_159,di_157,ds_161,es_158,S_169,SCZO_155,si_156,SO_168,sp_152,ss_154,SZO_162,Z_164
+	word16 ax_176 = ax_165
+	branch ax_165 < 0x0000 l0800_1764
+// DataOut: al ax bp bx di ds si ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0032 bp:fp - 0x0002 si:<invalid> al:<invalid> ax:<invalid> di:<invalid> cx:<invalid> bx:<invalid> bl:<invalid> -54(fp):<invalid> -52(fp):<invalid> -50(fp):es -48(fp):di -46(fp):si -42(fp):0x0000 -40(fp):<invalid> -2(fp):bp
+// LocalsOut: fp(16) Local -0028(8)
+
+l0800_173F:
+	branch di_157 < 0x0000 l0800_1775
+// DataOut: al ax bp bx di ds si ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0032 bp:fp - 0x0002 si:<invalid> al:<invalid> ax:<invalid> di:<invalid> cx:<invalid> bx:<invalid> bl:<invalid> -54(fp):<invalid> -52(fp):<invalid> -50(fp):es -48(fp):di -46(fp):si -42(fp):0x0000 -40(fp):<invalid> -2(fp):bp
+// LocalsOut: fp(16) Local -0028(8)
+
+l0800_1743:
+	branch Mem0[ds:di_157 + 0x055A:byte] != 0x01 l0800_1775
+// DataOut: al ax bp bx di ds si ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0032 bp:fp - 0x0002 si:<invalid> al:<invalid> ax:<invalid> di:<invalid> cx:<invalid> bx:<invalid> bl:<invalid> -54(fp):<invalid> -52(fp):<invalid> -50(fp):es -48(fp):di -46(fp):si -42(fp):0x0000 -40(fp):<invalid> -2(fp):bp
+// LocalsOut: fp(16) Local -0028(8)
+
+l0800_1775:
+	branch ax_165 == di_157 l0800_1726
+// DataOut: bp bx di ds si ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0032 bp:fp - 0x0002 si:<invalid> al:<invalid> ax:<invalid> di:<invalid> cx:<invalid> bx:<invalid> bl:<invalid> -54(fp):<invalid> -52(fp):<invalid> -50(fp):es -48(fp):di -46(fp):si -42(fp):0x0000 -40(fp):<invalid> -2(fp):bp
+// LocalsOut: fp(16) Local -0028(8)
+
+l0800_1779:
+	word16 sp_215
+	word16 bp_216
+	selector ss_217
+	byte SCZO_218
+	word16 si_219
+	word16 di_220
+	selector es_221
+	byte D_222
+	byte al_223
+	selector ds_224
+	byte SZO_225
+	byte C_226
+	byte Z_227
+	word16 ax_228
+	selector cs_229
+	word16 cx_230
+	byte SO_231
+	byte S_232
+	word16 bx_233
+	byte bl_234
+	byte bh_235
+	byte CZ_236
+	call SEQ(cs, Mem0[ss:bp_153 + 0x0006:word16]) (retsize: 2; depth: 56)
+		uses: al_177,ax_176,bh_172,bl_171,bLoc2B,bp_153,bx_170,C_208,cs_166,cx_174,CZ_173,D_159,di_205,ds_161,es_158,S_207,SCZO_209,si_156,SO_179,sp_213,ss_154,SZO_206,wLoc02_4,wLoc24,wLoc28_146,wLoc2A_14,wLoc2E_10,wLoc30_13,wLoc32_18,wLoc34_212,wLoc36_214,Z_210
+		defs: al_223,ax_228,bh_235,bl_234,bp_216,bx_233,C_226,cs_229,cx_230,CZ_236,D_222,di_220,ds_224,es_221,S_232,SCZO_218,si_219,SO_231,sp_215,ss_217,SZO_225,Z_227
+// DataOut: ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0032 bp:fp - 0x0002 si:<invalid> al:<invalid> ax:<invalid> di:<invalid> cx:<invalid> bx:<invalid> bl:<invalid> -54(fp):<invalid> -52(fp):<invalid> -50(fp):es -48(fp):di -46(fp):si -42(fp):0x0000 -40(fp):<invalid> -2(fp):bp
+// LocalsOut: fp(16)
+
+l0800_174A:
+	byte bl_268 = (byte) ax_176
+	word16 bx_271 = DPB(ax_176, bl_268, 0)
+	branch bl_268 < 0x00 l0800_1767
+// DataOut: ax bp bx di ds si ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0032 bp:fp - 0x0002 si:<invalid> al:<invalid> ax:<invalid> di:<invalid> cx:<invalid> bx:<invalid> bl:<invalid> -54(fp):<invalid> -52(fp):<invalid> -50(fp):es -48(fp):di -46(fp):si -42(fp):0x0000 -40(fp):<invalid> -2(fp):bp
+// LocalsOut: fp(16) Local -0028(8)
+
+l0800_174F:
+	branch Mem0[ds:bx_271 + 0x055A:byte] != 0x01 l0800_1767
+// DataOut: ax bp bx di ds si ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0032 bp:fp - 0x0002 si:<invalid> al:<invalid> ax:<invalid> di:<invalid> cx:<invalid> bx:<invalid> bl:<invalid> -54(fp):<invalid> -52(fp):<invalid> -50(fp):es -48(fp):di -46(fp):si -42(fp):0x0000 -40(fp):<invalid> -2(fp):bp
+// LocalsOut: fp(16) Local -0028(8)
+
+l0800_1767:
+	word16 sp_279
+	byte SCZO_282
+	word16 di_284
+	selector es_285
+	byte D_286
+	byte al_287
+	byte SZO_289
+	byte C_290
+	byte Z_291
+	word16 ax_292
+	word16 cx_294
+	byte SO_295
+	byte S_296
+	byte bl_298
+	byte bh_299
+	byte CZ_300
+	call SEQ(cs, Mem0[ss:bp_153 + 0x0006:word16]) (retsize: 2; depth: 56)
+		uses: al_266,ax_265,bh_269,bl_270,bLoc2B,bp_262,bx_271,C_274,cs_251,cx_256,CZ_248,D_254,di_260,ds_253,es_258,S_273,SCZO_257,si_261,SO_250,sp_277,ss_255,SZO_272,wLoc02_4,wLoc24,wLoc28_246,wLoc2A_14,wLoc2E_10,wLoc30_13,wLoc32_18,wLoc34_276,wLoc36_278,Z_252
+		defs: al_287,ax_292,bh_299,bl_298,bp_280,bx_297,C_290,cs_293,cx_294,CZ_300,D_286,di_284,ds_288,es_285,S_296,SCZO_282,si_283,SO_295,sp_279,ss_281,SZO_289,Z_291
+// DataOut: bp bx di ds si ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0032 bp:fp - 0x0002 si:<invalid> al:<invalid> ax:<invalid> di:<invalid> cx:<invalid> bx:<invalid> bl:<invalid> -54(fp):<invalid> -52(fp):<invalid> -50(fp):es -48(fp):di -46(fp):si -42(fp):0x0000 -40(fp):<invalid> -2(fp):bp
+// LocalsOut: fp(16) Local -0028(8)
+
+l0800_1756:
+	word16 sp_315
+	byte SCZO_318
+	word16 si_319
+	word16 di_320
+	selector es_321
+	byte D_322
+	byte al_323
+	byte SZO_325
+	byte C_326
+	byte Z_327
+	word16 ax_328
+	word16 cx_330
+	byte SO_331
+	byte S_332
+	word16 bx_333
+	byte bl_334
+	byte bh_335
+	byte CZ_336
+	call SEQ(cs, Mem0[ss:bp_153 + 0x0004:word16]) (retsize: 2; depth: 54)
+		uses: al_266,ax_265,bh_269,bl_270,bLoc2B,bp_262,bx_271,C_274,cs_251,cx_256,CZ_248,D_254,di_260,ds_253,es_258,S_273,SCZO_308,si_261,SO_250,sp_313,ss_255,SZO_312,wLoc02_4,wLoc24,wLoc28_311,wLoc2A_14,wLoc2E_10,wLoc30_13,wLoc32_18,wLoc34_314,wLoc36_37,Z_309
+		defs: al_323,ax_328,bh_335,bl_334,bp_316,bx_333,C_326,cs_329,cx_330,CZ_336,D_322,di_320,ds_324,es_321,S_332,SCZO_318,si_319,SO_331,sp_315,ss_317,SZO_325,Z_327
+	ax_176 = ax_328
+	branch ax_328 > 0x0000 l0800_174A
+// DataOut: al bp bx di ds si ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0032 bp:fp - 0x0002 si:<invalid> al:<invalid> ax:<invalid> di:<invalid> cx:<invalid> bx:<invalid> bl:<invalid> -54(fp):<invalid> -52(fp):<invalid> -50(fp):es -48(fp):di -46(fp):si -42(fp):0x0000 -40(fp):<invalid> -2(fp):bp
+// LocalsOut: fp(16) Local -0028(8)
+
+l0800_1764:
+// DataOut: bp ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0032 bp:fp - 0x0002 si:<invalid> al:<invalid> ax:<invalid> di:<invalid> cx:<invalid> bx:<invalid> bl:<invalid> -54(fp):<invalid> -52(fp):<invalid> -50(fp):es -48(fp):di -46(fp):si -42(fp):0x0000 -40(fp):<invalid> -2(fp):bp
+// LocalsOut: fp(16)
+
 l0800_1AEB:
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = Mem0[ss:bp + 0x0008:word16]
-	ax = 0xFFFF
-	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = ax
-	call SEQ(cs, Mem0[ss:bp + 0x0006:word16]) (retsize: 2;)
-	cx = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	cx = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	SCZO = cond(Mem0[ss:bp - 0x0028:word16] - 0x0001)
-	v26 = Mem0[ss:bp - 0x0028:word16] - 0x00 - C
-	Mem0[ss:bp - 0x0028:word16] = v26
-	SCZO = cond(v26)
-	// succ:  l0800_1AFF
+	word16 sp_110
+	word16 bp_111
+	selector ss_112
+	byte SCZO_113
+	word16 si_114
+	word16 di_115
+	selector es_116
+	byte D_117
+	byte al_118
+	selector ds_119
+	byte SZO_120
+	byte C_121
+	byte Z_122
+	word16 ax_123
+	selector cs_124
+	word16 cx_125
+	byte SO_126
+	byte S_127
+	word16 bx_128
+	byte bl_129
+	byte bh_130
+	byte CZ_131
+	call SEQ(cs, Mem0[ss:bp_153 + 0x0006:word16]) (retsize: 2; depth: 56)
+		uses: al_59,ax_107,bh_39,bl_40,bLoc2B_101,bp_54,bx_41,C_63,cs_44,cx_48,CZ_38,D_46,di_52,ds_45,es_50,S_42,SCZO_98,si_58,SO_43,sp_108,ss_47,SZO_61,wLoc02_4,wLoc24_100,wLoc28_103,wLoc2A_14,wLoc2E_10,wLoc30_13,wLoc32_18,wLoc34_106,wLoc36_109,Z_99
+		defs: al_118,ax_123,bh_130,bl_129,bp_111,bx_128,C_121,cs_124,cx_125,CZ_131,D_117,di_115,ds_119,es_116,S_127,SCZO_113,si_114,SO_126,sp_110,ss_112,SZO_120,Z_122
+	Mem139[ss_112:bp_111 - 0x0028:word16] = 0x0000
+// DataOut: ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0032 bp:fp - 0x0002 si:<invalid> al:<invalid> ax:<invalid> di:<invalid> cx:<invalid> bl:<invalid> bh:0x00 bx:<invalid> -54(fp):<invalid> -52(fp):<invalid> -50(fp):es -48(fp):di -46(fp):si -43(fp):0x00 -42(fp):0x0000 -40(fp):<invalid> -36(fp):0xFFFF -2(fp):bp 8(fp):<invalid>
+// LocalsOut: fp(16)
+
 l0800_1AFF:
-	es = Mem0[ss:sp:selector]
-	sp = sp + 0x0002
-	ax = Mem0[ss:bp - 0x0028:word16]
-	// succ:  l0800_1B8C
+// DataOut: ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0032 bp:fp - 0x0002 si:<invalid> al:<invalid> ax:<invalid> di:<invalid> cx:<invalid> bl:<invalid> bh:<invalid> bx:<invalid> -54(fp):<invalid> -52(fp):<invalid> -50(fp):es -48(fp):di -46(fp):si -43(fp):0x00 -42(fp):<invalid> -40(fp):<invalid> -36(fp):0xFFFF -2(fp):bp 8(fp):<invalid>
+// LocalsOut: fp(16)
+
 l0800_1B8C:
-	di = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	si = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
-	sp = bp
-	bp = Mem0[ss:sp:word16]
-	sp = sp + 0x0002
 	return
-	// succ:  fn0800_16F3_exit
+// DataOut: ds ss
+// DataOut (flags): 
+// SymbolicIn: sp:fp - 0x0030 bp:fp - 0x0002 si:<invalid> al:<invalid> es:es ax:<invalid> di:<invalid> cx:<invalid> bl:<invalid> bh:<invalid> bx:<invalid> -54(fp):<invalid> -52(fp):<invalid> -50(fp):es -48(fp):di -46(fp):si -43(fp):0x00 -42(fp):<invalid> -40(fp):<invalid> -36(fp):0xFFFF -2(fp):bp 8(fp):<invalid>
+
 fn0800_16F3_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp bp:bp si:si al:<invalid> es:es ax:<invalid> di:di cx:<invalid> bl:<invalid> bh:<invalid> bx:<invalid> -54(fp):<invalid> -52(fp):<invalid> -50(fp):es -48(fp):di -46(fp):si -43(fp):0x00 -42(fp):<invalid> -40(fp):<invalid> -36(fp):0xFFFF -2(fp):bp 8(fp):<invalid>
+
 
 
