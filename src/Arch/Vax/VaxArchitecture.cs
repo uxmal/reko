@@ -36,30 +36,30 @@ namespace Reko.Arch.Vax
     {
         private static RegisterStorage[] regs = new[]
         {
-            new RegisterStorage("r0", 0, 0, PrimitiveType.Word32),
-            new RegisterStorage("r1", 1, 0, PrimitiveType.Word32),
-            new RegisterStorage("r2", 2, 0, PrimitiveType.Word32),
-            new RegisterStorage("r3", 3, 0, PrimitiveType.Word32),
+            Registers.r0,
+            Registers.r1,
+            Registers.r2,
+            Registers.r3,
 
-            new RegisterStorage("r4", 4, 0, PrimitiveType.Word32),
-            new RegisterStorage("r5", 5, 0, PrimitiveType.Word32),
-            new RegisterStorage("r6", 6, 0, PrimitiveType.Word32),
-            new RegisterStorage("r7", 7, 0, PrimitiveType.Word32),
+            Registers.r4,
+            Registers.r5,
+            Registers.r6,
+            Registers.r7,
 
-            new RegisterStorage("r8", 8, 0, PrimitiveType.Word32),
-            new RegisterStorage("r9", 9, 0, PrimitiveType.Word32),
-            new RegisterStorage("r10", 10, 0, PrimitiveType.Word32),
-            new RegisterStorage("r11", 11, 0, PrimitiveType.Word32),
+            Registers.r8,
+            Registers.r9,
+            Registers.r10,
+            Registers.r11,
 
-            new RegisterStorage("ap", 12, 0, PrimitiveType.Word32),
-            new RegisterStorage("fp", 13, 0, PrimitiveType.Word32),
-            new RegisterStorage("sp", 14, 0, PrimitiveType.Word32),
-            new RegisterStorage("pc", 15, 0, PrimitiveType.Word32),
-
+            Registers.ap,
+            Registers.fp,
+            Registers.sp,
+            Registers.pc,
         };
 
         public VaxArchitecture()
         {
+            var x = Registers.r0;
             InstructionBitSize = 8;
             this.FramePointerType = PrimitiveType.Pointer32;
             this.WordWidth = PrimitiveType.Word32;
@@ -146,9 +146,23 @@ namespace Reko.Arch.Vax
             throw new NotImplementedException();
         }
 
+        //$REVIEW: shouldn't this be flaggroup?
+        private static RegisterStorage[] flagRegisters = {
+            new RegisterStorage("C", 0, 0, PrimitiveType.Bool),
+            new RegisterStorage("V", 0, 0, PrimitiveType.Bool),
+            new RegisterStorage("Z", 0, 0, PrimitiveType.Bool),
+            new RegisterStorage("N", 0, 0, PrimitiveType.Bool),
+        };
+
         public override string GrfToString(uint grf)
         {
-            throw new NotImplementedException();
+            StringBuilder s = new StringBuilder();
+            for (int r = 0; grf != 0; ++r, grf >>= 1)
+            {
+                if ((grf & 1) != 0)
+                    s.Append(flagRegisters[r].Name);
+            }
+            return s.ToString();
         }
 
         public override Address MakeAddressFromConstant(Constant c)

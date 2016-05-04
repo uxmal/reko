@@ -95,6 +95,14 @@ namespace Reko.Arch.Vax
                string.Format(
                    "Access type {0} not implemented.", format[i - 1]));
                 }
+                if (op == null)
+                {
+                    return new VaxInstruction
+                    {
+                        Opcode = Opcode.Invalid,
+                        Operands = new MachineOperand[0],
+                    };
+                }
                 ops.Add(op);
             }
             return new VaxInstruction
@@ -208,7 +216,7 @@ namespace Reko.Arch.Vax
                     string.Format(
                         "Unimplemented addressing mode {0:X2}", (bSpecifier >> 4)));
             }
-            return op != null;
+            return true;
         }
 
         private MachineOperand ImmediateOperand(PrimitiveType width)
@@ -256,6 +264,10 @@ namespace Reko.Arch.Vax
                 if (width.BitSize == 32)
                 {
                     c = Constant.Real32(frac * exp / 16.0F);
+                }
+                else if (width.BitSize == 64)
+                {
+                    c = Constant.Real64(frac * exp / 16.0F);
                 }
                 else
                     throw new NotImplementedException();

@@ -25,6 +25,9 @@ using Reko.Core;
 using Reko.Core.Rtl;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
+using System.Diagnostics;
+using System.Linq;
+using Reko.Core.Machine;
 
 namespace Reko.Arch.Vax
 {
@@ -59,10 +62,18 @@ namespace Reko.Arch.Vax
                 switch (dasm.Current.Opcode)
                 {
                 default:
-                    throw new AddressCorrelatedException(
-               dasm.Current.Address,
-               "Rewriting of VAX instruction {0} not implemented yet.",
-               dasm.Current.Opcode);
+                    //EmitUnitTest();
+                    emitter.SideEffect(Constant.String(
+                        dasm.Current.ToString(),
+                        StringType.NullTerminated(PrimitiveType.Char)));
+                    break;
+                //$DEBUG: restore this before checkin
+                //throw new AddressCorrelatedException(
+                //   dasm.Current.Address,
+                //   "Rewriting of VAX instruction {0} not implemented yet.",
+                //   dasm.Current.Opcode);
+                case Opcode.addb2: RewriteAlu2(PrimitiveType.Byte, emitter.IAdd, AllFlags); break;
+
                 case Opcode.halt: RewriteHalt(); break;
                 case Opcode.bsbw: goto default;
                 case Opcode.nop: goto default;
@@ -218,7 +229,6 @@ namespace Reko.Arch.Vax
                 case Opcode.mnegw: goto default;
                 case Opcode.pushaq: goto default;
                 case Opcode.casew: goto default;
-                case Opcode.addb2: goto default;
                 case Opcode.movw: goto default;
                 case Opcode.addb3: goto default;
                 case Opcode.cmpw: goto default;
@@ -437,6 +447,33 @@ namespace Reko.Arch.Vax
             }
         }
 
+        private static HashSet<Opcode> seen = new HashSet<Opcode>();
+
+        [Conditional("DEBUG")]
+        private void EmitUnitTest()
+        {
+            if (seen.Contains(dasm.Current.Opcode))
+                return;
+            seen.Add(dasm.Current.Opcode);
+
+            var r2 = rdr.Clone();
+            r2.Offset -= dasm.Current.Length;
+            var bytes = r2.ReadBytes(dasm.Current.Length);
+            Debug.WriteLine("        [Test]");
+            Debug.WriteLine("        public void VaxRw_" + dasm.Current.Opcode + "()");
+            Debug.WriteLine("        {");
+            Debug.Write("            BuildTest(");
+            Debug.Write(string.Join(
+                ", ",
+                bytes.Select(b => string.Format("0x{0:X2}", (int)b))));
+            Debug.WriteLine(");\t// " + dasm.Current.ToString());
+            Debug.WriteLine("            AssertCode(");
+            Debug.WriteLine("                \"0|L--|00100000(2): 1 instructions\",");
+            Debug.WriteLine("                \"1|L--|@@@\");");
+            Debug.WriteLine("        }");
+            Debug.WriteLine("");
+        }
+
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
@@ -461,5 +498,110 @@ namespace Reko.Arch.Vax
             return emitter.Fn(new ProcedureConstant(arch.PointerType, ppp), retType, args);
         }
 
+        private Expression RewriteSrcOp(int iOp, PrimitiveType width)
+        {
+            var op = dasm.Current.Operands[iOp];
+            var regOp = op as RegisterOperand;
+            if (regOp != null)
+            {
+                return frame.EnsureRegister(regOp.Register);
+            }
+            var immOp = op as ImmediateOperand;
+            if (immOp != null)
+            {
+                return immOp.Value;
+            }
+            var memOp = op as MemoryOperand;
+            if (memOp != null)
+            {
+                Expression ea;
+                if (memOp.Base != null)
+                {
+                    var reg = frame.EnsureRegister(memOp.Base);
+                    if (memOp.AutoDecrement)
+                    {
+                        emitter.Assign(reg, emitter.ISub(reg, width.Size));
+                    }
+                    ea = reg;
+                    if (memOp.Offset != null)
+                    {
+                        ea = emitter.IAdd(ea, memOp.Offset);
+                    }
+                    var mem = emitter.Load(width, ea);
+                    if (memOp.AutoIncrement)
+                    {
+                        throw new NotImplementedException(op.GetType().Name);
+                    }
+                    return mem;
+                }
+                else
+                {
+                }
+            }
+            throw new NotImplementedException(op.GetType().Name);
+        }
+
+        private Identifier RewriteDstOp(int iOp, PrimitiveType width, Func<Expression, Expression> fn)
+        {
+            var op = dasm.Current.Operands[iOp];
+            var regOp = op as RegisterOperand;
+            if (regOp != null)
+            {
+                var reg = frame.EnsureRegister(regOp.Register);
+                emitter.Assign(reg, fn(reg));
+                return reg;
+            }
+            if( op is ImmediateOperand)
+            {
+                throw new AddressCorrelatedException(
+                    dasm.Current.Address,
+                    "Instruction {0} is attempting to assign to an immediate value.",
+                    dasm.Current);
+            }
+            var memOp = op as MemoryOperand;
+            if (memOp != null)
+            {
+                Expression ea;
+                if (memOp.Base != null)
+                {
+                    var reg = frame.EnsureRegister(memOp.Base);
+                    if (memOp.AutoDecrement)
+                    {
+                        emitter.Assign(reg, emitter.ISub(reg, width.Size));
+                    }
+                    ea = reg;
+                    if (memOp.Offset != null)
+                    {
+                        ea = emitter.IAdd(ea, memOp.Offset);
+                    }
+                    var tmp = frame.CreateTemporary(width);
+                    emitter.Assign(tmp, fn(emitter.Load(width, ea)));
+                    emitter.Assign(emitter.Load(width, ea), tmp);
+
+                    if (memOp.AutoIncrement)
+                    {
+                        throw new NotImplementedException(op.GetType().Name);
+                    }
+                    return tmp;
+                }
+                else
+                {
+                }
+            }
+            throw new NotImplementedException(op.GetType().Name);
+
+        }
+
+        private Identifier FlagGroup(FlagM flags)
+        {
+            return frame.EnsureFlagGroup(Registers.psw, (uint)flags, arch.GrfToString((uint)flags), PrimitiveType.Byte);
+        }
+
+        private void AllFlags(Expression dst)
+        {
+            var grf = FlagGroup(FlagM.NZVC);
+
+            emitter.Assign(grf, emitter.Cond(dst));
+        }
     }
 }
