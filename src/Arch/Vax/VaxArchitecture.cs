@@ -61,7 +61,9 @@ namespace Reko.Arch.Vax
         public VaxArchitecture()
         {
             InstructionBitSize = 8;
-
+            this.FramePointerType = PrimitiveType.Pointer32;
+            this.WordWidth = PrimitiveType.Word32;
+            this.PointerType = PrimitiveType.Pointer32;
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
@@ -106,12 +108,12 @@ namespace Reko.Arch.Vax
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new VaxProcessorState(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new VaxRewriter(this, rdr, state, frame, host);
         }
 
         public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)

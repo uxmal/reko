@@ -49,6 +49,9 @@
     <Compile Include="VaxDisassembler.TwoByte.cs" />
     <Compile Include="VaxDisassembler.OneByte.cs" />
     <Compile Include="VaxInstruction.cs" />
+    <Compile Include="VaxProcessorState.cs" />
+    <Compile Include="VaxRewriter.cs" />
+    <Compile Include="VaxRewriter.Misc.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">
