@@ -81,11 +81,11 @@ namespace Reko.Gui.Windows.Controls
             set
             {
                 if (segmentMap != null)
-                    imageMap.MapChanged -= imageMap_MapChanged;
+                    segmentMap.MapChanged -= imageMap_MapChanged;
                 segmentMap = value;
                 if (segmentMap != null)
                     segmentMap.MapChanged += imageMap_MapChanged;
-                OnImageMapChanged();
+                OnSegmentMapChanged();
             }
         }
         public event EventHandler SegmentMapChanged;
@@ -314,6 +314,13 @@ namespace Reko.Gui.Windows.Controls
             BoundGranularity(granularity);
             Invalidate();
             ImageMapChanged.Fire(this);
+        }
+
+        protected virtual void OnSegmentMapChanged()
+        {
+            BoundGranularity(granularity);
+            Invalidate();
+            SegmentMapChanged.Fire(this);
         }
 
         protected override void OnGotFocus(EventArgs e)
