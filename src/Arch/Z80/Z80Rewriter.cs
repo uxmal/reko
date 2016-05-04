@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using System;
@@ -98,6 +99,9 @@ namespace Reko.Arch.Z80
                 case Opcode.push: RewritePush(dasm.Current); break;
                 case Opcode.ret: RewriteRet(); break;
                 case Opcode.sbc: RewriteSbc(); break;
+                case Opcode.sla: RewriteShift(dasm.Current, emitter.Shl); break;
+                case Opcode.sra: RewriteShift(dasm.Current, emitter.Sar); break;
+                case Opcode.srl: RewriteShift(dasm.Current, emitter.Shr); break;
                 case Opcode.sub: RewriteSub(); break;
                 case Opcode.xor: RewriteXor(); break;
 
@@ -135,9 +139,6 @@ namespace Reko.Arch.Z80
         case Opcode.rrca: goto default;
         case Opcode.rst: goto default;
         case Opcode.scf: goto default;
-        case Opcode.sla: goto default;
-        case Opcode.srl: goto default;
-        case Opcode.sra: goto default;
         case Opcode.set: goto default;
         case Opcode.swap: goto default;
                 }
@@ -485,6 +486,14 @@ namespace Reko.Arch.Z80
         {
             rtlc.Class = RtlClass.Transfer;
             emitter.Return(2, 0);
+        }
+
+        private void RewriteShift(Z80Instruction instr, Func<Expression, Expression, Expression> op)
+        {
+            var reg = RewriteOp(instr.Op1);
+            var sh = emitter.Byte(1);
+            emitter.Assign(reg, op(reg, sh));
+            AssignCond(FlagM.CF | FlagM.ZF | FlagM.SF | FlagM.PF, reg);
         }
     }
 }
