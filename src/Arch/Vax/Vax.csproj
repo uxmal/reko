@@ -52,7 +52,9 @@
     <Compile Include="VaxInstruction.cs" />
     <Compile Include="VaxProcessorState.cs" />
     <Compile Include="VaxRewriter.Alu.cs" />
+    <Compile Include="VaxRewriter.Control.cs" />
     <Compile Include="VaxRewriter.cs" />
+    <Compile Include="VaxRewriter.Fpu.cs" />
     <Compile Include="VaxRewriter.Misc.cs" />
   </ItemGroup>
   <ItemGroup>

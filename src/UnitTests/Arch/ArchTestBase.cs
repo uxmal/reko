@@ -45,6 +45,13 @@ namespace Reko.UnitTests.Arch
 
         private class RewriterHost : IRewriterHost
         {
+            private IProcessorArchitecture arch;
+
+            public RewriterHost(IProcessorArchitecture arch)
+            {
+                this.arch = arch;
+            }
+
             public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
             {
                 return new PseudoProcedure(name, returnType, arity);
@@ -57,7 +64,18 @@ namespace Reko.UnitTests.Arch
 
             public Expression PseudoProcedure(string name, DataType returnType, params Expression[] args)
             {
-                throw new NotImplementedException();
+                var ppp = EnsurePseudoProcedure(name, returnType, args.Length);
+                if (args.Length != ppp.Arity)
+                    throw new ArgumentOutOfRangeException(
+                        string.Format("Pseudoprocedure {0} expected {1} arguments, but was passed {2}.",
+                        ppp.Name,
+                        ppp.Arity,
+                        args.Length));
+
+                return new Application(
+                    new ProcedureConstant(arch.PointerType, ppp),
+                    returnType,
+                    args);
             }
 
             public ExternalProcedure GetInterceptedCall(Address addrImportThunk)
@@ -73,7 +91,7 @@ namespace Reko.UnitTests.Arch
 
         protected virtual IRewriterHost CreateRewriterHost()
         {
-            return new RewriterHost();
+            return new RewriterHost(Architecture);
         }
 
         protected void AssertCode(params string[] expected)
