@@ -426,6 +426,7 @@ namespace Reko.Gui.Forms
             SwitchInteractor(this.InitialPageInteractor);
             
             CloseAllDocumentWindows();
+            diagnosticsSvc.ClearDiagnostics();
             projectBrowserSvc.Reload();
         }
 

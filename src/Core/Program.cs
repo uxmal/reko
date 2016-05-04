@@ -83,7 +83,14 @@ namespace Reko.Core
 
         public IPlatform Platform { get; set; }
 
+        /// <summary>
+        /// The image map stores items discovered by the scanner phase.
+        /// </summary>
         public ImageMap ImageMap { get; set; }
+
+        /// <summary>
+        /// Contains the segments that the binary consists of.
+        /// </summary>
         public SegmentMap SegmentMap { get; set; }
 
         /// <summary>
@@ -394,12 +401,12 @@ namespace Reko.Core
             return p;
         }
 
-        public Serialization.Procedure_v1 EnsureUserProcedure(Address address, string name)
+        public Procedure_v1 EnsureUserProcedure(Address address, string name)
         {
-            Serialization.Procedure_v1 up;
+            Procedure_v1 up;
             if (!User.Procedures.TryGetValue(address, out up))
             {
-                up = new Serialization.Procedure_v1
+                up = new Procedure_v1
                 {
                     Address = address.ToString(),
                     Name = name,
@@ -455,10 +462,11 @@ namespace Reko.Core
                 return;
             ImageMap.RemoveItem(address);
         }
+
         public void Reset()
         {
             Procedures.Clear();
-            ImageMap.Items.Clear();
+            BuildImageMap();
             globals = null;
             TypeFactory = new TypeFactory();
             TypeStore = new TypeStore();
