@@ -28,6 +28,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
+using System.Globalization;
 
 namespace Reko.Arch.Vax
 {
@@ -56,6 +57,13 @@ namespace Reko.Arch.Vax
             new RegisterStorage("pc", 15, 0, PrimitiveType.Word32),
 
         };
+
+        public VaxArchitecture()
+        {
+            InstructionBitSize = 8;
+
+        }
+
         public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
         {
             return new VaxDisassembler(this, imageReader);
@@ -68,12 +76,12 @@ namespace Reko.Arch.Vax
 
         public override ImageReader CreateImageReader(MemoryArea img, Address addr)
         {
-            throw new NotImplementedException();
+            return new LeImageReader(img, addr);
         }
 
         public override ImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
         {
-            throw new NotImplementedException();
+            return new LeImageReader(img, addrBegin, addrEnd);
         }
 
         public override ImageWriter CreateImageWriter()
@@ -143,7 +151,7 @@ namespace Reko.Arch.Vax
 
         public override Address MakeAddressFromConstant(Constant c)
         {
-            throw new NotImplementedException();
+            return Address.Ptr32(c.ToUInt32());
         }
 
         public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
@@ -158,7 +166,17 @@ namespace Reko.Arch.Vax
 
         public override bool TryParseAddress(string txtAddr, out Address addr)
         {
-            throw new NotImplementedException();
+            uint uAddr;
+            if (!uint.TryParse(txtAddr, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out uAddr))
+            {
+                addr = null;
+                return false;
+            }
+            else
+            {
+                addr = Address.Ptr32(uAddr);
+                return true;
+            }
         }
     }
 }

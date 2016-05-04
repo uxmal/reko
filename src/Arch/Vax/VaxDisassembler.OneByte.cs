@@ -210,7 +210,7 @@ namespace Reko.Arch.Vax
  /* A5 */ new OpRec(Opcode.mulw3,  -1), 
  /* A6 */ new OpRec(Opcode.divw2,  -1), 
  /* A7 */ new OpRec(Opcode.divw3,  -1), 
- /* A8 */ new OpRec(Opcode.bisw2,  -1), 
+ /* A8 */ new OpRec(Opcode.bisw2, "rw,ww"), 
  /* A9 */ new OpRec(Opcode.bisw3,  -1), 
  /* AA */ new OpRec(Opcode.bicw2,  -1), 
  /* AB */ new OpRec(Opcode.bicw3,  -1), 
