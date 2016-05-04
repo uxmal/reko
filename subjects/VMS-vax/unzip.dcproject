@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Reko/v4">
+  <arch>vax</arch>
+  <input>
+    <filename>unzip.exe</filename>
+    <disassembly>unzip.asm</disassembly>
+    <intermediate-code>unzip.dis</intermediate-code>
+    <output>unzip.c</output>
+    <types-file>unzip.h</types-file>
+    <global-vars>unzip.globals.c</global-vars>
+    <user>
+      <address>00001000</address>
+      <processor name="vax" />
+    </user>
+  </input>
+</project>
