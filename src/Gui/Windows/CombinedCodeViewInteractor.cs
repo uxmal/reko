@@ -309,7 +309,9 @@ namespace Reko.Gui.Windows
                         : MenuStatus.Visible | MenuStatus.Enabled | MenuStatus.Checked;
                     return true;
                 case CmdIds.EditDeclaration:
-                    status.Status = MenuStatus.Enabled | MenuStatus.Visible;
+                    status.Status = GetAnchorAddress() == null 
+                        ? MenuStatus.Visible
+                        : MenuStatus.Enabled | MenuStatus.Visible;
                     return true;
                 }
             }
@@ -372,13 +374,25 @@ namespace Reko.Gui.Windows
             return true;
         }
 
-        private void EditDeclaration()
+        private Address CodeView_GetAnchorAddress()
+        {
+            var pt = combinedCodeView.CodeView.GetAnchorMiddlePoint();
+            var tag = combinedCodeView.CodeView.GetTagFromPoint(pt);
+            var addr = tag as Address;
+            var proc = tag as Procedure;
+
+            if (proc != null)
+                addr = program.GetProcedureAddress(proc);
+
+            return addr;
+        }
+
+        private Address MixedCodeDataView_GetAnchorAddress()
         {
             var addr = combinedCodeView.MixedCodeDataView.GetAnchorAddress();
             ImageMapItem item;
             if (program.ImageMap.TryFindItem(addr, out item))
             {
-                GlobalDataItem_v2 globalDataItem;
                 var blockItem = item as ImageMapBlock;
                 if (blockItem != null)
                 {
@@ -389,8 +403,26 @@ namespace Reko.Gui.Windows
                     addr = item.Address;
                 }
             }
-            var anchorPt = combinedCodeView.MixedCodeDataView.GetAnchorTopPoint();
-            var screenPoint = combinedCodeView.MixedCodeDataView.PointToScreen(anchorPt);
+            return addr;
+        }
+
+        private Address GetAnchorAddress()
+        {
+            if (combinedCodeView.CodeView.Focused)
+                return CodeView_GetAnchorAddress();
+            if (combinedCodeView.MixedCodeDataView.Focused)
+                return MixedCodeDataView_GetAnchorAddress();
+            return null;
+
+        }
+
+        private void EditDeclaration()
+        {
+            var addr = GetAnchorAddress();
+            if (addr == null)
+                return;
+            var anchorPt = FocusedTextView.GetAnchorTopPoint();
+            var screenPoint = FocusedTextView.PointToScreen(anchorPt);
             declarationFormInteractor.Show(screenPoint, program, addr);
         }
 
