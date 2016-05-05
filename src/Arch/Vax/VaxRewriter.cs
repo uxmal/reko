@@ -147,6 +147,39 @@ namespace Reko.Arch.Vax
                 case Opcode.incl: RewriteIncDec(PrimitiveType.Word32, Inc); break;
                 case Opcode.incw: RewriteIncDec(PrimitiveType.Word16, Inc); break;
 
+                case Opcode.mcomb: RewriteAluUnary2(PrimitiveType.Byte, emitter.Comp, NZ00); break;
+                case Opcode.mcoml: RewriteAluUnary2(PrimitiveType.Word32, emitter.Comp, NZ00); break;
+                case Opcode.mcomw: RewriteAluUnary2(PrimitiveType.Word16, emitter.Comp, NZ00); break;
+                case Opcode.mnegb: RewriteAluUnary2(PrimitiveType.Byte, emitter.Neg, AllFlags); break;
+                case Opcode.mnegd: RewriteAluUnary2(PrimitiveType.Real64, emitter.FNeg, NZ00); break;
+                case Opcode.mnegf: RewriteAluUnary2(PrimitiveType.Real32, emitter.FNeg, NZ00); break;
+                case Opcode.mnegg: RewriteAluUnary2(PrimitiveType.Real64, emitter.FNeg, NZ00); break;
+                case Opcode.mnegh: RewriteAluUnary2(PrimitiveType.Word128, emitter.FNeg, NZ00); break;
+                case Opcode.mnegl: RewriteAluUnary2(PrimitiveType.Word32, emitter.Neg, AllFlags); break;
+                case Opcode.mnegw: RewriteAluUnary2(PrimitiveType.Word16, emitter.Neg, AllFlags); break;
+
+                case Opcode.movab:  RewriteAluUnary2(PrimitiveType.Word32, e => e, NZ00); break;
+                case Opcode.movah:  RewriteAluUnary2(PrimitiveType.Word32, e => e, NZ00); break;
+                case Opcode.moval:  RewriteAluUnary2(PrimitiveType.Word32, e => e, NZ00); break;
+                case Opcode.movaq:  RewriteAluUnary2(PrimitiveType.Word32, e => e, NZ00); break;
+                case Opcode.movaw:  RewriteAluUnary2(PrimitiveType.Word32, e => e, NZ00); break;
+                    
+                case Opcode.movb:   RewriteAluUnary2(PrimitiveType.Byte, Copy, NZ00); break;
+                case Opcode.movc3:  goto default;
+                case Opcode.movc5:  goto default;
+                case Opcode.movd:   RewriteAluUnary2(PrimitiveType.Real64, Copy, NZ00); break;
+                case Opcode.movf:   RewriteAluUnary2(PrimitiveType.Real32, Copy, NZ00); break;
+                case Opcode.movg:   RewriteAluUnary2(PrimitiveType.Real64, Copy, NZ00); break;
+                case Opcode.movh:   RewriteAluUnary2(PrimitiveType.Real128,Copy, NZ00); break;
+                case Opcode.movl:   RewriteAluUnary2(PrimitiveType.Word32, Copy, NZ00); break;
+                case Opcode.movo:   RewriteAluUnary2(PrimitiveType.Word128,Copy, NZ00); break;
+                case Opcode.movp: goto default;
+                case Opcode.movq:   RewriteAluUnary2(PrimitiveType.Word64, Copy, NZ00); break;
+                case Opcode.movw:   RewriteAluUnary2(PrimitiveType.Word16, Copy, NZ00); break;
+                case Opcode.movzbl: RewriteMovz(PrimitiveType.Byte, PrimitiveType.Word32); break;
+                case Opcode.movzbw: RewriteMovz(PrimitiveType.Byte, PrimitiveType.Word16); break;
+                case Opcode.movzwl: RewriteMovz(PrimitiveType.Word16, PrimitiveType.Word32); break;
+
                 case Opcode.pushl: RewritePush(PrimitiveType.Word32); break;
 
                 case Opcode.xorb2: RewriteAlu2(PrimitiveType.Byte, emitter.Xor, NZ00); break;
@@ -163,7 +196,6 @@ namespace Reko.Arch.Vax
                 case Opcode.cvtwl: goto default;
                 case Opcode.cvtwb: goto default;
                 case Opcode.ret: goto default;
-                case Opcode.movp: goto default;
                 case Opcode.rsb: goto default;
                 case Opcode.cmpp3: goto default;
                 case Opcode.ldpctx: goto default;
@@ -179,11 +211,9 @@ namespace Reko.Arch.Vax
                 case Opcode.crc: goto default;
                 case Opcode.skpc: goto default;
                 case Opcode.prober: goto default;
-                case Opcode.movzwl: goto default;
                 case Opcode.probew: goto default;
                 case Opcode.acbw: goto default;
                 case Opcode.insque: goto default;
-                case Opcode.movaw: goto default;
                 case Opcode.remque: goto default;
                 case Opcode.pushaw: goto default;
                 case Opcode.bsbb: goto default;
@@ -204,10 +234,8 @@ namespace Reko.Arch.Vax
                 case Opcode.cvtwf: goto default;
                 case Opcode.cvtlf: goto default;
                 case Opcode.acbf: goto default;
-                case Opcode.movf: goto default;
                 case Opcode.cmpf: goto default;
                 case Opcode.subp4: goto default;
-                case Opcode.mnegf: goto default;
                 case Opcode.subp6: goto default;
                 case Opcode.tstf: goto default;
                 case Opcode.cvtpt: goto default;
@@ -216,12 +244,10 @@ namespace Reko.Arch.Vax
                 case Opcode.polyf: goto default;
                 case Opcode.cvttp: goto default;
                 case Opcode.cvtfd: goto default;
-                case Opcode.movc3: goto default;
                 case Opcode.adawi: goto default;
                 case Opcode.cmpc3: goto default;
                 case Opcode.scanc: goto default;
                 case Opcode.spanc: goto default;
-                case Opcode.movc5: goto default;
                 case Opcode.insqhi: goto default;
                 case Opcode.cmpc5: goto default;
                 case Opcode.insqti: goto default;
@@ -229,9 +255,7 @@ namespace Reko.Arch.Vax
                 case Opcode.remqhi: goto default;
                 case Opcode.movtuc: goto default;
                 case Opcode.remqti: goto default;
-                case Opcode.movb: goto default;
                 case Opcode.subd2: goto default;
-                case Opcode.mcomb: goto default;
                 case Opcode.subd3: goto default;
                 case Opcode.bitb: goto default;
                 case Opcode.muld2: goto default;
@@ -242,20 +266,15 @@ namespace Reko.Arch.Vax
                 case Opcode.cvtdw: goto default;
                 case Opcode.cvtbw: goto default;
                 case Opcode.cvtdl: goto default;
-                case Opcode.movzbl: goto default;
                 case Opcode.cvtrdl: goto default;
-                case Opcode.movzbw: goto default;
                 case Opcode.cvtbd: goto default;
                 case Opcode.rotl: goto default;
                 case Opcode.cvtwd: goto default;
                 case Opcode.acbb: goto default;
                 case Opcode.cvtld: goto default;
-                case Opcode.movab: goto default;
                 case Opcode.acbd: goto default;
                 case Opcode.pushab: goto default;
-                case Opcode.movd: goto default;
                 case Opcode.cmpd: goto default;
-                case Opcode.mnegd: goto default;
                 case Opcode.subw2: goto default;
                 case Opcode.tstd: goto default;
                 case Opcode.subw3: goto default;
@@ -266,14 +285,9 @@ namespace Reko.Arch.Vax
                 case Opcode.cvtdf: goto default;
                 case Opcode.emul: goto default;
                 case Opcode.ediv: goto default;
-                case Opcode.movq: goto default;
-                case Opcode.movaq: goto default;
-                case Opcode.mnegw: goto default;
                 case Opcode.pushaq: goto default;
                 case Opcode.casew: goto default;
-                case Opcode.movw: goto default;
                 case Opcode.subb2: goto default;
-                case Opcode.mcomw: goto default;
                 case Opcode.subb3: goto default;
                 case Opcode.bitw: goto default;
                 case Opcode.mulb2: goto default;
@@ -282,7 +296,6 @@ namespace Reko.Arch.Vax
                 case Opcode.popr: goto default;
                 case Opcode.pushr: goto default;
                 case Opcode.chmk: goto default;
-                case Opcode.mnegb: goto default;
                 case Opcode.chms: goto default;
                 case Opcode.caseb: goto default;
                 case Opcode.chmu: goto default;
@@ -302,15 +315,13 @@ namespace Reko.Arch.Vax
                 case Opcode.ffc: goto default;
                 case Opcode.cmpv: goto default;
                 case Opcode.cmpzv: goto default;
-                case Opcode.mnegl: goto default;
+
                 case Opcode.extv: goto default;
                 case Opcode.casel: goto default;
                 case Opcode.extzv: goto default;
-                case Opcode.movl: goto default;
                 case Opcode.insv: goto default;
 
                 case Opcode.acbl: goto default;
-                case Opcode.mcoml: goto default;
                 case Opcode.aoblss: goto default;
                 case Opcode.bitl: goto default;
                 case Opcode.sobgeq: goto default;
@@ -326,7 +337,6 @@ namespace Reko.Arch.Vax
                 case Opcode.calls: goto default;
                 case Opcode.movpsl: goto default;
                 case Opcode.xfc: goto default;
-                case Opcode.moval: goto default;
                 case Opcode.pushal: goto default;
                 case Opcode.mfvp: goto default;
                 case Opcode.cvtdh: goto default;
@@ -351,9 +361,8 @@ namespace Reko.Arch.Vax
                 case Opcode.cvtwg: goto default;
                 case Opcode.cvtlg: goto default;
                 case Opcode.acbg: goto default;
-                case Opcode.movg: goto default;
                 case Opcode.cmpg: goto default;
-                case Opcode.mnegg: goto default;
+
                 case Opcode.tstg: goto default;
                 case Opcode.emodg: goto default;
                 case Opcode.polyg: goto default;
@@ -380,11 +389,9 @@ namespace Reko.Arch.Vax
                 case Opcode.vstq: goto default;
                 case Opcode.acbh: goto default;
                 case Opcode.vscatq: goto default;
-                case Opcode.movh: goto default;
                 case Opcode.vvmull: goto default;
                 case Opcode.cmph: goto default;
                 case Opcode.vsmull: goto default;
-                case Opcode.mnegh: goto default;
                 case Opcode.vvmulg: goto default;
                 case Opcode.tsth: goto default;
                 case Opcode.vsmulg: goto default;
@@ -400,9 +407,7 @@ namespace Reko.Arch.Vax
                 case Opcode.vvdivg: goto default;
                 case Opcode.vsdivg: goto default;
                 case Opcode.vvdivf: goto default;
-                case Opcode.movo: goto default;
                 case Opcode.vsdivf: goto default;
-                case Opcode.movah: goto default;
                 case Opcode.vvdivd: goto default;
                 case Opcode.pushah: goto default;
                 case Opcode.vsdivd: goto default;

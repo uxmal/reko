@@ -71,7 +71,8 @@ namespace Reko.Core.Output
             precedences = new Dictionary<Operator, int>();
 			precedences[Operator.Not] = 2;			//$REFACTOR: precedence is a property of the output language; these are the C/C++ precedences
 			precedences[Operator.Neg] = 2;			
-			precedences[Operator.Comp] = 2;
+			precedences[Operator.FNeg] = 2;
+            precedences[Operator.Comp] = 2;
 			precedences[Operator.AddrOf] = 2;
 			precedences[Operator.SMul] = 4;
 			precedences[Operator.UMul] = 4;

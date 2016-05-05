@@ -34,6 +34,11 @@ namespace Reko.Arch.Vax
             return emitter.And(a, emitter.Comp(mask));
         }
 
+        private Expression Copy(Expression e)
+        {
+            return e;
+        }
+
         private Expression Dec(Expression e)
         {
             return emitter.ISub(e, 1);
@@ -102,6 +107,19 @@ namespace Reko.Arch.Vax
             var op1 = RewriteSrcOp(0, width);
             var op2 = RewriteSrcOp(1, width);
             var dst = RewriteDstOp(2, width, e => fn(op2, op1));
+            genFlags(dst);
+        }
+
+        private void RewriteAluUnary1(PrimitiveType width, Func<Expression, Expression> fn, Action<Expression> genFlags)
+        {
+            var dst = RewriteDstOp(1, width, e => fn(e));
+            genFlags(dst);
+        }
+
+        private void RewriteAluUnary2(PrimitiveType width, Func<Expression, Expression> fn, Action<Expression> genFlags)
+        {
+            var op1 = RewriteSrcOp(0, width);
+            var dst = RewriteDstOp(1, width, e => fn(op1));
             genFlags(dst);
         }
 
@@ -190,6 +208,13 @@ namespace Reko.Arch.Vax
         {
             var dst = RewriteDstOp(0, width, e => incdec(e));
             AllFlags(dst);
+        }
+
+        private void RewriteMovz(PrimitiveType from, PrimitiveType to)
+        {
+            var opFrom = RewriteSrcOp(0, from);
+            var dst = RewriteDstOp(1, to, e => emitter.Cast(to, opFrom));
+            NZ00(dst);
         }
 
         private void RewritePush(PrimitiveType width)
