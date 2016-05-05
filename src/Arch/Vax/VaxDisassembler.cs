@@ -193,28 +193,26 @@ namespace Reko.Arch.Vax
                     Deferred = true,
                 };
                 break;
-            case 10: // Displacement mode
-            case 11:
+            case 0xA: // Displacement mode
+            case 0xD:
                 if (!rdr.TryReadByte(out b))
                     return false;
                 op = DisplacementOperand(width, reg, Constant.SByte((sbyte)b), bSpecifier);
                 break;
-            case 12:
-            case 13:
+            case 0xB:
+            case 0xE:
                 if (!rdr.TryReadUInt16(out w))
                     return false;
                 op = DisplacementOperand(width, reg, Constant.Int16((short)w), bSpecifier);
                 break;
-            case 14:
-            case 15:
+            case 0xC:
+            case 0xF:
                 if (!rdr.TryReadUInt32(out dw))
                     return false;
                 op = DisplacementOperand(width, reg, Constant.Word32(dw), bSpecifier);
                 break;
             default:
-                throw new NotImplementedException(
-                    string.Format(
-                        "Unimplemented addressing mode {0:X2}", (bSpecifier >> 4)));
+                throw new InvalidCastException("Impossiburu!");
             }
             return true;
         }
@@ -250,7 +248,7 @@ namespace Reko.Arch.Vax
             {
                 Base = reg,
                 Offset = c,
-                Deferred = (bSpecifier & 1) == 1
+                Deferred = (bSpecifier >> 4) > 0xC
             };
         }
 
