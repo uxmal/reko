@@ -217,6 +217,24 @@ namespace Reko.Arch.Vax
             NZ00(dst);
         }
 
+        private void RewriteMulp()
+        {
+            var op0 = RewriteSrcOp(0, PrimitiveType.Word16);
+            var op1 = RewriteSrcOp(1, PrimitiveType.Pointer32);
+            var op2 = RewriteSrcOp(2, PrimitiveType.Word16);
+            var op3 = RewriteSrcOp(3, PrimitiveType.Pointer32);
+            var op4 = RewriteSrcOp(4, PrimitiveType.Word16);
+            var op5 = RewriteSrcOp(5, PrimitiveType.Pointer32);
+            var grf = FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF);
+            emitter.Assign(
+                grf,
+                host.PseudoProcedure(
+                    "vax_mulp",
+                    PrimitiveType.Byte,
+                    op0, op1, op2, op3, op4, op5));
+            var c = FlagGroup(FlagM.CF);
+            emitter.Assign(c, Constant.False());
+        }
         private void RewritePush(PrimitiveType width)
         {
             var sp = frame.EnsureRegister(Registers.sp);
