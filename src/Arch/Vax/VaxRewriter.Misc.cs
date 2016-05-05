@@ -32,5 +32,16 @@ namespace Reko.Arch.Vax
         {
             emitter.SideEffect(PseudoProc("__halt", VoidType.Instance));
         }
+
+        private void RewriteBpt()
+        {
+            emitter.SideEffect(PseudoProc("vax_bpt", VoidType.Instance));
+        }
+
+        private void RewriteChme()
+        {
+            emitter.SideEffect(PseudoProc("vax_chme", VoidType.Instance,
+                RewriteSrcOp(1, PrimitiveType.Word16)));
+        }
     }
 }

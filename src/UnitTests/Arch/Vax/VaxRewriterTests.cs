@@ -296,12 +296,39 @@ namespace Reko.UnitTests.Arch.Vax
         }
 
         [Test]
+        public void VaxRw_bgtr()
+        {
+            BuildTest(0x14, 0x03);	// bgtr	00008178
+            AssertCode(
+                "0|T--|00010000(2): 1 instructions",
+                "1|T--|if (Test(GT,ZN)) branch 00010005");
+        }
+
+        [Test]
+        public void VaxRw_bgtru()
+        {
+            BuildTest(0x1A, 0x29);	// bgtru	0000B43C
+            AssertCode(
+                "0|T--|00010000(2): 1 instructions",
+                "1|T--|if (Test(UGT,CZ)) branch 0001002B");
+        }
+
+        [Test]
         public void VaxRw_bleq()
         {
             BuildTest(0x15, 0x42);	// bleq	00008128
             AssertCode(
                 "0|T--|00010000(2): 1 instructions",
-                "1|T--|if (Test(LE,ZN)) branch 00010030");
+                "1|T--|if (Test(LE,ZN)) branch 00010044");
+        }
+
+        [Test]
+        public void VaxRw_blequ()
+        {
+            BuildTest(0x1B, 0x16);	// blequ	00008F6E
+            AssertCode(
+                "0|T--|00010000(2): 1 instructions",
+                "1|T--|if (Test(ULE,CZ)) branch 00010018");
         }
 
         [Test]
@@ -309,8 +336,26 @@ namespace Reko.UnitTests.Arch.Vax
         {
             BuildTest(0x19, 0x04);	// blss	00008155
             AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
+                "0|T--|00010000(2): 1 instructions",
+                "1|T--|if (Test(LT,N)) branch 00010044");
+        }
+
+        [Test]
+        public void VaxRw_blssu()
+        {
+            BuildTest(0x19, 0x04);	// blss	00008155
+            AssertCode(
+                "0|T--|00010000(2): 1 instructions",
+                "1|T--|if (Test(ULT,C)) branch 00010006");
+        }
+
+        [Test]
+        public void VaxRw_bneq()
+        {
+            BuildTest(0x12, 0x02);	// bneq	00008081
+            AssertCode(
+                "0|T--|00010000(2): 1 instructions",
+                "1|T--|if (Test(NE,Z)) branch 00010004");
         }
 
         [Test]
@@ -392,6 +437,303 @@ namespace Reko.UnitTests.Arch.Vax
 
 
         [Test]
+        public void VaxRw_bisb2()
+        {
+            BuildTest(0x88, 0xE1, 0xFE, 0x7F, 0xD0, 0x50, 0x52);	// bisb2	+50D07FFE(r1),r2
+            AssertCode(
+                "0|L--|00010000(7): 5 instructions",
+                "1|L--|v4 = (byte) r2 | Mem0[r1 + 0x50D07FFE:byte]",
+                "2|L--|r2 = DPB(r2, v4, 0)",
+                "3|L--|ZN = cond(v4)",
+                "4|L--|C = false",
+                "5|L--|V = false");
+        }
+
+        [Test]
+        public void VaxRw_bisb3()
+        {
+            BuildTest(0x89, 0xF3, 0xD4, 0x50, 0x04, 0xD5, 0x50, 0x7B);	// bisb3	-2AFBAF2C(r3),r0,-(r11)
+            AssertCode(
+                "0|L--|00010000(8): 6 instructions",
+                "1|L--|r11 = r11 - 0x00000001", 
+                "2|L--|v5 = (byte) r0 | Mem0[r3 + 0xD50450D4:byte]",
+                "3|L--|Mem0[r11:byte] = v5",
+                "4|L--|ZN = cond(v5)",
+                "5|L--|C = false",
+                "6|L--|V = false");
+        }
+
+        [Test]
+        public void VaxRw_bisl2()
+        {
+            BuildTest(0xC8, 0xE1, 0xFE, 0x7F, 0xD0, 0x50, 0x54);	// bisl2	+50D07FFE(r1),r4
+            AssertCode(
+                "0|L--|00010000(7): 4 instructions",
+                "1|L--|r4 = r4 | Mem0[r1 + 0x50D07FFE:word32]",
+                "2|L--|ZN = cond(r4)",
+                "3|L--|C = false",
+                "4|L--|V = false");
+        }
+
+        [Test]
+        public void VaxRw_bisl3()
+        {
+            BuildTest(0xC9, 0xE2, 0xA8, 0x0A, 0x01, 0x00, 0xE2, 0xAC, 0x0A, 0x01, 0x00, 0x5C);	// bisl3	+00010AA8(r2),+00010AAC(r2),ap
+            AssertCode(
+                "0|L--|00010000(12): 4 instructions",
+                "1|L--|ap = Mem0[r2 + 0x00010AAC:word32] | Mem0[r2 + 0x00010AA8:word32]",
+                "2|L--|ZN = cond(ap)",
+                "3|L--|C = false",
+                "4|L--|V = false");
+        }
+
+        [Test]
+        public void VaxRw_bisw2()
+        {
+            BuildTest(0xA8, 0x05, 0xE6, 0x22, 0x02, 0x01, 0x00);	// bisw2	#0005,+00010222(r6)
+            AssertCode(
+                "0|L--|00010000(7): 5 instructions",
+                "1|L--|v3 = Mem0[r6 + 0x00010222:word16] | 0x0005",
+                "2|L--|Mem0[r6 + 0x00010222:word16] = v3",
+                "3|L--|ZN = cond(v3)",
+                "4|L--|C = false",
+                "5|L--|V = false");
+        }
+
+        [Test]
+        public void VaxRw_bisw3()
+        {
+            BuildTest(0xA9, 0x01, 0xA9, 0x00, 0xA9, 0x00);	// bisw3	#0001,+00(r9),+00(r9)
+            AssertCode(
+                "0|L--|00010000(6): 5 instructions",
+                "1|L--|v3 = Mem0[r9 + 0:word16] | 0x0001",
+                "2|L--|Mem0[r9 + 0:word16] = v3",
+                "3|L--|ZN = cond(v3)",
+                "4|L--|C = false",
+                "5|L--|V = false");
+        }
+
+        [Test]
+        public void VaxRw_bpt()
+        {
+            BuildTest(0x03);	// bpt	
+            AssertCode(
+                "0|L--|00010000(2): 1 instructions",
+                "1|L--|vax_bpt()");
+        }
+
+
+        [Test]
+        public void VaxRw_clrb()
+        {
+            BuildTest(0x94, 0x50);	// clrb	r0
+            AssertCode(
+                "0|L--|00010000(2): 6 instructions",
+                "1|L--|v3 = 0x00",
+                "2|L--|r0 = DPB(r0, v3, 0)",
+                "3|L--|Z = true",
+                "4|L--|N = false",
+                "5|L--|C = false",
+                "6|L--|V = false");
+        }
+
+        [Test]
+        public void VaxRw_clrl()
+        {
+            BuildTest(0xD4, 0x53);	// clrl	r3
+            AssertCode(
+                "0|L--|00010000(2): 5 instructions",
+                "1|L--|r3 = 0x00000000",
+                "2|L--|Z = true",
+                "3|L--|N = false",
+                "4|L--|C = false",
+                "5|L--|V = false");
+        }
+
+        [Test]
+        public void VaxRw_clrq()
+        {
+            BuildTest(0x7C, 0x81);	// clrq	(r1)+
+            AssertCode(
+                "0|L--|00010000(2): 7 instructions",
+                "1|L--|v3 = 0x0000000000000000",
+                "2|L--|Mem0[r1:word64] = v3",
+                "3|L--|r1 = r1 + 0x00000008",
+                "4|L--|Z = true",
+                "5|L--|N = false",
+                "6|L--|C = false",
+                "7|L--|V = false");
+        }
+
+        [Test]
+        public void VaxRw_clrw()
+        {
+            BuildTest(0xB4, 0xCD, 0xE8, 0xFE);	// clrw	-0118(fp)
+            AssertCode(
+                "0|L--|00010000(4): 6 instructions",
+                "1|L--|v3 = 0x0000",
+                "2|L--|Mem0[fp + -280:word16] = v3",
+                "3|L--|Z = true",
+                "4|L--|N = false",
+                "5|L--|C = false",
+                "6|L--|V = false");
+        }
+
+        [Test]
+        public void VaxRw_cmpb()
+        {
+            BuildTest(0x91, 0xB7, 0x00, 0x2D);	// cmpb	+00(r7),#2D
+            AssertCode(
+                "0|L--|00010000(4): 2 instructions",
+                "1|L--|CZN = cond(Mem0[r7 + 0:byte] - 0x2D)",
+                "2|L--|V = false");
+        }
+
+        [Test]
+        public void VaxRw_cmpl()
+        {
+            BuildTest(0xD1, 0xAC, 0x04, 0x01);	// cmpl	+04(ap),#00000001
+            AssertCode(
+                "0|L--|00010000(4): 2 instructions",
+                "1|L--|CZN = cond(Mem0[ap + 4:word32] - 0x2D)",
+                "2|L--|V = false");
+        }
+
+        [Test]
+        public void VaxRw_cmpw()
+        {
+            BuildTest(0xB1, 0xBE, 0x10, 0xCB, 0x3F, 0x03);	// cmpw	+10(sp),+033F(r11)
+            AssertCode(
+                "0|L--|00010000(6): 2 instructions",
+                "1|L--|CZN = cond(Mem0[sp + 16:word16] - Mem0[r11 + 831:word16])",
+                "2|L--|V = false");
+        }
+
+        [Test]
+        public void VaxRw_decl()
+        {
+            BuildTest(0xD7, 0x58);	// decl	r8
+            AssertCode(
+                "0|L--|00010000(2): 2 instructions",
+                "1|L--|r8 = r8 - 0x00000001",
+                "2|L--|CVZN = cond(r8)");
+        }
+
+        [Test]
+        public void VaxRw_decw()
+        {
+            BuildTest(0xB7, 0xAE, 0x46);	// decw	+46(sp)
+            AssertCode(
+                "0|L--|00010000(3): 3 instructions",
+                "1|L--|v3 = Mem0[sp + 70:word16] - 0x0001",
+                "2|L--|Mem0[sp + 70:word16] = v3",
+                "3|L--|CVZN = cond(v3)");
+        }
+
+        [Test]
+        public void VaxRw_divb3()
+        {
+            BuildTest(0x87, 0x53, 0x51, 0x90);	// divb3	r3,r1,@(R0)+
+            AssertCode(
+                "0|L--|00010000(4): 4 instructions",
+                "1|L--|v5 = (byte) r1 / (byte) r3",
+                "2|L--|Mem0[Mem0[r0:word32]:byte] = v5",
+                "3|L--|r0 = r0 + 0x00000004",
+                "4|L--|CVZN = cond(v5)");
+        }
+
+        [Test]
+        public void VaxRw_divd2()
+        {
+            BuildTest(0x66, 0x24, 0xEA, 0x00, 0xEA, 0x00, 0xEA);	// divd2	#0.5,-15FF1600(r10)
+            AssertCode(
+                "0|L--|00010000(7): 3 instructions",
+                "1|L--|v3 = Mem0[r10 + 0xEA00EA00:real64] / 12",
+                "2|L--|Mem0[r10 + 0xEA00EA00:real64] = v3",
+                "3|L--|CVZN = cond(v3)");
+        }
+
+        [Test]
+        public void VaxRw_divd3()
+        {
+            BuildTest(0x67, 0x20, 0x5A, 0x65 );	// divd3	#80,r10,(r5)
+            AssertCode(
+                "0|L--|00010000(4): 3 instructions",
+                "1|L--|v4 = r10 / 8",
+                "2|L--|Mem0[r5:real64] = v4",
+                "3|L--|CVZN = cond(v4)");
+        }
+
+        [Test]
+        public void VaxRw_divf2()
+        {
+            BuildTest(0x46, 0x32, 0x57);	// divf2	
+            AssertCode(
+                "0|L--|00010000(3): 2 instructions",
+                "1|L--|r7 = r7 / 40F",
+                "2|L--|CVZN = cond(r7)");
+        }
+
+        [Test]
+        public void VaxRw_divf3()
+        {
+            BuildTest(0x47, 0x32, 0x56, 0x68);	// divf3	
+            AssertCode(
+                "0|L--|00010000(4): 3 instructions",
+                "1|L--|v4 = r6 / @@",
+                "2|L--|Mem0[r8:real32] = v4",
+                "3|L--|CVZN = cond(v4)");
+        }
+
+        [Test]
+        public void VaxRw_divl2()
+        {
+            BuildTest(0xC6, 0x04, 0x50);	// divl2	#00000004,r0
+            AssertCode(
+                "0|L--|00010000(3): 2 instructions",
+                "1|L--|r0 = r0 / 0x00000004",
+                "2|L--|CVZN = cond(r0)");
+        }
+
+        [Test]
+        public void VaxRw_divl3()
+        {
+            BuildTest(0xC7, 0x04, 0x50, 0xA2, 0x64);	// divl3	#00000004,r0,+64(r2)
+            AssertCode(
+                "0|L--|00010000(5): 3 instructions",
+                "1|L--|v4 = r0 / 0x00000004",
+                "1|L--|Mem0[r2 + 100:word32] = v4",
+                "2|L--|CVZN = cond(v4)");
+        }
+
+        [Test]
+        public void VaxRw_divp()
+        {
+            BuildTest(0x27, 0x00, 0x3B, 0x00, 0x11, 0x4B, 0xD5, 0x50, 0x01, 0x17);	// divp	#0000,#3B,#0000,#11,+0150(r5)[r11],#17
+            AssertCode(
+                "0|L--|00010000(2): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void VaxRw_divw2()
+        {
+            BuildTest(0xA6, 0x2D, 0x2B);	// divw2	#002D,#002B
+            AssertCode(
+                "0|L--|00010000(2): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
+        public void VaxRw_divw3()
+        {
+            BuildTest(0xA7, 0x00, 0xAC, 0x00, 0xAC, 0x00);	// divw3	#0000,+00(ap),+00(ap)
+            AssertCode(
+                "0|L--|00010000(2): 1 instructions",
+                "1|L--|@@@");
+        }
+
+        [Test]
         public void VaxRw_subl2()
         {
             BuildTest(0xC2, 0x04, 0x5E);	// subl2	#00000004,sp
@@ -419,18 +761,18 @@ namespace Reko.UnitTests.Arch.Vax
         }
 
         [Test]
-        public void VaxRw_pushl()
+        public void VaxRw_movl()
         {
-            BuildTest(0xDD, 0xAC, 0x08);	// pushl	+08(ap)
+            BuildTest(0xD0, 0x01, 0x50);	// movl	#00000001,r0
             AssertCode(
                 "0|L--|00010000(2): 1 instructions",
                 "1|L--|@@@");
         }
 
         [Test]
-        public void VaxRw_movl()
+        public void VaxRw_pushl()
         {
-            BuildTest(0xD0, 0x01, 0x50);	// movl	#00000001,r0
+            BuildTest(0xDD, 0xAC, 0x08);	// pushl	+08(ap)
             AssertCode(
                 "0|L--|00010000(2): 1 instructions",
                 "1|L--|@@@");
@@ -481,41 +823,7 @@ namespace Reko.UnitTests.Arch.Vax
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void VaxRw_clrl()
-        {
-            BuildTest(0xD4, 0x53);	// clrl	r3
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void VaxRw_cmpl()
-        {
-            BuildTest(0xD1, 0xAC, 0x04, 0x01);	// cmpl	+04(ap),#00000001
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        public void VaxRw_bneq()
-        {
-            BuildTest(0x12, 0x02);	// bneq	00008081
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        public void VaxRw_incl()
-        {
-            BuildTest(0xD6, 0x53);	// incl	r3
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
         [Test]
         public void VaxRw_pushal()
@@ -571,14 +879,7 @@ namespace Reko.UnitTests.Arch.Vax
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void VaxRw_bgtr()
-        {
-            BuildTest(0x14, 0x03);	// bgtr	00008178
-            AssertCode(
-                "0|T--|00010000(2): 1 instructions",
-                "1|T--|if (Test(GT,ZN) branch 00010005");
-        }
+
 
         [Test]
         public void VaxRw_brw()
@@ -593,17 +894,6 @@ namespace Reko.UnitTests.Arch.Vax
         public void VaxRw_subl3()
         {
             BuildTest(0xC3, 0x04, 0xAC, 0x08, 0x54);	// subl3	#00000004,+08(ap),r4
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
-
-
-
-        [Test]
-        public void VaxRw_divl3()
-        {
-            BuildTest(0xC7, 0x04, 0x50, 0xA2, 0x64);	// divl3	#00000004,r0,+64(r2)
             AssertCode(
                 "0|L--|00010000(2): 1 instructions",
                 "1|L--|@@@");
@@ -636,15 +926,7 @@ namespace Reko.UnitTests.Arch.Vax
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void VaxRw_divl2()
-        {
-            BuildTest(0xC6, 0x04, 0x50);	// divl2	#00000004,r0
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
-
+ 
         [Test]
         public void VaxRw_remque()
         {
@@ -663,14 +945,6 @@ namespace Reko.UnitTests.Arch.Vax
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void VaxRw_cmpb()
-        {
-            BuildTest(0x91, 0xB7, 0x00, 0x2D);	// cmpb	+00(r7),#2D
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
         [Test]
         public void VaxRw_cvtbl()
@@ -737,14 +1011,6 @@ namespace Reko.UnitTests.Arch.Vax
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void VaxRw_bpt()
-        {
-            BuildTest(0x03);	// bpt	
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
         [Test]
         public void VaxRw_insqhi()
@@ -777,15 +1043,6 @@ namespace Reko.UnitTests.Arch.Vax
         public void VaxRw_movc3()
         {
             BuildTest(0x28, 0x02, 0xE4, 0x04, 0x74, 0x02, 0x88, 0x02);	// movc3	#0002,-77FD8BFC(r4),#02
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        public void VaxRw_xorw2()
-        {
-            BuildTest(0xAC, 0x02, 0xB4, 0x03);	// xorw2	#0002,+03(r4)
             AssertCode(
                 "0|L--|00010000(2): 1 instructions",
                 "1|L--|@@@");
@@ -827,14 +1084,6 @@ namespace Reko.UnitTests.Arch.Vax
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void VaxRw_decl()
-        {
-            BuildTest(0xD7, 0x58);	// decl	r8
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
         [Test]
         public void VaxRw_mnegl()
@@ -854,41 +1103,7 @@ namespace Reko.UnitTests.Arch.Vax
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void VaxRw_clrb()
-        {
-            BuildTest(0x94, 0x50);	// clrb	r0
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
-        [Test]
-        public void VaxRw_clrq()
-        {
-            BuildTest(0x7C, 0x00);	// clrq	#00000000
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        public void VaxRw_clrw()
-        {
-            BuildTest(0xB4, 0xCD, 0xE8, 0xFE);	// clrw	-0118(fp)
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        public void VaxRw_blequ()
-        {
-            BuildTest(0x1B, 0x16);	// blequ	00008F6E
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
         [Test]
         public void VaxRw_blbc()
@@ -898,17 +1113,6 @@ namespace Reko.UnitTests.Arch.Vax
                 "0|L--|00010000(2): 1 instructions",
                 "1|L--|@@@");
         }
-
-
-        [Test]
-        public void VaxRw_blssu()
-        {
-            BuildTest(0x1F, 0xF1);	// blssu	000096E8
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
-
 
 
         [Test]
@@ -939,6 +1143,40 @@ namespace Reko.UnitTests.Arch.Vax
         }
 
         [Test]
+        public void VaxRw_incb()
+        {
+            BuildTest(0x96, 0x89);	// incb	(r9)+
+            AssertCode(
+                "0|L--|00010000(2): 4 instructions",
+                "1|L--|v3 = Mem0[r9:byte] + 0x01",
+                "2|L--|Mem0[r9:byte] = v3",
+                "3|L--|r9 = r9 + 0x00000001",
+                "4|L--|CVZN = cond(v3)");
+        }
+
+        [Test]
+        public void VaxRw_incl()
+        {
+            BuildTest(0xD6, 0x53);	// incl	r3
+            AssertCode(
+                "0|L--|00010000(2): 2 instructions",
+                "1|L--|r3 = r3 + 0x00000001",
+                "2|L--|CVZN = cond(r3)");
+        }
+
+        [Test]
+        public void VaxRw_incw()
+        {
+            BuildTest(0xB6, 0xAE, 0x32);	// incw	+32(sp)
+            AssertCode(
+                "0|L--|00010000(3): 3 instructions",
+                "1|L--|v3 = Mem0[sp + 50:word16] + 0x0001",
+                "2|L--|Mem0[sp + 50:word16] = v3",
+                "3|L--|CVZN = cond(v3)");
+        }
+
+
+        [Test]
         public void VaxRw_subp6()
         {
             BuildTest(0x23, 0x3D, 0x0A, 0xD7, 0x70, 0x3D, 0xD7, 0xA3, 0x7C, 0x00, 0x9E);	// subp6	#003D,#0A,+3D70(r7),+7CA3(r7),#0000,(sp)+
@@ -956,14 +1194,7 @@ namespace Reko.UnitTests.Arch.Vax
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void VaxRw_xorw3()
-        {
-            BuildTest(0xAD, 0xAC, 0xD0, 0xEC, 0x13, 0xC6, 0x00, 0x00, 0xAD, 0xD8);	// xorw3	-30(ap),+0000C613(ap),-28(fp)
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
+
 
         [Test]
         public void VaxRw_cvtps()
@@ -1030,14 +1261,6 @@ namespace Reko.UnitTests.Arch.Vax
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void VaxRw_bisl2()
-        {
-            BuildTest(0xC8, 0xE1, 0xFE, 0x7F, 0xD0, 0x50, 0x54);	// bisl2	+50D07FFE(r1),r4
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
         [Test]
         public void VaxRw_movp()
@@ -1178,15 +1401,6 @@ namespace Reko.UnitTests.Arch.Vax
         }
 
         [Test]
-        public void VaxRw_bisw2()
-        {
-            BuildTest(0xA8, 0x05, 0xE6, 0x22, 0x02, 0x01, 0x00);	// bisw2	#0005,+00010222(r6)
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
         public void VaxRw_remqhi()
         {
             BuildTest(0x5E);	// remqhi	
@@ -1208,24 +1422,6 @@ namespace Reko.UnitTests.Arch.Vax
         public void VaxRw_Reserved()
         {
             BuildTest(0x57);	// Reserved	
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        public void VaxRw_xorl3()
-        {
-            BuildTest(0xCD, 0xFD, 0xFF, 0x58, 0xD0, 0xEA, 0x27, 0xC6, 0x00, 0x00);	// xorl3	-152FA701(fp),#00000027,+0000(r6)
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        public void VaxRw_cmpw()
-        {
-            BuildTest(0xB1, 0xBE, 0x10, 0xCB, 0x3F, 0x03);	// cmpw	+10(sp),+033F(r11)
             AssertCode(
                 "0|L--|00010000(2): 1 instructions",
                 "1|L--|@@@");
@@ -1258,14 +1454,6 @@ namespace Reko.UnitTests.Arch.Vax
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void VaxRw_divp()
-        {
-            BuildTest(0x27, 0x00, 0x3B, 0x00, 0x11, 0x4B, 0xD5, 0x50, 0x01, 0x17);	// divp	#0000,#3B,#0000,#11,+0150(r5)[r11],#17
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
         [Test]
         public void VaxRw_bvc()
@@ -1324,32 +1512,7 @@ namespace Reko.UnitTests.Arch.Vax
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void VaxRw_bgtru()
-        {
-            BuildTest(0x1A, 0x29);	// bgtru	0000B43C
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        public void VaxRw_bisb2()
-        {
-            BuildTest(0x88, 0xE1, 0xFE, 0x7F, 0xD0, 0x50, 0x51);	// bisb2	+50D07FFE(r1),r1
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        public void VaxRw_bisb3()
-        {
-            BuildTest(0x89, 0xF3, 0xD4, 0x50, 0x04, 0xD5, 0x50, 0x1C);	// bisb3	-2AFBAF2C(r3),r0,#1C
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
+  
 
         [Test]
         public void VaxRw_mull3()
@@ -1388,14 +1551,6 @@ namespace Reko.UnitTests.Arch.Vax
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void VaxRw_incb()
-        {
-            BuildTest(0x96, 0x59);	// incb	r9
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
         [Test]
         public void VaxRw_subd2()
@@ -1419,15 +1574,6 @@ namespace Reko.UnitTests.Arch.Vax
         public void VaxRw_index()
         {
             BuildTest(0x0A, 0x01, 0x00, 0xD4, 0x50, 0x04, 0x9A, 0xE6, 0x18, 0x0A, 0x01, 0x00, 0x52);	// index	#00000001,#00000000,+0450(r4),(r10)+,+00010A18(r6),r2
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        public void VaxRw_bisl3()
-        {
-            BuildTest(0xC9, 0xE2, 0xA8, 0x0A, 0x01, 0x00, 0xE2, 0xAC, 0x0A, 0x01, 0x00, 0x5C);	// bisl3	+00010AA8(r2),+00010AAC(r2),ap
             AssertCode(
                 "0|L--|00010000(2): 1 instructions",
                 "1|L--|@@@");
@@ -1496,25 +1642,6 @@ namespace Reko.UnitTests.Arch.Vax
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void VaxRw_xorl2()
-        {
-            BuildTest(0xCC, 0x8F, 0xFF, 0xFF, 0xFF, 0xFF, 0x53);	// xorl2	#FFFFFFFF,r3
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
-
-
-
-        [Test]
-        public void VaxRw_xorb3()
-        {
-            BuildTest(0x8D, 0x5C, 0x52, 0x63);	// xorb3	ap,r2,(r3)
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
         [Test]
         public void VaxRw_cmpf()
@@ -1535,24 +1662,6 @@ namespace Reko.UnitTests.Arch.Vax
         }
 
         [Test]
-        public void VaxRw_decw()
-        {
-            BuildTest(0xB7, 0xAE, 0x46);	// decw	+46(sp)
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
-        public void VaxRw_incw()
-        {
-            BuildTest(0xB6, 0xAE, 0x32);	// incw	+32(sp)
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
         public void VaxRw_insv()
         {
             BuildTest(0xF0);	// insv	
@@ -1561,14 +1670,7 @@ namespace Reko.UnitTests.Arch.Vax
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void VaxRw_divw3()
-        {
-            BuildTest(0xA7, 0x00, 0xAC, 0x00, 0xAC, 0x00);	// divw3	#0000,+00(ap),+00(ap)
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
+   
 
         [Test]
         public void VaxRw_rotl()
@@ -1599,14 +1701,6 @@ namespace Reko.UnitTests.Arch.Vax
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void VaxRw_divd2()
-        {
-            BuildTest(0x66, 0x00, 0xEA, 0x00, 0xEA, 0x00, 0xEA);	// divd2	#0.5,-15FF1600(r10)
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
         [Test]
         public void VaxRw_bvs()
@@ -1617,14 +1711,7 @@ namespace Reko.UnitTests.Arch.Vax
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void VaxRw_bisw3()
-        {
-            BuildTest(0xA9, 0x00, 0xA9, 0x00, 0xA9, 0x00);	// bisw3	#0000,+00(r9),+00(r9)
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
+ 
 
         [Test]
         public void VaxRw_mulb3()
@@ -1706,8 +1793,6 @@ namespace Reko.UnitTests.Arch.Vax
                 "0|L--|00010000(2): 1 instructions",
                 "1|L--|@@@");
         }
-
-
 
         [Test]
         public void VaxRw_locc()
@@ -1809,14 +1894,7 @@ namespace Reko.UnitTests.Arch.Vax
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void VaxRw_xorb2()
-        {
-            BuildTest(0x8C, 0x02, 0x00);	// xorb2	#02,#00
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
+ 
 
         [Test]
         public void VaxRw_cvtpt()
@@ -1918,16 +1996,6 @@ namespace Reko.UnitTests.Arch.Vax
                 "0|L--|00010000(2): 1 instructions",
                 "1|L--|@@@");
         }
-
-        [Test]
-        public void VaxRw_divf2()
-        {
-            BuildTest(0x46);	// divf2	
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
-
 
         [Test]
         public void VaxRw_mulw2()
@@ -2037,14 +2105,7 @@ namespace Reko.UnitTests.Arch.Vax
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void VaxRw_divd3()
-        {
-            BuildTest(0x67, 0x65, 0x3A, 0x20);	// divd3	(r5),#80,#8
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
+
 
         [Test]
         public void VaxRw_cvtdf()
@@ -2055,14 +2116,7 @@ namespace Reko.UnitTests.Arch.Vax
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void VaxRw_divf3()
-        {
-            BuildTest(0x47);	// divf3	
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
+
 
         [Test]
         public void VaxRw_skpc()
@@ -2100,14 +2154,6 @@ namespace Reko.UnitTests.Arch.Vax
                 "1|L--|@@@");
         }
 
-        [Test]
-        public void VaxRw_divb3()
-        {
-            BuildTest(0x87, 0x53, 0x01, 0x00);	// divb3	r3,#01,#00
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
         [Test]
         public void VaxRw_mcomb()
@@ -2185,15 +2231,6 @@ namespace Reko.UnitTests.Arch.Vax
         }
 
         [Test]
-        public void VaxRw_divw2()
-        {
-            BuildTest(0xA6, 0x2D, 0x2B);	// divw2	#002D,#002B
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
-
-        [Test]
         public void VaxRw_mtpr()
         {
             BuildTest(0xDA);	// mtpr	
@@ -2220,6 +2257,83 @@ namespace Reko.UnitTests.Arch.Vax
                 "1|L--|@@@");
         }
 
+        [Test]
+        public void VaxRw_xorb2()
+        {
+            BuildTest(0x8C, 0x02, 0x90);	// xorb2	#02,(r0)+
+            AssertCode(
+                "0|L--|00010000(3): 6 instructions",
+                "1|L--|v3 = Mem0[r0:byte] ^ 0x02",
+                "2|L--|Mem0[r0:byte] = v3",
+                "3|L--|r0 = r0 + 0x00000001",
+                "4|L--|ZN = cond(v3)",
+                "5|L--|C = false",
+                "6|L--|V = false");
+        }
 
+        [Test]
+        public void VaxRw_xorb3()
+        {
+            BuildTest(0x8D, 0x5C, 0x52, 0x63);	// xorb3	ap,r2,(r3)
+            AssertCode(
+                "0|L--|00010000(4): 5 instructions",
+                "1|L--|v5 = (byte) r2 ^ (byte) ap",
+                "2|L--|Mem0[r3:byte] = v5",
+                "3|L--|ZN = cond(v5)",
+                "4|L--|C = false",
+                "5|L--|V = false");
+        }
+
+        [Test]
+        public void VaxRw_xorl2()
+        {
+            BuildTest(0xCC, 0x8F, 0xFF, 0xFF, 0xFF, 0xFF, 0x53);	// xorl2	#FFFFFFFF,r3
+            AssertCode(
+                "0|L--|00010000(7): 4 instructions",
+                "1|L--|r3 = r3 ^ 0xFFFFFFFF",
+                "2|L--|ZN = cond(r3)",
+                "3|L--|C = false",
+                "4|L--|V = false");
+        }
+
+
+        [Test]
+        public void VaxRw_xorl3()
+        {
+            BuildTest(0xCD, 0xFD, 0xFF, 0x58, 0xD0, 0xEA, 0x27, 0xC6, 0x00, 0x00);	// xorl3	-152FA701(fp),#00000027,+0000(r6)
+            AssertCode(
+                "0|L--|00010000(10): 5 instructions",
+                "1|L--|v4 = 0x00000027 ^ Mem0[fp + 0xEAD058FF:word32]",
+                "2|L--|Mem0[r6 + 0:word32] = v4",
+                "3|L--|ZN = cond(v4)",
+                "4|L--|C = false",
+                "5|L--|V = false");
+        }
+
+        [Test]
+        public void VaxRw_xorw2()
+        {
+            BuildTest(0xAC, 0x02, 0xB4, 0x03);	// xorw2	#0002,+03(r4)
+            AssertCode(
+                "0|L--|00010000(4): 5 instructions",
+                "1|L--|v3 = Mem0[r4 + 3:word16] ^ 0x0002",
+                "2|L--|Mem0[r4 + 3:word16] = v3",
+                "3|L--|ZN = cond(v3)",
+                "4|L--|C = false",
+                "5|L--|V = false");
+        }
+
+        [Test]
+        public void VaxRw_xorw3()
+        {
+            BuildTest(0xAD, 0xAC, 0xD0, 0xEC, 0x13, 0xC6, 0x00, 0x00, 0xAD, 0xD8);	// xorw3	-30(ap),+0000C613(ap),-28(fp)
+            AssertCode(
+                "0|L--|00010000(10): 5 instructions",
+                "1|L--|v4 = Mem0[ap + 0x0000C613:word16] ^ Mem0[ap + -48:word16]",
+                "2|L--|Mem0[fp + -40:word16] = v4",
+                "3|L--|ZN = cond(v4)",
+                "4|L--|C = false",
+                "5|L--|V = false");
+        }
     }
 }

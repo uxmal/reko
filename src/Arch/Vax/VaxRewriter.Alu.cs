@@ -34,6 +34,16 @@ namespace Reko.Arch.Vax
             return emitter.And(a, emitter.Comp(mask));
         }
 
+        private Expression Dec(Expression e)
+        {
+            return emitter.ISub(e, 1);
+        }
+
+        private Expression Inc(Expression e)
+        {
+            return emitter.IAdd(e, 1);
+        }
+
         private void RewriteAddp4()
         {
             var op0 = RewriteSrcOp(0, PrimitiveType.Word16);
@@ -139,6 +149,37 @@ namespace Reko.Arch.Vax
             emitter.Assign(c, Constant.False());
         }
 
+        private void RewriteClr(PrimitiveType width)
+        {
+            RewriteDstOp(0, width, e => Constant.Create(width, 0));
+            emitter.Assign(FlagGroup(FlagM.ZF), Constant.True());
+            emitter.Assign(FlagGroup(FlagM.NF), Constant.False());
+            emitter.Assign(FlagGroup(FlagM.CF), Constant.False());
+            emitter.Assign(FlagGroup(FlagM.VF), Constant.False());
+        }
 
+        private void RewriteCmp(PrimitiveType width)
+        {
+            var op0 = RewriteSrcOp(0, PrimitiveType.Word16);
+            var op1 = RewriteSrcOp(1, PrimitiveType.Word16);
+            var grf = FlagGroup(FlagM.NF | FlagM.ZF | FlagM.CF);
+            emitter.Assign(grf, emitter.Cond(emitter.ISub(op0, op1)));
+            emitter.Assign(FlagGroup(FlagM.VF), Constant.False());
+        }
+
+        private void RewriteIncDec(PrimitiveType width, Func<Expression, Expression> incdec)
+        {
+            var dst = RewriteDstOp(0, width, e => incdec(e));
+            AllFlags(dst);
+        }
+
+        private void RewritePush(PrimitiveType width)
+        {
+            var sp = frame.EnsureRegister(Registers.sp);
+            emitter.Assign(sp, emitter.ISub(sp, width.Size));
+            var op0 = RewriteSrcOp(0, PrimitiveType.Word16);
+            emitter.Assign(emitter.Load(width, sp), op0);
+            //$TODO: flags?
+        }
     }
 }

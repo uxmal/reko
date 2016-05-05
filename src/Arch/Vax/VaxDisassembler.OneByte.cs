@@ -79,7 +79,7 @@ namespace Reko.Arch.Vax
  /* 2A */ new OpRec(Opcode.scanc, "rw,ab,ab,rb"),
  /* 2B */ new OpRec(Opcode.spanc, "rw,ab,ab,rb"),
  /* 2C */ new OpRec(Opcode.movc5,  -1), 
- /* 2D */ new OpRec(Opcode.cmpc5,  -1), 
+ /* 2D */ new OpRec(Opcode.cmpc5, "rw,ab,rb,raw,ab"), 
  /* 2E */ new OpRec(Opcode.movtc,  -1), 
  /* 2F */ new OpRec(Opcode.movtuc,  -1), 
 
