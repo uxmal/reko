@@ -167,6 +167,25 @@ namespace Reko.Arch.Vax
             emitter.Assign(FlagGroup(FlagM.VF), Constant.False());
         }
 
+        private void RewriteDivp()
+        {
+            var op0 = RewriteSrcOp(0, PrimitiveType.Word16);
+            var op1 = RewriteSrcOp(1, PrimitiveType.Pointer32);
+            var op2 = RewriteSrcOp(2, PrimitiveType.Word16);
+            var op3 = RewriteSrcOp(3, PrimitiveType.Pointer32);
+            var op4 = RewriteSrcOp(4, PrimitiveType.Word16);
+            var op5 = RewriteSrcOp(5, PrimitiveType.Pointer32);
+            var grf = FlagGroup(FlagM.NF | FlagM.ZF | FlagM.VF);
+            emitter.Assign(
+                grf,
+                host.PseudoProcedure(
+                    "vax_divp",
+                    PrimitiveType.Byte,
+                    op0, op1, op2, op3, op4, op5));
+            var c = FlagGroup(FlagM.CF);
+            emitter.Assign(c, Constant.False());
+        }
+
         private void RewriteIncDec(PrimitiveType width, Func<Expression, Expression> incdec)
         {
             var dst = RewriteDstOp(0, width, e => incdec(e));

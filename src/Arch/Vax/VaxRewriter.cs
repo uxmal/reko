@@ -138,7 +138,7 @@ namespace Reko.Arch.Vax
                 case Opcode.divf3: RewriteFpu3(PrimitiveType.Real32, emitter.FDiv, AllFlags); break;
                 case Opcode.divl2: RewriteAlu2(PrimitiveType.Word32, emitter.SDiv, AllFlags); break;
                 case Opcode.divl3: RewriteAlu3(PrimitiveType.Word32, emitter.SDiv, AllFlags); break;
-                case Opcode.divp: goto default;
+                case Opcode.divp: RewriteDivp(); break;
                 case Opcode.divw2: RewriteAlu2(PrimitiveType.Word16, emitter.SDiv, AllFlags); break;
                 case Opcode.divw3: RewriteAlu3(PrimitiveType.Word16, emitter.SDiv, AllFlags); break;
 
@@ -540,12 +540,23 @@ namespace Reko.Arch.Vax
                     {
                         ea = emitter.IAdd(ea, memOp.Offset);
                     }
-                    var mem = emitter.Load(width, ea);
+                    if (memOp.Index != null)
+                    {
+                        Expression idx = frame.EnsureRegister(memOp.Index);
+                        if (width.Size != 1)
+                            idx = emitter.IMul(idx, Constant.Int32(width.Size));
+                        ea = emitter.IAdd(ea, idx);
+                    }
+                    Expression load;
+                    if (memOp.Deferred)
+                        load = emitter.Load(width, emitter.LoadDw(ea));
+                    else
+                        load = emitter.Load(width, ea);
                     if (memOp.AutoIncrement)
                     {
                         throw new NotImplementedException(op.GetType().Name);
                     }
-                    return mem;
+                    return load;
                 }
                 else
                 {
