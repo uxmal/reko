@@ -179,6 +179,17 @@ namespace Reko.Arch.Vax
             rtlc.Class = RtlClass.ConditionalTransfer;
         }
 
+        private void RewriteJmp()
+        {
+            emitter.Goto(RewriteSrcOp(0, PrimitiveType.Word32));
+            rtlc.Class = RtlClass.Transfer;
+        }
+
+        private void RewriteJsb()
+        {
+            emitter.Call(RewriteSrcOp(0, PrimitiveType.Word32), 4);
+            rtlc.Class = RtlClass.Transfer;
+        }
 
         // condition handler (initially 0) <-- fp
         // saved PSW + flags

@@ -52,9 +52,31 @@ namespace Reko.Arch.Vax
             return emitter.ISub(e, 1);
         }
 
+        private Expression FCmp0(Expression val)
+        {
+            return emitter.FSub(val, ConstantReal.Create(val.DataType, 0.0));
+        }
+
+        private Expression ICmp0(Expression val)
+        {
+            return emitter.ISub(val, Constant.Zero(val.DataType));
+        }
+
         private Expression Inc(Expression e)
         {
             return emitter.IAdd(e, 1);
+        }
+
+        private void RewriteMova(PrimitiveType width)
+        {
+            var opSrc = RewriteSrcOp(0, width);
+            var mem = opSrc as MemoryAccess;
+            if (mem == null)
+                throw new AddressCorrelatedException(
+                    dasm.Current.Address,
+                    "Source operand must be a memory reference.");
+            var dst = RewriteDstOp(1, PrimitiveType.Word32, e => mem.EffectiveAddress);
+            NZ00(dst);
         }
 
         private Expression Rotl(Expression a, Expression b)
@@ -355,6 +377,12 @@ namespace Reko.Arch.Vax
                         emitter.ISub(e, op1),
                         FlagGroup(FlagM.CF)));
             AllFlags(dst);
+        }
+
+        private void RewriteTst(PrimitiveType width, Func<Expression,Expression> sub)
+        {
+            var op1 = RewriteSrcOp(0, width);
+            NZ00(sub(op1));
         }
     }
 }

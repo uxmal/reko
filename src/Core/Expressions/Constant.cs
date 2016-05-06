@@ -1067,7 +1067,7 @@ namespace Reko.Core.Expressions
         }
     }
 
-    internal abstract class ConstantReal : Constant
+    public abstract class ConstantReal : Constant
     {
         public ConstantReal(DataType dt) : base(dt)
         {
@@ -1075,10 +1075,11 @@ namespace Reko.Core.Expressions
 
         public static ConstantReal Create(DataType dt, double value)
         {
+            var pt = PrimitiveType.Create(Domain.Real, dt.Size);
             switch (dt.BitSize)
             {
-            case 32: return new ConstantReal32(dt, (float)value);
-            case 64: return new ConstantReal64(dt, value);
+            case 32: return new ConstantReal32(pt, (float)value);
+            case 64: return new ConstantReal64(pt, value);
             }
             throw new NotSupportedException(string.Format("Data type {0} not supported.", dt));
         }

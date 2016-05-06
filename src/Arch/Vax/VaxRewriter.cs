@@ -222,6 +222,8 @@ namespace Reko.Arch.Vax
                 case Opcode.incb: RewriteIncDec(PrimitiveType.Byte, Inc); break;
                 case Opcode.incl: RewriteIncDec(PrimitiveType.Word32, Inc); break;
                 case Opcode.incw: RewriteIncDec(PrimitiveType.Word16, Inc); break;
+                case Opcode.jmp: RewriteJmp(); break;
+                case Opcode.jsb: RewriteJsb(); break;
 
                 case Opcode.mcomb: RewriteAluUnary2(PrimitiveType.Byte, emitter.Comp, NZ00); break;
                 case Opcode.mcoml: RewriteAluUnary2(PrimitiveType.Word32, emitter.Comp, NZ00); break;
@@ -234,11 +236,11 @@ namespace Reko.Arch.Vax
                 case Opcode.mnegl: RewriteAluUnary2(PrimitiveType.Word32, emitter.Neg, AllFlags); break;
                 case Opcode.mnegw: RewriteAluUnary2(PrimitiveType.Word16, emitter.Neg, AllFlags); break;
 
-                case Opcode.movab:  RewriteAluUnary2(PrimitiveType.Word32, e => e, NZ00); break;
-                case Opcode.movah:  RewriteAluUnary2(PrimitiveType.Word32, e => e, NZ00); break;
-                case Opcode.moval:  RewriteAluUnary2(PrimitiveType.Word32, e => e, NZ00); break;
-                case Opcode.movaq:  RewriteAluUnary2(PrimitiveType.Word32, e => e, NZ00); break;
-                case Opcode.movaw:  RewriteAluUnary2(PrimitiveType.Word32, e => e, NZ00); break;
+                case Opcode.movab: RewriteMova(PrimitiveType.Byte); break;
+                case Opcode.movah: RewriteMova(PrimitiveType.Real128); break;
+                case Opcode.moval: RewriteMova(PrimitiveType.Word32); break;
+                case Opcode.movaq: RewriteMova(PrimitiveType.Word64); break;
+                case Opcode.movaw: RewriteMova(PrimitiveType.Word16); break;
                     
                 case Opcode.movb:   RewriteAluUnary2(PrimitiveType.Byte, Copy, NZ00); break;
                 case Opcode.movc3:  goto default;
@@ -312,7 +314,13 @@ namespace Reko.Arch.Vax
                 case Opcode.subp6: RewriteP6("vax_subp6"); break;
                 case Opcode.subw2: RewriteAlu2(PrimitiveType.Word16, emitter.ISub, AllFlags); break;
                 case Opcode.subw3: RewriteAlu3(PrimitiveType.Word16, emitter.ISub, AllFlags); break;
-
+                case Opcode.tstb: RewriteTst(PrimitiveType.Byte, ICmp0); break;
+                case Opcode.tstd: RewriteTst(PrimitiveType.Real64, FCmp0); break;
+                case Opcode.tstf: RewriteTst(PrimitiveType.Real32, FCmp0); break;
+                case Opcode.tstg: RewriteTst(PrimitiveType.Real64, FCmp0); break;
+                case Opcode.tsth: RewriteTst(PrimitiveType.Real128, FCmp0); break;
+                case Opcode.tstl: RewriteTst(PrimitiveType.Word32, ICmp0); break;
+                case Opcode.tstw: RewriteTst(PrimitiveType.Word16, ICmp0); break;
                 case Opcode.xorb2: RewriteAlu2(PrimitiveType.Byte, emitter.Xor, NZ00); break;
                 case Opcode.xorb3: RewriteAlu3(PrimitiveType.Byte, emitter.Xor, NZ00); break;
                 case Opcode.xorl2: RewriteAlu2(PrimitiveType.Word32, emitter.Xor, NZ00); break;
@@ -331,9 +339,6 @@ namespace Reko.Arch.Vax
                 case Opcode.skpc: goto default;
                 case Opcode.insque: goto default;
                 case Opcode.remque: goto default;
-                case Opcode.jsb: goto default;
-                case Opcode.jmp: goto default;
-                case Opcode.tstf: goto default;
                 case Opcode.emodf: goto default;
                 case Opcode.scanc: goto default;
                 case Opcode.spanc: goto default;
@@ -343,17 +348,14 @@ namespace Reko.Arch.Vax
                 case Opcode.remqhi: goto default;
                 case Opcode.movtuc: goto default;
                 case Opcode.remqti: goto default;
-                case Opcode.tstb: goto default;
 
                 case Opcode.bitb: goto default;
-                case Opcode.tstd: goto default;
                 case Opcode.emodd: goto default;
 
                 case Opcode.emul: goto default;
                 case Opcode.ediv: goto default;
                 case Opcode.casew: goto default;
                 case Opcode.bitw: goto default;
-                case Opcode.tstw: goto default;
                 case Opcode.chmk: goto default;
                 case Opcode.chms: goto default;
                 case Opcode.caseb: goto default;
@@ -372,7 +374,6 @@ namespace Reko.Arch.Vax
                 case Opcode.insv: goto default;
 
                 case Opcode.bitl: goto default;
-                case Opcode.tstl: goto default;
                 case Opcode.mtpr: goto default;
                 case Opcode.callg: goto default;
                 case Opcode.mfpr: goto default;
@@ -388,7 +389,6 @@ namespace Reko.Arch.Vax
                 case Opcode.addg3: goto default;
                 case Opcode.divg2: goto default;
                 case Opcode.divg3: goto default;
-                case Opcode.tstg: goto default;
                 case Opcode.emodg: goto default;
                 case Opcode.addh2: goto default;
                 case Opcode.addh3: goto default;
@@ -402,7 +402,6 @@ namespace Reko.Arch.Vax
                 case Opcode.vvmull: goto default;
                 case Opcode.vsmull: goto default;
                 case Opcode.vvmulg: goto default;
-                case Opcode.tsth: goto default;
                 case Opcode.vsmulg: goto default;
                 case Opcode.emodh: goto default;
                 case Opcode.vvmulf: goto default;
@@ -521,10 +520,26 @@ namespace Reko.Arch.Vax
             if (regOp != null)
             {
                 var reg = frame.EnsureRegister(regOp.Register);
-                if (reg.DataType.Size <= width.Size)
+                if (width.Size == 4)
                 {
                     return reg;
-                } else
+                }
+                else if (width.Size == 8)
+                {
+                    var regHi = frame.EnsureRegister(arch.GetRegister(1 + (int)reg.Storage.Domain));
+                    return frame.EnsureSequence(regHi, reg, width);
+                }
+                else if (width.Size == 16)
+                {
+                    var regHi1 = frame.EnsureRegister(arch.GetRegister(1 + (int)reg.Storage.Domain));
+                    var regHi2 = frame.EnsureRegister(arch.GetRegister(2 + (int)reg.Storage.Domain));
+                    var regHi3 = frame.EnsureRegister(arch.GetRegister(3 + (int)reg.Storage.Domain));
+
+                    var regLo = frame.EnsureSequence(regHi1, reg, PrimitiveType.Word64);
+                    var regHi = frame.EnsureSequence(regHi3, regHi2, PrimitiveType.Word64);
+                    return frame.EnsureSequence(regHi, regLo, width);
+                }
+                else
                 {
                     return emitter.Cast(width, reg);
                 }
@@ -582,6 +597,11 @@ namespace Reko.Arch.Vax
                 {
                 }
             }
+            var addrOp = op as AddressOperand;
+            if (addrOp != null)
+            {
+                return addrOp.Address;
+            }
             throw new NotImplementedException(op.GetType().Name);
         }
 
@@ -592,18 +612,30 @@ namespace Reko.Arch.Vax
             if (regOp != null)
             {
                 var reg = frame.EnsureRegister(regOp.Register);
-                if (reg.DataType.Size > width.Size)
+                if (width.Size < 4)
                 {
                     var tmp = frame.CreateTemporary(width);
                     emitter.Assign(tmp, fn(emitter.Cast(width, reg)));
                     emitter.Assign(reg, emitter.Dpb(reg, tmp, 0));
                     return tmp;
                 }
-                else
+                else if (width.Size == 8)
                 {
-                    emitter.Assign(reg, fn(reg));
-                    return reg;
+                    var regHi = frame.EnsureRegister(arch.GetRegister(1 + (int)reg.Storage.Domain));
+                    reg = frame.EnsureSequence(regHi, reg, width);
                 }
+                else if (width.Size == 16)
+                {
+                    var regHi1 = frame.EnsureRegister(arch.GetRegister(1 + (int)reg.Storage.Domain));
+                    var regHi2 = frame.EnsureRegister(arch.GetRegister(2 + (int)reg.Storage.Domain));
+                    var regHi3 = frame.EnsureRegister(arch.GetRegister(3 + (int)reg.Storage.Domain));
+
+                    var regLo = frame.EnsureSequence(regHi1, reg, PrimitiveType.Word64);
+                    var regHi = frame.EnsureSequence(regHi3, regHi2, PrimitiveType.Word64);
+                    reg = frame.EnsureSequence(regHi, regLo, width);
+                }
+                emitter.Assign(reg, fn(reg));
+                return reg;
             }
             if( op is ImmediateOperand)
             {

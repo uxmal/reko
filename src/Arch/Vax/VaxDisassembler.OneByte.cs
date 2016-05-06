@@ -97,7 +97,7 @@ namespace Reko.Arch.Vax
  /* 3B */ new OpRec(Opcode.skpc,  -1), 
  /* 3C */ new OpRec(Opcode.movzwl, "rw,wl"),
  /* 3D */ new OpRec(Opcode.acbw,  "rw,rw,mw,bw"),
- /* 3E */ new OpRec(Opcode.movaw,  -1), 
+ /* 3E */ new OpRec(Opcode.movaw,  "aw,wl"), 
  /* 3F */ new OpRec(Opcode.pushaw, "aw"), 
  
  /* 40 */ new OpRec(Opcode.addf2, "rf,wf"), 
