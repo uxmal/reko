@@ -96,7 +96,7 @@ namespace Reko.Arch.Vax
  /* 3A */ new OpRec(Opcode.locc,  -1), 
  /* 3B */ new OpRec(Opcode.skpc,  -1), 
  /* 3C */ new OpRec(Opcode.movzwl, "rw,wl"),
- /* 3D */ new OpRec(Opcode.acbw,  -1), 
+ /* 3D */ new OpRec(Opcode.acbw,  "rw,rw,mw,bw"),
  /* 3E */ new OpRec(Opcode.movaw,  -1), 
  /* 3F */ new OpRec(Opcode.pushaw, "aw"), 
  
@@ -115,7 +115,7 @@ namespace Reko.Arch.Vax
  /* 4C */ new OpRec(Opcode.cvtbf,  "rb,wf"),
  /* 4D */ new OpRec(Opcode.cvtwf, "rw,wf"),
  /* 4E */ new OpRec(Opcode.cvtlf, "rl,wf"), 
- /* 4F */ new OpRec(Opcode.acbf,  -1), 
+ /* 4F */ new OpRec(Opcode.acbf,  "rf,rf,mf,bw"),
 
  /* 50 */ new OpRec(Opcode.movf,  "rf,wf"),
  /* 51 */ new OpRec(Opcode.cmpf,  "rf,rf"), 
@@ -149,7 +149,7 @@ namespace Reko.Arch.Vax
  /* 6C */ new OpRec(Opcode.cvtbd,  "rb,rd"),
  /* 6D */ new OpRec(Opcode.cvtwd,  "rw,rd"),
  /* 6E */ new OpRec(Opcode.cvtld,  "rl,rd"),
- /* 6F */ new OpRec(Opcode.acbd,   "rd,rd,md,bb"),
+ /* 6F */ new OpRec(Opcode.acbd,   "rd,rd,md,bw"),
 
  /* 70 */ new OpRec(Opcode.movd,  "rd,wd"), 
  /* 71 */ new OpRec(Opcode.cmpd,  "rd,rd"), 
@@ -262,7 +262,7 @@ namespace Reko.Arch.Vax
  /* D6 */ new OpRec(Opcode.incl, "wl"), 
  /* D7 */ new OpRec(Opcode.decl, "wl"), 
  /* D8 */ new OpRec(Opcode.adwc, "rl,wl"),
- /* D9 */ new OpRec(Opcode.sbwc,  -1), 
+ /* D9 */ new OpRec(Opcode.sbwc, "rl,ml"), 
  /* DA */ new OpRec(Opcode.mtpr,  -1), 
  /* DB */ new OpRec(Opcode.mfpr, "rl,wl"), 
  /* DC */ new OpRec(Opcode.movpsl,  -1), 
@@ -288,7 +288,7 @@ namespace Reko.Arch.Vax
  /* EF */ new OpRec(Opcode.extzv, "rl,rb,vb,wl"),
 
  /* F0 */ new OpRec(Opcode.insv,  -1), 
- /* F1 */ new OpRec(Opcode.acbl,  -1), 
+ /* F1 */ new OpRec(Opcode.acbl,   "rl,rl,ml,bw"),
  /* F2 */ new OpRec(Opcode.aoblss, "rl,ml,bb"), 
  /* F3 */ new OpRec(Opcode.aobleq, "rl,ml,bb"), 
  /* F4 */ new OpRec(Opcode.sobgeq, "ml,bb"),

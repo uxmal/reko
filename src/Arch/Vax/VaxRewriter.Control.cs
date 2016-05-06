@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Operators;
@@ -32,19 +33,63 @@ namespace Reko.Arch.Vax
 {
     public partial class VaxRewriter
     {
-        private void RewriteAobleq()
+        private void RewriteAcbf(PrimitiveType width)
         {
-            var limit = RewriteSrcOp(0, PrimitiveType.Word32);
-            var dst = RewriteDstOp(
-                1,
-                PrimitiveType.Word32,
-                e => emitter.IAdd(e, emitter.Word32(1)));
-            AllFlags(dst);
-            emitter.Branch(
-                emitter.Le(dst, limit),
-                ((AddressOperand)dasm.Current.Operands[2]).Address,
-                RtlClass.ConditionalTransfer);
+            var limit = RewriteSrcOp(0, width);
+            var add = RewriteSrcOp(1, width);
+            var index = RewriteDstOp(2, width, e => emitter.FAdd(e, add));
+            NZV(index);
+            var cAdd = add as Constant;
+            if (cAdd == null)
+                throw new AddressCorrelatedException(
+                    dasm.Current.Address,
+                    "Instruction {0] too complex to rewrite.",
+                    dasm.Current);
+            if (cAdd.ToReal64() >= 0.0)
+            {
+                emitter.Branch(
+                    emitter.FLe(index, limit),
+                    ((AddressOperand)dasm.Current.Operands[3]).Address,
+                    RtlClass.ConditionalTransfer);
+            }
+            else
+            {
+                emitter.Branch(
+                    emitter.FGe(index, limit),
+                    ((AddressOperand)dasm.Current.Operands[3]).Address,
+                    RtlClass.ConditionalTransfer);
+            }
             rtlc.Class = RtlClass.ConditionalTransfer;
+        }
+
+        private void RewriteAcbi(PrimitiveType width)
+        {
+            var limit = RewriteSrcOp(0, width);
+            var add = RewriteSrcOp(1, width);
+            var index = RewriteDstOp(2, width, e => emitter.IAdd(e, add));
+            NZV(index);
+            var cAdd = add as Constant;
+            if (cAdd == null)
+                throw new AddressCorrelatedException(
+                    dasm.Current.Address,
+                    "Instruction {0] too complex to rewrite.",
+                    dasm.Current);
+            if (cAdd.ToInt32() >= 0)
+            {
+                emitter.Branch(
+                          emitter.Le(index, limit),
+                          ((AddressOperand)dasm.Current.Operands[3]).Address,
+                          RtlClass.ConditionalTransfer);
+            }
+            else
+            {
+                emitter.Branch(
+                    emitter.Ge(index, limit),
+                    ((AddressOperand)dasm.Current.Operands[3]).Address,
+                    RtlClass.ConditionalTransfer);
+            }
+            rtlc.Class = RtlClass.ConditionalTransfer;
+
         }
 
         private void RewriteBb(bool set)
@@ -76,6 +121,39 @@ namespace Reko.Arch.Vax
                 RtlClass.ConditionalTransfer);
             rtlc.Class = RtlClass.ConditionalTransfer;
         }
+
+
+        private void RewriteAob(
+            Func<Expression, Expression, Expression> cmp)
+        {
+            var limit = RewriteSrcOp(0, PrimitiveType.Word32);
+            var dst = RewriteDstOp(
+                1,
+                PrimitiveType.Word32,
+                e => emitter.IAdd(e, emitter.Word32(1)));
+            AllFlags(dst);
+            emitter.Branch(
+                cmp(dst, limit),
+                ((AddressOperand)dasm.Current.Operands[2]).Address,
+                RtlClass.ConditionalTransfer);
+            rtlc.Class = RtlClass.ConditionalTransfer;
+        }
+
+        private void RewriteSob(
+            Func<Expression, Expression, Expression> cmp)
+        {
+            var dst = RewriteDstOp(
+                0,
+                PrimitiveType.Word32,
+                e => emitter.ISub(e, emitter.Word32(1)));
+            AllFlags(dst);
+            emitter.Branch(
+                cmp(dst, Constant.Word32(0)),
+                ((AddressOperand)dasm.Current.Operands[1]).Address,
+                RtlClass.ConditionalTransfer);
+            rtlc.Class = RtlClass.ConditionalTransfer;
+        }
+
 
         // condition handler (initially 0) <-- fp
         // saved PSW + flags

@@ -30,6 +30,13 @@ namespace Reko.Arch.Vax
 {
     public partial class VaxRewriter
     {
+        private Expression Adawi(Expression a, Expression b)
+        {
+            return host.PseudoProcedure("atomic_fetch_add",
+                a.DataType,
+                a, b);
+        }
+
         private Expression Bic(Expression a, Expression mask)
         {
             return emitter.And(a, emitter.Comp(mask));
@@ -58,7 +65,7 @@ namespace Reko.Arch.Vax
                 a, b);
         }
 
-        private void RewriteAddp4()
+        private void RewriteP4(string op)
         {
             var op0 = RewriteSrcOp(0, PrimitiveType.Word16);
             var op1 = RewriteSrcOp(1, PrimitiveType.Pointer32);
@@ -68,14 +75,14 @@ namespace Reko.Arch.Vax
             emitter.Assign(
                 grf,
                 host.PseudoProcedure(
-                    "vax_addp4", 
+                    op,
                     PrimitiveType.Byte,
                     op0, op1, op2, op3));
             var c = FlagGroup(FlagM.CF);
             emitter.Assign(c, Constant.False());
         }
 
-        private void RewriteAddp6()
+        private void RewriteP6(string op)
         {
             var op0 = RewriteSrcOp(0, PrimitiveType.Word16);
             var op1 = RewriteSrcOp(1, PrimitiveType.Pointer32);
@@ -87,7 +94,7 @@ namespace Reko.Arch.Vax
             emitter.Assign(
                 grf,
                 host.PseudoProcedure(
-                    "vax_addp6", 
+                    op, 
                     PrimitiveType.Byte,
                     op0, op1, op2, op3, op4, op5));
             var c = FlagGroup(FlagM.CF);
@@ -297,6 +304,16 @@ namespace Reko.Arch.Vax
             }
             emitter.Assign(emitter.Load(PrimitiveType.Word32, sp), ea);
             NZ00(ea);
+        }
+
+        private void RewriteSbwc()
+        {
+            var op1 = RewriteSrcOp(0, PrimitiveType.Word32);
+            var dst = RewriteDstOp(1, PrimitiveType.Word32,
+                e => emitter.ISub(
+                        emitter.ISub(e, op1),
+                        FlagGroup(FlagM.CF)));
+            AllFlags(dst);
         }
     }
 }
