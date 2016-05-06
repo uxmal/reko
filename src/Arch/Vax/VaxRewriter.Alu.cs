@@ -226,6 +226,22 @@ namespace Reko.Arch.Vax
                     op0, op1, op2, op3));
         }
 
+        private void RewriteCvt(PrimitiveType from, PrimitiveType to)
+        {
+            var src = RewriteSrcOp(0, from);
+            var dst = RewriteDstOp(1, to, e => emitter.Cast(to, src));
+            NZV0(dst);
+        }
+
+        private void RewriteCvtr(PrimitiveType from, PrimitiveType to)
+        {
+            var src = RewriteSrcOp(0, from);
+            var dst = RewriteDstOp(1, to, e => emitter.Cast(
+                to,
+                host.PseudoProcedure("round", to, src)));
+            NZV0(dst);
+        }
+
         private void RewriteDivp()
         {
             var op0 = RewriteSrcOp(0, PrimitiveType.Word16);
