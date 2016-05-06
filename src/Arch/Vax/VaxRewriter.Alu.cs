@@ -194,11 +194,36 @@ namespace Reko.Arch.Vax
 
         private void RewriteCmp(PrimitiveType width)
         {
-            var op0 = RewriteSrcOp(0, PrimitiveType.Word16);
-            var op1 = RewriteSrcOp(1, PrimitiveType.Word16);
+            var op0 = RewriteSrcOp(0, width);
+            var op1 = RewriteSrcOp(1, width);
             var grf = FlagGroup(FlagM.NF | FlagM.ZF | FlagM.CF);
             emitter.Assign(grf, emitter.Cond(emitter.ISub(op0, op1)));
             emitter.Assign(FlagGroup(FlagM.VF), Constant.False());
+        }
+
+        private void RewriteCmpp3()
+        {
+            var op0 = RewriteSrcOp(0, PrimitiveType.Word16);
+            var op1 = RewriteSrcOp(1, PrimitiveType.Pointer32);
+            var op2 = RewriteSrcOp(2, PrimitiveType.Pointer32);
+            NZ00(
+                host.PseudoProcedure(
+                    "vax_cmpp3",
+                    PrimitiveType.Byte,
+                    op0, op1, op2));
+        }
+
+        private void RewriteCmpp4()
+        {
+            var op0 = RewriteSrcOp(0, PrimitiveType.Word16);
+            var op1 = RewriteSrcOp(1, PrimitiveType.Pointer32);
+            var op2 = RewriteSrcOp(2, PrimitiveType.Word16);
+            var op3 = RewriteSrcOp(3, PrimitiveType.Pointer32);
+            NZ00(
+                host.PseudoProcedure(
+                    "vax_cmpp4",
+                    PrimitiveType.Byte,
+                    op0, op1, op2, op3));
         }
 
         private void RewriteDivp()

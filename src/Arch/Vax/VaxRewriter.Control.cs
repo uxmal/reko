@@ -113,6 +113,31 @@ namespace Reko.Arch.Vax
             rtlc.Class = RtlClass.ConditionalTransfer;
         }
 
+        private void RewriteBlb(Func<Expression,Expression> fn)
+        {
+            var n = RewriteSrcOp(0, PrimitiveType.Word32);
+            var test = fn(emitter.And(n, 1));
+            emitter.Branch(test,
+                    ((AddressOperand)dasm.Current.Operands[1]).Address,
+                    RtlClass.ConditionalTransfer);
+            rtlc.Class = RtlClass.ConditionalTransfer;
+        }
+
+        private void RewriteBranch()
+        {
+            emitter.Goto(
+                ((AddressOperand)dasm.Current.Operands[0]).Address);
+            rtlc.Class = RtlClass.Transfer;
+        }
+
+        private void RewriteBsb()
+        {
+            emitter.Call(
+                ((AddressOperand)dasm.Current.Operands[0]).Address,
+                4);
+            rtlc.Class = RtlClass.Transfer;
+        }
+
         private void RewriteBranch(ConditionCode cc, FlagM flags)
         {
             emitter.Branch(
