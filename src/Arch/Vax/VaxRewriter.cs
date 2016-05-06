@@ -162,7 +162,7 @@ namespace Reko.Arch.Vax
                 case Opcode.cvtdb: RewriteCvt(PrimitiveType.Real64, PrimitiveType.SByte); break;
                 case Opcode.cvtdf: RewriteCvt(PrimitiveType.Real64, PrimitiveType.Real32); break;
                 case Opcode.cvtdh: RewriteCvt(PrimitiveType.Real64, PrimitiveType.Real128); break;
-                case Opcode.cvtdl: RewriteCvt(PrimitiveType.Real64, PrimitiveType.Int32; break;
+                case Opcode.cvtdl: RewriteCvt(PrimitiveType.Real64, PrimitiveType.Int32); break;
                 case Opcode.cvtdw: RewriteCvt(PrimitiveType.Real64, PrimitiveType.Int16); break;
                 case Opcode.cvtfb: RewriteCvt(PrimitiveType.Real32, PrimitiveType.SByte); break;
                 case Opcode.cvtfd: RewriteCvt(PrimitiveType.Real32, PrimitiveType.Real64); break;
@@ -202,7 +202,7 @@ namespace Reko.Arch.Vax
                 case Opcode.cvtwf: RewriteCvt(PrimitiveType.Int16, PrimitiveType.Real32); break;
                 case Opcode.cvtwg: RewriteCvt(PrimitiveType.Int16, PrimitiveType.Real64); break;
                 case Opcode.cvtwh: RewriteCvt(PrimitiveType.Int16, PrimitiveType.Real128); break;
-                case Opcode.cvtwl: RewriteCvt(PrimitiveType.Int16, PrimitiveType.Int32; break; ;
+                case Opcode.cvtwl: RewriteCvt(PrimitiveType.Int16, PrimitiveType.Int32); break; ;
                 case Opcode.decb: RewriteIncDec(PrimitiveType.Byte, Dec); break;
                 case Opcode.decl: RewriteIncDec(PrimitiveType.Word32, Dec); break;
                 case Opcode.decw: RewriteIncDec(PrimitiveType.Word16, Dec); break;
@@ -252,9 +252,9 @@ namespace Reko.Arch.Vax
                 case Opcode.movp: goto default;
                 case Opcode.movq:   RewriteAluUnary2(PrimitiveType.Word64, Copy, NZ00); break;
                 case Opcode.movw:   RewriteAluUnary2(PrimitiveType.Word16, Copy, NZ00); break;
-                case Opcode.movzbl: RewriteMovz(PrimitiveType.Byte, PrimitiveType.Word32); break;
-                case Opcode.movzbw: RewriteMovz(PrimitiveType.Byte, PrimitiveType.Word16); break;
-                case Opcode.movzwl: RewriteMovz(PrimitiveType.Word16, PrimitiveType.Word32); break;
+                case Opcode.movzbl: RewriteMovz(PrimitiveType.Byte, PrimitiveType.UInt32); break;
+                case Opcode.movzbw: RewriteMovz(PrimitiveType.Byte, PrimitiveType.UInt16); break;
+                case Opcode.movzwl: RewriteMovz(PrimitiveType.Word16, PrimitiveType.UInt32); break;
                 case Opcode.mulb2: RewriteAlu2(PrimitiveType.Byte, emitter.IMul, AllFlags); break;
                 case Opcode.mulb3: RewriteAlu3(PrimitiveType.Byte, emitter.IMul, AllFlags); break;
                 case Opcode.muld2: RewriteAlu2(PrimitiveType.Real64, emitter.FMul, AllFlags); break;

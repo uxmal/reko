@@ -226,6 +226,13 @@ namespace Reko.Arch.Vax
                     op0, op1, op2, op3));
         }
 
+        private void RewriteMovz(PrimitiveType from, PrimitiveType to)
+        {
+            var opFrom = RewriteSrcOp(0, from);
+            var dst = RewriteDstOp(1, to, e => emitter.Cast(to, opFrom));
+            NZ00(dst);
+        }
+
         private void RewriteCvt(PrimitiveType from, PrimitiveType to)
         {
             var src = RewriteSrcOp(0, from);
@@ -265,13 +272,6 @@ namespace Reko.Arch.Vax
         {
             var dst = RewriteDstOp(0, width, e => incdec(e));
             AllFlags(dst);
-        }
-
-        private void RewriteMovz(PrimitiveType from, PrimitiveType to)
-        {
-            var opFrom = RewriteSrcOp(0, from);
-            var dst = RewriteDstOp(1, to, e => emitter.Cast(to, opFrom));
-            NZ00(dst);
         }
 
         private void RewriteMulp()
