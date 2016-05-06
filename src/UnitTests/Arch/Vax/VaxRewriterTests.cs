@@ -30,7 +30,6 @@ using System.Text;
 namespace Reko.UnitTests.Arch.Vax
 {
     [TestFixture]
-    [Ignore]
     public class VaxRewriterTests : RewriterTestBase
     {
         private VaxArchitecture arch = new VaxArchitecture();
