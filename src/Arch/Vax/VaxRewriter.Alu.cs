@@ -235,13 +235,59 @@ namespace Reko.Arch.Vax
             var c = FlagGroup(FlagM.CF);
             emitter.Assign(c, Constant.False());
         }
+
+        private void RewritePoly(PrimitiveType width)
+        {
+            var op0 = RewriteSrcOp(0, width);
+            var op1 = RewriteSrcOp(1, PrimitiveType.Word16);
+            var op2 = RewriteSrcOp(2, PrimitiveType.Pointer32);
+            var ret = frame.EnsureRegister(Registers.r0);
+            if (width.Size == 8)
+            {
+                var r1 = frame.EnsureRegister(Registers.r1);
+                ret = frame.EnsureSequence(r1, ret, width);
+            }
+            var grf = FlagGroup(FlagM.ZF | FlagM.NF);
+            emitter.Assign(
+                ret,
+                host.PseudoProcedure(
+                    "vax_poly",
+                    width,
+                    op0, op1, op2));
+            emitter.Assign(grf, emitter.Cond(ret));
+            emitter.Assign(FlagGroup(FlagM.VF), Constant.False());
+            emitter.Assign(FlagGroup(FlagM.CF), Constant.False());
+        }
+
         private void RewritePush(PrimitiveType width)
         {
             var sp = frame.EnsureRegister(Registers.sp);
             emitter.Assign(sp, emitter.ISub(sp, width.Size));
-            var op0 = RewriteSrcOp(0, PrimitiveType.Word16);
+            var op0 = RewriteSrcOp(0, width);
+            if (op0 is MemoryAccess)
+            {
+                var t = frame.CreateTemporary(width);
+                emitter.Assign(t, op0);
+                op0 = t;
+            }
             emitter.Assign(emitter.Load(width, sp), op0);
-            //$TODO: flags?
+            NZ00(op0);
+        }
+
+        private void RewritePusha()
+        {
+            var sp = frame.EnsureRegister(Registers.sp);
+            emitter.Assign(sp, emitter.ISub(sp, PrimitiveType.Word32.Size));
+            var op0 = (MemoryAccess) RewriteSrcOp(0, PrimitiveType.Word32);
+            var ea = op0.EffectiveAddress;
+            if (!(ea is Identifier || ea is Constant))
+            {
+                var t = frame.CreateTemporary(PrimitiveType.Word32);
+                emitter.Assign(t, ea);
+                ea = t;
+            }
+            emitter.Assign(emitter.Load(PrimitiveType.Word32, sp), ea);
+            NZ00(ea);
         }
     }
 }
