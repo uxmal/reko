@@ -77,9 +77,29 @@ namespace Reko.Arch.Vax
             rtlc.Class = RtlClass.ConditionalTransfer;
         }
 
+        // condition handler (initially 0) <-- fp
+        // saved PSW + flags
+        // saved AP
+        // saved FP
+        // saved PC
+        // saved regs
+        // ...
+        // last saved reg                  <-- sp
         private void RewriteRet()
         {
-            emitter.Return(0, 0);
+            var sp = frame.EnsureRegister(Registers.sp);
+            var fp = frame.EnsureRegister(Registers.fp);
+            var ap = frame.EnsureRegister(Registers.ap);
+            emitter.Assign(sp, emitter.ISub(fp, 4));
+            emitter.Assign(fp, emitter.LoadDw(emitter.IAdd(sp, 16)));
+            emitter.Assign(ap, emitter.LoadDw(emitter.IAdd(sp, 12)));
+            emitter.Return(4, 0);
+            rtlc.Class = RtlClass.Transfer;
+        }
+
+        private void RewriteRsb()
+        {
+            emitter.Return(4, 0);
             rtlc.Class = RtlClass.Transfer;
         }
     }

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
@@ -47,6 +48,14 @@ namespace Reko.Arch.Vax
         private Expression Inc(Expression e)
         {
             return emitter.IAdd(e, 1);
+        }
+
+        private Expression Rotl(Expression a, Expression b)
+        {
+            return host.PseudoProcedure(
+                PseudoProcedure.Rol,
+                a.DataType,
+                a, b);
         }
 
         private void RewriteAddp4()

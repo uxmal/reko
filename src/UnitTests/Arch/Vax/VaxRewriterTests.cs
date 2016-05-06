@@ -1222,8 +1222,34 @@ namespace Reko.UnitTests.Arch.Vax
         {
             BuildTest(0x04);	// ret	
             AssertCode(
+                "0|T--|00010000(1): 4 instructions",
+                "1|L--|sp = fp - 0x00000004",
+                "2|L--|fp = Mem0[sp + 0x00000010:word32]",
+                "3|L--|ap = Mem0[sp + 0x0000000C:word32]",
+                "4|T--|return (4,0)");
+        }
+
+
+        [Test]
+        public void VaxRw_rotl()
+        {
+            BuildTest(0x9C, 0x03, 0x52, 0x64);	// rotl	
+            AssertCode(
+                "0|L--|00010000(4): 5 instructions",
+                "1|L--|v4 = __rol(r2, 0x03)",
+                "2|L--|Mem0[r4:word32] = v4",
+                "3|L--|ZN = cond(v4)",
+                "4|L--|C = false",
+                "5|L--|V = false");
+        }
+
+        [Test]
+        public void VaxRw_rsb()
+        {
+            BuildTest(0x05);	// rsb	
+            AssertCode(
                 "0|T--|00010000(1): 1 instructions",
-                "1|T--|return (0,0)");
+                "1|T--|return (4,0)");
         }
 
         [Test]
@@ -1337,6 +1363,7 @@ namespace Reko.UnitTests.Arch.Vax
 
  
         [Test]
+        [Ignore]
         public void VaxRw_remque()
         {
             BuildTest(0x0F, 0xC2, 0x04, 0x5E, 0x9E);	// remque	+5E04(r2),(sp)+
@@ -1397,6 +1424,7 @@ namespace Reko.UnitTests.Arch.Vax
         }
 
         [Test]
+        [Ignore]
         public void VaxRw_rei()
         {
             BuildTest(0x02);	// rei	
@@ -1714,6 +1742,7 @@ namespace Reko.UnitTests.Arch.Vax
         }
 
         [Test]
+        [Ignore]
         public void VaxRw_remqhi()
         {
             BuildTest(0x5E);	// remqhi	
@@ -1730,16 +1759,6 @@ namespace Reko.UnitTests.Arch.Vax
                 "0|L--|00010000(2): 1 instructions",
                 "1|L--|@@@");
         }
-
-        [Test]
-        public void VaxRw_Reserved()
-        {
-            BuildTest(0x57);	// Reserved	
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
-
 
 
         [Test]
@@ -1929,24 +1948,7 @@ namespace Reko.UnitTests.Arch.Vax
 
    
 
-        [Test]
-        public void VaxRw_rotl()
-        {
-            BuildTest(0x9C);	// rotl	
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
-
-        [Test]
-        public void VaxRw_rsb()
-        {
-            BuildTest(0x05);	// rsb	
-            AssertCode(
-                "0|L--|00010000(2): 1 instructions",
-                "1|L--|@@@");
-        }
 
 
         [Test]
@@ -2189,6 +2191,7 @@ namespace Reko.UnitTests.Arch.Vax
 
 
         [Test]
+        [Ignore]
         public void VaxRw_remqti()
         {
             BuildTest(0x5F);	// remqti	
