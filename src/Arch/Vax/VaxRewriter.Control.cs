@@ -76,5 +76,11 @@ namespace Reko.Arch.Vax
                 RtlClass.ConditionalTransfer);
             rtlc.Class = RtlClass.ConditionalTransfer;
         }
+
+        private void RewriteRet()
+        {
+            emitter.Return(0, 0);
+            rtlc.Class = RtlClass.Transfer;
+        }
     }
 }

@@ -213,6 +213,8 @@ namespace Reko.Arch.Vax
                 case Opcode.pushaq: RewritePusha(); break;
                 case Opcode.pushl: RewritePush(PrimitiveType.Word32); break;
 
+                case Opcode.ret: RewriteRet(); break;
+
                 case Opcode.xorb2: RewriteAlu2(PrimitiveType.Byte, emitter.Xor, NZ00); break;
                 case Opcode.xorb3: RewriteAlu3(PrimitiveType.Byte, emitter.Xor, NZ00); break;
                 case Opcode.xorl2: RewriteAlu2(PrimitiveType.Word32, emitter.Xor, NZ00); break;
@@ -225,7 +227,6 @@ namespace Reko.Arch.Vax
                 case Opcode.rei: goto default;
                 case Opcode.cvtwl: goto default;
                 case Opcode.cvtwb: goto default;
-                case Opcode.ret: goto default;
                 case Opcode.rsb: goto default;
                 case Opcode.cmpp3: goto default;
                 case Opcode.ldpctx: goto default;
