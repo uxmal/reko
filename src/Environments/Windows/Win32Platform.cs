@@ -103,6 +103,12 @@ namespace Reko.Environments.Windows
             return new X86ProcedureSerializer((IntelArchitecture) Architecture, typeLoader, defaultConvention);
         }
 
+        public override ImageSymbol FindMainProcedure(Program program, Address addrStart)
+        {
+            var sf = new X86StartFinder(program, addrStart);
+            return sf.FindMainProcedure();
+        }
+
         //$REFACTOR: should be loaded from config file.
         public override int GetByteSizeFromCBasicType(CBasicType cb)
         {

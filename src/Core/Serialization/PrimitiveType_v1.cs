@@ -40,6 +40,11 @@ namespace Reko.Core.Serialization
 		{
 		}
 
+        public static SerializedType Char8()
+        {
+            return new PrimitiveType_v1 { Domain = Domain.Character, ByteSize = 1 };
+        }
+
         public static SerializedType Int32()
         {
             return new PrimitiveType_v1 { Domain = Domain.Integer, ByteSize = 4 };
@@ -70,5 +75,7 @@ namespace Reko.Core.Serialization
 		{
 			return string.Format("prim({0},{1})", Domain, ByteSize);
 		}
-	}
+
+       
+    }
 }

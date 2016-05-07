@@ -456,6 +456,10 @@ namespace Reko.ImageLoaders.MzExe
 
         public ImageSymbol CreateMainEntryPoint(bool isDll, Address addrEp, IPlatform platform)
         {
+            var s = platform.FindMainProcedure(this.program, addrEp);
+            if (s != null)
+                return s;
+
             string name = null;
             SerializedSignature ssig = null;
             Func<string, string, Argument_v1> Arg =
