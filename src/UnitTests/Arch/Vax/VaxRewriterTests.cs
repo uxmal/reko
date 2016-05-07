@@ -663,6 +663,7 @@ namespace Reko.UnitTests.Arch.Vax
         }
 
         [Test]
+        [Ignore("VAX calls are awful")]
         public void VaxRw_callg()
         {
             BuildTest(0xFA);	// callg	
@@ -672,6 +673,7 @@ namespace Reko.UnitTests.Arch.Vax
         }
 
         [Test]
+        [Ignore("VAX calls are awful")]
         public void VaxRw_calls()
         {
             BuildTest(0xFB, 0x00, 0xEF, 0x0E, 0x54, 0x00, 0x00);	// calls	#00,0000D420
@@ -2079,6 +2081,7 @@ namespace Reko.UnitTests.Arch.Vax
 
         // These instructions are "extra credit" as most VAX user mode programs won't have them.
 
+#if LATER
         [Test]
         [Ignore]
         public void VaxRw_adawi()
@@ -2609,6 +2612,6 @@ namespace Reko.UnitTests.Arch.Vax
                 "0|L--|00010000(2): 1 instructions",
                 "1|L--|@@@");
         }
-
+#endif
     }
 }
