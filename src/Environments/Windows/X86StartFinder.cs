@@ -64,41 +64,76 @@ namespace Reko.Environments.Windows
             0xE8,                           // call
         };
 
+        private static readonly byte[] msvcDebugCrt =
+        {
+            0x8B, 0x95, 0x70, 0xFF, 0xFF, 0xFF, // mov edx,[ebp+FFFFFF70]
+            0x52,                               // push edx
+            0x8B, 0x45, 0x8C,                   // mov eax,[ebp - 74]
+            0x50,                               // push eax
+            0x6A, 0x00,                         // push 00
+            0x6A, 0x00,                         // push 00
+            0xFF, 0x15, WILD, WILD, WILD, WILD, // call dword ptr[GetModuleHandle]
+            0x50,                               // push eax
+            0xE8, WILD, WILD, WILD, WILD,       // call fn00458D40
+            0x89, 0x85, 0x7C, 0xFF, 0xFF, 0xFF, // mov [ebp + FFFFFF7C],eax
+        };
+
         private static readonly SerializedSignature mainSignature = new SerializedSignature
         {
             Convention = "cdecl",
             ReturnValue = new Argument_v1
             {
-                Kind = new Register_v1 { Name = "eax" },
                 Type = PrimitiveType_v1.Int32(),
             },
             Arguments = new[]
             {
-                new Argument_v1
-                {
-                    Name = "argc",
-                    Kind = new StackVariable_v1(),
-                    Type = PrimitiveType_v1.Int32(),
-                },
-                new Argument_v1
-                {
-                    Name = "argv",
-                    Kind = new StackVariable_v1(),
-                    Type = new PointerType_v1 {
+                Arg("argc", PrimitiveType_v1.Int32()),
+                Arg("argv", new PointerType_v1 {
+                    PointerSize = 4,
+                    DataType = new PointerType_v1 {
                         PointerSize = 4,
-                        DataType = new PointerType_v1 {
-                            PointerSize = 4,
-                            DataType = PrimitiveType_v1.Char8(),
-                        }
+                        DataType = PrimitiveType_v1.Char8(),
                     }
-                },
+                })
             }
         };
 
+        private static readonly SerializedSignature winmainSignature = new SerializedSignature
+        {
+            Convention = "stdapi",
+            Arguments = new Argument_v1[]
+            {
+                Arg("hInstance",     "HINSTANCE"),
+                Arg("hPrevInstance", "HINSTANCE"),
+                Arg("lpCmdLine",     "LPSTR"),
+                Arg("nCmdShow",      "INT"),
+            },
+            ReturnValue = Arg(null, "INT")
+        };
+
+        private static Argument_v1 Arg(string name, string typename)
+        {
+            return new Argument_v1
+            {
+                Name = name,
+                Type = new TypeReference_v1 { TypeName = typename }
+            };
+        }
+
+        private static Argument_v1 Arg(string name, SerializedType sType)
+        {
+            return new Argument_v1
+            {
+                Name = name,
+                Type = sType,
+            };
+        }
 
         public ImageSymbol FindMainProcedure()
         {
-            const uint MaxDistanceFromEntry = 0x200;
+            const uint MaxDistanceFromEntry = 0x400;
+
+            uint idx;
 
             // Start at program entry point
             ImageSegment seg;
@@ -111,60 +146,79 @@ namespace Reko.Environments.Windows
                 addrMax);
             var dasm = program.Architecture.CreateDisassembler(rdr);
             var p = dasm.GetEnumerator();
-            while (p.MoveNext())
+            if (!p.MoveNext())
+                return null;
+
+            var instr = p.Current;
+            var op0 = instr.GetOperand(0);
+            var addrOp0 = op0 as AddressOperand;
+            if (instr.InstructionClass == InstructionClass.Transfer)
             {
-                var instr = p.Current;
-                var op0 = instr.GetOperand(0);
-                var addrOp0 = op0 as AddressOperand;
-                switch (instr.InstructionClass)
+                if (addrOp0 != null && addrOp0.Address > instr.Address)
                 {
-                case InstructionClass.Transfer:
-                    if (addrOp0 != null && addrOp0.Address > instr.Address)
+                    p.Dispose();
+                    // Forward jump (appears in Borland binaries)
+                    dasm = program.CreateDisassembler(addrOp0.Address);
+
+                    // Search for this pattern.
+                    if (!LocatePattern(
+                        seg.MemoryArea.Bytes,
+                        (uint)(addrOp0.Address - seg.MemoryArea.BaseAddress),
+                        (uint)(addrMax - seg.MemoryArea.BaseAddress),
+                        borlandPattern,
+                        out idx))
+                        return null;
+                    var iMainInfo = idx + 0x0E;
+                    var addrMainInfo = Address.Ptr32(
+                        seg.MemoryArea.ReadLeUInt32(iMainInfo));
+                    ImageSegment segMainInfo;
+                    if (!program.SegmentMap.TryFindSegment(addrMainInfo, out segMainInfo))
+                        return null;
+                    var addrMain = Address.Ptr32(
+                        segMainInfo.MemoryArea.ReadLeUInt32(addrMainInfo + 0x18));
+                    if (program.SegmentMap.IsExecutableAddress(addrMain))
                     {
-                        p.Dispose();
-                        // Forward jump (appears in Borland binaries)
-                        dasm = program.CreateDisassembler(addrOp0.Address);
-
-                        // Search for this pattern.
-                        uint idx;
-                        if (!locatePattern(
-                            seg.MemoryArea.Bytes,
-                            (uint)(addrOp0.Address - seg.MemoryArea.BaseAddress),
-                            (uint)(addrMax - seg.MemoryArea.BaseAddress),
-                            borlandPattern,
-                            out idx))
-                            return null;
-                        var iMainInfo = idx + 0x0E;
-                        var addrMainInfo = Address.Ptr32(
-                            seg.MemoryArea.ReadLeUInt32(iMainInfo));
-                        ImageSegment segMainInfo;
-                        if (!program.SegmentMap.TryFindSegment(addrMainInfo, out segMainInfo))
-                            return null;
-                        var addrMain = Address.Ptr32(
-                            segMainInfo.MemoryArea.ReadLeUInt32(addrMainInfo + 0x18));
-                        if (program.SegmentMap.IsExecutableAddress(addrMain))
+                        return new ImageSymbol(addrMain)
                         {
-                            return new ImageSymbol(addrMain)
-                            {
-                                Type = SymbolType.Procedure,
-                                Name = "main",
-                                Signature = mainSignature,
-                            };
-                        }
-
+                            Type = SymbolType.Procedure,
+                            Name = "main",
+                            Signature = mainSignature,
+                        };
                     }
-                    break;
+                }
+            }
+
+            if (LocatePattern(
+                   seg.MemoryArea.Bytes,
+                   (uint)(addrStart - seg.MemoryArea.BaseAddress),
+                   (uint)(addrMax - seg.MemoryArea.BaseAddress),
+                   msvcDebugCrt,
+                   out idx))
+            {
+                idx += 0x17;        // skip to call <offset>
+                int offset = seg.MemoryArea.ReadLeInt32(seg.MemoryArea.BaseAddress + idx);
+                var addrMain = seg.MemoryArea.BaseAddress + idx + 5 + offset;
+                if (program.SegmentMap.IsExecutableAddress(addrMain))
+                {
+                    return new ImageSymbol(addrMain)
+                    {
+                        Type = SymbolType.Procedure,
+                        Name = "WinMain",
+                        Signature = winmainSignature,
+                    };
                 }
             }
             return null;
         }
 
-        /* Search the source array between limits iMin and iMax for the pattern (length
- iPatLen). The pattern can contain wild bytes; if you really want to match
- for the pattern that is used up by the WILD uint8_t, tough - it will match with
- everything else as well. */
- //$TODO moe this to memoryarea
-        static bool locatePattern(
+        /* 
+         * Search the source array between limits iMin and iMax for the 
+         * pattern (length iPatLen). The pattern can contain wild bytes; if 
+         * you really want to match for the pattern that is used up by the
+         * WILD uint8_t, tough - it will match with everything else as well.
+         */
+ //$TODO move this to memoryarea
+        public static bool LocatePattern(
             byte[] source, uint iMin, uint iMax,
             byte[] pattern,
             out uint index)
@@ -185,27 +239,23 @@ namespace Reko.Environments.Windows
                     /* j is the index of the uint8_t being considered in the pattern. */
                     if ((source[pSrc] != pattern[j]) && (pattern[j] != WILD))
                     {
-                        /* A definite mismatch */
-                        break;                      /* Break to outer loop */
+                        // A definite mismatch
+                        break;                      // Break to outer loop 
                     }
                     pSrc++;
                 }
                 if (j >= pattern.Length)
                 {
                     /* Pattern has been found */
-                    index = i;                     /* Pass start of pattern */
-                    return true;                       /* Indicate success */
+                    index = i;                      /* Pass start of pattern */
+                    return true;                    /* Indicate success */
                 }
                 /* Else just try next value of i */
             }
             /* Pattern was not found */
             index = ~0u;                            /* Invalidate index */
-            return false;                               /* Indicate failure */
+            return false;                           /* Indicate failure */
         }
-
-
-
     }
-
 }
  
