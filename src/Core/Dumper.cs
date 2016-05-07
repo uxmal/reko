@@ -44,11 +44,11 @@ namespace Reko.Core
 
         public void Dump(Program program, TextWriter stm)
         {
-            var map = program.ImageMap;
+            var map = program.SegmentMap;
             ImageSegment segment = null;
-            foreach (ImageMapItem i in map.Items.Values)
+            foreach (ImageMapItem i in program.ImageMap.Items.Values)
             {
-                if (!program.ImageMap.IsValidAddress(i.Address))
+                if (!map.IsValidAddress(i.Address))
                     continue;
                 ImageSegment seg;
                 if (!map.TryFindSegment(i.Address, out seg))
@@ -72,7 +72,7 @@ namespace Reko.Core
                     {
                         stm.WriteLine(block.Address.GenerateName("l", ":"));
                     }
-                    DumpAssembler(program.ImageMap, block.Address, block.Address + block.Size, stm);
+                    DumpAssembler(program.SegmentMap, block.Address, block.Address + block.Size, stm);
                     continue;
                 }
 
@@ -85,31 +85,31 @@ namespace Reko.Core
                     {
                         stm.WriteLine("\t{0}", addr != null ? addr.ToString() : "-- null --");
                     }
-                    DumpData(program.ImageMap, i.Address, i.Size, stm);
+                    DumpData(program.SegmentMap, i.Address, i.Size, stm);
                 }
                 else
                 {
                     var segLast = segment.Address + segment.Size;
                     var size = segLast - i.Address;
                     size = Math.Min(i.Size, size);
-                    DumpData(program.ImageMap, i.Address, size, stm);
+                    DumpData(program.SegmentMap, i.Address, size, stm);
                 }
             }
         }
 
-        public void DumpData(ImageMap map, Address address, int cbBytes, TextWriter stm)
+        public void DumpData(SegmentMap map, Address address, int cbBytes, TextWriter stm)
         {
             if (cbBytes < 0)
                 throw new ArgumentException("Must be a nonnegative number.", "cbBytes"); 
             DumpData(map, address, (uint)cbBytes, stm);
         }
 
-        public void DumpData(ImageMap map, AddressRange range, TextWriter stm)
+        public void DumpData(SegmentMap map, AddressRange range, TextWriter stm)
         {
             DumpData(map, range.Begin, (long) (range.End - range.Begin), stm);
         }
 
-		public void DumpData(ImageMap map, Address address, long cbBytes, TextWriter stm)
+		public void DumpData(SegmentMap map, Address address, long cbBytes, TextWriter stm)
 		{
 			ulong cSkip = address.ToLinear() & 0x0F;
             ImageSegment segment;
@@ -152,7 +152,7 @@ namespace Reko.Core
 			}
 		}
 
-        public void DumpAssembler(ImageMap map, Address addrStart, Address addrLast, TextWriter writer)
+        public void DumpAssembler(SegmentMap map, Address addrStart, Address addrLast, TextWriter writer)
         {
             ImageSegment segment;
             if (!map.TryFindSegment(addrStart, out segment))

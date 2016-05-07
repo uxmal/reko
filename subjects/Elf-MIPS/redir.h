@@ -4,12 +4,13 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (FFFFFEB8 Eq_5412 tFFFFFEB8) (FFFFFFEC (arr int8) aFFFFFFEC) (FFFFFFFF code tFFFFFFFF) (2 byte b0002) (695 Eq_293 t0695))
+Eq_1: (struct "Globals" (FFFFFEB8 Eq_5412 tFFFFFEB8) (FFFFFFEC (arr int8) aFFFFFFEC) (FFFFFFFF code tFFFFFFFF) (2 byte b0002) (695 Eq_293 t0695) (400238 (struct "Eq_24" (FC00690 (ptr code) ptrFC00690)) t400238))
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: (struct "Eq_2" (FC006C0 ptr32 ptrFC006C0) (FC006C4 ptr32 ptrFC006C4))
 	T_2 (in r25 : (ptr Eq_2))
-Eq_23: (struct "Eq_23" (FC00690 (ptr code) ptrFC00690))
-	T_23 (in ra : (ptr Eq_23))
+Eq_24: (struct "Eq_24" (FC00690 (ptr code) ptrFC00690))
+	T_24 (in ra_2 : (ptr Eq_24))
+	T_25 (in 00400238 : ptr32)
 Eq_39: (struct "Eq_39" (FC00258 (ptr Eq_45) ptrFC00258))
 	T_39 (in r25 : (ptr Eq_39))
 Eq_45: (struct "Eq_45" (4 (ptr (ptr code)) ptr0004) (8 word32 dw0008))
@@ -1088,18 +1089,18 @@ T_22: (in r25->ptrFC006C4 + -25584 : word32)
   Class: Eq_22
   DataType: (ptr code)
   OrigDataType: (ptr code)
-T_23: (in ra : (ptr Eq_23))
+T_23: (in dwArg00 : word32)
   Class: Eq_23
-  DataType: (ptr Eq_23)
-  OrigDataType: (ptr (struct (FC00690 T_29 tFC00690)))
-T_24: (in dwArg00 : word32)
-  Class: Eq_24
   DataType: word32
   OrigDataType: word32
-T_25: (in false : bool)
-  Class: Eq_25
-  DataType: bool
-  OrigDataType: bool
+T_24: (in ra_2 : (ptr Eq_24))
+  Class: Eq_24
+  DataType: (ptr Eq_24)
+  OrigDataType: (ptr (struct (FC00690 T_29 tFC00690)))
+T_25: (in 00400238 : ptr32)
+  Class: Eq_24
+  DataType: (ptr Eq_24)
+  OrigDataType: ptr32
 T_26: (in r25_18 : (ptr code))
   Class: Eq_26
   DataType: (ptr code)
@@ -1108,11 +1109,11 @@ T_27: (in 0x0FC00690 : word32)
   Class: Eq_27
   DataType: word32
   OrigDataType: word32
-T_28: (in ra + 0x0FC00690 : word32)
+T_28: (in ra_2 + 0x0FC00690 : word32)
   Class: Eq_28
   DataType: word32
   OrigDataType: word32
-T_29: (in Mem0[ra + 0x0FC00690:word32] : word32)
+T_29: (in Mem0[ra_2 + 0x0FC00690:word32] : word32)
   Class: Eq_26
   DataType: (ptr code)
   OrigDataType: word32
@@ -1120,11 +1121,11 @@ T_30: (in sp_19 : word32)
   Class: Eq_30
   DataType: word32
   OrigDataType: word32
-T_31: (in r28_20 : word32)
+T_31: (in ra_20 : word32)
   Class: Eq_31
   DataType: word32
   OrigDataType: word32
-T_32: (in ra_21 : word32)
+T_32: (in r28_21 : word32)
   Class: Eq_32
   DataType: word32
   OrigDataType: word32
@@ -43717,12 +43718,14 @@ T_10679:
   DataType: Eq_10679
   OrigDataType: 
 */
-typedef struct Globals {
+typedef struct Eq_24;
+struct Globals {
 	Eq_5412 tFFFFFEB8;	// FFFFFEB8
 	int8 aFFFFFFEC[];	// FFFFFFEC
 	 <anonymous> tFFFFFFFF;	// FFFFFFFF
 	byte b0002;	// 2
 	Eq_293 t0695;	// 695
+	struct Eq_24 t400238;	// 400238
 } Eq_1;
 
 typedef struct Eq_2 {
@@ -43730,9 +43733,7 @@ typedef struct Eq_2 {
 	ptr32 ptrFC006C4;	// FC006C4
 } Eq_2;
 
-typedef struct Eq_23 {
-	 <anonymous> * ptrFC00690;	// FC00690
-} Eq_23;
+typedef struct Eq_24 Eq_24;
 
 typedef struct Eq_39 {
 	Eq_45 * ptrFC00258;	// FC00258

@@ -1413,7 +1413,7 @@ namespace Reko.ImageLoaders.OdbgScript
                     {
                         var ea = Address.Ptr32((uint) src);
                         ImageSegment segment;
-                        if (!Host.ImageMap.TryFindSegment(ea, out segment))
+                        if (!Host.SegmentMap.TryFindSegment(ea, out segment))
                             throw new AccessViolationException();
                         byte[] buffer = new byte[STRING_READSIZE];
 
@@ -1509,7 +1509,7 @@ namespace Reko.ImageLoaders.OdbgScript
                     uint dw;
                     var ea = Address.Ptr32((uint)src);
                     ImageSegment segment;
-                    if (!Host.ImageMap.TryFindSegment(ea, out segment))
+                    if (!Host.SegmentMap.TryFindSegment(ea, out segment))
                         throw new AccessViolationException();
                     bool ret = segment.MemoryArea.TryReadLeUInt32(ea, out dw);
                     value = dw;
@@ -1574,7 +1574,7 @@ namespace Reko.ImageLoaders.OdbgScript
                     Debug.Assert(src != 0);
                     var ea = Address.Ptr32((uint) src);
                     ImageSegment segment;
-                    if (!Host.ImageMap.TryFindSegment(ea, out segment))
+                    if (!Host.SegmentMap.TryFindSegment(ea, out segment))
                         throw new AccessViolationException();
                     value = segment.MemoryArea.ReadLeDouble(ea).ToDouble();
                     return true;

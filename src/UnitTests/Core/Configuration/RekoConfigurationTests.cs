@@ -84,6 +84,16 @@ namespace Reko.UnitTests.Core.Configuration
                         Characteristics = new []
                         {
                             new TypeLibraryReference_v1 { Name="sysvcharacteristics.xml" }
+                        },
+                        Heuristics = new PlatformHeuristics_v1
+                        {
+                            ProcedurePrologs = new []
+                            {
+                                new BytePattern_v1 {
+                                    Bytes = "55 8B EC",
+                                    Mask = "FF FF FF"
+                                }
+                            }
                         }
                     }
                 },
@@ -100,7 +110,7 @@ namespace Reko.UnitTests.Core.Configuration
                 {
                     new Assembler_v1
                     {
-                        Name="pdp11-mac",
+                        Name = "pdp11-mac",
                         Description = "PDP-11 MACRO assembler",
                         Type = "Reko.Assemblers.Pdp11.Pdp11TextAssembler,Reko.Assemblers.Pdp11" 
                     }
@@ -149,6 +159,14 @@ namespace Reko.UnitTests.Core.Configuration
       <Characteristics>
         <TypeLibrary Name=""sysvcharacteristics.xml"" />
       </Characteristics>
+      <Heuristics>
+        <ProcedurePrologs>
+          <Pattern>
+            <Bytes>55 8B EC</Bytes>
+            <Mask>FF FF FF</Mask>
+          </Pattern>
+        </ProcedurePrologs>
+      </Heuristics>
     </Environment>
   </Environments>
   <Architectures>
@@ -165,7 +183,5 @@ namespace Reko.UnitTests.Core.Configuration
             #endregion
             Assert.AreEqual(sExp, stm.ToString());
         }
-
-
     }
 }

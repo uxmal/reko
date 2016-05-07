@@ -1,254 +1,36 @@
 ;;; Segment 0800 (0800:0000)
-
-fn0800_0000()
-	mov	dx,09DB
-	mov	cs:[01F8],dx
-	mov	ah,30
-	int	21
-	mov	bp,[0002]
-	mov	bx,[002C]
-	mov	ds,dx
-	mov	[0092],ax
-	mov	[0090],es
-	mov	[008C],bx
-	mov	[00AC],bp
-	mov	word ptr [0096],FFFF
-	call	0162
-	les	di,[008A]
-	mov	ax,di
-	mov	bx,ax
-	mov	cx,7FFF
-
-l0800_0039:
-	cmp	word ptr es:[di],3738
-	jnz	0059
-
-l0800_0040:
-	mov	dx,es:[di+02]
-	cmp	dl,3D
-	jnz	0059
-
-l0800_0049:
-	and	dh,DF
-	inc	word ptr [0096]
-	cmp	dh,59
-	jnz	0059
-
-l0800_0055:
-	inc	word ptr [0096]
-
-l0800_0059:
-	repne	
-	scasb	
-
-l0800_005B:
-	jcxz	00BE
-
-l0800_005D:
-	inc	bx
-	cmp	es:[di],al
-	jnz	0039
-
-l0800_0063:
-	or	ch,80
-	neg	cx
-	mov	[008A],cx
-	mov	cx,0001
-	shl	bx,cl
-	add	bx,08
-	and	bx,F8
-	mov	[008E],bx
-	mov	dx,ds
-	sub	bp,dx
-	mov	di,[023C]
-	cmp	di,0200
-	jnc	0090
-
-l0800_0089:
-	mov	di,0200
-	mov	[023C],di
-
-l0800_0090:
-	add	di,062E
-	jc	00BE
-
-l0800_0096:
-	add	di,[023A]
-	jc	00BE
-
-l0800_009C:
-	mov	cl,04
-	shr	di,cl
-	inc	di
-	cmp	bp,di
-	jc	00BE
-
-l0800_00A5:
-	cmp	word ptr [023C],00
-	jz	00B3
-
-l0800_00AC:
-	cmp	word ptr [023A],00
-	jnz	00C1
-
-l0800_00B3:
-	mov	di,1000
-	cmp	bp,di
-	ja	00C1
-
-l0800_00BA:
-	mov	di,bp
-	jmp	00C1
-
-l0800_00BE:
-	jmp	01E2
-
-l0800_00C1:
-	mov	bx,di
-	add	bx,dx
-	mov	[00A4],bx
-	mov	[00A8],bx
-	mov	ax,[0090]
-	sub	bx,ax
-	mov	es,ax
-	mov	ah,4A
-	push	di
-	int	21
-	pop	di
-	shl	di,cl
-	cli	
-	mov	ss,dx
-	mov	sp,di
-	sti	
-	xor	ax,ax
-	mov	es,cs:[01F8]
-	mov	di,05E8
-	mov	cx,062E
-	sub	cx,di
-
-l0800_00F1:
-	rep	
-	stosb	
-
-l0800_00F3:
-	push	cs
-	call	word ptr [05DA]
-	call	0336
-	call	0421
-	mov	ah,00
-	int	1A
-	mov	[0098],dx
-	mov	[009A],cx
-	call	word ptr [05DE]
-	push	word ptr [0088]
-	push	word ptr [0086]
-	push	word ptr [0084]
-	call	0265
-	push	ax
-	call	0301
-
-fn0800_0121()
-	mov	ds,cs:[01F8]
-	call	01A5
-	push	cs
-	call	word ptr [05DC]
-	xor	ax,ax
-	mov	si,ax
-	mov	cx,002F
-	nop	
-	cld	
-
-l0800_0137:
-	add	al,[si]
-	adc	ah,00
-	inc	si
-	loop	0137
-
-l0800_013F:
-	sub	ax,0D37
-	nop	
-	jz	014F
-
-l0800_0145:
-	mov	cx,0019
-	nop	
-	mov	dx,002F
-	call	01DA
-
-l0800_014F:
-	mov	bp,sp
-	mov	ah,4C
-	mov	al,[bp+02]
-	int	21
-0800:0158                         B9 0E 00 90 BA 48 00 E9         .....H..
-0800:0160 87 00                                           ..             
-
-fn0800_0162()
-	push	ds
-	mov	ax,3500
-	int	21
-	mov	[0074],bx
-	mov	[0076],es
-	mov	ax,3504
-	int	21
-	mov	[0078],bx
-	mov	[007A],es
-	mov	ax,3505
-	int	21
-	mov	[007C],bx
-	mov	[007E],es
-	mov	ax,3506
-	int	21
-	mov	[0080],bx
-	mov	[0082],es
-	mov	ax,2500
-	mov	dx,cs
-	mov	ds,dx
-	mov	dx,0158
-	int	21
-	pop	ds
-	ret	
-
-fn0800_01A5()
-	push	ds
-	mov	ax,2500
-	lds	dx,[0074]
-	int	21
-	pop	ds
-	push	ds
-	mov	ax,2504
-	lds	dx,[0078]
-	int	21
-	pop	ds
-	push	ds
-	mov	ax,2505
-	lds	dx,[007C]
-	int	21
-	pop	ds
-	push	ds
-	mov	ax,2506
-	lds	dx,[0080]
-	int	21
-	pop	ds
-	ret	
-0800:01D2       C7 06 96 00 00 00 CB C3                     ........     
-
-fn0800_01DA()
-	mov	ah,40
-	mov	bx,0002
-	int	21
-	ret	
-
-l0800_01E2:
-	mov	cx,001E
-	nop	
-	mov	dx,0056
-	mov	ds,cs:[01F8]
-	call	01DA
-	mov	ax,0003
-	push	ax
-	call	0121
-	add	[bx+si],al
+0800:0000 BA DB 09 2E 89 16 F8 01 B4 30 CD 21 8B 2E 02 00 .........0.!....
+0800:0010 8B 1E 2C 00 8E DA A3 92 00 8C 06 90 00 89 1E 8C ..,.............
+0800:0020 00 89 2E AC 00 C7 06 96 00 FF FF E8 34 01 C4 3E ............4..>
+0800:0030 8A 00 8B C7 8B D8 B9 FF 7F 26 81 3D 38 37 75 19 .........&.=87u.
+0800:0040 26 8B 55 02 80 FA 3D 75 10 80 E6 DF FF 06 96 00 &.U...=u........
+0800:0050 80 FE 59 75 04 FF 06 96 00 F2 AE E3 61 43 26 38 ..Yu........aC&8
+0800:0060 05 75 D6 80 CD 80 F7 D9 89 0E 8A 00 B9 01 00 D3 .u..............
+0800:0070 E3 83 C3 08 83 E3 F8 89 1E 8E 00 8C DA 2B EA 8B .............+..
+0800:0080 3E 3C 02 81 FF 00 02 73 07 BF 00 02 89 3E 3C 02 ><.....s.....><.
+0800:0090 81 C7 2E 06 72 28 03 3E 3A 02 72 22 B1 04 D3 EF ....r(.>:.r"....
+0800:00A0 47 3B EF 72 19 83 3E 3C 02 00 74 07 83 3E 3A 02 G;.r..><..t..>:.
+0800:00B0 00 75 0E BF 00 10 3B EF 77 07 8B FD EB 03 E9 21 .u....;.w......!
+0800:00C0 01 8B DF 03 DA 89 1E A4 00 89 1E A8 00 A1 90 00 ................
+0800:00D0 2B D8 8E C0 B4 4A 57 CD 21 5F D3 E7 FA 8E D2 8B +....JW.!_......
+0800:00E0 E7 FB 33 C0 2E 8E 06 F8 01 BF E8 05 B9 2E 06 2B ..3............+
+0800:00F0 CF F3 AA 0E FF 16 DA 05 E8 3B 02 E8 23 03 B4 00 .........;..#...
+0800:0100 CD 1A 89 16 98 00 89 0E 9A 00 FF 16 DE 05 FF 36 ...............6
+0800:0110 88 00 FF 36 86 00 FF 36 84 00 E8 48 01 50 E8 E0 ...6...6...H.P..
+0800:0120 01 2E 8E 1E F8 01 E8 7C 00 0E FF 16 DC 05 33 C0 .......|......3.
+0800:0130 8B F0 B9 2F 00 90 FC 02 04 80 D4 00 46 E2 F8 2D .../........F..-
+0800:0140 37 0D 90 74 0A B9 19 00 90 BA 2F 00 E8 8B 00 8B 7..t....../.....
+0800:0150 EC B4 4C 8A 46 02 CD 21 B9 0E 00 90 BA 48 00 E9 ..L.F..!.....H..
+0800:0160 87 00 1E B8 00 35 CD 21 89 1E 74 00 8C 06 76 00 .....5.!..t...v.
+0800:0170 B8 04 35 CD 21 89 1E 78 00 8C 06 7A 00 B8 05 35 ..5.!..x...z...5
+0800:0180 CD 21 89 1E 7C 00 8C 06 7E 00 B8 06 35 CD 21 89 .!..|...~...5.!.
+0800:0190 1E 80 00 8C 06 82 00 B8 00 25 8C CA 8E DA BA 58 .........%.....X
+0800:01A0 01 CD 21 1F C3 1E B8 00 25 C5 16 74 00 CD 21 1F ..!.....%..t..!.
+0800:01B0 1E B8 04 25 C5 16 78 00 CD 21 1F 1E B8 05 25 C5 ...%..x..!....%.
+0800:01C0 16 7C 00 CD 21 1F 1E B8 06 25 C5 16 80 00 CD 21 .|..!....%.....!
+0800:01D0 1F C3 C7 06 96 00 00 00 CB C3 B4 40 BB 02 00 CD ...........@....
+0800:01E0 21 C3 B9 1E 00 90 BA 56 00 2E 8E 1E F8 01 E8 E9 !......V........
+0800:01F0 FF B8 03 00 50 E8 29 FF 00 00                   ....P.)...     
 
 fn0800_01FA()
 	push	bp
@@ -358,528 +140,58 @@ l0800_02B9:
 0800:02D0 83 FE 58 76 03 BE 57 00 89 36 D8 01 8A 84 DA 01 ..Xv..W..6......
 0800:02E0 98 96 EB 0D F7 DE 83 FE 23 77 EA C7 06 D8 01 FF ........#w......
 0800:02F0 FF 8B C6 A3 94 00 B8 FF FF EB 00 5E 5D C2 02 00 ...........^]...
-0800:0300 C3                                              .              
-
-fn0800_0301()
-	push	bp
-	mov	bp,sp
-	jmp	0310
-
-l0800_0306:
-	mov	bx,[023E]
-	shl	bx,01
-	call	word ptr [bx+05E8]
-
-l0800_0310:
-	mov	ax,[023E]
-	dec	word ptr [023E]
-	or	ax,ax
-	jnz	0306
-
-l0800_031B:
-	call	word ptr [0234]
-	call	word ptr [0236]
-	call	word ptr [0238]
-	push	word ptr [bp+04]
-	call	0121
-	pop	cx
-	pop	bp
-	ret	
-0800:0330 00 00 00 00 00 00                               ......         
-
-fn0800_0336()
-	pop	word ptr cs:[0330]
-	mov	cs:[0332],ds
-	cld	
-	mov	es,[0090]
-	mov	si,0080
-	xor	ah,ah
-	lodsb	
-	inc	ax
-	mov	bp,es
-	xchg	si,dx
-	xchg	ax,bx
-	mov	si,[008A]
-	add	si,02
-	mov	cx,0001
-	cmp	byte ptr [0092],03
-	jc	0374
-
-l0800_0363:
-	mov	es,[008C]
-	mov	di,si
-	mov	cl,7F
-	xor	al,al
-
-l0800_036D:
-	repne	
-	scasb	
-
-l0800_036F:
-	jcxz	03E7
-
-l0800_0371:
-	xor	cl,7F
-
-l0800_0374:
-	sub	sp,02
-	mov	ax,0001
-	add	ax,bx
-	add	ax,cx
-	and	ax,FFFE
-	mov	di,sp
-	sub	di,ax
-	jc	03E7
-
-l0800_0387:
-	mov	sp,di
-	mov	ax,es
-	mov	ds,ax
-	mov	ax,ss
-	mov	es,ax
-	push	cx
-	dec	cx
-
-l0800_0393:
-	rep	
-	movsb	
-
-l0800_0395:
-	xor	al,al
-	stosb	
-	mov	ds,bp
-	xchg	dx,si
-	xchg	cx,bx
-	mov	ax,bx
-	mov	dx,ax
-	inc	bx
-
-l0800_03A3:
-	call	03BF
-	ja	03AF
-
-l0800_03A8:
-	jc	03EA
-
-l0800_03AA:
-	call	03BF
-	ja	03A8
-
-l0800_03AF:
-	cmp	al,20
-	jz	03BB
-
-l0800_03B3:
-	cmp	al,0D
-	jz	03BB
-
-l0800_03B7:
-	cmp	al,09
-	jnz	03A3
-
-l0800_03BB:
-	xor	al,al
-	jmp	03A3
-
-fn0800_03BF()
-	or	ax,ax
-	jz	03CA
-
-l0800_03C3:
-	inc	dx
-	stosb	
-	or	al,al
-	jnz	03CA
-
-l0800_03C9:
-	inc	bx
-
-l0800_03CA:
-	xchg	al,ah
-	xor	al,al
-	stc	
-	jcxz	03E6
-
-l0800_03D1:
-	lodsb	
-	dec	cx
-	sub	al,22
-	jz	03E6
-
-l0800_03D7:
-	add	al,22
-	cmp	al,5C
-	jnz	03E4
-
-l0800_03DD:
-	cmp	byte ptr [si],22
-	jnz	03E4
-
-l0800_03E2:
-	lodsb	
-	dec	cx
-
-l0800_03E4:
-	or	si,si
-
-l0800_03E6:
-	ret	
-
-l0800_03E7:
-	jmp	01E2
-
-l0800_03EA:
-	pop	cx
-	add	cx,dx
-	mov	ds,cs:[0332]
-	mov	[0084],bx
-	inc	bx
-	add	bx,bx
-	mov	si,sp
-	mov	bp,sp
-	sub	bp,bx
-	jc	03E7
-
-l0800_0401:
-	mov	sp,bp
-	mov	[0086],bp
-
-l0800_0407:
-	jcxz	0417
-
-l0800_0409:
-	mov	[bp+00],si
-	add	bp,02
-
-l0800_040F:
-	lodsb	
-	or	al,al
-	loopne	040F
-
-l0800_0415:
-	jz	0407
-
-l0800_0417:
-	xor	ax,ax
-	mov	[bp+00],ax
-	jmp	word ptr cs:[0330]
-
-fn0800_0421()
-	mov	cx,[008A]
-	push	cx
-	call	0570
-	pop	cx
-	mov	di,ax
-	or	ax,ax
-	jz	0454
-
-l0800_0430:
-	push	ds
-	push	ds
-	pop	es
-	mov	ds,[008C]
-	xor	si,si
-	cld	
-
-l0800_043A:
-	rep	
-	movsb	
-
-l0800_043C:
-	pop	ds
-	mov	di,ax
-	push	es
-	push	word ptr [008E]
-	call	0570
-	add	sp,02
-	mov	bx,ax
-	pop	es
-	mov	[0088],ax
-	or	ax,ax
-	jnz	0457
-
-l0800_0454:
-	jmp	01E2
-
-l0800_0457:
-	xor	ax,ax
-	mov	cx,FFFF
-
-l0800_045C:
-	mov	[bx],di
-	add	bx,02
-
-l0800_0461:
-	repne	
-	scasb	
-
-l0800_0463:
-	cmp	es:[di],al
-	jnz	045C
-
-l0800_0468:
-	mov	[bx],ax
-	ret	
-0800:046B                                  55 8B EC 83 3E            U...>
+0800:0300 C3 55 8B EC EB 0A 8B 1E 3E 02 D1 E3 FF 97 E8 05 .U......>.......
+0800:0310 A1 3E 02 FF 0E 3E 02 0B C0 75 EB FF 16 34 02 FF .>...>...u...4..
+0800:0320 16 36 02 FF 16 38 02 FF 76 04 E8 F4 FD 59 5D C3 .6...8..v....Y].
+0800:0330 00 00 00 00 00 00 2E 8F 06 30 03 2E 8C 1E 32 03 .........0....2.
+0800:0340 FC 8E 06 90 00 BE 80 00 32 E4 26 AC 40 8C C5 87 ........2.&.@...
+0800:0350 D6 93 8B 36 8A 00 83 C6 02 B9 01 00 80 3E 92 00 ...6.........>..
+0800:0360 03 72 11 8E 06 8C 00 8B FE B1 7F 32 C0 F2 AE E3 .r.........2....
+0800:0370 76 80 F1 7F 83 EC 02 B8 01 00 03 C3 03 C1 25 FE v.............%.
+0800:0380 FF 8B FC 2B F8 72 60 8B E7 8C C0 8E D8 8C D0 8E ...+.r`.........
+0800:0390 C0 51 49 F3 A4 32 C0 AA 8E DD 87 F2 87 D9 8B C3 .QI..2..........
+0800:03A0 8B D0 43 E8 19 00 77 07 72 40 E8 12 00 77 F9 3C ..C...w.r@...w.<
+0800:03B0 20 74 08 3C 0D 74 04 3C 09 75 E8 32 C0 EB E4 0B  t.<.t.<.u.2....
+0800:03C0 C0 74 07 42 AA 0A C0 75 01 43 86 E0 32 C0 F9 E3 .t.B...u.C..2...
+0800:03D0 15 AC 49 2C 22 74 0F 04 22 3C 5C 75 07 80 3C 22 ..I,"t.."<\u..<"
+0800:03E0 75 02 AC 49 0B F6 C3 E9 F8 FD 59 03 CA 2E 8E 1E u..I......Y.....
+0800:03F0 32 03 89 1E 84 00 43 03 DB 8B F4 8B EC 2B EB 72 2.....C......+.r
+0800:0400 E6 8B E5 89 2E 86 00 E3 0E 89 76 00 83 C5 02 36 ..........v....6
+0800:0410 AC 0A C0 E0 FA 74 F0 33 C0 89 46 00 2E FF 26 30 .....t.3..F...&0
+0800:0420 03 8B 0E 8A 00 51 E8 47 01 59 8B F8 0B C0 74 24 .....Q.G.Y....t$
+0800:0430 1E 1E 07 8E 1E 8C 00 33 F6 FC F3 A4 1F 8B F8 06 .......3........
+0800:0440 FF 36 8E 00 E8 29 01 83 C4 02 8B D8 07 A3 88 00 .6...)..........
+0800:0450 0B C0 75 03 E9 8B FD 33 C0 B9 FF FF 89 3F 83 C3 ..u....3.....?..
+0800:0460 02 F2 AE 26 38 05 75 F4 89 07 C3 55 8B EC 83 3E ...&8.u....U...>
 0800:0470 3E 02 20 75 05 B8 01 00 EB 15 8B 46 04 8B 1E 3E >. u.......F...>
 0800:0480 02 D1 E3 89 87 E8 05 FF 06 3E 02 33 C0 EB 00 5D .........>.3...]
-0800:0490 C3                                              .              
-
-fn0800_0491()
-	push	bp
-	mov	bp,sp
-	push	si
-	push	di
-	mov	di,[bp+04]
-	mov	ax,[di+06]
-	mov	[062A],ax
-	cmp	ax,di
-	jnz	04AB
-
-l0800_04A3:
-	mov	word ptr [062A],0000
-	jmp	04BB
-
-l0800_04AB:
-	mov	si,[di+04]
-	mov	bx,[062A]
-	mov	[bx+04],si
-	mov	ax,[062A]
-	mov	[si+06],ax
-
-l0800_04BB:
-	pop	di
-	pop	si
-	pop	bp
-	ret	
-
-fn0800_04BF()
-	push	bp
-	mov	bp,sp
-	push	si
-	push	di
-	mov	di,[bp+04]
-	mov	ax,[bp+06]
-	sub	[di],ax
-	mov	si,[di]
-	add	si,di
-	mov	ax,[bp+06]
-	inc	ax
-	mov	[si],ax
-	mov	[si+02],di
-	mov	ax,[0628]
-	cmp	ax,di
-	jnz	04E6
-
-l0800_04E0:
-	mov	[0628],si
-	jmp	04EE
-
-l0800_04E6:
-	mov	di,si
-	add	di,[bp+06]
-	mov	[di+02],si
-
-l0800_04EE:
-	mov	ax,si
-	add	ax,0004
-	jmp	04F5
-
-l0800_04F5:
-	pop	di
-	pop	si
-	pop	bp
-	ret	
-
-fn0800_04F9()
-	push	bp
-	mov	bp,sp
-	push	si
-	mov	ax,[bp+04]
-	xor	dx,dx
-	and	ax,FFFF
-	and	dx,0000
-	push	dx
-	push	ax
-	call	0607
-	pop	cx
-	pop	cx
-	mov	si,ax
-	cmp	si,FF
-	jnz	051B
-
-l0800_0517:
-	xor	ax,ax
-	jmp	0533
-
-l0800_051B:
-	mov	ax,[0628]
-	mov	[si+02],ax
-	mov	ax,[bp+04]
-	inc	ax
-	mov	[si],ax
-	mov	[0628],si
-	mov	ax,[0628]
-	add	ax,0004
-	jmp	0533
-
-l0800_0533:
-	pop	si
-	pop	bp
-	ret	
-
-fn0800_0536()
-	push	bp
-	mov	bp,sp
-	push	si
-	mov	ax,[bp+04]
-	xor	dx,dx
-	and	ax,FFFF
-	and	dx,0000
-	push	dx
-	push	ax
-	call	0607
-	pop	cx
-	pop	cx
-	mov	si,ax
-	cmp	si,FF
-	jnz	0558
-
-l0800_0554:
-	xor	ax,ax
-	jmp	056D
-
-l0800_0558:
-	mov	[062C],si
-	mov	[0628],si
-	mov	ax,[bp+04]
-	inc	ax
-	mov	[si],ax
-	mov	ax,si
-	add	ax,0004
-	jmp	056D
-
-l0800_056D:
-	pop	si
-	pop	bp
-	ret	
-
-fn0800_0570()
-	push	bp
-	mov	bp,sp
-	push	si
-	push	di
-	mov	di,[bp+04]
-	or	di,di
-	jz	0581
-
-l0800_057C:
-	cmp	di,F4
-	jbe	0585
-
-l0800_0581:
-	xor	ax,ax
-	jmp	05DF
-
-l0800_0585:
-	mov	ax,di
-	add	ax,000B
-	and	ax,FFF8
-	mov	di,ax
-	cmp	word ptr [062C],00
-	jnz	059D
-
-l0800_0596:
-	push	di
-	call	0536
-	pop	cx
-	jmp	05DF
-
-l0800_059D:
-	mov	si,[062A]
-	mov	ax,si
-	or	ax,ax
-	jz	05D8
-
-l0800_05A7:
-	mov	ax,[si]
-	mov	dx,di
-	add	dx,28
-	cmp	ax,dx
-	jc	05BB
-
-l0800_05B2:
-	push	di
-	push	si
-	call	04BF
-	pop	cx
-	pop	cx
-	jmp	05DF
-
-l0800_05BB:
-	mov	ax,[si]
-	cmp	ax,di
-	jc	05CF
-
-l0800_05C1:
-	push	si
-	call	0491
-	pop	cx
-	inc	word ptr [si]
-	mov	ax,si
-	add	ax,0004
-	jmp	05DF
-
-l0800_05CF:
-	mov	si,[si+06]
-	cmp	si,[062A]
-	jnz	05A7
-
-l0800_05D8:
-	push	di
-	call	04F9
-	pop	cx
-	jmp	05DF
-
-l0800_05DF:
-	pop	di
-	pop	si
-	pop	bp
-	ret	
-0800:05E3          55 8B EC 8B 46 04 8B D4 81 EA 00 01 3B    U...F.......;
+0800:0490 C3 55 8B EC 56 57 8B 7E 04 8B 45 06 A3 2A 06 3B .U..VW.~..E..*.;
+0800:04A0 C7 75 08 C7 06 2A 06 00 00 EB 10 8B 75 04 8B 1E .u...*......u...
+0800:04B0 2A 06 89 77 04 A1 2A 06 89 44 06 5F 5E 5D C3 55 *..w..*..D._^].U
+0800:04C0 8B EC 56 57 8B 7E 04 8B 46 06 29 05 8B 35 03 F7 ..VW.~..F.)..5..
+0800:04D0 8B 46 06 40 89 04 89 7C 02 A1 28 06 3B C7 75 06 .F.@...|..(.;.u.
+0800:04E0 89 36 28 06 EB 08 8B FE 03 7E 06 89 75 02 8B C6 .6(......~..u...
+0800:04F0 05 04 00 EB 00 5F 5E 5D C3 55 8B EC 56 8B 46 04 ....._^].U..V.F.
+0800:0500 33 D2 25 FF FF 81 E2 00 00 52 50 E8 F9 00 59 59 3.%......RP...YY
+0800:0510 8B F0 83 FE FF 75 04 33 C0 EB 18 A1 28 06 89 44 .....u.3....(..D
+0800:0520 02 8B 46 04 40 89 04 89 36 28 06 A1 28 06 05 04 ..F.@...6(..(...
+0800:0530 00 EB 00 5E 5D C3 55 8B EC 56 8B 46 04 33 D2 25 ...^].U..V.F.3.%
+0800:0540 FF FF 81 E2 00 00 52 50 E8 BC 00 59 59 8B F0 83 ......RP...YY...
+0800:0550 FE FF 75 04 33 C0 EB 15 89 36 2C 06 89 36 28 06 ..u.3....6,..6(.
+0800:0560 8B 46 04 40 89 04 8B C6 05 04 00 EB 00 5E 5D C3 .F.@.........^].
+0800:0570 55 8B EC 56 57 8B 7E 04 0B FF 74 05 83 FF F4 76 U..VW.~...t....v
+0800:0580 04 33 C0 EB 5A 8B C7 05 0B 00 25 F8 FF 8B F8 83 .3..Z.....%.....
+0800:0590 3E 2C 06 00 75 07 57 E8 9C FF 59 EB 42 8B 36 2A >,..u.W...Y.B.6*
+0800:05A0 06 8B C6 0B C0 74 31 8B 04 8B D7 83 C2 28 3B C2 .....t1......(;.
+0800:05B0 72 09 57 56 E8 08 FF 59 59 EB 24 8B 04 3B C7 72 r.WV...YY.$..;.r
+0800:05C0 0E 56 E8 CC FE 59 FF 04 8B C6 05 04 00 EB 10 8B .V...Y..........
+0800:05D0 74 06 3B 36 2A 06 75 CF 57 E8 1D FF 59 EB 00 5F t.;6*.u.W...Y.._
+0800:05E0 5E 5D C3 55 8B EC 8B 46 04 8B D4 81 EA 00 01 3B ^].U...F.......;
 0800:05F0 C2 73 07 A3 9E 00 33 C0 EB 0B C7 06 94 00 08 00 .s....3.........
-0800:0600 B8 FF FF EB 00 5D C3                            .....].        
-
-fn0800_0607()
-	push	bp
-	mov	bp,sp
-	mov	ax,[bp+04]
-	mov	dx,[bp+06]
-	add	ax,[009E]
-	adc	dx,00
-	mov	cx,ax
-	add	cx,0100
-	adc	dx,00
-	or	dx,dx
-	jnz	062E
-
-l0800_0624:
-	cmp	cx,sp
-	jnc	062E
-
-l0800_0628:
-	xchg	[009E],ax
-	jmp	0639
-
-l0800_062E:
-	mov	word ptr [0094],0008
-	mov	ax,FFFF
-	jmp	0639
-
-l0800_0639:
-	pop	bp
-	ret	
-0800:063B                                  55 8B EC FF 76            U...v
+0800:0600 B8 FF FF EB 00 5D C3 55 8B EC 8B 46 04 8B 56 06 .....].U...F..V.
+0800:0610 03 06 9E 00 83 D2 00 8B C8 81 C1 00 01 83 D2 00 ................
+0800:0620 0B D2 75 0A 3B CC 73 06 87 06 9E 00 EB 0B C7 06 ..u.;.s.........
+0800:0630 94 00 08 00 B8 FF FF EB 00 5D C3 55 8B EC FF 76 .........].U...v
 0800:0640 04 E8 9F FF 59 EB 00 5D C3 55 8B EC 8B 46 04 99 ....Y..].U...F..
 0800:0650 52 50 E8 B2 FF 8B E5 EB 00 5D C3 55 8B EC 83 EC RP.......].U....
 0800:0660 02 56 57 8B 5E 04 8B 37 8B C6 89 46 FE 8B 5E 04 .VW.^..7...F..^.

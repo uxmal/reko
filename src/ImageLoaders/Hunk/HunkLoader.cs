@@ -66,7 +66,7 @@ namespace Reko.ImageLoaders.Hunk
             this.firstCodeHunk = parse.FindFirstCodeHunk();
             var mem = new MemoryArea(addrLoad, RelocateBytes(addrLoad));
             return new Program(
-                new ImageMap(
+                new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment(
                         "code", mem, AccessMode.ReadWriteExecute)),
@@ -625,12 +625,20 @@ print arg_mem
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            var entries = new List<EntryPoint>
+            var sym = new ImageSymbol(addrLoad)
+            {
+                Type = SymbolType.Procedure,
+                ProcessorState = arch.CreateProcessorState()
+            };
+
+            var entries = new List<ImageSymbol>
             {
                 //$TODO: what are the registers on entry?
-                new EntryPoint(addrLoad, arch.CreateProcessorState())
             };
-            return new RelocationResults(entries, new List<Address>());
+            return new RelocationResults(
+                new List<ImageSymbol> { sym },
+                new SortedList<Address, ImageSymbol> { { sym.Address, sym } },
+                new List<Address>());
         }
 
         private byte[] RelocateBytes(Address addrLoad)

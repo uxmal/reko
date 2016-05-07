@@ -98,8 +98,8 @@ namespace Reko.UnitTests.Arch.Intel
                 this.program, 
                 new ImportResolver(project, this.program, eventListener),
                 sc);
-            EntryPoint ep = new EntryPoint(baseAddress, this.program.Architecture.CreateProcessorState());
-            scanner.EnqueueEntryPoint(ep);
+            ImageSymbol ep = new ImageSymbol(baseAddress);
+            scanner.EnqueueImageSymbol(ep, true);
             var program =  project.Programs[0];
             foreach (Procedure_v1 sp in program.User.Procedures.Values)
             {
@@ -132,6 +132,7 @@ namespace Reko.UnitTests.Arch.Intel
             using (var stm = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
                 var lr = asm.Assemble(baseAddress, stm);
+                program.SegmentMap = lr.SegmentMap;
                 program.ImageMap = lr.ImageMap;
                 program.Platform = lr.Platform ?? new DefaultPlatform(null, lr.Architecture);
             }

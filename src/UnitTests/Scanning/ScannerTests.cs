@@ -106,12 +106,12 @@ namespace Reko.UnitTests.Scanning
         private void BuildX86RealTest(Action<X86Assembler> test)
         {
             var addr = Address.SegPtr(0x0C00, 0);
-            var m = new X86Assembler(sc, new FakePlatform(null, new X86ArchitectureReal()), addr, new List<EntryPoint>());
+            var m = new X86Assembler(sc, new FakePlatform(null, new X86ArchitectureReal()), addr, new List<ImageSymbol>());
             test(m);
             this.program = m.GetImage();
             this.scan = this.CreateScanner(this.program);
-            EntryPoint ep = new EntryPoint(addr, this.program.Architecture.CreateProcessorState());
-            scan.EnqueueEntryPoint(ep);
+            var sym = new ImageSymbol(addr);
+            scan.EnqueueImageSymbol(sym, true);
         }
 
         private void AssertProgram(string sExpected, Program prog)
@@ -144,10 +144,7 @@ namespace Reko.UnitTests.Scanning
                 this.program,
                 new ImportResolver(project, program, eventListener),
                 this.sc);
-            sc.EnqueueEntryPoint(
-                new EntryPoint(
-                    Address.Ptr32(0x12314),
-                    program.Architecture.CreateProcessorState()));
+            sc.EnqueueImageSymbol(new ImageSymbol(Address.Ptr32(0x12314)), true);
             sc.ScanImage();
 
             Assert.AreEqual(1, program.Procedures.Count);
@@ -158,7 +155,7 @@ namespace Reko.UnitTests.Scanning
         private void Given_Program(Address address, byte[] bytes)
         {
             var mem = new MemoryArea(address, bytes);
-            var imageMap = new ImageMap(
+            var segmentMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment("proggie", mem, AccessMode.ReadExecute));
             var arch = new X86ArchitectureFlat32();
@@ -166,7 +163,7 @@ namespace Reko.UnitTests.Scanning
             this.program = new Program
             {
                 Architecture = arch,
-                ImageMap = imageMap,
+                SegmentMap = segmentMap,
                 Platform = platform
             };
             platform.Test_CreateProcedureSerializer = (t, d) =>
@@ -200,7 +197,7 @@ namespace Reko.UnitTests.Scanning
             mem = new MemoryArea(Address.Ptr32(startAddress), new byte[imageSize]);
             program = new Program
             {
-                ImageMap = new ImageMap(mem.BaseAddress,
+                SegmentMap = new SegmentMap(mem.BaseAddress,
                     new ImageSegment("progseg", mem, AccessMode.ReadExecute)),
                 Architecture = arch,
                 Platform = new FakePlatform(null, arch)
@@ -226,7 +223,7 @@ namespace Reko.UnitTests.Scanning
             prog.Architecture = arch;
             prog.Platform = new FakePlatform(null, arch);
             this.mem = new MemoryArea(Address.Ptr32(startAddress), new byte[imageSize]);
-            prog.ImageMap = new ImageMap(
+            prog.SegmentMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment("progseg", this.mem, AccessMode.ReadExecute));
             return new TestScanner(prog, importResolver, sc);
@@ -291,7 +288,7 @@ namespace Reko.UnitTests.Scanning
         {
             program = new Program();
             var addr = Address.SegPtr(0xC00, 0);
-            var m = new X86Assembler(sc, new DefaultPlatform(sc, new X86ArchitectureReal()), addr, new List<EntryPoint>());
+            var m = new X86Assembler(sc, new DefaultPlatform(sc, new X86ArchitectureReal()), addr, new List<ImageSymbol>());
             m.i86();
 
             m.Proc("main");
@@ -321,8 +318,8 @@ namespace Reko.UnitTests.Scanning
                 program, 
                 new ImportResolver(project, program, eventListener),
                 sc);
-            var ep = new EntryPoint(addr, program.Architecture.CreateProcessorState());
-            scan.EnqueueEntryPoint(ep);
+            var sym = new ImageSymbol(addr);
+            scan.EnqueueImageSymbol(sym, true);
             scan.ScanImage();
 
             Assert.AreEqual(4, program.Procedures.Count);
@@ -457,8 +454,8 @@ fn0C00_0000_exit:
                 m => { m.Goto(Address.Ptr32(0x1004)); },
             });
 
-            scan.EnqueueEntryPoint(new EntryPoint(Address.Ptr32(0x1000), arch.CreateProcessorState()));
-            scan.EnqueueEntryPoint(new EntryPoint(Address.Ptr32(0x1100), arch.CreateProcessorState()));
+            scan.EnqueueImageSymbol(new ImageSymbol(Address.Ptr32(0x1000)) { ProcessorState = arch.CreateProcessorState(), }, true);
+            scan.EnqueueImageSymbol(new ImageSymbol(Address.Ptr32(0x1100)) { ProcessorState = arch.CreateProcessorState(), }, true);
             scan.ScanImage();
 
             var sExp =
@@ -515,6 +512,77 @@ fn00001100_exit:
             var proc = scan.ScanProcedure(Address.Ptr32(0x1000), "fn1000", arch.CreateProcessorState());
 
             Assert.AreEqual("bar", proc.Name);
+        }
+
+        [Test]
+        public void Scanner_NoDecompledProcedure()
+        {
+            Given_Program(Address.Ptr32(0x1000), new byte[0x2000]);
+            program.User.Procedures.Add(
+                Address.Ptr32(0x2000),
+                new Procedure_v1()
+                {
+                    Name = "ndProc",
+                    CSignature = "int ndProc(double dVal)",
+                    Decompile = false,
+                }
+            );
+
+            var sc = CreateScanner(program);
+            var proc = sc.ScanProcedure(Address.Ptr32(0x2000), "fn000020", arch.CreateProcessorState());
+            Assert.AreEqual("ndProc", proc.Name);
+            Assert.AreEqual("int32", proc.Signature.ReturnValue.DataType.ToString());
+            Assert.AreEqual("eax", proc.Signature.ReturnValue.Name);
+            Assert.AreEqual(1, proc.Signature.Parameters.Length);
+            Assert.AreEqual("real64", proc.Signature.Parameters[0].DataType.ToString());
+            Assert.AreEqual("dVal", proc.Signature.Parameters[0].Name);
+        }
+
+        [Test]
+        public void Scanner_EnqueueUserProcedure()
+        {
+            Given_Program(Address.Ptr32(0x1000), new byte[0x2000]);
+
+            var sc = CreateScanner(program);
+            sc.EnqueueUserProcedure(new Procedure_v1
+            {
+                Address = "0x1010",
+                Name = "proc1",
+                Decompile = false
+            });
+            sc.EnqueueUserProcedure(new Procedure_v1
+            {
+                Address = "0x1020",
+                Name = "proc2",
+            });
+            sc.ScanImage();
+            Assert.AreEqual(1, program.Procedures.Count);
+            Assert.AreEqual("proc2", program.Procedures.Values[0].Name);
+        }
+
+        [Test]
+        public void Scanner_NoDecompiledEntryPoint()
+        {
+            Given_Program(Address.Ptr32(0x12314), new byte[20]);
+            program.User.Procedures.Add(
+                Address.Ptr32(0x12314),
+                new Procedure_v1()
+                {
+                    Decompile = false,
+                }
+            );
+
+            var sc = CreateScanner(program);
+            sc.EnqueueImageSymbol(
+                new ImageSymbol(Address.Ptr32(0x12314)),
+                true);
+            sc.EnqueueImageSymbol(
+                new ImageSymbol(Address.Ptr32(0x12324)),
+                true);
+            sc.ScanImage();
+
+            Assert.AreEqual(1, program.Procedures.Count);
+            Assert.AreEqual(0x12324, program.Procedures.Keys[0].Offset);
         }
 
         [Test]
@@ -639,7 +707,14 @@ fn00001200_exit:
                 m => { m.Return(0, 0); }
             });
 
-            scanner.ScanEntryPoint(program, new EntryPoint(Address.Ptr32(0x1000), "test", arch.CreateProcessorState()));
+            scanner.ScanImageSymbol(
+                program, 
+                new ImageSymbol(Address.Ptr32(0x1000))
+                {
+                    Name = "test",
+                    ProcessorState = arch.CreateProcessorState()
+                },
+                true);
 
             Assert.AreEqual(1, program.Procedures.Count);
             Assert.AreEqual("test", program.Procedures[Address.Ptr32(0x1000)].Name);
@@ -763,7 +838,6 @@ fn00001200_exit:
         }
 
         [Test(Description = "Scanner should be able to handle structures with padding 'holes'")]
-        [Ignore("@ptomin: see if you can get this to work.")]
         public void Scanner_GlobalData_StructWithPadding()
         {
             var bytes = new byte[]
@@ -799,7 +873,7 @@ fn00001200_exit:
             scanner.ScanImage();
 
             Assert.AreEqual(1, program.Procedures.Count, "Scanner should have detected the pointer to function correctly.");
-            Assert.AreEqual(Address.Ptr32(0x43210017), program.Procedures.Keys.First());
+            Assert.AreEqual(Address.Ptr32(0x43210008), program.Procedures.Keys.First());
         }
     }
 }

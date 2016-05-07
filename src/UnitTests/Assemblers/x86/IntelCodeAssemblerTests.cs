@@ -38,12 +38,12 @@ namespace Reko.UnitTests.Assemblers.x86
         public new void Setup()
         {
             base.Setup();
-            m = new X86Assembler(sc, new MsdosPlatform(sc, new X86ArchitectureReal()), Address.SegPtr(0x100, 0x0100), new List<EntryPoint>());
+            m = new X86Assembler(sc, new MsdosPlatform(sc, new X86ArchitectureReal()), Address.SegPtr(0x100, 0x0100), new List<ImageSymbol>());
         }
 
         private byte[] GetBytes(X86Assembler m)
         {
-            return m.GetImage().ImageMap.Segments.Values.First().MemoryArea.Bytes;
+            return m.GetImage().SegmentMap.Segments.Values.First().MemoryArea.Bytes;
         }
 
         [Test]

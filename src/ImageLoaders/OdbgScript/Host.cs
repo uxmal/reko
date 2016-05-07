@@ -34,7 +34,7 @@ namespace Reko.ImageLoaders.OdbgScript
 {
     public interface IHost
     {
-        ImageMap ImageMap { get; }
+        SegmentMap SegmentMap { get; }
         object TS_LOG_COMMAND { get; set; }
 
         ulong TE_AllocMemory(ulong size);
@@ -84,7 +84,7 @@ namespace Reko.ImageLoaders.OdbgScript
             this.loader = loader;
         }
 
-        public ImageMap ImageMap { get; set; }
+        public SegmentMap SegmentMap { get; set; }
         public object TS_LOG_COMMAND { get; set; }
 
         public virtual ulong TE_AllocMemory(ulong size)
@@ -141,7 +141,7 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public virtual bool TE_GetMemoryInfo(ulong addr, out MEMORY_BASIC_INFORMATION MemInfo)
         {
-            ImageMap map = loader.ImageMap;
+            SegmentMap map = loader.ImageMap;
             ImageSegment segment;
             if (map.TryFindSegment(Address.Ptr32((uint)addr), out segment))
             {
@@ -164,7 +164,7 @@ namespace Reko.ImageLoaders.OdbgScript
         {
             ImageSegment seg;
             var ea= Address.Ptr32((uint)addr);
-            if (!ImageMap.TryFindSegment(ea, out seg))
+            if (!SegmentMap.TryFindSegment(ea, out seg))
                 return false;
             return seg.MemoryArea.TryReadBytes(ea, (int)memlen, membuf);
         }
@@ -247,7 +247,7 @@ namespace Reko.ImageLoaders.OdbgScript
         public virtual MachineInstruction DisassembleEx(Address addr)
         {
             ImageSegment segment;
-            if (!ImageMap.TryFindSegment(addr, out segment))
+            if (!SegmentMap.TryFindSegment(addr, out segment))
                 throw new AccessViolationException();
             var rdr = loader.Architecture.CreateImageReader(segment.MemoryArea, addr);
             var dasm = (X86Disassembler)loader.Architecture.CreateDisassembler(rdr);

@@ -63,29 +63,23 @@ namespace Reko.UnitTests.Scanning
             sc.AddService<DecompilerEventListener>(eventListener);
             sc.AddService<DecompilerHost>(new FakeDecompilerHost());
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
-            var entryPoints = new List<EntryPoint>();
+            var entryPoints = new List<ImageSymbol>();
             var asm = new X86Assembler(sc, platform, addrBase, entryPoints);
             asmProg(asm);
 
-            var lr = asm.GetImage();
-            program = new Program
-            {
-                ImageMap = lr.ImageMap,
-                Architecture = arch,
-                Platform = platform
-            };
+            program = asm.GetImage();
             var project = new Project { Programs = { program } };
             scanner = new Scanner(
                 program,
                 new ImportResolver(project, program, eventListener),
                 sc);
-            scanner.EnqueueEntryPoint(new EntryPoint(addrBase, arch.CreateProcessorState()));
+            scanner.EnqueueImageSymbol(new ImageSymbol(addrBase), true);
             scanner.ScanImage();
         }
 
         private void DumpProgram(Scanner scanner)
         {
-            var dasm = arch.CreateDisassembler(program.ImageMap.Segments.Values.First().MemoryArea.CreateLeReader(0));
+            var dasm = arch.CreateDisassembler(program.SegmentMap.Segments.Values.First().MemoryArea.CreateLeReader(0));
             foreach (var instr in dasm)
             {
                 Console.Out.WriteLine("{0} {1}", instr.Address, instr);

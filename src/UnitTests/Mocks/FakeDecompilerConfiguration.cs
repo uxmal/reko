@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Mocks
             return new SignatureFileElement[0];
         }
 
-        public string GetInstallationRelativePath(string path)
+        public string GetInstallationRelativePath(params string[] pathComponents)
         {
             throw new NotImplementedException();
         }

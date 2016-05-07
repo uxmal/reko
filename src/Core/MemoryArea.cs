@@ -90,9 +90,9 @@ namespace Reko.Core
         }
 
         [Obsolete]
-        public ImageMap CreateImageMap()
+        public SegmentMap CreateImageMap()
         {
-            return new ImageMap(BaseAddress,
+            return new SegmentMap(BaseAddress,
                 new ImageSegment("", this, AccessMode.ReadWriteExecute));
         }
 

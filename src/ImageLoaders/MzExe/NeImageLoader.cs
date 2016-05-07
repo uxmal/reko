@@ -63,8 +63,8 @@ namespace Reko.ImageLoaders.MzExe
         const ushort NE_RSCTYPE_GROUP_ICON        =0x800e;
         const ushort NE_RSCTYPE_SCALABLE_FONTPATH = 0x80cc;
 
-        private MemoryArea image;
-        private ImageMap imageMap;
+        private MemoryArea mem;
+        private SegmentMap segmentMap;
         private List<string> moduleNames;
         private NeSegment[] segments;
         private ushort cbFileAlignmentShift;
@@ -77,6 +77,7 @@ namespace Reko.ImageLoaders.MzExe
         private ushort offRsrcTable;
         private Address addrImportStubs;
         private Dictionary<uint, Tuple<Address, ImportReference>> importStubs;
+        private SortedList<Address, ImageSymbol> imageSymbols;
         private IProcessorArchitecture arch;
         private Address addrEntry;
 
@@ -87,6 +88,7 @@ namespace Reko.ImageLoaders.MzExe
             diags = Services.RequireService<IDiagnosticsService>();
             this.lfaNew = e_lfanew;
             this.importStubs = new Dictionary<uint, Tuple<Address, ImportReference>>();
+            this.imageSymbols = new SortedList<Address, ImageSymbol>();
             if (!LoadNeHeader(rdr))
                 throw new BadImageFormatException("Unable to read NE header.");
         }
@@ -391,7 +393,7 @@ namespace Reko.ImageLoaders.MzExe
             var platform = cfgSvc.GetEnvironment("win16").Load(Services, arch);
 
             var program = new Program(
-                this.imageMap,
+                this.segmentMap,
                 arch,
                 platform);
             program.Resources.Name = "NE resources";
@@ -407,9 +409,10 @@ namespace Reko.ImageLoaders.MzExe
         {
             var entryNames = LoadEntryNames();
             var entryPoints = LoadEntryPoints(entryNames);
-            entryPoints.Add(new EntryPoint(addrEntry, arch.CreateProcessorState()));
+            entryPoints.Add(new ImageSymbol(addrEntry));
             return new RelocationResults(
                 entryPoints,
+                imageSymbols,
                 new List<Address>());
         }
 
@@ -430,10 +433,10 @@ namespace Reko.ImageLoaders.MzExe
             return dict;
         }
 
-        public List<EntryPoint> LoadEntryPoints(Dictionary<int, string> names)
+        public List<ImageSymbol> LoadEntryPoints(Dictionary<int, string> names)
         {
             var rdr = new LeImageReader(RawImage, this.lfaNew + this.offEntryTable);
-            var entries = new List<EntryPoint>();
+            var entries = new List<ImageSymbol>();
             for (;;)
             {
                 var cEntries = rdr.ReadByte();
@@ -448,15 +451,15 @@ namespace Reko.ImageLoaders.MzExe
                     string name;
                     var addr = seg.Address + offset;
                     var state = arch.CreateProcessorState();
-                    EntryPoint ep;
+
+                    ImageSymbol ep = new ImageSymbol(addr);
                     if (names.TryGetValue(entries.Count, out name))
                     {
-                        ep = new EntryPoint(addr, name, state);
+                        ep.Name = name;
                     }
-                    else
-                    {
-                        ep = new EntryPoint(addr, state);
-                    }
+                    ep.Type = SymbolType.Procedure;
+                    ep.ProcessorState = state;
+                    imageSymbols[ep.Address] = ep;
                     entries.Add(ep);
                 }
             }
@@ -497,13 +500,13 @@ namespace Reko.ImageLoaders.MzExe
             this.segments = ReadSegmentTable(offset, cSeg);
             var segFirst = segments[0];
             var segLast = segments[segments.Length - 1];
-            this.image = new MemoryArea(
+            this.mem = new MemoryArea(
                 PreferredBaseAddress,
                 new byte[segLast.LinearAddress + segLast.DataLength]);
-            this.imageMap = image.CreateImageMap();
+            this.segmentMap = mem.CreateImageMap();
             foreach (var segment in segments)
             {
-                LoadSegment(segment, image, imageMap);
+                LoadSegment(segment, mem, segmentMap);
             }
         }
 
@@ -539,7 +542,7 @@ namespace Reko.ImageLoaders.MzExe
             return segs.ToArray();
         }
 
-        bool LoadSegment(NeSegment seg, MemoryArea loadedImage, ImageMap imageMap)
+        bool LoadSegment(NeSegment seg, MemoryArea loadedImage, SegmentMap imageMap)
         {
             Array.Copy(
                 RawImage,
@@ -553,7 +556,7 @@ namespace Reko.ImageLoaders.MzExe
                 (seg.Flags & 1) != 0
                     ? AccessMode.ReadWrite
                     : AccessMode.ReadExecute;
-            imageMap.AddSegment(
+            segmentMap.AddSegment(
                 seg.Address,
                 seg.Address.Selector.Value.ToString("X4"),
                 access,
@@ -766,25 +769,25 @@ namespace Reko.ImageLoaders.MzExe
                     switch (rep.address_type & 0x7f)
                     {
                     case NE_RADDR_LOWBYTE:
-                        b = image.ReadByte(sp);
-                        image.WriteByte(sp, (byte)(b + address.Offset));
+                        b = mem.ReadByte(sp);
+                        mem.WriteByte(sp, (byte)(b + address.Offset));
                         break;
                     case NE_RADDR_OFFSET16:
-                        w = image.ReadLeUInt16(sp);
-                        image.WriteLeUInt16(sp, (ushort)(w + address.Offset));
+                        w = mem.ReadLeUInt16(sp);
+                        mem.WriteLeUInt16(sp, (ushort)(w + address.Offset));
                         break;
                     case NE_RADDR_POINTER32:
-                        w = image.ReadLeUInt16(sp);
-                        image.WriteLeUInt16(sp, (ushort)(w + address.Offset));
-                        image.WriteLeUInt16(sp + 2, address.Selector.Value);
+                        w = mem.ReadLeUInt16(sp);
+                        mem.WriteLeUInt16(sp, (ushort)(w + address.Offset));
+                        mem.WriteLeUInt16(sp + 2, address.Selector.Value);
                         break;
                     case NE_RADDR_SELECTOR:
                         // Borland creates additive records with offset zero. Strange, but OK.
-                        w = image.ReadLeUInt16(sp);
+                        w = mem.ReadLeUInt16(sp);
                         if (w != 0)
                             diags.Error(string.Format("Additive selector to {0:X4}. Please report.", w));
                         else
-                            image.WriteLeUInt16(sp, address.Selector.Value);
+                            mem.WriteLeUInt16(sp, address.Selector.Value);
                         break;
                     default:
                         goto unknown;
@@ -796,22 +799,22 @@ namespace Reko.ImageLoaders.MzExe
                     do
                     {
                         var sp = seg.Address + offset;
-                        ushort next_offset = image.ReadLeUInt16(sp);
+                        ushort next_offset = mem.ReadLeUInt16(sp);
                         Debug.Print("    {0:X4}:{0:X4}", offset, next_offset);
                         switch (rep.address_type & 0x7f)
                         {
                         case NE_RADDR_LOWBYTE:
-                            image.WriteByte(sp, (byte)address.Offset);
+                            mem.WriteByte(sp, (byte)address.Offset);
                             break;
                         case NE_RADDR_OFFSET16:
-                            image.WriteLeUInt16(sp, (ushort)address.Offset);
+                            mem.WriteLeUInt16(sp, (ushort)address.Offset);
                             break;
                         case NE_RADDR_POINTER32:
-                            image.WriteLeUInt16(sp, (ushort)address.Offset);
-                            image.WriteLeUInt16(sp + 2, address.Selector.Value);
+                            mem.WriteLeUInt16(sp, (ushort)address.Offset);
+                            mem.WriteLeUInt16(sp + 2, address.Selector.Value);
                             break;
                         case NE_RADDR_SELECTOR:
-                            image.WriteLeUInt16(sp, address.Selector.Value);
+                            mem.WriteLeUInt16(sp, address.Selector.Value);
                             break;
                         default:
                             goto unknown;
@@ -827,10 +830,10 @@ namespace Reko.ImageLoaders.MzExe
 
             unknown:
             var svc = Services.RequireService<IDiagnosticsService>();
-            svc.Warn(string.Format("{0}: unknown ADDR TYPE {1},  " +
+            svc.Warn("{0}: unknown ADDR TYPE {1},  " +
                 "TYPE {2},  OFFSET {3:X4},  TARGET {4:X4} {5:X4}",
                 seg.Address.Selector, rep.address_type, rep.relocation_type,
-                rep.offset, rep.target1, rep.target2));
+                rep.offset, rep.target1, rep.target2);
             return false;
         }
 

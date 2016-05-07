@@ -52,6 +52,7 @@ namespace Reko.Gui.Windows.Controls
         private uint cbRow;
         private IProcessorArchitecture arch;
         private MemoryArea mem;
+        private SegmentMap segmentMap;
         private ImageMap imageMap;
         private Encoding encoding;
         private Address addrSelected;
@@ -187,7 +188,7 @@ namespace Reko.Gui.Windows.Controls
             ulong linAddr = (ulong)((long)SelectedAddress.ToLinear() + offset);
             if (!mem.IsValidLinearAddress(linAddr))
                 return;
-            Address addr = imageMap.MapLinearAddressToAddress(linAddr);
+            Address addr = segmentMap.MapLinearAddressToAddress(linAddr);
             if (!IsVisible(SelectedAddress))
             {
                 Address newTopAddress = TopAddress + offset;
@@ -405,6 +406,21 @@ namespace Reko.Gui.Windows.Controls
         }
 
         [Browsable(false)]
+        public SegmentMap SegmentMap
+        {
+            get { return segmentMap; }
+            set
+            {
+                if (segmentMap != null)
+                    segmentMap.MapChanged -= imageMap_MapChanged;
+                segmentMap = value;
+                if (segmentMap != null)
+                    segmentMap.MapChanged += imageMap_MapChanged;
+                Invalidate();
+            }
+        }
+
+        [Browsable(false)]
         public IProcessorArchitecture Architecture
         {
             get { return arch; }
@@ -425,7 +441,7 @@ namespace Reko.Gui.Windows.Controls
         private Address RoundToNearestRow(Address addr)
         {
             ulong rows = addr.ToLinear() / cbRow;
-            return imageMap.MapLinearAddressToAddress(rows * cbRow);
+            return segmentMap.MapLinearAddressToAddress(rows * cbRow);
         }
 
         [Browsable(false)]
@@ -466,7 +482,7 @@ namespace Reko.Gui.Windows.Controls
             ImageSegment seg;
             if (ImageMap == null)
                 return null;
-            if (!ImageMap.TryFindSegment(addr, out seg))
+            if (!SegmentMap.TryFindSegment(addr, out seg))
                 return null;
             return seg;
         }
@@ -513,7 +529,7 @@ namespace Reko.Gui.Windows.Controls
 
         private void vscroller_Scroll(object sender, ScrollEventArgs e)
         {
-            Address newTopAddress = imageMap.MapLinearAddressToAddress(
+            Address newTopAddress = segmentMap.MapLinearAddressToAddress(
                 addrMin.ToLinear() + (uint)e.NewValue * cbRow);
             if (mem.IsValidAddress(newTopAddress))
             {
@@ -561,7 +577,7 @@ namespace Reko.Gui.Windows.Controls
                 while (rc.Top < ctrl.Height && rdr.Address.ToLinear() < laEnd)
                 {
                     ImageSegment seg;
-                    if (ctrl.ImageMap.TryFindSegment(ctrl.addrTopVisible, out seg))
+                    if (ctrl.SegmentMap.TryFindSegment(ctrl.addrTopVisible, out seg))
                     {
                         if (rdr.Address.ToLinear() >= laSegEnd)
                         {

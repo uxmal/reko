@@ -79,7 +79,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             var mem = new MemoryArea(loadAddress, bytes);
             Program prog = new Program
             {
-                ImageMap = new ImageMap(
+                SegmentMap = new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment(".text", mem, AccessMode.ReadExecute)),
                 Architecture = arch,

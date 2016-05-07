@@ -31,7 +31,7 @@ namespace Reko.Core.Serialization
     [XmlRoot(ElementName="SIGNATURES", Namespace = "", IsNullable = false)]
     public partial class UnpackerSignatureFile_v1
     {
-        [XmlElementAttribute("ENTRY", Form = XmlSchemaForm.Unqualified)]
+        [XmlElement("ENTRY", Form = XmlSchemaForm.Unqualified)]
         public UnpackerSignature_v1[] Signatures;
     }
 

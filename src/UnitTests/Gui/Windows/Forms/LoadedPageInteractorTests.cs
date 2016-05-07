@@ -64,14 +64,14 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             program.Architecture = new X86ArchitectureReal();
             program.Platform = platform;
             var mem = new MemoryArea(Address.SegPtr(0xC00, 0), new byte[10000]);
-            program.ImageMap = new ImageMap(
+            program.SegmentMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment("0C00", mem, AccessMode.ReadWriteExecute));
 
-            program.ImageMap.AddSegment(Address.SegPtr(0x0C10, 0), "0C10", AccessMode.ReadWrite, 0);
-            program.ImageMap.AddSegment(Address.SegPtr(0x0C20, 0), "0C20", AccessMode.ReadWrite, 0);
-            mapSegment1 = program.ImageMap.Segments.Values[0];
-            mapSegment2 = program.ImageMap.Segments.Values[1];
+            program.SegmentMap.AddSegment(Address.SegPtr(0x0C10, 0), "0C10", AccessMode.ReadWrite, 0);
+            program.SegmentMap.AddSegment(Address.SegPtr(0x0C20, 0), "0C20", AccessMode.ReadWrite, 0);
+            mapSegment1 = program.SegmentMap.Segments.Values[0];
+            mapSegment2 = program.SegmentMap.Segments.Values[1];
 
             decSvc = new DecompilerService();
 
@@ -152,7 +152,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             var decompiler = mr.Stub<IDecompiler>();
             var prog = new Program();
             var mem = new MemoryArea(Address.Ptr32(0x3000), new byte[10]);
-            prog.ImageMap = new ImageMap(
+            prog.SegmentMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment(".text", mem, AccessMode.ReadWriteExecute));
             var project = new Project { Programs = { prog } };

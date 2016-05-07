@@ -282,7 +282,7 @@ namespace Reko.Gui.Windows.Forms
             dlg.MemoryControl.Font = new System.Drawing.Font("Lucida Console", 9.0f);
             dlg.DisassemblyControl.StyleClass = UiStyles.Disassembler;
             dlg.DisassemblyControl.Services = sc;
-            dlg.DisassemblyControl.Model = new DisassemblyTextModel(program, program.ImageMap.Segments.Values.First());
+            dlg.DisassemblyControl.Model = new DisassemblyTextModel(program, program.SegmentMap.Segments.Values.First());
             dlg.CodeControl.Model = GenerateSimulatedHllCode();
         }
 
@@ -308,9 +308,10 @@ namespace Reko.Gui.Windows.Forms
                         40).SelectMany(r => r).ToArray());
             var addrCode = Address.Ptr32(0x0010008);
             var addrData = Address.Ptr32(0x001001A);
-            var imageMap = new ImageMap(
+            var segmentMap = new SegmentMap(
                 image.BaseAddress,
                 new ImageSegment("code", image,  AccessMode.ReadWriteExecute));
+            var imageMap = segmentMap.CreateImageMap();
             imageMap.AddItemWithSize(addrCode, new ImageMapBlock { Address = addrCode, Size = 0x0E });
             imageMap.AddItemWithSize(addrData, new ImageMapItem { Address = addrData, DataType = PrimitiveType.Byte, Size = 0x0E });
             var arch = dlg.Services.RequireService<IConfigurationService>().GetArchitecture("x86-protected-32");

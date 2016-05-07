@@ -75,7 +75,7 @@ namespace Reko.WindowsItp
             throw new NotImplementedException();
         }
 
-        public string GetInstallationRelativePath(string path)
+        public string GetInstallationRelativePath(params string [] pathComponents)
         {
             throw new NotImplementedException();
         }

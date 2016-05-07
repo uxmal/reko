@@ -51,7 +51,7 @@ namespace Reko.Assemblers.Pdp11
         {
             var mem = new MemoryArea(BaseAddress, emitter.GetBytes());
             return new Program(
-                new ImageMap(
+                new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment(".text", mem, AccessMode.ReadWriteExecute)),
                 arch,

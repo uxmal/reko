@@ -47,7 +47,7 @@ namespace Reko.UnitTests
             }
             var mem = new MemoryArea(addrStart, memStm.ToArray());
             results = new Program(
-                new ImageMap(
+                new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute)),
                 arch,
@@ -125,7 +125,7 @@ namespace Reko.UnitTests
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            return new RelocationResults(new List<EntryPoint>(), new List<Address>());
+            return new RelocationResults(new List<ImageSymbol>(), new SortedList<Address, ImageSymbol>(), new List<Address>());
         }
     }
 }

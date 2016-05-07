@@ -144,7 +144,7 @@ namespace Reko.Gui.Design
             var arch = program.Architecture;
             var rdr = program.CreateImageReader(program.ImageMap.BaseAddress);
             var addrControl = arch.CreatePointerScanner(
-                program.ImageMap,
+                program.SegmentMap,
                 rdr,
                 new Address[]  {
                     this.Address,

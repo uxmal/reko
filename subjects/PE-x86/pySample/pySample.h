@@ -418,8 +418,6 @@ Eq_1156: (fn Eq_884 ((ptr Eq_1158)))
 Eq_1158: LARGE_INTEGER
 	T_1158 (in lpPerformanceCount : (ptr LARGE_INTEGER))
 	T_1160 (in fp - 0x00000014 : word32)
-Eq_1189: (struct "PyMethodDef" (0 (ptr char) ml_name) (4 PyCFunction ml_meth) (8 int32 ml_flags) (C (ptr char) ml_doc))
-	T_1189
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
@@ -5173,10 +5171,6 @@ T_1188: (in esi_68 | esi_68 << 0x00000010 : word32)
   Class: Eq_1089
   DataType: ui32
   OrigDataType: ui32
-T_1189:
-  Class: Eq_1189
-  DataType: Eq_1189
-  OrigDataType: 
 */
 typedef struct Globals {
 	Eq_146 t0004;	// 4
@@ -5413,11 +5407,4 @@ typedef Eq_146 (Eq_1152)();
 typedef BOOL (Eq_1156)(LARGE_INTEGER *);
 
 typedef LARGE_INTEGER Eq_1158;
-
-typedef struct PyMethodDef {
-	char * ml_name;	// 0
-	 PyCFunction ml_meth;	// 4
-	int32 ml_flags;	// 8
-	char * ml_doc;	// C
-} Eq_1189;
 

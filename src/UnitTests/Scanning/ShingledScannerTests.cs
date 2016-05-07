@@ -86,8 +86,8 @@ namespace Reko.UnitTests.Scanning
 
         private void CreateProgram(MemoryArea mem, IProcessorArchitecture arch)
         {
-            var imageMap = new ImageMap(mem.BaseAddress);
-            var seg = imageMap.AddSegment(new ImageSegment(
+            var segmentMap = new SegmentMap(mem.BaseAddress);
+            var seg = segmentMap.AddSegment(new ImageSegment(
                 ".text",
                 mem,
                 AccessMode.ReadExecute)
@@ -97,7 +97,7 @@ namespace Reko.UnitTests.Scanning
             seg.Access = AccessMode.ReadExecute;
             var platform = new DefaultPlatform(null, arch);
             program = new Program(
-                imageMap,
+                segmentMap,
                 arch,
                 platform);
         }
@@ -121,7 +121,7 @@ namespace Reko.UnitTests.Scanning
         public void Shsc_Invalid()
         {
             Given_Mips_Image(0x00001403);
-            var by = sh.ScanSegment(program.ImageMap.Segments.Values.First());
+            var by = sh.ScanSegment(program.SegmentMap.Segments.Values.First());
             Assert.AreEqual(new byte[] { 0 }, TakeEach(by, 4));
         }
 
@@ -130,7 +130,7 @@ namespace Reko.UnitTests.Scanning
         {
             Given_Mips_Image(0x03E00008, 0);
             Given_Scanner();
-            var by = sh.ScanSegment(program.ImageMap.Segments.Values.First());
+            var by = sh.ScanSegment(program.SegmentMap.Segments.Values.First());
             Assert.AreEqual(new byte[] { 1, 1 }, TakeEach(by, 4));
         }
 
@@ -139,7 +139,7 @@ namespace Reko.UnitTests.Scanning
         {
             Given_Mips_Image(0x1C60FFFF, 0, 0x03e00008, 0);
             Given_Scanner();
-            var by = sh.ScanSegment(program.ImageMap.Segments.Values.First());
+            var by = sh.ScanSegment(program.SegmentMap.Segments.Values.First());
             Assert.AreEqual(new byte[] { 1, 1, 1, 1, }, TakeEach(by, 4));
         }
 
@@ -148,7 +148,7 @@ namespace Reko.UnitTests.Scanning
         {
             Given_x86_Image(0x33, 0xC0, 0xC0, 0x90, 0xc3);
             Given_Scanner();
-            var by = sh.ScanSegment(program.ImageMap.Segments.Values.First());
+            var by = sh.ScanSegment(program.SegmentMap.Segments.Values.First());
             Assert.AreEqual(new byte[] { 0, 1, 0, 1, 1 }, by);
         }
 

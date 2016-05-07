@@ -158,7 +158,7 @@ namespace Reko.Arch.PowerPC
         }
 
         public override abstract IEnumerable<Address> CreatePointerScanner(
-            ImageMap map, 
+            SegmentMap map, 
             ImageReader rdr,
             IEnumerable<Address> addrs, 
             PointerScannerFlags flags);
@@ -301,7 +301,7 @@ namespace Reko.Arch.PowerPC
         { }
 
         public override IEnumerable<Address> CreatePointerScanner(
-            ImageMap map, 
+            SegmentMap map, 
             ImageReader rdr, 
             IEnumerable<Address> knownAddresses,
             PointerScannerFlags flags)
@@ -331,7 +331,7 @@ namespace Reko.Arch.PowerPC
         { }
 
         public override IEnumerable<Address> CreatePointerScanner(
-            ImageMap map,
+            SegmentMap map,
             ImageReader rdr,
             IEnumerable<Address> knownAddresses,
             PointerScannerFlags flags)

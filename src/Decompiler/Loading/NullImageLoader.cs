@@ -38,11 +38,11 @@ namespace Reko.Loading
         {
             this.imageBytes = image;
             this.baseAddr = Address.Ptr32(0);
-            this.EntryPoints = new List<EntryPoint>();
+            this.EntryPoints = new List<ImageSymbol>();
         }
 
         public IProcessorArchitecture Architecture { get; set; }
-        public List<EntryPoint> EntryPoints { get; private set; }
+        public List<ImageSymbol> EntryPoints { get; private set; }
         public IPlatform Platform { get; set; }
         public override Address PreferredBaseAddress
         {
@@ -56,7 +56,7 @@ namespace Reko.Loading
                 addrLoad = PreferredBaseAddress;
             var mem = new MemoryArea(addrLoad, imageBytes);
             return new Program(
-                new ImageMap(
+                new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute)),
                 Architecture,
@@ -65,7 +65,7 @@ namespace Reko.Loading
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            return new RelocationResults(EntryPoints, new List<Address>());
+            return new RelocationResults(EntryPoints, new SortedList<Address, ImageSymbol>(), new List<Address>());
         }
     }
 }

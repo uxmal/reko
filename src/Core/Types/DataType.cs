@@ -64,7 +64,7 @@ namespace Reko.Core.Types
             {
                 dt = tv.Class.DataType ?? tv.DataType;
                 tv = dt as TypeVariable;
-            }
+            }     
             EquivalenceClass eq = dt as EquivalenceClass;
             while (eq != null)
             {

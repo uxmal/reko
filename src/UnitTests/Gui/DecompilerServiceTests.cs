@@ -84,7 +84,7 @@ namespace Reko.UnitTests.Gui
             var fileName = "foo\\bar\\baz.exe";
             var bytes = new byte[100];
             var mem = new MemoryArea(Address.Ptr32(0x1000), bytes);
-            var imageMap = new ImageMap(
+            var imageMap = new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
             var prog = new Program(imageMap, arch, platform);

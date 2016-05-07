@@ -198,9 +198,81 @@ namespace Reko.UnitTests.Core
 			Assert.IsNotNull(new AddressOfOperator());
 		}
 
+        [Test]
+        public void LtApplyConstants1()
+        {
+            RunApply(5, 3, new LtOperator(), 0);
+        }
+
+        [Test]
+        public void LtApplyConstants2()
+        {
+            RunApply(4, 5, new LtOperator(), 1);
+        }
+
+        [Test]
+        public void LtApplyConstants3()
+        {
+            RunApply(6, 6, new LtOperator(), 0);
+        }
+
+        [Test]
+        public void GtApplyConstants1()
+        {
+            RunApply(5, 3, new GtOperator(), 1);
+        }
+
+        [Test]
+        public void GtApplyConstants2()
+        {
+            RunApply(4, 5, new GtOperator(), 0);
+        }
+
+        [Test]
+        public void GtApplyConstants3()
+        {
+            RunApply(6, 6, new GtOperator(), 0);
+        }
+
+        [Test]
+        public void LeApplyConstants1()
+        {
+            RunApply(5, 3, new LeOperator(), 0);
+        }
+
+        [Test]
+        public void LeApplyConstants2()
+        {
+            RunApply(4, 5, new LeOperator(), 1);
+        }
+
+        [Test]
+        public void LeApplyConstants3()
+        {
+            RunApply(6, 6, new LeOperator(), 1);
+        }
+
+        [Test]
+        public void GeApplyConstants1()
+        {
+            RunApply(5, 3, new GeOperator(), 1);
+        }
+
+        [Test]
+        public void GeApplyConstants2()
+        {
+            RunApply(4, 5, new GeOperator(), 0);
+        }
+
+        [Test]
+        public void GeApplyConstants3()
+        {
+            RunApply(6, 6, new GeOperator(), 1);
+        }
 
 
-		private void RunApply(int a, int b, BinaryOperator op, int expected)
+
+        private void RunApply(int a, int b, BinaryOperator op, int expected)
 		{
 			Constant c1 = Constant.Word32(a);
 			Constant c2 = Constant.Word32(b);

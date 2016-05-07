@@ -127,9 +127,9 @@ namespace Reko.Scanning
 
             return program.ImageMap.Items
                 .Where(de => de.Value.DataType is UnknownType)
-                .Select(de => Tuple.Create(this.program.ImageMap.Segments[de.Key].MemoryArea, de.Key, de.Key + de.Value.Size));
+                .Select(de => Tuple.Create(this.program.SegmentMap.Segments[de.Key].MemoryArea, de.Key, de.Key + de.Value.Size));
 #else
-            return program.ImageMap.Segments.Values
+            return program.SegmentMap.Segments.Values
                 .Where(s => (s.Access & AccessMode.Execute) != 0)
                 .Select(s => Tuple.Create(s.MemoryArea, s.Address, s.Address + s.ContentSize));
 #endif
@@ -165,7 +165,7 @@ namespace Reko.Scanning
         public IEnumerable<Address> FindCallOpcodes(MemoryArea mem, IEnumerable<Address> knownProcedureAddresses)
         {
             return program.Architecture.CreatePointerScanner(
-                program.ImageMap,
+                program.SegmentMap,
                 program.Architecture.CreateImageReader(mem, 0),
                 knownProcedureAddresses,
                 PointerScannerFlags.Calls);

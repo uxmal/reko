@@ -132,7 +132,7 @@ namespace Reko.Core.Expressions
 
         public Expression FMul(Expression a, Expression b)
         {
-            return new BinaryExpression(Operator.FMul, PrimitiveType.Real64, a, b);
+            return new BinaryExpression(Operator.FMul, a.DataType, a, b);
         }
 
         public Application Fn(Expression e, params Expression[] exps)
@@ -159,6 +159,11 @@ namespace Reko.Core.Expressions
         public Application Fn(PseudoProcedure ppp, params Expression[] args)
         {
             return new Application(new ProcedureConstant(PrimitiveType.Pointer32, ppp), ppp.ReturnType, args);
+        }
+
+        public Expression FNeg(Expression a)
+        {
+            return new UnaryExpression(Operator.FNeg, a.DataType, a);
         }
 
         public Expression FEq(Expression a, Expression b)

@@ -30,7 +30,7 @@ namespace Reko.UnitTests.Arch.Intel
             arch = new X86ArchitectureFlat32();
             var services = new ServiceContainer();
             services.AddService<IFileSystemService>(new FileSystemServiceImpl());
-            asm = new X86Assembler(services, new DefaultPlatform(services, arch), loadAddress, new List<EntryPoint>());
+            asm = new X86Assembler(services, new DefaultPlatform(services, arch), loadAddress, new List<ImageSymbol>());
         }
 
         public override IProcessorArchitecture Architecture
@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Arch.Intel
                 arch,
                 host, 
                 new X86State(arch),
-                asmResult.ImageMap.Segments.Values.First().MemoryArea.CreateLeReader(0), frame);
+                asmResult.SegmentMap.Segments.Values.First().MemoryArea.CreateLeReader(0), frame);
         }
 
         public override Address LoadAddress

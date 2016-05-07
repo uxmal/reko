@@ -169,7 +169,7 @@ namespace Reko.ImageLoaders.Elf
                 Alignment = 0x10,
             };
             foreach (var sym in loader.GetAllSymbols().Where(s => 
-                s.Type == SymbolType.STT_NOTYPE &&
+                s.Type == ElfSymbolType.STT_NOTYPE &&
                 !string.IsNullOrEmpty(s.Name)))
             {
                 rekoExtfn.Size = Align(rekoExtfn.Size, 0x10);
@@ -207,7 +207,7 @@ namespace Reko.ImageLoaders.Elf
             return segFlags;
         }
 
-        public ImageMap CreateSegments(Address addrBase, Dictionary<ElfSection,Elf32_PHdr> mpSections)
+        public SegmentMap CreateSegments(Address addrBase, Dictionary<ElfSection,Elf32_PHdr> mpSections)
         {
             var addr = addrBase;
             foreach (var segment in Segments)
@@ -241,7 +241,7 @@ namespace Reko.ImageLoaders.Elf
                 v => new MemoryArea(
                     Address.Ptr32(v.Key.p_paddr),
                     v.Value.ToArray()));
-            var imageMap = new ImageMap(
+            var imageMap = new SegmentMap(
                 addrBase,
                 mpSections
                     .Select(s => new ImageSegment(
@@ -256,7 +256,7 @@ namespace Reko.ImageLoaders.Elf
         {
             // Find all unresolved symbols and add them as external procedures.
             foreach (var sym in loader.GetAllSymbols().Where(s =>
-                s.Type == SymbolType.STT_NOTYPE &&
+                s.Type == ElfSymbolType.STT_NOTYPE &&
                 !string.IsNullOrEmpty(s.Name)))
             {
                 var addr =

@@ -22,6 +22,8 @@ using Reko.Core.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Core.Configuration
@@ -32,6 +34,7 @@ namespace Reko.Core.Configuration
         string Description { get; }
         string TypeName { get; }
         string MemoryMapFile { get; }
+        PlatformHeuristics_v1 Heuristics { get; }
         List<ITypeLibraryElement> TypeLibraries { get; }
         List<ITypeLibraryElement> CharacteristicsLibraries { get; }
 
@@ -50,6 +53,8 @@ namespace Reko.Core.Configuration
 
         public string Description { get; set; }
 
+        public PlatformHeuristics_v1 Heuristics { get; set; }
+
         public string TypeName { get; set; }
 
         public string MemoryMapFile { get; set; }
@@ -63,14 +68,132 @@ namespace Reko.Core.Configuration
             if (type == null)
                 throw new TypeLoadException(
                     string.Format("Unable to load {0} environment.", Description));
-            var platform = (Platform) Activator.CreateInstance(type, services, arch);
+            var platform = (Platform)Activator.CreateInstance(type, services, arch);
+            LoadSettingsFromConfiguration(services, platform);
+            return platform;
+        }
+
+        public void LoadSettingsFromConfiguration(IServiceProvider services, Platform platform)
+        {
             platform.Name = this.Name;
             if (!string.IsNullOrEmpty(MemoryMapFile))
             {
                 platform.MemoryMap = MemoryMap_v1.LoadMemoryMapFromFile(services, MemoryMapFile, platform);
             }
             platform.Description = this.Description;
-            return platform;
+            platform.Heuristics = LoadHeuristics(this.Heuristics);
+        }
+
+        private PlatformHeuristics LoadHeuristics(PlatformHeuristics_v1 heuristics)
+        {
+            if (heuristics == null)
+            {
+                return new PlatformHeuristics
+                {
+                    ProcedurePrologs = new BytePattern[0],
+                };
+            }
+            BytePattern[] prologs;
+            if (heuristics.ProcedurePrologs == null)
+            {
+                prologs = new BytePattern[0];
+            }
+            else
+            {
+                prologs = heuristics.ProcedurePrologs
+                    .Select(p => LoadBytePattern(p))
+                    .Where(p => p.Bytes != null)
+                    .ToArray();
+            }
+
+            return new PlatformHeuristics
+            {
+                ProcedurePrologs = prologs
+            };
+        }
+
+        public BytePattern LoadBytePattern(BytePattern_v1 sPattern)
+        {
+            List<byte> bytes = null;
+            List<byte> mask = null;
+            if (sPattern.Bytes == null)
+                return null;
+            if (sPattern.Mask == null)
+            {
+                bytes = new List<byte>();
+                mask = new List<byte>();
+                int shift = 4;
+                int bb = 0;
+                int mm = 0;
+                for (int i = 0; i < sPattern.Bytes.Length; ++i)
+                {
+                    char c = sPattern.Bytes[i];
+                    byte b;
+                    if (BytePattern.TryParseHexDigit(c, out b))
+                    {
+                        bb = bb | (b << shift);
+                        mm = mm | (0x0F << shift);
+                        shift -= 4;
+                        if (shift < 0)
+                        {
+                            bytes.Add((byte)bb);
+                            mask.Add((byte)mm);
+                            shift = 4;
+                            bb = mm = 0;
+                        }
+                    }
+                    else if (c == '?' || c == '.')
+                    {
+                        shift -= 4;
+                        if (shift < 0)
+                        {
+                            bytes.Add((byte)bb);
+                            mask.Add((byte)mm);
+                            shift = 4;
+                            bb = mm = 0;
+                        }
+                    }
+                }
+                Debug.Assert(bytes.Count == mask.Count);
+            }
+            else
+            {
+                bytes = LoadHexPattern(sPattern.Bytes);
+                mask = LoadHexPattern(sPattern.Mask);
+            }
+            if (bytes.Count == 0)
+                return null;
+            else
+                return new BytePattern
+                {
+                    Bytes = bytes.ToArray(),
+                    Mask = mask.ToArray()
+                };
+
+        }
+
+        private List<byte> LoadHexPattern(string sBytes)
+        {
+            int shift = 4;
+            int bb = 0;
+            var bytes = new List<byte>();
+            for (int i = 0; i < sBytes.Length; ++i)
+            {
+                char c = sBytes[i];
+                byte b;
+                if (BytePattern.TryParseHexDigit(c, out b))
+                {
+                    bb = bb | (b << shift);
+                    shift -= 4;
+                    if (shift < 0)
+                    {
+                        bytes.Add((byte)bb);
+                        shift = 4;
+                        bb = 0;
+                    }
+                }
+            }
+            return bytes;
         }
 
         public override string ToString()

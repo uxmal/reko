@@ -210,8 +210,21 @@ namespace Reko
                 program.EnvironmentMetadata = Project.LoadedMetadata;
                 isProject = false;
             }
+            BuildImageMaps();
             eventListener.ShowStatus("Source program loaded.");
             return isProject;
+        }
+
+        /// <summary>
+        /// Build image maps for each program in preparation of the scanning
+        /// phase.
+        /// </summary>
+        private void BuildImageMaps()
+        {
+            foreach (var program in this.Project.Programs)
+            {
+                program.BuildImageMap();
+            }
         }
 
         public void RunScriptOnProgramImage(Program program, Script_v2 script)
@@ -227,7 +240,7 @@ namespace Reko
             }
             catch (Exception ex)
             {
-                eventListener.Error(new NullCodeLocation(""), ex, string.Format("Unable to load script interpreter {0}."));
+                eventListener.Error(new NullCodeLocation(""), ex, "Unable to load script interpreter {0}.");
                 return;
             }
 
@@ -237,7 +250,7 @@ namespace Reko
                 interpreter.Run();
             } catch (Exception ex)
             {
-                eventListener.Error(new NullCodeLocation(""), ex, string.Format("An error occurred while running the script."));
+                eventListener.Error(new NullCodeLocation(""), ex, "An error occurred while running the script.");
             }
         }
 
@@ -413,13 +426,20 @@ namespace Reko
                     var dt = global.Value.DataType.Accept(tlDeser);
                     scanner.EnqueueUserGlobalData(addr, dt);
                 }
-                foreach (EntryPoint ep in program.EntryPoints.Values)
+                foreach (ImageSymbol ep in program.EntryPoints.Values)
                 {
-                    scanner.EnqueueEntryPoint(ep);
+                    scanner.EnqueueImageSymbol(ep, true);
                 }
                 foreach (Procedure_v1 up in program.User.Procedures.Values)
                 {
                     scanner.EnqueueUserProcedure(up);
+                }
+                foreach (ImageSymbol sym in program.ImageSymbols.Values.Where(s => s.Type == SymbolType.Procedure))
+                {
+                    if (sym.NoDecompile)
+                        program.EnsureUserProcedure(sym.Address, sym.Name, false);
+                    else
+                        scanner.EnqueueImageSymbol(sym, false);
                 }
                 foreach (var addr in program.FunctionHints)
                 {

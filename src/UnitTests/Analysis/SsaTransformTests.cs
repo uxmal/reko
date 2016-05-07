@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Analysis
                 this.pb.Program,
                 new FakeDecompilerEventListener());
             this.pb.Program.Platform = new FakePlatform(null, new FakeArchitecture());
-            this.pb.Program.ImageMap = new ImageMap(
+            this.pb.Program.SegmentMap = new SegmentMap(
                 Address.Ptr32(0x0000),
                 new ImageSegment(
                     ".text",

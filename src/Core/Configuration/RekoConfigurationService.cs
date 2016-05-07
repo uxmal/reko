@@ -51,12 +51,12 @@ namespace Reko.Core.Configuration
          IEnumerable<UiStyle> GetDefaultPreferences ();
 
          /// <summary>
-         /// Given a relative path with respect to the intallation directory, 
+         /// Given a relative path with respect to the installation directory, 
          /// returns the absolute path.
          /// </summary>
          /// <param name="path"></param>
          /// <returns></returns>
-         string GetInstallationRelativePath(string path);
+         string GetInstallationRelativePath(params string [] pathComponents);
     }
 
     public class RekoConfigurationService : IConfigurationService
@@ -70,7 +70,7 @@ namespace Reko.Core.Configuration
         private List<RawFileElement> rawFiles;
         private UiPreferencesConfiguration uiPreferences;
 
-        private RekoConfigurationService(RekoConfiguration_v1 config)
+        public RekoConfigurationService(RekoConfiguration_v1 config)
         {
             this.config = config;
             this.loaders = LoadCollection(config.Loaders, LoadLoaderConfiguration);
@@ -127,6 +127,7 @@ namespace Reko.Core.Configuration
                 Description = env.Description,
                 MemoryMapFile = env.MemoryMap,
                 TypeName = env.Type,
+                Heuristics = env.Heuristics,
                 TypeLibraries = LoadCollection(env.TypeLibraries, LoadTypeLibraryReference),
                 CharacteristicsLibraries = LoadCollection(env.Characteristics, LoadTypeLibraryReference)
             };
@@ -216,7 +217,7 @@ namespace Reko.Core.Configuration
                 throw new ApplicationException("Missing app setting 'RekoConfiguration' in configuration file.");
             configFileName = Path.Combine(appDir, configFileName);
 
-            using (var stm = File.Open(configFileName, FileMode.Open, FileAccess.Read))
+            using (var stm = File.Open(configFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 var ser = new XmlSerializer(typeof(RekoConfiguration_v1));
                 var sConfig = (RekoConfiguration_v1)ser.Deserialize(stm);
@@ -305,8 +306,9 @@ namespace Reko.Core.Configuration
             return uiPreferences.Styles;
         }
 
-        public string GetInstallationRelativePath(string filename)
+        public string GetInstallationRelativePath(string [] pathComponents)
         {
+            var filename = Path.Combine(pathComponents);
             if (!Path.IsPathRooted(filename))
             {
                 return Path.Combine(

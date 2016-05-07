@@ -371,6 +371,23 @@ done:
 			Assert.AreEqual("RltOperator", b.Operator.GetType().Name);
 		}
 
+        [Test]
+        public void TypeReferenceComparisonFromConditionCode()
+        {
+            ConditionCodeEliminator cce = new ConditionCodeEliminator(
+                null,
+                new DefaultPlatform(null, new FakeArchitecture()));
+            var w16 = new TypeReference("W16", PrimitiveType.Word16);
+            BinaryExpression bin = new BinaryExpression(
+                Operator.IAdd,
+                w16,
+                new Identifier("a", w16, null),
+                new Identifier("b", w16, null));
+            BinaryExpression b = (BinaryExpression)cce.ComparisonFromConditionCode(ConditionCode.LT, bin, false);
+            Assert.AreEqual("a + b < 0x0000", b.ToString());
+            Assert.AreEqual("LtOperator", b.Operator.GetType().Name);
+        }
+
         private Identifier MockReg(ProcedureBuilder m, int i)
         {
             return m.Frame.EnsureRegister(FakeArchitecture.GetMachineRegister(i));

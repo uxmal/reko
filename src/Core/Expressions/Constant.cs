@@ -232,7 +232,7 @@ namespace Reko.Core.Expressions
 			get { return !Object.ReferenceEquals(this, Constant.Invalid); }
 		}
 
-		public Constant Negate()
+		public virtual Constant Negate()
 		{
 			PrimitiveType p = (PrimitiveType) DataType;
             var c = GetValue();
@@ -246,14 +246,6 @@ namespace Reko.Core.Expressions
 				if (p.BitSize <= 32)
                     return Constant.Create(p, -Convert.ToInt32(c));
                 return Constant.Create(p, -Convert.ToInt64(c));
-			}
-			else if (p == PrimitiveType.Real32)
-			{
-                return Constant.Real32(-ToFloat());
-			}
-			else if (p == PrimitiveType.Real64)
-			{
-                return Constant.Real64(-ToDouble());
 			}
 			else 
 				throw new InvalidOperationException(string.Format("Type {0} doesn't support negation.", p));
@@ -1075,7 +1067,7 @@ namespace Reko.Core.Expressions
         }
     }
 
-    internal abstract class ConstantReal : Constant
+    public abstract class ConstantReal : Constant
     {
         public ConstantReal(DataType dt) : base(dt)
         {
@@ -1083,10 +1075,11 @@ namespace Reko.Core.Expressions
 
         public static ConstantReal Create(DataType dt, double value)
         {
+            var pt = PrimitiveType.Create(Domain.Real, dt.Size);
             switch (dt.BitSize)
             {
-            case 32: return new ConstantReal32(dt, (float)value);
-            case 64: return new ConstantReal64(dt, value);
+            case 32: return new ConstantReal32(pt, (float)value);
+            case 64: return new ConstantReal64(pt, value);
             }
             throw new NotSupportedException(string.Format("Data type {0} not supported.", dt));
         }
@@ -1110,6 +1103,11 @@ namespace Reko.Core.Expressions
         public override object GetValue()
         {
             return value;
+        }
+
+        public override Constant Negate()
+        {
+            return new ConstantReal32(DataType, -value);
         }
 
         public override byte ToByte()
@@ -1166,6 +1164,11 @@ namespace Reko.Core.Expressions
         public override object GetValue()
         {
             return value;
+        }
+
+        public override Constant Negate()
+        {
+            return new ConstantReal64(DataType, -value);
         }
 
         public override byte ToByte()

@@ -31,13 +31,13 @@ namespace Reko.Core
     /// segmented addresses (x86).
     /// </summary>
 	public abstract class Address : Expression, IComparable<Address>, IComparable
-	{
+    {
         protected Address(DataType size)
             : base(size)
         {
         }
 
-        public static Address Create(DataType size, ulong bitPattern) 
+        public static Address Create(DataType size, ulong bitPattern)
         {
             switch (size.Size)
             {
@@ -120,19 +120,37 @@ namespace Reko.Core
             visit.VisitAddress(this);
         }
 
-		public override bool Equals(object obj)
-		{
-			return CompareTo(obj) == 0;
-		}
+        public override bool Equals(object obj)
+        {
+            return CompareTo(obj) == 0;
+        }
 
-		public override int GetHashCode()
-		{
-			return ToLinear().GetHashCode();
-		}
+        public override int GetHashCode()
+        {
+            return ToLinear().GetHashCode();
+        }
 
         public abstract string GenerateName(string prefix, string suffix);
 
-		public static bool operator < (Address a, Address b)
+        public static bool operator ==(Address a, Address b)
+        {
+            if ((object)a == null)
+                return ((object)b == null);
+            if ((object)b == null)
+                return ((object)a == null);
+            return a.ToLinear() == b.ToLinear();
+        }
+
+        public static bool operator !=(Address a, Address b)
+        {
+            if ((object)a == null)
+                return ((object)b != null);
+            if ((object)b == null)
+                return ((object)a != null);
+            return a.ToLinear() != b.ToLinear();
+        }
+
+        public static bool operator < (Address a, Address b)
 		{
 			return a.ToLinear() < b.ToLinear();
 		}

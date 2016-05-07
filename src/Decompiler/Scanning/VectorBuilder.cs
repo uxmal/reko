@@ -95,7 +95,7 @@ namespace Reko.Scanning
         {
             int[] map = new int[limit];
             var addrTableStart = Address.Ptr32((uint)deref.TableOffset); //$BUG: breaks on 64- and 16-bit platforms.
-            if (!program.ImageMap.IsValidAddress(addrTableStart))
+            if (!program.SegmentMap.IsValidAddress(addrTableStart))
                 return new int[0];      //$DEBUG: look into this case.
             var rdr = program.CreateImageReader(addrTableStart);
             for (int i = 0; i < limit; ++i)
@@ -135,12 +135,12 @@ namespace Reko.Scanning
             {
                 ImageReader rdr = scanner.CreateReader(addrTable);
                 int cItems = limit / stride;
-                var imageMap = program.ImageMap;
+                var segmentMap = program.SegmentMap;
                 var arch = program.Architecture;
                 for (int i = 0; i < cItems; ++i)
                 {
                     var entryAddr = program.Architecture.ReadCodeAddress(stride, rdr, state);
-                    if (!imageMap.IsValidAddress(entryAddr))
+                    if (!segmentMap.IsValidAddress(entryAddr))
                     {
                         scanner.Warn(addrTable, "The call or jump table has invalid addresses; stopping.");
                         break;
@@ -215,7 +215,7 @@ namespace Reko.Scanning
 
         public bool IsValidAddress(Address addr)
         {
-            return program.ImageMap.IsValidAddress(addr);
+            return program.SegmentMap.IsValidAddress(addr);
         }
     }
 }

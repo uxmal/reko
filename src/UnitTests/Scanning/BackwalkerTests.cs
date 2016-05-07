@@ -127,7 +127,7 @@ namespace Reko.UnitTests.Scanning
                 program = asm.Assemble(Address.Ptr32(0x10000000), rdr);
             }
             var scanner = new Scanner(program, null, sc);
-            scanner.EnqueueEntryPoint(new EntryPoint(program.ImageMap.BaseAddress, arch.CreateProcessorState()));
+            scanner.EnqueueImageSymbol(new ImageSymbol(program.ImageMap.BaseAddress), true);
             scanner.ScanImage();
             using (var fut = new FileUnitTester(outputFile))
             {
@@ -138,7 +138,6 @@ namespace Reko.UnitTests.Scanning
                 fut.AssertFilesEqual();
             }
         }
-
 
         [Test(Description = "Part of regression of issue #121")]
         [Category(Categories.Regressions)]
