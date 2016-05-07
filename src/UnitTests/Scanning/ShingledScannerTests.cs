@@ -237,7 +237,7 @@ namespace Reko.UnitTests.Scanning
             rd.AddPointerReference(0x10001, 0x11000000);
             Given_Scanner();
 
-            var seg = program.ImageMap.Segments.Values.First();
+            var seg = program.SegmentMap.Segments.Values.First();
             var by = this.sh.ScanSegment(seg);
             Assert.AreEqual(new byte[]
                 {

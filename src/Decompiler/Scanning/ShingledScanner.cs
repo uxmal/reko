@@ -220,7 +220,7 @@ namespace Reko.Scanning
         /// <returns>A dictionary mapping segments to their pointer tallies.</returns>
         public Dictionary<ImageSegment, int[]> GetPossiblePointerTargets()
         {
-            var targetMap = program.SegmentMap.Segments.ToDictionary(s => s.Value, s => new byte[s.Value.ContentSize]);
+            var targetMap = program.SegmentMap.Segments.ToDictionary(s => s.Value, s => new int[s.Value.ContentSize]);
             foreach (var seg in program.SegmentMap.Segments.Values)
             {
                 foreach (var pointer in GetPossiblePointers(seg))
