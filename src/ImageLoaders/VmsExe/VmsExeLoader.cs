@@ -1,0 +1,114 @@
+﻿using Reko.Arch.Vax;
+using Reko.Core;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Reko.ImageLoaders.VmsExe
+{
+    public class VmsExeLoader : ImageLoader
+    {
+        public VmsExeLoader(IServiceProvider services, string filename, byte[] imgRaw) 
+            : base(services, filename, imgRaw)
+        {
+        }
+
+        public uint GlobalSectionID { get; private set; }
+        public byte HeaderBlocks { get; private set; }
+        public ushort IdMajor { get; private set; }
+        public ushort IdMinor { get; private set; }
+        public uint ImageFlags { get; private set; }
+        public byte ImageType { get; private set; }
+        public ushort IoChannels { get; private set; }
+        public ushort IoSegPages { get; private set; }
+        public override Address PreferredBaseAddress { get; set; }
+        public ulong RequestedPrivilegeMask { get; private set; }
+        public ushort RvaIdent { get; private set; }
+        public ushort RvaSymbols { get; private set; }
+        public ushort RvaTaa { get; private set; }
+        public uint SystemVersionNumber { get; private set; }
+
+        public override Program Load(Address addrLoad)
+        {
+            var rdr = new LeImageReader(RawImage);
+            var hdr = LoadHeader(rdr);
+            var isds = LoadImageSectionDescriptors(hdr.HdrSize);
+
+            var addr = Address.Ptr32(0x1000);
+            var arch = new VaxArchitecture();
+            return new Program(
+                new SegmentMap(
+                    addr,
+                    new ImageSegment(
+                        "", 
+                        new MemoryArea(addr, RawImage),
+                        AccessMode.ReadWriteExecute)),
+                arch,
+                new DefaultPlatform(Services, arch));
+        }
+
+        private Header LoadHeader(LeImageReader rdr)
+        {
+            var header = new Header
+            {
+                HdrSize = rdr.ReadLeUInt16(),
+                RvaTaa = rdr.ReadLeUInt16(),
+                RvaSymbols = rdr.ReadLeUInt16(),
+                RvaIdent = rdr.ReadLeUInt16(),
+                RvaPatchData = rdr.ReadLeUInt16(),
+                Spare0A = rdr.ReadLeUInt16(),
+                IdMajor = rdr.ReadLeUInt16(),
+                IdMinor = rdr.ReadLeUInt16(),
+
+                HeaderBlocks = rdr.ReadByte(),
+                ImageType = rdr.ReadByte(),
+                Spare12 = rdr.ReadLeUInt16(),
+
+                RequestedPrivilegeMask = rdr.ReadLeUInt64(),
+                IoChannels = rdr.ReadLeUInt16(),
+                IoSegPages = rdr.ReadLeUInt16(),
+                ImageFlags = rdr.ReadLeUInt32(),
+                GlobalSectionID = rdr.ReadLeUInt32(),
+                SystemVersionNumber = rdr.ReadLeUInt32(),
+            };
+            return header;
+        }
+
+        private List<ImageSectionDescriptor> LoadImageSectionDescriptors(ushort rvaIsds)
+        {
+            var sections = new List<ImageSectionDescriptor>();
+            var rdr = new LeImageReader(RawImage, rvaIsds);
+            for (;;)
+            {
+                var isd = new ImageSectionDescriptor();
+                isd.Size = rdr.ReadLeUInt16();
+                if (isd.Size == 0)
+                    break;
+                isd.NumPages = rdr.ReadLeUInt16();
+                isd.StartVPage = rdr.ReadLeUInt32();
+                isd.Flags = rdr.ReadLeUInt32();
+                if (isd.Size > 0x0C)
+                {
+                    isd.RvaFile = rdr.ReadLeUInt32();
+                    if (isd.Size > 0x010)
+                    {
+                        isd.GlobalSectionIdent = rdr.ReadLeUInt32();
+                        var count = rdr.ReadByte();
+                        var sectionName = rdr.ReadBytes(count);
+                        isd.SectionName = Encoding.ASCII.GetString(sectionName);
+                    }
+                }
+                sections.Add(isd);
+            }
+            return sections;
+        }
+
+        public override RelocationResults Relocate(Program program, Address addrLoad)
+        {
+            return new RelocationResults(new List<ImageSymbol>(),
+                new SortedList<Address, ImageSymbol>(),
+                new List<Address>());
+        }
+    }
+}
