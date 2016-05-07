@@ -47,7 +47,7 @@ namespace Reko.Core.Serialization
 
         public static SerializedType Int32()
         {
-            return new PrimitiveType_v1 { Domain = Domain.Integer, ByteSize = 4 };
+            return new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize = 4 };
         }
 
         public static SerializedType Real32()

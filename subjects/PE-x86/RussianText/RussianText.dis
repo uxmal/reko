@@ -59,7 +59,7 @@ fn00401158_exit:
 
 
 
-ui32 main(ui32 argc, char * * argv)
+int32 main(int32 argc, char * * argv)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
