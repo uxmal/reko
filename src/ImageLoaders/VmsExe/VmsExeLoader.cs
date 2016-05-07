@@ -34,21 +34,6 @@ namespace Reko.ImageLoaders.VmsExe
         {
         }
 
-        public uint GlobalSectionID { get; private set; }
-        public byte HeaderBlocks { get; private set; }
-        public ushort IdMajor { get; private set; }
-        public ushort IdMinor { get; private set; }
-        public uint ImageFlags { get; private set; }
-        public byte ImageType { get; private set; }
-        public ushort IoChannels { get; private set; }
-        public ushort IoSegPages { get; private set; }
-        public override Address PreferredBaseAddress { get; set; }
-        public ulong RequestedPrivilegeMask { get; private set; }
-        public ushort RvaIdent { get; private set; }
-        public ushort RvaSymbols { get; private set; }
-        public ushort RvaTaa { get; private set; }
-        public uint SystemVersionNumber { get; private set; }
-
         public override Program Load(Address addrLoad)
         {
             var rdr = new LeImageReader(RawImage);
