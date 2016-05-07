@@ -783,7 +783,6 @@ namespace Reko.Scanning
             while (queue.Count > 0)
             {
                 var workitem = queue.Dequeue();
-                workitem.Process();
                 try
                 {
                     workitem.Process();
