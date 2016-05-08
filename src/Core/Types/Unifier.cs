@@ -537,11 +537,11 @@ namespace Reko.Core.Types
 
         private string MakeFieldName(StructureField fa, StructureField fb)
         {
-            if (fa.NameSet && fb.NameSet && fa.Name != fb.Name)
+            if (fa.IsNameSet && fb.IsNameSet && fa.Name != fb.Name)
                 throw new NotSupportedException("Both structure fields have names");
-            if (fa.NameSet)
+            if (fa.IsNameSet)
                 return fa.Name;
-            if (fb.NameSet)
+            if (fb.IsNameSet)
                 return fb.Name;
             return null;
         }

@@ -51,7 +51,7 @@ namespace Reko.Core.Types
         public override string Name { get { if (name == null) return GenerateDefaultName(); return name; }
             set { name = value; } }
 
-        public bool NameSet { get { return name != null; } }
+        public bool IsNameSet { get { return name != null; } }
 
         private string name;
 
