@@ -20,8 +20,10 @@
 
 using Reko.Arch.Vax;
 using Reko.Core;
+using Reko.Core.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -34,20 +36,7 @@ namespace Reko.ImageLoaders.VmsExe
         {
         }
 
-        public uint GlobalSectionID { get; private set; }
-        public byte HeaderBlocks { get; private set; }
-        public ushort IdMajor { get; private set; }
-        public ushort IdMinor { get; private set; }
-        public uint ImageFlags { get; private set; }
-        public byte ImageType { get; private set; }
-        public ushort IoChannels { get; private set; }
-        public ushort IoSegPages { get; private set; }
         public override Address PreferredBaseAddress { get; set; }
-        public ulong RequestedPrivilegeMask { get; private set; }
-        public ushort RvaIdent { get; private set; }
-        public ushort RvaSymbols { get; private set; }
-        public ushort RvaTaa { get; private set; }
-        public uint SystemVersionNumber { get; private set; }
 
         public override Program Load(Address addrLoad)
         {
@@ -56,7 +45,8 @@ namespace Reko.ImageLoaders.VmsExe
             var isds = LoadImageSectionDescriptors(hdr.HdrSize);
 
             var addr = Address.Ptr32(0x1000);
-            var arch = new VaxArchitecture();
+            var arch = (VaxArchitecture)Services.RequireService<IConfigurationService>()
+                .GetArchitecture("vax");
             return new Program(
                 new SegmentMap(
                     addr,
@@ -99,6 +89,8 @@ namespace Reko.ImageLoaders.VmsExe
         {
             var sections = new List<ImageSectionDescriptor>();
             var rdr = new LeImageReader(RawImage, rvaIsds);
+            Debug.WriteLine("Isd: Size Pges Start    Flags    Rva      GsId     Name");
+
             for (;;)
             {
                 var isd = new ImageSectionDescriptor();
@@ -120,6 +112,7 @@ namespace Reko.ImageLoaders.VmsExe
                     }
                 }
                 sections.Add(isd);
+                Debug.WriteLine("{0}", isd);
             }
             return sections;
         }

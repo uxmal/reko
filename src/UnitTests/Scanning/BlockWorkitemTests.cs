@@ -48,6 +48,7 @@ namespace Reko.UnitTests.Scanning
         private Identifier r0;
         private Identifier r1;
         private Identifier r2;
+        private Identifier sp;
         private Identifier grf;
 
         [SetUp]
@@ -61,15 +62,17 @@ namespace Reko.UnitTests.Scanning
             r0 = new Identifier("r0", PrimitiveType.Word32, new RegisterStorage("r0", 0, 0, PrimitiveType.Word32));
             r1 = new Identifier("r1", PrimitiveType.Word32, new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
             r2 = new Identifier("r2", PrimitiveType.Word32, new RegisterStorage("r2", 2, 0, PrimitiveType.Word32));
+            sp = new Identifier("sp", PrimitiveType.Word32, new RegisterStorage("sp", 15, 0, PrimitiveType.Word32));
             grf = proc.Frame.EnsureFlagGroup(Registers.eflags, 3, "SCZ", PrimitiveType.Byte);
 
             scanner = mr.StrictMock<IScanner>();
-            arch = mr.DynamicMock<IProcessorArchitecture>();
-            arch.Stub(s => s.PointerType).Return(PrimitiveType.Pointer32);
+            arch = mr.Stub<IProcessorArchitecture>();
             program.Architecture = arch;
             arch.Replay();
             program.Platform = new DefaultPlatform(null, arch);
             arch.BackToRecord();
+            arch.Stub(s => s.StackRegister).Return((RegisterStorage)sp.Storage);
+            arch.Stub(s => s.PointerType).Return(PrimitiveType.Pointer32);
         }
 
         private BlockWorkitem CreateWorkItem(Address addr, ProcessorState state)
@@ -688,7 +691,48 @@ testProc_exit:
             var wi = CreateWorkItem(Address.Ptr32(0x00100000), new FakeProcessorState(arch));
             wi.Process();
 
-            proc.Dump(true);
+            mr.VerifyAll();
+        }
+
+        [Test(Description = "User-defined procedures with signatures should generate applications immediately")]
+        public void Bwi_Call_UserProcedure_With_Signature()
+        {
+            var addrCall = Address.Ptr32(0x00100000);
+            var addrCallee = Address.Ptr32(0x00200000);
+            var l00100000 = new Block(proc, "l00100000");
+            var procCallee = new Procedure(null, new Frame(PrimitiveType.Pointer32))
+            {
+                Name = "testFn",
+                Signature = new ProcedureSignature(
+                    new Identifier("", PrimitiveType.Int32, r0.Storage),
+                    new Identifier("str", new Pointer(PrimitiveType.Char, 4), r0.Storage),
+                    new Identifier("f", PrimitiveType.Real32, r1.Storage))
+            };
+            scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
+            scanner.Stub(f => f.FindContainingBlock(null)).IgnoreArguments().Return(l00100000);
+            scanner.Stub(f => f.GetImportedProcedure(addrCallee, addrCall)).Return(null);
+            scanner.Stub(f => f.ScanProcedure(
+                Arg<Address>.Is.Equal(addrCallee),
+                Arg<string>.Is.Anything,
+                Arg<ProcessorState>.Is.Anything)).Return(procCallee);
+            scanner.Stub(f => f.SetProcedureReturnAddressBytes(null, 0, null)).IgnoreArguments();
+            scanner.Stub(f => f.TerminateBlock(null, null)).IgnoreArguments();
+            mr.ReplayAll();
+
+            trace.Add(m => m.Call(addrCallee, 4));
+            trace.Add(m => m.Return(4, 0));
+
+            program.User.Procedures.Add(
+                addrCallee,
+                new Procedure_v1
+                {
+                    CSignature = "int testFn(char * str, float f)"
+                });
+
+            var wi = CreateWorkItem(addrCall, new FakeProcessorState(arch));
+            wi.Process();
+            Assert.AreEqual("r0 = testFn(r0, r1)", l00100000.Statements[0].ToString());
+
             mr.VerifyAll();
         }
     }

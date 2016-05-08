@@ -95,7 +95,7 @@ namespace Reko.UnitTests.Typing
 			c.TypeVariable.DataType = PrimitiveType.Real32;
 			c.TypeVariable.OriginalDataType = c.DataType;
 			Expression e = tcr.Rewrite(c, false);
-			Assert.AreEqual("1F", e.ToString());
+			Assert.AreEqual("1.0F", e.ToString());
 		}
 
 		[Test]

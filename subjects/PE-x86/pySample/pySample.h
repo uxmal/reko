@@ -8,7 +8,7 @@ Eq_1: (struct "Globals" (4 Eq_146 t0004) (10002098 (ptr code) ptr10002098) (1000
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: PyObject
 	T_2 (in eax : (ptr Eq_2))
-	T_5 (in eax_19 : (ptr Eq_2))
+	T_5 (in eax_21 : (ptr Eq_2))
 	T_14 (in PyArg_ParseTuple(ptrArg04, "ii:sum", SLICE(0x10002144, <unknown>, 32)) : int32)
 	T_15 (in 0x00000000 : word32)
 	T_24 (in Py_BuildValue("i", SLICE(0x1000214C, <unknown>, 32)) : (ptr PyObject))
@@ -435,7 +435,7 @@ T_4: (in ptrArg04 : (ptr Eq_4))
   Class: Eq_4
   DataType: (ptr Eq_4)
   OrigDataType: (ptr (union (PyObject u1)))
-T_5: (in eax_19 : (ptr Eq_2))
+T_5: (in eax_21 : (ptr Eq_2))
   Class: Eq_2
   DataType: (ptr Eq_2)
   OrigDataType: word32
@@ -479,7 +479,7 @@ T_15: (in 0x00000000 : word32)
   Class: Eq_2
   DataType: (ptr Eq_2)
   OrigDataType: word32
-T_16: (in eax_19 != null : bool)
+T_16: (in eax_21 != null : bool)
   Class: Eq_16
   DataType: bool
   OrigDataType: bool

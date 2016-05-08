@@ -544,6 +544,8 @@ namespace Reko.Scanning
 
             // Add <stackpointer> := fp explicitly to the starting block.
             EstablishFrame(addr, proc, sp);
+            var usb = new UserSignatureBuilder(program);
+            usb.BuildSignature(addr, proc);
             return proc;
         }
 
@@ -767,7 +769,7 @@ namespace Reko.Scanning
             Procedure proc;
             if (program.Procedures.TryGetValue(addr, out proc))
                 return proc;
-            ImageSymbol sym; 
+            ImageSymbol sym;
             if (procedureName == null && program.ImageSymbols.TryGetValue(addr, out sym))
             {
                 procedureName = sym.Name;

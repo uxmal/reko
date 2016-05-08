@@ -76,9 +76,9 @@ fn0C00_0037_entry:
 	// succ:  l0C00_0037
 l0C00_0037:
 	sp = fp
-	rLoc1 = 0
+	rLoc1 = 0.0
 	Mem0[ds:0x0400:real64] = rLoc1
-	rLoc1 = 1
+	rLoc1 = 1.0
 	Mem0[ds:0x0408:int32] = (int32) rLoc1
 	return
 	// succ:  fn0C00_0037_exit

@@ -76,7 +76,9 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             var cfgSvc = mr.StrictMock<IConfigurationService>();
             var dcSvc = mr.Stub<DecompilerEventListener>();
             Given_i386_Architecture();
-            this.win32 = new Win32Platform(sc, arch_386);
+            this.win32 = mr.PartialMock<Win32Platform>(sc, arch_386);
+            // Avoid complications with the FindMainProcedure call.
+            this.win32.Stub(w => w.FindMainProcedure(null, null)).IgnoreArguments().Return(null);
             var win32Env = mr.Stub<OperatingEnvironment>();
             cfgSvc.Stub(c => c.GetArchitecture("x86-protected-32")).Return(arch_386);
             cfgSvc.Stub(c => c.GetEnvironment("win32")).Return(win32Env);

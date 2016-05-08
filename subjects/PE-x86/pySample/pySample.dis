@@ -13,8 +13,8 @@ fn10001000_entry:
 // LocalsOut: fp(32) Local -0004(32) Local -0008(32) Stack +0000(32)
 
 l10001000:
-	word32 eax_19 = PyArg_ParseTuple(ptrArg04, 0x10002144, SLICE(0x10002144, <unknown>, 32))
-	branch eax_19 != 0x00000000 l10001027
+	word32 eax_21 = PyArg_ParseTuple(ptrArg04, 0x10002144, SLICE(0x10002144, <unknown>, 32))
+	branch eax_21 != 0x00000000 l10001027
 // DataOut: eax
 // DataOut (flags): 
 // SymbolicIn: esp:fp
@@ -27,7 +27,7 @@ l10001027:
 // SymbolicIn: esp:fp - 0x00000008 edx:ptrArg04 eax:<invalid> ecx:fp - 0x00000004 -24(fp):ptrArg04 -20(fp):0x10002144 -16(fp):fp - 0x00000004 -12(fp):fp - 0x00000008 4(fp):ptrArg00 8(fp):ptrArg04
 
 l10001023:
-	return eax_19
+	return eax_21
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000008 edx:ptrArg04 eax:<invalid> ecx:fp - 0x00000004 -24(fp):ptrArg04 -20(fp):0x10002144 -16(fp):fp - 0x00000004 -12(fp):fp - 0x00000008 4(fp):ptrArg00 8(fp):ptrArg04

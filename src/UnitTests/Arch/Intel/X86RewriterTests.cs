@@ -713,14 +713,13 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void X86Rw_Fstp()
         {
-            Run32bitTest(delegate(X86Assembler m)
+            Run32bitTest(m => 
             {
                 m.Fstp(m.MemDw(Registers.ebx, 4));
             });
             AssertCode(
                 "0|L--|10000000(3): 1 instructions",
-                "1|L--|Mem0[ebx + 0x00000004:real32] = rArg0");
-
+                "1|L--|Mem0[ebx + 0x00000004:real32] = (real32) rArg0");
         }
         [Test]
         public void X86Rw_RepScasb()
@@ -1361,5 +1360,15 @@ namespace Reko.UnitTests.Arch.Intel
                 "1|L--|sp = sp - 0x0002",
                 "2|T--|call 0C00:3246 (2)");
         }
+
+        [Test]
+        public void X86rw_fstp_real32()
+        {
+            Run32bitTest(0xd9, 0x1c, 0x24);
+            AssertCode(
+                "0|L--|10000000(3): 1 instructions",
+                "1|L--|Mem0[esp:real32] = (real32) rArg0");
+        }
+
     }
 }

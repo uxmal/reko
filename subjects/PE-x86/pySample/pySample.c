@@ -6,11 +6,11 @@
 
 PyObject * fn10001000(PyObject * ptrArg00, PyObject * ptrArg04)
 {
-	PyObject * eax_19 = PyArg_ParseTuple(ptrArg04, "ii:sum", SLICE(0x10002144, <unknown>, 32));
-	if (eax_19 != null)
+	PyObject * eax_21 = PyArg_ParseTuple(ptrArg04, "ii:sum", SLICE(0x10002144, <unknown>, 32));
+	if (eax_21 != null)
 		return Py_BuildValue("i", SLICE(0x1000214C, <unknown>, 32));
 	else
-		return eax_19;
+		return eax_21;
 }
 
 PyObject * fn10001050(PyObject * ptrArg00, PyObject * ptrArg04)

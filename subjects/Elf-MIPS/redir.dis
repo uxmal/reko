@@ -12892,7 +12892,7 @@ __fixunsdfsi_entry:
 // SymbolicIn: sp:fp
 
 l00407740:
-	branch !(1105199104 <= f12_f13) l00407740_ds_t
+	branch !(1105199104.0 <= f12_f13) l00407740_ds_t
 // DataOut: f12 f13 FCSR
 // DataOut (flags): 
 // SymbolicIn: sp:fp

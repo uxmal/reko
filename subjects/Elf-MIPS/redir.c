@@ -5357,7 +5357,7 @@ void slist_destroy(Eq_7546 * r25, word32 dwArg00)
 
 void __fixunsdfsi(word32 r25, word32 f12, word32 f13, word32 FCSR)
 {
-	if (1105199104 <= f12_f13)
+	if (1105199104.0 <= f12_f13)
 		;
 	return;
 }

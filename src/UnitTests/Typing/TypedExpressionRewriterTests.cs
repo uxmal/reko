@@ -289,7 +289,7 @@ namespace Reko.UnitTests.Typing
             ctn.RenameAllTypes(prog.TypeStore);
             var ter = new TypedExpressionRewriter(prog);
             Instruction instr = ter.TransformAssignment(ass);
-            Assert.AreEqual("x.u0 = 3F", instr.ToString());
+            Assert.AreEqual("x.u0 = 3.0F", instr.ToString());
         }
 
         [Test]

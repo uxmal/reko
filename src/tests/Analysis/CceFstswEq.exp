@@ -13,7 +13,7 @@ Mem0:Global memory
     uses: rLoc1_5 = Mem0[ds:si:real64]
 rLoc1_5: orig: rLoc1
     def:  rLoc1_5 = Mem0[ds:si:real64]
-    uses: branch 0 != rLoc1_5 l0C00_0012
+    uses: branch 0.0 != rLoc1_5 l0C00_0012
 rLoc2_6: orig: rLoc2
 FPUF_7: orig: FPUF
 SCZO_8: orig: SCZO
@@ -36,7 +36,7 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	rLoc1_5 = Mem0[ds:si:real64]
-	branch 0 != rLoc1_5 l0C00_0012
+	branch 0.0 != rLoc1_5 l0C00_0012
 	// succ:  l0C00_000D l0C00_0012
 l0C00_000D:
 	Mem9[ds:di:word16] = 0x0001

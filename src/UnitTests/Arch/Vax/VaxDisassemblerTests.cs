@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Arch.Vax
         [Test]
         public void VaxDis_jsb()
         {
-            AssertCode("jsb\t00100000", 0x16, 0xCF, 0xFC, 0xFF);
+            AssertCode("jsb\t00100000", 0x16, 0xBF, 0xFC, 0xFF);
         }
 
         [Test]

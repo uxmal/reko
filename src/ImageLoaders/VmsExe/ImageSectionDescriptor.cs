@@ -29,5 +29,19 @@ namespace Reko.ImageLoaders.VmsExe
         public uint RvaFile { get; internal set; }
         public uint GlobalSectionIdent { get; internal set; }
         public string SectionName { get; internal set; }
+
+        public override string ToString()
+        {
+            return string.Format(
+                "Isd: {0:X4} {1:X4} {2:X8} {3:X8} {4:X8} {5:X8} {6}",
+                Size,
+                NumPages,
+                StartVPage,
+                Flags,
+                RvaFile,
+                GlobalSectionIdent,
+                SectionName ?? "<none>");
+        }
     }
+
 }
