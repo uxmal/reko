@@ -27,7 +27,7 @@ l0C00_0000:
 	sp = fp - 0x0002
 	wLoc02 = 0x0308
 	fn0C00_0024(ds, wLoc02, rLoc2, rLoc1)
-	rLoc1 = 0
+	rLoc1 = 0.0
 	Mem0[ds:0x030C:real32] = (real32) rLoc1
 	ax = Mem0[ds:0x0308:word16]
 	sp = fp - 0x0004

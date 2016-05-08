@@ -31325,7 +31325,7 @@ T_7581: (in FCSR : word32)
   Class: Eq_7581
   DataType: word32
   OrigDataType: word32
-T_7582: (in 1105199104 : real64)
+T_7582: (in 1105199104.0 : real64)
   Class: Eq_7582
   DataType: real64
   OrigDataType: real64
@@ -31333,11 +31333,11 @@ T_7583: (in f12_f13 : real64)
   Class: Eq_7582
   DataType: real64
   OrigDataType: real64
-T_7584: (in 1105199104 <= f12_f13 : bool)
+T_7584: (in 1105199104.0 <= f12_f13 : bool)
   Class: Eq_7584
   DataType: bool
   OrigDataType: bool
-T_7585: (in !(1105199104 <= f12_f13) : bool)
+T_7585: (in !(1105199104.0 <= f12_f13) : bool)
   Class: Eq_7585
   DataType: bool
   OrigDataType: bool

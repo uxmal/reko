@@ -77,11 +77,11 @@ T_16: (in 0x004020C0 : word32)
   Class: Eq_9
   DataType: (ptr char)
   OrigDataType: (ptr char)
-T_17: (in 1F : real32)
+T_17: (in 1.0F : real32)
   Class: Eq_10
   DataType: real32
   OrigDataType: real32
-T_18: (in test1(*argv, argc, "test123", 1F) : void)
+T_18: (in test1(*argv, argc, "test123", 1.0F) : void)
   Class: Eq_18
   DataType: void
   OrigDataType: void

@@ -84,7 +84,7 @@ namespace Reko.UnitTests.Arch.Vax
                 "1|L--|v3 = Mem0[r4:real64] + 13.0",
                 "2|L--|Mem0[r4:real64] = v3",
                 "3|L--|VZN = cond(v3)",
-                "4|T--|if (v3 <= 8) branch 0000F034");
+                "4|T--|if (v3 <= 8.0) branch 0000F034");
         }
 
         [Test]

@@ -6,7 +6,7 @@
 
 int32 main(int32 argc, char * * argv)
 {
-	test1(*argv, argc, "test123", 1F);
+	test1(*argv, argc, "test123", 1.0F);
 	return 0x00;
 }
 

@@ -20,7 +20,7 @@ l0C00_0000:
 	sp = sp - 0x0002
 	Mem0[ss:sp:word16] = 0x0308
 	call fn0C00_0024 (retsize: 2; FPU: 2;)
-	rLoc1 = 0
+	rLoc1 = 0.0
 	Mem0[ds:0x030C:real32] = (real32) rLoc1
 	ax = Mem0[ds:0x0308:word16]
 	sp = sp - 0x0002

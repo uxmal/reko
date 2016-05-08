@@ -619,14 +619,14 @@ ProcedureBuilder_exit:
             var sExp =
             #region Expected
 @"r1_0: orig: r1
-    def:  r1_0 = 1F
+    def:  r1_0 = 1.0F
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
 	// succ:  l1
 l1:
-	r1_0 = 1F
+	r1_0 = 1.0F
 ProcedureBuilder_exit:
 ";
             #endregion
