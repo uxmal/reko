@@ -53,29 +53,36 @@ namespace Reko.Analysis
         {
             foreach (var de in program.Procedures)
             {
-                var proc = de.Value;
-                Procedure_v1 userProc;
-                if (program.User.Procedures.TryGetValue(de.Key, out userProc))
+                BuildSignature(de.Key, de.Value);
+                return;
+            }
+        }
+
+        public bool BuildSignature(Address addr, Procedure proc)
+        {
+            Procedure_v1 userProc;
+            if (program.User.Procedures.TryGetValue(addr, out userProc))
+            {
+                var sProc = DeserializeSignature(userProc, proc);
+                if (sProc != null)
                 {
-                    var sProc = DeserializeSignature(userProc, proc);
-                    if (sProc != null)
+                    var ser = program.CreateProcedureSerializer();
+                    var sig = ser.Deserialize(sProc.Signature, proc.Frame);
+                    if (sig != null)
                     {
-                        var ser = program.CreateProcedureSerializer();
-                        var sig = ser.Deserialize(sProc.Signature, proc.Frame);
-                        if (sig != null)
-                        {
-                            proc.Name = sProc.Name;
-                            ApplySignatureToProcedure(de.Key, sig, proc);
-                            continue;
-                        }
+                        proc.Name = sProc.Name;
+                        ApplySignatureToProcedure(addr, sig, proc);
+                        return true;
                     }
                 }
-
-                if (proc.Signature.ParametersValid)
-                {
-                    ApplySignatureToProcedure(de.Key, proc.Signature, proc);
-                }
             }
+
+            if (proc.Signature.ParametersValid)
+            {
+                ApplySignatureToProcedure(addr, proc.Signature, proc);
+                return true;
+            }
+            return false;
         }
 
         public ProcedureBase_v1 DeserializeSignature(Procedure_v1 userProc, Procedure proc)

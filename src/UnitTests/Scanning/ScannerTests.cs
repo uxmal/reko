@@ -875,5 +875,31 @@ fn00001200_exit:
             Assert.AreEqual(1, program.Procedures.Count, "Scanner should have detected the pointer to function correctly.");
             Assert.AreEqual(Address.Ptr32(0x43210008), program.Procedures.Keys.First());
         }
+
+        [Test(Description ="User-supplied signatures should be respected")]
+        public void Scanner_UserProcedure_GenerateSignature()
+        {
+            Given_Program(Address.Ptr32(0x00100000), new byte[100]);
+            Given_Project();
+            program.User.Procedures.Add(
+                Address.Ptr32(0x00100010),
+                new Procedure_v1
+                {
+                    CSignature = "int foo(char * a, float b)"
+                });
+            mr.ReplayAll();
+
+            var scanner = new Scanner(
+                this.program,
+                new ImportResolver(project, program, eventListener),
+                this.sc);
+            var proc = scanner.ScanProcedure(
+                Address.Ptr32(0x00100010),
+                null,
+                fakeArch.CreateProcessorState());
+
+            Assert.AreEqual("foo", proc.Name);
+            Assert.AreEqual("Register int32 foo(Stack (ptr char) a, Stack real32 b)", proc.Signature.ToString(proc.Name));
+        }
     }
 }
