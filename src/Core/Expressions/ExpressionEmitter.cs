@@ -286,6 +286,11 @@ namespace Reko.Core.Expressions
             return Lt(a, Constant.Create(a.DataType, b));
         }
 
+        public MemberPointerSelector MembPtr8(Expression ptr, Expression membPtr)
+        {
+            return new MemberPointerSelector(PrimitiveType.Byte, new Dereference(PrimitiveType.Pointer32, ptr), membPtr);
+        }
+
         public MemberPointerSelector MembPtrW(Expression ptr, Expression membPtr)
         {
             return new MemberPointerSelector(PrimitiveType.Word16, new Dereference(PrimitiveType.Pointer32, ptr), membPtr);

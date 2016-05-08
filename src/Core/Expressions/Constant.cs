@@ -287,7 +287,7 @@ namespace Reko.Core.Expressions
 			return Convert.ToDouble(GetValue());
 		}
 
-		public float ToFloat()
+		public virtual float ToFloat()
 		{
 			return Convert.ToSingle(GetValue());
 		}
@@ -1143,6 +1143,11 @@ namespace Reko.Core.Expressions
         public override long ToInt64()
         {
             return Convert.ToInt64(value);
+        }
+
+        public override float ToFloat()
+        {
+            return value;
         }
     }
 

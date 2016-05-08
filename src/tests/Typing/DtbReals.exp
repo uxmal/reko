@@ -31,8 +31,8 @@ void fn0C00_0037(selector ds)
 fn0C00_0037_entry:
 	// succ:  l0C00_0037
 l0C00_0037:
-	Mem3[ds:0x0400:real64] = 0
-	Mem6[ds:0x0408:int32] = (int32) 1
+	Mem3[ds:0x0400:real64] = 0.0
+	Mem6[ds:0x0408:int32] = (int32) 1.0
 	return
 	// succ:  fn0C00_0037_exit
 fn0C00_0037_exit:
@@ -114,14 +114,14 @@ Eq_41: word16
 Eq_42: word16
 	T_42 (in wArg04 + 0x0028 : word16)
 Eq_44: real64
-	T_44 (in 0 : real64)
+	T_44 (in 0.0 : real64)
 	T_46 (in Mem3[ds:0x0400:real64] : real64)
 Eq_45: (memptr T_13 (struct (0 T_46 t0000)))
 	T_45 (in 0x0400 : word16)
 Eq_47: real64
-	T_47 (in 1 : real64)
+	T_47 (in 1.0 : real64)
 Eq_48: int32
-	T_48 (in (int32) 1 : int32)
+	T_48 (in (int32) 1.0 : int32)
 	T_50 (in Mem6[ds:0x0408:int32] : int32)
 Eq_49: (memptr T_13 (struct (0 T_50 t0000)))
 	T_49 (in 0x0408 : word16)
@@ -298,7 +298,7 @@ T_43: (in Mem22[ds:wArg04 + 0x0028:real64] : real64)
   Class: Eq_40
   DataType: real64
   OrigDataType: real64
-T_44: (in 0 : real64)
+T_44: (in 0.0 : real64)
   Class: Eq_44
   DataType: real64
   OrigDataType: real64
@@ -310,11 +310,11 @@ T_46: (in Mem3[ds:0x0400:real64] : real64)
   Class: Eq_44
   DataType: real64
   OrigDataType: real64
-T_47: (in 1 : real64)
+T_47: (in 1.0 : real64)
   Class: Eq_47
   DataType: real64
   OrigDataType: real64
-T_48: (in (int32) 1 : int32)
+T_48: (in (int32) 1.0 : int32)
   Class: Eq_48
   DataType: int32
   OrigDataType: int32

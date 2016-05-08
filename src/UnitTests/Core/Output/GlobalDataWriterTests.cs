@@ -119,7 +119,7 @@ namespace Reko.UnitTests.Core.Output
             Given_Globals(
                 Given_Field(0x1000, PrimitiveType.Real32));
 
-            RunTest("real32 g_r1000 = 1F;\r\n");
+            RunTest("real32 g_r1000 = 1.0F;\r\n");
         }
 
         [Test]
@@ -133,7 +133,7 @@ namespace Reko.UnitTests.Core.Output
                 Given_Field(0x1004, PrimitiveType.Char));
 
             RunTest(
-@"real32 g_r1000 = -4F;
+@"real32 g_r1000 = -4.0F;
 char g_b1004 = 'H';
 ");
         }

@@ -81,7 +81,7 @@ namespace Reko.UnitTests.Arch.Vax
             BuildTest(0x6F, 0x20, 0x25, 0x64, 0x2E, 0xF0);	// acbd	#8,#13,(r4),00001E1B
             AssertCode(
                 "0|T--|00010000(6): 4 instructions",
-                "1|L--|v3 = Mem0[r4:real64] + 13",
+                "1|L--|v3 = Mem0[r4:real64] + 13.0",
                 "2|L--|Mem0[r4:real64] = v3",
                 "3|L--|VZN = cond(v3)",
                 "4|T--|if (v3 <= 8) branch 0000F034");
@@ -1111,7 +1111,7 @@ namespace Reko.UnitTests.Arch.Vax
             BuildTest(0x66, 0x24, 0xCA, 0x00, 0xEA, 0x00, 0xEA);	// divd2	#0.5,-15FF1600(r10)
             AssertCode(
                 "0|L--|00010000(7): 3 instructions",
-                "1|L--|v3 = Mem0[r10 + 0xEA00EA00:real64] / 12",
+                "1|L--|v3 = Mem0[r10 + 0xEA00EA00:real64] / 12.0",
                 "2|L--|Mem0[r10 + 0xEA00EA00:real64] = v3",
                 "3|L--|CVZN = cond(v3)");
         }
@@ -1122,7 +1122,7 @@ namespace Reko.UnitTests.Arch.Vax
             BuildTest(0x67, 0x20, 0x5A, 0x65);	// divd3	#80,r10,(r5)
             AssertCode(
                 "0|L--|00010000(4): 3 instructions",
-                "1|L--|v6 = r11_r10 / 8",
+                "1|L--|v6 = r11_r10 / 8.0",
                 "2|L--|Mem0[r5:real64] = v6",
                 "3|L--|CVZN = cond(v6)");
         }
@@ -1133,7 +1133,7 @@ namespace Reko.UnitTests.Arch.Vax
             BuildTest(0x46, 0x32, 0x57);	// divf2	
             AssertCode(
                 "0|L--|00010000(3): 2 instructions",
-                "1|L--|r7 = r7 / 40F",
+                "1|L--|r7 = r7 / 40.0F",
                 "2|L--|CVZN = cond(r7)");
         }
 
@@ -1143,7 +1143,7 @@ namespace Reko.UnitTests.Arch.Vax
             BuildTest(0x47, 0x32, 0x56, 0x68);	// divf3	
             AssertCode(
                 "0|L--|00010000(4): 3 instructions",
-                "1|L--|v4 = r6 / 40F",
+                "1|L--|v4 = r6 / 40.0F",
                 "2|L--|Mem0[r8:real32] = v4",
                 "3|L--|CVZN = cond(v4)");
         }
@@ -1310,7 +1310,7 @@ namespace Reko.UnitTests.Arch.Vax
             BuildTest(0x72, 0x20, 0x56);	// mnegd	#8,r6
             AssertCode(
                 "0|L--|00010000(3): 4 instructions",
-                "1|L--|r7_r6 = -8",
+                "1|L--|r7_r6 = -8.0",
                 "2|L--|ZN = cond(r7_r6)",
                 "3|L--|C = false",
                 "4|L--|V = false");
@@ -1322,7 +1322,7 @@ namespace Reko.UnitTests.Arch.Vax
             BuildTest(0x52, 0x3E, 0xC6, 0xCE, 0x00, 0x00, 0x00);	// mnegf	#112,+000000FE(r6)
             AssertCode(
                 "0|L--|00010000(7): 5 instructions",
-                "1|L--|v3 = -112F",
+                "1|L--|v3 = -112.0F",
                 "2|L--|Mem0[r6 + 0x000000CE:real32] = v3",
                 "3|L--|ZN = cond(v3)",
                 "4|L--|C = false",
@@ -1518,7 +1518,7 @@ namespace Reko.UnitTests.Arch.Vax
             BuildTest(0x45, 0x24, 0x66, 0x52);	// mulf3	
             AssertCode(
                 "0|L--|00010000(4): 2 instructions",
-                "1|L--|r2 = Mem0[r6:real32] * 12F",
+                "1|L--|r2 = Mem0[r6:real32] * 12.0F",
                 "2|L--|CVZN = cond(r2)");
         }
 
@@ -1912,7 +1912,7 @@ namespace Reko.UnitTests.Arch.Vax
             BuildTest(0x73, 0x50);	// tstd	r0
             AssertCode(
                 "0|L--|00010000(2): 3 instructions",
-                "1|L--|ZN = cond(r1_r0 - 0)",
+                "1|L--|ZN = cond(r1_r0 - 0.0)",
                 "2|L--|C = false",
                 "3|L--|V = false");
         }
@@ -1923,7 +1923,7 @@ namespace Reko.UnitTests.Arch.Vax
             BuildTest(0x53, 0xA0, 0x63);	// tstf	+63(r0)
             AssertCode(
                 "0|L--|00010000(3): 3 instructions",
-                "1|L--|ZN = cond(Mem0[r0 + 99:real32] - 0F)",
+                "1|L--|ZN = cond(Mem0[r0 + 99:real32] - 0.0F)",
                 "2|L--|C = false",
                 "3|L--|V = false");
         }
