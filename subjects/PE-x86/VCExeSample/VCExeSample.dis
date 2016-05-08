@@ -13,7 +13,7 @@ main_entry:
 // LocalsOut: fp(32) Stack +0000(32)
 
 l00401000:
-	test1(Mem0[argv:word32], argc, 0x004020C0, (real32) 1)
+	test1(Mem0[argv:word32], argc, 0x004020C0, 1F)
 	return 0x00000000
 // DataOut:
 // DataOut (flags): 

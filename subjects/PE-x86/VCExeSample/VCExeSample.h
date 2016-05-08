@@ -9,9 +9,9 @@ Eq_1: (struct "Globals" (4020C0 (str char) str4020C0) (4020C8 (str char) str4020
 Eq_5: (fn void ((ptr char), int32, (ptr char), real32))
 	T_5 (in test1 : ptr32)
 	T_6 (in signature of test1 : void)
-Eq_21: (fn int32 ((ptr char)))
-	T_21 (in printf : ptr32)
-	T_22 (in signature of printf : void)
+Eq_20: (fn int32 ((ptr char)))
+	T_20 (in printf : ptr32)
+	T_21 (in signature of printf : void)
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
@@ -32,7 +32,7 @@ T_4: (in argv : (ptr (ptr char)))
 T_5: (in test1 : ptr32)
   Class: Eq_5
   DataType: (ptr Eq_5)
-  OrigDataType: (ptr (fn T_19 (T_14, T_15, T_16, T_18)))
+  OrigDataType: (ptr (fn T_18 (T_14, T_15, T_16, T_17)))
 T_6: (in signature of test1 : void)
   Class: Eq_5
   DataType: (ptr Eq_5)
@@ -77,40 +77,36 @@ T_16: (in 0x004020C0 : word32)
   Class: Eq_9
   DataType: (ptr char)
   OrigDataType: (ptr char)
-T_17: (in 1 : real64)
-  Class: Eq_17
-  DataType: real64
-  OrigDataType: real64
-T_18: (in (real32) 1 : real32)
+T_17: (in 1F : real32)
   Class: Eq_10
   DataType: real32
   OrigDataType: real32
-T_19: (in test1(*argv, argc, "test123", (real32) 1) : void)
-  Class: Eq_19
+T_18: (in test1(*argv, argc, "test123", 1F) : void)
+  Class: Eq_18
   DataType: void
   OrigDataType: void
-T_20: (in 0x00000000 : word32)
+T_19: (in 0x00000000 : word32)
   Class: Eq_2
   DataType: int32
   OrigDataType: word32
-T_21: (in printf : ptr32)
-  Class: Eq_21
-  DataType: (ptr Eq_21)
-  OrigDataType: (ptr (fn T_25 (T_24)))
-T_22: (in signature of printf : void)
-  Class: Eq_21
-  DataType: (ptr Eq_21)
+T_20: (in printf : ptr32)
+  Class: Eq_20
+  DataType: (ptr Eq_20)
+  OrigDataType: (ptr (fn T_24 (T_23)))
+T_21: (in signature of printf : void)
+  Class: Eq_20
+  DataType: (ptr Eq_20)
   OrigDataType: 
-T_23: (in ptrArg00 : (ptr char))
-  Class: Eq_23
+T_22: (in ptrArg00 : (ptr char))
+  Class: Eq_22
   DataType: (ptr char)
   OrigDataType: 
-T_24: (in 0x004020C8 : word32)
-  Class: Eq_23
+T_23: (in 0x004020C8 : word32)
+  Class: Eq_22
   DataType: (ptr char)
   OrigDataType: (ptr char)
-T_25: (in printf("%s %d %s %f") : int32)
-  Class: Eq_25
+T_24: (in printf("%s %d %s %f") : int32)
+  Class: Eq_24
   DataType: int32
   OrigDataType: int32
 */
@@ -121,5 +117,5 @@ typedef struct Globals {
 
 typedef void (Eq_5)(char *, int32, char *, real32);
 
-typedef int32 (Eq_21)(char *);
+typedef int32 (Eq_20)(char *);
 

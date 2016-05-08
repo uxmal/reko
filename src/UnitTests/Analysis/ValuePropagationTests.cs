@@ -607,5 +607,31 @@ ProcedureBuilder_exit:
             AssertStringsEqual(sExp, ssa);
         }
 
+        [Test]
+        public void VpCastRealConstant()
+        {
+            var m = new ProcedureBuilder();
+            var r1 = m.Reg32("r1", 1);
+
+            m.Assign(r1, m.Cast(PrimitiveType.Real32, ConstantReal.Real64(1)));
+
+            var ssa = RunTest(m);
+            var sExp =
+            #region Expected
+@"r1_0: orig: r1
+    def:  r1_0 = 1F
+// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	// succ:  l1
+l1:
+	r1_0 = 1F
+ProcedureBuilder_exit:
+";
+            #endregion
+
+            AssertStringsEqual(sExp, ssa);
+        }
     }
 }
