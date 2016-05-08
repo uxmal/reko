@@ -226,8 +226,48 @@ namespace Reko.UnitTests.Typing
 			Assert.AreEqual("foo", st.Name);
 		}
 
-		// Arrays with the same sized elements should unify just fine.
-		[Test]
+        // Ensures that if a named field of structure is unified with an unnamed one, the resulting structure keeps the field name.
+        [Test]
+        public void UnifyStructNamedField()
+        {
+            StructureType st1 = new StructureType { Fields = { { 8, PrimitiveType.Word32 } } };
+            StructureType st2 = new StructureType { Fields = { { 8, PrimitiveType.Word32, "bar89" } } };
+            StructureType st = (StructureType)un.Unify(st1, st2);
+            Assert.AreEqual(1, st.Fields.Count);
+            Assert.AreEqual("bar89", st.Fields[0].Name);
+        }
+
+        [Test]
+        public void UnifyStructNamedField_SameNames()
+        {
+            StructureType st1 = new StructureType { Fields = { { 8, PrimitiveType.Word32, "bar89" } } };
+            StructureType st2 = new StructureType { Fields = { { 8, PrimitiveType.Word32, "bar89" } } };
+            StructureType st = (StructureType)un.Unify(st1, st2);
+            Assert.AreEqual(1, st.Fields.Count);
+            Assert.AreEqual("bar89", st.Fields[0].Name);
+        }
+
+        [Test]
+        public void UnifyStructNamedField_DifferentNames()
+        {
+            StructureType st1 = new StructureType { Fields = { { 8, PrimitiveType.Word32, "bar89" } } };
+            StructureType st2 = new StructureType { Fields = { { 8, PrimitiveType.Word32, "foo89" } } };
+            try
+            {
+                un.Unify(st1, st2);
+            }
+            catch (NotSupportedException ex)
+            {
+                Assert.AreEqual(
+                    "Failed to unify field 'bar89' in structure '(struct (8 word32 bar89))' with field 'foo89' in structure '(struct (8 word32 foo89))'.",
+                    ex.Message);
+                return;
+            }
+            Assert.Fail("Should throw NotSupportedException");
+        }
+
+        // Arrays with the same sized elements should unify just fine.
+        [Test]
 		public void UnifyArrays()
 		{
 			ArrayType a1 = new ArrayType(PrimitiveType.Word32, 0);
