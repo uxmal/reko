@@ -6,28 +6,11 @@
 
 int32 main(int32 argc, char * * argv)
 {
-main_entry:
-	def argc
-	def argv
-	def Mem0
-l00401000:
-	argc_5 = argc
-	argv_7 = argv
-	rLoc1_17 = 1
-	dwLoc08_18.u1 = 1
-	dwLoc0C_20 = (char *) "test123"
-	eax_21 = argc
-	dwLoc10_23 = argc
-	ecx_24 = argv
-	edx_26 = (char *) *argv
-	dwLoc14_28 = edx_26
-	test1(dwLoc14_28, dwLoc10_23, dwLoc0C_20, dwLoc08_18)
-	eax_30 = 0x00
-	return eax_30
-main_exit:
+	test1(*argv, argc, "test123", (real32) 1);
+	return 0x00;
 }
 
-void test1(char * arg1, int32 arg2, char * arg3, Eq_11 arg4)
+void test1(char * arg1, int32 arg2, char * arg3, real32 arg4)
 {
 	printf("%s %d %s %f");
 	return;
