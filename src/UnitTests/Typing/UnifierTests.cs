@@ -226,8 +226,19 @@ namespace Reko.UnitTests.Typing
 			Assert.AreEqual("foo", st.Name);
 		}
 
-		// Arrays with the same sized elements should unify just fine.
-		[Test]
+        // Ensures that if a named field of structure is unified with an unnamed one, the resulting structure keeps the field name.
+        [Test]
+        public void UnifyStructNamedField()
+        {
+            StructureType st1 = new StructureType { Fields = { { 8, PrimitiveType.Word32 } } };
+            StructureType st2 = new StructureType { Fields = { { 8, PrimitiveType.Word32, "bar89" } } };
+            StructureType st = (StructureType)un.Unify(st1, st2);
+            Assert.AreEqual(1, st.Fields.Count);
+            Assert.AreEqual("bar89", st.Fields[0].Name);
+        }
+
+        // Arrays with the same sized elements should unify just fine.
+        [Test]
 		public void UnifyArrays()
 		{
 			ArrayType a1 = new ArrayType(PrimitiveType.Word32, 0);
