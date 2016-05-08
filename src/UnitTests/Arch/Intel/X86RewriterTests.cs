@@ -1361,5 +1361,15 @@ namespace Reko.UnitTests.Arch.Intel
                 "1|L--|sp = sp - 0x0002",
                 "2|T--|call 0C00:3246 (2)");
         }
+
+        [Test]
+        public void X86rw_fstp_real32()
+        {
+            Run32bitTest(0xd9, 0x1c, 0x24);
+            AssertCode(
+                "0|L--|10000000(3): 1 instructions",
+                "1|L--|Mem0[esp:real32] = (real32) rArg0");
+        }
+
     }
 }

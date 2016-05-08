@@ -27,7 +27,6 @@ using Reko.Core.Types;
 using System;
 using System.Diagnostics;
 
-
 namespace Reko.Typing
 {
     /// <summary>
