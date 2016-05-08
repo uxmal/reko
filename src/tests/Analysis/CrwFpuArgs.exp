@@ -28,12 +28,12 @@ l0C00_0000:
 	wLoc02 = 0x0308
 	fn0C00_0024(ds, wLoc02, rLoc2, rLoc1)
 	rLoc1 = 0
-	Mem0[ds:0x030C:real32] = rLoc1
+	Mem0[ds:0x030C:real32] = (real32) rLoc1
 	ax = Mem0[ds:0x0308:word16]
 	sp = fp - 0x0004
 	wLoc04 = ax
 	rLoc1 = fn0C00_0031(ds, wLoc04)
-	Mem0[ds:0x030C:real32] = rLoc1
+	Mem0[ds:0x030C:real32] = (real32) rLoc1
 	sp = fp
 	SCZO = cond(fp)
 	return
@@ -53,8 +53,8 @@ void fn0C00_0024(Register selector ds, Stack word16 wArg02, FpuStack real64 rArg
 // bp:bp
 // ss:ss
 // bx:bx
-// ds:ds
 // rArg0:FPU stack
+// ds:ds
 // rArg1:FPU stack
 // wLoc02:Local -0002
 // wArg02:Stack +0002
@@ -68,8 +68,8 @@ l0C00_0024:
 	wLoc02 = bp
 	bp = fp - 0x0002
 	bx = wArg02
-	Mem0[ds:bx:real32] = rArg0
-	Mem0[ds:bx + 0x0004:real32] = rArg1
+	Mem0[ds:bx:real32] = (real32) rArg0
+	Mem0[ds:bx + 0x0004:real32] = (real32) rArg1
 	bp = wLoc02
 	sp = fp
 	return

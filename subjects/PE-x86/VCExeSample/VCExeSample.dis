@@ -1,55 +1,77 @@
+// main
+// Return size: 4
 int32 main(int32 argc, char * * argv)
-// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse:  ebp
-// LiveOut:
-// Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
-// Preserved: ebp esp
-// Stack args: Stack +0000(32)
 main_entry:
-// DataOut: ebp
-// DataOut (flags): 
-// SymbolicIn: esp:fp
-// LocalsOut: fp(32) Stack +0000(32)
-
+	// succ:  l00401000
 l00401000:
-	test1(ebp, dwArg00, argc, argv)
-	return 0x00000000
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: esp:fp
-
-main_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: esp:fp ebp:ebp eax:0x00000000 ecx:argv edx:<invalid> -20(fp):<invalid> -16(fp):argc -12(fp):0x004020C0 -8(fp):rLoc1 -4(fp):ebp 4(fp):argc 8(fp):argv
-
-
-
-void test1(char * arg1, int32 arg2, char * arg3, real32 arg4)
-// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
-
-// MayUse: 
-// LiveOut:
-// Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
-// Preserved: ebp esp
-test1_entry:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: esp:fp
-// LocalsOut: fp(32)
-
-l00401030:
-	printf(0x004020C8)
+	Mem0[fp + 0x00000004:int32] = argc
+	Mem0[fp + 0x00000008:(ptr (ptr char))] = argv
+	esp = fp
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebp
+	ebp = esp
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ecx
+	rLoc1 = 1
+	Mem0[esp:real32] = rLoc1
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x004020C0
+	eax = Mem0[ebp + 0x00000008:word32]
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = eax
+	ecx = Mem0[ebp + 0x0000000C:word32]
+	edx = Mem0[ecx:word32]
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = edx
+	test1(Mem0[esp:(ptr char)], Mem0[esp + 4:int32], Mem0[esp + 8:(ptr char)], Mem0[esp + 12:real32])
+	esp = esp + 0x00000010
+	SCZO = cond(esp)
+	eax = eax ^ eax
+	SZO = cond(eax)
+	C = false
+	ebp = Mem0[esp:word32]
+	esp = esp + 0x00000004
 	return
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: esp:fp
+	// succ:  main_exit
+main_exit:
 
+
+// test1
+// Return size: 4
+void test1(char * arg1, int32 arg2, char * arg3, real32 arg4)
+test1_entry:
+	// succ:  l00401030
+l00401030:
+	Mem0[fp + 0x00000004:(ptr char)] = arg1
+	Mem0[fp + 0x00000008:int32] = arg2
+	Mem0[fp + 0x0000000C:(ptr char)] = arg3
+	Mem0[fp + 0x00000010:real32] = arg4
+	esp = fp
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ebp
+	ebp = esp
+	rLoc1 = Mem0[ebp + 0x00000014:real32]
+	esp = esp - 0x00000008
+	SCZO = cond(esp)
+	Mem0[esp:real64] = rLoc1
+	eax = Mem0[ebp + 0x00000010:word32]
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = eax
+	ecx = Mem0[ebp + 0x0000000C:word32]
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = ecx
+	edx = Mem0[ebp + 0x00000008:word32]
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = edx
+	esp = esp - 0x00000004
+	Mem0[esp:word32] = 0x004020C8
+	eax = printf(Mem0[esp:(ptr char)])
+	esp = esp + 0x00000018
+	SCZO = cond(esp)
+	ebp = Mem0[esp:word32]
+	esp = esp + 0x00000004
+	return
+	// succ:  test1_exit
 test1_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn: esp:fp ebp:ebp eax:<invalid> ecx:arg2 edx:arg1 -28(fp):0x004020C8 -24(fp):arg1 -20(fp):arg2 -16(fp):arg3 -12(fp):rLoc1 -4(fp):ebp 4(fp):arg1 8(fp):arg2 12(fp):arg3 16(fp):arg4
-
 
 
