@@ -507,7 +507,12 @@ namespace Reko.Core.Types
 				else
 				{
                     var fieldType = Unify(fa.DataType, fb.DataType);
-                    var fieldName = MakeFieldName(fa, fb);
+                    string fieldName;
+                    if (!TryMakeFieldName(fa, fb, out fieldName))
+                        throw new NotSupportedException(
+                            string.Format(
+                                "Failed to unify field '{0}' in structure '{1}' with field '{2}' in structure '{3}'.",
+                                fa.Name, a, fb.Name, b));
                     mem.Fields.Add(fa.Offset, fieldType, fieldName);
 					fa = null;
 					fb = null;
@@ -535,15 +540,16 @@ namespace Reko.Core.Types
 			return mem;
 		}
 
-        private string MakeFieldName(StructureField fa, StructureField fb)
+        private bool TryMakeFieldName(StructureField fa, StructureField fb, out string name)
         {
+            name = null;
             if (fa.IsNameSet && fb.IsNameSet && fa.Name != fb.Name)
-                throw new NotSupportedException("Both structure fields have names");
+                return false;
             if (fa.IsNameSet)
-                return fa.Name;
+                name = fa.Name;
             if (fb.IsNameSet)
-                return fb.Name;
-            return null;
+                name = fb.Name;
+            return true;
         }
 
 		public DataType UnifyPointer(Pointer ptrA, DataType b)
