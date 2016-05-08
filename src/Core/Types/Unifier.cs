@@ -506,8 +506,9 @@ namespace Reko.Core.Types
 				}
 				else
 				{
-                    DataType fieldType = Unify(fa.DataType, fb.DataType);
-					mem.Fields.Add(fa.Offset, fieldType);
+                    var fieldType = Unify(fa.DataType, fb.DataType);
+                    var fieldName = MakeFieldName(fa, fb);
+                    mem.Fields.Add(fa.Offset, fieldType, fieldName);
 					fa = null;
 					fb = null;
 				}
@@ -533,6 +534,17 @@ namespace Reko.Core.Types
             mem.ForceStructure = a.ForceStructure | b.ForceStructure;
 			return mem;
 		}
+
+        private string MakeFieldName(StructureField fa, StructureField fb)
+        {
+            if (fa.NameSet && fb.NameSet && fa.Name != fb.Name)
+                throw new NotSupportedException("Both structure fields have names");
+            if (fa.NameSet)
+                return fa.Name;
+            if (fb.NameSet)
+                return fb.Name;
+            return null;
+        }
 
 		public DataType UnifyPointer(Pointer ptrA, DataType b)
 		{
