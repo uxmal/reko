@@ -200,9 +200,16 @@ namespace Reko.Analysis
             if (a.Src.As(out app) && app.Procedure.As(out pc))
             {
                 var pseudo = pc.Procedure as PseudoProcedure;
-                if (pseudo != null && pseudo.Name == PseudoProcedure.RorC)
+                if (pseudo != null)
                 {
-                    return TransformRorC(app, a);
+                    if (pseudo.Name == PseudoProcedure.RorC)
+                    {
+                        return TransformRorC(app, a);
+                    }
+                    else if (pseudo.Name == PseudoProcedure.RolC)
+                    {
+                        return TransformRolC(app, a);
+                    }
                 }
             }
             return a;
@@ -236,6 +243,84 @@ namespace Reko.Analysis
             return a;
         }
 
+        private Instruction TransformRolC(Application rolc, Assignment a)
+        {
+            var sidOrigHi = ssaIds[a.Dst];
+            var sidCarry = ssaIds[(Identifier)rolc.Arguments[2]];
+            var cond = sidCarry.DefExpression as ConditionOf;
+            if (cond == null)
+                return a;
+            var condId = cond.Expression as Identifier;
+            if (condId == null)
+                return a;
+            var sidOrigLo = ssaIds[condId];
+            var shift = sidOrigLo.DefExpression as BinaryExpression;
+            if (shift == null || shift.Operator != Operator.Shl)
+                return a;
+
+            var block = sidOrigHi.DefStatement.Block;
+            var sidShift = sidOrigLo.DefStatement;
+            var expShrSrc = shift.Left;
+            var expRorSrc = rolc.Arguments[0];
+
+            var stmGrf = sidGrf.DefStatement;
+            block.Statements.Remove(stmGrf);
+
+            // xx = lo
+            var tmpLo = ssa.Procedure.Frame.CreateTemporary(expShrSrc.DataType);
+            var sidTmpLo = ssaIds.Add(tmpLo, sidOrigLo.DefStatement, expShrSrc, false);
+            sidOrigLo.DefStatement.Instruction = new Assignment(sidTmpLo.Identifier, expShrSrc);
+
+            var tmpHi = ssa.Procedure.Frame.CreateTemporary(rolc.Arguments[0].DataType);
+            var sidTmpHi = ssaIds.Add(tmpHi, sidOrigHi.DefStatement, rolc.Arguments[0], false);
+            sidOrigHi.DefStatement.Instruction = new Assignment(sidTmpHi.Identifier, rolc.Arguments[0]);
+
+            var iRolc = block.Statements.IndexOf(sidOrigHi.DefStatement);
+            var dt = PrimitiveType.Create(Domain.Integer, expShrSrc.DataType.Size + expRorSrc.DataType.Size);
+            var tmp = ssa.Procedure.Frame.CreateTemporary(dt);
+            var expMkLongword = m.Shl(m.Seq(sidTmpHi.Identifier, sidTmpLo.Identifier), 1);
+            var sidTmp = ssaIds.Add(tmp, sidGrf.DefStatement, expMkLongword, false);
+            var stmTmp = block.Statements.Insert(iRolc + 1, sidOrigHi.DefStatement.LinearAddress,
+                new Assignment(sidTmp.Identifier, expMkLongword));
+            sidTmp.DefStatement = stmTmp;
+            sidTmpLo.Uses.Add(stmTmp);
+            sidTmpHi.Uses.Add(stmTmp);
+
+            ssa.RemoveUses(sidCarry.DefStatement);
+            block.Statements.Remove(sidCarry.DefStatement);
+            ssaIds.Remove(sidCarry);
+
+            var expNewLo = m.Cast(
+                PrimitiveType.CreateWord(tmpHi.DataType.Size),
+                sidTmp.Identifier);
+            var stmNewLo = block.Statements.Insert(
+                iRolc + 2,
+                sidOrigLo.DefStatement.LinearAddress,
+                new Assignment(sidOrigLo.Identifier, expNewLo));
+            sidTmp.Uses.Add(stmNewLo);
+            sidOrigLo.DefStatement = stmNewLo;
+            sidOrigLo.DefExpression = expNewLo;
+
+            var expNewHi = m.Slice(
+                PrimitiveType.CreateWord(tmpLo.DataType.Size),
+                sidTmp.Identifier,
+                (uint)tmpHi.DataType.BitSize);
+            var stmNewHi = block.Statements.Insert(
+                iRolc + 3,
+                sidOrigHi.DefStatement.LinearAddress,
+                new Assignment(sidOrigHi.Identifier, expNewHi));
+            sidTmp.Uses.Add(stmNewHi);
+            sidOrigHi.DefStatement = stmNewHi;
+            sidOrigHi.DefStatement = stmNewHi;
+
+            sidGrf.DefExpression = m.Cond(sidTmp.Identifier);
+            sidGrf.DefStatement.Instruction = new Assignment(
+                sidGrf.Identifier, sidGrf.DefExpression);
+            sidTmp.Uses.Add(sidGrf.DefStatement);
+
+            return sidOrigHi.DefStatement.Instruction;
+        }
+
         // 1. a_2 = a_1 >> 1
         // 2. C_2 = cond(a_2)
         // 3. b_2 = b_1 rorc 1, C
@@ -249,8 +334,6 @@ namespace Reko.Analysis
         // 4.  flags_3 = cond(b_2)
         private Instruction TransformRorC(Application rorc, Assignment a)
         {
-            ssa.DebugDump(true);
-
             var sidOrigLo = ssaIds[a.Dst];
             var sidCarry = ssaIds[(Identifier)rorc.Arguments[2]];
             var cond = sidCarry.DefExpression as ConditionOf;
@@ -264,7 +347,6 @@ namespace Reko.Analysis
             if (shift == null || shift.Operator != Operator.Shr)
                 return a;
 
-            Debug.Print("sidGrf: /// {0}", sidGrf);
             var block = sidOrigLo.DefStatement.Block;
             var sidShift = sidOrigHi.DefStatement;
             var expShrSrc = shift.Left;

@@ -30,6 +30,7 @@ using NUnit.Framework;
 using System;
 using System.IO;
 using Rhino.Mocks;
+using System.Diagnostics;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -98,6 +99,7 @@ namespace Reko.UnitTests.Analysis
 
                 Aliases alias = new Aliases(proc, prog.Architecture, dfa.ProgramDataFlow);
                 alias.Transform();
+
                 var sst = new SsaTransform(dfa.ProgramDataFlow, proc, importResolver, proc.CreateBlockDominatorGraph());
                 SsaState ssa = sst.SsaState;
 
@@ -153,14 +155,14 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        [Ignore("scanning-development")]
+        [Ignore("The called function is mistakenly marked as always setting cl = 0. New SSA analysis will fix this.")]
         public void CceReg00005()
 		{
 			RunFileTest("Fragments/regressions/r00005.asm", "Analysis/CceReg00005.txt");
 		}
 
 		[Test]
-        [Ignore("scanning-development")]
+        [Ignore("The called function is mistakenly identified as returning SZCO when it really just returns C. New SSA analysis fixes this")]
         public void CceReg00007()
 		{
 			RunFileTest("Fragments/regressions/r00007.asm", "Analysis/CceReg00007.txt");
@@ -319,7 +321,6 @@ done:
             SaveRunOutput(prog, RunTest, "Analysis/CceFstswLt.txt");
         }
 
-
 		[Test]
 		public void CceEqId()
 		{
@@ -437,10 +438,32 @@ done:
                     new PseudoProcedure(PseudoProcedure.RorC, r2.DataType, 2),
                     r2, Constant.Byte(1), C));
                 m.Assign(C, m.Cond(r2));
+                m.Store(m.Word32(0x3000), r2);
+                m.Store(m.Word32(0x3004), r1);
+            });
+            RunTest(p, "Analysis/CceShrRcrPattern.txt");
+        }
+
+        [Test]
+        public void CceShlRclPattern()
+        {
+            var p = new ProgramBuilder(new FakeArchitecture());
+            p.Add("main", (m) =>
+            {
+                var C = m.Flags("C");
+                var r1 = MockReg(m, 1);
+                var r2 = MockReg(m, 2);
+
+                m.Assign(r1, m.Shl(r1, 1));
+                m.Assign(C, m.Cond(r1));
+                m.Assign(r2, m.Fn(
+                    new PseudoProcedure(PseudoProcedure.RolC, r2.DataType, 2),
+                    r2, Constant.Byte(1), C));
+                m.Assign(C, m.Cond(r2));
                 m.Store(m.Word32(0x3000), r1);
                 m.Store(m.Word32(0x3004), r2);
             });
-            RunTest(p, "Analysis/CceShrRcrPattern.txt");
+            RunTest(p, "Analysis/CceShlRclPattern.txt");
         }
 
         [Test]
