@@ -347,20 +347,6 @@ namespace Reko.Core.Serialization
             foreach (var kv in user.Globals)
             {
                 var dt = kv.Value.DataType.Accept(tlDeser);
-                var item = new ImageMapItem((uint)dt.Size)
-                {
-                    Address = kv.Key,
-                    DataType = dt,
-                    Name = kv.Value.Name,
-                };
-                if (item.Size > 0)
-                {
-                    program.ImageMap.AddItemWithSize(kv.Key, item);
-                }
-                else
-                {
-                    program.ImageMap.AddItem(kv.Key, item);
-                }
                 //$BUGBUG: what about x86 segmented binaries?
                 int offset = (int)kv.Key.ToLinear();
                 program.GlobalFields.Fields.Add(offset, dt, kv.Value.Name);
@@ -469,21 +455,6 @@ namespace Reko.Core.Serialization
             foreach (var kv in user.Globals)
             {
                 var dt = kv.Value.DataType.Accept(tlDeser);
-                var item = new ImageMapItem((uint)dt.Size)
-                {
-                    Address = kv.Key,
-                    DataType = dt,
-                    Name = kv.Value.Name,
-                };
-
-                if (item.Size > 0)
-                {
-                    program.ImageMap.AddItemWithSize(kv.Key, item);
-                }
-                else
-                {
-                    program.ImageMap.AddItem(kv.Key, item);
-                }
                 //$BUGBUG: what about x86 segmented binaries?
                 int offset = (int)kv.Key.ToLinear();
                 program.GlobalFields.Fields.Add(offset, dt, kv.Value.Name);
@@ -580,25 +551,6 @@ namespace Reko.Core.Serialization
                     })
                     .Where(kv => kv.Key != null)
                    .ToSortedList(kv => kv.Key, kv => kv.Value);
-            }
-            var tlDeser = CreateTypeLibraryDeserializer();
-            foreach (var kv in user.Globals)
-            {
-                var dt = kv.Value.DataType.Accept(tlDeser);
-                var item = new ImageMapItem((uint)dt.Size)
-                {
-                    Address = kv.Key,
-                    DataType = dt,
-                    Name = kv.Value.Name,
-                };
-                if (item.Size > 0)
-                {
-                    program.ImageMap.AddItemWithSize(kv.Key, item);
-                }
-                else
-                {
-                    program.ImageMap.AddItem(kv.Key, item);
-                }
             }
             user.OnLoadedScript = sInput.OnLoadedScript;
             if (sInput.Options != null)

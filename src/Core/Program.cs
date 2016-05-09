@@ -361,6 +361,25 @@ namespace Reko.Core
                         Size = sym.Size,
                     });
             }
+            var tlDeser = CreateTypeLibraryDeserializer();
+            foreach (var kv in User.Globals)
+            {
+                var dt = kv.Value.DataType.Accept(tlDeser);
+                var item = new ImageMapItem((uint)dt.Size)
+                {
+                    Address = kv.Key,
+                    DataType = dt,
+                    Name = kv.Value.Name,
+                };
+                if (item.Size > 0)
+                {
+                    this.ImageMap.AddItemWithSize(kv.Key, item);
+                }
+                else
+                {
+                    this.ImageMap.AddItem(kv.Key, item);
+                }
+            }
         }
 
         public uint GetDataSize(Address addr, DataType dt)
