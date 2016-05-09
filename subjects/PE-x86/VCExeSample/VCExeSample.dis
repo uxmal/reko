@@ -53,3 +53,48 @@ test1_exit:
 
 
 
+void test2(word32 dwArg04)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO
+// Preserved: ebp esp
+// Stack args: Stack +0004(32)
+test2_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32) Stack +0004(32)
+
+l00401060:
+	test1(0x004020D8, 0x00000002, 0x004020D4, (real32) Mem0[0x004020E8:real32])
+	branch dwArg04 != 0x00000000 l004010A5
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32)
+
+l00401087:
+	word32 dwLoc08_30 = (real32) Mem0[0x004020E4:real32]
+	Mem32[fp - 0x0000000C:word32] = 0x004020DC
+	Mem34[fp - 0x00000010:word32] = 0x00000006
+	Mem36[fp - 0x00000014:word32] = 0x004020E0
+	test1(0x004020D8, 0x00000002, 0x004020D4, dwLoc08_30)
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000004 ebp:fp - 0x00000004 -20(fp):0x004020D8 -16(fp):0x00000002 -12(fp):0x004020D4 -8(fp):(real32) rLoc1 -4(fp):ebp
+
+l004010A5:
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000004 ebp:fp - 0x00000004 -20(fp):<invalid> -16(fp):<invalid> -12(fp):<invalid> -8(fp):(real32) rLoc1 -4(fp):ebp
+
+test2_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp ebp:ebp -20(fp):<invalid> -16(fp):<invalid> -12(fp):<invalid> -8(fp):(real32) rLoc1 -4(fp):ebp
+
+
+
