@@ -360,8 +360,8 @@ namespace Reko.Scanning
                 }
                 else
                 {
-                    // Jumped into the middle of another procedure. Is it worth promoting the destination block
-                    // to a new procedure?
+                    // Jumped into the middle of another procedure. Is it worth
+                    // promoting the destination block to a new procedure?
                     if (IsBlockLinearProcedureExit(block))
                     {
                         // No, just clone the block into the new procedure.
@@ -369,8 +369,9 @@ namespace Reko.Scanning
                     }
                     else
                     {
-                        // We jumped into a pre-existing block of another procedure which was hairy enough
-                        // that we need to promote the block to a new procedure.
+                        // We jumped into a pre-existing block of another 
+                        // procedure which was hairy enough that we need to 
+                        // promote the block to a new procedure.
                         procDest = EnsureProcedure(addrDest, null);
                         var blockNew = CreateCallRetThunk(addrSrc, proc, procDest);
                         procDest.ControlGraph.AddEdge(procDest.EntryBlock, block);
@@ -532,21 +533,33 @@ namespace Reko.Scanning
             var oldQueue = queue;
             queue = new PriorityQueue<WorkItem>();
             var st = state.Clone();
-            st.SetInstructionPointer(addr);
-            st.OnProcedureEntered();
-            var sp = proc.Frame.EnsureRegister(program.Architecture.StackRegister);
-            st.SetValue(sp, proc.Frame.FramePointer);
-            SetAssumedRegisterValues(addr, st);
+            EstablishInitialState(addr, st, proc);
             var block = EnqueueJumpTarget(addr, addr, proc, st);
             proc.ControlGraph.AddEdge(proc.EntryBlock, block);
             ProcessQueue();
             queue = oldQueue;
 
             // Add <stackpointer> := fp explicitly to the starting block.
-            EstablishFrame(addr, proc, sp);
+            EstablishFrame(addr, proc);
             var usb = new UserSignatureBuilder(program);
             usb.BuildSignature(addr, proc);
             return proc;
+        }
+
+        /// <summary>
+        /// Before processing the body of a procedure, perform housekeeping tasks.
+        /// </summary>
+        /// <param name="addr"></param>
+        /// <param name="state"></param>
+        /// <param name="proc"></param>
+        /// <returns></returns>
+        private void EstablishInitialState(Address addr, ProcessorState st, Procedure proc)
+        {
+            st.SetInstructionPointer(addr);
+            st.OnProcedureEntered();
+            var sp = proc.Frame.EnsureRegister(program.Architecture.StackRegister);
+            st.SetValue(sp, proc.Frame.FramePointer);
+            SetAssumedRegisterValues(addr, st);
         }
 
         /// <summary>
@@ -557,9 +570,10 @@ namespace Reko.Scanning
         /// <param name="addr"></param>
         /// <param name="proc"></param>
         /// <param name="sp"></param>
-        public void EstablishFrame(Address addr, Procedure proc, Identifier sp)
+        public void EstablishFrame(Address addr, Procedure proc)
         {
             var stmts = proc.EntryBlock.Succ[0].Statements;
+            var sp = proc.Frame.EnsureRegister(program.Architecture.StackRegister);
             stmts.Insert(0, addr.ToLinear(), new Assignment(sp, proc.Frame.FramePointer));
         }
 
