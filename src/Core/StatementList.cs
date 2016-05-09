@@ -38,9 +38,11 @@ namespace Reko.Core
             Add(new Statement(linearAddress, instr, block));
         }
 
-        public void Insert(int position, ulong linearAddress, Instruction instr)
+        public Statement Insert(int position, ulong linearAddress, Instruction instr)
         {
-            base.Insert(position, new Statement(linearAddress, instr, block));
+            var stm = new Statement(linearAddress, instr, block);
+            base.Insert(position, stm);
+            return stm;
         }
 
 		public Statement Last

@@ -196,7 +196,7 @@ namespace Reko.Core.Expressions
             return new BinaryExpression(Operator.Flt, PrimitiveType.Bool, a, b);
         }
 
-        public Expression FSub(Expression a, Expression b)
+        public BinaryExpression FSub(Expression a, Expression b)
         {
             return new BinaryExpression(Operator.FSub, PrimitiveType.Real64, a, b);
         }

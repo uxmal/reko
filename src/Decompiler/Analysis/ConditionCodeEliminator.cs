@@ -48,23 +48,27 @@ namespace Reko.Analysis
 	/// </remarks>
 	public class ConditionCodeEliminator : InstructionTransformer
 	{
+        private SsaState ssa;
 		private SsaIdentifierCollection ssaIds;
 		private SsaIdentifier sidGrf;
         private HashSet<SsaIdentifier> aliases;     // aliases of sidGrf
         private Statement useStm;
         private IPlatform platform;
+        private ExpressionEmitter m;
 
-		private static TraceSwitch trace = new TraceSwitch("CcodeEliminator", "Traces the progress of the condition code eliminator");
+        private static TraceSwitch trace = new TraceSwitch("CcodeEliminator", "Traces the progress of the condition code eliminator");
 
-		public ConditionCodeEliminator(SsaIdentifierCollection ssaIds, IPlatform arch)
+        public ConditionCodeEliminator(SsaState ssa, IPlatform arch)
 		{
-			this.ssaIds = ssaIds;
+            this.ssa=ssa;
+			this.ssaIds = ssa.Identifiers;
             this.platform = arch;
+            this.m = new ExpressionEmitter();
 		}
 
         public void Transform()
         {
-            foreach (var s in ssaIds)
+            foreach (var s in ssaIds.ToList())
             {
                 sidGrf = s;
                 if (!IsLocallyDefinedFlagGroup(sidGrf))
@@ -186,40 +190,146 @@ namespace Reko.Analysis
 		}
 
 		public override Instruction TransformAssignment(Assignment a)
-		{
-			a.Src = a.Src.Accept(this);
-			BinaryExpression binUse = a.Src as BinaryExpression;
-			if (binUse == null)
-				return a;
-			if (!IsAddOrSub(binUse.Operator))
-				return a;
-			Expression u = binUse.Right;
-			Cast c = null;
-			if (u != sidGrf.Identifier)
-			{
-				c = binUse.Right as Cast;
-				if (c != null)
-					u = c.Expression;
-			}
-			if (u != sidGrf.Identifier)
-				return a;
+        {
+            a.Src = a.Src.Accept(this);
+            BinaryExpression binUse = a.Src as BinaryExpression;
+            if (binUse != null && IsAddOrSub(binUse.Operator))
+                return TransformAddOrSub(a, binUse);
+            Application app;
+            ProcedureConstant pc;
+            if (a.Src.As(out app) && app.Procedure.As(out pc))
+            {
+                var pseudo = pc.Procedure as PseudoProcedure;
+                if (pseudo != null && pseudo.Name == PseudoProcedure.RorC)
+                {
+                    return TransformRorC(app, a);
+                }
+            }
+            return a;
+        }
+
+        private Instruction TransformAddOrSub(Assignment a, BinaryExpression binUse)
+        {
+            Expression u = binUse.Right;
+            Cast c = null;
+            if (u != sidGrf.Identifier)
+            {
+                c = binUse.Right as Cast;
+                if (c != null)
+                    u = c.Expression;
+            }
+            if (u != sidGrf.Identifier)
+                return a;
 
             //var law = new LongAddRewriter(arch, useStm.Block.Procedure.Frame);
             //if (law.Match(u, a))
             //{
             //    InsertLongAdd(sidGrf, u, a);
             //}
-			u = UseGrfConditionally(sidGrf, ConditionCode.ULT);
-			if (c != null)
-				c.Expression = u;
-			else
-				binUse.Right = u;
-			sidGrf.Uses.Remove(useStm);
-			Use(u, useStm);
-			return a;
-		}
+            u = UseGrfConditionally(sidGrf, ConditionCode.ULT);
+            if (c != null)
+                c.Expression = u;
+            else
+                binUse.Right = u;
+            sidGrf.Uses.Remove(useStm);
+            Use(u, useStm);
+            return a;
+        }
 
-		public override Expression VisitTestCondition(TestCondition tc)
+        // 1. a_2 = a_1 >> 1
+        // 2. C_2 = cond(a_2)
+        // 3. b_2 = b_1 rorc 1, C
+        // 4. flags_3 = cond(b_2)
+
+        // 1.  tmp_1 = a_1
+        // 3.  tmp_2 = b_2
+        // *.  tmp_3 = (tmp1:tmp2) >> 1
+        // 1'. a_2 = slice(tmp3,16)
+        // 2'. b_2 = (cast) tmp3
+        // 4.  flags_3 = cond(b_2)
+        private Instruction TransformRorC(Application rorc, Assignment a)
+        {
+            ssa.DebugDump(true);
+
+            var sidOrigLo = ssaIds[a.Dst];
+            var sidCarry = ssaIds[(Identifier)rorc.Arguments[2]];
+            var cond = sidCarry.DefExpression as ConditionOf;
+            if (cond == null)
+                return a;
+            var condId = cond.Expression as Identifier;
+            if (condId == null)
+                return a;
+            var sidOrigHi = ssaIds[condId];
+            var shift = sidOrigHi.DefExpression as BinaryExpression;
+            if (shift == null || shift.Operator != Operator.Shr)
+                return a;
+
+            Debug.Print("sidGrf: /// {0}", sidGrf);
+            var block = sidOrigLo.DefStatement.Block;
+            var sidShift = sidOrigHi.DefStatement;
+            var expShrSrc = shift.Left;
+            var expRorSrc = rorc.Arguments[0];
+
+            var stmGrf = sidGrf.DefStatement;
+            block.Statements.Remove(stmGrf);
+
+            var tmpHi = ssa.Procedure.Frame.CreateTemporary(expShrSrc.DataType);
+            var sidTmpHi = ssaIds.Add(tmpHi, sidOrigHi.DefStatement, expShrSrc, false);
+            sidOrigHi.DefStatement.Instruction = new Assignment(sidTmpHi.Identifier, expShrSrc);
+
+            var tmpLo = ssa.Procedure.Frame.CreateTemporary(rorc.Arguments[0].DataType);
+            var sidTmpLo = ssaIds.Add(tmpLo, sidOrigLo.DefStatement, rorc.Arguments[0], false);
+            sidOrigLo.DefStatement.Instruction = new Assignment(sidTmpLo.Identifier, rorc.Arguments[0]);
+
+            var iRorc = block.Statements.IndexOf(sidOrigLo.DefStatement);
+            var dt = PrimitiveType.Create(Domain.UnsignedInt, expShrSrc.DataType.Size + expRorSrc.DataType.Size);
+            var tmp = ssa.Procedure.Frame.CreateTemporary(dt);
+            var expMkLongword = m.Shr(m.Seq(sidTmpHi.Identifier, sidTmpLo.Identifier), 1);
+            var sidTmp = ssaIds.Add(tmp, sidGrf.DefStatement, expMkLongword, false);
+            var stmTmp = block.Statements.Insert(iRorc + 1, sidOrigLo.DefStatement.LinearAddress,
+                new Assignment(sidTmp.Identifier, expMkLongword));
+            sidTmp.DefStatement = stmTmp;
+            sidTmpHi.Uses.Add(stmTmp);
+            sidTmpLo.Uses.Add(stmTmp);
+
+            ssa.RemoveUses(sidCarry.DefStatement);
+            block.Statements.Remove(sidCarry.DefStatement);
+            ssaIds.Remove(sidCarry);
+
+            var expNewHi = m.Slice(
+                PrimitiveType.CreateWord(tmpHi.DataType.Size),
+                sidTmp.Identifier,
+                (uint)tmpLo.DataType.BitSize);
+            var stmNewHi = block.Statements.Insert(
+                iRorc + 2,
+                sidOrigHi.DefStatement.LinearAddress,
+                new Assignment(sidOrigHi.Identifier, expNewHi));
+            sidTmp.Uses.Add(stmNewHi);
+            sidOrigHi.DefStatement = stmNewHi;
+            sidOrigHi.DefExpression = expNewHi;
+
+            var expNewLo = m.Cast(
+                PrimitiveType.CreateWord(tmpLo.DataType.Size),
+                sidTmp.Identifier);
+            var stmNewLo = block.Statements.Insert(
+                iRorc + 3,
+                sidOrigLo.DefStatement.LinearAddress,
+                new Assignment(sidOrigLo.Identifier, expNewLo));
+            sidTmp.Uses.Add(stmNewLo);
+            sidOrigLo.DefStatement = stmNewLo;
+            sidOrigLo.DefStatement = stmNewLo;
+
+            sidGrf.DefExpression = m.Cond(sidTmp.Identifier);
+            sidGrf.DefStatement.Instruction = new Assignment(
+                sidGrf.Identifier, sidGrf.DefExpression);
+            sidTmp.Uses.Add(sidGrf.DefStatement);
+             
+            ssa.DebugDump(true);
+            Debug.Print("sidGrf: *** {0}", sidGrf);
+            return sidOrigLo.DefStatement.Instruction;
+        }
+
+        public override Expression VisitTestCondition(TestCondition tc)
 		{
 			SsaIdentifier sid = ssaIds[(Identifier) tc.Expression];
 			sid.Uses.Remove(useStm);

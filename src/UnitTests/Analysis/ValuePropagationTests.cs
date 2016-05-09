@@ -90,7 +90,7 @@ namespace Reko.UnitTests.Analysis
 				alias.Transform();
 				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, null, gr);
 				SsaState ssa = sst.SsaState;
-                var cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Platform);
+                var cce = new ConditionCodeEliminator(ssa, prog.Platform);
                 cce.Transform();
 				ssa.Write(writer);
 				proc.Write(false, writer);

@@ -39,18 +39,18 @@ al:al
     def:  def al
     uses: al_5 = PHI(al, al_19)
           al_16 = al - 0x30
-          al_23 = al - 0x37
-          al_23 = al - 0x37
-          al_26 = al - 0x57
-          al_26 = al - 0x57
           branch al <u 0x30 l0C00_0032
           branch al <=u 0x39 l0C00_0022
-          branch al <u 0x3A l0C00_0030
-          branch al <u 0x47 l0C00_0030
           branch al <u 0x41 l0C00_0032
           branch al <=u 0x46 l0C00_0022
           branch al <u 0x61 l0C00_0032
           branch al >u 0x66 l0C00_0032
+          branch al <u 0x3A l0C00_0030
+          al_23 = al - 0x37
+          al_23 = al - 0x37
+          branch al <u 0x47 l0C00_0030
+          al_26 = al - 0x57
+          al_26 = al - 0x57
 SCZO_3: orig: SCZO
 C_4: orig: C
 al_5: orig: al

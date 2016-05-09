@@ -2161,7 +2161,7 @@ T_539: (in Mem0[a4_0 + -32758:word32] : word32)
   Class: Eq_536
   DataType: word32
   OrigDataType: word32
-T_540: (in v7_8 : word32)
+T_540: (in v8_8 : word32)
   Class: Eq_33
   DataType: (ptr (struct (0 T_575 t0000) (4 T_554 t0004)))
   OrigDataType: (ptr (struct (0 T_575 t0000) (4 T_554 t0004)))
@@ -2185,7 +2185,7 @@ T_545: (in Mem0[a7_3 - 0x00000004 + 0x00000000:word32] : word32)
   Class: Eq_33
   DataType: word32
   OrigDataType: word32
-T_546: (in v5_5 : word32)
+T_546: (in v6_5 : word32)
   Class: Eq_33
   DataType: word32
   OrigDataType: word32
@@ -2213,11 +2213,11 @@ T_552: (in 4 : int32)
   Class: Eq_552
   DataType: int32
   OrigDataType: int32
-T_553: (in v7_8 + 4 : word32)
+T_553: (in v8_8 + 4 : word32)
   Class: Eq_553
   DataType: word32
   OrigDataType: word32
-T_554: (in Mem0[v7_8 + 4:word32] : word32)
+T_554: (in Mem0[v8_8 + 4:word32] : word32)
   Class: Eq_554
   DataType: word32
   OrigDataType: word32
@@ -2225,7 +2225,7 @@ T_555: (in 0x00000000 : word32)
   Class: Eq_554
   DataType: word32
   OrigDataType: word32
-T_556: (in Mem0[v7_8 + 4:word32] == 0x00000000 : bool)
+T_556: (in Mem0[v8_8 + 4:word32] == 0x00000000 : bool)
   Class: Eq_556
   DataType: bool
   OrigDataType: bool
@@ -2265,7 +2265,7 @@ T_565: (in 0x00000000 : word32)
   Class: Eq_33
   DataType: word32
   OrigDataType: word32
-T_566: (in v5_5 == 0x00000000 : bool)
+T_566: (in v6_5 == 0x00000000 : bool)
   Class: Eq_566
   DataType: bool
   OrigDataType: bool
@@ -2273,7 +2273,7 @@ T_567: (in fn0000126C : ptr32)
   Class: Eq_372
   DataType: (ptr (fn T_568 (T_546)))
   OrigDataType: (ptr (fn T_568 (T_546)))
-T_568: (in fn0000126C(v5_5) : void)
+T_568: (in fn0000126C(v6_5) : void)
   Class: Eq_568
   DataType: void
   OrigDataType: void
@@ -2297,15 +2297,15 @@ T_573: (in 0x00000000 : word32)
   Class: Eq_573
   DataType: word32
   OrigDataType: word32
-T_574: (in v7_8 + 0x00000000 : word32)
+T_574: (in v8_8 + 0x00000000 : word32)
   Class: Eq_574
   DataType: word32
   OrigDataType: word32
-T_575: (in Mem0[v7_8 + 0x00000000:word32] : word32)
+T_575: (in Mem0[v8_8 + 0x00000000:word32] : word32)
   Class: Eq_572
   DataType: word32
   OrigDataType: word32
-T_576: (in FreeMem(v7_8, Mem0[v7_8 + 0x00000000:word32]) : void)
+T_576: (in FreeMem(v8_8, Mem0[v8_8 + 0x00000000:word32]) : void)
   Class: Eq_576
   DataType: void
   OrigDataType: void
