@@ -76,11 +76,7 @@ l00401060:
 // LocalsOut: fp(32)
 
 l00401087:
-	word32 dwLoc08_30 = (real32) Mem0[0x004020E4:real32]
-	Mem32[fp - 0x0000000C:word32] = 0x004020DC
-	Mem34[fp - 0x00000010:word32] = 0x00000006
-	Mem36[fp - 0x00000014:word32] = 0x004020E0
-	test1(0x004020D8, 0x00000002, 0x004020D4, dwLoc08_30)
+	test1(0x004020E0, 0x00000006, 0x004020DC, (real32) Mem0[0x004020E4:real32])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000004 ebp:fp - 0x00000004 -20(fp):0x004020D8 -16(fp):0x00000002 -12(fp):0x004020D4 -8(fp):(real32) rLoc1 -4(fp):ebp

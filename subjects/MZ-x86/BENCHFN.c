@@ -212,120 +212,120 @@ void fn0800_16D4(word16 bx, Eq_64 di, Eq_63 * ds, word16 wArg02)
 
 void fn0800_16F3(word16 bx, Eq_64 di, Eq_63 * ds, word16 wArg06, word16 wArg08)
 {
-	Eq_342 bp_153 = fp - 0x02;
-	byte Eq_63::*si_156 = wArg08;
+	Eq_342 bp_154 = fp - 0x02;
+	byte Eq_63::*si_157 = wArg08;
 l0800_1726:
-	byte al_57 = ds->*si_156;
-	byte Eq_63::*si_58 = si_156 + 0x01;
+	byte al_57 = ds->*si_157;
+	byte Eq_63::*si_58 = si_157 + 0x01;
 	if (al_57 == 0x00)
 		return;
 	if (al_57 != 0x25)
 	{
-		word16 sp_152;
-		byte SCZO_155;
-		Eq_361 di_157;
-		Eq_362 * es_158;
-		byte D_159;
-		byte al_160;
-		byte SZO_162;
-		byte C_163;
-		byte Z_164;
-		Eq_361 ax_165;
-		word16 cx_167;
-		byte SO_168;
-		byte S_169;
-		byte bl_171;
-		byte bh_172;
-		byte CZ_173;
-		(cs->*(ss->*bp_153))();
-		Eq_361 ax_176 = ax_165;
-		if (ax_165 >= 0x00)
+		word16 sp_153;
+		byte SCZO_156;
+		Eq_361 di_158;
+		Eq_362 * es_159;
+		byte D_160;
+		byte al_161;
+		byte SZO_163;
+		byte C_164;
+		byte Z_165;
+		Eq_361 ax_166;
+		word16 cx_168;
+		byte SO_169;
+		byte S_170;
+		byte bl_172;
+		byte bh_173;
+		byte CZ_174;
+		(cs->*(ss->*bp_154))();
+		Eq_361 ax_177 = ax_166;
+		if (ax_166 >= 0x00)
 		{
-			if (di_157 < 0x00 || ds->*di_157 != 0x01)
+			if (di_158 < 0x00 || ds->*di_158 != 0x01)
 			{
-				if (ax_165 == di_157)
+				if (ax_166 == di_158)
 					goto l0800_1726;
-				word16 sp_215;
-				word16 bp_216;
-				Eq_488 * ss_217;
-				byte SCZO_218;
-				word16 si_219;
-				word16 di_220;
-				Eq_492 * es_221;
-				byte D_222;
-				byte al_223;
-				Eq_495 * ds_224;
-				byte SZO_225;
-				byte C_226;
-				byte Z_227;
-				word16 ax_228;
-				Eq_500 * cs_229;
-				word16 cx_230;
-				byte SO_231;
-				byte S_232;
-				word16 bx_233;
-				byte bl_234;
-				byte bh_235;
-				byte CZ_236;
-				(cs->*(ss->*bp_153))();
+				word16 sp_216;
+				word16 bp_217;
+				Eq_482 * ss_218;
+				byte SCZO_219;
+				word16 si_220;
+				word16 di_221;
+				Eq_486 * es_222;
+				byte D_223;
+				byte al_224;
+				Eq_489 * ds_225;
+				byte SZO_226;
+				byte C_227;
+				byte Z_228;
+				word16 ax_229;
+				Eq_494 * cs_230;
+				word16 cx_231;
+				byte SO_232;
+				byte S_233;
+				word16 bx_234;
+				byte bl_235;
+				byte bh_236;
+				byte CZ_237;
+				(cs->*(ss->*bp_154))();
 				return;
 			}
 			do
 			{
-				ci8 bl_268 = (byte) ax_176;
-				Eq_394 Eq_63::*bx_271 = DPB(ax_176, bl_268, 0);
-				if (bl_268 < 0x00 || (ds->*bx_271).b055A != 0x01)
+				ci8 bl_269 = (byte) ax_177;
+				Eq_394 Eq_63::*bx_272 = DPB(ax_177, bl_269, 0);
+				if (bl_269 < 0x00 || (ds->*bx_272).b055A != 0x01)
 				{
-					word16 sp_279;
-					byte SCZO_282;
-					word16 di_284;
-					Eq_401 * es_285;
-					byte D_286;
-					byte al_287;
-					byte SZO_289;
-					byte C_290;
-					byte Z_291;
-					word16 ax_292;
-					word16 cx_294;
-					byte SO_295;
-					byte S_296;
-					byte bl_298;
-					byte bh_299;
-					byte CZ_300;
-					(cs->*(ss->*bp_153))();
+					word16 sp_280;
+					byte SCZO_283;
+					word16 di_285;
+					Eq_401 * es_286;
+					byte D_287;
+					byte al_288;
+					byte SZO_290;
+					byte C_291;
+					byte Z_292;
+					word16 ax_293;
+					word16 cx_295;
+					byte SO_296;
+					byte S_297;
+					byte bl_299;
+					byte bh_300;
+					byte CZ_301;
+					(cs->*(ss->*bp_154))();
 					goto l0800_1726;
 				}
-				word16 sp_315;
-				byte SCZO_318;
-				word16 si_319;
-				word16 di_320;
-				Eq_427 * es_321;
-				byte D_322;
-				byte al_323;
-				byte SZO_325;
-				byte C_326;
-				byte Z_327;
-				Eq_361 ax_328;
-				word16 cx_330;
-				byte SO_331;
-				byte S_332;
-				word16 bx_333;
-				byte bl_334;
-				byte bh_335;
-				byte CZ_336;
-				(cs->*(ss->*bp_153))();
-				ax_176 = ax_328;
-			} while (ax_328 > 0x00);
+				word16 sp_316;
+				byte SCZO_319;
+				word16 si_320;
+				word16 di_321;
+				Eq_427 * es_322;
+				byte D_323;
+				byte al_324;
+				byte SZO_326;
+				byte C_327;
+				byte Z_328;
+				Eq_361 ax_329;
+				word16 cx_331;
+				byte SO_332;
+				byte S_333;
+				word16 bx_334;
+				byte bl_335;
+				byte bh_336;
+				byte CZ_337;
+				(cs->*(ss->*bp_154))();
+				ax_177 = ax_329;
+			} while (ax_329 > 0x00);
 		}
 	}
 	else
 	{
-		int16 ax_347 = (int16) (ds->*si_58);
-		if (ax_347 < 0x00)
+		int16 ax_348 = (int16) (ds->*si_58);
+		if (ax_348 < 0x00)
 			goto l0800_17E6;
 		if (DPB(bx, 0x00, 8) <= 0x15)
 		{
-			switch (ax_347)
+			switch (ax_348)
 			{
 			case 0x00:
 				break;
@@ -333,30 +333,29 @@ l0800_1726:
 			return;
 		}
 	}
-	word16 sp_110;
-	word16 Eq_449::*bp_111;
-	Eq_449 * ss_112;
-	byte SCZO_113;
-	word16 si_114;
-	word16 di_115;
-	Eq_453 * es_116;
-	byte D_117;
-	byte al_118;
-	Eq_456 * ds_119;
-	byte SZO_120;
-	byte C_121;
-	byte Z_122;
-	word16 ax_123;
-	Eq_461 * cs_124;
-	word16 cx_125;
-	byte SO_126;
-	byte S_127;
-	word16 bx_128;
-	byte bl_129;
-	byte bh_130;
-	byte CZ_131;
-	(cs->*(ss->*bp_153))();
-	ss_112->*(bp_111 - &Eq_449::w0028) = 0x00;
+	word16 sp_111;
+	word16 bp_112;
+	Eq_449 * ss_113;
+	byte SCZO_114;
+	word16 si_115;
+	word16 di_116;
+	Eq_453 * es_117;
+	byte D_118;
+	byte al_119;
+	Eq_456 * ds_120;
+	byte SZO_121;
+	byte C_122;
+	byte Z_123;
+	word16 ax_124;
+	Eq_461 * cs_125;
+	word16 cx_126;
+	byte SO_127;
+	byte S_128;
+	word16 bx_129;
+	byte bl_130;
+	byte bh_131;
+	byte CZ_132;
+	(cs->*(ss->*bp_154))();
 	return;
 }
 

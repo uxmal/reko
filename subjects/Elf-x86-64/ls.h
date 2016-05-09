@@ -26,8 +26,8 @@ Eq_31: (fn void ())
 Eq_32: (fn void ())
 	T_32 (in fini : (ptr (fn void ())))
 	T_39 (in 0x0000000000411ED0 : word64)
-Eq_43: (fn void ())
-	T_43 (in __hlt : ptr64)
+Eq_42: (fn void ())
+	T_42 (in __hlt : ptr64)
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
@@ -111,8 +111,8 @@ T_20: (in __align : ptr64)
   OrigDataType: (ptr (fn T_24 (T_23)))
 T_21: (in fp : ptr64)
   Class: Eq_21
-  DataType: ptr64
-  OrigDataType: ptr64
+  DataType: (ptr void)
+  OrigDataType: (ptr void)
 T_22: (in 0x0000000000000008 : word64)
   Class: Eq_22
   DataType: int64
@@ -125,14 +125,14 @@ T_24: (in __align(fp + 0x0000000000000008) : void)
   Class: Eq_24
   DataType: void
   OrigDataType: void
-T_25: (in rax_20 : word64)
+T_25: (in rax_19 : word64)
   Class: Eq_25
   DataType: word64
   OrigDataType: word64
 T_26: (in __libc_start_main : ptr64)
   Class: Eq_26
   DataType: (ptr Eq_26)
-  OrigDataType: (ptr (fn T_41 (T_35, T_36, T_37, T_38, T_39, T_17, T_40)))
+  OrigDataType: (ptr (fn T_40 (T_35, T_36, T_37, T_38, T_39, T_17, T_21)))
 T_27: (in signature of __libc_start_main : void)
   Class: Eq_26
   DataType: (ptr Eq_26)
@@ -162,7 +162,7 @@ T_33: (in rtld_fini : (ptr (fn void ())))
   DataType: (ptr Eq_17)
   OrigDataType: 
 T_34: (in stack_end : (ptr void))
-  Class: Eq_34
+  Class: Eq_21
   DataType: (ptr void)
   OrigDataType: 
 T_35: (in 0x00000000004028C0 : word64)
@@ -185,24 +185,20 @@ T_39: (in 0x0000000000411ED0 : word64)
   Class: Eq_32
   DataType: (ptr Eq_32)
   OrigDataType: (ptr (fn void ()))
-T_40: (in DPB(qwArg00, fp, 0) : word64)
-  Class: Eq_34
-  DataType: (ptr void)
-  OrigDataType: (ptr void)
-T_41: (in __libc_start_main(&globals->t4028C0, qwArg00, fp + 0x0000000000000008, &globals->t411E60, &globals->t411ED0, rdx, DPB(qwArg00, fp, 0)) : int32)
-  Class: Eq_41
+T_40: (in __libc_start_main(&globals->t4028C0, qwArg00, fp + 0x0000000000000008, 0x0000000000411E60, 0x0000000000411ED0, rdx, fp) : int32)
+  Class: Eq_40
   DataType: int32
   OrigDataType: int32
-T_42: (in DPB(rax, __libc_start_main(&globals->t4028C0, qwArg00, fp + 0x0000000000000008, &globals->t411E60, &globals->t411ED0, rdx, DPB(qwArg00, fp, 0)), 0) : word64)
+T_41: (in DPB(rax, __libc_start_main(&globals->t4028C0, qwArg00, fp + 0x0000000000000008, 0x0000000000411E60, 0x0000000000411ED0, rdx, fp), 0) : word64)
   Class: Eq_25
   DataType: word64
   OrigDataType: word64
-T_43: (in __hlt : ptr64)
+T_42: (in __hlt : ptr64)
+  Class: Eq_42
+  DataType: (ptr Eq_42)
+  OrigDataType: (ptr (fn T_43 ()))
+T_43: (in __hlt() : void)
   Class: Eq_43
-  DataType: (ptr Eq_43)
-  OrigDataType: (ptr (fn T_44 ()))
-T_44: (in __hlt() : void)
-  Class: Eq_44
   DataType: void
   OrigDataType: void
 */
@@ -229,5 +225,5 @@ typedef void (Eq_31)();
 
 typedef void (Eq_32)();
 
-typedef void (Eq_43)();
+typedef void (Eq_42)();
 

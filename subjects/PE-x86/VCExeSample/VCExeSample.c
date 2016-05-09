@@ -20,13 +20,7 @@ void test2(word32 dwArg04)
 {
 	test1("1", 0x02, "3", (real32) globals->r4020E8);
 	if (dwArg04 == 0x00)
-	{
-		real32 dwLoc08_30 = (real32) globals->r4020E4;
-		dwLoc0C = 0x004020DC;
-		dwLoc10 = 0x06;
-		*(fp - 0x14) = 0x004020E0;
-		test1(dwLoc14, dwLoc0C, dwLoc10, dwLoc08_30);
-	}
+		test1("5", 0x06, "7", (real32) globals->r4020E4);
 	return;
 }
 
