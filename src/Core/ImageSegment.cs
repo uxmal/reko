@@ -115,6 +115,8 @@ namespace Reko.Core
 
         public Address EndAddress { get { return Address + ContentSize; } }
 
+        public bool IsExecutable { get { return (this.Access & AccessMode.Execute) != 0; } }
+
         /// <summary>
         /// Creates an image reader that scans all available memory in the segment.
         /// </summary>
