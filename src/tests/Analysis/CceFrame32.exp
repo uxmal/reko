@@ -43,8 +43,8 @@ wLoc08_9: orig: wLoc08
     uses: wLoc08_38 = PHI(wLoc08_9, wLoc08_57)
 dwArg04:Stack +0004
     def:  def dwArg04
-    uses: edx_42 = (int32) Mem0[dwArg04 + eax_39:byte]
-          branch dwArg04 != 0x00000000 l1000002F
+    uses: branch dwArg04 != 0x00000000 l1000002F
+          edx_42 = (int32) Mem0[dwArg04 + eax_39:byte]
 SCZO_11: orig: SCZO
 Z_12: orig: Z
 SO:Flags

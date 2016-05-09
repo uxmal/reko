@@ -23602,6 +23602,7 @@ void fn0800_8BD8()
 fn0800_8BD8_entry:
 	// succ:  l0800_8BD8
 l0800_8BD8:
+	sp = v3
 	sp = sp - 0x0002
 	Mem0[ss:sp:word16] = bp
 	sp = sp - 0x0002
@@ -23689,15 +23690,15 @@ l0800_8C19:
 l0800_8C23:
 	ax = ax << 0x0001
 	SCZO = cond(ax)
-	v16 = (dx & 0x0001 << 0x10 - 0x01) != 0x0000
+	v17 = (dx & 0x0001 << 0x10 - 0x01) != 0x0000
 	dx = __rcl(dx, 0x01, C)
-	C = v16
-	v17 = (si & 0x0001 << 0x10 - 0x01) != 0x0000
-	si = __rcl(si, 0x01, C)
 	C = v17
-	v18 = (di & 0x0001 << 0x10 - 0x01) != 0x0000
-	di = __rcl(di, 0x01, C)
+	v18 = (si & 0x0001 << 0x10 - 0x01) != 0x0000
+	si = __rcl(si, 0x01, C)
 	C = v18
+	v19 = (di & 0x0001 << 0x10 - 0x01) != 0x0000
+	di = __rcl(di, 0x01, C)
+	C = v19
 	SCZO = cond(di - bp)
 	branch Test(ULT,C) l0800_8C3A
 	// succ:  l0800_8C2F l0800_8C3A
@@ -23766,9 +23767,9 @@ l0800_8C5C:
 	branch Test(EQ,Z) l0800_8C65
 	// succ:  l0800_8C64 l0800_8C65
 l0800_8C64:
-	v21 = ax
+	v22 = ax
 	ax = dx
-	dx = v21
+	dx = v22
 	// succ:  l0800_8C65
 l0800_8C65:
 	dx = dx ^ dx
@@ -25696,6 +25697,7 @@ void fn0800_9F9F()
 fn0800_9F9F_entry:
 	// succ:  l0800_9F9F
 l0800_9F9F:
+	sp = v3
 	ax = ax + 0x0013
 	SCZO = cond(ax)
 	dx = dx + 0x00 + C

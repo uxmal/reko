@@ -4,11 +4,13 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (4020C0 (str char) str4020C0) (4020C8 (str char) str4020C8))
+Eq_1: (struct "Globals" (4020C0 (str char) str4020C0) (4020C8 (str char) str4020C8) (4020D4 (str char) str4020D4) (4020D8 (str char) str4020D8) (4020DC (str char) str4020DC) (4020E0 (str char) str4020E0) (4020E4 real32 r4020E4) (4020E8 real32 r4020E8))
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_5: (fn void ((ptr char), int32, (ptr char), real32))
 	T_5 (in test1 : ptr32)
 	T_6 (in signature of test1 : void)
+	T_26 (in test1 : ptr32)
+	T_37 (in test1 : ptr32)
 Eq_20: (fn int32 ((ptr char)))
 	T_20 (in printf : ptr32)
 	T_21 (in signature of printf : void)
@@ -109,10 +111,96 @@ T_24: (in printf("%s %d %s %f") : int32)
   Class: Eq_24
   DataType: int32
   OrigDataType: int32
+T_25: (in dwArg04 : word32)
+  Class: Eq_25
+  DataType: word32
+  OrigDataType: word32
+T_26: (in test1 : ptr32)
+  Class: Eq_5
+  DataType: (ptr Eq_5)
+  OrigDataType: (ptr (fn T_33 (T_27, T_28, T_29, T_32)))
+T_27: (in 0x004020D8 : word32)
+  Class: Eq_7
+  DataType: (ptr char)
+  OrigDataType: (ptr char)
+T_28: (in 0x00000002 : word32)
+  Class: Eq_8
+  DataType: int32
+  OrigDataType: int32
+T_29: (in 0x004020D4 : word32)
+  Class: Eq_9
+  DataType: (ptr char)
+  OrigDataType: (ptr char)
+T_30: (in 0x004020E8 : ptr32)
+  Class: Eq_30
+  DataType: (ptr real32)
+  OrigDataType: (ptr (struct (0 T_31 t0000)))
+T_31: (in Mem0[0x004020E8:real32] : real32)
+  Class: Eq_31
+  DataType: real32
+  OrigDataType: real32
+T_32: (in (real32) globals->r4020E8 : real32)
+  Class: Eq_10
+  DataType: real32
+  OrigDataType: real32
+T_33: (in test1("1", 0x00000002, "3", (real32) globals->r4020E8) : void)
+  Class: Eq_18
+  DataType: void
+  OrigDataType: void
+T_34: (in dwArg04 : word32)
+  Class: Eq_34
+  DataType: word32
+  OrigDataType: word32
+T_35: (in 0x00000000 : word32)
+  Class: Eq_34
+  DataType: word32
+  OrigDataType: word32
+T_36: (in dwArg04 != 0x00000000 : bool)
+  Class: Eq_36
+  DataType: bool
+  OrigDataType: bool
+T_37: (in test1 : ptr32)
+  Class: Eq_5
+  DataType: (ptr Eq_5)
+  OrigDataType: (ptr (fn T_44 (T_38, T_39, T_40, T_43)))
+T_38: (in 0x004020E0 : word32)
+  Class: Eq_7
+  DataType: (ptr char)
+  OrigDataType: (ptr char)
+T_39: (in 0x00000006 : word32)
+  Class: Eq_8
+  DataType: int32
+  OrigDataType: int32
+T_40: (in 0x004020DC : word32)
+  Class: Eq_9
+  DataType: (ptr char)
+  OrigDataType: (ptr char)
+T_41: (in 0x004020E4 : ptr32)
+  Class: Eq_41
+  DataType: (ptr real32)
+  OrigDataType: (ptr (struct (0 T_42 t0000)))
+T_42: (in Mem0[0x004020E4:real32] : real32)
+  Class: Eq_42
+  DataType: real32
+  OrigDataType: real32
+T_43: (in (real32) globals->r4020E4 : real32)
+  Class: Eq_10
+  DataType: real32
+  OrigDataType: real32
+T_44: (in test1("5", 0x00000006, "7", (real32) globals->r4020E4) : void)
+  Class: Eq_18
+  DataType: void
+  OrigDataType: void
 */
 typedef struct Globals {
 	char str4020C0[];	// 4020C0
 	char str4020C8[];	// 4020C8
+	char str4020D4[];	// 4020D4
+	char str4020D8[];	// 4020D8
+	char str4020DC[];	// 4020DC
+	char str4020E0[];	// 4020E0
+	real32 r4020E4;	// 4020E4
+	real32 r4020E8;	// 4020E8
 } Eq_1;
 
 typedef void (Eq_5)(char *, int32, char *, real32);

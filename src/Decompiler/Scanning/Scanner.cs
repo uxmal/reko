@@ -374,7 +374,9 @@ namespace Reko.Scanning
                         // promote the block to a new procedure.
                         procDest = EnsureProcedure(addrDest, null);
                         var blockNew = CreateCallRetThunk(addrSrc, proc, procDest);
+                        EstablishInitialState(addrDest, program.Architecture.CreateProcessorState(), procDest);
                         procDest.ControlGraph.AddEdge(procDest.EntryBlock, block);
+                        AddFramePointerAssignment(addrDest, procDest);
                         var wi = CreatePromoteWorkItem(addrDest, block, procDest);
                         queue.Enqueue(PriorityBlockPromote, wi);
                         return blockNew;
@@ -529,6 +531,9 @@ namespace Reko.Scanning
             visitedProcs.Add(proc);
             Debug.WriteLineIf(trace.TraceInfo, string.Format("Scanning procedure at {0}", addr));
 
+            var st = state.Clone();
+            EstablishInitialState(addr, st, proc);
+
             //$REFACTOR: make the stack explicit?
             var oldQueue = queue;
             queue = new PriorityQueue<WorkItem>();
@@ -539,8 +544,7 @@ namespace Reko.Scanning
             ProcessQueue();
             queue = oldQueue;
 
-            // Add <stackpointer> := fp explicitly to the starting block.
-            EstablishFrame(addr, proc);
+            AddFramePointerAssignment(addr, proc);
             var usb = new UserSignatureBuilder(program);
             usb.BuildSignature(addr, proc);
             return proc;
@@ -570,7 +574,7 @@ namespace Reko.Scanning
         /// <param name="addr"></param>
         /// <param name="proc"></param>
         /// <param name="sp"></param>
-        public void EstablishFrame(Address addr, Procedure proc)
+        public void AddFramePointerAssignment(Address addr, Procedure proc)
         {
             var stmts = proc.EntryBlock.Succ[0].Statements;
             var sp = proc.Frame.EnsureRegister(program.Architecture.StackRegister);

@@ -16,3 +16,11 @@ void test1(char * arg1, int32 arg2, char * arg3, real32 arg4)
 	return;
 }
 
+void test2(word32 dwArg04)
+{
+	test1("1", 0x02, "3", (real32) globals->r4020E8);
+	if (dwArg04 == 0x00)
+		test1("5", 0x06, "7", (real32) globals->r4020E4);
+	return;
+}
+

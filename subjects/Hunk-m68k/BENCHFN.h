@@ -2197,7 +2197,7 @@ T_548: (in Mem0[a4_0 + -32758:word32] : word32)
   Class: Eq_545
   DataType: word32
   OrigDataType: word32
-T_549: (in v7_8 : word32)
+T_549: (in v8_8 : word32)
   Class: Eq_34
   DataType: (ptr (struct (0 T_587 t0000) (4 T_566 t0004)))
   OrigDataType: (ptr (struct (0 T_587 t0000) (4 T_566 t0004)))
@@ -2221,7 +2221,7 @@ T_554: (in Mem0[a7_3 - 0x00000004 + 0x00000000:word32] : word32)
   Class: Eq_34
   DataType: word32
   OrigDataType: word32
-T_555: (in v5_5 : word32)
+T_555: (in v6_5 : word32)
   Class: Eq_34
   DataType: word32
   OrigDataType: word32
@@ -2261,11 +2261,11 @@ T_564: (in 4 : int32)
   Class: Eq_564
   DataType: int32
   OrigDataType: int32
-T_565: (in v7_8 + 4 : word32)
+T_565: (in v8_8 + 4 : word32)
   Class: Eq_565
   DataType: word32
   OrigDataType: word32
-T_566: (in Mem0[v7_8 + 4:word32] : word32)
+T_566: (in Mem0[v8_8 + 4:word32] : word32)
   Class: Eq_542
   DataType: word32
   OrigDataType: word32
@@ -2313,7 +2313,7 @@ T_577: (in 0x00000000 : word32)
   Class: Eq_34
   DataType: word32
   OrigDataType: word32
-T_578: (in v5_5 == 0x00000000 : bool)
+T_578: (in v6_5 == 0x00000000 : bool)
   Class: Eq_578
   DataType: bool
   OrigDataType: bool
@@ -2321,7 +2321,7 @@ T_579: (in fn0000126C : ptr32)
   Class: Eq_369
   DataType: (ptr (fn T_580 (T_555)))
   OrigDataType: (ptr (fn T_580 (T_555)))
-T_580: (in fn0000126C(v5_5) : void)
+T_580: (in fn0000126C(v6_5) : void)
   Class: Eq_580
   DataType: void
   OrigDataType: void
@@ -2345,15 +2345,15 @@ T_585: (in 0x00000000 : word32)
   Class: Eq_585
   DataType: word32
   OrigDataType: word32
-T_586: (in v7_8 + 0x00000000 : word32)
+T_586: (in v8_8 + 0x00000000 : word32)
   Class: Eq_586
   DataType: word32
   OrigDataType: word32
-T_587: (in Mem0[v7_8 + 0x00000000:word32] : word32)
+T_587: (in Mem0[v8_8 + 0x00000000:word32] : word32)
   Class: Eq_584
   DataType: word32
   OrigDataType: word32
-T_588: (in FreeMem(v7_8, Mem0[v7_8 + 0x00000000:word32]) : void)
+T_588: (in FreeMem(v8_8, Mem0[v8_8 + 0x00000000:word32]) : void)
   Class: Eq_588
   DataType: void
   OrigDataType: void

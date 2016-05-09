@@ -130,9 +130,9 @@ void fn0800_01E6()
 	return;
 }
 
-void fn0800_025E()
+void main()
 {
-fn0800_025E_entry:
+main_entry:
 l0800_025E:
 	sp = fp
 	sp = fp - 0x02
@@ -362,7 +362,7 @@ l0800_0338:
 	bp = Mem0[ss:sp + 0x00:word16]
 	sp = sp + 0x02
 	return
-fn0800_025E_exit:
+main_exit:
 }
 
 void fn0800_0402()
@@ -1435,11 +1435,11 @@ l0800_0B9E:
 		}
 		while (true)
 		{
-			ax = wArg04;
-			dx = wArg02;
-			dx = dx - wArg06;
+			ax = Mem0[ss:bp + 0x06:word16];
+			dx = Mem0[ss:bp + 0x04:word16];
+			dx = dx - Mem0[ss:bp + 0x08:word16];
 			SCZO = cond(dx);
-			ax = ax - wArg08 - C;
+			ax = ax - Mem0[ss:bp + 0x0A:word16] - C;
 			SCZO = cond(ax - 0x06);
 			if (Test(ULE,CZ))
 				break;
@@ -1452,13 +1452,13 @@ l0800_0B9E:
 			sp = sp - 0x02;
 			Mem0[ss:sp + 0x00:word16] = 0x0A;
 			sp = sp - 0x02;
-			Mem0[ss:sp + 0x00:word16] = wArg04;
+			Mem0[ss:sp + 0x00:word16] = Mem0[ss:bp + 0x06:word16];
 			sp = sp - 0x02;
-			Mem0[ss:sp + 0x00:word16] = wArg02;
+			Mem0[ss:sp + 0x00:word16] = Mem0[ss:bp + 0x04:word16];
 			fn0800_8BC2();
 			sp = sp + 0x08;
-			wArg04 = dx;
-			wArg02 = ax;
+			Mem0[ss:bp + 0x06:word16] = dx;
+			Mem0[ss:bp + 0x04:word16] = ax;
 			ax = 0x00;
 			SZO = cond(0x00);
 			C = false;
@@ -1468,25 +1468,25 @@ l0800_0B9E:
 			sp = sp - 0x02;
 			Mem0[ss:sp + 0x00:word16] = 0x0A;
 			sp = sp - 0x02;
-			Mem0[ss:sp + 0x00:word16] = wArg08;
+			Mem0[ss:sp + 0x00:word16] = Mem0[ss:bp + 0x0A:word16];
 			sp = sp - 0x02;
-			Mem0[ss:sp + 0x00:word16] = wArg06;
+			Mem0[ss:sp + 0x00:word16] = Mem0[ss:bp + 0x08:word16];
 			fn0800_8BC2();
 			sp = sp + 0x08;
-			wArg08 = dx;
-			wArg06 = ax;
+			Mem0[ss:bp + 0x0A:word16] = dx;
+			Mem0[ss:bp + 0x08:word16] = ax;
 		}
 		if (Test(EQ,Z))
 			SCZO = cond(dx - 0x8DB8);
 		sp = sp - 0x02;
-		Mem0[ss:sp + 0x00:word16] = wArg04;
+		Mem0[ss:sp + 0x00:word16] = Mem0[ss:bp + 0x06:word16];
 		sp = sp - 0x02;
-		Mem0[ss:sp + 0x00:word16] = wArg02;
-		cx = wArg04;
-		bx = wArg02;
-		bx = bx - wArg06;
+		Mem0[ss:sp + 0x00:word16] = Mem0[ss:bp + 0x04:word16];
+		cx = Mem0[ss:bp + 0x06:word16];
+		bx = Mem0[ss:bp + 0x04:word16];
+		bx = bx - Mem0[ss:bp + 0x08:word16];
 		SCZO = cond(bx);
-		cx = cx - wArg08 - C;
+		cx = cx - Mem0[ss:bp + 0x0A:word16] - C;
 		dx = 0x00;
 		SZO = cond(0x00);
 		C = false;
@@ -12439,30 +12439,30 @@ void fn0800_4550()
 	wLoc0C = 0x01;
 	while (true)
 	{
-		SCZO = cond(wLoc0C - 0x10);
+		SCZO = cond(Mem0[ss:bp - 0x0A + 0x00:word16] - 0x10);
 		if (Test(UGT,CZ))
 			break;
 		di = 0x00;
-		si = wArg02;
-		SCZO = cond(0x00 - wArg06);
+		si = Mem0[ss:bp + 0x04:word16];
+		SCZO = cond(0x00 - Mem0[ss:bp + 0x08:word16]);
 		if (Test(ULT,C))
 			do
 			{
-				es = psegArg04;
+				es = Mem0[ss:bp + 0x06:selector];
 				ax = Mem0[es:si + 0x0A:word16];
-				SCZO = cond(ax - wLoc0C);
+				SCZO = cond(ax - Mem0[ss:(bp - 0x0A) + 0x00:word16]);
 				if (Test(EQ,Z))
 				{
 					sp = sp - 0x02;
-					Mem0[ss:sp + 0x00:word16] = wLoc0C;
+					Mem0[ss:sp + 0x00:word16] = Mem0[ss:bp - 0x0A + 0x00:word16];
 					sp = sp - 0x02;
-					Mem0[ss:sp + 0x00:word16] = wLoc08;
+					Mem0[ss:sp + 0x00:word16] = Mem0[ss:bp - 0x06 + 0x00:word16];
 					sp = sp - 0x02;
-					Mem0[ss:sp + 0x00:word16] = wLoc0A;
+					Mem0[ss:sp + 0x00:word16] = Mem0[ss:bp - 0x08 + 0x00:word16];
 					sp = sp - 0x02;
-					Mem0[ss:sp + 0x00:word16] = wLoc04;
+					Mem0[ss:sp + 0x00:word16] = Mem0[ss:bp - 0x02 + 0x00:word16];
 					sp = sp - 0x02;
-					Mem0[ss:sp + 0x00:word16] = wLoc06;
+					Mem0[ss:sp + 0x00:word16] = Mem0[ss:bp - 0x04 + 0x00:word16];
 					fn0800_8BC2();
 					sp = sp + 0x08;
 					sp = sp - 0x02;
@@ -12471,50 +12471,50 @@ void fn0800_4550()
 					Mem0[ss:sp + 0x00:word16] = ax;
 					fn0800_45E2();
 					sp = sp + 0x06;
-					es = psegArg04;
+					es = Mem0[ss:bp + 0x06:selector];
 					Mem0[es:si + 0x08:word16] = dx;
 					Mem0[es:si + 0x06:word16] = ax;
-					ax = wLoc08;
-					dx = wLoc0A;
-					v15 = wLoc06 + dx;
-					wLoc06 = v15;
+					ax = Mem0[ss:bp - 0x06 + 0x00:word16];
+					dx = Mem0[ss:bp - 0x08 + 0x00:word16];
+					v15 = Mem0[ss:bp - 0x04 + 0x00:word16] + dx;
+					Mem0[ss:bp - 0x04 + 0x00:word16] = v15;
 					SCZO = cond(v15);
-					v16 = wLoc04 + ax + C;
-					wLoc04 = v16;
+					v16 = Mem0[ss:bp - 0x02 + 0x00:word16] + ax + C;
+					Mem0[ss:bp - 0x02 + 0x00:word16] = v16;
 					SCZO = cond(v16);
 				}
 				si = si + 0x0C;
 				di = di + 0x01;
-				SCZO = cond(di - wArg06);
+				SCZO = cond(di - Mem0[ss:bp + 0x08:word16]);
 			} while (Test(ULT,C));
-		v17 = wLoc0C + 0x01;
-		wLoc0C = v17;
-		ax = wLoc08;
-		dx = wLoc0A;
+		v17 = Mem0[ss:bp - 0x0A + 0x00:word16] + 0x01;
+		Mem0[ss:bp - 0x0A + 0x00:word16] = v17;
+		ax = Mem0[ss:bp - 0x06 + 0x00:word16];
+		dx = Mem0[ss:bp - 0x08 + 0x00:word16];
 		ax = ax >>u 0x01;
 		SCZO = cond(ax);
 		v18 = (dx & 0x02) != 0x00;
 		dx = __rcr(dx, 0x01, C);
-		wLoc08 = ax;
-		wLoc0A = dx;
-		v19 = wLoc0C + 0x01;
-		wLoc0C = v19;
-		ax = wLoc08;
-		dx = wLoc0A;
+		Mem0[ss:bp - 0x06 + 0x00:word16] = ax;
+		Mem0[ss:bp - 0x08 + 0x00:word16] = dx;
+		v19 = Mem0[ss:bp - 0x0A + 0x00:word16] + 0x01;
+		Mem0[ss:bp - 0x0A + 0x00:word16] = v19;
+		ax = Mem0[ss:bp - 0x06 + 0x00:word16];
+		dx = Mem0[ss:bp - 0x08 + 0x00:word16];
 		ax = ax >>u 0x01;
 		SCZO = cond(ax);
 		v20 = (dx & 0x02) != 0x00;
 		dx = __rcr(dx, 0x01, C);
 		C = v20;
-		wLoc08 = ax;
-		wLoc0A = dx;
+		Mem0[ss:bp - 0x06 + 0x00:word16] = ax;
+		Mem0[ss:bp - 0x08 + 0x00:word16] = dx;
 	}
 	di = Mem0[ss:sp + 0x00:word16];
 	sp = sp + 0x02;
 	si = Mem0[ss:sp + 0x00:word16];
-	sp = fp - 0x02;
-	bp = wLoc02;
-	sp = fp;
+	sp = bp;
+	bp = Mem0[ss:sp + 0x00:word16];
+	sp = sp + 0x02;
 	return;
 }
 
@@ -19873,18 +19873,19 @@ void fn0800_8BCA()
 
 void fn0800_8BD8()
 {
-	sp = fp - 0x02;
-	wLoc02 = bp;
-	sp = fp - 0x04;
-	wLoc04 = si;
-	sp = fp - 0x06;
-	wLoc06 = di;
-	bp = fp - 0x06;
+	sp = v3;
+	sp = sp - 0x02;
+	Mem0[ss:sp + 0x00:word16] = bp;
+	sp = sp - 0x02;
+	Mem0[ss:sp + 0x00:word16] = si;
+	sp = sp - 0x02;
+	Mem0[ss:sp + 0x00:word16] = di;
+	bp = sp;
 	di = cx;
-	ax = wArg04;
-	dx = wArg06;
-	bx = wArg08;
-	cx = wArg0A;
+	ax = Mem0[ss:bp + 0x0A:word16];
+	dx = Mem0[ss:bp + 0x0C:word16];
+	bx = Mem0[ss:bp + 0x0E:word16];
+	cx = Mem0[ss:bp + 0x10:word16];
 	cx = cx | cx;
 	SZO = cond(cx);
 	C = false;
@@ -19924,8 +19925,8 @@ l0800_8BF7:
 		}
 		bp = cx;
 		cx = 0x20;
-		sp = fp - 0x08;
-		wLoc08 = di;
+		sp = sp - 0x02;
+		Mem0[ss:sp + 0x00:word16] = di;
 		di = 0x00;
 		si = 0x00;
 		SZO = cond(0x00);
@@ -19933,13 +19934,13 @@ l0800_8BF7:
 l0800_8C23:
 		ax = ax << 0x01;
 		SCZO = cond(ax);
-		v16 = (dx & 0x8000) != 0x00;
+		v17 = (dx & 0x8000) != 0x00;
 		dx = __rcl(dx, 0x01, C);
-		C = v16;
-		v17 = (si & 0x8000) != 0x00;
-		si = __rcl(si, 0x01, C);
 		C = v17;
-		v18 = (di & 0x8000) != 0x00;
+		v18 = (si & 0x8000) != 0x00;
+		si = __rcl(si, 0x01, C);
+		C = v18;
+		v19 = (di & 0x8000) != 0x00;
 		di = __rcl(di, 0x01, C);
 		SCZO = cond(di - bp);
 		if (Test(UGE,C))
@@ -19961,8 +19962,8 @@ l0800_8C3A:
 		cx = cx - 0x01;
 		if (cx != 0x00)
 			goto l0800_8C23;
-		bx = wLoc08;
-		sp = fp - 0x06;
+		bx = Mem0[ss:sp + 0x00:word16];
+		sp = sp + 0x02;
 		SZO = cond(bx & 0x02);
 		C = false;
 		if (Test(NE,Z))
@@ -19983,12 +19984,12 @@ l0800_8C3A:
 			SCZO = cond(dx);
 		}
 l0800_8C56:
-		di = wLoc06;
-		sp = fp - 0x04;
-		si = wLoc04;
-		sp = fp - 0x02;
-		bp = wLoc02;
-		sp = fp;
+		di = Mem0[ss:sp + 0x00:word16];
+		sp = sp + 0x02;
+		si = Mem0[ss:sp + 0x00:word16];
+		sp = sp + 0x02;
+		bp = Mem0[ss:sp + 0x00:word16];
+		sp = sp + 0x02;
 		return;
 	}
 	else
@@ -20010,9 +20011,9 @@ l0800_8C56:
 		C = false;
 		if (Test(NE,Z))
 		{
-			v21 = ax;
+			v22 = ax;
 			ax = dx;
-			dx = v21;
+			dx = v22;
 		}
 		dx = 0x00;
 		SZO = cond(0x00);
@@ -21499,6 +21500,7 @@ void fn0800_9F92()
 
 void fn0800_9F9F()
 {
+	sp = v3;
 	ax = ax + 0x13;
 	SCZO = cond(ax);
 	dx = dx + 0x00 + C;

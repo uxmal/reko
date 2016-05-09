@@ -9,9 +9,9 @@ bx_6: orig: bx
     uses: bx_22 = PHI(bx_6, bx_24)
 wArg04:Stack +0004
     def:  def wArg04
-    uses: ax_27 = -wArg04
+    uses: branch wArg04 <= 0x0000 l0C00_0015
+          ax_27 = -wArg04
           cx_21 = wArg04
-          branch wArg04 <= 0x0000 l0C00_0015
 ax_8: orig: ax
 ax_9: orig: ax
 SZO_10: orig: SZO

@@ -253,20 +253,20 @@ word32 fn0000127C(word32 d2, ptr32 d1Out, ptr32 a1Out, ptr32 a5Out)
 {
 	word32 a4_0 = 0x0000BE8A;
 	word32 a7_3 = Mem0[a4_0 + -0x00007FF6:word32];
-	word32 v7_8 = Mem0[a7_3 - 0x04 + 0x00:word32];
-	word32 v5_5 = Mem0[a7_3 - 0x08 + 0x00:word32];
+	word32 v8_8 = Mem0[a7_3 - 0x04 + 0x00:word32];
+	word32 v6_5 = Mem0[a7_3 - 0x08 + 0x00:word32];
 	word32 a5_10;
-	*a5Out = v7_8;
-	word32 d1_11 = Mem0[v7_8 + 0x04:word32];
+	*a5Out = v8_8;
+	word32 d1_11 = Mem0[v8_8 + 0x04:word32];
 	*d1Out = d1_11;
 	if (d1_11 != 0x00)
 		execPrivate1();
 	CloseLibrary(Mem0[a4_0 + -0x00007FEE:word32]);
-	if (v5_5 != 0x00)
-		fn0000126C(v5_5);
-	FreeMem(v7_8, Mem0[v7_8 + 0x00:word32]);
+	if (v6_5 != 0x00)
+		fn0000126C(v6_5);
+	FreeMem(v8_8, Mem0[v8_8 + 0x00:word32]);
 	word32 a1_19;
-	*a1Out = v7_8;
+	*a1Out = v8_8;
 	return d2;
 }
 
