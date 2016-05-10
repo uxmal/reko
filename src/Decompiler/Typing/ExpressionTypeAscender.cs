@@ -168,13 +168,15 @@ namespace Reko.Typing
         {
             var ptLeft = dtLeft as PrimitiveType;
             var ptRight = dtRight as PrimitiveType;
-            if (ptLeft.Domain == Domain.Pointer || dtLeft is Pointer)
+            if (ptLeft != null && ptLeft.Domain == Domain.Pointer || 
+                dtLeft is Pointer)
             {
                 if (ptRight != null && (ptRight.Domain & Domain.Integer) != 0)
                     return dtLeft;
                 throw new NotImplementedException(string.Format("Pulling difference {0} and {1}", dtLeft, dtRight));
             }
-            if (ptRight.Domain == Domain.Pointer || dtRight is Pointer)
+            if (ptRight != null && ptRight.Domain == Domain.Pointer || 
+                dtRight is Pointer)
             {
                 if (ptRight != null && (ptRight.Domain & Domain.Integer) != 0)
                     return dtLeft;
@@ -266,11 +268,16 @@ namespace Reko.Typing
         {
             var dtHead = seq.Head.Accept(this);
             var dtTail = seq.Tail.Accept(this);
+            DataType dtSeq;
             if (IsSelector(dtHead))
             {
-                return RecordDataType(PrimitiveType.Create(Domain.Pointer,  dtHead.Size + dtTail.Size), seq); 
+                dtSeq = PrimitiveType.Create(Domain.Pointer, dtHead.Size + dtTail.Size);
             }
-            throw new NotImplementedException();
+            else
+            {
+                dtSeq = seq.DataType;
+            }
+            return RecordDataType(dtSeq, seq);
         }
 
         private bool IsSelector(DataType dt)
