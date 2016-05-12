@@ -30,6 +30,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Reko.Core
 {
@@ -323,6 +324,8 @@ namespace Reko.Core
         /// <returns></returns>
         public ImageMapItem AddUserGlobalItem(Address address, DataType dataType)
         {
+            //$TODO: if user enters a segmented address, we need to 
+            // place the item in the respective globals struct.
             var size = GetDataSize(address, dataType);
             var item = new ImageMapItem
             {
@@ -342,6 +345,35 @@ namespace Reko.Core
             });
             return item;
         }
+
+        public void BuildSegmentIdentifiers()
+        {
+            foreach (var segment in SegmentMap.Segments.Values)
+            {
+                var idName = segment.Name;
+                if (!string.IsNullOrEmpty(idName))
+                {
+                    idName = Regex.Replace(segment.Name, "[^a-zA-Z_0-9]", "");
+                }
+                if (string.IsNullOrEmpty(idName))
+                {
+                    idName = "seg" + segment.Address.ToString();
+                }
+                else if (Regex.IsMatch(idName, "^[0-9]"))
+                {
+                    ushort? segNum = segment.Address.Selector;
+                    if (segNum.HasValue)
+                    {
+                        idName = string.Format("seg{0:X4}", segNum.Value);
+                    }
+                    else
+                    {
+                        idName = string.Format("seg{0}", segment.Address);
+                    }
+                }
+            }
+        }
+
 
         /// <summary>
         /// Seed the imagemap with image symbols 
@@ -483,14 +515,18 @@ namespace Reko.Core
             ImageMap.RemoveItem(address);
         }
 
+        //$REVIEW: why not always call this from Reko.Decompiler right before 
+        // scanning, in Decompiler.BuildImageMaps?
         public void Reset()
         {
             Procedures.Clear();
             BuildImageMap();
+            BuildSegmentIdentifiers();
             globals = null;
             TypeFactory = new TypeFactory();
             TypeStore = new TypeStore();
             GlobalFields = TypeFactory.CreateStructureType("Globals", 0);
+            BuildSegmentIdentifiers();
         }
     } 
 

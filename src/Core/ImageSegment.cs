@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using System;
 using System.ComponentModel;
 
@@ -111,9 +112,18 @@ namespace Reko.Core
 
         public ImageSegmentRenderer Designer { get; set; }
 
-		public string Name { get;set; }
+		public string Name { get; set; }
 
         public Address EndAddress { get { return Address + ContentSize; } }
+
+        /// <summary>
+        /// The identifier used in the program to refer to the segment.
+        /// </summary>
+        /// <remarks>
+        /// Used primarily on architectures with segmented address spaces
+        /// like x86.
+        /// </remarks>
+        public Identifier Identifier { get; set; }
 
         /// <summary>
         /// Creates an image reader that scans all available memory in the segment.
