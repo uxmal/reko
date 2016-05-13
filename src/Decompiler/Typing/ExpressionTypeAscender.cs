@@ -199,7 +199,9 @@ namespace Reko.Typing
 
         public DataType VisitConditionOf(ConditionOf cof)
         {
-            throw new NotImplementedException();
+            cof.Expression.Accept(this);
+            RecordDataType(cof.DataType, cof);
+            return cof.DataType;
         }
 
         public DataType VisitConstant(Constant c)
@@ -273,9 +275,17 @@ namespace Reko.Typing
             {
                 dtSeq = PrimitiveType.Create(Domain.Pointer, dtHead.Size + dtTail.Size);
             }
-            else
+            else 
             {
-                dtSeq = seq.DataType;
+                var ptHead = dtHead as PrimitiveType;
+                if (ptHead != null && ptHead.IsIntegral)
+                {
+                    dtSeq = PrimitiveType.Create(ptHead.Domain, seq.DataType.Size);
+                }
+                else
+                {
+                    dtSeq = seq.DataType;
+                }
             }
             return RecordDataType(dtSeq, seq);
         }

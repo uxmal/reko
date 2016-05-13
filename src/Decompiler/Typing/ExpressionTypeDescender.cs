@@ -27,6 +27,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Reko.Typing
 {
@@ -73,19 +74,16 @@ namespace Reko.Typing
 
         public bool VisitApplication(Application appl, TypeVariable tv)
         {
+            if (appl != null && appl.Procedure.ToString().Contains("_set_interr"))//$DEBUG
+                appl.ToString();
             MeetDataType(appl, appl.TypeVariable.DataType);
 
             appl.Procedure.Accept(this, appl.Procedure.TypeVariable);
+            BindActualTypesToFormalTypes(appl);
 
-            TypeVariable[] paramTypes = new TypeVariable[appl.Arguments.Length];
-            for (int i = 0; i < appl.Arguments.Length; ++i)
-            {
-                appl.Arguments[i].Accept(this, appl.Arguments[i].TypeVariable);
-                paramTypes[i] = appl.Arguments[i].TypeVariable;
-            }
+            var paramTypes = appl.Arguments.Select(a => a.TypeVariable).ToArray();
             FunctionTrait(appl.Procedure, appl.Procedure.DataType.Size, appl.TypeVariable, paramTypes);
 
-            BindActualTypesToFormalTypes(appl);
             return false;
         }
 
@@ -383,7 +381,9 @@ namespace Reko.Typing
 
         public bool VisitConditionOf(ConditionOf cof, TypeVariable tv)
         {
-            throw new NotImplementedException();
+            MeetDataType(cof, cof.DataType);
+            cof.Expression.Accept(this, cof.Expression.TypeVariable);
+            return false;
         }
 
         public bool VisitConstant(Constant c, TypeVariable tv)
@@ -634,7 +634,15 @@ namespace Reko.Typing
                     return false;
                 }
             }
-            return NYI(seq, tv);
+            var pt = tv.DataType as PrimitiveType;
+            if (pt != null && pt.IsIntegral)
+            {
+                MeetDataType(seq.Head, PrimitiveType.Create(pt.Domain, seq.Head.DataType.Size));
+                MeetDataType(seq.Tail, PrimitiveType.Create(Domain.UnsignedInt, seq.Head.DataType.Size));
+            }
+            seq.Head.Accept(this, seq.Head.TypeVariable);
+            seq.Tail.Accept(this, seq.Tail.TypeVariable);
+            return false;
         }
 
         private bool NYI(Expression e, TypeVariable tv)

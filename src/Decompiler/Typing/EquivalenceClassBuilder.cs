@@ -25,6 +25,7 @@ using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.Typing
 {
@@ -55,6 +56,7 @@ namespace Reko.Typing
 			var tvGlobals = store.EnsureExpressionTypeVariable(factory, program.Globals, "globals_t");
             tvGlobals.OriginalDataType = program.Globals.DataType;
 
+            EnsureSegmentTypeVariables(program.SegmentMap.Segments.Values);
             foreach (Procedure proc in program.Procedures.Values)
             {
                 this.signature = proc.Signature;
@@ -66,6 +68,16 @@ namespace Reko.Typing
                 }
             }
 		}
+
+        void EnsureSegmentTypeVariables(IEnumerable<ImageSegment> segments)
+        {
+            foreach (var segment in segments.Where(s => s.Identifier != null))
+            {
+                segment.Identifier.TypeVariable = null;
+                var tvSeg = store.EnsureExpressionTypeVariable(factory, segment.Identifier, segment.Identifier.Name + "_t");
+                tvSeg.OriginalDataType = segment.Identifier.DataType;
+            }
+        }
 
         public void EnsureSignatureTypeVariables(ProcedureSignature signature)
         {

@@ -224,7 +224,6 @@ namespace Reko
             foreach (var program in this.Project.Programs)
             {
                 program.BuildImageMap();
-                program.BuildSegmentIdentifiers();
             }
         }
 
