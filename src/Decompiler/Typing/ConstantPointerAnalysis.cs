@@ -149,7 +149,8 @@ namespace Reko.Typing
 			{
                 // C is a constant offset into a segment.
                 var seg = ((Pointer) mptr.BasePointer).Pointee.ResolveAs<StructureType>();
-                if (seg.Fields.AtOffset(offset) == null)
+                if (seg != null && //$DEBUG
+                    seg.Fields.AtOffset(offset) == null)
                 {
                     seg.Fields.Add(offset, mptr.Pointee);
                 }

@@ -42,21 +42,21 @@ namespace Reko.UnitTests.Typing
             factory = new TypeFactory();
         }
 
-        private void RunTest(Program prog, string outputFile)
+        private void RunTest(Program program, string outputFile)
         {
             EquivalenceClassBuilder eqb = new EquivalenceClassBuilder(factory, store);
-            DataTypeBuilder dtb = new DataTypeBuilder(factory, store, prog.Platform);
-            eqb.Build(prog);
-            TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
-            trco.CollectProgramTraits(prog);
+            DataTypeBuilder dtb = new DataTypeBuilder(factory, store, program.Platform);
+            eqb.Build(program);
+            TraitCollector trco = new TraitCollector(factory, store, dtb, program);
+            trco.CollectProgramTraits(program);
             dtb.BuildEquivalenceClassDataTypes();
             var tv = new TypeVariableReplacer(store);
             tv.ReplaceTypeVariables();
             store.CopyClassDataTypesToTypeVariables();
-            var ppr = new PtrPrimitiveReplacer(factory, store, prog);
+            var ppr = new PtrPrimitiveReplacer(factory, store, program);
             ppr.ReplaceAll();
 
-            var cpa = new ConstantPointerAnalysis(factory, store, prog);
+            var cpa = new ConstantPointerAnalysis(factory, store, program);
             cpa.FollowConstantPointers();
 
             Verify(null, outputFile);
@@ -65,40 +65,40 @@ namespace Reko.UnitTests.Typing
 		[Test]
 		public void CpaSimple()
 		{
-			var prog = new ProgramBuilder();
-            prog.Add("test", m=>
+			var program = new ProgramBuilder();
+            program.Add("test", m=>
                {
                    var r1 = m.Register(1);
                    m.Assign(r1, m.Load(PrimitiveType.Real32, m.Word32(0x10000000)));
                });
-			RunTest(prog.BuildProgram(), "Typing/CpaSimple.txt");
+			RunTest(program.BuildProgram(), "Typing/CpaSimple.txt");
 		}
 
 		[Test]
 		public void CpaGlobalVariables()
 		{
-			ProgramBuilder prog = new ProgramBuilder();
-			prog.Add(new GlobalVariablesMock());
-			RunTest(prog.BuildProgram(), "Typing/CpaGlobalVariables.txt");
+			ProgramBuilder program = new ProgramBuilder();
+			program.Add(new GlobalVariablesMock());
+			RunTest(program.BuildProgram(), "Typing/CpaGlobalVariables.txt");
 		}
 
 		[Test]
 		public void CpaConstantPointer()
 		{
-			ProgramBuilder prog = new ProgramBuilder();
+			ProgramBuilder program = new ProgramBuilder();
 			ProcedureBuilder m = new ProcedureBuilder();
 			Identifier r1 = m.Register(1);
 			m.Assign(r1, 0x123130);
 			m.Store(r1, m.Int32(0x42));
-			prog.Add(m);
+			program.Add(m);
 
-			RunTest(prog.BuildProgram(), "Typing/CpaConstantPointer.txt");
+			RunTest(program.BuildProgram(), "Typing/CpaConstantPointer.txt");
 		}
 
 		[Test]
 		public void CpaConstantMemberPointer()
 		{
-			ProgramBuilder prog = new ProgramBuilder();
+			ProgramBuilder program = new ProgramBuilder();
 			ProcedureBuilder m = new ProcedureBuilder();
 			Identifier ds = m.Local16("ds");
 			ds.DataType = PrimitiveType.SegmentSelector;
@@ -106,19 +106,19 @@ namespace Reko.UnitTests.Typing
 
 			m.Assign(bx, 0x1234);
 			m.Store(m.SegMemW(ds, bx), m.Int16(0x0042));
-			prog.Add(m);
+			program.Add(m);
 
-			RunTest(prog.BuildProgram(), "Typing/CpaConstantMemberPointer.txt");
+			RunTest(program.BuildProgram(), "Typing/CpaConstantMemberPointer.txt");
 		}
 
 
-		private void Verify(Program prog, string outputFile)
+		private void Verify(Program program, string outputFile)
 		{
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
-				if (prog != null)
+				if (program != null)
 				{
-					foreach (Procedure proc in prog.Procedures.Values)
+					foreach (Procedure proc in program.Procedures.Values)
 					{
 						proc.Write(false, fut.TextWriter);
 						fut.TextWriter.WriteLine();
@@ -139,6 +139,5 @@ namespace Reko.UnitTests.Typing
                 PrimitiveType.Int32);
             Assert.IsTrue(isInside, "Since the array has no specified size, offset 304 should be inside the array.");
         }
-
     }
 }

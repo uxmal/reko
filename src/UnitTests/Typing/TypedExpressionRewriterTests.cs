@@ -48,12 +48,14 @@ namespace Reko.UnitTests.Typing
         private ComplexTypeNamer ctn;
         private List<StructureField> userDefinedGlobals;
         private Dictionary<string, ProcedureSignature> userDefinedProcedures;
+        private Dictionary<Address, ImageSegment> imageSegments;
 
         [SetUp]
         public void Setup()
         {
             userDefinedGlobals = new List<StructureField>();
             userDefinedProcedures = new Dictionary<string, ProcedureSignature>();
+            imageSegments = new Dictionary<Address, ImageSegment>();
         }
 
         protected override void RunTest(Program program, string outputFile)
@@ -182,6 +184,10 @@ namespace Reko.UnitTests.Typing
             foreach (var f in userDefinedGlobals)
             {
                 program.GlobalFields.Fields.Add(f);
+            }
+            foreach (var s in imageSegments.Values)
+            {
+                program.SegmentMap.Segments.Add(s.Address, s);
             }
             aen = new ExpressionNormalizer(program.Platform.PointerType);
             eqb = new EquivalenceClassBuilder(program.TypeFactory, program.TypeStore);
@@ -1003,6 +1009,49 @@ test_exit:
             RunStringTest(m =>
             {
                 m.SideEffect(m.Fn(func, m.Word32(0x1000)));
+            }, sExp);
+        }
+
+        [Test(Description = "Rewrite constants with segment selector type ")]
+        public void TerSelector()
+        {
+            var sExp =
+            #region Expected
+                
+@"// Before ///////
+// test
+// Return size: 0
+void test()
+test_entry:
+	// succ:  l1
+l1:
+	ds = seg1234
+	Mem0[ds:0x00000010:word32] = 0x00010004
+test_exit:
+
+// After ///////
+// test
+// Return size: 0
+void test()
+test_entry:
+	// succ:  l1
+l1:
+	ds = 0x1234
+	ds->dw0010 = 0x00010004
+test_exit:";
+            #endregion
+
+            var seg = new ImageSegment(
+                "1234",
+                new MemoryArea(Address.SegPtr(0x1234, 0), new byte[0x100]),
+                AccessMode.ReadWriteExecute);
+            seg.Identifier = Identifier.CreateTemporary("seg1234", PrimitiveType.SegmentSelector);
+            imageSegments.Add(seg.Address, seg);
+            RunStringTest(m =>
+            {
+                var ds = m.Frame.CreateTemporary("ds", PrimitiveType.SegmentSelector);
+                m.Assign(ds, Constant.Create(ds.DataType, 0x1234));
+                m.SegStore(ds, m.Word16(0x10), m.Word32(0x010004));
             }, sExp);
         }
     }
