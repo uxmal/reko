@@ -23,6 +23,8 @@ using Reko.Core.Expressions;
 using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.Typing
 {
@@ -38,13 +40,17 @@ namespace Reko.Typing
 		private Constant c;
 		private PrimitiveType pOrig;
 		private bool dereferenced;
+        private Dictionary<ushort, Identifier> mpSelectorToSegId;
 
-		public TypedConstantRewriter(Program program)
+        public TypedConstantRewriter(Program program)
 		{
             this.program = program;
             this.platform = program.Platform;
             this.store = program.TypeStore;
             this.globals = program.Globals;
+            this.mpSelectorToSegId = program.SegmentMap.Segments.Values
+                .Where(s => s.Identifier != null && s.Address.Selector.HasValue)
+                .ToDictionary(s => s.Address.Selector.Value, s => s.Identifier);
 		}
 
         /// <summary>
@@ -179,7 +185,9 @@ namespace Reko.Typing
 			Expression e = c;
             if (IsSegmentPointer(ptr))
             {
-                //$TODO: Segments have to be declared and their initial contents defined somewhere.
+                Identifier segID;
+                if (mpSelectorToSegId.TryGetValue(c.ToUInt16(), out segID))
+                    return segID;
                 return e;
             } 
             else if (GlobalVars != null)

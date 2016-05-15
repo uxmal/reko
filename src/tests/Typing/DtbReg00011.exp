@@ -207,7 +207,7 @@ T_28: (in 0x0001 : word16)
 T_29: (in bx_23 - 0x0001 : word16)
   Class: Eq_5
   DataType: (union (ci16 u0) ((memptr T_24 (struct (0 T_27 t0000))) u1))
-  OrigDataType: word16
+  OrigDataType: (memptr T_24 (struct (0 T_27 t0000)))
 T_30: (in SLICE(bx_23, byte, 8) : byte)
   Class: Eq_7
   DataType: bu8

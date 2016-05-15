@@ -223,6 +223,7 @@ namespace Reko.UnitTests.Typing
         public void TerComplex()
         {
             Program program = new Program();
+            program.SegmentMap = new SegmentMap(Address.Ptr32(0x0010000));
             program.Architecture = new FakeArchitecture();
             program.Platform = new DefaultPlatform(null, program.Architecture);
             SetupPreStages(program);
@@ -273,9 +274,11 @@ namespace Reko.UnitTests.Typing
         [Test]
         public void TerConstants()
         {
-            Program prog = new Program();
-            prog.Architecture = new FakeArchitecture();
-            prog.Platform = new DefaultPlatform(null, prog.Architecture);
+            var arch = new FakeArchitecture();
+            Program prog = new Program(
+                new SegmentMap(Address.Ptr32(0x10000)),
+                arch,
+                new DefaultPlatform(null, arch));
             SetupPreStages(prog);
             Constant r = Constant.Real32(3.0F);
             Constant i = Constant.Int32(1);
@@ -890,7 +893,7 @@ proc1_entry:
 	// succ:  l1
 l1:
 	Eq_2 * r1
-	word32 r2
+	ptr32 r2
 	r1 = r1->ptr0000
 	globals->b1004 = r1->ptr0000->ptr0000->b0004
 	r2 = &r1->b0004
@@ -1017,7 +1020,7 @@ test_exit:
         {
             var sExp =
             #region Expected
-                
+
 @"// Before ///////
 // test
 // Return size: 0
@@ -1025,8 +1028,8 @@ void test()
 test_entry:
 	// succ:  l1
 l1:
-	ds = seg1234
-	Mem0[ds:0x00000010:word32] = 0x00010004
+	ds = 0x1234
+	Mem0[ds:0x0010:word32] = 0x00010004
 test_exit:
 
 // After ///////
@@ -1036,9 +1039,12 @@ void test()
 test_entry:
 	// succ:  l1
 l1:
-	ds = 0x1234
+	ds = seg1234
 	ds->dw0010 = 0x00010004
-test_exit:";
+test_exit:
+
+"
+;
             #endregion
 
             var seg = new ImageSegment(

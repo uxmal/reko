@@ -241,7 +241,7 @@ namespace Reko.Typing
                 id.TypeVariable.DataType = id.DataType;
                 id.TypeVariable.OriginalDataType = id.DataType;
             }
-            return id.DataType;
+            return id.TypeVariable.DataType;
         }
 
         public DataType VisitMemberPointerSelector(MemberPointerSelector mps)
