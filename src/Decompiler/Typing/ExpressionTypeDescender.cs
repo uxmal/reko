@@ -183,7 +183,6 @@ namespace Reko.Typing
 
         public bool VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv)
         {
-            Debug.Print("Pushing {0} ({1}) into {2}", tv, tv.DataType, binExp);
             var eLeft = binExp.Left;
             var eRight= binExp.Right;
             if (binExp.Operator == Operator.IAdd)
@@ -383,7 +382,9 @@ namespace Reko.Typing
 
         public bool VisitConditionOf(ConditionOf cof, TypeVariable tv)
         {
-            throw new NotImplementedException();
+            var dt = MeetDataType(cof, cof.TypeVariable.DataType);
+            cof.Expression.Accept(this, cof.Expression.TypeVariable);
+            return false;
         }
 
         public bool VisitConstant(Constant c, TypeVariable tv)
@@ -445,7 +446,6 @@ namespace Reko.Typing
             var tv = access.TypeVariable;
             MeetDataType(access, tv.DataType);
             int eaSize = effectiveAddress.TypeVariable.DataType.Size;
-            Debug.Print("Pushing {0} into {1}", tv, access);
             Expression p;
             int offset;
             if (fieldAccessPattern.Match(effectiveAddress))
@@ -629,12 +629,11 @@ namespace Reko.Typing
                     {
                         MeetDataType(seq.Tail, MemberPointerTo(seq.Head.TypeVariable, ptr.Pointee, DataTypeOf(seq.Tail).Size));
                     }
-                    seq.Head.Accept(this, seq.Head.TypeVariable);
-                    seq.Tail.Accept(this, seq.Tail.TypeVariable);
-                    return false;
                 }
             }
-            return NYI(seq, tv);
+            seq.Head.Accept(this, seq.Head.TypeVariable);
+            seq.Tail.Accept(this, seq.Tail.TypeVariable);
+            return false;
         }
 
         private bool NYI(Expression e, TypeVariable tv)
@@ -644,7 +643,7 @@ namespace Reko.Typing
 
         public bool VisitOutArgument(OutArgument outArgument, TypeVariable tv)
         {
-            outArgument.Expression.Accept(this, outArgument.TypeVariable);
+            outArgument.Expression.Accept(this, outArgument.Expression.TypeVariable);
             return false;
         }
 

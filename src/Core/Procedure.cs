@@ -77,14 +77,14 @@ namespace Reko.Core
 		{
 			if (name == null)
 			{
-				name = addr.GenerateName("fn", "");     //$TODO: should be a user option, move out of here.
+				name = GenerateName(addr);     //$TODO: should be a user option, move out of here.
 			}
 			return new Procedure(name, f);
 		}
 
 		public static Procedure Create(Address addr, Frame f)
 		{
-			return new Procedure(addr.GenerateName("fn", ""), f);
+			return new Procedure(GenerateName(addr), f);
 		}
 
         [Conditional("DEBUG")]
@@ -101,6 +101,11 @@ namespace Reko.Core
         public BlockDominatorGraph CreateBlockDominatorGraph()
         {
             return new BlockDominatorGraph(new BlockGraph(blocks), EntryBlock);
+        }
+
+        public static string GenerateName(Address addr)
+        {
+            return addr.GenerateName("fn", "");
         }
 
         /// <summary>

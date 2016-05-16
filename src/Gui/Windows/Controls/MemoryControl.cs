@@ -349,7 +349,7 @@ namespace Reko.Gui.Windows.Controls
 
         protected override void OnPaint(PaintEventArgs pea)
         {
-            if (mem == null || imageMap == null || arch == null)
+            if (mem == null || segmentMap == null || imageMap == null || arch == null)
             {
                 pea.Graphics.FillRectangle(SystemBrushes.Window, ClientRectangle);
             }

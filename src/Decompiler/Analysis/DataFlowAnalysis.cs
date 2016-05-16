@@ -95,7 +95,6 @@ namespace Reko.Analysis
                     vp.Transform();
                     DeadCode.Eliminate(proc, ssa);
 
-
                     // Build expressions. A definition with a single use can be subsumed
                     // into the using expression. 
 

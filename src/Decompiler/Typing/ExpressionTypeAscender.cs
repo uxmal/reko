@@ -197,7 +197,8 @@ namespace Reko.Typing
 
         public DataType VisitConditionOf(ConditionOf cof)
         {
-            throw new NotImplementedException();
+            RecordDataType(cof.Expression.Accept(this), cof.Expression);
+            return cof.DataType;
         }
 
         public DataType VisitConstant(Constant c)
@@ -289,12 +290,12 @@ namespace Reko.Typing
         {
             var dt = outArgument.Expression.Accept(this);
             Expression exp = outArgument;
-            return RecordDataType(PointerTo(outArgument.TypeVariable), exp);
+            return RecordDataType(OutPointerTo(outArgument.TypeVariable), exp);
         }
 
-        private DataType PointerTo(TypeVariable tv)
+        private DataType OutPointerTo(TypeVariable tv)
         {
-            return new Pointer(tv, platform.PointerType.Size);
+            return new Pointer(tv, platform.FramePointerType.Size);
         }
 
         private DataType RecordDataType(DataType dt, Expression exp)
