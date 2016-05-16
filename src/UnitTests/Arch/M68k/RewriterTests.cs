@@ -1064,9 +1064,33 @@ namespace Reko.UnitTests.Arch.M68k
         {
             Rewrite(0x4EF9, 0x0001, 0xE5B2);
             AssertCode(
-                 "0|T--|00010000(2): 1 instructions",
-                 "1|T--|goto a5");
+                 "0|T--|00010000(6): 1 instructions",
+                 "1|T--|goto 0001E5B2");
         }
 
+        [Test]
+        public void M68krw_dbne()
+        {
+            Rewrite(0x56C8, 0xFFFA);
+            AssertCode(
+                "0|T--|00010000(4): 3 instructions",
+                "1|T--|if (Test(NE,Z)) branch 00010004",
+                "2|L--|d0 = d0 - 0x00000001",
+                "3|T--|if (d0 != 0xFFFFFFFF) branch 0000FFFC");
+        }
+
+        [Test]
+        public void M68krw_cmpm()
+        {
+            Rewrite(0xB308);
+            AssertCode(
+                "0|L--|00010000(2): 6 instructions",
+                "1|L--|v3 = Mem0[a0:byte]",
+                "2|L--|a0 = a0 + 0x00000001",
+                "3|L--|v5 = Mem0[a1:byte]",
+                "4|L--|a1 = a1 + 0x00000001",
+                "5|L--|v6 = v5 - v3",
+                "6|L--|CVZN = cond(v6)");
+        }
     }
 }

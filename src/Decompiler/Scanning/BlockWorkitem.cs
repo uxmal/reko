@@ -403,6 +403,18 @@ namespace Reko.Scanning
             Address addr = call.Target as Address;
             if (addr != null)
             {
+                if (!program.SegmentMap.IsValidAddress(addr))
+                {
+                    scanner.Warn(ric.Address, "Target address {0} is invalid.", addr);
+                    sig = new ProcedureSignature();
+                    EmitCall(
+                        CreateProcedureConstant(
+                            new ExternalProcedure(Procedure.GenerateName(addr), sig)),
+                        sig,
+                        site);
+                    return OnAfterCall(sig, chr);
+                }
+
                 var impProc = scanner.GetImportedProcedure(addr, this.ric.Address);
                 if (impProc != null && impProc.Characteristics.IsAlloca)
                     return ProcessAlloca(site, impProc);

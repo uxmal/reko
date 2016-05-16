@@ -64,7 +64,7 @@ namespace Reko.Scanning
 
         public Identifier VisitFlagRegister(FlagRegister freg)
         {
-            throw new NotImplementedException();
+            return frame.EnsureRegister(freg);
         }
 
         public Identifier VisitFpuStackStorage(FpuStackStorage fpu)

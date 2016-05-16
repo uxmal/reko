@@ -123,7 +123,10 @@ namespace Reko.Gui.Windows
         {
             this.nestedTextModel = new NestedTextModel();
 
-            var mixedCodeDataModel = (MixedCodeDataModel)combinedCodeView.MixedCodeDataView.Model;
+            var mixedCodeDataModel = combinedCodeView.MixedCodeDataView.Model as MixedCodeDataModel;
+            if (mixedCodeDataModel == null)
+                return;
+
             var dataItemNodes = mixedCodeDataModel.GetDataItemNodes();
 
             this.nodeByAddress = new SortedList<Address, MixedCodeDataModel.DataItemNode>();
@@ -467,8 +470,9 @@ namespace Reko.Gui.Windows
         private void MixedCodeDataView_TopAddressChanged()
         {
             var topAddress = combinedCodeView.MixedCodeDataView.TopAddress;
-            MixedCodeDataModel.DataItemNode dataItemNode;
-            if (!nodeByAddress.TryGetLowerBound(topAddress, out dataItemNode))
+            MixedCodeDataModel.DataItemNode dataItemNode = null;
+            if (nodeByAddress == null ||
+                !nodeByAddress.TryGetLowerBound(topAddress, out dataItemNode))
                 return;
 
             int numer;
