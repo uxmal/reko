@@ -277,12 +277,15 @@ namespace Reko.Gui.Windows.Forms
 
             GenerateSimulatedProgram();
             dlg.MemoryControl.Services = sc;
+            dlg.MemoryControl.SegmentMap = program.SegmentMap;
             dlg.MemoryControl.ImageMap = program.ImageMap;
             dlg.MemoryControl.Architecture = program.Architecture;
+            dlg.MemoryControl.SelectedAddress = program.SegmentMap.BaseAddress;
             dlg.MemoryControl.Font = new System.Drawing.Font("Lucida Console", 9.0f);
             dlg.DisassemblyControl.StyleClass = UiStyles.Disassembler;
             dlg.DisassemblyControl.Services = sc;
             dlg.DisassemblyControl.Model = new DisassemblyTextModel(program, program.SegmentMap.Segments.Values.First());
+            dlg.CodeControl.Services = sc;
             dlg.CodeControl.Model = GenerateSimulatedHllCode();
         }
 
@@ -317,8 +320,9 @@ namespace Reko.Gui.Windows.Forms
             var arch = dlg.Services.RequireService<IConfigurationService>().GetArchitecture("x86-protected-32");
             this.program = new Program
             {
-                ImageMap = imageMap,
+                SegmentMap = segmentMap,
                 Architecture = arch,
+                ImageMap = imageMap,
             };
 
             dlg.Browser.Nodes.AddRange(new[]
