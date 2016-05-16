@@ -118,7 +118,7 @@ Options:
                 return this.handle_file(scan_file, loader.HunkFile);
             }
 
-            public virtual object run()
+            public virtual bool run()
             {
                 // setup error handler
                 //scanners = new List<object> {
@@ -281,26 +281,27 @@ Options:
             }
 
 
-            public static object main(string[] args)
+            public static int Main(string[] args)
             {
-                Type cmd_cls;
-                Dictionary<string,
-                    Type> cmd_map;
-                object res;
                 // call scanner and process all files with selected command
-                cmd_map = new Dictionary<string, Type> {
-            {
-                "validate",
-                typeof(Validator)},
-            {
-                "info",
-                typeof(Info)},
-            {
-                "elfinfo",
-                typeof(ElfInfo)},
-            {
-                "relocate",
-                typeof(Relocate)}};
+                var cmd_map = new Dictionary<string, Type> {
+                    {
+                        "validate",
+                        typeof(Validator)
+                    },
+                    {
+                        "info",
+                        typeof(Info)
+                    },
+                    {
+                        "elfinfo",
+                        typeof(ElfInfo)
+                    },
+                    {
+                        "relocate",
+                        typeof(Relocate)
+                    }
+                };
                 var docopt = new Docopt();
                 var options = docopt.Apply(Program.options, args);
                 var cmd = options["command"].Value.ToString();
@@ -314,11 +315,11 @@ Options:
                     }
                     return 1;
                 }
-                cmd_cls = cmd_map[cmd];
+                var cmd_cls = cmd_map[cmd];
                 // execute command
                 var cmdInst = (HunkCommand)Activator.CreateInstance(cmd_cls, options);
-                res = cmdInst.run();
-                return res;
+                var res = cmdInst.run();
+                return res ? 0 : 1;
             }
 
         }

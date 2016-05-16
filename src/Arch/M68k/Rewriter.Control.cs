@@ -55,8 +55,11 @@ namespace Reko.Arch.M68k
         private void RewriteJmp()
         {
             ric.Class = RtlClass.Transfer;
-            var mem = (MemoryAccess)orw.RewriteSrc(di.op1, di.Address, true);
-            emitter.Goto(mem.EffectiveAddress);
+            var src = orw.RewriteSrc(di.op1, di.Address, true);
+            var mem = src as MemoryAccess;
+            if (mem != null)
+                src = mem.EffectiveAddress;
+            emitter.Goto(src);
         }
 
         private void RewriteJsr()
