@@ -1057,5 +1057,16 @@ namespace Reko.UnitTests.Arch.M68k
                  "0|T--|00010000(2): 1 instructions",
                  "1|T--|goto a5");
         }
+
+
+        [Test]
+        public void M68krw_JmpLong()
+        {
+            Rewrite(0x4EF9, 0x0001, 0xE5B2);
+            AssertCode(
+                 "0|T--|00010000(2): 1 instructions",
+                 "1|T--|goto a5");
+        }
+
     }
 }
