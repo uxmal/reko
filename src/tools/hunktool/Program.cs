@@ -10,6 +10,8 @@ using DocoptNet;
 using System.Globalization;
 using System.IO;
 using Reko.Core;
+using System.ComponentModel.Design;
+using Reko.Core.Configuration;
 
 namespace hunktool
 {
@@ -18,7 +20,7 @@ namespace hunktool
         private const string options = @"hunktool - AmigaOS Hunk file browser
 
 Usage:
-    hunktool [options] [<command>] <files>
+    hunktool [options] <command> <files>
 
 Options:
     -d, --dump                         Dump the hunk structure
@@ -27,12 +29,12 @@ Options:
     -R, --show-relocs                  Show relocation entries
     -D, --show-debug                   Show debug info entries
     -A, --disassemble                  Disassemble code segments
-    -S, --disassemble-start [address]  action = store, type = @int, @default = 0, help = start address for dissassembly
+    -S, --disassemble-start [address]  start address for dissassembly
     -x, --hexdump                      action store_true, @default = false, help = dump segments in hex
     -b, --brief                        action store_true, @default = false, help = show only brief information
     -B, --base-address [address]       action = store, type = @int, @default = 0, help = base address for relocation
     -o, --use-objdump                  action = store_true, @default = false, help = disassemble with m68k-elf-objdump instead of vda68k
-    -c, --cpu [cpuType=68000]          action = store,  help = disassemble for given cpu (objdump only)
+    -c, --cpu cpuType                  disassemble for given cpu (objdump only) [default=68000]
 ";
 
         // ----- commands -------------------------------------------------------------
@@ -57,11 +59,11 @@ Options:
                 Console.WriteLine(path);
             
                     // if verbose then print block structure
-                if (this.args["verbose"].IsTrue)
+                if (this.args["--verbose"].IsTrue)
                 {
                     Console.WriteLine();
                     //Console.WriteLine("  hunks:    ", hunk_file.get_hunk_summary());
-                    if (args["dump"].IsTrue)
+                    if (args["--dump"].IsTrue)
                     {
                         //print_pretty(hunk_file.hunks);
                     }
@@ -70,7 +72,7 @@ Options:
                 }
                 Console.WriteLine(hunk_file.type.ToString());
                 // if verbose then print hunk structure
-                if (this.args["verbose"].IsTrue)
+                if (this.args["--verbose"].IsTrue)
                 {
                     //Console.WriteLine();
                     //Console.WriteLine("  segments: ", hunk_file.get_segment_summary());
@@ -109,10 +111,15 @@ Options:
                 //path = scan_file.get_path();
                 //fobj = scan_file.get_fobj();
                 var hunkBytes = File.ReadAllBytes(scan_file);
-                var loader = new HunkLoader(null, scan_file, hunkBytes);
-                Address addr;
-                if (!Address.TryParse32((string) args["base-address"].Value, out addr))
+                var sc = new ServiceContainer();
+                sc.AddService<IConfigurationService>(new StubConfigurationService());
+                var loader = new HunkLoader(sc, scan_file, hunkBytes);
+                Address addr = null;
+                if (args["--base-address"] == null ||
+                    !Address.TryParse32((string)args["--base-address"].Value, out addr))
+                {
                     addr = Address.Ptr32(0);
+                }
                 result = loader.Load(addr);
                 // ignore non hunk files
                 return this.handle_file(scan_file, loader.HunkFile);
@@ -126,7 +133,7 @@ Options:
                 //    ZipScanner(),
                 //    LhaScanner()
                 //};
-                foreach (string file in args["files"].AsList)
+                foreach (string file in args["<files>"].AsList)
                 {
                     this.process_file(file);
                 }
@@ -178,17 +185,20 @@ Options:
                 // verbose all hunk
                 var hs = new HunkShow(
                     hunk_file,
-                    show_relocs: args["show-relocs"].IsTrue,
-                    show_debug: args["show-debug"].IsTrue,
-                    disassemble: args["disassemble"].IsTrue,
-                    disassemble_start: UInt32.Parse(
-                        (string)args["disassemble-start"].Value,
-                        NumberStyles.HexNumber,
-                        CultureInfo.InvariantCulture),
-                    use_objdump: args["use-objdump"].IsTrue,
-                    cpu: (string)args["cpu"].Value,
-                    hexdump: args["hexdump"].IsTrue,
-                    brief: args["brief"].IsTrue);
+                    show_relocs: args["--show-relocs"].IsTrue,
+                    show_debug: args["--show-debug"].IsTrue,
+                    disassemble: args["--disassemble"].IsTrue,
+                    disassemble_start:
+                        args["--disassemble-start"] != null
+                            ? UInt32.Parse(
+                                (string)args["--disassemble-start"].Value,
+                                NumberStyles.HexNumber,
+                                CultureInfo.InvariantCulture)
+                            : 0,
+                    use_objdump: args["--use-objdump"].IsTrue,
+                    cpu: args["--cpu"] != null ? (string)args["--cpu"].Value : "",
+                    hexdump: args["--hexdump"].IsTrue,
+                    brief: args["--brief"].IsTrue);
                 hs.show_segments();
                 return true;
             }
@@ -304,7 +314,7 @@ Options:
                 };
                 var docopt = new Docopt();
                 var options = docopt.Apply(Program.options, args);
-                var cmd = options["command"].Value.ToString();
+                var cmd = options["<command>"].Value.ToString();
                 if (!cmd_map.ContainsKey(cmd))
                 {
                     Console.WriteLine("INVALID COMMAND:", cmd);

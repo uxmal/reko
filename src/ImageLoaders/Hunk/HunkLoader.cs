@@ -207,7 +207,6 @@ namespace Reko.ImageLoaders.Hunk
             HunkType.HUNK_NAME
         };
 
-
         //$TODO: move this to HunkFile
         public bool BuildUnit()
         {
@@ -221,6 +220,7 @@ namespace Reko.ImageLoaders.Hunk
             int hunk_no = 0;
             foreach (var e in this.hunkFile.hunks)
             {
+                Debug.Print("=== {0} = {1:X8}", e.HunkType, e.FileOffset);
                 var hunk_type = e.HunkType;
                 // optional unit as first entry
                 if (hunk_type == HunkType.HUNK_UNIT)
@@ -276,13 +276,13 @@ namespace Reko.ImageLoaders.Hunk
                     if (hunk_type == HunkType.HUNK_END)
                     {
                         in_hunk = false;
-                        // contents of hunk
                     }
                     else if (HunkLoader.unit_valid_extra_hunks.Contains(hunk_type))
                     {
+                        // contents of hunk
                         segment.Add(e);
-                        // unecpected hunk?!
                     }
+                    // unexpected hunk?!
                     else
                         throw new BadImageFormatException(string.Format("Unexpected hunk in unit: {0} {1}/{1:X}", e.HunkType, hunk_type));
                 }

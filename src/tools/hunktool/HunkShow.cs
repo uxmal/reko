@@ -384,7 +384,7 @@ namespace hunktool
             {
                 Console.WriteLine("{0}{1}",
                     new string(' ', indent),
-                    string.Join(" ", line));
+                    string.Join(" ", line.Select(b => string.Format("{0:X2}", (int)b))));
             }
         }
 

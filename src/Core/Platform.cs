@@ -384,7 +384,7 @@ namespace Reko.Core
 
         public override SystemService FindService(int vector, ProcessorState state)
         {
-            throw new NotSupportedException();
+            return null;
         }
 
         public override int GetByteSizeFromCBasicType(CBasicType cb)
