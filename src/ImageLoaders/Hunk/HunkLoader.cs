@@ -47,8 +47,10 @@ namespace Reko.ImageLoaders.Hunk
         {
         }
 
-        //$REVIEW: is this a sane value? AmigaOS apparently didn't load at a specific address. Emulators 
-        // seem to like this value.
+        public HunkFile HunkFile { get { return hunkFile; } }
+
+        //$REVIEW: is this a sane value? AmigaOS apparently didn't load at a specific
+        // address. Emulators seem to like this value.
         public override Address PreferredBaseAddress
         {
             get { return Address.Ptr32(0x1000); }
