@@ -116,6 +116,13 @@ namespace Reko.Analysis
                     aliases.Add(sidAlias);
                     ClosureOfUsingStatements(sidAlias, expr, uses, aliases);
                 }
+                var phiAss = use.Instruction as PhiAssignment;
+                if (phiAss != null)
+                {
+                    var sidPhi = ssaIds[phiAss.Dst];
+                    aliases.Add(sidPhi);
+                    ClosureOfUsingStatements(sidPhi, expr, uses, aliases);
+                }
             }
             return uses;
         }
