@@ -78,8 +78,6 @@ namespace Reko.ImageLoaders.Hunk
                 }
                 var hunkType = (HunkType) (rawHunkType & Hunk.HUNK_TYPE_MASK);
                 var hunkFlags = rawHunkType & Hunk.HUNK_FLAGS_MASK;
-                if (hunkFileOffset < 300) //$DEBUG
-                    Debug.Print("--- {0} - {1:X8}", hunkType, hunkFileOffset);
 
                 // Validate that hunk type is known.
                 if (!knownHunkTypes.ContainsKey(hunkType))

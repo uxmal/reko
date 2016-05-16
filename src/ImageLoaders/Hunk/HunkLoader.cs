@@ -220,7 +220,6 @@ namespace Reko.ImageLoaders.Hunk
             int hunk_no = 0;
             foreach (var e in this.hunkFile.hunks)
             {
-                Debug.Print("=== {0} = {1:X8}", e.HunkType, e.FileOffset);
                 var hunk_type = e.HunkType;
                 // optional unit as first entry
                 if (hunk_type == HunkType.HUNK_UNIT)

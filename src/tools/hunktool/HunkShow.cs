@@ -69,7 +69,7 @@ namespace hunktool
         {
             foreach (var lib in this.libs)
             {
-                Console.WriteLine("Library #%d", lib.lib_no);
+                Console.WriteLine("Library #{0}", lib.lib_no);
                 foreach (var unit in lib.units)
                 {
                     this.print_unit(unit.unit_no, unit.name);
@@ -268,6 +268,10 @@ namespace hunktool
                 else
                 {
                     this.print_extra_sub(String.Format("To Segment #{0}: {1,4} entries", hunk_num, offsets.Count));
+                    foreach (var off in offsets)
+                    {
+                        this.print_extra_sub(string.Format("\t{0:X8}", off));
+                    }
                 }
             }
         }
