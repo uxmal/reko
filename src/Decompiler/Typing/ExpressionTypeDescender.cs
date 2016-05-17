@@ -27,6 +27,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Reko.Typing
 {
@@ -73,19 +74,16 @@ namespace Reko.Typing
 
         public bool VisitApplication(Application appl, TypeVariable tv)
         {
+            if (appl != null && appl.Procedure.ToString().Contains("_set_interr"))//$DEBUG
+                appl.ToString();
             MeetDataType(appl, appl.TypeVariable.DataType);
 
             appl.Procedure.Accept(this, appl.Procedure.TypeVariable);
+            BindActualTypesToFormalTypes(appl);
 
-            TypeVariable[] paramTypes = new TypeVariable[appl.Arguments.Length];
-            for (int i = 0; i < appl.Arguments.Length; ++i)
-            {
-                appl.Arguments[i].Accept(this, appl.Arguments[i].TypeVariable);
-                paramTypes[i] = appl.Arguments[i].TypeVariable;
-            }
+            var paramTypes = appl.Arguments.Select(a => a.TypeVariable).ToArray();
             FunctionTrait(appl.Procedure, appl.Procedure.DataType.Size, appl.TypeVariable, paramTypes);
 
-            BindActualTypesToFormalTypes(appl);
             return false;
         }
 
@@ -382,7 +380,7 @@ namespace Reko.Typing
 
         public bool VisitConditionOf(ConditionOf cof, TypeVariable tv)
         {
-            var dt = MeetDataType(cof, cof.TypeVariable.DataType);
+            MeetDataType(cof, cof.DataType);
             cof.Expression.Accept(this, cof.Expression.TypeVariable);
             return false;
         }
@@ -471,8 +469,8 @@ namespace Reko.Typing
             {
                 // Mem[p + i] where i is integer type.
                 var binEa = (BinaryExpression)effectiveAddress;
-                ArrayField(null, binEa.Left, binEa.DataType.Size, 0, 1, 0, access);
-                p = effectiveAddress;
+                ArrayField(basePointer, binEa.Left, binEa.DataType.Size, 0, 1, 0, access);
+                p = binEa.Left;
                 offset = 0;
             }
             else
@@ -491,7 +489,7 @@ namespace Reko.Typing
             var binEa = effectiveAddress as BinaryExpression;
             if (binEa == null || binEa.Operator != Operator.IAdd)
                 return false;
-            var ptRight = binEa.Right.DataType as PrimitiveType;
+            var ptRight = binEa.Right.TypeVariable.DataType as PrimitiveType;
             if (ptRight == null || !ptRight.IsIntegral)
                 return false;
             return true;
@@ -629,7 +627,16 @@ namespace Reko.Typing
                     {
                         MeetDataType(seq.Tail, MemberPointerTo(seq.Head.TypeVariable, ptr.Pointee, DataTypeOf(seq.Tail).Size));
                     }
+                    seq.Head.Accept(this, seq.Head.TypeVariable);
+                    seq.Tail.Accept(this, seq.Tail.TypeVariable);
+                    return false;
                 }
+            }
+            var pt = tv.DataType as PrimitiveType;
+            if (pt != null && pt.IsIntegral)
+            {
+                MeetDataType(seq.Head, PrimitiveType.Create(pt.Domain, seq.Head.DataType.Size));
+                MeetDataType(seq.Tail, PrimitiveType.Create(Domain.UnsignedInt, seq.Head.DataType.Size));
             }
             seq.Head.Accept(this, seq.Head.TypeVariable);
             seq.Tail.Accept(this, seq.Tail.TypeVariable);
@@ -676,30 +683,6 @@ namespace Reko.Typing
             access.BasePointer.Accept(this, access.BasePointer.TypeVariable);
 
             return VisitMemoryAccess(access.BasePointer, access, access.EffectiveAddress, access.BasePointer);
-            //MeetDataType(access, tv.DataType);
-            //int eaSize = access.TypeVariable.DataType.Size;
-            //if (fieldAccessPattern.Match(access.EffectiveAddress))
-            //{
-            //    // Mem[seg:p + c]
-            //    var p = fieldAccessPattern.CapturedExpression("p");
-            //    var c = ((Constant) fieldAccessPattern.CapturedExpression("c")).ToInt32();
-            //    MemoryAccessCommon(access.BasePointer, p, c, access.TypeVariable, eaSize);
-            //    p.Accept(this, p.TypeVariable);
-            //}
-            //else if (access.EffectiveAddress is Constant)
-            //{
-            //    // Mem[seg:c]
-            //    var c = access.EffectiveAddress as Constant;
-            //    MemoryAccessCommon(access.BasePointer, c, 0, access.TypeVariable, eaSize);
-            //    MemoryAccessCommon(null, access.BasePointer, c.ToInt32(), access.TypeVariable, eaSize);
-            //    c.Accept(this, c.TypeVariable);
-            //}
-            //else 
-            //{
-            //    // Mem[seg:anything]
-            //    MemoryAccessCommon(access.BasePointer, access.EffectiveAddress, 0, access.TypeVariable, eaSize);
-            //}
-            //return false;
         }
 
         public bool VisitSlice(Slice slice, TypeVariable tv)

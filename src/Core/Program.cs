@@ -30,6 +30,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Reko.Core
 {
@@ -323,6 +324,8 @@ namespace Reko.Core
         /// <returns></returns>
         public ImageMapItem AddUserGlobalItem(Address address, DataType dataType)
         {
+            //$TODO: if user enters a segmented address, we need to 
+            // place the item in the respective globals struct.
             var size = GetDataSize(address, dataType);
             var item = new ImageMapItem
             {
@@ -483,6 +486,8 @@ namespace Reko.Core
             ImageMap.RemoveItem(address);
         }
 
+        //$REVIEW: why not always call this from Reko.Decompiler right before 
+        // scanning, in Decompiler.BuildImageMaps?
         public void Reset()
         {
             Procedures.Clear();

@@ -300,7 +300,7 @@ namespace Reko.Typing
 
         public Expression VisitUnknownType(UnknownType ut)
         {
-            throw new NotImplementedException();
+            return expComplex;
         }
 
         public Expression VisitVoidType(VoidType voidType)

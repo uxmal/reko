@@ -25,6 +25,7 @@ using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.Typing
 {
@@ -40,7 +41,7 @@ namespace Reko.Typing
         private Dictionary<string, EquivalenceClass> typeReferenceClasses;
 
 		public EquivalenceClassBuilder(TypeFactory factory, TypeStore store)
-		{
+        {
 			this.factory = factory;
 			this.store = store;
 			this.signature = null;
@@ -49,12 +50,14 @@ namespace Reko.Typing
 		}
 
 		public void Build(Program program)
-		{
+        {
             // Special case for the global variables. In essence,
             // a memory map of all the globals.
 			var tvGlobals = store.EnsureExpressionTypeVariable(factory, program.Globals, "globals_t");
             tvGlobals.OriginalDataType = program.Globals.DataType;
 
+            this.segTypevars = segTypevars;
+            EnsureSegmentTypeVariables(program.SegmentMap.Segments.Values);
             foreach (Procedure proc in program.Procedures.Values)
             {
                 this.signature = proc.Signature;
@@ -66,6 +69,22 @@ namespace Reko.Typing
                 }
             }
 		}
+
+        public void EnsureSegmentTypeVariables(IEnumerable<ImageSegment> segments)
+        {
+
+            foreach (var segment in segments.Where(s => s.Identifier != null))
+            {
+                var selector = segment.Address.Selector;
+                if (selector.HasValue)
+                {
+                    segment.Identifier.TypeVariable = null;
+                    var tvSeg = store.EnsureExpressionTypeVariable(factory, segment.Identifier, segment.Identifier.Name + "_t");
+                    tvSeg.OriginalDataType = segment.Identifier.DataType;
+                    this.segTypevars[selector.Value] = tvSeg;
+                }
+            }
+        }
 
         public void EnsureSignatureTypeVariables(ProcedureSignature signature)
         {
@@ -181,6 +200,7 @@ namespace Reko.Typing
                 else
                 {
                     EnsureTypeVariable(c);
+
                     segTypevars[c.ToUInt16()] = c.TypeVariable;
                 }
                 return;

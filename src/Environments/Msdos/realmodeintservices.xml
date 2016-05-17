@@ -499,6 +499,7 @@
 		<reg>al</reg>
 	  </arg>
 	  <arg>
+      <ptr><code /></ptr>
 		<seq>
 		<reg>ds</reg>
 		<reg>dx</reg>

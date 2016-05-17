@@ -42,6 +42,12 @@ namespace Reko.Core.Expressions
 			this.Storage = stg;
 		}
 
+        public static Identifier CreateTemporary(string name, DataType dt)
+        {
+            var tmp = new TemporaryStorage(name, 0, null);
+            return new Identifier(name, dt, tmp);
+        }
+
         public string Name { get; private set; }
 
         /// <summary>
@@ -108,7 +114,7 @@ namespace Reko.Core.Expressions
 			}
 			writer.Write(DataType);
 		}
-	}
+    }
 
 	/// <summary>
 	/// A special class that represents memory locations. Initially,

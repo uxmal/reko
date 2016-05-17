@@ -116,8 +116,12 @@ namespace Reko.Core.Serialization
             var t = arch.GetRegister(sq.Registers[1].Name.Trim());
             Identifier head = frame.EnsureRegister(h);
             Identifier tail = frame.EnsureRegister(t);
-            return frame.EnsureSequence(head, tail,
-                PrimitiveType.CreateWord(head.DataType.Size + tail.DataType.Size));
+            DataType dt;
+            if (this.argCur.Type != null)
+                dt = this.argCur.Type.Accept(procSer.TypeLoader);
+            else 
+                dt = PrimitiveType.CreateWord(head.DataType.Size + tail.DataType.Size);
+            return frame.EnsureSequence(head, tail, dt);
         }
 
 

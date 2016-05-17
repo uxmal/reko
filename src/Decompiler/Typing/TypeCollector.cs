@@ -54,6 +54,7 @@ namespace Reko.Typing
             desc.MeetDataType(program.Globals, factory.CreatePointer(
                 factory.CreateStructureType(),
                 program.Platform.PointerType.Size));
+            CollectSegmentTypes();
             foreach (Procedure p in program.Procedures.Values)
             {
                 proc = p;
@@ -62,6 +63,17 @@ namespace Reko.Typing
                 {
                     stm.Instruction.Accept(this);
                 }
+            }
+        }
+
+        public void CollectSegmentTypes()
+        {
+            foreach (var seg in program.SegmentMap.Segments.Values)
+            {
+                if (seg.Identifier != null)
+                    desc.MeetDataType(seg.Identifier, factory.CreatePointer(
+                        factory.CreateStructureType(),
+                        seg.Identifier.DataType.Size));
             }
         }
 
