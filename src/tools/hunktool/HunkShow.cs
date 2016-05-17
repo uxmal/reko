@@ -162,7 +162,7 @@ namespace hunktool
             // index hunk info is embedded if its in a lib
             if (main.index_hunk != null)
             {
-                this.show_index_info((IndexHunk)(object)main.index_hunk);
+                this.show_index_info(main.index_hunk);
             }
             if (main.HunkType == HunkType.HUNK_CODE && this.disassemble && main.Data != null && main.Data.Length > 0)
             {
@@ -177,34 +177,32 @@ namespace hunktool
             }
         }
 
-        public virtual void show_index_info(IndexHunk info)
+        public virtual void show_index_info(IHunk info)
         {
-            /*
             // references from index
-            if (info.refs)
+            if (info.refs != null && info.refs.Count > 0)
             {
-                this.print_extra("refs", String.Format("#%d", len(info["refs"])));
+                this.print_extra("refs", string.Format("#{0}", info.refs.Count));
                 if (!this.brief)
                 {
-                    foreach (var @ref in info["refs"])
+                    foreach (var @ref in info.refs)
                     {
-                        this.print_symbol(-1, @ref["name"], String.Format("(%d bits)", @ref["bits"]));
+                        this.print_symbol(~0u, @ref.name, string.Format("({0} bits)", @ref.bits));
                         // defines from index
                     }
                 }
             }
-            if (info.has_key("defs"))
+            if (info.defs != null && info.defs.Count > 0)
             {
-                this.print_extra("defs", String.Format("#%d", len(info["defs"])));
+                this.print_extra("defs", string.Format("#{0}", info.defs.Count));
                 if (!this.brief)
                 {
-                    foreach (var d in info["defs"])
+                    foreach (var d in info.defs)
                     {
-                        this.print_symbol(d["value"], d["name"], String.Format("(type %d)", d["type"]));
+                        this.print_symbol((uint) d.value, d.name, string.Format("(type {0})", d.type));
                     }
                 }
             }
-            */
         }
 
         public virtual void show_extra_hunk(Hunk hunk)

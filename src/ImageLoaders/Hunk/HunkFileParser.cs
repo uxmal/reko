@@ -302,7 +302,7 @@ namespace Reko.ImageLoaders.Hunk
 
         public virtual string get_index_name(byte[] strtab, int offset)
         {
-            int end = Array.IndexOf(strtab, (byte) 0);
+            int end = Array.IndexOf(strtab, (byte) 0, offset);
             if (end == -1)
             {
                 return Encoding.GetEncoding("ISO_8859-1").GetString(strtab, offset, strtab.Length - offset);

@@ -17,15 +17,18 @@ namespace hunktool
         // Generate signatures to Output.
         public override bool handle_hunk_file(string s, HunkFile hunk_file)
         {
-            foreach (var unit in hunk_file.units)
+            if (hunk_file.units != null)
             {
-                foreach (var segment in unit.segments)
+                foreach (var unit in hunk_file.units)
                 {
-                    var main = segment[0];
-                    if (main.HunkType == HunkType.HUNK_CODE && main.Data != null &&
-                        main.Data.Length != 0)
+                    foreach (var segment in unit.segments)
                     {
-                        GenerateSignature(segment);
+                        var main = segment[0];
+                        if (main.HunkType == HunkType.HUNK_CODE && main.Data != null &&
+                            main.Data.Length != 0)
+                        {
+                            GenerateSignature(segment);
+                        }
                     }
                 }
             }
