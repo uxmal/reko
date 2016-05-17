@@ -31,6 +31,7 @@ namespace Reko.Loading
     {
         public override IEnumerable<ImageSignature> Load(string filename)
         {
+            // Expect rows of the format "<even number of hex digits or dots><spaces><name>
             var re = new Regex("([.0-9a-f]+)[ \t]+([^ ]+)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
             using (var stm = CreateReader(filename))
             {

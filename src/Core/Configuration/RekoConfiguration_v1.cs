@@ -174,6 +174,9 @@ namespace Reko.Core.Configuration
         [XmlAttribute("Filename")]
         public string Filename;
 
+        [XmlAttribute("Label")]
+        public string Label;
+
         [XmlAttribute("Type")]
         public string Type;
     }

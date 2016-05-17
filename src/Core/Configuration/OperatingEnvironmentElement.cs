@@ -37,6 +37,7 @@ namespace Reko.Core.Configuration
         PlatformHeuristics_v1 Heuristics { get; }
         List<ITypeLibraryElement> TypeLibraries { get; }
         List<ITypeLibraryElement> CharacteristicsLibraries { get; }
+        List<SignatureFile> SignatureFiles { get; }
 
         IPlatform Load(IServiceProvider services, IProcessorArchitecture arch);
     }
@@ -47,6 +48,7 @@ namespace Reko.Core.Configuration
         {
             this.TypeLibraries = new List<ITypeLibraryElement>();
             this.CharacteristicsLibraries = new List<ITypeLibraryElement>();
+            this.SignatureFiles = new List<SignatureFile>();
         }
 
         public string Name { get; set; }
@@ -61,6 +63,7 @@ namespace Reko.Core.Configuration
 
         public List<ITypeLibraryElement> TypeLibraries { get; internal set; }
         public List<ITypeLibraryElement> CharacteristicsLibraries { get; internal set; }
+        public List<SignatureFile> SignatureFiles { get; internal set; }
 
         public IPlatform Load(IServiceProvider services, IProcessorArchitecture arch)
         {

@@ -105,6 +105,7 @@ namespace Reko.Core.Configuration
             return new SignatureFileElement
             {
                 Filename = sSig.Filename,
+                Label = sSig.Label,
                 Type = sSig.Type,
             };
         }
