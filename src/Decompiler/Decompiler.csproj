@@ -252,6 +252,7 @@
     <Compile Include="Evaluation\Substitutor.cs" />
     <Compile Include="Evaluation\SymbolicEvaluationContext.cs" />
     <Compile Include="Evaluation\SymbolicEvaluator.cs" />
+    <Compile Include="Loading\FlirtoidSignatureLoader.cs" />
     <Compile Include="Loading\ImageSignature.cs" />
     <Compile Include="Loading\NullImageLoader.cs" />
     <Compile Include="Loading\SignatureLoader.cs" />

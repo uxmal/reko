@@ -266,6 +266,7 @@
     <Compile Include="ImageLoaders\MachO\MachOLoaderTests.cs" />
     <Compile Include="ImageLoaders\MzExe\NeImageLoaderTests.cs" />
     <Compile Include="ImageLoaders\MzExe\PeImageLoaderTests.cs" />
+    <Compile Include="Loading\FlirtoidSignatureLoaderTests.cs" />
     <Compile Include="Loading\UnpackerSignatureLoaderTests.cs" />
     <Compile Include="Loading\UnpackingServiceTests.cs" />
     <Compile Include="Mocks\FakeDiagnosticsService.cs" />
