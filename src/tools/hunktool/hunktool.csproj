@@ -63,11 +63,12 @@
     <Compile Include="HunkShow.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SignatureGenerator.cs" />
     <Compile Include="StubConfigurationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <Compile Include="Program.Tests.cs" />
+    <Compile Include="SignatureGenerator.Tests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Arch\M68k\M68k.csproj">

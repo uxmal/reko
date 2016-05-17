@@ -34,7 +34,7 @@ using System.Text.RegularExpressions;
 namespace hunktool
 {
 	[TestFixture]
-    public class GenerateSignatureTests
+    public class SignatureGeneratorTests
     {
         private static string nl = Environment.NewLine;
 
@@ -102,7 +102,7 @@ namespace hunktool
             };
             
             var sw = new StringWriter();
-            var segs = new Program.Signatures(new Dictionary<string, ValueObject>());
+            var segs = new SignatureGenerator(new Dictionary<string, ValueObject>());
             segs.Output = sw;
             segs.handle_hunk_file("foo.lib", file);
             var sGen = sw.ToString();
