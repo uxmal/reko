@@ -17,8 +17,8 @@ namespace hunktool
         // Generate signatures to Output.
         public override bool handle_hunk_file(string s, HunkFile hunk_file)
         {
-            if (hunk_file.units != null)
-            {
+            if (hunk_file.type == FileType.TYPE_UNIT)
+            { 
                 foreach (var unit in hunk_file.units)
                 {
                     foreach (var segment in unit.segments)
@@ -32,7 +32,25 @@ namespace hunktool
                     }
                 }
             }
+            if (hunk_file.type == FileType.TYPE_LIB)
+            {
+                foreach (var lib in hunk_file.libs)
+                {
+                    foreach (var unit in lib.units)
+                    {
+                        foreach (var segment in unit.segments)
+                        {
+                            var main = segment[0];
+                            if (main.HunkType == HunkType.HUNK_CODE && main.Data != null &&
+                                main.Data.Length != 0)
+                            {
+                                GenerateSignature(segment);
+                            }
+                        }
+                    }
+                }
 
+            }
             return true;
         }
 
@@ -41,19 +59,37 @@ namespace hunktool
         private void GenerateSignature(List<Hunk> segment)
         {
             var main = segment[0];
-            var extRefs =
-                segment.OfType<ExtHunk>()
-                .SelectMany(e => e.ext_ref)
-                .Where(e => e.refs != null)
-                .SelectMany(e => e.refs.Select(r => new { e.type, offset = r }))
-                .ToDictionary(e => (int)e.offset, e => SizeOfRef(e.type));
-            var defs =
-                segment.OfType<ExtHunk>()
-                .SelectMany(e => e.ext_def)
-                .Where(e => e.type == ExtType.EXT_DEF)
-                .GroupBy(e => e.def)
-                .Select(g => new ExtObject { def = g.Key, name = g.Min(i => i.name) })
-                .ToSortedList(e => (int)e.def, e => e.name);
+            Dictionary<int, int> extRefs =
+                    segment.OfType<ExtHunk>()
+                    .SelectMany(e => e.ext_ref)
+                    .Where(e => e.refs != null)
+                    .SelectMany(e => e.refs.Select(r => new { e.type, offset = r }))
+                    .ToDictionary(e => (int)e.offset, e => SizeOfRef(e.type));
+            SortedList<int, string> defs;
+            if (main.index_hunk != null)
+            {
+                if (main.index_hunk.defs != null)
+                {
+                    defs = main.index_hunk.defs
+                        .GroupBy(e => e.value)
+                        .Select(g => new ExtObject { def = (uint)g.Key, name = g.Min(i => i.name) })
+                        .ToSortedList(e => (int)e.def, e => e.name);
+                }
+                else
+                {
+                    defs = new SortedList<int, string>();
+                }
+            }
+            else
+            {
+                defs =
+                    segment.OfType<ExtHunk>()
+                    .SelectMany(e => e.ext_def)
+                    .Where(e => e.type == ExtType.EXT_DEF)
+                    .GroupBy(e => e.def)
+                    .Select(g => new ExtObject { def = g.Key, name = g.Min(i => i.name) })
+                    .ToSortedList(e => (int)e.def, e => e.name);
+            }
             var ee = defs.GetEnumerator();
             if (!ee.MoveNext())
                 return;
@@ -95,7 +131,9 @@ namespace hunktool
         {
             switch (ext)
             {
-            case ExtType.EXT_RELREF16: return 2;
+            case ExtType.EXT_DEXT16:
+            case ExtType.EXT_RELREF16:
+                return 2;
             case ExtType.EXT_DEF: return 4;
             case ExtType.EXT_ABSREF32: return 4;
             default: throw new NotImplementedException(string.Format("Unknown {0}", ext));

@@ -188,10 +188,10 @@ namespace hunktool
                     foreach (var @ref in info.refs)
                     {
                         this.print_symbol(~0u, @ref.name, string.Format("({0} bits)", @ref.bits));
-                        // defines from index
                     }
                 }
             }
+                        // defines from index
             if (info.defs != null && info.defs.Count > 0)
             {
                 this.print_extra("defs", string.Format("#{0}", info.defs.Count));
