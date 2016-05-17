@@ -39,15 +39,15 @@ namespace Reko.UnitTests.Core.Lib
         [Test]
         public void Test1()
         {
-            SuffixArray sa = new SuffixArray("");
-            Assert.AreEqual(sa.IndexOf("a"), -1, "Found wrong substring");
+            SuffixArray<char> sa = SuffixArray.Create("");
+            Assert.AreEqual(sa.IndexOf(new[] { 'c' }), -1, "Found wrong substring");
         }
 
         [Test]
         public void Test2()
         {
-            SuffixArray sa = new SuffixArray(null);
-            Assert.AreEqual(sa.IndexOf("a"), -1, "Found wrong substring");
+            SuffixArray<char> sa = SuffixArray.Create((string)null);
+            Assert.AreEqual(sa.IndexOf(new[] { 'a' }), -1, "Found wrong substring");
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace Reko.UnitTests.Core.Lib
             string str = "abracadabra";
             string[] expectedSubstrs = { "a", "abra", "abracadabra", "acadabra", "adabra", "bra", "bracadabra", "cadabra", "dabra", "ra", "racadabra" };
             int[] expectedLcps = { 0, 1, 4, 1, 1, 0, 3, 0, 0, 0, 2 };
-            SuffixArray sa = new SuffixArray(str);
+            var sa = SuffixArray.Create(str);
 
             PrintSortedArray(sa);
 
@@ -79,42 +79,42 @@ namespace Reko.UnitTests.Core.Lib
         [Test]
         public void TestSearch1()
         {
-            SuffixArray sa = new SuffixArray("yakawow");
-            Assert.AreEqual(sa.IndexOf("a"), 1, "Substring not found/Wrong index");
+            var sa = SuffixArray.Create("yakawow");
+            Assert.AreEqual(sa.IndexOf(new char[]{ 'a' }), 1, "Substring not found/Wrong index");
         }
         [Test]
         public void TestSearch2()
         {
-            SuffixArray sa = new SuffixArray("yakawow");
-            Assert.AreEqual(sa.IndexOf("yakawow"), 0, "Wrong index");
+            var sa = SuffixArray.Create("yakawow");
+            Assert.AreEqual(sa.IndexOf("yakawow".ToCharArray()), 0, "Wrong index");
         }
         [Test]
         public void TestSearch3()
         {
-            SuffixArray sa = new SuffixArray("yakawow");
-            Assert.AreEqual(sa.IndexOf("z"), -1, "Found wrong substring.");
+            var sa = SuffixArray.Create("yakawow");
+            Assert.AreEqual(sa.IndexOf(new char[] { 'z' }), -1, "Found wrong substring.");
         }
         [Test]
         public void TestSearch4()
         {
-            SuffixArray sa = new SuffixArray("yakawow");
+            var sa = SuffixArray.Create("yakawow");
             Assert.AreEqual(sa.IndexOf(null), -1, "Found wrong substring.");
         }
         [Test]
         public void TestSearch5()
         {
-            SuffixArray sa = new SuffixArray("yakawow");
-            Assert.AreEqual(sa.IndexOf(""), -1, "Wrong index");
+            var sa = SuffixArray.Create("yakawow");
+            Assert.AreEqual(sa.IndexOf(new char[0]), -1, "Wrong index");
         }
 
-        public void PrintSortedArray(SuffixArray sa)
+        public void PrintSortedArray(SuffixArray<char> sa)
         {
             for (int i = 0; i < sa.Length; i++)
             {
                 Console.Write("{0} {1} {2} lcp = {3}",
                     i, 
                     sa[i],
-                    sa.Str.Substring(sa[i]),
+                    string.Join("", sa.Str.Skip(sa[i])),
                     sa.Lcp[i].ToString());
             }
         }
@@ -122,19 +122,19 @@ namespace Reko.UnitTests.Core.Lib
         [Test]
         public void Occurences()
         {
-            var sa = new SuffixArray("zappa");
-            Assert.AreEqual(new[] { 1, 4 }, sa.FindOccurences("a").ToArray());
+            var sa = SuffixArray.Create("zappa");
+            Assert.AreEqual(new[] { 1, 4 }, sa.FindOccurences("a".ToCharArray()).ToArray());
         }
 
         [Test]
         public void Occurences2()
         {
-            var sa = new SuffixArray("papapa");
+            var sa = SuffixArray.Create("papapa");
             PrintSortedArray(sa);
-            Assert.AreEqual(new[] { 0, 2 }, sa.FindOccurences("papa").ToArray());
+            Assert.AreEqual(new[] { 0, 2 }, sa.FindOccurences("papa".ToCharArray()).ToArray());
         }
 
-        [Test]
+        //[Test]
         public void Timing()
         {
             for (int N = 2; N < 100000000; N = N * 3 / 2)
@@ -143,7 +143,7 @@ namespace Reko.UnitTests.Core.Lib
                 var bytes = new byte[N];
                 rnd.NextBytes(bytes);
                 var str = new string(bytes.Select(b => (char)b).ToArray());
-                var sw1 = Time(str, s => new SuffixArray(s));
+                var sw1 = Time(str, s => SuffixArray.Create(s));
                 var sw2 = Time(str, s => { });
                 var beforeGc = GC.GetTotalMemory(false) / 1024.0 / 1024.0;
                 GC.Collect();
@@ -166,10 +166,21 @@ namespace Reko.UnitTests.Core.Lib
         [Test]
         public void Sufa_Abracadabra()
         {
-            var sa = new SuffixArray("abracadabra");
+            var sa = SuffixArray.Create("abracadabra");
             PrintSortedArray(sa);
             Debug.Print(sa.ToString());
-            Assert.AreEqual(new[] { 0, 3, 5, 7, 10 }, sa.FindOccurences("a").OrderBy(i=>i).ToArray());
+            Assert.AreEqual(new[] { 0, 3, 5, 7, 10 }, sa.FindOccurences("a".ToCharArray()).OrderBy(i=>i).ToArray());
+        }
+
+        [Test]
+        public void Sufa_ByteArray()
+        {
+            var sa = SuffixArray.Create(new byte[]
+            {
+                0x01, 0x02, 0x4E, 0x75,
+                0x01, 0x02, 0x4E, 0x75,
+            });
+            Assert.AreEqual(new[] { 2, 6 }, sa.FindOccurences(new byte[] { 0x4E, 0x75 }).OrderBy(i=>i).ToArray());
         }
     }
 }

@@ -25,24 +25,44 @@ using System.Collections.Generic;
 
 namespace Reko.Core.Lib
 {
-    public class SuffixArray
+    public static class SuffixArray
+    {
+        public static SuffixArray<char> Create(string str)
+        {
+            if (str == null)
+                str = "";
+            return new SuffixArray<char>(str.ToCharArray());
+        }
+
+        public static SuffixArray<byte> Create(byte[] arr)
+        {
+
+            if (arr == null)
+                arr = new byte[0];
+            return new SuffixArray<byte>(arr);
+        }
+    }
+
+    public class SuffixArray<T>
     {
         private const int EOC = int.MaxValue;
         private int[] m_sa;
         private int[] m_isa;
         private int[] m_lcp;
-        private Dictionary<char, int> m_chainHeadsDict = new Dictionary<char, int>();
+        private Dictionary<T, int> m_chainHeadsDict;
         private List<Chain> m_chainStack = new List<Chain>();
         private List<Chain> m_subChains = new List<Chain>();
         private int m_nextRank = 1;
-        private string m_str;
+        private T[] m_str;
+        private IComparer<T> cmp;
 
         /// <summary>
         /// Build a suffix array from string str
         /// </summary>
         /// <param name="str">A string for which to build a suffix array with LCP information</param>
         /// <param name="buildLcps">Also build LCP array</param>
-        public SuffixArray(string str) : this(str, true) { }
+        public SuffixArray(T[] str) : this(str, true) {
+        }
 
         /// 
         /// <summary>
@@ -50,15 +70,17 @@ namespace Reko.Core.Lib
         /// </summary>
         /// <param name="str">A string for which to build a suffix array</param>
         /// <param name="buildLcps">Also calculate LCP information</param>
-        public SuffixArray(string str, bool buildLcps)
+        public SuffixArray(T[] str, bool buildLcps)
         {
             m_str = str;
             if (m_str == null)
             {
-                m_str = "";
+                m_str = new T[0];
             }
             m_sa = new int[m_str.Length];
             m_isa = new int[m_str.Length];
+            this.cmp = Comparer<T>.Default;
+            m_chainHeadsDict = new Dictionary<T, int>();
 
             FormInitialChains();
             BuildSuffixArray();
@@ -85,7 +107,7 @@ namespace Reko.Core.Lib
             get { return m_lcp; }
         }
 
-        public string Str
+        public T[] Str
         {
             get { return m_str; }
         }
@@ -94,7 +116,7 @@ namespace Reko.Core.Lib
         /// <summary>Find the index of a substring </summary>
         /// <param name="substr">Substring to look for</param>
         /// <returns>First index in the original string. -1 if not found</returns>
-        public int IndexOf(string substr)
+        public int IndexOf(T[] substr)
         {
             int l = 0;
             int r = m_sa.Length;
@@ -109,7 +131,7 @@ namespace Reko.Core.Lib
             while (r > l)
             {
                 m = (l + r) / 2;
-                if (m_str.Substring(m_sa[m]).CompareTo(substr) < 0)
+                if (Match(m_sa[m], substr) < 0)
                 {
                     l = m + 1;
                 }
@@ -118,7 +140,7 @@ namespace Reko.Core.Lib
                     r = m;
                 }
             }
-            if ((l == r) && (l < m_str.Length) && (m_str.Substring(m_sa[l]).StartsWith(substr)))
+            if ((l == r) && (l < m_str.Length) && (Match(m_sa[m], substr) == 0))
             {
                 return m_sa[l];
             }
@@ -128,13 +150,13 @@ namespace Reko.Core.Lib
             }
         }
 
-        public IEnumerable<int> FindOccurences(string substr)
+        public IEnumerable<int> FindOccurences(T[] substr)
         {
             int lo = 0;
             int hi = m_sa.Length - 1;
             int m = -1;
 
-            if (string.IsNullOrEmpty(substr))
+            if (substr == null || substr.Length ==0)
             {
                 yield break;
             }
@@ -174,18 +196,45 @@ namespace Reko.Core.Lib
             }
         }
 
-        int Match(int iText, string substr)
+        private int Match(int iText, T[] substr)
         {
             for (int i = 0; i < substr.Length; ++i)
             {
                 if (iText >= m_str.Length)
                     return -1;
-                int cmp = m_str[iText].CompareTo(substr[i]);
+                int cmp = this.cmp.Compare(m_str[iText], substr[i]);
                 if (cmp != 0)
                     return cmp;
                 ++iText;
             }
             return 0;
+        }
+
+        private int Match(int iLeft, int cLeft, int iRight, int cRight)
+        {
+            int iLeftMax = iLeft + cLeft;
+            int iRightMax = iRight + cRight;
+            for (;;)
+            {
+                if (iLeft == iLeftMax)
+                {
+                    if (iRight == iRightMax)
+                        return 0;
+                    else
+                        return -1;
+                } else if (iRight == iRightMax)
+                {
+                    if (iLeft == iLeftMax)
+                        return 0;
+                    else
+                        return 1;
+                }
+                var c = cmp.Compare(m_str[iLeft], m_str[iRight]);
+                if (c != 0)
+                    return c;
+                ++iLeft;
+                ++iRight;
+            }
         }
 
         private void FormInitialChains()
@@ -214,7 +263,7 @@ namespace Reko.Core.Lib
             // Prepare chains to be pushed to stack
             foreach (int headIndex in m_chainHeadsDict.Values)
             {
-                Chain newChain = new Chain(m_str);
+                Chain newChain = new Chain(this, m_str);
                 newChain.head = headIndex;
                 newChain.length = 1;
                 m_subChains.Add(newChain);
@@ -274,7 +323,7 @@ namespace Reko.Core.Lib
 
         private void ExtendChain(Chain chain)
         {
-            char sym = m_str[chain.head + chain.length];
+            T sym = m_str[chain.head + chain.length];
             if (m_chainHeadsDict.ContainsKey(sym))
             {
                 // Continuation of an existing chain, this is the leftmost
@@ -286,7 +335,7 @@ namespace Reko.Core.Lib
             {
                 // This is the beginning of a new subchain
                 m_isa[chain.head] = EOC;
-                Chain newChain = new Chain(m_str);
+                Chain newChain = new Chain(this, m_str);
                 newChain.head = chain.head;
                 newChain.length = chain.length + 1;
                 m_subChains.Add(newChain);
@@ -364,7 +413,8 @@ namespace Reko.Core.Lib
         {
             int lcp;
             int maxIndex = m_str.Length - Math.Max(i, j);       // Out of bounds prevention
-            for (lcp = 0; (lcp < maxIndex) && (m_str[i + lcp] == m_str[j + lcp]); lcp++) ;
+            for (lcp = 0; (lcp < maxIndex) && (cmp.Compare(m_str[i + lcp] , m_str[j + lcp]) == 0); lcp++)
+                ;
             return lcp;
         }
 
@@ -373,66 +423,64 @@ namespace Reko.Core.Lib
             return string.Format("[{0}]", string.Join(", ", m_sa.Take(80)));
         }
 
+
+        #region HelperClasses
+        [Serializable]
+        internal class Chain : IComparable<Chain>
+        {
+            public int head;
+            public int length;
+            private T[] m_str;
+            private SuffixArray<T> outer;
+
+            public Chain(SuffixArray<T> outer, T[] str)
+            {
+                this.outer = outer;
+                m_str = str;
+            }
+
+            public int CompareTo(Chain other)
+            {
+                return outer.Match(head, length, other.head, other.length);
+            }
+
+        }
+
+        [Serializable]
+        internal class CharComparer : System.Collections.Generic.EqualityComparer<char>
+        {
+            public override bool Equals(char x, char y)
+            {
+                return x.Equals(y);
+            }
+
+            public override int GetHashCode(char obj)
+            {
+                return obj.GetHashCode();
+            }
+        }
+
+        [Serializable]
+        internal struct SuffixRank
+        {
+            public int head;
+            public int rank;
+        }
+
+        [Serializable]
+        internal class SuffixRankComparer : IComparer<SuffixRank>
+        {
+            public bool Equals(SuffixRank x, SuffixRank y)
+            {
+                return x.rank.Equals(y.rank);
+            }
+
+            public int Compare(SuffixRank x, SuffixRank y)
+            {
+                return x.rank.CompareTo(y.rank);
+            }
+        }
+        #endregion
     }
-
-    #region HelperClasses
-    [Serializable]
-    internal class Chain : IComparable<Chain>
-    {
-        public int head;
-        public int length;
-        private string m_str;
-
-        public Chain(string str)
-        {
-            m_str = str;
-        }
-
-        public int CompareTo(Chain other)
-        {
-            return m_str.Substring(head, length).CompareTo(m_str.Substring(other.head, other.length));
-        }
-
-        public override string ToString()
-        {
-            return m_str.Substring(head, length);
-        }
-    }
-
-    [Serializable]
-    internal class CharComparer : System.Collections.Generic.EqualityComparer<char>
-    {
-        public override bool Equals(char x, char y)
-        {
-            return x.Equals(y);
-        }
-
-        public override int GetHashCode(char obj)
-        {
-            return obj.GetHashCode();
-        }
-    }
-
-    [Serializable]
-    internal struct SuffixRank
-    {
-        public int head;
-        public int rank;
-    }
-
-    [Serializable]
-    internal class SuffixRankComparer : IComparer<SuffixRank>
-    {
-        public bool Equals(SuffixRank x, SuffixRank y)
-        {
-            return x.rank.Equals(y.rank);
-        }
-
-        public int Compare(SuffixRank x, SuffixRank y)
-        {
-            return x.rank.CompareTo(y.rank);
-        }
-    }
-    #endregion
 }
 
