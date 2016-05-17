@@ -72,6 +72,7 @@ namespace Reko.Gui.Windows.Controls
                 {
                     Model = new MixedCodeDataModel(program);
                     addrTop = (Address)Model.CurrentPosition;
+                    return;
                 }
             }
             catch (Exception ex)

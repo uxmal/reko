@@ -104,6 +104,10 @@ namespace Reko.Gui.Windows.Controls
         public object EndPosition{ get { return this; } }
         public int LineCount { get { return 0; } }
 
+        public EmptyEditorModel()
+        {
+        }
+
         public int MoveToLine(object position, int offset)
         {
             return 0;
