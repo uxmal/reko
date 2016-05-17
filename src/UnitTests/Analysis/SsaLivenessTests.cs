@@ -132,7 +132,7 @@ namespace Reko.UnitTests.Analysis
                 proc.CreateBlockDominatorGraph(),
                 new HashSet<RegisterStorage>());
 			ssa = sst.SsaState;
-			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa.Identifiers, platform);
+			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, platform);
 			cce.Transform();
 			ValuePropagator vp = new ValuePropagator(arch, ssa.Identifiers, proc);
 			vp.Transform();

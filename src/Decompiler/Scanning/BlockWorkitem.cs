@@ -30,7 +30,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using ProcedureCharacteristics  = Reko.Core.Serialization.ProcedureCharacteristics;
+using ProcedureCharacteristics = Reko.Core.Serialization.ProcedureCharacteristics;
+using Reko.Analysis;
 
 namespace Reko.Scanning
 {
@@ -339,6 +340,7 @@ namespace Reko.Scanning
         /// <returns></returns>
         public bool VisitGoto(RtlGoto g)
         {
+            var blockFrom = blockCur;
             if ((g.Class & RtlClass.Delay) != 0)
             {
                 // Get next instruction cluster.
@@ -352,6 +354,11 @@ namespace Reko.Scanning
                 var blockTarget = BlockFromAddress(ric.Address, addrTarget, blockCur.Procedure, state);
                 var blockSource = scanner.FindContainingBlock(ric.Address);
                 EnsureEdge(blockSource.Procedure, blockSource, blockTarget);
+                if (ric.Address == addrTarget)
+                {
+                    var bt = BlockFromAddress(ric.Address, addrTarget, blockCur.Procedure, state);
+                    EnsureEdge(blockSource.Procedure, blockFrom, bt);
+                }
                 return false;
             }
             CallSite site;
@@ -396,6 +403,18 @@ namespace Reko.Scanning
             Address addr = call.Target as Address;
             if (addr != null)
             {
+                if (!program.SegmentMap.IsValidAddress(addr))
+                {
+                    scanner.Warn(ric.Address, "Target address {0} is invalid.", addr);
+                    sig = new ProcedureSignature();
+                    EmitCall(
+                        CreateProcedureConstant(
+                            new ExternalProcedure(Procedure.GenerateName(addr), sig)),
+                        sig,
+                        site);
+                    return OnAfterCall(sig, chr);
+                }
+
                 var impProc = scanner.GetImportedProcedure(addr, this.ric.Address);
                 if (impProc != null && impProc.Characteristics.IsAlloca)
                     return ProcessAlloca(site, impProc);
@@ -697,7 +716,7 @@ namespace Reko.Scanning
                     return false;
                 // Can't determine the size of the table, but surely it has one entry?
                 var addrEntry = arch.ReadCodeAddress(bw.Stride, rdr, state);
-                if (this.program.ImageMap.IsValidAddress(addrEntry))
+                if (this.program.SegmentMap.IsValidAddress(addrEntry))
                 {
                     vector.Add(addrEntry);
                     scanner.Warn(addrSwitch, "Can't determine size of jump vector; probing only one entry.");
@@ -768,7 +787,7 @@ namespace Reko.Scanning
                 }
                 else
                 {
-                    if (!program.ImageMap.IsValidAddress(addr))
+                    if (!program.SegmentMap.IsValidAddress(addr))
                         break;
                     BlockFromAddress(ric.Address, addr, blockCur.Procedure, state);
                 }
@@ -958,14 +977,14 @@ namespace Reko.Scanning
         private class BackwalkerHost : IBackWalkHost
         {
             private IScanner scanner;
-            private ImageMap imageMap;
+            private SegmentMap segmentMap;
             private IPlatform platform;
             private IProcessorArchitecture arch;
 
             public BackwalkerHost(BlockWorkitem item)
             {
                 this.scanner = item.scanner;
-                this.imageMap = item.program.ImageMap;
+                this.segmentMap = item.program.SegmentMap;
                 this.arch = item.program.Architecture;
                 this.platform = item.program.Platform;
             }
@@ -992,7 +1011,7 @@ namespace Reko.Scanning
 
             public bool IsValidAddress(Address addr)
             {
-                return imageMap.IsValidAddress(addr);
+                return segmentMap.IsValidAddress(addr);
             }
 
             public Address MakeAddressFromConstant(Constant c)

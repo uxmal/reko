@@ -75,7 +75,12 @@ namespace Reko.Analysis
         {
             return GetEnumerator();
         }
-        
+
+        public void Remove(SsaIdentifier sid)
+        {
+            sids.Remove(sid.Identifier);
+        }
+
         public bool TryGetValue(Identifier id, out SsaIdentifier sid)
         {
             return sids.TryGetValue(id, out sid);

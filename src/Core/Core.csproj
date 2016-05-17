@@ -227,8 +227,14 @@
     <Compile Include="Expressions\UnaryExpression.cs" />
     <Compile Include="FieldAttribute.cs" />
     <Compile Include="ImageSymbol.cs" />
+    <Compile Include="Lib\PatternCollector.cs" />
+    <Compile Include="Lib\PerfectHash.cs" />
+    <Compile Include="Lib\SuffixArray.cs" />
+    <Compile Include="Lib\WildPatternMatcher.cs" />
+    <Compile Include="Operators\FNegOperator.cs" />
     <Compile Include="Output\CTypeReferenceFormatter.cs" />
     <Compile Include="Rational.cs" />
+    <Compile Include="SegmentMap.cs" />
     <Compile Include="Serialization\ArgumentDeserializer.cs" />
     <Compile Include="Serialization\GlobalDataItem_v2.cs" />
     <Compile Include="IByteSource.cs" />

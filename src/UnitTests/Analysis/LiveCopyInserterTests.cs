@@ -186,7 +186,7 @@ namespace Reko.UnitTests.Analysis
 			SsaState ssa = sst.SsaState;
 			this.ssaIds = ssa.Identifiers;
 
-			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa.Identifiers, platform);
+			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, platform);
 			cce.Transform();
 			DeadCode.Eliminate(proc, ssa);
 

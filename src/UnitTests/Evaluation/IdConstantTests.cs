@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Evaluation
 		}
 
 		[Test]
-		public void ConstantPropagate()
+		public void Idc_ConstantPropagate()
 		{
 			Identifier ds = m.Frame.EnsureRegister(Registers.ds);
             var c = Constant.Word16(0x1234);
@@ -64,5 +64,37 @@ namespace Reko.UnitTests.Evaluation
 			Expression e = ic.Transform();
 			Assert.AreEqual("selector", e.DataType.ToString());
 		}
-	}
+
+        [Test]
+        public void Idc_ConstantReferenceInt()
+        {
+            var dword = new TypeReference("DWORD", PrimitiveType.Int32);
+            Identifier edx = new Identifier("edx", dword, Registers.edx);
+
+            var ctx = new SymbolicEvaluationContext(null, null);
+            ctx.SetValue(edx, Constant.Int32(321));
+
+            IdConstant ic = new IdConstant(ctx, new Unifier(null));
+            Assert.IsTrue(ic.Match(edx));
+            Expression e = ic.Transform();
+            Assert.AreEqual("321", e.ToString());
+            Assert.AreEqual("int32", e.DataType.ToString());
+        }
+
+        [Test]
+        public void Idc_ConstantReferencePointerToInt()
+        {
+            var intptr = new TypeReference("INTPTR", new Pointer(PrimitiveType.Int32, 4));
+            Identifier edx = new Identifier("edx", intptr, Registers.edx);
+
+            var ctx = new SymbolicEvaluationContext(null, null);
+            ctx.SetValue(edx, Constant.Int32(0x567));
+
+            IdConstant ic = new IdConstant(ctx, new Unifier(null));
+            Assert.IsTrue(ic.Match(edx));
+            Expression e = ic.Transform();
+            Assert.AreEqual("00000567", e.ToString());
+            Assert.AreEqual("(ptr int32)", e.DataType.ToString());
+        }
+    }
 }

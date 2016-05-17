@@ -51,21 +51,28 @@ namespace Reko.Core
             this.FpuStackArgumentMax = -1;
         }
 
-        public ProcedureSignature(Identifier returnId, params Identifier[] formalArguments)
+        public ProcedureSignature(
+            Identifier returnId,
+            params Identifier[] formalParameters)
             : this()
         {
             this.ReturnValue = returnId;
-            this.Parameters = formalArguments;
+            this.Parameters = formalParameters;
         }
 
         public TypeVariable TypeVariable { get; set; }
         public Identifier[] Parameters { get; private set; } 
         public Identifier ReturnValue { get; private set; }
-        public int ReturnAddressOnStack { get; set; }           // The size of the return address if pushed on stack.
 
         /// <summary>
-        /// Number of slots by which the FPU stack grows or shrinks after the procedure is called. A positive number 
-        /// means that items are left on the stack, a negative number means items are removed from stack.
+        /// The size of the return address if pushed on stack.
+        /// </summary>
+        public int ReturnAddressOnStack { get; set; }
+
+        /// <summary>
+        /// Number of slots by which the FPU stack grows or shrinks after the
+        /// procedure is called. A positive number means that items are left
+        /// on the stack, a negative number means items are removed from stack.
         /// </summary>
         /// <remarks>
         /// This is x86-specific.
@@ -102,7 +109,6 @@ namespace Reko.Core
         /// True if this is an instance method of the EnclosingType.
         /// </summary>
         public bool IsInstanceMetod { get; set; }
-
 
         #region Output methods
         public void Emit(string fnName, EmitFlags f, TextWriter writer)

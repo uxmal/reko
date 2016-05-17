@@ -796,8 +796,7 @@ namespace Reko.Arch.X86
                 p = PseudoProc(operation, instrCur.op1.Width, SrcOp(instrCur.op1), SrcOp(instrCur.op2));
             }
             emitter.Assign(SrcOp(instrCur.op1), p);
-            if (t != null)
-                emitter.Assign(orw.FlagGroup(FlagM.CF), t);
+            emitter.Assign(orw.FlagGroup(FlagM.CF), t);
         }
 
         private void RewriteSet(ConditionCode cc)

@@ -101,6 +101,7 @@
     <Compile Include="Arch\Intel\X86InstructionComparer.Tests.cs" />
     <Compile Include="Arch\Mips\MipsPointerScannerTests.cs" />
     <Compile Include="Arch\Vax\VaxDisassemblerTests.cs" />
+    <Compile Include="Arch\Vax\VaxRewriterTests.cs" />
     <Compile Include="Categories.cs" />
     <Compile Include="Core\CLanguage\CConstantEvaluatorTests.cs" />
     <Compile Include="Core\CLanguage\CDirectiveLexerTests.cs" />
@@ -110,8 +111,13 @@
     <Compile Include="Core\CLanguage\LookAheadLexerTests.cs" />
     <Compile Include="Core\CLanguage\NamedDataTypeExtractorTests.cs" />
     <Compile Include="Core\CLanguage\TypedefTests.cs" />
+    <Compile Include="Core\Configuration\OperatingEnvironmentElementTests.cs" />
+    <Compile Include="Core\Configuration\RekoConfigurationServiceTests.cs" />
     <Compile Include="Core\Configuration\RekoConfigurationTests.cs" />
+    <Compile Include="Core\Lib\SuffixArrayTests.cs" />
+    <Compile Include="Core\Lib\WildPatternMatcher.Tests.cs" />
     <Compile Include="Core\Output\CTypeReferenceFormatterTests.cs" />
+    <Compile Include="Core\SegmentMapTests.cs" />
     <Compile Include="Core\Serialization\ArgumentDeserializerTests.cs" />
     <Compile Include="Core\Serialization\ArgumentSerializerTests.cs" />
     <Compile Include="Core\Serialization\ProjectLoaderTests.cs" />
@@ -263,6 +269,8 @@
     <Compile Include="ImageLoaders\MachO\MachOLoaderTests.cs" />
     <Compile Include="ImageLoaders\MzExe\NeImageLoaderTests.cs" />
     <Compile Include="ImageLoaders\MzExe\PeImageLoaderTests.cs" />
+    <Compile Include="Loading\DccSignatureLoaderTests.cs" />
+    <Compile Include="Loading\FlirtoidSignatureLoaderTests.cs" />
     <Compile Include="Loading\UnpackerSignatureLoaderTests.cs" />
     <Compile Include="Loading\UnpackingServiceTests.cs" />
     <Compile Include="Mocks\FakeDiagnosticsService.cs" />

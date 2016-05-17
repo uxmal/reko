@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
@@ -48,7 +49,7 @@ namespace Reko.Scanning
         void ScanImage();
         ProcedureBase ScanProcedure(Address addr, string procedureName, ProcessorState state);
 
-        void EnqueueEntryPoint(EntryPoint ep);
+        void EnqueueImageSymbol(ImageSymbol sym, bool isEntryPoint);
         void EnqueueProcedure(Address addr);
         Block EnqueueJumpTarget(Address addrSrc, Address addrDst, Procedure proc, ProcessorState state);
         void EnqueueUserProcedure(Procedure_v1 sp);
@@ -94,6 +95,7 @@ namespace Reko.Scanning
     {
         private Program program;
         private PriorityQueue<WorkItem> queue;
+        private SegmentMap segmentMap;
         private ImageMap imageMap;
         private IImportResolver importResolver;
         private SortedList<Address, BlockRange> blocks;
@@ -120,12 +122,17 @@ namespace Reko.Scanning
             IServiceProvider services)
         {
             this.program = program;
-            this.imageMap = program.ImageMap;
+            this.segmentMap = program.SegmentMap;
             this.importResolver = importResolver;
             this.eventListener = services.RequireService<DecompilerEventListener>();
             this.cancelSvc = services.GetService<CancellationTokenSource>();
-            if (imageMap == null)
-                throw new InvalidOperationException("Program must have an image map.");
+            if (segmentMap == null)
+                throw new InvalidOperationException("Program must have an segment map.");
+            if (program.ImageMap == null)
+            {
+                program.ImageMap = segmentMap.CreateImageMap();
+            }
+            this.imageMap = program.ImageMap;
             this.queue = new PriorityQueue<WorkItem>();
             this.blocks = new SortedList<Address, BlockRange>();
             this.blockStarts = new Dictionary<Block, Address>();
@@ -167,7 +174,7 @@ namespace Reko.Scanning
         public Block AddBlock(Address addr, Procedure proc, string blockName)
         {
             Block b = new Block(proc, blockName) { Address = addr };
-            var lastMem = imageMap.Segments.Values.Last().MemoryArea;
+            var lastMem = segmentMap.Segments.Values.Last().MemoryArea;
             blocks.Add(addr, new BlockRange(b, addr.ToLinear(), lastMem.BaseAddress.ToLinear() + (uint)lastMem.Length));
             blockStarts.Add(b, addr);
             proc.ControlGraph.Blocks.Add(b);
@@ -259,9 +266,11 @@ namespace Reko.Scanning
             };
         }
 
-        public void EnqueueEntryPoint(EntryPoint ep)
+        public void EnqueueImageSymbol(ImageSymbol sym, bool isEntryPoint)
         {
-            queue.Enqueue(PriorityEntryPoint, new EntryPointWorkitem(this, program, ep));
+            if (sym.ProcessorState == null)
+                sym.ProcessorState = program.Architecture.CreateProcessorState();
+            queue.Enqueue(PriorityEntryPoint, new ImageSymbolWorkItem(this, program, sym, isEntryPoint));
         }
 
         public void EnqueueProcedure(Address addr)
@@ -276,6 +285,8 @@ namespace Reko.Scanning
             Procedure proc;
             if (program.Procedures.TryGetValue(addr, out proc))
                 return; // Already scanned. Do nothing.
+            if (!sp.Decompile)
+                return;
             proc = EnsureProcedure(addr, sp.Name);
             if (sp.Signature != null)
             {
@@ -349,8 +360,8 @@ namespace Reko.Scanning
                 }
                 else
                 {
-                    // Jumped into the middle of another procedure. Is it worth promoting the destination block
-                    // to a new procedure?
+                    // Jumped into the middle of another procedure. Is it worth
+                    // promoting the destination block to a new procedure?
                     if (IsBlockLinearProcedureExit(block))
                     {
                         // No, just clone the block into the new procedure.
@@ -358,11 +369,14 @@ namespace Reko.Scanning
                     }
                     else
                     {
-                        // We jumped into a pre-existing block of another procedure which was hairy enough
-                        // that we need to promote the block to a new procedure.
+                        // We jumped into a pre-existing block of another 
+                        // procedure which was hairy enough that we need to 
+                        // promote the block to a new procedure.
                         procDest = EnsureProcedure(addrDest, null);
                         var blockNew = CreateCallRetThunk(addrSrc, proc, procDest);
+                        EstablishInitialState(addrDest, program.Architecture.CreateProcessorState(), procDest);
                         procDest.ControlGraph.AddEdge(procDest.EntryBlock, block);
+                        AddFramePointerAssignment(addrDest, procDest);
                         var wi = CreatePromoteWorkItem(addrDest, block, procDest);
                         queue.Enqueue(PriorityBlockPromote, wi);
                         return blockNew;
@@ -436,24 +450,27 @@ namespace Reko.Scanning
             }
         }
 
-        public void ScanEntryPoint(Program program, EntryPoint ep)
+        public void ScanImageSymbol(Program program, ImageSymbol sym, bool isEntryPoint)
         {
             try
             {
-                Address addr = ep.Address;
+                Address addr = sym.Address;
                 Procedure proc;
+                ExternalProcedure extProc;
                 if (program.Procedures.TryGetValue(addr, out proc))
                     return; // Already scanned. Do nothing.
+                if (TryGetNoDecompiledProcedure(addr, out extProc))
+                    return;
 
-                proc = EnsureProcedure(addr, ep.Name);
-                if (ep.Signature != null)
+                proc = EnsureProcedure(addr, sym.Name);
+                if (sym.Signature != null)
                 {
                     var sser = program.CreateProcedureSerializer();
-                    proc.Signature = sser.Deserialize(ep.Signature, proc.Frame);
+                    proc.Signature = sser.Deserialize(sym.Signature, proc.Frame);
                 }
-                else if (ep.Name != null)
+                else if (sym.Name != null)
                 {
-                    var exp = program.Platform.SignatureFromName(ep.Name);
+                    var exp = program.Platform.SignatureFromName(sym.Name);
                     if (exp != null)
                     {
                         proc.Name = exp.Name;
@@ -462,7 +479,7 @@ namespace Reko.Scanning
                     }
                     else
                     {
-                        proc.Name = ep.Name;
+                        proc.Name = sym.Name;
                     }
                 }
 
@@ -471,9 +488,9 @@ namespace Reko.Scanning
                 //    proc.Characteristics = sp.Characteristics;
                 //}
 
-                var pb = ScanProcedure(ep.Address, ep.Name, ep.ProcessorState);
+                var pb = ScanProcedure(sym.Address, sym.Name, sym.ProcessorState);
                 proc = pb as Procedure;
-                if (proc != null)
+                if (isEntryPoint && proc != null)
                 {
                     program.CallGraph.AddEntryPoint(proc);
                 }
@@ -496,6 +513,8 @@ namespace Reko.Scanning
         {
             TerminateAnyBlockAt(addr);
             ExternalProcedure ep;
+            if (TryGetNoDecompiledProcedure(addr, out ep))
+                return ep;
             if (program.InterceptedCalls.TryGetValue(addr, out ep))
                 return ep;
             var trampoline = GetTrampoline(addr);
@@ -512,23 +531,37 @@ namespace Reko.Scanning
             visitedProcs.Add(proc);
             Debug.WriteLineIf(trace.TraceInfo, string.Format("Scanning procedure at {0}", addr));
 
+            var st = state.Clone();
+            EstablishInitialState(addr, st, proc);
+
             //$REFACTOR: make the stack explicit?
             var oldQueue = queue;
             queue = new PriorityQueue<WorkItem>();
-            var st = state.Clone();
-            st.SetInstructionPointer(addr);
-            st.OnProcedureEntered();
-            var sp = proc.Frame.EnsureRegister(program.Architecture.StackRegister);
-            st.SetValue(sp, proc.Frame.FramePointer);
-            SetAssumedRegisterValues(addr, st);
             var block = EnqueueJumpTarget(addr, addr, proc, st);
             proc.ControlGraph.AddEdge(proc.EntryBlock, block);
             ProcessQueue();
             queue = oldQueue;
 
-            // Add <stackpointer> := fp explicitly to the starting block.
-            EstablishFrame(addr, proc, sp);
+            AddFramePointerAssignment(addr, proc);
+            var usb = new UserSignatureBuilder(program);
+            usb.BuildSignature(addr, proc);
             return proc;
+        }
+
+        /// <summary>
+        /// Before processing the body of a procedure, perform housekeeping tasks.
+        /// </summary>
+        /// <param name="addr"></param>
+        /// <param name="state"></param>
+        /// <param name="proc"></param>
+        /// <returns></returns>
+        private void EstablishInitialState(Address addr, ProcessorState st, Procedure proc)
+        {
+            st.SetInstructionPointer(addr);
+            st.OnProcedureEntered();
+            var sp = proc.Frame.EnsureRegister(program.Architecture.StackRegister);
+            st.SetValue(sp, proc.Frame.FramePointer);
+            SetAssumedRegisterValues(addr, st);
         }
 
         /// <summary>
@@ -539,10 +572,43 @@ namespace Reko.Scanning
         /// <param name="addr"></param>
         /// <param name="proc"></param>
         /// <param name="sp"></param>
-        public void EstablishFrame(Address addr, Procedure proc, Identifier sp)
+        public void AddFramePointerAssignment(Address addr, Procedure proc)
         {
             var stmts = proc.EntryBlock.Succ[0].Statements;
+            var sp = proc.Frame.EnsureRegister(program.Architecture.StackRegister);
             stmts.Insert(0, addr.ToLinear(), new Assignment(sp, proc.Frame.FramePointer));
+        }
+
+        private bool TryGetNoDecompiledProcedure(Address addr, out ExternalProcedure ep)
+        {
+            Procedure_v1 sProc;
+            if (!program.User.Procedures.TryGetValue(addr, out sProc) ||
+                sProc.Decompile)
+            {
+                ep = null;
+                return false;
+            }
+
+            ProcedureSignature sig = null;
+            if (!string.IsNullOrEmpty(sProc.CSignature))
+            {
+                var usb = new UserSignatureBuilder(program);
+                var procDecl = usb.ParseFunctionDeclaration(sProc.CSignature);
+                if (procDecl != null)
+                {
+                    var ser = program.CreateProcedureSerializer();
+                    sig = ser.Deserialize(
+                        procDecl.Signature,
+                        program.Architecture.CreateFrame());
+                }
+            }
+            else
+            {
+                Warn(addr, "The user-defined procedure at address {0} did not have a signature.", addr); 
+            }
+
+            ep = new ExternalProcedure(sProc.Name, sig);
+            return true;
         }
 
         public void EnqueueUserGlobalData(Address addr, DataType dt)
@@ -638,7 +704,7 @@ namespace Reko.Scanning
         public ExternalProcedure GetInterceptedCall(Address addrImportThunk)
         {
             ExternalProcedure ep;
-            if (!imageMap.IsValidAddress(addrImportThunk))
+            if (!segmentMap.IsValidAddress(addrImportThunk))
                 return null;
             var rdr= program.CreateImageReader(addrImportThunk);
             uint uDest;
@@ -719,10 +785,10 @@ namespace Reko.Scanning
             Procedure proc;
             if (program.Procedures.TryGetValue(addr, out proc))
                 return proc;
-            EntryPoint ep;          //$REVIEW: should be ImageSymbol.
-            if (procedureName == null && program.EntryPoints.TryGetValue(addr, out ep))
+            ImageSymbol sym;
+            if (procedureName == null && program.ImageSymbols.TryGetValue(addr, out sym))
             {
-                procedureName = ep.Name;
+                procedureName = sym.Name;
             }
             proc = Procedure.Create(procedureName, addr, program.Architecture.CreateFrame());
             program.Procedures.Add(addr, proc);
@@ -735,7 +801,6 @@ namespace Reko.Scanning
             while (queue.Count > 0)
             {
                 var workitem = queue.Dequeue();
-                workitem.Process();
                 try
                 {
                     workitem.Process();

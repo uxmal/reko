@@ -64,8 +64,8 @@ namespace Reko.Core.Serialization
         public string Address;
 
         /// <summary>
-        /// Property that indicated whether the procedure body is to be decompiled or not. If false, it is recommended
-        /// that the Signature property be set.
+        /// Property that indicated whether the procedure body is to be decompiled 
+        /// or not. If false, it is recommendedthat the Signature property be set.
         /// </summary>
         [XmlElement("decompile")]
         [DefaultValue(true)]

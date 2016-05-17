@@ -40,14 +40,14 @@ namespace Reko.UnitTests.Assemblers.M68k
         public void Setup()
         {
             arch = new M68kArchitecture();
-            asm = new M68kAssembler(arch, Address.Ptr32(0x00010000), new List<EntryPoint>());
+            asm = new M68kAssembler(arch, Address.Ptr32(0x00010000), new List<ImageSymbol>());
         }
 
         private void BuildTest(Action<M68kAssembler> builder)
         {
             builder(asm);
             dasm = M68kDisassembler.Create68020(
-                asm.GetImage().ImageMap.Segments.Values.First().MemoryArea.CreateBeReader(asm.BaseAddress));
+                asm.GetImage().SegmentMap.Segments.Values.First().MemoryArea.CreateBeReader(asm.BaseAddress));
         }
 
         private void Expect(string expectedInstr)

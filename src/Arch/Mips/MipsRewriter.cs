@@ -101,7 +101,7 @@ namespace Reko.Arch.Mips
                 case Opcode.bltzl:
                     RewriteBranch0(instr, Operator.Lt, true); break;
                 case Opcode.bltzal:
-                    RewriteBranch0(instr, Operator.Lt, false); break;
+                    RewriteBranch0(instr, Operator.Lt, true); break;
                 case Opcode.bltzall:
                     RewriteBranch0(instr, Operator.Lt, true); break;
                 case Opcode.bne:

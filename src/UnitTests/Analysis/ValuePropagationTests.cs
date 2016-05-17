@@ -92,7 +92,7 @@ namespace Reko.UnitTests.Analysis
                 SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, null, gr,
                     new HashSet<RegisterStorage>());
 				SsaState ssa = sst.SsaState;
-                var cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Platform);
+                var cce = new ConditionCodeEliminator(ssa, prog.Platform);
                 cce.Transform();
 				ssa.Write(writer);
 				proc.Write(false, writer);
@@ -610,5 +610,31 @@ ProcedureBuilder_exit:
             AssertStringsEqual(sExp, ssa);
         }
 
+        [Test]
+        public void VpCastRealConstant()
+        {
+            var m = new ProcedureBuilder();
+            var r1 = m.Reg32("r1", 1);
+
+            m.Assign(r1, m.Cast(PrimitiveType.Real32, ConstantReal.Real64(1)));
+
+            var ssa = RunTest(m);
+            var sExp =
+            #region Expected
+@"r1_0: orig: r1
+    def:  r1_0 = 1.0F
+// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	// succ:  l1
+l1:
+	r1_0 = 1.0F
+ProcedureBuilder_exit:
+";
+            #endregion
+
+            AssertStringsEqual(sExp, ssa);
+        }
     }
 }

@@ -252,5 +252,15 @@ namespace Reko.UnitTests.Arch.Z80
                 "0|T--|0100(1): 1 instructions",
                 "1|T--|goto hl");
         }
+
+        [Test]
+        public void Z80rw_sla()
+        {
+            BuildTest(0xCB, 0x27);
+            AssertCode(
+                "0|L--|0100(2): 2 instructions",
+                "1|L--|a = a << 0x01",
+                "2|L--|SZPC = cond(a)");
+        }
     }
 }

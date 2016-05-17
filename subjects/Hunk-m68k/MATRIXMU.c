@@ -245,14 +245,14 @@ void fn0000127C(int32 d2)
 {
 	Eq_517 * a4_0 = (Eq_517 *) 0x948A;
 	Eq_33 * * a7_3 = a4_0->ptrFFFF800A;
-	Eq_33 * v7_8 = *(a7_3 - 0x04);
-	Eq_33 * v5_5 = *(a7_3 - 0x08);
-	if (v7_8->dw0004 != 0x00)
+	Eq_33 * v8_8 = *(a7_3 - 0x04);
+	Eq_33 * v6_5 = *(a7_3 - 0x08);
+	if (v8_8->dw0004 != 0x00)
 		execPrivate1();
 	CloseLibrary(a4_0->ptrFFFF8012);
-	if (v5_5 != null)
-		fn0000126C(v5_5);
-	FreeMem(v7_8, v7_8->dw0000);
+	if (v6_5 != null)
+		fn0000126C(v6_5);
+	FreeMem(v8_8, v8_8->dw0000);
 	return;
 }
 

@@ -56,11 +56,13 @@ namespace Reko.Environments.Trs80
             var bytes = tracks.SelectMany(t => t.Sectors)
                 .SelectMany(s => s.GetData())
                 .ToArray();
-            var image = new MemoryArea(addrLoad, bytes);
+            var mem = new MemoryArea(addrLoad, bytes);
+            var segmentMap = new SegmentMap(addrLoad,
+                new ImageSegment("", mem, AccessMode.ReadWriteExecute));
             return new Program
             {
                 Architecture = new Z80ProcessorArchitecture(),
-                ImageMap = image.CreateImageMap(),
+                SegmentMap = segmentMap,
             };
         }
 
@@ -156,7 +158,7 @@ namespace Reko.Environments.Trs80
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            return new RelocationResults(new List<EntryPoint>(), new List<Address>());
+            return new RelocationResults(new List<ImageSymbol>(), new SortedList<Address, ImageSymbol>(), new List<Address>());
         }
     }
 }

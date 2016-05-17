@@ -45,7 +45,7 @@ namespace Reko.Gui.Windows.Controls
         public MixedCodeDataModel(Program program)
         {
             this.program = program;
-            var firstSeg = program.ImageMap.Segments.Values.FirstOrDefault();
+            var firstSeg = program.SegmentMap.Segments.Values.FirstOrDefault();
             if (firstSeg == null)
             {
                 this.addrCur = program.ImageMap.BaseAddress;
@@ -55,7 +55,7 @@ namespace Reko.Gui.Windows.Controls
             }
             else
             {
-                var lastSeg = program.ImageMap.Segments.Values.Last();
+                var lastSeg = program.SegmentMap.Segments.Values.Last();
                 this.addrCur = firstSeg.Address;
                 this.StartPosition = firstSeg.Address;
                 this.addrEnd = lastSeg.EndAddress;

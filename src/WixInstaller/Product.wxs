@@ -93,6 +93,7 @@
         <File Source="$(var.MachO.TargetPath)" />
         <File Source="$(var.MzExe.TargetPath)" />
         <File Source="$(var.OdbgScript.TargetPath)" />
+        <File Source="$(var.VmsExe.TargetPath)" />
 
         <!-- Environments -->
         <File Source="$(var.AmigaOS.TargetPath)" />

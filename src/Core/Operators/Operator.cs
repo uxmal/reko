@@ -39,6 +39,7 @@ namespace Reko.Core.Operators
         public static readonly BinaryOperator FSub = new FSubOperator();
         public static readonly BinaryOperator FMul = new FMulOperator();
         public static readonly BinaryOperator FDiv = new FDivOperator();
+        public static readonly UnaryOperator FNeg = new FNegOperator();
 
         public static readonly BinaryOperator And = new AndOperator();
 		public static readonly BinaryOperator Or = new OrOperator();

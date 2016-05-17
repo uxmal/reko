@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Gui.Commands
             var mem = new MemoryArea(Address.SegPtr(0x0C00, 0), new byte[100]);
             this.program = new Program
             {
-                ImageMap = new ImageMap(
+                SegmentMap = new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment("0C00", mem, AccessMode.ReadWriteExecute))
             };

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Reko/v4">
+  <arch>x86-protected-32</arch>
+  <platform>win32</platform>
+  <input>
+    <filename>VCExeSample.exe</filename>
+    <disassembly>VCExeSample.asm</disassembly>
+    <intermediate-code>VCExeSample.dis</intermediate-code>
+    <output>VCExeSample.c</output>
+    <types-file>VCExeSample.h</types-file>
+    <global-vars>VCExeSample.globals.c</global-vars>
+    <user>
+      <processor />
+      <procedure name="main">
+        <characteristics />
+        <address>00401000</address>
+        <CSignature>int main(int argc, char *argv[])</CSignature>
+      </procedure>
+      <procedure name="test1">
+        <characteristics />
+        <address>00401030</address>
+        <CSignature>void test1(char *arg1, int arg2, char *arg3, float arg4)</CSignature>
+      </procedure>
+      <procedure name="Win32CrtStartup">
+        <characteristics />
+        <address>00401353</address>
+        <decompile>false</decompile>
+        <CSignature>DWORD Win32CrtStartup()</CSignature>
+      </procedure>
+    </user>
+  </input>
+</project>

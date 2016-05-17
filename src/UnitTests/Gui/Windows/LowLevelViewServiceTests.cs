@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Gui.Windows
 
             interactor.SetSite(sc);
             interactor.CreateControl();
-            svc.ShowMemoryAtAddress(program, program.ImageMap.BaseAddress);
+            svc.ShowMemoryAtAddress(this.program, (Address)this.program.ImageMap.BaseAddress);
 
             mr.VerifyAll();
         }
@@ -87,7 +87,7 @@ namespace Reko.UnitTests.Gui.Windows
         {
             var addrBase = Address.Ptr32(0x10000);
             var mem = new MemoryArea(addrBase, new byte[100]);
-            var map = new ImageMap(
+            var map = new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
             var arch = mr.Stub<IProcessorArchitecture>();

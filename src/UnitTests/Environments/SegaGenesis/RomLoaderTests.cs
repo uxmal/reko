@@ -90,11 +90,11 @@ namespace Reko.UnitTests.Environments.SegaGenesis
             var sgrom = new RomLoader(sc, "foo.bin", rawBytes);
             var program = sgrom.Load(Address.Ptr32(0));
 
-            var romSegment = program.ImageMap.Segments.Values.First();
+            var romSegment = program.SegmentMap.Segments.Values.First();
             Assert.IsNotNull(romSegment.MemoryArea, "ROM image should have been loaded into first segment");
             Assert.AreSame(rawBytes, romSegment.MemoryArea.Bytes, "ROM image should have been loaded into first segment");
             Assert.AreEqual(rawBytes.Length, romSegment.ContentSize);
-            var ramSegment = program.ImageMap.Segments.Values.First(s => s.Name == ".data");
+            var ramSegment = program.SegmentMap.Segments.Values.First(s => s.Name == ".data");
             Assert.IsNotNull(ramSegment.MemoryArea, "RAM segment should have a MemoryArea");
         }
 

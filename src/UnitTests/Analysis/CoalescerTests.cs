@@ -125,7 +125,7 @@ namespace Reko.UnitTests.Analysis
 				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, importResolver, proc.CreateBlockDominatorGraph(), new HashSet<RegisterStorage>());
 				SsaState ssa = sst.SsaState;
 				
-                ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa.Identifiers, program.Platform);
+                ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, prog.Platform);
 				cce.Transform();
 				DeadCode.Eliminate(proc, ssa);
 

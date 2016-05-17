@@ -147,6 +147,7 @@ namespace Reko.Arch.X86
             {
             case "":
             case "stdapi":
+            case "cdecl":
             case "__cdecl":
             case "__stdcall":
             case "pascal":

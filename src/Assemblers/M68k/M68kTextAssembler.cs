@@ -37,14 +37,15 @@ namespace Reko.Assemblers.M68k
         private M68kArchitecture arch;
         private Address addrBase;
         private IEmitter emitter;
-        private List<EntryPoint> entryPoints;
+        private List<ImageSymbol> entryPoints;
         private Lexer lexer;
         private M68kAssembler asm ;
         private PrimitiveType dataWidth;
 
         public M68kTextAssembler()
         {
-            this.entryPoints = new List<EntryPoint>();
+            this.entryPoints = new List<ImageSymbol>();
+            this.ImageSymbols = new List<ImageSymbol>();
             this.LineNumber = 1;
         }
 
@@ -566,7 +567,7 @@ namespace Reko.Assemblers.M68k
             get { throw new NotImplementedException(); }
         }
 
-        public ICollection<EntryPoint> EntryPoints
+        public ICollection<ImageSymbol> EntryPoints
         {
             get { return entryPoints; }
         }
@@ -577,6 +578,8 @@ namespace Reko.Assemblers.M68k
         {
             get { throw new NotImplementedException(); }
         }
+
+        public ICollection<ImageSymbol> ImageSymbols { get; private set; }
 
         public Dictionary<Address, ImportReference> ImportReferences
         {

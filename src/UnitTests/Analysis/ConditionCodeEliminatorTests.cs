@@ -18,19 +18,21 @@
  */
 #endregion
 
+using NUnit.Framework;
+using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Operators;
 using Reko.Core.Machine;
+using Reko.Core.Operators;
 using Reko.Core.Types;
-using Reko.Analysis;
 using Reko.UnitTests.Mocks;
-using NUnit.Framework;
+using Rhino.Mocks;
 using Rhino.Mocks;
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -39,13 +41,23 @@ namespace Reko.UnitTests.Analysis
 	{
 		private SsaIdentifierCollection ssaIds;
         private FlagRegister freg;
+        private SsaState ssaState;
+        private ProcedureBuilder m;
+        private ConditionCodeEliminator cce;
 
-		[SetUp]
+        [SetUp]
 		public void Setup()
 		{
-			ssaIds = new SsaIdentifierCollection();
+            m = new ProcedureBuilder();
+            ssaState = new SsaState(m.Procedure, null);
+            ssaIds = ssaState.Identifiers;
             freg = new FlagRegister("flags", PrimitiveType.Word32);
 		}
+
+        private void Given_ConditionCodeEliminator()
+        {
+            cce = new ConditionCodeEliminator(ssaState, new DefaultPlatform(null, new FakeArchitecture()));
+        }
 
         protected Program CompileTest(Action<ProcedureBuilder> m)
         {
@@ -92,13 +104,12 @@ namespace Reko.UnitTests.Analysis
                 var sst = new SsaTransform(dfa.ProgramDataFlow, proc, importResolver, proc.CreateBlockDominatorGraph(), new HashSet<RegisterStorage>());
                 SsaState ssa = sst.SsaState;
 
-                proc.Dump(true);
+                var cce = new ConditionCodeEliminator(ssa, prog.Platform);
+                cce.Transform();
 
                 var vp = new ValuePropagator(program.Architecture, ssa.Identifiers, proc);
                 vp.Transform();
 
-                var cce = new ConditionCodeEliminator(ssa.Identifiers, program.Platform);
-                cce.Transform();
                 DeadCode.Eliminate(proc, ssa);
 
                 ssa.Write(writer);
@@ -145,14 +156,14 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        [Ignore("scanning-development")]
+        [Ignore("The called function is mistakenly marked as always setting cl = 0. New SSA analysis will fix this.")]
         public void CceReg00005()
 		{
 			RunFileTest("Fragments/regressions/r00005.asm", "Analysis/CceReg00005.txt");
 		}
 
 		[Test]
-        [Ignore("scanning-development")]
+        [Ignore("The called function is mistakenly identified as returning SZCO when it really just returns C. New SSA analysis fixes this")]
         public void CceReg00007()
 		{
 			RunFileTest("Fragments/regressions/r00007.asm", "Analysis/CceReg00007.txt");
@@ -311,7 +322,6 @@ done:
             SaveRunOutput(prog, RunTest, "Analysis/CceFstswLt.txt");
         }
 
-
 		[Test]
 		public void CceEqId()
 		{
@@ -319,7 +329,6 @@ done:
 			Identifier z = FlagGroup("z");  // is a condition code.
             Identifier y = FlagGroup("y");  // is a condition code.
 
-            ProcedureBuilder m = new ProcedureBuilder();
             m.Assign(z, new ConditionOf(r));
             ssaIds[z].DefStatement = m.Block.Statements.Last;
             m.Assign(y, z);
@@ -328,8 +337,7 @@ done:
 			var stmBr = m.BranchIf(m.Test(ConditionCode.EQ, y), "foo");
             ssaIds[y].Uses.Add(stmBr);
 
-            var arch = new FakeArchitecture();
-			var cce = new ConditionCodeEliminator(ssaIds, new DefaultPlatform(null, arch));
+            Given_ConditionCodeEliminator();
 			cce.Transform();
 			Assert.AreEqual("branch r == 0x00000000 foo", stmBr.Instruction.ToString());
 		}
@@ -341,36 +349,50 @@ done:
 			Identifier Z = FlagGroup("Z");
 			Identifier f = Reg32("f");
 
-			Statement stmZ = new Statement(0, new Assignment(Z, new ConditionOf(new BinaryExpression(Operator.ISub, PrimitiveType.Word32, r, Constant.Word32(0)))), null);
+			Statement stmZ = new Statement(0, m.Assign(Z, m.Cond(m.ISub(r, 0))), null);
 			ssaIds[Z].DefStatement = stmZ;
-			Statement stmF = new Statement(0, new Assignment(f, new TestCondition(ConditionCode.NE, Z)), null);
+			Statement stmF = new Statement(0, m.Assign(f, m.Test(ConditionCode.NE, Z)), null);
 			ssaIds[f].DefStatement = stmF;
 			ssaIds[Z].Uses.Add(stmF);
 
-			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssaIds, new DefaultPlatform(null, new FakeArchitecture()));
+            Given_ConditionCodeEliminator();
 			cce.Transform();
 			Assert.AreEqual("f = r != 0x00000000", stmF.Instruction.ToString());
 		}
 
         [Test]
-		public void SignedIntComparisonFromConditionCode()
-		{
-			ConditionCodeEliminator cce = new ConditionCodeEliminator(null, new DefaultPlatform(null, new FakeArchitecture()));
-			BinaryExpression bin = new BinaryExpression(Operator.ISub, PrimitiveType.Word16, new Identifier("a", PrimitiveType.Word16, null), new Identifier("b", PrimitiveType.Word16, null));
-			BinaryExpression b = (BinaryExpression) cce.ComparisonFromConditionCode(ConditionCode.LT, bin, false);
-			Assert.AreEqual("a < b", b.ToString());
-			Assert.AreEqual("LtOperator", b.Operator.GetType().Name);
-		}
+		public void Cce_SignedIntComparisonFromConditionCode()
+        {
+            Given_ConditionCodeEliminator();
+            var bin = m.ISub(new Identifier("a", PrimitiveType.Word16, null), new Identifier("b", PrimitiveType.Word16, null));
+            var b = (BinaryExpression)cce.ComparisonFromConditionCode(ConditionCode.LT, bin, false);
+            Assert.AreEqual("a < b", b.ToString());
+            Assert.AreEqual("LtOperator", b.Operator.GetType().Name);
+        }
 
-		[Test]
-		public void RealComparisonFromConditionCode()
+
+        [Test]
+		public void Cce_RealComparisonFromConditionCode()
 		{
-			ConditionCodeEliminator cce = new ConditionCodeEliminator(null, new DefaultPlatform(null, new FakeArchitecture()));
-			BinaryExpression bin = new BinaryExpression(Operator.ISub, PrimitiveType.Real64, new Identifier("a", PrimitiveType.Real64, null), new Identifier("b", PrimitiveType.Real64, null));
+            Given_ConditionCodeEliminator();
+			var bin = m.FSub(new Identifier("a", PrimitiveType.Real64, null), new Identifier("b", PrimitiveType.Real64, null));
 			BinaryExpression b = (BinaryExpression) cce.ComparisonFromConditionCode(ConditionCode.LT, bin, false);
 			Assert.AreEqual("a < b", b.ToString());
 			Assert.AreEqual("RltOperator", b.Operator.GetType().Name);
 		}
+
+        [Test]
+        public void Cce_TypeReferenceComparisonFromConditionCode()
+        {
+            Given_ConditionCodeEliminator();
+            var w16 = new TypeReference("W16", PrimitiveType.Word16);
+            var bin = m.IAdd(
+                new Identifier("a", w16, null),
+                new Identifier("b", w16, null));
+            var b = (BinaryExpression)cce.ComparisonFromConditionCode(ConditionCode.LT, bin, false);
+            Assert.AreEqual("a + b < 0x0000", b.ToString());
+            Assert.AreEqual("LtOperator", b.Operator.GetType().Name);
+        }
 
         private Identifier MockReg(ProcedureBuilder m, int i)
         {
@@ -402,7 +424,6 @@ done:
         }
 
         [Test]
-        [Ignore]
         public void CceShrRcrPattern()
         {
             var p = new ProgramBuilder(new FakeArchitecture());
@@ -414,12 +435,36 @@ done:
 
                 m.Assign(r1, m.Shr(r1, 1));
                 m.Assign(C, m.Cond(r1));
-                m.Assign(r2, m.Fn(new PseudoProcedure(PseudoProcedure.RorC, r2.DataType, 2), r2, C));
+                m.Assign(r2, m.Fn(
+                    new PseudoProcedure(PseudoProcedure.RorC, r2.DataType, 2),
+                    r2, Constant.Byte(1), C));
+                m.Assign(C, m.Cond(r2));
+                m.Store(m.Word32(0x3000), r2);
+                m.Store(m.Word32(0x3004), r1);
+            });
+            RunTest(p, "Analysis/CceShrRcrPattern.txt");
+        }
+
+        [Test]
+        public void CceShlRclPattern()
+        {
+            var p = new ProgramBuilder(new FakeArchitecture());
+            p.Add("main", (m) =>
+            {
+                var C = m.Flags("C");
+                var r1 = MockReg(m, 1);
+                var r2 = MockReg(m, 2);
+
+                m.Assign(r1, m.Shl(r1, 1));
+                m.Assign(C, m.Cond(r1));
+                m.Assign(r2, m.Fn(
+                    new PseudoProcedure(PseudoProcedure.RolC, r2.DataType, 2),
+                    r2, Constant.Byte(1), C));
                 m.Assign(C, m.Cond(r2));
                 m.Store(m.Word32(0x3000), r1);
                 m.Store(m.Word32(0x3004), r2);
             });
-            RunTest(p, "Analysis/CceShrRcrPattern.txt");
+            RunTest(p, "Analysis/CceShlRclPattern.txt");
         }
 
         [Test]

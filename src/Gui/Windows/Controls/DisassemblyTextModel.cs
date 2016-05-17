@@ -80,7 +80,7 @@ namespace Reko.Gui.Windows.Controls
             {
                 var addr = Align(position);
                 ImageSegment seg;
-                if (program.ImageMap.TryFindSegment(addr, out seg) &&
+                if (program.SegmentMap.TryFindSegment(addr, out seg) &&
                     seg.MemoryArea != null &&
                     seg.MemoryArea.IsValidAddress(addr))
                 {
@@ -157,7 +157,7 @@ namespace Reko.Gui.Windows.Controls
             else if (offset > mem.Bytes.Length)
                 offset = mem.Bytes.Length;
 
-            this.position = program.ImageMap.MapLinearAddressToAddress(addrStart.ToLinear() + (uint)offset);
+            this.position = program.SegmentMap.MapLinearAddressToAddress(addrStart.ToLinear() + (uint)offset);
         }
 
         /// <summary>

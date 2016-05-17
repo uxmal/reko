@@ -114,6 +114,11 @@ namespace Reko.Gui.Windows.Forms
             AddDiagnostic(new NullCodeLocation(""), new ErrorDiagnostic(message, ex));
         }
 
+        public void Error(string message, params object[] args)
+        {
+            Error(string.Format(message, args));
+        }
+
         public void Error(ICodeLocation location, string message)
         {
             AddDiagnostic(location, new ErrorDiagnostic(message));
@@ -134,6 +139,11 @@ namespace Reko.Gui.Windows.Forms
             AddDiagnostic(new NullCodeLocation(""), new WarningDiagnostic(message));
         }
 
+        public void Warn(string message, params object[] args)
+        {
+            Warn(string.Format(message, args));
+        }
+
         public void Warn(ICodeLocation location, string message)
         {
             AddDiagnostic(location, new WarningDiagnostic(message));
@@ -141,7 +151,19 @@ namespace Reko.Gui.Windows.Forms
 
         public void Warn(ICodeLocation location, string message, params object[] args)
         {
-            AddDiagnostic(location, new WarningDiagnostic(string.Format(message, args)));
+            Warn(location, string.Format(message, args));
+        }
+
+        public void Inform(string message)
+        {
+            AddDiagnostic(new NullCodeLocation(""), new InformationalDiagnostic(message));
+        }
+
+        public void Inform(string message, params object[] args)
+        {
+            AddDiagnostic(
+                new NullCodeLocation(""),
+                new InformationalDiagnostic(string.Format(message, args)));
         }
 
         public void ClearDiagnostics()
@@ -216,6 +238,11 @@ namespace Reko.Gui.Windows.Forms
             for (int i = 0; i < listView.Items.Count; ++i)
                 listView.SelectedIndices.Add(i);
             return true;
+        }
+
+        public void Error(ICodeLocation location, string message, params object[] args)
+        {
+            throw new NotImplementedException();
         }
     }
 }

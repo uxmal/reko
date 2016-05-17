@@ -38,7 +38,7 @@ namespace Reko.Gui.Windows.Controls
             var spans = new List<LineSpan>();
             ImageSegment seg;
             ImageMapItem item;
-            program.ImageMap.TryFindSegment(addrCur, out seg);
+            program.SegmentMap.TryFindSegment(addrCur, out seg);
             program.ImageMap.TryFindItem(addrCur, out item);
 
             SpanGenerator sp = CreateSpanifier(item, addrCur);
@@ -74,9 +74,9 @@ namespace Reko.Gui.Windows.Controls
                     {
                         // Find next segment.
                         Address addrSeg;
-                        if (program.ImageMap.Segments.TryGetUpperBoundKey(addrCur, out addrSeg))
+                        if (program.SegmentMap.Segments.TryGetUpperBoundKey(addrCur, out addrSeg))
                         {
-                            program.ImageMap.TryFindSegment(addrSeg, out seg);
+                            program.SegmentMap.TryFindSegment(addrSeg, out seg);
                             program.ImageMap.TryFindItem(addrSeg, out item);
                             addrCur = addrSeg;
                         }

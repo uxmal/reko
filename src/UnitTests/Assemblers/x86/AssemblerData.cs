@@ -33,7 +33,7 @@ namespace Reko.UnitTests.Assemblers.x86
         private void AssembleFragment(string asmSrc)
         {
             lr = asm.AssembleFragment(Address.SegPtr(0x0C00, 0), asmSrc);
-            mem = lr.ImageMap.Segments.Values.First().MemoryArea;
+            mem = lr.SegmentMap.Segments.Values.First().MemoryArea;
         }
 
 		[Test]

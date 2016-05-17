@@ -179,8 +179,8 @@ namespace Reko.WindowsItp
             var addr = peLdr.PreferredBaseAddress;
             var program = peLdr.Load(addr);
             var rr = peLdr.Relocate(program, addr);
-            var win32 = new Win32Emulator(program.ImageMap, program.Platform, program.ImportReferences);
-            var emu = new X86Emulator((IntelArchitecture) program.Architecture, program.ImageMap, win32);
+            var win32 = new Win32Emulator(program.SegmentMap, program.Platform, program.ImportReferences);
+            var emu = new X86Emulator((IntelArchitecture) program.Architecture, program.SegmentMap, win32);
             emu.InstructionPointer = rr.EntryPoints[0].Address;
             emu.ExceptionRaised += delegate { throw new Exception(); };
             emu.WriteRegister(Registers.esp, (uint) peLdr.PreferredBaseAddress.ToLinear() + 0x0FFC);
@@ -233,7 +233,7 @@ namespace Reko.WindowsItp
             var ctrl = new ByteMapView();
             dlg.Controls.Add(ctrl);
             ctrl.Dock = DockStyle.Fill;
-            ctrl.ImageMap = new ImageMap(Address.Ptr32(0x0040000),
+            ctrl.SegmentMap = new SegmentMap(Address.Ptr32(0x0040000),
                 new ImageSegment("foo", mem, AccessMode.ReadWriteExecute));
             dlg.ShowDialog();
         }

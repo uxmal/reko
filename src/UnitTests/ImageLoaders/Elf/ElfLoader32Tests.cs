@@ -136,10 +136,10 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             mr.ReplayAll();
 
             When_CreateLoader32();
-            var imageMap = el32.LoadImageBytes(platform, this.bytes, Address.Ptr32(0x1000));
+            var segmentMap = el32.LoadImageBytes(platform, this.bytes, Address.Ptr32(0x1000));
 
             ImageSegment segText;
-            Assert.IsTrue(imageMap.TryFindSegment(Address.Ptr32(0x1001), out segText));
+            Assert.IsTrue(segmentMap.TryFindSegment(Address.Ptr32(0x1001), out segText));
             Assert.AreEqual(".text", segText.Name);
             Assert.AreEqual(8, segText.Size);
         }

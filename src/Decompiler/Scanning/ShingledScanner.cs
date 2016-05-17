@@ -71,7 +71,7 @@ namespace Reko.Scanning
         public Dictionary<ImageSegment, byte[]> ScanExecutableSegments()
         {
             var map = new Dictionary<ImageSegment, byte[]>();
-            foreach (var segment in program.ImageMap.Segments.Values
+            foreach (var segment in program.SegmentMap.Segments.Values
                 .Where(s => (s.Access & AccessMode.Execute) != 0))
             {
                 var y = ScanSegment(segment);
@@ -206,13 +206,13 @@ namespace Reko.Scanning
         /// <returns>A dictionary mapping segments to their pointer tallies.</returns>
         public Dictionary<ImageSegment, byte[]> GetPossiblePointerTargets()
         {
-            var targetMap = program.ImageMap.Segments.ToDictionary(s => s.Value, s => new byte[s.Value.ContentSize]);
-            foreach (var seg in program.ImageMap.Segments.Values)
+            var targetMap = program.SegmentMap.Segments.ToDictionary(s => s.Value, s => new byte[s.Value.ContentSize]);
+            foreach (var seg in program.SegmentMap.Segments.Values)
             {
                 foreach (var pointer in GetPossiblePointers(seg))
                 {
                     ImageSegment segPointee;
-                    if (program.ImageMap.TryFindSegment(pointer, out segPointee) &&
+                    if (program.SegmentMap.TryFindSegment(pointer, out segPointee) &&
                         segPointee.IsInRange(pointer))
                     {
                         
@@ -256,7 +256,7 @@ namespace Reko.Scanning
         private bool IsExecutable(Address address)
         {
             ImageSegment seg;
-            if (!program.ImageMap.TryFindSegment(address, out seg))
+            if (!program.SegmentMap.TryFindSegment(address, out seg))
                 return false;
             return (seg.Access & AccessMode.Execute) != 0;
         }
@@ -304,7 +304,7 @@ namespace Reko.Scanning
             IDictionary<ImageSegment, byte[]> map)
         {
             ImageSegment seg;
-            if (!program.ImageMap.TryFindSegment(addr, out seg))
+            if (!program.SegmentMap.TryFindSegment(addr, out seg))
                 throw new InvalidOperationException(string.Format("Address {0} doesn't belong to any segment.", addr));
             return map[seg][addr - seg.Address] == MaybeCode;
         }

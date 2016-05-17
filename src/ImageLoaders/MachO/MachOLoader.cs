@@ -78,10 +78,10 @@ namespace Reko.ImageLoaders.MachO
         {
             ldr = CreateParser();
             uint ncmds = ldr.ParseHeader(addrLoad);
-            ImageMap imageMap = ldr.ParseLoadCommands(ncmds, addrLoad);
+            SegmentMap segmentMap = ldr.ParseLoadCommands(ncmds, addrLoad);
             var image = new MemoryArea(addrLoad, RawImage);
             return new Program(
-                imageMap,
+                segmentMap,
                 ldr.arch,
                 new DefaultPlatform(Services, ldr.arch));
         }
@@ -130,7 +130,7 @@ namespace Reko.ImageLoaders.MachO
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            return new RelocationResults(new List<EntryPoint>(), new List<Address>());
+            return new RelocationResults(new List<ImageSymbol>(), new SortedList<Address, ImageSymbol>(), new List<Address>());
         }
 
         public abstract class Parser
@@ -222,9 +222,9 @@ namespace Reko.ImageLoaders.MachO
             public const uint LC_VERSION_MIN_TVOS     = 0x0000002Fu;
             public const uint LC_VERSION_MIN_WATCHOS  = 0x00000030u;
 
-            public ImageMap ParseLoadCommands(uint ncmds, Address addrLoad)
+            public SegmentMap ParseLoadCommands(uint ncmds, Address addrLoad)
             {
-                var imageMap = new ImageMap(addrLoad);
+                var imageMap = new SegmentMap(addrLoad);
                 Debug.Print("Parsing load commands, {0} of them.", ncmds);
 
                 var lookup = GetType()
@@ -284,7 +284,7 @@ namespace Reko.ImageLoaders.MachO
                 return new String(chars, 0, i);
             }
 
-            void parseSegmentCommand64(ImageMap imageMap)
+            void parseSegmentCommand64(SegmentMap imageMap)
             {
                 var abSegname = rdr.ReadBytes(16);
                 var cChars = Array.IndexOf<byte>(abSegname, 0);
@@ -350,7 +350,7 @@ namespace Reko.ImageLoaders.MachO
             const uint VM_PROT_WRITE = 0x02;
             const uint VM_PROT_EXECUTE = 0x04;
 
-            void parseSection64(uint protection, ImageMap imageMap)
+            void parseSection64(uint protection, SegmentMap segmentMap)
             {
                 var abSectname = rdr.ReadBytes(16);
                 var abSegname = rdr.ReadBytes(16);
@@ -423,7 +423,7 @@ namespace Reko.ImageLoaders.MachO
 
                 //sections_.push_back(imageSection.get());
                 //image_->addSection(std::move(imageSection));
-                imageMap.AddSegment(imageSection);
+                segmentMap.AddSegment(imageSection);
             }
         }
 

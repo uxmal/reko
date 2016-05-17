@@ -113,7 +113,9 @@ namespace Reko.Core.Serialization
         /// Loads a .dcproject from a stream.
         /// </summary>
         /// <param name="stm"></param>
-        /// <returns>The Project if the file format was recognized, otherwise null.</returns>
+        /// <returns>
+        /// The Project if the file format was recognized, otherwise null.
+        /// </returns>
         public Project LoadProject(string filename, Stream stm)
         {
             var rdr = new XmlTextReader(stm);
@@ -344,20 +346,6 @@ namespace Reko.Core.Serialization
             foreach (var kv in user.Globals)
             {
                 var dt = kv.Value.DataType.Accept(tlDeser);
-                var item = new ImageMapItem((uint)dt.Size)
-                {
-                    Address = kv.Key,
-                    DataType = dt,
-                    Name = kv.Value.Name,
-                };
-                if (item.Size > 0)
-                {
-                    program.ImageMap.AddItemWithSize(kv.Key, item);
-                }
-                else
-                {
-                    program.ImageMap.AddItem(kv.Key, item);
-                }
                 //$BUGBUG: what about x86 segmented binaries?
                 int offset = (int)kv.Key.ToLinear();
                 program.GlobalFields.Fields.Add(offset, dt, kv.Value.Name);
@@ -376,7 +364,9 @@ namespace Reko.Core.Serialization
                 } catch
                 {
                     var diagSvc = Services.RequireService<IDiagnosticsService>();
-                    diagSvc.Warn(string.Format("Unknown text encoding '{0}'. Defaulting to platform text encoding.", sUser.TextEncoding));
+                    diagSvc.Warn(
+                        "Unknown text encoding '{0}'. Defaulting to platform text encoding.", 
+                        sUser.TextEncoding);
                 }
                 user.TextEncoding = enc;
             }
@@ -464,21 +454,6 @@ namespace Reko.Core.Serialization
             foreach (var kv in user.Globals)
             {
                 var dt = kv.Value.DataType.Accept(tlDeser);
-                var item = new ImageMapItem((uint)dt.Size)
-                {
-                    Address = kv.Key,
-                    DataType = dt,
-                    Name = kv.Value.Name,
-                };
-
-                if (item.Size > 0)
-                {
-                    program.ImageMap.AddItemWithSize(kv.Key, item);
-                }
-                else
-                {
-                    program.ImageMap.AddItem(kv.Key, item);
-                }
                 //$BUGBUG: what about x86 segmented binaries?
                 int offset = (int)kv.Key.ToLinear();
                 program.GlobalFields.Fields.Add(offset, dt, kv.Value.Name);
@@ -541,25 +516,6 @@ namespace Reko.Core.Serialization
                     })
                     .Where(kv => kv.Key != null)
                    .ToSortedList(kv => kv.Key, kv => kv.Value);
-            }
-            var tlDeser = CreateTypeLibraryDeserializer();
-            foreach (var kv in user.Globals)
-            {
-                var dt = kv.Value.DataType.Accept(tlDeser);
-                var item = new ImageMapItem((uint)dt.Size)
-                {
-                    Address = kv.Key,
-                    DataType = dt,
-                    Name = kv.Value.Name,
-                };
-                if (item.Size > 0)
-                {
-                    program.ImageMap.AddItemWithSize(kv.Key, item);
-                }
-                else
-                {
-                    program.ImageMap.AddItem(kv.Key, item);
-                }
             }
             user.OnLoadedScript = sInput.OnLoadedScript;
             if (sInput.Options != null)

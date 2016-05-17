@@ -18,29 +18,30 @@
  */
 #endregion
 
-using Reko.Core;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace Reko.Scanning
+namespace Reko.Arch.Vax
 {
-    public class EntryPointWorkitem : WorkItem
+    public partial class VaxRewriter
     {
-        private Scanner scanner;
-        private Program program;
-        private EntryPoint ep;
-
-        public EntryPointWorkitem(Scanner scanner, Program program, EntryPoint ep) : base(ep.Address)
+        private void RewriteFpu2(PrimitiveType width, Func<Expression, Expression, Expression> fn, Action<Expression> genFlags)
         {
-            this.scanner = scanner;
-            this.program = program;
-            this.ep = ep;
+            var op1 = RewriteSrcOp(0, width);
+            var dst = RewriteDstOp(1, width, e => fn(e, op1));
+            genFlags(dst);
         }
 
-        public override void Process()
+        private void RewriteFpu3(PrimitiveType width, Func<Expression, Expression, Expression> fn, Action<Expression> genFlags)
         {
-            scanner.ScanEntryPoint(program, ep);
+            var op1 = RewriteSrcOp(0, width);
+            var op2 = RewriteSrcOp(1, width);
+            var dst = RewriteDstOp(2, width, e => fn(op2, op1));
+            genFlags(dst);
         }
     }
 }

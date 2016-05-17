@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             var bytes = Enumerable.Range(0, size).Select(b => (byte)b).ToArray();
             var mem = new MemoryArea(Address.Ptr32(0x1000000), bytes);
             var seg = new ImageSegment(".text", mem, AccessMode.ReadExecute);
-            program.ImageMap = new ImageMap(mem.BaseAddress, seg);
+            program.SegmentMap = new SegmentMap(mem.BaseAddress, seg);
             return seg;
         }
 
@@ -181,7 +181,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             {
                 instrs.Add(new TestInstruction
                 {
-                    Address = program.ImageMap.BaseAddress + i,
+                    Address = program.SegmentMap.BaseAddress + i,
                     Length = c % 5
                 });
             }

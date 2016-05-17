@@ -49,7 +49,8 @@ namespace Reko.Core
 
         public Program()
         {
-            this.EntryPoints = new SortedList<Address, EntryPoint>();
+            this.EntryPoints = new SortedList<Address, ImageSymbol>();
+            this.ImageSymbols = new SortedList<Address, ImageSymbol>();
             this.FunctionHints = new List<Address>();
             this.Procedures = new SortedList<Address, Procedure>();
             this.CallGraph = new CallGraph();
@@ -65,9 +66,10 @@ namespace Reko.Core
             this.GlobalFields = TypeFactory.CreateStructureType("Globals", 0);
         }
 
-        public Program(ImageMap imageMap, IProcessorArchitecture arch, IPlatform platform) : this()
+        public Program(SegmentMap segmentMap, IProcessorArchitecture arch, IPlatform platform) : this()
         {
-            this.ImageMap = imageMap;
+            this.SegmentMap = segmentMap;
+            this.ImageMap = segmentMap.CreateImageMap();
             this.Architecture = arch;
             this.Platform = platform;
         }
@@ -81,7 +83,15 @@ namespace Reko.Core
 
         public IPlatform Platform { get; set; }
 
+        /// <summary>
+        /// The image map stores items discovered by the scanner phase.
+        /// </summary>
         public ImageMap ImageMap { get; set; }
+
+        /// <summary>
+        /// Contains the segments that the binary consists of.
+        /// </summary>
+        public SegmentMap SegmentMap { get; set; }
 
         /// <summary>
         /// Metadata obtained from the environment -- not
@@ -94,79 +104,6 @@ namespace Reko.Core
         /// and their callees (procedures).
         /// </summary>
         public CallGraph CallGraph { get; private set; }
-
-        public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
-        {
-            PseudoProcedure p;
-            if (!pseudoProcs.TryGetValue(name, out p))
-            {
-                p = new PseudoProcedure(name, returnType, arity);
-                pseudoProcs[name] = p;
-            }
-            return p;
-        }
-
-        public Serialization.Procedure_v1 EnsureUserProcedure(Address address, string name)
-        {
-            Serialization.Procedure_v1 up;
-            if (!User.Procedures.TryGetValue(address, out up))
-            {
-                up = new Serialization.Procedure_v1
-                {
-                    Address = address.ToString(),
-                    Name = name,
-                };
-                User.Procedures.Add(address, up);
-            }
-            return up;
-        }
-
-        public GlobalDataItem_v2 ModifyUserGlobal(Address address, SerializedType dataType, string name)
-        {
-            GlobalDataItem_v2 gbl;
-            if (!User.Globals.TryGetValue(address, out gbl))
-            {
-                gbl = new GlobalDataItem_v2()
-                {
-                    Address = address.ToString(),
-                };
-                User.Globals.Add(address, gbl);
-            }
-
-            gbl.Name = name;
-            gbl.DataType = dataType;
-
-            this.ImageMap.RemoveItem(address);
-
-            var tlDeser = CreateTypeLibraryDeserializer();
-            var dt = dataType.Accept(tlDeser);
-            var size = GetDataSize(address, dt);
-            var item = new ImageMapItem
-            {
-                Address = address,
-                Size = size,
-                Name = name,
-                DataType = dt,
-            };
-            if (size != 0)
-                this.ImageMap.AddItemWithSize(address, item);
-            else
-                this.ImageMap.AddItem(address, item);
-
-            return gbl;
-        }
-
-        public void RemoveUserGlobal(Address address)
-        {
-            User.Globals.Remove(address);
-            // Do not remove block data item
-            ImageMapItem item;
-            if (ImageMap.TryFindItemExact(address, out item) &&
-                item is ImageMapBlock
-            )
-                return;
-            ImageMap.RemoveItem(address);
-        }
 
         /// <summary>
         /// Represents a _pointer_ to a structure that contains all the 
@@ -241,16 +178,30 @@ namespace Reko.Core
         /// <summary>
         /// The entry points to the program.
         /// </summary>
-        public SortedList<Address, EntryPoint> EntryPoints { get; private set; }
+        public SortedList<Address, ImageSymbol> EntryPoints { get; private set; }
 
         /// <summary>
         /// List of function hints.
         /// </summary>
+        [Obsolete("Use ImageSymbols instead")]
         public List<Address> FunctionHints
         {
             get; private set;
         }
+
+        /// <summary>
+        /// The name of the file from which this Program was loaded.
+        /// </summary>
         public string Filename { get; set; }
+
+        /// <summary>
+        /// All the image locations that the loader was aware of.
+        /// </summary>
+        /// <remarks>
+        /// Starting with these locations, Reko can find more by scanning
+        /// the image both recursively and by using heuristics.
+        /// </remarks>
+        public SortedList<Address, ImageSymbol> ImageSymbols { get; private set; }
 
         /// <summary>
         /// A collection of memory locations and the external library references
@@ -309,7 +260,7 @@ namespace Reko.Core
         public string DisassemblyFilename { get; set; }
 
         /// <summary>
-        /// The name of the file in which intermediate results are stored.
+        /// The nsame of the file in which intermediate results are stored.
         /// </summary>
         public string IntermediateFilename { get; set; }
 
@@ -340,7 +291,7 @@ namespace Reko.Core
         public ImageReader CreateImageReader(Address addr)
         {
             ImageSegment segment;
-            if (!ImageMap.TryFindSegment(addr, out segment))
+            if (!SegmentMap.TryFindSegment(addr, out segment))
                 throw new ArgumentException(string.Format("The address {0} is invalid.", addr));
             return Architecture.CreateImageReader(segment.MemoryArea, addr);
         }
@@ -348,7 +299,7 @@ namespace Reko.Core
         public ImageWriter CreateImageWriter(Address addr)
         {
             ImageSegment segment;
-            if (!ImageMap.TryFindSegment(addr, out segment))
+            if (!SegmentMap.TryFindSegment(addr, out segment))
                 throw new ArgumentException(string.Format("The address {0} is invalid.", addr));
             return Architecture.CreateImageWriter(segment.MemoryArea, addr);
         }
@@ -356,7 +307,7 @@ namespace Reko.Core
         public IEnumerable<MachineInstruction> CreateDisassembler(Address addr)
         {
             ImageSegment segment;
-            if (!ImageMap.TryFindSegment(addr, out segment))
+            if (!SegmentMap.TryFindSegment(addr, out segment))
                 throw new ArgumentException(string.Format("The address {0} is invalid.", addr));
             return Architecture.CreateDisassembler(
                 Architecture.CreateImageReader(segment.MemoryArea, addr));
@@ -392,6 +343,45 @@ namespace Reko.Core
             return item;
         }
 
+        /// <summary>
+        /// Seed the imagemap with image symbols 
+        /// </summary>
+        public void BuildImageMap()
+        {
+            this.ImageMap = SegmentMap.CreateImageMap();
+            foreach (var sym in this.ImageSymbols.Values.Where(
+                s => s.Type == SymbolType.Data && s.Size != 0))
+            {
+                this.ImageMap.AddItemWithSize(
+                    sym.Address,
+                    new ImageMapItem
+                    {
+                        Address = sym.Address,
+                        DataType = sym.DataType,
+                        Size = sym.Size,
+                    });
+            }
+            var tlDeser = CreateTypeLibraryDeserializer();
+            foreach (var kv in User.Globals)
+            {
+                var dt = kv.Value.DataType.Accept(tlDeser);
+                var item = new ImageMapItem((uint)dt.Size)
+                {
+                    Address = kv.Key,
+                    DataType = dt,
+                    Name = kv.Value.Name,
+                };
+                if (item.Size > 0)
+                {
+                    this.ImageMap.AddItemWithSize(kv.Key, item);
+                }
+                else
+                {
+                    this.ImageMap.AddItem(kv.Key, item);
+                }
+            }
+        }
+
         public uint GetDataSize(Address addr, DataType dt)
         {
             var strDt = dt as StringType;
@@ -419,10 +409,84 @@ namespace Reko.Core
                 .FirstOrDefault();
         }
 
+        public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
+        {
+            PseudoProcedure p;
+            if (!pseudoProcs.TryGetValue(name, out p))
+            {
+                p = new PseudoProcedure(name, returnType, arity);
+                pseudoProcs[name] = p;
+            }
+            return p;
+        }
+
+        public Procedure_v1 EnsureUserProcedure(Address address, string name, bool decompile = true)
+        {
+            Procedure_v1 up;
+            if (!User.Procedures.TryGetValue(address, out up))
+            {
+                up = new Procedure_v1
+                {
+                    Address = address.ToString(),
+                    Name = name,
+                    Decompile = decompile,
+                };
+                User.Procedures.Add(address, up);
+            }
+            return up;
+        }
+
+        public GlobalDataItem_v2 ModifyUserGlobal(Address address, SerializedType dataType, string name)
+        {
+            GlobalDataItem_v2 gbl;
+            if (!User.Globals.TryGetValue(address, out gbl))
+            {
+                gbl = new GlobalDataItem_v2()
+                {
+                    Address = address.ToString(),
+                };
+                User.Globals.Add(address, gbl);
+            }
+
+            gbl.Name = name;
+            gbl.DataType = dataType;
+
+            this.ImageMap.RemoveItem(address);
+
+            var tlDeser = CreateTypeLibraryDeserializer();
+            var dt = dataType.Accept(tlDeser);
+            var size = GetDataSize(address, dt);
+            var item = new ImageMapItem
+            {
+                Address = address,
+                Size = size,
+                Name = name,
+                DataType = dt,
+            };
+            if (size != 0)
+                this.ImageMap.AddItemWithSize(address, item);
+            else
+                this.ImageMap.AddItem(address, item);
+
+            return gbl;
+        }
+
+        public void RemoveUserGlobal(Address address)
+        {
+            User.Globals.Remove(address);
+            // Do not remove block data item
+            ImageMapItem item;
+            if (ImageMap.TryFindItemExact(address, out item) &&
+                item is ImageMapBlock
+            )
+                return;
+            ImageMap.RemoveItem(address);
+        }
+
         public void Reset()
         {
             Procedures.Clear();
-            ImageMap.Items.Clear();
+            BuildImageMap();
             globals = null;
             TypeFactory = new TypeFactory();
             TypeStore = new TypeStore();

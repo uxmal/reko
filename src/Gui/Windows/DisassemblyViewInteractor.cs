@@ -88,7 +88,7 @@ namespace Reko.Gui.Windows
                     dumper.ShowAddresses = true;
                     dumper.ShowCodeBytes = true;
                     ImageSegment segment;
-                    if (program.ImageMap.TryFindSegment(StartAddress, out segment))
+                    if (program.SegmentMap.TryFindSegment(StartAddress, out segment))
                     {
                         var dasm = program.CreateDisassembler(StartAddress).GetEnumerator();
                         while (dasm.MoveNext())

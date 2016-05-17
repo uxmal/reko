@@ -28,6 +28,8 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
+using System.Text;
 
 namespace Reko.Core.Output
 {
@@ -71,7 +73,8 @@ namespace Reko.Core.Output
             precedences = new Dictionary<Operator, int>();
 			precedences[Operator.Not] = 2;			//$REFACTOR: precedence is a property of the output language; these are the C/C++ precedences
 			precedences[Operator.Neg] = 2;			
-			precedences[Operator.Comp] = 2;
+			precedences[Operator.FNeg] = 2;
+            precedences[Operator.Comp] = 2;
 			precedences[Operator.AddrOf] = 2;
 			precedences[Operator.SMul] = 4;
 			precedences[Operator.UMul] = 4;
@@ -204,6 +207,8 @@ namespace Reko.Core.Output
 			writer.Write(")");
 		}
 
+        private static readonly char[] nosuffixRequired = new[] { '.', 'E', 'e' };
+
         public virtual void VisitConstant(Constant c)
         {
             if (!c.IsValid)
@@ -211,17 +216,39 @@ namespace Reko.Core.Output
                 writer.Write("<invalid>");
                 return;
             }
-            PrimitiveType t = c.DataType as PrimitiveType;
-            if (t != null)
+            var pt = c.DataType as PrimitiveType;
+            if (pt != null)
             {
-                if (t.Domain == Domain.Boolean)
+                if (pt.Domain == Domain.Boolean)
                 {
                     writer.Write(Convert.ToBoolean(c.GetValue()) ? "true" : "false");
                 }
-                else
+                else if (pt.Domain == Domain.Real)
+                {
+                    string sr;
+
+                    if (pt.Size == 4)
+                    {
+                        sr = c.ToFloat().ToString("g", CultureInfo.InvariantCulture);
+                    }
+                    else
+                    {
+                        sr = c.ToReal64().ToString("g", CultureInfo.InvariantCulture);
+                    }
+                    if (sr.IndexOfAny(nosuffixRequired) < 0)
+                    {
+                        sr += ".0";
+                    }
+                    if (pt.Size == 4)
+                    {
+                        sr += "F";
+                    }
+                    writer.Write(sr);
+                }
+                else 
                 {
                     object v = c.GetValue();
-                    writer.Write(FormatString(t, v), v);
+                    writer.Write(FormatString(pt, v), v);
                 }
                 return;
             }
@@ -686,7 +713,6 @@ namespace Reko.Core.Output
             case 16: return "0x{0:X16}";
             default: throw new ArgumentOutOfRangeException("type", type.Size, string.Format("Integral types of size {0} bytes are not supported.", type.Size));
             }
-
         }
 
         private string FormatString(PrimitiveType type, object value)
@@ -709,13 +735,6 @@ namespace Reko.Core.Output
                 else if (ch == '\'' || ch == '\\')
                     return string.Format(format, string.Format("\\{0}", ch));
                 return format;
-            case Domain.Real:
-                switch (type.Size)
-                {
-                case 4: return "{0:g}F";
-                case 8: return "{0:g}";
-                default: throw new ArgumentOutOfRangeException("Only real types of size 4 and 8 are supported.");
-                }
             default:
                 return UnsignedFormatString(type, Convert.ToUInt64(value));
             }

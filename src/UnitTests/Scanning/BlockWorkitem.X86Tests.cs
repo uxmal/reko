@@ -167,7 +167,7 @@ namespace Reko.UnitTests.Scanning
             proc = new Procedure("test", arch.CreateFrame());
             block = proc.AddBlock("testblock");
             this.state = arch.CreateProcessorState();
-            var asm = new X86Assembler(sc, new DefaultPlatform(sc, arch), addr, new List<EntryPoint>());
+            var asm = new X86Assembler(sc, new DefaultPlatform(sc, arch), addr, new List<ImageSymbol>());
             scanner = mr.StrictMock<IScanner>();
             m(asm);
             lr = asm.GetImage();
@@ -191,13 +191,14 @@ namespace Reko.UnitTests.Scanning
                 }
               });
             var rw = arch.CreateRewriter(
-                lr.ImageMap.Segments.Values.First().MemoryArea.CreateLeReader(addr), 
+                lr.SegmentMap.Segments.Values.First().MemoryArea.CreateLeReader(addr), 
                 this.state, 
                 proc.Frame,
                 host);
             var prog = new Program
             {
                 Architecture = arch,
+                SegmentMap = lr.SegmentMap,
                 ImageMap = lr.ImageMap,
                 Platform = platform,
             };

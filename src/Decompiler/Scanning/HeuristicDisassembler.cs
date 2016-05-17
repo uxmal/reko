@@ -111,7 +111,7 @@ namespace Reko.Scanning
                         }
                         return current;
                     case InstructionClass.Transfer | InstructionClass.Conditional:
-                        if (addrOp != null && program.ImageMap.IsValidAddress(addrOp.Address))
+                        if (addrOp != null && program.SegmentMap.IsValidAddress(addrOp.Address))
                         {
                             block = Disassemble(addrOp.Address);
                             Debug.Assert(proc.Cfg.Nodes.Contains(block));

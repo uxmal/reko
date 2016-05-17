@@ -77,4 +77,15 @@ namespace Reko.Core
             get { return "Warning"; }
         }
     }
+
+    public class InformationalDiagnostic : Diagnostic
+    {
+        public InformationalDiagnostic(string message) : base(message) { }
+
+        public override string ImageKey
+        {
+            //$TODO: need a pretty icon for "Inform"
+            get { return "Warning"; }
+        }
+    }
 }

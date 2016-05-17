@@ -79,7 +79,8 @@ namespace Reko.UnitTests.Analysis
             };
             Debug.Print("GetRegister(1) {0}", arch.GetRegister(1));
             this.pb.Program.Platform = platform;
-            this.pb.Program.ImageMap = new ImageMap(
+            this.pb.Program.Platform = new FakePlatform(null, new FakeArchitecture());
+            this.pb.Program.SegmentMap = new SegmentMap(
                 Address.Ptr32(0x0000),
                 new ImageSegment(
                     ".text",

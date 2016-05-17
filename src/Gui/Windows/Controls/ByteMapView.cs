@@ -21,10 +21,10 @@ namespace Reko.Gui.Windows.Controls
         int x_new, y_new;
         const int ScaleFactor = 4;
         private IEnumerator<byte> rdr;
-        private ImageMap imageMap;
+        private SegmentMap segmentMap;
         private byte[] data;
 
-        public ImageMap ImageMap { get { return this.imageMap; } set { this.imageMap = value; OnImageMapChanged(); } }
+        public SegmentMap SegmentMap { get { return this.segmentMap; } set { this.segmentMap = value; OnImageMapChanged(); } }
 
         void msg(string ss)
         {
@@ -33,12 +33,12 @@ namespace Reko.Gui.Windows.Controls
 
         void DrawSpaceFillingCurve()
         {
-            if (ImageMap == null)
+            if (segmentMap == null)
                 return;
             x_old = 0;
             y_old = 0;
 
-            this.rdr = ImageMap.Segments.Values
+            this.rdr = SegmentMap.Segments.Values
                 .Select(seg => seg.MemoryArea)
                 .Where(mem => mem != null)
                 .OrderBy(mem => mem.BaseAddress)

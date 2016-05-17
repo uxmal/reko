@@ -376,12 +376,12 @@ namespace Reko.UnitTests.Gui.Windows
         private void Given_ProgramWithOneSegment()
         {
             var mem = new MemoryArea(Address.Ptr32(0x12340000), new byte[0x1000]);
-            var imageMap = new ImageMap(Address.Ptr32(0x12300000));
-            imageMap.AddSegment(mem, ".text", AccessMode.ReadExecute);
+            var segmentMap = new SegmentMap(Address.Ptr32(0x12300000));
+            segmentMap.AddSegment(mem, ".text", AccessMode.ReadExecute);
             var arch = mr.StrictMock<ProcessorArchitecture>();
             arch.Description = "Foo Processor";
             var platform = new DefaultPlatform(sc, arch);
-            this.program = new Program(imageMap, arch, platform);
+            this.program = new Program(segmentMap, arch, platform);
             this.program.Name = "foo.exe";
             this.program.Filename = @"c:\test\foo.exe";
             project.Programs.Add(program);
@@ -478,7 +478,7 @@ namespace Reko.UnitTests.Gui.Windows
             project.Programs.Add(new Program
             {
                 Filename = "bar.exe",
-                ImageMap = new ImageMap(
+                SegmentMap = new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment(".text", mem, AccessMode.ReadExecute))
             });

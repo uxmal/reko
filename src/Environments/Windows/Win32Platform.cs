@@ -45,14 +45,6 @@ namespace Reko.Environments.Windows
         // x86-specific.
         public Win32Platform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "win32")
         {
-            //$REVIEW: should be loaded from configuration file.
-            Heuristics.ProcedurePrologs = new BytePattern[] {
-                new BytePattern
-                {
-                    Bytes = new byte[]{ 0x55, 0x8B, 0xEC },
-                    Mask =  new byte[]{ 0xFF, 0xFF, 0xFF }
-                }
-            };
             var frame = arch.CreateFrame();
             this.services = new Dictionary<int, SystemService>
             {
@@ -109,6 +101,12 @@ namespace Reko.Environments.Windows
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
             return new X86ProcedureSerializer((IntelArchitecture) Architecture, typeLoader, defaultConvention);
+        }
+
+        public override ImageSymbol FindMainProcedure(Program program, Address addrStart)
+        {
+            var sf = new X86StartFinder(program, addrStart);
+            return sf.FindMainProcedure();
         }
 
         //$REFACTOR: should be loaded from config file.

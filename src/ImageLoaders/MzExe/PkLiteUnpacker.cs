@@ -40,7 +40,7 @@ namespace Reko.ImageLoaders.MzExe
 
 		private byte [] abU;
 		private MemoryArea imgU;
-        private ImageMap imageMap;
+        private SegmentMap segmentMap;
 		private ushort pklCs;
 		private ushort pklIp;
 		private BitStream bitStm;
@@ -208,8 +208,9 @@ l01C8:
 */
 			l01C8:
 			imgU = new MemoryArea(addrLoad, abU);
-            imageMap = new ImageMap(imgU.BaseAddress, imgU.Length);
-			return new Program(imageMap, arch, platform);
+            segmentMap = new SegmentMap(imgU.BaseAddress,
+                new ImageSegment("image", imgU, AccessMode.ReadWriteExecute));
+			return new Program(segmentMap, arch, platform);
 		}
 
 		public uint CopyDictionaryWord(byte [] abU, int offset, int bytes, BitStream stm, uint dst)
@@ -254,7 +255,7 @@ l01C8:
 
 					imgU.WriteLeUInt16(relocBase + relocOff, seg);
 					relocations.AddSegmentReference(relocBase + relocOff, seg);
-					imageMap.AddSegment(Address.SegPtr(seg, 0), seg.ToString("X4"), AccessMode.ReadWriteExecute,0);
+					segmentMap.AddSegment(Address.SegPtr(seg, 0), seg.ToString("X4"), AccessMode.ReadWriteExecute,0);
 				} while (--relocs != 0);
 			}
 
@@ -276,8 +277,14 @@ l01C8:
 			state.SetRegister(Registers.si, Constant.Word16(0));
 			state.SetRegister(Registers.di, Constant.Word16(0));
 
+            var sym = new ImageSymbol(Address.SegPtr(pklCs, pklIp))
+            {
+                Type = SymbolType.Procedure,
+                ProcessorState = state
+            };
             return new RelocationResults(
-                new List<EntryPoint> {new EntryPoint(Address.SegPtr(pklCs, pklIp), state) },
+                new List<ImageSymbol> { sym },
+                new SortedList<Address, ImageSymbol> { { sym.Address, sym } },
                 new List<Address>());
 		}
 

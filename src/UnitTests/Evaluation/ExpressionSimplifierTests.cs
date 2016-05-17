@@ -48,44 +48,7 @@ namespace Reko.UnitTests.Evaluation
             m = new ProcedureBuilder();
         }
 
-		[Test]
-		public void Exs_Constants()
-		{
-			BuildExpressionSimplifier();
-			Expression expr = new BinaryExpression(Operator.IAdd, PrimitiveType.Word32, 
-				Constant.Word32(1), Constant.Word32(2));
-			Constant c = (Constant) expr.Accept(simplifier);
-
-			Assert.AreEqual(3, c.ToInt32());
-		}
-
-        [Test]
-        public void Exs_OrWithSelf()
-        {
-            BuildExpressionSimplifier();
-            var expr = new BinaryExpression(Operator.Or, foo.DataType, foo, foo);
-            var result = expr.Accept(simplifier);
-            Assert.AreSame(foo, result);
-        }
-
-        [Test]
-        public void Exs_AddPositiveConstantToNegative()
-        {
-            BuildExpressionSimplifier();
-            var expr = new BinaryExpression(
-                Operator.IAdd,
-                foo.DataType,
-                new BinaryExpression(
-                    Operator.ISub,
-                    foo.DataType,
-                    foo,
-                    Constant.Word32(4)),
-                Constant.Word32(1));
-            var result = expr.Accept(simplifier);
-            Assert.AreEqual("foo_0 - 0x00000003", result.ToString());
-        }
-
-		private void BuildExpressionSimplifier()
+		private void Given_ExpressionSimplifier()
 		{
 			SsaIdentifierCollection ssaIds = BuildSsaIdentifiers();
 			table = new Dictionary<Expression,Expression>();
@@ -106,12 +69,58 @@ namespace Reko.UnitTests.Evaluation
 		}
 
         [Test]
+        public void Exs_Constants()
+        {
+            Given_ExpressionSimplifier();
+            Expression expr = new BinaryExpression(Operator.IAdd, PrimitiveType.Word32,
+                Constant.Word32(1), Constant.Word32(2));
+            Constant c = (Constant)expr.Accept(simplifier);
+
+            Assert.AreEqual(3, c.ToInt32());
+        }
+
+        [Test]
+        public void Exs_OrWithSelf()
+        {
+            Given_ExpressionSimplifier();
+            var expr = new BinaryExpression(Operator.Or, foo.DataType, foo, foo);
+            var result = expr.Accept(simplifier);
+            Assert.AreSame(foo, result);
+        }
+
+        [Test]
+        public void Exs_AddPositiveConstantToNegative()
+        {
+            Given_ExpressionSimplifier();
+            var expr = new BinaryExpression(
+                Operator.IAdd,
+                foo.DataType,
+                new BinaryExpression(
+                    Operator.ISub,
+                    foo.DataType,
+                    foo,
+                    Constant.Word32(4)),
+                Constant.Word32(1));
+            var result = expr.Accept(simplifier);
+            Assert.AreEqual("foo_0 - 0x00000003", result.ToString());
+        }
+
+        [Test]
         public void Exs_FloatIeeeConstant_Cmp()
         {
-            BuildExpressionSimplifier();
+            Given_ExpressionSimplifier();
             var expr = m.FLt(foo, Constant.Word32( 0xC0B00000));
             var result = expr.Accept(simplifier);
             Assert.AreEqual("foo_0 < -5.5F", result.ToString());
+        }
+
+        [Test]
+        public void Exs_Cast_real()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.Cast(PrimitiveType.Real32, Constant.Real64(1.5));
+            Assert.AreEqual("1.5F", expr.Accept(simplifier).ToString());
+
         }
     }
 }

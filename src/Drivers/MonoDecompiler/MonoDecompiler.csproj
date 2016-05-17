@@ -188,6 +188,7 @@
     <ImageLoaders Include="$(ProjectDir)..\..\ImageLoaders\Hunk\$(OutDir)Reko.ImageLoaders.Hunk.*" />
     <ImageLoaders Include="$(ProjectDir)..\..\ImageLoaders\MachO\$(OutDir)Reko.ImageLoaders.MachO.*" />
     <ImageLoaders Include="$(ProjectDir)..\..\ImageLoaders\OdbgScript\$(OutDir)Reko.ImageLoaders.OdbgScript.*" />
+    <ImageLoaders Include="$(Projectdir)..\..\ImageLoaders\VmsExe\$(OutDir)Reko.ImageLoaders.VmsExe.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\AmigaOS\$(OutDir)Reko.Environments.AmigaOS.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\C64\$(OutDir)Reko.Environments.C64.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\Cpm\$(OutDir)Reko.Environments.Cpm.*" />

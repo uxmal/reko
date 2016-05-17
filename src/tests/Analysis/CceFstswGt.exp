@@ -5,13 +5,13 @@ ds:ds
     def:  def ds
     uses: Mem8[ds:di:word16] = 0x0001
           Mem10[ds:di:word16] = 0x0000
-          branch 0 <= Mem0[ds:si:real64] l0C00_0010
+          branch 0.0 <= Mem0[ds:si:real64] l0C00_0010
 si:si
     def:  def si
-    uses: branch 0 <= Mem0[ds:si:real64] l0C00_0010
+    uses: branch 0.0 <= Mem0[ds:si:real64] l0C00_0010
 Mem0:Global memory
     def:  def Mem0
-    uses: branch 0 <= Mem0[ds:si:real64] l0C00_0010
+    uses: branch 0.0 <= Mem0[ds:si:real64] l0C00_0010
 FPUF_6: orig: FPUF
 SCZO_7: orig: SCZO
 Mem8: orig: Mem0
@@ -32,7 +32,7 @@ fn0C00_0000_entry:
 	def di
 	// succ:  l0C00_0000
 l0C00_0000:
-	branch 0 <= Mem0[ds:si:real64] l0C00_0010
+	branch 0.0 <= Mem0[ds:si:real64] l0C00_0010
 	// succ:  l0C00_000B l0C00_0010
 l0C00_000B:
 	Mem8[ds:di:word16] = 0x0001

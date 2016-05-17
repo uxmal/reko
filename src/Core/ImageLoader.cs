@@ -25,8 +25,9 @@ using System.Collections.Generic;
 namespace Reko.Core
 {
 	/// <summary>
-	/// Abstract base class for image loaders. These examine a raw image, and generate a new,
-    /// relocated image.
+	/// Abstract base class for image loaders. These examine a raw image, and 
+    /// generate a Program after carrying out relocations, resolving external
+    /// symbols etc.
 	/// </summary>
 	public abstract class ImageLoader
 	{
