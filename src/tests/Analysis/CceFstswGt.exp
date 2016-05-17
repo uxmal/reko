@@ -5,24 +5,29 @@ sp_2: orig: sp
     def:  sp_2 = fp
     uses: use sp_2
 rLoc1_3: orig: rLoc1
-    def:  rLoc1_3 = 0
+    def:  rLoc1_3 = 0.0
     uses: use rLoc1_3
 ds:ds
     def:  def ds
-    uses: FPUF_7 = cond(0 - Mem0[ds:si:real64])
+    uses: FPUF_7 = cond(0.0 - Mem0[ds:si:real64])
           Mem10[ds:di:word16] = 0x0000
           Mem11[ds:di:word16] = 0x0001
-          branch 0 <= Mem0[ds:si:real64] l0C00_0010
+          branch 0.0 <= Mem0[ds:si:real64] l0C00_0010
 si:si
     def:  def si
-    uses: branch 0.0 <= Mem0[ds:si:real64] l0C00_0010
+    uses: FPUF_7 = cond(0.0 - Mem0[ds:si:real64])
+          branch 0.0 <= Mem0[ds:si:real64] l0C00_0010
 Mem0:Global memory
     def:  def Mem0
-    uses: branch 0.0 <= Mem0[ds:si:real64] l0C00_0010
-FPUF_6: orig: FPUF
-SCZO_7: orig: SCZO
-Mem8: orig: Mem0
-    def:  Mem8[ds:di:word16] = 0x0001
+    uses: FPUF_7 = cond(0.0 - Mem0[ds:si:real64])
+          branch 0.0 <= Mem0[ds:si:real64] l0C00_0010
+FPUF_7: orig: FPUF
+    def:  FPUF_7 = cond(0.0 - Mem0[ds:si:real64])
+    uses: SCZO_8 = FPUF_7
+          use FPUF_7
+SCZO_8: orig: SCZO
+    def:  SCZO_8 = FPUF_7
+    uses: use SCZO_8
 di:di
     def:  def di
     uses: Mem10[ds:di:word16] = 0x0000
@@ -42,6 +47,10 @@ fn0C00_0000_entry:
 	def di
 	// succ:  l0C00_0000
 l0C00_0000:
+	sp_2 = fp
+	rLoc1_3 = 0.0
+	FPUF_7 = cond(0.0 - Mem0[ds:si:real64])
+	SCZO_8 = FPUF_7
 	branch 0.0 <= Mem0[ds:si:real64] l0C00_0010
 	// succ:  l0C00_000B l0C00_0010
 l0C00_000B:

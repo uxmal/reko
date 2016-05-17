@@ -632,15 +632,15 @@ ProcedureBuilder_exit:
             var ssa = RunTest(m);
             var sExp =
             #region Expected
-@"r1_0: orig: r1
-    def:  r1_0 = 1.0F
+@"r1_1: orig: r1
+    def:  r1_1 = 1.0F
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
 	// succ:  l1
 l1:
-	r1_0 = 1.0F
+	r1_1 = 1.0F
 ProcedureBuilder_exit:
 ";
             #endregion

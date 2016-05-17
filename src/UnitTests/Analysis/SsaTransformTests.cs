@@ -1834,18 +1834,18 @@ bh_3: orig: bh
 bx:bx
     def:  def bx
     uses: bx_5 = DPB(bx, bl_2, 0) (alias)
-          bx_8 = PHI(bx, bx_6)
+          bx_8 = PHI(bx, bx_5)
 bx_5: orig: bx
     def:  bx_5 = DPB(bx, bl_2, 0) (alias)
     uses: bx_6 = DPB(bx_5, 0x00, 8) (alias)
+          bx_8 = PHI(bx, bx_5)
 bx_6: orig: bx
     def:  bx_6 = DPB(bx_5, 0x00, 8) (alias)
     uses: Mem7[0x1236:word16] = bx_6
-          bx_8 = PHI(bx, bx_6)
 Mem7: orig: Mem0
     def:  Mem7[0x1236:word16] = bx_6
 bx_8: orig: bx
-    def:  bx_8 = PHI(bx, bx_6)
+    def:  bx_8 = PHI(bx, bx_5)
     uses: use bx_8
 // ProcedureBuilder
 // Return size: 0
@@ -1865,7 +1865,7 @@ m1:
 	Mem7[0x1236:word16] = bx_6
 	// succ:  m2
 m2:
-	bx_8 = PHI(bx, bx_6)
+	bx_8 = PHI(bx, bx_5)
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
@@ -1892,7 +1892,7 @@ ProcedureBuilder_exit:
             });
         }
 
-        [Test()]
+        [Test]
         public void SsaAlias2()
         {
             var sExp =
@@ -1910,7 +1910,6 @@ SCZO_4: orig: SCZO
     uses: branch Test(UGT,SCZO_4) m2
 bh_5: orig: bh
     def:  bh_5 = 0x00
-    uses: bh_5 = DPB(bx_7, bh_5, 8) (alias)
 bx:bx
     def:  def bx
     uses: bx_7 = DPB(bx, bl_3, 0) (alias)

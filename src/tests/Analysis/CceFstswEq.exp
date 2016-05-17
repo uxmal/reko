@@ -17,14 +17,14 @@ Mem0:Global memory
     uses: rLoc1_6 = Mem0[ds:si:real64]
 rLoc1_6: orig: rLoc1
     def:  rLoc1_6 = Mem0[ds:si:real64]
-    uses: FPUF_8 = cond(0 - rLoc1_6)
-          branch 0 != rLoc1_6 l0C00_0012
+    uses: FPUF_8 = cond(0.0 - rLoc1_6)
+          branch 0.0 != rLoc1_6 l0C00_0012
           use rLoc1_6
 rLoc2_7: orig: rLoc2
-    def:  rLoc2_7 = 0
+    def:  rLoc2_7 = 0.0
     uses: use rLoc2_7
 FPUF_8: orig: FPUF
-    def:  FPUF_8 = cond(0 - rLoc1_6)
+    def:  FPUF_8 = cond(0.0 - rLoc1_6)
     uses: SCZO_9 = FPUF_8
           use FPUF_8
 SCZO_9: orig: SCZO
@@ -51,10 +51,10 @@ fn0C00_0000_entry:
 l0C00_0000:
 	sp_2 = fp
 	rLoc1_6 = Mem0[ds:si:real64]
-	rLoc2_7 = 0
-	FPUF_8 = cond(0 - rLoc1_6)
+	rLoc2_7 = 0.0
+	FPUF_8 = cond(0.0 - rLoc1_6)
 	SCZO_9 = FPUF_8
-	branch 0 != rLoc1_6 l0C00_0012
+	branch 0.0 != rLoc1_6 l0C00_0012
 	// succ:  l0C00_000D l0C00_0012
 l0C00_000D:
 	Mem12[ds:di:word16] = 0x0001

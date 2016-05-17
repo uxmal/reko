@@ -111,7 +111,7 @@ namespace Reko.UnitTests.Evaluation
             Given_ExpressionSimplifier();
             var expr = m.FLt(foo, Constant.Word32( 0xC0B00000));
             var result = expr.Accept(simplifier);
-            Assert.AreEqual("foo_0 < -5.5F", result.ToString());
+            Assert.AreEqual("foo_1 < -5.5F", result.ToString());
         }
 
         [Test]
