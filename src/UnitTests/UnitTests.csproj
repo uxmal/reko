@@ -114,6 +114,7 @@
     <Compile Include="Core\Configuration\OperatingEnvironmentElementTests.cs" />
     <Compile Include="Core\Configuration\RekoConfigurationServiceTests.cs" />
     <Compile Include="Core\Configuration\RekoConfigurationTests.cs" />
+    <Compile Include="Core\Lib\SuffixArrayTests.cs" />
     <Compile Include="Core\Output\CTypeReferenceFormatterTests.cs" />
     <Compile Include="Core\SegmentMapTests.cs" />
     <Compile Include="Core\Serialization\ArgumentDeserializerTests.cs" />
@@ -266,6 +267,7 @@
     <Compile Include="ImageLoaders\MachO\MachOLoaderTests.cs" />
     <Compile Include="ImageLoaders\MzExe\NeImageLoaderTests.cs" />
     <Compile Include="ImageLoaders\MzExe\PeImageLoaderTests.cs" />
+    <Compile Include="Loading\DccSignatureLoaderTests.cs" />
     <Compile Include="Loading\FlirtoidSignatureLoaderTests.cs" />
     <Compile Include="Loading\UnpackerSignatureLoaderTests.cs" />
     <Compile Include="Loading\UnpackingServiceTests.cs" />

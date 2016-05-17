@@ -229,6 +229,7 @@
     <Compile Include="ImageSymbol.cs" />
     <Compile Include="Lib\PatternCollector.cs" />
     <Compile Include="Lib\PerfectHash.cs" />
+    <Compile Include="Lib\SuffixArray.cs" />
     <Compile Include="Operators\FNegOperator.cs" />
     <Compile Include="Output\CTypeReferenceFormatter.cs" />
     <Compile Include="Rational.cs" />

@@ -338,25 +338,28 @@ static char [] buf= new char[100];                       /* A general purpose bu
     0xE9					/* jmp XXXX		*/
 };
 
-
-
-
-        /* This procedure is called to initialise the library check code */
-        bool SetupLibCheck(IServiceProvider services)
+        // This procedure is called to initialise the library check code 
+        public bool SetupLibCheck(IServiceProvider services)
         {
             var diag = services.RequireService<IDiagnosticsService>();
             var cfgSvc = services.RequireService<IConfigurationService>();
+            string fpath = cfgSvc.GetInstallationRelativePath("msdos", sSigName);
+                var fsSvc = services.RequireService<IFileSystemService>();
+                if (!fsSvc.FileExists(fpath))
+                {
+                    diag.Warn(string.Format("Can't open signature file {0}.", fpath));
+                    return false;
+                }
+                var bytes = fsSvc.ReadAllBytes(fpath);
+                return SetupLibCheck(services, fpath, bytes);
+        }
+
+        public bool SetupLibCheck(IServiceProvider services, string fpath, byte[] bytes)
+        {
+            var diag = services.RequireService<IDiagnosticsService>();
+            var rdr = new LeImageReader(bytes);
             ushort w, len;
             int i;
-            string fpath = cfgSvc.GetInstallationRelativePath("msdos", sSigName);
-            var fsSvc = services.RequireService<IFileSystemService>();
-            if (!fsSvc.FileExists(fpath))
-            {
-                diag.Warn(string.Format("Can't open signature file {0}.", fpath));
-                return false;
-            }
-            var bytes = fsSvc.ReadAllBytes(fpath);
-            var rdr = new LeImageReader(bytes);
 
             //readProtoFile();
 
@@ -471,10 +474,11 @@ static char [] buf= new char[100];                       /* A general purpose bu
         }
 
 
-        /* Check this function to see if it is a library function. Return true if
-            it is, and copy its name to pProc->name
-        */
-        public bool LibCheck(IServiceProvider services, Program prog,Procedure pProc, Address addr)
+        /// <summary>
+        /// Check this function to see if it is a library function. Return true if
+        /// it is, and copy its name to pProc.Name
+        /// </summary>
+        public bool LibCheck(IServiceProvider services, Program prog, Procedure pProc, Address addr)
         {
             var diagSvc = services.RequireService<IDiagnosticsService>();
             long fileOffset;
