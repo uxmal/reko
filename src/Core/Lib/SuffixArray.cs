@@ -89,14 +89,14 @@ namespace Reko.Core.Lib
                 BuildLcpArray();
         }
 
-        public int Length
-        {
-            get { return m_sa.Length; }
-        }
-
         public int this[int index]
         {
             get { return m_sa[index]; }
+        }
+
+        public int Length
+        {
+            get { return m_sa.Length; }
         }
 
         /// <summary>

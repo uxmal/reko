@@ -111,11 +111,11 @@ namespace Reko.UnitTests.Core.Lib
         {
             for (int i = 0; i < sa.Length; i++)
             {
-                Console.Write("{0} {1} {2} lcp = {3}",
-                    i, 
+                Console.Write("{0,4} {1,4} lcp = {2,4} {3}",
+                    i,
                     sa[i],
-                    string.Join("", sa.Str.Skip(sa[i])),
-                    sa.Lcp[i].ToString());
+                    sa.Lcp[i],
+                    string.Join("", sa.Str.Skip(sa[i])));
             }
         }
 

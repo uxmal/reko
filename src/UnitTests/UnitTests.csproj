@@ -115,6 +115,7 @@
     <Compile Include="Core\Configuration\RekoConfigurationServiceTests.cs" />
     <Compile Include="Core\Configuration\RekoConfigurationTests.cs" />
     <Compile Include="Core\Lib\SuffixArrayTests.cs" />
+    <Compile Include="Core\Lib\WildPatternMatcher.Tests.cs" />
     <Compile Include="Core\Output\CTypeReferenceFormatterTests.cs" />
     <Compile Include="Core\SegmentMapTests.cs" />
     <Compile Include="Core\Serialization\ArgumentDeserializerTests.cs" />
