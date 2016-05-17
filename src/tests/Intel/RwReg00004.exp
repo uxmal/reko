@@ -58,7 +58,7 @@ l10000035:
 	SZO = cond(esi)
 	C = false
 	edi = 0x000186A0
-	Mem0[esp + 0x00000014:real32] = rLoc1
+	Mem0[esp + 0x00000014:real32] = (real32) rLoc1
 	rLoc1 = (real64) Mem0[esp + 0x0000001C:int32]
 	// succ:  l10000048
 l10000048:
@@ -66,7 +66,7 @@ l10000048:
 	rLoc2 = rLoc2 * Mem0[0x0099188A:real64]
 	esi = esi + 0x00000001
 	SZO = cond(esi)
-	Mem0[esp + 0x00000014:real32] = rLoc2
+	Mem0[esp + 0x00000014:real32] = (real32) rLoc2
 	call fn1000010A (retsize: 4; FPU: 2;)
 	ecx = eax
 	Mem0[esp + 0x0000001C:word32] = ecx
@@ -80,7 +80,7 @@ l10000072:
 	SZO = cond(ecx)
 	Mem0[esp + 0x00000014:word32] = ecx
 	rLoc2 = (real64) Mem0[esp + 0x00000014:int32]
-	Mem0[esp + 0x00000014:real32] = rLoc2
+	Mem0[esp + 0x00000014:real32] = (real32) rLoc2
 	// succ:  l1000007F
 l1000007F:
 	rLoc1 = rLoc1 * Mem0[0x10033290:real64]

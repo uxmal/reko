@@ -64,8 +64,8 @@ namespace Reko.Core.Serialization
         public string Address;
 
         /// <summary>
-        /// Property that indicated whether the procedure body is to be decompiled or not. If false, it is recommended
-        /// that the Signature property be set.
+        /// Property that indicated whether the procedure body is to be decompiled 
+        /// or not. If false, it is recommendedthat the Signature property be set.
         /// </summary>
         [XmlElement("decompile")]
         [DefaultValue(true)]
@@ -81,7 +81,7 @@ namespace Reko.Core.Serialization
 
         /// <summary>
         /// The signature of the function as specified by the user. It is written
-        /// in C syntax, with the [[reko::reg({regname})]] extension for specifying
+        /// in C syntax, with the [[reko::arg(register,{name})]] extension for specifying
         /// values passed or returned in parameters.
         /// </summary>
         public string CSignature;

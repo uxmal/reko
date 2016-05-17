@@ -26,6 +26,7 @@ using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -126,7 +127,7 @@ namespace Reko.UnitTests.Analysis
 		private void Prepare(ProcedureBuilder mock)
 		{
 			proc = mock.Procedure;
-			SsaTransform tr = new SsaTransform(new ProgramDataFlow(), proc, null, proc.CreateBlockDominatorGraph());
+			SsaTransform tr = new SsaTransform(new ProgramDataFlow(), proc, null, proc.CreateBlockDominatorGraph(), new HashSet<RegisterStorage>());
 			ssaIds = tr.SsaState.Identifiers;
 		}
 

@@ -157,21 +157,15 @@ namespace Reko.Analysis
 			}
 		}
 
+        /// <summary>
+        /// Remove all uses <paramref name="stm"/> makes.
+        /// </summary>
+        /// <param name="stm"></param>
 		public void RemoveUses(Statement stm)
 		{
 			foreach (var sid in Identifiers)
 			{
-				List<Statement> uses = sid.Uses;
-				int jTo = 0;
-				for (int j = 0; j < uses.Count; ++j)
-				{
-					if (uses[j] != stm)
-					{
-						uses[jTo] = uses[j];
-						++jTo;
-					}
-				}
-				uses.RemoveRange(jTo, uses.Count - jTo);
+                sid.Uses.RemoveAll(u => u == stm);
 			}
 		}
 

@@ -76,17 +76,22 @@ namespace Reko.UnitTests.Analysis
 			RunFileTest(m, "Analysis/DeadFnReturn.txt");
 		}
 
-		protected override void RunTest(Program prog, TextWriter writer)
+		protected override void RunTest(Program program, TextWriter writer)
 		{
-			DataFlowAnalysis dfa = new DataFlowAnalysis(prog, null,  new FakeDecompilerEventListener());
+			DataFlowAnalysis dfa = new DataFlowAnalysis(program, null,  new FakeDecompilerEventListener());
 			dfa.UntangleProcedures();
-			foreach (Procedure proc in prog.Procedures.Values)
+			foreach (Procedure proc in program.Procedures.Values)
 			{
-				Aliases alias = new Aliases(proc, prog.Architecture);
+				Aliases alias = new Aliases(proc, program.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, null, proc.CreateBlockDominatorGraph());
+				SsaTransform sst = new SsaTransform(
+                    dfa.ProgramDataFlow,
+                    proc,
+                    null,
+                    proc.CreateBlockDominatorGraph(),
+                    program.Platform.CreateImplicitArgumentRegisters());
 				SsaState ssa = sst.SsaState;
-				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Platform);
+				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform);
 				cce.Transform();
 
 				DeadCode.Eliminate(proc, ssa);

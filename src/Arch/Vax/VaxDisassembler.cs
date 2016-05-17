@@ -46,7 +46,14 @@ namespace Reko.Arch.Vax
             var addr = rdr.Address;
             if (!rdr.TryReadByte(out op))
                 return null;
-            VaxInstruction instr = oneByteInstructions[op].Decode(this);
+            VaxInstruction instr;
+            try
+            {
+                instr = oneByteInstructions[op].Decode(this);
+            } catch
+            {
+                instr = new VaxInstruction { Opcode = Opcode.Invalid, Operands = new MachineOperand[0] };
+            }
             if (instr == null)
                 return null;
             instr.Address = addr;
@@ -67,8 +74,13 @@ namespace Reko.Arch.Vax
                 case ',':
                     continue;
                 case 'a':
+                    if (!TryDecodeOperand(Width(format[i++]), out op))
+                        return null;
+                    break;
                 case 'r':
                 case 'w':
+                case 'm':
+                case 'v':
                     if (!TryDecodeOperand(Width(format[i++]), out op))
                         return null;
                     break;
@@ -78,9 +90,18 @@ namespace Reko.Arch.Vax
                     ulong uAddr = (uint)((long)rdr.Address.Offset + jOffset);
                     op = AddressOperand.Ptr32((uint)uAddr);
                     break;
-                default: throw new NotImplementedException(
-                    string.Format(
-                        "Access type {0} not implemented.", format[i - 1]));
+                default:
+                    throw new NotImplementedException(
+               string.Format(
+                   "Access type {0} not implemented.", format[i - 1]));
+                }
+                if (op == null)
+                {
+                    return new VaxInstruction
+                    {
+                        Opcode = Opcode.Invalid,
+                        Operands = new MachineOperand[0],
+                    };
                 }
                 ops.Add(op);
             }
@@ -99,6 +120,10 @@ namespace Reko.Arch.Vax
             case 'w': return PrimitiveType.Word16;
             case 'l': return PrimitiveType.Word32;
             case 'f': return PrimitiveType.Real32;  //$TODO: this is not IEEE
+            case 'd': return PrimitiveType.Real64;  //$TODO: this is not IEEE
+            case 'g': return PrimitiveType.Real64;  //$TODO: this is not IEEE
+            case 'h': return PrimitiveType.Real128;  //$TODO: this is not IEEE
+            case 'q': return PrimitiveType.Word64;
             default:
                 throw new NotImplementedException(
                     string.Format(
@@ -127,8 +152,17 @@ namespace Reko.Arch.Vax
             case 3:
                 op = LiteralOperand(width, bSpecifier);
                 break;
+            case 4: // Index mode
+                op = IndexOperand(width, reg);
+                break;
             case 5: // Register mode
                 op = new RegisterOperand(reg);
+                break;
+            case 6: // Register deferred
+                op = new MemoryOperand(width)
+                {
+                    Base = reg
+                };
                 break;
             case 7: // Autodecrement mode
                 op = new MemoryOperand(width)
@@ -138,11 +172,18 @@ namespace Reko.Arch.Vax
                 };
                 break;
             case 8: // Autoincrement mode
-                op = new MemoryOperand(width)
+                if (reg.Number == 0x0F)
                 {
-                    Base = reg,
-                    AutoIncrement = true,
-                };
+                    op = ImmediateOperand(width);
+                }
+                else
+                {
+                    op = new MemoryOperand(width)
+                    {
+                        Base = reg,
+                        AutoIncrement = true,
+                    };
+                }
                 break;
             case 9: // Deferred Autoincrement mode
                 op = new MemoryOperand(width)
@@ -152,30 +193,48 @@ namespace Reko.Arch.Vax
                     Deferred = true,
                 };
                 break;
-            case 10: // Displacement mode
-            case 11:
+            case 0xA: // Displacement mode
+            case 0xD:
                 if (!rdr.TryReadByte(out b))
                     return false;
                 op = DisplacementOperand(width, reg, Constant.SByte((sbyte)b), bSpecifier);
                 break;
-            case 12:
-            case 13:
+            case 0xB:
+            case 0xE:
                 if (!rdr.TryReadUInt16(out w))
                     return false;
                 op = DisplacementOperand(width, reg, Constant.Int16((short)w), bSpecifier);
                 break;
-            case 14:
-            case 15:
+            case 0xC:
+            case 0xF:
                 if (!rdr.TryReadUInt32(out dw))
                     return false;
                 op = DisplacementOperand(width, reg, Constant.Word32(dw), bSpecifier);
                 break;
             default:
-                throw new NotImplementedException(
-                    string.Format(
-                        "Unimplemented addressing mode {0:X2}", (bSpecifier >> 4)));
+                throw new InvalidCastException("Impossiburu!");
             }
             return true;
+        }
+
+        private MachineOperand ImmediateOperand(PrimitiveType width)
+        {
+            Constant imm;
+            if (!rdr.TryRead(width, out imm))
+                return null;
+            return new ImmediateOperand(imm);
+        }
+
+        private MachineOperand IndexOperand(PrimitiveType width, RegisterStorage reg)
+        {
+            MachineOperand op;
+            if (!TryDecodeOperand(width, out op))
+                return null;
+            var aOp = op as MemoryOperand;
+            if (aOp == null)
+                return null;
+            aOp.Index = reg;
+            return aOp;
         }
 
         private MachineOperand DisplacementOperand(PrimitiveType width, RegisterStorage reg, Constant c, byte bSpecifier)
@@ -189,7 +248,7 @@ namespace Reko.Arch.Vax
             {
                 Base = reg,
                 Offset = c,
-                Deferred = (bSpecifier & 1) == 1
+                Deferred = (bSpecifier >> 4) > 0xC
             };
         }
 
@@ -203,6 +262,10 @@ namespace Reko.Arch.Vax
                 if (width.BitSize == 32)
                 {
                     c = Constant.Real32(frac * exp / 16.0F);
+                }
+                else if (width.BitSize == 64)
+                {
+                    c = Constant.Real64(frac * exp / 16.0F);
                 }
                 else
                     throw new NotImplementedException();
@@ -232,14 +295,14 @@ namespace Reko.Arch.Vax
 
             public OpRec(Opcode op, int args)
             {
-
+                this.op = op;
+                this.format = "";
             }
+
             public virtual VaxInstruction Decode(VaxDisassembler dasm)
             {
                 return dasm.DecodeOperands(op, format);
             }
         }
-
-        
     }
 }

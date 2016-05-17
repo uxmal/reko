@@ -57,9 +57,7 @@ namespace Reko.UnitTests.Core
 			Identifier id1 = new Identifier("v1", PrimitiveType.Word16, null);
 			Identifier id2 = new Identifier("v2", PrimitiveType.Word16, null);
 
-			Expression e = new BinaryExpression(
-				Operator.IMul, PrimitiveType.Word16, new BinaryExpression(
-				Operator.IAdd, PrimitiveType.Word16, id1, id2), Constant.Word16(2));
+			var e = m.IMul(m.IAdd(id1, id2), Constant.Word16(2));
 			e.Accept(cf);
 
 			Assert.AreEqual("(v1 + v2) * 0x0002", sw.ToString());
@@ -71,9 +69,7 @@ namespace Reko.UnitTests.Core
 			Identifier id1 = new Identifier("v1", PrimitiveType.Word16, null);
 			Identifier id2 = new Identifier("v2", PrimitiveType.Word16, null);
 
-			Expression e = new BinaryExpression(
-				Operator.IAdd, PrimitiveType.Word16, new BinaryExpression(
-				Operator.IMul, PrimitiveType.Word16, id1, id2), Constant.Word16(2));
+			var e = m.IAdd(m.IMul(id1, id2), Constant.Word16(2));
 			e.Accept(cf);
 
 			Assert.AreEqual("v1 * v2 + 0x0002", sw.ToString());
@@ -85,7 +81,7 @@ namespace Reko.UnitTests.Core
 			Identifier id1 = new Identifier("v1", PrimitiveType.Word32, null);
             Expression e = new FieldAccess(
                 PrimitiveType.Pointer32,
-                new Dereference(PrimitiveType.Word32, id1),
+                m.Deref(id1),
                 new StructureField(4, PrimitiveType.Word32, "foo"));
 			e.Accept(cf);
 
@@ -96,7 +92,7 @@ namespace Reko.UnitTests.Core
 		public void CfDerefFieldAccess()
 		{
 			Identifier id1 = new Identifier("v1", PrimitiveType.Word32, null);
-			Expression e = new Dereference(PrimitiveType.Pointer32, new FieldAccess(
+			Expression e = m.Deref(new FieldAccess(
                 PrimitiveType.Word32, 
                 id1,
                 new StructureField(4, PrimitiveType.Word32, "foo")));
@@ -236,5 +232,53 @@ namespace Reko.UnitTests.Core
             e.Accept(cf);
             Assert.AreEqual("(a->*b).a0004[c]", sw.ToString());
         }
-	}
+
+        [Test]
+        public void CfFloatWithDecimals()
+        {
+            var c = Constant.Real32(3.1F);
+            c.Accept(cf);
+            Assert.AreEqual("3.1F", sw.ToString());
+        }
+
+        [Test]
+        public void CfDoubleWithDecimals()
+        {
+            var c = Constant.Real64(3.1);
+            c.Accept(cf);
+            Assert.AreEqual("3.1", sw.ToString());
+        }
+
+        [Test]
+        public void CfFloatWithoutDecimals()
+        {
+            var c = Constant.Real32(3);
+            c.Accept(cf);
+            Assert.AreEqual("3.0F", sw.ToString());
+        }
+
+        [Test]
+        public void CfDoubleWithoutDecimals()
+        {
+            var c = Constant.Real64(3);
+            c.Accept(cf);
+            Assert.AreEqual("3.0", sw.ToString());
+        }
+
+        [Test]
+        public void CfFloatWithExponent()
+        {
+            var c = Constant.Real32(1e12F);
+            c.Accept(cf);
+            Assert.AreEqual("1e+12F", sw.ToString());
+        }
+
+        [Test]
+        public void CfDoubleWithExponent()
+        {
+            var c = Constant.Real64(1e18);
+            c.Accept(cf);
+            Assert.AreEqual("1e+18", sw.ToString());
+        }
+    }
 }

@@ -43,12 +43,19 @@
   <ItemGroup>
     <Compile Include="MemoryOperand.cs" />
     <Compile Include="Opcode.cs" />
+    <Compile Include="Registers.cs" />
     <Compile Include="VaxArchitecture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VaxDisassembler.cs" />
     <Compile Include="VaxDisassembler.TwoByte.cs" />
     <Compile Include="VaxDisassembler.OneByte.cs" />
     <Compile Include="VaxInstruction.cs" />
+    <Compile Include="VaxProcessorState.cs" />
+    <Compile Include="VaxRewriter.Alu.cs" />
+    <Compile Include="VaxRewriter.Control.cs" />
+    <Compile Include="VaxRewriter.cs" />
+    <Compile Include="VaxRewriter.Fpu.cs" />
+    <Compile Include="VaxRewriter.Misc.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">

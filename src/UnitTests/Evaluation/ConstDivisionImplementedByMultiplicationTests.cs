@@ -65,7 +65,6 @@ namespace Reko.UnitTests.Evaluation
             Assert.AreEqual(sExp, ass.Src.ToString());
         }
 
-
         [Test]
         public void Cdiv_SmallConstants()
         {

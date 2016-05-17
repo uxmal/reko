@@ -56,7 +56,7 @@ namespace Reko.ImageLoaders.OdbgScript
             set { throw new NotImplementedException(); }
         }
 
-        public ImageMap ImageMap { get; set; }
+        public SegmentMap ImageMap { get; set; }
         public IntelArchitecture Architecture { get; set; }
 
         /// <summary>
@@ -71,12 +71,12 @@ namespace Reko.ImageLoaders.OdbgScript
             var pe = CreatePeImageLoader();
             var program = pe.Load(pe.PreferredBaseAddress);
             var rr = pe.Relocate(program, pe.PreferredBaseAddress);
-            this.ImageMap = program.ImageMap;
+            this.ImageMap = program.SegmentMap;
             this.Architecture = (IntelArchitecture)program.Architecture;
 
-            var win32 = new Win32Emulator(program.ImageMap, program.Platform, program.ImportReferences);
+            var win32 = new Win32Emulator(program.SegmentMap, program.Platform, program.ImportReferences);
             var state = (X86State)program.Architecture.CreateProcessorState();
-            var emu = new X86Emulator((IntelArchitecture) program.Architecture, program.ImageMap, win32);
+            var emu = new X86Emulator((IntelArchitecture) program.Architecture, program.SegmentMap, win32);
             this.debugger = new Debugger(emu);
             this.scriptInterpreter = new OllyLang(Services);
             this.scriptInterpreter.Host = new Host(this);
@@ -100,10 +100,18 @@ namespace Reko.ImageLoaders.OdbgScript
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            var eps = new List<EntryPoint>();
+            var eps = new List<ImageSymbol>();
+            var syms = new SortedList<Address, ImageSymbol>();
             if (OriginalEntryPoint != null)
-                eps.Add(new EntryPoint(OriginalEntryPoint, Architecture.CreateProcessorState()));
-            return new RelocationResults(eps, new List<Address>());
+            {
+                var sym = new ImageSymbol(OriginalEntryPoint)
+                {
+                    ProcessorState = Architecture.CreateProcessorState()
+                };
+                syms.Add(sym.Address, sym);
+                eps.Add(sym);
+            }
+            return new RelocationResults(eps, syms, new List<Address>());
         }
 
         public virtual PeImageLoader CreatePeImageLoader()

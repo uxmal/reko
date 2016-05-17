@@ -51,7 +51,12 @@ namespace Reko.UnitTests.Analysis
 			{
 				Aliases alias = new Aliases(proc, program.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, null, proc.CreateBlockDominatorGraph());
+				SsaTransform sst = new SsaTransform(
+                    dfa.ProgramDataFlow,
+                    proc,
+                    null,
+                    proc.CreateBlockDominatorGraph(),
+                    program.Platform.CreateImplicitArgumentRegisters());
 				SsaState ssa = sst.SsaState;
 
 				proc.Write(false, fut.TextWriter);

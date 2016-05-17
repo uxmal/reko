@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Scanning
             arch = new M68kArchitecture();
             var mem = new MemoryArea(addrBase, bytes);
             program = new Program(
-                new ImageMap(
+                new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment(
                         "code", mem, AccessMode.ReadWriteExecute)),
@@ -78,17 +78,11 @@ namespace Reko.UnitTests.Scanning
 
         private void BuildTest(Address addrBase, IPlatform platform, Action<M68kAssembler> asmProg)
         {
-            var entryPoints = new List<EntryPoint>();
+            var entryPoints = new List<ImageSymbol>();
             var asm = new M68kAssembler(arch, addrBase, entryPoints);
             asmProg(asm);
 
-            var lr = asm.GetImage();
-            program = new Program
-            {
-                Architecture = arch,
-                ImageMap = lr.ImageMap,
-                Platform = platform,
-            };
+            program = asm.GetImage();
 
             RunTest(addrBase);
         }
@@ -100,7 +94,7 @@ namespace Reko.UnitTests.Scanning
                 program,
                 new ImportResolver(project, program, new FakeDecompilerEventListener()),
                 sc);
-            scanner.EnqueueEntryPoint(new EntryPoint(addrBase, arch.CreateProcessorState()));
+            scanner.EnqueueImageSymbol(new ImageSymbol(addrBase), true);
             scanner.ScanImage();
         }
 

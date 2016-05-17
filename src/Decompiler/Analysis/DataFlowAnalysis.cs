@@ -82,10 +82,10 @@ namespace Reko.Analysis
                     alias.Transform();
 
                     var doms = new DominatorGraph<Block>(proc.ControlGraph, proc.EntryBlock);
-                    var sst = new SsaTransform(flow, proc, importResolver, doms);
+                    var sst = new SsaTransform(flow, proc, importResolver, doms, new HashSet<RegisterStorage>());
                     var ssa = sst.SsaState;
 
-                    var cce = new ConditionCodeEliminator(ssa.Identifiers, program.Platform);
+                    var cce = new ConditionCodeEliminator(ssa, program.Platform);
                     cce.Transform();
                     //var cd = new ConstDivisionImplementedByMultiplication(ssa);
                     //cd.Transform();
@@ -95,7 +95,6 @@ namespace Reko.Analysis
                     var vp = new ValuePropagator(program.Architecture, ssa);
                     vp.Transform();
                     DeadCode.Eliminate(proc, ssa);
-
 
                     // Build expressions. A definition with a single use can be subsumed
                     // into the using expression. 
@@ -290,7 +289,7 @@ namespace Reko.Analysis
             // all statements like (x86) mem[esp_42+4] will have been converted to
             // mem[fp - 30]. We also hope that procedure constants kept in registers
             // are propagated to the corresponding call sites.
-            var cce = new ConditionCodeEliminator(ssa.Identifiers, program.Platform);
+            var cce = new ConditionCodeEliminator(ssa, program.Platform);
             cce.Transform();
             var vp = new ValuePropagator(program.Architecture, ssa);
             vp.Transform();

@@ -149,12 +149,13 @@ namespace Reko.Core.Serialization
             else
             {
                 var doc = new XmlDocument();
+                var xml = SerializeValue(options, doc);
+                var elems = xml != null
+                    ? xml.ChildNodes.OfType<XmlElement>().ToArray()
+                    : new XmlElement[0];
                 return new ProcessorOptions_v4 {
                     Name = user.Processor,
-                    Options = SerializeValue(options, doc)
-                        .ChildNodes
-                        .OfType<XmlElement>()
-                        .ToArray()
+                    Options = elems
                 };
             }
         }
@@ -194,6 +195,8 @@ namespace Reko.Core.Serialization
 
         private XmlElement SerializeValue(object value, XmlDocument doc)
         {
+            if (value == null)
+                return null;
             var sValue = value as string;
             if (sValue != null)
             {
@@ -223,7 +226,7 @@ namespace Reko.Core.Serialization
                 }
                 return el;
             }
-            throw new NotSupportedException(typeof(object).Name);
+            throw new NotSupportedException(value.GetType().Name);
         }
 
         public ProjectFile_v3 VisitMetadataFile(string projectAbsPath, MetadataFile metadata)

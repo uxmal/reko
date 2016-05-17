@@ -54,10 +54,10 @@ namespace Reko.Core
 
         Address AdjustProcedureAddress(Address addrCode);
         HashSet<RegisterStorage> CreateImplicitArgumentRegisters();
-        IEnumerable<Address> CreatePointerScanner(ImageMap imageMap, ImageReader rdr, IEnumerable<Address> address, PointerScannerFlags pointerScannerFlags);
+        IEnumerable<Address> CreatePointerScanner(SegmentMap segmentMap, ImageReader rdr, IEnumerable<Address> address, PointerScannerFlags pointerScannerFlags);
         ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
         TypeLibrary CreateMetadata();
-        ImageMap CreateAbsoluteMemoryMap();
+        SegmentMap CreateAbsoluteMemoryMap();
 
         /// <summary>
         /// Given a C basic type, returns the number of bytes that type is
@@ -79,6 +79,17 @@ namespace Reko.Core
         string GetPrimitiveTypeName(PrimitiveType t, string v);
 
         ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host);
+
+        /// <summary>
+        /// Given an executable entry point, find the location of the "main" program,
+        /// bypassing any runtime startup code.
+        /// </summary>
+        /// <param name="imageMap">Program image in which to search</param>
+        /// <param name="addrStart">The entrypoint according to the image.</param>
+        /// <returns>null if no known runtime code was found, otherwise the 
+        /// an ImageSymbol corresponding to the "real" user main procedure.</returns>
+        ImageSymbol FindMainProcedure(Program program, Address addrStart);
+
         SystemService FindService(int vector, ProcessorState state);
         SystemService FindService(RtlInstruction call, ProcessorState state);
         string FormatProcedureName(Program program, Procedure proc);
@@ -116,7 +127,7 @@ namespace Reko.Core
         public virtual TypeLibrary Metadata { get; protected set; }
         public CharacteristicsLibrary[] CharacteristicsLibs { get; protected set; }
         public string Description { get; set; }
-        public PlatformHeuristics Heuristics { get; private set; }
+        public PlatformHeuristics Heuristics { get; set; }
         public string Name { get; set; }
         public MemoryMap_v1 MemoryMap { get; set; }
         public virtual PrimitiveType FramePointerType { get { return Architecture.FramePointerType; } }
@@ -161,12 +172,12 @@ namespace Reko.Core
         public abstract HashSet<RegisterStorage> CreateImplicitArgumentRegisters();
 
         public IEnumerable<Address> CreatePointerScanner(
-            ImageMap imageMap,
+            SegmentMap segmentMap,
             ImageReader rdr,
             IEnumerable<Address> address,
             PointerScannerFlags pointerScannerFlags)
         {
-            return Architecture.CreatePointerScanner(imageMap, rdr, address, pointerScannerFlags);
+            return Architecture.CreatePointerScanner(segmentMap, rdr, address, pointerScannerFlags);
         }
 
         public TypeLibrary CreateMetadata()
@@ -189,7 +200,7 @@ namespace Reko.Core
         /// of each resulting ImageSegment.
         /// </summary>
         /// <returns></returns>
-        public ImageMap CreateAbsoluteMemoryMap()
+        public virtual SegmentMap CreateAbsoluteMemoryMap()
         {
             if (this.MemoryMap == null ||
                   this.MemoryMap.Segments == null)
@@ -198,13 +209,14 @@ namespace Reko.Core
             var segs = MemoryMap.Segments.Select(s => MemoryMap_v1.LoadSegment(s, this, diagSvc))
                 .Where(s => s != null)
                 .ToSortedList(s => s.Address);
-            return new ImageMap(
+            return new SegmentMap(
                 segs.Values.First().Address,
                 segs.Values.ToArray());
         }
 
         /// <summary>
-        /// Utility function for subclasses that loads all type libraries and characteristics libraries 
+        /// Utility function for subclasses that loads all type libraries and
+        /// characteristics libraries defined in the Reko configuration file.
         /// </summary>
         /// <param name="envName"></param>
         public virtual void EnsureTypeLibraries(string envName)
@@ -227,8 +239,7 @@ namespace Reko.Core
                     Debug.Print("Loading {0}", tl.Name);
                     Metadata = tlSvc.LoadMetadataIntoLibrary(this, tl, Metadata); 
                 }
-                this.CharacteristicsLibs = ((System.Collections.IEnumerable)envCfg.CharacteristicsLibraries)
-                    .OfType<ITypeLibraryElement>()
+                this.CharacteristicsLibs = envCfg.CharacteristicsLibraries
                     .Select(cl => tlSvc.LoadCharacteristics(cl.Name))
                     .Where(cl => cl != null).ToArray();
             }
@@ -248,13 +259,19 @@ namespace Reko.Core
         {
             return string.Format("{0}!{1}", program.Name, proc.Name);
         }
-        
 
         public abstract int GetByteSizeFromCBasicType(CBasicType cb);
 
         public virtual string GetPrimitiveTypeName(PrimitiveType pt, string language)
         {
             return null;
+        }
+
+        public virtual ImageSymbol FindMainProcedure(Program program, Address addrStart)
+        {
+            // By default, we don't provide this service, but individual platforms 
+            // may have the knowledge of how to find the "real" main program.
+            throw new NotSupportedException();
         }
 
         public abstract SystemService FindService(int vector, ProcessorState state);
@@ -367,7 +384,7 @@ namespace Reko.Core
 
         public override SystemService FindService(int vector, ProcessorState state)
         {
-            throw new NotSupportedException();
+            return null;
         }
 
         public override int GetByteSizeFromCBasicType(CBasicType cb)

@@ -57,14 +57,29 @@ namespace Reko.UnitTests.Mocks
             AddDiagnostic(location, new WarningDiagnostic(message));
         }
 
+        public void Warn(ICodeLocation location, string message, params object[] args)
+        {
+            Warn(location, string.Format(message, args));
+        }
+
         public void Error(ICodeLocation location, string message)
         {
             AddDiagnostic(location, new ErrorDiagnostic(message));
         }
 
+        public void Error(ICodeLocation location, string message, params object[] args)
+        {
+            Error(location, string.Format(message, args));
+        }
+
         public void Error(ICodeLocation location, Exception ex, string message)
         {
             AddDiagnostic(location, new ErrorDiagnostic(message, ex));
+        }
+
+        public void Error(ICodeLocation location, Exception ex, string message, params object[] args)
+        {
+            Error(location, ex, string.Format(message, args));
         }
 
         public void ShowProgress(string caption, int numerator, int denominator)

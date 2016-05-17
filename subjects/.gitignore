@@ -1,0 +1,15 @@
+**/src/*.exe
+**/src/*.exp
+**/src/*.dep
+**/src/*.dll
+**/src/*.htm
+**/src/*.intermediate.manifest
+**/src/*.idb
+**/src/*.lib
+**/src/*.ncb
+**/src/*.obj
+**/src/*.pdb
+**/src/*.res
+**/src/*.tds
+**/src/*.user
+**/src/*.*~*

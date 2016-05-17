@@ -89,7 +89,12 @@ namespace Reko.UnitTests.Analysis
                 // (e.g. vtables) they will have no "ProcedureFlow" associated with them yet, in
                 // which case the the SSA treats the call as a "hell node".
                 var doms = proc.CreateBlockDominatorGraph();
-                var sst = new SsaTransform(flow, proc, importResolver, doms);
+                var sst = new SsaTransform(
+                    flow, 
+                    proc,
+                    importResolver,
+                    doms, 
+                    program.Platform.CreateImplicitArgumentRegisters());
                 sst.AddUseInstructions = true;
                 sst.Transform();
                 var ssa = sst.SsaState;

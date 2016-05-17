@@ -92,7 +92,7 @@ namespace Reko.Arch.Arm
             return new ArmRewriter(this, rdr, (ArmProcessorState)state, frame, host);
         }
 
-        public override IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             var knownLinAddresses = knownAddresses.Select(a => a.ToUInt32()).ToHashSet();
             if (flags != PointerScannerFlags.Calls)

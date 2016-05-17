@@ -125,9 +125,14 @@ namespace Reko.UnitTests.Analysis
 			this.proc = proc;
 			Aliases alias = new Aliases(proc, arch);
 			alias.Transform();
-			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, null, proc.CreateBlockDominatorGraph());
+			SsaTransform sst = new SsaTransform(
+                new ProgramDataFlow(),
+                proc,
+                null,
+                proc.CreateBlockDominatorGraph(),
+                new HashSet<RegisterStorage>());
 			ssa = sst.SsaState;
-			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa.Identifiers, platform);
+			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, platform);
 			cce.Transform();
             ValuePropagator vp = new ValuePropagator(arch, ssa);
 			vp.Transform();

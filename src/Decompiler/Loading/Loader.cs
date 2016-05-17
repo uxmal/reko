@@ -72,12 +72,16 @@ namespace Reko.Loading
         {
             var program = asm.Assemble(addrLoad, new StreamReader(new MemoryStream(image), Encoding.UTF8));
             program.Name = Path.GetFileName(fileName);
+            foreach (var sym in asm.ImageSymbols)
+            {
+                program.ImageSymbols[sym.Address] = sym;
+            }
             foreach (var ep in asm.EntryPoints)
             {
                 program.EntryPoints[ep.Address] = ep;
             }
-            program.EntryPoints[asm.StartAddress] = 
-                new EntryPoint(asm.StartAddress, program.Architecture.CreateProcessorState());
+            program.EntryPoints[asm.StartAddress] =
+                new ImageSymbol(asm.StartAddress);
             CopyImportReferences(asm.ImportReferences, program);
             return program;
         }
@@ -102,11 +106,16 @@ namespace Reko.Loading
             var program = imgLoader.Load(addrLoad);
             program.Name = Path.GetFileName(filename);
             var relocations = imgLoader.Relocate(program, addrLoad);
+            foreach (var sym in relocations.Symbols.Values)
+            {
+                program.ImageSymbols[sym.Address] = sym;
+            }
             foreach (var ep in relocations.EntryPoints)
             {
                 program.EntryPoints[ep.Address] = ep;
             }
             program.FunctionHints.AddRange(relocations.Functions);
+            program.ImageMap = program.SegmentMap.CreateImageMap();
             return program;
         }
 
@@ -115,9 +124,9 @@ namespace Reko.Loading
             var arch = cfgSvc.GetArchitecture(archName);
             var platform = cfgSvc.GetEnvironment(platformName).Load(Services, arch);
             var mem = new MemoryArea(addrLoad, image);
-            var imageMap = CreatePlatformMemoryMap(platform, addrLoad, image);
+            var segmentMap = CreatePlatformSegmentMap(platform, addrLoad, image);
             var program = new Program(
-                CreatePlatformMemoryMap(platform, addrLoad, image),
+                CreatePlatformSegmentMap(platform, addrLoad, image),
                 arch, 
                 platform);
             program.Name = Path.GetFileName(filename);
@@ -131,14 +140,19 @@ namespace Reko.Loading
         {
             var imgLoader = CreateRawImageLoader(image, new NullImageLoader(Services, filename, image), raw);
             var program = imgLoader.Load(imgLoader.PreferredBaseAddress);
-            program.ImageMap = CreatePlatformMemoryMap(program.Platform, imgLoader.PreferredBaseAddress, image);
+            program.SegmentMap = CreatePlatformSegmentMap(program.Platform, imgLoader.PreferredBaseAddress, image);
             program.Name = Path.GetFileName(filename);
             var relocations = imgLoader.Relocate(program, imgLoader.PreferredBaseAddress);
+            foreach (var sym in relocations.Symbols.Values)
+            {
+                program.ImageSymbols[sym.Address] = sym;
+            }
             foreach (var ep in relocations.EntryPoints)
             {
                 program.EntryPoints.Add(ep.Address, ep);
             }
             program.FunctionHints.AddRange(relocations.Functions);
+            program.ImageMap = program.SegmentMap.CreateImageMap();
             return program;
         }
 
@@ -180,10 +194,11 @@ namespace Reko.Loading
                 imgLoader.PreferredBaseAddress = baseAddr;
                 entryAddr = GetRawBinaryEntryAddress(rawFile, image, arch, baseAddr);
                 var state = arch.CreateProcessorState();
-                imgLoader.EntryPoints.Add(new EntryPoint(
-                    entryAddr,
-                    rawFile.EntryPoint.Name,
-                    state));
+                imgLoader.EntryPoints.Add(new ImageSymbol(entryAddr)
+                {
+                    Name = rawFile.EntryPoint.Name,
+                    ProcessorState = state
+                });
             }
             return imgLoader;
         }
@@ -239,7 +254,7 @@ namespace Reko.Loading
             var fsSvc = Services.RequireService<IFileSystemService>();
             using (var stm = fsSvc.CreateFileStream(fileName, FileMode.Open, FileAccess.Read))
             {
-                byte[] bytes = new Byte[stm.Length + offset];
+                byte[] bytes = new byte[stm.Length + offset];
                 stm.Read(bytes, offset, (int)stm.Length);
                 return bytes;
             }
@@ -352,17 +367,17 @@ namespace Reko.Loading
             }
         }
 
-        private ImageMap CreatePlatformMemoryMap(IPlatform platform, Address loadAddr, byte [] rawBytes)
+        private SegmentMap CreatePlatformSegmentMap(IPlatform platform, Address loadAddr, byte [] rawBytes)
         {
-            var imageMap = platform.CreateAbsoluteMemoryMap();
-            if (imageMap != null)
+            var segmentMap = platform.CreateAbsoluteMemoryMap();
+            if (segmentMap != null)
             {
-                return imageMap;
+                return segmentMap;
             }
             else
             {
                 var mem = new MemoryArea(loadAddr, rawBytes);
-                return new ImageMap(loadAddr,
+                return new SegmentMap(loadAddr,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
             }
         }

@@ -152,7 +152,7 @@ namespace Reko.Arch.X86
             return new X86Rewriter(this, host, (X86State) state, rdr, frame);
         }
 
-        public override IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             return mode.CreateInstructionScanner(map, rdr, knownAddresses, flags);
         }

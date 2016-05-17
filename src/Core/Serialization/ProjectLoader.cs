@@ -113,7 +113,9 @@ namespace Reko.Core.Serialization
         /// Loads a .dcproject from a stream.
         /// </summary>
         /// <param name="stm"></param>
-        /// <returns>The Project if the file format was recognized, otherwise null.</returns>
+        /// <returns>
+        /// The Project if the file format was recognized, otherwise null.
+        /// </returns>
         public Project LoadProject(string filename, Stream stm)
         {
             var rdr = new XmlTextReader(stm);
@@ -272,7 +274,6 @@ namespace Reko.Core.Serialization
             return program;
         }
 
-
         private Address LoadAddress(UserData_v4 user, IProcessorArchitecture arch)
         {
             if (user == null || user.LoadAddress == null)
@@ -307,7 +308,7 @@ namespace Reko.Core.Serialization
                 {
                     program.Architecture = Services.RequireService<IConfigurationService>().GetArchitecture(program.User.Processor);
                 }
-                program.Architecture.LoadUserOptions(LoadWeaklyTypedOptions(sUser.Processor.Options));
+                program.Architecture.LoadUserOptions(XmlOptions.LoadIntoDictionary(sUser.Processor.Options));
             }
             if (sUser.Procedures != null)
             {
@@ -325,7 +326,7 @@ namespace Reko.Core.Serialization
             if (sUser.PlatformOptions != null)
             {
                 program.User.Environment = sUser.PlatformOptions.Name;
-                program.Platform.LoadUserOptions(LoadWeaklyTypedOptions(sUser.PlatformOptions.Options));
+                program.Platform.LoadUserOptions(XmlOptions.LoadIntoDictionary(sUser.PlatformOptions.Options));
             }
             if (sUser.GlobalData != null)
             {
@@ -345,20 +346,6 @@ namespace Reko.Core.Serialization
             foreach (var kv in user.Globals)
             {
                 var dt = kv.Value.DataType.Accept(tlDeser);
-                var item = new ImageMapItem((uint)dt.Size)
-                {
-                    Address = kv.Key,
-                    DataType = dt,
-                    Name = kv.Value.Name,
-                };
-                if (item.Size > 0)
-                {
-                    program.ImageMap.AddItemWithSize(kv.Key, item);
-                }
-                else
-                {
-                    program.ImageMap.AddItem(kv.Key, item);
-                }
                 //$BUGBUG: what about x86 segmented binaries?
                 int offset = (int)kv.Key.ToLinear();
                 program.GlobalFields.Fields.Add(offset, dt, kv.Value.Name);
@@ -377,7 +364,9 @@ namespace Reko.Core.Serialization
                 } catch
                 {
                     var diagSvc = Services.RequireService<IDiagnosticsService>();
-                    diagSvc.Warn(string.Format("Unknown text encoding '{0}'. Defaulting to platform text encoding.", sUser.TextEncoding));
+                    diagSvc.Warn(
+                        "Unknown text encoding '{0}'. Defaulting to platform text encoding.", 
+                        sUser.TextEncoding);
                 }
                 user.TextEncoding = enc;
             }
@@ -445,7 +434,7 @@ namespace Reko.Core.Serialization
             if (sUser.PlatformOptions != null)
             {
                 program.User.Environment = sUser.PlatformOptions.Name;
-                program.Platform.LoadUserOptions(LoadWeaklyTypedOptions(sUser.PlatformOptions.Options));
+                program.Platform.LoadUserOptions(XmlOptions.LoadIntoDictionary(sUser.PlatformOptions.Options));
             }
             if (sUser.GlobalData != null)
             {
@@ -465,21 +454,6 @@ namespace Reko.Core.Serialization
             foreach (var kv in user.Globals)
             {
                 var dt = kv.Value.DataType.Accept(tlDeser);
-                var item = new ImageMapItem((uint)dt.Size)
-                {
-                    Address = kv.Key,
-                    DataType = dt,
-                    Name = kv.Value.Name,
-                };
-
-                if (item.Size > 0)
-                {
-                    program.ImageMap.AddItemWithSize(kv.Key, item);
-                }
-                else
-                {
-                    program.ImageMap.AddItem(kv.Key, item);
-                }
                 //$BUGBUG: what about x86 segmented binaries?
                 int offset = (int)kv.Key.ToLinear();
                 program.GlobalFields.Fields.Add(offset, dt, kv.Value.Name);
@@ -495,40 +469,6 @@ namespace Reko.Core.Serialization
         private TypeLibraryDeserializer CreateTypeLibraryDeserializer()
         {
             return new TypeLibraryDeserializer(platform, true, project.LoadedMetadata.Clone());
-        }
-
-        private object ReadItem(XmlElement element)
-        {
-            if (element.Name == "item")
-            {
-                return element.InnerText;
-            } else if (element.Name == "list")
-            {
-                return element.ChildNodes
-                    .OfType<XmlElement>()
-                    .Select(e => ReadItem(e))
-                    .ToList();
-            }
-            else if (element.Name == "dict")
-            {
-                return ReadDictionaryElements(
-                    element.ChildNodes.OfType<XmlElement>());
-            }
-            throw new NotSupportedException();
-        }
-
-        private Dictionary<string,object> ReadDictionaryElements(IEnumerable<XmlElement> elements)
-        {
-            return elements.ToDictionary(
-                e => e.Attributes["key"] != null ? e.Attributes["key"].Value : null,
-                e => ReadItem(e));
-        }
-
-        private Dictionary<string, object> LoadWeaklyTypedOptions(XmlElement[] options)
-        {
-            if (options == null)
-                return new Dictionary<string, object>();
-            return ReadDictionaryElements(options);
         }
 
         public Program VisitInputFile(string projectFilePath, DecompilerInput_v2 sInput)
@@ -576,25 +516,6 @@ namespace Reko.Core.Serialization
                     })
                     .Where(kv => kv.Key != null)
                    .ToSortedList(kv => kv.Key, kv => kv.Value);
-            }
-            var tlDeser = CreateTypeLibraryDeserializer();
-            foreach (var kv in user.Globals)
-            {
-                var dt = kv.Value.DataType.Accept(tlDeser);
-                var item = new ImageMapItem((uint)dt.Size)
-                {
-                    Address = kv.Key,
-                    DataType = dt,
-                    Name = kv.Value.Name,
-                };
-                if (item.Size > 0)
-                {
-                    program.ImageMap.AddItemWithSize(kv.Key, item);
-                }
-                else
-                {
-                    program.ImageMap.AddItem(kv.Key, item);
-                }
             }
             user.OnLoadedScript = sInput.OnLoadedScript;
             if (sInput.Options != null)

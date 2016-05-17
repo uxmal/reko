@@ -69,8 +69,24 @@ namespace Reko.UnitTests.Analysis
             {
                 Programs = { this.pb.Program }
             };
+            var importResolver = new ImportResolver(
+                project,
+                this.pb.Program,
+                new FakeDecompilerEventListener());
+            var arch = new FakeArchitecture();
+            
+            var platform = new FakePlatform(null, arch);
+
+            // Register r1 is assumed to always be implicit when calling
+            // another procedure.
+            var implicitRegs = new HashSet<RegisterStorage>
+            {
+                arch.GetRegister(1)
+            };
+            Debug.Print("GetRegister(1) {0}", arch.GetRegister(1));
+            this.pb.Program.Platform = platform;
             this.pb.Program.Platform = new FakePlatform(null, new FakeArchitecture());
-            this.pb.Program.ImageMap = new ImageMap(
+            this.pb.Program.SegmentMap = new SegmentMap(
                 Address.Ptr32(0x0000),
                 new ImageSegment(
                     ".text",

@@ -144,7 +144,7 @@ namespace Reko.UnitTests.Environments.SysV
             mr.ReplayAll();
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
-            Assert.AreEqual("Register ui32 test(Stack real64 rArg04)", sig.ToString("test"));
+            Assert.AreEqual("Register int32 test(Stack real64 rArg04)", sig.ToString("test"));
         }
 
         private SerializedType Type(string typeName)

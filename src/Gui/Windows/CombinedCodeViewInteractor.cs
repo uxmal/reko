@@ -79,7 +79,7 @@ namespace Reko.Gui.Windows
                 var addr = program.GetProcedureAddress(proc);
                 if (addr == null)
                 {
-                    addr = program.ImageMap.Segments.Values
+                    addr = program.SegmentMap.Segments.Values
                         .Where(s => s.MemoryArea != null)
                         .Select(s => Address.Max(s.Address, s.MemoryArea.BaseAddress))
                         .FirstOrDefault();
@@ -123,7 +123,10 @@ namespace Reko.Gui.Windows
         {
             this.nestedTextModel = new NestedTextModel();
 
-            var mixedCodeDataModel = (MixedCodeDataModel)combinedCodeView.MixedCodeDataView.Model;
+            var mixedCodeDataModel = combinedCodeView.MixedCodeDataView.Model as MixedCodeDataModel;
+            if (mixedCodeDataModel == null)
+                return;
+
             var dataItemNodes = mixedCodeDataModel.GetDataItemNodes();
 
             this.nodeByAddress = new SortedList<Address, MixedCodeDataModel.DataItemNode>();
@@ -309,7 +312,9 @@ namespace Reko.Gui.Windows
                         : MenuStatus.Visible | MenuStatus.Enabled | MenuStatus.Checked;
                     return true;
                 case CmdIds.EditDeclaration:
-                    status.Status = MenuStatus.Enabled | MenuStatus.Visible;
+                    status.Status = GetAnchorAddress() == null 
+                        ? MenuStatus.Visible
+                        : MenuStatus.Enabled | MenuStatus.Visible;
                     return true;
                 }
             }
@@ -372,13 +377,25 @@ namespace Reko.Gui.Windows
             return true;
         }
 
-        private void EditDeclaration()
+        private Address CodeView_GetAnchorAddress()
+        {
+            var pt = combinedCodeView.CodeView.GetAnchorMiddlePoint();
+            var tag = combinedCodeView.CodeView.GetTagFromPoint(pt);
+            var addr = tag as Address;
+            var proc = tag as Procedure;
+
+            if (proc != null)
+                addr = program.GetProcedureAddress(proc);
+
+            return addr;
+        }
+
+        private Address MixedCodeDataView_GetAnchorAddress()
         {
             var addr = combinedCodeView.MixedCodeDataView.GetAnchorAddress();
             ImageMapItem item;
             if (program.ImageMap.TryFindItem(addr, out item))
             {
-                GlobalDataItem_v2 globalDataItem;
                 var blockItem = item as ImageMapBlock;
                 if (blockItem != null)
                 {
@@ -389,8 +406,26 @@ namespace Reko.Gui.Windows
                     addr = item.Address;
                 }
             }
-            var anchorPt = combinedCodeView.MixedCodeDataView.GetAnchorTopPoint();
-            var screenPoint = combinedCodeView.MixedCodeDataView.PointToScreen(anchorPt);
+            return addr;
+        }
+
+        private Address GetAnchorAddress()
+        {
+            if (combinedCodeView.CodeView.Focused)
+                return CodeView_GetAnchorAddress();
+            if (combinedCodeView.MixedCodeDataView.Focused)
+                return MixedCodeDataView_GetAnchorAddress();
+            return null;
+
+        }
+
+        private void EditDeclaration()
+        {
+            var addr = GetAnchorAddress();
+            if (addr == null)
+                return;
+            var anchorPt = FocusedTextView.GetAnchorTopPoint();
+            var screenPoint = FocusedTextView.PointToScreen(anchorPt);
             declarationFormInteractor.Show(screenPoint, program, addr);
         }
 
@@ -435,8 +470,9 @@ namespace Reko.Gui.Windows
         private void MixedCodeDataView_TopAddressChanged()
         {
             var topAddress = combinedCodeView.MixedCodeDataView.TopAddress;
-            MixedCodeDataModel.DataItemNode dataItemNode;
-            if (!nodeByAddress.TryGetLowerBound(topAddress, out dataItemNode))
+            MixedCodeDataModel.DataItemNode dataItemNode = null;
+            if (nodeByAddress == null ||
+                !nodeByAddress.TryGetLowerBound(topAddress, out dataItemNode))
                 return;
 
             int numer;
@@ -496,7 +532,7 @@ namespace Reko.Gui.Windows
 
         private void UserNavigateToAddress(Address addrFrom, Address addrTo)
         {
-            if (!program.ImageMap.IsValidAddress(addrTo))
+            if (!program.SegmentMap.IsValidAddress(addrTo))
                 return;
             navInteractor.RememberAddress(addrTo);
             this.SelectedAddress = addrTo;        // ...and move to the new position.

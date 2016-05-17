@@ -20,7 +20,7 @@ namespace Reko.WindowsItp
         private void btnLoad_Click(object sender, EventArgs e)
         {
             var mem = new MemoryArea(Address.Ptr32(0x12312300),new byte[0x1000]);
-            var imageMap = new ImageMap(
+            var imageMap = new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
             var arch = new X86ArchitectureFlat32();

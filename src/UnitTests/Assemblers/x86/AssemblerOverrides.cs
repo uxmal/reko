@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Assemblers.x86
 		add	eax,0x12345678
 		add ebx,0x87654321
 ");
-			Assert.IsTrue(Compare(lr.ImageMap.Segments.Values.First().MemoryArea.Bytes, 
+			Assert.IsTrue(Compare(lr.SegmentMap.Segments.Values.First().MemoryArea.Bytes, 
                 new byte[]
 				{	0x66,0xb8,0x20,0x00,0x00,0x00,0xbe,0x34,
 					0x22,0x66,0xbb,0x34,0x22,0x00,0x00,0x66,

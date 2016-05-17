@@ -31,8 +31,8 @@ void fn0C00_0037(selector ds)
 fn0C00_0037_entry:
 	// succ:  l0C00_0037
 l0C00_0037:
-	Mem4[ds:0x0400:real64] = 0
-	Mem7[ds:0x0408:int32] = (int32) 1
+	Mem3[ds:0x0400:real64] = 0.0
+	Mem6[ds:0x0408:int32] = (int32) 1.0
 	return
 	// succ:  fn0C00_0037_exit
 fn0C00_0037_exit:
@@ -227,7 +227,7 @@ T_43: (in Mem23[ds:wArg04 + 0x0028:real64] : real64)
   Class: Eq_40
   DataType: real64
   OrigDataType: real64
-T_44: (in 0 : real64)
+T_44: (in 0.0 : real64)
   Class: Eq_44
   DataType: real64
   OrigDataType: real64
@@ -239,11 +239,11 @@ T_46: (in Mem4[ds:0x0400:real64] : real64)
   Class: Eq_44
   DataType: real64
   OrigDataType: real64
-T_47: (in 1 : real64)
+T_47: (in 1.0 : real64)
   Class: Eq_47
   DataType: real64
   OrigDataType: real64
-T_48: (in (int32) 1 : int32)
+T_48: (in (int32) 1.0 : int32)
   Class: Eq_48
   DataType: int32
   OrigDataType: int32

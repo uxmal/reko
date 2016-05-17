@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Typing
             this.program = new Program
             {
                 Architecture = arch,
-                ImageMap = new ImageMap(
+                SegmentMap = new SegmentMap(
                     mem.BaseAddress,  
                     new ImageSegment(".text", mem, AccessMode.ReadWriteExecute)),
                 Platform = new DefaultPlatform(null, arch),
@@ -95,7 +95,7 @@ namespace Reko.UnitTests.Typing
 			c.TypeVariable.DataType = PrimitiveType.Real32;
 			c.TypeVariable.OriginalDataType = c.DataType;
 			Expression e = tcr.Rewrite(c, false);
-			Assert.AreEqual("1F", e.ToString());
+			Assert.AreEqual("1.0F", e.ToString());
 		}
 
 		[Test]
@@ -139,7 +139,7 @@ namespace Reko.UnitTests.Typing
 
         private void Given_Readonly_Segment(string segName, uint address, uint size)
         {
-            var seg = program.ImageMap.AddSegment(
+            var seg = program.SegmentMap.AddSegment(
                 Address.Ptr32(address),
                 segName, AccessMode.Read, size);
             seg.Access = AccessMode.Read;
@@ -147,7 +147,7 @@ namespace Reko.UnitTests.Typing
 
         private void Given_Writeable_Segment(string segName, uint address, uint size)
         {
-            var seg = program.ImageMap.AddSegment(
+            var seg = program.SegmentMap.AddSegment(
                 Address.Ptr32(address),
                 segName, AccessMode.ReadWrite, size);
             seg.Access = AccessMode.ReadWrite;

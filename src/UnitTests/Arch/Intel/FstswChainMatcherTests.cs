@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Arch.Intel
         public void Fstsw_Setup()
         {
             arch = new X86ArchitectureFlat32();
-            asm = new X86Assembler(null, new DefaultPlatform(null, new X86ArchitectureFlat32()), Address.Ptr32(0x10000), new List<EntryPoint>());
+            asm = new X86Assembler(null, new DefaultPlatform(null, new X86ArchitectureFlat32()), Address.Ptr32(0x10000), new List<ImageSymbol>());
             Procedure proc = new Procedure("test", arch.CreateFrame());
             orw = new OperandRewriter32(arch, proc.Frame, null);
             emitter = new ProcedureBuilder();
@@ -123,7 +123,7 @@ namespace Reko.UnitTests.Arch.Intel
         {
             Program lr = asm.GetImage();
             var dasm = arch.CreateDisassembler(
-                lr.ImageMap.Segments.Values.First().MemoryArea.CreateLeReader(0));
+                lr.SegmentMap.Segments.Values.First().MemoryArea.CreateLeReader(0));
             instrs = new List<X86Instruction>();
             return new FstswChainMatcher(dasm.Cast<X86Instruction>().ToArray(), orw);
         }

@@ -34,7 +34,9 @@ namespace Reko.Core.Operators
 
 		public override Constant ApplyConstants(Constant c1, Constant c2)
 		{
-			return BuildConstant(c1.DataType, c2.DataType, (int) (c1.ToInt64() + c2.ToInt64()));
+            if (!ValidArgs(c1, c2))
+                return Constant.Invalid;
+            return BuildConstant(c1.DataType, c2.DataType, (int) (c1.ToInt64() + c2.ToInt64()));
 		}
 
 		public override string ToString()

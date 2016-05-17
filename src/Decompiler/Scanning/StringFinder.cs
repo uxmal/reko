@@ -42,7 +42,7 @@ namespace Reko.Scanning
 
         public IEnumerable<ProgramAddress> FindStrings(StringType stringType, int minLength)
         {
-            foreach (var segment in program.ImageMap.Segments.Values)
+            foreach (var segment in program.SegmentMap.Segments.Values)
             {
                 Address segEnd = Address.Min(
                     segment.Address + segment.Size,

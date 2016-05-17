@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,16 +66,21 @@ namespace Reko.Gui.Windows.Controls
 
         private void OnProgramChanged()
         {
-            if (program != null)
+            try
             {
-                Model = new MixedCodeDataModel(program);
-                addrTop = (Address)Model.CurrentPosition;
+                if (program != null)
+                {
+                    Model = new MixedCodeDataModel(program);
+                    addrTop = (Address)Model.CurrentPosition;
+                    return;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Model = new EmptyEditorModel();
-                addrTop = null;
+                Services.RequireService<IDiagnosticsService>().Error(ex, "An error occurred while displaying the program.");
             }
+            Model = new EmptyEditorModel();
+            addrTop = null;
         }
 
         private void OnTopAddressChanged()

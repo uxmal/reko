@@ -317,15 +317,25 @@ namespace Reko.Evaluation
             if (exp == Constant.Invalid)
                 return exp;
 
+            var ptCast = cast.DataType as PrimitiveType;
             Constant c = exp as Constant;
             if (c != null)
             {
-                PrimitiveType p = c.DataType as PrimitiveType;
-                if (p != null && (p.Domain & Domain.Integer) != 0)
+                PrimitiveType ptSrc = c.DataType as PrimitiveType;
+                if (ptSrc != null)
                 {
-                    //$REVIEW: this is fixed to 32 bits; need a general solution to it.
-                    Changed = true;
-                    return Constant.Create(cast.DataType, c.ToUInt64());
+                    if ((ptSrc.Domain & Domain.Integer) != 0)
+                    {
+                        Changed = true;
+                        return Constant.Create(cast.DataType, c.ToUInt64());
+                    }
+                    if (ptSrc.Domain == Domain.Real && 
+                        ptCast.Domain == Domain.Real && 
+                        ptCast.Size < ptSrc.Size)
+                    {
+                        Changed = true;
+                        return ConstantReal.Create(ptCast, c.ToReal64());
+                    }
                 }
             }
             Identifier id;

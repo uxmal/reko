@@ -20,6 +20,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace Reko.Core.Configuration
@@ -86,14 +87,6 @@ namespace Reko.Core.Configuration
     [Serializable]
     public partial class Environment_v1
     {
-        [XmlArray("TypeLibraries")]
-        [XmlArrayItem("TypeLibrary")]
-        public TypeLibraryReference_v1[] TypeLibraries;
-
-        [XmlArray("Characteristics")]
-        [XmlArrayItem("TypeLibrary")]
-        public TypeLibraryReference_v1[] Characteristics;
-
         [XmlAttribute("Name")]
         public string Name;
 
@@ -105,6 +98,25 @@ namespace Reko.Core.Configuration
 
         [XmlAttribute("MemoryMap")]
         public string MemoryMap;
+
+        [XmlArray("TypeLibraries")]
+        [XmlArrayItem("TypeLibrary")]
+        public TypeLibraryReference_v1[] TypeLibraries;
+
+        [XmlArray("Characteristics")]
+        [XmlArrayItem("TypeLibrary")]
+        public TypeLibraryReference_v1[] Characteristics;
+
+        [XmlElement]
+        public PlatformHeuristics_v1 Heuristics;
+
+        [XmlArray("SignatureFiles")]
+        [XmlArrayItem("SignatureFile")]
+        public SignatureFile_v1[] SignatureFiles;
+
+        // Collect any other platform-specific elements in "Options"
+        [XmlAnyElement]
+        public XmlElement[] Options;
     }
 
     [Serializable]
@@ -171,6 +183,9 @@ namespace Reko.Core.Configuration
         [XmlAttribute("Filename")]
         public string Filename;
 
+        [XmlAttribute("Label")]
+        public string Label;
+
         [XmlAttribute("Type")]
         public string Type;
     }
@@ -232,5 +247,22 @@ namespace Reko.Core.Configuration
 
         [XmlAttribute("Module")]
         public string Module;
+    }
+
+    [Serializable]
+    public class PlatformHeuristics_v1
+    {
+        [XmlArray("ProcedurePrologs")]
+        [XmlArrayItem("Pattern")]
+        public BytePattern_v1[] ProcedurePrologs;
+    }
+
+    public class BytePattern_v1
+    {
+        [XmlElement("Bytes")]
+        public string Bytes;
+
+        [XmlElement("Mask")]
+        public string Mask;
     }
 }

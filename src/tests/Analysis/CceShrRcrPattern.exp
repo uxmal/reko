@@ -1,39 +1,39 @@
-Mem0:Global memory
-fp:fp
-C:Flags
 r1:r1
     def:  def r1
-    uses: def r1
-          C_7 = cond(r1 >>u 0x01)
-          Mem10[0x00003000:word32] = r1 >>u 0x01
+    uses: v8_10 = SEQ(r1, r2) >>u 0x01
+r1_1: orig: r1
+    def:  r1_1 = SLICE(v8_10, word32, 32)
+    uses: Mem7[0x00003004:word32] = r1_1
 r2:r2
     def:  def r2
-    uses: def r2
-          r2_8 = __rcr(r2, C_7)
-r63:r63
-r1_6: orig: r1
-C_7: orig: C
-    def:  C_7 = cond(r1 >>u 0x01)
-    uses: r2_8 = __rcr(r2, C_7)
-r2_8: orig: r2
-    def:  r2_8 = __rcr(r2, C_7)
-    uses: Mem11[0x00003004:word32] = r2_8
-C_9: orig: C
-Mem10: orig: Mem0
-    def:  Mem10[0x00003000:word32] = r1 >>u 0x01
-Mem11: orig: Mem0
-    def:  Mem11[0x00003004:word32] = r2_8
+    uses: v8_10 = SEQ(r1, r2) >>u 0x01
+r2_4: orig: r2
+    def:  r2_4 = (word32) v8_10
+    uses: Mem6[0x00003000:word32] = r2_4
+C_5: orig: C
+Mem6: orig: Mem0
+    def:  Mem6[0x00003000:word32] = r2_4
+Mem7: orig: Mem0
+    def:  Mem7[0x00003004:word32] = r1_1
+v6_8: orig: v6
+v7_9: orig: v7
+v8_10: orig: v8
+    def:  v8_10 = SEQ(r1, r2) >>u 0x01
+    uses: r1_1 = SLICE(v8_10, word32, 32)
+          r2_4 = (word32) v8_10
+          C_2 = cond(v8_10)
 // main
+// Return size: 0
 void main(word32 r1, word32 r2)
 main_entry:
 	def r1
 	def r2
 	// succ:  l1
 l1:
-	C_7 = cond(r1 >>u 0x01)
-	r2_8 = __rcr(r2, C_7)
-	r1_r2_9 = r1_r2_9 >> 0x01
-	Mem10[0x00003000:word32] = r1 >>u 0x01
-	Mem11[0x00003004:word32] = r2_8
+	v8_10 = SEQ(r1, r2) >>u 0x01
+	r1_1 = SLICE(v8_10, word32, 32)
+	r2_4 = (word32) v8_10
+	Mem6[0x00003000:word32] = r2_4
+	Mem7[0x00003004:word32] = r1_1
 main_exit:
 

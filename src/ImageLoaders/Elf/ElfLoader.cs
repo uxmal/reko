@@ -138,6 +138,37 @@ namespace Reko.ImageLoaders.Elf
             return cfgSvc.GetArchitecture(arch);
         }
 
+        private static Dictionary<ElfSymbolType, SymbolType> mpSymbolType = new Dictionary<ElfSymbolType, SymbolType>
+        {
+            { ElfSymbolType.STT_FUNC, SymbolType.Procedure },
+            { ElfSymbolType.STT_OBJECT, SymbolType.Data },
+        };
+
+        protected ImageSymbol CreateImageSymbol(ElfSymbol sym, uint headerType)
+        {
+            SymbolType st;
+            if (sym.SectionIndex == 0 || sym.SectionIndex >= Sections.Count)
+                return null;
+            if (!mpSymbolType.TryGetValue(sym.Type, out st))
+                return null;
+            var symSection = Sections[(int)sym.SectionIndex];
+            // If this is a relocatable file, the symbol value is 
+            // an offset from the section's virtual address. 
+            // If this is an executable file, the symbol value is
+            // the virtual address.
+            var addr = headerType == ElfImageLoader.ET_REL
+                ? symSection.Address + sym.Value
+                : platform.MakeAddressFromLinear(sym.Value);
+
+            return new ImageSymbol(addr)
+            {
+                Type = st,
+                Name = sym.Name,
+                Size = (uint)sym.Size,     //$REVIEW: problem? Could such large objects (like arrays) exist?
+                ProcessorState = Architecture.CreateProcessorState()
+            };
+        }
+
         public IPlatform LoadPlatform(byte osAbi, IProcessorArchitecture arch)
         {
             string envName;
@@ -173,8 +204,8 @@ namespace Reko.ImageLoaders.Elf
             GetPltLimits();
             var addrPreferred = ComputeBaseAddress(platform);
             Dump();
-            var imageMap = LoadImageBytes(platform, rawImage, addrPreferred);
-            var program = new Program(imageMap, platform.Architecture, platform);
+            var segmentMap = LoadImageBytes(platform, rawImage, addrPreferred);
+            var program = new Program(segmentMap, platform.Architecture, platform);
             return program;
         }
 
@@ -182,7 +213,7 @@ namespace Reko.ImageLoaders.Elf
 
         public abstract void GetPltLimits();
 
-        public abstract ImageMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred);
+        public abstract SegmentMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred);
 
         public ImageReader CreateReader(ulong fileOffset)
         {
@@ -619,7 +650,7 @@ namespace Reko.ImageLoaders.Elf
             return GetStrPtr(symSection.LinkedSection, (uint)offset);
         }
 
-        public override ImageMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred)
+        public override SegmentMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred)
         {
             var segMap = AllocateMemoryAreas(
                 ProgramHeaders64
@@ -641,7 +672,7 @@ namespace Reko.ImageLoaders.Elf
                         (long)ph.p_offset, mem.Bytes,
                         vaddr - mem.BaseAddress, (long)ph.p_filesz);
             }
-            var imageMap = new ImageMap(addrPreferred);
+            var segmentMap = new SegmentMap(addrPreferred);
             foreach (var section in Sections)
             {
                 if (section.Name == null || section.Address == null)
@@ -651,7 +682,7 @@ namespace Reko.ImageLoaders.Elf
                     section.Address < mem.EndAddress)
                 {
                     AccessMode mode = AccessModeOf(section.Flags);
-                    var seg = imageMap.AddSegment(new ImageSegment(
+                    var seg = segmentMap.AddSegment(new ImageSegment(
                         section.Name,
                         section.Address,
                         mem, mode)
@@ -665,8 +696,8 @@ namespace Reko.ImageLoaders.Elf
                     //$TODO: warn
                 }
             }
-            imageMap.DumpSections();
-            return imageMap;
+            segmentMap.DumpSections();
+            return segmentMap;
 
         }
 
@@ -749,7 +780,7 @@ namespace Reko.ImageLoaders.Elf
                 Debug.Print("  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
                     i,
                     ReadAsciiString(stringtableSection.FileOffset + sym.st_name),
-                    (SymbolType)(sym.st_info & 0xF),
+                    (ElfSymbolType)(sym.st_info & 0xF),
                     sym.st_shndx,
                     GetSectionNameQ(sym.st_shndx),
                     sym.st_value,
@@ -757,7 +788,7 @@ namespace Reko.ImageLoaders.Elf
                 symbols.Add(new ElfSymbol
                 {
                     Name = ReadAsciiString(stringtableSection.FileOffset + sym.st_name),
-                    Type = (SymbolType)(sym.st_info & 0xF),
+                    Type = (ElfSymbolType)(sym.st_info & 0xF),
                     SectionIndex = sym.st_shndx,
                     Value = sym.st_value,
                     Size = sym.st_size,
@@ -768,15 +799,37 @@ namespace Reko.ImageLoaders.Elf
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            var entryPoints = new List<EntryPoint>();
+            Relocator.Relocate(program);
+
+            var entryPoints = new List<ImageSymbol>();
+            var symbols = new SortedList<Address, ImageSymbol>();
+            foreach (var sym in Symbols.Values.SelectMany(seg => seg))
+            {
+                var imgSym = CreateImageSymbol(sym, Header64.e_type);
+                if (imgSym != null)
+                {
+                    symbols[imgSym.Address] = imgSym;
+                }
+            }
+
             var addrEntry = GetEntryPointAddress(addrLoad);
             if (addrEntry != null)
             {
-                var ep = new EntryPoint(addrEntry, Architecture.CreateProcessorState());
-                entryPoints.Add(ep);
+                ImageSymbol entrySymbol;
+                if (symbols.TryGetValue(addrEntry, out entrySymbol))
+                {
+                    entryPoints.Add(entrySymbol);
+                }
+                else
+                {
+                    var ep = new ImageSymbol(addrEntry)
+                    {
+                        ProcessorState = Architecture.CreateProcessorState()
+                    };
+                    entryPoints.Add(ep);
+                }
             }
-            this.Relocator.Relocate(program);
-            return new RelocationResults(entryPoints, new List<Address>());
+            return new RelocationResults(entryPoints, symbols, new List<Address>());
         }
     }
 
@@ -800,7 +853,7 @@ namespace Reko.ImageLoaders.Elf
         public static int ELF32_R_SYM(int info) { return ((info) >> 8); }
         public static int ELF32_ST_BIND(int i) { return ((i) >> 4); }
         public static int ELF32_ST_TYPE(int i) { return ((i) & 0x0F); }
-        public static byte ELF32_ST_INFO(int b, SymbolType t) { return (byte)(((b) << 4) + ((byte)t & 0xF)); }
+        public static byte ELF32_ST_INFO(int b, ElfSymbolType t) { return (byte)(((b) << 4) + ((byte)t & 0xF)); }
 
         // Add appropriate symbols to the symbol table.  secIndex is the section index of the symbol table.
         private void AddSyms(Elf32_SHdr pSect)
@@ -1100,7 +1153,7 @@ namespace Reko.ImageLoaders.Elf
             return GetStrPtr(strSection, offset);
         }
 
-        public override ImageMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred)
+        public override SegmentMap LoadImageBytes(IPlatform platform, byte[] rawImage, Address addrPreferred)
         {
             var segMap = AllocateMemoryAreas(
                 ProgramHeaders
@@ -1123,7 +1176,7 @@ namespace Reko.ImageLoaders.Elf
                         (long)ph.p_offset, mem.Bytes,
                         vaddr - mem.BaseAddress, (long)ph.p_filesz);
             }
-            var imageMap = new ImageMap(addrPreferred);
+            var segmentMap = new SegmentMap(addrPreferred);
             foreach (var section in Sections)
             {
                 if (section.Name == null || section.Address == null)
@@ -1134,7 +1187,7 @@ namespace Reko.ImageLoaders.Elf
                     section.Address < mem.EndAddress)
                 {
                     AccessMode mode = AccessModeOf(section.Flags);
-                    var seg = imageMap.AddSegment(new ImageSegment(
+                    var seg = segmentMap.AddSegment(new ImageSegment(
                         section.Name,
                         section.Address,
                         mem, mode)
@@ -1147,8 +1200,8 @@ namespace Reko.ImageLoaders.Elf
                     //$TODO: warn
                 }
             }
-            imageMap.DumpSections();
-            return imageMap;
+            segmentMap.DumpSections();
+            return segmentMap;
         }
 
         public override int LoadProgramHeaderTable()
@@ -1230,7 +1283,7 @@ namespace Reko.ImageLoaders.Elf
                 Debug.Print("  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
                     i,
                     ReadAsciiString(stringtableSection.FileOffset + sym.st_name),
-                    (SymbolType)(sym.st_info & 0xF),
+                    (ElfSymbolType)(sym.st_info & 0xF),
                     sym.st_shndx,
                     GetSectionNameQ(sym.st_shndx),
                     sym.st_value,
@@ -1238,7 +1291,7 @@ namespace Reko.ImageLoaders.Elf
                 symbols.Add(new ElfSymbol
                 {
                     Name = ReadAsciiString(stringtableSection.FileOffset + sym.st_name),
-                    Type = (SymbolType)(sym.st_info & 0xF),
+                    Type = (ElfSymbolType)(sym.st_info & 0xF),
                     SectionIndex = sym.st_shndx,
                     Value = sym.st_value,
                     Size = sym.st_size,
@@ -1249,40 +1302,37 @@ namespace Reko.ImageLoaders.Elf
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            var entryPoints = new List<EntryPoint>();
-            var relocations = new RelocationDictionary();
+            Relocator.Relocate(program);
+
+            var entryPoints = new List<ImageSymbol>();
+            var symbols = new SortedList<Address, ImageSymbol>();
+            foreach (var sym in Symbols.Values.SelectMany(seg => seg))
+            {
+                var imgSym = CreateImageSymbol(sym, Header.e_type);
+                if (imgSym != null)
+                {
+                    symbols[imgSym.Address] = imgSym;
+                }
+            }
+
             var addrEntry = GetEntryPointAddress(addrLoad);
             if (addrEntry != null)
             {
-                var ep = new EntryPoint(addrEntry, Architecture.CreateProcessorState());
-                entryPoints.Add(ep);
+                ImageSymbol entrySymbol;
+                if (symbols.TryGetValue(addrEntry, out entrySymbol))
+                {
+                    entryPoints.Add(entrySymbol);
+                }
+                else
+                {
+                    var ep = new ImageSymbol(addrEntry)
+                    {
+                        ProcessorState = Architecture.CreateProcessorState()
+                    };
+                    entryPoints.Add(ep);
+                }
             }
-
-            entryPoints.AddRange(CollectFunctionSymbols());
-
-            Relocator.Relocate(program);
-            return new RelocationResults(entryPoints, new List<Address>());
-        }
-
-        private IEnumerable<EntryPoint> CollectFunctionSymbols()
-        {
-            return Symbols.Values.SelectMany(v => v)
-                .Where(sym => sym.Type == SymbolType.STT_FUNC &&
-                              sym.SectionIndex != 0)
-                .Select(MakeEntryPoint);
-        }
-
-        private EntryPoint MakeEntryPoint(ElfSymbol sym)
-        {
-            var symSection = Sections[(int)sym.SectionIndex];
-            // If this is a relocatable file, the symbol value is 
-            // an offset from the section's virtual address. 
-            // If this is an executable file, the symbol value is
-            // the virtual address.
-            var addr = Header.e_type == ElfImageLoader.ET_REL
-                ? symSection.Address + sym.Value
-                : platform.MakeAddressFromLinear(sym.Value);
-            return new EntryPoint(addr, sym.Name, state: Architecture.CreateProcessorState());
+            return new RelocationResults(entryPoints, symbols, new List<Address>());
         }
     }
 

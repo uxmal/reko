@@ -110,8 +110,11 @@ VS Overflow Set 1001 V
                 case Opcode.cmp: RewriteCmp(); break;
                 case Opcode.cmpa: RewriteCmp(); break;
                 case Opcode.cmpi: RewriteCmp(); break;
+                case Opcode.cmpm: RewriteCmp(); break;
+                case Opcode.dbeq: RewriteDbcc(ConditionCode.EQ, FlagM.ZF); break;
                 case Opcode.dble: RewriteDbcc(ConditionCode.GT, FlagM.NF | FlagM.VF | FlagM.ZF); break;
                 case Opcode.dbhi: RewriteDbcc(ConditionCode.ULE, FlagM.CF | FlagM.ZF); break;
+                case Opcode.dbne: RewriteDbcc(ConditionCode.NE, FlagM.ZF); break;
                 case Opcode.dbra: RewriteDbcc(ConditionCode.None, 0); break;
                 case Opcode.divu: RewriteDiv(Operator.UDiv); break;
                 case Opcode.eor: RewriteLogical((s, d) => emitter.Xor(d, s)); break;

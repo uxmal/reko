@@ -35,6 +35,7 @@ namespace Reko.Arch.Vax
         public bool Deferred;
         internal bool AutoDecrement;
         internal bool AutoIncrement;
+        internal RegisterStorage Index;
 
         public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
@@ -42,9 +43,21 @@ namespace Reko.Arch.Vax
             {
                 writer.Write(FormatSignedValue(Offset));
             }
+            if (AutoDecrement)
+            {
+                writer.Write("-");
+            }
             if (Base != null)
             {
                 writer.Write("({0})", Base.Name);
+            }
+            if (AutoIncrement)
+            {
+                writer.Write("+");
+            }
+            if (Index != null)
+            {
+                writer.Write("[{0}]", Index.Name);
             }
         }
     }

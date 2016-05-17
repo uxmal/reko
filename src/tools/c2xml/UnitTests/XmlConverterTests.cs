@@ -80,7 +80,7 @@ namespace Reko.Tools.C2Xml.UnitTests
                 throw new NotImplementedException();
             }
 
-            public override IEnumerable<Address> CreatePointerScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
+            public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
             {
                 throw new NotImplementedException();
             }
@@ -947,7 +947,7 @@ namespace Reko.Tools.C2Xml.UnitTests
   </procedure>
 </library>";
             RunTest(
-                "void foo([[reko::reg(\"D0\")]]int parm);",
+                "void foo([[reko::arg(register,\"D0\")]]int parm);",
                 sExp);
 
         }
@@ -968,9 +968,8 @@ namespace Reko.Tools.C2Xml.UnitTests
   </procedure>
 </library>";
             RunTest(
-                "[[reko::reg(\"D0\")]] char foo();",
+                "[[reko::returns(register,\"D0\")]] char foo();",
                 sExp);
-
         }
 
         [Test]

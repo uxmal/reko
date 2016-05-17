@@ -41,7 +41,8 @@ namespace Reko.Core.Serialization
         public abstract T Accept<T>(ISerializedTypeVisitor<T> visitor);
 
         /// <summary>
-        /// Generates attribute overrides for each field that holds a serialized DataType.
+        /// Generates attribute overrides for each field that holds a serialized
+        /// DataType.
         /// </summary>
         /// <param name="typesToDecorate"></param>
         /// <param name="xmlNamespace"></param>

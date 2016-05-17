@@ -371,5 +371,13 @@ namespace Reko.UnitTests.Arch.Mips
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r9 = r2 >> r6");
         }
+
+        [Test]
+        public void MipsRw_bltzal_r0()
+        {
+            AssertCode(0x0410FFFE,      // bltzal r0,000FFFFC
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|ra = 00100008");
+        }
     }
 }

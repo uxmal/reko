@@ -57,12 +57,12 @@ namespace Reko.Environments.Trs80
                 .SelectMany(s => s.GetData())
                 .ToArray();
             var mem = new MemoryArea(addrLoad, bytes);
+            var segmentMap = new SegmentMap(addrLoad,
+                new ImageSegment("code", mem, AccessMode.ReadWriteExecute));
             return new Program
             {
                 Architecture = new Z80ProcessorArchitecture(),
-                ImageMap = new ImageMap(
-                    mem.BaseAddress,
-                    new ImageSegment("code", mem, AccessMode.ReadWriteExecute))
+                SegmentMap = segmentMap,
             };
         }
 
@@ -158,7 +158,7 @@ namespace Reko.Environments.Trs80
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            return new RelocationResults(new List<EntryPoint>(), new List<Address>());
+            return new RelocationResults(new List<ImageSymbol>(), new SortedList<Address, ImageSymbol>(), new List<Address>());
         }
     }
 }

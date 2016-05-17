@@ -224,7 +224,7 @@
             // byteMapView
             // 
             this.byteMapView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.byteMapView.ImageMap = null;
+            this.byteMapView.SegmentMap = null;
             this.byteMapView.Location = new System.Drawing.Point(0, 18);
             this.byteMapView.Name = "byteMapView";
             this.byteMapView.Size = new System.Drawing.Size(162, 415);

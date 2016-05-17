@@ -37,9 +37,10 @@ namespace Reko.UnitTests.Mocks
             Metadata = new TypeLibrary();
         }
 
+        public Func<HashSet<RegisterStorage>> Test_CreateImplicitArgumentRegisters;
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
-            return new HashSet<RegisterStorage>();
+            return Test_CreateImplicitArgumentRegisters();
         }
 
         public Func<ISerializedTypeVisitor<DataType>, string, ProcedureSerializer> Test_CreateProcedureSerializer;

@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Gui.Windows
             mr = new MockRepository();
             mockFactory = new MockFactory(mr);
             var platform = mockFactory.CreatePlatform();
-            var imageMap = new ImageMap(Address32.Ptr32(0x05));
+            var imageMap = new SegmentMap(Address32.Ptr32(0x05));
             program = new Program(imageMap, platform.Architecture, platform);
             interactor = new CombinedCodeViewInteractor();
             var uiPreferencesSvc = mr.Stub<IUiPreferencesService>();
@@ -122,7 +122,8 @@ namespace Reko.UnitTests.Gui.Windows
         {
             var mem = new MemoryArea(Address32.Ptr32(addr), bytes);
             var seg = new ImageSegment(".text", mem, AccessMode.ReadWrite);
-            program.ImageMap.AddSegment(seg);
+            program.SegmentMap.AddSegment(seg);
+            program.ImageMap = program.SegmentMap.CreateImageMap();
         }
 
         private void Given_StubProcedure(uint addr, uint size)
@@ -225,7 +226,7 @@ int32 iVar = 1000;
             mr.ReplayAll();
 
             When_CombinedCodeViewCreated();
-            var segment = this.program.ImageMap.Segments.Values[0];
+            var segment = this.program.SegmentMap.Segments.Values[0];
             interactor.DisplayGlobals(this.program, segment);
 
             var sExp =

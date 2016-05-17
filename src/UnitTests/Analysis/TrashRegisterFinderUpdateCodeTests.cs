@@ -307,7 +307,7 @@ l1:
 	dwLoc08 = 0x00000037
 	esp = fp - 0x0000000C
 	dwLoc0C = 0x0000002D
-	eax = add(dwLoc0C, dwLoc08)
+	eax = add(0x0000002D, 0x00000037)
 	esp = fp - 0x00000004
 	ebp = dwLoc04
 	esp = fp

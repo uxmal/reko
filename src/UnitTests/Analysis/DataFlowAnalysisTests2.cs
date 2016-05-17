@@ -199,6 +199,8 @@ test_exit:
                 });
             var program = pb.BuildProgram();
             var platform = new FakePlatform(null, arch);
+            platform.Test_CreateImplicitArgumentRegisters = () =>
+                new HashSet<RegisterStorage>();
             platform.Test_CreateProcedureSerializer = (t, d) =>
             {
                 var typeLoader = new TypeLibraryDeserializer(platform, false, new TypeLibrary());

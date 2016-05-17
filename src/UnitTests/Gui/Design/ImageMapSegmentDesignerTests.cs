@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Gui.Design
         private MockRepository mr;
         private ImageSegment seg1;
         private ImageSegment seg2;
-        private ImageMap map;
+        private SegmentMap map;
 
         [SetUp]
         public void Setup()
@@ -45,7 +45,8 @@ namespace Reko.UnitTests.Gui.Design
             mr = new MockRepository();
             seg1 = new ImageSegment("seg1", new MemoryArea(Address.Ptr32(0x01000), new byte[0x1000]), AccessMode.Execute);
             seg2 = new ImageSegment("seg2", new MemoryArea(Address.Ptr32(0x02000), new byte[0x1000]), AccessMode.Execute);
-            map = new ImageMap(seg1.Address, 0x4000);
+            map = new SegmentMap(seg1.Address,
+                seg1, seg2);
         }
 
         [Test]

@@ -60,7 +60,7 @@ namespace Reko.Arch.X86
             get { return Registers.sp; }
         }
 
-        public abstract IEnumerable<Address> CreateInstructionScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
+        public abstract IEnumerable<Address> CreateInstructionScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
 
         public abstract X86Disassembler CreateDisassembler(ImageReader rdr, X86Options options);
 
@@ -124,7 +124,7 @@ namespace Reko.Arch.X86
         {
         }
 
-        public override IEnumerable<Address> CreateInstructionScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreateInstructionScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             var knownLinAddresses = knownAddresses.Select(a => a.ToUInt32()).ToHashSet();
             return new X86RealModePointerScanner(rdr, knownLinAddresses, flags).Select(li => map.MapLinearAddressToAddress(li));
@@ -178,7 +178,7 @@ namespace Reko.Arch.X86
             return new X86Disassembler(this, rdr, PrimitiveType.Word16, PrimitiveType.Word16, false);
         }
 
-        public override IEnumerable<Address> CreateInstructionScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreateInstructionScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             var knownLinAddresses = knownAddresses.Select(a => a.ToUInt32()).ToHashSet();
             return new X86RealModePointerScanner(rdr, knownLinAddresses, flags).Select(li => map.MapLinearAddressToAddress(li));
@@ -233,7 +233,7 @@ namespace Reko.Arch.X86
         }
 
         public override IEnumerable<Address> CreateInstructionScanner(
-            ImageMap map,
+            SegmentMap map,
             ImageReader rdr,
             IEnumerable<Address> knownAddresses,
             PointerScannerFlags flags)
@@ -296,7 +296,7 @@ namespace Reko.Arch.X86
             return Address.Ptr64(offset);
         }
 
-        public override IEnumerable<Address> CreateInstructionScanner(ImageMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreateInstructionScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             var knownLinAddresses = knownAddresses.Select(a => (ulong)a.ToLinear()).ToHashSet();
             return new X86PointerScanner64(rdr, knownLinAddresses, flags).Select(li => map.MapLinearAddressToAddress(li));

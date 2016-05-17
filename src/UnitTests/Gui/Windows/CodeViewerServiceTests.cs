@@ -43,9 +43,11 @@ namespace Reko.UnitTests.Gui.Windows
         {
             mr = new MockRepository();
             sc = new ServiceContainer();
+            var mem = new MemoryArea(Address.Ptr32(0x0040000),  new byte[0x400]);
             this.program = new Program
             {
-                ImageMap = new ImageMap(Address.Ptr32(0x0040000), 0x400)
+                SegmentMap = new SegmentMap(mem.BaseAddress,
+                    new ImageSegment("code", mem, AccessMode.ReadWriteExecute))
             };
         }
 

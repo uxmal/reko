@@ -50,7 +50,7 @@ namespace Reko.Gui.Windows
             mvi.Program = program;
             if (program != null)
             {
-                mvi.SelectedAddress = program.ImageMap.Segments.Values
+                mvi.SelectedAddress = program.SegmentMap.Segments.Values
                     .Where(s => s.MemoryArea != null)
                     .Select(s => Address.Max(s.Address, s.MemoryArea.BaseAddress))
                     .First();
@@ -62,6 +62,9 @@ namespace Reko.Gui.Windows
             if (mvi == null || mvi.Program != program)
             {
                 ViewImage(program);
+            } else
+            {
+                ShowWindow(program);
             }
             mvi.SelectedAddress = addr;
         }

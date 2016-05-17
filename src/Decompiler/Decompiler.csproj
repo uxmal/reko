@@ -223,6 +223,7 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Loading\DccSignatureLoader.cs" />
     <Compile Include="Decompiler.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -252,6 +253,7 @@
     <Compile Include="Evaluation\Substitutor.cs" />
     <Compile Include="Evaluation\SymbolicEvaluationContext.cs" />
     <Compile Include="Evaluation\SymbolicEvaluator.cs" />
+    <Compile Include="Loading\FlirtoidSignatureLoader.cs" />
     <Compile Include="Loading\ImageSignature.cs" />
     <Compile Include="Loading\NullImageLoader.cs" />
     <Compile Include="Loading\SignatureLoader.cs" />
@@ -278,7 +280,7 @@
     <Compile Include="Scanning\HeuristicProcedureScanner.cs" />
     <Compile Include="Scanning\IdentifierRelocator.cs" />
     <Compile Include="Scanning\BlockWorkitem.cs" />
-    <Compile Include="Scanning\EntryPointWorkitem.cs" />
+    <Compile Include="Scanning\ImageSymbolWorkItem.cs" />
     <Compile Include="Scanning\PromoteBlockWorkItem.cs" />
     <Compile Include="Scanning\RobustRewriter.cs" />
     <Compile Include="Scanning\ShingledScanner.cs" />

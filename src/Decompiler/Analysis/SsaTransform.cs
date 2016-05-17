@@ -45,6 +45,7 @@ namespace Reko.Analysis
         private ProgramDataFlow programFlow;
 		private Procedure proc;
         private IImportResolver importResolver;
+        private HashSet<RegisterStorage> implicitRegs;
 
         private const byte BitDefined = 1;
 		private const byte BitDeadIn = 2;
@@ -56,11 +57,12 @@ namespace Reko.Analysis
 		/// </summary>
 		/// <param name="proc"></param>
 		/// <param name="gr"></param>
-		public SsaTransform(ProgramDataFlow programFlow, Procedure proc, IImportResolver importResolver, DominatorGraph<Block> gr)
+		public SsaTransform(ProgramDataFlow programFlow, Procedure proc, IImportResolver importResolver, DominatorGraph<Block> gr, HashSet<RegisterStorage> implicitRegs)
 		{
             this.programFlow = programFlow;
 			this.proc = proc;
             this.importResolver = importResolver;
+            this.implicitRegs = implicitRegs;
             this.SsaState = new SsaState(proc, gr);
             this.AOrig = CreateA();
 
@@ -215,6 +217,7 @@ namespace Reko.Analysis
 		/// </summary>
 		private class LocateDefinedVariables : InstructionVisitorBase
 		{
+            private HashSet<RegisterStorage> implicitRegs;
             private ProgramDataFlow programFlow;
             private Procedure proc;
 			private Block block;
@@ -227,6 +230,7 @@ namespace Reko.Analysis
 
 			public LocateDefinedVariables(SsaTransform ssaXform, Dictionary<Expression, byte>[] defOrig)
 			{
+                this.implicitRegs = ssaXform.implicitRegs;
                 this.programFlow = ssaXform.programFlow;
 				this.proc = ssaXform.proc;
                 this.ssa = ssaXform.SsaState;
@@ -331,12 +335,22 @@ namespace Reko.Analysis
                         return;
                     foreach (Identifier id in proc.Frame.Identifiers)
                     {
-                        if ((id.Storage is RegisterStorage && !(id.Storage is TemporaryStorage))
-                            || id.Storage is FlagGroupStorage)
+                        if (id.Storage is TemporaryStorage)
                         {
-                            ci.Definitions.Add(new DefInstruction(id));
-                            MarkDefined(id);
+                            continue;
                         }
+                        var reg = id.Storage as RegisterStorage;
+                        if (reg != null)
+                        {
+                            if (implicitRegs.Contains(reg))
+                                continue;
+                        }
+                        else if (!(id.Storage is FlagGroupStorage))
+                        {
+                            continue;
+                        }
+                        ci.Definitions.Add(new DefInstruction(id));
+                        MarkDefined(id);
                     }
                 }
 			}
@@ -375,6 +389,7 @@ namespace Reko.Analysis
 
 		public class VariableRenamer : InstructionTransformer
 		{
+            private HashSet<RegisterStorage> implicitRegs;
             private ProgramDataFlow programFlow;
             private SsaState ssa;
             private bool renameFrameAccess;
@@ -395,6 +410,7 @@ namespace Reko.Analysis
 			{
                 this.programFlow = ssaXform.programFlow;
 				this.ssa = ssaXform.SsaState;
+                this.implicitRegs = ssaXform.implicitRegs;
                 this.renameFrameAccess = ssaXform.RenameFrameAccesses;
                 this.addUseInstructions = ssaXform.AddUseInstructions;
                 this.proc = ssaXform.proc;
@@ -624,12 +640,13 @@ namespace Reko.Analysis
             /// <param name="ci"></param>
             private void RenameAllRegisterIdentifiers(CallInstruction ci)
             {
-                // Hell node implementation - use all register variables.
+                // Hell node implementation - use all register variables that
+                // aren't implicit on this platform.
 
                 var alreadyExistingUses = ci.Uses.Select(u => ssa.Identifiers[(Identifier)u.Expression].OriginalIdentifier).ToHashSet();
                 foreach (Identifier id in ssa.Identifiers.Select(s => s.OriginalIdentifier).Distinct().ToList())
                 {
-                    if (id.Storage is RegisterStorage || id.Storage is FlagGroupStorage ||
+                    if (IsMutableRegister(id.Storage) || id.Storage is FlagGroupStorage ||
                         id.Storage is StackLocalStorage)
                     {
                         if (!alreadyExistingUses.Contains(id))
@@ -643,12 +660,18 @@ namespace Reko.Analysis
                 foreach (DefInstruction def in ci.Definitions)
                 {
                     var id = (Identifier)def.Expression;
-                    if (id.Storage is RegisterStorage || id.Storage is FlagGroupStorage ||
+                    if (IsMutableRegister(id.Storage) || id.Storage is FlagGroupStorage ||
                         id.Storage is StackLocalStorage)
                     {
                         def.Expression = NewDef(id, null, false);
                     }
                 }
+            }
+
+            private bool IsMutableRegister(Storage storage)
+            {
+                var reg = storage as RegisterStorage;
+                return reg != null && !implicitRegs.Contains(reg);
             }
 
             public override Expression VisitApplication(Application appl)

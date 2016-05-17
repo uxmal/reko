@@ -197,7 +197,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             loader.Stub(l => l.LoadExecutable(null, null, null)).IgnoreArguments()
                 .Return(new Program
                 {
-                    ImageMap = new ImageMap(
+                    SegmentMap = new SegmentMap(
                         mem.BaseAddress,
                         new ImageSegment("0C00", mem, AccessMode.ReadWriteExecute)),
                     Platform = mockFactory.CreatePlatform()
@@ -364,7 +364,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
                 Programs = { new Program
                 {
                     Filename="foo.exe" ,
-                    ImageMap = new ImageMap(
+                    SegmentMap = new SegmentMap(
                         mem.BaseAddress,
                         new ImageSegment(".text", mem, AccessMode.ReadExecute)),
                     Platform = platform,
@@ -501,7 +501,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Program prog = new Program();
             prog.Architecture = new X86ArchitectureReal();
             var mem = new MemoryArea(Address.SegPtr(0xC00, 0), new byte[300]);
-            prog.ImageMap = new ImageMap(
+            prog.SegmentMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment("0C00", mem, AccessMode.ReadWriteExecute));
             return prog; 

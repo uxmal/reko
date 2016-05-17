@@ -336,6 +336,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\ImageLoaders\VmsExe\VmsExe.csproj">
+      <Name>VmsExe</Name>
+      <Project>{4059bebf-7b5c-4701-ac98-ade2515d8823}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WixExtension Include="WixUIExtension">

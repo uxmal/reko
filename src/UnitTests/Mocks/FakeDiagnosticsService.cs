@@ -39,10 +39,20 @@ namespace Reko.UnitTests.Mocks
         {
             Error(new NullCodeLocation(""), ex, message);
         }
+    
+        public void Error(string message, params object[] args)
+        {
+            Error(string.Format(message, args));
+        }
 
         public void Error(ICodeLocation location, string message)
         {
             Debug.Print("{0}: error: {1}", location, message);
+        }
+
+        public void Error(ICodeLocation location, string message, params object[] args)
+        {
+            Error(location, string.Format(message, args));
         }
 
         public void Error(ICodeLocation location, Exception ex, string message)
@@ -62,6 +72,11 @@ namespace Reko.UnitTests.Mocks
             Warn(new NullCodeLocation(""), message);
         }
 
+        public void Warn(string message, params object[] args)
+        {
+            Warn(new NullCodeLocation(""), string.Format(message, args));
+        }
+
         public void Warn(ICodeLocation location, string message)
         {
             Debug.Print("{0}: warning: {1}", location, message);
@@ -69,11 +84,22 @@ namespace Reko.UnitTests.Mocks
 
         public void Warn(ICodeLocation location, string message, params object[] args)
         {
-            Debug.Print("{0}: warning: {1}", location, string.Format(message, args));
+            Warn(location, string.Format(message, args));
+        }
+
+        public void Inform(string message)
+        {
+            Debug.WriteLine(message);
+        }
+
+        public void Inform(string message, params object[] args)
+        {
+            Debug.WriteLine(message, args);
         }
 
         public void ClearDiagnostics()
         {
         }
+
     }
 }

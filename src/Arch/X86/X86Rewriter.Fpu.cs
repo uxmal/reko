@@ -269,7 +269,15 @@ namespace Reko.Arch.X86
 
         private void RewriteFst(bool pop)
         {
-            emitter.Assign(SrcOp(instrCur.op1), FpuRegister(0));
+            Expression src = FpuRegister(0);
+            Expression dst = SrcOp(instrCur.op1);
+            if (src.DataType.Size != dst.DataType.Size)
+            {
+                src = emitter.Cast(
+                    PrimitiveType.Create(Domain.Real, dst.DataType.Size),
+                    src);
+            }
+            emitter.Assign(dst, src);
             if (pop)
                 state.ShrinkFpuStack(1);
         }

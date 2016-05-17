@@ -87,7 +87,7 @@ namespace Reko.Gui.Forms
 
             var memCtrl = new MemoryControl();
             memCtrl.Services = services;
-            memCtrl.ImageMap = new ImageMap(
+            memCtrl.SegmentMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment("resource", mem, AccessMode.Read));
             memCtrl.Architecture = program.Architecture;

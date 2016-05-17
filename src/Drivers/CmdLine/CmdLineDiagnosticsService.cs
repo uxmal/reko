@@ -47,6 +47,11 @@ namespace Reko.CmdLine
             writer.WriteLine("error: {0}", message);
         }
 
+        public void Error(string message, params object[] args)
+        {
+            Error(string.Format(message, args));
+        }
+
         public void Error(Exception ex, string message)
         {
             writer.WriteLine("error: {0} {1}", message, ex);
@@ -55,6 +60,11 @@ namespace Reko.CmdLine
         public void Error(ICodeLocation location, string message)
         {
             writer.WriteLine("{0}: error: {1}", location, message);
+        }
+
+        public void Error(ICodeLocation location, string message, params object[] args)
+        {
+            Error(location, string.Format(message, args));
         }
 
         public void Error(ICodeLocation location, Exception ex, string message)
@@ -74,6 +84,11 @@ namespace Reko.CmdLine
             throw new NotImplementedException();
         }
 
+        public void Warn(string message, params object[] args)
+        {
+            writer.WriteLine("warning: {0}", string.Format(message, args));
+        }
+
         public void Warn(ICodeLocation location, string message)
         {
             throw new NotImplementedException();
@@ -82,6 +97,16 @@ namespace Reko.CmdLine
         public void Warn(ICodeLocation location, string message, params object[] args)
         {
             throw new NotImplementedException();
+        }
+
+        public void Inform(string message)
+        {
+            writer.WriteLine(message);
+        }
+
+        public void Inform(string message, params object[] args)
+        {
+            writer.WriteLine(message, args);
         }
 
         public void ClearDiagnostics()

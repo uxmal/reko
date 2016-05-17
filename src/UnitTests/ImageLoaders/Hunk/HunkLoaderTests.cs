@@ -18,19 +18,18 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.ImageLoaders.Hunk;
-using Reko.Environments.AmigaOS;
 using NUnit.Framework;
+using Reko.Arch.M68k;
+using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Core.Services;
+using Reko.Environments.AmigaOS;
+using Reko.ImageLoaders.Hunk;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using Rhino.Mocks;
 using System.ComponentModel.Design;
-using Reko.Core.Configuration;
-using Reko.Arch.M68k;
+using System.IO;
 
 namespace Reko.UnitTests.ImageLoaders.Hunk
 {
@@ -48,14 +47,18 @@ namespace Reko.UnitTests.ImageLoaders.Hunk
             mh = new HunkMaker();
             var cfgSvc = mr.Stub<IConfigurationService>();
             var opEnv = mr.Stub<OperatingEnvironment>();
+            var tlSvc = mr.Stub<ITypeLibraryLoaderService>();
             cfgSvc.Stub(c => c.GetEnvironment("amigaOS")).Return(opEnv);
             cfgSvc.Stub(c => c.GetArchitecture("m68k")).Return(new M68kArchitecture());
             opEnv.Stub(o => o.Load(null, null))
                 .IgnoreArguments()
                 .Do(new Func<IServiceProvider, IProcessorArchitecture, IPlatform>((sp, arch) =>
                 new AmigaOSPlatform(sp, arch)));
+            opEnv.Stub(o => o.TypeLibraries).Return(new List<ITypeLibraryElement>());
+            opEnv.Stub(o => o.CharacteristicsLibraries).Return(new List<ITypeLibraryElement>());
             sc = new ServiceContainer();
             sc.AddService<IConfigurationService>(cfgSvc);
+            sc.AddService<ITypeLibraryLoaderService>(tlSvc);
         }
 
 
@@ -82,8 +85,8 @@ namespace Reko.UnitTests.ImageLoaders.Hunk
                 0);
             var ldr = new HunkLoader(sc, "foo.bar", bytes);
             var ldImg = ldr.Load(Address.Ptr32(0x00010000));
-            Assert.AreEqual(1, ldImg.ImageMap.Segments.Count);
-            Assert.AreEqual(Address.Ptr32(0x00010000), ldImg.ImageMap.Segments.Values[0].Address);
+            Assert.AreEqual(1, ldImg.SegmentMap.Segments.Count);
+            Assert.AreEqual(Address.Ptr32(0x00010000), ldImg.SegmentMap.Segments.Values[0].Address);
         }
 
         [Test]

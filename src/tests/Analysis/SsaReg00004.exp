@@ -198,7 +198,7 @@ esp_61: orig: esp
     def:  esp_61 = fp
 rLoc1_62: orig: rLoc1
     def:  rLoc1_62 = (real64) Mem32[ebx_8:int32]
-    uses: dwArg04_74 = rLoc1_62
+    uses: dwArg04_74 = (real32) rLoc1_62
 esp_63: orig: esp
     def:  esp_63 = fp - 0x0000000C
 dwLoc0C_64: orig: dwLoc0C
@@ -233,7 +233,7 @@ edi_73: orig: edi
     def:  edi_73 = 0x000186A0
     uses: edi_79 = PHI(edi_73, edi_122)
 dwArg04_74: orig: dwArg04
-    def:  dwArg04_74 = rLoc1_62
+    def:  dwArg04_74 = (real32) rLoc1_62
     uses: dwArg04_76 = PHI(dwArg04_74, dwArg04_96)
 rLoc1_75: orig: rLoc1
     def:  rLoc1_75 = (real64) dwArg0C_31
@@ -260,7 +260,7 @@ rLoc2_81: orig: rLoc2
     uses: rLoc2_82 = rLoc2_81 * Mem32[0x0099188A:real64]
 rLoc2_82: orig: rLoc2
     def:  rLoc2_82 = rLoc2_81 * Mem32[0x0099188A:real64]
-    uses: dwArg04_85 = rLoc2_82
+    uses: dwArg04_85 = (real32) rLoc2_82
           eax_86 = fn1000010A(rLoc2_82)
 esi_83: orig: esi
     def:  esi_83 = esi_80 + 0x00000001
@@ -271,7 +271,7 @@ esi_83: orig: esi
 SZO_84: orig: SZO
     def:  SZO_84 = cond(esi_83)
 dwArg04_85: orig: dwArg04
-    def:  dwArg04_85 = rLoc2_82
+    def:  dwArg04_85 = (real32) rLoc2_82
     uses: FPUF_90 = cond(rLoc2_89 - dwArg04_85)
           dwArg04_96 = PHI(dwArg04_172, dwArg04_85)
 eax_86: orig: eax
@@ -569,10 +569,10 @@ dwArg04_170: orig: dwArg04
     uses: rLoc2_171 = (real64) dwArg04_170
 rLoc2_171: orig: rLoc2
     def:  rLoc2_171 = (real64) dwArg04_170
-    uses: dwArg04_172 = rLoc2_171
+    uses: dwArg04_172 = (real32) rLoc2_171
           rLoc2_97 = PHI(rLoc2_171, rLoc2_89)
 dwArg04_172: orig: dwArg04
-    def:  dwArg04_172 = rLoc2_171
+    def:  dwArg04_172 = (real32) rLoc2_171
     uses: dwArg04_96 = PHI(dwArg04_172, dwArg04_85)
 // fn10000000
 // Return size: 0
@@ -636,7 +636,7 @@ l10000035:
 	C_71 = false
 	SCZO_72 = C_71 (alias)
 	edi_73 = 0x000186A0
-	dwArg04_74 = rLoc1_62
+	dwArg04_74 = (real32) rLoc1_62
 	rLoc1_75 = (real64) dwArg0C_31
 	// succ:  l10000048
 l10000048:
@@ -649,7 +649,7 @@ l10000048:
 	rLoc2_82 = rLoc2_81 * Mem32[0x0099188A:real64]
 	esi_83 = esi_80 + 0x00000001
 	SZO_84 = cond(esi_83)
-	dwArg04_85 = rLoc2_82
+	dwArg04_85 = (real32) rLoc2_82
 	eax_86 = fn1000010A(rLoc2_82)
 	ecx_87 = eax_86
 	dwArg0C_88 = ecx_87
@@ -670,7 +670,7 @@ l10000072:
 	SO_169 = SZO_166 (alias)
 	dwArg04_170 = ecx_165
 	rLoc2_171 = (real64) dwArg04_170
-	dwArg04_172 = rLoc2_171
+	dwArg04_172 = (real32) rLoc2_171
 	// succ:  l1000007F
 l1000007F:
 	dwArg04_96 = PHI(dwArg04_172, dwArg04_85)

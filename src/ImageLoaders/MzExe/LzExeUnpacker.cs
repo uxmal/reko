@@ -40,7 +40,7 @@ namespace Reko.ImageLoaders.MzExe
 		private int lzHdrOffset;
 		private bool isLz91;
 		private MemoryArea imgLoaded;
-        private ImageMap imageMap;
+        private SegmentMap segmentMap;
 		private ushort lzIp;
 		private ushort lzCs;
 
@@ -106,11 +106,15 @@ namespace Reko.ImageLoaders.MzExe
 
 		public override RelocationResults Relocate(Program program, Address addrLoad)
 		{
-			// Seed the scanner with the start location.
+            // Seed the scanner with the start location.
 
-            List<EntryPoint> entryPoints = new List<EntryPoint>() {
-			    new EntryPoint(Address.SegPtr((ushort) (lzCs + addrLoad.Selector), lzIp), arch.CreateProcessorState()),
+            var sym = new ImageSymbol(Address.SegPtr((ushort)(lzCs + addrLoad.Selector), lzIp))
+            {
+                Type = SymbolType.Procedure,
+                ProcessorState = arch.CreateProcessorState()
             };
+            var imageSymbols = new SortedList<Address, ImageSymbol> { { sym.Address, sym } };
+            List<ImageSymbol> entryPoints = new List<ImageSymbol>() { sym };
 			if (isLz91)
 			{
 				Relocate91(RawImage, addrLoad.Selector.Value, imgLoaded);
@@ -119,11 +123,11 @@ namespace Reko.ImageLoaders.MzExe
 			{
 				Relocate90(RawImage, addrLoad.Selector.Value, imgLoaded);
 			}
-            return new RelocationResults(entryPoints, new List<Address>());
+            return new RelocationResults(entryPoints, imageSymbols, new List<Address>());
 		}
 
 		// for LZEXE ver 0.90 
-		private  ImageMap Relocate90(byte [] pgmImg, ushort segReloc, MemoryArea pgmImgNew)
+		private  SegmentMap Relocate90(byte [] pgmImg, ushort segReloc, MemoryArea pgmImgNew)
         {
             var relocations = pgmImgNew.Relocations;
 
@@ -157,7 +161,7 @@ namespace Reko.ImageLoaders.MzExe
 
 		// Unpacks the relocation entries in a LzExe 0.91 binary
 
-		private ImageMap Relocate91(byte [] abUncompressed, ushort segReloc, MemoryArea pgmImgNew)
+		private SegmentMap Relocate91(byte [] abUncompressed, ushort segReloc, MemoryArea pgmImgNew)
 		{
             const int CompressedRelocationTableAddress = 0x0158;
             var relocations = pgmImgNew.Relocations;
@@ -186,20 +190,20 @@ namespace Reko.ImageLoaders.MzExe
 				ushort seg = (ushort) (pgmImgNew.ReadLeUInt16((uint)rel_off) + segReloc);
 				pgmImgNew.WriteLeUInt16((uint)rel_off, seg);
 				relocations.AddSegmentReference((uint)rel_off, seg);
-				imageMap.AddSegment(
+				segmentMap.AddSegment(
                     new ImageSegment(
                         seg.ToString("X4"),
                         Address.SegPtr(seg, 0),
                         this.imgLoaded,
                         AccessMode.ReadWriteExecute));
 			}
-			return imageMap;
+			return segmentMap;
 		}
 
         public override Program Load(Address addrLoad)
 		{
 			Unpack(RawImage, addrLoad);
-            return new Program(imageMap, arch, platform);
+            return new Program(segmentMap, arch, platform);
 		}
 
 		public override Address PreferredBaseAddress
@@ -282,7 +286,7 @@ namespace Reko.ImageLoaders.MzExe
 			// Create a new image based on the uncompressed data.
 
 			this.imgLoaded = new MemoryArea(addrLoad, abU);
-            this.imageMap = imgLoaded.CreateImageMap();
+            this.segmentMap = imgLoaded.CreateImageMap();
 			return imgLoaded;
 		}
 

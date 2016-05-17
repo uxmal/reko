@@ -32,6 +32,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using Rhino.Mocks;
+using System.Collections.Generic;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -117,9 +118,10 @@ namespace Reko.UnitTests.Analysis
         {
             var sw = new StringWriter();
             cg.Write(sw);
+            Debug.Print("{0}", sw.ToString());
         }
 
-		[Test]
+        [Test]
 		public void SsaSimple()
 		{
 			RunFileTest("Fragments/ssasimple.asm", "Analysis/SsaSimple.txt");

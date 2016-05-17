@@ -132,7 +132,7 @@ namespace Reko.Core.Expressions
 
         public Expression FMul(Expression a, Expression b)
         {
-            return new BinaryExpression(Operator.FMul, PrimitiveType.Real64, a, b);
+            return new BinaryExpression(Operator.FMul, a.DataType, a, b);
         }
 
         public Application Fn(Expression e, params Expression[] exps)
@@ -159,6 +159,11 @@ namespace Reko.Core.Expressions
         public Application Fn(PseudoProcedure ppp, params Expression[] args)
         {
             return new Application(new ProcedureConstant(PrimitiveType.Pointer32, ppp), ppp.ReturnType, args);
+        }
+
+        public Expression FNeg(Expression a)
+        {
+            return new UnaryExpression(Operator.FNeg, a.DataType, a);
         }
 
         public Expression FEq(Expression a, Expression b)
@@ -191,7 +196,7 @@ namespace Reko.Core.Expressions
             return new BinaryExpression(Operator.Flt, PrimitiveType.Bool, a, b);
         }
 
-        public Expression FSub(Expression a, Expression b)
+        public BinaryExpression FSub(Expression a, Expression b)
         {
             return new BinaryExpression(Operator.FSub, PrimitiveType.Real64, a, b);
         }
@@ -279,6 +284,11 @@ namespace Reko.Core.Expressions
         public BinaryExpression Lt(Expression a, int b)
         {
             return Lt(a, Constant.Create(a.DataType, b));
+        }
+
+        public MemberPointerSelector MembPtr8(Expression ptr, Expression membPtr)
+        {
+            return new MemberPointerSelector(PrimitiveType.Byte, new Dereference(PrimitiveType.Pointer32, ptr), membPtr);
         }
 
         public MemberPointerSelector MembPtrW(Expression ptr, Expression membPtr)

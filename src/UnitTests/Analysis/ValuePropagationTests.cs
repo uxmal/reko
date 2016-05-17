@@ -33,6 +33,7 @@ using System.IO;
 using System.Linq;
 using Rhino.Mocks;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -89,9 +90,10 @@ namespace Reko.UnitTests.Analysis
 				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, null, gr);
+                SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, null, gr,
+                    new HashSet<RegisterStorage>());
 				SsaState ssa = sst.SsaState;
-                var cce = new ConditionCodeEliminator(ssa.Identifiers, prog.Platform);
+                var cce = new ConditionCodeEliminator(ssa, prog.Platform);
                 cce.Transform();
 				ssa.Write(writer);
 				proc.Write(false, writer);
@@ -206,7 +208,8 @@ namespace Reko.UnitTests.Analysis
 		{
 			Procedure proc = new DpbMock().Procedure;
 			var gr = proc.CreateBlockDominatorGraph();
-			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc,  null, gr);
+			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc,  null, gr,
+                new HashSet<RegisterStorage>());
 			SsaState ssa = sst.SsaState;
 
             ssa.DebugDump(true);
@@ -484,7 +487,7 @@ namespace Reko.UnitTests.Analysis
 			var gr = proc.CreateBlockDominatorGraph();
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             importResolver.Replay();
-			var sst = new SsaTransform(new ProgramDataFlow(), proc, importResolver, gr);
+			var sst = new SsaTransform(new ProgramDataFlow(), proc, importResolver, gr, new HashSet<RegisterStorage>());
 			var ssa = sst.SsaState;
 
             ssa.DebugDump(true);
@@ -504,7 +507,7 @@ namespace Reko.UnitTests.Analysis
         {
             var proc = m.Procedure;
             var gr = proc.CreateBlockDominatorGraph();
-            var sst = new SsaTransform(new ProgramDataFlow(), proc, null, gr);
+            var sst = new SsaTransform(new ProgramDataFlow(), proc, null, gr, new HashSet<RegisterStorage>());
             var ssa = sst.SsaState;
 
             var vp = new ValuePropagator(arch, ssa);
@@ -618,5 +621,31 @@ ProcedureBuilder_exit:
             AssertStringsEqual(sExp, ssa);
         }
 
-	}
+        [Test]
+        public void VpCastRealConstant()
+        {
+            var m = new ProcedureBuilder();
+            var r1 = m.Reg32("r1", 1);
+
+            m.Assign(r1, m.Cast(PrimitiveType.Real32, ConstantReal.Real64(1)));
+
+            var ssa = RunTest(m);
+            var sExp =
+            #region Expected
+@"r1_0: orig: r1
+    def:  r1_0 = 1.0F
+// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	// succ:  l1
+l1:
+	r1_0 = 1.0F
+ProcedureBuilder_exit:
+";
+            #endregion
+
+            AssertStringsEqual(sExp, ssa);
+        }
+    }
 }

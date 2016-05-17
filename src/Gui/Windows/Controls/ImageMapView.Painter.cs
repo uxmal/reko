@@ -34,6 +34,7 @@ namespace Reko.Gui.Windows.Controls
     {
         public class Painter
         {
+            private SegmentMap segmentMap;
             private ImageMap imageMap;
             public Rectangle rcClient;
             public Rectangle rcBody;
@@ -45,7 +46,8 @@ namespace Reko.Gui.Windows.Controls
 
             public Painter(ImageMapView mapView)
             {
-                this.imageMap = mapView.imageMap;
+                this.imageMap = mapView.ImageMap;
+                this.segmentMap = mapView.SegmentMap;
                 this.granularity = mapView.granularity;
 
                 segLayouts = new List<SegmentLayout>();
@@ -53,7 +55,7 @@ namespace Reko.Gui.Windows.Controls
                 long cx = 0;
                 if (imageMap != null && granularity > 0)
                 {
-                    foreach (var segment in imageMap.Segments.Values)
+                    foreach (var segment in segmentMap.Segments.Values)
                     {
                         cx = (segment.Size + granularity - 1) / granularity;
                         segLayouts.Add(new SegmentLayout
@@ -207,7 +209,7 @@ namespace Reko.Gui.Windows.Controls
                 var lin = seg.Address.ToLinear() + (uint)cbOffset;
                 if (!seg.IsInRange(lin))
                     return brBack;
-                var address = imageMap.MapLinearAddressToAddress(lin);
+                var address = segmentMap.MapLinearAddressToAddress(lin);
                 if (!imageMap.TryFindItem(address, out item))
                     return brBack;
                 if (item is ImageMapVectorTable)
