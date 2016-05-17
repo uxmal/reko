@@ -604,7 +604,7 @@ namespace Reko.Scanning
             }
             else
             {
-                Warn(addr, "The user-defined procedure at address {0} did not have a signature"); 
+                Warn(addr, "The user-defined procedure at address {0} did not have a signature.", addr); 
             }
 
             ep = new ExternalProcedure(sProc.Name, sig);
