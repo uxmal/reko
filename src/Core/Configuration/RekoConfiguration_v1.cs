@@ -110,6 +110,10 @@ namespace Reko.Core.Configuration
         [XmlElement]
         public PlatformHeuristics_v1 Heuristics;
 
+        [XmlArray("SignatureFiles")]
+        [XmlArrayItem("SignatureFile")]
+        public SignatureFile_v1[] SignatureFiles;
+
         // Collect any other platform-specific elements in "Options"
         [XmlAnyElement]
         public XmlElement[] Options;

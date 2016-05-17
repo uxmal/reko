@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Analysis
                     proc.CreateBlockDominatorGraph(),
                     program.Platform.CreateImplicitArgumentRegisters());
 				SsaState ssa = sst.SsaState;
-				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, prog.Platform);
+				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform);
 				cce.Transform();
 
 				DeadCode.Eliminate(proc, ssa);

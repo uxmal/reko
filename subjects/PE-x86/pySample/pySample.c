@@ -148,14 +148,14 @@ l10001258:
 		if (globals->ptr100033B8 != null)
 		{
 			Eq_363 * esp_142 = esp_123 - (LONG *) 0x04;
-			Mem143[esp_142 + 0x00:word32] = 0x100033B8;
-			 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * edi_144;
+			esp_142->dw0000 = 0x100033B8;
+			word32 edi_144;
 			word32 eax_145 = fn10001742(ebx_116, esi_115, edi_114, out edi_144);
 			if (eax_145 != 0x00)
 			{
-				Mem152[esp_142 + 0x00:word32] = Mem143[esp_142 + 0x1C:word32];
-				Mem154[esp_142 - 0x04 + 0x00:word32] = edi_144;
-				Mem156[esp_142 - 0x08 + 0x00:word32] = Mem154[esp_142 + 0x14:word32];
+				esp_142->dw0000 = esp_142->dw001C;
+				*(esp_142 - 0x04) = edi_144;
+				*(esp_142 - 0x08) = esp_142->dw0014;
 				word32 esp_157;
 				word32 eax_158;
 				word32 ebp_159;

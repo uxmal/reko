@@ -260,28 +260,15 @@ Eq_334: (fn void ((ptr Eq_286)))
 	T_335 (in signature of free : void)
 Eq_349: (segment "Eq_349")
 	T_349 (in fs_376 : (ptr Eq_349))
-Eq_363: (struct "Eq_363" (0 (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_366)))))))))))))))))))))))))))))))))))))))))))))))))))) ptr0000) (14 (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_366)))))))))))))))))))))))))))))))))))))))))))))))))))) ptr0014) (1C (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_366)))))))))))))))))))))))))))))))))))))))))))))))))))) ptr001C))
+Eq_363: (struct "Eq_363" (0 word32 dw0000) (14 word32 dw0014) (1C word32 dw001C))
 	T_363 (in esp_142 : (ptr Eq_363))
 	T_365 (in esp_123 - (LONG *) 0x00000004 : word32)
-Eq_366: (ptr Eq_377)
-	T_366 (in 0x100033B8 : word32)
-	T_369 (in Mem143[esp_142 + 0x00000000:word32] : word32)
-	T_370 (in edi_144 : (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_366)))))))))))))))))))))))))))))))))))))))))))))))))))))
-	T_384 (in Mem143[esp_142 + 0x0000001C:word32] : word32)
-	T_387 (in Mem152[esp_142 + 0x00000000:word32] : word32)
-	T_392 (in Mem154[esp_142 - 0x00000004 + 0x00000000:word32] : word32)
-	T_395 (in Mem154[esp_142 + 0x00000014:word32] : word32)
-	T_400 (in Mem156[esp_142 - 0x00000008 + 0x00000000:word32] : word32)
 Eq_372: (fn word32 (ui32, ui32, ui32, (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_377))))))))))))))))))))))))))))))))))))))))))))))))))))))
 	T_372 (in fn10001742 : ptr32)
 	T_373 (in signature of fn10001742 : void)
 Eq_377: (ptr Eq_377)
 	T_377 (in ediOut : (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_377)))))))))))))))))))))))))))))))))))))))))))))))))))))
 	T_378 (in out edi_144 : ptr32)
-Eq_389: (ptr (ptr Eq_366))
-	T_389 (in esp_142 - 0x00000004 : word32)
-Eq_397: (ptr (ptr Eq_366))
-	T_397 (in esp_142 - 0x00000008 : word32)
 Eq_412: (segment "Eq_412")
 	T_412 (in fs_168 : (ptr Eq_412))
 Eq_424: (segment "Eq_424")
@@ -1858,7 +1845,7 @@ T_365: (in esp_123 - (LONG *) 0x00000004 : word32)
   OrigDataType: word32
 T_366: (in 0x100033B8 : word32)
   Class: Eq_366
-  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_366))))))))))))))))))))))))))))))))))))))))))))))))))))
+  DataType: word32
   OrigDataType: word32
 T_367: (in 0x00000000 : word32)
   Class: Eq_367
@@ -1870,12 +1857,12 @@ T_368: (in esp_142 + 0x00000000 : word32)
   OrigDataType: word32
 T_369: (in Mem143[esp_142 + 0x00000000:word32] : word32)
   Class: Eq_366
-  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_366))))))))))))))))))))))))))))))))))))))))))))))))))))
+  DataType: word32
   OrigDataType: word32
-T_370: (in edi_144 : (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_366)))))))))))))))))))))))))))))))))))))))))))))))))))))
+T_370: (in edi_144 : word32)
   Class: Eq_366
-  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_366))))))))))))))))))))))))))))))))))))))))))))))))))))
-  OrigDataType: (ptr T_378)
+  DataType: word32
+  OrigDataType: word32
 T_371: (in eax_145 : word32)
   Class: Eq_371
   DataType: word32
@@ -1930,7 +1917,7 @@ T_383: (in esp_142 + 0x0000001C : word32)
   OrigDataType: word32
 T_384: (in Mem143[esp_142 + 0x0000001C:word32] : word32)
   Class: Eq_366
-  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_366))))))))))))))))))))))))))))))))))))))))))))))))))))
+  DataType: word32
   OrigDataType: word32
 T_385: (in 0x00000000 : word32)
   Class: Eq_385
@@ -1942,7 +1929,7 @@ T_386: (in esp_142 + 0x00000000 : word32)
   OrigDataType: word32
 T_387: (in Mem152[esp_142 + 0x00000000:word32] : word32)
   Class: Eq_366
-  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_366))))))))))))))))))))))))))))))))))))))))))))))))))))
+  DataType: word32
   OrigDataType: word32
 T_388: (in 0x00000004 : word32)
   Class: Eq_388
@@ -1950,7 +1937,7 @@ T_388: (in 0x00000004 : word32)
   OrigDataType: ui32
 T_389: (in esp_142 - 0x00000004 : word32)
   Class: Eq_389
-  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_389)))))))))))))))))))))))))))))))))))))))))))))))))))
+  DataType: (ptr word32)
   OrigDataType: (ptr (struct (0 T_392 t0000)))
 T_390: (in 0x00000000 : word32)
   Class: Eq_390
@@ -1962,7 +1949,7 @@ T_391: (in esp_142 - 0x00000004 + 0x00000000 : word32)
   OrigDataType: word32
 T_392: (in Mem154[esp_142 - 0x00000004 + 0x00000000:word32] : word32)
   Class: Eq_366
-  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_366))))))))))))))))))))))))))))))))))))))))))))))))))))
+  DataType: word32
   OrigDataType: word32
 T_393: (in 0x00000014 : word32)
   Class: Eq_393
@@ -1974,7 +1961,7 @@ T_394: (in esp_142 + 0x00000014 : word32)
   OrigDataType: word32
 T_395: (in Mem154[esp_142 + 0x00000014:word32] : word32)
   Class: Eq_366
-  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_366))))))))))))))))))))))))))))))))))))))))))))))))))))
+  DataType: word32
   OrigDataType: word32
 T_396: (in 0x00000008 : word32)
   Class: Eq_396
@@ -1982,7 +1969,7 @@ T_396: (in 0x00000008 : word32)
   OrigDataType: ui32
 T_397: (in esp_142 - 0x00000008 : word32)
   Class: Eq_397
-  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_397)))))))))))))))))))))))))))))))))))))))))))))))))))
+  DataType: (ptr word32)
   OrigDataType: (ptr (struct (0 T_400 t0000)))
 T_398: (in 0x00000000 : word32)
   Class: Eq_398
@@ -1994,7 +1981,7 @@ T_399: (in esp_142 - 0x00000008 + 0x00000000 : word32)
   OrigDataType: word32
 T_400: (in Mem156[esp_142 - 0x00000008 + 0x00000000:word32] : word32)
   Class: Eq_366
-  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_366))))))))))))))))))))))))))))))))))))))))))))))))))))
+  DataType: word32
   OrigDataType: word32
 T_401: (in esp_157 : word32)
   Class: Eq_401
@@ -4886,20 +4873,14 @@ typedef struct Eq_349 {
 } Eq_349;
 
 typedef struct Eq_363 {
-	Eq_366 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * ptr0000;	// 0
-	Eq_366 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * ptr0014;	// 14
-	Eq_366 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * ptr001C;	// 1C
+	word32 dw0000;	// 0
+	word32 dw0014;	// 14
+	word32 dw001C;	// 1C
 } Eq_363;
-
-typedef  * Eq_366;
 
 typedef word32 (Eq_372)(ui32, ui32, ui32,  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *);
 
 typedef  * Eq_377;
-
-typedef  * * Eq_389;
-
-typedef  * * Eq_397;
 
 typedef struct Eq_412 {
 } Eq_412;

@@ -104,7 +104,7 @@ namespace Reko.UnitTests.Analysis
                 var sst = new SsaTransform(dfa.ProgramDataFlow, proc, importResolver, proc.CreateBlockDominatorGraph(), new HashSet<RegisterStorage>());
                 SsaState ssa = sst.SsaState;
 
-                var cce = new ConditionCodeEliminator(ssa, prog.Platform);
+                var cce = new ConditionCodeEliminator(ssa, program.Platform);
                 cce.Transform();
 
                 var vp = new ValuePropagator(program.Architecture, ssa.Identifiers, proc);

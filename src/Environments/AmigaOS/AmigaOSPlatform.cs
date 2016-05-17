@@ -88,10 +88,10 @@ namespace Reko.Environments.AmigaOS
         /// ...which is trivial on the Amiga since the only known address
         /// is the pointer at 0x00000004 that points to the ExecBase.
         /// </returns>
-        public override ImageMap CreateAbsoluteMemoryMap()
+        public override SegmentMap CreateAbsoluteMemoryMap()
         {
             EnsureTypeLibraries(base.PlatformIdentifier);
-            var imageMap = new ImageMap(
+            var segmentMap = new SegmentMap(
                 Address.Ptr32(0),
                 new ImageSegment(
                     "interrupts",
@@ -105,7 +105,7 @@ namespace Reko.Environments.AmigaOS
             //    {
             //        DataType = new Pointer(Metadata.Types["ExecBase"], 4)
             //    });
-            return imageMap;
+            return segmentMap;
         }
 
         public override ProcedureSerializer CreateProcedureSerializer(

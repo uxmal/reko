@@ -55,10 +55,10 @@ void fn0800_0245()
 
 void main(Eq_63 * ds)
 {
-	Eq_64 di_12;
+	word16 di_12;
 	word16 bx_13 = fn0800_0E4B(ds, 404, out di_12);
 	fn0800_16D4(bx_13, di_12, ds, 0x01B0);
-	Eq_82 di_35;
+	word16 di_35;
 	fn0800_0E4B(ds, 0x01B4, out di_35);
 	ci16 wLoc08_39 = 0x00;
 	cu16 wLoc0A_40 = 0x01;
@@ -68,19 +68,19 @@ void main(Eq_63 * ds)
 		wLoc0A_40 = wLoc0A_40 + 0x01;
 		wLoc08_39 = v14;
 	}
-	Eq_100 di_68;
+	word16 di_68;
 	fn0800_0E4B(ds, 0x01CE, out di_68);
 	return;
 }
 
-word16 fn0800_0E4B(Eq_63 * ds, word16 wArg02, Eq_70 diOut)
+word16 fn0800_0E4B(Eq_63 * ds, word16 wArg02,  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * diOut)
 {
-	Eq_108 di_19;
+	word16 di_19;
 	word16 bx_20 = fn0800_1073(ds, wArg02, out di_19);
 	return bx_20;
 }
 
-word16 fn0800_1073(Eq_63 * ds, word16 wArg04, Eq_114 diOut)
+word16 fn0800_1073(Eq_63 * ds, word16 wArg04,  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * diOut)
 {
 	ci8 bLoc57_109 = 0x50;
 	ptr16 sp_161 = fp - 0xA0;
@@ -151,7 +151,7 @@ l0800_1572:
 	{
 		Eq_125 di_93;
 		fn0800_10A1(fp - 0x02, di_107, out di_93);
-		Eq_185 di_95;
+		word16 di_95;
 		bx = fn0800_10A1(fp - 0x02, di_93, out di_95);
 	}
 	word16 Eq_206::*sp_80 = sp_161 + 0x02;
@@ -162,7 +162,7 @@ l0800_1572:
 	return bx;
 }
 
-word16 fn0800_1099(byte al, Eq_163 bp, Eq_125 di, Eq_63 * ds, Eq_229 diOut)
+word16 fn0800_1099(byte al, Eq_163 bp, Eq_125 di, Eq_63 * ds,  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * diOut)
 {
 	ds->*di = al;
 	ci8 v9_9 = ss->*(bp - &Eq_257::b0055) - 0x01;
@@ -173,12 +173,12 @@ word16 fn0800_1099(byte al, Eq_163 bp, Eq_125 di, Eq_63 * ds, Eq_229 diOut)
 		return bx;
 	else
 	{
-		Eq_276 di_15;
+		word16 di_15;
 		return fn0800_10A1(bp, di, out di_15);
 	}
 }
 
-Eq_281 * fn0800_10A1(Eq_163 bp, Eq_125 di, Eq_165 diOut)
+Eq_281 * fn0800_10A1(Eq_163 bp, Eq_125 di,  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * diOut)
 {
 	word16 sp_29;
 	word16 bx_30;
@@ -204,13 +204,13 @@ Eq_281 * fn0800_10A1(Eq_163 bp, Eq_125 di, Eq_165 diOut)
 	return es;
 }
 
-void fn0800_16D4(word16 bx, Eq_64 di, Eq_63 * ds, word16 wArg02)
+void fn0800_16D4(word16 bx, word16 di, Eq_63 * ds, word16 wArg02)
 {
 	fn0800_16F3(bx, di, ds, 0x0342, wArg02);
 	return;
 }
 
-void fn0800_16F3(word16 bx, Eq_64 di, Eq_63 * ds, word16 wArg06, word16 wArg08)
+void fn0800_16F3(word16 bx, word16 di, Eq_63 * ds, word16 wArg06, word16 wArg08)
 {
 	Eq_342 bp_154 = fp - 0x02;
 	byte Eq_63::*si_157 = wArg08;

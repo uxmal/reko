@@ -48,39 +48,29 @@ Eq_63: (segment "Eq_63")
 	T_112 (in ds : (ptr Eq_63))
 	T_228 (in ds : (ptr Eq_63))
 	T_336 (in ds : (ptr Eq_63))
-Eq_64: (union "Eq_64" (word16 u0) ((ptr Eq_70) u1))
-	T_64 (in di_12 : Eq_64)
-	T_77 (in di : Eq_64)
-	T_335 (in di : Eq_64)
-Eq_66: (fn word16 ((ptr Eq_63), word16, Eq_70))
+Eq_66: (fn word16 ((ptr Eq_63), word16, (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_70))))))))))))))))))))))))))))))))))))))))))))))))))))))
 	T_66 (in fn0800_0E4B : ptr32)
 	T_67 (in signature of fn0800_0E4B : void)
 	T_83 (in fn0800_0E4B : ptr32)
 	T_101 (in fn0800_0E4B : ptr32)
-Eq_70: (union "Eq_70" (ptr16 u0) ((ptr Eq_70) u1))
-	T_70 (in diOut : Eq_70)
+Eq_70: (ptr Eq_70)
+	T_70 (in diOut : (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_70)))))))))))))))))))))))))))))))))))))))))))))))))))))
 	T_72 (in out di_12 : ptr16)
 	T_85 (in out di_35 : ptr16)
 	T_103 (in out di_68 : ptr16)
-Eq_74: (fn void (word16, Eq_64, (ptr Eq_63), word16))
+Eq_74: (fn void (word16, word16, (ptr Eq_63), word16))
 	T_74 (in fn0800_16D4 : ptr32)
 	T_75 (in signature of fn0800_16D4 : void)
-Eq_82: (union "Eq_82" (word16 u0) ((ptr Eq_70) u1))
-	T_82 (in di_35 : Eq_82)
 Eq_93: (fn void ())
 	T_93 (in fn0800_0245 : ptr32)
 	T_94 (in signature of fn0800_0245 : void)
-Eq_100: (union "Eq_100" (word16 u0) ((ptr Eq_70) u1))
-	T_100 (in di_68 : Eq_100)
-Eq_108: (union "Eq_108" (word16 u0) ((ptr Eq_114) u1))
-	T_108 (in di_19 : Eq_108)
-Eq_110: (fn word16 ((ptr Eq_63), word16, Eq_114))
+Eq_110: (fn word16 ((ptr Eq_63), word16, (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_114))))))))))))))))))))))))))))))))))))))))))))))))))))))
 	T_110 (in fn0800_1073 : ptr32)
 	T_111 (in signature of fn0800_1073 : void)
-Eq_114: (union "Eq_114" (ptr16 u0) ((ptr Eq_114) u1))
-	T_114 (in diOut : Eq_114)
+Eq_114: (ptr Eq_114)
+	T_114 (in diOut : (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_114)))))))))))))))))))))))))))))))))))))))))))))))))))))
 	T_116 (in out di_19 : ptr16)
-Eq_125: (union "Eq_125" ((ptr Eq_165) u0) ((ptr Eq_229) u1) ((memptr (ptr Eq_63) byte) u2) (Eq_510 u3))
+Eq_125: (union "Eq_125" ((memptr (ptr Eq_63) byte) u0) (Eq_510 u1))
 	T_125 (in di_107 : Eq_125)
 	T_127 (in fp - 0x0056 : word16)
 	T_150 (in di_107 + 0x0001 : word16)
@@ -88,7 +78,7 @@ Eq_125: (union "Eq_125" ((ptr Eq_165) u0) ((ptr Eq_229) u1) ((memptr (ptr Eq_63)
 	T_180 (in di_93 : Eq_125)
 	T_227 (in di : Eq_125)
 	T_278 (in di + 0x0001 : word16)
-Eq_161: (fn word16 (Eq_163, Eq_125, Eq_165))
+Eq_161: (fn word16 (Eq_163, Eq_125, (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_165))))))))))))))))))))))))))))))))))))))))))))))))))))))
 	T_161 (in fn0800_10A1 : ptr32)
 	T_162 (in signature of fn0800_10A1 : void)
 	T_181 (in fn0800_10A1 : ptr32)
@@ -101,29 +91,25 @@ Eq_163: (union "Eq_163" (ptr16 u1) ((memptr (ptr Eq_297) Eq_511) u0))
 	T_187 (in fp - 0x0002 : word16)
 	T_226 (in bp : Eq_163)
 	T_230 (in fp - 0x0002 : word16)
-Eq_165: (union "Eq_165" (ptr16 u0) ((ptr Eq_165) u1))
-	T_165 (in diOut : Eq_165)
+Eq_165: (ptr Eq_165)
+	T_165 (in diOut : (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_165)))))))))))))))))))))))))))))))))))))))))))))))))))))
 	T_168 (in out di_107 : ptr16)
 	T_183 (in out di_93 : ptr16)
 	T_188 (in out di_95 : ptr16)
 	T_279 (in out di_15 : ptr16)
-Eq_185: (union "Eq_185" (word16 u0) ((ptr Eq_165) u1))
-	T_185 (in di_95 : Eq_185)
 Eq_199: (struct "Eq_199" (4F9 byte b04F9))
 	T_199 (in bx_145 : (memptr (ptr Eq_63) Eq_199))
 	T_202 (in DPB(ax_139, bl_143 - 0x20, 0) : word16)
 Eq_206: (segment "Eq_206")
 	T_206 (in ss : selector)
-Eq_223: (fn word16 (byte, Eq_163, Eq_125, (ptr Eq_63), Eq_229))
+Eq_223: (fn word16 (byte, Eq_163, Eq_125, (ptr Eq_63), (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_229))))))))))))))))))))))))))))))))))))))))))))))))))))))
 	T_223 (in fn0800_1099 : ptr32)
 	T_224 (in signature of fn0800_1099 : void)
-Eq_229: (union "Eq_229" (ptr16 u0) ((ptr Eq_229) u1))
-	T_229 (in diOut : Eq_229)
+Eq_229: (ptr Eq_229)
+	T_229 (in diOut : (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_229)))))))))))))))))))))))))))))))))))))))))))))))))))))
 	T_231 (in out di_107 : ptr16)
 Eq_257: (segment "Eq_257" (55 ci8 b0055))
 	T_257 (in ss : selector)
-Eq_276: (union "Eq_276" (word16 u0) ((ptr Eq_165) u1))
-	T_276 (in di_15 : Eq_276)
 Eq_281: (segment "Eq_281")
 	T_281 (in bx : (ptr Eq_281))
 	T_331 (in es : selector)
@@ -145,7 +131,7 @@ Eq_304: (union "Eq_304" (byte u0) (word16 u1))
 	T_320 (in Mem49[ss_31:bp_35 - 0x0058 + 0x0000:word16] : word16)
 	T_325 (in 0x0001 : word16)
 	T_330 (in Mem61[ss_31:bp_35 - 0x0002 + 0x0000:word16] : word16)
-Eq_332: (fn void (word16, Eq_64, (ptr Eq_63), word16, word16))
+Eq_332: (fn void (word16, word16, (ptr Eq_63), word16, word16))
 	T_332 (in fn0800_16F3 : ptr32)
 	T_333 (in signature of fn0800_16F3 : void)
 Eq_342: (union "Eq_342" (ptr16 u1) ((memptr (ptr Eq_376) Eq_512) u0))
@@ -449,10 +435,10 @@ T_63: (in ds : (ptr Eq_63))
   Class: Eq_63
   DataType: (ptr Eq_63)
   OrigDataType: (ptr (segment))
-T_64: (in di_12 : Eq_64)
+T_64: (in di_12 : word16)
   Class: Eq_64
-  DataType: Eq_64
-  OrigDataType: (union (word16 u0) ((ptr Eq_70) u1))
+  DataType: word16
+  OrigDataType: word16
 T_65: (in bx_13 : word16)
   Class: Eq_65
   DataType: word16
@@ -473,9 +459,9 @@ T_69: (in wArg02 : word16)
   Class: Eq_69
   DataType: word16
   OrigDataType: word16
-T_70: (in diOut : Eq_70)
+T_70: (in diOut : (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_70)))))))))))))))))))))))))))))))))))))))))))))))))))))
   Class: Eq_70
-  DataType: Eq_70
+  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_70))))))))))))))))))))))))))))))))))))))))))))))))))))
   OrigDataType: ptr16
 T_71: (in 0x0194 : word16)
   Class: Eq_69
@@ -483,8 +469,8 @@ T_71: (in 0x0194 : word16)
   OrigDataType: word16
 T_72: (in out di_12 : ptr16)
   Class: Eq_70
-  DataType: Eq_70
-  OrigDataType: (union (ptr16 u1) ((ptr Eq_70) u0))
+  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_70))))))))))))))))))))))))))))))))))))))))))))))))))))
+  OrigDataType: (ptr T_72)
 T_73: (in fn0800_0E4B(ds, 0x0194, out di_12) : word16)
   Class: Eq_65
   DataType: word16
@@ -501,9 +487,9 @@ T_76: (in bx : word16)
   Class: Eq_65
   DataType: word16
   OrigDataType: word16
-T_77: (in di : Eq_64)
+T_77: (in di : word16)
   Class: Eq_64
-  DataType: Eq_64
+  DataType: word16
   OrigDataType: word16
 T_78: (in ds : (ptr Eq_63))
   Class: Eq_63
@@ -521,10 +507,10 @@ T_81: (in fn0800_16D4(bx_13, di_12, ds, 0x01B0) : void)
   Class: Eq_81
   DataType: void
   OrigDataType: void
-T_82: (in di_35 : Eq_82)
+T_82: (in di_35 : word16)
   Class: Eq_82
-  DataType: Eq_82
-  OrigDataType: (union (word16 u1) ((ptr Eq_70) u0))
+  DataType: word16
+  OrigDataType: word16
 T_83: (in fn0800_0E4B : ptr32)
   Class: Eq_66
   DataType: (ptr Eq_66)
@@ -535,8 +521,8 @@ T_84: (in 0x01B4 : word16)
   OrigDataType: word16
 T_85: (in out di_35 : ptr16)
   Class: Eq_70
-  DataType: Eq_70
-  OrigDataType: (union (ptr16 u1) ((ptr Eq_70) u0))
+  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_70))))))))))))))))))))))))))))))))))))))))))))))))))))
+  OrigDataType: (ptr T_85)
 T_86: (in fn0800_0E4B(ds, 0x01B4, out di_35) : word16)
   Class: Eq_65
   DataType: word16
@@ -593,10 +579,10 @@ T_99: (in wLoc08_39 > wLoc04 : bool)
   Class: Eq_99
   DataType: bool
   OrigDataType: bool
-T_100: (in di_68 : Eq_100)
+T_100: (in di_68 : word16)
   Class: Eq_100
-  DataType: Eq_100
-  OrigDataType: (union (word16 u1) ((ptr Eq_70) u0))
+  DataType: word16
+  OrigDataType: word16
 T_101: (in fn0800_0E4B : ptr32)
   Class: Eq_66
   DataType: (ptr Eq_66)
@@ -607,8 +593,8 @@ T_102: (in 0x01CE : word16)
   OrigDataType: word16
 T_103: (in out di_68 : ptr16)
   Class: Eq_70
-  DataType: Eq_70
-  OrigDataType: (union (ptr16 u1) ((ptr Eq_70) u0))
+  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_70))))))))))))))))))))))))))))))))))))))))))))))))))))
+  OrigDataType: (ptr T_103)
 T_104: (in fn0800_0E4B(ds, 0x01CE, out di_68) : word16)
   Class: Eq_65
   DataType: word16
@@ -625,10 +611,10 @@ T_107: (in bx : word16)
   Class: Eq_107
   DataType: word16
   OrigDataType: word16
-T_108: (in di_19 : Eq_108)
+T_108: (in di_19 : word16)
   Class: Eq_108
-  DataType: Eq_108
-  OrigDataType: (union (word16 u1) ((ptr Eq_114) u0))
+  DataType: word16
+  OrigDataType: word16
 T_109: (in bx_20 : word16)
   Class: Eq_107
   DataType: word16
@@ -649,9 +635,9 @@ T_113: (in wArg04 : word16)
   Class: Eq_113
   DataType: word16
   OrigDataType: word16
-T_114: (in diOut : Eq_114)
+T_114: (in diOut : (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_114)))))))))))))))))))))))))))))))))))))))))))))))))))))
   Class: Eq_114
-  DataType: Eq_114
+  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_114))))))))))))))))))))))))))))))))))))))))))))))))))))
   OrigDataType: ptr16
 T_115: (in wArg02 : word16)
   Class: Eq_113
@@ -659,8 +645,8 @@ T_115: (in wArg02 : word16)
   OrigDataType: word16
 T_116: (in out di_19 : ptr16)
   Class: Eq_114
-  DataType: Eq_114
-  OrigDataType: (union (ptr16 u1) ((ptr Eq_114) u0))
+  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_114))))))))))))))))))))))))))))))))))))))))))))))))))))
+  OrigDataType: (ptr T_116)
 T_117: (in fn0800_1073(ds, wArg02, out di_19) : word16)
   Class: Eq_107
   DataType: word16
@@ -696,7 +682,7 @@ T_124: (in fp - 0x00A0 : word16)
 T_125: (in di_107 : Eq_125)
   Class: Eq_125
   DataType: Eq_125
-  OrigDataType: (union ((ptr Eq_165) u0) ((ptr Eq_229) u2) ((memptr T_112 (struct 0001 (0 byte b0000))) u1))
+  OrigDataType: (memptr T_112 (struct 0001 (0 (union (byte u0) (T_145 u1)) u0000)))
 T_126: (in 0x0056 : word16)
   Class: Eq_126
   DataType: ui16
@@ -853,9 +839,9 @@ T_164: (in di : Eq_125)
   Class: Eq_125
   DataType: Eq_125
   OrigDataType: word16
-T_165: (in diOut : Eq_165)
+T_165: (in diOut : (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_165)))))))))))))))))))))))))))))))))))))))))))))))))))))
   Class: Eq_165
-  DataType: Eq_165
+  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_165))))))))))))))))))))))))))))))))))))))))))))))))))))
   OrigDataType: ptr16
 T_166: (in 0x0002 : word16)
   Class: Eq_166
@@ -867,8 +853,8 @@ T_167: (in fp - 0x0002 : word16)
   OrigDataType: ptr16
 T_168: (in out di_107 : ptr16)
   Class: Eq_165
-  DataType: Eq_165
-  OrigDataType: (union (ptr16 u1) ((ptr Eq_165) u0))
+  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_165))))))))))))))))))))))))))))))))))))))))))))))))))))
+  OrigDataType: (ptr T_168)
 T_169: (in fn0800_10A1(fp - 0x0002, di_107, out di_107) : word16)
   Class: Eq_118
   DataType: word16
@@ -916,7 +902,7 @@ T_179: (in 0x0000 == 0x0000 : bool)
 T_180: (in di_93 : Eq_125)
   Class: Eq_125
   DataType: Eq_125
-  OrigDataType: (union (word16 u0) ((ptr Eq_165) u1))
+  OrigDataType: word16
 T_181: (in fn0800_10A1 : ptr32)
   Class: Eq_161
   DataType: (ptr Eq_161)
@@ -927,16 +913,16 @@ T_182: (in fp - 0x0002 : word16)
   OrigDataType: ptr16
 T_183: (in out di_93 : ptr16)
   Class: Eq_165
-  DataType: Eq_165
-  OrigDataType: (union (ptr16 u1) ((ptr Eq_165) u0))
+  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_165))))))))))))))))))))))))))))))))))))))))))))))))))))
+  OrigDataType: (ptr T_183)
 T_184: (in fn0800_10A1(fp - 0x0002, di_107, out di_93) : word16)
   Class: Eq_118
   DataType: word16
   OrigDataType: word16
-T_185: (in di_95 : Eq_185)
+T_185: (in di_95 : word16)
   Class: Eq_185
-  DataType: Eq_185
-  OrigDataType: (union (word16 u1) ((ptr Eq_165) u0))
+  DataType: word16
+  OrigDataType: word16
 T_186: (in fn0800_10A1 : ptr32)
   Class: Eq_161
   DataType: (ptr Eq_161)
@@ -947,8 +933,8 @@ T_187: (in fp - 0x0002 : word16)
   OrigDataType: ptr16
 T_188: (in out di_95 : ptr16)
   Class: Eq_165
-  DataType: Eq_165
-  OrigDataType: (union (ptr16 u1) ((ptr Eq_165) u0))
+  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_165))))))))))))))))))))))))))))))))))))))))))))))))))))
+  OrigDataType: (ptr T_188)
 T_189: (in fn0800_10A1(fp - 0x0002, di_93, out di_95) : word16)
   Class: Eq_118
   DataType: word16
@@ -1104,14 +1090,14 @@ T_226: (in bp : Eq_163)
 T_227: (in di : Eq_125)
   Class: Eq_125
   DataType: Eq_125
-  OrigDataType: (memptr T_228 (struct (0 T_255 t0000)))
+  OrigDataType: (memptr T_228 (struct (0 byte b0000)))
 T_228: (in ds : (ptr Eq_63))
   Class: Eq_63
   DataType: (ptr Eq_63)
   OrigDataType: (ptr (segment))
-T_229: (in diOut : Eq_229)
+T_229: (in diOut : (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_229)))))))))))))))))))))))))))))))))))))))))))))))))))))
   Class: Eq_229
-  DataType: Eq_229
+  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_229))))))))))))))))))))))))))))))))))))))))))))))))))))
   OrigDataType: ptr16
 T_230: (in fp - 0x0002 : word16)
   Class: Eq_163
@@ -1119,8 +1105,8 @@ T_230: (in fp - 0x0002 : word16)
   OrigDataType: ptr16
 T_231: (in out di_107 : ptr16)
   Class: Eq_229
-  DataType: Eq_229
-  OrigDataType: (union (ptr16 u1) ((ptr Eq_229) u0))
+  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_229))))))))))))))))))))))))))))))))))))))))))))))))))))
+  OrigDataType: (ptr T_231)
 T_232: (in fn0800_1099(al_156, fp - 0x0002, di_107, ds, out di_107) : word16)
   Class: Eq_118
   DataType: word16
@@ -1297,10 +1283,10 @@ T_275: (in v9_9 <= 0x00 : bool)
   Class: Eq_275
   DataType: bool
   OrigDataType: bool
-T_276: (in di_15 : Eq_276)
+T_276: (in di_15 : word16)
   Class: Eq_276
-  DataType: Eq_276
-  OrigDataType: (union (word16 u1) ((ptr Eq_165) u0))
+  DataType: word16
+  OrigDataType: word16
 T_277: (in fn0800_10A1 : ptr32)
   Class: Eq_161
   DataType: (ptr Eq_161)
@@ -1311,8 +1297,8 @@ T_278: (in di + 0x0001 : word16)
   OrigDataType: word16
 T_279: (in out di_15 : ptr16)
   Class: Eq_165
-  DataType: Eq_165
-  OrigDataType: (union (ptr16 u1) ((ptr Eq_165) u0))
+  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_165))))))))))))))))))))))))))))))))))))))))))))))))))))
+  OrigDataType: (ptr T_279)
 T_280: (in fn0800_10A1(bp, di, out di_15) : word16)
   Class: Eq_118
   DataType: word16
@@ -1533,9 +1519,9 @@ T_334: (in bx : word16)
   Class: Eq_65
   DataType: word16
   OrigDataType: word16
-T_335: (in di : Eq_64)
+T_335: (in di : word16)
   Class: Eq_64
-  DataType: Eq_64
+  DataType: word16
   OrigDataType: word16
 T_336: (in ds : (ptr Eq_63))
   Class: Eq_63
@@ -2262,67 +2248,31 @@ typedef void (Eq_44)();
 typedef struct Eq_63 {
 } Eq_63;
 
-typedef union Eq_64 {
-	word16 u0;
-	Eq_70 * u1;
-} Eq_64;
+typedef word16 (Eq_66)(Eq_63 *, word16,  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *);
 
-typedef word16 (Eq_66)(Eq_63 *, word16, Eq_70);
+typedef  * Eq_70;
 
-typedef union Eq_70 {
-	ptr16 u0;
-	Eq_70 * u1;
-} Eq_70;
-
-typedef void (Eq_74)(word16, Eq_64, Eq_63 *, word16);
-
-typedef union Eq_82 {
-	word16 u0;
-	Eq_70 * u1;
-} Eq_82;
+typedef void (Eq_74)(word16, word16, Eq_63 *, word16);
 
 typedef void (Eq_93)();
 
-typedef union Eq_100 {
-	word16 u0;
-	Eq_70 * u1;
-} Eq_100;
+typedef word16 (Eq_110)(Eq_63 *, word16,  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *);
 
-typedef union Eq_108 {
-	word16 u0;
-	Eq_114 * u1;
-} Eq_108;
-
-typedef word16 (Eq_110)(Eq_63 *, word16, Eq_114);
-
-typedef union Eq_114 {
-	ptr16 u0;
-	Eq_114 * u1;
-} Eq_114;
+typedef  * Eq_114;
 
 typedef union Eq_125 {
-	Eq_165 * u0;
-	Eq_229 * u1;
-	byte Eq_63::* u2;
-	Eq_510 u3;
+	byte Eq_63::* u0;
+	Eq_510 u1;
 } Eq_125;
 
-typedef word16 (Eq_161)(Eq_163, Eq_125, Eq_165);
+typedef word16 (Eq_161)(Eq_163, Eq_125,  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *);
 
 typedef union Eq_163 {
 	ptr16 u1;
 	Eq_511 Eq_297::* u0;
 } Eq_163;
 
-typedef union Eq_165 {
-	ptr16 u0;
-	Eq_165 * u1;
-} Eq_165;
-
-typedef union Eq_185 {
-	word16 u0;
-	Eq_165 * u1;
-} Eq_185;
+typedef  * Eq_165;
 
 typedef struct Eq_199 {
 	byte b04F9;	// 4F9
@@ -2331,21 +2281,13 @@ typedef struct Eq_199 {
 typedef struct Eq_206 {
 } Eq_206;
 
-typedef word16 (Eq_223)(byte, Eq_163, Eq_125, Eq_63 *, Eq_229);
+typedef word16 (Eq_223)(byte, Eq_163, Eq_125, Eq_63 *,  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *);
 
-typedef union Eq_229 {
-	ptr16 u0;
-	Eq_229 * u1;
-} Eq_229;
+typedef  * Eq_229;
 
 typedef struct Eq_257 {
 	ci8 b0055;	// 55
 } Eq_257;
-
-typedef union Eq_276 {
-	word16 u0;
-	Eq_165 * u1;
-} Eq_276;
 
 typedef struct Eq_281 {
 } Eq_281;
@@ -2374,7 +2316,7 @@ typedef union Eq_304 {
 	word16 u1;
 } Eq_304;
 
-typedef void (Eq_332)(word16, Eq_64, Eq_63 *, word16, word16);
+typedef void (Eq_332)(word16, word16, Eq_63 *, word16, word16);
 
 typedef union Eq_342 {
 	ptr16 u1;
