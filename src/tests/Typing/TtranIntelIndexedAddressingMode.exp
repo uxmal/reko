@@ -21,8 +21,6 @@ Eq_2: (segment (CA4 (memptr (ptr Eq_2) Eq_13) ptr0CA4) (1C0A int16 w1C0A) (7070 
 Eq_13: <unknown>
 	T_13 (in Mem0[ds:0x0CA4:word16] : word16)
 	T_14 (in bx : word16)
-Eq_17: <unknown>
-	T_17 (in bx + 0x000A : word16)
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
@@ -90,13 +88,17 @@ T_16: (in 0x000A : word16)
   OrigDataType: int16
 T_17: (in bx + 0x000A : word16)
   Class: Eq_17
-  DataType: (memptr (ptr Eq_2) Eq_17)
-  OrigDataType: (memptr T_2 <unknown>)
+  DataType: (memptr (ptr Eq_2) byte)
+  OrigDataType: (memptr T_2 (struct (0 (arr T_15) a0000)))
 T_18: (in bx + 0x000A + si : word16)
   Class: Eq_18
-  DataType: (memptr (ptr Eq_2) byte)
-  OrigDataType: (memptr T_2 (struct (0 T_19 t0000)))
+  DataType: word16
+  OrigDataType: word16
 T_19: (in Mem0[ds:bx + 0x000A + si:byte] : byte)
   Class: Eq_15
   DataType: byte
   OrigDataType: byte
+T_20:
+  Class: Eq_15
+  DataType: byte
+  OrigDataType: (struct 0001 (0 (union (byte u0) (Eq_15 u1)) u0000))

@@ -312,7 +312,8 @@ namespace Reko.Typing
                 if (dtOther is MemberPointer)
                     return PrimitiveType.Create(Domain.SignedInt, dtOther.Size);
                 if (ptOther != null && (ptOther.Domain & Domain.Integer) != 0)
-                    return factory.CreateMemberPointer(mpSum.BasePointer, factory.CreateUnknown(), mpSum.Size);
+                    //return factory.CreateMemberPointer(mpSum.BasePointer, factory.CreateUnknown(), mpSum.Size);
+                    return PrimitiveType.Create(Domain.Offset, mpSum.Size);
             }
             if (ptSum != null && ptSum.IsIntegral)
             {
@@ -336,6 +337,12 @@ namespace Reko.Typing
                     return dtDiff;  //$REVIEW: is this really OK? should probably be pointer.
                 throw new NotImplementedException(string.Format("Not handling {0} and {1} yet", dtDiff, dtSub));
             }
+            if (dtDiff is MemberPointer || ptDiff != null && ptDiff.Domain == Domain.Offset)
+            {
+                if (ptSub != null && (ptSub.Domain & Domain.Integer) != 0)
+                    return dtDiff;
+                throw new NotImplementedException(string.Format("Not handling {0} and {1} yet", dtDiff, dtSub));
+            }
             return dtDiff;
         }
 
@@ -346,6 +353,12 @@ namespace Reko.Typing
             if (dtDiff is Pointer || ptDiff != null && ptDiff.Domain == Domain.Pointer)
             {
                 if (dtMin is Pointer || ptMin != null && ptMin.Domain == Domain.Pointer)
+                    return PrimitiveType.Create(Domain.Integer, dtDiff.Size);
+                throw new NotImplementedException(string.Format("Not handling {0} and {1} yet", dtDiff, dtMin));
+            }
+            if (dtDiff is MemberPointer || ptDiff != null && ptDiff.Domain == Domain.Pointer)
+            {
+                if (dtMin is MemberPointer || ptMin != null && ptMin.Domain == Domain.Pointer)
                     return PrimitiveType.Create(Domain.Integer, dtDiff.Size);
                 throw new NotImplementedException(string.Format("Not handling {0} and {1} yet", dtDiff, dtMin));
             }

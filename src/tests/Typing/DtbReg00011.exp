@@ -85,7 +85,7 @@ Eq_25: word16
 	T_25 (in 0x0000 : word16)
 Eq_26: word16
 	T_26 (in bx_23 + 0x0000 : word16)
-Eq_28: (memptr T_24 (struct (0 T_27 t0000)))
+Eq_28: ui16
 	T_28 (in 0x0001 : word16)
 Eq_33: bool
 	T_33 (in bx_23 >= 0x0000 : bool)
@@ -202,8 +202,8 @@ T_27: (in Mem22[0x4DE1:bx_23 + 0x0000:byte] : byte)
   OrigDataType: byte
 T_28: (in 0x0001 : word16)
   Class: Eq_28
-  DataType: (memptr T_24 (struct (0 T_27 t0000)))
-  OrigDataType: (memptr T_24 (struct (0 T_27 t0000)))
+  DataType: ui16
+  OrigDataType: ui16
 T_29: (in bx_23 - 0x0001 : word16)
   Class: Eq_5
   DataType: (union (ci16 u0) ((memptr T_24 (struct (0 T_27 t0000))) u1))

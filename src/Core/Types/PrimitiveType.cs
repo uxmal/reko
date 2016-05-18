@@ -48,10 +48,11 @@ namespace Reko.Core.Types
         Bcd = 32,                   // b - Binary coded decimal; a decimal digit stored in each nybble of a byte.
         Real = 64,                  // r
 		Pointer = 128,              // p
-		Selector = 256,             // S
-        SegPointer = 512,           // P - Segmented pointer (x86-style)
+        Offset = 256,               // n
+		Selector = 512,             // S
+        SegPointer = 1024,          // P - Segmented pointer (x86-style)
 
-        Any = Boolean|Character|SignedInt|UnsignedInt|Bcd|Real|Pointer|Selector|SegPointer
+        Any = Boolean|Character|SignedInt|UnsignedInt|Bcd|Real|Pointer|Offset|Selector|SegPointer
 	}
 
 	/// <summary>
@@ -128,7 +129,7 @@ namespace Reko.Core.Types
 				name = "byte";
 				break;
 			case 2:
-				w = Domain.Character|Domain.Integer|Domain.Pointer|Domain.Selector;
+				w = Domain.Character|Domain.Integer| Domain.Pointer|Domain.Offset|Domain.Selector;
 				name = "word16";
 				break;
 			case 4:
@@ -140,7 +141,7 @@ namespace Reko.Core.Types
 				name = "word64";
 				break;
             case 10:
-                w = Domain.Integer | Domain.Real | Domain.Bcd;
+                w = Domain.Integer|Domain.Real|Domain.Bcd;
                 name = "word80";
                 break;
             case 16:
@@ -197,6 +198,8 @@ namespace Reko.Core.Types
 				return "uint" + bitSize;
 			case Domain.Pointer:
 				return "ptr" + bitSize;
+            case Domain.Offset:
+                return "mp" + bitSize;
             case Domain.SegPointer:
                 return "segptr" + bitSize;
 			case Domain.Real:
@@ -214,8 +217,10 @@ namespace Reko.Core.Types
                 if ((dom & Domain.SignedInt) != 0)
                     sb.Append('i');
                 if ((dom & Domain.Pointer) != 0)
-					sb.Append('p');
-				if ((dom & Domain.Selector) != 0)
+                    sb.Append('p');
+                if ((dom & Domain.Offset) != 0)
+                    sb.Append('o');
+                if ((dom & Domain.Selector) != 0)
 					sb.Append('s');
 				if ((dom & Domain.Real) != 0)
 					sb.Append('r');

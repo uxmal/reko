@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Reko.Core;
+using Reko.Core.Types;
 
 namespace Reko.UnitTests.Typing
 {
@@ -76,6 +77,22 @@ namespace Reko.UnitTests.Typing
         public void TycoMemStore()
         {
             RunTest(Fragments.MemStore, "Typing/TycoMemStore.txt");
+        }
+
+        [Test]
+        public void TycoIndexedDisplacement()
+        {
+            RunTest(m =>
+            {
+                var ds = m.Temp(PrimitiveType.SegmentSelector, "ds");
+                var bx = m.Temp(PrimitiveType.Word16, "bx");
+                var si = m.Temp(PrimitiveType.Int16, "si");
+                m.Assign(bx, m.SegMemW(ds, m.Word16(0xC00)));
+                m.SegStore(ds, m.IAdd(
+                                m.IAdd(bx, 10),
+                                si),
+                           m.Byte(0xF8));
+            }, "Typing/TycoIndexedDisplacement.txt");
         }
     }
 }

@@ -19,9 +19,14 @@
 #endregion
 
 using NUnit.Framework;
+using Reko.Core;
+using Reko.Core.Services;
 using Reko.Loading;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -30,12 +35,27 @@ namespace Reko.UnitTests.Loading
     [TestFixture]
     public class DccSignatureLoaderTests
     {
+        private MockRepository mr;
+        private ServiceContainer sc;
+
+        [SetUp]
+        public void Setup()
+        {
+            this.mr = new MockRepository();
+            this.sc = new ServiceContainer();
+            var diagSvc = mr.Stub<IDiagnosticsService>();
+            sc.AddService<IDiagnosticsService>(diagSvc);
+        }
+
         [Test]
-        [Ignore("Make this work")]
         public void Dccs_Load()
         {
+            mr.ReplayAll();
+
             var dccsl = new DccSignatureLoader();
-            dccsl.SetupLibCheck(null, "foo", new byte[0]);
+            var file = @"d:\dev\uxmal\reko\master\external\dccb3c.sig";
+            var bytes = File.ReadAllBytes(file);
+            dccsl.SetupLibCheck(sc, file, bytes);
         }
     }
 }

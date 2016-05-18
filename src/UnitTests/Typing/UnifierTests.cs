@@ -475,5 +475,17 @@ namespace Reko.UnitTests.Typing
             Assert.IsTrue(un.AreCompatible(t1, t2));
             Assert.AreEqual("(struct \"FOO\" 0003)", un.Unify(t1, t2).ToString());
         }
+
+        [Test]
+        public void Unify_MemberPointer()
+        {
+            var t1 = PrimitiveType.Create(Domain.Offset, 2);
+            var t2 = new MemberPointer(
+                new Pointer(new StructureType { IsSegment = true }, 2),
+                PrimitiveType.Word16,
+                2);
+            Assert.IsTrue(un.AreCompatible(t1, t2));
+            Assert.AreEqual("(memptr (ptr (segment)) word16)", un.Unify(t1, t2).ToString());
+        }
     }
 }

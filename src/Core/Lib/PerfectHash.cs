@@ -27,11 +27,8 @@ namespace Reko.Core.Lib
         public ushort[] readT2() { return T2base; }
         public short[] readG() { return g; }
 
-
         PatternCollector m_collector; /* used to retrieve the keys */
-
-
-        /*
+/*
  *$Log: perfhlib.c,v $
  * Revision 1.5  93/09/29  14:45:02  emmerik
  * Oops, didn't do the casts last check in
@@ -171,7 +168,7 @@ namespace Reko.Core.Lib
         /* e, v1, v2 are 0 based */
         void addToGraph(int e, int v1, int v2)
         {
-            e++; v1++; v2++;                        /* So much more convenient */
+            e++; v1++; v2++;                         /* So much more convenient */
 
             graphNode[NumEntry + e] = v2;             /* Insert the edge information */
             graphNode[NumEntry - e] = v1;
@@ -186,13 +183,13 @@ namespace Reko.Core.Lib
         {
             int e, w;
 
-            /* Depth first search of the graph, starting at vertex v, looking for
-                cycles. parent and v are origin 1. Note parent is an EDGE,
-                not a vertex */
+            // Depth first search of the graph, starting at vertex v, looking for
+            // cycles. parent and v are origin 1. Note parent is an EDGE,
+            // not a vertex
 
             visited[v] = true;
 
-            /* For each e incident with v .. */
+            // For each e incident with v ..
             for (e = graphFirst[v]; e!=0; e = graphNext[NumEntry + e])
             {
                 byte[] key1;
@@ -252,23 +249,21 @@ namespace Reko.Core.Lib
                                 Debug.Print("There is a unit cycle involving vertex %d and edge %d\n", v, e);
                                 return true;
                             }
-
                         }
                         else
                         {
-                            /* We have reached a previously visited vertex not the
-                                parent. Therefore, we have uncovered a genuine cycle */
+                            // We have reached a previously visited vertex not the
+                            // parent. Therefore, we have uncovered a genuine cycle
                             Debug.Print("There is a cycle involving vertex {0} and edge {1}", v, e);
                             return true;
-
                         }
                     }
                 }
-                else                                /* Not yet seen. Traverse it */
+                else                                // Not yet seen. Traverse it 
                 {
                     if (DFS(e, w))
                     {
-                        /* Cycle found deeper down. Exit */
+                        // Cycle found deeper down. Exit
                         return true;
                     }
                 }
@@ -306,7 +301,7 @@ namespace Reko.Core.Lib
             int w, e;
 
             visited[u] = true;
-            /* Find w, the neighbours of u, by searching the edges e associated with u */
+            // Find w, the neighbours of u, by searching the edges e associated with u
             e = graphFirst[1 + u];
             while (e != 0)
             {
@@ -315,22 +310,19 @@ namespace Reko.Core.Lib
                 {
                     g[w] = (short)((Math.Abs(e) - 1 - g[u]) % NumEntry);
                     if (g[w] < 0)
-                        g[w] += (short) NumEntry;     /* Keep these positive */
+                        g[w] += (short) NumEntry;     // Keep these positive
                     traverse(w);
                 }
                 e = graphNext[NumEntry + e];
             }
-
         }
 
         void assign()
         {
             int v;
-
-
             for (v = 0; v < NumVert; v++)
             {
-                g[v] = 0;                           /* g is sparse; leave the gaps 0 */
+                g[v] = 0;                           // g is sparse; leave the gaps 0
                 visited[v] = false;
             }
 
@@ -352,9 +344,9 @@ namespace Reko.Core.Lib
             u = 0;
             for (j = 0; j < EntryLen; j++)
             {
-                    //T1 = T1base + j * SetSize;
-                    //u += T1[@string[j] - SetMin];
-                    u += T1base[j * SetSize + (@string[j] - SetMin)];
+                //T1 = T1base + j * SetSize;
+                //u += T1[@string[j] - SetMin];
+                u += T1base[j * SetSize + (@string[j] - SetMin)];
             }
             u = (ushort)(u % NumVert);
 
@@ -364,12 +356,10 @@ namespace Reko.Core.Lib
                 //T2 = T2base + j * SetSize;
                 //v += T2[@string[j] - SetMin];
                 v += T2base[j * SetSize + (@string[j] - SetMin)];
-
             }
             v = (ushort)(v % NumVert);
 
             return (g[u] + g[v]) % NumEntry;
         }
-
     }
 }

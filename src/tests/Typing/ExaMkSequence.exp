@@ -24,7 +24,7 @@ T_6: (in 0x1200 : word16)
   Class: Eq_6
   DataType: word16
   OrigDataType: word16
-T_7: (in SEQ(Mem0[psz + 0x00000004:word16], 0x1200) : cuips32)
+T_7: (in SEQ(Mem0[psz + 0x00000004:word16], 0x1200) : cuipos32)
   Class: Eq_7
-  DataType: cuips32
-  OrigDataType: cuips32
+  DataType: cuipos32
+  OrigDataType: cuipos32

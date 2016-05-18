@@ -71,6 +71,41 @@ namespace Reko.Core.Lib
             return occ_P;
         }
 
+        public IEnumerable<int> FindIdcp(string T, string P)
+        {
+            var sa = new SuffixArray<char>(T.ToCharArray());
+            Tuple<string[], int[]> pat = splitPattern(P);
+            var l = pat.Item1.Length;
+            var Val = new int[l];
+            Val[0] = 0;
+            for (int i = 1; i < l; ++i)
+            {
+                Val[i] = Val[i - 1] + pat.Item1[i - 1].Length + pat.Item2[i - 1];
+            }
+            var occ_P = new SortedSet<int>();
+            var P_1 = pat.Item1[0];
+            var occ_P1 = sa.FindOccurences(P_1.ToCharArray());
+            var permitted = occ_P1.ToDictionary(i => i, v => 1);
+            for (int i =0; i < l; ++i)
+            {
+                var Pi = pat.Item1[i];
+                var occ_Pi = sa.FindOccurences(Pi.ToCharArray());
+                foreach (var r in occ_Pi)
+                {
+                    int r_val = r - Val[i];
+                    int c;
+                    if (permitted.TryGetValue(r_val, out c))
+                    {
+                        ++c;
+                        permitted[r_val] = c;
+                        if (c == l)
+                            occ_P.Add(r_val);
+                    }
+                }
+            }
+            return occ_P;
+        }
+
         private Tuple<string[], int[]> splitPattern(string P)
         {
             var Ps = new List<string>();
