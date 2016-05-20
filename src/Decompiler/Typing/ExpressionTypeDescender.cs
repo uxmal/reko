@@ -304,7 +304,9 @@ namespace Reko.Typing
                     return PrimitiveType.Create(Domain.SignedInt, dtSum.Size);
                 }
                 if (ptOther != null && (ptOther.Domain & Domain.Integer) != 0)
+                {
                     return PrimitiveType.Create(Domain.Pointer, dtSum.Size);
+                }
             }
             if (dtSum is MemberPointer)
             {
@@ -312,8 +314,9 @@ namespace Reko.Typing
                 if (dtOther is MemberPointer)
                     return PrimitiveType.Create(Domain.SignedInt, dtOther.Size);
                 if (ptOther != null && (ptOther.Domain & Domain.Integer) != 0)
-                    //return factory.CreateMemberPointer(mpSum.BasePointer, factory.CreateUnknown(), mpSum.Size);
-                    return PrimitiveType.Create(Domain.Offset, mpSum.Size);
+                {
+                    return factory.CreateMemberPointer(mpSum.BasePointer, factory.CreateUnknown(), mpSum.Size);
+                }
             }
             if (ptSum != null && ptSum.IsIntegral)
             {
@@ -365,8 +368,9 @@ namespace Reko.Typing
             return dtMin;
         }
 
-        public DataType MeetDataType(TypeVariable tv, DataType dt)
+        public DataType MeetDataType(Expression e, DataType dt)
         {
+            var tv = e.TypeVariable;
             if (dt == PrimitiveType.SegmentSelector)
             {
                 var seg = factory.CreateStructureType(null, 0);
@@ -377,11 +381,6 @@ namespace Reko.Typing
             tv.DataType = unifier.Unify(tv.DataType, dt);
             tv.OriginalDataType = unifier.Unify(tv.OriginalDataType, dt);
             return tv.DataType;
-        }
-
-        public DataType MeetDataType(Expression e, DataType dt)
-        {
-            return MeetDataType(e.TypeVariable, dt);
         }
 
         public bool VisitCast(Cast cast, TypeVariable tv)
@@ -469,6 +468,7 @@ namespace Reko.Typing
                 {
                     VisitInductionVariable(globals, (Identifier) p, iv, offset, access);
                 }
+                MemoryAccessCommon(basePointer, p, offset, tv, eaSize);
             }
             else if (effectiveAddress is Constant)
             {
@@ -476,13 +476,17 @@ namespace Reko.Typing
                 var c = effectiveAddress as Constant;
                 p = effectiveAddress;
                 offset = 0;
-                MemoryAccessCommon(null, globals, OffsetOf(c), access.TypeVariable, eaSize);
+                MemoryAccessCommon(null, globals, OffsetOf(c), tv, eaSize);
             }
             else if (IsArrayAccess(effectiveAddress))
             {
                 // Mem[p + i] where i is integer type.
                 var binEa = (BinaryExpression)effectiveAddress;
-                ArrayField(basePointer, binEa.Left, binEa.DataType.Size, 0, 1, 0, access);
+
+                // First do the array index.
+                binEa.Right.Accept(this, binEa.Right.TypeVariable);
+
+                tv = ArrayField(basePointer, binEa.Left, binEa.DataType.Size, 0, 1, 0, access);
                 p = binEa.Left;
                 offset = 0;
             }
@@ -492,7 +496,7 @@ namespace Reko.Typing
                 p = effectiveAddress;
                 offset = 0;
             }
-            MemoryAccessCommon(basePointer, p, offset, access.TypeVariable, eaSize);
+            MemoryAccessCommon(basePointer, p, offset, tv, eaSize);
             p.Accept(this, p.TypeVariable);
             return false;
         }
@@ -506,11 +510,6 @@ namespace Reko.Typing
             if (ptRight == null || !ptRight.IsIntegral)
                 return false;
             return true;
-        }
-
-        private bool IsByteArrayAccess(Expression effectiveAddress)
-        {
-            throw new NotImplementedException();
         }
 
         public LinearInductionVariable GetInductionVariable(Expression e)
