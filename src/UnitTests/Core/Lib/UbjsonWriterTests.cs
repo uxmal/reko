@@ -119,6 +119,22 @@ namespace Reko.UnitTests.Core.Lib
             }, stream.ToArray());
         }
 
+        [Test]
+        public void Ubjs_WriteObject()
+        {
+            Given_Stream();
+            var ubjs = new UbjsonWriter(stream);
+            ubjs.Write(new { Name = "Bob", Age = 32 });
+            Assert.AreEqual(new byte[]
+            {
+                0x7B,
+                      0x69, 0x04, 0x4E, 0x61, 0x6D, 0x65,
+                      0x53, 0x69, 0x03, 0x42, 0x6F, 0x62,
 
+                      0x69, 0x03, 0x41, 0x67, 0x65,
+                      0x69, 0x20,
+                0x7D,
+            }, stream.ToArray());
+        }
     }
 }

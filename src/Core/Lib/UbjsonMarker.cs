@@ -40,6 +40,8 @@ namespace Reko.Core.Lib
 
         Array = '[',
         ArrayEnd = ']',
+        Object = '{',
+        ObjectEnd = '}',
 
         ElementType = '$',
         ElementCount = '#',

@@ -58,14 +58,10 @@ namespace Reko.Core.Lib
             if (s != null)
             {
                 stm.WriteByte((byte)UbjsonMarker.String);
-                var enc = Encoding.UTF8.GetByteCount(s);
-                WriteNumber(enc);
-                var tx = new StreamWriter(stm, Encoding.UTF8);
-                tx.Write(s);
-                tx.Flush();
+                WriteString(s);
                 return;
             }
-     
+
             var e = o as IEnumerable;
             if (e != null)
             {
@@ -87,7 +83,37 @@ namespace Reko.Core.Lib
                 WriteArray(e);
                 return;
             }
-            throw new NotSupportedException(string.Format("Writing data type {0} is not supported.", o.GetType()));
+            if (o is ValueType)
+                throw new NotSupportedException(string.Format("Writing data type {0} is not supported.", o.GetType()));
+            else
+            {
+                stm.WriteByte((byte)UbjsonMarker.Object);
+                var t = o.GetType();
+                foreach (var p in t.GetProperties())
+                {
+                    WriteDictionaryEntry(p.Name, p.GetValue(o, null));
+                }
+                foreach (var f in t.GetFields())
+                {
+                    WriteDictionaryEntry(f.Name, f.GetValue(o));
+                }
+                stm.WriteByte((byte)UbjsonMarker.ObjectEnd);
+            }
+        }
+
+        private void WriteString(string s)
+        {
+            var enc = Encoding.UTF8.GetByteCount(s);
+            WriteNumber(enc);
+            var tx = new StreamWriter(stm, Encoding.UTF8);
+            tx.Write(s);
+            tx.Flush();
+        }
+
+        private void WriteDictionaryEntry(string key, object value)
+        {
+            WriteString(key);
+            Write(value);
         }
 
         private static Dictionary<Type, UbjsonMarker> mpTypeMarker = new Dictionary<Type, UbjsonMarker>
