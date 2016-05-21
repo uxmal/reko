@@ -20,12 +20,46 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.IO;
 using System.Linq;
 using System.Text;
+using Reko.Core;
+using Reko.Core.Lib;
 
 namespace Reko.Loading
 {
     public class SuffixArrayPersister
     {
+        private IServiceProvider services;
+
+        public SuffixArrayPersister(IServiceProvider services)
+        {
+            this.services = services;
+        }
+
+        public void Save(Dictionary<MemoryArea, SuffixArray<byte>> sufas, Stream stream)
+        {
+            WriteMagic(stream);
+         
+        }
+
+        private void WriteMagic(Stream stream)
+        {
+            stream.Write(new byte[] { 0x52, 0x65, 0x6B, 0x6F, 0x53, 0x66, 0x78, 0x1A }, 0, 8);
+        }
+        
+        private void WriteHeader(Stream stream)
+        {
+            WriteBeUInt32(0, stream);
+        }
+
+        private void WriteBeUInt32(uint w, Stream stm)
+        {
+            stm.WriteByte((byte)(w >> 24));
+            stm.WriteByte((byte)(w >> 16));
+            stm.WriteByte((byte)(w >> 8));
+            stm.WriteByte((byte)w);
+        }
     }
 }

@@ -115,6 +115,7 @@
     <Compile Include="Core\Configuration\RekoConfigurationServiceTests.cs" />
     <Compile Include="Core\Configuration\RekoConfigurationTests.cs" />
     <Compile Include="Core\Lib\SuffixArrayTests.cs" />
+    <Compile Include="Core\Lib\UbjsonWriterTests.cs" />
     <Compile Include="Core\Lib\WildPatternMatcher.Tests.cs" />
     <Compile Include="Core\Output\CTypeReferenceFormatterTests.cs" />
     <Compile Include="Core\SegmentMapTests.cs" />
@@ -272,6 +273,7 @@
     <Compile Include="Loading\DccSignatureLoaderTests.cs" />
     <Compile Include="Loading\FlirtoidSignatureLoaderTests.cs" />
     <Compile Include="Loading\SuffixArrayPersisterTests.cs" />
+    <Compile Include="Core\Lib\UbjsonReaderTests.cs" />
     <Compile Include="Loading\UnpackerSignatureLoaderTests.cs" />
     <Compile Include="Loading\UnpackingServiceTests.cs" />
     <Compile Include="Mocks\FakeDiagnosticsService.cs" />

@@ -19,8 +19,14 @@
 #endregion
 
 using NUnit.Framework;
+using Reko.Core;
+using Reko.Core.Lib;
+using Reko.Loading;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -29,10 +35,86 @@ namespace Reko.UnitTests.Loading
     [TestFixture]
     public class SuffixArrayPersisterTests
     {
-        [Test]
-        public void Load()
+        private ServiceContainer sc;
+        private MemoryStream stream;
+        private Dictionary<MemoryArea, SuffixArray<byte>> sufas;
+
+        [SetUp]
+        public void Setup()
         {
-            Assert.Fail();
+            this.sc = new ServiceContainer();
         }
+
+        private void Given_MemoryStream()
+        {
+            this.stream = new MemoryStream();
+        }
+
+        private void Given_SuffixArrays(params string [] sMemChunks)
+        {
+            const int AlignSize = 16;
+            const int BaseAddress = 0x010000;
+
+            var aByteChunks = sMemChunks
+                .Select(s => HexStringsToByteArray(s))
+                .ToList();
+            var addr = Address.Ptr32(BaseAddress);
+            var mems = new List<MemoryArea>();
+            foreach (var ab in aByteChunks)
+            {
+                mems.Add(new MemoryArea(addr, ab));
+                addr = (addr + ab.Length).Align(AlignSize);
+            }
+            this.sufas = mems
+                .ToDictionary(k => k, v => SuffixArray.Create(v.Bytes));
+        }
+
+
+        private void Expect_Output(params string[] expectedHex)
+        {
+            var abExpected = HexStringsToByteArray(expectedHex);
+            Assert.AreEqual(abExpected, stream.ToArray());
+        }
+
+        private static byte[] HexStringsToByteArray(params string[] expectedHex)
+        {
+            return expectedHex
+                .SelectMany(hex => hex.Split(' '))
+                .Select(hex => (byte)int.Parse(hex, NumberStyles.HexNumber))
+                .ToArray();
+        }
+
+        [Test]
+        public void Sufa_Save_Empty()
+        {
+            Given_MemoryStream();
+            Given_SuffixArrays();
+
+            var sufaPersister = new SuffixArrayPersister(sc);
+            sufaPersister.Save(sufas, stream);
+
+            Expect_Output(
+                "52 65 6B 6F 53 66 78 1A",
+                "00 00 00 00");
+        }
+
+        [Test]
+        public void Sufa_Save_SingleSuffixArray()
+        {
+            Given_MemoryStream();
+            Given_SuffixArrays("00 01 01 00 01");
+
+            var sufaPersister = new SuffixArrayPersister(sc);
+            sufaPersister.Save(sufas, stream);
+
+            Expect_Output(
+                "52 65 6B 6F 53 66 78 1A",
+                "00 00 00 01",
+                "00 01 00 00",  // linaddr
+                "00 01 00 00",  // offset
+                "00 00 00 14"  // length (inbytes)
+                );
+        }
+
     }
 }
