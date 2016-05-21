@@ -22,6 +22,8 @@ namespace Reko.Core.Lib
 {
     public enum UbjsonMarker
     {
+        None = 0,
+
         Null = 'Z',
         Noop = 'N',
         False = 'F',
@@ -34,6 +36,12 @@ namespace Reko.Core.Lib
         Float32 = 'd',
         Float64 = 'D',
         Char = 'C',
-        String = 'S'
+        String = 'S',
+
+        Array = '[',
+        ArrayEnd = ']',
+
+        ElementType = '$',
+        ElementCount = '#',
     }
 }

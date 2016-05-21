@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Core.Lib;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -39,29 +40,29 @@ namespace Reko.UnitTests.Core.Lib
         }
 
         [Test]
-        public void Ubjs_SaveNull()
+        public void Ubjs_WriteNull()
         {
             Given_Stream();
             var ubjs = new UbjsonWriter(stream);
-            ubjs.Save(null);
+            ubjs.Write(null);
             Assert.AreEqual(new byte[] { 0x5A }, stream.ToArray());
         }
 
         [Test]
-        public void Ubjs_SaveSmallString()
+        public void Ubjs_WriteSmallString()
         {
             Given_Stream();
             var ubjs = new UbjsonWriter(stream);
-            ubjs.Save("hello");
+            ubjs.Write("hello");
             Assert.AreEqual(new byte[] { 0x53, 0x69, 0x05, 0x68, 0x65, 0x6C, 0x6C, 0x6F }, stream.ToArray());
         }
 
         [Test]
-        public void Ubjs_SaveLargeString()
+        public void Ubjs_WriteLargeString()
         {
             Given_Stream();
             var ubjs = new UbjsonWriter(stream);
-            ubjs.Save(new string('Ä', 32800));
+            ubjs.Write(new string('Ä', 32800));
             var a = stream.ToArray();
             Assert.AreEqual(65606, a.Length);
             Assert.AreEqual(0x53, a[0]);
@@ -75,5 +76,49 @@ namespace Reko.UnitTests.Core.Lib
             Assert.AreEqual(0xC3, a[8]);
             Assert.AreEqual(0x84, a[9]);
         }
+
+        [Test]
+        public void Ubjs_WriteArray_Unoptimized()
+        {
+            Given_Stream();
+            var ubjs = new UbjsonWriter(stream);
+            ubjs.Write(new ArrayList { 3, "foo!", false });
+            Assert.AreEqual(new byte[] {
+                0x5B,
+                     0x69, 0x03,
+                     0x53, 0x69, 0x04, 0x66, 0x6F, 0x6F, 0x21,
+                     0x46,
+                0x5D
+            }, stream.ToArray());
+        }
+
+        [Test]
+        public void Ubjs_WriteArray_IntCollction()
+        {
+            Given_Stream();
+            var ubjs = new UbjsonWriter(stream);
+            ubjs.Write(new List<int> { 3, -4 });
+            Assert.AreEqual(new byte[]
+            {
+                0x5B, 0x24, 0x6C, 0x23, 0x69, 0x02,
+                      0x00, 0x00, 0x00, 0x03,
+                      0xFF, 0xFF, 0xFF, 0xFC,
+            }, stream.ToArray());
+        }
+
+        [Test]
+        public void Ubjs_WriteArray_ByteArray()
+        {
+            Given_Stream();
+            var ubjs = new UbjsonWriter(stream);
+            ubjs.Write(new byte[] { 0x1, 0x2, 0x3 });
+            Assert.AreEqual(new byte[]
+            {
+                0x5B, 0x24, 0x55, 0x23, 0x69, 0x03,
+                      0x01, 0x02, 0x03,
+            }, stream.ToArray());
+        }
+
+
     }
 }

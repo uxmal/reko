@@ -141,7 +141,7 @@ namespace Reko.UnitTests.Core.Lib
         {
             var sExp = "hello";
             var stm = new MemoryStream();
-            new UbjsonWriter(stm).Save(sExp);
+            new UbjsonWriter(stm).Write(sExp);
             stm.Position = 0;
             var str = (string)new UbjsonReader(stm).Read();
             Assert.AreEqual(sExp, str);
