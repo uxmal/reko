@@ -36,10 +36,14 @@ namespace Reko.Core.Lib
 
         public static SuffixArray<byte> Create(byte[] arr)
         {
-
             if (arr == null)
                 arr = new byte[0];
             return new SuffixArray<byte>(arr);
+        }
+
+        public static SuffixArray<T> Load<T>(T[] arr, int [] intArray)
+        {
+            return new SuffixArray<T>(arr, intArray);
         }
     }
 
@@ -59,18 +63,8 @@ namespace Reko.Core.Lib
         /// <summary>
         /// Build a suffix array from string str
         /// </summary>
-        /// <param name="str">A string for which to build a suffix array with LCP information</param>
-        /// <param name="buildLcps">Also build LCP array</param>
-        public SuffixArray(T[] str) : this(str, true) {
-        }
-
-        /// 
-        /// <summary>
-        /// Build a suffix array from string str
-        /// </summary>
         /// <param name="str">A string for which to build a suffix array</param>
-        /// <param name="buildLcps">Also calculate LCP information</param>
-        public SuffixArray(T[] str, bool buildLcps)
+        public SuffixArray(T[] str)
         {
             m_str = str;
             if (m_str == null)
@@ -85,8 +79,14 @@ namespace Reko.Core.Lib
             FormInitialChains();
             BuildSuffixArray();
             m_chainHeadsDict = null;  // free the mem.
-            if (buildLcps)
-                BuildLcpArray();
+            BuildLcpArray();
+        }
+
+        public SuffixArray(T[] str, int [] sa)
+        {
+            m_str = str;
+            m_sa = sa;
+            BuildLcpArray();
         }
 
         public int this[int index]
@@ -235,6 +235,11 @@ namespace Reko.Core.Lib
                 ++iLeft;
                 ++iRight;
             }
+        }
+
+        public int[] Save()
+        {
+            return this.m_sa;
         }
 
         private void FormInitialChains()

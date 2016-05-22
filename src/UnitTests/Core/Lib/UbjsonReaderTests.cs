@@ -175,6 +175,19 @@ namespace Reko.UnitTests.Core.Lib
         }
 
         [Test]
+        public void Ubjl_ArrayInts()
+        {
+            var stm = new MemoryStream();
+            new UbjsonWriter(stm).Write(new int[] { 0x30, 0x41, 0x5A });
+            stm.Position = 0;
+            var list = (int[])new UbjsonReader(stm).Read();
+            Assert.AreEqual(3, list.Length);
+            Assert.AreEqual(0x30, list[0]);
+            Assert.AreEqual(0x41, list[1]);
+            Assert.AreEqual(0x5A, list[2]);
+        }
+
+        [Test]
         public void Ubjl_Object()
         {
             var stm = new MemoryStream();

@@ -63,11 +63,11 @@ namespace Reko.Core.Lib
                 case UbjsonMarker.Noop: m = (UbjsonMarker)stm.ReadByte(); break;
                 case UbjsonMarker.False: return false; 
                 case UbjsonMarker.True: return true;
-                case UbjsonMarker.Int8: return (sbyte)ReadInteger(1);
-                case UbjsonMarker.UInt8: return (byte)ReadInteger(1);
-                case UbjsonMarker.Int16: return (short)ReadInteger(2);
-                case UbjsonMarker.Int32: return (int) ReadInteger(4);
-                case UbjsonMarker.Int64: return (long) ReadInteger(8);
+                case UbjsonMarker.Int8: return (sbyte)ReadInteger(stm, 1);
+                case UbjsonMarker.UInt8: return (byte)ReadInteger(stm, 1);
+                case UbjsonMarker.Int16: return (short)ReadInteger(stm, 2);
+                case UbjsonMarker.Int32: return (int) ReadInteger(stm, 4);
+                case UbjsonMarker.Int64: return (long) ReadInteger(stm, 8);
                 case UbjsonMarker.Float32: return BitConverter.ToSingle(ReadFloatBits(4), 0);
                 case UbjsonMarker.Float64: return BitConverter.ToDouble(ReadFloatBits(8), 0);
                 case UbjsonMarker.String: return ReadString();
@@ -79,7 +79,7 @@ namespace Reko.Core.Lib
             }
         }
 
-        private long ReadInteger(int bytes)
+        private static long ReadInteger(Stream stm, int bytes)
         {
             long num = 0;
             while (bytes > 0)
@@ -116,10 +116,10 @@ namespace Reko.Core.Lib
         { 
             switch(m)
             {
-            case UbjsonMarker.Int8: return (sbyte)ReadInteger(1);
-            case UbjsonMarker.UInt8: return (byte)ReadInteger(1);
-            case UbjsonMarker.Int16: return (short)ReadInteger(2);
-            case UbjsonMarker.Int32: return (int)ReadInteger(4);
+            case UbjsonMarker.Int8: return (sbyte)ReadInteger(stm, 1);
+            case UbjsonMarker.UInt8: return (byte)ReadInteger(stm, 1);
+            case UbjsonMarker.Int16: return (short)ReadInteger(stm, 2);
+            case UbjsonMarker.Int32: return (int)ReadInteger(stm, 4);
             }
             throw new NotSupportedException();
         }
@@ -178,13 +178,24 @@ namespace Reko.Core.Lib
         private static Dictionary<UbjsonMarker, Func<Stream, int, object>> mpTypeArrayReader =
             new Dictionary<UbjsonMarker, Func<Stream, int, object>>
         {
-            { UbjsonMarker.UInt8, ReadByteArray }
+            { UbjsonMarker.UInt8, ReadByteArray },
+            { UbjsonMarker.Int32, ReadInt32Array }
         };
 
         private static object ReadByteArray(Stream stm, int count)
         {
             var arr = new byte[count];
             stm.Read(arr, 0, arr.Length);
+            return arr;
+        }
+
+        private static object ReadInt32Array(Stream stm, int count)
+        {
+            var arr = new int[count];
+            for (int i = 0; i < arr.Length; ++i)
+            {
+                arr[i] = (int) ReadInteger(stm, 4);
+            }
             return arr;
         }
 

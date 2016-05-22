@@ -20,10 +20,12 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Lib;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -80,8 +82,17 @@ namespace Reko.Loading
             return ldr;
         }
 
+        /// <summary>
+        /// Using the image of the program under investigation, find an 
+        /// unpacker capable of unpacking it.
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="image">The image prior to packing it.</param>
+        /// <param name="entryPointOffset"></param>
+        /// <returns></returns>
         public ImageLoader FindUnpackerBySignature(string filename, byte[] image, uint entryPointOffset)
         {
+            var sa = EnsureSuffixArray(filename + ".sufa-raw.ubj", image);
             var signature = Signatures.Where(s => Matches(s, image, entryPointOffset)).FirstOrDefault();
             if (signature == null)
                 return null;
@@ -127,6 +138,32 @@ namespace Reko.Loading
             {
                 Debug.Print("Pattern for '{0}' is unhandled: {1}", sig.Name, sig.EntryPointPattern);
                 return false;
+            }
+        }
+
+        private object EnsureSuffixArray(string filename, byte[] image)
+        {
+            var fsSvc = Services.RequireService<IFileSystemService>();
+            Stream stm = null;
+            try
+            {
+                if (fsSvc.FileExists(filename))
+                {
+                    stm = fsSvc.CreateFileStream(filename, FileMode.Open);
+                    var sSuffix = (int[]) new UbjsonReader(stm).Read();
+                    return SuffixArray.Load(image, sSuffix);
+                }
+                else
+                {
+                    var sa = SuffixArray.Create(image);
+                    stm = fsSvc.CreateFileStream(filename, FileMode.Create, FileAccess.Write);
+                    new UbjsonWriter(stm).Write(sa.Save());
+                    return sa;
+                }
+            }
+            finally
+            {
+                if (stm != null) stm.Dispose();
             }
         }
     }
