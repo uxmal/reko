@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -30,6 +31,10 @@ namespace Reko.Core.Lib
     {
         private Stream stm;
 
+        /// <summary>
+        /// Convenience constructor. Wraps the byte array into a stream
+        /// </summary>
+        /// <param name="bytes"></param>
         public UbjsonReader(byte [] bytes) : this(new MemoryStream(bytes))
         {
         }
@@ -38,18 +43,24 @@ namespace Reko.Core.Lib
         {
             this.stm = stm;
         }
-       
+
         public object Read()
+        {
+            int n = stm.ReadByte();
+            if (n < 0)
+                throw new FormatException();
+
+            return Read((UbjsonMarker)n);
+        }
+
+        private object Read(UbjsonMarker m)
         {
             for (;;)
             {
-                int n = stm.ReadByte();
-                if (n < 0)
-                    throw new FormatException();
-                switch ((UbjsonMarker)n)
+                switch (m)
                 {
                 case UbjsonMarker.Null: return null;
-                case UbjsonMarker.Noop: continue;
+                case UbjsonMarker.Noop: m = (UbjsonMarker)stm.ReadByte(); break;
                 case UbjsonMarker.False: return false; 
                 case UbjsonMarker.True: return true;
                 case UbjsonMarker.Int8: return (sbyte)ReadInteger(1);
@@ -60,8 +71,10 @@ namespace Reko.Core.Lib
                 case UbjsonMarker.Float32: return BitConverter.ToSingle(ReadFloatBits(4), 0);
                 case UbjsonMarker.Float64: return BitConverter.ToDouble(ReadFloatBits(8), 0);
                 case UbjsonMarker.String: return ReadString();
+                case UbjsonMarker.Array: return ReadArray();
+                case UbjsonMarker.Object: return ReadObject();
                 default:
-                    throw new NotSupportedException(string.Format("Unknown marker {0}.", (char)n));
+                    throw new NotSupportedException(string.Format("Unknown marker {0}.", (char)m));
                 }
             }
         }
@@ -96,7 +109,12 @@ namespace Reko.Core.Lib
             int n = stm.ReadByte();
             if (n < 0)
                 throw new FormatException();
-            switch ((UbjsonMarker)n)
+            return ReadLength((UbjsonMarker)n);
+        }
+
+        private int ReadLength(UbjsonMarker m)
+        { 
+            switch(m)
             {
             case UbjsonMarker.Int8: return (sbyte)ReadInteger(1);
             case UbjsonMarker.UInt8: return (byte)ReadInteger(1);
@@ -109,9 +127,85 @@ namespace Reko.Core.Lib
         private string ReadString()
         {
             int len = ReadLength();
+            return ReadString(len);
+        }
+
+        private string ReadString(int len)
+        {
             var buf = new byte[len];
             stm.Read(buf, 0, len);
             return Encoding.UTF8.GetString(buf);
+        }
+
+        private object ReadArray()
+        {
+            var b = stm.ReadByte();
+            if (b < 0)
+                throw new FormatException();
+            var m = (UbjsonMarker)b;
+            if (m == UbjsonMarker.ElementType)
+            {
+                int n = stm.ReadByte();
+                if (n < 0)
+                    throw new FormatException();
+                var rdr = mpTypeArrayReader[(UbjsonMarker)n];
+                n = stm.ReadByte();
+                if ((UbjsonMarker)n != UbjsonMarker.ElementCount)
+                    throw new FormatException();
+                int c = ReadLength();
+                return rdr(stm, c);
+            }
+            else if (m == UbjsonMarker.ElementType)
+            {
+                throw new NotImplementedException();
+            }
+            else
+            {
+                // Unoptimized array == ArrayList.
+                var array = new List<object>();
+                while (m != UbjsonMarker.ArrayEnd)
+                {
+                    array.Add(Read(m));
+                    b = stm.ReadByte();
+                    if (b < 0)
+                        throw new FormatException();
+                    m = (UbjsonMarker)b;
+                }
+                return array;
+            }
+        }
+
+        private static Dictionary<UbjsonMarker, Func<Stream, int, object>> mpTypeArrayReader =
+            new Dictionary<UbjsonMarker, Func<Stream, int, object>>
+        {
+            { UbjsonMarker.UInt8, ReadByteArray }
+        };
+
+        private static object ReadByteArray(Stream stm, int count)
+        {
+            var arr = new byte[count];
+            stm.Read(arr, 0, arr.Length);
+            return arr;
+        }
+
+        private object ReadObject()
+        {
+            // Unoptimized object
+            var dict = new Dictionary<string, object>();
+            for (;;)
+            {
+                var n = stm.ReadByte();
+                if (n < 0)
+                    throw new FormatException();
+                var m = (UbjsonMarker)n;
+                if (m == UbjsonMarker.ObjectEnd)
+                    break;
+                var len = ReadLength(m);
+                var key = ReadString(len);
+                var obj = Read();
+                dict[key] = obj;
+            }
+            return dict;
         }
     }
 }

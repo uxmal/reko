@@ -54,6 +54,11 @@ namespace Reko.Core.Lib
                 WriteNumber((int)o);
                 return;
             }
+            if (o is long)
+            {
+                WriteNumber((long)o);
+                return;
+            }
             var s = o as string;
             if (s != null)
             {
@@ -61,7 +66,12 @@ namespace Reko.Core.Lib
                 WriteString(s);
                 return;
             }
-
+            var d = o as IDictionary;
+            if (d != null)
+            {
+                WriteObject(d);
+                return;
+            }
             var e = o as IEnumerable;
             if (e != null)
             {
@@ -87,17 +97,7 @@ namespace Reko.Core.Lib
                 throw new NotSupportedException(string.Format("Writing data type {0} is not supported.", o.GetType()));
             else
             {
-                stm.WriteByte((byte)UbjsonMarker.Object);
-                var t = o.GetType();
-                foreach (var p in t.GetProperties())
-                {
-                    WriteDictionaryEntry(p.Name, p.GetValue(o, null));
-                }
-                foreach (var f in t.GetFields())
-                {
-                    WriteDictionaryEntry(f.Name, f.GetValue(o));
-                }
-                stm.WriteByte((byte)UbjsonMarker.ObjectEnd);
+                WriteClassAsObject(o);
             }
         }
 
@@ -213,6 +213,31 @@ namespace Reko.Core.Lib
             {
                 writer(item, stm);
             }
+        }
+
+        private void WriteObject(IDictionary d)
+        {
+            stm.WriteByte((byte)UbjsonMarker.Object);
+            foreach (DictionaryEntry de in d)
+            {
+                WriteDictionaryEntry(de.Key.ToString(), de.Value);
+            }
+            stm.WriteByte((byte)UbjsonMarker.ObjectEnd);
+        }
+
+        private void WriteClassAsObject(object o)
+        {
+            stm.WriteByte((byte)UbjsonMarker.Object);
+            var t = o.GetType();
+            foreach (var p in t.GetProperties())
+            {
+                WriteDictionaryEntry(p.Name, p.GetValue(o, null));
+            }
+            foreach (var f in t.GetFields())
+            {
+                WriteDictionaryEntry(f.Name, f.GetValue(o));
+            }
+            stm.WriteByte((byte)UbjsonMarker.ObjectEnd);
         }
 
         private void WriteNumber(long num)

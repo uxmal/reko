@@ -120,6 +120,21 @@ namespace Reko.UnitTests.Core.Lib
         }
 
         [Test]
+        public void Ubjs_WriteArray_IntArray()
+        {
+            Given_Stream();
+            var ubjs = new UbjsonWriter(stream);
+            ubjs.Write(new List<int> { 0x41, 0x812, 0x12345678 });
+            Assert.AreEqual(new byte[]
+            {
+                0x5B, 0x24, 0x6C, 0x23, 0x69, 0x03,
+                      0x00, 0x00, 0x00, 0x41,
+                      0x00, 0x00, 0x08, 0x12,
+                      0x12, 0x34, 0x56, 0x78,
+            }, stream.ToArray());
+        }
+
+        [Test]
         public void Ubjs_WriteObject()
         {
             Given_Stream();

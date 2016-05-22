@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Core.Lib;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -145,6 +146,96 @@ namespace Reko.UnitTests.Core.Lib
             stm.Position = 0;
             var str = (string)new UbjsonReader(stm).Read();
             Assert.AreEqual(sExp, str);
+        }
+
+        [Test]
+        public void Ubjl_Array()
+        {
+            var stm = new MemoryStream();
+            new UbjsonWriter(stm).Write(new ArrayList { true, -1, "hi" });
+            stm.Position = 0;
+            var list = (List<object>)new UbjsonReader(stm).Read();
+            Assert.AreEqual(3, list.Count);
+            Assert.IsTrue((bool)list[0]);
+            Assert.AreEqual(-1, (sbyte)list[1]);
+            Assert.AreEqual("hi", (string)list[2]);
+        }
+
+        [Test]
+        public void Ubjl_ArrayBytes()
+        {
+            var stm = new MemoryStream();
+            new UbjsonWriter(stm).Write(new byte[] { 0x30, 0x41, 0x5A });
+            stm.Position = 0;
+            var list = (byte[])new UbjsonReader(stm).Read();
+            Assert.AreEqual(3, list.Length);
+            Assert.AreEqual(0x30, list[0]);
+            Assert.AreEqual(0x41, list[1]);
+            Assert.AreEqual(0x5A, list[2]);
+        }
+
+        [Test]
+        public void Ubjl_Object()
+        {
+            var stm = new MemoryStream();
+            new UbjsonWriter(stm).Write(new
+            {
+                LinAddress = 0x00400032L,
+                Name = "foo"
+            });
+            stm.Position = 0;
+            var dict = (Dictionary<string, object>)new UbjsonReader(stm).Read();
+            Assert.AreEqual(0x00400032L, (int)dict["LinAddress"]);
+            Assert.AreEqual("foo", (string)dict["Name"]);
+        }
+
+        [Test]
+        public void Ubjl_ObjectDictionary()
+        {
+            var stm = new MemoryStream();
+            new UbjsonWriter(stm).Write(new Hashtable
+            {
+                { "LinAddress",  0x00400032L },
+                { "Name", "foo" }
+            });
+            stm.Position = 0;
+            var dict = (Dictionary<string, object>)new UbjsonReader(stm).Read();
+            Assert.AreEqual(0x00400032L, (int)dict["LinAddress"]);
+            Assert.AreEqual("foo", (string)dict["Name"]);
+        }
+
+        [Test]
+        public void Ubjl_NestedContainers()
+        {
+            var stm = new MemoryStream();
+            new UbjsonWriter(stm).Write(new ArrayList
+            {
+                new {
+                    LinearAddr = 3L,
+                    SuffixArray = new int[]
+                    {
+                        3, 1, 4
+                    }
+                },
+                new {
+                    LinearAddr = 203L,
+                    SuffixArray = new int[]
+                    {
+                        2, 7, 1,
+                    }
+                }
+            });
+            stm.Position = 0;
+            var list = (List<object>)new UbjsonReader(stm).Read();
+            Assert.AreEqual(2, list.Count);
+            var d0 = (Dictionary<string, object>)list[0];
+            var d1 = (Dictionary<string, object>)list[1];
+            Assert.AreEqual(3, d0["LinearAddr"]);
+            Assert.AreEqual(new int[] { 3, 1, 4 }, d0["SuffixArray"]);
+
+            Assert.AreEqual(203, d1["LinearAddr"]);
+            Assert.AreEqual(new int[] { 2, 7, 1 }, d1["SuffixArray"]);
+
         }
     }
 }
