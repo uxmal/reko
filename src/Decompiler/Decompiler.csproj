@@ -327,7 +327,6 @@
     <Compile Include="Structure\Region.cs" />
     <Compile Include="Structure\RegionFactory.cs" />
     <Compile Include="Structure\ReverseGraph.cs" />
-    <Compile Include="Loading\SuffixArrayPersister.cs" />
     <Compile Include="Typing\ConstantPointerTraversal.cs" />
     <Compile Include="Typing\ExpressionTypeAscender.cs" />
     <Compile Include="Typing\ExpressionTypeDescender.cs" />

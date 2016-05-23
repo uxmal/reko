@@ -224,14 +224,14 @@ namespace Reko.UnitTests.Core.Lib
             new UbjsonWriter(stm).Write(new ArrayList
             {
                 new {
-                    LinearAddr = 3L,
+                    LinearAddr = 3uL,
                     SuffixArray = new int[]
                     {
                         3, 1, 4
                     }
                 },
                 new {
-                    LinearAddr = 203L,
+                    LinearAddr = 203uL,
                     SuffixArray = new int[]
                     {
                         2, 7, 1,
@@ -246,7 +246,7 @@ namespace Reko.UnitTests.Core.Lib
             Assert.AreEqual(3, d0["LinearAddr"]);
             Assert.AreEqual(new int[] { 3, 1, 4 }, d0["SuffixArray"]);
 
-            Assert.AreEqual(203, d1["LinearAddr"]);
+            Assert.AreEqual(203, Convert.ToInt64(d1["LinearAddr"]));
             Assert.AreEqual(new int[] { 2, 7, 1 }, d1["SuffixArray"]);
 
         }

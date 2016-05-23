@@ -268,7 +268,7 @@ namespace Reko.Core.Lib
             // Prepare chains to be pushed to stack
             foreach (int headIndex in m_chainHeadsDict.Values)
             {
-                Chain newChain = new Chain(this, m_str);
+                Chain newChain = new Chain(this);
                 newChain.head = headIndex;
                 newChain.length = 1;
                 m_subChains.Add(newChain);
@@ -340,7 +340,7 @@ namespace Reko.Core.Lib
             {
                 // This is the beginning of a new subchain
                 m_isa[chain.head] = EOC;
-                Chain newChain = new Chain(this, m_str);
+                Chain newChain = new Chain(this);
                 newChain.head = chain.head;
                 newChain.length = chain.length + 1;
                 m_subChains.Add(newChain);
@@ -429,19 +429,17 @@ namespace Reko.Core.Lib
         }
 
 
-        #region HelperClasses
+        #region Helper classes
         [Serializable]
         internal class Chain : IComparable<Chain>
         {
             public int head;
             public int length;
-            private T[] m_str;
             private SuffixArray<T> outer;
 
-            public Chain(SuffixArray<T> outer, T[] str)
+            public Chain(SuffixArray<T> outer)
             {
                 this.outer = outer;
-                m_str = str;
             }
 
             public int CompareTo(Chain other)

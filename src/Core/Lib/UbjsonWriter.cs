@@ -59,6 +59,11 @@ namespace Reko.Core.Lib
                 WriteNumber((long)o);
                 return;
             }
+            if (o is ulong)
+            {
+                WriteUnsignedNumber((ulong)o);
+                return;
+            }
             var s = o as string;
             if (s != null)
             {
@@ -264,7 +269,50 @@ namespace Reko.Core.Lib
                 stm.WriteByte((byte)num);
                 return;
             }
-            throw new NotImplementedException();
+            stm.WriteByte((byte)UbjsonMarker.Int64);
+            stm.WriteByte((byte)(num >> 56));
+            stm.WriteByte((byte)(num >> 48));
+            stm.WriteByte((byte)(num >> 40));
+            stm.WriteByte((byte)(num >> 32));
+            stm.WriteByte((byte)(num >> 24));
+            stm.WriteByte((byte)(num >> 16));
+            stm.WriteByte((byte)(num >> 8));
+            stm.WriteByte((byte)num);
+        }
+
+        private void WriteUnsignedNumber(ulong num)
+        {
+            if (num < 128)
+            {
+                stm.WriteByte((byte)UbjsonMarker.Int8);
+                stm.WriteByte((byte)num);
+                return;
+            }
+            if (num < 32768)
+            {
+                stm.WriteByte((byte)UbjsonMarker.Int16);
+                stm.WriteByte((byte)(num >> 8));
+                stm.WriteByte((byte)num);
+                return;
+            }
+            if (num < (1L << 31))
+            {
+                stm.WriteByte((byte)UbjsonMarker.Int32);
+                stm.WriteByte((byte)(num >> 24));
+                stm.WriteByte((byte)(num >> 16));
+                stm.WriteByte((byte)(num >> 8));
+                stm.WriteByte((byte)num);
+                return;
+            }
+            stm.WriteByte((byte)UbjsonMarker.Int64);
+            stm.WriteByte((byte)(num >> 56));
+            stm.WriteByte((byte)(num >> 48));
+            stm.WriteByte((byte)(num >> 40));
+            stm.WriteByte((byte)(num >> 32));
+            stm.WriteByte((byte)(num >> 24));
+            stm.WriteByte((byte)(num >> 16));
+            stm.WriteByte((byte)(num >> 8));
+            stm.WriteByte((byte)num);
         }
     }
 }
