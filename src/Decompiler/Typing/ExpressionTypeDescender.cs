@@ -74,8 +74,6 @@ namespace Reko.Typing
 
         public bool VisitApplication(Application appl, TypeVariable tv)
         {
-            if (appl != null && appl.Procedure.ToString().Contains("_set_interr"))//$DEBUG
-                appl.ToString();
             MeetDataType(appl, appl.TypeVariable.DataType);
 
             appl.Procedure.Accept(this, appl.Procedure.TypeVariable);
@@ -485,10 +483,8 @@ namespace Reko.Typing
 
                 // First do the array index.
                 binEa.Right.Accept(this, binEa.Right.TypeVariable);
-
                 tv = ArrayField(basePointer, binEa.Left, binEa.DataType.Size, 0, 1, 0, access);
-                p = binEa.Left;
-                offset = 0;
+                return VisitMemoryAccess(basePointer, access, binEa.Left, globals);
             }
             else
             {
