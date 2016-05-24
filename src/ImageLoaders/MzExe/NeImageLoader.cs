@@ -562,9 +562,7 @@ namespace Reko.ImageLoaders.MzExe
             this.segmentMap.AddSegment(
                 mem,
                 seg.Address.Selector.Value.ToString("X4"),
-                access,
-                seg.DataLength);
-
+                access);
             var rdr = new LeImageReader(
                 RawImage,
                 seg.DataLength + ((uint)seg.DataOffset << this.cbFileAlignmentShift));
