@@ -25,6 +25,10 @@ using System.Text;
 
 namespace Reko.Core
 {
+    /// <summary>
+    /// An (external) module is described by a name and the services it 
+    /// provides.
+    /// </summary>
     public class ModuleDescriptor
     {
         public ModuleDescriptor(string name)

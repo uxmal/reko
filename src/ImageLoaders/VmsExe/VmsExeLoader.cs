@@ -29,6 +29,9 @@ using System.Text;
 
 namespace Reko.ImageLoaders.VmsExe
 {
+    /// <summary>
+    /// Documentation for the VAX VMS .EXE format is hard to obtain and understand(!)
+    /// </summary>
     public class VmsExeLoader : ImageLoader
     {
         public VmsExeLoader(IServiceProvider services, string filename, byte[] imgRaw) 

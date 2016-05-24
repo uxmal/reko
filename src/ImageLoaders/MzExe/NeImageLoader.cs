@@ -503,9 +503,12 @@ namespace Reko.ImageLoaders.MzExe
             this.mem = new MemoryArea(
                 PreferredBaseAddress,
                 new byte[segLast.LinearAddress + segLast.DataLength]);
-            this.segmentMap = mem.CreateImageMap();
+            this.segmentMap = new SegmentMap(segFirst.Address);
             foreach (var segment in segments)
             {
+                var mem = new MemoryArea(
+                    segment.Address, 
+                    new byte[Math.Max(segment.Alloc, segment.DataLength)]);
                 LoadSegment(segment, mem, segmentMap);
             }
         }
@@ -542,13 +545,13 @@ namespace Reko.ImageLoaders.MzExe
             return segs.ToArray();
         }
 
-        bool LoadSegment(NeSegment seg, MemoryArea loadedImage, SegmentMap imageMap)
+        bool LoadSegment(NeSegment seg, MemoryArea mem, SegmentMap imageMap)
         {
             Array.Copy(
                 RawImage,
                 (uint)seg.DataOffset << this.cbFileAlignmentShift,
-                loadedImage.Bytes,
-                seg.LinearAddress - (int)loadedImage.BaseAddress.ToLinear(),
+                mem.Bytes,
+                seg.LinearAddress - (int)mem.BaseAddress.ToLinear(),
                 seg.DataLength);
             var x = seg.Address.ToLinear();
 
@@ -556,8 +559,8 @@ namespace Reko.ImageLoaders.MzExe
                 (seg.Flags & 1) != 0
                     ? AccessMode.ReadWrite
                     : AccessMode.ReadExecute;
-            segmentMap.AddSegment(
-                seg.Address,
+            this.segmentMap.AddSegment(
+                mem,
                 seg.Address.Selector.Value.ToString("X4"),
                 access,
                 seg.DataLength);

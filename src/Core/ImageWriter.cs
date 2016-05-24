@@ -26,8 +26,8 @@ using System.Text;
 namespace Reko.Core
 {
     /// <summary>
-    /// This class is used to write bytes to arrays of bytes. It knows all 
-    /// about endian conventions.
+    /// This class is used to write bytes to arrays of bytes. Its two
+    /// subclasses know all about endian conventions.
     /// </summary>
     public abstract class ImageWriter
     {
