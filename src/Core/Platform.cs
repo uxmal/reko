@@ -47,6 +47,11 @@ namespace Reko.Core
         string Description { get; set; }
         PrimitiveType FramePointerType { get; }
         PlatformHeuristics Heuristics { get; }
+        /// <summary>
+        /// Some platforms, especially microcomputers, have well-known
+        /// procedures and global variables at absolute addresses. These are
+        /// available in the MemoryMap.
+        /// </summary>
         MemoryMap_v1 MemoryMap { get; set; }
         string Name { get; }
         string PlatformIdentifier { get; }

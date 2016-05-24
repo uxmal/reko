@@ -420,7 +420,7 @@ namespace Reko.Scanning
             callRetThunkBlock.IsSynthesized = true;
             callRetThunkBlock.Statements.Add(0, new CallInstruction(
                     new ProcedureConstant(program.Platform.PointerType, procNew),
-                    new CallSite(procNew.Signature.ReturnAddressOnStack, 0)));
+                    new CallSite(procNew.Signature.ReturnAddressOnStack, procOld.Signature.ReturnAddressOnStack)));
             program.CallGraph.AddEdge(callRetThunkBlock.Statements.Last, procNew);
             callRetThunkBlock.Statements.Add(0, new ReturnInstruction());
             procOld.ControlGraph.AddEdge(callRetThunkBlock, procOld.ExitBlock);

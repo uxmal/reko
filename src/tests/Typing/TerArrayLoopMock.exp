@@ -98,3 +98,7 @@ T_12:
   Class: Eq_12
   DataType: word32
   OrigDataType: (struct 0004 (0 T_9 t0000))
+T_13:
+  Class: Eq_13
+  DataType: (arr word32 1024)
+  OrigDataType: (arr T_12 1024)

@@ -112,3 +112,7 @@ T_16:
   Class: Eq_16
   DataType: word16
   OrigDataType: (struct 0002 (0 T_8 t0000))
+T_17:
+  Class: Eq_17
+  DataType: (arr word16)
+  OrigDataType: (arr T_16)
