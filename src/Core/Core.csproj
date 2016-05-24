@@ -386,9 +386,6 @@
     <Compile Include="Dumper.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="EntryPoint.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="ExternalProcedure.cs">
       <SubType>Code</SubType>
     </Compile>
