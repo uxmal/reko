@@ -436,10 +436,10 @@ namespace Reko.UnitTests.Typing
 				"T_1 (in ds : word16)" + nl +
 				"\ttrait_primitive(word16)" + nl +
 				"\ttrait_equal(T_2)" + nl +
-				"\ttrait_primitive(cups16)" + nl +
+				"\ttrait_primitive(cupos16)" + nl +
 				"T_2 (in 0x0800 : word16)" + nl +
 				"\ttrait_primitive(word16)" + nl +
-				"\ttrait_primitive(cups16)" + nl +
+				"\ttrait_primitive(cupos16)" + nl +
 				"T_3 (in ds >=u 0x0800 : bool)" + nl +
 				"\ttrait_primitive(bool)" + nl;
 			Assert.AreEqual(exp, sb.ToString());

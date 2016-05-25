@@ -36,10 +36,14 @@ namespace Reko.Core.Lib
 
         public static SuffixArray<byte> Create(byte[] arr)
         {
-
             if (arr == null)
                 arr = new byte[0];
             return new SuffixArray<byte>(arr);
+        }
+
+        public static SuffixArray<T> Load<T>(T[] arr, int [] intArray)
+        {
+            return new SuffixArray<T>(arr, intArray);
         }
     }
 
@@ -59,18 +63,8 @@ namespace Reko.Core.Lib
         /// <summary>
         /// Build a suffix array from string str
         /// </summary>
-        /// <param name="str">A string for which to build a suffix array with LCP information</param>
-        /// <param name="buildLcps">Also build LCP array</param>
-        public SuffixArray(T[] str) : this(str, true) {
-        }
-
-        /// 
-        /// <summary>
-        /// Build a suffix array from string str
-        /// </summary>
         /// <param name="str">A string for which to build a suffix array</param>
-        /// <param name="buildLcps">Also calculate LCP information</param>
-        public SuffixArray(T[] str, bool buildLcps)
+        public SuffixArray(T[] str)
         {
             m_str = str;
             if (m_str == null)
@@ -85,8 +79,14 @@ namespace Reko.Core.Lib
             FormInitialChains();
             BuildSuffixArray();
             m_chainHeadsDict = null;  // free the mem.
-            if (buildLcps)
-                BuildLcpArray();
+            BuildLcpArray();
+        }
+
+        public SuffixArray(T[] str, int [] sa)
+        {
+            m_str = str;
+            m_sa = sa;
+            BuildLcpArray();
         }
 
         public int this[int index]
@@ -237,6 +237,11 @@ namespace Reko.Core.Lib
             }
         }
 
+        public int[] Save()
+        {
+            return this.m_sa;
+        }
+
         private void FormInitialChains()
         {
             // Link all suffixes that have the same first character
@@ -263,7 +268,7 @@ namespace Reko.Core.Lib
             // Prepare chains to be pushed to stack
             foreach (int headIndex in m_chainHeadsDict.Values)
             {
-                Chain newChain = new Chain(this, m_str);
+                Chain newChain = new Chain(this);
                 newChain.head = headIndex;
                 newChain.length = 1;
                 m_subChains.Add(newChain);
@@ -335,7 +340,7 @@ namespace Reko.Core.Lib
             {
                 // This is the beginning of a new subchain
                 m_isa[chain.head] = EOC;
-                Chain newChain = new Chain(this, m_str);
+                Chain newChain = new Chain(this);
                 newChain.head = chain.head;
                 newChain.length = chain.length + 1;
                 m_subChains.Add(newChain);
@@ -424,19 +429,17 @@ namespace Reko.Core.Lib
         }
 
 
-        #region HelperClasses
+        #region Helper classes
         [Serializable]
         internal class Chain : IComparable<Chain>
         {
             public int head;
             public int length;
-            private T[] m_str;
             private SuffixArray<T> outer;
 
-            public Chain(SuffixArray<T> outer, T[] str)
+            public Chain(SuffixArray<T> outer)
             {
                 this.outer = outer;
-                m_str = str;
             }
 
             public int CompareTo(Chain other)
