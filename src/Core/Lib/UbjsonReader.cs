@@ -104,7 +104,7 @@ namespace Reko.Core.Lib
             return buf;
         }
 
-        private int ReadLength()
+        private uint ReadLength()
         {
             int n = stm.ReadByte();
             if (n < 0)
@@ -112,28 +112,28 @@ namespace Reko.Core.Lib
             return ReadLength((UbjsonMarker)n);
         }
 
-        private int ReadLength(UbjsonMarker m)
+        private uint ReadLength(UbjsonMarker m)
         { 
             switch(m)
             {
-            case UbjsonMarker.Int8: return (sbyte)ReadInteger(stm, 1);
+            case UbjsonMarker.Int8: return (byte)ReadInteger(stm, 1);
             case UbjsonMarker.UInt8: return (byte)ReadInteger(stm, 1);
-            case UbjsonMarker.Int16: return (short)ReadInteger(stm, 2);
-            case UbjsonMarker.Int32: return (int)ReadInteger(stm, 4);
+            case UbjsonMarker.Int16: return (ushort)ReadInteger(stm, 2);
+            case UbjsonMarker.Int32: return (uint)ReadInteger(stm, 4);
             }
             throw new NotSupportedException();
         }
 
         private string ReadString()
         {
-            int len = ReadLength();
+            uint len = ReadLength();
             return ReadString(len);
         }
 
-        private string ReadString(int len)
+        private string ReadString(uint len)
         {
             var buf = new byte[len];
-            stm.Read(buf, 0, len);
+            stm.Read(buf, 0, (int)len);
             return Encoding.UTF8.GetString(buf);
         }
 
@@ -152,8 +152,8 @@ namespace Reko.Core.Lib
                 n = stm.ReadByte();
                 if ((UbjsonMarker)n != UbjsonMarker.ElementCount)
                     throw new FormatException();
-                int c = ReadLength();
-                return rdr(stm, c);
+                uint c = ReadLength();
+                return rdr(stm, (int)c);
             }
             else if (m == UbjsonMarker.ElementType)
             {

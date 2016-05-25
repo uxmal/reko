@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Typing
                 tvr.ReplaceTypeVariables();
                 trans.Transform();
                 ctn.RenameAllTypes(program.TypeStore);
-                ter = new TypedExpressionRewriter(program);
+                ter = new TypedExpressionRewriter(program, null);
                 try
                 {
                     ter.RewriteProgram(program);
@@ -128,7 +128,7 @@ namespace Reko.UnitTests.Typing
             ctn.RenameAllTypes(program.TypeStore);
             program.TypeStore.Dump();
 
-            var ter = new TypedExpressionRewriter(program);
+            var ter = new TypedExpressionRewriter(program, null);
             try
             {
                 ter.RewriteProgram(program);
@@ -241,7 +241,7 @@ namespace Reko.UnitTests.Typing
             trans.Transform();
             ctn.RenameAllTypes(program.TypeStore);
 
-            ter = new TypedExpressionRewriter(program);
+            ter = new TypedExpressionRewriter(program, null);
             cmp = cmp.Accept(ter);
             Assert.AreEqual("v0->dw0004", cmp.ToString());
         }
@@ -275,28 +275,28 @@ namespace Reko.UnitTests.Typing
         public void TerConstants()
         {
             var arch = new FakeArchitecture();
-            Program prog = new Program(
+            Program program = new Program(
                 new SegmentMap(Address.Ptr32(0x10000)),
                 arch,
                 new DefaultPlatform(null, arch));
-            SetupPreStages(prog);
+            SetupPreStages(program);
             Constant r = Constant.Real32(3.0F);
             Constant i = Constant.Int32(1);
             Identifier x = new Identifier("x", PrimitiveType.Word32, null);
             Assignment ass = new Assignment(x, r);
-            TypeVariable tvR = r.TypeVariable = prog.TypeFactory.CreateTypeVariable();
-            TypeVariable tvI = i.TypeVariable = prog.TypeFactory.CreateTypeVariable();
-            TypeVariable tvX = x.TypeVariable = prog.TypeFactory.CreateTypeVariable();
-            prog.TypeStore.TypeVariables.AddRange(new TypeVariable[] { tvR, tvI, tvX });
-            UnionType u = prog.TypeFactory.CreateUnionType(null, null, new DataType[] { r.DataType, i.DataType });
+            TypeVariable tvR = r.TypeVariable = program.TypeFactory.CreateTypeVariable();
+            TypeVariable tvI = i.TypeVariable = program.TypeFactory.CreateTypeVariable();
+            TypeVariable tvX = x.TypeVariable = program.TypeFactory.CreateTypeVariable();
+            program.TypeStore.TypeVariables.AddRange(new TypeVariable[] { tvR, tvI, tvX });
+            UnionType u = program.TypeFactory.CreateUnionType(null, null, new DataType[] { r.DataType, i.DataType });
             tvR.OriginalDataType = r.DataType;
             tvI.OriginalDataType = i.DataType;
             tvX.OriginalDataType = x.DataType;
             tvR.DataType = u;
             tvI.DataType = u;
             tvX.DataType = u;
-            ctn.RenameAllTypes(prog.TypeStore);
-            var ter = new TypedExpressionRewriter(prog);
+            ctn.RenameAllTypes(program.TypeStore);
+            var ter = new TypedExpressionRewriter(program, null);
             Instruction instr = ter.TransformAssignment(ass);
             Assert.AreEqual("x.u0 = 3.0F", instr.ToString());
         }

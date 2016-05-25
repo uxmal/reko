@@ -44,6 +44,7 @@ namespace Reko.UnitTests.Loading
         private ServiceContainer sc;
         private IConfigurationService cfgSvc;
         private IFileSystemService fsSvc;
+        private IDiagnosticsService diagSvc;
 
         [SetUp]
         public void Setup()
@@ -52,7 +53,9 @@ namespace Reko.UnitTests.Loading
             sc = new ServiceContainer();
             cfgSvc = mr.Stub<IConfigurationService>();
             fsSvc = mr.Stub<IFileSystemService>();
+            diagSvc = mr.Stub<IDiagnosticsService>();
             sc.AddService<IFileSystemService>(fsSvc);
+            sc.AddService<IDiagnosticsService>(diagSvc);
         }
 
         void Given_File(string name, byte[] content)

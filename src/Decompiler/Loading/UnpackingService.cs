@@ -144,22 +144,30 @@ namespace Reko.Loading
         private object EnsureSuffixArray(string filename, byte[] image)
         {
             var fsSvc = Services.RequireService<IFileSystemService>();
+            var diagSvc = Services.RequireService<IDiagnosticsService>();
             Stream stm = null;
             try
             {
                 if (fsSvc.FileExists(filename))
                 {
                     stm = fsSvc.CreateFileStream(filename, FileMode.Open);
-                    var sSuffix = (int[]) new UbjsonReader(stm).Read();
-                    return SuffixArray.Load(image, sSuffix);
+                    try
+                    {
+                        var sSuffix = (int[])new UbjsonReader(stm).Read();
+                        return SuffixArray.Load(image, sSuffix);
+                    }
+                    catch (Exception ex)
+                    {
+                        diagSvc.Warn("Unable to load suffix array {0}. {1}", filename, ex.Message);
+                    } finally
+                    {
+                        stm.Close();
+                    }
                 }
-                else
-                {
-                    var sa = SuffixArray.Create(image);
-                    stm = fsSvc.CreateFileStream(filename, FileMode.Create, FileAccess.Write);
-                    new UbjsonWriter(stm).Write(sa.Save());
-                    return sa;
-                }
+                var sa = SuffixArray.Create(image);
+                stm = fsSvc.CreateFileStream(filename, FileMode.Create, FileAccess.Write);
+                new UbjsonWriter(stm).Write(sa.Save());
+                return sa;
             }
             finally
             {

@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -41,9 +42,11 @@ namespace Reko.Typing
 		private PrimitiveType pOrig;
 		private bool dereferenced;
         private Dictionary<ushort, Identifier> mpSelectorToSegId;
+        private DecompilerEventListener eventListener;
 
-        public TypedConstantRewriter(Program program)
+        public TypedConstantRewriter(Program program, DecompilerEventListener eventListener)
 		{
+            this.eventListener = eventListener;
             this.program = program;
             this.platform = program.Platform;
             this.store = program.TypeStore;
@@ -76,11 +79,49 @@ namespace Reko.Typing
 
         public Expression Rewrite(Address addr, bool dereferenced)
         {
-            this.c = Constant.UInt32(addr.ToUInt32());  //$BUG: won't work for x86.
-            var dtInferred = addr.TypeVariable.DataType.ResolveAs<DataType>();
-            this.pOrig = addr.TypeVariable.OriginalDataType as PrimitiveType;
-            this.dereferenced = dereferenced;
-            return dtInferred.Accept(this);
+            if (addr.Selector.HasValue)
+            {
+                Identifier segId;
+                if (!mpSelectorToSegId.TryGetValue(addr.Selector.Value, out segId))
+                {
+                    eventListener.Warn(
+                        new NullCodeLocation(""), 
+                        "Selector {0:X4} has no known segment.",
+                        addr.Selector.Value);
+                    return addr;
+                }
+                var ptrSeg = segId.TypeVariable.DataType.ResolveAs<Pointer>();
+                if (ptrSeg == null)
+                {
+                    //$TODO: what should the warning be?
+                    return addr;
+                }
+                var baseType = ptrSeg.Pointee.ResolveAs<StructureType>();
+                var dt = addr.TypeVariable.DataType.ResolveAs<Pointer>();
+                this.c = Constant.Create(
+                    PrimitiveType.CreateWord(addr.DataType.Size - ptrSeg.Size),
+                    addr.Offset);
+
+                var f = EnsureFieldAtOffset(baseType, dt.Pointee, c.ToInt32());
+                Expression ex = new FieldAccess(dt, new Dereference(ptrSeg, segId), f);
+                if (dereferenced || dt.Pointee is ArrayType)
+                {
+                    return ex;
+                }
+                else
+                {
+                    var un = new UnaryExpression(Operator.AddrOf, dt, ex);
+                    return un;
+                }
+            }
+            else
+            {
+                this.c = Constant.UInt32(addr.ToUInt32());  //$BUG: won't work for x86.
+                var dtInferred = addr.TypeVariable.DataType.ResolveAs<DataType>();
+                this.pOrig = addr.TypeVariable.OriginalDataType as PrimitiveType;
+                this.dereferenced = dereferenced;
+                return dtInferred.Accept(this);
+            }
         }
 
 		private StructureType GlobalVars

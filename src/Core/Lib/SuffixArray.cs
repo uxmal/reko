@@ -86,6 +86,7 @@ namespace Reko.Core.Lib
         {
             m_str = str;
             m_sa = sa;
+            this.cmp = Comparer<T>.Default;
             BuildLcpArray();
         }
 

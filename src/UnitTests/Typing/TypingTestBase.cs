@@ -44,13 +44,15 @@ namespace Reko.UnitTests.Typing
 	/// </summary>
 	public abstract class TypingTestBase
 	{
-		protected Program RewriteFile16(string relativePath) { return RewriteFile(relativePath, Address.SegPtr(0xC00, 0)); }
+        protected ServiceContainer sc;
+
+        protected Program RewriteFile16(string relativePath) { return RewriteFile(relativePath, Address.SegPtr(0xC00, 0)); }
 
 		protected Program RewriteFile32(string relativePath) { return RewriteFile(relativePath, Address.Ptr32(0x00100000)); }
 
 		protected Program RewriteFile(string relativePath, Address addrBase)
 		{
-            var sc = new ServiceContainer();
+            sc = new ServiceContainer();
             var config = new FakeDecompilerConfiguration();
             var eventListener = new FakeDecompilerEventListener();
             sc.AddService<IConfigurationService>(config);
