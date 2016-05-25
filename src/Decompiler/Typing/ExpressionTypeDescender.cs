@@ -152,7 +152,19 @@ namespace Reko.Typing
             return false;
         }
 
-        TypeVariable ArrayField(Expression expBase, Expression expStruct, int structPtrSize, int offset, int elementSize, int length, TypeVariable tvField)
+        /// <summary>
+        /// Assert that there is an array field at offset <paramref name="offset"/>
+        /// of the structure pointed at by <paramref name="expStruct"/>.
+        /// </summary>
+        /// <param name="expBase"></param>
+        /// <param name="expStruct"></param>
+        /// <param name="structPtrSize"></param>
+        /// <param name="offset"></param>
+        /// <param name="elementSize"></param>
+        /// <param name="length"></param>
+        /// <param name="tvField"></param>
+        /// <returns>A type variable for the array type of the field.</returns>
+        private TypeVariable ArrayField(Expression expBase, Expression expStruct, int structPtrSize, int offset, int elementSize, int length, TypeVariable tvField)
         {
             var dtElement = factory.CreateStructureType(null, elementSize);
             dtElement.Fields.Add(0, tvField);
@@ -165,7 +177,7 @@ namespace Reko.Typing
             tvArray.DataType = dtArray;
             tvArray.OriginalDataType = dtArray;
             MemoryAccessCommon(expBase, expStruct, offset, dtArray, structPtrSize);
-            return tvArray;
+            return tvElement;
         }
 
         public DataType MemoryAccessCommon(Expression eBase, Expression eStructPtr, int offset, DataType dtField, int structPtrSize)
@@ -489,8 +501,12 @@ namespace Reko.Typing
 
                 // First do the array index.
                 binEa.Right.Accept(this, binEa.Right.TypeVariable);
-                var tvArray = ArrayField(basePointer, binEa.Left, binEa.DataType.Size, 0, 1, 0, tvAccess);
-                return VisitMemoryAccess(basePointer, tvArray, binEa.Left, globals);
+
+                var tvElement = ArrayField(basePointer, binEa.Left, binEa.DataType.Size, 0, 1, 0, tvAccess);
+                VisitMemoryAccess(basePointer, tvElement, binEa.Left, globals);
+                MemoryAccessCommon(basePointer, effectiveAddress, 0, tvAccess, eaSize);
+                effectiveAddress.Accept(this, effectiveAddress.TypeVariable);
+                return false;
             }
             else
             {

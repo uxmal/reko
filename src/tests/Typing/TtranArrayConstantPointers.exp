@@ -50,3 +50,7 @@ T_9:
   Class: Eq_9
   DataType: Eq_9
   OrigDataType: (struct 0008 (0 T_8 t0000))
+T_10:
+  Class: Eq_10
+  DataType: (arr Eq_9)
+  OrigDataType: (arr T_9)

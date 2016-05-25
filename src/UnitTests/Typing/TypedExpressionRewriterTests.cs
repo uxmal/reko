@@ -578,6 +578,14 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
+        public void TerArrayExpression()
+        {
+            var m = new ProgramBuilder();
+            m.Add(new ArrayExpressionFragment());
+            RunTest(m.BuildProgram(), "Typing/TerArrayExpression.txt");
+        }
+
+        [Test]
         public void TerDeclaration()
         {
             ProgramBuilder pm = new ProgramBuilder();

@@ -1,3 +1,4 @@
+// Before ///////
 // ArrayExpressionFragment
 // Return size: 0
 void ArrayExpressionFragment()
@@ -8,10 +9,21 @@ l1:
 	Mem0[pa + 0x00000140 + i:byte] = 0xF8
 ArrayExpressionFragment_exit:
 
+// After ///////
+// ArrayExpressionFragment
+// Return size: 0
+void ArrayExpressionFragment()
+ArrayExpressionFragment_entry:
+	// succ:  l1
+l1:
+	pa = (Eq_2 *) 0x000A0000
+	pa->a0140[i] = 0xF8
+ArrayExpressionFragment_exit:
+
 // Equivalence classes ////////////
 Eq_1: (struct "Globals" (A0000 Eq_2 tA0000))
 	globals_t (in globals : (ptr (struct "Globals")))
-Eq_2: (struct (140 byte b0140))
+Eq_2: (struct "Eq_2" (140 byte b0140))
 	T_2 (in 0x000A0000 : word32)
 	T_3 (in pa : word32)
 // Type Variables ////////////
