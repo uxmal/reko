@@ -417,7 +417,20 @@ namespace Reko.Core.Output
             return writer;
 		}
 
-		public Formatter VisitPrimitive(PrimitiveType pt)
+        public Formatter VisitReference(ReferenceTo refTo)
+        {
+            if (mode == Mode.Writing)
+            {
+                if (name == null)
+                    name = "&";
+                else
+                    name = "& " + name;
+            }
+            refTo.Referent.Accept(this);
+            return writer;
+        }
+
+        public Formatter VisitPrimitive(PrimitiveType pt)
 		{
 			if (mode == Mode.Writing)
 			{

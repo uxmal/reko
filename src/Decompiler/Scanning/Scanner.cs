@@ -412,6 +412,8 @@ namespace Reko.Scanning
         /// <returns></returns>
         public Block CreateCallRetThunk(Address addrFrom, Procedure procOld, Procedure procNew)
         {
+            //$BUG: ReturnAddressOnStack property needs to be properly set, the
+            // EvenOdd sample shows how this doesn't work currently. 
             var blockName = string.Format(
                 "{0}_thunk_{1}", 
                 GenerateBlockName(addrFrom),
@@ -420,7 +422,9 @@ namespace Reko.Scanning
             callRetThunkBlock.IsSynthesized = true;
             callRetThunkBlock.Statements.Add(0, new CallInstruction(
                     new ProcedureConstant(program.Platform.PointerType, procNew),
-                    new CallSite(procNew.Signature.ReturnAddressOnStack, 0)));
+                    new CallSite(
+                        procNew.Signature.ReturnAddressOnStack,
+                        0)));
             program.CallGraph.AddEdge(callRetThunkBlock.Statements.Last, procNew);
             callRetThunkBlock.Statements.Add(0, new ReturnInstruction());
             procOld.ControlGraph.AddEdge(callRetThunkBlock, procOld.ExitBlock);

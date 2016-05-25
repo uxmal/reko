@@ -230,6 +230,9 @@
     <Compile Include="Lib\PatternCollector.cs" />
     <Compile Include="Lib\PerfectHash.cs" />
     <Compile Include="Lib\SuffixArray.cs" />
+    <Compile Include="Lib\UbjsonReader.cs" />
+    <Compile Include="Lib\UbjsonMarker.cs" />
+    <Compile Include="Lib\UbjsonWriter.cs" />
     <Compile Include="Lib\WildPatternMatcher.cs" />
     <Compile Include="Operators\FNegOperator.cs" />
     <Compile Include="Output\CTypeReferenceFormatter.cs" />
@@ -386,9 +389,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Dumper.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="EntryPoint.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ExternalProcedure.cs">
@@ -655,6 +655,7 @@
     <Compile Include="Types\PrimitiveType.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Types\ReferenceTo.cs" />
     <Compile Include="Types\StringType.cs" />
     <Compile Include="Types\StructureField.cs">
       <SubType>Code</SubType>

@@ -21,8 +21,11 @@
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.Typing
 {
@@ -38,13 +41,19 @@ namespace Reko.Typing
 		private Constant c;
 		private PrimitiveType pOrig;
 		private bool dereferenced;
+        private Dictionary<ushort, Identifier> mpSelectorToSegId;
+        private DecompilerEventListener eventListener;
 
-		public TypedConstantRewriter(Program program)
+        public TypedConstantRewriter(Program program, DecompilerEventListener eventListener)
 		{
+            this.eventListener = eventListener;
             this.program = program;
             this.platform = program.Platform;
             this.store = program.TypeStore;
             this.globals = program.Globals;
+            this.mpSelectorToSegId = program.SegmentMap.Segments.Values
+                .Where(s => s.Identifier != null && s.Address.Selector.HasValue)
+                .ToDictionary(s => s.Address.Selector.Value, s => s.Identifier);
 		}
 
         /// <summary>
@@ -70,11 +79,49 @@ namespace Reko.Typing
 
         public Expression Rewrite(Address addr, bool dereferenced)
         {
-            this.c = Constant.UInt32(addr.ToUInt32());  //$BUG: won't work for x86.
-            var dtInferred = addr.TypeVariable.DataType.ResolveAs<DataType>();
-            this.pOrig = addr.TypeVariable.OriginalDataType as PrimitiveType;
-            this.dereferenced = dereferenced;
-            return dtInferred.Accept(this);
+            if (addr.Selector.HasValue)
+            {
+                Identifier segId;
+                if (!mpSelectorToSegId.TryGetValue(addr.Selector.Value, out segId))
+                {
+                    eventListener.Warn(
+                        new NullCodeLocation(""), 
+                        "Selector {0:X4} has no known segment.",
+                        addr.Selector.Value);
+                    return addr;
+                }
+                var ptrSeg = segId.TypeVariable.DataType.ResolveAs<Pointer>();
+                if (ptrSeg == null)
+                {
+                    //$TODO: what should the warning be?
+                    return addr;
+                }
+                var baseType = ptrSeg.Pointee.ResolveAs<StructureType>();
+                var dt = addr.TypeVariable.DataType.ResolveAs<Pointer>();
+                this.c = Constant.Create(
+                    PrimitiveType.CreateWord(addr.DataType.Size - ptrSeg.Size),
+                    addr.Offset);
+
+                var f = EnsureFieldAtOffset(baseType, dt.Pointee, c.ToInt32());
+                Expression ex = new FieldAccess(dt, new Dereference(ptrSeg, segId), f);
+                if (dereferenced || dt.Pointee is ArrayType)
+                {
+                    return ex;
+                }
+                else
+                {
+                    var un = new UnaryExpression(Operator.AddrOf, dt, ex);
+                    return un;
+                }
+            }
+            else
+            {
+                this.c = Constant.UInt32(addr.ToUInt32());  //$BUG: won't work for x86.
+                var dtInferred = addr.TypeVariable.DataType.ResolveAs<DataType>();
+                this.pOrig = addr.TypeVariable.OriginalDataType as PrimitiveType;
+                this.dereferenced = dereferenced;
+                return dtInferred.Accept(this);
+            }
         }
 
 		private StructureType GlobalVars
@@ -179,7 +226,9 @@ namespace Reko.Typing
 			Expression e = c;
             if (IsSegmentPointer(ptr))
             {
-                //$TODO: Segments have to be declared and their initial contents defined somewhere.
+                Identifier segID;
+                if (mpSelectorToSegId.TryGetValue(c.ToUInt16(), out segID))
+                    return segID;
                 return e;
             } 
             else if (GlobalVars != null)
@@ -233,6 +282,11 @@ namespace Reko.Typing
             }
 			return e;
 		}
+
+        public Expression VisitReference(ReferenceTo refTo)
+        {
+            throw new NotImplementedException();
+        }
 
         private bool IsCharPtrToReadonlySection(Constant c, DataType dt)
         {

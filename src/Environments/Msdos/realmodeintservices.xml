@@ -422,10 +422,11 @@
 	</syscallinfo>
 	<signature>
 	  <arg>
-		<reg>ds</reg>
-	  </arg>
-	  <arg>
-		<reg>dx</reg>
+      <ptr><prim domain="Character" size="1" /></ptr>
+      <seq>
+		    <reg>ds</reg>
+		    <reg>dx</reg>
+      </seq>  
 	  </arg>
 	</signature>
   </service>
@@ -499,6 +500,7 @@
 		<reg>al</reg>
 	  </arg>
 	  <arg>
+      <ptr><code /></ptr>
 		<seq>
 		<reg>ds</reg>
 		<reg>dx</reg>

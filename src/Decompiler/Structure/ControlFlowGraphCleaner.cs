@@ -99,6 +99,14 @@ namespace Reko.Structure
                         {
                             ReplaceBranchWithJump(block);
                         }
+                        foreach (var s in block.Succ.ToList())
+                        {
+                            if (s.Statements.Count == 0 &&
+                                EndsInJump(s))
+                            {
+                                dirty |= Block.ReplaceJumpsTo(s, s.Succ[0]);
+                            }
+                        }
                     }
 
                     if (EndsInJump(block))
@@ -108,8 +116,7 @@ namespace Reko.Structure
                             block.Statements.Count == 0 &&
                             next.Pred.Count == 1)
                         {
-                            if (Block.ReplaceJumpsTo(block, next))
-                                dirty = true;
+                            dirty |= Block.ReplaceJumpsTo(block, next);
                         }
                         if (next.Pred.Count == 1 && next != proc.ExitBlock)
                         {

@@ -26,6 +26,9 @@ using System.Text;
 
 namespace Reko.Core
 {
+    /// <summary>
+    /// Represents a reference to an external symbol from another module.
+    /// </summary>
     public abstract class ImportReference
     {
         public Address ReferenceAddress;
@@ -76,6 +79,9 @@ namespace Reko.Core
         }
     }
 
+    /// <summary>
+    /// Windows likes to use imports by ordinal number, especially Win16.
+    /// </summary>
     public class OrdinalImportReference : ImportReference
     {
         public int Ordinal;

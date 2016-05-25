@@ -348,6 +348,11 @@ namespace Reko.Core.Expressions
             return new SegmentedAccess(MemoryIdentifier.GlobalMemory, basePtr, ptr, dt);
         }
 
+        public SegmentedAccess SegMemB(Expression basePtr, Expression ptr)
+        {
+            return new SegmentedAccess(MemoryIdentifier.GlobalMemory, basePtr, ptr, PrimitiveType.Byte);
+        }
+
         public SegmentedAccess SegMemW(Expression basePtr, Expression ptr)
         {
             return new SegmentedAccess(MemoryIdentifier.GlobalMemory, basePtr, ptr, PrimitiveType.Word16);

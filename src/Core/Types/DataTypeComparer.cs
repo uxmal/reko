@@ -42,9 +42,10 @@ namespace Reko.Core.Types
         private const int TRef =   9;
         private const int TVar =   10;
 		private const int EqClass= 11;
-        private const int Code = 12;
-		private const int Unk =    13;
-        private const int Void =   14;
+        private const int Code =   12;
+        private const int Ref =    13;
+        private const int Unk =    14;
+        private const int Void =   15;
 
         private IDictionary<Tuple<DataType, DataType>, int> compareResult;
 
@@ -338,6 +339,11 @@ namespace Reko.Core.Types
 		{
 			return Ptr;
 		}
+
+        public int VisitReference(ReferenceTo refTo)
+        {
+            return Ref;
+        }
 
         public int VisitTypeReference(TypeReference typeref)
         {

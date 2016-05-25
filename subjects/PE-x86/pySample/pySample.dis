@@ -1094,7 +1094,7 @@ fn10001700_exit:
 
 
 
-word32 fn10001742(word32 ebx, word32 esi, word32 edi, ptr32 ediOut)
+word32 fn10001742(word32 ebx, word32 esi, word32 edi, ptr32 & ediOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ebx edi esi fs

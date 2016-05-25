@@ -80,8 +80,8 @@ T_16: (in 0x00000004 : word32)
   OrigDataType: word32
 T_17: (in dwArg04 + 0x00000004 : word32)
   Class: Eq_17
-  DataType: word32
-  OrigDataType: word32
+  DataType: ptr32
+  OrigDataType: ptr32
 T_18: (in Mem16[dwArg04 + 0x00000004:word32] : word32)
   Class: Eq_15
   DataType: ptr32

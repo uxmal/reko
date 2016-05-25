@@ -866,7 +866,14 @@ namespace Reko.Core.Output
             }
             else
             {
-                t.Write(arg.DataType, arg.Name);
+                if (arg.Storage is OutArgumentStorage)
+                {
+                    t.Write(new ReferenceTo(arg.DataType), arg.Name);
+                }
+                else
+                {
+                    t.Write(arg.DataType, arg.Name);
+                }
             }
         }
 

@@ -29,7 +29,7 @@ fn0C00_0000_exit:
 // Preserved: sp
 // fn0C00_000A
 // Return size: 0
-byte fn0C00_000A(byte al, ptr16 alOut)
+byte fn0C00_000A(byte al, ptr16 & alOut)
 fn0C00_000A_entry:
 	*alOut = al
 	// succ:  l0C00_000A

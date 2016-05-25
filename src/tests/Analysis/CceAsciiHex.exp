@@ -77,7 +77,7 @@ al_20: orig: al
     uses: al_18 = PHI(al, al_20)
 // fn0C00_000A
 // Return size: 0
-byte fn0C00_000A(byte al, ptr16 alOut)
+byte fn0C00_000A(byte al, ptr16 & alOut)
 fn0C00_000A_entry:
 	def al
 	// succ:  l0C00_000A

@@ -24,6 +24,7 @@ using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System.Diagnostics;
 using System.IO;
+using Reko.Core.Types;
 
 namespace Reko.UnitTests.Structure
 {
@@ -40,6 +41,8 @@ namespace Reko.UnitTests.Structure
 
         private void RunTest(string sExp, Procedure proc)
         {
+            var cfgc = new ControlFlowGraphCleaner(proc);
+            cfgc.Transform();
             var ps = new StructureAnalysis(new FakeDecompilerEventListener(), new Program(), proc);
             var reg = ps.Execute();
             var sb = new StringWriter();
@@ -631,6 +634,100 @@ case_2:
     } while (r1 == 0x02);
     return r1;
 ";
+            RunTest(sExp, m.Procedure);
+        }
+
+        [Test]
+        public void ProcStr_r00237()
+        {
+            //byte fn0800_0541(byte al, selector ds)
+
+            var al = m.Temp(PrimitiveType.Byte, "al");
+            var ds = m.Temp(PrimitiveType.SegmentSelector, "ds");
+            var cx_10 = m.Temp(PrimitiveType.Word16, "cx_10");
+            var si_12 = m.Temp(PrimitiveType.Word16, "si_12");
+            var ah_13 = m.Temp(PrimitiveType.Byte, "al_13");
+            var al_43 = m.Temp(PrimitiveType.Byte, "al_43");
+            var Z_26 = m.Temp(PrimitiveType.Byte, "Z_26");
+
+            m.Assign(cx_10, 20000);
+m.Label("l0800_0544");
+                m.Assign(si_12, 0x8E8A);
+                m.Assign(ah_13, 0x00);
+m.Label("l0800_054A");
+                    m.Assign(si_12, m.IAdd(si_12, 0x01));
+                    m.BranchIf(m.Eq0(m.SegMemB(ds, si_12)), "l0800_0557");
+ m.Label("l0800_054F");
+                        m.Assign(ah_13, 0x01);
+                        m.Assign(Z_26, m.Cond(m.ISub(si_12, m.SegMemW(ds, m.Word16(0x8F0B)))));
+                        m.BranchIf(m.Ne(si_12, m.SegMemW(ds, m.Word16(0x8F0B))), "l0800_055F");
+ m.Label("l0800_0557");
+            m.Assign(Z_26, m.Cond(m.ISub(si_12, 0x8F0A)));
+            m.BranchIf(m.Eq(si_12, 0x8F0A), "l0800_055F");
+m.Label("l0800_055D");
+            m.Goto("l0800_054A");
+m.Label("l0800_055F");
+            m.BranchIf(Z_26, "l0800_0578");
+m.Label("l0800_0561");
+            m.SegStore(ds, m.Word16(0x8F0B), si_12);
+            m.Assign(al_43, m.SegMemB(ds, m.ISub(si_12, 0x8E31)));
+            m.BranchIf(m.Eq0(al_43), "l0800_0576");
+m.Label("l0800_0571");
+            m.BranchIf(m.Ge(al_43, 0x00), "l0800_0575");
+m.Label("l0800_0573");
+            m.Assign(al_43, 0x00);
+m.Label("l0800_0575");
+            m.Return(al_43);
+m.Label("l0800_0576");
+            m.Goto("l0800_0583");
+m.Label("l0800_0578");
+            m.BranchIf(m.Ne0(ah_13), "l0800_0583");
+m.Label("l0800_057D");
+            m.SegStore(ds, m.Word16(0x8F0B), m.Byte(0));
+m.Label("l0800_0583");
+            m.Assign(cx_10, m.ISub(cx_10, 0x01));
+            m.BranchIf(m.Ne0(cx_10), "l0800_0544");
+m.Label("l0800_0585");
+            m.Return(m.Byte(0x00));
+
+            var sExp =
+            #region Expected
+@"    cx_10 = 20000;
+l0800_0544:
+    si_12 = 0x8E8A;
+    al_13 = 0x00;
+    do
+    {
+        si_12 = si_12 + 0x01;
+        if (Mem0[ds:si_12:byte] != 0x00)
+        {
+            al_13 = 0x01;
+            Z_26 = cond(si_12 - Mem0[ds:0x8F0B:word16]);
+            if (si_12 != Mem0[ds:0x8F0B:word16])
+                break;
+        }
+        Z_26 = cond(si_12 - 0x8F0A);
+    } while (si_12 == 0x8F0A);
+    if (!Z_26)
+    {
+        Mem0[ds:0x8F0B:word16] = si_12;
+        al_43 = Mem0[ds:si_12 - 0x8E31:byte];
+        if (al_43 != 0x00)
+        {
+            if (al_43 < 0x00)
+                al_43 = 0x00;
+            return al_43;
+        }
+    }
+    else if (al_13 == 0x00)
+        Mem0[ds:0x8F0B:byte] = 0x00;
+    cx_10 = cx_10 - 0x01;
+    if (cx_10 != 0x00)
+        goto l0800_0544;
+    return 0x00;
+";
+            #endregion
+
             RunTest(sExp, m.Procedure);
         }
     }

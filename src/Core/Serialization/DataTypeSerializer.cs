@@ -120,6 +120,11 @@ namespace Reko.Core.Serialization
             };
         }
 
+        public SerializedType VisitReference(ReferenceTo refTo)
+        {
+            throw new NotImplementedException();
+        }
+
         public SerializedType VisitString(StringType str)
         {
             return new StringType_v2 { 
