@@ -52,8 +52,12 @@ Eq_11: (fn void ((ptr Eq_2)))
 	T_12 (in signature of fn0C00_0037 : void)
 Eq_16: (struct (0 real64 r0000) (8 real64 r0008) (10 real64 r0010))
 	T_16 (in wArg02 : word16)
+Eq_26: (struct (0 real64 r0000) (8 real64 r0008))
+	T_26 (in wArg02 + 0x0010 : word16)
 Eq_33: (struct (0 real64 r0000) (20 int16 w0020) (28 real64 r0028))
 	T_33 (in wArg04 : word16)
+Eq_42: (struct (0 real64 r0000) (20 int16 w0020))
+	T_42 (in wArg04 + 0x0028 : word16)
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
@@ -141,8 +145,8 @@ T_21: (in 0x0008 : word16)
   OrigDataType: word16
 T_22: (in wArg02 + 0x0008 : word16)
   Class: Eq_22
-  DataType: word16
-  OrigDataType: word16
+  DataType: (memptr (ptr Eq_2) real64)
+  OrigDataType: (memptr T_5 (struct (0 T_19 t0000)))
 T_23: (in Mem0[ds:wArg02 + 0x0008:real64] : real64)
   Class: Eq_20
   DataType: real64
@@ -157,8 +161,8 @@ T_25: (in 0x0010 : word16)
   OrigDataType: word16
 T_26: (in wArg02 + 0x0010 : word16)
   Class: Eq_26
-  DataType: word16
-  OrigDataType: word16
+  DataType: (memptr (ptr Eq_2) Eq_26)
+  OrigDataType: (memptr T_5 (struct (0 T_19 t0000) (8 T_23 t0008)))
 T_27: (in Mem0[ds:wArg02 + 0x0010:real64] : real64)
   Class: Eq_24
   DataType: real64
@@ -205,8 +209,8 @@ T_37: (in 0x0020 : word16)
   OrigDataType: word16
 T_38: (in wArg04 + 0x0020 : word16)
   Class: Eq_38
-  DataType: word16
-  OrigDataType: word16
+  DataType: (memptr (ptr Eq_2) real64)
+  OrigDataType: (memptr T_5 (struct (0 T_36 t0000)))
 T_39: (in Mem21[ds:wArg04 + 0x0020:int16] : int16)
   Class: Eq_39
   DataType: int16
@@ -221,8 +225,8 @@ T_41: (in 0x0028 : word16)
   OrigDataType: word16
 T_42: (in wArg04 + 0x0028 : word16)
   Class: Eq_42
-  DataType: word16
-  OrigDataType: word16
+  DataType: (memptr (ptr Eq_2) Eq_42)
+  OrigDataType: (memptr T_5 (struct (0 T_36 t0000) (20 T_39 t0020)))
 T_43: (in Mem23[ds:wArg04 + 0x0028:real64] : real64)
   Class: Eq_40
   DataType: real64

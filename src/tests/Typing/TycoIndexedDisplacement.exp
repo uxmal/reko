@@ -4,7 +4,7 @@ void ProcedureBuilder()
 ProcedureBuilder_entry:
 	// succ:  l1
 l1:
-	Mem3[ds:Mem0[ds:0x0C00:word16] + 0x000A + si:byte] = 0xF8
+	Mem4[ds:Mem0[ds:0x0C00:word16] + 0x000A + si:byte] = 0xF8
 ProcedureBuilder_exit:
 
 // Equivalence classes ////////////
@@ -45,7 +45,7 @@ T_9: (in Mem0[ds:0x0C00:word16] + 0x000A + si : word16)
   Class: Eq_9
   DataType: (memptr T_3 (struct (0 T_10 t0000)))
   OrigDataType: (memptr T_3 (struct (0 T_10 t0000)))
-T_10: (in Mem3[ds:Mem0[ds:0x0C00:word16] + 0x000A + si:byte] : byte)
+T_10: (in Mem4[ds:Mem0[ds:0x0C00:word16] + 0x000A + si:byte] : byte)
   Class: Eq_2
   DataType: byte
   OrigDataType: byte

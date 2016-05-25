@@ -82,12 +82,12 @@ T_8: (in Mem5[ds:di_1 + 0x0000:word16] : word16)
   OrigDataType: word16
 T_9: (in 0x0002 : word16)
   Class: Eq_9
-  DataType: word16
-  OrigDataType: word16
+  DataType: int16
+  OrigDataType: int16
 T_10: (in di_1 + 0x0002 : word16)
   Class: Eq_2
   DataType: (memptr (ptr Eq_5) word16)
-  OrigDataType: word16
+  OrigDataType: (memptr T_5 (struct 0002 (0 (union (word16 u0) (T_8 u1)) u0000)))
 T_11: (in cx : word16)
   Class: Eq_11
   DataType: word16

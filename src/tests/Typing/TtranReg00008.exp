@@ -120,12 +120,12 @@ T_21: (in Mem17[ds:0x9A26:word16] : word16)
   OrigDataType: word16
 T_22: (in 0x0026 : word16)
   Class: Eq_22
-  DataType: word16
-  OrigDataType: word16
+  DataType: int16
+  OrigDataType: int16
 T_23: (in si_11 + 0x0026 : word16)
   Class: Eq_9
   DataType: (memptr (ptr Eq_12) Eq_9)
-  OrigDataType: word16
+  OrigDataType: (memptr T_12 (struct 0026 (0 (union (word16 u0) (T_15 u1)) u0000)))
 T_24: (in 0x0000 : word16)
   Class: Eq_6
   DataType: word16
