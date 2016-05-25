@@ -172,7 +172,7 @@ namespace Reko.Typing
             var cOther = index as Constant;
             if (cOther != null)
             {
-                offset += cOther.ToInt32();
+                offset += (int) cOther.ToUInt32();
                 index = null;
             }
             var ceb = new ComplexExpressionBuilder(null, basePtr, complex, index, offset);
@@ -315,6 +315,7 @@ namespace Reko.Typing
                 this.basePtr = basePtr;
                 result = Rewrite(access.EffectiveAddress, true);
             }
+            result.TypeVariable = access.TypeVariable;
             this.basePtr = oldBase;
             return result;
         }
