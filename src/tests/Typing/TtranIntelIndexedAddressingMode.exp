@@ -77,7 +77,7 @@ T_13: (in Mem0[ds:0x0CA4:word16] : word16)
 T_14: (in bx : word16)
   Class: Eq_13
   DataType: (memptr (ptr Eq_2) Eq_13)
-  OrigDataType: (memptr T_2 (struct (A T_20 t000A)))
+  OrigDataType: (memptr T_2 (struct (A T_21 t000A)))
 T_15: (in 0xF8 : byte)
   Class: Eq_15
   DataType: byte
@@ -102,4 +102,7 @@ T_20:
   Class: Eq_20
   DataType: byte
   OrigDataType: (struct 0001 (0 T_19 t0000))
-
+T_21:
+  Class: Eq_21
+  DataType: (arr byte)
+  OrigDataType: (arr T_20)

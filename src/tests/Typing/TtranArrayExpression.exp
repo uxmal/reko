@@ -26,7 +26,7 @@ T_2: (in 0x000A0000 : word32)
 T_3: (in pa : word32)
   Class: Eq_2
   DataType: (ptr Eq_2)
-  OrigDataType: (ptr (struct (140 T_10 t0140)))
+  OrigDataType: (ptr (struct (140 T_11 t0140)))
 T_4: (in 0xF8 : byte)
   Class: Eq_4
   DataType: byte
@@ -55,3 +55,7 @@ T_10:
   Class: Eq_10
   DataType: byte
   OrigDataType: (struct 0001 (0 T_9 t0000))
+T_11:
+  Class: Eq_11
+  DataType: (arr byte)
+  OrigDataType: (arr T_10)

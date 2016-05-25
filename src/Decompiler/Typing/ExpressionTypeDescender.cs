@@ -134,11 +134,11 @@ namespace Reko.Typing
                 arr = acc.Array;
                 offset = 0;
             }
-            BinaryExpression b = acc.Index as BinaryExpression;
+            BinaryExpression bIndex = acc.Index as BinaryExpression;
             int stride = 1;
-            if (b != null && (b.Operator == Operator.IMul || b.Operator == Operator.SMul || b.Operator == Operator.UMul))
+            if (bIndex != null && (bIndex.Operator == Operator.IMul || bIndex.Operator == Operator.SMul || bIndex.Operator == Operator.UMul))
             {
-                Constant c = b.Right as Constant;
+                Constant c = bIndex.Right as Constant;
                 if (c != null)
                 {
                     stride = c.ToInt32();
@@ -503,7 +503,10 @@ namespace Reko.Typing
                 var dtArray = factory.CreateArrayType(tvElement, 0);
                 MemoryAccessCommon(basePointer, binEa.Left, 0, dtArray, eaSize);
 
-                VisitMemoryAccess(basePointer, tvElement, binEa.Left, globals);
+                var tvArray = store.CreateTypeVariable(factory);
+                tvArray.DataType = dtArray;
+                tvArray.OriginalDataType = dtArray;
+                VisitMemoryAccess(basePointer, tvArray, binEa.Left, globals);
 
                 MemoryAccessCommon(basePointer, effectiveAddress, 0, tvAccess, eaSize);
                 effectiveAddress.Accept(this, effectiveAddress.TypeVariable);

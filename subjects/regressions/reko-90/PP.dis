@@ -23568,7 +23568,7 @@ l0800_8BC2:
 	cx = 0x0001
 	// succ:  l0800_8BC5_thunk_fn0800_8BD8
 l0800_8BC5_thunk_fn0800_8BD8:
-	call fn0800_8BD8 (retsize: 0;)
+	call fn0800_8BD8 (retsize: 0; FPU: 4;)
 	return
 	// succ:  fn0800_8BC2_exit
 fn0800_8BC2_exit:
@@ -25274,7 +25274,7 @@ l0800_9DFF:
 	Mem0[es:0x0002:word16] = ax
 	// succ:  l0800_9E11_thunk_fn0800_9E15
 l0800_9E11_thunk_fn0800_9E15:
-	call fn0800_9E15 (retsize: 2;)
+	call fn0800_9E15 (retsize: 2; FPU: 2;)
 	return
 	// succ:  fn0800_9DA4_exit
 fn0800_9DA4_exit:
@@ -25628,7 +25628,7 @@ l0800_9F89:
 	ax = Mem0[ss:bp + 0x0004:word16]
 	// succ:  l0800_9F8F_thunk_fn0800_9F92
 l0800_9F8F_thunk_fn0800_9F92:
-	call fn0800_9F92 (retsize: 0;)
+	call fn0800_9F92 (retsize: 0; FPU: 2;)
 	return
 	// succ:  fn0800_9F89_exit
 fn0800_9F89_exit:
@@ -25671,11 +25671,11 @@ l0800_9F9D_thunk_fn0800_9F9F:
 	return
 	// succ:  fn0800_9F92_exit
 l0800_9F9D_thunk_fn0800_9F9F:
-	call fn0800_9F9F (retsize: 0;)
+	call fn0800_9F9F (retsize: 0; FPU: 2;)
 	return
 	// succ:  fn0800_9F92_exit
 l0800_9F9D_thunk_fn0800_9F9F:
-	call fn0800_9F9F (retsize: 0;)
+	call fn0800_9F9F (retsize: 0; FPU: 2;)
 	return
 	// succ:  fn0800_9F92_exit
 l0800_9FFD_in_fn0800_9F92:
