@@ -32,8 +32,6 @@ Eq_10: (ptr code)
 	T_10 (in SEQ(0x2700, SEQ(ds, 0x2040)[di * 0x0002]) : ptr32)
 Eq_11: (struct 0002 (0 T_9 t0000))
 	T_11
-Eq_12: (arr T_11)
-	T_12
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
@@ -79,7 +77,3 @@ T_11:
   Class: Eq_11
   DataType: (struct 0002 (0 T_9 t0000))
   OrigDataType: (struct 0002 (0 T_9 t0000))
-T_12:
-  Class: Eq_12
-  DataType: (arr T_11)
-  OrigDataType: (arr T_11)

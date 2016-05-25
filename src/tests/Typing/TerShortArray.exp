@@ -84,7 +84,3 @@ T_15:
   Class: Eq_15
   DataType: int16
   OrigDataType: (struct 0002 (0 T_11 t0000))
-T_16:
-  Class: Eq_16
-  DataType: (arr int16)
-  OrigDataType: (arr T_15)

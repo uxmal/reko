@@ -61,7 +61,3 @@ T_11:
   Class: Eq_11
   DataType: (memptr (ptr Eq_2) code)
   OrigDataType: (struct 0002 (0 T_9 t0000))
-T_12:
-  Class: Eq_12
-  DataType: (arr (memptr (ptr Eq_2) code))
-  OrigDataType: (arr T_11)

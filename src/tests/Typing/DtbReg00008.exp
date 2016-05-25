@@ -63,8 +63,6 @@ Eq_25: bool
 	T_25 (in v9_15 != 0x0000 : bool)
 Eq_26: (struct 0026 (0 T_15 t0000))
 	T_26
-Eq_27: (arr T_26)
-	T_27
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
@@ -170,7 +168,3 @@ T_26:
   Class: Eq_26
   DataType: (struct 0026 (0 T_15 t0000))
   OrigDataType: (struct 0026 (0 T_15 t0000))
-T_27:
-  Class: Eq_27
-  DataType: (arr T_26)
-  OrigDataType: (arr T_26)

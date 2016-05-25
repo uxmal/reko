@@ -162,7 +162,3 @@ T_26:
   Class: Eq_26
   DataType: Eq_26
   OrigDataType: (struct 0026 (0 T_15 t0000))
-T_27:
-  Class: Eq_27
-  DataType: (arr Eq_26)
-  OrigDataType: (arr T_26)

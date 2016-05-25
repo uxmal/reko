@@ -91,8 +91,6 @@ Eq_33: bool
 	T_33 (in bx_23 >= 0x0000 : bool)
 Eq_34: (struct 0001 (0 T_27 t0000))
 	T_34
-Eq_35: (arr T_34 4096)
-	T_35
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
@@ -230,7 +228,3 @@ T_34:
   Class: Eq_34
   DataType: (struct 0001 (0 T_27 t0000))
   OrigDataType: (struct 0001 (0 T_27 t0000))
-T_35:
-  Class: Eq_35
-  DataType: (arr T_34 4096)
-  OrigDataType: (arr T_34 4096)

@@ -173,9 +173,6 @@ namespace Reko.Typing
             tvElement.OriginalDataType = dtElement;
 
             DataType dtArray = factory.CreateArrayType(tvElement, length);
-            var tvArray = store.CreateTypeVariable(factory);
-            tvArray.DataType = dtArray;
-            tvArray.OriginalDataType = dtArray;
             MemoryAccessCommon(expBase, expStruct, offset, dtArray, structPtrSize);
             return tvElement;
         }
@@ -503,7 +500,11 @@ namespace Reko.Typing
                 binEa.Right.Accept(this, binEa.Right.TypeVariable);
 
                 var tvElement = ArrayField(basePointer, binEa.Left, binEa.DataType.Size, 0, 1, 0, tvAccess);
+                var dtArray = factory.CreateArrayType(tvElement, 0);
+                MemoryAccessCommon(basePointer, binEa.Left, 0, dtArray, eaSize);
+
                 VisitMemoryAccess(basePointer, tvElement, binEa.Left, globals);
+
                 MemoryAccessCommon(basePointer, effectiveAddress, 0, tvAccess, eaSize);
                 effectiveAddress.Accept(this, effectiveAddress.TypeVariable);
                 return false;

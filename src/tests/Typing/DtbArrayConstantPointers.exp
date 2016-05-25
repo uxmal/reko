@@ -25,8 +25,6 @@ Eq_7: ui32
 	T_7 (in i * 0x00000008 : word32)
 Eq_9: (struct 0008 (0 T_8 t0000))
 	T_9
-Eq_10: (arr T_9)
-	T_10
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
@@ -64,7 +62,3 @@ T_9:
   Class: Eq_9
   DataType: (struct 0008 (0 T_8 t0000))
   OrigDataType: (struct 0008 (0 T_8 t0000))
-T_10:
-  Class: Eq_10
-  DataType: (arr T_9)
-  OrigDataType: (arr T_9)

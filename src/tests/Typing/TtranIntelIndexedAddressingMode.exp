@@ -18,7 +18,7 @@ Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: (segment (CA4 (memptr (ptr Eq_2) Eq_13) ptr0CA4) (1C0A int16 w1C0A) (7070 word16 w7070))
 	T_2 (in ds : word16)
-Eq_13: (struct (A byte b000A))
+Eq_13: (struct (A (arr byte) a000A))
 	T_13 (in Mem0[ds:0x0CA4:word16] : word16)
 	T_14 (in bx : word16)
 // Type Variables ////////////
@@ -102,7 +102,4 @@ T_20:
   Class: Eq_20
   DataType: byte
   OrigDataType: (struct 0001 (0 T_19 t0000))
-T_21:
-  Class: Eq_21
-  DataType: (arr byte)
-  OrigDataType: (arr T_20)
+
