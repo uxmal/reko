@@ -130,7 +130,7 @@ namespace Reko.Structure
                 {
                     didReduce = false;
                     do {
-                        didReduce = ReduceAcyclic(n, false);
+                        didReduce = ReduceAcyclic(n);
                         if (!didReduce && IsCyclic(n))
                         {
                             didReduce = ReduceCyclic(n);
@@ -231,13 +231,13 @@ namespace Reko.Structure
         /// </summary>
         /// <param name="n"></param>
         /// <returns>True if a reduction occurred</returns>
-        public bool ReduceAcyclic(Region n, bool reduceTailregions)
+        public bool ReduceAcyclic(Region n)
         {
             bool didReduce = false;
             switch (n.Type)
             {
             case RegionType.Condition:
-                didReduce = ReduceIfRegion(n, reduceTailregions);
+                didReduce = ReduceIfRegion(n, false);
                 break;
             case RegionType.IncSwitch:
                 didReduce = ReduceSwitchRegion(n);
