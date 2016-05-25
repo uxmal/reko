@@ -146,6 +146,14 @@ namespace Reko.Core.Types
             return writer;
 		}
 
+        public Formatter VisitReference(ReferenceTo refTo)
+        {
+            writer.Write("(ref ");
+            WriteReference(refTo.Referent);
+            writer.Write(")");
+            return writer;
+        }
+
         public Formatter VisitString(StringType str)
         {
             writer.Write("(str");

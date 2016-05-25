@@ -166,6 +166,11 @@ namespace Reko.Typing
             return Single(new WorkItem { DataType = ptr.Pointee, GlobalOffset = c.ToInt32() });
         }
 
+        public IEnumerable<WorkItem> VisitReference(ReferenceTo refTo)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<WorkItem> VisitString(StringType str)
         {
             throw new NotImplementedException();

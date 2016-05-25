@@ -221,6 +221,12 @@ namespace Reko.Typing
             throw new NotImplementedException();
         }
 
+
+        public Expression VisitReference(ReferenceTo refTo)
+        {
+            return refTo.Referent.Accept(this);
+        }
+
         public Expression VisitString(StringType str)
         {
             throw new NotImplementedException();

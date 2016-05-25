@@ -104,7 +104,7 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
     The method or operation is not implemented.
-       at Reko.Typing.ExpressionTypeAscender.VisitTestCondition(TestCondition tc) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 358
+       at Reko.Typing.ExpressionTypeAscender.VisitTestCondition(TestCondition tc) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 359
    at Reko.Core.Expressions.TestCondition.Accept[T](ExpressionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 56
    at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 113
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
@@ -132,35 +132,18 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
 
 === BENCHFN.dcproject
 === BENCHFN.EXE
-*** BENCHFN.EXE
-BENCHFN.EXE: error: An internal error occurred while decompiling.
-    Object reference not set to an instance of an object.
-       at Reko.Core.Lib.SuffixArray`1.CalcLcp(Int32 i, Int32 j) in D:\dev\uxmal\reko\master\src\Core\Lib\SuffixArray.cs:line 421
-   at Reko.Core.Lib.SuffixArray`1.BuildLcpArray() in D:\dev\uxmal\reko\master\src\Core\Lib\SuffixArray.cs:line 413
-   at Reko.Core.Lib.SuffixArray`1..ctor(T[] str, Int32[] sa) in D:\dev\uxmal\reko\master\src\Core\Lib\SuffixArray.cs:line 89
-   at Reko.Core.Lib.SuffixArray.Load[T](T[] arr, Int32[] intArray) in D:\dev\uxmal\reko\master\src\Core\Lib\SuffixArray.cs:line 46
-   at Reko.Loading.UnpackingService.EnsureSuffixArray(String filename, Byte[] image) in D:\dev\uxmal\reko\master\src\Decompiler\Loading\UnpackingService.cs:line 154
-   at Reko.Loading.UnpackingService.FindUnpackerBySignature(String filename, Byte[] image, UInt32 entryPointOffset) in D:\dev\uxmal\reko\master\src\Decompiler\Loading\UnpackingService.cs:line 95
-   at Reko.ImageLoaders.MzExe.ExeImageLoader.CreateDeferredLoader() in D:\dev\uxmal\reko\master\src\ImageLoaders\MzExe\ExeImageLoader.cs:line 133
-   at Reko.ImageLoaders.MzExe.ExeImageLoader.GetDeferredLoader() in D:\dev\uxmal\reko\master\src\ImageLoaders\MzExe\ExeImageLoader.cs:line 78
-   at Reko.ImageLoaders.MzExe.ExeImageLoader.get_PreferredBaseAddress() in D:\dev\uxmal\reko\master\src\ImageLoaders\MzExe\ExeImageLoader.cs:line 142
-   at Reko.Loading.Loader.LoadExecutable(String filename, Byte[] image, Address addrLoad) in D:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 103
-   at Reko.DecompilerDriver.Load(String fileName) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 207
-   at Reko.DecompilerDriver.Decompile(String filename) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 97
-
 === pySample.dcproject
 *** pySample.dcproject
-: warning: Type transformer has looped 51 times, quitting prematurely.
 10003008: error: Failed to write global variable g_t10003008.
     The method or operation is not implemented.
-       at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 317
+       at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 322
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 80
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 181
    at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 53
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
 10003008: error: Failed to write global variable g_t10003008.
     The method or operation is not implemented.
-       at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 317
+       at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 322
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 80
    at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 181
    at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 53

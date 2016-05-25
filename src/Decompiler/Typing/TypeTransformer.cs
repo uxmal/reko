@@ -342,6 +342,12 @@ namespace Reko.Typing
             return ptr;
         }
 
+        public DataType VisitReference(ReferenceTo refTo)
+        {
+            refTo.Referent = refTo.Referent.Accept(this);
+            return refTo;
+        }
+
         public DataType VisitPrimitive(PrimitiveType pt)
         {
             return pt;

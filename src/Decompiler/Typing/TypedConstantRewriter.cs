@@ -283,6 +283,11 @@ namespace Reko.Typing
 			return e;
 		}
 
+        public Expression VisitReference(ReferenceTo refTo)
+        {
+            throw new NotImplementedException();
+        }
+
         private bool IsCharPtrToReadonlySection(Constant c, DataType dt)
         {
             var pr = dt as PrimitiveType;

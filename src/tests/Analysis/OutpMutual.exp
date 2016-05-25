@@ -26,7 +26,7 @@ fn0C00_0000_exit:
 ====================
 // fn0C00_0004
 // Return size: 0
-word16 fn0C00_0004(word16 dx, ptr16 dxOut)
+word16 fn0C00_0004(word16 dx, ptr16 & dxOut)
 fn0C00_0004_entry:
 	def fp
 	def dx
@@ -62,7 +62,7 @@ fn0C00_0004_exit:
 
 // fn0C00_0004
 // Return size: 0
-word16 fn0C00_0004(word16 dx, ptr16 dxOut)
+word16 fn0C00_0004(word16 dx, ptr16 & dxOut)
 fn0C00_0004_entry:
 	def dx
 	def dxOut

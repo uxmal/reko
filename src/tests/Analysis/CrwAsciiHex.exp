@@ -43,7 +43,7 @@ FlagGroup byte fn0C00_000A(Register byte al, Register out ptr16 alOut)
 // CZ:Flags
 // alOut:Out:al
 // return address size: 2
-byte fn0C00_000A(byte al, ptr16 alOut)
+byte fn0C00_000A(byte al, ptr16 & alOut)
 fn0C00_000A_entry:
 	// succ:  l0C00_000A
 l0C00_000A:

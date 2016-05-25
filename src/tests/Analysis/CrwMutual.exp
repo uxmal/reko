@@ -37,7 +37,7 @@ Register word16 fn0C00_0004(Register word16 dx, Register out ptr16 dxOut)
 // ax:ax
 // dxOut:Out:dx
 // return address size: 2
-word16 fn0C00_0004(word16 dx, ptr16 dxOut)
+word16 fn0C00_0004(word16 dx, ptr16 & dxOut)
 fn0C00_0004_entry:
 	// succ:  l0C00_0004
 l0C00_0004:

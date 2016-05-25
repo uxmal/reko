@@ -27,8 +27,8 @@ using System.Diagnostics;
 namespace Reko.Scanning
 {
     /// <summary>
-    /// The purpose of this class is to discover interesting global variables. In particular,
-    /// we want to discover pointers to procedures in global data.
+    /// The purpose of this class is to discover interesting global variables.
+    /// In particular, we want to discover pointers to procedures in global data.
     /// </summary>
     public class GlobalDataWorkItem : WorkItem, IDataTypeVisitor
     {
@@ -113,6 +113,11 @@ namespace Reko.Scanning
                 return;
 
             scanner.EnqueueUserGlobalData(addr, ptr.Pointee);
+        }
+
+        public void VisitReference(ReferenceTo refTo)
+        {
+            throw new NotSupportedException("Global variables cannot be references.");
         }
 
         public void VisitString(StringType str)

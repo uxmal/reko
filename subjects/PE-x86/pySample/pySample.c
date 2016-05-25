@@ -443,7 +443,7 @@ Eq_830 * fn10001700(word32 dwArg04, word32 dwArg08)
 	return eax_22;
 }
 
-ui32 fn10001742(ui32 ebx, ui32 esi, ui32 edi,  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * ediOut)
+ui32 fn10001742(ui32 ebx, ui32 esi, ui32 edi, ptr32 & ediOut)
 {
 	ui32 eax_31;
 	Eq_447 * ebp_10 = fn100017E8(ebx, esi, edi, dwLoc0C, 0x10002230, 0x08);

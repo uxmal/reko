@@ -305,8 +305,9 @@ namespace Reko.Typing
         public DataType VisitOutArgument(OutArgument outArgument)
         {
             var dt = outArgument.Expression.Accept(this);
-            Expression exp = outArgument;
-            return RecordDataType(OutPointerTo(outArgument.TypeVariable), exp);
+            return dt;
+            //Expression exp = outArgument;
+            //return RecordDataType(OutPointerTo(outArgument.TypeVariable), exp);
         }
 
         private DataType OutPointerTo(TypeVariable tv)

@@ -255,12 +255,9 @@ Eq_349: (segment "Eq_349")
 Eq_363: (struct "Eq_363" (0 ptr32 ptr0000) (14 ptr32 ptr0014) (1C ptr32 ptr001C))
 	T_363 (in esp_142 : (ptr Eq_363))
 	T_365 (in esp_123 - 0x00000004 : word32)
-Eq_372: (fn word32 (ui32, ui32, ui32, (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_377))))))))))))))))))))))))))))))))))))))))))))))))))))))
+Eq_372: (fn word32 (ui32, ui32, ui32, ptr32))
 	T_372 (in fn10001742 : ptr32)
 	T_373 (in signature of fn10001742 : void)
-Eq_377: (ptr Eq_377)
-	T_377 (in ediOut : (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_377)))))))))))))))))))))))))))))))))))))))))))))))))))))
-	T_378 (in out edi_144 : ptr32)
 Eq_389: (struct "Eq_389" (0 ptr32 ptr0000) (1C ptr32 ptr001C))
 	T_389 (in esp_142 - 0x00000004 : word32)
 Eq_397: (struct "Eq_397" (0 ptr32 ptr0000) (14 ptr32 ptr0014) (1C ptr32 ptr001C))
@@ -1917,14 +1914,14 @@ T_376: (in edi : ui32)
   Class: Eq_166
   DataType: ui32
   OrigDataType: word32
-T_377: (in ediOut : (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_377)))))))))))))))))))))))))))))))))))))))))))))))))))))
+T_377: (in ediOut : ptr32)
   Class: Eq_377
-  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_377))))))))))))))))))))))))))))))))))))))))))))))))))))
+  DataType: ptr32
   OrigDataType: ptr32
 T_378: (in out edi_144 : ptr32)
   Class: Eq_377
-  DataType: (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr (ptr Eq_377))))))))))))))))))))))))))))))))))))))))))))))))))))
-  OrigDataType: (ptr T_378)
+  DataType: ptr32
+  OrigDataType: ptr32
 T_379: (in fn10001742(ebx_116, esi_115, edi_114, out edi_144) : word32)
   Class: Eq_371
   DataType: word32
@@ -4909,9 +4906,7 @@ typedef struct Eq_363 {
 	ptr32 ptr001C;	// 1C
 } Eq_363;
 
-typedef word32 (Eq_372)(ui32, ui32, ui32,  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *);
-
-typedef  * Eq_377;
+typedef word32 (Eq_372)(ui32, ui32, ui32, ptr32);
 
 typedef struct Eq_389 {
 	ptr32 ptr0000;	// 0
