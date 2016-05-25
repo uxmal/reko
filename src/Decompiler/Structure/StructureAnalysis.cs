@@ -64,6 +64,8 @@ namespace Reko.Structure
         {
             var ccc = new CompoundConditionCoalescer(proc);
             ccc.Transform();
+            var cfgc = new ControlFlowGraphCleaner(proc);
+            cfgc.Transform();
             var reg = Execute();
             //$REVIEW: yeecch. Should return the statements, and 
             // caller decides what to do with'em. Probably 
