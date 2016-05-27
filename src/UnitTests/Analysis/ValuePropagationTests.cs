@@ -667,24 +667,24 @@ ProcedureBuilder_exit:
             #region Expected
 @"es:es
     def:  def es
-    uses: es_bx_3 = Mem0[es:bx:word32]
+    uses: es_bx_4 = Mem0[es:bx:word32]
 bx:bx
     def:  def bx
-    uses: es_bx_3 = Mem0[es:bx:word32]
+    uses: es_bx_4 = Mem0[es:bx:word32]
 Mem0:Global memory
     def:  def Mem0
-    uses: es_bx_3 = Mem0[es:bx:word32]
-es_bx_3: orig: es_bx
-    def:  es_bx_3 = Mem0[es:bx:word32]
-    uses: es_4 = SLICE(es_bx_3, word16, 16)
-          bx_5 = (word16) es_bx_3
-          Mem0[es_bx_3 + 0x0004:byte] = 0x03
-es_4: orig: es
-    def:  es_4 = SLICE(es_bx_3, word16, 16)
-bx_5: orig: bx
-    def:  bx_5 = (word16) es_bx_3
-Mem6: orig: Mem0
-    def:  Mem0[es_bx_3 + 0x0004:byte] = 0x03
+    uses: es_bx_4 = Mem0[es:bx:word32]
+es_bx_4: orig: es_bx
+    def:  es_bx_4 = Mem0[es:bx:word32]
+    uses: es_5 = SLICE(es_bx_4, word16, 16)
+          bx_6 = (word16) es_bx_4
+          Mem0[es_bx_4 + 0x0004:byte] = 0x03
+es_5: orig: es
+    def:  es_5 = SLICE(es_bx_4, word16, 16)
+bx_6: orig: bx
+    def:  bx_6 = (word16) es_bx_4
+Mem7: orig: Mem0
+    def:  Mem0[es_bx_4 + 0x0004:byte] = 0x03
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -694,10 +694,10 @@ ProcedureBuilder_entry:
 	def Mem0
 	// succ:  l1
 l1:
-	es_bx_3 = Mem0[es:bx:word32]
-	es_4 = SLICE(es_bx_3, word16, 16)
-	bx_5 = (word16) es_bx_3
-	Mem0[es_bx_3 + 0x0004:byte] = 0x03
+	es_bx_4 = Mem0[es:bx:word32]
+	es_5 = SLICE(es_bx_4, word16, 16)
+	bx_6 = (word16) es_bx_4
+	Mem0[es_bx_4 + 0x0004:byte] = 0x03
 ProcedureBuilder_exit:
 ";
             #endregion
