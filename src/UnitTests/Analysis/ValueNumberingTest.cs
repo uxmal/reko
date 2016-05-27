@@ -24,6 +24,7 @@ using NUnit.Framework;
 using System;
 using System.IO;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -52,7 +53,12 @@ namespace Reko.UnitTests.Analysis
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
 				var gr = proc.CreateBlockDominatorGraph();
-                SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, null, gr);
+                SsaTransform sst = new SsaTransform(
+                    new ProgramDataFlow(), 
+                    proc,
+                    null,
+                    gr,
+                    new HashSet<RegisterStorage>());
 				SsaState ssa = sst.SsaState;
 				ValueNumbering vn = new ValueNumbering(ssa.Identifiers);
 				DumpProc(proc, ssa, fut.TextWriter);
@@ -85,7 +91,8 @@ namespace Reko.UnitTests.Analysis
 				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, program.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc,  null, gr);
+				SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc,  null, gr,
+                    new HashSet<RegisterStorage>());
 				SsaState ssa = sst.SsaState;
 				ValueNumbering vn = new ValueNumbering(ssa.Identifiers);
 				DumpProc(proc, ssa, fut.TextWriter);
@@ -119,8 +126,9 @@ done:
 				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, program.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, null, gr);
-				SsaState ssa = sst.SsaState;
+				SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, null, gr,
+                    new HashSet<RegisterStorage>());
+                SsaState ssa = sst.SsaState;
 				DumpProc(proc, ssa, fut.TextWriter);
 
 				DeadCode.Eliminate(proc, ssa);
@@ -156,8 +164,9 @@ done:
 				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, program.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, null, gr);
-				SsaState ssa = sst.SsaState;
+				SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, null, gr,
+                    new HashSet<RegisterStorage>());
+                SsaState ssa = sst.SsaState;
 				DumpProc(proc, ssa, fut.TextWriter);
 				ValueNumbering vn = new ValueNumbering(ssa.Identifiers);
 				vn.Write(fut.TextWriter);
@@ -189,8 +198,9 @@ looptest:
 				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, program.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, null, gr);
-				SsaState ssa = sst.SsaState;
+				SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, null, gr,
+                    new HashSet<RegisterStorage>());
+                SsaState ssa = sst.SsaState;
 				DumpProc(proc, ssa, fut.TextWriter);
 				ValueNumbering vn = new ValueNumbering(ssa.Identifiers);
 				vn.Write(fut.TextWriter);
@@ -225,8 +235,9 @@ looptest:
 				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, program.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(progFlow, proc, null, gr);
-				SsaState ssa = sst.SsaState;
+				SsaTransform sst = new SsaTransform(progFlow, proc, null, gr,
+                    new HashSet<RegisterStorage>());
+                SsaState ssa = sst.SsaState;
 				DumpProc(proc, ssa, writer);
 				ValueNumbering vn = new ValueNumbering(ssa.Identifiers);
 				vn.Write(writer);

@@ -172,6 +172,11 @@ namespace Reko.Gui.Windows
                 {
                     switch (cmdId.ID)
                     {
+                    case CmdIds.EditCopy:
+                        status.Status = ValidDisassemblerSelection()
+                            ? MenuStatus.Visible | MenuStatus.Enabled
+                            : MenuStatus.Visible;
+                        return true;
                     case CmdIds.OpenLink:
                     case CmdIds.OpenLinkInNewWindow:
                         status.Status = selAddress != null ? MenuStatus.Visible | MenuStatus.Enabled : 0;
@@ -228,6 +233,7 @@ namespace Reko.Gui.Windows
                 {
                     switch (cmdId.ID)
                     {
+                    case CmdIds.EditCopy: return CopyDisassemblerSelectionToClipboard();
                     case CmdIds.EditAnnotation: return EditDasmAnnotation();
                     case CmdIds.TextEncodingChoose: return ChooseTextEncoding();
                     case CmdIds.ActionCallTerminates: return EditCallSite();
@@ -304,12 +310,21 @@ namespace Reko.Gui.Windows
                 return true;
             if (control.MemoryView.Focused)
             {
-                 var decompiler = services.GetService<IDecompilerService>().Decompiler;
-                 var dumper = new Dumper(decompiler.Project.Programs.First().Architecture);
+                var decompiler = services.GetService<IDecompilerService>().Decompiler;
+                var dumper = new Dumper(decompiler.Project.Programs.First().Architecture);
                 var sb = new StringWriter();
                 dumper.DumpData(control.MemoryView.SegmentMap, range, sb);
                 Clipboard.SetText(sb.ToString());       //$TODO: abstract this.
             }
+            return true;
+        }
+
+        private bool CopyDisassemblerSelectionToClipboard()
+        {
+            var ms = new MemoryStream();
+            control.DisassemblyView.Selection.Save(ms, DataFormats.UnicodeText);
+            var text = new string(Encoding.Unicode.GetChars(ms.ToArray()));
+            Clipboard.SetData(DataFormats.UnicodeText, text);
             return true;
         }
 
@@ -343,6 +358,11 @@ namespace Reko.Gui.Windows
                     return true;
             }
             return false;
+        }
+
+        private bool ValidDisassemblerSelection()
+        { 
+            return !control.DisassemblyView.Selection.IsEmpty;
         }
 
         public ImageMapItem SetTypeAtAddressRange(Address address, string userText)

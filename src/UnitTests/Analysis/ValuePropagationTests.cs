@@ -32,6 +32,7 @@ using System;
 using System.IO;
 using Rhino.Mocks;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -88,7 +89,8 @@ namespace Reko.UnitTests.Analysis
 				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
-				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, null, gr);
+                SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, null, gr,
+                    new HashSet<RegisterStorage>());
 				SsaState ssa = sst.SsaState;
                 var cce = new ConditionCodeEliminator(ssa, prog.Platform);
                 cce.Transform();
@@ -205,7 +207,8 @@ namespace Reko.UnitTests.Analysis
 		{
 			Procedure proc = new DpbMock().Procedure;
 			var gr = proc.CreateBlockDominatorGraph();
-			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc,  null, gr);
+			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc,  null, gr,
+                new HashSet<RegisterStorage>());
 			SsaState ssa = sst.SsaState;
 
             ssa.DebugDump(true);
@@ -475,7 +478,7 @@ namespace Reko.UnitTests.Analysis
 			var gr = proc.CreateBlockDominatorGraph();
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             importResolver.Replay();
-			var sst = new SsaTransform(new ProgramDataFlow(), proc, importResolver, gr);
+			var sst = new SsaTransform(new ProgramDataFlow(), proc, importResolver, gr, new HashSet<RegisterStorage>());
 			var ssa = sst.SsaState;
 
 			var vp = new ValuePropagator(arch, ssa.Identifiers, proc);
@@ -493,7 +496,7 @@ namespace Reko.UnitTests.Analysis
         {
             var proc = m.Procedure;
             var gr = proc.CreateBlockDominatorGraph();
-            var sst = new SsaTransform(new ProgramDataFlow(), proc, null, gr);
+            var sst = new SsaTransform(new ProgramDataFlow(), proc, null, gr, new HashSet<RegisterStorage>());
             var ssa = sst.SsaState;
 
             var vp = new ValuePropagator(arch, ssa.Identifiers, proc);
@@ -627,6 +630,63 @@ ProcedureBuilder_entry:
 	// succ:  l1
 l1:
 	r1_0 = 1.0F
+ProcedureBuilder_exit:
+";
+            #endregion
+
+            AssertStringsEqual(sExp, ssa);
+        }
+
+        [Test]
+        public void VpUndoUnnecessarySlicingOfSegmentPointer()
+        {
+            var m = new ProcedureBuilder();
+            var es = m.Reg16("es", 1);
+            var bx = m.Reg16("bx", 3);
+            var es_bx = m.Frame.EnsureSequence(es, bx, PrimitiveType.Word32);
+
+            m.Assign(es_bx, m.SegMem(PrimitiveType.Word32, es, bx));
+            m.Assign(es, m.Slice(PrimitiveType.Word16, es_bx, 16));
+            m.Assign(bx, m.Cast(PrimitiveType.Word16, es_bx));
+            m.SegStore(es, m.IAdd(bx, 4), m.Byte(3));
+
+            var ssa = RunTest(m);
+
+            var sExp =
+            #region Expected
+@"es:es
+    def:  def es
+    uses: es_bx_3 = Mem0[es:bx:word32]
+bx:bx
+    def:  def bx
+    uses: es_bx_3 = Mem0[es:bx:word32]
+Mem0:Global memory
+    def:  def Mem0
+    uses: es_bx_3 = Mem0[es:bx:word32]
+es_bx_3: orig: es_bx
+    def:  es_bx_3 = Mem0[es:bx:word32]
+    uses: es_4 = SLICE(es_bx_3, word16, 16)
+          bx_5 = (word16) es_bx_3
+          Mem0[es_bx_3 + 0x0004:byte] = 0x03
+es_4: orig: es
+    def:  es_4 = SLICE(es_bx_3, word16, 16)
+bx_5: orig: bx
+    def:  bx_5 = (word16) es_bx_3
+Mem6: orig: Mem0
+    def:  Mem0[es_bx_3 + 0x0004:byte] = 0x03
+// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def es
+	def bx
+	def Mem0
+	// succ:  l1
+l1:
+	es_bx_3 = Mem0[es:bx:word32]
+	es_4 = SLICE(es_bx_3, word16, 16)
+	bx_5 = (word16) es_bx_3
+	Mem0[es_bx_3 + 0x0004:byte] = 0x03
 ProcedureBuilder_exit:
 ";
             #endregion

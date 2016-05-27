@@ -280,9 +280,9 @@ namespace Reko.Scanning
         }
 
         /// <summary>
-        /// Scans through each segment to find things that look like pointers.
-        /// If these pointers point into a valid segment, increment the tally for 
-        /// that address
+        /// Scans through each address in each segment to find things that
+        /// look like pointers. If these pointers point into a valid segment,
+        /// increment the tally for that address.
         /// </summary>
         /// <returns>A dictionary mapping segments to their pointer tallies.</returns>
         public Dictionary<ImageSegment, int[]> GetPossiblePointerTargets()

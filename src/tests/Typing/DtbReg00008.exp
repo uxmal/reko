@@ -57,7 +57,7 @@ Eq_17: (memptr T_2 (struct (0 T_6 t0000)))
 	T_17 (in 0x9A26 : word16)
 Eq_19: word16
 	T_19 (in 0x0001 : word16)
-Eq_22: word16
+Eq_22: int16
 	T_22 (in 0x0026 : word16)
 Eq_25: bool
 	T_25 (in v9_15 != 0x0000 : bool)
@@ -150,12 +150,12 @@ T_21: (in Mem16[ds:0x9A26:word16] : word16)
   OrigDataType: word16
 T_22: (in 0x0026 : word16)
   Class: Eq_22
-  DataType: word16
-  OrigDataType: word16
+  DataType: int16
+  OrigDataType: int16
 T_23: (in si_10 + 0x0026 : word16)
   Class: Eq_9
   DataType: (memptr T_12 (struct 0026 (0 (union (word16 u0) (T_15 u1)) u0000)))
-  OrigDataType: word16
+  OrigDataType: (memptr T_12 (struct 0026 (0 (union (word16 u0) (T_15 u1)) u0000)))
 T_24: (in 0x0000 : word16)
   Class: Eq_6
   DataType: word16

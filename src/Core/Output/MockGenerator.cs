@@ -506,6 +506,11 @@ namespace Reko.Core.Output
             throw new NotImplementedException();
         }
 
+        public int VisitReference(ReferenceTo ptr)
+        {
+            throw new NotImplementedException();
+        }
+
         public int VisitString(StringType str)
         {
             throw new NotImplementedException();

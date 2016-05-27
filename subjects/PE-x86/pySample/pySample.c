@@ -82,12 +82,11 @@ word32 fn100011E9(word32 dwArg08)
 			if (eax_93 == 0x00)
 				break;
 			if (eax_93 == edi_82)
-				goto l10001258;
+				break;
 			Sleep(1000);
 		}
-l10001258:
 		ptr32 esp_118;
-		LONG ebp_117;
+		ptr32 ebp_117;
 		ui32 ebx_116;
 		ui32 esi_115;
 		ui32 edi_114;
@@ -138,24 +137,24 @@ l10001258:
 			globals->dw100033A8 = 0x02;
 			esp_118 = fp + ~0x1B;
 		}
-		LONG * esp_123 = esp_118 + 0x04;
+		ptr32 * esp_123 = esp_118 + 0x04;
 		if (ebp_117 == 0x00)
 		{
-			*(esp_123 - 0x04) = (int32) ebp_117;
-			*(esp_123 - 0x08) = (int32) 268448684;
+			*(esp_123 - 0x04) = ebp_117;
+			*(esp_123 - 0x08) = 268448684;
 			InterlockedExchange(*(esp_123 - 0x08), *(esp_123 - 0x04));
 		}
 		if (globals->ptr100033B8 != null)
 		{
-			Eq_363 * esp_142 = esp_123 - (LONG *) 0x04;
-			Mem143[esp_142 + 0x00:word32] = 0x100033B8;
-			 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * edi_144;
+			Eq_363 * esp_142 = esp_123 - 0x04;
+			esp_142->ptr0000 = 0x100033B8;
+			ptr32 edi_144;
 			word32 eax_145 = fn10001742(ebx_116, esi_115, edi_114, out edi_144);
 			if (eax_145 != 0x00)
 			{
-				Mem152[esp_142 + 0x00:word32] = Mem143[esp_142 + 0x1C:word32];
-				Mem154[esp_142 - 0x04 + 0x00:word32] = edi_144;
-				Mem156[esp_142 - 0x08 + 0x00:word32] = Mem154[esp_142 + 0x14:word32];
+				esp_142->ptr0000 = esp_142->ptr001C;
+				(esp_142 - 0x04)->ptr0000 = edi_144;
+				(esp_142 - 0x08)->ptr0000 = esp_142->ptr0014;
 				word32 esp_157;
 				word32 eax_158;
 				word32 ebp_159;
@@ -265,9 +264,9 @@ l10001258:
 				globals->dw100033B4 = eax_366;
 				esp_309 = fp + ~0x1B;
 			}
-			LONG * esp_323 = esp_309 - 0x04;
-			*esp_323 = (int32) 0x00;
-			*(esp_323 - 0x04) = (int32) 268448684;
+			ptr32 * esp_323 = esp_309 - 0x04;
+			*esp_323 = 0x00;
+			*(esp_323 - 0x04) = 268448684;
 			globals->dw100033A8 = 0x00;
 			InterlockedExchange(*(esp_323 - 0x04), *esp_323);
 		}
@@ -280,16 +279,16 @@ Eq_176 fn10001388(Eq_176 ecx, Eq_176 edx, ui32 ebx, ui32 esi, ui32 edi)
 {
 	Eq_447 * ebp_10 = fn100017E8(ebx, esi, edi, dwLoc0C, 0x100021E8, 0x10);
 	Eq_176 ebx_158 = ebp_10->t0008;
-	*(ebp_10 - 0x1C) = 0x01;
-	*(ebp_10 - 0x04) = 0x00;
+	(ebp_10 - 0x1C)->t0000.u0 = 0x01;
+	(ebp_10 - 0x04)->t0000.u0 = 0x00;
 	globals->t10003008 = edx;
-	*(ebp_10 - 0x04) = 0x01;
+	(ebp_10 - 0x04)->t0000.u0 = 0x01;
 	ptr32 esp_175 = fp - 0x08;
 	Eq_176 edi_12 = ecx;
 	Eq_176 esi_14 = edx;
 	if (edx == 0x00 && globals->dw10003070 == 0x00)
 	{
-		*(ebp_10 - 0x1C) = 0x00;
+		(ebp_10 - 0x1C)->t0000.u0 = 0x00;
 		goto l1000147A;
 	}
 	if (edx == 0x01 || edx == 0x02)
@@ -308,15 +307,15 @@ Eq_176 fn10001388(Eq_176 ecx, Eq_176 edx, ui32 ebx, ui32 esi, ui32 edi)
 			byte SCZO_210;
 			byte Z_211;
 			eax_165();
-			*(ebp_10 - 0x1C) = (Eq_176 *) eax_207;
+			(ebp_10 - 0x1C)->t0000 = eax_207;
 		}
-		if (*(ebp_10 - 0x1C) == 0x00)
+		if ((ebp_10 - 0x1C)->t0000 == 0x00)
 		{
 l1000147A:
-			*(ebp_10 - 0x04) = (Eq_176 *) (*(ebp_10 - 0x04) & 0x00);
-			*(ebp_10 - 0x04) = ~0x01;
+			(ebp_10 - 0x04)->t0000 = (ebp_10 - 0x04)->t0000 & 0x00;
+			(ebp_10 - 0x04)->t0000.u0 = ~0x01;
 			fn10001493();
-			Eq_176 eax_39 = *(ebp_10 - 0x1C);
+			Eq_176 eax_39 = (ebp_10 - 0x1C)->t0000;
 			fn1000182D(ebp_10, 0x10, dwArg00, dwArg04, dwArg08, dwArg0C);
 			return eax_39;
 		}
@@ -325,7 +324,7 @@ l1000147A:
 		*(esp_182 - 0x04) = (Eq_176 *) esi_14;
 		*(esp_182 - 0x08) = (Eq_176 *) ebx_158;
 		Eq_176 eax_188 = fn100011E9(dwArg04);
-		*(ebp_10 - 0x1C) = (Eq_176 *) eax_188;
+		(ebp_10 - 0x1C)->t0000 = eax_188;
 		esp_175 = esp_182;
 		if (eax_188 == 0x00)
 			goto l1000147A;
@@ -335,8 +334,8 @@ l1000147A:
 	*(esp_56 - 0x04) = (Eq_176 *) esi_14;
 	*(esp_56 - 0x08) = (Eq_176 *) ebx_158;
 	Eq_176 eax_62 = fn100017C6(0x10, dwArg04);
-	*(ebp_10 - 0x1C) = (Eq_176 *) eax_62;
-	word32 esp_142 = esp_56;
+	(ebp_10 - 0x1C)->t0000 = eax_62;
+	ptr32 esp_142 = esp_56;
 	if (esi_14 == 0x01 && eax_62 == 0x00)
 	{
 		*esp_56 = (Eq_176 *) edi_12;
@@ -372,8 +371,8 @@ l1000147A:
 		*(esp_80 - 0x08) = (Eq_176 *) ebx_158;
 		Eq_176 eax_86 = fn100011E9(dwArg04);
 		if (eax_86 == 0x00)
-			*(ebp_10 - 0x1C) = (Eq_176 *) (*(ebp_10 - 0x1C) & eax_86);
-		if (*(ebp_10 - 0x1C) != 0x00)
+			(ebp_10 - 0x1C)->t0000 = (ebp_10 - 0x1C)->t0000 & eax_86;
+		if ((ebp_10 - 0x1C)->t0000 != 0x00)
 		{
 			code * eax_95 = globals->ptr100020CC;
 			if (eax_95 != null)
@@ -393,7 +392,7 @@ l1000147A:
 				byte SCZO_115;
 				byte Z_116;
 				eax_95();
-				*(ebp_10 - 0x1C) = (Eq_176 *) eax_112;
+				(ebp_10 - 0x1C)->t0000 = eax_112;
 			}
 		}
 	}
@@ -443,7 +442,7 @@ Eq_830 * fn10001700(word32 dwArg04, word32 dwArg08)
 	return eax_22;
 }
 
-ui32 fn10001742(ui32 ebx, ui32 esi, ui32 edi,  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * ediOut)
+ui32 fn10001742(ui32 ebx, ui32 esi, ui32 edi, ptr32 & ediOut)
 {
 	ui32 eax_31;
 	Eq_447 * ebp_10 = fn100017E8(ebx, esi, edi, dwLoc0C, 0x10002230, 0x08);
@@ -457,7 +456,7 @@ ui32 fn10001742(ui32 ebx, ui32 esi, ui32 edi,  * * * * * * * * * * * * * * * * *
 		if (eax_54 != null)
 		{
 			eax_31 = ~(eax_54->dw0024 >> 0x1F) & 0x01;
-			*(ebp_10 - 0x04) = ~0x01;
+			(ebp_10 - 0x04)->t0000.u0 = ~0x01;
 l100017A8:
 			word32 edi_37;
 			*ediOut = fn1000182D(ebp_10, 0x08, dwArg00, dwArg04, dwArg08, dwArg0C);

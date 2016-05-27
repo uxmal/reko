@@ -68,6 +68,12 @@ namespace Reko.UnitTests.Scanning
             scanner = mr.StrictMock<IScanner>();
             arch = mr.Stub<IProcessorArchitecture>();
             program.Architecture = arch;
+            program.SegmentMap = new SegmentMap(
+                Address.Ptr32(0x00100000),
+                new ImageSegment(
+                    ".text",
+                    new MemoryArea(Address.Ptr32(0x00100000), new byte[0x20000]),
+                    AccessMode.ReadExecute));
             arch.Replay();
             program.Platform = new DefaultPlatform(null, arch);
             arch.BackToRecord();
@@ -210,7 +216,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwi_CallInstructionShouldAddNodeToCallgraph()
         {
-            trace.Add(m => { m.Call(Address.Ptr32(0x1200), 4); });
+            trace.Add(m => { m.Call(Address.Ptr32(0x102000), 4); });
             trace.Add(m => { m.Assign(m.Word32(0x4000), m.Word32(0)); });
             trace.Add(m => { m.Return(4, 0); });
 
@@ -226,10 +232,10 @@ namespace Reko.UnitTests.Scanning
                 scanner.Stub(x => x.FindContainingBlock(
                     Arg<Address>.Is.Anything)).Return(block);
                 scanner.Expect(x => x.ScanProcedure(
-                    Arg<Address>.Matches(arg => arg.Offset == 0x1200),
+                    Arg<Address>.Matches(arg => arg.Offset == 0x102000),
                     Arg<string>.Is.Null,
                     Arg<ProcessorState>.Is.Anything))
-                        .Return(new Procedure("fn1200", new Frame(PrimitiveType.Word32)));
+                        .Return(new Procedure("fn102000", new Frame(PrimitiveType.Word32)));
                 scanner.Stub(x => x.TerminateBlock(null, null)).IgnoreArguments();
                 scanner.Stub(x => x.SetProcedureReturnAddressBytes(
                     Arg<Procedure>.Is.NotNull,
@@ -241,7 +247,7 @@ namespace Reko.UnitTests.Scanning
             wi.Process();
             var callees = new List<Procedure>(program.CallGraph.Callees(block.Procedure));
             Assert.AreEqual(1, callees.Count);
-            Assert.AreEqual("fn1200", callees[0].Name);
+            Assert.AreEqual("fn102000", callees[0].Name);
         }
 
         [Test]
@@ -262,11 +268,11 @@ namespace Reko.UnitTests.Scanning
                 scanner.Stub(x => x.FindContainingBlock(
                     Arg<Address>.Is.Anything)).Return(block);
                 scanner.Expect(x => x.GetImportedProcedure(
-                    Arg<Address>.Matches(a => a.ToLinear() == 0x2000u),
+                    Arg<Address>.Matches(a => a.ToLinear() == 0x102000u),
                     Arg<Address>.Is.NotNull)).Return(alloca);
                 scanner.Stub(x => x.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             }
-            trace.Add(m => m.Call(Address.Ptr32(0x2000), 4));
+            trace.Add(m => m.Call(Address.Ptr32(0x102000), 4));
             var state = new FakeProcessorState(program.Architecture);
             state.SetRegister(Registers.eax, Constant.Word32(0x0400));
             var wi = CreateWorkItem(Address.Ptr32(0x1000), state);
@@ -290,14 +296,14 @@ namespace Reko.UnitTests.Scanning
                 IsAlloca = true
             });
 
-            trace.Add(m => m.Call(Address.Ptr32(0x2000), 4));
+            trace.Add(m => m.Call(Address.Ptr32(0x102000), 4));
 
             using (mr.Record())
             {
                 scanner.Stub(x => x.FindContainingBlock(
                     Arg<Address>.Is.Anything)).Return(block);
                 scanner.Expect(x => x.GetImportedProcedure(
-                    Arg<Address>.Is.Equal(Address.Ptr32(0x2000u)),
+                    Arg<Address>.Is.Equal(Address.Ptr32(0x102000u)),
                     Arg<Address>.Is.NotNull)).Return(alloca);
                 scanner.Stub(x => x.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
 
@@ -312,7 +318,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwi_CallTerminatingProcedure_StopScanning()
         {
-            proc = Procedure.Create("proc", Address.Ptr32(0x002000), new Frame(PrimitiveType.Pointer32));
+            proc = Procedure.Create("proc", Address.Ptr32(0x102000), new Frame(PrimitiveType.Pointer32));
             var terminator = Procedure.Create("terminator", Address.Ptr32(0x0001000), new Frame(PrimitiveType.Pointer32));
             terminator.Characteristics = new ProcedureCharacteristics {
                 Terminates = true,
@@ -333,7 +339,7 @@ namespace Reko.UnitTests.Scanning
             scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             mr.ReplayAll();
 
-            trace.Add(m => m.Call(Address.Ptr32(0x0001000), 4));
+            trace.Add(m => m.Call(Address.Ptr32(0x00102000), 4));
             trace.Add(m => m.SideEffect(new ProcedureConstant(VoidType.Instance, new PseudoProcedure("shouldnt_decompile_this", VoidType.Instance, 0))));
 
             var wi = CreateWorkItem(Address.Ptr32(0x2000), new FakeProcessorState(arch));
@@ -415,13 +421,13 @@ testProc_exit:
                 Arg<ProcessorState>.Is.NotNull))
                 .Return(block3);
             scanner.Expect(s => s.ScanProcedure(
-                Arg<Address>.Is.Equal(Address.Ptr32(0x2000)),
+                Arg<Address>.Is.Equal(Address.Ptr32(0x102000)),
                 Arg<string>.Is.Null,
                 Arg<ProcessorState>.Is.NotNull)).Return(proc2);
             scanner.Expect(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             mr.ReplayAll();
 
-            trace.Add(m => m.Call(Address.Ptr32(0x2000), 0));
+            trace.Add(m => m.Call(Address.Ptr32(0x102000), 0));
             trace.Add(m => m.Return(0, 0));
             var wi = CreateWorkItem(Address.Ptr32(0x1000), new FakeProcessorState(arch));
             wi.Process();
@@ -698,7 +704,7 @@ testProc_exit:
         public void Bwi_Call_UserProcedure_With_Signature()
         {
             var addrCall = Address.Ptr32(0x00100000);
-            var addrCallee = Address.Ptr32(0x00200000);
+            var addrCallee = Address.Ptr32(0x00102000);
             var l00100000 = new Block(proc, "l00100000");
             var procCallee = new Procedure(null, new Frame(PrimitiveType.Pointer32))
             {

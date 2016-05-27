@@ -27,13 +27,14 @@ using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Text;
+using Rhino.Mocks;
 
 namespace Reko.UnitTests.Typing
 {
 	[TestFixture]
 	public class TypedConstantRewriterTests
 	{
-		private TypeStore store;
+        private TypeStore store;
 		private TypeFactory factory;
 		private TypedConstantRewriter tcr;
 		private Identifier globals;
@@ -66,9 +67,12 @@ namespace Reko.UnitTests.Typing
 			eqGlobals.DataType = s;
 			globals.TypeVariable.DataType = new Pointer(eqGlobals, 4);
 			globals.DataType = globals.TypeVariable.DataType;
-
-            tcr = new TypedConstantRewriter(program);
 		}
+
+        private void Given_TypedConstantRewriter()
+        {
+            tcr = new TypedConstantRewriter(program, new FakeDecompilerEventListener());
+        }
 
         private void Given_Global(uint address, DataType dt)
         {
@@ -76,9 +80,26 @@ namespace Reko.UnitTests.Typing
             str.Fields.Add((int)(address - 0x00100000u), dt);
         }
 
+        private void Given_Segment(ushort selector, string name)
+        {
+            var seg = new ImageSegment(name, new MemoryArea(Address.SegPtr(selector, 0), new byte[100]), AccessMode.ReadWriteExecute);
+            seg.Identifier = new Identifier(name, PrimitiveType.SegmentSelector, RegisterStorage.None);
+            program.SegmentMap.AddSegment(seg);
+
+            var tv = store.EnsureExpressionTypeVariable(factory, seg.Identifier);
+            var dt = new StructureType
+            {
+                IsSegment = true,
+            };
+            tv.Class.DataType = dt;
+            tv.DataType = new Pointer(tv.Class, 2);
+            tv.OriginalDataType = PrimitiveType.SegmentSelector;
+        }
+
 		[Test]
 		public void Tcr_RewriteWord32()
 		{
+            Given_TypedConstantRewriter();
 			Constant c = Constant.Word32(0x0131230);
 			store.EnsureExpressionTypeVariable(factory, c);
 			c.TypeVariable.DataType = PrimitiveType.Word32;
@@ -90,7 +111,8 @@ namespace Reko.UnitTests.Typing
 		[Test]
         public void Tcr_RewriterRealBitpattern()
 		{
-			Constant c = Constant.Word32(0x3F800000);
+            Given_TypedConstantRewriter();
+            Constant c = Constant.Word32(0x3F800000);
 			store.EnsureExpressionTypeVariable(factory, c);
 			c.TypeVariable.DataType = PrimitiveType.Real32;
 			c.TypeVariable.OriginalDataType = c.DataType;
@@ -101,7 +123,8 @@ namespace Reko.UnitTests.Typing
 		[Test]
         public void Tcr_RewritePointer()
 		{
-			Constant c = Constant.Word32(0x00100000);
+            Given_TypedConstantRewriter();
+            Constant c = Constant.Word32(0x00100000);
 			store.EnsureExpressionTypeVariable(factory, c);
 			c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 4);
 			c.TypeVariable.OriginalDataType = PrimitiveType.Word32;
@@ -112,6 +135,7 @@ namespace Reko.UnitTests.Typing
         [Test]
         public void Tcr_RewriteNullPointer()
         {
+            Given_TypedConstantRewriter();
             Constant c = Constant.Word32(0x00000000);
             store.EnsureExpressionTypeVariable(factory, c);
             c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 4);
@@ -123,6 +147,7 @@ namespace Reko.UnitTests.Typing
         [Test]
         public void Tcr_OffImagePointer()
         {
+            Given_TypedConstantRewriter();
             Constant c = Constant.Word32(0xFFFFFFFF);
             store.EnsureExpressionTypeVariable(factory, c);
             c.TypeVariable.DataType = new Pointer(PrimitiveType.Word32, 4);
@@ -160,6 +185,7 @@ namespace Reko.UnitTests.Typing
             // strings terminated by the high bit of the last character set to
             // 1, others have length prefixed strings (looking at you, Turbo Pascal and
             // MacOS classic).
+            Given_TypedConstantRewriter();
             Given_String("Hello", 0x00100000);
             Given_Readonly_Segment(".rdata", 0x00100000, 0x20);
             var c = Constant.Word32(0x00100000);
@@ -177,6 +203,7 @@ namespace Reko.UnitTests.Typing
         [Test]
         public void Tcr_Writable_Char_Pointer_YieldsCharacterReference()
         {
+            Given_TypedConstantRewriter();
             Given_String("Hello", 0x00100000);
             Given_Writeable_Segment(".rdata", 0x00100000, 0x20);
             var c = Constant.Word32(0x00100000);
@@ -191,6 +218,7 @@ namespace Reko.UnitTests.Typing
         [Test(Description="Pointers to the end of arrays are well-defined.")]
         public void Tcr_ArrayEnd()
         {
+            Given_TypedConstantRewriter();
             Given_Global(0x00100000, new ArrayType(PrimitiveType.Real32, 16));
             Given_Global(0x00100040, PrimitiveType.Word16);
             var c = Constant.Word32(0x00100040);
@@ -200,6 +228,21 @@ namespace Reko.UnitTests.Typing
 
             var e = tcr.Rewrite(c, false);
             Assert.AreEqual("&globals->r100040", e.ToString());
+        }
+
+        [Test(Description = "Segmented pointers need to be properly handled")]
+        public void Tcr_SegPtr()
+        {
+            Given_Segment(0xC00, "seg0C00");
+            Given_TypedConstantRewriter();
+
+            var c = Address.SegPtr(0xC00, 0x0124);
+            store.EnsureExpressionTypeVariable(factory, c);
+            c.TypeVariable.DataType = new Pointer(PrimitiveType.Char, 4);
+            c.TypeVariable.OriginalDataType = new Pointer(PrimitiveType.Char, 4);
+
+            var e = tcr.Rewrite(c, false);
+            Assert.AreEqual("&seg0C00->b0124", e.ToString());
         }
     }
 }

@@ -172,7 +172,8 @@ namespace Reko.Core.Types
 			PrimitiveType pb = b as PrimitiveType;
 			if (pb != null)
 			{
-				if (pb == PrimitiveType.Word16 || pb.Domain == Domain.Pointer || pb.Domain == Domain.Selector)
+				if (pb == PrimitiveType.Word16 || pb.Domain == Domain.Pointer ||
+                    pb.Domain == Domain.Selector || pb.Domain == Domain.Offset)
 					return true;
 			}
 			return false;
@@ -571,7 +572,8 @@ namespace Reko.Core.Types
 			PrimitiveType pb = b as PrimitiveType;
 			if (pb != null)
 			{
-				if (pb == PrimitiveType.Word16 || pb == PrimitiveType.Word32 || pb.Domain == Domain.Selector)
+                if (pb == PrimitiveType.Word16 || pb == PrimitiveType.Word32 ||
+                    pb.Domain == Domain.Selector || pb.Domain == Domain.Offset)
 				{
 					//$REVIEW: line above should be if (mpA.Size = b.Size .... as in UnifyPointer.
 					return mpA.Clone();

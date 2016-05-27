@@ -65,10 +65,22 @@ namespace Reko.UnitTests.Typing
             TypeVariableReplacer tvr = new TypeVariableReplacer(store);
             tvr.ReplaceTypeVariables();
 
-            TypeTransformer trans = new TypeTransformer(factory, store, program);
-            trans.Transform();
+            Exception theEx = null;
+            try
+            {
+                TypeTransformer trans = new TypeTransformer(factory, store, program);
+                trans.Transform();
+            } catch (Exception ex)
+            {
+                theEx = ex;
+            }
             using (FileUnitTester fut = new FileUnitTester(outputFileName))
             {
+                if (theEx != null)
+                {
+                    fut.TextWriter.WriteLine(theEx.Message);
+                    fut.TextWriter.WriteLine(theEx.StackTrace);
+                }
                 foreach (Procedure proc in program.Procedures.Values)
                 {
                     proc.Write(false, fut.TextWriter);

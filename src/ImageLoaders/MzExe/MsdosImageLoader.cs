@@ -25,6 +25,8 @@ using System;
 using System.Collections.Generic;
 using Reko.Core.Configuration;
 using System.Diagnostics;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
 
 namespace Reko.ImageLoaders.MzExe
 {
@@ -73,6 +75,7 @@ namespace Reko.ImageLoaders.MzExe
 			ImageReader rdr = new LeImageReader(exe.RawImage, (uint) exe.e_lfaRelocations);
             var relocations = imgLoaded.Relocations;
 			int i = exe.e_cRelocations;
+            var segments = new Dictionary<Address, ushort>();
 			while (i != 0)
 			{
 				uint offset = rdr.ReadLeUInt16();
@@ -89,9 +92,23 @@ namespace Reko.ImageLoaders.MzExe
                     imgLoaded, 
                     AccessMode.ReadWriteExecute);
                 segment = segmentMap.AddSegment(segment);
+                segments[segment.Address] = seg;
 				--i;
 			}
 		
+            // Create an identifier for each segment.
+            foreach (var de in segments)
+            {
+                var tmp = new TemporaryStorage(
+                    string.Format("seg{0:X4}", de.Value),
+                    0,
+                    PrimitiveType.SegmentSelector);
+                segmentMap.Segments[de.Key].Identifier = new Identifier(
+                    tmp.Name,
+                    PrimitiveType.SegmentSelector,
+                    tmp);
+            }
+
 			// Found the start address.
 
 			Address addrStart = Address.SegPtr((ushort)(exe.e_cs + addrLoad.Selector.Value), exe.e_ip);

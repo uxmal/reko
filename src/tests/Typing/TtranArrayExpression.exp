@@ -9,8 +9,11 @@ l1:
 ArrayExpressionFragment_exit:
 
 // Equivalence classes ////////////
-Eq_1: (struct "Globals")
+Eq_1: (struct "Globals" (A0000 Eq_2 tA0000))
 	globals_t (in globals : (ptr (struct "Globals")))
+Eq_2: (struct (140 (arr byte) a0140))
+	T_2 (in 0x000A0000 : word32)
+	T_3 (in pa : word32)
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
@@ -18,12 +21,12 @@ globals_t: (in globals : (ptr (struct "Globals")))
   OrigDataType: (ptr (struct "Globals"))
 T_2: (in 0x000A0000 : word32)
   Class: Eq_2
-  DataType: ptr32
+  DataType: (ptr Eq_2)
   OrigDataType: word32
 T_3: (in pa : word32)
   Class: Eq_2
-  DataType: ptr32
-  OrigDataType: ptr32
+  DataType: (ptr Eq_2)
+  OrigDataType: (ptr (struct (140 T_11 t0140)))
 T_4: (in 0xF8 : byte)
   Class: Eq_4
   DataType: byte
@@ -52,3 +55,7 @@ T_10:
   Class: Eq_10
   DataType: byte
   OrigDataType: (struct 0001 (0 T_9 t0000))
+T_11:
+  Class: Eq_11
+  DataType: (arr byte)
+  OrigDataType: (arr T_10)

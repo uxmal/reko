@@ -102,7 +102,7 @@ C_43: orig: C
 CZ_44: orig: CZ
 // fn0C00_000A
 // Return size: 0
-byte fn0C00_000A(byte al, ptr16 alOut)
+byte fn0C00_000A(byte al, ptr16 & alOut)
 fn0C00_000A_entry:
 	def al
 	// succ:  l0C00_000A

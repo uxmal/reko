@@ -24,7 +24,7 @@ fn0C00_0000_exit:
 // Preserved: sp
 // fn0C00_0004
 // Return size: 0
-word16 fn0C00_0004(word16 dx, ptr16 dxOut)
+word16 fn0C00_0004(word16 dx, ptr16 & dxOut)
 fn0C00_0004_entry:
 	// succ:  l0C00_0004
 l0C00_0004:

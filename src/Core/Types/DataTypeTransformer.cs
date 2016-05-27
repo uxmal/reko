@@ -101,6 +101,12 @@ namespace Reko.Core.Types
 			return ptr;
 		}
 
+        public virtual DataType VisitReference(ReferenceTo refTo)
+        {
+            refTo.Referent = refTo.Referent.Accept(this);
+            return refTo;
+        }
+
         public virtual DataType VisitString(StringType str)
         {
             return str;

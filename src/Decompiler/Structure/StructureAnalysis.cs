@@ -64,6 +64,8 @@ namespace Reko.Structure
         {
             var ccc = new CompoundConditionCoalescer(proc);
             ccc.Transform();
+            var cfgc = new ControlFlowGraphCleaner(proc);
+            cfgc.Transform();
             var reg = Execute();
             //$REVIEW: yeecch. Should return the statements, and 
             // caller decides what to do with'em. Probably 
@@ -128,9 +130,11 @@ namespace Reko.Structure
                 bool didReduce = false;
                 foreach (var n in postOrder)
                 {
+                    Probe();
                     didReduce = false;
-                    do {
-                        didReduce = ReduceAcyclic(n, false);
+                    do
+                    {
+                        didReduce = ReduceAcyclic(n);
                         if (!didReduce && IsCyclic(n))
                         {
                             didReduce = ReduceCyclic(n);
@@ -146,6 +150,12 @@ namespace Reko.Structure
                 }
             } while (regionGraph.Nodes.Count > 1);
             return entry;
+        }
+
+        private void Probe()
+        {
+            if (regionGraph.Nodes.Any(nn => nn.Block.Name.EndsWith("0800_27B3") && regionGraph.Successors(nn).Count != 2)) //$DEBUG
+                proc.ToString();
         }
 
         private DominatorGraph<Region> BuildPostDoms()
@@ -166,7 +176,7 @@ namespace Reko.Structure
         /// </summary>
         /// <param name="proc"></param>
         /// <returns></returns>
-        public Tuple<DirectedGraph<Region>, Region> BuildRegionGraph(Procedure proc)
+        public static Tuple<DirectedGraph<Region>, Region> BuildRegionGraph(Procedure proc)
         {
             var btor = new Dictionary<Block, Region>();
             var regs = new DiGraph<Region>();
@@ -174,10 +184,11 @@ namespace Reko.Structure
             foreach (var b in proc.ControlGraph.Blocks)
             {
                 if (b.Pred.Count == 0 && b != proc.EntryBlock ||
-            
-                            b == proc.ExitBlock)
+                    b == proc.ExitBlock)
                     continue;
                 var reg = regionFactory.Create(b);
+                if (b.Name.EndsWith("27B3")) //$DEBUG
+                    b.ToString();
                 btor.Add(b, reg);
                 regs.AddNode(reg);
             }
@@ -231,13 +242,13 @@ namespace Reko.Structure
         /// </summary>
         /// <param name="n"></param>
         /// <returns>True if a reduction occurred</returns>
-        public bool ReduceAcyclic(Region n, bool reduceTailregions)
+        public bool ReduceAcyclic(Region n)
         {
             bool didReduce = false;
             switch (n.Type)
             {
             case RegionType.Condition:
-                didReduce = ReduceIfRegion(n, reduceTailregions);
+                didReduce = ReduceIfRegion(n, false);
                 break;
             case RegionType.IncSwitch:
                 didReduce = ReduceSwitchRegion(n);
@@ -251,6 +262,7 @@ namespace Reko.Structure
             default:
                 throw new NotImplementedException();
             }
+            Probe();
             return didReduce;
         }
 
@@ -613,6 +625,7 @@ all other cases, together they constitute a Switch[].
         {
             Debug.Print("Removing region {0} from graph", n.Block.Name);
             regionGraph.Nodes.Remove(n);
+            Probe();
         }
 
         /// <summary>
@@ -666,6 +679,8 @@ all other cases, together they constitute a Switch[].
                 regionGraph.RemoveEdge(old, s);
                 regionGraph.AddEdge(gnu, s);
             }
+            Probe();
+
         }
 #if NILZ
     3.3
@@ -736,6 +751,7 @@ doing future pattern matches.
             if (regionGraph.Predecessors(vEdge.To).Count == 0 && vEdge.To != entry)
             {
                 RemoveRegion(vEdge.To);
+            Probe();
             }
         }
 
@@ -763,12 +779,14 @@ doing future pattern matches.
                 };
                 from.Statements.Add(ifStm);
                 from.Expression = null;
+            Probe();
                 from.Type = RegionType.Linear;
             }
             else if (from.Type == RegionType.Linear)
             {
                 from.Statements.Add(stm);
                 from.Type = RegionType.Tail;
+            Probe();
             }
             else
                 throw new NotImplementedException(string.Format("Can't collapse {0} ({1}) => {2}", from.Block.Name, from.Type, to.Block.Name));
@@ -835,6 +853,7 @@ are added during loop refinement, which we discuss next.
                 succs = regionGraph.Successors(n).ToArray();
                 if (succs.Length != 1 || !ReduceSequence(n))
                     break;
+            Probe();
                 didReduce = true;
             }
             foreach (var s in succs)
@@ -858,6 +877,7 @@ are added during loop refinement, which we discuss next.
                     n.Expression = null;
                     regionGraph.RemoveEdge(n, s);
                     regionGraph.RemoveEdge(s, n);
+            Probe();
                     return true;
                 }
             }
@@ -890,6 +910,7 @@ are added during loop refinement, which we discuss next.
                     regionGraph.RemoveEdge(n, s);
                     regionGraph.RemoveEdge(s, n);
                     RemoveRegion(s);
+            Probe();
                     return true;
                 }
             }
@@ -979,6 +1000,7 @@ refinement on the loop body, which we describe below.
             if (virtualized)
             {
                 CoalesceTailRegions(lexicalNodes);
+                Probe();
                 return true;
             }
             foreach (var n in lexicalNodes)
@@ -1018,6 +1040,7 @@ refinement on the loop body, which we describe below.
                     RemoveRegion(th);
                     n.Expression = null;
                     n.Type = RegionType.Tail;
+            Probe();
                     return true;
                 }
                 if (regions.Contains(el) && el.Type == RegionType.Tail && SinglePredecessor(el) == n)
@@ -1028,6 +1051,7 @@ refinement on the loop body, which we describe below.
                     RemoveRegion(el);
                     n.Expression = null;
                     n.Type = RegionType.Linear;
+            Probe();
                     return true;
                 }
                 if (regions.Contains(th) && th.Type == RegionType.Tail && SinglePredecessor(th) == n)
@@ -1038,6 +1062,7 @@ refinement on the loop body, which we describe below.
                     RemoveRegion(th);
                     n.Expression = null;
                     n.Type = RegionType.Linear;
+            Probe();
                     return true;
                 }
             }

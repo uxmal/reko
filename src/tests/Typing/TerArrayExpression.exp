@@ -1,0 +1,73 @@
+// Before ///////
+// ArrayExpressionFragment
+// Return size: 0
+void ArrayExpressionFragment()
+ArrayExpressionFragment_entry:
+	// succ:  l1
+l1:
+	pa = 0x000A0000
+	Mem0[pa + 0x00000140 + i:byte] = 0xF8
+ArrayExpressionFragment_exit:
+
+// After ///////
+// ArrayExpressionFragment
+// Return size: 0
+void ArrayExpressionFragment()
+ArrayExpressionFragment_entry:
+	// succ:  l1
+l1:
+	pa = (Eq_2 *) 0x000A0000
+	pa->a0140[i] = 0xF8
+ArrayExpressionFragment_exit:
+
+// Equivalence classes ////////////
+Eq_1: (struct "Globals" (A0000 Eq_2 tA0000))
+	globals_t (in globals : (ptr (struct "Globals")))
+Eq_2: (struct "Eq_2" (140 (arr byte) a0140))
+	T_2 (in 0x000A0000 : word32)
+	T_3 (in pa : word32)
+// Type Variables ////////////
+globals_t: (in globals : (ptr (struct "Globals")))
+  Class: Eq_1
+  DataType: (ptr Eq_1)
+  OrigDataType: (ptr (struct "Globals"))
+T_2: (in 0x000A0000 : word32)
+  Class: Eq_2
+  DataType: (ptr Eq_2)
+  OrigDataType: word32
+T_3: (in pa : word32)
+  Class: Eq_2
+  DataType: (ptr Eq_2)
+  OrigDataType: (ptr (struct (140 T_11 t0140)))
+T_4: (in 0xF8 : byte)
+  Class: Eq_4
+  DataType: byte
+  OrigDataType: byte
+T_5: (in 0x00000140 : word32)
+  Class: Eq_5
+  DataType: int32
+  OrigDataType: int32
+T_6: (in pa + 0x00000140 : word32)
+  Class: Eq_6
+  DataType: (ptr (arr byte))
+  OrigDataType: (ptr (struct (0 (arr T_10) a0000)))
+T_7: (in i : int32)
+  Class: Eq_7
+  DataType: int32
+  OrigDataType: int32
+T_8: (in pa + 0x00000140 + i : word32)
+  Class: Eq_8
+  DataType: (ptr byte)
+  OrigDataType: (ptr (struct (0 T_9 t0000)))
+T_9: (in Mem0[pa + 0x00000140 + i:byte] : byte)
+  Class: Eq_4
+  DataType: byte
+  OrigDataType: byte
+T_10:
+  Class: Eq_10
+  DataType: byte
+  OrigDataType: (struct 0001 (0 T_9 t0000))
+T_11:
+  Class: Eq_11
+  DataType: (arr byte)
+  OrigDataType: (arr T_10)

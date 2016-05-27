@@ -168,13 +168,15 @@ namespace Reko.Typing
         {
             var ptLeft = dtLeft as PrimitiveType;
             var ptRight = dtRight as PrimitiveType;
-            if (ptLeft.Domain == Domain.Pointer || dtLeft is Pointer)
+            if (ptLeft != null && ptLeft.Domain == Domain.Pointer || 
+                dtLeft is Pointer)
             {
                 if (ptRight != null && (ptRight.Domain & Domain.Integer) != 0)
                     return dtLeft;
                 throw new NotImplementedException(string.Format("Pulling difference {0} and {1}", dtLeft, dtRight));
             }
-            if (ptRight.Domain == Domain.Pointer || dtRight is Pointer)
+            if (ptRight != null && ptRight.Domain == Domain.Pointer || 
+                dtRight is Pointer)
             {
                 if (ptRight != null && (ptRight.Domain & Domain.Integer) != 0)
                     return dtLeft;
@@ -197,7 +199,9 @@ namespace Reko.Typing
 
         public DataType VisitConditionOf(ConditionOf cof)
         {
-            throw new NotImplementedException();
+            cof.Expression.Accept(this);
+            RecordDataType(cof.DataType, cof);
+            return cof.DataType;
         }
 
         public DataType VisitConstant(Constant c)
@@ -237,7 +241,7 @@ namespace Reko.Typing
                 id.TypeVariable.DataType = id.DataType;
                 id.TypeVariable.OriginalDataType = id.DataType;
             }
-            return id.DataType;
+            return id.TypeVariable.DataType;
         }
 
         public DataType VisitMemberPointerSelector(MemberPointerSelector mps)
@@ -266,11 +270,24 @@ namespace Reko.Typing
         {
             var dtHead = seq.Head.Accept(this);
             var dtTail = seq.Tail.Accept(this);
+            DataType dtSeq;
             if (IsSelector(dtHead))
             {
-                return RecordDataType(PrimitiveType.Create(Domain.Pointer,  dtHead.Size + dtTail.Size), seq); 
+                dtSeq = PrimitiveType.Create(Domain.Pointer, dtHead.Size + dtTail.Size);
             }
-            throw new NotImplementedException();
+            else 
+            {
+                var ptHead = dtHead as PrimitiveType;
+                if (ptHead != null && ptHead.IsIntegral)
+                {
+                    dtSeq = PrimitiveType.Create(ptHead.Domain, seq.DataType.Size);
+                }
+                else
+                {
+                    dtSeq = seq.DataType;
+                }
+            }
+            return RecordDataType(dtSeq, seq);
         }
 
         private bool IsSelector(DataType dt)
@@ -288,13 +305,14 @@ namespace Reko.Typing
         public DataType VisitOutArgument(OutArgument outArgument)
         {
             var dt = outArgument.Expression.Accept(this);
-            Expression exp = outArgument;
-            return RecordDataType(PointerTo(outArgument.TypeVariable), exp);
+            return dt;
+            //Expression exp = outArgument;
+            //return RecordDataType(OutPointerTo(outArgument.TypeVariable), exp);
         }
 
-        private DataType PointerTo(TypeVariable tv)
+        private DataType OutPointerTo(TypeVariable tv)
         {
-            return new Pointer(tv, platform.PointerType.Size);
+            return new Pointer(tv, platform.FramePointerType.Size);
         }
 
         private DataType RecordDataType(DataType dt, Expression exp)

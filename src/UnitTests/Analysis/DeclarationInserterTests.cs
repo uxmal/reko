@@ -24,6 +24,7 @@ using Reko.Core.Lib;
 using NUnit.Framework;
 using System;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -54,7 +55,13 @@ namespace Reko.UnitTests.Analysis
 		{
 			this.proc = proc;
 			this.doms = proc.CreateBlockDominatorGraph();
-			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, null, doms);
+
+			SsaTransform sst = new SsaTransform(
+                new ProgramDataFlow(), 
+                proc, 
+                null, 
+                doms,
+                new HashSet<RegisterStorage>());
 			
 			this.ssaIds = sst.SsaState.Identifiers;
 		}

@@ -107,7 +107,7 @@ namespace Reko.ImageLoaders.Hunk
                     }
                     else
                         throw new BadImageFormatException(
-                            String.Format("Invalid hunk type {0}/{0:X} found at @{1:X8}.", hunkType, (int) hunkType, f.Offset));
+                            string.Format("Invalid hunk type {0}/{0:X} found at @{1:X8}.", hunkType, (int) hunkType, f.Offset));
                 }
                 // check for valid first hunk type
                 if (isFirstHunk && !this.IsValidFirstHunkType(hunkType))
@@ -197,6 +197,7 @@ namespace Reko.ImageLoaders.Hunk
                     this.ParseDebug(hunk);
                     break;
                 case HunkType.HUNK_END:
+                    hunk(new Hunk());
                     sawEndHunk = true;
                     break;
                 case HunkType.HUNK_OVERLAY:
@@ -301,7 +302,7 @@ namespace Reko.ImageLoaders.Hunk
 
         public virtual string get_index_name(byte[] strtab, int offset)
         {
-            int end = Array.IndexOf(strtab, (byte) 0);
+            int end = Array.IndexOf(strtab, (byte) 0, offset);
             if (end == -1)
             {
                 return Encoding.GetEncoding("ISO_8859-1").GetString(strtab, offset, strtab.Length - offset);
@@ -733,15 +734,15 @@ namespace Reko.ImageLoaders.Hunk
             hunk.ext_def = ext_def;
             hunk.ext_ref = ext_ref;
             hunk.ext_common = ext_common;
-            var ext_type_size = 1;
-            while (ext_type_size > 0)
+            var ext_size = 1;
+            while (ext_size > 0)
             {
                 // ext type | size
-                ext_type_size = this.read_long();
-                if (ext_type_size < 0)
+                var ext_type_size = this.read_long();
+                var ext_type = (ExtType) (byte) (ext_type_size >> (int) ExtType.EXT_TYPE_SHIFT);
+                ext_size = ext_type_size & (int) ExtType.EXT_TYPE_SIZE_MASK;
+                if (ext_size < 0)
                     throw new BadImageFormatException(string.Format("{0} has invalid size.", hunk.HunkType));
-                var ext_type = (ExtType) (ext_type_size >> (int) ExtType.EXT_TYPE_SHIFT);
-                var ext_size = ext_type_size & (int) ExtType.EXT_TYPE_SIZE_MASK;
                 // ext name
                 string ext_name = this.ReadSizedString(ext_size);
                 if (ext_name == null)

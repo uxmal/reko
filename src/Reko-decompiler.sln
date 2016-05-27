@@ -288,6 +288,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "website", "Drivers\WebSite\
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gui", "Gui\Gui.csproj", "{1CA14C64-92E8-452E-A380-637F3DBB4D28}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C4EF0F8B-B8BC-4BBD-91E6-F11D2335F901} = {C4EF0F8B-B8BC-4BBD-91E6-F11D2335F901}
+	EndProjectSection
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "WixInstaller", "WixInstaller\WixInstaller.wixproj", "{B1916638-EF20-4692-8C95-1C5AD6C67D30}"
 EndProject
@@ -302,6 +305,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "X86.Design", "Arch\X86.Design\X86.Design.csproj", "{370A707F-3B17-4680-BC35-8EDC846F058F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VmsExe", "ImageLoaders\VmsExe\VmsExe.csproj", "{4059BEBF-7B5C-4701-AC98-ADE2515D8823}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hunktool", "tools\hunktool\hunktool.csproj", "{23CBC001-C9B5-4C2E-9AEA-851E3CCEA9C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1671,6 +1676,36 @@ Global
 		{4059BEBF-7B5C-4701-AC98-ADE2515D8823}.TravisRelease|Win32.Build.0 = Release|Any CPU
 		{4059BEBF-7B5C-4701-AC98-ADE2515D8823}.TravisRelease|x86.ActiveCfg = Release|Any CPU
 		{4059BEBF-7B5C-4701-AC98-ADE2515D8823}.TravisRelease|x86.Build.0 = Release|Any CPU
+		{23CBC001-C9B5-4C2E-9AEA-851E3CCEA9C9}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{23CBC001-C9B5-4C2E-9AEA-851E3CCEA9C9}.Debug|.NET.Build.0 = Debug|Any CPU
+		{23CBC001-C9B5-4C2E-9AEA-851E3CCEA9C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23CBC001-C9B5-4C2E-9AEA-851E3CCEA9C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23CBC001-C9B5-4C2E-9AEA-851E3CCEA9C9}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{23CBC001-C9B5-4C2E-9AEA-851E3CCEA9C9}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{23CBC001-C9B5-4C2E-9AEA-851E3CCEA9C9}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{23CBC001-C9B5-4C2E-9AEA-851E3CCEA9C9}.Debug|Win32.Build.0 = Debug|Any CPU
+		{23CBC001-C9B5-4C2E-9AEA-851E3CCEA9C9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{23CBC001-C9B5-4C2E-9AEA-851E3CCEA9C9}.Debug|x86.Build.0 = Debug|Any CPU
+		{23CBC001-C9B5-4C2E-9AEA-851E3CCEA9C9}.Release|.NET.ActiveCfg = Release|Any CPU
+		{23CBC001-C9B5-4C2E-9AEA-851E3CCEA9C9}.Release|.NET.Build.0 = Release|Any CPU
+		{23CBC001-C9B5-4C2E-9AEA-851E3CCEA9C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23CBC001-C9B5-4C2E-9AEA-851E3CCEA9C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23CBC001-C9B5-4C2E-9AEA-851E3CCEA9C9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{23CBC001-C9B5-4C2E-9AEA-851E3CCEA9C9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{23CBC001-C9B5-4C2E-9AEA-851E3CCEA9C9}.Release|Win32.ActiveCfg = Release|Any CPU
+		{23CBC001-C9B5-4C2E-9AEA-851E3CCEA9C9}.Release|Win32.Build.0 = Release|Any CPU
+		{23CBC001-C9B5-4C2E-9AEA-851E3CCEA9C9}.Release|x86.ActiveCfg = Release|Any CPU
+		{23CBC001-C9B5-4C2E-9AEA-851E3CCEA9C9}.Release|x86.Build.0 = Release|Any CPU
+		{23CBC001-C9B5-4C2E-9AEA-851E3CCEA9C9}.TravisRelease|.NET.ActiveCfg = Release|Any CPU
+		{23CBC001-C9B5-4C2E-9AEA-851E3CCEA9C9}.TravisRelease|.NET.Build.0 = Release|Any CPU
+		{23CBC001-C9B5-4C2E-9AEA-851E3CCEA9C9}.TravisRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{23CBC001-C9B5-4C2E-9AEA-851E3CCEA9C9}.TravisRelease|Any CPU.Build.0 = Release|Any CPU
+		{23CBC001-C9B5-4C2E-9AEA-851E3CCEA9C9}.TravisRelease|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{23CBC001-C9B5-4C2E-9AEA-851E3CCEA9C9}.TravisRelease|Mixed Platforms.Build.0 = Release|Any CPU
+		{23CBC001-C9B5-4C2E-9AEA-851E3CCEA9C9}.TravisRelease|Win32.ActiveCfg = Release|Any CPU
+		{23CBC001-C9B5-4C2E-9AEA-851E3CCEA9C9}.TravisRelease|Win32.Build.0 = Release|Any CPU
+		{23CBC001-C9B5-4C2E-9AEA-851E3CCEA9C9}.TravisRelease|x86.ActiveCfg = Release|Any CPU
+		{23CBC001-C9B5-4C2E-9AEA-851E3CCEA9C9}.TravisRelease|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1727,6 +1762,7 @@ Global
 		{6B0DED4F-5035-49CE-AE54-BE92B3354E44} = {E6A2E818-3AB9-47FC-9266-4E72ECBB13F4}
 		{370A707F-3B17-4680-BC35-8EDC846F058F} = {18994109-C4D5-49F9-86E0-3B5B1046C08E}
 		{4059BEBF-7B5C-4701-AC98-ADE2515D8823} = {E34BB92E-9C1E-41E8-8333-8BB69831BB63}
+		{23CBC001-C9B5-4C2E-9AEA-851E3CCEA9C9} = {AD6CD1E3-2C31-4E78-9432-4BAC77BC63D5}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Drivers\MonoDecompiler\MonoDecompiler.csproj

@@ -947,7 +947,7 @@ namespace Reko.Tools.C2Xml.UnitTests
   </procedure>
 </library>";
             RunTest(
-                "void foo([[reko::reg(\"D0\")]]int parm);",
+                "void foo([[reko::arg(register,\"D0\")]]int parm);",
                 sExp);
 
         }
@@ -968,9 +968,8 @@ namespace Reko.Tools.C2Xml.UnitTests
   </procedure>
 </library>";
             RunTest(
-                "[[reko::reg(\"D0\")]] char foo();",
+                "[[reko::returns(register,\"D0\")]] char foo();",
                 sExp);
-
         }
 
         [Test]

@@ -27,33 +27,40 @@ using System;
 
 namespace Reko.UnitTests.Typing
 {
-	[TestFixture]
-	public class ExpressionNormalizerTests
-	{
-		private ProcedureBuilder m;
-		private ExpressionNormalizer aen;
+    [TestFixture]
+    public class ExpressionNormalizerTests
+    {
+        private ProcedureBuilder m;
+        private ExpressionNormalizer aen;
 
-		[Test]
-		public void EnSimpleArray()
-		{
-			Identifier globals = m.Local32("globals");
-			Identifier i = m.Local32("idx");
-			Expression ea = m.IAdd(globals, m.IAdd(m.Shl(i, 4), 0x30000));
-			Expression e = m.Load(PrimitiveType.Int32, ea);
-			e = e.Accept(aen);
-			Assert.AreEqual("(globals + 0x00030000)[idx * 0x00000010]", e.ToString());
-		}
+        [SetUp]
+        public void Setup()
+        {
+            m = new ProcedureBuilder();
+            aen = new ExpressionNormalizer(PrimitiveType.Pointer32);
+        }
 
-		[Test]
-		public void EnTest2()
-		{
-			Identifier p = m.Local32("p");
-			Identifier i = m.Local32("i");
-			Expression e = m.Load(PrimitiveType.Int32, 
-				m.IAdd(p, m.IAdd(m.SMul(i, 8), 4)));
-			e = e.Accept(aen);
-			Assert.AreEqual("(p + 4)[i * 0x00000008]", e.ToString());
-		}
+        [Test]
+        public void EnSimpleArray()
+        {
+            Identifier globals = m.Local32("globals");
+            Identifier i = m.Local32("idx");
+            Expression ea = m.IAdd(globals, m.IAdd(m.Shl(i, 4), 0x30000));
+            Expression e = m.Load(PrimitiveType.Int32, ea);
+            e = e.Accept(aen);
+            Assert.AreEqual("(globals + 0x00030000)[idx * 0x00000010]", e.ToString());
+        }
+
+        [Test]
+        public void EnTest2()
+        {
+            Identifier p = m.Local32("p");
+            Identifier i = m.Local32("i");
+            Expression e = m.Load(PrimitiveType.Int32,
+                m.IAdd(p, m.IAdd(m.SMul(i, 8), 4)));
+            e = e.Accept(aen);
+            Assert.AreEqual("(p + 4)[i * 0x00000008]", e.ToString());
+        }
 
         [Test]
         public void EnIdentifierPointer()
@@ -79,17 +86,32 @@ namespace Reko.UnitTests.Typing
         {
             Identifier bx = m.Local16("bx");
             Identifier ds = m.Local(PrimitiveType.SegmentSelector, "ds");
-            Expression e = m.SegMem(PrimitiveType.Int32, ds, m.IAdd(m.IMul(bx, 2), 0x42));
-            Assert.AreEqual("Mem0[ds:bx * 0x0002 + 0x0042:int32]", e.ToString());
+            Expression e = m.SegMem(PrimitiveType.Int16, ds, m.IAdd(m.IMul(bx, 2), 0x42));
+            Assert.AreEqual("Mem0[ds:bx * 0x0002 + 0x0042:int16]", e.ToString());
             e = e.Accept(aen);
             Assert.AreEqual("SEQ(ds, 0x0042)[bx * 0x0002]", e.ToString());
         }
 
-		[SetUp]
-		public void Setup()
-		{
-			m = new ProcedureBuilder();
-			aen = new ExpressionNormalizer(PrimitiveType.Pointer32);
-		}
-	}
+        [Test]
+        public void EnSegAccessZeroBasedArray()
+        {
+            Identifier bx = m.Local16("bx");
+            Identifier ds = m.Local(PrimitiveType.SegmentSelector, "ds");
+            Expression e = m.SegMem(PrimitiveType.Int32, ds, m.Shl(bx, 2));
+            Assert.AreEqual("Mem0[ds:bx << 0x02:int32]", e.ToString());
+            e = e.Accept(aen);
+            Assert.AreEqual("SEQ(ds, 0x0000)[bx * 0x0004]", e.ToString());
+        }
+
+        // Seems unlikely, but sometimes important arrays are located at address 0 in memory.
+        [Test]
+        public void EnAccessZeroBasedArray()
+        {
+            Identifier a1 = m.Local32("a1");
+            Expression e = m.Load(PrimitiveType.Int32, m.Shl(a1, 2));
+            Assert.AreEqual("Mem0[a1 << 0x02:int32]", e.ToString());
+            e = e.Accept(aen);
+            Assert.AreEqual("0x00000000[a1 * 0x00000004]", e.ToString());
+        }
+    }
 }

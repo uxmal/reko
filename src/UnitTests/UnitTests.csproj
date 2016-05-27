@@ -30,7 +30,7 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
-    <UseMSBuildEngine>False</UseMSBuildEngine>
+    <UseMSBuildEngine>True</UseMSBuildEngine>
     <ProductVersion>12.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
@@ -114,6 +114,9 @@
     <Compile Include="Core\Configuration\OperatingEnvironmentElementTests.cs" />
     <Compile Include="Core\Configuration\RekoConfigurationServiceTests.cs" />
     <Compile Include="Core\Configuration\RekoConfigurationTests.cs" />
+    <Compile Include="Core\Lib\SuffixArrayTests.cs" />
+    <Compile Include="Core\Lib\UbjsonWriterTests.cs" />
+    <Compile Include="Core\Lib\WildPatternMatcher.Tests.cs" />
     <Compile Include="Core\Output\CTypeReferenceFormatterTests.cs" />
     <Compile Include="Core\SegmentMapTests.cs" />
     <Compile Include="Core\Serialization\ArgumentDeserializerTests.cs" />
@@ -121,6 +124,7 @@
     <Compile Include="Core\Serialization\ProjectLoaderTests.cs" />
     <Compile Include="Core\Serialization\ProjectPersisterTests.cs" />
     <Compile Include="Core\Services\FileSystemServiceTests.cs" />
+    <Compile Include="Environments\AmigaOS\AmigaHeaderLoaderTests.cs" />
     <Compile Include="Environments\SegaGenesis\RomLoaderTests.cs" />
     <Compile Include="Environments\SysV\MipsProcedureSerializerTests.cs" />
     <Compile Include="Environments\SysV\SparcProcedureSerializerTests.cs" />
@@ -266,6 +270,9 @@
     <Compile Include="ImageLoaders\MachO\MachOLoaderTests.cs" />
     <Compile Include="ImageLoaders\MzExe\NeImageLoaderTests.cs" />
     <Compile Include="ImageLoaders\MzExe\PeImageLoaderTests.cs" />
+    <Compile Include="Loading\DccSignatureLoaderTests.cs" />
+    <Compile Include="Loading\FlirtoidSignatureLoaderTests.cs" />
+    <Compile Include="Core\Lib\UbjsonReaderTests.cs" />
     <Compile Include="Loading\UnpackerSignatureLoaderTests.cs" />
     <Compile Include="Loading\UnpackingServiceTests.cs" />
     <Compile Include="Mocks\FakeDiagnosticsService.cs" />

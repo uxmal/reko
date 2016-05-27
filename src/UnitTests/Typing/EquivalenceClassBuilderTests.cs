@@ -111,5 +111,23 @@ namespace Reko.UnitTests.Typing
             b.Accept(eqb);
             Assert.AreSame(a.TypeVariable.Class, b.TypeVariable.Class);
         }
-	}
+
+        [Test]
+        public void EqSegmentConstantsWithAllocatedSegment()
+        {
+            var tmp = new TemporaryStorage("seg1234", 0, PrimitiveType.SegmentSelector);
+            var segment = new ImageSegment(
+                    "seg1234",
+                    new MemoryArea(Address.SegPtr(0x1234, 0), new byte[100]),
+                    AccessMode.ReadWriteExecute)
+            {
+                Identifier = new Identifier(tmp.Name, PrimitiveType.SegmentSelector, tmp)
+            };
+            var program = new Program();
+            eqb.EnsureSegmentTypeVariables(new[] { segment });
+            Constant seg1 = Constant.Create(PrimitiveType.SegmentSelector, 0x1234);
+            seg1.Accept(eqb);
+            Assert.AreSame(seg1.TypeVariable.Class, segment.Identifier.TypeVariable.Class);
+        }
+    }
 }

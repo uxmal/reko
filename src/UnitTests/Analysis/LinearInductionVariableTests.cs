@@ -62,7 +62,12 @@ namespace Reko.UnitTests.Analysis
             m.Label("b3");
             m.Return();
             this.dom = m.Procedure.CreateBlockDominatorGraph();
-            var ssa = new SsaTransform(new ProgramDataFlow(), m.Procedure, null, dom);
+            var ssa = new SsaTransform(
+                new ProgramDataFlow(),
+                m.Procedure,
+                null, 
+                dom,
+                new HashSet<RegisterStorage>());
 
             /*
             
@@ -333,7 +338,12 @@ namespace Reko.UnitTests.Analysis
 		{
 			this.proc = proc;
             doms = proc.CreateBlockDominatorGraph();
-			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc, null, doms);
+			SsaTransform sst = new SsaTransform(
+                new ProgramDataFlow(),
+                proc,
+                null,
+                doms,
+                new HashSet<RegisterStorage>());
 			SsaState ssa = sst.SsaState;
 			ssaIds = ssa.Identifiers;
 

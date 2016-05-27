@@ -29,6 +29,10 @@ using System.Text;
 
 namespace Reko.Core.CLanguage
 {
+    /// <summary>
+    /// Extracts the name of the declared entity from a C declaration. C is a 
+    /// hairy language....
+    /// </summary>
     public class NamedDataTypeExtractor :
         DeclaratorVisitor<Func<NamedDataType,NamedDataType>>,
         DeclSpecVisitor<SerializedType>
@@ -194,7 +198,7 @@ namespace Reko.Core.CLanguage
             {
                 var ntde = new NamedDataTypeExtractor(platform, decl.DeclSpecs, symbolTable);
                 var nt = ConvertArrayToPointer(ntde.GetNameAndType(decl.Declarator));
-                var kind = GetArgumentKindFromAttributes(decl.Attributes);
+                var kind = GetArgumentKindFromAttributes("arg", decl.Attributes);
                 return new Argument_v1
                 {
                     Kind = kind,
@@ -210,7 +214,7 @@ namespace Reko.Core.CLanguage
         /// </summary>
         /// <param name="attrs"></param>
         /// <returns></returns>
-        public SerializedKind GetArgumentKindFromAttributes(List<CAttribute> attrs)
+        public SerializedKind GetArgumentKindFromAttributes(string paramType, List<CAttribute> attrs)
         {
             if (attrs == null)
                 return null;
@@ -218,12 +222,15 @@ namespace Reko.Core.CLanguage
             foreach (var attr in attrs)
             {
                 if (attr.Name.Components == null || attr.Name.Components.Length != 2 ||
-                    attr.Name.Components[0] != "reko" || attr.Name.Components[1] != "reg")
+                    attr.Name.Components[0] != "reko" || attr.Name.Components[1] != paramType)
                     continue;
-                // We have a reko::reg; get the register.
-                if (attr.Tokens.Count < 1 || attr.Tokens[0].Type != CTokenType.StringLiteral)
-                    throw new FormatException("[[reko::reg]] attribute expects a register name.");
-                kind = new Register_v1 { Name = (string)attr.Tokens[0].Value };
+                if (attr.Tokens[0].Type != CTokenType.Register ||
+                    attr.Tokens[1].Type != CTokenType.Comma)
+                    continue;
+                // We have a reko::arg(register, prefix; get the register.
+                if (attr.Tokens.Count < 1 || attr.Tokens[2].Type != CTokenType.StringLiteral)
+                    throw new FormatException("[[reko::arg(register,<name>)]] attribute expects a register name.");
+                kind = new Register_v1 { Name = (string)attr.Tokens[2].Value };
             }
             return kind;
         }

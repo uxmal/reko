@@ -16,6 +16,8 @@ Eq_2: (struct (0 word32 dw0000) (4 word32 dw0004))
 	T_2 (in bx : word16)
 Eq_3: (segment)
 	T_3 (in ds : selector)
+Eq_8: (struct (4 word32 dw0004))
+	T_8 (in bx + 0x0000 : word16)
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
@@ -47,8 +49,8 @@ T_7: (in 0x0000 : word16)
   OrigDataType: word16
 T_8: (in bx + 0x0000 : word16)
   Class: Eq_8
-  DataType: word16
-  OrigDataType: word16
+  DataType: (memptr (ptr Eq_3) Eq_8)
+  OrigDataType: (memptr T_3 (struct (4 T_6 t0004)))
 T_9: (in Mem6[ds:bx + 0x0000:word32] : word32)
   Class: Eq_6
   DataType: word32

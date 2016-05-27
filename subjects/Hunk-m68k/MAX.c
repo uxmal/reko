@@ -239,14 +239,14 @@ void fn0000126C(word32 a2)
 	return;
 }
 
-word32 fn00001278(word32 dwArg04, ptr32 a1Out, ptr32 a5Out)
+word32 fn00001278(word32 dwArg04, ptr32 & a1Out, ptr32 & a5Out)
 {
 	word32 a1_5;
 	word32 a5_6;
 	return fn0000127C(dwArg04, out a1_5, out a5_6);
 }
 
-word32 fn0000127C(word32 d2, ptr32 a1Out, ptr32 a5Out)
+word32 fn0000127C(word32 d2, ptr32 & a1Out, ptr32 & a5Out)
 {
 	word32 a4_0 = 0x0000BD86;
 	word32 a7_3 = Mem0[a4_0 + -0x00007FF6:word32];
@@ -266,7 +266,7 @@ word32 fn0000127C(word32 d2, ptr32 a1Out, ptr32 a5Out)
 	return d1_11;
 }
 
-word32 fn000012D0(word32 dwArg04, ptr32 a1Out, ptr32 a5Out)
+word32 fn000012D0(word32 dwArg04, ptr32 & a1Out, ptr32 & a5Out)
 {
 	word32 a3_11 = 0x00003ED8;
 	if (16088 != 0x00)
@@ -304,7 +304,7 @@ word32 fn000012D0(word32 dwArg04, ptr32 a1Out, ptr32 a5Out)
 	return fn00001278(dwArg04, out a1_31, out a5_32);
 }
 
-word32 fn0000131C(word32 dwArg04, ptr32 a1Out, ptr32 a5Out)
+word32 fn0000131C(word32 dwArg04, ptr32 & a1Out, ptr32 & a5Out)
 {
 	*a1Out = a1;
 	*a5Out = a5;
@@ -397,9 +397,7 @@ word32 fn00001390(word32 d0, word32 a6)
 word32 fn00001408(word32 dwArg04, word32 dwArg08)
 {
 	word32 d0_11 = dwArg04;
-	if (dwArg08 - dwArg04 < 0x00)
-		;
-	else
+	if (dwArg08 - dwArg04 >= 0x00)
 		d0_11 = dwArg08;
 	return d0_11;
 }
@@ -1685,7 +1683,7 @@ l00002362:
 	goto l00002460;
 }
 
-word32 fn0000248C(word32 d4, word32 dwArg04, word32 dwArg08, word32 dwArg0C, word32 dwArg10, ptr32 d1Out)
+word32 fn0000248C(word32 d4, word32 dwArg04, word32 dwArg08, word32 dwArg0C, word32 dwArg10, ptr32 & d1Out)
 {
 	word32 d0_24 = __swap(dwArg08);
 	word32 d1_26 = __swap(dwArg10);
@@ -1733,7 +1731,7 @@ word32 fn0000254C(word32 d2, word32 dwArg04, word32 dwArg08)
 	}
 }
 
-word32 fn0000257E(word32 d0, word32 d1, word32 d2, ptr32 d1Out)
+word32 fn0000257E(word32 d0, word32 d1, word32 d2, ptr32 & d1Out)
 {
 	word32 d1_136 = __swap(d1);
 	word16 v10_8 = (word16) d1_136;
@@ -1794,7 +1792,7 @@ word32 fn0000257E(word32 d0, word32 d1, word32 d2, ptr32 d1Out)
 	}
 }
 
-word32 fn00002604(word32 a6, word32 dwArg04, ptr32 d1Out, ptr32 a1Out, ptr32 a5Out)
+word32 fn00002604(word32 a6, word32 dwArg04, ptr32 & d1Out, ptr32 & a1Out, ptr32 & a5Out)
 {
 	word32 d0_141;
 	word32 a1_28;
@@ -1888,7 +1886,7 @@ word32 fn00002604(word32 a6, word32 dwArg04, ptr32 d1Out, ptr32 a1Out, ptr32 a5O
 	return d0_141;
 }
 
-word32 fn00002718(word32 dwArg04, ptr32 d1Out, ptr32 a0Out, ptr32 a1Out)
+word32 fn00002718(word32 dwArg04, ptr32 & d1Out, ptr32 & a0Out, ptr32 & a1Out)
 {
 	*d1Out = d1;
 	*a1Out = a1;
@@ -1930,7 +1928,7 @@ word32 fn00002718(word32 dwArg04, ptr32 d1Out, ptr32 a0Out, ptr32 a1Out)
 	return d0_20;
 }
 
-word32 fn000028E8(word32 dwArg04, word32 dwArg08, ptr32 d1Out, ptr32 a0Out)
+word32 fn000028E8(word32 dwArg04, word32 dwArg08, ptr32 & d1Out, ptr32 & a0Out)
 {
 	*d1Out = d1;
 	word32 d0_45;
@@ -2019,7 +2017,7 @@ l000029BA:
 	return d0_45;
 }
 
-word32 fn00002A0C(word32 dwArg04, word32 dwArg08, word32 dwArg0C, ptr32 d1Out, ptr32 a0Out, ptr32 a1Out)
+word32 fn00002A0C(word32 dwArg04, word32 dwArg08, word32 dwArg0C, ptr32 & d1Out, ptr32 & a0Out, ptr32 & a1Out)
 {
 	*a1Out = a1;
 	*d1Out = d1;
@@ -2059,7 +2057,7 @@ word32 fn00002A0C(word32 dwArg04, word32 dwArg08, word32 dwArg0C, ptr32 d1Out, p
 	return d0_30;
 }
 
-word32 fn00002AEC(word32 a2, ptr32 a1Out, ptr32 a2Out, ptr32 a5Out)
+word32 fn00002AEC(word32 a2, ptr32 & a1Out, ptr32 & a2Out, ptr32 & a5Out)
 {
 	*a1Out = a1;
 	*a5Out = a5;
@@ -2089,7 +2087,7 @@ word32 fn00002AEC(word32 a2, ptr32 a1Out, ptr32 a2Out, ptr32 a5Out)
 	return d0_22;
 }
 
-word32 fn00002B28(word32 dwArg04, ptr32 a0Out, ptr32 a1Out, ptr32 a5Out)
+word32 fn00002B28(word32 dwArg04, ptr32 & a0Out, ptr32 & a1Out, ptr32 & a5Out)
 {
 	*a0Out = a0;
 	word32 d0_109;
@@ -2140,7 +2138,7 @@ word32 fn00002B28(word32 dwArg04, ptr32 a0Out, ptr32 a1Out, ptr32 a5Out)
 	return d0_109;
 }
 
-word32 fn00002BBC(ptr32 a1Out, ptr32 a2Out, ptr32 a5Out)
+word32 fn00002BBC(ptr32 & a1Out, ptr32 & a2Out, ptr32 & a5Out)
 {
 	*a1Out = a1;
 	*a5Out = a5;
@@ -2156,7 +2154,7 @@ word32 fn00002BBC(ptr32 a1Out, ptr32 a2Out, ptr32 a5Out)
 	return d1_20;
 }
 
-word32 fn00002F18(word32 d0, word32 a6, word32 dwArg04, ptr32 d1Out, ptr32 d7Out, ptr32 a1Out, ptr32 a5Out, ptr32 a6Out)
+word32 fn00002F18(word32 d0, word32 a6, word32 dwArg04, ptr32 & d1Out, ptr32 & d7Out, ptr32 & a1Out, ptr32 & a5Out, ptr32 & a6Out)
 {
 	*a6Out = a6;
 	*d7Out = d7;
@@ -2166,7 +2164,7 @@ word32 fn00002F18(word32 d0, word32 a6, word32 dwArg04, ptr32 d1Out, ptr32 d7Out
 	return fn00002F34(d0, a6, Mem0[0x00003EF8 + 0x00:word32], dwArg04, fp + 0x08, out d1_19, out a1_20);
 }
 
-word32 fn00002F34(word32 d0, word32 a6, word32 dwArg04, word32 dwArg08, word32 dwArg0C, ptr32 d1Out, ptr32 a1Out)
+word32 fn00002F34(word32 d0, word32 a6, word32 dwArg04, word32 dwArg08, word32 dwArg0C, ptr32 & d1Out, ptr32 & a1Out)
 {
 	*d1Out = d1;
 	*a1Out = a1;
@@ -2931,7 +2929,7 @@ l000036A0:
 	}
 }
 
-word32 fn000038B4(word32 a6, word32 dwArg04, word32 dwArg08, ptr32 d1Out, ptr32 d3Out, ptr32 d4Out, ptr32 d5Out, ptr32 d6Out, ptr32 a0Out, ptr32 a1Out, ptr32 a4Out, ptr32 a5Out, ptr32 a6Out)
+word32 fn000038B4(word32 a6, word32 dwArg04, word32 dwArg08, ptr32 & d1Out, ptr32 & d3Out, ptr32 & d4Out, ptr32 & d5Out, ptr32 & d6Out, ptr32 & a0Out, ptr32 & a1Out, ptr32 & a4Out, ptr32 & a5Out, ptr32 & a6Out)
 {
 	*d3Out = d3;
 	*d4Out = d4;
@@ -2964,7 +2962,7 @@ word32 fn000038B4(word32 a6, word32 dwArg04, word32 dwArg08, ptr32 d1Out, ptr32 
 	return d1_103;
 }
 
-word32 fn00003910(word32 a6, word32 dwArg04, word32 dwArg08, ptr32 a0Out, ptr32 a1Out, ptr32 a5Out)
+word32 fn00003910(word32 a6, word32 dwArg04, word32 dwArg08, ptr32 & a0Out, ptr32 & a1Out, ptr32 & a5Out)
 {
 	*a0Out = a0;
 	word32 d0_128;
@@ -3054,7 +3052,7 @@ word32 fn00003910(word32 a6, word32 dwArg04, word32 dwArg08, ptr32 a0Out, ptr32 
 	return d0_128;
 }
 
-word32 fn00003A24(word32 dwArg04, word32 dwArg08, word32 dwArg0C, word32 dwArg10, ptr32 d1Out, ptr32 a0Out)
+word32 fn00003A24(word32 dwArg04, word32 dwArg08, word32 dwArg0C, word32 dwArg10, ptr32 & d1Out, ptr32 & a0Out)
 {
 	word32 d0_115;
 	word32 d1_18;
@@ -3114,7 +3112,11 @@ word32 fn00003A24(word32 dwArg04, word32 dwArg08, word32 dwArg0C, word32 dwArg10
 				goto l00003B20;
 			}
 			if (dwArg0C - dwArg04 <u 0x00 || dwArg10 - dwArg08 <=u 0x00)
-				goto l00003B20;
+			{
+l00003B20:
+				d0_115 = 0x00;
+				return d0_115;
+			}
 		}
 		goto l00003B20;
 	}
@@ -3138,13 +3140,11 @@ word32 fn00003A24(word32 dwArg04, word32 dwArg08, word32 dwArg0C, word32 dwArg10
 		word32 d2_81;
 		word32 d1_83;
 		*d1Out = fn00003B28(dwArg04, dwArg08, dwArg10, out d1_80, out d2_81);
-l00003B20:
-		d0_115 = 0x00;
-		return d0_115;
+		goto l00003B20;
 	}
 }
 
-word32 fn00003B28(word32 d0, word32 d1, word32 d2, ptr32 d1Out, ptr32 d2Out)
+word32 fn00003B28(word32 d0, word32 d1, word32 d2, ptr32 & d1Out, ptr32 & d2Out)
 {
 	*d2Out = d2;
 	*d1Out = d1;

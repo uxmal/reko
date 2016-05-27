@@ -30,7 +30,7 @@ namespace Reko.Core
 	/// Contains the bytes that are present in memory after a program is loaded.
 	/// </summary>
     /// <remarks>
-    /// Loading sparse images should load multiple memory areas. Use ImageMap
+    /// Loading sparse images should load multiple memory areas. Use SegmentMap
     /// and ImageSegments to accomplish this.
     /// </remarks>
 	public class MemoryArea

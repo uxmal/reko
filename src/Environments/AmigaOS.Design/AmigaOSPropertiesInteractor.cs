@@ -53,7 +53,7 @@ namespace Reko.Environments.AmigaOS.Design
         {
             Control = new AmigaOSProperties();
             this.Control.KickstartVersionList.DataSource =
-                AmigaOSPlatform.MapKickstartToListOfLibraries
+                platform.MapKickstartToListOfLibraries
                 .Select(kv => new ListOption
                 {
                     Text = string.Format("Kickstart {0}", kv.Key),

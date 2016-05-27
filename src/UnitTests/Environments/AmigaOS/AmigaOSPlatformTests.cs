@@ -62,6 +62,15 @@ namespace Reko.UnitTests.Environments.AmigaOS
             cfgSvc.Stub(c => c.GetEnvironment("amigaOS")).Return(env);
             env.Stub(e => e.TypeLibraries).Return(new List<ITypeLibraryElement>());
             env.Stub(e => e.CharacteristicsLibraries).Return(new List<ITypeLibraryElement>());
+            env.Stub(e => e.Options).Return(new Dictionary<string, object>
+            {
+                { "versionDependentLibraries", new Dictionary<string,object>
+                    {
+                        { "33", new List<object> { "exec_v33", "dos_v33" } },
+                        { "34", new List<object> { "exec_v34", "dos_v34" } },
+                    }
+                }
+            });
             this.services.Stub(s => s.GetService(typeof(IConfigurationService))).Return(cfgSvc);
             this.services.Stub(s => s.GetService(typeof(IFileSystemService))).Return(fsSvc);
             this.services.Stub(s => s.GetService(typeof(ITypeLibraryLoaderService))).Return(tllSvc);
@@ -85,8 +94,9 @@ namespace Reko.UnitTests.Environments.AmigaOS
             Assert.AreEqual("d0", svc.Signature.Parameters[1].Storage.ToString());
             mr.VerifyAll();
         }
+
         [Test]
-        public void AOS_LibrarySelection() 
+        public void AOS_LibrarySelection()
         {
             mr.ReplayAll();
             When_Create_Platform();
@@ -96,11 +106,12 @@ namespace Reko.UnitTests.Environments.AmigaOS
             var libs_v999 = platform.GetLibrarySetForKickstartVersion(999);
 
             Assert.AreEqual(0, libs_v0.Count);
-            Assert.IsTrue (libs_v33.Contains ("exec_v33"));
-            Assert.IsTrue (libs_v34.Contains ("exec_v34"));
-            Assert.IsTrue (libs_v999.Contains ("exec_v34")); //TODO: should select version from highest availalbe kickstart version
+            Assert.IsTrue(libs_v33.Contains("exec_v33"));
+            Assert.IsTrue(libs_v34.Contains("exec_v34"));
+            Assert.IsTrue(libs_v999.Contains("exec_v34")); //TODO: should select version from highest available kickstart version
             mr.VerifyAll();
         }
+
         private void Given_Func(string fileContents)
         {
             var stm = new MemoryStream(Encoding.ASCII.GetBytes(fileContents));

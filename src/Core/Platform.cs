@@ -47,6 +47,11 @@ namespace Reko.Core
         string Description { get; set; }
         PrimitiveType FramePointerType { get; }
         PlatformHeuristics Heuristics { get; }
+        /// <summary>
+        /// Some platforms, especially microcomputers, have well-known
+        /// procedures and global variables at absolute addresses. These are
+        /// available in the MemoryMap.
+        /// </summary>
         MemoryMap_v1 MemoryMap { get; set; }
         string Name { get; }
         string PlatformIdentifier { get; }
@@ -200,7 +205,7 @@ namespace Reko.Core
         /// of each resulting ImageSegment.
         /// </summary>
         /// <returns></returns>
-        public SegmentMap CreateAbsoluteMemoryMap()
+        public virtual SegmentMap CreateAbsoluteMemoryMap()
         {
             if (this.MemoryMap == null ||
                   this.MemoryMap.Segments == null)
@@ -215,7 +220,8 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// Utility function for subclasses that loads all type libraries and characteristics libraries 
+        /// Utility function for subclasses that loads all type libraries and
+        /// characteristics libraries defined in the Reko configuration file.
         /// </summary>
         /// <param name="envName"></param>
         public virtual void EnsureTypeLibraries(string envName)
@@ -238,8 +244,7 @@ namespace Reko.Core
                     Debug.Print("Loading {0}", tl.Name);
                     Metadata = tlSvc.LoadMetadataIntoLibrary(this, tl, Metadata); 
                 }
-                this.CharacteristicsLibs = ((System.Collections.IEnumerable)envCfg.CharacteristicsLibraries)
-                    .OfType<ITypeLibraryElement>()
+                this.CharacteristicsLibs = envCfg.CharacteristicsLibraries
                     .Select(cl => tlSvc.LoadCharacteristics(cl.Name))
                     .Where(cl => cl != null).ToArray();
             }
@@ -384,7 +389,7 @@ namespace Reko.Core
 
         public override SystemService FindService(int vector, ProcessorState state)
         {
-            throw new NotSupportedException();
+            return null;
         }
 
         public override int GetByteSizeFromCBasicType(CBasicType cb)

@@ -26,6 +26,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace Reko.Core.Configuration
@@ -105,6 +106,7 @@ namespace Reko.Core.Configuration
             return new SignatureFileElement
             {
                 Filename = sSig.Filename,
+                Label = sSig.Label,
                 Type = sSig.Type,
             };
         }
@@ -129,7 +131,12 @@ namespace Reko.Core.Configuration
                 TypeName = env.Type,
                 Heuristics = env.Heuristics,
                 TypeLibraries = LoadCollection(env.TypeLibraries, LoadTypeLibraryReference),
-                CharacteristicsLibraries = LoadCollection(env.Characteristics, LoadTypeLibraryReference)
+                CharacteristicsLibraries = LoadCollection(env.Characteristics, LoadTypeLibraryReference),
+                Options = env.Options != null
+                    ? XmlOptions.LoadIntoDictionary(env.Options
+                        .SelectMany(o => o.ChildNodes.OfType<XmlElement>())
+                        .ToArray())
+                    : new Dictionary<string,object>()
             };
         }
 

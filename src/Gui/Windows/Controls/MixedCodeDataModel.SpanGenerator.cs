@@ -197,9 +197,9 @@ namespace Reko.Gui.Windows.Controls
                 {
                     if (rdr.IsValid)
                     {
-                        var addr = rdr.Address;
+                        var addr1 = rdr.Address;
                         byte b = rdr.ReadByte();
-                        line.Add(new MemoryTextSpan(addr, string.Format(" {0:X2}", b), UiStyles.MemoryWindow));
+                        line.Add(new MemoryTextSpan(addr1, string.Format(" {0:X2}", b), UiStyles.MemoryWindow));
                         //$BUG: should use platform.Encoding
                         abCode.Add(b);
                     }

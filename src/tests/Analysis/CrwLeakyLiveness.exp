@@ -50,7 +50,7 @@ FlagGroup byte fn0C00_000A(Register selector ds, Register out ptr16 axOut)
 // C:Flags
 // axOut:Out:ax
 // return address size: 2
-byte fn0C00_000A(selector ds, ptr16 axOut)
+byte fn0C00_000A(selector ds, ptr16 & axOut)
 fn0C00_000A_entry:
 	// succ:  l0C00_000A
 l0C00_000A:

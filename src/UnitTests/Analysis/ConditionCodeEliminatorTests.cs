@@ -18,19 +18,21 @@
  */
 #endregion
 
+using NUnit.Framework;
+using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Operators;
 using Reko.Core.Machine;
+using Reko.Core.Operators;
 using Reko.Core.Types;
-using Reko.Analysis;
 using Reko.UnitTests.Mocks;
-using NUnit.Framework;
-using System;
-using System.IO;
 using Rhino.Mocks;
+using Rhino.Mocks;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -87,26 +89,25 @@ namespace Reko.UnitTests.Analysis
             return ssaIds.Add(id, null, null, false).Identifier;
         }
 
-        protected override void RunTest(Program prog, TextWriter writer)
+        protected override void RunTest(Program program, TextWriter writer)
         {
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
-            DataFlowAnalysis dfa = new DataFlowAnalysis(prog, importResolver, new FakeDecompilerEventListener());
+            DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
             dfa.UntangleProcedures();
-            foreach (Procedure proc in prog.Procedures.Values)
+            foreach (Procedure proc in program.Procedures.Values)
             {
-                var larw = new LongAddRewriter(proc, prog.Architecture);
+                var larw = new LongAddRewriter(proc, program.Architecture);
                 larw.Transform();
 
-                Aliases alias = new Aliases(proc, prog.Architecture, dfa.ProgramDataFlow);
+                Aliases alias = new Aliases(proc, program.Architecture, dfa.ProgramDataFlow);
                 alias.Transform();
-
-                var sst = new SsaTransform(dfa.ProgramDataFlow, proc, importResolver, proc.CreateBlockDominatorGraph());
+                var sst = new SsaTransform(dfa.ProgramDataFlow, proc, importResolver, proc.CreateBlockDominatorGraph(), new HashSet<RegisterStorage>());
                 SsaState ssa = sst.SsaState;
 
-                var cce = new ConditionCodeEliminator(ssa, prog.Platform);
+                var cce = new ConditionCodeEliminator(ssa, program.Platform);
                 cce.Transform();
 
-                var vp = new ValuePropagator(prog.Architecture, ssa.Identifiers, proc);
+                var vp = new ValuePropagator(program.Architecture, ssa.Identifiers, proc);
                 vp.Transform();
 
                 DeadCode.Eliminate(proc, ssa);

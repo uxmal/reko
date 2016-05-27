@@ -119,14 +119,17 @@ namespace Reko.Core
 						change = true;
 					}
 				}
-				if (!next.Pred.Contains(p))
-				{
-					next.Pred.Add(p);
-					change = true;
-				}
-			}
-			next.Pred.Remove(block);
-			block.Pred.Clear();
+                for (int ip = 0; ip < next.Pred.Count; ++ip)
+                {
+                    if (next.Pred[ip] == block)
+                    {
+                        next.Pred[ip] = p;
+                        change = true;
+                        break; // replace only one.
+                    }
+                }
+            }
+            block.Pred.Clear();
 			return change;
 		}
 

@@ -55,7 +55,31 @@ namespace Reko.Core.Types
 
         public Formatter VisitClass(ClassType ct)
         {
-            throw new NotImplementedException();
+            if (this.visited == null)
+                visited = new HashSet<DataType>();
+
+            writer.Write("(class");
+            if (ct.Name != null)
+            {
+                writer.Write(" \"{0}\"", ct.Name);
+            }
+            if (ct.Size != 0)
+            {
+                writer.Write(" {0:X4}", ct.Size);
+            }
+
+            if (!visited.Contains(ct) && (!reference || ct.Name == null))
+            {
+                visited.Add(ct);
+                foreach (ClassField f in ct.Fields)
+                {
+                    writer.Write(" ({0:X} ", f.Offset);
+                    f.DataType.Accept(this);
+                    writer.Write(" {0} {1})", f.Name, f.Protection);
+                }
+            }
+            writer.Write(")");
+            return writer;
         }
 
         public Formatter VisitCode(CodeType c)
@@ -121,6 +145,14 @@ namespace Reko.Core.Types
 			writer.Write(")");
             return writer;
 		}
+
+        public Formatter VisitReference(ReferenceTo refTo)
+        {
+            writer.Write("(ref ");
+            WriteReference(refTo.Referent);
+            writer.Write(")");
+            return writer;
+        }
 
         public Formatter VisitString(StringType str)
         {

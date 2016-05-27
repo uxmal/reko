@@ -141,8 +141,7 @@ namespace Reko.ImageLoaders.MzExe
                 imgU.BaseAddress,
                 new ImageSegment(
                     "code",
-                    imgU.BaseAddress,
-                    imgU.Length,
+                    imgU,
                     AccessMode.ReadWriteExecute));
             return new Program(
                 segmentMap,

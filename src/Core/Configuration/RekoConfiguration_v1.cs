@@ -20,6 +20,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace Reko.Core.Configuration
@@ -108,6 +109,14 @@ namespace Reko.Core.Configuration
 
         [XmlElement]
         public PlatformHeuristics_v1 Heuristics;
+
+        [XmlArray("SignatureFiles")]
+        [XmlArrayItem("SignatureFile")]
+        public SignatureFile_v1[] SignatureFiles;
+
+        // Collect any other platform-specific elements in "Options"
+        [XmlAnyElement]
+        public XmlElement[] Options;
     }
 
     [Serializable]
@@ -173,6 +182,9 @@ namespace Reko.Core.Configuration
     {
         [XmlAttribute("Filename")]
         public string Filename;
+
+        [XmlAttribute("Label")]
+        public string Label;
 
         [XmlAttribute("Type")]
         public string Type;

@@ -250,6 +250,11 @@ namespace Reko.Core.Output
             return codeFormatter;
         }
 
+        public CodeFormatter VisitReference(ReferenceTo refTo)
+        {
+            throw new NotSupportedException("Global variables cannot be references.");
+        }
+
         public CodeFormatter VisitString(StringType str)
         {
             var offset = rdr.Offset;

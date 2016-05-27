@@ -48,6 +48,8 @@ namespace Reko.ImageLoaders.Elf
         {
             base.Relocate(program);
             var rela_plt = loader.GetSectionInfoByName(".rela.plt");
+            if (rela_plt == null)
+                return;
             var plt = loader.GetSectionInfoByName(".plt");
             var relaRdr = loader.CreateReader(rela_plt.FileOffset);
             var pltRdr = loader.CreateReader(plt.FileOffset);

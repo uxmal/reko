@@ -46,7 +46,7 @@ void fn00001000(int32 d0, byte * a0)
 				byte * a0_512 = a0_458;
 			} while (*a0_512 != 0x00);
 		}
-		ui32 d0_105 = d4_455 << 0x02;
+		int32 d0_105 = d4_455 << 0x02;
 		word32 d0_107 = d0_105 + d2_3;
 		int32 d1_111 = 0x00010001;
 		d0_112 = AllocMem(d0_107 + 0x11, 0x00010001);
@@ -55,9 +55,9 @@ void fn00001000(int32 d0, byte * a0)
 			Eq_68 * dwLoc14_159;
 			word32 a0_164;
 			d0_112->dw0000 = d0_107 + 0x11;
-			word32 d4_123 = d4_455 - 0x01;
+			int32 d4_123 = d4_455 - 0x01;
 			d0_112->dw000C = d4_123;
-			d0_112->dw0008 = d0_112->dw000C + 0x01 + d0_105 / 0x0010;
+			d0_112->ptr0008 = d0_112->dw000C + 0x01 + d0_105 / 0x0010;
 			Mem131[0x00:word32] = 0x00;
 			Eq_68 * d0_132 = d0_19->ptr00AC;
 			d0_132->dw0000 = d0_107 + 0x11;
@@ -109,7 +109,7 @@ l000011F8:
 			int32 d3_231 = 0x01;
 			Eq_237 * a0_233 = a0 + d2_3;
 			do
-				a0_233 = a0_233 - (Eq_243 *) 0x01;
+				a0_233 = a0_233 - 0x01;
 			while (d2_3 != ~0x00);
 			a0_233[0x01] = (struct Eq_237 {	// size: 1 1
 				cu8 b0000;	// 0
@@ -249,7 +249,7 @@ void fn0000127C(int32 d2)
 	Eq_33 * v6_5 = *(a7_3 - 0x08);
 	if (v8_8->dw0004 != 0x00)
 		execPrivate1();
-	CloseLibrary(a4_0->ptrFFFF8012);
+	CloseLibrary(a4_0->ptrFFFF800A);
 	if (v6_5 != null)
 		fn0000126C(v6_5);
 	FreeMem(v8_8, v8_8->dw0000);

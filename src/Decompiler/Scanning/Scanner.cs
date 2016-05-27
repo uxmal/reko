@@ -412,17 +412,26 @@ namespace Reko.Scanning
         /// <returns></returns>
         public Block CreateCallRetThunk(Address addrFrom, Procedure procOld, Procedure procNew)
         {
+            //$BUG: ReturnAddressOnStack property needs to be properly set, the
+            // EvenOdd sample shows how this doesn't work currently. 
             var blockName = string.Format(
                 "{0}_thunk_{1}", 
                 GenerateBlockName(addrFrom),
                 procNew.Name);
             var callRetThunkBlock = procOld.AddBlock(blockName);
             callRetThunkBlock.IsSynthesized = true;
-            callRetThunkBlock.Statements.Add(0, new CallInstruction(
+
+            var linFrom = addrFrom.ToLinear();
+            callRetThunkBlock.Statements.Add(
+                addrFrom.ToLinear(), 
+                new CallInstruction(
                     new ProcedureConstant(program.Platform.PointerType, procNew),
-                    new CallSite(procNew.Signature.ReturnAddressOnStack, 0)));
+                    new CallSite(
+                        procNew.Signature.ReturnAddressOnStack,
+                        0)));
             program.CallGraph.AddEdge(callRetThunkBlock.Statements.Last, procNew);
-            callRetThunkBlock.Statements.Add(0, new ReturnInstruction());
+
+            callRetThunkBlock.Statements.Add(linFrom, new ReturnInstruction());
             procOld.ControlGraph.AddEdge(callRetThunkBlock, procOld.ExitBlock);
             SetProcedureReturnAddressBytes(procOld, procNew.Frame.ReturnAddressSize, addrFrom);
             return callRetThunkBlock;
@@ -606,7 +615,7 @@ namespace Reko.Scanning
             }
             else
             {
-                Warn(addr, "The user-defined procedure at address {0} did not have a signature"); 
+                Warn(addr, "The user-defined procedure at address {0} did not have a signature.", addr); 
             }
 
             ep = new ExternalProcedure(sProc.Name, sig);

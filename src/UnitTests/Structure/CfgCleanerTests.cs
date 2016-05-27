@@ -22,13 +22,34 @@ using Reko.Core;
 using Reko.Structure;
 using NUnit.Framework;
 using System;
+using Reko.UnitTests.Mocks;
+using Reko.Core.Types;
+using System.IO;
+using System.Diagnostics;
+using System.Linq;
 
 namespace Reko.UnitTests.Structure
 {
 	[TestFixture]
 	public class CfgCleanerTests : StructureTestBase
 	{
-		[Test]
+        [System.Diagnostics.DebuggerHidden]
+        private void RunTest(string sourceFile, string testFile)
+        {
+            using (FileUnitTester fut = new FileUnitTester(testFile))
+            {
+                this.RewriteProgramMsdos(sourceFile, Address.SegPtr(0xC00, 0));
+                program.Procedures.Values[0].Write(false, fut.TextWriter);
+                fut.TextWriter.WriteLine();
+                var cfgc = new ControlFlowGraphCleaner(program.Procedures.Values[0]);
+                cfgc.Transform();
+                program.Procedures.Values[0].Write(false, fut.TextWriter);
+
+                fut.AssertFilesEqual();
+            }
+        }
+
+        [Test]
 		public void CfgcIf()
 		{
 			RunTest("Fragments/if.asm", "Structure/CfgcIf.txt");
@@ -46,20 +67,39 @@ namespace Reko.UnitTests.Structure
 			RunTest("Fragments/forkedloop.asm", "Structure/CfgcForkedLoop.txt");
 		}
 
-		[System.Diagnostics.DebuggerHidden]
-		private void RunTest(string sourceFile, string testFile)
-		{
-			using (FileUnitTester fut = new FileUnitTester(testFile))
-			{
-				this.RewriteProgramMsdos(sourceFile, Address.SegPtr(0xC00, 0));
-				program.Procedures.Values[0].Write(false, fut.TextWriter);
-                fut.TextWriter.WriteLine();
-				var cfgc = new ControlFlowGraphCleaner(program.Procedures.Values[0]);
-				cfgc.Transform();
-				program.Procedures.Values[0].Write(false, fut.TextWriter);
+        [Test]
+        public void CfgcJmpToBranch()
+        {
+            var m = new ProcedureBuilder();
+            var c = m.Temp(PrimitiveType.Bool, "c");
+            var pfn = m.Temp(PrimitiveType.Pointer32, "pfn");
+            m.Label("m1");
+            m.BranchIf(c, "m3");
+            m.Label("m2");
+            m.Goto("m3");
+            m.Label("m3");
+            m.SideEffect(m.Fn(pfn));
+            m.Return();
 
-				fut.AssertFilesEqual();
-			}
-		}
+            var sExp =
+            #region Expected
+@"// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	pfn()
+	return
+	// succ:  ProcedureBuilder_exit
+m1:
+m3:
+ProcedureBuilder_exit:
+";
+            #endregion
+            var cfgc = new ControlFlowGraphCleaner(m.Procedure);
+            cfgc.Transform();
+            var sw = new StringWriter();
+            m.Procedure.Write(false, sw);
+            Assert.AreEqual(sExp, sw.ToString());
+        }
 	}
 }

@@ -4,27 +4,27 @@
 
 #include "redir.h"
 
-void _init(Eq_2 * r25)
+void _init(word32 r25)
 {
 	word32 sp_14;
 	word32 r28_15;
 	word32 r25_16;
 	word32 ra_17;
-	bcuipsr0 None_18;
-	(r25->ptrFC006C0 + 0x072C)();
+	bcuiposr0 None_18;
+	(Mem0[r25 + 0x0FC006C0:word32] + 0x072C)();
 	word32 sp_22;
 	word32 r28_23;
 	word32 r25_24;
 	word32 ra_25;
-	bcuipsr0 None_26;
-	(r25->ptrFC006C4 + -25584)();
+	bcuiposr0 None_26;
+	(Mem0[r25 + 264242884:word32] + -25584)();
 	return;
 }
 
 void __start(word32 dwArg00)
 {
-	Eq_24 * ra_2 = &globals->t400238;
-	code * r25_18 = ra_2->ptrFC00690;
+	word32 ra_2 = 0x00400238;
+	word32 r25_18 = Mem0[ra_2 + 0x0FC00690:word32];
 	word32 sp_19;
 	word32 ra_20;
 	word32 r28_21;
@@ -39,19 +39,19 @@ void __start(word32 dwArg00)
 		;
 }
 
-void __do_global_dtors_aux(Eq_39 * r25)
+void __do_global_dtors_aux(word32 r25)
 {
-	Eq_63 * * r28_29 = &r25->ptrFC00258;
-	if (r25->ptrFC00258->dw0008 == 0x00)
+	word32 r28_29 = r25 + 264274496;
+	if (Mem0[Mem0[r25 + 0x0FC00258:word32] + 0x08:word32] == 0x00)
 	{
-		code * * r3_25 = r25->ptrFC00258->ptr0004;
-		if (*r3_25 != null)
+		word32 r3_25 = Mem0[Mem0[r25 + 0x0FC00258:word32] + 0x04:word32];
+		if (Mem0[r3_25 + 0x00:word32] != 0x00)
 		{
-			word32 r2_59 = r3_25;
+			word32 r2_59 = r3_25 + 0x04;
 			while (true)
 			{
-				code * r25_63 = *r3_25;
-				**(r28_29 - 32744) = r2_59;
+				word32 r25_63 = Mem0[r3_25 + 0x00:word32];
+				Mem66[Mem0[r28_29 - 32744 + 0x00:word32] + 0x04:word32] = r2_59;
 				word32 sp_68;
 				word32 r28_69;
 				word32 r25_70;
@@ -61,15 +61,15 @@ void __do_global_dtors_aux(Eq_39 * r25)
 				word32 r1_74;
 				word32 r4_75;
 				r25_63();
-				r3_25 = r25->ptrFC00258->ptr0004;
-				r28_29 = (Eq_63 * *) &r25->ptrFC00258;
-				if (*r3_25 == null)
+				r3_25 = Mem66[Mem66[r25 + 0x0FC00258:word32] + 0x04:word32];
+				r28_29 = r25 + 264274496;
+				if (Mem66[r3_25 + 0x00:word32] == 0x00)
 					break;
-				r2_59 = r3_25;
+				r2_59 = r3_25 + 0x04;
 			}
 		}
-		Eq_63 * r25_34 = *(r28_29 - 32428);
-		if (r25_34 != null)
+		word32 r25_34 = Mem0[r28_29 - 32428 + 0x00:word32];
+		if (r25_34 != 0x00)
 		{
 			word32 sp_48;
 			word32 r28_49;
@@ -80,9 +80,9 @@ void __do_global_dtors_aux(Eq_39 * r25)
 			word32 r1_54;
 			word32 r4_55;
 			r25_34();
-			r28_29 = (Eq_63 * *) &r25->ptrFC00258;
+			r28_29 = r25 + 264274496;
 		}
-		**(r28_29 - 32744) = 0x01;
+		Mem44[Mem0[r28_29 - 32744 + 0x00:word32] + 0x08:word32] = 0x01;
 	}
 	return;
 }
@@ -92,10 +92,10 @@ void fini_dummy(word32 r25)
 	return;
 }
 
-void frame_dummy(Eq_127 * r25)
+void frame_dummy(word32 r25)
 {
-	code * r25_9 = r25->ptrFC00178;
-	if (r25_9 != null)
+	word32 r25_9 = Mem0[r25 + 0x0FC00178:word32];
+	if (r25_9 != 0x00)
 	{
 		word32 sp_23;
 		word32 r28_24;
@@ -113,9 +113,9 @@ void init_dummy(word32 r25)
 	return;
 }
 
-void handle_stop(Eq_141 * r25, word32 dwArg00)
+void handle_stop(word32 r25, word32 dwArg00)
 {
-	code * r25_24 = r25->ptrFC0023C;
+	word32 r25_24 = Mem0[r25 + 0x0FC0023C:word32];
 	word32 sp_25;
 	word32 r28_26;
 	word32 r25_27;
@@ -128,13 +128,13 @@ void handle_stop(Eq_141 * r25, word32 dwArg00)
 	word32 r7_34;
 	word32 r1_35;
 	r25_24();
-	*r25->ptrFC00110 = 0x01;
+	Mem39[Mem0[r25 + 0x0FC00110:word32] + 0x00:word32] = 0x01;
 	return;
 }
 
-void handle_log_rotate(Eq_165 * r25, word32 dwArg00)
+void handle_log_rotate(word32 r25, word32 dwArg00)
 {
-	code * r25_24 = r25->ptrFC001B0;
+	word32 r25_24 = Mem0[r25 + 0x0FC001B0:word32];
 	word32 sp_25;
 	word32 r28_26;
 	word32 r25_27;
@@ -146,7 +146,7 @@ void handle_log_rotate(Eq_165 * r25, word32 dwArg00)
 	word32 r6_33;
 	word32 r7_34;
 	r25_24();
-	code * r25_36 = r25->ptrFC00234;
+	word32 r25_36 = Mem0[r25 + 264241716:word32];
 	word32 sp_37;
 	word32 r28_38;
 	word32 r25_39;
@@ -161,1070 +161,1341 @@ void handle_log_rotate(Eq_165 * r25, word32 dwArg00)
 	return;
 }
 
-void main(word32 r5, Eq_196 * r25, word32 dwArg00, word32 dwArg04)
+void main(word32 r5, word32 r25, word32 dwArg00, word32 dwArg04)
 {
-	word32 r2_23 = *r25->ptrFC00044;
-	word32 * r1_24 = r25->ptrFC00150;
-	*r1_24 = r2_23;
-	code * r25_28 = r25->ptrFC000D0;
-	word32 sp_29;
-	word32 r28_30;
-	word32 r25_31;
-	word32 ra_32;
-	word32 r30_33;
-	word32 r16_34;
-	word32 r4_35;
-	word32 r5_36;
-	word32 r2_37;
-	word32 r1_38;
-	word32 r6_39;
-	word32 r3_40;
-	word32 r7_41;
-	r25_28();
-	code * r25_45 = r25->ptrFC000D0;
-	word32 sp_46;
-	word32 r28_47;
-	word32 r25_48;
-	word32 ra_49;
-	word32 r30_50;
-	word32 r16_51;
-	word32 r4_52;
-	word32 r5_53;
-	word32 r2_54;
-	word32 r1_55;
-	word32 r6_56;
-	word32 r3_57;
-	word32 r7_58;
-	r25_45();
-	code * r25_63 = r25->ptrFC000D8;
-	word32 sp_64;
-	word32 r28_65;
-	word32 r25_66;
-	word32 ra_67;
-	word32 r30_68;
-	word32 r16_69;
-	word32 r4_70;
-	word32 r5_71;
-	word32 r2_72;
-	word32 r1_73;
-	word32 r6_74;
-	word32 r3_75;
-	word32 r7_76;
-	r25_63();
-	code * r25_80 = r25->ptrFC0018C;
-	word32 sp_81;
-	word32 r28_82;
-	word32 r25_83;
-	word32 ra_84;
-	word32 r30_85;
-	word32 r16_86;
-	word32 r4_87;
-	word32 r5_88;
-	word32 r2_89;
-	word32 r1_90;
-	word32 r6_91;
-	word32 r3_92;
-	word32 r7_93;
-	r25_80();
-	Eq_293 * * r28_109 = &r25->ptrFC001AC;
-	word32 r2_96 = r25->ptrFC00170->dw04BC;
-	if (r2_96 != 0x00)
-	{
-		code * r25_1509 = r25->ptrFC00090;
-		word32 sp_1512;
-		word32 r28_1513;
-		word32 r25_1514;
-		word32 ra_1515;
-		word32 r30_1516;
-		word32 r16_1517;
-		word32 r4_1518;
-		word32 r5_1519;
-		word32 r2_1520;
-		word32 r1_1521;
-		word32 r6_1522;
-		word32 r3_1523;
-		word32 r7_1524;
-		r25_1509();
-		code * * r28_1525 = &r25->ptrFC001AC;
-		if (r2_1520 != 0x00)
-		{
-			code * r25_1578 = r25->ptrFC00020;
-			word32 sp_1579;
-			word32 r28_1580;
-			word32 r25_1581;
-			word32 ra_1582;
-			word32 r30_1583;
-			word32 r16_1584;
-			word32 r4_1585;
-			word32 r5_1586;
-			word32 r2_1587;
-			word32 r1_1588;
-			word32 r6_1589;
-			word32 r3_1590;
-			word32 r7_1591;
-			r25_1578();
-			r28_1525 = (code * *) &r25->ptrFC001AC;
-		}
-		code * r25_1530 = *(r28_1525 - 0x7FC4);
-		word32 sp_1531;
-		word32 r28_1532;
-		word32 r25_1533;
-		word32 ra_1534;
-		word32 r30_1535;
-		word32 r16_1536;
-		word32 r4_1537;
-		word32 r5_1538;
-		word32 r2_1539;
-		word32 r1_1540;
-		word32 r6_1541;
-		word32 r3_1542;
-		word32 r7_1543;
-		r25_1530();
-		code * r25_1546 = r25->ptrFBFFFCC;
-		word32 sp_1547;
-		word32 r28_1548;
-		word32 r25_1549;
-		word32 ra_1550;
-		word32 r30_1551;
-		word32 r16_1552;
-		word32 r4_1553;
-		word32 r5_1554;
-		word32 r2_1555;
-		word32 r1_1556;
-		word32 r6_1557;
-		word32 r3_1558;
-		word32 r7_1559;
-		r25_1546();
-		code * r25_1562 = r25->ptrFBFFFCC;
-		word32 sp_1563;
-		word32 r28_1564;
-		word32 r25_1565;
-		word32 ra_1566;
-		word32 r30_1567;
-		word32 r16_1568;
-		word32 r4_1569;
-		word32 r5_1570;
-		word32 r2_1571;
-		word32 r1_1572;
-		word32 r6_1573;
-		word32 r3_1574;
-		word32 r7_1575;
-		r25_1562();
-		r28_109 = (Eq_293 * *) &r25->ptrFC001AC;
-	}
-	Eq_293 * r2_110 = *(r28_109 - 32288);
-	if (r2_110 != (Eq_293 *) 0x0695)
-	{
-		word32 r2_1426 = (word32) r2_110->b0695;
-		if (r2_1426 != 0x00)
-		{
-			Eq_293 * r25_1430 = *(r28_109 - 32532);
-			word32 sp_1443;
-			word32 r28_1444;
-			word32 r25_1445;
-			word32 ra_1446;
-			word32 r30_1447;
-			word32 r16_1448;
-			word32 r4_1449;
-			word32 r5_1450;
-			word32 r2_1451;
-			word32 r1_1452;
-			word32 r6_1453;
-			word32 r3_1454;
-			word32 r7_1455;
-			r25_1430();
-			r28_109 = (Eq_293 * *) &r25->ptrFC001AC;
-			if (r2_1451 != 0x00)
-			{
-				code * r25_1459 = r25->ptrFC00184;
-				word32 sp_1460;
-				word32 r28_1461;
-				word32 r25_1462;
-				word32 ra_1463;
-				word32 r30_1464;
-				word32 r16_1465;
-				word32 r4_1466;
-				word32 r5_1467;
-				word32 r2_1468;
-				word32 r1_1469;
-				word32 r6_1470;
-				word32 r3_1471;
-				word32 r7_1472;
-				r25_1459();
-				code * r25_1478 = r25->ptrFC000F4;
-				word32 sp_1479;
-				word32 r28_1480;
-				word32 r25_1481;
-				word32 ra_1482;
-				word32 r30_1483;
-				word32 r16_1484;
-				word32 r4_1485;
-				word32 r5_1486;
-				word32 r2_1487;
-				word32 r1_1488;
-				word32 r6_1489;
-				word32 r3_1490;
-				word32 r7_1491;
-				r25_1478();
-				code * r25_1494 = r25->ptrFC0006C;
-				word32 sp_1495;
-				word32 r28_1496;
-				word32 r25_1497;
-				word32 ra_1498;
-				word32 r30_1499;
-				word32 r16_1500;
-				word32 r4_1501;
-				word32 r5_1502;
-				word32 r2_1503;
-				word32 r1_1504;
-				word32 r6_1505;
-				word32 r3_1506;
-				word32 r7_1507;
-				r25_1494();
-				r28_109 = (Eq_293 * *) &r25->ptrFC001AC;
-			}
-		}
-	}
-	**(r28_109 - 32620) = **(r28_109 - 32288);
-	**(r28_109 - 0x7FC0) = *(r28_109 - 32288);
-	**(r28_109 - 32312) = **(r28_109 - 32288) << 0x0A;
-	ui32 r2_130 = **(r28_109 - 32288);
-	Eq_293 * r1_131 = *(r28_109 - 0x7F54);
-	r1_131->t0000.u0 = r2_130;
-	Eq_293 * r25_135 = *(r28_109 - 0x7F90);
-	word32 sp_136;
-	word32 r28_137;
-	word32 r25_138;
-	word32 ra_139;
-	word32 r30_140;
-	word32 r16_141;
-	word32 r4_142;
-	word32 r5_143;
-	word32 r2_144;
-	word32 r1_145;
-	word32 r6_146;
-	word32 r3_147;
-	word32 r7_148;
-	r25_135();
-	code * r25_152 = r25->ptrFC001A8;
-	word32 sp_153;
-	word32 r28_154;
-	word32 r25_155;
-	word32 ra_156;
-	word32 r30_157;
-	word32 r16_158;
-	word32 r4_159;
-	word32 r5_160;
-	word32 r2_161;
-	word32 r1_162;
-	word32 r6_163;
-	word32 r3_164;
-	word32 r7_165;
-	r25_152();
-	if (*r25->ptrFC00158 < 0x00)
-		;
-	code * r25_206 = r25->ptrFC0011C;
-	word32 sp_207;
-	word32 r28_208;
-	word32 r25_209;
-	word32 ra_210;
-	word32 r30_211;
-	word32 r16_212;
-	word32 r4_213;
-	word32 r5_214;
-	word32 r2_215;
-	word32 r1_216;
-	word32 r6_217;
-	word32 r3_218;
-	word32 r7_219;
-	r25_206();
-	code * r25_221 = r25->ptrFC00038;
-	word32 sp_222;
-	word32 r28_223;
-	word32 r25_224;
-	word32 ra_225;
-	word32 r30_226;
-	word32 r16_227;
-	word32 r4_228;
-	word32 r5_229;
-	Eq_615 * r2_230;
-	word32 r1_231;
-	word32 r6_232;
-	word32 r3_233;
-	word32 r7_234;
-	r25_221();
-	code * * r28_1421 = &r25->ptrFC001AC;
-	if (r2_230 == null)
-	{
-		code * r25_1406 = r25->ptrFC00020;
-		word32 sp_1408;
-		word32 r28_1409;
-		word32 r25_1410;
-		word32 ra_1411;
-		word32 r30_1412;
-		word32 r16_1413;
-		word32 r4_1414;
-		word32 r5_1415;
-		word32 r2_1416;
-		word32 r1_1417;
-		word32 r6_1418;
-		word32 r3_1419;
-		word32 r7_1420;
-		r25_1406();
-		r28_1421 = (code * *) &r25->ptrFC001AC;
-	}
-	code * r25_239 = *(r28_1421 - 32404);
-	word32 sp_240;
-	word32 r28_241;
-	word32 r25_242;
-	word32 ra_243;
-	word32 r30_244;
-	word32 r16_245;
-	word32 r4_246;
-	word32 r5_247;
-	Eq_638 * r2_248;
-	word32 r1_249;
-	word32 r6_250;
-	word32 r3_251;
-	word32 r7_252;
-	r25_239();
-	code * * r28_1404 = &r25->ptrFC001AC;
-	if (r2_248 == null)
-	{
-		code * r25_1386 = r25->ptrFC00020;
-		word32 sp_1391;
-		word32 r28_1392;
-		word32 r25_1393;
-		word32 ra_1394;
-		word32 r30_1395;
-		word32 r16_1396;
-		word32 r4_1397;
-		word32 r5_1398;
-		word32 r2_1399;
-		word32 r1_1400;
-		word32 r6_1401;
-		word32 r3_1402;
-		word32 r7_1403;
-		r25_1386();
-		r28_1404 = (code * *) &r25->ptrFC001AC;
-	}
-	code * r25_264 = *(r28_1404 - 32344);
-	word32 sp_265;
-	word32 r28_266;
-	word32 r25_267;
-	word32 ra_268;
-	word32 r30_269;
-	word32 r16_270;
-	word32 r4_271;
-	word32 r5_272;
-	word32 r2_273;
-	word32 r1_274;
-	word32 r6_275;
-	word32 r3_276;
-	word32 r7_277;
-	r25_264();
-	code * r25_282 = r25->ptrFBFFFE0;
-	word32 sp_283;
-	word32 r28_284;
-	word32 r25_285;
-	word32 ra_286;
-	word32 r30_287;
-	word32 r16_288;
-	word32 r4_289;
-	word32 r5_290;
-	word32 r2_291;
-	word32 r1_292;
-	word32 r6_293;
-	word32 r3_294;
-	word32 r7_295;
-	r25_282();
-	code * r25_304 = r25->ptrFC00138;
-	word32 sp_305;
-	word32 r28_306;
-	word32 r25_307;
-	word32 ra_308;
-	word32 r30_309;
-	word32 r16_310;
-	word32 r4_311;
-	word32 r5_312;
-	word32 r2_313;
-	word32 r1_314;
-	word32 r6_315;
-	word32 r3_316;
-	word32 r7_317;
-	r25_304();
-	code * r25_322 = r25->ptrFBFFFE0;
-	word32 sp_323;
-	word32 r28_324;
-	word32 r25_325;
-	word32 ra_326;
-	word32 r30_327;
-	word32 r16_328;
-	word32 r4_329;
-	word32 r5_330;
-	word32 r2_331;
-	word32 r1_332;
-	word32 r6_333;
-	word32 r3_334;
-	word32 r7_335;
-	r25_322();
-	code * r25_340 = r25->ptrFC00124;
-	word32 sp_341;
-	word32 r28_342;
-	word32 r25_343;
-	word32 ra_344;
-	word32 r30_345;
-	word32 r16_346;
-	word32 r4_347;
-	word32 r5_348;
-	word32 r2_349;
-	word32 r1_350;
-	word32 r6_351;
-	word32 r3_352;
-	word32 r7_353;
-	r25_340();
-	code * r25_362 = r25->ptrFC000E8;
-	word32 sp_363;
-	word32 r28_364;
-	word32 r25_365;
-	word32 ra_366;
-	word32 r30_367;
-	word32 r16_368;
-	word32 r4_369;
-	word32 r5_370;
-	word32 r2_371;
-	word32 r1_372;
-	word32 r6_373;
-	word32 r3_374;
-	word32 r7_375;
-	r25_362();
-	Eq_793 * * r28_1024 = &r25->ptrFC001AC;
-	Eq_771 * dwLoc0150_1368 = r2_248->ptr0008;
-	while (dwLoc0150_1368 != null)
-	{
-		Eq_793 * r25_1339 = *(r28_1024 - 32220);
-		word32 sp_1340;
-		word32 r28_1341;
-		word32 r25_1342;
-		word32 ra_1343;
-		word32 r30_1344;
-		word32 r16_1345;
-		word32 r4_1346;
-		word32 r5_1347;
-		word32 r2_1348;
-		word32 r1_1349;
-		word32 r6_1350;
-		word32 r3_1351;
-		word32 r7_1352;
-		r25_1339();
-		r28_1024 = (Eq_793 * *) &r25->ptrFC001AC;
-		if (r2_1348 == 0x00)
-		{
-			code * r25_1370 = r25->ptrFC00020;
-			word32 sp_1371;
-			word32 r28_1372;
-			word32 r25_1373;
-			word32 ra_1374;
-			word32 r30_1375;
-			word32 r16_1376;
-			word32 r4_1377;
-			word32 r5_1378;
-			word32 r2_1379;
-			word32 r1_1380;
-			word32 r6_1381;
-			word32 r3_1382;
-			word32 r7_1383;
-			r25_1370();
-			r28_1024 = (Eq_793 * *) &r25->ptrFC001AC;
-		}
-		dwLoc0150_1368 = dwLoc0150_1368->ptr0018;
-	}
+main_entry:
+	word32 r2_23 = Mem0[Mem0[r25 + 0x0FC00044:word32] + 0x00:word32]
+	word32 r1_24 = Mem0[r25 + 0x0FC00150:word32]
+	Mem25[r1_24 + 0x00:word32] = r2_23
+	word32 r25_28 = Mem25[r25 + 0x0FC000D0:word32]
+	word32 sp_29
+	word32 r28_30
+	word32 r25_31
+	word32 ra_32
+	word32 r30_33
+	word32 r16_34
+	word32 r4_35
+	word32 r5_36
+	word32 r2_37
+	word32 r1_38
+	word32 r6_39
+	word32 r3_40
+	word32 r7_41
+	call r25_28 (retsize: 0; depth: 416)
+		uses: dwLoc0160_20,dwLoc0168_7,dwLoc04_9,dwLoc08_11,dwLoc0C_13,r1_24,r16,r2_23,r25_28,r28_5,r30_14,r4_26,r5_27,ra,sp_6
+		defs: r1_38,r16_34,r2_37,r25_31,r28_30,r3_40,r30_33,r4_35,r5_36,r6_39,r7_41,ra_32,sp_29
+	word32 r25_45 = Mem25[r25 + 0x0FC000D0:word32]
+	word32 sp_46
+	word32 r28_47
+	word32 r25_48
+	word32 ra_49
+	word32 r30_50
+	word32 r16_51
+	word32 r4_52
+	word32 r5_53
+	word32 r2_54
+	word32 r1_55
+	word32 r6_56
+	word32 r3_57
+	word32 r7_58
+	call r25_45 (retsize: 0; depth: 416)
+		uses: dwLoc0160_20,dwLoc0168_7,dwLoc04_9,dwLoc08_11,dwLoc0C_13,r1_38,r16_34,r2_37,r25_45,r28_42,r3_40,r30_33,r4_43,r5_44,r6_39,r7_41,ra_32,sp_29
+		defs: r1_55,r16_51,r2_54,r25_48,r28_47,r3_57,r30_50,r4_52,r5_53,r6_56,r7_58,ra_49,sp_46
+	word32 r25_63 = Mem25[r25 + 0x0FC000D8:word32]
+	word32 sp_64
+	word32 r28_65
+	word32 r25_66
+	word32 ra_67
+	word32 r30_68
+	word32 r16_69
+	word32 r4_70
+	word32 r5_71
+	word32 r2_72
+	word32 r1_73
+	word32 r6_74
+	word32 r3_75
+	word32 r7_76
+	call r25_63 (retsize: 0; depth: 416)
+		uses: dwLoc0160_20,dwLoc0168_7,dwLoc04_9,dwLoc08_11,dwLoc0C_13,r1_55,r16_51,r2_60,r25_63,r28_59,r3_57,r30_50,r4_61,r5_62,r6_56,r7_58,ra_49,sp_46
+		defs: r1_73,r16_69,r2_72,r25_66,r28_65,r3_75,r30_68,r4_70,r5_71,r6_74,r7_76,ra_67,sp_64
+	word32 r25_80 = Mem25[r25 + 0x0FC0018C:word32]
+	word32 sp_81
+	word32 r28_82
+	word32 r25_83
+	word32 ra_84
+	word32 r30_85
+	word32 r16_86
+	word32 r4_87
+	word32 r5_88
+	word32 r2_89
+	word32 r1_90
+	word32 r6_91
+	word32 r3_92
+	word32 r7_93
+	call r25_80 (retsize: 0; depth: 416)
+		uses: dwLoc0160_20,dwLoc0168_7,dwLoc04_9,dwLoc08_11,dwLoc0C_13,r1_73,r16_69,r2_72,r25_80,r28_77,r3_75,r30_68,r4_78,r5_79,r6_74,r7_76,ra_67,sp_64
+		defs: r1_90,r16_86,r2_89,r25_83,r28_82,r3_92,r30_85,r4_87,r5_88,r6_91,r7_93,ra_84,sp_81
+	word32 r28_109 = r25 + 0x0FC07F90
+	word32 r2_96 = Mem25[Mem25[r25 + 0x0FC00170:word32] + 1212:word32]
+	branch r2_96 == 0x00 l004008D0_ds_t
+	goto l004008D0_ds_f
+l004008D0:
+l004008D0_ds_f:
+	word32 r25_1509 = Mem25[r25 + 0x0FC00090:word32]
+	word32 sp_1512
+	word32 r28_1513
+	word32 r25_1514
+	word32 ra_1515
+	word32 r30_1516
+	word32 r16_1517
+	word32 r4_1518
+	word32 r5_1519
+	word32 r2_1520
+	word32 r1_1521
+	word32 r6_1522
+	word32 r3_1523
+	word32 r7_1524
+	call r25_1509 (retsize: 0; depth: 416)
+		uses: dwLoc0138,dwLoc0144,dwLoc014C,dwLoc0150,dwLoc0154,dwLoc0158,dwLoc015C,dwLoc0160_20,dwLoc0168_7,dwLoc0170,dwLoc0174,dwLoc0178,dwLoc017C,dwLoc0180,dwLoc0184,dwLoc0188,dwLoc018C,dwLoc0190,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14,dwLoc18,dwLoc1C,dwLoc20,dwLoc24,dwLoc28,dwLoc2C,dwLoc30,r1_90,r16_86,r2_96,r25_1509,r28_94,r3_92,r30_85,r4_87,r5_88,r6_91,r7_93,ra_84,sp_81,wLoc0146,wLoc0148
+		defs: r1_1521,r16_1517,r2_1520,r25_1514,r28_1513,r3_1523,r30_1516,r4_1518,r5_1519,r6_1522,r7_1524,ra_1515,sp_1512
+	word32 r28_1525 = r25 + 0x0FC07F90
+	branch r2_1520 == 0x00 l004009BC_ds_t
+	goto l004009BC_ds_f
+l004009BC:
+l004009BC_ds_f:
+	word32 r25_1578 = Mem25[r25 + 0x0FC00020:word32]
+	word32 sp_1579
+	word32 r28_1580
+	word32 r25_1581
+	word32 ra_1582
+	word32 r30_1583
+	word32 r16_1584
+	word32 r4_1585
+	word32 r5_1586
+	word32 r2_1587
+	word32 r1_1588
+	word32 r6_1589
+	word32 r3_1590
+	word32 r7_1591
+	call r25_1578 (retsize: 0; depth: 416)
+		uses: dwLoc0138,dwLoc0144,dwLoc014C,dwLoc0150,dwLoc0154,dwLoc0158,dwLoc015C,dwLoc0160_20,dwLoc0168_7,dwLoc0170,dwLoc0174,dwLoc0178,dwLoc017C,dwLoc0180,dwLoc0184,dwLoc0188,dwLoc018C,dwLoc0190,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14,dwLoc18,dwLoc1C,dwLoc20,dwLoc24,dwLoc28,dwLoc2C_1526,dwLoc30,r1_1521,r16_1517,r2_1527,r25_1578,r28_1525,r3_1523,r30_1516,r4_1577,r5_1519,r6_1522,r7_1524,ra_1515,sp_1512,wLoc0146,wLoc0148
+		defs: r1_1588,r16_1584,r2_1587,r25_1581,r28_1580,r3_1590,r30_1583,r4_1585,r5_1586,r6_1589,r7_1591,ra_1582,sp_1579
+	r28_1525 = r25 + 0x0FC07F90
+	goto l00400A00
+l004009E4:
+l00400A00:
+	word32 r25_1530 = Mem25[r28_1525 - 0x7FC4 + 0x00:word32]
+	word32 sp_1531
+	word32 r28_1532
+	word32 r25_1533
+	word32 ra_1534
+	word32 r30_1535
+	word32 r16_1536
+	word32 r4_1537
+	word32 r5_1538
+	word32 r2_1539
+	word32 r1_1540
+	word32 r6_1541
+	word32 r3_1542
+	word32 r7_1543
+	call r25_1530 (retsize: 0; depth: 416)
+		uses: dwLoc0138,dwLoc0144,dwLoc014C,dwLoc0150,dwLoc0154,dwLoc0158,dwLoc015C,dwLoc0160_20,dwLoc0168_7,dwLoc0170,dwLoc0174,dwLoc0178,dwLoc017C,dwLoc0180,dwLoc0184,dwLoc0188,dwLoc018C,dwLoc0190,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14,dwLoc18,dwLoc1C,dwLoc20,dwLoc24,dwLoc28,dwLoc2C_1526,dwLoc30,r1_1521,r16_1517,r2_1527,r25_1530,r28_1528,r3_1523,r30_1516,r4_1529,r5_1519,r6_1522,r7_1524,ra_1515,sp_1512,wLoc0146,wLoc0148
+		defs: r1_1540,r16_1536,r2_1539,r25_1533,r28_1532,r3_1542,r30_1535,r4_1537,r5_1538,r6_1541,r7_1543,ra_1534,sp_1531
+	word32 r25_1546 = Mem25[r25 + 0x0FBFFFCC:word32]
+	word32 sp_1547
+	word32 r28_1548
+	word32 r25_1549
+	word32 ra_1550
+	word32 r30_1551
+	word32 r16_1552
+	word32 r4_1553
+	word32 r5_1554
+	word32 r2_1555
+	word32 r1_1556
+	word32 r6_1557
+	word32 r3_1558
+	word32 r7_1559
+	call r25_1546 (retsize: 0; depth: 416)
+		uses: dwLoc0138,dwLoc0144,dwLoc014C,dwLoc0150,dwLoc0154,dwLoc0158,dwLoc015C,dwLoc0160_20,dwLoc0168_7,dwLoc0170,dwLoc0174,dwLoc0178,dwLoc017C,dwLoc0180,dwLoc0184,dwLoc0188,dwLoc018C,dwLoc0190,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14,dwLoc18,dwLoc1C,dwLoc20,dwLoc24,dwLoc28,dwLoc2C_1526,dwLoc30,r1_1540,r16_1536,r2_1539,r25_1546,r28_1544,r3_1542,r30_1535,r4_1545,r5_1538,r6_1541,r7_1543,ra_1534,sp_1531,wLoc0146,wLoc0148
+		defs: r1_1556,r16_1552,r2_1555,r25_1549,r28_1548,r3_1558,r30_1551,r4_1553,r5_1554,r6_1557,r7_1559,ra_1550,sp_1547
+	word32 r25_1562 = Mem25[r25 + 0x0FBFFFCC:word32]
+	word32 sp_1563
+	word32 r28_1564
+	word32 r25_1565
+	word32 ra_1566
+	word32 r30_1567
+	word32 r16_1568
+	word32 r4_1569
+	word32 r5_1570
+	word32 r2_1571
+	word32 r1_1572
+	word32 r6_1573
+	word32 r3_1574
+	word32 r7_1575
+	call r25_1562 (retsize: 0; depth: 416)
+		uses: dwLoc0138,dwLoc0144,dwLoc014C,dwLoc0150,dwLoc0154,dwLoc0158,dwLoc015C,dwLoc0160_20,dwLoc0168_7,dwLoc0170,dwLoc0174,dwLoc0178,dwLoc017C,dwLoc0180,dwLoc0184,dwLoc0188,dwLoc018C,dwLoc0190,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14,dwLoc18,dwLoc1C,dwLoc20,dwLoc24,dwLoc28,dwLoc2C_1526,dwLoc30,r1_1556,r16_1552,r2_1555,r25_1562,r28_1560,r3_1558,r30_1551,r4_1561,r5_1554,r6_1557,r7_1559,ra_1550,sp_1547,wLoc0146,wLoc0148
+		defs: r1_1572,r16_1568,r2_1571,r25_1565,r28_1564,r3_1574,r30_1567,r4_1569,r5_1570,r6_1573,r7_1575,ra_1566,sp_1563
+	r28_109 = r25 + 0x0FC07F90
+l00400A54:
+	word32 r2_110 = Mem25[r28_109 - 32288 + 0x00:word32]
+	branch r2_110 == 0x0695 l00400A54_ds_t
+l00400A54_ds_f:
+	word32 r2_1426 = (word32) Mem25[r2_110 + 0x0695:int8]
+	branch r2_1426 == 0x00 l00400A74_ds_t
+	goto l00400A74_ds_f
+l00400A74:
+l00400A74_ds_f:
+	word32 r25_1430 = Mem25[r28_109 - 32532 + 0x00:word32]
+	word32 sp_1443
+	word32 r28_1444
+	word32 r25_1445
+	word32 ra_1446
+	word32 r30_1447
+	word32 r16_1448
+	word32 r4_1449
+	word32 r5_1450
+	word32 r2_1451
+	word32 r1_1452
+	word32 r6_1453
+	word32 r3_1454
+	word32 r7_1455
+	call r25_1430 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144,dwLoc014C,dwLoc0150,dwLoc0154,dwLoc0158,dwLoc015C,dwLoc0160_20,dwLoc0168_7,dwLoc0170,dwLoc0174,dwLoc0178,dwLoc017C,dwLoc0180,dwLoc0184,dwLoc0188,dwLoc018C,dwLoc0190,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14,dwLoc18,dwLoc1C,dwLoc20,dwLoc24,dwLoc28,dwLoc2C_97,dwLoc30,r1_101,r16_104,r2_1426,r25_1430,r28_109,r3_99,r30_105,r4_1427,r5_1429,r6_100,r7_98,ra_106,sp_108,wLoc0146,wLoc0148
+		defs: r1_1452,r16_1448,r2_1451,r25_1445,r28_1444,r3_1454,r30_1447,r4_1449,r5_1450,r6_1453,r7_1455,ra_1446,sp_1443
+	r28_109 = r25 + 0x0FC07F90
+	branch r2_1451 == 0x00 l00400A8C_ds_t
+	goto l00400A8C_ds_f
+l00400A8C:
+l00400A8C_ds_f:
+	word32 r25_1459 = Mem25[r25 + 0x0FC00184:word32]
+	word32 sp_1460
+	word32 r28_1461
+	word32 r25_1462
+	word32 ra_1463
+	word32 r30_1464
+	word32 r16_1465
+	word32 r4_1466
+	word32 r5_1467
+	word32 r2_1468
+	word32 r1_1469
+	word32 r6_1470
+	word32 r3_1471
+	word32 r7_1472
+	call r25_1459 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144,dwLoc014C,dwLoc0150,dwLoc0154,dwLoc0158,dwLoc015C,dwLoc0160_20,dwLoc0168_7,dwLoc0170,dwLoc0174,dwLoc0178,dwLoc017C,dwLoc0180,dwLoc0184,dwLoc0188,dwLoc018C,dwLoc0190,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14,dwLoc18,dwLoc1C,dwLoc20,dwLoc24,dwLoc28,dwLoc2C_1457,dwLoc30,r1_1452,r16_1448,r2_1458,r25_1459,r28_1456,r3_1454,r30_1447,r4_1449,r5_1450,r6_1453,r7_1455,ra_1446,sp_1443,wLoc0146,wLoc0148
+		defs: r1_1469,r16_1465,r2_1468,r25_1462,r28_1461,r3_1471,r30_1464,r4_1466,r5_1467,r6_1470,r7_1472,ra_1463,sp_1460
+	word32 r25_1478 = Mem25[r25 + 0x0FC000F4:word32]
+	word32 sp_1479
+	word32 r28_1480
+	word32 r25_1481
+	word32 ra_1482
+	word32 r30_1483
+	word32 r16_1484
+	word32 r4_1485
+	word32 r5_1486
+	word32 r2_1487
+	word32 r1_1488
+	word32 r6_1489
+	word32 r3_1490
+	word32 r7_1491
+	call r25_1478 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144,dwLoc014C,dwLoc0150,dwLoc0154,dwLoc0158,dwLoc015C,dwLoc0160_20,dwLoc0168_7,dwLoc0170,dwLoc0174,dwLoc0178,dwLoc017C,dwLoc0180,dwLoc0184,dwLoc0188,dwLoc018C,dwLoc0190,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14,dwLoc18,dwLoc1C,dwLoc20,dwLoc24,dwLoc28,dwLoc2C_1457,dwLoc30,r1_1469,r16_1465,r2_1468,r25_1478,r28_1473,r3_1471,r30_1464,r4_1474,r5_1476,r6_1477,r7_1472,ra_1463,sp_1460,wLoc0146,wLoc0148
+		defs: r1_1488,r16_1484,r2_1487,r25_1481,r28_1480,r3_1490,r30_1483,r4_1485,r5_1486,r6_1489,r7_1491,ra_1482,sp_1479
+	word32 r25_1494 = Mem25[r25 + 0x0FC0006C:word32]
+	word32 sp_1495
+	word32 r28_1496
+	word32 r25_1497
+	word32 ra_1498
+	word32 r30_1499
+	word32 r16_1500
+	word32 r4_1501
+	word32 r5_1502
+	word32 r2_1503
+	word32 r1_1504
+	word32 r6_1505
+	word32 r3_1506
+	word32 r7_1507
+	call r25_1494 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144,dwLoc014C,dwLoc0150,dwLoc0154,dwLoc0158,dwLoc015C,dwLoc0160_20,dwLoc0168_7,dwLoc0170,dwLoc0174,dwLoc0178,dwLoc017C,dwLoc0180,dwLoc0184,dwLoc0188,dwLoc018C,dwLoc0190,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14,dwLoc18,dwLoc1C,dwLoc20,dwLoc24,dwLoc28,dwLoc2C_1457,dwLoc30,r1_1488,r16_1484,r2_1487,r25_1494,r28_1492,r3_1490,r30_1483,r4_1493,r5_1486,r6_1489,r7_1491,ra_1482,sp_1479,wLoc0146,wLoc0148
+		defs: r1_1504,r16_1500,r2_1503,r25_1497,r28_1496,r3_1506,r30_1499,r4_1501,r5_1502,r6_1505,r7_1507,ra_1498,sp_1495
+	r28_109 = r25 + 0x0FC07F90
+	goto l00400B20
+l00400AC4:
+l00400B20:
+	Mem119[Mem25[r28_109 - 32620 + 0x00:word32] + 0x00:word32] = Mem25[Mem25[r28_109 - 32288 + 0x00:word32] + 0x038C:word32]
+	Mem123[Mem119[r28_109 - 0x7FC0 + 0x00:word32] + 0x00:word32] = Mem119[r28_109 - 32288 + 0x00:word32] + 0x039D
+	Mem128[Mem123[r28_109 - 32312 + 0x00:word32] + 0x00:word32] = Mem123[Mem123[r28_109 - 32288 + 0x00:word32] + 1668:word32] << 0x0A
+	word32 r2_130 = Mem128[Mem128[r28_109 - 32288 + 0x00:word32] + 1516:word32]
+	word32 r1_131 = Mem128[r28_109 - 0x7F54 + 0x00:word32]
+	Mem132[r1_131 + 0x00:word32] = r2_130
+	word32 r25_135 = Mem132[r28_109 - 0x7F90 + 0x00:word32]
+	word32 sp_136
+	word32 r28_137
+	word32 r25_138
+	word32 ra_139
+	word32 r30_140
+	word32 r16_141
+	word32 r4_142
+	word32 r5_143
+	word32 r2_144
+	word32 r1_145
+	word32 r6_146
+	word32 r3_147
+	word32 r7_148
+	call r25_135 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0160_20,dwLoc0168_7,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc2C_114,r1_131,r16_104,r2_130,r25_135,r28_115,r3_99,r30_105,r4_134,r5_102,r6_100,r7_98,ra_106,sp_108
+		defs: r1_145,r16_141,r2_144,r25_138,r28_137,r3_147,r30_140,r4_142,r5_143,r6_146,r7_148,ra_139,sp_136
+	word32 r25_152 = Mem132[r25 + 0x0FC001A8:word32]
+	word32 sp_153
+	word32 r28_154
+	word32 r25_155
+	word32 ra_156
+	word32 r30_157
+	word32 r16_158
+	word32 r4_159
+	word32 r5_160
+	word32 r2_161
+	word32 r1_162
+	word32 r6_163
+	word32 r3_164
+	word32 r7_165
+	call r25_152 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0160_20,dwLoc0168_7,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc2C_114,r1_145,r16_141,r2_150,r25_152,r28_149,r3_147,r30_140,r4_151,r5_143,r6_146,r7_148,ra_139,sp_136
+		defs: r1_162,r16_158,r2_161,r25_155,r28_154,r3_164,r30_157,r4_159,r5_160,r6_163,r7_165,ra_156,sp_153
+	word32 r25_206 = Mem132[r25 + 0x0FC0011C:word32]
+	word32 sp_207
+	word32 r28_208
+	word32 r25_209
+	word32 ra_210
+	word32 r30_211
+	word32 r16_212
+	word32 r4_213
+	word32 r5_214
+	word32 r2_215
+	word32 r1_216
+	word32 r6_217
+	word32 r3_218
+	word32 r7_219
+	call r25_206 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0160_20,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_170,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc20_193,dwLoc24_167,dwLoc2C_114,r1_162,r16_158,r2_198,r25_206,r28_166,r3_164,r30_157,r4_200,r5_202,r6_203,r7_205,ra_156,sp_153
+		defs: r1_216,r16_212,r2_215,r25_209,r28_208,r3_218,r30_211,r4_213,r5_214,r6_217,r7_219,ra_210,sp_207
+	word32 r25_221 = Mem132[r25 + 0x0FC00038:word32]
+	word32 sp_222
+	word32 r28_223
+	word32 r25_224
+	word32 ra_225
+	word32 r30_226
+	word32 r16_227
+	word32 r4_228
+	word32 r5_229
+	word32 r2_230
+	word32 r1_231
+	word32 r6_232
+	word32 r3_233
+	word32 r7_234
+	call r25_221 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0160_20,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_170,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc20_193,dwLoc24_167,dwLoc2C_114,r1_216,r16_212,r2_215,r25_221,r28_220,r3_218,r30_211,r4_213,r5_214,r6_217,r7_219,ra_210,sp_207
+		defs: r1_231,r16_227,r2_230,r25_224,r28_223,r3_233,r30_226,r4_228,r5_229,r6_232,r7_234,ra_225,sp_222
+	word32 r28_1421 = r25 + 0x0FC07F90
+	branch r2_230 != 0x00 l00400C88_ds_t
+	goto l00400C88_ds_f
+l00400C78:
+l00400C88:
+l00400C88_ds_f:
+	word32 r25_1406 = Mem132[r25 + 0x0FC00020:word32]
+	word32 sp_1408
+	word32 r28_1409
+	word32 r25_1410
+	word32 ra_1411
+	word32 r30_1412
+	word32 r16_1413
+	word32 r4_1414
+	word32 r5_1415
+	word32 r2_1416
+	word32 r1_1417
+	word32 r6_1418
+	word32 r3_1419
+	word32 r7_1420
+	call r25_1406 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144,dwLoc014C,dwLoc0150,dwLoc0154_236,dwLoc0158,dwLoc015C,dwLoc0160_20,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_170,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14,dwLoc18,dwLoc1C,dwLoc20_193,dwLoc24_167,dwLoc28,dwLoc2C_114,dwLoc30,r1_231,r16_227,r2_237,r25_1406,r28_235,r3_233,r30_226,r4_1405,r5_229,r6_232,r7_234,ra_225,sp_222,wLoc0146,wLoc0148
+		defs: r1_1417,r16_1413,r2_1416,r25_1410,r28_1409,r3_1419,r30_1412,r4_1414,r5_1415,r6_1418,r7_1420,ra_1411,sp_1408
+	r28_1421 = r25 + 0x0FC07F90
+	goto l00400D28
+l00400D0C:
+l00400D28:
+	word32 r25_239 = Mem132[r28_1421 - 32404 + 0x00:word32]
+	word32 sp_240
+	word32 r28_241
+	word32 r25_242
+	word32 ra_243
+	word32 r30_244
+	word32 r16_245
+	word32 r4_246
+	word32 r5_247
+	word32 r2_248
+	word32 r1_249
+	word32 r6_250
+	word32 r3_251
+	word32 r7_252
+	call r25_239 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0154_236,dwLoc0160_20,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_170,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc20_193,dwLoc24_167,dwLoc2C_114,r1_231,r16_227,r2_237,r25_239,r28_238,r3_233,r30_226,r4_228,r5_229,r6_232,r7_234,ra_225,sp_222
+		defs: r1_249,r16_245,r2_248,r25_242,r28_241,r3_251,r30_244,r4_246,r5_247,r6_250,r7_252,ra_243,sp_240
+	word32 r28_1404 = r25 + 0x0FC07F90
+	branch r2_248 != 0x00 l00400D28_ds_t
+l00400D28_ds_f:
+	word32 r25_1386 = Mem132[r25 + 0x0FC00020:word32]
+	word32 sp_1391
+	word32 r28_1392
+	word32 r25_1393
+	word32 ra_1394
+	word32 r30_1395
+	word32 r16_1396
+	word32 r4_1397
+	word32 r5_1398
+	word32 r2_1399
+	word32 r1_1400
+	word32 r6_1401
+	word32 r3_1402
+	word32 r7_1403
+	call r25_1386 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144,dwLoc014C_254,dwLoc0150,dwLoc0154_236,dwLoc0158,dwLoc015C,dwLoc0160_20,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_170,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14,dwLoc18,dwLoc1C,dwLoc20_193,dwLoc24_167,dwLoc28,dwLoc2C_114,dwLoc30,r1_249,r16_245,r2_255,r25_1386,r28_253,r3_251,r30_244,r4_1385,r5_247,r6_250,r7_252,ra_243,sp_240,wLoc0146,wLoc0148
+		defs: r1_1400,r16_1396,r2_1399,r25_1393,r28_1392,r3_1402,r30_1395,r4_1397,r5_1398,r6_1401,r7_1403,ra_1394,sp_1391
+	r28_1404 = r25 + 0x0FC07F90
+	goto l00400D6C
+l00400D50:
+l00400D6C:
+	word32 r25_264 = Mem132[r28_1404 - 32344 + 0x00:word32]
+	word32 sp_265
+	word32 r28_266
+	word32 r25_267
+	word32 ra_268
+	word32 r30_269
+	word32 r16_270
+	word32 r4_271
+	word32 r5_272
+	word32 r2_273
+	word32 r1_274
+	word32 r6_275
+	word32 r3_276
+	word32 r7_277
+	call r25_264 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc014C_254,dwLoc0154_236,dwLoc0160_20,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_170,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc20_193,dwLoc24_167,dwLoc2C_114,r1_249,r16_245,r2_255,r25_264,r28_256,r3_251,r30_244,r4_258,r5_260,r6_262,r7_263,ra_243,sp_240
+		defs: r1_274,r16_270,r2_273,r25_267,r28_266,r3_276,r30_269,r4_271,r5_272,r6_275,r7_277,ra_268,sp_265
+	word32 r25_282 = Mem132[r25 + 0x0FBFFFE0:word32]
+	word32 sp_283
+	word32 r28_284
+	word32 r25_285
+	word32 ra_286
+	word32 r30_287
+	word32 r16_288
+	word32 r4_289
+	word32 r5_290
+	word32 r2_291
+	word32 r1_292
+	word32 r6_293
+	word32 r3_294
+	word32 r7_295
+	call r25_282 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc014C_254,dwLoc0150_279,dwLoc0154_236,dwLoc0160_20,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_170,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc20_193,dwLoc24_167,dwLoc2C_114,r1_274,r16_270,r2_273,r25_282,r28_278,r3_276,r30_269,r4_280,r5_281,r6_275,r7_277,ra_268,sp_265
+		defs: r1_292,r16_288,r2_291,r25_285,r28_284,r3_294,r30_287,r4_289,r5_290,r6_293,r7_295,ra_286,sp_283
+	word32 r25_304 = Mem132[r25 + 264241464:word32]
+	word32 sp_305
+	word32 r28_306
+	word32 r25_307
+	word32 ra_308
+	word32 r30_309
+	word32 r16_310
+	word32 r4_311
+	word32 r5_312
+	word32 r2_313
+	word32 r1_314
+	word32 r6_315
+	word32 r3_316
+	word32 r7_317
+	call r25_304 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc014C_254,dwLoc0150_279,dwLoc0154_236,dwLoc0160_20,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_170,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc20_193,dwLoc24_167,dwLoc2C_114,r1_292,r16_288,r2_291,r25_304,r28_296,r3_294,r30_287,r4_298,r5_300,r6_302,r7_303,ra_286,sp_283
+		defs: r1_314,r16_310,r2_313,r25_307,r28_306,r3_316,r30_309,r4_311,r5_312,r6_315,r7_317,ra_308,sp_305
+	word32 r25_322 = Mem132[r25 + 0x0FBFFFE0:word32]
+	word32 sp_323
+	word32 r28_324
+	word32 r25_325
+	word32 ra_326
+	word32 r30_327
+	word32 r16_328
+	word32 r4_329
+	word32 r5_330
+	word32 r2_331
+	word32 r1_332
+	word32 r6_333
+	word32 r3_334
+	word32 r7_335
+	call r25_322 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc014C_254,dwLoc0150_319,dwLoc0154_236,dwLoc0160_20,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_170,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc20_193,dwLoc24_167,dwLoc2C_114,r1_314,r16_310,r2_313,r25_322,r28_318,r3_316,r30_309,r4_320,r5_321,r6_315,r7_317,ra_308,sp_305
+		defs: r1_332,r16_328,r2_331,r25_325,r28_324,r3_334,r30_327,r4_329,r5_330,r6_333,r7_335,ra_326,sp_323
+	word32 r25_340 = Mem132[r25 + 264241444:word32]
+	word32 sp_341
+	word32 r28_342
+	word32 r25_343
+	word32 ra_344
+	word32 r30_345
+	word32 r16_346
+	word32 r4_347
+	word32 r5_348
+	word32 r2_349
+	word32 r1_350
+	word32 r6_351
+	word32 r3_352
+	word32 r7_353
+	call r25_340 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc014C_254,dwLoc0150_319,dwLoc0154_236,dwLoc0160_20,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_170,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc20_193,dwLoc24_167,dwLoc2C_114,r1_332,r16_328,r2_337,r25_340,r28_336,r3_334,r30_327,r4_338,r5_339,r6_333,r7_335,ra_326,sp_323
+		defs: r1_350,r16_346,r2_349,r25_343,r28_342,r3_352,r30_345,r4_347,r5_348,r6_351,r7_353,ra_344,sp_341
+	word32 r25_362 = Mem132[r25 + 0x0FC000E8:word32]
+	word32 sp_363
+	word32 r28_364
+	word32 r25_365
+	word32 ra_366
+	word32 r30_367
+	word32 r16_368
+	word32 r4_369
+	word32 r5_370
+	word32 r2_371
+	word32 r1_372
+	word32 r6_373
+	word32 r3_374
+	word32 r7_375
+	call r25_362 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc014C_254,dwLoc0150_319,dwLoc0154_236,dwLoc0160_20,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_170,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc20_193,dwLoc24_167,dwLoc2C_114,r1_350,r16_346,r2_358,r25_362,r28_354,r3_352,r30_345,r4_361,r5_348,r6_351,r7_353,ra_344,sp_341,wLoc0146_359,wLoc0148_356
+		defs: r1_372,r16_368,r2_371,r25_365,r28_364,r3_374,r30_367,r4_369,r5_370,r6_373,r7_375,ra_366,sp_363
+	word32 r28_1024 = r25 + 0x0FC07F90
+	word32 dwLoc0150_1368 = Mem132[r2_248 + 0x08:word32]
+	goto l00400EA4
+l00400D6C_ds_t:
+	word32 r25_1339 = Mem132[r28_1024 - 32220 + 0x00:word32]
+	word32 sp_1340
+	word32 r28_1341
+	word32 r25_1342
+	word32 ra_1343
+	word32 r30_1344
+	word32 r16_1345
+	word32 r4_1346
+	word32 r5_1347
+	word32 r2_1348
+	word32 r1_1349
+	word32 r6_1350
+	word32 r3_1351
+	word32 r7_1352
+	call r25_1339 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144_377,dwLoc014C_254,dwLoc0150_381,dwLoc0154_236,dwLoc0158,dwLoc015C,dwLoc0160_20,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_170,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14,dwLoc18,dwLoc1C,dwLoc20_193,dwLoc24_167,dwLoc28,dwLoc2C_114,dwLoc30,r1_385,r16_388,r2_394,r25_1339,r28_393,r3_383,r30_389,r4_1338,r5_386,r6_384,r7_382,ra_390,sp_392,wLoc0146_359,wLoc0148_356
+		defs: r1_1349,r16_1345,r2_1348,r25_1342,r28_1341,r3_1351,r30_1344,r4_1346,r5_1347,r6_1350,r7_1352,ra_1343,sp_1340
+	r28_1024 = r25 + 0x0FC07F90
+	branch r2_1348 != 0x00 l00400EBC_ds_t
+	goto l00400EBC_ds_f
+l00400EA4:
+	branch dwLoc0150_1368 != 0x00 l00400D6C_ds_t
+	goto l00400F10
+l00400EB4:
+l00400EBC:
+l00400EBC_ds_f:
+	word32 r25_1370 = Mem132[r25 + 0x0FC00020:word32]
+	word32 sp_1371
+	word32 r28_1372
+	word32 r25_1373
+	word32 ra_1374
+	word32 r30_1375
+	word32 r16_1376
+	word32 r4_1377
+	word32 r5_1378
+	word32 r2_1379
+	word32 r1_1380
+	word32 r6_1381
+	word32 r3_1382
+	word32 r7_1383
+	call r25_1370 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144_377,dwLoc014C_254,dwLoc0150_381,dwLoc0154_236,dwLoc0158,dwLoc015C,dwLoc0160_20,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_170,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14,dwLoc18,dwLoc1C,dwLoc20_193,dwLoc24_167,dwLoc28,dwLoc2C_114,dwLoc30,r1_1349,r16_1345,r2_1348,r25_1370,r28_1353,r3_1351,r30_1344,r4_1369,r5_1347,r6_1350,r7_1352,ra_1343,sp_1340,wLoc0146_359,wLoc0148_356
+		defs: r1_1380,r16_1376,r2_1379,r25_1373,r28_1372,r3_1382,r30_1375,r4_1377,r5_1378,r6_1381,r7_1383,ra_1374,sp_1371
+	r28_1024 = r25 + 0x0FC07F90
+	goto l00400EF8
+l00400EDC:
+l00400EF8:
+	dwLoc0150_1368 = Mem132[dwLoc0150_1368 + 0x18:word32]
+	goto l00400EA4
 l00400F10:
-	word32 r2_426 = **(r28_1024 - 0x7FA0);
-	if (r2_426 != 0x00)
-	{
-		Eq_793 * r25_428 = *(r28_1024 - 0x7ED0);
-		word32 sp_429;
-		word32 r28_430;
-		word32 r25_431;
-		word32 ra_432;
-		word32 r30_433;
-		word32 r16_434;
-		word32 r4_435;
-		word32 r5_436;
-		word32 r2_437;
-		word32 r1_438;
-		word32 r6_439;
-		word32 r3_440;
-		word32 r7_441;
-		r25_428();
-		code * r25_444 = r25->ptrFBFFFD8;
-		word32 sp_445;
-		word32 r28_446;
-		word32 r25_447;
-		word32 ra_448;
-		word32 r30_449;
-		word32 r16_450;
-		word32 r4_451;
-		word32 r5_452;
-		word32 r2_453;
-		word32 r1_454;
-		word32 r6_455;
-		word32 r3_456;
-		word32 r7_457;
-		r25_444();
-		code * * r28_458 = &r25->ptrFC001AC;
-		if (r2_110 != (Eq_293 *) 0x0695)
-		{
-			word32 r2_482 = (word32) r2_110->b0695;
-			if (r2_482 != 0x00)
-			{
-				code * r25_484 = r25->ptrFC000B8;
-				word32 sp_485;
-				word32 r28_486;
-				word32 r25_487;
-				word32 ra_488;
-				word32 r30_489;
-				word32 r16_490;
-				word32 r4_491;
-				word32 r5_492;
-				word32 r2_493;
-				word32 r1_494;
-				word32 r6_495;
-				word32 r3_496;
-				word32 r7_497;
-				r25_484();
-				r28_458 = (code * *) &r25->ptrFC001AC;
-			}
-		}
-		code * r25_462 = *(r28_458 - 0x7F70);
-		word32 sp_463;
-		word32 r28_464;
-		Eq_929 * r25_465;
-		word32 ra_466;
-		word32 r30_467;
-		word32 r16_468;
-		Eq_933 * r4_469;
-		Eq_934 * r5_470;
-		word32 r2_471;
-		word32 r1_472;
-		word32 r6_473;
-		word32 r3_474;
-		word32 r7_475;
-		r25_462();
-		client_new(r2_471, r4_469, r5_470, r7_475, r25_465, dwLoc01A0, dwLoc019C, dwLoc0198, dwLoc0194);
-		return;
-	}
-	Eq_847 dwLoc0160_1183 = 0x00;
-	Eq_793 * r25_501 = *(r28_1024 - 0x7F30);
-	word32 sp_502;
-	word32 r28_503;
-	word32 r25_504;
-	word32 ra_505;
-	word32 r30_506;
-	word32 r16_507;
-	word32 r4_508;
-	word32 r5_509;
-	word32 r2_510;
-	word32 r1_511;
-	word32 r6_512;
-	word32 r3_513;
-	word32 r7_514;
-	r25_501();
-	Eq_868 dwLoc2C_1337 = 0x00;
-	while ((word32) (dwLoc2C_1337 < 0x0020) != 0x00)
-	{
-		fp->aFFFFFED0[dwLoc2C_1337] = 0x00;
-		dwLoc2C_1337.u1 = dwLoc2C_1337.u1;
-	}
-	Eq_919 dwLoc28_1329 = 0x00;
-	while ((word32) (dwLoc28_1329 < 0x0020) != 0x00)
-	{
-		fp->aFFFFFF50[dwLoc28_1329] = 0x00;
-		dwLoc28_1329.u1 = dwLoc28_1329.u1;
-	}
-	Eq_771 * dwLoc0150_1318 = r2_248->ptr0008;
-	while (dwLoc0150_1318 != null)
-	{
-		Eq_847 r2_1293 = dwLoc0150_1318->t0000;
-		fp->aFFFFFED0[r2_1293 >> 0x05] = fp->aFFFFFED0[r2_1293 >> 0x05] | 0x01 << dwLoc0150_1318->t0000;
-		if ((word32) (dwLoc0160_1183 < dwLoc0150_1318->t0000) != 0x00)
-			dwLoc0160_1183 = dwLoc0150_1318->t0000;
-		dwLoc0150_1318 = dwLoc0150_1318->ptr0018;
-	}
-	Eq_1013 * dwLoc0158_1195 = r2_230->ptr0008;
-	while (dwLoc0158_1195 != null)
-	{
-		if (dwLoc0158_1195->t0000 >= 0x00)
-		{
-			if ((word32) (dwLoc0160_1183 < dwLoc0158_1195->t0000) != 0x00)
-				dwLoc0160_1183 = dwLoc0158_1195->t0000;
-			if (dwLoc0158_1195->dw0FAC == 0x00)
-			{
-				Eq_847 r2_1252 = dwLoc0158_1195->t0000;
-				fp->aFFFFFED0[r2_1252 >> 0x05] = fp->aFFFFFED0[r2_1252 >> 0x05] | 0x01 << dwLoc0158_1195->t0000;
-			}
-			else
-			{
-				Eq_847 r2_1271 = dwLoc0158_1195->t0000;
-				fp->aFFFFFF50[r2_1271 >> 0x05] = fp->aFFFFFF50[r2_1271 >> 0x05] | 0x01 << dwLoc0158_1195->t0000;
-			}
-		}
-		if (dwLoc0158_1195->t0004 >= 0x00)
-		{
-			if ((word32) (dwLoc0160_1183 < dwLoc0158_1195->t0004) != 0x00)
-				dwLoc0160_1183 = dwLoc0158_1195->t0004;
-			if (dwLoc0158_1195->dw178C == 0x00)
-			{
-				Eq_847 r2_1204 = dwLoc0158_1195->t0004;
-				fp->aFFFFFED0[r2_1204 >> 0x05] = fp->aFFFFFED0[r2_1204 >> 0x05] | 0x01 << dwLoc0158_1195->t0004;
-			}
-			else
-			{
-				Eq_847 r2_1223 = dwLoc0158_1195->t0004;
-				fp->aFFFFFF50[r2_1223 >> 0x05] = fp->aFFFFFF50[r2_1223 >> 0x05] | 0x01 << dwLoc0158_1195->t0004;
-			}
-		}
-		dwLoc0158_1195 = dwLoc0158_1195->ptr17B8;
-	}
-	code * r25_557 = r25->ptrFC00148;
-	word32 sp_558;
-	word32 r28_559;
-	word32 r25_560;
-	word32 ra_561;
-	word32 r30_562;
-	word32 r16_563;
-	word32 r4_564;
-	word32 r5_565;
-	int32 r2_566;
-	word32 r1_567;
-	word32 r6_568;
-	word32 r3_569;
-	word32 r7_570;
-	r25_557();
-	r28_1024 = (Eq_793 * *) &r25->ptrFC001AC;
-	if (r2_566 < 0x00)
-	{
-		code * r25_1081 = r25->ptrFC00028;
-		word32 sp_1082;
-		word32 r28_1083;
-		word32 r25_1084;
-		word32 ra_1085;
-		word32 r30_1086;
-		word32 r16_1087;
-		word32 r4_1088;
-		word32 r5_1089;
-		int32 * r2_1090;
-		word32 r1_1091;
-		word32 r6_1092;
-		word32 r3_1093;
-		word32 r7_1094;
-		r25_1081();
-		r28_1024 = (Eq_793 * *) &r25->ptrFC001AC;
-		int32 r3_1096 = *r2_1090;
-		if (r3_1096 == 0x04)
-			goto l00400F10;
-		code * r25_1098 = r25->ptrFC00028;
-		word32 sp_1099;
-		word32 r28_1100;
-		word32 r25_1101;
-		word32 ra_1102;
-		word32 r30_1103;
-		word32 r16_1104;
-		word32 r4_1105;
-		word32 r5_1106;
-		word32 r2_1107;
-		word32 r1_1108;
-		word32 r6_1109;
-		word32 r3_1110;
-		word32 r7_1111;
-		r25_1098();
-		code * r25_1114 = r25->ptrFC00028;
-		word32 sp_1115;
-		word32 r28_1116;
-		word32 r25_1117;
-		word32 ra_1118;
-		word32 r30_1119;
-		word32 r16_1120;
-		word32 r4_1121;
-		word32 r5_1122;
-		word32 r2_1123;
-		word32 r1_1124;
-		word32 r6_1125;
-		word32 r3_1126;
-		word32 r7_1127;
-		r25_1114();
-		code * r25_1130 = r25->ptrFC001AC;
-		word32 sp_1131;
-		word32 r28_1132;
-		word32 r25_1133;
-		word32 ra_1134;
-		word32 r30_1135;
-		word32 r16_1136;
-		word32 r4_1137;
-		word32 r5_1138;
-		word32 r2_1139;
-		word32 r1_1140;
-		word32 r6_1141;
-		word32 r3_1142;
-		word32 r7_1143;
-		r25_1130();
-		code * r25_1150 = r25->ptrFC0011C;
-		word32 sp_1151;
-		word32 r28_1152;
-		word32 r25_1153;
-		word32 ra_1154;
-		word32 r30_1155;
-		word32 r16_1156;
-		word32 r4_1157;
-		word32 r5_1158;
-		word32 r2_1159;
-		word32 r1_1160;
-		word32 r6_1161;
-		word32 r3_1162;
-		word32 r7_1163;
-		r25_1150();
-		code * r25_1166 = r25->ptrFC00020;
-		word32 sp_1167;
-		word32 r28_1168;
-		word32 r25_1169;
-		word32 ra_1170;
-		word32 r30_1171;
-		word32 r16_1172;
-		word32 r4_1173;
-		word32 r5_1174;
-		word32 r2_1175;
-		word32 r1_1176;
-		word32 r6_1177;
-		word32 r3_1178;
-		word32 r7_1179;
-		r25_1166();
-		r28_1024 = (Eq_793 * *) &r25->ptrFC001AC;
-	}
-	Eq_771 * dwLoc0150_1000 = r2_248->ptr0008;
-	while (dwLoc0150_1000 != null)
-	{
-		if (fp->aFFFFFED0[dwLoc0150_1000->t0000 >> 0x05] >> dwLoc0150_1000->t0000 != 0x01)
-		{
-			Eq_793 * r25_1010 = *(r28_1024 - 32552);
-			word32 sp_1011;
-			word32 r28_1012;
-			word32 r25_1013;
-			word32 ra_1014;
-			word32 r30_1015;
-			word32 r16_1016;
-			word32 r4_1017;
-			word32 r5_1018;
-			word32 r2_1019;
-			word32 r1_1020;
-			word32 r6_1021;
-			word32 r3_1022;
-			word32 r7_1023;
-			r25_1010();
-			r28_1024 = (Eq_793 * *) &r25->ptrFC001AC;
-			if (r2_1019 == 0x00)
-				;
-			else
-			{
-				code * r25_1029 = r25->ptrFC00048;
-				word32 sp_1030;
-				word32 r28_1031;
-				word32 r25_1032;
-				word32 ra_1033;
-				word32 r30_1034;
-				word32 r16_1035;
-				word32 r4_1036;
-				word32 r5_1037;
-				word32 r2_1038;
-				word32 r1_1039;
-				word32 r6_1040;
-				word32 r3_1041;
-				word32 r7_1042;
-				r25_1029();
-				r28_1024 = (Eq_793 * *) &r25->ptrFC001AC;
-				if (r2_1038 == 0x00)
-				{
-					code * r25_1050 = r25->ptrFC0011C;
-					word32 sp_1051;
-					word32 r28_1052;
-					word32 r25_1053;
-					word32 ra_1054;
-					word32 r30_1055;
-					word32 r16_1056;
-					word32 r4_1057;
-					word32 r5_1058;
-					word32 r2_1059;
-					word32 r1_1060;
-					word32 r6_1061;
-					word32 r3_1062;
-					word32 r7_1063;
-					r25_1050();
-					code * r25_1066 = r25->ptrFC0000C;
-					word32 sp_1067;
-					word32 r28_1068;
-					word32 r25_1069;
-					word32 ra_1070;
-					word32 r30_1071;
-					word32 r16_1072;
-					word32 r4_1073;
-					word32 r5_1074;
-					word32 r2_1075;
-					word32 r1_1076;
-					word32 r6_1077;
-					word32 r3_1078;
-					word32 r7_1079;
-					r25_1066();
-					r28_1024 = (Eq_793 * *) &r25->ptrFC001AC;
-				}
-			}
-		}
-		dwLoc0150_1000 = dwLoc0150_1000->ptr0018;
-	}
-	Eq_1013 * dwLoc0158_604 = r2_230->ptr0008;
-	if (dwLoc0158_604 == null)
-		continue;
-	if (dwLoc0158_604 != null)
-		if (dwLoc0158_604->t0000 >= 0x00)
-			if (fp->aFFFFFED0[dwLoc0158_604->t0000 >> 0x05] >> dwLoc0158_604->t0000 != 0x01)
-			{
-				Eq_793 * r25_899 = *(r28_1024 - 0x7EF8);
-				word32 sp_900;
-				word32 r28_901;
-				word32 r25_902;
-				word32 ra_903;
-				word32 r30_904;
-				word32 r16_905;
-				word32 r4_906;
-				word32 r5_907;
-				word32 r2_908;
-				word32 r1_909;
-				word32 r6_910;
-				word32 r3_911;
-				word32 r7_912;
-				r25_899();
-				r28_1024 = (Eq_793 * *) &r25->ptrFC001AC;
-				if (dwLoc0158_604->dw07D8 <= 0x00)
-					if (dwLoc0158_604->t0000 >= 0x00)
-					{
-						code * r25_920 = r25->ptrFBFFFCC;
-						word32 sp_921;
-						word32 r28_922;
-						word32 r25_923;
-						word32 ra_924;
-						word32 r30_925;
-						word32 r16_926;
-						word32 r4_927;
-						word32 r5_928;
-						word32 r2_929;
-						word32 r1_930;
-						word32 r6_931;
-						word32 r3_932;
-						word32 r7_933;
-						r25_920();
-						dwLoc0158_604->t0000.u0 = -0x01;
-						r28_1024 = (Eq_793 * *) &r25->ptrFC001AC;
-					}
-				else
-				{
-					code * r2_939 = dwLoc0158_604->ptr17C0;
-					word32 sp_943;
-					word32 r28_944;
-					word32 r25_945;
-					word32 ra_946;
-					word32 r30_947;
-					word32 r16_948;
-					word32 r4_949;
-					word32 r5_950;
-					word32 r2_951;
-					word32 r1_952;
-					word32 r6_953;
-					word32 r3_954;
-					word32 r7_955;
-					r2_939();
-					code * r25_958 = r25->ptrFC000E0;
-					word32 sp_959;
-					word32 r28_960;
-					word32 r25_961;
-					word32 ra_962;
-					word32 r30_963;
-					word32 r16_964;
-					word32 r4_965;
-					word32 r5_966;
-					word32 r2_967;
-					word32 r1_968;
-					word32 r6_969;
-					word32 r3_970;
-					word32 r7_971;
-					r25_958();
-					r28_1024 = (Eq_793 * *) &r25->ptrFC001AC;
-				}
-			}
-	if (dwLoc0158_604 != null)
-		if (dwLoc0158_604->t0004 >= 0x00)
-			if (fp->aFFFFFED0[dwLoc0158_604->t0004 >> 0x05] >> dwLoc0158_604->t0004 != 0x01)
-			{
-				Eq_793 * r25_826 = *(r28_1024 - 32272);
-				word32 sp_827;
-				word32 r28_828;
-				word32 r25_829;
-				word32 ra_830;
-				word32 r30_831;
-				word32 r16_832;
-				word32 r4_833;
-				word32 r5_834;
-				word32 r2_835;
-				word32 r1_836;
-				word32 r6_837;
-				word32 r3_838;
-				word32 r7_839;
-				r25_826();
-				r28_1024 = (Eq_793 * *) &r25->ptrFC001AC;
-				if (dwLoc0158_604->dw178C <= 0x00)
-					if (dwLoc0158_604->t0004 >= 0x00)
-					{
-						code * r25_847 = r25->ptrFBFFFCC;
-						word32 sp_848;
-						word32 r28_849;
-						word32 r25_850;
-						word32 ra_851;
-						word32 r30_852;
-						word32 r16_853;
-						word32 r4_854;
-						word32 r5_855;
-						word32 r2_856;
-						word32 r1_857;
-						word32 r6_858;
-						word32 r3_859;
-						word32 r7_860;
-						r25_847();
-						dwLoc0158_604->t0004.u0 = -0x01;
-						r28_1024 = (Eq_793 * *) &r25->ptrFC001AC;
-					}
-				else
-				{
-					code * r2_866 = dwLoc0158_604->ptr17C4;
-					word32 sp_870;
-					word32 r28_871;
-					word32 r25_872;
-					word32 ra_873;
-					word32 r30_874;
-					word32 r16_875;
-					word32 r4_876;
-					word32 r5_877;
-					word32 r2_878;
-					word32 r1_879;
-					word32 r6_880;
-					word32 r3_881;
-					word32 r7_882;
-					r2_866();
-					r28_1024 = (Eq_793 * *) &r25->ptrFC001AC;
-				}
-			}
-	if (dwLoc0158_604 != null)
-		if (dwLoc0158_604->t0000 >= 0x00)
-			if (fp->aFFFFFF50[dwLoc0158_604->t0000 >> 0x05] >> dwLoc0158_604->t0000 != 0x01)
-			{
-				code * r2_793 = dwLoc0158_604->ptr17C4;
-				word32 sp_797;
-				word32 r28_798;
-				word32 r25_799;
-				word32 ra_800;
-				word32 r30_801;
-				word32 r16_802;
-				word32 r4_803;
-				word32 r5_804;
-				word32 r2_805;
-				word32 r1_806;
-				word32 r6_807;
-				word32 r3_808;
-				word32 r7_809;
-				r2_793();
-				r28_1024 = (Eq_793 * *) &r25->ptrFC001AC;
-			}
-	if (dwLoc0158_604 != null)
-		if (dwLoc0158_604->t0004 >= 0x00)
-			if (fp->aFFFFFF50[dwLoc0158_604->t0004 >> 0x05] >> dwLoc0158_604->t0004 != 0x01)
-			{
-				Eq_793 * r25_763 = *(r28_1024 - 32432);
-				word32 sp_764;
-				word32 r28_765;
-				word32 r25_766;
-				word32 ra_767;
-				word32 r30_768;
-				word32 r16_769;
-				word32 r4_770;
-				word32 r5_771;
-				word32 r2_772;
-				word32 r1_773;
-				word32 r6_774;
-				word32 r3_775;
-				word32 r7_776;
-				r25_763();
-				r28_1024 = (Eq_793 * *) &r25->ptrFC001AC;
-			}
-	if (dwLoc0158_604 == null)
-		goto l00401AA4;
-	Eq_847 r2_696 = dwLoc0158_604->t0004;
-	if (r2_696 < 0x00)
-		if (dwLoc0158_604->t0000 < 0x00)
-			goto l00401A80;
-	if (dwLoc0158_604->t0004 < 0x00)
-		if (dwLoc0158_604->t0000 >= 0x00)
-			if (dwLoc0158_604->dw178C <= 0x00)
-				goto l00401A80;
-	Eq_847 r2_719 = dwLoc0158_604->t0000;
-	if (r2_719 < 0x00)
-		if (dwLoc0158_604->t0004 >= 0x00)
-			if (dwLoc0158_604->dw0FAC <= 0x00)
-				goto l00401A80;
-	Eq_793 * r25_722 = *(r28_1024 - 32712);
-	word32 sp_723;
-	word32 r28_724;
-	word32 r25_725;
-	word32 ra_726;
-	word32 r30_727;
-	word32 r16_728;
-	word32 r4_729;
-	word32 r5_730;
-	int32 r2_731;
-	word32 r1_732;
-	word32 r6_733;
-	word32 r3_734;
-	word32 r7_735;
-	r25_722();
-	r28_1024 = (Eq_793 * *) &r25->ptrFC001AC;
-	if ((word32) (r2_731 < 0x03) != 0x00)
-	{
-l00401AA4:
-		if (dwLoc0158_604 == null)
-			goto l00400F10;
-		dwLoc0158_604 = dwLoc0158_604->ptr17B8;
-		goto l004015C8;
-	}
+	word32 r2_426 = Mem132[Mem132[r28_1024 - 0x7FA0 + 0x00:word32] + 0x00:word32]
+	branch r2_426 == 0x00 l00400F10_ds_t
+l00400F10_ds_f:
+	word32 r25_428 = Mem132[r28_1024 - 0x7ED0 + 0x00:word32]
+	word32 sp_429
+	word32 r28_430
+	word32 r25_431
+	word32 ra_432
+	word32 r30_433
+	word32 r16_434
+	word32 r4_435
+	word32 r5_436
+	word32 r2_437
+	word32 r1_438
+	word32 r6_439
+	word32 r3_440
+	word32 r7_441
+	call r25_428 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144_377,dwLoc014C_254,dwLoc0150_408,dwLoc0154_236,dwLoc0158_412,dwLoc015C_407,dwLoc0160_405,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_406,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_411,dwLoc18_410,dwLoc1C_409,dwLoc20_193,dwLoc24_167,dwLoc28_404,dwLoc2C_403,dwLoc30_402,r1_416,r16_419,r2_426,r25_428,r28_424,r3_414,r30_420,r4_427,r5_417,r6_415,r7_413,ra_421,sp_423,wLoc0146_359,wLoc0148_356
+		defs: r1_438,r16_434,r2_437,r25_431,r28_430,r3_440,r30_433,r4_435,r5_436,r6_439,r7_441,ra_432,sp_429
+	word32 r25_444 = Mem132[r25 + 264241112:word32]
+	word32 sp_445
+	word32 r28_446
+	word32 r25_447
+	word32 ra_448
+	word32 r30_449
+	word32 r16_450
+	word32 r4_451
+	word32 r5_452
+	word32 r2_453
+	word32 r1_454
+	word32 r6_455
+	word32 r3_456
+	word32 r7_457
+	call r25_444 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144_377,dwLoc014C_254,dwLoc0150_408,dwLoc0154_236,dwLoc0158_412,dwLoc015C_407,dwLoc0160_405,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_406,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_411,dwLoc18_410,dwLoc1C_409,dwLoc20_193,dwLoc24_167,dwLoc28_404,dwLoc2C_403,dwLoc30_402,r1_438,r16_434,r2_437,r25_444,r28_442,r3_440,r30_433,r4_443,r5_436,r6_439,r7_441,ra_432,sp_429,wLoc0146_359,wLoc0148_356
+		defs: r1_454,r16_450,r2_453,r25_447,r28_446,r3_456,r30_449,r4_451,r5_452,r6_455,r7_457,ra_448,sp_445
+	word32 r28_458 = r25 + 0x0FC07F90
+	branch r2_110 == 0x0695 l00401AD4_ds_t
+	goto l00401AD4_ds_f
+l00400F10_ds_t:
+	word32 dwLoc0160_1183 = 0x00
+	word32 r25_501 = Mem132[r28_1024 - 0x7F30 + 0x00:word32]
+	word32 sp_502
+	word32 r28_503
+	word32 r25_504
+	word32 ra_505
+	word32 r30_506
+	word32 r16_507
+	word32 r4_508
+	word32 r5_509
+	word32 r2_510
+	word32 r1_511
+	word32 r6_512
+	word32 r3_513
+	word32 r7_514
+	call r25_501 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144_377,dwLoc014C_254,dwLoc0150_408,dwLoc0154_236,dwLoc0158_412,dwLoc015C_407,dwLoc0160_499,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_406,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_411,dwLoc18_410,dwLoc1C_409,dwLoc20_193,dwLoc24_167,dwLoc28_404,dwLoc2C_403,dwLoc30_402,r1_416,r16_419,r2_426,r25_501,r28_424,r3_414,r30_420,r4_500,r5_417,r6_415,r7_413,ra_421,sp_423,wLoc0146_359,wLoc0148_356
+		defs: r1_511,r16_507,r2_510,r25_504,r28_503,r3_513,r30_506,r4_508,r5_509,r6_512,r7_514,ra_505,sp_502
+	word32 dwLoc2C_1337 = 0x00
+	goto l00400F5C
+l00400F28:
+l00400F30:
+l00400F30_ds_f:
+	word32 dwLoc28_1329 = 0x00
+	goto l00400FB0
+l00400F30_ds_t:
+	(fp + -0x0130)[dwLoc2C_1337 * 0x04] = 0x00
+	dwLoc2C_1337 = dwLoc2C_1337 + 0x01
+l00400F5C:
+	branch (word32) (dwLoc2C_1337 <u 0x0020) != 0x00 l00400F30_ds_t
+	goto l00400F30_ds_f
+l00400F70:
+l00400F78:
+l00400FA4:
+l00400FA4_ds_f:
+	word32 dwLoc0150_1318 = Mem132[r2_248 + 0x08:word32]
+	goto l0040100C
+l00400FA4_ds_t:
+	(fp + -0x00B0)[dwLoc28_1329 * 0x04] = 0x00
+	dwLoc28_1329 = dwLoc28_1329 + 0x01
+l00400FB0:
+	branch (word32) (dwLoc28_1329 <u 0x0020) != 0x00 l00400FA4_ds_t
+	goto l00400FA4_ds_f
+l00400FC4:
+l00400FCC:
+l00400FF8:
+l00400FF8_ds_f:
+	word32 dwLoc0158_1195 = Mem132[r2_230 + 0x08:word32]
+	goto l004010E0
+l00400FF8_ds_t:
+	word32 r2_1293 = Mem132[dwLoc0150_1318 + 0x00:word32]
+	(fp + -0x0130)[(r2_1293 >>u 0x05) * 0x04] = (fp + -0x0130)[(r2_1293 >>u 0x05) * 0x04] | 0x01 << Mem132[dwLoc0150_1318 + 0x00:word32] + 0x1F
+	branch (word32) (dwLoc0160_1183 < Mem1310[dwLoc0150_1318 + 0x00:word32]) == 0x00 l00401024_ds_t
+	goto l00401024_ds_f
+l0040100C:
+	branch dwLoc0150_1318 != 0x00 l00400FF8_ds_t
+	goto l00400FF8_ds_f
+l0040101C:
+l00401024:
+l00401024_ds_f:
+	dwLoc0160_1183 = Mem1310[dwLoc0150_1318 + 0x00:word32]
+	goto l004010B4
+l004010A0:
+l004010B4:
+	dwLoc0150_1318 = Mem1310[dwLoc0150_1318 + 0x18:word32]
+	goto l0040100C
+l004010CC:
+l004010CC_ds_f:
+	word32 r25_557 = Mem132[r25 + 0x0FC00148:word32]
+	word32 sp_558
+	word32 r28_559
+	word32 r25_560
+	word32 ra_561
+	word32 r30_562
+	word32 r16_563
+	word32 r4_564
+	word32 r5_565
+	word32 r2_566
+	word32 r1_567
+	word32 r6_568
+	word32 r3_569
+	word32 r7_570
+	call r25_557 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144_377,dwLoc014C_254,dwLoc0150_535,dwLoc0154_236,dwLoc0158_544,dwLoc015C_407,dwLoc0160_543,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_552,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_411,dwLoc18_410,dwLoc1C_409,dwLoc20_193,dwLoc24_167,dwLoc28_527,dwLoc2C_525,dwLoc30_516,r1_511,r16_507,r2_550,r25_557,r28_515,r3_551,r30_506,r4_553,r5_554,r6_555,r7_556,ra_505,sp_502,wLoc0146_359,wLoc0148_356
+		defs: r1_567,r16_563,r2_566,r25_560,r28_559,r3_569,r30_562,r4_564,r5_565,r6_568,r7_570,ra_561,sp_558
+	r28_1024 = r25 + 0x0FC07F90
+	branch r2_566 >= 0x00 l00401358_ds_t
+	goto l00401358_ds_f
+l004010CC_ds_t:
+	branch Mem132[dwLoc0158_1195 + 0x00:word32] < 0x00 l004010F8_ds_t
+	goto l004010F8_ds_f
+l004010E0:
+	branch dwLoc0158_1195 != 0x00 l004010CC_ds_t
+	goto l004010CC_ds_f
+l004010F0:
+l004010F8:
+l004010F8_ds_f:
+	branch (word32) (dwLoc0160_1183 < Mem132[dwLoc0158_1195 + 0x00:word32]) == 0x00 l00401110_ds_t
+	goto l00401110_ds_f
+l00401110:
+l00401110_ds_f:
+	dwLoc0160_1183 = Mem132[dwLoc0158_1195 + 0x00:word32]
+	goto l00401140
+l0040112C:
+l00401140:
+	branch Mem132[dwLoc0158_1195 + 0x0FAC:word32] != 0x00 l00401140_ds_t
+l00401140_ds_f:
+	word32 r2_1252 = Mem132[dwLoc0158_1195 + 0x00:word32]
+	(fp + -0x0130)[(r2_1252 >>u 0x05) * 0x04] = (fp + -0x0130)[(r2_1252 >>u 0x05) * 0x04] | 0x01 << Mem132[dwLoc0158_1195 + 0x00:word32] + 0x1F
+	goto l0040121C
+l00401140_ds_t:
+	word32 r2_1271 = Mem132[dwLoc0158_1195 + 0x00:word32]
+	(fp + -0x00B0)[(r2_1271 >>u 0x05) * 0x04] = (fp + -0x00B0)[(r2_1271 >>u 0x05) * 0x04] | 0x01 << Mem132[dwLoc0158_1195 + 0x00:word32] + 0x1F
+	goto l0040121C
+l00401158:
+l004011BC:
+l0040121C:
+	branch Mem132[dwLoc0158_1195 + 0x04:word32] < 0x00 l0040121C_ds_t
+l0040121C_ds_f:
+	branch (word32) (dwLoc0160_1183 < Mem132[dwLoc0158_1195 + 0x04:word32]) == 0x00 l00401234_ds_t
+	goto l00401234_ds_f
+l00401234:
+l00401234_ds_f:
+	dwLoc0160_1183 = Mem132[dwLoc0158_1195 + 0x04:word32]
+	goto l00401264
+l00401250:
+l00401264:
+	branch Mem132[dwLoc0158_1195 + 0x178C:word32] != 0x00 l00401264_ds_t
+l00401264_ds_f:
+	word32 r2_1204 = Mem132[dwLoc0158_1195 + 0x04:word32]
+	(fp + -0x0130)[(r2_1204 >>u 0x05) * 0x04] = (fp + -0x0130)[(r2_1204 >>u 0x05) * 0x04] | 0x01 << Mem132[dwLoc0158_1195 + 0x04:word32] + 0x1F
+	goto l00401340
+l00401264_ds_t:
+	word32 r2_1223 = Mem132[dwLoc0158_1195 + 0x04:word32]
+	(fp + -0x00B0)[(r2_1223 >>u 0x05) * 0x04] = (fp + -0x00B0)[(r2_1223 >>u 0x05) * 0x04] | 0x01 << Mem132[dwLoc0158_1195 + 0x04:word32] + 0x1F
+	goto l00401340
+l0040127C:
+l004012E0:
+l00401340:
+	dwLoc0158_1195 = Mem132[dwLoc0158_1195 + 0x17B8:word32]
+	goto l004010E0
+l00401358:
+l00401358_ds_f:
+	word32 r25_1081 = Mem132[r25 + 0x0FC00028:word32]
+	word32 sp_1082
+	word32 r28_1083
+	word32 r25_1084
+	word32 ra_1085
+	word32 r30_1086
+	word32 r16_1087
+	word32 r4_1088
+	word32 r5_1089
+	word32 r2_1090
+	word32 r1_1091
+	word32 r6_1092
+	word32 r3_1093
+	word32 r7_1094
+	call r25_1081 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144_377,dwLoc014C_254,dwLoc0150_535,dwLoc0154_236,dwLoc0158_544,dwLoc015C_407,dwLoc0160_543,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_552,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_411,dwLoc18_410,dwLoc1C_409,dwLoc20_193,dwLoc24_167,dwLoc28_527,dwLoc2C_525,dwLoc30_516,r1_567,r16_563,r2_566,r25_1081,r28_571,r3_569,r30_562,r4_564,r5_565,r6_568,r7_570,ra_561,sp_558,wLoc0146_359,wLoc0148_356
+		defs: r1_1091,r16_1087,r2_1090,r25_1084,r28_1083,r3_1093,r30_1086,r4_1088,r5_1089,r6_1092,r7_1094,ra_1085,sp_1082
+	r28_1024 = r25 + 0x0FC07F90
+	word32 r3_1096 = Mem132[r2_1090 + 0x00:word32]
+	branch r3_1096 != 0x04 l00401398_ds_t
+	goto l00400F10
+l00401398:
+l00401398_ds_t:
+	word32 r25_1098 = Mem132[r25 + 0x0FC00028:word32]
+	word32 sp_1099
+	word32 r28_1100
+	word32 r25_1101
+	word32 ra_1102
+	word32 r30_1103
+	word32 r16_1104
+	word32 r4_1105
+	word32 r5_1106
+	word32 r2_1107
+	word32 r1_1108
+	word32 r6_1109
+	word32 r3_1110
+	word32 r7_1111
+	call r25_1098 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144_377,dwLoc014C_254,dwLoc0150_535,dwLoc0154_236,dwLoc0158_544,dwLoc015C_407,dwLoc0160_543,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_552,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_411,dwLoc18_410,dwLoc1C_409,dwLoc20_193,dwLoc24_167,dwLoc28_527,dwLoc2C_525,dwLoc30_516,r1_1091,r16_1087,r2_1097,r25_1098,r28_1095,r3_1096,r30_1086,r4_1088,r5_1089,r6_1092,r7_1094,ra_1085,sp_1082,wLoc0146_359,wLoc0148_356
+		defs: r1_1108,r16_1104,r2_1107,r25_1101,r28_1100,r3_1110,r30_1103,r4_1105,r5_1106,r6_1109,r7_1111,ra_1102,sp_1099
+	word32 r25_1114 = Mem132[r25 + 0x0FC00028:word32]
+	word32 sp_1115
+	word32 r28_1116
+	word32 r25_1117
+	word32 ra_1118
+	word32 r30_1119
+	word32 r16_1120
+	word32 r4_1121
+	word32 r5_1122
+	word32 r2_1123
+	word32 r1_1124
+	word32 r6_1125
+	word32 r3_1126
+	word32 r7_1127
+	call r25_1114 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144_377,dwLoc014C_254,dwLoc0150_535,dwLoc0154_236,dwLoc0158_544,dwLoc015C_407,dwLoc0160_543,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_552,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_411,dwLoc18_410,dwLoc1C_409,dwLoc20_193,dwLoc24_167,dwLoc28_527,dwLoc2C_525,dwLoc30_516,r1_1108,r16_1113,r2_1107,r25_1114,r28_1112,r3_1110,r30_1103,r4_1105,r5_1106,r6_1109,r7_1111,ra_1102,sp_1099,wLoc0146_359,wLoc0148_356
+		defs: r1_1124,r16_1120,r2_1123,r25_1117,r28_1116,r3_1126,r30_1119,r4_1121,r5_1122,r6_1125,r7_1127,ra_1118,sp_1115
+	word32 r25_1130 = Mem132[r25 + 0x0FC001AC:word32]
+	word32 sp_1131
+	word32 r28_1132
+	word32 r25_1133
+	word32 ra_1134
+	word32 r30_1135
+	word32 r16_1136
+	word32 r4_1137
+	word32 r5_1138
+	word32 r2_1139
+	word32 r1_1140
+	word32 r6_1141
+	word32 r3_1142
+	word32 r7_1143
+	call r25_1130 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144_377,dwLoc014C_254,dwLoc0150_535,dwLoc0154_236,dwLoc0158_544,dwLoc015C_407,dwLoc0160_543,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_552,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_411,dwLoc18_410,dwLoc1C_409,dwLoc20_193,dwLoc24_167,dwLoc28_527,dwLoc2C_525,dwLoc30_516,r1_1124,r16_1120,r2_1123,r25_1130,r28_1128,r3_1126,r30_1119,r4_1129,r5_1122,r6_1125,r7_1127,ra_1118,sp_1115,wLoc0146_359,wLoc0148_356
+		defs: r1_1140,r16_1136,r2_1139,r25_1133,r28_1132,r3_1142,r30_1135,r4_1137,r5_1138,r6_1141,r7_1143,ra_1134,sp_1131
+	word32 r25_1150 = Mem132[r25 + 0x0FC0011C:word32]
+	word32 sp_1151
+	word32 r28_1152
+	word32 r25_1153
+	word32 ra_1154
+	word32 r30_1155
+	word32 r16_1156
+	word32 r4_1157
+	word32 r5_1158
+	word32 r2_1159
+	word32 r1_1160
+	word32 r6_1161
+	word32 r3_1162
+	word32 r7_1163
+	call r25_1150 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144_377,dwLoc014C_254,dwLoc0150_535,dwLoc0154_236,dwLoc0158_544,dwLoc015C_407,dwLoc0160_543,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_552,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_411,dwLoc18_410,dwLoc1C_409,dwLoc20_193,dwLoc24_167,dwLoc28_527,dwLoc2C_525,dwLoc30_516,r1_1140,r16_1136,r2_1139,r25_1150,r28_1144,r3_1142,r30_1135,r4_1145,r5_1147,r6_1148,r7_1149,ra_1134,sp_1131,wLoc0146_359,wLoc0148_356
+		defs: r1_1160,r16_1156,r2_1159,r25_1153,r28_1152,r3_1162,r30_1155,r4_1157,r5_1158,r6_1161,r7_1163,ra_1154,sp_1151
+	word32 r25_1166 = Mem132[r25 + 0x0FC00020:word32]
+	word32 sp_1167
+	word32 r28_1168
+	word32 r25_1169
+	word32 ra_1170
+	word32 r30_1171
+	word32 r16_1172
+	word32 r4_1173
+	word32 r5_1174
+	word32 r2_1175
+	word32 r1_1176
+	word32 r6_1177
+	word32 r3_1178
+	word32 r7_1179
+	call r25_1166 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144_377,dwLoc014C_254,dwLoc0150_535,dwLoc0154_236,dwLoc0158_544,dwLoc015C_407,dwLoc0160_543,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_552,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_411,dwLoc18_410,dwLoc1C_409,dwLoc20_193,dwLoc24_167,dwLoc28_527,dwLoc2C_525,dwLoc30_516,r1_1160,r16_1156,r2_1159,r25_1166,r28_1164,r3_1162,r30_1155,r4_1165,r5_1158,r6_1161,r7_1163,ra_1154,sp_1151,wLoc0146_359,wLoc0148_356
+		defs: r1_1176,r16_1172,r2_1175,r25_1169,r28_1168,r3_1178,r30_1171,r4_1173,r5_1174,r6_1177,r7_1179,ra_1170,sp_1167
+	r28_1024 = r25 + 0x0FC07F90
+	goto l00401454
+l004013BC:
+l004013C4:
+l00401454:
+	word32 dwLoc0150_1000 = Mem132[r2_248 + 0x08:word32]
+	goto l00401468
+l00401454_ds_f:
+	word32 dwLoc0158_604 = Mem132[r2_230 + 0x08:word32]
+	goto l004015C8
+l00401454_ds_t:
+	branch (fp + -0x0130)[(Mem132[dwLoc0150_1000 + 0x00:word32] >>u 0x05) * 0x04] >> Mem132[dwLoc0150_1000 + 0x00:word32] + 0x1F == 0x01 l00401480_ds_t
+	goto l00401480_ds_f
+l00401468:
+	branch dwLoc0150_1000 != 0x00 l00401454_ds_t
+	goto l00401454_ds_f
+l00401478:
+l00401480:
+l00401480_ds_f:
+	word32 r25_1010 = Mem132[r28_1024 - 32552 + 0x00:word32]
+	word32 sp_1011
+	word32 r28_1012
+	word32 r25_1013
+	word32 ra_1014
+	word32 r30_1015
+	word32 r16_1016
+	word32 r4_1017
+	word32 r5_1018
+	word32 r2_1019
+	word32 r1_1020
+	word32 r6_1021
+	word32 r3_1022
+	word32 r7_1023
+	call r25_1010 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144_377,dwLoc014C_254,dwLoc0150_588,dwLoc0154_236,dwLoc0158_544,dwLoc015C_587,dwLoc0160_543,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_552,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_411,dwLoc18_410,dwLoc1C_409,dwLoc20_193,dwLoc24_167,dwLoc28_527,dwLoc2C_525,dwLoc30_516,r1_592,r16_595,r2_1002,r25_1010,r28_600,r3_1003,r30_596,r4_1006,r5_1007,r6_1008,r7_1009,ra_597,sp_599,wLoc0146_359,wLoc0148_356
+		defs: r1_1020,r16_1016,r2_1019,r25_1013,r28_1012,r3_1022,r30_1015,r4_1017,r5_1018,r6_1021,r7_1023,ra_1014,sp_1011
+	r28_1024 = r25 + 0x0FC07F90
+	branch r2_1019 != 0x00 l004014CC_ds_t
+	goto l0040159C
+l004014CC:
+l004014CC_ds_t:
+	word32 r25_1029 = Mem132[r25 + 264241224:word32]
+	word32 sp_1030
+	word32 r28_1031
+	word32 r25_1032
+	word32 ra_1033
+	word32 r30_1034
+	word32 r16_1035
+	word32 r4_1036
+	word32 r5_1037
+	word32 r2_1038
+	word32 r1_1039
+	word32 r6_1040
+	word32 r3_1041
+	word32 r7_1042
+	call r25_1029 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144_377,dwLoc014C_254,dwLoc0150_588,dwLoc0154_236,dwLoc0158_544,dwLoc015C_1025,dwLoc0160_543,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_552,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_411,dwLoc18_410,dwLoc1C_409,dwLoc20_193,dwLoc24_167,dwLoc28_527,dwLoc2C_525,dwLoc30_516,r1_1020,r16_1016,r2_1026,r25_1029,r28_1024,r3_1022,r30_1015,r4_1027,r5_1028,r6_1021,r7_1023,ra_1014,sp_1011,wLoc0146_359,wLoc0148_356
+		defs: r1_1039,r16_1035,r2_1038,r25_1032,r28_1031,r3_1041,r30_1034,r4_1036,r5_1037,r6_1040,r7_1042,ra_1033,sp_1030
+	r28_1024 = r25 + 0x0FC07F90
+	branch r2_1038 != 0x00 l00401524_ds_t
+	goto l00401524_ds_f
+l0040151C:
+l00401524:
+l00401524_ds_f:
+	word32 r25_1050 = Mem132[r25 + 0x0FC0011C:word32]
+	word32 sp_1051
+	word32 r28_1052
+	word32 r25_1053
+	word32 ra_1054
+	word32 r30_1055
+	word32 r16_1056
+	word32 r4_1057
+	word32 r5_1058
+	word32 r2_1059
+	word32 r1_1060
+	word32 r6_1061
+	word32 r3_1062
+	word32 r7_1063
+	call r25_1050 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144_377,dwLoc014C_254,dwLoc0150_588,dwLoc0154_236,dwLoc0158_544,dwLoc015C_1025,dwLoc0160_543,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_552,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_411,dwLoc18_410,dwLoc1C_409,dwLoc20_193,dwLoc24_167,dwLoc28_527,dwLoc2C_525,dwLoc30_516,r1_1039,r16_1035,r2_1038,r25_1050,r28_1043,r3_1041,r30_1034,r4_1044,r5_1046,r6_1048,r7_1049,ra_1033,sp_1030,wLoc0146_359,wLoc0148_356
+		defs: r1_1060,r16_1056,r2_1059,r25_1053,r28_1052,r3_1062,r30_1055,r4_1057,r5_1058,r6_1061,r7_1063,ra_1054,sp_1051
+	word32 r25_1066 = Mem132[r25 + 0x0FC0000C:word32]
+	word32 sp_1067
+	word32 r28_1068
+	word32 r25_1069
+	word32 ra_1070
+	word32 r30_1071
+	word32 r16_1072
+	word32 r4_1073
+	word32 r5_1074
+	word32 r2_1075
+	word32 r1_1076
+	word32 r6_1077
+	word32 r3_1078
+	word32 r7_1079
+	call r25_1066 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144_377,dwLoc014C_254,dwLoc0150_588,dwLoc0154_236,dwLoc0158_544,dwLoc015C_1025,dwLoc0160_543,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_552,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_411,dwLoc18_410,dwLoc1C_409,dwLoc20_193,dwLoc24_167,dwLoc28_527,dwLoc2C_525,dwLoc30_516,r1_1060,r16_1056,r2_1059,r25_1066,r28_1064,r3_1062,r30_1055,r4_1065,r5_1058,r6_1061,r7_1063,ra_1054,sp_1051,wLoc0146_359,wLoc0148_356
+		defs: r1_1076,r16_1072,r2_1075,r25_1069,r28_1068,r3_1078,r30_1071,r4_1073,r5_1074,r6_1077,r7_1079,ra_1070,sp_1067
+	r28_1024 = r25 + 0x0FC07F90
+	goto l0040159C
+l00401548:
+l0040159C:
+	dwLoc0150_1000 = Mem132[dwLoc0150_1000 + 0x18:word32]
+	goto l00401468
+l004015B4:
+l004015B4_ds_t:
+	branch dwLoc0158_604 == 0x00 l004015E0_ds_t
+	goto l004015E0_ds_f
+l004015C8:
+	branch dwLoc0158_604 != 0x00 l004015B4_ds_t
+	goto l00400F10
+l004015D8:
+l004015E0:
+l004015E0_ds_f:
+	branch Mem132[dwLoc0158_604 + 0x00:word32] < 0x00 l004015F0_ds_t
+	goto l004015F0_ds_f
+l004015F0:
+l004015F0_ds_f:
+	branch (fp + -0x0130)[(Mem132[dwLoc0158_604 + 0x00:word32] >>u 0x05) * 0x04] >> Mem132[dwLoc0158_604 + 0x00:word32] + 0x1F == 0x01 l00401608_ds_t
+	goto l00401608_ds_f
+l00401608:
+l00401608_ds_f:
+	word32 r25_899 = Mem132[r28_1024 - 0x7EF8 + 0x00:word32]
+	word32 sp_900
+	word32 r28_901
+	word32 r25_902
+	word32 ra_903
+	word32 r30_904
+	word32 r16_905
+	word32 r4_906
+	word32 r5_907
+	word32 r2_908
+	word32 r1_909
+	word32 r6_910
+	word32 r3_911
+	word32 r7_912
+	call r25_899 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144_377,dwLoc014C_254,dwLoc0150_588,dwLoc0154_236,dwLoc0158_608,dwLoc015C_587,dwLoc0160_543,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_552,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_607,dwLoc18_606,dwLoc1C_605,dwLoc20_193,dwLoc24_167,dwLoc28_527,dwLoc2C_525,dwLoc30_516,r1_612,r16_615,r2_897,r25_899,r28_620,r3_894,r30_616,r4_898,r5_613,r6_611,r7_609,ra_617,sp_619,wLoc0146_359,wLoc0148_356
+		defs: r1_909,r16_905,r2_908,r25_902,r28_901,r3_911,r30_904,r4_906,r5_907,r6_910,r7_912,ra_903,sp_900
+	r28_1024 = r25 + 0x0FC07F90
+	branch Mem132[dwLoc0158_604 + 2008:word32] > 0x00 l00401654_ds_t
+	goto l00401654_ds_f
+l00401654:
+l00401654_ds_f:
+	branch Mem132[dwLoc0158_604 + 0x00:word32] < 0x00 l00401688_ds_t
+	goto l00401688_ds_f
+l00401654_ds_t:
+	word32 r2_939 = Mem132[dwLoc0158_604 + 6080:word32]
+	word32 sp_943
+	word32 r28_944
+	word32 r25_945
+	word32 ra_946
+	word32 r30_947
+	word32 r16_948
+	word32 r4_949
+	word32 r5_950
+	word32 r2_951
+	word32 r1_952
+	word32 r6_953
+	word32 r3_954
+	word32 r7_955
+	call r2_939 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144_377,dwLoc014C_254,dwLoc0150_588,dwLoc0154_236,dwLoc0158_608,dwLoc015C_587,dwLoc0160_543,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_552,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_607,dwLoc18_606,dwLoc1C_940,dwLoc20_193,dwLoc24_167,dwLoc28_527,dwLoc2C_525,dwLoc30_516,r1_909,r16_905,r2_939,r25_942,r28_913,r3_911,r30_904,r4_941,r5_907,r6_910,r7_912,ra_903,sp_900,wLoc0146_359,wLoc0148_356
+		defs: r1_952,r16_948,r2_951,r25_945,r28_944,r3_954,r30_947,r4_949,r5_950,r6_953,r7_955,ra_946,sp_943
+	word32 r25_958 = Mem132[r25 + 0x0FC000E0:word32]
+	word32 sp_959
+	word32 r28_960
+	word32 r25_961
+	word32 ra_962
+	word32 r30_963
+	word32 r16_964
+	word32 r4_965
+	word32 r5_966
+	word32 r2_967
+	word32 r1_968
+	word32 r6_969
+	word32 r3_970
+	word32 r7_971
+	call r25_958 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144_377,dwLoc014C_254,dwLoc0150_588,dwLoc0154_236,dwLoc0158_608,dwLoc015C_587,dwLoc0160_543,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_552,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_607,dwLoc18_606,dwLoc1C_940,dwLoc20_193,dwLoc24_167,dwLoc28_527,dwLoc2C_525,dwLoc30_516,r1_952,r16_948,r2_951,r25_958,r28_956,r3_954,r30_947,r4_957,r5_950,r6_953,r7_955,ra_946,sp_943,wLoc0146_359,wLoc0148_356
+		defs: r1_968,r16_964,r2_967,r25_961,r28_960,r3_970,r30_963,r4_965,r5_966,r6_969,r7_971,ra_962,sp_959
+	r28_1024 = r25 + 0x0FC07F90
+	goto l00401724
+l00401688:
+l00401688_ds_f:
+	word32 r25_920 = Mem132[r25 + 0x0FBFFFCC:word32]
+	word32 sp_921
+	word32 r28_922
+	word32 r25_923
+	word32 ra_924
+	word32 r30_925
+	word32 r16_926
+	word32 r4_927
+	word32 r5_928
+	word32 r2_929
+	word32 r1_930
+	word32 r6_931
+	word32 r3_932
+	word32 r7_933
+	call r25_920 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144_377,dwLoc014C_254,dwLoc0150_588,dwLoc0154_236,dwLoc0158_608,dwLoc015C_587,dwLoc0160_543,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_552,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_607,dwLoc18_606,dwLoc1C_605,dwLoc20_193,dwLoc24_167,dwLoc28_527,dwLoc2C_525,dwLoc30_516,r1_909,r16_905,r2_918,r25_920,r28_913,r3_911,r30_904,r4_919,r5_907,r6_910,r7_912,ra_903,sp_900,wLoc0146_359,wLoc0148_356
+		defs: r1_930,r16_926,r2_929,r25_923,r28_922,r3_932,r30_925,r4_927,r5_928,r6_931,r7_933,ra_924,sp_921
+	Mem937[dwLoc0158_604 + 0x00:word32] = -0x01
+	r28_1024 = r25 + 0x0FC07F90
+	goto l00401724
+l004016A0:
+l004016D8:
+l00401724:
+	branch dwLoc0158_604 == 0x00 l00401724_ds_t
+l00401724_ds_f:
+	branch Mem132[dwLoc0158_604 + 0x04:word32] < 0x00 l00401734_ds_t
+	goto l00401734_ds_f
+l00401734:
+l00401734_ds_f:
+	branch (fp + -0x0130)[(Mem132[dwLoc0158_604 + 0x04:word32] >>u 0x05) * 0x04] >> Mem132[dwLoc0158_604 + 0x04:word32] + 0x1F == 0x01 l0040174C_ds_t
+	goto l0040174C_ds_f
+l0040174C:
+l0040174C_ds_f:
+	word32 r25_826 = Mem132[r28_1024 - 32272 + 0x00:word32]
+	word32 sp_827
+	word32 r28_828
+	word32 r25_829
+	word32 ra_830
+	word32 r30_831
+	word32 r16_832
+	word32 r4_833
+	word32 r5_834
+	word32 r2_835
+	word32 r1_836
+	word32 r6_837
+	word32 r3_838
+	word32 r7_839
+	call r25_826 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144_377,dwLoc014C_254,dwLoc0150_588,dwLoc0154_236,dwLoc0158_608,dwLoc015C_587,dwLoc0160_543,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_552,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_607,dwLoc18_606,dwLoc1C_623,dwLoc20_193,dwLoc24_167,dwLoc28_527,dwLoc2C_525,dwLoc30_516,r1_627,r16_630,r2_824,r25_826,r28_635,r3_821,r30_631,r4_825,r5_628,r6_626,r7_624,ra_632,sp_634,wLoc0146_359,wLoc0148_356
+		defs: r1_836,r16_832,r2_835,r25_829,r28_828,r3_838,r30_831,r4_833,r5_834,r6_837,r7_839,ra_830,sp_827
+	r28_1024 = r25 + 0x0FC07F90
+	branch Mem132[dwLoc0158_604 + 0x178C:word32] > 0x00 l00401798_ds_t
+	goto l00401798_ds_f
+l00401798:
+l00401798_ds_f:
+	branch Mem132[dwLoc0158_604 + 0x04:word32] < 0x00 l004017CC_ds_t
+	goto l004017CC_ds_f
+l00401798_ds_t:
+	word32 r2_866 = Mem132[dwLoc0158_604 + 0x17C4:word32]
+	word32 sp_870
+	word32 r28_871
+	word32 r25_872
+	word32 ra_873
+	word32 r30_874
+	word32 r16_875
+	word32 r4_876
+	word32 r5_877
+	word32 r2_878
+	word32 r1_879
+	word32 r6_880
+	word32 r3_881
+	word32 r7_882
+	call r2_866 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144_377,dwLoc014C_254,dwLoc0150_588,dwLoc0154_236,dwLoc0158_608,dwLoc015C_587,dwLoc0160_543,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_552,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_607,dwLoc18_867,dwLoc1C_623,dwLoc20_193,dwLoc24_167,dwLoc28_527,dwLoc2C_525,dwLoc30_516,r1_836,r16_832,r2_866,r25_869,r28_840,r3_838,r30_831,r4_868,r5_834,r6_837,r7_839,ra_830,sp_827,wLoc0146_359,wLoc0148_356
+		defs: r1_879,r16_875,r2_878,r25_872,r28_871,r3_881,r30_874,r4_876,r5_877,r6_880,r7_882,ra_873,sp_870
+	r28_1024 = r25 + 0x0FC07F90
+	goto l0040184C
+l004017CC:
+l004017CC_ds_f:
+	word32 r25_847 = Mem132[r25 + 0x0FBFFFCC:word32]
+	word32 sp_848
+	word32 r28_849
+	word32 r25_850
+	word32 ra_851
+	word32 r30_852
+	word32 r16_853
+	word32 r4_854
+	word32 r5_855
+	word32 r2_856
+	word32 r1_857
+	word32 r6_858
+	word32 r3_859
+	word32 r7_860
+	call r25_847 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144_377,dwLoc014C_254,dwLoc0150_588,dwLoc0154_236,dwLoc0158_608,dwLoc015C_587,dwLoc0160_543,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_552,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_607,dwLoc18_606,dwLoc1C_623,dwLoc20_193,dwLoc24_167,dwLoc28_527,dwLoc2C_525,dwLoc30_516,r1_836,r16_832,r2_845,r25_847,r28_840,r3_838,r30_831,r4_846,r5_834,r6_837,r7_839,ra_830,sp_827,wLoc0146_359,wLoc0148_356
+		defs: r1_857,r16_853,r2_856,r25_850,r28_849,r3_859,r30_852,r4_854,r5_855,r6_858,r7_860,ra_851,sp_848
+	Mem864[dwLoc0158_604 + 0x04:word32] = -0x01
+	r28_1024 = r25 + 0x0FC07F90
+	goto l0040184C
+l004017E4:
+l0040181C:
+l0040184C:
+	branch dwLoc0158_604 == 0x00 l0040184C_ds_t
+l0040184C_ds_f:
+	branch Mem132[dwLoc0158_604 + 0x00:word32] < 0x00 l0040185C_ds_t
+	goto l0040185C_ds_f
+l0040185C:
+l0040185C_ds_f:
+	branch (fp + -0x00B0)[(Mem132[dwLoc0158_604 + 0x00:word32] >>u 0x05) * 0x04] >> Mem132[dwLoc0158_604 + 0x00:word32] + 0x1F == 0x01 l00401874_ds_t
+	goto l00401874_ds_f
+l00401874:
+l00401874_ds_f:
+	word32 r2_793 = Mem132[dwLoc0158_604 + 0x17C4:word32]
+	word32 sp_797
+	word32 r28_798
+	word32 r25_799
+	word32 ra_800
+	word32 r30_801
+	word32 r16_802
+	word32 r4_803
+	word32 r5_804
+	word32 r2_805
+	word32 r1_806
+	word32 r6_807
+	word32 r3_808
+	word32 r7_809
+	call r2_793 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144_377,dwLoc014C_254,dwLoc0150_588,dwLoc0154_236,dwLoc0158_608,dwLoc015C_587,dwLoc0160_543,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_552,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_794,dwLoc18_637,dwLoc1C_623,dwLoc20_193,dwLoc24_167,dwLoc28_527,dwLoc2C_525,dwLoc30_516,r1_641,r16_644,r2_793,r25_796,r28_649,r3_788,r30_645,r4_795,r5_642,r6_640,r7_638,ra_646,sp_648,wLoc0146_359,wLoc0148_356
+		defs: r1_806,r16_802,r2_805,r25_799,r28_798,r3_808,r30_801,r4_803,r5_804,r6_807,r7_809,ra_800,sp_797
+	r28_1024 = r25 + 0x0FC07F90
+	goto l004018F0
+l004018C0:
+l004018F0:
+	branch dwLoc0158_604 == 0x00 l004018F0_ds_t
+l004018F0_ds_f:
+	branch Mem132[dwLoc0158_604 + 0x04:word32] < 0x00 l00401900_ds_t
+	goto l00401900_ds_f
+l00401900:
+l00401900_ds_f:
+	branch (fp + -0x00B0)[(Mem132[dwLoc0158_604 + 0x04:word32] >>u 0x05) * 0x04] >> Mem132[dwLoc0158_604 + 0x04:word32] + 0x1F == 0x01 l00401918_ds_t
+	goto l00401918_ds_f
+l00401918:
+l00401918_ds_f:
+	word32 r25_763 = Mem132[r28_1024 - 32432 + 0x00:word32]
+	word32 sp_764
+	word32 r28_765
+	word32 r25_766
+	word32 ra_767
+	word32 r30_768
+	word32 r16_769
+	word32 r4_770
+	word32 r5_771
+	word32 r2_772
+	word32 r1_773
+	word32 r6_774
+	word32 r3_775
+	word32 r7_776
+	call r25_763 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144_377,dwLoc014C_254,dwLoc0150_588,dwLoc0154_236,dwLoc0158_608,dwLoc015C_587,dwLoc0160_543,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_552,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_651,dwLoc18_637,dwLoc1C_623,dwLoc20_193,dwLoc24_167,dwLoc28_527,dwLoc2C_525,dwLoc30_516,r1_655,r16_658,r2_761,r25_763,r28_663,r3_758,r30_659,r4_762,r5_656,r6_654,r7_652,ra_660,sp_662,wLoc0146_359,wLoc0148_356
+		defs: r1_773,r16_769,r2_772,r25_766,r28_765,r3_775,r30_768,r4_770,r5_771,r6_774,r7_776,ra_767,sp_764
+	r28_1024 = r25 + 0x0FC07F90
+	goto l00401980
+l00401964:
+l00401980:
+	branch dwLoc0158_604 == 0x00 l00401980_ds_t
+l00401980_ds_f:
+	word32 r2_696 = Mem132[dwLoc0158_604 + 0x04:word32]
+	branch r2_696 >= 0x00 l00401990_ds_t
+	goto l00401990_ds_f
+l00401990:
+l00401990_ds_f:
+	branch Mem132[dwLoc0158_604 + 0x00:word32] < 0x00 l004019A8_ds_t
+	goto l004019C0
+l004019A8:
+l004019C0:
+	branch Mem132[dwLoc0158_604 + 0x04:word32] >= 0x00 l004019C0_ds_t
+l004019C0_ds_f:
+	branch Mem132[dwLoc0158_604 + 0x00:word32] < 0x00 l004019D8_ds_t
+	goto l004019D8_ds_f
+l004019D8:
+l004019D8_ds_f:
+	branch Mem132[dwLoc0158_604 + 0x178C:word32] <= 0x00 l004019F0_ds_t
+	goto l00401A08
+l004019F0:
+l00401A08:
+	word32 r2_719 = Mem132[dwLoc0158_604 + 0x00:word32]
+	branch r2_719 >= 0x00 l00401A08_ds_t
+l00401A08_ds_f:
+	branch Mem132[dwLoc0158_604 + 0x04:word32] < 0x00 l00401A20_ds_t
+	goto l00401A20_ds_f
+l00401A20:
+l00401A20_ds_f:
+	branch Mem132[dwLoc0158_604 + 0x0FAC:word32] <= 0x00 l00401A38_ds_t
+	goto l00401A50
+l00401A38:
+l00401A50:
+	word32 r25_722 = Mem132[r28_1024 - 32712 + 0x00:word32]
+	word32 sp_723
+	word32 r28_724
+	word32 r25_725
+	word32 ra_726
+	word32 r30_727
+	word32 r16_728
+	word32 r4_729
+	word32 r5_730
+	word32 r2_731
+	word32 r1_732
+	word32 r6_733
+	word32 r3_734
+	word32 r7_735
+	call r25_722 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144_377,dwLoc014C_254,dwLoc0150_588,dwLoc0154_236,dwLoc0158_608,dwLoc015C_587,dwLoc0160_543,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_552,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_651,dwLoc18_637,dwLoc1C_623,dwLoc20_193,dwLoc24_167,dwLoc28_527,dwLoc2C_525,dwLoc30_516,r1_668,r16_671,r2_719,r25_722,r28_676,r3_666,r30_672,r4_720,r5_721,r6_667,r7_665,ra_673,sp_675,wLoc0146_359,wLoc0148_356
+		defs: r1_732,r16_728,r2_731,r25_725,r28_724,r3_734,r30_727,r4_729,r5_730,r6_733,r7_735,ra_726,sp_723
+	r28_1024 = r25 + 0x0FC07F90
+	branch (word32) (r2_731 < 0x03) == 0x00 l00401A50_ds_t
+	goto l00401AA4
+l00401A78:
 l00401A80:
-	Eq_793 * r25_700 = *(r28_1024 - 32332);
-	word32 sp_701;
-	word32 r28_702;
-	word32 r25_703;
-	word32 ra_704;
-	word32 r30_705;
-	word32 r16_706;
-	word32 r4_707;
-	word32 r5_708;
-	word32 r2_709;
-	word32 r1_710;
-	word32 r6_711;
-	word32 r3_712;
-	word32 r7_713;
-	r25_700();
-	r28_1024 = (Eq_793 * *) &r25->ptrFC001AC;
-	dwLoc0158_604 = null;
-	goto l00401AA4;
+	word32 r25_700 = Mem132[r28_1024 - 32332 + 0x00:word32]
+	word32 sp_701
+	word32 r28_702
+	word32 r25_703
+	word32 ra_704
+	word32 r30_705
+	word32 r16_706
+	word32 r4_707
+	word32 r5_708
+	word32 r2_709
+	word32 r1_710
+	word32 r6_711
+	word32 r3_712
+	word32 r7_713
+	call r25_700 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144_377,dwLoc014C_254,dwLoc0150_588,dwLoc0154_236,dwLoc0158_608,dwLoc015C_587,dwLoc0160_543,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_552,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_651,dwLoc18_637,dwLoc1C_623,dwLoc20_193,dwLoc24_167,dwLoc28_527,dwLoc2C_525,dwLoc30_516,r1_668,r16_671,r2_696,r25_700,r28_697,r3_666,r30_672,r4_698,r5_699,r6_667,r7_665,ra_673,sp_675,wLoc0146_359,wLoc0148_356
+		defs: r1_710,r16_706,r2_709,r25_703,r28_702,r3_712,r30_705,r4_707,r5_708,r6_711,r7_713,ra_704,sp_701
+	r28_1024 = r25 + 0x0FC07F90
+	dwLoc0158_604 = 0x00
+l00401AA4:
+	branch dwLoc0158_604 != 0x00 l00401AA4_ds_t
+	goto l00400F10
+l00401AA4_ds_t:
+	dwLoc0158_604 = Mem132[dwLoc0158_604 + 0x17B8:word32]
+	goto l004015C8
+l00401AB4:
+l00401ABC:
+l00401AD4:
+l00401AD4_ds_f:
+	word32 r2_482 = (word32) Mem132[r2_110 + 0x0695:int8]
+	branch r2_482 == 0x00 l00401B1C_ds_t
+	goto l00401B1C_ds_f
+l00401B1C:
+l00401B1C_ds_f:
+	word32 r25_484 = Mem132[r25 + 0x0FC000B8:word32]
+	word32 sp_485
+	word32 r28_486
+	word32 r25_487
+	word32 ra_488
+	word32 r30_489
+	word32 r16_490
+	word32 r4_491
+	word32 r5_492
+	word32 r2_493
+	word32 r1_494
+	word32 r6_495
+	word32 r3_496
+	word32 r7_497
+	call r25_484 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144_377,dwLoc014C_254,dwLoc0150_408,dwLoc0154_236,dwLoc0158_412,dwLoc015C_407,dwLoc0160_405,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_406,dwLoc0194,dwLoc0198,dwLoc019C,dwLoc01A0,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_411,dwLoc18_410,dwLoc1C_409,dwLoc20_193,dwLoc24_167,dwLoc28_404,dwLoc2C_403,dwLoc30_402,r1_454,r16_450,r2_482,r25_484,r28_458,r3_456,r30_449,r4_483,r5_452,r6_455,r7_457,ra_448,sp_445,wLoc0146_359,wLoc0148_356
+		defs: r1_494,r16_490,r2_493,r25_487,r28_486,r3_496,r30_489,r4_491,r5_492,r6_495,r7_497,ra_488,sp_485
+	r28_458 = r25 + 0x0FC07F90
+	goto l00401B50
+l00401B34:
+l00401B50:
+	word32 r25_462 = Mem132[r28_458 - 0x7F70 + 0x00:word32]
+	word32 sp_463
+	word32 r28_464
+	word32 r25_465
+	word32 ra_466
+	word32 r30_467
+	word32 r16_468
+	word32 r4_469
+	word32 r5_470
+	word32 r2_471
+	word32 r1_472
+	word32 r6_473
+	word32 r3_474
+	word32 r7_475
+	call r25_462 (retsize: 0; depth: 416)
+		uses: dwLoc0138_112,dwLoc0144_377,dwLoc014C_254,dwLoc0150_408,dwLoc0154_236,dwLoc0158_412,dwLoc015C_407,dwLoc0160_405,dwLoc0168_7,dwLoc0170_199,dwLoc0174_196,dwLoc0178_188,dwLoc017C_185,dwLoc0180_182,dwLoc0184_179,dwLoc0188_176,dwLoc018C_173,dwLoc0190_406,dwLoc04_9,dwLoc08_11,dwLoc0C_13,dwLoc14_411,dwLoc18_410,dwLoc1C_409,dwLoc20_193,dwLoc24_167,dwLoc28_404,dwLoc2C_403,dwLoc30_402,r1_454,r16_450,r2_459,r25_462,r28_460,r3_456,r30_449,r4_461,r5_452,r6_455,r7_457,ra_448,sp_445,wLoc0146_359,wLoc0148_356
+		defs: r1_472,r16_468,r2_471,r25_465,r28_464,r3_474,r30_467,r4_469,r5_470,r6_473,r7_475,ra_466,sp_463
+	client_new(r2_471, r4_469, r5_470, r7_475, r25_465, dwLoc01A0, dwLoc019C, dwLoc0198, dwLoc0194)
+	return
+l00401B6C_thunk_client_new:
+main_exit:
 }
 
-void client_new(word32 r2, Eq_933 * r4, Eq_934 * r5, word32 r7, Eq_929 * r25, word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 dwArg0C)
+void client_new(word32 r2, word32 r4, word32 r5, word32 r7, word32 r25, word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 dwArg0C)
 {
-	code * r25_23 = r25->ptrFBFEEC4;
+	word32 r25_23 = Mem0[r25 + 0x0FBFEEC4:word32];
 	word32 sp_24;
 	word32 r28_25;
 	word32 r25_26;
@@ -1234,12 +1505,12 @@ void client_new(word32 r2, Eq_933 * r4, Eq_934 * r5, word32 r7, Eq_929 * r25, wo
 	word32 r5_30;
 	word32 r6_31;
 	word32 r7_32;
-	Eq_1836 * r2_33;
+	word32 r2_33;
 	word32 r3_34;
 	r25_23();
-	if (r2_33 == null)
+	if (r2_33 == 0x00)
 	{
-		code * r25_60 = r25->ptrFBFEE7C;
+		word32 r25_60 = Mem0[r25 + 264236668:word32];
 		word32 sp_66;
 		word32 r28_67;
 		word32 r25_68;
@@ -1255,7 +1526,7 @@ void client_new(word32 r2, Eq_933 * r4, Eq_934 * r5, word32 r7, Eq_929 * r25, wo
 	}
 	else
 	{
-		code * r25_86 = r25->ptrFBFEE84;
+		word32 r25_86 = Mem0[r25 + 264236676:word32];
 		word32 sp_87;
 		word32 r28_88;
 		word32 r25_89;
@@ -1268,10 +1539,10 @@ void client_new(word32 r2, Eq_933 * r4, Eq_934 * r5, word32 r7, Eq_929 * r25, wo
 		word32 r2_96;
 		word32 r3_97;
 		r25_86();
-		r2_33->w1798 = 0x02;
-		r2_33->w179A = (word16) (word32) r4->w0002;
-		r2_33->dw179C = r4->dw0004;
-		code * r25_115 = r25->ptrFBFEE74;
+		Mem101[r2_33 + 6040:word16] = 0x02;
+		Mem105[r2_33 + 0x179A:word16] = (word16) (word32) Mem101[r4 + 0x02:word16];
+		Mem109[r2_33 + 6044:word32] = Mem105[r4 + 0x04:word32];
+		word32 r25_115 = Mem109[r25 + 264236660:word32];
 		word32 sp_116;
 		word32 r28_117;
 		word32 r25_118;
@@ -1284,12 +1555,12 @@ void client_new(word32 r2, Eq_933 * r4, Eq_934 * r5, word32 r7, Eq_929 * r25, wo
 		word32 r2_125;
 		word32 r3_126;
 		r25_115();
-		r2_33->dw0000 = r2_125;
-		r2_33->w17A8 = 0x02;
-		r2_33->w17AA = (word16) (word32) r5->w0002;
-		r2_33->dw17AC = r5->dw0004;
-		r2_33->dw1790 = r7;
-		code * r25_150 = r25->ptrFBFED74;
+		Mem130[r2_33 + 0x00:word32] = r2_125;
+		Mem135[r2_33 + 6056:word16] = 0x02;
+		Mem139[r2_33 + 0x17AA:word16] = (word16) (word32) Mem135[r5 + 0x02:word16];
+		Mem143[r2_33 + 6060:word32] = Mem139[r5 + 0x04:word32];
+		Mem146[r2_33 + 0x1790:word32] = r7;
+		word32 r25_150 = Mem146[r25 + 264236404:word32];
 		word32 sp_151;
 		word32 r28_152;
 		word32 r25_153;
@@ -1299,13 +1570,13 @@ void client_new(word32 r2, Eq_933 * r4, Eq_934 * r5, word32 r7, Eq_929 * r25, wo
 		word32 r5_157;
 		word32 r6_158;
 		word32 r7_159;
-		int32 r2_160;
+		word32 r2_160;
 		word32 r3_161;
 		r25_150();
-		r2_33->dw0004 = r2_160;
-		if (r2_33->dw0004 < 0x00)
+		Mem165[r2_33 + 0x04:word32] = r2_160;
+		if (Mem165[r2_33 + 0x04:word32] < 0x00)
 		{
-			code * r25_177 = r25->ptrFBFEE7C;
+			word32 r25_177 = Mem165[r25 + 264236668:word32];
 			word32 sp_178;
 			word32 r28_179;
 			word32 r25_180;
@@ -1318,7 +1589,7 @@ void client_new(word32 r2, Eq_933 * r4, Eq_934 * r5, word32 r7, Eq_929 * r25, wo
 			word32 r2_187;
 			word32 r3_188;
 			r25_177();
-			code * r25_192 = r25->ptrFBFED2C;
+			word32 r25_192 = Mem165[r25 + 264236332:word32];
 			word32 sp_193;
 			word32 r28_194;
 			word32 r25_195;
@@ -1331,7 +1602,7 @@ void client_new(word32 r2, Eq_933 * r4, Eq_934 * r5, word32 r7, Eq_929 * r25, wo
 			word32 r2_202;
 			word32 r3_203;
 			r25_192();
-			code * r25_206 = r25->ptrFBFED1C;
+			word32 r25_206 = Mem165[r25 + 264236316:word32];
 			word32 sp_207;
 			word32 r28_208;
 			word32 r25_209;
@@ -1347,7 +1618,7 @@ void client_new(word32 r2, Eq_933 * r4, Eq_934 * r5, word32 r7, Eq_929 * r25, wo
 		}
 		else
 		{
-			code * r25_222 = r25->ptrFBFEDC4;
+			word32 r25_222 = Mem165[r25 + 264236484:word32];
 			word32 sp_223;
 			word32 r28_224;
 			word32 r25_225;
@@ -1360,7 +1631,7 @@ void client_new(word32 r2, Eq_933 * r4, Eq_934 * r5, word32 r7, Eq_929 * r25, wo
 			word32 r2_232;
 			word32 r3_233;
 			r25_222();
-			code * r25_248 = r25->ptrFBFEE7C;
+			word32 r25_248 = Mem165[r25 + 264236668:word32];
 			word32 sp_249;
 			word32 r28_250;
 			word32 r25_251;
@@ -1373,16 +1644,16 @@ void client_new(word32 r2, Eq_933 * r4, Eq_934 * r5, word32 r7, Eq_929 * r25, wo
 			word32 r2_258;
 			word32 r3_259;
 			r25_248();
-			r2_33->dw07D8 = 0x00;
-			r2_33->dw0FAC = 0x00;
-			r2_33->dw178C = 0x00;
-			r2_33->dw0FB0 = r2_33->dw07D8 + 0x01;
-			r2_33->dw1788 = r2_33->dw0FB4 + 0x01;
-			r2_33->dw1794 = 0x00;
-			r2_33->dw0FB4 = 0x00;
-			r2_33->dw17BC = 0x00;
-			r2_33->dw17B8 = 0x00;
-			code * r25_284 = r25->ptrFBFEDC0;
+			Mem262[r2_33 + 2008:word32] = 0x00;
+			Mem264[r2_33 + 0x0FAC:word32] = 0x00;
+			Mem266[r2_33 + 0x178C:word32] = 0x00;
+			Mem270[r2_33 + 0x0FB0:word32] = r2_33 + 2012;
+			Mem274[r2_33 + 0x1788:word32] = r2_33 + 4024;
+			Mem276[r2_33 + 6036:word32] = 0x00;
+			Mem278[r2_33 + 4020:word32] = 0x00;
+			Mem280[r2_33 + 6076:word32] = 0x00;
+			Mem282[r2_33 + 0x17B8:word32] = 0x00;
+			word32 r25_284 = Mem282[r25 + 0x0FBFEDC0:word32];
 			word32 sp_285;
 			word32 r28_286;
 			word32 r25_287;
@@ -1395,8 +1666,8 @@ void client_new(word32 r2, Eq_933 * r4, Eq_934 * r5, word32 r7, Eq_929 * r25, wo
 			word32 r2_294;
 			word32 r3_295;
 			r25_284();
-			r2_33->dw17C8 = r2_294;
-			code * r25_301 = r25->ptrFBFEDC0;
+			Mem299[r2_33 + 6088:word32] = r2_294;
+			word32 r25_301 = Mem299[r25 + 0x0FBFEDC0:word32];
 			word32 sp_302;
 			word32 r28_303;
 			word32 r25_304;
@@ -1409,8 +1680,8 @@ void client_new(word32 r2, Eq_933 * r4, Eq_934 * r5, word32 r7, Eq_929 * r25, wo
 			word32 r2_311;
 			word32 r3_312;
 			r25_301();
-			r2_33->dw17CC = r2_311;
-			code * r25_318 = r25->ptrFBFEDC0;
+			Mem316[r2_33 + 0x17CC:word32] = r2_311;
+			word32 r25_318 = Mem316[r25 + 0x0FBFEDC0:word32];
 			word32 sp_319;
 			word32 r28_320;
 			word32 r25_321;
@@ -1423,16 +1694,14 @@ void client_new(word32 r2, Eq_933 * r4, Eq_934 * r5, word32 r7, Eq_929 * r25, wo
 			word32 r2_328;
 			word32 r3_329;
 			r25_318();
-			r2_33->dw17D0 = r2_328;
+			Mem333[r2_33 + 6096:word32] = r2_328;
 			if (r7 != 0x00)
-				if (0x003D != 0x01)
-					;
-				else
+				if (0x003D == 0x01)
 				{
-					r2_33->dw17C0 = r25->dwFBFEE60;
-					word32 r2_354 = r25->dwFBFEE34;
-					r2_33->dw17C4 = r2_354;
-					code * r25_357 = r25->ptrFBFEEE8;
+					Mem352[r2_33 + 6080:word32] = Mem333[r25 + 0x0FBFEE60:word32];
+					word32 r2_354 = Mem352[r25 + 264236596:word32];
+					Mem355[r2_33 + 0x17C4:word32] = r2_354;
+					word32 r25_357 = Mem355[r25 + 0x0FBFEEE8:word32];
 					word32 sp_358;
 					word32 r28_359;
 					word32 r25_360;
@@ -1445,7 +1714,7 @@ void client_new(word32 r2, Eq_933 * r4, Eq_934 * r5, word32 r7, Eq_929 * r25, wo
 					word32 r2_367;
 					word32 r3_368;
 					r25_357();
-					code * r25_371 = r25->ptrFBFEE40;
+					word32 r25_371 = Mem355[r25 + 0x0FBFEE40:word32];
 					word32 sp_372;
 					word32 r28_373;
 					word32 r25_374;
@@ -1461,17 +1730,17 @@ void client_new(word32 r2, Eq_933 * r4, Eq_934 * r5, word32 r7, Eq_929 * r25, wo
 				}
 			else
 			{
-				r2_33->dw17C0 = r25->dwFBFEDF4;
-				r2_33->dw17C4 = r25->dwFBFEDE8;
+				Mem386[r2_33 + 6080:word32] = Mem333[r25 + 264236532:word32];
+				Mem389[r2_33 + 0x17C4:word32] = Mem386[r25 + 264236520:word32];
 			}
 		}
 	}
 	return;
 }
 
-void client_prepare_connect(word32 r4, Eq_2178 * r25, word32 dwArg00)
+void client_prepare_connect(word32 r4, word32 r25, word32 dwArg00)
 {
-	code * r25_28 = r25->ptrFBFE8DC;
+	word32 r25_28 = Mem0[r25 + 264235228:word32];
 	word32 sp_29;
 	word32 r28_30;
 	word32 r25_31;
@@ -1485,7 +1754,7 @@ void client_prepare_connect(word32 r4, Eq_2178 * r25, word32 dwArg00)
 	word32 r5_39;
 	word32 r6_40;
 	r25_28();
-	code * r25_44 = r25->ptrFBFE90C;
+	word32 r25_44 = Mem0[r25 + 0x0FBFE90C:word32];
 	word32 sp_45;
 	word32 r28_46;
 	word32 r25_47;
@@ -1499,7 +1768,7 @@ void client_prepare_connect(word32 r4, Eq_2178 * r25, word32 dwArg00)
 	word32 r5_55;
 	word32 r6_56;
 	r25_44();
-	code * r25_61 = r25->ptrFBFE90C;
+	word32 r25_61 = Mem0[r25 + 0x0FBFE90C:word32];
 	word32 sp_62;
 	word32 r28_63;
 	word32 r25_64;
@@ -1513,7 +1782,7 @@ void client_prepare_connect(word32 r4, Eq_2178 * r25, word32 dwArg00)
 	word32 r5_72;
 	word32 r6_73;
 	r25_61();
-	code * r25_88 = r25->ptrFBFEA4C;
+	word32 r25_88 = Mem0[r25 + 264235596:word32];
 	word32 sp_89;
 	word32 r28_90;
 	word32 r25_91;
@@ -1521,15 +1790,13 @@ void client_prepare_connect(word32 r4, Eq_2178 * r25, word32 dwArg00)
 	word32 r30_93;
 	word32 r16_94;
 	word32 r4_95;
-	int32 r2_96;
+	word32 r2_96;
 	word32 r3_97;
 	word32 r7_98;
 	word32 r5_99;
 	word32 r6_100;
 	r25_88();
-	if ((word32) (r2_96 < 0x0100) == 0x00)
-		;
-	code * r25_112 = r25->ptrFBFE9B8;
+	word32 r25_112 = Mem0[r25 + 264235448:word32];
 	word32 sp_113;
 	word32 r28_114;
 	word32 r25_115;
@@ -1546,9 +1813,9 @@ void client_prepare_connect(word32 r4, Eq_2178 * r25, word32 dwArg00)
 	return;
 }
 
-void client_copy_request(Eq_2265 * r4, Eq_2266 * r25, word32 dwArg00)
+void client_copy_request(word32 r4, word32 r25, word32 dwArg00)
 {
-	code * r25_23 = r25->ptrFBFE8A8;
+	word32 r25_23 = Mem0[r25 + 0x0FBFE8A8:word32];
 	word32 sp_24;
 	word32 r28_25;
 	word32 r25_26;
@@ -1560,19 +1827,19 @@ void client_copy_request(Eq_2265 * r4, Eq_2266 * r25, word32 dwArg00)
 	word32 r5_32;
 	word32 r6_33;
 	r25_23();
-	r4->dw0FB0 = r4->dw07D8 + 0x01;
-	r4->dw0FAC = r4->dw07D8;
+	Mem38[r4 + 0x0FB0:word32] = r4 + 2012;
+	Mem42[r4 + 0x0FAC:word32] = Mem38[r4 + 2008:word32];
 	return;
 }
 
-void client_parse_request(Eq_2293 * r4, Eq_2294 * r25, word32 dwArg00)
+void client_parse_request(word32 r4, word32 r25, word32 dwArg00)
 {
-	code * * r28_103 = &r25->ptrFBFE850;
-	int32 r2_21 = r4->dw07D8;
-	Eq_2303 * dwLoc20_125 = r4->ptr0FB4;
+	word32 r28_103 = r25 + 264267292;
+	word32 r2_21 = Mem0[r4 + 2008:word32];
+	word32 dwLoc20_125 = Mem0[r4 + 4020:word32];
 	if (r2_21 <= 0x00)
 		return;
-	code * r25_91 = *(r28_103 - 32692);
+	word32 r25_91 = Mem0[r28_103 - 32692 + 0x00:word32];
 	word32 sp_92;
 	word32 r28_93;
 	word32 r25_94;
@@ -1585,368 +1852,160 @@ void client_parse_request(Eq_2293 * r4, Eq_2294 * r25, word32 dwArg00)
 	word32 r3_101;
 	word32 r7_102;
 	r25_91();
-	r28_103 = (code * *) &r25->ptrFBFE850;
-	int32 dwLoc1C_111 = 0x00;
+	r28_103 = r25 + 264267292;
+	word32 dwLoc1C_111 = 0x00;
 	if ((word32) bLoc0810 != 0x0A)
 		if ((word32) bLoc0810 != 0x0D)
 		{
 l00402370:
-			int32 r2_120 = r4->dw1794;
-			if (r2_120 == 0x01)
-			{
-				if (dwLoc1C_111 != 0x00)
-				{
-					code * r25_414 = r25->ptrFBFE7A8;
-					word32 sp_415;
-					word32 r28_416;
-					word32 r25_417;
-					word32 ra_418;
-					word32 r30_419;
-					word32 r4_420;
-					word32 r2_421;
-					word32 r5_422;
-					word32 r6_423;
-					word32 r3_424;
-					word32 r7_425;
-					r25_414();
-					r4->dw1794 = 0x00;
-					return;
-				}
-				if ((word32) true == 0x00)
-				{
-					code * r25_518 = r25->ptrFBFE7B4;
-					word32 sp_519;
-					word32 r28_520;
-					word32 r25_521;
-					word32 ra_522;
-					word32 r30_523;
-					word32 r4_524;
-					word32 r2_525;
-					word32 r5_526;
-					word32 r6_527;
-					word32 r3_528;
-					word32 r7_529;
-					r25_518();
-					r28_103 = (code * *) &r25->ptrFBFE850;
-					if (fp == ~0x080F)
-					{
-						if (dwLoc20_125 == null)
-						{
-							code * r25_538 = r25->ptrFBFE7A8;
-							word32 sp_539;
-							word32 r28_540;
-							word32 r25_541;
-							word32 ra_542;
-							word32 r30_543;
-							word32 r4_544;
-							word32 r2_545;
-							word32 r5_546;
-							word32 r6_547;
-							word32 r3_548;
-							word32 r7_549;
-							r25_538();
-							r28_103 = (code * *) &r25->ptrFBFE850;
-						}
-						else
-						{
-							code * r25_554 = r25->ptrFBFE670;
-							word32 sp_555;
-							word32 r28_556;
-							word32 r25_557;
-							word32 ra_558;
-							word32 r30_559;
-							word32 r4_560;
-							word32 r2_561;
-							word32 r5_562;
-							word32 r6_563;
-							word32 r3_564;
-							word32 r7_565;
-							r25_554();
-							code * r25_568 = r25->ptrFBFE7F4;
-							word32 sp_569;
-							word32 r28_570;
-							word32 r25_571;
-							word32 ra_572;
-							word32 r30_573;
-							word32 r4_574;
-							word32 r2_575;
-							word32 r5_576;
-							word32 r6_577;
-							word32 r3_578;
-							word32 r7_579;
-							r25_568();
-							code * r25_584 = r25->ptrFBFE688;
-							word32 sp_585;
-							word32 r28_586;
-							word32 r25_587;
-							word32 ra_588;
-							word32 r30_589;
-							word32 r4_590;
-							word32 r2_591;
-							word32 r5_592;
-							word32 r6_593;
-							word32 r3_594;
-							word32 r7_595;
-							r25_584();
-							code * r25_604 = r25->ptrFBFE79C;
-							word32 sp_605;
-							word32 r28_606;
-							word32 r25_607;
-							word32 ra_608;
-							word32 r30_609;
-							word32 r4_610;
-							word32 r2_611;
-							word32 r5_612;
-							word32 r6_613;
-							word32 r3_614;
-							word32 r7_615;
-							r25_604();
-							code * r25_621 = r25->ptrFBFE6A8;
-							word32 sp_622;
-							word32 r28_623;
-							word32 r25_624;
-							word32 ra_625;
-							word32 r30_626;
-							word32 r4_627;
-							word32 r2_628;
-							word32 r5_629;
-							word32 r6_630;
-							word32 r3_631;
-							word32 r7_632;
-							r25_621();
-							code * r25_640 = r25->ptrFBFE79C;
-							word32 sp_641;
-							word32 r28_642;
-							word32 r25_643;
-							word32 ra_644;
-							word32 r30_645;
-							word32 r4_646;
-							word32 r2_647;
-							word32 r5_648;
-							word32 r6_649;
-							word32 r3_650;
-							word32 r7_651;
-							r25_640();
-							r4->dw1794 = 0x02;
-							r28_103 = (code * *) &r25->ptrFBFE850;
-						}
-						goto l00402A34;
-					}
-				}
-				if ((word32) true == 0x00)
-				{
-					code * r25_467 = *(r28_103 - 32360);
-					word32 sp_468;
-					word32 r28_469;
-					word32 r25_470;
-					word32 ra_471;
-					word32 r30_472;
-					word32 r4_473;
-					word32 r2_474;
-					word32 r5_475;
-					word32 r6_476;
-					word32 r3_477;
-					word32 r7_478;
-					r25_467();
-					r28_103 = (code * *) &r25->ptrFBFE850;
-					if (fp == ~0x080F)
-					{
-						code * r25_483 = r25->ptrFBFE7B8;
-						word32 sp_484;
-						word32 r28_485;
-						word32 r25_486;
-						word32 ra_487;
-						word32 r30_488;
-						word32 r4_489;
-						word32 r2_490;
-						word32 r5_491;
-						word32 r6_492;
-						word32 r3_493;
-						word32 r7_494;
-						r25_483();
-						code * r25_500 = r25->ptrFBFE710;
-						word32 sp_501;
-						word32 r28_502;
-						word32 r25_503;
-						word32 ra_504;
-						word32 r30_505;
-						word32 r4_506;
-						word32 r2_507;
-						word32 r5_508;
-						word32 r6_509;
-						word32 r3_510;
-						word32 r7_511;
-						r25_500();
-						r28_103 = (code * *) &r25->ptrFBFE850;
-						goto l00402A34;
-					}
-				}
-				code * r25_449 = *(r28_103 - 0x7F0C);
-				word32 sp_450;
-				word32 r28_451;
-				word32 r25_452;
-				word32 ra_453;
-				word32 r30_454;
-				word32 r4_455;
-				word32 r2_456;
-				word32 r5_457;
-				word32 r6_458;
-				word32 r3_459;
-				word32 r7_460;
-				r25_449();
-				r28_103 = (code * *) &r25->ptrFBFE850;
-				goto l00402A34;
-			}
-			else
+			word32 r2_120 = Mem0[r4 + 6036:word32];
+			if (r2_120 != 0x01)
 			{
 				if ((word32) (r2_120 < 0x02) != 0x00)
 				{
-					if (r2_120 != 0x00)
-						;
-					else if (dwLoc1C_111 == 0x00)
-					{
-						Eq_2303 * r2_144 = r4->ptr0FB4;
-						if (r2_144 != null)
+					if (r2_120 == 0x00)
+						if (dwLoc1C_111 == 0x00)
 						{
-							code * r25_210 = r25->ptrFBFE7A8;
-							word32 sp_211;
-							word32 r28_212;
-							word32 r25_213;
-							word32 ra_214;
-							word32 r30_215;
-							word32 r4_216;
-							word32 r2_217;
-							word32 r5_218;
-							word32 r6_219;
-							word32 r3_220;
-							word32 r7_221;
-							r25_210();
-							dwLoc20_125 = r4->ptr0FB4;
-							code * r25_229 = r25->ptrFBFE738;
-							word32 sp_230;
-							word32 r28_231;
-							word32 r25_232;
-							word32 ra_233;
-							word32 r30_234;
-							word32 r4_235;
-							word32 r2_236;
-							word32 r5_237;
-							word32 r6_238;
-							word32 r3_239;
-							word32 r7_240;
-							r25_229();
-							r28_103 = (code * *) &r25->ptrFBFE850;
-							if (fp == ~0x080F)
+							word32 r2_144 = Mem0[r4 + 4020:word32];
+							if (r2_144 != 0x00)
 							{
-								code * r25_248 = r25->ptrFBFE7A8;
-								word32 sp_249;
-								word32 r28_250;
-								word32 r25_251;
-								word32 ra_252;
-								word32 r30_253;
-								word32 r4_254;
-								word32 r2_255;
-								word32 r5_256;
-								word32 r6_257;
-								word32 r3_258;
-								word32 r7_259;
-								r25_248();
-								code * r25_262 = r25->ptrFBFE83C;
-								word32 sp_263;
-								word32 r28_264;
-								word32 r25_265;
-								word32 ra_266;
-								word32 r30_267;
-								word32 r4_268;
-								word32 r2_269;
-								word32 r5_270;
-								word32 r6_271;
-								word32 r3_272;
-								word32 r7_273;
-								r25_262();
-								r28_103 = (code * *) &r25->ptrFBFE850;
-								dwLoc20_125 = null;
+								word32 r25_210 = Mem0[r25 + 264234920:word32];
+								word32 sp_211;
+								word32 r28_212;
+								word32 r25_213;
+								word32 ra_214;
+								word32 r30_215;
+								word32 r4_216;
+								word32 r2_217;
+								word32 r5_218;
+								word32 r6_219;
+								word32 r3_220;
+								word32 r7_221;
+								r25_210();
+								dwLoc20_125 = Mem0[r4 + 4020:word32];
+								word32 r25_229 = Mem0[r25 + 264234808:word32];
+								word32 sp_230;
+								word32 r28_231;
+								word32 r25_232;
+								word32 ra_233;
+								word32 r30_234;
+								word32 r4_235;
+								word32 r2_236;
+								word32 r5_237;
+								word32 r6_238;
+								word32 r3_239;
+								word32 r7_240;
+								r25_229();
+								r28_103 = r25 + 264267292;
+								if (fp == ~0x080F)
+								{
+									word32 r25_248 = Mem0[r25 + 264234920:word32];
+									word32 sp_249;
+									word32 r28_250;
+									word32 r25_251;
+									word32 ra_252;
+									word32 r30_253;
+									word32 r4_254;
+									word32 r2_255;
+									word32 r5_256;
+									word32 r6_257;
+									word32 r3_258;
+									word32 r7_259;
+									r25_248();
+									word32 r25_262 = Mem0[r25 + 0x0FBFE83C:word32];
+									word32 sp_263;
+									word32 r28_264;
+									word32 r25_265;
+									word32 ra_266;
+									word32 r30_267;
+									word32 r4_268;
+									word32 r2_269;
+									word32 r5_270;
+									word32 r6_271;
+									word32 r3_272;
+									word32 r7_273;
+									r25_262();
+									r28_103 = r25 + 264267292;
+									dwLoc20_125 = 0x00;
+								}
+							}
+							else
+							{
+								word32 r25_278 = Mem0[r25 + 0x0FBFE850:word32];
+								word32 sp_279;
+								word32 r28_280;
+								word32 r25_281;
+								word32 ra_282;
+								word32 r30_283;
+								word32 r4_284;
+								word32 r2_285;
+								word32 r5_286;
+								word32 r6_287;
+								word32 r3_288;
+								word32 r7_289;
+								r25_278();
+								r28_103 = r25 + 264267292;
+								dwLoc20_125 = fp + -0x0810;
+							}
+							Mem157[r4 + 4020:word32] = dwLoc20_125;
+							if (dwLoc20_125 != 0x00)
+								Mem161[r4 + 6036:word32] = 0x01;
+							else
+							{
+								word32 r25_170 = Mem157[r28_103 - 32372 + 0x00:word32];
+								word32 sp_171;
+								word32 r28_172;
+								word32 r25_173;
+								word32 ra_174;
+								word32 r30_175;
+								word32 r4_176;
+								word32 r2_177;
+								word32 r5_178;
+								word32 r6_179;
+								word32 r3_180;
+								word32 r7_181;
+								r25_170();
+								word32 r25_188 = Mem157[r25 + 0x0FBFE79C:word32];
+								word32 sp_189;
+								word32 r28_190;
+								word32 r25_191;
+								word32 ra_192;
+								word32 r30_193;
+								word32 r4_194;
+								word32 r2_195;
+								word32 r5_196;
+								word32 r6_197;
+								word32 r3_198;
+								word32 r7_199;
+								r25_188();
+								Mem203[r4 + 6036:word32] = 0x02;
+								r28_103 = r25 + 264267292;
 							}
 						}
 						else
 						{
-							code * r25_278 = r25->ptrFBFE850;
-							word32 sp_279;
-							word32 r28_280;
-							word32 r25_281;
-							word32 ra_282;
-							word32 r30_283;
-							word32 r4_284;
-							word32 r2_285;
-							word32 r5_286;
-							word32 r6_287;
-							word32 r3_288;
-							word32 r7_289;
-							r25_278();
-							r28_103 = (code * *) &r25->ptrFBFE850;
-							dwLoc20_125 = fp + -0x0810;
+							word32 r25_297 = Mem0[r25 + 0x0FBFE79C:word32];
+							word32 sp_298;
+							word32 r28_299;
+							word32 r25_300;
+							word32 ra_301;
+							word32 r30_302;
+							word32 r4_303;
+							word32 r2_304;
+							word32 r5_305;
+							word32 r6_306;
+							word32 r3_307;
+							word32 r7_308;
+							r25_297();
+							r28_103 = r25 + 264267292;
 						}
-						r4->ptr0FB4 = dwLoc20_125;
-						if (dwLoc20_125 != null)
-							r4->dw1794 = 0x01;
-						else
-						{
-							code * r25_170 = *(r28_103 - 32372);
-							word32 sp_171;
-							word32 r28_172;
-							word32 r25_173;
-							word32 ra_174;
-							word32 r30_175;
-							word32 r4_176;
-							word32 r2_177;
-							word32 r5_178;
-							word32 r6_179;
-							word32 r3_180;
-							word32 r7_181;
-							r25_170();
-							code * r25_188 = r25->ptrFBFE79C;
-							word32 sp_189;
-							word32 r28_190;
-							word32 r25_191;
-							word32 ra_192;
-							word32 r30_193;
-							word32 r4_194;
-							word32 r2_195;
-							word32 r5_196;
-							word32 r6_197;
-							word32 r3_198;
-							word32 r7_199;
-							r25_188();
-							r4->dw1794 = 0x02;
-							r28_103 = (code * *) &r25->ptrFBFE850;
-						}
-					}
-					else
-					{
-						code * r25_297 = r25->ptrFBFE79C;
-						word32 sp_298;
-						word32 r28_299;
-						word32 r25_300;
-						word32 ra_301;
-						word32 r30_302;
-						word32 r4_303;
-						word32 r2_304;
-						word32 r5_305;
-						word32 r6_306;
-						word32 r3_307;
-						word32 r7_308;
-						r25_297();
-						r28_103 = (code * *) &r25->ptrFBFE850;
-					}
 					goto l00402A34;
 				}
 				if (r2_120 != 0x02)
 				{
-					if (r2_120 != 0x03)
-						;
-					else
+					if (r2_120 == 0x03)
 					{
-						code * r25_319 = r25->ptrFBFE79C;
+						word32 r25_319 = Mem0[r25 + 0x0FBFE79C:word32];
 						word32 sp_320;
 						word32 r28_321;
 						word32 r25_322;
@@ -1959,14 +2018,14 @@ l00402370:
 						word32 r3_329;
 						word32 r7_330;
 						r25_319();
-						dwLoc20_125->dw0554 = dwLoc20_125->dw0554;
-						r28_103 = (code * *) &r25->ptrFBFE850;
-						if (dwLoc20_125->dw0554 == 0x00)
-							r4->dw1794 = 0x00;
+						Mem338[dwLoc20_125 + 0x0554:word32] = Mem0[dwLoc20_125 + 0x0554:word32];
+						r28_103 = r25 + 264267292;
+						if (Mem338[dwLoc20_125 + 0x0554:word32] == 0x00)
+							Mem342[r4 + 6036:word32] = 0x00;
 					}
 					goto l00402A34;
 				}
-				code * r25_348 = r25->ptrFBFE79C;
+				word32 r25_348 = Mem0[r25 + 0x0FBFE79C:word32];
 				word32 sp_349;
 				word32 r28_350;
 				word32 r25_351;
@@ -1979,123 +2038,267 @@ l00402370:
 				word32 r3_358;
 				word32 r7_359;
 				r25_348();
-				r28_103 = (code * *) &r25->ptrFBFE850;
-				if (dwLoc1C_111 != 0x00)
+				r28_103 = r25 + 264267292;
+				if (dwLoc1C_111 == 0x00)
 				{
-					if (dwLoc20_125 != null)
-						if (dwLoc20_125->dw0554 == 0x00)
+					if ((word32) true == 0x00)
+					{
+						word32 r25_378 = Mem0[r25 + 264234932:word32];
+						word32 sp_379;
+						word32 r28_380;
+						word32 r25_381;
+						word32 ra_382;
+						word32 r30_383;
+						word32 r4_384;
+						word32 r2_385;
+						word32 r5_386;
+						word32 r6_387;
+						word32 r3_388;
+						word32 r7_389;
+						r25_378();
+						r28_103 = r25 + 264267292;
+						if (fp == ~0x080F)
 						{
-							r4->dw1794 = 0x00;
-							goto l00402A34;
+							word32 r25_394 = Mem0[r25 + 264234936:word32];
+							word32 sp_395;
+							word32 r28_396;
+							word32 r25_397;
+							word32 ra_398;
+							word32 r30_399;
+							word32 r4_400;
+							word32 r2_401;
+							word32 r5_402;
+							word32 r6_403;
+							word32 r3_404;
+							word32 r7_405;
+							r25_394();
+							r28_103 = r25 + 264267292;
 						}
-					r4->dw1794 = 0x03;
+					}
 					goto l00402A34;
 				}
-				if ((word32) true == 0x00)
-				{
-					code * r25_378 = r25->ptrFBFE7B4;
-					word32 sp_379;
-					word32 r28_380;
-					word32 r25_381;
-					word32 ra_382;
-					word32 r30_383;
-					word32 r4_384;
-					word32 r2_385;
-					word32 r5_386;
-					word32 r6_387;
-					word32 r3_388;
-					word32 r7_389;
-					r25_378();
-					r28_103 = (code * *) &r25->ptrFBFE850;
-					if (fp == ~0x080F)
+				if (dwLoc20_125 != 0x00)
+					if (Mem0[dwLoc20_125 + 0x0554:word32] == 0x00)
 					{
-						code * r25_394 = r25->ptrFBFE7B8;
-						word32 sp_395;
-						word32 r28_396;
-						word32 r25_397;
-						word32 ra_398;
-						word32 r30_399;
-						word32 r4_400;
-						word32 r2_401;
-						word32 r5_402;
-						word32 r6_403;
-						word32 r3_404;
-						word32 r7_405;
-						r25_394();
-						r28_103 = (code * *) &r25->ptrFBFE850;
+						Mem370[r4 + 6036:word32] = 0x00;
+						goto l00402A34;
 					}
-				}
-l00402A34:
-				goto l004022C4;
+				Mem366[r4 + 6036:word32] = 0x03;
+				goto l00402A34;
 			}
+			if (dwLoc1C_111 != 0x00)
+			{
+				word32 r25_414 = Mem0[r25 + 264234920:word32];
+				word32 sp_415;
+				word32 r28_416;
+				word32 r25_417;
+				word32 ra_418;
+				word32 r30_419;
+				word32 r4_420;
+				word32 r2_421;
+				word32 r5_422;
+				word32 r6_423;
+				word32 r3_424;
+				word32 r7_425;
+				r25_414();
+				Mem428[r4 + 6036:word32] = 0x00;
+				return;
+			}
+			if ((word32) true == 0x00)
+			{
+				word32 r25_518 = Mem0[r25 + 264234932:word32];
+				word32 sp_519;
+				word32 r28_520;
+				word32 r25_521;
+				word32 ra_522;
+				word32 r30_523;
+				word32 r4_524;
+				word32 r2_525;
+				word32 r5_526;
+				word32 r6_527;
+				word32 r3_528;
+				word32 r7_529;
+				r25_518();
+				r28_103 = r25 + 264267292;
+				if (fp == ~0x080F)
+				{
+					if (dwLoc20_125 == 0x00)
+					{
+						word32 r25_538 = Mem0[r25 + 264234920:word32];
+						word32 sp_539;
+						word32 r28_540;
+						word32 r25_541;
+						word32 ra_542;
+						word32 r30_543;
+						word32 r4_544;
+						word32 r2_545;
+						word32 r5_546;
+						word32 r6_547;
+						word32 r3_548;
+						word32 r7_549;
+						r25_538();
+						r28_103 = r25 + 264267292;
+					}
+					else
+					{
+						word32 r25_554 = Mem0[r25 + 0x0FBFE670:word32];
+						word32 sp_555;
+						word32 r28_556;
+						word32 r25_557;
+						word32 ra_558;
+						word32 r30_559;
+						word32 r4_560;
+						word32 r2_561;
+						word32 r5_562;
+						word32 r6_563;
+						word32 r3_564;
+						word32 r7_565;
+						r25_554();
+						word32 r25_568 = Mem0[r25 + 264234996:word32];
+						word32 sp_569;
+						word32 r28_570;
+						word32 r25_571;
+						word32 ra_572;
+						word32 r30_573;
+						word32 r4_574;
+						word32 r2_575;
+						word32 r5_576;
+						word32 r6_577;
+						word32 r3_578;
+						word32 r7_579;
+						r25_568();
+						word32 r25_584 = Mem0[r25 + 264234632:word32];
+						word32 sp_585;
+						word32 r28_586;
+						word32 r25_587;
+						word32 ra_588;
+						word32 r30_589;
+						word32 r4_590;
+						word32 r2_591;
+						word32 r5_592;
+						word32 r6_593;
+						word32 r3_594;
+						word32 r7_595;
+						r25_584();
+						word32 r25_604 = Mem0[r25 + 0x0FBFE79C:word32];
+						word32 sp_605;
+						word32 r28_606;
+						word32 r25_607;
+						word32 ra_608;
+						word32 r30_609;
+						word32 r4_610;
+						word32 r2_611;
+						word32 r5_612;
+						word32 r6_613;
+						word32 r3_614;
+						word32 r7_615;
+						r25_604();
+						word32 r25_621 = Mem0[r25 + 264234664:word32];
+						word32 sp_622;
+						word32 r28_623;
+						word32 r25_624;
+						word32 ra_625;
+						word32 r30_626;
+						word32 r4_627;
+						word32 r2_628;
+						word32 r5_629;
+						word32 r6_630;
+						word32 r3_631;
+						word32 r7_632;
+						r25_621();
+						word32 r25_640 = Mem0[r25 + 0x0FBFE79C:word32];
+						word32 sp_641;
+						word32 r28_642;
+						word32 r25_643;
+						word32 ra_644;
+						word32 r30_645;
+						word32 r4_646;
+						word32 r2_647;
+						word32 r5_648;
+						word32 r6_649;
+						word32 r3_650;
+						word32 r7_651;
+						r25_640();
+						Mem656[r4 + 6036:word32] = 0x02;
+						r28_103 = r25 + 264267292;
+					}
+l00402A34:
+					goto l004022C4;
+				}
+			}
+			if ((word32) true == 0x00)
+			{
+				word32 r25_467 = Mem0[r28_103 - 32360 + 0x00:word32];
+				word32 sp_468;
+				word32 r28_469;
+				word32 r25_470;
+				word32 ra_471;
+				word32 r30_472;
+				word32 r4_473;
+				word32 r2_474;
+				word32 r5_475;
+				word32 r6_476;
+				word32 r3_477;
+				word32 r7_478;
+				r25_467();
+				r28_103 = r25 + 264267292;
+				if (fp == ~0x080F)
+				{
+					word32 r25_483 = Mem0[r25 + 264234936:word32];
+					word32 sp_484;
+					word32 r28_485;
+					word32 r25_486;
+					word32 ra_487;
+					word32 r30_488;
+					word32 r4_489;
+					word32 r2_490;
+					word32 r5_491;
+					word32 r6_492;
+					word32 r3_493;
+					word32 r7_494;
+					r25_483();
+					word32 r25_500 = Mem0[r25 + 0x0FBFE710:word32];
+					word32 sp_501;
+					word32 r28_502;
+					word32 r25_503;
+					word32 ra_504;
+					word32 r30_505;
+					word32 r4_506;
+					word32 r2_507;
+					word32 r5_508;
+					word32 r6_509;
+					word32 r3_510;
+					word32 r7_511;
+					r25_500();
+					r28_103 = r25 + 264267292;
+					goto l00402A34;
+				}
+			}
+			word32 r25_449 = Mem0[r28_103 - 0x7F0C + 0x00:word32];
+			word32 sp_450;
+			word32 r28_451;
+			word32 r25_452;
+			word32 ra_453;
+			word32 r30_454;
+			word32 r4_455;
+			word32 r2_456;
+			word32 r5_457;
+			word32 r6_458;
+			word32 r3_459;
+			word32 r7_460;
+			r25_449();
+			r28_103 = r25 + 264267292;
+			goto l00402A34;
 		}
 	dwLoc1C_111 = 0x01;
 	goto l00402370;
 }
 
-void add_to_request(Eq_2842 * r4, word32 r5, word32 r6, int32 r7, Eq_2846 * r25, word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 dwArg0C)
+void add_to_request(word32 r4, word32 r5, word32 r6, word32 r7, word32 r25, word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 dwArg0C)
 {
-	if (r5 != 0x00)
+	if (r5 == 0x00)
 	{
-		if (r6 != 0x00)
-			if (r7 > 0x00)
-			{
-				int32 r3_80 = r4->dw0FAC;
-				r4->dw0FAC = r3_80 + r7;
-				word32 r2_86 = (word32) (r4->dw0FAC < 2000);
-				if (r2_86 != 0x00)
-				{
-					code * r25_90 = r25->ptrFBFDFE8;
-					word32 sp_91;
-					word32 r28_92;
-					word32 r25_93;
-					word32 ra_94;
-					word32 r30_95;
-					word32 r4_96;
-					word32 r5_97;
-					word32 r6_98;
-					word32 r7_99;
-					word32 r2_100;
-					word32 r3_101;
-					r25_90();
-				}
-				else
-				{
-					code * r25_112 = r25->ptrFBFDF8C;
-					word32 sp_113;
-					word32 r28_114;
-					word32 r25_115;
-					word32 ra_116;
-					word32 r30_117;
-					word32 r4_118;
-					word32 r5_119;
-					word32 r6_120;
-					word32 r7_121;
-					word32 r2_122;
-					word32 r3_123;
-					r25_112();
-					r4->dw0FAC = 0x00;
-				}
-				return;
-			}
-		code * r25_63 = r25->ptrFBFDF8C;
-		word32 sp_64;
-		word32 r28_65;
-		word32 r25_66;
-		word32 ra_67;
-		word32 r30_68;
-		word32 r4_69;
-		word32 r5_70;
-		word32 r6_71;
-		word32 r7_72;
-		word32 r2_73;
-		word32 r3_74;
-		r25_63();
-		return;
-	}
-	else
-	{
-		code * r25_41 = r25->ptrFBFDF8C;
+		word32 r25_41 = Mem0[r25 + 264232844:word32];
 		word32 sp_43;
 		word32 r28_44;
 		word32 r25_45;
@@ -2110,53 +2313,114 @@ void add_to_request(Eq_2842 * r4, word32 r5, word32 r6, int32 r7, Eq_2846 * r25,
 		r25_41();
 		return;
 	}
+	if (r6 != 0x00)
+		if (r7 > 0x00)
+		{
+			word32 r3_80 = Mem0[r4 + 0x0FAC:word32];
+			Mem83[r4 + 0x0FAC:word32] = r3_80 + r7;
+			word32 r2_86 = (word32) (Mem83[r4 + 0x0FAC:word32] < 2000);
+			if (r2_86 != 0x00)
+			{
+				word32 r25_90 = Mem83[r25 + 264232936:word32];
+				word32 sp_91;
+				word32 r28_92;
+				word32 r25_93;
+				word32 ra_94;
+				word32 r30_95;
+				word32 r4_96;
+				word32 r5_97;
+				word32 r6_98;
+				word32 r7_99;
+				word32 r2_100;
+				word32 r3_101;
+				r25_90();
+			}
+			else
+			{
+				word32 r25_112 = Mem83[r25 + 264232844:word32];
+				word32 sp_113;
+				word32 r28_114;
+				word32 r25_115;
+				word32 ra_116;
+				word32 r30_117;
+				word32 r4_118;
+				word32 r5_119;
+				word32 r6_120;
+				word32 r7_121;
+				word32 r2_122;
+				word32 r3_123;
+				r25_112();
+				Mem126[r4 + 0x0FAC:word32] = 0x00;
+			}
+			return;
+		}
+	word32 r25_63 = Mem0[r25 + 264232844:word32];
+	word32 sp_64;
+	word32 r28_65;
+	word32 r25_66;
+	word32 ra_67;
+	word32 r30_68;
+	word32 r4_69;
+	word32 r5_70;
+	word32 r6_71;
+	word32 r7_72;
+	word32 r2_73;
+	word32 r3_74;
+	r25_63();
+	return;
 }
 
-void get_a_line(word32 r4, word32 r5, int32 * r6, word32 r25, word32 dwArg00, word32 dwArg04, word32 dwArg08)
+void get_a_line(word32 r4, word32 r5, word32 r6, word32 r25, word32 dwArg00, word32 dwArg04, word32 dwArg08)
 {
-	byte * dwArg00_103 = r4 + 0x01;
-	int8 * dwArg04_101 = r5 + 0x01;
-	while (*r6 > 0x00)
+	word32 dwArg00_103 = r4 + 0x01;
+	word32 dwArg04_101 = r5 + 0x01;
+	while (Mem0[r6 + 0x00:word32] > 0x00)
 	{
-		if ((word32) *dwArg04_101 == 0x0A)
-			goto l00402CE8;
-		if ((word32) *dwArg04_101 == 0x0D)
-			goto l00402CE8;
-		*dwArg00_103 = (byte) (word32) *dwArg04_101;
-		*r6 = *r6 + -0x01;
+		if ((word32) Mem0[dwArg04_101 + 0x00:int8] == 0x0A)
+			break;
+		if ((word32) Mem0[dwArg04_101 + 0x00:int8] == 0x0D)
+			break;
+		Mem99[dwArg00_103 + 0x00:byte] = (byte) (word32) Mem0[dwArg04_101 + 0x00:byte];
+		Mem109[r6 + 0x00:word32] = Mem99[r6 + 0x00:word32] + -0x01;
 		dwArg04_101 = dwArg04_101 + 0x01;
 		dwArg00_103 = dwArg00_103 + 0x01;
 	}
-	if (*r6 <= 0x00)
-		goto l00402D84;
-	if ((word32) *dwArg04_101 != 0x0A)
-		if ((word32) *dwArg04_101 != 0x0D)
-		{
+	if (Mem0[r6 + 0x00:word32] <= 0x00)
+	{
 l00402D84:
-			if (*r6 <= 0x00)
-				goto l00402E20;
-			if ((word32) *dwArg04_101 != 0x0A)
-				if ((word32) *dwArg04_101 != 0x0D)
-				{
+		if (Mem0[r6 + 0x00:word32] <= 0x00)
+		{
 l00402E20:
-					*dwArg00_103 = 0x00;
-					return;
-				}
-			*dwArg00_103 = (byte) (word32) *dwArg04_101;
-			*r6 = *r6 + -0x01;
+			Mem42[dwArg00_103 + 0x00:byte] = 0x00;
+			return;
+		}
+		else
+		{
+			if ((word32) Mem0[dwArg04_101 + 0x00:int8] != 0x0A)
+				if ((word32) Mem0[dwArg04_101 + 0x00:int8] != 0x0D)
+					goto l00402E20;
+			Mem54[dwArg00_103 + 0x00:byte] = (byte) (word32) Mem0[dwArg04_101 + 0x00:byte];
+			Mem64[r6 + 0x00:word32] = Mem54[r6 + 0x00:word32] + -0x01;
 			dwArg00_103 = dwArg00_103 + 0x01;
 			goto l00402E20;
 		}
-	*dwArg00_103 = (byte) (word32) *dwArg04_101;
-	*r6 = *r6 + -0x01;
-	dwArg04_101 = dwArg04_101;
-	dwArg00_103 = dwArg00_103;
-	goto l00402D84;
+	}
+	else
+	{
+		if ((word32) Mem0[dwArg04_101 + 0x00:int8] != 0x0A)
+			if ((word32) Mem0[dwArg04_101 + 0x00:int8] != 0x0D)
+				goto l00402D84;
+		Mem75[dwArg00_103 + 0x00:byte] = (byte) (word32) Mem0[dwArg04_101 + 0x00:byte];
+		Mem85[r6 + 0x00:word32] = Mem75[r6 + 0x00:word32] + -0x01;
+		dwArg04_101 = dwArg04_101 + 0x00;
+		dwArg00_103 = dwArg00_103 + 0x00;
+		goto l00402D84;
+	}
 }
 
-void client_read_request(word32 r2, Eq_3065 * r4, Eq_3066 * r25, word32 dwArg00)
+void client_read_request(word32 r2, word32 r4, word32 r25, word32 dwArg00)
 {
-	code * r25_17 = r25->ptrFBFDAEC;
+	word32 r25_17 = Mem0[r25 + 264231660:word32];
 	word32 sp_18;
 	word32 r28_19;
 	word32 r25_20;
@@ -2169,8 +2433,8 @@ void client_read_request(word32 r2, Eq_3065 * r4, Eq_3066 * r25, word32 dwArg00)
 	word32 r6_27;
 	word32 r7_28;
 	r25_17();
-	r4->dw17CC = r2_24;
-	code * r25_40 = r25->ptrFBFDC48;
+	Mem32[r4 + 0x17CC:word32] = r2_24;
+	word32 r25_40 = Mem32[r25 + 264232008:word32];
 	word32 sp_41;
 	word32 r28_42;
 	word32 r25_43;
@@ -2183,13 +2447,13 @@ void client_read_request(word32 r2, Eq_3065 * r4, Eq_3066 * r25, word32 dwArg00)
 	word32 r6_50;
 	word32 r7_51;
 	r25_40();
-	r4->dw07D8 = r2_47;
+	Mem55[r4 + 2008:word32] = r2_47;
 	return;
 }
 
-void client_send_request(word32 r2, Eq_3105 * r4, Eq_3106 * r25, word32 dwArg00)
+void client_send_request(word32 r2, word32 r4, word32 r25, word32 dwArg00)
 {
-	code * r25_18 = r25->ptrFBFDA38;
+	word32 r25_18 = Mem0[r25 + 0x0FBFDA38:word32];
 	word32 sp_19;
 	word32 r28_20;
 	word32 r25_21;
@@ -2202,35 +2466,33 @@ void client_send_request(word32 r2, Eq_3105 * r4, Eq_3106 * r25, word32 dwArg00)
 	word32 r5_28;
 	word32 r7_29;
 	r25_18();
-	r4->dw17CC = r2_25;
-	if (r4->dw0FAC <= 0x00)
-		;
-	else
+	Mem33[r4 + 0x17CC:word32] = r2_25;
+	if (Mem33[r4 + 0x0FAC:word32] > 0x00)
 	{
-		code * r25_59 = r25->ptrFBFDAF8;
+		word32 r25_59 = Mem33[r25 + 0x0FBFDAF8:word32];
 		word32 sp_60;
 		word32 r28_61;
 		word32 r25_62;
 		word32 ra_63;
 		word32 r30_64;
 		word32 r4_65;
-		int32 r2_66;
+		word32 r2_66;
 		word32 r3_67;
 		word32 r6_68;
 		word32 r5_69;
 		word32 r7_70;
 		r25_59();
-		if (r2_66 == r4->dw0FAC)
+		if (r2_66 == Mem33[r4 + 0x0FAC:word32])
 		{
-			r4->dw0FAC = 0x00;
+			Mem89[r4 + 0x0FAC:word32] = 0x00;
 			Mem93[r4 + 0x0FB0:word32] = r4 + 2012;
 		}
 		else
 		{
-			r4->dw0FB0 = r4->dw0FB0 + r2_66;
-			int32 r3_102 = r4->dw0FAC;
-			r4->dw0FAC = r3_102 - r2_66;
-			code * r25_114 = r25->ptrFBFDAF4;
+			Mem99[r4 + 0x0FB0:word32] = Mem33[r4 + 0x0FB0:word32] + r2_66;
+			word32 r3_102 = Mem99[r4 + 0x0FAC:word32];
+			Mem105[r4 + 0x0FAC:word32] = r3_102 - r2_66;
+			word32 r25_114 = Mem105[r25 + 0x0FBFDAF4:word32];
 			word32 sp_115;
 			word32 r28_116;
 			word32 r25_117;
@@ -2248,9 +2510,9 @@ void client_send_request(word32 r2, Eq_3105 * r4, Eq_3106 * r25, word32 dwArg00)
 	return;
 }
 
-void client_read_reply(word32 r2, Eq_3190 * r4, Eq_3191 * r25, word32 dwArg00)
+void client_read_reply(word32 r2, word32 r4, word32 r25, word32 dwArg00)
 {
-	code * r25_17 = r25->ptrFBFD8B4;
+	word32 r25_17 = Mem0[r25 + 0x0FBFD8B4:word32];
 	word32 sp_18;
 	word32 r28_19;
 	word32 r25_20;
@@ -2262,8 +2524,8 @@ void client_read_reply(word32 r2, Eq_3190 * r4, Eq_3191 * r25, word32 dwArg00)
 	word32 r5_26;
 	word32 r6_27;
 	r25_17();
-	r4->dw17D0 = r2_24;
-	code * r25_38 = r25->ptrFBFD920;
+	Mem31[r4 + 6096:word32] = r2_24;
+	word32 r25_38 = Mem31[r25 + 0x0FBFD920:word32];
 	word32 sp_39;
 	word32 r28_40;
 	word32 r25_41;
@@ -2275,19 +2537,17 @@ void client_read_reply(word32 r2, Eq_3190 * r4, Eq_3191 * r25, word32 dwArg00)
 	word32 r5_47;
 	word32 r6_48;
 	r25_38();
-	r4->dw178C = r2_45;
+	Mem52[r4 + 0x178C:word32] = r2_45;
 	Mem56[r4 + 0x1788:word32] = r4 + 4024;
 	return;
 }
 
-void client_parse_reply(Eq_3232 * r4, Eq_3233 * r25, word32 dwArg00)
+void client_parse_reply(word32 r4, word32 r25, word32 dwArg00)
 {
-	int32 r2_17 = r4->dw178C;
-	if (r2_17 <= 0x00)
-		;
-	else
+	word32 r2_17 = Mem0[r4 + 0x178C:word32];
+	if (r2_17 > 0x00)
 	{
-		code * r25_28 = r25->ptrFBFD958;
+		word32 r25_28 = Mem0[r25 + 264231256:word32];
 		word32 sp_29;
 		word32 r28_30;
 		word32 r25_31;
@@ -2296,11 +2556,9 @@ void client_parse_reply(Eq_3232 * r4, Eq_3233 * r25, word32 dwArg00)
 		word32 r4_34;
 		word32 r2_35;
 		r25_28();
-		if (r2_35 != 0x00)
-			;
-		else
+		if (r2_35 == 0x00)
 		{
-			code * r25_39 = r25->ptrFBFD818;
+			word32 r25_39 = Mem0[r25 + 0x0FBFD818:word32];
 			word32 sp_40;
 			word32 r28_41;
 			word32 r25_42;
@@ -2314,14 +2572,12 @@ void client_parse_reply(Eq_3232 * r4, Eq_3233 * r25, word32 dwArg00)
 	return;
 }
 
-void client_copy_reply(Eq_3265 * r4, Eq_3266 * r25, word32 dwArg00)
+void client_copy_reply(word32 r4, word32 r25, word32 dwArg00)
 {
-	int32 r2_17 = r4->dw178C;
-	if (r2_17 <= 0x00)
-		;
-	else
+	word32 r2_17 = Mem0[r4 + 0x178C:word32];
+	if (r2_17 > 0x00)
 	{
-		code * r25_38 = r25->ptrFBFD754;
+		word32 r25_38 = Mem0[r25 + 264230740:word32];
 		word32 sp_39;
 		word32 r28_40;
 		word32 r25_41;
@@ -2334,51 +2590,50 @@ void client_copy_reply(Eq_3265 * r4, Eq_3266 * r25, word32 dwArg00)
 		word32 r5_48;
 		word32 r7_49;
 		r25_38();
-		r4->dw17D0 = r2_45;
-		code * r25_61 = r25->ptrFBFD814;
+		Mem53[r4 + 6096:word32] = r2_45;
+		word32 r25_61 = Mem53[r25 + 264230932:word32];
 		word32 sp_62;
 		word32 r28_63;
 		word32 r25_64;
 		word32 ra_65;
 		word32 r30_66;
 		word32 r4_67;
-		int32 r2_68;
+		word32 r2_68;
 		word32 r3_69;
 		word32 r6_70;
 		word32 r5_71;
 		word32 r7_72;
 		r25_61();
-		if (r2_68 == r4->dw178C)
+		if (r2_68 == Mem53[r4 + 0x178C:word32])
 		{
 			Mem84[r4 + 0x1788:word32] = r4 + 4024;
-			r4->dw178C = 0x00;
+			Mem86[r4 + 0x178C:word32] = 0x00;
 		}
 		else
 		{
-			r4->dw1788 = r4->dw1788 + r2_68;
-			r4->dw178C = r4->dw178C - r2_68;
+			Mem92[r4 + 0x1788:word32] = Mem53[r4 + 0x1788:word32] + r2_68;
+			Mem98[r4 + 0x178C:word32] = Mem92[r4 + 0x178C:word32] - r2_68;
 		}
 	}
 	return;
 }
 
-void client_check_reply_http(Eq_3334 * r4, Eq_3335 * r25, word32 dwArg00)
+void client_check_reply_http(word32 r4, word32 r25, word32 dwArg00)
 {
-	Eq_3337 * dwLoc18_103 = r4->ptr1788;
-	int32 dwLoc14_106 = r4->dw178C;
+	word32 dwLoc18_103 = Mem0[r4 + 0x1788:word32];
+	word32 dwLoc14_106 = Mem0[r4 + 0x178C:word32];
 	while (dwLoc14_106 > 0x00)
 	{
-		if ((word32) dwLoc18_103->b0000 != 0x0A)
-			if ((word32) dwLoc18_103->b0000 != 0x0D)
-				goto l004033D0;
+		if ((word32) Mem0[dwLoc18_103 + 0x00:int8] != 0x0A)
+			if ((word32) Mem0[dwLoc18_103 + 0x00:int8] != 0x0D)
+				break;
 		dwLoc18_103 = dwLoc18_103 + 0x01;
 		dwLoc14_106 = dwLoc14_106 + -0x01;
 	}
-l004033D0:
 	word32 r2_29 = (word32) (dwLoc14_106 < 0x05);
 	if (r2_29 == 0x00)
 	{
-		code * r25_57 = r25->ptrFBFD6E0;
+		word32 r25_57 = Mem0[r25 + 264230624:word32];
 		word32 sp_58;
 		word32 r28_59;
 		word32 r25_60;
@@ -2392,69 +2647,68 @@ l004033D0:
 		r25_57();
 		if (r2_64 == 0x00)
 		{
-			r4->dw17C4 = r25->dwFBFD640;
-			if (dwLoc14_106 > 0x00)
+			Mem71[r4 + 0x17C4:word32] = Mem0[r25 + 264230464:word32];
+			do
 			{
+				if (dwLoc14_106 <= 0x00)
+				{
+					Mem79[r4 + 0x1788:word32] = r4 + 4024;
+					Mem81[r4 + 0x178C:word32] = 0x00;
+					return;
+				}
 				while (dwLoc14_106 > 0x00)
 				{
-					if ((word32) dwLoc18_103->b0000 == 0x0A)
-						goto l004034CC;
-					if ((word32) dwLoc18_103->b0000 == 0x0D)
-						goto l004034CC;
+					if ((word32) Mem71[dwLoc18_103 + 0x00:int8] == 0x0A)
+						break;
+					if ((word32) Mem71[dwLoc18_103 + 0x00:int8] == 0x0D)
+						break;
 					dwLoc14_106 = dwLoc14_106 + -0x01;
 					dwLoc18_103 = dwLoc18_103 + 0x01;
 				}
 				if ((word32) (dwLoc14_106 < 0x02) != 0x00)
-					goto l00403424;
-				else
-				{
-					if ((word32) dwLoc18_103->b0000 != 0x0A)
-						if ((word32) dwLoc18_103->b0000 != 0x0D)
-							continue;
-					if ((word32) dwLoc18_103[0x01] != 0x0A)
-						if ((word32) dwLoc18_103[0x01] != 0x0D)
-							continue;
-					Eq_3441 * r2_99 = dwLoc18_103 + 0x01;
-					int32 r2_105 = dwLoc14_106 + -0x02;
-					dwLoc18_103 = (Eq_3337 *) &r2_99->b0001;
-					dwLoc14_106 = r2_105;
-					if ((word32) (r2_105 < 0x02) != 0x00)
+					continue;
+				if ((word32) Mem71[dwLoc18_103 + 0x00:int8] != 0x0A)
+					if ((word32) Mem71[dwLoc18_103 + 0x00:int8] != 0x0D)
 						continue;
-					if ((word32) r2_99->b0001 != 0x0A)
-						if ((word32) r2_99->b0001 != 0x0D)
-							continue;
-					if ((word32) r2_99->b0002 != 0x0A)
-						if ((word32) r2_99->b0002 != 0x0D)
-							continue;
-					if (r2_105 > ~0x01)
-					{
-						r4->ptr1788 = (Eq_3337 *) (r2_99->b0002 + 0x01);
-						r4->dw178C = r2_105 + -0x02;
-					}
-					else
-					{
-						Mem137[r4 + 0x1788:word32] = r4 + 4024;
-						r4->dw178C = 0x00;
-					}
-					return;
-				}
+				if ((word32) Mem71[dwLoc18_103 + 0x01:int8] != 0x0A)
+					if ((word32) Mem71[dwLoc18_103 + 0x01:int8] != 0x0D)
+						continue;
+				word32 r2_99 = dwLoc18_103 + 0x01;
+				word32 r2_105 = dwLoc14_106 + -0x02;
+				dwLoc18_103 = r2_99 + 0x01;
+				dwLoc14_106 = r2_105;
+				if ((word32) (r2_105 < 0x02) != 0x00)
+					continue;
+				if ((word32) Mem71[r2_99 + 0x01:int8] != 0x0A)
+					if ((word32) Mem71[r2_99 + 0x01:int8] != 0x0D)
+						continue;
+				if ((word32) Mem71[r2_99 + 0x02:int8] == 0x0A)
+					break;
+			} while ((word32) Mem71[r2_99 + 0x02:int8] == 0x0D);
+			if (r2_105 > ~0x01)
+			{
+				Mem129[r4 + 0x1788:word32] = r2_99 + 0x03;
+				Mem132[r4 + 0x178C:word32] = r2_105 + -0x02;
 			}
-			Mem79[r4 + 0x1788:word32] = r4 + 4024;
-			r4->dw178C = 0x00;
+			else
+			{
+				Mem137[r4 + 0x1788:word32] = r4 + 4024;
+				Mem139[r4 + 0x178C:word32] = 0x00;
+			}
 			return;
 		}
 	}
 	return;
 }
 
-void client_close(Eq_3505 * r4, Eq_3506 * r25, word32 dwArg00)
+void client_close(word32 r4, word32 r25, word32 dwArg00)
 {
-	code * * r28_30 = &r25->ptrFBFD1E0;
-	if (r4 != null)
+	word32 r28_30 = r25 + 264262052;
+	if (r4 != 0x00)
 	{
-		if (r4->dw0000 >= 0x00)
+		if (Mem0[r4 + 0x00:word32] >= 0x00)
 		{
-			code * r25_54 = r25->ptrFBFD1E0;
+			word32 r25_54 = Mem0[r25 + 264229344:word32];
 			word32 sp_56;
 			word32 r28_57;
 			word32 r25_58;
@@ -2464,12 +2718,12 @@ void client_close(Eq_3505 * r4, Eq_3506 * r25, word32 dwArg00)
 			word32 r2_62;
 			word32 r3_63;
 			r25_54();
-			r4->dw0000 = -0x01;
-			r28_30 = (code * *) &r25->ptrFBFD1E0;
+			Mem67[r4 + 0x00:word32] = -0x01;
+			r28_30 = r25 + 264262052;
 		}
-		if (r4->dw0004 >= 0x00)
+		if (Mem0[r4 + 0x04:word32] >= 0x00)
 		{
-			code * r25_39 = *(r28_30 - 0x7FC4);
+			word32 r25_39 = Mem0[r28_30 - 0x7FC4 + 0x00:word32];
 			word32 sp_40;
 			word32 r28_41;
 			word32 r25_42;
@@ -2479,15 +2733,15 @@ void client_close(Eq_3505 * r4, Eq_3506 * r25, word32 dwArg00)
 			word32 r2_46;
 			word32 r3_47;
 			r25_39();
-			r4->dw0004 = -0x01;
+			Mem51[r4 + 0x04:word32] = -0x01;
 		}
 	}
 	return;
 }
 
-void client_destroy(Eq_3558 * r4, Eq_3559 * r25, word32 dwArg00)
+void client_destroy(word32 r4, word32 r25, word32 dwArg00)
 {
-	code * r25_17 = r25->ptrFBFD128;
+	word32 r25_17 = Mem0[r25 + 264229160:word32];
 	word32 sp_18;
 	word32 r28_19;
 	word32 r25_20;
@@ -2496,11 +2750,11 @@ void client_destroy(Eq_3558 * r4, Eq_3559 * r25, word32 dwArg00)
 	word32 r4_23;
 	word32 r2_24;
 	r25_17();
-	code * * r28_25 = &r25->ptrFBFD2EC;
-	word32 r2_27 = r4->dw0FB4;
+	word32 r28_25 = r25 + 0x0FC050CC;
+	word32 r2_27 = Mem0[r4 + 4020:word32];
 	if (r2_27 != 0x00)
 	{
-		code * r25_45 = r25->ptrFBFD2EC;
+		word32 r25_45 = Mem0[r25 + 264229612:word32];
 		word32 sp_46;
 		word32 r28_47;
 		word32 r25_48;
@@ -2509,9 +2763,9 @@ void client_destroy(Eq_3558 * r4, Eq_3559 * r25, word32 dwArg00)
 		word32 r4_51;
 		word32 r2_52;
 		r25_45();
-		r28_25 = (code * *) &r25->ptrFBFD2EC;
+		r28_25 = r25 + 0x0FC050CC;
 	}
-	code * r25_30 = *(r28_25 - 32724);
+	word32 r25_30 = Mem0[r28_25 - 32724 + 0x00:word32];
 	word32 sp_31;
 	word32 r28_32;
 	word32 r25_33;
@@ -2523,13 +2777,13 @@ void client_destroy(Eq_3558 * r4, Eq_3559 * r25, word32 dwArg00)
 	return;
 }
 
-void client_check_activ(Eq_3606 * r4, int32 r5, Eq_3608 * r25, word32 dwArg00, word32 dwArg04)
+void client_check_activ(word32 r4, word32 r5, word32 r25, word32 dwArg00, word32 dwArg04)
 {
-	Eq_3621 * * r28_135 = &r25->ptrFBFD0F0;
-	int32 dwArg04_158 = r5;
+	word32 r28_135 = r25 + 264261664;
+	word32 dwArg04_158 = r5;
 	if (r5 < 0x00)
 	{
-		code * r25_142 = r25->ptrFBFD0F0;
+		word32 r25_142 = Mem0[r25 + 0x0FBFD0F0:word32];
 		word32 sp_146;
 		word32 r28_147;
 		word32 r25_148;
@@ -2537,17 +2791,17 @@ void client_check_activ(Eq_3606 * r4, int32 r5, Eq_3608 * r25, word32 dwArg00, w
 		word32 r30_150;
 		word32 r4_151;
 		word32 r5_152;
-		int32 r2_153;
+		word32 r2_153;
 		word32 r3_154;
 		word32 r6_155;
 		word32 r7_156;
 		r25_142();
-		r28_135 = (Eq_3621 * *) &r25->ptrFBFD0F0;
+		r28_135 = r25 + 264261664;
 		dwArg04_158 = r2_153;
 	}
-	if ((word32) (**(r28_135 - 0x7F54) < dwArg04_158 - r4->dw17CC) != 0x00)
+	if ((word32) (Mem0[Mem0[r28_135 - 0x7F54 + 0x00:word32] + 0x00:word32] < dwArg04_158 - Mem0[r4 + 0x17CC:word32]) != 0x00)
 	{
-		Eq_3621 * r25_123 = *(r28_135 - 32372);
+		word32 r25_123 = Mem0[r28_135 - 32372 + 0x00:word32];
 		word32 sp_124;
 		word32 r28_125;
 		word32 r25_126;
@@ -2560,11 +2814,11 @@ void client_check_activ(Eq_3606 * r4, int32 r5, Eq_3608 * r25, word32 dwArg00, w
 		word32 r6_133;
 		word32 r7_134;
 		r25_123();
-		r28_135 = (Eq_3621 * *) &r25->ptrFBFD0F0;
+		r28_135 = r25 + 264261664;
 	}
-	if ((word32) (**(r28_135 - 0x7F54) < dwArg04_158 - r4->dw17D0) != 0x00)
+	if ((word32) (Mem0[Mem0[r28_135 - 0x7F54 + 0x00:word32] + 0x00:word32] < dwArg04_158 - Mem0[r4 + 6096:word32]) != 0x00)
 	{
-		Eq_3621 * r25_90 = *(r28_135 - 32372);
+		word32 r25_90 = Mem0[r28_135 - 32372 + 0x00:word32];
 		word32 sp_91;
 		word32 r28_92;
 		word32 r25_93;
@@ -2581,9 +2835,9 @@ void client_check_activ(Eq_3606 * r4, int32 r5, Eq_3608 * r25, word32 dwArg00, w
 	return;
 }
 
-void open_destination(word32 r2, word32 r4, Eq_3702 * r25, word32 dwArg00)
+void open_destination(word32 r2, word32 r4, word32 r25, word32 dwArg00)
 {
-	code * r25_21 = r25->ptrFBFD000;
+	word32 r25_21 = Mem0[r25 + 0x0FBFD000:word32];
 	word32 sp_22;
 	word32 r28_23;
 	word32 r25_24;
@@ -2593,13 +2847,13 @@ void open_destination(word32 r2, word32 r4, Eq_3702 * r25, word32 dwArg00)
 	word32 r4_28;
 	word32 r5_29;
 	word32 r6_30;
-	int32 r2_31;
+	word32 r2_31;
 	word32 r3_32;
 	word32 r7_33;
 	r25_21();
 	if (r2_31 < 0x00)
 	{
-		code * r25_52 = r25->ptrFBFCEDC;
+		word32 r25_52 = Mem0[r25 + 264228572:word32];
 		word32 sp_55;
 		word32 r28_56;
 		word32 r25_57;
@@ -2613,7 +2867,7 @@ void open_destination(word32 r2, word32 r4, Eq_3702 * r25, word32 dwArg00)
 		word32 r3_65;
 		word32 r7_66;
 		r25_52();
-		code * r25_69 = r25->ptrFBFCEDC;
+		word32 r25_69 = Mem0[r25 + 264228572:word32];
 		word32 sp_70;
 		word32 r28_71;
 		word32 r25_72;
@@ -2627,7 +2881,7 @@ void open_destination(word32 r2, word32 r4, Eq_3702 * r25, word32 dwArg00)
 		word32 r3_80;
 		word32 r7_81;
 		r25_69();
-		code * r25_84 = r25->ptrFBFD060;
+		word32 r25_84 = Mem0[r25 + 0x0FBFD060:word32];
 		word32 sp_85;
 		word32 r28_86;
 		word32 r25_87;
@@ -2641,7 +2895,7 @@ void open_destination(word32 r2, word32 r4, Eq_3702 * r25, word32 dwArg00)
 		word32 r3_95;
 		word32 r7_96;
 		r25_84();
-		code * r25_108 = r25->ptrFBFCFD0;
+		word32 r25_108 = Mem0[r25 + 0x0FBFCFD0:word32];
 		word32 sp_109;
 		word32 r28_110;
 		word32 r25_111;
@@ -2658,7 +2912,7 @@ void open_destination(word32 r2, word32 r4, Eq_3702 * r25, word32 dwArg00)
 	}
 	else
 	{
-		code * r25_127 = r25->ptrFBFD06C;
+		word32 r25_127 = Mem0[r25 + 264228972:word32];
 		word32 sp_128;
 		word32 r28_129;
 		word32 r25_130;
@@ -2668,13 +2922,13 @@ void open_destination(word32 r2, word32 r4, Eq_3702 * r25, word32 dwArg00)
 		word32 r4_134;
 		word32 r5_135;
 		word32 r6_136;
-		int32 r2_137;
+		word32 r2_137;
 		word32 r3_138;
 		word32 r7_139;
 		r25_127();
 		if (r2_137 < 0x00)
 		{
-			code * r25_141 = r25->ptrFBFCEDC;
+			word32 r25_141 = Mem0[r25 + 264228572:word32];
 			word32 sp_142;
 			word32 r28_143;
 			word32 r25_144;
@@ -2688,7 +2942,7 @@ void open_destination(word32 r2, word32 r4, Eq_3702 * r25, word32 dwArg00)
 			word32 r3_152;
 			word32 r7_153;
 			r25_141();
-			code * r25_156 = r25->ptrFBFCEDC;
+			word32 r25_156 = Mem0[r25 + 264228572:word32];
 			word32 sp_157;
 			word32 r28_158;
 			word32 r25_159;
@@ -2702,7 +2956,7 @@ void open_destination(word32 r2, word32 r4, Eq_3702 * r25, word32 dwArg00)
 			word32 r3_167;
 			word32 r7_168;
 			r25_156();
-			code * r25_171 = r25->ptrFBFD060;
+			word32 r25_171 = Mem0[r25 + 0x0FBFD060:word32];
 			word32 sp_172;
 			word32 r28_173;
 			word32 r25_174;
@@ -2716,7 +2970,7 @@ void open_destination(word32 r2, word32 r4, Eq_3702 * r25, word32 dwArg00)
 			word32 r3_182;
 			word32 r7_183;
 			r25_171();
-			code * r25_195 = r25->ptrFBFCFD0;
+			word32 r25_195 = Mem0[r25 + 0x0FBFCFD0:word32];
 			word32 sp_196;
 			word32 r28_197;
 			word32 r25_198;
@@ -2735,21 +2989,21 @@ void open_destination(word32 r2, word32 r4, Eq_3702 * r25, word32 dwArg00)
 	return;
 }
 
-void clist_new(word32 r2, Eq_3869 * r25)
+void clist_new(word32 r2, word32 r25)
 {
-	code * r25_15 = r25->ptrFBFCE34;
+	word32 r25_15 = Mem0[r25 + 264228404:word32];
 	word32 sp_16;
 	word32 r28_17;
 	word32 r25_18;
 	word32 ra_19;
 	word32 r30_20;
 	word32 r4_21;
-	Eq_3880 * r2_22;
+	word32 r2_22;
 	word32 r5_23;
 	r25_15();
-	if (r2_22 == null)
+	if (r2_22 == 0x00)
 	{
-		code * r25_41 = r25->ptrFBFCDEC;
+		word32 r25_41 = Mem0[r25 + 264228332:word32];
 		word32 sp_42;
 		word32 r28_43;
 		word32 r25_44;
@@ -2762,70 +3016,70 @@ void clist_new(word32 r2, Eq_3869 * r25)
 	}
 	else
 	{
-		r2_22->dw0008 = 0x00;
-		r2_22->dw0000 = 0x00;
-		r2_22->dw0004 = 0x00;
+		Mem54[r2_22 + 0x08:word32] = 0x00;
+		Mem56[r2_22 + 0x00:word32] = 0x00;
+		Mem58[r2_22 + 0x04:word32] = 0x00;
 	}
 	return;
 }
 
-void clist_add(Eq_3908 * r4, Eq_3909 * r5, word32 r25, word32 dwArg00, word32 dwArg04)
+void clist_add(word32 r4, word32 r5, word32 r25, word32 dwArg00, word32 dwArg04)
 {
-	if (r4->ptr0008 != null)
+	if (Mem0[r4 + 0x08:word32] != 0x00)
 	{
-		r4->ptr0008->ptr17BC = r5;
-		r5->ptr17B8 = r4->ptr0008;
+		Mem47[Mem0[r4 + 0x08:word32] + 6076:word32] = r5;
+		Mem51[r5 + 0x17B8:word32] = Mem47[r4 + 0x08:word32];
 	}
-	r5->ptr17BC = null;
-	r4->ptr0008 = r5;
-	r4->dw0000 = r4->dw0000 + 0x01;
-	if ((word32) (r4->dw0004 < r4->dw0000) != 0x00)
-		r4->dw0004 = r4->dw0000;
+	Mem19[r5 + 6076:word32] = 0x00;
+	Mem22[r4 + 0x08:word32] = r5;
+	Mem28[r4 + 0x00:word32] = Mem22[r4 + 0x00:word32] + 0x01;
+	if ((word32) (Mem28[r4 + 0x04:word32] < Mem28[r4 + 0x00:word32]) != 0x00)
+		Mem43[r4 + 0x04:word32] = Mem28[r4 + 0x00:word32];
 	return;
 }
 
-void clist_remove(Eq_3961 * r4, Eq_3962 * r5, word32 r25, word32 dwArg00, word32 dwArg04)
+void clist_remove(word32 r4, word32 r5, word32 r25, word32 dwArg00, word32 dwArg04)
 {
-	if (r5 != null)
+	if (r5 != 0x00)
 	{
-		if (r5 == r4->ptr0008)
-			r4->ptr0008 = r5->ptr17B8;
+		if (r5 == Mem0[r4 + 0x08:word32])
+			Mem43[r4 + 0x08:word32] = Mem0[r5 + 0x17B8:word32];
 		else
-			r5->ptr17BC->ptr17B8 = r5->ptr17B8;
-		if (r5->ptr17B8 != null)
-			r5->ptr17B8->ptr17BC = r5->ptr17BC;
-		r4->dw0000 = r4->dw0000 + -0x01;
+			Mem48[Mem0[r5 + 6076:word32] + 0x17B8:word32] = Mem0[r5 + 0x17B8:word32];
+		if (Mem0[r5 + 0x17B8:word32] != 0x00)
+			Mem39[Mem0[r5 + 0x17B8:word32] + 6076:word32] = Mem0[r5 + 6076:word32];
+		Mem34[r4 + 0x00:word32] = Mem0[r4 + 0x00:word32] + -0x01;
 	}
 	return;
 }
 
-void clist_find_fdin(Eq_4009 * r4, word32 r5, word32 r25, word32 dwArg00, word32 dwArg04)
+void clist_find_fdin(word32 r4, word32 r5, word32 r25, word32 dwArg00, word32 dwArg04)
 {
-	Eq_4014 * dwLoc10_18 = r4->ptr0008;
-	while (dwLoc10_18 != null)
+	word32 dwLoc10_18 = Mem0[r4 + 0x08:word32];
+	while (dwLoc10_18 != 0x00)
 	{
-		if (dwLoc10_18->dw0000 == r5)
+		if (Mem0[dwLoc10_18 + 0x00:word32] == r5)
 			return;
-		dwLoc10_18 = dwLoc10_18->ptr17B8;
+		dwLoc10_18 = Mem0[dwLoc10_18 + 0x17B8:word32];
 	}
 	return;
 }
 
-void clist_find_fdout(Eq_4027 * r4, word32 r5, word32 r25, word32 dwArg00, word32 dwArg04)
+void clist_find_fdout(word32 r4, word32 r5, word32 r25, word32 dwArg00, word32 dwArg04)
 {
-	Eq_4032 * dwLoc10_18 = r4->ptr0008;
-	while (dwLoc10_18 != null)
+	word32 dwLoc10_18 = Mem0[r4 + 0x08:word32];
+	while (dwLoc10_18 != 0x00)
 	{
-		if (dwLoc10_18->dw0004 == r5)
+		if (Mem0[dwLoc10_18 + 0x04:word32] == r5)
 			return;
-		dwLoc10_18 = dwLoc10_18->ptr17B8;
+		dwLoc10_18 = Mem0[dwLoc10_18 + 0x17B8:word32];
 	}
 	return;
 }
 
-void clist_delete(Eq_4045 * r25, word32 dwArg00, word32 dwArg04)
+void clist_delete(word32 r25, word32 dwArg00, word32 dwArg04)
 {
-	code * r25_20 = r25->ptrFBFCA4C;
+	word32 r25_20 = Mem0[r25 + 264227404:word32];
 	word32 sp_21;
 	word32 r28_22;
 	word32 r25_23;
@@ -2834,7 +3088,7 @@ void clist_delete(Eq_4045 * r25, word32 dwArg00, word32 dwArg04)
 	word32 r4_26;
 	word32 r5_27;
 	r25_20();
-	code * r25_30 = r25->ptrFBFC8E4;
+	word32 r25_30 = Mem0[r25 + 264227044:word32];
 	word32 sp_31;
 	word32 r28_32;
 	word32 r25_33;
@@ -2846,13 +3100,13 @@ void clist_delete(Eq_4045 * r25, word32 dwArg00, word32 dwArg04)
 	return;
 }
 
-void clist_close_all(Eq_4070 * r4, word32 r25, word32 dwArg00)
+void clist_close_all(word32 r4, word32 r25, word32 dwArg00)
 {
-	code * * r28_21 = r25 + 0x0FC047F0;
-	Eq_4076 * dwLoc18_18 = r4->ptr0008;
-	while (dwLoc18_18 != null)
+	word32 r28_21 = r25 + 0x0FC047F0;
+	word32 dwLoc18_18 = Mem0[r4 + 0x08:word32];
+	while (dwLoc18_18 != 0x00)
 	{
-		code * r25_32 = *(r28_21 - 32676);
+		word32 r25_32 = Mem0[r28_21 - 32676 + 0x00:word32];
 		word32 sp_33;
 		word32 r28_34;
 		word32 r25_35;
@@ -2862,17 +3116,17 @@ void clist_close_all(Eq_4070 * r4, word32 r25, word32 dwArg00)
 		word32 r2_39;
 		r25_32();
 		r28_21 = r25 + 0x0FC047F0;
-		dwLoc18_18 = dwLoc18_18->ptr17B8;
+		dwLoc18_18 = Mem0[dwLoc18_18 + 0x17B8:word32];
 	}
 	return;
 }
 
-void clist_destroy_all(Eq_4099 * r4, word32 r25, word32 dwArg00)
+void clist_destroy_all(word32 r4, word32 r25, word32 dwArg00)
 {
-	code * * r28_24 = r25 + 264259416;
-	while (r4->dw0008 != 0x00)
+	word32 r28_24 = r25 + 264259416;
+	while (Mem0[r4 + 0x08:word32] != 0x00)
 	{
-		code * r25_39 = *(r28_24 - 32332);
+		word32 r25_39 = Mem0[r28_24 - 32332 + 0x00:word32];
 		word32 sp_40;
 		word32 r28_41;
 		word32 r25_42;
@@ -2887,9 +3141,9 @@ void clist_destroy_all(Eq_4099 * r4, word32 r25, word32 dwArg00)
 	return;
 }
 
-void clist_destroy(Eq_4125 * r25, word32 dwArg00)
+void clist_destroy(word32 r25, word32 dwArg00)
 {
-	code * r25_17 = r25->ptrFBFC778;
+	word32 r25_17 = Mem0[r25 + 264226680:word32];
 	word32 sp_18;
 	word32 r28_19;
 	word32 r25_20;
@@ -2897,7 +3151,7 @@ void clist_destroy(Eq_4125 * r25, word32 dwArg00)
 	word32 r30_22;
 	word32 r4_23;
 	r25_17();
-	code * r25_26 = r25->ptrFBFC77C;
+	word32 r25_26 = Mem0[r25 + 264226684:word32];
 	word32 sp_27;
 	word32 r28_28;
 	word32 r25_29;
@@ -2905,7 +3159,7 @@ void clist_destroy(Eq_4125 * r25, word32 dwArg00)
 	word32 r30_31;
 	word32 r4_32;
 	r25_26();
-	code * r25_35 = r25->ptrFBFC6DC;
+	word32 r25_35 = Mem0[r25 + 264226524:word32];
 	word32 sp_36;
 	word32 r28_37;
 	word32 r25_38;
@@ -2916,50 +3170,22 @@ void clist_destroy(Eq_4125 * r25, word32 dwArg00)
 	return;
 }
 
-void request_new(word32 r2, word32 r4, Eq_4159 * r25, word32 dwArg00)
+void request_new(word32 r2, word32 r4, word32 r25, word32 dwArg00)
 {
-	code * r25_17 = r25->ptrFBFC7F4;
+	word32 r25_17 = Mem0[r25 + 264226804:word32];
 	word32 sp_18;
 	word32 r28_19;
 	word32 r25_20;
 	word32 ra_21;
 	word32 r30_22;
 	word32 r4_23;
-	Eq_4171 * r2_24;
+	word32 r2_24;
 	word32 r5_25;
 	word32 r3_26;
 	r25_17();
-	if (r2_24 != null)
+	if (r2_24 == 0x00)
 	{
-		r2_24->b0000 = 0x00;
-		r2_24->b0114 = 0x00;
-		r2_24->b0314 = 0x00;
-		r2_24->b0214 = 0x00;
-		r2_24->b0014 = 0x00;
-		r2_24->dw0414 = 0x00;
-		r2_24->dw0558 = -0x01;
-		r2_24->dw0554 = 0x00;
-		if (r4 != 0x00)
-		{
-			code * r25_87 = r25->ptrFBFC73C;
-			word32 sp_88;
-			word32 r28_89;
-			word32 r25_90;
-			word32 ra_91;
-			word32 r30_92;
-			word32 r4_93;
-			word32 r2_94;
-			word32 r5_95;
-			word32 r3_96;
-			r25_87();
-			if (r2_94 == 0x00)
-				return;
-		}
-		return;
-	}
-	else
-	{
-		code * r25_45 = r25->ptrFBFC7AC;
+		word32 r25_45 = Mem0[r25 + 264226732:word32];
 		word32 sp_46;
 		word32 r28_47;
 		word32 r25_48;
@@ -2972,11 +3198,36 @@ void request_new(word32 r2, word32 r4, Eq_4159 * r25, word32 dwArg00)
 		r25_45();
 		return;
 	}
+	Mem59[r2_24 + 0x00:byte] = 0x00;
+	Mem61[r2_24 + 0x0114:byte] = 0x00;
+	Mem63[r2_24 + 788:byte] = 0x00;
+	Mem65[r2_24 + 0x0214:byte] = 0x00;
+	Mem67[r2_24 + 0x14:byte] = 0x00;
+	Mem69[r2_24 + 0x0414:word32] = 0x00;
+	Mem72[r2_24 + 0x0558:word32] = -0x01;
+	Mem74[r2_24 + 0x0554:word32] = 0x00;
+	if (r4 != 0x00)
+	{
+		word32 r25_87 = Mem74[r25 + 264226620:word32];
+		word32 sp_88;
+		word32 r28_89;
+		word32 r25_90;
+		word32 ra_91;
+		word32 r30_92;
+		word32 r4_93;
+		word32 r2_94;
+		word32 r5_95;
+		word32 r3_96;
+		r25_87();
+		if (r2_94 == 0x00)
+			return;
+	}
+	return;
 }
 
-void request_parse_line(word32 r2, word32 r4, Eq_4240 * r25, word32 dwArg00, word32 dwArg04)
+void request_parse_line(word32 r2, word32 r4, word32 r25, word32 dwArg00, word32 dwArg04)
 {
-	code * r25_20 = r25->ptrFBFC620;
+	word32 r25_20 = Mem0[r25 + 264226336:word32];
 	word32 sp_21;
 	word32 r28_22;
 	word32 r25_23;
@@ -2986,7 +3237,7 @@ void request_parse_line(word32 r2, word32 r4, Eq_4240 * r25, word32 dwArg00, wor
 	word32 r5_27;
 	word32 r2_28;
 	r25_20();
-	code * r25_32 = r25->ptrFBFC728;
+	word32 r25_32 = Mem0[r25 + 264226600:word32];
 	word32 sp_33;
 	word32 r28_34;
 	word32 r25_35;
@@ -2996,11 +3247,9 @@ void request_parse_line(word32 r2, word32 r4, Eq_4240 * r25, word32 dwArg00, wor
 	word32 r5_39;
 	word32 r2_40;
 	r25_32();
-	if (r2_40 == 0x00)
-		;
-	else
+	if (r2_40 != 0x00)
 	{
-		code * r25_57 = r25->ptrFBFC5C8;
+		word32 r25_57 = Mem0[r25 + 264226248:word32];
 		word32 sp_58;
 		word32 r28_59;
 		word32 r25_60;
@@ -3010,7 +3259,7 @@ void request_parse_line(word32 r2, word32 r4, Eq_4240 * r25, word32 dwArg00, wor
 		word32 r5_64;
 		word32 r2_65;
 		r25_57();
-		code * r25_72 = r25->ptrFBFC570;
+		word32 r25_72 = Mem0[r25 + 264226160:word32];
 		word32 sp_73;
 		word32 r28_74;
 		word32 r25_75;
@@ -3024,11 +3273,11 @@ void request_parse_line(word32 r2, word32 r4, Eq_4240 * r25, word32 dwArg00, wor
 	return;
 }
 
-void request_save_line(Eq_4293 * r4, Eq_4294 * r25, word32 dwArg00, word32 dwArg04, word32 dwArg08, byte bArg0B)
+void request_save_line(word32 r4, word32 r25, word32 dwArg00, word32 dwArg04, word32 dwArg08, byte bArg0B)
 {
-	if (r4 == null)
+	if (r4 == 0x00)
 	{
-		code * r25_40 = r25->ptrFBFC594;
+		word32 r25_40 = Mem0[r25 + 264226196:word32];
 		word32 sp_43;
 		word32 r28_44;
 		word32 r25_45;
@@ -3042,9 +3291,9 @@ void request_save_line(Eq_4293 * r4, Eq_4294 * r25, word32 dwArg00, word32 dwArg
 		word32 r3_53;
 		r25_40();
 	}
-	else if ((word32) (r4->dw0558 < 0x003F) == 0x00)
+	else if ((word32) (Mem0[r4 + 0x0558:word32] < 0x003F) == 0x00)
 	{
-		code * r25_67 = r25->ptrFBFC594;
+		word32 r25_67 = Mem0[r25 + 264226196:word32];
 		word32 sp_68;
 		word32 r28_69;
 		word32 r25_70;
@@ -3060,8 +3309,8 @@ void request_save_line(Eq_4293 * r4, Eq_4294 * r25, word32 dwArg00, word32 dwArg
 	}
 	else
 	{
-		r4->dw0558 = r4->dw0558 + 0x01;
-		code * r25_87 = r25->ptrFBFC5DC;
+		Mem85[r4 + 0x0558:word32] = Mem0[r4 + 0x0558:word32] + 0x01;
+		word32 r25_87 = Mem85[r25 + 264226268:word32];
 		word32 sp_89;
 		word32 r28_90;
 		word32 r25_91;
@@ -3075,11 +3324,11 @@ void request_save_line(Eq_4293 * r4, Eq_4294 * r25, word32 dwArg00, word32 dwArg
 		word32 r3_99;
 		r25_87();
 		(r4 + 0x04 + 1040)[Mem85[r4 + 0x0558:word32] * 0x04] = r2_97;
-		int32 r3_114 = (r4->dw0558 << 0x02) + 1040;
+		word32 r3_114 = (Mem109[r4 + 0x0558:word32] << 0x02) + 1040;
 		word32 r2_117 = Mem109[r4 + 0x04 + r3_114:word32];
 		if (r2_117 == 0x00)
 		{
-			code * r25_124 = r25->ptrFBFC594;
+			word32 r25_124 = Mem109[r25 + 264226196:word32];
 			word32 sp_125;
 			word32 r28_126;
 			word32 r25_127;
@@ -3092,12 +3341,12 @@ void request_save_line(Eq_4293 * r4, Eq_4294 * r25, word32 dwArg00, word32 dwArg
 			word32 r7_134;
 			word32 r3_135;
 			r25_124();
-			r4->dw0558 = r4->dw0558 + -0x01;
+			Mem142[r4 + 0x0558:word32] = Mem109[r4 + 0x0558:word32] + -0x01;
 		}
 		else
 		{
 			Mem151[r4 + 0x04 + (Mem109[r4 + 0x0558:word32] + 0x0510):byte] = (byte) (word32) bArg0B;
-			code * r25_162 = r25->ptrFBFC5F0;
+			word32 r25_162 = Mem151[r25 + 264226288:word32];
 			word32 sp_163;
 			word32 r28_164;
 			word32 r25_165;
@@ -3115,11 +3364,11 @@ void request_save_line(Eq_4293 * r4, Eq_4294 * r25, word32 dwArg00, word32 dwArg
 	return;
 }
 
-void request_make_url(Eq_4437 * r4, Eq_4438 * r25, word32 dwArg00)
+void request_make_url(word32 r4, word32 r25, word32 dwArg00)
 {
-	if (r4 == null)
+	if (r4 == 0x00)
 	{
-		code * r25_38 = r25->ptrFBFC328;
+		word32 r25_38 = Mem0[r25 + 264225576:word32];
 		word32 sp_43;
 		word32 r28_44;
 		word32 r25_45;
@@ -3135,7 +3384,7 @@ void request_make_url(Eq_4437 * r4, Eq_4438 * r25, word32 dwArg00)
 	}
 	else
 	{
-		code * r25_61 = r25->ptrFBFC334;
+		word32 r25_61 = Mem0[r25 + 264225588:word32];
 		word32 sp_63;
 		word32 r28_64;
 		word32 r25_65;
@@ -3150,7 +3399,7 @@ void request_make_url(Eq_4437 * r4, Eq_4438 * r25, word32 dwArg00)
 		r25_61();
 		if (r2_69 == 0x00)
 		{
-			code * r25_88 = r25->ptrFBFC3B0;
+			word32 r25_88 = Mem0[r25 + 0x0FBFC3B0:word32];
 			word32 sp_89;
 			word32 r28_90;
 			word32 r25_91;
@@ -3164,9 +3413,9 @@ void request_make_url(Eq_4437 * r4, Eq_4438 * r25, word32 dwArg00)
 			word32 r3_99;
 			r25_88();
 		}
-		else if ((word32) r4->b0114 == 0x002F)
+		else if ((word32) Mem0[r4 + 0x0114:int8] == 0x002F)
 		{
-			code * r25_120 = r25->ptrFBFC3B0;
+			word32 r25_120 = Mem0[r25 + 0x0FBFC3B0:word32];
 			word32 sp_121;
 			word32 r28_122;
 			word32 r25_123;
@@ -3182,7 +3431,7 @@ void request_make_url(Eq_4437 * r4, Eq_4438 * r25, word32 dwArg00)
 		}
 		else
 		{
-			code * r25_149 = r25->ptrFBFC3B0;
+			word32 r25_149 = Mem0[r25 + 0x0FBFC3B0:word32];
 			word32 sp_150;
 			word32 r28_151;
 			word32 r25_152;
@@ -3200,20 +3449,20 @@ void request_make_url(Eq_4437 * r4, Eq_4438 * r25, word32 dwArg00)
 	return;
 }
 
-void request_add_lines(Eq_4525 * r4, Eq_4526 * r5, word32 r6, word32 r25, word32 dwArg00, word32 dwArg04, word32 dwArg08)
+void request_add_lines(word32 r4, word32 r5, word32 r6, word32 r25, word32 dwArg00, word32 dwArg04, word32 dwArg08)
 {
-	code * * r28_148 = r25 + 0x0FC03F84;
-	int32 dwLoc18_19 = 0x00;
-	while ((word32) (r4->dw0558 < dwLoc18_19) == 0x00)
+	word32 r28_148 = r25 + 0x0FC03F84;
+	word32 dwLoc18_19 = 0x00;
+	while ((word32) (Mem0[r4 + 0x0558:word32] < dwLoc18_19) == 0x00)
 	{
 		if ((r4 + 0x04 + 1040)[dwLoc18_19 * 0x04] != 0x00)
 		{
 			word32 r3_106 = (word32) Mem0[r4 + 0x04 + (dwLoc18_19 + 0x0510):int8];
-			word32 r2_109 = (word32) (r3_106 + r5->dw0FAC < 2000);
+			word32 r2_109 = (word32) (r3_106 + Mem0[r5 + 0x0FAC:word32] < 2000);
 			if (r2_109 != 0x00)
 			{
 				Mem120[r5 + 0x0FAC:word32] = Mem0[r5 + 0x0FAC:word32] + (word32) Mem0[(r4 + 0x04) + (dwLoc18_19 + 0x0510):int8];
-				code * r25_136 = *(r28_148 - 32280);
+				word32 r25_136 = Mem120[r28_148 - 32280 + 0x00:word32];
 				word32 sp_137;
 				word32 r28_138;
 				word32 r25_139;
@@ -3230,7 +3479,7 @@ void request_add_lines(Eq_4525 * r4, Eq_4526 * r5, word32 r6, word32 r25, word32
 			}
 			else
 			{
-				code * r25_164 = *(r28_148 - 32372);
+				word32 r25_164 = Mem0[r28_148 - 32372 + 0x00:word32];
 				word32 sp_165;
 				word32 r28_166;
 				word32 r25_167;
@@ -3248,10 +3497,10 @@ void request_add_lines(Eq_4525 * r4, Eq_4526 * r5, word32 r6, word32 r25, word32
 		}
 		dwLoc18_19 = dwLoc18_19 + 0x01;
 	}
-	while (r4->dw0558 >= 0x00)
+	while (Mem0[r4 + 0x0558:word32] >= 0x00)
 	{
-		r4->dw0558 = r4->dw0558 + -0x01;
-		code * r25_66 = *(r28_148 - 32724);
+		Mem64[r4 + 0x0558:word32] = Mem0[r4 + 0x0558:word32] + -0x01;
+		word32 r25_66 = Mem64[r28_148 - 32724 + 0x00:word32];
 		word32 sp_67;
 		word32 r28_68;
 		word32 r25_69;
@@ -3269,9 +3518,9 @@ void request_add_lines(Eq_4525 * r4, Eq_4526 * r5, word32 r6, word32 r25, word32
 	return;
 }
 
-void get_method(Eq_4653 * r25, word32 dwArg00, word32 dwArg04)
+void get_method(word32 r25, word32 dwArg00, word32 dwArg04)
 {
-	code * r25_22 = r25->ptrFBFBDDC;
+	word32 r25_22 = Mem0[r25 + 264224220:word32];
 	word32 sp_23;
 	word32 r28_24;
 	word32 r25_25;
@@ -3282,7 +3531,7 @@ void get_method(Eq_4653 * r25, word32 dwArg00, word32 dwArg04)
 	word32 r2_30;
 	word32 r6_31;
 	r25_22();
-	code * r25_37 = r25->ptrFBFBE58;
+	word32 r25_37 = Mem0[r25 + 264224344:word32];
 	word32 sp_38;
 	word32 r28_39;
 	word32 r25_40;
@@ -3296,9 +3545,9 @@ void get_method(Eq_4653 * r25, word32 dwArg00, word32 dwArg04)
 	return;
 }
 
-void get_uri(Eq_4682 * r25, word32 dwArg00, word32 dwArg04)
+void get_uri(word32 r25, word32 dwArg00, word32 dwArg04)
 {
-	code * r25_22 = r25->ptrFBFBD48;
+	word32 r25_22 = Mem0[r25 + 264224072:word32];
 	word32 sp_23;
 	word32 r28_24;
 	word32 r25_25;
@@ -3309,7 +3558,7 @@ void get_uri(Eq_4682 * r25, word32 dwArg00, word32 dwArg04)
 	word32 r2_30;
 	word32 r6_31;
 	r25_22();
-	code * r25_37 = r25->ptrFBFBDC4;
+	word32 r25_37 = Mem0[r25 + 264224196:word32];
 	word32 sp_38;
 	word32 r28_39;
 	word32 r25_40;
@@ -3323,9 +3572,9 @@ void get_uri(Eq_4682 * r25, word32 dwArg00, word32 dwArg04)
 	return;
 }
 
-void get_version(Eq_4711 * r25, word32 dwArg00, word32 dwArg04)
+void get_version(word32 r25, word32 dwArg00, word32 dwArg04)
 {
-	code * r25_22 = r25->ptrFBFBCB4;
+	word32 r25_22 = Mem0[r25 + 264223924:word32];
 	word32 sp_23;
 	word32 r28_24;
 	word32 r25_25;
@@ -3336,7 +3585,7 @@ void get_version(Eq_4711 * r25, word32 dwArg00, word32 dwArg04)
 	word32 r2_30;
 	word32 r6_31;
 	r25_22();
-	code * r25_37 = r25->ptrFBFBD30;
+	word32 r25_37 = Mem0[r25 + 264224048:word32];
 	word32 sp_38;
 	word32 r28_39;
 	word32 r25_40;
@@ -3350,12 +3599,12 @@ void get_version(Eq_4711 * r25, word32 dwArg00, word32 dwArg04)
 	return;
 }
 
-void request_get_host(Eq_4740 r4, uint32 r5, Eq_4742 * r25, word32 dwArg00, word32 dwArg04)
+void request_get_host(word32 r4, word32 r5, word32 r25, word32 dwArg00, word32 dwArg04)
 {
 	if (r4 != 0x00)
 		if (r4 != -0x0014)
 		{
-			code * r25_75 = r25->ptrFBFBBA0;
+			word32 r25_75 = Mem0[r25 + 0x0FBFBBA0:word32];
 			word32 sp_78;
 			word32 r28_79;
 			word32 r25_80;
@@ -3368,10 +3617,10 @@ void request_get_host(Eq_4740 r4, uint32 r5, Eq_4742 * r25, word32 dwArg00, word
 			word32 r6_87;
 			word32 r7_88;
 			r25_75();
-			int8 * dwLoc18_112 = (int8 *) -0x0014;
+			word32 dwLoc18_112 = -0x0014;
 			if (false)
 			{
-				code * r25_98 = r25->ptrFBFBCFC;
+				word32 r25_98 = Mem0[r25 + 0x0FBFBCFC:word32];
 				word32 sp_99;
 				word32 r28_100;
 				word32 r25_101;
@@ -3388,16 +3637,15 @@ void request_get_host(Eq_4740 r4, uint32 r5, Eq_4742 * r25, word32 dwArg00, word
 			}
 			while (true)
 			{
-				word32 r2_116 = (word32) (dwLoc18_112 < r5 + 0x0100);
+				word32 r2_116 = (word32) (dwLoc18_112 <u r5 + 0x0100);
 				if (r2_116 == 0x00)
 					break;
-				if ((word32) *dwLoc18_112 != 0x0020)
-					if ((word32) *dwLoc18_112 != 0x09)
-						goto l00404E1C;
+				if ((word32) Mem0[dwLoc18_112 + 0x00:int8] != 0x0020)
+					if ((word32) Mem0[dwLoc18_112 + 0x00:int8] != 0x09)
+						break;
 				dwLoc18_112 = dwLoc18_112 + 0x01;
 			}
-l00404E1C:
-			code * r25_120 = r25->ptrFBFBBA0;
+			word32 r25_120 = Mem0[r25 + 0x0FBFBBA0:word32];
 			word32 sp_121;
 			word32 r28_122;
 			word32 r25_123;
@@ -3405,14 +3653,14 @@ l00404E1C:
 			word32 r30_125;
 			word32 r4_126;
 			word32 r5_127;
-			int32 r2_128;
+			word32 r2_128;
 			word32 r3_129;
 			word32 r6_130;
 			word32 r7_131;
 			r25_120();
 			if (r2_128 == 0x00)
 			{
-				code * r25_141 = r25->ptrFBFBCFC;
+				word32 r25_141 = Mem0[r25 + 0x0FBFBCFC:word32];
 				word32 sp_142;
 				word32 r28_143;
 				word32 r25_144;
@@ -3429,7 +3677,7 @@ l00404E1C:
 			}
 			if ((word32) (r2_128 - dwLoc18_112 < 0x0101) == 0x00)
 			{
-				code * r25_169 = r25->ptrFBFBCFC;
+				word32 r25_169 = Mem0[r25 + 0x0FBFBCFC:word32];
 				word32 sp_170;
 				word32 r28_171;
 				word32 r25_172;
@@ -3444,7 +3692,7 @@ l00404E1C:
 				r25_169();
 				return;
 			}
-			code * r25_190 = r25->ptrFBFBC9C;
+			word32 r25_190 = Mem0[r25 + 0x0FBFBC9C:word32];
 			word32 sp_191;
 			word32 r28_192;
 			word32 r25_193;
@@ -3457,10 +3705,10 @@ l00404E1C:
 			word32 r6_200;
 			word32 r7_201;
 			r25_190();
-			r4.u1 + ((r2_128 - dwLoc18_112) + 0x0010) = (byte *) 0x00;
+			Mem210[r4 + 0x04 + ((r2_128 - dwLoc18_112) + 0x0010):byte] = 0x00;
 			return;
 		}
-	code * r25_54 = r25->ptrFBFBCFC;
+	word32 r25_54 = Mem0[r25 + 0x0FBFBCFC:word32];
 	word32 sp_58;
 	word32 r28_59;
 	word32 r25_60;
@@ -3476,12 +3724,12 @@ l00404E1C:
 	return;
 }
 
-void request_get_content_length(Eq_4894 * r4, uint32 r5, Eq_4896 * r25, word32 dwArg00, word32 dwArg04)
+void request_get_content_length(word32 r4, word32 r5, word32 r25, word32 dwArg00, word32 dwArg04)
 {
-	if (r4 != null)
-		if (r4 != (Eq_4894 *) -0x0014)
+	if (r4 != 0x00)
+		if (r4 != -0x0014)
 		{
-			code * r25_75 = r25->ptrFBFB8D0;
+			word32 r25_75 = Mem0[r25 + 264222928:word32];
 			word32 sp_78;
 			word32 r28_79;
 			word32 r25_80;
@@ -3494,10 +3742,10 @@ void request_get_content_length(Eq_4894 * r4, uint32 r5, Eq_4896 * r25, word32 d
 			word32 r6_87;
 			word32 r7_88;
 			r25_75();
-			int8 * dwLoc18_112 = (int8 *) -0x0014;
+			word32 dwLoc18_112 = -0x0014;
 			if (false)
 			{
-				code * r25_98 = r25->ptrFBFBA2C;
+				word32 r25_98 = Mem0[r25 + 264223276:word32];
 				word32 sp_99;
 				word32 r28_100;
 				word32 r25_101;
@@ -3514,16 +3762,15 @@ void request_get_content_length(Eq_4894 * r4, uint32 r5, Eq_4896 * r25, word32 d
 			}
 			while (true)
 			{
-				word32 r2_116 = (word32) (dwLoc18_112 < r5 + 0x0100);
+				word32 r2_116 = (word32) (dwLoc18_112 <u r5 + 0x0100);
 				if (r2_116 == 0x00)
 					break;
-				if ((word32) *dwLoc18_112 != 0x0020)
-					if ((word32) *dwLoc18_112 != 0x09)
-						goto l004050EC;
+				if ((word32) Mem0[dwLoc18_112 + 0x00:int8] != 0x0020)
+					if ((word32) Mem0[dwLoc18_112 + 0x00:int8] != 0x09)
+						break;
 				dwLoc18_112 = dwLoc18_112 + 0x01;
 			}
-l004050EC:
-			code * r25_120 = r25->ptrFBFB8D0;
+			word32 r25_120 = Mem0[r25 + 264222928:word32];
 			word32 sp_121;
 			word32 r28_122;
 			word32 r25_123;
@@ -3531,14 +3778,14 @@ l004050EC:
 			word32 r30_125;
 			word32 r4_126;
 			word32 r5_127;
-			int32 r2_128;
+			word32 r2_128;
 			word32 r3_129;
 			word32 r6_130;
 			word32 r7_131;
 			r25_120();
 			if (r2_128 == 0x00)
 			{
-				code * r25_141 = r25->ptrFBFBA2C;
+				word32 r25_141 = Mem0[r25 + 264223276:word32];
 				word32 sp_142;
 				word32 r28_143;
 				word32 r25_144;
@@ -3555,7 +3802,7 @@ l004050EC:
 			}
 			if ((word32) (r2_128 - dwLoc18_112 < 0x0101) == 0x00)
 			{
-				code * r25_169 = r25->ptrFBFBA2C;
+				word32 r25_169 = Mem0[r25 + 264223276:word32];
 				word32 sp_170;
 				word32 r28_171;
 				word32 r25_172;
@@ -3570,7 +3817,7 @@ l004050EC:
 				r25_169();
 				return;
 			}
-			code * r25_187 = r25->ptrFBFBA6C;
+			word32 r25_187 = Mem0[r25 + 264223340:word32];
 			word32 sp_188;
 			word32 r28_189;
 			word32 r25_190;
@@ -3583,10 +3830,10 @@ l004050EC:
 			word32 r6_197;
 			word32 r7_198;
 			r25_187();
-			r4->dw0554 = fp + -0x0014;
+			Mem202[r4 + 0x0554:word32] = fp + -0x0014;
 			return;
 		}
-	code * r25_54 = r25->ptrFBFBA2C;
+	word32 r25_54 = Mem0[r25 + 264223276:word32];
 	word32 sp_58;
 	word32 r28_59;
 	word32 r25_60;
@@ -3604,16 +3851,13 @@ l004050EC:
 
 void is_a_method(word32 r25, word32 dwArg00)
 {
-	Eq_10625 * * r28_23[] = r25 + 0x0FC035FC;
-	ui32 dwLoc18_15 = 0x00;
-	while (**(r28_23 - 0x7E98) != 0x00)
+	word32 r28_23 = r25 + 0x0FC035FC;
+	word32 dwLoc18_15 = 0x00;
+	if (Mem0[r28_23 - 0x7E98 + 0x00:word32][dwLoc18_15 * 0x04] != 0x00)
 	{
-		ui32 r3_51 = dwLoc18_15 + 0x01;
+		word32 r3_51 = dwLoc18_15 + 0x01;
 		dwLoc18_15 = r3_51;
-		union  {
-			word32 u0;
-			 <anonymous> u1;
-		} * r25_56[] = *(r28_23 - 0x7ECC);
+		word32 r25_56 = Mem0[r28_23 - 0x7ECC + 0x00:word32];
 		word32 sp_57;
 		word32 r28_58;
 		word32 r25_59;
@@ -3626,22 +3870,22 @@ void is_a_method(word32 r25, word32 dwArg00)
 		word32 r6_66;
 		r25_56();
 		r28_23 = r25 + 0x0FC035FC;
-		if (r2_63 == 0x00)
-			return;
+		if (r2_63 != 0x00)
+			goto l0040528C;
 	}
 	return;
 }
 
-void request_destroy(Eq_5085 * r4, word32 r25, word32 dwArg00)
+void request_destroy(word32 r4, word32 r25, word32 dwArg00)
 {
-	code * * r28_23 = r25 + 264254776;
+	word32 r28_23 = r25 + 264254776;
 	while (true)
 	{
-		int32 r2_29 = r4->dw0558;
+		word32 r2_29 = Mem0[r4 + 0x0558:word32];
 		if (r2_29 < 0x00)
 			break;
-		r4->dw0558 = r4->dw0558 + -0x01;
-		code * r25_59 = *(r28_23 - 32724);
+		Mem57[r4 + 0x0558:word32] = Mem0[r4 + 0x0558:word32] + -0x01;
+		word32 r25_59 = Mem57[r28_23 - 32724 + 0x00:word32];
 		word32 sp_60;
 		word32 r28_61;
 		word32 r25_62;
@@ -3655,7 +3899,7 @@ void request_destroy(Eq_5085 * r4, word32 r25, word32 dwArg00)
 		r25_59();
 		r28_23 = r25 + 264254776;
 	}
-	code * r25_31 = *(r28_23 - 32724);
+	word32 r25_31 = Mem0[r28_23 - 32724 + 0x00:word32];
 	word32 sp_32;
 	word32 r28_33;
 	word32 r25_34;
@@ -3670,9 +3914,9 @@ void request_destroy(Eq_5085 * r4, word32 r25, word32 dwArg00)
 	return;
 }
 
-void properties_parse_int(int8 * r5, Eq_5138 * r25, word32 dwArg00, word32 dwArg04)
+void properties_parse_int(word32 r5, word32 r25, word32 dwArg00, word32 dwArg04)
 {
-	code * r25_21 = r25->ptrFBFB63C;
+	word32 r25_21 = Mem0[r25 + 264222268:word32];
 	word32 sp_22;
 	word32 r28_23;
 	word32 r25_24;
@@ -3685,10 +3929,10 @@ void properties_parse_int(int8 * r5, Eq_5138 * r25, word32 dwArg00, word32 dwArg
 	word32 r3_31;
 	word32 r7_32;
 	r25_21();
-	if ((word32) *dwLoc18 != 0x00)
+	if ((word32) Mem0[dwLoc18 + 0x00:int8] != 0x00)
 		if (dwLoc18 != r5)
 		{
-			code * r25_64 = r25->ptrFBFB5FC;
+			word32 r25_64 = Mem0[r25 + 264222204:word32];
 			word32 sp_65;
 			word32 r28_66;
 			word32 r25_67;
@@ -3706,655 +3950,651 @@ void properties_parse_int(int8 * r5, Eq_5138 * r25, word32 dwArg00, word32 dwArg
 	return;
 }
 
-void properties_load(word32 r4, word32 r5, Eq_5181 * r25, word32 dwArg00, word32 dwArg04)
+void properties_load(word32 r4, word32 r5, word32 r25, word32 dwArg00, word32 dwArg04)
 {
-	Eq_5184 * r2_19 = r25->ptrFBFB3B0;
-	__lwl(r2_19->dwFFFFA5E0);
-	word32 r4_22 = __lwr(r2_19->dwFFFFA5E3);
-	__lwl(r2_19->dwFFFFA5E4);
-	word32 r5_24 = __lwr(r2_19->dwFFFFA5E7);
+	word32 r2_19 = Mem0[r25 + 0x0FBFB3B0:word32];
+	__lwl(Mem0[r2_19 + -23072:word32]);
+	word32 r4_22 = __lwr(Mem0[r2_19 + 4294944227:word32]);
+	__lwl(Mem0[r2_19 + 4294944228:word32]);
+	word32 r5_24 = __lwr(Mem0[r2_19 + 4294944231:word32]);
 	word32 dwLoc40_27 = __swl(r4_22);
 	word32 dwLoc3D_28 = __swr(r4_22);
 	word32 dwLoc3C_29 = __swl(r5_24);
-	code * * r28_5 = &r25->ptrFBFB5D4;
+	word32 r28_5 = r25 + 0x0FC03390;
 	word32 dwLoc39_30 = __swr(r5_24);
-	int32 dwLoc30_33 = 0x00;
-	if (r4 == 0x00)
-		return;
-	if (r5 == 0x00)
+	word32 dwLoc30_33 = 0x00;
+	if (r4 != 0x00)
 	{
-		code * r25_568 = r25->ptrFBFB3FC;
-		word32 sp_569;
-		word32 r28_570;
-		word32 r25_571;
-		word32 ra_572;
-		word32 r30_573;
-		word32 r4_574;
-		word32 r5_575;
-		word32 r2_576;
-		word32 r3_577;
-		word32 r6_578;
-		word32 r7_579;
-		bcuipsr0 None_580;
-		r25_568();
-		code * r25_584 = r25->ptrFBFB564;
-		word32 sp_585;
-		word32 r28_586;
-		word32 r25_587;
-		word32 ra_588;
-		word32 r30_589;
-		word32 r4_590;
-		word32 r5_591;
-		word32 r2_592;
-		word32 r3_593;
-		word32 r6_594;
-		word32 r7_595;
-		bcuipsr0 None_596;
-		r25_584();
-		if (r2_592 == 0x00)
+		if (r5 == 0x00)
 		{
-			code * r25_606 = r25->ptrFBFB51C;
-			word32 sp_607;
-			word32 r28_608;
-			word32 r25_609;
-			word32 ra_610;
-			word32 r30_611;
-			word32 r4_612;
-			word32 r5_613;
-			word32 r2_614;
-			word32 r3_615;
-			word32 r6_616;
-			word32 r7_617;
-			bcuipsr0 None_618;
-			r25_606();
-			return;
-		}
-		dwLoc30_33 = 0x01;
-		code * r25_625 = r25->ptrFBFB5D4;
-		word32 sp_626;
-		word32 r28_627;
-		word32 r25_628;
-		word32 ra_629;
-		word32 r30_630;
-		word32 r4_631;
-		word32 r5_632;
-		word32 r2_633;
-		word32 r3_634;
-		word32 r6_635;
-		word32 r7_636;
-		bcuipsr0 None_637;
-		r25_625();
-		code * r25_641 = r25->ptrFBFB504;
-		word32 sp_642;
-		word32 r28_643;
-		word32 r25_644;
-		word32 ra_645;
-		word32 r30_646;
-		word32 r4_647;
-		word32 r5_648;
-		word32 r2_649;
-		word32 r3_650;
-		word32 r6_651;
-		word32 r7_652;
-		bcuipsr0 None_653;
-		r25_641();
-		if (0x01 != 0x00)
-			(byte *) 0x02 = (byte *) 0x00;
-		code * r25_661 = r25->ptrFBFB5D4;
-		word32 sp_662;
-		word32 r28_663;
-		word32 r25_664;
-		word32 ra_665;
-		word32 r30_666;
-		word32 r4_667;
-		word32 r5_668;
-		word32 r2_669;
-		word32 r3_670;
-		word32 r6_671;
-		word32 r7_672;
-		bcuipsr0 None_673;
-		r25_661();
-		r28_5 = (code * *) &r25->ptrFBFB5D4;
-	}
-	code * r25_82 = *(r28_5 - 32532);
-	word32 sp_83;
-	word32 r28_84;
-	word32 r25_85;
-	word32 ra_86;
-	word32 r30_87;
-	word32 r4_88;
-	word32 r5_89;
-	word32 r2_90;
-	word32 r3_91;
-	word32 r6_92;
-	word32 r7_93;
-	bcuipsr0 None_94;
-	r25_82();
-	code * * r28_131 = &r25->ptrFBFB5D4;
-	if (r2_90 == 0x00)
-	{
-		code * r25_106 = r25->ptrFBFB51C;
-		word32 sp_107;
-		word32 r28_108;
-		word32 r25_109;
-		word32 ra_110;
-		word32 r30_111;
-		word32 r4_112;
-		word32 r5_113;
-		word32 r2_114;
-		word32 r3_115;
-		word32 r6_116;
-		word32 r7_117;
-		bcuipsr0 None_118;
-		r25_106();
-	}
-	else
-	{
-		if (dwLoc30_33 != 0x00)
-		{
-			code * r25_553 = r25->ptrFBFB3BC;
-			word32 sp_554;
-			word32 r28_555;
-			word32 r25_556;
-			word32 ra_557;
-			word32 r30_558;
-			word32 r4_559;
-			word32 r5_560;
-			word32 r2_561;
-			word32 r3_562;
-			word32 r6_563;
-			word32 r7_564;
-			bcuipsr0 None_565;
-			r25_553();
-			r28_131 = (code * *) &r25->ptrFBFB5D4;
-		}
-		while (true)
-		{
-			code * r25_136 = *(r28_131 - 32276);
-			word32 sp_137;
-			word32 r28_138;
-			word32 r25_139;
-			word32 ra_140;
-			word32 r30_141;
-			word32 r4_142;
-			word32 r5_143;
-			word32 r2_144;
-			word32 r3_145;
-			word32 r6_146;
-			word32 r7_147;
-			bcuipsr0 None_148;
-			r25_136();
-			if (fp == ~0x0147)
-				break;
-			code * r25_170 = r25->ptrFBFB3E8;
-			word32 sp_171;
-			word32 r28_172;
-			word32 r25_173;
-			word32 ra_174;
-			word32 r30_175;
-			word32 r4_176;
-			word32 r5_177;
-			word32 r2_178;
-			word32 r3_179;
-			word32 r6_180;
-			word32 r7_181;
-			bcuipsr0 None_182;
-			r25_170();
-			if (fp != ~0x0147)
-				;
-			code * r25_189 = r25->ptrFBFB3E8;
-			word32 sp_190;
-			word32 r28_191;
-			word32 r25_192;
-			word32 ra_193;
-			word32 r30_194;
-			word32 r4_195;
-			word32 r5_196;
-			word32 r2_197;
-			word32 r3_198;
-			word32 r6_199;
-			word32 r7_200;
-			bcuipsr0 None_201;
-			r25_189();
-			if (fp != ~0x0147)
-				;
-			code * r25_209 = r25->ptrFBFB404;
-			word32 sp_210;
-			word32 r28_211;
-			word32 r25_212;
-			word32 ra_213;
-			word32 r30_214;
-			word32 r4_215;
-			word32 r5_216;
-			word32 r2_217;
-			word32 r3_218;
-			word32 r6_219;
-			word32 r7_220;
-			bcuipsr0 None_221;
-			r25_209();
-			int8 * r2_225 = fp + -0x0148 + (fp + -0x0148);
-			r28_131 = (code * *) &r25->ptrFBFB5D4;
-			if ((word32) *r2_225 == 0x00)
-				;
-			else
+			word32 r25_568 = Mem0[r25 + 264221692:word32];
+			word32 sp_569;
+			word32 r28_570;
+			word32 r25_571;
+			word32 ra_572;
+			word32 r30_573;
+			word32 r4_574;
+			word32 r5_575;
+			word32 r2_576;
+			word32 r3_577;
+			word32 r6_578;
+			word32 r7_579;
+			bcuiposr0 None_580;
+			r25_568();
+			word32 r25_584 = Mem0[r25 + 264222052:word32];
+			word32 sp_585;
+			word32 r28_586;
+			word32 r25_587;
+			word32 ra_588;
+			word32 r30_589;
+			word32 r4_590;
+			word32 r5_591;
+			word32 r2_592;
+			word32 r3_593;
+			word32 r6_594;
+			word32 r7_595;
+			bcuiposr0 None_596;
+			r25_584();
+			if (r2_592 == 0x00)
 			{
-				code * r25_234 = r25->ptrFBFB44C;
-				word32 sp_235;
-				word32 r28_236;
-				word32 r25_237;
-				word32 ra_238;
-				word32 r30_239;
-				word32 r4_240;
-				word32 r5_241;
-				word32 r2_242;
-				word32 r3_243;
-				word32 r6_244;
-				word32 r7_245;
-				bcuipsr0 None_246;
-				r25_234();
-				code * r25_256 = r25->ptrFBFB3E8;
-				word32 sp_257;
-				word32 r28_258;
-				word32 r25_259;
-				word32 ra_260;
-				word32 r30_261;
-				word32 r4_262;
-				word32 r5_263;
-				ptr32 r2_264;
-				word32 r3_265;
-				word32 r6_266;
-				word32 r7_267;
-				bcuipsr0 None_268;
-				r25_256();
-				byte * r2_250 = r2_225 + r2_242;
-				if (r2_264 == 0x00)
+				word32 r25_606 = Mem0[r25 + 0x0FBFB51C:word32];
+				word32 sp_607;
+				word32 r28_608;
+				word32 r25_609;
+				word32 ra_610;
+				word32 r30_611;
+				word32 r4_612;
+				word32 r5_613;
+				word32 r2_614;
+				word32 r3_615;
+				word32 r6_616;
+				word32 r7_617;
+				bcuiposr0 None_618;
+				r25_606();
+				return;
+			}
+			dwLoc30_33 = 0x01;
+			word32 r25_625 = Mem0[r25 + 264222164:word32];
+			word32 sp_626;
+			word32 r28_627;
+			word32 r25_628;
+			word32 ra_629;
+			word32 r30_630;
+			word32 r4_631;
+			word32 r5_632;
+			word32 r2_633;
+			word32 r3_634;
+			word32 r6_635;
+			word32 r7_636;
+			bcuiposr0 None_637;
+			r25_625();
+			word32 r25_641 = Mem0[r25 + 0x0FBFB504:word32];
+			word32 sp_642;
+			word32 r28_643;
+			word32 r25_644;
+			word32 ra_645;
+			word32 r30_646;
+			word32 r4_647;
+			word32 r5_648;
+			word32 r2_649;
+			word32 r3_650;
+			word32 r6_651;
+			word32 r7_652;
+			bcuiposr0 None_653;
+			r25_641();
+			if (0x01 != 0x00)
+				Mem678[0x02:byte] = 0x00;
+			word32 r25_661 = Mem0[r25 + 264222164:word32];
+			word32 sp_662;
+			word32 r28_663;
+			word32 r25_664;
+			word32 ra_665;
+			word32 r30_666;
+			word32 r4_667;
+			word32 r5_668;
+			word32 r2_669;
+			word32 r3_670;
+			word32 r6_671;
+			word32 r7_672;
+			bcuiposr0 None_673;
+			r25_661();
+			r28_5 = r25 + 0x0FC03390;
+		}
+		word32 r25_82 = Mem0[r28_5 - 32532 + 0x00:word32];
+		word32 sp_83;
+		word32 r28_84;
+		word32 r25_85;
+		word32 ra_86;
+		word32 r30_87;
+		word32 r4_88;
+		word32 r5_89;
+		word32 r2_90;
+		word32 r3_91;
+		word32 r6_92;
+		word32 r7_93;
+		bcuiposr0 None_94;
+		r25_82();
+		word32 r28_131 = r25 + 0x0FC03390;
+		if (r2_90 == 0x00)
+		{
+			word32 r25_106 = Mem0[r25 + 0x0FBFB51C:word32];
+			word32 sp_107;
+			word32 r28_108;
+			word32 r25_109;
+			word32 ra_110;
+			word32 r30_111;
+			word32 r4_112;
+			word32 r5_113;
+			word32 r2_114;
+			word32 r3_115;
+			word32 r6_116;
+			word32 r7_117;
+			bcuiposr0 None_118;
+			r25_106();
+		}
+		else
+		{
+			if (dwLoc30_33 != 0x00)
+			{
+				word32 r25_553 = Mem0[r25 + 264221628:word32];
+				word32 sp_554;
+				word32 r28_555;
+				word32 r25_556;
+				word32 ra_557;
+				word32 r30_558;
+				word32 r4_559;
+				word32 r5_560;
+				word32 r2_561;
+				word32 r3_562;
+				word32 r6_563;
+				word32 r7_564;
+				bcuiposr0 None_565;
+				r25_553();
+				r28_131 = r25 + 0x0FC03390;
+			}
+			while (true)
+			{
+				word32 r25_136 = Mem0[r28_131 - 32276 + 0x00:word32];
+				word32 sp_137;
+				word32 r28_138;
+				word32 r25_139;
+				word32 ra_140;
+				word32 r30_141;
+				word32 r4_142;
+				word32 r5_143;
+				word32 r2_144;
+				word32 r3_145;
+				word32 r6_146;
+				word32 r7_147;
+				bcuiposr0 None_148;
+				r25_136();
+				if (fp == ~0x0147)
+					break;
+				word32 r25_170 = Mem0[r25 + 264221672:word32];
+				word32 sp_171;
+				word32 r28_172;
+				word32 r25_173;
+				word32 ra_174;
+				word32 r30_175;
+				word32 r4_176;
+				word32 r5_177;
+				word32 r2_178;
+				word32 r3_179;
+				word32 r6_180;
+				word32 r7_181;
+				bcuiposr0 None_182;
+				r25_170();
+				word32 r25_189 = Mem0[r25 + 264221672:word32];
+				word32 sp_190;
+				word32 r28_191;
+				word32 r25_192;
+				word32 ra_193;
+				word32 r30_194;
+				word32 r4_195;
+				word32 r5_196;
+				word32 r2_197;
+				word32 r3_198;
+				word32 r6_199;
+				word32 r7_200;
+				bcuiposr0 None_201;
+				r25_189();
+				word32 r25_209 = Mem0[r25 + 0x0FBFB404:word32];
+				word32 sp_210;
+				word32 r28_211;
+				word32 r25_212;
+				word32 ra_213;
+				word32 r30_214;
+				word32 r4_215;
+				word32 r5_216;
+				word32 r2_217;
+				word32 r3_218;
+				word32 r6_219;
+				word32 r7_220;
+				bcuiposr0 None_221;
+				r25_209();
+				word32 r2_225 = fp + -0x0148 + (fp + -0x0148);
+				r28_131 = r25 + 0x0FC03390;
+				if ((word32) Mem0[r2_225 + 0x00:int8] != 0x00)
 				{
-					code * r25_280 = r25->ptrFBFB51C;
-					word32 sp_281;
-					word32 r28_282;
-					word32 r25_283;
-					word32 ra_284;
-					word32 r30_285;
-					word32 r4_286;
-					word32 r5_287;
-					word32 r2_288;
-					word32 r3_289;
-					word32 r6_290;
-					word32 r7_291;
-					bcuipsr0 None_292;
-					r25_280();
-					r28_131 = (code * *) &r25->ptrFBFB5D4;
-				}
-				else
-				{
-					code * r25_300 = r25->ptrFBFB404;
-					word32 sp_301;
-					word32 r28_302;
-					word32 r25_303;
-					word32 ra_304;
-					word32 r30_305;
-					word32 r4_306;
-					word32 r5_307;
-					int32 r2_308;
-					word32 r3_309;
-					word32 r6_310;
-					word32 r7_311;
-					bcuipsr0 None_312;
-					r25_300();
-					code * r25_323 = r25->ptrFBFB44C;
-					word32 sp_324;
-					word32 r28_325;
-					word32 r25_326;
-					word32 ra_327;
-					word32 r30_328;
-					word32 r4_329;
-					word32 r5_330;
-					int32 r2_331;
-					word32 r3_332;
-					word32 r6_333;
-					word32 r7_334;
-					bcuipsr0 None_335;
-					r25_323();
-					r2_264 + 0x01 + r2_308 + r2_331 = (byte *) 0x00;
-					*r2_250 = 0x00;
-					r28_131 = (code * *) &r25->ptrFBFB5D4;
-					int32 dwLoc2C_345 = 0x00;
-					ui32 dwLoc014C_346 = 0x00;
-					while (true)
+					word32 r25_234 = Mem0[r25 + 264221772:word32];
+					word32 sp_235;
+					word32 r28_236;
+					word32 r25_237;
+					word32 ra_238;
+					word32 r30_239;
+					word32 r4_240;
+					word32 r5_241;
+					word32 r2_242;
+					word32 r3_243;
+					word32 r6_244;
+					word32 r7_245;
+					bcuiposr0 None_246;
+					r25_234();
+					word32 r25_256 = Mem0[r25 + 264221672:word32];
+					word32 sp_257;
+					word32 r28_258;
+					word32 r25_259;
+					word32 ra_260;
+					word32 r30_261;
+					word32 r4_262;
+					word32 r5_263;
+					word32 r2_264;
+					word32 r3_265;
+					word32 r6_266;
+					word32 r7_267;
+					bcuiposr0 None_268;
+					r25_256();
+					word32 r2_250 = r2_225 + r2_242;
+					if (r2_264 == 0x00)
 					{
-						int32 r3_370 = (word32) **(r28_131 - 32288);
-						if (r3_370 == 0x0020)
-							break;
-						if (dwLoc2C_345 != 0x00)
-							goto l00405C40;
-						code * r25_408 = *(r28_131 - 0x7EE0);
-						word32 sp_409;
-						word32 r28_410;
-						word32 r25_411;
-						word32 ra_412;
-						word32 r30_413;
-						word32 r4_414;
-						word32 r5_415;
-						word32 r2_416;
-						word32 r3_417;
-						word32 r6_418;
-						word32 r7_419;
-						bcuipsr0 None_420;
-						r25_408();
-						r28_131 = (code * *) &r25->ptrFBFB5D4;
-						if (r2_416 == 0x00)
+						word32 r25_280 = Mem0[r25 + 0x0FBFB51C:word32];
+						word32 sp_281;
+						word32 r28_282;
+						word32 r25_283;
+						word32 ra_284;
+						word32 r30_285;
+						word32 r4_286;
+						word32 r5_287;
+						word32 r2_288;
+						word32 r3_289;
+						word32 r6_290;
+						word32 r7_291;
+						bcuiposr0 None_292;
+						r25_280();
+						r28_131 = r25 + 0x0FC03390;
+					}
+					else
+					{
+						word32 r25_300 = Mem0[r25 + 0x0FBFB404:word32];
+						word32 sp_301;
+						word32 r28_302;
+						word32 r25_303;
+						word32 ra_304;
+						word32 r30_305;
+						word32 r4_306;
+						word32 r5_307;
+						word32 r2_308;
+						word32 r3_309;
+						word32 r6_310;
+						word32 r7_311;
+						bcuiposr0 None_312;
+						r25_300();
+						word32 r25_323 = Mem0[r25 + 264221772:word32];
+						word32 sp_324;
+						word32 r28_325;
+						word32 r25_326;
+						word32 ra_327;
+						word32 r30_328;
+						word32 r4_329;
+						word32 r5_330;
+						word32 r2_331;
+						word32 r3_332;
+						word32 r6_333;
+						word32 r7_334;
+						bcuiposr0 None_335;
+						r25_323();
+						Mem342[r2_264 + 0x01 + r2_308 + r2_331:byte] = 0x00;
+						Mem344[r2_250 + 0x00:byte] = 0x00;
+						r28_131 = r25 + 0x0FC03390;
+						word32 dwLoc2C_345 = 0x00;
+						word32 dwLoc014C_346 = 0x00;
+						while (true)
 						{
-							dwLoc2C_345 = 0x01;
-							Eq_5623 r2_450 = r25->ptrFBFB570->a0008[((dwLoc014C_346 << 0x02) + dwLoc014C_346 << 0x02) - dwLoc014C_346].t0000;
-							if (r2_450 != 0x01)
-								if ((word32) (r2_450 < 0x01) == 0x00)
-									if (r2_450 != 0x02)
-										;
+							word32 r3_370 = (word32) Mem344[Mem344[r28_131 - 32288 + 0x00:word32] + ((((dwLoc014C_346 << 0x02) + dwLoc014C_346 << 0x02) - dwLoc014C_346 << 0x03) + 0x08) + 0x04:int8];
+							if (r3_370 == 0x0020)
+								break;
+							if (dwLoc2C_345 != 0x00)
+								break;
+							word32 r25_408 = Mem344[r28_131 - 0x7EE0 + 0x00:word32];
+							word32 sp_409;
+							word32 r28_410;
+							word32 r25_411;
+							word32 ra_412;
+							word32 r30_413;
+							word32 r4_414;
+							word32 r5_415;
+							word32 r2_416;
+							word32 r3_417;
+							word32 r6_418;
+							word32 r7_419;
+							bcuiposr0 None_420;
+							r25_408();
+							r28_131 = r25 + 0x0FC03390;
+							if (r2_416 == 0x00)
+							{
+								dwLoc2C_345 = 0x01;
+								word32 r2_450 = (Mem344[r25 + 264222064:word32] + 0x08)[(((dwLoc014C_346 << 0x02) + dwLoc014C_346 << 0x02) - dwLoc014C_346) * 0x08];
+								if (r2_450 != 0x01)
+									if ((word32) (r2_450 <u 0x01) == 0x00)
+										if (r2_450 == 0x02)
+										{
+											word32 r25_463 = Mem344[r25 + 264221672:word32];
+											word32 sp_464;
+											word32 r28_465;
+											word32 r25_466;
+											word32 ra_467;
+											word32 r30_468;
+											word32 r4_469;
+											word32 r5_470;
+											word32 r2_471;
+											word32 r3_472;
+											word32 r6_473;
+											word32 r7_474;
+											bcuiposr0 None_475;
+											r25_463();
+											(Mem344[r25 + 264222064:word32] + 0x04 + 144)[(((dwLoc014C_346 << 0x02) + dwLoc014C_346 << 0x02) - dwLoc014C_346) * 0x08] = (word32) (0x00 <u r2_471);
+											r28_131 = r25 + 0x0FC03390;
+										}
 									else
 									{
-										code * r25_463 = r25->ptrFBFB3E8;
-										word32 sp_464;
-										word32 r28_465;
-										word32 r25_466;
-										word32 ra_467;
-										word32 r30_468;
-										word32 r4_469;
-										word32 r5_470;
-										uint32 r2_471;
-										word32 r3_472;
-										word32 r6_473;
-										word32 r7_474;
-										bcuipsr0 None_475;
-										r25_463();
-										(Mem344[r25 + 264222064:word32] + 0x04 + 144)[(((dwLoc014C_346 << 0x02) + dwLoc014C_346 << 0x02) - dwLoc014C_346) * 0x08] = (word32) (0x00 < r2_471);
-										r28_131 = (code * *) &r25->ptrFBFB5D4;
+										word32 r25_504 = Mem344[r25 + 0x0FBFB4BC:word32];
+										word32 sp_505;
+										word32 r28_506;
+										word32 r25_507;
+										word32 ra_508;
+										word32 r30_509;
+										word32 r4_510;
+										word32 r5_511;
+										word32 r2_512;
+										word32 r3_513;
+										word32 r6_514;
+										word32 r7_515;
+										bcuiposr0 None_516;
+										r25_504();
+										r28_131 = r25 + 0x0FC03390;
 									}
 								else
 								{
-									code * r25_504 = r25->ptrFBFB4BC;
-									word32 sp_505;
-									word32 r28_506;
-									word32 r25_507;
-									word32 ra_508;
-									word32 r30_509;
-									word32 r4_510;
-									word32 r5_511;
-									word32 r2_512;
-									word32 r3_513;
-									word32 r6_514;
-									word32 r7_515;
-									bcuipsr0 None_516;
-									r25_504();
-									r28_131 = (code * *) &r25->ptrFBFB5D4;
+									word32 sp_522;
+									word32 r28_523;
+									word32 r25_524;
+									word32 ra_525;
+									word32 r30_526;
+									word32 r4_527;
+									word32 r5_528;
+									word32 r2_529;
+									word32 r3_530;
+									word32 r6_531;
+									word32 r7_532;
+									bcuiposr0 None_533;
+									(Mem344[r25 + 264221612:word32] + 21488)();
+									(Mem344[r25 + 264222064:word32] + 0x04 + 144)[(((dwLoc014C_346 << 0x02) + dwLoc014C_346 << 0x02) - dwLoc014C_346) * 0x08] = 0x01;
+									r28_131 = r25 + 0x0FC03390;
 								}
-							else
-							{
-								word32 sp_522;
-								word32 r28_523;
-								word32 r25_524;
-								word32 ra_525;
-								word32 r30_526;
-								word32 r4_527;
-								word32 r5_528;
-								word32 r2_529;
-								word32 r3_530;
-								word32 r6_531;
-								word32 r7_532;
-								bcuipsr0 None_533;
-								(r25->ptrFBFB3AC + 21488)();
-								(Mem344[r25 + 264222064:word32] + 0x04 + 144)[(((dwLoc014C_346 << 0x02) + dwLoc014C_346 << 0x02) - dwLoc014C_346) * 0x08] = 0x01;
-								r28_131 = (code * *) &r25->ptrFBFB5D4;
 							}
+							dwLoc014C_346 = dwLoc014C_346 + 0x01;
 						}
-						dwLoc014C_346 = dwLoc014C_346 + 0x01;
-					}
-l00405C40:
-					if (dwLoc2C_345 == 0x00)
-					{
-						code * r25_381 = *(r28_131 - 32372);
-						word32 sp_382;
-						word32 r28_383;
-						word32 r25_384;
-						word32 ra_385;
-						word32 r30_386;
-						word32 r4_387;
-						word32 r5_388;
-						word32 r2_389;
-						word32 r3_390;
-						word32 r6_391;
-						word32 r7_392;
-						bcuipsr0 None_393;
-						r25_381();
-						r28_131 = (code * *) &r25->ptrFBFB5D4;
+						if (dwLoc2C_345 == 0x00)
+						{
+							word32 r25_381 = Mem344[r28_131 - 32372 + 0x00:word32];
+							word32 sp_382;
+							word32 r28_383;
+							word32 r25_384;
+							word32 ra_385;
+							word32 r30_386;
+							word32 r4_387;
+							word32 r5_388;
+							word32 r2_389;
+							word32 r3_390;
+							word32 r6_391;
+							word32 r7_392;
+							bcuiposr0 None_393;
+							r25_381();
+							r28_131 = r25 + 0x0FC03390;
+						}
 					}
 				}
 			}
+			word32 r25_153 = Mem0[r25 + 264221804:word32];
+			word32 sp_154;
+			word32 r28_155;
+			word32 r25_156;
+			word32 ra_157;
+			word32 r30_158;
+			word32 r4_159;
+			word32 r5_160;
+			word32 r2_161;
+			word32 r3_162;
+			word32 r6_163;
+			word32 r7_164;
+			bcuiposr0 None_165;
+			r25_153();
 		}
-		code * r25_153 = r25->ptrFBFB46C;
-		word32 sp_154;
-		word32 r28_155;
-		word32 r25_156;
-		word32 ra_157;
-		word32 r30_158;
-		word32 r4_159;
-		word32 r5_160;
-		word32 r2_161;
-		word32 r3_162;
-		word32 r6_163;
-		word32 r7_164;
-		bcuipsr0 None_165;
-		r25_153();
 	}
 	return;
 }
 
-void properties_parse_command_line(int32 r4, Eq_5789 * r5[], Eq_5779 * r25, word32 dwArg00, word32 dwArg04)
+void properties_parse_command_line(word32 r4, word32 r5, word32 r25, word32 dwArg00, word32 dwArg04)
 {
-	Eq_5831 * * r28_123 = &r25->ptrFBFADCC;
-	int32 dwLoc28_103 = 0x00;
+	word32 r28_123 = r25 + 0x0FC02B90;
+	word32 dwLoc28_103 = 0x00;
 	if ((word32) (dwLoc28_103 < r4) == 0x00)
 		return;
-	if ((word32) (r5[dwLoc28_103]->b0000 + 0x00) != 0x002D)
-		goto l0040625C;
-	byte bLoc1C_111 = (byte) (word32) (r5[dwLoc28_103]->b0000 + 0x01);
-	if ((word32) bLoc1C_111 != 0x00)
-		if ((word32) (r5[dwLoc28_103]->b0000 + 0x02) != 0x00)
-			goto l00405E54;
-	if ((word32) (dwLoc28_103 < r4) != 0x00)
+	if ((word32) Mem0[r5[dwLoc28_103 * 0x04] + 0x00:int8] != 0x002D)
+	{
+l0040625C:
 		dwLoc28_103 = dwLoc28_103 + 0x01;
-l00405E54:
-	int32 r3_115 = (word32) bLoc1C_111;
-	if (r3_115 == 0x0068)
-	{
-		Eq_5831 * r25_414 = *(r28_123 - 0x7DC4);
-		word32 sp_415;
-		word32 r28_416;
-		word32 r25_417;
-		word32 ra_418;
-		word32 r30_419;
-		word32 r16_420;
-		word32 r4_421;
-		word32 r5_422;
-		word32 r2_423;
-		word32 r3_424;
-		word32 r1_425;
-		word32 r6_426;
-		word32 r7_427;
-		bcuipsr0 None_428;
-		r25_414();
-		code * r25_431 = r25->ptrFBFAC20;
-		word32 sp_432;
-		word32 r28_433;
-		word32 r25_434;
-		word32 ra_435;
-		word32 r30_436;
-		word32 r16_437;
-		word32 r4_438;
-		word32 r5_439;
-		word32 r2_440;
-		word32 r3_441;
-		word32 r1_442;
-		word32 r6_443;
-		word32 r7_444;
-		bcuipsr0 None_445;
-		r25_431();
-		r28_123 = (Eq_5831 * *) &r25->ptrFBFADCC;
+		goto l00405D00;
 	}
-	int32 dwLoc20_131 = 0x00;
-	ui32 dwLoc24_132 = 0x00;
-l00405EAC:
-	int32 r3_159 = (word32) **(r28_123 - 32288);
-	if (r3_159 != 0x0020)
-	{
-		if (dwLoc20_131 != 0x00)
-			goto l004061DC;
-		Eq_5876 * r1_216 = *(r28_123 - 32288);
-		if ((word32) bLoc1C_111 != (word32) r1_216->b0004)
+	byte bLoc1C_111 = (byte) (word32) Mem0[r5[dwLoc28_103 * 0x04] + 0x01:byte];
+	if ((word32) bLoc1C_111 != 0x00)
+		if ((word32) Mem0[r5[dwLoc28_103 * 0x04] + 0x02:int8] != 0x00)
 		{
-			Eq_5900 r3_363 = **(r28_123 - 32288);
-			if (r3_363 != 0x02)
-				goto l004061C8;
-			Eq_5831 * r25_367 = *(r28_123 - 32668);
-			word32 sp_368;
-			word32 r28_369;
-			word32 r25_370;
-			word32 ra_371;
-			word32 r30_372;
-			word32 r16_373;
-			word32 r4_374;
-			word32 r5_375;
-			word32 r2_376;
-			word32 r3_377;
-			word32 r1_378;
-			word32 r6_379;
-			word32 r7_380;
-			bcuipsr0 None_381;
-			r25_367();
-			code * r25_396 = r25->ptrFBFABF4;
-			word32 sp_397;
-			word32 r28_398;
-			word32 r25_399;
-			word32 ra_400;
-			word32 r30_401;
-			word32 r16_402;
-			word32 r4_403;
-			word32 r5_404;
-			word32 r2_405;
-			word32 r3_406;
-			word32 r1_407;
-			word32 r6_408;
-			word32 r7_409;
-			bcuipsr0 None_410;
-			r25_396();
-			r28_123 = (Eq_5831 * *) &r25->ptrFBFADCC;
-			if (r16_402 != r2_405)
-				goto l004061C8;
-		}
-		dwLoc20_131 = 0x01;
-		Eq_5900 r2_261 = **(r28_123 - 32288);
-		if (r2_261 != 0x01)
-			if ((word32) (r2_261 < 0x01) == 0x00)
-				if (r2_261 != 0x02)
-					;
+l00405E54:
+			word32 r3_115 = (word32) bLoc1C_111;
+			if (r3_115 == 0x0068)
+			{
+				word32 r25_414 = Mem0[r28_123 - 0x7DC4 + 0x00:word32];
+				word32 sp_415;
+				word32 r28_416;
+				word32 r25_417;
+				word32 ra_418;
+				word32 r30_419;
+				word32 r16_420;
+				word32 r4_421;
+				word32 r5_422;
+				word32 r2_423;
+				word32 r3_424;
+				word32 r1_425;
+				word32 r6_426;
+				word32 r7_427;
+				bcuiposr0 None_428;
+				r25_414();
+				word32 r25_431 = Mem0[r25 + 0x0FBFAC20:word32];
+				word32 sp_432;
+				word32 r28_433;
+				word32 r25_434;
+				word32 ra_435;
+				word32 r30_436;
+				word32 r16_437;
+				word32 r4_438;
+				word32 r5_439;
+				word32 r2_440;
+				word32 r3_441;
+				word32 r1_442;
+				word32 r6_443;
+				word32 r7_444;
+				bcuiposr0 None_445;
+				r25_431();
+				r28_123 = r25 + 0x0FC02B90;
+			}
+			word32 dwLoc20_131 = 0x00;
+			word32 dwLoc24_132 = 0x00;
+l00405EAC:
+			word32 r3_159 = (word32) Mem0[Mem0[r28_123 - 32288 + 0x00:word32] + ((((dwLoc24_132 << 0x02) + dwLoc24_132 << 0x02) - dwLoc24_132 << 0x03) + 0x08) + 0x04:int8];
+			if (r3_159 != 0x0020)
+			{
+				if (dwLoc20_131 != 0x00)
+					break;
+				word32 r1_216 = Mem0[r28_123 - 32288 + 0x00:word32] + ((((dwLoc24_132 << 0x02) + dwLoc24_132 << 0x02) - dwLoc24_132 << 0x03) + 0x08);
+				if ((word32) bLoc1C_111 != (word32) Mem0[r1_216 + 0x04:int8])
+				{
+					word32 r3_363 = (Mem0[r28_123 - 32288 + 0x00:word32] + 0x08)[(((dwLoc24_132 << 0x02) + dwLoc24_132 << 0x02) - dwLoc24_132) * 0x08];
+					if (r3_363 != 0x02)
+						goto l004061C8;
+					word32 r25_367 = Mem0[r28_123 - 32668 + 0x00:word32];
+					word32 sp_368;
+					word32 r28_369;
+					word32 r25_370;
+					word32 ra_371;
+					word32 r30_372;
+					word32 r16_373;
+					word32 r4_374;
+					word32 r5_375;
+					word32 r2_376;
+					word32 r3_377;
+					word32 r1_378;
+					word32 r6_379;
+					word32 r7_380;
+					bcuiposr0 None_381;
+					r25_367();
+					word32 r25_396 = Mem0[r25 + 0x0FBFABF4:word32];
+					word32 sp_397;
+					word32 r28_398;
+					word32 r25_399;
+					word32 ra_400;
+					word32 r30_401;
+					word32 r16_402;
+					word32 r4_403;
+					word32 r5_404;
+					word32 r2_405;
+					word32 r3_406;
+					word32 r1_407;
+					word32 r6_408;
+					word32 r7_409;
+					bcuiposr0 None_410;
+					r25_396();
+					r28_123 = r25 + 0x0FC02B90;
+					if (r16_402 != r2_405)
+					{
+l004061C8:
+						dwLoc24_132 = dwLoc24_132 + 0x01;
+						goto l00405EAC;
+					}
+				}
+				dwLoc20_131 = 0x01;
+				word32 r2_261 = (Mem0[r28_123 - 32288 + 0x00:word32] + 0x08)[(((dwLoc24_132 << 0x02) + dwLoc24_132 << 0x02) - dwLoc24_132) * 0x08];
+				if (r2_261 != 0x01)
+					if ((word32) (r2_261 <u 0x01) == 0x00)
+						if (r2_261 == 0x02)
+						{
+							(Mem0[r28_123 - 32288 + 0x00:word32] + 0x04 + 144)[(((dwLoc24_132 << 0x02) + dwLoc24_132 << 0x02) - dwLoc24_132) * 0x08] = (word32) Mem0[Mem0[r28_123 - 32244 + 0x00:word32] + 0x00:word32][(word32) bLoc1C_111 * 0x02] + 0x00010000;
+							dwLoc28_103 = dwLoc28_103 + -0x01;
+						}
+					else
+					{
+						word32 r25_305 = Mem0[r28_123 - 0x7ED4 + 0x00:word32];
+						word32 sp_306;
+						word32 r28_307;
+						word32 r25_308;
+						word32 ra_309;
+						word32 r30_310;
+						word32 r16_311;
+						word32 r4_312;
+						word32 r5_313;
+						word32 r2_314;
+						word32 r3_315;
+						word32 r1_316;
+						word32 r6_317;
+						word32 r7_318;
+						bcuiposr0 None_319;
+						r25_305();
+						r28_123 = r25 + 0x0FC02B90;
+					}
 				else
 				{
-					**(r28_123 - 32288) = (word32) ***(r28_123 - 32244) + 0x00010000;
-					dwLoc28_103 = dwLoc28_103 + -0x01;
+					word32 sp_325;
+					word32 r28_326;
+					word32 r25_327;
+					word32 ra_328;
+					word32 r30_329;
+					word32 r16_330;
+					word32 r4_331;
+					word32 r5_332;
+					word32 r2_333;
+					word32 r3_334;
+					word32 r1_335;
+					word32 r6_336;
+					word32 r7_337;
+					bcuiposr0 None_338;
+					(Mem0[r28_123 - 0x7FE4 + 0x00:word32] + 21488)();
+					(Mem0[r25 + 264220016:word32] + 0x04 + 144)[(((dwLoc24_132 << 0x02) + dwLoc24_132 << 0x02) - dwLoc24_132) * 0x08] = 0x01;
+					r28_123 = r25 + 0x0FC02B90;
 				}
-			else
-			{
-				Eq_5831 * r25_305 = *(r28_123 - 0x7ED4);
-				word32 sp_306;
-				word32 r28_307;
-				word32 r25_308;
-				word32 ra_309;
-				word32 r30_310;
-				word32 r16_311;
-				word32 r4_312;
-				word32 r5_313;
-				word32 r2_314;
-				word32 r3_315;
-				word32 r1_316;
-				word32 r6_317;
-				word32 r7_318;
-				bcuipsr0 None_319;
-				r25_305();
-				r28_123 = (Eq_5831 * *) &r25->ptrFBFADCC;
+				goto l004061C8;
 			}
-		else
-		{
-			word32 sp_325;
-			word32 r28_326;
-			word32 r25_327;
-			word32 ra_328;
-			word32 r30_329;
-			word32 r16_330;
-			word32 r4_331;
-			word32 r5_332;
-			word32 r2_333;
-			word32 r3_334;
-			word32 r1_335;
-			word32 r6_336;
-			word32 r7_337;
-			bcuipsr0 None_338;
-			(**(r28_123 - 0x7FE4))();
-			(r25->ptrFBFAD70 + 0x04)->a0090[((dwLoc24_132 << 0x02) + dwLoc24_132 << 0x02) - dwLoc24_132].dw0000 = 0x01;
-			r28_123 = (Eq_5831 * *) &r25->ptrFBFADCC;
+			if (dwLoc20_131 == 0x00)
+			{
+				word32 r25_170 = Mem0[r28_123 - 32372 + 0x00:word32];
+				word32 sp_171;
+				word32 r28_172;
+				word32 r25_173;
+				word32 ra_174;
+				word32 r30_175;
+				word32 r16_176;
+				word32 r4_177;
+				word32 r5_178;
+				word32 r2_179;
+				word32 r3_180;
+				word32 r1_181;
+				word32 r6_182;
+				word32 r7_183;
+				bcuiposr0 None_184;
+				r25_170();
+				word32 r25_188 = Mem0[r25 + 264220108:word32];
+				word32 sp_189;
+				word32 r28_190;
+				word32 r25_191;
+				word32 ra_192;
+				word32 r30_193;
+				word32 r16_194;
+				word32 r4_195;
+				word32 r5_196;
+				word32 r2_197;
+				word32 r3_198;
+				word32 r1_199;
+				word32 r6_200;
+				word32 r7_201;
+				bcuiposr0 None_202;
+				r25_188();
+				return;
+			}
+			goto l0040625C;
 		}
-l004061C8:
-		dwLoc24_132 = dwLoc24_132 + 0x01;
-		goto l00405EAC;
-	}
-	if (dwLoc20_131 == 0x00)
-	{
-		Eq_5831 * r25_170 = *(r28_123 - 32372);
-		word32 sp_171;
-		word32 r28_172;
-		word32 r25_173;
-		word32 ra_174;
-		word32 r30_175;
-		word32 r16_176;
-		word32 r4_177;
-		word32 r5_178;
-		word32 r2_179;
-		word32 r3_180;
-		word32 r1_181;
-		word32 r6_182;
-		word32 r7_183;
-		bcuipsr0 None_184;
-		r25_170();
-		code * r25_188 = r25->ptrFBFADCC;
-		word32 sp_189;
-		word32 r28_190;
-		word32 r25_191;
-		word32 ra_192;
-		word32 r30_193;
-		word32 r16_194;
-		word32 r4_195;
-		word32 r5_196;
-		word32 r2_197;
-		word32 r3_198;
-		word32 r1_199;
-		word32 r6_200;
-		word32 r7_201;
-		bcuipsr0 None_202;
-		r25_188();
-		return;
-	}
-l0040625C:
-	dwLoc28_103 = dwLoc28_103 + 0x01;
-	goto l00405D00;
+	if ((word32) (dwLoc28_103 < r4) != 0x00)
+		dwLoc28_103 = dwLoc28_103 + 0x01;
+	goto l00405E54;
 }
 
-void properties_print_usage(int8 * r4, Eq_6148 * r25, word32 dwArg00)
+void properties_print_usage(word32 r4, word32 r25, word32 dwArg00)
 {
-	Eq_6199 * * r28_145;
-	if (r4 != null)
+	word32 r28_145;
+	if (r4 != 0x00)
 	{
-		word32 r2_256 = (word32) *r4;
+		word32 r2_256 = (word32) Mem0[r4 + 0x00:int8];
 		if (r2_256 != 0x00)
 		{
-			code * r25_260 = r25->ptrFBFA804;
+			word32 r25_260 = Mem0[r25 + 264218628:word32];
 			word32 sp_261;
 			word32 r28_262;
 			word32 r25_263;
@@ -4367,20 +4607,20 @@ void properties_print_usage(int8 * r4, Eq_6148 * r25, word32 dwArg00)
 			word32 r1_270;
 			word32 r6_271;
 			r25_260();
-			r28_145 = (Eq_6199 * *) &r25->ptrFBFA804;
+			r28_145 = r25 + 0x0FC025D4;
 l00406328:
-			ui32 dwLoc18_27 = 0x00;
+			word32 dwLoc18_27 = 0x00;
 			while (true)
 			{
-				int32 r3_51 = (word32) **(r28_145 - 32288);
+				word32 r3_51 = (word32) Mem0[Mem0[r28_145 - 32288 + 0x00:word32] + ((((dwLoc18_27 << 0x02) + dwLoc18_27 << 0x02) - dwLoc18_27 << 0x03) + 0x08) + 0x04:int8];
 				if (r3_51 == 0x0020)
 					break;
-				if (**(r28_145 - 32288) == 0x02)
+				if ((Mem0[r28_145 - 32288 + 0x00:word32] + 0x08)[(((dwLoc18_27 << 0x02) + dwLoc18_27 << 0x02) - dwLoc18_27) * 0x08] == 0x02)
 				{
-					code * * r28_117;
-					if ((word32) ***(r28_145 - 32244) != 0x00010000)
+					word32 r28_117;
+					if ((word32) Mem0[Mem0[r28_145 - 32244 + 0x00:word32] + 0x00:word32][(word32) Mem0[Mem0[r28_145 - 32288 + 0x00:word32] + ((((dwLoc18_27 << 0x02) + dwLoc18_27 << 0x02) - dwLoc18_27 << 0x03) + 0x08) + 0x04:int8] * 0x02] != 0x00010000)
 					{
-						Eq_6199 * r25_158 = *(r28_145 - 32292);
+						word32 r25_158 = Mem0[r28_145 - 32292 + 0x00:word32];
 						word32 sp_159;
 						word32 r28_160;
 						word32 r25_161;
@@ -4393,11 +4633,11 @@ l00406328:
 						word32 r1_168;
 						word32 r6_169;
 						r25_158();
-						r28_117 = (code * *) &r25->ptrFBFA804;
+						r28_117 = r25 + 0x0FC025D4;
 					}
 					else
 					{
-						Eq_6199 * r25_184 = *(r28_145 - 32668);
+						word32 r25_184 = Mem0[r28_145 - 32668 + 0x00:word32];
 						word32 sp_185;
 						word32 r28_186;
 						word32 r25_187;
@@ -4410,9 +4650,9 @@ l00406328:
 						word32 r1_194;
 						word32 r6_195;
 						r25_184();
-						r28_117 = (code * *) &r25->ptrFBFA804;
+						r28_117 = r25 + 0x0FC025D4;
 					}
-					code * r25_133 = *(r28_117 - 0x7DD0);
+					word32 r25_133 = Mem0[r28_117 - 0x7DD0 + 0x00:word32];
 					word32 sp_134;
 					word32 r28_135;
 					word32 r25_136;
@@ -4425,11 +4665,11 @@ l00406328:
 					word32 r1_143;
 					word32 r6_144;
 					r25_133();
-					r28_145 = (Eq_6199 * *) &r25->ptrFBFA804;
+					r28_145 = r25 + 0x0FC025D4;
 				}
 				else
 				{
-					Eq_6199 * r25_222 = *(r28_145 - 0x7DD0);
+					word32 r25_222 = Mem0[r28_145 - 0x7DD0 + 0x00:word32];
 					word32 sp_223;
 					word32 r28_224;
 					word32 r25_225;
@@ -4442,11 +4682,11 @@ l00406328:
 					word32 r1_232;
 					word32 r6_233;
 					r25_222();
-					r28_145 = (Eq_6199 * *) &r25->ptrFBFA804;
+					r28_145 = r25 + 0x0FC025D4;
 				}
 				dwLoc18_27 = dwLoc18_27 + 0x01;
 			}
-			Eq_6199 * r25_55 = *(r28_145 - 0x7DD0);
+			word32 r25_55 = Mem0[r28_145 - 0x7DD0 + 0x00:word32];
 			word32 sp_56;
 			word32 r28_57;
 			word32 r25_58;
@@ -4462,7 +4702,7 @@ l00406328:
 			return;
 		}
 	}
-	code * r25_237 = r25->ptrFBFA804;
+	word32 r25_237 = Mem0[r25 + 264218628:word32];
 	word32 sp_243;
 	word32 r28_244;
 	word32 r25_245;
@@ -4475,16 +4715,16 @@ l00406328:
 	word32 r1_252;
 	word32 r6_253;
 	r25_237();
-	r28_145 = (Eq_6199 * *) &r25->ptrFBFA804;
+	r28_145 = r25 + 0x0FC025D4;
 	goto l00406328;
 }
 
-void print_log(int32 r4, Eq_6363 * r25, word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 dwArg0C)
+void print_log(word32 r4, word32 r25, word32 dwArg00, word32 dwArg04, word32 dwArg08, word32 dwArg0C)
 {
-	int32 r3_25 = *r25->ptrFBFA2E4;
+	word32 r3_25 = Mem0[Mem0[r25 + 264217316:word32] + 0x00:word32];
 	if ((word32) (r3_25 < r4) == 0x00)
 	{
-		code * r25_49 = r25->ptrFBFA420;
+		word32 r25_49 = Mem0[r25 + 0x0FBFA420:word32];
 		word32 sp_52;
 		word32 r28_53;
 		word32 r25_54;
@@ -4496,7 +4736,7 @@ void print_log(int32 r4, Eq_6363 * r25, word32 dwArg00, word32 dwArg04, word32 d
 		word32 r4_60;
 		word32 r2_61;
 		word32 r3_62;
-		bcuipsr0 None_63;
+		bcuiposr0 None_63;
 		r25_49();
 		word32 sp_74;
 		word32 r28_75;
@@ -4509,20 +4749,20 @@ void print_log(int32 r4, Eq_6363 * r25, word32 dwArg00, word32 dwArg04, word32 d
 		word32 r4_82;
 		word32 r2_83;
 		word32 r3_84;
-		bcuipsr0 None_85;
-		(r25->ptrFBFA26C + 27004)();
+		bcuiposr0 None_85;
+		(Mem0[r25 + 264217196:word32] + 27004)();
 	}
 	return;
 }
 
-void open_log(Eq_6412 * r25, word32 dwArg00)
+void open_log(word32 r25, word32 dwArg00)
 {
-	if ((word32) **r25->ptrFBFA1B8 != 0x00)
+	if ((word32) Mem0[Mem0[Mem0[r25 + 0x0FBFA1B8:word32] + 0x00:word32] + 0x00:int8] != 0x00)
 	{
-		int32 r3_56 = (word32) **r25->ptrFBFA1B8;
+		word32 r3_56 = (word32) Mem0[Mem0[Mem0[r25 + 0x0FBFA1B8:word32] + 0x00:word32] + 0x00:int8];
 		if (r3_56 != 0x002D)
 		{
-			code * r25_61 = r25->ptrFBFA264;
+			word32 r25_61 = Mem0[r25 + 264217188:word32];
 			word32 sp_63;
 			word32 r28_64;
 			word32 r25_65;
@@ -4535,13 +4775,13 @@ void open_log(Eq_6412 * r25, word32 dwArg00)
 			word32 r1_72;
 			word32 r6_73;
 			r25_61();
-			*r25->ptrFBFA338 = 0x002D;
-			if (*r25->ptrFBFA338 == 0x00)
+			Mem76[Mem0[r25 + 0x0FBFA338:word32] + 0x00:word32] = 0x002D;
+			if (Mem76[Mem76[r25 + 0x0FBFA338:word32] + 0x00:word32] == 0x00)
 			{
-				int32 r2_80 = *r25->ptrFBFA22C;
-				int32 * r1_81 = r25->ptrFBFA338;
-				*r1_81 = r2_80;
-				code * r25_88 = r25->ptrFBFA304;
+				word32 r2_80 = Mem76[Mem76[r25 + 264217132:word32] + 0x00:word32];
+				word32 r1_81 = Mem76[r25 + 0x0FBFA338:word32];
+				Mem82[r1_81 + 0x00:word32] = r2_80;
+				word32 r25_88 = Mem82[r25 + 0x0FBFA304:word32];
 				word32 sp_89;
 				word32 r28_90;
 				word32 r25_91;
@@ -4558,10 +4798,10 @@ void open_log(Eq_6412 * r25, word32 dwArg00)
 			return;
 		}
 	}
-	int32 r2_32 = *r25->ptrFBFA22C;
-	int32 * r1_33 = r25->ptrFBFA338;
-	*r1_33 = r2_32;
-	code * r25_39 = r25->ptrFBFA3BC;
+	word32 r2_32 = Mem0[Mem0[r25 + 264217132:word32] + 0x00:word32];
+	word32 r1_33 = Mem0[r25 + 0x0FBFA338:word32];
+	Mem34[r1_33 + 0x00:word32] = r2_32;
+	word32 r25_39 = Mem34[r25 + 0x0FBFA3BC:word32];
 	word32 sp_42;
 	word32 r28_43;
 	word32 r25_44;
@@ -4577,9 +4817,9 @@ void open_log(Eq_6412 * r25, word32 dwArg00)
 	return;
 }
 
-void log_rotate(Eq_6527 * r25)
+void log_rotate(word32 r25)
 {
-	code * r25_16 = r25->ptrFBFA0F4;
+	word32 r25_16 = Mem0[r25 + 0x0FBFA0F4:word32];
 	word32 sp_17;
 	word32 r28_18;
 	word32 r25_19;
@@ -4590,14 +4830,14 @@ void log_rotate(Eq_6527 * r25)
 	word32 r3_24;
 	word32 r5_25;
 	r25_16();
-	code * * r28_26 = &r25->ptrFBFA25C;
-	word32 r2_29 = (word32) **r25->ptrFBFA058;
+	word32 r28_26 = r25 + 0x0FC02018;
+	word32 r2_29 = (word32) Mem0[Mem0[Mem0[r25 + 264216664:word32] + 0x00:word32] + 0x00:int8];
 	if (r2_29 != 0x00)
 	{
-		int32 r3_50 = (word32) **r25->ptrFBFA058;
+		word32 r3_50 = (word32) Mem0[Mem0[Mem0[r25 + 264216664:word32] + 0x00:word32] + 0x00:int8];
 		if (r3_50 != 0x002D)
 		{
-			code * r25_55 = r25->ptrFBFA25C;
+			word32 r25_55 = Mem0[r25 + 0x0FBFA25C:word32];
 			word32 sp_56;
 			word32 r28_57;
 			word32 r25_58;
@@ -4608,7 +4848,7 @@ void log_rotate(Eq_6527 * r25)
 			word32 r3_63;
 			word32 r5_64;
 			r25_55();
-			code * r25_69 = r25->ptrFBFA178;
+			word32 r25_69 = Mem0[r25 + 264216952:word32];
 			word32 sp_70;
 			word32 r28_71;
 			word32 r25_72;
@@ -4619,7 +4859,7 @@ void log_rotate(Eq_6527 * r25)
 			word32 r3_77;
 			word32 r5_78;
 			r25_69();
-			code * r25_83 = r25->ptrFBFA190;
+			word32 r25_83 = Mem0[r25 + 0x0FBFA190:word32];
 			word32 sp_84;
 			word32 r28_85;
 			word32 r25_86;
@@ -4630,10 +4870,10 @@ void log_rotate(Eq_6527 * r25)
 			word32 r3_91;
 			word32 r5_92;
 			r25_83();
-			r28_26 = (code * *) &r25->ptrFBFA25C;
+			r28_26 = r25 + 0x0FC02018;
 		}
 	}
-	code * r25_33 = *(r28_26 - 0x7F90);
+	word32 r25_33 = Mem0[r28_26 - 0x7F90 + 0x00:word32];
 	word32 sp_34;
 	word32 r28_35;
 	word32 r25_36;
@@ -4647,9 +4887,9 @@ void log_rotate(Eq_6527 * r25)
 	return;
 }
 
-void log_string(word32 r5, Eq_6626 * r25, word32 dwArg00)
+void log_string(word32 r5, word32 r25, word32 dwArg00)
 {
-	code * r25_27 = r25->ptrFBF9FD4;
+	word32 r25_27 = Mem0[r25 + 0x0FBF9FD4:word32];
 	word32 sp_28;
 	word32 r28_29;
 	word32 r25_30;
@@ -4667,7 +4907,7 @@ void log_string(word32 r5, Eq_6626 * r25, word32 dwArg00)
 	word32 lo_42;
 	word32 r1_43;
 	r25_27();
-	code * r25_47 = r25->ptrFBF9F5C;
+	word32 r25_47 = Mem0[r25 + 264216412:word32];
 	word32 sp_48;
 	word32 r28_49;
 	word32 r25_50;
@@ -4685,7 +4925,7 @@ void log_string(word32 r5, Eq_6626 * r25, word32 dwArg00)
 	word32 lo_62;
 	word32 r1_63;
 	r25_47();
-	code * r25_70 = r25->ptrFBF9F84;
+	word32 r25_70 = Mem0[r25 + 264216452:word32];
 	word32 sp_71;
 	word32 r28_72;
 	word32 r25_73;
@@ -4703,7 +4943,7 @@ void log_string(word32 r5, Eq_6626 * r25, word32 dwArg00)
 	word32 lo_85;
 	word32 r1_86;
 	r25_70();
-	code * r25_109 = r25->ptrFBFA048;
+	word32 r25_109 = Mem0[r25 + 264216648:word32];
 	word32 sp_110;
 	word32 r28_111;
 	word32 r25_112;
@@ -4721,7 +4961,7 @@ void log_string(word32 r5, Eq_6626 * r25, word32 dwArg00)
 	word32 lo_124;
 	word32 r1_125;
 	r25_109();
-	code * r25_128 = r25->ptrFBFA090;
+	word32 r25_128 = Mem0[r25 + 0x0FBFA090:word32];
 	word32 sp_129;
 	word32 r28_130;
 	word32 r25_131;
@@ -4739,18 +4979,18 @@ void log_string(word32 r5, Eq_6626 * r25, word32 dwArg00)
 	word32 lo_143;
 	word32 r1_144;
 	r25_128();
-	r25->ptrFBF9EFC->dw0824 = r25->ptrFBF9EFC->dw0824 + 0x01;
-	if (*r25->ptrFBFA0AC != 0x00)
+	Mem152[Mem0[r25 + 264216316:word32] + 0x0824:word32] = Mem0[Mem0[r25 + 264216316:word32] + 0x0824:word32] + 0x01;
+	if (Mem152[Mem152[r25 + 0x0FBFA0AC:word32] + 0x00:word32] != 0x00)
 	{
-		int32 r2_174 = *r25->ptrFBFA0AC;
-		int32 dwLoc20_175 = r2_174;
+		word32 r2_174 = Mem152[Mem152[r25 + 0x0FBFA0AC:word32] + 0x00:word32];
+		word32 dwLoc20_175 = r2_174;
 		if (r2_174 < 0x00)
 			dwLoc20_175 = r2_174 + 0x03FF;
-		int32 r3_182 = r25->ptrFBF9EFC->dw0824;
+		word32 r3_182 = Mem152[Mem152[r25 + 264216316:word32] + 0x0824:word32];
 		word32 r2_183 = (word32) (dwLoc20_175 >> 0x0A < r3_182);
 		if (r2_183 != 0x00)
 		{
-			code * r25_185 = r25->ptrFBF9FC8;
+			word32 r25_185 = Mem152[r25 + 0x0FBF9FC8:word32];
 			word32 sp_186;
 			word32 r28_187;
 			word32 r25_188;
@@ -4761,18 +5001,18 @@ void log_string(word32 r5, Eq_6626 * r25, word32 dwArg00)
 			word32 r4_193;
 			word32 r5_194;
 			word32 r6_195;
-			int32 r2_196;
+			word32 r2_196;
 			word32 r7_197;
 			word32 r3_198;
 			word32 hi_199;
 			word32 lo_200;
 			word32 r1_201;
 			r25_185();
-			int32 r3_204 = *r25->ptrFBFA0AC;
+			word32 r3_204 = Mem152[Mem152[r25 + 0x0FBFA0AC:word32] + 0x00:word32];
 			word32 r2_205 = (word32) (r2_196 < r3_204);
 			if (r2_205 == 0x00)
 			{
-				code * r25_207 = r25->ptrFBFA0F4;
+				word32 r25_207 = Mem152[r25 + 0x0FBFA0F4:word32];
 				word32 sp_208;
 				word32 r28_209;
 				word32 r25_210;
@@ -4792,15 +5032,15 @@ void log_string(word32 r5, Eq_6626 * r25, word32 dwArg00)
 				r25_207();
 			}
 			else
-				r25->ptrFBF9EFC->dw0824 = r25->ptrFBF9EFC->dw0824 + -0x0A;
+				Mem231[Mem152[r25 + 264216316:word32] + 0x0824:word32] = Mem152[Mem152[r25 + 264216316:word32] + 0x0824:word32] + -0x0A;
 		}
 	}
 	return;
 }
 
-void server_new(word32 r2, word32 r6, word32 r7, Eq_6845 * r25, word32 dwArg00, word32 dwArg04, word16 wArg06, word32 dwArg08, word32 dwArg0C)
+void server_new(word32 r2, word32 r6, word32 r7, word32 r25, word32 dwArg00, word32 dwArg04, word16 wArg06, word32 dwArg08, word32 dwArg0C)
 {
-	code * r25_23 = r25->ptrFBF9E44;
+	word32 r25_23 = Mem0[r25 + 264216132:word32];
 	word32 sp_24;
 	word32 r28_25;
 	word32 r25_26;
@@ -4810,12 +5050,12 @@ void server_new(word32 r2, word32 r6, word32 r7, Eq_6845 * r25, word32 dwArg00, 
 	word32 r5_30;
 	word32 r6_31;
 	word32 r7_32;
-	Eq_6864 * r2_33;
+	word32 r2_33;
 	word32 r3_34;
 	r25_23();
-	if (r2_33 == null)
+	if (r2_33 == 0x00)
 	{
-		code * r25_55 = r25->ptrFBF9DFC;
+		word32 r25_55 = Mem0[r25 + 264216060:word32];
 		word32 sp_56;
 		word32 r28_57;
 		word32 r25_58;
@@ -4831,12 +5071,12 @@ void server_new(word32 r2, word32 r6, word32 r7, Eq_6845 * r25, word32 dwArg00, 
 	}
 	else
 	{
-		r2_33->dw0000 = -0x01;
-		r2_33->dw0020 = r7;
-		r2_33->dw0018 = 0x00;
-		r2_33->dw001C = 0x00;
-		r2_33->dw0004 = r6;
-		code * r25_87 = r25->ptrFBF9E04;
+		Mem72[r2_33 + 0x00:word32] = -0x01;
+		Mem75[r2_33 + 0x20:word32] = r7;
+		Mem77[r2_33 + 0x18:word32] = 0x00;
+		Mem79[r2_33 + 0x1C:word32] = 0x00;
+		Mem82[r2_33 + 0x04:word32] = r6;
+		word32 r25_87 = Mem82[r25 + 0x0FBF9E04:word32];
 		word32 sp_88;
 		word32 r28_89;
 		word32 r25_90;
@@ -4849,10 +5089,10 @@ void server_new(word32 r2, word32 r6, word32 r7, Eq_6845 * r25, word32 dwArg00, 
 		word32 r2_97;
 		word32 r3_98;
 		r25_87();
-		r2_33->w0008 = 0x02;
+		Mem102[r2_33 + 0x08:word16] = 0x02;
 		word32 r2_105 = (word32) wArg06;
-		r2_33->w000A = (word16) r2_105;
-		code * r25_108 = r25->ptrFBF9DC8;
+		Mem106[r2_33 + 0x0A:word16] = (word16) r2_105;
+		word32 r25_108 = Mem106[r25 + 264216008:word32];
 		word32 sp_109;
 		word32 r28_110;
 		word32 r25_111;
@@ -4865,14 +5105,14 @@ void server_new(word32 r2, word32 r6, word32 r7, Eq_6845 * r25, word32 dwArg00, 
 		word32 r2_118;
 		word32 r3_119;
 		r25_108();
-		r2_33->dw000C = r2_118;
+		Mem123[r2_33 + 0x0C:word32] = r2_118;
 	}
 	return;
 }
 
-void server_open(word32 r2, int32 * r4, Eq_6947 * r25, word32 dwArg00)
+void server_open(word32 r2, word32 r4, word32 r25, word32 dwArg00)
 {
-	code * r25_21 = r25->ptrFBF9CD0;
+	word32 r25_21 = Mem0[r25 + 0x0FBF9CD0:word32];
 	word32 sp_22;
 	word32 r28_23;
 	word32 r25_24;
@@ -4882,13 +5122,13 @@ void server_open(word32 r2, int32 * r4, Eq_6947 * r25, word32 dwArg00)
 	word32 r4_28;
 	word32 r5_29;
 	word32 r6_30;
-	int32 r2_31;
+	word32 r2_31;
 	word32 r3_32;
 	word32 r7_33;
 	r25_21();
 	if (r2_31 < 0x00)
 	{
-		code * r25_52 = r25->ptrFBF9BAC;
+		word32 r25_52 = Mem0[r25 + 0x0FBF9BAC:word32];
 		word32 sp_55;
 		word32 r28_56;
 		word32 r25_57;
@@ -4902,7 +5142,7 @@ void server_open(word32 r2, int32 * r4, Eq_6947 * r25, word32 dwArg00)
 		word32 r3_65;
 		word32 r7_66;
 		r25_52();
-		code * r25_69 = r25->ptrFBF9BAC;
+		word32 r25_69 = Mem0[r25 + 0x0FBF9BAC:word32];
 		word32 sp_70;
 		word32 r28_71;
 		word32 r25_72;
@@ -4916,7 +5156,7 @@ void server_open(word32 r2, int32 * r4, Eq_6947 * r25, word32 dwArg00)
 		word32 r3_80;
 		word32 r7_81;
 		r25_69();
-		code * r25_84 = r25->ptrFBF9D30;
+		word32 r25_84 = Mem0[r25 + 0x0FBF9D30:word32];
 		word32 sp_85;
 		word32 r28_86;
 		word32 r25_87;
@@ -4930,7 +5170,7 @@ void server_open(word32 r2, int32 * r4, Eq_6947 * r25, word32 dwArg00)
 		word32 r3_95;
 		word32 r7_96;
 		r25_84();
-		code * r25_108 = r25->ptrFBF9CA0;
+		word32 r25_108 = Mem0[r25 + 0x0FBF9CA0:word32];
 		word32 sp_109;
 		word32 r28_110;
 		word32 r25_111;
@@ -4947,7 +5187,7 @@ void server_open(word32 r2, int32 * r4, Eq_6947 * r25, word32 dwArg00)
 	}
 	else
 	{
-		code * r25_128 = r25->ptrFBF9C70;
+		word32 r25_128 = Mem0[r25 + 264215664:word32];
 		word32 sp_129;
 		word32 r28_130;
 		word32 r25_131;
@@ -4957,13 +5197,13 @@ void server_open(word32 r2, int32 * r4, Eq_6947 * r25, word32 dwArg00)
 		word32 r4_135;
 		word32 r5_136;
 		word32 r6_137;
-		int32 r2_138;
+		word32 r2_138;
 		word32 r3_139;
 		word32 r7_140;
 		r25_128();
 		if (r2_138 < 0x00)
 		{
-			code * r25_142 = r25->ptrFBF9BAC;
+			word32 r25_142 = Mem0[r25 + 0x0FBF9BAC:word32];
 			word32 sp_143;
 			word32 r28_144;
 			word32 r25_145;
@@ -4977,7 +5217,7 @@ void server_open(word32 r2, int32 * r4, Eq_6947 * r25, word32 dwArg00)
 			word32 r3_153;
 			word32 r7_154;
 			r25_142();
-			code * r25_157 = r25->ptrFBF9BAC;
+			word32 r25_157 = Mem0[r25 + 0x0FBF9BAC:word32];
 			word32 sp_158;
 			word32 r28_159;
 			word32 r25_160;
@@ -4991,7 +5231,7 @@ void server_open(word32 r2, int32 * r4, Eq_6947 * r25, word32 dwArg00)
 			word32 r3_168;
 			word32 r7_169;
 			r25_157();
-			code * r25_172 = r25->ptrFBF9D30;
+			word32 r25_172 = Mem0[r25 + 0x0FBF9D30:word32];
 			word32 sp_173;
 			word32 r28_174;
 			word32 r25_175;
@@ -5005,7 +5245,7 @@ void server_open(word32 r2, int32 * r4, Eq_6947 * r25, word32 dwArg00)
 			word32 r3_183;
 			word32 r7_184;
 			r25_172();
-			code * r25_196 = r25->ptrFBF9CA0;
+			word32 r25_196 = Mem0[r25 + 0x0FBF9CA0:word32];
 			word32 sp_197;
 			word32 r28_198;
 			word32 r25_199;
@@ -5022,7 +5262,7 @@ void server_open(word32 r2, int32 * r4, Eq_6947 * r25, word32 dwArg00)
 		}
 		else
 		{
-			code * r25_214 = r25->ptrFBF9C20;
+			word32 r25_214 = Mem0[r25 + 0x0FBF9C20:word32];
 			word32 sp_215;
 			word32 r28_216;
 			word32 r25_217;
@@ -5032,13 +5272,13 @@ void server_open(word32 r2, int32 * r4, Eq_6947 * r25, word32 dwArg00)
 			word32 r4_221;
 			word32 r5_222;
 			word32 r6_223;
-			int32 r2_224;
+			word32 r2_224;
 			word32 r3_225;
 			word32 r7_226;
 			r25_214();
 			if (r2_224 < 0x00)
 			{
-				code * r25_228 = r25->ptrFBF9BAC;
+				word32 r25_228 = Mem0[r25 + 0x0FBF9BAC:word32];
 				word32 sp_229;
 				word32 r28_230;
 				word32 r25_231;
@@ -5052,7 +5292,7 @@ void server_open(word32 r2, int32 * r4, Eq_6947 * r25, word32 dwArg00)
 				word32 r3_239;
 				word32 r7_240;
 				r25_228();
-				code * r25_243 = r25->ptrFBF9BAC;
+				word32 r25_243 = Mem0[r25 + 0x0FBF9BAC:word32];
 				word32 sp_244;
 				word32 r28_245;
 				word32 r25_246;
@@ -5066,7 +5306,7 @@ void server_open(word32 r2, int32 * r4, Eq_6947 * r25, word32 dwArg00)
 				word32 r3_254;
 				word32 r7_255;
 				r25_243();
-				code * r25_258 = r25->ptrFBF9D30;
+				word32 r25_258 = Mem0[r25 + 0x0FBF9D30:word32];
 				word32 sp_259;
 				word32 r28_260;
 				word32 r25_261;
@@ -5080,7 +5320,7 @@ void server_open(word32 r2, int32 * r4, Eq_6947 * r25, word32 dwArg00)
 				word32 r3_269;
 				word32 r7_270;
 				r25_258();
-				code * r25_282 = r25->ptrFBF9CA0;
+				word32 r25_282 = Mem0[r25 + 0x0FBF9CA0:word32];
 				word32 sp_283;
 				word32 r28_284;
 				word32 r25_285;
@@ -5096,18 +5336,18 @@ void server_open(word32 r2, int32 * r4, Eq_6947 * r25, word32 dwArg00)
 				r25_282();
 			}
 			else
-				*r4 = r2_31;
+				Mem299[r4 + 0x00:word32] = r2_31;
 		}
 	}
 	return;
 }
 
-void server_close(int32 * r4, Eq_7199 * r25, word32 dwArg00)
+void server_close(word32 r4, word32 r25, word32 dwArg00)
 {
-	if (r4 != null)
-		if (*r4 > 0x00)
+	if (r4 != 0x00)
+		if (Mem0[r4 + 0x00:word32] > 0x00)
 		{
-			code * r25_30 = r25->ptrFBF98A4;
+			word32 r25_30 = Mem0[r25 + 264214692:word32];
 			word32 sp_32;
 			word32 r28_33;
 			word32 r25_34;
@@ -5117,14 +5357,14 @@ void server_close(int32 * r4, Eq_7199 * r25, word32 dwArg00)
 			word32 r2_38;
 			word32 r3_39;
 			r25_30();
-			*r4 = -0x01;
+			Mem43[r4 + 0x00:word32] = -0x01;
 		}
 	return;
 }
 
-void server_destroy(word32 r4, Eq_7225 * r25, word32 dwArg00)
+void server_destroy(word32 r4, word32 r25, word32 dwArg00)
 {
-	code * r25_25 = r25->ptrFBF9960;
+	word32 r25_25 = Mem0[r25 + 0x0FBF9960:word32];
 	word32 sp_26;
 	word32 r28_27;
 	word32 r25_28;
@@ -5136,7 +5376,7 @@ void server_destroy(word32 r4, Eq_7225 * r25, word32 dwArg00)
 	word32 r6_34;
 	word32 r7_35;
 	r25_25();
-	code * r25_38 = r25->ptrFBF98E8;
+	word32 r25_38 = Mem0[r25 + 0x0FBF98E8:word32];
 	word32 sp_39;
 	word32 r28_40;
 	word32 r25_41;
@@ -5148,7 +5388,7 @@ void server_destroy(word32 r4, Eq_7225 * r25, word32 dwArg00)
 	word32 r6_47;
 	word32 r7_48;
 	r25_38();
-	code * r25_51 = r25->ptrFBF9800;
+	word32 r25_51 = Mem0[r25 + 0x0FBF9800:word32];
 	word32 sp_52;
 	word32 r28_53;
 	word32 r25_54;
@@ -5163,21 +5403,21 @@ void server_destroy(word32 r4, Eq_7225 * r25, word32 dwArg00)
 	return;
 }
 
-void slist_new(word32 r2, Eq_7270 * r25)
+void slist_new(word32 r2, word32 r25)
 {
-	code * r25_15 = r25->ptrFBF98E4;
+	word32 r25_15 = Mem0[r25 + 264214756:word32];
 	word32 sp_16;
 	word32 r28_17;
 	word32 r25_18;
 	word32 ra_19;
 	word32 r30_20;
 	word32 r4_21;
-	Eq_7281 * r2_22;
+	word32 r2_22;
 	word32 r5_23;
 	r25_15();
-	if (r2_22 == null)
+	if (r2_22 == 0x00)
 	{
-		code * r25_41 = r25->ptrFBF989C;
+		word32 r25_41 = Mem0[r25 + 264214684:word32];
 		word32 sp_42;
 		word32 r28_43;
 		word32 r25_44;
@@ -5190,58 +5430,58 @@ void slist_new(word32 r2, Eq_7270 * r25)
 	}
 	else
 	{
-		r2_22->dw0008 = 0x00;
-		r2_22->dw0000 = 0x00;
-		r2_22->dw0004 = 0x00;
+		Mem54[r2_22 + 0x08:word32] = 0x00;
+		Mem56[r2_22 + 0x00:word32] = 0x00;
+		Mem58[r2_22 + 0x04:word32] = 0x00;
 	}
 	return;
 }
 
-void slist_add(Eq_7309 * r4, Eq_7310 * r5, word32 r25, word32 dwArg00, word32 dwArg04)
+void slist_add(word32 r4, word32 r5, word32 r25, word32 dwArg00, word32 dwArg04)
 {
-	if (r4->ptr0008 != null)
+	if (Mem0[r4 + 0x08:word32] != 0x00)
 	{
-		r4->ptr0008->ptr001C = r5;
-		r5->ptr0018 = r4->ptr0008;
+		Mem47[Mem0[r4 + 0x08:word32] + 0x1C:word32] = r5;
+		Mem51[r5 + 0x18:word32] = Mem47[r4 + 0x08:word32];
 	}
-	r5->ptr001C = null;
-	r4->ptr0008 = r5;
-	r4->dw0000 = r4->dw0000 + 0x01;
-	if ((word32) (r4->dw0004 < r4->dw0000) != 0x00)
-		r4->dw0004 = r4->dw0000;
+	Mem19[r5 + 0x1C:word32] = 0x00;
+	Mem22[r4 + 0x08:word32] = r5;
+	Mem28[r4 + 0x00:word32] = Mem22[r4 + 0x00:word32] + 0x01;
+	if ((word32) (Mem28[r4 + 0x04:word32] < Mem28[r4 + 0x00:word32]) != 0x00)
+		Mem43[r4 + 0x04:word32] = Mem28[r4 + 0x00:word32];
 	return;
 }
 
-void slist_remove(Eq_7362 * r4, Eq_7363 * r5, word32 r25, word32 dwArg00, word32 dwArg04)
+void slist_remove(word32 r4, word32 r5, word32 r25, word32 dwArg00, word32 dwArg04)
 {
-	if (r5 != null)
+	if (r5 != 0x00)
 	{
-		if (r5 == r4->ptr0008)
-			r4->ptr0008 = r5->ptr0018;
+		if (r5 == Mem0[r4 + 0x08:word32])
+			Mem43[r4 + 0x08:word32] = Mem0[r5 + 0x18:word32];
 		else
-			r5->ptr001C->ptr0018 = r5->ptr0018;
-		if (r5->ptr0018 != null)
-			r5->ptr0018->ptr001C = r5->ptr001C;
-		r4->dw0000 = r4->dw0000 + -0x01;
+			Mem48[Mem0[r5 + 0x1C:word32] + 0x18:word32] = Mem0[r5 + 0x18:word32];
+		if (Mem0[r5 + 0x18:word32] != 0x00)
+			Mem39[Mem0[r5 + 0x18:word32] + 0x1C:word32] = Mem0[r5 + 0x1C:word32];
+		Mem34[r4 + 0x00:word32] = Mem0[r4 + 0x00:word32] + -0x01;
 	}
 	return;
 }
 
-void slist_find_fd(Eq_7410 * r4, word32 r5, word32 r25, word32 dwArg00, word32 dwArg04)
+void slist_find_fd(word32 r4, word32 r5, word32 r25, word32 dwArg00, word32 dwArg04)
 {
-	Eq_7415 * dwLoc10_18 = r4->ptr0008;
-	while (dwLoc10_18 != null)
+	word32 dwLoc10_18 = Mem0[r4 + 0x08:word32];
+	while (dwLoc10_18 != 0x00)
 	{
-		if (dwLoc10_18->dw0000 == r5)
+		if (Mem0[dwLoc10_18 + 0x00:word32] == r5)
 			return;
-		dwLoc10_18 = dwLoc10_18->ptr0018;
+		dwLoc10_18 = Mem0[dwLoc10_18 + 0x18:word32];
 	}
 	return;
 }
 
-void slist_delete(Eq_7428 * r25, word32 dwArg00, word32 dwArg04)
+void slist_delete(word32 r25, word32 dwArg00, word32 dwArg04)
 {
-	code * r25_20 = r25->ptrFBF94C4;
+	word32 r25_20 = Mem0[r25 + 0x0FBF94C4:word32];
 	word32 sp_21;
 	word32 r28_22;
 	word32 r25_23;
@@ -5253,7 +5493,7 @@ void slist_delete(Eq_7428 * r25, word32 dwArg00, word32 dwArg04)
 	word32 r6_29;
 	word32 r7_30;
 	r25_20();
-	code * r25_40 = r25->ptrFBF9540;
+	word32 r25_40 = Mem0[r25 + 0x0FBF9540:word32];
 	word32 sp_41;
 	word32 r28_42;
 	word32 r25_43;
@@ -5265,7 +5505,7 @@ void slist_delete(Eq_7428 * r25, word32 dwArg00, word32 dwArg04)
 	word32 r6_49;
 	word32 r7_50;
 	r25_40();
-	code * r25_53 = r25->ptrFBF9554;
+	word32 r25_53 = Mem0[r25 + 264213844:word32];
 	word32 sp_54;
 	word32 r28_55;
 	word32 r25_56;
@@ -5280,13 +5520,13 @@ void slist_delete(Eq_7428 * r25, word32 dwArg00, word32 dwArg04)
 	return;
 }
 
-void slist_close_all(Eq_7473 * r4, word32 r25, word32 dwArg00)
+void slist_close_all(word32 r4, word32 r25, word32 dwArg00)
 {
-	code * * r28_21 = r25 + 264246008;
-	Eq_7479 * dwLoc18_18 = r4->ptr0008;
-	while (dwLoc18_18 != null)
+	word32 r28_21 = r25 + 264246008;
+	word32 dwLoc18_18 = Mem0[r4 + 0x08:word32];
+	while (dwLoc18_18 != 0x00)
 	{
-		code * r25_32 = *(r28_21 - 0x7EEC);
+		word32 r25_32 = Mem0[r28_21 - 0x7EEC + 0x00:word32];
 		word32 sp_33;
 		word32 r28_34;
 		word32 r25_35;
@@ -5296,17 +5536,17 @@ void slist_close_all(Eq_7473 * r4, word32 r25, word32 dwArg00)
 		word32 r2_39;
 		r25_32();
 		r28_21 = r25 + 264246008;
-		dwLoc18_18 = dwLoc18_18->ptr0018;
+		dwLoc18_18 = Mem0[dwLoc18_18 + 0x18:word32];
 	}
 	return;
 }
 
-void slist_destroy_all(Eq_7502 * r4, word32 r25, word32 dwArg00)
+void slist_destroy_all(word32 r4, word32 r25, word32 dwArg00)
 {
-	code * * r28_24 = r25 + 264245856;
-	while (r4->dw0008 != 0x00)
+	word32 r28_24 = r25 + 264245856;
+	while (Mem0[r4 + 0x08:word32] != 0x00)
 	{
-		code * r25_39 = *(r28_24 - 0x7F80);
+		word32 r25_39 = Mem0[r28_24 - 0x7F80 + 0x00:word32];
 		word32 sp_40;
 		word32 r28_41;
 		word32 r25_42;
@@ -5321,9 +5561,9 @@ void slist_destroy_all(Eq_7502 * r4, word32 r25, word32 dwArg00)
 	return;
 }
 
-void slist_destroy(Eq_7528 * r25, word32 dwArg00)
+void slist_destroy(word32 r25, word32 dwArg00)
 {
-	code * r25_17 = r25->ptrFBF92DC;
+	word32 r25_17 = Mem0[r25 + 264213212:word32];
 	word32 sp_18;
 	word32 r28_19;
 	word32 r25_20;
@@ -5331,7 +5571,7 @@ void slist_destroy(Eq_7528 * r25, word32 dwArg00)
 	word32 r30_22;
 	word32 r4_23;
 	r25_17();
-	code * r25_26 = r25->ptrFBF935C;
+	word32 r25_26 = Mem0[r25 + 264213340:word32];
 	word32 sp_27;
 	word32 r28_28;
 	word32 r25_29;
@@ -5339,7 +5579,7 @@ void slist_destroy(Eq_7528 * r25, word32 dwArg00)
 	word32 r30_31;
 	word32 r4_32;
 	r25_26();
-	code * r25_35 = r25->ptrFBF91E4;
+	word32 r25_35 = Mem0[r25 + 264212964:word32];
 	word32 sp_36;
 	word32 r28_37;
 	word32 r25_38;
@@ -5352,23 +5592,21 @@ void slist_destroy(Eq_7528 * r25, word32 dwArg00)
 
 void __fixunsdfsi(word32 r25, word32 f12, word32 f13, word32 FCSR)
 {
-	if (1105199104.0 <= f12_f13)
-		;
 	return;
 }
 
-void _fpadd_parts(Eq_7568 * r4, Eq_7569 * r5, Eq_7570 * r6, word32 r25)
+void _fpadd_parts(word32 r4, word32 r5, word32 r6, word32 r25)
 {
-	Eq_7572 r7_9 = r4->t0000;
-	if ((word32) (r7_9 < 0x02) == 0x00)
+	word32 r7_9 = Mem0[r4 + 0x00:word32];
+	if ((word32) (r7_9 <u 0x02) == 0x00)
 	{
-		Eq_7581 r4_29 = r5->t0000;
-		if ((word32) (r4_29 < 0x02) == 0x00)
+		word32 r4_29 = Mem0[r5 + 0x00:word32];
+		if ((word32) (r4_29 <u 0x02) == 0x00)
 			if ((r7_9 ^ 0x04) == 0x00)
 			{
 				if ((r4_29 ^ 0x04) != 0x00)
 					return;
-				if (r4->dw0004 == r5->dw0004)
+				if (Mem0[r4 + 0x04:word32] == Mem0[r5 + 0x04:word32])
 					return;
 			}
 			else if ((r4_29 ^ 0x04) != 0x00)
@@ -5378,20 +5616,20 @@ void _fpadd_parts(Eq_7568 * r4, Eq_7569 * r5, Eq_7570 * r6, word32 r25)
 						return;
 					else
 					{
-						r6->t0000 = r7_9;
-						r6->dw0004 = r4->dw0004;
-						r6->dw0008 = r4->dw0008;
-						r6->t000C = r4->t000C;
-						r6->dw0004 = r4->dw0004 + r5->dw0004;
+						Mem49[r6 + 0x00:word32] = r7_9;
+						Mem53[r6 + 0x04:word32] = Mem49[r4 + 0x04:word32];
+						Mem55[r6 + 0x08:word32] = Mem53[r4 + 0x08:word32];
+						Mem57[r6 + 0x0C:word32] = Mem55[r4 + 0x0C:word32];
+						Mem61[r6 + 0x04:word32] = Mem57[r4 + 0x04:word32] + Mem57[r5 + 0x04:word32];
 						return;
 					}
 				if ((r7_9 ^ 0x02) != 0x00)
 				{
-					int32 r8_140 = r4->dw0008;
-					int32 r7_137 = r5->dw0008;
-					Eq_7638 r10_141 = r4->t000C;
-					int32 r2_164 = r8_140 - r7_137;
-					uint32 r9_136 = r5->dw000C;
+					word32 r8_140 = Mem0[r4 + 0x08:word32];
+					word32 r7_137 = Mem0[r5 + 0x08:word32];
+					word32 r10_141 = Mem0[r4 + 0x0C:word32];
+					word32 r2_164 = r8_140 - r7_137;
+					word32 r9_136 = Mem0[r5 + 0x0C:word32];
 					if (r2_164 < 0x00)
 						r2_164 = 0x00 - r2_164;
 					if ((word32) (r2_164 < 0x0020) != 0x00)
@@ -5403,8 +5641,8 @@ void _fpadd_parts(Eq_7568 * r4, Eq_7569 * r5, Eq_7570 * r6, word32 r25)
 							word32 r7_149 = r8_140 - r7_137;
 							while (true)
 							{
-								uint32 r3_152 = r9_136 >> 0x01;
-								ui32 r2_153 = r9_136 + 0x01;
+								word32 r3_152 = r9_136 >>u 0x01;
+								word32 r2_153 = r9_136 + 0x01;
 								r7_149 = r7_149 + -0x01;
 								if (r7_149 == 0x00)
 									break;
@@ -5421,8 +5659,8 @@ void _fpadd_parts(Eq_7568 * r4, Eq_7569 * r5, Eq_7570 * r6, word32 r25)
 							while (true)
 							{
 								r8_140 = r8_140 + 0x01;
-								uint32 r2_143 = r10_141 >> 0x01;
-								ui32 r3_144 = r10_141.u1;
+								word32 r2_143 = r10_141 >>u 0x01;
+								word32 r3_144 = r10_141 + 0x01;
 								if ((word32) (r8_140 < r7_137) == 0x00)
 									break;
 								r10_141 = r3_144 | r2_143;
@@ -5438,39 +5676,39 @@ void _fpadd_parts(Eq_7568 * r4, Eq_7569 * r5, Eq_7570 * r6, word32 r25)
 						else
 						{
 							r8_140 = r7_137;
-							r10_141.u0 = 0x00;
+							r10_141 = 0x00;
 						}
 					}
-					Eq_7638 r7_103;
-					int32 r4_77 = r4->dw0004;
-					if (r4_77 != r5->dw0004)
+					word32 r7_103;
+					word32 r4_77 = Mem0[r4 + 0x04:word32];
+					if (r4_77 != Mem0[r5 + 0x04:word32])
 					{
-						Eq_7638 r3_127;
+						word32 r3_127;
 						if (r4_77 == 0x00)
 							r3_127 = r10_141 - r9_136;
 						else
 							r3_127 = r9_136 - r10_141;
 						if (r3_127 >= 0x00)
 						{
-							r6->dw0008 = r8_140;
-							r6->t000C = r3_127;
-							r6->dw0004 = 0x00;
+							Mem118[r6 + 0x08:word32] = r8_140;
+							Mem119[r6 + 0x0C:word32] = r3_127;
+							Mem120[r6 + 0x04:word32] = 0x00;
 						}
 						else
 						{
-							r6->dw0004 = 0x01;
-							r6->dw0008 = r8_140;
-							r6->t000C = 0x00 - r3_127;
+							Mem123[r6 + 0x04:word32] = 0x01;
+							Mem124[r6 + 0x08:word32] = r8_140;
+							Mem125[r6 + 0x0C:word32] = 0x00 - r3_127;
 						}
-						r7_103 = r6->t000C;
-						if ((word32) (0x3FFFFFFE < r7_103) == 0x00)
+						r7_103 = Mem0[r6 + 0x0C:word32];
+						if ((word32) (0x3FFFFFFE <u r7_103 + -0x01) == 0x00)
 						{
 							while (true)
 							{
-								r6->dw0008 = r6->dw0008 + -0x01;
-								Eq_7638 r5_104 = r7_103 << 0x01;
-								r6->t000C = r5_104;
-								if ((word32) (0x3FFFFFFE < r5_104.u1) != 0x00)
+								Mem111[r6 + 0x08:word32] = Mem0[r6 + 0x08:word32] + -0x01;
+								word32 r5_104 = r7_103 << 0x01;
+								Mem112[r6 + 0x0C:word32] = r5_104;
+								if ((word32) (0x3FFFFFFE <u r5_104 + -0x01) != 0x00)
 									break;
 								r7_103 = r5_104;
 							}
@@ -5479,34 +5717,34 @@ void _fpadd_parts(Eq_7568 * r4, Eq_7569 * r5, Eq_7570 * r6, word32 r25)
 					}
 					else
 					{
-						r6->dw0004 = r4_77;
-						r6->dw0008 = r8_140;
-						Eq_7638 r2_129 = r10_141.u0;
-						r6->t000C = r2_129;
+						Mem130[r6 + 0x04:word32] = r4_77;
+						Mem131[r6 + 0x08:word32] = r8_140;
+						word32 r2_129 = r10_141 + r9_136;
+						Mem132[r6 + 0x0C:word32] = r2_129;
 						r7_103 = r2_129;
 					}
 					if (r7_103 < 0x00)
 					{
-						r6->t0000.u0 = 0x03;
-						int32 r2_88 = r6->dw0008;
-						r6->t000C = r7_103 | r7_103 >> 0x01;
-						r6->dw0008 = r2_88 + 0x01;
+						Mem87[r6 + 0x00:word32] = 0x03;
+						word32 r2_88 = Mem87[r6 + 0x08:word32];
+						Mem93[r6 + 0x0C:word32] = r7_103 + 0x01 | r7_103 >>u 0x01;
+						Mem94[r6 + 0x08:word32] = r2_88 + 0x01;
 					}
 					else
-						r6->t0000.u0 = 0x03;
+						Mem95[r6 + 0x00:word32] = 0x03;
 				}
 			}
 	}
 	return;
 }
 
-void __addsf3(Eq_7833 * r25)
+void __addsf3(word32 r25)
 {
-	code * r17_11 = r25->ptrFBF8FA4;
+	word32 r17_11 = Mem0[r25 + 0x0FBF8FA4:word32];
 	word32 sp_23;
 	word32 r28_24;
 	word32 r25_25;
-	code * r17_26;
+	word32 r17_26;
 	word32 ra_27;
 	word32 r16_28;
 	word32 r4_29;
@@ -5514,7 +5752,7 @@ void __addsf3(Eq_7833 * r25)
 	word32 f12_31;
 	word32 f14_32;
 	word32 r6_33;
-	bcuipsr0 None_34;
+	bcuiposr0 None_34;
 	word32 r2_35;
 	r17_11();
 	word32 sp_41;
@@ -5528,7 +5766,7 @@ void __addsf3(Eq_7833 * r25)
 	word32 f12_49;
 	word32 f14_50;
 	word32 r6_51;
-	bcuipsr0 None_52;
+	bcuiposr0 None_52;
 	word32 r2_53;
 	r17_26();
 	word32 sp_60;
@@ -5542,10 +5780,10 @@ void __addsf3(Eq_7833 * r25)
 	word32 f12_68;
 	word32 f14_69;
 	word32 r6_70;
-	bcuipsr0 None_71;
+	bcuiposr0 None_71;
 	word32 r2_72;
-	(r25->ptrFBF8E44 + 0x000077E0)();
-	code * r25_74 = r25->ptrFBF8F74;
+	(Mem0[r25 + 264212036:word32] + 0x000077E0)();
+	word32 r25_74 = Mem0[r25 + 0x0FBF8F74:word32];
 	word32 sp_76;
 	word32 r28_77;
 	word32 r25_78;
@@ -5557,19 +5795,19 @@ void __addsf3(Eq_7833 * r25)
 	word32 f12_84;
 	word32 f14_85;
 	word32 r6_86;
-	bcuipsr0 None_87;
+	bcuiposr0 None_87;
 	word32 r2_88;
 	r25_74();
 	return;
 }
 
-void __subsf3(Eq_7899 * r25)
+void __subsf3(word32 r25)
 {
-	code * r17_11 = r25->ptrFBF8EFC;
+	word32 r17_11 = Mem0[r25 + 264212220:word32];
 	word32 sp_23;
 	word32 r28_24;
 	word32 r25_25;
-	code * r17_26;
+	word32 r17_26;
 	word32 ra_27;
 	word32 r16_28;
 	word32 r4_29;
@@ -5578,7 +5816,7 @@ void __subsf3(Eq_7899 * r25)
 	word32 f14_32;
 	word32 r2_33;
 	word32 r6_34;
-	bcuipsr0 None_35;
+	bcuiposr0 None_35;
 	r17_11();
 	word32 sp_41;
 	word32 r28_42;
@@ -5592,7 +5830,7 @@ void __subsf3(Eq_7899 * r25)
 	word32 f14_50;
 	word32 r2_51;
 	word32 r6_52;
-	bcuipsr0 None_53;
+	bcuiposr0 None_53;
 	r17_26();
 	word32 sp_64;
 	word32 r28_65;
@@ -5606,9 +5844,9 @@ void __subsf3(Eq_7899 * r25)
 	word32 f14_73;
 	word32 r2_74;
 	word32 r6_75;
-	bcuipsr0 None_76;
-	(r25->ptrFBF8D9C + 0x000077E0)();
-	code * r25_78 = r25->ptrFBF8ECC;
+	bcuiposr0 None_76;
+	(Mem0[r25 + 264211868:word32] + 0x000077E0)();
+	word32 r25_78 = Mem0[r25 + 264212172:word32];
 	word32 sp_80;
 	word32 r28_81;
 	word32 r25_82;
@@ -5621,18 +5859,18 @@ void __subsf3(Eq_7899 * r25)
 	word32 f14_89;
 	word32 r2_90;
 	word32 r6_91;
-	bcuipsr0 None_92;
+	bcuiposr0 None_92;
 	r25_78();
 	return;
 }
 
-void __mulsf3(Eq_7965 * r25)
+void __mulsf3(word32 r25)
 {
-	code * r17_11 = r25->ptrFBF8E3C;
+	word32 r17_11 = Mem0[r25 + 264212028:word32];
 	word32 sp_23;
 	word32 r28_24;
 	word32 r25_25;
-	code * r17_26;
+	word32 r17_26;
 	word32 ra_27;
 	word32 r16_28;
 	word32 r4_29;
@@ -5663,55 +5901,38 @@ void __mulsf3(Eq_7965 * r25)
 	word32 hi_58;
 	word32 lo_59;
 	r17_26();
-	word32 r2_63 = (word32) (dwLoc48 < 0x02);
+	word32 r2_63 = (word32) (dwLoc48 <u 0x02);
 	if (r2_63 != 0x00)
-		goto l00407C64;
-	if ((word32) (dwLoc38 < 0x02) != 0x00)
-		goto l00407C8C;
+	{
+l00407C64:
+		goto l00407DA4;
+	}
+	if ((word32) (dwLoc38 <u 0x02) != 0x00)
+	{
+l00407C8C:
+		goto l00407DA4;
+	}
 	if ((dwLoc48 ^ 0x04) == 0x00)
 	{
 		if ((dwLoc38 ^ 0x02) != 0x00)
-		{
-l00407C64:
-			goto l00407DA4;
-		}
-l00407DA4:
-		code * r25_71 = r25->ptrFBF8E0C;
-		word32 sp_72;
-		word32 r28_73;
-		word32 r25_74;
-		word32 r17_75;
-		word32 ra_76;
-		word32 r16_77;
-		word32 r4_78;
-		word32 r5_79;
-		word32 f12_80;
-		word32 f14_81;
-		word32 r2_82;
-		word32 r7_83;
-		word32 r3_84;
-		word32 r6_85;
-		word32 hi_86;
-		word32 lo_87;
-		r25_71();
-		return;
+			goto l00407C64;
+		goto l00407DA4;
 	}
 	if ((dwLoc38 ^ 0x04) == 0x00)
 	{
-		if ((dwLoc48 ^ 0x02) == 0x00)
-			goto l00407DA4;
-l00407C8C:
+		if ((dwLoc48 ^ 0x02) != 0x00)
+			goto l00407C8C;
 		goto l00407DA4;
 	}
 	if ((dwLoc48 ^ 0x02) == 0x00)
 		goto l00407C64;
 	if ((dwLoc38 ^ 0x02) == 0x00)
 		goto l00407C8C;
-	uint32 r4_165;
-	Eq_8059 hi_lo_142 = dwLoc3C * dwLoc2C;
-	int32 hi_143 = SLICE(hi_lo_142, word32, 32);
-	uint32 lo_144 = (word32) hi_lo_142;
-	Eq_8067 r6_160 = hi_143 >> 0x00;
+	word32 r4_165;
+	uint64 hi_lo_142 = dwLoc3C *u dwLoc2C;
+	word32 hi_143 = SLICE(hi_lo_142, word32, 32);
+	word32 lo_144 = (word32) hi_lo_142;
+	word32 r6_160 = hi_143 >> 0x00;
 	if (hi_143 >> 0x00 < 0x00)
 	{
 		r4_165 = lo_144;
@@ -5720,49 +5941,70 @@ l00407C8C:
 		{
 			if (r2_209 != 0x00)
 			{
-				r6_160 = r6_160 >> 0x01;
-				r4_165 = r4_165 >> 0x01 | 0x80000000;
+				r6_160 = r6_160 >>u 0x01;
+				r4_165 = r4_165 >>u 0x01 | 0x80000000;
 			}
 			else
-				r6_160 = r6_160 >> 0x01;
+				r6_160 = r6_160 >>u 0x01;
 			if (r6_160 >= 0x00)
 				break;
-			r2_209 = (word32) r6_160;
+			r2_209 = r6_160 + 0x01;
 		}
 	}
 	else
 		r4_165 = lo_144;
-	if ((word32) (0x3FFFFFFF < r6_160) == 0x00)
+	if ((word32) (0x3FFFFFFF <u r6_160) == 0x00)
 	{
 		while (true)
 		{
 			r6_160 = r6_160 << 0x01;
 			if (r4_165 + 0x80000000 != 0x00)
 				r6_160 = r6_160 | 0x01;
-			if ((word32) (0x3FFFFFFF < r6_160) != 0x00)
+			if ((word32) (0x3FFFFFFF <u r6_160) != 0x00)
 				break;
 			r4_165 = r4_165 << 0x01;
 		}
 		r4_165 = r4_165 << 0x01;
 	}
-	if (r6_160 != 0x0040)
-		goto l00407D98;
-	if (r6_160 == 0x00)
-		if (r4_165 == 0x00)
+	if (r6_160 + 0x7F == 0x0040)
+	{
+		if (r6_160 + 0x80 != 0x00)
 		{
-l00407D98:
-			goto l00407DA4;
+l00407D90:
+			goto l00407D98;
 		}
-	goto l00407D98;
+		if (r4_165 != 0x00)
+			goto l00407D90;
+	}
+l00407DA4:
+	word32 r25_71 = Mem0[r25 + 0x0FBF8E0C:word32];
+	word32 sp_72;
+	word32 r28_73;
+	word32 r25_74;
+	word32 r17_75;
+	word32 ra_76;
+	word32 r16_77;
+	word32 r4_78;
+	word32 r5_79;
+	word32 f12_80;
+	word32 f14_81;
+	word32 r2_82;
+	word32 r7_83;
+	word32 r3_84;
+	word32 r6_85;
+	word32 hi_86;
+	word32 lo_87;
+	r25_71();
+	return;
 }
 
-void __divsf3(Eq_8121 * r25)
+void __divsf3(word32 r25)
 {
-	code * r17_11 = r25->ptrFBF8C0C;
+	word32 r17_11 = Mem0[r25 + 0x0FBF8C0C:word32];
 	word32 sp_23;
 	word32 r28_24;
 	word32 r25_25;
-	code * r17_26;
+	word32 r17_26;
 	word32 ra_27;
 	word32 r16_28;
 	word32 r4_29;
@@ -5791,26 +6033,11 @@ void __divsf3(Eq_8121 * r25)
 	word32 r3_56;
 	word32 r7_57;
 	r17_26();
-	word32 r2_62 = (word32) (dwLoc38 < 0x02);
+	word32 r2_62 = (word32) (dwLoc38 <u 0x02);
 	if (r2_62 != 0x00)
-		goto l00407F3C;
-	if ((word32) (dwLoc28 < 0x02) != 0x00)
-		goto l00407F3C;
-	if ((dwLoc38 ^ 0x04) == 0x00)
-		goto l00407E74;
-	if ((dwLoc38 ^ 0x02) == 0x00)
-	{
-l00407E74:
-		if (dwLoc38 != dwLoc28)
-			;
-		goto l00407F3C;
-	}
-	if ((dwLoc28 ^ 0x04) == 0x00)
-		goto l00407F3C;
-	if ((dwLoc28 ^ 0x02) == 0x00)
 	{
 l00407F3C:
-		code * r25_67 = r25->ptrFBF8BDC;
+		word32 r25_67 = Mem0[r25 + 264211420:word32];
 		word32 sp_68;
 		word32 r28_69;
 		word32 r25_70;
@@ -5829,15 +6056,28 @@ l00407F3C:
 		r25_67();
 		return;
 	}
-	uint32 r4_123 = dwLoc2C;
-	word32 r5_125 = (word32) (dwLoc2C < dwLoc1C);
+	if ((word32) (dwLoc28 <u 0x02) != 0x00)
+		goto l00407F3C;
+	if ((dwLoc38 ^ 0x04) == 0x00)
+	{
+l00407E74:
+		goto l00407F3C;
+	}
+	if ((dwLoc38 ^ 0x02) == 0x00)
+		goto l00407E74;
+	if ((dwLoc28 ^ 0x04) == 0x00)
+		goto l00407F3C;
+	if ((dwLoc28 ^ 0x02) == 0x00)
+		goto l00407F3C;
+	word32 r4_123 = dwLoc2C;
+	word32 r5_125 = (word32) (dwLoc2C <u dwLoc1C);
 	if (r5_125 != 0x00)
 	{
 		r4_123 = dwLoc2C << 0x01;
-		r5_125 = (word32) (dwLoc2C << 0x01 < dwLoc1C);
+		r5_125 = (word32) (dwLoc2C << 0x01 <u dwLoc1C);
 	}
-	uint32 r2_129 = 0x40000000;
-	ui32 r6_130 = 0x00;
+	word32 r2_129 = 0x40000000;
+	word32 r6_130 = 0x00;
 	while (true)
 	{
 		if (r5_125 == 0x00)
@@ -5846,50 +6086,51 @@ l00407F3C:
 			r4_123 = r4_123 - dwLoc1C;
 		}
 		r4_123 = r4_123 << 0x01;
-		r2_129 = r2_129 >> 0x01;
+		r2_129 = r2_129 >>u 0x01;
 		if (r2_129 == 0x00)
 			break;
-		r5_125 = (word32) (r4_123 < dwLoc1C);
+		r5_125 = (word32) (r4_123 <u dwLoc1C);
 	}
-	if (r6_130 + 0x7F != 0x0040)
-		goto l00407F34;
-	word32 r2_146 = r6_130 + 0x80;
-	if (r2_146 == 0x00)
-		if (r4_123 == 0x00)
+	if (r6_130 + 0x7F == 0x0040)
+	{
+		word32 r2_146 = r6_130 + 0x80;
+		if (r2_146 != 0x00)
 		{
-l00407F34:
-			goto l00407F3C;
+l00407F30:
+			goto l00407F34;
 		}
-	goto l00407F34;
+		if (r4_123 != 0x00)
+			goto l00407F30;
+	}
+l00407F34:
+	goto l00407F3C;
 }
 
-void __floatsisf(uint32 r4, Eq_8246 * r25)
+void __floatsisf(word32 r4, word32 r25)
 {
-	if (r4 == 0x00)
-		;
-	else
+	if (r4 != 0x00)
 	{
-		uint32 dwLoc0C_60;
-		if (r4 >> 0x1F != 0x00)
+		word32 dwLoc0C_60;
+		if (r4 >>u 0x1F != 0x00)
 		{
 			if (r4 == 0x80000000)
 				return;
-			uint32 r2_83 = 0x00 - r4;
+			word32 r2_83 = 0x00 - r4;
 			dwLoc0C_60 = r2_83;
 		}
 		else
 			dwLoc0C_60 = r4;
-		uint32 r6_63 = dwLoc0C_60;
-		if ((word32) (0x3FFFFFFF < dwLoc0C_60) == 0x00)
+		word32 r6_63 = dwLoc0C_60;
+		if ((word32) (0x3FFFFFFF <u dwLoc0C_60) == 0x00)
 			while (true)
 			{
-				uint32 r3_72 = r6_63 << 0x01;
-				if ((word32) (0x3FFFFFFF < r3_72) != 0x00)
+				word32 r3_72 = r6_63 << 0x01;
+				if ((word32) (0x3FFFFFFF <u r3_72) != 0x00)
 					break;
 				r6_63 = r3_72;
 			}
 	}
-	code * r25_34 = r25->ptrFBF8A3C;
+	word32 r25_34 = Mem0[r25 + 264211004:word32];
 	word32 sp_40;
 	word32 r28_41;
 	word32 r25_42;
@@ -5905,9 +6146,9 @@ void __floatsisf(uint32 r4, Eq_8246 * r25)
 	return;
 }
 
-void __fixsfsi(Eq_8288 * r25)
+void __fixsfsi(word32 r25)
 {
-	code * r25_9 = r25->ptrFBF899C;
+	word32 r25_9 = Mem0[r25 + 264210844:word32];
 	word32 sp_16;
 	word32 r28_17;
 	word32 r25_18;
@@ -5918,28 +6159,22 @@ void __fixsfsi(Eq_8288 * r25)
 	word32 r3_23;
 	word32 r2_24;
 	r25_9();
-	if ((dwLoc20 ^ 0x02) == 0x00)
-		return;
-	if ((word32) (dwLoc20 < 0x02) != 0x00)
-		return;
-	if ((dwLoc20 ^ 0x04) == 0x00)
-		return;
-	else
+	if ((dwLoc20 ^ 0x02) != 0x00)
 	{
+		if ((word32) (dwLoc20 <u 0x02) != 0x00)
+			return;
+		if ((dwLoc20 ^ 0x04) == 0x00)
+			return;
 		if (dwLoc18 >= 0x00)
-		{
 			if ((word32) (dwLoc18 < 0x001F) == 0x00)
 				return;
-			if (dwLoc1C != 0x00)
-				;
-		}
-		return;
 	}
+	return;
 }
 
-void __extendsfdf2(Eq_8327 * r25)
+void __extendsfdf2(word32 r25)
 {
-	code * r25_11 = r25->ptrFBF88DC;
+	word32 r25_11 = Mem0[r25 + 264210652:word32];
 	word32 sp_16;
 	word32 r28_17;
 	word32 r25_18;
@@ -5952,7 +6187,7 @@ void __extendsfdf2(Eq_8327 * r25)
 	word32 r7_25;
 	word32 r6_26;
 	r25_11();
-	code * r25_41 = r25->ptrFBF8968;
+	word32 r25_41 = Mem0[r25 + 0x0FBF8968:word32];
 	word32 sp_44;
 	word32 r28_45;
 	word32 r25_46;
@@ -5968,198 +6203,200 @@ void __extendsfdf2(Eq_8327 * r25)
 	return;
 }
 
-void _fpadd_parts(Eq_8358 * r4, Eq_8359 * r5, Eq_8360 * r6, word32 r25)
+void _fpadd_parts(word32 r4, word32 r5, word32 r6, word32 r25)
 {
-	Eq_8362 r7_9 = r4->t0000;
-	if ((word32) (r7_9 < 0x02) != 0x00)
-		return;
-	Eq_8371 r4_42 = r5->t0000;
-	if ((word32) (r4_42 < 0x02) != 0x00)
-		return;
-	if ((r7_9 ^ 0x04) == 0x00)
+	word32 r7_9 = Mem0[r4 + 0x00:word32];
+	if ((word32) (r7_9 <u 0x02) == 0x00)
 	{
-		if ((r4_42 ^ 0x04) != 0x00)
+		word32 r4_42 = Mem0[r5 + 0x00:word32];
+		if ((word32) (r4_42 <u 0x02) != 0x00)
 			return;
-		if (r4->dw0004 == r5->dw0004)
+		if ((r7_9 ^ 0x04) == 0x00)
+		{
+			if ((r4_42 ^ 0x04) != 0x00)
+				return;
+			if (Mem0[r4 + 0x04:word32] == Mem0[r5 + 0x04:word32])
+				return;
 			return;
-		return;
-	}
-	if ((r4_42 ^ 0x04) == 0x00)
-		return;
-	if ((r4_42 ^ 0x02) == 0x00)
+		}
+		if ((r4_42 ^ 0x04) == 0x00)
+			return;
+		if ((r4_42 ^ 0x02) == 0x00)
+			if ((r7_9 ^ 0x02) != 0x00)
+				return;
+			else
+			{
+				Mem66[r6 + 0x00:word32] = r7_9;
+				Mem69[r6 + 0x04:word32] = Mem66[r4 + 0x04:word32];
+				Mem71[r6 + 0x08:word32] = Mem69[r4 + 0x08:word32];
+				Mem73[r6 + 0x0C:word32] = Mem71[r4 + 0x0C:word32];
+				Mem75[r6 + 0x10:word32] = Mem73[r4 + 0x10:word32];
+				Mem77[r6 + 0x14:word32] = Mem75[r4 + 0x14:word32];
+				Mem81[r6 + 0x04:word32] = Mem77[r4 + 0x04:word32] + Mem77[r5 + 0x04:word32];
+				return;
+			}
 		if ((r7_9 ^ 0x02) != 0x00)
-			return;
-		else
 		{
-			r6->t0000 = r7_9;
-			r6->dw0004 = r4->dw0004;
-			r6->dw0008 = r4->dw0008;
-			r6->dw000C = r4->dw000C;
-			r6->t0010 = r4->t0010;
-			r6->t0014 = r4->t0014;
-			r6->dw0004 = r4->dw0004 + r5->dw0004;
-			return;
-		}
-	if ((r7_9 ^ 0x02) == 0x00)
-		return;
-	int32 r12_251 = r4->dw0008;
-	int32 r7_243 = r5->dw0008;
-	Eq_8434 r10_252 = r4->t0010;
-	Eq_8440 r11_253 = r4->t0014;
-	int32 r2_291 = r12_251 - r7_243;
-	uint32 r8_241 = r5->dw0010;
-	Eq_8440 r9_100 = r5->t0014;
-	if (r2_291 < 0x00)
-		r2_291 = 0x00 - r2_291;
-	if ((word32) (r2_291 < 0x0040) != 0x00)
-	{
-		word32 r2_238 = (word32) (r7_243 < r12_251);
-		word32 r2_248;
-		if (r2_238 != 0x00)
-		{
-			word32 r7_268 = r12_251 - r7_243;
-			while (true)
+			word32 r12_251 = Mem0[r4 + 0x08:word32];
+			word32 r7_243 = Mem0[r5 + 0x08:word32];
+			word32 r10_252 = Mem0[r4 + 0x10:word32];
+			word32 r11_253 = Mem0[r4 + 0x14:word32];
+			word32 r2_291 = r12_251 - r7_243;
+			word32 r8_241 = Mem0[r5 + 0x10:word32];
+			word32 r9_100 = Mem0[r5 + 0x14:word32];
+			if (r2_291 < 0x00)
+				r2_291 = 0x00 - r2_291;
+			if ((word32) (r2_291 < 0x0040) != 0x00)
 			{
-				ui32 r5_275 = r9_100 >> 0x01 | r8_241 << 0x1F;
-				ui32 r3_276 = r9_100.u1;
-				r7_268 = r7_268 + -0x01;
-				r8_241 = r8_241 | r8_241 >> 0x01;
-				if (r7_268 == 0x00)
-					break;
-				r9_100 = r3_276 | r5_275;
+				word32 r2_238 = (word32) (r7_243 < r12_251);
+				word32 r2_248;
+				if (r2_238 != 0x00)
+				{
+					word32 r7_268 = r12_251 - r7_243;
+					while (true)
+					{
+						word32 r5_275 = r9_100 >>u 0x01 | r8_241 << 0x1F;
+						word32 r3_276 = r9_100 + 0x01;
+						r7_268 = r7_268 + -0x01;
+						r8_241 = r8_241 | r8_241 >>u 0x01;
+						if (r7_268 == 0x00)
+							break;
+						r9_100 = r3_276 | r5_275;
+					}
+					r9_100 = r3_276 | r5_275;
+					r7_243 = r12_251;
+					r2_248 = (word32) (r12_251 < r12_251);
+				}
+				else
+					r2_248 = (word32) (r12_251 < r7_243);
+				if (r2_248 != 0x00)
+				{
+					while (true)
+					{
+						r12_251 = r12_251 + 0x01;
+						word32 r5_257 = r11_253 >>u 0x01 | r10_252 << 0x1F;
+						word32 r3_260 = r11_253 + 0x01;
+						r10_252 = r10_252 | r10_252 >>u 0x01;
+						if ((word32) (r12_251 < r7_243) == 0x00)
+							break;
+						r11_253 = r3_260 | r5_257;
+					}
+					r11_253 = r3_260 | r5_257;
+				}
 			}
-			r9_100 = r3_276 | r5_275;
-			r7_243 = r12_251;
-			r2_248 = (word32) (r12_251 < r12_251);
-		}
-		else
-			r2_248 = (word32) (r12_251 < r7_243);
-		if (r2_248 != 0x00)
-		{
-			while (true)
+			else
 			{
-				r12_251 = r12_251 + 0x01;
-				ui32 r5_257 = r11_253 >> 0x01 | r10_252 << 0x1F;
-				ui32 r3_260 = r11_253.u1;
-				r10_252 = r10_252 | r10_252 >> 0x01;
-				if ((word32) (r12_251 < r7_243) == 0x00)
-					break;
-				r11_253 = r3_260 | r5_257;
+				word32 r2_285 = (word32) (r7_243 < r12_251);
+				if (r2_285 != 0x00)
+				{
+					r8_241 = 0x00;
+					r9_100 = 0x00;
+				}
+				else
+				{
+					r12_251 = r7_243;
+					r10_252 = 0x00;
+					r11_253 = 0x00;
+				}
 			}
-			r11_253 = r3_260 | r5_257;
-		}
-	}
-	else
-	{
-		word32 r2_285 = (word32) (r7_243 < r12_251);
-		if (r2_285 != 0x00)
-		{
-			r8_241 = 0x00;
-			r9_100.u0 = 0x00;
-		}
-		else
-		{
-			r12_251 = r7_243;
-			r10_252.u0 = 0x00;
-			r11_253.u0 = 0x00;
-		}
-	}
-	int32 r6_105 = r4->dw0004;
-	if (r6_105 != r5->dw0004)
-	{
-		word32 r2_144 = (word32) (r9_100 < r11_253);
-		Eq_8434 r4_148;
-		Eq_8440 r5_145 = r9_100 - r11_253;
-		word32 r4_146 = r8_241 - r10_252;
-		if (r6_105 == 0x00)
-		{
-			r5_145 = r11_253 - r9_100;
-			r4_148 = r10_252 - r8_241 - (word32) (r11_253 < r9_100);
-		}
-		else
-			r4_148 = r4_146 - r2_144;
-		if (r4_148 >= 0x00)
-		{
-			r6->dw0008 = r12_251;
-			r6->t0010 = r4_148;
-			r6->t0014 = r5_145;
-			r6->dw0004 = 0x00;
-		}
-		else
-		{
-			r6->dw0004 = 0x01;
-			r6->dw0008 = r12_251;
-			Eq_8440 r5_215 = 0x00 - r5_145;
-			r6->t0010 = 0x00 - r4_148 - (word32) (0x00 < r5_215);
-			r6->t0014 = r5_215;
-		}
-		Eq_8440 r9_151 = r6->t0014;
-		Eq_8434 r8_150 = r6->t0010;
-		uint32 r4_156 = r8_150;
-		if ((word32) (0x0FFFFFFF < r4_156) != 0x00)
-			goto l00408490;
-		uint32 r2_167;
-		if (r4_156 == 0x0FFFFFFF)
-		{
-			if ((word32) (r9_151 < 0x00) == 0x00)
+			word32 r6_105 = Mem0[r4 + 0x04:word32];
+			if (r6_105 == Mem0[r5 + 0x04:word32])
+			{
+				Mem234[r6 + 0x04:word32] = r6_105;
+				Mem235[r6 + 0x08:word32] = r12_251;
+				word32 r3_230 = r11_253 + r9_100;
+				Mem236[r6 + 0x10:word32] = r10_252 + r8_241 + (word32) (r3_230 <u r9_100);
+				Mem237[r6 + 0x14:word32] = r3_230;
 				goto l00408490;
+			}
+			word32 r2_144 = (word32) (r9_100 <u r11_253);
+			word32 r4_148;
+			word32 r5_145 = r9_100 - r11_253;
+			word32 r4_146 = r8_241 - r10_252;
+			if (r6_105 == 0x00)
+			{
+				r5_145 = r11_253 - r9_100;
+				r4_148 = r10_252 - r8_241 - (word32) (r11_253 <u r9_100);
+			}
+			else
+				r4_148 = r4_146 - r2_144;
+			if (r4_148 >= 0x00)
+			{
+				Mem210[r6 + 0x08:word32] = r12_251;
+				Mem211[r6 + 0x10:word32] = r4_148;
+				Mem212[r6 + 0x14:word32] = r5_145;
+				Mem213[r6 + 0x04:word32] = 0x00;
+			}
+			else
+			{
+				Mem219[r6 + 0x04:word32] = 0x01;
+				Mem220[r6 + 0x08:word32] = r12_251;
+				word32 r5_215 = 0x00 - r5_145;
+				Mem221[r6 + 0x10:word32] = 0x00 - r4_148 - (word32) (0x00 <u r5_215);
+				Mem222[r6 + 0x14:word32] = r5_215;
+			}
+			word32 r9_151 = Mem0[r6 + 0x14:word32];
+			word32 r8_150 = Mem0[r6 + 0x10:word32];
+			word32 r4_156 = r8_150 + -0x01 + (word32) (r9_151 <u 0x00);
+			if ((word32) (0x0FFFFFFF <u r4_156) == 0x00)
+			{
+				word32 r2_167;
+				if (r4_156 == 0x0FFFFFFF)
+				{
+					if ((word32) (r9_151 <u 0x00) == 0x00)
+						goto l00408490;
 l0040840C:
-			r2_167 = r9_151 >> 0x1F;
-		}
-		else
-			r2_167 = r9_151 >> 0x1F;
-		ui32 r6_168 = r8_150 << 0x01;
-		while (true)
-		{
-			Eq_8440 r7_176 = r9_151 << 0x01;
-			Eq_8434 r6_174 = r6_168 | r2_167;
-			r6->dw0008 = r6->dw0008 + -0x01;
-			r6->t0010 = r6_174;
-			r6->t0014 = r7_176;
-			uint32 r4_181 = r6_174;
-			if ((word32) (0x0FFFFFFF < r4_181) != 0x00)
-				break;
-			word32 r11_188 = (word32) (r7_176 < 0x00);
-			r8_150 = r6_174;
-			if (r4_181 != 0x0FFFFFFF)
-			{
-				r9_151 = r7_176;
-				goto l0040840C;
+					r2_167 = r9_151 >>u 0x1F;
+				}
+				else
+					r2_167 = r9_151 >>u 0x1F;
+				word32 r6_168 = r8_150 << 0x01;
+				while (true)
+				{
+					word32 r7_176 = r9_151 << 0x01;
+					word32 r6_174 = r6_168 | r2_167;
+					Mem185[r6 + 0x08:word32] = Mem0[r6 + 0x08:word32] + -0x01;
+					Mem186[r6 + 0x10:word32] = r6_174;
+					Mem187[r6 + 0x14:word32] = r7_176;
+					word32 r4_181 = r6_174 + -0x01 + (word32) (r7_176 <u 0x00);
+					if ((word32) (0x0FFFFFFF <u r4_181) != 0x00)
+						break;
+					word32 r11_188 = (word32) (r7_176 <u 0x00);
+					r8_150 = r6_174;
+					if (r4_181 != 0x0FFFFFFF)
+					{
+						r9_151 = r7_176;
+						goto l0040840C;
+					}
+					r9_151 = r7_176;
+					if (r11_188 == 0x00)
+						break;
+					r2_167 = r7_176 >>u 0x1F;
+					r6_168 = r6_174 << 0x01;
+				}
 			}
-			r9_151 = r7_176;
-			if (r11_188 == 0x00)
-				goto l00408490;
-			r2_167 = r7_176 >> 0x1F;
-			r6_168 = r6_174 << 0x01;
+l00408490:
+			if ((word32) (0x1FFFFFFF <u Mem0[r6 + 0x10:word32]) != 0x00)
+			{
+				Mem125[r6 + 0x00:word32] = 0x03;
+				word32 r4_126 = Mem125[r6 + 0x10:word32];
+				word32 r5_127 = Mem125[r6 + 0x14:word32];
+				word32 r6_135 = Mem125[r6 + 0x08:word32];
+				Mem140[r6 + 0x10:word32] = r4_126 | r4_126 >>u 0x01;
+				Mem141[r6 + 0x14:word32] = r5_127 + 0x01 | (r5_127 >>u 0x01 | r4_126 << 0x1F);
+				Mem142[r6 + 0x08:word32] = r6_135 + 0x01;
+			}
+			else
+				Mem143[r6 + 0x00:word32] = 0x03;
+			return;
 		}
 	}
-	else
-	{
-		r6->dw0004 = r6_105;
-		r6->dw0008 = r12_251;
-		word32 r3_230 = r11_253 + r9_100;
-		r6->t0010 = r10_252.u0 + (word32) (r3_230 < r9_100);
-		r6->t0014 = r3_230;
-	}
-l00408490:
-	if ((word32) (0x1FFFFFFF < r6->t0010) != 0x00)
-	{
-		r6->t0000.u0 = 0x03;
-		Eq_8434 r4_126 = r6->t0010;
-		Eq_8440 r5_127 = r6->t0014;
-		int32 r6_135 = r6->dw0008;
-		r6->t0010 = r4_126 | r4_126 >> 0x01;
-		r6->t0014 = r5_127.u1 | (r5_127 >> 0x01 | r4_126 << 0x1F);
-		r6->dw0008 = r6_135 + 0x01;
-	}
-	else
-		r6->t0000.u0 = 0x03;
 	return;
 }
 
-void __adddf3(Eq_8757 * r25)
+void __adddf3(word32 r25)
 {
-	code * r18_22 = r25->ptrFBF8514;
+	word32 r18_22 = Mem0[r25 + 264209684:word32];
 	word32 sp_35;
 	word32 r28_36;
 	word32 r25_37;
@@ -6172,13 +6409,13 @@ void __adddf3(Eq_8757 * r25)
 	word32 r6_44;
 	word32 f15_45;
 	word32 r8_46;
-	code * r18_47;
+	word32 r18_47;
 	word32 r17_48;
 	word32 ra_49;
 	word32 r16_50;
 	word32 r4_51;
 	word32 r5_52;
-	bcuipsr0 None_53;
+	bcuiposr0 None_53;
 	r18_22();
 	word32 sp_59;
 	word32 r28_60;
@@ -6198,7 +6435,7 @@ void __adddf3(Eq_8757 * r25)
 	word32 r16_74;
 	word32 r4_75;
 	word32 r5_76;
-	bcuipsr0 None_77;
+	bcuiposr0 None_77;
 	r18_47();
 	word32 sp_84;
 	word32 r28_85;
@@ -6218,9 +6455,9 @@ void __adddf3(Eq_8757 * r25)
 	word32 r16_99;
 	word32 r4_100;
 	word32 r5_101;
-	bcuipsr0 None_102;
-	(r25->ptrFBF8384 + -32384)();
-	code * r25_104 = r25->ptrFBF8398;
+	bcuiposr0 None_102;
+	(Mem0[r25 + 264209284:word32] + -32384)();
+	word32 r25_104 = Mem0[r25 + 0x0FBF8398:word32];
 	word32 sp_106;
 	word32 r28_107;
 	word32 r25_108;
@@ -6239,14 +6476,14 @@ void __adddf3(Eq_8757 * r25)
 	word32 r16_121;
 	word32 r4_122;
 	word32 r5_123;
-	bcuipsr0 None_124;
+	bcuiposr0 None_124;
 	r25_104();
 	return;
 }
 
-void __subdf3(Eq_8847 * r25)
+void __subdf3(word32 r25)
 {
-	code * r18_22 = r25->ptrFBF8444;
+	word32 r18_22 = Mem0[r25 + 0x0FBF8444:word32];
 	word32 sp_35;
 	word32 r28_36;
 	word32 r25_37;
@@ -6259,13 +6496,13 @@ void __subdf3(Eq_8847 * r25)
 	word32 r6_44;
 	word32 f15_45;
 	word32 r8_46;
-	code * r18_47;
+	word32 r18_47;
 	word32 r17_48;
 	word32 ra_49;
 	word32 r16_50;
 	word32 r4_51;
 	word32 r5_52;
-	bcuipsr0 None_53;
+	bcuiposr0 None_53;
 	r18_22();
 	word32 sp_59;
 	word32 r28_60;
@@ -6285,7 +6522,7 @@ void __subdf3(Eq_8847 * r25)
 	word32 r16_74;
 	word32 r4_75;
 	word32 r5_76;
-	bcuipsr0 None_77;
+	bcuiposr0 None_77;
 	r18_47();
 	word32 sp_88;
 	word32 r28_89;
@@ -6305,9 +6542,9 @@ void __subdf3(Eq_8847 * r25)
 	word32 r16_103;
 	word32 r4_104;
 	word32 r5_105;
-	bcuipsr0 None_106;
-	(r25->ptrFBF82B4 + -32384)();
-	code * r25_108 = r25->ptrFBF82C8;
+	bcuiposr0 None_106;
+	(Mem0[r25 + 0x0FBF82B4:word32] + -32384)();
+	word32 r25_108 = Mem0[r25 + 264209096:word32];
 	word32 sp_110;
 	word32 r28_111;
 	word32 r25_112;
@@ -6326,14 +6563,14 @@ void __subdf3(Eq_8847 * r25)
 	word32 r16_125;
 	word32 r4_126;
 	word32 r5_127;
-	bcuipsr0 None_128;
+	bcuiposr0 None_128;
 	r25_108();
 	return;
 }
 
-void __muldf3(Eq_8937 * r25)
+void __muldf3(word32 r25)
 {
-	code * r18_22 = r25->ptrFBF8360;
+	word32 r18_22 = Mem0[r25 + 0x0FBF8360:word32];
 	word32 sp_43;
 	word32 r28_44;
 	word32 r25_45;
@@ -6346,7 +6583,7 @@ void __muldf3(Eq_8937 * r25)
 	word32 r6_52;
 	word32 f15_53;
 	word32 r8_54;
-	code * r18_55;
+	word32 r18_55;
 	word32 r16_56;
 	word32 ra_57;
 	word32 r22_58;
@@ -6400,85 +6637,52 @@ void __muldf3(Eq_8937 * r25)
 	word32 r12_110;
 	word32 r15_111;
 	r18_55();
-	word32 r2_115 = (word32) (dwLoc88 < 0x02);
+	word32 r2_115 = (word32) (dwLoc88 <u 0x02);
 	if (r2_115 != 0x00)
-		goto l004087A8;
-	if ((word32) (dwLoc70 < 0x02) != 0x00)
-		goto l004087D0;
+	{
+l004087A8:
+		goto l00408B58;
+	}
+	if ((word32) (dwLoc70 <u 0x02) != 0x00)
+	{
+l004087D0:
+		goto l00408B58;
+	}
 	if ((dwLoc88 ^ 0x04) == 0x00)
 	{
 		if ((dwLoc70 ^ 0x02) != 0x00)
-		{
-l004087A8:
-			goto l00408B58;
-		}
-l00408B58:
-		code * r25_126 = r25->ptrFBF81E4;
-		word32 sp_127;
-		word32 r28_128;
-		word32 r25_129;
-		word32 r3_130;
-		word32 f12_131;
-		word32 r2_132;
-		word32 f13_133;
-		word32 r7_134;
-		word32 f14_135;
-		word32 r6_136;
-		word32 f15_137;
-		word32 r8_138;
-		word32 r18_139;
-		word32 r16_140;
-		word32 ra_141;
-		word32 r22_142;
-		word32 r21_143;
-		word32 r20_144;
-		word32 r19_145;
-		word32 r17_146;
-		word32 r4_147;
-		word32 r5_148;
-		word32 r11_149;
-		word32 r9_150;
-		word32 hi_151;
-		word32 lo_152;
-		word32 r10_153;
-		word32 r13_154;
-		word32 r14_155;
-		word32 r24_156;
-		word32 r12_157;
-		word32 r15_158;
-		r25_126();
-		return;
+			goto l004087A8;
+		goto l00408B58;
 	}
 	if ((dwLoc70 ^ 0x04) == 0x00)
 	{
-		if ((dwLoc88 ^ 0x02) == 0x00)
-			goto l00408B58;
-l004087D0:
+		if ((dwLoc88 ^ 0x02) != 0x00)
+			goto l004087D0;
 		goto l00408B58;
 	}
 	if ((dwLoc88 ^ 0x02) == 0x00)
 		goto l004087A8;
 	if ((dwLoc70 ^ 0x02) == 0x00)
 		goto l004087D0;
-	uint32 r16_296;
-	Eq_9079 hi_lo_244 = (dwLoc60 >> 0x00) * dwLoc74;
-	Eq_9087 hi_lo_250 = dwLoc5C * (dwLoc78 >> 0x00);
-	uint32 lo_246 = (word32) hi_lo_244;
-	uint32 lo_252 = (word32) hi_lo_250;
-	uint32 r21_264 = lo_246 + lo_252;
-	uint32 r24_259 = SLICE(hi_lo_244, word32, 32) + (word32) ((dwLoc60 >> 0x00) *s dwLoc78) + (word32) (dwLoc74 *s 0x00);
-	Eq_9112 hi_lo_275 = dwLoc5C * dwLoc74;
-	Eq_9116 hi_lo_281 = (dwLoc60 >> 0x00) * (dwLoc78 >> 0x00);
-	word32 lo_288 = (word32) ((dwLoc78 >> 0x00) *s 0x00);
-	uint32 r20_269 = r24_259 + ((SLICE(hi_lo_250, word32, 32) + (word32) (dwLoc5C *s 0x00)) + (word32) ((dwLoc78 >> 0x00) *s dwLoc60)) + (word32) (r21_264 < lo_252);
-	int32 dwLoc30_238 = 0x00;
-	int32 dwLoc2C_239 = 0x00;
-	Eq_9144 lo_277 = (word32) hi_lo_275;
-	word32 r16_280 = SLICE(hi_lo_275, word32, 32) + (word32) (dwLoc5C *s dwLoc78);
-	uint32 lo_283 = (word32) hi_lo_281;
-	word32 r18_290 = SLICE(hi_lo_281, word32, 32) + (word32) ((dwLoc60 >> 0x00) *s 0x00) + lo_288;
-	word32 lo_292 = (word32) (dwLoc74 *s dwLoc60);
-	if ((word32) (r20_269 < r24_259) != 0x00)
+	word32 r16_296;
+	int64 hi_lo_244 = (dwLoc60 >>u 0x00) *u (dwLoc74 + -0x01);
+	int64 hi_lo_250 = (dwLoc5C + -0x01) *u (dwLoc78 >>u 0x00);
+	word32 lo_246 = (word32) hi_lo_244;
+	word32 lo_252 = (word32) hi_lo_250;
+	word32 r21_264 = lo_246 + lo_252;
+	word32 r24_259 = SLICE(hi_lo_244, word32, 32) + (word32) ((dwLoc60 >>u 0x00) *s dwLoc78) + (word32) ((dwLoc74 + -0x01) *s 0x00);
+	int64 hi_lo_275 = (dwLoc5C + -0x01) *u (dwLoc74 + -0x01);
+	int64 hi_lo_281 = (dwLoc60 >>u 0x00) *u (dwLoc78 >>u 0x00);
+	word32 lo_288 = (word32) ((dwLoc78 >>u 0x00) *s 0x00);
+	word32 r20_269 = r24_259 + ((SLICE(hi_lo_250, word32, 32) + (word32) ((dwLoc5C + -0x01) *s 0x00)) + (word32) ((dwLoc78 >>u 0x00) *s dwLoc60)) + (word32) (r21_264 <u lo_252);
+	word32 dwLoc30_238 = 0x00;
+	word32 dwLoc2C_239 = 0x00;
+	word32 lo_277 = (word32) hi_lo_275;
+	word32 r16_280 = SLICE(hi_lo_275, word32, 32) + (word32) ((dwLoc5C + -0x01) *s dwLoc78);
+	word32 lo_283 = (word32) hi_lo_281;
+	word32 r18_290 = SLICE(hi_lo_281, word32, 32) + (word32) ((dwLoc60 >>u 0x00) *s 0x00) + lo_288;
+	word32 lo_292 = (word32) ((dwLoc74 + -0x01) *s dwLoc60);
+	if ((word32) (r20_269 <u r24_259) != 0x00)
 	{
 		r16_296 = r16_280 + lo_292;
 		goto l00408924;
@@ -6488,7 +6692,7 @@ l004087D0:
 		r16_296 = r16_280 + lo_292;
 		if (r24_259 == r20_269)
 		{
-			word32 r2_487 = (word32) (r21_264 < lo_246);
+			word32 r2_487 = (word32) (r21_264 <u lo_246);
 			if (r2_487 != 0x00)
 			{
 l00408924:
@@ -6498,87 +6702,121 @@ l00408924:
 			}
 		}
 l00408934:
-		uint32 r10_305 = r16_296 + (lo_288 + -0x01) + (word32) (lo_277 < 0x00);
-		if ((word32) (r10_305 < r16_296) != 0x00)
-			goto l00408978;
+		word32 r10_305 = r16_296 + (lo_288 + -0x01) + (word32) (lo_277 <u 0x00);
+		if ((word32) (r10_305 <u r16_296) != 0x00)
+		{
+l00408978:
+			dwLoc30_238 = dwLoc30_238 + (word32) false;
+			dwLoc2C_239 = 0x01;
+			goto l00408998;
+		}
 		else
 		{
 			if (r16_296 == r10_305)
 			{
-				word32 r2_479 = (word32) (lo_277 < lo_277);
+				word32 r2_479 = (word32) (lo_277 <u lo_277);
 				if (r2_479 != 0x00)
-				{
-l00408978:
-					dwLoc30_238 = dwLoc30_238 + (word32) false;
-					dwLoc2C_239 = 0x01;
-					goto l00408998;
-				}
+					goto l00408978;
 			}
 l00408998:
-			Eq_9144 r7_352;
-			uint32 r5_315 = r20_269 >> 0x00;
-			uint32 r13_326 = dwLoc2C_239 + r5_315;
-			uint32 r12_332 = dwLoc30_238 + (r18_290 + (word32) (r5_315 < lo_283)) + (word32) (r13_326 < r5_315);
-			uint32 r6_340 = r10_305;
-			if ((word32) (0x1FFFFFFF < r12_332) != 0x00)
+			word32 r7_352;
+			word32 r5_315 = (r20_269 >>u 0x00) + -0x01 + lo_283;
+			word32 r13_326 = dwLoc2C_239 + r5_315;
+			word32 r12_332 = dwLoc30_238 + (r18_290 + (word32) (r5_315 <u lo_283)) + (word32) (r13_326 <u r5_315);
+			word32 r6_340 = r10_305;
+			if ((word32) (0x1FFFFFFF <u r12_332) != 0x00)
 			{
 				r7_352 = lo_277;
-				while (true)
+				do
 				{
-					r12_332 = r12_332 >> 0x01;
-					r13_326 = r13_326 >> 0x01 | r12_332 << 0x1F;
-					word32 r4_455 = (word32) (0x1FFFFFFF < r12_332);
+					r12_332 = r12_332 >>u 0x01;
+					r13_326 = r13_326 >>u 0x01 | r12_332 << 0x1F;
+					word32 r4_455 = (word32) (0x1FFFFFFF <u r12_332);
 					if (r13_326 + 0x01 != 0x00)
 					{
-						r6_340 = r6_340 >> 0x01 | 0x80000000;
-						r7_352 = r7_352 >> 0x01 | r6_340 << 0x1F;
+						r6_340 = r6_340 >>u 0x01 | 0x80000000;
+						r7_352 = r7_352 >>u 0x01 | r6_340 << 0x1F;
 					}
-					if (r4_455 == 0x00)
-						break;
-				}
+				} while (r4_455 != 0x00);
 			}
 			else
 				r7_352 = lo_277;
-			if ((word32) (0x0FFFFFFF < r12_332) == 0x00)
+			if ((word32) (0x0FFFFFFF <u r12_332) == 0x00)
 			{
 				while (true)
 				{
-					r12_332 = r12_332 << 0x01 | r13_326 >> 0x1F;
+					r12_332 = r12_332 << 0x01 | r13_326 >>u 0x1F;
 					r13_326 = r13_326 << 0x01;
 					if ((r7_352 | r6_340 + 0x80000000) != 0x00)
 						r13_326 = r13_326 | 0x01;
-					r6_340 = r6_340 << 0x01 | r7_352 >> 0x1F;
-					if ((word32) (0x0FFFFFFF < r12_332) != 0x00)
+					r6_340 = r6_340 << 0x01 | r7_352 >>u 0x1F;
+					if ((word32) (0x0FFFFFFF <u r12_332) != 0x00)
 						break;
 					r7_352 = r7_352 << 0x01;
 				}
 				r7_352 = r7_352 << 0x01;
 			}
 			if (r12_332 != 0x00)
-				goto l00408B44;
-			int32 r5_385 = r13_326 + 0x00FF;
+			{
+l00408B44:
+				goto l00408B48;
+			}
+			word32 r5_385 = r13_326 + 0x00FF;
 			if (r5_385 == 0x0080)
 			{
 				if ((r13_326 + 0x0100 | r12_332) != 0x00)
-					goto l00408B38;
-				ui32 r2_396 = r7_352 | r6_340;
-				if (r2_396 != 0x00)
 				{
-l00408B44:
-					goto l00408B48;
+l00408B38:
+					goto l00408B44;
 				}
+				word32 r2_396 = r7_352 | r6_340;
+				if (r2_396 != 0x00)
+					goto l00408B38;
 			}
-l00408B48:
-			goto l00408B58;
+l00408B58:
+			word32 r25_126 = Mem0[r25 + 264208868:word32];
+			word32 sp_127;
+			word32 r28_128;
+			word32 r25_129;
+			word32 r3_130;
+			word32 f12_131;
+			word32 r2_132;
+			word32 f13_133;
+			word32 r7_134;
+			word32 f14_135;
+			word32 r6_136;
+			word32 f15_137;
+			word32 r8_138;
+			word32 r18_139;
+			word32 r16_140;
+			word32 ra_141;
+			word32 r22_142;
+			word32 r21_143;
+			word32 r20_144;
+			word32 r19_145;
+			word32 r17_146;
+			word32 r4_147;
+			word32 r5_148;
+			word32 r11_149;
+			word32 r9_150;
+			word32 hi_151;
+			word32 lo_152;
+			word32 r10_153;
+			word32 r13_154;
+			word32 r14_155;
+			word32 r24_156;
+			word32 r12_157;
+			word32 r15_158;
+			r25_126();
+			return;
 		}
 	}
 }
 
-void __divdf3(Eq_9299 * r25)
+void __divdf3(word32 r25)
 {
 __divdf3_entry:
-l00408BA0:
-	code * r18_22 = r25->ptrFBF7E70
+	word32 r18_22 = Mem0[r25 + 0x0FBF7E70:word32]
 	word32 sp_35
 	word32 r28_36
 	word32 r25_37
@@ -6591,7 +6829,7 @@ l00408BA0:
 	word32 r6_44
 	word32 f15_45
 	word32 r8_46
-	code * r18_47
+	word32 r18_47
 	word32 r16_48
 	word32 ra_49
 	word32 r17_50
@@ -6604,7 +6842,9 @@ l00408BA0:
 	word32 r11_57
 	word32 r12_58
 	word32 r13_59
-	r18_22()
+	call r18_22 (retsize: 0; depth: 112)
+		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_30,dwLoc14_20,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc60_7,f12,f13,f14,f15,r16_23,r17,r18_22,r2_11,r25_33,r28_5,r3_9,r4_31,r5_32,r6_15,r7_13,r8_16,ra,sp_6
+		defs: f12_39,f13_41,f14_43,f15_45,r10_56,r11_57,r12_58,r13_59,r14_55,r15_53,r16_48,r17_50,r18_47,r2_40,r25_37,r28_36,r3_38,r4_51,r5_52,r6_44,r7_42,r8_46,r9_54,ra_49,sp_35
 	word32 sp_65
 	word32 r28_66
 	word32 r25_67
@@ -6630,157 +6870,119 @@ l00408BA0:
 	word32 r11_87
 	word32 r12_88
 	word32 r13_89
-	r18_47()
-	word32 r2_94 = (word32) (dwLoc58 < 0x02)
+	call r18_47 (retsize: 0; depth: 112)
+		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_30,dwLoc14_20,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc60_7,f12_39,f13_41,f14_43,f15_45,r10_56,r11_57,r12_58,r13_59,r14_55,r15_53,r16_48,r17_61,r18_47,r2_40,r25_63,r28_60,r3_38,r4_62,r5_64,r6_44,r7_42,r8_46,r9_54,ra_49,sp_35
+		defs: f12_69,f13_71,f14_73,f15_75,r10_86,r11_87,r12_88,r13_89,r14_85,r15_83,r16_78,r17_80,r18_77,r2_70,r25_67,r28_66,r3_68,r4_81,r5_82,r6_74,r7_72,r8_76,r9_84,ra_79,sp_65
+	word32 r2_94 = (word32) (dwLoc58 <u 0x02)
 	branch r2_94 != 0x00 l00408BA0_ds_t
+	goto l00408BA0_ds_f
+l00408BA0:
 l00408BA0_ds_f:
-	goto l00408C30
-l00408BA0_ds_t:
-	goto l00408DDC
+	branch (word32) (dwLoc40 <u 0x02) != 0x00 l00408C30_ds_t
+	goto l00408C30_ds_f
 l00408C30:
-	branch (word32) (dwLoc40 < 0x02) != 0x00 l00408C30_ds_t
 l00408C30_ds_f:
-	goto l00408C44
-l00408C30_ds_t:
-	goto l00408DDC
-l00408C44:
 	branch (dwLoc58 ^ 0x04) == 0x00 l00408C44_ds_t
+	goto l00408C44_ds_f
+l00408C44:
 l00408C44_ds_f:
-	goto l00408C5C
-l00408C44_ds_t:
+	branch (dwLoc58 ^ 0x02) != 0x00 l00408C5C_ds_t
 	goto l00408C68
 l00408C5C:
-	branch (dwLoc58 ^ 0x02) != 0x00 l00408C5C_ds_t
-l00408C5C_ds_f:
-	goto l00408C68
 l00408C5C_ds_t:
-	goto l00408C7C
+	branch (dwLoc40 ^ 0x04) != 0x00 l00408C7C_ds_t
+	goto l00408DDC
 l00408C68:
-	branch dwLoc58 == dwLoc40 l00408C68_ds_t
-l00408C68_ds_f:
-	goto l00408C74
-l00408C68_ds_t:
 	goto l00408DDC
 l00408C74:
-	goto l00408DDC
 l00408C7C:
-	branch (dwLoc40 ^ 0x04) != 0x00 l00408C7C_ds_t
-l00408C7C_ds_f:
-	goto l00408C84
 l00408C7C_ds_t:
-	goto l00408CA0
-l00408C84:
-	goto l00408DDC
-l00408CA0:
 	branch (dwLoc40 ^ 0x02) != 0x00 l00408CA0_ds_t
-l00408CA0_ds_f:
-	goto l00408CA8
-l00408CA0_ds_t:
-	goto l00408CB4
-l00408CA8:
 	goto l00408DDC
-l00408CB4:
-	uint32 r4_173 = dwLoc48
-	uint32 r5_174 = dwLoc44
-	word32 r14_176 = (word32) (dwLoc48 < dwLoc30)
+l00408C84:
+l00408CA0:
+l00408CA0_ds_t:
+	word32 r4_173 = dwLoc48
+	word32 r5_174 = dwLoc44
+	word32 r14_176 = (word32) (dwLoc48 <u dwLoc30)
 	branch r14_176 != 0x00 l00408CB4_ds_t
+	goto l00408CB4_ds_f
+l00408CA8:
+l00408CB4:
 l00408CB4_ds_f:
-	goto l00408CDC
-l00408CB4_ds_t:
-	goto l00408CEC
-l00408CDC:
 	branch dwLoc30 != dwLoc48 l00408CDC_ds_t
+	goto l00408CDC_ds_f
+l00408CDC:
 l00408CDC_ds_f:
-	word32 r2_258 = (word32) (dwLoc44 < dwLoc2C)
-	goto l00408CE4
-l00408CDC_ds_t:
-	goto l00408D08
-l00408CE4:
+	word32 r2_258 = (word32) (dwLoc44 <u dwLoc2C)
 	branch r2_258 == 0x00 l00408CE4_ds_t
-l00408CE4_ds_f:
 	goto l00408CEC
-l00408CE4_ds_t:
-	goto l00408D08
+l00408CE4:
 l00408CEC:
-	r4_173 = dwLoc48 << 0x01 | dwLoc44 >> 0x1F
+	r4_173 = dwLoc48 << 0x01 | dwLoc44 >>u 0x1F
 	r5_174 = dwLoc44 << 0x01
-	r14_176 = (word32) (r4_173 < dwLoc30)
+	r14_176 = (word32) (r4_173 <u dwLoc30)
 l00408D08:
-	uint32 r10_183 = 0x10000000
-	Eq_9435 r11_184 = 0x00
-	ui32 r12_185 = 0x00
-	ui32 r13_186 = 0x00
+	word32 r10_183 = 0x10000000
+	word32 r11_184 = 0x00
+	word32 r12_185 = 0x00
+	word32 r13_186 = 0x00
 	goto l00408D18
 l00408D08_ds_f:
-	goto l00408D24
-l00408D08_ds_t:
-	goto l00408D4C
+	word32 r2_239
+	branch dwLoc30 != r4_173 l00408D24_ds_t
+	goto l00408D24_ds_f
 l00408D18:
 	branch r14_176 != 0x00 l00408D08_ds_t
 	goto l00408D08_ds_f
 l00408D24:
-	word32 r2_239
-	branch dwLoc30 != r4_173 l00408D24_ds_t
 l00408D24_ds_f:
-	goto l00408D2C
+	branch (word32) (r5_174 <u dwLoc2C) != 0x00 l00408D2C_ds_t
+	goto l00408D2C_ds_f
 l00408D24_ds_t:
-	r2_239 = (word32) (r5_174 < dwLoc2C)
+	r2_239 = (word32) (r5_174 <u dwLoc2C)
 	goto l00408D38
 l00408D2C:
-	branch (word32) (r5_174 < dwLoc2C) != 0x00 l00408D2C_ds_t
 l00408D2C_ds_f:
-	r2_239 = (word32) (r5_174 < dwLoc2C)
-	goto l00408D38
-l00408D2C_ds_t:
-	goto l00408D4C
+	r2_239 = (word32) (r5_174 <u dwLoc2C)
 l00408D38:
 	r5_174 = r5_174 - dwLoc2C
 	r12_185 = r12_185 | r10_183
 	r4_173 = r4_173 - dwLoc30 - r2_239
 	r13_186 = r13_186 | r11_184
 l00408D4C:
-	uint32 r6_208 = r4_173 << 0x01 | r5_174 >> 0x1F
-	r11_184 = r11_184 >> 0x01 | r10_183 << 0x1F
-	r10_183 = r10_183 >> 0x01
-	uint32 r7_210 = r5_174 << 0x01
+	word32 r6_208 = r4_173 << 0x01 | r5_174 >>u 0x1F
+	r11_184 = r11_184 >>u 0x01 | r10_183 << 0x1F
+	r10_183 = r10_183 >>u 0x01
+	word32 r7_210 = r5_174 << 0x01
 	r4_173 = r6_208
-	r14_176 = (word32) (r6_208 < dwLoc30)
+	r14_176 = (word32) (r6_208 <u dwLoc30)
 	branch (r11_184 | r10_183) != 0x00 l00408D4C_ds_t
 l00408D4C_ds_f:
-	goto l00408D80
+	branch r12_185 != 0x00 l00408D80_ds_t
+	goto l00408D80_ds_f
 l00408D4C_ds_t:
 	r5_174 = r7_210
 	goto l00408D18
 l00408D80:
-	branch r12_185 != 0x00 l00408D80_ds_t
 l00408D80_ds_f:
-	int32 r5_225 = r13_186 + 0x00FF
-	goto l00408D94
-l00408D80_ds_t:
-	goto l00408DD0
-l00408D94:
+	word32 r5_225 = r13_186 + 0x00FF
 	branch r5_225 != 0x0080 l00408D94_ds_t
+	goto l00408D94_ds_f
+l00408D94:
 l00408D94_ds_f:
-	goto l00408DA0
-l00408D94_ds_t:
-	goto l00408DD0
-l00408DA0:
 	branch (r13_186 + 0x0100 | r12_185) != 0x00 l00408DA0_ds_t
+	goto l00408DA0_ds_f
+l00408DA0:
 l00408DA0_ds_f:
-	ui32 r2_235 = r7_210 | r6_208
-	goto l00408DBC
-l00408DA0_ds_t:
+	word32 r2_235 = r7_210 | r6_208
+	branch r2_235 == 0x00 l00408DBC_ds_t
 	goto l00408DC4
 l00408DBC:
-	branch r2_235 == 0x00 l00408DBC_ds_t
-l00408DBC_ds_f:
-	goto l00408DC4
-l00408DBC_ds_t:
-	goto l00408DD0
 l00408DC4:
 l00408DD0:
 l00408DDC:
-	code * r25_100 = r25->ptrFBF7CF4
+	word32 r25_100 = Mem0[r25 + 264207604:word32]
 	word32 sp_101
 	word32 r28_102
 	word32 r25_103
@@ -6806,14 +7008,16 @@ l00408DDC:
 	word32 r11_123
 	word32 r12_124
 	word32 r13_125
-	r25_100()
+	call r25_100 (retsize: 0; depth: 112)
+		uses: dwLoc08_27,dwLoc0C_18,dwLoc10_30,dwLoc14_20,dwLoc1C_34,dwLoc20_25,dwLoc24_28,dwLoc28_24,dwLoc44_98,dwLoc48_97,dwLoc50_99,dwLoc54_95,dwLoc58_96,dwLoc60_7,f12_69,f13_71,f14_73,f15_75,r10_86,r11_87,r12_88,r13_89,r14_85,r15_93,r16_78,r17_80,r18_77,r2_94,r25_100,r28_90,r3_68,r4_81,r5_82,r6_92,r7_72,r8_76,r9_84,ra_79,sp_65
+		defs: f12_105,f13_107,f14_109,f15_111,r10_122,r11_123,r12_124,r13_125,r14_121,r15_119,r16_114,r17_116,r18_113,r2_106,r25_103,r28_102,r3_104,r4_117,r5_118,r6_110,r7_108,r8_112,r9_120,ra_115,sp_101
 	return
 __divdf3_exit:
 }
 
-void __eqdf2(Eq_9501 * r25)
+void __eqdf2(word32 r25)
 {
-	code * r18_22 = r25->ptrFBF7C00;
+	word32 r18_22 = Mem0[r25 + 0x0FBF7C00:word32];
 	word32 sp_35;
 	word32 r28_36;
 	word32 r25_37;
@@ -6826,7 +7030,7 @@ void __eqdf2(Eq_9501 * r25)
 	word32 r6_44;
 	word32 f15_45;
 	word32 r8_46;
-	code * r18_47;
+	word32 r18_47;
 	word32 r16_48;
 	word32 ra_49;
 	word32 r17_50;
@@ -6852,12 +7056,12 @@ void __eqdf2(Eq_9501 * r25)
 	word32 r4_74;
 	word32 r5_75;
 	r18_47();
-	if ((word32) (dwLoc58 < 0x02) == 0x00)
+	if ((word32) (dwLoc58 <u 0x02) == 0x00)
 	{
-		word32 r3_101 = (word32) (dwLoc40 < 0x02);
+		word32 r3_101 = (word32) (dwLoc40 <u 0x02);
 		if (r3_101 == 0x00)
 		{
-			code * r25_103 = r25->ptrFBF7B68;
+			word32 r25_103 = Mem0[r25 + 264207208:word32];
 			word32 sp_105;
 			word32 r28_106;
 			word32 r25_107;
@@ -6882,9 +7086,9 @@ void __eqdf2(Eq_9501 * r25)
 	return;
 }
 
-void __nedf2(Eq_9577 * r25)
+void __nedf2(word32 r25)
 {
-	code * r18_22 = r25->ptrFBF7B30;
+	word32 r18_22 = Mem0[r25 + 0x0FBF7B30:word32];
 	word32 sp_35;
 	word32 r28_36;
 	word32 r25_37;
@@ -6897,7 +7101,7 @@ void __nedf2(Eq_9577 * r25)
 	word32 r6_44;
 	word32 f15_45;
 	word32 r8_46;
-	code * r18_47;
+	word32 r18_47;
 	word32 r16_48;
 	word32 ra_49;
 	word32 r17_50;
@@ -6923,12 +7127,12 @@ void __nedf2(Eq_9577 * r25)
 	word32 r4_74;
 	word32 r5_75;
 	r18_47();
-	if ((word32) (dwLoc58 < 0x02) == 0x00)
+	if ((word32) (dwLoc58 <u 0x02) == 0x00)
 	{
-		word32 r3_101 = (word32) (dwLoc40 < 0x02);
+		word32 r3_101 = (word32) (dwLoc40 <u 0x02);
 		if (r3_101 == 0x00)
 		{
-			code * r25_103 = r25->ptrFBF7A98;
+			word32 r25_103 = Mem0[r25 + 264207000:word32];
 			word32 sp_105;
 			word32 r28_106;
 			word32 r25_107;
@@ -6953,9 +7157,9 @@ void __nedf2(Eq_9577 * r25)
 	return;
 }
 
-void __gedf2(Eq_9653 * r25)
+void __gedf2(word32 r25)
 {
-	code * r18_22 = r25->ptrFBF7A60;
+	word32 r18_22 = Mem0[r25 + 264206944:word32];
 	word32 sp_35;
 	word32 r28_36;
 	word32 r25_37;
@@ -6968,7 +7172,7 @@ void __gedf2(Eq_9653 * r25)
 	word32 r6_44;
 	word32 f15_45;
 	word32 r8_46;
-	code * r18_47;
+	word32 r18_47;
 	word32 r16_48;
 	word32 ra_49;
 	word32 r17_50;
@@ -6994,12 +7198,12 @@ void __gedf2(Eq_9653 * r25)
 	word32 r4_74;
 	word32 r5_75;
 	r18_47();
-	if ((word32) (dwLoc58 < 0x02) == 0x00)
+	if ((word32) (dwLoc58 <u 0x02) == 0x00)
 	{
-		word32 r3_101 = (word32) (dwLoc40 < 0x02);
+		word32 r3_101 = (word32) (dwLoc40 <u 0x02);
 		if (r3_101 == 0x00)
 		{
-			code * r25_103 = r25->ptrFBF79C8;
+			word32 r25_103 = Mem0[r25 + 264206792:word32];
 			word32 sp_105;
 			word32 r28_106;
 			word32 r25_107;
@@ -7024,9 +7228,9 @@ void __gedf2(Eq_9653 * r25)
 	return;
 }
 
-void __ltdf2(Eq_9729 * r25)
+void __ltdf2(word32 r25)
 {
-	code * r18_22 = r25->ptrFBF7990;
+	word32 r18_22 = Mem0[r25 + 0x0FBF7990:word32];
 	word32 sp_35;
 	word32 r28_36;
 	word32 r25_37;
@@ -7039,7 +7243,7 @@ void __ltdf2(Eq_9729 * r25)
 	word32 r6_44;
 	word32 f15_45;
 	word32 r8_46;
-	code * r18_47;
+	word32 r18_47;
 	word32 r16_48;
 	word32 ra_49;
 	word32 r17_50;
@@ -7065,12 +7269,12 @@ void __ltdf2(Eq_9729 * r25)
 	word32 r4_74;
 	word32 r5_75;
 	r18_47();
-	if ((word32) (dwLoc58 < 0x02) == 0x00)
+	if ((word32) (dwLoc58 <u 0x02) == 0x00)
 	{
-		word32 r3_101 = (word32) (dwLoc40 < 0x02);
+		word32 r3_101 = (word32) (dwLoc40 <u 0x02);
 		if (r3_101 == 0x00)
 		{
-			code * r25_103 = r25->ptrFBF78F8;
+			word32 r25_103 = Mem0[r25 + 0x0FBF78F8:word32];
 			word32 sp_105;
 			word32 r28_106;
 			word32 r25_107;
@@ -7095,19 +7299,17 @@ void __ltdf2(Eq_9729 * r25)
 	return;
 }
 
-void __floatsidf(Eq_9805 r4, Eq_9806 * r25)
+void __floatsidf(word32 r4, word32 r25)
 {
-	if (r4 == 0x00)
-		;
-	else
+	if (r4 != 0x00)
 	{
-		Eq_9805 dwLoc0C_103;
-		Eq_9810 dwLoc10_102;
-		if (r4 >> 0x1F != 0x00)
+		word32 dwLoc0C_103;
+		word32 dwLoc10_102;
+		if (r4 >>u 0x1F != 0x00)
 		{
 			if (r4 == 0x80000000)
 				return;
-			Eq_9805 r2_99 = 0x00 - r4;
+			word32 r2_99 = 0x00 - r4;
 			dwLoc10_102 = r2_99 >> 0x1F;
 			dwLoc0C_103 = r2_99;
 		}
@@ -7116,17 +7318,15 @@ void __floatsidf(Eq_9805 r4, Eq_9806 * r25)
 			dwLoc10_102 = r4 >> 0x1F;
 			dwLoc0C_103 = r4;
 		}
-		if ((word32) (0x0FFFFFFF < dwLoc10_102) == 0x00)
-			while (true)
+		if ((word32) (0x0FFFFFFF <u dwLoc10_102) == 0x00)
+			do
 			{
-				Eq_9810 r2_85 = dwLoc10_102 << 0x01 | dwLoc0C_103 >> 0x1F;
+				word32 r2_85 = dwLoc10_102 << 0x01 | dwLoc0C_103 >>u 0x1F;
 				dwLoc10_102 = r2_85;
 				dwLoc0C_103 = dwLoc0C_103 << 0x01;
-				if ((word32) (0x0FFFFFFF < r2_85) != 0x00)
-					break;
-			}
+			} while ((word32) (0x0FFFFFFF <u r2_85) == 0x00);
 	}
-	code * r25_37 = r25->ptrFBF7744;
+	word32 r25_37 = Mem0[r25 + 0x0FBF7744:word32];
 	word32 sp_44;
 	word32 r28_45;
 	word32 r25_46;
@@ -7143,9 +7343,9 @@ void __floatsidf(Eq_9805 r4, Eq_9806 * r25)
 	return;
 }
 
-void __negdf2(Eq_9858 * r25)
+void __negdf2(word32 r25)
 {
-	code * r25_18 = r25->ptrFBF77C0;
+	word32 r25_18 = Mem0[r25 + 264206272:word32];
 	word32 sp_21;
 	word32 r28_22;
 	word32 r25_23;
@@ -7158,7 +7358,7 @@ void __negdf2(Eq_9858 * r25)
 	word32 r4_30;
 	word32 r5_31;
 	r25_18();
-	code * r25_33 = r25->ptrFBF7644;
+	word32 r25_33 = Mem0[r25 + 0x0FBF7644:word32];
 	word32 sp_40;
 	word32 r28_41;
 	word32 r25_42;
@@ -7174,9 +7374,9 @@ void __negdf2(Eq_9858 * r25)
 	return;
 }
 
-void __make_dp(Eq_9889 * r25, word32 dwArg10, word32 dwArg14)
+void __make_dp(word32 r25, word32 dwArg10, word32 dwArg14)
 {
-	code * r25_15 = r25->ptrFBF75C4;
+	word32 r25_15 = Mem0[r25 + 264205764:word32];
 	word32 sp_25;
 	word32 r28_26;
 	word32 r25_27;
@@ -7190,9 +7390,9 @@ void __make_dp(Eq_9889 * r25, word32 dwArg10, word32 dwArg14)
 	return;
 }
 
-void __truncdfsf2(Eq_9905 * r25)
+void __truncdfsf2(word32 r25)
 {
-	code * r25_18 = r25->ptrFBF76E0;
+	word32 r25_18 = Mem0[r25 + 264206048:word32];
 	word32 sp_21;
 	word32 r28_22;
 	word32 r25_23;
@@ -7206,10 +7406,8 @@ void __truncdfsf2(Eq_9905 * r25)
 	word32 r5_31;
 	word32 r7_32;
 	r25_18();
-	code * r25_41 = r25->ptrFBF7734;
-	ui32 r2_48 = dwLoc14 + 0x3FFFFFFF | dwLoc18;
-	if (r2_48 != 0x00)
-		;
+	word32 r25_41 = Mem0[r25 + 264206132:word32];
+	word32 r2_48 = dwLoc14 + 0x3FFFFFFF | dwLoc18;
 	word32 sp_55;
 	word32 r28_56;
 	word32 r25_57;
@@ -7226,110 +7424,108 @@ void __truncdfsf2(Eq_9905 * r25)
 	return;
 }
 
-void __pack_f(Eq_9946 * r4)
+void __pack_f(word32 r4)
 {
-	Eq_9947 r3_5 = r4->t0000;
-	Eq_9951 r4_6 = r4->t000C;
-	if ((word32) (r3_5 < 0x02) != 0x00)
-		return;
-	if ((r3_5 ^ 0x04) != 0x00)
+	word32 r3_5 = Mem0[r4 + 0x00:word32];
+	word32 r4_6 = Mem0[r4 + 0x0C:word32];
+	if ((word32) (r3_5 <u 0x02) == 0x00)
 	{
-		if ((r3_5 ^ 0x02) == 0x00)
-			return;
-		if (r4_6 == 0x00)
-			return;
-		int32 r5_35 = r4->dw0008;
-		if ((word32) (r5_35 < -0x007E) != 0x00)
+		if ((r3_5 ^ 0x04) != 0x00)
 		{
-			ui32 r4_47;
-			int32 r2_39 = -0x007E - r5_35;
-			word32 r3_44 = (word32) (0x00 <u r4_6 + ((0x01 << r2_39) + -0x01));
-			uint32 r4_45 = r4_6 >> r2_39;
-			if ((word32) (r2_39 < 0x001A) == 0x00)
-				r4_47 = 0x00;
-			else
-				r4_47 = r4_45 | r3_44;
-			if (r4_47 + 0x7F == 0x0040)
-				if (r4_47 + 0x80 != 0x00)
-					;
-			return;
+			if ((r3_5 ^ 0x02) == 0x00)
+				return;
+			if (r4_6 == 0x00)
+				return;
+			word32 r5_35 = Mem0[r4 + 0x08:word32];
+			if ((word32) (r5_35 < -0x007E) != 0x00)
+			{
+				word32 r4_47;
+				word32 r2_39 = -0x007E - r5_35;
+				word32 r3_44 = (word32) (0x00 <u r4_6 + ((0x01 << r2_39) + -0x01));
+				word32 r4_45 = r4_6 >>u r2_39;
+				if ((word32) (r2_39 < 0x001A) == 0x00)
+					r4_47 = 0x00;
+				else
+					r4_47 = r4_45 | r3_44;
+				return;
+			}
+			word32 r2_61 = (word32) (r5_35 < 0x0080);
+			if (r2_61 != 0x00)
+			{
+				if (r4_6 == 0x3F)
+					if (r4_6 != 0x80)
+						r4_6 = r4_6 + 0x0040;
+				else
+					r4_6 = r4_6 + 0x003F;
+				return;
+			}
 		}
-		word32 r2_61 = (word32) (r5_35 < 0x0080);
-		if (r2_61 != 0x00)
-		{
-			if (r4_6 == 0x3F)
-				if (r4_6 != 0x80)
-					r4_6 = r4_6;
-			else
-				r4_6 = r4_6;
-			if (r4_6 < 0x00)
-				;
-			return;
-		}
+		return;
 	}
-	return;
+	else
+		return;
 }
 
-void __unpack_f(uint32 * r4, Eq_10026 * r5)
+void __unpack_f(word32 r4, word32 r5)
 {
-	uint32 r3_4 = *r4;
-	r5->dw0004 = r3_4 >> 0x1F;
-	int32 r4_11 = (r3_4 >> 0x17) + 0xFF;
+	word32 r3_4 = Mem0[r4 + 0x00:word32];
+	Mem12[r5 + 0x04:word32] = r3_4 >>u 0x1F;
+	word32 r4_11 = (r3_4 >>u 0x17) + 0xFF;
 	if (r4_11 != 0x00)
 		if (r4_11 != 0x00FF)
 		{
-			r5->dw000C = r3_4 + 0x007FFFFF << 0x07 | 0x40000000;
-			r5->dw0008 = r4_11 + -0x007F;
-			r5->dw0000 = 0x03;
+			Mem64[r5 + 0x0C:word32] = r3_4 + 0x007FFFFF << 0x07 | 0x40000000;
+			Mem65[r5 + 0x08:word32] = r4_11 + -0x007F;
+			Mem66[r5 + 0x00:word32] = 0x03;
 			return;
 		}
 		else if (r3_4 != 0x007FFFFF)
 		{
 			if (r3_4 != 0x008FFFFF)
-				r5->dw0000 = 0x01;
+				Mem56[r5 + 0x00:word32] = 0x01;
 			else
-				r5->dw0000 = 0x00;
-			r5->dw000C = r3_4 + 0x007FFFFF;
+				Mem58[r5 + 0x00:word32] = 0x00;
+			Mem54[r5 + 0x0C:word32] = r3_4 + 0x007FFFFF;
 			return;
 		}
 		else
 		{
-			r5->dw0000 = 0x04;
+			Mem50[r5 + 0x00:word32] = 0x04;
 			return;
 		}
 	else if (r3_4 != 0x007FFFFF)
 	{
-		r5->dw0008 = -0x007E;
-		uint32 r5_22 = r3_4 + 0x007FFFFF << 0x07;
-		if ((word32) (0x3FFFFFFF < r5_22) == 0x00)
+		Mem27[r5 + 0x08:word32] = -0x007E;
+		word32 r5_22 = r3_4 + 0x007FFFFF << 0x07;
+		if ((word32) (0x3FFFFFFF <u r5_22) == 0x00)
 		{
-			r5->dw0000 = 0x03;
-			int32 r4_36 = -0x007F;
+			Mem33[r5 + 0x00:word32] = 0x03;
+			word32 r4_36 = -0x007F;
 			while (true)
 			{
 				r5_22 = r5_22 << 0x01;
-				if ((word32) (0x3FFFFFFF < r5_22) != 0x00)
+				if ((word32) (0x3FFFFFFF <u r5_22) != 0x00)
 					break;
 				r4_36 = r4_36 + -0x01;
 			}
-			int32 r4_41 = r4_36 + 0x00;
-			r5->dw0008 = r4_41;
+			word32 r4_41 = r4_36 + 0x00;
+			Mem42[r5 + 0x08:word32] = r4_41;
 		}
 		else
-			r5->dw0000 = 0x03;
-		r5->dw000C = r5_22;
+			Mem44[r5 + 0x00:word32] = 0x03;
+		Mem32[r5 + 0x0C:word32] = r5_22;
 		return;
 	}
 	else
 	{
-		r5->dw0000 = 0x02;
+		Mem20[r5 + 0x00:word32] = 0x02;
 		return;
 	}
 }
 
-void __make_fp(Eq_10131 * r25)
+void __make_fp(word32 r25)
 {
-	code * r25_11 = r25->ptrFBF737C;
+	word32 r25_11 = Mem0[r25 + 0x0FBF737C:word32];
 	word32 sp_21;
 	word32 r28_22;
 	word32 r25_23;
@@ -7342,12 +7538,12 @@ void __make_fp(Eq_10131 * r25)
 	return;
 }
 
-void __pack_d(Eq_10144 * r4, word32 r25)
+void __pack_d(word32 r4, word32 r25)
 {
-	Eq_10146 r3_8 = r4->t0000;
-	uint32 r10_163 = r4->dw0010;
-	Eq_10154 r11_10 = r4->t0014;
-	if ((word32) (r3_8 < 0x02) != 0x00)
+	word32 r3_8 = Mem0[r4 + 0x00:word32];
+	word32 r10_163 = Mem0[r4 + 0x10:word32];
+	word32 r11_10 = Mem0[r4 + 0x14:word32];
+	if ((word32) (r3_8 <u 0x02) != 0x00)
 		return;
 	if ((r3_8 ^ 0x04) == 0x00)
 		return;
@@ -7355,12 +7551,12 @@ void __pack_d(Eq_10144 * r4, word32 r25)
 		return;
 	if ((r11_10 | r10_163) == 0x00)
 		return;
-	int32 r4_62 = r4->dw0008;
+	word32 r4_62 = Mem0[r4 + 0x08:word32];
 	if ((word32) (r4_62 < -1022) != 0x00)
 	{
-		uint32 r10_107;
-		uint32 r11_123;
-		int32 r4_80 = -1022 - r4_62;
+		word32 r10_107;
+		word32 r11_123;
+		word32 r4_80 = -1022 - r4_62;
 		if ((word32) (r4_80 < 0x0039) == 0x00)
 		{
 			r10_107 = 0x00;
@@ -7368,49 +7564,46 @@ void __pack_d(Eq_10144 * r4, word32 r25)
 		}
 		else
 		{
-			int32 r5_134;
-			int32 r2_127 = 0x01 << r4_80;
-			if ((r11_10.u1 | r10_163 + (r2_127 + -0x01 >> 0x1F)) != 0x00)
+			word32 r5_134;
+			word32 r2_127 = 0x01 << r4_80;
+			if ((r11_10 + (r2_127 + -0x01) | r10_163 + (r2_127 + -0x01 >> 0x1F)) != 0x00)
 				r5_134 = 0x01;
 			else
 				r5_134 = 0x00;
-			uint32 r15_136;
-			uint32 r14_137;
+			word32 r15_136;
+			word32 r14_137;
 			if (r4_80 << 0x1A < 0x00)
 			{
-				r15_136 = r10_163 >> r4_80;
+				r15_136 = r10_163 >>u r4_80;
 				r14_137 = 0x00;
 			}
 			else
 			{
 				if (r4_80 << 0x1A != 0x00)
 				{
-					uint32 r15_150 = r11_10 >> r4_80;
+					word32 r15_150 = r11_10 >>u r4_80;
 					r15_136 = r15_150 | r10_163 << 0x00 - r4_80;
 				}
 				else
-					r15_136 = r11_10 >> r4_80;
-				r14_137 = r10_163 >> r4_80;
+					r15_136 = r11_10 >>u r4_80;
+				r14_137 = r10_163 >>u r4_80;
 			}
 			r10_107 = r14_137;
 			r11_123 = r15_136 | r5_134;
 		}
 		if (r10_107 == 0x00)
 		{
-			int32 r5_108 = r11_123 + 0x00FF;
+			word32 r5_108 = r11_123 + 0x00FF;
 			if (r5_108 == 0x0080)
 			{
 				if ((r11_123 + 0x0100 | r10_107) == 0x00)
-					goto l004097F0;
-				r10_107 = r10_107 + (word32) (r11_123 + 0x0080 < 0x0080);
-l004097F0:
-				if ((word32) (0x0FFFFFFF < r10_107) != 0x00)
-					;
+					return;
+				r10_107 = r10_107 + (word32) (r11_123 + 0x0080 <u 0x0080);
 				return;
 			}
 		}
-		r10_107 = r10_107 + (word32) (r11_123 + 0x007F < 0x007F);
-		goto l004097EC;
+		r10_107 = r10_107 + (word32) (r11_123 + 0x007F <u 0x007F);
+		return;
 	}
 	word32 r2_158 = (word32) (r4_62 < 0x0400);
 	if (r2_158 == 0x00)
@@ -7418,87 +7611,84 @@ l004097F0:
 	if (r10_163 == 0x00)
 		if (r11_10 == 0x007F)
 		{
-			if ((r11_10.u1 | r10_163) == 0x00)
-				goto l00409884;
-			r10_163 = r10_163 + (word32) (r11_10 < 0x00);
-l00409884:
-			if ((word32) (0x1FFFFFFF < r10_163) != 0x00)
-				;
+			if ((r11_10 + 0x0100 | r10_163) == 0x00)
+				return;
+			r10_163 = r10_163 + (word32) (r11_10 <u 0x00);
 			return;
 		}
-	r10_163 = r10_163 + (word32) (r11_10 < 0x00);
-	goto l00409880;
+	r10_163 = r10_163 + (word32) (r11_10 <u 0x00);
+	return;
 }
 
-void __unpack_d(Eq_10288 * r4, Eq_10289 * r5, word32 r25)
+void __unpack_d(word32 r4, word32 r5, word32 r25)
 {
-	uint32 r2_8 = r4->dw0000;
-	uint32 r3_9 = r4->dw0004;
-	r5->dw0004 = (r2_8 >> 0x1F) + 0x01;
-	int32 r7_16 = (r2_8 >> 0x14) + 0x07FF;
+	word32 r2_8 = Mem0[r4 + 0x00:word32];
+	word32 r3_9 = Mem0[r4 + 0x04:word32];
+	Mem20[r5 + 0x04:word32] = (r2_8 >>u 0x1F) + 0x01;
+	word32 r7_16 = (r2_8 >>u 0x14) + 0x07FF;
 	if (r7_16 != 0x00)
 		if (r7_16 != 0x07FF)
 		{
-			r5->dw0010 = r2_8 + 0x000FFFFF << 0x08 | r3_9 + -0x01 >> 0x18 | 0x10000000;
-			r5->dw0014 = r3_9 + -0x01 << 0x08;
-			r5->dw0008 = r7_16 + -0x03FF;
-			r5->dw0000 = 0x03;
+			Mem95[r5 + 0x10:word32] = r2_8 + 0x000FFFFF << 0x08 | r3_9 + -0x01 >>u 0x18 | 0x10000000;
+			Mem96[r5 + 0x14:word32] = r3_9 + -0x01 << 0x08;
+			Mem97[r5 + 0x08:word32] = r7_16 + -0x03FF;
+			Mem98[r5 + 0x00:word32] = 0x03;
 			return;
 		}
 		else if ((r3_9 + -0x01 | r2_8 + 0x000FFFFF) != 0x00)
 		{
 			if ((r3_9 + -0x01 | r2_8 + 0x0017FFFF) != 0x00)
-				r5->dw0000 = 0x01;
+				Mem82[r5 + 0x00:word32] = 0x01;
 			else
-				r5->dw0000 = 0x00;
-			r5->dw0010 = r2_8 + 0x000FFFFF;
-			r5->dw0014 = r3_9 + -0x01;
+				Mem84[r5 + 0x00:word32] = 0x00;
+			Mem79[r5 + 0x10:word32] = r2_8 + 0x000FFFFF;
+			Mem80[r5 + 0x14:word32] = r3_9 + -0x01;
 			return;
 		}
 		else
 		{
-			r5->dw0000 = 0x04;
+			Mem71[r5 + 0x00:word32] = 0x04;
 			return;
 		}
 	else if ((r3_9 + -0x01 | r2_8 + 0x000FFFFF) != 0x00)
 	{
-		r5->dw0008 = -1022;
-		uint32 r8_37 = r2_8 + 0x000FFFFF << 0x08 | r3_9 + -0x01 >> 0x18;
-		uint32 r9_38 = r3_9 + -0x01 << 0x08;
-		if ((word32) (0x0FFFFFFF < r8_37) == 0x00)
+		Mem43[r5 + 0x08:word32] = -1022;
+		word32 r8_37 = r2_8 + 0x000FFFFF << 0x08 | r3_9 + -0x01 >>u 0x18;
+		word32 r9_38 = r3_9 + -0x01 << 0x08;
+		if ((word32) (0x0FFFFFFF <u r8_37) == 0x00)
 		{
-			r5->dw0000 = 0x03;
+			Mem51[r5 + 0x00:word32] = 0x03;
 			while (true)
 			{
-				r8_37 = r8_37 << 0x01 | r9_38 >> 0x1F;
-				int32 r2_58 = r5->dw0008;
+				r8_37 = r8_37 << 0x01 | r9_38 >>u 0x1F;
+				word32 r2_58 = Mem51[r5 + 0x08:word32];
 				r9_38 = r9_38 << 0x01;
-				if ((word32) (0x0FFFFFFF < r8_37) != 0x00)
+				if ((word32) (0x0FFFFFFF <u r8_37) != 0x00)
 					break;
-				r5->dw0008 = r2_58 + -0x01;
+				Mem64[r5 + 0x08:word32] = r2_58 + -0x01;
 			}
-			r5->dw0008 = r2_58 + -0x01;
+			Mem63[r5 + 0x08:word32] = r2_58 + -0x01;
 		}
 		else
-			r5->dw0000 = 0x03;
-		r5->dw0010 = r8_37;
-		r5->dw0014 = r9_38;
+			Mem65[r5 + 0x00:word32] = 0x03;
+		Mem49[r5 + 0x10:word32] = r8_37;
+		Mem50[r5 + 0x14:word32] = r9_38;
 		return;
 	}
 	else
 	{
-		r5->dw0000 = 0x02;
+		Mem33[r5 + 0x00:word32] = 0x02;
 		return;
 	}
 }
 
-void __fpcmp_parts_d(Eq_10444 * r4, Eq_10445 * r5)
+void __fpcmp_parts_d(word32 r4, word32 r5)
 {
-	Eq_10446 r6_4 = r4->t0000;
-	if ((word32) (r6_4 < 0x02) != 0x00)
+	word32 r6_4 = Mem0[r4 + 0x00:word32];
+	if ((word32) (r6_4 <u 0x02) != 0x00)
 		return;
-	Eq_10455 r3_16 = r5->t0000;
-	if ((word32) (r3_16 < 0x02) != 0x00)
+	word32 r3_16 = Mem0[r5 + 0x00:word32];
+	if ((word32) (r3_16 <u 0x02) != 0x00)
 		return;
 	if ((r6_4 ^ 0x04) == 0x00)
 	{
@@ -7516,57 +7706,55 @@ void __fpcmp_parts_d(Eq_10444 * r4, Eq_10445 * r5)
 	}
 	if ((r3_16 ^ 0x02) == 0x00)
 		return;
-	if (r4->dw0004 != r5->dw0004)
+	if (Mem0[r4 + 0x04:word32] != Mem0[r5 + 0x04:word32])
 		return;
-	int32 r6_52 = r4->dw0008;
-	int32 r3_53 = r5->dw0008;
+	word32 r6_52 = Mem0[r4 + 0x08:word32];
+	word32 r3_53 = Mem0[r5 + 0x08:word32];
 	if ((word32) (r3_53 < r6_52) != 0x00)
 		return;
 	if ((word32) (r6_52 < r3_53) == 0x00)
 	{
-		uint32 r7_64 = r4->dw0010;
-		uint32 r6_65 = r5->dw0010;
-		if ((word32) (r6_65 < r7_64) != 0x00)
+		word32 r7_64 = Mem0[r4 + 0x10:word32];
+		word32 r6_65 = Mem0[r5 + 0x10:word32];
+		if ((word32) (r6_65 <u r7_64) != 0x00)
 			return;
 		word32 r2_69;
 		if (r7_64 == r6_65)
 		{
-			if ((word32) (r5->dw0014 < r4->dw0014) != 0x00)
+			if ((word32) (Mem0[r5 + 0x14:word32] <u Mem0[r4 + 0x14:word32]) != 0x00)
 				return;
-			r2_69 = (word32) (r7_64 < r6_65);
+			r2_69 = (word32) (r7_64 <u r6_65);
 		}
 		else
-			r2_69 = (word32) (r7_64 < r6_65);
+			r2_69 = (word32) (r7_64 <u r6_65);
 		if (r2_69 == 0x00)
 		{
-			if (r6_65 != r7_64)
-				return;
-			if ((word32) (r4->dw0014 < r5->dw0014) == 0x00)
-				return;
+			if (r6_65 == r7_64)
+				if ((word32) (Mem0[r4 + 0x14:word32] <u Mem0[r5 + 0x14:word32]) != 0x00)
+					return;
+			return;
 		}
 	}
 	return;
 }
 
-void __do_global_ctors_aux(Eq_10551 * r25)
+void __do_global_ctors_aux(word32 r25)
 {
-	Eq_10552 * r2_11 = r25->ptrFBF6C68;
-	code * r25_17 = r2_11->ptr0854;
-	if (r25_17 != (code *) -0x01)
-		while (true)
+	word32 r2_11 = Mem0[r25 + 0x0FBF6C68:word32];
+	word32 r25_17 = Mem0[r2_11 + 2132:word32];
+	if (r25_17 != -0x01)
+		do
 		{
 			word32 sp_29;
 			word32 r28_30;
 			word32 r25_31;
-			Eq_10565 * r16_32;
+			word32 r16_32;
 			word32 r2_33;
 			word32 ra_34;
 			word32 r17_35;
 			word32 r3_36;
 			r25_17();
-			if (r16_32->dwFFFFFFFC == -0x01)
-				break;
-		}
+		} while (Mem0[r16_32 + -0x04:word32] != -0x01);
 	return;
 }
 
@@ -7575,14 +7763,14 @@ void init_dummy(word32 r25)
 	return;
 }
 
-void _fini(Eq_10576 * r25)
+void _fini(word32 r25)
 {
 	word32 sp_14;
 	word32 r28_15;
 	word32 r25_16;
 	word32 ra_17;
-	bcuipsr0 None_18;
-	(r25->ptrFBF6BCC + 0x0620)();
+	bcuiposr0 None_18;
+	(Mem0[r25 + 0x0FBF6BCC:word32] + 0x0620)();
 	return;
 }
 

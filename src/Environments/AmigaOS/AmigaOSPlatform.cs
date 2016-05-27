@@ -34,6 +34,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Reko.Core.CLanguage;
+using Reko.Core.Configuration;
 
 namespace Reko.Environments.AmigaOS
 {
@@ -45,23 +46,7 @@ namespace Reko.Environments.AmigaOS
     {
         private RtlInstructionMatcher a6Pattern;
         private Dictionary<int, SystemService> funcs; //$TODO: This should take a type of base pointer the reference is from ?
-        private static Dictionary<int, List<String>> mapKickstartToListOfLibraries = new Dictionary<int, List<String>>
-        {
-            {
-                33, new List<String>
-                {
-                    "exec_v33",
-                    "dos_v33"
-                }
-            },
-            {
-                34, new List<String>
-                {
-                    "exec_v34",
-                    "dos_v34"
-                }
-            }
-        }; //$TODO: Load available kickstart -> libraries mappings from disk ?
+        private static Dictionary<string, object> mapKickstartToListOfLibraries;
 
         public AmigaOSPlatform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch, "amigaOS")
@@ -77,20 +62,63 @@ namespace Reko.Environments.AmigaOS
                     RtlClass.Transfer));
         }
 
-        public static Dictionary<int, List<String>> MapKickstartToListOfLibraries
+        public Dictionary<string, object> MapKickstartToListOfLibraries
         {
             get
             {
-                return mapKickstartToListOfLibraries;
+                return EnsureMapKickstartToListOfLibraries();
             }
         }
 
-        public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
+        private Dictionary<string, object> EnsureMapKickstartToListOfLibraries()
         {
-            throw new NotImplementedException();
+            if (mapKickstartToListOfLibraries != null)
+                return mapKickstartToListOfLibraries;
+
+            var cfgSvc = Services.RequireService<IConfigurationService>();
+            var env = cfgSvc.GetEnvironment(this.PlatformIdentifier);
+            mapKickstartToListOfLibraries = (Dictionary<string,object>)env.Options["versionDependentLibraries"];
+            return mapKickstartToListOfLibraries;
         }
 
-        public override HashSet<RegisterStorage>  CreateImplicitArgumentRegisters()
+        /// <summary>
+        /// Creates the Amiga absolute memory map.
+        /// </summary>
+        /// <returns>
+        /// ...which is trivial on the Amiga since the only known address
+        /// is the pointer at 0x00000004 that points to the ExecBase.
+        /// </returns>
+        public override SegmentMap CreateAbsoluteMemoryMap()
+        {
+            EnsureTypeLibraries(base.PlatformIdentifier);
+            var segmentMap = new SegmentMap(
+                Address.Ptr32(0),
+                new ImageSegment(
+                    "interrupts",
+                    new MemoryArea(Address.Ptr32(0), new byte[0x100]),
+                    AccessMode.Read));
+            //$TODO: once we're guaranteed the correct Kickstart version
+            // has been loaded, we can execute the below.
+            //imageMap.AddItemWithSize(
+            //    Address.Ptr32(4),
+            //    new ImageMapItem(4)
+            //    {
+            //        DataType = new Pointer(Metadata.Types["ExecBase"], 4)
+            //    });
+            return segmentMap;
+        }
+
+        public override ProcedureSerializer CreateProcedureSerializer(
+            ISerializedTypeVisitor<DataType> typeLoader,
+            string defaultConvention)
+        {
+            return new M68kProcedureSerializer(
+                (M68kArchitecture)Architecture,
+                typeLoader,
+                defaultConvention);
+        }
+
+        public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
             return new HashSet<RegisterStorage> { Registers.a7 };
         }
@@ -114,27 +142,30 @@ namespace Reko.Environments.AmigaOS
             SystemService svc;
             return funcs.TryGetValue(offset, out svc) ? svc : null;
         }
-        private String GetLibraryBaseName(String name_with_version) 
+
+        private string GetLibraryBaseName(string name_with_version) 
         {
             int idx_of_version_str = name_with_version.IndexOf("_v");
             if (-1 == idx_of_version_str) // no version, assuming the base name of library is same as name_with_version
                 return name_with_version;
             return name_with_version.Substring(0, idx_of_version_str);
         }
+
         /// <summary>
         /// Gets the list of libraries for given kickstart version.
         /// </summary>
         /// <returns>The library list for kickstart version.</returns>
-        /// <remarks> This will always try to build maximum list of libraries, using older versions where possible </remarks>
+        /// <remarks> This will always try to build maximum list of libraries, using older
+        /// versions where possible </remarks>
         /// <param name="ver">Kickstart version</param>
-        public List<String> GetLibrarySetForKickstartVersion(int ver)
+        public List<string> GetLibrarySetForKickstartVersion(int ver)
         {
             //$TODO: needs cleanup ?
             var result_list = new List<String>();
             var selected_librarties = new Dictionary<String,String>();
 
-            var keys = mapKickstartToListOfLibraries.Keys.ToList();
-            keys.Sort ();
+            var keys = EnsureMapKickstartToListOfLibraries().Keys.Select(k => Convert.ToInt32(k)).ToList();
+            keys.Sort();
 
             int idx_version_to_select = keys.BinarySearch(ver);
             if (idx_version_to_select<0) 
@@ -150,9 +181,9 @@ namespace Reko.Environments.AmigaOS
             for (int ver_idx = idx_version_to_select; ver_idx >= 0; --ver_idx) 
             {
                 int try_version = keys.ElementAt(ver_idx);
-                foreach(String lib in mapKickstartToListOfLibraries[try_version]) 
+                foreach (string lib in (IEnumerable<object>)mapKickstartToListOfLibraries[try_version.ToString()])
                 {
-                    String base_libname = GetLibraryBaseName(lib);
+                    string base_libname = GetLibraryBaseName(lib);
                     if (selected_librarties.ContainsKey(base_libname))
                         continue;
                     selected_librarties.Add(base_libname, lib);
@@ -160,11 +191,15 @@ namespace Reko.Environments.AmigaOS
             }
             return selected_librarties.Values.ToList();
         }
+
         public void SetKickstartVersion(int v)
         {
-            List<String> lib_list = GetLibrarySetForKickstartVersion (v);
-
+            List<String> lib_list = GetLibrarySetForKickstartVersion(v);
         }
+
+        /// <summary>
+        /// AmigaOS doesn't appear to define a calling convention; each fn is ad-hoc.
+        /// </summary>
         public override string DefaultCallingConvention
         {
             get { return ""; }
@@ -207,12 +242,8 @@ namespace Reko.Environments.AmigaOS
         {
             var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
             var fsSvc = Services.RequireService<IFileSystemService>();
-            var sser = new M68kProcedureSerializer(
-                (M68kArchitecture)Architecture,
-                new TypeLibraryDeserializer(this, true, libDst),
-                DefaultCallingConvention);
-
-            using (var rdr = new StreamReader(fsSvc.CreateFileStream(tlSvc.InstalledFileLocation( lib_name + ".funcs"), FileMode.Open, FileAccess.Read)))
+            var sser = this.CreateProcedureSerializer(new TypeLibraryDeserializer(this, true, libDst), DefaultCallingConvention);
+            using (var rdr = new StreamReader(fsSvc.CreateFileStream(tlSvc.InstalledFileLocation(lib_name + ".funcs"), FileMode.Open, FileAccess.Read)))
             {
                 var fpp = new FuncsFileParser((M68kArchitecture)this.Architecture, rdr);
                 fpp.Parse();

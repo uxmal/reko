@@ -46,7 +46,7 @@ fn0C00_0000_exit:
 ====================
 // fn0C00_0025
 // Return size: 0
-word16 fn0C00_0025(word16 si, selector ds, ptr16 siOut)
+word16 fn0C00_0025(word16 si, selector ds, ptr16 & siOut)
 fn0C00_0025_entry:
 	def fp
 	def ds
@@ -65,7 +65,7 @@ fn0C00_0025_exit:
 
 // fn0C00_0025
 // Return size: 0
-word16 fn0C00_0025(word16 si, selector ds, ptr16 siOut)
+word16 fn0C00_0025(word16 si, selector ds, ptr16 & siOut)
 fn0C00_0025_entry:
 	def ds
 	def si
@@ -81,7 +81,7 @@ fn0C00_0025_exit:
 ====================
 // fn0C00_0027
 // Return size: 0
-word16 fn0C00_0027(word16 si, selector ds, ptr16 siOut)
+word16 fn0C00_0027(word16 si, selector ds, ptr16 & siOut)
 fn0C00_0027_entry:
 	def fp
 	def si
@@ -112,7 +112,7 @@ fn0C00_0027_exit:
 
 // fn0C00_0027
 // Return size: 0
-word16 fn0C00_0027(word16 si, selector ds, ptr16 siOut)
+word16 fn0C00_0027(word16 si, selector ds, ptr16 & siOut)
 fn0C00_0027_entry:
 	def si
 	def siOut
@@ -139,7 +139,7 @@ fn0C00_0027_exit:
 ====================
 // fn0C00_002F
 // Return size: 0
-word16 fn0C00_002F(word16 si, selector ds, ptr16 siOut)
+word16 fn0C00_002F(word16 si, selector ds, ptr16 & siOut)
 fn0C00_002F_entry:
 	def fp
 	def ds
@@ -159,7 +159,7 @@ fn0C00_002F_exit:
 
 // fn0C00_002F
 // Return size: 0
-word16 fn0C00_002F(word16 si, selector ds, ptr16 siOut)
+word16 fn0C00_002F(word16 si, selector ds, ptr16 & siOut)
 fn0C00_002F_entry:
 	def ds
 	def si
@@ -177,7 +177,7 @@ fn0C00_002F_exit:
 ====================
 // fn0C00_0036
 // Return size: 0
-word16 fn0C00_0036(word16 si, selector ds, ptr16 siOut)
+word16 fn0C00_0036(word16 si, selector ds, ptr16 & siOut)
 fn0C00_0036_entry:
 	def fp
 	def ds
@@ -197,7 +197,7 @@ fn0C00_0036_exit:
 
 // fn0C00_0036
 // Return size: 0
-word16 fn0C00_0036(word16 si, selector ds, ptr16 siOut)
+word16 fn0C00_0036(word16 si, selector ds, ptr16 & siOut)
 fn0C00_0036_entry:
 	def ds
 	def si

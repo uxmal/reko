@@ -202,7 +202,7 @@ main_exit:
 
 
 
-word16 fn0800_0E4B(selector ds, word16 wArg02, ptr16 diOut)
+word16 fn0800_0E4B(selector ds, word16 wArg02, ptr16 & diOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ds ss
@@ -236,7 +236,7 @@ fn0800_0E4B_exit:
 
 
 
-word16 fn0800_1073(selector ds, word16 wArg04, ptr16 diOut)
+word16 fn0800_1073(selector ds, word16 wArg04, ptr16 & diOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ds ss
@@ -471,7 +471,7 @@ l0800_10EE:
 
 
 
-word16 fn0800_1099(byte al, word16 bp, word16 di, selector ds, ptr16 diOut)
+word16 fn0800_1099(byte al, word16 bp, word16 di, selector ds, ptr16 & diOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  al bp di ds ss
@@ -514,7 +514,7 @@ fn0800_1099_exit:
 
 
 
-word16 fn0800_10A1(word16 bp, word16 di, ptr16 diOut)
+word16 fn0800_10A1(word16 bp, word16 di, ptr16 & diOut)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  bp di ss

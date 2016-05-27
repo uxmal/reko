@@ -31,7 +31,7 @@ using System.Diagnostics;
 namespace Reko.UnitTests.Typing
 {
     [TestFixture]
-    public class ExpressionTypeAscenderTests 
+    public class ExpressionTypeAscenderTests
     {
         private ExpressionEmitter m;
         private TypeStore store;
@@ -87,7 +87,7 @@ namespace Reko.UnitTests.Typing
         {
             RunTest(Id("x", PrimitiveType.Byte));
         }
-        
+
         [Test]
         public void ExaAnd()
         {
@@ -148,6 +148,16 @@ namespace Reko.UnitTests.Typing
             var psz = Id("psz", new TypeReference("LPSTR", new Pointer(PrimitiveType.Char, 4)));
             RunTest(
                 m.LoadB(m.IAdd(psz, Constant.Word32(0))));
+        }
+
+        [Test(Description = "Resilve LPSTRs and the like to their underlying rep")]
+        public void ExaMkSequence()
+        {
+            var lpsz = Id("psz", PrimitiveType.Word32);
+            RunTest(
+                m.Seq(
+                    m.LoadW(m.IAdd(lpsz, 4)),
+                    Constant.Word16(0x1200)));
         }
     }
 }

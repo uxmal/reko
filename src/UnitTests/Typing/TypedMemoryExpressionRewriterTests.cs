@@ -81,7 +81,7 @@ namespace Reko.UnitTests.Typing
             var ptr = new Identifier("ptr", PrimitiveType.Word32, null);
 			var tv = CreateTv(ptr, new Pointer(point, 4), new Pointer(point, 4));
 
-            var tmer = new TypedExpressionRewriter(program);
+            var tmer = new TypedExpressionRewriter(program, null);
             var access = CreateTv(m.LoadDw(m.IAdd(ptr, 0)));
             Expression e = access.Accept(tmer);
 			Assert.AreEqual("ptr->dw0000", e.ToString());
@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Typing
 			var c = CreateTv(Constant.Word32(4));
 			var bin = CreateTv(new BinaryExpression(BinaryOperator.IAdd, PrimitiveType.Word32, ptr, c));
             var mem = CreateTv(new MemoryAccess(bin, PrimitiveType.Word32));
-			var tmer = new TypedExpressionRewriter(program);
+			var tmer = new TypedExpressionRewriter(program, null);
 			Expression e = mem.Accept(tmer);
 			Assert.AreEqual("ptr->dw0004", e.ToString());
 		}

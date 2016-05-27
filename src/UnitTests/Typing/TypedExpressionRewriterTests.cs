@@ -48,12 +48,14 @@ namespace Reko.UnitTests.Typing
         private ComplexTypeNamer ctn;
         private List<StructureField> userDefinedGlobals;
         private Dictionary<string, ProcedureSignature> userDefinedProcedures;
+        private Dictionary<Address, ImageSegment> imageSegments;
 
         [SetUp]
         public void Setup()
         {
             userDefinedGlobals = new List<StructureField>();
             userDefinedProcedures = new Dictionary<string, ProcedureSignature>();
+            imageSegments = new Dictionary<Address, ImageSegment>();
         }
 
         protected override void RunTest(Program program, string outputFile)
@@ -78,7 +80,7 @@ namespace Reko.UnitTests.Typing
                 tvr.ReplaceTypeVariables();
                 trans.Transform();
                 ctn.RenameAllTypes(program.TypeStore);
-                ter = new TypedExpressionRewriter(program);
+                ter = new TypedExpressionRewriter(program, null);
                 try
                 {
                     ter.RewriteProgram(program);
@@ -126,7 +128,7 @@ namespace Reko.UnitTests.Typing
             ctn.RenameAllTypes(program.TypeStore);
             program.TypeStore.Dump();
 
-            var ter = new TypedExpressionRewriter(program);
+            var ter = new TypedExpressionRewriter(program, null);
             try
             {
                 ter.RewriteProgram(program);
@@ -183,6 +185,10 @@ namespace Reko.UnitTests.Typing
             {
                 program.GlobalFields.Fields.Add(f);
             }
+            foreach (var s in imageSegments.Values)
+            {
+                program.SegmentMap.Segments.Add(s.Address, s);
+            }
             aen = new ExpressionNormalizer(program.Platform.PointerType);
             eqb = new EquivalenceClassBuilder(program.TypeFactory, program.TypeStore);
             dtb = new DataTypeBuilder(program.TypeFactory, program.TypeStore, program.Platform);
@@ -217,6 +223,7 @@ namespace Reko.UnitTests.Typing
         public void TerComplex()
         {
             Program program = new Program();
+            program.SegmentMap = new SegmentMap(Address.Ptr32(0x0010000));
             program.Architecture = new FakeArchitecture();
             program.Platform = new DefaultPlatform(null, program.Architecture);
             SetupPreStages(program);
@@ -234,7 +241,7 @@ namespace Reko.UnitTests.Typing
             trans.Transform();
             ctn.RenameAllTypes(program.TypeStore);
 
-            ter = new TypedExpressionRewriter(program);
+            ter = new TypedExpressionRewriter(program, null);
             cmp = cmp.Accept(ter);
             Assert.AreEqual("v0->dw0004", cmp.ToString());
         }
@@ -267,27 +274,29 @@ namespace Reko.UnitTests.Typing
         [Test]
         public void TerConstants()
         {
-            Program prog = new Program();
-            prog.Architecture = new FakeArchitecture();
-            prog.Platform = new DefaultPlatform(null, prog.Architecture);
-            SetupPreStages(prog);
+            var arch = new FakeArchitecture();
+            Program program = new Program(
+                new SegmentMap(Address.Ptr32(0x10000)),
+                arch,
+                new DefaultPlatform(null, arch));
+            SetupPreStages(program);
             Constant r = Constant.Real32(3.0F);
             Constant i = Constant.Int32(1);
             Identifier x = new Identifier("x", PrimitiveType.Word32, null);
             Assignment ass = new Assignment(x, r);
-            TypeVariable tvR = r.TypeVariable = prog.TypeFactory.CreateTypeVariable();
-            TypeVariable tvI = i.TypeVariable = prog.TypeFactory.CreateTypeVariable();
-            TypeVariable tvX = x.TypeVariable = prog.TypeFactory.CreateTypeVariable();
-            prog.TypeStore.TypeVariables.AddRange(new TypeVariable[] { tvR, tvI, tvX });
-            UnionType u = prog.TypeFactory.CreateUnionType(null, null, new DataType[] { r.DataType, i.DataType });
+            TypeVariable tvR = r.TypeVariable = program.TypeFactory.CreateTypeVariable();
+            TypeVariable tvI = i.TypeVariable = program.TypeFactory.CreateTypeVariable();
+            TypeVariable tvX = x.TypeVariable = program.TypeFactory.CreateTypeVariable();
+            program.TypeStore.TypeVariables.AddRange(new TypeVariable[] { tvR, tvI, tvX });
+            UnionType u = program.TypeFactory.CreateUnionType(null, null, new DataType[] { r.DataType, i.DataType });
             tvR.OriginalDataType = r.DataType;
             tvI.OriginalDataType = i.DataType;
             tvX.OriginalDataType = x.DataType;
             tvR.DataType = u;
             tvI.DataType = u;
             tvX.DataType = u;
-            ctn.RenameAllTypes(prog.TypeStore);
-            var ter = new TypedExpressionRewriter(prog);
+            ctn.RenameAllTypes(program.TypeStore);
+            var ter = new TypedExpressionRewriter(program, null);
             Instruction instr = ter.TransformAssignment(ass);
             Assert.AreEqual("x.u0 = 3.0F", instr.ToString());
         }
@@ -566,6 +575,14 @@ namespace Reko.UnitTests.Typing
             var pb = CreateProgramBuilder(0x04000000, 0x9000);
             pb.Add(new ArrayLoopMock());
             RunTest(pb, "Typing/TerArrayLoopMock.txt");
+        }
+
+        [Test]
+        public void TerArrayExpression()
+        {
+            var m = new ProgramBuilder();
+            m.Add(new ArrayExpressionFragment());
+            RunTest(m.BuildProgram(), "Typing/TerArrayExpression.txt");
         }
 
         [Test]
@@ -884,7 +901,7 @@ proc1_entry:
 	// succ:  l1
 l1:
 	Eq_2 * r1
-	word32 r2
+	ptr32 r2
 	r1 = r1->ptr0000
 	globals->b1004 = r1->ptr0000->ptr0000->b0004
 	r2 = &r1->b0004
@@ -1003,6 +1020,52 @@ test_exit:
             RunStringTest(m =>
             {
                 m.SideEffect(m.Fn(func, m.Word32(0x1000)));
+            }, sExp);
+        }
+
+        [Test(Description = "Rewrite constants with segment selector type ")]
+        public void TerSelector()
+        {
+            var sExp =
+            #region Expected
+
+@"// Before ///////
+// test
+// Return size: 0
+void test()
+test_entry:
+	// succ:  l1
+l1:
+	ds = 0x1234
+	Mem0[ds:0x0010:word32] = 0x00010004
+test_exit:
+
+// After ///////
+// test
+// Return size: 0
+void test()
+test_entry:
+	// succ:  l1
+l1:
+	ds = seg1234
+	ds->dw0010 = 0x00010004
+test_exit:
+
+"
+;
+            #endregion
+
+            var seg = new ImageSegment(
+                "1234",
+                new MemoryArea(Address.SegPtr(0x1234, 0), new byte[0x100]),
+                AccessMode.ReadWriteExecute);
+            seg.Identifier = Identifier.CreateTemporary("seg1234", PrimitiveType.SegmentSelector);
+            imageSegments.Add(seg.Address, seg);
+            RunStringTest(m =>
+            {
+                var ds = m.Frame.CreateTemporary("ds", PrimitiveType.SegmentSelector);
+                m.Assign(ds, Constant.Create(ds.DataType, 0x1234));
+                m.SegStore(ds, m.Word16(0x10), m.Word32(0x010004));
             }, sExp);
         }
     }

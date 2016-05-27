@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Diagnostics;
@@ -43,12 +44,12 @@ namespace Reko.Typing
         private bool dereferenced;
         private Expression basePtr;
 
-        public TypedExpressionRewriter(Program program)
+        public TypedExpressionRewriter(Program program, DecompilerEventListener eventListener)
         {
             this.program = program;
             this.globals = program.Globals;
             this.compTypes = new DataTypeComparer();
-            this.tcr = new TypedConstantRewriter(program);
+            this.tcr = new TypedConstantRewriter(program, eventListener);
             this.m = new ExpressionEmitter();
             this.unifier = new Unifier();
         }
@@ -171,7 +172,7 @@ namespace Reko.Typing
             var cOther = index as Constant;
             if (cOther != null)
             {
-                offset += cOther.ToInt32();
+                offset += (int) cOther.ToUInt32();
                 index = null;
             }
             var ceb = new ComplexExpressionBuilder(null, basePtr, complex, index, offset);
@@ -314,6 +315,7 @@ namespace Reko.Typing
                 this.basePtr = basePtr;
                 result = Rewrite(access.EffectiveAddress, true);
             }
+            result.TypeVariable = access.TypeVariable;
             this.basePtr = oldBase;
             return result;
         }

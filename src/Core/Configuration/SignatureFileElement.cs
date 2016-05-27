@@ -30,12 +30,15 @@ namespace Reko.Core.Configuration
     {
         string Filename { get; }
         
+        string Label { get; }
         string Type { get; }
     }
 
     public class SignatureFileElement : SignatureFile
     {
         public string Filename { get; set; }
+
+        public string Label { get; set; }
 
         public string Type { get; set; }
     }

@@ -42,12 +42,13 @@ namespace Reko.Loading
 {
     public class DccSignatureLoader
     {
-        PerfectHash g_pattern_hasher;
+        PerfectHash g_pattern_hasher = new PerfectHash();
+
         const int NIL = -1;                   /* Used like NULL, but 0 is valid */
         const byte WILD = 0xF4;
 
         const int SYMLEN = 16;          /* Number of chars in the symbol name, incl null */
-        const int PATLEN = 23;         /* Number of bytes in the pattern part */
+        const int PATLEN = 23;          /* Number of bytes in the pattern part */
 
         private Program program;
         private ProcessorState state;
@@ -58,6 +59,7 @@ namespace Reko.Loading
             public string htSym;
             public byte[] htPat;
         }
+
         //typedef struct HT_tag
         //{
         //    char htSym[SYMLEN];
@@ -87,38 +89,38 @@ namespace Reko.Loading
     sorted by function name) */
 class PH_FUNC_STRUCT
         {
-            public string name; // [SYMLEN]               /* Name of function or arg */
-            public hlType typ;                        /* Return type */
-            public int numArg;                     /* Number of args */
-            public int firstArg;                   /* Index of first arg in chain */
-            //  int     next;                       /* Index of next function in chain */
-            public bool bVararg;                    /* True if variable arguements */
+            public string name; // [SYMLEN]  /* Name of function or arg */
+            public hlType typ;               /* Return type */
+            public int numArg;               /* Number of args */
+            public int firstArg;             /* Index of first arg in chain */
+            //  int     next;                /* Index of next function in chain */
+            public bool bVararg;             /* True if variable arguements */
         }
 
 
-        const int NUM_PLIST = 64;              	/* Number of entries to increase allocation by */
+        const int NUM_PLIST = 64;            /* Number of entries to increase allocation by */
 
 /* statics */
-static char [] buf= new char[100];                       /* A general purpose buffer */
-        int numKeys;                            /* Number of hash table entries (keys) */
-        ushort numVert;                            /* Number of vertices in the graph (also size of g[]) */
-        ushort PatLen;                        /* Size of the keys (pattern length) */
-        ushort SymLen;                        /* Max size of the symbols, including null */
-        static string sSigName;            /* Full path name of .sig file */
-
-        static ushort[] T1base, T2base;       /* Pointers to start of T1, T2 */
-        static short[]  g;                     /* g[] */
-        static HT [] ht;                    /* The hash table */
-        static PH_FUNC_STRUCT [] pFunc;          /* Points to the array of func names */
-        static hlType [] pArg = null;      /* Points to the array of param types */
-        static int numFunc;                /* Number of func names actually stored */
-        static int numArg;                 /* Number of param names actually stored */
-//#define DCCLIBS "dcclibs.dat"           /* Name of the prototypes data file */
+static char [] buf = new char[100];          /* A general purpose buffer */
+        int numKeys;                         /* Number of hash table entries (keys) */
+        ushort numVert;                      /* Number of vertices in the graph (also size of g[]) */
+        ushort PatLen;                       /* Size of the keys (pattern length) */
+        ushort SymLen;                       /* Max size of the symbols, including null */
+        static string sSigName;              /* Full path name of .sig file */
+                                             
+        static ushort[] T1base, T2base;      /* Pointers to start of T1, T2 */
+        static short[]  g;                   /* g[] */
+        static HT [] ht;                     /* The hash table */
+        static PH_FUNC_STRUCT [] pFunc;      /* Points to the array of func names */
+        static hlType [] pArg = null;        /* Points to the array of param types */
+        static int numFunc;                  /* Number of func names actually stored */
+        static int numArg;                   /* Number of param names actually stored */
+//#define DCCLIBS "dcclibs.dat"              /* Name of the prototypes data file */
 
         /* prototypes */
-        //void checkHeap(string msg);              /* For debugging */
+        //void checkHeap(string msg);        /* For debugging */
 
-        //void fixWildCards(uint8_t pat[]);           /* In fixwild.c */
+        //void fixWildCards(uint8_t pat[]);  /* In fixwild.c */
 
         /*  *   *   *   *   *   *   *   *   *   *   *   *   *   *   *\
         *                                                            *
@@ -222,32 +224,32 @@ static char [] buf= new char[100];                       /* A general purpose bu
 
         static byte[] pattBorl7Init =
         {
-    0xBA, WILD, WILD,		/* Mov dx, dseg */
-    0x8E, 0xDA,         	/* mov ds, dx */
-    0x8C, 0x06, 0x30, 0,	/* mov [0030], es */
-    0xE8, WILD, WILD,		/* call xxxx */
-    0xE8, WILD, WILD,		/* call xxxx... offset always 00A0? */
-    0x8B, 0xC4,				/* mov ax, sp */
-    0x05, 0x13, 0,			/* add ax, 13h */
-    0xB1, 0x04,				/* mov cl, 4 */
-    0xD3, 0xE8,				/* shr ax, cl */
-    0x8C, 0xD2				/* mov dx, ss */
-};
+            0xBA, WILD, WILD,		/* Mov dx, dseg */
+            0x8E, 0xDA,         	/* mov ds, dx */
+            0x8C, 0x06, 0x30, 0,	/* mov [0030], es */
+            0xE8, WILD, WILD,		/* call xxxx */
+            0xE8, WILD, WILD,		/* call xxxx... offset always 00A0? */
+            0x8B, 0xC4,				/* mov ax, sp */
+            0x05, 0x13, 0,			/* add ax, 13h */
+            0xB1, 0x04,				/* mov cl, 4 */
+            0xD3, 0xE8,				/* shr ax, cl */
+            0x8C, 0xD2				/* mov dx, ss */
+        };
 
 
         static byte[] pattLogiStart =
         {
-    0xEB, 0x04,         /* jmp short $+6 */
-    WILD, WILD,         /* Don't know what this is */
-    WILD, WILD,         /* Don't know what this is */
-    0xB8, WILD, WILD,   /* mov ax, dseg */
-    0x8E, 0xD8          /* mov ds, ax */
-};
+            0xEB, 0x04,         /* jmp short $+6 */
+            WILD, WILD,         /* Don't know what this is */
+            WILD, WILD,         /* Don't know what this is */
+            0xB8, WILD, WILD,   /* mov ax, dseg */
+            0x8E, 0xD8          /* mov ds, ax */
+        };
 
         static byte[] pattTPasStart =
         {
-    0xE9, 0x79, 0x2C    /* Jmp 2D7C - Turbo pascal 3.0 */
-};
+            0xE9, 0x79, 0x2C    /* Jmp 2D7C - Turbo pascal 3.0 */
+        };
 
 
 
@@ -261,58 +263,58 @@ static char [] buf= new char[100];                       /* A general purpose bu
         /* This pattern works for MS and Borland, small and tiny model */
         static byte[]  pattMainSmall =
         {
-    0xFF, 0x36, WILD, WILD,                 /* Push environment pointer */
-    0xFF, 0x36, WILD, WILD,                 /* Push argv */
-    0xFF, 0x36, WILD, WILD,                 /* Push argc */
-    0xE8, WILD, WILD						/* call _main */
-    //  0x50,                                   /* push ax... not in Borland V3 */
-    //  0xE8                                    /* call _exit */
-};
+            0xFF, 0x36, WILD, WILD,                 /* Push environment pointer */
+            0xFF, 0x36, WILD, WILD,                 /* Push argv */
+            0xFF, 0x36, WILD, WILD,                 /* Push argc */
+            0xE8, WILD, WILD						/* call _main */
+            //  0x50,                                   /* push ax... not in Borland V3 */
+            //  0xE8                                    /* call _exit */
+        };
         /* Num bytes from start pattern to the relative offset of main() */
         const int OFFMAINSMALL = 13;
 
         /* This pattern works for MS and Borland, medium model */
         static byte[] pattMainMedium =
         {
-    0xFF, 0x36, WILD, WILD,                 /* Push environment pointer */
-    0xFF, 0x36, WILD, WILD,                 /* Push argv */
-    0xFF, 0x36, WILD, WILD,                 /* Push argc */
-    0x9A, WILD, WILD, WILD, WILD            /* call far _main */
-    //  0x50                                /* push ax */
-    //  0x0E,                               /* push cs NB not tested Borland */
-    //  0xE8                                /* call _exit */
-};
+            0xFF, 0x36, WILD, WILD,                 /* Push environment pointer */
+            0xFF, 0x36, WILD, WILD,                 /* Push argv */
+            0xFF, 0x36, WILD, WILD,                 /* Push argc */
+            0x9A, WILD, WILD, WILD, WILD            /* call far _main */
+            //  0x50                                /* push ax */
+            //  0x0E,                               /* push cs NB not tested Borland */
+            //  0xE8                                /* call _exit */
+        };
         /* Num bytes from start pattern to the relative offset of main() */
         const int OFFMAINMEDIUM =13;
 
         /* This pattern works for MS and Borland, compact model */
         static byte[] pattMainCompact =
         {
-    0xFF, 0x36, WILD, WILD,                 /* Push environment pointer lo */
-    0xFF, 0x36, WILD, WILD,                 /* Push environment pointer hi */
-    0xFF, 0x36, WILD, WILD,                 /* Push argv lo */
-    0xFF, 0x36, WILD, WILD,                 /* Push argv hi */
-    0xFF, 0x36, WILD, WILD,                 /* Push argc */
-    0xE8, WILD, WILD,                       /* call _main */
-    //  0x50,                                   /* push ax */
-    //  0xE8                                    /* call _exit */
-};
+            0xFF, 0x36, WILD, WILD,                 /* Push environment pointer lo */
+            0xFF, 0x36, WILD, WILD,                 /* Push environment pointer hi */
+            0xFF, 0x36, WILD, WILD,                 /* Push argv lo */
+            0xFF, 0x36, WILD, WILD,                 /* Push argv hi */
+            0xFF, 0x36, WILD, WILD,                 /* Push argc */
+            0xE8, WILD, WILD,                       /* call _main */
+            //  0x50,                                   /* push ax */
+            //  0xE8                                    /* call _exit */
+        };
         /* Num bytes from start pattern to the relative offset of main() */
         const int OFFMAINCOMPACT= 21;
 
         /* This pattern works for MS and Borland, large model */
         static byte[] pattMainLarge =
         {
-    0xFF, 0x36, WILD, WILD,                 /* Push environment pointer lo */
-    0xFF, 0x36, WILD, WILD,                 /* Push environment pointer hi */
-    0xFF, 0x36, WILD, WILD,                 /* Push argv lo */
-    0xFF, 0x36, WILD, WILD,                 /* Push argv hi */
-    0xFF, 0x36, WILD, WILD,                 /* Push argc */
-    0x9A, WILD, WILD, WILD, WILD            /* call far _main */
-    //  0x50                                    /* push ax */
-    //  0x0E,                                   /* push cs */
-    //  0xE8                                    /* call _exit */
-};
+            0xFF, 0x36, WILD, WILD,                 /* Push environment pointer lo */
+            0xFF, 0x36, WILD, WILD,                 /* Push environment pointer hi */
+            0xFF, 0x36, WILD, WILD,                 /* Push argv lo */
+            0xFF, 0x36, WILD, WILD,                 /* Push argv hi */
+            0xFF, 0x36, WILD, WILD,                 /* Push argc */
+            0x9A, WILD, WILD, WILD, WILD            /* call far _main */
+            //  0x50                                    /* push ax */
+            //  0x0E,                                   /* push cs */
+            //  0xE8                                    /* call _exit */
+        };
         /* Num bytes from start pattern to the relative offset of main() */
         const int OFFMAINLARGE = 21;
 
@@ -326,28 +328,23 @@ static char [] buf= new char[100];                       /* A general purpose bu
         /* This pattern is for the stack check code in Microsoft compilers */
         static byte [] pattMsChkstk =
         {
-    0x59,					/* pop cx		*/
-    0x8B, 0xDC,          	/* mov bx, sp	*/
-    0x2B, 0xD8,				/* sub bx, ax	*/
-    0x72, 0x0A,				/* jb bad		*/
-    0x3B, 0x1E, WILD, WILD,	/* cmp bx, XXXX */
-    0x72, 0x04,				/* jb bad		*/
-    0x8B, 0xE3,				/* mov sp, bx	*/
-    0xFF, 0xE1,				/* jmp [cx]		*/
-    0x33, 0xC0,				/* xor ax, ax	*/
-    0xE9					/* jmp XXXX		*/
-};
+            0x59,					/* pop cx		*/
+            0x8B, 0xDC,          	/* mov bx, sp	*/
+            0x2B, 0xD8,				/* sub bx, ax	*/
+            0x72, 0x0A,				/* jb bad		*/
+            0x3B, 0x1E, WILD, WILD,	/* cmp bx, XXXX */
+            0x72, 0x04,				/* jb bad		*/
+            0x8B, 0xE3,				/* mov sp, bx	*/
+            0xFF, 0xE1,				/* jmp [cx]		*/
+            0x33, 0xC0,				/* xor ax, ax	*/
+            0xE9					/* jmp XXXX		*/
+        };
 
-
-
-
-        /* This procedure is called to initialise the library check code */
-        bool SetupLibCheck(IServiceProvider services)
+        // This procedure is called to initialise the library check code 
+        public bool SetupLibCheck(IServiceProvider services)
         {
             var diag = services.RequireService<IDiagnosticsService>();
             var cfgSvc = services.RequireService<IConfigurationService>();
-            ushort w, len;
-            int i;
             string fpath = cfgSvc.GetInstallationRelativePath("msdos", sSigName);
             var fsSvc = services.RequireService<IFileSystemService>();
             if (!fsSvc.FileExists(fpath))
@@ -356,10 +353,17 @@ static char [] buf= new char[100];                       /* A general purpose bu
                 return false;
             }
             var bytes = fsSvc.ReadAllBytes(fpath);
+            return SetupLibCheck(services, fpath, bytes);
+        }
+
+        public bool SetupLibCheck(IServiceProvider services, string fpath, byte[] bytes)
+        {
+            var diag = services.RequireService<IDiagnosticsService>();
             var rdr = new LeImageReader(bytes);
+            ushort w, len;
+            int i;
 
             //readProtoFile();
-
 
             /* Read the parameters */
             uint fileSig;
@@ -374,19 +378,19 @@ static char [] buf= new char[100];                       /* A general purpose bu
             PatLen = rdr.ReadLeUInt16();
             SymLen = rdr.ReadLeUInt16();
             if ((PatLen != PATLEN) || (SymLen != SYMLEN))
-              {
+            {
                 diag.Warn(string.Format("Can't use signature file with sym and pattern lengths of {0} and {1}.", SymLen, PatLen));
                 return false;
             }
 
-            /* Initialise the perfhlib stuff. Also allocates T1, T2, g, etc */
-            /* Set the parameters for the hash table */
+            // Initialise the perfhlib stuff. Also allocates T1, T2, g, etc
+            // Set the parameters for the hash table
             g_pattern_hasher.setHashParams(
-                            numKeys,                /* The number of symbols */
-                            PatLen,                 /* The length of the pattern to be hashed */
-                            256,                    /* The character set of the pattern (0-FF) */
-                            (char)0,                /* Minimum pattern character value */
-                            numVert);               /* Specifies c, the sparseness of the graph. See Czech, Havas and Majewski for details */
+                            numKeys,                // The number of symbols
+                            PatLen,                 // The length of the pattern to be hashed
+                            256,                    // The character set of the pattern (0-FF)
+                            (char)0,                // Minimum pattern character value
+                            numVert);               // Specifies c, the sparseness of the graph. See Czech, Havas and Majewski for details
             T1base = g_pattern_hasher.readT1();
             T2base = g_pattern_hasher.readT2();
             g = g_pattern_hasher.readG();
@@ -457,24 +461,26 @@ static char [] buf= new char[100];                       /* A general purpose bu
                 return false;
             }
 
+            ht = new HT[numKeys];
             for (i = 0; i < numKeys; i++)
             {
-                ht[i].htSym = Encoding.ASCII.GetString(rdr.ReadBytes(SymLen));
-                ht[i].htPat = rdr.ReadBytes(PatLen);
+                var aSym = rdr.ReadBytes(SymLen)
+                    .TakeWhile(b => b != 0).ToArray();
+
+                ht[i] = new HT
+                {
+                    htSym = Encoding.ASCII.GetString(aSym),
+                    htPat = rdr.ReadBytes(PatLen)
+                };
             }
             return true;
         }
 
-
-        void CleanupLibCheck()
-        {
-        }
-
-
-        /* Check this function to see if it is a library function. Return true if
-            it is, and copy its name to pProc->name
-        */
-        public bool LibCheck(IServiceProvider services, Program prog,Procedure pProc, Address addr)
+        /// <summary>
+        /// Check this function to see if it is a library function. Return true if
+        /// it is, and copy its name to pProc.Name
+        /// </summary>
+        public bool LibCheck(IServiceProvider services, Program prog, Procedure pProc, Address addr)
         {
             var diagSvc = services.RequireService<IDiagnosticsService>();
             long fileOffset;
@@ -626,7 +632,7 @@ static char [] buf= new char[100];                       /* A general purpose bu
 
         }
 
-        /* Search the source array between limits iMin and iMax for the pattern (length
+        /*  Search the source array between limits iMin and iMax for the pattern (length
             iPatLen). The pattern can contain wild bytes; if you really want to match
             for the pattern that is used up by the WILD uint8_t, tough - it will match with
             everything else as well. */
@@ -879,7 +885,7 @@ static char [] buf= new char[100];                       /* A general purpose bu
 
         const string DCCLIBS = "dclibs.lst";
 
-        /* DCCLIBS.DAT is a data file sorted on function name containing names and
+        /*  DCCLIBS.DAT is a data file sorted on function name containing names and
             return types of functions found in include files, and the names and types
             of arguements. Only functions in this list will be considered library
             functions; others (like LXMUL@) are helper files, and need to be analysed
@@ -959,47 +965,44 @@ static char [] buf= new char[100];                       /* A general purpose bu
 
         }
 
-int searchPList(string name)
-{
-    /* Search through the symbol names for the name */
-    /* Use binary search */
-    int mx, mn, i, res;
-
-
-    mx = numFunc;
-    mn = 0;
-
-    while (mn < mx)
-    {
-        i = mn + (mx - mn) / 2;
-        res = pFunc[i].name.CompareTo(name);
-        if (res == 0)
+        int searchPList(string name)
         {
-            return i;            /* Found! */
-        }
-        else
-        {
-            if (res < 0)
+            /* Search through the symbol names for the name */
+            /* Use binary search */
+            int mx, mn, i, res;
+
+
+            mx = numFunc;
+            mn = 0;
+
+            while (mn < mx)
             {
-                mn = i + 1;
+                i = mn + (mx - mn) / 2;
+                res = pFunc[i].name.CompareTo(name);
+                if (res == 0)
+                {
+                    return i;            /* Found! */
+                }
+                else
+                {
+                    if (res < 0)
+                    {
+                        mn = i + 1;
+                    }
+                    else
+                    {
+                        mx = i - 1;
+                    }
+                }
             }
-            else
+
+            /* Still could be the case that mn == mx == required record */
+            res = string.Compare(pFunc[mn].name, name);
+            if (res == 0)
             {
-                mx = i - 1;
+                return mn;            /* Found! */
             }
+            return NIL;
         }
-    }
-
-    /* Still could be the case that mn == mx == required record */
-    res = string.Compare(pFunc[mn].name, name);
-    if (res == 0)
-    {
-        return mn;            /* Found! */
-    }
-    return NIL;
-}
-
-
-
     }
 }

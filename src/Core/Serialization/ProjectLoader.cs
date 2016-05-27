@@ -274,7 +274,6 @@ namespace Reko.Core.Serialization
             return program;
         }
 
-
         private Address LoadAddress(UserData_v4 user, IProcessorArchitecture arch)
         {
             if (user == null || user.LoadAddress == null)
@@ -309,7 +308,7 @@ namespace Reko.Core.Serialization
                 {
                     program.Architecture = Services.RequireService<IConfigurationService>().GetArchitecture(program.User.Processor);
                 }
-                program.Architecture.LoadUserOptions(LoadWeaklyTypedOptions(sUser.Processor.Options));
+                program.Architecture.LoadUserOptions(XmlOptions.LoadIntoDictionary(sUser.Processor.Options));
             }
             if (sUser.Procedures != null)
             {
@@ -327,7 +326,7 @@ namespace Reko.Core.Serialization
             if (sUser.PlatformOptions != null)
             {
                 program.User.Environment = sUser.PlatformOptions.Name;
-                program.Platform.LoadUserOptions(LoadWeaklyTypedOptions(sUser.PlatformOptions.Options));
+                program.Platform.LoadUserOptions(XmlOptions.LoadIntoDictionary(sUser.PlatformOptions.Options));
             }
             if (sUser.GlobalData != null)
             {
@@ -435,7 +434,7 @@ namespace Reko.Core.Serialization
             if (sUser.PlatformOptions != null)
             {
                 program.User.Environment = sUser.PlatformOptions.Name;
-                program.Platform.LoadUserOptions(LoadWeaklyTypedOptions(sUser.PlatformOptions.Options));
+                program.Platform.LoadUserOptions(XmlOptions.LoadIntoDictionary(sUser.PlatformOptions.Options));
             }
             if (sUser.GlobalData != null)
             {
@@ -470,40 +469,6 @@ namespace Reko.Core.Serialization
         private TypeLibraryDeserializer CreateTypeLibraryDeserializer()
         {
             return new TypeLibraryDeserializer(platform, true, project.LoadedMetadata.Clone());
-        }
-
-        private object ReadItem(XmlElement element)
-        {
-            if (element.Name == "item")
-            {
-                return element.InnerText;
-            } else if (element.Name == "list")
-            {
-                return element.ChildNodes
-                    .OfType<XmlElement>()
-                    .Select(e => ReadItem(e))
-                    .ToList();
-            }
-            else if (element.Name == "dict")
-            {
-                return ReadDictionaryElements(
-                    element.ChildNodes.OfType<XmlElement>());
-            }
-            throw new NotSupportedException();
-        }
-
-        private Dictionary<string,object> ReadDictionaryElements(IEnumerable<XmlElement> elements)
-        {
-            return elements.ToDictionary(
-                e => e.Attributes["key"] != null ? e.Attributes["key"].Value : null,
-                e => ReadItem(e));
-        }
-
-        private Dictionary<string, object> LoadWeaklyTypedOptions(XmlElement[] options)
-        {
-            if (options == null)
-                return new Dictionary<string, object>();
-            return ReadDictionaryElements(options);
         }
 
         public Program VisitInputFile(string projectFilePath, DecompilerInput_v2 sInput)
