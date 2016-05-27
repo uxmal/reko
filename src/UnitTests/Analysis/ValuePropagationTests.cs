@@ -647,5 +647,62 @@ ProcedureBuilder_exit:
 
             AssertStringsEqual(sExp, ssa);
         }
+
+        [Test]
+        public void VpUndoUnnecessarySlicingOfSegmentPointer()
+        {
+            var m = new ProcedureBuilder();
+            var es = m.Reg16("es", 1);
+            var bx = m.Reg16("bx", 3);
+            var es_bx = m.Frame.EnsureSequence(es, bx, PrimitiveType.Word32);
+
+            m.Assign(es_bx, m.SegMem(PrimitiveType.Word32, es, bx));
+            m.Assign(es, m.Slice(PrimitiveType.Word16, es_bx, 16));
+            m.Assign(bx, m.Cast(PrimitiveType.Word16, es_bx));
+            m.SegStore(es, m.IAdd(bx, 4), m.Byte(3));
+
+            var ssa = RunTest(m);
+
+            var sExp =
+            #region Expected
+@"es:es
+    def:  def es
+    uses: es_bx_3 = Mem0[es:bx:word32]
+bx:bx
+    def:  def bx
+    uses: es_bx_3 = Mem0[es:bx:word32]
+Mem0:Global memory
+    def:  def Mem0
+    uses: es_bx_3 = Mem0[es:bx:word32]
+es_bx_3: orig: es_bx
+    def:  es_bx_3 = Mem0[es:bx:word32]
+    uses: es_4 = SLICE(es_bx_3, word16, 16)
+          bx_5 = (word16) es_bx_3
+          Mem0[es_bx_3 + 0x0004:byte] = 0x03
+es_4: orig: es
+    def:  es_4 = SLICE(es_bx_3, word16, 16)
+bx_5: orig: bx
+    def:  bx_5 = (word16) es_bx_3
+Mem6: orig: Mem0
+    def:  Mem0[es_bx_3 + 0x0004:byte] = 0x03
+// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def es
+	def bx
+	def Mem0
+	// succ:  l1
+l1:
+	es_bx_3 = Mem0[es:bx:word32]
+	es_4 = SLICE(es_bx_3, word16, 16)
+	bx_5 = (word16) es_bx_3
+	Mem0[es_bx_3 + 0x0004:byte] = 0x03
+ProcedureBuilder_exit:
+";
+            #endregion
+
+            AssertStringsEqual(sExp, ssa);
+        }
     }
 }

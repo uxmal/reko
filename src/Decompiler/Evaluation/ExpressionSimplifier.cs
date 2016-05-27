@@ -48,9 +48,10 @@ namespace Reko.Evaluation
         private IdBinIdc_Rule idBinIdc;
         private SliceConstant_Rule sliceConst;
         private SliceMem_Rule sliceMem;
+        private SliceSegmentedPointer_Rule sliceSegPtr;
+        private SliceShift sliceShift;
         private Shl_mul_e_Rule shMul;
         private ShiftShift_c_c_Rule shiftShift;
-        private SliceShift sliceShift;
         private NegSub_Rule negSub;
         private Mps_Constant_Rule mpsRule;
         private BinOpWithSelf_Rule binopWithSelf;
@@ -70,6 +71,7 @@ namespace Reko.Evaluation
             this.idBinIdc = new IdBinIdc_Rule(ctx);
             this.sliceConst = new SliceConstant_Rule();
             this.sliceMem = new SliceMem_Rule();
+            this.sliceSegPtr = new SliceSegmentedPointer_Rule(ctx);
             this.negSub = new NegSub_Rule();
             this.constConstBin = new ConstConstBin_Rule();
             this.shMul = new Shl_mul_e_Rule(ctx);
@@ -525,11 +527,18 @@ namespace Reko.Evaluation
 
         public virtual Expression VisitSegmentedAccess(SegmentedAccess segMem)
         {
-            return ctx.GetValue(new SegmentedAccess(
+            segMem =
+                new SegmentedAccess(
                 segMem.MemoryId,
                 segMem.BasePointer.Accept(this),
                 segMem.EffectiveAddress.Accept(this),
-                segMem.DataType));
+                segMem.DataType);
+            if (sliceSegPtr.Match(segMem))
+            {
+                Changed = true;
+                return sliceSegPtr.Transform();
+            }
+            return ctx.GetValue(segMem);
         }
 
         public virtual Expression VisitSlice(Slice slice)

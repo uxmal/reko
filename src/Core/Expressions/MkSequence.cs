@@ -31,6 +31,8 @@ namespace Reko.Core.Expressions
 	{
 		public MkSequence(DataType dt, Expression head, Expression tail) : base(dt)
 		{
+            if (head == null || tail == null)
+                throw new ArgumentNullException();
             if (head == Constant.Invalid || tail == Constant.Invalid)
                 throw new ArgumentException();
 			Head = head;
