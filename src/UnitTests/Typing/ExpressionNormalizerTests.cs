@@ -33,7 +33,14 @@ namespace Reko.UnitTests.Typing
 		private ProcedureBuilder m;
 		private ExpressionNormalizer aen;
 
-		[Test]
+        [SetUp]
+        public void Setup()
+        {
+            m = new ProcedureBuilder();
+            aen = new ExpressionNormalizer(PrimitiveType.Pointer32);
+        }
+
+        [Test]
 		public void EnSimpleArray()
 		{
 			Identifier globals = m.Local32("globals");
@@ -79,17 +86,21 @@ namespace Reko.UnitTests.Typing
         {
             Identifier bx = m.Local16("bx");
             Identifier ds = m.Local(PrimitiveType.SegmentSelector, "ds");
-            Expression e = m.SegMem(PrimitiveType.Int32, ds, m.IAdd(m.IMul(bx, 2), 0x42));
-            Assert.AreEqual("Mem0[ds:bx * 0x0002 + 0x0042:int32]", e.ToString());
+            Expression e = m.SegMem(PrimitiveType.Int16, ds, m.IAdd(m.IMul(bx, 2), 0x42));
+            Assert.AreEqual("Mem0[ds:bx * 0x0002 + 0x0042:int16]", e.ToString());
             e = e.Accept(aen);
             Assert.AreEqual("SEQ(ds, 0x0042)[bx * 0x0002]", e.ToString());
         }
-
-		[SetUp]
-		public void Setup()
-		{
-			m = new ProcedureBuilder();
-			aen = new ExpressionNormalizer(PrimitiveType.Pointer32);
-		}
-	}
+        
+        [Test]
+        public void EnSegAccessZeroBasedArray()
+        {
+            Identifier bx = m.Local16("bx");
+            Identifier ds = m.Local(PrimitiveType.SegmentSelector, "ds");
+            Expression e = m.SegMem(PrimitiveType.Int32, ds, m.Shl(bx, 2));
+            Assert.AreEqual("Mem0[ds:bx << 0x02:int32]", e.ToString());
+            e = e.Accept(aen);
+            Assert.AreEqual("SEQ(ds, 0x0000)[bx * 0x0004]", e.ToString());
+        }
+    }
 }

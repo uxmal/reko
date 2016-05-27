@@ -88,8 +88,11 @@ namespace Reko.Typing
 			BinaryExpression b = e as BinaryExpression;
 			if (b == null)
 				return false;
-			if (MatchMul(b))
-				return true;
+            if (MatchMul(b))
+            {
+                ArrayPointer = Constant.Zero(b.DataType);
+                return true;
+            }
 
 			// (+ x y)
 			if (b.Operator == Operator.IAdd)
