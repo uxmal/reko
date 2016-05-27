@@ -33,13 +33,13 @@ using Reko.UnitTests.Mocks;
 
 namespace Reko.UnitTests.Evaluation
 {
-	[TestFixture]
-	public class ExpressionSimplifierTests
-	{
-		private Dictionary<Expression, Expression> table;
-		private ExpressionSimplifier simplifier;
-		private Identifier foo;
-		private Identifier bar;
+    [TestFixture]
+    public class ExpressionSimplifierTests
+    {
+        private Dictionary<Expression, Expression> table;
+        private ExpressionSimplifier simplifier;
+        private Identifier foo;
+        private Identifier bar;
         private ProcedureBuilder m;
 
         [SetUp]
@@ -48,25 +48,25 @@ namespace Reko.UnitTests.Evaluation
             m = new ProcedureBuilder();
         }
 
-		private void Given_ExpressionSimplifier()
-		{
-			SsaIdentifierCollection ssaIds = BuildSsaIdentifiers();
-			table = new Dictionary<Expression,Expression>();
+        private void Given_ExpressionSimplifier()
+        {
+            SsaIdentifierCollection ssaIds = BuildSsaIdentifiers();
+            table = new Dictionary<Expression, Expression>();
             simplifier = new ExpressionSimplifier(new SsaEvaluationContext(null, ssaIds));
-		}
+        }
 
-		private SsaIdentifierCollection BuildSsaIdentifiers()
-		{
-			var mrFoo = new RegisterStorage("foo", 1, 0, PrimitiveType.Word32);
-			var mrBar = new RegisterStorage("bar", 2, 1, PrimitiveType.Word32);
-			foo = new Identifier(mrFoo.Name, mrFoo.DataType, mrFoo);
-			bar = new Identifier(mrBar.Name, mrBar.DataType, mrBar);
+        private SsaIdentifierCollection BuildSsaIdentifiers()
+        {
+            var mrFoo = new RegisterStorage("foo", 1, 0, PrimitiveType.Word32);
+            var mrBar = new RegisterStorage("bar", 2, 1, PrimitiveType.Word32);
+            foo = new Identifier(mrFoo.Name, mrFoo.DataType, mrFoo);
+            bar = new Identifier(mrBar.Name, mrBar.DataType, mrBar);
 
-			var coll = new SsaIdentifierCollection();
+            var coll = new SsaIdentifierCollection();
             var src = Constant.Word32(1);
             foo = coll.Add(foo, new Statement(0, new Assignment(foo, src), null), src, false).Identifier;
-			return coll;
-		}
+            return coll;
+        }
 
         [Test]
         public void Exs_Constants()
@@ -109,7 +109,7 @@ namespace Reko.UnitTests.Evaluation
         public void Exs_FloatIeeeConstant_Cmp()
         {
             Given_ExpressionSimplifier();
-            var expr = m.FLt(foo, Constant.Word32( 0xC0B00000));
+            var expr = m.FLt(foo, Constant.Word32(0xC0B00000));
             var result = expr.Accept(simplifier);
             Assert.AreEqual("foo_0 < -5.5F", result.ToString());
         }
@@ -120,7 +120,6 @@ namespace Reko.UnitTests.Evaluation
             Given_ExpressionSimplifier();
             var expr = m.Cast(PrimitiveType.Real32, Constant.Real64(1.5));
             Assert.AreEqual("1.5F", expr.Accept(simplifier).ToString());
-
         }
     }
 }
