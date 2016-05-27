@@ -71,7 +71,7 @@ namespace Reko.ImageLoaders.Elf
         public IServiceProvider Services { get { return imgLoader.Services; } }
         public ElfRelocator Relocator { get; protected set; }
         public abstract Address DefaultAddress { get; }
-        public List<ElfSection> Sections { get; }
+        public List<ElfSection> Sections { get; private set; }
         public Dictionary<ElfSection, List<ElfSymbol>> Symbols { get; }
         public Dictionary<Address, ExternalProcedure> ExternalProcedures { get; }
 
