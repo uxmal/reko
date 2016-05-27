@@ -82,10 +82,9 @@ word32 fn100011E9(word32 dwArg08)
 			if (eax_93 == 0x00)
 				break;
 			if (eax_93 == edi_82)
-				goto l10001258;
+				break;
 			Sleep(1000);
 		}
-l10001258:
 		ptr32 esp_118;
 		ptr32 ebp_117;
 		ui32 ebx_116;

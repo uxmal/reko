@@ -93,6 +93,8 @@ namespace Reko.Structure
                     if (block == null)
                         continue;
 
+                    if (block.Name.EndsWith("m1")) //$DEBUG
+                        block.ToString();
                     if (EndsInBranch(block))
                     {
                         if (BranchTargetsEqual(block))
@@ -102,9 +104,14 @@ namespace Reko.Structure
                         foreach (var s in block.Succ.ToList())
                         {
                             if (s.Statements.Count == 0 &&
+                                s.Pred.Count == 1 &&
                                 EndsInJump(s))
                             {
-                                dirty |= Block.ReplaceJumpsTo(s, s.Succ[0]);
+                                var sSucc = s.Succ[0];
+                                Block.ReplaceJumpsTo(s, sSucc);
+                                proc.ControlGraph.RemoveEdge(s, sSucc);
+                                proc.ControlGraph.Blocks.Remove(s);
+                                dirty = true;
                             }
                         }
                     }
@@ -112,15 +119,17 @@ namespace Reko.Structure
                     if (EndsInJump(block))
                     {
                         Block next = block.Succ[0];
-                        if (block != proc.EntryBlock && 
-                            block.Statements.Count == 0 &&
-                            next.Pred.Count == 1)
-                        {
-                            dirty |= Block.ReplaceJumpsTo(block, next);
-                        }
                         if (next.Pred.Count == 1 && next != proc.ExitBlock)
                         {
                             Coalesce(block, next);
+                        }
+                        else if (block != proc.EntryBlock && 
+                            block.Statements.Count == 0 &&
+                            next.Pred.Count == 1)
+                        {
+                            Block.ReplaceJumpsTo(block, next);
+                            proc.ControlGraph.Blocks.Remove(block);
+                            dirty = true;
                         }
 #if IGNORE
 						// This bollixes up the graphs for ForkedLoop.asm, so we can't use it.		
@@ -132,8 +141,11 @@ namespace Reko.Structure
 						}
 #endif
                     }
+                    if (proc.ControlGraph.Blocks.Any(b => b.Name.EndsWith("m3") && b.Pred.Count == 1)) //$DEBUG
+                        proc.ToString();
+
                 }
-			} while (dirty);
+            } while (dirty);
 
 			proc.Dump(true);
 		}

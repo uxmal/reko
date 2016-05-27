@@ -113,13 +113,8 @@ word16 fn0800_1073(Eq_64 * ds, word16 wArg04, ptr16 & diOut)
 					cu16 bx_182 = DPB(ax_139, (ds->*bx_145).b04F9, 0);
 					if (bx_182 > 0x17)
 						goto l0800_1560;
-					switch (bx_182 << 0x01)
-					{
-					case 0x00:
-						if (true)
-							goto l0800_1175;
+					if (true)
 						break;
-					}
 					if (bLoc8F_128 != 0x2B)
 						bLoc8F_128 = dl_141;
 					ax = DPB(ax_139, ds->*si_105, 0);
@@ -136,7 +131,7 @@ l0800_1560:
 					si_154 = si_154 + 0x01;
 					al_156 = al_167;
 				} while (al_167 != 0x00);
-				goto l0800_1572;
+				break;
 			}
 		}
 		ds->*di_107 = al_101;
@@ -146,7 +141,6 @@ l0800_1560:
 		if (v15_108 <= 0x00)
 			bx = fn0800_10A1(fp - 0x02, di_107, out di_107);
 	}
-l0800_1572:
 	if (bLoc57_109 < 0x50)
 	{
 		Eq_126 di_93;
@@ -155,8 +149,6 @@ l0800_1572:
 		bx = fn0800_10A1(fp - 0x02, di_93, out di_95);
 	}
 	word16 Eq_207::*sp_80 = sp_161 + 0x02;
-	if (0x00 != 0x00)
-		;
 	word16 di_84;
 	*diOut = ss->*sp_80;
 	return bx;
@@ -196,9 +188,9 @@ Eq_282 * fn0800_10A1(Eq_164 bp, Eq_126 di, Eq_166 & diOut)
 	byte Z_42;
 	(cs->*(ss->*bp))();
 	if (ax_36 == 0x00)
-		ss_31->*(bp_35 - 0x02) = 0x01;
-	ss_31->*(bp_35 - 0x55) = (Eq_305 Eq_285::*) 0x50;
-	ss_31->*(bp_35 - 88) = ss_31->*(bp_35 - 88);
+		(ss_31->*(bp_35 - 0x02)).u1 = 0x01;
+	(ss_31->*(bp_35 - 0x55)).u0 = 0x50;
+	(ss_31->*(bp_35 - 88)).u1 = (ss_31->*(bp_35 - 88)).u1;
 	word16 di_51;
 	*diOut = bp_35 - 0x54;
 	return es;

@@ -785,7 +785,7 @@ T_195: (in d0_213 : word32)
   Class: Eq_195
   DataType: int32
   OrigDataType: int32
-T_196: (in 0x00000000 : ptr32)
+T_196: (in 0x00000000 : word32)
   Class: Eq_196
   DataType: (ptr (struct (0 (arr T_8558) a0000)))
   OrigDataType: (ptr (struct (0 (arr T_8558) a0000)))
@@ -889,7 +889,7 @@ T_221: (in d0_229 : word32)
   Class: Eq_179
   DataType: int32
   OrigDataType: int32
-T_222: (in 0x00000000 : ptr32)
+T_222: (in 0x00000000 : word32)
   Class: Eq_222
   DataType: (ptr (struct (0 (arr T_8560) a0000)))
   OrigDataType: (ptr (struct (0 (arr T_8560) a0000)))

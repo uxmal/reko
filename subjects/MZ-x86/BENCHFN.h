@@ -767,7 +767,7 @@ T_145: (in di_107 + 0x0000 : word16)
   OrigDataType: word16
 T_146: (in Mem106[ds:di_107 + 0x0000:byte] : byte)
   Class: Eq_131
-  DataType: Eq_126
+  DataType: byte
   OrigDataType: byte
 T_147: (in v15_108 : ci8)
   Class: Eq_120
@@ -1207,7 +1207,7 @@ T_255: (in di + 0x0000 : word16)
   OrigDataType: word16
 T_256: (in Mem3[ds:di + 0x0000:byte] : byte)
   Class: Eq_222
-  DataType: Eq_126
+  DataType: byte
   OrigDataType: byte
 T_257: (in v9_9 : ci8)
   Class: Eq_257

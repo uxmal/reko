@@ -397,9 +397,7 @@ word32 fn00001390(word32 d0, word32 a6)
 word32 fn00001408(word32 dwArg04, word32 dwArg08)
 {
 	word32 d0_11 = dwArg04;
-	if (dwArg08 - dwArg04 < 0x00)
-		;
-	else
+	if (dwArg08 - dwArg04 >= 0x00)
 		d0_11 = dwArg08;
 	return d0_11;
 }
@@ -3114,7 +3112,11 @@ word32 fn00003A24(word32 dwArg04, word32 dwArg08, word32 dwArg0C, word32 dwArg10
 				goto l00003B20;
 			}
 			if (dwArg0C - dwArg04 <u 0x00 || dwArg10 - dwArg08 <=u 0x00)
-				goto l00003B20;
+			{
+l00003B20:
+				d0_115 = 0x00;
+				return d0_115;
+			}
 		}
 		goto l00003B20;
 	}
@@ -3138,9 +3140,7 @@ word32 fn00003A24(word32 dwArg04, word32 dwArg08, word32 dwArg0C, word32 dwArg10
 		word32 d2_81;
 		word32 d1_83;
 		*d1Out = fn00003B28(dwArg04, dwArg08, dwArg10, out d1_80, out d2_81);
-l00003B20:
-		d0_115 = 0x00;
-		return d0_115;
+		goto l00003B20;
 	}
 }
 
