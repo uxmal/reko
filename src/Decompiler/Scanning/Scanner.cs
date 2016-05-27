@@ -546,8 +546,6 @@ namespace Reko.Scanning
             //$REFACTOR: make the stack explicit?
             var oldQueue = queue;
             queue = new PriorityQueue<WorkItem>();
-            var st = state.Clone();
-            EstablishInitialState(addr, st, proc);
             var block = EnqueueJumpTarget(addr, addr, proc, st);
             proc.ControlGraph.AddEdge(proc.EntryBlock, block);
             ProcessQueue();
