@@ -168,7 +168,7 @@ namespace Reko.Structure
         /// </summary>
         /// <param name="proc"></param>
         /// <returns></returns>
-        public Tuple<DirectedGraph<Region>, Region> BuildRegionGraph(Procedure proc)
+        public static Tuple<DirectedGraph<Region>, Region> BuildRegionGraph(Procedure proc)
         {
             var btor = new Dictionary<Block, Region>();
             var regs = new DiGraph<Region>();
@@ -176,8 +176,7 @@ namespace Reko.Structure
             foreach (var b in proc.ControlGraph.Blocks)
             {
                 if (b.Pred.Count == 0 && b != proc.EntryBlock ||
-            
-                            b == proc.ExitBlock)
+                    b == proc.ExitBlock)
                     continue;
                 var reg = regionFactory.Create(b);
                 btor.Add(b, reg);

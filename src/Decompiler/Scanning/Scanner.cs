@@ -420,13 +420,18 @@ namespace Reko.Scanning
                 procNew.Name);
             var callRetThunkBlock = procOld.AddBlock(blockName);
             callRetThunkBlock.IsSynthesized = true;
-            callRetThunkBlock.Statements.Add(0, new CallInstruction(
+
+            var linFrom = addrFrom.ToLinear();
+            callRetThunkBlock.Statements.Add(
+                addrFrom.ToLinear(), 
+                new CallInstruction(
                     new ProcedureConstant(program.Platform.PointerType, procNew),
                     new CallSite(
                         procNew.Signature.ReturnAddressOnStack,
                         0)));
             program.CallGraph.AddEdge(callRetThunkBlock.Statements.Last, procNew);
-            callRetThunkBlock.Statements.Add(0, new ReturnInstruction());
+
+            callRetThunkBlock.Statements.Add(linFrom, new ReturnInstruction());
             procOld.ControlGraph.AddEdge(callRetThunkBlock, procOld.ExitBlock);
             SetProcedureReturnAddressBytes(procOld, procNew.Frame.ReturnAddressSize, addrFrom);
             return callRetThunkBlock;
