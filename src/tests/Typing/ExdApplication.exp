@@ -1,0 +1,30 @@
+// Equivalence classes ////////////
+// Type Variables ////////////
+globals_t: (in globals : (ptr (struct "Globals")))
+  Class: Eq_1
+  DataType: (ptr (struct (300400 T_6 t300400)))
+  OrigDataType: (ptr (struct (300400 T_6 t300400)))
+T_2: (in test : ptr32)
+  Class: Eq_2
+  DataType: (ptr (fn T_7 (T_6)))
+  OrigDataType: (ptr (fn T_7 (T_6)))
+T_3: (in signature of test : void)
+  Class: Eq_2
+  DataType: 
+  OrigDataType: 
+T_4: (in r : real32)
+  Class: Eq_4
+  DataType: 
+  OrigDataType: 
+T_5: (in 0x00300400 : word32)
+  Class: Eq_5
+  DataType: (ptr (struct (0 T_6 t0000)))
+  OrigDataType: (ptr (struct (0 T_6 t0000)))
+T_6: (in Mem0[0x00300400:word32] : word32)
+  Class: Eq_4
+  DataType: real32
+  OrigDataType: real32
+T_7: (in test(Mem0[0x00300400:word32]) : void)
+  Class: Eq_7
+  DataType: void
+  OrigDataType: void
