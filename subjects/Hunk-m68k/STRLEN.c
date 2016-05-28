@@ -249,7 +249,7 @@ void fn0000127C(int32 d2)
 	Eq_33 * v6_5 = *(a7_3 - 0x08);
 	if (v8_8->dw0004 != 0x00)
 		execPrivate1();
-	CloseLibrary(a4_0->ptrFFFF800A);
+	CloseLibrary(a4_0->ptrFFFF8012);
 	if (v6_5 != null)
 		fn0000126C(v6_5);
 	FreeMem(v8_8, v8_8->dw0000);

@@ -115,8 +115,8 @@ T_21: (in fp : ptr64)
   OrigDataType: (ptr void)
 T_22: (in 0x0000000000000008 : word64)
   Class: Eq_22
-  DataType: word64
-  OrigDataType: word64
+  DataType: int64
+  OrigDataType: int64
 T_23: (in fp + 0x0000000000000008 : word64)
   Class: Eq_23
   DataType: ptr64
