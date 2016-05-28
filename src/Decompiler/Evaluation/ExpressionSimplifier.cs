@@ -50,6 +50,7 @@ namespace Reko.Evaluation
         private SliceMem_Rule sliceMem;
         private SliceSegmentedPointer_Rule sliceSegPtr;
         private SliceShift sliceShift;
+        private Shl_add_Rule shAdd;
         private Shl_mul_e_Rule shMul;
         private ShiftShift_c_c_Rule shiftShift;
         private NegSub_Rule negSub;
@@ -74,6 +75,7 @@ namespace Reko.Evaluation
             this.sliceSegPtr = new SliceSegmentedPointer_Rule(ctx);
             this.negSub = new NegSub_Rule();
             this.constConstBin = new ConstConstBin_Rule();
+            this.shAdd = new Shl_add_Rule(ctx);
             this.shMul = new Shl_mul_e_Rule(ctx);
             this.shiftShift = new ShiftShift_c_c_Rule(ctx);
             this.mpsRule = new Mps_Constant_Rule(ctx);
@@ -264,6 +266,12 @@ namespace Reko.Evaluation
             {
                 Changed = true;
                 return addMici.Transform();
+            }
+
+            if (shAdd.Match(binExp))
+            {
+                Changed = true;
+                return shAdd.Transform();
             }
 
             if (shMul.Match(binExp))
