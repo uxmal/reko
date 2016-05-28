@@ -22,10 +22,12 @@ using NUnit.Framework;
 using Reko.Arch.Mips;
 using Reko.Arch.X86;
 using Reko.Core;
-using Reko.Core.Expressions;
+using Reko.Core.Lib;
+using Reko.Core.Machine;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Scanning;
+using Reko.UnitTests.Mocks;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
@@ -41,12 +43,17 @@ namespace Reko.UnitTests.Scanning
         private Program program;
         private ShingledScanner sh;
         private RelocationDictionary rd;
+        private DiGraph<Address> graph;
+        private SortedList<Address, MachineInstruction> instrs;
+        private static readonly string nl = Environment.NewLine;
 
         [SetUp]
         public void Setup()
         {
             mr = new MockRepository();
             rd = null;
+            this.graph = new DiGraph<Address>();
+            this.instrs = new SortedList<Address, MachineInstruction>();
         }
 
         private void Given_Mips_Image(params uint[] words)
@@ -274,6 +281,114 @@ namespace Reko.UnitTests.Scanning
                     0, 0
                 },
                 by);
+        }
+
+        private MachineInstruction Lin(uint addr, int length)
+        {
+            var instr = new FakeInstruction(InstructionClass.Linear, Operation.Add)
+            {
+                Address = Address.Ptr32(addr),
+                Length = length
+            };
+            return instr;
+        }
+
+        private void AddInstr(MachineInstruction instr, params uint[] succs)
+        {
+            this.instrs.Add(instr.Address, instr);
+            foreach (var succ in succs)
+            {
+                var addrSucc = Address.Ptr32(succ);
+                this.graph.AddNode(instr.Address);
+                this.graph.AddNode(addrSucc);
+                this.graph.AddEdge(addrSucc, instr.Address);
+            }
+        }
+
+        private string DumpBlocks(SortedList<Address, ShingledScanner.ShingleBlock> blocks)
+        {
+            var sb = new StringBuilder();
+            foreach (var block in blocks.Values)
+            {
+                sb.AppendFormat("{0} - {1}", block.BaseAddress, block.EndAddress);
+                sb.AppendLine();
+            }
+            return sb.ToString();
+        }
+
+        [Test]
+        public void Shsc_BuildBlock()
+        {
+            Given_x86_Image();
+            Given_Scanner();
+            AddInstr(Lin(0x1000, 2), 0x1002);
+            AddInstr(Lin(0x1002, 3));
+
+            var blocks = sh.BuildBlocks(this.graph, this.instrs);
+
+            var sExp =
+                "00001000 - 00001005" + nl;
+            Assert.AreEqual(sExp, DumpBlocks(blocks));
+        }
+
+        [Test]
+        public void Shsc_BuildOffsetBlocks()
+        {
+            Given_x86_Image();
+            Given_Scanner();
+            AddInstr(Lin(0x1000, 2), 0x1002);
+            AddInstr(Lin(0x1001, 2), 0x1003);
+            AddInstr(Lin(0x1002, 2), 0x1004);
+            AddInstr(Lin(0x1003, 2));
+            AddInstr(Lin(0x1004, 2));
+
+            var blocks = sh.BuildBlocks(this.graph, this.instrs);
+
+            var sExp =
+                "00001000 - 00001006" + nl +
+                "00001001 - 00001005" + nl;
+            Assert.AreEqual(sExp, DumpBlocks(blocks));
+        }
+
+        [Test]
+        public void Shsc_BuildConvergentBlocks()
+        {
+            Given_x86_Image();
+            Given_Scanner();
+            AddInstr(Lin(0x1000, 2), 0x1002);
+            AddInstr(Lin(0x1001, 4), 0x1005);
+            AddInstr(Lin(0x1002, 3), 0x1005);
+            AddInstr(Lin(0x1005, 2));
+
+            var blocks = sh.BuildBlocks(this.graph, this.instrs);
+
+            var sExp =
+                "00001000 - 00001005" + nl +
+                "00001001 - 00001005" + nl +
+                "00001005 - 00001007" + nl;
+            Assert.AreEqual(sExp, DumpBlocks(blocks));
+        }
+
+        [Test]
+        public void Shsc_Regression_0001()
+        {
+            Given_x86_Image(
+                0x55,
+                0x8B, 0xEC,
+                0x81, 0xEC, 0x68, 0x01, 0x00, 0x00,
+                0x53,
+                0x56,
+                0x57,
+                0x8D, 0xBD, 0x98, 0xFE, 0xFF, 0xFF,
+                0xB9, 0x5A, 0x00, 0x00, 0x00,
+                0xC3,
+                0xC3,
+                0xC3);
+            Given_Scanner();
+            var seg = program.SegmentMap.Segments.Values.First();
+            sh.ScanSegment(seg, 0);
+            
+
         }
     }
 }

@@ -33,6 +33,11 @@ namespace Reko.Typing
     /// Collect type information by pulling type information from
     /// the leaves of expression trees to their roots.
     /// </summary>
+    /// <remarks>
+    ///    root
+    ///  ↑ /  \ ↑
+    /// leaf  leaf
+    /// </remarks>
     public class ExpressionTypeAscender : ExpressionVisitor<DataType>
     {
         private IPlatform platform;

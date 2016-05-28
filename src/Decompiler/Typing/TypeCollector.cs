@@ -61,7 +61,12 @@ namespace Reko.Typing
                 CollectProcedureSignature(p);
                 foreach (Statement stm in p.Statements)
                 {
-                    stm.Instruction.Accept(this);
+                    try
+                    {
+                        stm.Instruction.Accept(this);
+                    } catch (Exception ex)
+                    {
+                    }
                 }
             }
         }

@@ -65,7 +65,11 @@ namespace Reko.Typing
 			{
                 foreach (var stm in proc.Statements)
                 {
-                    stm.Instruction.Accept(this);
+                    try
+                    {
+                        stm.Instruction.Accept(this);
+                    }
+                    catch { }
                 }
 			}
 		}
@@ -148,11 +152,20 @@ namespace Reko.Typing
 			if (mptr != null)
 			{
                 // C is a constant offset into a segment.
-                var seg = ((Pointer) mptr.BasePointer).Pointee.ResolveAs<StructureType>();
-                if (seg != null && //$DEBUG
-                    seg.Fields.AtOffset(offset) == null)
+                StructureType seg;
+                try
                 {
-                    seg.Fields.Add(offset, mptr.Pointee);
+                    seg = ((Pointer)mptr.BasePointer).Pointee.ResolveAs<StructureType>();
+
+                    if (seg.Fields.AtOffset(offset) == null)
+                    {
+                        seg.Fields.Add(offset, mptr.Pointee);
+                    }
+                } catch 
+                {
+                    var ut = (UnionType)((EquivalenceClass)mptr.BasePointer).DataType;
+                    var ddt = ut.Simplify();
+                    mptr.ToString();
                 }
 //				VisitConstantMemberPointer(offset, mptr);
 			}

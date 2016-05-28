@@ -116,7 +116,7 @@ namespace Reko.Scanning
 
             // Advance by the instruction granularity.
             var step = program.Architecture.InstructionBitSize / 8;
-            bool inDelaySlot = false;
+            var delaySlot = InstructionClass.None;
             for (var a = 0; a < y.Length; a += step)
             {
                 y[a] = MaybeCode;
@@ -124,20 +124,19 @@ namespace Reko.Scanning
                 if (i == null)
                 {
                     AddEdge(G, bad, segment.Address + a);
-                    inDelaySlot = false;
                     break;
                 }
                 if (IsInvalid(segment.MemoryArea, i))
                 {
                     AddEdge(G, bad, i.Address);
-                    inDelaySlot = false;
+                    delaySlot = InstructionClass.None;
                     y[a] = Data;
                 }
                 else
                 {
                     if (MayFallThrough(i))
                     {
-                        if (!inDelaySlot)
+                        if (delaySlot != DT)
                         {
                             if (a + i.Length < y.Length)
                             {
@@ -179,7 +178,7 @@ namespace Reko.Scanning
                     }
 
                     // If this is a delayed unconditional branch...
-                    inDelaySlot = i.InstructionClass == DT;
+                    delaySlot = i.InstructionClass;
                 }
                 if (y[a] == MaybeCode)
                     instructions.Add(i.Address, i);
@@ -200,55 +199,76 @@ namespace Reko.Scanning
                 }
             }
 
-            // Build blocks out of sequences of instructions with only [0,1] predecessors.
-            BuildBlocks(G, y);
+            // Build blocks out of sequences of instructions.
+            BuildBlocks(G, instructions);
             return y;
         }
 
         public class ShingleBlock
         {
             public Address BaseAddress;
-
-            public Address EndAddress { get; internal set; }
+            public Address EndAddress;
         }
 
-        private void BuildBlocks(DiGraph<Address> g, byte[] y)
+        public SortedList<Address,ShingleBlock> BuildBlocks(DiGraph<Address> g, SortedList<Address,MachineInstruction> instructions)
         {
-            /*
-            var visited = new bool[y.Length];
-            var activeBlocks = new Dictionary<ulong, ShingleBlock>();
+            // Remember, the graph is backwards!
+            var activeBlocks = new Dictionary<Address, ShingleBlock>();
             var allBlocks = new SortedList<Address, ShingleBlock>();
             foreach (var instr in instructions.Values)
             {
+                var addrInstrEnd = instr.Address + instr.Length;
+
                 ShingleBlock block;
-                if (!activeBlocks.TryGetValue(instr.Address.ToLinear(), out block))
+                if (!activeBlocks.TryGetValue(instr.Address, out block))
                 {
                     // new block
                     block = new ShingleBlock { BaseAddress = instr.Address };
                     allBlocks.Add(block.BaseAddress, block);
-                    activeBlocks.Add(block.BaseAddress.ToLinear() + (uint)instr.Length, block);
                 }
                 else
                 {
-                    if (g.Predecessors(instr.Address).Count > 0)
+                    activeBlocks.Remove(instr.Address);
+                }
+                if (!g.Nodes.Contains(instr.Address))
+                {
+                    block.EndAddress = addrInstrEnd;
+                }
+                else if (g.Successors(instr.Address).Count > 1)
+                {
+                    // fell into a block join.
+                    if (block.BaseAddress < instr.Address)
                     {
-                        // fell into a block boundary.
                         block.EndAddress = instr.Address;
-                        activeBlocks.Remove(instr.Address.ToLinear());
                         block = new ShingleBlock { BaseAddress = instr.Address };
                         allBlocks.Add(block.BaseAddress, block);
-                        activeBlocks.Add(block.BaseAddress.ToLinear() + (uint)instr.Length, block);
                     }
-                    else if (g.Successors(instr.Address).Count > 1)
+                    activeBlocks.Add(addrInstrEnd, block);
+                }
+                else
+                {
+                    var pred = g.Predecessors(instr.Address);
+                    if (pred.Count != 1)
                     {
-                        // branched.
-                        block.EndAddress = instr.Address + (uint)instr.Length;
-
+                        block.EndAddress = addrInstrEnd;
+                    }
+                    else if (activeBlocks.ContainsKey(addrInstrEnd))
+                    {
+                        block.EndAddress = addrInstrEnd;
+                    }
+                    else
+                    {
+                        activeBlocks.Add(addrInstrEnd, block);
                     }
                 }
             }
-            */
+            foreach (var nn in activeBlocks)
+            {
+                nn.Value.EndAddress = nn.Key;
+            }
+            return allBlocks;
         }
+
 
         private bool IsInvalid(MemoryArea mem, MachineInstruction instr)
         {
