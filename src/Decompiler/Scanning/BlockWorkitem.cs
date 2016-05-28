@@ -39,7 +39,8 @@ namespace Reko.Scanning
     /// Scanner work item for processing a basic block.
     /// </summary>
     /// <remarks>
-    /// The block work item will disassemble and rewrite instructions linearly until it reaches:
+    /// The block work item will disassemble and rewrite instructions linearly
+    /// until it reaches:
     /// <list type="">
     /// <item>An condition or unconditional branch</item>
     /// <item>A call to a procedure that is known to terminate.</item>
@@ -217,7 +218,7 @@ namespace Reko.Scanning
             // We don't know the 'then' block yet, as the following statements may chop up the block
             // we're presently in. Back-patch in when the block target is obtained.
             var branch = new Branch(b.Condition, new Block(blockCur.Procedure, "TMP!"));
-
+            
             // The following statements may chop up the blockCur, so hang on to the essentials.
             var proc = blockCur.Procedure;
             RtlInstructionCluster ricDelayed = null;
@@ -268,8 +269,8 @@ namespace Reko.Scanning
             else
             {
                 branch.Target = blockThen;      // The back-patch referred to above.
-                EnsureEdge(proc, branchingBlock, blockElse);
-                EnsureEdge(proc, branchingBlock, blockThen);
+                proc.ControlGraph.AddEdge(branchingBlock, blockElse);
+                proc.ControlGraph.AddEdge(branchingBlock, blockThen);
             }
 
             // Now, switch to the fallthru block and keep rewriting.
@@ -808,9 +809,10 @@ namespace Reko.Scanning
         {
             if (ri.NextStatementRequiresLabel)
             {
-                // Some machine instructions, like the X86 'rep cmps' instruction, force the need to generate 
-                // a label where there wouldn't be one normally, in the middle of the rtl sequence corresponding to
-                // the machine instruction.
+                // Some machine instructions, like the X86 'rep cmps' 
+                // instruction, force the need to generate a label where
+                // there wouldn't be one normally, in the middle of the rtl
+                // sequence corresponding to the machine instruction.
                 return AddIntraStatementBlock(proc);
             }
             else
