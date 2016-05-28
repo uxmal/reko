@@ -152,20 +152,11 @@ namespace Reko.Typing
 			if (mptr != null)
 			{
                 // C is a constant offset into a segment.
-                StructureType seg;
-                try
+                var seg = ((Pointer) mptr.BasePointer).Pointee.ResolveAs<StructureType>();
+                if (seg != null && //$DEBUG
+                    seg.Fields.AtOffset(offset) == null)
                 {
-                    seg = ((Pointer)mptr.BasePointer).Pointee.ResolveAs<StructureType>();
-
-                    if (seg.Fields.AtOffset(offset) == null)
-                    {
-                        seg.Fields.Add(offset, mptr.Pointee);
-                    }
-                } catch 
-                {
-                    var ut = (UnionType)((EquivalenceClass)mptr.BasePointer).DataType;
-                    var ddt = ut.Simplify();
-                    mptr.ToString();
+                    seg.Fields.Add(offset, mptr.Pointee);
                 }
 //				VisitConstantMemberPointer(offset, mptr);
 			}

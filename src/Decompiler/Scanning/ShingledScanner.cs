@@ -210,13 +210,24 @@ namespace Reko.Scanning
             public Address EndAddress;
         }
 
-        public SortedList<Address,ShingleBlock> BuildBlocks(DiGraph<Address> g, SortedList<Address,MachineInstruction> instructions)
+        /// <summary>
+        /// Build Shingle blocks from the graph. An instruction can only be 
+        /// in one block at a time, so at each point in the graph where the 
+        /// successors > 1 or the predecessors > 1, we create a new node.
+        /// </summary>
+        /// <param name="g"></param>
+        /// <param name="instructions"></param>
+        /// <returns></returns>
+        public SortedList<Address,ShingleBlock> BuildBlocks(
+            DiGraph<Address> g,
+            SortedList<Address,MachineInstruction> instructions)
         {
             // Remember, the graph is backwards!
-            var activeBlocks = new Dictionary<Address, ShingleBlock>();
+            var activeBlocks = new SortedList<Address, ShingleBlock>();
             var allBlocks = new SortedList<Address, ShingleBlock>();
             foreach (var instr in instructions.Values)
             {
+                Debug.Print("Instr {0}[{1,2}] {2}", instr.Address, instr.Length, instr.ToString());
                 var addrInstrEnd = instr.Address + instr.Length;
 
                 ShingleBlock block;
@@ -228,6 +239,7 @@ namespace Reko.Scanning
                 }
                 else
                 {
+                    // Remove it from list and start working on it.
                     activeBlocks.Remove(instr.Address);
                 }
                 if (!g.Nodes.Contains(instr.Address))
@@ -236,6 +248,7 @@ namespace Reko.Scanning
                 }
                 else if (g.Successors(instr.Address).Count > 1)
                 {
+                    Debug.Print("  predecessors: [{0}]", string.Join(", ", g.Successors(instr.Address)));
                     // fell into a block join.
                     if (block.BaseAddress < instr.Address)
                     {
@@ -261,6 +274,8 @@ namespace Reko.Scanning
                         activeBlocks.Add(addrInstrEnd, block);
                     }
                 }
+                Debug.Print("  active: [{0}]", string.Join(", ", activeBlocks.Keys));
+
             }
             foreach (var nn in activeBlocks)
             {
