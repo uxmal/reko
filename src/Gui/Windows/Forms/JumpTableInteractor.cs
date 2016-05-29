@@ -18,17 +18,20 @@
  */
 #endregion
 
-using System;
+ using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace Reko.Gui
+namespace Reko.Gui.Windows.Forms
 {
-    /// <summary>
-    /// Abstracts the notion of a dialog for assistance when unit testing.
-    /// </summary>
-    public interface IDialog : IDisposable
+    public class JumpTableInteractor
     {
-        string Text { get; set; }
+        private JumpTableDialog dlg;
+
+        public void Attach(JumpTableDialog dlg)
+        {
+            this.dlg = dlg;
+        }
     }
 }

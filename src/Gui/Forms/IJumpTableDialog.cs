@@ -18,17 +18,16 @@
  */
 #endregion
 
+using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace Reko.Gui
+namespace Reko.Gui.Forms
 {
-    /// <summary>
-    /// Abstracts the notion of a dialog for assistance when unit testing.
-    /// </summary>
-    public interface IDialog : IDisposable
+    public interface IJumpTableDialog : IDialog
     {
-        string Text { get; set; }
+        Address[] GetJumpTableAddresses();
     }
 }

@@ -28,7 +28,6 @@ using Reko.Core.Operators;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using Rhino.Mocks;
-using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

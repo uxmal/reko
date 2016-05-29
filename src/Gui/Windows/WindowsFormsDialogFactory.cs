@@ -149,6 +149,14 @@ namespace Reko.Gui.Windows
         {
             return new DeclarationForm();
         }
+
+        public IJumpTableDialog CreateJumpTableDialog(Address addrIndirectJump)
+        {
+            return new JumpTableDialog()
+            {
+                IndirectJumpAddress = addrIndirectJump,
+            };
+        }
     }
 }
 
