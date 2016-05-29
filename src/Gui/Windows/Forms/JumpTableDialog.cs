@@ -28,6 +28,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Reko.Core;
+using Reko.Core.Machine;
 
 namespace Reko.Gui.Windows.Forms
 {
@@ -35,11 +36,19 @@ namespace Reko.Gui.Windows.Forms
     {
         public JumpTableDialog()
         {
-            new JumpTableInteractor().Attach(this);
             InitializeComponent();
+            new JumpTableInteractor().Attach(this);
         }
 
-        public Address IndirectJumpAddress { get; internal set; }
+        public IServiceProvider Services { get; set; }
+        public MachineInstruction IndirectJump { get; internal set; }
+        public Program Program { get; internal set; }
+
+        public Label IndirectJumpLabel { get { return lblInstruction; } }
+        public TextBox JumpTableStartAddress { get { return txtStartAddress; } }
+        public CheckBox IsIndirectTable { get { return chkIndirectTable; } }
+        public TextBox IndirectTable { get { return txtIndirectTable; } }
+        public ErrorProvider ErrorProvider { get { return errorStartAddress; } }
 
         public Address[] GetJumpTableAddresses()
         {

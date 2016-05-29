@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Machine;
 using Reko.Gui.Forms;
 using Reko.Gui.Windows.Forms;
 using System;
@@ -150,11 +151,13 @@ namespace Reko.Gui.Windows
             return new DeclarationForm();
         }
 
-        public IJumpTableDialog CreateJumpTableDialog(Address addrIndirectJump)
+        public IJumpTableDialog CreateJumpTableDialog(Program program, MachineInstruction instrIndirectJmp)
         {
             return new JumpTableDialog()
             {
-                IndirectJumpAddress = addrIndirectJump,
+                Services = this.services,
+                Program = program,
+                IndirectJump = instrIndirectJmp,
             };
         }
     }

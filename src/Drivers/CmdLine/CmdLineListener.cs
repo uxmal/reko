@@ -44,6 +44,11 @@ namespace Reko.CmdLine
             return new NullCodeLocation(block.Name);
         }
 
+        public ICodeLocation CreateJumpTableNavigator(Program program, Address addr)
+        {
+            return new NullCodeLocation(addr.ToString());
+        }
+
         public void AddDiagnostic(ICodeLocation location, Diagnostic d)
         {
             Console.Out.WriteLine("{0}: {1}: {2}",

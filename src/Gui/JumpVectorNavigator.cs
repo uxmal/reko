@@ -21,42 +21,43 @@
 using Reko.Core;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace Reko.Gui
 {
-    public class AddressNavigator : ICodeLocation
+    public class JumpVectorNavigator : ICodeLocation
     {
-        private IServiceProvider sp;
+        private readonly IServiceProvider services;
 
-        public AddressNavigator(Program program, Address addr, IServiceProvider sp)
+        public JumpVectorNavigator(Program program, Address addrInstr, IServiceProvider services)
         {
             this.Program = program;
-            this.Address = addr;
-            this.sp = sp;
+            this.Address = addrInstr;
+            this.services = services;
         }
 
         public Address Address { get; private set; }
         public Program Program { get; private set; }
 
-        #region ICodeLocation Members
-
-        public string Text
-        {
-            get { return Address.ToString(); }
-        }
+        public string Text { get { return Address.ToString();  } }
 
         public void NavigateTo()
         {
-            var svc = sp.RequireService<ILowLevelViewService>();
+            var svc = services.RequireService<ILowLevelViewService>();
             svc.ShowMemoryAtAddress(Program, Address);
-        }
 
-        #endregion
-
-        public override string ToString()
-        {
-            return string.Format("{0}!{1}", Program.Filename, Address);
+            var dlgSvc = services.RequireService<IDialogFactory>();
+            var uiSvc = services.RequireService<IDecompilerShellUiService>();
+            var instr = Program.CreateDisassembler(Address).First();
+            using (var dlg = dlgSvc.CreateJumpTableDialog(Program, instr))
+            {
+                if (DialogResult.OK == uiSvc.ShowModalDialog(dlg))
+                {
+                    //$TODO: add to Program.UserData.
+                }
+            }
         }
     }
 }

@@ -136,6 +136,7 @@
     <Compile Include="IResourceEditorService.cs" />
     <Compile Include="Forms\IWorkerDialog.cs" />
     <Compile Include="Forms\ITextEncodingDialog.cs" />
+    <Compile Include="JumpVectorNavigator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BlockNavigator.cs" />
     <Compile Include="CommandGroup.cs" />

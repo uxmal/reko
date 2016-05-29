@@ -18,8 +18,10 @@
  */
 #endregion
 
- using System;
+using Reko.Core;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
@@ -32,6 +34,35 @@ namespace Reko.Gui.Windows.Forms
         public void Attach(JumpTableDialog dlg)
         {
             this.dlg = dlg;
+            dlg.JumpTableStartAddress.Validating += JumpTableStartAddress_Validating;
+            dlg.Load += Dlg_Load;
+        }
+
+        private void Dlg_Load(object sender, EventArgs e)
+        {
+            dlg.Text = string.Format("Jump table for {0}", dlg.IndirectJump.Address);
+            dlg.IndirectJumpLabel.Text = dlg.IndirectJump.ToString().Replace('\t', ' ');
+        }
+
+        private void JumpTableStartAddress_Validating(object sender, CancelEventArgs e)
+        {
+            Address addr;
+            if (!dlg.Program.Platform.TryParseAddress(dlg.JumpTableStartAddress.Text, out addr))
+            {
+                e.Cancel = true;
+            } 
+            else
+            {
+                e.Cancel = !dlg.Program.SegmentMap.IsValidAddress(addr);
+            }
+            if (e.Cancel)
+            {
+                dlg.ErrorProvider.SetError(dlg.JumpTableStartAddress, "Invalid address");
+            }
+            else
+            {
+                dlg.ErrorProvider.SetError(dlg.JumpTableStartAddress, "");
+            }
         }
     }
 }

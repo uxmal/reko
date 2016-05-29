@@ -32,6 +32,7 @@ using System.Diagnostics;
 using System.Linq;
 using ProcedureCharacteristics = Reko.Core.Serialization.ProcedureCharacteristics;
 using Reko.Analysis;
+using Reko.Core.Services;
 
 namespace Reko.Scanning
 {
@@ -717,16 +718,20 @@ namespace Reko.Scanning
                     return false;
                 // Can't determine the size of the table, but surely it has one entry?
                 var addrEntry = arch.ReadCodeAddress(bw.Stride, rdr, state);
+                var listener = scanner.Services.RequireService<DecompilerEventListener>();
+                string msg;
                 if (this.program.SegmentMap.IsValidAddress(addrEntry))
                 {
                     vector.Add(addrEntry);
-                    scanner.Warn(addrSwitch, "Can't determine size of jump vector; probing only one entry.");
+                    msg = "Can't determine size of jump vector; probing only one entry.";
                 }
                 else
                 {
                     // Nope, not even that.
-                    scanner.Warn(addrSwitch, "No valid entries could be found in jump vector.");
+                    msg = "No valid entries could be found in jump vector.";
                 }
+                var nav = listener.CreateJumpTableNavigator(program, addrSwitch);
+                listener.Warn(nav, msg);
             }
 
             ScanVectorTargets(xfer, vector);
