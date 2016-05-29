@@ -42,6 +42,7 @@ namespace Reko.Gui.Windows.Forms
 
         public IServiceProvider Services { get; set; }
         public MachineInstruction IndirectJump { get; internal set; }
+        public Address VectorAddress { get; internal set; }
         public Program Program { get; internal set; }
 
         public Label IndirectJumpLabel { get { return lblInstruction; } }
@@ -49,6 +50,7 @@ namespace Reko.Gui.Windows.Forms
         public CheckBox IsIndirectTable { get { return chkIndirectTable; } }
         public TextBox IndirectTable { get { return txtIndirectTable; } }
         public ErrorProvider ErrorProvider { get { return errorStartAddress; } }
+
 
         public Address[] GetJumpTableAddresses()
         {

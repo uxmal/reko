@@ -157,9 +157,9 @@ namespace Reko.UnitTests.Mocks
             return new NullCodeLocation(block.Name);
         }
 
-        public ICodeLocation CreateJumpTableNavigator(Program program, Address address)
+        public ICodeLocation CreateJumpTableNavigator(Program program, Address addrIndirectJump, Address addrVector)
         {
-            return new NullCodeLocation(address.ToString());
+            return new NullCodeLocation(addrIndirectJump.ToString());
         }
 
         #region IWorkerDialogService Members

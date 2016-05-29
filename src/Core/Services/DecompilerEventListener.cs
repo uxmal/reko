@@ -31,7 +31,7 @@ namespace Reko.Core.Services
         ICodeLocation CreateAddressNavigator(Program program, Address address);
         ICodeLocation CreateProcedureNavigator(Program program, Procedure proc);
         ICodeLocation CreateBlockNavigator(Program program, Block block);
-        ICodeLocation CreateJumpTableNavigator(Program program, Address addr);
+        ICodeLocation CreateJumpTableNavigator(Program program, Address addrIndirectJump, Address addrVector);
         void Warn(ICodeLocation location, string message);
         void Warn(ICodeLocation location, string message, params object[] args);
         void Error(ICodeLocation location, string message);
@@ -116,9 +116,9 @@ namespace Reko.Core.Services
             return new NullCodeLocation(block.Name);
         }
 
-        public ICodeLocation CreateJumpTableNavigator(Program program, Address addr)
+        public ICodeLocation CreateJumpTableNavigator(Program program, Address addrIndirectJump, Address addrVector)
         {
-            return new NullCodeLocation(addr.ToString());
+            return new NullCodeLocation(addrIndirectJump.ToString());
         }
 
         public void AddDiagnostic(ICodeLocation location, Diagnostic d)

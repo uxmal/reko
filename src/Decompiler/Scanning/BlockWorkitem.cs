@@ -730,7 +730,7 @@ namespace Reko.Scanning
                     // Nope, not even that.
                     msg = "No valid entries could be found in jump vector.";
                 }
-                var nav = listener.CreateJumpTableNavigator(program, addrSwitch);
+                var nav = listener.CreateJumpTableNavigator(program, addrSwitch, bw.VectorAddress);
                 listener.Warn(nav, msg);
             }
 
