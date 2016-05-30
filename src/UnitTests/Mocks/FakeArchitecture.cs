@@ -267,6 +267,10 @@ namespace Reko.UnitTests.Mocks
 
         public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
         {
+            if (size == 4)
+            {
+                return Address.Ptr32(rdr.ReadLeUInt32());
+            }
             throw new NotImplementedException();
         }
 

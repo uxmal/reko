@@ -34,27 +34,34 @@ namespace Reko.Gui.Windows.Forms
 {
     public partial class JumpTableDialog : Form, IJumpTableDialog
     {
+        private JumpTableInteractor interactor;
+
         public JumpTableDialog()
         {
             InitializeComponent();
-            new JumpTableInteractor().Attach(this);
+            this.interactor = new JumpTableInteractor();
+            interactor.Attach(this);
         }
 
         public IServiceProvider Services { get; set; }
-        public MachineInstruction IndirectJump { get; internal set; }
-        public Address VectorAddress { get; internal set; }
-        public Program Program { get; internal set; }
-
+        public MachineInstruction IndirectJump { get; set; }
+        public Address VectorAddress { get;  set; }
+        public Program Program { get; set; }
+        
+        public Label CaptionLabel { get { return lblCaption; } }
         public Label IndirectJumpLabel { get { return lblInstruction; } }
         public TextBox JumpTableStartAddress { get { return txtStartAddress; } }
+        public NumericUpDown EntryCount { get { return numEntries; } }
         public CheckBox IsIndirectTable { get { return chkIndirectTable; } }
         public TextBox IndirectTable { get { return txtIndirectTable; } }
-        public ErrorProvider ErrorProvider { get { return errorStartAddress; } }
+        public Panel SegmentedAddressPanel { get { return panelSegmentedAddresses; } }
+        public RadioButton FarAddress { get { return rdbFarAddresses; } }
+        public RadioButton Offsets { get { return rdbOffsets; } }
+        public ComboBox SegmentList { get { return ddlSegments; } }
 
-
-        public Address[] GetJumpTableAddresses()
+        public ImageMapVectorTable GetResults()
         {
-            throw new NotImplementedException();
+            return interactor.GetResults();
         }
     }
 }

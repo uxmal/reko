@@ -54,6 +54,7 @@ namespace Reko.UnitTests.Scanning
         private Program lr;
         private string nl = Environment.NewLine;
         private ServiceContainer sc;
+        private Program program;
 
         [SetUp]
         public void Setup()
@@ -62,6 +63,7 @@ namespace Reko.UnitTests.Scanning
             var cfgSvc = mr.Stub<IConfigurationService>();
             var env = mr.Stub<OperatingEnvironment>();
             var tlSvc = mr.Stub<ITypeLibraryLoaderService>();
+            var eventListener = mr.Stub<DecompilerEventListener>();
             cfgSvc.Stub(c => c.GetEnvironment("ms-dos")).Return(env);
             env.Stub(c => c.TypeLibraries).Return(new List<ITypeLibraryElement>());
             env.Stub(c => c.CharacteristicsLibraries).Return(new List<ITypeLibraryElement>());
@@ -69,6 +71,7 @@ namespace Reko.UnitTests.Scanning
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             sc.AddService<IConfigurationService>(cfgSvc);
             sc.AddService<ITypeLibraryLoaderService>(tlSvc);
+            sc.AddService<DecompilerEventListener>(eventListener);
         }
 
         private void BuildTest32(Action<X86Assembler> m)
@@ -195,7 +198,7 @@ namespace Reko.UnitTests.Scanning
                 this.state, 
                 proc.Frame,
                 host);
-            var prog = new Program
+            this.program = new Program
             {
                 Architecture = arch,
                 SegmentMap = lr.SegmentMap,
@@ -206,8 +209,9 @@ namespace Reko.UnitTests.Scanning
             {
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
                 scanner.Stub(x => x.GetTrace(null, null, null)).IgnoreArguments().Return(rw);
+                scanner.Stub(x => x.Services).Return(sc);
             }
-            wi = new BlockWorkitem(scanner, prog, state, addr);
+            wi = new BlockWorkitem(scanner, program, state, addr);
         }
 
 
@@ -332,24 +336,16 @@ namespace Reko.UnitTests.Scanning
                 m.And(m.bx, m.Const(3));
                 m.Add(m.bx, m.bx);
                 m.Jmp(m.MemW(Registers.cs, Registers.bx, "table"));
+
                 m.Label("table");
                 m.Dw(0x1234);
                 m.Dw(0x0C00);
                 m.Repeat(30, mm => mm.Dw(0xC3));
 
-                //prog.image = new LoadedImage(Address.Ptr32(0x0C00, 0), new byte[100]);
-                //var imageMap = image.CreateImageMap();
                 scanner.Stub(x => x.TerminateBlock(
                     Arg<Block>.Is.Anything,
                     Arg<Address>.Is.Anything));
-                scanner.Expect(x => x.CreateReader(
-                    Arg<Address>.Is.Anything)).Return(new LeImageReader(new byte[] {
-                        0x34, 0x00,
-                        0x36, 0x00,
-                        0x38, 0x00,
-                        0x3A, 0x00,
-                        0xCC, 0xCC},
-                        0));
+           
                 ExpectJumpTarget(0x0C00, 0x0000, "l0C00_0000");
                 var block1234 = ExpectJumpTarget(0x0C00, 0x0034, "foo1");
                 var block1236 = ExpectJumpTarget(0x0C00, 0x0036, "foo2");
@@ -363,6 +359,17 @@ namespace Reko.UnitTests.Scanning
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x0038))).Return(block1238);
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x003A))).Return(block123A);
             });
+
+            var mem = this.program.SegmentMap.Segments.Values.First().MemoryArea;
+            mem.WriteBytes(
+                new byte[] {
+                    0x34, 0x00,
+                    0x36, 0x00,
+                    0x38, 0x00,
+                    0x3A, 0x00,
+                    0xCC, 0xCC
+                },
+                0x000A, 0x000A);
 
             wi.Process();
             var sw = new StringWriter();

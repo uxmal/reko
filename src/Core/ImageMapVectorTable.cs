@@ -38,7 +38,6 @@ namespace Reko.Core
             this.Size = (uint) size;
         }
 
-        public Address TableAddress { get; private set; }
         public List<Address> Addresses { get; private set; }
     }
 }

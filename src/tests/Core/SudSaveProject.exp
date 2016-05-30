@@ -26,6 +26,7 @@
         <address>1000:0320</address>
         <noreturn>true</noreturn>
       </call>
+      <indirectJump instrAdress="1000:0380" tableAddress="1000:0400" />
       <global>
         <Address>2000:0000</Address>
         <str term="z">
@@ -33,6 +34,11 @@
         </str>
         <Name>g_20000</Name>
       </global>
+      <jumpTable tableAddress="1000:0400">
+        <dst>1000:0500</dst>
+        <dst>1000:0513</dst>
+        <dst>1000:05BA</dst>
+      </jumpTable>
     </user>
   </input>
 </project>

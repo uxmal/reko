@@ -705,7 +705,7 @@ namespace Reko.Scanning
                 ? blockCur.Procedure.Frame.EnsureRegister(bw.Index)
                 : null;
 
-            VectorBuilder builder = new VectorBuilder(scanner, program, new DirectedGraphImpl<object>());
+            VectorBuilder builder = new VectorBuilder(scanner.Services, program, new DirectedGraphImpl<object>());
             if (bw.VectorAddress == null)
                 return false;
 

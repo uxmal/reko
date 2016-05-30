@@ -19,11 +19,14 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Lib;
+using Reko.Scanning;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace Reko.Gui.Windows.Forms
 {
@@ -34,35 +37,63 @@ namespace Reko.Gui.Windows.Forms
         public void Attach(JumpTableDialog dlg)
         {
             this.dlg = dlg;
-            dlg.JumpTableStartAddress.Validating += JumpTableStartAddress_Validating;
+            dlg.IsIndirectTable.CheckedChanged += IsIndirectTable_CheckedChanged;
             dlg.Load += Dlg_Load;
+            dlg.FormClosing += Dlg_FormClosing;
         }
 
         private void Dlg_Load(object sender, EventArgs e)
         {
-            dlg.Text = string.Format("Jump table for {0}", dlg.IndirectJump.Address);
+            dlg.CaptionLabel.Text = string.Format("Jump table for {0}", dlg.IndirectJump.Address);
             dlg.IndirectJumpLabel.Text = dlg.IndirectJump.ToString().Replace('\t', ' ');
+            if (dlg.VectorAddress != null)
+            {
+                dlg.JumpTableStartAddress.Text = dlg.VectorAddress.ToString();
+            }
+            EnableSegmentedPanel(dlg.Program.SegmentMap.BaseAddress.Selector.HasValue);
         }
 
-        private void JumpTableStartAddress_Validating(object sender, CancelEventArgs e)
+        private void Dlg_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (dlg.DialogResult != DialogResult.OK)
+                return;
             Address addr;
-            if (!dlg.Program.Platform.TryParseAddress(dlg.JumpTableStartAddress.Text, out addr))
+            if (dlg.Program.Platform.TryParseAddress(dlg.JumpTableStartAddress.Text, out addr))
             {
-                e.Cancel = true;
-            } 
-            else
-            {
-                e.Cancel = !dlg.Program.SegmentMap.IsValidAddress(addr);
+                dlg.VectorAddress = addr;
             }
-            if (e.Cancel)
+        }
+
+        private void EnableSegmentedPanel(bool hasValue)
+        {
+            //foreach (Control control in dlg.SegmentedAddressPanel.Controls)
+            //{
+            //    control.Enabled = hasValue;
+            //}
+            if (hasValue)
             {
-                dlg.ErrorProvider.SetError(dlg.JumpTableStartAddress, "Invalid address");
+                dlg.SegmentList.DataSource = dlg.Program.SegmentMap.Segments.Values
+                    .Select(seg => new ListOption { Text = seg.Name, Value = seg.Address })
+                    .ToList();
             }
-            else
-            {
-                dlg.ErrorProvider.SetError(dlg.JumpTableStartAddress, "");
-            }
+        }
+
+        private void EnableControls()
+        {
+            dlg.IndirectTable.Enabled = dlg.IsIndirectTable.Checked;
+        }
+
+        private void IsIndirectTable_CheckedChanged(object sender, EventArgs e)
+        {
+            EnableControls();
+        }
+
+        public ImageMapVectorTable GetResults()
+        {
+            var vb = new VectorBuilder(dlg.Services, dlg.Program, new DirectedGraphImpl<object>());
+            var stride = 4; //$TODO: get from dialog
+            var entries = vb.BuildTable(dlg.VectorAddress, stride * (int)dlg.EntryCount.Value, null, stride, null);
+            return new ImageMapVectorTable(dlg.VectorAddress, entries.ToArray(), 0);
         }
     }
 }

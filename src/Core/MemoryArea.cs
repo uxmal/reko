@@ -643,9 +643,14 @@ namespace Reko.Core
         public void WriteLeUInt16(Address addr, ushort w) { WriteLeUInt16(ToOffset(addr), w); }
         public void WriteLeUInt32(Address addr, uint dw) { WriteLeUInt32(ToOffset(addr), dw); }
 
+        public void WriteBytes(byte[] srcBytes, long offset, int count)
+        {
+            WriteBytes(srcBytes, offset, count, this.Bytes);
+        }
+
         public static void WriteBytes(byte[] srcBytes, long offset, int count, byte[] dstBytes)
         {
-            Array.Copy(srcBytes, 0, dstBytes, (long)offset, count);
+            Array.Copy(srcBytes, 0, dstBytes, offset, count);
         }
     }
 }

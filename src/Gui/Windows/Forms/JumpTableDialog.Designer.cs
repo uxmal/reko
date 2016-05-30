@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.lblCaption = new System.Windows.Forms.Label();
             this.lblInstruction = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -40,9 +39,13 @@
             this.numEntries = new System.Windows.Forms.NumericUpDown();
             this.txtIndirectTable = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.errorStartAddress = new System.Windows.Forms.ErrorProvider(this.components);
+            this.panelSegmentedAddresses = new System.Windows.Forms.Panel();
+            this.ddlSegments = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.rdbOffsets = new System.Windows.Forms.RadioButton();
+            this.rdbFarAddresses = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.numEntries)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.errorStartAddress)).BeginInit();
+            this.panelSegmentedAddresses.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblCaption
@@ -75,7 +78,6 @@
             // 
             // txtStartAddress
             // 
-            this.errorStartAddress.SetError(this.txtStartAddress, "Invalid address");
             this.txtStartAddress.Location = new System.Drawing.Point(104, 56);
             this.txtStartAddress.MaxLength = 16;
             this.txtStartAddress.Name = "txtStartAddress";
@@ -95,7 +97,7 @@
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(84, 205);
+            this.btnOK.Location = new System.Drawing.Point(141, 298);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 6;
@@ -106,7 +108,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(165, 205);
+            this.btnCancel.Location = new System.Drawing.Point(222, 298);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 7;
@@ -162,15 +164,65 @@
             this.label3.TabIndex = 11;
             this.label3.Text = "Start of in&direct table:";
             // 
-            // errorStartAddress
+            // panelSegmentedAddresses
             // 
-            this.errorStartAddress.ContainerControl = this;
+            this.panelSegmentedAddresses.Controls.Add(this.ddlSegments);
+            this.panelSegmentedAddresses.Controls.Add(this.label4);
+            this.panelSegmentedAddresses.Controls.Add(this.rdbOffsets);
+            this.panelSegmentedAddresses.Controls.Add(this.rdbFarAddresses);
+            this.panelSegmentedAddresses.Location = new System.Drawing.Point(0, 184);
+            this.panelSegmentedAddresses.Name = "panelSegmentedAddresses";
+            this.panelSegmentedAddresses.Size = new System.Drawing.Size(309, 86);
+            this.panelSegmentedAddresses.TabIndex = 16;
+            // 
+            // ddlSegments
+            // 
+            this.ddlSegments.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ddlSegments.FormattingEnabled = true;
+            this.ddlSegments.Location = new System.Drawing.Point(156, 52);
+            this.ddlSegments.Name = "ddlSegments";
+            this.ddlSegments.Size = new System.Drawing.Size(92, 21);
+            this.ddlSegments.TabIndex = 19;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(12, 14);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(89, 13);
+            this.label4.TabIndex = 18;
+            this.label4.Text = "Table entries are:";
+            // 
+            // rdbOffsets
+            // 
+            this.rdbOffsets.AutoSize = true;
+            this.rdbOffsets.Location = new System.Drawing.Point(29, 53);
+            this.rdbOffsets.Name = "rdbOffsets";
+            this.rdbOffsets.Size = new System.Drawing.Size(121, 17);
+            this.rdbOffsets.TabIndex = 17;
+            this.rdbOffsets.TabStop = true;
+            this.rdbOffsets.Text = "Offsets into segment";
+            this.rdbOffsets.UseVisualStyleBackColor = true;
+            // 
+            // rdbFarAddresses
+            // 
+            this.rdbFarAddresses.AutoSize = true;
+            this.rdbFarAddresses.Location = new System.Drawing.Point(29, 30);
+            this.rdbFarAddresses.Name = "rdbFarAddresses";
+            this.rdbFarAddresses.Size = new System.Drawing.Size(92, 17);
+            this.rdbFarAddresses.TabIndex = 16;
+            this.rdbFarAddresses.TabStop = true;
+            this.rdbFarAddresses.Text = "Full addresses";
+            this.rdbFarAddresses.UseVisualStyleBackColor = true;
             // 
             // JumpTableDialog
             // 
+            this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(252, 240);
+            this.CancelButton = this.btnCancel;
+            this.ClientSize = new System.Drawing.Size(309, 333);
+            this.Controls.Add(this.panelSegmentedAddresses);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txtIndirectTable);
             this.Controls.Add(this.numEntries);
@@ -188,9 +240,10 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "JumpTableDialog";
+            this.Text = "Jump Table";
             ((System.ComponentModel.ISupportInitialize)(this.numEntries)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.errorStartAddress)).EndInit();
+            this.panelSegmentedAddresses.ResumeLayout(false);
+            this.panelSegmentedAddresses.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -209,6 +262,10 @@
         private System.Windows.Forms.NumericUpDown numEntries;
         private System.Windows.Forms.TextBox txtIndirectTable;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ErrorProvider errorStartAddress;
+        private System.Windows.Forms.Panel panelSegmentedAddresses;
+        private System.Windows.Forms.ComboBox ddlSegments;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.RadioButton rdbOffsets;
+        private System.Windows.Forms.RadioButton rdbFarAddresses;
     }
 }

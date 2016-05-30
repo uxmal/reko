@@ -377,8 +377,36 @@ namespace Reko.Core.Serialization
                     .Select(c => LoadUserCall(c, program))
                     .Where(c => c != null)
                     .ToSortedList(k => k.Address, v => v);
-                
             }
+            if (sUser.JumpTables != null)
+            {
+                program.User.JumpTables = sUser.JumpTables.Select(LoadJumpTable_v4)
+                    .Where(t => t != null)
+                    .ToSortedList(k => k.Address, v => v);
+            }
+            if (user.IndirectJumps != null)
+            {
+                program.User.IndirectJumps = sUser.IndirectJumps
+                    .Select(ij => LoadIndirectJump_v4(ij, program.User))
+                    .Where(ij => ij != null)
+                    .ToSortedList(k => k.Item1, v => v.Item2);
+            }
+        }
+
+        private ImageMapVectorTable LoadJumpTable_v4(JumpTable_v4 sTable)
+        {
+            Address addr;
+            if (!platform.TryParseAddress(sTable.TableAddress, out addr))
+                return null;
+            var listAddrDst = new List<Address>();
+            foreach (var item in sTable.Destinations)
+            {
+                Address addrDst;
+                if (!platform.TryParseAddress(item, out addrDst))
+                    break;
+                listAddrDst.Add(addrDst);
+            }
+            return new ImageMapVectorTable(addr, listAddrDst.ToArray(), 0);
         }
 
         private UserCallData LoadUserCall(SerializedCall_v1 call, Program program)
@@ -402,6 +430,20 @@ namespace Reko.Core.Serialization
                 NoReturn = call.NoReturn,
                 Signature = sig,
             };
+        }
+
+        private Tuple<Address, ImageMapVectorTable> LoadIndirectJump_v4(IndirectJump_v4 indirJump, UserData user)
+        {
+            Address addrInstr;
+            if (!platform.TryParseAddress(indirJump.InstructionAddress, out addrInstr))
+                return null;
+            Address addrTable;
+            if (!platform.TryParseAddress(indirJump.TableAddress, out addrTable))
+                return null;
+            ImageMapVectorTable table;
+            if (!user.JumpTables.TryGetValue(addrTable, out table))
+                return null;
+            return Tuple.Create(addrInstr, table);
         }
 
         public void LoadUserData(UserData_v3 sUser, Program program, UserData user)

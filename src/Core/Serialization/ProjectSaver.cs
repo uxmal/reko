@@ -79,6 +79,8 @@ namespace Reko.Core.Serialization
                         .Select(uc => SerializeUserCall(program, uc.Value))
                         .Where(uc => uc != null)
                         .ToList(),
+                    IndirectJumps = program.User.IndirectJumps.Select(SerializeIndirectJump).ToList(),
+                    JumpTables = program.User.JumpTables.Select(SerializeJumpTable).ToList(),
                     GlobalData = program.User.Globals
                         .Select(de => new GlobalDataItem_v2
                         {
@@ -127,6 +129,24 @@ namespace Reko.Core.Serialization
                 Comment = uc.Comment,
                 NoReturn = uc.NoReturn,
                 Signature = ssig,
+            };
+        }
+
+        private IndirectJump_v4 SerializeIndirectJump(KeyValuePair<Address, ImageMapVectorTable> de)
+        {
+            return new IndirectJump_v4
+            {
+                InstructionAddress = de.Key.ToString(),
+                TableAddress = de.Value.Address.ToString()
+            };
+        }
+
+        private JumpTable_v4 SerializeJumpTable(KeyValuePair<Address, ImageMapVectorTable> de)
+        {
+            return new JumpTable_v4
+            {
+                TableAddress = de.Key.ToString(),
+                Destinations = de.Value.Addresses.Select(a => a.ToString()).ToArray(),
             };
         }
 

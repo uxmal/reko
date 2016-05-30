@@ -130,7 +130,26 @@ namespace Reko.UnitTests.Core.Serialization
                                     }
                                 }
                             },
-                            LoadAddress = "0x1000:0x0",
+                            LoadAddress = "1000:0000",
+                            IndirectJumps =
+                            {
+                                new IndirectJump_v4 {
+                                    InstructionAddress ="1000:0220",
+                                    TableAddress ="1000:0228"
+                                },
+                            },
+                            JumpTables = {
+                                new JumpTable_v4
+                                {
+                                    TableAddress = "1000:0228",
+                                    Destinations = new string[]
+                                    {
+                                        "1000:0230",
+                                        "1000:0244",
+                                        "1000:033F",
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -151,6 +170,15 @@ namespace Reko.UnitTests.Core.Serialization
         {
             Given_Architecture();
             Given_TestOS_Platform();
+            var jumpTable = new ImageMapVectorTable(
+                Address.SegPtr(0x1000, 0x400),
+                new Address[] {
+                    Address.SegPtr(0x1000, 0x500),
+                    Address.SegPtr(0x1000, 0x513),
+                    Address.SegPtr(0x1000, 0x5BA),
+                }, 0);
+
+            
             Project project = new Project
             {
                 Programs =
@@ -214,6 +242,14 @@ namespace Reko.UnitTests.Core.Serialization
                                         NoReturn = true,
                                     }
                                 }
+                            },
+                            IndirectJumps =
+                            {
+                                { Address.SegPtr(0x1000, 0x380), jumpTable }
+                            },
+                            JumpTables =
+                            {
+                                { jumpTable.Address, jumpTable }
                             }
                         }
                     }
