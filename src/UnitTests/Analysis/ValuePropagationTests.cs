@@ -704,5 +704,52 @@ ProcedureBuilder_exit:
 
             AssertStringsEqual(sExp, ssa);
         }
+
+        [Test]
+        public void VpMulBy6()
+        {
+            var m = new ProcedureBuilder();
+            var r1 = m.Reg16("r1", 1);
+            var r2 = m.Reg16("r1", 2);
+
+            m.Assign(r2, r1);                 // r1
+            m.Assign(r1, m.Shl(r1, 1));       // r1 * 2
+            m.Assign(r1, m.IAdd(r1, r2));     // r1 * 3
+            m.Assign(r1, m.Shl(r1, 1));       // r1 * 6
+
+            var ssa = RunTest(m);
+            var sExp =
+            #region Expected
+@"r1:r1
+    def:  def r1
+    uses: r1_1 = r1
+          r1_2 = r1 << 0x01
+          r1_3 = r1 * 0x0003
+          r1_4 = r1 * 0x0006
+r1_1: orig: r1
+    def:  r1_1 = r1
+r1_2: orig: r1
+    def:  r1_2 = r1 << 0x01
+r1_3: orig: r1
+    def:  r1_3 = r1 * 0x0003
+r1_4: orig: r1
+    def:  r1_4 = r1 * 0x0006
+// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def r1
+	// succ:  l1
+l1:
+	r1_1 = r1
+	r1_2 = r1 << 0x01
+	r1_3 = r1 * 0x0003
+	r1_4 = r1 * 0x0006
+ProcedureBuilder_exit:
+";
+            #endregion
+
+            AssertStringsEqual(sExp, ssa);
+        }
     }
 }

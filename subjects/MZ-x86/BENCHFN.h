@@ -851,8 +851,8 @@ T_166: (in diOut : Eq_166)
   OrigDataType: ptr16
 T_167: (in 0x0002 : word16)
   Class: Eq_167
-  DataType: word16
-  OrigDataType: word16
+  DataType: ui16
+  OrigDataType: ui16
 T_168: (in fp - 0x0002 : word16)
   Class: Eq_164
   DataType: Eq_164

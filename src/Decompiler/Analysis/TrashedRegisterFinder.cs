@@ -101,9 +101,7 @@ namespace Reko.Analysis
             var e = eventListener;
             while (worklist.GetWorkItem(out block))
             {
-            if (block.Name == "l0040F146_thunk_fn0040F148") //$DEBUG
-                block.ToString();
-                 eventListener.ShowStatus(string.Format("Blocks left: {0}", worklist.Count));
+                eventListener.ShowStatus(string.Format("Blocks left: {0}", worklist.Count));
                 ProcessBlock(block);
             }
         }
@@ -194,8 +192,6 @@ namespace Reko.Analysis
 
         public void RewriteBlock(Block block)
         {
-            if (block.Name == "l0040F146_thunk_fn0040F148") //$DEBUG
-                block.ToString();
             StartProcessingBlock(block);
             var propagator = new ExpressionPropagator(program.Architecture, se.Simplifier, ctx, flow);
             foreach (Statement stm in block.Statements)

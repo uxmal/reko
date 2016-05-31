@@ -57,6 +57,7 @@ namespace Reko.UnitTests.Typing
         {
             return new Pointer(dt, arch.PointerType.Size);
         }
+
         private static Identifier Id(string name, DataType dt)
         {
             return new Identifier(name, dt, RegisterStorage.None);
@@ -208,13 +209,22 @@ namespace Reko.UnitTests.Typing
                 Test(m.FGe(p, Constant.Real32(-5.5F)), PrimitiveType.Bool));
         }
 
-
         [Test]
         public void ExdFloatSub()
         {
             var p = Id("p", PrimitiveType.Word32);
             RunTest(
                 Test(m.FSub(p, Constant.Real32(-5.5F)), PrimitiveType.Real32));
+        }
+
+        [Test]
+        public void ExdApplication()
+        {
+            var arg = Id("arg", PrimitiveType.Word32);
+            var sig = new ProcedureSignature(null, Id("r", PrimitiveType.Real32));
+            var ep = new ExternalProcedure("test", sig);
+            RunTest(
+                Test(m.Fn(ep, m.Load(PrimitiveType.Word32, m.Word32(0x0300400))), VoidType.Instance));
         }
     }
 }

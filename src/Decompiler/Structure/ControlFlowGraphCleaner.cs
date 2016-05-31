@@ -93,8 +93,6 @@ namespace Reko.Structure
                     if (block == null)
                         continue;
 
-                    if (block.Name.EndsWith("m1")) //$DEBUG
-                        block.ToString();
                     if (EndsInBranch(block))
                     {
                         if (BranchTargetsEqual(block))
@@ -141,9 +139,6 @@ namespace Reko.Structure
 						}
 #endif
                     }
-                    if (proc.ControlGraph.Blocks.Any(b => b.Name.EndsWith("m3") && b.Pred.Count == 1)) //$DEBUG
-                        proc.ToString();
-
                 }
             } while (dirty);
 

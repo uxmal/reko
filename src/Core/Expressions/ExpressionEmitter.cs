@@ -130,6 +130,12 @@ namespace Reko.Core.Expressions
             return new FieldAccess(dt, e, field);
         }
 
+        public FieldAccess Field(DataType dt, Expression e, string fieldName)
+        {
+            var field = new StructureField(0, dt, fieldName);
+            return new FieldAccess(dt, e, field);
+        }
+
         public Expression FMul(Expression a, Expression b)
         {
             return new BinaryExpression(Operator.FMul, a.DataType, a, b);
