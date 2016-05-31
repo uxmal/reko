@@ -54,5 +54,14 @@ namespace Reko.Arch.Mips
             }
             emitter.Assign(RewriteOperand(instr.op1), from);
         }
+
+        private void RewriteTrap(MipsInstruction instr, Operator op)
+        {
+            var trap = PseudoProc("__trap", VoidType.Instance, RewriteOperand(instr.op3));
+            emitter.If(new BinaryExpression(op, PrimitiveType.Bool,
+                RewriteOperand(instr.op1),
+                RewriteOperand(instr.op2)),
+                new RtlSideEffect(trap));
+        }
     }
 }
