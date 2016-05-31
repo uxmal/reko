@@ -57,7 +57,13 @@ namespace Reko.Gui
             {
                 if (DialogResult.OK == uiSvc.ShowModalDialog(dlg))
                 {
-                    //$TODO: add to Program.UserData.
+                    var indJump = dlg.GetResults();
+                    this.Program.User.JumpTables[indJump.Table.Address] = indJump.Table;
+                    this.Program.User.IndirectJumps[IndirectJumpAddress] = indJump;
+                    
+                    ///$TODO: register
+                    //$TODO: prevent user from proceeding, in effect forcing 
+                    // a restart.
                 }
             }
         }

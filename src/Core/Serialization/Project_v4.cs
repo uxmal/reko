@@ -180,5 +180,8 @@ namespace Reko.Core.Serialization
 
         [XmlAttribute("tableAddress")]
         public string TableAddress;
+
+        [XmlAttribute("idxReg")]
+        public string IndexRegister;
     }
 }

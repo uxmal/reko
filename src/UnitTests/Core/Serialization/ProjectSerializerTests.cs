@@ -117,6 +117,7 @@ namespace Reko.UnitTests.Core.Serialization
             Given_Platform_Address("115000", 0x115000);
             Given_Platform_Address("115012", 0x115012);
             Given_Platform_Address("11504F", 0x11504F);
+            arch.Stub(a => a.GetRegister("r1")).Return(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
             mr.ReplayAll();
 
             var sp = new Project_v4
@@ -165,6 +166,7 @@ namespace Reko.UnitTests.Core.Serialization
                                 new IndirectJump_v4
                                 {
                                     InstructionAddress = "113800",
+                                    IndexRegister = "r1",
                                     TableAddress = "114000",
                                 }
                             },
@@ -199,8 +201,9 @@ namespace Reko.UnitTests.Core.Serialization
             Assert.AreEqual(Address.Ptr32(0x0011504F), jumpTable.Addresses[2]);
 
             Assert.AreEqual(1, inputFile.User.IndirectJumps.Count);
-            var table = inputFile.User.IndirectJumps[Address.Ptr32(0x00113800)];
-            Assert.AreSame(jumpTable, table);
+            var indJump = inputFile.User.IndirectJumps[Address.Ptr32(0x00113800)];
+            Assert.AreSame(jumpTable, indJump.Table);
+
         }
 
         [Test]

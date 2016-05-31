@@ -51,6 +51,7 @@ namespace Reko.Gui.Windows.Forms
                 dlg.JumpTableStartAddress.Text = dlg.VectorAddress.ToString();
             }
             EnableSegmentedPanel(dlg.Program.SegmentMap.BaseAddress.Selector.HasValue);
+            dlg.IndexRegister.DataSource = dlg.Program.Architecture.GetRegisters().ToList();
         }
 
         private void Dlg_FormClosing(object sender, FormClosingEventArgs e)
@@ -88,12 +89,18 @@ namespace Reko.Gui.Windows.Forms
             EnableControls();
         }
 
-        public ImageMapVectorTable GetResults()
+        public UserIndirectJump GetResults()
         {
             var vb = new VectorBuilder(dlg.Services, dlg.Program, new DirectedGraphImpl<object>());
             var stride = 4; //$TODO: get from dialog
             var entries = vb.BuildTable(dlg.VectorAddress, stride * (int)dlg.EntryCount.Value, null, stride, null);
-            return new ImageMapVectorTable(dlg.VectorAddress, entries.ToArray(), 0);
+            var table =  new ImageMapVectorTable(dlg.VectorAddress, entries.ToArray(), 0);
+            return new UserIndirectJump
+            {
+                Address = dlg.IndirectJump.Address,
+                Table = table,
+                IndexRegister = dlg.Program.Architecture.GetRegister(dlg.IndexRegister.SelectedIndex.ToString())
+            };
         }
     }
 }

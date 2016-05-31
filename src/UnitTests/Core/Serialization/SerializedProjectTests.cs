@@ -245,7 +245,14 @@ namespace Reko.UnitTests.Core.Serialization
                             },
                             IndirectJumps =
                             {
-                                { Address.SegPtr(0x1000, 0x380), jumpTable }
+                                {
+                                    Address.SegPtr(0x1000, 0x380),
+                                    new UserIndirectJump {
+                                        Address = jumpTable.Address,
+                                        Table = jumpTable,
+                                        IndexRegister = new RegisterStorage("R1", 1, 0, PrimitiveType.Word32)
+                                   }
+                                }
                             },
                             JumpTables =
                             {

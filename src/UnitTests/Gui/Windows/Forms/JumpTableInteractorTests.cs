@@ -62,7 +62,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             this.dlg = new JumpTableDialog()
             {
                 Program = program,
-                IndirectJump = new FakeInstruction(Operation.Jump)
+                IndirectJump = new FakeInstruction(Operation.Jump) {  Address = Address.Ptr32(0x1000) }
             };
         }
     
@@ -85,6 +85,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
             dlg.Show();
             dlg.JumpTableStartAddress.Text = "001000";
+            dlg.IndexRegister.SelectedIndex = 0;
             dlg.EntryCount.Value = 3;
             dlg.Refresh();
             dlg.AcceptButton.PerformClick();
@@ -92,8 +93,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
             var table = dlg.GetResults();
             Assert.AreEqual(Address.Ptr32(0x1000), table.Address);
-            Assert.AreEqual(3, table.Addresses.Count);
-            Assert.AreEqual(Address.Ptr32(0x01018), table.Addresses[2]);
+            Assert.AreEqual(3, table.Table.Addresses.Count);
+            Assert.AreEqual(Address.Ptr32(0x01018), table.Table.Addresses[2]);
         }
 
         [TearDown]

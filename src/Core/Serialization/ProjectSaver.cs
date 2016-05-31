@@ -132,12 +132,13 @@ namespace Reko.Core.Serialization
             };
         }
 
-        private IndirectJump_v4 SerializeIndirectJump(KeyValuePair<Address, ImageMapVectorTable> de)
+        private IndirectJump_v4 SerializeIndirectJump(KeyValuePair<Address, UserIndirectJump> de)
         {
             return new IndirectJump_v4
             {
                 InstructionAddress = de.Key.ToString(),
-                TableAddress = de.Value.Address.ToString()
+                TableAddress = de.Value.Address.ToString(),
+                IndexRegister = de.Value.IndexRegister.Name,
             };
         }
 

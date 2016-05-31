@@ -28,6 +28,6 @@ namespace Reko.Gui.Forms
 {
     public interface IJumpTableDialog : IDialog
     {
-        ImageMapVectorTable GetResults();
+        UserIndirectJump GetResults();
     }
 }

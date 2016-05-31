@@ -49,6 +49,7 @@ namespace Reko.Gui.Windows.Forms
         public Program Program { get; set; }
         
         public Label CaptionLabel { get { return lblCaption; } }
+        public ComboBox IndexRegister { get { return ddlRegisters; } }
         public Label IndirectJumpLabel { get { return lblInstruction; } }
         public TextBox JumpTableStartAddress { get { return txtStartAddress; } }
         public NumericUpDown EntryCount { get { return numEntries; } }
@@ -59,7 +60,7 @@ namespace Reko.Gui.Windows.Forms
         public RadioButton Offsets { get { return rdbOffsets; } }
         public ComboBox SegmentList { get { return ddlSegments; } }
 
-        public ImageMapVectorTable GetResults()
+        public UserIndirectJump GetResults()
         {
             return interactor.GetResults();
         }

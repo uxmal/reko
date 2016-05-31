@@ -44,6 +44,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.rdbOffsets = new System.Windows.Forms.RadioButton();
             this.rdbFarAddresses = new System.Windows.Forms.RadioButton();
+            this.label5 = new System.Windows.Forms.Label();
+            this.ddlRegisters = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.numEntries)).BeginInit();
             this.panelSegmentedAddresses.SuspendLayout();
             this.SuspendLayout();
@@ -97,7 +99,7 @@
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(141, 298);
+            this.btnOK.Location = new System.Drawing.Point(141, 303);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 6;
@@ -108,7 +110,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(222, 298);
+            this.btnCancel.Location = new System.Drawing.Point(222, 303);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 7;
@@ -118,7 +120,7 @@
             // chkIndirectTable
             // 
             this.chkIndirectTable.AutoSize = true;
-            this.chkIndirectTable.Location = new System.Drawing.Point(15, 113);
+            this.chkIndirectTable.Location = new System.Drawing.Point(15, 144);
             this.chkIndirectTable.Name = "chkIndirectTable";
             this.chkIndirectTable.Size = new System.Drawing.Size(87, 17);
             this.chkIndirectTable.TabIndex = 8;
@@ -149,7 +151,7 @@
             // 
             // txtIndirectTable
             // 
-            this.txtIndirectTable.Location = new System.Drawing.Point(29, 155);
+            this.txtIndirectTable.Location = new System.Drawing.Point(29, 186);
             this.txtIndirectTable.MaxLength = 16;
             this.txtIndirectTable.Name = "txtIndirectTable";
             this.txtIndirectTable.Size = new System.Drawing.Size(126, 20);
@@ -158,7 +160,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(26, 139);
+            this.label3.Location = new System.Drawing.Point(26, 170);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(107, 13);
             this.label3.TabIndex = 11;
@@ -170,7 +172,7 @@
             this.panelSegmentedAddresses.Controls.Add(this.label4);
             this.panelSegmentedAddresses.Controls.Add(this.rdbOffsets);
             this.panelSegmentedAddresses.Controls.Add(this.rdbFarAddresses);
-            this.panelSegmentedAddresses.Location = new System.Drawing.Point(0, 184);
+            this.panelSegmentedAddresses.Location = new System.Drawing.Point(0, 212);
             this.panelSegmentedAddresses.Name = "panelSegmentedAddresses";
             this.panelSegmentedAddresses.Size = new System.Drawing.Size(309, 86);
             this.panelSegmentedAddresses.TabIndex = 16;
@@ -215,13 +217,33 @@
             this.rdbFarAddresses.Text = "Full addresses";
             this.rdbFarAddresses.UseVisualStyleBackColor = true;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(13, 111);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(73, 13);
+            this.label5.TabIndex = 17;
+            this.label5.Text = "Inde&x register:";
+            // 
+            // ddlRegisters
+            // 
+            this.ddlRegisters.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ddlRegisters.FormattingEnabled = true;
+            this.ddlRegisters.Location = new System.Drawing.Point(104, 108);
+            this.ddlRegisters.Name = "ddlRegisters";
+            this.ddlRegisters.Size = new System.Drawing.Size(92, 21);
+            this.ddlRegisters.TabIndex = 20;
+            // 
             // JumpTableDialog
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(309, 333);
+            this.ClientSize = new System.Drawing.Size(309, 338);
+            this.Controls.Add(this.ddlRegisters);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.panelSegmentedAddresses);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txtIndirectTable);
@@ -267,5 +289,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.RadioButton rdbOffsets;
         private System.Windows.Forms.RadioButton rdbFarAddresses;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox ddlRegisters;
     }
 }

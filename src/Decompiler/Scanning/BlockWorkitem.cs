@@ -693,47 +693,65 @@ namespace Reko.Scanning
 
         public bool ProcessIndirectControlTransfer(Address addrSwitch, RtlTransfer xfer)
         {
-            var bw = new Backwalker(new BackwalkerHost(this), xfer, eval);
-            if (!bw.CanBackwalk())
+            List<Address> vector;
+            ImageMapVectorTable imgVector;
+            Expression swExp;
+            UserIndirectJump indJump;
+            if (program.User.IndirectJumps.TryGetValue(addrSwitch, out indJump))
             {
-                return false;
+                vector = indJump.Table.Addresses;
+                swExp = this.frame.EnsureIdentifier(indJump.IndexRegister);
+                imgVector = indJump.Table;
             }
-            var bwops = bw.BackWalk(blockCur);
-            if (bwops == null || bwops.Count == 0)
-                return false;     //$REVIEW: warn?
-            Identifier idIndex = bw.Index != null
-                ? blockCur.Procedure.Frame.EnsureRegister(bw.Index)
-                : null;
-
-            VectorBuilder builder = new VectorBuilder(scanner.Services, program, new DirectedGraphImpl<object>());
-            if (bw.VectorAddress == null)
-                return false;
-
-            List<Address> vector = builder.BuildAux(bw, addrSwitch, state);
-            if (vector.Count == 0)
+            else
             {
-                var addrNext = bw.VectorAddress + bw.Stride;
-                var rdr = scanner.CreateReader(bw.VectorAddress);
-                if (!rdr.IsValid)
+                var bw = new Backwalker(new BackwalkerHost(this), xfer, eval);
+                if (!bw.CanBackwalk())
+                {
                     return false;
-                // Can't determine the size of the table, but surely it has one entry?
-                var addrEntry = arch.ReadCodeAddress(bw.Stride, rdr, state);
-                var listener = scanner.Services.RequireService<DecompilerEventListener>();
-                string msg;
-                if (this.program.SegmentMap.IsValidAddress(addrEntry))
-                {
-                    vector.Add(addrEntry);
-                    msg = "Can't determine size of jump vector; probing only one entry.";
                 }
-                else
-                {
-                    // Nope, not even that.
-                    msg = "No valid entries could be found in jump vector.";
-                }
-                var nav = listener.CreateJumpTableNavigator(program, addrSwitch, bw.VectorAddress);
-                listener.Warn(nav, msg);
-            }
+                var bwops = bw.BackWalk(blockCur);
+                if (bwops == null || bwops.Count == 0)
+                    return false;     //$REVIEW: warn?
+                Identifier idIndex = bw.Index != null
+                    ? blockCur.Procedure.Frame.EnsureRegister(bw.Index)
+                    : null;
 
+                VectorBuilder builder = new VectorBuilder(scanner.Services, program, new DirectedGraphImpl<object>());
+                if (bw.VectorAddress == null)
+                    return false;
+                vector = builder.BuildAux(bw, addrSwitch, state);
+                if (vector.Count == 0)
+                {
+                    var addrNext = bw.VectorAddress + bw.Stride;
+                    var rdr = scanner.CreateReader(bw.VectorAddress);
+                    if (!rdr.IsValid)
+                        return false;
+                    // Can't determine the size of the table, but surely it has one entry?
+                    var addrEntry = arch.ReadCodeAddress(bw.Stride, rdr, state);
+                    var listener = scanner.Services.RequireService<DecompilerEventListener>();
+                    string msg;
+                    if (this.program.SegmentMap.IsValidAddress(addrEntry))
+                    {
+                        vector.Add(addrEntry);
+                        msg = "Can't determine size of jump vector; probing only one entry.";
+                    }
+                    else
+                    {
+                        // Nope, not even that.
+                        msg = "No valid entries could be found in jump vector.";
+                    }
+                    var nav = listener.CreateJumpTableNavigator(program, addrSwitch, bw.VectorAddress);
+                    listener.Warn(nav, msg);
+                }
+                imgVector = new ImageMapVectorTable(
+                    bw.VectorAddress,
+                    vector.ToArray(),
+                    builder.TableByteSize);
+                swExp = idIndex;
+                if (idIndex == null || idIndex.Name == "None")
+                    swExp = bw.IndexExpression;
+            }
             ScanVectorTargets(xfer, vector);
 
             if (xfer is RtlGoto)
@@ -746,9 +764,7 @@ namespace Reko.Scanning
                     Debug.Assert(dest != null, "The block at address " + addr + "should have been enqueued.");
                     blockSource.Procedure.ControlGraph.AddEdge(blockSource, dest);
                 }
-                Expression swExp = idIndex;
-                if (idIndex == null || idIndex.Name == "None")
-                    swExp = bw.IndexExpression;
+              
                 if (swExp == null)
                 {
                     scanner.Warn(addrSwitch, "Unable to determine index variable for indirect jump.");
@@ -762,17 +778,13 @@ namespace Reko.Scanning
                     Emit(new SwitchInstruction(swExp, blockCur.Procedure.ControlGraph.Successors(blockCur).ToArray()));
                 }
             }
-            var imgVector = new ImageMapVectorTable(
-                        bw.VectorAddress,
-                        vector.ToArray(),
-                        builder.TableByteSize);
-            if (builder.TableByteSize > 0)
+            if (imgVector.Size > 0)
             {
-                program.ImageMap.AddItemWithSize(bw.VectorAddress, imgVector);
+                program.ImageMap.AddItemWithSize(imgVector.Address, imgVector);
             }
             else
             {
-                program.ImageMap.AddItem(bw.VectorAddress, imgVector);
+                program.ImageMap.AddItem(imgVector.Address, imgVector);
             }
             return true;
         }

@@ -387,7 +387,7 @@ namespace Reko.Core.Serialization
             if (user.IndirectJumps != null)
             {
                 program.User.IndirectJumps = sUser.IndirectJumps
-                    .Select(ij => LoadIndirectJump_v4(ij, program.User))
+                    .Select(ij => LoadIndirectJump_v4(ij, program))
                     .Where(ij => ij != null)
                     .ToSortedList(k => k.Item1, v => v.Item2);
             }
@@ -432,7 +432,7 @@ namespace Reko.Core.Serialization
             };
         }
 
-        private Tuple<Address, ImageMapVectorTable> LoadIndirectJump_v4(IndirectJump_v4 indirJump, UserData user)
+        private Tuple<Address, UserIndirectJump> LoadIndirectJump_v4(IndirectJump_v4 indirJump, Program program)
         {
             Address addrInstr;
             if (!platform.TryParseAddress(indirJump.InstructionAddress, out addrInstr))
@@ -441,9 +441,17 @@ namespace Reko.Core.Serialization
             if (!platform.TryParseAddress(indirJump.TableAddress, out addrTable))
                 return null;
             ImageMapVectorTable table;
-            if (!user.JumpTables.TryGetValue(addrTable, out table))
+            if (!program.User.JumpTables.TryGetValue(addrTable, out table))
                 return null;
-            return Tuple.Create(addrInstr, table);
+            var reg = program.Architecture.GetRegister(indirJump.IndexRegister);
+            if (reg == null)
+                return null;
+            return Tuple.Create(addrInstr, new UserIndirectJump
+            {
+                Address = addrInstr,
+                Table = table,
+                IndexRegister = reg,
+            });
         }
 
         public void LoadUserData(UserData_v3 sUser, Program program, UserData user)
