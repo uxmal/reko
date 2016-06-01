@@ -722,18 +722,18 @@ ProcedureBuilder_exit:
             #region Expected
 @"r1:r1
     def:  def r1
-    uses: r1_1 = r1
-          r1_2 = r1 << 0x01
-          r1_3 = r1 * 0x0003
-          r1_4 = r1 * 0x0006
-r1_1: orig: r1
-    def:  r1_1 = r1
+    uses: r1_2 = r1
+          r1_3 = r1 << 0x01
+          r1_4 = r1 * 0x0003
+          r1_5 = r1 * 0x0006
 r1_2: orig: r1
-    def:  r1_2 = r1 << 0x01
+    def:  r1_2 = r1
 r1_3: orig: r1
-    def:  r1_3 = r1 * 0x0003
+    def:  r1_3 = r1 << 0x01
 r1_4: orig: r1
-    def:  r1_4 = r1 * 0x0006
+    def:  r1_4 = r1 * 0x0003
+r1_5: orig: r1
+    def:  r1_5 = r1 * 0x0006
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -741,10 +741,10 @@ ProcedureBuilder_entry:
 	def r1
 	// succ:  l1
 l1:
-	r1_1 = r1
-	r1_2 = r1 << 0x01
-	r1_3 = r1 * 0x0003
-	r1_4 = r1 * 0x0006
+	r1_2 = r1
+	r1_3 = r1 << 0x01
+	r1_4 = r1 * 0x0003
+	r1_5 = r1 * 0x0006
 ProcedureBuilder_exit:
 ";
             #endregion
