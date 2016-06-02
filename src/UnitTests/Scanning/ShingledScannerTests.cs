@@ -136,17 +136,17 @@ namespace Reko.UnitTests.Scanning
             Given_Mips_Image(0x00001403);
             Given_Scanner();
             var seg = program.SegmentMap.Segments.Values.First();
-            var by = sh.ScanSegment(seg, 0);
-            Assert.AreEqual(new byte[] { 0 }, TakeEach(by, 4));
+            var scseg = sh.ScanSegment(seg, 0);
+            Assert.AreEqual(new byte[] { 0 }, TakeEach(scseg.CodeFlags, 4));
         }
 
         [Test]
-        public void Shsc_Return()
+        public void Shsc_Return_DelaySlot()
         {
             Given_Mips_Image(0x03E00008, 0);
             Given_Scanner();
-            var by = sh.ScanSegment(program.SegmentMap.Segments.Values.First(), 0);
-            Assert.AreEqual(new byte[] { 1, 1 }, TakeEach(by, 4));
+            var scseg = sh.ScanSegment(program.SegmentMap.Segments.Values.First(), 0);
+            Assert.AreEqual(new byte[] { 1, 1 }, TakeEach(scseg.CodeFlags, 4));
         }
 
         [Test]
@@ -154,8 +154,8 @@ namespace Reko.UnitTests.Scanning
         {
             Given_Mips_Image(0x1C60FFFF, 0, 0x03e00008, 0);
             Given_Scanner();
-            var by = sh.ScanSegment(program.SegmentMap.Segments.Values.First(), 0);
-            Assert.AreEqual(new byte[] { 1, 1, 1, 1, }, TakeEach(by, 4));
+            var scseg = sh.ScanSegment(program.SegmentMap.Segments.Values.First(), 0);
+            Assert.AreEqual(new byte[] { 1, 1, 1, 1, }, TakeEach(scseg.CodeFlags, 4));
         }
 
         [Test]
@@ -163,8 +163,8 @@ namespace Reko.UnitTests.Scanning
         {
             Given_x86_Image(0x33, 0xC0, 0xC0, 0x90, 0xc3);
             Given_Scanner();
-            var by = sh.ScanSegment(program.SegmentMap.Segments.Values.First(), 0);
-            Assert.AreEqual(new byte[] { 0, 1, 0, 1, 1 }, by);
+            var scseg = sh.ScanSegment(program.SegmentMap.Segments.Values.First(), 0);
+            Assert.AreEqual(new byte[] { 0, 1, 0, 1, 1 }, scseg.CodeFlags);
         }
 
         [Test]
@@ -253,12 +253,12 @@ namespace Reko.UnitTests.Scanning
             Given_Scanner();
 
             var seg = program.SegmentMap.Segments.Values.First();
-            var by = this.sh.ScanSegment(seg, 0);
+            var scseg = this.sh.ScanSegment(seg, 0);
             Assert.AreEqual(new byte[]
                 {
                     0, 0, 0, 0, 0
                 },
-                by);
+                scseg.CodeFlags);
         }
 
         [Test(Description ="Calls to functions that turn out to be bad should also be bad")]
@@ -273,14 +273,14 @@ namespace Reko.UnitTests.Scanning
             Given_Scanner();
 
             var seg = program.SegmentMap.Segments.Values.First();
-            var by = this.sh.ScanSegment(seg, 0);
+            var scseg = this.sh.ScanSegment(seg, 0);
             Assert.AreEqual(new byte[]
                 {
                     1, 1,
                     0, 0, 1, 0, 1, 0, 1,
                     0, 0
                 },
-                by);
+                scseg.CodeFlags);
         }
 
         private MachineInstruction Lin(uint addr, int length)
@@ -386,9 +386,49 @@ namespace Reko.UnitTests.Scanning
                 0xC3);
             Given_Scanner();
             var seg = program.SegmentMap.Segments.Values.First();
-            sh.ScanSegment(seg, 0);
-            
+            var scseg = sh.ScanSegment(seg, 0);
 
+            var sExp =
+                "00010000 - 00010003" + nl +
+                "00010002 - 00010003" + nl +
+                "00010003 - 00010009" + nl +
+                "00010004 - 0001000A" + nl +
+                "00010006 - 0001000B" + nl +
+                "00010007 - 00010009" + nl +
+                "00010009 - 0001000A" + nl +
+                "0001000A - 0001000B" + nl +
+                "0001000B - 00010012" + nl +
+                "0001000D - 00010012" + nl +
+                "00010012 - 00010017" + nl +
+                "00010013 - 00010019" + nl +
+                "00010015 - 00010017" + nl +
+                "00010017 - 00010018" + nl +
+                "00010019 - 0001001A" + nl;
+            Assert.AreEqual(sExp, DumpBlocks(scseg.Blocks));
+        }
+
+        [Test]
+        public void Shsc_Branch()
+        {
+            Given_x86_Image(
+                0xEB, 0x02,
+                0xC3,
+                0x00,
+                0xA1, 0x00, 0x00, 0x00, 0x00,
+                0xC3);
+            Given_Scanner();
+            var seg = program.SegmentMap.Segments.Values.First();
+            var scseg = sh.ScanSegment(seg, 0);
+
+            var sExp =
+                "00010000 - 00010002" + nl +
+                "00010001 - 00010009" + nl +
+                "00010002 - 00010003" + nl +
+                "00010004 - 00010009" + nl +
+                "00010005 - 00010009" + nl +
+                "00010009 - 0001000A" + nl;
+            Assert.AreEqual(sExp, DumpBlocks(scseg.Blocks));
         }
     }
 }
+

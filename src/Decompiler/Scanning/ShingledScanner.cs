@@ -86,8 +86,8 @@ namespace Reko.Scanning
             foreach (var segment in program.SegmentMap.Segments.Values
                 .Where(s => s.IsExecutable))
             {
-                var y = ScanSegment(segment, workToDo);
-                map.Add(segment, y);
+                var sc = ScanSegment(segment, workToDo);
+                map.Add(segment, sc.CodeFlags);
             }
             return map;
         }
@@ -105,7 +105,7 @@ namespace Reko.Scanning
         /// <param name="segment"></param>
         /// <returns>An array of bytes classifying each byte as code or data.
         /// </returns>
-        public byte[] ScanSegment(ImageSegment segment, ulong workToDo)
+        public ScannedSegment ScanSegment(ImageSegment segment, ulong workToDo)
         {
             var G = new DiGraph<Address>();
             G.AddNode(bad);
@@ -200,8 +200,21 @@ namespace Reko.Scanning
             }
 
             // Build blocks out of sequences of instructions.
-            BuildBlocks(G, instructions);
-            return y;
+            var blocks = BuildBlocks(G, instructions);
+            return new ScannedSegment
+            {
+                Blocks = blocks,
+                CodeFlags = y,
+            };
+        }
+
+        /// <summary>
+        /// The results of running the shingle scanner on an image segment.
+        /// </summary>
+        public class ScannedSegment
+        {
+            public SortedList<Address, ShingleBlock> Blocks;
+            public byte[] CodeFlags;
         }
 
         public class ShingleBlock
@@ -223,67 +236,60 @@ namespace Reko.Scanning
             SortedList<Address,MachineInstruction> instructions)
         {
             // Remember, the graph is backwards!
-            var activeBlocks = new SortedList<Address, ShingleBlock>();
+            var activeBlocks = new List<ShingleBlock>();
             var allBlocks = new SortedList<Address, ShingleBlock>();
-            foreach (var instr in instructions.Values)
+            var wl = instructions.Keys.ToSortedSet();
+            while (wl.Count > 0)
             {
-                Debug.Print("Instr {0}[{1,2}] {2}", instr.Address, instr.Length, instr.ToString());
-                var addrInstrEnd = instr.Address + instr.Length;
-
-                ShingleBlock block;
-                if (!activeBlocks.TryGetValue(instr.Address, out block))
+                var addr = wl.First();
+                wl.Remove(addr);
+                var instr = instructions[addr];
+                var block = new ShingleBlock { BaseAddress = addr };
+                allBlocks.Add(addr, block);
+                bool terminateNow = false;
+                bool terminateDeferred = false;
+                for (;;)
                 {
-                    // new block
-                    block = new ShingleBlock { BaseAddress = instr.Address };
-                    allBlocks.Add(block.BaseAddress, block);
-                }
-                else
-                {
-                    // Remove it from list and start working on it.
-                    activeBlocks.Remove(instr.Address);
-                }
-                if (!g.Nodes.Contains(instr.Address))
-                {
-                    block.EndAddress = addrInstrEnd;
-                }
-                else if (g.Successors(instr.Address).Count > 1)
-                {
-                    Debug.Print("  predecessors: [{0}]", string.Join(", ", g.Successors(instr.Address)));
-                    // fell into a block join.
-                    if (block.BaseAddress < instr.Address)
+                    var addrInstrEnd = instr.Address + instr.Length;
+                    if ((instr.InstructionClass & InstructionClass.Transfer) != 0)
                     {
-                        block.EndAddress = instr.Address;
-                        block = new ShingleBlock { BaseAddress = instr.Address };
-                        allBlocks.Add(block.BaseAddress, block);
-                    }
-                    activeBlocks.Add(addrInstrEnd, block);
-                }
-                else
-                {
-                    var pred = g.Predecessors(instr.Address);
-                    if (pred.Count != 1)
-                    {
-                        block.EndAddress = addrInstrEnd;
-                    }
-                    else if (activeBlocks.ContainsKey(addrInstrEnd))
-                    {
-                        block.EndAddress = addrInstrEnd;
+                        if ((instr.InstructionClass & DT) == DT)
+                        {
+                            terminateDeferred = true;
+                        }
+                        else
+                        {
+                            terminateNow = true;
+                        }
                     }
                     else
                     {
-                        activeBlocks.Add(addrInstrEnd, block);
+                        terminateNow = terminateDeferred;
                     }
-                }
-                Debug.Print("  active: [{0}]", string.Join(", ", activeBlocks.Keys));
+                    if (terminateNow || 
+                        !wl.Contains(addrInstrEnd) ||
+                        !g.Nodes.Contains(addrInstrEnd) || 
+                        g.Successors(addrInstrEnd).Count != 1)
+                    {
+                        block.EndAddress = addrInstrEnd;
+                        break;
+                    }
 
-            }
-            foreach (var nn in activeBlocks)
-            {
-                nn.Value.EndAddress = nn.Key;
+                    wl.Remove(addrInstrEnd);
+                    instr = instructions[addrInstrEnd];
+                    terminateNow = terminateDeferred;
+                }
             }
             return allBlocks;
         }
 
+        private List<ShingleBlock> TerminateBlocks(List<ShingleBlock> blocks, Address addrTerm)
+        {
+
+            var live = blocks.Where(de => de.EndAddress == addrTerm)
+                .ToList();
+            return live;
+        }
 
         private bool IsInvalid(MemoryArea mem, MachineInstruction instr)
         {
