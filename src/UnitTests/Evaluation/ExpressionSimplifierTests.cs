@@ -121,5 +121,13 @@ namespace Reko.UnitTests.Evaluation
             var expr = m.Cast(PrimitiveType.Real32, Constant.Real64(1.5));
             Assert.AreEqual("1.5F", expr.Accept(simplifier).ToString());
         }
+
+        [Test]
+        public void Exs_Cast_byte_typeref()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.Cast(new TypeReference("BYTE", PrimitiveType.Byte), Constant.Word32(0x11));
+            Assert.AreEqual("0x11", expr.Accept(simplifier).ToString());
+        }
     }
 }
