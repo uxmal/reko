@@ -329,7 +329,11 @@ namespace Reko.Evaluation
             if (exp == Constant.Invalid)
                 return exp;
 
-            var ptCast = cast.DataType as PrimitiveType;
+            var dtCast = cast.DataType;
+            var typeref = dtCast as TypeReference;
+            if (typeref != null)
+                dtCast = typeref.Referent;
+            var ptCast = dtCast as PrimitiveType;
             Constant c = exp as Constant;
             if (c != null)
             {
@@ -339,7 +343,7 @@ namespace Reko.Evaluation
                     if ((ptSrc.Domain & Domain.Integer) != 0)
                     {
                         Changed = true;
-                        return Constant.Create(cast.DataType, c.ToUInt64());
+                        return Constant.Create(ptCast, c.ToUInt64());
                     }
                     if (ptSrc.Domain == Domain.Real && 
                         ptCast.Domain == Domain.Real && 
