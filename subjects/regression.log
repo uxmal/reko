@@ -177,14 +177,14 @@ l0800_9F9D_thunk_fn0800_9F9F: error: An error occurred while processing instruct
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 130
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 205
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 201
 l0800_9F9D_thunk_fn0800_9F9F: error: An error occurred while processing instruction at address 0800:9F9D.
     The given key was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
    at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 130
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
-   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 205
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 201
 fn0800_889A: error: An error occurred during data flow analysis.
     The given key was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -324,7 +324,7 @@ fn0800_889A: error: An error occurred while rewriting procedure to high-level la
        at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
    at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
    at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 189
+   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 191
    at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 533
@@ -333,7 +333,7 @@ fn0800_9F92: error: An error occurred while rewriting procedure to high-level la
        at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
    at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
    at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 189
+   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 191
    at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 533
@@ -342,7 +342,7 @@ fn0800_A96D: error: An error occurred while rewriting procedure to high-level la
        at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
    at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
    at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
-   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 189
+   at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 191
    at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 533
