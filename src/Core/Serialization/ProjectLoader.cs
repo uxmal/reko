@@ -210,6 +210,7 @@ namespace Reko.Core.Serialization
 
         public Program VisitInputFile(string projectFilePath, DecompilerInput_v4 sInput)
         {
+            var binAbsPath = ConvertToAbsolutePath(projectFilePath, sInput.Filename);
             var bytes = loader.LoadImageBytes(ConvertToAbsolutePath(projectFilePath, sInput.Filename), 0);
             var sUser = sInput.User;
             var address = LoadAddress(sUser, this.arch);
@@ -223,13 +224,13 @@ namespace Reko.Core.Serialization
                 var platform = sUser.PlatformOptions != null
                     ? sUser.PlatformOptions.Name
                     : null;
-                program = loader.LoadRawImage(sInput.Filename, bytes, arch, platform, address);
+                program = loader.LoadRawImage(binAbsPath, bytes, arch, platform, address);
             }
             else
             {
-                program = loader.LoadExecutable(sInput.Filename, bytes, address);
+                program = loader.LoadExecutable(binAbsPath, bytes, address);
             }
-            program.Filename = ConvertToAbsolutePath(projectFilePath, sInput.Filename);
+            program.Filename = binAbsPath;
             program.DisassemblyFilename = ConvertToAbsolutePath(projectFilePath, sInput.DisassemblyFilename);
             program.IntermediateFilename = ConvertToAbsolutePath(projectFilePath, sInput.IntermediateFilename);
             program.OutputFilename = ConvertToAbsolutePath(projectFilePath, sInput.OutputFilename);
