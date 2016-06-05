@@ -93,7 +93,6 @@
     <Compile Include="RelaSegmentRenderer.cs" />
     <Compile Include="RelSegmentRenderer.cs" />
     <Compile Include="SectionHeaderType.cs" />
-    <Compile Include="SectionInfo.cs" />
     <Compile Include="SparcRelocator.cs" />
     <Compile Include="SymtabSegmentRenderer.cs" />
     <Compile Include="x86Relocator.cs" />

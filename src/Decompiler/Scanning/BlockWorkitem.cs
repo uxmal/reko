@@ -268,8 +268,11 @@ namespace Reko.Scanning
             else
             {
                 branch.Target = blockThen;      // The back-patch referred to above.
-                proc.ControlGraph.AddEdge(branchingBlock, blockElse);
-                proc.ControlGraph.AddEdge(branchingBlock, blockThen);
+                EnsureEdge(proc, branchingBlock, blockElse);
+                if (blockElse != blockThen)
+                    EnsureEdge(proc, branchingBlock, blockThen);
+                else
+                    proc.ControlGraph.AddEdge(branchingBlock, blockThen);
             }
 
             // Now, switch to the fallthru block and keep rewriting.
@@ -687,7 +690,7 @@ namespace Reko.Scanning
             return true;
         }
 
-        #endregion
+#endregion
 
         public bool ProcessIndirectControlTransfer(Address addrSwitch, RtlTransfer xfer)
         {
