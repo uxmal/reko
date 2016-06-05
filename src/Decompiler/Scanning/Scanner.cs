@@ -249,10 +249,10 @@ namespace Reko.Scanning
         public IEnumerable<RtlInstructionCluster> GetTrace(Address addrStart, ProcessorState state, Frame frame)
         {
             return program.Architecture.CreateRewriter(
-                    CreateReader(addrStart),
-                    state,
-                    frame,
-                    this);
+                CreateReader(addrStart),
+                state,
+                frame,
+                this);
         }
 
         public PromoteBlockWorkItem CreatePromoteWorkItem(Address addrStart, Block block, Procedure procNew)
@@ -376,7 +376,7 @@ namespace Reko.Scanning
                         var blockNew = CreateCallRetThunk(addrSrc, proc, procDest);
                         EstablishInitialState(addrDest, program.Architecture.CreateProcessorState(), procDest);
                         procDest.ControlGraph.AddEdge(procDest.EntryBlock, block);
-                        AddFramePointerAssignment(addrDest, procDest);
+                        InjectProcedureStartStatements(addrDest, procDest);
                         var wi = CreatePromoteWorkItem(addrDest, block, procDest);
                         queue.Enqueue(PriorityBlockPromote, wi);
                         return blockNew;
@@ -551,7 +551,7 @@ namespace Reko.Scanning
             ProcessQueue();
             queue = oldQueue;
 
-            AddFramePointerAssignment(addr, proc);
+            InjectProcedureStartStatements(addr, proc);
             var usb = new UserSignatureBuilder(program);
             usb.BuildSignature(addr, proc);
             return proc;
@@ -581,7 +581,7 @@ namespace Reko.Scanning
         /// <param name="addr"></param>
         /// <param name="proc"></param>
         /// <param name="sp"></param>
-        public void AddFramePointerAssignment(Address addr, Procedure proc)
+        public void InjectProcedureStartStatements(Address addr, Procedure proc)
         {
             var stmts = proc.EntryBlock.Succ[0].Statements;
             var sp = proc.Frame.EnsureRegister(program.Architecture.StackRegister);
