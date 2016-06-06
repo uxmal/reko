@@ -341,8 +341,8 @@ namespace Reko.Scanning
             }
             else if (block.Procedure != proc)
             {
-                // Jumped to a block with a different procedure than the current one.
-                // Was the jump to the entry of an existing procedure?
+                // Jumped to a block with a different procedure than the 
+                // current one. Was the jump to the entry of an existing procedure?
                 if (program.Procedures.TryGetValue(addrDest, out procDest))
                 {
                     if (procDest == proc)
