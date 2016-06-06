@@ -36,12 +36,21 @@ xbuild Reko-decompiler.sln
 on machine with the Mono toolchain. All external dependencies 
 needed to build are included in the `external` directory.
 
+**Note**: some users have reported difficulties with certain 
+Linux distributions that don't support the 4.0 CLR framework. 
+One workaround that has been identified is to specify the 
+CLR target framework at the xbuild command line:
+```
+xbuild /p:TargetFrameworkVersion="v4.5"  Reko-decompiler.sln
+```
+
 The solution folder `Drivers` contains the executables that act
 as user interfaces: the directory `WindowsDecompiler` contains
 the GUI client for Windows users; `MonoDecompiler` contains the GUI 
 client for Mono users; `CmdLine` is a command line driver.
-(**Note:** please let us know if you are not able to compile, so we 
-can help you fix the issue).
+
+**Note**: please let us know if you are not able to compile, so we 
+can help you fix the issue.
 
 You will receive warnings or errors when loading the solution in Visual Studio
 or MonoDevelop if you haven't installed the WiX toolset on your 
