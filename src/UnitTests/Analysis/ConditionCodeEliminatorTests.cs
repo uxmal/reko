@@ -444,6 +444,7 @@ done:
                 m.Assign(C, m.Cond(r2));
                 m.Store(m.Word32(0x3000), r2);
                 m.Store(m.Word32(0x3004), r1);
+                m.Return();
             });
             RunTest(p, "Analysis/CceShrRcrPattern.txt");
         }

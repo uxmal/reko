@@ -910,6 +910,7 @@ namespace Reko.Analysis
                 .Where(sid => sid.Identifier.Name != sid.OriginalIdentifier.Name &&
                               !(sid.Identifier.Storage is MemoryStorage) &&
                               !(sid.Identifier.Storage is StackStorage) &&
+                              !(sid.Identifier.Storage is TemporaryStorage) &&
                               !existing.Contains(sid.Identifier))
                 .Select(sid => sid.OriginalIdentifier);
             reachingIds = SeparateSequences(reachingIds);
@@ -1533,7 +1534,7 @@ namespace Reko.Analysis
             /// <param name="b"></param>
             /// <param name="aliasProbe"></param>
             /// <returns></returns>
-            public SsaIdentifier ReadVariable(SsaBlockState bs, bool generateAlias)
+            public virtual SsaIdentifier ReadVariable(SsaBlockState bs, bool generateAlias)
             {
                 var sid = ReadBlockLocalVariable(bs, generateAlias);
                 if (sid != null)
@@ -1987,13 +1988,18 @@ namespace Reko.Analysis
                 this.seq = seq;
             }
 
-            public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs, bool generateAlias)
+            public override SsaIdentifier ReadVariable(SsaBlockState bs, bool generateAlias)
             {
                 var ss = outer.factory.Create(seq.Head, stm);
-                var head = ss.ReadBlockLocalVariable(bs, generateAlias);
+                var head = ss.ReadVariable(bs, generateAlias);
                 ss = outer.factory.Create(seq.Tail, stm);
-                var tail = ss.ReadBlockLocalVariable(bs, generateAlias);
+                var tail = ss.ReadVariable(bs, generateAlias);
                 return Fuse(head, tail);
+            }
+
+            public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs, bool generateAlias)
+            {
+                throw new NotImplementedException();
             }
 
             public override bool ProbeBlockLocalVariable(SsaBlockState bs)
