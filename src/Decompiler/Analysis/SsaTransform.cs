@@ -1814,7 +1814,11 @@ namespace Reko.Analysis
                     if (alias.SsaId.Identifier.Storage.OverlapsWith(id.Storage))
                     {
                         if (generateAlias)
-                            return MaybeGenerateAliasStatement(alias);
+                        {
+                            var sid = MaybeGenerateAliasStatement(alias);
+                            bs.currentDef[id.Storage.Domain] = alias;
+                            return sid;
+                        }
                         else
                             return alias.SsaId;
                     }

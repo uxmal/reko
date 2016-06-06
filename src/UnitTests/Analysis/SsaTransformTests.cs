@@ -69,10 +69,10 @@ namespace Reko.UnitTests.Analysis
             {
                 Programs = { this.pb.Program }
             };
-            var importResolver = new ImportResolver(
-                project,
-                this.pb.Program,
-                new FakeDecompilerEventListener());
+            //var importResolver = new ImportResolver(
+            //    project,
+            //    this.pb.Program,
+            //    new FakeDecompilerEventListener());
             var arch = new FakeArchitecture();
             
             var platform = new FakePlatform(null, arch);
@@ -1387,20 +1387,19 @@ bx:bx
 Mem0:Global memory
     def:  def Mem0
     uses: es_bx_4 = Mem0[es:bx:word32]
-          bx_7 = Mem0[es_5:bx_6 + 0x0010:word32]
+          bx_7 = Mem0[es_bx_4 + 0x0010:word32]
 es_bx_4: orig: es_bx
     def:  es_bx_4 = Mem0[es:bx:word32]
     uses: es_5 = SLICE(es_bx_4, word16, 16) (alias)
           bx_6 = (word16) es_bx_4 (alias)
+          bx_7 = Mem0[es_bx_4 + 0x0010:word32]
 es_5: orig: es
     def:  es_5 = SLICE(es_bx_4, word16, 16) (alias)
-    uses: bx_7 = Mem0[es_5:bx_6 + 0x0010:word32]
-          use es_5
+    uses: use es_5
 bx_6: orig: bx
     def:  bx_6 = (word16) es_bx_4 (alias)
-    uses: bx_7 = Mem0[es_5:bx_6 + 0x0010:word32]
 bx_7: orig: bx
-    def:  bx_7 = Mem0[es_5:bx_6 + 0x0010:word32]
+    def:  bx_7 = Mem0[es_bx_4 + 0x0010:word32]
     uses: use bx_7
 // ProcedureBuilder
 // Return size: 0
@@ -1414,7 +1413,7 @@ l1:
 	es_bx_4 = Mem0[es:bx:word32]
 	es_5 = SLICE(es_bx_4, word16, 16) (alias)
 	bx_6 = (word16) es_bx_4 (alias)
-	bx_7 = Mem0[es_5:bx_6 + 0x0010:word32]
+	bx_7 = Mem0[es_bx_4 + 0x0010:word32]
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
@@ -1916,12 +1915,12 @@ bx:bx
 bx_7: orig: bx
     def:  bx_7 = DPB(bx, bl_3, 0) (alias)
     uses: bx_8 = DPB(bx_7, bh_5, 8) (alias)
-          bx_9 = bx_8 + bx_7
 bx_8: orig: bx
     def:  bx_8 = DPB(bx_7, bh_5, 8) (alias)
-    uses: bx_9 = bx_8 + bx_7
+    uses: bx_9 = bx_8 + bx_8
+          bx_9 = bx_8 + bx_8
 bx_9: orig: bx
-    def:  bx_9 = bx_8 + bx_7
+    def:  bx_9 = bx_8 + bx_8
     uses: Mem10[bx_9:word16] = 0x0000
 Mem10: orig: Mem0
     def:  Mem10[bx_9:word16] = 0x0000
@@ -1942,7 +1941,7 @@ m0:
 m1:
 	bh_5 = 0x00
 	bx_8 = DPB(bx_7, bh_5, 8) (alias)
-	bx_9 = bx_8 + bx_7
+	bx_9 = bx_8 + bx_8
 	Mem10[bx_9:word16] = 0x0000
 	// succ:  m2
 m2:
