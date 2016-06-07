@@ -134,9 +134,8 @@ namespace Reko.Core
 
         public List<Expression> BindVariadicArguments(ProcedureSignature sig, ProcedureCharacteristics chr, List<Expression> actuals)
         {
-            if (chr == null)
+            actuals.Add(new StringConstant(StringType.NullTerminated(PrimitiveType.Char), "<varargs not implemented>"));
             return actuals;
-            throw new NotImplementedException();
         }
 
         public abstract OutArgument BindOutArg(Identifier id);
