@@ -26,6 +26,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using Reko.Core.Serialization;
+using System.Diagnostics;
 
 namespace Reko.Core
 {
@@ -60,6 +61,10 @@ namespace Reko.Core
             this.site = site;
             this.callee = callee;
         }
+
+        public abstract OutArgument BindOutArg(Identifier id);
+        public abstract Identifier BindReturnValue(Identifier id);
+        public abstract Expression Bind(Identifier id);
 
         /// <summary>
         /// Creates an instruction:
@@ -134,14 +139,9 @@ namespace Reko.Core
 
         public List<Expression> BindVariadicArguments(ProcedureSignature sig, ProcedureCharacteristics chr, List<Expression> actuals)
         {
-            actuals.Add(new StringConstant(StringType.NullTerminated(PrimitiveType.Char), "<varargs not implemented>"));
+            actuals.Add(Constant.Word32(0));
+            Debug.Print("Varargs are not implemented yet.");
             return actuals;
         }
-
-        public abstract OutArgument BindOutArg(Identifier id);
-        public abstract Identifier BindReturnValue(Identifier id);
-        public abstract Expression Bind(Identifier id);
-
-
     }
 }
