@@ -96,9 +96,8 @@ SCZO_9: orig: SCZO
 C_10: orig: C
     def:  C_10 = true
     uses: C_25 = PHI(C_10, C_18)
-S_23: orig: S
-    def:  S_23 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
-    uses: S_22 = PHI(S_23, S_24)
+al_11: orig: al
+    def:  al_11 = PHI(al, al, al)
 al_12: orig: al
     def:  al_12 = al - 0x30
     uses: al_21 = PHI(al_12, al_14, al_16)
@@ -130,12 +129,17 @@ al_19: orig: al
     def:  al_19 = PHI(al, al_21)
     uses: use al_19 (=> alOut)
           use al_19
-S_22: orig: S
-    def:  S_22 = PHI(S_23, S_24)
-    uses: use C_25 | O_29 | S_22 | Z_26
+al_20: orig: al
+    def:  al_20 = PHI(al, al, al, al)
 al_21: orig: al
     def:  al_21 = PHI(al_12, al_14, al_16)
     uses: al_19 = PHI(al, al_21)
+S_22: orig: S
+    def:  S_22 = PHI(S_23, S_24)
+    uses: use C_25 | O_29 | S_22 | Z_26
+S_23: orig: S
+    def:  S_23 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
+    uses: S_22 = PHI(S_23, S_24)
 S_24: orig: S
     def:  S_24 = PHI(SCZO_13, SCZO_15, SCZO_17)
     uses: S_22 = PHI(S_23, S_24)

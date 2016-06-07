@@ -22,6 +22,9 @@ cx_7: orig: cx
 di_8: orig: di
     def:  di_8 = 0x0004
     uses: di_20 = PHI(di_8, di_20, di_21)
+ds_9: orig: ds
+    def:  ds_9 = PHI(ds, ds_9, ds_9)
+    uses: use ds_9
 si_10: orig: si
     def:  si_10 = PHI(si, si_13, si_13)
     uses: ax_12 = Mem0[ds:si_10:word16]

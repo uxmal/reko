@@ -22,10 +22,16 @@ ax_7: orig: ax
           ax_17 = ax_7 + Mem0[ds:si_16 + 0x0004:word16]
           ax_19 = ax_7 + Mem0[ds:si_13:word16]
           use ax_7
+bx_8: orig: bx
+    def:  bx_8 = PHI(bx, bx_8, bx_8)
+    uses: use bx_8
 SCZO_9: orig: SCZO
     def:  SCZO_9 = cond(ax_7 - bx)
     uses: branch Test(LT,SCZO_9) l0C00_0005
           use SCZO_9
+ds_10: orig: ds
+    def:  ds_10 = PHI(ds, ds_10, ds_10)
+    uses: use ds_10
 si_12: orig: si
     def:  si_12 = Mem0[ds:0x0300:word16]
     uses: si_13 = si_12 | si_12

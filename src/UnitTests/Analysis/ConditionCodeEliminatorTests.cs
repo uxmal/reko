@@ -467,6 +467,7 @@ done:
                 m.Assign(C, m.Cond(r2));
                 m.Store(m.Word32(0x3000), r1);
                 m.Store(m.Word32(0x3004), r2);
+                m.Return();
             });
             RunTest(p, "Analysis/CceShlRclPattern.txt");
         }

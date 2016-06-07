@@ -1,147 +1,307 @@
 fp:fp
-esp_1: orig: esp
+    def:  def fp
+    uses: esp_9 = fp
+          SCZO_10 = cond(fp)
+esp_2: orig: esp
 Mem0:Global memory
     def:  def Mem0
-    uses: eax_3 = Mem0[0x10003420:word32]
-eax_3: orig: eax
-    def:  eax_3 = Mem0[0x10003420:word32]
-    uses: ax_6 = fn10000017(eax_3)
-esp_4: orig: esp
-dwLoc04_5: orig: dwLoc04
-ax_6: orig: ax
-    def:  ax_6 = fn10000017(eax_3)
-    uses: Mem10[0x10003428:word16] = ax_6
-eax_7: orig: eax
-esp_8: orig: esp
-SCZO_9: orig: SCZO
-Mem10: orig: Mem0
-    def:  Mem10[0x10003428:word16] = ax_6
+    uses: eax_4 = Mem0[0x10003420:word32]
+eax_4: orig: eax
+    def:  eax_4 = Mem0[0x10003420:word32]
+    uses: eax_8 = DPB(eax_4, ax_7, 0) (alias)
+          ax_7 = fn10000017(eax_4)
+esp_5: orig: esp
+dwLoc04_6: orig: dwLoc04
+ax_7: orig: ax
+    def:  ax_7 = fn10000017(eax_4)
+    uses: Mem11[0x10003428:word16] = ax_7
+eax_8: orig: eax
+    def:  eax_8 = DPB(eax_4, ax_7, 0) (alias)
+    uses: use eax_8
+esp_9: orig: esp
+    def:  esp_9 = fp
+    uses: use esp_9
+SCZO_10: orig: SCZO
+    def:  SCZO_10 = cond(fp)
+    uses: use SCZO_10
+Mem11: orig: Mem0
+    def:  Mem11[0x10003428:word16] = ax_7
 // fn10000000
 // Return size: 0
 void fn10000000()
 fn10000000_entry:
+	def fp
 	def Mem0
 	// succ:  l10000000
 l10000000:
-	eax_3 = Mem0[0x10003420:word32]
-	ax_6 = fn10000017(eax_3)
-	Mem10[0x10003428:word16] = ax_6
+	eax_4 = Mem0[0x10003420:word32]
+	ax_7 = fn10000017(eax_4)
+	eax_8 = DPB(eax_4, ax_7, 0) (alias)
+	esp_9 = fp
+	SCZO_10 = cond(fp)
+	Mem11[0x10003428:word16] = ax_7
 	return
 	// succ:  fn10000000_exit
 fn10000000_exit:
+	use eax_8
+	use esp_9
+	use SCZO_10
 
 fp:fp
-esp_1: orig: esp
+    def:  def fp
+    uses: fp_35 = PHI(fp, fp_36)
+          fp_34 = PHI(fp, fp_35)
 esp_2: orig: esp
+esp_3: orig: esp
 ebp:ebp
-dwLoc04_4: orig: dwLoc04
-ebp_5: orig: ebp
-esp_6: orig: esp
+    def:  def ebp
+    uses: dwLoc04_5 = ebp
+dwLoc04_5: orig: dwLoc04
+    def:  dwLoc04_5 = ebp
+    uses: dwLoc04_39 = PHI(dwLoc04_5, dwLoc04_40)
+          dwLoc04_38 = PHI(dwLoc04_5, dwLoc04_39)
+ebp_6: orig: ebp
+esp_7: orig: esp
 ecx:ecx
-dwLoc08_8: orig: dwLoc08
-wLoc08_9: orig: wLoc08
-    def:  wLoc08_9 = 0x0000
-    uses: wLoc08_12 = PHI(wLoc08_9, wLoc08_32)
+    def:  def ecx
+    uses: ecx_51 = PHI(ecx, ecx_16)
+dwLoc08_9: orig: dwLoc08
+wLoc08_10: orig: wLoc08
+    def:  wLoc08_10 = 0x0000
+    uses: wLoc08_13 = PHI(wLoc08_10, wLoc08_30)
 dwArg04:Stack +0004
     def:  def dwArg04
     uses: branch dwArg04 != 0x00000000 l1000002F
-          edx_42 = (int32) Mem0[dwArg04 + eax_39:byte]
-SCZO_11: orig: SCZO
-wLoc08_12: orig: wLoc08
-    def:  wLoc08_12 = PHI(wLoc08_9, wLoc08_32)
-    uses: eax_13 = (int32) wLoc08_12
-          eax_23 = (int32) wLoc08_12
-          ax_26 = wLoc08_12
-          cx_30 = wLoc08_12 + 0x0001
-eax_13: orig: eax
-    def:  eax_13 = (int32) wLoc08_12
-    uses: edx_19 = (int32) Mem0[dwArg04 + eax_13:byte]
+          edx_18 = (int32) Mem0[dwArg04 + eax_14:byte]
+SCZO_12: orig: SCZO
+wLoc08_13: orig: wLoc08
+    def:  wLoc08_13 = PHI(wLoc08_10, wLoc08_30)
+    uses: eax_14 = (int32) wLoc08_13
+          eax_21 = (int32) wLoc08_13
+          ax_26 = DPB(ax_25, wLoc08_13, 0) (alias)
+          cx_28 = wLoc08_13 + 0x0001
 eax_14: orig: eax
+    def:  eax_14 = (int32) wLoc08_13
+    uses: edx_18 = (int32) Mem0[dwArg04 + eax_14:byte]
+          ax_25 = PHI(eax_14, eax_21)
+          eax_48 = PHI(eax_14, eax_21)
+dwArg04_15: orig: dwArg04
+    def:  dwArg04_15 = PHI(dwArg04, dwArg04_15)
 ecx_16: orig: ecx
-ecx_17: orig: ecx
-edx_19: orig: edx
-    def:  edx_19 = (int32) Mem0[dwArg04 + eax_13:byte]
-    uses: branch edx_19 == 0x00000000 l1000005A
-edx_20: orig: edx
-SZO_21: orig: SZO
-C_22: orig: C
-eax_23: orig: eax
-    def:  eax_23 = (int32) wLoc08_12
-    uses: branch eax_23 >= 0x00007FFF l1000005A
-SCZO_24: orig: SCZO
+    def:  ecx_16 = dwArg04
+    uses: ecx_51 = PHI(ecx, ecx_16)
+Mem17: orig: Mem0
+    def:  Mem17 = PHI(Mem0, Mem17)
+edx_18: orig: edx
+    def:  edx_18 = (int32) Mem0[dwArg04 + eax_14:byte]
+    uses: SZO_19 = cond(edx_18)
+          branch edx_18 == 0x00000000 l1000005A
+          edx_53 = PHI(edx, edx_18)
+SZO_19: orig: SZO
+    def:  SZO_19 = cond(edx_18)
+    uses: S_57 = PHI(SZO_19, SCZO_22)
+          Z_61 = PHI(SZO_19, SCZO_22)
+          O_63 = PHI(SZO_19, SCZO_22)
+C_20: orig: C
+    def:  C_20 = false
+    uses: C_59 = PHI(C_20, SCZO_22)
+eax_21: orig: eax
+    def:  eax_21 = (int32) wLoc08_13
+    uses: SCZO_22 = cond(eax_21 - 0x00007FFF)
+          ax_25 = PHI(eax_14, eax_21)
+          branch eax_21 >= 0x00007FFF l1000005A
+          eax_48 = PHI(eax_14, eax_21)
+SCZO_22: orig: SCZO
+    def:  SCZO_22 = cond(eax_21 - 0x00007FFF)
+    uses: S_57 = PHI(SZO_19, SCZO_22)
+          C_59 = PHI(C_20, SCZO_22)
+          Z_61 = PHI(SZO_19, SCZO_22)
+          O_63 = PHI(SZO_19, SCZO_22)
+wLoc08_23: orig: wLoc08
+    def:  wLoc08_23 = PHI(wLoc08_13, wLoc08_13)
+ax_24: orig: ax
+ax_25: orig: ax
+    def:  ax_25 = PHI(eax_14, eax_21)
+    uses: ax_26 = DPB(ax_25, wLoc08_13, 0) (alias)
 ax_26: orig: ax
-    def:  ax_26 = wLoc08_12
-    uses: ax_51 = PHI(ax_33, ax_26)
-ax_27: orig: ax
+    def:  ax_26 = DPB(ax_25, wLoc08_13, 0) (alias)
+    uses: ax_43 = PHI(ax_31, ax_26)
+cx_27: orig: cx
 cx_28: orig: cx
-ecx_29: orig: ecx
-cx_30: orig: cx
-    def:  cx_30 = wLoc08_12 + 0x0001
-    uses: wLoc08_32 = cx_30
-SCZO_31: orig: SCZO
-wLoc08_32: orig: wLoc08
-    def:  wLoc08_32 = cx_30
-    uses: wLoc08_12 = PHI(wLoc08_9, wLoc08_32)
-ax_33: orig: ax
-    def:  ax_33 = 0x0000
-    uses: ax_51 = PHI(ax_33, ax_26)
-SZO_34: orig: SZO
-C_35: orig: C
+    def:  cx_28 = wLoc08_13 + 0x0001
+    uses: wLoc08_30 = cx_28
+SCZO_29: orig: SCZO
+wLoc08_30: orig: wLoc08
+    def:  wLoc08_30 = cx_28
+    uses: wLoc08_13 = PHI(wLoc08_10, wLoc08_30)
+ax_31: orig: ax
+    def:  ax_31 = 0x0000
+    uses: ax_43 = PHI(ax_31, ax_26)
+SZO_32: orig: SZO
+    def:  SZO_32 = cond(0x0000)
+    uses: S_56 = PHI(SZO_32, S_57)
+          Z_60 = PHI(SZO_32, Z_61)
+          O_62 = PHI(SZO_32, O_63)
+C_33: orig: C
+    def:  C_33 = false
+    uses: C_58 = PHI(C_33, C_59)
+fp_34: orig: fp
+    def:  fp_34 = PHI(fp, fp_35)
+    uses: esp_42 = fp_34
+fp_35: orig: fp
+    def:  fp_35 = PHI(fp, fp_36)
+    uses: fp_34 = PHI(fp, fp_35)
 fp_36: orig: fp
-fp_37: orig: fp
-esp_39: orig: esp
-esp_40: orig: esp
-esp_41: orig: esp
-dwLoc04_43: orig: dwLoc04
-dwLoc04_44: orig: dwLoc04
-ebp_46: orig: ebp
-ebp_47: orig: ebp
-ebp_48: orig: ebp
-esp_50: orig: esp
-ax_51: orig: ax
-    def:  ax_51 = PHI(ax_33, ax_26)
-    uses: return ax_51
-eax:eax
-ecx_53: orig: ecx
+    def:  fp_36 = PHI(fp, fp_36)
+    uses: fp_35 = PHI(fp, fp_36)
+esp_37: orig: esp
+dwLoc04_38: orig: dwLoc04
+    def:  dwLoc04_38 = PHI(dwLoc04_5, dwLoc04_39)
+    uses: ebp_41 = dwLoc04_38
+dwLoc04_39: orig: dwLoc04
+    def:  dwLoc04_39 = PHI(dwLoc04_5, dwLoc04_40)
+    uses: dwLoc04_38 = PHI(dwLoc04_5, dwLoc04_39)
+dwLoc04_40: orig: dwLoc04
+    def:  dwLoc04_40 = PHI(dwLoc04_5, dwLoc04_40)
+    uses: dwLoc04_39 = PHI(dwLoc04_5, dwLoc04_40)
+ebp_41: orig: ebp
+    def:  ebp_41 = dwLoc04_38
+    uses: use ebp_41
+esp_42: orig: esp
+    def:  esp_42 = fp_34
+    uses: use esp_42
+ax_43: orig: ax
+    def:  ax_43 = PHI(ax_31, ax_26)
+    uses: return ax_43
 Mem0:Global memory
     def:  def Mem0
+eax_45: orig: eax
+    def:  eax_45 = PHI(eax_47, eax_49)
+    uses: eax_50 = DPB(eax_45, ax_43, 0) (alias)
+eax:eax
+    def:  def eax
+    uses: eax_47 = DPB(eax, ax_31, 0) (alias)
+eax_47: orig: eax
+    def:  eax_47 = DPB(eax, ax_31, 0) (alias)
+    uses: eax_45 = PHI(eax_47, eax_49)
+eax_48: orig: eax
+    def:  eax_48 = PHI(eax_14, eax_21)
+    uses: eax_49 = DPB(eax_48, ax_26, 0) (alias)
+eax_49: orig: eax
+    def:  eax_49 = DPB(eax_48, ax_26, 0) (alias)
+    uses: eax_45 = PHI(eax_47, eax_49)
+eax_50: orig: eax
+    def:  eax_50 = DPB(eax_45, ax_43, 0) (alias)
+    uses: use eax_50
+ecx_51: orig: ecx
+    def:  ecx_51 = PHI(ecx, ecx_16)
+    uses: use ecx_51
+edx_53: orig: edx
+    def:  edx_53 = PHI(edx, edx_18)
+    uses: use edx_53
 edx:edx
+    def:  def edx
+    uses: edx_53 = PHI(edx, edx_18)
+S_56: orig: S
+    def:  S_56 = PHI(SZO_32, S_57)
+    uses: use C_58 | O_62 | S_56 | Z_60
+S_57: orig: S
+    def:  S_57 = PHI(SZO_19, SCZO_22)
+    uses: S_56 = PHI(SZO_32, S_57)
+C_58: orig: C
+    def:  C_58 = PHI(C_33, C_59)
+    uses: use C_58 | O_62 | S_56 | Z_60
+C_59: orig: C
+    def:  C_59 = PHI(C_20, SCZO_22)
+    uses: C_58 = PHI(C_33, C_59)
+Z_60: orig: Z
+    def:  Z_60 = PHI(SZO_32, Z_61)
+    uses: use C_58 | O_62 | S_56 | Z_60
+Z_61: orig: Z
+    def:  Z_61 = PHI(SZO_19, SCZO_22)
+    uses: Z_60 = PHI(SZO_32, Z_61)
+O_62: orig: O
+    def:  O_62 = PHI(SZO_32, O_63)
+    uses: use C_58 | O_62 | S_56 | Z_60
+O_63: orig: O
+    def:  O_63 = PHI(SZO_19, SCZO_22)
+    uses: O_62 = PHI(SZO_32, O_63)
 // fn10000017
 // Return size: 0
 word16 fn10000017(word32 dwArg04)
 fn10000017_entry:
+	def fp
+	def ebp
+	def ecx
 	def dwArg04
 	def Mem0
+	def eax
+	def edx
 	// succ:  l10000017
 l10000017:
-	wLoc08_9 = 0x0000
+	dwLoc04_5 = ebp
+	wLoc08_10 = 0x0000
 	branch dwArg04 != 0x00000000 l1000002F
 	// succ:  l10000027 l1000002F
 l10000027:
-	ax_33 = 0x0000
+	ax_31 = 0x0000
+	eax_47 = DPB(eax, ax_31, 0) (alias)
+	SZO_32 = cond(0x0000)
+	C_33 = false
 	goto l1000005E
 	// succ:  l1000005E
 l1000002F:
-	wLoc08_12 = PHI(wLoc08_9, wLoc08_32)
-	eax_13 = (int32) wLoc08_12
-	edx_19 = (int32) Mem0[dwArg04 + eax_13:byte]
-	branch edx_19 == 0x00000000 l1000005A
+	wLoc08_13 = PHI(wLoc08_10, wLoc08_30)
+	eax_14 = (int32) wLoc08_13
+	ecx_16 = dwArg04
+	edx_18 = (int32) Mem0[dwArg04 + eax_14:byte]
+	SZO_19 = cond(edx_18)
+	C_20 = false
+	branch edx_18 == 0x00000000 l1000005A
 	// succ:  l1000003E l1000005A
 l1000003E:
-	eax_23 = (int32) wLoc08_12
-	branch eax_23 >= 0x00007FFF l1000005A
+	eax_21 = (int32) wLoc08_13
+	SCZO_22 = cond(eax_21 - 0x00007FFF)
+	branch eax_21 >= 0x00007FFF l1000005A
 	// succ:  l10000049 l1000005A
 l10000049:
-	cx_30 = wLoc08_12 + 0x0001
-	wLoc08_32 = cx_30
+	cx_28 = wLoc08_13 + 0x0001
+	wLoc08_30 = cx_28
 	goto l1000002F
 	// succ:  l1000002F
 l1000005A:
-	ax_26 = wLoc08_12
+	O_63 = PHI(SZO_19, SCZO_22)
+	Z_61 = PHI(SZO_19, SCZO_22)
+	C_59 = PHI(C_20, SCZO_22)
+	S_57 = PHI(SZO_19, SCZO_22)
+	eax_48 = PHI(eax_14, eax_21)
+	dwLoc04_39 = PHI(dwLoc04_5, dwLoc04_40)
+	fp_35 = PHI(fp, fp_36)
+	ax_25 = PHI(eax_14, eax_21)
+	ax_26 = DPB(ax_25, wLoc08_13, 0) (alias)
+	eax_49 = DPB(eax_48, ax_26, 0) (alias)
 	// succ:  l1000005E
 l1000005E:
-	ax_51 = PHI(ax_33, ax_26)
-	return ax_51
+	O_62 = PHI(SZO_32, O_63)
+	Z_60 = PHI(SZO_32, Z_61)
+	C_58 = PHI(C_33, C_59)
+	S_56 = PHI(SZO_32, S_57)
+	edx_53 = PHI(edx, edx_18)
+	ecx_51 = PHI(ecx, ecx_16)
+	eax_45 = PHI(eax_47, eax_49)
+	ax_43 = PHI(ax_31, ax_26)
+	eax_50 = DPB(eax_45, ax_43, 0) (alias)
+	dwLoc04_38 = PHI(dwLoc04_5, dwLoc04_39)
+	fp_34 = PHI(fp, fp_35)
+	ebp_41 = dwLoc04_38
+	esp_42 = fp_34
+	return ax_43
 	// succ:  fn10000017_exit
 fn10000017_exit:
+	use eax_50
+	use ebp_41
+	use ecx_51
+	use edx_53
+	use esp_42
+	use C_58 | O_62 | S_56 | Z_60
 

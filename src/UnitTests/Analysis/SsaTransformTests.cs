@@ -310,18 +310,22 @@ r1_8: orig: r1
 r1_9: orig: r1
     def:  r1_9 = 0x00000000
     uses: r1_19 = PHI(r1_9, r1_8)
-wArg04:Stack +0004
-    def:  def wArg04
-    uses: CZS_7 = cond(wArg04 - 0x0003)
-dwLoc04_14: orig: dwLoc04
-    def:  dwLoc04_14 = bp
-    uses: bp_12 = dwLoc04_14
+r63_10: orig: r63
+    def:  r63_10 = PHI(r63_3, r63_3)
+Mem11: orig: Mem0
+    def:  Mem11 = PHI(Mem5, Mem5)
 bp_12: orig: bp
     def:  bp_12 = dwLoc04_14
     uses: use bp_12
 r63_13: orig: r63
     def:  r63_13 = fp
     uses: use r63_13
+dwLoc04_14: orig: dwLoc04
+    def:  dwLoc04_14 = bp
+    uses: bp_12 = dwLoc04_14
+wArg04:Stack +0004
+    def:  def wArg04
+    uses: CZS_7 = cond(wArg04 - 0x0003)
 r1_19: orig: r1
     def:  r1_19 = PHI(r1_9, r1_8)
     uses: use r1_19
@@ -428,9 +432,8 @@ r1_9: orig: r1
 Mem10: orig: Mem0
     def:  wArg04_18 = 0x0003
     uses: Mem12 = PHI(Mem10, Mem8)
-dwLoc04_15: orig: dwLoc04
-    def:  dwLoc04_15 = bp
-    uses: bp_13 = dwLoc04_15
+r63_11: orig: r63
+    def:  r63_11 = PHI(r63_3, r63_3)
 Mem12: orig: Mem0
     def:  Mem12 = PHI(Mem10, Mem8)
     uses: bp_13 = dwLoc04_15
@@ -440,6 +443,9 @@ bp_13: orig: bp
 r63_14: orig: r63
     def:  r63_14 = fp
     uses: use r63_14
+dwLoc04_15: orig: dwLoc04
+    def:  dwLoc04_15 = bp
+    uses: bp_13 = dwLoc04_15
 wArg04:Stack +0004
     def:  def wArg04
     uses: CZS_7 = wArg04 - 0x0003
@@ -498,7 +504,7 @@ ProcedureBuilder_exit:
             RunTest_FrameAccesses(sExp, m =>
             {
                 var sp = m.Register(m.Architecture.StackRegister);
-                var bp = m.Frame.CreateTemporary("bp", sp.DataType);
+                var bp = m.Reg32("bp", 5);
                 var r1 = m.Reg32("r1", 1);
                 var r2 = m.Reg32("r2", 2);
                 var flags = m.Architecture.GetFlagGroup(1).FlagRegister;
@@ -621,8 +627,8 @@ Mem10: orig: Mem0
 Mem11: orig: Mem0
     def:  dwLoc0C_22 = r1
     uses: Mem13 = PHI(Mem11, Mem10)
-dwLoc0C_19: orig: dwLoc0C
-    def:  dwLoc0C_19 = 0x00000000
+bp_12: orig: bp
+    def:  bp_12 = PHI(bp_6, bp_6)
 Mem13: orig: Mem0
     def:  Mem13 = PHI(Mem11, Mem10)
     uses: r1_14 = dwLoc0C_23
@@ -630,15 +636,19 @@ Mem13: orig: Mem0
 r1_14: orig: r1
     def:  r1_14 = dwLoc0C_23
     uses: use r1_14
-dwLoc04_18: orig: dwLoc04
-    def:  dwLoc04_18 = bp
-    uses: bp_16 = dwLoc04_18
+r63_15: orig: r63
+    def:  r63_15 = PHI(r63_3, r63_3)
 bp_16: orig: bp
     def:  bp_16 = dwLoc04_18
     uses: use bp_16
 r63_17: orig: r63
     def:  r63_17 = fp
     uses: use r63_17
+dwLoc04_18: orig: dwLoc04
+    def:  dwLoc04_18 = bp
+    uses: bp_16 = dwLoc04_18
+dwLoc0C_19: orig: dwLoc0C
+    def:  dwLoc0C_19 = 0x00000000
 wArg04:Stack +0004
     def:  def wArg04
     uses: CZS_8 = wArg04 - 0x0003
@@ -697,7 +707,7 @@ ProcedureBuilder_exit:
             RunTest_FrameAccesses(sExp, m =>
             {
                 var sp = m.Register(m.Architecture.StackRegister);
-                var bp = m.Frame.CreateTemporary("bp", sp.DataType);
+                var bp = m.Reg32("bp", 5);
                 var r1 = m.Reg32("r1", 1);
                 var r2 = m.Reg32("r2", 2);
                 var flags = m.Architecture.GetFlagGroup(1).FlagRegister;
@@ -785,10 +795,14 @@ ProcedureBuilder_exit:
 r2_2: orig: r2
     def:  r2_2 = 0x00000010
     uses: r2_7 = PHI(r2, r2_2)
+r3_3: orig: r3
+    def:  r3_3 = PHI(r3, r3)
 r3:r3
     def:  def r3
     uses: call r3 (retsize: 4;)	uses: r1,r2_7,r3	defs: r1_6,r2_9,r3_10
           call r3 (retsize: 4;)	uses: r1,r2_7,r3	defs: r1_6,r2_9,r3_10
+r1_5: orig: r1
+    def:  r1_5 = PHI(r1, r1)
 r1_6: orig: r1
     def:  call r3 (retsize: 4;)	uses: r1,r2_7,r3	defs: r1_6,r2_9,r3_10
     uses: use r1_6
@@ -1566,6 +1580,8 @@ eax_4: orig: eax
     def:  eax_4 = PHI(eax_1, eax_6)
     uses: eax_6 = eax_4 + Mem0[ebx_2:word32]
           return eax_4
+Mem5: orig: Mem0
+    def:  Mem5 = PHI(Mem0, Mem5)
 eax_6: orig: eax
     def:  eax_6 = eax_4 + Mem0[ebx_2:word32]
     uses: eax_4 = PHI(eax_1, eax_6)
@@ -1705,6 +1721,11 @@ ProcedureBuilder_exit:
     uses: branch r1_1 == 0x00000000 m3done
           r1_4 = r1_1 + Mem0[r2:word32]
           use r1_1
+r2_2: orig: r2
+    def:  r2_2 = PHI(r2, r2_2)
+    uses: use r2_2
+Mem3: orig: Mem0
+    def:  Mem3 = PHI(Mem0, Mem3)
 r1_4: orig: r1
     def:  r1_4 = r1_1 + Mem0[r2:word32]
     uses: r1_1 = PHI(r1, r1_4)
@@ -1736,6 +1757,7 @@ m3done:
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
 	use r1_1
+	use r2_2
 ";
             #endregion
 

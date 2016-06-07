@@ -70,32 +70,45 @@ bx_23: orig: bx
     def:  bx_23 = PHI(bx_20, bx_16)
     uses: Mem27[ds:0x0300:word16] = bx_23
           use bx_23
-S_38: orig: S
-    def:  S_38 = PHI(SCZO_21, SCZO_14)
-    uses: use C_39 | O_41 | S_38 | Z_40
-C_39: orig: C
-    def:  C_39 = PHI(SCZO_21, C_15)
-    uses: use C_39 | O_41 | S_38 | Z_40
+ds_24: orig: ds
+    def:  ds_24 = PHI(ds, ds)
+ds_25: orig: ds
+    def:  ds_25 = PHI(ds, ds_25)
 ds:ds
     def:  def ds
     uses: Mem27[ds:0x0300:word16] = bx_23
+          use ds
 Mem27: orig: Mem0
     def:  Mem27[ds:0x0300:word16] = bx_23
+wLoc02_28: orig: wLoc02
+    def:  wLoc02_28 = PHI(wLoc02_5, wLoc02_5)
+wLoc02_29: orig: wLoc02
+    def:  wLoc02_29 = PHI(wLoc02_5, wLoc02_29)
+bp_30: orig: bp
+    def:  bp_30 = bp
+    uses: use bp_30
+fp_31: orig: fp
+    def:  fp_31 = PHI(fp, fp)
+fp_32: orig: fp
+    def:  fp_32 = PHI(fp, fp_32)
+sp_33: orig: sp
+    def:  sp_33 = fp
+    uses: use sp_33
+ax_34: orig: ax
+    def:  ax_34 = PHI(ax_10, ax_13)
+    uses: use ax_34
 cx_36: orig: cx
     def:  cx_36 = PHI(cx_22, cx)
     uses: use cx_36
 cx:cx
     def:  def cx
     uses: cx_36 = PHI(cx_22, cx)
-bp_30: orig: bp
-    def:  bp_30 = bp
-    uses: use bp_30
-ax_34: orig: ax
-    def:  ax_34 = PHI(ax_10, ax_13)
-    uses: use ax_34
-sp_33: orig: sp
-    def:  sp_33 = fp
-    uses: use sp_33
+S_38: orig: S
+    def:  S_38 = PHI(SCZO_21, SCZO_14)
+    uses: use C_39 | O_41 | S_38 | Z_40
+C_39: orig: C
+    def:  C_39 = PHI(SCZO_21, C_15)
+    uses: use C_39 | O_41 | S_38 | Z_40
 Z_40: orig: Z
     def:  Z_40 = PHI(SCZO_21, SCZO_14)
     uses: use C_39 | O_41 | S_38 | Z_40
@@ -155,6 +168,7 @@ fn0C00_0000_exit:
 	use bp_30
 	use bx_23
 	use cx_36
+	use ds
 	use C_39 | O_41 | S_38 | Z_40
 	use sp_33
 

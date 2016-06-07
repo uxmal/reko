@@ -880,10 +880,12 @@ namespace Reko.Analysis
 
             // Optionally, add Use instructions in the exit block.
             if (this.AddUseInstructions)
-                AddUsesToExitBlock();
-            foreach (var sid in sidsToRemove)
             {
-                ssa.Identifiers.Remove(sid);
+                AddUsesToExitBlock();
+                foreach (var sid in sidsToRemove.Where(s => s.Uses.Count == 0))
+                {
+                    ssa.Identifiers.Remove(sid);
+                }
             }
         }
 
@@ -1800,29 +1802,29 @@ namespace Reko.Analysis
             public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs, bool generateAlias)
             {
                 AliasState alias;
-                if (bs.currentDef.TryGetValue(id.Storage.Domain, out alias))
-                {
-                    // Defined locally in this block.
-                    // Has the alias already been calculated?
-                    SsaIdentifier ssaId = alias.SsaId;
-                    if (alias.SsaId.OriginalIdentifier == id ||
-                        alias.Aliases.TryGetValue(id, out ssaId))
-                    {
-                        return ssaId;
-                    }
+                if (!bs.currentDef.TryGetValue(id.Storage.Domain, out alias))
+                    return null;
 
-                    // Does ssaId intersect the probed value?
-                    if (alias.SsaId.Identifier.Storage.OverlapsWith(id.Storage))
+                // Defined locally in this block.
+                // Has the alias already been calculated?
+                SsaIdentifier ssaId = alias.SsaId;
+                if (alias.SsaId.OriginalIdentifier == id ||
+                    alias.Aliases.TryGetValue(id, out ssaId))
+                {
+                    return ssaId;
+                }
+
+                // Does ssaId intersect the probed value?
+                if (alias.SsaId.Identifier.Storage.OverlapsWith(id.Storage))
+                {
+                    if (generateAlias)
                     {
-                        if (generateAlias)
-                        {
-                            var sid = MaybeGenerateAliasStatement(alias);
-                            bs.currentDef[id.Storage.Domain] = alias;
-                            return sid;
-                        }
-                        else
-                            return alias.SsaId;
+                        var sid = MaybeGenerateAliasStatement(alias);
+                        bs.currentDef[id.Storage.Domain] = alias;
+                        return sid;
                     }
+                    else
+                        return alias.SsaId;
                 }
                 return null;
             }
@@ -1900,12 +1902,11 @@ namespace Reko.Analysis
             public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs, bool generateAlias)
             {
                 SsaIdentifier ssaId;
-                if (bs.currentFlagDef.TryGetValue(flagMask, out ssaId))
-                {
-                    // Defined locally in this block.
-                    return ssaId;
-                }
-                return null;
+                if (!bs.currentFlagDef.TryGetValue(flagMask, out ssaId))
+                    return null;
+                
+                // Defined locally in this block.
+                return ssaId;
             }
 
             public override bool ProbeBlockLocalVariable(SsaBlockState bs)
@@ -1999,7 +2000,9 @@ namespace Reko.Analysis
 
             public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs, bool generateAlias)
             {
-                throw new NotImplementedException();
+                // We shouldn't reach this, as ReadVariable above should have 
+                // broken the sequence into a head and tail read.
+                throw new InvalidOperationException();
             }
 
             public override bool ProbeBlockLocalVariable(SsaBlockState bs)
