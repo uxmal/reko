@@ -65,21 +65,36 @@ namespace Reko.Analysis
                 if (sidHead.DefStatement.Instruction is DefInstruction &&
                     sidTail.DefStatement.Instruction is DefInstruction)
                 {
-                    var idSeq = ssa.Procedure.Frame.EnsureSequence(
-                        sidHead.OriginalIdentifier,
-                        sidTail.OriginalIdentifier,
-                        seq.DataType);
-                    var def = ssa.Procedure.EntryBlock.Statements.Add(0, null);
-                    var sidSeq = ssa.Identifiers.Add(idSeq, null, null, false);
-                    sidSeq.DefStatement = def;
-                    def.Instruction = new DefInstruction(sidSeq.Identifier);
-                    sidSeq.Uses.Add(this.stmCur);
-                    RemoveUse(sidHead);
-                    RemoveUse(sidTail);
-                    return sidSeq.Identifier;
+                    return ReplaceMkSequence(seq, stmCur, sidHead, sidTail);
                 }
             }
             return seq;
+        }
+
+        private Expression ReplaceMkSequence(MkSequence seq, Statement stmCur, SsaIdentifier sidHead, SsaIdentifier sidTail)
+        {
+            var idSeq = ssa.Procedure.Frame.EnsureSequence(
+                sidHead.OriginalIdentifier,
+                sidTail.OriginalIdentifier,
+                seq.DataType);
+            SsaIdentifier sidSeq = EnsureSequenceArgument(idSeq);
+            sidSeq.Uses.Add(stmCur);
+            RemoveUse(sidHead);
+            RemoveUse(sidTail);
+            return sidSeq.Identifier;
+        }
+
+        private SsaIdentifier EnsureSequenceArgument(Identifier idSeq)
+        {
+            SsaIdentifier sidSeq;
+            if (!ssa.Identifiers.TryGetValue(idSeq, out sidSeq))
+            {
+                var def = ssa.Procedure.EntryBlock.Statements.Add(0, null);
+                sidSeq = ssa.Identifiers.Add(idSeq, null, null, false);
+                sidSeq.DefStatement = def;
+                def.Instruction = new DefInstruction(sidSeq.Identifier);
+            }
+            return sidSeq;
         }
 
         private void RemoveUse(SsaIdentifier sid)

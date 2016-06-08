@@ -98,18 +98,15 @@ namespace Reko.Analysis
             }
 		}
 
-		public void Classify()
-		{
-			sequencePoint = 0;
-			foreach (Block b in proc.ControlGraph.Blocks)
-			{
-				foreach (Statement stm in b.Statements)
-				{
-					stm.Instruction.Accept(this);
-				}
-				++sequencePoint;
-			}
-		}
+        public void Classify()
+        {
+            sequencePoint = 0;
+            foreach (Statement stm in proc.Statements)
+            {
+                stm.Instruction.Accept(this);
+            }
+            ++sequencePoint;
+        }
 
 		public bool IsOnlyAssociatedWithConstants(Identifier pointer)
 		{

@@ -87,5 +87,43 @@ ProcedureBuilder_exit:
                 m.Store(m.Word32(0x2000), m.Seq(r2, r1));
             });
         }
+
+        [Test]
+        public void Seqgen_MultipleReferences()
+        {
+            var sExp =
+            #region Expected
+@"r2:r2
+r1:r1
+Mem3: orig: Mem0
+    def:  Mem3[0x00002000:uipr64] = r2_r1
+Mem4: orig: Mem0
+    def:  Mem4[0x00002008:uipr64] = r2_r1
+r2_r1:Sequence r2:r1
+    def:  def r2_r1
+    uses: Mem3[0x00002000:uipr64] = r2_r1
+          Mem4[0x00002008:uipr64] = r2_r1
+// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def r2_r1
+	// succ:  l1
+l1:
+	Mem3[0x00002000:uipr64] = r2_r1
+	Mem4[0x00002008:uipr64] = r2_r1
+ProcedureBuilder_exit:
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                var r1 = m.Reg32("r1", 1);
+                var r2 = m.Reg32("r2", 2);
+
+                m.Store(m.Word32(0x2000), m.Seq(r2, r1));
+                m.Store(m.Word32(0x2008), m.Seq(r2, r1));
+            });
+        }
     }
 }
