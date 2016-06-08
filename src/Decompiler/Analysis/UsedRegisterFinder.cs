@@ -47,6 +47,7 @@ namespace Reko.Analysis
         private SsaTransform2[] ssts;
         private Dictionary<SsaIdentifier, int> uses;
 
+
         public UsedRegisterFinder(
             IProcessorArchitecture arch,
             ProgramDataFlow flow,
@@ -58,6 +59,8 @@ namespace Reko.Analysis
             this.ssts = ssts;
             this.eventListener = eventListener;
         }
+
+        public bool IgnoreUseInstructions { get; set; }
 
         /// <summary>
         /// Compute the live-in of the procedure whose SSA state is 
@@ -86,6 +89,7 @@ namespace Reko.Analysis
 
         private int Classify(SsaIdentifier sid)
         {
+            idCur = sid.Identifier;
             return sid.Uses.Aggregate(0, (w, stm) => Math.Max(w, stm.Instruction.Accept(this)));
         }
 
@@ -156,7 +160,9 @@ namespace Reko.Analysis
 
         public int VisitUseInstruction(UseInstruction use)
         {
-            throw new NotImplementedException();
+            if (IgnoreUseInstructions)
+                return 0;
+            return use.Expression.Accept(this);
         }
 
         public int VisitAddress(Address addr)
@@ -181,7 +187,8 @@ namespace Reko.Analysis
 
         public int VisitCast(Cast cast)
         {
-            throw new NotImplementedException();
+            int n = cast.Expression.Accept(this);
+            return Math.Min(n, cast.DataType.BitSize);
         }
 
         public int VisitConditionOf(ConditionOf cof)
@@ -227,7 +234,7 @@ namespace Reko.Analysis
 
         public int VisitMkSequence(MkSequence seq)
         {
-            throw new NotImplementedException();
+            return Math.Max(seq.Head.Accept(this), seq.Tail.Accept(this));
         }
 
         public int VisitOutArgument(OutArgument outArgument)

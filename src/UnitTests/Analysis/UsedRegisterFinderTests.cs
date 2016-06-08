@@ -102,6 +102,7 @@ namespace Reko.UnitTests.Analysis
                 pf,
                 new[] { sst },
                 NullDecompilerEventListener.Instance);
+            urf.IgnoreUseInstructions = true;
             var flow = urf.Compute(sst.SsaState);
             var sw = new StringWriter();
             sw.Write("Used: ");
@@ -142,6 +143,74 @@ namespace Reko.UnitTests.Analysis
                 var r1 = m.Reg32("r1", 1);
                 m.Assign(r1, m.LoadDw(m.IAdd(fp, 4)));
                 m.Store(m.Word32(0x2000), r1);
+                m.Return();
+            });
+        }
+
+        [Test]
+        public void UrfCast()
+        {
+            var sExp =
+@"Used: [r1, 16]
+";
+            RunTest(sExp, m =>
+            {
+                var r1 = m.Reg32("r1", 1);
+                var tmp = m.Temp(PrimitiveType.Word16, "tmp");
+                m.Assign(tmp, m.Cast(PrimitiveType.Word16, r1));
+                m.Store(m.Word32(0x2000), tmp);
+                m.Return();
+            });
+        }
+
+
+        [Test(Description = "Identifiers are not considered used if they only are copied.")]
+        public void UrfCopy()
+        {
+            var sExp =
+@"Used: [r1, 0]
+";
+            RunTest(sExp, m =>
+            {
+                var r1 = m.Reg32("r1", 1);
+                var r2 = m.Reg32("r2", 2);
+                m.Assign(r2, r1);
+                m.Return();
+            });
+        }
+
+        [Test]
+        public void UrfBranch()
+        {
+            var sExp = @"Used: [r1, 32]
+";
+            RunTest(sExp, m =>
+            {
+                var r1 = m.Reg32("r1", 1);
+                m.BranchIf(m.Ge(m.LoadB(m.Word32(0x02000)), 4), "mge");
+                m.Label("mlt");
+                m.Store(m.Word32(0x02004), r1);
+                m.Goto("mxit");
+                m.Label("mge");
+                m.Store(m.Word32(0x02008), m.Cast(PrimitiveType.Word16, r1));
+                m.Label("mxit");
+                m.Return();
+            });
+        }
+
+        [Test]
+        public void UrfSequence()
+        {
+            var sExp = @"Used: [r1, 32],[r2, 32]
+";
+
+            RunTest(sExp, m =>
+            {
+                var r1 = m.Reg32("r1", 1);
+                var r2 = m.Reg32("r2", 2);
+                var r2_r1 = m.Frame.EnsureSequence(r2, r1, PrimitiveType.Word64);
+
+                m.Store(m.Word32(0x2000), m.Shr(r2_r1, 2));
                 m.Return();
             });
         }
