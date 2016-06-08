@@ -29,12 +29,12 @@ namespace Reko.Analysis
     /// <summary>
     /// Finds all used identifiers in an expression.
     /// </summary>
-    public class UsedIdentifierFinder : ExpressionVisitorBase
+    public class ExpressionIdentifierUseFinder : ExpressionVisitorBase
     {
         private SsaIdentifierCollection ssaIds;
         private List<Identifier> identifiers;
 
-        public UsedIdentifierFinder(SsaIdentifierCollection ssaIds)
+        public ExpressionIdentifierUseFinder(SsaIdentifierCollection ssaIds)
         {
             this.ssaIds = ssaIds;
             this.identifiers = new List<Identifier>();
@@ -42,14 +42,14 @@ namespace Reko.Analysis
 
         public static List<Identifier> Find(SsaIdentifierCollection ssaIds, Expression exp)
         {
-            var inst = new UsedIdentifierFinder(ssaIds);
+            var inst = new ExpressionIdentifierUseFinder(ssaIds);
             exp.Accept(inst);
             return inst.identifiers;
         }
 
         public override void VisitIdentifier(Identifier id)
         {
-            identifiers.Add( id );
+            identifiers.Add(id);
         }
 
         public override void VisitOutArgument(OutArgument outArg)

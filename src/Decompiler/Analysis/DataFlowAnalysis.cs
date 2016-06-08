@@ -45,6 +45,7 @@ namespace Reko.Analysis
 		private DecompilerEventListener eventListener;
         private IImportResolver importResolver;
 		private ProgramDataFlow flow;
+        private List<SsaTransform2> ssts;
 
         public DataFlowAnalysis(Program program, IImportResolver importResolver, DecompilerEventListener eventListener)
 		{
@@ -217,11 +218,18 @@ namespace Reko.Analysis
             var usb = new UserSignatureBuilder(program);
             usb.BuildSignatures();
 
+            this.ssts = new List<SsaTransform2>();
             var sscf = new SccFinder<Procedure>(new ProcedureGraph(program), UntangleProcedureScc);
             foreach (var procedure in program.Procedures.Values)
             {
                 sscf.Find(procedure);
             }
+
+            // Discover values that are live out at each call site.
+            var uvr = new UnusedOutValuesRemover();
+            uvr.Transform(ssts);
+
+            BuildExpressionTrees();
         }
 
         private void UntangleProcedureScc(IList<Procedure> procs)
@@ -229,15 +237,21 @@ namespace Reko.Analysis
             // Convert all procedures in the SCC to SSA form and perform
             // value propagation where possible.
             var ssts = procs.Select(p => ConvertToSsa(p)).ToArray();
+            this.ssts.AddRange(ssts);
 
             // At this point, the computation of ProcedureFlow is be possible.
             var tid = new TrashedRegisterFinder2(program.Architecture, flow, ssts, this.eventListener);
-            foreach (var sst in ssts)
-            {
-                tid.Compute(sst.SsaState);
-            }
+            //var uid = new ExpressionIdentifierUseFinder(program.Architecture, flow, ssts, this.eventListener);
+            //foreach (var sst in ssts)
+            //{
+            //    tid.Compute(sst.SsaState);
+            //    uid.Compute(sst.SsaState);
+            //}
+        }
 
-            foreach (var ssa in ssts)
+        public void BuildExpressionTrees2()
+        {
+            foreach (var ssa in this.ssts)
             {
                 // Procedures should be untangled from each other. Now process each one separately.
                 var proc = ssa.SsaState.Procedure;

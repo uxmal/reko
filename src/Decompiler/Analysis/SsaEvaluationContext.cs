@@ -119,8 +119,8 @@ namespace Reko.Analysis
             var assSrc = src.Instruction as Assignment;
             if (assSrc == null)
                 return false;
-            new DefinedIdentifierFinder();
-            return UsedIdentifierFinder.Find(ssaIds, assSrc.Src)
+            //new DefinedIdentifierFinder();        //$REVIEW: this doesn't appear to do anything?
+            return ExpressionIdentifierUseFinder.Find(ssaIds, assSrc.Src)
                 .Select(c => ssaIds[c].DefStatement)
                 .Where(d => d != null)
                 .Select(ph => ph.Instruction as PhiAssignment)
@@ -133,9 +133,9 @@ namespace Reko.Analysis
                 //.Any();
             /*
              function shouldPropagateInto(r )
-src := the assignment dening r
+src := the assignment defining r
 for each subscripted component c of the RHS of r
-  if the denition for c is a phi-function ph then
+  if the definition for c is a phi-function ph then
     for each operand op of ph
       opdef := the denition for op
       if opdef is an overwriting statement and either

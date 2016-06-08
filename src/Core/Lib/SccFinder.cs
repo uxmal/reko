@@ -32,21 +32,21 @@ namespace Reko.Core.Lib
     /// processScc procedure to perform the 
     /// actual work.
 	/// </remarks>
-	public class SccFinder<T>
+	public class SccFinder<TNode>
 	{
-        private DirectedGraph<T> graph;
-        private Action<IList<T>> processScc;
-        private Action<T> firstVisit;
+        private DirectedGraph<TNode> graph;
+        private Action<IList<TNode>> processScc;
+        private Action<TNode> firstVisit;
         private int nextDfs = 0;
 		private Stack<Node> stack = new Stack<Node>();
-		private Dictionary<T,Node> map = new Dictionary<T,Node>();
+		private Dictionary<TNode,Node> map = new Dictionary<TNode,Node>();
 
-        public SccFinder(DirectedGraph<T> graph, Action<IList<T>> processScc) :
+        public SccFinder(DirectedGraph<TNode> graph, Action<IList<TNode>> processScc) :
             this(graph, x => { }, processScc) 
         {
         }
 
-        public SccFinder(DirectedGraph<T> graph, Action<T> firstVisit, Action<IList<T>> processScc)
+        public SccFinder(DirectedGraph<TNode> graph, Action<TNode> firstVisit, Action<IList<TNode>> processScc)
         {
             this.graph = graph;
             this.firstVisit = firstVisit;
@@ -54,7 +54,7 @@ namespace Reko.Core.Lib
             this.nextDfs = 0;
         }
 
-		private Node AddNode(T o)
+		private Node AddNode(TNode o)
 		{
 			Node node;
             if (!map.TryGetValue(o, out node))
@@ -87,7 +87,7 @@ namespace Reko.Core.Lib
             }
             if (node.low == node.dfsNumber)
             {
-                List<T> scc = new List<T>();
+                List<TNode> scc = new List<TNode>();
                 Node x;
                 do
                 {
@@ -98,7 +98,7 @@ namespace Reko.Core.Lib
             }
         }
 
-        public void Find(T start)
+        public void Find(TNode start)
         {
             if (!map.ContainsKey(start))
                 Dfs(AddNode(start));
@@ -106,7 +106,7 @@ namespace Reko.Core.Lib
 
         private IEnumerable<Node> GetSuccessors(Node node)
         {
-            foreach (T successor in graph.Successors(node.o))
+            foreach (TNode successor in graph.Successors(node.o))
             {
                 yield return AddNode(successor);
             }
@@ -117,9 +117,9 @@ namespace Reko.Core.Lib
 			public int dfsNumber;
 			public bool visited;
 			public int low;
-			public T o;
+			public TNode o;
 
-			public Node(T o)
+			public Node(TNode o)
 			{
 				this.o = o;
 			}

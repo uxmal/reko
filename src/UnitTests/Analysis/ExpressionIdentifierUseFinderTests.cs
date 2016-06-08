@@ -30,7 +30,7 @@ using System.Text;
 
 namespace Reko.UnitTests.Analysis
 {
-    public class UsedIdentifierFinderTests
+    public class ExpressionIdentifierUseFinderTests
     {
         private ProcedureBuilder m;
 
@@ -43,19 +43,19 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void FindNone()
         {
-            Assert.AreEqual(0, UsedIdentifierFinder.Find(null, m.Int32(3)).Count);
+            Assert.AreEqual(0, ExpressionIdentifierUseFinder.Find(null, m.Int32(3)).Count);
         }
 
         [Test]
         public void FindId()
         {
-            Assert.AreEqual(1, UsedIdentifierFinder.Find(null, m.Local(PrimitiveType.Word16, "loc3")).Count);
+            Assert.AreEqual(1, ExpressionIdentifierUseFinder.Find(null, m.Local(PrimitiveType.Word16, "loc3")).Count);
         }
 
         [Test]
         public void FindIdsInBinOp()
         {
-            Assert.AreEqual(2, UsedIdentifierFinder.Find(null, m.IAdd(
+            Assert.AreEqual(2, ExpressionIdentifierUseFinder.Find(null, m.IAdd(
                 m.Local32("loc2"),
                 m.Local32("loc1"))).Count);
         }
@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void FindNoOutParams()
         {
-            Assert.AreEqual(0, UsedIdentifierFinder.Find(null, m.Fn("foo", m.Out(PrimitiveType.Pointer32, m.Local32("tmp")))).Count);
+            Assert.AreEqual(0, ExpressionIdentifierUseFinder.Find(null, m.Fn("foo", m.Out(PrimitiveType.Pointer32, m.Local32("tmp")))).Count);
         }
     }
 }
