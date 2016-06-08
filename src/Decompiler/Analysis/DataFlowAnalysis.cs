@@ -241,12 +241,12 @@ namespace Reko.Analysis
 
             // At this point, the computation of ProcedureFlow is be possible.
             var tid = new TrashedRegisterFinder2(program.Architecture, flow, ssts, this.eventListener);
-            //var uid = new ExpressionIdentifierUseFinder(program.Architecture, flow, ssts, this.eventListener);
-            //foreach (var sst in ssts)
-            //{
-            //    tid.Compute(sst.SsaState);
-            //    uid.Compute(sst.SsaState);
-            //}
+            var uid = new UsedRegisterFinder(program.Architecture, flow, ssts, this.eventListener);
+            foreach (var sst in ssts)
+            {
+                tid.Compute(sst.SsaState);
+                uid.Compute(sst.SsaState);
+            }
         }
 
         public void BuildExpressionTrees2()

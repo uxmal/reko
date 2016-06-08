@@ -27,6 +27,9 @@ using System.Text;
 
 namespace Reko.Analysis
 {
+    /// <summary>
+    /// Summarizes the effects a procedure has on its callers.
+    /// </summary>
     public class ProcedureFlow2
     {
         public ProcedureFlow2()
@@ -34,6 +37,7 @@ namespace Reko.Analysis
             this.Preserved = new HashSet<Storage>();
             this.Trashed = new HashSet<Storage>();
             this.Constants = new Dictionary<Storage, Constant>();
+            this.Used = new Dictionary<Storage, int>();
         }
 
         /// <summary>
@@ -48,5 +52,9 @@ namespace Reko.Analysis
         /// Locations that have a constant value at the end of a procedure.
         /// </summary>
         public Dictionary<Storage, Constant> Constants { get; private set; }
+        /// <summary>
+        /// Locations that are used by the procedure
+        /// </summary>
+        public Dictionary<Storage, int> Used { get; private set; }
     }
 }

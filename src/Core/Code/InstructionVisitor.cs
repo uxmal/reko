@@ -56,7 +56,7 @@ namespace Reko.Core.Code
     }
 
 	/// <summary>
-	/// Useful base class when only a few of the methods of InstructionVisitor and IExpressionVisitor 
+	/// Useful base classes when only a few of the methods of InstructionVisitor and IExpressionVisitor 
 	/// are actually implemented.
 	/// </summary>
 	public class InstructionVisitorBase : InstructionVisitor, IExpressionVisitor
