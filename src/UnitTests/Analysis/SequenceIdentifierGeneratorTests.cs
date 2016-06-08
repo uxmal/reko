@@ -20,7 +20,10 @@
 
 using NUnit.Framework;
 using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -32,11 +35,20 @@ namespace Reko.UnitTests.Analysis
     [TestFixture]
     public class SequenceIdentifierGeneratorTests
     {
+        private IImportResolver importResolver;
+
+        [SetUp]
+        public void Setup()
+        {
+            this.importResolver = MockRepository.GenerateStub<IImportResolver>();
+            importResolver.Replay();
+        }
+
         private void RunTest(string sExp, Action<ProcedureBuilder> builder)
         {
             var pb = new ProcedureBuilder();
             builder(pb);
-            var sst = new SsaTransform2(null, pb.Procedure, null, null);
+            var sst = new SsaTransform2(null, pb.Procedure, importResolver, null);
             sst.Transform();
 
             var seqgen = new SequenceIdentifierGenerator(sst);
@@ -123,6 +135,55 @@ ProcedureBuilder_exit:
 
                 m.Store(m.Word32(0x2000), m.Seq(r2, r1));
                 m.Store(m.Word32(0x2008), m.Seq(r2, r1));
+            });
+        }
+
+        [Test]
+        public void Seqgen_SliceCastIdentifier()
+        {
+            var sExp =
+            #region Expected
+@"Mem0:Global memory
+    def:  def Mem0
+    uses: r2_r1_2 = Mem0[0x2000:word64]
+r2_r1_2: orig: r2_r1
+    def:  r2_r1_2 = Mem0[0x2000:word64]
+    uses: Mem6[r3 + 0x00002000:word64] = r2_r1_2
+r2_3: orig: r2
+r1_4: orig: r1
+r3:r3
+    def:  def r3
+    uses: Mem6[r3 + 0x00002000:word64] = r2_r1_2
+Mem6: orig: Mem0
+    def:  Mem6[r3 + 0x00002000:word64] = r2_r1_2
+Mem7: orig: Mem0
+// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def Mem0
+	def r3
+	// succ:  l1
+l1:
+	r2_r1_2 = Mem0[0x2000:word64]
+	Mem6[r3 + 0x00002000:word64] = r2_r1_2
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                var r1 = m.Reg32("r1", 1);
+                var r2 = m.Reg32("r2", 2);
+                var r3 = m.Reg32("r3", 3);
+                var r2_r1 = m.Frame.EnsureSequence(r2, r1, PrimitiveType.Word64);
+
+                m.Assign(r2_r1, m.Load(r2_r1.DataType, m.Word16(0x2000)));
+                m.Store(m.IAdd(r3, 0x2000), m.Cast(r1.DataType, r2_r1));
+                m.Store(m.IAdd(r3, 0x2004), m.Slice(PrimitiveType.Word32, r2_r1, 32));
+                m.Return();
             });
         }
     }

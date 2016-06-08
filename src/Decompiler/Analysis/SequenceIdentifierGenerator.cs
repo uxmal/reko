@@ -26,6 +26,8 @@ using System.Text;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using Reko.Core;
+using System.Diagnostics;
+using Reko.Core.Operators;
 
 namespace Reko.Analysis
 {
@@ -47,11 +49,132 @@ namespace Reko.Analysis
 
         public void Transform()
         {
-            foreach (var stm in sst.SsaState.Procedure.Statements)
+            foreach (var stm in sst.SsaState.Procedure.Statements.ToList())
             {
                 this.stmCur = stm;
                 stm.Instruction.Accept(this);
             }
+        }
+
+        public override Instruction TransformAssignment(Assignment ass)
+        {
+            var seq = ass.Dst.Storage as SequenceStorage;
+            if (seq == null)
+                return ass;
+            var sid = ssa.Identifiers[ass.Dst];
+            var stores = sid.Uses
+                .Select(u => ClassifyStore(u))
+                .Where(u => u != null);
+            var grps = from u in stores
+                       orderby u.Statement.LinearAddress
+                       group u by u.Statement.Block;
+            foreach (var grp in grps)
+            {
+                ProcessAdjacentStores(sid, grp.ToArray());
+            }
+            return ass;
+        }
+
+        private void ProcessAdjacentStores(SsaIdentifier sid, StoreOffset[] storeOffset)
+        {
+            for (int i = 0; i < storeOffset.Length; ++i)
+            {
+                if (storeOffset[i] == null)
+                    continue;
+                var cast1 = GetCastRhs(storeOffset[i].Store);
+                var slice1 = GetSliceRhs(storeOffset[i].Store);
+                if (cast1 != null || slice1 != null)
+                {
+                    for (int j = i + 1; j < storeOffset.Length; ++j)
+                    {
+                        var cast2 = GetCastRhs(storeOffset[j].Store);
+                        var slice2 = GetSliceRhs(storeOffset[j].Store);
+                        if (cast1 != null && slice2 != null)
+                        {
+                            ReplaceStores(sid, storeOffset[i], storeOffset[j]);
+                            storeOffset[i] = null;
+                            storeOffset[j] = null;
+                        }
+                        else if (slice1 != null && cast2 != null)
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
+                }
+            }
+        }
+
+        private void ReplaceStores(SsaIdentifier sid, StoreOffset stoTail, StoreOffset stoHead)
+        {
+            if (Operator.Lt.ApplyConstants(stoTail.Offset, stoHead.Offset).ToBoolean())
+            {
+                stoTail.Store.Dst.DataType = sid.Identifier.DataType;
+                stoTail.Store.Src = sid.Identifier;
+
+                ssa.DeleteStatement(stoHead.Statement);
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private Slice GetSliceRhs(Store store)
+        {
+            var slice = store.Src as Slice;
+            return slice;
+        }
+
+        private Cast GetCastRhs(Store store)
+        {
+            var cast = store.Src as Cast;
+            return cast;
+        }
+
+        private class StoreOffset
+        {
+            public Statement Statement;
+            public Store Store;
+            public Constant Offset;
+        }
+
+        private StoreOffset ClassifyStore(Statement stm)
+        {
+            var store = stm.Instruction as Store;
+            if (store == null)
+                return null;
+            Expression ea;
+            var access = store.Dst as MemoryAccess;
+            if (access != null)
+                ea = access.EffectiveAddress;
+            else
+            {
+                var segAccess = store.Dst as SegmentedAccess;
+                if (segAccess != null)
+                    ea = segAccess.EffectiveAddress;
+                else
+                    return null;
+            }
+            Constant offset = null;
+            if (ea is Identifier)
+                offset = Constant.Zero(ea.DataType);
+            else
+            {
+                var bin = ea as BinaryExpression;
+                if (bin != null)
+                {
+                    if (bin.Operator == Operator.IAdd || bin.Operator == Operator.ISub)
+                    {
+                        offset = bin.Right as Constant;
+                    }
+                }
+            }
+            if (offset == null)
+                return null;
+            return new StoreOffset {
+                Statement = stm,
+                Store = store,
+                Offset = offset };
         }
 
         public override Expression VisitMkSequence(MkSequence seq)
