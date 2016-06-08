@@ -26,6 +26,7 @@ using Reko.Core;
 using Reko.Core.Services;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using System.Diagnostics;
 
 namespace Reko.Analysis
 {
@@ -73,18 +74,32 @@ namespace Reko.Analysis
             this.ssa = ssaState;
             foreach (var sid in ssaState.Identifiers)
             {
-                if (sid.DefStatement.Block != ssa.Procedure.EntryBlock)
+                if (sid.DefStatement.Block != ssa.Procedure.EntryBlock ||
+                    !(sid.Identifier.Storage is RegisterStorage ||
+                      sid.Identifier.Storage is StackArgumentStorage))
                     continue;
-                int n = sid.Uses.Aggregate(0, (w, stm) => Math.Max(w, stm.Instruction.Accept(this)));
+                int n = Classify(sid);
                 procFlow.Used[sid.Identifier.Storage] = n;
             }
             return procFlow;
         }
 
+        private int Classify(SsaIdentifier sid)
+        {
+            return sid.Uses.Aggregate(0, (w, stm) => Math.Max(w, stm.Instruction.Accept(this)));
+        }
 
         public int VisitAssignment(Assignment ass)
         {
-            throw new NotImplementedException();
+            if (ass.Src == idCur) 
+            {
+                var idOld = idCur;
+                idCur = ass.Dst;
+                var n = Classify(ssa.Identifiers[ass.Dst]);
+                idCur = idOld;
+                return n;
+            }
+            return ass.Src.Accept(this);
         }
 
         public int VisitBranch(Branch branch)
@@ -196,6 +211,7 @@ namespace Reko.Analysis
 
         public int VisitIdentifier(Identifier id)
         {
+            Debug.Print("Using {0}: {1}", id.Storage, id.Storage.BitSize);
             return (int)id.Storage.BitSize;
         }
 

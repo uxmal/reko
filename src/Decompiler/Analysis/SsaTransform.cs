@@ -185,6 +185,7 @@ namespace Reko.Analysis
             if (bin.Operator == Operator.ISub)
                 offset = -offset;
             var idFrame = proc.Frame.EnsureStackVariable(offset, dt);
+            idFrame.Storage.BitSize = (ulong) dt.BitSize;
             return idFrame;
         }
 

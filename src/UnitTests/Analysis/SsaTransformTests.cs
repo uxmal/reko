@@ -170,18 +170,18 @@ r2:r2
 r1_3: orig: r1
     def:  r1_3 = r1 + r2
     uses: use r1_3
-// ProcedureBuilder
+// proc1
 // Return size: 0
-void ProcedureBuilder()
-ProcedureBuilder_entry:
+void proc1()
+proc1_entry:
 	def r1
 	def r2
 	// succ:  l1
 l1:
 	r1_3 = r1 + r2
 	return
-	// succ:  ProcedureBuilder_exit
-ProcedureBuilder_exit:
+	// succ:  proc1_exit
+proc1_exit:
 	use r1_3
 ======
 ";
@@ -244,10 +244,10 @@ dwLoc04_13: orig: dwLoc04
 dwLoc08_14: orig: dwLoc08
     def:  dwLoc08_14 = r2
     uses: r2_10 = dwLoc08_14
-// ProcedureBuilder
+// proc1
 // Return size: 0
-void ProcedureBuilder()
-ProcedureBuilder_entry:
+void proc1()
+proc1_entry:
 	def fp
 	def r1
 	def r2
@@ -263,8 +263,8 @@ l1:
 	r1_11 = r1_9 + r2_10
 	Mem12[0x00010008:word32] = r1_11
 	return
-	// succ:  ProcedureBuilder_exit
-ProcedureBuilder_exit:
+	// succ:  proc1_exit
+proc1_exit:
 	use r1_11
 	use r2_10
 	use r63_6
@@ -342,10 +342,10 @@ wArg04:Stack +0004
 r1_19: orig: r1
     def:  r1_19 = PHI(r1_9, r1_8)
     uses: use r1_19
-// ProcedureBuilder
+// proc1
 // Return size: 0
-void ProcedureBuilder()
-ProcedureBuilder_entry:
+void proc1()
+proc1_entry:
 	def fp
 	def bp
 	def wArg04
@@ -356,7 +356,7 @@ done:
 	bp_12 = dwLoc04_14
 	r63_13 = fp
 	return
-	// succ:  ProcedureBuilder_exit
+	// succ:  proc1_exit
 ge3:
 	r1_8 = 0x00000001
 	goto done
@@ -373,7 +373,7 @@ l2:
 	r1_9 = 0x00000000
 	goto done
 	// succ:  done
-ProcedureBuilder_exit:
+proc1_exit:
 	use bp_12
 	use CZS_7
 	use r1_19
@@ -473,10 +473,10 @@ r1_22: orig: r1
 r1:r1
     def:  def r1
     uses: r1_22 = PHI(r1, r1_9)
-// ProcedureBuilder
+// proc1
 // Return size: 0
-void ProcedureBuilder()
-ProcedureBuilder_entry:
+void proc1()
+proc1_entry:
 	def fp
 	def bp
 	def wArg04
@@ -489,7 +489,7 @@ done:
 	bp_13 = dwLoc04_15
 	r63_14 = fp
 	return
-	// succ:  ProcedureBuilder_exit
+	// succ:  proc1_exit
 ge3:
 	wArg04_17 = -3
 	r1_9 = 0x00000001
@@ -507,7 +507,7 @@ l2:
 	wArg04_18 = 0x0003
 	goto done
 	// succ:  done
-ProcedureBuilder_exit:
+proc1_exit:
 	use bp_13
 	use CZS_7
 	use r1_22
@@ -683,10 +683,10 @@ dwLoc0C_22: orig: dwLoc0C
 dwLoc0C_23: orig: dwLoc0C
     def:  dwLoc0C_23 = PHI(dwLoc0C_22, dwLoc0C_21)
     uses: r1_14 = dwLoc0C_23
-// ProcedureBuilder
+// proc1
 // Return size: 0
-void ProcedureBuilder()
-ProcedureBuilder_entry:
+void proc1()
+proc1_entry:
 	def fp
 	def bp
 	def r1
@@ -700,7 +700,7 @@ done:
 	bp_16 = dwLoc04_18
 	r63_17 = fp
 	return
-	// succ:  ProcedureBuilder_exit
+	// succ:  proc1_exit
 ge3:
 	dwLoc0C_21 = r1
 	goto done
@@ -718,7 +718,7 @@ l2:
 	dwLoc0C_22 = r1
 	goto done
 	// succ:  done
-ProcedureBuilder_exit:
+proc1_exit:
 	use bp_16
 	use CZS_8
 	use r1_14
@@ -775,10 +775,10 @@ C_3: orig: C
     uses: al_4 = Test(ULE,C_3 | SZ_2)
 al_4: orig: al
     def:  al_4 = Test(ULE,C_3 | SZ_2)
-// ProcedureBuilder
+// proc1
 // Return size: 0
-void ProcedureBuilder()
-ProcedureBuilder_entry:
+void proc1()
+proc1_entry:
 	def esi
 	// succ:  l1
 l1:
@@ -786,8 +786,8 @@ l1:
 	C_3 = false
 	al_4 = Test(ULE,C_3 | SZ_2)
 	return
-	// succ:  ProcedureBuilder_exit
-ProcedureBuilder_exit:
+	// succ:  proc1_exit
+proc1_exit:
 ======
 ";
             #endregion
@@ -842,10 +842,10 @@ r2_9: orig: r2
 r3_10: orig: r3
     def:  call r3 (retsize: 4;)	uses: r1,r2_7,r3	defs: r1_6,r2_9,r3_10
     uses: use r3_10
-// ProcedureBuilder
+// proc1
 // Return size: 0
-void ProcedureBuilder()
-ProcedureBuilder_entry:
+void proc1()
+proc1_entry:
 	def r1
 	def r3
 	def r2
@@ -862,8 +862,8 @@ true:
 		uses: r1,r2_7,r3
 		defs: r1_6,r2_9,r3_10
 	return
-	// succ:  ProcedureBuilder_exit
-ProcedureBuilder_exit:
+	// succ:  proc1_exit
+proc1_exit:
 	use r1_6
 	use r2_9
 	use r3_10
@@ -1030,17 +1030,17 @@ proc1_exit:
     uses: b_2 = a_1
 b_2: orig: b
     def:  b_2 = a_1
-// ProcedureBuilder
+// proc1
 // Return size: 0
-void ProcedureBuilder()
-ProcedureBuilder_entry:
+void proc1()
+proc1_entry:
 	// succ:  l1
 l1:
 	a_1 = 0x00000003
 	b_2 = a_1
 	return
-	// succ:  ProcedureBuilder_exit
-ProcedureBuilder_exit:
+	// succ:  proc1_exit
+proc1_exit:
 ======
 ";
             #endregion
@@ -1067,17 +1067,17 @@ ProcedureBuilder_exit:
     uses: Mem2[0x00123400:word32] = a
 Mem2: orig: Mem0
     def:  Mem2[0x00123400:word32] = a
-// ProcedureBuilder
+// proc1
 // Return size: 0
-void ProcedureBuilder()
-ProcedureBuilder_entry:
+void proc1()
+proc1_entry:
 	def a
 	// succ:  l1
 l1:
 	Mem2[0x00123400:word32] = a
 	return
-	// succ:  ProcedureBuilder_exit
-ProcedureBuilder_exit:
+	// succ:  proc1_exit
+proc1_exit:
 ======
 ";
             #endregion
@@ -1108,10 +1108,10 @@ b_3: orig: b
 b:b
     def:  def b
     uses: b_3 = PHI(b, b_2)
-// ProcedureBuilder
+// proc1
 // Return size: 0
-void ProcedureBuilder()
-ProcedureBuilder_entry:
+void proc1()
+proc1_entry:
 	def a
 	def b
 	// succ:  l1
@@ -1124,8 +1124,8 @@ m_1:
 m_2:
 	b_3 = PHI(b, b_2)
 	return b_3
-	// succ:  ProcedureBuilder_exit
-ProcedureBuilder_exit:
+	// succ:  proc1_exit
+proc1_exit:
 ======
 ";
             #endregion
@@ -1165,10 +1165,10 @@ ah_4: orig: ah
     uses: Mem5[0x00001234:byte] = ah_4
 Mem5: orig: Mem0
     def:  Mem5[0x00001234:byte] = ah_4
-// ProcedureBuilder
+// proc1
 // Return size: 0
-void ProcedureBuilder()
-ProcedureBuilder_entry:
+void proc1()
+proc1_entry:
 	def eax
 	def Mem0
 	// succ:  l1
@@ -1177,8 +1177,8 @@ l1:
 	ah_4 = SLICE(eax_3, byte, 8) (alias)
 	Mem5[0x00001234:byte] = ah_4
 	return
-	// succ:  ProcedureBuilder_exit
-ProcedureBuilder_exit:
+	// succ:  proc1_exit
+proc1_exit:
 	use eax_3
 ======
 ";
@@ -1221,10 +1221,10 @@ ecx_6: orig: ecx
     uses: Mem7[0x00010232:word32] = ecx_6
 Mem7: orig: Mem0
     def:  Mem7[0x00010232:word32] = ecx_6
-// ProcedureBuilder
+// proc1
 // Return size: 0
-void ProcedureBuilder()
-ProcedureBuilder_entry:
+void proc1()
+proc1_entry:
 	def Mem0
 	// succ:  l1
 l1:
@@ -1243,8 +1243,8 @@ mCommon:
 	ecx_6 = PHI(ecx_5, ecx_3)
 	Mem7[0x00010232:word32] = ecx_6
 	return
-	// succ:  ProcedureBuilder_exit
-ProcedureBuilder_exit:
+	// succ:  proc1_exit
+proc1_exit:
 ======
 ";
             #endregion
@@ -1289,10 +1289,10 @@ eax_4: orig: eax
     uses: Mem5[0x00642300:word32] = eax_4
 Mem5: orig: Mem0
     def:  Mem5[0x00642300:word32] = eax_4
-// ProcedureBuilder
+// proc1
 // Return size: 0
-void ProcedureBuilder()
-ProcedureBuilder_entry:
+void proc1()
+proc1_entry:
 	def Mem0
 	// succ:  l1
 l1:
@@ -1301,8 +1301,8 @@ l1:
 	eax_4 = eax_2 + edx_3
 	Mem5[0x00642300:word32] = eax_4
 	return
-	// succ:  ProcedureBuilder_exit
-ProcedureBuilder_exit:
+	// succ:  proc1_exit
+proc1_exit:
 ======
 ";
             #endregion
@@ -1345,10 +1345,10 @@ dl_6: orig: dl
     uses: Mem7[0x00642308:byte] = dl_6
 Mem7: orig: Mem0
     def:  Mem7[0x00642308:byte] = dl_6
-// ProcedureBuilder
+// proc1
 // Return size: 0
-void ProcedureBuilder()
-ProcedureBuilder_entry:
+void proc1()
+proc1_entry:
 	def Mem0
 	// succ:  l1
 l1:
@@ -1359,8 +1359,8 @@ l1:
 	dl_6 = (byte) edx_5 (alias)
 	Mem7[0x00642308:byte] = dl_6
 	return
-	// succ:  ProcedureBuilder_exit
-ProcedureBuilder_exit:
+	// succ:  proc1_exit
+proc1_exit:
 ======
 ";
             #endregion
@@ -1393,18 +1393,18 @@ C_3: orig: C
     def:  C_3 = os_service(ebx, out ebx_2)
 Mem4: orig: Mem0
     def:  Mem4[0x00123400:word32] = ebx_2
-// ProcedureBuilder
+// proc1
 // Return size: 0
-void ProcedureBuilder()
-ProcedureBuilder_entry:
+void proc1()
+proc1_entry:
 	def ebx
 	// succ:  l1
 l1:
 	C_3 = os_service(ebx, out ebx_2)
 	Mem4[0x00123400:word32] = ebx_2
 	return
-	// succ:  ProcedureBuilder_exit
-ProcedureBuilder_exit:
+	// succ:  proc1_exit
+proc1_exit:
 ======
 ";
             #endregion
@@ -1449,10 +1449,10 @@ bx_6: orig: bx
 bx_7: orig: bx
     def:  bx_7 = Mem0[es_bx_4 + 0x0010:word32]
     uses: use bx_7
-// ProcedureBuilder
+// proc1
 // Return size: 0
-void ProcedureBuilder()
-ProcedureBuilder_entry:
+void proc1()
+proc1_entry:
 	def es
 	def bx
 	def Mem0
@@ -1463,8 +1463,8 @@ l1:
 	bx_6 = (word16) es_bx_4 (alias)
 	bx_7 = Mem0[es_bx_4 + 0x0010:word32]
 	return
-	// succ:  ProcedureBuilder_exit
-ProcedureBuilder_exit:
+	// succ:  proc1_exit
+proc1_exit:
 	use bx_7
 	use es_5
 ======
@@ -1505,10 +1505,10 @@ Mem5: orig: Mem0
     def:  Mem5[0x00123100:byte] = al_4
 Mem6: orig: Mem0
     def:  Mem6[0x00123108:byte] = al_4
-// ProcedureBuilder
+// proc1
 // Return size: 0
-void ProcedureBuilder()
-ProcedureBuilder_entry:
+void proc1()
+proc1_entry:
 	def eax
 	def Mem0
 	// succ:  l1
@@ -1517,7 +1517,7 @@ l1:
 	al_4 = (byte) eax_3 (alias)
 	Mem5[0x00123100:byte] = al_4
 	Mem6[0x00123108:byte] = al_4
-ProcedureBuilder_exit:
+proc1_exit:
 ======
 ";
             #endregion
@@ -1558,10 +1558,10 @@ r14_3: orig: r14
 r6:r6
     def:  def r6
     uses: r14_3 = ImportedFunc(r6)
-// ProcedureBuilder
+// proc1
 // Return size: 0
-void ProcedureBuilder()
-ProcedureBuilder_entry:
+void proc1()
+proc1_entry:
 	def r6
 	// succ:  l1
 l1:
@@ -1569,8 +1569,8 @@ l1:
 	r12_2 = ImportedFunc
 	r14_3 = ImportedFunc(r6)
 	return
-	// succ:  ProcedureBuilder_exit
-ProcedureBuilder_exit:
+	// succ:  proc1_exit
+proc1_exit:
 ======
 ";
             var addr = Address.Ptr32(0x00031234);
@@ -1630,10 +1630,10 @@ ebx:ebx
     uses: ebx_2 = PHI(ebx, ebx_7)
 Mem0:Global memory
     def:  def Mem0
-// ProcedureBuilder
+// proc1
 // Return size: 0
-void ProcedureBuilder()
-ProcedureBuilder_entry:
+void proc1()
+proc1_entry:
 	def ebx
 	def Mem0
 	// succ:  l1
@@ -1653,8 +1653,8 @@ l3Head:
 	// succ:  l4Exit l2Body
 l4Exit:
 	return eax_4
-	// succ:  ProcedureBuilder_exit
-ProcedureBuilder_exit:
+	// succ:  proc1_exit
+proc1_exit:
 ======
 ";
             #endregion
@@ -1711,10 +1711,10 @@ cx_7: orig: cx
 es_8: orig: es
     def:  es_8 = SLICE(es_cx_4, word16, 16) (alias)
     uses: use es_8
-// ProcedureBuilder
+// proc1
 // Return size: 0
-void ProcedureBuilder()
-ProcedureBuilder_entry:
+void proc1()
+proc1_entry:
 	def Mem0
 	// succ:  m0
 m0:
@@ -1726,8 +1726,8 @@ m0:
 	es_cx_6 = DPB(es_cx_4, 0x2D, 0) (alias)
 	cx_7 = (word16) es_cx_6 (alias)
 	return
-	// succ:  ProcedureBuilder_exit
-ProcedureBuilder_exit:
+	// succ:  proc1_exit
+proc1_exit:
 	use cx_7
 	use es_8
 ======
@@ -1775,10 +1775,10 @@ r2:r2
     def:  def r2
 Mem0:Global memory
     def:  def Mem0
-// ProcedureBuilder
+// proc1
 // Return size: 0
-void ProcedureBuilder()
-ProcedureBuilder_entry:
+void proc1()
+proc1_entry:
 	def r1
 	def r2
 	def Mem0
@@ -1793,8 +1793,8 @@ m1notdone:
 	// succ:  m0
 m3done:
 	return
-	// succ:  ProcedureBuilder_exit
-ProcedureBuilder_exit:
+	// succ:  proc1_exit
+proc1_exit:
 	use r1_1
 	use r2_2
 ======
@@ -1842,10 +1842,10 @@ bx_6: orig: bx
           use bx_6
 Mem7: orig: Mem0
     def:  Mem7[0x1236:word16] = bx_6
-// ProcedureBuilder
+// proc1
 // Return size: 0
-void ProcedureBuilder()
-ProcedureBuilder_entry:
+void proc1()
+proc1_entry:
 	def Mem0
 	def bx
 	// succ:  m0
@@ -1858,8 +1858,8 @@ m1:
 	bx_6 = DPB(bx_5, 0x00, 8) (alias)
 	Mem7[0x1236:word16] = bx_6
 	return
-	// succ:  ProcedureBuilder_exit
-ProcedureBuilder_exit:
+	// succ:  proc1_exit
+proc1_exit:
 	use bx_6
 ======
 ";
@@ -1909,10 +1909,10 @@ Mem7: orig: Mem0
 bx_8: orig: bx
     def:  bx_8 = PHI(bx_5, bx_6)
     uses: use bx_8
-// ProcedureBuilder
+// proc1
 // Return size: 0
-void ProcedureBuilder()
-ProcedureBuilder_entry:
+void proc1()
+proc1_entry:
 	def Mem0
 	def bx
 	// succ:  m0
@@ -1929,8 +1929,8 @@ m1:
 m2:
 	bx_8 = PHI(bx_5, bx_6)
 	return
-	// succ:  ProcedureBuilder_exit
-ProcedureBuilder_exit:
+	// succ:  proc1_exit
+proc1_exit:
 	use bx_8
 ======
 ";
@@ -1988,10 +1988,10 @@ bx_9: orig: bx
     uses: Mem10[bx_9:word16] = 0x0000
 Mem10: orig: Mem0
     def:  Mem10[bx_9:word16] = 0x0000
-// ProcedureBuilder
+// proc1
 // Return size: 0
-void ProcedureBuilder()
-ProcedureBuilder_entry:
+void proc1()
+proc1_entry:
 	def si
 	def Mem0
 	def bx
@@ -2010,8 +2010,8 @@ m1:
 	// succ:  m2
 m2:
 	return
-	// succ:  ProcedureBuilder_exit
-ProcedureBuilder_exit:
+	// succ:  proc1_exit
+proc1_exit:
 ======
 ";
             RunTest(sExp, m =>
@@ -2051,18 +2051,18 @@ SZ_2: orig: SZ
 C_3: orig: C
     def:  C_3 = false
     uses: use C_3 | SZ_2
-// ProcedureBuilder
+// proc1
 // Return size: 0
-void ProcedureBuilder()
-ProcedureBuilder_entry:
+void proc1()
+proc1_entry:
 	def r1
 	// succ:  m0
 m0:
 	SZ_2 = cond(r1)
 	C_3 = false
 	return
-	// succ:  ProcedureBuilder_exit
-ProcedureBuilder_exit:
+	// succ:  proc1_exit
+proc1_exit:
 	use C_3 | SZ_2
 ======
 ";
@@ -2151,10 +2151,10 @@ Mem3: orig: Mem0
 Mem0:Global memory
     def:  def Mem0
     uses: Mem1 = PHI(Mem0, Mem3)
-// ProcedureBuilder
+// proc1
 // Return size: 0
-void ProcedureBuilder()
-ProcedureBuilder_entry:
+void proc1()
+proc1_entry:
 	def Mem0
 	// succ:  m1
 m1:
@@ -2171,8 +2171,8 @@ m3:
 m4:
 	r1_2 = 0x00000003
 	return
-	// succ:  ProcedureBuilder_exit
-ProcedureBuilder_exit:
+	// succ:  proc1_exit
+proc1_exit:
 ======
 ";
             #endregion

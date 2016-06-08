@@ -772,6 +772,7 @@ namespace Reko.Core
         public StackArgumentStorage(int cbOffset, DataType dataType) : base("Stack", cbOffset)
         {
             this.DataType = dataType;
+            this.BitSize = (uint) dataType.BitSize;
         }
 
         public DataType DataType { get; private set; }

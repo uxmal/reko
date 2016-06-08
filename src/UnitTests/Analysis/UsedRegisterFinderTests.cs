@@ -117,7 +117,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        public void UrfSimple()
+        public void UrfRegisterArg()
         {
             var sExp =
 @"Used: [r1, 32]
@@ -125,6 +125,22 @@ namespace Reko.UnitTests.Analysis
             RunTest(sExp, m =>
             {
                 var r1 = m.Register("r1");
+                m.Store(m.Word32(0x2000), r1);
+                m.Return();
+            });
+        }
+
+        [Test]
+        public void UrfStackArg()
+        {
+            var sExp = 
+@"Used: [Stack +0004, 32]
+";
+            RunTest(sExp, m =>
+            {
+                var fp = m.Frame.FramePointer;
+                var r1 = m.Reg32("r1", 1);
+                m.Assign(r1, m.LoadDw(m.IAdd(fp, 4)));
                 m.Store(m.Word32(0x2000), r1);
                 m.Return();
             });
