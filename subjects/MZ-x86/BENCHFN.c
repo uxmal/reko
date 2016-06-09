@@ -164,24 +164,24 @@ word16 fn0800_1099(byte al, Eq_161 bp, Eq_123 di, Eq_64 * ds, Eq_227 & diOut)
 		return bx;
 	else
 	{
-		word16 di_16;
+		Eq_123 di_16;
 		return fn0800_10A1(bp, di, out di_16);
 	}
 }
 
-Eq_279 * fn0800_10A1(Eq_161 bp, Eq_123 di, Eq_163 & diOut)
+Eq_283 * fn0800_10A1(Eq_161 bp, Eq_123 di, Eq_163 & diOut)
 {
 	word16 sp_30;
 	word16 bx_31;
-	Eq_282 * ss_32;
+	Eq_286 * ss_32;
 	word16 cx_33;
 	word16 dx_34;
-	Eq_285 * es_35;
-	Eq_302 Eq_282::*bp_36;
+	Eq_289 * es_35;
+	Eq_306 Eq_286::*bp_36;
 	word16 ax_37;
 	word16 di_38;
 	byte SCZO_39;
-	Eq_290 * cs_40;
+	Eq_294 * cs_40;
 	byte SZO_41;
 	byte C_42;
 	byte Z_43;
@@ -203,7 +203,7 @@ void fn0800_16D4(word16 bx, word16 di, Eq_64 * ds, word16 wArg02)
 
 void fn0800_16F3(word16 bx, word16 di, Eq_64 * ds, word16 wArg06, word16 wArg08)
 {
-	Eq_340 bp_155 = fp - 0x02;
+	Eq_344 bp_155 = fp - 0x02;
 	byte Eq_64::*si_158 = wArg08;
 l0800_1726:
 	byte al_58 = ds->*si_158;
@@ -214,14 +214,14 @@ l0800_1726:
 	{
 		word16 sp_154;
 		byte SCZO_157;
-		Eq_359 di_159;
-		Eq_360 * es_160;
+		Eq_363 di_159;
+		Eq_364 * es_160;
 		byte D_161;
 		byte al_162;
 		byte SZO_164;
 		byte C_165;
 		byte Z_166;
-		Eq_359 ax_167;
+		Eq_363 ax_167;
 		word16 cx_169;
 		byte SO_170;
 		byte S_171;
@@ -229,7 +229,7 @@ l0800_1726:
 		byte bh_174;
 		byte CZ_175;
 		(cs->*(ss->*bp_155))();
-		Eq_359 ax_178 = ax_167;
+		Eq_363 ax_178 = ax_167;
 		if (ax_167 >= 0x00)
 		{
 			if (di_159 < 0x00 || ds->*di_159 != 0x01)
@@ -238,19 +238,19 @@ l0800_1726:
 					goto l0800_1726;
 				word16 sp_217;
 				word16 bp_218;
-				Eq_480 * ss_219;
+				Eq_484 * ss_219;
 				byte SCZO_220;
 				word16 si_221;
 				word16 di_222;
-				Eq_484 * es_223;
+				Eq_488 * es_223;
 				byte D_224;
 				byte al_225;
-				Eq_487 * ds_226;
+				Eq_491 * ds_226;
 				byte SZO_227;
 				byte C_228;
 				byte Z_229;
 				word16 ax_230;
-				Eq_492 * cs_231;
+				Eq_496 * cs_231;
 				word16 cx_232;
 				byte SO_233;
 				byte S_234;
@@ -264,13 +264,13 @@ l0800_1726:
 			do
 			{
 				ci8 bl_270 = (byte) ax_178;
-				Eq_392 Eq_64::*bx_273 = DPB(ax_178, bl_270, 0);
+				Eq_396 Eq_64::*bx_273 = DPB(ax_178, bl_270, 0);
 				if (bl_270 < 0x00 || (ds->*bx_273).b055A != 0x01)
 				{
 					word16 sp_281;
 					byte SCZO_284;
 					word16 di_286;
-					Eq_399 * es_287;
+					Eq_403 * es_287;
 					byte D_288;
 					byte al_289;
 					byte SZO_291;
@@ -290,13 +290,13 @@ l0800_1726:
 				byte SCZO_320;
 				word16 si_321;
 				word16 di_322;
-				Eq_425 * es_323;
+				Eq_429 * es_323;
 				byte D_324;
 				byte al_325;
 				byte SZO_327;
 				byte C_328;
 				byte Z_329;
-				Eq_359 ax_330;
+				Eq_363 ax_330;
 				word16 cx_332;
 				byte SO_333;
 				byte S_334;
@@ -326,19 +326,19 @@ l0800_1726:
 	}
 	word16 sp_112;
 	word16 bp_113;
-	Eq_447 * ss_114;
+	Eq_451 * ss_114;
 	byte SCZO_115;
 	word16 si_116;
 	word16 di_117;
-	Eq_451 * es_118;
+	Eq_455 * es_118;
 	byte D_119;
 	byte al_120;
-	Eq_454 * ds_121;
+	Eq_458 * ds_121;
 	byte SZO_122;
 	byte C_123;
 	byte Z_124;
 	word16 ax_125;
-	Eq_459 * cs_126;
+	Eq_463 * cs_126;
 	word16 cx_127;
 	byte SO_128;
 	byte S_129;

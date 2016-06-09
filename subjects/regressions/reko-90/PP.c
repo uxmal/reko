@@ -10879,7 +10879,10 @@ word16 fn0800_984F(byte al, word16 bp, word16 di)
 	if (v8_9 != 0x00)
 		return di + 0x01;
 	else
-		return fn0800_9858(bp, di + 0x01);
+	{
+		word16 di_14 = fn0800_9858(bp, di + 0x01);
+		return di_14;
+	}
 }
 
 word16 fn0800_9858(word16 bp, word16 di)
@@ -11168,28 +11171,31 @@ l0800_9F9D_thunk_fn0800_9F9F:
 	ax_32 = fn0800_9F9F(ax, dx, bp, out dx_29, out bp_30, out ds_31)
 	return ax_32
 l0800_9F9D_thunk_fn0800_9F9F:
+	ax_36 = fn0800_9F9F(ax_32, dx_29, bp_30, out dx_33, out bp_34, out ds_35)
+	return ax_36
+l0800_9F9D_thunk_fn0800_9F9F:
 	ax = fn0800_9F9F(ax, dx, bp, out dx, out bp, out ds)
 	return ax
 l0800_9F9D_thunk_fn0800_9F9F:
 	ax = fn0800_9F9F(ax, dx, bp, out dx, out bp, out ds)
 	return ax
 l0800_9FFD_in_fn0800_9F92:
-	ds_33 = Mem17[0x0800:~0x62C4:selector]
-	di_34 = wLoc04_15
-	sp_35 = fp - 0x02
-	si_36 = wLoc02_12
-	sp_37 = fp
-	bp_39 = wArg00
-	sp_40 = fp + 0x02
+	ds_37 = Mem17[0x0800:~0x62C4:selector]
+	di_38 = wLoc04_15
+	sp_39 = fp - 0x02
+	si_40 = wLoc02_12
+	sp_41 = fp
+	bp_43 = wArg00
+	sp_44 = fp + 0x02
 	return ax
 fn0800_9F92_exit:
-	di_18 = PHI(di_34, di, di, di)
-	si_19 = PHI(si_36, si, si, si)
-	sp_20 = PHI(sp_40, sp_13, sp, sp)
-	dx_21 = PHI(dx, dx_29, dx, dx)
-	bp_22 = PHI(bp_39, bp_30, bp, bp)
-	ds_23 = PHI(ds_33, ds_31, ds, ds)
-	ax_24 = PHI(ax, ax_32, ax, ax)
+	di_18 = PHI(di_38, di, di, di, di)
+	si_19 = PHI(si_40, si, si, si, si)
+	sp_20 = PHI(sp_44, sp_13, sp_13, sp, sp)
+	dx_21 = PHI(dx, dx_29, dx_33, dx, dx)
+	bp_22 = PHI(bp_43, bp_30, bp_34, bp, bp)
+	ds_23 = PHI(ds_37, ds_31, ds_35, ds, ds)
+	ax_24 = PHI(ax, ax_32, ax_36, ax, ax)
 	use dx_21 (=> dxOut)
 	use bp_22 (=> bpOut)
 	use ds_23 (=> dsOut)
