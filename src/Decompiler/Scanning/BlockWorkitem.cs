@@ -357,7 +357,9 @@ namespace Reko.Scanning
             if (addrTarget != null)
             {
                 var blockTarget = BlockFromAddress(ric.Address, addrTarget, blockCur.Procedure, state);
-                var blockSource = scanner.FindContainingBlock(ric.Address);
+                var blockSource = blockCur.IsSynthesized
+                    ? blockCur
+                    : scanner.FindContainingBlock(ric.Address);
                 EnsureEdge(blockSource.Procedure, blockSource, blockTarget);
                 if (ric.Address == addrTarget)
                 {
