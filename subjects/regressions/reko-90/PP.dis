@@ -24331,10 +24331,17 @@ l0800_988B_in_fn0800_984F:
 // SymbolicIn: sp:fp di:di + 0x0001
 
 l0800_9856_thunk_fn0800_9858:
-	return fn0800_9858(bp, di + 0x0001)
+	word16 di_13 = fn0800_9858(bp, di + 0x0001)
+	return di_13
 // DataOut: bp di ds si ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp di:di + 0x0001
+
+l0800_9856_thunk_fn0800_9858:
+	return fn0800_9858(bp, di_13)
+// DataOut: bp di ds si ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> di:<invalid> ax:<invalid> es:<invalid> dx:<invalid> cx:<invalid> bx:<invalid>
 
 fn0800_984F_exit:
 // DataOut: di
@@ -25095,13 +25102,13 @@ l0800_9F92:
 // LocalsOut: fp(16) Stack +0000(16)
 
 l0800_9FFD_in_fn0800_9F92:
-	ds_32 = Mem16[0x0800:0x9D3B:selector]
-	di_33 = wLoc04_14
-	sp_34 = fp - 0x0002
-	si_35 = wLoc02_11
-	sp_36 = fp
-	bp_38 = wArg00
-	sp_39 = fp + 0x0002
+	ds_36 = Mem16[0x0800:0x9D3B:selector]
+	di_37 = wLoc04_14
+	sp_38 = fp - 0x0002
+	si_39 = wLoc02_11
+	sp_40 = fp
+	bp_42 = wArg00
+	sp_43 = fp + 0x0002
 	return ax
 // DataOut: ax bp ds dx sp ss
 // DataOut (flags): 
@@ -25114,14 +25121,21 @@ l0800_9F9D_thunk_fn0800_9F9F:
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0004 cx:ax | dx -4(fp):di -2(fp):si
 
+l0800_9F9D_thunk_fn0800_9F9F:
+	ax_35 = fn0800_9F9F(ax_31, dx_28, bp_29, out dx_32, out bp_33, out ds_34)
+	return ax_35
+// DataOut: ax bp ds dx sp ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> cx:<invalid> ax:<invalid> dx:<invalid> ds:<invalid> di:<invalid> si:<invalid> bp:<invalid> cl:<invalid> ah:<invalid> bx:<invalid> bl:<invalid> es:<invalid> ch:<invalid> al:<invalid> dh:<invalid> bh:<invalid> -4(fp):di -2(fp):si
+
 fn0800_9F92_exit:
-	di_17 = PHI(di_33, di, di, di)
-	si_18 = PHI(si_35, si, si, si)
-	sp_19 = PHI(sp_39, sp_12, sp, sp)
-	dx_20 = PHI(dx, dx_28, dx, dx)
-	bp_21 = PHI(bp_38, bp_29, bp, bp)
-	ds_22 = PHI(ds_32, ds_30, ds, ds)
-	ax_23 = PHI(ax, ax_31, ax, ax)
+	di_17 = PHI(di_37, di, di, di, di)
+	si_18 = PHI(si_39, si, si, si, si)
+	sp_19 = PHI(sp_43, sp_12, sp_12, sp, sp)
+	dx_20 = PHI(dx, dx_28, dx_32, dx, dx)
+	bp_21 = PHI(bp_42, bp_29, bp_33, bp, bp)
+	ds_22 = PHI(ds_36, ds_30, ds_34, ds, ds)
+	ax_23 = PHI(ax, ax_31, ax_35, ax, ax)
 	use dx_20 (=> dxOut)
 	use bp_21 (=> bpOut)
 	use ds_22 (=> dsOut)

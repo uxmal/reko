@@ -218,7 +218,8 @@ namespace Reko.Scanning
             // We don't know the 'then' block yet, as the following statements may chop up the block
             // we're presently in. Back-patch in when the block target is obtained.
             var branch = new Branch(b.Condition, new Block(blockCur.Procedure, "TMP!"));
-            
+            Emit(branch, blockCur);
+
             // The following statements may chop up the blockCur, so hang on to the essentials.
             var proc = blockCur.Procedure;
             RtlInstructionCluster ricDelayed = null;
@@ -233,9 +234,9 @@ namespace Reko.Scanning
             var blockThen = BlockFromAddress(ric.Address, b.Target, proc, state.Clone());
 
             var blockElse = FallthroughBlock(ric.Address, proc, fallthruAddress);
-            var branchingBlock = scanner.FindContainingBlock(ric.Address);
-
-            Emit(branch, branchingBlock);
+            var branchingBlock = blockCur.IsSynthesized
+                ? blockCur
+                : scanner.FindContainingBlock(ric.Address);
 
             if ((b.Class & RtlClass.Delay) != 0 &&
                 ricDelayed.Instructions.Count > 0)
@@ -278,7 +279,7 @@ namespace Reko.Scanning
 
             // Now, switch to the fallthru block and keep rewriting.
             blockCur = blockElse;
-            return !blockElse.IsSynthesized;
+            return true;
         }
 
         /// <summary>
@@ -827,6 +828,7 @@ namespace Reko.Scanning
         private Block AddIntraStatementBlock(Procedure proc)
         {
             var fallthru = new Block(proc, ric.Address.GenerateName("l", string.Format("_{0}", ++extraLabels)));
+            fallthru.IsSynthesized = true;
             proc.ControlGraph.Blocks.Add(fallthru);
             return fallthru;
         }

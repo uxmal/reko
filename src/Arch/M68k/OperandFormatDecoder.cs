@@ -251,10 +251,15 @@ namespace Reko.Arch.M68k
                            (extension & 7) > 4);
                     }
                     return new IndirectIndexedOperand(
+                        dataWidth,
                         EXT_8BIT_DISPLACEMENT(extension), 
                         Registers.pc,
-                        EXT_INDEX_AR(extension) ? Registers.AddressRegister((int)EXT_INDEX_REGISTER(extension)) : Registers.DataRegister((int)EXT_INDEX_REGISTER(extension)),
-                        EXT_INDEX_LONG(extension) ? PrimitiveType.Word32 : PrimitiveType.Int16,
+                        EXT_INDEX_AR(extension) 
+                            ? Registers.AddressRegister((int)EXT_INDEX_REGISTER(extension)) 
+                            : Registers.DataRegister((int)EXT_INDEX_REGISTER(extension)),
+                        EXT_INDEX_LONG(extension)
+                            ? PrimitiveType.Word32
+                            : PrimitiveType.Int16,
                         1 << EXT_INDEX_SCALE(extension));
 
                 case 4:
@@ -313,6 +318,7 @@ namespace Reko.Arch.M68k
             else
             {
                 return new IndirectIndexedOperand(
+                    dataWidth,
                     EXT_8BIT_DISPLACEMENT(extension),
                     Registers.AddressRegister(opcode & 7),
                     EXT_INDEX_AR(extension)

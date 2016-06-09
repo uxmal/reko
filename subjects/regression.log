@@ -42,7 +42,7 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
-    Pulling difference (union (int32 u0) (uint32 u1)) and (ptr (struct 0001 (0 (union (word32 u0) (T_1555 u1)) u0000)))
+    Pulling difference (union (int32 u0) (uint32 u1)) and (ptr (struct 0001 (0 (union (word32 u0) (T_1557 u1)) u0000)))
        at Reko.Typing.ExpressionTypeAscender.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 188
    at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 91
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
@@ -59,7 +59,7 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
-    Pulling difference (union (int32 u0) (uint32 u1)) and (ptr (struct 0001 (0 (union (word32 u0) (T_2212 u1)) u0000)))
+    Pulling difference (union (int32 u0) (uint32 u1)) and (ptr (struct 0001 (0 (union (word32 u0) (T_2214 u1)) u0000)))
        at Reko.Typing.ExpressionTypeAscender.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 188
    at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 91
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
@@ -76,7 +76,7 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
-    Pulling difference (union (int32 u0) (uint32 u1)) and (ptr (struct 0001 (0 (union (word32 u0) (T_1402 u1)) u0000)))
+    Pulling difference (union (int32 u0) (uint32 u1)) and (ptr (struct 0001 (0 (union (word32 u0) (T_1401 u1)) u0000)))
        at Reko.Typing.ExpressionTypeAscender.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 188
    at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 91
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
@@ -93,7 +93,7 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
-    Pulling difference (union (int32 u0) (uint32 u1)) and (ptr (struct 0001 (0 (union (word32 u0) (T_1584 u1)) u0000)))
+    Pulling difference (union (int32 u0) (uint32 u1)) and (ptr (struct 0001 (0 (union (word32 u0) (T_1586 u1)) u0000)))
        at Reko.Typing.ExpressionTypeAscender.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 188
    at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 91
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
@@ -111,9 +111,12 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
-    The method or operation is not implemented.
-       at Reko.Typing.ExpressionTypeAscender.VisitTestCondition(TestCondition tc) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 359
-   at Reko.Core.Expressions.TestCondition.Accept[T](ExpressionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 56
+    Pulling difference (union (int32 u0) (uint32 u1)) and (ptr (struct 0001 (0 (union (word32 u0) (T_6268 u1)) u0000)))
+       at Reko.Typing.ExpressionTypeAscender.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 188
+   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 91
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 82
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 113
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 64
@@ -126,7 +129,7 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
-    Pulling difference (union (int32 u0) (uint32 u1)) and (ptr (struct 0001 (0 (union (word32 u0) (T_1511 u1)) u0000)))
+    Pulling difference (union (int32 u0) (uint32 u1)) and (ptr (struct 0001 (0 (union (word32 u0) (T_1513 u1)) u0000)))
        at Reko.Typing.ExpressionTypeAscender.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 188
    at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 91
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
@@ -243,15 +246,44 @@ main: error: An error occurred while rewriting procedure to high-level language.
    at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 137
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 533
+fn0800_0402: error: An error occurred while rewriting procedure to high-level language.
+    Value cannot be null.
+Parameter name: condition
+       at Reko.Core.Absyn.AbsynLoop..ctor(Expression condition, List`1 body) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynLoop.cs:line 35
+   at Reko.Core.Absyn.AbsynDoWhile..ctor(List`1 body, Expression condition) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynDoWhile.cs:line 32
+   at Reko.Structure.StructureAnalysis.ReduceCyclic(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 873
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 533
 fn0800_0541: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1145
-   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 995
-   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 274
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 149
+    Value cannot be null.
+Parameter name: condition
+       at Reko.Core.Absyn.AbsynLoop..ctor(Expression condition, List`1 body) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynLoop.cs:line 35
+   at Reko.Core.Absyn.AbsynDoWhile..ctor(List`1 body, Expression condition) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynDoWhile.cs:line 32
+   at Reko.Structure.StructureAnalysis.ReduceCyclic(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 873
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 533
+fn0800_0C93: error: An error occurred while rewriting procedure to high-level language.
+    Value cannot be null.
+Parameter name: condition
+       at Reko.Core.Absyn.AbsynLoop..ctor(Expression condition, List`1 body) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynLoop.cs:line 35
+   at Reko.Core.Absyn.AbsynDoWhile..ctor(List`1 body, Expression condition) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynDoWhile.cs:line 32
+   at Reko.Structure.StructureAnalysis.ReduceCyclic(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 873
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 533
 fn0800_0DE8: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+fn0800_19EE: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
+fn0800_2085: error: An error occurred while rewriting procedure to high-level language.
+    Value cannot be null.
+Parameter name: condition
+       at Reko.Core.Absyn.AbsynLoop..ctor(Expression condition, List`1 body) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynLoop.cs:line 35
+   at Reko.Core.Absyn.AbsynDoWhile..ctor(List`1 body, Expression condition) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynDoWhile.cs:line 32
+   at Reko.Structure.StructureAnalysis.ReduceCyclic(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 873
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 533
 fn0800_2688: error: An error occurred while rewriting procedure to high-level language.
     Index was outside the bounds of the array.
        at Reko.Structure.StructureAnalysis.ReduceIfRegion(Region n, Boolean reduceTailregions) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 303
@@ -260,11 +292,93 @@ fn0800_2688: error: An error occurred while rewriting procedure to high-level la
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 533
 fn0800_29C5: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1145
-   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 995
-   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 274
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 149
+    Value cannot be null.
+Parameter name: condition
+       at Reko.Core.Absyn.AbsynLoop..ctor(Expression condition, List`1 body) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynLoop.cs:line 35
+   at Reko.Core.Absyn.AbsynDoWhile..ctor(List`1 body, Expression condition) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynDoWhile.cs:line 32
+   at Reko.Structure.StructureAnalysis.ReduceCyclic(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 873
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 533
+fn0800_2DE2: error: An error occurred while rewriting procedure to high-level language.
+    Value cannot be null.
+Parameter name: condition
+       at Reko.Core.Absyn.AbsynLoop..ctor(Expression condition, List`1 body) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynLoop.cs:line 35
+   at Reko.Core.Absyn.AbsynDoWhile..ctor(List`1 body, Expression condition) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynDoWhile.cs:line 32
+   at Reko.Structure.StructureAnalysis.ReduceCyclic(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 873
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 533
+fn0800_31B4: error: An error occurred while rewriting procedure to high-level language.
+    Value cannot be null.
+Parameter name: condition
+       at Reko.Core.Absyn.AbsynLoop..ctor(Expression condition, List`1 body) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynLoop.cs:line 35
+   at Reko.Core.Absyn.AbsynDoWhile..ctor(List`1 body, Expression condition) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynDoWhile.cs:line 32
+   at Reko.Structure.StructureAnalysis.ReduceCyclic(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 873
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 533
+fn0800_32CD: error: An error occurred while rewriting procedure to high-level language.
+    Value cannot be null.
+Parameter name: condition
+       at Reko.Core.Absyn.AbsynLoop..ctor(Expression condition, List`1 body) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynLoop.cs:line 35
+   at Reko.Core.Absyn.AbsynDoWhile..ctor(List`1 body, Expression condition) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynDoWhile.cs:line 32
+   at Reko.Structure.StructureAnalysis.ReduceCyclic(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 873
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 533
+fn0800_335C: error: An error occurred while rewriting procedure to high-level language.
+    Value cannot be null.
+Parameter name: condition
+       at Reko.Core.Absyn.AbsynLoop..ctor(Expression condition, List`1 body) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynLoop.cs:line 35
+   at Reko.Core.Absyn.AbsynDoWhile..ctor(List`1 body, Expression condition) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynDoWhile.cs:line 32
+   at Reko.Structure.StructureAnalysis.ReduceCyclic(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 873
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 533
+fn0800_33CD: error: An error occurred while rewriting procedure to high-level language.
+    Value cannot be null.
+Parameter name: condition
+       at Reko.Core.Absyn.AbsynLoop..ctor(Expression condition, List`1 body) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynLoop.cs:line 35
+   at Reko.Core.Absyn.AbsynDoWhile..ctor(List`1 body, Expression condition) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynDoWhile.cs:line 32
+   at Reko.Structure.StructureAnalysis.ReduceCyclic(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 873
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 533
+fn0800_3479: error: An error occurred while rewriting procedure to high-level language.
+    Value cannot be null.
+Parameter name: condition
+       at Reko.Core.Absyn.AbsynLoop..ctor(Expression condition, List`1 body) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynLoop.cs:line 35
+   at Reko.Core.Absyn.AbsynDoWhile..ctor(List`1 body, Expression condition) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynDoWhile.cs:line 32
+   at Reko.Structure.StructureAnalysis.ReduceCyclic(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 873
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 533
+fn0800_3509: error: An error occurred while rewriting procedure to high-level language.
+    Value cannot be null.
+Parameter name: condition
+       at Reko.Core.Absyn.AbsynLoop..ctor(Expression condition, List`1 body) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynLoop.cs:line 35
+   at Reko.Core.Absyn.AbsynDoWhile..ctor(List`1 body, Expression condition) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynDoWhile.cs:line 32
+   at Reko.Structure.StructureAnalysis.ReduceCyclic(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 873
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 533
+fn0800_35A3: error: An error occurred while rewriting procedure to high-level language.
+    Value cannot be null.
+Parameter name: condition
+       at Reko.Core.Absyn.AbsynLoop..ctor(Expression condition, List`1 body) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynLoop.cs:line 35
+   at Reko.Core.Absyn.AbsynDoWhile..ctor(List`1 body, Expression condition) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynDoWhile.cs:line 32
+   at Reko.Structure.StructureAnalysis.ReduceCyclic(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 873
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 533
+fn0800_3764: error: An error occurred while rewriting procedure to high-level language.
+    Value cannot be null.
+Parameter name: condition
+       at Reko.Core.Absyn.AbsynLoop..ctor(Expression condition, List`1 body) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynLoop.cs:line 35
+   at Reko.Core.Absyn.AbsynDoWhile..ctor(List`1 body, Expression condition) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynDoWhile.cs:line 32
+   at Reko.Structure.StructureAnalysis.ReduceCyclic(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 873
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 533
 fn0800_51A9: error: An error occurred while rewriting procedure to high-level language.
@@ -319,6 +433,15 @@ fn0800_7FDC: error: An error occurred while rewriting procedure to high-level la
    at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 149
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 533
+fn0800_867A: error: An error occurred while rewriting procedure to high-level language.
+    Value cannot be null.
+Parameter name: condition
+       at Reko.Core.Absyn.AbsynLoop..ctor(Expression condition, List`1 body) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynLoop.cs:line 35
+   at Reko.Core.Absyn.AbsynDoWhile..ctor(List`1 body, Expression condition) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynDoWhile.cs:line 32
+   at Reko.Structure.StructureAnalysis.ReduceCyclic(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 873
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 533
 fn0800_889A: error: An error occurred while rewriting procedure to high-level language.
     The method or operation is not implemented.
        at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
@@ -328,6 +451,7 @@ fn0800_889A: error: An error occurred while rewriting procedure to high-level la
    at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 533
+fn0800_984F: warning: Structure analysis stopped making progress, quitting. Please report this issue at https://github.com/uxmal/reko
 fn0800_9F92: error: An error occurred while rewriting procedure to high-level language.
     The method or operation is not implemented.
        at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
@@ -344,6 +468,24 @@ fn0800_A96D: error: An error occurred while rewriting procedure to high-level la
    at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
    at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 191
    at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 533
+fn0800_B05F: error: An error occurred while rewriting procedure to high-level language.
+    Value cannot be null.
+Parameter name: condition
+       at Reko.Core.Absyn.AbsynLoop..ctor(Expression condition, List`1 body) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynLoop.cs:line 35
+   at Reko.Core.Absyn.AbsynDoWhile..ctor(List`1 body, Expression condition) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynDoWhile.cs:line 32
+   at Reko.Structure.StructureAnalysis.ReduceCyclic(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 873
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
+   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
+   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 533
+fn0800_B0A1: error: An error occurred while rewriting procedure to high-level language.
+    Value cannot be null.
+Parameter name: condition
+       at Reko.Core.Absyn.AbsynLoop..ctor(Expression condition, List`1 body) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynLoop.cs:line 35
+   at Reko.Core.Absyn.AbsynDoWhile..ctor(List`1 body, Expression condition) in D:\dev\uxmal\reko\master\src\Core\Absyn\AbsynDoWhile.cs:line 32
+   at Reko.Structure.StructureAnalysis.ReduceCyclic(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 873
+   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 533
 
