@@ -791,7 +791,7 @@ namespace Reko.UnitTests.Arch.M68k
             Rewrite(0x4AB3, 0x0000);
             AssertCode(
                 "0|L--|00010000(4): 3 instructions",
-                "1|L--|ZN = cond(Mem0[a3 + d0:word32] - 0x00000000)",
+                "1|L--|ZN = cond(Mem0[a3 + (int32) ((int16) d0):word32] - 0x00000000)",
                 "2|L--|C = false",
                 "3|L--|V = false");
         }
@@ -1013,9 +1013,8 @@ namespace Reko.UnitTests.Arch.M68k
             Rewrite(0x2432, 0x04fc);    // move.l\t(-04,a2,d0*2),d2",
             AssertCode(
                 "0|L--|00010000(4): 2 instructions",
-                "1|L--|d2 = Mem0[a2 + -4 + d0 * 2:word32]"
+                "1|L--|d2 = Mem0[a2 + -4 + (int32) ((int16) d0) * 2:word32]"
                 );
-
         }
 
         [Test]
@@ -1091,6 +1090,17 @@ namespace Reko.UnitTests.Arch.M68k
                 "4|L--|a1 = a1 + 0x00000001",
                 "5|L--|v6 = v5 - v3",
                 "6|L--|CVZN = cond(v6)");
+        }
+
+        [Test]
+        public void M68krw_move_pc_indexed()
+        {
+            Rewrite(0x303B, 0x0006);    // move.w (06, pc, d0), d0
+            AssertCode(
+                "0|L--|00010000(4): 3 instructions",
+                "1|L--|v3 = Mem0[0x00010008 + (int32) ((int16) d0):word16]",
+                "2|L--|d0 = DPB(d0, v3, 0)",
+                "3|L--|CVZN = cond(v3)");
         }
     }
 }

@@ -219,12 +219,13 @@ namespace Reko.Arch.M68k
         public readonly PrimitiveType XWidth;
         public readonly byte Scale;
 
-        public IndirectIndexedOperand(sbyte imm8, RegisterStorage a, RegisterStorage x, PrimitiveType width, int scale)
-            : base(null)
+        public IndirectIndexedOperand(PrimitiveType dataWidth, sbyte imm8, RegisterStorage a, RegisterStorage x, PrimitiveType width, int scale)
+            : base(dataWidth)
         {
             this.Imm8 = imm8;
             this.ARegister = a;
             this.XRegister = x;
+            this.XWidth = width;
             this.Scale = (byte) scale;
         }
 
