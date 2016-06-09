@@ -3,11 +3,11 @@ sp_2: orig: sp
 ax_3: orig: ax
 bx_4: orig: bx
 cx_5: orig: cx
-Mem6: orig: Mem0
-    def:  Mem6[ds:0x0300:word16] = 0x0004
 ds:ds
     def:  def ds
-    uses: Mem6[ds:0x0300:word16] = 0x0004
+    uses: Mem7[ds:0x0300:word16] = 0x0004
+Mem7: orig: Mem0
+    def:  Mem7[ds:0x0300:word16] = 0x0004
 bx_8: orig: bx
 ax_9: orig: ax
 // fn0C00_0000
@@ -17,7 +17,7 @@ fn0C00_0000_entry:
 	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem6[ds:0x0300:word16] = 0x0004
+	Mem7[ds:0x0300:word16] = 0x0004
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

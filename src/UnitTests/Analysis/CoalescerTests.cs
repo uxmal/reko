@@ -120,9 +120,8 @@ namespace Reko.UnitTests.Analysis
 			
 			foreach (Procedure proc in program.Procedures.Values)
 			{
-				Aliases alias = new Aliases(proc, program.Architecture);
-				alias.Transform();
-				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, importResolver, proc.CreateBlockDominatorGraph(), new HashSet<RegisterStorage>());
+                SsaTransform2 sst = new SsaTransform2(program.Architecture, proc, importResolver, dfa.ProgramDataFlow.ToDataFlow2());
+                sst.Transform();
 				SsaState ssa = sst.SsaState;
 				
                 ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform);

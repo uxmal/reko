@@ -71,11 +71,11 @@ sp_2: orig: sp
 sp_3: orig: sp
 ax:ax
 wLoc02_5: orig: wLoc02
-Mem6: orig: Mem0
-    def:  Mem6[ds:0x0200:word16] = 0xFFFF
 ds:ds
     def:  def ds
-    uses: Mem6[ds:0x0200:word16] = 0xFFFF
+    uses: Mem7[ds:0x0200:word16] = 0xFFFF
+Mem7: orig: Mem0
+    def:  Mem7[ds:0x0200:word16] = 0xFFFF
 ax_8: orig: ax
 sp_9: orig: sp
 // fn0C00_002A
@@ -85,7 +85,7 @@ fn0C00_002A_entry:
 	def ds
 	// succ:  l0C00_002A
 l0C00_002A:
-	Mem6[ds:0x0200:word16] = 0xFFFF
+	Mem7[ds:0x0200:word16] = 0xFFFF
 	return
 	// succ:  fn0C00_002A_exit
 fn0C00_002A_exit:
