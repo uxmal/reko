@@ -2196,5 +2196,34 @@ proc1_exit:
                 m.Return();
             });
         }
+
+        [Test]
+        [Category("investigation")]
+        public void SsaPartialRegisters()
+        {
+            var sExp =
+            #region Expected
+                "@@@";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                var al = m.Frame.EnsureRegister(new RegisterStorage("al", 0, 0, PrimitiveType.Byte));
+                var bl = m.Frame.EnsureRegister(new RegisterStorage("bl", 3, 0, PrimitiveType.Byte));
+                var ah = m.Frame.EnsureRegister(new RegisterStorage("ah", 0, 8, PrimitiveType.Byte));
+                var bh = m.Frame.EnsureRegister(new RegisterStorage("bh", 3, 8, PrimitiveType.Byte));
+                var ax = m.Frame.EnsureRegister(new RegisterStorage("ax", 0, 0, PrimitiveType.Word16));
+                var bx = m.Frame.EnsureRegister(new RegisterStorage("bx", 3, 0, PrimitiveType.Word16));
+
+                m.Assign(ax, m.Load(ax.DataType, m.Word32(0x2000)));
+                m.Assign(bx, m.Load(bx.DataType, m.Word32(0x2002)));
+                m.Label("m0");
+                m.Assign(al, bh);
+                m.BranchIf(m.Ge(bx, 0), "m0");
+
+                m.Label("m1");
+                m.Return(al);
+            });
+        }
     }
 }

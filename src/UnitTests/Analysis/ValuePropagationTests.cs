@@ -80,26 +80,24 @@ namespace Reko.UnitTests.Analysis
             return sid.Identifier;
         }
 
-		protected override void RunTest(Program prog, TextWriter writer)
+		protected override void RunTest(Program program, TextWriter writer)
 		{
-			var dfa = new DataFlowAnalysis(prog, null, new FakeDecompilerEventListener());
+			var dfa = new DataFlowAnalysis(program, null, new FakeDecompilerEventListener());
 			dfa.UntangleProcedures();
-			foreach (Procedure proc in prog.Procedures.Values)
+			foreach (Procedure proc in program.Procedures.Values)
 			{
 				writer.WriteLine("= {0} ========================", proc.Name);
 				var gr = proc.CreateBlockDominatorGraph();
-				Aliases alias = new Aliases(proc, prog.Architecture);
-				alias.Transform();
-                SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, null, gr,
-                    new HashSet<RegisterStorage>());
+                SsaTransform2 sst = new SsaTransform2(program.Architecture, proc, null, dfa.ProgramDataFlow.ToDataFlow2());
+                sst.Transform();
 				SsaState ssa = sst.SsaState;
-                var cce = new ConditionCodeEliminator(ssa, prog.Platform);
+                var cce = new ConditionCodeEliminator(ssa, program.Platform);
                 cce.Transform();
 				ssa.Write(writer);
 				proc.Write(false, writer);
 				writer.WriteLine();
 
-                ValuePropagator vp = new ValuePropagator(prog.Architecture, ssa);
+                ValuePropagator vp = new ValuePropagator(program.Architecture, ssa);
 				vp.Transform();
 
 				ssa.Write(writer);
@@ -171,6 +169,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
         [Test]
+        [Category("investigation")]
         public void VpReg00011()
         {
             RunFileTest("Fragments/regressions/r00011.asm", "Analysis/VpReg00011.txt");
