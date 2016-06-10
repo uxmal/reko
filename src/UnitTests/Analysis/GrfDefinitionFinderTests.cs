@@ -59,14 +59,12 @@ namespace Reko.UnitTests.Analysis
 			dfa.UntangleProcedures();
 			foreach (Procedure proc in program.Procedures.Values)
 			{
-				Aliases alias = new Aliases(proc, program.Architecture);
-				alias.Transform();
-				SsaTransform sst = new SsaTransform(
-                    dfa.ProgramDataFlow,
+                SsaTransform2 sst = new SsaTransform2(
+                    program.Architecture,
                     proc,
                     importResolver,
-                    proc.CreateBlockDominatorGraph(),
-                    new HashSet<RegisterStorage>());
+                    dfa.ProgramDataFlow.ToDataFlow2());
+                sst.Transform();
 				SsaState ssa = sst.SsaState;
 				GrfDefinitionFinder grfd = new GrfDefinitionFinder(ssa.Identifiers);
 				foreach (SsaIdentifier sid in ssa.Identifiers)
