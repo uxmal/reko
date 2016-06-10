@@ -77,16 +77,17 @@ namespace Reko.UnitTests.Analysis
 			dfa.UntangleProcedures();
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
-				Aliases alias = new Aliases(proc, prog.Architecture);
-				alias.Transform();
-				var gr = proc.CreateBlockDominatorGraph();
-				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, null, gr, new HashSet<RegisterStorage>());
+                SsaTransform2 sst = new SsaTransform2(prog.Architecture, proc, null, dfa.ProgramDataFlow.ToDataFlow2());
+                sst.Transform();
 				SsaState ssa = sst.SsaState;
 
 				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, prog.Platform);
 				cce.Transform();
 
 				DeadCode.Eliminate(proc, ssa);
+
+                sst.RenameFrameAccesses = true;
+                sst.Transform();
 
                 var vp = new ValuePropagator(prog.Architecture, ssa);
 				vp.Transform();
@@ -106,7 +107,6 @@ namespace Reko.UnitTests.Analysis
 
 				ssa.ConvertBack(false);
 			}
-
 		}
 
 		protected override void RunTest(Program prog, TextWriter writer)

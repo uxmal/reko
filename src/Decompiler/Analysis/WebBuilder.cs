@@ -75,8 +75,11 @@ namespace Reko.Analysis
 			DeclarationInserter deci = new DeclarationInserter(ssaIds, doms);
 			foreach (Web web in this.webs)
 			{
-				if (!(web.Identifier is MemoryIdentifier))
-					deci.InsertDeclaration(web);
+                if (web.Uses.Count > 0 &&
+                    !(web.Identifier is MemoryIdentifier))
+                {
+                    deci.InsertDeclaration(web);
+                }
 			}
 		}
 
