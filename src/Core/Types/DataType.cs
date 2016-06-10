@@ -59,6 +59,15 @@ namespace Reko.Core.Types
         public T ResolveAs<T>() where T : DataType
         {
             DataType dt = this;
+            // Special case: ResolveAs<TypeReference> or ResolveAs<DataType>
+            if ((dt is TypeReference) && (dt is T))
+                return dt as T;
+            TypeReference typeRef = dt as TypeReference;
+            while (typeRef != null)
+            {
+                dt = typeRef.Referent;
+                typeRef = dt as TypeReference;
+            }
             TypeVariable tv = dt as TypeVariable;
             while (tv != null)
             {
