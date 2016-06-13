@@ -38,6 +38,8 @@ namespace Reko.UnitTests.Arch.Intel
 	{
         private MockRepository mr;
         private ServiceContainer sc;
+        private X86ArchitectureReal arch;
+        private MsdosPlatform platform;
 
         [SetUp]
         public void Setup()
@@ -55,33 +57,46 @@ namespace Reko.UnitTests.Arch.Intel
             sc.AddService<ITypeLibraryLoaderService>(tlSvc);
         }
 
-		[Test]
+        private void Given_MsdosPlatform()
+        {
+            this.arch = new X86ArchitectureReal();
+            this.platform = new MsdosPlatform(sc, arch);
+        }
+
+        [Test]
 		public void MspRealModeServices()
-		{
+        {
             mr.ReplayAll();
-			IntelArchitecture arch = new X86ArchitectureReal();
-			IPlatform platform = new MsdosPlatform(sc, arch);
+            Given_MsdosPlatform();
 
-			var state = arch.CreateProcessorState();
-			state.SetRegister(Registers.ah, Constant.Byte(0x3E));
-			SystemService svc = platform.FindService(0x21, state);
-			Assert.AreEqual("msdos_close_file", svc.Name);
-			Assert.AreEqual(1, svc.Signature.Parameters.Length);
-			Assert.IsFalse(svc.Characteristics.Terminates, "close() shouldn't terminate program");
+            var state = arch.CreateProcessorState();
+            state.SetRegister(Registers.ah, Constant.Byte(0x3E));
+            SystemService svc = platform.FindService(0x21, state);
+            Assert.AreEqual("msdos_close_file", svc.Name);
+            Assert.AreEqual(1, svc.Signature.Parameters.Length);
+            Assert.IsFalse(svc.Characteristics.Terminates, "close() shouldn't terminate program");
 
-			state.SetRegister(Registers.ah, Constant.Byte(0x4C));
-			svc = platform.FindService(0x21, state);
-			Assert.AreEqual("msdos_terminate", svc.Name);
-			Assert.AreEqual(1, svc.Signature.Parameters.Length);
-			Assert.IsTrue(svc.Characteristics.Terminates, "terminate() should terminate program");
+            state.SetRegister(Registers.ah, Constant.Byte(0x4C));
+            svc = platform.FindService(0x21, state);
+            Assert.AreEqual("msdos_terminate", svc.Name);
+            Assert.AreEqual(1, svc.Signature.Parameters.Length);
+            Assert.IsTrue(svc.Characteristics.Terminates, "terminate() should terminate program");
 
-			state.SetRegister(Registers.ah, Constant.Byte(0x2F));
-			svc = platform.FindService(0x21, state);
-			Assert.AreEqual("msdos_get_disk_transfer_area_address", svc.Name);
-			Assert.AreEqual(0, svc.Signature.Parameters.Length);
-			SequenceStorage seq = (SequenceStorage) svc.Signature.ReturnValue.Storage;
-			Assert.AreEqual("es", seq.Head.Name);
-			Assert.AreEqual("bx", seq.Tail.Name);
-		}
+            state.SetRegister(Registers.ah, Constant.Byte(0x2F));
+            svc = platform.FindService(0x21, state);
+            Assert.AreEqual("msdos_get_disk_transfer_area_address", svc.Name);
+            Assert.AreEqual(0, svc.Signature.Parameters.Length);
+            SequenceStorage seq = (SequenceStorage)svc.Signature.ReturnValue.Storage;
+            Assert.AreEqual("es", seq.Head.Name);
+            Assert.AreEqual("bx", seq.Tail.Name);
+        }
+
+
+        [Test]
+        public void Msp_cdecl_call()
+        {
+            Given_MsdosPlatform();
+            Assert.Fail();
+        }
 	}
 }

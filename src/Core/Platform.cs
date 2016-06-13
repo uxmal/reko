@@ -65,6 +65,15 @@ namespace Reko.Core
         SegmentMap CreateAbsoluteMemoryMap();
 
         /// <summary>
+        /// Given a procedure signature, determines whether it conforms to any
+        /// of the platform's defined calling conventions.
+        /// </summary>
+        /// <param name="signature"></param>
+        /// <returns>The name of the calling convention, or null
+        /// if no calling convention could be determined.</returns>
+        string DetermineCallingConvention(ProcedureSignature signature);
+
+        /// <summary>
         /// Given a C basic type, returns the number of bytes that type is
         /// represented with on this platform.
         /// </summary>
@@ -81,7 +90,7 @@ namespace Reko.Core
         /// <param name="t">Primitive type</param>
         /// <param name="language">Programming language to use</param>
         /// <returns></returns>
-        string GetPrimitiveTypeName(PrimitiveType t, string v);
+        string GetPrimitiveTypeName(PrimitiveType t, string language);
 
         ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host);
 
@@ -217,6 +226,11 @@ namespace Reko.Core
             return new SegmentMap(
                 segs.Values.First().Address,
                 segs.Values.ToArray());
+        }
+
+        public virtual string DetermineCallingConvention(ProcedureSignature signature)
+        {
+            return null;
         }
 
         /// <summary>
