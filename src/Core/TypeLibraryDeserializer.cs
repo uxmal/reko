@@ -217,7 +217,7 @@ namespace Reko.Core
 
         public DataType VisitSignature(SerializedSignature signature)
         {
-            return new FunctionType(signature);
+            return FunctionType.Create(this, signature);
         }
 
         public DataType VisitStructure(StructType_v1 structure)
