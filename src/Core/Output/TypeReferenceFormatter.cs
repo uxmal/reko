@@ -357,7 +357,7 @@ namespace Reko.Core.Output
                     first = false;
                     declaredName = ft.Parameters[i].Name;
                     DeclarationSpecifiers(ft.Parameters[i].DataType);
-                    if (declaration && declaredName != null)
+                    if (declaration && !string.IsNullOrEmpty(declaredName))
                         Declarator(ft.Parameters[i].DataType);
                     else
                         AbstractDeclarator(ft.Parameters[i].DataType);

@@ -408,7 +408,7 @@ namespace Reko.Core.Output
 		{
 			if (mode == Mode.Writing)
 			{
-				if (name == null)
+				if (string.IsNullOrEmpty(name))
 					name = "*";
 				else 
 					name = "* " + name;
@@ -421,7 +421,7 @@ namespace Reko.Core.Output
         {
             if (mode == Mode.Writing)
             {
-                if (name == null)
+                if (string.IsNullOrEmpty(name))
                     name = "&";
                 else
                     name = "& " + name;
@@ -516,7 +516,7 @@ namespace Reko.Core.Output
 
 		private void WriteName(bool spacePrefix)
 		{
-			if (name != null)
+			if (!string.IsNullOrEmpty(name))
 			{
 				if (spacePrefix)
 					writer.Write(" ");
