@@ -744,24 +744,22 @@ fn00001200_exit:
                 this.sc
             );
 
-            var ft1 = FunctionType.Create(
-                new TypeLibraryDeserializer(
-                    program.Platform,
-                    true,
-                    new TypeLibrary()),
-                new SerializedSignature
+            var ft1 = new SerializedSignature
             {
                 ReturnValue = new Argument_v1 { Type = Int32() }
-            });
-            var ft2 = FunctionType.Create(
+            }.Accept(
                 new TypeLibraryDeserializer(
                     program.Platform,
                     true,
-                    new TypeLibrary()),
-                new SerializedSignature
+                    new TypeLibrary()));
+            var ft2 = new SerializedSignature
             {
                 ReturnValue = new Argument_v1 { Type = Char() }
-            });
+            }.Accept(
+                new TypeLibraryDeserializer(
+                    program.Platform,
+                    true,
+                    new TypeLibrary()));
             var str = new StructureType();
             var fields = new StructureField[] {
                 new StructureField(0, new Pointer(ft1, 4), "A"),
@@ -825,15 +823,14 @@ fn00001200_exit:
                 this.sc
             );
 
-            var ft = FunctionType.Create(
+            var ft = new SerializedSignature
+            { 
+                 ReturnValue = new Argument_v1 { Type = Real32() },
+            }.Accept(
                 new TypeLibraryDeserializer(
                     program.Platform,
                     true,
-                    new TypeLibrary()),
-                new SerializedSignature
-            { 
-                 ReturnValue = new Argument_v1 { Type = Real32() },
-            });
+                    new TypeLibrary()));
             var str = new StructureType();
             var fields = new StructureField[] {
                 new StructureField(0, new Pointer(ft,  4), "func"),
