@@ -447,11 +447,11 @@ namespace Reko.ImageLoaders.MzExe
                     platform);
             ImageSymbols[entrySym.Address] = entrySym;
             var entryPoints = new List<ImageSymbol> { entrySym };
-            var functions = ReadExceptionRecords(addrLoad, rvaExceptionTable, sizeExceptionTable);
+            ReadExceptionRecords(addrLoad, rvaExceptionTable, sizeExceptionTable, ImageSymbols);
             AddExportedEntryPoints(addrLoad, SegmentMap, entryPoints);
 			ReadImportDescriptors(addrLoad);
             ReadDeferredLoadDescriptors(addrLoad);
-            return new RelocationResults(entryPoints, ImageSymbols, functions);
+            return new RelocationResults(entryPoints, ImageSymbols);
 		}
 
         public ImageSymbol CreateMainEntryPoint(bool isDll, Address addrEp, IPlatform platform)
@@ -935,12 +935,16 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
             return 0;
         }
 
-        public List<Address> ReadExceptionRecords(Address addrLoad, uint rvaExceptionTable, uint sizeExceptionTable)
+        public void ReadExceptionRecords(
+            Address addrLoad,
+            uint rvaExceptionTable, 
+            uint sizeExceptionTable,
+            SortedList<Address, ImageSymbol> symbols)
         {
             var rvaTableEnd = rvaExceptionTable + sizeExceptionTable; 
             var functionStarts = new List<Address>();
             if (rvaExceptionTable == 0 || sizeExceptionTable == 0)
-                return functionStarts;
+                return;
             switch (machine)
             {
             default: 
@@ -953,11 +957,14 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 {
                     var addr = Address.Ptr32(rdr.ReadLeUInt32());
                     rdr.Seek(16);
-                    functionStarts.Add(addr);
+                    symbols.Add(addr, new ImageSymbol(addr, null, new CodeType())
+                    {
+                        Type = SymbolType.Procedure,
+                        ProcessorState = arch.CreateProcessorState()
+                    });
                 }
                 break;
             }
-            return functionStarts;
         }
     }
 }

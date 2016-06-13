@@ -106,7 +106,7 @@ namespace Reko.ImageLoaders.BinHex
                 rsrcFork.Dump();
                 rsrcFork.AddResourcesToImageMap(addrLoad, mem, segmentMap, entryPoints);
             }
-            return new RelocationResults(entryPoints, new SortedList<Address, ImageSymbol>(), new List<Address>());
+            return new RelocationResults(entryPoints, new SortedList<Address, ImageSymbol>());
         }
 
         public BinHexHeader LoadBinHexHeader(IEnumerator<byte> stm)

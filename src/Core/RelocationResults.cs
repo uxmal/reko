@@ -39,12 +39,10 @@ namespace Reko.Core
 
         public RelocationResults(
             List<ImageSymbol> entryPoints, 
-            SortedList<Address, ImageSymbol> symbols,
-            List<Address> functions)
+            SortedList<Address, ImageSymbol> symbols)
         {
             this.EntryPoints = entryPoints;
             this.Symbols = symbols;
-            this.Functions = functions;
         }
     }
 }

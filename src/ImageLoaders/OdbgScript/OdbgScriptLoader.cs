@@ -111,7 +111,7 @@ namespace Reko.ImageLoaders.OdbgScript
                 syms.Add(sym.Address, sym);
                 eps.Add(sym);
             }
-            return new RelocationResults(eps, syms, new List<Address>());
+            return new RelocationResults(eps, syms);
         }
 
         public virtual PeImageLoader CreatePeImageLoader()

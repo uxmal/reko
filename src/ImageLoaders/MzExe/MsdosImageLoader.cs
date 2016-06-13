@@ -127,8 +127,7 @@ namespace Reko.ImageLoaders.MzExe
             var sym = platform.FindMainProcedure(program, addrStart);
             var results = new RelocationResults(
                 new List<ImageSymbol> { ep },
-                new SortedList<Address, ImageSymbol> { { ep.Address, ep } },
-                new List<Address>());
+                new SortedList<Address, ImageSymbol> { { ep.Address, ep } });
             if (sym != null)
             {
                 results.Symbols[sym.Address] = sym;

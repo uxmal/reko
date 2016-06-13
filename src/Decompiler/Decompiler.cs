@@ -441,10 +441,6 @@ namespace Reko
                     else
                         scanner.EnqueueImageSymbol(sym, false);
                 }
-                foreach (var addr in program.FunctionHints)
-                {
-                    scanner.EnqueueProcedure(addr);
-                }
                 scanner.ScanImage();
 
                 if (program.User.Heuristics.Contains("HeuristicScanning"))

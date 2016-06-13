@@ -114,7 +114,6 @@ namespace Reko.Loading
             {
                 program.EntryPoints[ep.Address] = ep;
             }
-            program.FunctionHints.AddRange(relocations.Functions);
             program.ImageMap = program.SegmentMap.CreateImageMap();
             return program;
         }
@@ -151,7 +150,6 @@ namespace Reko.Loading
             {
                 program.EntryPoints.Add(ep.Address, ep);
             }
-            program.FunctionHints.AddRange(relocations.Functions);
             program.ImageMap = program.SegmentMap.CreateImageMap();
             return program;
         }

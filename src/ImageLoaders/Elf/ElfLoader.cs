@@ -829,7 +829,7 @@ namespace Reko.ImageLoaders.Elf
                     entryPoints.Add(ep);
                 }
             }
-            return new RelocationResults(entryPoints, symbols, new List<Address>());
+            return new RelocationResults(entryPoints, symbols);
         }
     }
 
@@ -1332,7 +1332,7 @@ namespace Reko.ImageLoaders.Elf
                     entryPoints.Add(ep);
                 }
             }
-            return new RelocationResults(entryPoints, symbols, new List<Address>());
+            return new RelocationResults(entryPoints, symbols);
         }
     }
 
