@@ -280,7 +280,6 @@ namespace Reko.UnitTests.Core
         }
 
         [Test(Description = "Load a serialized signature")]
-        [Ignore("Needs to wait until we reach convergence Functype / ProcedureSignature")]
         public void Tlldr_signature()
         {
             Given_ArchitectureStub();

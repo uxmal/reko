@@ -744,11 +744,21 @@ fn00001200_exit:
                 this.sc
             );
 
-            var ft1 = new FunctionType(new SerializedSignature
+            var ft1 = FunctionType.Create(
+                new TypeLibraryDeserializer(
+                    program.Platform,
+                    true,
+                    new TypeLibrary()),
+                new SerializedSignature
             {
                 ReturnValue = new Argument_v1 { Type = Int32() }
             });
-            var ft2 = new FunctionType(new SerializedSignature
+            var ft2 = FunctionType.Create(
+                new TypeLibraryDeserializer(
+                    program.Platform,
+                    true,
+                    new TypeLibrary()),
+                new SerializedSignature
             {
                 ReturnValue = new Argument_v1 { Type = Char() }
             });
@@ -815,7 +825,12 @@ fn00001200_exit:
                 this.sc
             );
 
-            var ft = new FunctionType(new SerializedSignature
+            var ft = FunctionType.Create(
+                new TypeLibraryDeserializer(
+                    program.Platform,
+                    true,
+                    new TypeLibrary()),
+                new SerializedSignature
             { 
                  ReturnValue = new Argument_v1 { Type = Real32() },
             });
