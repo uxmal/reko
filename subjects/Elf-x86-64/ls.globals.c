@@ -4,7 +4,7 @@
 
 #include "ls.h"
 
-Eq_28 g_t4028C0 = Unexpected function type (fn void ())
+Eq_28 g_t4028C0 = Unexpected function type (fn int32 (int32, (ptr (ptr char)), (ptr (ptr char))))
 ;
 Eq_31 g_t411E60 = Unexpected function type (fn void ())
 ;

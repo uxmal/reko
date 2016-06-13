@@ -14,8 +14,8 @@ Eq_20: (fn void (ptr64))
 Eq_26: (fn int32 ((ptr Eq_28), Eq_29, (ptr (ptr char)), (ptr Eq_31), (ptr Eq_32), (ptr Eq_17), (ptr void)))
 	T_26 (in __libc_start_main : ptr64)
 	T_27 (in signature of __libc_start_main : void)
-Eq_28: (fn void ())
-	T_28 (in main : (ptr (fn void ())))
+Eq_28: (fn int32 (int32, (ptr (ptr char)), (ptr (ptr char))))
+	T_28 (in main : (ptr (fn int32 (int32, (ptr (ptr char)), (ptr (ptr char))))))
 	T_35 (in 0x00000000004028C0 : word64)
 Eq_29: (union "Eq_29" (int32 u0) (word64 u1))
 	T_29 (in argc : int32)
@@ -137,7 +137,7 @@ T_27: (in signature of __libc_start_main : void)
   Class: Eq_26
   DataType: (ptr Eq_26)
   OrigDataType: 
-T_28: (in main : (ptr (fn void ())))
+T_28: (in main : (ptr (fn int32 (int32, (ptr (ptr char)), (ptr (ptr char))))))
   Class: Eq_28
   DataType: (ptr Eq_28)
   OrigDataType: 
@@ -168,7 +168,7 @@ T_34: (in stack_end : (ptr void))
 T_35: (in 0x00000000004028C0 : word64)
   Class: Eq_28
   DataType: (ptr Eq_28)
-  OrigDataType: (ptr (fn void ()))
+  OrigDataType: (ptr (fn int32 (int32, (ptr (ptr char)), (ptr (ptr char)))))
 T_36: (in qwArg00 : word64)
   Class: Eq_29
   DataType: Eq_29
@@ -214,7 +214,7 @@ typedef void (Eq_20)(ptr64);
 
 typedef int32 (Eq_26)( *, Eq_29, char * *,  *,  *,  *, void);
 
-typedef void (Eq_28)();
+typedef int32 (Eq_28)(int32, char * *, char * *);
 
 typedef union Eq_29 {
 	int32 u0;

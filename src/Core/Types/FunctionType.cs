@@ -40,7 +40,8 @@ namespace Reko.Core.Types
 			string name,
 			DataType returnType,
 			DataType [] argumentTypes,
-			string [] argumentNames) :
+			string [] argumentNames,
+            SerializedSignature sSig = null) :
 			base(name)
 		{
             if (argumentTypes == null)
@@ -50,6 +51,7 @@ namespace Reko.Core.Types
 			this.ReturnType = returnType; 
 			this.ArgumentTypes = argumentTypes; 
 			this.ArgumentNames = argumentNames;
+            this.Signature = sSig;
 		}
 
         public FunctionType(ProcedureSignature sig) : base()
@@ -67,36 +69,6 @@ namespace Reko.Core.Types
                 this.ArgumentTypes = new DataType[0];
                 this.ArgumentNames = new string[0];
             }
-        }
-
-        static public FunctionType Create(ISerializedTypeVisitor<DataType> tldser, SerializedSignature signature)
-        {
-            DataType[] argTypes;
-            string[] argNames;
-            if (signature.Arguments != null)
-            {
-                argTypes = signature.Arguments
-                   .Select(a => a.Type.Accept(tldser))
-                   .ToArray();
-                argNames = signature.Arguments
-                   .Select(a => a.Name)
-                   .ToArray();
-            }
-            else
-            {
-                argTypes = new DataType[0];
-                argNames = new string[0];
-            }
-            //$TODO: low level info like storages and stack offsets?
-            var ft = new FunctionType(
-                null,
-                signature.ReturnValue != null && signature.ReturnValue.Type != null
-                    ? signature.ReturnValue.Type.Accept(tldser)
-                    : VoidType.Instance,
-                argTypes,
-                argNames);
-            ft.Signature = signature;
-            return ft;
         }
 
         public override void Accept(IDataTypeVisitor v)

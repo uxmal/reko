@@ -744,21 +744,11 @@ fn00001200_exit:
                 this.sc
             );
 
-            var ft1 = FunctionType.Create(
-                new TypeLibraryDeserializer(
-                    program.Platform,
-                    true,
-                    new TypeLibrary()),
-                new SerializedSignature
+            var ft1 = Given_Serialized_Signature(new SerializedSignature
             {
                 ReturnValue = new Argument_v1 { Type = Int32() }
             });
-            var ft2 = FunctionType.Create(
-                new TypeLibraryDeserializer(
-                    program.Platform,
-                    true,
-                    new TypeLibrary()),
-                new SerializedSignature
+            var ft2 = Given_Serialized_Signature(new SerializedSignature
             {
                 ReturnValue = new Argument_v1 { Type = Char() }
             });
@@ -790,6 +780,15 @@ fn00001200_exit:
             Assert.AreEqual(sExpSig2, program.Procedures[Address.Ptr32(0x43210053)].Signature.ToString());
             Assert.AreEqual(sExpSig2, program.Procedures[Address.Ptr32(0x43210063)].Signature.ToString());
             Assert.AreEqual(sExpSig2, program.Procedures[Address.Ptr32(0x43210073)].Signature.ToString());
+        }
+
+        private DataType Given_Serialized_Signature(SerializedSignature sSignature)
+        {
+            var tldeser = new TypeLibraryDeserializer(
+                   program.Platform,
+                   true,
+                   new TypeLibrary());
+            return sSignature.Accept(tldeser);
         }
 
         private SerializedType Char()
@@ -825,12 +824,7 @@ fn00001200_exit:
                 this.sc
             );
 
-            var ft = FunctionType.Create(
-                new TypeLibraryDeserializer(
-                    program.Platform,
-                    true,
-                    new TypeLibrary()),
-                new SerializedSignature
+            var ft = Given_Serialized_Signature(new SerializedSignature
             { 
                  ReturnValue = new Argument_v1 { Type = Real32() },
             });
