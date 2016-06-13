@@ -248,7 +248,7 @@ namespace Reko.Core.Output
 		{
 			string oldName = name;
 			name = null;
-			ft.ReturnType.Accept(this);
+			ft.ReturnValue.DataType.Accept(this);
             if (mode == Mode.Writing)
             {
                 writer.Write(" (");
@@ -259,19 +259,19 @@ namespace Reko.Core.Output
             {
                 writer.Write(")(");
             }
-			if (ft.ArgumentTypes.Length > 0)
+			if (ft.Parameters != null && ft.Parameters.Length > 0)
 			{
-				name = ft.ArgumentNames != null ? ft.ArgumentNames[0] : null;
-				ft.ArgumentTypes[0].Accept(this);
+                name = ft.Parameters[0].Name;
+				ft.Parameters[0].DataType.Accept(this);
 				
-				for (int i = 1; i < ft.ArgumentTypes.Length; ++i)
+				for (int i = 1; i < ft.Parameters.Length; ++i)
 				{
                     if (mode == Mode.Writing)
                     {
                         writer.Write(", ");
                     }
-					name = ft.ArgumentNames != null ? ft.ArgumentNames[i] : null;
-					ft.ArgumentTypes[i].Accept(this);
+                    name = ft.Parameters[i].Name;
+					ft.Parameters[i].DataType.Accept(this);
 				}
 				name = oldName;
 			}

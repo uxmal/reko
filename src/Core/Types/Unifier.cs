@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -116,7 +117,7 @@ namespace Reko.Core.Types
 			FunctionType fb = b as FunctionType;
 			if (fa != null && fb != null)
 			{
-				return fa.ArgumentTypes.Length == fb.ArgumentTypes.Length;
+				return fa.Parameters.Length == fb.Parameters.Length;
 			}
 
             CodeType ca = a as CodeType;
@@ -420,17 +421,18 @@ namespace Reko.Core.Types
 
 		public DataType UnifyFunctions(FunctionType a, FunctionType b)
 		{
-			if (a.ArgumentTypes.Length != b.ArgumentTypes.Length)
+			if (a.Parameters.Length != b.Parameters.Length)
 			{
 				return MakeUnion(a, b);
 			}
-			DataType ret = Unify(a.ReturnType, b.ReturnType);
-			DataType [] args = new DataType[a.ArgumentTypes.Length];
+			DataType ret = Unify(a.ReturnValue.DataType, b.ReturnValue.DataType);
+			Identifier [] args = new Identifier[a.Parameters.Length];
 			for (int i = 0; i < args.Length; ++i)
 			{
-				args[i] = Unify(a.ArgumentTypes[i], b.ArgumentTypes[i]);
+				var dt = Unify(a.Parameters[i].DataType, b.Parameters[i].DataType);
+                args[i] = new Identifier(null, dt, null);   //$BUG: unify storages!
 			}
-			return factory.CreateFunctionType(null, ret, args, null);
+			return factory.CreateFunctionType(null, new Identifier("", ret, null), args);
 		}
 
 		/// <summary>

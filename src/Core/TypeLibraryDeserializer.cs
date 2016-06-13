@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
@@ -217,27 +218,22 @@ namespace Reko.Core
 
         public DataType VisitSignature(SerializedSignature signature)
         {
-            DataType[] argTypes;
-            string[] argNames;
+            Identifier[] parameters;
             if (signature.Arguments != null)
             {
-                argTypes = signature.Arguments
-                   .Select(a => a.Type.Accept(this))
-                   .ToArray();
-                argNames = signature.Arguments
-                   .Select(a => a.Name)
+                parameters = signature.Arguments
+                   .Select(a => new Identifier(a.Name, a.Type.Accept(this), null))   //$TODO: storage
                    .ToArray();
             }
             else
             {
-                argTypes = new DataType[0];
-                argNames = new string[0];
+                parameters = new Identifier[0];
             }
             //$TODO: low level info like storages and stack offsets?
             DataType retType = signature.ReturnValue != null && signature.ReturnValue.Type != null
                 ? signature.ReturnValue.Type.Accept(this)
                 : VoidType.Instance;
-            var ft = new FunctionType(null, retType, argTypes, argNames, signature);
+            var ft = new FunctionType(null, new Identifier("", retType, null), parameters, signature);
             return ft;
         }
 

@@ -863,9 +863,8 @@ fn00001200_exit:
 
             var ft = new FunctionType(
                 null,
-                PrimitiveType.Real32,
-                new DataType[0],
-                new string[0]);
+                new Identifier("", PrimitiveType.Real32, null),
+                new Identifier[0]);
             var str = new StructureType();
             str.Fields.AddRange(new StructureField[]
             {

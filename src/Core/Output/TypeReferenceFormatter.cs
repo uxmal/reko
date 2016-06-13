@@ -295,9 +295,9 @@ namespace Reko.Core.Output
                 return;
             }
             var ft = t as FunctionType;
-            if (ft != null)
+            if (ft != null && ft.ReturnValue != null)
             {
-                SpecifierQualifierList(ft.ReturnType);
+                SpecifierQualifierList(ft.ReturnValue.DataType);
                 return;
             }
             var at = t as ArrayType;
@@ -343,24 +343,24 @@ namespace Reko.Core.Output
         {
             var name = declaredName;
             fmt.Write('(');
-            if (ft.ArgumentTypes.Length == 0)
+            if (ft.Parameters == null || ft.Parameters.Length == 0)
             {
                 // fmt.Write("void");      // In C, 0-parameter functions use 'void'
             }
             else
             {
                 bool first = true;
-                for (int i = 0; i < ft.ArgumentTypes.Length; ++i)
+                for (int i = 0; i < ft.Parameters.Length; ++i)
                 {
                     if (!first)
                         fmt.Write(", ");
                     first = false;
-                    declaredName = ft.ArgumentNames != null ? ft.ArgumentNames[i] : null;
-                    DeclarationSpecifiers(ft.ArgumentTypes[i]);
+                    declaredName = ft.Parameters[i].Name;
+                    DeclarationSpecifiers(ft.Parameters[i].DataType);
                     if (declaration && declaredName != null)
-                        Declarator(ft.ArgumentTypes[i]);
+                        Declarator(ft.Parameters[i].DataType);
                     else
-                        AbstractDeclarator(ft.ArgumentTypes[i]);
+                        AbstractDeclarator(ft.Parameters[i].DataType);
                 }
             }
             fmt.Write(')');
@@ -502,7 +502,10 @@ namespace Reko.Core.Output
             if (ft != null)
             {
                 ParameterTypeList(ft);
-                AbstractDeclarator(ft.ReturnType);
+                if (ft.ReturnValue != null)
+                {
+                    AbstractDeclarator(ft.ReturnValue.DataType);
+                }
                 return;
             }
         }

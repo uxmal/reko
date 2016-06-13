@@ -102,20 +102,20 @@ namespace Reko.Core.Types
         public Formatter VisitFunctionType(FunctionType ft)
         {
             writer.Write("(fn ");
-            if (ft.ReturnType != null)
-                ft.ReturnType.Accept(this);
+            if (ft.ReturnValue!= null)
+                ft.ReturnValue.DataType.Accept(this);
             else
                 writer.Write("void");
             writer.Write(" (");
 
             string separator = "";
-            if (ft.ArgumentTypes != null)
+            if (ft.Parameters != null)
             {
-                for (int i = 0; i < ft.ArgumentTypes.Length; ++i)
+                for (int i = 0; i < ft.Parameters.Length; ++i)
                 {
                     writer.Write(separator);
                     separator = ", ";
-                    ft.ArgumentTypes[i].Accept(this);
+                    ft.Parameters[i].DataType.Accept(this);
                 }
             }
             writer.Write("))");

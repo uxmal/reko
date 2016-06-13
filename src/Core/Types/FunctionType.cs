@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using Reko.Core.Serialization;
 using System;
 using System.IO;
@@ -30,46 +31,32 @@ namespace Reko.Core.Types
     /// </summary>
 	public class FunctionType : DataType
 	{
-		public DataType ReturnType;
-		public readonly DataType [] ArgumentTypes;
-		public readonly string [] ArgumentNames;
         //$REVIEW: unify ProcedureSignature and FunctionType.
         public SerializedSignature Signature { get; private set; }
 
         public FunctionType(
-			string name,
-			DataType returnType,
-			DataType [] argumentTypes,
-			string [] argumentNames,
-            SerializedSignature sSig = null) :
-			base(name)
-		{
-            if (argumentTypes == null)
-                throw new ArgumentNullException("argumentTypes");
-			if (returnType == null)
-				returnType = VoidType.Instance;
-			this.ReturnType = returnType; 
-			this.ArgumentTypes = argumentTypes; 
-			this.ArgumentNames = argumentNames;
+            string name,
+            Identifier returnValue,
+            Identifier [] parameters,
+            SerializedSignature sSig = null)
+        {
+            if (parameters == null)
+                throw new ArgumentNullException("parameters");
+            if (returnValue == null)
+                returnValue = new Identifier("", VoidType.Instance, null);
+            this.ReturnValue = returnValue;
+            this.Parameters = parameters;
             this.Signature = sSig;
-		}
+        }
 
         public FunctionType(ProcedureSignature sig) : base()
         {
-            this.ReturnType = sig.ReturnValue != null
-                ? sig.ReturnValue.DataType
-                : VoidType.Instance;
-            if (sig.Parameters != null)
-            {
-                this.ArgumentTypes = sig.Parameters.Select(a => a.DataType).ToArray();
-                this.ArgumentNames = sig.Parameters.Select(a => a.Name).ToArray();
-            }
-            else
-            {
-                this.ArgumentTypes = new DataType[0];
-                this.ArgumentNames = new string[0];
-            }
+            this.ReturnValue = sig.ReturnValue;
+            this.Parameters = sig.Parameters;
         }
+
+        public Identifier ReturnValue { get; private set; }
+        public Identifier [] Parameters { get; private set; }
 
         public override void Accept(IDataTypeVisitor v)
         {
@@ -83,28 +70,11 @@ namespace Reko.Core.Types
 
 		public override DataType Clone()
 		{
-			DataType ret = (ReturnType != null) ? ReturnType.Clone() : null;
-
-            DataType[] types;
-            string[] names;
-            if (ArgumentTypes != null)
-            {
-                types = new DataType[ArgumentTypes.Length];
-                names = new string[ArgumentTypes.Length];
-            }
-            else
-            {
-                types = new DataType[0];
-                names = new string[0];
-            }
-			for (int i = 0; i < types.Length; ++i)
-			{
-				types[i] = ArgumentTypes[i].Clone();
-				if (ArgumentNames != null)
-					names[i] = ArgumentNames[i];
-			}
-            var ft = new FunctionType(Name, ret, types, names);
-            ft.Signature = Signature;
+            Identifier ret = new Identifier("", ReturnValue.DataType.Clone(), ReturnValue.Storage);
+            Identifier[] parameters = this.Parameters
+                .Select(p => new Identifier(p.Name, p.DataType.Clone(), p.Storage))
+                .ToArray();
+            var ft = new FunctionType(Name, ret, parameters, Signature);
             return ft;
 		}
 
