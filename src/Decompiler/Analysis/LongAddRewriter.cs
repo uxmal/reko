@@ -268,7 +268,7 @@ namespace Reko.Analysis
             var idHi = expHi as Identifier;
             if (idLo != null && idHi != null)
             {
-                return proc.Frame.EnsureSequence(idHi, idLo, totalSize);
+                return proc.Frame.EnsureSequence(idHi.Storage, idLo.Storage, totalSize);
             }
             var memDstLo = expLo as MemoryAccess;
             var memDstHi = expHi as MemoryAccess;

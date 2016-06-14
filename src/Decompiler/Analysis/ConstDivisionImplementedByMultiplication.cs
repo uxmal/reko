@@ -177,12 +177,12 @@ namespace Reko.Analysis
             return true;
         }
 
-        private Identifier FindAlias(Identifier id, Identifier idHead)
+        private Identifier FindAlias(Identifier id, Storage idHead)
         {
             return (ssa.Identifiers[id].Uses
                 .Select(u => u.Instruction)
                 .OfType<AliasAssignment>()
-                .Where(a => a.Dst.Storage == idHead.Storage)
+                .Where(a => a.Dst.Storage == idHead)
                 .Select(a => a.Dst)
                 .FirstOrDefault());
         }

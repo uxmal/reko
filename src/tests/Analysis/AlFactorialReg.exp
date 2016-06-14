@@ -27,9 +27,9 @@ cx:cx (aliases:)
 SCZO:Flags (aliases: SZO)
 SZO:Flags (aliases: SCZO)
 ax:ax (aliases: dx_ax)
-dx:dx (aliases: dx_ax)
-dx_ax:Sequence dx:ax (aliases: ax dx)
+dx_ax:Sequence dx:ax (aliases: ax)
 wLoc02:Local -0002 (aliases:)
+dx:dx (aliases:)
 // fn0C00_000B
 // Return size: 2
 void fn0C00_000B()

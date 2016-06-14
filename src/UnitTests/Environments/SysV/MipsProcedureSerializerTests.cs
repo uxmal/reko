@@ -56,18 +56,18 @@ namespace Reko.UnitTests.Environments.SysV
                 Arguments = args
             },
             arch.CreateFrame());
-            var sArgs = string.Join(", ", sig.Parameters.Select(RenderArg));
+            var sArgs = string.Join(", ", sig.Parameters.Select(p => RenderArg(p.Storage)));
             Assert.AreEqual(sExp.Trim(), sArgs);
         }
 
-        private string RenderArg(Identifier arg)
+        private string RenderArg(Storage arg)
         {
-            var reg = arg.Storage as RegisterStorage;
+            var reg = arg as RegisterStorage;
             if (reg != null)
             {
-                return RenderReg(reg, arg.DataType);
+                return RenderReg(reg);
             }
-            var seq = arg.Storage as SequenceStorage;
+            var seq = arg as SequenceStorage;
             if (seq != null)
             {
                 var head = RenderArg(seq.Head);
@@ -77,7 +77,7 @@ namespace Reko.UnitTests.Environments.SysV
             return "stack";
         }
 
-        private static string RenderReg(RegisterStorage reg, DataType dt)
+        private static string RenderReg(RegisterStorage reg)
         {
             return reg.Name;
         }

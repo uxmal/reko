@@ -384,8 +384,8 @@ namespace Reko.Analysis
 
         public bool VisitSequenceStorage(SequenceStorage seq, bool defining)
         {
-            seq.Head.Storage.Accept(this, defining);
-            seq.Tail.Storage.Accept(this, defining);
+            seq.Head.Accept(this, defining);
+            seq.Tail.Accept(this, defining);
             return true;
         }
 

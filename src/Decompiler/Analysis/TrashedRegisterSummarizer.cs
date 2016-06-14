@@ -150,8 +150,8 @@ namespace Reko.Analysis
             var seq = storage as SequenceStorage;
             if (seq != null)
             {
-                changed |= SetConstant(seq.Head.Storage, constant);
-                changed |= SetConstant(seq.Tail.Storage, constant);
+                changed |= SetConstant(seq.Head, constant);
+                changed |= SetConstant(seq.Tail, constant);
             }
             Constant old;
             if (!pf.ConstantRegisters.TryGetValue(storage, out old))
@@ -181,8 +181,8 @@ namespace Reko.Analysis
             var seq = s as SequenceStorage;
             if (seq != null)
             {
-                Trash(seq.Head.Storage);
-                Trash(seq.Tail.Storage);
+                Trash(seq.Head);
+                Trash(seq.Tail);
             }
         }
     }

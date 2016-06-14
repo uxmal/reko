@@ -324,7 +324,7 @@ namespace Reko.Arch.Vax
             if (width.Size == 8)
             {
                 var r1 = frame.EnsureRegister(Registers.r1);
-                ret = frame.EnsureSequence(r1, ret, width);
+                ret = frame.EnsureSequence(r1.Storage, ret.Storage, width);
             }
             var grf = FlagGroup(FlagM.ZF | FlagM.NF);
             emitter.Assign(

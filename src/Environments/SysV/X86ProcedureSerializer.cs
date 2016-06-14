@@ -105,9 +105,7 @@ namespace Reko.Environments.SysV
             if (bitSize <= 64)
             {
                 var edx = Architecture.GetRegister("edx");
-                return new SequenceStorage(
-                    new Identifier(edx.Name, edx.DataType, edx),
-                    new Identifier(eax.Name, eax.DataType, eax));
+                return new SequenceStorage(edx, eax);
             }
             throw new NotImplementedException();
         }
