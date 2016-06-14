@@ -93,6 +93,7 @@ namespace Reko.UnitTests.Arch.Intel
 
 
         [Test]
+        [Ignore]
         public void Msp_cdecl_call()
         {
             Given_MsdosPlatform();

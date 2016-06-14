@@ -127,7 +127,6 @@ namespace Reko.Typing
 		public DataType FunctionTrait(Expression function, int funcPtrSize, TypeVariable ret, params TypeVariable [] actuals)
 		{
             Identifier[] adt = actuals.Select(a => new Identifier("", a, null)).ToArray();
-			actuals.CopyTo(adt, 0);
 			var fn = factory.CreateFunctionType(null, new Identifier("", ret, null), adt);
 			var pfn = factory.CreatePointer(fn, funcPtrSize);
 			return MergeIntoDataType(function, pfn);
