@@ -216,25 +216,15 @@ namespace Reko.Core
             throw new NotImplementedException();
         }
 
-        public DataType VisitSignature(SerializedSignature signature)
+        public DataType VisitSignature(SerializedSignature sSig)
         {
-            Identifier[] parameters;
-            if (signature.Arguments != null)
-            {
-                parameters = signature.Arguments
-                   .Select(a => new Identifier(a.Name, a.Type.Accept(this), null))   //$TODO: storage
-                   .ToArray();
-            }
-            else
-            {
-                parameters = new Identifier[0];
-            }
-            //$TODO: low level info like storages and stack offsets?
-            DataType retType = signature.ReturnValue != null && signature.ReturnValue.Type != null
-                ? signature.ReturnValue.Type.Accept(this)
-                : VoidType.Instance;
-            var ft = new FunctionType(null, new Identifier("", retType, null), parameters, signature);
-            return ft;
+            var sser = platform.CreateProcedureSerializer(this, this.defaultConvention);
+            var sig = sser.Deserialize(sSig, platform.Architecture.CreateFrame());
+            return new FunctionType(
+                null,
+                sig.ReturnValue,
+                sig.Parameters, 
+                sSig);
         }
 
         public DataType VisitStructure(StructType_v1 structure)

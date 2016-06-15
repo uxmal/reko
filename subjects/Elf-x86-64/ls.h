@@ -214,7 +214,7 @@ typedef void (Eq_20)(ptr64);
 
 typedef int32 (Eq_26)( *, Eq_29, char * *,  *,  *,  *, void);
 
-typedef int32 (Eq_28)(int32, char * *, char * *);
+typedef int32 (Eq_28)(int32 rdi, char * * rsi, char * * rdx);
 
 typedef union Eq_29 {
 	int32 u0;
