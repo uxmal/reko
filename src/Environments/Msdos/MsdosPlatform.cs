@@ -67,9 +67,18 @@ namespace Reko.Environments.Msdos
         {
             if (signature.ReturnValue != null)
             {
-                if (signature.ReturnValue.Storage != Registers.al &&
-                    signature.ReturnValue.Storage != Registers.ax)
-                    return null;
+                var reg = signature.ReturnValue.Storage as RegisterStorage;
+                if (reg != null)
+                {
+                    if (reg != Registers.al && reg != Registers.ax)
+                        return null;
+                }
+                var seq = signature.ReturnValue.Storage as SequenceStorage;
+                if (seq != null)
+                {
+                    if (seq.Head != Registers.dx || seq.Tail != Registers.ax)
+                        return null;
+                }
             }
             if (signature.Parameters.Any(p => !(p.Storage is StackArgumentStorage)))
                 return null;

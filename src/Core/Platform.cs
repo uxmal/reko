@@ -68,6 +68,14 @@ namespace Reko.Core
         /// Given a procedure signature, determines whether it conforms to any
         /// of the platform's defined calling conventions.
         /// </summary>
+        /// <remarks>
+        /// Some platforms, like Win32, will have several well known 
+        /// calling conventions. Others, like many ELF implementations,
+        /// will have one and only one calling convention. On such platforms
+        /// we will assume that the calling convention is represented by
+        /// the empty string "". //$REVIEW: this probably highlights the 
+        /// need for a CallingConvention abstraction.
+        /// </remarks>
         /// <param name="signature"></param>
         /// <returns>The name of the calling convention, or null
         /// if no calling convention could be determined.</returns>
