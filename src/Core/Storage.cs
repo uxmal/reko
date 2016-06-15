@@ -44,6 +44,7 @@ namespace Reko.Core
         public StorageDomain Domain { get; set; }
         public ulong BitAddress { get; set; }
         public virtual ulong BitSize { get; set; }
+        public string Name { get; protected set; }
 
         public abstract int OffsetOf(Storage storage);
         public abstract T Accept<T>(StorageVisitor<T> visitor);
@@ -127,7 +128,6 @@ namespace Reko.Core
 
         public FlagRegister FlagRegister { get; private set; }
         public uint FlagGroupBits { get; private set; }
-        public string Name { get; private set; }
         public DataType DataType { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
@@ -339,11 +339,6 @@ namespace Reko.Core
         public ulong BitMask { get; private set; }
 
         /// <summary>
-        /// The name of the register.
-        /// </summary>
-        public string Name { get; private set; }
-
-        /// <summary>
         /// The size and domain of the register.
         /// </summary>
         /// <remarks>
@@ -479,15 +474,15 @@ namespace Reko.Core
 
 	public class SequenceStorage : Storage
 	{
-		public SequenceStorage(Identifier head, Identifier tail) 
+		public SequenceStorage(Storage head, Storage tail) 
 			: base("Sequence")		
 		{
 			this.Head = head;
 			this.Tail = tail;
 		}
 
-        public Identifier Head { get; private set; }
-        public Identifier Tail { get; private set; }
+        public Storage Head { get; private set; }
+        public Storage Tail { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
@@ -514,12 +509,12 @@ namespace Reko.Core
 
 		public override int OffsetOf(Storage stgSub)
 		{
-			int off = Tail.Storage.OffsetOf(stgSub);
+			int off = Tail.OffsetOf(stgSub);
 			if (off != -1)
 				return off;
-			off = Head.Storage.OffsetOf(stgSub);
+			off = Head.OffsetOf(stgSub);
 			if (off != -1)
-				return off + Tail.DataType.BitSize;
+				return off + (int)Tail.BitSize;
 			return -1;
 		}
 
@@ -540,15 +535,6 @@ namespace Reko.Core
             : base(kind)
         {
         }
-    }
-
-	public class StackArgumentStorage : StackStorage
-	{
-		public StackArgumentStorage(int cbOffset, DataType dataType) : base("Stack")
-		{
-			this.StackOffset = cbOffset;
-			this.DataType = dataType;
-		}
 
         /// <summary>
         /// Offset from stack pointer as it was when the procedure was entered.
@@ -560,8 +546,17 @@ namespace Reko.Core
         /// direction the stack grows, there may be negative stack offsets for parameters, although most popular
         /// general purpose processors (x86, PPC, m68K) grown their stacks down toward lower memory addresses.
         /// </remarks>
-        public int StackOffset { get; private set; }
-        public DataType DataType { get; private set; }
+        public DataType DataType { get; protected set; }
+        public int StackOffset { get; protected set; }
+    }
+
+    public class StackArgumentStorage : StackStorage
+	{
+		public StackArgumentStorage(int cbOffset, DataType dataType) : base("Stack")
+		{
+			this.StackOffset = cbOffset;
+			this.DataType = dataType;
+		}
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
@@ -615,9 +610,6 @@ namespace Reko.Core
             this.StackOffset = cbOffset;
             this.DataType = dataType;
         }
-
-        public DataType DataType { get; private set; }
-        public int StackOffset { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
@@ -679,8 +671,6 @@ namespace Reko.Core
             Domain = StorageDomain.Temporary + number;
             Name = name;
 		}
-
-        public string Name { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {

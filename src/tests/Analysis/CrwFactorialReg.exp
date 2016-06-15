@@ -39,7 +39,6 @@ Register word16 fn0C00_000B(Register word16 cx)
 // SCZO:Flags
 // SZO:Flags
 // ax:ax
-// dx:dx
 // dx_ax:Sequence dx:ax
 // wLoc02:Local -0002
 // return address size: 2

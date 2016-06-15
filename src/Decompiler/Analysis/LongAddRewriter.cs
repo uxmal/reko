@@ -201,9 +201,6 @@ namespace Reko.Analysis
                 var ass = stms[i].Instruction as Assignment;
                 if (ass == null)
                     continue;
-                var bin = ass.Src as BinaryExpression;
-                if (bin == null)
-                    continue;
                 if (IsCarryFlag(ass.Dst))
                     return null;
             }
@@ -268,7 +265,7 @@ namespace Reko.Analysis
             var idHi = expHi as Identifier;
             if (idLo != null && idHi != null)
             {
-                return proc.Frame.EnsureSequence(idHi, idLo, totalSize);
+                return proc.Frame.EnsureSequence(idHi.Storage, idLo.Storage, totalSize);
             }
             var memDstLo = expLo as MemoryAccess;
             var memDstHi = expHi as MemoryAccess;

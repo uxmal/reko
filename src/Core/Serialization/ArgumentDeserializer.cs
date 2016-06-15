@@ -121,9 +121,8 @@ namespace Reko.Core.Serialization
                 dt = this.argCur.Type.Accept(procSer.TypeLoader);
             else 
                 dt = PrimitiveType.CreateWord(head.DataType.Size + tail.DataType.Size);
-            return frame.EnsureSequence(head, tail, dt);
+            return frame.EnsureSequence(head.Storage, tail.Storage, dt);
         }
-
 
         public Identifier DeserializeReturnValue(Argument_v1 arg)
         {

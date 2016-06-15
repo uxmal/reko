@@ -121,9 +121,7 @@ namespace Reko.Environments.SysV
                     if (ptArg.Size <= 4)
                         return f0;
                     var f1 = Architecture.GetRegister("f1");
-                    return new SequenceStorage(
-                        new Identifier(f1.Name, f1.DataType, f1),
-                        new Identifier(f0.Name, f0.DataType, f0));
+                    return new SequenceStorage(f1, f0);
                 }
                 return Architecture.GetRegister("o0");
             }
