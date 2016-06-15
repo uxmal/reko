@@ -101,8 +101,6 @@ namespace Reko.Core
         {
             Identifier id = new Identifier(string.Format("{0}_{1}", head.Name, tail.Name), dt, new
                 SequenceStorage(head, tail));
-            if (id.Name.EndsWith("_fp"))    //$DEBUG
-                id.ToString();
             identifiers.Add(id);
             return id;
         }
