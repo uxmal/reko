@@ -113,5 +113,22 @@ namespace Reko.UnitTests.Environments.Msdos
             var cc = platform.DetermineCallingConvention(sig);
             Assert.AreEqual("__cdecl", cc);
         }
+
+        [Test]
+        public void Msp_cdecl_long_return_value()
+        {
+            Given_MsdosPlatform();
+            Given_Procedure();
+            var dx_ax = proc.Frame.EnsureSequence(Registers.dx, Registers.ax, PrimitiveType.Word32);
+            var arg06 = proc.Frame.EnsureStackArgument(6, PrimitiveType.Word16);
+            var sb = new SignatureBuilder(proc, arch);
+            sb.AddOutParam(dx_ax);
+            sb.AddInParam(arg06);
+            var sig = sb.BuildSignature();
+            sig.ReturnAddressOnStack = 4;
+            sig.StackDelta = 0;
+            var cc = platform.DetermineCallingConvention(sig);
+            Assert.AreEqual("__cdecl", cc);
+        }
     }
 }
