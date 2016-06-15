@@ -101,6 +101,8 @@ namespace Reko.Core
         {
             Identifier id = new Identifier(string.Format("{0}_{1}", head.Name, tail.Name), dt, new
                 SequenceStorage(head, tail));
+            if (id.Name.EndsWith("_fp"))    //$DEBUG
+                id.ToString();
             identifiers.Add(id);
             return id;
         }
@@ -123,6 +125,9 @@ namespace Reko.Core
             var fp = stgForeign as FpuStackStorage;
             if (fp != null)
                 return EnsureFpuStackVariable(fp.FpuStackOffset, fp.DataType);
+            var st = stgForeign as StackStorage;
+            if (st != null)
+                return EnsureStackVariable(st.StackOffset, st.DataType);
             throw new NotImplementedException(string.Format(
                 "Unsupported storage {0}.",
                 stgForeign != null ? stgForeign.ToString() : "(null)"));

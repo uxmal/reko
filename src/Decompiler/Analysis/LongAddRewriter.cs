@@ -201,9 +201,6 @@ namespace Reko.Analysis
                 var ass = stms[i].Instruction as Assignment;
                 if (ass == null)
                     continue;
-                var bin = ass.Src as BinaryExpression;
-                if (bin == null)
-                    continue;
                 if (IsCarryFlag(ass.Dst))
                     return null;
             }

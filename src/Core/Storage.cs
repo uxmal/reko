@@ -535,15 +535,6 @@ namespace Reko.Core
             : base(kind)
         {
         }
-    }
-
-	public class StackArgumentStorage : StackStorage
-	{
-		public StackArgumentStorage(int cbOffset, DataType dataType) : base("Stack")
-		{
-			this.StackOffset = cbOffset;
-			this.DataType = dataType;
-		}
 
         /// <summary>
         /// Offset from stack pointer as it was when the procedure was entered.
@@ -555,8 +546,17 @@ namespace Reko.Core
         /// direction the stack grows, there may be negative stack offsets for parameters, although most popular
         /// general purpose processors (x86, PPC, m68K) grown their stacks down toward lower memory addresses.
         /// </remarks>
-        public int StackOffset { get; private set; }
-        public DataType DataType { get; private set; }
+        public DataType DataType { get; protected set; }
+        public int StackOffset { get; protected set; }
+    }
+
+    public class StackArgumentStorage : StackStorage
+	{
+		public StackArgumentStorage(int cbOffset, DataType dataType) : base("Stack")
+		{
+			this.StackOffset = cbOffset;
+			this.DataType = dataType;
+		}
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
@@ -610,9 +610,6 @@ namespace Reko.Core
             this.StackOffset = cbOffset;
             this.DataType = dataType;
         }
-
-        public DataType DataType { get; private set; }
-        public int StackOffset { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
