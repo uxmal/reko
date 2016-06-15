@@ -113,7 +113,7 @@ namespace Reko.UnitTests.Analysis
         {
             Identifier eax = proc.Frame.EnsureRegister(Registers.eax);
             Identifier edx = proc.Frame.EnsureRegister(Registers.edx);
-            Identifier edx_eax = proc.Frame.EnsureSequence(edx, eax, PrimitiveType.Word64);
+            Identifier edx_eax = proc.Frame.EnsureSequence(edx.Storage, eax.Storage, PrimitiveType.Word64);
             Assignment ass = alias.CreateAliasInstruction(edx_eax, eax);
             Assert.AreEqual("eax = (word32) edx_eax (alias)", ass.ToString());
         }
@@ -123,7 +123,7 @@ namespace Reko.UnitTests.Analysis
         {
             Identifier eax = proc.Frame.EnsureRegister(Registers.eax);
             Identifier edx = proc.Frame.EnsureRegister(Registers.edx);
-            Identifier edx_eax = proc.Frame.EnsureSequence(edx, eax, PrimitiveType.Word64);
+            Identifier edx_eax = proc.Frame.EnsureSequence(edx.Storage, eax.Storage, PrimitiveType.Word64);
             Identifier dh = proc.Frame.EnsureRegister(Registers.dh);
             Assignment ass = alias.CreateAliasInstruction(edx_eax, dh);
             Assert.AreEqual("dh = SLICE(edx_eax, byte, 40) (alias)", ass.ToString());
@@ -134,7 +134,7 @@ namespace Reko.UnitTests.Analysis
         {
             Identifier eax = proc.Frame.EnsureRegister(Registers.eax);
             Identifier edx = proc.Frame.EnsureRegister(Registers.edx);
-            Identifier edx_eax = proc.Frame.EnsureSequence(edx, eax, PrimitiveType.Word64);
+            Identifier edx_eax = proc.Frame.EnsureSequence(edx.Storage, eax.Storage, PrimitiveType.Word64);
             Assignment ass = alias.CreateAliasInstruction(eax, edx_eax);
             Assert.AreEqual("edx_eax = SEQ(edx, eax) (alias)", ass.ToString());
 

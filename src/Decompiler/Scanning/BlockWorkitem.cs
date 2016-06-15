@@ -930,27 +930,28 @@ namespace Reko.Scanning
         {
             if (sig == null)
                 return;
-            TrashVariable(sig.ReturnValue);
+            if (sig.ReturnValue != null)
+                TrashVariable(sig.ReturnValue.Storage);
             for (int i = 0; i < sig.Parameters.Length; ++i)
             {
                 var os = sig.Parameters[i].Storage as OutArgumentStorage;
                 if (os != null)
                 {
-                    TrashVariable(os.OriginalIdentifier);
+                    TrashVariable(os.OriginalIdentifier.Storage);
                 }
             }
         }
 
-        public void TrashVariable(Identifier id)
+        public void TrashVariable(Storage id)
         {
             if (id == null)
                 return;
-            var reg = id.Storage as RegisterStorage;
+            var reg = id as RegisterStorage;
             if (reg != null)
             {
-                state.SetValue(id, Constant.Invalid);
+                state.SetValue(reg, Constant.Invalid);
             }
-            SequenceStorage seq = id.Storage as SequenceStorage;
+            SequenceStorage seq = id as SequenceStorage;
             if (seq != null)
             {
                 TrashVariable(seq.Head);

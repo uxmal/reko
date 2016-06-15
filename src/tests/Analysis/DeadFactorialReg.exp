@@ -31,45 +31,43 @@ si:si
 wLoc02_4: orig: wLoc02
 cx:cx
     def:  def cx
-    uses: si_16 = cx
-          cx_17 = cx - 0x0001
+    uses: si_15 = cx
+          cx_16 = cx - 0x0001
           branch cx <= 0x0001 l0C00_001C
 SCZO_6: orig: SCZO
 SZO_7: orig: SZO
 cx_8: orig: cx
 dx_ax_9: orig: dx_ax
 ax_10: orig: ax
-    def:  ax_10 = PHI(ax_21, ax_25)
+    def:  ax_10 = PHI(ax_20, ax_23)
     uses: return ax_10
-dx_11: orig: dx
-SCZO_12: orig: SCZO
-SZO_13: orig: SZO
-si_14: orig: si
-sp_15: orig: sp
-si_16: orig: si
-    def:  si_16 = cx
-    uses: dx_ax_20 = si_16 *s ax_19
-cx_17: orig: cx
-    def:  cx_17 = cx - 0x0001
-    uses: ax_19 = fn0C00_000B(cx_17)
-SZO_18: orig: SZO
-ax_19: orig: ax
-    def:  ax_19 = fn0C00_000B(cx_17)
-    uses: dx_ax_20 = si_16 *s ax_19
-dx_ax_20: orig: dx_ax
-    def:  dx_ax_20 = si_16 *s ax_19
-    uses: ax_21 = (word16) dx_ax_20 (alias)
-ax_21: orig: ax
-    def:  ax_21 = (word16) dx_ax_20 (alias)
-    uses: ax_10 = PHI(ax_21, ax_25)
-dx_22: orig: dx
-SCZO_23: orig: SCZO
-SZO_24: orig: SZO
-ax_25: orig: ax
-    def:  ax_25 = 0x0001
-    uses: ax_10 = PHI(ax_21, ax_25)
+SCZO_11: orig: SCZO
+SZO_12: orig: SZO
+si_13: orig: si
+sp_14: orig: sp
+si_15: orig: si
+    def:  si_15 = cx
+    uses: dx_ax_19 = si_15 *s ax_18
+cx_16: orig: cx
+    def:  cx_16 = cx - 0x0001
+    uses: ax_18 = fn0C00_000B(cx_16)
+SZO_17: orig: SZO
+ax_18: orig: ax
+    def:  ax_18 = fn0C00_000B(cx_16)
+    uses: dx_ax_19 = si_15 *s ax_18
+dx_ax_19: orig: dx_ax
+    def:  dx_ax_19 = si_15 *s ax_18
+    uses: ax_20 = (word16) dx_ax_19 (alias)
+ax_20: orig: ax
+    def:  ax_20 = (word16) dx_ax_19 (alias)
+    uses: ax_10 = PHI(ax_20, ax_23)
+SCZO_21: orig: SCZO
+SZO_22: orig: SZO
+ax_23: orig: ax
+    def:  ax_23 = 0x0001
+    uses: ax_10 = PHI(ax_20, ax_23)
 dx:dx
-dx_ax_27: orig: dx_ax
+dx_ax_25: orig: dx_ax
 // fn0C00_000B
 // Return size: 0
 word16 fn0C00_000B(word16 cx)
@@ -80,18 +78,18 @@ l0C00_000B:
 	branch cx <= 0x0001 l0C00_001C
 	// succ:  l0C00_0011 l0C00_001C
 l0C00_0011:
-	si_16 = cx
-	cx_17 = cx - 0x0001
-	ax_19 = fn0C00_000B(cx_17)
-	dx_ax_20 = si_16 *s ax_19
-	ax_21 = (word16) dx_ax_20 (alias)
+	si_15 = cx
+	cx_16 = cx - 0x0001
+	ax_18 = fn0C00_000B(cx_16)
+	dx_ax_19 = si_15 *s ax_18
+	ax_20 = (word16) dx_ax_19 (alias)
 	goto l0C00_001F
 	// succ:  l0C00_001F
 l0C00_001C:
-	ax_25 = 0x0001
+	ax_23 = 0x0001
 	// succ:  l0C00_001F
 l0C00_001F:
-	ax_10 = PHI(ax_21, ax_25)
+	ax_10 = PHI(ax_20, ax_23)
 	return ax_10
 	// succ:  fn0C00_000B_exit
 fn0C00_000B_exit:

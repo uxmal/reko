@@ -99,9 +99,8 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void SsigSerializeSequence()
         {
-            Identifier seq = new Identifier("es_bx", PrimitiveType.Word32, new SequenceStorage(
-                new Identifier(Registers.es.Name, Registers.es.DataType, Registers.es),
-                new Identifier(Registers.bx.Name, Registers.bx.DataType, Registers.bx)));
+            Identifier seq = new Identifier("es_bx", PrimitiveType.Word32, 
+                new SequenceStorage(Registers.es, Registers.bx));
             Given_ProcedureSerializer("stdapi");
             mr.ReplayAll();
 
