@@ -31,15 +31,16 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 
-namespace Reko.UnitTests.Arch.Intel
+namespace Reko.UnitTests.Environments.Msdos
 {
-	[TestFixture]
-	public class MsDosPlatformTests
-	{
+    [TestFixture]
+    public class MsDosPlatformTests
+    {
         private MockRepository mr;
         private ServiceContainer sc;
         private X86ArchitectureReal arch;
         private MsdosPlatform platform;
+        private Procedure proc;
 
         [SetUp]
         public void Setup()
@@ -63,8 +64,13 @@ namespace Reko.UnitTests.Arch.Intel
             this.platform = new MsdosPlatform(sc, arch);
         }
 
+        private void Given_Procedure()
+        {
+            this.proc = Procedure.Create(Address.Ptr32(0x1000), arch.CreateFrame());
+        }
+
         [Test]
-		public void MspRealModeServices()
+        public void MspRealModeServices()
         {
             mr.ReplayAll();
             Given_MsdosPlatform();
@@ -91,13 +97,21 @@ namespace Reko.UnitTests.Arch.Intel
             Assert.AreEqual("bx", seq.Tail.Name);
         }
 
-
         [Test]
-        [Ignore]
         public void Msp_cdecl_call()
         {
             Given_MsdosPlatform();
-            Assert.Fail();
+            Given_Procedure();
+            var ax = proc.Frame.EnsureRegister(Registers.ax);
+            var arg06 = proc.Frame.EnsureStackArgument(6, PrimitiveType.Word16);
+            var sb = new SignatureBuilder(proc, arch);
+            sb.AddOutParam(ax);
+            sb.AddInParam(arg06);
+            var sig = sb.BuildSignature();
+            sig.ReturnAddressOnStack = 4;
+            sig.StackDelta = 0;
+            var cc = platform.DetermineCallingConvention(sig);
+            Assert.AreEqual("__cdecl", cc);
         }
-	}
+    }
 }

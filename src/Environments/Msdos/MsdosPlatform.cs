@@ -63,6 +63,24 @@ namespace Reko.Environments.Msdos
             return new X86ProcedureSerializer((IntelArchitecture) this.Architecture, typeLoader, defaultConvention);
         }
 
+        public override string DetermineCallingConvention(ProcedureSignature signature)
+        {
+            if (signature.ReturnValue != null)
+            {
+                if (signature.ReturnValue.Storage != Registers.al &&
+                    signature.ReturnValue.Storage != Registers.ax)
+                    return null;
+            }
+            if (signature.Parameters.Any(p => !(p.Storage is StackArgumentStorage)))
+                return null;
+            if (signature.FpuStackDelta != 0 || signature.FpuStackArgumentMax >= 0)
+                return null;
+            if (signature.StackDelta == 0)
+                return "__cdecl";
+            else
+                return "__pascal";
+        }
+
         public override void EnsureTypeLibraries(string envName)
         {
             base.EnsureTypeLibraries(envName);
