@@ -581,11 +581,12 @@ namespace Reko.Scanning
         /// <param name="addr"></param>
         /// <param name="proc"></param>
         /// <param name="sp"></param>
-        public void InjectProcedureStartStatements(Address addr, Procedure proc)
+        public void InjectProcedureEntryInstructions(Address addr, Procedure proc)
         {
-            var stmts = proc.EntryBlock.Succ[0].Statements;
+            var bb = new StatementInjector(proc, proc.EntryBlock.Succ[0], addr);
             var sp = proc.Frame.EnsureRegister(program.Architecture.StackRegister);
-            stmts.Insert(0, addr.ToLinear(), new Assignment(sp, proc.Frame.FramePointer));
+            bb.Assign(sp, proc.Frame.FramePointer);
+            program.Platform.InjectProcedureEntryStatements(proc, addr, bb);
         }
 
         private bool TryGetNoDecompiledProcedure(Address addr, out ExternalProcedure ep)
@@ -897,6 +898,36 @@ namespace Reko.Scanning
                 proc.Frame.ReturnAddressSize = returnAddressBytes;
                 proc.Frame.ReturnAddressKnown = true;
                 proc.Signature.ReturnAddressOnStack = returnAddressBytes;
+            }
+        }
+
+        private class StatementInjector : CodeEmitter
+        {
+            private Address addr;
+            private Block block;
+            private int iStm;
+            private Procedure proc;
+
+            public StatementInjector(Procedure proc, Block block, Address addr)
+            {
+                this.proc = proc;
+                this.addr = addr;
+                this.block = block;
+                this.iStm = 0;
+            }
+
+            public override Frame Frame { get { return proc.Frame; } }
+
+            public override Statement Emit(Instruction instr)
+            {
+                var stm = block.Statements.Insert(iStm, addr.ToLinear(), instr);
+                ++iStm;
+                return stm;
+            }
+
+            public override Identifier Register(int i)
+            {
+                throw new NotImplementedException();
             }
         }
     }

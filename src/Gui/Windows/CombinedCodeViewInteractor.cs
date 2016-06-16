@@ -154,6 +154,7 @@ namespace Reko.Gui.Windows
                         nodeCreated = true;
                     }
                     else if (program.ImageMap.TryFindItem(curAddr, out item) &&
+                              item.DataType != null &&
                             !(item.DataType is UnknownType))
                     {
                         var dt = item.DataType;

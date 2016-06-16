@@ -4,4 +4,8 @@
 
 #include "TESTLONG.h"
 
+Eq_138 * g_ptr0000;
+Eq_8528 g_a0005[];
+Eq_402 g_t0008;
+Eq_188 g_t0010;
 

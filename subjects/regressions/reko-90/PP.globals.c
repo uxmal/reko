@@ -4,4 +4,7 @@
 
 #include "PP.h"
 
+Eq_2 g_tFFFF83BA;
+Eq_24 g_t0000;
+Eq_2 * g_ptr8000 = &g_tFFFF83BA;
 
