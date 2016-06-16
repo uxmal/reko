@@ -4,8 +4,4 @@
 
 #include "MAX.h"
 
-Eq_136 * g_ptr0000;
-Eq_8562 g_a0005[];
-Eq_400 g_t0008;
-Eq_186 g_t0010;
 

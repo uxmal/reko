@@ -4,8 +4,4 @@
 
 #include "BENCHFN.h"
 
-Eq_137 * g_ptr0000;
-Eq_8692 g_a0005[];
-Eq_401 g_t0008;
-Eq_187 g_t0010;
 

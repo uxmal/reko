@@ -2,7 +2,7 @@
 === redir
 *** redir
 : error: Error when reconstructing types.
-    Pulling difference int32 and (ptr (struct 0001 (0 (union (int8 u0) (T_4823 u1) (T_4831 u2)) u0000)))
+    Pulling difference int32 and (ptr (struct 0001 (0 (union (int8 u0) (T_4400 u1) (T_4408 u2)) u0000)))
        at Reko.Typing.ExpressionTypeAscender.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 188
    at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 91
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
@@ -37,6 +37,15 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
 
 === const.o
 === ls
+*** ls
+ls: error: An internal error occurred while decompiling.
+    The method or operation is not implemented.
+       at Reko.ImageLoaders.Elf.ElfLoader64.LocateGotPointers(Program program, SortedList`2 symbols) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\ElfLoader.cs:line 857
+   at Reko.ImageLoaders.Elf.ElfImageLoader.Relocate(Program program, Address addrLoad) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\ElfImageLoader.cs:line 98
+   at Reko.Loading.Loader.LoadExecutable(String filename, Byte[] image, Address addrLoad) in D:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 108
+   at Reko.DecompilerDriver.Load(String fileName) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 207
+   at Reko.DecompilerDriver.Decompile(String filename) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 97
+
 === BENCHFN
 *** BENCHFN
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.

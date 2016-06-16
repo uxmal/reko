@@ -376,7 +376,7 @@ namespace Reko.Scanning
                         var blockNew = CreateCallRetThunk(addrSrc, proc, procDest);
                         EstablishInitialState(addrDest, program.Architecture.CreateProcessorState(), procDest);
                         procDest.ControlGraph.AddEdge(procDest.EntryBlock, block);
-                        InjectProcedureStartStatements(addrDest, procDest);
+                        InjectProcedureEntryInstructions(addrDest, procDest);
                         var wi = CreatePromoteWorkItem(addrDest, block, procDest);
                         queue.Enqueue(PriorityBlockPromote, wi);
                         return blockNew;
@@ -551,7 +551,7 @@ namespace Reko.Scanning
             ProcessQueue();
             queue = oldQueue;
 
-            InjectProcedureStartStatements(addr, proc);
+            InjectProcedureEntryInstructions(addr, proc);
             var usb = new UserSignatureBuilder(program);
             usb.BuildSignature(addr, proc);
             return proc;
