@@ -1,23 +1,6 @@
 === CB80.dcproject
 === redir
 *** redir
-: error: Error when reconstructing types.
-    Pulling difference int32 and (ptr (struct 0001 (0 (union (int8 u0) (T_4823 u1) (T_4831 u2)) u0000)))
-       at Reko.Typing.ExpressionTypeAscender.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 188
-   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 91
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 82
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 83
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.ExpressionTypeAscender.VisitMemoryAccessCommon(Expression access, Expression ea) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 259
-   at Reko.Typing.ExpressionTypeAscender.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 254
-   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
-   at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 179
-   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 64
-   at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 101
-   at Reko.DecompilerDriver.ReconstructTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 318
 main: error: An error occurred while rewriting procedure to high-level language.
     Sequence contains no elements
        at System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
@@ -34,76 +17,278 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 149
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 533
+00400238: error: Failed to write global variable g_t400238.
+    Index was outside the bounds of the array.
+       at Reko.Core.MemoryArea.ReadBeInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 352
+   at Reko.Core.MemoryArea.ReadBeUInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 506
+   at Reko.Core.MemoryArea.ReadBe(Byte[] abImage, Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 233
+   at Reko.Core.MemoryArea.ReadBe(Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 171
+   at Reko.Core.ImageReader.ReadBe(PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 205
+   at Reko.Core.BeImageReader.Read(PrimitiveType dataType) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 581
+   at Reko.Core.Output.GlobalDataWriter.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 213
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 49
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 300
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 58
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+100007E0: warning: Expected sizes of arrays to have been determined by now
+1000002C: warning: Expected sizes of arrays to have been determined by now
+00400238: error: Failed to write global variable g_t400238.
+    Index was outside the bounds of the array.
+       at Reko.Core.MemoryArea.ReadBeInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 352
+   at Reko.Core.MemoryArea.ReadBeUInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 506
+   at Reko.Core.MemoryArea.ReadBe(Byte[] abImage, Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 233
+   at Reko.Core.MemoryArea.ReadBe(Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 171
+   at Reko.Core.ImageReader.ReadBe(PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 205
+   at Reko.Core.BeImageReader.Read(PrimitiveType dataType) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 581
+   at Reko.Core.Output.GlobalDataWriter.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 213
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 49
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 300
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 58
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+1000002C: warning: Expected sizes of arrays to have been determined by now
+100007E0: warning: Expected sizes of arrays to have been determined by now
 
 === const.o
 === ls
+*** ls
+ls: error: An internal error occurred while decompiling.
+    The method or operation is not implemented.
+       at Reko.ImageLoaders.Elf.ElfLoader64.LocateGotPointers(Program program, SortedList`2 symbols) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\ElfLoader.cs:line 857
+   at Reko.ImageLoaders.Elf.ElfImageLoader.Relocate(Program program, Address addrLoad) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\ElfImageLoader.cs:line 98
+   at Reko.Loading.Loader.LoadExecutable(String filename, Byte[] image, Address addrLoad) in D:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 108
+   at Reko.DecompilerDriver.Load(String fileName) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 207
+   at Reko.DecompilerDriver.Decompile(String filename) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 97
+
 === BENCHFN
 *** BENCHFN
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
-    Pulling difference (union (int32 u0) (uint32 u1)) and (ptr (struct 0001 (0 (union (word32 u0) (T_1555 u1)) u0000)))
-       at Reko.Typing.ExpressionTypeAscender.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 188
-   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 91
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 82
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 113
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 64
-   at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 101
+    Failed to compare two elements in the array.
+       at System.Collections.Generic.ArraySortHelper`1.BinarySearch(T[] array, Int32 index, Int32 length, T value, IComparer`1 comparer)
+   at System.Array.BinarySearch[T](T[] array, Int32 index, Int32 length, T value, IComparer`1 comparer)
+   at System.Collections.Generic.SortedList`2.set_Item(TKey key, TValue value)
+   at Reko.Core.Types.UnionAlternativeCollection.Add(UnionAlternative a) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 197
+   at Reko.Core.Types.Unifier.UnifyIntoUnion(UnionType u, DataType dt) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 418
+   at Reko.Typing.TypeTransformer.FactorDuplicateAlternatives(UnionType u) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 84
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 412
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 80
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 58
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 49
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 400
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 80
+   at Reko.Typing.TypeTransformer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 257
+   at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 111
    at Reko.DecompilerDriver.ReconstructTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 318
+       at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 91
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 68
+   at System.Collections.Generic.ArraySortHelper`1.InternalBinarySearch(T[] array, Int32 index, Int32 length, T value, IComparer`1 comparer)
+   at System.Collections.Generic.ArraySortHelper`1.BinarySearch(T[] array, Int32 index, Int32 length, T value, IComparer`1 comparer)
 
 === BENCHMUL
 *** BENCHMUL
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
-    Pulling difference (union (int32 u0) (uint32 u1)) and (ptr (struct 0001 (0 (union (word32 u0) (T_2212 u1)) u0000)))
-       at Reko.Typing.ExpressionTypeAscender.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 188
-   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 91
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 82
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 113
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 64
-   at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 101
+    Failed to compare two elements in the array.
+       at System.Collections.Generic.ArraySortHelper`1.BinarySearch(T[] array, Int32 index, Int32 length, T value, IComparer`1 comparer)
+   at System.Array.BinarySearch[T](T[] array, Int32 index, Int32 length, T value, IComparer`1 comparer)
+   at System.Collections.Generic.SortedList`2.set_Item(TKey key, TValue value)
+   at Reko.Core.Types.UnionAlternativeCollection.Add(UnionAlternative a) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 197
+   at Reko.Core.Types.Unifier.UnifyIntoUnion(UnionType u, DataType dt) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 418
+   at Reko.Typing.TypeTransformer.FactorDuplicateAlternatives(UnionType u) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 84
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 412
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 80
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 58
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 49
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 400
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 80
+   at Reko.Typing.TypeTransformer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 257
+   at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 111
    at Reko.DecompilerDriver.ReconstructTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 318
+       at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 91
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 68
+   at System.Collections.Generic.ArraySortHelper`1.InternalBinarySearch(T[] array, Int32 index, Int32 length, T value, IComparer`1 comparer)
+   at System.Collections.Generic.ArraySortHelper`1.BinarySearch(T[] array, Int32 index, Int32 length, T value, IComparer`1 comparer)
 
 === BYTEOPS
 *** BYTEOPS
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-: error: Error when reconstructing types.
-    Pulling difference (union (int32 u0) (uint32 u1)) and (ptr (struct 0001 (0 (union (word32 u0) (T_1402 u1)) u0000)))
-       at Reko.Typing.ExpressionTypeAscender.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 188
-   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 91
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 82
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 113
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 64
-   at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 101
-   at Reko.DecompilerDriver.ReconstructTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 318
+: warning: Type transformer has looped 51 times, quitting prematurely.
+00001DAC: error: Failed to write global variable g_u1DAC.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 323
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 80
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00001DB0: warning: Expected sizes of arrays to have been determined by now
+00001DAC: error: Failed to write global variable g_u1DAC.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 323
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 80
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00001DB0: warning: Expected sizes of arrays to have been determined by now
 
 === FIBO
 *** FIBO
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
-    Pulling difference (union (int32 u0) (uint32 u1)) and (ptr (struct 0001 (0 (union (word32 u0) (T_1584 u1)) u0000)))
-       at Reko.Typing.ExpressionTypeAscender.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 188
-   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 91
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 82
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 113
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 64
-   at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 101
+    Failed to compare two elements in the array.
+       at System.Collections.Generic.ArraySortHelper`1.BinarySearch(T[] array, Int32 index, Int32 length, T value, IComparer`1 comparer)
+   at System.Array.BinarySearch[T](T[] array, Int32 index, Int32 length, T value, IComparer`1 comparer)
+   at System.Collections.Generic.SortedList`2.set_Item(TKey key, TValue value)
+   at Reko.Core.Types.UnionAlternativeCollection.Add(UnionAlternative a) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 197
+   at Reko.Core.Types.Unifier.UnifyIntoUnion(UnionType u, DataType dt) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 418
+   at Reko.Typing.TypeTransformer.FactorDuplicateAlternatives(UnionType u) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 84
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 412
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 80
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 58
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 49
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 400
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 80
+   at Reko.Typing.TypeTransformer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 257
+   at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 111
    at Reko.DecompilerDriver.ReconstructTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 318
+       at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 91
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 68
+   at System.Collections.Generic.ArraySortHelper`1.InternalBinarySearch(T[] array, Int32 index, Int32 length, T value, IComparer`1 comparer)
+   at System.Collections.Generic.ArraySortHelper`1.BinarySearch(T[] array, Int32 index, Int32 length, T value, IComparer`1 comparer)
 
 === MATRIXMU
 === MAX
@@ -111,14 +296,71 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
-    The method or operation is not implemented.
-       at Reko.Typing.ExpressionTypeAscender.VisitTestCondition(TestCondition tc) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 359
-   at Reko.Core.Expressions.TestCondition.Accept[T](ExpressionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 56
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 113
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 64
-   at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 101
+    Failed to compare two elements in the array.
+       at System.Collections.Generic.ArraySortHelper`1.BinarySearch(T[] array, Int32 index, Int32 length, T value, IComparer`1 comparer)
+   at System.Array.BinarySearch[T](T[] array, Int32 index, Int32 length, T value, IComparer`1 comparer)
+   at System.Collections.Generic.SortedList`2.set_Item(TKey key, TValue value)
+   at Reko.Core.Types.UnionAlternativeCollection.Add(UnionAlternative a) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 197
+   at Reko.Core.Types.Unifier.UnifyIntoUnion(UnionType u, DataType dt) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 418
+   at Reko.Typing.TypeTransformer.FactorDuplicateAlternatives(UnionType u) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 84
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 412
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 80
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 58
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 49
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 400
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 80
+   at Reko.Typing.TypeTransformer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 257
+   at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 111
    at Reko.DecompilerDriver.ReconstructTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 318
+       at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 91
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 68
+   at System.Collections.Generic.ArraySortHelper`1.InternalBinarySearch(T[] array, Int32 index, Int32 length, T value, IComparer`1 comparer)
+   at System.Collections.Generic.ArraySortHelper`1.BinarySearch(T[] array, Int32 index, Int32 length, T value, IComparer`1 comparer)
 
 === STRLEN
 === TESTLONG
@@ -126,17 +368,71 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
-    Pulling difference (union (int32 u0) (uint32 u1)) and (ptr (struct 0001 (0 (union (word32 u0) (T_1511 u1)) u0000)))
-       at Reko.Typing.ExpressionTypeAscender.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 188
-   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 91
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 82
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 113
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 64
-   at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 101
+    Failed to compare two elements in the array.
+       at System.Collections.Generic.ArraySortHelper`1.BinarySearch(T[] array, Int32 index, Int32 length, T value, IComparer`1 comparer)
+   at System.Array.BinarySearch[T](T[] array, Int32 index, Int32 length, T value, IComparer`1 comparer)
+   at System.Collections.Generic.SortedList`2.set_Item(TKey key, TValue value)
+   at Reko.Core.Types.UnionAlternativeCollection.Add(UnionAlternative a) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 197
+   at Reko.Core.Types.Unifier.UnifyIntoUnion(UnionType u, DataType dt) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 418
+   at Reko.Typing.TypeTransformer.FactorDuplicateAlternatives(UnionType u) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 84
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 412
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 80
+   at Reko.Typing.TypeTransformer.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 371
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 58
+   at Reko.Typing.TypeTransformer.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 341
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 49
+   at Reko.Typing.TypeTransformer.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 400
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 80
+   at Reko.Typing.TypeTransformer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeTransformer.cs:line 257
+   at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 111
    at Reko.DecompilerDriver.ReconstructTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 318
+       at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 91
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.CompareInternal(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 151
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y, Int32 count) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 82
+   at Reko.Core.Types.DataTypeComparer.Compare(DataType x, DataType y) in D:\dev\uxmal\reko\master\src\Core\Types\DataTypeComparer.cs:line 68
+   at System.Collections.Generic.ArraySortHelper`1.InternalBinarySearch(T[] array, Int32 index, Int32 length, T value, IComparer`1 comparer)
+   at System.Collections.Generic.ArraySortHelper`1.BinarySearch(T[] array, Int32 index, Int32 length, T value, IComparer`1 comparer)
 
 === BENCHFN.dcproject
 === BENCHFN.EXE
@@ -144,16 +440,16 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
 *** pySample.dcproject
 10003008: error: Failed to write global variable g_t10003008.
     The method or operation is not implemented.
-       at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 322
+       at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 323
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 80
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 181
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 182
    at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 53
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
 10003008: error: Failed to write global variable g_t10003008.
     The method or operation is not implemented.
-       at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 322
+       at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 323
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 80
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 181
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 182
    at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 53
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
 
@@ -226,13 +522,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
    at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 96
-: error: Error when reconstructing types.
-    The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 153
-   at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 64
-   at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 101
-   at Reko.DecompilerDriver.ReconstructTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 318
+: warning: Type transformer has looped 51 times, quitting prematurely.
 main: error: An error occurred while rewriting procedure to high-level language.
     The given key was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)

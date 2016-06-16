@@ -135,6 +135,17 @@ namespace Reko.Environments.SysV
             return host.GetInterceptedCall(addrTarget);
         }
 
+        public override void InjectProcedureEntryStatements(Procedure proc, Address addr, CodeEmitter m)
+        {
+            switch (Architecture.Name)
+            {
+            case "mips-be-32":
+                // MIPS ELF ABI: r25 is _always_ set to the address of a procedure on entry.
+                m.Assign(proc.Frame.EnsureRegister(Architecture.GetRegister(25)), Constant.Word32((uint) addr.ToLinear()));
+                break;
+            }
+        }
+
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             //$REVIEW: looks a lot like Win32library, perhaps push to parent class?

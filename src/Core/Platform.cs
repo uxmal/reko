@@ -59,7 +59,7 @@ namespace Reko.Core
 
         Address AdjustProcedureAddress(Address addrCode);
         HashSet<RegisterStorage> CreateImplicitArgumentRegisters();
-        IEnumerable<Address> CreatePointerScanner(SegmentMap segmentMap, ImageReader rdr, IEnumerable<Address> address, PointerScannerFlags pointerScannerFlags);
+        IEnumerable<Address> CreatePointerScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> addr, PointerScannerFlags flags);
         ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
         TypeLibrary CreateMetadata();
         SegmentMap CreateAbsoluteMemoryMap();
@@ -98,6 +98,14 @@ namespace Reko.Core
         SystemService FindService(int vector, ProcessorState state);
         SystemService FindService(RtlInstruction call, ProcessorState state);
         string FormatProcedureName(Program program, Procedure proc);
+
+        /// <summary>
+        /// Injects any platform specific instructions to the beginning 
+        /// of a procedure.
+        /// </summary>
+        /// <param name="emitter"></param>
+        void InjectProcedureEntryStatements(Procedure proc, Address addr, CodeEmitter emitter);
+
         void LoadUserOptions(Dictionary<string, object> options);
         ExternalProcedure LookupProcedureByName(string moduleName, string procName);
         ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal);
@@ -303,6 +311,10 @@ namespace Reko.Core
         public virtual Address MakeAddressFromConstant(Constant c)
         {
             return Architecture.MakeAddressFromConstant(c);
+        }
+
+        public virtual void InjectProcedureEntryStatements(Procedure proc, Address addr, CodeEmitter emitter)
+        {
         }
 
         /// <summary>

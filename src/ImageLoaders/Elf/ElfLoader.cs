@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Lib;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -32,7 +33,23 @@ namespace Reko.ImageLoaders.Elf
 {
     public abstract class ElfLoader
     {
-        public const int ELFOSABI_NONE = 0x00;         // No specific ABI specified.
+        public const int ELFOSABI_NONE = 0x00;  // No specific ABI specified.
+        public const int ELFOSABI_HPUX = 1;     // Hewlett-Packard HP-UX 
+        public const int ELFOSABI_NETBSD = 2;   // NetBSD 
+        public const int ELFOSABI_GNU = 3;      // GNU 
+        public const int ELFOSABI_LINUX = 3;    // Linux  historical - alias for ELFOSABI_GNU 
+        public const int ELFOSABI_SOLARIS = 6;  // Sun Solaris 
+        public const int ELFOSABI_AIX = 7;      // AIX 
+        public const int ELFOSABI_IRIX = 8;     // IRIX 
+        public const int ELFOSABI_FREEBSD = 9;  // FreeBSD 
+        public const int ELFOSABI_TRU64 = 10;   // Compaq TRU64 UNIX 
+        public const int ELFOSABI_MODESTO = 11; // Novell Modesto 
+        public const int ELFOSABI_OPENBSD = 12; // Open BSD 
+        public const int ELFOSABI_OPENVMS = 13; // Open VMS 
+        public const int ELFOSABI_NSK = 14;     // Hewlett-Packard Non-Stop Kernel 
+        public const int ELFOSABI_AROS = 15;    // Amiga Research OS 
+        public const int ELFOSABI_FENIXOS = 16; // The FenixOS highly scalable multi-core OS 
+
         public const int ELFOSABI_CELL_LV2 = 0x66;     // PS/3 has this in its files
         public const uint SHF_WRITE = 0x1;
         public const uint SHF_ALLOC = 0x2;
@@ -229,6 +246,7 @@ namespace Reko.ImageLoaders.Elf
         public abstract int LoadProgramHeaderTable();
         public abstract void LoadSectionHeaders();
         public abstract List<ElfSymbol> LoadSymbolsSection(ElfSection symSection);
+        public abstract void LocateGotPointers(Program program, SortedList<Address, ImageSymbol> symbols);
 
         public IEnumerable<ElfSymbol> GetAllSymbols()
         {
@@ -252,12 +270,29 @@ namespace Reko.ImageLoaders.Elf
             return Sections.FirstOrDefault(s => s.Name == sectionName);
         }
 
-        public string GetSectionName(uint idxString)
+        protected string ReadSectionName(uint idxString)
         {
             ulong offset = (ulong)GetSectionNameOffset(idxString);
             return imgLoader.ReadAsciiString(offset);
         }
 
+        public string GetSectionName(ushort st_shndx)
+        {
+            Debug.Assert(Sections != null);
+            if (st_shndx < 0xFF00)
+            {
+                return Sections[st_shndx].Name;
+            }
+            else
+            {
+                switch (st_shndx)
+                {
+                case 0xFFF1: return "SHN_ABS";
+                case 0xFFF2: return "SHN_COMMON";
+                default: return st_shndx.ToString("X4");
+                }
+            }
+        }
         protected abstract int GetSectionNameOffset(uint idxString);
 
         public string GetStrPtr(ElfSection section, ulong offset)
@@ -388,22 +423,7 @@ namespace Reko.ImageLoaders.Elf
             return 0; //m_pImportStubs[];
         }
 
-        protected string GetSectionNameQ(ushort st_shndx)
-        {
-            if (st_shndx < 0xFF00)
-            {
-                return Sections[st_shndx].Name;
-            }
-            else
-            {
-                switch (st_shndx)
-                {
-                case 0xFFF1: return "SHN_ABS";
-                case 0xFFF2: return "SHN_COMMON";
-                default: return st_shndx.ToString("X4");
-                }
-            }
-        }
+
 
         public string GetStrPtr(Elf32_SHdr sect, uint offset)
         {
@@ -745,7 +765,7 @@ namespace Reko.ImageLoaders.Elf
             for (int i = 0; i < Sections.Count; ++i)
             {
                 var section = Sections[i];
-                section.Name = GetSectionName(inames[i]);
+                section.Name = ReadSectionName(inames[i]);
 
                 ElfSection linkSection = null;
                 ElfSection relSection = null;
@@ -782,7 +802,7 @@ namespace Reko.ImageLoaders.Elf
                     ReadAsciiString(stringtableSection.FileOffset + sym.st_name),
                     (ElfSymbolType)(sym.st_info & 0xF),
                     sym.st_shndx,
-                    GetSectionNameQ(sym.st_shndx),
+                    GetSectionName(sym.st_shndx),
                     sym.st_value,
                     sym.st_size);
                 symbols.Add(new ElfSymbol
@@ -830,6 +850,11 @@ namespace Reko.ImageLoaders.Elf
                 }
             }
             return new RelocationResults(entryPoints, symbols, new List<Address>());
+        }
+
+        public override void LocateGotPointers(Program program, SortedList<Address, ImageSymbol> symbols)
+        {
+            throw new NotImplementedException();
         }
     }
 
@@ -996,9 +1021,12 @@ namespace Reko.ImageLoaders.Elf
             switch (shdr.Type)
             {
             case SectionHeaderType.SHT_DYNAMIC:
-                return new DynamicSectionRenderer(this, shdr);
+                return new DynamicSectionRenderer32(this, shdr);
             case SectionHeaderType.SHT_RELA:
                 return new RelaSegmentRenderer(this, shdr);
+            case SectionHeaderType.SHT_SYMTAB:
+            case SectionHeaderType.SHT_DYNSYM:
+                return new SymtabSegmentRenderer32(this, shdr);
             default: return null;
             }
         }
@@ -1248,7 +1276,7 @@ namespace Reko.ImageLoaders.Elf
             for (int i = 0; i < Sections.Count; ++i)
             {
                 var section = Sections[i];
-                section.Name = GetSectionName(inames[i]);
+                section.Name = ReadSectionName(inames[i]);
 
                 ElfSection linkSection = null;
                 ElfSection relSection = null;
@@ -1285,7 +1313,7 @@ namespace Reko.ImageLoaders.Elf
                     ReadAsciiString(stringtableSection.FileOffset + sym.st_name),
                     (ElfSymbolType)(sym.st_info & 0xF),
                     sym.st_shndx,
-                    GetSectionNameQ(sym.st_shndx),
+                    GetSectionName(sym.st_shndx),
                     sym.st_value,
                     sym.st_size);
                 symbols.Add(new ElfSymbol
@@ -1334,6 +1362,42 @@ namespace Reko.ImageLoaders.Elf
             }
             return new RelocationResults(entryPoints, symbols, new List<Address>());
         }
-    }
 
+        /// <summary>
+        /// The GOT table contains an array of pointers. Some of these
+        /// pointers may be pointing to the symbols in the symbol table(s).
+        /// </summary>
+        public override void LocateGotPointers(Program program, SortedList<Address, ImageSymbol> symbols)
+        {
+            // Locate the GOT
+            //$REVIEW: there doesn't seem to be a reliable way to get that
+            // information.
+            var got = program.SegmentMap.Segments.Values.FirstOrDefault(s => s.Name == ".got");
+            if (got == null)
+                return;
+
+            var rdr = program.CreateImageReader(got.Address);
+            while (rdr.Address < got.EndAddress)
+            {
+                var addrGot = rdr.Address;
+                uint uAddrSym;
+                if (!rdr.TryReadUInt32(out uAddrSym))
+                    break;
+
+                var addrSym = Address.Ptr32(uAddrSym);
+                ImageSymbol symbol;
+                if (symbols.TryGetValue(addrSym, out symbol))
+                {
+                    // This GOT entry is a known symbol!
+                    if (symbol.Type == SymbolType.Procedure)
+                    {
+                        //$TODO: look up function signature.
+                        var gotSym = new ImageSymbol(addrGot, symbol.Name + "_GOT",  new Pointer(new CodeType(), 4));
+                        symbols[addrGot] = gotSym;
+                        Debug.Print("Found GOT entry at {0}, changing symbol at {1}", gotSym, symbol);
+                    }
+                }
+            }
+        }
+    }
 }
