@@ -249,10 +249,10 @@ namespace Reko.Scanning
         public IEnumerable<RtlInstructionCluster> GetTrace(Address addrStart, ProcessorState state, Frame frame)
         {
             return program.Architecture.CreateRewriter(
-                    CreateReader(addrStart),
-                    state,
-                    frame,
-                    this);
+                CreateReader(addrStart),
+                state,
+                frame,
+                this);
         }
 
         public PromoteBlockWorkItem CreatePromoteWorkItem(Address addrStart, Block block, Procedure procNew)
@@ -341,8 +341,8 @@ namespace Reko.Scanning
             }
             else if (block.Procedure != proc)
             {
-                // Jumped to a block with a different procedure than the current one.
-                // Was the jump to the entry of an existing procedure?
+                // Jumped to a block with a different procedure than the 
+                // current one. Was the jump to the entry of an existing procedure?
                 if (program.Procedures.TryGetValue(addrDest, out procDest))
                 {
                     if (procDest == proc)

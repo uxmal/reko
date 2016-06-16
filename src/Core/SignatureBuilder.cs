@@ -56,32 +56,31 @@ namespace Reko.Core
 
 		public void AddFpuStackArgument(int x, Identifier id)
 		{
-			AddArgument(proc.Frame.EnsureFpuStackVariable(x, id.DataType), false);
+			AddInParam(proc.Frame.EnsureFpuStackVariable(x, id.DataType));
 		}
 
 		public void AddRegisterArgument(RegisterStorage reg)
 		{
-			AddArgument(proc.Frame.EnsureRegister(reg), false);
+			AddInParam(proc.Frame.EnsureRegister(reg));
 		}
 
-		public void AddArgument(Identifier idOrig, bool isOut)
-		{
-			Identifier arg;
-			if (isOut)
-			{
-				if (ret == null)
-				{
-					ret = idOrig;
-					return;
-				}
-				arg = proc.Frame.EnsureOutArgument(idOrig, arch.FramePointerType);
-			}
-			else
-			{
-				arg = idOrig;
-			}
-			args.Add(arg);
-		}
+        public void AddOutParam(Identifier idOrig)
+        {
+            if (ret == null)
+            {
+                ret = idOrig;
+            }
+            else
+            {
+                var arg = proc.Frame.EnsureOutArgument(idOrig, arch.FramePointerType);
+                args.Add(arg);
+            }
+        }
+
+        public void AddInParam(Identifier arg)
+        {
+            args.Add(arg);
+        }
 
 		public void AddStackArgument(int stackOffset, Identifier id)
 		{

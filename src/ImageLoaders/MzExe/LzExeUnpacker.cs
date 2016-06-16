@@ -123,7 +123,7 @@ namespace Reko.ImageLoaders.MzExe
 			{
 				Relocate90(RawImage, addrLoad.Selector.Value, imgLoaded);
 			}
-            return new RelocationResults(entryPoints, imageSymbols, new List<Address>());
+            return new RelocationResults(entryPoints, imageSymbols);
 		}
 
 		// for LZEXE ver 0.90 

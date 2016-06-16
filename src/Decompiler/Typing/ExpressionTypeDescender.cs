@@ -82,11 +82,14 @@ namespace Reko.Typing
             MeetDataType(appl, appl.TypeVariable.DataType);
 
             appl.Procedure.Accept(this, appl.Procedure.TypeVariable);
-            BindActualTypesToFormalTypes(appl);
-
-            var paramTypes = appl.Arguments.Select(a => a.TypeVariable).ToArray();
+            TypeVariable[] paramTypes = new TypeVariable[appl.Arguments.Length];
+            for (int i = 0; i < appl.Arguments.Length; ++i)
+            {
+                appl.Arguments[i].Accept(this, appl.Arguments[i].TypeVariable);
+                paramTypes[i] = appl.Arguments[i].TypeVariable;
+            }
             FunctionTrait(appl.Procedure, appl.Procedure.DataType.Size, appl.TypeVariable, paramTypes);
-
+            BindActualTypesToFormalTypes(appl);
             return false;
         }
 
@@ -112,9 +115,13 @@ namespace Reko.Typing
 
         public void FunctionTrait(Expression function, int funcPtrSize, TypeVariable ret, params TypeVariable[] actuals)
         {
-            DataType[] adt = new DataType[actuals.Length];
-            actuals.CopyTo(adt, 0);
-            var fn = factory.CreateFunctionType(null, ret, adt, null);
+            Identifier[] parameters = actuals
+                .Select(a => new Identifier("", a, null))
+                .ToArray();
+            var fn = factory.CreateFunctionType(
+                null, 
+                new Identifier("", ret, null),
+                parameters);
             var pfn = factory.CreatePointer(fn, funcPtrSize);
             MeetDataType(function, pfn);
         }

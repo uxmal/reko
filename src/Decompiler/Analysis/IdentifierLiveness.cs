@@ -232,11 +232,11 @@ namespace Reko.Analysis
 
 		public Storage VisitSequenceStorage(SequenceStorage seq)
 		{
-			seq.Head.Storage.Accept(this);
-			seq.Tail.Storage.Accept(this);
+			seq.Head.Accept(this);
+			seq.Tail.Accept(this);
 	  		if (define)
 			{
-				defBitSize = seq.Head.DataType.BitSize + seq.Tail.DataType.BitSize;
+				defBitSize = (int)(seq.Head.BitSize + seq.Tail.BitSize);
 				defOffset = 0;
 			}
 			else

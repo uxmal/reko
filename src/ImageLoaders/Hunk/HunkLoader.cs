@@ -640,8 +640,7 @@ print arg_mem
             };
             return new RelocationResults(
                 new List<ImageSymbol> { sym },
-                new SortedList<Address, ImageSymbol> { { sym.Address, sym } },
-                new List<Address>());
+                new SortedList<Address, ImageSymbol> { { sym.Address, sym } });
         }
 
         private byte[] RelocateBytes(Address addrLoad)

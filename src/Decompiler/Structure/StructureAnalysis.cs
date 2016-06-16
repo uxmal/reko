@@ -152,10 +152,12 @@ namespace Reko.Structure
             return entry;
         }
 
+        /// <summary>
+        /// Handy place to put breakpoints during debugging of structuring algorithm.
+        /// </summary>
+        [Conditional("DEBUG")]
         private void Probe()
         {
-            if (regionGraph.Nodes.Any(nn => nn.Block.Name.EndsWith("0800_27B3") && regionGraph.Successors(nn).Count != 2)) //$DEBUG
-                proc.ToString();
         }
 
         private DominatorGraph<Region> BuildPostDoms()
@@ -187,8 +189,6 @@ namespace Reko.Structure
                     b == proc.ExitBlock)
                     continue;
                 var reg = regionFactory.Create(b);
-                if (b.Name.EndsWith("27B3")) //$DEBUG
-                    b.ToString();
                 btor.Add(b, reg);
                 regs.AddNode(reg);
             }

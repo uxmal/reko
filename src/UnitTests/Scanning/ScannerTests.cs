@@ -744,11 +744,11 @@ fn00001200_exit:
                 this.sc
             );
 
-            var ft1 = new FunctionType(new SerializedSignature
+            var ft1 = Given_Serialized_Signature(new SerializedSignature
             {
                 ReturnValue = new Argument_v1 { Type = Int32() }
             });
-            var ft2 = new FunctionType(new SerializedSignature
+            var ft2 = Given_Serialized_Signature(new SerializedSignature
             {
                 ReturnValue = new Argument_v1 { Type = Char() }
             });
@@ -780,6 +780,15 @@ fn00001200_exit:
             Assert.AreEqual(sExpSig2, program.Procedures[Address.Ptr32(0x43210053)].Signature.ToString());
             Assert.AreEqual(sExpSig2, program.Procedures[Address.Ptr32(0x43210063)].Signature.ToString());
             Assert.AreEqual(sExpSig2, program.Procedures[Address.Ptr32(0x43210073)].Signature.ToString());
+        }
+
+        private DataType Given_Serialized_Signature(SerializedSignature sSignature)
+        {
+            var tldeser = new TypeLibraryDeserializer(
+                   program.Platform,
+                   true,
+                   new TypeLibrary());
+            return sSignature.Accept(tldeser);
         }
 
         private SerializedType Char()
@@ -815,7 +824,7 @@ fn00001200_exit:
                 this.sc
             );
 
-            var ft = new FunctionType(new SerializedSignature
+            var ft = Given_Serialized_Signature(new SerializedSignature
             { 
                  ReturnValue = new Argument_v1 { Type = Real32() },
             });
@@ -854,9 +863,8 @@ fn00001200_exit:
 
             var ft = new FunctionType(
                 null,
-                PrimitiveType.Real32,
-                new DataType[0],
-                new string[0]);
+                new Identifier("", PrimitiveType.Real32, null),
+                new Identifier[0]);
             var str = new StructureType();
             str.Fields.AddRange(new StructureField[]
             {

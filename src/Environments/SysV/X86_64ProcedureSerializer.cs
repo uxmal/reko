@@ -139,9 +139,7 @@ namespace Reko.Environments.SysV
                 if (bitSize <= 128)
                 {
                     var xmm1 = Architecture.GetRegister("xmm1");
-                    return new SequenceStorage(
-                        new Identifier(xmm1.Name, xmm1.DataType, xmm1),
-                        new Identifier(xmm0.Name, xmm0.DataType, xmm0));
+                    return new SequenceStorage(xmm1, xmm0);
                 }
                 throw new NotImplementedException();
             }
@@ -151,9 +149,7 @@ namespace Reko.Environments.SysV
             if (bitSize <= 128)
             {
                 var rdx = Architecture.GetRegister("rdx");
-                return new SequenceStorage(
-                    new Identifier(rdx.Name, rdx.DataType, rdx),
-                    new Identifier(rax.Name, rax.DataType, rax));
+                return new SequenceStorage(rdx, rax);
             }
             throw new NotImplementedException();
         }

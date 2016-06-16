@@ -118,10 +118,7 @@ namespace Reko.Arch.Mips
 
         private void RewriteMul(MipsInstruction instr, Func<Expression,Expression,Expression> fn, PrimitiveType ret)
         {
-            var hilo = frame.EnsureSequence(
-                frame.EnsureRegister(Registers.hi),
-                frame.EnsureRegister(Registers.lo),
-                ret);
+            var hilo = frame.EnsureSequence(Registers.hi, Registers.lo, ret);
             emitter.Assign(
                 hilo,
                 fn(RewriteOperand(instr.op1), RewriteOperand(instr.op2)));

@@ -162,8 +162,8 @@ namespace Reko.Arch.X86
         private void RewriteXgetbv()
         {
             Identifier edx_eax = frame.EnsureSequence(
-                orw.AluRegister(Registers.edx),
-                orw.AluRegister(Registers.eax),
+                Registers.edx,
+                Registers.eax,
                 PrimitiveType.Word64);
             emitter.Assign(edx_eax,
                 PseudoProc("__xgetbv", 
@@ -174,8 +174,8 @@ namespace Reko.Arch.X86
         private void RewriteRdtsc()
         {
             Identifier edx_eax = frame.EnsureSequence(
-                orw.AluRegister(Registers.edx),
-                orw.AluRegister(Registers.eax),
+                Registers.edx,
+                Registers.eax,
                 PrimitiveType.Word64);
             emitter.Assign(edx_eax,
                 PseudoProc("__rdtsc",
@@ -304,8 +304,8 @@ namespace Reko.Arch.X86
             if (instrCur.dataWidth == PrimitiveType.Word32)
             {
                 Identifier edx_eax = frame.EnsureSequence(
-                    orw.AluRegister(Registers.edx),
-                    orw.AluRegister(Registers.eax),
+                    Registers.edx,
+                    Registers.eax,
                     PrimitiveType.Int64);
                 emitter.Assign(
                     edx_eax, emitter.Cast(edx_eax.DataType, orw.AluRegister(Registers.eax)));
@@ -313,8 +313,8 @@ namespace Reko.Arch.X86
             else
             {
                 Identifier dx_ax = frame.EnsureSequence(
-                    orw.AluRegister(Registers.dx),
-                    orw.AluRegister(Registers.ax),
+                    Registers.dx,
+                    Registers.ax,
                     PrimitiveType.Int32);
                 emitter.Assign(
                     dx_ax, emitter.Cast(dx_ax.DataType, orw.AluRegister(Registers.ax)));
@@ -348,17 +348,17 @@ namespace Reko.Arch.X86
             case 2:
                 regQuotient = orw.AluRegister(Registers.ax);
                 regRemainder = orw.AluRegister(Registers.dx);
-                regDividend = frame.EnsureSequence(regRemainder, regQuotient, PrimitiveType.Word32);
+                regDividend = frame.EnsureSequence(regRemainder.Storage, regQuotient.Storage, PrimitiveType.Word32);
                 break;
             case 4:
                 regQuotient = orw.AluRegister(Registers.eax);
                 regRemainder = orw.AluRegister(Registers.edx);
-                regDividend = frame.EnsureSequence(regRemainder, regQuotient, PrimitiveType.Word64);
+                regDividend = frame.EnsureSequence(regRemainder.Storage, regQuotient.Storage, PrimitiveType.Word64);
                 break;
             case 8:
                 regQuotient = orw.AluRegister(Registers.rax);
                 regRemainder = orw.AluRegister(Registers.rdx);
-                regDividend = frame.EnsureSequence(regRemainder, regQuotient, PrimitiveType.Word128);
+                regDividend = frame.EnsureSequence(regRemainder.Storage, regQuotient.Storage, PrimitiveType.Word128);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(string.Format("{0}-byte divisions not supported.", instrCur.dataWidth.Size));
@@ -461,17 +461,17 @@ namespace Reko.Arch.X86
                 case 2:
                     multiplicator = orw.AluRegister(Registers.ax);
                     product = frame.EnsureSequence(
-                        orw.AluRegister(Registers.dx), multiplicator, PrimitiveType.Word32);
+                        Registers.dx, multiplicator.Storage, PrimitiveType.Word32);
                     break;
                 case 4:
                     multiplicator = orw.AluRegister(Registers.eax);
                     product = frame.EnsureSequence(
-                        orw.AluRegister(Registers.edx), multiplicator, PrimitiveType.Word64);
+                        Registers.edx, multiplicator.Storage, PrimitiveType.Word64);
                     break;
                 case 8:
                     multiplicator = orw.AluRegister(Registers.rax);
                     product = frame.EnsureSequence(
-                        orw.AluRegister(Registers.rdx), multiplicator, PrimitiveType.Word64);
+                        Registers.rdx, multiplicator.Storage, PrimitiveType.Word64);
                     break;
                 default:
                     throw new ApplicationException(string.Format("Unexpected operand size: {0}", instrCur.op1.Width));
@@ -566,7 +566,7 @@ namespace Reko.Arch.X86
             }
 
             var ass = emitter.Assign(
-                frame.EnsureSequence(orw.AluRegister(seg), orw.AluRegister(reg.Register),
+                frame.EnsureSequence(seg, reg.Register,
                 PrimitiveType.Pointer32),
                 SrcOp(mem, PrimitiveType.SegPtr32));
         }

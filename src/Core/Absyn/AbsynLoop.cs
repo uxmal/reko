@@ -31,6 +31,8 @@ namespace Reko.Core.Absyn
 	{
 		protected AbsynLoop(Expression condition, List<AbsynStatement> body)
 		{
+            if (condition == null)
+                throw new ArgumentNullException("condition");
 			this.Condition = condition;
 			this.Body = body;
 		}

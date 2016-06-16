@@ -86,7 +86,7 @@ word32 fn100011E9(word32 dwArg08)
 			Sleep(1000);
 		}
 		ptr32 esp_118;
-		ptr32 ebp_117;
+		LONG ebp_117;
 		ui32 ebx_116;
 		ui32 esi_115;
 		ui32 edi_114;
@@ -137,24 +137,24 @@ word32 fn100011E9(word32 dwArg08)
 			globals->dw100033A8 = 0x02;
 			esp_118 = fp + ~0x1B;
 		}
-		ptr32 * esp_123 = esp_118 + 0x04;
+		LONG * esp_123 = esp_118 + 0x04;
 		if (ebp_117 == 0x00)
 		{
-			*(esp_123 - 0x04) = ebp_117;
-			*(esp_123 - 0x08) = 268448684;
+			*(esp_123 - 0x04) = (int32) ebp_117;
+			*(esp_123 - 0x08) = (int32) 268448684;
 			InterlockedExchange(*(esp_123 - 0x08), *(esp_123 - 0x04));
 		}
 		if (globals->ptr100033B8 != null)
 		{
 			Eq_363 * esp_142 = esp_123 - 0x04;
-			esp_142->ptr0000 = 0x100033B8;
-			ptr32 edi_144;
+			esp_142->t0000 = 0x100033B8;
+			LONG edi_144;
 			word32 eax_145 = fn10001742(ebx_116, esi_115, edi_114, out edi_144);
 			if (eax_145 != 0x00)
 			{
-				esp_142->ptr0000 = esp_142->ptr001C;
-				(esp_142 - 0x04)->ptr0000 = edi_144;
-				(esp_142 - 0x08)->ptr0000 = esp_142->ptr0014;
+				esp_142->t0000 = esp_142->t001C;
+				(esp_142 - 0x04)->t0000 = edi_144;
+				(esp_142 - 0x08)->t0000 = esp_142->t0014;
 				word32 esp_157;
 				word32 eax_158;
 				word32 ebp_159;
@@ -264,9 +264,9 @@ word32 fn100011E9(word32 dwArg08)
 				globals->dw100033B4 = eax_366;
 				esp_309 = fp + ~0x1B;
 			}
-			ptr32 * esp_323 = esp_309 - 0x04;
-			*esp_323 = 0x00;
-			*(esp_323 - 0x04) = 268448684;
+			LONG * esp_323 = esp_309 - 0x04;
+			*esp_323 = (int32) 0x00;
+			*(esp_323 - 0x04) = (int32) 268448684;
 			globals->dw100033A8 = 0x00;
 			InterlockedExchange(*(esp_323 - 0x04), *esp_323);
 		}

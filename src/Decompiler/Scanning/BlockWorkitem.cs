@@ -39,7 +39,8 @@ namespace Reko.Scanning
     /// Scanner work item for processing a basic block.
     /// </summary>
     /// <remarks>
-    /// The block work item will disassemble and rewrite instructions linearly until it reaches:
+    /// The block work item will disassemble and rewrite instructions linearly
+    /// until it reaches:
     /// <list type="">
     /// <item>An condition or unconditional branch</item>
     /// <item>A call to a procedure that is known to terminate.</item>
@@ -217,6 +218,7 @@ namespace Reko.Scanning
             // We don't know the 'then' block yet, as the following statements may chop up the block
             // we're presently in. Back-patch in when the block target is obtained.
             var branch = new Branch(b.Condition, new Block(blockCur.Procedure, "TMP!"));
+            Emit(branch, blockCur);
 
             // The following statements may chop up the blockCur, so hang on to the essentials.
             var proc = blockCur.Procedure;
@@ -232,9 +234,9 @@ namespace Reko.Scanning
             var blockThen = BlockFromAddress(ric.Address, b.Target, proc, state.Clone());
 
             var blockElse = FallthroughBlock(ric.Address, proc, fallthruAddress);
-            var branchingBlock = scanner.FindContainingBlock(ric.Address);
-
-            Emit(branch, branchingBlock);
+            var branchingBlock = blockCur.IsSynthesized
+                ? blockCur
+                : scanner.FindContainingBlock(ric.Address);
 
             if ((b.Class & RtlClass.Delay) != 0 &&
                 ricDelayed.Instructions.Count > 0)
@@ -269,12 +271,15 @@ namespace Reko.Scanning
             {
                 branch.Target = blockThen;      // The back-patch referred to above.
                 EnsureEdge(proc, branchingBlock, blockElse);
-                EnsureEdge(proc, branchingBlock, blockThen);
+                if (blockElse != blockThen)
+                    EnsureEdge(proc, branchingBlock, blockThen);
+                else
+                    proc.ControlGraph.AddEdge(branchingBlock, blockThen);
             }
 
             // Now, switch to the fallthru block and keep rewriting.
             blockCur = blockElse;
-            return !blockElse.IsSynthesized;
+            return true;
         }
 
         /// <summary>
@@ -352,7 +357,9 @@ namespace Reko.Scanning
             if (addrTarget != null)
             {
                 var blockTarget = BlockFromAddress(ric.Address, addrTarget, blockCur.Procedure, state);
-                var blockSource = scanner.FindContainingBlock(ric.Address);
+                var blockSource = blockCur.IsSynthesized
+                    ? blockCur
+                    : scanner.FindContainingBlock(ric.Address);
                 EnsureEdge(blockSource.Procedure, blockSource, blockTarget);
                 if (ric.Address == addrTarget)
                 {
@@ -687,7 +694,7 @@ namespace Reko.Scanning
             return true;
         }
 
-        #endregion
+#endregion
 
         public bool ProcessIndirectControlTransfer(Address addrSwitch, RtlTransfer xfer)
         {
@@ -808,9 +815,10 @@ namespace Reko.Scanning
         {
             if (ri.NextStatementRequiresLabel)
             {
-                // Some machine instructions, like the X86 'rep cmps' instruction, force the need to generate 
-                // a label where there wouldn't be one normally, in the middle of the rtl sequence corresponding to
-                // the machine instruction.
+                // Some machine instructions, like the X86 'rep cmps' 
+                // instruction, force the need to generate a label where
+                // there wouldn't be one normally, in the middle of the rtl
+                // sequence corresponding to the machine instruction.
                 return AddIntraStatementBlock(proc);
             }
             else
@@ -822,6 +830,7 @@ namespace Reko.Scanning
         private Block AddIntraStatementBlock(Procedure proc)
         {
             var fallthru = new Block(proc, ric.Address.GenerateName("l", string.Format("_{0}", ++extraLabels)));
+            fallthru.IsSynthesized = true;
             proc.ControlGraph.Blocks.Add(fallthru);
             return fallthru;
         }
@@ -921,27 +930,28 @@ namespace Reko.Scanning
         {
             if (sig == null)
                 return;
-            TrashVariable(sig.ReturnValue);
+            if (sig.ReturnValue != null)
+                TrashVariable(sig.ReturnValue.Storage);
             for (int i = 0; i < sig.Parameters.Length; ++i)
             {
                 var os = sig.Parameters[i].Storage as OutArgumentStorage;
                 if (os != null)
                 {
-                    TrashVariable(os.OriginalIdentifier);
+                    TrashVariable(os.OriginalIdentifier.Storage);
                 }
             }
         }
 
-        public void TrashVariable(Identifier id)
+        public void TrashVariable(Storage id)
         {
             if (id == null)
                 return;
-            var reg = id.Storage as RegisterStorage;
+            var reg = id as RegisterStorage;
             if (reg != null)
             {
-                state.SetValue(id, Constant.Invalid);
+                state.SetValue(reg, Constant.Invalid);
             }
-            SequenceStorage seq = id.Storage as SequenceStorage;
+            SequenceStorage seq = id as SequenceStorage;
             if (seq != null)
             {
                 TrashVariable(seq.Head);

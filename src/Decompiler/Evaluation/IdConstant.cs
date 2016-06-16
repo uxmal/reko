@@ -59,9 +59,6 @@ namespace Reko.Evaluation
             if (!cSrc.IsValid)
                 return cSrc;
             DataType dt = unifier.Unify(cSrc.DataType, idDst.DataType);
-            var typeref = dt as TypeReference;
-            if (typeref != null)
-                dt = typeref.Referent;
             var pt = dt.ResolveAs<PrimitiveType>();
             if (pt != null)
                 return Constant.Create(pt, cSrc.ToInt64());

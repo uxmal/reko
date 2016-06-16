@@ -18,5 +18,5 @@ T_4: (in psz + 0x00000000 : LPSTR)
   OrigDataType: LPSTR
 T_5: (in Mem0[psz + 0x00000000:byte] : byte)
   Class: Eq_5
-  DataType: byte
-  OrigDataType: byte
+  DataType: char
+  OrigDataType: char

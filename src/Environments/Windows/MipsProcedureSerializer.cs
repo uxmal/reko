@@ -160,9 +160,7 @@ namespace Reko.Environments.Windows
             if (bitSize <= 64)
             {
                 var v1 = Architecture.GetRegister("r3");
-                return new SequenceStorage(
-                    new Identifier(v1.Name, v1.DataType, v1),
-                    new Identifier(v0.Name, v0.DataType, v0));
+                return new SequenceStorage(v1, v0);
             }
             throw new NotImplementedException();
         }

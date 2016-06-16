@@ -527,7 +527,7 @@ namespace Reko.Arch.Vax
                 else if (width.Size == 8)
                 {
                     var regHi = frame.EnsureRegister(arch.GetRegister(1 + (int)reg.Storage.Domain));
-                    return frame.EnsureSequence(regHi, reg, width);
+                    return frame.EnsureSequence(regHi.Storage, reg.Storage, width);
                 }
                 else if (width.Size == 16)
                 {
@@ -535,9 +535,9 @@ namespace Reko.Arch.Vax
                     var regHi2 = frame.EnsureRegister(arch.GetRegister(2 + (int)reg.Storage.Domain));
                     var regHi3 = frame.EnsureRegister(arch.GetRegister(3 + (int)reg.Storage.Domain));
 
-                    var regLo = frame.EnsureSequence(regHi1, reg, PrimitiveType.Word64);
-                    var regHi = frame.EnsureSequence(regHi3, regHi2, PrimitiveType.Word64);
-                    return frame.EnsureSequence(regHi, regLo, width);
+                    var regLo = frame.EnsureSequence(regHi1.Storage, reg.Storage, PrimitiveType.Word64);
+                    var regHi = frame.EnsureSequence(regHi3.Storage, regHi2.Storage, PrimitiveType.Word64);
+                    return frame.EnsureSequence(regHi.Storage, regLo.Storage, width);
                 }
                 else
                 {
@@ -622,7 +622,7 @@ namespace Reko.Arch.Vax
                 else if (width.Size == 8)
                 {
                     var regHi = frame.EnsureRegister(arch.GetRegister(1 + (int)reg.Storage.Domain));
-                    reg = frame.EnsureSequence(regHi, reg, width);
+                    reg = frame.EnsureSequence(regHi.Storage, reg.Storage, width);
                 }
                 else if (width.Size == 16)
                 {
@@ -630,9 +630,9 @@ namespace Reko.Arch.Vax
                     var regHi2 = frame.EnsureRegister(arch.GetRegister(2 + (int)reg.Storage.Domain));
                     var regHi3 = frame.EnsureRegister(arch.GetRegister(3 + (int)reg.Storage.Domain));
 
-                    var regLo = frame.EnsureSequence(regHi1, reg, PrimitiveType.Word64);
-                    var regHi = frame.EnsureSequence(regHi3, regHi2, PrimitiveType.Word64);
-                    reg = frame.EnsureSequence(regHi, regLo, width);
+                    var regLo = frame.EnsureSequence(regHi1.Storage, reg.Storage, PrimitiveType.Word64);
+                    var regHi = frame.EnsureSequence(regHi3.Storage, regHi2.Storage, PrimitiveType.Word64);
+                    reg = frame.EnsureSequence(regHi.Storage, regLo.Storage, width);
                 }
                 emitter.Assign(reg, fn(reg));
                 return reg;

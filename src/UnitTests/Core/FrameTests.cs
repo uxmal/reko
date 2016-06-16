@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Core
 			Frame f = new Frame(PrimitiveType.Word16);
 			Identifier ax = f.EnsureRegister(Registers.ax);
 			Identifier dx = f.EnsureRegister(Registers.dx);
-			Identifier dxax = f.EnsureSequence(dx, ax, PrimitiveType.Word32);
+			Identifier dxax = f.EnsureSequence(dx.Storage, ax.Storage, PrimitiveType.Word32);
 
 			using (FileUnitTester fut = new FileUnitTester("Core/SequenceTest.txt"))
 			{
@@ -64,7 +64,7 @@ namespace Reko.UnitTests.Core
 				fut.AssertFilesEqual();
 			}
 
-			Identifier dxax2 = f.EnsureSequence(dx,ax, PrimitiveType.Word32);
+			Identifier dxax2 = f.EnsureSequence(dx.Storage, ax.Storage, PrimitiveType.Word32);
 			Assert.IsTrue(dxax2 == dxax);
 		}
 
@@ -103,7 +103,7 @@ namespace Reko.UnitTests.Core
 			Frame f = new Frame(PrimitiveType.Word16);
 			Identifier ax = f.EnsureRegister(Registers.ax);
 			Identifier dx = f.EnsureRegister(Registers.dx);
-			Identifier dx_ax = f.EnsureSequence(dx, ax, PrimitiveType.Word32);
+			Identifier dx_ax = f.EnsureSequence(dx.Storage, ax.Storage, PrimitiveType.Word32);
 			SequenceStorage vDx_ax = (SequenceStorage) dx_ax.Storage;
 			using (FileUnitTester fut = new FileUnitTester("Core/FrSequenceAccess.txt"))
 			{

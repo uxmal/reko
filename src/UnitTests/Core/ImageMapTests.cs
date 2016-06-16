@@ -239,7 +239,5 @@ namespace Reko.UnitTests.Core
             map.AddItem(addrBase, new ImageMapItem { DataType = new CodeType() });
             Assert.IsTrue(mapChangedFired, "ImageMap should have fired MapChanged event");
         }
-
-
 	}
 }

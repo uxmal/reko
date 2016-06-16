@@ -179,6 +179,11 @@ namespace Reko.Typing
             return ceb.BuildComplex(dereferenced);
         }
 
+        public override Expression VisitApplication(Application appl)
+        {
+            return base.VisitApplication(appl);
+        }
+
         public override Expression VisitArrayAccess(ArrayAccess acc)
         {
             BinaryExpression bin;

@@ -849,7 +849,12 @@ namespace Reko.ImageLoaders.Elf
                     entryPoints.Add(ep);
                 }
             }
-            return new RelocationResults(entryPoints, symbols, new List<Address>());
+            return new RelocationResults(entryPoints, symbols);
+        }
+
+        public override void LocateGotPointers(Program program, SortedList<Address, ImageSymbol> symbols)
+        {
+            throw new NotImplementedException();
         }
 
         public override void LocateGotPointers(Program program, SortedList<Address, ImageSymbol> symbols)
@@ -1360,7 +1365,7 @@ namespace Reko.ImageLoaders.Elf
                     entryPoints.Add(ep);
                 }
             }
-            return new RelocationResults(entryPoints, symbols, new List<Address>());
+            return new RelocationResults(entryPoints, symbols);
         }
 
         /// <summary>

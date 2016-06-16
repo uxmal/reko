@@ -271,8 +271,9 @@ namespace Reko.Typing
                     var array = f.DataType as ArrayType;
                     if (array != null) // C language rules 'promote' arrays to pointers.
                     {
-                        //$BUG: no factory?
-                        e.DataType = new Pointer(array.ElementType, platform.PointerType.Size);
+                        e.DataType = program.TypeFactory.CreatePointer(
+                            array.ElementType, 
+                            platform.PointerType.Size);
                     }
                     else
                     {

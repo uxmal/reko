@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Scanning;
@@ -95,14 +96,12 @@ namespace Reko.UnitTests.Scanning
             };
             var ft1 = new FunctionType(
                 null,
-                PrimitiveType.Int32,
-                new DataType[0],
-                new string[0]);
+                new Identifier("", PrimitiveType.Int32, null),
+                new Identifier[0]);
             var ft2 = new FunctionType(
                 null,
-                PrimitiveType.Char,
-                new DataType[0],
-                new string[0]);
+                new Identifier("", PrimitiveType.Char, null),
+                new Identifier[0]);
             var str = new StructureType();
             var fields = new StructureField[] {
                 new StructureField(0, new Pointer(ft1, 4), "A"),
@@ -147,9 +146,8 @@ namespace Reko.UnitTests.Scanning
 
             var ft = new FunctionType(
                 null,
-                PrimitiveType.Real32,
-                new DataType[0],
-                new string[0]);
+                new Identifier("", PrimitiveType.Real32, null),
+                new Identifier[0]);
             var str = new StructureType("str", 0);
             var fields = new StructureField[] {
                 new StructureField(0, new Pointer(ft,  4), "func"),
@@ -183,9 +181,8 @@ namespace Reko.UnitTests.Scanning
 
             var ft = new FunctionType(
                 null,
-                PrimitiveType.Real32, 
-                new DataType[0], 
-                new string[0]);
+                new Identifier("", PrimitiveType.Real32, null),
+                new Identifier[0]);
             var str = new StructureType();
             str.Fields.AddRange(new StructureField[]
             {
@@ -208,9 +205,8 @@ namespace Reko.UnitTests.Scanning
             Given_Program(Address.Ptr32(0x12340000), new byte[4]);
             var ft = new FunctionType(
                null,
-               PrimitiveType.Real32,
-               new DataType[0],
-               new string[0]);
+               new Identifier("", PrimitiveType.Real32, null),
+               new Identifier[0]);
             scanner.Expect(s => s.EnqueueUserProcedure(
                 Arg<Procedure_v1>.Matches(up => up.Address == "12340000")));
             mr.ReplayAll();

@@ -10,8 +10,8 @@
 // bx:bx
 // SCZO:Flags
 // C:Flags
-// es:es
 // es_cx:Sequence es:cx
+// es:es
 // SZO:Flags
 // cl:cl
 // return address size: 2

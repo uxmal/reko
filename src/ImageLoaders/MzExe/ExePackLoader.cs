@@ -197,7 +197,7 @@ namespace Reko.ImageLoaders.MzExe
             };
             var entryPoints = new List<ImageSymbol> { ep };
             var imageSymbols = entryPoints.ToSortedList(e => e.Address, e => e);
-            return new RelocationResults(entryPoints, imageSymbols, new List<Address>());
+            return new RelocationResults(entryPoints, imageSymbols);
         }
 
         private static byte[] signature = 

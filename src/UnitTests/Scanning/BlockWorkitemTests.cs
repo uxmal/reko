@@ -741,5 +741,34 @@ testProc_exit:
 
             mr.VerifyAll();
         }
+
+        [Test(Description = "Create two edges even if they both point to the same destination")]
+        public void BwiBranchToSame()
+        {
+            var addrStart = Address.Ptr32(0x00100000);
+            var addrNext = Address.Ptr32(0x00100004);
+            var blockOther = new Block(proc, "other");
+
+            scanner.Stub(s => s.FindContainingBlock(addrStart)).Return(block);
+            scanner.Stub(s => s.FindContainingBlock(addrNext)).Return(blockOther);
+            scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
+            scanner.Stub(s => s.EnqueueJumpTarget(
+                Arg<Address>.Is.Equal(addrStart),
+                Arg<Address>.Is.Equal(addrNext),
+                Arg<Procedure>.Is.Same(proc),
+                Arg<ProcessorState>.Is.Anything)).Return(blockOther);
+            mr.ReplayAll();
+
+            trace.Add(m => m.Branch(m.LoadB(m.Word32(0x12340)), addrNext, RtlClass.ConditionalTransfer));
+
+            var wi = CreateWorkItem(addrStart, new FakeProcessorState(arch));
+            wi.Process();
+
+            Assert.AreEqual(2, block.Succ.Count);
+            Assert.AreSame(blockOther, block.Succ[0]);
+            Assert.AreSame(blockOther, block.Succ[1]);
+            mr.VerifyAll();
+
+        }
     }
 }
