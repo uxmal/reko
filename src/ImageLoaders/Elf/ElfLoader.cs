@@ -856,11 +856,6 @@ namespace Reko.ImageLoaders.Elf
         {
             throw new NotImplementedException();
         }
-
-        public override void LocateGotPointers(Program program, SortedList<Address, ImageSymbol> symbols)
-        {
-            throw new NotImplementedException();
-        }
     }
 
     public class ElfLoader32 : ElfLoader

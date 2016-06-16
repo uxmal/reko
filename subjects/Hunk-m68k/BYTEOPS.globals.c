@@ -4,12 +4,12 @@
 
 #include "BYTEOPS.h"
 
-Eq_139 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * g_ptr0000;
-Eq_4321 g_a0005[];
+Eq_138 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * g_ptr0000;
+Eq_4327 g_a0005[];
 word32 g_a0008[];
 ui32 g_a0010[];
-union Eq_795 g_u1DAC = ;
-Eq_1049 g_a1DB0[] = 
+union Eq_794 g_u1DAC = ;
+Eq_1048 g_a1DB0[] = 
 	{
 	};
 struct Eq_4 g_t1DB8 = 
@@ -21,9 +21,12 @@ struct Eq_4 g_t1DC8 =
 		0x242F,
 	};
 word32 g_dw2B88 = 0x00000000;
-Eq_3203 * g_ptr2B8C = &g_t4000;
+Eq_3202 * g_ptr2B8C = &g_t4000;
 word32 g_dw2BB8 = 0x06060606;
 word32 g_dw2BBC = 0x06060606;
 word32 g_dw2BC0 = 0x06060606;
-Eq_3203 g_t4000;
+Eq_3527 g_a2BC4[] = 
+	{
+	};
+Eq_3202 g_t4000;
 
