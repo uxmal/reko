@@ -208,7 +208,7 @@ namespace Reko.UnitTests.Analysis
             {
                 var r1 = m.Reg32("r1", 1);
                 var r2 = m.Reg32("r2", 2);
-                var r2_r1 = m.Frame.EnsureSequence(r2, r1, PrimitiveType.Word64);
+                var r2_r1 = m.Frame.EnsureSequence(r2.Storage, r1.Storage, PrimitiveType.Word64);
 
                 m.Store(m.Word32(0x2000), m.Shr(r2_r1, 2));
                 m.Return();

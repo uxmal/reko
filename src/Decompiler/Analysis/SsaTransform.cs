@@ -931,15 +931,15 @@ namespace Reko.Analysis
             });
         }
 
-        public static IEnumerable<Identifier> SeparateSequences(IEnumerable<Identifier> ids)
+        public IEnumerable<Identifier> SeparateSequences(IEnumerable<Identifier> ids)
         {
             foreach (var id in ids)
             {
                 var seq = id.Storage as SequenceStorage;
                 if (seq != null)
                 {
-                    yield return seq.Head;
-                    yield return seq.Tail;
+                    yield return ssa.Procedure.Frame.EnsureIdentifier(seq.Head);
+                    yield return ssa.Procedure.Frame.EnsureIdentifier(seq.Tail);
                 }
                 else
                 {
@@ -1992,9 +1992,9 @@ namespace Reko.Analysis
 
             public override SsaIdentifier ReadVariable(SsaBlockState bs, bool generateAlias)
             {
-                var ss = outer.factory.Create(seq.Head, stm);
+                var ss = outer.factory.Create(outer.ssa.Procedure.Frame.EnsureIdentifier(seq.Head), stm);
                 var head = ss.ReadVariable(bs, generateAlias);
-                ss = outer.factory.Create(seq.Tail, stm);
+                ss = outer.factory.Create(outer.ssa.Procedure.Frame.EnsureIdentifier(seq.Tail), stm);
                 var tail = ss.ReadVariable(bs, generateAlias);
                 return Fuse(head, tail);
             }
@@ -2008,8 +2008,8 @@ namespace Reko.Analysis
 
             public override bool ProbeBlockLocalVariable(SsaBlockState bs)
             {
-                var hd = outer.factory.Create(seq.Head, stm);
-                var tl = outer.factory.Create(seq.Tail, stm);
+                var hd = outer.factory.Create(outer.ssa.Procedure.Frame.EnsureIdentifier(seq.Head), stm);
+                var tl = outer.factory.Create(outer.ssa.Procedure.Frame.EnsureIdentifier(seq.Tail), stm);
                 return
                     hd.ProbeBlockLocalVariable(bs) &&
                     tl.ProbeBlockLocalVariable(bs);
@@ -2053,9 +2053,9 @@ namespace Reko.Analysis
 
             public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
             {
-                var ss = outer.factory.Create(seq.Head, stm);
+                var ss = outer.factory.Create(outer.ssa.Procedure.Frame.EnsureIdentifier(seq.Head), stm);
                 ss.WriteVariable(bs, sid, performProbe);
-                ss = outer.factory.Create(seq.Tail, stm);
+                ss = outer.factory.Create(outer.ssa.Procedure.Frame.EnsureIdentifier(seq.Tail), stm);
                 ss.WriteVariable(bs, sid, performProbe);
                 return sid.Identifier;
             }

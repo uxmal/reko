@@ -112,48 +112,29 @@ namespace Reko.Core
         /// <returns></returns>
         public virtual List<Expression> BindArguments(ProcedureSignature sigCallee, ProcedureCharacteristics chr)
         {
-            return frame.EnsureFpuStackVariable(fpu.FpuStackOffset - site.FpuStackDepthBefore, fpu.DataType);
-        }
-
-        public Expression VisitMemoryStorage(MemoryStorage global)
-        {
-            throw new NotSupportedException(string.Format("A {0} can't be used as a formal parameter.", global.GetType().FullName));
-        }
-
-        public Expression VisitStackLocalStorage(StackLocalStorage local)
-        {
-            throw new NotSupportedException(string.Format("A {0} can't be used as a formal parameter.", local.GetType().FullName));
-        }
-
-        public Expression VisitOutArgumentStorage(OutArgumentStorage arg)
-        {
-            return arg.OriginalIdentifier.Storage.Accept(this);
-        }
-
-        public Expression VisitRegisterStorage(RegisterStorage reg)
-        {
-			return frame.EnsureRegister(reg);
-        }
-
-        public Expression VisitSequenceStorage(SequenceStorage seq)
-        {
-            var h = seq.Head.Storage.Accept(this);
-            var t = seq.Tail.Storage.Accept(this);
-            var idHead = h as Identifier;
-            var idTail = t as Identifier;
-            if (idHead != null && idTail != null)
-                return frame.EnsureSequence(idHead, idTail, PrimitiveType.CreateWord(idHead.DataType.Size + idTail.DataType.Size));
-            throw new NotImplementedException("Handle case when stack parameter is passed.");
-        }
-
-        public Expression VisitStackArgumentStorage(StackArgumentStorage stack)
-        {
-            if (ensureVariables)
-                return frame.EnsureStackVariable(
-                    stack.StackOffset - (site.StackDepthOnEntry + sigCallee.ReturnAddressOnStack),
-                    stack.DataType);
-            else 
-                return arch.CreateStackAccess(frame, stack.StackOffset, stack.DataType);
+            if (sigCallee == null || !sigCallee.ParametersValid)
+                throw new InvalidOperationException("No signature available; application cannot be constructed.");
+            this.sigCallee = sigCallee;
+            var actuals = new List<Expression>();
+            for (int i = 0; i < sigCallee.Parameters.Length; ++i)
+            {
+                var formalArg = sigCallee.Parameters[i];
+                if (formalArg.Name == "...")
+                {
+                    return BindVariadicArguments(sigCallee, chr, actuals);
+                }
+                if (formalArg.Storage is OutArgumentStorage)
+                {
+                    var outArg = BindOutArg(formalArg);
+                    actuals.Add(outArg);
+                }
+                else
+                {
+                    var actualArg = Bind(formalArg);
+                    actuals.Add(actualArg);
+                }
+            }
+            return actuals;
         }
 
         public List<Expression> BindVariadicArguments(ProcedureSignature sig, ProcedureCharacteristics chr, List<Expression> actuals)

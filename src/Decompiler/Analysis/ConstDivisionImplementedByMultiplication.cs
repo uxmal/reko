@@ -152,7 +152,7 @@ namespace Reko.Analysis
             }
 
             this.idOrig = ass.Dst;
-            this.idDst = FindAlias(ass.Dst, dst.Head.Storage);
+            this.idDst = FindAlias(ass.Dst, dst.Head);
             if (idDst == null)
                 return false;
 

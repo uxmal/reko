@@ -654,13 +654,13 @@ namespace Reko.Core
         {
             if (this == that)
                 return true;
-            if (this.Head.Storage.Domain == that.Domain)
+            if (this.Head.Domain == that.Domain)
             {
-                return this.Head.Storage.Covers(that);
+                return this.Head.Covers(that);
             }
-            if (this.Tail.Storage.Domain == that.Domain)
+            if (this.Tail.Domain == that.Domain)
             {
-                return this.Tail.Storage.Covers(that);
+                return this.Tail.Covers(that);
             }
             return false;
         }
@@ -677,13 +677,13 @@ namespace Reko.Core
         {
             if (this == that)
                 return true;
-            if (this.Head.Storage.Domain == that.Domain)
+            if (this.Head.Domain == that.Domain)
             {
-                return this.Head.Storage.Exceeds(that);
+                return this.Head.Exceeds(that);
             }
-            if (this.Tail.Storage.Domain == that.Domain)
+            if (this.Tail.Domain == that.Domain)
             {
-                return this.Tail.Storage.Exceeds(that);
+                return this.Tail.Exceeds(that);
             }
             return false;
         }
@@ -708,13 +708,13 @@ namespace Reko.Core
         {
             if (this == that)
                 return true;
-            if (this.Head.Storage.Domain == that.Domain)
+            if (this.Head.Domain == that.Domain)
             {
-                return this.Head.Storage.OverlapsWith(that);
+                return this.Head.OverlapsWith(that);
             }
-            if (this.Tail.Storage.Domain == that.Domain)
+            if (this.Tail.Domain == that.Domain)
             {
-                return this.Tail.Storage.OverlapsWith(that);
+                return this.Tail.OverlapsWith(that);
             }
             return false;
         }
@@ -732,11 +732,14 @@ namespace Reko.Core
 
     public abstract class StackStorage : Storage
     {
-        public StackStorage(string kind, int cbOffset)
+        public StackStorage(string kind, int cbOffset, DataType dt)
             : base(kind)
         {
             this.StackOffset = cbOffset;
+            this.DataType = dt;
         }
+
+        public DataType DataType { get; private set; }
 
         /// <summary>
         /// Offset from stack pointer as it was when the procedure was entered.
@@ -764,13 +767,10 @@ namespace Reko.Core
 
     public class StackArgumentStorage : StackStorage
     {
-        public StackArgumentStorage(int cbOffset, DataType dataType) : base("Stack", cbOffset)
+        public StackArgumentStorage(int cbOffset, DataType dataType) : base("Stack", cbOffset, dataType)
         {
-            this.DataType = dataType;
             this.BitSize = (uint) dataType.BitSize;
         }
-
-        public DataType DataType { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
@@ -824,9 +824,8 @@ namespace Reko.Core
     public class StackLocalStorage : StackStorage
     {
         public StackLocalStorage(int cbOffset, DataType dataType)
-            : base("Local", cbOffset)
+            : base("Local", cbOffset, dataType)
         {
-            this.DataType = dataType;
         }
 
         public override T Accept<T>(StorageVisitor<T> visitor)

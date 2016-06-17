@@ -120,12 +120,12 @@ namespace Reko.Core
 
         public Expression VisitSequenceStorage(SequenceStorage seq)
         {
-            var h = seq.Head.Storage.Accept(this);
-            var t = seq.Tail.Storage.Accept(this);
+            var h = seq.Head.Accept(this);
+            var t = seq.Tail.Accept(this);
             var idHead = h as Identifier;
             var idTail = t as Identifier;
             if (idHead != null && idTail != null)
-                return frame.EnsureSequence(idHead, idTail, PrimitiveType.CreateWord(idHead.DataType.Size + idTail.DataType.Size));
+                return frame.EnsureSequence(idHead.Storage, idTail.Storage, PrimitiveType.CreateWord(idHead.DataType.Size + idTail.DataType.Size));
             throw new NotImplementedException("Handle case when stack parameter is passed.");
         }
 
