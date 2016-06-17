@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Reko.Core.Expressions;
 
 namespace Reko.UnitTests.Core
 {
@@ -36,6 +37,7 @@ namespace Reko.UnitTests.Core
         private MockRepository mr;
         private IProcessorArchitecture arch;
         private IPlatform platform;
+        private ProcedureSerializer procSer;
 
         [SetUp]
         public void Setup()
@@ -54,9 +56,8 @@ namespace Reko.UnitTests.Core
             arch = mr.DynamicMock<IProcessorArchitecture>();
             platform = mr.DynamicMock<IPlatform>();
             platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
-            var procSer = mr.StrictMock<ProcedureSerializer>(null, null, null);
+            this.procSer = mr.StrictMock<ProcedureSerializer>(null, null, null);
             platform.Stub(p => p.CreateProcedureSerializer(null, null)).IgnoreArguments().Return(procSer);
-            procSer.Stub(p => p.Deserialize(null, null)).IgnoreArguments().Return(new ProcedureSignature());
             platform.Stub(p => p.Architecture).Return(arch);
         }
 
@@ -124,6 +125,7 @@ namespace Reko.UnitTests.Core
         public void Tlldr_void_fn()
         {
             Given_ArchitectureStub();
+            Given_ProcedureSignature(new ProcedureSignature());
             mr.ReplayAll();
 
             var tlLdr = new TypeLibraryDeserializer(platform, true, new TypeLibrary());
@@ -154,7 +156,9 @@ namespace Reko.UnitTests.Core
         public void Tlldr_BothOrdinalAndName()
         {
             Given_ArchitectureStub();
+            Given_ProcedureSignature(new ProcedureSignature());
             mr.ReplayAll();
+
             var tlLDr = new TypeLibraryDeserializer(platform, true, new TypeLibrary());
             var slib = new SerializedLibrary
             {
@@ -190,11 +194,11 @@ namespace Reko.UnitTests.Core
                 Name = "localeinfo_struct",
                 Fields = new StructField_v1[]
                 {
-                                new StructField_v1 {
-                                    Name = "foo",
-                                    Offset =0,
-                                    Type = new PrimitiveType_v1 { Domain = Domain.Integer, ByteSize=4 }
-                                }
+                    new StructField_v1 {
+                        Name = "foo",
+                        Offset = 0,
+                        Type = new PrimitiveType_v1 { Domain = Domain.Integer, ByteSize=4 }
+                    }
                 }
             }.Accept(tlldr);
             new SerializedTypedef
@@ -280,10 +284,13 @@ namespace Reko.UnitTests.Core
         }
 
         [Test(Description = "Load a serialized signature")]
-        [Ignore("Needs to wait until we reach convergence Functype / ProcedureSignature")]
         public void Tlldr_signature()
         {
             Given_ArchitectureStub();
+            var r3 = new RegisterStorage("r3", 3, 0, PrimitiveType.Word32);
+            Given_ProcedureSignature(new ProcedureSignature(
+                new Identifier("", PrimitiveType.Int32, r3),
+                new Identifier("", PrimitiveType.Real32, r3)));
             mr.ReplayAll();
 
             var typelib = new TypeLibrary();
@@ -304,7 +311,12 @@ namespace Reko.UnitTests.Core
                     Kind = new Register_v1 { Name = "r3" }
                 }
             });
-            Assert.AreEqual("(fn ui32 (real32))", fn.ToString());
+            Assert.AreEqual("(fn int32 (real32))", fn.ToString());
+        }
+
+        private void Given_ProcedureSignature(ProcedureSignature sig)
+        {
+            procSer.Stub(p => p.Deserialize(null, null)).IgnoreArguments().Return(sig);
         }
     }
 }

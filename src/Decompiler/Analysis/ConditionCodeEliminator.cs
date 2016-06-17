@@ -471,11 +471,8 @@ namespace Reko.Analysis
             }
             else
             {
-                var dt = bin.Left.DataType;
-                var typeref = dt as TypeReference;
-                if (typeref != null)
-                    dt = typeref.Referent;
-                e = new BinaryExpression(cmpOp, PrimitiveType.Bool, bin, Constant.Zero(dt));
+                var pt = bin.Left.DataType.ResolveAs<PrimitiveType>();
+                e = new BinaryExpression(cmpOp, PrimitiveType.Bool, bin, Constant.Zero(pt));
             }
 			return e;
 		}

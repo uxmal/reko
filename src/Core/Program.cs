@@ -52,7 +52,6 @@ namespace Reko.Core
         {
             this.EntryPoints = new SortedList<Address, ImageSymbol>();
             this.ImageSymbols = new SortedList<Address, ImageSymbol>();
-            this.FunctionHints = new List<Address>();
             this.Procedures = new SortedList<Address, Procedure>();
             this.CallGraph = new CallGraph();
             this.EnvironmentMetadata = new TypeLibrary();
@@ -180,15 +179,6 @@ namespace Reko.Core
         /// The entry points to the program.
         /// </summary>
         public SortedList<Address, ImageSymbol> EntryPoints { get; private set; }
-
-        /// <summary>
-        /// List of function hints.
-        /// </summary>
-        [Obsolete("Use ImageSymbols instead")]
-        public List<Address> FunctionHints
-        {
-            get; private set;
-        }
 
         /// <summary>
         /// The name of the file from which this Program was loaded.

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
@@ -215,9 +216,15 @@ namespace Reko.Core
             throw new NotImplementedException();
         }
 
-        public DataType VisitSignature(SerializedSignature signature)
+        public DataType VisitSignature(SerializedSignature sSig)
         {
-            return new FunctionType(signature);
+            var sser = platform.CreateProcedureSerializer(this, this.defaultConvention);
+            var sig = sser.Deserialize(sSig, platform.Architecture.CreateFrame());
+            return new FunctionType(
+                null,
+                sig.ReturnValue,
+                sig.Parameters, 
+                sSig);
         }
 
         public DataType VisitStructure(StructType_v1 structure)

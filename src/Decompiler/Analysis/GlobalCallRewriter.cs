@@ -164,7 +164,7 @@ namespace Reko.Analysis
 			{
 				if (!IsSubRegisterOfRegisters(r, liveOut))
 				{
-					sb.AddArgument(frame.EnsureRegister(r), true);
+					sb.AddOutParam(frame.EnsureRegister(r));
 				}
 			}
 
@@ -173,7 +173,7 @@ namespace Reko.Analysis
 				int i = de.Key;
 				if (i <= proc.Signature.FpuStackOutArgumentMax)
 				{
-					sb.AddArgument(frame.EnsureFpuStackVariable(i, de.Value.DataType), true);
+					sb.AddOutParam(frame.EnsureFpuStackVariable(i, de.Value.DataType));
 				}
 			}
 

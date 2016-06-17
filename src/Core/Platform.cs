@@ -59,10 +59,27 @@ namespace Reko.Core
 
         Address AdjustProcedureAddress(Address addrCode);
         HashSet<RegisterStorage> CreateImplicitArgumentRegisters();
-        IEnumerable<Address> CreatePointerScanner(SegmentMap segmentMap, ImageReader rdr, IEnumerable<Address> address, PointerScannerFlags pointerScannerFlags);
+        IEnumerable<Address> CreatePointerScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> addr, PointerScannerFlags flags);
         ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
         TypeLibrary CreateMetadata();
         SegmentMap CreateAbsoluteMemoryMap();
+
+        /// <summary>
+        /// Given a procedure signature, determines whether it conforms to any
+        /// of the platform's defined calling conventions.
+        /// </summary>
+        /// <remarks>
+        /// Some platforms, like Win32, will have several well known 
+        /// calling conventions. Others, like many ELF implementations,
+        /// will have one and only one calling convention. On such platforms
+        /// we will assume that the calling convention is represented by
+        /// the empty string "". //$REVIEW: this probably highlights the 
+        /// need for a CallingConvention abstraction.
+        /// </remarks>
+        /// <param name="signature"></param>
+        /// <returns>The name of the calling convention, or null
+        /// if no calling convention could be determined.</returns>
+        string DetermineCallingConvention(ProcedureSignature signature);
 
         /// <summary>
         /// Given a C basic type, returns the number of bytes that type is
@@ -81,7 +98,7 @@ namespace Reko.Core
         /// <param name="t">Primitive type</param>
         /// <param name="language">Programming language to use</param>
         /// <returns></returns>
-        string GetPrimitiveTypeName(PrimitiveType t, string v);
+        string GetPrimitiveTypeName(PrimitiveType t, string language);
 
         ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host);
 
@@ -98,6 +115,14 @@ namespace Reko.Core
         SystemService FindService(int vector, ProcessorState state);
         SystemService FindService(RtlInstruction call, ProcessorState state);
         string FormatProcedureName(Program program, Procedure proc);
+
+        /// <summary>
+        /// Injects any platform specific instructions to the beginning 
+        /// of a procedure.
+        /// </summary>
+        /// <param name="emitter"></param>
+        void InjectProcedureEntryStatements(Procedure proc, Address addr, CodeEmitter emitter);
+
         void LoadUserOptions(Dictionary<string, object> options);
         ExternalProcedure LookupProcedureByName(string moduleName, string procName);
         ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal);
@@ -219,6 +244,11 @@ namespace Reko.Core
                 segs.Values.ToArray());
         }
 
+        public virtual string DetermineCallingConvention(ProcedureSignature signature)
+        {
+            return null;
+        }
+
         /// <summary>
         /// Utility function for subclasses that loads all type libraries and
         /// characteristics libraries defined in the Reko configuration file.
@@ -303,6 +333,10 @@ namespace Reko.Core
         public virtual Address MakeAddressFromConstant(Constant c)
         {
             return Architecture.MakeAddressFromConstant(c);
+        }
+
+        public virtual void InjectProcedureEntryStatements(Procedure proc, Address addr, CodeEmitter emitter)
+        {
         }
 
         /// <summary>

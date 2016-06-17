@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Evaluation
             var c = Constant.Int32((int)mult);
             var r1 = m.Reg32("r1", 1);
             var r2 = m.Reg32("r2", 2);
-            var r2_r1 = m.Frame.EnsureSequence(r2, r1, PrimitiveType.Word64);
+            var r2_r1 = m.Frame.EnsureSequence(r2.Storage, r1.Storage, PrimitiveType.Word64);
 
             var ass = m.Assign(r2_r1, m.SMul(r1, c));
             if (shift != 0)

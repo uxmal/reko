@@ -327,11 +327,7 @@ namespace Reko.Evaluation
             if (exp == Constant.Invalid)
                 return exp;
 
-            var dtCast = cast.DataType;
-            var typeref = dtCast as TypeReference;
-            if (typeref != null)
-                dtCast = typeref.Referent;
-            var ptCast = dtCast as PrimitiveType;
+            var ptCast = cast.DataType.ResolveAs<PrimitiveType>();
             Constant c = exp as Constant;
             if (c != null)
             {

@@ -309,13 +309,13 @@ namespace Reko.Typing
 
         public DataType VisitFunctionType(FunctionType fn)
         {
-            if (fn.ReturnType != null)
+            if (fn.ReturnValue != null)
             {
-                fn.ReturnType = fn.ReturnType.Accept(this);
+                fn.ReturnValue.DataType = fn.ReturnValue.DataType.Accept(this);
             }
-            for (int i = 0; i < fn.ArgumentTypes.Length; ++i)
+            for (int i = 0; i < fn.Parameters.Length; ++i)
             {
-                fn.ArgumentTypes[i] = fn.ArgumentTypes[i].Accept(this);
+                fn.Parameters[i].DataType = fn.Parameters[i].DataType.Accept(this);
             }
             return fn;
         }

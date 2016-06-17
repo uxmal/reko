@@ -291,7 +291,7 @@
     <Compile Include="Arch\Intel\IntelAssemblerTests.cs" />
     <Compile Include="Arch\Intel\IntelInstructionTrieTests.cs" />
     <Compile Include="Arch\Intel\IntelRegisterTests.cs" />
-    <Compile Include="Arch\Intel\MsDosPlatformTests.cs" />
+    <Compile Include="Environments\Msdos\MsdosPlatformTests.cs" />
     <Compile Include="Arch\Intel\OperandRewriterRealModeTests.cs" />
     <Compile Include="Arch\Intel\OperandRewriterTests.cs" />
     <Compile Include="Arch\Intel\Rewrite32.cs" />
@@ -691,7 +691,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Core\Machine\" />
-    <Folder Include="Environments\Msdos\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

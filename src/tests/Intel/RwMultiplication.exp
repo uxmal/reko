@@ -7,8 +7,8 @@
 // ds:ds
 // ax:ax
 // SCZO:Flags
-// dx:dx
 // dx_ax:Sequence dx:ax
+// dx:dx
 // cx:cx
 // cl:cl
 // return address size: 2

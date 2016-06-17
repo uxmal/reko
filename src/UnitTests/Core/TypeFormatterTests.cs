@@ -24,6 +24,7 @@ using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using System.IO;
+using Reko.Core.Expressions;
 
 namespace Reko.UnitTests.Core
 {
@@ -141,8 +142,9 @@ struct a {
 		[Test]
 		public void TyfoFn()
 		{
-			FunctionType fn = new FunctionType(null, PrimitiveType.Int32, 
-				new DataType[] { PrimitiveType.Word32 }, null);
+			FunctionType fn = new FunctionType(null, 
+                new Identifier("", PrimitiveType.Int32, null), 
+				new Identifier[] { new Identifier("", PrimitiveType.Word32, null) });
 			tyreffo.WriteDeclaration(fn, "fn");
 			Assert.AreEqual("int32 fn(word32)", 
 				sw.ToString());
@@ -152,7 +154,7 @@ struct a {
 		public void TyfoPfn()
 		{
 			FunctionType fn = new FunctionType(null, null, 
-				new DataType[] { PrimitiveType.Word32 }, null);
+				new Identifier[] { new Identifier("", PrimitiveType.Word32, null)});
 			Pointer pfn = new Pointer(fn, 4);
 			tyreffo.WriteDeclaration(pfn, "pfn");
 			Assert.AreEqual("void ( * pfn)(word32)", 
@@ -171,8 +173,12 @@ struct a {
 		[Test]
 		public void TyfoManyArgs()
 		{
-			FunctionType fn = new FunctionType(null, null, 
-				new DataType[] { PrimitiveType.Pointer32, PrimitiveType.Int64 }, null);
+            FunctionType fn = new FunctionType(
+                null, 
+                null,
+                new Identifier[] {
+                    new Identifier("", PrimitiveType.Pointer32,  null),
+                    new Identifier("", PrimitiveType.Int64 , null)});
 			tyreffo.WriteDeclaration(fn, "fn");
 			Assert.AreEqual("void fn(ptr32, int64)", sw.ToString());
 		}

@@ -397,7 +397,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void BwiX86_RepMovsw()
         {
-            var follow = new Block(proc, "follow");
+            var follow = new Block(proc, "follow"); // the code that follows the 'rep movsw'
             BuildTest16(delegate(X86Assembler m)
             {
                 m.Rep();
@@ -422,12 +422,11 @@ namespace Reko.UnitTests.Scanning
                 scanner.Expect(x => x.TerminateBlock(
                     Arg<Block>.Is.Anything,
                     Arg<Address>.Is.Anything));
-
             });
             follow.Procedure = proc;
             wi.Process();
-            Assert.IsTrue(proc.ControlGraph.ContainsEdge(block, follow), "follow should follow block");
-            Assert.IsTrue(proc.ControlGraph.ContainsEdge(block, block), "block should loop back onto itself");
+            Assert.AreEqual("l0C00_0000_1", block.Succ[0].Name, "block should loop back onto itself");
+            Assert.AreEqual("follow", block.Succ[1].Name, "block should terminate if cx == 0 check is true");
         }
 
         [Test]

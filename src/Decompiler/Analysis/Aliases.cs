@@ -105,10 +105,14 @@ namespace Reko.Analysis
 				text.Write(":");
 				id.Storage.Write(text);
 				text.Write(" (aliases:", id);
-				foreach (var a in aliases[id])
-				{
-					text.Write(" {0}", a.Name);
-				}
+                List<Identifier> aa;
+                if (aliases.TryGetValue(id, out aa))
+                {
+                    foreach (var a in aliases[id])
+                    {
+                        text.Write(" {0}", a.Name);
+                    }
+                }
 				text.WriteLine(")");
 			}
 		}
@@ -219,9 +223,12 @@ namespace Reko.Analysis
 				// We are replacing a part of a wider register with a narrower one.
 
 				SequenceStorage seq = varTo.Storage as SequenceStorage;
-				if (seq != null && (seq.Head == varFrom || seq.Tail == varFrom))
+				if (seq != null && (seq.Head == varFrom.Storage || seq.Tail == varFrom.Storage))
 				{
-					aliasExpr = new MkSequence(varTo.DataType, seq.Head, seq.Tail);
+					aliasExpr = new MkSequence(
+                        varTo.DataType,
+                        proc.Frame.EnsureIdentifier(seq.Head), 
+                        proc.Frame.EnsureIdentifier(seq.Tail));
 				}
 				else
 				{

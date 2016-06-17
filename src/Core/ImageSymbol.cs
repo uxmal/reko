@@ -86,6 +86,14 @@ namespace Reko.Core
         public SerializedSignature Signature { get; set; }
 
         public DataType DataType { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format(
+                "{0} ({1})",
+                string.IsNullOrEmpty(Name) ? "???" : Name,
+                Address);
+        }
     }
 
     public enum SymbolType

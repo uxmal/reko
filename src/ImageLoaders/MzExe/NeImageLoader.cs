@@ -412,8 +412,7 @@ namespace Reko.ImageLoaders.MzExe
             entryPoints.Add(new ImageSymbol(addrEntry));
             return new RelocationResults(
                 entryPoints,
-                imageSymbols,
-                new List<Address>());
+                imageSymbols);
         }
 
         public Dictionary<int, string> LoadEntryNames()

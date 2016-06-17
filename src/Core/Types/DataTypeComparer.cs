@@ -270,17 +270,17 @@ namespace Reko.Core.Types
 
         public int Compare(FunctionType x, FunctionType y, int count)
         {
-            int d = x.ArgumentTypes.Length - y.ArgumentTypes.Length;
+            int d = x.Parameters.Length - y.Parameters.Length;
             if (d != 0)
                 return d;
             ++count;
-            for (int i = 0; i < x.ArgumentTypes.Length; ++i)
+            for (int i = 0; i < x.Parameters.Length; ++i)
             {
-                d = Compare(x.ArgumentTypes[i], y.ArgumentTypes[i], count);
+                d = Compare(x.Parameters[i].DataType, y.Parameters[i].DataType, count);
                 if (d != 0)
                     return d;
             }
-            return Compare(x.ReturnType, y.ReturnType, count);
+            return Compare(x.ReturnValue.DataType, y.ReturnValue.DataType, count);
         }
 
 		#region IDataTypeVisitor Members /////////////////////////////////////////

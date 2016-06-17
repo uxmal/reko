@@ -30,7 +30,6 @@ namespace Reko.ImageLoaders.Elf
     public class SparcRelocator : ElfRelocator32
     {
         private ElfLoader32 loader;
-        private Program program;
 
         public SparcRelocator(ElfLoader32 loader) : base(loader)
         {

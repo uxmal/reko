@@ -166,13 +166,13 @@ namespace Reko.Arch.X86
             case 32: 
                 if (Architecture.WordWidth.BitSize == 16)
                     return new SequenceStorage(
-                        new Identifier("dx", PrimitiveType.Word16, Architecture.GetRegister("dx")),
-                        new Identifier("ax", PrimitiveType.Word16, Architecture.GetRegister("ax")));
+                        Architecture.GetRegister("dx"),
+                        Architecture.GetRegister("ax"));
                 break;
             case 64: if (Architecture.WordWidth.BitSize == 32)
                     return new SequenceStorage(
-                        new Identifier("edx", PrimitiveType.Word16, Architecture.GetRegister("edx")),
-                        new Identifier("eax", PrimitiveType.Word16, Architecture.GetRegister("eax")));
+                        Architecture.GetRegister("edx"),
+                        Architecture.GetRegister("eax"));
                 break;
             }
             var reg = Architecture.GetRegister("rax");

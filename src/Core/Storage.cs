@@ -44,6 +44,7 @@ namespace Reko.Core
         public StorageDomain Domain { get; set; }
         public ulong BitAddress { get; set; }
         public virtual ulong BitSize { get; set; }
+        public string Name { get; protected set; }
         public int Number { get; protected set; }
 
         /// <summary>
@@ -179,7 +180,6 @@ namespace Reko.Core
 
         public FlagRegister FlagRegister { get; private set; }
         public uint FlagGroupBits { get; private set; }
-        public string Name { get; private set; }
         public DataType DataType { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
@@ -480,11 +480,6 @@ namespace Reko.Core
         public ulong BitMask { get; private set; }
 
         /// <summary>
-        /// The name of the register.
-        /// </summary>
-        public string Name { get; private set; }
-
-        /// <summary>
         /// The size and domain of the register.
         /// </summary>
         /// <remarks>
@@ -633,17 +628,17 @@ namespace Reko.Core
         }
     }
 
-    public class SequenceStorage : Storage
-    {
-        public SequenceStorage(Identifier head, Identifier tail)
-            : base("Sequence")
-        {
-            this.Head = head;
-            this.Tail = tail;
-        }
+	public class SequenceStorage : Storage
+	{
+		public SequenceStorage(Storage head, Storage tail) 
+			: base("Sequence")		
+		{
+			this.Head = head;
+			this.Tail = tail;
+		}
 
-        public Identifier Head { get; private set; }
-        public Identifier Tail { get; private set; }
+        public Storage Head { get; private set; }
+        public Storage Tail { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
@@ -698,16 +693,16 @@ namespace Reko.Core
             return GetType().GetHashCode() ^ Head.GetHashCode() ^ (3 * Tail.GetHashCode());
         }
 
-        public override int OffsetOf(Storage stgSub)
-        {
-            int off = Tail.Storage.OffsetOf(stgSub);
-            if (off != -1)
-                return off;
-            off = Head.Storage.OffsetOf(stgSub);
-            if (off != -1)
-                return off + Tail.DataType.BitSize;
-            return -1;
-        }
+		public override int OffsetOf(Storage stgSub)
+		{
+			int off = Tail.OffsetOf(stgSub);
+			if (off != -1)
+				return off;
+			off = Head.OffsetOf(stgSub);
+			if (off != -1)
+				return off + (int)Tail.BitSize;
+			return -1;
+		}
 
         public override bool OverlapsWith(Storage that)
         {
@@ -834,8 +829,6 @@ namespace Reko.Core
             this.DataType = dataType;
         }
 
-        public DataType DataType { get; private set; }
-
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
             return visitor.VisitStackLocalStorage(this);
@@ -901,8 +894,6 @@ namespace Reko.Core
             Domain = StorageDomain.Temporary + number;
             Name = name;
         }
-
-        public string Name { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {

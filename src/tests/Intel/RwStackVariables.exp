@@ -5,9 +5,9 @@
 // sp:sp
 // bp:bp
 // ss:ss
+// es_bx:Sequence es:bx
 // es:es
 // bx:bx
-// es_bx:Sequence es:bx
 // SCZO:Flags
 // ax:ax
 // ds:ds
@@ -51,10 +51,10 @@ fn0C00_0000_exit:
 // sp:sp
 // bp:bp
 // ss:ss
-// es:es
-// bx:bx
 // es_bx:Sequence es:bx
 // ax:ax
+// bx:bx
+// es:es
 // return address size: 2
 void fn0C00_0020()
 fn0C00_0020_entry:
@@ -79,10 +79,10 @@ fn0C00_0020_exit:
 // sp:sp
 // bp:bp
 // ss:ss
-// es:es
-// bx:bx
 // es_bx:Sequence es:bx
 // ax:ax
+// bx:bx
+// es:es
 // SCZO:Flags
 // return address size: 2
 void fn0C00_002E()
