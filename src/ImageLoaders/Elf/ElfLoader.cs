@@ -164,10 +164,18 @@ namespace Reko.ImageLoaders.Elf
         protected ImageSymbol CreateImageSymbol(ElfSymbol sym, uint headerType)
         {
             SymbolType st;
+            if (sym.SectionIndex == 0 && sym.Type == ElfSymbolType.STT_FUNC) //$DEBUG
+                sym.ToString();
             if (sym.SectionIndex == 0 || sym.SectionIndex >= Sections.Count)
                 return null;
             if (!mpSymbolType.TryGetValue(sym.Type, out st))
                 return null;
+            if (sym.SectionIndex == 0)
+            {
+                if (st != SymbolType.Procedure)
+                    return null;
+                st = SymbolType.ExternalProcedure;
+            }
             var symSection = Sections[(int)sym.SectionIndex];
             // If this is a relocatable file, the symbol value is 
             // an offset from the section's virtual address. 
@@ -181,7 +189,7 @@ namespace Reko.ImageLoaders.Elf
             {
                 Type = st,
                 Name = sym.Name,
-                Size = (uint)sym.Size,     //$REVIEW: problem? Could such large objects (like arrays) exist?
+                Size = (uint)sym.Size,     //$REVIEW: is int32 a problem? Could such large objects (like arrays) exist?
                 ProcessorState = Architecture.CreateProcessorState()
             };
         }
