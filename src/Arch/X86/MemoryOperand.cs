@@ -137,9 +137,21 @@ namespace Reko.Arch.X86
 					writer.Write(FormatSignedValue(Offset));
 				}
 				else
-				{	
-					writer.Write("+");
-					writer.Write(FormatUnsignedValue(Offset));
+				{
+                    var off = Offset.ToInt32();
+                    var absOff = Math.Abs(off);
+                    if (Offset.DataType.Size > 2 && off < 0 && absOff < 0x10000)
+                    {
+                        // Special case for negative 32-bit offsets whose 
+                        // absolute value < 0x10000 (GitHub issue #252)
+                        writer.Write("-");
+                        writer.Write("{0:X8}", absOff);
+                    }
+                    else
+                    {
+                        writer.Write("+");
+                        writer.Write(FormatUnsignedValue(Offset));
+                    }
 				}
 			}
 			writer.Write("]");

@@ -711,5 +711,12 @@ movzx	ax,byte ptr [bp+04]
             Assert.AreEqual("nop\t", instrs[0]);
             Assert.AreEqual("fld\tdouble ptr es:[048B]", instrs[1]);
         }
+
+        [Test(Description ="Very large 32-bit offsets can be treated as negative offsets")]
+        public void Dis_x86_LargeNegativeOffset()
+        {
+            AssertCode32("mov\tesi,[eax-0000FFF0]", 0x8B, 0xB0, 0x10, 0x00, 0xFF, 0xFF);
+            AssertCode32("mov\tesi,[eax+FFFF0000]", 0x8B, 0xB0, 0x00, 0x00, 0xFF, 0xFF);
+        }
     }
 }
