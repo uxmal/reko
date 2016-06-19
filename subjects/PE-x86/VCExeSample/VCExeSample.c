@@ -24,3 +24,17 @@ void test2(word32 dwArg04)
 	return;
 }
 
+void indirect_call_test3(cdecl_class * c)
+{
+	Eq_46 * edx_15 = c->vtbl;
+	code * eax_16 = edx_15->ptr0004;
+	word32 esp_17;
+	word32 ebp_18;
+	word32 eax_19;
+	word32 ecx_20;
+	word32 edx_21;
+	byte SCZO_22;
+	eax_16();
+	return;
+}
+
