@@ -87,6 +87,9 @@ namespace Reko.Evaluation
 
         public bool VisitDefInstruction(DefInstruction def)
         {
+            var defPat = pattern as DefInstruction;
+            if (defPat == null)
+                return false;
             throw new NotImplementedException();
         }
 

@@ -290,6 +290,9 @@ namespace Reko.Core.Expressions
 
         bool ExpressionVisitor<bool>.VisitSlice(Slice slice)
         {
+            var slicePat = p as Slice;
+            if (slicePat == null)
+                return false;
             throw new NotImplementedException();
         }
 
