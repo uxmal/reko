@@ -156,7 +156,7 @@ namespace Reko.UnitTests.Analysis
             });
             ssa.DebugDump(true);
             var cm = rw.FindConditionOf(block.Statements, 0, GetId("ax_3"));
-            var asc = rw.FindUsingInstruction(block.Statements, cm.FlagGroup, new AddSubCandidate { Left=ax, Right=cx });
+            var asc = rw.FindUsingInstruction(cm.FlagGroup, new AddSubCandidate { Left=ax, Right=cx });
             Assert.AreEqual("dx_7 = dx + bx + SCZ_4", asc.Statement.ToString());
         }
 

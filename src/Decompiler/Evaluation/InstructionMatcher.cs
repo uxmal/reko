@@ -100,6 +100,9 @@ namespace Reko.Evaluation
 
         public bool VisitPhiAssignment(PhiAssignment phi)
         {
+            var defPat = pattern as PhiAssignment;
+            if (defPat == null)
+                return false;
             throw new NotImplementedException();
         }
 

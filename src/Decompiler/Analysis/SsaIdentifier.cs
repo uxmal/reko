@@ -87,7 +87,8 @@ namespace Reko.Analysis
 		}
 
         /// <summary>
-        /// _Bag_ of Statements that use the identifier. A bag is needed, since the statement a = i * i uses i twice.
+        /// _Bag_ of Statements that use the identifier. A bag is needed, 
+        /// since the statement a = i * i uses i twice.
         /// </summary>
         public List<Statement> Uses { get; private set; }
 

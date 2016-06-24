@@ -505,22 +505,48 @@ namespace Reko.Analysis
             var stmts = hiCandidate.Statement.Block.Statements;
             var linAddr = hiCandidate.Statement.LinearAddress;
             var iStm = stmts.IndexOf(hiCandidate.Statement);
+
             var stmMkLeft = stmts.Insert(
                 iStm++,
                 linAddr,
                 CreateMkSeq(left, hiCandidate.Left, loCandidate.Left));
+            left = ReplaceDstWithSsaIdentifier(left, null, stmMkLeft);
+
             var stmMkRight = stmts.Insert(
                 iStm++,
                 linAddr,
                 CreateMkSeq(right, hiCandidate.Right, loCandidate.Right));
+            right = ReplaceDstWithSsaIdentifier(right, null, stmMkRight);
+
             var expSum = new BinaryExpression(loCandidate.Op, left.DataType, left, right);
             Instruction instr = Assign(dst, expSum);
             var stmLong = stmts.Insert(iStm++, linAddr, instr);
-            var sidDef = ReplaceDstWithSsaIdentifier(expSum, instr, stmLong);
+            this.dst = ReplaceDstWithSsaIdentifier(this.dst, expSum, stmLong);
+
+            var sidDst = GetSsaIdentifierOf(dst);
+            var sidLeft = GetSsaIdentifierOf(left);
+            var sidRight = GetSsaIdentifierOf(right);
+            if (sidLeft != null)
+            {
+                GetSsaIdentifierOf(loCandidate.Left).Uses.Add(stmMkLeft);
+                GetSsaIdentifierOf(hiCandidate.Left).Uses.Add(stmMkLeft);
+            }
+            if (sidRight != null)
+            {
+                GetSsaIdentifierOf(loCandidate.Right).Uses.Add(stmMkRight);
+                GetSsaIdentifierOf(hiCandidate.Right).Uses.Add(stmMkRight);
+            }
+            if (sidDst != null)
+            {
+                sidLeft.Uses.Add(stmLong);
+                sidRight.Uses.Add(stmLong);
+            }
+
             var sidDstLo = GetSsaIdentifierOf(loCandidate.Dst);
             if (sidDstLo != null)
             {
-                var cast = new Cast(loCandidate.Dst.DataType, sidDef.Identifier);
+
+                var cast = new Cast(loCandidate.Dst.DataType, dst);
                 var stmCastLo = stmts.Insert(iStm++, linAddr, new Assignment(
                     sidDstLo.Identifier, cast));
                 var stmDeadLo = sidDstLo.DefStatement;
@@ -528,26 +554,34 @@ namespace Reko.Analysis
                 sidDstLo.DefStatement = stmCastLo;
 
                 var sidDstHi = GetSsaIdentifierOf(hiCandidate.Dst);
-                var slice = new Slice(hiCandidate.Dst.DataType, sidDef.Identifier, (uint)loCandidate.Dst.DataType.BitSize);
+                var slice = new Slice(hiCandidate.Dst.DataType, dst, (uint)loCandidate.Dst.DataType.BitSize);
                 var stmSliceHi = stmts.Insert(iStm++, linAddr, new Assignment(
                     sidDstHi.Identifier, slice));
                 var stmDeadHi = sidDstHi.DefStatement;
                 sidDstHi.DefExpression = slice;
                 sidDstHi.DefStatement = stmSliceHi;
-
+                if (sidDstLo != null)
+                {
+                    sidDstLo.Uses.Add(stmLong);
+                }
+                if (sidDstHi != null)
+                {
+                    sidDstHi.Uses.Add(stmLong);
+                }
                 ssa.DeleteStatement(stmDeadLo);
                 ssa.DeleteStatement(stmDeadHi);
             }
         }
 
-        private SsaIdentifier ReplaceDstWithSsaIdentifier(BinaryExpression expSum, Instruction instr, Statement stmLong)
+        private Expression ReplaceDstWithSsaIdentifier(Expression dst, BinaryExpression src, Statement stmLong)
         {
-            var ass = instr as Assignment;
-            if (ass == null)
-                return null;
-            var sid = ssa.Identifiers.Add(ass.Dst, stmLong, expSum, false);
-            ass.Dst = sid.Identifier;
-            return sid;
+            var ass = stmLong.Instruction as Assignment;
+            if (ass != null) {
+                var sid = ssa.Identifiers.Add(ass.Dst, stmLong, src, false);
+                ass.Dst = sid.Identifier;
+                return ass.Dst;
+            }
+            return dst;
         }
 
         private Instruction CreateMkSeq(Expression dst, Expression hi, Expression lo)
@@ -587,16 +621,17 @@ namespace Reko.Analysis
 
         public void ReplaceLongAdditions(Block block)
         {
+            var stmtsOrig = block.Statements.ToList();
             for (int i = 0; i < block.Statements.Count; ++i)
             {
                 var loInstr = MatchAddSub(block.Statements[i]);
                 if (loInstr == null)
                     continue;
-                var cond = FindConditionOf(block.Statements, i, loInstr.Dst);
+                var cond = FindConditionOf(stmtsOrig, i, loInstr.Dst);
                 if (cond == null)
                     continue;
 
-                var hiInstr = FindUsingInstruction(block.Statements, cond.FlagGroup, loInstr);
+                var hiInstr = FindUsingInstruction(cond.FlagGroup, loInstr);
                 if (hiInstr == null)
                     continue;
 
@@ -611,7 +646,7 @@ namespace Reko.Analysis
         /// <param name="i"></param>
         /// <param name="next"></param>
         /// <returns></returns>
-        public AddSubCandidate FindUsingInstruction(StatementList stms, Identifier cy, AddSubCandidate loInstr)
+        public AddSubCandidate FindUsingInstruction(Identifier cy, AddSubCandidate loInstr)
         {
             foreach (var use in ssa.Identifiers[cy].Uses)
             {
@@ -651,7 +686,7 @@ namespace Reko.Analysis
         /// <param name="p"></param>
         /// <param name="ax"></param>
         /// <returns></returns>
-        public CondMatch FindConditionOf(StatementList stms, int iStm, Expression exp)
+        public CondMatch FindConditionOf(List<Statement> stms, int iStm, Expression exp)
         {
             var idLo = exp as Identifier;
             if (idLo != null)

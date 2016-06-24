@@ -33,6 +33,9 @@ using System.IO;
 
 namespace Reko.UnitTests.Analysis
 {
+    /// <summary>
+    /// Exercises the register aliasing capabilities of Reko
+    /// </summary>
     public class AliasTests : AnalysisTestBase
     {
         private Procedure proc;

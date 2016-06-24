@@ -95,13 +95,13 @@ namespace Reko.UnitTests.Analysis
             dfa.UntangleProcedures();
             foreach (Procedure proc in program.Procedures.Values)
             {
-                var larw = new LongAddRewriter(proc, program.Architecture);
-                larw.Transform();
-
                 var sst = new SsaTransform2(program.Architecture, proc, importResolver, dfa.ProgramDataFlow.ToDataFlow2());
                 SsaState ssa = sst.SsaState;
                 sst.Transform();
                 proc.Dump(true);
+
+                var larw = new LongAddRewriter2(program.Architecture, ssa);
+                larw.Transform();
 
                 var cce = new ConditionCodeEliminator(ssa, program.Platform);
                 cce.Transform();
