@@ -178,7 +178,7 @@ namespace Reko.UnitTests.Analysis
             });
             CreateLongInstruction(block.Statements[0], block.Statements[1]);
             ssa.DebugDump(true);
-            Assert.AreEqual("dx_ax_8 = dx_ax + Mem0[bx + 0x0300:ui32]", block.Statements[2].ToString());
+            Assert.AreEqual("dx_ax_9 = dx_ax_8 + Mem0[bx + 0x0300:ui32]", block.Statements[2].ToString());
         }
 
         [Test]
@@ -193,7 +193,7 @@ namespace Reko.UnitTests.Analysis
                 m.Return();
             });
             CreateLongInstruction(block.Statements[0], block.Statements[2]);
-            Assert.AreEqual("dx_ax_6 = dx_ax + 0x12345678", block.Statements[3].ToString());
+            Assert.AreEqual("dx_ax_7 = dx_ax_6 + 0x12345678", block.Statements[3].ToString());
         }
 
         [Test]
@@ -209,7 +209,7 @@ namespace Reko.UnitTests.Analysis
             });
             CreateLongInstruction(block.Statements[0], block.Statements[2]);
             ssa.DebugDump(true);
-            Assert.AreEqual("dx_ax_6 = dx_ax + 0x00000001", block.Statements[3].ToString());
+            Assert.AreEqual("dx_ax_7 = dx_ax_6 + 0x00000001", block.Statements[3].ToString());
         }
 
         [Test]
@@ -229,7 +229,7 @@ namespace Reko.UnitTests.Analysis
                 m.Return();
             });
             CreateLongInstruction(block.Statements[0], block.Statements[1]);
-            Assert.AreEqual("dx_ax_8 = dx_ax + Mem0[bx + 0x0300:ui32]", block.Statements[2].ToString());
+            Assert.AreEqual("dx_ax_9 = dx_ax_8 + Mem0[bx + 0x0300:ui32]", block.Statements[2].ToString());
         }
 
         [Test]
@@ -278,11 +278,11 @@ namespace Reko.UnitTests.Analysis
             //$TODO: remove the C = cond(ax)
             var sExp = @"l1:
 	C_5 = cond(ax_4)
-	dx_ax = SEQ(dx, ax)
+	dx_ax_9 = SEQ(dx, ax)
 	Mem0[bx + 0x0300:ui32] = SEQ(Mem0[bx + 0x0302:word16], Mem0[bx + 0x0300:word16])
-	dx_ax_9 = dx_ax + Mem0[bx + 0x0300:ui32]
-	ax_4 = (word16) dx_ax_9
-	dx_7 = SLICE(dx_ax_9, word16, 16)
+	dx_ax_10 = dx_ax_9 + Mem0[bx + 0x0300:ui32]
+	ax_4 = (word16) dx_ax_10
+	dx_7 = SLICE(dx_ax_10, word16, 16)
 	C_8 = cond(dx_7)
 	return
 ";

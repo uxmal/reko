@@ -1,67 +1,67 @@
 r1:r1
     def:  def r1
-    uses: SZC_2 = cond(r1)
-          r3_r1_4 = SEQ(r3, r1) (alias)
-SZC_2: orig: SZC
-    def:  SZC_2 = cond(r1)
-    uses: use SZC_2
-r3:r3
-    def:  def r3
-    uses: r3_r1_4 = SEQ(r3, r1) (alias)
-r3_r1_4: orig: r3_r1
-    def:  r3_r1_4 = SEQ(r3, r1) (alias)
-    uses: r3_r1_8 = r3_r1_4 + r4_r2_7
-r4:r4
-    def:  def r4
-    uses: r4_r2_7 = SEQ(r4, r2) (alias)
-          use r4
+    uses: r3_r1_10 = SEQ(r3, r1)
 r2:r2
     def:  def r2
-    uses: r4_r2_7 = SEQ(r4, r2) (alias)
+    uses: r4_r2_11 = SEQ(r4, r2)
           use r2
-r4_r2_7: orig: r4_r2
-    def:  r4_r2_7 = SEQ(r4, r2) (alias)
-    uses: r3_r1_8 = r3_r1_4 + r4_r2_7
-r3_r1_8: orig: r3_r1
-    def:  r3_r1_8 = r3_r1_4 + r4_r2_7
-    uses: r1_9 = (word32) r3_r1_8 (alias)
-          r3_11 = SLICE(r3_r1_8, word32, 32) (alias)
-r1_9: orig: r1
-    def:  r1_9 = (word32) r3_r1_8 (alias)
-    uses: Mem10[0x00444400:word32] = r1_9
-          use r1_9
-Mem10: orig: Mem0
-    def:  Mem10[0x00444400:word32] = r1_9
-r3_11: orig: r3
-    def:  r3_11 = SLICE(r3_r1_8, word32, 32) (alias)
-    uses: Mem12[0x00444404:word32] = r3_11
-          use r3_11
-Mem12: orig: Mem0
-    def:  Mem12[0x00444404:word32] = r3_11
+r1_3: orig: r1
+    def:  r1_3 = (word32) r3_r1_12
+    uses: SZC_4 = cond(r1_3)
+          Mem8[0x00444400:word32] = r1_3
+          r3_r1_12 = r3_r1_10 + r4_r2_11
+          use r1_3
+SZC_4: orig: SZC
+    def:  SZC_4 = cond(r1_3)
+    uses: use SZC_4
+r3:r3
+    def:  def r3
+    uses: r3_r1_10 = SEQ(r3, r1)
+r4:r4
+    def:  def r4
+    uses: r4_r2_11 = SEQ(r4, r2)
+          use r4
+r3_7: orig: r3
+    def:  r3_7 = SLICE(r3_r1_12, word32, 32)
+    uses: Mem9[0x00444404:word32] = r3_7
+          r3_r1_12 = r3_r1_10 + r4_r2_11
+          use r3_7
+Mem8: orig: Mem0
+    def:  Mem8[0x00444400:word32] = r1_3
+Mem9: orig: Mem0
+    def:  Mem9[0x00444404:word32] = r3_7
+r3_r1_10: orig: r3_r1
+    def:  r3_r1_10 = SEQ(r3, r1)
+    uses: r3_r1_12 = r3_r1_10 + r4_r2_11
+r4_r2_11: orig: r4_r2
+    def:  r4_r2_11 = SEQ(r4, r2)
+    uses: r3_r1_12 = r3_r1_10 + r4_r2_11
+r3_r1_12: orig: r3_r1
+    def:  r3_r1_12 = r3_r1_10 + r4_r2_11
 // main
 // Return size: 0
 void main(word32 r1, word32 r2, word32 r3, word32 r4)
 main_entry:
 	def r1
-	def r3
-	r3_r1_4 = SEQ(r3, r1) (alias)
-	def r4
 	def r2
-	r4_r2_7 = SEQ(r4, r2) (alias)
+	def r3
+	def r4
 	// succ:  l1
 l1:
-	SZC_2 = cond(r1)
-	r3_r1_8 = r3_r1_4 + r4_r2_7
-	r1_9 = (word32) r3_r1_8 (alias)
-	r3_11 = SLICE(r3_r1_8, word32, 32) (alias)
-	Mem10[0x00444400:word32] = r1_9
-	Mem12[0x00444404:word32] = r3_11
+	SZC_4 = cond(r1_3)
+	r3_r1_10 = SEQ(r3, r1)
+	r4_r2_11 = SEQ(r4, r2)
+	r3_r1_12 = r3_r1_10 + r4_r2_11
+	r1_3 = (word32) r3_r1_12
+	r3_7 = SLICE(r3_r1_12, word32, 32)
+	Mem8[0x00444400:word32] = r1_3
+	Mem9[0x00444404:word32] = r3_7
 	return
 	// succ:  main_exit
 main_exit:
-	use r1_9
+	use r1_3
 	use r2
-	use r3_11
+	use r3_7
 	use r4
-	use SZC_2
+	use SZC_4
 

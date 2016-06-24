@@ -538,8 +538,10 @@ namespace Reko.Analysis
             }
             if (sidDst != null)
             {
-                sidLeft.Uses.Add(stmLong);
-                sidRight.Uses.Add(stmLong);
+                if (sidLeft != null)
+                    sidLeft.Uses.Add(stmLong);
+                if (sidRight != null)
+                    sidRight.Uses.Add(stmLong);
             }
 
             var sidDstLo = GetSsaIdentifierOf(loCandidate.Dst);
