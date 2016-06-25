@@ -34,6 +34,7 @@ namespace Reko.Analysis
 		{
 			this.Members = new List<SsaIdentifier>();
 			this.Definitions = new List<Statement>();
+            this.DefExprs = new List<Expression>();
 			this.Uses = new List<Statement>();
 		}
 
@@ -41,6 +42,7 @@ namespace Reko.Analysis
         public List<SsaIdentifier> Members { get; private set; }
         public List<Statement> Uses { get; private set; }
         public List<Statement> Definitions { get; private set; }
+        public List<Expression> DefExprs { get; private set; }
 
         public void Add(SsaIdentifier sid)
 		{
@@ -78,6 +80,7 @@ namespace Reko.Analysis
 				}
 			}
 			Definitions.Add(sid.DefStatement);
+            DefExprs.Add(sid.DefExpression);
 			foreach (Statement u in sid.Uses)
 				Uses.Add(u);
 		}

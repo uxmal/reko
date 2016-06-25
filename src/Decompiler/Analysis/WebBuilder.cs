@@ -25,6 +25,7 @@ using Reko.Core.Lib;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Reko.Analysis
 {
@@ -76,7 +77,8 @@ namespace Reko.Analysis
 			foreach (Web web in this.webs)
 			{
                 if (web.Uses.Count > 0 &&
-                    !(web.Identifier is MemoryIdentifier))
+                    !(web.Identifier is MemoryIdentifier)
+                    || web.DefExprs.OfType<OutArgument>().Count() > 0)
                 {
                     deci.InsertDeclaration(web);
                 }
