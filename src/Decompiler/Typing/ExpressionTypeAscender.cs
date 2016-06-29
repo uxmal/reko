@@ -84,7 +84,11 @@ namespace Reko.Typing
             DataType dt;
             if (binExp.Operator == Operator.IAdd)
             {
-                dt = PullSumDataType(dtLeft, dtRight);
+                dt = FieldType(dtLeft, dtRight, binExp.Right);
+                if (dt == null)
+                {
+                    dt = PullSumDataType(dtLeft, dtRight);
+                }
             }
             else if (binExp.Operator == Operator.ISub)
             {
@@ -146,16 +150,37 @@ namespace Reko.Typing
             return dt;
         }
 
+        private DataType FieldType(DataType dtLeft, DataType dtRight, Expression right)
+        {
+            var ptrLeft = dtLeft as Pointer;
+            var ptRight = dtRight as PrimitiveType;
+            if (ptrLeft == null || ptRight == null || ptRight.Domain == Domain.Pointer)
+                return null;
+
+            var pointee = ptrLeft.Pointee;
+            var strPointee = pointee.ResolveAs<StructureType>();
+                Constant cOffset;
+            if (strPointee == null || !right.As(out cOffset))
+                return null;
+
+            int offset = cOffset.ToInt32();
+            var field = strPointee.Fields.LowerBound(offset);
+            //$BUG: offset != field.Offset?
+            if (field == null || offset >= field.Offset + field.DataType.Size)
+                return null;
+            return factory.CreatePointer(field.DataType, dtLeft.Size); 
+        }
+
         private DataType PullSumDataType(DataType dtLeft, DataType dtRight)
         {
             var ptLeft = dtLeft as PrimitiveType;
             var ptRight = dtRight.ResolveAs<PrimitiveType>();
-            if (ptLeft != null && ptLeft.Domain == Domain.Pointer ||
-                dtLeft is Pointer)
+            if (ptLeft != null && ptLeft.Domain == Domain.Pointer)
             {
                 if (ptRight != null && ptRight.Domain != Domain.Pointer)
                     return PrimitiveType.Create(Domain.Pointer, dtLeft.Size);
             }
+            
             if (ptLeft != null && ptLeft.IsIntegral)
             {
                 if (ptRight != null)

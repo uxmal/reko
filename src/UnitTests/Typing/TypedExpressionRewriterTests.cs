@@ -1122,7 +1122,7 @@ proc1_exit:
 
 ";
             #endregion
-            RunStringTest(pm.BuildProgram(), sExp);
+            RunTest(pm.BuildProgram(), "Typing/TerNestedStructsPtr.txt");
         }
     }
 }

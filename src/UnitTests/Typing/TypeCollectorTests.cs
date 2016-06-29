@@ -26,6 +26,7 @@ using System.Linq;
 using System.Text;
 using Reko.Core;
 using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
 
 namespace Reko.UnitTests.Typing
 {
@@ -49,16 +50,26 @@ namespace Reko.UnitTests.Typing
                 aen.Transform(program);
                 eqb.Build(program);
                 tyco.CollectTypes();
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 fut.TextWriter.WriteLine(ex.Message);
                 fut.TextWriter.WriteLine(ex.StackTrace);
                 throw;
-            } finally
+            }
+            finally
             {
                 DumpProgAndStore(program, fut);
                 fut.Dispose();
             }
+        }
+
+        private void RunTest(Action<ProcedureBuilder> doBuild, string outputFile)
+        {
+            var pb = new ProgramBuilder();
+            pb.Add("proc1", doBuild);
+            var program = pb.BuildProgram();
+            RunTest(program, outputFile);
         }
 
         private void DumpProgAndStore(Program prog, FileUnitTester fut)
@@ -93,6 +104,33 @@ namespace Reko.UnitTests.Typing
                                 si),
                            m.Byte(0xF8));
             }, "Typing/TycoIndexedDisplacement.txt");
+        }
+
+        [Test]
+        public void TycoNestedStructsPtr()
+        {
+            RunTest(m =>
+            {
+                var eax = m.Reg32("eax", 0);
+                var ecx = m.Reg32("ecx", 1);
+                var strInner = new StructureType("strInner", 8, true)
+                {
+                    Fields = {
+                        { 0, PrimitiveType.Real32, "innerAttr00" },
+                        { 4, PrimitiveType.Int32, "innerAttr04" },
+                    }
+                };
+                var str = new StructureType("str", 8, true)
+                {
+                    Fields = {
+                        { 0, new Pointer(strInner, 4), "strAttr00" },
+                        { 4, PrimitiveType.Int32, "strAttr04" },
+                    }
+                };
+                var v = m.Frame.EnsureStackArgument(4, new Pointer(str, 4));
+                m.Declare(eax, m.Load(PrimitiveType.Word32, v));
+                m.Declare(ecx, m.Load(PrimitiveType.Word32, eax));
+            }, "Typing/TycoNestedStructsPtr.txt");
         }
     }
 }

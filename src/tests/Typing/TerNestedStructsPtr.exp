@@ -1,0 +1,74 @@
+// Before ///////
+// proc1
+// Return size: 0
+void proc1()
+proc1_entry:
+	// succ:  l1
+l1:
+	word32 eax = Mem0[ptrArg04:word32]
+	word32 ecx = Mem0[eax:word32]
+proc1_exit:
+
+// After ///////
+// proc1
+// Return size: 0
+void proc1()
+proc1_entry:
+	// succ:  l1
+l1:
+	word32 * eax = ptrArg04->strAttr00
+	word32 ecx = *eax
+proc1_exit:
+
+// Equivalence classes ////////////
+Eq_1: (struct "Globals")
+	globals_t (in globals : (ptr (struct "Globals")))
+Eq_3: (struct "str" 0q008 (0 Eq_11 strAttr00) (4 int32 strAttr04))
+	T_3 (in ptrArg04 : (ptr (struct "str" 0008)))
+Eq_11: (union "Eq_11" ((ptr word32) u1) ((ptr (struct "strInner" 0008)) u0))
+	T_11
+// Type Variables ////////////
+globals_t: (in globals : (ptr (struct "Globals")))
+  Class: Eq_1
+  DataType: (ptr Eq_1)
+  OrigDataType: (ptr (struct "Globals"))
+T_2: (in eax : (ptr word32))
+  Class: Eq_2
+  DataType: (ptr word32)
+  OrigDataType: (ptr (struct (0 T_10 t0000)))
+T_3: (in ptrArg04 : (ptr (struct "str" 0008)))
+  Class: Eq_3
+  DataType: (ptr Eq_3)
+  OrigDataType: (ptr (struct "str" 0008))
+T_4: (in 0x00000000 : word32)
+  Class: Eq_4
+  DataType: word32
+  OrigDataType: word32
+T_5: (in ptrArg04 + 0x00000000 : word32)
+  Class: Eq_5
+  DataType: ptr32
+  OrigDataType: ptr32
+T_6: (in Mem0[ptrArg04 + 0x00000000:word32] : word32)
+  Class: Eq_2
+  DataType: (ptr word32)
+  OrigDataType: word32
+T_7: (in ecx : word32)
+  Class: Eq_7
+  DataType: word32
+  OrigDataType: word32
+T_8: (in 0x00000000 : word32)
+  Class: Eq_8
+  DataType: word32
+  OrigDataType: word32
+T_9: (in eax + 0x00000000 : word32)
+  Class: Eq_9
+  DataType: word32
+  OrigDataType: word32
+T_10: (in Mem0[eax + 0x00000000:word32] : word32)
+  Class: Eq_7
+  DataType: word32
+  OrigDataType: word32
+T_11:
+  Class: Eq_11
+  DataType: Eq_11
+  OrigDataType: 
