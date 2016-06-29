@@ -134,9 +134,9 @@ void nested_structs_test13(nested_structs_type * str)
 void gbl_nested_structs_test14()
 {
 	// gbl_nested_structs.a = 5
-	globals->gbl_nested_structs = (Eq_n) 0x05;
+	globals->gbl_nested_structs.a = 0x05;
 	// gbl_nested_structs.str.b = 6
-	globals->gbl_nested_structs.str.b = (Eq_n) 0x06;
+	globals->gbl_nested_structs.str.b = 0x06;
 	// gbl_nested_structs.str.c = 7
 	globals->gbl_nested_structs.str.c = 0x07;
 	// gbl_nested_structs.d = 8

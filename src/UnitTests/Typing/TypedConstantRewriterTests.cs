@@ -63,8 +63,10 @@ namespace Reko.UnitTests.Typing
 			TypeVariable tvGlobals = store.EnsureExpressionTypeVariable(factory, globals);
 			EquivalenceClass eqGlobals = new EquivalenceClass(tvGlobals);
 			eqGlobals.DataType = s;
-			globals.TypeVariable.DataType = new Pointer(eqGlobals, 32);
-			globals.DataType = globals.TypeVariable.DataType;
+            var globalsPtr = new Pointer(eqGlobals, 32);
+            globals.TypeVariable.DataType = globalsPtr;
+            globals.TypeVariable.OriginalDataType = globalsPtr;
+            globals.DataType = globalsPtr;
 		}
 
         private void Given_TypedConstantRewriter()

@@ -3319,15 +3319,15 @@ Eq_n fn0000998C(Eq_n r15, word32 VR)
 		fn00009834(-1, -8, -3);
 		ui32 * r2_n = fn00009834(-1, -9, -3);
 		*r2_n |= 0x001A0000;
-		globals->a13938.u0 = -0x0011;
-		globals->a13934.u0 = -22;
+		globals->a13938[0].u0 = -0x0011;
+		globals->a13934[0].u0 = -22;
 		fn0000EDF4(-0x0F, &globals->t12C16, r15, VR);
 	}
 	else
 	{
 		globals->t134AC.u0 = -1;
-		globals->a13938 = r11_n;
-		globals->a13934.u0 = -0x0F;
+		globals->a13938[0] = r11_n;
+		globals->a13934[0].u0 = -0x0F;
 		word32 r22_n;
 		word32 r28_n;
 		fn0000D214(fp - 27, fp - 26, ~0x00, VR, out r22_n, out r28_n);
@@ -3750,7 +3750,7 @@ int32 fn0000A5D0(union Eq_n * r3)
 	union Eq_n * r4_n;
 	Eq_n r3_n;
 	Eq_n r4_n = *((char *) r3 + 40);
-	if (*((char *) r3 + 48) == &((word32) (globals->tFFFFFFFF).dw0000 + 2))
+	if (*((char *) r3 + 48) == (char *) (&(globals->tFFFFFFFF).dw0000) + 2)
 	{
 		r3_n = *((char *) r3 + 44);
 		globals->t1349C = r4_n;
@@ -4320,13 +4320,13 @@ l0000B84C:
 			{
 				int32 r14_n;
 				Eq_n r2_n;
-				if (r2_n == &((word32) (globals->tFFFFFFFF).dw0000 + 3))
+				if (r2_n == (char *) (&(globals->tFFFFFFFF).dw0000) + 3)
 				{
 					r14_n = -3;
 					r2_n = globals->t13098;
 					goto l0000B590;
 				}
-				if (r2_n > &((word32) (globals->tFFFFFFFF).dw0000 + 3))
+				if (r2_n > (char *) (&(globals->tFFFFFFFF).dw0000) + 3)
 				{
 					if (r2_n != &globals->dw0003)
 					{
@@ -4355,7 +4355,7 @@ l0000B5FC:
 				}
 				else
 				{
-					if (r2_n == &((word32) (globals->tFFFFFFFF).dw0000 + 2))
+					if (r2_n == (char *) (&(globals->tFFFFFFFF).dw0000) + 2)
 					{
 						r14_n = 0;
 						r2_n = globals->t1309C;
@@ -4569,9 +4569,9 @@ int32 fn0000BC28()
 //      fn00010570
 word32 fn0000BC38(word32 * r3)
 {
-	if (r3 > &globals->dw0021 || r3 < &((word32) globals->dw000B + 3))
+	if (r3 > &globals->dw0021 || r3 < (char *) (&globals->dw000B) + 3)
 		return dwLoc0C;
-	<anonymous> * r3_n = *((char *) globals->a12BA4 + (r3 - &((word32) globals->dw000B + 3)) * 0x04);
+	<anonymous> * r3_n = *((char *) globals->a12BA4 + (r3 - ((char *) (&globals->dw000B) + 3)) * 0x04);
 	word32 r2_n;
 	r3_n();
 	return r2_n;
@@ -7196,8 +7196,8 @@ word32 fn000101A8(Eq_n r15, word32 VR)
 	{
 		if ((globals->dw134D0 >> r18_n & 0x01) != 0x00)
 		{
-			Eq_n r2_n = globals->a13938;
-			while (r2_n <= globals->a13934)
+			Eq_n r2_n = globals->a13938[0];
+			while (r2_n <= (globals->a13934)[0])
 			{
 				if ((*r20_n >> r2_n & 0x01) != 0x00)
 				{
@@ -7224,8 +7224,8 @@ word32 fn000101A8(Eq_n r15, word32 VR)
 	{
 		if ((globals->dw134D4 >> r2_n & 0x01) == 0x00)
 		{
-			Eq_n r14_n = globals->a13938;
-			while (r14_n <= globals->a13934)
+			Eq_n r14_n = globals->a13938[0];
+			while (r14_n <= (globals->a13934)[0])
 			{
 				if ((*r16_n >> r14_n & 0x01) != 0x00)
 				{
@@ -7262,8 +7262,8 @@ word32 fn000103C0(Eq_n r15, word32 VR, ptr32 & r9Out, ptr32 & r18Out, ptr32 & r2
 	{
 		if ((globals->dw134D0 >> r16_n & 0x01) != 0x00 && *r20_n != 0x00)
 		{
-			Eq_n r2_n = globals->a13938;
-			while (r2_n <= globals->a13934)
+			Eq_n r2_n = globals->a13938[0];
+			while (r2_n <= (globals->a13934)[0])
 			{
 				if ((*r18_n >> r2_n & 0x01) != 0x00)
 				{
@@ -7286,8 +7286,8 @@ word32 fn000103C0(Eq_n r15, word32 VR, ptr32 & r9Out, ptr32 & r18Out, ptr32 & r2
 	{
 		if ((globals->dw134D4 >> r16_n & 0x01) == 0x00)
 		{
-			Eq_n r2_n = globals->a13938;
-			while (r2_n <= globals->a13934)
+			Eq_n r2_n = globals->a13938[0];
+			while (r2_n <= (globals->a13934)[0])
 			{
 				if ((*r14_n >> r2_n & 0x01) != 0x00 && (int32) (*((word64) r2_n + 0x00013744)) == 0x00)
 				{
