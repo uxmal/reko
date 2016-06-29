@@ -94,15 +94,15 @@ namespace Reko.UnitTests.Analysis
 
 				DeadCode.Eliminate(proc, ssa);
 
-				Coalescer coa = new Coalescer(proc, ssa);
+				Coalescer coa = new Coalescer(ssa);
 				coa.Transform();
 
 				DeadCode.Eliminate(proc, ssa);
 
-				LiveCopyInserter lci = new LiveCopyInserter(proc, ssa.Identifiers);
+				LiveCopyInserter lci = new LiveCopyInserter(ssa);
 				lci.Transform();
 
-				WebBuilder web = new WebBuilder(proc, ssa.Identifiers, new Dictionary<Identifier,LinearInductionVariable>());
+				WebBuilder web = new WebBuilder(ssa, new Dictionary<Identifier,LinearInductionVariable>());
 				web.Transform();
 
 				ssa.ConvertBack(false);

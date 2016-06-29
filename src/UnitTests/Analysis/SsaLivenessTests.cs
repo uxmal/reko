@@ -137,12 +137,12 @@ namespace Reko.UnitTests.Analysis
             ValuePropagator vp = new ValuePropagator(arch, ssa);
 			vp.Transform();
 			DeadCode.Eliminate(proc, ssa);
-			Coalescer coa = new Coalescer(proc, ssa);
+			Coalescer coa = new Coalescer(ssa);
 			coa.Transform();
 			DeadCode.Eliminate(proc, ssa);
 
-			sla = new SsaLivenessAnalysis(proc, ssa.Identifiers);
-			sla2 = new SsaLivenessAnalysis2(proc, ssa.Identifiers);
+			sla = new SsaLivenessAnalysis(ssa);
+			sla2 = new SsaLivenessAnalysis2(ssa);
 			sla2.Analyze();
 		}
 

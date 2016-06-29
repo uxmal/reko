@@ -100,7 +100,7 @@ namespace Reko.Analysis
                     // Build expressions. A definition with a single use can be subsumed
                     // into the using expression. 
 
-                    var coa = new Coalescer(proc, ssa);
+                    var coa = new Coalescer(ssa);
                     coa.Transform();
                     DeadCode.Eliminate(proc, ssa);
 
@@ -121,7 +121,7 @@ namespace Reko.Analysis
                     DeadCode.Eliminate(proc, ssa);
 
                     // Definitions with multiple uses and variables joined by PHI functions become webs.
-                    var web = new WebBuilder(proc, ssa.Identifiers, program.InductionVariables);
+                    var web = new WebBuilder(ssa, program.InductionVariables);
                     web.Transform();
                     ssa.ConvertBack(false);
                 }
@@ -260,7 +260,7 @@ namespace Reko.Analysis
                 // Build expressions. A definition with a single use can be subsumed
                 // into the using expression. 
 
-                var coa = new Coalescer(proc, ssa.SsaState);
+                var coa = new Coalescer(ssa.SsaState);
                 coa.Transform();
                 DeadCode.Eliminate(proc, ssa.SsaState);
 
@@ -282,7 +282,7 @@ namespace Reko.Analysis
                 DeadCode.Eliminate(proc, ssa.SsaState);
 
                 // Definitions with multiple uses and variables joined by PHI functions become webs.
-                var web = new WebBuilder(proc, ssa.SsaState.Identifiers, program.InductionVariables);
+                var web = new WebBuilder(ssa.SsaState, program.InductionVariables);
                 web.Transform();
                 ssa.SsaState.ConvertBack(false);
             }

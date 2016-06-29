@@ -40,7 +40,7 @@ namespace Reko.Analysis
     /// </remarks>
 	public class WebBuilder
 	{
-		private Procedure proc;
+		private SsaState ssa;
 		private SsaIdentifierCollection ssaIds;
 		private SsaLivenessAnalysis sla;
 		private BlockDominatorGraph doms;
@@ -49,13 +49,13 @@ namespace Reko.Analysis
 		private List<Web> webs;
 		private Statement stmCur;
 
-        public WebBuilder(Procedure proc, SsaIdentifierCollection ssaIds, Dictionary<Identifier,LinearInductionVariable> ivs)
+        public WebBuilder(SsaState ssa, Dictionary<Identifier,LinearInductionVariable> ivs)
         {
-            this.proc = proc;
-            this.ssaIds = ssaIds;
+            this.ssa = ssa;
+            this.ssaIds = ssa.Identifiers;
             this.ivs = ivs;
-            this.sla = new SsaLivenessAnalysis(proc, ssaIds);
-            this.doms = proc.CreateBlockDominatorGraph();
+            this.sla = new SsaLivenessAnalysis(ssa);
+            this.doms = ssa.Procedure.CreateBlockDominatorGraph();
             this.webs = new List<Web>();
         }
 
@@ -87,7 +87,7 @@ namespace Reko.Analysis
 
 		public void Transform()
 		{
-			new LiveCopyInserter(proc, ssaIds).Transform();
+			new LiveCopyInserter(ssa).Transform();
 			BuildWebOf();
 
 			foreach (SsaIdentifier id in ssaIds)
@@ -99,7 +99,7 @@ namespace Reko.Analysis
 			InsertDeclarations();
 
 			WebReplacer replacer = new WebReplacer(this);
-			foreach (Block bl in proc.ControlGraph.Blocks)
+			foreach (Block bl in ssa.Procedure.ControlGraph.Blocks)
 			{
 				for (int i = bl.Statements.Count - 1; i >= 0; --i)
 				{

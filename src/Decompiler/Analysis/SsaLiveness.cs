@@ -44,19 +44,19 @@ namespace Reko.Analysis
             public List<SsaIdentifier> LiveOut { get; private set; }
         }
 
-		private Procedure proc;
+		private SsaState ssa;
 		private SsaIdentifierCollection ssaIds;
         private HashSet<Block> visited;
 		private Dictionary<Statement, List<Identifier>> defined;		// maps statement to -> List of identifiers
 		private InterferenceGraph interference;
         private Dictionary<Block, Record> records;
 
-		public SsaLivenessAnalysis(Procedure proc, SsaIdentifierCollection ssaIds)
+		public SsaLivenessAnalysis(SsaState ssa)
 		{
-			this.proc = proc;
-			this.ssaIds = ssaIds;
+			this.ssa = ssa;
+			this.ssaIds = ssa.Identifiers;
             this.visited = new HashSet<Block>();
-            BuildRecords(proc.ControlGraph.Blocks);
+            BuildRecords(ssa.Procedure.ControlGraph.Blocks);
 			BuildDefinedMap(ssaIds);
 			BuildInterferenceGraph(ssaIds);
 		}
@@ -270,9 +270,9 @@ namespace Reko.Analysis
 		private Dictionary<Block,Block> visitedBlocks;
 		private InterferenceGraph interference;
 
-		public SsaLivenessAnalysis2(Procedure proc, SsaIdentifierCollection ssa)
+		public SsaLivenessAnalysis2(SsaState ssa)
 		{
-			this.ssa = ssa;
+			this.ssa = ssa.Identifiers;
             visitedBlocks = new Dictionary<Block, Block>();
 			interference = new InterferenceGraph();
 		}

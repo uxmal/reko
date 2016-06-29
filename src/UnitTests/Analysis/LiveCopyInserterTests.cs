@@ -35,13 +35,14 @@ namespace Reko.UnitTests.Analysis
 	public class LiveCopyInserterTests : AnalysisTestBase
 	{
 		private Procedure proc;
+        private SsaState ssa;
 		private SsaIdentifierCollection ssaIds;
 
 		[Test]
 		public void LciFindCopyslots()
 		{
 			Build(new LiveLoopMock().Procedure, new FakeArchitecture());
-			var lci = new LiveCopyInserter(proc, ssaIds);
+			var lci = new LiveCopyInserter(ssa);
 			Assert.AreEqual(2, lci.IndexOfInsertedCopy(proc.ControlGraph.Blocks[0]));
             Assert.AreEqual(0, lci.IndexOfInsertedCopy(proc.ControlGraph.Blocks[2].Succ[0]));
             Assert.AreEqual(0, lci.IndexOfInsertedCopy(proc.ControlGraph.Blocks[2].Succ[0].Succ[0]));
@@ -51,7 +52,7 @@ namespace Reko.UnitTests.Analysis
 		public void LciLiveAtLoop()
 		{
 			Build(new LiveLoopMock().Procedure, new FakeArchitecture());
-			var lci = new LiveCopyInserter(proc, ssaIds);
+			var lci = new LiveCopyInserter(ssa);
 
 			var i = ssaIds.Where(s => s.Identifier.Name == "i").Single().Identifier;
 			var i_4 = ssaIds.Where(s => s.Identifier.Name == "i_4").Single().Identifier;
@@ -64,7 +65,7 @@ namespace Reko.UnitTests.Analysis
 		public void LciLiveAtCopy()
 		{
 			Build(new LiveCopyMock().Procedure, new FakeArchitecture());
-			var lci = new LiveCopyInserter(proc, ssaIds);
+			var lci = new LiveCopyInserter(ssa);
 
 			var reg   = ssaIds.Where(s => s.Identifier.Name == "reg").Single();
 			var reg_3 = ssaIds.Where(s => s.Identifier.Name == "reg_3").Single();
@@ -78,7 +79,7 @@ namespace Reko.UnitTests.Analysis
 		public void LciInsertAssignmentCopy()
 		{
 			Build(new LiveCopyMock().Procedure, new FakeArchitecture());
-			var lci = new LiveCopyInserter(proc, ssaIds);
+			var lci = new LiveCopyInserter(ssa);
 
 			int i = lci.IndexOfInsertedCopy(proc.ControlGraph.Blocks[2]);
 			Assert.AreEqual(i, 0);
@@ -91,7 +92,7 @@ namespace Reko.UnitTests.Analysis
 		public void LciInsertAssignmentLiveLoop()
 		{
 			Build(new LiveLoopMock().Procedure, new FakeArchitecture());
-			var lci = new LiveCopyInserter(proc, ssaIds);
+			var lci = new LiveCopyInserter(ssa);
 
             var i_4 = ssaIds.Where(s => s.Identifier.Name == "i_2").Single();
 			var idNew = lci.InsertAssignmentNewId(i_4.Identifier, proc.ControlGraph.Blocks[2], 2);
@@ -103,7 +104,7 @@ namespace Reko.UnitTests.Analysis
 		public void LciRenameDominatedIdentifiers()
 		{
 			Build(new LiveLoopMock().Procedure, new FakeArchitecture());
-			var lci = new LiveCopyInserter(proc, ssaIds);
+			var lci = new LiveCopyInserter(ssa);
             proc.ControlGraph.Blocks[1].Dump();
             var i_1 = ssaIds.Where(s => s.Identifier.Name == "i_2").Single();
             var idNew = lci.InsertAssignmentNewId(i_1.Identifier, proc.ControlGraph.Blocks[2], 2);
@@ -115,7 +116,7 @@ namespace Reko.UnitTests.Analysis
 		public void LciLiveLoop()
 		{
 			Build(new LiveLoopMock().Procedure, new FakeArchitecture());
-			LiveCopyInserter lci = new LiveCopyInserter(proc, ssaIds);
+			LiveCopyInserter lci = new LiveCopyInserter(ssa);
 			lci.Transform();
 			using (FileUnitTester fut = new FileUnitTester("Analysis/LciLiveLoop.txt"))
 			{
@@ -128,7 +129,7 @@ namespace Reko.UnitTests.Analysis
 		public void LciLiveCopy()
 		{
 			Build(new LiveCopyMock().Procedure, new FakeArchitecture());
-			LiveCopyInserter lci = new LiveCopyInserter(proc, ssaIds);
+			LiveCopyInserter lci = new LiveCopyInserter(ssa);
 			lci.Transform();
 			using (FileUnitTester fut = new FileUnitTester("Analysis/LciLiveCopy.txt"))
 			{
@@ -159,7 +160,7 @@ namespace Reko.UnitTests.Analysis
 		{
 			Program program = RewriteFile(sourceFile);
 			Build(program.Procedures.Values[0], program.Architecture);
-			LiveCopyInserter lci = new LiveCopyInserter(proc, ssaIds);
+			LiveCopyInserter lci = new LiveCopyInserter(ssa);
 			lci.Transform();
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
@@ -183,7 +184,7 @@ namespace Reko.UnitTests.Analysis
                 null,
                 gr,
                 new HashSet<RegisterStorage>());
-			SsaState ssa = sst.SsaState;
+			this.ssa = sst.SsaState;
 			this.ssaIds = ssa.Identifiers;
 
 			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, platform);
@@ -193,7 +194,7 @@ namespace Reko.UnitTests.Analysis
             ValuePropagator vp = new ValuePropagator(arch, ssa);
 			vp.Transform();
 
-			Coalescer coa = new Coalescer(proc, ssa);
+			Coalescer coa = new Coalescer(ssa);
 			coa.Transform();
 
 			DeadCode.Eliminate(proc, ssa);

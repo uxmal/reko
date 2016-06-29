@@ -29,17 +29,17 @@ namespace Reko.Analysis
 {
 	public class LiveCopyInserter
 	{
-		private Procedure proc;
+		private SsaState ssa;
 		private SsaIdentifierCollection ssaIds;
 		private SsaLivenessAnalysis sla;
 		private BlockDominatorGraph doms;
 
-		public LiveCopyInserter(Procedure proc, SsaIdentifierCollection ssaIds)
+		public LiveCopyInserter(SsaState ssa)
 		{
-			this.proc = proc;
-			this.ssaIds = ssaIds;
-			this.sla = new SsaLivenessAnalysis(proc, ssaIds);
-			this.doms = proc.CreateBlockDominatorGraph();
+			this.ssa = ssa;
+			this.ssaIds = ssa.Identifiers;
+			this.sla = new SsaLivenessAnalysis(ssa);
+			this.doms = ssa.Procedure.CreateBlockDominatorGraph();
 		}
 
 		public int IndexOfInsertedCopy(Block b)

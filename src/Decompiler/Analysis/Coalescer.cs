@@ -40,16 +40,14 @@ namespace Reko.Analysis
     /// </remarks>
 	public class Coalescer : InstructionTransformer
 	{
-		private Procedure proc;
 		private SsaState ssa;
 		private SideEffectFinder sef;
         private Dictionary<Statement, List<SsaIdentifier>> defsByStatement;
 
 		private static TraceSwitch trace = new TraceSwitch("Coalescer", "Traces the progress of identifier coalescing");
 
-		public Coalescer(Procedure proc, SsaState ssa)
+		public Coalescer(SsaState ssa)
 		{
-			this.proc = proc;
 			this.ssa = ssa;
 			this.sef = new SideEffectFinder();
             this.defsByStatement = new Dictionary<Statement, List<SsaIdentifier>>();
@@ -202,7 +200,7 @@ namespace Reko.Analysis
 
 		public void Transform()
 		{
-			foreach (Block b in proc.ControlGraph.Blocks)
+			foreach (Block b in ssa.Procedure.ControlGraph.Blocks)
 			{
 				Process(b);
 			}
