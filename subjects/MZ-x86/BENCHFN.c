@@ -148,7 +148,7 @@ l0800_1560:
 		word16 di_95;
 		bx = fn0800_10A1(fp - 0x02, di_93, out di_95);
 	}
-	word16 Eq_207::*sp_80 = sp_161 + 0x02;
+	Eq_175 sp_80 = sp_161 + 0x02;
 	word16 di_84;
 	*diOut = ss->*sp_80;
 	return bx;

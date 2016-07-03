@@ -1,23 +1,6 @@
 === CB80.dcproject
 === redir
 *** redir
-: error: Error when reconstructing types.
-    Pulling difference int32 and (ptr (struct 0001 (0 (union (int8 u0) (T_4400 u1) (T_4408 u2)) u0000)))
-       at Reko.Typing.ExpressionTypeAscender.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 188
-   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 91
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 82
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 83
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.ExpressionTypeAscender.VisitMemoryAccessCommon(Expression access, Expression ea) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 259
-   at Reko.Typing.ExpressionTypeAscender.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 254
-   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
-   at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 179
-   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 64
-   at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 101
-   at Reko.DecompilerDriver.ReconstructTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 318
 main: error: An error occurred while rewriting procedure to high-level language.
     Sequence contains no elements
        at System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
@@ -34,13 +17,593 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 149
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 529
+00400238: error: Failed to write global variable g_t400238.
+    Index was outside the bounds of the array.
+       at Reko.Core.MemoryArea.ReadBeInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 352
+   at Reko.Core.MemoryArea.ReadBeUInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 506
+   at Reko.Core.MemoryArea.ReadBe(Byte[] abImage, Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 233
+   at Reko.Core.MemoryArea.ReadBe(Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 171
+   at Reko.Core.ImageReader.ReadBe(PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 205
+   at Reko.Core.BeImageReader.Read(PrimitiveType dataType) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 581
+   at Reko.Core.Output.GlobalDataWriter.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 212
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 49
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 299
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 58
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400600: error: Failed to write global variable g_t400600.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004005F0: error: Failed to write global variable g_t4005F0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004005E0: error: Failed to write global variable g_t4005E0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004005D0: error: Failed to write global variable g_t4005D0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004005C0: error: Failed to write global variable g_t4005C0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004005A0: error: Failed to write global variable g_t4005A0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400590: error: Failed to write global variable g_t400590.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400580: error: Failed to write global variable g_t400580.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400570: error: Failed to write global variable g_t400570.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400560: error: Failed to write global variable g_t400560.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400550: error: Failed to write global variable g_t400550.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400540: error: Failed to write global variable g_t400540.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400530: error: Failed to write global variable g_t400530.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400520: error: Failed to write global variable g_t400520.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400510: error: Failed to write global variable g_t400510.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400500: error: Failed to write global variable g_t400500.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004004F0: error: Failed to write global variable g_t4004F0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004004E0: error: Failed to write global variable g_t4004E0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004004D0: error: Failed to write global variable g_t4004D0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004004C0: error: Failed to write global variable g_t4004C0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004004B0: error: Failed to write global variable g_t4004B0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004004A0: error: Failed to write global variable g_t4004A0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400490: error: Failed to write global variable g_t400490.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400480: error: Failed to write global variable g_t400480.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400470: error: Failed to write global variable g_t400470.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400460: error: Failed to write global variable g_t400460.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400450: error: Failed to write global variable g_t400450.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400440: error: Failed to write global variable g_t400440.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400430: error: Failed to write global variable g_t400430.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400420: error: Failed to write global variable g_t400420.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400410: error: Failed to write global variable g_t400410.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400400: error: Failed to write global variable g_t400400.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+100007E0: warning: Expected sizes of arrays to have been determined by now
+004003F0: error: Failed to write global variable g_t4003F0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004003E0: error: Failed to write global variable g_t4003E0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004003D0: error: Failed to write global variable g_t4003D0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004003C0: error: Failed to write global variable g_t4003C0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004003B0: error: Failed to write global variable g_t4003B0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004003A0: error: Failed to write global variable g_t4003A0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400390: error: Failed to write global variable g_t400390.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400380: error: Failed to write global variable g_t400380.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400370: error: Failed to write global variable g_t400370.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400360: error: Failed to write global variable g_t400360.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400350: error: Failed to write global variable g_t400350.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400340: error: Failed to write global variable g_t400340.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400330: error: Failed to write global variable g_t400330.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+1000002C: warning: Expected sizes of arrays to have been determined by now
+00400320: error: Failed to write global variable g_t400320.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400310: error: Failed to write global variable g_t400310.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400300: error: Failed to write global variable g_t400300.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004002F0: error: Failed to write global variable g_t4002F0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004002E0: error: Failed to write global variable g_t4002E0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004002D0: error: Failed to write global variable g_t4002D0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004002C0: error: Failed to write global variable g_t4002C0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004002B0: error: Failed to write global variable g_t4002B0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004002A0: error: Failed to write global variable g_t4002A0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400290: error: Failed to write global variable g_t400290.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400238: error: Failed to write global variable g_t400238.
+    Index was outside the bounds of the array.
+       at Reko.Core.MemoryArea.ReadBeInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 352
+   at Reko.Core.MemoryArea.ReadBeUInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 506
+   at Reko.Core.MemoryArea.ReadBe(Byte[] abImage, Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 233
+   at Reko.Core.MemoryArea.ReadBe(Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 171
+   at Reko.Core.ImageReader.ReadBe(PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 205
+   at Reko.Core.BeImageReader.Read(PrimitiveType dataType) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 581
+   at Reko.Core.Output.GlobalDataWriter.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 212
+   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 49
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 299
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 58
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400290: error: Failed to write global variable g_t400290.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004002A0: error: Failed to write global variable g_t4002A0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004002B0: error: Failed to write global variable g_t4002B0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004002C0: error: Failed to write global variable g_t4002C0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004002D0: error: Failed to write global variable g_t4002D0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004002E0: error: Failed to write global variable g_t4002E0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004002F0: error: Failed to write global variable g_t4002F0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400300: error: Failed to write global variable g_t400300.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400310: error: Failed to write global variable g_t400310.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400320: error: Failed to write global variable g_t400320.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400330: error: Failed to write global variable g_t400330.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400340: error: Failed to write global variable g_t400340.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400350: error: Failed to write global variable g_t400350.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400360: error: Failed to write global variable g_t400360.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400370: error: Failed to write global variable g_t400370.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400380: error: Failed to write global variable g_t400380.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400390: error: Failed to write global variable g_t400390.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004003A0: error: Failed to write global variable g_t4003A0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004003B0: error: Failed to write global variable g_t4003B0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004003C0: error: Failed to write global variable g_t4003C0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004003D0: error: Failed to write global variable g_t4003D0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004003E0: error: Failed to write global variable g_t4003E0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004003F0: error: Failed to write global variable g_t4003F0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400400: error: Failed to write global variable g_t400400.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400410: error: Failed to write global variable g_t400410.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400420: error: Failed to write global variable g_t400420.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400430: error: Failed to write global variable g_t400430.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400440: error: Failed to write global variable g_t400440.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400450: error: Failed to write global variable g_t400450.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400460: error: Failed to write global variable g_t400460.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400470: error: Failed to write global variable g_t400470.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400480: error: Failed to write global variable g_t400480.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400490: error: Failed to write global variable g_t400490.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004004A0: error: Failed to write global variable g_t4004A0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004004B0: error: Failed to write global variable g_t4004B0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004004C0: error: Failed to write global variable g_t4004C0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004004D0: error: Failed to write global variable g_t4004D0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004004E0: error: Failed to write global variable g_t4004E0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004004F0: error: Failed to write global variable g_t4004F0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400500: error: Failed to write global variable g_t400500.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400510: error: Failed to write global variable g_t400510.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400520: error: Failed to write global variable g_t400520.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400530: error: Failed to write global variable g_t400530.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400540: error: Failed to write global variable g_t400540.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400550: error: Failed to write global variable g_t400550.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400560: error: Failed to write global variable g_t400560.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400570: error: Failed to write global variable g_t400570.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400580: error: Failed to write global variable g_t400580.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400590: error: Failed to write global variable g_t400590.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004005A0: error: Failed to write global variable g_t4005A0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004005C0: error: Failed to write global variable g_t4005C0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004005D0: error: Failed to write global variable g_t4005D0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004005E0: error: Failed to write global variable g_t4005E0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+004005F0: error: Failed to write global variable g_t4005F0.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00400600: error: Failed to write global variable g_t400600.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitCode(CodeType c) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 162
+   at Reko.Core.Types.CodeType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\CodeType.cs:line 47
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+1000002C: warning: Expected sizes of arrays to have been determined by now
+100007E0: warning: Expected sizes of arrays to have been determined by now
 
 === const.o
 === ls
 *** ls
 ls: error: An internal error occurred while decompiling.
     The method or operation is not implemented.
-       at Reko.ImageLoaders.Elf.ElfLoader64.LocateGotPointers(Program program, SortedList`2 symbols) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\ElfLoader.cs:line 857
+       at Reko.ImageLoaders.Elf.ElfLoader64.LocateGotPointers(Program program, SortedList`2 symbols) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\ElfLoader.cs:line 865
    at Reko.ImageLoaders.Elf.ElfImageLoader.Relocate(Program program, Address addrLoad) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\ElfImageLoader.cs:line 98
    at Reko.Loading.Loader.LoadExecutable(String filename, Byte[] image, Address addrLoad) in D:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 108
    at Reko.DecompilerDriver.Load(String fileName) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 207
@@ -51,14 +614,12 @@ ls: error: An internal error occurred while decompiling.
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
-    Pulling difference (union (int32 u0) (uint32 u1)) and (ptr (struct 0001 (0 (union (word32 u0) (T_1557 u1)) u0000)))
-       at Reko.Typing.ExpressionTypeAscender.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 188
-   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 91
+    Pulling difference ptr32 and (ptr (struct 0001 (0 (union (byte u0) (T_961 u1) (T_974 u2)) u0000)))
+       at Reko.Typing.ExpressionTypeAscender.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 205
+   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 95
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 82
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 113
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 101
+   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 64
    at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 101
    at Reko.DecompilerDriver.ReconstructTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 318
@@ -68,14 +629,12 @@ ls: error: An internal error occurred while decompiling.
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
-    Pulling difference (union (int32 u0) (uint32 u1)) and (ptr (struct 0001 (0 (union (word32 u0) (T_2214 u1)) u0000)))
-       at Reko.Typing.ExpressionTypeAscender.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 188
-   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 91
+    Pulling difference ptr32 and (ptr (struct 0001 (0 (union (byte u0) (T_1611 u1) (T_1624 u2)) u0000)))
+       at Reko.Typing.ExpressionTypeAscender.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 205
+   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 95
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 82
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 113
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 101
+   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 64
    at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 101
    at Reko.DecompilerDriver.ReconstructTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 318
@@ -85,14 +644,12 @@ ls: error: An internal error occurred while decompiling.
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
-    Pulling difference (union (int32 u0) (uint32 u1)) and (ptr (struct 0001 (0 (union (word32 u0) (T_1401 u1)) u0000)))
-       at Reko.Typing.ExpressionTypeAscender.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 188
-   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 91
+    Pulling difference ptr32 and (ptr (struct 0001 (0 (union (byte u0) (T_805 u1) (T_818 u2)) u0000)))
+       at Reko.Typing.ExpressionTypeAscender.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 205
+   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 95
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 82
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 113
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 101
+   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 64
    at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 101
    at Reko.DecompilerDriver.ReconstructTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 318
@@ -102,14 +659,12 @@ ls: error: An internal error occurred while decompiling.
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
-    Pulling difference (union (int32 u0) (uint32 u1)) and (ptr (struct 0001 (0 (union (word32 u0) (T_1586 u1)) u0000)))
-       at Reko.Typing.ExpressionTypeAscender.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 188
-   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 91
+    Pulling difference ptr32 and (ptr (struct 0001 (0 (union (byte u0) (T_990 u1) (T_1003 u2)) u0000)))
+       at Reko.Typing.ExpressionTypeAscender.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 205
+   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 95
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 82
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 113
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 101
+   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 64
    at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 101
    at Reko.DecompilerDriver.ReconstructTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 318
@@ -120,14 +675,12 @@ ls: error: An internal error occurred while decompiling.
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
-    Pulling difference (union (int32 u0) (uint32 u1)) and (ptr (struct 0001 (0 (union (word32 u0) (T_6268 u1)) u0000)))
-       at Reko.Typing.ExpressionTypeAscender.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 188
-   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 91
+    Pulling difference ptr32 and (ptr (struct 0001 (0 (union (byte u0) (T_5665 u1) (T_5678 u2)) u0000)))
+       at Reko.Typing.ExpressionTypeAscender.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 205
+   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 95
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 82
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 113
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 101
+   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 64
    at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 101
    at Reko.DecompilerDriver.ReconstructTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 318
@@ -138,14 +691,12 @@ ls: error: An internal error occurred while decompiling.
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 00001212: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 : error: Error when reconstructing types.
-    Pulling difference (union (int32 u0) (uint32 u1)) and (ptr (struct 0001 (0 (union (word32 u0) (T_1513 u1)) u0000)))
-       at Reko.Typing.ExpressionTypeAscender.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 188
-   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 91
+    Pulling difference ptr32 and (ptr (struct 0001 (0 (union (byte u0) (T_917 u1) (T_930 u2)) u0000)))
+       at Reko.Typing.ExpressionTypeAscender.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 205
+   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 95
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.ExpressionTypeAscender.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeAscender.cs:line 82
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 113
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 101
+   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 64
    at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 101
    at Reko.DecompilerDriver.ReconstructTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 318
@@ -240,7 +791,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 96
 : error: Error when reconstructing types.
     The method or operation is not implemented.
-       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 153
+       at Reko.Typing.TypeCollector.VisitPhiAssignment(PhiAssignment phi) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 171
    at Reko.Core.Code.PhiAssignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\PhiAssignment.cs:line 61
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 64
    at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 101
