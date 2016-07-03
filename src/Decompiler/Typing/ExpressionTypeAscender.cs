@@ -186,6 +186,10 @@ namespace Reko.Typing
                 if (ptRight != null)
                     return ptRight;
             }
+            if (dtLeft is Pointer)
+            {
+                return PrimitiveType.Create(Domain.Pointer, dtLeft.Size);
+            }
             return dtLeft;
         }
 
