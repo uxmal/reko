@@ -2405,7 +2405,7 @@ typedef word16 (Eq_162)(Eq_164, Eq_126, Eq_166);
 
 typedef union Eq_164 {
 	ptr16 u1;
-	Eq_518 Eq_302::* u0;
+	struct Eq_518 Eq_302::* u0;
 } Eq_164;
 
 typedef union Eq_166 {
@@ -2462,12 +2462,12 @@ typedef void (Eq_337)(word16, word16, Eq_64 *, word16, word16);
 
 typedef union Eq_347 {
 	ptr16 u1;
-	Eq_523 Eq_381::* u0;
+	struct Eq_523 Eq_381::* u0;
 } Eq_347;
 
 typedef union Eq_366 {
 	ci16 u0;
-	Eq_524 Eq_64::* u1;
+	struct Eq_524 Eq_64::* u1;
 } Eq_366;
 
 typedef struct Eq_367 {
@@ -2487,7 +2487,7 @@ typedef struct Eq_406 {
 } Eq_406;
 
 typedef union Eq_420 {
-	Eq_525 Eq_381::* u0;
+	struct Eq_525 Eq_381::* u0;
 	Eq_527 u1;
 } Eq_420;
 
@@ -2495,7 +2495,7 @@ typedef struct Eq_432 {
 } Eq_432;
 
 typedef union Eq_447 {
-	Eq_528 Eq_381::* u0;
+	struct Eq_525 Eq_381::* u0;
 	Eq_530 u1;
 } Eq_447;
 
@@ -2512,7 +2512,7 @@ typedef struct Eq_466 {
 } Eq_466;
 
 typedef union Eq_475 {
-	Eq_531 Eq_381::* u0;
+	struct Eq_525 Eq_381::* u0;
 	Eq_533 u1;
 } Eq_475;
 
@@ -2529,7 +2529,7 @@ typedef struct Eq_499 {
 } Eq_499;
 
 typedef union Eq_508 {
-	Eq_534 Eq_381::* u0;
+	struct Eq_525 Eq_381::* u0;
 	Eq_536 u1;
 } Eq_508;
 
@@ -2574,7 +2574,7 @@ typedef struct Eq_523 Eq_526;
 
 typedef union Eq_527 {
 	ptr16 u1;
-	Eq_526 Eq_381::* u0;
+	struct Eq_523 Eq_381::* u0;
 } Eq_527;
 
 typedef struct Eq_525 Eq_528;
@@ -2583,7 +2583,7 @@ typedef struct Eq_523 Eq_529;
 
 typedef union Eq_530 {
 	ptr16 u1;
-	Eq_529 Eq_381::* u0;
+	struct Eq_523 Eq_381::* u0;
 } Eq_530;
 
 typedef struct Eq_525 Eq_531;
@@ -2592,7 +2592,7 @@ typedef struct Eq_523 Eq_532;
 
 typedef union Eq_533 {
 	ptr16 u1;
-	Eq_532 Eq_381::* u0;
+	struct Eq_523 Eq_381::* u0;
 } Eq_533;
 
 typedef struct Eq_525 Eq_534;
@@ -2601,6 +2601,6 @@ typedef struct Eq_523 Eq_535;
 
 typedef union Eq_536 {
 	ptr16 u1;
-	Eq_535 Eq_381::* u0;
+	struct Eq_523 Eq_381::* u0;
 } Eq_536;
 

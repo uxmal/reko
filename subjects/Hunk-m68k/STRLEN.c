@@ -95,13 +95,13 @@ l000011F8:
 				goto l00001202;
 			}
 			ui32 d0_202 = ((ui32[]) 0x0010)[d0_151];
-			Eq_200 * a0_209[] = (d0_202 << 0x02) + 0x01;
+			Eq_200 ( * a0_209)[] = (d0_202 << 0x02) + 0x01;
 			int32 d0_210 = (int32) null[d0_202].b0000;
 			Mem211[a0_209 + d0_210:byte] = 0x00;
 			d0_132->ptr0010 = a0_209;
 			ui32 d0_217 = ((ui32[]) 0x0010)[d0_210];
 			byte * a1_220 = d0_132->ptr0008;
-			Eq_200 * a0_225[] = (d0_217 << 0x02) + 0x01;
+			Eq_200 ( * a0_225)[] = (d0_217 << 0x02) + 0x01;
 			int32 d0_226 = (int32) null[d0_217].b0000;
 			Mem227[a0_225 + d0_226:byte] = 0x00;
 			d0_132->ptr0010 = a0_225;
@@ -276,7 +276,7 @@ void fn000012D0(word32 dwArg04)
 			do
 			{
 				int32 d0_55 = d2_49 << 0x02;
-				code * a2_57 = a3_11[d0_55];
+				 <anonymous> * a2_57 = a3_11[d0_55];
 				word32 a7_59;
 				word32 a2_61;
 				word32 d2_62;
@@ -304,7 +304,7 @@ void fn0000131C(word32 dwArg04)
 		if (a3_28 != null)
 			do
 			{
-				code * a2_50 = a3_28->ptr0004;
+				 <anonymous> * a2_50 = a3_28->ptr0004;
 				word32 a7_51;
 				Eq_618 * * a3_52;
 				word32 a2_53;
@@ -324,7 +324,7 @@ void fn0000131C(word32 dwArg04)
 
 void fn00001354(int32 dwArg04, Eq_68 * dwArg08)
 {
-	code * * a3_45 = (code * *) 0x1400;
+	 <anonymous> * * a3_45 = (code * *) 0x1400;
 	if (5116 != 0x00 && *a3_45 != null)
 		do
 		{

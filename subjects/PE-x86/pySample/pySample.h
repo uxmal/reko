@@ -4869,7 +4869,7 @@ typedef PyObject Eq_108;
 typedef LONG Eq_137;
 
 typedef struct Eq_138 {
-	Eq_140 * ptr0018;	// 18
+	struct Eq_140 * ptr0018;	// 18
 } Eq_138;
 
 typedef struct Eq_140 {
@@ -5106,7 +5106,7 @@ typedef struct Eq_1022 {
 
 typedef union Eq_1023 {
 	ptr32 u1;
-	Eq_176 Eq_1022::* u0;
+	union Eq_176 Eq_1022::* u0;
 } Eq_1023;
 
 typedef void (Eq_1035)(LPFILETIME);

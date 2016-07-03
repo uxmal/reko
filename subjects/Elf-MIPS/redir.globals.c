@@ -95,9 +95,9 @@ word32 g_a100007E0[] =
 		{
 		};
  <anonymous> * g_ptr10000860 = null;
-Eq_37 * g_ptr10000878 = &g_t10000000;
+struct Eq_37 * g_ptr10000878 = &g_t10000000;
 ptr32 g_ptr1000087C = 0x00400000;
-Eq_17 * g_ptr10000880 = &g_t410000;
+struct Eq_17 * g_ptr10000880 = &g_t410000;
  <anonymous> * g_ptr1000088C = &g_t400600;
  <anonymous> * g_ptr10000890 = &g_t4005F0;
  <anonymous> * g_ptr10000894 = __pack_d;
@@ -199,7 +199,7 @@ int32 * g_ptr10000A28 = &g_dw1000001C;
  <anonymous> * g_ptr10000A34 = &g_t400340;
  <anonymous> * g_ptr10000A38 = request_make_url;
  <anonymous> * g_ptr10000A3C = &g_t400330;
-Eq_245 * g_ptr10000A40 = &g_t10000024;
+struct Eq_245 * g_ptr10000A40 = &g_t10000024;
  <anonymous> * g_ptr10000A44 = clist_remove;
  <anonymous> * g_ptr10000A48 = &g_t400320;
  <anonymous> * g_ptr10000A4C = &g_t400310;

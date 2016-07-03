@@ -294,6 +294,7 @@ namespace Reko.Core.Output
                     MemberPointer(mp);
                 return;
             }
+
             var ft = t as FunctionType;
             if (ft != null && ft.ReturnValue != null)
             {
@@ -324,6 +325,9 @@ namespace Reko.Core.Output
                 pt = dt as Pointer;
                 mp = dt as MemberPointer;
             }
+            var eq = dt as EquivalenceClass;
+            if (eq != null && eq.DataType != null)
+                dt = eq.DataType;
             return dt;
         }
 
@@ -376,10 +380,14 @@ namespace Reko.Core.Output
             var pt = dt as Pointer;
             if (pt != null)
             {
-                if (pt.Pointee is ArrayType ||
-                    pt.Pointee is FunctionType)
+                var pointee = pt.Pointee;
+                var eq = pointee as EquivalenceClass;
+                if (eq != null && eq.DataType != null)
+                    pointee = eq.DataType;
+                if (pointee is ArrayType ||
+                    pointee is FunctionType)
                     fmt.Write(')');
-                dt = pt.Pointee;
+                dt = pointee;
             }
             DirectAbstractDeclarator(dt);
         }

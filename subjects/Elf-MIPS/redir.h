@@ -40487,9 +40487,9 @@ struct Globals {
 	Eq_245 t10000024;	// 10000024
 	word32 a100007E0[];	// 100007E0
 	 <anonymous> * ptr10000860;	// 10000860
-	Eq_37 * ptr10000878;	// 10000878
+	struct Eq_37 * ptr10000878;	// 10000878
 	ptr32 ptr1000087C;	// 1000087C
-	Eq_17 * ptr10000880;	// 10000880
+	struct Eq_17 * ptr10000880;	// 10000880
 	 <anonymous> * ptr1000088C;	// 1000088C
 	 <anonymous> * ptr10000890;	// 10000890
 	 <anonymous> * ptr10000894;	// 10000894
@@ -40591,7 +40591,7 @@ struct Globals {
 	 <anonymous> * ptr10000A34;	// 10000A34
 	 <anonymous> * ptr10000A38;	// 10000A38
 	 <anonymous> * ptr10000A3C;	// 10000A3C
-	Eq_245 * ptr10000A40;	// 10000A40
+	struct Eq_245 * ptr10000A40;	// 10000A40
 	 <anonymous> * ptr10000A44;	// 10000A44
 	 <anonymous> * ptr10000A48;	// 10000A48
 	 <anonymous> * ptr10000A4C;	// 10000A4C
@@ -40646,16 +40646,16 @@ typedef struct Eq_245 {
 } Eq_245;
 
 typedef struct Eq_520 {
-	Eq_874 * ptr0008;	// 8
+	struct Eq_874 * ptr0008;	// 8
 } Eq_520;
 
 typedef struct Eq_538 {
-	Eq_657 * ptr0008;	// 8
+	struct Eq_657 * ptr0008;	// 8
 } Eq_538;
 
 typedef struct Eq_657 {
 	Eq_722 t0000;	// 0
-	Eq_657 * ptr0018;	// 18
+	struct Eq_657 * ptr0018;	// 18
 } Eq_657;
 
 typedef union Eq_722 {
@@ -40694,7 +40694,7 @@ typedef struct Eq_874 {
 	int32 dw07D8;	// 7D8
 	int32 dw0FAC;	// FAC
 	int32 dw178C;	// 178C
-	Eq_874 * ptr17B8;	// 17B8
+	struct Eq_874 * ptr17B8;	// 17B8
 	 <anonymous> * ptr17C0;	// 17C0
 	 <anonymous> * ptr17C4;	// 17C4
 } Eq_874;
@@ -40735,7 +40735,7 @@ typedef struct Eq_2053 {
 
 typedef struct Eq_2079 {
 	int32 dw07D8;	// 7D8
-	Eq_2085 * ptr0FB4;	// FB4
+	struct Eq_2085 * ptr0FB4;	// FB4
 	int32 dw1794;	// 1794
 } Eq_2079;
 
@@ -40857,7 +40857,7 @@ typedef struct Eq_2978 {
 } Eq_2978;
 
 typedef struct Eq_3044 {
-	Eq_3046 * ptr1788;	// 1788
+	struct Eq_3046 * ptr1788;	// 1788
 	int32 dw178C;	// 178C
 	 <anonymous> * ptr17C4;	// 17C4
 } Eq_3044;
@@ -40966,52 +40966,52 @@ typedef struct Eq_3536 {
 typedef struct Eq_3563 {
 	int32 dw0000;	// 0
 	int32 dw0004;	// 4
-	Eq_3564 * ptr0008;	// 8
+	struct Eq_3564 * ptr0008;	// 8
 } Eq_3563;
 
 typedef struct Eq_3564 {
-	Eq_3564 * ptr17B8;	// 17B8
-	Eq_3564 * ptr17BC;	// 17BC
+	struct Eq_3564 * ptr17B8;	// 17B8
+	struct Eq_3564 * ptr17BC;	// 17BC
 } Eq_3564;
 
 typedef struct Eq_3615 {
 	word32 dw0000;	// 0
-	Eq_3616 * ptr0008;	// 8
+	struct Eq_3616 * ptr0008;	// 8
 } Eq_3615;
 
 typedef struct Eq_3616 {
-	Eq_3616 * ptr17B8;	// 17B8
-	Eq_3630 * ptr17BC;	// 17BC
+	struct Eq_3616 * ptr17B8;	// 17B8
+	struct Eq_3630 * ptr17BC;	// 17BC
 } Eq_3616;
 
 typedef struct Eq_3630 {
-	Eq_3616 * ptr17B8;	// 17B8
+	struct Eq_3616 * ptr17B8;	// 17B8
 } Eq_3630;
 
 typedef struct Eq_3662 {
-	Eq_3666 * ptr0008;	// 8
+	struct Eq_3666 * ptr0008;	// 8
 } Eq_3662;
 
 typedef struct Eq_3666 {
 	word32 dw0000;	// 0
-	Eq_3666 * ptr17B8;	// 17B8
+	struct Eq_3666 * ptr17B8;	// 17B8
 } Eq_3666;
 
 typedef struct Eq_3679 {
-	Eq_3683 * ptr0008;	// 8
+	struct Eq_3683 * ptr0008;	// 8
 } Eq_3679;
 
 typedef struct Eq_3683 {
 	word32 dw0004;	// 4
-	Eq_3683 * ptr17B8;	// 17B8
+	struct Eq_3683 * ptr17B8;	// 17B8
 } Eq_3683;
 
 typedef struct Eq_3718 {
-	Eq_3720 * ptr0008;	// 8
+	struct Eq_3720 * ptr0008;	// 8
 } Eq_3718;
 
 typedef struct Eq_3720 {
-	Eq_3720 * ptr17B8;	// 17B8
+	struct Eq_3720 * ptr17B8;	// 17B8
 } Eq_3720;
 
 typedef struct Eq_3739 {
@@ -41160,43 +41160,43 @@ typedef struct Eq_6601 {
 typedef struct Eq_6628 {
 	int32 dw0000;	// 0
 	int32 dw0004;	// 4
-	Eq_6629 * ptr0008;	// 8
+	struct Eq_6629 * ptr0008;	// 8
 } Eq_6628;
 
 typedef struct Eq_6629 {
-	Eq_6629 * ptr0018;	// 18
-	Eq_6629 * ptr001C;	// 1C
+	struct Eq_6629 * ptr0018;	// 18
+	struct Eq_6629 * ptr001C;	// 1C
 } Eq_6629;
 
 typedef struct Eq_6680 {
 	word32 dw0000;	// 0
-	Eq_6681 * ptr0008;	// 8
+	struct Eq_6681 * ptr0008;	// 8
 } Eq_6680;
 
 typedef struct Eq_6681 {
-	Eq_6681 * ptr0018;	// 18
-	Eq_6695 * ptr001C;	// 1C
+	struct Eq_6681 * ptr0018;	// 18
+	struct Eq_6695 * ptr001C;	// 1C
 } Eq_6681;
 
 typedef struct Eq_6695 {
-	Eq_6681 * ptr0018;	// 18
+	struct Eq_6681 * ptr0018;	// 18
 } Eq_6695;
 
 typedef struct Eq_6727 {
-	Eq_6731 * ptr0008;	// 8
+	struct Eq_6731 * ptr0008;	// 8
 } Eq_6727;
 
 typedef struct Eq_6731 {
 	word32 dw0000;	// 0
-	Eq_6731 * ptr0018;	// 18
+	struct Eq_6731 * ptr0018;	// 18
 } Eq_6731;
 
 typedef struct Eq_6785 {
-	Eq_6787 * ptr0008;	// 8
+	struct Eq_6787 * ptr0008;	// 8
 } Eq_6785;
 
 typedef struct Eq_6787 {
-	Eq_6787 * ptr0018;	// 18
+	struct Eq_6787 * ptr0018;	// 18
 } Eq_6787;
 
 typedef struct Eq_6806 {

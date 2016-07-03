@@ -297,6 +297,6 @@ typedef void (Eq_52)(cdecl_class * ptrArg00, int32 dwArg04);
 
 typedef union Eq_60 {
 	 cdecl_class_vtbl * u0;
-	Eq_46 * u1;
+	 cdecl_class_vtbl * u1;
 } Eq_60;
 
