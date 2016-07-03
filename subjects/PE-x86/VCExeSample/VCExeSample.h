@@ -21,7 +21,7 @@ Eq_46: cdecl_class_vtbl
 	T_49 (in Mem0[c + 0x00000000:word32] : word32)
 Eq_48: cdecl_class_vtbl
 	T_48 (in c + 0x00000000 : word32)
-Eq_50: (union "Eq_50" ((fn void ((ptr cdecl_class), int32)) u0) (code u1))
+Eq_50: (fn void ((ptr cdecl_class), int32))
 	T_50 (in eax_16 : (ptr Eq_50))
 	T_53 (in Mem0[edx_15 + 0x00000004:word32] : word32)
 Eq_52: (fn void ((ptr cdecl_class), int32))
@@ -228,7 +228,7 @@ T_49: (in Mem0[c + 0x00000000:word32] : word32)
 T_50: (in eax_16 : (ptr Eq_50))
   Class: Eq_50
   DataType: (ptr Eq_50)
-  OrigDataType: (ptr (union ((fn void ((ptr cdecl_class), int32)) u0) (code u1)))
+  OrigDataType: (ptr (fn void ((ptr cdecl_class), int32)))
 T_51: (in 0x00000004 : word32)
   Class: Eq_51
   DataType: word32
@@ -291,10 +291,7 @@ typedef cdecl_class_vtbl Eq_46;
 
 typedef cdecl_class_vtbl Eq_48;
 
-typedef union Eq_50 {
-	void u0( cdecl_class *, int32);
-	 <anonymous> u1;
-} Eq_50;
+typedef void (Eq_50)(cdecl_class *, int32);
 
 typedef void (Eq_52)(cdecl_class * ptrArg00, int32 dwArg04);
 
