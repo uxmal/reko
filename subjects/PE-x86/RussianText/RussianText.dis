@@ -19,9 +19,9 @@ l00401071:
 // LocalsOut: fp(32) Stack +0004(32)
 
 l004011FC:
-	Mem15[0x004020F8:word32] = fn00401158() + 0x0000001C
-	Mem16[dwArg04:word32] = 0x82727349
-	Mem17[dwArg04 + 0x00000004:word32] = 0x004020E4
+	Mem14[0x004020F8:word32] = fn00401158() + 0x0000001C
+	Mem15[dwArg04:word32] = 0x82727349
+	Mem16[dwArg04 + 0x00000004:word32] = 0x004020E4
 	return
 // DataOut:
 // DataOut (flags): 
@@ -73,15 +73,15 @@ main_entry:
 // LocalsOut: fp(32)
 
 l00401168:
-	word32 esp_13
-	word32 ebp_14
-	word32 ecx_15
-	word32 eax_16
-	byte SZO_17
-	byte C_18
+	word32 esp_12
+	word32 ebp_13
+	word32 ecx_14
+	word32 eax_15
+	byte SZO_16
+	byte C_17
 	call printf (retsize: 4; depth: 12)
-		uses: dwLoc04_9,dwLoc08_12,ebp_10,esp_11
-		defs: C_18,eax_16,ebp_14,ecx_15,esp_13,SZO_17
+		uses: dwLoc04_8,dwLoc08_11,ebp_9,esp_10
+		defs: C_17,eax_15,ebp_13,ecx_14,esp_12,SZO_16
 	return 0x00000000
 // DataOut:
 // DataOut (flags): 

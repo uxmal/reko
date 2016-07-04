@@ -33,7 +33,7 @@ globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct "Globals"))
-T_2: (in rax_5 : word64)
+T_2: (in rax_4 : word64)
   Class: Eq_2
   DataType: word64
   OrigDataType: word64
@@ -57,31 +57,31 @@ T_7: (in 0x0000000000000000 : word64)
   Class: Eq_2
   DataType: word64
   OrigDataType: word64
-T_8: (in rax_5 == 0x0000000000000000 : bool)
+T_8: (in rax_4 == 0x0000000000000000 : bool)
   Class: Eq_8
   DataType: bool
   OrigDataType: bool
-T_9: (in rsp_16 : word64)
+T_9: (in rsp_15 : word64)
   Class: Eq_9
   DataType: word64
   OrigDataType: word64
-T_10: (in SCZO_17 : byte)
+T_10: (in SCZO_16 : byte)
   Class: Eq_10
   DataType: byte
   OrigDataType: byte
-T_11: (in rax_18 : word64)
+T_11: (in rax_17 : word64)
   Class: Eq_11
   DataType: word64
   OrigDataType: word64
-T_12: (in SZO_19 : byte)
+T_12: (in SZO_18 : byte)
   Class: Eq_12
   DataType: byte
   OrigDataType: byte
-T_13: (in C_20 : byte)
+T_13: (in C_19 : byte)
   Class: Eq_13
   DataType: byte
   OrigDataType: byte
-T_14: (in Z_21 : byte)
+T_14: (in Z_20 : byte)
   Class: Eq_14
   DataType: byte
   OrigDataType: byte
@@ -125,7 +125,7 @@ T_24: (in __align(fp + 0x0000000000000008) : void)
   Class: Eq_24
   DataType: void
   OrigDataType: void
-T_25: (in rax_20 : word64)
+T_25: (in rax_19 : word64)
   Class: Eq_25
   DataType: word64
   OrigDataType: word64
