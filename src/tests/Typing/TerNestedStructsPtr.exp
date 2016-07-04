@@ -16,7 +16,7 @@ void proc1()
 proc1_entry:
 	// succ:  l1
 l1:
-	strInner * eax = ptrArg04->strAttr00
+	struct strInner * eax = ptrArg04->strAttr00
 	real32 ecx = eax->innerAttr00
 proc1_exit:
 

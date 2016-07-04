@@ -30,7 +30,7 @@ fn0C00_0000_entry:
 l0C00_0000:
 	ds->w9A2E = 0x0000
 	ds->w9A26 = 0x0100
-	Eq_9 Eq_12::*si_11 = Eq_12::a0000
+	struct Eq_9 Eq_12::* si_11 = Eq_12::a0000
 	// succ:  l0C00_0015
 l0C00_0015:
 	(0x5CE1->*si_11).w0000 = 0xFFFF
