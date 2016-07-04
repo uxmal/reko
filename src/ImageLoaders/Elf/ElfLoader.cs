@@ -862,7 +862,35 @@ namespace Reko.ImageLoaders.Elf
 
         public override void LocateGotPointers(Program program, SortedList<Address, ImageSymbol> symbols)
         {
-            throw new NotImplementedException();
+            // Locate the GOT
+            //$REVIEW: there doesn't seem to be a reliable way to get that
+            // information.
+            var got = program.SegmentMap.Segments.Values.FirstOrDefault(s => s.Name == ".got");
+            if (got == null)
+                return;
+
+            var rdr = program.CreateImageReader(got.Address);
+            while (rdr.Address < got.EndAddress)
+            {
+                var addrGot = rdr.Address;
+                ulong uAddrSym;
+                if (!rdr.TryReadUInt64(out uAddrSym))
+                    break;
+
+                var addrSym = Address.Ptr64(uAddrSym);
+                ImageSymbol symbol;
+                if (symbols.TryGetValue(addrSym, out symbol))
+                {
+                    // This GOT entry is a known symbol!
+                    if (symbol.Type == SymbolType.Procedure)
+                    {
+                        //$TODO: look up function signature.
+                        var gotSym = new ImageSymbol(addrGot, symbol.Name + "_GOT", new Pointer(new CodeType(), 4));
+                        symbols[addrGot] = gotSym;
+                        Debug.Print("Found GOT entry at {0}, changing symbol at {1}", gotSym, symbol);
+                    }
+                }
+            }
         }
     }
 
