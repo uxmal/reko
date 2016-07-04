@@ -6,7 +6,7 @@
 
 PyObject * fn10001000(PyObject * ptrArg00, PyObject * ptrArg04)
 {
-	 PyObject * eax_21 = PyArg_ParseTuple(ptrArg04, "ii:sum", SLICE(0x10002144, <unknown>, 32));
+	PyObject * eax_21 = PyArg_ParseTuple(ptrArg04, "ii:sum", SLICE(0x10002144, <unknown>, 32));
 	if (eax_21 != null)
 		return Py_BuildValue("i", SLICE(0x1000214C, <unknown>, 32));
 	else
@@ -15,7 +15,7 @@ PyObject * fn10001000(PyObject * ptrArg00, PyObject * ptrArg04)
 
 PyObject * fn10001050(PyObject * ptrArg00, PyObject * ptrArg04)
 {
-	 PyObject * eax_19 = PyArg_ParseTuple(ptrArg04, "ii:dif", SLICE(0x10002150, <unknown>, 32));
+	PyObject * eax_19 = PyArg_ParseTuple(ptrArg04, "ii:dif", SLICE(0x10002150, <unknown>, 32));
 	if (eax_19 != null)
 		return Py_BuildValue("i", SLICE(0x1000214C, <unknown>, 32));
 	else
@@ -24,7 +24,7 @@ PyObject * fn10001050(PyObject * ptrArg00, PyObject * ptrArg04)
 
 PyObject * fn100010A0(PyObject * ptrArg00, PyObject * ptrArg04)
 {
-	 PyObject * eax_19 = PyArg_ParseTuple(ptrArg04, "ii:div", SLICE(0x10002158, <unknown>, 32));
+	PyObject * eax_19 = PyArg_ParseTuple(ptrArg04, "ii:div", SLICE(0x10002158, <unknown>, 32));
 	if (eax_19 != null)
 		return Py_BuildValue("i", SLICE(0x1000214C, <unknown>, 32));
 	else
@@ -33,7 +33,7 @@ PyObject * fn100010A0(PyObject * ptrArg00, PyObject * ptrArg04)
 
 PyObject * fn100010F0(PyObject * ptrArg00, PyObject * ptrArg04)
 {
-	 PyObject * eax_19 = PyArg_ParseTuple(ptrArg04, "ff:fdiv", SLICE(0x10002160, <unknown>, 32));
+	PyObject * eax_19 = PyArg_ParseTuple(ptrArg04, "ff:fdiv", SLICE(0x10002160, <unknown>, 32));
 	if (eax_19 != null)
 		return Py_BuildValue("f", SLICE(0x10002168, <unknown>, 32));
 	else
@@ -42,7 +42,7 @@ PyObject * fn100010F0(PyObject * ptrArg00, PyObject * ptrArg04)
 
 PyObject * py_unused(PyObject * self, PyObject * args)
 {
-	 PyObject * eax_12 = PyArg_ParseTuple(args, ":unused", tArg00);
+	PyObject * eax_12 = PyArg_ParseTuple(args, ":unused", tArg00);
 	if (eax_12 != null)
 	{
 		word32 * eax_20 = Py_NoneStruct;
@@ -137,7 +137,7 @@ word32 fn100011E9(word32 dwArg08)
 			globals->dw100033A8 = 0x02;
 			esp_118 = fp + ~0x1B;
 		}
-		 LONG * esp_123 = esp_118 + 0x04;
+		LONG * esp_123 = esp_118 + 0x04;
 		if (ebp_117 == 0x00)
 		{
 			*(esp_123 - 0x04) = (int32) ebp_117;
@@ -230,7 +230,7 @@ word32 fn100011E9(word32 dwArg08)
 					edi_347 = edi_347 - 0x04;
 					if (edi_347 < ebx_340)
 						break;
-					 <anonymous> * eax_380 = *edi_347;
+					<anonymous> * eax_380 = *edi_347;
 					if (eax_380 != null)
 					{
 						word32 esp_384;
@@ -264,7 +264,7 @@ word32 fn100011E9(word32 dwArg08)
 				globals->dw100033B4 = eax_366;
 				esp_309 = fp + ~0x1B;
 			}
-			 LONG * esp_323 = esp_309 - 0x04;
+			LONG * esp_323 = esp_309 - 0x04;
 			*esp_323 = (int32) 0x00;
 			*(esp_323 - 0x04) = (int32) 268448684;
 			globals->dw100033A8 = 0x00;
@@ -293,7 +293,7 @@ Eq_176 fn10001388(Eq_176 ecx, Eq_176 edx, ui32 ebx, ui32 esi, ui32 edi)
 	}
 	if (edx == 0x01 || edx == 0x02)
 	{
-		 <anonymous> * eax_165 = globals->ptr100020CC;
+		<anonymous> * eax_165 = globals->ptr100020CC;
 		if (eax_165 != null)
 		{
 			*(fp - 0x0C) = (Eq_176 *) ecx;
@@ -347,7 +347,7 @@ l1000147A:
 		*(esp_56 - 0x08) = (Eq_176 *) ebx_158;
 		fn100011E9(dwArg04);
 		esp_142 = esp_56;
-		 <anonymous> * eax_143 = globals->ptr100020CC;
+		<anonymous> * eax_143 = globals->ptr100020CC;
 		if (eax_143 != null)
 		{
 			*esp_56 = (Eq_176 *) edi_12;
@@ -374,7 +374,7 @@ l1000147A:
 			(ebp_10 - 0x1C)->t0000 = (ebp_10 - 0x1C)->t0000 & eax_86;
 		if ((ebp_10 - 0x1C)->t0000 != 0x00)
 		{
-			 <anonymous> * eax_95 = globals->ptr100020CC;
+			<anonymous> * eax_95 = globals->ptr100020CC;
 			if (eax_95 != null)
 			{
 				*esp_80 = (Eq_176 *) edi_12;

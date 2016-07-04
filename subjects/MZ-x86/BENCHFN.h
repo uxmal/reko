@@ -2544,7 +2544,7 @@ typedef union Eq_517 {
 } Eq_517;
 
 typedef struct Eq_518 {
-	 <anonymous> Eq_301::* ptr000A;	// A
+	<anonymous> Eq_301::* ptr000A;	// A
 } Eq_518;
 
 typedef union Eq_520 {
@@ -2558,7 +2558,7 @@ typedef union Eq_522 {
 } Eq_522;
 
 typedef struct Eq_523 {
-	 <anonymous> Eq_380::* Eq_380::* Eq_380::* Eq_380::* Eq_380::* ptr0004;	// 4
+	<anonymous> Eq_380::* Eq_380::* Eq_380::* Eq_380::* Eq_380::* ptr0004;	// 4
 } Eq_523;
 
 typedef struct Eq_524 {
@@ -2566,8 +2566,8 @@ typedef struct Eq_524 {
 } Eq_524;
 
 typedef struct Eq_525 {
-	 <anonymous> Eq_380::* Eq_380::* Eq_380::* Eq_380::* ptr0004;	// 4
-	 <anonymous> Eq_380::* Eq_380::* Eq_380::* Eq_380::* ptr0006;	// 6
+	<anonymous> Eq_380::* Eq_380::* Eq_380::* Eq_380::* ptr0004;	// 4
+	<anonymous> Eq_380::* Eq_380::* Eq_380::* Eq_380::* ptr0006;	// 6
 } Eq_525;
 
 typedef struct Eq_523 Eq_526;

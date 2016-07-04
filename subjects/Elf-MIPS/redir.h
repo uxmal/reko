@@ -40417,68 +40417,68 @@ T_9867:
 typedef struct Eq_21;
 struct Globals {
 	int8 aFFFFFFEC[];	// FFFFFFEC
-	 <anonymous> tFFFFFFFF;	// FFFFFFFF
+	<anonymous> tFFFFFFFF;	// FFFFFFFF
 	byte b0002;	// 2
 	int32 dw01C4;	// 1C4
 	Eq_245 t0695;	// 695
 	struct Eq_21 t400238;	// 400238
-	 <anonymous> t400290;	// 400290
-	 <anonymous> t4002A0;	// 4002A0
-	 <anonymous> t4002B0;	// 4002B0
-	 <anonymous> t4002C0;	// 4002C0
-	 <anonymous> t4002D0;	// 4002D0
-	 <anonymous> t4002E0;	// 4002E0
-	 <anonymous> t4002F0;	// 4002F0
-	 <anonymous> t400300;	// 400300
-	 <anonymous> t400310;	// 400310
-	 <anonymous> t400320;	// 400320
-	 <anonymous> t400330;	// 400330
-	 <anonymous> t400340;	// 400340
-	 <anonymous> t400350;	// 400350
-	 <anonymous> t400360;	// 400360
-	 <anonymous> t400370;	// 400370
-	 <anonymous> t400380;	// 400380
-	 <anonymous> t400390;	// 400390
-	 <anonymous> t4003A0;	// 4003A0
-	 <anonymous> t4003B0;	// 4003B0
-	 <anonymous> t4003C0;	// 4003C0
-	 <anonymous> t4003D0;	// 4003D0
-	 <anonymous> t4003E0;	// 4003E0
-	 <anonymous> t4003F0;	// 4003F0
-	 <anonymous> t400400;	// 400400
-	 <anonymous> t400410;	// 400410
-	 <anonymous> t400420;	// 400420
-	 <anonymous> t400430;	// 400430
-	 <anonymous> t400440;	// 400440
-	 <anonymous> t400450;	// 400450
-	 <anonymous> t400460;	// 400460
-	 <anonymous> t400470;	// 400470
-	 <anonymous> t400480;	// 400480
-	 <anonymous> t400490;	// 400490
-	 <anonymous> t4004A0;	// 4004A0
-	 <anonymous> t4004B0;	// 4004B0
-	 <anonymous> t4004C0;	// 4004C0
-	 <anonymous> t4004D0;	// 4004D0
-	 <anonymous> t4004E0;	// 4004E0
-	 <anonymous> t4004F0;	// 4004F0
-	 <anonymous> t400500;	// 400500
-	 <anonymous> t400510;	// 400510
-	 <anonymous> t400520;	// 400520
-	 <anonymous> t400530;	// 400530
-	 <anonymous> t400540;	// 400540
-	 <anonymous> t400550;	// 400550
-	 <anonymous> t400560;	// 400560
-	 <anonymous> t400570;	// 400570
-	 <anonymous> t400580;	// 400580
-	 <anonymous> t400590;	// 400590
-	 <anonymous> t4005A0;	// 4005A0
-	 <anonymous> t4005C0;	// 4005C0
-	 <anonymous> t4005D0;	// 4005D0
-	 <anonymous> t4005E0;	// 4005E0
-	 <anonymous> t4005F0;	// 4005F0
-	 <anonymous> t400600;	// 400600
+	<anonymous> t400290;	// 400290
+	<anonymous> t4002A0;	// 4002A0
+	<anonymous> t4002B0;	// 4002B0
+	<anonymous> t4002C0;	// 4002C0
+	<anonymous> t4002D0;	// 4002D0
+	<anonymous> t4002E0;	// 4002E0
+	<anonymous> t4002F0;	// 4002F0
+	<anonymous> t400300;	// 400300
+	<anonymous> t400310;	// 400310
+	<anonymous> t400320;	// 400320
+	<anonymous> t400330;	// 400330
+	<anonymous> t400340;	// 400340
+	<anonymous> t400350;	// 400350
+	<anonymous> t400360;	// 400360
+	<anonymous> t400370;	// 400370
+	<anonymous> t400380;	// 400380
+	<anonymous> t400390;	// 400390
+	<anonymous> t4003A0;	// 4003A0
+	<anonymous> t4003B0;	// 4003B0
+	<anonymous> t4003C0;	// 4003C0
+	<anonymous> t4003D0;	// 4003D0
+	<anonymous> t4003E0;	// 4003E0
+	<anonymous> t4003F0;	// 4003F0
+	<anonymous> t400400;	// 400400
+	<anonymous> t400410;	// 400410
+	<anonymous> t400420;	// 400420
+	<anonymous> t400430;	// 400430
+	<anonymous> t400440;	// 400440
+	<anonymous> t400450;	// 400450
+	<anonymous> t400460;	// 400460
+	<anonymous> t400470;	// 400470
+	<anonymous> t400480;	// 400480
+	<anonymous> t400490;	// 400490
+	<anonymous> t4004A0;	// 4004A0
+	<anonymous> t4004B0;	// 4004B0
+	<anonymous> t4004C0;	// 4004C0
+	<anonymous> t4004D0;	// 4004D0
+	<anonymous> t4004E0;	// 4004E0
+	<anonymous> t4004F0;	// 4004F0
+	<anonymous> t400500;	// 400500
+	<anonymous> t400510;	// 400510
+	<anonymous> t400520;	// 400520
+	<anonymous> t400530;	// 400530
+	<anonymous> t400540;	// 400540
+	<anonymous> t400550;	// 400550
+	<anonymous> t400560;	// 400560
+	<anonymous> t400570;	// 400570
+	<anonymous> t400580;	// 400580
+	<anonymous> t400590;	// 400590
+	<anonymous> t4005A0;	// 4005A0
+	<anonymous> t4005C0;	// 4005C0
+	<anonymous> t4005D0;	// 4005D0
+	<anonymous> t4005E0;	// 4005E0
+	<anonymous> t4005F0;	// 4005F0
+	<anonymous> t400600;	// 400600
 	Eq_17 t410000;	// 410000
-	 <anonymous> t811F260;	// 811F260
+	<anonymous> t811F260;	// 811F260
 	Eq_37 t10000000;	// 10000000
 	int32 dw10000014;	// 10000014
 	int32 dw10000018;	// 10000018
@@ -40486,136 +40486,136 @@ struct Globals {
 	int32 dw10000020;	// 10000020
 	Eq_245 t10000024;	// 10000024
 	word32 a100007E0[];	// 100007E0
-	 <anonymous> * ptr10000860;	// 10000860
+	<anonymous> * ptr10000860;	// 10000860
 	struct Eq_37 * ptr10000878;	// 10000878
 	ptr32 ptr1000087C;	// 1000087C
 	struct Eq_17 * ptr10000880;	// 10000880
-	 <anonymous> * ptr1000088C;	// 1000088C
-	 <anonymous> * ptr10000890;	// 10000890
-	 <anonymous> * ptr10000894;	// 10000894
-	 <anonymous> * ptr10000898;	// 10000898
-	 <anonymous> * ptr1000089C;	// 1000089C
-	int8 * * ptr100008A0;	// 100008A0
-	 <anonymous> * ptr100008A4;	// 100008A4
-	 <anonymous> * ptr100008A8;	// 100008A8
-	 <anonymous> * ptr100008AC;	// 100008AC
-	 <anonymous> * ptr100008B0;	// 100008B0
-	 <anonymous> * ptr100008B4;	// 100008B4
-	 <anonymous> * ptr100008B8;	// 100008B8
-	 <anonymous> * ptr100008BC;	// 100008BC
+	<anonymous> * ptr1000088C;	// 1000088C
+	<anonymous> * ptr10000890;	// 10000890
+	<anonymous> * ptr10000894;	// 10000894
+	<anonymous> * ptr10000898;	// 10000898
+	<anonymous> * ptr1000089C;	// 1000089C
+	int8 ** ptr100008A0;	// 100008A0
+	<anonymous> * ptr100008A4;	// 100008A4
+	<anonymous> * ptr100008A8;	// 100008A8
+	<anonymous> * ptr100008AC;	// 100008AC
+	<anonymous> * ptr100008B0;	// 100008B0
+	<anonymous> * ptr100008B4;	// 100008B4
+	<anonymous> * ptr100008B8;	// 100008B8
+	<anonymous> * ptr100008BC;	// 100008BC
 	int32 * ptr100008C0;	// 100008C0
-	 <anonymous> * ptr100008C4;	// 100008C4
-	 <anonymous> * ptr100008CC;	// 100008CC
-	 <anonymous> * ptr100008D0;	// 100008D0
-	 <anonymous> * ptr100008D4;	// 100008D4
-	 <anonymous> * ptr100008D8;	// 100008D8
-	 <anonymous> * ptr100008DC;	// 100008DC
-	 <anonymous> * ptr100008E0;	// 100008E0
-	 <anonymous> * ptr100008E4;	// 100008E4
-	 <anonymous> * ptr100008E8;	// 100008E8
-	 <anonymous> * ptr100008EC;	// 100008EC
-	 <anonymous> * ptr100008F0;	// 100008F0
+	<anonymous> * ptr100008C4;	// 100008C4
+	<anonymous> * ptr100008CC;	// 100008CC
+	<anonymous> * ptr100008D0;	// 100008D0
+	<anonymous> * ptr100008D4;	// 100008D4
+	<anonymous> * ptr100008D8;	// 100008D8
+	<anonymous> * ptr100008DC;	// 100008DC
+	<anonymous> * ptr100008E0;	// 100008E0
+	<anonymous> * ptr100008E4;	// 100008E4
+	<anonymous> * ptr100008E8;	// 100008E8
+	<anonymous> * ptr100008EC;	// 100008EC
+	<anonymous> * ptr100008F0;	// 100008F0
 	int32 * ptr100008F4;	// 100008F4
-	 <anonymous> * ptr100008F8;	// 100008F8
-	 <anonymous> * ptr10000900;	// 10000900
-	 <anonymous> * ptr10000904;	// 10000904
-	 <anonymous> * ptr10000908;	// 10000908
+	<anonymous> * ptr100008F8;	// 100008F8
+	<anonymous> * ptr10000900;	// 10000900
+	<anonymous> * ptr10000904;	// 10000904
+	<anonymous> * ptr10000908;	// 10000908
 	int32 * ptr1000090C;	// 1000090C
-	 <anonymous> * ptr10000910;	// 10000910
+	<anonymous> * ptr10000910;	// 10000910
 	int32 * ptr10000914;	// 10000914
-	 <anonymous> * ptr10000918;	// 10000918
-	 <anonymous> * ptr1000091C;	// 1000091C
-	 <anonymous> * ptr10000928;	// 10000928
-	 <anonymous> * ptr1000092C;	// 1000092C
-	 <anonymous> * ptr10000930;	// 10000930
-	 <anonymous> * ptr10000934;	// 10000934
-	 <anonymous> * ptr10000938;	// 10000938
-	 <anonymous> * ptr1000093C;	// 1000093C
-	 <anonymous> * ptr10000940;	// 10000940
-	 <anonymous> * ptr10000944;	// 10000944
-	 <anonymous> * ptr1000094C;	// 1000094C
-	 <anonymous> * ptr10000950;	// 10000950
-	 <anonymous> * ptr10000954;	// 10000954
-	 <anonymous> * ptr10000958;	// 10000958
-	 <anonymous> * ptr10000960;	// 10000960
+	<anonymous> * ptr10000918;	// 10000918
+	<anonymous> * ptr1000091C;	// 1000091C
+	<anonymous> * ptr10000928;	// 10000928
+	<anonymous> * ptr1000092C;	// 1000092C
+	<anonymous> * ptr10000930;	// 10000930
+	<anonymous> * ptr10000934;	// 10000934
+	<anonymous> * ptr10000938;	// 10000938
+	<anonymous> * ptr1000093C;	// 1000093C
+	<anonymous> * ptr10000940;	// 10000940
+	<anonymous> * ptr10000944;	// 10000944
+	<anonymous> * ptr1000094C;	// 1000094C
+	<anonymous> * ptr10000950;	// 10000950
+	<anonymous> * ptr10000954;	// 10000954
+	<anonymous> * ptr10000958;	// 10000958
+	<anonymous> * ptr10000960;	// 10000960
 	word32 dw10000964;	// 10000964
-	 <anonymous> * ptr10000968;	// 10000968
-	 <anonymous> * ptr1000096C;	// 1000096C
-	 <anonymous> * ptr10000970;	// 10000970
-	 <anonymous> * ptr10000974;	// 10000974
-	 <anonymous> * ptr10000978;	// 10000978
-	 <anonymous> * ptr1000097C;	// 1000097C
-	 <anonymous> * ptr10000980;	// 10000980
-	 <anonymous> * ptr10000984;	// 10000984
-	 <anonymous> * ptr10000988;	// 10000988
-	 <anonymous> * ptr1000098C;	// 1000098C
-	 <anonymous> * ptr10000990;	// 10000990
-	 <anonymous> * ptr10000994;	// 10000994
-	 <anonymous> * ptr10000998;	// 10000998
-	 <anonymous> * ptr1000099C;	// 1000099C
-	 <anonymous> * ptr100009A0;	// 100009A0
-	 <anonymous> * ptr100009A4;	// 100009A4
-	 <anonymous> * ptr100009A8;	// 100009A8
-	 <anonymous> * ptr100009AC;	// 100009AC
-	 <anonymous> * ptr100009B0;	// 100009B0
-	 <anonymous> * ptr100009B4;	// 100009B4
-	 <anonymous> * ptr100009B8;	// 100009B8
-	 <anonymous> * ptr100009BC;	// 100009BC
-	 <anonymous> * ptr100009C0;	// 100009C0
-	 <anonymous> * ptr100009C4;	// 100009C4
-	word32 ( * ptr100009C8)[];	// 100009C8
-	 <anonymous> * ptr100009CC;	// 100009CC
+	<anonymous> * ptr10000968;	// 10000968
+	<anonymous> * ptr1000096C;	// 1000096C
+	<anonymous> * ptr10000970;	// 10000970
+	<anonymous> * ptr10000974;	// 10000974
+	<anonymous> * ptr10000978;	// 10000978
+	<anonymous> * ptr1000097C;	// 1000097C
+	<anonymous> * ptr10000980;	// 10000980
+	<anonymous> * ptr10000984;	// 10000984
+	<anonymous> * ptr10000988;	// 10000988
+	<anonymous> * ptr1000098C;	// 1000098C
+	<anonymous> * ptr10000990;	// 10000990
+	<anonymous> * ptr10000994;	// 10000994
+	<anonymous> * ptr10000998;	// 10000998
+	<anonymous> * ptr1000099C;	// 1000099C
+	<anonymous> * ptr100009A0;	// 100009A0
+	<anonymous> * ptr100009A4;	// 100009A4
+	<anonymous> * ptr100009A8;	// 100009A8
+	<anonymous> * ptr100009AC;	// 100009AC
+	<anonymous> * ptr100009B0;	// 100009B0
+	<anonymous> * ptr100009B4;	// 100009B4
+	<anonymous> * ptr100009B8;	// 100009B8
+	<anonymous> * ptr100009BC;	// 100009BC
+	<anonymous> * ptr100009C0;	// 100009C0
+	<anonymous> * ptr100009C4;	// 100009C4
+	word32 (* ptr100009C8)[];	// 100009C8
+	<anonymous> * ptr100009CC;	// 100009CC
 	word32 dw100009D0;	// 100009D0
-	 <anonymous> * ptr100009D4;	// 100009D4
-	 <anonymous> * ptr100009D8;	// 100009D8
-	 <anonymous> * ptr100009DC;	// 100009DC
-	 <anonymous> * ptr100009E0;	// 100009E0
-	 <anonymous> * ptr100009E4;	// 100009E4
-	 <anonymous> * ptr100009EC;	// 100009EC
-	 <anonymous> * ptr100009F0;	// 100009F0
-	 <anonymous> * ptr100009F4;	// 100009F4
-	 <anonymous> * ptr100009F8;	// 100009F8
-	 <anonymous> * ptr100009FC;	// 100009FC
-	 <anonymous> * ptr10000A00;	// 10000A00
-	 <anonymous> * ptr10000A04;	// 10000A04
-	 <anonymous> * ptr10000A08;	// 10000A08
-	 <anonymous> * ptr10000A0C;	// 10000A0C
-	 <anonymous> * ptr10000A10;	// 10000A10
-	 <anonymous> * ptr10000A14;	// 10000A14
-	 <anonymous> * ptr10000A18;	// 10000A18
-	 <anonymous> * ptr10000A1C;	// 10000A1C
+	<anonymous> * ptr100009D4;	// 100009D4
+	<anonymous> * ptr100009D8;	// 100009D8
+	<anonymous> * ptr100009DC;	// 100009DC
+	<anonymous> * ptr100009E0;	// 100009E0
+	<anonymous> * ptr100009E4;	// 100009E4
+	<anonymous> * ptr100009EC;	// 100009EC
+	<anonymous> * ptr100009F0;	// 100009F0
+	<anonymous> * ptr100009F4;	// 100009F4
+	<anonymous> * ptr100009F8;	// 100009F8
+	<anonymous> * ptr100009FC;	// 100009FC
+	<anonymous> * ptr10000A00;	// 10000A00
+	<anonymous> * ptr10000A04;	// 10000A04
+	<anonymous> * ptr10000A08;	// 10000A08
+	<anonymous> * ptr10000A0C;	// 10000A0C
+	<anonymous> * ptr10000A10;	// 10000A10
+	<anonymous> * ptr10000A14;	// 10000A14
+	<anonymous> * ptr10000A18;	// 10000A18
+	<anonymous> * ptr10000A1C;	// 10000A1C
 	int32 * ptr10000A20;	// 10000A20
 	int32 * ptr10000A28;	// 10000A28
-	 <anonymous> * ptr10000A2C;	// 10000A2C
-	 <anonymous> * ptr10000A30;	// 10000A30
-	 <anonymous> * ptr10000A34;	// 10000A34
-	 <anonymous> * ptr10000A38;	// 10000A38
-	 <anonymous> * ptr10000A3C;	// 10000A3C
+	<anonymous> * ptr10000A2C;	// 10000A2C
+	<anonymous> * ptr10000A30;	// 10000A30
+	<anonymous> * ptr10000A34;	// 10000A34
+	<anonymous> * ptr10000A38;	// 10000A38
+	<anonymous> * ptr10000A3C;	// 10000A3C
 	struct Eq_245 * ptr10000A40;	// 10000A40
-	 <anonymous> * ptr10000A44;	// 10000A44
-	 <anonymous> * ptr10000A48;	// 10000A48
-	 <anonymous> * ptr10000A4C;	// 10000A4C
-	 <anonymous> * ptr10000A50;	// 10000A50
-	 <anonymous> * ptr10000A54;	// 10000A54
-	 <anonymous> * ptr10000A58;	// 10000A58
-	 <anonymous> * ptr10000A5C;	// 10000A5C
-	 <anonymous> * ptr10000A64;	// 10000A64
-	 <anonymous> * ptr10000A68;	// 10000A68
-	word16 ( * * ptr10000A6C)[];	// 10000A6C
-	 <anonymous> * ptr10000A70;	// 10000A70
-	 <anonymous> * ptr10000A74;	// 10000A74
-	 <anonymous> * ptr10000A78;	// 10000A78
-	 <anonymous> * ptr10000A7C;	// 10000A7C
-	 <anonymous> * ptr10000A80;	// 10000A80
-	 <anonymous> * ptr10000A84;	// 10000A84
-	 <anonymous> * ptr10000A88;	// 10000A88
-	 <anonymous> * ptr10000A8C;	// 10000A8C
-	 <anonymous> * ptr10000A90;	// 10000A90
-	 <anonymous> * ptr10000A94;	// 10000A94
-	 <anonymous> * ptr10000A98;	// 10000A98
-	 <anonymous> * ptr10000A9C;	// 10000A9C
-	 <anonymous> * ptr10000AA0;	// 10000AA0
-	 <anonymous> * ptr10000AA4;	// 10000AA4
+	<anonymous> * ptr10000A44;	// 10000A44
+	<anonymous> * ptr10000A48;	// 10000A48
+	<anonymous> * ptr10000A4C;	// 10000A4C
+	<anonymous> * ptr10000A50;	// 10000A50
+	<anonymous> * ptr10000A54;	// 10000A54
+	<anonymous> * ptr10000A58;	// 10000A58
+	<anonymous> * ptr10000A5C;	// 10000A5C
+	<anonymous> * ptr10000A64;	// 10000A64
+	<anonymous> * ptr10000A68;	// 10000A68
+	word16 (** ptr10000A6C)[];	// 10000A6C
+	<anonymous> * ptr10000A70;	// 10000A70
+	<anonymous> * ptr10000A74;	// 10000A74
+	<anonymous> * ptr10000A78;	// 10000A78
+	<anonymous> * ptr10000A7C;	// 10000A7C
+	<anonymous> * ptr10000A80;	// 10000A80
+	<anonymous> * ptr10000A84;	// 10000A84
+	<anonymous> * ptr10000A88;	// 10000A88
+	<anonymous> * ptr10000A8C;	// 10000A8C
+	<anonymous> * ptr10000A90;	// 10000A90
+	<anonymous> * ptr10000A94;	// 10000A94
+	<anonymous> * ptr10000A98;	// 10000A98
+	<anonymous> * ptr10000A9C;	// 10000A9C
+	<anonymous> * ptr10000AA0;	// 10000AA0
+	<anonymous> * ptr10000AA4;	// 10000AA4
 	int32 dw10000AA8;	// 10000AA8
 	int8 * ptr10000AAC;	// 10000AAC
 } Eq_1;
@@ -40630,10 +40630,10 @@ typedef struct Eq_17 {
 typedef struct Eq_21 Eq_21;
 
 typedef struct Eq_37 {
-	 <anonymous> * * ptr0004;	// 4
+	<anonymous> ** ptr0004;	// 4
 	int32 dw0008;	// 8
 	int32 dw0824;	// 824
-	 <anonymous> * ptr0854;	// 854
+	<anonymous> * ptr0854;	// 854
 } Eq_37;
 
 typedef struct Eq_245 {
@@ -40695,8 +40695,8 @@ typedef struct Eq_874 {
 	int32 dw0FAC;	// FAC
 	int32 dw178C;	// 178C
 	struct Eq_874 * ptr17B8;	// 17B8
-	 <anonymous> * ptr17C0;	// 17C0
-	 <anonymous> * ptr17C4;	// 17C4
+	<anonymous> * ptr17C0;	// 17C0
+	<anonymous> * ptr17C4;	// 17C4
 } Eq_874;
 
 typedef void (Eq_883)(word32, Eq_796 *, Eq_797 *, word32, word32, word32, word32, word32);
@@ -40721,7 +40721,7 @@ typedef struct Eq_1648 {
 	word32 dw17B8;	// 17B8
 	word32 dw17BC;	// 17BC
 	word32 dw17C0;	// 17C0
-	 <anonymous> * ptr17C4;	// 17C4
+	<anonymous> * ptr17C4;	// 17C4
 	word32 dw17C8;	// 17C8
 	word32 dw17CC;	// 17CC
 	word32 dw17D0;	// 17D0
@@ -40859,7 +40859,7 @@ typedef struct Eq_2978 {
 typedef struct Eq_3044 {
 	struct Eq_3046 * ptr1788;	// 1788
 	int32 dw178C;	// 178C
-	 <anonymous> * ptr17C4;	// 17C4
+	<anonymous> * ptr17C4;	// 17C4
 } Eq_3044;
 
 typedef struct Eq_3046 {	// size: 1 1

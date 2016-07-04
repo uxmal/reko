@@ -267,7 +267,7 @@ struct a {
             var ptr2 = new Pointer(ptr, 4);
             tyreffo.WriteDeclaration(ptr2, "ppi");
 
-            string sExp = "int32 * * ppi";
+            string sExp = "int32 ** ppi";
             Assert.AreEqual(sExp, sw.ToString());
         }
 
@@ -335,7 +335,7 @@ public:
 	do_something();
 private:
 	int32 m_n0004;	// 4
-	 TestClass * m_ptr0008;	// 8
+	TestClass * m_ptr0008;	// 8
 }";
             #endregion
             Assert.AreEqual(sExp, sw.ToString());

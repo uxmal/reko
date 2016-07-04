@@ -32,6 +32,7 @@ namespace Reko.Core.Output
         private bool declaration;
         private string declaredName;
         private int depth;//$BUG: used to avoid infinite recursion
+        private bool wantSpace;
 
         public TypeReferenceFormatter(Formatter writer)
         {
@@ -157,7 +158,7 @@ namespace Reko.Core.Output
             var ptPointee = t.Pointee as Pointer;
             if (ptPointee != null)
                 Pointer(ptPointee);
-            fmt.Write(' ');
+            WriteSpace();
             fmt.Write('*');
             TypeQualifierList(t);
         }
@@ -209,6 +210,7 @@ namespace Reko.Core.Output
             else if (t is EquivalenceClass)
             {
                 fmt.Write(t.Name);
+                wantSpace = true;
                 return;
             }
             else if (t is PrimitiveType) {
@@ -224,40 +226,56 @@ namespace Reko.Core.Output
                 WritePrimitiveTypeName((PrimitiveType)t);
                 //if (declaration && !string.IsNullOrEmpty(declaredName))
                 //    fmt.Write(' ');
+                wantSpace = true;
                 return;
             }
             else if (t is VoidType)
             {
                 WriteVoidType((VoidType)t);
+                wantSpace = true;
                 return;
             }
             else if (t is UnionType)
             {
                 fmt.WriteKeyword("union");
+                fmt.Write(" ");
             }
             else if (t is StructureType)
             {
                 fmt.WriteKeyword("struct");
+                fmt.Write(" ");
             }
             else if (t is EnumType)
             {
                 fmt.WriteKeyword("enum");
+                fmt.Write(" ");
             }
-            fmt.Write(" ");
             if (string.IsNullOrEmpty(t.Name))
                 fmt.Write("<anonymous>");
             else
                 fmt.Write(t.Name);
+            wantSpace = true;
         }
 
         public virtual void WritePrimitiveTypeName(PrimitiveType t)
         {
             fmt.Write(t.Name);
+            wantSpace = true;
         }
 
         public virtual void WriteVoidType(VoidType t)
         {
             fmt.Write(t.Name);
+            wantSpace = true;
+        }
+
+        private void WriteSpace()
+        {
+            if (wantSpace)
+            {
+                fmt.Write(' ');
+                wantSpace = false;
+            }
         }
 
         /* specifier-qualifier-list:
@@ -291,6 +309,7 @@ namespace Reko.Core.Output
                 if (pointee is ArrayType || pointee is FunctionType)
                 {
                     fmt.Write(" (");
+                    wantSpace = false;
                 }
                 if (pt != null)
                     Pointer(pt);
