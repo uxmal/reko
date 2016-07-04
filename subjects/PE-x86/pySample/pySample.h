@@ -4804,7 +4804,7 @@ T_1094: (in esi_68 | esi_68 << 0x00000010 : word32)
   OrigDataType: ui32
 */
 typedef struct Globals {
-	 <anonymous> * ptr100020CC;	// 100020CC
+	<anonymous> * ptr100020CC;	// 100020CC
 	char str100020E0[];	// 100020E0
 	char str100020F4[];	// 100020F4
 	char str100020FC[];	// 100020FC
@@ -4824,14 +4824,14 @@ typedef struct Globals {
 	ui32 dw10003000;	// 10003000
 	ui32 dw10003004;	// 10003004
 	Eq_176 t10003008;	// 10003008
-	 PyMethodDef methods[5];	// 10003010
+	PyMethodDef methods[5];	// 10003010
 	int32 dw10003070;	// 10003070
 	word32 dw100033A4;	// 100033A4
 	word32 dw100033A8;	// 100033A8
 	Eq_147 t100033AC;	// 100033AC
 	word32 dw100033B0;	// 100033B0
 	word32 dw100033B4;	// 100033B4
-	 <anonymous> * ptr100033B8;	// 100033B8
+	<anonymous> * ptr100033B8;	// 100033B8
 } Eq_1;
 
 typedef PyObject Eq_2;
@@ -4883,8 +4883,8 @@ typedef LONG Eq_147;
 typedef void (Eq_174)(Eq_176);
 
 typedef union Eq_176 {
-	 DWORD u0;
-	 LPVOID u1;
+	DWORD u0;
+	LPVOID u1;
 } Eq_176;
 
 typedef struct Eq_195 {
@@ -4902,7 +4902,7 @@ typedef struct Eq_244 {
 typedef LONG (Eq_273)(LONG, LONG);
 
 typedef union Eq_286 {
-	 <anonymous> * u0;
+	<anonymous> * u0;
 	void u1;
 } Eq_286;
 

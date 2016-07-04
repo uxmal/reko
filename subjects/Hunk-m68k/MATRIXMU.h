@@ -3639,7 +3639,7 @@ T_856:
   OrigDataType: 
 */
 typedef struct Globals {
-	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * ptr0000;	// 0
+	***************************************************************************************************** ptr0000;	// 0
 	Eq_847 a0005[];	// 5
 	word32 a0008[];	// 8
 	ui32 a0010[];	// 10
@@ -3692,7 +3692,7 @@ typedef struct Eq_68 {
 	int32 dw0004;	// 4
 	byte * ptr0008;	// 8
 	int32 dw000C;	// C
-	Eq_200 ( * ptr0010)[];	// 10
+	Eq_200 (* ptr0010)[];	// 10
 	int32 dw0024;	// 24
 } Eq_68;
 
@@ -3736,7 +3736,7 @@ typedef void (Eq_508)();
 typedef void (Eq_511)(Eq_33 *);
 
 typedef struct Eq_519 {
-	struct Eq_33 * * ptrFFFF800A;	// FFFF800A
+	struct Eq_33 ** ptrFFFF800A;	// FFFF800A
 	struct Eq_33 * ptrFFFF8012;	// FFFF8012
 } Eq_519;
 
@@ -3752,7 +3752,7 @@ typedef struct Eq_563 {	// size: 1 1
 typedef void (Eq_568)(word32);
 
 typedef struct Eq_618 {
-	 <anonymous> * ptr0004;	// 4
+	<anonymous> * ptr0004;	// 4
 } Eq_618;
 
 typedef void (Eq_630)(word32);
@@ -3831,6 +3831,6 @@ typedef union Eq_848 {
 } Eq_848;
 
 typedef struct Eq_856 {	// size: 1 1
-	 <anonymous> * ptr0000;	// 0
+	<anonymous> * ptr0000;	// 0
 } Eq_856;
 

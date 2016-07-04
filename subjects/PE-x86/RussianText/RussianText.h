@@ -188,6 +188,6 @@ typedef struct Eq_11 {
 } Eq_11;
 
 typedef struct Eq_20 {
-	word32 ( * ptr002C)[];	// 2C
+	word32 (* ptr002C)[];	// 2C
 } Eq_20;
 

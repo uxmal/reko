@@ -800,7 +800,7 @@ void proc1()
 proc1_entry:
 	// succ:  l1
 l1:
-	real32 * * * eax1
+	real32 *** eax1
 	eax2 = *eax1
 	eax3 = *eax2
 	globals->r1004 = *eax3

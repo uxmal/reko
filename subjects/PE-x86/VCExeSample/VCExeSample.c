@@ -26,8 +26,8 @@ void test2(word32 dwArg04)
 
 void indirect_call_test3(cdecl_class * c)
 {
-	 cdecl_class_vtbl * edx_15 = c->vtbl;
-	void ( * eax_16)( cdecl_class *, int32) = edx_15->method04;
+	cdecl_class_vtbl * edx_15 = c->vtbl;
+	void (* eax_16)(cdecl_class *, int32) = edx_15->method04;
 	word32 esp_17;
 	word32 ebp_18;
 	word32 eax_19;

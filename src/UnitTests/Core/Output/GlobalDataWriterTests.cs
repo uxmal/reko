@@ -326,7 +326,7 @@ struct test g_t1004 =
                 })));
             Given_ProcedureAtAddress(0x2000, "funcTest");
             RunTest(
-@" refTest g_t1000 = 
+@"refTest g_t1000 = 
 {
     1,
     2,
