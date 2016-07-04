@@ -37,15 +37,6 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
 
 === const.o
 === ls
-*** ls
-ls: error: An internal error occurred while decompiling.
-    The method or operation is not implemented.
-       at Reko.ImageLoaders.Elf.ElfLoader64.LocateGotPointers(Program program, SortedList`2 symbols) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\ElfLoader.cs:line 857
-   at Reko.ImageLoaders.Elf.ElfImageLoader.Relocate(Program program, Address addrLoad) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\ElfImageLoader.cs:line 98
-   at Reko.Loading.Loader.LoadExecutable(String filename, Byte[] image, Address addrLoad) in D:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 108
-   at Reko.DecompilerDriver.Load(String fileName) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 207
-   at Reko.DecompilerDriver.Decompile(String filename) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 97
-
 === BENCHFN
 *** BENCHFN
 000011CC: warning: Procedure fn00001000 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
