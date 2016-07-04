@@ -31,6 +31,7 @@ namespace Reko.Core.Output
         private Formatter fmt;
         private bool declaration;
         private string declaredName;
+        private int depth;//$BUG: used to avoid infinite recursion
 
         public TypeReferenceFormatter(Formatter writer)
         {
@@ -272,6 +273,9 @@ namespace Reko.Core.Output
 
         void SpecifierQualifierList(DataType t)
         {
+            if (this.depth > 50) //$BUG: used to avoid infinite recursion
+                return;
+            ++this.depth;
             if (!(t is Pointer))
                 TypeQualifierList(t);
             var pt = t as Pointer;
@@ -292,12 +296,15 @@ namespace Reko.Core.Output
                     Pointer(pt);
                 else
                     MemberPointer(mp);
+                --this.depth;
                 return;
             }
+
             var ft = t as FunctionType;
             if (ft != null && ft.ReturnValue != null)
             {
                 SpecifierQualifierList(ft.ReturnValue.DataType);
+                --this.depth;
                 return;
             }
             var at = t as ArrayType;
@@ -309,6 +316,7 @@ namespace Reko.Core.Output
             {
                 TypeSpecifier(t);
             }
+            --this.depth;
         }
 
         private DataType StripPointerOperator(DataType dt)
@@ -324,6 +332,9 @@ namespace Reko.Core.Output
                 pt = dt as Pointer;
                 mp = dt as MemberPointer;
             }
+            var eq = dt as EquivalenceClass;
+            if (eq != null && eq.DataType != null)
+                dt = eq.DataType;
             return dt;
         }
 
@@ -373,15 +384,23 @@ namespace Reko.Core.Output
 
         void AbstractDeclarator(DataType dt)
         {
+            if (this.depth > 50)
+                return;         //$BUG: discover cause of the deep recursion?
+            ++this.depth;
             var pt = dt as Pointer;
             if (pt != null)
             {
-                if (pt.Pointee is ArrayType ||
-                    pt.Pointee is FunctionType)
+                var pointee = pt.Pointee;
+                var eq = pointee as EquivalenceClass;
+                if (eq != null && eq.DataType != null)
+                    pointee = eq.DataType;
+                if (pointee is ArrayType ||
+                    pointee is FunctionType)
                     fmt.Write(')');
-                dt = pt.Pointee;
+                dt = pointee;
             }
             DirectAbstractDeclarator(dt);
+            --this.depth;
         }
 
         /* direct-abstract-declarator:

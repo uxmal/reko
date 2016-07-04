@@ -16,9 +16,16 @@ Eq_20: (fn int32 ((ptr char)))
 	T_21 (in signature of printf : void)
 Eq_45: cdecl_class
 	T_45 (in c : (ptr Eq_45))
-Eq_46: (struct "Eq_46" (4 (ptr code) ptr0004))
+Eq_46: cdecl_class_vtbl
 	T_46 (in edx_15 : (ptr Eq_46))
 	T_49 (in Mem0[c + 0x00000000:word32] : word32)
+Eq_48: cdecl_class_vtbl
+	T_48 (in c + 0x00000000 : word32)
+Eq_50: (fn void ((ptr cdecl_class), int32))
+	T_50 (in eax_16 : (ptr Eq_50))
+	T_53 (in Mem0[edx_15 + 0x00000004:word32] : word32)
+Eq_52: (fn void ((ptr cdecl_class), int32))
+	T_52 (in edx_15 + 0x00000004 : word32)
 Eq_60: (union "Eq_60" ((ptr cdecl_class_vtbl) u0) ((ptr Eq_46) u1))
 	T_60
 // Type Variables ////////////
@@ -205,35 +212,35 @@ T_45: (in c : (ptr Eq_45))
 T_46: (in edx_15 : (ptr Eq_46))
   Class: Eq_46
   DataType: (ptr Eq_46)
-  OrigDataType: (ptr (struct (4 T_53 t0004)))
+  OrigDataType: (ptr (union (cdecl_class_vtbl u1)))
 T_47: (in 0x00000000 : word32)
   Class: Eq_47
   DataType: word32
   OrigDataType: word32
 T_48: (in c + 0x00000000 : word32)
   Class: Eq_48
-  DataType: ptr32
-  OrigDataType: ptr32
+  DataType: (ptr (ptr Eq_48))
+  OrigDataType: (ptr (ptr cdecl_class_vtbl))
 T_49: (in Mem0[c + 0x00000000:word32] : word32)
   Class: Eq_46
   DataType: (ptr Eq_46)
-  OrigDataType: word32
-T_50: (in eax_16 : (ptr code))
+  OrigDataType: (ptr cdecl_class_vtbl)
+T_50: (in eax_16 : (ptr Eq_50))
   Class: Eq_50
-  DataType: (ptr code)
-  OrigDataType: (ptr code)
+  DataType: (ptr Eq_50)
+  OrigDataType: (ptr (fn void ((ptr cdecl_class), int32)))
 T_51: (in 0x00000004 : word32)
   Class: Eq_51
   DataType: word32
   OrigDataType: word32
 T_52: (in edx_15 + 0x00000004 : word32)
   Class: Eq_52
-  DataType: word32
-  OrigDataType: word32
+  DataType: (ptr (ptr Eq_52))
+  OrigDataType: (ptr (ptr (fn void ((ptr cdecl_class), int32))))
 T_53: (in Mem0[edx_15 + 0x00000004:word32] : word32)
   Class: Eq_50
-  DataType: (ptr code)
-  OrigDataType: word32
+  DataType: (ptr Eq_50)
+  OrigDataType: (ptr (fn void ((ptr cdecl_class), int32)))
 T_54: (in esp_17 : word32)
   Class: Eq_54
   DataType: word32
@@ -280,12 +287,16 @@ typedef int32 (Eq_20)(char *);
 
 typedef cdecl_class Eq_45;
 
-typedef struct Eq_46 {
-	 <anonymous> * ptr0004;	// 4
-} Eq_46;
+typedef cdecl_class_vtbl Eq_46;
+
+typedef cdecl_class_vtbl Eq_48;
+
+typedef void (Eq_50)(cdecl_class *, int32);
+
+typedef void (Eq_52)(cdecl_class * ptrArg00, int32 dwArg04);
 
 typedef union Eq_60 {
 	 cdecl_class_vtbl * u0;
-	Eq_46 * u1;
+	 cdecl_class_vtbl * u1;
 } Eq_60;
 

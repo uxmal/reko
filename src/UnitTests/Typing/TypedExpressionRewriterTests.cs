@@ -754,7 +754,7 @@ void proc1()
 proc1_entry:
 	// succ:  l1
 l1:
-	Eq_2 * eax
+	struct Eq_2 * eax
 	globals->w1000 = eax->w0000
 	globals->w1002 = eax->w0002
 proc1_exit:
@@ -848,7 +848,7 @@ void proc1()
 proc1_entry:
 	// succ:  l1
 l1:
-	Eq_2 * r1
+	struct Eq_2 * r1
 	r1 = r1->ptr0000
 	globals->b1004 = r1->ptr0000->ptr0000->b0004
 proc1_exit:
@@ -900,7 +900,7 @@ void proc1()
 proc1_entry:
 	// succ:  l1
 l1:
-	Eq_2 * r1
+	struct Eq_2 * r1
 	ptr32 r2
 	r1 = r1->ptr0000
 	globals->b1004 = r1->ptr0000->ptr0000->b0004
@@ -1122,7 +1122,7 @@ proc1_exit:
 
 ";
             #endregion
-            RunStringTest(pm.BuildProgram(), sExp);
+            RunTest(pm.BuildProgram(), "Typing/TerNestedStructsPtr.txt");
         }
     }
 }
