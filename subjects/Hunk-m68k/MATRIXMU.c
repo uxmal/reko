@@ -6,10 +6,10 @@
 
 void fn00001000(int32 d0, byte * a0)
 {
-	Eq_4 * a6_8 = *(Eq_4 * *) 0x04;
+	struct Eq_4 * a6_8 = *(Eq_4 * *) 0x04;
 	int32 d2_235 = d0;
 	byte * a2_247 = a0;
-	Eq_11 * a4_6 = (Eq_11 *) 0x948A;
+	struct Eq_11 * a4_6 = (Eq_11 *) 0x948A;
 	if (a6_8->w0014 - 0x24 < 0x00)
 	{
 		word32 * a0_502 = &globals->dw1494;
@@ -23,8 +23,8 @@ void fn00001000(int32 d0, byte * a0)
 	}
 	a4_6->ptrFFFF800A = fp;
 	a4_6->ptrFFFF800E = a6_8;
-	Eq_27 * d0_19 = FindTask(0x00);
-	Eq_33 * d0_112 = OpenLibrary(0x12BC, 0x00);
+	struct Eq_27 * d0_19 = FindTask(0x00);
+	struct Eq_33 * d0_112 = OpenLibrary(0x12BC, 0x00);
 	if (d0_112 != null)
 	{
 		int32 d4_457;
@@ -52,19 +52,19 @@ void fn00001000(int32 d0, byte * a0)
 		d0_112 = AllocMem(d0_107 + 0x11, 0x00010001);
 		if (d0_112 != null)
 		{
-			Eq_68 * dwLoc14_159;
+			struct Eq_68 * dwLoc14_159;
 			word32 a0_164;
 			d0_112->dw0000 = d0_107 + 0x11;
 			int32 d4_123 = d4_457 - 0x01;
 			d0_112->dw000C = d4_123;
 			d0_112->ptr0008 = d0_112->dw000C + 0x01 + d0_105 / 0x0010;
 			Mem131[0x00:word32] = 0x00;
-			Eq_68 * d0_132 = d0_19->ptr00AC;
+			struct Eq_68 * d0_132 = d0_19->ptr00AC;
 			d0_132->dw0000 = d0_107 + 0x11;
 			d0_132->dw000C = d4_123 - 0x01;
 			d0_132->ptr0008 = (byte *) (&d0_132->ptr0010 + d0_105 / 0x0028);
 			Mem150[0x00:word32] = 0x00;
-			Eq_68 * d0_151 = d0_19->ptr00AC;
+			struct Eq_68 * d0_151 = d0_19->ptr00AC;
 			if (d0_151 == null)
 			{
 				fn00001214(d0_19);
@@ -107,7 +107,7 @@ l000011F8:
 			d0_132->ptr0010 = a0_225;
 			byte * * a6_230 = &d0_132->ptr0010;
 			int32 d3_231 = 0x01;
-			Eq_237 * a0_233 = a0 + d2_235;
+			struct Eq_237 * a0_233 = a0 + d2_235;
 l000010DA:
 			a0_233 = a0_233 - 0x01;
 			if (a0_233->b0000 - 0x20 > 0x00)
@@ -248,10 +248,10 @@ void fn00001278(word32 dwArg04)
 
 void fn0000127C(int32 d2)
 {
-	Eq_519 * a4_0 = (Eq_519 *) 0x948A;
-	Eq_33 * * a7_3 = a4_0->ptrFFFF800A;
-	Eq_33 * v8_8 = *(a7_3 - 0x04);
-	Eq_33 * v6_5 = *(a7_3 - 0x08);
+	struct Eq_519 * a4_0 = (Eq_519 *) 0x948A;
+	struct Eq_33 * * a7_3 = a4_0->ptrFFFF800A;
+	struct Eq_33 * v8_8 = *(a7_3 - 0x04);
+	struct Eq_33 * v6_5 = *(a7_3 - 0x08);
 	if (v8_8->dw0004 != 0x00)
 		execPrivate1();
 	CloseLibrary(a4_0->ptrFFFF8012);
@@ -263,7 +263,7 @@ void fn0000127C(int32 d2)
 
 void fn000012D0(word32 dwArg04)
 {
-	Eq_563 * a3_11 = (Eq_563 *) 0x14D0;
+	struct Eq_563 * a3_11 = (Eq_563 *) 0x14D0;
 	if (0x14D0 != 0x00)
 	{
 		int32 d2_39 = 0x01;
@@ -299,14 +299,14 @@ void fn0000131C(int32 dwArg04)
 {
 	if (*(word32 *) 0x14C4 == 0x00)
 	{
-		Eq_618 * a3_28 = *(Eq_618 * *) 5336;
+		struct Eq_618 * a3_28 = *(Eq_618 * *) 5336;
 		*(int32 *) 0x14C4 = 0x01;
 		if (a3_28 != null)
 			do
 			{
 				 <anonymous> * a2_50 = a3_28->ptr0004;
 				word32 a7_51;
-				Eq_618 * * a3_52;
+				struct Eq_618 * * a3_52;
 				word32 a2_53;
 				byte ZN_54;
 				byte C_55;

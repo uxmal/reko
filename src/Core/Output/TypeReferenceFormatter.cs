@@ -31,6 +31,7 @@ namespace Reko.Core.Output
         private Formatter fmt;
         private bool declaration;
         private string declaredName;
+        private int depth;//$BUG: used to avoid infinite recursion
 
         public TypeReferenceFormatter(Formatter writer)
         {
@@ -272,6 +273,9 @@ namespace Reko.Core.Output
 
         void SpecifierQualifierList(DataType t)
         {
+            if (this.depth > 50) //$BUG: used to avoid infinite recursion
+                return;
+            ++this.depth;
             if (!(t is Pointer))
                 TypeQualifierList(t);
             var pt = t as Pointer;
@@ -292,6 +296,7 @@ namespace Reko.Core.Output
                     Pointer(pt);
                 else
                     MemberPointer(mp);
+                --this.depth;
                 return;
             }
 
@@ -299,6 +304,7 @@ namespace Reko.Core.Output
             if (ft != null && ft.ReturnValue != null)
             {
                 SpecifierQualifierList(ft.ReturnValue.DataType);
+                --this.depth;
                 return;
             }
             var at = t as ArrayType;
@@ -310,6 +316,7 @@ namespace Reko.Core.Output
             {
                 TypeSpecifier(t);
             }
+            --this.depth;
         }
 
         private DataType StripPointerOperator(DataType dt)
@@ -377,6 +384,9 @@ namespace Reko.Core.Output
 
         void AbstractDeclarator(DataType dt)
         {
+            if (this.depth > 50)
+                return;         //$BUG: discover cause of the deep recursion?
+            ++this.depth;
             var pt = dt as Pointer;
             if (pt != null)
             {
@@ -390,6 +400,7 @@ namespace Reko.Core.Output
                 dt = pointee;
             }
             DirectAbstractDeclarator(dt);
+            --this.depth;
         }
 
         /* direct-abstract-declarator:
