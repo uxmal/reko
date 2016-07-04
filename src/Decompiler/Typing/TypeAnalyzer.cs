@@ -43,12 +43,7 @@ namespace Reko.Typing
 		private TypeStore store;
 		private ExpressionNormalizer aen;
 		private EquivalenceClassBuilder eqb;
-#if OLD
-        private TraitCollector trco;
-		private DataTypeBuilder dtb;
-#else
         private TypeCollector tyco;
-#endif
         //private DerivedPointerAnalysis dpa;
         private TypeVariableReplacer tvr;
 		private TypeTransformer trans;
@@ -75,12 +70,7 @@ namespace Reko.Typing
 
             aen = new ExpressionNormalizer(program.Platform.PointerType);
             eqb = new EquivalenceClassBuilder(factory, store);
-#if OLD
-            dtb = new DataTypeBuilder(factory, store, program.Platform);
-            trco = new TraitCollector(factory, store, dtb, program);
-#else
             tyco = new TypeCollector(program.TypeFactory, program.TypeStore, program);
-#endif
             //dpa = new DerivedPointerAnalysis(factory, store, program.Architecture);
             tvr = new TypeVariableReplacer(store);
             trans = new TypeTransformer(factory, store,program, eventListener);
@@ -91,16 +81,10 @@ namespace Reko.Typing
             eventListener.ShowStatus("Gathering primitive datatypes from instructions.");
 			aen.Transform(program);
             eqb.Build(program);
-#if OLD
-            eventListener.ShowStatus("Collecting datatype usage traits.");
-			trco.CollectProgramTraits(program);
-            eventListener.ShowStatus("Building equivalence classes.");
-			dtb.BuildEquivalenceClassDataTypes();
-#else
+
             eventListener.ShowStatus("Collecting data types");
             tyco.CollectTypes();
             store.BuildEquivalenceClassDataTypes(factory);
-#endif
             //dpa.FollowConstantPointers(prog);
             tvr.ReplaceTypeVariables();
 

@@ -128,17 +128,6 @@ namespace Reko.Typing
 
         public void VisitDeclaration(Declaration decl)
         {
-#if OLD
-          var dt = decl.Identifier.Accept(asc);
-            desc.MeetDataType(decl.Identifier, dt);
-            decl.Identifier.Accept(desc, decl.Identifier.TypeVariable);
-            if (decl.Expression != null)
-            {
-                dt = decl.Expression.Accept(asc);
-                desc.MeetDataType(decl.Expression, dt);
-                decl.Expression.Accept(desc, decl.Expression.TypeVariable);
-            }
-#else
             // Pattern after VisitAssignment
             DataType dtExp = null;
             if (decl.Expression != null)
@@ -152,9 +141,10 @@ namespace Reko.Typing
             decl.Identifier.Accept(desc, decl.Identifier.TypeVariable);
             if (dtExp != null)
             {
+                // OK to do this as this is the _declaration_
+                // of the variable. 
                 desc.MeetDataType(decl.Identifier, dtExp);
             }
-#endif
         }
 
         public void VisitDefInstruction(DefInstruction def)
