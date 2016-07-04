@@ -179,7 +179,7 @@ T_32: (in Mem25[ds:bx + 0x0009:byte] : byte)
 T_33: (in dx_ax_27 : word32)
   Class: Eq_33
   DataType: int32
-  OrigDataType: word32
+  OrigDataType: int32
 T_34: (in 0x000C : word16)
   Class: Eq_34
   DataType: word16

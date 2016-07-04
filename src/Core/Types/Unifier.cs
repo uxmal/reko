@@ -322,6 +322,14 @@ namespace Reko.Core.Types
 			{
 				return UnifyFunctions(funA, funB);
 			}
+            if (funA != null && b is CodeType)
+            {
+                return funA;
+            }
+            if (funB != null && a is CodeType)
+            {
+                return funB;
+            }
 
 			ArrayType arrA = a as ArrayType;
 			ArrayType arrB = b as ArrayType;

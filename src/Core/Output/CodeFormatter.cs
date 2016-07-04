@@ -475,9 +475,14 @@ namespace Reko.Core.Output
 			writer.Indent();
             Debug.Assert(decl.Identifier.DataType != null, "The DataType property can't ever be null");
 
+#if OLD
             TypeFormatter tf = new TypeFormatter(writer, true);
             tf.Write(decl.Identifier.DataType, decl.Identifier.Name);
-			if (decl.Expression != null)
+#else
+            TypeReferenceFormatter tf = new TypeReferenceFormatter(writer);
+            tf.WriteDeclaration(decl.Identifier.DataType, decl.Identifier.Name);
+#endif
+            if (decl.Expression != null)
 			{
 				writer.Write(" = ");
 				decl.Expression.Accept(this);
@@ -574,10 +579,10 @@ namespace Reko.Core.Output
 			}
 			writer.Terminate();
 		}
-		#endregion
+#endregion
 
 
-		#region IAbsynStatementVisitor //////////////////////
+#region IAbsynStatementVisitor //////////////////////
 
 		public void VisitAssignment(AbsynAssignment a)
 		{
@@ -627,8 +632,8 @@ namespace Reko.Core.Output
 			writer.Indent();
 			if (decl.Identifier.DataType != null)
 			{
-                TypeFormatter tf = new TypeFormatter(writer, true);
-                tf.Write(decl.Identifier.DataType, decl.Identifier.Name);
+                TypeReferenceFormatter tf = new TypeReferenceFormatter(writer);
+                tf.WriteDeclaration(decl.Identifier.DataType, decl.Identifier.Name);
 			}
 			else
 			{
@@ -801,7 +806,7 @@ namespace Reko.Core.Output
 			WriteIndentedStatements(loop.Body, false);
 		}
 
-		#endregion
+#endregion
 
 		public void Write(Procedure proc)
 		{

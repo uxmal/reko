@@ -987,7 +987,8 @@ test_exit:
         public void TerNamedGlobal()
         {
             var sExp =
-            #region Expected@"// Before ///////
+            #region Expected
+@"// Before ///////
 // test
 // Return size: 0
 void test()
@@ -1067,6 +1068,61 @@ test_exit:
                 m.Assign(ds, Constant.Create(ds.DataType, 0x1234));
                 m.SegStore(ds, m.Word16(0x10), m.Word32(0x010004));
             }, sExp);
+        }
+
+        [Test]
+        public void TerNestedStructsPtr()
+        {
+            var pm = CreateProgramBuilder(0x1000, 0x1000);
+            pm.Add("proc1", m =>
+            {
+                var eax = m.Reg32("eax", 0);
+                var ecx = m.Reg32("ecx", 1);
+                var strInner = new StructureType("strInner", 8, true)
+                {
+                    Fields = {
+                        { 0, PrimitiveType.Real32, "innerAttr00" },
+                        { 4, PrimitiveType.Int32, "innerAttr04" },
+                    }
+                };
+                var str = new StructureType("str", 8, true)
+                {
+                    Fields = {
+                        { 0, new Pointer(strInner, 4), "strAttr00" },
+                        { 4, PrimitiveType.Int32, "strAttr04" },
+                    }
+                };
+                var v = m.Frame.EnsureStackArgument(4, new Pointer(str, 4));
+                m.Declare(eax, m.Load(PrimitiveType.Word32, v));
+                m.Declare(ecx, m.Load(PrimitiveType.Word32, eax));
+            });
+            var sExp =
+            #region Expected String
+@"// Before ///////
+// proc1
+// Return size: 0
+void proc1()
+proc1_entry:
+	// succ:  l1
+l1:
+	word32 eax = Mem0[ptrArg04:word32]
+	word32 ecx = Mem0[eax:word32]
+proc1_exit:
+
+// After ///////
+// proc1
+// Return size: 0
+void proc1()
+proc1_entry:
+	// succ:  l1
+l1:
+	strInner * eax = ptrArg04->strAttr00
+	real32 ecx = eax->innerAttr00
+proc1_exit:
+
+";
+            #endregion
+            RunTest(pm.BuildProgram(), "Typing/TerNestedStructsPtr.txt");
         }
     }
 }
