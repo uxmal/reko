@@ -11,7 +11,7 @@ namespace Reko.Analysis
 
         internal void Transform(List<SsaTransform2> ssts)
         {
-            throw new NotImplementedException();
+//            throw new NotImplementedException();
         }
     }
 }

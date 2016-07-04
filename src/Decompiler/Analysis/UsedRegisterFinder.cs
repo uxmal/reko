@@ -182,7 +182,9 @@ namespace Reko.Analysis
 
         public int VisitBinaryExpression(BinaryExpression binExp)
         {
-            throw new NotImplementedException();
+            return Math.Max(
+                binExp.Left.Accept(this),
+                binExp.Right.Accept(this));
         }
 
         public int VisitCast(Cast cast)

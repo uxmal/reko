@@ -216,14 +216,22 @@ test_exit:
 // Return size: 4
 void test(int32 a, int32 b)
 test_entry:
+	def a
+	def fp
+	def b
 	// succ:  l1
 l1:
-	word32 r1_8 = a + b
+	a_10 = a
+	b_11 = b
+	r1_6 = a
+	r2_7 = b
+	r1_8 = a + b
 	Mem9[0x00010008:word32] = r1_8
-	word32 r2_7 = b
 	return
 	// succ:  test_exit
 test_exit:
+	use r1_8
+	use r2_7
 ";
             AssertProgram(sExp, pb.Program);
         }
