@@ -87,7 +87,6 @@ namespace Reko.UnitTests.Analysis
 			foreach (Procedure proc in program.Procedures.Values)
 			{
 				writer.WriteLine("= {0} ========================", proc.Name);
-				var gr = proc.CreateBlockDominatorGraph();
                 SsaTransform2 sst = new SsaTransform2(program.Architecture, proc, null, dfa.ProgramDataFlow.ToDataFlow2());
                 sst.Transform();
 				SsaState ssa = sst.SsaState;
