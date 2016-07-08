@@ -1325,7 +1325,7 @@ namespace Reko.Analysis
             {
                 var phiBlock = phi.DefStatement.Block;
                 var x = factory.Create(phi.OriginalIdentifier, phi.DefStatement);
-                x.AddPhiOperandsCore(phi, false);
+                x.AddPhiOperandsCore(phi, true);
             }
             incompletePhis.Clear();
         }
@@ -1555,6 +1555,8 @@ namespace Reko.Analysis
 
             public bool ProbeVariable(SsaBlockState bs, HashSet<Block> visited)
             {
+                if (bs.Block.Pred.Any(p => !blockstates[p].Visited))
+                    return false;
                 foreach (var p in bs.Block.Pred)
                 {
                     if (visited.Contains(p))

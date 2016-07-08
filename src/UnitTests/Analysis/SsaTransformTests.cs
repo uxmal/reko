@@ -2203,7 +2203,59 @@ proc1_exit:
         {
             var sExp =
             #region Expected
-                "@@@";
+@"Mem0:Global memory
+    def:  def Mem0
+    uses: ax_2 = Mem0[0x00002000:word16]
+          bx_3 = Mem0[0x00002002:word16]
+ax_2: orig: ax
+    def:  ax_2 = Mem0[0x00002000:word16]
+    uses: al_6 = PHI(ax_2, al_7)
+bx_3: orig: bx
+    def:  bx_3 = Mem0[0x00002002:word16]
+    uses: bx_8 = PHI(bx_3, bx_9)
+bh_4: orig: bh
+    def:  bh_4 = PHI(bx_3, bh_4)
+al_5: orig: al
+    def:  al_5 = bx_3
+al_6: orig: al
+    def:  al_6 = PHI(ax_2, al_7)
+    uses: al_7 = DPB(al_6, al_5, 0) (alias)
+al_7: orig: al
+    def:  al_7 = DPB(al_6, al_5, 0) (alias)
+    uses: return al_7
+          al_6 = PHI(ax_2, al_7)
+bx_8: orig: bx
+    def:  bx_8 = PHI(bx_3, bx_9)
+    uses: bx_9 = DPB(bx_8, bh_4, 8) (alias)
+bx_9: orig: bx
+    def:  bx_9 = DPB(bx_8, bh_4, 8) (alias)
+    uses: branch bx_9 >= 0x0000 m0
+          bx_8 = PHI(bx_3, bx_9)
+// proc1
+// Return size: 0
+void proc1()
+proc1_entry:
+	def Mem0
+	// succ:  l1
+l1:
+	ax_2 = Mem0[0x00002000:word16]
+	bx_3 = Mem0[0x00002002:word16]
+	// succ:  m0
+m0:
+	bx_8 = PHI(bx_3, bx_9)
+	bh_4 = SLICE(bx_8, 8, byte) (alias)
+	al_6 = PHI(ax_2, al_7)
+	bx_9 = DPB(bx_8, bh_4, 8) (alias)
+	al_5 = bh_4
+	al_7 = DPB(al_6, al_5, 0) (alias)
+	branch bx_9 >= 0x0000 m0
+	// succ:  m1 m0
+m1:
+	return al_7
+	// succ:  proc1_exit
+proc1_exit:
+======
+";
             #endregion
 
             RunTest(sExp, m =>
