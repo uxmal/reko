@@ -157,7 +157,7 @@ struct a {
 				new Identifier[] { new Identifier("", PrimitiveType.Word32, null)});
 			Pointer pfn = new Pointer(fn, 4);
 			tyreffo.WriteDeclaration(pfn, "pfn");
-			Assert.AreEqual("void ( * pfn)(word32)", 
+			Assert.AreEqual("void (* pfn)(word32)", 
 				sw.ToString());
 		}
 
