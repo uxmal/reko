@@ -132,3 +132,41 @@ indirect_call_test3_exit:
 
 
 
+void test4()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
+// Preserved: ebp esp
+test4_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32)
+
+l004010D0:
+	word32 ecx_10 = Mem0[0x00403018:word32]
+	word32 edx_11 = Mem0[ecx_10:word32]
+	word32 eax_12 = Mem0[edx_11:word32]
+	word32 esp_13
+	word32 ebp_14
+	word32 eax_15
+	word32 ecx_16
+	word32 edx_17
+	byte SCZO_18
+	call eax_12 (retsize: 4; depth: 12)
+		uses: dwLoc04_4,dwLoc08_9,eax_12,ebp_5,ecx_10,edx_11,esp_8
+		defs: eax_15,ebp_14,ecx_16,edx_17,esp_13,SCZO_18
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+test4_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp ebp:ebp eax:<invalid> ecx:<invalid> edx:<invalid> -8(fp):<invalid> -4(fp):ebp
+
+
+
