@@ -4,6 +4,11 @@
     <typedef name="cdecl_class">
       <struct name="cdecl_class" />
     </typedef>
+    <typedef name="cdecl_class_ptr">
+      <ptr size="4">
+        <type>cdecl_class</type>
+      </ptr>
+    </typedef>
     <typedef name="cdecl_class_vtbl">
       <struct name="cdecl_class_vtbl" />
     </typedef>

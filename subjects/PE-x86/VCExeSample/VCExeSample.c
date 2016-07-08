@@ -38,3 +38,18 @@ void indirect_call_test3(cdecl_class * c)
 	return;
 }
 
+void test4()
+{
+	<anonymous> *** ecx_10 = globals->gbl_c;
+	<anonymous> ** edx_11 = *ecx_10;
+	<anonymous> * eax_12 = *edx_11;
+	word32 esp_13;
+	word32 ebp_14;
+	word32 eax_15;
+	word32 ecx_16;
+	word32 edx_17;
+	byte SCZO_18;
+	eax_12();
+	return;
+}
+
