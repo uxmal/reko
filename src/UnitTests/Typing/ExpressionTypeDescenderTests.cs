@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Typing
             this.factory = new TypeFactory();
             this.arch = new FakeArchitecture();
             var prog = new Program { Architecture = arch , Platform = new DefaultPlatform(null,arch)};
-            this.exa = new ExpressionTypeAscender(prog.Platform, store, factory);
+            this.exa = new ExpressionTypeAscender(prog, store, factory);
             this.exd = new ExpressionTypeDescender(prog, store, factory);
             store.EnsureExpressionTypeVariable(factory, prog.Globals, "globals_t");
         }

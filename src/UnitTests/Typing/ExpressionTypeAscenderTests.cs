@@ -46,7 +46,8 @@ namespace Reko.UnitTests.Typing
             this.factory = new TypeFactory();
             var arch = new FakeArchitecture();
             var platform = new DefaultPlatform(null, arch);
-            this.exa = new ExpressionTypeAscender(platform, store, factory);
+            var program = new Program { Architecture = arch, Platform = platform };
+            this.exa = new ExpressionTypeAscender(program, store, factory);
         }
 
         private static Identifier Id(string name, DataType dt)
