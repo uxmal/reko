@@ -48,32 +48,19 @@ namespace Reko.Arch.X86
             }
             internal X86LegacyCodeRegisterExtension(byte magic, bool wide, bool modrm_reg, bool sib_idx, bool modrm_rm)
             {
-                this.val = (byte)((this.val & 0xf) | ((magic & 0xf) << 4));
-                this.WideValue = wide;
-                this.Target_ModRM_Reg = modrm_reg;
-                this.Target_SIB_Index = sib_idx;
-                this.Target_ModRM_RegOrMem = modrm_rm;
+                this.ByteValue = (byte)((this.val & 0xf) | ((magic & 0xf) << 4));
+                this.FlagWideValue = wide;
+                this.FlagTargetModrmRegister = modrm_reg;
+                this.FlagTargetSIBIndex = sib_idx;
+                this.FlagTargetModrmRegOrMem = modrm_rm;
             }
 
-            internal byte ByteValue
+            internal byte ByteValue { get; set; }
+            internal bool IsActive()
             {
-                get
-                {
-                    return this.val;
-                }
-                set
-                {
-                    this.val = value;
-                }
+                return this.val != 0;
             }
-            internal bool Active
-            {
-                get
-                {
-                    return this.val != 0;
-                }
-            }
-            internal bool WideValue
+            internal bool FlagWideValue
             {
                 get
                 {
@@ -91,7 +78,7 @@ namespace Reko.Arch.X86
                     }
                 }
             }
-            internal bool Target_ModRM_Reg
+            internal bool FlagTargetModrmRegister
             {
                 get
                 {
@@ -109,7 +96,7 @@ namespace Reko.Arch.X86
                     }
                 }
             }
-            internal bool Target_ModRM_RegOrMem
+            internal bool FlagTargetModrmRegOrMem
             {
                 get
                 {
@@ -127,7 +114,7 @@ namespace Reko.Arch.X86
                     }
                 }
             }
-            internal bool Target_SIB_Index
+            internal bool FlagTargetSIBIndex
             {
                 get
                 {
@@ -371,14 +358,14 @@ namespace Reko.Arch.X86
         private RegisterStorage RegFromBitsRexW(int bits, PrimitiveType dataWidth)
         {
             int reg_bits = bits & 7;
-            reg_bits |= this.currentDecodingContext.RegisterExtension.WideValue ? 8 : 0;
+            reg_bits |= this.currentDecodingContext.RegisterExtension.FlagWideValue ? 8 : 0;
             return GpRegFromBits(reg_bits, dataWidth);
         }
 
         private RegisterStorage RegFromBitsRexR(int bits, PrimitiveType dataWidth, Func<int, PrimitiveType, RegisterStorage> fnReg)
         {
             int reg_bits = bits & 7;
-            reg_bits |= this.currentDecodingContext.RegisterExtension.Target_ModRM_Reg ? 8 : 0;
+            reg_bits |= this.currentDecodingContext.RegisterExtension.FlagTargetModrmRegister ? 8 : 0;
             return fnReg(reg_bits, dataWidth);
         }
 
@@ -403,14 +390,14 @@ namespace Reko.Arch.X86
         private RegisterStorage RegFromBitsRexX(int bits, PrimitiveType dataWidth, Func<int, PrimitiveType, RegisterStorage> fnReg)
         {
             int reg_bits = bits & 7;
-            reg_bits |= this.currentDecodingContext.RegisterExtension.Target_SIB_Index ? 8 : 0;
+            reg_bits |= this.currentDecodingContext.RegisterExtension.FlagTargetSIBIndex ? 8 : 0;
             return fnReg(reg_bits, dataWidth);
         }
 
         private RegisterStorage RegFromBitsRexB(int bits, PrimitiveType dataWidth, Func<int, PrimitiveType, RegisterStorage> fnReg)
         {
             int reg_bits = bits & 7;
-            reg_bits |= this.currentDecodingContext.RegisterExtension.Target_ModRM_RegOrMem ? 8 : 0;
+            reg_bits |= this.currentDecodingContext.RegisterExtension.FlagTargetModrmRegOrMem ? 8 : 0;
             return fnReg(reg_bits, dataWidth);
         }
 
@@ -630,7 +617,7 @@ namespace Reko.Arch.X86
                 if (disasm.isRegisterExtensionEnabled)
                 {
                     disasm.currentDecodingContext.RegisterExtensionPrefixByte = op;
-                    if (disasm.currentDecodingContext.RegisterExtension.WideValue)
+                    if (disasm.currentDecodingContext.RegisterExtension.FlagWideValue)
                     {
                         disasm.dataWidth = PrimitiveType.Word64;
                     }
@@ -876,14 +863,14 @@ namespace Reko.Arch.X86
                     return disasm.DecodeOperands(this.opF3, op, opF3Fmt);
                 else if (disasm.currentDecodingContext.SizeOverridePrefix)
                 {
-                    if (disasm.isRegisterExtensionEnabled && disasm.currentDecodingContext.RegisterExtension.WideValue)
+                    if (disasm.isRegisterExtensionEnabled && disasm.currentDecodingContext.RegisterExtension.FlagWideValue)
                         return disasm.DecodeOperands(this.op66Wide, op, op66Fmt);
                     else
                         return disasm.DecodeOperands(this.op66, op, op66Fmt);
                 }
                 else
                 {
-                    if (disasm.isRegisterExtensionEnabled && disasm.currentDecodingContext.RegisterExtension.WideValue)
+                    if (disasm.isRegisterExtensionEnabled && disasm.currentDecodingContext.RegisterExtension.FlagWideValue)
                         return disasm.DecodeOperands(this.opWide, op, opFmt);
                     else
                         return disasm.DecodeOperands(this.op, op, opFmt);
@@ -1123,7 +1110,7 @@ namespace Reko.Arch.X86
                 dataWidth = PrimitiveType.Word64;
                 break;
             case 'y':
-                dataWidth = (this.isRegisterExtensionEnabled && this.currentDecodingContext.RegisterExtension.WideValue) ? PrimitiveType.Word64: PrimitiveType.Word32;
+                dataWidth = (this.isRegisterExtensionEnabled && this.currentDecodingContext.RegisterExtension.FlagWideValue) ? PrimitiveType.Word64: PrimitiveType.Word32;
                 break;
             case 'z':
                 dataWidth = this.dataWidth.BitSize == 64 ? PrimitiveType.Int32 : this.dataWidth;
