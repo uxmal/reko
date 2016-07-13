@@ -99,34 +99,10 @@ namespace Reko.Gui.Windows.Controls
     /// </summary>
     public class EmptyEditorModel : TextViewModel
     {
-        public object CurrentPosition
-        {
-            get
-            {
-                return null;
-            }
-        }
-        public object StartPosition
-        {
-            get
-            {
-                return null;
-            }
-        }
-        public object EndPosition
-        {
-            get
-            {
-                return null;
-            }
-        }
-        public int LineCount
-        {
-            get
-            {
-                return 0;
-            }
-        }
+        public object CurrentPosition { get { return this; } }
+        public object StartPosition { get { return this; } }
+        public object EndPosition{ get { return this; } }
+        public int LineCount { get { return 0; } }
 
         public EmptyEditorModel()
         {
