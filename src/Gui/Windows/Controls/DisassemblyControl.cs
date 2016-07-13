@@ -116,7 +116,7 @@ namespace Reko.Gui.Windows.Controls
         protected override void OnScroll()
         {
             base.OnScroll();
-            topAddress = (Address)Model.CurrentPosition;
+            topAddress = Model.CurrentPosition as Address;
         }
 
         protected override bool IsInputKey(Keys keyData)
