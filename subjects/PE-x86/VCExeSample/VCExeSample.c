@@ -40,9 +40,9 @@ void indirect_call_test3(cdecl_class * c)
 
 void test4()
 {
-	<anonymous> *** ecx_10 = globals->gbl_c;
-	<anonymous> ** edx_11 = *ecx_10;
-	<anonymous> * eax_12 = *edx_11;
+	Eq_60 ecx_10 = globals->gbl_c;
+	cdecl_class_vtbl * edx_11 = ecx_10->vtbl;
+	void (* eax_12)(cdecl_class *) = edx_11->method00;
 	word32 esp_13;
 	word32 ebp_14;
 	word32 eax_15;

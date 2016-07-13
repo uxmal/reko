@@ -37,6 +37,7 @@ namespace Reko.UnitTests.Typing
         private TypeStore store;
         private TypeFactory factory;
         private ExpressionTypeAscender exa;
+        private Program program;
 
         [SetUp]
         public void Setup()
@@ -46,7 +47,13 @@ namespace Reko.UnitTests.Typing
             this.factory = new TypeFactory();
             var arch = new FakeArchitecture();
             var platform = new DefaultPlatform(null, arch);
-            this.exa = new ExpressionTypeAscender(platform, store, factory);
+            program = new Program { Architecture = arch, Platform = platform };
+            this.exa = new ExpressionTypeAscender(program, store, factory);
+        }
+
+        private void Given_GlobalVariable(Address addr, DataType dt)
+        {
+            program.GlobalFields.Fields.Add((int)addr.ToUInt32(), dt);
         }
 
         private static Identifier Id(string name, DataType dt)
@@ -158,6 +165,22 @@ namespace Reko.UnitTests.Typing
                 m.Seq(
                     m.LoadW(m.IAdd(lpsz, 4)),
                     Constant.Word16(0x1200)));
+        }
+
+        [Test(Description = "Pointers should be processed as globals")]
+        public void ExaUsrGlobals_Ptr32()
+        {
+            Given_GlobalVariable(
+                Address32.Ptr32(0x10001200), PrimitiveType.Real32);
+            RunTest(Constant.Create(PrimitiveType.Pointer32, 0x10001200));
+        }
+
+        [Test(Description = "Reals should not be processed as globals")]
+        public void ExaUsrGlobals_Real32()
+        {
+            Given_GlobalVariable(
+                Address32.Ptr32(0x10001200), PrimitiveType.Real32);
+            RunTest(Constant.Create(PrimitiveType.Real32, 0x10001200));
         }
     }
 }

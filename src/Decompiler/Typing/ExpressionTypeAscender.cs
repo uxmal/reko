@@ -39,10 +39,12 @@ namespace Reko.Typing
         private TypeStore store;
         private TypeFactory factory;
         private Unifier unifier;
+        private StructureType globalFields;
 
-        public ExpressionTypeAscender(IPlatform platform, TypeStore store, TypeFactory factory)
+        public ExpressionTypeAscender(Program program, TypeStore store, TypeFactory factory)
         {
-            this.platform = platform;
+            this.platform = program.Platform;
+            this.globalFields = program.GlobalFields;
             this.store = store;
             this.factory = factory;
             this.unifier = new DataTypeBuilderUnifier(factory, store);
@@ -152,7 +154,7 @@ namespace Reko.Typing
 
         private DataType FieldType(DataType dtLeft, DataType dtRight, Expression right)
         {
-            var ptrLeft = dtLeft as Pointer;
+            var ptrLeft = dtLeft.ResolveAs<Pointer>();
             var ptRight = dtRight as PrimitiveType;
             if (ptrLeft == null || ptRight == null || ptRight.Domain == Domain.Pointer)
                 return null;
@@ -235,8 +237,17 @@ namespace Reko.Typing
 
         public DataType VisitConstant(Constant c)
         {
-            RecordDataType(c.DataType, c);
+            RecordDataType(GlobalType(c) ?? c.DataType, c);
             return c.TypeVariable.DataType;
+        }
+
+        public DataType GlobalType(Constant c)
+        {
+            var pt = c.DataType as PrimitiveType;
+            if (pt == null || (pt.Domain & Domain.Pointer) == 0)
+                return null;
+            var global = factory.CreatePointer(globalFields, pt.Size);
+            return FieldType(global, PrimitiveType.Int32, c);
         }
 
         public DataType VisitDepositBits(DepositBits d)

@@ -45,7 +45,7 @@ namespace Reko.Typing
             this.factory = factory;
             this.store = store;
             this.program = program;
-            this.asc = new ExpressionTypeAscender(program.Platform, store, factory);
+            this.asc = new ExpressionTypeAscender(program, store, factory);
             this.desc = new ExpressionTypeDescender(program, store, factory);
         }
 
