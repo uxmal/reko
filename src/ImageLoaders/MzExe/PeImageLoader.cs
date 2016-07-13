@@ -60,7 +60,7 @@ namespace Reko.ImageLoaders.MzExe
         private uint rvaSectionTable;
 		private MemoryArea imgLoaded;
 		private Address preferredBaseOfImage;
-		private SortedDictionary<string, Section> sectionMap;
+        private List<Section> sectionList;
         private Dictionary<uint, PseudoProcedure> importThunks;
 		private uint rvaStartAddress;		// unrelocated start address of the image.
 		private uint rvaExportTable;
@@ -69,6 +69,9 @@ namespace Reko.ImageLoaders.MzExe
         private uint rvaDelayImportDescriptor;
         private uint rvaExceptionTable;
         private uint sizeExceptionTable;
+        private uint rvaBaseRelocationTable;
+        private uint sizeBaseRelocationTable;
+
         private uint rvaResources;
         private Dictionary<Address, ImportReference> importReferences;
         private Relocator relocator;
@@ -213,8 +216,8 @@ namespace Reko.ImageLoaders.MzExe
             if (sections > 0)
             {
                 SegmentMap = new SegmentMap(addrLoad);
-                sectionMap = LoadSections(addrLoad, rvaSectionTable, sections);
-                imgLoaded = LoadSectionBytes(addrLoad, sectionMap);
+                sectionList = LoadSections(addrLoad, rvaSectionTable, sections);
+                imgLoaded = LoadSectionBytes(addrLoad, sectionList);
                 AddSectionsToImageMap(addrLoad, SegmentMap);
             }
             this.program = new Program(SegmentMap, arch, platform);
@@ -247,31 +250,30 @@ namespace Reko.ImageLoaders.MzExe
 		/// </summary>
 		/// <param name="rvaSectionTable"></param>
 		/// <returns></returns>
-		private SortedDictionary<string, Section> LoadSections(Address addrLoad, uint rvaSectionTable, int sections)
+		private List<Section> LoadSections(Address addrLoad, uint rvaSectionTable, int sections)
         {
-            var sectionMap = new SortedDictionary<string, Section>();
+            var sectionMap = new List<Section>();
 			ImageReader rdr = new LeImageReader(RawImage, rvaSectionTable);
-			var section = ReadSection(rdr);
-			var sectionMax = section;
-			sectionMap[section.Name] = section;
-			
-			for (int i = 1; i != sections; ++i)
+
+            // Why are we keeping track of this? Any particular reason?
+			Section maxSection = null;
+			for (int i = 0; i != sections; ++i)
 			{
-				section = ReadSection(rdr);
-				sectionMap[section.Name] = section;
-				if (section.VirtualAddress > sectionMax.VirtualAddress)
-					sectionMax = section;
+				Section section = ReadSection(rdr);
+				sectionMap.Add(section);
+				if (maxSection == null || section.VirtualAddress > maxSection.VirtualAddress)
+					maxSection = section;
                 Debug.Print("  Section: {0,10} {1:X8} {2:X8} {3:X8} {4:X8}", section.Name, section.OffsetRawData, section.SizeRawData, section.VirtualAddress, section.VirtualSize);
 			}
             return sectionMap;
 		}
 
-        public MemoryArea LoadSectionBytes(Address addrLoad, SortedDictionary<string, Section> sections)
+        public MemoryArea LoadSectionBytes(Address addrLoad, List<Section> sections)
         {
-            var vaMax = sections.Values.Max(s => s.VirtualAddress);
-            var sectionMax = sections.Values.Where(s => s.VirtualAddress == vaMax).First();
+            var vaMax = sections.Max(s => s.VirtualAddress);
+            var sectionMax = sections.Where(s => s.VirtualAddress == vaMax).First();
             var imgLoaded = new MemoryArea(addrLoad, new byte[sectionMax.VirtualAddress + Math.Max(sectionMax.VirtualSize, sectionMax.SizeRawData)]);
-            foreach (Section s in sectionMap.Values)
+            foreach (Section s in sectionList)
             {
                 Array.Copy(RawImage, s.OffsetRawData, imgLoaded.Bytes, s.VirtualAddress, s.SizeRawData);
             }
@@ -340,28 +342,28 @@ namespace Reko.ImageLoaders.MzExe
 			uint dictionaryCount = rdr.ReadLeUInt32();
 
             if (dictionaryCount == 0) return;
-			rvaExportTable = rdr.ReadLeUInt32();
-			sizeExportTable = rdr.ReadLeUInt32();
+            this.rvaExportTable = rdr.ReadLeUInt32();
+            this.sizeExportTable = rdr.ReadLeUInt32();
 
             if (--dictionaryCount == 0) return;
-            rvaImportTable = rdr.ReadLeUInt32();
+            this.rvaImportTable = rdr.ReadLeUInt32();
 			uint importTableSize = rdr.ReadLeUInt32();
 
             if (--dictionaryCount == 0) return;
-			rvaResources = rdr.ReadLeUInt32();			// resource address
+            this.rvaResources = rdr.ReadLeUInt32();			// resource address
 			rdr.ReadLeUInt32();			// resource size
 
             if (--dictionaryCount == 0) return;
-			rvaExceptionTable = rdr.ReadLeUInt32();			// exception address
-			sizeExceptionTable = rdr.ReadLeUInt32();			// exception size
+			this.rvaExceptionTable = rdr.ReadLeUInt32();            // exception address
+            this.sizeExceptionTable = rdr.ReadLeUInt32();			// exception size
 
             if (--dictionaryCount == 0) return;
 			rdr.ReadLeUInt32();			// certificate address
 			rdr.ReadLeUInt32();			// certificate size
 
             if (--dictionaryCount == 0) return;
-            uint rvaBaseRelocAddress = rdr.ReadLeUInt32();
-			uint baseRelocSize = rdr.ReadLeUInt32();
+            this.rvaBaseRelocationTable = rdr.ReadLeUInt32();
+            this.sizeBaseRelocationTable = rdr.ReadLeUInt32();
 
             if (--dictionaryCount == 0) return;
             uint rvaDebug = rdr.ReadLeUInt32();
@@ -436,10 +438,10 @@ namespace Reko.ImageLoaders.MzExe
             relocator = CreateRelocator(machine, program);
             var relocations = imgLoaded.Relocations;
 			Section relocSection;
-            if (sectionMap.TryGetValue(".reloc", out relocSection))
+            if ((relocSection = sectionList.Find(section => this.rvaBaseRelocationTable >= section.OffsetRawData && this.rvaBaseRelocationTable < section.OffsetRawData + section.SizeRawData)) != null)
 			{
                 ApplyRelocations(relocSection.OffsetRawData, relocSection.SizeRawData, (uint)addrLoad.ToLinear(), relocations);
-			}
+			} 
             var addrEp = platform.AdjustProcedureAddress(addrLoad + rvaStartAddress);
             var entrySym = CreateMainEntryPoint(
                     (this.fileFlags & ImageFileDll) != 0,
@@ -503,7 +505,7 @@ namespace Reko.ImageLoaders.MzExe
 
         public void AddSectionsToImageMap(Address addrLoad, SegmentMap imageMap)
         {
-            foreach (Section s in sectionMap.Values)
+            foreach (Section s in sectionList)
             {
                 AccessMode acc = AccessMode.Read;
                 if ((s.Flags & SectionFlagsWriteable) != 0)
