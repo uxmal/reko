@@ -23,6 +23,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 
@@ -39,14 +40,18 @@ namespace Reko.Typing
         private Procedure proc;
         private ExpressionTypeAscender asc;
         private ExpressionTypeDescender desc;
+        private DecompilerEventListener eventListener;
 
-        public TypeCollector(TypeFactory factory, TypeStore store, Program program)
+        public TypeCollector(
+            TypeFactory factory, TypeStore store, Program program,
+            DecompilerEventListener eventListener)
         {
             this.factory = factory;
             this.store = store;
             this.program = program;
             this.asc = new ExpressionTypeAscender(program, store, factory);
             this.desc = new ExpressionTypeDescender(program, store, factory);
+            this.eventListener = eventListener;
         }
 
         public void CollectTypes()
@@ -61,7 +66,18 @@ namespace Reko.Typing
                 CollectProcedureSignature(p);
                 foreach (Statement stm in p.Statements)
                 {
-                    stm.Instruction.Accept(this);
+                    try
+                    {
+                        stm.Instruction.Accept(this);
+                    }
+                    catch (Exception ex)
+                    {
+                        eventListener.Error(
+                            eventListener.CreateProcedureNavigator(program, p),
+                            ex,
+                            "An error occurred while processing the statement {0}.",
+                            stm);
+                    }
                 }
             }
         }

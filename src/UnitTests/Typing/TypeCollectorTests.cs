@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Typing
                 var aen = new ExpressionNormalizer(program.Platform.PointerType);
                 var eqb = new EquivalenceClassBuilder(factory, store);
 
-                var tyco = new TypeCollector(factory, store, program);
+                var tyco = new TypeCollector(factory, store, program, null);
 
                 aen.Transform(program);
                 eqb.Build(program);

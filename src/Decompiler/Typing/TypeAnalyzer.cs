@@ -70,7 +70,9 @@ namespace Reko.Typing
 
             aen = new ExpressionNormalizer(program.Platform.PointerType);
             eqb = new EquivalenceClassBuilder(factory, store);
-            tyco = new TypeCollector(program.TypeFactory, program.TypeStore, program);
+            tyco = new TypeCollector(
+                program.TypeFactory, program.TypeStore, program,
+                eventListener);
             //dpa = new DerivedPointerAnalysis(factory, store, program.Architecture);
             tvr = new TypeVariableReplacer(store);
             trans = new TypeTransformer(factory, store,program, eventListener);
