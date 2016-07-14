@@ -48,3 +48,8 @@ extern "C" __declspec(dllexport) void test4()
 {
     gbl_c->vtbl->method00(gbl_c);
 }
+
+extern "C" __declspec(dllexport) void test5()
+{
+    (( void (*)(cdecl_class *, int, float))gbl_c->vtbl->method04)(gbl_c, 999, 1000.1);
+}

@@ -12,5 +12,6 @@ char g_str4020DC[] = "7";
 char g_str4020E0[] = "5";
 real32 g_r4020E4 = 8.567F;
 real32 g_r4020E8 = 4.123F;
-Eq_77 g_gbl_c = ;
+Eq_78 g_t4020EC = ;
+Eq_89 g_gbl_c = ;
 
