@@ -242,6 +242,48 @@ movzx	ax,byte ptr [bp+04]
 ", s);
         }
 
+        private X86Instruction DisEnumerator_TakeNext(System.Collections.Generic.IEnumerator<X86Instruction> e)
+        {
+            e.MoveNext();
+            return e.Current;
+        }
+
+        [Test]
+        public void Dis_x86_InvalidKeptStateRegression()
+        {
+            X86TextAssembler asm = new X86TextAssembler(sc, new X86ArchitectureFlat32());
+            var lr = asm.AssembleFragment(
+                Address.Ptr32(0x01001000),
+
+                "db 0xf2, 0x0f, 0x70, 0x00, 0x00\r\n" + 
+                "db 0xf3, 0x0f, 0x70, 0x00, 0x00\r\n");
+
+            /* Before (incorrect):
+             *  pshuflw xmm0, dqword ptr ds:[eax], 0
+             *  pshuflw xmm0, dqword ptr ds:[eax], 0
+             *  
+             *  
+             * After (correct):
+             *  pshuflw xmm0, dqword ptr ds:[eax], 0
+             *  pshufhw xmm0, dqword ptr ds:[eax], 0
+             */
+
+            MemoryArea img = lr.SegmentMap.Segments.Values.First().MemoryArea;
+            CreateDisassembler32(img);
+            var instructions = dasm.GetEnumerator();
+
+            X86Instruction one = DisEnumerator_TakeNext(instructions);
+            X86Instruction two = DisEnumerator_TakeNext(instructions);
+
+            Assert.AreEqual(Opcode.pshuflw, one.code);
+            Assert.AreEqual("xmm0", one.op1.ToString());
+            Assert.AreEqual("[eax]", one.op2.ToString());
+
+            Assert.AreEqual(Opcode.pshufhw, two.code);
+            Assert.AreEqual("xmm0", two.op1.ToString());
+            Assert.AreEqual("[eax]", two.op2.ToString());
+        }
+
         [Test]
         public void DisEdiTimes2()
         {
@@ -712,7 +754,7 @@ movzx	ax,byte ptr [bp+04]
             Assert.AreEqual("fld\tdouble ptr es:[048B]", instrs[1]);
         }
 
-        [Test(Description ="Very large 32-bit offsets can be treated as negative offsets")]
+        [Test(Description = "Very large 32-bit offsets can be treated as negative offsets")]
         public void Dis_x86_LargeNegativeOffset()
         {
             AssertCode32("mov\tesi,[eax-0000FFF0]", 0x8B, 0xB0, 0x10, 0x00, 0xFF, 0xFF);
