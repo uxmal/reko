@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (4020C0 (str char) str4020C0) (4020C8 (str char) str4020C8) (4020D4 (str char) str4020D4) (4020D8 (str char) str4020D8) (4020DC (str char) str4020DC) (4020E0 (str char) str4020E0) (4020E4 real32 r4020E4) (4020E8 real32 r4020E8) (403018 Eq_77 gbl_c))
+Eq_1: (struct "Globals" (4020C0 (str char) str4020C0) (4020C8 (str char) str4020C8) (4020D4 (str char) str4020D4) (4020D8 (str char) str4020D8) (4020DC (str char) str4020DC) (4020E0 (str char) str4020E0) (4020E4 real32 r4020E4) (4020E8 real32 r4020E8) (4020EC Eq_78 t4020EC) (403018 Eq_89 gbl_c))
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_5: (fn void ((ptr char), int32, (ptr char), real32))
 	T_5 (in test1 : ptr32)
@@ -29,6 +29,9 @@ Eq_52: (fn void ((ptr cdecl_class), int32))
 Eq_60: cdecl_class_ptr
 	T_60 (in ecx_10 : Eq_60)
 	T_62 (in Mem0[0x00403018:word32] : word32)
+	T_83 (in Mem0[0x00403018:word32] : word32)
+	T_84 (in eax_13 : word32)
+	T_85 (in dwLoc10_15 : word32)
 Eq_61: (union "Eq_61" (cdecl_class_ptr u0) (Eq_60 u1))
 	T_61 (in 0x00403018 : ptr32)
 Eq_63: cdecl_class_vtbl
@@ -41,10 +44,17 @@ Eq_67: (fn void ((ptr cdecl_class)))
 	T_70 (in Mem0[edx_11 + 0x00000000:word32] : word32)
 Eq_69: (fn void ((ptr cdecl_class)))
 	T_69 (in edx_11 + 0x00000000 : word32)
-Eq_77: (union "Eq_77" (cdecl_class_ptr u0) (Eq_60 u1))
-	T_77
-Eq_78: (union "Eq_78" ((ptr cdecl_class_vtbl) u0) ((ptr Eq_46) u1))
-	T_78
+Eq_78: (union "Eq_78" (real32 u0) (real64 u1))
+	T_78 (in Mem0[0x004020EC:real32] : real32)
+	T_79 (in rLoc1_9 : real64)
+Eq_82: (union "Eq_82" (cdecl_class_ptr u0) (Eq_60 u1))
+	T_82 (in 0x00403018 : word32)
+Eq_86: (fn void (Eq_60, word32, real32))
+	T_86 (in eax : word32)
+Eq_89: (union "Eq_89" (cdecl_class_ptr u0) (Eq_60 u1))
+	T_89
+Eq_90: (union "Eq_90" ((ptr cdecl_class_vtbl) u0) ((ptr Eq_46) u1))
+	T_90
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
@@ -350,13 +360,61 @@ T_76: (in SCZO_18 : byte)
   Class: Eq_76
   DataType: byte
   OrigDataType: byte
-T_77:
+T_77: (in 0x004020EC : ptr32)
   Class: Eq_77
-  DataType: Eq_77
-  OrigDataType: 
-T_78:
+  DataType: (ptr Eq_78)
+  OrigDataType: (ptr (struct (0 T_78 t0000)))
+T_78: (in Mem0[0x004020EC:real32] : real32)
   Class: Eq_78
   DataType: Eq_78
+  OrigDataType: real32
+T_79: (in rLoc1_9 : real64)
+  Class: Eq_78
+  DataType: Eq_78
+  OrigDataType: (union (real32 u0) (real64 u1))
+T_80: (in (real32) rLoc1_9 : real32)
+  Class: Eq_80
+  DataType: real32
+  OrigDataType: real32
+T_81: (in dwLoc08_10 : word32)
+  Class: Eq_80
+  DataType: real32
+  OrigDataType: real32
+T_82: (in 0x00403018 : word32)
+  Class: Eq_82
+  DataType: (ptr Eq_82)
+  OrigDataType: (ptr (union ((struct (0 Eq_60 t0000)) u0) (cdecl_class_ptr u1)))
+T_83: (in Mem0[0x00403018:word32] : word32)
+  Class: Eq_60
+  DataType: Eq_60
+  OrigDataType: cdecl_class_ptr
+T_84: (in eax_13 : word32)
+  Class: Eq_60
+  DataType: Eq_60
+  OrigDataType: cdecl_class_ptr
+T_85: (in dwLoc10_15 : word32)
+  Class: Eq_60
+  DataType: Eq_60
+  OrigDataType: cdecl_class_ptr
+T_86: (in eax : word32)
+  Class: Eq_86
+  DataType: (ptr Eq_86)
+  OrigDataType: (ptr (fn T_88 (T_85, T_87, T_81)))
+T_87: (in 0x000003E7 : word32)
+  Class: Eq_87
+  DataType: word32
+  OrigDataType: word32
+T_88: (in eax(dwLoc10_15, 0x000003E7, dwLoc08_10) : void)
+  Class: Eq_88
+  DataType: void
+  OrigDataType: void
+T_89:
+  Class: Eq_89
+  DataType: Eq_89
+  OrigDataType: 
+T_90:
+  Class: Eq_90
+  DataType: Eq_90
   OrigDataType: 
 */
 typedef struct Globals {
@@ -368,7 +426,8 @@ typedef struct Globals {
 	char str4020E0[];	// 4020E0
 	real32 r4020E4;	// 4020E4
 	real32 r4020E8;	// 4020E8
-	Eq_77 gbl_c;	// 403018
+	Eq_78 t4020EC;	// 4020EC
+	Eq_89 gbl_c;	// 403018
 } Eq_1;
 
 typedef void (Eq_5)(char *, int32, char *, real32);
@@ -400,13 +459,25 @@ typedef void (Eq_67)(cdecl_class *);
 
 typedef void (Eq_69)(cdecl_class * ptrArg00);
 
-typedef union Eq_77 {
+typedef union Eq_78 {
+	real32 u0;
+	real64 u1;
+} Eq_78;
+
+typedef union Eq_82 {
 	cdecl_class_ptr u0;
 	Eq_60 u1;
-} Eq_77;
+} Eq_82;
 
-typedef union Eq_78 {
+typedef void (Eq_86)(cdecl_class_ptr, word32, real32);
+
+typedef union Eq_89 {
+	cdecl_class_ptr u0;
+	Eq_60 u1;
+} Eq_89;
+
+typedef union Eq_90 {
 	cdecl_class_vtbl * u0;
 	cdecl_class_vtbl * u1;
-} Eq_78;
+} Eq_90;
 

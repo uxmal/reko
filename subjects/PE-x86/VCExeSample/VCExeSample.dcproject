@@ -28,10 +28,29 @@
       </procedure>
       <procedure name="Win32CrtStartup">
         <characteristics />
-        <address>00401393</address>
+        <address>004013C3</address>
         <decompile>false</decompile>
         <CSignature>DWORD Win32CrtStartup()</CSignature>
       </procedure>
+      <call>
+        <address>00401113</address>
+        <signature>
+          <return>
+            <void />
+          </return>
+          <arg name="c">
+            <ptr size="4">
+              <type>cdecl_class</type>
+            </ptr>
+          </arg>
+          <arg name="i">
+            <prim domain="SignedInt" size="4" />
+          </arg>
+          <arg name="f">
+            <prim domain="Real" size="4" />
+          </arg>
+        </signature>
+      </call>
       <global>
         <Address>00403018</Address>
         <type>cdecl_class_ptr</type>
