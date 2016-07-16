@@ -869,26 +869,11 @@ namespace Reko.Assemblers.x86
 			case Token.MOV:
 				ProcessMov();
 				break;
-            case Token.MOVSB:
-                asm.ProcessStringInstruction(0xA4, PrimitiveType.Byte);
-                break;
-            case Token.MOVSD:
-                asm.ProcessStringInstruction(0xA4, PrimitiveType.Word32);
-                break;
-            case Token.MOVSW:
-                asm.Movsw();
-				break;
 			case Token.MOVSX:
 				ProcessMovx(0xBE);
 				break;
 			case Token.MOVZX:
 				ProcessMovx(0xB6);
-				break;
-			case Token.SCASB:
-                asm.Scasb();
-				break;
-			case Token.SCASW:
-                asm.Scasw();
 				break;
 			case Token.SETNZ:
 				ProcessSetCc(0x05);
@@ -900,21 +885,51 @@ namespace Reko.Assemblers.x86
                 asm.Stc();
 				break;
 			case Token.STOSB:
-                asm.ProcessStringInstruction(0xAA, PrimitiveType.Byte);
+                asm.Stosb();
 				break;
-			case Token.STOSW:
-                asm.ProcessStringInstruction(0xAA, PrimitiveType.Word16);
+            case Token.STOSW:
+                asm.Stosw();
 				break;
+            case Token.STOSD:
+                asm.Stosd();
+                break;
 			case Token.LODSB:
-                asm.ProcessStringInstruction(0xAC, PrimitiveType.Byte);
+                asm.Lodsb();
 				break;
 			case Token.LODSW:
                 asm.Lodsw();
 				break;
 			case Token.LODSD:
-                asm.ProcessStringInstruction(0xAC, PrimitiveType.Word32);
+                asm.Lodsd();
 				break;
-			case Token.MUL:
+            case Token.SCASB:
+                asm.Scasb();
+                break;
+            case Token.SCASW:
+                asm.Scasw();
+                break;
+            case Token.SCASD:
+                asm.Scasd();
+                break;
+            case Token.MOVSB:
+                asm.Movsb();
+                break;
+            case Token.MOVSW:
+                asm.Movsw();
+                break;
+            case Token.MOVSD:
+                asm.Movsd();
+                break;
+            case Token.CMPSB:
+                asm.Cmpsb();
+                break;
+            case Token.CMPSW:
+                asm.Cmpsw();
+                break;
+            case Token.CMPSD:
+                asm.Cmpsd();
+                break;
+            case Token.MUL:
 				ProcessMul();
 				break;
 			case Token.NEG:

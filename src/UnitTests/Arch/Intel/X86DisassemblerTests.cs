@@ -26,6 +26,7 @@ using Reko.Core.Machine;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
@@ -759,6 +760,73 @@ movzx	ax,byte ptr [bp+04]
         {
             AssertCode32("mov\tesi,[eax-0000FFF0]", 0x8B, 0xB0, 0x10, 0x00, 0xFF, 0xFF);
             AssertCode32("mov\tesi,[eax+FFFF0000]", 0x8B, 0xB0, 0x00, 0x00, 0xFF, 0xFF);
+        }
+
+        [Test]
+        public void Dis_x86_StringOps()
+        {
+            X86TextAssembler asm = new X86TextAssembler(sc, new X86ArchitectureFlat32());
+            var lr = asm.AssembleFragment(
+                Address.Ptr32(0x01001000),
+
+                "movsb\r\n" +
+                "movsw\r\n" +
+                "movsd\r\n" +
+
+                "scasb\r\n" +
+                "scasw\r\n" +
+                "scasd\r\n" +
+                
+                "cmpsb\r\n" +
+                "cmpsw\r\n" +
+                "cmpsd\r\n" +
+                
+                "lodsb\r\n" +
+                "lodsw\r\n" +
+                "lodsd\r\n" +
+                
+                "stosb\r\n" +
+                "stosw\r\n" +
+                "stosd\r\n");
+
+            MemoryArea img = lr.SegmentMap.Segments.Values.First().MemoryArea;
+            CreateDisassembler32(img);
+            var instructions = dasm.GetEnumerator();
+
+            List<X86Instruction> instr = new List<X86Instruction>();
+            for (int i = 0; i < 5 * 3; i++)
+            {
+                instr.Add(DisEnumerator_TakeNext(instructions));
+            }
+            Assert.AreEqual(Opcode.movsb, instr[0].code);
+            Assert.AreEqual(Opcode.movs, instr[1].code);
+            Assert.AreEqual("word16", instr[1].dataWidth.Name);
+            Assert.AreEqual(Opcode.movs, instr[2].code);
+            Assert.AreEqual("word32", instr[2].dataWidth.Name);
+
+            Assert.AreEqual(Opcode.scasb, instr[3].code);
+            Assert.AreEqual(Opcode.scas, instr[4].code);
+            Assert.AreEqual("word16", instr[4].dataWidth.Name);
+            Assert.AreEqual(Opcode.scas, instr[5].code);
+            Assert.AreEqual("word32", instr[5].dataWidth.Name);
+
+            Assert.AreEqual(Opcode.cmpsb, instr[6].code);
+            Assert.AreEqual(Opcode.cmps, instr[7].code);
+            Assert.AreEqual("word16", instr[7].dataWidth.Name);
+            Assert.AreEqual(Opcode.cmps, instr[8].code);
+            Assert.AreEqual("word32", instr[8].dataWidth.Name);
+
+            Assert.AreEqual(Opcode.lodsb, instr[9].code);
+            Assert.AreEqual(Opcode.lods, instr[10].code);
+            Assert.AreEqual("word16", instr[10].dataWidth.Name);
+            Assert.AreEqual(Opcode.lods, instr[11].code);
+            Assert.AreEqual("word32", instr[11].dataWidth.Name);
+
+            Assert.AreEqual(Opcode.stosb, instr[12].code);
+            Assert.AreEqual(Opcode.stos, instr[13].code);
+            Assert.AreEqual("word16", instr[13].dataWidth.Name);
+            Assert.AreEqual(Opcode.stos, instr[14].code);
+            Assert.AreEqual("word32", instr[14].dataWidth.Name);
         }
     }
 }
