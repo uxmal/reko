@@ -82,7 +82,7 @@ namespace Reko.Arch.X86
             {
                 get
                 {
-                    return ((this.val & 0x8) == 0x4);
+                    return ((this.val & 0x4) == 0x4);
                 }
                 set
                 {
@@ -100,7 +100,7 @@ namespace Reko.Arch.X86
             {
                 get
                 {
-                    return ((this.val & 0x8) == 0x1);
+                    return ((this.val & 0x1) == 0x1);
                 }
                 set
                 {
@@ -118,17 +118,17 @@ namespace Reko.Arch.X86
             {
                 get
                 {
-                    return ((this.val & 0x8) == 0x4);
+                    return ((this.val & 0x2) == 0x2);
                 }
                 set
                 {
                     if (value)
                     {
-                        this.val = (byte)(this.val | 0x4);
+                        this.val = (byte)(this.val | 0x2);
                     }
                     else
                     {
-                        this.val = (byte)(this.val & ~0x4);
+                        this.val = (byte)(this.val & ~0x2);
                     }
                 }
             }
