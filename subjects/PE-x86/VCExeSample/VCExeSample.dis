@@ -178,18 +178,13 @@ void test5()
 // Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
 // Preserved: ebp esp
 test5_entry:
-	def Mem0
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp
 // LocalsOut: fp(32)
 
 l004010F0:
-	rLoc1_9 = Mem0[0x004020EC:real32]
-	dwLoc08_10 = (real32) rLoc1_9
-	eax_13 = Mem0[0x00403018:word32]
-	dwLoc10_15 = eax_13
-	eax(dwLoc10_15, 0x000003E7, dwLoc08_10)
+	Mem0[Mem0[Mem0[0x00403018:word32]:word32] + 0x00000004:word32](Mem0[0x00403018:word32], 0x000003E7, (real32) Mem0[0x004020EC:real32])
 	return
 // DataOut:
 // DataOut (flags): 

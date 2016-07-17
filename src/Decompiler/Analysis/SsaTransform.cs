@@ -672,7 +672,8 @@ namespace Reko.Analysis
 
             public override Expression VisitApplication(Application appl)
 			{
-				for (int i = 0; i < appl.Arguments.Length; ++i)
+                appl.Procedure = appl.Procedure.Accept(this);
+                for (int i = 0; i < appl.Arguments.Length; ++i)
 				{
                     UnaryExpression unary = appl.Arguments[i] as UnaryExpression;
                     if (unary != null && unary.Operator == Operator.AddrOf)

@@ -132,14 +132,15 @@ namespace Reko.Core.Code
             return addr;
         }
 
-		public virtual Expression VisitApplication(Application appl)
-		{
-			for (int i = 0; i < appl.Arguments.Length; ++i)
-			{
-				appl.Arguments[i] = appl.Arguments[i].Accept(this);
-			}
-			return appl;
-		}
+        public virtual Expression VisitApplication(Application appl)
+        {
+            appl.Procedure = appl.Procedure.Accept(this);
+            for (int i = 0; i < appl.Arguments.Length; ++i)
+            {
+                appl.Arguments[i] = appl.Arguments[i].Accept(this);
+            }
+            return appl;
+        }
 
 		public virtual Expression VisitArrayAccess(ArrayAccess acc)
 		{

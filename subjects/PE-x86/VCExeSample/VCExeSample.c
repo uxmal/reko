@@ -55,15 +55,7 @@ void test4()
 
 void test5()
 {
-test5_entry:
-	def Mem0
-	rLoc1_9 = globals->t4020EC
-	dwLoc08_10 = (real32) rLoc1_9
-	eax_13 = (cdecl_class_ptr) globals->gbl_c
-	dwLoc10_15 = eax_13
-	eax(dwLoc10_15, 999, dwLoc08_10)
-	return
-l004010F0:
-test5_exit:
+	(**globals->gbl_c)(globals->gbl_c, 999, (real32) globals->r4020EC);
+	return;
 }
 
