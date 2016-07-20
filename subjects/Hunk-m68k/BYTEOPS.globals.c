@@ -8,14 +8,7 @@
 Eq_4331 g_a0005[];
 word32 g_a0008[];
 ui32 g_a0010[];
-struct Eq_4 g_t1DB8 = 
-	{
-		0x3435,
-	};
-struct Eq_4 g_t1DC8 = 
-	{
-		0x242F,
-	};
+byte g_b1DAC = 0x25;
 word32 g_dw2B88 = 0x00000000;
 struct Eq_3202 * g_ptr2B8C = &g_t4000;
 word32 g_dw2BB8 = 0x06060606;
