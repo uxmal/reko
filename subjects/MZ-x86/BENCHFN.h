@@ -738,7 +738,7 @@ T_128: (in fp - 0x0056 : word16)
 T_129: (in si_105 : (memptr (ptr Eq_64) byte))
   Class: Eq_129
   DataType: (memptr (ptr Eq_64) byte)
-  OrigDataType: (memptr T_113 (struct 0001 (0 (union (byte u0) (T_136 u1) (T_156 u2) (T_249 u3)) u0000)))
+  OrigDataType: (memptr T_113 (struct 0001 (0 T_131 t0000)))
 T_130: (in wArg04 : word16)
   Class: Eq_129
   DataType: (memptr (ptr Eq_64) byte)
@@ -786,7 +786,7 @@ T_140: (in 0x0001 : word16)
 T_141: (in si_105 + 0x0001 : word16)
   Class: Eq_129
   DataType: (memptr (ptr Eq_64) byte)
-  OrigDataType: (memptr T_113 (struct 0001 (0 (union (byte u0) (T_136 u1) (T_156 u2) (T_249 u3)) u0000)))
+  OrigDataType: (memptr T_113 (struct 0001 (0 T_136 t0000)))
 T_142: (in 0x25 : byte)
   Class: Eq_131
   DataType: byte
@@ -842,7 +842,7 @@ T_154: (in 0x0000 : word16)
 T_155: (in si_105 + 0x0000 : word16)
   Class: Eq_155
   DataType: (memptr (ptr Eq_64) byte)
-  OrigDataType: (memptr T_113 (struct 0001 (0 (union (byte u0) (T_136 u1) (T_156 u2) (T_249 u3)) u0000)))
+  OrigDataType: (memptr T_113 (struct 0001 (0 T_136 t0000)))
 T_156: (in Mem0[ds:si_105 + 0x0000:byte] : byte)
   Class: Eq_131
   DataType: byte
@@ -854,7 +854,7 @@ T_157: (in 0x0001 : word16)
 T_158: (in si_105 + 0x0001 : word16)
   Class: Eq_129
   DataType: (memptr (ptr Eq_64) byte)
-  OrigDataType: (memptr T_113 (struct 0001 (0 (union (byte u0) (T_136 u1) (T_156 u2) (T_249 u3)) u0000)))
+  OrigDataType: (memptr T_113 (struct 0001 (0 T_131 t0000)))
 T_159: (in DPB(ax, al_40, 0) : word16)
   Class: Eq_138
   DataType: word16
@@ -1106,13 +1106,13 @@ T_220: (in bx_182 << 0x0001 : word16)
 T_221: (in si_154 : (memptr (ptr Eq_64) byte))
   Class: Eq_129
   DataType: (memptr (ptr Eq_64) byte)
-  OrigDataType: (memptr T_113 (struct 0001 (0 (union (byte u0) (T_136 u1) (T_156 u2) (T_237 u3)) u0000)))
+  OrigDataType: (memptr T_113 (struct 0001 (0 T_131 t0000)))
 T_222: (in al_156 : byte)
-  Class: Eq_222
+  Class: Eq_131
   DataType: byte
   OrigDataType: byte
 T_223: (in 0x25 : byte)
-  Class: Eq_222
+  Class: Eq_131
   DataType: byte
   OrigDataType: byte
 T_224: (in fn0800_1099 : ptr32)
@@ -1124,7 +1124,7 @@ T_225: (in signature of fn0800_1099 : void)
   DataType: (ptr Eq_224)
   OrigDataType: 
 T_226: (in al : byte)
-  Class: Eq_222
+  Class: Eq_131
   DataType: byte
   OrigDataType: byte
 T_227: (in bp : Eq_164)
@@ -1156,7 +1156,7 @@ T_233: (in fn0800_1099(al_156, fp - 0x0002, di_107, ds, out di_107) : word16)
   DataType: word16
   OrigDataType: word16
 T_234: (in al_167 : byte)
-  Class: Eq_222
+  Class: Eq_131
   DataType: byte
   OrigDataType: byte
 T_235: (in 0x0000 : word16)
@@ -1166,9 +1166,9 @@ T_235: (in 0x0000 : word16)
 T_236: (in si_154 + 0x0000 : word16)
   Class: Eq_236
   DataType: (memptr (ptr Eq_64) byte)
-  OrigDataType: (memptr T_113 (struct 0001 (0 (union (byte u0) (T_136 u1) (T_156 u2) (T_237 u3)) u0000)))
+  OrigDataType: (memptr T_113 (struct 0001 (0 T_131 t0000)))
 T_237: (in Mem0[ds:si_154 + 0x0000:byte] : byte)
-  Class: Eq_222
+  Class: Eq_131
   DataType: byte
   OrigDataType: byte
 T_238: (in 0xFFFE : word16)
@@ -1186,9 +1186,9 @@ T_240: (in 0x0001 : word16)
 T_241: (in si_154 + 0x0001 : word16)
   Class: Eq_129
   DataType: (memptr (ptr Eq_64) byte)
-  OrigDataType: (memptr T_113 (struct 0001 (0 (union (byte u0) (T_136 u1) (T_156 u2) (T_237 u3)) u0000)))
+  OrigDataType: (memptr T_113 (struct 0001 (0 T_131 t0000)))
 T_242: (in 0x00 : byte)
-  Class: Eq_222
+  Class: Eq_131
   DataType: byte
   OrigDataType: byte
 T_243: (in al_167 != 0x00 : bool)
@@ -1214,9 +1214,9 @@ T_247: (in 0x0000 : word16)
 T_248: (in si_105 + 0x0000 : word16)
   Class: Eq_248
   DataType: (memptr (ptr Eq_64) byte)
-  OrigDataType: (memptr T_113 (struct 0001 (0 (union (byte u0) (T_136 u1) (T_156 u2) (T_249 u3)) u0000)))
+  OrigDataType: (memptr T_113 (struct 0001 (0 T_131 t0000)))
 T_249: (in Mem0[ds:si_105 + 0x0000:byte] : byte)
-  Class: Eq_249
+  Class: Eq_131
   DataType: byte
   OrigDataType: byte
 T_250: (in DPB(ax_139, Mem0[ds:si_105 + 0x0000:byte], 0) : word16)
@@ -1230,7 +1230,7 @@ T_251: (in 0x0001 : word16)
 T_252: (in si_105 + 0x0001 : word16)
   Class: Eq_129
   DataType: (memptr (ptr Eq_64) byte)
-  OrigDataType: (memptr T_113 (struct 0001 (0 (union (byte u0) (T_136 u1) (T_156 u2) (T_249 u3)) u0000)))
+  OrigDataType: (memptr T_113 (struct 0001 (0 T_131 t0000)))
 T_253: (in bx : word16)
   Class: Eq_119
   DataType: word16
@@ -1244,7 +1244,7 @@ T_255: (in di + 0x0000 : word16)
   DataType: word16
   OrigDataType: word16
 T_256: (in Mem3[ds:di + 0x0000:byte] : byte)
-  Class: Eq_222
+  Class: Eq_131
   DataType: byte
   OrigDataType: byte
 T_257: (in v9_9 : ci8)

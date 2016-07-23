@@ -2211,18 +2211,18 @@ void add_to_request(Eq_2574 * r4, word32 r5, word32 r6, int32 r7, word32 dwArg00
 
 void get_a_line(word32 r4, word32 r5, int32 * r6, word32 dwArg00, word32 dwArg04, word32 dwArg08)
 {
-	union Eq_2671 * dwArg00_103 = r4 + 0x01;
-	union Eq_2674 * dwArg04_101 = r5 + 0x01;
+	byte * dwArg00_103 = r4 + 0x01;
+	int8 * dwArg04_101 = r5 + 0x01;
 	while (*r6 > 0x00)
 	{
 		if ((word32) *dwArg04_101 == 0x0A)
 			break;
 		if ((word32) *dwArg04_101 == 0x0D)
 			break;
-		*dwArg00_103 = (Eq_2671 *) (byte) (word32) *dwArg04_101;
+		*dwArg00_103 = (byte) (word32) *dwArg04_101;
 		*r6 = *r6 + -0x01;
-		dwArg04_101 = *dwArg04_101;
-		dwArg00_103 = *dwArg00_103;
+		dwArg04_101 = (int8 *) dwArg04_101[0x01];
+		dwArg00_103 = (byte *) dwArg00_103[0x01];
 	}
 	if (*r6 <= 0x00)
 	{
@@ -2230,7 +2230,7 @@ l00402D84:
 		if (*r6 <= 0x00)
 		{
 l00402E20:
-			*dwArg00_103 = (Eq_2671 *) 0x00;
+			*dwArg00_103 = 0x00;
 			return;
 		}
 		else
@@ -2238,9 +2238,9 @@ l00402E20:
 			if ((word32) *dwArg04_101 != 0x0A)
 				if ((word32) *dwArg04_101 != 0x0D)
 					goto l00402E20;
-			*dwArg00_103 = (Eq_2671 *) (byte) (word32) *dwArg04_101;
+			*dwArg00_103 = (byte) (word32) *dwArg04_101;
 			*r6 = *r6 + -0x01;
-			dwArg00_103 = *dwArg00_103;
+			dwArg00_103 = (byte *) dwArg00_103[0x01];
 			goto l00402E20;
 		}
 	}
@@ -2249,10 +2249,10 @@ l00402E20:
 		if ((word32) *dwArg04_101 != 0x0A)
 			if ((word32) *dwArg04_101 != 0x0D)
 				goto l00402D84;
-		*dwArg00_103 = (Eq_2671 *) (byte) (word32) *dwArg04_101;
+		*dwArg00_103 = (byte) (word32) *dwArg04_101;
 		*r6 = *r6 + -0x01;
-		dwArg04_101 = *dwArg04_101;
-		dwArg00_103 = *dwArg00_103;
+		dwArg04_101 = (int8 *) *dwArg04_101;
+		dwArg00_103 = (byte *) *dwArg00_103;
 		goto l00402D84;
 	}
 }
@@ -2463,8 +2463,8 @@ void client_check_reply_http(Eq_3044 * r4, word32 dwArg00)
 	int32 dwLoc14_106 = r4->dw178C;
 	while (dwLoc14_106 > 0x00)
 	{
-		if ((word32) dwLoc18_103->t0000 != 0x0A)
-			if ((word32) dwLoc18_103->t0000 != 0x0D)
+		if ((word32) dwLoc18_103->b0000 != 0x0A)
+			if ((word32) dwLoc18_103->b0000 != 0x0D)
 				break;
 		dwLoc18_103 = (Eq_3046 *) dwLoc18_103[0x01];
 		dwLoc14_106 = dwLoc14_106 + -0x01;
@@ -2497,36 +2497,36 @@ void client_check_reply_http(Eq_3044 * r4, word32 dwArg00)
 				}
 				while (dwLoc14_106 > 0x00)
 				{
-					if ((word32) dwLoc18_103->t0000 == 0x0A)
+					if ((word32) dwLoc18_103->b0000 == 0x0A)
 						break;
-					if ((word32) dwLoc18_103->t0000 == 0x0D)
+					if ((word32) dwLoc18_103->b0000 == 0x0D)
 						break;
 					dwLoc14_106 = dwLoc14_106 + -0x01;
 					dwLoc18_103 = (Eq_3046 *) dwLoc18_103[0x01];
 				}
 				if ((word32) (dwLoc14_106 < 0x02) != 0x00)
 					continue;
-				if ((word32) dwLoc18_103->t0000 != 0x0A)
-					if ((word32) dwLoc18_103->t0000 != 0x0D)
+				if ((word32) dwLoc18_103->b0000 != 0x0A)
+					if ((word32) dwLoc18_103->b0000 != 0x0D)
 						continue;
 				if ((word32) dwLoc18_103[0x01] != 0x0A)
 					if ((word32) dwLoc18_103[0x01] != 0x0D)
 						continue;
-				union Eq_3148 * r2_99 = dwLoc18_103[0x01];
+				struct Eq_3148 * r2_99 = dwLoc18_103[0x01];
 				int32 r2_105 = dwLoc14_106 + -0x02;
-				dwLoc18_103 = (Eq_3046 *) *r2_99;
+				dwLoc18_103 = (Eq_3046 *) r2_99->b0001;
 				dwLoc14_106 = r2_105;
 				if ((word32) (r2_105 < 0x02) != 0x00)
 					continue;
-				if ((word32) *r2_99 != 0x0A)
-					if ((word32) *r2_99 != 0x0D)
+				if ((word32) r2_99->b0001 != 0x0A)
+					if ((word32) r2_99->b0001 != 0x0D)
 						continue;
-				if ((word32) *r2_99 == 0x0A)
+				if ((word32) r2_99->b0002 == 0x0A)
 					break;
-			} while ((word32) *r2_99 == 0x0D);
+			} while ((word32) r2_99->b0002 == 0x0D);
 			if (r2_105 > ~0x01)
 			{
-				r4->ptr1788 = (Eq_3046 *) *r2_99;
+				r4->ptr1788 = (Eq_3046 *) r2_99->b0002[0x01];
 				r4->dw178C = r2_105 + -0x02;
 			}
 			else
