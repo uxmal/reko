@@ -396,7 +396,7 @@ Eq_1012: (segment "Eq_1012" (0 ptr32 ptr0000))
 	T_1012 (in fs : selector)
 Eq_1022: (segment "Eq_1022" (0 Eq_176 t0000))
 	T_1022 (in fs : selector)
-Eq_1023: (union "Eq_1023" (ptr32 u1) ((memptr (ptr Eq_1022) Eq_176) u0))
+Eq_1023: (union "Eq_1023" (ptr32 u0) ((memptr (ptr Eq_1022) Eq_176) u1))
 	T_1023 (in 0x00000000 : ptr32)
 Eq_1035: (fn void (Eq_1037))
 	T_1035 (in GetSystemTimeAsFileTime : ptr32)
@@ -4511,7 +4511,7 @@ T_1022: (in fs : selector)
 T_1023: (in 0x00000000 : ptr32)
   Class: Eq_1023
   DataType: Eq_1023
-  OrigDataType: (union (ptr32 u1) ((memptr T_1022 (struct (0 Eq_176 t0000))) u0))
+  OrigDataType: (union (ptr32 u0) ((memptr T_1022 (struct (0 Eq_176 t0000))) u1))
 T_1024: (in Mem5[fs:0x00000000:word32] : word32)
   Class: Eq_176
   DataType: Eq_176
@@ -5094,8 +5094,8 @@ typedef struct Eq_1022 {
 } Eq_1022;
 
 typedef union Eq_1023 {
-	ptr32 u1;
-	union Eq_176 Eq_1022::* u0;
+	ptr32 u0;
+	union Eq_176 Eq_1022::* u1;
 } Eq_1023;
 
 typedef void (Eq_1035)(LPFILETIME);

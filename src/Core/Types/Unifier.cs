@@ -315,11 +315,15 @@ namespace Reko.Core.Types
 			}
 			if (mpA != null)
 			{
-				return UnifyMemberPointer(mpA, b);
+				var dt = UnifyMemberPointer(mpA, b);
+                if (dt != null)
+                    return dt;
 			}
 			if (mpB != null)
 			{
-				return UnifyMemberPointer(mpB, a);
+				var dt = UnifyMemberPointer(mpB, a);
+                if (dt != null)
+                    return dt;
 			}
 
 			FunctionType funA = a as FunctionType;
@@ -603,7 +607,7 @@ namespace Reko.Core.Types
 					return mpA.Clone();
 				}
 			}
-			return MakeUnion(mpA, b);
+			return null;
 		}
 
 		public virtual DataType UnifyTypeVariables(TypeVariable tA, TypeVariable tB)
