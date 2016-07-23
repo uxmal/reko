@@ -40,17 +40,17 @@ namespace Reko.Core.Types
 	public enum Domain
 	{
 		None = 0,
-		Boolean = 2,                // f
-		Character = 4,              // c
-		SignedInt = 8,              // i 
-		UnsignedInt = 16,           // u
+		Boolean = 1,                // f
+		Character = 2,              // c
+		SignedInt = 4,              // i 
+		UnsignedInt = 8,            // u
         Integer = SignedInt|UnsignedInt,
-        Bcd = 32,                   // b - Binary coded decimal; a decimal digit stored in each nybble of a byte.
-        Real = 64,                  // r
-		Pointer = 128,              // p
-        Offset = 256,               // n
-		Selector = 512,             // S
-        SegPointer = 1024,          // P - Segmented pointer (x86-style)
+        Bcd = 16,                   // b - Binary coded decimal; a decimal digit stored in each nybble of a byte.
+        Real = 32,                  // r
+		Pointer = 64,               // p
+        Offset = 128,               // n - "near pointer" (x86)
+		Selector = 256,             // S
+        SegPointer = 512,           // P - Segmented pointer (x86-style)
 
         Any = Boolean|Character|SignedInt|UnsignedInt|Bcd|Real|Pointer|Offset|Selector|SegPointer
 	}
