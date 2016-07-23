@@ -323,6 +323,7 @@ namespace Reko.Core.Types
 			Ptr16 = Create(Domain.Pointer, 2);
 			SegmentSelector = Create(Domain.Selector, 2);
             WChar = Create(Domain.Character, 2);
+            Offset16 = Create(Domain.Offset, 2);
 
 			Word32 = CreateWord(4);
 			Int32 = Create(Domain.SignedInt, 4);
@@ -359,6 +360,7 @@ namespace Reko.Core.Types
 		public static PrimitiveType Int16 { get; private set; }
 		public static PrimitiveType UInt16 { get; private set; }
         public static PrimitiveType Ptr16 { get; private set; }
+        public static PrimitiveType Offset16 { get; private set; }
 
 		public static PrimitiveType SegmentSelector  {get; private set; }
 
