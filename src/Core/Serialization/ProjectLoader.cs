@@ -343,14 +343,6 @@ namespace Reko.Core.Serialization
                     .Where(kv => kv.Key != null)
                    .ToSortedList(kv => kv.Key, kv => kv.Value);
             }
-            var tlDeser = CreateTypeLibraryDeserializer();
-            foreach (var kv in user.Globals)
-            {
-                var dt = kv.Value.DataType.Accept(tlDeser);
-                //$BUGBUG: what about x86 segmented binaries?
-                int offset = (int)kv.Key.ToLinear();
-                program.GlobalFields.Fields.Add(offset, dt, kv.Value.Name);
-            }
           
             if (sUser.Heuristics != null)
             {
@@ -450,14 +442,6 @@ namespace Reko.Core.Serialization
                     })
                     .Where(kv => kv.Key != null)
                    .ToSortedList(kv => kv.Key, kv => kv.Value);
-            }
-            var tlDeser = CreateTypeLibraryDeserializer();
-            foreach (var kv in user.Globals)
-            {
-                var dt = kv.Value.DataType.Accept(tlDeser);
-                //$BUGBUG: what about x86 segmented binaries?
-                int offset = (int)kv.Key.ToLinear();
-                program.GlobalFields.Fields.Add(offset, dt, kv.Value.Name);
             }
 
             if (sUser.Heuristics != null)
