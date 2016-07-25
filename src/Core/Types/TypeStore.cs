@@ -249,5 +249,19 @@ namespace Reko.Core.Types
             expr.TypeVariable.DataType = dt;
             expr.TypeVariable.OriginalDataType = dt;
         }
+
+        public void Clear()
+        {
+            foreach(var e in tvSources.Values)
+            {
+                e.TypeVariable = null;
+                ProcedureConstant pc = e as ProcedureConstant;
+                if (pc != null && pc.Procedure.Signature != null)
+                    pc.Procedure.Signature.TypeVariable = null;
+            }
+            TypeVariables.Clear();
+            usedClasses.Clear();
+            tvSources.Clear();
+        }
     }
 }
