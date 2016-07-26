@@ -147,8 +147,11 @@ namespace Reko.Typing
             }
             else
                 throw NYI(binExp);
-            binExp.TypeVariable.DataType = dt;
-            binExp.TypeVariable.OriginalDataType = dt;
+            if (binExp.TypeVariable != null)
+            {
+                binExp.TypeVariable.DataType = dt;
+                binExp.TypeVariable.OriginalDataType = dt;
+            }
             return dt;
         }
 
@@ -237,11 +240,10 @@ namespace Reko.Typing
 
         public DataType VisitConstant(Constant c)
         {
-            RecordDataType(GlobalType(c) ?? c.DataType, c);
-            return c.TypeVariable.DataType;
+            return RecordDataType(GlobalType(c) ?? c.DataType, c);
         }
 
-        public DataType GlobalType(Constant c)
+        private DataType GlobalType(Constant c)
         {
             var pt = c.DataType as PrimitiveType;
             if (pt == null || (pt.Domain & Domain.Pointer) == 0)
@@ -254,6 +256,8 @@ namespace Reko.Typing
         {
             var dtSource = d.Source.Accept(this);
             var dtBits = d.InsertedBits.Accept(this);
+            if (d.TypeVariable == null)
+                return dtSource;
             if (d.TypeVariable.DataType == null)
             {
                 d.TypeVariable.DataType = dtSource;
@@ -274,8 +278,10 @@ namespace Reko.Typing
             throw new NotImplementedException();
         }
 
-        public DataType VisitIdentifier(Identifier id)
+        public virtual DataType VisitIdentifier(Identifier id)
         {
+            if (id.TypeVariable == null)
+                return id.DataType;
             if (id.TypeVariable.DataType == null)
             {
                 id.TypeVariable.DataType = id.DataType;
@@ -296,7 +302,7 @@ namespace Reko.Typing
 
         public DataType VisitMemoryAccessCommon(Expression access, Expression ea)
         {
-            var dtEa = ea.Accept(this);
+            var dtEa = MemoryAccessType(ea.Accept(this));
             var ptEa = dtEa.ResolveAs<Pointer>();
             DataType dt;
             if (ptEa != null)
@@ -304,6 +310,12 @@ namespace Reko.Typing
             else 
                 dt = access.DataType;
             return RecordDataType(dt, access);
+        }
+
+        private DataType MemoryAccessType(DataType dt)
+        {
+            var c = Constant.Zero(PrimitiveType.Int32);
+            return FieldType(dt, c.DataType, c) ?? dt;
         }
 
         public DataType VisitMkSequence(MkSequence seq)
@@ -357,6 +369,8 @@ namespace Reko.Typing
 
         private DataType RecordDataType(DataType dt, Expression exp)
         {
+            if (exp.TypeVariable == null)
+                return dt;
             exp.TypeVariable.DataType = unifier.Unify(exp.TypeVariable.DataType, dt);
             exp.TypeVariable.OriginalDataType = unifier.Unify(exp.TypeVariable.OriginalDataType, dt);
             return exp.TypeVariable.DataType;
