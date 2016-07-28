@@ -24,6 +24,7 @@ using System.Linq;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Typing;
 
@@ -39,14 +40,19 @@ namespace Reko.Analysis
         private Program program;
         private Procedure proc;
         private SsaIdentifierTransformer ssaIdTransformer;
+        private DecompilerEventListener eventListener;
 
-        public IndirectCallRewriter(Program program, SsaState ssa) :
+        public IndirectCallRewriter(
+            Program program,
+            SsaState ssa,
+            DecompilerEventListener eventListener) :
             base(program, new TypeStore(), new TypeFactory())
         {
             this.program = program;
             this.proc = ssa.Procedure;
             this.ssa = ssa;
             this.ssaIdTransformer = new SsaIdentifierTransformer(ssa);
+            this.eventListener = eventListener;
         }
 
         public void Rewrite()
@@ -62,10 +68,11 @@ namespace Reko.Analysis
                     }
                     catch (Exception ex)
                     {
-                        Debug.Print(
-                            "Exception {0}" + Environment.NewLine +
-                            "when rewriting indirect call statement: {1}",
-                            ex, stm);
+                        eventListener.Error(
+                            eventListener.CreateProcedureNavigator(program, proc),
+                            ex,
+                            "Indirect call rewriter: an error occurred while processing the statement {0}.",
+                            stm);
                     }
                 }
             }
