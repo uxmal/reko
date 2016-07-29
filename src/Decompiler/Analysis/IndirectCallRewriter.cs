@@ -34,7 +34,7 @@ namespace Reko.Analysis
     /// Try to rewrite indirect call statements to Applications using
     /// user-defined data (e.g. global variables, parameters of procedures).
     /// </summary>
-    class IndirectCallRewriter : ExpressionTypeAscender
+    public class IndirectCallRewriter : ExpressionTypeAscender
     {
         private SsaState ssa;
         private Program program;
