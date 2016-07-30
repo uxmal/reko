@@ -26,30 +26,13 @@ void test2(word32 dwArg04)
 
 void indirect_call_test3(cdecl_class * c)
 {
-	cdecl_class_vtbl * edx_15 = c->vtbl;
-	void (* eax_16)(cdecl_class *, int32) = edx_15->method04;
-	word32 esp_17;
-	word32 ebp_18;
-	word32 eax_19;
-	word32 ecx_20;
-	word32 edx_21;
-	byte SCZO_22;
-	eax_16();
+	c->vtbl->method04(c, 1000);
 	return;
 }
 
 void test4()
 {
-	Eq_60 ecx_10 = globals->gbl_c;
-	cdecl_class_vtbl * edx_11 = ecx_10->vtbl;
-	void (* eax_12)(cdecl_class *) = edx_11->method00;
-	word32 esp_13;
-	word32 ebp_14;
-	word32 eax_15;
-	word32 ecx_16;
-	word32 edx_17;
-	byte SCZO_18;
-	eax_12();
+	(**globals->gbl_c)(globals->gbl_c);
 	return;
 }
 
