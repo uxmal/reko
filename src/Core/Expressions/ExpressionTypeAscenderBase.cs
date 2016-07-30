@@ -260,7 +260,7 @@ namespace Reko.Core.Expressions
             throw new NotImplementedException();
         }
 
-        public virtual DataType VisitIdentifier(Identifier id)
+        public DataType VisitIdentifier(Identifier id)
         {
             return EnsureDataType(id.DataType, id);
         }

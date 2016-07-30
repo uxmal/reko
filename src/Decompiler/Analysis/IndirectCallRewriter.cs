@@ -29,26 +29,29 @@ using Reko.Core.Types;
 namespace Reko.Analysis
 {
     /// <summary>
-    /// Try to rewrite indirect call statements to Applications using
+    /// Try to rewrite indirect call statements to applications using
     /// user-defined data (e.g. global variables, parameters of procedures).
     /// </summary>
-    public class IndirectCallRewriter : ExpressionTypeAscenderBase
+    public class IndirectCallRewriter
     {
         private SsaState ssa;
         private Program program;
         private Procedure proc;
+        private IndirectCallTypeAscender asc;
+        private IndirectCallExpander expander;
         private SsaIdentifierTransformer ssaIdTransformer;
         private DecompilerEventListener eventListener;
 
         public IndirectCallRewriter(
             Program program,
             SsaState ssa,
-            DecompilerEventListener eventListener) :
-            base(program, new TypeFactory())
+            DecompilerEventListener eventListener)
         {
             this.program = program;
             this.proc = ssa.Procedure;
             this.ssa = ssa;
+            this.asc = new IndirectCallTypeAscender(program);
+            this.expander = new IndirectCallExpander(ssa);
             this.ssaIdTransformer = new SsaIdentifierTransformer(ssa);
             this.eventListener = eventListener;
         }
@@ -78,7 +81,8 @@ namespace Reko.Analysis
 
         private void RewriteCall(Statement stm, CallInstruction call)
         {
-            var pt = call.Callee.Accept(this) as Pointer;
+            var e = expander.Expand(call.Callee);
+            var pt = e.Accept(asc) as Pointer;
             if (pt == null)
                 return;
             var ft = pt.Pointee as FunctionType;
@@ -93,16 +97,17 @@ namespace Reko.Analysis
             stm.Instruction = ab.CreateInstruction();
             ssaIdTransformer.Transform(stm, call);
         }
+    }
 
-        public override DataType VisitIdentifier(Identifier id)
+    /// <summary>
+    /// Pulling type information from the leaves of expression trees to their
+    /// roots without store it.
+    /// </summary>
+    class IndirectCallTypeAscender : ExpressionTypeAscenderBase
+    {
+        public IndirectCallTypeAscender(Program program) :
+            base (program, new TypeFactory())
         {
-            SsaIdentifier sid;
-            if (ssa.Identifiers.TryGetValue(id, out sid))
-            {
-                if (sid.DefExpression != null)
-                    return sid.DefExpression.Accept(this);
-            }
-            return base.VisitIdentifier(id);
         }
 
         protected override DataType RecordDataType(DataType dt, Expression exp)
@@ -117,9 +122,44 @@ namespace Reko.Analysis
     }
 
     /// <summary>
+    /// Replace ssa identifiers with expressions that defines them. Also
+    /// replace phi functions.
+    /// </summary>
+    class IndirectCallExpander : InstructionTransformer
+    {
+        private SsaState ssa;
+
+        public IndirectCallExpander(SsaState ssa)
+        {
+            this.ssa = ssa;
+        }
+
+        public Expression Expand(Expression e)
+        {
+            return e.CloneExpression().Accept(this);
+        }
+
+        public override Expression VisitIdentifier(Identifier id)
+        {
+            SsaIdentifier sid;
+            if (ssa.Identifiers.TryGetValue(id, out sid))
+            {
+                if (sid.DefExpression != null)
+                    return Expand(sid.DefExpression);
+            }
+            return id;
+        }
+
+        public override Expression VisitPhiFunction(PhiFunction phi)
+        {
+            return Constant.Invalid;
+        }
+    }
+
+    /// <summary>
     /// Replace application parameters with ssa identifiers
     /// </summary>
-    public class SsaIdentifierTransformer : InstructionTransformer
+    class SsaIdentifierTransformer : InstructionTransformer
     {
         private SsaState ssa;
         private Frame frame;
