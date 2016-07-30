@@ -19,14 +19,12 @@
 #endregion
 
 using System;
-using System.Diagnostics;
 using System.Linq;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Services;
 using Reko.Core.Types;
-using Reko.Typing;
 
 namespace Reko.Analysis
 {
@@ -34,7 +32,7 @@ namespace Reko.Analysis
     /// Try to rewrite indirect call statements to Applications using
     /// user-defined data (e.g. global variables, parameters of procedures).
     /// </summary>
-    public class IndirectCallRewriter : ExpressionTypeAscender
+    public class IndirectCallRewriter : ExpressionTypeAscenderBase
     {
         private SsaState ssa;
         private Program program;
@@ -46,7 +44,7 @@ namespace Reko.Analysis
             Program program,
             SsaState ssa,
             DecompilerEventListener eventListener) :
-            base(program, new TypeStore(), new TypeFactory())
+            base(program, new TypeFactory())
         {
             this.program = program;
             this.proc = ssa.Procedure;
@@ -105,6 +103,16 @@ namespace Reko.Analysis
                     return sid.DefExpression.Accept(this);
             }
             return base.VisitIdentifier(id);
+        }
+
+        protected override DataType RecordDataType(DataType dt, Expression exp)
+        {
+            return dt;
+        }
+
+        protected override DataType EnsureDataType(DataType dt, Expression exp)
+        {
+            return dt;
         }
     }
 
