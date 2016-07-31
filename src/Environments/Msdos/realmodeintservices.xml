@@ -424,8 +424,8 @@
 	  <arg>
       <ptr><prim domain="Character" size="1" /></ptr>
       <seq>
-		    <reg>ds</reg>
-		    <reg>dx</reg>
+		<reg>ds</reg>
+		<reg>dx</reg>
       </seq>  
 	  </arg>
 	</signature>
@@ -1069,6 +1069,21 @@
       <arg name="errorCode" out="true"><reg>ax</reg></arg>
     </signature>
   </service>
+  <service name="msdos_get_memory_allocation_strategy">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">58</regvalue>
+	  <regvalue reg="al">00</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<flag>C</flag>
+	  </return>
+	  <arg out="true">
+		<reg>ax</reg>
+	  </arg>
+	</signature>
+  </service>
   <service name="msdos_set_memory_allocation_strategy">
 	<syscallinfo>
 	  <vector>21</vector>
@@ -1081,6 +1096,39 @@
 	  </return>
 	  <arg>
 		<reg>bl</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_get_UMB_link_state">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">58</regvalue>
+	  <regvalue reg="al">02</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<flag>C</flag>
+	  </return>
+	  <arg out="true">
+		<reg>al</reg>
+	  </arg>
+	</signature>
+  </service>
+  <service name="msdos_set_UMB_link_state">
+	<syscallinfo>
+	  <vector>21</vector>
+	  <regvalue reg="ah">58</regvalue>
+	  <regvalue reg="al">03</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<flag>C</flag>
+	  </return>
+	  <arg>
+		<reg>bx</reg>
+	  </arg>
+	  <arg out="true">
+		<reg>ax</reg>
 	  </arg>
 	</signature>
   </service>
@@ -1176,6 +1224,24 @@
 	  <arg out="true">
 		<reg>bx</reg>
 	  </arg>
+	</signature>
+  </service>
+  <service name="msmouse_show_cursor">
+	<syscallinfo>
+	  <vector>33</vector>
+	  <regvalue reg="ah">00</regvalue>
+	  <regvalue reg="al">01</regvalue>
+	</syscallinfo>
+	<signature>
+	</signature>
+  </service>
+  <service name="msmouse_hide_cursor">
+	<syscallinfo>
+	  <vector>33</vector>
+	  <regvalue reg="ah">00</regvalue>
+	  <regvalue reg="al">02</regvalue>
+	</syscallinfo>
+	<signature>
 	</signature>
   </service>
   <service name="msmouse_position_mouse_cursor">
@@ -1359,6 +1425,17 @@
 	  <arg>
 		<reg>dx</reg>
 	  </arg>
+	</signature>
+  </service>
+  <service name="ems_get_emm_version">
+	<syscallinfo>
+	  <vector>67</vector>
+	  <regvalue reg="ah">46</regvalue>
+	</syscallinfo>
+	<signature>
+	  <return>
+		<reg>ax</reg>
+	  </return>
 	</signature>
   </service>
 </library>
