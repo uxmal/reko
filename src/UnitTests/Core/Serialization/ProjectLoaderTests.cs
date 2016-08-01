@@ -330,8 +330,8 @@ namespace Reko.UnitTests.Core.Serialization
             mr.ReplayAll();
 
             var prld = new ProjectLoader(sc, ldr);
-            var project = prld.LoadProject(@"c:/users/bob/projects/foo.project", sProject);
-            Assert.AreEqual(@"c:\users\bob\projects\foo.exe", project.Programs[0].Filename);
+            var project = prld.LoadProject(OsPath.Absolute("users", "bob", "projects", "foo.project"), sProject);
+            Assert.AreEqual(OsPath.Absolute("users", "bob", "projects", "foo.exe"), project.Programs[0].Filename);
         }
 
         [Test]

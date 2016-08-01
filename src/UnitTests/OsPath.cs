@@ -30,6 +30,11 @@ namespace Reko.UnitTests
     /// </summary>
     public static class OsPath
     {
+        /// <summary>
+        /// Create an absolute path obeying the rules of the platform.
+        /// </summary>
+        /// <param name="pathSegments"></param>
+        /// <returns></returns>
         public static string Absolute(params string [] pathSegments)
         {
             switch (Environment.OSVersion.Platform)
@@ -46,6 +51,11 @@ namespace Reko.UnitTests
             }
         }
 
+        /// <summary>
+        /// Create a relative path obeying the rules of the platform.
+        /// </summary>
+        /// <param name="pathSegments"></param>
+        /// <returns></returns>
         public static string Relative(params string[] pathSegments)
         {
             switch (Environment.OSVersion.Platform)
