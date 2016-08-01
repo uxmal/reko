@@ -50,6 +50,7 @@ namespace Reko.UnitTests.Gui.Design
         }
 
         [Test]
+        [Category(Categories.UserInterface)]
         public void Imd_Add_Empty()
         {
             var host = mr.StrictMock<ITreeNodeDesignerHost>();
