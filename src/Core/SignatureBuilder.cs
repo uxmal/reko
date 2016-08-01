@@ -72,7 +72,10 @@ namespace Reko.Core
             }
             else
             {
-                var arg = proc.Frame.EnsureOutArgument(idOrig, arch.FramePointerType);
+                //$REVIEW: out arguments are weird, as they are synthetic. It's possible that 
+                // future versions of reko will opt to model multiple values return from functions
+                // explicitly instead of using destructive updates of this kind.
+                var arg = proc.Frame.EnsureOutArgument(idOrig, PrimitiveType.Create(Domain.Pointer, arch.FramePointerType.Size));
                 args.Add(arg);
             }
         }

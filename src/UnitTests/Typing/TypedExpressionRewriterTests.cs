@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Typing
                 coll = new TraitCollector(program.TypeFactory, program.TypeStore, dtb, program);
                 coll.CollectProgramTraits(program);
 #else
-                var coll = new TypeCollector(program.TypeFactory, program.TypeStore, program);
+                var coll = new TypeCollector(program.TypeFactory, program.TypeStore, program, null);
                 coll.CollectTypes();
 #endif
                 program.TypeStore.BuildEquivalenceClassDataTypes(program.TypeFactory);
@@ -119,7 +119,7 @@ namespace Reko.UnitTests.Typing
             coll = new TraitCollector(program.TypeFactory, program.TypeStore, dtb, program);
             coll.CollectProgramTraits(program);
 #else
-            var coll = new TypeCollector(program.TypeFactory, program.TypeStore, program);
+            var coll = new TypeCollector(program.TypeFactory, program.TypeStore, program, null);
             coll.CollectTypes();
 #endif
             program.TypeStore.BuildEquivalenceClassDataTypes(program.TypeFactory);

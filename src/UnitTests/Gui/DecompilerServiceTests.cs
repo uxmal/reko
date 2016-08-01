@@ -81,7 +81,7 @@ namespace Reko.UnitTests.Gui
             var host = mr.StrictMock<DecompilerHost>();
             var arch = mr.StrictMock<IProcessorArchitecture>();
             var platform = mr.StrictMock<IPlatform>();
-            var fileName = "foo\\bar\\baz.exe";
+            var fileName = OsPath.Relative("foo", "bar", "baz.exe");
             var bytes = new byte[100];
             var mem = new MemoryArea(Address.Ptr32(0x1000), bytes);
             var imageMap = new SegmentMap(

@@ -32,6 +32,8 @@ namespace Reko.UnitTests.Environments.Windows
     [TestFixture]
     public class WineSpecFileLoaderTests
     {
+        private static string nl = Environment.NewLine;
+
         private Win16Platform platform;
         private WineSpecFileLoader wsfl;
 
@@ -62,7 +64,7 @@ namespace Reko.UnitTests.Environments.Windows
             var svc = mod.ServicesByVector[624];
             Assert.AreEqual("SetFastQueue", svc.Name);
             Assert.AreEqual(
-                "void ()(Stack word32 dwArg04, Stack word32 dwArg00)\r\n// stackDelta: 12; fpuStackDelta: 0; fpuMaxParam: -1\r\n",
+                "void ()(Stack word32 dwArg04, Stack word32 dwArg00)" + nl + "// stackDelta: 12; fpuStackDelta: 0; fpuMaxParam: -1" + nl + "",
                 svc.Signature.ToString());
         }
 
@@ -77,13 +79,13 @@ namespace Reko.UnitTests.Environments.Windows
             var mod = lib.Modules["FOO.DLL"];
             Assert.AreEqual(3, mod.ServicesByVector.Count);
             Assert.AreEqual(
-                "void ()()\r\n// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1\r\n",
+                "void ()()" + nl + "// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1" + nl + "",
                 mod.ServicesByVector[2].Signature.ToString());
             Assert.AreEqual(
-                "void ()()\r\n// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1\r\n",
+                "void ()()" + nl + "// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1" + nl + "",
                 mod.ServicesByVector[3].Signature.ToString());
             Assert.AreEqual(
-                "void ()(Stack word16 wArg04, Stack word16 wArg02, Stack word16 wArg00)\r\n// stackDelta: 10; fpuStackDelta: 0; fpuMaxParam: -1\r\n",
+                "void ()(Stack word16 wArg04, Stack word16 wArg02, Stack word16 wArg00)" + nl + "// stackDelta: 10; fpuStackDelta: 0; fpuMaxParam: -1" + nl + "",
                 mod.ServicesByVector[4].Signature.ToString());
         }
 
@@ -91,7 +93,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void Wsfl_Ignore_atsign()
         {
             CreateWineSpecFileLoader("foo.spec",
-                " @ stdcall -arch=win32 -norelay SMapLS_IP_EBP_36()\r\n");
+                " @ stdcall -arch=win32 -norelay SMapLS_IP_EBP_36()" + nl + "");
             var lib = wsfl.Load(platform, new TypeLibrary());
             Assert.AreEqual(0, lib.Modules.Count);
         }

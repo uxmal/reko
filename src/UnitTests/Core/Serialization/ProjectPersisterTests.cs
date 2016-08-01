@@ -90,8 +90,10 @@ namespace Reko.UnitTests.Core.Serialization
             var sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl('\\'));
             var pp = new ProjectPersister(sc);
-            var s = pp.ConvertToAbsolutePath(@"d:\Users\Bob\foo.dcproj", @"..\reko\foo.c");
-            Assert.AreEqual(@"d:\Users\reko\foo.c", s);
+            var s = pp.ConvertToAbsolutePath(
+                OsPath.Absolute("Users", "Bob", "foo.dcproj"),
+                OsPath.Relative("..", "reko", "foo.c"));
+            Assert.AreEqual(OsPath.Absolute("Users", "reko", "foo.c"), s);
         }
     }
 }

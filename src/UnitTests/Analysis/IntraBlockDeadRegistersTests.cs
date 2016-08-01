@@ -36,6 +36,7 @@ namespace Reko.UnitTests.Analysis
     public class IntraBlockDeadRegistersTests
     {
         private string testResult;
+
         private static string ToExpectedString(params string [] lines)
         {
             var stringlist = new List<string>();
@@ -44,6 +45,7 @@ namespace Reko.UnitTests.Analysis
             stringlist.Add ("");
             return String.Join (Environment.NewLine, stringlist.ToArray ());
         }
+
         private void RunTest(Action<ProcedureBuilder> m)
         {
             var builder = new ProcedureBuilder();
@@ -140,6 +142,24 @@ namespace Reko.UnitTests.Analysis
             );
 
             Assert.AreEqual(expected, testResult);
+        }
+
+        [Test(Description = "if a statement uses bl, then bx is live")]
+        [Category(Categories.UnitTests)]
+        public void Ibdr_PartialUse()
+        {
+            RunTest(m =>
+            {
+                var al = m.Frame.EnsureRegister(new RegisterStorage("al", 0, 0, PrimitiveType.Byte));
+                var bx = m.Frame.EnsureRegister(new RegisterStorage("bx", 3, 0, PrimitiveType.Word16));
+                var bl = m.Frame.EnsureRegister(new RegisterStorage("bl", 3, 0, PrimitiveType.Byte));
+                m.Assign(bx, m.Cast(PrimitiveType.Word16, al));
+                m.SideEffect(m.Fn("foo", bl));
+            });
+            string sExp = ToExpectedString(
+                "bx = (word16) al",
+                "foo(bl)");
+            Assert.AreEqual(sExp, testResult);
         }
     }
 }

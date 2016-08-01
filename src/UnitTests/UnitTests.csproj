@@ -81,6 +81,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OsPath.cs" />
     <Compile Include="Analysis\AliasStateTests.cs" />
     <Compile Include="Analysis\AliasTests.cs" />
     <Compile Include="Analysis\AnalysisTestBase.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="Analysis\BlockDominatorGraphTests.cs" />
     <Compile Include="Analysis\DominatorGraphTests.cs" />
     <Compile Include="Analysis\ExpressionPropagatorTests.cs" />
+    <Compile Include="Analysis\IndirectCallRewriterTests.cs" />
     <Compile Include="Analysis\PrintfFormatParserTests.cs" />
     <Compile Include="Analysis\RegisterPreservationTests.cs" />
     <Compile Include="Analysis\SequenceIdentifierGeneratorTests.cs" />

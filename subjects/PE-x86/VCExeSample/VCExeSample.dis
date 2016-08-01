@@ -109,17 +109,7 @@ indirect_call_test3_entry:
 // LocalsOut: fp(32) Stack +0000(32)
 
 l004010B0:
-	word32 edx_15 = Mem0[c:word32]
-	word32 eax_16 = Mem0[edx_15 + 0x00000004:word32]
-	word32 esp_17
-	word32 ebp_18
-	word32 eax_19
-	word32 ecx_20
-	word32 edx_21
-	byte SCZO_22
-	call eax_16 (retsize: 4; depth: 16)
-		uses: dwLoc04_6,dwLoc08_9,dwLoc0C_12,eax_16,ebp_7,ecx_13,edx_15,esp_11
-		defs: eax_19,ebp_18,ecx_20,edx_21,esp_17,SCZO_22
+	Mem0[Mem0[c:word32] + 0x00000004:word32](c, 0x000003E8)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -129,6 +119,60 @@ indirect_call_test3_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp ebp:ebp eax:<invalid> ecx:c edx:<invalid> -12(fp):c -8(fp):0x000003E8 -4(fp):ebp 4(fp):c
+
+
+
+void test4()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
+// Preserved: ebp esp
+test4_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32)
+
+l004010D0:
+	Mem0[Mem0[Mem0[0x00403018:word32]:word32]:word32](Mem0[0x00403018:word32])
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+test4_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp ebp:ebp eax:<invalid> ecx:<invalid> edx:<invalid> -8(fp):<invalid> -4(fp):ebp
+
+
+
+void test5()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
+// Preserved: ebp esp
+test5_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32)
+
+l004010F0:
+	Mem0[Mem0[Mem0[0x00403018:word32]:word32] + 0x00000004:word32](Mem0[0x00403018:word32], 0x000003E7, (real32) Mem0[0x004020EC:real32])
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+test5_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp eax:<invalid> ecx:<invalid> edx:<invalid> ebp:ebp -16(fp):<invalid> -12(fp):0x000003E7 -8(fp):(real32) rLoc1 -4(fp):ebp
 
 
 

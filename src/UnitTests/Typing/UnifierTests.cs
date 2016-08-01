@@ -201,7 +201,7 @@ namespace Reko.UnitTests.Typing
 
 			mem = (StructureType) dt;
 			Assert.AreEqual(2, mem.Fields.Count);
-			Assert.IsNotNull((UnionType) mem.Fields[0].DataType);
+			Assert.IsNotNull((TypeVariable) mem.Fields[0].DataType);
 			Assert.IsNotNull((TypeVariable) mem.Fields[1].DataType);
 		}
 

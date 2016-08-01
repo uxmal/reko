@@ -1,0 +1,10 @@
+// Equivalence classes ////////////
+// Type Variables ////////////
+globals_t: (in globals : ptr32)
+  Class: Eq_1
+  DataType: 
+  OrigDataType: 
+T_2: (in 2.684401e+08F : real32)
+  Class: Eq_2
+  DataType: real32
+  OrigDataType: real32

@@ -330,8 +330,8 @@ namespace Reko.UnitTests.Core.Serialization
             mr.ReplayAll();
 
             var prld = new ProjectLoader(sc, ldr);
-            var project = prld.LoadProject(@"c:/users/bob/projects/foo.project", sProject);
-            Assert.AreEqual(@"c:\users\bob\projects\foo.exe", project.Programs[0].Filename);
+            var project = prld.LoadProject(OsPath.Absolute("users", "bob", "projects", "foo.project"), sProject);
+            Assert.AreEqual(OsPath.Absolute("users", "bob", "projects", "foo.exe"), project.Programs[0].Filename);
         }
 
         [Test]
@@ -370,14 +370,14 @@ namespace Reko.UnitTests.Core.Serialization
             Given_TestOS();
 
             mockFactory.CreateLoadMetadataStub(
-                @"c:\meta1.xml",
+                OsPath.Absolute("meta1.xml"),
                 this.platform,
                 new TypeLibrary(
                     types1, new Dictionary<string, ProcedureSignature>()
                 )
             );
             mockFactory.CreateLoadMetadataStub(
-                @"c:\meta2.xml",
+                OsPath.Absolute("meta2.xml"),
                 this.platform,
                 new TypeLibrary(
                     types2, new Dictionary<string, ProcedureSignature>()
@@ -386,7 +386,7 @@ namespace Reko.UnitTests.Core.Serialization
             mr.ReplayAll();
 
             var prld = new ProjectLoader(sc, ldr);
-            var project = prld.LoadProject(@"c:\foo.project", sProject);
+            var project = prld.LoadProject(OsPath.Absolute("foo.project"), sProject);
             Assert.AreEqual(2, project.Programs[0].EnvironmentMetadata.Types.Count);
             Assert.AreEqual(
                 "word16",

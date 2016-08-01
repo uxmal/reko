@@ -182,7 +182,7 @@ l00001116:
 			}
 l00001148:
 			*a1_220 = 0x00;
-			*a6_230 = 0x00;
+			*a6_230 = (byte * *) null;
 			execPrivate4();
 			a4_6->dwFFFF801E = d0_226;
 			execPrivate5();

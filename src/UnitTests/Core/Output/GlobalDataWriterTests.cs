@@ -108,7 +108,9 @@ namespace Reko.UnitTests.Core.Output
             Given_Globals(
                 new StructureField(0x1000, PrimitiveType.Int32));
 
-            RunTest("int32 g_dw1000 = -1;\r\n");
+            RunTest(
+@"int32 g_dw1000 = -1;
+");
         }
 
         [Test]
@@ -119,7 +121,9 @@ namespace Reko.UnitTests.Core.Output
             Given_Globals(
                 Given_Field(0x1000, PrimitiveType.Real32));
 
-            RunTest("real32 g_r1000 = 1.0F;\r\n");
+            RunTest(
+@"real32 g_r1000 = 1.0F;
+");
         }
 
         [Test]

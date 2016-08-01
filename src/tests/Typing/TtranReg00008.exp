@@ -69,7 +69,7 @@ T_8: (in Mem6[ds:0x9A26:word16] : word16)
 T_9: (in si_11 : word16)
   Class: Eq_9
   DataType: (memptr (ptr Eq_12) Eq_9)
-  OrigDataType: (memptr T_12 (struct 0026 (0 (union (word16 u0) (T_15 u1)) u0000)))
+  OrigDataType: (memptr T_12 (struct 0026 (0 T_15 t0000)))
 T_10: (in 0x0000 : word16)
   Class: Eq_9
   DataType: (memptr (ptr Eq_12) Eq_9)
@@ -125,7 +125,7 @@ T_22: (in 0x0026 : word16)
 T_23: (in si_11 + 0x0026 : word16)
   Class: Eq_9
   DataType: (memptr (ptr Eq_12) Eq_9)
-  OrigDataType: (memptr T_12 (struct 0026 (0 (union (word16 u0) (T_15 u1)) u0000)))
+  OrigDataType: (memptr T_12 (struct 0026 (0 T_15 t0000)))
 T_24: (in 0x0000 : word16)
   Class: Eq_6
   DataType: word16

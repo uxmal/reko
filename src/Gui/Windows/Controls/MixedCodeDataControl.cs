@@ -71,7 +71,7 @@ namespace Reko.Gui.Windows.Controls
                 if (program != null)
                 {
                     Model = new MixedCodeDataModel(program);
-                    addrTop = (Address)Model.CurrentPosition;
+                    addrTop = Model.CurrentPosition as Address;
                     return;
                 }
             }
@@ -96,16 +96,16 @@ namespace Reko.Gui.Windows.Controls
 
         protected override void OnScroll()
         {
-            addrTop = (Address)Model.CurrentPosition;
+            addrTop = Model.CurrentPosition as Address;
             base.OnScroll();
         }
 
         private void RefreshModel()
         {
-            var currentAddress = (Address)Model.CurrentPosition;
+            var currentAddress = Model.CurrentPosition;
             var model = new MixedCodeDataModel(program);
             model.MoveToLine(currentAddress, 0);
-            this.addrTop = (Address)model.CurrentPosition;
+            this.addrTop = model.CurrentPosition as Address;
             this.Model = model;
         }
 
@@ -128,7 +128,7 @@ namespace Reko.Gui.Windows.Controls
             var pt = GetAnchorMiddlePoint();
             var memoryTextSpan = GetTagFromPoint(pt) as MixedCodeDataModel.MemoryTextSpan;
             if (memoryTextSpan == null || memoryTextSpan.Address == null)
-                return (Address)anchorPos.Line;
+                return anchorPos.Line as Address;
             return memoryTextSpan.Address;
         }
     }

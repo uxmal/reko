@@ -377,7 +377,7 @@ namespace Reko.Analysis
             }
             else
             {
-                deadRegs.Remove(reg);
+                deadRegs.RemoveWhere(r => r.OverlapsWith(reg));
             }
             return true;
         }

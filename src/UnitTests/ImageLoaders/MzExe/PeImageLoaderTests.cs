@@ -507,5 +507,21 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             Assert.AreEqual("Win32CrtStartup", ep.Name);
             Assert.AreEqual("fn(__cdecl,arg(DWORD),()", ep.Signature.ToString());
         }
+
+        [Test]
+        public void Pil32_IdenticallyNamedSections()
+        {
+            Given_Pe32Header(0x00100000);
+            Given_Section("hehe", 0x1000, 0x1000);
+            Given_Section("hehe", 0x2000, 0x2000);
+
+            mr.ReplayAll();
+
+            Given_PeLoader();
+            var program = peldr.Load(addrLoad);
+            Assert.AreEqual(2, program.SegmentMap.Segments.Count);
+            Assert.AreEqual("hehe", program.SegmentMap.Segments[Address.Ptr32(0x00101000)].Name);
+            Assert.AreEqual("hehe", program.SegmentMap.Segments[Address.Ptr32(0x00102000)].Name);
+        }
     }
 }
