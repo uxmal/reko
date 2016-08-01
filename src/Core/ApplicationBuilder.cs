@@ -79,10 +79,18 @@ namespace Reko.Core
             ProcedureSignature sigCallee,
             ProcedureCharacteristics chr)
         {
-            var idOut = BindReturnValue(sigCallee.ReturnValue);
-            var dtOut = sigCallee.ReturnValue != null
-                ? sigCallee.ReturnValue.DataType
-                : VoidType.Instance;
+            Identifier idOut;
+            DataType dtOut;
+            if (sigCallee.ReturnValue != null)
+            {
+                idOut = BindReturnValue(sigCallee.ReturnValue);
+                dtOut = sigCallee.ReturnValue.DataType;
+            }
+            else
+            {
+                idOut = null;
+                dtOut = VoidType.Instance;
+            }
             var actuals = BindArguments(sigCallee, chr);
             Expression appl = new Application(
                 callee,

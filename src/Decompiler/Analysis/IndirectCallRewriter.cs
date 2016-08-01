@@ -34,6 +34,7 @@ namespace Reko.Analysis
     /// </summary>
     public class IndirectCallRewriter
     {
+        private SsaTransform2 sst;
         private SsaState ssa;
         private Program program;
         private Procedure proc;
@@ -56,9 +57,24 @@ namespace Reko.Analysis
             this.eventListener = eventListener;
         }
 
+        public IndirectCallRewriter(
+            Program program,
+            SsaTransform2 sst,
+            DecompilerEventListener eventListener)
+        {
+            this.program = program;
+            this.proc = sst.SsaState.Procedure;
+            this.sst = sst;
+            this.ssa = sst.SsaState;
+            this.asc = new IndirectCallTypeAscender(program);
+            this.expander = new IndirectCallExpander(sst.SsaState);
+            this.ssaIdTransformer = new SsaIdentifierTransformer(sst.SsaState);
+            this.eventListener = eventListener;
+        }
+
         public void Rewrite()
         {
-            foreach (Statement stm in proc.Statements)
+            foreach (Statement stm in proc.Statements.ToList())
             {
                 CallInstruction ci = stm.Instruction as CallInstruction;
                 if (ci != null)
@@ -91,10 +107,8 @@ namespace Reko.Analysis
             var returnId = ft.ReturnValue.DataType is VoidType ?
                 null : ft.ReturnValue;
             var sigCallee = new ProcedureSignature(returnId, ft.Parameters);
-            var ab = new ApplicationBuilder(
-                program.Architecture, proc.Frame, call.CallSite,
-                call.Callee, sigCallee, true);
-            stm.Instruction = ab.CreateInstruction();
+            var ab = new SsaTransform2.SsaApplicationBuilder(sst, call.CallSite, call.Callee);
+            stm.Instruction = ab.CreateInstruction(sigCallee, null);
             ssaIdTransformer.Transform(stm, call);
         }
     }
