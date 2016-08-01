@@ -215,7 +215,14 @@ done:
             SaveRunOutput(prog, RunTest, "Analysis/DfaReg00001.txt");
         }
 
-		protected override void RunTest(Program prog, TextWriter writer)
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void DfaReg00282()
+        {
+            RunFileTest("Fragments/regressions/r00282.asm", "Analysis/DfaReg00282.txt");
+        }
+
+        protected override void RunTest(Program prog, TextWriter writer)
 		{
             IImportResolver importResolver = null;
 			dfa = new DataFlowAnalysis(prog, importResolver, new FakeDecompilerEventListener());

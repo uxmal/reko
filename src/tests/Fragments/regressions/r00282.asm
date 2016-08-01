@@ -9,13 +9,13 @@
   setmemallocstrat  proc       near  
 			push    ax
 			movzx   bx, al
-			mov     ax, 5801h
-			int     21h         ; DOS - 3+ - GET/SET MEMORY ALLOCATION STRATEGY
+			mov     ax, 0x5801
+			int     0x21         ; DOS - 3+ - GET/SET MEMORY ALLOCATION STRATEGY
 				; AL = function code: set allocation strategy
 			pop     bx
 					shr     bx, 8
-			mov     ax, 5803h
-			int     21h         ; DOS - 3+ - GET/SET MEMORY ALLOCATION STRATEGY
+			mov     ax, 0x5803
+			int     0x21         ; DOS - 3+ - GET/SET MEMORY ALLOCATION STRATEGY
 				; AL = function code: (DOS 5beta) set UMB link state
-			retn
+			ret
 			endp
