@@ -661,6 +661,7 @@
     <Compile Include="Types\StructureType.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Expressions\ExpressionTypeAscenderBase.cs" />
     <Compile Include="Types\TypeFactory.cs">
       <SubType>Code</SubType>
     </Compile>

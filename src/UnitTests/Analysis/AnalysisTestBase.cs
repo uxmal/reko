@@ -142,7 +142,7 @@ namespace Reko.UnitTests.Analysis
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
                 program = asm.Assemble(Address.SegPtr(0xC00, 0), rdr);
-                program.Platform = new MsdosPlatform(sc, arch);
+                program.Platform = new MsdosPlatform(sc, program.Architecture);
             }
             Rewrite(program, asm, configFile);
             return program;

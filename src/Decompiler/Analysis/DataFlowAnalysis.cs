@@ -84,6 +84,9 @@ namespace Reko.Analysis
                     var sst = new SsaTransform(flow, proc, importResolver, doms, new HashSet<RegisterStorage>());
                     var ssa = sst.SsaState;
 
+                    var icrw = new IndirectCallRewriter(program, ssa, eventListener);
+                    icrw.Rewrite();
+
                     var cce = new ConditionCodeEliminator(ssa, program.Platform);
                     cce.Transform();
                     //var cd = new ConstDivisionImplementedByMultiplication(ssa);
