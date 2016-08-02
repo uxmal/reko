@@ -241,6 +241,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         <address>00012345</address>
       </procedure>
       <heuristic name=""shingle"" />
+      <registerValues />
     </user>
   </input>
 </project>";
