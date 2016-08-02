@@ -47,9 +47,11 @@ bh:bh
     def:  def bh
     uses: bh_14 = bh ^ bh
           bh_14 = bh ^ bh
+          bx_18 = DPB(bx, bh, 8) (alias)
 bh_14: orig: bh
     def:  bh_14 = bh ^ bh
     uses: SZO_15 = cond(bh_14)
+          bx_19 = DPB(bx_18, bh_14, 8) (alias)
 SZO_15: orig: SZO
     def:  SZO_15 = cond(bh_14)
 C_16: orig: C

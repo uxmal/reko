@@ -126,6 +126,7 @@ ax_25: orig: ax
 ax_26: orig: ax
     def:  ax_26 = DPB(ax_25, wLoc08_13, 0) (alias)
     uses: ax_43 = PHI(ax_31, ax_26)
+          eax_49 = DPB(eax_48, ax_26, 0) (alias)
 cx_27: orig: cx
 cx_28: orig: cx
     def:  cx_28 = wLoc08_13 + 0x0001
@@ -137,6 +138,7 @@ wLoc08_30: orig: wLoc08
 ax_31: orig: ax
     def:  ax_31 = 0x0000
     uses: ax_43 = PHI(ax_31, ax_26)
+          eax_47 = DPB(eax, ax_31, 0) (alias)
 SZO_32: orig: SZO
     def:  SZO_32 = cond(0x0000)
     uses: S_56 = PHI(SZO_32, S_57)
@@ -173,6 +175,7 @@ esp_42: orig: esp
 ax_43: orig: ax
     def:  ax_43 = PHI(ax_31, ax_26)
     uses: return ax_43
+          eax_50 = DPB(eax_45, ax_43, 0) (alias)
 Mem0:Global memory
     def:  def Mem0
 eax_45: orig: eax

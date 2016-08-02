@@ -1640,6 +1640,8 @@ namespace Reko.Analysis
                 var ass = new AliasAssignment(id, e);
                 var sidAlias = InsertAfterDefinition(sidFrom.DefStatement, ass);
                 sidUse.Uses.Add(sidAlias.DefStatement);
+                if (e is DepositBits)
+                    sidFrom.Uses.Add(sidAlias.DefStatement);
                 alias.Aliases[id] = sidAlias;
                 return sidAlias;
             }

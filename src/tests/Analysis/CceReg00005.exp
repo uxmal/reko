@@ -100,6 +100,7 @@ bx_20: orig: bx
     uses: bx_41 = PHI(bx_37, bx_20)
 cl_21: orig: cl
     def:  cl_21 = 0x00
+    uses: cx_44 = DPB(cx_43, cl_21, 0) (alias)
 SZO_22: orig: SZO
     def:  SZO_22 = cond(0x00)
     uses: S_49 = PHI(SCZO_38, SZO_22)
@@ -124,6 +125,7 @@ Mem27: orig: Mem0
     def:  Mem27 = PHI(Mem14, Mem14)
 ah_28: orig: ah
     def:  ah_28 = Mem0[ds_24:di_26 + 0x0001:byte]
+    uses: ax_33 = DPB(ax_29, ah_28, 8) (alias)
 ax_29: orig: ax
     def:  ax_29 = PHI(ax_32, ax_30)
     uses: ax_33 = DPB(ax_29, ah_28, 8) (alias)

@@ -1828,6 +1828,7 @@ proc1_exit:
     uses: bl_2 = Mem0[0x1234:word16]
 bl_2: orig: bl
     def:  bl_2 = Mem0[0x1234:word16]
+    uses: bx_5 = DPB(bx, bl_2, 0) (alias)
 bh_3: orig: bh
     def:  bh_3 = 0x00
 bx:bx
@@ -1891,6 +1892,7 @@ proc1_exit:
 bl_2: orig: bl
     def:  bl_2 = Mem0[0x1234:word16]
     uses: branch bl_2 > 0x00000003 m2
+          bx_5 = DPB(bx, bl_2, 0) (alias)
 bh_3: orig: bh
     def:  bh_3 = 0x00
 bx:bx
@@ -1968,11 +1970,13 @@ Mem0:Global memory
 bl_3: orig: bl
     def:  bl_3 = Mem0[si:byte]
     uses: SCZO_4 = cond(bl_3 - 0x02)
+          bx_7 = DPB(bx, bl_3, 0) (alias)
 SCZO_4: orig: SCZO
     def:  SCZO_4 = cond(bl_3 - 0x02)
     uses: branch Test(UGT,SCZO_4) m2
 bh_5: orig: bh
     def:  bh_5 = 0x00
+    uses: bx_8 = DPB(bx_7, bh_5, 8) (alias)
 bx:bx
     def:  def bx
     uses: bx_7 = DPB(bx, bl_3, 0) (alias)
@@ -2209,28 +2213,24 @@ proc1_exit:
           bx_3 = Mem0[0x00002002:word16]
 ax_2: orig: ax
     def:  ax_2 = Mem0[0x00002000:word16]
-    uses: al_6 = PHI(ax_2, al_7)
 bx_3: orig: bx
     def:  bx_3 = Mem0[0x00002002:word16]
-    uses: bx_8 = PHI(bx_3, bx_9)
+    uses: bh_8 = SLICE(bx_3, byte, 8) (alias)
+          bx_6 = PHI(bx_3, bx_7)
 bh_4: orig: bh
-    def:  bh_4 = PHI(bx_3, bh_4)
+    def:  bh_4 = PHI(bh_8, bh_4)
 al_5: orig: al
-    def:  al_5 = bx_3
-al_6: orig: al
-    def:  al_6 = PHI(ax_2, al_7)
-    uses: al_7 = DPB(al_6, al_5, 0) (alias)
-al_7: orig: al
-    def:  al_7 = DPB(al_6, al_5, 0) (alias)
-    uses: return al_7
-          al_6 = PHI(ax_2, al_7)
-bx_8: orig: bx
-    def:  bx_8 = PHI(bx_3, bx_9)
-    uses: bx_9 = DPB(bx_8, bh_4, 8) (alias)
-bx_9: orig: bx
-    def:  bx_9 = DPB(bx_8, bh_4, 8) (alias)
-    uses: branch bx_9 >= 0x0000 m0
-          bx_8 = PHI(bx_3, bx_9)
+    def:  al_5 = bh_8
+    uses: return al_5
+bx_6: orig: bx
+    def:  bx_6 = PHI(bx_3, bx_7)
+    uses: bx_7 = DPB(bx_6, bh_8, 8) (alias)
+bx_7: orig: bx
+    def:  bx_7 = DPB(bx_6, bh_8, 8) (alias)
+    uses: branch bx_7 >= 0x0000 m0
+          bx_6 = PHI(bx_3, bx_7)
+bh_8: orig: bh
+    def:  bh_8 = SLICE(bx_3, byte, 8) (alias)
 // proc1
 // Return size: 0
 void proc1()
@@ -2240,18 +2240,16 @@ proc1_entry:
 l1:
 	ax_2 = Mem0[0x00002000:word16]
 	bx_3 = Mem0[0x00002002:word16]
+	bh_8 = SLICE(bx_3, byte, 8) (alias)
 	// succ:  m0
 m0:
-	bx_8 = PHI(bx_3, bx_9)
-	bh_4 = SLICE(bx_8, 8, byte) (alias)
-	al_6 = PHI(ax_2, al_7)
-	bx_9 = DPB(bx_8, bh_4, 8) (alias)
-	al_5 = bh_4
-	al_7 = DPB(al_6, al_5, 0) (alias)
-	branch bx_9 >= 0x0000 m0
+	bx_6 = PHI(bx_3, bx_7)
+	bx_7 = DPB(bx_6, bh_8, 8) (alias)
+	al_5 = bh_8
+	branch bx_7 >= 0x0000 m0
 	// succ:  m1 m0
 m1:
-	return al_7
+	return al_5
 	// succ:  proc1_exit
 proc1_exit:
 ======
@@ -2269,6 +2267,7 @@ proc1_exit:
 
                 m.Assign(ax, m.Load(ax.DataType, m.Word32(0x2000)));
                 m.Assign(bx, m.Load(bx.DataType, m.Word32(0x2002)));
+
                 m.Label("m0");
                 m.Assign(al, bh);
                 m.BranchIf(m.Ge(bx, 0), "m0");

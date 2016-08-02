@@ -132,6 +132,7 @@ cl_35: orig: cl
 cl_36: orig: cl
     def:  cl_36 = DPB(cl_30, cl_35, 0) (alias)
     uses: SCZO_37 = cond(cl_36 - 0x3A)
+          cx_43 = DPB(cx, cl_36, 0) (alias)
 SCZO_37: orig: SCZO
     def:  SCZO_37 = cond(cl_36 - 0x3A)
     uses: C_38 = !SCZO_37
