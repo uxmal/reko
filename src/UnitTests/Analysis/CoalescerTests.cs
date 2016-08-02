@@ -36,80 +36,80 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void Coa3Converge()
 		{
-			RunFileTest("Fragments/3converge.asm", "Analysis/Coa3Converge.txt");
+			RunFileTest_x86_real("Fragments/3converge.asm", "Analysis/Coa3Converge.txt");
 		}
 
 		[Test]
 		public void CoaAsciiHex()
 		{
-			RunFileTest("Fragments/ascii_hex.asm", "Analysis/CoaAsciiHex.txt");
+			RunFileTest_x86_real("Fragments/ascii_hex.asm", "Analysis/CoaAsciiHex.txt");
 		}
 
 		[Test]
 		public void CoaDataConstraint()
 		{
-			RunFileTest("Fragments/data_constraint.asm", "Analysis/CoaDataConstraint.txt");
+			RunFileTest_x86_real("Fragments/data_constraint.asm", "Analysis/CoaDataConstraint.txt");
 		}
 
 		[Test]
 		public void CoaMoveChain()
 		{
-			RunFileTest("Fragments/move_sequence.asm", "Analysis/CoaMoveChain.txt");
+			RunFileTest_x86_real("Fragments/move_sequence.asm", "Analysis/CoaMoveChain.txt");
 		}
 
 		[Test]
 		public void CoaFactorialReg()
 		{
-			RunFileTest("Fragments/factorial_reg.asm", "Analysis/CoaFactorialReg.txt");
+			RunFileTest_x86_real("Fragments/factorial_reg.asm", "Analysis/CoaFactorialReg.txt");
 		}
 
 		[Test]
 		public void CoaMemoryTest()
 		{
-			RunFileTest("Fragments/simple_memoperations.asm", "Analysis/CoaMemoryTest.txt");
+			RunFileTest_x86_real("Fragments/simple_memoperations.asm", "Analysis/CoaMemoryTest.txt");
 		}
 
 		[Test]
 		public void CoaSmallLoop()
 		{
-			RunFileTest("Fragments/small_loop.asm", "Analysis/CoaSmallLoop.txt");
+			RunFileTest_x86_real("Fragments/small_loop.asm", "Analysis/CoaSmallLoop.txt");
 		}
 
 		[Test]
         [Ignore("scanning-development")]
         public void CoaAddSubCarries()
 		{
-			RunFileTest("Fragments/addsubcarries.asm", "Analysis/CoaAddSubCarries.txt");
+			RunFileTest_x86_real("Fragments/addsubcarries.asm", "Analysis/CoaAddSubCarries.txt");
 		}
 
 		[Test]
 		public void CoaConditionals()
 		{
-			RunFileTest("Fragments/multiple/conditionals.asm", "Analysis/CoaConditionals.txt");
+			RunFileTest_x86_real("Fragments/multiple/conditionals.asm", "Analysis/CoaConditionals.txt");
 		}
 
 		[Test]
 		public void CoaSliceReturn()
 		{
-			RunFileTest("Fragments/multiple/slicereturn.asm", "Analysis/CoaSliceReturn.txt");
+			RunFileTest_x86_real("Fragments/multiple/slicereturn.asm", "Analysis/CoaSliceReturn.txt");
 		}
 
 		[Test]
 		public void CoaReg00002()
 		{
-			RunFileTest("Fragments/regression00002.asm", "Analysis/CoaReg00002.txt");
+			RunFileTest_x86_real("Fragments/regression00002.asm", "Analysis/CoaReg00002.txt");
 		}
 
 		[Test]
 		public void CoaWhileGoto()
 		{
-			RunFileTest("Fragments/while_goto.asm", "Analysis/CoaWhileGoto.txt");
+			RunFileTest_x86_real("Fragments/while_goto.asm", "Analysis/CoaWhileGoto.txt");
 		}
 
         [Test]
         public void CoaSideEffectCalls()
         {
-            RunFileTest("Fragments/multiple/sideeffectcalls.asm", "Analysis/CoaSideEffectCalls.txt");
+            RunFileTest_x86_real("Fragments/multiple/sideeffectcalls.asm", "Analysis/CoaSideEffectCalls.txt");
         }
 
 		protected override void RunTest(Program program, TextWriter fut)

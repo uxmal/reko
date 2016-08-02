@@ -124,56 +124,58 @@ namespace Reko.UnitTests.Analysis
         [Test]
 		public void SsaSimple()
 		{
-			RunFileTest("Fragments/ssasimple.asm", "Analysis/SsaSimple.txt");
+			RunFileTest_x86_real("Fragments/ssasimple.asm", "Analysis/SsaSimple.txt");
 		}
 
 		[Test]
 		public void SsaConverge()
 		{
-			RunFileTest("Fragments/3converge.asm", "Analysis/SsaConverge.txt");
+			RunFileTest_x86_real("Fragments/3converge.asm", "Analysis/SsaConverge.txt");
 		}
 
 		[Test]
 		public void SsaMemoryTest()
 		{
-			RunFileTest("Fragments/memory_simple.asm", "Analysis/SsaMemoryTest.txt");			
+			RunFileTest_x86_real("Fragments/memory_simple.asm", "Analysis/SsaMemoryTest.txt");			
 		}
 
 		[Test]
 		public void SsaAddSubCarries()
 		{
-			RunFileTest("Fragments/addsubcarries.asm", "Analysis/SsaAddSubCarries.txt");
+			RunFileTest_x86_real("Fragments/addsubcarries.asm", "Analysis/SsaAddSubCarries.txt");
 		}
 
 		[Test]
 		public void SsaSwitch()
 		{
-			RunFileTest("Fragments/switch.asm", "Analysis/SsaSwitch.txt");
+			RunFileTest_x86_real("Fragments/switch.asm", "Analysis/SsaSwitch.txt");
 		}
 		
 		[Test]
 		public void SsaFactorial()
 		{
-			RunFileTest("Fragments/factorial.asm", "Analysis/SsaFactorial.txt");
+			RunFileTest_x86_real("Fragments/factorial.asm", "Analysis/SsaFactorial.txt");
 		}
 
 		[Test]
 		public void SsaFactorialReg()
 		{
-			RunFileTest("Fragments/factorial_reg.asm", "Analysis/SsaFactorialReg.txt");
+			RunFileTest_x86_real("Fragments/factorial_reg.asm", "Analysis/SsaFactorialReg.txt");
 		}
 
 		[Test]
 		public void SsaForkedLoop()
 		{
-			RunFileTest("Fragments/forkedloop.asm", "Analysis/SsaForkedLoop.txt");
+			RunFileTest_x86_real("Fragments/forkedloop.asm", "Analysis/SsaForkedLoop.txt");
 		}
 
 		[Test]
 		public void SsaNestedRepeats()
 		{
-			RunFileTest("Fragments/nested_repeats.asm", "Analysis/SsaNestedRepeats.txt");
+			RunFileTest_x86_real("Fragments/nested_repeats.asm", "Analysis/SsaNestedRepeats.txt");
 		}
+
+
 
         [Test]
         public void SsaOutParamters()

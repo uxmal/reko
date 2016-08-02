@@ -216,7 +216,7 @@ namespace Reko.UnitTests.Analysis
         {
             Given_Typedef("str", TestStr());
             Given_CSignature("void test(str *a)");
-            RunFileTest(
+            RunFileTest_x86_real(
                 "Fragments/icrw/indirect_call_no_arguments.asm",
                 "Analysis/IcrwNoArguments.txt");
         }
@@ -226,7 +226,7 @@ namespace Reko.UnitTests.Analysis
         {
             Given_Typedef("str", TestStrEcx());
             Given_CSignature("void test(str *a)");
-            RunFileTest(
+            RunFileTest_x86_real(
                 "Fragments/icrw/indirect_call_no_arguments.asm",
                 "Analysis/IcrwInvalidArguments.txt");
         }
@@ -236,7 +236,7 @@ namespace Reko.UnitTests.Analysis
         {
             Given_Typedef("str", TestStr());
             Given_CSignature("void test(str *a)");
-            RunFileTest(
+            RunFileTest_x86_real(
                 "Fragments/icrw/indirect_call_one_argument.asm",
                 "Analysis/IcrwOneArgument.txt");
         }
@@ -246,7 +246,7 @@ namespace Reko.UnitTests.Analysis
         {
             Given_Typedef("str", TestStrNoFuncs());
             Given_CSignature("void test(str *a)");
-            RunFileTest(
+            RunFileTest_x86_real(
                 "Fragments/icrw/indirect_call_one_argument.asm",
                 "Analysis/IcrwOneArgumentNoFuncs.txt");
         }
@@ -256,7 +256,7 @@ namespace Reko.UnitTests.Analysis
         {
             Given_Typedef("str", TestStrEcx());
             Given_CSignature("void test(str *a)");
-            RunFileTest(
+            RunFileTest_x86_real(
                 "Fragments/icrw/indirect_call_one_argument.asm",
                 "Analysis/IcrwOneArgumentPassEcx.txt");
         }
@@ -266,7 +266,7 @@ namespace Reko.UnitTests.Analysis
         {
             Given_Typedef("str", TestStr());
             Given_CSignature("void test(str *a)");
-            RunFileTest(
+            RunFileTest_x86_real(
                 "Fragments/icrw/indirect_call_two_arguments.asm",
                 "Analysis/IcrwTwoArguments.txt");
         }
@@ -276,7 +276,7 @@ namespace Reko.UnitTests.Analysis
         {
             Given_Typedef("str", TestStrNoFuncs());
             Given_CSignature("void test(str *a)");
-            RunFileTest(
+            RunFileTest_x86_real(
                 "Fragments/icrw/indirect_call_two_arguments.asm",
                 "Analysis/IcrwTwoArgumentsNoFuncs.txt");
         }

@@ -120,13 +120,13 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void VpChainTest()
 		{
-			RunFileTest("Fragments/multiple/chaincalls.asm", "Analysis/VpChainTest.txt");
+			RunFileTest_x86_real("Fragments/multiple/chaincalls.asm", "Analysis/VpChainTest.txt");
 		}
 
 		[Test]
 		public void VpConstPropagation()
 		{
-			RunFileTest("Fragments/constpropagation.asm", "Analysis/VpConstPropagation.txt");
+			RunFileTest_x86_real("Fragments/constpropagation.asm", "Analysis/VpConstPropagation.txt");
 		}
 
 		[Test]
@@ -140,38 +140,38 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void VpNegsNots()
 		{
-			RunFileTest("Fragments/negsnots.asm", "Analysis/VpNegsNots.txt");
+			RunFileTest_x86_real("Fragments/negsnots.asm", "Analysis/VpNegsNots.txt");
 		}
 
 		[Test]
 		public void VpNestedRepeats()
 		{
-			RunFileTest("Fragments/nested_repeats.asm", "Analysis/VpNestedRepeats.txt");
+			RunFileTest_x86_real("Fragments/nested_repeats.asm", "Analysis/VpNestedRepeats.txt");
 		}
 
 		[Test]
 		public void VpStringInstructions()
 		{
-			RunFileTest("Fragments/stringinstr.asm", "Analysis/VpStringInstructions.txt");
+			RunFileTest_x86_real("Fragments/stringinstr.asm", "Analysis/VpStringInstructions.txt");
 		}
 
 		[Test]
 		public void VpSuccessiveDecs()
 		{
-			RunFileTest("Fragments/multiple/successivedecs.asm", "Analysis/VpSuccessiveDecs.txt");
+			RunFileTest_x86_real("Fragments/multiple/successivedecs.asm", "Analysis/VpSuccessiveDecs.txt");
 		}
 
 		[Test]
 		public void VpWhileGoto()
 		{
-			RunFileTest("Fragments/while_goto.asm", "Analysis/VpWhileGoto.txt");
+			RunFileTest_x86_real("Fragments/while_goto.asm", "Analysis/VpWhileGoto.txt");
 		}
 
         [Test]
         [Category("investigation")]
         public void VpReg00011()
         {
-            RunFileTest("Fragments/regressions/r00011.asm", "Analysis/VpReg00011.txt");
+            RunFileTest_x86_real("Fragments/regressions/r00011.asm", "Analysis/VpReg00011.txt");
         }
 
         [Test]

@@ -37,86 +37,86 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void CrwAsciiHex()
 		{
-			RunFileTest("Fragments/ascii_hex.asm", "Analysis/CrwAsciiHex.txt");
+			RunFileTest_x86_real("Fragments/ascii_hex.asm", "Analysis/CrwAsciiHex.txt");
 		}
 
 		[Test]
 		public void CrwNoCalls()
 		{
-			RunFileTest("Fragments/diamond.asm", "Analysis/CrwNoCalls.txt");
+			RunFileTest_x86_real("Fragments/diamond.asm", "Analysis/CrwNoCalls.txt");
 		}
 
 		[Test]
 		public void CrwEvenOdd()
 		{
-			RunFileTest("Fragments/multiple/even_odd.asm", "Analysis/CrwEvenOdd.txt");
+			RunFileTest_x86_real("Fragments/multiple/even_odd.asm", "Analysis/CrwEvenOdd.txt");
 		}
 
 		[Test]
 		public void CrwFactorial()
 		{
-			RunFileTest("Fragments/factorial.asm", "Analysis/CrwFactorial.txt");
+			RunFileTest_x86_real("Fragments/factorial.asm", "Analysis/CrwFactorial.txt");
 		}
 
 		[Test]
 		public void CrwFactorialReg()
 		{
-			RunFileTest("Fragments/factorial_reg.asm", "Analysis/CrwFactorialReg.txt");
+			RunFileTest_x86_real("Fragments/factorial_reg.asm", "Analysis/CrwFactorialReg.txt");
 		}
 
 		[Test]
 		public void CrwLeakyLiveness()
 		{
-			RunFileTest("Fragments/multiple/leaky_liveness.asm", "Analysis/CrwLeakyLiveness.txt");
+			RunFileTest_x86_real("Fragments/multiple/leaky_liveness.asm", "Analysis/CrwLeakyLiveness.txt");
 		}
 
 		[Test]
 		public void CrwManyStackArgs()
 		{
-			RunFileTest("Fragments/multiple/many_stack_args.asm", "Analysis/CrwManyStackArgs.txt");
+			RunFileTest_x86_real("Fragments/multiple/many_stack_args.asm", "Analysis/CrwManyStackArgs.txt");
 		}
 
 		[Test]
 		public void CrwStackVariables()
 		{
-			RunFileTest("Fragments/stackvars.asm", "Analysis/CrwStackVariables.txt");
+			RunFileTest_x86_real("Fragments/stackvars.asm", "Analysis/CrwStackVariables.txt");
 		}
 
 		[Test]
 		[Ignore("Won't pass until ProcedureSignatures for call tables and call pointers are implemented")]
 		public void CrwCallTables()
 		{
-			RunFileTest("Fragments/multiple/calltables.asm", "Analysis/CrwCallTables.txt");
+			RunFileTest_x86_real("Fragments/multiple/calltables.asm", "Analysis/CrwCallTables.txt");
 		}
 
 		[Test]
 		public void CrwFpuArgs()
 		{
-			RunFileTest("Fragments/multiple/fpuArgs.asm", "Analysis/CrwFpuArgs.txt");
+			RunFileTest_x86_real("Fragments/multiple/fpuArgs.asm", "Analysis/CrwFpuArgs.txt");
 		}
 
 		[Test]
 		public void CrwFpuOps()
 		{
-			RunFileTest("Fragments/fpuops.asm", "Analysis/CrwFpuOps.txt");
+			RunFileTest_x86_real("Fragments/fpuops.asm", "Analysis/CrwFpuOps.txt");
 		}
 
 		[Test]
 		public void CrwIpLiveness()
 		{
-			RunFileTest("Fragments/multiple/ipliveness.asm", "Analysis/CrwIpLiveness.txt");
+			RunFileTest_x86_real("Fragments/multiple/ipliveness.asm", "Analysis/CrwIpLiveness.txt");
 		}
 
 		[Test]
 		public void CrwVoidFunctions()
 		{
-			RunFileTest("Fragments/multiple/voidfunctions.asm", "Analysis/CrwVoidFunctions.txt");
+			RunFileTest_x86_real("Fragments/multiple/voidfunctions.asm", "Analysis/CrwVoidFunctions.txt");
 		}
 
 		[Test]
 		public void CrwMutual()
 		{
-			RunFileTest("Fragments/multiple/mutual.asm", "Analysis/CrwMutual.txt");
+			RunFileTest_x86_real("Fragments/multiple/mutual.asm", "Analysis/CrwMutual.txt");
 		}
 
 		[Test]
@@ -129,13 +129,13 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void CrwSliceReturn()
 		{
-			RunFileTest("Fragments/multiple/slicereturn.asm", "Analysis/CrwSliceReturn.txt");
+			RunFileTest_x86_real("Fragments/multiple/slicereturn.asm", "Analysis/CrwSliceReturn.txt");
 		}
 
 		[Test]
 		public void CrwProcIsolation()
 		{
-			RunFileTest("Fragments/multiple/procisolation.asm", "Analysis/CrwProcIsolation.txt");
+			RunFileTest_x86_real("Fragments/multiple/procisolation.asm", "Analysis/CrwProcIsolation.txt");
 		}
 
 		[Test]

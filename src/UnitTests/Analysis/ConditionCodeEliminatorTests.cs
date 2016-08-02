@@ -124,14 +124,14 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void CceAsciiHex()
 		{
-			RunFileTest("Fragments/ascii_hex.asm", "Analysis/CceAsciiHex.txt");
+			RunFileTest_x86_real("Fragments/ascii_hex.asm", "Analysis/CceAsciiHex.txt");
 		}
 
 		[Test]
         [Ignore("scanning-development")]
         public void CceAddSubCarries()
 		{
-			RunFileTest("Fragments/addsubcarries.asm", "Analysis/CceAddSubCarries.txt");
+			RunFileTest_x86_real("Fragments/addsubcarries.asm", "Analysis/CceAddSubCarries.txt");
 		}
 
 		[Test]
@@ -155,20 +155,20 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void CceWhileLoop()
 		{
-			RunFileTest("Fragments/while_loop.asm", "Analysis/CceWhileLoop.txt");
+			RunFileTest_x86_real("Fragments/while_loop.asm", "Analysis/CceWhileLoop.txt");
 		}
 
 		[Test]
         public void CceReg00005()
 		{
-			RunFileTest("Fragments/regressions/r00005.asm", "Analysis/CceReg00005.txt");
+			RunFileTest_x86_real("Fragments/regressions/r00005.asm", "Analysis/CceReg00005.txt");
 		}
 
 		[Test]
         [Ignore("The called function is mistakenly identified as returning SZCO when it really just returns C. New SSA analysis fixes this")]
         public void CceReg00007()
 		{
-			RunFileTest("Fragments/regressions/r00007.asm", "Analysis/CceReg00007.txt");
+			RunFileTest_x86_real("Fragments/regressions/r00007.asm", "Analysis/CceReg00007.txt");
 		}
 
         [Test]
@@ -475,7 +475,7 @@ done:
         [Ignore("Think about how to deal with long variables (edx:eax)")]
         public void CceIsqrt()
         {
-            RunFileTest("Fragments/isqrt.asm", "Analysis/CceIsqrt.txt");
+            RunFileTest_x86_real("Fragments/isqrt.asm", "Analysis/CceIsqrt.txt");
         }
 	}
 }

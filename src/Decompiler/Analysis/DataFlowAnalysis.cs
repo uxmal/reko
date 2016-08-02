@@ -311,16 +311,16 @@ namespace Reko.Analysis
             var vp = new ValuePropagator(program.Architecture, ssa);
             vp.Transform();
 
-                // Now compute SSA for the stack-based variables as well. That is:
-                // mem[fp - 30] becomes wLoc30, while 
-                // mem[fp + 30] becomes wArg30.
-                // This allows us to compute the dataflow of this procedure.
-                sst.RenameFrameAccesses = true;
-                sst.AddUseInstructions = true;
-                sst.Transform();
+            // Now compute SSA for the stack-based variables as well. That is:
+            // mem[fp - 30] becomes wLoc30, while 
+            // mem[fp + 30] becomes wArg30.
+            // This allows us to compute the dataflow of this procedure.
+            sst.RenameFrameAccesses = true;
+            sst.AddUseInstructions = true;
+            sst.Transform();
 
-                // Propagate those newly discovered identifiers.
-                vp.Transform();
+            // Propagate those newly discovered identifiers.
+            vp.Transform();
 
             return sst;
         }

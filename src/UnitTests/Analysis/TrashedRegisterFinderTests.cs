@@ -606,25 +606,25 @@ const ax:0x0000 cx:<invalid>
         [Test]
         public void TrfFactorial()
         {
-            RunFileTest("Fragments/factorial.asm", "Analysis/TrfFactorial.txt");
+            RunFileTest_x86_real("Fragments/factorial.asm", "Analysis/TrfFactorial.txt");
         }
 
         [Test]
         public void TrfReg00005()
         {
-            RunFileTest("Fragments/regressions/r00005.asm", "Analysis/TrfReg00005.txt");
+            RunFileTest_x86_real("Fragments/regressions/r00005.asm", "Analysis/TrfReg00005.txt");
         }
 
         [Test]
         public void TrfReg00007()
         {
-            RunFileTest("Fragments/regressions/r00007.asm", "Analysis/TrfReg00007.txt");
+            RunFileTest_x86_real("Fragments/regressions/r00007.asm", "Analysis/TrfReg00007.txt");
         }
 
         [Test]
         public void TrfProcIsolation()
         {
-            RunFileTest("Fragments/multiple/procisolation.asm", "Analysis/TrfProcIsolation.txt");
+            RunFileTest_x86_real("Fragments/multiple/procisolation.asm", "Analysis/TrfProcIsolation.txt");
         }
 
         [Test]

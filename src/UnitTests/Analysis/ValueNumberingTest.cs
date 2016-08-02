@@ -212,19 +212,19 @@ looptest:
 		//[Test]
 		public void VnFactorial()
 		{
-			RunFileTest("Fragments/factorial.asm", "Analysis/VnFactorial.txt");
+			RunFileTest_x86_real("Fragments/factorial.asm", "Analysis/VnFactorial.txt");
 		}
 
 		//[Test]
 		public void VnReg00001()
 		{
-			RunFileTest("Fragments/regression00001.asm", "Analysis/VnReg00001.txt");
+			RunFileTest_x86_real("Fragments/regression00001.asm", "Analysis/VnReg00001.txt");
 		}
 
 		//[Test]
 		public void VnStringInstructions()
 		{
-			RunFileTest("Fragments/stringinstr.asm", "Analysis/VnStringInstructions.txt");
+			RunFileTest_x86_real("Fragments/stringinstr.asm", "Analysis/VnStringInstructions.txt");
 		}
 
 		protected override void RunTest(Program program, TextWriter writer)

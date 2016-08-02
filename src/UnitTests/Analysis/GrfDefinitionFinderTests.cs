@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void GrfdAddSubCarries()
 		{
-			RunFileTest("Fragments/addsubcarries.asm", "Analysis/GrfdAddSubCarries.txt");
+			RunFileTest_x86_real("Fragments/addsubcarries.asm", "Analysis/GrfdAddSubCarries.txt");
 		}
 
 		[Test]

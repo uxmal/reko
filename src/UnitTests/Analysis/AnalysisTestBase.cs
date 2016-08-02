@@ -223,13 +223,13 @@ namespace Reko.UnitTests.Analysis
             scan.ScanImage();
         }
 
-        public static void RunTest(string sourceFile, Action<Program, TextWriter> test, string outputFile)
+        public static void RunTest_x86_real(string sourceFile, Action<Program, TextWriter> test, string outputFile)
         {
             Program prog = RewriteMsdosAssembler(sourceFile, null);
             SaveRunOutput(prog, test, outputFile);
         }
 
-		protected void RunFileTest(string sourceFile, string outputFile)
+		protected void RunFileTest_x86_real(string sourceFile, string outputFile)
 		{
 			Program prog = RewriteMsdosAssembler(sourceFile, null);
             SaveRunOutput(prog, RunTest, outputFile);

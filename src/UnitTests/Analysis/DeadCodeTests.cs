@@ -39,25 +39,25 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void DeadPushPop()
 		{
-			RunFileTest("Fragments/pushpop.asm", "Analysis/DeadPushPop.txt");
+			RunFileTest_x86_real("Fragments/pushpop.asm", "Analysis/DeadPushPop.txt");
 		}
 
 		[Test]
 		public void DeadFactorialReg()
 		{
-			RunFileTest("Fragments/factorial_reg.asm", "Analysis/DeadFactorialReg.txt");
+			RunFileTest_x86_real("Fragments/factorial_reg.asm", "Analysis/DeadFactorialReg.txt");
 		}
 
 		[Test]
 		public void DeadFactorial()
 		{
-			RunFileTest("Fragments/factorial.asm", "Analysis/DeadFactorial.txt");
+			RunFileTest_x86_real("Fragments/factorial.asm", "Analysis/DeadFactorial.txt");
 		}
 
 		[Test]
 		public void Dead3Converge()
 		{
-			RunFileTest("Fragments/3converge.asm", "Analysis/Dead3Converge.txt");
+			RunFileTest_x86_real("Fragments/3converge.asm", "Analysis/Dead3Converge.txt");
 		}
 
 		[Test]

@@ -57,6 +57,23 @@ namespace Reko.UnitTests.Analysis
             Assert.AreEqual(sExp, sw.ToString());
         }
 
+        private void RunTest(Program program, TextWriter writer)
+        {
+            var dfa = new DataFlowAnalysis(program, null, new FakeDecompilerEventListener());
+            dfa.AnalyzeProgram2();
+            foreach (var proc in program.Procedures.Values)
+            {
+                proc.Write(false, writer);
+            }
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void DfaReg00282()
+        {
+            AnalysisTestBase.RunTest_x86_real("Fragments/regressions/r00282.asm", RunTest, "Analysis/DfaReg00282.txt");
+        }
+
         [Test]
         [Ignore()]
         public void Dfa2_Simple()

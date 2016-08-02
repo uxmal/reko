@@ -172,7 +172,7 @@ namespace Reko.Analysis
 
         public int VisitApplication(Application appl)
         {
-            throw new NotImplementedException();
+            return 0;
         }
 
         public int VisitArrayAccess(ArrayAccess acc)
@@ -195,7 +195,7 @@ namespace Reko.Analysis
 
         public int VisitConditionOf(ConditionOf cof)
         {
-            throw new NotImplementedException();
+            return cof.Expression.Accept(this);
         }
 
         public int VisitConstant(Constant c)

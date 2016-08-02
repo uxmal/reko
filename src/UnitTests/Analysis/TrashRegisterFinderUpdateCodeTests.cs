@@ -357,25 +357,25 @@ main_exit:
         [Test]
         public void Trfu_ProcIsolation()
         {
-            AnalysisTestBase.RunTest("Fragments/multiple/procisolation.asm", RunTest, "Analysis/TrfuProcIsolation.txt");
+            AnalysisTestBase.RunTest_x86_real("Fragments/multiple/procisolation.asm", RunTest, "Analysis/TrfuProcIsolation.txt");
         }
 
         [Test]
         public void Trfu_PushedRegisters()
         {
-            AnalysisTestBase.RunTest("Fragments/multiple/pushed_registers.asm", RunTest, "Analysis/TrfuPushedRegisters.txt");
+            AnalysisTestBase.RunTest_x86_real("Fragments/multiple/pushed_registers.asm", RunTest, "Analysis/TrfuPushedRegisters.txt");
         }
 
         [Test]
         public void Trfu_WhileLoop()
         {
-            AnalysisTestBase.RunTest("Fragments/while_loop.asm", RunTest, "Analysis/TrfuWhileLoop.txt");
+            AnalysisTestBase.RunTest_x86_real("Fragments/while_loop.asm", RunTest, "Analysis/TrfuWhileLoop.txt");
         }
 
         [Test]
         public void Trfu_Reg00005()
         {
-            AnalysisTestBase.RunTest("Fragments/regressions/r00005.asm", RunTest, "Analysis/TrfuReg00005.txt");
+            AnalysisTestBase.RunTest_x86_real("Fragments/regressions/r00005.asm", RunTest, "Analysis/TrfuReg00005.txt");
         }
 
         [Test]

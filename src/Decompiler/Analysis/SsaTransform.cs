@@ -1270,7 +1270,7 @@ namespace Reko.Analysis
             if (this.RenameFrameAccesses && IsFrameAccess(ssa.Procedure, access.EffectiveAddress))
             {
                 var idFrame = EnsureStackVariable(ssa.Procedure, access.EffectiveAddress, access.DataType);
-                var idNew = NewUse(idFrame, stmCur, false);
+                var idNew = NewUse(idFrame, stmCur, true);
                 return idNew;
             }
             else
