@@ -768,7 +768,30 @@ testProc_exit:
             Assert.AreSame(blockOther, block.Succ[0]);
             Assert.AreSame(blockOther, block.Succ[1]);
             mr.VerifyAll();
+        }
 
+        [Test]
+        public void BwiUserSpecifiedValues()
+        {
+            var addrStart = Address.Ptr32(0x00100000);
+            program.User.RegisterValues[addrStart+4] = new List<RegisterValue_v2>
+            {
+                new RegisterValue_v2 { Register= "r1", Value= "4711" },
+                new RegisterValue_v2 { Register="r2", Value= "1147" },
+            };
+            trace.Add(m => { m.Assign(r1, m.LoadDw(m.Word32(0x112200))); });
+            trace.Add(m => { m.Assign(m.LoadDw(m.Word32(0x112204)), r1); });
+            scanner.Stub(s => s.FindContainingBlock(null)).IgnoreArguments().Return(block);
+            scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
+            mr.ReplayAll();
+
+            var wi = CreateWorkItem(addrStart, new FakeProcessorState(arch));
+            wi.Process();
+
+            Assert.AreEqual("r1 = Mem0[0x00112200:word32]", block.Statements[0].Instruction.ToString());
+            Assert.AreEqual("r1 = 0x00004711", block.Statements[1].Instruction.ToString());
+            Assert.AreEqual("r2 = 0x00001147", block.Statements[2].Instruction.ToString());
+            Assert.AreEqual("r1 = Mem0[0x00112200:word32]", block.Statements[3].Instruction.ToString());
         }
     }
 }
