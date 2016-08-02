@@ -39,6 +39,7 @@ namespace Reko.Core
             this.Heuristics = new SortedSet<string>();
             this.Annotations = new List<Annotation>();
             this.TextEncoding = Encoding.ASCII;
+            this.RegisterValues = new SortedList<Address, List<Serialization.RegisterValue_v2>>();
         }
 
         // 'Oracular' information provided by the user.
@@ -64,6 +65,8 @@ namespace Reko.Core
         /// Text encoding to use to interpret strings.
         /// </summary>
         public Encoding TextEncoding { get; set; }
+
+        public SortedList<Address, List<Serialization.RegisterValue_v2>> RegisterValues { get; set; }
     }
 
     public class Annotation

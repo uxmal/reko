@@ -370,8 +370,32 @@ namespace Reko.Core.Serialization
                     .Select(c => LoadUserCall(c, program))
                     .Where(c => c != null)
                     .ToSortedList(k => k.Address, v => v);
-                
             }
+            if (sUser.RegisterValues != null)
+            {
+                program.User.RegisterValues = LoadRegisterValues(sUser.RegisterValues);
+            }
+        }
+
+        private SortedList<Address, List<RegisterValue_v2>> LoadRegisterValues(
+            RegisterValue_v2[] sRegValues)
+        {
+            var allLists = new SortedList<Address, List<RegisterValue_v2>>();
+            foreach (var sRegValue in sRegValues)
+            {
+                Address addr;
+                if (sRegValue != null && platform.TryParseAddress(sRegValue.Address, out addr))
+                {
+                    List<RegisterValue_v2> list;
+                    if (!allLists.TryGetValue(addr, out list))
+                    {
+                        list = new List<RegisterValue_v2>();
+                        allLists.Add(addr, list);
+                    }
+                    list.Add(sRegValue);
+                }
+            }
+            return allLists;
         }
 
         private UserCallData LoadUserCall(SerializedCall_v1 call, Program program)
@@ -396,6 +420,7 @@ namespace Reko.Core.Serialization
                 Signature = sig,
             };
         }
+
 
         public void LoadUserData(UserData_v3 sUser, Program program, UserData user)
         {

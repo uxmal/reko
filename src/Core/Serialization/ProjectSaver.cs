@@ -92,6 +92,8 @@ namespace Reko.Core.Serialization
                         .Select(h => new Heuristic_v3 { Name = h }).ToList(),
                     Annotations = program.User.Annotations.Select(SerializeAnnotation).ToList(),
                     TextEncoding = program.User.TextEncoding != Encoding.ASCII ? program.User.TextEncoding.WebName : null,
+                    RegisterValues = SerializeRegisterValues(program.User.RegisterValues)
+
                 },
                 DisassemblyFilename =  ConvertToProjectRelativePath(projectAbsPath, program.DisassemblyFilename),
                 IntermediateFilename = ConvertToProjectRelativePath(projectAbsPath, program.IntermediateFilename),
@@ -99,6 +101,25 @@ namespace Reko.Core.Serialization
                 TypesFilename =        ConvertToProjectRelativePath(projectAbsPath, program.TypesFilename),
                 GlobalsFilename =      ConvertToProjectRelativePath(projectAbsPath, program.GlobalsFilename),
             };
+        }
+
+        private RegisterValue_v2[] SerializeRegisterValues(SortedList<Address, List<RegisterValue_v2>> registerValues)
+        {
+            var sRegValues = new List<RegisterValue_v2>();
+            foreach (var de in registerValues)
+            {
+                var sAddr = de.Key.ToString();
+                foreach (var rv in de.Value)
+                {
+                    sRegValues.Add(new RegisterValue_v2
+                    {
+                        Address = sAddr,
+                        Register = rv.Register,
+                        Value = rv.Value
+                    });
+                }
+            }
+            return sRegValues.ToArray();
         }
 
         private string GlobalName(KeyValuePair<Address, GlobalDataItem_v2> de)

@@ -76,17 +76,43 @@ namespace Reko.UnitTests.Core.Serialization
 			Assert.AreEqual(21, lib.Procedures.Count);
 		}
 
-		[Test]
-		public void SlibReadRealModeIntServices()
-		{
-            XmlSerializer ser = SerializedLibrary.CreateSerializer_v1(typeof(SerializedLibrary));
-			SerializedLibrary lib;
-			using (Stream stm = fsSvc.CreateFileStream(FileUnitTester.MapTestPath("../Environments/Msdos/realmodeintservices.xml"), FileMode.Open))
-			{
-				lib = (SerializedLibrary) ser.Deserialize(stm);
-			}
-			Assert.AreEqual(95, lib.Procedures.Count);
-		}
+        [Test(Description = "Validates that the realmodeintservices file (in format 1) can be read properly")]
+        public void SlibReadRealModeIntServices_v1()
+        {
+            var ser = SerializedLibrary.CreateSerializer_v1(typeof(SerializedLibrary));
+            SerializedLibrary lib;
+            var contents =
+@"<?xml version=""1.0"" encoding=""utf-16"" ?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <service name=""msdos_rename_file"">
+    <syscallinfo>
+      <vector>21</vector>
+      <regvalue reg=""ah"">56</regvalue>
+    </syscallinfo>
+    <signature>
+      <return>
+        <flag>C</flag>
+      </return>
+      <arg name=""oldName""><seq><reg>ds</reg><reg>dx</reg></seq></arg>
+      <arg name=""newName""><seq><reg>es</reg><reg>di</reg></seq></arg>
+      <arg name=""errorCode"" out=""true""><reg>ax</reg></arg>
+    </signature>
+  </service>
+</library>
+";
+            lib = (SerializedLibrary)ser.Deserialize(new StringReader(contents));
+            Assert.AreEqual(1, lib.Procedures.Count);
+            var svc = (SerializedService)lib.Procedures[0];
+            Assert.AreEqual("msdos_rename_file", svc.Name);
+            Assert.AreEqual("21", svc.SyscallInfo.Vector);
+            Assert.AreEqual("ah", svc.SyscallInfo.RegisterValues[0].Register);
+            Assert.AreEqual("56", svc.SyscallInfo.RegisterValues[0].Value);
+            Assert.AreEqual("arg()", svc.Signature.ReturnValue.ToString());
+            Assert.AreEqual(3, svc.Signature.Arguments.Length);
+            Assert.AreEqual("arg(oldName,)", svc.Signature.Arguments[0].ToString());
+            Assert.AreEqual("arg(newName,)", svc.Signature.Arguments[1].ToString());
+            Assert.AreEqual("arg(errorCode,)", svc.Signature.Arguments[2].ToString());
+        }
 
         [Test]
         public void SlibLoadVoidFn()
