@@ -170,15 +170,20 @@ namespace Reko.Analysis
         {
             visited.Add(block);
             StartProcessingBlock(block);
-            try
+            foreach (var stm in block.Statements)
             {
-                block.Statements.ForEach(stm => stm.Instruction.Accept(this));
-            } catch (Exception ex)
-            {
-                eventListener.Error(
-                    eventListener.CreateBlockNavigator(program, block),
-                    ex,
-                    "Error while analyzing trashed registers.");
+                try
+                {
+                    stm.Instruction.Accept(this);
+
+                }
+                catch (Exception ex)
+                {
+                    eventListener.Error(
+                        eventListener.CreateStatementNavigator(program, stm),
+                        ex,
+                        "Error while analyzing trashed registers.");
+                }
             }
             if (block == block.Procedure.ExitBlock)
             {
@@ -213,7 +218,7 @@ namespace Reko.Analysis
                 }
                 catch (Exception ex)
                 {
-                    var location = eventListener.CreateBlockNavigator(program, block);
+                    var location = eventListener.CreateStatementNavigator(program, stm);
                     eventListener.Error(
                         location,
                         ex,

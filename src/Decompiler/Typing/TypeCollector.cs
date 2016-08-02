@@ -73,7 +73,7 @@ namespace Reko.Typing
                     catch (Exception ex)
                     {
                         eventListener.Error(
-                            eventListener.CreateProcedureNavigator(program, p),
+                            eventListener.CreateStatementNavigator(program, stm),
                             ex,
                             "An error occurred while processing the statement {0}.",
                             stm);
