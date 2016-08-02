@@ -129,7 +129,7 @@ namespace Reko.Analysis
                 catch (StatementCorrelatedException stex)
                 {
                     eventListener.Error(
-                        eventListener.CreateBlockNavigator(program, stex.Statement),
+                        eventListener.CreateStatementNavigator(program, stex.Statement),
                         stex, 
                         "An error occurred during data flow analysis.");
                 }
