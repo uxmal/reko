@@ -27,9 +27,19 @@ namespace Reko.UnitTests
 {
     public static class Categories
     {
-        public const string Capstone = "Capstone";
         public const string Regressions = "Regressions";
         public const string UnitTests = "UnitTests";
+
+        // The purpose of UserInterface is to avoid running such unit tests
+        // under Travis CI, since they require an X server to pass, and
+        // the Travis CI environment doesn't provide one.
         public const string UserInterface = "UserInterface";
+
+        // The purpose of the Capstone category is to avoid running
+        // such unit tests, because currently the Reko build process
+        // isn't able to provide a platform neutral Capstone 
+        // disassembler for ARM :-(
+        public const string Capstone = "Capstone";
+
     }
 }
