@@ -370,12 +370,6 @@ namespace Reko.Gui.Windows.Controls
         {
             if (denom <= 0)
                 throw new ArgumentOutOfRangeException("denom", "Denominator must be larger than 0.");
-#if SIMPLE
-            long total = LineCount;
-            long iPos = (numer * total) / denom;
-
-            MoveToLine(StartPosition, (int)iPos);
-#else
             if (numer <= 0)
             {
                 addrCur = (Address)StartPosition;
@@ -414,7 +408,6 @@ namespace Reko.Gui.Windows.Controls
                 curLine += size;
             }
             addrCur = (Address)EndPosition;
-#endif
         }
 
         public int CountLines(object startPos, object endPos)
