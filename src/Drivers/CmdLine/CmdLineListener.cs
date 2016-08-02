@@ -44,6 +44,11 @@ namespace Reko.CmdLine
             return new NullCodeLocation(block.Name);
         }
 
+        public ICodeLocation CreateStatementNavigator(Program program, Statement stm)
+        {
+            return new NullCodeLocation(program.SegmentMap.MapLinearAddressToAddress(stm.LinearAddress).ToString());
+        }
+
         public void AddDiagnostic(ICodeLocation location, Diagnostic d)
         {
             Console.Out.WriteLine("{0}: {1}: {2}",

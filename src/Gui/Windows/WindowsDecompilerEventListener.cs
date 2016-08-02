@@ -235,6 +235,11 @@ namespace Reko.Gui.Windows
             return new ProcedureNavigator(program, proc, sp);
         }
 
+        ICodeLocation DecompilerEventListener.CreateStatementNavigator(Program program, Statement stm)
+        {
+            return new StatementNavigator(program, stm, sp);
+        }
+
         private void ShowStatus(string newStatus)
         {
             if (dlg == null)

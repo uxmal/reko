@@ -32,5 +32,6 @@ namespace Reko.Gui
         void DisplayProcedure(Program program, Procedure proc);
         void DisplayGlobals(Program program, ImageSegment segment);
         void DisplayDataType(Program program, DataType dt);
+        void DisplayStatement(Program program, Statement statement);
     }
 }

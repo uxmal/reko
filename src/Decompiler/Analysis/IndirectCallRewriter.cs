@@ -66,13 +66,14 @@ namespace Reko.Analysis
                     try
                     {
                         RewriteCall(stm, ci);
+                        throw new NotImplementedException("bleh");      //$DEBUG
                     }
                     catch (Exception ex)
                     {
                         eventListener.Error(
-                            eventListener.CreateProcedureNavigator(program, proc),
+                            eventListener.CreateStatementNavigator(program, stm),
                             ex,
-                            "Indirect call rewriter: an error occurred while processing the statement {0}.",
+                            "Indirect call rewriter encountered an error while processing the statement {0}.",
                             stm);
                     }
                 }
