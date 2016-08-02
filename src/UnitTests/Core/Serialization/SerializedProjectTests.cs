@@ -33,6 +33,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
+using System;
 
 namespace Reko.UnitTests.Core.Serialization
 {
@@ -89,6 +90,13 @@ namespace Reko.UnitTests.Core.Serialization
             procser.Stub(p => p.Deserialize(null, null)).IgnoreArguments()
                 .Return(new ProcedureSignature());
             oe.Stub(e => e.Load(sc, arch)).Return(platform);
+        }
+
+        private void Expect_TryParseAddress(string sAddr, Address addr)
+        {
+            platform.Stub(p => p.TryParseAddress(
+                Arg<string>.Is.Equal(sAddr),
+                out Arg<Address>.Out(addr).Dummy)).Return(true);
         }
 
         [Test]
@@ -439,9 +447,8 @@ namespace Reko.UnitTests.Core.Serialization
             };
             Given_Architecture();
             Given_TestOS_Platform();
-            platform.Stub(p => p.TryParseAddress(
-                Arg<string>.Is.Equal("0041230"),
-                out Arg<Address>.Out(Address.Ptr32(0x0041230)).Dummy)).Return(true);
+            Expect_TryParseAddress("0041230", Address.Ptr32(0x0041230));
+            Expect_TryParseAddress("00443210", Address.Ptr32(0x00443210));
             var loader = mr.Stub<ILoader>();
             loader.Stub(l => l.LoadImageBytes(null, 0))
                 .IgnoreArguments()
@@ -459,7 +466,7 @@ namespace Reko.UnitTests.Core.Serialization
             Assert.IsTrue(project.Programs[0].User.Heuristics.Contains("HeuristicScanning"));
             Assert.AreEqual("windows-1251", project.Programs[0].User.TextEncoding.WebName);
             Assert.AreEqual(1, project.Programs[0].User.RegisterValues.Count);
-            Assert.AreEqual(2, project.Programs[0].User.RegisterValues[Address.Ptr32(0x00443210)]);
+            Assert.AreEqual(2, project.Programs[0].User.RegisterValues[Address.Ptr32(0x00443210)].Count);
         }
 
         [Test]
