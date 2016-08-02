@@ -114,6 +114,7 @@ namespace Reko.Scanning
         private bool ProcessRtlCluster(RtlInstructionCluster ric)
         {
             state.SetInstructionPointer(ric.Address);
+            SetAssumedRegisterValues(ric.Address);
             foreach (var rtlInstr in ric.Instructions)
             {
                 ri = rtlInstr;
@@ -123,6 +124,25 @@ namespace Reko.Scanning
                 }
             }
             return true;
+        }
+
+        /// <summary>
+        /// If a user has requested register values to be hard wired at a
+        /// particular address, do so by emitting assignments that set
+        /// the relevant registers to the right values.
+        /// </summary>
+        /// <param name="addr"></param>
+        public void SetAssumedRegisterValues(Address addr)
+        {
+            List<Core.Serialization.RegisterValue_v2> regValues;
+            if (!program.User.RegisterValues.TryGetValue(addr, out regValues))
+                return;
+            foreach (var rv in regValues)
+            {
+                var reg = frame.EnsureRegister(program.Architecture.GetRegister(rv.Register));
+                var val = Constant.Create(reg.DataType, Convert.ToUInt64(rv.Value, 16));
+                new RtlAssignment(reg, val).Accept(this);
+            }
         }
 
         /// <summary>

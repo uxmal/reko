@@ -770,19 +770,21 @@ testProc_exit:
             mr.VerifyAll();
         }
 
-        [Test]
-        public void BwiUserSpecifiedValues()
+        [Test(Description = "Tests the implementation of #25; user specified register values at a specific address in the program")]
+        public void BwiUserSpecifiedRegisterValues()
         {
             var addrStart = Address.Ptr32(0x00100000);
             program.User.RegisterValues[addrStart+4] = new List<RegisterValue_v2>
             {
                 new RegisterValue_v2 { Register= "r1", Value= "4711" },
-                new RegisterValue_v2 { Register="r2", Value= "1147" },
+                new RegisterValue_v2 { Register= "r2", Value= "1147" },
             };
             trace.Add(m => { m.Assign(r1, m.LoadDw(m.Word32(0x112200))); });
             trace.Add(m => { m.Assign(m.LoadDw(m.Word32(0x112204)), r1); });
             scanner.Stub(s => s.FindContainingBlock(null)).IgnoreArguments().Return(block);
             scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
+            arch.Stub(s => s.GetRegister("r1")).Return((RegisterStorage)r1.Storage);
+            arch.Stub(s => s.GetRegister("r2")).Return((RegisterStorage)r2.Storage);
             mr.ReplayAll();
 
             var wi = CreateWorkItem(addrStart, new FakeProcessorState(arch));
@@ -791,7 +793,7 @@ testProc_exit:
             Assert.AreEqual("r1 = Mem0[0x00112200:word32]", block.Statements[0].Instruction.ToString());
             Assert.AreEqual("r1 = 0x00004711", block.Statements[1].Instruction.ToString());
             Assert.AreEqual("r2 = 0x00001147", block.Statements[2].Instruction.ToString());
-            Assert.AreEqual("r1 = Mem0[0x00112200:word32]", block.Statements[3].Instruction.ToString());
+            Assert.AreEqual("Mem0[0x00112204:word32] = r1", block.Statements[3].Instruction.ToString());
         }
     }
 }
