@@ -296,27 +296,25 @@ l0C00_000C:
 	bx_10 = PHI(bx_7, bx_27)
 	bh_11 = PHI(bh_8, bh_28)
 	bl_12 = PHI(bl_9, bl_29)
-	al_13 = bh_11
-	al_14 = bh_11 + 0x01
-	ah_15 = bl_12
-	ah_16 = bl_12 & 0x0F
-	ax_17 = ah_16 *u al_14
-	ax_18 = ax_17 << 0x0004
-	ah_19 = SLICE(ax_17 << 0x0004, byte, 8) (alias)
-	al_20 = bl_12
-	al_21 = bl_12 & 0xF0
+	al_7 = bh_6
+	al_8 = bh_6 + 0x01
+	ah_10 = bl_9
+	ah_11 = bl_9 & 0x0F
+	ax_13 = ah_11 *u al_8
+	ax_14 = ax_13 << 0x0004
+	al_15 = bl_9
+	ax_16 = DPB(ax_13 << 0x0004, bl_9, 0) (alias)
+	al_17 = bl_9 & 0xF0
 	ah_22 = ah_19 & 0x0F
 	al_23 = al_21 | ah_19 & 0x0F
 	ax_24 = DPB(ax_17 << 0x0004, al_23, 0) (alias)
-	C_25 = false
-	Mem26[0x4DE1:bx_10:byte] = al_23
-	bx_27 = bx_10 - 0x0001
-	bh_28 = SLICE(bx_27, byte, 8) (alias)
-	bl_29 = (byte) bx_27 (alias)
-	SZO_30 = cond(bx_27)
-	SCZO_31 = SZO_30 (alias)
-	S_32 = SZO_30 (alias)
-	branch bx_27 >= 0x0000 l0C00_000C
+	C_24 = false
+	Mem27[0x4DE1:bx_26:byte] = al_23
+	bx_28 = bx_26 - 0x0001
+	bh_31 = SLICE(bx_26 - 0x0001, byte, 8) (alias)
+	bl_33 = (byte) (bx_26 - 0x0001) (alias)
+	SZO_29 = cond(bx_26 - 0x0001)
+	branch bx_26 >= 0x0001 l0C00_000C
 	// succ:  l0C00_0029 l0C00_000C
 l0C00_0029:
 	return

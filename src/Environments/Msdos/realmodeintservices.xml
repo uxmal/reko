@@ -746,6 +746,7 @@
 		<reg>cx</reg>
 	  </arg>
 	  <arg>
+      <ptr><prim domain="Character" size="1" /></ptr>
 		<seq><reg>ds</reg><reg>dx</reg></seq>
 	  </arg>
 	  <arg out="true">

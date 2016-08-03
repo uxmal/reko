@@ -31,11 +31,16 @@ using Reko.UnitTests.Mocks;
 namespace Reko.UnitTests.Analysis
 {
     [TestFixture]
-    [Ignore("Finist SsaTransform2 first")]
-    class IndirectCallRewriterTests : AnalysisTestBase
+    public class IndirectCallRewriterTests : AnalysisTestBase
     {
         private string CSignature;
         private IDictionary<string, DataType> types;
+
+        [SetUp]
+        public void Setup()
+        {
+            types = new Dictionary<string, DataType>();
+        }
 
         private void Given_CSignature(string CSignature)
         {
@@ -44,8 +49,6 @@ namespace Reko.UnitTests.Analysis
 
         private void Given_Typedef(string name, DataType dt)
         {
-            if (types == null)
-                types = new Dictionary<string, DataType>();
             types[name] = dt;
         }
 
@@ -271,7 +274,7 @@ namespace Reko.UnitTests.Analysis
                 "Analysis/IcrwTwoArguments.txt");
         }
 
-        [Test]
+        [Test(Description = "If there are no virtual functions, don't rewrite the call")]
         public void Icrw_TwoArgumentsNoFuncs()
         {
             Given_Typedef("str", TestStrNoFuncs());

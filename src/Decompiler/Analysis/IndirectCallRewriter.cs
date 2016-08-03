@@ -107,7 +107,9 @@ namespace Reko.Analysis
             var returnId = ft.ReturnValue.DataType is VoidType ?
                 null : ft.ReturnValue;
             var sigCallee = new ProcedureSignature(returnId, ft.Parameters);
-            var ab = new SsaTransform2.SsaApplicationBuilder(sst, call.CallSite, call.Callee);
+            var ab = new FrameApplicationBuilder(
+                 program.Architecture, proc.Frame, call.CallSite,
+                 call.Callee, true);
             stm.Instruction = ab.CreateInstruction(sigCallee, null);
             ssaIdTransformer.Transform(stm, call);
         }

@@ -23,7 +23,7 @@ l0C00_0000:
 	// succ:  l0C00_0019
 l0C00_0019:
 	si_26 = si_52 + 0x0001
-	word16 si_52 = si_26
+	si_52 = si_26
 	branch Mem11[ds_21:si_52:byte] != 0x00 l0C00_0019
 	// succ:  l0C00_001E l0C00_0019
 l0C00_001E:

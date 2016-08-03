@@ -68,6 +68,8 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Ignore()]
+        [Category("investigation")]
         [Category(Categories.UnitTests)]
         public void DfaReg00282()
         {
