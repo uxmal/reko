@@ -169,7 +169,8 @@ namespace Reko.Gui.Windows.Controls
         }
 
         /// <summary>
-        /// Guesses at a scrollbar position by dividing the byte offset by the instruction size.
+        /// Guesses at a scrollbar position by dividing the byte offset by the 
+        /// instruction size. This will possibly overestimate the position.
         /// </summary>
         /// <param name="byteOffset"></param>
         /// <returns></returns>
