@@ -41,7 +41,16 @@ namespace Reko.UnitTests.Analysis
     [TestFixture]
     public class DataFlowAnalysisTests2
     {
+        private MockRepository mr;
         private ProgramBuilder pb;
+        private IImportResolver importResolver;
+
+        [SetUp]
+        public void Setup()
+        {
+            mr = new MockRepository();
+            this.importResolver = mr.Stub<IImportResolver>();
+        }
 
         private void GivenProgram(ProgramBuilder pb)
         {
@@ -90,7 +99,9 @@ namespace Reko.UnitTests.Analysis
                     m.Store(m.Word32(0x010008), m.IAdd(r1, r2));
                     m.Return();
                 });
-            var dfa = new DataFlowAnalysis(pb.BuildProgram(), null, new FakeDecompilerEventListener());
+            mr.ReplayAll();
+
+            var dfa = new DataFlowAnalysis(pb.BuildProgram(), importResolver, new FakeDecompilerEventListener());
             dfa.AnalyzeProgram2();
             var sExp = @"// test
 // Return size: 0
@@ -235,22 +246,14 @@ test_exit:
 // Return size: 4
 void test(int32 a, int32 b)
 test_entry:
-	def a
-	def fp
-	def b
 	// succ:  l1
 l1:
-	a_10 = a
-	b_11 = b
-	r1_6 = a
-	r2_7 = b
-	r1_8 = a + b
+	word32 r1_8 = a + b
 	Mem9[0x00010008:word32] = r1_8
+	word32 r2_7 = b
 	return
 	// succ:  test_exit
 test_exit:
-	use r1_8
-	use r2_7
 ";
             AssertProgram(sExp, pb.Program);
         }

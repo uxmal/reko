@@ -213,7 +213,7 @@ namespace Reko.Analysis
 
         // EXPERIMENTAL - consult uxmal before using
         /// <summary>
-        /// Analyizes the procedures of a program by finding all strongly 
+        /// Analyzes the procedures of a program by finding all strongly 
         /// connected components (SCCs) and processing the SCCs one by one.
         /// </summary>
         public void AnalyzeProgram2()
@@ -232,7 +232,7 @@ namespace Reko.Analysis
             var uvr = new UnusedOutValuesRemover();
             uvr.Transform(ssts);
 
-            BuildExpressionTrees();
+            BuildExpressionTrees2();
         }
 
         private void UntangleProcedureScc(IList<Procedure> procs)
