@@ -68,7 +68,9 @@ namespace Reko.UnitTests.Analysis
 
         private void RunTest(Program program, TextWriter writer)
         {
-            var dfa = new DataFlowAnalysis(program, null, new FakeDecompilerEventListener());
+            mr.ReplayAll();
+
+            var dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
             dfa.AnalyzeProgram2();
             foreach (var proc in program.Procedures.Values)
             {
@@ -86,7 +88,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Ignore()]
+        [Ignore("This won't pass until the UseInstructions are eliminated")]
         public void Dfa2_Simple()
         {
             var pb = new ProgramBuilder(new FakeArchitecture());

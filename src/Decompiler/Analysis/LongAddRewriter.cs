@@ -506,17 +506,25 @@ namespace Reko.Analysis
             var linAddr = hiCandidate.Statement.LinearAddress;
             var iStm = stmts.IndexOf(hiCandidate.Statement);
 
-            var stmMkLeft = stmts.Insert(
-                iStm++,
-                linAddr,
-                CreateMkSeq(left, hiCandidate.Left, loCandidate.Left));
-            left = ReplaceDstWithSsaIdentifier(left, null, stmMkLeft);
+            Statement stmMkLeft = null;
+            if (!(left is MkSequence))
+            {
+                stmMkLeft = stmts.Insert(
+                    iStm++,
+                    linAddr,
+                    CreateMkSeq(left, hiCandidate.Left, loCandidate.Left));
+                left = ReplaceDstWithSsaIdentifier(left, null, stmMkLeft);
+            }
 
-            var stmMkRight = stmts.Insert(
-                iStm++,
-                linAddr,
-                CreateMkSeq(right, hiCandidate.Right, loCandidate.Right));
-            right = ReplaceDstWithSsaIdentifier(right, null, stmMkRight);
+            Statement stmMkRight = null;
+            if (!(right is MkSequence))
+            {
+                stmMkRight = stmts.Insert(
+                    iStm++,
+                    linAddr,
+                    CreateMkSeq(right, hiCandidate.Right, loCandidate.Right));
+                right = ReplaceDstWithSsaIdentifier(right, null, stmMkRight);
+            }
 
             var expSum = new BinaryExpression(loCandidate.Op, left.DataType, left, right);
             Instruction instr = Assign(dst, expSum);
@@ -526,12 +534,12 @@ namespace Reko.Analysis
             var sidDst = GetSsaIdentifierOf(dst);
             var sidLeft = GetSsaIdentifierOf(left);
             var sidRight = GetSsaIdentifierOf(right);
-            if (sidLeft != null)
+            if (stmMkLeft != null && sidLeft != null)
             {
                 GetSsaIdentifierOf(loCandidate.Left).Uses.Add(stmMkLeft);
                 GetSsaIdentifierOf(hiCandidate.Left).Uses.Add(stmMkLeft);
             }
-            if (sidRight != null)
+            if (stmMkRight != null && sidRight != null)
             {
                 GetSsaIdentifierOf(loCandidate.Right).Uses.Add(stmMkRight);
                 GetSsaIdentifierOf(hiCandidate.Right).Uses.Add(stmMkRight);
@@ -737,7 +745,7 @@ namespace Reko.Analysis
             {
                 return Constant.Create(totalSize, ((ulong)immHi.ToUInt32() << expLo.DataType.BitSize) | immLo.ToUInt32());
             }
-            throw new NotImplementedException();
+            return new MkSequence(totalSize, expHi, expLo);
         }
 
         private Expression CreateMemoryAccess(MemoryAccess mem, DataType totalSize)

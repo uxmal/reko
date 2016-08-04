@@ -472,7 +472,6 @@ done:
         }
 
         [Test]
-        [Ignore("Think about how to deal with long variables (edx:eax)")]
         public void CceIsqrt()
         {
             RunFileTest_x86_real("Fragments/isqrt.asm", "Analysis/CceIsqrt.txt");
