@@ -79,9 +79,13 @@ namespace Reko.Arch.Sparc
         {
             var dst = RewriteOp(instrCur.Op3);
             var src1 = RewriteOp(instrCur.Op1);
-            var src2 = (Constant)RewriteOp(instrCur.Op2);
-            var tmp = frame.CreateTemporary(dst.DataType);
-            emitter.Assign(tmp, emitter.IAdd(src1, -src2.ToInt32()));
+            var src2 = RewriteOp(instrCur.Op2);
+            Identifier tmp = null;
+            if (dst is Identifier && ((Identifier)dst).Storage != Registers.g0)
+            {
+                tmp = frame.CreateTemporary(dst.DataType);
+                emitter.Assign(tmp, emitter.IAdd(src1, src2));
+            }
             Copy(Registers.i0, Registers.o0);
             Copy(Registers.i1, Registers.o1);
             Copy(Registers.i2, Registers.o2);
@@ -90,15 +94,23 @@ namespace Reko.Arch.Sparc
             Copy(Registers.i5, Registers.o5);
             Copy(Registers.i6, Registers.sp);
             Copy(Registers.i7, Registers.o7);
+            if (tmp != null)
+            {
+                emitter.Assign(dst, tmp);
+            }
         }
 
         private void RewriteSave()
         {
             var dst = RewriteOp(instrCur.Op3);
             var src1 = RewriteOp(instrCur.Op1);
-            var src2 = (Constant) RewriteOp(instrCur.Op2);
-            var tmp = frame.CreateTemporary(dst.DataType);
-            emitter.Assign(tmp, emitter.ISub(src1, -src2.ToInt32()));
+            var src2 = RewriteOp(instrCur.Op2);
+            Identifier tmp = null;
+            if (((Identifier)dst).Storage != Registers.g0)
+            {
+                tmp = frame.CreateTemporary(dst.DataType);
+                emitter.Assign(tmp, emitter.IAdd(src1, src2));
+            }
             Copy(Registers.o0, Registers.i0);
             Copy(Registers.o1, Registers.i1);
             Copy(Registers.o2, Registers.i2);
@@ -107,7 +119,12 @@ namespace Reko.Arch.Sparc
             Copy(Registers.o5, Registers.i5);
             Copy(Registers.sp, Registers.i6);
             Copy(Registers.o7, Registers.i7);
+            if (tmp != null)
+            {
+                emitter.Assign(dst, tmp);
+            }
         }
+
 
         private void Copy(RegisterStorage src, RegisterStorage dst)
         {
