@@ -204,7 +204,7 @@ namespace Reko.UnitTests.Analysis
 
                 var icrw = new IndirectCallRewriter(
                     program,
-                    sst,
+                    sst.SsaState,
                     eventListener);
                 icrw.Rewrite();
 

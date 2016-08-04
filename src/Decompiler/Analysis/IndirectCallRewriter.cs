@@ -34,7 +34,6 @@ namespace Reko.Analysis
     /// </summary>
     public class IndirectCallRewriter
     {
-        private SsaTransform2 sst;
         private SsaState ssa;
         private Program program;
         private Procedure proc;
@@ -54,21 +53,6 @@ namespace Reko.Analysis
             this.asc = new IndirectCallTypeAscender(program);
             this.expander = new IndirectCallExpander(ssa);
             this.ssaIdTransformer = new SsaIdentifierTransformer(ssa);
-            this.eventListener = eventListener;
-        }
-
-        public IndirectCallRewriter(
-            Program program,
-            SsaTransform2 sst,
-            DecompilerEventListener eventListener)
-        {
-            this.program = program;
-            this.proc = sst.SsaState.Procedure;
-            this.sst = sst;
-            this.ssa = sst.SsaState;
-            this.asc = new IndirectCallTypeAscender(program);
-            this.expander = new IndirectCallExpander(sst.SsaState);
-            this.ssaIdTransformer = new SsaIdentifierTransformer(sst.SsaState);
             this.eventListener = eventListener;
         }
 
