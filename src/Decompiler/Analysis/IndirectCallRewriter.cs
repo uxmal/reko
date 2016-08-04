@@ -66,7 +66,6 @@ namespace Reko.Analysis
                     try
                     {
                         RewriteCall(stm, ci);
-                        throw new NotImplementedException("bleh");      //$DEBUG
                     }
                     catch (Exception ex)
                     {
