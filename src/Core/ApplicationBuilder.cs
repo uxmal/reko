@@ -201,7 +201,7 @@ namespace Reko.Core
         {
             if (ensureVariables)
                 return frame.EnsureStackVariable(
-                    stack.StackOffset - (site.StackDepthOnEntry + sigCallee.ReturnAddressOnStack),
+                    stack.StackOffset - site.StackDepthOnEntry,
                     stack.DataType);
             else 
                 return arch.CreateStackAccess(frame, stack.StackOffset, stack.DataType);
