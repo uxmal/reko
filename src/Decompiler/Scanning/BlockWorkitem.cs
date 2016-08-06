@@ -165,13 +165,13 @@ namespace Reko.Scanning
             return block.Statements.Count > 0;
         }
 
-        private Instruction BuildApplication(Expression fn, ProcedureSignature sig, CallSite site)
+        private Instruction BuildApplication(Expression fn, FunctionType sig, CallSite site)
         {
             var ab = CreateApplicationBuilder(fn, sig, site);
             return ab.CreateInstruction();
         }
 
-        private ApplicationBuilder CreateApplicationBuilder(Expression callee, ProcedureSignature sig, CallSite site)
+        private ApplicationBuilder CreateApplicationBuilder(Expression callee, FunctionType sig, CallSite site)
         {
             var ab = new ApplicationBuilder(
                 arch,
@@ -425,7 +425,7 @@ namespace Reko.Scanning
                 ProcessRtlCluster(rtlStream.Current);
             }
             var site = OnBeforeCall(stackReg, call.ReturnAddressSize);
-            ProcedureSignature sig;
+            FunctionType sig;
             ProcedureCharacteristics chr = null;
             Address addr = call.Target as Address;
             if (addr != null)
@@ -433,7 +433,7 @@ namespace Reko.Scanning
                 if (!program.SegmentMap.IsValidAddress(addr))
                 {
                     scanner.Warn(ric.Address, "Target address {0} is invalid.", addr);
-                    sig = new ProcedureSignature();
+                    sig = new FunctionType();
                     EmitCall(
                         CreateProcedureConstant(
                             new ExternalProcedure(Procedure.GenerateName(addr), sig)),
@@ -512,7 +512,7 @@ namespace Reko.Scanning
             return OnAfterCall(sig, chr);
         }
 
-        private void EmitCall(Expression callee, ProcedureSignature sig, CallSite site)
+        private void EmitCall(Expression callee, FunctionType sig, CallSite site)
         {
             if (sig != null && sig.ParametersValid)
             {
@@ -543,7 +543,7 @@ namespace Reko.Scanning
             return state.OnBeforeCall(stackReg, sizeOfRetAddrOnStack);
         }
 
-        private bool OnAfterCall(ProcedureSignature sigCallee, ProcedureCharacteristics characteristics)
+        private bool OnAfterCall(FunctionType sigCallee, ProcedureCharacteristics characteristics)
         {
             UserCallData userCall = null;
             if (program.User.Calls.TryGetUpperBound(ric.Address, out userCall))
@@ -683,9 +683,9 @@ namespace Reko.Scanning
             return false;
         }
 
-        private ProcedureSignature GuessProcedureSignature(CallInstruction call)
+        private FunctionType GuessProcedureSignature(CallInstruction call)
         {
-            return new ProcedureSignature(); //$TODO: attempt to detect parameters of procedure?
+            return new FunctionType(); //$TODO: attempt to detect parameters of procedure?
             // This would have to be arch-dependent + platform-dependent as some arch pass
             // on stack, while others pass in registers, or a combination or both
             // ("thiscall" in x86 µsoft world).
@@ -946,7 +946,7 @@ namespace Reko.Scanning
         }
 
         //$TODO: merge the followng two procedures?
-        private void AffectProcessorState(ProcedureSignature sig)
+        private void AffectProcessorState(FunctionType sig)
         {
             if (sig == null)
                 return;

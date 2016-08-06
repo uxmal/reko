@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Scanning
         private TestScanner scan;
         private Identifier reg1;
         private IImportResolver importResolver;
-        private IDictionary<Address, ProcedureSignature> callSigs;
+        private IDictionary<Address, FunctionType> callSigs;
         private ServiceContainer sc;
         private Project project;
         private MemoryArea mem;
@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Scanning
             mr = new MockRepository();
             fakeArch = new FakeArchitecture();
             importResolver = mr.StrictMock<IImportResolver>();
-            callSigs = new Dictionary<Address, ProcedureSignature>();
+            callSigs = new Dictionary<Address, FunctionType>();
             this.eventListener = new FakeDecompilerEventListener();
             arch = fakeArch;
             var r1 = arch.GetRegister(1);
@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Scanning
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
         }
 
-        private ProcedureSignature CreateSignature(string ret, params string[] args)
+        private FunctionType CreateSignature(string ret, params string[] args)
         {
             var retReg = new Identifier(ret, PrimitiveType.Word32, new RegisterStorage(ret, 0, 0, PrimitiveType.Word32));
             var argIds = new List<Identifier>();
@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Scanning
                 argIds.Add(new Identifier(arg, PrimitiveType.Word32,
                     new RegisterStorage(ret, argIds.Count + 1, 0, PrimitiveType.Word32)));
             }
-            return new ProcedureSignature(retReg, argIds.ToArray());
+            return new FunctionType(null, retReg, argIds.ToArray());
         }
 
         private void BuildX86RealTest(Action<X86Assembler> test)
@@ -496,9 +496,9 @@ fn00001100_exit:
             var platform = mr.Stub<IPlatform>();
             platform.Stub(p => p.GetTrampolineDestination(null, null))
                 .IgnoreArguments()
-                .Return(new ExternalProcedure("bar", new ProcedureSignature()));
+                .Return(new ExternalProcedure("bar", new FunctionType()));
             platform.Stub(p => p.LookupProcedureByName("foo.dll", "bar")).Return(
-                new ExternalProcedure("bar", new ProcedureSignature()));
+                new ExternalProcedure("bar", new FunctionType()));
             program.Platform = platform;
             Given_Trace(new RtlTrace(0x1000)
             {

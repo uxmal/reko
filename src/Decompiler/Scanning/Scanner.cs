@@ -58,7 +58,7 @@ namespace Reko.Scanning
         void Warn(Address addr, string message);
         void Warn(Address addr, string message, params object[] args);
         void Error(Address addr, string message);
-        ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction);
+        FunctionType GetCallSignatureAtAddress(Address addrCallInstruction);
         ExternalProcedure GetImportedProcedure(Address addrImportThunk, Address addrInstruction);
         void TerminateBlock(Block block, Address addrEnd);
 
@@ -599,7 +599,7 @@ namespace Reko.Scanning
                 return false;
             }
 
-            ProcedureSignature sig = null;
+            FunctionType sig = null;
             if (!string.IsNullOrEmpty(sProc.CSignature))
             {
                 var usb = new UserSignatureBuilder(program);
@@ -853,7 +853,7 @@ namespace Reko.Scanning
             return addr.GenerateName("l", "");
         }
 
-        public ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction)
+        public FunctionType GetCallSignatureAtAddress(Address addrCallInstruction)
         {
             UserCallData call = null;
             if (!program.User.Calls.TryGetValue(addrCallInstruction, out call))

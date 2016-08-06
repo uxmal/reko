@@ -219,12 +219,12 @@ namespace Reko.Core
         public DataType VisitSignature(SerializedSignature sSig)
         {
             var sser = platform.CreateProcedureSerializer(this, this.defaultConvention);
-            var sig = sser.Deserialize(sSig, platform.Architecture.CreateFrame());
-            return new FunctionType(
-                null,
-                sig.ReturnValue,
-                sig.Parameters, 
-                sSig);
+            return sser.Deserialize(sSig, platform.Architecture.CreateFrame());
+            //return new FunctionType(
+            //    null,
+            //    sig.ReturnValue,
+            //    sig.Parameters, 
+            //    sSig);
         }
 
         public DataType VisitStructure(StructType_v1 structure)

@@ -75,7 +75,8 @@ namespace Reko.UnitTests.Arch.Intel
         public void Test()
         {
             Given_ProcedureSerializer("stdapi");
-            ProcedureSignature sig = new ProcedureSignature(
+            FunctionType sig = new FunctionType(
+                null,
                 new Identifier("qax", PrimitiveType.Word32, Registers.eax),
                 new Identifier[] {
                     new Identifier("qbx", PrimitiveType.Word32, Registers.ebx)
@@ -104,7 +105,7 @@ namespace Reko.UnitTests.Arch.Intel
             Given_ProcedureSerializer("stdapi");
             mr.ReplayAll();
 
-            SerializedSignature ssig = ser.Serialize(new ProcedureSignature(seq, new Identifier[0]));
+            SerializedSignature ssig = ser.Serialize(new FunctionType(null, seq, new Identifier[0]));
             Verify(ssig, "Core/SsigSerializeSequence.txt");
         }
 
@@ -126,7 +127,8 @@ namespace Reko.UnitTests.Arch.Intel
         {
             Procedure proc = new Procedure("foo", arch.CreateFrame())
             {
-                Signature = new ProcedureSignature(
+                Signature = new FunctionType(
+                    null,
                     new Identifier("eax", PrimitiveType.Word32, Registers.eax),
                     new Identifier[] {
                         new Identifier("arg00", PrimitiveType.Word32, new StackArgumentStorage(0, PrimitiveType.Word32))

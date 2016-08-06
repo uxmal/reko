@@ -21,6 +21,7 @@
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.ComponentModel;
 
@@ -37,7 +38,7 @@ namespace Reko.Core
         public string ModuleName;
 		public string Name;
 		public SyscallInfo SyscallInfo;
-		public ProcedureSignature Signature;
+		public FunctionType Signature;
 		public ProcedureCharacteristics Characteristics;
 
 		public ExternalProcedure CreateExternalProcedure(IProcessorArchitecture arch)

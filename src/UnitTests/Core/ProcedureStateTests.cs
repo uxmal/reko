@@ -309,7 +309,7 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
-            public override void OnProcedureLeft(ProcedureSignature procedureSignature)
+            public override void OnProcedureLeft(FunctionType procedureSignature)
             {
                 throw new NotImplementedException();
             }
@@ -319,7 +319,7 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
-            public override void OnAfterCall(ProcedureSignature sigCallee)
+            public override void OnAfterCall(FunctionType sigCallee)
             {
             }
 

@@ -29,10 +29,24 @@ using System.Linq;
 namespace Reko.Core.Types
 {
     /// <summary>
-    /// Models a function type. Note the similarity to ProcedureSignature: it's likely we'll want to merge these two.
+    /// Models a function type, including summarizing the effects of calling
+    /// a procedure, as seen by the caller.
     /// </summary>
-	public class FunctionType : DataType
+    /// <remarks>
+    /// Calling a procedure affects a few things: the registers, the stack 
+    /// depth, and in the case of the Intel x86 architecture the FPU stack 
+    /// depth. These effects are summarized by the signature.
+    /// <para>
+    /// $TODO: There are CPU-specific items (like x86 FPU stack gunk). Move
+    /// these into processor-specific subclasses. Also, some architectures 
+    /// -- like the FORTH language -- have multiple stacks.
+    /// </para>
+    /// </remarks>
+    public class FunctionType : DataType
 	{
+        private object p;
+        private Identifier identifier;
+
         //$REVIEW: unify ProcedureSignature and FunctionType.
         public SerializedSignature Signature { get; private set; }
 
@@ -43,7 +57,7 @@ namespace Reko.Core.Types
         }
 
         public FunctionType(
-            string name,
+            string name,        //$REVIEW: what's the use? function types have no names
             Identifier returnValue,
             Identifier [] parameters,
             SerializedSignature sSig = null)
@@ -59,9 +73,18 @@ namespace Reko.Core.Types
             this.Signature = sSig;
         }
 
+        public FunctionType(object p, Identifier identifier)
+        {
+            this.p = p;
+            this.identifier = identifier;
+        }
+
         public Identifier ReturnValue { get; private set; }
         public Identifier [] Parameters { get; private set; }
         public bool HasVoidReturn { get { return ReturnValue == null || ReturnValue.DataType is VoidType; } }
+        public TypeVariable TypeVariable { get; set; }  //$REVIEW: belongs on the Procedure itself!
+
+
         public override void Accept(IDataTypeVisitor v)
         {
             v.VisitFunctionType(this);

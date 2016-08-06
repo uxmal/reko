@@ -23,6 +23,7 @@ using Reko.Core.Code;
 using Reko.Core.Lib;
 using Reko.Core.Output;
 using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -151,16 +152,16 @@ namespace Reko.Analysis
 				ProcedureFlow pf= this.flow[proc];
                 TextFormatter f = new TextFormatter(output);
 				if (pf.Signature != null)
-					pf.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, f);
+					pf.Signature.Emit(proc.Name, FunctionType.EmitFlags.None, f);
 				else if (proc.Signature != null)
-					proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, f);
+					proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.None, f);
 				else
 					output.Write("Warning: no signature found for {0}", proc.Name);
 				output.WriteLine();
 				pf.Emit(program.Architecture, output);
 
 				output.WriteLine("// {0}", proc.Name);
-				proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, f);
+				proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.None, f);
 				output.WriteLine();
 				foreach (Block block in proc.ControlGraph.Blocks)
 				{

@@ -47,7 +47,7 @@ namespace Reko.Core
         private Frame frame;
         private CallSite site;
         private Expression callee;
-        private ProcedureSignature sigCallee;
+        private FunctionType sigCallee;
         private bool ensureVariables;
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Reko.Core
             Frame frame,
             CallSite site,
             Expression callee,
-            ProcedureSignature sigCallee,
+            FunctionType sigCallee,
             bool ensureVariables)
         {
             this.arch = arch;
@@ -75,7 +75,7 @@ namespace Reko.Core
             this.ensureVariables = ensureVariables;
         }
 
-        public virtual List<Expression> BindArguments(Frame frame, ProcedureSignature sigCallee)
+        public virtual List<Expression> BindArguments(Frame frame, FunctionType sigCallee)
         {
             if (sigCallee == null || !sigCallee.ParametersValid)
                 throw new InvalidOperationException("No signature available; application cannot be constructed.");

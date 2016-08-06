@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Analysis
         public void Setup()
         {
             exit = new ExternalProcedure("exit", 
-                new ProcedureSignature(null, new Identifier("retCode", PrimitiveType.Int32, new StackArgumentStorage(0, PrimitiveType.Int32))));
+                new FunctionType(null, new Identifier("retCode", PrimitiveType.Int32, new StackArgumentStorage(0, PrimitiveType.Int32))));
             exit.Characteristics = new ProcedureCharacteristics();
             exit.Characteristics.Terminates = true;
 

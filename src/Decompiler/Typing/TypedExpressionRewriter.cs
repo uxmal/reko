@@ -75,7 +75,7 @@ namespace Reko.Typing
             }
         }
 
-        private void RewriteFormals(ProcedureSignature sig)
+        private void RewriteFormals(FunctionType sig)
         {
             if (!sig.HasVoidReturn)
                 sig.ReturnValue.DataType = sig.ReturnValue.TypeVariable.DataType;

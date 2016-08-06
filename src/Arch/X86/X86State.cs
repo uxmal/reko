@@ -136,7 +136,7 @@ namespace Reko.Arch.X86
             SetFlagGroup(arch.GetFlagGroup((uint) FlagM.DF), Constant.False());
         }
 
-        public override void OnProcedureLeft(ProcedureSignature sig)
+        public override void OnProcedureLeft(FunctionType sig)
         {
             sig.FpuStackDelta = FpuStackItems;     
         }
@@ -146,7 +146,7 @@ namespace Reko.Arch.X86
             return new CallSite(returnAddressSize, FpuStackItems);  
         }
 
-        public override void OnAfterCall(ProcedureSignature sig)
+        public override void OnAfterCall(FunctionType sig)
         {
             if (sig == null)
                 return;

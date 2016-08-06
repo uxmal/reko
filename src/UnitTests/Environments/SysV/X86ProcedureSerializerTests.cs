@@ -81,7 +81,8 @@ namespace Reko.UnitTests.Environments.SysV
 
             mr.ReplayAll();
 
-            var sig = new ProcedureSignature(
+            var sig = new FunctionType(
+                null,
                 new Identifier("eax", PrimitiveType.Word32, arch.GetRegister("rbx")),
                 new Identifier[] {
                     new Identifier("arg04", PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Int32))
@@ -112,7 +113,8 @@ namespace Reko.UnitTests.Environments.SysV
         {
             Procedure proc = new Procedure("foo", arch.CreateFrame())
             {
-                Signature = new ProcedureSignature(
+                Signature = new FunctionType(
+                    null,
                     new Identifier("eax", PrimitiveType.Word32, arch.GetRegister("eax")),
                     new Identifier[] {
                         new Identifier("arg00", PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Int32))

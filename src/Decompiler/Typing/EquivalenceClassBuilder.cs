@@ -36,7 +36,7 @@ namespace Reko.Typing
 	{
 		private TypeFactory factory;
 		private TypeStore store;
-		private ProcedureSignature signature;
+		private FunctionType signature;
         private Dictionary<ushort, TypeVariable> segTypevars;
         private Dictionary<string, EquivalenceClass> typeReferenceClasses;
 
@@ -86,7 +86,7 @@ namespace Reko.Typing
             }
         }
 
-        public void EnsureSignatureTypeVariables(ProcedureSignature signature)
+        public void EnsureSignatureTypeVariables(FunctionType signature)
         {
             if (signature == null || !signature.ParametersValid)
                 return;
@@ -124,7 +124,7 @@ namespace Reko.Typing
             var oldSig = signature;
 			signature = null;
 			appl.Procedure.Accept(this);
-			ProcedureSignature sig = signature;
+			FunctionType sig = signature;
 
 			if (sig != null)
 			{

@@ -67,7 +67,7 @@ namespace Reko.Typing
 		/// </summary>
 		private void AddProcedureTraits(Procedure proc)
 		{
-			ProcedureSignature sig = proc.Signature;
+			FunctionType sig = proc.Signature;
             if (!sig.HasVoidReturn)
             {
                 handler.DataTypeTrait(sig.ReturnValue, sig.ReturnValue.DataType);
@@ -82,7 +82,7 @@ namespace Reko.Typing
             if (pc.Procedure.Signature == null)
                 return;
 
-            ProcedureSignature sig = pc.Procedure.Signature;
+            FunctionType sig = pc.Procedure.Signature;
             if (appl.Arguments.Length != sig.Parameters.Length)
                 throw new InvalidOperationException(
                     string.Format("Call to {0} had {1} arguments instead of the expected {2}.",
@@ -572,7 +572,7 @@ namespace Reko.Typing
 
 		public DataType VisitProcedureConstant(ProcedureConstant pc)
 		{
-			ProcedureSignature sig = pc.Procedure.Signature;
+			FunctionType sig = pc.Procedure.Signature;
 			DataType [] argTypes = null;
 			if (sig != null && sig.Parameters != null)
 			{

@@ -101,7 +101,7 @@ namespace Reko.UnitTests.Environments.Windows
         private void Expect_TypeLibraryLoaderService_LoadLibrary(string expected, IDictionary<string, DataType> types)
         {
             var tl = new TypeLibrary(
-                types, new Dictionary<string, ProcedureSignature>());
+                types, new Dictionary<string, FunctionType>());
 
             Expect_TypeLibraryLoaderService_LoadLibrary(
                 new TypeLibraryElement

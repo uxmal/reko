@@ -76,7 +76,7 @@ namespace Reko.UnitTests.Core
                          new SystemService
                          {
                             Name = "bar",
-                            Signature = new ProcedureSignature()
+                            Signature = new FunctionType()
                          }
                     }
                 }
@@ -115,7 +115,7 @@ namespace Reko.UnitTests.Core
                          new SystemService
                          {
                             Name = "bar",
-                            Signature = new ProcedureSignature()
+                            Signature = new FunctionType()
                          }
                     }
                 }
@@ -145,22 +145,25 @@ namespace Reko.UnitTests.Core
                 }
             };
 
-            var barSig = new ProcedureSignature(
+            var barSig = new FunctionType(
+                    null,
                     new Identifier(
                         "res",
                         PrimitiveType.Word16,
                         new RegisterStorage("ax", 0, 0, PrimitiveType.Word16)
                     ),
-                    new Identifier(
-                        "a",
-                        PrimitiveType.Word16,
-                        new RegisterStorage("cx", 0, 0, PrimitiveType.Word16)
-                    ),
-                    new Identifier(
-                        "b",
-                        PrimitiveType.Word16,
-                        new RegisterStorage("dx", 0, 0, PrimitiveType.Word16)
-                    )
+                    new[] {
+                        new Identifier(
+                            "a",
+                            PrimitiveType.Word16,
+                            new RegisterStorage("cx", 0, 0, PrimitiveType.Word16)
+                        ),
+                        new Identifier(
+                            "b",
+                            PrimitiveType.Word16,
+                            new RegisterStorage("dx", 0, 0, PrimitiveType.Word16)
+                        )
+                    }
                 );
 
             program.EnvironmentMetadata.Modules.Add("foo", new ModuleDescriptor("foo")
