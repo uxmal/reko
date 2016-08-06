@@ -105,7 +105,6 @@ namespace Reko.UnitTests.Core.Serialization
         }
 
         [Test]
-        [Category(Categories.FailedTests)]
         public void ArgSer_DeserializeStackVariable()
         {
             var arg = new Argument_v1
@@ -120,7 +119,6 @@ namespace Reko.UnitTests.Core.Serialization
         }
 
         [Test]
-        [Category(Categories.FailedTests)]
         public void ArgSer_DeserializeTwoNamedStackVariables()
         {
             var argA = new Argument_v1
