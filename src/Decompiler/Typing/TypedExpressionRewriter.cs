@@ -77,7 +77,7 @@ namespace Reko.Typing
 
         private void RewriteFormals(ProcedureSignature sig)
         {
-            if (sig.ReturnValue != null)
+            if (!sig.HasVoidReturn)
                 sig.ReturnValue.DataType = sig.ReturnValue.TypeVariable.DataType;
             if (sig.Parameters != null)
             {

@@ -504,7 +504,7 @@ namespace Reko.Analysis
                     new ProcedureConstant(program.Platform.PointerType, procCallee), 
                     sig, 
                     false);
-				if (sig.ReturnValue != null)
+				if (!sig.HasVoidReturn)
 				{
                     varLive.Def(ab.Bind(sig.ReturnValue));
 				}

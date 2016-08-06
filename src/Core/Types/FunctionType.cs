@@ -61,7 +61,7 @@ namespace Reko.Core.Types
 
         public Identifier ReturnValue { get; private set; }
         public Identifier [] Parameters { get; private set; }
-
+        public bool HasVoidReturn { get { return ReturnValue == null || ReturnValue.DataType is VoidType; } }
         public override void Accept(IDataTypeVisitor v)
         {
             v.VisitFunctionType(this);
@@ -150,7 +150,7 @@ namespace Reko.Core.Types
             bool emitStorage = (f & EmitFlags.ArgumentKind) == EmitFlags.ArgumentKind;
             if (emitStorage)
             {
-                if (ReturnValue == null || ReturnValue.DataType is VoidType)
+                if (HasVoidReturn)
                 {
                     fmt.Write("void ");
                 }
@@ -163,7 +163,7 @@ namespace Reko.Core.Types
             }
             else
             {
-                if (ReturnValue == null || ReturnValue.DataType is VoidType)
+                if (HasVoidReturn)
                 {
                     fmt.Write("void {0}", fnName);
                 }

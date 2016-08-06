@@ -65,7 +65,7 @@ namespace Reko.Environments.Msdos
 
         public override string DetermineCallingConvention(ProcedureSignature signature)
         {
-            if (signature.ReturnValue != null)
+            if (!signature.HasVoidReturn)
             {
                 var reg = signature.ReturnValue.Storage as RegisterStorage;
                 if (reg != null)

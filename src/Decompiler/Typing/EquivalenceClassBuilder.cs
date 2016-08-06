@@ -90,7 +90,7 @@ namespace Reko.Typing
         {
             if (signature == null || !signature.ParametersValid)
                 return;
-            if (signature.ReturnValue != null)
+            if (!signature.HasVoidReturn)
             {
                 signature.ReturnValue.Accept(this);
             }
@@ -287,7 +287,7 @@ namespace Reko.Typing
             if (ret.Expression == null)
                 return;
             ret.Expression.Accept(this);
-            if (signature.ReturnValue != null)
+            if (!signature.HasVoidReturn)
             {
                 store.MergeClasses(
                     signature.ReturnValue.TypeVariable,

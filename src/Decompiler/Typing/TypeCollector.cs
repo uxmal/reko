@@ -99,7 +99,7 @@ namespace Reko.Typing
         private void CollectProcedureSignature(Procedure proc)
         {
             ProcedureSignature sig = proc.Signature;
-            if (sig.ReturnValue != null)
+            if (!sig.HasVoidReturn)
             {
                 desc.MeetDataType(sig.ReturnValue, sig.ReturnValue.DataType);
             }

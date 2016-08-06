@@ -123,9 +123,9 @@ namespace Reko.Core
         public Instruction CreateInstruction()
         {
             var idOut = BindReturnValue();
-            var dtOut = sigCallee.ReturnValue != null
-                ? sigCallee.ReturnValue.DataType
-                : VoidType.Instance;
+            var dtOut = sigCallee.HasVoidReturn
+                ? VoidType.Instance
+                : sigCallee.ReturnValue.DataType;
             var actuals = BindArguments(frame, sigCallee);
             Expression appl = new Application(
                 callee,

@@ -950,7 +950,7 @@ namespace Reko.Scanning
         {
             if (sig == null)
                 return;
-            if (sig.ReturnValue != null)
+            if (!sig.HasVoidReturn)
                 TrashVariable(sig.ReturnValue.Storage);
             for (int i = 0; i < sig.Parameters.Length; ++i)
             {

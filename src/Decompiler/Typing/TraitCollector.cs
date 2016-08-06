@@ -68,7 +68,7 @@ namespace Reko.Typing
 		private void AddProcedureTraits(Procedure proc)
 		{
 			ProcedureSignature sig = proc.Signature;
-            if (sig.ReturnValue != null)
+            if (!sig.HasVoidReturn)
             {
                 handler.DataTypeTrait(sig.ReturnValue, sig.ReturnValue.DataType);
             }
@@ -92,7 +92,7 @@ namespace Reko.Typing
                 handler.EqualTrait(appl.Arguments[i], sig.Parameters[i]);
                 sig.Parameters[i].Accept(this);
             }
-            if (sig.ReturnValue != null)
+            if (!sig.HasVoidReturn)
                 handler.EqualTrait(appl, sig.ReturnValue);
         }
 
@@ -228,7 +228,7 @@ namespace Reko.Typing
                 return VoidType.Instance;
 
             var dt = ret.Expression.Accept(this);
-            if (proc.Signature != null && proc.Signature.ReturnValue != null)
+            if (!proc.Signature.HasVoidReturn)
             {
                 dt = handler.EqualTrait(proc.Signature.ReturnValue, ret.Expression);
             }
@@ -594,7 +594,7 @@ namespace Reko.Typing
 					}
 				}
 			}
-            return sig != null && sig.ReturnValue != null ? sig.ReturnValue.DataType : null;
+            return sig != null && !sig.HasVoidReturn ? sig.ReturnValue.DataType : null;
 		}
 
         private void CollectProcedureCharacteristics()
