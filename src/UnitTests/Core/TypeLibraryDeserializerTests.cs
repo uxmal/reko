@@ -125,7 +125,7 @@ namespace Reko.UnitTests.Core
         public void Tlldr_void_fn()
         {
             Given_ArchitectureStub();
-            Given_ProcedureSignature(new ProcedureSignature());
+            Given_ProcedureSignature(new FunctionType());
             mr.ReplayAll();
 
             var tlLdr = new TypeLibraryDeserializer(platform, true, new TypeLibrary());
@@ -156,7 +156,7 @@ namespace Reko.UnitTests.Core
         public void Tlldr_BothOrdinalAndName()
         {
             Given_ArchitectureStub();
-            Given_ProcedureSignature(new ProcedureSignature());
+            Given_ProcedureSignature(new FunctionType());
             mr.ReplayAll();
 
             var tlLDr = new TypeLibraryDeserializer(platform, true, new TypeLibrary());
@@ -288,9 +288,12 @@ namespace Reko.UnitTests.Core
         {
             Given_ArchitectureStub();
             var r3 = new RegisterStorage("r3", 3, 0, PrimitiveType.Word32);
-            Given_ProcedureSignature(new ProcedureSignature(
+            Given_ProcedureSignature(new FunctionType(
+                null,
                 new Identifier("", PrimitiveType.Int32, r3),
-                new Identifier("", PrimitiveType.Real32, r3)));
+                new[] {
+                    new Identifier("", PrimitiveType.Real32, r3)}
+                ));
             mr.ReplayAll();
 
             var typelib = new TypeLibrary();
@@ -314,7 +317,7 @@ namespace Reko.UnitTests.Core
             Assert.AreEqual("(fn int32 (real32))", fn.ToString());
         }
 
-        private void Given_ProcedureSignature(ProcedureSignature sig)
+        private void Given_ProcedureSignature(FunctionType sig)
         {
             procSer.Stub(p => p.Deserialize(null, null)).IgnoreArguments().Return(sig);
         }

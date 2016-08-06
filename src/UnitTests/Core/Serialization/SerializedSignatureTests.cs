@@ -84,7 +84,7 @@ namespace Reko.UnitTests.Core.Serialization
 		{
 			SerializedSignature ssig = BuildSsigAxBxCl();
             Given_X86ProcedureSerializer();
-            ProcedureSignature sig = sser.Deserialize(ssig, arch.CreateFrame());
+            FunctionType sig = sser.Deserialize(ssig, arch.CreateFrame());
 			Assert.AreEqual("Register int16 AxBxCl(Register word16 bx, Register byte cl)", sig.ToString("AxBxCl"));
 			Assert.AreEqual(PrimitiveType.Int16, sig.ReturnValue.DataType);
 		}
@@ -108,7 +108,7 @@ namespace Reko.UnitTests.Core.Serialization
 			SerializedSignature sig = new SerializedSignature();
 			sig.Arguments = new Argument_v1[] { arg };
             Given_X86ProcedureSerializer();
-            ProcedureSignature ps = sser.Deserialize(sig, arch.CreateFrame());
+            FunctionType ps = sser.Deserialize(sig, arch.CreateFrame());
 			Assert.AreEqual("void foo(Register out ptr16 bpOut)", ps.ToString("foo"));
 		}
 
@@ -129,13 +129,13 @@ namespace Reko.UnitTests.Core.Serialization
 			return ssig;
 		}
 
-		public static ProcedureSignature MkSigAxBxCl()
+		public static FunctionType MkSigAxBxCl()
 		{
 			Identifier ret = new Identifier(Registers.ax.Name, Registers.ax.DataType, Registers.ax);
 			Identifier [] args = new Identifier[2];
 			args[0] = new Identifier(Registers.bx.Name, Registers.bx.DataType, Registers.bx);
 			args[1] = new Identifier(Registers.cl.Name, Registers.cl.DataType, Registers.cl);
-			return new ProcedureSignature(ret, args);
+			return new FunctionType(null, ret, args);
 		}
 
 		private SerializedSignature BuildSsigStack()

@@ -139,17 +139,17 @@ namespace Reko.UnitTests.Arch.Intel
 	public class FakeRewriterHost : IRewriterHost
 	{
         private Program program;
-		private Dictionary<Address,ProcedureSignature> callSignatures;
+		private Dictionary<Address,FunctionType> callSignatures;
 		private Dictionary<Address,Procedure> procedures;
 
 		public FakeRewriterHost(Program prog)
 		{
             this.program = prog;
-			callSignatures = new Dictionary<Address,ProcedureSignature>();
+			callSignatures = new Dictionary<Address,FunctionType>();
 			procedures = new Dictionary<Address,Procedure>();
 		}
 
-		public void AddCallSignature(Address addr, ProcedureSignature sig)
+		public void AddCallSignature(Address addr, FunctionType sig)
 		{
 			callSignatures[addr] = sig;
 		}
@@ -186,9 +186,9 @@ namespace Reko.UnitTests.Arch.Intel
                 args);
         }
 
-		public ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction)
+		public FunctionType GetCallSignatureAtAddress(Address addrCallInstruction)
 		{
-            ProcedureSignature sig;
+            FunctionType sig;
             if (callSignatures.TryGetValue(addrCallInstruction, out sig))
                 return sig;
             else

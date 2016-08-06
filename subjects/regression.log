@@ -1608,7 +1608,7 @@ fn0800_889A: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 116
    at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 99
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
 0800:8B46: error: Indirect call rewriter encountered an error while processing the statement call SEQ(cs_21, Mem0[ds_22:0x2354:word16]) (retsize: 2; depth: 6)	uses: al_31,bLoc06,bp_28,bx_20,C_60,cs_21,cx_26,dl_30,ds_22,SCZO_33,si_57,sp_29,ss_25,SZO_58,wLoc02_4,wLoc04_8,wLoc06,Z_59	defs: al_91,bp_80,bx_90,C_84,cs_88,cx_89,dl_92,ds_87,SCZO_86,si_82,sp_79,ss_81,SZO_83,Z_85.
     The method or operation is not implemented.
        at Reko.Core.Expressions.PhiFunction.CloneExpression() in D:\dev\uxmal\reko\master\src\Core\Expressions\PhiFunction.cs:line 55
@@ -1654,7 +1654,7 @@ fn0800_9F92: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
    at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 95
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 96
 fn0800_A96D: error: An error occurred during data flow analysis.
     The given key was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -1667,7 +1667,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Analysis.DeadCode.Eliminate() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 100
    at Reko.Analysis.DeadCode.Eliminate(Procedure proc, SsaState ssa) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DeadCode.cs:line 82
-   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 99
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 100
 0800:BD04: error: Indirect call rewriter encountered an error while processing the statement call Mem116[0x0800:bx_137 + 0x000E:word16] (retsize: 4; depth: 98)	uses: al_131,ax_140,bp_5,bx_137,C_119,cx_139,di_13,es_130,ptrLoc06_126,ptrLoc62_77,ptrLoc64_102,ptrLoc68_108,SCZO_141,si_117,sp_109,ss,SZO_127,wLoc02_4,wLoc04_59,wLoc06_125,wLoc08_133,wLoc5C_9,wLoc5E_12,wLoc60_96,wLoc62_98,wLoc64_100,wLoc66_104,wLoc68_106,Z_142	defs: al_160,ax_155,bp_148,bx_157,C_154,cx_159,di_152,es_158,SCZO_150,si_151,sp_147,ss_149,SZO_153,Z_156.
     The method or operation is not implemented.
        at Reko.Core.Expressions.PhiFunction.CloneExpression() in D:\dev\uxmal\reko\master\src\Core\Expressions\PhiFunction.cs:line 55

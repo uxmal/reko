@@ -29,6 +29,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using Rhino.Mocks;
+using Reko.Core.Types;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -231,7 +232,7 @@ done:
 			{
 				ProcedureFlow flow = dfa.ProgramDataFlow[proc];
 				writer.Write("// ");
-				flow.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.ArgumentKind|ProcedureSignature.EmitFlags.LowLevelInfo, writer);
+				flow.Signature.Emit(proc.Name, FunctionType.EmitFlags.ArgumentKind|FunctionType.EmitFlags.LowLevelInfo, writer);
 				flow.Emit(prog.Architecture, writer);
 				proc.Write(false, writer);
 				writer.WriteLine();

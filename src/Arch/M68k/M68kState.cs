@@ -93,7 +93,7 @@ namespace Reko.Arch.M68k
         {
         }
 
-        public override void OnProcedureLeft(ProcedureSignature sig)
+        public override void OnProcedureLeft(FunctionType sig)
         {
         }
 
@@ -102,7 +102,7 @@ namespace Reko.Arch.M68k
             return new CallSite(returnAddressSize, 0);
         }
 
-        public override void OnAfterCall(ProcedureSignature sigCallee)
+        public override void OnAfterCall(FunctionType sigCallee)
         {
         }
 

@@ -79,7 +79,7 @@ namespace Reko.Core
         /// <param name="signature"></param>
         /// <returns>The name of the calling convention, or null
         /// if no calling convention could be determined.</returns>
-        string DetermineCallingConvention(ProcedureSignature signature);
+        string DetermineCallingConvention(FunctionType signature);
 
         /// <summary>
         /// Given a C basic type, returns the number of bytes that type is
@@ -244,7 +244,7 @@ namespace Reko.Core
                 segs.Values.ToArray());
         }
 
-        public virtual string DetermineCallingConvention(ProcedureSignature signature)
+        public virtual string DetermineCallingConvention(FunctionType signature)
         {
             return null;
         }

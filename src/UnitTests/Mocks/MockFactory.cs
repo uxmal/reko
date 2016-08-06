@@ -168,7 +168,7 @@ namespace Reko.UnitTests.Mocks
         public void Given_PlatformTypes(Dictionary<string, DataType> types)
         {
             this.platformMetadata = new TypeLibrary(
-                types, new Dictionary<string, ProcedureSignature>()
+                types, new Dictionary<string, FunctionType>()
             );
         }
 
@@ -242,13 +242,13 @@ namespace Reko.UnitTests.Mocks
         public void Given_UserDefinedMetafile(
             string moduleName,
             Dictionary<string, DataType> types,
-            Dictionary<string, ProcedureSignature> signatures,
+            Dictionary<string, FunctionType> signatures,
             ModuleDescriptor module)
         {
             if (types == null)
                 types = new Dictionary<string, DataType>();
             if (signatures == null)
-                signatures = new Dictionary<string, ProcedureSignature>();
+                signatures = new Dictionary<string, FunctionType>();
             var loaderMetadata = new TypeLibrary(types, signatures);
             if (module != null)
                 loaderMetadata.Modules.Add(moduleName, module);

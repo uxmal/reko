@@ -154,7 +154,7 @@ namespace Reko.UnitTests.Arch.Intel
                     args);
             }
 
-            public ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction)
+            public FunctionType GetCallSignatureAtAddress(Address addrCallInstruction)
             {
                 throw new NotImplementedException();
             }

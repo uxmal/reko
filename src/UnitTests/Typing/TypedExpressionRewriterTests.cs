@@ -47,14 +47,14 @@ namespace Reko.UnitTests.Typing
         private TypeTransformer trans;
         private ComplexTypeNamer ctn;
         private List<StructureField> userDefinedGlobals;
-        private Dictionary<string, ProcedureSignature> userDefinedProcedures;
+        private Dictionary<string, FunctionType> userDefinedProcedures;
         private Dictionary<Address, ImageSegment> imageSegments;
 
         [SetUp]
         public void Setup()
         {
             userDefinedGlobals = new List<StructureField>();
-            userDefinedProcedures = new Dictionary<string, ProcedureSignature>();
+            userDefinedProcedures = new Dictionary<string, FunctionType>();
             imageSegments = new Dictionary<Address, ImageSegment>();
         }
 
@@ -209,7 +209,8 @@ namespace Reko.UnitTests.Typing
 
         private ExternalProcedure Given_Procedure(string name, params DataType [] argTypes)
         {
-            var sig = new ProcedureSignature(
+            var sig = new FunctionType(
+                null,
                 null,
                 argTypes.Select((argType, i) => new Identifier(
                         "arg" + i, 
@@ -594,7 +595,8 @@ namespace Reko.UnitTests.Typing
                 var ax = m.Reg16("ax", 0);
                 var rand = new ExternalProcedure(
                     "rand",
-                    new ProcedureSignature(
+                    new FunctionType(
+                        null,
                         new Identifier("ax", PrimitiveType.Int16, ax.Storage),
                         new Identifier[0]));
                 m.Declare(ax, m.Fn(rand));

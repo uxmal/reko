@@ -63,9 +63,9 @@ namespace Reko.Environments.Msdos
             return new X86ProcedureSerializer((IntelArchitecture) this.Architecture, typeLoader, defaultConvention);
         }
 
-        public override string DetermineCallingConvention(ProcedureSignature signature)
+        public override string DetermineCallingConvention(FunctionType signature)
         {
-            if (signature.ReturnValue != null)
+            if (!signature.HasVoidReturn)
             {
                 var reg = signature.ReturnValue.Storage as RegisterStorage;
                 if (reg != null)

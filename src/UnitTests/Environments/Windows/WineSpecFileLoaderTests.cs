@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Types;
 using Reko.Environments.Windows;
 using System;
 using System.Collections.Generic;
@@ -64,8 +65,8 @@ namespace Reko.UnitTests.Environments.Windows
             var svc = mod.ServicesByVector[624];
             Assert.AreEqual("SetFastQueue", svc.Name);
             Assert.AreEqual(
-                "void ()(Stack word32 dwArg04, Stack word32 dwArg00)" + nl + "// stackDelta: 12; fpuStackDelta: 0; fpuMaxParam: -1" + nl + "",
-                svc.Signature.ToString());
+                "void SetFastQueue(Stack word32 dwArg04, Stack word32 dwArg00)" + nl + "// stackDelta: 12; fpuStackDelta: 0; fpuMaxParam: -1" + nl + "",
+                svc.Signature.ToString(svc.Name, FunctionType.EmitFlags.AllDetails));
         }
 
         [Test]
@@ -79,14 +80,14 @@ namespace Reko.UnitTests.Environments.Windows
             var mod = lib.Modules["FOO.DLL"];
             Assert.AreEqual(3, mod.ServicesByVector.Count);
             Assert.AreEqual(
-                "void ()()" + nl + "// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1" + nl + "",
-                mod.ServicesByVector[2].Signature.ToString());
+                "void ExitKernel()" + nl + "// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1" + nl + "",
+                mod.ServicesByVector[2].Signature.ToString("ExitKernel", FunctionType.EmitFlags.AllDetails));
             Assert.AreEqual(
-                "void ()()" + nl + "// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1" + nl + "",
-                mod.ServicesByVector[3].Signature.ToString());
+                "void GetVersion()" + nl + "// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1" + nl + "",
+                mod.ServicesByVector[3].Signature.ToString("GetVersion", FunctionType.EmitFlags.AllDetails));
             Assert.AreEqual(
-                "void ()(Stack word16 wArg04, Stack word16 wArg02, Stack word16 wArg00)" + nl + "// stackDelta: 10; fpuStackDelta: 0; fpuMaxParam: -1" + nl + "",
-                mod.ServicesByVector[4].Signature.ToString());
+                "void LocalInit(Stack word16 wArg04, Stack word16 wArg02, Stack word16 wArg00)" + nl + "// stackDelta: 10; fpuStackDelta: 0; fpuMaxParam: -1" + nl + "",
+                mod.ServicesByVector[4].Signature.ToString("LocalInit", FunctionType.EmitFlags.AllDetails));
         }
 
         [Test(Description ="Ignore lines starting with '@'")]

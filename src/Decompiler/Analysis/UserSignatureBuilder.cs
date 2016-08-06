@@ -23,6 +23,7 @@ using Reko.Core.CLanguage;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -94,7 +95,7 @@ namespace Reko.Analysis
             return null;
         }
 
-        public void ApplySignatureToProcedure(Address addr, ProcedureSignature sig, Procedure proc)
+        public void ApplySignatureToProcedure(Address addr, FunctionType sig, Procedure proc)
         {
             proc.Signature = sig;
 

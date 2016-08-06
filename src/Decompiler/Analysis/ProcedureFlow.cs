@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
+using Reko.Core.Types;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -57,7 +58,7 @@ namespace Reko.Analysis
 		public HashSet<RegisterStorage> LiveOut;
 		public uint grfLiveOut;
 
-		public ProcedureSignature Signature;
+		public FunctionType Signature;
 
         // True if calling this procedure terminates the thread/process. This implies
         // that no code path reached the exit block without first terminating the process.

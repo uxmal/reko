@@ -53,12 +53,13 @@ namespace Reko.Scanning
         void EnqueueProcedure(Address addr);
         Block EnqueueJumpTarget(Address addrSrc, Address addrDst, Procedure proc, ProcessorState state);
         void EnqueueUserProcedure(Procedure_v1 sp);
+        void EnqueueUserProcedure(Address addr, FunctionType sig);
         void EnqueueUserGlobalData(Address addr, DataType dt);
 
         void Warn(Address addr, string message);
         void Warn(Address addr, string message, params object[] args);
         void Error(Address addr, string message);
-        ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction);
+        FunctionType GetCallSignatureAtAddress(Address addrCallInstruction);
         ExternalProcedure GetImportedProcedure(Address addrImportThunk, Address addrInstruction);
         void TerminateBlock(Block block, Address addrEnd);
 
@@ -298,6 +299,15 @@ namespace Reko.Scanning
                 proc.Characteristics = sp.Characteristics;
             }
             queue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, addr, sp.Name));
+        }
+
+        public void EnqueueUserProcedure(Address addr, FunctionType sig)
+        {
+            if (program.Procedures.ContainsKey(addr))
+                return; // Already scanned. Do nothing.
+            var proc = EnsureProcedure(addr, null);
+            proc.Signature = sig;
+            queue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, addr, proc.Name));
         }
 
         public Block EnqueueJumpTarget(Address addrSrc, Address addrDest, Procedure proc, ProcessorState state)
@@ -599,7 +609,7 @@ namespace Reko.Scanning
                 return false;
             }
 
-            ProcedureSignature sig = null;
+            FunctionType sig = null;
             if (!string.IsNullOrEmpty(sProc.CSignature))
             {
                 var usb = new UserSignatureBuilder(program);
@@ -853,7 +863,7 @@ namespace Reko.Scanning
             return addr.GenerateName("l", "");
         }
 
-        public ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction)
+        public FunctionType GetCallSignatureAtAddress(Address addrCallInstruction)
         {
             UserCallData call = null;
             if (!program.User.Calls.TryGetValue(addrCallInstruction, out call))

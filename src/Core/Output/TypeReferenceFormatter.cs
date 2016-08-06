@@ -548,7 +548,7 @@ namespace Reko.Core.Output
             }
         }
 
-        void DirectDeclarator(ProcedureSignature sig)
+        void DirectDeclarator(FunctionType sig)
         {
             SpaceForPointerOperator(sig.ReturnValue.DataType);
             fmt.Write(declaredName);

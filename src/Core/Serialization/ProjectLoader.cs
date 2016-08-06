@@ -29,6 +29,7 @@ using System.Xml.Serialization;
 using Reko.Core.Services;
 using System.Diagnostics;
 using System.Text;
+using Reko.Core.Types;
 
 namespace Reko.Core.Serialization
 {
@@ -405,7 +406,7 @@ namespace Reko.Core.Serialization
                 return null;
 
             var procSer = program.CreateProcedureSerializer();
-            ProcedureSignature sig = null;
+            FunctionType sig = null;
             if (call.Signature != null)
             {
                 sig = procSer.Deserialize(

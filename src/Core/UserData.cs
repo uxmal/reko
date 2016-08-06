@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Lib;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -86,6 +87,6 @@ namespace Reko.Core
 
         public bool NoReturn { get; set; }
 
-        public ProcedureSignature Signature { get; set; }
+        public FunctionType Signature { get; set; }
     }
 }

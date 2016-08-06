@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -96,7 +97,7 @@ namespace Reko.Environments.Windows
 
         private static ExternalProcedure CdeclSignature(string name, IProcessorArchitecture arch)
         {
-            return new ExternalProcedure(name, new ProcedureSignature
+            return new ExternalProcedure(name, new FunctionType
             {
                 ReturnAddressOnStack = arch.PointerType.Size,
             });
@@ -104,7 +105,7 @@ namespace Reko.Environments.Windows
 
         private static ExternalProcedure StdcallSignature(string name, int argBytes, IProcessorArchitecture arch)
         {
-            return new ExternalProcedure(name, new ProcedureSignature
+            return new ExternalProcedure(name, new FunctionType
             {
                 ReturnAddressOnStack = arch.PointerType.Size,
                 StackDelta = argBytes + arch.PointerType.Size,
@@ -113,7 +114,7 @@ namespace Reko.Environments.Windows
 
         private static ExternalProcedure FastcallSignature(string name, int argBytes, IProcessorArchitecture arch)
         {
-            return new ExternalProcedure(name, new ProcedureSignature
+            return new ExternalProcedure(name, new FunctionType
             {
                 ReturnAddressOnStack = arch.PointerType.Size,
                 StackDelta = argBytes - 2 * arch.PointerType.Size, // ecx, edx

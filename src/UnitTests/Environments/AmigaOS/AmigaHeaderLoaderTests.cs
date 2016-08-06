@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.M68k;
 using Reko.Core;
+using Reko.Core.Types;
 using Reko.Environments.AmigaOS;
 using System;
 using System.Collections.Generic;
@@ -56,7 +57,7 @@ namespace Reko.UnitTests.Environments.AmigaOS
                 "void  FrabDevice([[reko::arg(register, \"A1\")]] struct Device * device);"));
             var Q = ahl.Load(platform, new TypeLibrary());
             var svc = ahl.SystemServices[-432];
-            Assert.IsNull(svc.Signature.ReturnValue);
+            Assert.IsInstanceOf<VoidType>(svc.Signature.ReturnValue.DataType);
         }
     }
 }

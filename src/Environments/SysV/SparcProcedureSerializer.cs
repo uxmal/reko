@@ -35,7 +35,7 @@ namespace Reko.Environments.SysV
         {
         }
 
-        public void ApplyConvention(SerializedSignature ssig, ProcedureSignature sig)
+        public void ApplyConvention(SerializedSignature ssig, FunctionType sig)
         {
             string d = ssig.Convention;
             if (d == null || d.Length == 0)
@@ -44,7 +44,7 @@ namespace Reko.Environments.SysV
             sig.FpuStackDelta = 0;
         }
 
-        public override ProcedureSignature Deserialize(SerializedSignature ss, Frame frame)
+        public override FunctionType Deserialize(SerializedSignature ss, Frame frame)
         {
             if (ss == null)
                 return null;
@@ -68,7 +68,7 @@ namespace Reko.Environments.SysV
                 }
             }
 
-            var sig = new ProcedureSignature(ret, args.ToArray());
+            var sig = new FunctionType(null, ret, args.ToArray());
             ApplyConvention(ss, sig);
             return sig;
         }
