@@ -746,7 +746,7 @@ fn00001200_exit:
 
             var ft1 = Given_Serialized_Signature(new SerializedSignature
             {
-                ReturnValue = new Argument_v1 { Type = Int32() }
+                ReturnValue = new Argument_v1 { Type = Int32() },
             });
             var ft2 = Given_Serialized_Signature(new SerializedSignature
             {

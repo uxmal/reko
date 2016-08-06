@@ -53,6 +53,7 @@ namespace Reko.Scanning
         void EnqueueProcedure(Address addr);
         Block EnqueueJumpTarget(Address addrSrc, Address addrDst, Procedure proc, ProcessorState state);
         void EnqueueUserProcedure(Procedure_v1 sp);
+        void EnqueueUserProcedure(Address addr, FunctionType sig);
         void EnqueueUserGlobalData(Address addr, DataType dt);
 
         void Warn(Address addr, string message);
@@ -298,6 +299,15 @@ namespace Reko.Scanning
                 proc.Characteristics = sp.Characteristics;
             }
             queue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, addr, sp.Name));
+        }
+
+        public void EnqueueUserProcedure(Address addr, FunctionType sig)
+        {
+            if (program.Procedures.ContainsKey(addr))
+                return; // Already scanned. Do nothing.
+            var proc = EnsureProcedure(addr, null);
+            proc.Signature = sig;
+            queue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, addr, proc.Name));
         }
 
         public Block EnqueueJumpTarget(Address addrSrc, Address addrDest, Procedure proc, ProcessorState state)

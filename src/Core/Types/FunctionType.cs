@@ -44,12 +44,6 @@ namespace Reko.Core.Types
     /// </remarks>
     public class FunctionType : DataType
 	{
-        private object p;
-        private Identifier identifier;
-
-        //$REVIEW: unify ProcedureSignature and FunctionType.
-        public SerializedSignature Signature { get; private set; }
-
         public FunctionType()
         {
             this.ParametersValid = false;
@@ -59,8 +53,7 @@ namespace Reko.Core.Types
         public FunctionType(
             string name,        //$REVIEW: what's the use? function types have no names
             Identifier returnValue,
-            Identifier [] parameters,
-            SerializedSignature sSig = null)
+            params Identifier [] parameters)
         {
             if (parameters == null)
                 throw new ArgumentNullException("parameters");
@@ -70,20 +63,12 @@ namespace Reko.Core.Types
                 returnValue = new Identifier("", VoidType.Instance, null);
             this.ReturnValue = returnValue;
             this.Parameters = parameters;
-            this.Signature = sSig;
-        }
-
-        public FunctionType(object p, Identifier identifier)
-        {
-            this.p = p;
-            this.identifier = identifier;
         }
 
         public Identifier ReturnValue { get; private set; }
         public Identifier [] Parameters { get; private set; }
         public bool HasVoidReturn { get { return ReturnValue == null || ReturnValue.DataType is VoidType; } }
         public TypeVariable TypeVariable { get; set; }  //$REVIEW: belongs on the Procedure itself!
-
 
         public override void Accept(IDataTypeVisitor v)
         {
@@ -101,7 +86,7 @@ namespace Reko.Core.Types
             Identifier[] parameters = this.Parameters
                 .Select(p => new Identifier(p.Name, p.DataType.Clone(), p.Storage))
                 .ToArray();
-            var ft = new FunctionType(Name, ret, parameters, Signature);
+            var ft = new FunctionType(Name, ret, parameters);
             return ft;
 		}
 
@@ -124,24 +109,27 @@ namespace Reko.Core.Types
         public int FpuStackDelta { get; set; }
 
         /// <summary>
-        /// Number of bytes to add to the stack pointer after returning from the procedure.
-        /// Note that this does include the return address size, if the return address is 
-        /// passed on the stack. 
+        /// Number of bytes to add to the stack pointer after returning from 
+        /// the procedure. Note that this does include the return address 
+        /// size, if the return address is passed on the stack. 
         /// </summary>
         public int StackDelta { get; set; }
 
         /// <summary>
-        /// The index of the 'deepest' FPU stack argument used. -1 means no stack parameters are used.
+        /// The index of the 'deepest' FPU stack argument used. -1 means no
+        /// stack parameters are used.
         /// </summary>
         public int FpuStackArgumentMax { get; set; }
 
         /// <summary>
-        /// The index of the 'deepest' FPU stack argument written. -1 means no stack parameters are written.
+        /// The index of the 'deepest' FPU stack argument written. -1 means no
+        /// stack parameters are written.
         /// </summary>
         public int FpuStackOutArgumentMax { get; set; }
 
         /// <summary>
-        /// True if the medium-level arguments have been discovered. Otherwise, the signature just contains the net effect
+        /// True if the medium-level arguments have been discovered. Otherwise,
+        /// the signature just contains the net effect
         /// on the processor state.
         /// </summary>
         public bool ParametersValid { get; private set;  }
@@ -238,6 +226,5 @@ namespace Reko.Core.Types
             AllDetails = ArgumentKind|LowLevelInfo,
         }
         #endregion
-
     }
 }

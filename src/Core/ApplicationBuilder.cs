@@ -99,7 +99,7 @@ namespace Reko.Core
 
         public Identifier BindReturnValue()
         {
-            if (sigCallee.ReturnValue.DataType is VoidType)
+            if (sigCallee.HasVoidReturn)
                 return null;
             return (Identifier) Bind(sigCallee.ReturnValue);
         }
