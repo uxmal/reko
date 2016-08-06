@@ -162,11 +162,10 @@ namespace Reko.UnitTests.Analysis
             usb.BuildSignatures();
 
             var sigExp =
-@"Register int32 ()(Stack PLATFORMDEF a, Stack USRDEF b)
+@"Register int32 test(Stack PLATFORMDEF a, Stack USRDEF b)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 ";
-
-            Assert.AreEqual(sigExp, proc.Signature.ToString());
+            Assert.AreEqual(sigExp, proc.Signature.ToString("test", FunctionType.EmitFlags.AllDetails));
 
             Assert.AreEqual(2, proc.Signature.Parameters.Length);
             Assert.AreEqual("int32", proc.Signature.ReturnValue.DataType.ToString());

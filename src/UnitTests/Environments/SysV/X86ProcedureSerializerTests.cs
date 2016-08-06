@@ -188,9 +188,9 @@ namespace Reko.UnitTests.Environments.SysV
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(
                 string.Format(
-                    "FpuStack real64 ()(){0}// stackDelta: 0; fpuStackDelta: 1; fpuMaxParam: -1{0}",
+                    "FpuStack real64 foo(){0}// stackDelta: 0; fpuStackDelta: 1; fpuMaxParam: -1{0}",
                     nl),
-                sig.ToString());
+                sig.ToString("foo", FunctionType.EmitFlags.AllDetails));
         }
 
         [Test]
@@ -245,9 +245,9 @@ namespace Reko.UnitTests.Environments.SysV
             var args = sig.Parameters;
             Assert.AreEqual(
                 string.Format(
-                    "void ()(Stack int16 hArg04, Stack int8 wArg08, Stack real32 rArg0C){0}// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1{0}",
+                    "void foo(Stack int16 hArg04, Stack int8 wArg08, Stack real32 rArg0C){0}// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1{0}",
                     nl),
-                sig.ToString());
+                sig.ToString("foo", FunctionType.EmitFlags.AllDetails));
         }
     }
 }

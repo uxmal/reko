@@ -124,7 +124,7 @@ namespace Reko.Core
         public void RewriteReturns(Procedure proc)
         {
             Identifier idRet = proc.Signature.ReturnValue;
-            if (idRet == null)
+            if (idRet == null || idRet.DataType is VoidType)
                 return;
             foreach (Statement stm in proc.Statements)
             {

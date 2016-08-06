@@ -766,20 +766,20 @@ fn00001200_exit:
             sc.ScanImage();
 
             var sExpSig1 =
-@"Register ui32 ()()
+@"Register ui32 sig1()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 ";
             var sExpSig2 =
-@"Register char ()()
+@"Register char sig2()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 ";
             Assert.AreEqual(6, program.Procedures.Count);
-            Assert.AreEqual(sExpSig1, program.Procedures[Address.Ptr32(0x43210028)].Signature.ToString());
-            Assert.AreEqual(sExpSig1, program.Procedures[Address.Ptr32(0x43210038)].Signature.ToString());
-            Assert.AreEqual(sExpSig1, program.Procedures[Address.Ptr32(0x43210048)].Signature.ToString());
-            Assert.AreEqual(sExpSig2, program.Procedures[Address.Ptr32(0x43210053)].Signature.ToString());
-            Assert.AreEqual(sExpSig2, program.Procedures[Address.Ptr32(0x43210063)].Signature.ToString());
-            Assert.AreEqual(sExpSig2, program.Procedures[Address.Ptr32(0x43210073)].Signature.ToString());
+            Assert.AreEqual(sExpSig1, program.Procedures[Address.Ptr32(0x43210028)].Signature.ToString("sig1", FunctionType.EmitFlags.AllDetails));
+            Assert.AreEqual(sExpSig1, program.Procedures[Address.Ptr32(0x43210038)].Signature.ToString("sig1", FunctionType.EmitFlags.AllDetails));
+            Assert.AreEqual(sExpSig1, program.Procedures[Address.Ptr32(0x43210048)].Signature.ToString("sig1", FunctionType.EmitFlags.AllDetails));
+            Assert.AreEqual(sExpSig2, program.Procedures[Address.Ptr32(0x43210053)].Signature.ToString("sig2", FunctionType.EmitFlags.AllDetails));
+            Assert.AreEqual(sExpSig2, program.Procedures[Address.Ptr32(0x43210063)].Signature.ToString("sig2", FunctionType.EmitFlags.AllDetails));
+            Assert.AreEqual(sExpSig2, program.Procedures[Address.Ptr32(0x43210073)].Signature.ToString("sig2", FunctionType.EmitFlags.AllDetails));
         }
 
         private DataType Given_Serialized_Signature(SerializedSignature sSignature)
@@ -839,11 +839,11 @@ fn00001200_exit:
             sc.ScanImage();
 
             var sExpSig =
-@"Register real32 ()()
+@"Register real32 fn43210017()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 ";
             Assert.AreEqual(1, program.Procedures.Count);
-            Assert.AreEqual(sExpSig, program.Procedures[Address.Ptr32(0x43210017)].Signature.ToString());
+            Assert.AreEqual(sExpSig, program.Procedures[Address.Ptr32(0x43210017)].Signature.ToString("fn43210017", FunctionType.EmitFlags.AllDetails));
         }
 
         [Test(Description = "Scanner should be able to handle structures with padding 'holes'")]

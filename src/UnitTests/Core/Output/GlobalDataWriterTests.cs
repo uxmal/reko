@@ -31,6 +31,7 @@ using System.Linq;
 using System.Text;
 using Reko.Core.Services;
 using Reko.UnitTests.Mocks;
+using Reko.Core.Expressions;
 
 namespace Reko.UnitTests.Core.Output
 {
@@ -325,7 +326,7 @@ struct test g_t1004 =
                     {
                         { 0, PrimitiveType.Int32 },
                         { 4, PrimitiveType.Int32 },
-                        { 8, new Pointer(new FunctionType(new ProcedureSignature()), 4) }
+                        { 8, new Pointer(new FunctionType(null, null, new Identifier[0]), 4) }
                     }
                 })));
             Given_ProcedureAtAddress(0x2000, "funcTest");

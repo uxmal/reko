@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Core
 			ProcedureSignature sig = new ProcedureSignature(null, new Identifier[] { arg });
 			Assert.IsTrue(sig.ParametersValid);
 
-			sig = new ProcedureSignature(arg, null);
+			sig = new ProcedureSignature(arg, new Identifier[0]);
 			Assert.IsTrue(sig.ParametersValid);
 
 			sig = new ProcedureSignature();

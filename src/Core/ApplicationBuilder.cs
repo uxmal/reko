@@ -99,12 +99,9 @@ namespace Reko.Core
 
         public Identifier BindReturnValue()
         {
-            Identifier idOut = null;
-            if (sigCallee.ReturnValue != null)
-            {
-                idOut = (Identifier) Bind(sigCallee.ReturnValue);
-            }
-            return idOut;
+            if (sigCallee.ReturnValue.DataType is VoidType)
+                return null;
+            return (Identifier) Bind(sigCallee.ReturnValue);
         }
 
 		public Expression Bind(Identifier id)

@@ -179,11 +179,10 @@ namespace Reko.UnitTests.Core
             Assert.AreEqual("bar", ep.Name);
 
             var sigExp =
-@"Register word16 ()(Register word16 a, Register word16 b)
+@"Register word16 bar(Register word16 a, Register word16 b)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 ";
-
-            Assert.AreEqual(sigExp, ep.Signature.ToString());
+            Assert.AreEqual(sigExp, ep.Signature.ToString("bar", FunctionType.EmitFlags.AllDetails));
         }
     }
 }
