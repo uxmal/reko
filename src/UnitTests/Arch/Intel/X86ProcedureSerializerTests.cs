@@ -232,7 +232,6 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        [Category(Categories.FailedTests)]
         public void ProcSer_Load_cdecl()
         {
             var ssig = new SerializedSignature
@@ -255,7 +254,6 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        [Category(Categories.FailedTests)]
         public void ProcSer_Load_stdcall()
         {
             var ssig = new SerializedSignature
@@ -278,7 +276,6 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        [Category(Categories.FailedTests)]
         public void ProcSer_Load_pascal()
         {
             var ssig = new SerializedSignature
@@ -307,7 +304,6 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        [Category(Categories.FailedTests)]
         public void X86ProcSer_Load_thiscall()
         {
             var ssig = new SerializedSignature

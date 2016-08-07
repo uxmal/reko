@@ -63,7 +63,11 @@ namespace Reko.Arch.X86
         {
             if (ss == null)
                 return null;
-            this.argDeser = new ArgumentDeserializer(this, Architecture, frame, 0);
+            this.argDeser = new ArgumentDeserializer(
+                this,
+                Architecture,
+                frame,
+                Architecture.PointerType.Size);//$BUG: x86 real mode?
             Identifier ret = null;
             int fpuDelta = FpuStackOffset;
 
