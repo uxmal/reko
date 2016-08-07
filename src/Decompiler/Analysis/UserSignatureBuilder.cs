@@ -109,12 +109,12 @@ namespace Reko.Analysis
                 if (starg != null)
                 {
                     proc.Frame.EnsureStackArgument(
-                        starg.StackOffset + sig.ReturnAddressOnStack,
+                        starg.StackOffset,
                         param.DataType,
                         param.Name);
                     var fp = proc.Frame.FramePointer;
                     stmts.Insert(i, linAddr, new Store(
-                        m.Load(param.DataType, m.IAdd(fp, sig.ReturnAddressOnStack + starg.StackOffset)),
+                        m.Load(param.DataType, m.IAdd(fp, starg.StackOffset)),
                         param));
                 }
                 else

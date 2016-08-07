@@ -250,18 +250,6 @@ namespace Reko.Analysis
 
         private Identifier FindUsedId(CallInstruction call, Storage storage)
         {
-            var locStorage = storage as StackLocalStorage;
-            // $HACK: ApplicationBuilder returns stack arguments shifted by
-            // return address size. Add return address size to stack offset to
-            // correct parameters binding.
-            // Once analysis-development branch is complete it will make
-            // dealing with MIPS ELF binaries a lot nicer.
-            storage =
-                locStorage == null ?
-                storage :
-                new StackLocalStorage(
-                    locStorage.StackOffset + frame.ReturnAddressSize,
-                    locStorage.DataType);
             return call.Uses.Select(u => u.Expression).
                 OfType<Identifier>().
                 Where(usedId => usedId.Storage.Equals(storage)).

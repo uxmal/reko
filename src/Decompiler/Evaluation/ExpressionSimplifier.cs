@@ -333,7 +333,7 @@ namespace Reko.Evaluation
 
             var ptCast = cast.DataType.ResolveAs<PrimitiveType>();
             Constant c = exp as Constant;
-            if (c != null)
+            if (c != null && ptCast != null)
             {
                 PrimitiveType ptSrc = c.DataType as PrimitiveType;
                 if (ptSrc != null)

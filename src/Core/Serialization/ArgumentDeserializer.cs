@@ -95,7 +95,7 @@ namespace Reko.Core.Serialization
             var idArg = procSer.CreateId(
                 name,
                 dt,
-                new StackArgumentStorage(procSer.StackOffset, dt));
+                new StackArgumentStorage(procSer.StackOffset + retAddressOnStack, dt));
             procSer.StackOffset += dt.Size;
             return idArg;
         }
