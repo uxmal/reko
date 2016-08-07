@@ -184,7 +184,7 @@ namespace Reko.UnitTests.Scanning
                                 new TypeReference(
                                     "HWND",
                                     new Pointer(VoidType.Instance, 4)),
-                                new StackArgumentStorage(0, new TypeReference(
+                                new StackArgumentStorage(4, new TypeReference(
                                     "HWND",
                                     new Pointer(VoidType.Instance, 4))))
                         })

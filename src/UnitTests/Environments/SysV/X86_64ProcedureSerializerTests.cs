@@ -265,7 +265,7 @@ namespace Reko.UnitTests.Environments.SysV
             Assert.AreEqual("rcx", args[3].Storage.ToString());
             Assert.AreEqual("r8", args[4].Storage.ToString());
             Assert.AreEqual("r9", args[5].Storage.ToString());
-            Assert.AreEqual("Stack +0000", args[6].Storage.ToString());
+            Assert.AreEqual("Stack +0008", args[6].Storage.ToString());
         }
     }
 }

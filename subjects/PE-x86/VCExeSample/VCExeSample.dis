@@ -5,12 +5,12 @@ int32 main(int32 argc, char * * argv)
 // LiveOut:
 // Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
 // Preserved: ebp esp
-// Stack args: Stack +0000(32)
+// Stack args: Stack +0004(32) Stack +0008(32)
 main_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp
-// LocalsOut: fp(32) Stack +0000(32)
+// LocalsOut: fp(32) Stack +0004(32) Stack +0008(32)
 
 l00401000:
 	test1(Mem0[argv:word32], argc, 0x004020C0, 1.0F)
@@ -101,12 +101,12 @@ void indirect_call_test3(cdecl_class * c)
 // LiveOut:
 // Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
 // Preserved: ebp esp
-// Stack args: Stack +0000(32)
+// Stack args: Stack +0004(32)
 indirect_call_test3_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp
-// LocalsOut: fp(32) Stack +0000(32)
+// LocalsOut: fp(32) Stack +0004(32)
 
 l004010B0:
 	Mem0[Mem0[c:word32] + 0x00000004:word32](c, 0x000003E8)

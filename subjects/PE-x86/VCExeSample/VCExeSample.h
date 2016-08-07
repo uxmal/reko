@@ -138,7 +138,7 @@ T_21: (in signature of printf : void)
   Class: Eq_20
   DataType: (ptr Eq_20)
   OrigDataType: 
-T_22: (in ptrArg00 : (ptr char))
+T_22: (in ptrArg04 : (ptr char))
   Class: Eq_22
   DataType: (ptr char)
   OrigDataType: 
@@ -394,7 +394,7 @@ typedef cdecl_class_vtbl Eq_47;
 
 typedef cdecl_class_vtbl Eq_48;
 
-typedef void (Eq_50)(cdecl_class * ptrArg00, int32 dwArg04);
+typedef void (Eq_50)(cdecl_class * ptrArg04, int32 dwArg08);
 
 typedef void (Eq_51)(cdecl_class *, int32);
 
@@ -412,7 +412,7 @@ typedef cdecl_class_vtbl Eq_57;
 
 typedef cdecl_class_vtbl Eq_58;
 
-typedef void (Eq_60)(cdecl_class * ptrArg00);
+typedef void (Eq_60)(cdecl_class * ptrArg04);
 
 typedef void (Eq_61)(Eq_55);
 
@@ -430,10 +430,10 @@ typedef cdecl_class_vtbl Eq_68;
 
 typedef cdecl_class_vtbl Eq_69;
 
-typedef void (Eq_71)(cdecl_class * ptrArg00, int32 dwArg04);
+typedef void (Eq_71)(cdecl_class * ptrArg04, int32 dwArg08);
 
 typedef union Eq_72 {
-	void u0(cdecl_class * ptrArg00, int32 dwArg04);
+	void u0(cdecl_class * ptrArg04, int32 dwArg08);
 	void u1(Eq_55, word32, real32);
 } Eq_72;
 

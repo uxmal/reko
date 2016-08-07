@@ -250,6 +250,7 @@ namespace Reko.UnitTests.Arch.Intel
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(4, sig.StackDelta);
+            Assert.AreEqual(4, ((StackArgumentStorage)sig.Parameters[0].Storage).StackOffset);
         }
 
         [Test]
@@ -271,6 +272,7 @@ namespace Reko.UnitTests.Arch.Intel
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(8, sig.StackDelta);
+            Assert.AreEqual(4, ((StackArgumentStorage)sig.Parameters[0].Storage).StackOffset);
         }
 
         [Test]
@@ -297,8 +299,8 @@ namespace Reko.UnitTests.Arch.Intel
             mr.ReplayAll();
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
-            Assert.AreEqual(4, ((StackArgumentStorage)sig.Parameters[0].Storage).StackOffset);
-            Assert.AreEqual(0, ((StackArgumentStorage)sig.Parameters[1].Storage).StackOffset);
+            Assert.AreEqual(8, ((StackArgumentStorage)sig.Parameters[0].Storage).StackOffset);
+            Assert.AreEqual(4, ((StackArgumentStorage)sig.Parameters[1].Storage).StackOffset);
         }
 
         [Test]
@@ -331,6 +333,8 @@ namespace Reko.UnitTests.Arch.Intel
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 ";
             Assert.AreEqual(sExp, sig.ToString("memfn", FunctionType.EmitFlags.AllDetails));
+            Assert.AreEqual(4, ((StackArgumentStorage)sig.Parameters[1].Storage).StackOffset);
+            Assert.AreEqual(8, ((StackArgumentStorage)sig.Parameters[2].Storage).StackOffset);
         }
     }
 }

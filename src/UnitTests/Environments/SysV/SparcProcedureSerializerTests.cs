@@ -245,7 +245,7 @@ namespace Reko.UnitTests.Environments.SysV
             Assert.AreEqual("o3", args[3].Storage.ToString());
             Assert.AreEqual("o4", args[4].Storage.ToString());
             Assert.AreEqual("o5", args[5].Storage.ToString());
-            Assert.AreEqual("Stack +0000", args[6].Storage.ToString());
+            Assert.AreEqual("Stack +0004", args[6].Storage.ToString());
         }
     }
 }

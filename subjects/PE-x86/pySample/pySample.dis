@@ -1,19 +1,19 @@
-PyObject * fn10001000(PyObject * ptrArg00, PyObject * ptrArg04)
+PyObject * fn10001000(PyObject * ptrArg04, PyObject * ptrArg08)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
 // Preserved: esp
-// Stack args: Stack +0000(32)
+// Stack args: Stack +0008(32)
 fn10001000_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp
-// LocalsOut: fp(32) Local -0004(32) Local -0008(32) Stack +0000(32)
+// LocalsOut: fp(32) Local -0004(32) Local -0008(32) Stack +0008(32)
 
 l10001000:
-	word32 eax_21 = PyArg_ParseTuple(ptrArg04, 0x10002144, SLICE(0x10002144, <unknown>, 32))
+	word32 eax_21 = PyArg_ParseTuple(ptrArg08, 0x10002144, SLICE(ptrArg08, <unknown>, 32))
 	branch eax_21 != 0x00000000 l10001027
 // DataOut: eax
 // DataOut (flags): 
@@ -21,40 +21,40 @@ l10001000:
 // LocalsOut: fp(32) Local -0004(32) Local -0008(32)
 
 l10001027:
-	return Py_BuildValue(0x1000214C, SLICE(0x1000214C, <unknown>, 32))
+	return Py_BuildValue(0x1000214C, (void) 0x1000214C)
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000008 edx:ptrArg04 eax:<invalid> ecx:fp - 0x00000004 -24(fp):ptrArg04 -20(fp):0x10002144 -16(fp):fp - 0x00000004 -12(fp):fp - 0x00000008 4(fp):ptrArg00 8(fp):ptrArg04
+// SymbolicIn: esp:fp - 0x00000008 edx:ptrArg08 eax:<invalid> ecx:fp - 0x00000004 -24(fp):ptrArg08 -20(fp):0x10002144 -16(fp):fp - 0x00000004 -12(fp):fp - 0x00000008 4(fp):ptrArg04 8(fp):ptrArg08
 
 l10001023:
 	return eax_21
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000008 edx:ptrArg04 eax:<invalid> ecx:fp - 0x00000004 -24(fp):ptrArg04 -20(fp):0x10002144 -16(fp):fp - 0x00000004 -12(fp):fp - 0x00000008 4(fp):ptrArg00 8(fp):ptrArg04
+// SymbolicIn: esp:fp - 0x00000008 edx:ptrArg08 eax:<invalid> ecx:fp - 0x00000004 -24(fp):ptrArg08 -20(fp):0x10002144 -16(fp):fp - 0x00000004 -12(fp):fp - 0x00000008 4(fp):ptrArg04 8(fp):ptrArg08
 
 fn10001000_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp edx:ptrArg04 eax:<invalid> ecx:<invalid> -24(fp):ptrArg04 -20(fp):0x10002144 -16(fp):<invalid> -12(fp):<invalid> 4(fp):ptrArg00 8(fp):ptrArg04
+// SymbolicIn: esp:fp edx:ptrArg08 eax:<invalid> ecx:<invalid> -24(fp):ptrArg08 -20(fp):0x10002144 -16(fp):<invalid> -12(fp):<invalid> 4(fp):ptrArg04 8(fp):ptrArg08
 
 
 
-PyObject * fn10001050(PyObject * ptrArg00, PyObject * ptrArg04)
+PyObject * fn10001050(PyObject * ptrArg04, PyObject * ptrArg08)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
 // Preserved: esp
-// Stack args: Stack +0000(32)
+// Stack args: Stack +0008(32)
 fn10001050_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp
-// LocalsOut: fp(32) Local -0004(32) Local -0008(32) Stack +0000(32)
+// LocalsOut: fp(32) Local -0004(32) Local -0008(32) Stack +0008(32)
 
 l10001050:
-	word32 eax_19 = PyArg_ParseTuple(ptrArg04, 0x10002150, SLICE(0x10002150, <unknown>, 32))
+	word32 eax_19 = PyArg_ParseTuple(ptrArg08, 0x10002150, SLICE(ptrArg08, <unknown>, 32))
 	branch eax_19 != 0x00000000 l10001078
 // DataOut: eax
 // DataOut (flags): 
@@ -62,40 +62,40 @@ l10001050:
 // LocalsOut: fp(32) Local -0004(32) Local -0008(32)
 
 l10001078:
-	return Py_BuildValue(0x1000214C, SLICE(0x1000214C, <unknown>, 32))
+	return Py_BuildValue(0x1000214C, (void) 0x1000214C)
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000008 edx:ptrArg04 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg04 -20(fp):0x10002150 -16(fp):fp - 0x00000008 -12(fp):fp - 0x00000004 4(fp):ptrArg00 8(fp):ptrArg04
+// SymbolicIn: esp:fp - 0x00000008 edx:ptrArg08 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg08 -20(fp):0x10002150 -16(fp):fp - 0x00000008 -12(fp):fp - 0x00000004 4(fp):ptrArg04 8(fp):ptrArg08
 
 l10001074:
 	return eax_19
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000008 edx:ptrArg04 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg04 -20(fp):0x10002150 -16(fp):fp - 0x00000008 -12(fp):fp - 0x00000004 4(fp):ptrArg00 8(fp):ptrArg04
+// SymbolicIn: esp:fp - 0x00000008 edx:ptrArg08 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg08 -20(fp):0x10002150 -16(fp):fp - 0x00000008 -12(fp):fp - 0x00000004 4(fp):ptrArg04 8(fp):ptrArg08
 
 fn10001050_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp edx:ptrArg04 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg04 -20(fp):0x10002150 -16(fp):<invalid> -12(fp):<invalid> 4(fp):ptrArg00 8(fp):ptrArg04
+// SymbolicIn: esp:fp edx:ptrArg08 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg08 -20(fp):0x10002150 -16(fp):<invalid> -12(fp):<invalid> 4(fp):ptrArg04 8(fp):ptrArg08
 
 
 
-PyObject * fn100010A0(PyObject * ptrArg00, PyObject * ptrArg04)
+PyObject * fn100010A0(PyObject * ptrArg04, PyObject * ptrArg08)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
 // Preserved: esp
-// Stack args: Stack +0000(32)
+// Stack args: Stack +0008(32)
 fn100010A0_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp
-// LocalsOut: fp(32) Local -0004(32) Local -0008(32) Stack +0000(32)
+// LocalsOut: fp(32) Local -0004(32) Local -0008(32) Stack +0008(32)
 
 l100010A0:
-	word32 eax_19 = PyArg_ParseTuple(ptrArg04, 0x10002158, SLICE(0x10002158, <unknown>, 32))
+	word32 eax_19 = PyArg_ParseTuple(ptrArg08, 0x10002158, SLICE(ptrArg08, <unknown>, 32))
 	branch eax_19 != 0x00000000 l100010C8
 // DataOut: eax
 // DataOut (flags): 
@@ -103,62 +103,62 @@ l100010A0:
 // LocalsOut: fp(32) Local -0004(32) Local -0008(32)
 
 l100010C8:
-	return Py_BuildValue(0x1000214C, SLICE(0x1000214C, <unknown>, 32))
+	return Py_BuildValue(0x1000214C, (void) 0x1000214C)
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000008 edx:ptrArg04 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg04 -20(fp):0x10002158 -16(fp):fp - 0x00000008 -12(fp):fp - 0x00000004 4(fp):ptrArg00 8(fp):ptrArg04
+// SymbolicIn: esp:fp - 0x00000008 edx:ptrArg08 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg08 -20(fp):0x10002158 -16(fp):fp - 0x00000008 -12(fp):fp - 0x00000004 4(fp):ptrArg04 8(fp):ptrArg08
 
 l100010C4:
 	return eax_19
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000008 edx:ptrArg04 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg04 -20(fp):0x10002158 -16(fp):fp - 0x00000008 -12(fp):fp - 0x00000004 4(fp):ptrArg00 8(fp):ptrArg04
+// SymbolicIn: esp:fp - 0x00000008 edx:ptrArg08 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg08 -20(fp):0x10002158 -16(fp):fp - 0x00000008 -12(fp):fp - 0x00000004 4(fp):ptrArg04 8(fp):ptrArg08
 
 fn100010A0_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp edx:<invalid> eax:<invalid> ecx:fp - 0x00000008 Sequence edx:eax:<invalid> -24(fp):ptrArg04 -20(fp):0x10002158 -16(fp):<invalid> -12(fp):<invalid> 4(fp):ptrArg00 8(fp):ptrArg04
+// SymbolicIn: esp:fp edx:<invalid> eax:<invalid> ecx:fp - 0x00000008 Sequence edx:eax:<invalid> -24(fp):ptrArg08 -20(fp):0x10002158 -16(fp):<invalid> -12(fp):<invalid> 4(fp):ptrArg04 8(fp):ptrArg08
 
 
 
-PyObject * fn100010F0(PyObject * ptrArg00, PyObject * ptrArg04)
+PyObject * fn100010F0(PyObject * ptrArg04, PyObject * ptrArg08)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
 // LiveOut:
 // Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
 // Preserved: esp
-// Stack args: Stack +0000(32)
+// Stack args: Stack +0008(32)
 fn100010F0_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp
-// LocalsOut: fp(32) Local -0004(0) Stack +0000(32)
+// LocalsOut: fp(32) Local -0004(32) Stack +0008(32)
 
 l100010F0:
-	word32 eax_19 = PyArg_ParseTuple(ptrArg04, 0x10002160, SLICE(0x10002160, <unknown>, 32))
+	word32 eax_19 = PyArg_ParseTuple(ptrArg08, 0x10002160, SLICE(ptrArg08, <unknown>, 32))
 	branch eax_19 != 0x00000000 l10001118
 // DataOut: eax
 // DataOut (flags): 
 // SymbolicIn: esp:fp
-// LocalsOut: fp(32) Local -0004(0)
+// LocalsOut: fp(32) Local -0004(32)
 
 l10001118:
-	return Py_BuildValue(0x10002168, SLICE(0x10002168, <unknown>, 32))
+	return Py_BuildValue(0x10002168, (void) 0x10002168)
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000008 edx:ptrArg04 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg04 -20(fp):0x10002160 -16(fp):fp - 0x00000008 -12(fp):fp - 0x00000004 4(fp):ptrArg00 8(fp):ptrArg04
+// SymbolicIn: esp:fp - 0x00000008 edx:ptrArg08 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg08 -20(fp):0x10002160 -16(fp):fp - 0x00000008 -12(fp):fp - 0x00000004 4(fp):ptrArg04 8(fp):ptrArg08
 
 l10001114:
 	return eax_19
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp - 0x00000008 edx:ptrArg04 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg04 -20(fp):0x10002160 -16(fp):fp - 0x00000008 -12(fp):fp - 0x00000004 4(fp):ptrArg00 8(fp):ptrArg04
+// SymbolicIn: esp:fp - 0x00000008 edx:ptrArg08 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg08 -20(fp):0x10002160 -16(fp):fp - 0x00000008 -12(fp):fp - 0x00000004 4(fp):ptrArg04 8(fp):ptrArg08
 
 fn100010F0_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp edx:ptrArg04 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg04 -20(fp):<invalid> -16(fp):<invalid> -12(fp):fp - 0x00000004 4(fp):ptrArg00 8(fp):ptrArg04
+// SymbolicIn: esp:fp edx:ptrArg08 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg08 -20(fp):<invalid> -16(fp):<invalid> -12(fp):fp - 0x00000004 4(fp):ptrArg04 8(fp):ptrArg08
 
 
 
@@ -169,15 +169,15 @@ PyObject * py_unused(PyObject * self, PyObject * args)
 // LiveOut:
 // Trashed: SCZO ah al ax eax rax
 // Preserved: esp
-// Stack args: Stack +0000(32)
+// Stack args: Stack +0008(32)
 py_unused_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp
-// LocalsOut: fp(32) Stack +0000(32)
+// LocalsOut: fp(32) Stack +0008(32)
 
 l10001140:
-	word32 eax_12 = PyArg_ParseTuple(args, 0x1000216C, tArg00)
+	word32 eax_12 = PyArg_ParseTuple(args, 0x1000216C, SLICE(args, <unknown>, 32))
 	branch eax_12 != 0x00000000 l10001158
 // DataOut: eax
 // DataOut (flags): 
@@ -939,12 +939,12 @@ BOOL DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
 // LiveOut:
 // Trashed: SCZO ah al ax bh bl bp bpl bx ch cl cx dh di dil dl dx eax ebp ebx ecx edi edx esi esp rax rbp rbx rcx rdi rdx rsi rsp si sil sp spl
 // Preserved: esp
-// Stack args: Stack +0000(32)
+// Stack args: Stack +0008(32) Stack +000C(32)
 DllMain_entry:
 // DataOut: ebx edi esi fs
 // DataOut (flags): 
 // SymbolicIn: esp:fp
-// LocalsOut: fp(32) Stack +0000(32)
+// LocalsOut: fp(32) Stack +0008(32) Stack +000C(32)
 
 l1000149E:
 	branch dwReason != 0x00000001 l100014AA
