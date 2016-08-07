@@ -510,9 +510,7 @@ namespace Reko.UnitTests.Typing
         public void TrcoCallFunctionWithArraySize()
         {
             var m = new ProcedureBuilder();
-            var sig = new FunctionType(
-                null,
-                null,
+            var sig = FunctionType.Action(
                 m.Frame.EnsureStackArgument(0, PrimitiveType.Word32));
             var ex = new ExternalProcedure("malloc", sig, new ProcedureCharacteristics
             {

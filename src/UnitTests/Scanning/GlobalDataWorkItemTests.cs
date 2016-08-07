@@ -94,14 +94,11 @@ namespace Reko.UnitTests.Scanning
             {
                 ReturnValue = new Argument_v1(null, new PrimitiveType_v1(Domain.Character, 1), null, false),
             };
-            var ft1 = new FunctionType(
+            var ft1 = FunctionType.Func(
                 null,
-                new Identifier("", PrimitiveType.Int32, null),
-                new Identifier[0]);
-            var ft2 = new FunctionType(
-                null,
-                new Identifier("", PrimitiveType.Char, null),
-                new Identifier[0]);
+                new Identifier("", PrimitiveType.Int32, null));
+            var ft2 = FunctionType.Func(
+                new Identifier("", PrimitiveType.Char, null));
             var str = new StructureType();
             var fields = new StructureField[] {
                 new StructureField(0, new Pointer(ft1, 4), "A"),
@@ -144,8 +141,7 @@ namespace Reko.UnitTests.Scanning
             };
             Given_Program(Address.Ptr32(0x43210000), bytes);
 
-            var ft = new FunctionType(
-                null,
+            var ft = FunctionType.Func(
                 new Identifier("", PrimitiveType.Real32, null),
                 new Identifier[0]);
             var str = new StructureType("str", 0);
@@ -179,8 +175,7 @@ namespace Reko.UnitTests.Scanning
             };
             Given_Program(Address.Ptr32(0x43210000), bytes);
 
-            var ft = new FunctionType(
-                null,
+            var ft = FunctionType.Func(
                 new Identifier("", PrimitiveType.Real32, null),
                 new Identifier[0]);
             var str = new StructureType();
@@ -204,8 +199,7 @@ namespace Reko.UnitTests.Scanning
         {
             var addr = Address.Ptr32(0x12340000);
             Given_Program(addr, new byte[4]);
-            var ft = new FunctionType(
-               null,
+            var ft = FunctionType.Func(
                new Identifier("", PrimitiveType.Real32, null),
                new Identifier[0]);
             scanner.Expect(s => s.EnqueueUserProcedure(

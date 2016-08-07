@@ -145,13 +145,9 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Given_Interactor();
             form.Show();
             Procedure p = new Procedure("foo_proc", program.Architecture.CreateFrame());
-            p.Signature = new FunctionType(
-                null,
+            p.Signature = FunctionType.Func(
                 new Identifier("eax", PrimitiveType.Word32, Registers.eax),
-                new Identifier[] {
-                    new Identifier("arg04", PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Word32))
-                });
-
+                new Identifier("arg04", PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Word32)));
             program.Procedures.Add(Address.Ptr32(0x12345), new Procedure("bar", program.Architecture.CreateFrame()));
             program.Procedures.Add(Address.Ptr32(0x12346), p);
             interactor.EnterPage();

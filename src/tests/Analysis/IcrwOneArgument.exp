@@ -1,10 +1,10 @@
 a:Stack +0004
     def:  def a
     uses: a_2 = a
-          ecx_7 = Mem0[a:word32]
 a_2: orig: a
     def:  a_2 = a
     uses: eax_5 = a_2
+          ecx_7 = Mem0[a_2:word32]
 fp:fp
     def:  def fp
     uses: esp_4 = fp
@@ -15,10 +15,10 @@ eax_5: orig: eax
     def:  eax_5 = a_2
 Mem0:Global memory
     def:  def Mem0
-    uses: ecx_7 = Mem0[a:word32]
+    uses: ecx_7 = Mem0[a_2:word32]
           Mem0[ecx_7 + 0x00000004:word32](dwLoc04_9)
 ecx_7: orig: ecx
-    def:  ecx_7 = Mem0[a:word32]
+    def:  ecx_7 = Mem0[a_2:word32]
     uses: Mem0[ecx_7 + 0x00000004:word32](dwLoc04_9)
 esp_8: orig: esp
     def:  esp_8 = fp - 0x00000004
@@ -40,7 +40,7 @@ l0C00_0000:
 	a_2 = a
 	esp_4 = fp
 	eax_5 = a_2
-	ecx_7 = Mem0[a:word32]
+	ecx_7 = Mem0[a_2:word32]
 	esp_8 = fp - 0x00000004
 	dwLoc04_9 = 0x0000000A
 	Mem0[ecx_7 + 0x00000004:word32](dwLoc04_9)

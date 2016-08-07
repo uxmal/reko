@@ -1,10 +1,10 @@
 a:Stack +0004
     def:  def a
     uses: a_2 = a
-          ecx_7 = Mem0[a:word32]
 a_2: orig: a
     def:  a_2 = a
     uses: eax_5 = a_2
+          ecx_7 = Mem0[a_2:word32]
           call Mem0[ecx_7 + 0x00000008:word32] (retsize: 4; depth: 12)	uses: a_2,dwLoc04_9,dwLoc08_11,eax_5,ecx_7,esp_10	defs: eax_13,ecx_14,esp_12
 fp:fp
     def:  def fp
@@ -18,10 +18,10 @@ eax_5: orig: eax
     uses: call Mem0[ecx_7 + 0x00000008:word32] (retsize: 4; depth: 12)	uses: a_2,dwLoc04_9,dwLoc08_11,eax_5,ecx_7,esp_10	defs: eax_13,ecx_14,esp_12
 Mem0:Global memory
     def:  def Mem0
-    uses: ecx_7 = Mem0[a:word32]
+    uses: ecx_7 = Mem0[a_2:word32]
           call Mem0[ecx_7 + 0x00000008:word32] (retsize: 4; depth: 12)	uses: a_2,dwLoc04_9,dwLoc08_11,eax_5,ecx_7,esp_10	defs: eax_13,ecx_14,esp_12
 ecx_7: orig: ecx
-    def:  ecx_7 = Mem0[a:word32]
+    def:  ecx_7 = Mem0[a_2:word32]
     uses: call Mem0[ecx_7 + 0x00000008:word32] (retsize: 4; depth: 12)	uses: a_2,dwLoc04_9,dwLoc08_11,eax_5,ecx_7,esp_10	defs: eax_13,ecx_14,esp_12
           call Mem0[ecx_7 + 0x00000008:word32] (retsize: 4; depth: 12)	uses: a_2,dwLoc04_9,dwLoc08_11,eax_5,ecx_7,esp_10	defs: eax_13,ecx_14,esp_12
 esp_8: orig: esp
@@ -53,7 +53,7 @@ l0C00_0000:
 	a_2 = a
 	esp_4 = fp
 	eax_5 = a_2
-	ecx_7 = Mem0[a:word32]
+	ecx_7 = Mem0[a_2:word32]
 	esp_8 = fp - 0x00000004
 	dwLoc04_9 = 0x0000000B
 	esp_10 = fp - 0x00000008

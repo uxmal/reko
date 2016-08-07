@@ -221,7 +221,7 @@ namespace Reko.UnitTests.Typing
         public void ExdApplication()
         {
             var arg = Id("arg", PrimitiveType.Word32);
-            var sig = new FunctionType(null, null, new[] { Id("r", PrimitiveType.Real32) });
+            var sig = FunctionType.Action(Id("r", PrimitiveType.Real32));
             var ep = new ExternalProcedure("test", sig);
             RunTest(
                 Test(m.Fn(ep, m.Load(PrimitiveType.Word32, m.Word32(0x0300400))), VoidType.Instance));

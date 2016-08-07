@@ -81,12 +81,9 @@ namespace Reko.UnitTests.Environments.SysV
 
             mr.ReplayAll();
 
-            var sig = new FunctionType(
-                null,
+            var sig = FunctionType.Func(
                 new Identifier("eax", PrimitiveType.Word32, arch.GetRegister("rbx")),
-                new Identifier[] {
-                    new Identifier("arg04", PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Int32))
-                });
+                    new Identifier("arg04", PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Int32)));
 
             SerializedSignature ssig = ser.Serialize(sig);
             Assert.IsNotNull(ssig.ReturnValue);
@@ -113,12 +110,9 @@ namespace Reko.UnitTests.Environments.SysV
         {
             Procedure proc = new Procedure("foo", arch.CreateFrame())
             {
-                Signature = new FunctionType(
-                    null,
+                Signature = FunctionType.Func(
                     new Identifier("eax", PrimitiveType.Word32, arch.GetRegister("eax")),
-                    new Identifier[] {
-                        new Identifier("arg00", PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Int32))
-                    })
+                    new Identifier("arg00", PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Int32)))
             };
 
             Address addr = Address.Ptr32(0x567A0C);

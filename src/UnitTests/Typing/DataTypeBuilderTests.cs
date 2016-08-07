@@ -459,7 +459,7 @@ namespace Reko.UnitTests.Typing
             {
                 Identifier arg1 = m.Local32("arg1");
                 Identifier ret = m.Register(1);
-                m.Procedure.Signature = new FunctionType(null, ret, new Identifier[] { arg1 });
+                m.Procedure.Signature = FunctionType.Func(ret, arg1);
                 m.Procedure.Signature.Parameters[0] = arg1;
                 m.Assign(ret, m.IAdd(arg1, 1));
                 m.Return(ret);
@@ -482,7 +482,7 @@ namespace Reko.UnitTests.Typing
             pp.Add("Fn2", m =>
             {
                 Identifier arg1 = m.Local32("arg1");
-                m.Procedure.Signature = new FunctionType(null, null, new Identifier[] { arg1 });
+                m.Procedure.Signature = FunctionType.Action(arg1);
                 m.Store(m.IAdd(arg1, 8), m.Int32(0x23));
                 m.Return();
             });

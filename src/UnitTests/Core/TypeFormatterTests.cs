@@ -142,7 +142,7 @@ struct a {
 		[Test]
 		public void TyfoFn()
 		{
-			FunctionType fn = new FunctionType(null, 
+			FunctionType fn = FunctionType.Func(
                 new Identifier("", PrimitiveType.Int32, null), 
 				new Identifier[] { new Identifier("", PrimitiveType.Word32, null) });
 			tyreffo.WriteDeclaration(fn, "fn");
@@ -173,12 +173,9 @@ struct a {
 		[Test]
 		public void TyfoManyArgs()
 		{
-            FunctionType fn = new FunctionType(
-                null, 
-                null,
-                new Identifier[] {
-                    new Identifier("", PrimitiveType.Pointer32,  null),
-                    new Identifier("", PrimitiveType.Int64 , null)});
+            FunctionType fn = FunctionType.Action(
+                new Identifier("", PrimitiveType.Pointer32,  null),
+                new Identifier("", PrimitiveType.Int64 , null));
 			tyreffo.WriteDeclaration(fn, "fn");
 			Assert.AreEqual("void fn(ptr32, int64)", sw.ToString());
 		}

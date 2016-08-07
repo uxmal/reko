@@ -24,7 +24,7 @@ namespace Reko.Core
 
         }
 
-        public override List<Expression> BindArguments(ProcedureSignature sigCallee, ProcedureCharacteristics chr)
+        public override List<Expression> BindArguments(FunctionType sigCallee, ProcedureCharacteristics chr)
         {
             var actuals = new List<Expression>();
             int i;

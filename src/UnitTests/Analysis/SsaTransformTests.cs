@@ -1413,7 +1413,7 @@ proc1_exit:
             {
                 var ebx = m.Reg32("ebx", 2);
                 var C = m.Flags("C");
-                var func = new ExternalProcedure("os_service", new ProcedureSignature(C, ebx));
+                var func = new ExternalProcedure("os_service", FunctionType.Func(C, ebx));
 
                 m.Assign(C, m.Fn(func, ebx, m.Out(ebx.DataType, ebx)));
                 m.Store(m.Word32(0x123400), ebx);
@@ -1583,8 +1583,7 @@ proc1_exit:
                     PrimitiveType.Pointer32,
                     new ExternalProcedure(
                         "ImportedFunc",
-                        new ProcedureSignature(
-                            Reg(14), Reg(6)))));
+                        FunctionType.Func(Reg(14), Reg(6)))));
 
             RunTest(sExp, m =>
             {

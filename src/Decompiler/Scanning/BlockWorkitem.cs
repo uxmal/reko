@@ -165,9 +165,9 @@ namespace Reko.Scanning
             return block.Statements.Count > 0;
         }
 
-        private Instruction BuildApplication(Expression fn, FunctionType sig, CallSite site)
+        private Instruction BuildApplication(Expression fn, FunctionType sig, ProcedureCharacteristics c, CallSite site)
         {
-            var ab = CreateApplicationBuilder(fn, site);
+            var ab = CreateApplicationBuilder(fn, sig, site);
             return ab.CreateInstruction(sig, c);
         }
 
@@ -694,7 +694,12 @@ namespace Reko.Scanning
         {
             if (impProc.Signature == null)
                 throw new ApplicationException(string.Format("You must specify a procedure signature for {0} since it has been marked as 'alloca'.", impProc.Name));
-            var ab = CreateApplicationBuilder(new ProcedureConstant(program.Platform.PointerType, impProc), site);
+            var ab = CreateApplicationBuilder(
+                new ProcedureConstant(
+                    program.Platform.PointerType,
+                    impProc),
+                impProc.Signature,
+                site);
             if (impProc.Signature.Parameters.Length != 1)
                 throw new ApplicationException(string.Format("An alloca function must have exactly one parameter, but {0} has {1}.", impProc.Name, impProc.Signature.Parameters.Length));
             var target = ab.Bind(impProc.Signature.Parameters[0]);

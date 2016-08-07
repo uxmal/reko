@@ -310,10 +310,9 @@ namespace Reko.UnitTests.Scanning
             BuildTest16(delegate(X86Assembler m)
             {
                 scanner.Stub(x => x.GetCallSignatureAtAddress(Arg<Address>.Is.Anything)).Return(
-                    new FunctionType(
-                        null,
+                    FunctionType.Func(
                         Reg(Registers.ax),
-                        new Identifier[] { Reg(Registers.cx) }));
+                        Reg(Registers.cx)));
 
                 m.Call(m.MemW(Registers.cs, Registers.bx, 4));
             });

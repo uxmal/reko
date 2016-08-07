@@ -51,10 +51,7 @@ namespace Reko.UnitTests.Core
 			arg08 = new Identifier("arg08",   PrimitiveType.Word16, new StackArgumentStorage(8, PrimitiveType.Word16));
 			arg0C = new Identifier("arg0C",   PrimitiveType.Byte, new StackArgumentStorage(0x0C, PrimitiveType.Byte));
 			regOut = new Identifier("edxOut", PrimitiveType.Word32, new OutArgumentStorage(frame.EnsureRegister(Registers.edx)));
-            sig = new FunctionType(
-                null,
-                ret,
-                new Identifier[] { arg04, arg08, arg0C, regOut });
+            sig = FunctionType.Func(ret, new [] { arg04, arg08, arg0C, regOut });
         }
 
 		[Test]
@@ -92,10 +89,7 @@ namespace Reko.UnitTests.Core
             var callee = new Procedure("callee", new  Frame (PrimitiveType.Word16));
             var wArg = callee.Frame.EnsureStackArgument(0, PrimitiveType.Word16);
             var dwArg = callee.Frame.EnsureStackArgument(2, PrimitiveType.Word32);
-            callee.Signature = new FunctionType(
-                null,
-                null,
-                new Identifier[] { wArg, dwArg });
+            callee.Signature = FunctionType.Action(wArg, dwArg);
             var cs = new CallSite(0, 0)
             {
                 StackDepthOnEntry = 6
@@ -116,7 +110,7 @@ namespace Reko.UnitTests.Core
                 new CallSite(4, 0), 
                 new Identifier("foo", PrimitiveType.Pointer32, null),
                 true);
-            var sig = new FunctionType(null, new Identifier("bRet", PrimitiveType.Byte, Registers.eax));
+            var sig = FunctionType.Func(new Identifier("bRet", PrimitiveType.Byte, Registers.eax));
             var instr = ab.CreateInstruction(sig, null);
             Assert.AreEqual("eax = DPB(eax, foo(), 0)", instr.ToString());
         }
@@ -133,7 +127,7 @@ namespace Reko.UnitTests.Core
                 new CallSite(4, 0), 
                 new ProcedureConstant(PrimitiveType.Pointer32, callee),
                 true);
-            var sig = ProcedureSignature.Action(new Identifier("...", new UnknownType(), new StackArgumentStorage(0, null)));
+            var sig = FunctionType.Action(new Identifier("...", new UnknownType(), new StackArgumentStorage(0, null)));
             var instr = ab.CreateInstruction(sig, null);
             Assert.AreEqual("callee(0x00000000)", instr.ToString());//$BUG: obviously wrong
         }

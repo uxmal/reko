@@ -65,6 +65,16 @@ namespace Reko.Core.Types
             this.Parameters = parameters;
         }
 
+        public static FunctionType Func(Identifier returnId, params Identifier[] formals)
+        {
+            return new FunctionType(null, returnId, formals);
+        }
+
+        public static FunctionType Action(params Identifier[] formals)
+        {
+            return new FunctionType(null, null, formals);
+        }
+
         public Identifier ReturnValue { get; private set; }
         public Identifier [] Parameters { get; private set; }
         public bool HasVoidReturn { get { return ReturnValue == null || ReturnValue.DataType is VoidType; } }

@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Scanning
                 argIds.Add(new Identifier(arg, PrimitiveType.Word32,
                     new RegisterStorage(ret, argIds.Count + 1, 0, PrimitiveType.Word32)));
             }
-            return new FunctionType(null, retReg, argIds.ToArray());
+            return FunctionType.Func(retReg, argIds.ToArray());
         }
 
         private void BuildX86RealTest(Action<X86Assembler> test)
@@ -861,8 +861,7 @@ fn00001200_exit:
             Given_Program(Address.Ptr32(0x43210000), bytes);
             Given_Project();
 
-            var ft = new FunctionType(
-                null,
+            var ft = FunctionType.Func(
                 new Identifier("", PrimitiveType.Real32, null),
                 new Identifier[0]);
             var str = new StructureType();

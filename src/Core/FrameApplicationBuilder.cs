@@ -136,7 +136,10 @@ namespace Reko.Core
                     stack.StackOffset - (site.StackDepthOnEntry + sigCallee.ReturnAddressOnStack),
                     stack.DataType);
             else
-                return arch.CreateStackAccess(frame, stack.StackOffset, stack.DataType);
+                return arch.CreateStackAccess(
+                    frame, 
+                    stack.StackOffset - site.SizeOfReturnAddressOnStack,
+                    stack.DataType);
         }
 
         public Expression VisitTemporaryStorage(TemporaryStorage temp)

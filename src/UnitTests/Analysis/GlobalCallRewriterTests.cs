@@ -99,8 +99,7 @@ namespace Reko.UnitTests.Analysis
 		public void GenerateUseInstructionsForSpecifiedSignature()
 		{
             Procedure proc = new Procedure("foo", program.Architecture.CreateFrame());
-			proc.Signature = new FunctionType(
-                null,
+			proc.Signature = FunctionType.Func(
 				new Identifier("eax", PrimitiveType.Word32, Registers.eax),
 				new Identifier [] { 
 					new Identifier("ecx", PrimitiveType.Word32, Registers.ecx),
