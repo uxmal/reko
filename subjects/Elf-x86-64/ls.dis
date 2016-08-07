@@ -12,23 +12,17 @@ _init_entry:
 // LocalsOut: fp(64)
 
 l0000000000402168:
-	word64 rax_4 = Mem0[0x0000000000619FF8:word64]
-	branch rax_4 == 0x0000000000000000 l000000000040217D
+	word64 rax_5 = Mem0[0x0000000000619FF8:word64]
+	branch rax_5 == 0x0000000000000000 l000000000040217D
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
 // LocalsOut: fp(8)
 
 l0000000000402178:
-	word64 rsp_15
-	byte SCZO_16
-	word64 rax_17
-	byte SZO_18
-	byte C_19
-	byte Z_20
 	call __gmon_start__ (retsize: 8; depth: 16)
-		uses: C_7,rax_4,rsp_2,SCZO,SZO_5,Z_6
-		defs: C_19,rax_17,rsp_15,SCZO_16,SZO_18,Z_20
+		uses: C_8,rax_5,rsp_3,SCZO,SZO_6,Z_7
+		defs: C_20,rax_18,rsp_16,SCZO_17,SZO_19,Z_21
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000008 rax:<invalid>
@@ -69,7 +63,7 @@ fn0000000000404890_entry:
 
 l0000000000404890:
 	__align(fp + 0x0000000000000008)
-	word64 rax_19 = DPB(rax, __libc_start_main(0x00000000004028C0, qwArg00, fp + 0x0000000000000008, 0x0000000000411E60, 0x0000000000411ED0, rdx, fp), 0)
+	rax_20 = DPB(rax, __libc_start_main(0x00000000004028C0, qwArg00, fp + 0x0000000000000008, 0x0000000000411E60, 0x0000000000411ED0, rdx, fp), 0)
 	__hlt()
 // DataOut:
 // DataOut (flags): 
