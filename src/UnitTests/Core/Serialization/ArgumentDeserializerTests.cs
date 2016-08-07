@@ -54,7 +54,13 @@ namespace Reko.UnitTests.Core.Serialization
                 arch,
                 new TypeLibraryDeserializer(platform, true, new TypeLibrary()),
                 "stdapi");
-            argser = new ArgumentDeserializer(sigser, arch, arch.CreateFrame(), 13);
+            argser = new ArgumentDeserializer(
+                sigser,
+                arch,
+                arch.CreateFrame(),
+                // It's possible that old, hand-written assembler passes
+                // arguments on unaligned offsets
+                13);
             mr.ReplayAll();
         }
 
