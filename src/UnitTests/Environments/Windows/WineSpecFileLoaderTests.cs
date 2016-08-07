@@ -65,7 +65,7 @@ namespace Reko.UnitTests.Environments.Windows
             var svc = mod.ServicesByVector[624];
             Assert.AreEqual("SetFastQueue", svc.Name);
             Assert.AreEqual(
-                "void SetFastQueue(Stack word32 dwArg04, Stack word32 dwArg00)" + nl + "// stackDelta: 12; fpuStackDelta: 0; fpuMaxParam: -1" + nl + "",
+                "void SetFastQueue(Stack word32 dwArg08, Stack word32 dwArg04)" + nl + "// stackDelta: 12; fpuStackDelta: 0; fpuMaxParam: -1" + nl + "",
                 svc.Signature.ToString(svc.Name, FunctionType.EmitFlags.AllDetails));
         }
 
@@ -86,7 +86,7 @@ namespace Reko.UnitTests.Environments.Windows
                 "void GetVersion()" + nl + "// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1" + nl + "",
                 mod.ServicesByVector[3].Signature.ToString("GetVersion", FunctionType.EmitFlags.AllDetails));
             Assert.AreEqual(
-                "void LocalInit(Stack word16 wArg04, Stack word16 wArg02, Stack word16 wArg00)" + nl + "// stackDelta: 10; fpuStackDelta: 0; fpuMaxParam: -1" + nl + "",
+                "void LocalInit(Stack word16 wArg08, Stack word16 wArg06, Stack word16 wArg04)" + nl + "// stackDelta: 10; fpuStackDelta: 0; fpuMaxParam: -1" + nl + "",
                 mod.ServicesByVector[4].Signature.ToString("LocalInit", FunctionType.EmitFlags.AllDetails));
         }
 

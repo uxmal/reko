@@ -318,7 +318,7 @@ namespace Reko.UnitTests.Analysis
                             null,
                             new Identifier("eax", tHglobal, Reko.Arch.X86.Registers.eax),
                             new Identifier[] {
-                                new Identifier("pv",  tLpvoid, new StackArgumentStorage(0, PrimitiveType.Word32))
+                                new Identifier("pv",  tLpvoid, new StackArgumentStorage(4, PrimitiveType.Word32))
                             })
                         {
                             StackDelta = 4,
@@ -332,7 +332,7 @@ namespace Reko.UnitTests.Analysis
                         null,
                         new Identifier("eax",  tBool, Reko.Arch.X86.Registers.eax),
                         new Identifier[] {
-                            new Identifier("hMem", tHglobal, new StackArgumentStorage(0, PrimitiveType.Word32))
+                            new Identifier("hMem", tHglobal, new StackArgumentStorage(4, PrimitiveType.Word32))
                         })
                     {
                         StackDelta = 4,
@@ -347,7 +347,7 @@ namespace Reko.UnitTests.Analysis
                      null,
                      new Identifier("eax",  tBool, Reko.Arch.X86.Registers.eax),
                      new[] {
-                        new Identifier("hMem", tHglobal, new StackArgumentStorage(0, PrimitiveType.Word32))
+                        new Identifier("hMem", tHglobal, new StackArgumentStorage(4, PrimitiveType.Word32))
                      })
                      {
                          StackDelta = 4,

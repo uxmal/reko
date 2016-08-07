@@ -1,4 +1,4 @@
-a:Stack +0000
+a:Stack +0004
     def:  def a
     uses: a_1 = a
           ecx_6 = Mem0[a:word32]
