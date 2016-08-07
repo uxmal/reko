@@ -1122,5 +1122,19 @@ namespace Reko.UnitTests.Arch.M68k
                 "0|L--|00010000(4): 1 instructions",
                 "1|L--|sr = 0x2700");
         }
+
+        [Test]
+        public void M68krw_divs()
+        {
+            Rewrite(0x81C1);                // divs
+            AssertCode(
+                "0|L--|00010000(2): 6 instructions",
+                "1|L--|v3 = (int16) (d0 % (word16) d1)",
+                "2|L--|v4 = (int16) (d0 / (word16) d1)",
+                "3|L--|d0 = DPB(d0, v3, 16)",
+                "4|L--|d0 = DPB(d0, v4, 0)",
+                "5|L--|VZN = cond(v4)",
+                "6|L--|C = false");
+        }
     }
 }
