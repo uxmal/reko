@@ -74,7 +74,6 @@ namespace Reko.UnitTests.Core
 		}
 
 		[Test]
-        [Category(Categories.FailedTests)]
         public void AppBld_BuildApplication()
 		{
 			Assert.IsTrue(sig.Parameters[3].Storage is OutArgumentStorage);
