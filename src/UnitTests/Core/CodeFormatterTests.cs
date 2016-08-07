@@ -280,5 +280,23 @@ namespace Reko.UnitTests.Core
             c.Accept(cf);
             Assert.AreEqual("1e+18", sw.ToString());
         }
+
+        [Test]
+        public void CfStructCast()
+        {
+            var s = new StructureType
+            {
+                Name = "foo",
+                Fields =
+                {
+                    { 0x0000, PrimitiveType.Int16 },
+                    { 0x0002, PrimitiveType.Int16 }
+                }
+            };
+            var id = new Identifier("id", PrimitiveType.Word32, new TemporaryStorage("id", 4, PrimitiveType.Word32));
+            var cast = new Cast(s, id);
+            cast.Accept(cf);
+            Assert.AreEqual("(struct foo) id", sw.ToString());
+        }
     }
 }
