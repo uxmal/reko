@@ -199,7 +199,7 @@ namespace Reko.Environments.C64
             {
             }
 
-            public override void OnProcedureLeft(ProcedureSignature procedureSignature)
+            public override void OnProcedureLeft(FunctionType procedureSignature)
             {
             }
 
@@ -208,7 +208,7 @@ namespace Reko.Environments.C64
                 return new CallSite(2, 0);
             }
 
-            public override void OnAfterCall(ProcedureSignature sigCallee)
+            public override void OnAfterCall(FunctionType sigCallee)
             {
             }
         }

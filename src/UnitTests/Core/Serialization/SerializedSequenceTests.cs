@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Core.Serialization
 			ssig.Arguments = new Argument_v1[] { sa };
 
             Given_X86ProcedureSerializer();
-			ProcedureSignature ps = ser.Deserialize(ssig, f);
+			FunctionType ps = ser.Deserialize(ssig, f);
 			Assert.AreEqual("void foo(Sequence word32 dx_ax)", ps.ToString("foo"));
 		}
 
@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Core.Serialization
 		{
 			SerializedSignature sig = new SerializedSignature();
             Given_X86ProcedureSerializer();
-            ProcedureSignature ps = ser.Deserialize(sig, platform.Architecture.CreateFrame());
+            FunctionType ps = ser.Deserialize(sig, platform.Architecture.CreateFrame());
 			Assert.AreEqual("void foo()", ps.ToString("foo"));
 			Assert.IsTrue(ps.ParametersValid);
 		}

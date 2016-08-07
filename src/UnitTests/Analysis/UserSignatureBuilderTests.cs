@@ -162,11 +162,10 @@ namespace Reko.UnitTests.Analysis
             usb.BuildSignatures();
 
             var sigExp =
-@"Register int32 ()(Stack PLATFORMDEF a, Stack USRDEF b)
+@"Register int32 test(Stack PLATFORMDEF a, Stack USRDEF b)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 ";
-
-            Assert.AreEqual(sigExp, proc.Signature.ToString());
+            Assert.AreEqual(sigExp, proc.Signature.ToString("test", FunctionType.EmitFlags.AllDetails));
 
             Assert.AreEqual(2, proc.Signature.Parameters.Length);
             Assert.AreEqual("int32", proc.Signature.ReturnValue.DataType.ToString());
@@ -190,10 +189,13 @@ namespace Reko.UnitTests.Analysis
             var usb = new UserSignatureBuilder(program);
             usb.ApplySignatureToProcedure(
                 Address.Create(PrimitiveType.Pointer32, 0x1000),
-                new ProcedureSignature(
+                new FunctionType(
                     null,
-                    new Identifier("r2", PrimitiveType.Char, r1.Storage),  // perverse but legal.
-                    new Identifier("r1", PrimitiveType.Real32, r2.Storage)),
+                    null,
+                    new Identifier[] {
+                        new Identifier("r2", PrimitiveType.Char, r1.Storage),  // perverse but legal.
+                        new Identifier("r1", PrimitiveType.Real32, r2.Storage)
+                    }),
                 m.Procedure);
             var sExp = @"// test
 // Return size: 0

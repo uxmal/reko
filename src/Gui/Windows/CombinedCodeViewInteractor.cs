@@ -68,6 +68,19 @@ namespace Reko.Gui.Windows
             set { combinedCodeView.CurrentAddress = value; }
         }
 
+        public void DisplayStatement(Program program, Statement stm)
+        {
+            this.program = program;
+            this.proc = stm.Block.Procedure;
+            this.showProcedures = true;
+            ProgramChanged();
+            if (program != null)
+            {
+                var addr = program.SegmentMap.MapLinearAddressToAddress(stm.LinearAddress);
+                SelectedAddress = addr;
+            }
+        }
+
         public void DisplayProcedure(Program program, Procedure proc)
         {
             this.program = program;

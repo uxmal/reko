@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Scanning
         private TestScanner scan;
         private Identifier reg1;
         private IImportResolver importResolver;
-        private IDictionary<Address, ProcedureSignature> callSigs;
+        private IDictionary<Address, FunctionType> callSigs;
         private ServiceContainer sc;
         private Project project;
         private MemoryArea mem;
@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Scanning
             mr = new MockRepository();
             fakeArch = new FakeArchitecture();
             importResolver = mr.StrictMock<IImportResolver>();
-            callSigs = new Dictionary<Address, ProcedureSignature>();
+            callSigs = new Dictionary<Address, FunctionType>();
             this.eventListener = new FakeDecompilerEventListener();
             arch = fakeArch;
             var r1 = arch.GetRegister(1);
@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Scanning
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
         }
 
-        private ProcedureSignature CreateSignature(string ret, params string[] args)
+        private FunctionType CreateSignature(string ret, params string[] args)
         {
             var retReg = new Identifier(ret, PrimitiveType.Word32, new RegisterStorage(ret, 0, 0, PrimitiveType.Word32));
             var argIds = new List<Identifier>();
@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Scanning
                 argIds.Add(new Identifier(arg, PrimitiveType.Word32,
                     new RegisterStorage(ret, argIds.Count + 1, 0, PrimitiveType.Word32)));
             }
-            return new ProcedureSignature(retReg, argIds.ToArray());
+            return new FunctionType(null, retReg, argIds.ToArray());
         }
 
         private void BuildX86RealTest(Action<X86Assembler> test)
@@ -496,9 +496,9 @@ fn00001100_exit:
             var platform = mr.Stub<IPlatform>();
             platform.Stub(p => p.GetTrampolineDestination(null, null))
                 .IgnoreArguments()
-                .Return(new ExternalProcedure("bar", new ProcedureSignature()));
+                .Return(new ExternalProcedure("bar", new FunctionType()));
             platform.Stub(p => p.LookupProcedureByName("foo.dll", "bar")).Return(
-                new ExternalProcedure("bar", new ProcedureSignature()));
+                new ExternalProcedure("bar", new FunctionType()));
             program.Platform = platform;
             Given_Trace(new RtlTrace(0x1000)
             {
@@ -746,7 +746,7 @@ fn00001200_exit:
 
             var ft1 = Given_Serialized_Signature(new SerializedSignature
             {
-                ReturnValue = new Argument_v1 { Type = Int32() }
+                ReturnValue = new Argument_v1 { Type = Int32() },
             });
             var ft2 = Given_Serialized_Signature(new SerializedSignature
             {
@@ -766,20 +766,20 @@ fn00001200_exit:
             sc.ScanImage();
 
             var sExpSig1 =
-@"Register ui32 ()()
+@"Register ui32 sig1()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 ";
             var sExpSig2 =
-@"Register char ()()
+@"Register char sig2()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 ";
             Assert.AreEqual(6, program.Procedures.Count);
-            Assert.AreEqual(sExpSig1, program.Procedures[Address.Ptr32(0x43210028)].Signature.ToString());
-            Assert.AreEqual(sExpSig1, program.Procedures[Address.Ptr32(0x43210038)].Signature.ToString());
-            Assert.AreEqual(sExpSig1, program.Procedures[Address.Ptr32(0x43210048)].Signature.ToString());
-            Assert.AreEqual(sExpSig2, program.Procedures[Address.Ptr32(0x43210053)].Signature.ToString());
-            Assert.AreEqual(sExpSig2, program.Procedures[Address.Ptr32(0x43210063)].Signature.ToString());
-            Assert.AreEqual(sExpSig2, program.Procedures[Address.Ptr32(0x43210073)].Signature.ToString());
+            Assert.AreEqual(sExpSig1, program.Procedures[Address.Ptr32(0x43210028)].Signature.ToString("sig1", FunctionType.EmitFlags.AllDetails));
+            Assert.AreEqual(sExpSig1, program.Procedures[Address.Ptr32(0x43210038)].Signature.ToString("sig1", FunctionType.EmitFlags.AllDetails));
+            Assert.AreEqual(sExpSig1, program.Procedures[Address.Ptr32(0x43210048)].Signature.ToString("sig1", FunctionType.EmitFlags.AllDetails));
+            Assert.AreEqual(sExpSig2, program.Procedures[Address.Ptr32(0x43210053)].Signature.ToString("sig2", FunctionType.EmitFlags.AllDetails));
+            Assert.AreEqual(sExpSig2, program.Procedures[Address.Ptr32(0x43210063)].Signature.ToString("sig2", FunctionType.EmitFlags.AllDetails));
+            Assert.AreEqual(sExpSig2, program.Procedures[Address.Ptr32(0x43210073)].Signature.ToString("sig2", FunctionType.EmitFlags.AllDetails));
         }
 
         private DataType Given_Serialized_Signature(SerializedSignature sSignature)
@@ -839,11 +839,11 @@ fn00001200_exit:
             sc.ScanImage();
 
             var sExpSig =
-@"Register real32 ()()
+@"Register real32 fn43210017()
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 ";
             Assert.AreEqual(1, program.Procedures.Count);
-            Assert.AreEqual(sExpSig, program.Procedures[Address.Ptr32(0x43210017)].Signature.ToString());
+            Assert.AreEqual(sExpSig, program.Procedures[Address.Ptr32(0x43210017)].Signature.ToString("fn43210017", FunctionType.EmitFlags.AllDetails));
         }
 
         [Test(Description = "Scanner should be able to handle structures with padding 'holes'")]

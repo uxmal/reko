@@ -1868,6 +1868,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.move,
+                dataWidth = PrimitiveType.Word16,
                 op1 = new RegisterOperand(Registers.sr),
                 op2 = dasm.get_ea_mode_str_16(dasm.instruction),
             };
@@ -1878,6 +1879,7 @@ namespace Reko.Arch.M68k
             return new M68kInstruction
             {
                 code = Opcode.move,
+                dataWidth = PrimitiveType.Word16,
                 op1 = dasm.get_ea_mode_str_16(dasm.instruction),
                 op2 = new RegisterOperand(Registers.sr)
             };

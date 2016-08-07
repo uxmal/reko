@@ -46,6 +46,15 @@ namespace Reko.Gui.Windows
             ((CombinedCodeViewInteractor)frame.Pane).DisplayProcedure(program, proc);
         }
 
+        public void DisplayStatement(Program program, Statement stm)
+        {
+            var pane = new CombinedCodeViewInteractor();
+            var windowType = typeof(CombinedCodeViewInteractor).Name;
+            var proc = stm.Block.Procedure;
+            var frame = ShowWindow(windowType, proc.Name, proc, pane);
+            ((CombinedCodeViewInteractor)frame.Pane).DisplayStatement(program, stm);
+        }
+
         public void DisplayGlobals(Program program, ImageSegment segment)
         {
             var pane = new CombinedCodeViewInteractor();

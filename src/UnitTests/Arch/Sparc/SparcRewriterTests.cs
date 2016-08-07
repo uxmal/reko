@@ -237,11 +237,37 @@ namespace Reko.UnitTests.Arch.Sparc
         }
 
         [Test]
-        [Ignore]
         public void SparcRw_save()
         {
-            BuildTest(0x8BE04009);
-            AssertCode("save\t%g1,%o1,%g5");
+            BuildTest(0x9DE3BEE8); // save\t%g1,%o1,%g5
+            AssertCode(
+                "0|L--|00100000(4): 10 instructions",
+                "1|L--|v3 = sp + 0xFFFFFEE8",
+                "2|L--|i0 = o0",
+                "3|L--|i1 = o1",
+                "4|L--|i2 = o2",
+                "5|L--|i3 = o3",
+                "6|L--|i4 = o4",
+                "7|L--|i5 = o5",
+                "8|L--|i6 = sp",
+                "9|L--|i7 = o7",
+                "10|L--|sp = v3");
+        }
+
+        [Test]
+        public void SparcRw_restore()
+        {
+            BuildTest(0x81E80000); // restore\t%g0,%g0,%g0
+            AssertCode(
+                "0|L--|00100000(4): 8 instructions",
+                "1|L--|o0 = i0",
+                "2|L--|o1 = i1",
+                "3|L--|o2 = i2",
+                "4|L--|o3 = i3",
+                "5|L--|o4 = i4",
+                "6|L--|o5 = i5",
+                "7|L--|sp = i6",
+                "8|L--|o7 = i7");
         }
 
         [Test]

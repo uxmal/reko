@@ -425,8 +425,8 @@ namespace Reko.UnitTests.Typing
 		[Test]
 		public void CompatibleFunctions()
 		{
-			FunctionType f1 = new FunctionType(null, null, new Identifier[] { new Identifier("", PrimitiveType.Int16, null) }, null );
-			FunctionType f2 = new FunctionType(null, null, new Identifier[] { new Identifier("", PrimitiveType.Int32, null) }, null );
+			FunctionType f1 = new FunctionType(null, null, new Identifier("", PrimitiveType.Int16, null));
+			FunctionType f2 = new FunctionType(null, null, new Identifier("", PrimitiveType.Int32, null));
 			Assert.IsTrue(un.AreCompatible(f1, f2));
 		}
 

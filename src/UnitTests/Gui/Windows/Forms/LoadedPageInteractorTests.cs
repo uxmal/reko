@@ -113,16 +113,17 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         }
 
         [Test]
-        [Ignore]
         public void LpiPopulateBrowserWithScannedProcedures()
         {
+            var brSvc = AddService<IProjectBrowserService>();
+            brSvc.Expect(b => b.Reload());
+            mr.ReplayAll();
+
             // Instead write expectations for the two added items.
 
             AddProcedure(Address.SegPtr(0xC20, 0x0000), "Test1");
             AddProcedure(Address.SegPtr(0xC20, 0x0002), "Test2");
             interactor.EnterPage();
-            //Assert.AreEqual(3, form.BrowserList.Items.Count);
-            //Assert.AreEqual("0C20", form.BrowserList.Items[2].Text);
         }
 
         private void AddProcedure(Address addr, string procName)

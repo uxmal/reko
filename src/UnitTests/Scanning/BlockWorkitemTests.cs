@@ -90,7 +90,7 @@ namespace Reko.UnitTests.Scanning
                 addr);
         }
 
-        private ProcedureSignature CreateSignature(RegisterStorage ret, params RegisterStorage[] args)
+        private FunctionType CreateSignature(RegisterStorage ret, params RegisterStorage[] args)
         {
             var retReg = proc.Frame.EnsureRegister(ret);
             var argIds = new List<Identifier>();
@@ -98,7 +98,7 @@ namespace Reko.UnitTests.Scanning
             {
                 argIds.Add(proc.Frame.EnsureRegister(arg));
             }
-            return new ProcedureSignature(retReg, argIds.ToArray());
+            return new FunctionType(null, retReg, argIds.ToArray());
         }
 
         private bool StashArg(ref ProcessorState state, ProcessorState value)
@@ -403,10 +403,13 @@ testProc_exit:
         public void Bwi_CallProcedureWithSignature()
         {
             var proc2 = new Procedure("fn2000", new Frame(PrimitiveType.Pointer32));
-            var sig = new ProcedureSignature(
+            var sig = new FunctionType(
+                null,
                 proc2.Frame.EnsureRegister(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32)),
-                proc2.Frame.EnsureRegister(new RegisterStorage("r2", 2, 0, PrimitiveType.Word32)),
-                proc2.Frame.EnsureRegister(new RegisterStorage("r3", 3, 0, PrimitiveType.Word32)));
+                new[] {
+                    proc2.Frame.EnsureRegister(new RegisterStorage("r2", 2, 0, PrimitiveType.Word32)),
+                    proc2.Frame.EnsureRegister(new RegisterStorage("r3", 3, 0, PrimitiveType.Word32))
+                });
             proc2.Signature = sig;
             var block2 = new Block(proc, "l00100008");
             var block3 = new Block(proc, "l00100004");
@@ -456,7 +459,7 @@ testProc_exit:
             var reg1 = proc.Frame.EnsureRegister(new RegisterStorage("r1", 1, 0, PrimitiveType.Pointer32));
             var sysSvc = new SystemService {
                 Name = "SysSvc",
-                Signature = new ProcedureSignature(null, reg1),
+                Signature = new FunctionType(null, null, new[] { reg1 }),
                 Characteristics = new ProcedureCharacteristics()
             };
             platform.Expect(p => p.FindService(null, arch.CreateProcessorState())).IgnoreArguments().Return(sysSvc);
@@ -709,10 +712,13 @@ testProc_exit:
             var procCallee = new Procedure(null, new Frame(PrimitiveType.Pointer32))
             {
                 Name = "testFn",
-                Signature = new ProcedureSignature(
+                Signature = new FunctionType(
+                    null,
                     new Identifier("", PrimitiveType.Int32, r0.Storage),
-                    new Identifier("str", new Pointer(PrimitiveType.Char, 4), r0.Storage),
-                    new Identifier("f", PrimitiveType.Real32, r1.Storage))
+                    new[] {
+                        new Identifier("str", new Pointer(PrimitiveType.Char, 4), r0.Storage),
+                        new Identifier("f", PrimitiveType.Real32, r1.Storage)
+                    })
             };
             scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             scanner.Stub(f => f.FindContainingBlock(null)).IgnoreArguments().Return(l00100000);

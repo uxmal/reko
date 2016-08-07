@@ -24,6 +24,7 @@ using System.Linq;
 using System.Text;
 using Reko.Core.Expressions;
 using Reko.Core.Services;
+using Reko.Core.Types;
 
 namespace Reko.Core
 {
@@ -75,7 +76,7 @@ namespace Reko.Core
 
             foreach (var program in project.Programs)
             {
-                ProcedureSignature sig;
+                FunctionType sig;
                 if (program.EnvironmentMetadata.Signatures.TryGetValue(importName, out sig))
                 {
                     return new ExternalProcedure(importName, sig);

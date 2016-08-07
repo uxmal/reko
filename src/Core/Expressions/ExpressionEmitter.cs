@@ -419,6 +419,11 @@ namespace Reko.Core.Expressions
             return new BinaryExpression(Operator.Or, a.DataType, a, b);
         }
 
+        public Expression Or(Expression a, int b)
+        {
+            return new BinaryExpression(Operator.Or, a.DataType, a, Constant.Create(a.DataType, b));
+        }
+
         public BinaryExpression Sar(Expression e, byte sh)
         {
             return new BinaryExpression(Operator.Sar, e.DataType, e, Constant.Byte(sh));

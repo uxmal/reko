@@ -40499,7 +40499,9 @@ typedef struct Eq_17 {
 	word32 dwFFFFA5E7;	// FFFFA5E7
 } Eq_17;
 
-typedef struct Eq_21 Eq_21;
+typedef struct Eq_21 {
+	<anonymous> * ptrFC00690;	// FC00690
+} Eq_21;
 
 typedef struct Eq_37 {
 	<anonymous> ** ptr0004;	// 4

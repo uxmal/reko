@@ -759,7 +759,7 @@ namespace Reko.Environments.C64
                 PseudoProc("__Sys", VoidType.Instance,
                     new ProcedureConstant(arch.PointerType, new ExternalProcedure(
                         string.Format("fn{0:X4}", addr),
-                        new ProcedureSignature()))));
+                        new FunctionType()))));
         }
 
         private bool GetInteger(out int number)

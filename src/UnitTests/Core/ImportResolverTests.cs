@@ -76,7 +76,7 @@ namespace Reko.UnitTests.Core
                          new SystemService
                          {
                             Name = "bar",
-                            Signature = new ProcedureSignature()
+                            Signature = new FunctionType()
                          }
                     }
                 }
@@ -115,7 +115,7 @@ namespace Reko.UnitTests.Core
                          new SystemService
                          {
                             Name = "bar",
-                            Signature = new ProcedureSignature()
+                            Signature = new FunctionType()
                          }
                     }
                 }
@@ -145,22 +145,25 @@ namespace Reko.UnitTests.Core
                 }
             };
 
-            var barSig = new ProcedureSignature(
+            var barSig = new FunctionType(
+                    null,
                     new Identifier(
                         "res",
                         PrimitiveType.Word16,
                         new RegisterStorage("ax", 0, 0, PrimitiveType.Word16)
                     ),
-                    new Identifier(
-                        "a",
-                        PrimitiveType.Word16,
-                        new RegisterStorage("cx", 0, 0, PrimitiveType.Word16)
-                    ),
-                    new Identifier(
-                        "b",
-                        PrimitiveType.Word16,
-                        new RegisterStorage("dx", 0, 0, PrimitiveType.Word16)
-                    )
+                    new[] {
+                        new Identifier(
+                            "a",
+                            PrimitiveType.Word16,
+                            new RegisterStorage("cx", 0, 0, PrimitiveType.Word16)
+                        ),
+                        new Identifier(
+                            "b",
+                            PrimitiveType.Word16,
+                            new RegisterStorage("dx", 0, 0, PrimitiveType.Word16)
+                        )
+                    }
                 );
 
             program.EnvironmentMetadata.Modules.Add("foo", new ModuleDescriptor("foo")
@@ -179,11 +182,10 @@ namespace Reko.UnitTests.Core
             Assert.AreEqual("bar", ep.Name);
 
             var sigExp =
-@"Register word16 ()(Register word16 a, Register word16 b)
+@"Register word16 bar(Register word16 a, Register word16 b)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 ";
-
-            Assert.AreEqual(sigExp, ep.Signature.ToString());
+            Assert.AreEqual(sigExp, ep.Signature.ToString("bar", FunctionType.EmitFlags.AllDetails));
         }
     }
 }

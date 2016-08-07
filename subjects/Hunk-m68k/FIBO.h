@@ -41399,7 +41399,9 @@ typedef union Eq_6005 {
 
 typedef bool (Eq_6012)(byte, word16);
 
-typedef struct Eq_6013 Eq_6013;
+typedef struct Eq_6013 {
+	byte a0001[];	// 1
+} Eq_6013;
 
 typedef struct Eq_6041 {	// size: 4 4
 	struct Eq_779 ******************************************* ptrFFFFFFFC;	// FFFFFFFC

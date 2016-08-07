@@ -126,8 +126,10 @@ namespace Reko.UnitTests.Core
 			stack += loc02.DataType.Size;
 			Identifier loc04 = f.EnsureStackLocal(-stack, PrimitiveType.Word16, "wLoc04");
 
-			ProcedureSignature sig = new ProcedureSignature(
-				null, new Identifier[] {
+			FunctionType sig = new FunctionType(
+                null,
+				null,
+                new Identifier[] {
 					new Identifier("arg0", PrimitiveType.Word16, new StackArgumentStorage(4, PrimitiveType.Word16)),
 					new Identifier("arg1", PrimitiveType.Word16, new StackArgumentStorage(6, PrimitiveType.Word16)) });
 
@@ -152,10 +154,13 @@ namespace Reko.UnitTests.Core
 			int stack = PrimitiveType.Word16.Size;
 			Identifier arg1 = f.EnsureStackLocal(-stack, PrimitiveType.Word16);
 
-			ProcedureSignature sig = new ProcedureSignature(
-				ax,
-			    cx,
-			    new Identifier("arg0", PrimitiveType.Word16, new StackArgumentStorage(0, PrimitiveType.Word16)));
+			FunctionType sig = new FunctionType(
+                null,
+                ax,
+                new Identifier[] {
+                    cx,
+                    new Identifier("arg0", PrimitiveType.Word16, new StackArgumentStorage(0, PrimitiveType.Word16))
+                });
 			
 			var cs = new CallSite(stack, 0);
 			var fn = new ProcedureConstant(PrimitiveType.Pointer32, new PseudoProcedure("bar", sig));

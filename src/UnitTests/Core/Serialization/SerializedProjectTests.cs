@@ -88,7 +88,7 @@ namespace Reko.UnitTests.Core.Serialization
                 {
                 });
             procser.Stub(p => p.Deserialize(null, null)).IgnoreArguments()
-                .Return(new ProcedureSignature());
+                .Return(new FunctionType());
             oe.Stub(e => e.Load(sc, arch)).Return(platform);
         }
 

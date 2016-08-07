@@ -371,6 +371,13 @@ namespace Reko.Gui.Windows.Controls
             if (denom <= 0)
                 throw new ArgumentOutOfRangeException("denom", "Denominator must be larger than 0.");
 #if SIMPLE
+            // This is PTomin's simpler implementation of SetPositionAsFraction
+            // Notice that just like the original implementation, it is O(n) where
+            // n is the number of items in the image map. Consider measuring 
+            // performance on really large image maps (1,000,000 items or more)
+            // to see if the brittle code in the #else branch makes any difference
+            // and if not, keep the SIMPLE implementation.
+
             long total = LineCount;
             long iPos = (numer * total) / denom;
 

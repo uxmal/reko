@@ -90,9 +90,9 @@ namespace Reko.Core
 			args.Add(new Identifier(id.Name, id.DataType, new StackArgumentStorage(stackOffset, id.DataType)));
 		}
 
-		public ProcedureSignature BuildSignature()
+		public FunctionType BuildSignature()
 		{
-			return new ProcedureSignature(ret, args.ToArray());
+			return new FunctionType(null, ret, args.ToArray());
 		}
 
 		public Identifier CreateOutIdentifier(Procedure proc, Identifier id)

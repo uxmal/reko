@@ -122,11 +122,11 @@ namespace Reko.UnitTests.Analysis
                 VoidId());
             var fn0004 = FnPtr32(
                 VoidId(),
-                StackId(0, Int32()));
+                StackId(4, Int32()));
             var fn0008 = FnPtr32(
                 VoidId(),
-                StackId(0, Int32()),
-                StackId(4, Int32()));
+                StackId(4, Int32()),
+                StackId(8, Int32()));
             return VtblStr(fn0000, fn0004, fn0008);
         }
 
@@ -135,16 +135,16 @@ namespace Reko.UnitTests.Analysis
             var fn0000 = FnPtr32(
                 EaxId(),
                 EcxId(),
-                StackId(0, Int32()));
+                StackId(4, Int32()));
             var fn0004 = FnPtr32(
                 EaxId(),
                 EcxId(),
-                StackId(0, Int32()));
+                StackId(4, Int32()));
             var fn0008 = FnPtr32(
                 EaxId(),
                 EcxId(),
-                StackId(0, Int32()),
-                StackId(4, Int32()));
+                StackId(4, Int32()),
+                StackId(8, Int32()));
             return VtblStr(fn0000, fn0004, fn0008);
         }
 

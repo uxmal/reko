@@ -650,5 +650,36 @@ const ax:0x0000 cx:<invalid>
             blockflow = new BlockFlow(null, new HashSet<RegisterStorage>(), ctx);
             trf.EnsureEvaluationContext(blockflow);
         }
+
+        /// <summary>
+        /// This crazy code is generated when Reko starts disassembling large 
+        /// areas of data as M68k code. At least we won't run out of memory
+        /// trying to evaluate the data.
+        /// </summary>
+        [Test]
+        public void TrashRepeatedDpbs()
+        {
+            p.Add("main", m =>
+            {
+                var eax = m.Frame.EnsureRegister(Registers.eax);
+                var v1 = m.Frame.CreateTemporary("v1", PrimitiveType.Byte);
+                var v2 = m.Frame.CreateTemporary("v2", PrimitiveType.Byte);
+                var v3 = m.Frame.CreateTemporary("v3", PrimitiveType.Byte);
+                m.Assign(v1, m.Or(m.Cast(v1.DataType, eax), 0));
+                m.Assign(eax, m.Dpb(eax, v1, 0));
+                m.Assign(v2, m.Or(m.Cast(v1.DataType, eax), 0));
+                m.Assign(eax, m.Dpb(eax, v2, 0));
+                m.Assign(v3, m.Or(m.Cast(v1.DataType, eax), 0));
+                m.Assign(eax, m.Dpb(eax, v3, 0));
+                m.Return();
+            });
+
+            var sExp =
+@"main
+    main_entry esp:fp
+    l1 esp:fp
+    main_exit eax:eax esp:fp";
+            RunTest(p, sExp);
+        }
     }
 }

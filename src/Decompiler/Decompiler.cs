@@ -153,9 +153,9 @@ namespace Reko
                     ProcedureFlow flow = dfa.ProgramDataFlow[proc];
                     TextFormatter f = new TextFormatter(output);
                     if (flow.Signature != null)
-                        flow.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.LowLevelInfo, f);
+                        flow.Signature.Emit(proc.Name, FunctionType.EmitFlags.LowLevelInfo, f);
                     else if (proc.Signature != null)
-                        proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.LowLevelInfo, f);
+                        proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.LowLevelInfo, f);
                     else
                         output.Write("Warning: no signature found for {0}", proc.Name);
                     output.WriteLine();
@@ -477,7 +477,7 @@ namespace Reko
             }
         }
 
-        public IDictionary<Address, ProcedureSignature> LoadCallSignatures(
+        public IDictionary<Address, FunctionType> LoadCallSignatures(
             Program program, 
             ICollection<SerializedCall_v1> userCalls)
         {
@@ -491,12 +491,12 @@ namespace Reko
                     Address addr;
                     if (program.Architecture.TryParseAddress(sc.InstructionAddress, out addr))
                     {
-                        return new KeyValuePair<Address, ProcedureSignature>(
+                        return new KeyValuePair<Address, FunctionType>(
                             addr,
                             sser.Deserialize(sc.Signature, program.Architecture.CreateFrame()));
                     }
                     else
-                        return new KeyValuePair<Address, ProcedureSignature>(null, null);
+                        return new KeyValuePair<Address, FunctionType>(null, null);
                 })
                 .ToDictionary(item => item.Key, item => item.Value);
         }

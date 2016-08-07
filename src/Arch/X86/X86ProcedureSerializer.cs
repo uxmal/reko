@@ -47,7 +47,7 @@ namespace Reko.Arch.X86
         {
         }
 
-        public void ApplyConvention(SerializedSignature ssig, ProcedureSignature sig)
+        public void ApplyConvention(SerializedSignature ssig, FunctionType sig)
         {
             string d = ssig.Convention;
             if (d == null || d.Length == 0)
@@ -59,11 +59,15 @@ namespace Reko.Arch.X86
             sig.ReturnAddressOnStack = Architecture.PointerType.Size;   //$BUG: x86 real mode?
         }
 
-        public override ProcedureSignature Deserialize(SerializedSignature ss, Frame frame)
+        public override FunctionType Deserialize(SerializedSignature ss, Frame frame)
         {
             if (ss == null)
                 return null;
-            this.argDeser = new ArgumentDeserializer(this, Architecture, frame, 0);
+            this.argDeser = new ArgumentDeserializer(
+                this,
+                Architecture,
+                frame,
+                Architecture.PointerType.Size);//$BUG: x86 real mode?
             Identifier ret = null;
             int fpuDelta = FpuStackOffset;
 
@@ -105,7 +109,7 @@ namespace Reko.Arch.X86
                 fpuDelta -= FpuStackOffset;
             }
             FpuStackOffset = fpuDelta;
-            var sig = new ProcedureSignature(ret, args.ToArray());
+            var sig = new FunctionType(null, ret, args.ToArray());
             sig.IsInstanceMetod = ss.IsInstanceMethod;
             ApplyConvention(ss, sig);
             return sig;

@@ -51,7 +51,7 @@ namespace Reko.Core
 
         public Program Program { get; private set; }
 
-		public virtual ProcedureSignature GetProcedureSignature(ProcedureBase proc)
+		public virtual FunctionType GetProcedureSignature(ProcedureBase proc)
 		{
 			return proc.Signature;
 		}
@@ -124,7 +124,7 @@ namespace Reko.Core
         public void RewriteReturns(Procedure proc)
         {
             Identifier idRet = proc.Signature.ReturnValue;
-            if (idRet == null)
+            if (idRet == null || idRet.DataType is VoidType)
                 return;
             foreach (Statement stm in proc.Statements)
             {

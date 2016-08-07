@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Analysis
 				w.WriteLine();
 
 				w.WriteLine("// {0}", proc.Name);
-				proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, new TextFormatter(w));
+				proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.None, new TextFormatter(w));
 				w.WriteLine();
 				foreach (Block block in proc.SortBlocksByName())
 				{
@@ -314,9 +314,12 @@ namespace Reko.UnitTests.Analysis
                 .Return(
                     new ExternalProcedure(
                         "GlobalHandle",
-                        new ProcedureSignature(
+                        new FunctionType(
+                            null,
                             new Identifier("eax", tHglobal, Reko.Arch.X86.Registers.eax),
-                            new Identifier("pv",  tLpvoid, new StackArgumentStorage(0, PrimitiveType.Word32)))
+                            new Identifier[] {
+                                new Identifier("pv",  tLpvoid, new StackArgumentStorage(4, PrimitiveType.Word32))
+                            })
                         {
                             StackDelta = 4,
                         }));
@@ -325,9 +328,12 @@ namespace Reko.UnitTests.Analysis
                 Arg<string>.Is.Equal("GlobalUnlock")))
                 .Return(new ExternalProcedure(
                     "GlobalUnlock",
-                    new ProcedureSignature(
+                    new FunctionType(
+                        null,
                         new Identifier("eax",  tBool, Reko.Arch.X86.Registers.eax),
-                        new Identifier("hMem", tHglobal, new StackArgumentStorage(0, PrimitiveType.Word32)))
+                        new Identifier[] {
+                            new Identifier("hMem", tHglobal, new StackArgumentStorage(4, PrimitiveType.Word32))
+                        })
                     {
                         StackDelta = 4,
                     }));
@@ -337,12 +343,15 @@ namespace Reko.UnitTests.Analysis
              Arg<string>.Is.Equal("GlobalFree")))
              .Return(new ExternalProcedure(
                  "GlobalFree",
-                 new ProcedureSignature(
+                 new FunctionType(
+                     null,
                      new Identifier("eax",  tBool, Reko.Arch.X86.Registers.eax),
-                     new Identifier("hMem", tHglobal, new StackArgumentStorage(0, PrimitiveType.Word32)))
-                 {
-                     StackDelta = 4,
-                 }));
+                     new[] {
+                        new Identifier("hMem", tHglobal, new StackArgumentStorage(4, PrimitiveType.Word32))
+                     })
+                     {
+                         StackDelta = 4,
+                     }));
             platform.Stub(p => p.GetTrampolineDestination(
                 Arg<ImageReader>.Is.NotNull,
                 Arg<IRewriterHost>.Is.NotNull))

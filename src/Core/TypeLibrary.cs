@@ -40,13 +40,13 @@ namespace Reko.Core
 	{
 		public TypeLibrary() : this(
             new Dictionary<string, DataType>(),
-            new Dictionary<string, ProcedureSignature>())
+            new Dictionary<string, FunctionType>())
         {
         }
 
         public TypeLibrary(
             IDictionary<string,DataType> types,
-            IDictionary<string, ProcedureSignature> procedures)
+            IDictionary<string, FunctionType> procedures)
         {
             this.Types = types;
             this.Signatures = procedures;
@@ -54,35 +54,35 @@ namespace Reko.Core
         }
 
         public IDictionary<string, DataType> Types { get; private set; }
-        public IDictionary<string, ProcedureSignature> Signatures { get; private set; }
+        public IDictionary<string, FunctionType> Signatures { get; private set; }
         public IDictionary<string, ModuleDescriptor> Modules { get; private set; }
 
         public TypeLibrary Clone()
         {
             var clone = new TypeLibrary();
             clone.Types = new Dictionary<string, DataType>(this.Types);
-            clone.Signatures = new Dictionary<string, ProcedureSignature>(this.Signatures);
+            clone.Signatures = new Dictionary<string, FunctionType>(this.Signatures);
             clone.Modules = this.Modules.ToDictionary(k => k.Key, v => v.Value.Clone(), StringComparer.InvariantCultureIgnoreCase);
             return clone;
         }
 
 		public void Write(TextWriter writer)
 		{
-            var sl = new SortedList<string, ProcedureSignature>(
+            var sl = new SortedList<string, FunctionType>(
                 Signatures,
                 StringComparer.InvariantCulture);
             TextFormatter f = new TextFormatter(writer);
-			foreach (KeyValuePair<string,ProcedureSignature> de in sl)
+			foreach (KeyValuePair<string,FunctionType> de in sl)
 			{
 				string name = (string) de.Key;
-				de.Value.Emit(de.Key, ProcedureSignature.EmitFlags.ArgumentKind, f);
+				de.Value.Emit(de.Key, FunctionType.EmitFlags.ArgumentKind, f);
 				writer.WriteLine();
 			}
 		}
 
-		public ProcedureSignature Lookup(string procedureName)
+		public FunctionType Lookup(string procedureName)
 		{
-			ProcedureSignature sig;
+			FunctionType sig;
             if (!Signatures.TryGetValue(procedureName, out sig))
                 return null;
 			return sig;

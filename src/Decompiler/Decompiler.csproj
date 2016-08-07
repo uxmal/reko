@@ -224,6 +224,7 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Evaluation\SelfDpbRule.cs" />
     <Compile Include="Evaluation\Shl_add_Rule.cs" />
     <Compile Include="Evaluation\SliceSegmentedPointer_Rule.cs" />
     <Compile Include="Loading\DccSignatureLoader.cs" />

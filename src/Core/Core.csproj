@@ -518,9 +518,6 @@
     <Compile Include="ProcedureBase.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ProcedureSignature.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="ProcessorInfo.cs">
       <SubType>Code</SubType>
     </Compile>

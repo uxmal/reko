@@ -373,14 +373,14 @@ namespace Reko.UnitTests.Core.Serialization
                 OsPath.Absolute("meta1.xml"),
                 this.platform,
                 new TypeLibrary(
-                    types1, new Dictionary<string, ProcedureSignature>()
+                    types1, new Dictionary<string, FunctionType>()
                 )
             );
             mockFactory.CreateLoadMetadataStub(
                 OsPath.Absolute("meta2.xml"),
                 this.platform,
                 new TypeLibrary(
-                    types2, new Dictionary<string, ProcedureSignature>()
+                    types2, new Dictionary<string, FunctionType>()
                 )
             );
             mr.ReplayAll();

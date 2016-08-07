@@ -73,7 +73,7 @@ namespace Reko.Typing
                     catch (Exception ex)
                     {
                         eventListener.Error(
-                            eventListener.CreateProcedureNavigator(program, p),
+                            eventListener.CreateStatementNavigator(program, stm),
                             ex,
                             "An error occurred while processing the statement {0}.",
                             stm);
@@ -98,8 +98,8 @@ namespace Reko.Typing
         /// </summary>
         private void CollectProcedureSignature(Procedure proc)
         {
-            ProcedureSignature sig = proc.Signature;
-            if (sig.ReturnValue != null)
+            FunctionType sig = proc.Signature;
+            if (!sig.HasVoidReturn)
             {
                 desc.MeetDataType(sig.ReturnValue, sig.ReturnValue.DataType);
             }

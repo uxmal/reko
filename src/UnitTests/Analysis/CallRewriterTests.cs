@@ -26,6 +26,7 @@ using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.IO;
+using Reko.Core.Types;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -152,7 +153,7 @@ namespace Reko.UnitTests.Analysis
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				ProcedureFlow flow = dfa.ProgramDataFlow[proc];
-				proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.ArgumentKind, new TextFormatter(writer));
+				proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.ArgumentKind, new TextFormatter(writer));
 				writer.WriteLine();
 				flow.Emit(prog.Architecture, writer);
 				proc.Write(true, writer);

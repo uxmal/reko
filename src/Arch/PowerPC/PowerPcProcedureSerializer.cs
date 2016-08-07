@@ -44,7 +44,7 @@ namespace Reko.Arch.PowerPC
             this.arch = arch;
         }
 
-        public override ProcedureSignature Deserialize(SerializedSignature ss, Frame frame)
+        public override FunctionType Deserialize(SerializedSignature ss, Frame frame)
         {
             if (ss == null)
                 return null;
@@ -69,7 +69,7 @@ namespace Reko.Arch.PowerPC
                 }
             }
 
-            var sig = new ProcedureSignature(ret, args.ToArray());
+            var sig = new FunctionType(null, ret, args.ToArray());
             return sig;
         }
 
