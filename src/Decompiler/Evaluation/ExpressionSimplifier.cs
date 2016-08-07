@@ -57,6 +57,7 @@ namespace Reko.Evaluation
         private Mps_Constant_Rule mpsRule;
         private BinOpWithSelf_Rule binopWithSelf;
         private ConstDivisionImplementedByMultiplication constDiv;
+        private SelfDpbRule selfdpbRule;
 
         public ExpressionSimplifier(EvaluationContext ctx)
         {
@@ -82,6 +83,7 @@ namespace Reko.Evaluation
             this.sliceShift = new SliceShift(ctx);
             this.binopWithSelf = new BinOpWithSelf_Rule();
             this.constDiv = new ConstDivisionImplementedByMultiplication(ctx);
+            this.selfdpbRule = new SelfDpbRule(ctx);
         }
 
         public bool Changed { get { return changed; } set { changed = value; } }
@@ -404,6 +406,11 @@ namespace Reko.Evaluation
             {
                 Changed = true;
                 return dpbdpbRule.Transform();
+            }
+            if (selfdpbRule.Match(d))
+            {
+                Changed = true;
+                return selfdpbRule.Transform();
             }
             return d;
         }
