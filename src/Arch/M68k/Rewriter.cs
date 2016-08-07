@@ -185,6 +185,12 @@ VS Overflow Set 1001 V
             return GetEnumerator();
         }
 
+        private RegisterStorage GetRegister(MachineOperand op)
+        {
+            var rOp = op as RegisterOperand;
+            return rOp != null ? rOp.Register : null;
+        }
+
         //$REVIEW: push PseudoProc into the RewriterHost interface"
         public Expression PseudoProc(string name, DataType retType, params Expression[] args)
         {

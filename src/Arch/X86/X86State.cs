@@ -132,7 +132,9 @@ namespace Reko.Arch.X86
             // We're making an assumption that the direction flag is always clear
             // when a procedure is entered. This is true of the vast majority of
             // x86 code out there, and the assumption is certainly made by most
-            // compilers and code libraries.
+            // compilers and code libraries. If you know the DF flag is set on
+            // procedure entry, you can manually set that flag using a user-
+            // defined register value.
             SetFlagGroup(arch.GetFlagGroup((uint) FlagM.DF), Constant.False());
         }
 

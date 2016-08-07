@@ -422,7 +422,8 @@ namespace Reko.Arch.M68k
         {
             var opSrc = orw.RewriteSrc(di.op1, di.Address);
             var opDst = orw.RewriteDst(di.op2, di.Address, opSrc, (s, d) => s);
-            if (setFlag)
+            var isSr = GetRegister(di.op1) == Registers.sr || GetRegister(di.op2) == Registers.sr;
+            if (setFlag && !isSr)
             {
                 emitter.Assign(
                     orw.FlagGroup(FlagM.CVZN),

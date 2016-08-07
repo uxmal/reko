@@ -1102,5 +1102,25 @@ namespace Reko.UnitTests.Arch.M68k
                 "2|L--|d0 = DPB(d0, v3, 0)",
                 "3|L--|CVZN = cond(v3)");
         }
+
+        [Test]
+        public void M68krw_move_sr()
+        {
+            Rewrite(0x40E7);        // move sr,-(a7)
+            AssertCode(
+                "0|L--|00010000(2): 3 instructions",
+                "1|L--|a7 = a7 - 0x00000002",
+                "2|L--|v4 = sr",
+                "3|L--|Mem0[a7:word16] = v4");
+        }
+
+        [Test]
+        public void M68krw_move_sr_2()
+        {
+            Rewrite(0x46FC, 0x2700);        // move #$2700,sr
+            AssertCode(
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|sr = 0x2700");
+        }
     }
 }
