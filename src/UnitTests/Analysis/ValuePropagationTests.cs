@@ -42,13 +42,15 @@ namespace Reko.UnitTests.Analysis
 		SsaIdentifierCollection ssaIds;
         private MockRepository mr;
         private IProcessorArchitecture arch;
+        private IImportResolver importResolver;
 
-		[SetUp]
+        [SetUp]
 		public void Setup()
 		{
 			ssaIds = new SsaIdentifierCollection();
             mr = new MockRepository();
             arch = mr.Stub<IProcessorArchitecture>();
+            importResolver = mr.Stub<IImportResolver>();
 		}
 
         private Identifier Reg32(string name)
@@ -79,7 +81,30 @@ namespace Reko.UnitTests.Analysis
             return sid.Identifier;
         }
 
-		protected override void RunTest(Program prog, TextWriter writer)
+        private ExternalProcedure CreateExternalProcedure(string name, Identifier ret, params Identifier[] parameters)
+        {
+            var ep = new ExternalProcedure(name, new FunctionType(null, ret, parameters));
+            ep.Signature.ReturnAddressOnStack = 4;
+            return ep;
+        }
+
+        private Identifier RegArg(int n, string name)
+        {
+            return new Identifier(
+                name,
+                PrimitiveType.Word32,
+                new RegisterStorage(name, n, 0, PrimitiveType.Word32));
+        }
+
+        private Identifier StackArg(int offset)
+        {
+            return new Identifier(
+                string.Format("arg{0:X2}", offset),
+                PrimitiveType.Word32,
+                new StackArgumentStorage(offset, PrimitiveType.Word32));
+        }
+
+        protected override void RunTest(Program prog, TextWriter writer)
 		{
 			var dfa = new DataFlowAnalysis(prog, null, new FakeDecompilerEventListener());
 			dfa.UntangleProcedures();
@@ -496,7 +521,7 @@ namespace Reko.UnitTests.Analysis
         {
             var proc = m.Procedure;
             var gr = proc.CreateBlockDominatorGraph();
-            var sst = new SsaTransform(new ProgramDataFlow(), proc, null, gr, new HashSet<RegisterStorage>());
+            var sst = new SsaTransform(new ProgramDataFlow(), proc, importResolver, gr, new HashSet<RegisterStorage>());
             var ssa = sst.SsaState;
 
             var vp = new ValuePropagator(arch, ssa.Identifiers, proc);
@@ -739,6 +764,31 @@ ProcedureBuilder_exit:
             #endregion
 
             AssertStringsEqual(sExp, ssa);
+        }
+
+        [Test]
+        public void VpIndirectCall()
+        {
+            var callee = CreateExternalProcedure("foo", RegArg(1, "r1"), StackArg(4), StackArg(8));
+            var pc = new ProcedureConstant(PrimitiveType.Pointer32, callee);
+
+            var m = new ProcedureBuilder();
+            var r1 = m.Reg32("r1", 1);
+            var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
+            m.Assign(r1, pc);
+            m.Assign(sp, m.ISub(sp, 4));
+            m.Store(sp, 3);
+            m.Assign(sp, m.ISub(sp, 4));
+            m.Store(sp, m.LoadW(m.Word32(0x1231230)));
+            m.Call(r1, 4);
+            m.Return();
+
+            var ssa = RunTest(m);
+            var sExp =
+            #region Expected
+                "@@@";
+            #endregion
+                AssertStringsEqual(sExp, ssa);
         }
     }
 }
