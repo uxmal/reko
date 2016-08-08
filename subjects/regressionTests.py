@@ -10,14 +10,29 @@ import os.path
 import subprocess
 
 reko_cmdline =  os.path.abspath("../src/Drivers/CmdLine/bin/Debug/decompile.exe")
+output_extensions = [".asm", ".c", ".dis", ".h"]
+
+# Remove output files
+def clear_dir(dir_name, files):
+    for pname in files:
+        for ext in output_extensions:
+            if pname.endswith(ext):
+                os.remove(os.path.join(dir_name, pname))
 
 def run_test(dir_name, files):
+    needClear = True
     for pname in files:
         if pname.endswith(".dcproject"):
+            if needClear:
+                clear_dir(dir_name, files)
+                needClear = False
             execute_in_dir(execute_reko_project, dir_name, pname)
 
     scr_name = os.path.join(dir_name, "subject.cmd")
     if os.path.isfile(scr_name):
+        if needClear:
+            clear_dir(dir_name, files)
+            needClear = False
         execute_in_dir(execute_command_file, dir_name, scr_name)
 
 def execute_in_dir(fn, dir, fname):
