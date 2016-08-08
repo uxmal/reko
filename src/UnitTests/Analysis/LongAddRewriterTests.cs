@@ -100,8 +100,9 @@ namespace Reko.UnitTests.Analysis
                 var vp = new ValuePropagator(arch, sst.SsaState);
                 vp.Transform();
                 sst.RenameFrameAccesses = true;
-                sst.AddUseInstructions = true;
                 sst.Transform();
+                sst.AddUsesToExitBlock();
+                sst.RemoveDeadSsaIdentifiers();
 
                 var larw = new LongAddRewriter2(program.Architecture, sst.SsaState);
                 larw.Transform();
@@ -117,8 +118,9 @@ namespace Reko.UnitTests.Analysis
             var sst = new SsaTransform2(arch, m.Procedure, null, new DataFlow2());
             sst.Transform();
             sst.RenameFrameAccesses = true;
-            sst.AddUseInstructions = true;
             sst.Transform();
+            sst.AddUsesToExitBlock();
+            sst.RemoveDeadSsaIdentifiers();
 
             rw = new LongAddRewriter2(arch, sst.SsaState);
             this.ssa = sst.SsaState;

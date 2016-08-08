@@ -109,9 +109,10 @@ namespace Reko.UnitTests.Analysis
                 var vp = new ValuePropagator(program.Architecture, ssa);
                 vp.Transform();
 
-                sst.AddUseInstructions = true;
                 sst.RenameFrameAccesses = true;
                 sst.Transform();
+                sst.AddUsesToExitBlock();
+                sst.RemoveDeadSsaIdentifiers();
 
                 DeadCode.Eliminate(proc, ssa);
 

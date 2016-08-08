@@ -70,6 +70,16 @@ namespace Reko.Analysis
             this.cmp = new ExpressionValueComparer();
         }
 
+        /// <summary>
+        /// Given an SsaState, computes the summary data flow information for 
+        /// the procedure.
+        /// </summary>
+        /// <remarks>
+        /// Expects that the SSA transform has injected UseInstructions in 
+        /// the exit block.
+        /// </remarks>
+        /// <param name="ssa"></param>
+        /// <returns></returns>
         public ProcedureFlow2 Compute(SsaState ssa)
         {
             this.ssa = ssa;

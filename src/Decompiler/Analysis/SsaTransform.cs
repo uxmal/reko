@@ -37,7 +37,7 @@ namespace Reko.Analysis
 	/// </summary>
     /// <remarks>
     /// This class implements the SSA algorithm from Appel's "Modern compiler 
-    /// implementatation in [language of your choice]."
+    /// implementation in [language of your choice]."
     /// </remarks>
     [Obsolete("", false)]
 	public class SsaTransform
@@ -843,11 +843,14 @@ namespace Reko.Analysis
             this.incompletePhis = new HashSet<SsaIdentifier>();
         }
 
-        public bool AddUseInstructions { get; set; }
         /// <summary>
         /// If set, only renames frame accesses.
         /// </summary>
         public bool RenameFrameAccesses { get; set; }
+
+        /// <summary>
+        /// The SSA graph of the procedure being transformed.
+        /// </summary>
         public SsaState SsaState { get { return ssa; } }
 
         /// <summary>
@@ -879,15 +882,17 @@ namespace Reko.Analysis
                 blockstates[b].Visited = true;
             }
             ProcessIncompletePhis();
+        }
 
-            // Optionally, add Use instructions in the exit block.
-            if (this.AddUseInstructions)
+        /// <summary>
+        /// Remove any SSA identifiers with no uses. There will be a lot
+        /// of these, especially for flag registers.
+        /// </summary>
+        public void RemoveDeadSsaIdentifiers()
+        {
+            foreach (var sid in sidsToRemove.Where(s => s.Uses.Count == 0))
             {
-                AddUsesToExitBlock();
-                foreach (var sid in sidsToRemove.Where(s => s.Uses.Count == 0))
-                {
-                    ssa.Identifiers.Remove(sid);
-                }
+                ssa.Identifiers.Remove(sid);
             }
         }
 
@@ -900,18 +905,25 @@ namespace Reko.Analysis
         /// //$TODO: what about functions that don't terminate, or have branches that don't terminate? In such cases,
         /// the identifiers should be removed.
         /// </remarks>
-        private void AddUsesToExitBlock()
+        public void AddUsesToExitBlock()
         {
             //$TODO: flag groups need to be grouped on exit
-            // We don't do them yet.
+            // TrashedRegisterFinder should collect aliased registers
+            // (e.g. eax, ax, al, ah) and render them as a single
+            // register (eax).
             this.block = ssa.Procedure.ExitBlock;
+
+            // Compute the set of all blocks b such that there is a path from
+            // b to the exit block.
+            var reachingBlocks = FindPredecessorClosure(ssa.Procedure.ExitBlock);
             var existing = block.Statements
                 .Select(s => s.Instruction as UseInstruction)
                 .Where(u => u != null)
                 .Select(u => u.Expression)
                 .ToHashSet();
             var reachingIds = ssa.Identifiers
-                .Where(sid => sid.Identifier.Name != sid.OriginalIdentifier.Name &&
+                .Where(sid => reachingBlocks.Contains(sid.DefStatement.Block) &&
+                              sid.Identifier.Name != sid.OriginalIdentifier.Name &&
                               !(sid.Identifier.Storage is MemoryStorage) &&
                               !(sid.Identifier.Storage is StackStorage) &&
                               !(sid.Identifier.Storage is TemporaryStorage) &&
@@ -930,6 +942,26 @@ namespace Reko.Analysis
                 var use = (UseInstruction)u.Instruction;
                 use.Expression = NewUse((Identifier)use.Expression, u, true);
             });
+        }
+
+        private ISet<Block> FindPredecessorClosure(Block start)
+        {
+            var wl = new WorkList<Block>();
+            var preds = new HashSet<Block>();
+            wl.Add(start);
+            Block b;
+            while (wl.GetWorkItem(out b))
+            {
+                foreach (var p in b.Pred)
+                {
+                    if (!preds.Contains(p))
+                    {
+                        preds.Add(p);
+                        wl.Add(p);
+                    }
+                }
+            }
+            return preds;
         }
 
         public IEnumerable<Identifier> SeparateSequences(IEnumerable<Identifier> ids)
@@ -1266,7 +1298,7 @@ namespace Reko.Analysis
         }
 
         public override Expression VisitSegmentedAccess(SegmentedAccess access)
-            {
+        {
             if (this.RenameFrameAccesses && IsFrameAccess(ssa.Procedure, access.EffectiveAddress))
             {
                 var idFrame = EnsureStackVariable(ssa.Procedure, access.EffectiveAddress, access.DataType);

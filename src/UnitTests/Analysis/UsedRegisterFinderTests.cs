@@ -91,8 +91,9 @@ namespace Reko.UnitTests.Analysis
             vp.Transform();
 
             sst.RenameFrameAccesses = true;
-            sst.AddUseInstructions = true;
             sst.Transform();
+            sst.AddUsesToExitBlock();
+            sst.RemoveDeadSsaIdentifiers();
 
             vp.Transform();
 

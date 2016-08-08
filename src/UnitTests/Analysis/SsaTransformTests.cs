@@ -97,9 +97,12 @@ namespace Reko.UnitTests.Analysis
             foreach (var proc in this.pb.Program.Procedures.Values)
             {
                 var sst = new SsaTransform2(this.pb.Program.Architecture, proc, importResolver, programFlow2);
-                sst.AddUseInstructions = addUseInstructions;
                 sst.Transform();
-
+                if (this.addUseInstructions)
+                {
+                    sst.AddUsesToExitBlock();
+                    sst.RemoveDeadSsaIdentifiers();
+                }
                 sst.SsaState.Write(writer);
                 proc.Write(false, writer);
                 writer.WriteLine("======");
@@ -128,7 +131,6 @@ namespace Reko.UnitTests.Analysis
             {
                 // Perform initial transformation.
                 var sst = new SsaTransform2(this.pb.Program.Architecture, proc, importResolver, programFlow2);
-                sst.AddUseInstructions = false;
                 sst.Transform();
 
                 // Propagate values and simplify the results.
@@ -143,8 +145,9 @@ namespace Reko.UnitTests.Analysis
                 vp.Transform();
 
                 sst.RenameFrameAccesses = true;
-                sst.AddUseInstructions = true;
                 sst.Transform();
+                sst.AddUsesToExitBlock();
+                sst.RemoveDeadSsaIdentifiers();
 
                 sst.SsaState.Write(writer);
                 proc.Write(false, writer);

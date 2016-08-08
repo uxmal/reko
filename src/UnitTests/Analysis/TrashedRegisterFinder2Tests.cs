@@ -32,6 +32,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Rhino.Mocks;
+using Reko.Core.Expressions;
+using Reko.Core.Serialization;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -91,8 +93,9 @@ namespace Reko.UnitTests.Analysis
             vp.Transform();
 
             sst.RenameFrameAccesses = true;
-            sst.AddUseInstructions = true;
             sst.Transform();
+            sst.AddUsesToExitBlock();
+            sst.RemoveDeadSsaIdentifiers();
 
             vp.Transform();
 
@@ -304,5 +307,6 @@ Constants: cl:0x00
                 m.Return();
             });
         }
+
     }
 }

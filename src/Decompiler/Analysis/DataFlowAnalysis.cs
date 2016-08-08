@@ -317,8 +317,9 @@ namespace Reko.Analysis
             // mem[fp + 30] becomes wArg30.
             // This allows us to compute the dataflow of this procedure.
             sst.RenameFrameAccesses = true;
-            sst.AddUseInstructions = true;
             sst.Transform();
+            sst.AddUsesToExitBlock();
+            sst.RemoveDeadSsaIdentifiers();
 
             // Propagate those newly discovered identifiers.
             vp.Transform();

@@ -65,8 +65,9 @@ namespace Reko.UnitTests.Analysis
             foreach (Procedure proc in prog.Procedures.Values)
             {
                 var sst = new SsaTransform2(prog.Architecture, proc, importResolver, flow.ToDataFlow2());
-                sst.AddUseInstructions = true;
                 sst.Transform();
+                sst.AddUsesToExitBlock();
+                sst.RemoveDeadSsaIdentifiers();
                 Debug.Print("SsaTest: {0}", new StackFrame(3).GetMethod().Name);
                 ssa = sst.SsaState;
                 ssa.Write(writer);
