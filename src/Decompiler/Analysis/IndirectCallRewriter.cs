@@ -32,6 +32,12 @@ namespace Reko.Analysis
     /// Try to rewrite indirect call statements to applications using
     /// user-defined data (e.g. global variables, parameters of procedures).
     /// </summary>
+    /// <remarks>
+    /// //$REVIEW: Once analysis-development branch is complete it will make
+    /// dealing with MIPS ELF binaries a lot nicer. Currently, almost all
+    /// calls in a MIPS ELF binary are decompiled into messy indirect 
+    /// calls.
+    /// </remarks>
     public class IndirectCallRewriter
     {
         private SsaState ssa;
