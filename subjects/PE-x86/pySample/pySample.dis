@@ -184,8 +184,7 @@ l10001140:
 // SymbolicIn: esp:fp
 
 l10001158:
-	word32 eax_20 = Py_NoneStruct
-	Mem23[eax_20:word32] = Mem0[eax_20:word32] + 0x00000001
+	Mem23[Py_NoneStruct:word32] = Mem0[Py_NoneStruct:word32] + 0x00000001
 	return Py_NoneStruct
 // DataOut:
 // DataOut (flags): 
