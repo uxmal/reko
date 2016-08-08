@@ -8,7 +8,7 @@ PyObject * fn10001000(PyObject * ptrArg04, PyObject * ptrArg08)
 {
 	PyObject * eax_21 = PyArg_ParseTuple(ptrArg08, "ii:sum", SLICE(ptrArg08, <unknown>, 32));
 	if (eax_21 != null)
-		return Py_BuildValue("i", (void) 0x1000214C);
+		return Py_BuildValue("i", (<type-error>) 0x1000214C);
 	else
 		return eax_21;
 }
@@ -17,7 +17,7 @@ PyObject * fn10001050(PyObject * ptrArg04, PyObject * ptrArg08)
 {
 	PyObject * eax_19 = PyArg_ParseTuple(ptrArg08, "ii:dif", SLICE(ptrArg08, <unknown>, 32));
 	if (eax_19 != null)
-		return Py_BuildValue("i", (void) 0x1000214C);
+		return Py_BuildValue("i", (<type-error>) 0x1000214C);
 	else
 		return eax_19;
 }
@@ -26,7 +26,7 @@ PyObject * fn100010A0(PyObject * ptrArg04, PyObject * ptrArg08)
 {
 	PyObject * eax_19 = PyArg_ParseTuple(ptrArg08, "ii:div", SLICE(ptrArg08, <unknown>, 32));
 	if (eax_19 != null)
-		return Py_BuildValue("i", (void) 0x1000214C);
+		return Py_BuildValue("i", (<type-error>) 0x1000214C);
 	else
 		return eax_19;
 }
@@ -35,7 +35,7 @@ PyObject * fn100010F0(PyObject * ptrArg04, PyObject * ptrArg08)
 {
 	PyObject * eax_19 = PyArg_ParseTuple(ptrArg08, "ff:fdiv", SLICE(ptrArg08, <unknown>, 32));
 	if (eax_19 != null)
-		return Py_BuildValue("f", (void) 0x10002168);
+		return Py_BuildValue("f", (<type-error>) 0x10002168);
 	else
 		return eax_19;
 }
@@ -296,9 +296,9 @@ Eq_163 fn10001388(Eq_163 ecx, Eq_163 edx, ui32 ebx, ui32 esi, ui32 edi)
 		<anonymous> * eax_165 = globals->ptr100020CC;
 		if (eax_165 != null)
 		{
-			*(fp - 0x0C) = (Eq_163 *) ecx;
-			*(fp - 0x10) = (Eq_163 *) edx;
-			*(fp - 0x14) = (Eq_163 *) ebx_158;
+			*(fp - 0x0C) = (union Eq_163 *) ecx;
+			*(fp - 0x10) = (union Eq_163 *) edx;
+			*(fp - 0x14) = (union Eq_163 *) ebx_158;
 			word32 ecx_202;
 			word32 edx_204;
 			Eq_163 eax_207;
@@ -320,9 +320,9 @@ l1000147A:
 			return eax_39;
 		}
 		union Eq_163 * esp_182 = esp_175 - 0x04;
-		*esp_182 = (Eq_163 *) edi_12;
-		*(esp_182 - 0x04) = (Eq_163 *) esi_14;
-		*(esp_182 - 0x08) = (Eq_163 *) ebx_158;
+		*esp_182 = (union Eq_163 *) edi_12;
+		*(esp_182 - 0x04) = (union Eq_163 *) esi_14;
+		*(esp_182 - 0x08) = (union Eq_163 *) ebx_158;
 		Eq_163 eax_188 = fn100011E9(dwArg04);
 		(ebp_10 - 0x1C)->t0000 = eax_188;
 		esp_175 = esp_182;
@@ -330,29 +330,29 @@ l1000147A:
 			goto l1000147A;
 	}
 	union Eq_163 * esp_56 = esp_175 - 0x04;
-	*esp_56 = (Eq_163 *) edi_12;
-	*(esp_56 - 0x04) = (Eq_163 *) esi_14;
-	*(esp_56 - 0x08) = (Eq_163 *) ebx_158;
+	*esp_56 = (union Eq_163 *) edi_12;
+	*(esp_56 - 0x04) = (union Eq_163 *) esi_14;
+	*(esp_56 - 0x08) = (union Eq_163 *) ebx_158;
 	Eq_163 eax_62 = fn100017C6(0x10, dwArg04);
 	(ebp_10 - 0x1C)->t0000 = eax_62;
 	ptr32 esp_142 = esp_56;
 	if (esi_14 == 0x01 && eax_62 == 0x00)
 	{
-		*esp_56 = (Eq_163 *) edi_12;
-		*(esp_56 - 0x04) = (Eq_163 *) eax_62;
-		*(esp_56 - 0x08) = (Eq_163 *) ebx_158;
+		*esp_56 = (union Eq_163 *) edi_12;
+		*(esp_56 - 0x04) = (union Eq_163 *) eax_62;
+		*(esp_56 - 0x08) = (union Eq_163 *) ebx_158;
 		fn100017C6(0x10, dwArg04);
-		*esp_56 = (Eq_163 *) edi_12;
+		*esp_56 = (union Eq_163 *) edi_12;
 		*(esp_56 - 0x04) = 0x00;
-		*(esp_56 - 0x08) = (Eq_163 *) ebx_158;
+		*(esp_56 - 0x08) = (union Eq_163 *) ebx_158;
 		fn100011E9(dwArg04);
 		esp_142 = esp_56;
 		<anonymous> * eax_143 = globals->ptr100020CC;
 		if (eax_143 != null)
 		{
-			*esp_56 = (Eq_163 *) edi_12;
+			*esp_56 = (union Eq_163 *) edi_12;
 			*(esp_56 - 0x04) = 0x00;
-			*(esp_56 - 0x08) = (Eq_163 *) ebx_158;
+			*(esp_56 - 0x08) = (union Eq_163 *) ebx_158;
 			word32 ecx_155;
 			word32 edx_157;
 			word32 eax_160;
@@ -366,9 +366,9 @@ l1000147A:
 	if (esi_14 == 0x00 || esi_14 == 0x03)
 	{
 		union Eq_163 * esp_80 = esp_142 - 0x04;
-		*esp_80 = (Eq_163 *) edi_12;
-		*(esp_80 - 0x04) = (Eq_163 *) esi_14;
-		*(esp_80 - 0x08) = (Eq_163 *) ebx_158;
+		*esp_80 = (union Eq_163 *) edi_12;
+		*(esp_80 - 0x04) = (union Eq_163 *) esi_14;
+		*(esp_80 - 0x08) = (union Eq_163 *) ebx_158;
 		Eq_163 eax_86 = fn100011E9(dwArg04);
 		if (eax_86 == 0x00)
 			(ebp_10 - 0x1C)->t0000 = (ebp_10 - 0x1C)->t0000 & eax_86;
@@ -377,9 +377,9 @@ l1000147A:
 			<anonymous> * eax_95 = globals->ptr100020CC;
 			if (eax_95 != null)
 			{
-				*esp_80 = (Eq_163 *) edi_12;
-				*(esp_80 - 0x04) = (Eq_163 *) esi_14;
-				*(esp_80 - 0x08) = (Eq_163 *) ebx_158;
+				*esp_80 = (union Eq_163 *) edi_12;
+				*(esp_80 - 0x04) = (union Eq_163 *) esi_14;
+				*(esp_80 - 0x08) = (union Eq_163 *) ebx_158;
 				word32 esp_105;
 				word32 edi_106;
 				word32 ecx_107;
@@ -446,11 +446,11 @@ ui32 fn10001742(ui32 ebx, ui32 esi, ui32 edi, ptr32 & ediOut)
 {
 	ui32 eax_31;
 	struct Eq_434 * ebp_10 = fn100017E8(ebx, esi, edi, dwLoc0C, 0x10002230, 0x08);
-	*(ebp_10 - 0x04) = (Eq_163 *) (*(ebp_10 - 0x04) & 0x00);
+	*(ebp_10 - 0x04) = (union Eq_163 *) (*(ebp_10 - 0x04) & 0x00);
 	*(fp - 0x0C) = 0x10000000;
 	if (fn100016D0(dwArg00) != 0x00)
 	{
-		*(fp - 0x0C) = (Eq_881 *) (ebp_10->t0008 - 0x10000000);
+		*(fp - 0x0C) = (union Eq_881 *) (ebp_10->t0008 - 0x10000000);
 		*(fp - 0x10) = 0x10000000;
 		struct Eq_917 * eax_54 = fn10001700(dwArg00, dwArg04);
 		if (eax_54 != null)

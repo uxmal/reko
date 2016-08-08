@@ -41040,7 +41040,7 @@ T_9397: (in 0x00000080 : word32)
   Class: Eq_9397
   DataType: ui32
   OrigDataType: ui32
-T_9398: (in **(Eq_9393 * *) 0x00004258 & 0x00000080 : word32)
+T_9398: (in **(struct Eq_9393 **) 0x00004258 & 0x00000080 : word32)
   Class: Eq_9398
   DataType: ui32
   OrigDataType: ui32
@@ -41048,7 +41048,7 @@ T_9399: (in 0x00000000 : word32)
   Class: Eq_9398
   DataType: ui32
   OrigDataType: word32
-T_9400: (in (**(Eq_9393 * *) 0x00004258 & 0x00000080) != 0x00000000 : bool)
+T_9400: (in (**(struct Eq_9393 **) 0x00004258 & 0x00000080) != 0x00000000 : bool)
   Class: Eq_9400
   DataType: bool
   OrigDataType: bool

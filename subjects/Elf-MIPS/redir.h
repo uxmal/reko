@@ -1885,7 +1885,7 @@ T_254: (in 0x00000695 : word32)
   Class: Eq_245
   DataType: (ptr Eq_245)
   OrigDataType: word32
-T_255: (in r2_110 == (Eq_245 *) 0x00000695 : bool)
+T_255: (in r2_110 == (struct Eq_245 *) 0x00000695 : bool)
   Class: Eq_255
   DataType: bool
   OrigDataType: bool
@@ -3965,7 +3965,7 @@ T_774: (in 0x00000695 : word32)
   Class: Eq_245
   DataType: (ptr Eq_245)
   OrigDataType: word32
-T_775: (in r2_110 == (Eq_245 *) 0x00000695 : bool)
+T_775: (in r2_110 == (struct Eq_245 *) 0x00000695 : bool)
   Class: Eq_775
   DataType: bool
   OrigDataType: bool
@@ -18237,7 +18237,7 @@ T_4342: (in -20 : int32)
   Class: Eq_4322
   DataType: (ptr Eq_4322)
   OrigDataType: int32
-T_4343: (in r4 == (Eq_4322 *) -20 : bool)
+T_4343: (in r4 == (struct Eq_4322 *) -20 : bool)
   Class: Eq_4343
   DataType: bool
   OrigDataType: bool
@@ -18821,7 +18821,7 @@ T_4488: (in -20 : int32)
   Class: Eq_4468
   DataType: (ptr Eq_4468)
   OrigDataType: int32
-T_4489: (in r4 == (Eq_4468 *) -20 : bool)
+T_4489: (in r4 == (struct Eq_4468 *) -20 : bool)
   Class: Eq_4489
   DataType: bool
   OrigDataType: bool
@@ -40013,7 +40013,7 @@ T_9786: (in -1 : int32)
   Class: Eq_9782
   DataType: (ptr code)
   OrigDataType: int32
-T_9787: (in r25_17 == (code *) -1 : bool)
+T_9787: (in r25_17 == (<anonymous> *) -1 : bool)
   Class: Eq_9787
   DataType: bool
   OrigDataType: bool

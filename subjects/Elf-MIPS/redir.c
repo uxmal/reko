@@ -313,7 +313,7 @@ l00400A00:
 	r25_1556()
 l00400A54:
 	struct Eq_245 * r2_110 = globals->ptr10000A40
-	branch r2_110 == (Eq_245 *) 0x0695 l00400A54_ds_t
+	branch r2_110 == (struct Eq_245 *) 0x0695 l00400A54_ds_t
 l00400A54_ds_f:
 	word32 r2_1421 = (word32) r2_110->b0695
 	branch r2_1421 == 0x00 l00400A74_ds_t
@@ -681,7 +681,7 @@ l00400F10_ds_f:
 	word32 r3_453
 	word32 r7_454
 	r25_441()
-	branch r2_110 == (Eq_245 *) 0x0695 l00401AD4_ds_t
+	branch r2_110 == (struct Eq_245 *) 0x0695 l00401AD4_ds_t
 	goto l00401AD4_ds_f
 l00400F10_ds_t:
 	Eq_722 dwLoc0160_1178 = 0x00
@@ -2466,7 +2466,7 @@ void client_check_reply_http(Eq_3044 * r4, word32 dwArg00)
 		if ((word32) dwLoc18_103->b0000 != 0x0A)
 			if ((word32) dwLoc18_103->b0000 != 0x0D)
 				break;
-		dwLoc18_103 = (Eq_3046 *) dwLoc18_103[0x01];
+		dwLoc18_103 = (struct Eq_3046 *) dwLoc18_103[0x01];
 		dwLoc14_106 = dwLoc14_106 + -0x01;
 	}
 	word32 r2_29 = (word32) (dwLoc14_106 < 0x05);
@@ -2502,7 +2502,7 @@ void client_check_reply_http(Eq_3044 * r4, word32 dwArg00)
 					if ((word32) dwLoc18_103->b0000 == 0x0D)
 						break;
 					dwLoc14_106 = dwLoc14_106 + -0x01;
-					dwLoc18_103 = (Eq_3046 *) dwLoc18_103[0x01];
+					dwLoc18_103 = (struct Eq_3046 *) dwLoc18_103[0x01];
 				}
 				if ((word32) (dwLoc14_106 < 0x02) != 0x00)
 					continue;
@@ -2514,7 +2514,7 @@ void client_check_reply_http(Eq_3044 * r4, word32 dwArg00)
 						continue;
 				struct Eq_3148 * r2_99 = dwLoc18_103[0x01];
 				int32 r2_105 = dwLoc14_106 + -0x02;
-				dwLoc18_103 = (Eq_3046 *) r2_99->b0001;
+				dwLoc18_103 = (struct Eq_3046 *) r2_99->b0001;
 				dwLoc14_106 = r2_105;
 				if ((word32) (r2_105 < 0x02) != 0x00)
 					continue;
@@ -2526,7 +2526,7 @@ void client_check_reply_http(Eq_3044 * r4, word32 dwArg00)
 			} while ((word32) r2_99->b0002 == 0x0D);
 			if (r2_105 > ~0x01)
 			{
-				r4->ptr1788 = (Eq_3046 *) r2_99->b0002[0x01];
+				r4->ptr1788 = (struct Eq_3046 *) r2_99->b0002[0x01];
 				r4->dw178C = r2_105 + -0x02;
 			}
 			else
@@ -3173,10 +3173,7 @@ void request_save_line(Eq_3912 * r4, word32 dwArg00, word32 dwArg04, word32 dwAr
 		}
 		else
 		{
-			(&r4->a0004->dw0000)[(r4->dw0558 + 0x0510) / 0x055C] = (struct Eq_3912 {
-				Eq_9828 a0004[];	// 4
-				int32 dw0558;	// 558
-			}) (byte) (word32) bArg0B;
+			(&r4->a0004->dw0000)[(r4->dw0558 + 0x0510) / 0x055C] = (struct Eq_3912) (byte) (word32) bArg0B;
 			<anonymous> * r25_162 = globals->ptr10000A48;
 			word32 sp_163;
 			word32 r28_164;
@@ -3429,7 +3426,7 @@ void get_version(word32 dwArg00, word32 dwArg04)
 void request_get_host(Eq_4322 * r4, uint32 r5, word32 dwArg00, word32 dwArg04)
 {
 	if (r4 != null)
-		if (r4 != (Eq_4322 *) -0x0014)
+		if (r4 != (struct Eq_4322 *) -0x0014)
 		{
 			<anonymous> * r25_75 = globals->ptr10000890;
 			word32 sp_78;
@@ -3554,7 +3551,7 @@ void request_get_host(Eq_4322 * r4, uint32 r5, word32 dwArg00, word32 dwArg04)
 void request_get_content_length(Eq_4468 * r4, uint32 r5, word32 dwArg00, word32 dwArg04)
 {
 	if (r4 != null)
-		if (r4 != (Eq_4468 *) -0x0014)
+		if (r4 != (struct Eq_4468 *) -0x0014)
 		{
 			<anonymous> * r25_75 = globals->ptr10000890;
 			word32 sp_78;
@@ -7521,7 +7518,7 @@ void __do_global_ctors_aux()
 {
 	struct Eq_37 * r2_11 = globals->ptr10000878;
 	<anonymous> * r25_17 = r2_11->ptr0854;
-	if (r25_17 != (code *) -0x01)
+	if (r25_17 != (<anonymous> *) -0x01)
 		do
 		{
 			word32 sp_29;

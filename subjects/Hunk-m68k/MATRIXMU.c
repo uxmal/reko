@@ -6,10 +6,10 @@
 
 void fn00001000(int32 d0, byte * a0)
 {
-	struct Eq_4 * a6_8 = *(Eq_4 * *) 0x04;
+	struct Eq_4 * a6_8 = *(struct Eq_4 **) 0x04;
 	int32 d2_235 = d0;
 	byte * a2_247 = a0;
-	struct Eq_11 * a4_6 = (Eq_11 *) 0x948A;
+	struct Eq_11 * a4_6 = (struct Eq_11 *) 0x948A;
 	if (a6_8->w0014 - 0x24 < 0x00)
 	{
 		word32 * a0_502 = &globals->dw1494;
@@ -116,10 +116,7 @@ l000010DA:
 				if (d2_235 != ~0x00)
 					goto l000010DA;
 			}
-			a0_233[0x01] = (struct Eq_237 {	// size: 1 1
-				cu8 b0000;	// 0
-				byte b0001;	// 1
-			}) 0x00;
+			a0_233[0x01] = (struct Eq_237) 0x00;
 			do
 			{
 l000010E6:
@@ -131,7 +128,7 @@ l000010E6:
 			} while (v37_256 == 0x20 || v37_256 == 0x09);
 			if (d3_231 - d0_132->dw000C != 0x00)
 			{
-				*a6_230 = (byte * *) a1_220;
+				*a6_230 = (byte **) a1_220;
 				a6_230 = a6_230;
 				d3_231 = DPB(d3_231, (word16) d3_231 + 0x01, 0);
 				if (v37_256 != 0x22)
@@ -182,7 +179,7 @@ l00001116:
 			}
 l00001148:
 			*a1_220 = 0x00;
-			*a6_230 = (byte * *) null;
+			*a6_230 = (byte **) null;
 			execPrivate4();
 			a4_6->dwFFFF801E = d0_226;
 			execPrivate5();
@@ -248,7 +245,7 @@ void fn00001278(word32 dwArg04)
 
 void fn0000127C(int32 d2)
 {
-	struct Eq_519 * a4_0 = (Eq_519 *) 0x948A;
+	struct Eq_519 * a4_0 = (struct Eq_519 *) 0x948A;
 	struct Eq_33 ** a7_3 = a4_0->ptrFFFF800A;
 	struct Eq_33 * v8_8 = *(a7_3 - 0x04);
 	struct Eq_33 * v6_5 = *(a7_3 - 0x08);
@@ -263,7 +260,7 @@ void fn0000127C(int32 d2)
 
 void fn000012D0(word32 dwArg04)
 {
-	struct Eq_563 * a3_11 = (Eq_563 *) 0x14D0;
+	struct Eq_563 * a3_11 = (struct Eq_563 *) 0x14D0;
 	if (0x14D0 != 0x00)
 	{
 		int32 d2_39 = 0x01;
@@ -299,7 +296,7 @@ void fn0000131C(int32 dwArg04)
 {
 	if (*(word32 *) 0x14C4 == 0x00)
 	{
-		struct Eq_618 * a3_28 = *(Eq_618 * *) 5336;
+		struct Eq_618 * a3_28 = *(struct Eq_618 **) 5336;
 		*(int32 *) 0x14C4 = 0x01;
 		if (a3_28 != null)
 			do
@@ -315,7 +312,7 @@ void fn0000131C(int32 dwArg04)
 				word32 d0_58;
 				byte CVZN_59;
 				a2_50();
-				a3_28 = (Eq_618 *) *a3_52;
+				a3_28 = (struct Eq_618 *) *a3_52;
 			} while (a3_28 != null);
 		fn000012D0(dwArg04);
 	}
@@ -324,7 +321,7 @@ void fn0000131C(int32 dwArg04)
 
 void fn00001354(int32 dwArg04, Eq_68 * dwArg08)
 {
-	<anonymous> ** a3_45 = (code * *) 0x14CC;
+	<anonymous> ** a3_45 = (<anonymous> **) 0x14CC;
 	if (0x14C8 != 0x00 && *a3_45 != null)
 		do
 		{

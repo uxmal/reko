@@ -38032,7 +38032,7 @@ T_8682: (in 0x00000080 : word32)
   Class: Eq_8682
   DataType: ui32
   OrigDataType: ui32
-T_8683: (in **(Eq_8678 * *) 0x00003FD0 & 0x00000080 : word32)
+T_8683: (in **(struct Eq_8678 **) 0x00003FD0 & 0x00000080 : word32)
   Class: Eq_8683
   DataType: ui32
   OrigDataType: ui32
@@ -38040,7 +38040,7 @@ T_8684: (in 0x00000000 : word32)
   Class: Eq_8683
   DataType: ui32
   OrigDataType: word32
-T_8685: (in (**(Eq_8678 * *) 0x00003FD0 & 0x00000080) != 0x00000000 : bool)
+T_8685: (in (**(struct Eq_8678 **) 0x00003FD0 & 0x00000080) != 0x00000000 : bool)
   Class: Eq_8685
   DataType: bool
   OrigDataType: bool

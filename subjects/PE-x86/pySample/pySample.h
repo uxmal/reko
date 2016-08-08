@@ -11,19 +11,19 @@ Eq_2: PyObject
 	T_5 (in eax_21 : (ptr Eq_2))
 	T_13 (in PyArg_ParseTuple(ptrArg08, "ii:sum", SLICE(ptrArg08, <unknown>, 32)) : int32)
 	T_14 (in 0x00000000 : word32)
-	T_23 (in Py_BuildValue("i", (void) 0x1000214C) : (ptr PyObject))
+	T_23 (in Py_BuildValue("i", (<type-error>) 0x1000214C) : (ptr PyObject))
 	T_24 (in eax_19 : (ptr Eq_2))
 	T_28 (in PyArg_ParseTuple(ptrArg08, "ii:dif", SLICE(ptrArg08, <unknown>, 32)) : int32)
 	T_29 (in 0x00000000 : word32)
-	T_35 (in Py_BuildValue("i", (void) 0x1000214C) : (ptr PyObject))
+	T_35 (in Py_BuildValue("i", (<type-error>) 0x1000214C) : (ptr PyObject))
 	T_36 (in eax_19 : (ptr Eq_2))
 	T_40 (in PyArg_ParseTuple(ptrArg08, "ii:div", SLICE(ptrArg08, <unknown>, 32)) : int32)
 	T_41 (in 0x00000000 : word32)
-	T_47 (in Py_BuildValue("i", (void) 0x1000214C) : (ptr PyObject))
+	T_47 (in Py_BuildValue("i", (<type-error>) 0x1000214C) : (ptr PyObject))
 	T_48 (in eax_19 : (ptr Eq_2))
 	T_52 (in PyArg_ParseTuple(ptrArg08, "ff:fdiv", SLICE(ptrArg08, <unknown>, 32)) : int32)
 	T_53 (in 0x00000000 : word32)
-	T_59 (in Py_BuildValue("f", (void) 0x10002168) : (ptr PyObject))
+	T_59 (in Py_BuildValue("f", (<type-error>) 0x10002168) : (ptr PyObject))
 	T_63 (in eax_12 : (ptr Eq_2))
 	T_67 (in PyArg_ParseTuple(args, ":unused", SLICE(args, <unknown>, 32)) : int32)
 	T_68 (in 0x00000000 : word32)
@@ -55,10 +55,10 @@ Eq_16: (fn (ptr Eq_2) ((ptr char), Eq_19))
 	T_55 (in Py_BuildValue : ptr32)
 Eq_19: <unknown>
 	T_19 (in ... : <unknown>)
-	T_22 (in (void) 0x1000214C : <unknown>)
-	T_34 (in (void) 0x1000214C : <unknown>)
-	T_46 (in (void) 0x1000214C : <unknown>)
-	T_58 (in (void) 0x10002168 : <unknown>)
+	T_22 (in (<type-error>) 0x1000214C : <unknown>)
+	T_34 (in (<type-error>) 0x1000214C : <unknown>)
+	T_46 (in (<type-error>) 0x1000214C : <unknown>)
+	T_58 (in (<type-error>) 0x10002168 : <unknown>)
 Eq_60: PyObject
 	T_60 (in eax : (ptr Eq_60))
 Eq_61: PyObject
@@ -492,11 +492,11 @@ T_21: (in 0x1000214C : word32)
   Class: Eq_21
   DataType: word32
   OrigDataType: word32
-T_22: (in (void) 0x1000214C : <unknown>)
+T_22: (in (<type-error>) 0x1000214C : <unknown>)
   Class: Eq_19
   DataType: Eq_19
   OrigDataType: <unknown>
-T_23: (in Py_BuildValue("i", (void) 0x1000214C) : (ptr PyObject))
+T_23: (in Py_BuildValue("i", (<type-error>) 0x1000214C) : (ptr PyObject))
   Class: Eq_2
   DataType: (ptr Eq_2)
   OrigDataType: (ptr PyObject)
@@ -540,11 +540,11 @@ T_33: (in 0x1000214C : word32)
   Class: Eq_33
   DataType: word32
   OrigDataType: word32
-T_34: (in (void) 0x1000214C : <unknown>)
+T_34: (in (<type-error>) 0x1000214C : <unknown>)
   Class: Eq_19
   DataType: Eq_19
   OrigDataType: <unknown>
-T_35: (in Py_BuildValue("i", (void) 0x1000214C) : (ptr PyObject))
+T_35: (in Py_BuildValue("i", (<type-error>) 0x1000214C) : (ptr PyObject))
   Class: Eq_2
   DataType: (ptr Eq_2)
   OrigDataType: (ptr PyObject)
@@ -588,11 +588,11 @@ T_45: (in 0x1000214C : word32)
   Class: Eq_45
   DataType: word32
   OrigDataType: word32
-T_46: (in (void) 0x1000214C : <unknown>)
+T_46: (in (<type-error>) 0x1000214C : <unknown>)
   Class: Eq_19
   DataType: Eq_19
   OrigDataType: <unknown>
-T_47: (in Py_BuildValue("i", (void) 0x1000214C) : (ptr PyObject))
+T_47: (in Py_BuildValue("i", (<type-error>) 0x1000214C) : (ptr PyObject))
   Class: Eq_2
   DataType: (ptr Eq_2)
   OrigDataType: (ptr PyObject)
@@ -636,11 +636,11 @@ T_57: (in 0x10002168 : word32)
   Class: Eq_57
   DataType: word32
   OrigDataType: word32
-T_58: (in (void) 0x10002168 : <unknown>)
+T_58: (in (<type-error>) 0x10002168 : <unknown>)
   Class: Eq_19
   DataType: Eq_19
   OrigDataType: <unknown>
-T_59: (in Py_BuildValue("f", (void) 0x10002168) : (ptr PyObject))
+T_59: (in Py_BuildValue("f", (<type-error>) 0x10002168) : (ptr PyObject))
   Class: Eq_2
   DataType: (ptr Eq_2)
   OrigDataType: (ptr PyObject)
