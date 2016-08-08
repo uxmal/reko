@@ -42,13 +42,15 @@ namespace Reko.UnitTests.Analysis
 		SsaIdentifierCollection ssaIds;
         private MockRepository mr;
         private IProcessorArchitecture arch;
+        private IImportResolver importResolver;
 
-		[SetUp]
+        [SetUp]
 		public void Setup()
 		{
 			ssaIds = new SsaIdentifierCollection();
             mr = new MockRepository();
             arch = mr.Stub<IProcessorArchitecture>();
+            importResolver = mr.Stub<IImportResolver>();
 		}
 
         private Identifier Reg32(string name)
@@ -79,7 +81,30 @@ namespace Reko.UnitTests.Analysis
             return sid.Identifier;
         }
 
-		protected override void RunTest(Program prog, TextWriter writer)
+        private ExternalProcedure CreateExternalProcedure(string name, Identifier ret, params Identifier[] parameters)
+        {
+            var ep = new ExternalProcedure(name, new FunctionType(null, ret, parameters));
+            ep.Signature.ReturnAddressOnStack = 4;
+            return ep;
+        }
+
+        private Identifier RegArg(int n, string name)
+        {
+            return new Identifier(
+                name,
+                PrimitiveType.Word32,
+                new RegisterStorage(name, n, 0, PrimitiveType.Word32));
+        }
+
+        private Identifier StackArg(int offset)
+        {
+            return new Identifier(
+                string.Format("arg{0:X2}", offset),
+                PrimitiveType.Word32,
+                new StackArgumentStorage(offset, PrimitiveType.Word32));
+        }
+
+        protected override void RunTest(Program prog, TextWriter writer)
 		{
 			var dfa = new DataFlowAnalysis(prog, null, new FakeDecompilerEventListener());
 			dfa.UntangleProcedures();
@@ -98,7 +123,7 @@ namespace Reko.UnitTests.Analysis
 				proc.Write(false, writer);
 				writer.WriteLine();
 
-				ValuePropagator vp = new ValuePropagator(prog.Architecture, ssa.Identifiers, proc);
+				ValuePropagator vp = new ValuePropagator(prog.Architecture, ssa);
 				vp.Transform();
 
 				ssa.Write(writer);
@@ -213,7 +238,7 @@ namespace Reko.UnitTests.Analysis
 
             ssa.DebugDump(true);
 
-			ValuePropagator vp = new ValuePropagator(arch, ssa.Identifiers, proc);
+			ValuePropagator vp = new ValuePropagator(arch, ssa);
 			vp.Transform();
 
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VpDbp.txt"))
@@ -263,16 +288,18 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void VpEquality2()
 		{
-			// Makes sure that 
-			// y = x - 2
-			// if (y == 0) ...
-			// doesn't get munged into
-			// y = x - 2
-			// if (x == 2)
+            // Makes sure that 
+            // y = x - 2
+            // if (y == 0) ...
+            // doesn't get munged into
+            // y = x - 2
+            // if (x == 2)
 
-			Identifier x = Reg32("x");
-			Identifier y = Reg32("y");
             ProcedureBuilder m = new ProcedureBuilder();
+            var ssa = new SsaState(m.Procedure, null);
+            this.ssaIds = ssa.Identifiers;
+            Identifier x = Reg32("x");
+			Identifier y = Reg32("y");
             var stmX = m.Assign(x, m.LoadDw(Constant.Word32(0x1000300)));
 			ssaIds[x].DefStatement = m.Block.Statements.Last;
             var stmY = m.Assign(y, m.ISub(x, 2));
@@ -282,7 +309,7 @@ namespace Reko.UnitTests.Analysis
 			Assert.AreEqual("y = x - 0x00000002", stmY.ToString());
 			Assert.AreEqual("branch y == 0x00000000 test", stm.ToString());
 
-			var vp = new ValuePropagator(arch, ssaIds, null);
+			var vp = new ValuePropagator(arch, ssa);
 			vp.Transform(stm);
 			Assert.AreEqual("branch x == 0x00000002 test", stm.Instruction.ToString());
 		}
@@ -290,6 +317,8 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void VpCopyPropagate()
 		{
+            var ssa = new SsaState(new Procedure("foo", new Frame(PrimitiveType.Pointer32)), null);
+            ssaIds = ssa.Identifiers;
 			Identifier x = Reg32("x");
 			Identifier y = Reg32("y");
 			Identifier z = Reg32("z");
@@ -310,7 +339,7 @@ namespace Reko.UnitTests.Analysis
 			Assert.AreEqual("z = y + 0x00000002", stmZ.Instruction.ToString());
 			Assert.AreEqual("w = y", stmW.Instruction.ToString());
 
-			ValuePropagator vp = new ValuePropagator(arch, ssaIds, null);
+			ValuePropagator vp = new ValuePropagator(arch, ssa);
 			vp.Transform(stmX);
 			vp.Transform(stmY);
 			vp.Transform(stmZ);
@@ -439,7 +468,7 @@ namespace Reko.UnitTests.Analysis
             var stm2 = new Statement(2, new Assignment(r2, c2), null);
             ssaIds[r1].DefStatement = stm1;
             ssaIds[r2].DefStatement = stm2;
-            var vp = new ValuePropagator(arch, ssaIds, null);
+            var vp = new ValuePropagator(arch, null);
             Instruction instr = new PhiAssignment(r3, new PhiFunction(r1.DataType, r1, r2));
             instr = instr.Accept(vp);
             Assert.AreEqual("r3 = 0x4711", instr.ToString());
@@ -481,7 +510,7 @@ namespace Reko.UnitTests.Analysis
 			var sst = new SsaTransform(new ProgramDataFlow(), proc, importResolver, gr, new HashSet<RegisterStorage>());
 			var ssa = sst.SsaState;
 
-			var vp = new ValuePropagator(arch, ssa.Identifiers, proc);
+			var vp = new ValuePropagator(arch, ssa);
 			vp.Transform();
 
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VpDpbDpb.txt"))
@@ -496,10 +525,10 @@ namespace Reko.UnitTests.Analysis
         {
             var proc = m.Procedure;
             var gr = proc.CreateBlockDominatorGraph();
-            var sst = new SsaTransform(new ProgramDataFlow(), proc, null, gr, new HashSet<RegisterStorage>());
+            var sst = new SsaTransform(new ProgramDataFlow(), proc, importResolver, gr, new HashSet<RegisterStorage>());
             var ssa = sst.SsaState;
 
-            var vp = new ValuePropagator(arch, ssa.Identifiers, proc);
+            var vp = new ValuePropagator(arch, ssa);
             vp.Transform();
             return ssa;
         }
@@ -739,6 +768,73 @@ ProcedureBuilder_exit:
             #endregion
 
             AssertStringsEqual(sExp, ssa);
+        }
+
+        [Test]
+        public void VpIndirectCall()
+        {
+            var callee = CreateExternalProcedure("foo", RegArg(1, "r1"), StackArg(4), StackArg(8));
+            var pc = new ProcedureConstant(PrimitiveType.Pointer32, callee);
+
+            var m = new ProcedureBuilder();
+            var r1 = m.Reg32("r1", 1);
+            var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
+            m.Assign(r1, pc);
+            m.Assign(sp, m.ISub(sp, 4));
+            m.Store(sp, 3);
+            m.Assign(sp, m.ISub(sp, 4));
+            m.Store(sp, m.LoadW(m.Word32(0x1231230)));
+            m.Call(r1, 4);
+            m.Return();
+
+            arch.Stub(a => a.CreateStackAccess(null, 0, null))
+                .IgnoreArguments()
+                .Do(new Func<Frame, int, DataType, Expression>((f, off, dt) => m.Load(dt, m.IAdd(sp, off))));
+            mr.ReplayAll();
+
+            var ssa = RunTest(m);
+            var sExp =
+            #region Expected
+@"r1_0: orig: r1
+    def:  r1_0 = foo
+r63:r63
+    def:  def r63
+    uses: r63_2 = r63 - 0x00000004
+          Mem3[r63 - 0x00000004:word32] = 0x00000003
+          r63_4 = r63 - 0x00000008
+          r63_4 = r63 - 0x00000008
+          Mem5[r63 - 0x00000008:word16] = Mem3[0x01231230:word16]
+r63_2: orig: r63
+    def:  r63_2 = r63 - 0x00000004
+Mem3: orig: Mem0
+    def:  Mem3[r63 - 0x00000004:word32] = 0x00000003
+    uses: Mem5[r63 - 0x00000008:word16] = Mem3[0x01231230:word16]
+r63_4: orig: r63
+    def:  r63_4 = r63 - 0x00000008
+Mem5: orig: Mem0
+    def:  Mem5[r63 - 0x00000008:word16] = Mem3[0x01231230:word16]
+r1_6: orig: r1
+    def:  r1_6 = foo(Mem0[r63:word32], Mem0[r63 + 0x00000004:word32])
+r63_7: orig: r63
+// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def r63
+	// succ:  l1
+l1:
+	r1_0 = foo
+	r63_2 = r63 - 0x00000004
+	Mem3[r63 - 0x00000004:word32] = 0x00000003
+	r63_4 = r63 - 0x00000008
+	Mem5[r63 - 0x00000008:word16] = Mem3[0x01231230:word16]
+	r1_6 = foo(Mem0[r63:word32], Mem0[r63 + 0x00000004:word32])
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+";
+            #endregion
+                AssertStringsEqual(sExp, ssa);
         }
     }
 }
