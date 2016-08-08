@@ -288,17 +288,18 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void VpEquality2()
 		{
-			// Makes sure that 
-			// y = x - 2
-			// if (y == 0) ...
-			// doesn't get munged into
-			// y = x - 2
-			// if (x == 2)
+            // Makes sure that 
+            // y = x - 2
+            // if (y == 0) ...
+            // doesn't get munged into
+            // y = x - 2
+            // if (x == 2)
 
-			Identifier x = Reg32("x");
-			Identifier y = Reg32("y");
             ProcedureBuilder m = new ProcedureBuilder();
             var ssa = new SsaState(m.Procedure, null);
+            this.ssaIds = ssa.Identifiers;
+            Identifier x = Reg32("x");
+			Identifier y = Reg32("y");
             var stmX = m.Assign(x, m.LoadDw(Constant.Word32(0x1000300)));
 			ssaIds[x].DefStatement = m.Block.Statements.Last;
             var stmY = m.Assign(y, m.ISub(x, 2));
@@ -316,7 +317,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void VpCopyPropagate()
 		{
-            var ssa = new SsaState(null, null);
+            var ssa = new SsaState(new Procedure("foo", new Frame(PrimitiveType.Pointer32)), null);
             ssaIds = ssa.Identifiers;
 			Identifier x = Reg32("x");
 			Identifier y = Reg32("y");
@@ -796,7 +797,6 @@ ProcedureBuilder_exit:
             #region Expected
 @"r1_0: orig: r1
     def:  r1_0 = foo
-    uses: call foo (retsize: 4;)	uses: r1_0,r63_4	defs: r1_6,r63_7
 r63:r63
     def:  def r63
     uses: r63_2 = r63 - 0x00000004
@@ -811,13 +811,11 @@ Mem3: orig: Mem0
     uses: Mem5[r63 - 0x00000008:word16] = Mem3[0x01231230:word16]
 r63_4: orig: r63
     def:  r63_4 = r63 - 0x00000008
-    uses: call foo (retsize: 4;)	uses: r1_0,r63_4	defs: r1_6,r63_7
 Mem5: orig: Mem0
     def:  Mem5[r63 - 0x00000008:word16] = Mem3[0x01231230:word16]
 r1_6: orig: r1
-    def:  call foo (retsize: 4;)	uses: r1_0,r63_4	defs: r1_6,r63_7
+    def:  r1_6 = foo(Mem0[r63:word32], Mem0[r63 + 0x00000004:word32])
 r63_7: orig: r63
-    def:  call foo (retsize: 4;)	uses: r1_0,r63_4	defs: r1_6,r63_7
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -830,9 +828,7 @@ l1:
 	Mem3[r63 - 0x00000004:word32] = 0x00000003
 	r63_4 = r63 - 0x00000008
 	Mem5[r63 - 0x00000008:word16] = Mem3[0x01231230:word16]
-	call foo (retsize: 4;)
-		uses: r1_0,r63_4
-		defs: r1_6,r63_7
+	r1_6 = foo(Mem0[r63:word32], Mem0[r63 + 0x00000004:word32])
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
