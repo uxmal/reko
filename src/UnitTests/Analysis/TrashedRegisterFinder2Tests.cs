@@ -308,5 +308,31 @@ Constants: cl:0x00
             });
         }
 
+        [Test(Description = "Test that functions that don't return don't affect register state")]
+        public void TrfNonReturningProcedure()
+        {
+            var fnExit = new ExternalProcedure(
+                "exit",
+                FunctionType.Action(new Identifier("code", PrimitiveType.Int32, new StackArgumentStorage(4, PrimitiveType.Int32))),
+                new ProcedureCharacteristics
+                {
+                    Terminates = true,
+                });
+            var sExp = Expect(
+                "Preserved: ",
+                "Trashed: ",
+                "");
+            RunTest(sExp, "callExit", m =>
+            {
+                var sp = m.Frame.EnsureIdentifier(m.Architecture.StackRegister);
+                var r1 = m.Reg32("r1", 1);
+                m.Label("m1");
+                m.Assign(sp, m.Frame.FramePointer);
+                m.Assign(r1, m.LoadDw(m.IAdd(sp, 4)));
+                m.Assign(sp, m.ISub(sp, 4));
+                m.Store(sp, r1);
+                m.Call(fnExit, 4);
+            });
+        }
     }
 }
