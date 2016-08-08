@@ -109,7 +109,7 @@ namespace Reko.Analysis
             {
                 var ab = new ApplicationBuilder(
                       arch, ssa.Procedure.Frame, ci.CallSite,
-                      ci.Callee, pc.Procedure.Signature, true);
+                      ci.Callee, pc.Procedure.Signature, false);
                 evalCtx.Statement.Instruction = ab.CreateInstruction();
                 ssaIdTransformer.Transform(evalCtx.Statement, ci);
                 return evalCtx.Statement.Instruction;

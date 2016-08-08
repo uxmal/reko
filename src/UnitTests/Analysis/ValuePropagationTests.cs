@@ -786,6 +786,11 @@ ProcedureBuilder_exit:
             m.Call(r1, 4);
             m.Return();
 
+            arch.Stub(a => a.CreateStackAccess(null, 0, null))
+                .IgnoreArguments()
+                .Do(new Func<Frame, int, DataType, Expression>((f, off, dt) => m.Load(dt, m.IAdd(sp, off))));
+            mr.ReplayAll();
+
             var ssa = RunTest(m);
             var sExp =
             #region Expected

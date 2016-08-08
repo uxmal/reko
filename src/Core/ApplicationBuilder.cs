@@ -205,6 +205,7 @@ namespace Reko.Core
                     frame,
                     stack.StackOffset - site.SizeOfReturnAddressOnStack,
                     stack.DataType);
+
         }
 
         public Expression VisitTemporaryStorage(TemporaryStorage temp)
