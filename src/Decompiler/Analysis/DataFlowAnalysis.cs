@@ -239,7 +239,7 @@ namespace Reko.Analysis
         private void UntangleProcedureScc(IList<Procedure> procs)
         {
             // Convert all procedures in the SCC to SSA form and perform
-            // value propagation where possible.
+            // value propagation.
             var ssts = procs.Select(p => ConvertToSsa(p)).ToArray();
             this.ssts.AddRange(ssts);
 
@@ -251,6 +251,8 @@ namespace Reko.Analysis
                 tid.Compute(sst.SsaState);
                 uid.Compute(sst.SsaState);
             }
+
+            // 
         }
 
         public void BuildExpressionTrees2()

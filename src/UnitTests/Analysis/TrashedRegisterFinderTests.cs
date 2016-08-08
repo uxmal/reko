@@ -577,7 +577,7 @@ const eax:<invalid>
         }
 
         [Test]
-        [Ignore("scanning-development")]
+        [Ignore("This has been moved to TrashedRegisterFinder2")]
         public void TrfConstNonConst()
         {
             // Constant in one branch, not constant in other.
