@@ -42,12 +42,21 @@ namespace Reko.UnitTests.Analysis
     {
         private ProgramDataFlow pf;
         private ProgramBuilder progBuilder;
+        private ExternalProcedure fnExit;
 
         [SetUp]
         public void Setup()
         {
             this.pf = new ProgramDataFlow();
             this.progBuilder = new ProgramBuilder();
+            this.fnExit = new ExternalProcedure(
+              "exit",
+              FunctionType.Action(new Identifier("code", PrimitiveType.Int32, new StackArgumentStorage(4, PrimitiveType.Int32))),
+              new ProcedureCharacteristics
+              {
+                  Terminates = true,
+              });
+            this.fnExit.Signature.ReturnAddressOnStack = 4;
         }
 
         private static string Expect(string preserved, string trashed, string consts)
@@ -311,13 +320,6 @@ Constants: cl:0x00
         [Test(Description = "Test that functions that don't return don't affect register state")]
         public void TrfNonReturningProcedure()
         {
-            var fnExit = new ExternalProcedure(
-                "exit",
-                FunctionType.Action(new Identifier("code", PrimitiveType.Int32, new StackArgumentStorage(4, PrimitiveType.Int32))),
-                new ProcedureCharacteristics
-                {
-                    Terminates = true,
-                });
             var sExp = Expect(
                 "Preserved: ",
                 "Trashed: ",
@@ -332,6 +334,32 @@ Constants: cl:0x00
                 m.Assign(sp, m.ISub(sp, 4));
                 m.Store(sp, r1);
                 m.Call(fnExit, 4);
+            });
+        }
+
+        [Test(Description = "Only registers modified on paths that reach the exit affect register state")]
+        public void TrfBranchedNonReturningProcedure()
+        {
+            var sExp = Expect("Preserved: r63", "Trashed: r1", "");
+            RunTest(sExp, "callExitBranch", m =>
+            {
+                var sp = m.Frame.EnsureIdentifier(m.Architecture.StackRegister);
+                var r1 = m.Reg32("r1", 1);
+                var r2 = m.Reg32("r2", 2);
+                m.Label("m1");
+                m.Assign(sp, m.Frame.FramePointer);
+                m.Assign(r1, m.LoadDw(m.IAdd(sp, 4)));
+                m.BranchIf(m.Eq0(r1), "m3return");
+
+                m.Label("m2exit");
+                m.Assign(r2, 3);
+                m.Assign(sp, m.ISub(sp, 4));
+                m.Store(sp, r2);
+                m.Call(fnExit, 4);
+                m.ExitThread();
+
+                m.Label("m3return");
+                m.Return();
             });
         }
     }

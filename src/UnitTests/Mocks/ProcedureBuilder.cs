@@ -303,13 +303,22 @@ namespace Reko.UnitTests.Mocks
             Block = null;
         }
 
-        private void TerminateBlock()
+        public void TerminateBlock()
         {
             if (Block != null)
             {
                 lastBlock = Block;
                 Block = null;
             }
+        }
+
+        /// <summary>
+        /// Call this method right after a terminating function.
+        /// </summary>
+        public void ExitThread()
+        {
+            lastBlock = null;
+            Block = null;
         }
 
         public Identifier Reg64(string name, int number)

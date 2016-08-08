@@ -1061,7 +1061,8 @@ namespace Reko.Analysis
             if (callee != null && callee.Signature != null && callee.Signature.ParametersValid)
             {
                 var ab = CreateApplicationBuilder(ci.Callee.DataType, callee, ci.CallSite);
-                return ab.CreateInstruction(callee.Signature, callee.Characteristics);
+                var instr = ab.CreateInstruction(callee.Signature, callee.Characteristics);
+                return instr.Accept(this);
             }
             ProcedureFlow2 flow;
             var proc = callee as Procedure;
@@ -1079,7 +1080,7 @@ namespace Reko.Analysis
         private ApplicationBuilder CreateApplicationBuilder(DataType dt, ProcedureBase eCallee, CallSite site)
         {
             var pc = new ProcedureConstant(dt, eCallee);
-            var ab = new SsaApplicationBuilder(this, site, pc);
+            var ab = new FrameApplicationBuilder(arch, ssa.Procedure.Frame, site, pc, false);
             return ab;
         }
 
@@ -2127,33 +2128,5 @@ namespace Reko.Analysis
         }
 
 
-        public class SsaApplicationBuilder : ApplicationBuilder
-        {
-            private SsaTransform2 sst;
-
-            public SsaApplicationBuilder(
-                SsaTransform2 sst,
-                CallSite site,
-                Expression callee)
-                : base(site, callee)
-            {
-                this.sst = sst;
-            }
-
-            public override Expression Bind(Identifier id)
-            {
-                return sst.VisitIdentifier(id);
-            }
-
-            public override Identifier BindReturnValue(Identifier id)
-            {
-                return sst.NewDef(id, callee, false);
-            }
-
-            public override OutArgument BindOutArg(Identifier id)
-            {
-                throw new NotImplementedException();
-            }
-        }
     }
 }

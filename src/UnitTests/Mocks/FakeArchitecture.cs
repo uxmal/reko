@@ -102,7 +102,8 @@ namespace Reko.UnitTests.Mocks
 
         public Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
         {
-            throw new NotImplementedException();
+            var sp = frame.EnsureRegister(StackRegister);
+            return MemoryAccess.Create(sp, offset, dataType);
         }
 
         public ImageReader CreateImageReader(MemoryArea image, Address addr)

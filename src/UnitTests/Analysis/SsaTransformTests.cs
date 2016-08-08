@@ -1555,12 +1555,12 @@ proc1_exit:
     def:  r13_1 = 0x00030000
 r12_2: orig: r12
     def:  r12_2 = ImportedFunc
-    uses: r14_3 = ImportedFunc(r6)
-r14_3: orig: r14
-    def:  r14_3 = ImportedFunc(r6)
+    uses: r14_4 = ImportedFunc(r6)
 r6:r6
     def:  def r6
-    uses: r14_3 = ImportedFunc(r6)
+    uses: r14_4 = ImportedFunc(r6)
+r14_4: orig: r14
+    def:  r14_4 = ImportedFunc(r6)
 // proc1
 // Return size: 0
 void proc1()
@@ -1570,7 +1570,7 @@ proc1_entry:
 l1:
 	r13_1 = 0x00030000
 	r12_2 = ImportedFunc
-	r14_3 = ImportedFunc(r6)
+	r14_4 = ImportedFunc(r6)
 	return
 	// succ:  proc1_exit
 proc1_exit:
