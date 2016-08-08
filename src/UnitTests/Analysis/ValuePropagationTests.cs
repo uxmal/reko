@@ -123,7 +123,7 @@ namespace Reko.UnitTests.Analysis
 				proc.Write(false, writer);
 				writer.WriteLine();
 
-				ValuePropagator vp = new ValuePropagator(prog.Architecture, ssa.Identifiers, proc);
+				ValuePropagator vp = new ValuePropagator(prog.Architecture, ssa);
 				vp.Transform();
 
 				ssa.Write(writer);
@@ -238,7 +238,7 @@ namespace Reko.UnitTests.Analysis
 
             ssa.DebugDump(true);
 
-			ValuePropagator vp = new ValuePropagator(arch, ssa.Identifiers, proc);
+			ValuePropagator vp = new ValuePropagator(arch, ssa);
 			vp.Transform();
 
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VpDbp.txt"))
@@ -298,6 +298,7 @@ namespace Reko.UnitTests.Analysis
 			Identifier x = Reg32("x");
 			Identifier y = Reg32("y");
             ProcedureBuilder m = new ProcedureBuilder();
+            var ssa = new SsaState(m.Procedure, null);
             var stmX = m.Assign(x, m.LoadDw(Constant.Word32(0x1000300)));
 			ssaIds[x].DefStatement = m.Block.Statements.Last;
             var stmY = m.Assign(y, m.ISub(x, 2));
@@ -307,7 +308,7 @@ namespace Reko.UnitTests.Analysis
 			Assert.AreEqual("y = x - 0x00000002", stmY.ToString());
 			Assert.AreEqual("branch y == 0x00000000 test", stm.ToString());
 
-			var vp = new ValuePropagator(arch, ssaIds, null);
+			var vp = new ValuePropagator(arch, ssa);
 			vp.Transform(stm);
 			Assert.AreEqual("branch x == 0x00000002 test", stm.Instruction.ToString());
 		}
@@ -315,6 +316,8 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void VpCopyPropagate()
 		{
+            var ssa = new SsaState(null, null);
+            ssaIds = ssa.Identifiers;
 			Identifier x = Reg32("x");
 			Identifier y = Reg32("y");
 			Identifier z = Reg32("z");
@@ -335,7 +338,7 @@ namespace Reko.UnitTests.Analysis
 			Assert.AreEqual("z = y + 0x00000002", stmZ.Instruction.ToString());
 			Assert.AreEqual("w = y", stmW.Instruction.ToString());
 
-			ValuePropagator vp = new ValuePropagator(arch, ssaIds, null);
+			ValuePropagator vp = new ValuePropagator(arch, ssa);
 			vp.Transform(stmX);
 			vp.Transform(stmY);
 			vp.Transform(stmZ);
@@ -464,7 +467,7 @@ namespace Reko.UnitTests.Analysis
             var stm2 = new Statement(2, new Assignment(r2, c2), null);
             ssaIds[r1].DefStatement = stm1;
             ssaIds[r2].DefStatement = stm2;
-            var vp = new ValuePropagator(arch, ssaIds, null);
+            var vp = new ValuePropagator(arch, null);
             Instruction instr = new PhiAssignment(r3, new PhiFunction(r1.DataType, r1, r2));
             instr = instr.Accept(vp);
             Assert.AreEqual("r3 = 0x4711", instr.ToString());
@@ -506,7 +509,7 @@ namespace Reko.UnitTests.Analysis
 			var sst = new SsaTransform(new ProgramDataFlow(), proc, importResolver, gr, new HashSet<RegisterStorage>());
 			var ssa = sst.SsaState;
 
-			var vp = new ValuePropagator(arch, ssa.Identifiers, proc);
+			var vp = new ValuePropagator(arch, ssa);
 			vp.Transform();
 
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VpDpbDpb.txt"))
@@ -524,7 +527,7 @@ namespace Reko.UnitTests.Analysis
             var sst = new SsaTransform(new ProgramDataFlow(), proc, importResolver, gr, new HashSet<RegisterStorage>());
             var ssa = sst.SsaState;
 
-            var vp = new ValuePropagator(arch, ssa.Identifiers, proc);
+            var vp = new ValuePropagator(arch, ssa);
             vp.Transform();
             return ssa;
         }
@@ -786,7 +789,49 @@ ProcedureBuilder_exit:
             var ssa = RunTest(m);
             var sExp =
             #region Expected
-                "@@@";
+@"r1_0: orig: r1
+    def:  r1_0 = foo
+    uses: call foo (retsize: 4;)	uses: r1_0,r63_4	defs: r1_6,r63_7
+r63:r63
+    def:  def r63
+    uses: r63_2 = r63 - 0x00000004
+          Mem3[r63 - 0x00000004:word32] = 0x00000003
+          r63_4 = r63 - 0x00000008
+          r63_4 = r63 - 0x00000008
+          Mem5[r63 - 0x00000008:word16] = Mem3[0x01231230:word16]
+r63_2: orig: r63
+    def:  r63_2 = r63 - 0x00000004
+Mem3: orig: Mem0
+    def:  Mem3[r63 - 0x00000004:word32] = 0x00000003
+    uses: Mem5[r63 - 0x00000008:word16] = Mem3[0x01231230:word16]
+r63_4: orig: r63
+    def:  r63_4 = r63 - 0x00000008
+    uses: call foo (retsize: 4;)	uses: r1_0,r63_4	defs: r1_6,r63_7
+Mem5: orig: Mem0
+    def:  Mem5[r63 - 0x00000008:word16] = Mem3[0x01231230:word16]
+r1_6: orig: r1
+    def:  call foo (retsize: 4;)	uses: r1_0,r63_4	defs: r1_6,r63_7
+r63_7: orig: r63
+    def:  call foo (retsize: 4;)	uses: r1_0,r63_4	defs: r1_6,r63_7
+// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def r63
+	// succ:  l1
+l1:
+	r1_0 = foo
+	r63_2 = r63 - 0x00000004
+	Mem3[r63 - 0x00000004:word32] = 0x00000003
+	r63_4 = r63 - 0x00000008
+	Mem5[r63 - 0x00000008:word16] = Mem3[0x01231230:word16]
+	call foo (retsize: 4;)
+		uses: r1_0,r63_4
+		defs: r1_6,r63_7
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+";
             #endregion
                 AssertStringsEqual(sExp, ssa);
         }

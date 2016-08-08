@@ -58,6 +58,7 @@ namespace Reko.Evaluation
         private BinOpWithSelf_Rule binopWithSelf;
         private ConstDivisionImplementedByMultiplication constDiv;
         private SelfDpbRule selfdpbRule;
+        private IdProcConstRule idProcConstRule;
 
         public ExpressionSimplifier(EvaluationContext ctx)
         {
@@ -84,6 +85,7 @@ namespace Reko.Evaluation
             this.binopWithSelf = new BinOpWithSelf_Rule();
             this.constDiv = new ConstDivisionImplementedByMultiplication(ctx);
             this.selfdpbRule = new SelfDpbRule(ctx);
+            this.idProcConstRule = new IdProcConstRule(ctx);
         }
 
         public bool Changed { get { return changed; } set { changed = value; } }
@@ -431,6 +433,11 @@ namespace Reko.Evaluation
             {
                 Changed = true;
                 return idConst.Transform();
+            }
+            if (idProcConstRule.Match(id))
+            {
+                Changed = true;
+                return idProcConstRule.Transform();
             }
             // jkl: Copy propagation causes real problems when used during trashed register analysis.
             // If needed in other passes, it should be an option for expression e
