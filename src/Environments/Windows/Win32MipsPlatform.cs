@@ -65,6 +65,13 @@ namespace Reko.Environments.Windows
             return new MipsProcedureSerializer(Architecture, typeLoader, defaultConvention);
         }
 
+        public override ImageSymbol FindMainProcedure(Program program, Address addrStart)
+        {
+            Services.RequireService<DecompilerEventListener>().Warn(new NullCodeLocation(program.Name),
+                "Win32 MIPS main procedure finder not supported.");
+            return null;
+        }
+
         public override SystemService FindService(int vector, ProcessorState state)
         {
             throw new NotImplementedException("INT services are not supported by " + this.GetType().Name);
