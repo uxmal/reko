@@ -783,6 +783,7 @@ ProcedureBuilder_exit:
             var m = new ProcedureBuilder();
             var r1 = m.Reg32("r1", 1);
             var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
+            m.Assign(sp, m.Frame.FramePointer);
             m.Assign(r1, pc);
             m.Assign(sp, m.ISub(sp, 4));
             m.Store(sp, 3);
