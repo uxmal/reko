@@ -60,12 +60,8 @@ namespace Reko.Core
             IPlatform platform,
             AddressContext ctx)
         {
-            var global =  resolver.ResolveGlobal(ModuleName, ImportName, platform);
-            if (global != null)
-                return global;
-
-            ctx.Warn("Unable to resolve imported reference {0}.", this);
-            return null;
+            var global = resolver.ResolveGlobal(ModuleName, ImportName, platform);
+            return global;
         }
 
         public override ExternalProcedure ResolveImportedProcedure(

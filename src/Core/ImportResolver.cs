@@ -116,10 +116,18 @@ namespace Reko.Core
                 DataType dt;
                 if (mod.Globals.TryGetValue(globalName, out dt))
                 {
-                    return new Identifier(globalName, dt, new MemoryStorage());
+                    return new Identifier(globalName, new Pointer(dt, platform.PointerType.Size), new MemoryStorage());
                 }
             }
 
+            foreach (var program in project.Programs)
+            {
+                DataType dt;
+                if (program.EnvironmentMetadata.Globals.TryGetValue(globalName, out dt))
+                {
+                    return new Identifier(globalName, new Pointer(dt, platform.PointerType.Size), new MemoryStorage());
+                }
+            }
             return platform.LookupGlobalByName(moduleName, globalName);
         }
 
