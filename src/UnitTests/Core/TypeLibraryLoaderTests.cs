@@ -153,9 +153,8 @@ namespace Reko.UnitTests.Core
             var lib = tlldr.Load(platform, new TypeLibrary());
             Assert.AreEqual(1, lib.Types.Count);
             Assert.AreEqual(1, lib.Globals.Count);
-            var sExp =
-@"@@@";
-            Assert.AreEqual(sExp, lib.Globals["foo"].ToString());
+            var sExp = @"foo";
+            Assert.AreEqual(sExp, lib.Globals["g_foo"].ToString());
         }
     }
 }
