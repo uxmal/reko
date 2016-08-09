@@ -111,9 +111,13 @@ namespace Reko.Core.Types
                 EquivalenceClass c = tv.Class;
                 DataType dtOld = c.DataType;
                 if (dtOld != null)
+                {
                     dt = u.Unify(dt, dtOld);
+                }
                 else if (dt != null)
+                {
                     dt = dt.Clone();        // why clone???
+                }
                 c.DataType = dt;
             }
         }

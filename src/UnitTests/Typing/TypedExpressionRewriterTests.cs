@@ -256,7 +256,6 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-       [Ignore("scanning-development")]
         public void TerUnionIntReal()
         {
             var mock = CreateProgramBuilder(0x10000, 0x1000);
@@ -1125,6 +1124,46 @@ proc1_exit:
 ";
             #endregion
             RunTest(pm.BuildProgram(), "Typing/TerNestedStructsPtr.txt");
+        }
+
+
+        [Test]
+        public void TerAddressOf()
+        {
+            var pb = new ProgramBuilder();
+            pb.Add("AddressOf", m =>
+            {
+                var foo = new Identifier("foo", new UnknownType(), new MemoryStorage());
+                var r1 = m.Reg32("r1", 1);
+                m.Declare(r1, m.AddrOf(foo));
+                m.Store(r1, m.Word16(0x1234));
+                m.Store(m.IAdd(r1, 4), m.Byte(0x0A));
+                m.Return();
+            });
+            RunTest(pb.BuildProgram());
+        }
+
+        [Test]
+        public void TerTypedAddressOf()
+        {
+            var pb = new ProgramBuilder();
+            pb.Add("TypedAddressOf", m =>
+            {
+                var str = new TypeReference("foo", new StructureType("foo", 0)
+                {
+                    Fields = {
+                        { 0, PrimitiveType.Int16, "word00" },
+                        { 4, PrimitiveType.Byte, "byte004"}
+                    }
+                });
+                var foo = new Identifier("foo", str, new MemoryStorage());
+                var r1 = m.Reg32("r1", 1);
+                m.Declare(r1, m.AddrOf(foo));
+                m.Store(r1, m.Word16(0x1234));
+                m.Store(m.IAdd(r1, 4), m.Byte(0x0A));
+                m.Return();
+            });
+            RunTest(pb.BuildProgram());
         }
     }
 }

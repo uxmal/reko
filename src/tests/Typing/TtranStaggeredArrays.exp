@@ -50,8 +50,8 @@ T_8: (in 4 : int32)
   OrigDataType: int32
 T_9: (in p + 4 : ptr32)
   Class: Eq_9
-  DataType: (ptr Eq_14)
-  OrigDataType: (ptr T_14)
+  DataType: ptr32
+  OrigDataType: ptr32
 T_10: (in 0x00000008 : word32)
   Class: Eq_10
   DataType: ui32

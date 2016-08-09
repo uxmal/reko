@@ -101,7 +101,7 @@ namespace Reko.Core.Types
 				return AreCompatible(sa, sb);
 			}
 
-			ArrayType aa = a as ArrayType;
+            ArrayType aa = a as ArrayType;
 			ArrayType ab = b as ArrayType;
 			if (aa != null && ab != null)
 			{
@@ -250,6 +250,32 @@ namespace Reko.Core.Types
 			{
 				return UnifyTypeVariables(tA, tB);
 			}
+            if (tA != null)
+            {
+                if (tA.Class != null)
+                {
+                    tA.Class.DataType = UnifyInternal(tA.Class.DataType, b);
+                    return tA;
+                }
+                else
+                {
+                    tA.DataType = UnifyInternal(tA.DataType, b);
+                    return tA;
+                }
+            }
+            if (tB != null)
+            {
+                if (tB.Class != null)
+                {
+                    tB.Class.DataType = UnifyInternal(a, tB.Class.DataType);
+                    return tB;
+                }
+                else
+                {
+                    tB.DataType = UnifyInternal(a, tB.DataType);
+                    return tB;
+                }
+            }
 
             TypeReference trA = a as TypeReference;
             TypeReference trB = b as TypeReference;
@@ -364,12 +390,12 @@ namespace Reko.Core.Types
 			{
 				return UnifyStructures(strA, strB);
 			}
-			if (strA != null && strA.Size >= b.Size)
+			if (strA != null && (strA.Size == 0 || strA.Size >= b.Size))
 			{
                 MergeIntoStructure(b, strA);
 				return strA;
 			}
-			if (strB != null && strB.Size >= a.Size)
+			if (strB != null && (strB.Size == 0 || strB.Size >= a.Size))
 			{
                 MergeIntoStructure(a, strB);
 				return strB;
