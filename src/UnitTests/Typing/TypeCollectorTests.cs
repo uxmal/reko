@@ -27,6 +27,7 @@ using System.Text;
 using Reko.Core;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
+using Reko.Core.Expressions;
 
 namespace Reko.UnitTests.Typing
 {
@@ -131,6 +132,20 @@ namespace Reko.UnitTests.Typing
                 m.Declare(eax, m.Load(PrimitiveType.Word32, v));
                 m.Declare(ecx, m.Load(PrimitiveType.Word32, eax));
             }, "Typing/TycoNestedStructsPtr.txt");
+        }
+
+        [Test]
+        public void TycoAddressOf()
+        {
+            RunTest(m =>
+            {
+                var foo = new Identifier("foo", new UnknownType(), new MemoryStorage());
+                var r1 = m.Reg32("r1", 1);
+                m.Assign(r1, m.AddrOf(foo));
+                m.Store(r1, m.Word16(0x1234));
+                m.Store(m.IAdd(r1, 4), m.Byte(0x0A));
+                m.Return();
+            }, "Typing/TycoAddressOf.txt");
         }
     }
 }

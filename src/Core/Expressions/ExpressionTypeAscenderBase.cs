@@ -382,6 +382,10 @@ namespace Reko.Core.Expressions
         public DataType VisitUnaryExpression(UnaryExpression unary)
         {
             var dt = unary.Expression.Accept(this);
+            if (unary.Operator == Operator.AddrOf)
+            {
+                dt = unary.DataType;
+            }
             return RecordDataType(dt, unary);
         }
     }
