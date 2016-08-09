@@ -18,21 +18,33 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Reko.Core;
+using Reko.Core.Expressions;
 
-namespace Reko.Core.Serialization
+namespace Reko.Evaluation
 {
-    /// <summary>
-    /// User-specified global variable.
-    /// </summary>
-    public class GlobalDataItem_v2
+    public class IdProcConstRule
     {
-        public string Address;
-        public SerializedType DataType;
-        public string Name;
-        public string Comment;
+        private EvaluationContext ctx;
+        private Identifier id;
+        private ProcedureConstant pc;
+
+        public IdProcConstRule(EvaluationContext ctx)
+        {
+            this.ctx = ctx;
+        }
+
+        public bool Match(Identifier id)
+        {
+            this.id = id;
+            this.pc = ctx.GetValue(id) as ProcedureConstant;
+            return pc != null;
+        }
+
+        public ProcedureConstant Transform()
+        {
+            ctx.RemoveIdentifierUse(id);
+            return pc;
+        }
     }
 }

@@ -159,6 +159,11 @@ namespace Reko.UnitTests.Arch.Intel
                 throw new NotImplementedException();
             }
 
+            public Identifier GetImportedGlobal(Address addrThunk, Address addrInstruction)
+            {
+                throw new NotImplementedException();
+            }
+
             public ExternalProcedure GetImportedProcedure(Address addrThunk, Address addrInstruction)
             {
                 ImportReference p;

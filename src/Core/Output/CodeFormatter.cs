@@ -194,7 +194,7 @@ namespace Reko.Core.Output
 		{
 			int prec = SetPrecedence(PrecedenceCase);
 			writer.Write("(");
-            cast.DataType.Accept(new TypeFormatter(writer, true));
+            new TypeReferenceFormatter(writer).WriteTypeReference(cast.DataType);
 			writer.Write(") ");
 			cast.Expression.Accept(this);
 			ResetPresedence(prec);

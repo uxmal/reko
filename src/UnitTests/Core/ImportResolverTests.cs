@@ -187,5 +187,47 @@ namespace Reko.UnitTests.Core
 ";
             Assert.AreEqual(sigExp, ep.Signature.ToString("bar", FunctionType.EmitFlags.AllDetails));
         }
+
+        [Test]
+        public void Impres_GlobalByName()
+        {
+            var proj = new Project
+            {
+                MetadataFiles =
+                {
+                    new MetadataFile
+                    {
+                         ModuleName = "foo"
+                    }
+                },
+                Programs =
+                {
+                    program
+                }
+            };
+
+            var module = new ModuleDescriptor("foo")
+            {
+                Globals =
+                {
+                    {
+                         "bar",
+                         new StructureType
+                         {
+                             Fields =
+                             {
+                                 { 0, new Pointer(PrimitiveType.Char, 4), "name" },
+                                 { 4, PrimitiveType.Int32, "age" }
+                             }
+                         }
+                    }
+                }
+            };
+            program.EnvironmentMetadata.Modules.Add(module.ModuleName, module);
+
+            var impres = new ImportResolver(proj, program, new FakeDecompilerEventListener());
+            var dt = impres.ResolveGlobal("foo", "bar", platform);
+            Assert.AreEqual("bar", dt.ToString());
+        }
     }
 }

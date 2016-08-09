@@ -50,11 +50,15 @@ namespace Reko.Core.Serialization
         [XmlElement("service", typeof(SerializedService))]
         public List<ProcedureBase_v1> Procedures;
 
+        [XmlElement("global", typeof(GlobalVariable_v1))]
+        public List<GlobalVariable_v1> Globals;
+
         private static XmlSerializer serializer;
 
         public SerializedLibrary()
         {
             this.Procedures = new List<ProcedureBase_v1>();
+            this.Globals = new List<GlobalVariable_v1>();
         }
 
         public static SerializedLibrary LoadFromStream(Stream stm)
@@ -115,7 +119,19 @@ namespace Reko.Core.Serialization
             typeof(SerializedTypedef),
             typeof(SerializedLibrary),
             typeof(Argument_v1),
+            typeof(GlobalVariable_v1),
             typeof(GlobalDataItem_v2)
         };
+    }
+
+    /// <summary>
+    /// Defines a global variable in a library.
+    /// </summary>
+    public class GlobalVariable_v1
+    {
+        [XmlAttribute("name")]
+        public string Name;
+
+        public SerializedType Type;
     }
 }

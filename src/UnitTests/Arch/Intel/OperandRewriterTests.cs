@@ -206,7 +206,12 @@ namespace Reko.UnitTests.Arch.Intel
 			return new Procedure[0];
 		}
 
-		public ExternalProcedure GetImportedProcedure(Address addrTunk, Address addrInstruction)
+        public Identifier GetImportedGlobal(Address addrTunk, Address addrInstruction)
+        {
+            return null;
+        }
+
+        public ExternalProcedure GetImportedProcedure(Address addrTunk, Address addrInstruction)
 		{
 			return null;
 		}

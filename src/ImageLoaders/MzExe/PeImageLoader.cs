@@ -959,11 +959,21 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
                 {
                     var addr = Address.Ptr32(rdr.ReadLeUInt32());
                     rdr.Seek(16);
-                    symbols.Add(addr, new ImageSymbol(addr, null, new CodeType())
+                    ImageSymbol symOld;
+                    ImageSymbol symNew = new ImageSymbol(addr, null, new CodeType())
                     {
                         Type = SymbolType.Procedure,
                         ProcessorState = arch.CreateProcessorState()
-                    });
+                    };
+                    if (!symbols.TryGetValue(addr, out symOld))
+                    {
+                        symbols.Add(addr, symNew);
+                    }
+                    else
+                    {
+                        if (symOld.Name == null && symNew.Name != null)
+                            symbols[addr] = symNew;
+                    }
                 }
                 break;
             }

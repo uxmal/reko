@@ -133,6 +133,29 @@ namespace Reko.UnitTests.Core
             Assert.AreEqual(sExp, lib.Signatures["bar"].ToString("bar", FunctionType.EmitFlags.AllDetails)
             );
         }
+
+        [Test]
+        public void TLLDR_Global()
+        {
+            var contents =
+@"<?xml version=""1.0"" encoding=""UTF-8""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types>
+    <typedef name=""foo"">
+      <struct name=""foo_t"" />
+    </typedef>
+  </Types>
+  <global name=""g_foo"">
+    <type>foo</type>
+  </global>
+</library>";
+            CreateTypeLibraryLoader("c:\\bar\\foo.xml", contents);
+            var lib = tlldr.Load(platform, new TypeLibrary());
+            Assert.AreEqual(1, lib.Types.Count);
+            Assert.AreEqual(1, lib.Globals.Count);
+            var sExp = @"foo";
+            Assert.AreEqual(sExp, lib.Globals["g_foo"].ToString());
+        }
     }
 }
 
