@@ -51,6 +51,7 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GccMangledNameParser.cs" />
     <Compile Include="MipsProcedureSerializer.cs" />
     <Compile Include="PowerPcProcedureSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
