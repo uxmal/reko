@@ -53,9 +53,9 @@ namespace Reko.Analysis
         {
             this.arch = arch;
             this.ssa = ssa;
-            this.proc = ssa.Procedure;
-            this.evalCtx = new SsaEvaluationContext(arch, ssaIds);
+            this.evalCtx = new SsaEvaluationContext(arch, ssa.Identifiers);
             this.eval = new ExpressionSimplifier(evalCtx);
+            this.ssaIdTransformer = new SsaIdentifierTransformer(ssa);
         }
 
         public bool Changed { get { return eval.Changed; } set { eval.Changed = value; } }
@@ -109,10 +109,10 @@ namespace Reko.Analysis
             var pc = ci.Callee as ProcedureConstant;
             if (pc != null && pc.Procedure.Signature != null && pc.Procedure.Signature.ParametersValid)
             {
-                var ab = new ApplicationBuilder(
+                var ab = new FrameApplicationBuilder(
                       arch, ssa.Procedure.Frame, ci.CallSite,
-                      ci.Callee, pc.Procedure.Signature, false);
-                evalCtx.Statement.Instruction = ab.CreateInstruction();
+                      ci.Callee, false);
+                evalCtx.Statement.Instruction = ab.CreateInstruction(pc.Procedure.Signature, pc.Procedure.Characteristics);
                 ssaIdTransformer.Transform(evalCtx.Statement, ci);
                 return evalCtx.Statement.Instruction;
             }

@@ -799,27 +799,26 @@ ProcedureBuilder_exit:
             var ssa = RunTest(m);
             var sExp =
             #region Expected
-@"r1_0: orig: r1
-    def:  r1_0 = foo
+@"r1_1: orig: r1
+    def:  r1_1 = foo
 r63:r63
     def:  def r63
-    uses: r63_2 = r63 - 0x00000004
-          Mem3[r63 - 0x00000004:word32] = 0x00000003
-          r63_4 = r63 - 0x00000008
-          r63_4 = r63 - 0x00000008
-          Mem5[r63 - 0x00000008:word16] = Mem3[0x01231230:word16]
-r63_2: orig: r63
-    def:  r63_2 = r63 - 0x00000004
-Mem3: orig: Mem0
-    def:  Mem3[r63 - 0x00000004:word32] = 0x00000003
-    uses: Mem5[r63 - 0x00000008:word16] = Mem3[0x01231230:word16]
-r63_4: orig: r63
-    def:  r63_4 = r63 - 0x00000008
-Mem5: orig: Mem0
-    def:  Mem5[r63 - 0x00000008:word16] = Mem3[0x01231230:word16]
-r1_6: orig: r1
-    def:  r1_6 = foo(Mem0[r63:word32], Mem0[r63 + 0x00000004:word32])
-r63_7: orig: r63
+    uses: r63_3 = r63 - 0x00000004
+          Mem4[r63 - 0x00000004:word32] = 0x00000003
+          r63_5 = r63 - 0x00000008
+          Mem6[r63 - 0x00000008:word16] = Mem4[0x01231230:word16]
+r63_3: orig: r63
+    def:  r63_3 = r63 - 0x00000004
+Mem4: orig: Mem0
+    def:  Mem4[r63 - 0x00000004:word32] = 0x00000003
+    uses: Mem6[r63 - 0x00000008:word16] = Mem4[0x01231230:word16]
+r63_5: orig: r63
+    def:  r63_5 = r63 - 0x00000008
+Mem6: orig: Mem0
+    def:  Mem6[r63 - 0x00000008:word16] = Mem4[0x01231230:word16]
+r1_7: orig: r1
+    def:  r1_7 = foo(Mem0[r63:word32], Mem0[r63 + 0x00000004:word32])
+r63_8: orig: r63
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -827,12 +826,12 @@ ProcedureBuilder_entry:
 	def r63
 	// succ:  l1
 l1:
-	r1_0 = foo
-	r63_2 = r63 - 0x00000004
-	Mem3[r63 - 0x00000004:word32] = 0x00000003
-	r63_4 = r63 - 0x00000008
-	Mem5[r63 - 0x00000008:word16] = Mem3[0x01231230:word16]
-	r1_6 = foo(Mem0[r63:word32], Mem0[r63 + 0x00000004:word32])
+	r1_1 = foo
+	r63_3 = r63 - 0x00000004
+	Mem4[r63 - 0x00000004:word32] = 0x00000003
+	r63_5 = r63 - 0x00000008
+	Mem6[r63 - 0x00000008:word16] = Mem4[0x01231230:word16]
+	r1_7 = foo(Mem0[r63:word32], Mem0[r63 + 0x00000004:word32])
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
