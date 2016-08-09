@@ -25,6 +25,9 @@ using System.Text;
 
 namespace Reko.Core.Serialization
 {
+    /// <summary>
+    /// User-specified global variable.
+    /// </summary>
     public class GlobalDataItem_v2
     {
         public string Address;

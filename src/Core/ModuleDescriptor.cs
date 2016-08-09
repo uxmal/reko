@@ -18,7 +18,8 @@
  */
 #endregion
 
- using System;
+using Reko.Core.Types;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,6 +37,7 @@ namespace Reko.Core
             this.ModuleName = name;
             this.ServicesByName = new Dictionary<string, SystemService>();
             this.ServicesByVector = new Dictionary<int, SystemService>();
+            this.Globals = new Dictionary<string, DataType>();
         }
 
         public ModuleDescriptor(ModuleDescriptor other)
@@ -43,11 +45,13 @@ namespace Reko.Core
             this.ModuleName = other.ModuleName;
             this.ServicesByName = new Dictionary<string, SystemService>(other.ServicesByName);
             this.ServicesByVector = new Dictionary<int, SystemService>(other.ServicesByVector);
+            this.Globals = new Dictionary<string, DataType>();
         }
 
         public string ModuleName { get; private set; }
         public IDictionary<string, SystemService> ServicesByName { get; private set; }
         public IDictionary<int, SystemService> ServicesByVector { get; private set; }
+        public IDictionary<string, DataType> Globals { get; private set; }
 
         public ModuleDescriptor Clone()
         {

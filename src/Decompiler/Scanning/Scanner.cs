@@ -687,6 +687,20 @@ namespace Reko.Scanning
             return target;
         }
 
+        public Identifier GetImportedGlobal(Address addrImportThunk, Address addrInstruction)
+        {
+            ImportReference impref;
+            if (importReferences.TryGetValue(addrImportThunk, out impref))
+            {
+                var global = impref.ResolveImportedGlobal(
+                    importResolver,
+                    program.Platform,
+                    new AddressContext(program, addrInstruction, this.eventListener));
+                return global;
+            }
+            return null;
+        }
+
         /// <summary>
         /// If <paramref name="addrImportThunk"/> is the known address of an
         /// import thunk / trampoline, return the imported function as an

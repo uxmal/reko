@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Analysis
 {
 	public abstract class AnalysisTestBase
 	{
-        private IPlatform platform;
+        protected IPlatform platform;
         private ServiceContainer sc;
 
         public AnalysisTestBase()

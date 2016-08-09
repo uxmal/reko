@@ -160,6 +160,7 @@ namespace Reko.UnitTests.Analysis
 		public void VpGlobalHandle()
 		{
             Given_FakeWin32Platform(mr);
+            this.platform.Stub(p => p.LookupGlobalByName(null, null)).IgnoreArguments().Return(null);
             mr.ReplayAll();
 			RunFileTest32("Fragments/import32/GlobalHandle.asm", "Analysis/VpGlobalHandle.txt");
 		}

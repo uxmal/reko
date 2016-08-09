@@ -32,6 +32,7 @@ namespace Reko.Core
     {
         ExternalProcedure ResolveProcedure(string moduleName, string importName, IPlatform platform);
         ExternalProcedure ResolveProcedure(string moduleName, int ordinal, IPlatform platform);
+        Identifier ResolveGlobal(string moduleName, string globalName, IPlatform platform);
         ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c);
     }
 
@@ -104,6 +105,24 @@ namespace Reko.Core
             return platform.LookupProcedureByOrdinal(moduleName, ordinal);
         }
 
+        public Identifier ResolveGlobal(string moduleName, string globalName, IPlatform platform)
+        {
+            foreach (var program in project.Programs)
+            {
+                ModuleDescriptor mod;
+                if (!program.EnvironmentMetadata.Modules.TryGetValue(moduleName, out mod))
+                    continue;
+
+                DataType dt;
+                if (mod.Globals.TryGetValue(globalName, out dt))
+                {
+                    return new Identifier(globalName, dt, new MemoryStorage());
+                }
+            }
+
+            return platform.LookupGlobalByName(moduleName, globalName);
+        }
+
         public ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c)
         {
             var addrInstruction = program.SegmentMap.MapLinearAddressToAddress(stm.LinearAddress);
@@ -118,5 +137,7 @@ namespace Reko.Core
                 new AddressContext(program, addrInstruction, this.eventListener));
             return new ProcedureConstant(program.Platform.PointerType, extProc);
         }
+
+       
     }
 }
