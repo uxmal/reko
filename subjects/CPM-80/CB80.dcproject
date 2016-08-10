@@ -3,12 +3,12 @@
   <arch>z80</arch>
   <platform>cpm</platform>
   <input>
-    <filename>D:\dev\uxmal\reko\master\subjects\CPM-80\CB80.COM</filename>
-    <disassembly>D:\dev\uxmal\reko\master\subjects\CPM-80\CB80.asm</disassembly>
-    <intermediate-code>D:\dev\uxmal\reko\master\subjects\CPM-80\CB80.dis</intermediate-code>
-    <output>D:\dev\uxmal\reko\master\subjects\CPM-80\CB80.c</output>
-    <types-file>D:\dev\uxmal\reko\master\subjects\CPM-80\CB80.h</types-file>
-    <global-vars>D:\dev\uxmal\reko\master\subjects\CPM-80\CB80.globals.c</global-vars>
+    <filename>CB80.COM</filename>
+    <disassembly>CB80.asm</disassembly>
+    <intermediate-code>CB80.dis</intermediate-code>
+    <output>CB80.c</output>
+    <types-file>CB80.h</types-file>
+    <global-vars>CB80.globals.c</global-vars>
     <user>
       <address>0100</address>
       <processor name="z80" />
