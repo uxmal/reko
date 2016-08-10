@@ -186,14 +186,11 @@ namespace Reko.UnitTests.Typing
 
 
         [Test]
-        //[Ignore("Frame pointers require escape and alias analysis.")]
         public void TycoFramePointer()
         {
             ProgramBuilder mock = new ProgramBuilder();
             mock.Add(new FramePointerFragment(mock.Program.TypeFactory));
             RunTest(mock, "Typing/TycoFramePointer.txt");
-            throw new NotImplementedException();
         }
-
     }
 }
