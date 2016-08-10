@@ -246,36 +246,10 @@ namespace Reko.Core.Types
 
 			TypeVariable tA = a as TypeVariable;
 			TypeVariable tB = b as TypeVariable;
-			if (tA != null && tB != null)
-			{
-				return UnifyTypeVariables(tA, tB);
-			}
-            //if (tA != null)
-            //{
-            //    if (tA.Class != null)
-            //    {
-            //        tA.Class.DataType = UnifyInternal(tA.Class.DataType, b);
-            //        return tA;
-            //    }
-            //    else
-            //    {
-            //        tA.DataType = UnifyInternal(tA.DataType, b);
-            //        return tA;
-            //    }
-            //}
-            //if (tB != null)
-            //{
-            //    if (tB.Class != null)
-            //    {
-            //        tB.Class.DataType = UnifyInternal(a, tB.Class.DataType);
-            //        return tB;
-            //    }
-            //    else
-            //    {
-            //        tB.DataType = UnifyInternal(a, tB.DataType);
-            //        return tB;
-            //    }
-            //}
+            if (tA != null && tB != null)
+            {
+                return UnifyTypeVariables(tA, tB);
+            }
 
             TypeReference trA = a as TypeReference;
             TypeReference trB = b as TypeReference;

@@ -9,12 +9,6 @@ l1:
 proc1_exit:
 
 // Equivalence classes ////////////
-Eq_2: (ptr (struct "strInner" 0008))
-	T_2 (in eax : word32)
-	T_6 (in Mem0[ptrArg04 + 0x00000000:word32] : word32)
-Eq_7: real32
-	T_7 (in ecx : word32)
-	T_10 (in Mem0[eax + 0x00000000:word32] : word32)
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1

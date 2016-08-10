@@ -153,7 +153,7 @@ namespace Reko.Typing
             }
             var tvElement = ArrayField(null, arr, arr.DataType.Size, offset, stride, 0, acc.TypeVariable);
 
-  //          MeetDataType(acc.Array, factory.CreatePointer(tvElement, acc.Array.DataType.Size));
+            MeetDataType(acc.Array, factory.CreatePointer(tvElement, acc.Array.DataType.Size));
             acc.Array.Accept(this, acc.Array.TypeVariable);
             acc.Index.Accept(this, acc.Index.TypeVariable);
             return false;
