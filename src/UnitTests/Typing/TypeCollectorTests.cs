@@ -27,6 +27,8 @@ using System.Text;
 using Reko.Core;
 using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
+using Reko.Core.Expressions;
+using Reko.UnitTests.Fragments;
 
 namespace Reko.UnitTests.Typing
 {
@@ -131,6 +133,64 @@ namespace Reko.UnitTests.Typing
                 m.Declare(eax, m.Load(PrimitiveType.Word32, v));
                 m.Declare(ecx, m.Load(PrimitiveType.Word32, eax));
             }, "Typing/TycoNestedStructsPtr.txt");
+        }
+
+        [Test]
+        public void TycoAddressOf()
+        {
+            RunTest(m =>
+            {
+                var foo = new Identifier("foo", new UnknownType(), new MemoryStorage());
+                var r1 = m.Reg32("r1", 1);
+                m.Assign(r1, m.AddrOf(foo));
+                m.Store(r1, m.Word16(0x1234));
+                m.Store(m.IAdd(r1, 4), m.Byte(0x0A));
+                m.Return();
+            }, "Typing/TycoAddressOf.txt");
+        }
+
+        [Test]
+        public void TycoTypedAddressOf()
+        {
+            RunTest(m =>
+            {
+                var str = new TypeReference("foo", new StructureType("foo", 0)
+                {
+                    Fields = {
+                        { 0, PrimitiveType.Int16, "word00" },
+                        { 4, PrimitiveType.Byte, "byte004"}
+                    }
+                });
+                var foo = new Identifier("foo", str, new MemoryStorage());
+                var r1 = m.Reg32("r1", 1);
+                m.Assign(r1, m.AddrOf(foo));
+                m.Store(r1, m.Word16(0x1234));
+                m.Store(m.IAdd(r1, 4), m.Byte(0x0A));
+                m.Return();
+            }, "Typing/TycoTypedAddressOf.txt");
+        }
+
+        [Test]
+        public void TycoArrayConstantPointers()
+        {
+            ProgramBuilder pp = new ProgramBuilder();
+            pp.Add("Fn", m =>
+            {
+                Identifier a = m.Local32("a");
+                Identifier i = m.Local32("i");
+                m.Assign(a, 0x00123456);		// array pointer
+                m.Store(m.IAdd(a, m.IMul(i, 8)), m.Int32(42));
+            });
+            RunTest(pp.BuildProgram(), "Typing/TycoArrayConstantPointers.txt");
+        }
+
+
+        [Test]
+        public void TycoFramePointer()
+        {
+            ProgramBuilder mock = new ProgramBuilder();
+            mock.Add(new FramePointerFragment(mock.Program.TypeFactory));
+            RunTest(mock, "Typing/TycoFramePointer.txt");
         }
     }
 }

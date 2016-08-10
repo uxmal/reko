@@ -44,7 +44,7 @@ namespace Reko.Core.Expressions
 
         public static Identifier CreateTemporary(string name, DataType dt)
         {
-            var tmp = new TemporaryStorage(name, 0, null);
+            var tmp = new TemporaryStorage(name, 0, dt);
             return new Identifier(name, dt, tmp);
         }
 

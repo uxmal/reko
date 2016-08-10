@@ -24,8 +24,6 @@ Eq_50: (fn void ((ptr cdecl_class), int32))
 	T_50 (in Mem0[c + 0x00000000:word32] + 0x00000004 : word32)
 Eq_51: (fn void ((ptr Eq_45), int32))
 	T_51 (in Mem0[Mem0[c + 0x00000000:word32] + 0x00000004:word32] : word32)
-Eq_54: (union "Eq_54" (cdecl_class_ptr u0) (Eq_55 u1))
-	T_54 (in 0x00403018 : ptr32)
 Eq_55: (union "Eq_55" ((ptr cdecl_class) u0) (cdecl_class_ptr u1))
 	T_55 (in Mem0[0x00403018:word32] : word32)
 	T_63 (in Mem0[0x00403018:word32] : word32)
@@ -39,10 +37,6 @@ Eq_60: (fn void ((ptr cdecl_class)))
 	T_60 (in Mem0[Mem0[0x00403018:word32] + 0x00000000:word32] + 0x00000000 : word32)
 Eq_61: (fn void (Eq_55))
 	T_61 (in Mem0[Mem0[Mem0[0x00403018:word32] + 0x00000000:word32] + 0x00000000:word32] : word32)
-Eq_62: (union "Eq_62" (cdecl_class_ptr u0) (Eq_55 u1))
-	T_62 (in 0x00403018 : word32)
-Eq_65: (union "Eq_65" (cdecl_class_ptr u0) (Eq_55 u1))
-	T_65 (in 0x00403018 : ptr32)
 Eq_68: cdecl_class_vtbl
 	T_68 (in Mem0[0x00403018:word32] + 0x00000000 : word32)
 Eq_69: cdecl_class_vtbl
@@ -51,8 +45,6 @@ Eq_71: (fn void ((ptr cdecl_class), int32))
 	T_71 (in Mem0[Mem0[0x00403018:word32] + 0x00000000:word32] + 0x00000004 : word32)
 Eq_72: (union "Eq_72" ((fn void ((ptr cdecl_class), int32)) u0) ((fn void (Eq_55, word32, real32)) u1))
 	T_72 (in Mem0[Mem0[Mem0[0x00403018:word32] + 0x00000000:word32] + 0x00000004:word32] : word32)
-Eq_73: (union "Eq_73" (cdecl_class_ptr u0) (Eq_55 u1))
-	T_73 (in 0x00403018 : word32)
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
@@ -97,7 +89,7 @@ T_10: (in arg4 : real32)
 T_11: (in argv : (ptr (ptr char)))
   Class: Eq_11
   DataType: (ptr (ptr char))
-  OrigDataType: (ptr (union ((ptr char) u0) ((struct (0 (ptr char) ptr0000)) u1)))
+  OrigDataType: (ptr (struct (0 T_14 t0000)))
 T_12: (in 0x00000000 : word32)
   Class: Eq_12
   DataType: word32
@@ -268,8 +260,8 @@ T_53: (in c->vtbl->method04(c, 0x000003E8) : void)
   OrigDataType: void
 T_54: (in 0x00403018 : ptr32)
   Class: Eq_54
-  DataType: (ptr Eq_54)
-  OrigDataType: (ptr (union ((struct (0 Eq_55 t0000)) u0) (cdecl_class_ptr u1)))
+  DataType: (ptr Eq_55)
+  OrigDataType: (ptr (struct (0 T_55 t0000)))
 T_55: (in Mem0[0x00403018:word32] : word32)
   Class: Eq_55
   DataType: Eq_55
@@ -300,8 +292,8 @@ T_61: (in Mem0[Mem0[Mem0[0x00403018:word32] + 0x00000000:word32] + 0x00000000:wo
   OrigDataType: (ptr (fn T_64 (T_63)))
 T_62: (in 0x00403018 : word32)
   Class: Eq_62
-  DataType: (ptr Eq_62)
-  OrigDataType: (ptr (union ((struct (0 Eq_55 t0000)) u0) (cdecl_class_ptr u1)))
+  DataType: (ptr Eq_55)
+  OrigDataType: (ptr (struct (0 T_63 t0000)))
 T_63: (in Mem0[0x00403018:word32] : word32)
   Class: Eq_55
   DataType: Eq_55
@@ -312,12 +304,12 @@ T_64: (in (**globals->gbl_c)(globals->gbl_c) : void)
   OrigDataType: void
 T_65: (in 0x00403018 : ptr32)
   Class: Eq_65
-  DataType: (ptr Eq_65)
-  OrigDataType: (ptr (union ((struct (0 Eq_55 t0000)) u0) (cdecl_class_ptr u1)))
+  DataType: (ptr Eq_55)
+  OrigDataType: (ptr (struct (0 T_66 t0000)))
 T_66: (in Mem0[0x00403018:word32] : word32)
   Class: Eq_55
   DataType: Eq_55
-  OrigDataType: (union (cdecl_class_ptr u1))
+  OrigDataType: cdecl_class_ptr
 T_67: (in 0x00000000 : word32)
   Class: Eq_67
   DataType: word32
@@ -344,8 +336,8 @@ T_72: (in Mem0[Mem0[Mem0[0x00403018:word32] + 0x00000000:word32] + 0x00000004:wo
   OrigDataType: (ptr (union ((fn void ((ptr cdecl_class), int32)) u0) ((fn void (Eq_55, word32, real32)) u1)))
 T_73: (in 0x00403018 : word32)
   Class: Eq_73
-  DataType: (ptr Eq_73)
-  OrigDataType: (ptr (union ((struct (0 Eq_55 t0000)) u0) (cdecl_class_ptr u1)))
+  DataType: (ptr Eq_55)
+  OrigDataType: (ptr (struct (0 T_74 t0000)))
 T_74: (in Mem0[0x00403018:word32] : word32)
   Class: Eq_55
   DataType: Eq_55
@@ -398,11 +390,6 @@ typedef void (Eq_50)(cdecl_class * ptrArg04, int32 dwArg08);
 
 typedef void (Eq_51)(cdecl_class *, int32);
 
-typedef union Eq_54 {
-	cdecl_class_ptr u0;
-	Eq_55 u1;
-} Eq_54;
-
 typedef union Eq_55 {
 	cdecl_class * u0;
 	cdecl_class_ptr u1;
@@ -416,16 +403,6 @@ typedef void (Eq_60)(cdecl_class * ptrArg04);
 
 typedef void (Eq_61)(Eq_55);
 
-typedef union Eq_62 {
-	cdecl_class_ptr u0;
-	Eq_55 u1;
-} Eq_62;
-
-typedef union Eq_65 {
-	cdecl_class_ptr u0;
-	Eq_55 u1;
-} Eq_65;
-
 typedef cdecl_class_vtbl Eq_68;
 
 typedef cdecl_class_vtbl Eq_69;
@@ -436,9 +413,4 @@ typedef union Eq_72 {
 	void u0(cdecl_class * ptrArg04, int32 dwArg08);
 	void u1(Eq_55, word32, real32);
 } Eq_72;
-
-typedef union Eq_73 {
-	cdecl_class_ptr u0;
-	Eq_55 u1;
-} Eq_73;
 

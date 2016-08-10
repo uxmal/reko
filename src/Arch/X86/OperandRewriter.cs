@@ -91,11 +91,14 @@ namespace Reko.Arch.X86
         {
             var exg = ImportedGlobal(instr.Address, mem.Width, mem);
             if (exg != null)
-                return exg;
+            {
+                return new UnaryExpression(Operator.AddrOf, dt, exg);
+            }
             var exp = ImportedProcedure(instr.Address, mem.Width, mem);
             if (exp != null)
+            {
                 return new ProcedureConstant(arch.PointerType, exp);
-
+            }
             Expression expr = EffectiveAddressExpression(instr, mem, state);
             if (IsSegmentedAccessRequired ||
                 (mem.DefaultSegment != Registers.ds && mem.DefaultSegment != Registers.ss))

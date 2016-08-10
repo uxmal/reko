@@ -23,7 +23,7 @@ char g_str1000216C[] = ":unused";
 char g_str10002174[] = "pySample";
 ui32 g_dw10003000 = 0xBB40E64E;
 ui32 g_dw10003004 = 0x44BF19B1;
-Eq_160 g_t10003008 = ;
+Eq_163 g_t10003008 = ;
 PyMethodDef g_methods[5] = 
 	{
 		
@@ -62,10 +62,10 @@ PyMethodDef g_methods[5] =
 			null,
 		},
 	};
-int32 g_dw10003070 = 0;
+Eq_113 g_t10003070 = ;
 word32 g_dw100033A4 = 0x00000000;
 word32 g_dw100033A8 = 0x00000000;
-Eq_131 g_t100033AC = 0;
+Eq_134 g_t100033AC = 0;
 word32 g_dw100033B0 = 0x00000000;
 word32 g_dw100033B4 = 0x00000000;
 <anonymous> * g_ptr100033B8 = null;
