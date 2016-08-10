@@ -5,12 +5,24 @@
 # * having a dcproject file associated with them or
 # * a subject.cmd file containing reko command lines to execute.
 
+from optparse import OptionParser
 import os
 import os.path
 import subprocess
 import sys
 
-reko_cmdline =  os.path.abspath("../src/Drivers/CmdLine/bin/Debug/decompile.exe")
+parser = OptionParser()
+parser.add_option("-c", "--configuration", dest="configuration",
+                  help="define configuration (Debug, Release, etc.)",
+                  default="Debug", metavar="CONFIGURATION")
+parser.add_option("-o", "--check-output", dest="check_output",
+                  action="store_true",
+                  help="check output files", default=False)
+(options, args) = parser.parse_args()
+
+reko_cmdline_dir = os.path.abspath("../src/Drivers/CmdLine")
+reko_cmdline = os.path.join(
+    reko_cmdline_dir, "bin", options.configuration, "decompile.exe")
 output_extensions = [".asm", ".c", ".dis", ".h"]
 
 # Remove output files
@@ -72,5 +84,21 @@ def execute_command(exe_and_args, pname):
         print("*** " + pname)
         print(out)
 
+def check_output_files():
+    proc = subprocess.Popen(
+        ["git", "status", "."],
+        stdout=subprocess.PIPE,
+        universal_newlines=True)
+    out = proc.communicate()[0]
+    print(out)
+    if "working directory clean" in out.lower():
+        print("Output files are the same as in repository")
+    else:
+        print("Output files differ from repository")
+        exit(1)
+
 for root, subdirs, files in os.walk("."):
     run_test(root, files)
+
+if options.check_output:
+    check_output_files()
