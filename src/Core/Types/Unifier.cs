@@ -250,32 +250,32 @@ namespace Reko.Core.Types
 			{
 				return UnifyTypeVariables(tA, tB);
 			}
-            if (tA != null)
-            {
-                if (tA.Class != null)
-                {
-                    tA.Class.DataType = UnifyInternal(tA.Class.DataType, b);
-                    return tA;
-                }
-                else
-                {
-                    tA.DataType = UnifyInternal(tA.DataType, b);
-                    return tA;
-                }
-            }
-            if (tB != null)
-            {
-                if (tB.Class != null)
-                {
-                    tB.Class.DataType = UnifyInternal(a, tB.Class.DataType);
-                    return tB;
-                }
-                else
-                {
-                    tB.DataType = UnifyInternal(a, tB.DataType);
-                    return tB;
-                }
-            }
+            //if (tA != null)
+            //{
+            //    if (tA.Class != null)
+            //    {
+            //        tA.Class.DataType = UnifyInternal(tA.Class.DataType, b);
+            //        return tA;
+            //    }
+            //    else
+            //    {
+            //        tA.DataType = UnifyInternal(tA.DataType, b);
+            //        return tA;
+            //    }
+            //}
+            //if (tB != null)
+            //{
+            //    if (tB.Class != null)
+            //    {
+            //        tB.Class.DataType = UnifyInternal(a, tB.Class.DataType);
+            //        return tB;
+            //    }
+            //    else
+            //    {
+            //        tB.DataType = UnifyInternal(a, tB.DataType);
+            //        return tB;
+            //    }
+            //}
 
             TypeReference trA = a as TypeReference;
             TypeReference trB = b as TypeReference;

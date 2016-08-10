@@ -741,7 +741,7 @@ namespace Reko.Typing
         {
             if (unary.Operator == Operator.AddrOf)
             {
-                MeetDataType(unary, factory.CreatePointer(unary.Expression.TypeVariable, unary.DataType.Size));
+                MeetDataType(unary, factory.CreatePointer(unary.Expression.DataType, unary.DataType.Size));
             }
             unary.Expression.Accept(this, unary.Expression.TypeVariable);
             return false;

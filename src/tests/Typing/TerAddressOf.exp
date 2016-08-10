@@ -19,7 +19,7 @@ void AddressOf()
 AddressOf_entry:
 	// succ:  l1
 l1:
-	struct Eq_3 * r1 = &foo
+	struct Eq_2 * r1 = &foo
 	r1->w0000 = 0x1234
 	r1->b0004 = 0x0A
 	return
@@ -29,16 +29,19 @@ AddressOf_exit:
 // Equivalence classes ////////////
 Eq_1: (struct "Globals")
 	globals_t (in globals : (ptr (struct "Globals")))
-Eq_3: (struct "Eq_3" (0 word16 w0000) (4 byte b0004))
+Eq_2: (struct "Eq_2" (0 word16 w0000) (4 byte b0004))
+	T_2 (in r1 : (ptr Eq_2))
+	T_4 (in &foo : ptr32)
+Eq_3: <unknown>
 	T_3 (in foo : <unknown>)
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
   DataType: (ptr Eq_1)
   OrigDataType: (ptr (struct "Globals"))
-T_2: (in r1 : (ptr Eq_3))
+T_2: (in r1 : (ptr Eq_2))
   Class: Eq_2
-  DataType: (ptr Eq_3)
+  DataType: (ptr Eq_2)
   OrigDataType: (ptr (struct (0 T_8 t0000) (4 T_12 t0004)))
 T_3: (in foo : <unknown>)
   Class: Eq_3
@@ -46,8 +49,8 @@ T_3: (in foo : <unknown>)
   OrigDataType: <unknown>
 T_4: (in &foo : ptr32)
   Class: Eq_2
-  DataType: (ptr Eq_3)
-  OrigDataType: (ptr T_3)
+  DataType: (ptr Eq_2)
+  OrigDataType: (ptr <unknown>)
 T_5: (in 0x1234 : word16)
   Class: Eq_5
   DataType: word16

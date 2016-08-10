@@ -23,8 +23,8 @@ T_2: (in foo : foo)
   OrigDataType: foo
 T_3: (in &foo : ptr32)
   Class: Eq_3
-  DataType: (ptr T_2)
-  OrigDataType: (ptr T_2)
+  DataType: (ptr foo)
+  OrigDataType: (ptr foo)
 T_4: (in r1 : word32)
   Class: Eq_3
   DataType: (ptr (struct (0 T_8 t0000) (4 T_12 t0004)))
