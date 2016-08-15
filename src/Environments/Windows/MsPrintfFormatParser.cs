@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,7 @@ using System.Text;
 
 namespace Reko.Environments.Windows
 {
-    public class MsPrintfFormatParser
+    public class MsPrintfFormatParser : IVarargsFormatParser
     {
         private int i;
         private string format;
