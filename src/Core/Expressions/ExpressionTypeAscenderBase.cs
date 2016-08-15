@@ -229,7 +229,7 @@ namespace Reko.Core.Expressions
 
         public DataType VisitConstant(Constant c)
         {
-            return RecordDataType(GlobalType(c) ?? c.DataType, c);
+            return RecordDataType(c.DataType, c);
         }
 
         private DataType GlobalType(Constant c)

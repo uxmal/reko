@@ -171,7 +171,7 @@ namespace Reko.UnitTests.Typing
         public void ExaUsrGlobals_Ptr32()
         {
             Given_GlobalVariable(
-                Address32.Ptr32(0x10001200), PrimitiveType.Real32);
+                Address.Ptr32(0x10001200), PrimitiveType.Real32);
             RunTest(Constant.Create(PrimitiveType.Pointer32, 0x10001200));
         }
 
@@ -179,7 +179,7 @@ namespace Reko.UnitTests.Typing
         public void ExaUsrGlobals_Real32()
         {
             Given_GlobalVariable(
-                Address32.Ptr32(0x10001200), PrimitiveType.Real32);
+                Address.Ptr32(0x10001200), PrimitiveType.Real32);
             RunTest(Constant.Create(PrimitiveType.Real32, 0x10001200));
         }
     }
