@@ -153,7 +153,9 @@
       <ptr><prim domain="Character" size="1" /></ptr>
       <stack size="4"/>
     </arg>
-    <!-- TODO: what about varargs? -->
+    <arg name="...">
+      <stack />
+    </arg>
     </signature>
   </procedure>
   <procedure name="sprintf">
