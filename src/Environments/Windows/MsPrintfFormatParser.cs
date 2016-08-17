@@ -34,15 +34,23 @@ namespace Reko.Environments.Windows
         private bool wideChars;
         private int wordSize;
         private int longSize;
+        private int doubleSize;
         private int pointerSize;
 
-        public MsPrintfFormatParser(string format, bool wideChars, int wordSize, int longSize, int pointerSize)
+        public MsPrintfFormatParser(
+            string format,
+            bool wideChars,
+            int wordSize,
+            int longSize,
+            int doubleSize,
+            int pointerSize)
         {
             this.ArgumentTypes = new List<DataType>();
             this.wideChars = wideChars;
             this.format = format;
             this.wordSize = wordSize;
             this.longSize = longSize;
+            this.doubleSize = doubleSize;
             this.pointerSize = pointerSize;
         }
 
@@ -140,6 +148,7 @@ namespace Reko.Environments.Windows
             case 'F':
             case 'g':
             case 'G':
+                byteSize = this.doubleSize;
                 domain = Domain.Real;
                 break;
             case 'p':

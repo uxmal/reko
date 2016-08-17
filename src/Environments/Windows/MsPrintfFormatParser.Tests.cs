@@ -35,7 +35,7 @@ namespace Reko.Environments.Windows
 
         private void ParseChar32(string formatString)
         {
-            this.parser = new MsPrintfFormatParser(formatString, false, 4, 4, 4);
+            this.parser = new MsPrintfFormatParser(formatString, false, 4, 4, 4, 4);
             parser.Parse();
         }
 

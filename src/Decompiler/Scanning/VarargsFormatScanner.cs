@@ -157,6 +157,7 @@ namespace Reko.Scanning
                 false,
                 platform.Architecture.WordWidth.Size,
                 platform.GetByteSizeFromCBasicType(CBasicType.Long),
+                platform.GetByteSizeFromCBasicType(CBasicType.Double),
                 platform.PointerType.Size);
             varargsParser.Parse();
             return varargsParser.ArgumentTypes;
