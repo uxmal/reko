@@ -1059,7 +1059,7 @@ namespace Reko.Analysis
             ProcedureBase callee = GetCalleeProcedure(ci);
             if (callee != null && callee.Signature != null && callee.Signature.ParametersValid)
             {
-                var ab = CreateApplicationBuilder(ci.Callee.DataType, callee, ci.CallSite);
+                var ab = CreateApplicationBuilder(ci.Callee.DataType, callee, ci);
                 var instr = ab.CreateInstruction(callee.Signature, callee.Characteristics);
                 return instr.Accept(this);
             }
@@ -1076,10 +1076,10 @@ namespace Reko.Analysis
             return ci;
         }
 
-        private ApplicationBuilder CreateApplicationBuilder(DataType dt, ProcedureBase eCallee, CallSite site)
+        private ApplicationBuilder CreateApplicationBuilder(DataType dt, ProcedureBase eCallee, CallInstruction call)
         {
             var pc = new ProcedureConstant(dt, eCallee);
-            var ab = new FrameApplicationBuilder(arch, ssa.Procedure.Frame, site, pc, false);
+            var ab = new FrameApplicationBuilder(arch, ssa.Procedure.Frame, call.CallSite, pc, false);
             return ab;
         }
 

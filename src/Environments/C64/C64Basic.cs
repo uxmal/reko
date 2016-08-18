@@ -141,7 +141,7 @@ namespace Reko.Environments.C64
             throw new NotImplementedException();
         }
 
-        public override Expression CreateStackAccess(Func<RegisterStorage,Identifier> bindRegister, int cbOffset, DataType dataType)
+        public override Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }

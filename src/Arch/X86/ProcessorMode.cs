@@ -68,10 +68,10 @@ namespace Reko.Arch.X86
 
         public abstract Address CreateSegmentedAddress(ushort seg, uint offset);
 
-        public virtual Expression CreateStackAccess(Func<RegisterStorage,Identifier> bindRegister, int offset, DataType dataType)
+        public virtual Expression CreateStackAccess(IStorageBinder binder, int offset, DataType dataType)
         {
-            var sp = bindRegister(Registers.sp);
-            var ss = bindRegister(Registers.ss);
+            var sp = binder.EnsureRegister(Registers.sp);
+            var ss = binder.EnsureRegister(Registers.ss);
             return SegmentedAccess.Create(ss, sp, offset, dataType);
         }
 
@@ -257,9 +257,9 @@ namespace Reko.Arch.X86
             return null;
         }
 
-        public override Expression CreateStackAccess(Func<RegisterStorage,Identifier> bindRegister, int offset, DataType dataType)
+        public override Expression CreateStackAccess(IStorageBinder binder, int offset, DataType dataType)
         {
-            var esp = bindRegister(Registers.esp);
+            var esp = binder.EnsureRegister(Registers.esp);
             return MemoryAccess.Create(esp, offset, dataType);
         }
 
@@ -317,9 +317,9 @@ namespace Reko.Arch.X86
             return null;
         }
 
-        public override Expression CreateStackAccess(Func<RegisterStorage,Identifier> bindRegister, int offset, DataType dataType)
+        public override Expression CreateStackAccess(IStorageBinder binder, int offset, DataType dataType)
         {
-            var rsp = bindRegister(Registers.rsp);
+            var rsp = binder.EnsureRegister(Registers.rsp);
             return MemoryAccess.Create(rsp, offset, dataType);
         }
 

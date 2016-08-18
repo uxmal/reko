@@ -100,9 +100,9 @@ namespace Reko.UnitTests.Mocks
             throw new NotImplementedException();
         }
 
-        public Expression CreateStackAccess(Func<RegisterStorage,Identifier> bindRegister, int offset, DataType dataType)
+        public Expression CreateStackAccess(IStorageBinder binder, int offset, DataType dataType)
         {
-            var sp = bindRegister(StackRegister);
+            var sp = binder.EnsureRegister(StackRegister);
             return MemoryAccess.Create(sp, offset, dataType);
         }
 

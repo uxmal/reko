@@ -157,9 +157,9 @@ namespace Reko.Arch.X86
             return mode.CreateInstructionScanner(map, rdr, knownAddresses, flags);
         }
 
-        public override Expression CreateStackAccess(Func<RegisterStorage,Identifier> bindRegister, int offset, DataType dataType)
+        public override Expression CreateStackAccess(IStorageBinder binder, int offset, DataType dataType)
         {
-            return mode.CreateStackAccess(bindRegister, offset, dataType);
+            return mode.CreateStackAccess(binder, offset, dataType);
         }
 
         public override Address MakeAddressFromConstant(Constant c)

@@ -137,7 +137,7 @@ namespace Reko.Core
         bool TryGetRegister(string name, out RegisterStorage reg); // Attempts to find a register with name <paramref>name</paramref>
         FlagGroupStorage GetFlagGroup(uint grf);		    // Returns flag group matching the bitflags.
 		FlagGroupStorage GetFlagGroup(string name);
-        Expression CreateStackAccess(Func<RegisterStorage, Identifier> bindRegister, int cbOffset, DataType dataType);
+        Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType);
         Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state);
         Address MakeSegmentedAddress(Constant seg, Constant offset);
 
@@ -223,9 +223,9 @@ namespace Reko.Core
         /// <param name="cbOffset"></param>
         /// <param name="dataType"></param>
         /// <returns></returns>
-        public virtual Expression CreateStackAccess(Func<RegisterStorage, Identifier> bindRegister, int cbOffset, DataType dataType)
+        public virtual Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
         {
-            var sp = bindRegister(StackRegister);
+            var sp = binder.EnsureRegister(StackRegister);
             return MemoryAccess.Create(sp, cbOffset, dataType);
         }
 

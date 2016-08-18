@@ -34,7 +34,7 @@ namespace Reko.Core
                 var actualArg = formalArg.Storage.Accept(this);
                 if (formalArg.Storage is OutArgumentStorage)
                 {
-                    actuals.Add(new OutArgument(frame.FramePointer.DataType, actualArg));
+                    actuals.Add(new OutArgument(base.arch.FramePointerType, actualArg));
                 }
                 else
                 {

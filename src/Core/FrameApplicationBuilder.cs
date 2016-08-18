@@ -31,7 +31,7 @@ namespace Reko.Core
     public class FrameApplicationBuilder : ApplicationBuilder, StorageVisitor<Expression>
     {
         protected IProcessorArchitecture arch;
-        protected Frame frame;
+        protected IStorageBinder binder;
         protected bool ensureVariables;
 
         /// <summary>
@@ -46,14 +46,14 @@ namespace Reko.Core
         /// <param name="ensureVariables">If true, creates variables in the <paramref name="frame"/> if needed.</param>
         public FrameApplicationBuilder(
             IProcessorArchitecture arch,
-            Frame frame,
+            IStorageBinder binder,
             CallSite site,
             Expression callee,
             bool ensureVariables) : base(site, callee)
         {
             this.arch = arch;
             this.site = site;
-            this.frame = frame;
+            this.binder = binder;
             this.callee = callee;
             this.ensureVariables = ensureVariables;
         }
@@ -78,14 +78,14 @@ namespace Reko.Core
         public override OutArgument BindOutArg(Identifier id)
         {
             var actualArg = id.Storage.Accept(this);
-            return new OutArgument(frame.FramePointer.DataType, actualArg);
+            return new OutArgument(arch.FramePointerType, actualArg);
         }
 
         #region StorageVisitor<Expression> Members
 
         public Expression VisitFlagGroupStorage(FlagGroupStorage grf)
         {
-            return frame.EnsureFlagGroup(grf.FlagRegister, grf.FlagGroupBits, grf.Name, grf.DataType);
+            return binder.EnsureFlagGroup(grf.FlagRegister, grf.FlagGroupBits, grf.Name, grf.DataType);
         }
 
         public Expression VisitFlagRegister(FlagRegister freg)
@@ -95,7 +95,7 @@ namespace Reko.Core
 
         public Expression VisitFpuStackStorage(FpuStackStorage fpu)
         {
-            return frame.EnsureFpuStackVariable(fpu.FpuStackOffset - site.FpuStackDepthBefore, fpu.DataType);
+            return binder.EnsureFpuStackVariable(fpu.FpuStackOffset - site.FpuStackDepthBefore, fpu.DataType);
         }
 
         public Expression VisitMemoryStorage(MemoryStorage global)
@@ -115,7 +115,7 @@ namespace Reko.Core
 
         public Expression VisitRegisterStorage(RegisterStorage reg)
         {
-            return frame.EnsureRegister(reg);
+            return binder.EnsureRegister(reg);
         }
 
         public Expression VisitSequenceStorage(SequenceStorage seq)
@@ -125,19 +125,19 @@ namespace Reko.Core
             var idHead = h as Identifier;
             var idTail = t as Identifier;
             if (idHead != null && idTail != null)
-                return frame.EnsureSequence(idHead.Storage, idTail.Storage, PrimitiveType.CreateWord(idHead.DataType.Size + idTail.DataType.Size));
+                return binder.EnsureSequence(idHead.Storage, idTail.Storage, PrimitiveType.CreateWord(idHead.DataType.Size + idTail.DataType.Size));
             throw new NotImplementedException("Handle case when stack parameter is passed.");
         }
 
         public Expression VisitStackArgumentStorage(StackArgumentStorage stack)
         {
             if (ensureVariables)
-                return frame.EnsureStackVariable(
+                return binder.EnsureStackVariable(
                     stack.StackOffset - site.StackDepthOnEntry,
                     stack.DataType);
             else
                 return arch.CreateStackAccess(
-                    r => frame.EnsureIdentifier(r), 
+                    binder, 
                     stack.StackOffset - site.SizeOfReturnAddressOnStack,
                     stack.DataType);
         }
