@@ -30,6 +30,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Environments.Trs80
 {
+    // http://www.classiccmp.org/cpmarchives/trs80/mirrors/www.discover-net.net/~dmkeil/coco/cocotech.htm#Technical-DMK-disks
     public class DmkLoader : ImageLoader
     {
         private int TrackLength;
