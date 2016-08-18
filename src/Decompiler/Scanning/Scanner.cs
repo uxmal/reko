@@ -559,6 +559,7 @@ namespace Reko.Scanning
             var block = EnqueueJumpTarget(addr, addr, proc, st);
             proc.ControlGraph.AddEdge(proc.EntryBlock, block);
             ProcessQueue();
+
             queue = oldQueue;
 
             InjectProcedureEntryInstructions(addr, proc);

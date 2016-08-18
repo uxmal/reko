@@ -3,6 +3,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -38,16 +39,20 @@ namespace Reko.Scanning
         private Program program;
         private readonly Address bad;
         private IRewriterHost host;
+        private DecompilerEventListener eventListener;
         private IDictionary<Address, int> possibleCallDestinationTallies;
         private IDictionary<Address, int> possiblePointerTargetTallies;
+        private SortedList<Address, MachineInstruction> instructions;
 
-        public ShingledScanner(Program program, IRewriterHost host)
+        public ShingledScanner(Program program, IRewriterHost host, DecompilerEventListener eventListener)
         {
             this.program = program;
             this.host = host;
-            this.bad = program.Platform.MakeAddressFromLinear(~0u);
+            this.eventListener = eventListener;
+            this.bad = program.Platform.MakeAddressFromLinear(~0ul);
             this.possibleCallDestinationTallies = new Dictionary<Address,int>();
             this.possiblePointerTargetTallies = new Dictionary<Address, int>();
+            this.instructions = new SortedList<Address, MachineInstruction>();
         }
 
         /// <summary>
@@ -55,27 +60,34 @@ namespace Reko.Scanning
         /// returning a list of addresses to probable functions.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Address> Scan()
+        public IEnumerable<KeyValuePair<Address,int>> Scan()
         {
-            try {
-                Dictionary<ImageSegment, byte[]> map = ScanExecutableSegments();
+            try
+            {
+                var map = ScanExecutableSegments();
                 return SpeculateCallDests(map);
             }
             catch (Exception ex)
             {
                 Debug.Print("Error: {0}", ex.Message);
-                return new Address[0];
+                return new KeyValuePair<Address, int>[0];
             }
         }
+
 
         public Dictionary<ImageSegment, byte[]> ScanExecutableSegments()
         {
             var map = new Dictionary<ImageSegment, byte[]>();
+            var workToDo = program.SegmentMap.Segments.Values
+                .Where(s => s.IsExecutable)
+                .Select(s => s.Size)
+                .Aggregate(0ul, (s, n) => s + n);
+                
             foreach (var segment in program.SegmentMap.Segments.Values
-                .Where(s => (s.Access & AccessMode.Execute) != 0))
+                .Where(s => s.IsExecutable))
             {
-                var y = ScanSegment(segment);
-                map.Add(segment, y);
+                var sc = ScanSegment(segment, workToDo);
+                map.Add(segment, sc.CodeFlags);
             }
             return map;
         }
@@ -93,7 +105,7 @@ namespace Reko.Scanning
         /// <param name="segment"></param>
         /// <returns>An array of bytes classifying each byte as code or data.
         /// </returns>
-        public byte[] ScanSegment(ImageSegment segment)
+        public ScannedSegment ScanSegment(ImageSegment segment, ulong workToDo)
         {
             var G = new DiGraph<Address>();
             G.AddNode(bad);
@@ -104,7 +116,7 @@ namespace Reko.Scanning
 
             // Advance by the instruction granularity.
             var step = program.Architecture.InstructionBitSize / 8;
-            bool inDelaySlot = false;
+            var delaySlot = InstructionClass.None;
             for (var a = 0; a < y.Length; a += step)
             {
                 y[a] = MaybeCode;
@@ -112,19 +124,19 @@ namespace Reko.Scanning
                 if (i == null)
                 {
                     AddEdge(G, bad, segment.Address + a);
-                    inDelaySlot = false;
                     break;
                 }
-                if (i.InstructionClass == InstructionClass.Invalid)
+                if (IsInvalid(segment.MemoryArea, i))
                 {
                     AddEdge(G, bad, i.Address);
-                    inDelaySlot = false;
+                    delaySlot = InstructionClass.None;
+                    y[a] = Data;
                 }
                 else
                 {
                     if (MayFallThrough(i))
                     {
-                        if (!inDelaySlot)
+                        if (delaySlot != DT)
                         {
                             if (a + i.Length < y.Length)
                             {
@@ -135,10 +147,11 @@ namespace Reko.Scanning
                             {
                                 // Fell off segment, i must be a bad instruction.
                                 AddEdge(G, bad, i.Address);
+                                y[a] = Data;
                             }
                         }
                     }
-                    if ((i.InstructionClass & InstructionClass.Transfer) != 0) 
+                    if ((i.InstructionClass & InstructionClass.Transfer) != 0)
                     {
                         var addrDest = DestinationAddress(i);
                         if (addrDest != null)
@@ -159,13 +172,17 @@ namespace Reko.Scanning
                             {
                                 // Jump to data / hyperspace.
                                 AddEdge(G, bad, i.Address);
+                                y[a] = Data;
                             }
                         }
                     }
 
                     // If this is a delayed unconditional branch...
-                    inDelaySlot = i.InstructionClass == DT;
+                    delaySlot = i.InstructionClass;
                 }
+                if (y[a] == MaybeCode)
+                    instructions.Add(i.Address, i);
+                eventListener.ShowProgress("Shingle scanning", instructions.Count, (int)workToDo);
             }
 
             // Find all places that are reachable from "bad" addresses.
@@ -175,9 +192,114 @@ namespace Reko.Scanning
                 if (a != bad)
                 {
                     y[a - segment.Address] = Data;
+                    instructions.Remove(a);
+
+                    // Destination can't be a call destination.
+                    possibleCallDestinationTallies.Remove(a);
                 }
             }
-            return y;
+
+            // Build blocks out of sequences of instructions.
+            var blocks = BuildBlocks(G, instructions);
+            return new ScannedSegment
+            {
+                Blocks = blocks,
+                CodeFlags = y,
+            };
+        }
+
+        /// <summary>
+        /// The results of running the shingle scanner on an image segment.
+        /// </summary>
+        public class ScannedSegment
+        {
+            public SortedList<Address, ShingleBlock> Blocks;
+            public byte[] CodeFlags;
+        }
+
+        public class ShingleBlock
+        {
+            public Address BaseAddress;
+            public Address EndAddress;
+        }
+
+        /// <summary>
+        /// Build Shingle blocks from the graph. An instruction can only be 
+        /// in one block at a time, so at each point in the graph where the 
+        /// successors > 1 or the predecessors > 1, we create a new node.
+        /// </summary>
+        /// <param name="g"></param>
+        /// <param name="instructions"></param>
+        /// <returns></returns>
+        public SortedList<Address,ShingleBlock> BuildBlocks(
+            DiGraph<Address> g,
+            SortedList<Address,MachineInstruction> instructions)
+        {
+            // Remember, the graph is backwards!
+            var activeBlocks = new List<ShingleBlock>();
+            var allBlocks = new SortedList<Address, ShingleBlock>();
+            var wl = instructions.Keys.ToSortedSet();
+            while (wl.Count > 0)
+            {
+                var addr = wl.First();
+                wl.Remove(addr);
+                var instr = instructions[addr];
+                var block = new ShingleBlock { BaseAddress = addr };
+                allBlocks.Add(addr, block);
+                bool terminateNow = false;
+                bool terminateDeferred = false;
+                for (;;)
+                {
+                    var addrInstrEnd = instr.Address + instr.Length;
+                    if ((instr.InstructionClass & InstructionClass.Transfer) != 0)
+                    {
+                        if ((instr.InstructionClass & DT) == DT)
+                        {
+                            terminateDeferred = true;
+                        }
+                        else
+                        {
+                            terminateNow = true;
+                        }
+                    }
+                    else
+                    {
+                        terminateNow = terminateDeferred;
+                    }
+                    if (terminateNow || 
+                        !wl.Contains(addrInstrEnd) ||
+                        !g.Nodes.Contains(addrInstrEnd) || 
+                        g.Successors(addrInstrEnd).Count != 1)
+                    {
+                        block.EndAddress = addrInstrEnd;
+                        break;
+                    }
+
+                    wl.Remove(addrInstrEnd);
+                    instr = instructions[addrInstrEnd];
+                    terminateNow = terminateDeferred;
+                }
+            }
+            return allBlocks;
+        }
+
+        private List<ShingleBlock> TerminateBlocks(List<ShingleBlock> blocks, Address addrTerm)
+        {
+
+            var live = blocks.Where(de => de.EndAddress == addrTerm)
+                .ToList();
+            return live;
+        }
+
+        private bool IsInvalid(MemoryArea mem, MachineInstruction instr)
+        {
+            if (instr.InstructionClass == InstructionClass.Invalid)
+                return true;
+            // If an instruction straddles a relocation, it can't be 
+            // a real instruction.
+            if (mem.Relocations.Overlaps(instr.Address, (uint)instr.Length))
+                return true;
+            return false;
         }
 
         /// <summary>
@@ -204,9 +326,11 @@ namespace Reko.Scanning
         /// increment the tally for that address.
         /// </summary>
         /// <returns>A dictionary mapping segments to their pointer tallies.</returns>
-        public Dictionary<ImageSegment, byte[]> GetPossiblePointerTargets()
+        public Dictionary<ImageSegment, int[]> GetPossiblePointerTargets()
         {
-            var targetMap = program.SegmentMap.Segments.ToDictionary(s => s.Value, s => new byte[s.Value.ContentSize]);
+            var targetMap = program.SegmentMap.Segments.ToDictionary(
+                s => s.Value, 
+                s => new int[s.Value.ContentSize]);
             foreach (var seg in program.SegmentMap.Segments.Values)
             {
                 foreach (var pointer in GetPossiblePointers(seg))
@@ -217,11 +341,11 @@ namespace Reko.Scanning
                     {
                         int segOffset = (int)(pointer - segPointee.Address);
                         int hits = targetMap[segPointee][segOffset];
-                        if (hits < 255)    // Not saturated!
-                            targetMap[segPointee][segOffset] = (byte)(hits + 1);
+                        targetMap[segPointee][segOffset] = hits + 1;
+
                         if (!this.possiblePointerTargetTallies.TryGetValue(pointer, out hits))
                             hits = 0;
-                        this.possiblePointerTargetTallies[pointer] = hits;
+                        this.possiblePointerTargetTallies[pointer] = hits + 1;
                     }
                 }
             }
@@ -257,7 +381,7 @@ namespace Reko.Scanning
             ImageSegment seg;
             if (!program.SegmentMap.TryFindSegment(address, out seg))
                 return false;
-            return (seg.Access & AccessMode.Execute) != 0;
+            return seg.IsExecutable;
         }
 
         /// <summary>
@@ -280,6 +404,12 @@ namespace Reko.Scanning
             return null;
         }
 
+        /// <summary>
+        /// Grab a single instruction.
+        /// </summary>
+        /// <param name="segment"></param>
+        /// <param name="a"></param>
+        /// <returns></returns>
         private MachineInstruction Dasm(ImageSegment segment, int a)
         {
             var addr = segment.Address + a;
@@ -289,12 +419,13 @@ namespace Reko.Scanning
             return dasm.FirstOrDefault();
         }
 
-        public IEnumerable<Address> SpeculateCallDests(IDictionary<ImageSegment, byte[]> map)
+        public IEnumerable<KeyValuePair<Address, int>> SpeculateCallDests(IDictionary<ImageSegment, byte[]> map)
         {
-            var addrs = from addr in this.possibleCallDestinationTallies
-                    orderby addr.Value descending
-                    where IsPossibleExecutableCodeDestination(addr.Key, map)
-                    select addr.Key;
+            var addrs = 
+                from addr in this.possibleCallDestinationTallies
+                orderby addr.Value descending
+                where IsPossibleExecutableCodeDestination(addr.Key, map)
+                select addr;
             return addrs;
         }
 
