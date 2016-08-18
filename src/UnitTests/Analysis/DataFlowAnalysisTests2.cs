@@ -28,6 +28,7 @@ using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using Reko.UnitTests.TestCode;
 using Rhino.Mocks;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -59,7 +60,13 @@ namespace Reko.UnitTests.Analysis
         private void AssertProgram(string sExp, Program program)
         {
             var sw = new StringWriter();
-            program.Procedures.Values.First().Write(false, sw);
+            var sep = "";
+            foreach (var proc in program.Procedures.Values)
+            {
+                sw.Write(sep);
+                proc.Write(false, sw);
+                sep = "===" + Environment.NewLine;
+            }
             var sActual = sw.ToString();
             if (sExp != sActual) 
                 Debug.WriteLine(sActual);
@@ -258,6 +265,84 @@ l1:
 	// succ:  test_exit
 test_exit:
 ";
+            AssertProgram(sExp, pb.Program);
+        }
+
+        [Test]
+        public void Dfa2_Untangle_CallChain()
+        {
+            pb = new ProgramBuilder();
+            pb.Add("main", m =>
+            {
+                var r1 = m.Register(1);
+                m.Assign(r1, m.LoadDw(m.Word32(0x123400)));
+                m.Call("level1", 0);
+                m.Store(m.Word32(0x123400), r1);
+                m.Return();
+            });
+            pb.Add("level1", m =>
+            {
+                m.Call("level2", 0);
+                m.Return();
+            });
+            pb.Add("level2", m =>
+            {
+                var r1 = m.Register(1);
+                var r2 = m.Register(2);
+                m.Assign(r2, -1);
+                m.Assign(r1, m.IAdd(r1, 1));
+                m.Return();
+            });
+            var program = pb.BuildProgram();
+            mr.ReplayAll();
+
+            var dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
+            dfa.AnalyzeProgram2();
+
+            var sExp =
+            #region Expected
+@"// main
+// Return size: 0
+void main()
+main_entry:
+	// succ:  l1
+l1:
+	word32 r1_3
+	call level1 (retsize: 0;)
+		uses: r1_2
+		defs: r1_3
+	Mem4[0x00123400:word32] = r1_3
+	return
+	// succ:  main_exit
+main_exit:
+===
+// level1
+// Return size: 0
+void level1()
+level1_entry:
+	// succ:  l1
+l1:
+	call level2 (retsize: 0;)
+		uses: r1_2
+		defs: r1_3, r2_4
+	return
+	// succ:  level1_exit
+level1_exit:
+===
+// level2
+// Return size: 0
+void level2()
+level2_entry:
+	// succ:  l1
+l1:
+	word32 r2_1 = 0xFFFFFFFF
+	word32 r1_3 = r1 + 0x00000001
+	return
+	// succ:  level2_exit
+level2_exit:
+========== Run test finished: 1 run (0:00:02.8341061) ==========
+";
+            #endregion
             AssertProgram(sExp, pb.Program);
         }
     }

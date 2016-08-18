@@ -40,7 +40,7 @@ namespace Reko.Analysis
     {
         private IProcessorArchitecture arch;
         private DecompilerEventListener eventListener;
-        private ProgramDataFlow flow;
+        private DataFlow2 flow;
         private Identifier idCur;
         private ProcedureFlow2 procFlow;
         private SsaState ssa;
@@ -50,7 +50,7 @@ namespace Reko.Analysis
 
         public UsedRegisterFinder(
             IProcessorArchitecture arch,
-            ProgramDataFlow flow,
+            DataFlow2 flow,
             SsaTransform2[] ssts,
             DecompilerEventListener eventListener)
         {
@@ -72,7 +72,7 @@ namespace Reko.Analysis
         /// <param name="ssaState"></param>
         public ProcedureFlow2 Compute(SsaState ssaState)
         {
-            this.procFlow = flow.ProcedureFlows2[ssaState.Procedure];
+            this.procFlow = flow.ProcedureFlows[ssaState.Procedure];
             this.uses = new Dictionary<SsaIdentifier, int>();
             this.ssa = ssaState;
             foreach (var sid in ssaState.Identifiers)
@@ -113,7 +113,9 @@ namespace Reko.Analysis
 
         public int VisitCallInstruction(CallInstruction ci)
         {
-            throw new NotImplementedException();
+            //$BUG: the whole premise of this class is buggy. 
+            // we need to review how uses are to be discovered.
+            return 0;
         }
 
         public int VisitDeclaration(Declaration decl)
@@ -283,6 +285,5 @@ namespace Reko.Analysis
         {
             throw new NotImplementedException();
         }
-
     }
 }

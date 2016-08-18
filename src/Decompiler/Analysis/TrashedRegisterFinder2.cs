@@ -39,7 +39,7 @@ namespace Reko.Analysis
     public class TrashedRegisterFinder2 
     {
         private IProcessorArchitecture arch;
-        private ProgramDataFlow progFlow;
+        private DataFlow2 progFlow;
         private SsaState ssa;
         private DecompilerEventListener decompilerEventListener;
         private ProcedureFlow2 flow;
@@ -58,7 +58,7 @@ namespace Reko.Analysis
 
         public TrashedRegisterFinder2(
             IProcessorArchitecture arch,
-            ProgramDataFlow flow,
+            DataFlow2 flow,
             IEnumerable<SsaTransform2> sccGroup,
             DecompilerEventListener listener)
         {
@@ -83,8 +83,7 @@ namespace Reko.Analysis
         public ProcedureFlow2 Compute(SsaState ssa)
         {
             this.ssa = ssa;
-            this.flow = new ProcedureFlow2();
-            this.progFlow.ProcedureFlows2.Add(ssa.Procedure, flow);
+            this.flow = this.progFlow.ProcedureFlows[ssa.Procedure];
             this.activePhis = new HashSet<PhiAssignment>();
             foreach (var sid in ssa.Procedure.ExitBlock.Statements
                 .Select(s => s.Instruction as UseInstruction)

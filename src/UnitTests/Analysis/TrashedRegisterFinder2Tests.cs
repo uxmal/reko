@@ -40,14 +40,14 @@ namespace Reko.UnitTests.Analysis
     [TestFixture]
     public class TrashedRegisterFinder2Tests
     {
-        private ProgramDataFlow pf;
+        private DataFlow2 pf;
         private ProgramBuilder progBuilder;
         private ExternalProcedure fnExit;
 
         [SetUp]
         public void Setup()
         {
-            this.pf = new ProgramDataFlow();
+            this.pf = new DataFlow2();
             this.progBuilder = new ProgramBuilder();
             this.fnExit = new ExternalProcedure(
               "exit",

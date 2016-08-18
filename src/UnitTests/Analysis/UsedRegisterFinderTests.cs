@@ -38,13 +38,13 @@ namespace Reko.UnitTests.Analysis
     [TestFixture]
     public class UsedRegisterFinderTests
     {
-        private ProgramDataFlow pf;
+        private DataFlow2 pf;
         private ProgramBuilder progBuilder;
 
         [SetUp]
         public void Setup()
         {
-            this.pf = new ProgramDataFlow();
+            this.pf = new DataFlow2();
             this.progBuilder = new ProgramBuilder();
         }
 
@@ -97,7 +97,7 @@ namespace Reko.UnitTests.Analysis
 
             vp.Transform();
 
-            pf.ProcedureFlows2[proc] = new ProcedureFlow2();
+            pf.ProcedureFlows[proc] = new ProcedureFlow2();
             var urf = new UsedRegisterFinder(
                 arch, 
                 pf,

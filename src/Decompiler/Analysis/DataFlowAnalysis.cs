@@ -47,6 +47,7 @@ namespace Reko.Analysis
         private IImportResolver importResolver;
 		private ProgramDataFlow flow;
         private List<SsaTransform2> ssts;
+        private DataFlow2 dataFlow;
 
         public DataFlowAnalysis(Program program, IImportResolver importResolver, DecompilerEventListener eventListener)
 		{
@@ -54,6 +55,7 @@ namespace Reko.Analysis
             this.importResolver = importResolver;
             this.eventListener = eventListener;
 			this.flow = new ProgramDataFlow(program);
+            this.dataFlow = new DataFlow2();
 		}
 
 		public void AnalyzeProgram()
@@ -238,21 +240,24 @@ namespace Reko.Analysis
 
         private void UntangleProcedureScc(IList<Procedure> procs)
         {
+            foreach (var proc in procs)
+            {
+                dataFlow.ProcedureFlows.Add(proc, new ProcedureFlow2());
+            }
+
             // Convert all procedures in the SCC to SSA form and perform
             // value propagation.
             var ssts = procs.Select(p => ConvertToSsa(p)).ToArray();
             this.ssts.AddRange(ssts);
 
             // At this point, the computation of ProcedureFlow is be possible.
-            var tid = new TrashedRegisterFinder2(program.Architecture, flow, ssts, this.eventListener);
-            var uid = new UsedRegisterFinder(program.Architecture, flow, ssts, this.eventListener);
+            var tid = new TrashedRegisterFinder2(program.Architecture, dataFlow, ssts, this.eventListener);
+            var uid = new UsedRegisterFinder(program.Architecture, dataFlow, ssts, this.eventListener);
             foreach (var sst in ssts)
             {
                 tid.Compute(sst.SsaState);
                 uid.Compute(sst.SsaState);
             }
-
-            // 
         }
 
         public void BuildExpressionTrees2()
@@ -301,7 +306,7 @@ namespace Reko.Analysis
             // associated with them. If they have not been visited, or are computed destinations
             // (e.g. vtables) they will have no "ProcedureFlow" associated with them yet, in
             // which case the the SSA treats the call as a "hell node".
-            var sst = new SsaTransform2(program.Architecture, proc, importResolver, new DataFlow2());
+            var sst = new SsaTransform2(program.Architecture, proc, importResolver, this.dataFlow);
             sst.Transform();
             var ssa = sst.SsaState;
 
