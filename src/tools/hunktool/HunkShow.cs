@@ -139,7 +139,6 @@ namespace hunktool
             }
             var type_name = main.HunkType.ToString().Replace("HUNK_", "");
             size = main.size;
-            var hunk_no = main.hunk_no;
             data_file_offset = null;
             hunk_file_offset = null;
             if (main.alloc_size > 0)

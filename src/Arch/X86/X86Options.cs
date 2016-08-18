@@ -18,11 +18,6 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace Reko.Arch.X86
 {
     public class X86Options

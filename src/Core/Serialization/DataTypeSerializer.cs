@@ -71,7 +71,6 @@ namespace Reko.Core.Serialization
                 parms = new Argument_v1[ft.Parameters.Length];
                 for (int i = 0; i < ft.Parameters.Length; ++i)
                 {
-                    var type = ft.Parameters[i].DataType.Accept(this);
                     parms[i] = SerializeArgument(ft.Parameters[i].Name, null, ft.Parameters[i].DataType);
                 }
             }

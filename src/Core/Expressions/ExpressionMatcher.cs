@@ -285,7 +285,6 @@ namespace Reko.Core.Expressions
             return 
                 Match(smp.BasePointer, access.BasePointer) &&
                 Match(smp.EffectiveAddress, access.EffectiveAddress);
-            throw new NotImplementedException();
         }
 
         bool ExpressionVisitor<bool>.VisitSlice(Slice slice)
