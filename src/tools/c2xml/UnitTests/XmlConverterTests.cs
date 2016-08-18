@@ -95,11 +95,6 @@ namespace Reko.Tools.C2Xml.UnitTests
                 throw new NotImplementedException();
             }
 
-            public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
-            {
-                throw new NotImplementedException();
-            }
-
             public override FlagGroupStorage GetFlagGroup(string name)
             {
                 throw new NotImplementedException();

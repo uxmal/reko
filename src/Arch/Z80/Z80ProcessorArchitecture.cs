@@ -158,11 +158,6 @@ namespace Reko.Arch.Z80
             throw new NotImplementedException();
         }
 
-        public override Core.Expressions.Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
-        {
-            throw new NotImplementedException();
-        }
-
         public override Address MakeAddressFromConstant(Constant c)
         {
             return Address.Ptr16(c.ToUInt16());

@@ -115,11 +115,6 @@ namespace Reko.Arch.Vax
             return new VaxRewriter(this, rdr, state, frame, host);
         }
 
-        public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
-        {
-            throw new NotImplementedException();
-        }
-
         public override FlagGroupStorage GetFlagGroup(string name)
         {
             throw new NotImplementedException();

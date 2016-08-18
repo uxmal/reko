@@ -137,7 +137,7 @@ namespace Reko.Core
                     stack.DataType);
             else
                 return arch.CreateStackAccess(
-                    frame, 
+                    r => frame.EnsureIdentifier(r), 
                     stack.StackOffset - site.SizeOfReturnAddressOnStack,
                     stack.DataType);
         }

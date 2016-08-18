@@ -174,7 +174,7 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
-            public Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+            public Expression CreateStackAccess(Func<RegisterStorage,Identifier> bindRegister, int cbOffset, DataType dataType)
             {
                 throw new NotImplementedException();
             }

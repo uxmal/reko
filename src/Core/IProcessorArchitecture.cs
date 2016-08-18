@@ -137,7 +137,7 @@ namespace Reko.Core
         bool TryGetRegister(string name, out RegisterStorage reg); // Attempts to find a register with name <paramref>name</paramref>
         FlagGroupStorage GetFlagGroup(uint grf);		    // Returns flag group matching the bitflags.
 		FlagGroupStorage GetFlagGroup(string name);
-        Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType);
+        Expression CreateStackAccess(Func<RegisterStorage, Identifier> bindRegister, int cbOffset, DataType dataType);
         Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state);
         Address MakeSegmentedAddress(Constant seg, Constant offset);
 
@@ -205,12 +205,29 @@ namespace Reko.Core
         public abstract ProcessorState CreateProcessorState();
         public abstract IEnumerable<Address> CreatePointerScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
         public abstract IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host);
-        public abstract Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType);
-
         public virtual IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg) { yield return reg; }
         public abstract RegisterStorage GetRegister(int i);
         public abstract RegisterStorage GetRegister(string name);
         public abstract RegisterStorage[] GetRegisters();
+
+        /// <summary>
+        /// Create a stack access to a variable offset by <paramref name="cbOffsets"/>
+        /// from the stack pointer
+        /// </summary>
+        /// <remarks>
+        /// This method is the same for all _sane_ architectures. The crazy madness
+        /// of x86 segmented memory accesses is dealt with in that processor's 
+        /// implementation of this method.
+        /// </remarks>
+        /// <param name="bindRegister"></param>
+        /// <param name="cbOffset"></param>
+        /// <param name="dataType"></param>
+        /// <returns></returns>
+        public virtual Expression CreateStackAccess(Func<RegisterStorage, Identifier> bindRegister, int cbOffset, DataType dataType)
+        {
+            var sp = bindRegister(StackRegister);
+            return MemoryAccess.Create(sp, cbOffset, dataType);
+        }
 
         /// <summary>
         /// Get the improper subregister of <paramref name="reg"/> that starts

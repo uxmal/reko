@@ -205,11 +205,6 @@ namespace Reko.Arch.Pdp11
 			return s.ToString();
 		}
 
-        public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
-        {
-            throw new NotImplementedException();
-        }
-
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             return new Pdp11Rewriter(this, new Pdp11Disassembler(rdr, this), frame);

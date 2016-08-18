@@ -136,14 +136,6 @@ namespace Reko.Arch.M68k
             return new Rewriter(this, rdr, (M68kState)state, frame, host);
         }
 
-        public override Expression CreateStackAccess(Frame frame, int offset, DataType dataType)
-        {
-            return new MemoryAccess(new BinaryExpression(
-                Operator.IAdd, FramePointerType,
-                frame.EnsureRegister(StackRegister), Constant.Word32(offset)),
-                dataType);
-        }
-
         public override Address MakeAddressFromConstant(Constant c)
         {
             return Address.Ptr32(c.ToUInt32());

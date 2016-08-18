@@ -155,14 +155,6 @@ namespace Reko.Arch.Arm
             throw new NotImplementedException();
         }
 
-        public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
-        {
-            return new MemoryAccess(new BinaryExpression(
-                         Operator.IAdd, FramePointerType,
-                         frame.EnsureRegister(StackRegister), Constant.Word32(cbOffset)),
-                         dataType);
-        }
-
         public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();

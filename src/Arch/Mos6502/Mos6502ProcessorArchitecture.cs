@@ -129,11 +129,6 @@ namespace Reko.Arch.Mos6502
             throw new NotImplementedException();
         }
 
-        public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
-        {
-            throw new NotImplementedException();
-        }
-
         public override Address MakeAddressFromConstant(Constant c)
         {
             return Address.Ptr16(c.ToUInt16());

@@ -530,7 +530,6 @@ namespace Reko.Analysis
             private void AddDefInstructions(CallInstruction ci, ProcedureFlow2 flow)
             {
                 var existing = ci.Definitions.Select(d => ssa.Identifiers[(Identifier)d.Expression].OriginalIdentifier).ToHashSet();
-                var ab = new FrameApplicationBuilder(null, proc.Frame, null, null, true);
                 foreach (var idDef in flow.Trashed)
                 {
                     var idLocal = proc.Frame.EnsureIdentifier(idDef);

@@ -134,11 +134,6 @@ namespace Reko.Arch.Arm
             throw new NotImplementedException();
         }
 
-        public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
-        {
-            throw new NotImplementedException();
-        }
-
         public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();

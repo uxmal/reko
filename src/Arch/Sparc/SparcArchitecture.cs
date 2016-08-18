@@ -162,11 +162,6 @@ namespace Reko.Arch.Sparc
             return GetFlagGroup((uint)grf);
         }
 
-        public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
-        {
-            throw new NotImplementedException();
-        }
-
         public override Address MakeAddressFromConstant(Constant c)
         {
             return Address.Ptr32(c.ToUInt32());

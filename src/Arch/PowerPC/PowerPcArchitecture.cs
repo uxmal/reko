@@ -269,11 +269,6 @@ namespace Reko.Arch.PowerPC
             return "crX";
         }
 
-        public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
-        {
-            throw new NotImplementedException();
-        }
-
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             return new PowerPcRewriter(this, rdr, frame, host);
