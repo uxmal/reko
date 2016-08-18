@@ -124,24 +124,27 @@ namespace Reko.UnitTests.Mocks
         {
         }
 
-        public Statement Call(string procedureName, int retSizeOnStack)
+        public CallInstruction Call(string procedureName, int retSizeOnStack)
         {
             var ci = new CallInstruction(Constant.Invalid, new CallSite(retSizeOnStack, 0)); 
             unresolvedProcedures.Add(new ProcedureConstantUpdater(procedureName, ci));
-            return Emit(ci);
+            Emit(ci);
+            return ci;
         }
 
-        public Statement Call(ProcedureBase callee, int retSizeOnStack)
+        public CallInstruction Call(ProcedureBase callee, int retSizeOnStack)
         {
             ProcedureConstant c = new ProcedureConstant(PrimitiveType.Pointer32, callee);
             CallInstruction ci = new CallInstruction(c, new CallSite(retSizeOnStack, 0));  
-            return Emit(ci);
+            Emit(ci);
+            return ci;
         }
 
-        public Statement Call(Expression e, int retSizeOnstack)
+        public CallInstruction Call(Expression e, int retSizeOnstack)
         {
             CallInstruction ci = new CallInstruction(e, new CallSite(retSizeOnstack, 0));
-            return Emit(ci);
+            Emit(ci);
+            return ci;
         }
 
         public void Compare(string flags, Expression a, Expression b)

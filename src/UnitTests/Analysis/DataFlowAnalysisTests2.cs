@@ -361,7 +361,7 @@ level2_exit:
                 m.Store(sp, m.LoadDw(m.Word32(0x123400)));
                 m.Call("level1", 4);
                 m.Assign(sp, m.IAdd(sp, 4));
-                m.Store(m.Word32(0x123400), r1);
+                m.Store(m.Word32(0x123404), r1);
                 m.Return();
             });
             pb.Add("level1", m =>
@@ -402,9 +402,9 @@ main_entry:
 l1:
 	word32 r1_6
 	call level1 (retsize: 4;)
-		uses: dwLoc04_4
+		uses: Mem0[0x00123400:word32]
 		defs: r1_6
-	Mem8[0x00123400:word32] = r1_6
+	Mem8[0x00123404:word32] = r1_6
 	word32 r63_7 = fp
 	return
 	// succ:  main_exit

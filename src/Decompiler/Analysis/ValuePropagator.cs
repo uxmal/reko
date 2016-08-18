@@ -118,6 +118,10 @@ namespace Reko.Analysis
                 ssaIdTransformer.Transform(evalCtx.Statement, ci);
                 return evalCtx.Statement.Instruction;
             }
+            foreach (var use in ci.Uses)
+            {
+                use.Expression = use.Expression.Accept(eval);
+            }
             return ci;
         }
 

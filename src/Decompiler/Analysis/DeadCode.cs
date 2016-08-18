@@ -143,7 +143,16 @@ namespace Reko.Analysis
 			a.Src.Accept(this);
 		}
 
-		public override void VisitIdentifier(Identifier id)
+        public override void VisitCallInstruction(CallInstruction ci)
+        {
+            base.VisitCallInstruction(ci);
+            foreach (var use in ci.Uses)
+            {
+                use.Expression.Accept(this);
+            }
+        }
+
+        public override void VisitIdentifier(Identifier id)
 		{
 			SsaIdentifier sid = ssa.Identifiers[id];
 			if (sid.DefStatement != null)

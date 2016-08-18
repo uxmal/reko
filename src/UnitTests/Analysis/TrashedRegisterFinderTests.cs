@@ -264,7 +264,8 @@ namespace Reko.UnitTests.Analysis
         public void TrfCallInstruction()
         {
             var callee = new Procedure("Callee", program.Architecture.CreateFrame());
-            var stm = m.Call(callee, 4);
+            m.Call(callee, 4);
+            var stm = m.Block.Statements.Last;
             var pf = new ProcedureFlow(callee, program.Architecture);
             pf.TrashedRegisters.Add(Registers.ebx);
             flow[callee] = pf;

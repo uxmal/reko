@@ -56,5 +56,14 @@ namespace Reko.Analysis
             else
                 return id;
         }
+
+        public override Instruction TransformCallInstruction(CallInstruction ci)
+        {
+            foreach (var use in ci.Uses)
+            {
+                use.Expression = use.Expression.Accept(this);
+            }
+            return base.TransformCallInstruction(ci);
+        }
     }
 }
