@@ -33,11 +33,11 @@ namespace Reko.Core
     /// </summary>
     public interface IStorageBinder
     {
-        Identifier EnsureIdentifier(Storage r);
+        Identifier EnsureIdentifier(Storage stg);
         Identifier EnsureRegister(RegisterStorage stgForeign);
         Identifier EnsureFlagGroup(FlagRegister flagRegister, uint flagGroupBits, string name, DataType dataType);
         Identifier EnsureFpuStackVariable(int v, DataType dataType);
-        Identifier EnsureSequence(Storage head, Storage tail, DataType dt);
-        Identifier EnsureStackVariable(int v, DataType dataType);
+        Identifier EnsureSequence(Storage head, Storage tail, DataType dataType);
+        Identifier EnsureStackVariable(int offset, DataType dataType);
     }
 }

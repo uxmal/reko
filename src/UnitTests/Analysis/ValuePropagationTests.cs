@@ -794,45 +794,51 @@ ProcedureBuilder_exit:
 
             arch.Stub(a => a.CreateStackAccess(null, 0, null))
                 .IgnoreArguments()
-                .Do(new Func<Frame, int, DataType, Expression>((f, off, dt) => m.Load(dt, m.IAdd(sp, off))));
+                .Do(new Func<IStorageBinder, int, DataType, Expression>((f, off, dt) => m.Load(dt, m.IAdd(f.EnsureIdentifier(sp.Storage), off))));
             mr.ReplayAll();
 
             var ssa = RunTest(m);
             var sExp =
             #region Expected
-@"r1_1: orig: r1
-    def:  r1_1 = foo
-r63:r63
-    def:  def r63
-    uses: r63_3 = r63 - 0x00000004
-          Mem4[r63 - 0x00000004:word32] = 0x00000003
-          r63_5 = r63 - 0x00000008
-          Mem6[r63 - 0x00000008:word16] = Mem4[0x01231230:word16]
-r63_3: orig: r63
-    def:  r63_3 = r63 - 0x00000004
-Mem4: orig: Mem0
-    def:  Mem4[r63 - 0x00000004:word32] = 0x00000003
-    uses: Mem6[r63 - 0x00000008:word16] = Mem4[0x01231230:word16]
-r63_5: orig: r63
-    def:  r63_5 = r63 - 0x00000008
-Mem6: orig: Mem0
-    def:  Mem6[r63 - 0x00000008:word16] = Mem4[0x01231230:word16]
-r1_7: orig: r1
-    def:  r1_7 = foo(Mem0[r63:word32], Mem0[r63 + 0x00000004:word32])
-r63_8: orig: r63
+@"fp:fp
+    def:  def fp
+    uses: r63_2 = fp
+          r63_4 = fp - 0x00000004
+          Mem5[fp - 0x00000004:word32] = 0x00000003
+          r63_6 = fp - 0x00000008
+          Mem7[fp - 0x00000008:word16] = Mem5[0x01231230:word16]
+          r1_8 = foo(Mem0[fp - 0x00000008:word32], Mem0[fp - 0x00000004:word32])
+          r1_8 = foo(Mem0[fp - 0x00000008:word32], Mem0[fp - 0x00000004:word32])
+r63_2: orig: r63
+    def:  r63_2 = fp
+r1_3: orig: r1
+    def:  r1_3 = foo
+r63_4: orig: r63
+    def:  r63_4 = fp - 0x00000004
+Mem5: orig: Mem0
+    def:  Mem5[fp - 0x00000004:word32] = 0x00000003
+    uses: Mem7[fp - 0x00000008:word16] = Mem5[0x01231230:word16]
+r63_6: orig: r63
+    def:  r63_6 = fp - 0x00000008
+Mem7: orig: Mem0
+    def:  Mem7[fp - 0x00000008:word16] = Mem5[0x01231230:word16]
+r1_8: orig: r1
+    def:  r1_8 = foo(Mem0[fp - 0x00000008:word32], Mem0[fp - 0x00000004:word32])
+r63_9: orig: r63
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
 ProcedureBuilder_entry:
-	def r63
+	def fp
 	// succ:  l1
 l1:
-	r1_1 = foo
-	r63_3 = r63 - 0x00000004
-	Mem4[r63 - 0x00000004:word32] = 0x00000003
-	r63_5 = r63 - 0x00000008
-	Mem6[r63 - 0x00000008:word16] = Mem4[0x01231230:word16]
-	r1_7 = foo(Mem0[r63:word32], Mem0[r63 + 0x00000004:word32])
+	r63_2 = fp
+	r1_3 = foo
+	r63_4 = fp - 0x00000004
+	Mem5[fp - 0x00000004:word32] = 0x00000003
+	r63_6 = fp - 0x00000008
+	Mem7[fp - 0x00000008:word16] = Mem5[0x01231230:word16]
+	r1_8 = foo(Mem0[fp - 0x00000008:word32], Mem0[fp - 0x00000004:word32])
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:

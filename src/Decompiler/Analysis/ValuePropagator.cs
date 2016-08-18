@@ -26,6 +26,7 @@ using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Reko.Analysis
 {
@@ -109,8 +110,9 @@ namespace Reko.Analysis
             var pc = ci.Callee as ProcedureConstant;
             if (pc != null && pc.Procedure.Signature != null && pc.Procedure.Signature.ParametersValid)
             {
+                var binder = new CallInstructionBinder(ci);
                 var ab = new FrameApplicationBuilder(
-                      arch, ssa.Procedure.Frame, ci.CallSite,
+                      arch, binder, ci.CallSite,
                       ci.Callee, false);
                 evalCtx.Statement.Instruction = ab.CreateInstruction(pc.Procedure.Signature, pc.Procedure.Characteristics);
                 ssaIdTransformer.Transform(evalCtx.Statement, ci);
@@ -118,6 +120,7 @@ namespace Reko.Analysis
             }
             return ci;
         }
+
 
         public Instruction VisitDeclaration(Declaration decl)
         {
@@ -178,5 +181,57 @@ namespace Reko.Analysis
         }
 
         #endregion
+
+        private class CallInstructionBinder : IStorageBinder
+        {
+            private CallInstruction ci;
+
+            public CallInstructionBinder(CallInstruction ci)
+            {
+                this.ci = ci;
+            }
+
+            public Identifier EnsureFlagGroup(FlagRegister flagRegister, uint flagGroupBits, string name, DataType dataType)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Identifier EnsureFpuStackVariable(int v, DataType dataType)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Identifier EnsureIdentifier(Storage stg)
+            {
+                // If we can't find the storage, we're in trouble.
+                // it could mean that no statement in this fn defined it,
+                // so we probably should create it as a live-in identifier.
+                return ci.Uses
+                    .Select(u => u.Expression)
+                    .OfType<Identifier>()
+                    .Where(i => i.Storage == stg)
+                    .First();
+            }
+
+            public Identifier EnsureRegister(RegisterStorage reg)
+            {
+                return ci.Uses
+                   .Select(u => u.Expression)
+                   .OfType<Identifier>()
+                   .Where(i => i.Storage.Name == reg.Name)
+                   .First();
+            }
+
+            public Identifier EnsureSequence(Storage head, Storage tail, DataType dt)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Identifier EnsureStackVariable(int v, DataType dataType)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
     }
 }

@@ -70,7 +70,7 @@ namespace Reko.Core
             Identifier idRet = null;
             if (id != null)
             {
-                idRet = (Identifier)Bind(id);
+                idRet = (Identifier) id.Storage.Accept(this);
             }
             return idRet;
         }
