@@ -455,7 +455,7 @@ namespace Reko.Core.Output
                 writer.Indentation += writer.TabSize;
                 writer.Indent();
                 writer.Write("uses: ");
-                writer.Write(string.Join(",", ci.Uses.OrderBy(u => ((Identifier)(u.Expression)).Name).Select(u => u.Expression)));
+                writer.Write(string.Join(",", ci.Uses.OrderBy(u => u.Expression.ToString()).Select(u => u.Expression)));
                 writer.Terminate();
                 writer.Indentation -= writer.TabSize;
             }

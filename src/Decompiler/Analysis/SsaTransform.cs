@@ -1063,11 +1063,11 @@ namespace Reko.Analysis
                 var instr = ab.CreateInstruction(callee.Signature, callee.Characteristics);
                 return instr.Accept(this);
             }
-            ProcedureFlow2 flow;
+            ProcedureFlow2 calleeFlow;
             var proc = callee as Procedure;
-            if (proc != null && programFlow.ProcedureFlows.TryGetValue(proc, out flow))
+            if (proc != null && programFlow.ProcedureFlows.TryGetValue(proc, out calleeFlow))
             {
-                GenerateUseDefsForKnownCallee(ci, proc, flow);
+                GenerateUseDefsForKnownCallee(ci, proc, calleeFlow);
             }
             else
             {
@@ -1083,22 +1083,29 @@ namespace Reko.Analysis
             return ab;
         }
 
-        private void GenerateUseDefsForKnownCallee(CallInstruction ci, Procedure callee, ProcedureFlow2 flow)
+        private void GenerateUseDefsForKnownCallee(CallInstruction ci, Procedure callee, ProcedureFlow2 calleeFlow)
         {
-            var ab = new FrameApplicationBuilder(arch, ssa.Procedure.Frame, ci.CallSite, ci.Callee, true);
-            foreach (var use in callee.EntryBlock.Statements
-                .Select(s => (Identifier)((DefInstruction)s.Instruction).Expression))
+            if (this.RenameFrameAccesses)
             {
-                //$BUGBUG: not correct, because we want to bind stack arguments too. 
-                if (!this.RenameFrameAccesses)
+                foreach (var use in ci.Uses)
                 {
-                    var u = (Identifier) ab.Bind(use);
-                    ci.Uses.Add(new UseInstruction((Identifier)NewUse(u, stmCur, true)));
+                    use.Expression = use.Expression.Accept(this);
                 }
             }
-            if (!this.RenameFrameAccesses)
+            else
             {
-                foreach (var def in flow.Trashed)
+                var ab = new FrameApplicationBuilder(arch, ssa.Procedure.Frame, ci.CallSite, ci.Callee, false);
+                foreach (var use in calleeFlow.Used.Keys
+                    .Where(d => !(d is TemporaryStorage) &&
+                                !(d is MemoryStorage)))
+                {
+                    {
+                        var arg = use.Accept(ab);
+                        arg = arg.Accept(this);
+                        ci.Uses.Add(new UseInstruction(arg));
+                    }
+                }
+                foreach (var def in calleeFlow.Trashed)
                 {
                     var d = ssa.Procedure.Frame.EnsureIdentifier(def);
                     ci.Definitions.Add(

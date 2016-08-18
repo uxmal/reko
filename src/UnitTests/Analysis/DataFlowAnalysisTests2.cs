@@ -127,7 +127,7 @@ test_exit:
         }
 
         [Test]
-        [Ignore()]
+        [Ignore("r1 is kept alive by use statements")]
         public void Dfa2_StackArgs()
         {
             var pb = new ProgramBuilder(new FakeArchitecture());
@@ -346,6 +346,100 @@ level2_exit:
 ";
             #endregion
             AssertProgram(sExp, pb.Program);
+        }
+
+        [Test(Description = "One level calls the next")]
+        public void Dfa2_StackArgs_Nested()
+        {
+            pb = new ProgramBuilder();
+            pb.Add("main", m =>
+            {
+                var r1 = m.Register(1);
+                var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
+                m.Assign(sp, m.Frame.FramePointer);
+                m.Assign(sp, m.ISub(sp, 4));
+                m.Store(sp, m.LoadDw(m.Word32(0x123400)));
+                m.Call("level1", 4);
+                m.Assign(sp, m.IAdd(sp, 4));
+                m.Store(m.Word32(0x123400), r1);
+                m.Return();
+            });
+            pb.Add("level1", m =>
+            {
+                var r1 = m.Register(1);
+                var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
+                m.Assign(sp, m.Frame.FramePointer);
+                m.Assign(r1, m.LoadDw(m.IAdd(sp, 4)));
+                m.Assign(sp, m.ISub(sp, 4));
+                m.Store(sp, r1);
+                m.Call("level2", 4);
+                m.Assign(sp, m.IAdd(sp, 4));
+                m.Return();
+            });
+            pb.Add("level2", m =>
+            {
+                var r1 = m.Register(1);
+                var r2 = m.Register(2);
+                var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
+                m.Assign(sp, m.Frame.FramePointer);
+                m.Assign(r1, m.LoadDw(m.IAdd(sp, 4)));
+                m.Assign(r1, m.IAdd(r1, 1));
+                m.Return();
+            });
+            var program = pb.BuildProgram();
+            mr.ReplayAll();
+
+            var dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
+            dfa.AnalyzeProgram2();
+
+            var sExp =
+            #region Expected
+@"// main
+// Return size: 0
+void main()
+main_entry:
+	// succ:  l1
+l1:
+	word32 r1_6
+	call level1 (retsize: 4;)
+		uses: dwLoc04_4
+		defs: r1_6
+	Mem8[0x00123400:word32] = r1_6
+	word32 r63_7 = fp
+	return
+	// succ:  main_exit
+main_exit:
+===
+// level1
+// Return size: 0
+void level1()
+level1_entry:
+	// succ:  l1
+l1:
+	word32 r1_7
+	call level2 (retsize: 4;)
+		uses: dwArg04
+		defs: r1_7
+	word32 r63_8 = fp
+	return
+	// succ:  level1_exit
+level1_exit:
+===
+// level2
+// Return size: 0
+void level2()
+level2_entry:
+	// succ:  l1
+l1:
+	word32 r63_2 = fp
+	word32 r1_5 = dwArg04 + 0x00000001
+	return
+	// succ:  level2_exit
+level2_exit:
+";
+            #endregion
+            AssertProgram(sExp, pb.Program);
+
         }
     }
 }

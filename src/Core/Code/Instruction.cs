@@ -141,14 +141,14 @@ namespace Reko.Core.Code
 	/// </summary>
 	public class UseInstruction : Instruction
 	{
-		public UseInstruction(Identifier id)
+		public UseInstruction(Expression e)
 		{
-			this.Expression = id;
+			this.Expression = e;
 		}
 
-		public UseInstruction(Identifier id, Identifier argument)
+		public UseInstruction(Expression e, Identifier argument)
 		{
-			this.Expression = id;
+			this.Expression = e;
 			this.OutArgument = argument;
 		}
 
