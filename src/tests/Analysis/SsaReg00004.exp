@@ -240,7 +240,7 @@ rLoc1_75: orig: rLoc1
     uses: rLoc1_78 = PHI(rLoc1_75, rLoc1_112)
 dwArg04_76: orig: dwArg04
     def:  dwArg04_76 = PHI(dwArg04_74, dwArg04_96)
-    uses: rLoc2_81 = dwArg04_76
+    uses: rLoc2_81 = (real64) dwArg04_76
 rLoc3_77: orig: rLoc3
     def:  rLoc3_77 = PHI(rLoc3, rLoc3_104)
 rLoc1_78: orig: rLoc1
@@ -256,7 +256,7 @@ esi_80: orig: esi
     def:  esi_80 = PHI(esi_67, esi_83)
     uses: esi_83 = esi_80 + 0x00000001
 rLoc2_81: orig: rLoc2
-    def:  rLoc2_81 = dwArg04_76
+    def:  rLoc2_81 = (real64) dwArg04_76
     uses: rLoc2_82 = rLoc2_81 * Mem32[0x0099188A:real64]
 rLoc2_82: orig: rLoc2
     def:  rLoc2_82 = rLoc2_81 * Mem32[0x0099188A:real64]
@@ -308,9 +308,9 @@ C_95: orig: C
     def:  C_95 = SCZO_91 (alias)
 dwArg04_96: orig: dwArg04
     def:  dwArg04_96 = PHI(dwArg04_172, dwArg04_85)
-    uses: rLoc2_114 = dwArg04_96
+    uses: rLoc2_114 = (real64) dwArg04_96
           dwArg04_76 = PHI(dwArg04_74, dwArg04_96)
-          rLoc2_128 = dwArg04_96
+          rLoc2_128 = (real64) dwArg04_96
           dwArg04_43 = PHI(dwArg04, dwArg04_96, dwArg04_96)
           dwArg04_43 = PHI(dwArg04, dwArg04_96, dwArg04_96)
 rLoc2_97: orig: rLoc2
@@ -377,7 +377,7 @@ rLoc1_112: orig: rLoc1
 ecx_113: orig: ecx
     def:  ecx_113 = PHI(ecx_101, ecx_157)
 rLoc2_114: orig: rLoc2
-    def:  rLoc2_114 = dwArg04_96
+    def:  rLoc2_114 = (real64) dwArg04_96
     uses: FPUF_115 = cond(rLoc2_114 - Mem32[0x10033298:real64])
 FPUF_115: orig: FPUF
     def:  FPUF_115 = cond(rLoc2_114 - Mem32[0x10033298:real64])
@@ -422,7 +422,7 @@ SO_126: orig: SO
 C_127: orig: C
     def:  C_127 = SCZO_123 (alias)
 rLoc2_128: orig: rLoc2
-    def:  rLoc2_128 = dwArg04_96
+    def:  rLoc2_128 = (real64) dwArg04_96
     uses: eax_129 = fn1000010A(rLoc2_128)
           rLoc2_48 = PHI(rLoc2, rLoc2_128, rLoc2_128)
           rLoc2_48 = PHI(rLoc2, rLoc2_128, rLoc2_128)
@@ -645,7 +645,7 @@ l10000048:
 	rLoc1_78 = PHI(rLoc1_75, rLoc1_112)
 	edi_79 = PHI(edi_73, edi_122)
 	esi_80 = PHI(esi_67, esi_83)
-	rLoc2_81 = dwArg04_76
+	rLoc2_81 = (real64) dwArg04_76
 	rLoc2_82 = rLoc2_81 * Mem32[0x0099188A:real64]
 	esi_83 = esi_80 + 0x00000001
 	SZO_84 = cond(esi_83)
@@ -704,7 +704,7 @@ l100000AD:
 	dwArg0C_111 = PHI(dwArg0C_102, dwArg0C_163)
 	rLoc1_112 = PHI(rLoc1_98, rLoc1_164)
 	ecx_113 = PHI(ecx_101, ecx_157)
-	rLoc2_114 = dwArg04_96
+	rLoc2_114 = (real64) dwArg04_96
 	FPUF_115 = cond(rLoc2_114 - Mem32[0x10033298:real64])
 	SCZO_116 = FPUF_115
 	SZO_117 = SCZO_116 (alias)
@@ -744,7 +744,7 @@ l100000D7:
 	branch Test(LT,SO_126) l10000048
 	// succ:  l100000DF l10000048
 l100000DF:
-	rLoc2_128 = dwArg04_96
+	rLoc2_128 = (real64) dwArg04_96
 	eax_129 = fn1000010A(rLoc2_128)
 	Mem130[ebx_8:word32] = eax_129
 	eax_131 = fn1000010A(rLoc1_112)

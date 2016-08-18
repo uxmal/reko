@@ -1384,8 +1384,15 @@ namespace Reko.UnitTests.Arch.Intel
                 "1|L--|__lock()",
                 "2|L--|10000001(3): 1 instructions",
                 "3|L--|Z = __cmpxchg(Mem0[ebx:byte], ah, eax, out eax)");
-//            
-//Opcode: F0 0F B0 23
+        }
+
+        [Test]
+        public void X86rw_fld_real32()
+        {
+            Run16bitTest(0xD9, 0x44, 0x40); // fld word ptr [foo]
+            AssertCode(
+                "0|L--|0C00:0000(3): 1 instructions",
+                "1|L--|rLoc1 = (real64) Mem0[ds:si + 0x0040:real32]");
         }
     }
 }
