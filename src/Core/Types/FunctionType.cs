@@ -104,7 +104,7 @@ namespace Reko.Core.Types
             var sig = (FunctionType)Clone();
             sig.Parameters = Parameters.
                 Where(a => a.Name != "...").
-                Union(parameters).
+                Concat(parameters).
                 ToArray();
             return sig;
         }
