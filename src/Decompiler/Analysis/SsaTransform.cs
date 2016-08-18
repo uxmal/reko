@@ -1089,15 +1089,22 @@ namespace Reko.Analysis
             foreach (var use in callee.EntryBlock.Statements
                 .Select(s => (Identifier)((DefInstruction)s.Instruction).Expression))
             {
-                var u = ab.Bind(use);
-                ci.Uses.Add(new UseInstruction((Identifier)u.Accept(this)));
+                //$BUGBUG: not correct, because we want to bind stack arguments too. 
+                if (!this.RenameFrameAccesses)
+                {
+                    var u = (Identifier) ab.Bind(use);
+                    ci.Uses.Add(new UseInstruction((Identifier)NewUse(u, stmCur, true)));
+                }
             }
-            foreach (var def in flow.Trashed)
+            if (!this.RenameFrameAccesses)
             {
-                var d = ssa.Procedure.Frame.EnsureIdentifier(def);
-                ci.Definitions.Add(
-                    new DefInstruction(
-                        NewDef(d, ci.Callee, false)));
+                foreach (var def in flow.Trashed)
+                {
+                    var d = ssa.Procedure.Frame.EnsureIdentifier(def);
+                    ci.Definitions.Add(
+                        new DefInstruction(
+                            NewDef(d, ci.Callee, false)));
+                }
             }
         }
 

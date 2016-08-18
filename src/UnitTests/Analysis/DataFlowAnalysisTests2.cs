@@ -308,10 +308,11 @@ main_entry:
 	// succ:  l1
 l1:
 	word32 r1_3
+	word32 r2_4
 	call level1 (retsize: 0;)
 		uses: r1_2
-		defs: r1_3
-	Mem4[0x00123400:word32] = r1_3
+		defs: r1_3,r2_4
+	Mem5[0x00123400:word32] = r1_3
 	return
 	// succ:  main_exit
 main_exit:
@@ -322,9 +323,11 @@ void level1()
 level1_entry:
 	// succ:  l1
 l1:
+	word32 r1_2
+	word32 r2_3
 	call level2 (retsize: 0;)
-		uses: r1_2
-		defs: r1_3, r2_4
+		uses: r1
+		defs: r1_2,r2_3
 	return
 	// succ:  level1_exit
 level1_exit:
@@ -340,7 +343,6 @@ l1:
 	return
 	// succ:  level2_exit
 level2_exit:
-========== Run test finished: 1 run (0:00:02.8341061) ==========
 ";
             #endregion
             AssertProgram(sExp, pb.Program);
