@@ -23,11 +23,16 @@ using Reko.Core.Types;
 using System;
 
 namespace Reko.Core.Expressions
-{ 
+{
     /// <summary>
     /// Collect type information by pulling type information from
     /// the leaves of expression trees to their roots.
     /// </summary>
+    /// <remarks>
+    ///    root
+    ///  ↑ /  \ ↑
+    /// leaf  leaf
+    /// </remarks>
     public abstract class ExpressionTypeAscenderBase : ExpressionVisitor<DataType>
     {
         private IPlatform platform;
@@ -229,7 +234,7 @@ namespace Reko.Core.Expressions
 
         public DataType VisitConstant(Constant c)
         {
-            return RecordDataType(c.DataType, c);
+            return RecordDataType(GlobalType(c) ?? c.DataType, c);
         }
 
         private DataType GlobalType(Constant c)

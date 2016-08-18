@@ -5,6 +5,14 @@
 #include "pySample.h"
 
 <anonymous> * g_ptr100020CC = null;
+char g_str100020E0[] = "fdiv(a, b) = a / b";
+char g_str100020F4[] = "fdiv";
+char g_str100020FC[] = "div(a, b) = a / b";
+char g_str10002110[] = "div";
+char g_str10002114[] = "dif(a, b) = a - b";
+char g_str10002128[] = "dif";
+char g_str1000212C[] = "sum(a, b) = a + b";
+char g_str10002140[] = "sum";
 char g_str10002144[] = "ii:sum";
 char g_str1000214C[] = "i";
 char g_str10002150[] = "ii:dif";
@@ -61,12 +69,4 @@ Eq_138 g_t100033AC = 0;
 word32 g_dw100033B0 = 0x00000000;
 word32 g_dw100033B4 = 0x00000000;
 <anonymous> * g_ptr100033B8 = null;
-char g_str10002140[] = "sum";
-char g_str1000212C[] = "sum(a, b) = a + b";
-char g_str10002128[] = "dif";
-char g_str10002114[] = "dif(a, b) = a - b";
-char g_str10002110[] = "div";
-char g_str100020FC[] = "div(a, b) = a / b";
-char g_str100020F4[] = "fdiv";
-char g_str100020E0[] = "fdiv(a, b) = a / b";
 
