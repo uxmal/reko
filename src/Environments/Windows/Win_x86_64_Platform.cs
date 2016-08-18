@@ -47,7 +47,7 @@ namespace Reko.Environments.Windows
                     RegisterValues = new RegValue[0],
                 },
                 Name = "int3",
-                Signature = new ProcedureSignature(null, new Identifier[0]),
+                Signature = new FunctionType(null, null, new Identifier[0]),
                 Characteristics = new ProcedureCharacteristics(),
             };
         }

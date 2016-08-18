@@ -47,7 +47,7 @@ namespace Reko.Core
         private Frame frame;
         private CallSite site;
         private Expression callee;
-        private ProcedureSignature sigCallee;
+        private FunctionType sigCallee;
         private bool ensureVariables;
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Reko.Core
             Frame frame,
             CallSite site,
             Expression callee,
-            ProcedureSignature sigCallee,
+            FunctionType sigCallee,
             bool ensureVariables)
         {
             this.arch = arch;
@@ -75,7 +75,7 @@ namespace Reko.Core
             this.ensureVariables = ensureVariables;
         }
 
-        public virtual List<Expression> BindArguments(Frame frame, ProcedureSignature sigCallee)
+        public virtual List<Expression> BindArguments(Frame frame, FunctionType sigCallee)
         {
             if (sigCallee == null || !sigCallee.ParametersValid)
                 throw new InvalidOperationException("No signature available; application cannot be constructed.");
@@ -99,12 +99,9 @@ namespace Reko.Core
 
         public Identifier BindReturnValue()
         {
-            Identifier idOut = null;
-            if (sigCallee.ReturnValue != null)
-            {
-                idOut = (Identifier) Bind(sigCallee.ReturnValue);
-            }
-            return idOut;
+            if (sigCallee.HasVoidReturn)
+                return null;
+            return (Identifier) Bind(sigCallee.ReturnValue);
         }
 
 		public Expression Bind(Identifier id)
@@ -126,9 +123,9 @@ namespace Reko.Core
         public Instruction CreateInstruction()
         {
             var idOut = BindReturnValue();
-            var dtOut = sigCallee.ReturnValue != null
-                ? sigCallee.ReturnValue.DataType
-                : VoidType.Instance;
+            var dtOut = sigCallee.HasVoidReturn
+                ? VoidType.Instance
+                : sigCallee.ReturnValue.DataType;
             var actuals = BindArguments(frame, sigCallee);
             Expression appl = new Application(
                 callee,
@@ -201,10 +198,14 @@ namespace Reko.Core
         {
             if (ensureVariables)
                 return frame.EnsureStackVariable(
-                    stack.StackOffset - (site.StackDepthOnEntry + sigCallee.ReturnAddressOnStack),
+                    stack.StackOffset - site.StackDepthOnEntry,
                     stack.DataType);
             else 
-                return arch.CreateStackAccess(frame, stack.StackOffset, stack.DataType);
+                return arch.CreateStackAccess(
+                    frame,
+                    stack.StackOffset - site.SizeOfReturnAddressOnStack,
+                    stack.DataType);
+
         }
 
         public Expression VisitTemporaryStorage(TemporaryStorage temp)

@@ -21,6 +21,7 @@
 using Reko.Core.Code;
 using Reko.Core.Output;
 using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.IO;
 
@@ -32,18 +33,18 @@ namespace Reko.Core
     /// </summary>
 	public class ExternalProcedure : ProcedureBase
 	{
-		public ExternalProcedure(string name, ProcedureSignature signature) : base(name)
+		public ExternalProcedure(string name, FunctionType signature) : base(name)
 		{
 			this.Signature = signature;
 		}
 
-        public ExternalProcedure(string name, ProcedureSignature signature, ProcedureCharacteristics chars) : base(name)
+        public ExternalProcedure(string name, FunctionType signature, ProcedureCharacteristics chars) : base(name)
         {
             this.Signature = signature;
             this.Characteristics = chars;
         }
 
-		public override ProcedureSignature Signature { get; set; }
+		public override FunctionType Signature { get; set; }
 
 		public override string ToString()
 		{
@@ -51,7 +52,7 @@ namespace Reko.Core
             TextFormatter fmt = new TextFormatter(sw);
             CodeFormatter cf = new CodeFormatter(fmt);
             TypeFormatter tf = new TypeFormatter(fmt, false);
-			Signature.Emit(Name, ProcedureSignature.EmitFlags.ArgumentKind, fmt, cf, tf);
+			Signature.Emit(Name, FunctionType.EmitFlags.ArgumentKind, fmt, cf, tf);
 			return sw.ToString();
 		}
 	}

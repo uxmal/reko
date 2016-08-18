@@ -31,6 +31,7 @@ using System.Linq;
 using System.Text;
 using Reko.Core.Services;
 using Reko.UnitTests.Mocks;
+using Reko.Core.Expressions;
 
 namespace Reko.UnitTests.Core.Output
 {
@@ -108,7 +109,9 @@ namespace Reko.UnitTests.Core.Output
             Given_Globals(
                 new StructureField(0x1000, PrimitiveType.Int32));
 
-            RunTest("int32 g_dw1000 = -1;\r\n");
+            RunTest(
+@"int32 g_dw1000 = -1;
+");
         }
 
         [Test]
@@ -119,7 +122,9 @@ namespace Reko.UnitTests.Core.Output
             Given_Globals(
                 Given_Field(0x1000, PrimitiveType.Real32));
 
-            RunTest("real32 g_r1000 = 1.0F;\r\n");
+            RunTest(
+@"real32 g_r1000 = 1.0F;
+");
         }
 
         [Test]
@@ -235,7 +240,7 @@ Eq_2 g_t1008 =
     2,
     null,
 };
-Eq_2 * g_ptr1010 = &g_t1000;
+struct Eq_2 * g_ptr1010 = &g_t1000;
 ");
         }
 
@@ -321,12 +326,12 @@ struct test g_t1004 =
                     {
                         { 0, PrimitiveType.Int32 },
                         { 4, PrimitiveType.Int32 },
-                        { 8, new Pointer(new FunctionType(new ProcedureSignature()), 4) }
+                        { 8, new Pointer(new FunctionType(null, null, new Identifier[0]), 4) }
                     }
                 })));
             Given_ProcedureAtAddress(0x2000, "funcTest");
             RunTest(
-@" refTest g_t1000 = 
+@"refTest g_t1000 = 
 {
     1,
     2,

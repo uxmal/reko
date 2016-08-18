@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -39,7 +40,8 @@ namespace Reko.Core
             this.ReferenceAddress = addr;
             this.ModuleName = moduleName;
         }
-  
+
+        public abstract Identifier ResolveImportedGlobal(IImportResolver importResolver, IPlatform platform, AddressContext ctx);
         public abstract ExternalProcedure ResolveImportedProcedure(IImportResolver importResolver, IPlatform platform, AddressContext ctx);
     }
 
@@ -51,6 +53,15 @@ namespace Reko.Core
             : base(addr, moduleName)
         {
             this.ImportName = importName;
+        }
+
+        public override Identifier ResolveImportedGlobal(
+            IImportResolver resolver,
+            IPlatform platform,
+            AddressContext ctx)
+        {
+            var global = resolver.ResolveGlobal(ModuleName, ImportName, platform);
+            return global;
         }
 
         public override ExternalProcedure ResolveImportedProcedure(
@@ -90,6 +101,12 @@ namespace Reko.Core
             : base(addr, moduleName)
         {
             this.Ordinal = ordinal;
+        }
+
+        public override Identifier ResolveImportedGlobal(IImportResolver importResolver, IPlatform platform, AddressContext ctx)
+        {
+            ctx.Warn("Ordinal global imports not supported. Please report this message to the Reko maintainers (https://github.com/uxmal/reko).");
+            return null;
         }
 
         public override ExternalProcedure ResolveImportedProcedure(IImportResolver resolver, IPlatform platform, AddressContext ctx)

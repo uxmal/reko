@@ -157,6 +157,7 @@ namespace Reko.UnitTests.Gui.Windows
         }
 
         [Test(Description = "When a user browses to the procedure, we should see it")]
+        [Category(Categories.UserInterface)]
         public void Ccvi_SetProcedure()
         {
             Given_ImageSegment(0x10,
@@ -213,6 +214,7 @@ int32 iVar = 1000;
         }
 
         [Test(Description = "When a user browses to the global variables node, we should see it")]
+        [Category(Categories.UserInterface)]
         public void Ccvi_SetGlobalVariables()
         {
             Given_ImageSegment(0x10,

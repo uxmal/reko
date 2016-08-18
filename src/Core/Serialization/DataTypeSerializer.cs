@@ -61,7 +61,7 @@ namespace Reko.Core.Serialization
         public SerializedType VisitFunctionType(FunctionType ft)
         {
             Argument_v1 ret = null;
-            if (ft.ReturnValue != null)
+            if (!ft.HasVoidReturn)
             {
                 ret = SerializeArgument(null, null, ft.ReturnValue.DataType);
             }

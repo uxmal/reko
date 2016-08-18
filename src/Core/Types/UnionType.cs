@@ -34,11 +34,8 @@ namespace Reko.Core.Types
 	/// </remarks>
 	public class UnionType : DataType
 	{
-		public DataType PreferredType;
 
 		private UnionAlternativeCollection alts = new UnionAlternativeCollection();
-
-        public bool UserDefined { get; private set; }
 
         public UnionType() : this(null, null, false)
         {
@@ -69,6 +66,9 @@ namespace Reko.Core.Types
                 AddAlternative(dt);
             }
         }
+
+        public DataType PreferredType { get; set; }
+        public bool UserDefined { get; private set; }
 
         public override void Accept(IDataTypeVisitor v)
         {

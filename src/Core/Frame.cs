@@ -148,7 +148,7 @@ namespace Reko.Core
 		public Identifier CreateTemporary(string name, DataType dt)
 		{
 			Identifier id = new Identifier(name, dt, 
-                new TemporaryStorage(name, identifiers.Count, (PrimitiveType) dt));
+                new TemporaryStorage(name, identifiers.Count, dt));
 			identifiers.Add(id);
 			return id;
 		}

@@ -86,16 +86,19 @@ namespace Reko.UnitTests.Scanning
         private class RewriterHost : IRewriterHost, IImportResolver
         {
             Dictionary<string, PseudoProcedure> pprocs = new Dictionary<string, PseudoProcedure>();
-            Dictionary<ulong, ProcedureSignature> sigs = new Dictionary<ulong, ProcedureSignature>();
+            Dictionary<ulong, FunctionType> sigs = new Dictionary<ulong, FunctionType>();
             Dictionary<Address, ImportReference> importThunks;
-            Dictionary<string, ProcedureSignature> signatures;
+            Dictionary<string, FunctionType> signatures;
+            Dictionary<string, DataType> globals;
 
             public RewriterHost(
                 Dictionary<Address, ImportReference> importThunks,
-                Dictionary<string, ProcedureSignature> signatures)
+                Dictionary<string, FunctionType> signatures,
+                Dictionary<string, DataType> globals)
             {
                 this.importThunks = importThunks;
                 this.signatures = signatures;
+                this.globals = globals;
             }
 
             public PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity)
@@ -115,9 +118,14 @@ namespace Reko.UnitTests.Scanning
                 return new Application(new ProcedureConstant(PrimitiveType.Pointer32, ppp), returnType, args);
             }
 
-            public void BwiX86_SetCallSignatureAdAddress(Address addrCallInstruction, ProcedureSignature signature)
+            public void BwiX86_SetCallSignatureAdAddress(Address addrCallInstruction, FunctionType signature)
             {
                 sigs.Add(addrCallInstruction.ToLinear(), signature);
+            }
+
+            public Identifier GetImportedGlobal(Address addrThunk, Address addrInstr)
+            {
+                return null;
             }
 
             public ExternalProcedure GetImportedProcedure(Address addrThunk, Address addrInstr)
@@ -131,7 +139,7 @@ namespace Reko.UnitTests.Scanning
 
             public ExternalProcedure ResolveProcedure(string moduleName, string importName, IPlatform platform)
             {
-                ProcedureSignature sig;
+                FunctionType sig;
                 if (signatures.TryGetValue(importName, out sig))
                     return new ExternalProcedure(importName, sig);
                 else
@@ -143,6 +151,10 @@ namespace Reko.UnitTests.Scanning
                 throw new NotImplementedException();
             }
 
+            public Identifier ResolveGlobal(string moduleName, string globalName, IPlatform platform)
+            {
+                throw new NotImplementedException();
+            }
 
             public ExternalProcedure GetInterceptedCall(Address addrImportThunk)
             {
@@ -171,25 +183,30 @@ namespace Reko.UnitTests.Scanning
             scanner = mr.StrictMock<IScanner>();
             m(asm);
             lr = asm.GetImage();
-            host = new RewriterHost(asm.ImportReferences,
-                new Dictionary<string, ProcedureSignature>
+            host = new RewriterHost(
+                asm.ImportReferences,
+                new Dictionary<string, FunctionType>
                 {
-                {
-                    "GetDC", 
-                    new ProcedureSignature(
-                        new Identifier("", new Pointer(VoidType.Instance, 4), new RegisterStorage("eax", 0, 0, PrimitiveType.Word32)),
-                        new Identifier("arg", 
-                            new TypeReference(
-                                "HWND",
-                                new Pointer(VoidType.Instance, 4)),
-                            new StackArgumentStorage(0, new TypeReference(
-                                "HWND",
-                                new Pointer(VoidType.Instance, 4)))))
-                                {
-                                    StackDelta = 4,
-}
-                }
-              });
+                    {
+                        "GetDC",
+                        new FunctionType(
+                            null,
+                            new Identifier("", new Pointer(VoidType.Instance, 4), new RegisterStorage("eax", 0, 0, PrimitiveType.Word32)),
+                            new [] {
+                                new Identifier("arg",
+                                    new TypeReference(
+                                        "HWND",
+                                        new Pointer(VoidType.Instance, 4)),
+                                    new StackArgumentStorage(4, new TypeReference(
+                                        "HWND",
+                                        new Pointer(VoidType.Instance, 4))))
+                            })
+                        {
+                            StackDelta = 4,
+                        }
+                    }
+               },
+               new Dictionary<string, DataType>());
             var rw = arch.CreateRewriter(
                 lr.SegmentMap.Segments.Values.First().MemoryArea.CreateLeReader(addr), 
                 this.state, 
@@ -307,7 +324,8 @@ namespace Reko.UnitTests.Scanning
             BuildTest16(delegate(X86Assembler m)
             {
                 scanner.Stub(x => x.GetCallSignatureAtAddress(Arg<Address>.Is.Anything)).Return(
-                    new ProcedureSignature(
+                    new FunctionType(
+                        null,
                         Reg(Registers.ax),
                         new Identifier[] { Reg(Registers.cx) }));
 

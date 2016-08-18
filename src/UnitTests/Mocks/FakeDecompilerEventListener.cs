@@ -157,6 +157,10 @@ namespace Reko.UnitTests.Mocks
             return new NullCodeLocation(block.Name);
         }
 
+        public ICodeLocation CreateStatementNavigator(Program program, Statement stm)
+        {
+            return new NullCodeLocation(program.SegmentMap.MapLinearAddressToAddress(stm.LinearAddress).ToString());
+        }
 
         #region IWorkerDialogService Members
 

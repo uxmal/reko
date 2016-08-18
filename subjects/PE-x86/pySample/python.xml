@@ -6316,4 +6316,8 @@
       </arg>
     </signature>
   </procedure>
+  
+  <global name="_Py_NoneStruct">
+    <type>PyObject</type>
+  </global>
 </library>

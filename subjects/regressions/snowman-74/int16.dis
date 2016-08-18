@@ -1,19 +1,19 @@
-int32 get(int32 dwArg00)
+int32 get(int32 dwArg04)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ecx
 // LiveOut:
 // Trashed: SCZO ah al ax eax rax
 // Preserved: ecx esp
-// Stack args: Stack +0000(32)
+// Stack args: Stack +0004(32)
 ?get@A@@AAEHH@Z_entry:
 // DataOut: ecx
 // DataOut (flags): 
 // SymbolicIn: esp:fp
-// LocalsOut: Stack +0000(32)
+// LocalsOut: Stack +0004(32)
 
 l10071000:
-	return Mem0[this:word32] + dwArg00
+	return Mem0[this:word32] + dwArg04
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp
@@ -21,7 +21,7 @@ l10071000:
 ?get@A@@AAEHH@Z_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp ecx:this eax:<invalid> 4(fp):dwArg00
+// SymbolicIn: esp:fp ecx:this eax:<invalid> 4(fp):dwArg04
 
 
 

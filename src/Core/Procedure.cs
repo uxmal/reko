@@ -46,7 +46,7 @@ namespace Reko.Core
             this.blocks = new List<Block>();
             this.ControlGraph = new BlockGraph(blocks);
 			this.Frame = frame;
-			this.Signature = new ProcedureSignature();
+			this.Signature = new FunctionType();
             this.EntryBlock = AddBlock(Name + "_entry");
 			this.ExitBlock = AddBlock(Name + "_exit");
 		}
@@ -163,7 +163,7 @@ namespace Reko.Core
             writer.WriteLine("// Return size: {0}", this.Signature.ReturnAddressOnStack);
 			if (emitFrame)
 				Frame.Write(writer);
-            Signature.Emit(QualifiedName(), ProcedureSignature.EmitFlags.None, new TextFormatter(writer));
+            Signature.Emit(QualifiedName(), FunctionType.EmitFlags.None, new TextFormatter(writer));
 			writer.WriteLine();
             var formatter = new CodeFormatter(new TextFormatter(writer));
             new ProcedureFormatter(this, new BlockDecorator { ShowEdges = showEdges }, formatter).WriteProcedureBlocks();
@@ -175,7 +175,7 @@ namespace Reko.Core
             if (emitFrame)
                 Frame.Write(writer);
             var formatter = new TextFormatter(writer);
-            Signature.Emit(Name, ProcedureSignature.EmitFlags.None, new TextFormatter(writer));
+            Signature.Emit(Name, FunctionType.EmitFlags.None, new TextFormatter(writer));
             writer.WriteLine();
             var codeFormatter = new CodeFormatter(formatter);
             new ProcedureFormatter(this, decorator, codeFormatter).WriteProcedureBlocks();
@@ -205,7 +205,7 @@ namespace Reko.Core
 		/// <summary>
 		/// The effects of this procedure on registers, stack, and FPU stack.
 		/// </summary>
-		public override ProcedureSignature Signature { get; set; }
+		public override FunctionType Signature { get; set; }
 
         /// <summary>
         /// True if the user specified this procedure by adding it to the project

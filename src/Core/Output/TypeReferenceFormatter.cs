@@ -31,6 +31,8 @@ namespace Reko.Core.Output
         private Formatter fmt;
         private bool declaration;
         private string declaredName;
+        private int depth;//$BUG: used to avoid infinite recursion
+        private bool wantSpace;
 
         public TypeReferenceFormatter(Formatter writer)
         {
@@ -156,7 +158,7 @@ namespace Reko.Core.Output
             var ptPointee = t.Pointee as Pointer;
             if (ptPointee != null)
                 Pointer(ptPointee);
-            fmt.Write(' ');
+            WriteSpace();
             fmt.Write('*');
             TypeQualifierList(t);
         }
@@ -208,6 +210,7 @@ namespace Reko.Core.Output
             else if (t is EquivalenceClass)
             {
                 fmt.Write(t.Name);
+                wantSpace = true;
                 return;
             }
             else if (t is PrimitiveType) {
@@ -223,40 +226,56 @@ namespace Reko.Core.Output
                 WritePrimitiveTypeName((PrimitiveType)t);
                 //if (declaration && !string.IsNullOrEmpty(declaredName))
                 //    fmt.Write(' ');
+                wantSpace = true;
                 return;
             }
             else if (t is VoidType)
             {
                 WriteVoidType((VoidType)t);
+                wantSpace = true;
                 return;
             }
             else if (t is UnionType)
             {
                 fmt.WriteKeyword("union");
+                fmt.Write(" ");
             }
             else if (t is StructureType)
             {
                 fmt.WriteKeyword("struct");
+                fmt.Write(" ");
             }
             else if (t is EnumType)
             {
                 fmt.WriteKeyword("enum");
+                fmt.Write(" ");
             }
-            fmt.Write(" ");
             if (string.IsNullOrEmpty(t.Name))
                 fmt.Write("<anonymous>");
             else
                 fmt.Write(t.Name);
+            wantSpace = true;
         }
 
         public virtual void WritePrimitiveTypeName(PrimitiveType t)
         {
             fmt.Write(t.Name);
+            wantSpace = true;
         }
 
         public virtual void WriteVoidType(VoidType t)
         {
             fmt.Write(t.Name);
+            wantSpace = true;
+        }
+
+        private void WriteSpace()
+        {
+            if (wantSpace)
+            {
+                fmt.Write(' ');
+                wantSpace = false;
+            }
         }
 
         /* specifier-qualifier-list:
@@ -272,6 +291,9 @@ namespace Reko.Core.Output
 
         void SpecifierQualifierList(DataType t)
         {
+            if (this.depth > 50) //$BUG: used to avoid infinite recursion
+                return;
+            ++this.depth;
             if (!(t is Pointer))
                 TypeQualifierList(t);
             var pt = t as Pointer;
@@ -287,17 +309,21 @@ namespace Reko.Core.Output
                 if (pointee is ArrayType || pointee is FunctionType)
                 {
                     fmt.Write(" (");
+                    wantSpace = false;
                 }
                 if (pt != null)
                     Pointer(pt);
                 else
                     MemberPointer(mp);
+                --this.depth;
                 return;
             }
+
             var ft = t as FunctionType;
             if (ft != null && ft.ReturnValue != null)
             {
                 SpecifierQualifierList(ft.ReturnValue.DataType);
+                --this.depth;
                 return;
             }
             var at = t as ArrayType;
@@ -309,6 +335,7 @@ namespace Reko.Core.Output
             {
                 TypeSpecifier(t);
             }
+            --this.depth;
         }
 
         private DataType StripPointerOperator(DataType dt)
@@ -324,6 +351,9 @@ namespace Reko.Core.Output
                 pt = dt as Pointer;
                 mp = dt as MemberPointer;
             }
+            var eq = dt as EquivalenceClass;
+            if (eq != null && eq.DataType != null)
+                dt = eq.DataType;
             return dt;
         }
 
@@ -373,15 +403,23 @@ namespace Reko.Core.Output
 
         void AbstractDeclarator(DataType dt)
         {
+            if (this.depth > 50)
+                return;         //$BUG: discover cause of the deep recursion?
+            ++this.depth;
             var pt = dt as Pointer;
             if (pt != null)
             {
-                if (pt.Pointee is ArrayType ||
-                    pt.Pointee is FunctionType)
+                var pointee = pt.Pointee;
+                var eq = pointee as EquivalenceClass;
+                if (eq != null && eq.DataType != null)
+                    pointee = eq.DataType;
+                if (pointee is ArrayType ||
+                    pointee is FunctionType)
                     fmt.Write(')');
-                dt = pt.Pointee;
+                dt = pointee;
             }
             DirectAbstractDeclarator(dt);
+            --this.depth;
         }
 
         /* direct-abstract-declarator:
@@ -510,7 +548,7 @@ namespace Reko.Core.Output
             }
         }
 
-        void DirectDeclarator(ProcedureSignature sig)
+        void DirectDeclarator(FunctionType sig)
         {
             SpaceForPointerOperator(sig.ReturnValue.DataType);
             fmt.Write(declaredName);

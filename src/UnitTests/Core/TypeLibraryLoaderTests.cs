@@ -25,6 +25,7 @@ using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Text;
+using Reko.Core.Types;
 
 namespace Reko.UnitTests.Core
 {
@@ -84,10 +85,10 @@ namespace Reko.UnitTests.Core
             Assert.AreEqual(0, lib.Types.Count);
             Assert.AreEqual(1, lib.Signatures.Count);
             var sExp =
-@"Register size_t ()(Stack (ptr char) ptrArg00)
+@"Register size_t strlen(Stack (ptr char) ptrArg04)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 ";
-            Assert.AreEqual(sExp, lib.Signatures["strlen"].ToString()
+            Assert.AreEqual(sExp, lib.Signatures["strlen"].ToString("strlen", FunctionType.EmitFlags.AllDetails)
             );
         }
 
@@ -126,11 +127,34 @@ namespace Reko.UnitTests.Core
             Assert.AreEqual(1, lib.Signatures.Count);
             Assert.AreEqual("(struct \"foo\" (0 int32 x))", lib.Types["FOO"].ToString());
             var sExp =
-@"Register int32 ()(Stack (ptr FOO) pfoo)
+@"Register int32 bar(Stack (ptr FOO) pfoo)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 ";
-            Assert.AreEqual(sExp, lib.Signatures["bar"].ToString()
+            Assert.AreEqual(sExp, lib.Signatures["bar"].ToString("bar", FunctionType.EmitFlags.AllDetails)
             );
+        }
+
+        [Test]
+        public void TLLDR_Global()
+        {
+            var contents =
+@"<?xml version=""1.0"" encoding=""UTF-8""?>
+<library xmlns=""http://schemata.jklnet.org/Decompiler"">
+  <Types>
+    <typedef name=""foo"">
+      <struct name=""foo_t"" />
+    </typedef>
+  </Types>
+  <global name=""g_foo"">
+    <type>foo</type>
+  </global>
+</library>";
+            CreateTypeLibraryLoader("c:\\bar\\foo.xml", contents);
+            var lib = tlldr.Load(platform, new TypeLibrary());
+            Assert.AreEqual(1, lib.Types.Count);
+            Assert.AreEqual(1, lib.Globals.Count);
+            var sExp = @"foo";
+            Assert.AreEqual(sExp, lib.Globals["g_foo"].ToString());
         }
     }
 }

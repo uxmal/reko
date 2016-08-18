@@ -292,18 +292,18 @@ namespace Reko.Arch.M68k
                 emitter.Cond(tmp));
         }
 
-        private void RewriteDiv(BinaryOperator op)
+        private void RewriteDiv(Func<Expression,Expression,Expression> op, DataType dt)
         {
             Debug.Print(di.dataWidth.ToString());
             if (di.dataWidth.BitSize == 16)
             {
                 di.dataWidth = PrimitiveType.UInt32;
                 var src = orw.RewriteSrc(di.op1, di.Address);
-                var rem = frame.CreateTemporary(PrimitiveType.UInt16);
-                var quot = frame.CreateTemporary(PrimitiveType.UInt16);
+                var rem = frame.CreateTemporary(dt);
+                var quot = frame.CreateTemporary(dt);
                 var regDst = frame.EnsureRegister(((RegisterOperand) di.op2).Register);
                 emitter.Assign(rem, emitter.Cast(rem.DataType, emitter.Remainder(regDst, src)));
-                emitter.Assign(quot, emitter.Cast(quot.DataType, emitter.UDiv(regDst, src)));
+                emitter.Assign(quot, emitter.Cast(quot.DataType, op(regDst, src)));
                 emitter.Assign(regDst, emitter.Dpb(regDst, rem, 16));
                 emitter.Assign(regDst, emitter.Dpb(regDst, quot, 0));
                 emitter.Assign(
@@ -422,7 +422,8 @@ namespace Reko.Arch.M68k
         {
             var opSrc = orw.RewriteSrc(di.op1, di.Address);
             var opDst = orw.RewriteDst(di.op2, di.Address, opSrc, (s, d) => s);
-            if (setFlag)
+            var isSr = GetRegister(di.op1) == Registers.sr || GetRegister(di.op2) == Registers.sr;
+            if (setFlag && !isSr)
             {
                 emitter.Assign(
                     orw.FlagGroup(FlagM.CVZN),

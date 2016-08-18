@@ -233,7 +233,7 @@ namespace Reko.UnitTests.Core
         [Test]
         public void Im_FireChangeEvent()
         {
-            var map = new ImageMap(addrBase, 0x100);
+            var map = new ImageMap(addrBase);
             var mapChangedFired = false;
             map.MapChanged += (sender, e) => { mapChangedFired = true; };
             map.AddItem(addrBase, new ImageMapItem { DataType = new CodeType() });

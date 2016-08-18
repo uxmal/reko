@@ -403,7 +403,7 @@ namespace Reko.Typing
                 seg.IsSegment = true;
                 var ptr = factory.CreatePointer(seg, dt.Size);
                 dt = ptr;
-            }
+            } 
             tvExp.DataType = unifier.Unify(tvExp.DataType, dt);
             tvExp.OriginalDataType = unifier.Unify(tvExp.OriginalDataType, dt);
             return tvExp.DataType;
@@ -744,9 +744,12 @@ namespace Reko.Typing
 
         public bool VisitUnaryExpression(UnaryExpression unary, TypeVariable tv)
         {
+            if (unary.Operator == Operator.AddrOf)
+            {
+                MeetDataType(unary, factory.CreatePointer(unary.Expression.DataType, unary.DataType.Size));
+            }
             unary.Expression.Accept(this, unary.Expression.TypeVariable);
             return false;
-            throw new NotImplementedException();
         }
     }
 }

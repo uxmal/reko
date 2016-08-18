@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Environments.Windows
             arch.Stub(a => a.MakeAddressFromConstant(Arg<Constant>.Is.NotNull)).Return(addr);
             host.Stub(h => h.GetImportedProcedure(
                 Arg<Address>.Is.Equal(addr),
-                Arg<Address>.Is.NotNull)).Return(new ExternalProcedure("foo", new ProcedureSignature()));
+                Arg<Address>.Is.NotNull)).Return(new ExternalProcedure("foo", new FunctionType()));
             mr.ReplayAll();
 
             var platform = new Win32MipsPlatform(services, arch);

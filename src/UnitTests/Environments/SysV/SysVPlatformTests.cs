@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
+using Reko.Core.Types;
 
 namespace Reko.UnitTests.Environments.SysV
 {
@@ -89,7 +90,7 @@ namespace Reko.UnitTests.Environments.SysV
                     {
                          {
                             "exit",
-                            new ProcedureSignature(null)
+                            new FunctionType()
                          }
                      }
                 });

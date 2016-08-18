@@ -516,9 +516,6 @@
     <Compile Include="ProcedureBase.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ProcedureSignature.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="ProcessorInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -661,6 +658,7 @@
     <Compile Include="Types\StructureType.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Expressions\ExpressionTypeAscenderBase.cs" />
     <Compile Include="Types\TypeFactory.cs">
       <SubType>Code</SubType>
     </Compile>

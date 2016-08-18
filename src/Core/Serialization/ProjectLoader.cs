@@ -29,6 +29,7 @@ using System.Xml.Serialization;
 using Reko.Core.Services;
 using System.Diagnostics;
 using System.Text;
+using Reko.Core.Types;
 
 namespace Reko.Core.Serialization
 {
@@ -343,14 +344,6 @@ namespace Reko.Core.Serialization
                     .Where(kv => kv.Key != null)
                    .ToSortedList(kv => kv.Key, kv => kv.Value);
             }
-            var tlDeser = CreateTypeLibraryDeserializer();
-            foreach (var kv in user.Globals)
-            {
-                var dt = kv.Value.DataType.Accept(tlDeser);
-                //$BUGBUG: what about x86 segmented binaries?
-                int offset = (int)kv.Key.ToLinear();
-                program.GlobalFields.Fields.Add(offset, dt, kv.Value.Name);
-            }
           
             if (sUser.Heuristics != null)
             {
@@ -378,8 +371,32 @@ namespace Reko.Core.Serialization
                     .Select(c => LoadUserCall(c, program))
                     .Where(c => c != null)
                     .ToSortedList(k => k.Address, v => v);
-                
             }
+            if (sUser.RegisterValues != null)
+            {
+                program.User.RegisterValues = LoadRegisterValues(sUser.RegisterValues);
+            }
+        }
+
+        private SortedList<Address, List<RegisterValue_v2>> LoadRegisterValues(
+            RegisterValue_v2[] sRegValues)
+        {
+            var allLists = new SortedList<Address, List<RegisterValue_v2>>();
+            foreach (var sRegValue in sRegValues)
+            {
+                Address addr;
+                if (sRegValue != null && platform.TryParseAddress(sRegValue.Address, out addr))
+                {
+                    List<RegisterValue_v2> list;
+                    if (!allLists.TryGetValue(addr, out list))
+                    {
+                        list = new List<RegisterValue_v2>();
+                        allLists.Add(addr, list);
+                    }
+                    list.Add(sRegValue);
+                }
+            }
+            return allLists;
         }
 
         private UserCallData LoadUserCall(SerializedCall_v1 call, Program program)
@@ -389,7 +406,7 @@ namespace Reko.Core.Serialization
                 return null;
 
             var procSer = program.CreateProcedureSerializer();
-            ProcedureSignature sig = null;
+            FunctionType sig = null;
             if (call.Signature != null)
             {
                 sig = procSer.Deserialize(
@@ -404,6 +421,7 @@ namespace Reko.Core.Serialization
                 Signature = sig,
             };
         }
+
 
         public void LoadUserData(UserData_v3 sUser, Program program, UserData user)
         {
@@ -450,14 +468,6 @@ namespace Reko.Core.Serialization
                     })
                     .Where(kv => kv.Key != null)
                    .ToSortedList(kv => kv.Key, kv => kv.Value);
-            }
-            var tlDeser = CreateTypeLibraryDeserializer();
-            foreach (var kv in user.Globals)
-            {
-                var dt = kv.Value.DataType.Accept(tlDeser);
-                //$BUGBUG: what about x86 segmented binaries?
-                int offset = (int)kv.Key.ToLinear();
-                program.GlobalFields.Fields.Add(offset, dt, kv.Value.Name);
             }
 
             if (sUser.Heuristics != null)

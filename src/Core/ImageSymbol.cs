@@ -69,7 +69,7 @@ namespace Reko.Core
         public uint Size { get; set; }
 
         /// <summary>
-        /// If set, Reko should just make not of the symbol and not 
+        /// If set, Reko should just make note of the symbol and not 
         /// attempt to decompile it.
         /// </summary>
         public bool NoDecompile { get; set; }
@@ -98,9 +98,10 @@ namespace Reko.Core
 
     public enum SymbolType
     {
-        Unknown,        // Unknown type
-        Code,           // executable code
-        Data,           // non-executable data
-        Procedure,      // Something that is called.
+        Unknown,            // Unknown type
+        Code,               // executable code
+        Data,               // non-executable data
+        Procedure,          // Something that is called.
+        ExternalProcedure   // A procedure outside of the binary
     }
 }

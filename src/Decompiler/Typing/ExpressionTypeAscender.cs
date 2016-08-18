@@ -18,14 +18,9 @@
  */
 #endregion
 
-using Reko.Analysis;
 using Reko.Core;
-using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Operators;
 using Reko.Core.Types;
-using System;
-using System.Diagnostics;
 
 namespace Reko.Typing
 {
@@ -38,336 +33,34 @@ namespace Reko.Typing
     ///  ↑ /  \ ↑
     /// leaf  leaf
     /// </remarks>
-    public class ExpressionTypeAscender : ExpressionVisitor<DataType>
+    public class ExpressionTypeAscender : ExpressionTypeAscenderBase
     {
-        private IPlatform platform;
-        private TypeStore store;
-        private TypeFactory factory;
         private Unifier unifier;
 
-        public ExpressionTypeAscender(IPlatform platform, TypeStore store, TypeFactory factory)
+        public ExpressionTypeAscender(
+            Program program,
+            TypeStore store,
+            TypeFactory factory) :
+                base(program, factory)
         {
-            this.platform = platform;
-            this.store = store;
-            this.factory = factory;
             this.unifier = new DataTypeBuilderUnifier(factory, store);
         }
 
-        public DataType VisitAddress(Address addr)
-        {
-            return RecordDataType(
-                PrimitiveType.Create(Domain.Pointer, addr.DataType.Size),
-                addr);
-        }
-
-        public DataType VisitApplication(Application appl)
-        {
-            foreach (var a in appl.Arguments)
-            {
-                RecordDataType(a.Accept(this), a);
-            }
-            RecordDataType(appl.Procedure.Accept(this), appl.Procedure);
-            return RecordDataType(appl.DataType, appl);
-        }
-
-        public DataType VisitArrayAccess(ArrayAccess acc)
-        {
-            DataType dtArr = acc.Array.Accept(this);
-            DataType dtIdx = acc.Index.Accept(this);
-            return RecordDataType(acc.DataType, acc);
-        }
-
-        private Exception NYI(Expression e)
-        {
-            return new NotImplementedException(string.Format("Not implemented: {0}", e));
-        }
-
-        public DataType VisitBinaryExpression(BinaryExpression binExp)
-        {
-            DataType dtLeft = binExp.Left.Accept(this);
-            DataType dtRight = binExp.Right.Accept(this);
-            DataType dt;
-            if (binExp.Operator == Operator.IAdd)
-            {
-                dt = PullSumDataType(dtLeft, dtRight);
-            }
-            else if (binExp.Operator == Operator.ISub)
-            {
-                dt = PullDiffDataType(dtLeft, dtRight);
-            }
-            else if (binExp.Operator == Operator.And || 
-                binExp.Operator == Operator.Or)
-            {
-                dt = PrimitiveType.CreateWord(dtLeft.Size).MaskDomain(Domain.Boolean | Domain.Integer | Domain.Character);
-            }
-            else if (
-                binExp.Operator == Operator.IMul ||
-                binExp.Operator == Operator.Shl ||
-                binExp.Operator == Operator.IMod)
-            {
-                dt = PrimitiveType.CreateWord(binExp.DataType.Size).MaskDomain(Domain.Integer);
-            }
-            else if (
-                binExp.Operator == Operator.SMul ||
-                binExp.Operator == Operator.SDiv)
-            {
-                dt = PrimitiveType.CreateWord(binExp.DataType.Size).MaskDomain(Domain.SignedInt);
-            }
-            else if (
-                binExp.Operator == Operator.UMul ||
-                binExp.Operator == Operator.UDiv)
-            {
-                dt = PrimitiveType.CreateWord(binExp.DataType.Size).MaskDomain(Domain.UnsignedInt);
-            }
-            else if (binExp.Operator is ConditionalOperator)
-            {
-                dt = PrimitiveType.Bool;
-            }
-            else if (
-                binExp.Operator == Operator.FAdd ||
-                binExp.Operator == Operator.FSub ||
-                binExp.Operator == Operator.FMul ||
-                binExp.Operator == Operator.FDiv)
-            {
-                dt = PrimitiveType.Create(Domain.Real, dtLeft.Size);
-            }
-            else if (binExp.Operator == Operator.Shr)
-            {
-                dt = PrimitiveType.Create(Domain.UnsignedInt, dtLeft.Size);
-            }
-            else if (binExp.Operator == Operator.Sar)
-            {
-                dt = PrimitiveType.Create(Domain.SignedInt, dtLeft.Size);
-            }
-            else if (binExp.Operator == Operator.Xor ||
-                     binExp.Operator == Operator.Shl)
-            {
-                dt = PrimitiveType.Create(Domain.Integer, dtLeft.Size);
-            }
-            else
-                throw NYI(binExp);
-            binExp.TypeVariable.DataType = dt;
-            binExp.TypeVariable.OriginalDataType = dt;
-            return dt;
-        }
-
-        private DataType PullSumDataType(DataType dtLeft, DataType dtRight)
-        {
-            var ptLeft = dtLeft as PrimitiveType;
-            var ptRight = dtRight.ResolveAs<PrimitiveType>();
-            if (ptLeft != null && ptLeft.Domain == Domain.Pointer ||
-                dtLeft is Pointer)
-            {
-                if (ptRight != null && ptRight.Domain != Domain.Pointer)
-                    return PrimitiveType.Create(Domain.Pointer, dtLeft.Size);
-            }
-            if (ptLeft != null && ptLeft.IsIntegral)
-            {
-                if (ptRight != null)
-                    return ptRight;
-            }
-            return dtLeft;
-        }
-
-        private DataType PullDiffDataType(DataType dtLeft, DataType dtRight)
-        {
-            var ptLeft = dtLeft as PrimitiveType;
-            var ptRight = dtRight as PrimitiveType;
-            if (ptLeft != null && ptLeft.Domain == Domain.Pointer || 
-                dtLeft is Pointer)
-            {
-                if (ptRight != null && (ptRight.Domain & Domain.Integer) != 0)
-                    return dtLeft;
-                throw new NotImplementedException(string.Format("Pulling difference {0} and {1}", dtLeft, dtRight));
-            }
-            if (ptRight != null && ptRight.Domain == Domain.Pointer || 
-                dtRight is Pointer)
-            {
-                if (ptRight != null && (ptRight.Domain & Domain.Integer) != 0)
-                    return dtLeft;
-                // If a dtRight is a pointer and it's being subtracted from 
-                // something, then the result has to be a ptrdiff_t, i.e.
-                // integer.
-                if (ptLeft != null && (ptLeft.Domain & Domain.Pointer) != 0)
-                    return PrimitiveType.Create(Domain.Integer, dtLeft.Size);
-                throw new NotImplementedException(string.Format("Pulling difference {0} and {1}", dtLeft, dtRight));
-            }
-            return dtLeft;
-        }
-
-        public DataType VisitCast(Cast cast)
-        {
-            cast.Expression.Accept(this);
-            RecordDataType(cast.DataType, cast);
-            return cast.DataType;
-        }
-
-        public DataType VisitConditionOf(ConditionOf cof)
-        {
-            cof.Expression.Accept(this);
-            RecordDataType(cof.DataType, cof);
-            return cof.DataType;
-        }
-
-        public DataType VisitConstant(Constant c)
-        {
-            RecordDataType(c.DataType, c);
-            return c.TypeVariable.DataType;
-        }
-
-        public DataType VisitDepositBits(DepositBits d)
-        {
-            var dtSource = d.Source.Accept(this);
-            var dtBits = d.InsertedBits.Accept(this);
-            if (d.TypeVariable.DataType == null)
-            {
-                d.TypeVariable.DataType = dtSource;
-                d.TypeVariable.OriginalDataType = dtSource;
-            }
-            return d.TypeVariable.DataType;
-        }
-
-        public DataType VisitDereference(Dereference deref)
-        {
-            //$TODO: if deref.Expression is of pointer type, this
-            // should be the pointeee.
-            return deref.DataType;
-        }
-
-        public DataType VisitFieldAccess(FieldAccess acc)
-        {
-            throw new NotImplementedException();
-        }
-
-        public DataType VisitIdentifier(Identifier id)
-        {
-            if (id.TypeVariable.DataType == null)
-            {
-                id.TypeVariable.DataType = id.DataType;
-                id.TypeVariable.OriginalDataType = id.DataType;
-            }
-            return id.TypeVariable.DataType;
-        }
-
-        public DataType VisitMemberPointerSelector(MemberPointerSelector mps)
-        {
-            throw new NotImplementedException();
-        }
-
-        public DataType VisitMemoryAccess(MemoryAccess access)
-        {
-            return VisitMemoryAccessCommon(access, access.EffectiveAddress);
-        }
-
-        public DataType VisitMemoryAccessCommon(Expression access, Expression ea)
-        {
-            var dtEa = ea.Accept(this);
-            var ptEa = dtEa.ResolveAs<Pointer>();
-            DataType dt;
-            if (ptEa != null)
-                dt = ptEa.Pointee;
-            else 
-                dt = access.DataType;
-            return RecordDataType(dt, access);
-        }
-
-        public DataType VisitMkSequence(MkSequence seq)
-        {
-            var dtHead = seq.Head.Accept(this);
-            var dtTail = seq.Tail.Accept(this);
-            DataType dtSeq;
-            if (IsSelector(dtHead))
-            {
-                dtSeq = PrimitiveType.Create(Domain.Pointer, dtHead.Size + dtTail.Size);
-            }
-            else 
-            {
-                var ptHead = dtHead as PrimitiveType;
-                if (ptHead != null && ptHead.IsIntegral)
-                {
-                    dtSeq = PrimitiveType.Create(ptHead.Domain, seq.DataType.Size);
-                }
-                else
-                {
-                    dtSeq = seq.DataType;
-                }
-            }
-            return RecordDataType(dtSeq, seq);
-        }
-
-        private bool IsSelector(DataType dt)
-        {
-            var pt = dt as PrimitiveType;
-            return pt != null && pt.Domain == Domain.Selector;
-        }
-
-        private bool IsIntegral(DataType dt)
-        {
-            var pt = dt as PrimitiveType;
-            return pt != null && pt.IsIntegral;
-        }
-
-        public DataType VisitOutArgument(OutArgument outArgument)
-        {
-            var dt = outArgument.Expression.Accept(this);
-            return dt;
-            //Expression exp = outArgument;
-            //return RecordDataType(OutPointerTo(outArgument.TypeVariable), exp);
-        }
-
-        private DataType OutPointerTo(TypeVariable tv)
-        {
-            return new Pointer(tv, platform.FramePointerType.Size);
-        }
-
-        private DataType RecordDataType(DataType dt, Expression exp)
+        protected override DataType RecordDataType(DataType dt, Expression exp)
         {
             exp.TypeVariable.DataType = unifier.Unify(exp.TypeVariable.DataType, dt);
             exp.TypeVariable.OriginalDataType = unifier.Unify(exp.TypeVariable.OriginalDataType, dt);
             return exp.TypeVariable.DataType;
         }
 
-        public DataType VisitPhiFunction(PhiFunction phi)
+        protected override DataType EnsureDataType(DataType dt, Expression exp)
         {
-            throw new NotImplementedException();
-        }
-
-        public DataType VisitPointerAddition(PointerAddition pa)
-        {
-            throw new NotImplementedException();
-        }
-
-        public DataType VisitProcedureConstant(ProcedureConstant pc)
-        {
-            return pc.DataType;
-        }
-
-        public DataType VisitScopeResolution(ScopeResolution scopeResolution)
-        {
-            throw new NotImplementedException();
-        }
-
-        public DataType VisitSegmentedAccess(SegmentedAccess access)
-        {
-            access.BasePointer.Accept(this);
-            return VisitMemoryAccessCommon(access, access.EffectiveAddress);
-        }
-
-        public DataType VisitSlice(Slice slice)
-        {
-            slice.Expression.Accept(this);
-            return slice.DataType;
-        }
-
-        public DataType VisitTestCondition(TestCondition tc)
-        {
-            throw new NotImplementedException();
-        }
-
-        public DataType VisitUnaryExpression(UnaryExpression unary)
-        {
-            var dt = unary.Expression.Accept(this);
-            return RecordDataType(dt, unary);
+            if (exp.TypeVariable.DataType == null)
+            {
+                exp.TypeVariable.DataType = dt;
+                exp.TypeVariable.OriginalDataType = dt;
+            }
+            return exp.TypeVariable.DataType;
         }
     }
 }

@@ -79,7 +79,7 @@ namespace Reko.Core
         /// <param name="signature"></param>
         /// <returns>The name of the calling convention, or null
         /// if no calling convention could be determined.</returns>
-        string DetermineCallingConvention(ProcedureSignature signature);
+        string DetermineCallingConvention(FunctionType signature);
 
         /// <summary>
         /// Given a C basic type, returns the number of bytes that type is
@@ -126,6 +126,7 @@ namespace Reko.Core
         void LoadUserOptions(Dictionary<string, object> options);
         ExternalProcedure LookupProcedureByName(string moduleName, string procName);
         ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal);
+        Identifier LookupGlobalByName(string moduleName, string globalName);
         Address MakeAddressFromConstant(Constant c);
         Address MakeAddressFromLinear(ulong uAddr);
         bool TryParseAddress(string sAddress, out Address addr);
@@ -244,7 +245,7 @@ namespace Reko.Core
                 segs.Values.ToArray());
         }
 
-        public virtual string DetermineCallingConvention(ProcedureSignature signature)
+        public virtual string DetermineCallingConvention(FunctionType signature)
         {
             return null;
         }
@@ -385,6 +386,11 @@ namespace Reko.Core
         }
 
         public virtual ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
+        {
+            return null;
+        }
+
+        public virtual Identifier LookupGlobalByName(string moduleName, string globalName)
         {
             return null;
         }

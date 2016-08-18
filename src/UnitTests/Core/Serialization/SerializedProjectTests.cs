@@ -33,6 +33,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
+using System;
 
 namespace Reko.UnitTests.Core.Serialization
 {
@@ -87,8 +88,15 @@ namespace Reko.UnitTests.Core.Serialization
                 {
                 });
             procser.Stub(p => p.Deserialize(null, null)).IgnoreArguments()
-                .Return(new ProcedureSignature());
+                .Return(new FunctionType());
             oe.Stub(e => e.Load(sc, arch)).Return(platform);
+        }
+
+        private void Expect_TryParseAddress(string sAddr, Address addr)
+        {
+            platform.Stub(p => p.TryParseAddress(
+                Arg<string>.Is.Equal(sAddr),
+                out Arg<Address>.Out(addr).Dummy)).Return(true);
         }
 
         [Test]
@@ -212,6 +220,17 @@ namespace Reko.UnitTests.Core.Serialization
                                     {
                                         Address = Address.SegPtr(0x1000, 0x0320),
                                         NoReturn = true,
+                                    }
+                                }
+                            },
+                            RegisterValues =
+                            {
+                                {
+                                    Address.Ptr32(0x012310),
+                                    new List<RegisterValue_v2>
+                                    {
+                                        new RegisterValue_v2 { Register = "eax", Value="01231" },
+                                        new RegisterValue_v2 { Register = "ecx", Value="42424711" },
                                     }
                                 }
                             }
@@ -416,6 +435,11 @@ namespace Reko.UnitTests.Core.Serialization
                                     InstructionAddress = "0041230",
                                     NoReturn = true, 
                                 }
+                            },
+                            RegisterValues = new RegisterValue_v2[]
+                            {
+                                new RegisterValue_v2 { Address="00443210", Register="eax", Value="42" },
+                                new RegisterValue_v2 { Address="00443210", Register="ecx", Value="10" },
                             }
                         }
                     }
@@ -423,9 +447,8 @@ namespace Reko.UnitTests.Core.Serialization
             };
             Given_Architecture();
             Given_TestOS_Platform();
-            platform.Stub(p => p.TryParseAddress(
-                Arg<string>.Is.Equal("0041230"),
-                out Arg<Address>.Out(Address.Ptr32(0x0041230)).Dummy)).Return(true);
+            Expect_TryParseAddress("0041230", Address.Ptr32(0x0041230));
+            Expect_TryParseAddress("00443210", Address.Ptr32(0x00443210));
             var loader = mr.Stub<ILoader>();
             loader.Stub(l => l.LoadImageBytes(null, 0))
                 .IgnoreArguments()
@@ -442,6 +465,8 @@ namespace Reko.UnitTests.Core.Serialization
             var project = ploader.LoadProject("c:\\tmp\\foo\\bar.proj", sProject);
             Assert.IsTrue(project.Programs[0].User.Heuristics.Contains("HeuristicScanning"));
             Assert.AreEqual("windows-1251", project.Programs[0].User.TextEncoding.WebName);
+            Assert.AreEqual(1, project.Programs[0].User.RegisterValues.Count);
+            Assert.AreEqual(2, project.Programs[0].User.RegisterValues[Address.Ptr32(0x00443210)].Count);
         }
 
         [Test]
@@ -450,7 +475,7 @@ namespace Reko.UnitTests.Core.Serialization
             var program = new Program();
             program.User.Heuristics.Add("shingle");
             program.User.TextEncoding = Encoding.GetEncoding("windows-1251");
-            
+        
             var pSaver = new ProjectSaver(sc);
             var file = pSaver.VisitProgram("foo.proj", program);
             var ip = (DecompilerInput_v4)file;
@@ -505,6 +530,7 @@ namespace Reko.UnitTests.Core.Serialization
         <item key=""Name"">Bob</item>
         <item key=""Name2"">Sue</item>
       </platform>
+      <registerValues />
     </user>
   </input>
 </project>";
@@ -543,6 +569,7 @@ namespace Reko.UnitTests.Core.Serialization
         </list>
         <item key=""Name2"">Sue</item>
       </platform>
+      <registerValues />
     </user>
   </input>
 </project>";
@@ -587,6 +614,7 @@ namespace Reko.UnitTests.Core.Serialization
         </dict>
         <item key=""Name2"">Sue</item>
       </platform>
+      <registerValues />
     </user>
   </input>
 </project>";
@@ -631,6 +659,7 @@ namespace Reko.UnitTests.Core.Serialization
         <prim domain=""Real"" size=""4"" />
         <Name>pi</Name>
       </global>
+      <registerValues />
     </user>
   </input>
 </project>";

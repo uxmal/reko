@@ -51,6 +51,7 @@ namespace Reko.UnitTests.Gui.Windows
         }
 
         [Test]
+        [Category(Categories.UserInterface)]
         public void MVS_ShowingWindowCreatesWindowFrame()
         {
             ServiceContainer sc = new ServiceContainer();
@@ -114,6 +115,7 @@ namespace Reko.UnitTests.Gui.Windows
         }
 
         [Test]
+        [Category(Categories.UserInterface)]
         public void LLI_ShowMemoryAtAddressShouldChangeMemoryControl()
         {
             var sc = new ServiceContainer();

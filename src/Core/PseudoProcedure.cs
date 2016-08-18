@@ -34,7 +34,7 @@ namespace Reko.Core
 	{
 		private int arity;
         private DataType returnType;
-		private ProcedureSignature sig;
+		private FunctionType sig;
 
         /// <summary>
         /// Well-known operations that many processors support but most high- or 
@@ -59,7 +59,7 @@ namespace Reko.Core
 			this.arity = arity;
 		}
 
-		public PseudoProcedure(string name, ProcedureSignature sig) : base(name)
+		public PseudoProcedure(string name, FunctionType sig) : base(name)
 		{
 			this.sig = sig;
 		}
@@ -78,7 +78,7 @@ namespace Reko.Core
             get { return returnType; }
         }
 
-		public override ProcedureSignature Signature
+		public override FunctionType Signature
 		{
 			get { return sig; }
 			set { throw new InvalidOperationException("Changing the signature of a PseudoProcedure is not allowed."); }

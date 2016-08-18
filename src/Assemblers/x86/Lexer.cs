@@ -161,19 +161,13 @@ namespace Reko.Assemblers.x86
 			keywords["les"] = Token.LES;
 			keywords["lfs"] = Token.LFS;
 			keywords["lgs"] = Token.LGS;
-			keywords["lodsb"] = Token.LODSB;
-			keywords["lodsw"] = Token.LODSW;
-			keywords["lodsd"] = Token.LODSD;
-			keywords["loop"] = Token.LOOP;
+            keywords["loop"] = Token.LOOP;
 			keywords["loope"] = Token.LOOPE;
 			keywords["loopne"] = Token.LOOPNE;
 			keywords["long"] = Token.LONG;
 			keywords["lss"] = Token.LSS;
 
 			keywords["mov"] = Token.MOV;
-            keywords["movsb"] = Token.MOVSB;
-            keywords["movsd"] = Token.MOVSD;
-			keywords["movsw"] = Token.MOVSW;
 			keywords["movsx"] = Token.MOVSX;
 			keywords["movzx"] = Token.MOVZX;
 			keywords["mul"] = Token.MUL;
@@ -195,8 +189,7 @@ namespace Reko.Assemblers.x86
 			keywords["ror"] = Token.ROR;
 			keywords["sar"] = Token.SAR;
 			keywords["sbb"] = Token.SBB;
-			keywords["scasb"] = Token.SCASB;
-			keywords["setnz"] = Token.SETNZ;
+            keywords["setnz"] = Token.SETNZ;
 			keywords["setz"] = Token.SETZ;
 			keywords["shl"] = Token.SHL;
 			keywords["shld"] = Token.SHLD;
@@ -204,16 +197,30 @@ namespace Reko.Assemblers.x86
 			keywords["shrd"] = Token.SHRD;
 			keywords["st"] = Token.ST;
 			keywords["stc"] = Token.STC;
-			keywords["stosb"] = Token.STOSB;
-			keywords["stosw"] = Token.STOSW;
-			keywords["struct"] = Token.STRUCT;
+            keywords["struct"] = Token.STRUCT;
 			keywords["sub"] = Token.SUB;
 			keywords["test"] = Token.TEST;
 			keywords["title"] = Token.TITLE;
 			keywords["word"] = Token.WORD;
             keywords["xchg"] = Token.XCHG;
 			keywords["xor"] = Token.XOR;
-		}
+
+            keywords["lodsb"] = Token.LODSB;
+            keywords["lodsw"] = Token.LODSW;
+            keywords["lodsd"] = Token.LODSD;
+            keywords["movsb"] = Token.MOVSB;
+            keywords["movsw"] = Token.MOVSW;
+            keywords["movsd"] = Token.MOVSD;
+            keywords["stosb"] = Token.STOSB;
+            keywords["stosw"] = Token.STOSW;
+            keywords["stosd"] = Token.STOSD;
+            keywords["scasb"] = Token.SCASB;
+            keywords["scasw"] = Token.SCASW;
+            keywords["scasd"] = Token.SCASD;
+            keywords["cmpsb"] = Token.CMPSB;
+            keywords["cmpsw"] = Token.CMPSW;
+            keywords["cmpsd"] = Token.CMPSD;
+        }
 
 		private Token ClassifySymbol()
 		{

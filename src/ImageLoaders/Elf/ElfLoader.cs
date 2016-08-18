@@ -164,10 +164,18 @@ namespace Reko.ImageLoaders.Elf
         protected ImageSymbol CreateImageSymbol(ElfSymbol sym, uint headerType)
         {
             SymbolType st;
+            if (sym.SectionIndex == 0 && sym.Type == ElfSymbolType.STT_FUNC) //$DEBUG
+                sym.ToString();
             if (sym.SectionIndex == 0 || sym.SectionIndex >= Sections.Count)
                 return null;
             if (!mpSymbolType.TryGetValue(sym.Type, out st))
                 return null;
+            if (sym.SectionIndex == 0)
+            {
+                if (st != SymbolType.Procedure)
+                    return null;
+                st = SymbolType.ExternalProcedure;
+            }
             var symSection = Sections[(int)sym.SectionIndex];
             // If this is a relocatable file, the symbol value is 
             // an offset from the section's virtual address. 
@@ -181,7 +189,7 @@ namespace Reko.ImageLoaders.Elf
             {
                 Type = st,
                 Name = sym.Name,
-                Size = (uint)sym.Size,     //$REVIEW: problem? Could such large objects (like arrays) exist?
+                Size = (uint)sym.Size,     //$REVIEW: is int32 a problem? Could such large objects (like arrays) exist?
                 ProcessorState = Architecture.CreateProcessorState()
             };
         }
@@ -854,7 +862,35 @@ namespace Reko.ImageLoaders.Elf
 
         public override void LocateGotPointers(Program program, SortedList<Address, ImageSymbol> symbols)
         {
-            throw new NotImplementedException();
+            // Locate the GOT
+            //$REVIEW: there doesn't seem to be a reliable way to get that
+            // information.
+            var got = program.SegmentMap.Segments.Values.FirstOrDefault(s => s.Name == ".got");
+            if (got == null)
+                return;
+
+            var rdr = program.CreateImageReader(got.Address);
+            while (rdr.Address < got.EndAddress)
+            {
+                var addrGot = rdr.Address;
+                ulong uAddrSym;
+                if (!rdr.TryReadUInt64(out uAddrSym))
+                    break;
+
+                var addrSym = Address.Ptr64(uAddrSym);
+                ImageSymbol symbol;
+                if (symbols.TryGetValue(addrSym, out symbol))
+                {
+                    // This GOT entry is a known symbol!
+                    if (symbol.Type == SymbolType.Procedure)
+                    {
+                        //$TODO: look up function signature.
+                        var gotSym = new ImageSymbol(addrGot, symbol.Name + "_GOT", new Pointer(new CodeType(), 4));
+                        symbols[addrGot] = gotSym;
+                        Debug.Print("Found GOT entry at {0}, changing symbol at {1}", gotSym, symbol);
+                    }
+                }
+            }
         }
     }
 

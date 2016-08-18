@@ -101,7 +101,7 @@ namespace Reko.Core.Types
 				return AreCompatible(sa, sb);
 			}
 
-			ArrayType aa = a as ArrayType;
+            ArrayType aa = a as ArrayType;
 			ArrayType ab = b as ArrayType;
 			if (aa != null && ab != null)
 			{
@@ -211,7 +211,12 @@ namespace Reko.Core.Types
 			if (b is UnknownType)
 				return a;
 
-			UnionType ua = a as UnionType;
+            if (a is VoidType)
+                return b;
+            if (b is VoidType)
+                return a;
+
+            UnionType ua = a as UnionType;
 			UnionType ub = b as UnionType;
 			if (ua != null && ub != null)
 			{
@@ -241,14 +246,10 @@ namespace Reko.Core.Types
 
 			TypeVariable tA = a as TypeVariable;
 			TypeVariable tB = b as TypeVariable;
-			if (tA != null && tB != null)
-			{
-				return UnifyTypeVariables(tA, tB);
-			}
-			if (tA != null || tB != null)
-			{
-				MakeUnion(a, b);
-			}
+            if (tA != null && tB != null)
+            {
+                return UnifyTypeVariables(tA, tB);
+            }
 
             TypeReference trA = a as TypeReference;
             TypeReference trB = b as TypeReference;
@@ -283,6 +284,7 @@ namespace Reko.Core.Types
 				else
 					return MakeUnion(eqA, eqB);
 			}
+
 			Pointer ptrA = a as Pointer;
 			Pointer ptrB = b as Pointer;
 			if (ptrA != null && ptrB != null)
@@ -290,14 +292,18 @@ namespace Reko.Core.Types
 				DataType dt = UnifyInternal(ptrA.Pointee, ptrB.Pointee);
 				return new Pointer(dt, Math.Max(ptrA.Size, ptrB.Size));
 			}
-			if (ptrA != null)
-			{
-				return UnifyPointer(ptrA, b);
-			}
-			if (ptrB != null)
-			{
-				return UnifyPointer(ptrB, a);
-			}
+            if (ptrA != null)
+            {
+                var dt = UnifyPointer(ptrA, b);
+                if (dt != null)
+                    return dt;
+            }
+            if (ptrB != null)
+            {
+                var dt = UnifyPointer(ptrB, a);
+                if (dt != null)
+                    return dt;
+            }
 
 			MemberPointer mpA = a as MemberPointer;
 			MemberPointer mpB = b as MemberPointer;
@@ -309,11 +315,15 @@ namespace Reko.Core.Types
 			}
 			if (mpA != null)
 			{
-				return UnifyMemberPointer(mpA, b);
+				var dt = UnifyMemberPointer(mpA, b);
+                if (dt != null)
+                    return dt;
 			}
 			if (mpB != null)
 			{
-				return UnifyMemberPointer(mpB, a);
+				var dt = UnifyMemberPointer(mpB, a);
+                if (dt != null)
+                    return dt;
 			}
 
 			FunctionType funA = a as FunctionType;
@@ -322,6 +332,14 @@ namespace Reko.Core.Types
 			{
 				return UnifyFunctions(funA, funB);
 			}
+            if (funA != null && b is CodeType)
+            {
+                return funA;
+            }
+            if (funB != null && a is CodeType)
+            {
+                return funB;
+            }
 
 			ArrayType arrA = a as ArrayType;
 			ArrayType arrB = b as ArrayType;
@@ -346,12 +364,12 @@ namespace Reko.Core.Types
 			{
 				return UnifyStructures(strA, strB);
 			}
-			if (strA != null && strA.Size >= b.Size)
+			if (strA != null && (strA.Size == 0 || strA.Size >= b.Size))
 			{
                 MergeIntoStructure(b, strA);
 				return strA;
 			}
-			if (strB != null && strB.Size >= a.Size)
+			if (strB != null && (strB.Size == 0 || strB.Size >= a.Size))
 			{
                 MergeIntoStructure(a, strB);
 				return strB;
@@ -366,7 +384,15 @@ namespace Reko.Core.Types
             {
                 return ca;
             }
-			return MakeUnion(a, b);
+            if (tA != null)
+            {
+                return UnifyTypeVariable(tA, b);
+            }
+            if (tB != null)
+            {
+                return UnifyTypeVariable(tB, a);
+            }
+            return MakeUnion(a, b);
 		}
 
         private DataType UnifyPrimitives(PrimitiveType pa, PrimitiveType pb)
@@ -566,7 +592,7 @@ namespace Reko.Core.Types
 					return ptrA.Clone();
 				}
 			}
-			return MakeUnion(ptrA, b);
+			return null;
 		}
 
 		public DataType UnifyMemberPointer(MemberPointer mpA, DataType b)
@@ -581,7 +607,7 @@ namespace Reko.Core.Types
 					return mpA.Clone();
 				}
 			}
-			return MakeUnion(mpA, b);
+			return null;
 		}
 
 		public virtual DataType UnifyTypeVariables(TypeVariable tA, TypeVariable tB)
@@ -592,7 +618,14 @@ namespace Reko.Core.Types
 				return MakeUnion(tA, tB);
 		}
 
-		public UnionType UnifyUnions(UnionType u1, UnionType u2)
+        private DataType UnifyTypeVariable(TypeVariable tv, DataType dt)
+        {
+            tv.DataType = UnifyInternal(tv.DataType, dt);
+            tv.OriginalDataType = UnifyInternal(tv.OriginalDataType, dt);
+            return tv;
+        }
+
+        public UnionType UnifyUnions(UnionType u1, UnionType u2)
 		{
 			UnionType u = new UnionType(null, null);
 			foreach (UnionAlternative a in u1.Alternatives.Values)

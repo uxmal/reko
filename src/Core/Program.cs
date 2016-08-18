@@ -372,6 +372,9 @@ namespace Reko.Core
                 {
                     this.ImageMap.AddItem(kv.Key, item);
                 }
+                //$BUGBUG: what about x86 segmented binaries?
+                int offset = (int)kv.Key.ToLinear();
+                GlobalFields.Fields.Add(offset, dt, kv.Value.Name);
             }
         }
 
@@ -481,11 +484,11 @@ namespace Reko.Core
         public void Reset()
         {
             Procedures.Clear();
-            BuildImageMap();
             globals = null;
             TypeFactory = new TypeFactory();
-            TypeStore = new TypeStore();
+            TypeStore.Clear();
             GlobalFields = TypeFactory.CreateStructureType("Globals", 0);
+            BuildImageMap();
         }
     } 
 

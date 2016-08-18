@@ -34,6 +34,8 @@ namespace Reko.UnitTests.Gui.Design
     [TestFixture]
     public class ImageMapSegmentDesignerTests
     {
+        private static string nl = Environment.NewLine;
+
         private MockRepository mr;
         private ImageSegment seg1;
         private ImageSegment seg2;
@@ -50,13 +52,14 @@ namespace Reko.UnitTests.Gui.Design
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void Imd_Add_Empty()
         {
             var host = mr.StrictMock<ITreeNodeDesignerHost>();
             var treeNode = mr.StrictMock<ITreeNode>();
             treeNode.Expect(t => t.Text = "seg1");
             treeNode.Expect(t => t.ImageName = "RoSection.ico");
-            treeNode.Expect(t => t.ToolTipText = "seg1\r\nAddress: 00001000\r\nSize: 1000\r\n--x");
+            treeNode.Expect(t => t.ToolTipText = "seg1" + nl  + "Address: 00001000" + nl  + "Size: 1000" + nl  + "--x");
             var des = new ImageMapSegmentNodeDesigner();
             des.Host = host;
             des.TreeNode = treeNode;

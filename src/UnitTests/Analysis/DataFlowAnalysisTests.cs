@@ -29,6 +29,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using Rhino.Mocks;
+using Reko.Core.Types;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -97,6 +98,7 @@ namespace Reko.UnitTests.Analysis
 		public void DfaGlobalHandle()
 		{
             Given_FakeWin32Platform(mr);
+            this.platform.Stub(p => p.LookupGlobalByName(null, null)).IgnoreArguments().Return(null);
             mr.ReplayAll();
             RunFileTest32("Fragments/import32/GlobalHandle.asm", "Analysis/DfaGlobalHandle.txt");
 		}
@@ -215,7 +217,14 @@ done:
             SaveRunOutput(prog, RunTest, "Analysis/DfaReg00001.txt");
         }
 
-		protected override void RunTest(Program prog, TextWriter writer)
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void DfaReg00282()
+        {
+            RunFileTest("Fragments/regressions/r00282.asm", "Analysis/DfaReg00282.txt");
+        }
+
+        protected override void RunTest(Program prog, TextWriter writer)
 		{
             IImportResolver importResolver = null;
 			dfa = new DataFlowAnalysis(prog, importResolver, new FakeDecompilerEventListener());
@@ -224,7 +233,7 @@ done:
 			{
 				ProcedureFlow flow = dfa.ProgramDataFlow[proc];
 				writer.Write("// ");
-				flow.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.ArgumentKind|ProcedureSignature.EmitFlags.LowLevelInfo, writer);
+				flow.Signature.Emit(proc.Name, FunctionType.EmitFlags.ArgumentKind|FunctionType.EmitFlags.LowLevelInfo, writer);
 				flow.Emit(prog.Architecture, writer);
 				proc.Write(false, writer);
 				writer.WriteLine();

@@ -106,7 +106,7 @@ namespace Reko.UnitTests.Analysis
                 var cce = new ConditionCodeEliminator(ssa, program.Platform);
                 cce.Transform();
 
-                var vp = new ValuePropagator(program.Architecture, ssa.Identifiers, proc);
+                var vp = new ValuePropagator(program.Architecture, ssa);
                 vp.Transform();
 
                 DeadCode.Eliminate(proc, ssa);

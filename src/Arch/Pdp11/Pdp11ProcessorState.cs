@@ -25,6 +25,7 @@ using Reko.Core.Code;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Reko.Core.Types;
 
 namespace Reko.Arch.Pdp11
 {
@@ -64,7 +65,7 @@ namespace Reko.Arch.Pdp11
             throw new NotImplementedException();
         }
 
-        public override void OnProcedureLeft(ProcedureSignature procedureSignature)
+        public override void OnProcedureLeft(FunctionType procedureSignature)
         {
             throw new NotImplementedException();
         }
@@ -74,7 +75,7 @@ namespace Reko.Arch.Pdp11
             return new CallSite(returnSize, 0);
         }
 
-        public override void OnAfterCall(ProcedureSignature sigCallee)
+        public override void OnAfterCall(FunctionType sigCallee)
         {
         }
     }

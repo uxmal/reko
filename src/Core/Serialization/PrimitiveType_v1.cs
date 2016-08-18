@@ -40,14 +40,59 @@ namespace Reko.Core.Serialization
 		{
 		}
 
+        public static SerializedType Bool()
+        {
+            return new PrimitiveType_v1 { Domain = Domain.Boolean, ByteSize = 1 };
+        }
+
         public static SerializedType Char8()
         {
             return new PrimitiveType_v1 { Domain = Domain.Character, ByteSize = 1 };
         }
 
+        public static SerializedType WChar16()
+        {
+            return new PrimitiveType_v1 { Domain = Domain.Character, ByteSize = 2 };
+        }
+
+        public static SerializedType SChar8()
+        {
+            return new PrimitiveType_v1 { Domain = Domain.Character | Domain.SignedInt, ByteSize = 1 };
+        }
+
+        public static SerializedType UChar8()
+        {
+            return new PrimitiveType_v1 { Domain = Domain.Character|Domain.UnsignedInt, ByteSize = 1 };
+        }
+
+        public static SerializedType Int16()
+        {
+            return new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize = 2 };
+        }
+
+        public static SerializedType UInt16()
+        {
+            return new PrimitiveType_v1 { Domain = Domain.UnsignedInt, ByteSize = 2 };
+        }
+
         public static SerializedType Int32()
         {
             return new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize = 4 };
+        }
+
+        public static SerializedType UInt32()
+        {
+            return new PrimitiveType_v1 { Domain = Domain.UnsignedInt, ByteSize = 4 };
+        }
+
+        public static SerializedType Int64()
+        {
+            return new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize = 8 };
+        }
+
+        public static SerializedType UInt64()
+        {
+            return new PrimitiveType_v1 { Domain = Domain.UnsignedInt, ByteSize = 8 };
         }
 
         public static SerializedType Real32()

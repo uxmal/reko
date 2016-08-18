@@ -101,6 +101,7 @@ VS Overflow Set 1001 V
                 case Opcode.bmi: RewriteBcc(ConditionCode.LT, FlagM.NF); break;
                 case Opcode.bne: RewriteBcc(ConditionCode.NE, FlagM.ZF); break;
                 case Opcode.bpl: RewriteBcc(ConditionCode.GT, FlagM.NF); break;
+                case Opcode.bvs: RewriteBcc(ConditionCode.OV, FlagM.VF); break;
                 case Opcode.bchg: RewriteBchg(); break;
                 case Opcode.bra: RewriteBra(); break;
                 case Opcode.bset: RewriteBclrBset("__bset"); break;
@@ -116,7 +117,8 @@ VS Overflow Set 1001 V
                 case Opcode.dbhi: RewriteDbcc(ConditionCode.ULE, FlagM.CF | FlagM.ZF); break;
                 case Opcode.dbne: RewriteDbcc(ConditionCode.NE, FlagM.ZF); break;
                 case Opcode.dbra: RewriteDbcc(ConditionCode.None, 0); break;
-                case Opcode.divu: RewriteDiv(Operator.UDiv); break;
+                case Opcode.divs: RewriteDiv(emitter.SDiv, PrimitiveType.Int16); break;
+                case Opcode.divu: RewriteDiv(emitter.UDiv, PrimitiveType.UInt16); break;
                 case Opcode.eor: RewriteLogical((s, d) => emitter.Xor(d, s)); break;
                 case Opcode.eori: RewriteLogical((s, d) => emitter.Xor(d, s)); break;
                 case Opcode.exg: RewriteExg(); break;
@@ -183,6 +185,12 @@ VS Overflow Set 1001 V
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        private RegisterStorage GetRegister(MachineOperand op)
+        {
+            var rOp = op as RegisterOperand;
+            return rOp != null ? rOp.Register : null;
         }
 
         //$REVIEW: push PseudoProc into the RewriterHost interface"

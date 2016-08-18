@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Typing
             this.factory = new TypeFactory();
             this.arch = new FakeArchitecture();
             var prog = new Program { Architecture = arch , Platform = new DefaultPlatform(null,arch)};
-            this.exa = new ExpressionTypeAscender(prog.Platform, store, factory);
+            this.exa = new ExpressionTypeAscender(prog, store, factory);
             this.exd = new ExpressionTypeDescender(prog, store, factory);
             store.EnsureExpressionTypeVariable(factory, prog.Globals, "globals_t");
         }
@@ -221,7 +221,7 @@ namespace Reko.UnitTests.Typing
         public void ExdApplication()
         {
             var arg = Id("arg", PrimitiveType.Word32);
-            var sig = new ProcedureSignature(null, Id("r", PrimitiveType.Real32));
+            var sig = new FunctionType(null, null, new[] { Id("r", PrimitiveType.Real32) });
             var ep = new ExternalProcedure("test", sig);
             RunTest(
                 Test(m.Fn(ep, m.Load(PrimitiveType.Word32, m.Word32(0x0300400))), VoidType.Instance));

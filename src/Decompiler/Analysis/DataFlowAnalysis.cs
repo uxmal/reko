@@ -23,6 +23,7 @@ using Reko.Core.Code;
 using Reko.Core.Lib;
 using Reko.Core.Output;
 using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -84,6 +85,9 @@ namespace Reko.Analysis
                     var sst = new SsaTransform(flow, proc, importResolver, doms, new HashSet<RegisterStorage>());
                     var ssa = sst.SsaState;
 
+                    var icrw = new IndirectCallRewriter(program, ssa, eventListener);
+                    icrw.Rewrite();
+
                     var cce = new ConditionCodeEliminator(ssa, program.Platform);
                     cce.Transform();
                     //var cd = new ConstDivisionImplementedByMultiplication(ssa);
@@ -91,7 +95,7 @@ namespace Reko.Analysis
 
                     DeadCode.Eliminate(proc, ssa);
 
-                    var vp = new ValuePropagator(program.Architecture, ssa.Identifiers, proc);
+                    var vp = new ValuePropagator(program.Architecture, ssa);
                     vp.Transform();
                     DeadCode.Eliminate(proc, ssa);
 
@@ -126,7 +130,7 @@ namespace Reko.Analysis
                 catch (StatementCorrelatedException stex)
                 {
                     eventListener.Error(
-                        eventListener.CreateBlockNavigator(program, stex.Statement.Block),
+                        eventListener.CreateStatementNavigator(program, stex.Statement),
                         stex, 
                         "An error occurred during data flow analysis.");
                 }
@@ -148,16 +152,16 @@ namespace Reko.Analysis
 				ProcedureFlow pf= this.flow[proc];
                 TextFormatter f = new TextFormatter(output);
 				if (pf.Signature != null)
-					pf.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, f);
+					pf.Signature.Emit(proc.Name, FunctionType.EmitFlags.None, f);
 				else if (proc.Signature != null)
-					proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, f);
+					proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.None, f);
 				else
 					output.Write("Warning: no signature found for {0}", proc.Name);
 				output.WriteLine();
 				pf.Emit(program.Architecture, output);
 
 				output.WriteLine("// {0}", proc.Name);
-				proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.None, f);
+				proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.None, f);
 				output.WriteLine();
 				foreach (Block block in proc.ControlGraph.Blocks)
 				{
@@ -252,7 +256,7 @@ namespace Reko.Analysis
                 // are propagated to the corresponding call sites.
                 var cce = new ConditionCodeEliminator(ssa, program.Platform);
                 cce.Transform();
-                var vp = new ValuePropagator(program.Architecture, ssa.Identifiers, proc);
+                var vp = new ValuePropagator(program.Architecture, ssa);
                 vp.Transform();
 
                 // Now compute SSA for the stack-based variables as well. That is:

@@ -89,6 +89,11 @@ namespace Reko.Core.Serialization
 
     public class RegisterValue_v2
     {
+        // Optional address; if not specified, use parent context
+        // (e.g. address of user-provided procedure)
+        [XmlAttribute("addr")]
+        public string Address;  
+
         [XmlAttribute("reg")]
         public string Register;
 

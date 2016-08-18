@@ -83,8 +83,10 @@ namespace Reko.Gui.Windows.Controls
 
         public LineSpan[] GetLineSpans(int count)
         {
-            Location loc = (Location)CurrentPosition;
+            Location loc = CurrentPosition as Location;
             var spans = new List<LineSpan>();
+            if (loc == null)
+                return spans.ToArray();
             for (int i = loc.iModel; count > 0 && i < Nodes.Count; ++i)
             {
                 var model = Nodes[i].Model;

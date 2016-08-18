@@ -72,7 +72,10 @@ namespace Reko.Core
             }
             else
             {
-                var arg = proc.Frame.EnsureOutArgument(idOrig, arch.FramePointerType);
+                //$REVIEW: out arguments are weird, as they are synthetic. It's possible that 
+                // future versions of reko will opt to model multiple values return from functions
+                // explicitly instead of using destructive updates of this kind.
+                var arg = proc.Frame.EnsureOutArgument(idOrig, PrimitiveType.Create(Domain.Pointer, arch.FramePointerType.Size));
                 args.Add(arg);
             }
         }
@@ -87,9 +90,9 @@ namespace Reko.Core
 			args.Add(new Identifier(id.Name, id.DataType, new StackArgumentStorage(stackOffset, id.DataType)));
 		}
 
-		public ProcedureSignature BuildSignature()
+		public FunctionType BuildSignature()
 		{
-			return new ProcedureSignature(ret, args.ToArray());
+			return new FunctionType(null, ret, args.ToArray());
 		}
 
 		public Identifier CreateOutIdentifier(Procedure proc, Identifier id)

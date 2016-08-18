@@ -33,6 +33,10 @@
         </str>
         <Name>g_20000</Name>
       </global>
+      <registerValues>
+        <assume addr="00012310" reg="eax" value="01231" />
+        <assume addr="00012310" reg="ecx" value="42424711" />
+      </registerValues>
     </user>
   </input>
 </project>

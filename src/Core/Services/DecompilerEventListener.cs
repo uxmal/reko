@@ -31,6 +31,7 @@ namespace Reko.Core.Services
         ICodeLocation CreateAddressNavigator(Program program, Address address);
         ICodeLocation CreateProcedureNavigator(Program program, Procedure proc);
         ICodeLocation CreateBlockNavigator(Program program, Block block);
+        ICodeLocation CreateStatementNavigator(Program program, Statement stm);
         void Warn(ICodeLocation location, string message);
         void Warn(ICodeLocation location, string message, params object[] args);
         void Error(ICodeLocation location, string message);
@@ -113,6 +114,11 @@ namespace Reko.Core.Services
         public ICodeLocation CreateBlockNavigator(Program program, Block block)
         {
             return new NullCodeLocation(block.Name);
+        }
+
+        public ICodeLocation CreateStatementNavigator(Program program, Statement stm)
+        {
+            return new NullCodeLocation(program.SegmentMap.MapLinearAddressToAddress(stm.LinearAddress).ToString());
         }
 
         public void AddDiagnostic(ICodeLocation location, Diagnostic d)

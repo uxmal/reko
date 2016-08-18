@@ -38,6 +38,14 @@ namespace Reko.Assemblers.x86
     /// </summary>
     public class X86Assembler
     {
+        enum StringInstructionBaseOps : byte
+        {
+            Move = 0xA4,
+            Compare = 0xA6,
+            Store = 0xAA,
+            Load = 0xAC,
+            Scan = 0xAE,
+        }
         private IServiceProvider services;
         private IProcessorArchitecture arch;
         private Address addrBase;
@@ -1774,11 +1782,6 @@ namespace Reko.Assemblers.x86
             ProcessBinop(0x7, src, Imm(dst));
         }
 
-        public void Cmpsb()
-        {
-            ProcessStringInstruction(0xA6, PrimitiveType.Byte);
-        }
-
         public void Db(params int[] bytes)
         {
             for (int i = 0; i < bytes.Length; ++i)
@@ -1840,11 +1843,6 @@ namespace Reko.Assemblers.x86
             ProcessLxs(-1, 0xC4, dst, src);
         }
 
-        public void Lodsw()
-        {
-            ProcessStringInstruction(0xAC, PrimitiveType.Word16);
-        }
-
         public void Loop(string target)
         {
             ProcessLoop(2, target);
@@ -1860,24 +1858,74 @@ namespace Reko.Assemblers.x86
             ProcessLoop(0, target);
         }
 
-        public void Movsw()
-        {
-            ProcessStringInstruction(0xA4, PrimitiveType.Word16);
-        }
-
         public void Rep()
         {
             emitter.EmitByte(0xF3);
         }
 
-        public void Scasb()
+        public void Lodsb()
         {
-            ProcessStringInstruction(0xAE, PrimitiveType.Byte);
+            ProcessStringInstruction((byte)StringInstructionBaseOps.Load, PrimitiveType.Byte);
+        }
+        public void Lodsw()
+        {
+            ProcessStringInstruction((byte)StringInstructionBaseOps.Load, PrimitiveType.Word16);
+        }
+        public void Lodsd()
+        {
+            ProcessStringInstruction((byte)StringInstructionBaseOps.Load, PrimitiveType.Word32);
         }
 
+        public void Stosb()
+        {
+            ProcessStringInstruction((byte)StringInstructionBaseOps.Store, PrimitiveType.Byte);
+        }
+        public void Stosw()
+        {
+            ProcessStringInstruction((byte)StringInstructionBaseOps.Store, PrimitiveType.Word16);
+        }
+        public void Stosd()
+        {
+            ProcessStringInstruction((byte)StringInstructionBaseOps.Store, PrimitiveType.Word32);
+        }
+
+        public void Movsb()
+        {
+            ProcessStringInstruction((byte)StringInstructionBaseOps.Move, PrimitiveType.Byte);
+        }
+        public void Movsw()
+        {
+            ProcessStringInstruction((byte)StringInstructionBaseOps.Move, PrimitiveType.Word16);
+        }
+        public void Movsd()
+        {
+            ProcessStringInstruction((byte)StringInstructionBaseOps.Move, PrimitiveType.Word32);
+        }
+
+        public void Scasb()
+        {
+            ProcessStringInstruction((byte)StringInstructionBaseOps.Scan, PrimitiveType.Byte);
+        }
         public void Scasw()
         {
-            ProcessStringInstruction(0xAE, PrimitiveType.Word16);
+            ProcessStringInstruction((byte)StringInstructionBaseOps.Scan, PrimitiveType.Word16);
+        }
+        public void Scasd()
+        {
+            ProcessStringInstruction((byte)StringInstructionBaseOps.Scan, PrimitiveType.Word32);
+        }
+
+        public void Cmpsb()
+        {
+            ProcessStringInstruction((byte)StringInstructionBaseOps.Compare, PrimitiveType.Byte);
+        }
+        public void Cmpsw()
+        {
+            ProcessStringInstruction((byte)StringInstructionBaseOps.Compare, PrimitiveType.Word16);
+        }
+        public void Cmpsd()
+        {
+            ProcessStringInstruction((byte)StringInstructionBaseOps.Compare, PrimitiveType.Word32);
         }
 
         public ParsedOperand St(int n)

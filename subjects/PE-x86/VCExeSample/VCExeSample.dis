@@ -5,12 +5,12 @@ int32 main(int32 argc, char * * argv)
 // LiveOut:
 // Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
 // Preserved: ebp esp
-// Stack args: Stack +0000(32)
+// Stack args: Stack +0004(32) Stack +0008(32)
 main_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp
-// LocalsOut: fp(32) Stack +0000(32)
+// LocalsOut: fp(32) Stack +0004(32) Stack +0008(32)
 
 l00401000:
 	test1(Mem0[argv:word32], argc, 0x004020C0, 1.0F)
@@ -91,6 +91,88 @@ test2_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp ebp:ebp -20(fp):<invalid> -16(fp):<invalid> -12(fp):<invalid> -8(fp):(real32) rLoc1 -4(fp):ebp
+
+
+
+void indirect_call_test3(cdecl_class * c)
+// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
+// Preserved: ebp esp
+// Stack args: Stack +0004(32)
+indirect_call_test3_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32) Stack +0004(32)
+
+l004010B0:
+	Mem0[Mem0[c:word32] + 0x00000004:word32](c, 0x000003E8)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+indirect_call_test3_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp ebp:ebp eax:<invalid> ecx:c edx:<invalid> -12(fp):c -8(fp):0x000003E8 -4(fp):ebp 4(fp):c
+
+
+
+void test4()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
+// Preserved: ebp esp
+test4_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32)
+
+l004010D0:
+	Mem0[Mem0[Mem0[0x00403018:word32]:word32]:word32](Mem0[0x00403018:word32])
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+test4_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp ebp:ebp eax:<invalid> ecx:<invalid> edx:<invalid> -8(fp):<invalid> -4(fp):ebp
+
+
+
+void test5()
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
+// Preserved: ebp esp
+test5_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32)
+
+l004010F0:
+	Mem0[Mem0[Mem0[0x00403018:word32]:word32] + 0x00000004:word32](Mem0[0x00403018:word32], 0x000003E7, (real32) Mem0[0x004020EC:real32])
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+test5_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp eax:<invalid> ecx:<invalid> edx:<invalid> ebp:ebp -16(fp):<invalid> -12(fp):0x000003E7 -8(fp):(real32) rLoc1 -4(fp):ebp
 
 
 

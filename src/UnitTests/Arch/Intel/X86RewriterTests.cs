@@ -154,7 +154,12 @@ namespace Reko.UnitTests.Arch.Intel
                     args);
             }
 
-            public ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction)
+            public FunctionType GetCallSignatureAtAddress(Address addrCallInstruction)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Identifier GetImportedGlobal(Address addrThunk, Address addrInstruction)
             {
                 throw new NotImplementedException();
             }
@@ -1370,5 +1375,17 @@ namespace Reko.UnitTests.Arch.Intel
                 "1|L--|Mem0[esp:real32] = (real32) rArg0");
         }
 
+        [Test]
+        public void X86rw_cmpxchg()
+        {
+            Run32bitTest(0xF0, 0x0F, 0xB0, 0x23); // lock cmpxchg[ebx], ah
+            AssertCode(
+                "0|L--|10000000(1): 1 instructions",
+                "1|L--|__lock()",
+                "2|L--|10000001(3): 1 instructions",
+                "3|L--|Z = __cmpxchg(Mem0[ebx:byte], ah, eax, out eax)");
+//            
+//Opcode: F0 0F B0 23
+        }
     }
 }

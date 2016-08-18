@@ -294,13 +294,13 @@ namespace Reko.Core.Output
 			if (mode == Mode.Writing)
 			{
                 object v;
-                if (visited.TryGetValue(str, out v) && (v == Defined || v == Declared))
+                if (visited.TryGetValue(str, out v) && (v == Defined))
 				{
                     writer.WriteKeyword("struct");
                     writer.Write(" ");
                     writer.Write(str.Name);
 				}
-				else if (v != Declared)
+				else
 				{
 					visited[str] = Declared;
 					ScanFields(str);

@@ -309,7 +309,7 @@ namespace Reko.Typing
 
         public DataType VisitFunctionType(FunctionType fn)
         {
-            if (fn.ReturnValue != null)
+            if (!fn.HasVoidReturn)
             {
                 fn.ReturnValue.DataType = fn.ReturnValue.DataType.Accept(this);
             }

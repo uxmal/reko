@@ -1,0 +1,50 @@
+a:Stack +0004
+    def:  def a
+    uses: a_1 = a
+          ecx_6 = Mem0[a:word32]
+a_1: orig: a
+    def:  a_1 = a
+    uses: eax_4 = a_1
+fp:fp
+    def:  def fp
+    uses: esp_3 = fp
+          esp_7 = fp - 0x00000004
+esp_3: orig: esp
+    def:  esp_3 = fp
+eax_4: orig: eax
+    def:  eax_4 = a_1
+Mem0:Global memory
+    def:  def Mem0
+    uses: ecx_6 = Mem0[a:word32]
+          Mem0[ecx_6 + 0x00000004:word32](dwLoc04_8)
+ecx_6: orig: ecx
+    def:  ecx_6 = Mem0[a:word32]
+    uses: Mem0[ecx_6 + 0x00000004:word32](dwLoc04_8)
+esp_7: orig: esp
+    def:  esp_7 = fp - 0x00000004
+dwLoc04_8: orig: dwLoc04
+    def:  dwLoc04_8 = 0x0000000A
+    uses: Mem0[ecx_6 + 0x00000004:word32](dwLoc04_8)
+esp_9: orig: esp
+eax_10: orig: eax
+ecx_11: orig: ecx
+// test
+// Return size: 4
+void test(str * a)
+fn0C00_0000_entry:
+	def a
+	def fp
+	def Mem0
+	// succ:  l0C00_0000
+l0C00_0000:
+	a_1 = a
+	esp_3 = fp
+	eax_4 = a_1
+	ecx_6 = Mem0[a:word32]
+	esp_7 = fp - 0x00000004
+	dwLoc04_8 = 0x0000000A
+	Mem0[ecx_6 + 0x00000004:word32](dwLoc04_8)
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+

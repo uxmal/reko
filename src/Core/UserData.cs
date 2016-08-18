@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Lib;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,7 @@ namespace Reko.Core
             this.Heuristics = new SortedSet<string>();
             this.Annotations = new List<Annotation>();
             this.TextEncoding = Encoding.ASCII;
+            this.RegisterValues = new SortedList<Address, List<Serialization.RegisterValue_v2>>();
         }
 
         // 'Oracular' information provided by the user.
@@ -64,6 +66,8 @@ namespace Reko.Core
         /// Text encoding to use to interpret strings.
         /// </summary>
         public Encoding TextEncoding { get; set; }
+
+        public SortedList<Address, List<Serialization.RegisterValue_v2>> RegisterValues { get; set; }
     }
 
     public class Annotation
@@ -83,6 +87,6 @@ namespace Reko.Core
 
         public bool NoReturn { get; set; }
 
-        public ProcedureSignature Signature { get; set; }
+        public FunctionType Signature { get; set; }
     }
 }

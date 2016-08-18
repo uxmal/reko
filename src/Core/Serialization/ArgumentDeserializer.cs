@@ -66,7 +66,10 @@ namespace Reko.Core.Serialization
                 regStorage);
             if (argCur.OutParameter)
             {
-                idArg = frame.EnsureOutArgument(idArg, arch.FramePointerType);
+                //$REVIEW: out arguments are weird, as they are synthetic. It's possible that 
+                // future versions of reko will opt to model multiple values return from functions
+                // explicitly instead of using destructive updates of this kind.
+                idArg = frame.EnsureOutArgument(idArg, PrimitiveType.Create(Domain.Pointer, arch.FramePointerType.Size));
             }
             return idArg;
         }
@@ -75,7 +78,12 @@ namespace Reko.Core.Serialization
         {
             if (argCur.Name == "...")
             {
-                return procSer.CreateId("...", new UnknownType(), new StackArgumentStorage(procSer.StackOffset, new UnknownType()));
+                return procSer.CreateId(
+                    "...",
+                    new UnknownType(),
+                    new StackArgumentStorage(
+                        procSer.StackOffset + retAddressOnStack,
+                        new UnknownType()));
             }
             if (argCur.Type == null)
                 throw new ApplicationException(string.Format("Argument '{0}' has no type.", argCur.Name));
@@ -92,7 +100,7 @@ namespace Reko.Core.Serialization
             var idArg = procSer.CreateId(
                 name,
                 dt,
-                new StackArgumentStorage(procSer.StackOffset, dt));
+                new StackArgumentStorage(procSer.StackOffset + retAddressOnStack, dt));
             procSer.StackOffset += dt.Size;
             return idArg;
         }

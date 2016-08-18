@@ -57,8 +57,9 @@ namespace Reko.UnitTests.Typing
 			coll.CollectProgramTraits(program);
 			sktore.BuildEquivalenceClassDataTypes(factory);
 #else
-            TypeCollector coll = new TypeCollector(factory, store, program);
+            TypeCollector coll = new TypeCollector(factory, store, program, null);
             coll.CollectTypes();
+
             store.BuildEquivalenceClassDataTypes(factory);
 #endif
 
@@ -406,6 +407,45 @@ namespace Reko.UnitTests.Typing
             var ttran = new TypeTransformer(factory, store, null);
             var dt = t2.Accept(ttran);
             Assert.AreSame(t1, dt, "Should reduce fields at offset 0 ");
+        }
+
+        [Test]
+        public void TtranAddressOf()
+        {
+            var pb = new ProgramBuilder();
+            pb.Add("AddressOf", m =>
+            {
+                var foo = new Identifier("foo", new UnknownType(), new MemoryStorage());
+                var r1 = m.Reg32("r1", 1);
+                m.Declare(r1, m.AddrOf(foo));
+                m.Store(r1, m.Word16(0x1234));
+                m.Store(m.IAdd(r1, 4), m.Byte(0x0A));
+                m.Return();
+            });
+            RunTest(pb.BuildProgram());
+        }
+
+        [Test]
+        public void TtranTypedAddressOf()
+        {
+            var pb = new ProgramBuilder();
+            pb.Add("TypedAddressOf", m =>
+            {
+                var str = new TypeReference("foo", new StructureType("foo", 0)
+                {
+                    Fields = {
+                        { 0, PrimitiveType.Int16, "word00" },
+                        { 4, PrimitiveType.Byte, "byte004"}
+                    }
+                });
+                var foo = new Identifier("foo", str, new MemoryStorage());
+                var r1 = m.Reg32("r1", 1);
+                m.Declare(r1, m.AddrOf(foo));
+                m.Store(r1, m.Word16(0x1234));
+                m.Store(m.IAdd(r1, 4), m.Byte(0x0A));
+                m.Return();
+            });
+            RunTest(pb.BuildProgram());
         }
     }
 }
