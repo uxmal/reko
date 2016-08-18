@@ -35,7 +35,7 @@ namespace Reko.Scanning
     /// Try to read varargs format, then to parse it, get arguments types and
     /// build application instruction.
     /// </summary>
-    class VarargsFormatScanner
+    public class VarargsFormatScanner
     {
         private Program program;
         private IProcessorArchitecture arch;
