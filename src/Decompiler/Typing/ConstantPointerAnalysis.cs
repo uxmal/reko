@@ -65,7 +65,11 @@ namespace Reko.Typing
 			{
                 foreach (var stm in proc.Statements)
                 {
-                    stm.Instruction.Accept(this);
+                    try
+                    {
+                        stm.Instruction.Accept(this);
+                    }
+                    catch { }
                 }
 			}
 		}

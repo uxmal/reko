@@ -39,6 +39,7 @@ namespace Reko.UnitTests.Typing
         private ExpressionTypeAscender exa;
         private ExpressionTypeDescender exd;
         private FakeArchitecture arch;
+        private Program program;
 
         [SetUp]
         public void Setup()
@@ -47,10 +48,15 @@ namespace Reko.UnitTests.Typing
             this.store = new TypeStore();
             this.factory = new TypeFactory();
             this.arch = new FakeArchitecture();
-            var prog = new Program { Architecture = arch , Platform = new DefaultPlatform(null,arch)};
-            this.exa = new ExpressionTypeAscender(prog, store, factory);
-            this.exd = new ExpressionTypeDescender(prog, store, factory);
-            store.EnsureExpressionTypeVariable(factory, prog.Globals, "globals_t");
+            this.program = new Program { Architecture = arch , Platform = new DefaultPlatform(null,arch)};
+            this.exa = new ExpressionTypeAscender(program, store, factory);
+            this.exd = new ExpressionTypeDescender(program, store, factory);
+            store.EnsureExpressionTypeVariable(factory, program.Globals, "globals_t");
+        }
+
+        private void Given_GlobalVariable(Address addr, DataType dt)
+        {
+            program.GlobalFields.Fields.Add((int)addr.ToUInt32(), dt);
         }
 
         private Pointer PointerTo(DataType dt)

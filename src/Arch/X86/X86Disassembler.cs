@@ -990,6 +990,8 @@ namespace Reko.Arch.X86
                     }
                     ++i;
                     pOperand = CreateImmediateOperand(width, dataWidth);
+                    if (pOperand == null)
+                        return null;
                     break;
                 case 'J':		// Relative ("near") jump.
                     width = OperandWidth(strFormat[i++]);
@@ -1169,7 +1171,10 @@ namespace Reko.Arch.X86
 
 		public ImmediateOperand CreateImmediateOperand(PrimitiveType immWidth, PrimitiveType instrWidth)
 		{
-			return new ImmediateOperand(rdr.ReadLe(immWidth));
+            Constant c;
+            if (!rdr.TryReadLe(immWidth, out c))
+                return null;
+			return new ImmediateOperand(c);
 		}
 
 		private MachineOperand DecodeModRM(PrimitiveType dataWidth, RegisterStorage segOverride, Func<int, PrimitiveType, RegisterStorage> regFn)
@@ -1258,9 +1263,11 @@ namespace Reko.Arch.X86
 
 				if (rm == 0x04)
 				{
-					// We have SIB'ness, your majesty!
+                    // We have SIB'ness, your majesty!
 
-					byte sib = rdr.ReadByte();
+                    byte sib;
+                    if (!rdr.TryReadByte(out sib))
+                        return null;
 					if (((this.currentDecodingContext.ModRegMemByte & 0xC0) == 0) && ((sib & 0x7) == 5))
 					{
 						offsetWidth = PrimitiveType.Word32;

@@ -23,11 +23,16 @@ using Reko.Core.Types;
 using System;
 
 namespace Reko.Core.Expressions
-{ 
+{
     /// <summary>
     /// Collect type information by pulling type information from
     /// the leaves of expression trees to their roots.
     /// </summary>
+    /// <remarks>
+    ///    root
+    ///  ↑ /  \ ↑
+    /// leaf  leaf
+    /// </remarks>
     public abstract class ExpressionTypeAscenderBase : ExpressionVisitor<DataType>
     {
         private IPlatform platform;
@@ -382,6 +387,10 @@ namespace Reko.Core.Expressions
         public DataType VisitUnaryExpression(UnaryExpression unary)
         {
             var dt = unary.Expression.Accept(this);
+            if (unary.Operator == Operator.AddrOf)
+            {
+                dt = unary.DataType;
+            }
             return RecordDataType(dt, unary);
         }
     }

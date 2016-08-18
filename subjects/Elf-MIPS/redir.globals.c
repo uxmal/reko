@@ -8,68 +8,68 @@ int8 g_aFFFFFFEC[];
 <anonymous> g_tFFFFFFFF;
 byte g_b0002;
 int32 g_dw01C4;
-Eq_167 g_t0695;
-struct Eq_15 g_t400238 = 
+Eq_245 g_t0695;
+struct Eq_21 g_t400238 = 
 	{
 		;
-<anonymous> g_t400290 = ;
-<anonymous> g_t4002A0 = ;
-<anonymous> g_t4002B0 = ;
-<anonymous> g_t4002C0 = ;
-<anonymous> g_t4002D0 = ;
-<anonymous> g_t4002E0 = ;
-<anonymous> g_t4002F0 = ;
-<anonymous> g_t400300 = ;
-<anonymous> g_t400310 = ;
-<anonymous> g_t400320 = ;
-<anonymous> g_t400330 = ;
-<anonymous> g_t400340 = ;
-<anonymous> g_t400350 = ;
-<anonymous> g_t400360 = ;
-<anonymous> g_t400370 = ;
-<anonymous> g_t400380 = ;
-<anonymous> g_t400390 = ;
-<anonymous> g_t4003A0 = ;
-<anonymous> g_t4003B0 = ;
-<anonymous> g_t4003C0 = ;
-<anonymous> g_t4003D0 = ;
-<anonymous> g_t4003E0 = ;
-<anonymous> g_t4003F0 = ;
-<anonymous> g_t400400 = ;
-<anonymous> g_t400410 = ;
-<anonymous> g_t400420 = ;
-<anonymous> g_t400430 = ;
-<anonymous> g_t400440 = ;
-<anonymous> g_t400450 = ;
-<anonymous> g_t400460 = ;
-<anonymous> g_t400470 = ;
-<anonymous> g_t400480 = ;
-<anonymous> g_t400490 = ;
-<anonymous> g_t4004A0 = ;
-<anonymous> g_t4004B0 = ;
-<anonymous> g_t4004C0 = ;
-<anonymous> g_t4004D0 = ;
-<anonymous> g_t4004E0 = ;
-<anonymous> g_t4004F0 = ;
-<anonymous> g_t400500 = ;
-<anonymous> g_t400510 = ;
-<anonymous> g_t400520 = ;
-<anonymous> g_t400530 = ;
-<anonymous> g_t400540 = ;
-<anonymous> g_t400550 = ;
-<anonymous> g_t400560 = ;
-<anonymous> g_t400570 = ;
-<anonymous> g_t400580 = ;
-<anonymous> g_t400590 = ;
-<anonymous> g_t4005A0 = ;
-<anonymous> g_t4005C0 = ;
-<anonymous> g_t4005D0 = ;
-<anonymous> g_t4005E0 = ;
-<anonymous> g_t4005F0 = ;
-<anonymous> g_t400600 = ;
-Eq_10 g_t410000;
+<anonymous> g_t400290 = <code>;
+<anonymous> g_t4002A0 = <code>;
+<anonymous> g_t4002B0 = <code>;
+<anonymous> g_t4002C0 = <code>;
+<anonymous> g_t4002D0 = <code>;
+<anonymous> g_t4002E0 = <code>;
+<anonymous> g_t4002F0 = <code>;
+<anonymous> g_t400300 = <code>;
+<anonymous> g_t400310 = <code>;
+<anonymous> g_t400320 = <code>;
+<anonymous> g_t400330 = <code>;
+<anonymous> g_t400340 = <code>;
+<anonymous> g_t400350 = <code>;
+<anonymous> g_t400360 = <code>;
+<anonymous> g_t400370 = <code>;
+<anonymous> g_t400380 = <code>;
+<anonymous> g_t400390 = <code>;
+<anonymous> g_t4003A0 = <code>;
+<anonymous> g_t4003B0 = <code>;
+<anonymous> g_t4003C0 = <code>;
+<anonymous> g_t4003D0 = <code>;
+<anonymous> g_t4003E0 = <code>;
+<anonymous> g_t4003F0 = <code>;
+<anonymous> g_t400400 = <code>;
+<anonymous> g_t400410 = <code>;
+<anonymous> g_t400420 = <code>;
+<anonymous> g_t400430 = <code>;
+<anonymous> g_t400440 = <code>;
+<anonymous> g_t400450 = <code>;
+<anonymous> g_t400460 = <code>;
+<anonymous> g_t400470 = <code>;
+<anonymous> g_t400480 = <code>;
+<anonymous> g_t400490 = <code>;
+<anonymous> g_t4004A0 = <code>;
+<anonymous> g_t4004B0 = <code>;
+<anonymous> g_t4004C0 = <code>;
+<anonymous> g_t4004D0 = <code>;
+<anonymous> g_t4004E0 = <code>;
+<anonymous> g_t4004F0 = <code>;
+<anonymous> g_t400500 = <code>;
+<anonymous> g_t400510 = <code>;
+<anonymous> g_t400520 = <code>;
+<anonymous> g_t400530 = <code>;
+<anonymous> g_t400540 = <code>;
+<anonymous> g_t400550 = <code>;
+<anonymous> g_t400560 = <code>;
+<anonymous> g_t400570 = <code>;
+<anonymous> g_t400580 = <code>;
+<anonymous> g_t400590 = <code>;
+<anonymous> g_t4005A0 = <code>;
+<anonymous> g_t4005C0 = <code>;
+<anonymous> g_t4005D0 = <code>;
+<anonymous> g_t4005E0 = <code>;
+<anonymous> g_t4005F0 = <code>;
+<anonymous> g_t400600 = <code>;
+Eq_17 g_t410000;
 <anonymous> g_t811F260;
-Eq_20 g_t10000000 = 
+Eq_37 g_t10000000 = 
 		{
 			&g_ptr10000860,
 			0,
@@ -80,7 +80,7 @@ int32 g_dw10000014 = 0;
 int32 g_dw10000018 = 4;
 int32 g_dw1000001C = 204800;
 int32 g_dw10000020 = 0;
-Eq_167 g_t10000024 = 
+Eq_245 g_t10000024 = 
 		{
 			
 			{
@@ -95,9 +95,9 @@ word32 g_a100007E0[] =
 		{
 		};
 <anonymous> * g_ptr10000860 = null;
-struct Eq_20 * g_ptr10000878 = &g_t10000000;
+struct Eq_37 * g_ptr10000878 = &g_t10000000;
 ptr32 g_ptr1000087C = 0x00400000;
-struct Eq_10 * g_ptr10000880 = &g_t410000;
+struct Eq_17 * g_ptr10000880 = &g_t410000;
 <anonymous> * g_ptr1000088C = &g_t400600;
 <anonymous> * g_ptr10000890 = &g_t4005F0;
 <anonymous> * g_ptr10000894 = __pack_d;
@@ -199,7 +199,7 @@ int32 * g_ptr10000A28 = &g_dw1000001C;
 <anonymous> * g_ptr10000A34 = &g_t400340;
 <anonymous> * g_ptr10000A38 = request_make_url;
 <anonymous> * g_ptr10000A3C = &g_t400330;
-struct Eq_167 * g_ptr10000A40 = &g_t10000024;
+struct Eq_245 * g_ptr10000A40 = &g_t10000024;
 <anonymous> * g_ptr10000A44 = clist_remove;
 <anonymous> * g_ptr10000A48 = &g_t400320;
 <anonymous> * g_ptr10000A4C = &g_t400310;

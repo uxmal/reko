@@ -19,9 +19,11 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Lib;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Reko.Core
 {
@@ -30,7 +32,7 @@ namespace Reko.Core
 	/// </summary>
 	public class RelocationDictionary 
     {
-        private Dictionary<ulong, Constant> map = new Dictionary<ulong, Constant>();
+        private SortedList<ulong, Constant> map = new SortedList<ulong, Constant>();
 
         /// <summary>
         /// Retrieves a relocated value at the <paramref name="imageOffset"/>.
@@ -65,6 +67,40 @@ namespace Reko.Core
 		{
 			return map.ContainsKey(imageOffset);
 		}
+
+        /// <summary>
+        /// Returns true if the specified address + length partially overlaps
+        /// a relocation. 
+        /// </summary>
+        /// <returns></returns>
+        public bool Overlaps(Address addr, uint length)
+        {
+            ulong linAddr = addr.ToLinear();
+            ulong linAddrEnd = linAddr + length;
+            ulong linReloc;
+            if (map.TryGetLowerBoundKey(linAddr, out linReloc))
+            {
+                // |-reloc----|
+                //      |-addr----|
+                var linRelocEnd = linReloc + (uint)map[linReloc].DataType.Size;
+                if (linReloc < linAddr && linAddr < linRelocEnd)
+                {
+                    return true;
+                }
+            }
+            if (map.TryGetUpperBoundKey(linAddr, out linReloc))
+            {
+                //     |-reloc----|
+                // |-addr----|
+                var linRelocEnd = linReloc + (uint)map[linReloc].DataType.Size;
+                if (linReloc < linAddrEnd)
+                {
+                    if (linAddrEnd < linRelocEnd)
+                        return true;
+                }
+            }
+            return false;
+        }
 
         public int Count
         {

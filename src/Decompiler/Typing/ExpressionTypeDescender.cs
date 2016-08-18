@@ -34,6 +34,11 @@ namespace Reko.Typing
     /// <summary>
     /// Pushes type information down from the root of an expression to its leaves.
     /// </summary>
+    /// <remarks>
+    ///    root
+    ///  ↓ /  \ ↓
+    /// leaf  leaf
+    /// </remarks>
     public class ExpressionTypeDescender : ExpressionVisitor<bool, TypeVariable>
     {
         // Matches the effective address of Mem[p + c] where c is a constant.
@@ -739,9 +744,12 @@ namespace Reko.Typing
 
         public bool VisitUnaryExpression(UnaryExpression unary, TypeVariable tv)
         {
+            if (unary.Operator == Operator.AddrOf)
+            {
+                MeetDataType(unary, factory.CreatePointer(unary.Expression.DataType, unary.DataType.Size));
+            }
             unary.Expression.Accept(this, unary.Expression.TypeVariable);
             return false;
-            throw new NotImplementedException();
         }
     }
 }

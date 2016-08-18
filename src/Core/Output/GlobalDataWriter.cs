@@ -159,7 +159,8 @@ namespace Reko.Core.Output
 
         public CodeFormatter VisitCode(CodeType c)
         {
-            throw new NotImplementedException();
+            codeFormatter.InnerFormatter.Write("<code>");
+            return codeFormatter;
         }
 
         public CodeFormatter VisitEnum(EnumType e)

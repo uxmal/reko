@@ -181,16 +181,6 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-        [Ignore("Frame pointers require escape and alias analysis.")]
-        public void DtbFramePointer()
-        {
-            ProgramBuilder mock = new ProgramBuilder();
-            mock.Add(new FramePointerFragment(factory));
-            RunTest(mock, "Typing/DtbFramePointer.txt");
-            throw new NotImplementedException();
-        }
-
-        [Test]
         public void DtbFnPointerMock()
         {
             //$TODO: find out where pfn_0 is comingfrom.
@@ -523,19 +513,6 @@ namespace Reko.UnitTests.Typing
             RunTest(prog.BuildProgram(), "Typing/DtbSequenceWithSegment.txt");
         }
 
-        [Test]
-        public void DtbArrayConstantPointers()
-        {
-            ProgramBuilder pp = new ProgramBuilder();
-            pp.Add("Fn", m =>
-            {
-                Identifier a = m.Local32("a");
-                Identifier i = m.Local32("i");
-                m.Assign(a, 0x00123456);		// array pointer
-                m.Store(m.IAdd(a, m.IMul(i, 8)), m.Int32(42));
-            });
-            RunTest(pp.BuildProgram(), "Typing/DtbArrayConstantPointers.txt");
-        }
 
         [Test]
         public void DtbCallTable()

@@ -34,7 +34,6 @@ namespace Reko.Core.Types
 	/// </remarks>
 	public class UnionType : DataType
 	{
-
 		private UnionAlternativeCollection alts = new UnionAlternativeCollection();
 
         public UnionType() : this(null, null, false)

@@ -200,9 +200,7 @@ namespace Reko.UnitTests.Typing
                 new StructureType { Fields = { { 0, PrimitiveType.Word32 } } });
 
 			mem = (StructureType) dt;
-			Assert.AreEqual(2, mem.Fields.Count);
-			Assert.IsNotNull((TypeVariable) mem.Fields[0].DataType);
-			Assert.IsNotNull((TypeVariable) mem.Fields[1].DataType);
+			Assert.AreEqual("(struct (0 T_1 t0000) (4 T_1 t0004))", mem.ToString());
 		}
 
 		[Test]

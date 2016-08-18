@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Decompiler/v2">
   <input>
-    <filename>D:\dev\uxmal\reko\master\subjects\regressions\snowman-51\switch.dll</filename>
+    <filename>switch.dll</filename>
     <address>10070000</address>
     <procedure name="get">
       <address>10071000</address>

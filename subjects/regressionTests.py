@@ -5,11 +5,24 @@
 # * having a dcproject file associated with them or
 # * a subject.cmd file containing reko command lines to execute.
 
+from optparse import OptionParser
 import os
 import os.path
 import subprocess
+import sys
 
-reko_cmdline =  os.path.abspath("../src/Drivers/CmdLine/bin/Debug/decompile.exe")
+parser = OptionParser()
+parser.add_option("-c", "--configuration", dest="configuration",
+                  help="define configuration (Debug, Release, etc.)",
+                  default="Debug", metavar="CONFIGURATION")
+parser.add_option("-o", "--check-output", dest="check_output",
+                  action="store_true",
+                  help="check output files", default=False)
+(options, args) = parser.parse_args()
+
+reko_cmdline_dir = os.path.abspath("../src/Drivers/CmdLine")
+reko_cmdline = os.path.join(
+    reko_cmdline_dir, "bin", options.configuration, "decompile.exe")
 output_extensions = [".asm", ".c", ".dis", ".h"]
 
 # Remove output files
@@ -42,15 +55,7 @@ def execute_in_dir(fn, dir, fname):
     os.chdir(oldDir)
 
 def execute_reko_project(dir, pname):
-    print("=== "+ pname)
-    proc = subprocess.Popen(
-        [ reko_cmdline, pname ],
-        stdout=subprocess.PIPE,
-        universal_newlines=True)
-    out = proc.communicate()[0]
-    if "error" in out.lower():
-        print("*** " + pname)
-        print(out)
+    execute_command([ reko_cmdline, pname ], pname)
 
 # Find all commands to execute.
 def execute_command_file(dir, scr_name):
@@ -63,16 +68,37 @@ def execute_command_file(dir, scr_name):
         exe_and_args = line.split()
         if len(exe_and_args) <= 1:
             continue
-        print("=== "+ exe_and_args[1])
         exe_and_args[0] = reko_cmdline
-        proc = subprocess.Popen(
-            exe_and_args,
-            stdout=subprocess.PIPE,
-            universal_newlines=True)
-        out = proc.communicate()[0]
-        if "error" in out.lower():
-            print("*** " + exe_and_args[1])
-            print(out)
+        execute_command(exe_and_args, exe_and_args[1])
+
+def execute_command(exe_and_args, pname):
+    if sys.platform == "linux2":
+        exe_and_args.insert(0, "mono")
+    print("=== "+ pname)
+    proc = subprocess.Popen(
+        exe_and_args,
+        stdout=subprocess.PIPE,
+        universal_newlines=True)
+    out = proc.communicate()[0]
+    if "error" in out.lower():
+        print("*** " + pname)
+        print(out)
+
+def check_output_files():
+    proc = subprocess.Popen(
+        ["git", "status", "."],
+        stdout=subprocess.PIPE,
+        universal_newlines=True)
+    out = proc.communicate()[0]
+    print(out)
+    if "working directory clean" in out.lower():
+        print("Output files are the same as in repository")
+    else:
+        print("Output files differ from repository")
+        exit(1)
 
 for root, subdirs, files in os.walk("."):
     run_test(root, files)
+
+if options.check_output:
+    check_output_files()

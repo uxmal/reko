@@ -887,8 +887,8 @@ namespace Reko.Core
     /// </code>
     /// </remarks>
 	public class TemporaryStorage : Storage
-    {
-        public TemporaryStorage(string name, int number, PrimitiveType dt) : base("Temporary")
+	{
+		public TemporaryStorage(string name, int number, DataType dt) : base("Temporary")
         {
             Domain = StorageDomain.Temporary + number;
             Name = name;

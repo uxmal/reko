@@ -451,7 +451,7 @@ namespace Reko
                 if (program.User.Heuristics.Contains("Shingle heuristic"))
                 {
                     eventListener.ShowStatus("Shingle scanning");
-                    var sh = new ShingledScanner(program, (IRewriterHost)scanner);
+                    var sh = new ShingledScanner(program, (IRewriterHost)scanner, eventListener);
                     var watch = new Stopwatch();
                     watch.Start();
                     var procs = sh.Scan();
@@ -464,7 +464,7 @@ namespace Reko
 
                     foreach (var addr in procs)
                     {
-                        scanner.ScanProcedure(addr, null, program.Architecture.CreateProcessorState());
+                        scanner.ScanProcedure(addr.Key, null, program.Architecture.CreateProcessorState());
                     }
                 }
                 eventListener.ShowStatus("Finished rewriting reachable machine code.");
