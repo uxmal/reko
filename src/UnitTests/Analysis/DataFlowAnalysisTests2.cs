@@ -174,7 +174,6 @@ test_exit:
         }
 
         [Test]
-        [Ignore("scanning-development")]
         public void Dfa2_CallProc()
         {
             pb = new ProgramBuilder();
@@ -183,6 +182,7 @@ test_exit:
                 var sp = m.Register(m.Architecture.StackRegister);
 
                 var fooProc = GivenFunction("foo", m.Architecture.GetRegister(1), 4, 8);
+                m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(sp, m.ISub(sp, 4));
                 m.Store(sp, 2);
                 m.Assign(sp, m.ISub(sp, 4));
@@ -200,7 +200,8 @@ void test()
 test_entry:
 	// succ:  l1
 l1:
-	Mem9[0x00010008:word32] = Mem0[fp + 0x00000004:word32] + Mem0[fp + 0x00000008:word32]
+	word32 r1_7 = foo(0x00000001, 0x00000002)
+	word32 r63_8 = fp
 	return
 	// succ:  test_exit
 test_exit:
