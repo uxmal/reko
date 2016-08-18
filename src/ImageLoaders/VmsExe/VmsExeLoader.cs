@@ -32,6 +32,8 @@ namespace Reko.ImageLoaders.VmsExe
     /// <summary>
     /// Documentation for the VAX VMS .EXE format is hard to obtain and understand(!)
     /// </summary>
+    // https://mail.encompasserve.org/anon/htnotes/note?f1=DEC_SOFTWARE&f2=444.6
+    // http://fossies.org/linux/freevms/sys/src/sysimgact.c
     public class VmsExeLoader : ImageLoader
     {
         public VmsExeLoader(IServiceProvider services, string filename, byte[] imgRaw) 
