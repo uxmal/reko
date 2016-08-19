@@ -224,6 +224,7 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Evaluation\CastCastRule.cs" />
     <Compile Include="Evaluation\IdProcConstRule.cs" />
     <Compile Include="Evaluation\SelfDpbRule.cs" />
     <Compile Include="Evaluation\Shl_add_Rule.cs" />

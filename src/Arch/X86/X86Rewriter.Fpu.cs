@@ -196,7 +196,15 @@ namespace Reko.Arch.X86
         public void RewriteFld()
         {
             state.GrowFpuStack(instrCur.Address);
-            emitter.Assign(FpuRegister(0), SrcOp(instrCur.op1));
+            var dst = FpuRegister(0);
+            var src = SrcOp(instrCur.op1);
+            if (src.DataType.Size != dst.DataType.Size)
+            {
+                src = emitter.Cast(
+                    PrimitiveType.Create(Domain.Real, dst.DataType.Size),
+                    src);
+            }
+            emitter.Assign(dst, src);
             WriteFpuStack(0);
         }
 

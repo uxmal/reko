@@ -129,5 +129,17 @@ namespace Reko.UnitTests.Evaluation
             var expr = m.Cast(new TypeReference("BYTE", PrimitiveType.Byte), Constant.Word32(0x11));
             Assert.AreEqual("0x11", expr.Accept(simplifier).ToString());
         }
+
+        [Test]
+        public void Exs_CastCast()
+        {
+            Given_ExpressionSimplifier();
+            var expr = m.Cast(
+                PrimitiveType.Real32,
+                m.Cast(
+                    PrimitiveType.Real64,
+                    m.Load(PrimitiveType.Real32, m.Word32(0x123400))));
+            Assert.AreEqual("Mem0[0x00123400:real32]", expr.Accept(simplifier).ToString());
+        }
     }
 }

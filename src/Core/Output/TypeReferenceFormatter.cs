@@ -100,7 +100,6 @@ namespace Reko.Core.Output
             var p = t as Pointer;
             if (p != null)
             {
-                DataType pointee = StripPointerOperator(p.Pointee);
                 if (!(t is ArrayType || t is FunctionType))
                     fmt.Write(' ');
             }

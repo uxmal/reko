@@ -110,6 +110,8 @@ namespace Reko.Analysis
                     coa.Transform();
                     DeadCode.Eliminate(proc, ssa);
 
+                    vp.Transform();
+
                     var liv = new LinearInductionVariableFinder(
                         proc,
                         ssa.Identifiers,
