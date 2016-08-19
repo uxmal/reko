@@ -35,96 +35,11 @@ namespace Reko.UnitTests.Analysis
 	{
 		private SsaState ssa;
 
-		[Test]
-		public void Associate()
-		{
-			var foo = new Identifier("foo", PrimitiveType.SegmentSelector, null);
-			var bar = new Identifier("bar", PrimitiveType.Word16, null);
-			var mpc = new SegmentedAccessClassifier(null);
-			mpc.Associate(foo, bar);
-			Assert.IsNotNull(mpc.AssociatedIdentifier(foo), "Bar should be associated");
-			mpc.Associate(foo, bar);
-			Assert.IsNotNull(mpc.AssociatedIdentifier(foo), "Bar should still be associated");
-		}
-
-		[Test]
-		public void Disassociate()
-		{
-			Identifier foo = new Identifier("foo", PrimitiveType.SegmentSelector, null);
-			Identifier bar = new Identifier("bar", PrimitiveType.Word16, null);
-			Identifier baz = new Identifier("baz", PrimitiveType.Word16, null);
-			SegmentedAccessClassifier mpc = new SegmentedAccessClassifier(null);
-			mpc.Associate(foo, bar);
-			mpc.Associate(foo, baz);
-			Assert.IsNull(mpc.AssociatedIdentifier(foo), "Bar should no longer be associated");
-		}
-
-		[Test]
-		public void AssociateConsts()
-		{
-			Identifier ptr = new Identifier("ptr", PrimitiveType.SegmentSelector, null);
-			SegmentedAccessClassifier mpc = new SegmentedAccessClassifier(null);
-			mpc.Associate(ptr, Constant.Word32(3));
-			mpc.Associate(ptr, Constant.Word32(4));
-			Assert.IsTrue(mpc.IsOnlyAssociatedWithConstants(ptr), "Should only have been associated with constants");
-		}
-
-		[Test]
-		public void DisassociateConsts()
-		{
-			Identifier ptr = new Identifier("ptr", PrimitiveType.SegmentSelector, null);
-			Identifier mp =  new Identifier("mp",  PrimitiveType.SegmentSelector, null);
-			SegmentedAccessClassifier mpc = new SegmentedAccessClassifier(null);
-			mpc.Associate(ptr, Constant.Word32(3));
-			mpc.Associate(ptr, mp);
-			mpc.Associate(ptr, Constant.Word32(4));
-			Assert.IsFalse(mpc.IsOnlyAssociatedWithConstants(ptr), "Should have been disassociated");
-		}
-
-		[Test]
-		public void Classify1()
-		{
-			Prepare(new Mp1());
-			SegmentedAccessClassifier mpc = new SegmentedAccessClassifier(ssa);
-			mpc.Classify();
-            Identifier ds = ssa.Identifiers.Where(s => s.Identifier.Name == "ds").Single().Identifier;
-			Identifier bx = ssa.Identifiers.Where(s => s.Identifier.Name == "bx").Single().Identifier;
-			Identifier a = mpc.AssociatedIdentifier(ds);
-			Assert.AreSame(a, bx);
-		}
-
-		[Test]
-		public void Classify2()
-		{
-			Prepare(new Mp2());
-			SegmentedAccessClassifier mpc = new SegmentedAccessClassifier(ssa);
-			mpc.Classify();
-            Identifier ds = ssa.Identifiers.Where(s => s.Identifier.Name == "ds").Single().Identifier;
-			Assert.AreEqual("ds", ds.Name);
-            Identifier bx = ssa.Identifiers.Where(s => s.Identifier.Name == "bx").Single().Identifier;
-			Assert.AreEqual("bx", bx.Name);
-			Identifier a = mpc.AssociatedIdentifier(ds);
-			Assert.AreSame(a, bx);
-		}
-
-		[Test]
-		public void Classify3()
-		{
-			Prepare(new Mp3());
-			SegmentedAccessClassifier mpc = new SegmentedAccessClassifier(ssa);
-			mpc.Classify();
-            Identifier ds = ssa.Identifiers.Where(s => s.Identifier.Name == "ds").Single().Identifier;
-			Assert.AreEqual("ds", ds.Name);
-            Identifier bx = ssa.Identifiers.Where(s => s.Identifier.Name == "bx").Single().Identifier;
-			Assert.AreEqual("bx", bx.Name);
-			Identifier a = mpc.AssociatedIdentifier(ds);
-			Assert.IsNull(a, "ds is used both as ds:[bx+4] and ds:[0x3000], it should't be strongly associated with a register");
-		}
-
 		private void Prepare(ProcedureBuilder mock)
 		{
-			var tr = new SsaTransform(new ProgramDataFlow(), mock.Procedure, null, mock.Procedure.CreateBlockDominatorGraph(), new HashSet<RegisterStorage>());
-            ssa = tr.SsaState;
+            var sst = new SsaTransform2(mock.Architecture, mock.Procedure, null, new DataFlow2());
+            sst.Transform();
+            ssa = sst.SsaState;
 		}
 
 		public class Mp1 : ProcedureBuilder
@@ -166,6 +81,91 @@ namespace Reko.UnitTests.Analysis
 				LoadId(ax, MembPtrW(ds, IAdd(bx, Int16(4))));
 				LoadId(ax, MembPtrW(ds, Int16(0x3000)));
 			}
+		}
+		[Test]
+		public void SacAssociate()
+		{
+			var foo = new Identifier("foo", PrimitiveType.SegmentSelector, null);
+			var bar = new Identifier("bar", PrimitiveType.Word16, null);
+			var mpc = new SegmentedAccessClassifier(null);
+			mpc.Associate(foo, bar);
+			Assert.IsNotNull(mpc.AssociatedIdentifier(foo), "Bar should be associated");
+			mpc.Associate(foo, bar);
+			Assert.IsNotNull(mpc.AssociatedIdentifier(foo), "Bar should still be associated");
+		}
+
+		[Test]
+		public void SacDisassociate()
+		{
+			Identifier foo = new Identifier("foo", PrimitiveType.SegmentSelector, null);
+			Identifier bar = new Identifier("bar", PrimitiveType.Word16, null);
+			Identifier baz = new Identifier("baz", PrimitiveType.Word16, null);
+			SegmentedAccessClassifier mpc = new SegmentedAccessClassifier(null);
+			mpc.Associate(foo, bar);
+			mpc.Associate(foo, baz);
+			Assert.IsNull(mpc.AssociatedIdentifier(foo), "Bar should no longer be associated");
+		}
+
+		[Test]
+		public void SacAssociateConsts()
+		{
+			Identifier ptr = new Identifier("ptr", PrimitiveType.SegmentSelector, null);
+			SegmentedAccessClassifier mpc = new SegmentedAccessClassifier(null);
+			mpc.Associate(ptr, Constant.Word32(3));
+			mpc.Associate(ptr, Constant.Word32(4));
+			Assert.IsTrue(mpc.IsOnlyAssociatedWithConstants(ptr), "Should only have been associated with constants");
+		}
+
+		[Test]
+		public void SacDisassociateConsts()
+		{
+			Identifier ptr = new Identifier("ptr", PrimitiveType.SegmentSelector, null);
+			Identifier mp =  new Identifier("mp",  PrimitiveType.SegmentSelector, null);
+			SegmentedAccessClassifier mpc = new SegmentedAccessClassifier(null);
+			mpc.Associate(ptr, Constant.Word32(3));
+			mpc.Associate(ptr, mp);
+			mpc.Associate(ptr, Constant.Word32(4));
+			Assert.IsFalse(mpc.IsOnlyAssociatedWithConstants(ptr), "Should have been disassociated");
+		}
+
+		[Test]
+		public void SacClassify1()
+		{
+			Prepare(new Mp1());
+			SegmentedAccessClassifier mpc = new SegmentedAccessClassifier(ssa);
+			mpc.Classify();
+            Identifier ds = ssa.Identifiers.Where(s => s.Identifier.Name == "ds").Single().Identifier;
+			Identifier bx = ssa.Identifiers.Where(s => s.Identifier.Name == "bx").Single().Identifier;
+			Identifier a = mpc.AssociatedIdentifier(ds);
+			Assert.AreSame(a, bx);
+		}
+
+		[Test]
+		public void SacClassify2()
+		{
+			Prepare(new Mp2());
+			SegmentedAccessClassifier mpc = new SegmentedAccessClassifier(ssa);
+			mpc.Classify();
+            Identifier ds = ssa.Identifiers.Where(s => s.Identifier.Name == "ds").Single().Identifier;
+			Assert.AreEqual("ds", ds.Name);
+            Identifier bx = ssa.Identifiers.Where(s => s.Identifier.Name == "bx").Single().Identifier;
+			Assert.AreEqual("bx", bx.Name);
+			Identifier a = mpc.AssociatedIdentifier(ds);
+			Assert.AreSame(a, bx);
+		}
+
+		[Test]
+		public void SacClassify3()
+		{
+			Prepare(new Mp3());
+			SegmentedAccessClassifier mpc = new SegmentedAccessClassifier(ssa);
+			mpc.Classify();
+            Identifier ds = ssa.Identifiers.Where(s => s.Identifier.Name == "ds").Single().Identifier;
+			Assert.AreEqual("ds", ds.Name);
+            Identifier bx = ssa.Identifiers.Where(s => s.Identifier.Name == "bx").Single().Identifier;
+			Assert.AreEqual("bx", bx.Name);
+			Identifier a = mpc.AssociatedIdentifier(ds);
+			Assert.IsNull(a, "ds is used both as ds:[bx+4] and ds:[0x3000], it should't be strongly associated with a register");
 		}
 	}
 }
