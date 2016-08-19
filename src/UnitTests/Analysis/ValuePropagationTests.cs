@@ -106,7 +106,7 @@ namespace Reko.UnitTests.Analysis
 
         protected override void RunTest(Program prog, TextWriter writer)
 		{
-			var dfa = new DataFlowAnalysis(prog, null, new FakeDecompilerEventListener());
+			var dfa = new DataFlowAnalysis(prog, importResolver, new FakeDecompilerEventListener());
 			dfa.UntangleProcedures();
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
@@ -114,7 +114,7 @@ namespace Reko.UnitTests.Analysis
 				var gr = proc.CreateBlockDominatorGraph();
 				Aliases alias = new Aliases(proc, prog.Architecture);
 				alias.Transform();
-                SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, null, gr,
+                SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, importResolver, gr,
                     new HashSet<RegisterStorage>());
 				SsaState ssa = sst.SsaState;
                 var cce = new ConditionCodeEliminator(ssa, prog.Platform);
@@ -836,6 +836,23 @@ ProcedureBuilder_exit:
 ";
             #endregion
                 AssertStringsEqual(sExp, ssa);
+        }
+
+        [Test]
+        public void VpCastCast()
+        {
+            var m = new ProcedureBuilder();
+            m.Store(
+                m.Word32(0x1234000),
+                m.Cast(
+                    PrimitiveType.Real32,
+                    m.Cast(
+                        PrimitiveType.Real64, 
+                        m.Load(PrimitiveType.Real32, m.Word32(0x123400)))));
+            m.Return();
+            mr.ReplayAll();
+
+            RunFileTest(m, "Analysis/VpCastCast.txt");
         }
     }
 }

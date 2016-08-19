@@ -1,0 +1,41 @@
+= ProcedureBuilder ========================
+Mem0:Global memory
+    def:  def Mem0
+    uses: f1_1 = (real64) Mem0[0x00123400:real64]
+f1_1: orig: f1
+    def:  f1_1 = (real64) Mem0[0x00123400:real64]
+    uses: Mem2[0x01234000:real32] = (real32) f1_1
+Mem2: orig: Mem0
+    def:  Mem2[0x01234000:real32] = (real32) f1_1
+// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def Mem0
+	// succ:  l1
+l1:
+	f1_1 = (real64) Mem0[0x00123400:real64]
+	Mem2[0x01234000:real32] = (real32) f1_1
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+
+Mem0:Global memory
+    def:  def Mem0
+    uses: f1_1 = (real64) Mem0[0x00123400:real64]
+f1_1: orig: f1
+    def:  f1_1 = (real64) Mem0[0x00123400:real64]
+    uses: Mem2[0x01234000:real32] = (real32) f1_1
+Mem2: orig: Mem0
+    def:  Mem2[0x01234000:real32] = (real32) f1_1
+// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder()
+ProcedureBuilder_entry:
+	def Mem0
+	// succ:  l1
+l1:
+	Mem1[0x01234000:real32] = Mem0[0x00123400:real32]
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
