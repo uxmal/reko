@@ -36,6 +36,7 @@ ax_3: orig: ax
 bx_4: orig: bx
     def:  bx_4 = 0x002B
     uses: use bx_4 (=> bxOut)
+bxOut:Out:bx
 // fn0C00_000E
 // Return size: 0
 word16 fn0C00_000E(ptr16 & bxOut)

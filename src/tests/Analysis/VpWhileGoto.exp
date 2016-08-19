@@ -84,11 +84,17 @@ Mem27: orig: Mem0
     def:  Mem27[ds:0x0300:word16] = ax_25
 ds:ds
     def:  def ds
+    uses: ax_8 = Mem7[ds:si_6:word16]
+          Mem12[ds:di:word16] = ax_8
+          v12_17 = Mem12[ds:0x0302:word16] + 0x0001
+          Mem18[ds:0x0302:word16] = v12_17
+          Mem27[ds:0x0300:word16] = ax_25
 Mem0:Global memory
     def:  def Mem0
     uses: Mem7 = PHI(Mem0, Mem12, Mem18)
 di:di
     def:  def di
+    uses: Mem12[ds:di:word16] = ax_8
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(word16 si, word16 di, selector ds)
@@ -228,11 +234,17 @@ Mem27: orig: Mem0
     def:  Mem27[ds:0x0300:word16] = ax_25
 ds:ds
     def:  def ds
+    uses: ax_8 = Mem7[ds:si_6:word16]
+          Mem12[ds:di:word16] = ax_8
+          v12_17 = Mem12[ds:0x0302:word16] + 0x0001
+          Mem18[ds:0x0302:word16] = v12_17
+          Mem27[ds:0x0300:word16] = ax_25
 Mem0:Global memory
     def:  def Mem0
     uses: Mem7 = PHI(Mem0, Mem12, Mem18)
 di:di
     def:  def di
+    uses: Mem12[ds:di:word16] = ax_8
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(word16 si, word16 di, selector ds)

@@ -93,8 +93,10 @@ cx:cx
     uses: branch cx == 0x0000 l0C00_001A
 ds:ds
     def:  def ds
+    uses: si_24 = si_12 + Mem0[ds:di_22:word16]
 Mem0:Global memory
     def:  def Mem0
+    uses: si_24 = si_12 + Mem0[ds:di_22:word16]
 // fn0C00_0008
 // Return size: 0
 word16 fn0C00_0008(word16 cx, word16 di, selector ds)

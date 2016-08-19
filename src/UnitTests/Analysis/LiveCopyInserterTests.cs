@@ -54,7 +54,7 @@ namespace Reko.UnitTests.Analysis
 			Build(new LiveLoopMock().Procedure, new FakeArchitecture());
 			var lci = new LiveCopyInserter(ssa);
 
-			var i = ssaIds.Where(s => s.Identifier.Name == "i").Single().Identifier;
+            var i = ssaIds.Where(s => s.Identifier.Name == "i").Single().Identifier;
 			var i_4 = ssaIds.Where(s => s.Identifier.Name == "i_4").Single().Identifier;
             var loopHdr = proc.ControlGraph.Blocks[2];
 			Assert.IsFalse(lci.IsLiveAtCopyPoint(i, loopHdr));
@@ -71,6 +71,7 @@ namespace Reko.UnitTests.Analysis
 			var reg_3 = ssaIds.Where(s => s.Identifier.Name == "reg_3").Single();
             var reg_4 = ssaIds.Where(s => s.Identifier.Name == "reg_4").Single();
 
+            ssa.DebugDump(true);
 			Assert.AreEqual("reg_3 = PHI(reg, reg_4)", reg_3.DefStatement.Instruction.ToString());
 			Assert.IsTrue(lci.IsLiveOut(reg.Identifier, reg_3.DefStatement));
 		}
@@ -84,7 +85,7 @@ namespace Reko.UnitTests.Analysis
 			int i = lci.IndexOfInsertedCopy(proc.ControlGraph.Blocks[2]);
 			Assert.AreEqual(i, 0);
             var idNew = lci.InsertAssignmentNewId(ssaIds.Where(s => s.Identifier.Name == "reg").Single().Identifier, proc.ControlGraph.Blocks[2], i);
-            Assert.AreEqual("reg_5 = reg", proc.ControlGraph.Blocks[2].Statements[0].Instruction.ToString());
+            Assert.AreEqual("reg_6 = reg", proc.ControlGraph.Blocks[2].Statements[0].Instruction.ToString());
             Assert.AreSame(proc.ControlGraph.Blocks[2].Statements[0], ssaIds[idNew].DefStatement);
 		}
 
@@ -94,9 +95,9 @@ namespace Reko.UnitTests.Analysis
 			Build(new LiveLoopMock().Procedure, new FakeArchitecture());
 			var lci = new LiveCopyInserter(ssa);
 
-            var i_4 = ssaIds.Where(s => s.Identifier.Name == "i_2").Single();
-			var idNew = lci.InsertAssignmentNewId(i_4.Identifier, proc.ControlGraph.Blocks[2], 2);
-			Assert.AreEqual("i_6 = i_2", proc.ControlGraph.Blocks[2].Statements[2].Instruction.ToString());
+            var i_3 = ssaIds.Where(s => s.Identifier.Name == "i_3").Single();
+			var idNew = lci.InsertAssignmentNewId(i_3.Identifier, proc.ControlGraph.Blocks[2], 2);
+			Assert.AreEqual("i_7 = i_3", proc.ControlGraph.Blocks[2].Statements[2].Instruction.ToString());
 			Assert.AreSame(proc.ControlGraph.Blocks[2].Statements[2], ssaIds[idNew].DefStatement);
 		}
 
@@ -105,11 +106,11 @@ namespace Reko.UnitTests.Analysis
 		{
 			Build(new LiveLoopMock().Procedure, new FakeArchitecture());
 			var lci = new LiveCopyInserter(ssa);
-            proc.ControlGraph.Blocks[1].Dump();
-            var i_1 = ssaIds.Where(s => s.Identifier.Name == "i_2").Single();
-            var idNew = lci.InsertAssignmentNewId(i_1.Identifier, proc.ControlGraph.Blocks[2], 2);
-			lci.RenameDominatedIdentifiers(i_1, ssaIds[idNew]);
-            Assert.AreEqual("return i_6", proc.ControlGraph.Blocks[2].ElseBlock.Statements[0].Instruction.ToString());
+
+            var i_3 = ssaIds.Where(s => s.Identifier.Name == "i_3").Single();
+            var idNew = lci.InsertAssignmentNewId(i_3.Identifier, proc.ControlGraph.Blocks[2], 2);
+			lci.RenameDominatedIdentifiers(i_3, ssaIds[idNew]);
+            Assert.AreEqual("return i_1", proc.ControlGraph.Blocks[2].ElseBlock.Statements[0].Instruction.ToString());
 		}
 
 		[Test]
@@ -175,16 +176,14 @@ namespace Reko.UnitTests.Analysis
 			this.proc = proc;
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             importResolver.Replay();
-            Aliases alias = new Aliases(proc, arch);
-			alias.Transform();
 			var gr = proc.CreateBlockDominatorGraph();
-			SsaTransform sst = new SsaTransform(
-                new ProgramDataFlow(),
+            SsaTransform2 sst = new SsaTransform2(
+                arch,
                 proc,
                 null,
-                gr,
-                new HashSet<RegisterStorage>());
-			this.ssa = sst.SsaState;
+                new DataFlow2());
+            sst.Transform();
+            this.ssa = sst.SsaState;
 			this.ssaIds = ssa.Identifiers;
 
 			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, platform);

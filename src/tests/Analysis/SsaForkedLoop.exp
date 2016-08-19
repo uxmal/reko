@@ -64,10 +64,19 @@ SCZO_20: orig: SCZO
     def:  SCZO_20 = cond(ax_19)
 bx:bx
     def:  def bx
+    uses: SCZO_9 = cond(ax_7 - bx)
 ds:ds
     def:  def ds
+    uses: si_12 = Mem0[ds:0x0300:word16]
+          si_16 = Mem0[ds:0x0302:word16]
+          ax_17 = ax_7 + Mem0[ds:si_16 + 0x0004:word16]
+          ax_19 = ax_7 + Mem0[ds:si_13:word16]
 Mem0:Global memory
     def:  def Mem0
+    uses: si_12 = Mem0[ds:0x0300:word16]
+          si_16 = Mem0[ds:0x0302:word16]
+          ax_17 = ax_7 + Mem0[ds:si_16 + 0x0004:word16]
+          ax_19 = ax_7 + Mem0[ds:si_13:word16]
 si_24: orig: si
     def:  si_24 = PHI(si, si_13, si_16)
     uses: use si_24

@@ -232,6 +232,7 @@ Mem0:Global memory
     def:  def Mem0
     uses: cx_5 = Mem0[ds:0x0400:word16]
           di_7 = Mem0[ds:0x0402:word16]
+          SCZO_12 = cond(0x00 - Mem0[es:di_10:byte])
           branch 0x00 != Mem0[es:di_10:byte] l0C00_0030
 cx_5: orig: cx
     def:  cx_5 = Mem0[ds:0x0400:word16]
@@ -277,7 +278,8 @@ Mem18: orig: Mem0
     def:  Mem18[ds_16:0x0404:word16] = di_15
 es:es
     def:  def es
-    uses: branch 0x00 != Mem0[es:di_10:byte] l0C00_0030
+    uses: SCZO_12 = cond(0x00 - Mem0[es:di_10:byte])
+          branch 0x00 != Mem0[es:di_10:byte] l0C00_0030
 // fn0C00_0026
 // Return size: 0
 void fn0C00_0026(selector es, selector ds)
@@ -326,6 +328,7 @@ Mem0:Global memory
     def:  def Mem0
     uses: cx_5 = Mem0[ds:0x0400:word16]
           di_7 = Mem0[ds:0x0402:word16]
+          SCZO_12 = cond(0x00 - Mem0[es:di_10:byte])
           branch 0x00 != Mem0[es:di_10:byte] l0C00_0030
 cx_5: orig: cx
     def:  cx_5 = Mem0[ds:0x0400:word16]
@@ -371,7 +374,8 @@ Mem18: orig: Mem0
     def:  Mem18[ds_16:0x0404:word16] = di_15
 es:es
     def:  def es
-    uses: branch 0x00 != Mem0[es:di_10:byte] l0C00_0030
+    uses: SCZO_12 = cond(0x00 - Mem0[es:di_10:byte])
+          branch 0x00 != Mem0[es:di_10:byte] l0C00_0030
 // fn0C00_0026
 // Return size: 0
 void fn0C00_0026(selector es, selector ds)

@@ -1631,6 +1631,8 @@ ebx:ebx
     uses: ebx_2 = PHI(ebx, ebx_7)
 Mem0:Global memory
     def:  def Mem0
+    uses: eax_6 = eax_4 + Mem0[ebx_2:word32]
+          ebx_7 = Mem0[ebx_2 + 0x00000004:word32]
 // proc1
 // Return size: 0
 void proc1()
@@ -1774,8 +1776,10 @@ r1:r1
     uses: r1_1 = PHI(r1, r1_4)
 r2:r2
     def:  def r2
+    uses: r1_4 = r1_1 + Mem0[r2:word32]
 Mem0:Global memory
     def:  def Mem0
+    uses: r1_4 = r1_1 + Mem0[r2:word32]
 // proc1
 // Return size: 0
 void proc1()
@@ -2232,6 +2236,8 @@ bx_7: orig: bx
           bx_6 = PHI(bx_3, bx_7)
 bh_8: orig: bh
     def:  bh_8 = SLICE(bx_3, byte, 8) (alias)
+    uses: al_5 = bh_8
+          bx_7 = DPB(bx_6, bh_8, 8) (alias)
 // proc1
 // Return size: 0
 void proc1()

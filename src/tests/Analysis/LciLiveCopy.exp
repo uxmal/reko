@@ -6,15 +6,15 @@ LiveCopyMock_entry:
 	goto l1
 	// succ:  l1
 even:
-	reg_3 = PHI(reg_3, reg_4)
-	return reg_3 - reg
+	reg_4 = PHI(reg_4, reg_3)
+	return reg_4 - reg
 	// succ:  LiveCopyMock_exit
 l1:
-	reg_3 = reg
+	reg_4 = reg
 	branch (reg & 0x00000001) == 0x00000000 even
 	// succ:  l2 even
 l2:
-	reg_4 = reg + 0x00000002
+	reg_3 = reg + 0x00000002
 	goto even
 	// succ:  even
 LiveCopyMock_exit:

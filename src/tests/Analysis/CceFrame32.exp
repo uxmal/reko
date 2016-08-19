@@ -71,7 +71,8 @@ wLoc08_10: orig: wLoc08
     uses: wLoc08_13 = PHI(wLoc08_10, wLoc08_30)
 dwArg04:Stack +0004
     def:  def dwArg04
-    uses: branch dwArg04 != 0x00000000 l1000002F
+    uses: ecx_16 = dwArg04
+          branch dwArg04 != 0x00000000 l1000002F
           edx_18 = (int32) Mem0[dwArg04 + eax_14:byte]
 SCZO_12: orig: SCZO
 wLoc08_13: orig: wLoc08
@@ -178,6 +179,7 @@ ax_43: orig: ax
           eax_50 = DPB(eax_45, ax_43, 0) (alias)
 Mem0:Global memory
     def:  def Mem0
+    uses: edx_18 = (int32) Mem0[dwArg04 + eax_14:byte]
 eax_45: orig: eax
     def:  eax_45 = PHI(eax_47, eax_49)
     uses: eax_50 = DPB(eax_45, ax_43, 0) (alias)

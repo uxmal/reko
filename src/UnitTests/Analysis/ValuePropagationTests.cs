@@ -193,8 +193,7 @@ namespace Reko.UnitTests.Analysis
 			RunFileTest_x86_real("Fragments/while_goto.asm", "Analysis/VpWhileGoto.txt");
 		}
 
-        [Test][Ignore("Very complex interaction with SSA")]
-        [Category("investigation")]
+        [Test]
         public void VpReg00011()
         {
             RunFileTest_x86_real("Fragments/regressions/r00011.asm", "Analysis/VpReg00011.txt");

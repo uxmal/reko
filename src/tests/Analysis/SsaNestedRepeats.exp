@@ -79,11 +79,14 @@ Mem23: orig: Mem0
     def:  Mem23[ds:0x0300:word16] = dx_15
 ds:ds
     def:  def ds
+    uses: ax_12 = Mem0[ds:si_10:word16]
+          Mem23[ds:0x0300:word16] = dx_15
 si:si
     def:  def si
     uses: si_10 = PHI(si, si_13, si_13)
 Mem0:Global memory
     def:  def Mem0
+    uses: ax_12 = Mem0[ds:si_10:word16]
 // fn0C00_0000
 // Return size: 2
 void fn0C00_0000()

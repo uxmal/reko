@@ -163,7 +163,9 @@ SCZO_38: orig: SCZO
           O_52 = PHI(SCZO_38, SZO_22)
 Mem0:Global memory
     def:  def Mem0
-    uses: branch 0x00 != Mem0[ds:di_13:byte] l0C00_0019
+    uses: SCZO_15 = cond(0x00 - Mem0[ds:di_13:byte])
+          ah_28 = Mem0[ds_24:di_26 + 0x0001:byte]
+          branch 0x00 != Mem0[ds:di_13:byte] l0C00_0019
 ax_40: orig: ax
     def:  ax_40 = PHI(ax_33, ax_29)
     uses: use ax_40
