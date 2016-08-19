@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Analysis
 
         protected override void RunTest(Program program, TextWriter writer)
 		{
-            var flow = new DataFlow2(program);
+            var flow = new DataFlow2();
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             importResolver.Replay();
 #if NEW_SSA2

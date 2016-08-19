@@ -62,7 +62,6 @@ namespace Reko.UnitTests.Analysis
         {
             this.programFlow2 = new DataFlow2();
             var proc = pb.Add("proc1", builder);
-            programFlow2.ProcedureFlows.Add(proc, new ProcedureFlow2());
             RunTest(sExp);
         }
 
@@ -127,7 +126,7 @@ namespace Reko.UnitTests.Analysis
         private void RunTest_FrameAccesses(string sExp)
         {
             var program = pb.BuildProgram();
-            this.programFlow2 = new DataFlow2(program);
+            this.programFlow2 = new DataFlow2();
             var writer = new StringWriter();
             foreach (var proc in program.Procedures.Values)
             {
