@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Analysis
 		private List<SsaIdentifier> BuildScc()
 		{
             var m = new ProcedureBuilder("test");
-			Identifier a = new Identifier("a", PrimitiveType.Word32, null);
+			Identifier a = new Identifier("a", PrimitiveType.Word32, new RegisterStorage("a", 1, 0, PrimitiveType.Word32));
             m.Label("b1");
             m.Assign(a, Constant.Word32(0));
             m.Label("b2");
@@ -62,13 +62,12 @@ namespace Reko.UnitTests.Analysis
             m.Label("b3");
             m.Return();
             this.dom = m.Procedure.CreateBlockDominatorGraph();
-            var ssa = new SsaTransform(
-                new ProgramDataFlow(),
+            var ssa = new SsaTransform2(
+                m.Architecture,
                 m.Procedure,
-                null, 
-                dom,
-                new HashSet<RegisterStorage>());
-
+                null,
+                new DataFlow2());
+            ssa.Transform();
             /*
             
             proc = new Procedure("test", new Frame(PrimitiveType.Word32));
@@ -98,6 +97,7 @@ namespace Reko.UnitTests.Analysis
 			ssaIds.Add(a3, sid_a3);
             */
             ssaIds = ssa.SsaState.Identifiers;
+
             List<SsaIdentifier> list = new List<SsaIdentifier> {
                 ssaIds.Where(i => i.Identifier.Name == "a_1").Single(),
                 ssaIds.Where(i => i.Identifier.Name == "a_2").Single(),
