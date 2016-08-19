@@ -41,11 +41,12 @@ namespace Reko.UnitTests.Analysis
 			Build(new DiamondMock().Procedure);
 			DeclarationInserter deci = new DeclarationInserter(ssaIds, doms);
 			Web web = new Web();
+
 			SsaIdentifier r_2 = ssaIds.Where(s => s.Identifier.Name == "r_2").Single();
-            SsaIdentifier r_4 = ssaIds.Where(s => s.Identifier.Name == "r_4").Single();
+            SsaIdentifier r_3 = ssaIds.Where(s => s.Identifier.Name == "r_3").Single();
             SsaIdentifier r_5 = ssaIds.Where(s => s.Identifier.Name == "r_5").Single();
 			web.Add(r_2);
-			web.Add(r_4);
+			web.Add(r_3);
 			web.Add(r_5);
 			deci.InsertDeclaration(web);
 			Assert.AreEqual("word32 r_2", proc.ControlGraph.Blocks[2].Statements[0].Instruction.ToString());
@@ -56,13 +57,13 @@ namespace Reko.UnitTests.Analysis
 			this.proc = proc;
 			this.doms = proc.CreateBlockDominatorGraph();
 
-			SsaTransform sst = new SsaTransform(
-                new ProgramDataFlow(), 
-                proc, 
-                null, 
-                doms,
-                new HashSet<RegisterStorage>());
-			
+            SsaTransform2 sst = new SsaTransform2(
+                null,
+                proc,
+                null,
+                new DataFlow2());
+            sst.Transform();
+
 			this.ssaIds = sst.SsaState.Identifiers;
 		}
 	}
