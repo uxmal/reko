@@ -62,14 +62,14 @@ namespace Reko.UnitTests.Analysis
             Assert.AreEqual(sExp, sw.ToString());
         }
 
-        private void RunTest(Program prog, TextWriter writer)
+        private void RunTest(Program program, TextWriter writer)
         {
-            flow = new ProgramDataFlow(prog);
-            trf = new TrashedRegisterFinder(prog, prog.Procedures.Values, this.flow, new FakeDecompilerEventListener());
+            flow = new ProgramDataFlow(program);
+            trf = new TrashedRegisterFinder(program, program.Procedures.Values, this.flow, new FakeDecompilerEventListener());
             trf.Compute();
             trf.RewriteBasicBlocks();
 
-            foreach (var proc in prog.Procedures.Values)
+            foreach (var proc in program.Procedures.Values)
             {
                 flow[proc].EmitRegisters(arch, "// Trashed", flow[proc].TrashedRegisters);
                 proc.Write(false, writer);

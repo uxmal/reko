@@ -74,15 +74,15 @@ namespace Reko.UnitTests.Typing
             RunTest(program, outputFile);
         }
 
-        private void DumpProgAndStore(Program prog, FileUnitTester fut)
+        private void DumpProgAndStore(Program program, FileUnitTester fut)
         {
-            foreach (Procedure proc in prog.Procedures.Values)
+            foreach (Procedure proc in program.Procedures.Values)
             {
                 proc.Write(false, fut.TextWriter);
                 fut.TextWriter.WriteLine();
             }
 
-            prog.TypeStore.Write(fut.TextWriter);
+            program.TypeStore.Write(fut.TextWriter);
             fut.AssertFilesEqual();
         }
 

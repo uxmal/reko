@@ -225,20 +225,20 @@ namespace Reko.UnitTests.Analysis
 
         public static void RunTest_x86_real(string sourceFile, Action<Program, TextWriter> test, string outputFile)
         {
-            Program prog = RewriteMsdosAssembler(sourceFile, null);
-            SaveRunOutput(prog, test, outputFile);
+            Program program = RewriteMsdosAssembler(sourceFile, null);
+            SaveRunOutput(program, test, outputFile);
         }
 
 		protected void RunFileTest_x86_real(string sourceFile, string outputFile)
 		{
-			Program prog = RewriteMsdosAssembler(sourceFile, null);
-            SaveRunOutput(prog, RunTest, outputFile);
+			Program program = RewriteMsdosAssembler(sourceFile, null);
+            SaveRunOutput(program, RunTest, outputFile);
 		}
 
 		protected void RunFileTest(ProcedureBuilder mock, string outputFile)
 		{
-			Program prog = BuildProgramMock(mock);
-            SaveRunOutput(prog, RunTest, outputFile);
+			Program program = BuildProgramMock(mock);
+            SaveRunOutput(program, RunTest, outputFile);
 		}
 
         protected void RunStringTest(string sExp, Action<ProcedureBuilder> m)
@@ -251,36 +251,36 @@ namespace Reko.UnitTests.Analysis
 
 		protected void RunFileTest(string sourceFile, string configFile, string outputFile)
 		{
-			Program prog = RewriteMsdosAssembler(sourceFile, configFile);
-            SaveRunOutput(prog, RunTest, outputFile);
+			Program program = RewriteMsdosAssembler(sourceFile, configFile);
+            SaveRunOutput(program, RunTest, outputFile);
 		}
 
-        protected void RunFileTest(Program prog, string outputFile)
+        protected void RunFileTest(Program program, string outputFile)
         {
-            SaveRunOutput(prog, RunTest, outputFile);
+            SaveRunOutput(program, RunTest, outputFile);
         }
 
 		protected void RunFileTest32(string sourceFile, string outputFile)
 		{
-			Program prog = RewriteFile32(sourceFile);
-            SaveRunOutput(prog, RunTest, outputFile);
+			Program program = RewriteFile32(sourceFile);
+            SaveRunOutput(program, RunTest, outputFile);
 		}
 
 		protected void RunFileTest32(string sourceFile, string configFile, string outputFile)
 		{
-			Program prog = RewriteFile32(sourceFile, configFile);
-			SaveRunOutput(prog, RunTest, outputFile);
+			Program program = RewriteFile32(sourceFile, configFile);
+			SaveRunOutput(program, RunTest, outputFile);
 		}
 
-        protected virtual void RunTest(Program prog, TextWriter writer)
+        protected virtual void RunTest(Program program, TextWriter writer)
         {
         }
 
-		protected static void SaveRunOutput(Program prog, Action<Program, TextWriter> test, string outputFile)
+		protected static void SaveRunOutput(Program program, Action<Program, TextWriter> test, string outputFile)
 		{
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
-				test(prog, fut.TextWriter);
+				test(program, fut.TextWriter);
                 fut.AssertFilesEqual();
 			}
 		}

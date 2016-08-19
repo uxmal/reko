@@ -37,15 +37,15 @@ namespace Reko.UnitTests.Analysis
 	[TestFixture]
 	public class RegisterLivenessTests : AnalysisTestBase
 	{
-		protected override void RunTest(Program prog, TextWriter writer)
+		protected override void RunTest(Program program, TextWriter writer)
 		{
 			var eventListener = new FakeDecompilerEventListener();
-			var dfa = new DataFlowAnalysis(prog, null, eventListener);
-			var trf = new TrashedRegisterFinder(prog, prog.Procedures.Values, dfa.ProgramDataFlow, eventListener);
+			var dfa = new DataFlowAnalysis(program, null, eventListener);
+			var trf = new TrashedRegisterFinder(program, program.Procedures.Values, dfa.ProgramDataFlow, eventListener);
 			trf.Compute();
 			trf.RewriteBasicBlocks();
-			var rl = RegisterLiveness.Compute(prog, dfa.ProgramDataFlow, eventListener);
-			DumpProcedureFlows(prog, dfa, rl, writer);
+			var rl = RegisterLiveness.Compute(program, dfa.ProgramDataFlow, eventListener);
+			DumpProcedureFlows(program, dfa, rl, writer);
 		}
 
 		[Test]

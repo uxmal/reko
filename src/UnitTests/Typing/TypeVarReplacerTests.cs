@@ -50,10 +50,10 @@ namespace Reko.UnitTests.Typing
 			eqb.VisitAssignment(ass1);
 			eqb.VisitAssignment(ass2);
 
-            var prog = new Program();
-            prog.Architecture = new FakeArchitecture();
-            prog.Platform = new DefaultPlatform(null, prog.Architecture);
-            trco = new TraitCollector(factory, store, dtb, prog);
+            var program = new Program();
+            program.Architecture = new FakeArchitecture();
+            program.Platform = new DefaultPlatform(null, program.Architecture);
+            trco = new TraitCollector(factory, store, dtb, program);
 			trco.VisitAssignment(ass1);
 			trco.VisitAssignment(ass2);
 			dtb.BuildEquivalenceClassDataTypes();
@@ -63,11 +63,11 @@ namespace Reko.UnitTests.Typing
 			Verify("Typing/TvrReplaceInMem.txt");
 		}
 
-		protected override void RunTest(Program prog, string outputFilename)
+		protected override void RunTest(Program program, string outputFilename)
 		{
-			eqb.Build(prog);
-			trco = new TraitCollector(factory, store, dtb, prog);
-			trco.CollectProgramTraits(prog);
+			eqb.Build(program);
+			trco = new TraitCollector(factory, store, dtb, program);
+			trco.CollectProgramTraits(program);
 			dtb.BuildEquivalenceClassDataTypes();
 
 			store.CopyClassDataTypesToTypeVariables();

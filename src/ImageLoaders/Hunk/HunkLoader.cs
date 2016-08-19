@@ -585,7 +585,7 @@ print "setting up memory layout"
 layout = MemoryLayout.MemoryLayout(verbose=True)
 context = MachineContext.MachineContext(MusashiCPU(),layout)
  
-# place prog segments
+# place program segments
 prog_base = 0x010000
 prog_start = prog_base
 off = prog_base

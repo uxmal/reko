@@ -100,9 +100,9 @@ namespace Reko.UnitTests.Analysis
                 m.Call(exit, 4);
                 m.Return();
             });
-            var prog = progMock.BuildProgram();
+            var program = progMock.BuildProgram();
 
-            flow = new ProgramDataFlow(prog);
+            flow = new ProgramDataFlow(program);
             var a = new TerminationAnalysis(flow);
             a.Analyze(proc);
             Assert.IsTrue(flow[proc].TerminatesProcess);
@@ -118,9 +118,9 @@ namespace Reko.UnitTests.Analysis
                 m.Label("bye");
                 m.Return();
             });
-            var prog = progMock.BuildProgram();
+            var program = progMock.BuildProgram();
 
-            flow = new ProgramDataFlow(prog);
+            flow = new ProgramDataFlow(program);
             var a = new TerminationAnalysis(flow);
             a.Analyze(proc);
             Assert.IsFalse(flow[proc].TerminatesProcess);
@@ -138,8 +138,8 @@ namespace Reko.UnitTests.Analysis
                 m.Call(exit, 4);
                 m.FinishProcedure();
             });
-            var prog = progMock.BuildProgram();
-            flow = new ProgramDataFlow(prog);
+            var program = progMock.BuildProgram();
+            flow = new ProgramDataFlow(program);
             var a = new TerminationAnalysis(flow);
             a.Analyze(proc);
             Assert.IsTrue(flow[proc].TerminatesProcess);
@@ -160,10 +160,10 @@ namespace Reko.UnitTests.Analysis
                 m.Return();
             });
 
-            var prog = progMock.BuildProgram();
-            flow = new ProgramDataFlow(prog);
+            var program = progMock.BuildProgram();
+            flow = new ProgramDataFlow(program);
             var a = new TerminationAnalysis(flow);
-            a.Analyze(prog);
+            a.Analyze(program);
             Assert.IsTrue(flow[sub].TerminatesProcess);
             Assert.IsTrue(flow[caller].TerminatesProcess);
         }
@@ -176,8 +176,8 @@ namespace Reko.UnitTests.Analysis
                 m.SideEffect(m.Fn(new ProcedureConstant(PrimitiveType.Pointer32, exit)));
                 m.FinishProcedure();
             });
-            var prog = progMock.BuildProgram();
-            flow = new ProgramDataFlow(prog);
+            var program = progMock.BuildProgram();
+            flow = new ProgramDataFlow(program);
             var a = new TerminationAnalysis(flow);
             a.Analyze(test);
             Assert.IsTrue(flow[test].TerminatesProcess);

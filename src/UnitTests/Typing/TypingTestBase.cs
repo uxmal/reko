@@ -127,18 +127,18 @@ namespace Reko.UnitTests.Typing
         {
             ProcedureBuilder m = new ProcedureBuilder();
             pg(m);
-            ProgramBuilder prog = new ProgramBuilder();
-            prog.Add(m);
-            RunTest(prog, outputFile);
+            ProgramBuilder program = new ProgramBuilder();
+            program.Add(m);
+            RunTest(program, outputFile);
         }
 
-        protected void RunTest(Program prog)
+        protected void RunTest(Program program)
         {
             var outputFileName = string.Format("Typing/{0}.txt", new StackTrace().GetFrame(1).GetMethod().Name);
-            RunTest(prog, outputFileName);
+            RunTest(program, outputFileName);
         }
 
-        protected abstract void RunTest(Program prog, string outputFile);
+        protected abstract void RunTest(Program program, string outputFile);
 
 		protected void DumpSsaInfo(Procedure proc, SsaState ssa, TextWriter writer)
 		{

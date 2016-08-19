@@ -168,34 +168,33 @@ namespace Reko.UnitTests.Typing
         [Ignore("Frames require escape and aliasing analysis.")]
         public void TtranFramePointer()
         {
-            ProgramBuilder prog = new ProgramBuilder();
-            prog.Add(new FramePointerFragment(factory));
-            RunTest(prog.BuildProgram(), "Typing/TtranFramePointer.txt");
+            ProgramBuilder pb = new ProgramBuilder();
+            pb.Add(new FramePointerFragment(factory));
+            RunTest(pb.BuildProgram(), "Typing/TtranFramePointer.txt");
         }
-
 
         [Test]
         public void TtranRepeatedLoads()
         {
-            ProgramBuilder prog = new ProgramBuilder();
-            prog.Add(new RepeatedLoadsFragment());
-            RunTest(prog.BuildProgram(), "Typing/TtranRepeatedLoads.txt");
+            ProgramBuilder pb = new ProgramBuilder();
+            pb.Add(new RepeatedLoadsFragment());
+            RunTest(pb.BuildProgram(), "Typing/TtranRepeatedLoads.txt");
         }
 
         [Test]
         public void TtranStaggeredArrays()
         {
-            ProgramBuilder prog = new ProgramBuilder();
-            prog.Add(new StaggeredArraysFragment());
-            RunTest(prog.BuildProgram(), "Typing/TtranStaggeredArrays.txt");
+            ProgramBuilder pb = new ProgramBuilder();
+            pb.Add(new StaggeredArraysFragment());
+            RunTest(pb.BuildProgram(), "Typing/TtranStaggeredArrays.txt");
         }
 
         [Test]
         public void TtranFnPointerMock()
         {
-            ProgramBuilder prog = new ProgramBuilder();
-            prog.Add(new FnPointerFragment());
-            RunTest(prog.BuildProgram(), "Typing/TtranFnPointerMock.txt");
+            ProgramBuilder pb = new ProgramBuilder();
+            pb.Add(new FnPointerFragment());
+            RunTest(pb.BuildProgram(), "Typing/TtranFnPointerMock.txt");
         }
 
         [Test]

@@ -212,7 +212,7 @@ namespace Reko.UnitTests.Scanning
                 this.state, 
                 proc.Frame,
                 host);
-            var prog = new Program
+            var program = new Program
             {
                 Architecture = arch,
                 SegmentMap = lr.SegmentMap,
@@ -224,7 +224,7 @@ namespace Reko.UnitTests.Scanning
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
                 scanner.Stub(x => x.GetTrace(null, null, null)).IgnoreArguments().Return(rw);
             }
-            wi = new BlockWorkitem(scanner, prog, state, addr);
+            wi = new BlockWorkitem(scanner, program, state, addr);
         }
 
 
@@ -354,7 +354,7 @@ namespace Reko.UnitTests.Scanning
                 m.Dw(0x0C00);
                 m.Repeat(30, mm => mm.Dw(0xC3));
 
-                //prog.image = new LoadedImage(Address.Ptr32(0x0C00, 0), new byte[100]);
+                //program.image = new LoadedImage(Address.Ptr32(0x0C00, 0), new byte[100]);
                 //var imageMap = image.CreateImageMap();
                 scanner.Stub(x => x.TerminateBlock(
                     Arg<Block>.Is.Anything,

@@ -38,9 +38,9 @@ namespace Reko.UnitTests.Analysis
 			RunFileTest_x86_real("Fragments/while_goto.asm", "Analysis/DgWhileGoto.txt");
         }
 
-        protected override void RunTest(Program prog, TextWriter writer)
+        protected override void RunTest(Program program, TextWriter writer)
         {
-            foreach (var proc in prog.Procedures.Values)
+            foreach (var proc in program.Procedures.Values)
             {
                 writer.WriteLine("===========");
                 proc.Write(false, writer);

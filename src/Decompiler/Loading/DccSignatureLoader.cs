@@ -480,7 +480,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
         /// Check this function to see if it is a library function. Return true if
         /// it is, and copy its name to pProc.Name
         /// </summary>
-        public bool LibCheck(IServiceProvider services, Program prog, Procedure pProc, Address addr)
+        public bool LibCheck(IServiceProvider services, Program program, Procedure proc, Address addr)
         {
             var diagSvc = services.RequireService<IDiagnosticsService>();
             long fileOffset;
@@ -488,7 +488,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             // i, j, arg;
             uint Idx;
 
-            if (false) //  && prog.bSigs == false)
+            if (false) //  && program.bSigs == false)
             {
                 /* No signatures... can't rely on hash parameters to be initialised
                 so always return false */
@@ -496,12 +496,12 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             }
 
             ImageSegment segment;
-            if (!prog.SegmentMap.TryFindSegment(addr, out segment))
+            if (!program.SegmentMap.TryFindSegment(addr, out segment))
                 return false;
             
 
             fileOffset = addr - segment.MemoryArea.BaseAddress;              /* Offset into the image */
-            //if (fileOffset == prog.offMain)
+            //if (fileOffset == program.offMain)
             //{
             //    /* Easy - this function is called main! */
             //    pProc.Name = "main";
@@ -676,13 +676,13 @@ static char [] buf = new char[100];          /* A general purpose buffer */
         }
 
 
-        void STATE_checkStartup(Program prog, ProcessorState state)
+        void STATE_checkStartup(Program program, ProcessorState state)
         {
             Address addrEntry;
             /* This function checks the startup code for various compilers' way of
             loading DS. If found, it sets DS. This may not be needed in the future if
             pushing and popping of registers is implemented.
-            Also sets prog.offMain and prog.segMain if possible */
+            Also sets program.offMain and program.segMain if possible */
 
             uint startoff; 
             uint init;
@@ -694,12 +694,12 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             char[] temp = new char[4];
 
             //$TODO: get msdos entry.
-            Address start = prog.EntryPoints.Keys.First();
+            Address start = program.EntryPoints.Keys.First();
 
             /* Check the Turbo Pascal signatures first, since they involve only the
                         first 3 bytes, and false positives may be founf with the others later */
             ImageSegment segment;
-            prog.SegmentMap.TryFindSegment(start, out segment);
+            program.SegmentMap.TryFindSegment(start, out segment);
             var image = segment.MemoryArea;
             var startOff = (uint)(start - image.BaseAddress);   /* Offset into the Image of the initial CS:IP */
             if (locatePattern(image.Bytes,
@@ -798,7 +798,7 @@ static char [] buf = new char[100];          /* A general purpose buffer */
             }
 
             Debug.Print("Model: {0}", chModel);
-            //prog.addressingMode = chModel;
+            //program.addressingMode = chModel;
 
             /* Now decide the compiler vendor and version number */
             if (MemoryArea.CompareArrays(image.Bytes, (int)startOff, pattMsC5Start, pattMsC5Start.Length))

@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Scanning
     [TestFixture]
     public class InterProceduralJumpTests
     {
-        private ProgramBuilder prog;
+        private ProgramBuilder pb;
         private FlagRegister freg;
         private Identifier reg;
         private Identifier SCZO;
@@ -44,8 +44,8 @@ namespace Reko.UnitTests.Scanning
         private void CreateIntraProceduralJumps()
         {
             var regS = new RegisterStorage("reg", 1, 0, PrimitiveType.Word32);
-            prog = new ProgramBuilder();
-            var mainProc = prog.Add("main", (m) =>
+            pb = new ProgramBuilder();
+            var mainProc = pb.Add("main", (m) =>
             {
                 var reg = m.Frame.EnsureRegister(regS);
                 m.Assign(reg, 0);

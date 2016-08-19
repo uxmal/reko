@@ -151,12 +151,12 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         {
             var decSvc = AddService<IDecompilerService>();
             var decompiler = mr.Stub<IDecompiler>();
-            var prog = new Program();
+            var program = new Program();
             var mem = new MemoryArea(Address.Ptr32(0x3000), new byte[10]);
-            prog.SegmentMap = new SegmentMap(
+            program.SegmentMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment(".text", mem, AccessMode.ReadWriteExecute));
-            var project = new Project { Programs = { prog } };
+            var project = new Project { Programs = { program } };
             decompiler.Stub(x => x.Project).Return(project);
             decSvc.Stub(x => x.Decompiler).Return(decompiler);
             AddService<IDecompilerShellUiService>();

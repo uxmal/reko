@@ -146,16 +146,16 @@ namespace Reko.UnitTests.Analysis
 		}
 
 
-        protected override void RunTest(Program prog, TextWriter writer)
+        protected override void RunTest(Program program, TextWriter writer)
 		{
-			dfa = new DataFlowAnalysis(prog, null, new FakeDecompilerEventListener());
+			dfa = new DataFlowAnalysis(program, null, new FakeDecompilerEventListener());
 			dfa.UntangleProcedures();
-			foreach (Procedure proc in prog.Procedures.Values)
+			foreach (Procedure proc in program.Procedures.Values)
 			{
 				ProcedureFlow flow = dfa.ProgramDataFlow[proc];
 				proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.ArgumentKind, new TextFormatter(writer));
 				writer.WriteLine();
-				flow.Emit(prog.Architecture, writer);
+				flow.Emit(program.Architecture, writer);
 				proc.Write(true, writer);
 				writer.Flush();
 			}

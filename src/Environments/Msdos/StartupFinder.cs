@@ -45,14 +45,14 @@ namespace Reko.Environments.Msdos
         const byte WILD = 0xF4;
 
         private IServiceProvider services;
-        private Program prog;
+        private Program program;
         private Address start;
         private ProcessorState state;
 
         public StartupFinder(IServiceProvider services, Program program, Address addrStart)
         {
             this.services = services;
-            this.prog= program;
+            this.program= program;
             this.start = addrStart;
             this.state = program.Architecture.CreateProcessorState();
         }
@@ -69,7 +69,7 @@ namespace Reko.Environments.Msdos
             /* This function checks the startup code for various compilers' way of
             loading DS. If found, it sets DS. This may not be needed in the future if
             pushing and popping of registers is implemented.
-            Also sets prog.offMain and prog.segMain if possible */
+            Also sets program.offMain and program.segMain if possible */
 
             uint startoff;
             uint init;
@@ -81,7 +81,7 @@ namespace Reko.Environments.Msdos
             char[] temp = new char[4];
 
             ImageSegment segment;
-            prog.SegmentMap.TryFindSegment(start, out segment);
+            program.SegmentMap.TryFindSegment(start, out segment);
             var image = segment.MemoryArea;
             var startOff = (uint)(start - image.BaseAddress);   /* Offset into the Image of the initial CS:IP */
 
@@ -182,7 +182,7 @@ namespace Reko.Environments.Msdos
             }
 
             Debug.Print("Model: {0}", chModel);
-            //prog.addressingMode = chModel;
+            //program.addressingMode = chModel;
 
             /* Now decide the compiler vendor and version number */
             if (MemoryArea.CompareArrays(image.Bytes, (int)startOff, pattMsC5Start, pattMsC5Start.Length))
@@ -320,7 +320,7 @@ namespace Reko.Environments.Msdos
         void setState(string regName, ushort val)
         {
             state.SetRegister(
-                prog.Architecture.GetRegister(regName),
+                program.Architecture.GetRegister(regName),
                 Constant.Word16(val));
 
         }

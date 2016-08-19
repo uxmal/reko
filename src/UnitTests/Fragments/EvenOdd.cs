@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Fragments
         /// <returns></returns>
         public static Program BuildProgram()
         {
-            var prog = new ProgramBuilder();
+            var pb = new ProgramBuilder();
 
             var m = new ProcedureBuilder("even");
             var r1 = m.Register(1);
@@ -49,7 +49,7 @@ namespace Reko.UnitTests.Fragments
             m.Label("done");
             m.Assign(r1, true);
             m.Return();
-            prog.Add(m);
+            pb.Add(m);
 
             m = new ProcedureBuilder("odd");
             r1 = m.Register(1);
@@ -62,9 +62,9 @@ namespace Reko.UnitTests.Fragments
             m.Label("done");
             m.Assign(r1, true);
             m.Return();
-            prog.Add(m);
+            pb.Add(m);
 
-            return prog.BuildProgram();
+            return pb.BuildProgram();
         }
     }
 }

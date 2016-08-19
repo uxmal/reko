@@ -35,34 +35,34 @@ namespace Reko.UnitTests.Typing
 	{
 		private TypeStore store;
 
-        protected override void RunTest(Program prog, string outputFilename)
+        protected override void RunTest(Program program, string outputFilename)
 		{
 			TypeFactory factory = new TypeFactory();
 			store = new TypeStore();
 			EquivalenceClassBuilder eqb = new EquivalenceClassBuilder(factory, store);
-			eqb.Build(prog);
-			DataTypeBuilder dtb = new DataTypeBuilder(factory, store, prog.Platform);
-			TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
-			trco.CollectProgramTraits(prog);
+			eqb.Build(program);
+			DataTypeBuilder dtb = new DataTypeBuilder(factory, store, program.Platform);
+			TraitCollector trco = new TraitCollector(factory, store, dtb, program);
+			trco.CollectProgramTraits(program);
 			dtb.BuildEquivalenceClassDataTypes();
 
 			store.CopyClassDataTypesToTypeVariables();
 			TypeVariableReplacer tvr = new TypeVariableReplacer(store);
 			tvr.ReplaceTypeVariables();
 
-			PtrPrimitiveReplacer ppr = new PtrPrimitiveReplacer(factory, store, prog);
+			PtrPrimitiveReplacer ppr = new PtrPrimitiveReplacer(factory, store, program);
 			ppr.ReplaceAll();
 
-			Verify(prog, outputFilename);
+			Verify(program, outputFilename);
 		}
 
-		private void Verify(Program prog, string outputFilename)
+		private void Verify(Program program, string outputFilename)
 		{
 			using (FileUnitTester fut = new FileUnitTester(outputFilename))
 			{
-				if (prog != null)
+				if (program != null)
 				{
-					foreach (Procedure proc in prog.Procedures.Values)
+					foreach (Procedure proc in program.Procedures.Values)
 					{
 						proc.Write(false, fut.TextWriter);
 						fut.TextWriter.WriteLine();

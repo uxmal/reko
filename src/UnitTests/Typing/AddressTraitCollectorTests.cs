@@ -167,13 +167,13 @@ namespace Reko.UnitTests.Typing
 			m = new ProcedureBuilder();
 		}
 
-		private void Verify(Program prog, string outputFilename)
+		private void Verify(Program program, string outputFilename)
 		{
 			using (FileUnitTester fut = new FileUnitTester(outputFilename))
 			{
-				if (prog != null)
+				if (program != null)
 				{
-					foreach (Procedure proc in prog.Procedures.Values)
+					foreach (Procedure proc in program.Procedures.Values)
 					{
 						proc.Write(false, fut.TextWriter);
 						fut.TextWriter.WriteLine();

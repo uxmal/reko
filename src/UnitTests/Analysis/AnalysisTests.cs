@@ -31,8 +31,8 @@ namespace Reko.UnitTests.Analysis
 		[Test]
         public void DiamondDominatorTest()
         {
-			Program prog = RewriteFile("Fragments/diamond.asm");
-			Procedure proc = prog.Procedures.Values[0];
+			Program program = RewriteFile("Fragments/diamond.asm");
+			Procedure proc = program.Procedures.Values[0];
 			BlockDominatorGraph doms = proc.CreateBlockDominatorGraph();
 			var diamondTop = proc.ControlGraph.Blocks[2];
             Assert.AreSame(diamondTop, doms.ImmediateDominator(diamondTop.ElseBlock));
@@ -42,8 +42,8 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void LoopDominatorTest()
 		{
-			Program prog = RewriteFile("Fragments/while_loop.asm");
-            var proc = prog.Procedures.Values[0];
+			Program program = RewriteFile("Fragments/while_loop.asm");
+            var proc = program.Procedures.Values[0];
 			BlockDominatorGraph doms = proc.CreateBlockDominatorGraph();
             Assert.IsTrue(doms.DominatesStrictly(proc.EntryBlock, proc.EntryBlock.Succ[0]));
             Assert.IsTrue(doms.DominatesStrictly(proc.EntryBlock, proc.EntryBlock.Succ[0].Succ[0]));
@@ -57,9 +57,9 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void AnAliasExpanderTest()
 		{
-			Program prog = RewriteFile("Fragments/alias_regs.asm");
-			Procedure proc = prog.Procedures.Values[0];
-			Aliases alias = new Aliases(proc, prog.Architecture);
+			Program program = RewriteFile("Fragments/alias_regs.asm");
+			Procedure proc = program.Procedures.Values[0];
+			Aliases alias = new Aliases(proc, program.Architecture);
 			alias.Transform();
 			using (FileUnitTester fut = new FileUnitTester("Analysis/AnAliasExpanderTest.txt"))
 			{
@@ -71,9 +71,9 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void AliasExpandDeadVars()
 		{
-			Program prog = RewriteFile("Fragments/alias_regs2.asm");
-			Procedure proc = prog.Procedures.Values[0];
-			Aliases alias = new Aliases(proc, prog.Architecture);
+			Program program = RewriteFile("Fragments/alias_regs2.asm");
+			Procedure proc = program.Procedures.Values[0];
+			Aliases alias = new Aliases(proc, program.Architecture);
 			alias.Transform();
 
 			using (FileUnitTester fut = new FileUnitTester("Analysis/AnAliasExpandDeadVars.txt"))

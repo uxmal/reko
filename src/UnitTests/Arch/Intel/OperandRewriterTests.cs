@@ -142,9 +142,9 @@ namespace Reko.UnitTests.Arch.Intel
 		private Dictionary<Address,FunctionType> callSignatures;
 		private Dictionary<Address,Procedure> procedures;
 
-		public FakeRewriterHost(Program prog)
+		public FakeRewriterHost(Program program)
 		{
-            this.program = prog;
+            this.program = program;
 			callSignatures = new Dictionary<Address,FunctionType>();
 			procedures = new Dictionary<Address,Procedure>();
 		}

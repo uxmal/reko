@@ -93,8 +93,8 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void SltWhileGoto()
 		{
-			Program prog = RewriteFile("Fragments/while_goto.asm");
-			Build(prog.Procedures.Values[0], prog.Architecture);
+			Program program = RewriteFile("Fragments/while_goto.asm");
+			Build(program.Procedures.Values[0], program.Architecture);
 
 			using (FileUnitTester fut = new FileUnitTester("Analysis/SltWhileGoto.txt"))
 			{

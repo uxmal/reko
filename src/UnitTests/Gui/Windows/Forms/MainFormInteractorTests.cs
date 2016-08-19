@@ -499,13 +499,13 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
         private Program CreateFakeProgram()
         {
-            Program prog = new Program();
-            prog.Architecture = new X86ArchitectureReal();
+            Program program = new Program();
+            program.Architecture = new X86ArchitectureReal();
             var mem = new MemoryArea(Address.SegPtr(0xC00, 0), new byte[300]);
-            prog.SegmentMap = new SegmentMap(
+            program.SegmentMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment("0C00", mem, AccessMode.ReadWriteExecute));
-            return prog; 
+            return this.program; 
         }
 
         private void Given_MainFormInteractor()
@@ -612,8 +612,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             var services = new ServiceContainer();
             services.AddService(typeof(IDialogFactory), dlgFactory);
             services.AddService(typeof(IServiceFactory), svcFactory);
-            Program prog = new Program();
-            interactor = new TestMainFormInteractor(prog, loader, services);
+            Program program = new Program();
+            interactor = new TestMainFormInteractor(program, loader, services);
             form = interactor.LoadForm();
         }
 
@@ -636,9 +636,9 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private string testFilename;
         private bool promptedForSaving;
 
-		public TestMainFormInteractor(Program prog, IServiceProvider sp) : base(sp)
+		public TestMainFormInteractor(Program program, IServiceProvider sp) : base(sp)
 		{
-            this.program = prog;
+            this.program = program;
 		}
 
         public TestMainFormInteractor(DecompilerDriver decompiler, IServiceProvider sp)
@@ -647,10 +647,10 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             this.decompiler = decompiler;
 		}
 
-        public TestMainFormInteractor(Program prog, ILoader ldr, IServiceProvider sp)
+        public TestMainFormInteractor(Program program, ILoader ldr, IServiceProvider sp)
             : base(sp)
         {
-            this.program = prog;
+            this.program = program;
             this.ldr = ldr;
         }
 

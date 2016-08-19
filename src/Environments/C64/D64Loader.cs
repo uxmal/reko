@@ -191,10 +191,10 @@ namespace Reko.Environments.C64
                 Address.Ptr16(alignedAddress),
                 loadedBytes);
             var rdr = new C64BasicReader(image, 0x0801);
-            var prog = rdr.ToSortedList(line => (ushort)line.Address.ToLinear(), line => line);
-            var arch = new C64Basic(prog);
+            var programLines = rdr.ToSortedList(line => (ushort)line.Address.ToLinear(), line => line);
+            var arch = new C64Basic(programLines);
             image = new MemoryArea(
-                Address.Ptr16(prog.Keys[0]),
+                Address.Ptr16(programLines.Keys[0]),
                 new byte[0xFFFF]);
             var program = new Program(
                 new SegmentMap(

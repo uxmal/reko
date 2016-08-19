@@ -58,14 +58,14 @@ namespace Reko.UnitTests.Typing
             dtb = new DataTypeBuilder(factory, store, program.Platform);
         }
 
-        protected override void RunTest(Program prog, string outputFile)
+        protected override void RunTest(Program program, string outputFile)
         {
-            aen.Transform(prog);
-            eqb.Build(prog);
-            TypeCollector trco = new TypeCollector(factory, store, prog, null);
+            aen.Transform(program);
+            eqb.Build(program);
+            TypeCollector trco = new TypeCollector(factory, store, program, null);
             trco.CollectTypes();
             dtb.BuildEquivalenceClassDataTypes();
-            Verify(prog, outputFile);
+            Verify(program, outputFile);
         }
 
         private void Verify(string outputFile)
@@ -73,14 +73,14 @@ namespace Reko.UnitTests.Typing
             Verify(null, outputFile);
         }
 
-        private void Verify(Program prog, string outputFile)
+        private void Verify(Program program, string outputFile)
         {
             store.CopyClassDataTypesToTypeVariables();
             using (FileUnitTester fut = new FileUnitTester(outputFile))
             {
-                if (prog != null)
+                if (program != null)
                 {
-                    foreach (Procedure proc in prog.Procedures.Values)
+                    foreach (Procedure proc in program.Procedures.Values)
                     {
                         proc.Write(false, fut.TextWriter);
                         fut.TextWriter.WriteLine();
@@ -347,12 +347,12 @@ namespace Reko.UnitTests.Typing
             Identifier bx = m.Local16("bx");
             Expression e = m.SegMem(bx.DataType, ds, m.IAdd(bx, 4));
             var arch = new Reko.Arch.X86.X86ArchitectureReal();
-            Program prog = new Program
+            Program program = new Program
             {
                 Architecture = arch,
                 Platform = new DefaultPlatform(null, arch),
             };
-            TraitCollector trco = new TraitCollector(factory, store, dtb, prog);
+            TraitCollector trco = new TraitCollector(factory, store, dtb, program);
             e = e.Accept(aen);
             e.Accept(eqb);
             e.Accept(trco);
@@ -373,17 +373,17 @@ namespace Reko.UnitTests.Typing
         {
             ProcedureBuilder m = new ProcedureBuilder();
             var arch = new Reko.Arch.X86.X86ArchitectureReal();
-            var prog = new Program
+            var program = new Program
             {
                 Architecture = arch,
                 Platform = new DefaultPlatform(null, arch)
             };
-            store.EnsureExpressionTypeVariable(factory, prog.Globals);
+            store.EnsureExpressionTypeVariable(factory, program.Globals);
 
             Identifier ds = m.Local16("ds");
             Expression e = m.SegMem(PrimitiveType.Byte, ds, m.Int16(0x0200));
 
-            TraitCollector coll = new TraitCollector(factory, store, dtb, prog);
+            TraitCollector coll = new TraitCollector(factory, store, dtb, program);
             e = e.Accept(aen);
             e.Accept(eqb);
             e.Accept(coll);
@@ -495,9 +495,9 @@ namespace Reko.UnitTests.Typing
                 m.Lt(m.SegMemW(ds, m.Word16(0x5404)), m.Word16(20)));
             m.Store(m.SegMemW(ds2, m.Word16(0x5404)), m.Word16(0));
 
-            ProgramBuilder prog = new ProgramBuilder();
-            prog.Add(m);
-            RunTest(prog.BuildProgram(), "Typing/DtbSignedCompare.txt");
+            ProgramBuilder program = new ProgramBuilder();
+            program.Add(m);
+            RunTest(program.BuildProgram(), "Typing/DtbSignedCompare.txt");
         }
 
         [Test]
@@ -508,9 +508,9 @@ namespace Reko.UnitTests.Typing
             ds.DataType = PrimitiveType.SegmentSelector;
             m.SegStore(ds, m.Word16(0x0100), m.Seq(ds, m.Word16(0x1234)));
 
-            ProgramBuilder prog = new ProgramBuilder();
-            prog.Add(m);
-            RunTest(prog.BuildProgram(), "Typing/DtbSequenceWithSegment.txt");
+            ProgramBuilder pb = new ProgramBuilder();
+            pb.Add(m);
+            RunTest(pb.BuildProgram(), "Typing/DtbSequenceWithSegment.txt");
         }
 
 

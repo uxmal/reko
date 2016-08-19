@@ -87,7 +87,7 @@ namespace Reko.Typing
             eventListener.ShowStatus("Collecting data types");
             tyco.CollectTypes();
             store.BuildEquivalenceClassDataTypes(factory);
-            //dpa.FollowConstantPointers(prog);
+            //dpa.FollowConstantPointers(program);
             tvr.ReplaceTypeVariables();
 
             eventListener.ShowStatus("Transforming datatypes.");

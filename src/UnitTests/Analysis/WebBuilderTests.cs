@@ -71,18 +71,18 @@ namespace Reko.UnitTests.Analysis
 			RunFileTest_x86_real("Fragments/multiple/successivedecs.asm", "Analysis/WebSuccessiveDecs.txt");
 		}
 
-		private void Build(Program prog)
+		private void Build(Program program)
 		{
             var eventListener = new FakeDecompilerEventListener();
-            DataFlowAnalysis dfa = new DataFlowAnalysis(prog, null, eventListener);
+            DataFlowAnalysis dfa = new DataFlowAnalysis(program, null, eventListener);
 			dfa.UntangleProcedures();
-			foreach (Procedure proc in prog.Procedures.Values)
+			foreach (Procedure proc in program.Procedures.Values)
 			{
-                SsaTransform2 sst = new SsaTransform2(prog.Architecture, proc, null, dfa.DataFlow);
+                SsaTransform2 sst = new SsaTransform2(program.Architecture, proc, null, dfa.DataFlow);
                 sst.Transform();
 				SsaState ssa = sst.SsaState;
 
-				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, prog.Platform);
+				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform);
 				cce.Transform();
 
 				DeadCode.Eliminate(proc, ssa);
@@ -90,7 +90,7 @@ namespace Reko.UnitTests.Analysis
                 sst.RenameFrameAccesses = true;
                 sst.Transform();
 
-                var vp = new ValuePropagator(prog.Architecture, ssa);
+                var vp = new ValuePropagator(program.Architecture, ssa);
 				vp.Transform();
 
 				DeadCode.Eliminate(proc, ssa);
@@ -110,10 +110,10 @@ namespace Reko.UnitTests.Analysis
 			}
 		}
 
-		protected override void RunTest(Program prog, TextWriter writer)
+		protected override void RunTest(Program program, TextWriter writer)
 		{
-			Build(prog);
-			foreach (Procedure proc in prog.Procedures.Values)
+			Build(program);
+			foreach (Procedure proc in program.Procedures.Values)
 			{
 				proc.Write(false, writer);
 				writer.WriteLine();

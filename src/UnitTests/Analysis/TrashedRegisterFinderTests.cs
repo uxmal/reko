@@ -79,9 +79,9 @@ namespace Reko.UnitTests.Analysis
             return new TrashedRegisterFinder(program, program.Procedures.Values, this.flow, new FakeDecompilerEventListener());
         }
 
-        private TrashedRegisterFinder CreateTrashedRegisterFinder(Program prog)
+        private TrashedRegisterFinder CreateTrashedRegisterFinder(Program program)
         {
-            return new TrashedRegisterFinder(prog, prog.Procedures.Values, this.flow, new FakeDecompilerEventListener());
+            return new TrashedRegisterFinder(program, program.Procedures.Values, this.flow, new FakeDecompilerEventListener());
         }
 
         private string DumpProcedureSummaries()
@@ -126,10 +126,10 @@ namespace Reko.UnitTests.Analysis
             Assert.AreEqual(sExp, summary);
         }
 
-        protected override void RunTest(Program prog, TextWriter writer)
+        protected override void RunTest(Program program, TextWriter writer)
         {
-            this.program = prog;
-            flow = new ProgramDataFlow(prog);
+            this.program = program;
+            flow = new ProgramDataFlow(program);
             trf = CreateTrashedRegisterFinder();
             trf.Compute();
             DumpProcedureSummaries(writer);

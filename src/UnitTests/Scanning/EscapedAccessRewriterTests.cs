@@ -94,10 +94,10 @@ namespace Reko.UnitTests.Scanning
 
 		private void RunTest(string sourceFile, Address addr, string outputFile)
 		{
-			Program prog = AssembleFile(sourceFile, addr);
+			Program program = AssembleFile(sourceFile, addr);
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
-				foreach (Procedure proc in prog.Procedures.Values)
+				foreach (Procedure proc in program.Procedures.Values)
 				{
 					fut.TextWriter.WriteLine("= Before ==========");
 					proc.Write(true, fut.TextWriter);

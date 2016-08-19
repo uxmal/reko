@@ -44,7 +44,7 @@ namespace Reko.UnitTests.Arch.Intel
 		{
 			arch = new X86ArchitectureReal();
             var mem = new MemoryArea(Address.Ptr32(0x10000), new byte[4]);
-			var prog = new Program(
+			var program = new Program(
                 new SegmentMap(
                     mem.BaseAddress,
                     new ImageSegment(
@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Arch.Intel
             };
 
             proc = Procedure.Create(procAddress, arch.CreateFrame());
-			orw = new OperandRewriter16(arch, proc.Frame, new FakeRewriterHost(prog));
+			orw = new OperandRewriter16(arch, proc.Frame, new FakeRewriterHost(program));
             state = (X86State)arch.CreateProcessorState();
         }
 

@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Scanning
                 0x00, 0x00, 0xC3, 0x00,  0x00, 0x00, 0x00, 0x00,
                 0xC3, 0xC3                                      // 1010, 1011
             });
-            prog = new Program
+            program = new Program
             {
                 Image = image,
                 ImageMap = image.CreateImageMap(),

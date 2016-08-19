@@ -103,9 +103,9 @@ namespace Reko.Typing
                 return access;
         }
 
-		public void Transform(Program prog)
+		public void Transform(Program program)
 		{
-			foreach (Procedure proc in prog.Procedures.Values)
+			foreach (Procedure proc in program.Procedures.Values)
 			{
                 foreach (var stm in proc.Statements)
                 {

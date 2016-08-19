@@ -76,16 +76,16 @@ namespace Reko.UnitTests.Analysis
             }
 #else
             var eventListener = new FakeDecompilerEventListener();
-            var trf = new TrashedRegisterFinder(prog, prog.Procedures.Values, flow, eventListener);
+            var trf = new TrashedRegisterFinder(program, program.Procedures.Values, flow, eventListener);
             trf.Compute();
             trf.RewriteBasicBlocks();
-            //Dump(prog.CallGraph);
-            var rl = RegisterLiveness.Compute(prog, flow, eventListener);
-            GlobalCallRewriter.Rewrite(prog, flow);
+            //Dump(program.CallGraph);
+            var rl = RegisterLiveness.Compute(program, flow, eventListener);
+            GlobalCallRewriter.Rewrite(program, flow);
 
-			foreach (Procedure proc in prog.Procedures.Values)
+			foreach (Procedure proc in program.Procedures.Values)
 			{
-                Aliases alias = new Aliases(proc, prog.Architecture);
+                Aliases alias = new Aliases(proc, program.Architecture);
 				alias.Transform();
 				var gr = proc.CreateBlockDominatorGraph();
 				SsaTransform sst = new SsaTransform(flow, proc, gr);

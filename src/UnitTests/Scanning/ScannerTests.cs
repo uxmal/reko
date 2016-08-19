@@ -57,9 +57,9 @@ namespace Reko.UnitTests.Scanning
 
         public class TestScanner : Scanner
         {
-            public TestScanner(Program prog, IImportResolver importResolver,
+            public TestScanner(Program program, IImportResolver importResolver,
                 IServiceProvider services)
-                : base(prog, importResolver, services)
+                : base(program, importResolver, services)
             {
             }
 
@@ -114,10 +114,10 @@ namespace Reko.UnitTests.Scanning
             scan.EnqueueImageSymbol(sym, true);
         }
 
-        private void AssertProgram(string sExpected, Program prog)
+        private void AssertProgram(string sExpected, Program program)
         {
             var sw = new StringWriter();
-            foreach (var proc in prog.Procedures.Values)
+            foreach (var proc in program.Procedures.Values)
             {
                 proc.Write(false, false, sw);
                 sw.WriteLine();
@@ -208,25 +208,25 @@ namespace Reko.UnitTests.Scanning
                 sc);
         }
 
-        private TestScanner CreateScanner(Program prog)
+        private TestScanner CreateScanner(Program program)
         {
-            this.program = prog;
+            this.program = program;
             return new TestScanner(
-                prog, 
+                program, 
                 importResolver,
                 sc);
         }
 
-        private TestScanner CreateScanner(Program prog, uint startAddress, int imageSize)
+        private TestScanner CreateScanner(Program program, uint startAddress, int imageSize)
         {
-            this.program = prog;
-            prog.Architecture = arch;
-            prog.Platform = new FakePlatform(null, arch);
+            this.program = program;
+            program.Architecture = arch;
+            program.Platform = new FakePlatform(null, arch);
             this.mem = new MemoryArea(Address.Ptr32(startAddress), new byte[imageSize]);
-            prog.SegmentMap = new SegmentMap(
+            program.SegmentMap = new SegmentMap(
                 mem.BaseAddress,
                 new ImageSegment("progseg", this.mem, AccessMode.ReadExecute));
-            return new TestScanner(prog, importResolver, sc);
+            return new TestScanner(program, importResolver, sc);
         }
 
         [Test]

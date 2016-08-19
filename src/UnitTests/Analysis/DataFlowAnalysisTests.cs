@@ -191,7 +191,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void DfaFstsw()
         {
-           var prog = RewriteCodeFragment(@"
+           var program = RewriteCodeFragment(@"
                 fcomp   dword ptr [bx]
                 fstsw   ax
                 test    ah,0x41
@@ -200,7 +200,7 @@ namespace Reko.UnitTests.Analysis
 done:   
                 ret
 ");
-           SaveRunOutput(prog, RunTest, "Analysis/DfaFstsw.txt");
+           SaveRunOutput(program, RunTest, "Analysis/DfaFstsw.txt");
         }
 
         [Test]
@@ -213,8 +213,8 @@ done:
         [Ignore("scanning-development")]
         public void DfaReg00001()
         {
-            var prog = RewriteCodeFragment32(UnitTests.Fragments.Regressions.Reg00001.Text);
-            SaveRunOutput(prog, RunTest, "Analysis/DfaReg00001.txt");
+            var program = RewriteCodeFragment32(UnitTests.Fragments.Regressions.Reg00001.Text);
+            SaveRunOutput(program, RunTest, "Analysis/DfaReg00001.txt");
         }
 
         [Test]
@@ -224,17 +224,17 @@ done:
             RunFileTest_x86_real("Fragments/regressions/r00282.asm", "Analysis/DfaReg00282.txt");
         }
 
-        protected override void RunTest(Program prog, TextWriter writer)
+        protected override void RunTest(Program program, TextWriter writer)
 		{
             IImportResolver importResolver = null;
-			dfa = new DataFlowAnalysis(prog, importResolver, new FakeDecompilerEventListener());
+			dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
 			dfa.AnalyzeProgram();
-			foreach (Procedure proc in prog.Procedures.Values)
+			foreach (Procedure proc in program.Procedures.Values)
 			{
 				ProcedureFlow flow = dfa.ProgramDataFlow[proc];
 				writer.Write("// ");
 				flow.Signature.Emit(proc.Name, FunctionType.EmitFlags.ArgumentKind|FunctionType.EmitFlags.LowLevelInfo, writer);
-				flow.Emit(prog.Architecture, writer);
+				flow.Emit(program.Architecture, writer);
 				proc.Write(false, writer);
 				writer.WriteLine();
 			}

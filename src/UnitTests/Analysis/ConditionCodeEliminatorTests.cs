@@ -175,7 +175,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void CceFstswTestAx()
         {
-            Program prog = RewriteCodeFragment(@"
+            Program program = RewriteCodeFragment(@"
                 fcomp   dword ptr [bx]
                 fstsw  ax
                 test    ah,0x41
@@ -184,14 +184,14 @@ namespace Reko.UnitTests.Analysis
  done:
                 ret
 ");
-            SaveRunOutput(prog, RunTest, "Analysis/CceFstswTestAx.txt");
+            SaveRunOutput(program, RunTest, "Analysis/CceFstswTestAx.txt");
         }
 
         [Test]
         [Ignore("Wait until we see this in real code? If we do, we have to move the logic for FPUF into an architecture specific branch.")]
         public void CceFstswTestAxWithConstantBl()
         {
-            Program prog = RewriteCodeFragment(@"
+            Program program = RewriteCodeFragment(@"
                 mov     bx,1
                 fcomp   dword ptr[si]
                 fstsw   ax
@@ -201,13 +201,13 @@ namespace Reko.UnitTests.Analysis
 done:
                 ret
 ");
-            SaveRunOutput(prog, RunTest, "Analysis/CceFstswTestAxWithConstantBl.txt");
+            SaveRunOutput(program, RunTest, "Analysis/CceFstswTestAxWithConstantBl.txt");
         }
 
         [Test]
         public void CceFstswEq()
         {
-            var prog = RewriteCodeFragment(@"
+            var program = RewriteCodeFragment(@"
     fld	QWORD PTR [si]
 	fldz
 	fcompp
@@ -220,13 +220,13 @@ done:
     mov word ptr[di], 0
     ret
 ");
-            SaveRunOutput(prog, RunTest, "Analysis/CceFstswEq.txt");
+            SaveRunOutput(program, RunTest, "Analysis/CceFstswEq.txt");
         }
 
         [Test]
         public void CceFstswNe()
         {
-            var prog = RewriteCodeFragment(@"
+            var program = RewriteCodeFragment(@"
 	fld	QWORD PTR [si]
 	fldz
 	fcompp
@@ -239,13 +239,13 @@ done:
 	mov	word ptr [di], 0
 	ret	
 ");
-            SaveRunOutput(prog, RunTest,"Analysis/CceFstswNe.txt");
+            SaveRunOutput(program, RunTest,"Analysis/CceFstswNe.txt");
         }
 
         [Test]
         public void CceFstswGe()
         {
-            var prog = RewriteCodeFragment(@"
+            var program = RewriteCodeFragment(@"
 
 ; 18   : 	return x >= 0;
 
@@ -260,13 +260,13 @@ done:
 	mov	word ptr[di], 0
     ret
 ");
-            SaveRunOutput(prog, RunTest, "Analysis/CceFstswGe.txt");
+            SaveRunOutput(program, RunTest, "Analysis/CceFstswGe.txt");
         }
 
         [Test]
         public void CceFstswGt()
         {
-            var prog = RewriteCodeFragment(@"
+            var program = RewriteCodeFragment(@"
 ; 13   : 	return x > 0;
 
 	fldz
@@ -280,14 +280,14 @@ done:
 	mov	word ptr[di], 0
     ret
 ");
-            SaveRunOutput(prog, RunTest,"Analysis/CceFstswGt.txt");
+            SaveRunOutput(program, RunTest,"Analysis/CceFstswGt.txt");
 
          }
 
         [Test]
         public void CceFstswLe()
         {
-            var prog = RewriteCodeFragment(@"
+            var program = RewriteCodeFragment(@"
 
 ; 8    : 	return x <= 0;
 
@@ -302,13 +302,13 @@ done:
 	mov	word ptr[di], 0
     ret
 ");
-            SaveRunOutput(prog, RunTest, "Analysis/CceFstswLe.txt");
+            SaveRunOutput(program, RunTest, "Analysis/CceFstswLe.txt");
         }
 
         [Test]
         public void CceFstswLt()
         {
-            var prog = RewriteCodeFragment(@"
+            var program = RewriteCodeFragment(@"
 ; 3    : 	return x < 0;
 
 	fldz
@@ -322,7 +322,7 @@ done:
 	mov	word ptr[di], 0
     ret
 ");
-            SaveRunOutput(prog, RunTest, "Analysis/CceFstswLt.txt");
+            SaveRunOutput(program, RunTest, "Analysis/CceFstswLt.txt");
         }
 
 		[Test]

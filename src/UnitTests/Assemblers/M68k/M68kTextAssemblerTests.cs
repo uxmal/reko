@@ -42,36 +42,36 @@ namespace Reko.UnitTests.Assemblers.M68k
 
         protected void RunFragment(string fragment, string outputFile, Address addrBase)
         {
-            var prog = RunTestFromFragment(fragment, addrBase);
-            RenderResult(prog, outputFile);
+            var program = RunTestFromFragment(fragment, addrBase);
+            RenderResult(program, outputFile);
         }
 
         protected void RunTest(string sourceFile, string outputFile, Address addrBase)
         {
-            var prog = RunTestFromFile(sourceFile, addrBase);
+            var program = RunTestFromFile(sourceFile, addrBase);
 
-            RenderResult(prog, outputFile);
+            RenderResult(program, outputFile);
         }
 
-        private void RenderResult(Program prog, string outputFile)
+        private void RenderResult(Program program, string outputFile)
         {
             foreach (var item in asm.ImportReferences)
             {
-                prog.ImportReferences.Add(item.Key, item.Value);
+                program.ImportReferences.Add(item.Key, item.Value);
             }
 
             using (FileUnitTester fut = new FileUnitTester(outputFile))
             {
-                Dumper dumper = new Dumper(prog.Architecture);
+                Dumper dumper = new Dumper(program.Architecture);
                 dumper.ShowAddresses = true;
                 dumper.ShowCodeBytes = true;
-                var mem = prog.SegmentMap.Segments.Values.First().MemoryArea;
-                dumper.DumpData(prog.SegmentMap, mem.BaseAddress, mem.Bytes.Length, fut.TextWriter);
+                var mem = program.SegmentMap.Segments.Values.First().MemoryArea;
+                dumper.DumpData(program.SegmentMap, mem.BaseAddress, mem.Bytes.Length, fut.TextWriter);
                 fut.TextWriter.WriteLine();
-                dumper.DumpAssembler(prog.SegmentMap, mem.BaseAddress, mem.EndAddress, fut.TextWriter);
-                if (prog.ImportReferences.Count > 0)
+                dumper.DumpAssembler(program.SegmentMap, mem.BaseAddress, mem.EndAddress, fut.TextWriter);
+                if (program.ImportReferences.Count > 0)
                 {
-                    var list = new SortedList<Address, ImportReference>(prog.ImportReferences);
+                    var list = new SortedList<Address, ImportReference>(program.ImportReferences);
                     foreach (var de in list)
                     {
                         fut.TextWriter.WriteLine("{0}: {1}", de, de.Value);

@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Analysis
 		//[Test]
 		public void VnSumTest()
 		{
-			Program prog = RewriteCodeFragment(
+			Program program = RewriteCodeFragment(
 				@".i86
 	push bp
 	mov	 bp,sp
@@ -49,8 +49,8 @@ namespace Reko.UnitTests.Analysis
 	");
 			using (FileUnitTester fut = new FileUnitTester("Analysis/VnSumTest.txt"))
 			{
-				Procedure proc = prog.Procedures.Values[0];
-				Aliases alias = new Aliases(proc, prog.Architecture);
+				Procedure proc = program.Procedures.Values[0];
+				Aliases alias = new Aliases(proc, program.Architecture);
 				alias.Transform();
 				var gr = proc.CreateBlockDominatorGraph();
                 SsaTransform sst = new SsaTransform(
