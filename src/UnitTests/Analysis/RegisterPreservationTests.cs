@@ -76,33 +76,28 @@ namespace Reko.UnitTests.Analysis
         {
             importResolver = MockRepository.GenerateStub<IImportResolver>();
             importResolver.Replay();
-            var flow = new ProgramDataFlow(program);
+            this.dataFlow = new DataFlow2();
             var scc = new Dictionary<Procedure, SsaState>();
             foreach (var proc in procs)
             {
-                Aliases alias = new Aliases(proc, program.Architecture, flow);
-                alias.Transform();
-
                 // Transform the procedure to SSA state. When encountering 'call' instructions,
                 // they can be to functions already visited. If so, they have a "ProcedureFlow" 
                 // associated with them. If they have not been visited, or are computed destinations
                 // (e.g. vtables) they will have no "ProcedureFlow" associated with them yet, in
                 // which case the the SSA treats the call as a "hell node".
                 var doms = proc.CreateBlockDominatorGraph();
-                var sst = new SsaTransform(
-                    flow, 
+                var sst = new SsaTransform2(
+                    program.Architecture,
                     proc,
                     importResolver,
-                    doms, 
-                    program.Platform.CreateImplicitArgumentRegisters());
-                sst.AddUseInstructions = true;
+                    dataFlow);
                 sst.Transform();
-                var ssa = sst.SsaState;
+                sst.AddUsesToExitBlock();
 
+                var ssa = sst.SsaState;
                 scc.Add(proc, ssa);
             }
 
-            this.dataFlow = new DataFlow2();
             var regp = new RegisterPreservation(scc, dataFlow);
             regp.Compute();
         }
@@ -168,11 +163,10 @@ l1:
 	return
 	// succ:  test_exit
 test_exit:
-	use Mem0
 	use r1_2
 
 test:
-    Preserved: Global memory
+    Preserved: 
     Trashed:   r1
 ";
             #endregion
@@ -210,15 +204,15 @@ l1:
 	goto m_lt
 	// succ:  m_lt m_ge
 m_ge:
-	r1_2 = PHI(r1, r1_3)
+	r1_3 = PHI(r1, r1_2)
 	return
 	// succ:  test_exit
 m_lt:
-	r1_3 = 0x00000000
+	r1_2 = 0x00000000
 	goto m_ge
 	// succ:  m_ge
 test_exit:
-	use r1_2
+	use r1_3
 
 test:
     Preserved: 
@@ -270,11 +264,11 @@ l1:
 	goto m_lt
 	// succ:  m_lt m_ge
 m_done:
-	r1_3 = PHI(r1_4, r1_5)
+	r1_5 = PHI(r1_4, r1_3)
 	return
 	// succ:  test_exit
 m_ge:
-	r1_5 = r2_2
+	r1_3 = r2_2
 	goto m_done
 	// succ:  m_done
 m_lt:
@@ -282,7 +276,7 @@ m_lt:
 	goto m_done
 	// succ:  m_done
 test_exit:
-	use r1_3
+	use r1_5
 	use r2_2
 
 test:
@@ -291,7 +285,6 @@ test:
 ";
             #endregion
             AssertProgram(sExp, program.Procedures.Values);
-
         }
 
         [Test(Description = "While-do loops shouldn't confuse this analysis.")]
@@ -336,24 +329,24 @@ l1:
 	r1_4 = 0x0000000A
 	// succ:  m_loopHead
 m_loopHead:
-	r2_5 = PHI(r2_2, r2_9)
-	r1_6 = PHI(r1_4, r1_8)
-	branch r1_6 >= 0x00000000 m_loopStatements
+	r2_9 = PHI(r2_2, r2_8)
+	r1_5 = PHI(r1_4, r1_6)
+	branch r1_5 >= 0x00000000 m_loopStatements
 	goto m_xit
 	// succ:  m_xit m_loopStatements
 m_loopStatements:
-	r1_8 = r1_6 - 0x00000001
-	r2_9 = r3_3
+	r1_6 = r1_5 - 0x00000001
+	r2_8 = r3_3
 	goto m_loopHead
 	// succ:  m_loopHead
 m_xit:
-	r1_7 = r2_5
+	r1_10 = r2_9
 	return
 	// succ:  test_exit
 test_exit:
-	use r1_7
-	use r2_5
-	use r3_3
+	use r1_10
+	use r2_9
+	use r3_7
 
 test:
     Preserved: r1
@@ -364,7 +357,6 @@ test:
         }
 
         [Test(Description = "Processes a self-recursive program")]
-        [Ignore()]
         public void Regp_Factorial()
         {
             program = Factorial.BuildSample();
@@ -381,41 +373,40 @@ fact_entry:
 	def r3
 	// succ:  l1
 l1:
-	r63_1 = fp
-	r2_3 = r1
-	r1_4 = 0x00000001
-	cc_5 = cond(r2_3 - r1_4)
-	branch Test(LE,cc_5) m_done
+	r63_2 = fp
+	r2_4 = r1
+	r1_5 = 0x00000001
+	cc_6 = cond(r2_4 - r1_5)
+	branch Test(LE,cc_6) m_done
 	// succ:  l2 m_done
 l2:
-	r63_12 = r63_1 - 0x00000004
-	Mem13[r63_12:word32] = r2_3
-	r1_14 = r2_3 - r1_4
+	r63_7 = r63_2 - 0x00000004
+	Mem8[r63_7:word32] = r2_4
+	r1_9 = r2_4 - r1_5
 	call fact (retsize: 0;)
-		uses: cc_5,r1_14,r2_3,r3,r63_12
-		defs: cc_19,r1_16,r2_17,r3_18,r63_15
-	r2_20 = Mem13[r63_15:word32]
-	r63_21 = r63_15 + 0x00000004
-	r1_22 = r1_16 * r2_20
+		uses: r1_9,r2_4,r3,r63_7
+		defs: cc_15,r1_11,r2_12,r3_14,r63_10
+	r2_16 = Mem8[r63_10:word32]
+	r63_17 = r63_10 + 0x00000004
+	r1_18 = r1_11 * r2_16
 	// succ:  m_done
 m_done:
-	cc_7 = PHI(cc_5, cc_19)
-	r3_8 = PHI(r3, r3_18)
-	r2_9 = PHI(r2_3, r2_20)
-	r63_10 = PHI(r63_1, r63_21)
-	r1_11 = PHI(r1_4, r1_22)
+	r63_23 = PHI(r63_2, r63_17)
+	r3_22 = PHI(r3, r3_14)
+	r2_21 = PHI(r2_4, r2_16)
+	r1_20 = PHI(r1_5, r1_18)
+	cc_19 = PHI(cc_6, cc_15)
 	return
 	// succ:  fact_exit
 fact_exit:
-	use cc_7
-	use fp
-	use r1_11
-	use r2_9
-	use r3_8
-	use r63_10
+	use cc_19
+	use r1_20
+	use r2_21
+	use r3_22
+	use r63_23
 
 fact:
-    Preserved: fp
+    Preserved: 
     Trashed:   Flags r1 r2 r3 r63
 ";
             #endregion
