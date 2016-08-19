@@ -170,7 +170,6 @@
     <Compile Include="Analysis\TrashRegisterFinderUpdateCodeTests.cs" />
     <Compile Include="Analysis\TrashStorageHelperTests.cs" />
     <Compile Include="Analysis\ExpressionIdentifierUseFinderTests.cs" />
-    <Compile Include="Analysis\ValueNumberingTest.cs" />
     <Compile Include="Analysis\ValuePropagationTests.cs" />
     <Compile Include="Analysis\IdentifierLivenessTests.cs" />
     <Compile Include="Analysis\WebBuilderTests.cs" />
