@@ -69,7 +69,7 @@ test2_entry:
 // LocalsOut: fp(32) Stack +0004(32)
 
 l00401060:
-	test1(0x004020D8, 0x00000002, 0x004020D4, (real32) (real64) Mem0[0x004020E8:real32])
+	test1(0x004020D8, 0x00000002, 0x004020D4, Mem0[0x004020E8:real32])
 	branch dwArg04 != 0x00000000 l004010A5
 // DataOut:
 // DataOut (flags): 
@@ -77,7 +77,7 @@ l00401060:
 // LocalsOut: fp(32)
 
 l00401087:
-	test1(0x004020E0, 0x00000006, 0x004020DC, (real32) (real64) Mem0[0x004020E4:real32])
+	test1(0x004020E0, 0x00000006, 0x004020DC, Mem0[0x004020E4:real32])
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000004 ebp:fp - 0x00000004 -20(fp):0x004020D8 -16(fp):0x00000002 -12(fp):0x004020D4 -8(fp):(real32) rLoc1 -4(fp):ebp
@@ -164,7 +164,7 @@ test5_entry:
 // LocalsOut: fp(32)
 
 l004010F0:
-	Mem0[Mem0[Mem0[0x00403018:word32]:word32] + 0x00000004:word32](Mem0[0x00403018:word32], 0x000003E7, (real32) (real64) Mem0[0x004020EC:real32])
+	Mem0[Mem0[Mem0[0x00403018:word32]:word32] + 0x00000004:word32](Mem0[0x00403018:word32], 0x000003E7, Mem0[0x004020EC:real32])
 	return
 // DataOut:
 // DataOut (flags): 

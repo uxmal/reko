@@ -22,7 +22,7 @@ l0000100A:
 	word32 d2_235 = d0
 	word32 a2_247 = a0
 	word32 a4_6 = 0x0000948A
-	branch Mem0[a6_8 + 20:word16] - 0x0024 >=u 0x0000 l00001036
+	branch Mem0[a6_8 + 20:word16] >=u 0x0024 l00001036
 // DataOut: a2 a4 a6 d2
 // DataOut (flags): 
 // SymbolicIn: a7:fp
@@ -81,7 +81,7 @@ l00001066:
 // LocalsOut: fp(32) Local -0018(32)
 
 l0000106A:
-	branch Mem86[a0_514:byte] - 0x20 != 0x00 l00001072
+	branch Mem86[a0_514:byte] != 0x20 l00001072
 // DataOut: a0 a2 a3 a4 d2 d4
 // DataOut (flags): 
 // SymbolicIn: a7:fp d2:d0 a2:a0 a4:0000948A a6:<invalid> a1:000012BC d0:<invalid> a3:<invalid> a0:<invalid> d4:<invalid>
@@ -259,7 +259,7 @@ l000010B6:
 
 l000010DA:
 	a0_233 = a0_233 - 0x00000001
-	branch Mem229[a0_233:byte] - 0x20 <=u 0x00 l000010E2
+	branch Mem229[a0_233:byte] <=u 0x20 l000010E2
 // DataOut: a0 a1 a2 a3 a4 a5 a6 d0 d1 d2 d3
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000010 d2:<invalid> a2:a0 a4:0000948A a6:<invalid> a1:<invalid> d0:<invalid> a3:<invalid> d4:<invalid> d5:<invalid> d3:1 d1:0x00010001 a5:<invalid> a0:<invalid> -12(fp):<invalid> -4(fp):<invalid>
@@ -411,7 +411,7 @@ l00001148:
 	Mem280[a4_6 + -32734:word32] = d0_226
 	dwLoc14_159 = d0_132 + 16
 	dwLoc18 = d3_231
-	branch Mem280[Mem280[a4_6 + -32754:word32] + 20:word16] - 0x0024 <u 0x0000 l0000117A
+	branch Mem280[Mem280[a4_6 + -32754:word32] + 20:word16] <u 0x0024 l0000117A
 // DataOut: a3 a4 d0
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000010 d2:<invalid> a2:<invalid> a4:0000948A a6:<invalid> a1:<invalid> d0:<invalid> a3:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d1:<invalid> a5:<invalid> a0:<invalid> -12(fp):<invalid> -4(fp):<invalid>
@@ -434,7 +434,7 @@ l0000117A:
 // LocalsOut: fp(32) Local -0014(32) Local -0018(32)
 
 l0000117E:
-	branch Mem280[d0_19 + 8:byte] - 0x0D != 0x00 l000011F8
+	branch Mem280[d0_19 + 8:byte] != 0x0D l000011F8
 // DataOut: a3 a4
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000018 d2:<invalid> a2:<invalid> a4:0000948A a6:<invalid> a1:<invalid> d0:<invalid> a3:<invalid> d4:<invalid> d5:<invalid> d3:<invalid> d1:<invalid> a5:<invalid> a0:<invalid> -24(fp):<invalid> -20(fp):<invalid> -12(fp):<invalid> -4(fp):<invalid>

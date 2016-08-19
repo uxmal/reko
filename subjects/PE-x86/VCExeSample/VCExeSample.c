@@ -18,9 +18,9 @@ void test1(char * arg1, int32 arg2, char * arg3, real32 arg4)
 
 void test2(word32 dwArg04)
 {
-	test1("1", 0x02, "3", (real32) (real64) globals->r4020E8);
+	test1("1", 0x02, "3", globals->r4020E8);
 	if (dwArg04 == 0x00)
-		test1("5", 0x06, "7", (real32) (real64) globals->r4020E4);
+		test1("5", 0x06, "7", globals->r4020E4);
 	return;
 }
 
@@ -38,7 +38,7 @@ void test4()
 
 void test5()
 {
-	(**globals->gbl_c)(globals->gbl_c, 999, (real32) (real64) globals->r4020EC);
+	(**globals->gbl_c)(globals->gbl_c, 999, globals->r4020EC);
 	return;
 }
 
