@@ -1200,6 +1200,16 @@ namespace Reko.Analysis
             return store;
         }
 
+        public override Instruction TransformUseInstruction(UseInstruction u)
+        {
+            if (u.OutArgument != null)
+            {
+                var sidOut = ssa.Identifiers.Add(u.OutArgument, null, null, false);
+                u.OutArgument = sidOut.Identifier;
+            }
+            return base.TransformUseInstruction(u);
+        }
+
         public override Expression VisitApplication(Application appl)
         {
             for (int i = 0; i < appl.Arguments.Length; ++i)

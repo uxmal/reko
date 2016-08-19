@@ -32,8 +32,10 @@ namespace Reko.Core.Expressions
 
 		public Dereference(DataType ptrType, Expression exp) : base(ptrType)
 		{
-            this.exp = exp; if (exp == null) throw new ArgumentNullException();
-		}
+            if (exp == null)
+                throw new ArgumentNullException();
+            this.exp = exp;
+        }
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {

@@ -80,7 +80,7 @@ namespace Reko.Analysis
 				{
 					Identifier id = (Identifier) use.Expression;
 					ssa.Identifiers[id].Uses.Remove(stm);
-					ReplaceDefinitionsWithOutParameter(id, use.OutArgument);
+                    ReplaceDefinitionsWithOutParameter(id, use.OutArgument);
 					exitBlock.Statements.RemoveAt(i);
 				}
 			}
