@@ -338,12 +338,12 @@ namespace Reko.UnitTests.Analysis
 		{
 			this.proc = proc;
             doms = proc.CreateBlockDominatorGraph();
-			SsaTransform sst = new SsaTransform(
-                new ProgramDataFlow(),
+            SsaTransform2 sst = new SsaTransform2(
+                null,
                 proc,
                 null,
-                doms,
-                new HashSet<RegisterStorage>());
+                new DataFlow2());
+            sst.Transform();
 			SsaState ssa = sst.SsaState;
 			ssaIds = ssa.Identifiers;
 

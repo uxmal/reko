@@ -13,7 +13,7 @@ l2:
 	// succ:  WhileGtDecMock_exit
 loop:
 	i_3 = i_2 - 0x00000001
-	Mem4[a + i_3 * 0x00000004:word32] = 0x00000000
+	Mem5[a + i_3 * 0x00000004:word32] = 0x00000000
 	// succ:  loopHdr
 loopHdr:
 	i_2 = PHI(i_1, i_3)

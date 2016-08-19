@@ -12,7 +12,7 @@ l2:
 	return
 	// succ:  WhileLtIncMock_exit
 loop:
-	Mem3[a + i_2 * 0x00000004:word32] = 0x00000000
+	Mem4[a + i_2 * 0x00000004:word32] = 0x00000000
 	i_5 = i_2 + 0x00000001
 	// succ:  loopHdr
 loopHdr:
