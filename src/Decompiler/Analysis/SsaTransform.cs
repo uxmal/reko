@@ -2070,14 +2070,14 @@ namespace Reko.Analysis
 
             public SsaIdentifier Fuse(SsaIdentifier head, SsaIdentifier tail)
             {
-                AliasAssignment assHead, assTail;
-                if (head.DefStatement.Instruction.As(out assHead) &&
-                    tail.DefStatement.Instruction.As(out assTail))
+                AliasAssignment aassHead, aassTail;
+                if (head.DefStatement.Instruction.As(out aassHead) &&
+                    tail.DefStatement.Instruction.As(out aassTail))
                 {
                     // 
                     Slice eHead;
                     Cast eTail;
-                    if (assHead.Src.As(out eHead) && assTail.Src.As(out eTail))
+                    if (aassHead.Src.As(out eHead) && aassTail.Src.As(out eTail))
                     {
                         return ssaIds[(Identifier)eHead.Expression];
                     }
@@ -2096,6 +2096,22 @@ namespace Reko.Analysis
                     head.Uses.Add(stm);
                     tail.Uses.Add(stm);
                     return sidTo;
+                }
+
+                Assignment assHead, assTail;
+                if (head.DefStatement.Instruction.As(out assHead) &&
+                    tail.DefStatement.Instruction.As(out assTail))
+                {
+                    Identifier id;
+                    // If x_2 = Slice(y_3); z_4 = (cast) y_3 return y_3
+                    var slHead = assHead.Src as Slice;
+                    var caTail = assTail.Src as Cast;
+                    if (slHead != null && caTail != null &&
+                        slHead.Expression == caTail.Expression &&
+                        slHead.Expression.As(out id))
+                    {
+                        return ssaIds[id];
+                    }
                 }
 
                 throw new NotImplementedException(string.Format(

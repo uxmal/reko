@@ -700,14 +700,20 @@ Mem0:Global memory
     uses: es_bx_4 = Mem0[es:bx:word32]
 es_bx_4: orig: es_bx
     def:  es_bx_4 = Mem0[es:bx:word32]
-    uses: es_5 = SLICE(es_bx_4, word16, 16)
-          bx_6 = (word16) es_bx_4
+    uses: es_5 = SLICE(es_bx_4, word16, 16) (alias)
+          bx_6 = (word16) es_bx_4 (alias)
+          es_7 = SLICE(es_bx_4, word16, 16)
+          bx_8 = (word16) es_bx_4
           Mem0[es_bx_4 + 0x0004:byte] = 0x03
 es_5: orig: es
-    def:  es_5 = SLICE(es_bx_4, word16, 16)
+    def:  es_5 = SLICE(es_bx_4, word16, 16) (alias)
 bx_6: orig: bx
-    def:  bx_6 = (word16) es_bx_4
-Mem7: orig: Mem0
+    def:  bx_6 = (word16) es_bx_4 (alias)
+es_7: orig: es
+    def:  es_7 = SLICE(es_bx_4, word16, 16)
+bx_8: orig: bx
+    def:  bx_8 = (word16) es_bx_4
+Mem9: orig: Mem0
     def:  Mem0[es_bx_4 + 0x0004:byte] = 0x03
 // ProcedureBuilder
 // Return size: 0
@@ -719,8 +725,10 @@ ProcedureBuilder_entry:
 	// succ:  l1
 l1:
 	es_bx_4 = Mem0[es:bx:word32]
-	es_5 = SLICE(es_bx_4, word16, 16)
-	bx_6 = (word16) es_bx_4
+	es_5 = SLICE(es_bx_4, word16, 16) (alias)
+	bx_6 = (word16) es_bx_4 (alias)
+	es_7 = SLICE(es_bx_4, word16, 16)
+	bx_8 = (word16) es_bx_4
 	Mem0[es_bx_4 + 0x0004:byte] = 0x03
 ProcedureBuilder_exit:
 ";
