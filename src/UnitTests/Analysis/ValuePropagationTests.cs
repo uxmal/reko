@@ -231,10 +231,9 @@ namespace Reko.UnitTests.Analysis
 		public void VpDbp()
 		{
 			Procedure proc = new DpbMock().Procedure;
-			var gr = proc.CreateBlockDominatorGraph();
-			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc,  null, gr,
-                new HashSet<RegisterStorage>());
-			SsaState ssa = sst.SsaState;
+            var sst = new SsaTransform2(arch, proc, importResolver, new DataFlow2());
+            sst.Transform();
+            SsaState ssa = sst.SsaState;
 
             ssa.DebugDump(true);
 

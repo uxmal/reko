@@ -52,15 +52,15 @@ namespace Reko.UnitTests.Analysis
                 fut.AssertFilesEqual();
 			}
             SsaIdentifier i = ssa.Identifiers.Where(s => s.Identifier.Name == "i").Single();
-            SsaIdentifier i_2 = ssa.Identifiers.Where(s => s.Identifier.Name == "i_2").Single();
-            SsaIdentifier i_4 = ssa.Identifiers.Where(s => s.Identifier.Name == "i_4").Single();
-			Assert.IsFalse(sla.IsLiveOut(i.Identifier, i_2.DefStatement));
+            SsaIdentifier i_1 = ssa.Identifiers.Where(s => s.Identifier.Name == "i_1").Single();
+            SsaIdentifier i_3 = ssa.Identifiers.Where(s => s.Identifier.Name == "i_3").Single();
+			Assert.IsFalse(sla.IsLiveOut(i.Identifier, i_1.DefStatement));
             var block1 = proc.ControlGraph.Blocks.Where(b => b.Name =="loop").Single();
-			Assert.AreEqual("branch Mem0[i_4:byte] != 0 loop", block1.Statements[2].Instruction.ToString());
-			Assert.IsTrue(sla.IsLiveOut(i_2.Identifier, block1.Statements[2]), "i_2 should be live at the end of block 1");
-			Assert.IsTrue(sla.IsLiveOut(i_4.Identifier, block1.Statements[2]),"i_4 should be live at the end of block 1");
-			Assert.AreEqual("i_2 = PHI(i, i_4)", block1.Statements[0].Instruction.ToString());
-			Assert.IsFalse(sla.IsLiveOut(i_4.Identifier, block1.Statements[0]), "i_4 is dead after the phi function");
+			Assert.AreEqual("branch Mem0[i_3:byte] != 0 loop", block1.Statements[2].Instruction.ToString());
+			Assert.IsTrue(sla.IsLiveOut(i_1.Identifier, block1.Statements[2]), "i_1 should be live at the end of block 1");
+			Assert.IsTrue(sla.IsLiveOut(i_3.Identifier, block1.Statements[2]),"i_3 should be live at the end of block 1");
+			Assert.AreEqual("i_1 = PHI(i, i_3)", block1.Statements[0].Instruction.ToString());
+			Assert.IsFalse(sla.IsLiveOut(i_3.Identifier, block1.Statements[0]), "i_3 is dead after the phi function");
 		}
 
 		[Test]
@@ -77,7 +77,6 @@ namespace Reko.UnitTests.Analysis
 			}
 
 			Block block = proc.EntryBlock.Succ[0];
-			block.Write(Console.Out);
 			Assert.AreEqual("Mem4[0x10000000:word32] = a + b", block.Statements[0].Instruction.ToString());
 			Assert.AreEqual("Mem5[0x10000004:word32] = a", block.Statements[1].Instruction.ToString());
 
@@ -123,14 +122,12 @@ namespace Reko.UnitTests.Analysis
 		{
             var platform = new DefaultPlatform(null, arch);
 			this.proc = proc;
-			Aliases alias = new Aliases(proc, arch);
-			alias.Transform();
-			SsaTransform sst = new SsaTransform(
-                new ProgramDataFlow(),
+            var sst = new SsaTransform2(
+                arch,
                 proc,
                 null,
-                proc.CreateBlockDominatorGraph(),
-                new HashSet<RegisterStorage>());
+                new DataFlow2());
+            sst.Transform();
 			ssa = sst.SsaState;
 			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, platform);
 			cce.Transform();

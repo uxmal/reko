@@ -37,6 +37,7 @@ namespace Reko.Analysis
         private Statement use;
         private Identifier idOld;
         private Expression exprNew;
+        private Identifier idNew;
 
         public IdentifierReplacer(SsaIdentifierCollection ssaIds, Statement use, Identifier idOld, Expression exprNew)
         {
@@ -44,6 +45,7 @@ namespace Reko.Analysis
             this.use = use;
             this.idOld = idOld;
             this.exprNew = exprNew;
+            this.idNew = exprNew as Identifier;
         }
 
         public override Expression VisitIdentifier(Identifier id)
@@ -51,6 +53,10 @@ namespace Reko.Analysis
             if (idOld == id)
             {
                 ssaIds[id].Uses.Remove(use);
+                if (idNew != null)
+                {
+                    ssaIds[idNew].Uses.Add(use);
+                }
                 return exprNew;
             }
             else

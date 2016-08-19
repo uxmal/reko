@@ -48,16 +48,16 @@ namespace Reko.UnitTests.Analysis
             Procedure proc = BuildSimpleLoop();
 
             var dom = proc.CreateBlockDominatorGraph();
-            SsaTransform ssa = new SsaTransform(new ProgramDataFlow(), proc, null, dom, new HashSet<RegisterStorage>());
-            proc.Write(false, Console.Out);
-            LinearInductionVariableFinder lif = new LinearInductionVariableFinder(proc, ssa.SsaState.Identifiers, dom);
+            var sst = new SsaTransform2(null, proc, null, new DataFlow2());
+            sst.Transform();
+            var lif = new LinearInductionVariableFinder(proc, sst.SsaState.Identifiers, dom);
             lif.Find();
 
             Assert.AreEqual(1, lif.InductionVariables.Count, "Should have found one induction variable");
             Assert.AreEqual(1, lif.Contexts.Count);
             LinearInductionVariableContext ctx = lif.Contexts[lif.InductionVariables[0]];
 
-            StrengthReduction str = new StrengthReduction(ssa.SsaState,lif.InductionVariables[0], ctx);
+            StrengthReduction str = new StrengthReduction(sst.SsaState,lif.InductionVariables[0], ctx);
             str.ClassifyUses();
             Assert.AreEqual(1, str.IncrementedUses.Count);
             str.ModifyUses();

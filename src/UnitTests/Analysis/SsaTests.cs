@@ -61,7 +61,6 @@ namespace Reko.UnitTests.Analysis
             var flow = new DataFlow2();
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             importResolver.Replay();
-#if NEW_SSA2
             foreach (Procedure proc in program.Procedures.Values)
             {
                 var sst = new SsaTransform2(program.Architecture, proc, importResolver, flow);
@@ -74,27 +73,6 @@ namespace Reko.UnitTests.Analysis
                 proc.Write(false, true, writer);
                 writer.WriteLine();
             }
-#else
-            var eventListener = new FakeDecompilerEventListener();
-            var trf = new TrashedRegisterFinder(program, program.Procedures.Values, flow, eventListener);
-            trf.Compute();
-            trf.RewriteBasicBlocks();
-            //Dump(program.CallGraph);
-            var rl = RegisterLiveness.Compute(program, flow, eventListener);
-            GlobalCallRewriter.Rewrite(program, flow);
-
-			foreach (Procedure proc in program.Procedures.Values)
-			{
-                Aliases alias = new Aliases(proc, program.Architecture);
-				alias.Transform();
-				var gr = proc.CreateBlockDominatorGraph();
-				SsaTransform sst = new SsaTransform(flow, proc, gr);
-                ssa = sst.SsaState;
-				ssa.Write(writer);
-				proc.Write(false, true, writer);
-				writer.WriteLine();
-			}
-#endif
 		}
 
         private void RunUnitTest(ProcedureBuilder m, string outfile)
