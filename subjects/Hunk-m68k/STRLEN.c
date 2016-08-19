@@ -261,14 +261,23 @@ void fn0000127C(int32 d2)
 void fn000012D0(word32 dwArg04)
 {
 	struct Eq_563 * a3_12 = (struct Eq_563 *) 0x1404;
+	byte CVZN_14 = cond(0x1404);
 	if (0x1404 != 0x00)
 	{
 		int32 d2_40 = 0x01;
+		byte ZN_41 = cond(a3_12[0x04]);
+		bool C_43 = false;
+		bool V_44 = false;
 		if (a3_12[0x04] != 0x00)
 			do
+			{
 				d2_40 = d2_40 + 0x01;
-			while (a3_12[d2_40 * 0x04] != 0x00);
+				ZN_41 = cond(a3_12[d2_40 * 0x04]);
+				C_43 = false;
+				V_44 = false;
+			} while (a3_12[d2_40 * 0x04] != 0x00);
 		int32 d2_50 = d2_40 - 0x01;
+		byte CVZNX_51 = cond(d2_50);
 		if (d2_50 != 0x00)
 			do
 			{
@@ -285,18 +294,22 @@ void fn000012D0(word32 dwArg04)
 
 void fn0000131C(word32 dwArg04)
 {
+	byte ZN_10 = cond(*(word32 *) 5112);
 	if (*(word32 *) 5112 == 0x00)
 	{
-		struct Eq_609 * a3_29 = *(struct Eq_609 **) 0x140C;
+		struct Eq_632 * a3_29 = *(struct Eq_632 **) 0x140C;
 		*(int32 *) 5112 = 0x01;
+		byte CVZN_34 = cond(a3_29);
+		a3_50 = a3_29;
 		if (a3_29 != null)
 			do
 			{
-				<anonymous> * a2_51 = a3_29->ptr0004;
-				struct Eq_609 ** a3_53;
+				struct Eq_632 * a3_50;
+				<anonymous> * a2_51 = a3_50->ptr0004;
+				struct Eq_632 ** a3_53;
 				a2_51();
-				a3_29 = (struct Eq_609 *) *a3_53;
-			} while (a3_29 != null);
+				a3_50 = (struct Eq_632 *) *a3_53;
+			} while (a3_50 != null);
 		fn000012D0(dwArg04);
 	}
 	return;
@@ -305,10 +318,17 @@ void fn0000131C(word32 dwArg04)
 void fn00001354(int32 dwArg04, Eq_68 * dwArg08)
 {
 	<anonymous> ** a3_46 = (<anonymous> **) 0x1400;
-	if (5116 != 0x00 && *a3_46 != null)
-		do
-			(*a3_46)();
-		while (*a3_46 != null);
+	byte CVZN_11 = cond(5116);
+	if (5116 != 0x00)
+	{
+		byte ZN_42 = cond(*a3_46);
+		if (*a3_46 != null)
+			do
+			{
+				<anonymous> * v11_47 = *a3_46;
+				v11_47();
+			} while (*a3_46 != null);
+	}
 	fn0000131C(fn00001390());
 	return;
 }

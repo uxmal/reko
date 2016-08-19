@@ -74,7 +74,7 @@ main_entry:
 
 l00401168:
 	call printf (retsize: 4; depth: 12)
-		uses: dwLoc04_9,dwLoc08_12,ebp_10,esp_11
+		uses: 0x004020A4,ebp,fp - 0x00000004,fp - 0x00000008
 		defs: C_18,eax_16,ebp_14,ecx_15,esp_13,SZO_17
 	return 0x00000000
 // DataOut:

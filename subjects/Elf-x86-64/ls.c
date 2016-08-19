@@ -7,6 +7,7 @@
 void _init()
 {
 	word64 rax_5 = Mem0[0x0000000000619FF8 + 0x00:word64];
+	byte SZO_6 = cond(rax_5);
 	if (rax_5 != 0x00)
 		__gmon_start__();
 	return;

@@ -13,6 +13,7 @@ _init_entry:
 
 l0000000000402168:
 	word64 rax_5 = Mem0[0x0000000000619FF8:word64]
+	byte SZO_6 = cond(rax_5)
 	branch rax_5 == 0x0000000000000000 l000000000040217D
 // DataOut:
 // DataOut (flags): 
@@ -21,7 +22,7 @@ l0000000000402168:
 
 l0000000000402178:
 	call __gmon_start__ (retsize: 8; depth: 16)
-		uses: C_8,rax_5,rsp_3,SCZO,SZO_6,Z_7
+		uses: false,fp - 0x0000000000000008,rax_5,SCZO,SZO_6,SZO_6
 		defs: C_20,rax_18,rsp_16,SCZO_17,SZO_19,Z_21
 // DataOut:
 // DataOut (flags): 

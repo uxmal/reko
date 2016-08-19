@@ -532,12 +532,13 @@ fn0800_10A1_entry:
 // LocalsOut: fp(16)
 
 l0800_10A1:
+	word16 di_18 = di - (bp - 0x0054)
 	selector ss_32
 	word16 bp_36
 	word16 ax_37
 	word16 di_38
 	call SEQ(cs, Mem0[ss:bp + 0x000A:word16]) (retsize: 2; depth: 16)
-		uses: ax_20,bp,bx,cs,cx,di_18,dx,es,SCZO_19,sp_25,ss,wLoc02_5,wLoc04_8,wLoc06_11,wLoc08_14,wLoc0A_22,wLoc0C_24,wLoc0E_28
+		uses: bp,bp - 0x0054,bp - 0x0054,bx,bx,cond(di_18),cs,cx,cx,di_18,di_18,dx,dx,es,es,fp - 0x000E,Mem0[ss:bp + 0x0008:word16],ss
 		defs: ax_37,bp_36,bx_31,C_42,cs_40,cx_33,di_38,dx_34,es_35,SCZO_39,sp_30,ss_32,SZO_41,Z_43
 	branch ax_37 != 0x0000 l0800_10BE
 // DataOut: bp di ds si ss
@@ -622,21 +623,28 @@ fn0800_16F3_entry:
 
 l0800_16F3:
 	word16 bp_155 = fp - 0x0002
+	word16 wLoc28_105 = 0x0000
 // DataOut: bx di ds ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 // LocalsOut: fp(16) Local -0028(8) Stack +0008(16)
 
 l0800_1721:
+	byte D_161 = false
 	word16 si_158 = wArg08
+	es_160 = es
+	di_207 = di
 // DataOut: bx di ds si ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0030 bp:fp - 0x0002 -48(fp):di -46(fp):si -42(fp):0x0000 -40(fp):0x0000 -2(fp):bp
 // LocalsOut: fp(16) Local -0028(8)
 
 l0800_1726:
+	selector es_160
+	word16 di_207
 	byte al_58 = Mem0[ds:si_158:byte]
 	word16 si_59 = si_158 + 0x0001
+	byte SZO_62 = cond(al_58)
 	branch al_58 == 0x00 l0800_1788
 // DataOut: al bx di ds si ss
 // DataOut (flags): 
@@ -650,6 +658,7 @@ l0800_1788:
 // LocalsOut: fp(16)
 
 l0800_172B:
+	byte SCZO_100 = cond(al_58 - 0x25)
 	branch al_58 == 0x25 l0800_178B
 // DataOut: al bx di ds si ss
 // DataOut (flags): 
@@ -657,6 +666,8 @@ l0800_172B:
 // LocalsOut: fp(16) Local -0028(8)
 
 l0800_178B:
+	wLoc24 = 0xFFFF
+	bLoc2B = 0x00
 	word16 ax_349 = (int16) Mem0[ds:si_59:byte]
 	branch ax_349 < 0x0000 l0800_17E6
 // DataOut: di dil ds ss
@@ -691,17 +702,18 @@ l0800_17AB:
 // LocalsOut: fp(16)
 
 l0800_172F:
+	word16 v17_147 = wLoc28_105 + 0x0001
 	word16 di_159
-	selector es_160
-	byte D_161
 	word16 ax_167
-	byte bl_173
-	byte bh_174
-	byte CZ_175
 	call SEQ(cs, Mem0[ss:bp_155 + 0x0004:word16]) (retsize: 2; depth: 54)
-		uses: al_60,ax_145,bh_40,bl_41,bLoc2B,bp_55,bx_42,C_64,cs_45,cx_49,CZ_39,D_47,di_146,ds_46,es_51,S_43,SCZO_100,si_59,SO_44,sp_150,ss_48,SZO_149,wLoc02_5,wLoc24,wLoc28_148,wLoc2A_15,wLoc2E_11,wLoc30_14,wLoc32_19,wLoc34_151,wLoc36_38,Z_101
+		uses: (int16) al_58,0x0000,al_58,bh_40,bl_41,bLoc2B,bp,bp_55,bx_42,cond(v17_147),cs_45,cx_49,CZ_39,D_47,di,di_53,ds_46,es,es_51,false,fp - 0x0034,S_43,SCZO_100,SCZO_100,si,si_59,SO_44,ss_48,v17_147,wArg06,wLoc24,wLoc36_38
 		defs: al_162,ax_167,bh_174,bl_173,bp_155,bx_172,C_165,cs_168,cx_169,CZ_175,D_161,di_159,ds_163,es_160,S_171,SCZO_157,si_158,SO_170,sp_154,ss_156,SZO_164,Z_166
+	byte SZO_180 = cond(ax_167)
+	wLoc28_105 = v17_147
+	cx = wArg06
 	word16 ax_178 = ax_167
+	byte al_179 = (byte) ax_167
+	SO = SZO_180 (alias)
 	branch ax_167 < 0x0000 l0800_1764
 // DataOut: al ax bx di ds si ss
 // DataOut (flags): 
@@ -709,6 +721,9 @@ l0800_172F:
 // LocalsOut: fp(16) Local -0028(8)
 
 l0800_173F:
+	byte SZO_208 = cond(di_159)
+	di_207 = di_159
+	S = SZO_208 (alias)
 	branch di_159 < 0x0000 l0800_1775
 // DataOut: al ax bx di ds si ss
 // DataOut (flags): 
@@ -716,6 +731,8 @@ l0800_173F:
 // LocalsOut: fp(16) Local -0028(8)
 
 l0800_1743:
+	byte SCZO_246 = cond(Mem0[ds:di_159 + 0x055A:byte] - 0x01)
+	byte Z_247 = SCZO_246
 	branch Mem0[ds:di_159 + 0x055A:byte] != 0x01 l0800_1775
 // DataOut: al ax bx di ds si ss
 // DataOut (flags): 
@@ -723,6 +740,7 @@ l0800_1743:
 // LocalsOut: fp(16) Local -0028(8)
 
 l0800_1775:
+	byte SCZO_211 = cond(ax_167 - di_159)
 	branch ax_167 == di_159 l0800_1726
 // DataOut: bx di ds si ss
 // DataOut (flags): 
@@ -731,7 +749,7 @@ l0800_1775:
 
 l0800_1779:
 	call SEQ(cs, Mem0[ss:bp_155 + 0x0006:word16]) (retsize: 2; depth: 56)
-		uses: al_179,ax_178,bh_174,bl_173,bLoc2B,bp_155,bx_172,C_210,cs_168,cx_176,CZ_175,D_161,di_207,ds_163,es_160,S_209,SCZO_211,si_158,SO_181,sp_215,ss_156,SZO_208,wLoc02_5,wLoc24,wLoc28_148,wLoc2A_15,wLoc2E_11,wLoc30_14,wLoc32_19,wLoc34_214,wLoc36_216,Z_212
+		uses: 0x0000,al_179,ax_167,ax_167,bh_174,bl_173,bLoc2B,bp,bp_155,bx_172,cs_168,CZ_175,D_161,di,di_159,ds_163,es,es_160,false,fp - 0x0036,SCZO_211,SCZO_211,si,si_158,ss_156,SZO_180,SZO_208,SZO_208,v17_147,wArg06,wArg06,wLoc24
 		defs: al_225,ax_230,bh_237,bl_236,bp_218,bx_235,C_228,cs_231,cx_232,CZ_238,D_224,di_222,ds_226,es_223,S_234,SCZO_220,si_221,SO_233,sp_217,ss_219,SZO_227,Z_229
 // DataOut: ds ss
 // DataOut (flags): 
@@ -740,7 +758,10 @@ l0800_1779:
 
 l0800_174A:
 	byte bl_270 = (byte) ax_178
+	byte al_268 = (byte) bx
+	byte bh_271 = SLICE(ax_178, byte, 8)
 	word16 bx_273 = DPB(ax_178, bl_270, 0)
+	byte SZO_274 = cond(bl_270)
 	branch bl_270 < 0x00 l0800_1767
 // DataOut: ax bx di ds si ss
 // DataOut (flags): 
@@ -748,6 +769,7 @@ l0800_174A:
 // LocalsOut: fp(16) Local -0028(8)
 
 l0800_174F:
+	byte SCZO_310 = cond(Mem0[ds:bx_273 + 0x055A:byte] - 0x01)
 	branch Mem0[ds:bx_273 + 0x055A:byte] != 0x01 l0800_1767
 // DataOut: ax bx di ds si ss
 // DataOut (flags): 
@@ -756,18 +778,24 @@ l0800_174F:
 
 l0800_1767:
 	call SEQ(cs, Mem0[ss:bp_155 + 0x0006:word16]) (retsize: 2; depth: 56)
-		uses: al_268,ax_267,bh_271,bl_272,bLoc2B,bp_264,bx_273,C_276,cs_253,cx_258,CZ_250,D_256,di_262,ds_255,es_260,S_275,SCZO_259,si_263,SO_252,sp_279,ss_257,SZO_274,wLoc02_5,wLoc24,wLoc28_248,wLoc2A_15,wLoc2E_11,wLoc30_14,wLoc32_19,wLoc34_278,wLoc36_280,Z_254
+		uses: 0x0000,al_268,bh_271,bl_270,bLoc2B,bp,bp_264,bx_251,bx_273,bx_273,cs_253,cx_258,CZ_250,D_256,di,di_262,ds_255,es,es_260,false,fp - 0x0036,SCZO_259,si,si_263,SO_252,ss_257,SZO_274,SZO_274,wArg06,wLoc24,wLoc28_248,Z_254
 		defs: al_289,ax_294,bh_301,bl_300,bp_282,bx_299,C_292,cs_295,cx_296,CZ_302,D_288,di_286,ds_290,es_287,S_298,SCZO_284,si_285,SO_297,sp_281,ss_283,SZO_291,Z_293
+	wLoc36 = bx_273
+	cx = wArg06
+	wLoc28_105 = wLoc28_105 - 0x0001
 // DataOut: bx di ds si ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0032 bp:fp - 0x0002 si:<invalid> al:<invalid> ax:<invalid> di:<invalid> cx:<invalid> bx:<invalid> bl:<invalid> -54(fp):<invalid> -52(fp):<invalid> -50(fp):es -48(fp):di -46(fp):si -42(fp):0x0000 -40(fp):<invalid> -2(fp):bp
 // LocalsOut: fp(16) Local -0028(8)
 
 l0800_1756:
+	word16 v25_312 = wLoc28_105 + 0x0001
 	word16 ax_330
 	call SEQ(cs, Mem0[ss:bp_155 + 0x0004:word16]) (retsize: 2; depth: 54)
-		uses: al_268,ax_267,bh_271,bl_272,bLoc2B,bp_264,bx_273,C_276,cs_253,cx_258,CZ_250,D_256,di_262,ds_255,es_260,S_275,SCZO_310,si_263,SO_252,sp_315,ss_257,SZO_314,wLoc02_5,wLoc24,wLoc28_313,wLoc2A_15,wLoc2E_11,wLoc30_14,wLoc32_19,wLoc34_316,wLoc36_38,Z_311
+		uses: 0x0000,al_268,bh_271,bl_270,bLoc2B,bp,bp_264,bx_251,bx_273,cond(v25_312),cs_253,cx_258,CZ_250,D_256,di,di_262,ds_255,es,es_260,false,fp - 0x0034,SCZO_310,SCZO_310,si,si_263,SO_252,ss_257,SZO_274,v25_312,wArg06,wLoc24,wLoc36_38
 		defs: al_325,ax_330,bh_337,bl_336,bp_318,bx_335,C_328,cs_331,cx_332,CZ_338,D_324,di_322,ds_326,es_323,S_334,SCZO_320,si_321,SO_333,sp_317,ss_319,SZO_327,Z_329
+	wLoc28_105 = v25_312
+	cx = wArg06
 	ax_178 = ax_330
 	branch ax_330 > 0x0000 l0800_174A
 // DataOut: al bx di ds si ss
@@ -783,7 +811,7 @@ l0800_1764:
 
 l0800_1AEB:
 	call SEQ(cs, Mem0[ss:bp_155 + 0x0006:word16]) (retsize: 2; depth: 56)
-		uses: al_60,ax_109,bh_40,bl_41,bLoc2B_103,bp_55,bx_42,C_64,cs_45,cx_49,CZ_39,D_47,di_53,ds_46,es_51,S_43,SCZO_100,si_59,SO_44,sp_110,ss_48,SZO_62,wLoc02_5,wLoc24_102,wLoc28_105,wLoc2A_15,wLoc2E_11,wLoc30_14,wLoc32_19,wLoc34_108,wLoc36_111,Z_101
+		uses: 0x0000,0xFFFF,0xFFFF,al_58,bh_40,bl_41,bLoc2B_103,bp,bp_55,bx_42,cs_45,cx_49,CZ_39,D_47,di,di_53,ds_46,es,es_51,false,fp - 0x0036,S_43,SCZO_100,SCZO_100,si,si_59,SO_44,ss_48,SZO_62,wArg06,wLoc24_102,wLoc28_105
 		defs: al_120,ax_125,bh_132,bl_131,bp_113,bx_130,C_123,cs_126,cx_127,CZ_133,D_119,di_117,ds_121,es_118,S_129,SCZO_115,si_116,SO_128,sp_112,ss_114,SZO_122,Z_124
 // DataOut: ds ss
 // DataOut (flags): 

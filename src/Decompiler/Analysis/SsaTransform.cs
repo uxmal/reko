@@ -1119,7 +1119,9 @@ namespace Reko.Analysis
         {
             //$TODO special case for flags; unify them all into an überflag.
             var existingUses = ci.Uses
-                .Select(u => ssa.Identifiers[(Identifier)u.Expression].OriginalIdentifier)
+                .Select(u => u.Expression)
+                .OfType<Identifier>()
+                .Select(u => ssa.Identifiers[u].OriginalIdentifier)
                 .ToHashSet();
             var existingDefs = ci.Definitions
                 .Select(d => ssa.Identifiers[(Identifier)d.Expression].OriginalIdentifier)

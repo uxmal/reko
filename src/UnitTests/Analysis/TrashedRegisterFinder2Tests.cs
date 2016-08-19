@@ -40,14 +40,12 @@ namespace Reko.UnitTests.Analysis
     [TestFixture]
     public class TrashedRegisterFinder2Tests
     {
-        private DataFlow2 pf;
         private ProgramBuilder progBuilder;
         private ExternalProcedure fnExit;
 
         [SetUp]
         public void Setup()
         {
-            this.pf = new DataFlow2();
             this.progBuilder = new ProgramBuilder();
             this.fnExit = new ExternalProcedure(
               "exit",
@@ -96,7 +94,9 @@ namespace Reko.UnitTests.Analysis
             };
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             importResolver.Replay();
-            var sst = new SsaTransform2(arch, proc, importResolver, new DataFlow2());
+
+            var dataFlow = new DataFlow2(this.progBuilder.Program);
+            var sst = new SsaTransform2(arch, proc, importResolver, dataFlow);
             sst.Transform();
             var vp = new ValuePropagator(arch, sst.SsaState);
             vp.Transform();
@@ -110,7 +110,7 @@ namespace Reko.UnitTests.Analysis
 
             var trf = new TrashedRegisterFinder2(
                 arch, 
-                pf,
+                dataFlow,
                 new[] { sst },
                 NullDecompilerEventListener.Instance);
             var flow = trf.Compute(sst.SsaState);

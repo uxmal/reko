@@ -197,7 +197,7 @@ namespace Reko.UnitTests.Analysis
                     null,
                     proc,
                     importResolver,
-                    dfa.ProgramDataFlow.ToDataFlow2());
+                    dfa.DataFlow);
                 sst.Transform();
 
                 SsaState ssa = sst.SsaState;

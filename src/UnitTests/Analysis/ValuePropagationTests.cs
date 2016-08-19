@@ -112,7 +112,7 @@ namespace Reko.UnitTests.Analysis
 			foreach (Procedure proc in program.Procedures.Values)
 			{
 				writer.WriteLine("= {0} ========================", proc.Name);
-                SsaTransform2 sst = new SsaTransform2(program.Architecture, proc, null, dfa.ProgramDataFlow.ToDataFlow2());
+                SsaTransform2 sst = new SsaTransform2(program.Architecture, proc, null, dfa.DataFlow);
                 sst.Transform();
 				SsaState ssa = sst.SsaState;
                 var cce = new ConditionCodeEliminator(ssa, program.Platform);

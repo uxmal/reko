@@ -658,6 +658,7 @@ fn000012D0_entry:
 
 l000012D0:
 	word32 a3_12 = 0x00001404
+	byte CVZN_14 = cond(0x00001404)
 	branch 0x00001404 == 0x00000000 l00001308
 // DataOut: a3
 // DataOut (flags): 
@@ -666,6 +667,9 @@ l000012D0:
 
 l000012E2:
 	word32 d2_40 = 1
+	byte ZN_41 = cond(Mem0[a3_12 + 4:word32])
+	byte C_43 = false
+	byte V_44 = false
 	branch Mem0[a3_12 + 4:word32] == 0x00000000 l000012F6
 // DataOut: a3 d2
 // DataOut (flags): 
@@ -674,6 +678,9 @@ l000012E2:
 
 l000012EA:
 	d2_40 = d2_40 + 0x00000001
+	ZN_41 = cond(Mem0[a3_12 + (d2_40 << 0x00000002):word32])
+	C_43 = false
+	V_44 = false
 	branch Mem0[a3_12 + (d2_40 << 0x00000002):word32] != 0x00000000 l000012EA
 // DataOut: a3 d2
 // DataOut (flags): 
@@ -682,6 +689,7 @@ l000012EA:
 
 l000012F6:
 	word32 d2_50 = d2_40 - 0x00000001
+	byte CVZNX_51 = cond(d2_50)
 	branch d2_50 == 0x00000000 l00001308
 // DataOut: a3 d2
 // DataOut (flags): 
@@ -693,7 +701,7 @@ l000012FA:
 	word32 a2_58 = Mem0[a3_12 + d0_56:word32]
 	word32 d2_63
 	call a2_58 (retsize: 4; depth: 16)
-		uses: a2_58,a3_54,a7_9,C_46,CVZN_14,CVZNX_57,d0_56,d2_53,dwLoc04_5,dwLoc08_8,dwLoc0C_11,dwLoc10,V_45,Z_52,ZN_47
+		uses: a2,a2_58,a3,a3_54,C_46,cond(d0_56),CVZN_14,CVZNX_51,d0_56,d2,d2_53,dwLoc10,fp - 0x0000000C,V_45,ZN_47
 		defs: a2_62,a3_61,a7_60,C_68,CVZN_65,CVZNX_70,d0_64,d2_63,V_69,Z_66,ZN_67
 	d2_50 = d2_63 - 0x00000001
 	branch d2_63 != 0x00000001 l000012FA
@@ -731,6 +739,7 @@ fn0000131C_entry:
 // LocalsOut: fp(32) Stack +0004(32)
 
 l0000131C:
+	byte ZN_10 = cond(Mem0[0x000013F8:word32])
 	branch Mem0[0x000013F8:word32] != 0x00000000 l0000134E
 // DataOut: a7
 // DataOut (flags): 
@@ -740,6 +749,8 @@ l0000131C:
 l00001328:
 	word32 a3_29 = Mem0[0x0000140C:word32]
 	Mem32[0x000013F8:word32] = 1
+	byte CVZN_34 = cond(a3_29)
+	a3_50 = a3_29
 	branch a3_29 == 0x00000000 l00001346
 // DataOut: a3
 // DataOut (flags): 
@@ -747,13 +758,14 @@ l00001328:
 // LocalsOut: fp(32) Stack +0004(32)
 
 l0000133A:
-	word32 a2_51 = Mem32[a3_29 + 4:word32]
+	word32 a3_50
+	word32 a2_51 = Mem32[a3_50 + 4:word32]
 	word32 a3_53
 	call a2_51 (retsize: 4; depth: 12)
-		uses: a2_51,a3_50,a7_6,C_12,CVZN_34,d0_33,dwLoc04_5,dwLoc08_8,dwLoc0C,V_13,Z_35,ZN_10
+		uses: a2,a2_51,a3,a3_29,a3_50,CVZN_34,CVZN_34,dwLoc0C,false,false,fp - 0x00000008,ZN_10
 		defs: a2_54,a3_53,a7_52,C_56,CVZN_60,d0_59,V_57,Z_58,ZN_55
-	a3_29 = Mem32[a3_53:word32]
-	branch a3_29 != 0x00000000 l0000133A
+	a3_50 = Mem32[a3_53:word32]
+	branch a3_50 != 0x00000000 l0000133A
 // DataOut: a3
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000008 a3:<invalid> d0:<invalid> a2:<invalid> -8(fp):a2 -4(fp):a3
@@ -794,6 +806,7 @@ fn00001354_entry:
 
 l00001354:
 	word32 a3_46 = 0x00001400
+	byte CVZN_11 = cond(0x000013FC)
 	branch 0x000013FC == 0x00000000 l00001372
 // DataOut: a3
 // DataOut (flags): 
@@ -801,6 +814,7 @@ l00001354:
 // LocalsOut: fp(32) Stack +0004(8)
 
 l00001366:
+	byte ZN_42 = cond(Mem0[a3_46:word32])
 	branch Mem0[a3_46:word32] == 0x00000000 l00001372
 // DataOut: a3
 // DataOut (flags): 
@@ -808,8 +822,9 @@ l00001366:
 // LocalsOut: fp(32) Stack +0004(8)
 
 l0000136A:
-	call Mem0[a3_46:word32] (retsize: 4; depth: 12)
-		uses: a2_49,a3_48,a7_6,C_44,CVZN_11,d0_10,dwLoc04_5,dwLoc08_8,dwLoc0C,dwLoc10,dwLoc14,V_45,Z_43,ZN_42
+	word32 v11_47 = Mem0[a3_46:word32]
+	call v11_47 (retsize: 4; depth: 12)
+		uses: 0x000013FC,a2,a3,a3_46 + 0x00000004,CVZN_11,dwLoc0C,dwLoc10,dwLoc14,false,false,fp - 0x00000008,v11_47,ZN_42,ZN_42
 		defs: a2_55,a3_54,a7_53,C_60,CVZN_57,d0_56,V_61,Z_58,ZN_59
 	branch Mem0[a3_46:word32] != 0x00000000 l0000136A
 // DataOut: a3

@@ -56,15 +56,15 @@ namespace Reko.UnitTests.Analysis
             return m.Frame.EnsureRegister(new RegisterStorage(name, m.Frame.Identifiers.Count, 0, PrimitiveType.Word32));
         }
 
-        protected override void RunTest(Program prog, TextWriter writer)
+        protected override void RunTest(Program program, TextWriter writer)
 		{
-            var flow = new ProgramDataFlow(prog);
+            var flow = new DataFlow2(program);
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             importResolver.Replay();
 #if NEW_SSA2
-            foreach (Procedure proc in prog.Procedures.Values)
+            foreach (Procedure proc in program.Procedures.Values)
             {
-                var sst = new SsaTransform2(prog.Architecture, proc, importResolver, flow.ToDataFlow2());
+                var sst = new SsaTransform2(program.Architecture, proc, importResolver, flow);
                 sst.Transform();
                 sst.AddUsesToExitBlock();
                 sst.RemoveDeadSsaIdentifiers();

@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Analysis
 			dfa.UntangleProcedures();
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
-                SsaTransform2 sst = new SsaTransform2(prog.Architecture, proc, null, dfa.ProgramDataFlow.ToDataFlow2());
+                SsaTransform2 sst = new SsaTransform2(prog.Architecture, proc, null, dfa.DataFlow);
                 sst.Transform();
 				SsaState ssa = sst.SsaState;
 

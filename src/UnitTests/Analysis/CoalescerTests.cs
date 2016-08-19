@@ -120,7 +120,7 @@ namespace Reko.UnitTests.Analysis
 			
 			foreach (Procedure proc in program.Procedures.Values)
 			{
-                SsaTransform2 sst = new SsaTransform2(program.Architecture, proc, importResolver, dfa.ProgramDataFlow.ToDataFlow2());
+                SsaTransform2 sst = new SsaTransform2(program.Architecture, proc, importResolver, dfa.DataFlow);
                 sst.Transform();
 				SsaState ssa = sst.SsaState;
 				

@@ -185,6 +185,13 @@ namespace Reko.Analysis
         {
             this.ProcedureFlows = new Dictionary<Procedure, ProcedureFlow2>();
         }
+
+        public DataFlow2(Program program)
+        {
+            this.ProcedureFlows = program.Procedures.Values.ToDictionary(
+                p => p,
+                p => new ProcedureFlow2());
+        }
     }
 }
 

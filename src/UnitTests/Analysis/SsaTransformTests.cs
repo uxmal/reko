@@ -54,14 +54,15 @@ namespace Reko.UnitTests.Analysis
         {
             this.pb = new ProgramBuilder();
             this.importReferences = new Dictionary<Address, ImportReference>();
-            this.programFlow2 = new DataFlow2();
             this.addUseInstructions = false;
             this.importResolver = MockRepository.GenerateStub<IImportResolver>();
         }
 
         private void RunTest(string sExp, Action<ProcedureBuilder> builder)
         {
-            pb.Add("proc1", builder);
+            this.programFlow2 = new DataFlow2();
+            var proc = pb.Add("proc1", builder);
+            programFlow2.ProcedureFlows.Add(proc, new ProcedureFlow2());
             RunTest(sExp);
         }
 
@@ -126,6 +127,7 @@ namespace Reko.UnitTests.Analysis
         private void RunTest_FrameAccesses(string sExp)
         {
             var program = pb.BuildProgram();
+            this.programFlow2 = new DataFlow2(program);
             var writer = new StringWriter();
             foreach (var proc in program.Procedures.Values)
             {
@@ -551,16 +553,6 @@ proc1_exit:
         [Test]
         public void SsaSubroutine()
         {
-            Storage r1_ = null;
-            // Simulate the creation of a subroutine.
-            var procSub = this.pb.Add("Adder", m =>
-            {
-                r1_ = m.Register(1).Storage;
-            });
-
-            var procSubFlow = new ProcedureFlow2 { Trashed = { r1_ } };
-            programFlow2.ProcedureFlows.Add(procSub, procSubFlow);
-
             var sExp =
             #region Expected
 @"// Adder
@@ -605,6 +597,13 @@ proc1_exit:
             {
                 var r1 = m.Register(1);
                 var r2 = m.Register(2);
+
+                // Simulate the creation of a subroutine.
+                var procSub = this.pb.Add("Adder", mm => { });
+
+                var procSubFlow = new ProcedureFlow2 { Trashed = { r1.Storage } };
+                programFlow2.ProcedureFlows.Add(procSub, procSubFlow);
+
                 m.Assign(r1, 3);
                 m.Assign(r2, 4);
                 m.Call(procSub, 4);
@@ -896,6 +895,7 @@ proc1_exit:
     def:  def fp
     uses: r63_2 = fp
           r63_7 = fp - 0x00000004
+          call proc1 (retsize: 0;)	uses: dwArg04,dwLoc04_16,fp - 0x00000004,r3,r4_6,r63_14	defs: r3_11,r4_12,r63_9
 r63_2: orig: r63
     def:  r63_2 = fp
     uses: r63_19 = PHI(r63_14, r63_2)
@@ -913,38 +913,38 @@ r4_5: orig: r4
 r4_6: orig: r4
     def:  r4_6 = Mem0[r4_4 + 0x00000004:word32]
     uses: dwLoc04_16 = r4_6
-          call proc1 (retsize: 0;)	uses: dwArg04,dwLoc04_16,r3,r4_6,r63_7	defs: r3_11,r4_12,r63_9
+          call proc1 (retsize: 0;)	uses: dwArg04,dwLoc04_16,fp - 0x00000004,r3,r4_6,r63_14	defs: r3_11,r4_12,r63_9
 r63_7: orig: r63
     def:  r63_7 = fp - 0x00000004
-    uses: call proc1 (retsize: 0;)	uses: dwArg04,dwLoc04_16,r3,r4_6,r63_7	defs: r3_11,r4_12,r63_9
 Mem8: orig: Mem0
     def:  dwLoc04_16 = r4_6
 r63_9: orig: r63
-    def:  call proc1 (retsize: 0;)	uses: dwArg04,dwLoc04_16,r3,r4_6,r63_7	defs: r3_11,r4_12,r63_9
+    def:  call proc1 (retsize: 0;)	uses: dwArg04,dwLoc04_16,fp - 0x00000004,r3,r4_6,r63_14	defs: r3_11,r4_12,r63_9
     uses: r63_14 = r63_9 + 0x00000004
 r3:r3
     def:  def r3
-    uses: call proc1 (retsize: 0;)	uses: dwArg04,dwLoc04_16,r3,r4_6,r63_7	defs: r3_11,r4_12,r63_9
+    uses: call proc1 (retsize: 0;)	uses: dwArg04,dwLoc04_16,fp - 0x00000004,r3,r4_6,r63_14	defs: r3_11,r4_12,r63_9
           r3_17 = PHI(r3_11, r3)
 r3_11: orig: r3
-    def:  call proc1 (retsize: 0;)	uses: dwArg04,dwLoc04_16,r3,r4_6,r63_7	defs: r3_11,r4_12,r63_9
+    def:  call proc1 (retsize: 0;)	uses: dwArg04,dwLoc04_16,fp - 0x00000004,r3,r4_6,r63_14	defs: r3_11,r4_12,r63_9
     uses: r3_17 = PHI(r3_11, r3)
 r4_12: orig: r4
-    def:  call proc1 (retsize: 0;)	uses: dwArg04,dwLoc04_16,r3,r4_6,r63_7	defs: r3_11,r4_12,r63_9
+    def:  call proc1 (retsize: 0;)	uses: dwArg04,dwLoc04_16,fp - 0x00000004,r3,r4_6,r63_14	defs: r3_11,r4_12,r63_9
     uses: r4_13 = r4_12 + 0x00000001
 r4_13: orig: r4
     def:  r4_13 = r4_12 + 0x00000001
     uses: r4_18 = PHI(r4_13, r4_5)
 r63_14: orig: r63
     def:  r63_14 = r63_9 + 0x00000004
-    uses: r63_19 = PHI(r63_14, r63_2)
+    uses: call proc1 (retsize: 0;)	uses: dwArg04,dwLoc04_16,fp - 0x00000004,r3,r4_6,r63_14	defs: r3_11,r4_12,r63_9
+          r63_19 = PHI(r63_14, r63_2)
 dwArg04:Stack +0004
     def:  def dwArg04
     uses: r4_4 = dwArg04
-          call proc1 (retsize: 0;)	uses: dwArg04,dwLoc04_16,r3,r4_6,r63_7	defs: r3_11,r4_12,r63_9
+          call proc1 (retsize: 0;)	uses: dwArg04,dwLoc04_16,fp - 0x00000004,r3,r4_6,r63_14	defs: r3_11,r4_12,r63_9
 dwLoc04_16: orig: dwLoc04
     def:  dwLoc04_16 = r4_6
-    uses: call proc1 (retsize: 0;)	uses: dwArg04,dwLoc04_16,r3,r4_6,r63_7	defs: r3_11,r4_12,r63_9
+    uses: call proc1 (retsize: 0;)	uses: dwArg04,dwLoc04_16,fp - 0x00000004,r3,r4_6,r63_14	defs: r3_11,r4_12,r63_9
 r3_17: orig: r3
     def:  r3_17 = PHI(r3_11, r3)
     uses: use r3_17
@@ -973,7 +973,7 @@ m0Induction:
 	r63_7 = fp - 0x00000004
 	dwLoc04_16 = r4_6
 	call proc1 (retsize: 0;)
-		uses: dwArg04,dwLoc04_16,r3,r4_6,r63_7
+		uses: dwArg04,dwLoc04_16,fp - 0x00000004,r3,r4_6,r63_14
 		defs: r3_11,r4_12,r63_9
 	r4_13 = r4_12 + 0x00000001
 	r63_14 = r63_9 + 0x00000004

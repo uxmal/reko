@@ -86,7 +86,7 @@ namespace Reko.UnitTests.Analysis
                     program.Architecture,
                     proc,
                     null,
-                    dfa.ProgramDataFlow.ToDataFlow2());
+                    dfa.ProgramDataFlow.ToDataFlow2(program));
                 sst.Transform();
 				SsaState ssa = sst.SsaState;
 				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform);

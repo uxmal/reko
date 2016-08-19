@@ -55,7 +55,7 @@ namespace Reko.Analysis
             this.importResolver = importResolver;
             this.eventListener = eventListener;
 			this.flow = new ProgramDataFlow(program);
-            this.dataFlow = new DataFlow2();
+            this.dataFlow = new DataFlow2(program);
 		}
 
 		public void AnalyzeProgram()
@@ -249,11 +249,6 @@ namespace Reko.Analysis
 
         private void UntangleProcedureScc(IList<Procedure> procs)
         {
-            foreach (var proc in procs)
-            {
-                dataFlow.ProcedureFlows.Add(proc, new ProcedureFlow2());
-            }
-
             // Convert all procedures in the SCC to SSA form and perform
             // value propagation.
             var ssts = procs.Select(p => ConvertToSsa(p)).ToArray();
