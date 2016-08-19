@@ -15,8 +15,8 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp = fp
-	rLoc1 = Mem0[ds:0x0300:real32]
-	rLoc2 = Mem0[ds:0x0304:real32]
+	rLoc1 = (real64) Mem0[ds:0x0300:real32]
+	rLoc2 = (real64) Mem0[ds:0x0304:real32]
 	sp = sp - 0x0002
 	Mem0[ss:sp:word16] = 0x0308
 	call fn0C00_0024 (retsize: 2; FPU: 2;)
@@ -82,7 +82,7 @@ l0C00_0031:
 	Mem0[ss:sp:word16] = bp
 	bp = sp
 	bx = Mem0[ss:bp + 0x0004:word16]
-	rLoc1 = Mem0[ds:bx:real32]
+	rLoc1 = (real64) Mem0[ds:bx:real32]
 	bp = Mem0[ss:sp:word16]
 	sp = sp + 0x0002
 	return

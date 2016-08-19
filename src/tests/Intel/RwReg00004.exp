@@ -62,7 +62,7 @@ l10000035:
 	rLoc1 = (real64) Mem0[esp + 0x0000001C:int32]
 	// succ:  l10000048
 l10000048:
-	rLoc2 = Mem0[esp + 0x00000014:real32]
+	rLoc2 = (real64) Mem0[esp + 0x00000014:real32]
 	rLoc2 = rLoc2 * Mem0[0x0099188A:real64]
 	esi = esi + 0x00000001
 	SZO = cond(esi)
@@ -102,7 +102,7 @@ l100000A2:
 	rLoc1 = (real64) Mem0[esp + 0x0000001C:int32]
 	// succ:  l100000AD
 l100000AD:
-	rLoc2 = Mem0[esp + 0x00000014:real32]
+	rLoc2 = (real64) Mem0[esp + 0x00000014:real32]
 	FPUF = cond(rLoc2 - Mem0[0x10033298:real64])
 	SCZO = FPUF
 	branch Test(NE,FPUF) l100000D7
@@ -124,7 +124,7 @@ l100000D7:
 	branch Test(LT,SO) l10000048
 	// succ:  l100000DF l10000048
 l100000DF:
-	rLoc2 = Mem0[esp + 0x00000014:real32]
+	rLoc2 = (real64) Mem0[esp + 0x00000014:real32]
 	call fn1000010A (retsize: 4; FPU: 2;)
 	Mem0[ebx:word32] = eax
 	call fn1000010A (retsize: 4; FPU: 1;)
