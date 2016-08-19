@@ -235,8 +235,6 @@ namespace Reko.UnitTests.Analysis
             sst.Transform();
             SsaState ssa = sst.SsaState;
 
-            ssa.DebugDump(true);
-
             ValuePropagator vp = new ValuePropagator(arch, ssa);
 			vp.Transform();
 

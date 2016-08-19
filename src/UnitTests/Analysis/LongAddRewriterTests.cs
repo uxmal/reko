@@ -137,7 +137,6 @@ namespace Reko.UnitTests.Analysis
                 block = m.CurrentBlock;
                 m.Return();
             });
-            ssa.DebugDump(true);
             var ax_3 = GetId("ax_3");
             var cm = rw.FindConditionOf(block.Statements, 0, ax_3);
 
@@ -156,7 +155,6 @@ namespace Reko.UnitTests.Analysis
                 m.Assign(dx, m.IAdd(m.IAdd(dx, bx), CF));
                 m.Return();
             });
-            ssa.DebugDump(true);
             var cm = rw.FindConditionOf(block.Statements, 0, GetId("ax_3"));
             var asc = rw.FindUsingInstruction(cm.FlagGroup, new AddSubCandidate { Left=ax, Right=cx });
             Assert.AreEqual("dx_7 = dx + bx + SCZ_4", asc.Statement.ToString());
@@ -179,7 +177,6 @@ namespace Reko.UnitTests.Analysis
                 m.Return();
             });
             CreateLongInstruction(block.Statements[0], block.Statements[1]);
-            ssa.DebugDump(true);
             Assert.AreEqual("dx_ax_9 = dx_ax_8 + Mem0[bx + 0x0300:ui32]", block.Statements[2].ToString());
         }
 
@@ -210,7 +207,6 @@ namespace Reko.UnitTests.Analysis
                 m.Return();
             });
             CreateLongInstruction(block.Statements[0], block.Statements[2]);
-            ssa.DebugDump(true);
             Assert.AreEqual("dx_ax_7 = dx_ax_6 + 0x00000001", block.Statements[3].ToString());
         }
 
