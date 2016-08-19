@@ -124,7 +124,7 @@ namespace Reko.Analysis
                         str.ClassifyUses();
                         str.ModifyUses();
                     }
-                    var opt = new OutParameterTransformer(proc, ssa.Identifiers);
+                    var opt = new OutParameterTransformer(ssa);
                     opt.Transform();
                     DeadCode.Eliminate(proc, ssa);
 

@@ -36,19 +36,17 @@ namespace Reko.Analysis
 	/// </summary>
 	public class OutParameterTransformer : InstructionTransformer		//$REFACTOR: rename to OutArgumentTransformer.
 	{
-		private Procedure proc;
-		private SsaIdentifierCollection ssaIds;
+		private SsaState ssa;
 
 		private Identifier idOut;
-		private SsaIdentifier ssa;
+		private SsaIdentifier sid;
 		private Statement stmDef;
 		private int iStmDef;
 		private WorkList<Identifier> wl;
 
-		public OutParameterTransformer(Procedure proc, SsaIdentifierCollection ssaIds)
+		public OutParameterTransformer(SsaState ssa)
 		{
-			this.proc = proc;
-			this.ssaIds = ssaIds;
+			this.ssa = ssa;
 		}
 
 		public void ReplaceDefinitionsWithOutParameter(Identifier id, Identifier idOut)
@@ -60,8 +58,8 @@ namespace Reko.Analysis
 
 			while (wl.GetWorkItem(out id))
 			{
-				ssa = ssaIds[id];
-				stmDef = ssa.DefStatement;
+				sid = ssa.Identifiers[id];
+				stmDef = sid.DefStatement;
 				if (stmDef != null && !visited.Contains(stmDef))
 				{
 					visited.Add(stmDef);
@@ -73,16 +71,17 @@ namespace Reko.Analysis
 
 		public void Transform()
 		{
-			for (int i = proc.ExitBlock.Statements.Count - 1; i >= 0; --i)
+            var exitBlock = ssa.Procedure.ExitBlock;
+			for (int i = exitBlock.Statements.Count - 1; i >= 0; --i)
 			{
-				Statement stm  = proc.ExitBlock.Statements[i];
+				Statement stm  = exitBlock.Statements[i];
 				UseInstruction use = stm.Instruction as UseInstruction;
 				if (use != null)
 				{
 					Identifier id = (Identifier) use.Expression;
-					ssaIds[id].Uses.Remove(stm);
+					ssa.Identifiers[id].Uses.Remove(stm);
 					ReplaceDefinitionsWithOutParameter(id, use.OutArgument);
-					proc.ExitBlock.Statements.RemoveAt(i);
+					exitBlock.Statements.RemoveAt(i);
 				}
 			}
 		}
@@ -91,9 +90,9 @@ namespace Reko.Analysis
 		{
 			a.Src = a.Src.Accept(this);
 			Identifier id = a.Dst;
-			if (ssa.Identifier == id)
+			if (sid.Identifier == id)
 			{
-				if (ssa.Uses.Count == 0)
+				if (sid.Uses.Count == 0)
 				{
 					return new Store(Dereference(idOut, a.Src.DataType), a.Src);
 				}
@@ -121,7 +120,7 @@ namespace Reko.Analysis
 			for (int i = 0; i < phi.Src.Arguments.Length; ++i)
 			{
 				Identifier idSrc = (Identifier) phi.Src.Arguments[i];
-				ssaIds[idSrc].Uses.Remove(stmDef);
+				ssa.Identifiers[idSrc].Uses.Remove(stmDef);
 				wl.Add(idSrc);
 			}
 			return phi;
@@ -132,7 +131,7 @@ namespace Reko.Analysis
 			if (unary.Operator == Operator.AddrOf)
 			{
 				Identifier id = unary.Expression as Identifier;
-				if (id != null && ssa.Identifier == id)
+				if (id != null && sid.Identifier == id)
 				{
 					return idOut;
 				}

@@ -610,8 +610,8 @@ namespace Reko.Analysis
             {
                 return new Store(dst, src);
             }
-
         }
+
         private SsaIdentifier GetSsaIdentifierOf(Expression dst)
         {
             var id = dst as Identifier;

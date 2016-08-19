@@ -62,7 +62,7 @@ namespace Reko.UnitTests.Analysis
 				proc.Write(false, fut.TextWriter);
 				fut.TextWriter.WriteLine();
 
-				OutParameterTransformer opt = new OutParameterTransformer(proc, ssa.Identifiers);
+				OutParameterTransformer opt = new OutParameterTransformer( ssa);
 				opt.Transform();
 
 				DeadCode.Eliminate(proc, ssa);
@@ -82,9 +82,9 @@ namespace Reko.UnitTests.Analysis
             m.Assign(foo, 3);
 			var sid = new SsaIdentifier(foo, foo, m.Block.Statements.Last, null, false);
 
-            var ssaIds = new SsaIdentifierCollection { { foo, sid } };
-
-			var opt = new OutParameterTransformer(null, ssaIds);
+            var ssa = new SsaState(m.Procedure, null);
+            ssa.Identifiers.Add(foo, sid);
+			var opt = new OutParameterTransformer(ssa);
 			opt.ReplaceDefinitionsWithOutParameter(foo, pfoo);
 
 			Assert.AreEqual("*pfoo = 0x00000003", m.Block.Statements[0].ToString());
@@ -101,20 +101,20 @@ namespace Reko.UnitTests.Analysis
 			var pfoo = new Identifier("pfoo", PrimitiveType.Pointer32, null);
 
             Block block1 = m.Label("block1");
-             m.Assign(foo1, Constant.Word32(1));
-             Statement stmFoo1 = m.Block.Statements.Last;
+            m.Assign(foo1, Constant.Word32(1));
+            Statement stmFoo1 = m.Block.Statements.Last;
             Block block2 = m.Label("block2");
             m.Assign(foo2, Constant.Word32(2));
             Statement stmFoo2 = m.Block.Statements.Last;
             Block block3 = m.Label("block3");
             Statement stmFoo3 = m.Phi(foo3, foo1, foo2);
 
-			SsaIdentifierCollection ssaIds = new SsaIdentifierCollection();
-			ssaIds.Add(foo1, new SsaIdentifier(foo1, foo, stmFoo1, null, false));
-			ssaIds.Add(foo2, new SsaIdentifier(foo2, foo, stmFoo2, null, false));
-			ssaIds.Add(foo3, new SsaIdentifier(foo3, foo, stmFoo3, null, false));
+            var ssa = new SsaState(m.Procedure, null);
+			ssa.Identifiers.Add(foo1, new SsaIdentifier(foo1, foo, stmFoo1, null, false));
+			ssa.Identifiers.Add(foo2, new SsaIdentifier(foo2, foo, stmFoo2, null, false));
+			ssa.Identifiers.Add(foo3, new SsaIdentifier(foo3, foo, stmFoo3, null, false));
 
-			OutParameterTransformer opt = new OutParameterTransformer(null, ssaIds);
+			OutParameterTransformer opt = new OutParameterTransformer(ssa);
 			opt.ReplaceDefinitionsWithOutParameter(foo3, pfoo);
 
 			Assert.AreEqual("*pfoo = 0x00000001", stmFoo1.Instruction.ToString());
@@ -151,11 +151,15 @@ namespace Reko.UnitTests.Analysis
 			ssaFoo.Uses.Add(stmBar);
             SsaIdentifier ssaBar = new SsaIdentifier(bar, bar, stmBar, ((Assignment) stmBar.Instruction).Src, false);
 
-			SsaIdentifierCollection ssaIds = new SsaIdentifierCollection();
-			ssaIds.Add(foo, ssaFoo);
-			ssaIds.Add(bar, ssaBar);
+            var ssa = new SsaState(m.Procedure, null)
+            {
+                Identifiers = {
+                    { foo, ssaFoo },
+                    { bar, ssaBar },
+                }
+            };
 
-			OutParameterTransformer opt = new OutParameterTransformer(m.Procedure, ssaIds);
+			OutParameterTransformer opt = new OutParameterTransformer(ssa);
 			opt.ReplaceDefinitionsWithOutParameter(foo, pfoo);
 			Assert.AreEqual(3, block.Statements.Count);
 			Assert.AreEqual("foo = 0x00000001", block.Statements[0].Instruction.ToString());
