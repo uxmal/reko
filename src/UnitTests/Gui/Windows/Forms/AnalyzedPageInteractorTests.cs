@@ -77,7 +77,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             var bytes = new byte[4711];
             var arch = new X86ArchitectureFlat32();
             var mem = new MemoryArea(loadAddress, bytes);
-            Program program = new Program
+            this.program = new Program
             {
                 SegmentMap = new SegmentMap(
                     mem.BaseAddress,

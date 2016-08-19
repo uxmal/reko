@@ -511,7 +511,8 @@ namespace Reko.UnitTests.Analysis
 			var gr = proc.CreateBlockDominatorGraph();
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             importResolver.Replay();
-			var sst = new SsaTransform(new ProgramDataFlow(), proc, importResolver, gr, new HashSet<RegisterStorage>());
+			var sst = new SsaTransform2(arch, proc, importResolver, new DataFlow2());
+            sst.Transform();
 			var ssa = sst.SsaState;
 
 			var vp = new ValuePropagator(arch, ssa);
@@ -529,8 +530,9 @@ namespace Reko.UnitTests.Analysis
         {
             var proc = m.Procedure;
             var gr = proc.CreateBlockDominatorGraph();
-            var sst = new SsaTransform(new ProgramDataFlow(), proc, importResolver, gr, new HashSet<RegisterStorage>());
+            var sst = new SsaTransform2(arch, proc, importResolver, new DataFlow2());
             var ssa = sst.SsaState;
+            sst.Transform();
 
             var vp = new ValuePropagator(arch, ssa);
             vp.Transform();
@@ -807,12 +809,13 @@ ProcedureBuilder_exit:
           Mem5[fp - 0x00000004:word32] = 0x00000003
           r63_6 = fp - 0x00000008
           Mem7[fp - 0x00000008:word16] = Mem5[0x01231230:word16]
-          r1_8 = foo(Mem0[fp - 0x00000008:word32], Mem0[fp - 0x00000004:word32])
-          r1_8 = foo(Mem0[fp - 0x00000008:word32], Mem0[fp - 0x00000004:word32])
+          r1_8 = foo(Mem7[fp - 0x00000008:word32], Mem7[fp - 0x00000004:word32])
+          r1_8 = foo(Mem7[fp - 0x00000008:word32], Mem7[fp - 0x00000004:word32])
 r63_2: orig: r63
     def:  r63_2 = fp
 r1_3: orig: r1
     def:  r1_3 = foo
+    uses: r1_8 = foo(Mem7[fp - 0x00000008:word32], Mem7[fp - 0x00000004:word32])
 r63_4: orig: r63
     def:  r63_4 = fp - 0x00000004
 Mem5: orig: Mem0
@@ -822,9 +825,10 @@ r63_6: orig: r63
     def:  r63_6 = fp - 0x00000008
 Mem7: orig: Mem0
     def:  Mem7[fp - 0x00000008:word16] = Mem5[0x01231230:word16]
+    uses: r1_8 = foo(Mem7[fp - 0x00000008:word32], Mem7[fp - 0x00000004:word32])
+          r1_8 = foo(Mem7[fp - 0x00000008:word32], Mem7[fp - 0x00000004:word32])
 r1_8: orig: r1
-    def:  r1_8 = foo(Mem0[fp - 0x00000008:word32], Mem0[fp - 0x00000004:word32])
-r63_9: orig: r63
+    def:  r1_8 = foo(Mem7[fp - 0x00000008:word32], Mem7[fp - 0x00000004:word32])
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -838,7 +842,7 @@ l1:
 	Mem5[fp - 0x00000004:word32] = 0x00000003
 	r63_6 = fp - 0x00000008
 	Mem7[fp - 0x00000008:word16] = Mem5[0x01231230:word16]
-	r1_8 = foo(Mem0[fp - 0x00000008:word32], Mem0[fp - 0x00000004:word32])
+	r1_8 = foo(Mem7[fp - 0x00000008:word32], Mem7[fp - 0x00000004:word32])
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
