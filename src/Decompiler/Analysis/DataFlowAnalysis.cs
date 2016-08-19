@@ -186,6 +186,11 @@ namespace Reko.Analysis
 			get { return flow; }
 		}
 
+        public DataFlow2 DataFlow
+        {
+            get { return dataFlow; }
+        }
+
 		/// <summary>
 		/// Finds all interprocedural register dependencies (in- and out-parameters) and
 		/// abstracts them away by rewriting as calls.
@@ -221,6 +226,12 @@ namespace Reko.Analysis
         /// </summary>
         public void AnalyzeProgram2()
         {
+            UntangleProcedures2();
+            BuildExpressionTrees2();
+        }
+
+        public void UntangleProcedures2()
+        {
             var usb = new UserSignatureBuilder(program);
             usb.BuildSignatures();
 
@@ -234,8 +245,6 @@ namespace Reko.Analysis
             // Discover values that are live out at each call site.
             var uvr = new UnusedOutValuesRemover();
             uvr.Transform(ssts);
-
-            BuildExpressionTrees2();
         }
 
         private void UntangleProcedureScc(IList<Procedure> procs)

@@ -73,6 +73,27 @@ namespace Reko.UnitTests.Analysis
             Assert.AreEqual(sExp, sw.ToString());
         }
 
+        private void AssertProgramFlow(string sExp, Program program, DataFlow2 flow)
+        {
+            var sw = new StringWriter();
+            var sep = "";
+            foreach (var proc in program.Procedures.Values)
+            {
+                sw.Write(sep);
+                var pflow = flow.ProcedureFlows[proc];
+                sw.WriteLine("// Trashed   {0}", string.Join(", ", pflow.Trashed.OrderBy(s => s.ToString())));
+                sw.WriteLine("// Preserved {0}", string.Join(", ", pflow.Preserved.OrderBy(s => s.ToString())));
+                sw.WriteLine("// Used      {0}", string.Join(", ", pflow.Used.Select(s => string.Format("({0}:{1})", s.Key, s.Value)).OrderBy(s => s)));
+                flow.ProcedureFlows[proc].ToString();
+                proc.Write(false, sw);
+                sep = "===" + Environment.NewLine;
+            }
+            var sActual = sw.ToString();
+            if (sExp != sActual)
+                Debug.WriteLine(sActual);
+            Assert.AreEqual(sExp, sw.ToString());
+        }
+
         private void RunTest(Program program, TextWriter writer)
         {
             mr.ReplayAll();
@@ -310,7 +331,7 @@ l1:
 	word32 r1_3
 	word32 r2_4
 	call level1 (retsize: 0;)
-		uses: r1_2
+		uses: Mem0[0x00123400:word32]
 		defs: r1_3,r2_4
 	Mem5[0x00123400:word32] = r1_3
 	return
@@ -439,6 +460,71 @@ level2_exit:
 ";
             #endregion
             AssertProgram(sExp, pb.Program);
+        }
+
+        [Test]
+        public void Dfa2_Byte_Arg()
+        {
+            pb = new ProgramBuilder();
+            pb.Add("main", m =>
+            {
+                var r1 = m.Register(1);
+                var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
+                m.Assign(sp, m.Frame.FramePointer);
+                m.Assign(r1, m.LoadDw(m.IAdd(sp, 4)));
+                m.Call("level1", 4);
+                m.Return();
+            });
+            pb.Add("level1", m =>
+            {
+                var r1 = m.Register(1);
+                var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
+                m.Assign(sp, m.Frame.FramePointer);
+                m.Store(m.Word32(0x1234), m.Cast(PrimitiveType.Byte, r1));
+                m.Return();
+            });
+            var program = pb.BuildProgram();
+            mr.ReplayAll();
+
+            var dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
+            dfa.AnalyzeProgram2();
+
+            var sExp =
+            #region Expected
+@"// Trashed   r1
+// Preserved r63
+// Used      (Stack +0004:32)
+// main
+// Return size: 0
+void main()
+main_entry:
+	// succ:  l1
+l1:
+	call level1 (retsize: 4;)
+		uses: dwArg04
+	word32 r63_2 = fp
+	word32 r1_4 = dwArg04
+	return
+	// succ:  main_exit
+main_exit:
+===
+// Trashed   
+// Preserved r63
+// Used      (r1:8)
+// level1
+// Return size: 0
+void level1()
+level1_entry:
+	// succ:  l1
+l1:
+	Mem4[0x00001234:byte] = (byte) r1
+	word32 r63_2 = fp
+	return
+	// succ:  level1_exit
+level1_exit:
+";
+            #endregion
+            AssertProgramFlow(sExp, pb.Program, dfa.DataFlow);
 
         }
     }
