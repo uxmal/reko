@@ -34,8 +34,7 @@ namespace Reko.Analysis
 	/// </summary>
 	public class SegmentedAccessClassifier : InstructionVisitorBase	
 	{
-		private Procedure proc;
-		private SsaIdentifierCollection ssaIds;
+		private SsaState ssa;
 		private Dictionary<Identifier,Identifier> assocs;
 		private Dictionary<Identifier,Constant> consts;
 		private Identifier overAssociatedId = new Identifier("overAssociated", VoidType.Instance, null);
@@ -43,10 +42,9 @@ namespace Reko.Analysis
 
 		private int sequencePoint;
 
-		public SegmentedAccessClassifier(Procedure proc, SsaIdentifierCollection ssaIds)
+		public SegmentedAccessClassifier(SsaState  ssa)
 		{
-			this.proc = proc;
-			this.ssaIds = ssaIds;
+			this.ssa = ssa;
 			assocs = new Dictionary<Identifier,Identifier>();
             consts = new Dictionary<Identifier, Constant>();
 		}
@@ -101,7 +99,7 @@ namespace Reko.Analysis
         public void Classify()
         {
             sequencePoint = 0;
-            foreach (Statement stm in proc.Statements)
+            foreach (Statement stm in ssa.Procedure.Statements)
             {
                 stm.Instruction.Accept(this);
             }
