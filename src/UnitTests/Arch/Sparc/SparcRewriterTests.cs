@@ -34,7 +34,7 @@ using System.Text;
 namespace Reko.UnitTests.Arch.Sparc
 {
     [TestFixture]
-    class SparcRewriterTests : RewriterTestBase
+    public class SparcRewriterTests : RewriterTestBase
     {
         private SparcArchitecture arch = new SparcArchitecture(PrimitiveType.Word32);
         private Address baseAddr = Address.Ptr32(0x00100000);
@@ -398,6 +398,60 @@ namespace Reko.UnitTests.Arch.Sparc
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|g0 = o0 - 0x00000003",
                 "2|L--|NZVC = cond(g0)");
+        }
+
+        [Test]
+        public void SparcRw_andn()
+        {
+            BuildTest(0x922A0009);   // andn %o0,%o1,%o1
+            AssertCode(
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|o1 = o0 & ~o1");
+        }
+
+        [Test]
+        public void SparcRw_sra()
+        {
+            BuildTest(0x913C3C03);// sra%l2,0x00000003,%o0;
+            AssertCode(
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|o0 = l0 >> 0x00000003");
+        }
+
+        [Test]
+        public void SparcRw_subx()
+        {
+            BuildTest(0x986060FF);  //  subx %g0,0xFFFFFFFF,%o4
+            AssertCode(
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|o4 = g1 - 0x000000FF - C");
+        }
+
+        [Test]
+        public void SparcRw_addx()
+        {
+            BuildTest(0x90402000);  // addx %g0,0x00000000,%o0
+            AssertCode(
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|o0 = 0x00000000 + 0x00000000 + C");
+        }
+
+        [Test]
+        public void SparcRw_xor()
+        {
+            BuildTest(0x901A1A0A);  //  xor%o0,%o2,%o0
+            AssertCode(
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|o0 = o0 ^ o2");
+        }
+
+        [Test]
+        public void SparcRw_bpos()
+        {
+            BuildTest(0x1CBFBFF1);  //  bpos 0001203C
+            AssertCode(
+                 "0|T--|00100000(4): 1 instructions",
+                 "1|TD-|if (Test(GT,N)) branch 000EFFC4");
         }
     }
 }

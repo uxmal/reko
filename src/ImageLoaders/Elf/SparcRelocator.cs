@@ -50,8 +50,6 @@ namespace Reko.ImageLoaders.Elf
             var addr = referringSection.Address + rela.r_offset;
             uint P = (uint)addr.ToLinear();
             uint PP = P;
-            var relR = program.CreateImageReader(addr);
-            var relW = program.CreateImageWriter(addr);
 
             Debug.Print("  off:{0:X8} type:{1,-16} add:{3,-20} {4,3} {2} {5}",
                 rela.r_offset,
@@ -81,11 +79,17 @@ namespace Reko.ImageLoaders.Elf
                 P = ~P + 1;
                 sh = 2;
                 break;
+            case SparcRt.R_SPARC_COPY:
+                Debug.Print("Relocation type {0} not handled yet.", rt);
+                return;
             default:
                 throw new NotImplementedException(string.Format(
                     "SPARC ELF relocation type {0} not implemented yet.",
                     rt));
             }
+            var relR = program.CreateImageReader(addr);
+            var relW = program.CreateImageWriter(addr);
+
             var w = relR.ReadBeUInt32();
             w += ((uint)(S + A + P) >> sh) & mask;
             relW.WriteBeUInt32(w);

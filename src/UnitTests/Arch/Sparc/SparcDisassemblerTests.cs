@@ -72,6 +72,12 @@ namespace Reko.UnitTests.Arch.Sparc
         }
 
         [Test]
+        public void SparcDis_subcc()
+        {
+            AssertInstruction(0x986060FF, "subx\t%g1,0x000000FF,%o4");
+        }
+
+        [Test]
         public void SparcDis_or_imm()
         {
             AssertInstruction(0xBE10E004, "or\t%g3,0x00000004,%i7");
