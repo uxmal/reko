@@ -137,6 +137,58 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
 1000002C: warning: Expected sizes of arrays to have been determined by now
 100007E0: warning: Expected sizes of arrays to have been determined by now
 
+=== sparc-rtems-g++
+*** sparc-rtems-g++
+sparc-rtems-g++: error: An internal error occurred while decompiling.
+    The address 0006650C is invalid.
+       at Reko.Core.Program.CreateImageReader(Address addr) in D:\dev\uxmal\reko\master\src\Core\Program.cs:line 286
+   at Reko.ImageLoaders.Elf.SparcRelocator.RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, Elf32_Rela rela) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\SparcRelocator.cs:line 53
+   at Reko.ImageLoaders.Elf.ElfRelocator32.Relocate(Program program) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\ElfRelocator.cs:line 57
+   at Reko.ImageLoaders.Elf.ElfLoader32.Relocate(Program program, Address addrLoad) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\ElfLoader.cs:line 1369
+   at Reko.ImageLoaders.Elf.ElfImageLoader.Relocate(Program program, Address addrLoad) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\ElfImageLoader.cs:line 97
+   at Reko.Loading.Loader.LoadExecutable(String filename, Byte[] image, Address addrLoad) in D:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 108
+   at Reko.DecompilerDriver.Load(String fileName) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 207
+   at Reko.DecompilerDriver.Decompile(String filename) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 97
+
+=== sparc-rtems-gcc
+*** sparc-rtems-gcc
+sparc-rtems-gcc: error: An internal error occurred while decompiling.
+    The address 0006570C is invalid.
+       at Reko.Core.Program.CreateImageReader(Address addr) in D:\dev\uxmal\reko\master\src\Core\Program.cs:line 286
+   at Reko.ImageLoaders.Elf.SparcRelocator.RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, Elf32_Rela rela) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\SparcRelocator.cs:line 53
+   at Reko.ImageLoaders.Elf.ElfRelocator32.Relocate(Program program) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\ElfRelocator.cs:line 57
+   at Reko.ImageLoaders.Elf.ElfLoader32.Relocate(Program program, Address addrLoad) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\ElfLoader.cs:line 1369
+   at Reko.ImageLoaders.Elf.ElfImageLoader.Relocate(Program program, Address addrLoad) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\ElfImageLoader.cs:line 97
+   at Reko.Loading.Loader.LoadExecutable(String filename, Byte[] image, Address addrLoad) in D:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 108
+   at Reko.DecompilerDriver.Load(String fileName) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 207
+   at Reko.DecompilerDriver.Decompile(String filename) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 97
+
+=== sparc-rtems-protoize
+*** sparc-rtems-protoize
+sparc-rtems-protoize: error: An internal error occurred while decompiling.
+    The address 00055B0C is invalid.
+       at Reko.Core.Program.CreateImageReader(Address addr) in D:\dev\uxmal\reko\master\src\Core\Program.cs:line 286
+   at Reko.ImageLoaders.Elf.SparcRelocator.RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, Elf32_Rela rela) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\SparcRelocator.cs:line 53
+   at Reko.ImageLoaders.Elf.ElfRelocator32.Relocate(Program program) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\ElfRelocator.cs:line 57
+   at Reko.ImageLoaders.Elf.ElfLoader32.Relocate(Program program, Address addrLoad) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\ElfLoader.cs:line 1369
+   at Reko.ImageLoaders.Elf.ElfImageLoader.Relocate(Program program, Address addrLoad) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\ElfImageLoader.cs:line 97
+   at Reko.Loading.Loader.LoadExecutable(String filename, Byte[] image, Address addrLoad) in D:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 108
+   at Reko.DecompilerDriver.Load(String fileName) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 207
+   at Reko.DecompilerDriver.Decompile(String filename) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 97
+
+=== sparc-rtems-unprotoize
+*** sparc-rtems-unprotoize
+sparc-rtems-unprotoize: error: An internal error occurred while decompiling.
+    The address 0005350C is invalid.
+       at Reko.Core.Program.CreateImageReader(Address addr) in D:\dev\uxmal\reko\master\src\Core\Program.cs:line 286
+   at Reko.ImageLoaders.Elf.SparcRelocator.RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, Elf32_Rela rela) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\SparcRelocator.cs:line 53
+   at Reko.ImageLoaders.Elf.ElfRelocator32.Relocate(Program program) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\ElfRelocator.cs:line 57
+   at Reko.ImageLoaders.Elf.ElfLoader32.Relocate(Program program, Address addrLoad) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\ElfLoader.cs:line 1369
+   at Reko.ImageLoaders.Elf.ElfImageLoader.Relocate(Program program, Address addrLoad) in D:\dev\uxmal\reko\master\src\ImageLoaders\Elf\ElfImageLoader.cs:line 97
+   at Reko.Loading.Loader.LoadExecutable(String filename, Byte[] image, Address addrLoad) in D:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 108
+   at Reko.DecompilerDriver.Load(String fileName) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 207
+   at Reko.DecompilerDriver.Decompile(String filename) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 97
+
 === const.o
 === ls
 === BENCHFN
