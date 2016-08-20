@@ -10,7 +10,7 @@ void fn00001000(int32 d0, byte * a0)
 	int32 d2_236 = d0;
 	byte * a2_248 = a0;
 	struct Eq_11 * a4_7 = (struct Eq_11 *) 37822;
-	if (a6_9->w0014 - 0x24 < 0x00)
+	if (a6_9->w0014 < 0x24)
 	{
 		word32 * a0_503 = &globals->dw13C8;
 		word32 d0_506 = 0x0C;
@@ -23,8 +23,8 @@ void fn00001000(int32 d0, byte * a0)
 	}
 	a4_7->ptrFFFF800A = fp;
 	a4_7->ptrFFFF800E = a6_9;
-	struct Eq_27 * d0_20 = FindTask(0x00);
-	struct Eq_33 * d0_113 = OpenLibrary(0x12BC, 0x00);
+	struct Eq_25 * d0_20 = FindTask(0x00);
+	struct Eq_31 * d0_113 = OpenLibrary(0x12BC, 0x00);
 	if (d0_113 != null)
 	{
 		int32 d4_458;
@@ -40,7 +40,7 @@ void fn00001000(int32 d0, byte * a0)
 			d4_458 = 0x03;
 			do
 			{
-				if (*a0_515 - 0x20 == 0x00)
+				if (*a0_515 == 0x20)
 					d4_458 = DPB(d4_458, (word16) d4_458 + 0x01, 0);
 				a0_461 = a0_515 + 0x01;
 				a0_515 = a0_461;
@@ -52,19 +52,19 @@ void fn00001000(int32 d0, byte * a0)
 		d0_113 = AllocMem(d0_108 + 0x11, 0x00010001);
 		if (d0_113 != null)
 		{
-			struct Eq_68 * dwLoc14_160;
+			struct Eq_66 * dwLoc14_160;
 			word32 a0_165;
 			d0_113->dw0000 = d0_108 + 0x11;
 			int32 d4_124 = d4_458 - 0x01;
 			d0_113->dw000C = d4_124;
 			d0_113->ptr0008 = d0_113->dw000C + 0x01 + d0_106 / 0x0010;
 			Mem132[0x00:word32] = 0x00;
-			struct Eq_68 * d0_133 = d0_20->ptr00AC;
+			struct Eq_66 * d0_133 = d0_20->ptr00AC;
 			d0_133->dw0000 = d0_108 + 0x11;
 			d0_133->dw000C = d4_124 - 0x01;
 			d0_133->ptr0008 = (byte *) (&d0_133->ptr0010 + d0_106 / 0x0028);
 			Mem151[0x00:word32] = 0x00;
-			struct Eq_68 * d0_152 = d0_20->ptr00AC;
+			struct Eq_66 * d0_152 = d0_20->ptr00AC;
 			if (d0_152 == null)
 			{
 				fn00001214(d0_20);
@@ -95,28 +95,28 @@ l000011F8:
 				goto l00001202;
 			}
 			ui32 d0_203 = ((ui32[]) 0x0010)[d0_152];
-			Eq_200 (* a0_210)[] = (d0_203 << 0x02) + 0x01;
+			Eq_198 (* a0_210)[] = (d0_203 << 0x02) + 0x01;
 			int32 d0_211 = (int32) null[d0_203].b0000;
 			Mem212[a0_210 + d0_211:byte] = 0x00;
 			d0_133->ptr0010 = a0_210;
 			ui32 d0_218 = ((ui32[]) 0x0010)[d0_211];
 			byte * a1_221 = d0_133->ptr0008;
-			Eq_200 (* a0_226)[] = (d0_218 << 0x02) + 0x01;
+			Eq_198 (* a0_226)[] = (d0_218 << 0x02) + 0x01;
 			int32 d0_227 = (int32) null[d0_218].b0000;
 			Mem228[a0_226 + d0_227:byte] = 0x00;
 			d0_133->ptr0010 = a0_226;
 			byte ** a6_231 = &d0_133->ptr0010;
 			int32 d3_232 = 0x01;
-			struct Eq_237 * a0_234 = a0 + d2_236;
+			struct Eq_235 * a0_234 = a0 + d2_236;
 l000010DA:
 			a0_234 = a0_234 - 0x01;
-			if (a0_234->b0000 - 0x20 > 0x00)
+			if (a0_234->b0000 > 0x20)
 			{
 				d2_236 = d2_236 - 0x01;
 				if (d2_236 != ~0x00)
 					goto l000010DA;
 			}
-			a0_234[0x01] = (struct Eq_237) 0x00;
+			a0_234[0x01] = (struct Eq_235) 0x00;
 			do
 			{
 l000010E6:
@@ -186,14 +186,14 @@ l00001148:
 			a4_7->dwFFFF8022 = d0_227;
 			dwLoc14_160 = &d0_133->ptr0010;
 			dwLoc18 = d3_232;
-			if (a4_7->ptrFFFF800E->w0014 - 0x24 >= 0x00)
+			if (a4_7->ptrFFFF800E->w0014 >= 0x24)
 			{
 				int32 v87_299 = d0_20->dw00E0;
 				a4_7->dwFFFF8026 = v87_299;
 				if (v87_299 != 0x00)
 				{
 l0000117E:
-					if (d0_20->b0008 - 0x0D == 0x00)
+					if (d0_20->b0008 == 0x0D)
 					{
 						word32 * a0_289 = d0_20->ptr00B0;
 						a0_165 = a0_289 + 0x01 - *a0_289;
@@ -223,14 +223,14 @@ l00001202:
 	return;
 }
 
-void fn00001214(Eq_27 * a3)
+void fn00001214(Eq_25 * a3)
 {
 	WaitPort(a3 + 0x005C);
 	GetMsg(a3 + 0x005C);
 	return;
 }
 
-void fn0000126C(Eq_33 * a2)
+void fn0000126C(Eq_31 * a2)
 {
 	Forbid();
 	ReplyMsg(a2);
@@ -245,10 +245,10 @@ void fn00001278(word32 dwArg04)
 
 void fn0000127C(int32 d2)
 {
-	struct Eq_519 * a4_1 = (struct Eq_519 *) 37822;
-	struct Eq_33 ** a7_4 = a4_1->ptrFFFF800A;
-	struct Eq_33 * v8_9 = *(a7_4 - 0x04);
-	struct Eq_33 * v6_6 = *(a7_4 - 0x08);
+	struct Eq_509 * a4_1 = (struct Eq_509 *) 37822;
+	struct Eq_31 ** a7_4 = a4_1->ptrFFFF800A;
+	struct Eq_31 * v8_9 = *(a7_4 - 0x04);
+	struct Eq_31 * v6_6 = *(a7_4 - 0x08);
 	if (v8_9->dw0004 != 0x00)
 		execPrivate1();
 	CloseLibrary(a4_1->ptrFFFF8012);
@@ -260,7 +260,7 @@ void fn0000127C(int32 d2)
 
 void fn000012D0(word32 dwArg04)
 {
-	struct Eq_563 * a3_12 = (struct Eq_563 *) 0x1404;
+	struct Eq_553 * a3_12 = (struct Eq_553 *) 0x1404;
 	byte CVZN_14 = cond(0x1404);
 	if (0x1404 != 0x00)
 	{
@@ -297,25 +297,25 @@ void fn0000131C(word32 dwArg04)
 	byte ZN_10 = cond(*(word32 *) 5112);
 	if (*(word32 *) 5112 == 0x00)
 	{
-		struct Eq_632 * a3_29 = *(struct Eq_632 **) 0x140C;
+		struct Eq_622 * a3_29 = *(struct Eq_622 **) 0x140C;
 		*(int32 *) 5112 = 0x01;
 		byte CVZN_34 = cond(a3_29);
 		a3_50 = a3_29;
 		if (a3_29 != null)
 			do
 			{
-				struct Eq_632 * a3_50;
+				struct Eq_622 * a3_50;
 				<anonymous> * a2_51 = a3_50->ptr0004;
-				struct Eq_632 ** a3_53;
+				struct Eq_622 ** a3_53;
 				a2_51();
-				a3_50 = (struct Eq_632 *) *a3_53;
+				a3_50 = (struct Eq_622 *) *a3_53;
 			} while (a3_50 != null);
 		fn000012D0(dwArg04);
 	}
 	return;
 }
 
-void fn00001354(int32 dwArg04, Eq_68 * dwArg08)
+void fn00001354(int32 dwArg04, Eq_66 * dwArg08)
 {
 	<anonymous> ** a3_46 = (<anonymous> **) 0x1400;
 	byte CVZN_11 = cond(5116);

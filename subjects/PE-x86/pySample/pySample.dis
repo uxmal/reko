@@ -133,7 +133,7 @@ fn100010F0_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp
-// LocalsOut: fp(32) Local -0004(32) Stack +0008(32)
+// LocalsOut: fp(32) Local -0004(32) Local -0008(32) Stack +0008(32)
 
 l100010F0:
 	word32 eax_19 = PyArg_ParseTuple(ptrArg08, 0x10002160, 0x00000000)
@@ -141,7 +141,7 @@ l100010F0:
 // DataOut: eax
 // DataOut (flags): 
 // SymbolicIn: esp:fp
-// LocalsOut: fp(32) Local -0004(32)
+// LocalsOut: fp(32) Local -0004(32) Local -0008(32)
 
 l10001118:
 	return Py_BuildValue(0x10002168, 0x00000000)

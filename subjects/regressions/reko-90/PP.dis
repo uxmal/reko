@@ -3604,7 +3604,7 @@ l0800_163E:
 // LocalsOut: Local -0002(0)
 
 l0800_1645:
-	Mem505[es_1083:di_1079 - 0x0001 + 0x0001:byte] = (byte) Mem450[ss:sp_278 + 0x0002:word16]
+	Mem505[es_1083:di_1079:byte] = (byte) Mem450[ss:sp_278 + 0x0002:word16]
 	ptr32 es_di_509 = Mem505[ss:bp_205 - 0x0008:segptr32]
 	Mem513[ss:sp_278 + 0x0002:word16] = (word16) (int32) Mem505[ds_428:0x29E9:word16]
 	word16 di_1075 = (word16) es_di_509 + 0x0001
@@ -3673,7 +3673,7 @@ l0800_1668:
 // LocalsOut: Local -0002(0)
 
 l0800_166F:
-	Mem569[es_1061:di_1057 - 0x0001 + 0x0002:byte] = (byte) Mem513[ss:sp_278 + 0x0002:word16]
+	Mem569[es_1061:di_1057 + 0x0001:byte] = (byte) Mem513[ss:sp_278 + 0x0002:word16]
 	word16 dx_570 = Mem569[ds_428:0x29E9:word16]
 	word16 dx_574
 	word16 ax_575 = fn0800_8C8A(Mem569[ds_428:0x29E7:word16], 0x08, dx_570, bp, out dx_574)
@@ -3746,7 +3746,7 @@ l0800_169A:
 // LocalsOut: Local -0002(16)
 
 l0800_16A1:
-	Mem635[es_1039:di_1035 - 0x0001 + 0x0003:byte] = (byte) Mem580[ss:sp_278 + 0x0002:word16]
+	Mem635[es_1039:di_1035 + 0x0002:byte] = (byte) Mem580[ss:sp_278 + 0x0002:word16]
 	ptr32 es_di_636 = Mem635[ss:bp_205 - 0x0008:segptr32]
 	word16 di_1031 = (word16) es_di_636
 	selector es_1017 = SLICE(es_di_636, selector, 16)
@@ -3815,7 +3815,7 @@ l0800_16BF:
 
 l0800_16C6:
 	byte dl_689 = Mem635[ds_428:0x29E7:byte]
-	Mem693[es_1017:di_1013 - 0x0001 + 0x0004:byte] = dl_689
+	Mem693[es_1017:di_1013 + 0x0003:byte] = dl_689
 	Mem699[ds_428:0x2A05:word16] = 0x0000
 	Mem700[ds_428:0x2A03:word16] = 0x0000
 	Mem703[ss:sp_278 + 0x0002:word16] = Mem700[ds_428:0x29E5:word16]
@@ -4311,7 +4311,7 @@ l0800_197A:
 // LocalsOut: Local -0002(16)
 
 l0800_1981:
-	branch Mem135[es_141:di_159 - 0x0001 + 0x0001:byte] != 0x00 l0800_19AD
+	branch Mem135[es_141:di_159:byte] != 0x00 l0800_19AD
 // DataOut: bp ds sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> bp:<invalid> ax:<invalid> bx:<invalid> Sequence es:di:<invalid> di:<invalid> cx:<invalid> es:<invalid> dx:<invalid> al:<invalid> ah:<invalid> cl:<invalid> dl:<invalid> dh:<invalid> ds:<invalid> si:<invalid> ch:<invalid> bl:<invalid> bh:<invalid> -126(fp):<invalid> -124(fp):<invalid> -122(fp):<invalid> -120(fp):<invalid> -118(fp):<invalid> -116(fp):<invalid> -114(fp):di -2(fp):bp
@@ -4585,7 +4585,7 @@ l0800_1ADD:
 
 l0800_1AE4:
 	ptr32 es_di_207 = Mem156[ss:bp_146 - 0x0008:segptr32]
-	Mem211[ss:sp_111 - 0x0002:word16] = (int16) Mem156[es_159:di_1020 - 0x0001 + 0x0001:byte] << 0x08
+	Mem211[ss:sp_111 - 0x0002:word16] = (int16) Mem156[es_159:di_1020:byte] << 0x08
 	word16 di_1021 = (word16) es_di_207
 	selector es_209 = SLICE(es_di_207, selector, 16)
 	word16 cx_217 = 0xFFFF
@@ -4722,7 +4722,7 @@ l0800_1B32:
 
 l0800_1B39:
 	ptr32 es_di_325 = Mem277[ss:bp_146 - 0x0008:segptr32]
-	Mem329[ss:sp_111 - 0x0006:word16] = (int16) Mem277[es_273:di_1024 - 0x0001 + 0x0003:byte] << 0x08
+	Mem329[ss:sp_111 - 0x0006:word16] = (int16) Mem277[es_273:di_1024 + 0x0002:byte] << 0x08
 	word16 di_1025 = (word16) es_di_325
 	selector es_327 = SLICE(es_di_325, selector, 16)
 	word16 cx_335 = 0xFFFF
@@ -5595,7 +5595,7 @@ l0800_1F79:
 
 l0800_1F80:
 	word16 ax_331 = 0x0000
-	branch di_356 - 0x0001 == 0x0000 l0800_1FAD
+	branch di_356 == 0x0001 l0800_1FAD
 // DataOut: bp ds ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x000E bp:fp - 0x0002 Sequence es:di:<invalid> ax:<invalid> cx:<invalid> di:<invalid> es:0x0000 -14(fp):di -12(fp):si -2(fp):bp
@@ -5668,7 +5668,7 @@ l0800_1F9C:
 l0800_1FA3:
 	ax_331 = 0x0000
 	wArg04 = 0x0000
-	wArg02 = di_304 - 0x0001 + 0x0001
+	wArg02 = di_304
 // DataOut: bp ds ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x000E bp:fp - 0x0002 Sequence es:di:<invalid> ax:<invalid> cx:<invalid> di:<invalid> es:0x0000 -14(fp):di -12(fp):si -2(fp):bp
@@ -5983,7 +5983,7 @@ l0800_214B:
 // LocalsOut: fp(16) Local -0006(32) Local -000C(8) Local -000E(16) Local -001C(16)
 
 l0800_2152:
-	Mem225[es_178:di_197 - 0x0001 + 0x0001:byte] = 0x00
+	Mem225[es_178:di_197:byte] = 0x00
 	word16 di_227 = bx_74 - 0x0001
 	selector es_228 = SLICE(ptrLoc06_79, selector, 16)
 	word16 cx_233 = 0xFFFF
@@ -6050,7 +6050,7 @@ l0800_2170:
 // LocalsOut: fp(16) Local -0006(32) Local -000C(8) Local -000E(16) Local -001C(16)
 
 l0800_2177:
-	Mem275[es_228:di_247 - 0x0001 + 0x0002:byte] = 0x00
+	Mem275[es_228:di_247 + 0x0001:byte] = 0x00
 	word16 di_277 = bx_74 - 0x0001
 	selector es_278 = SLICE(ptrLoc06_79, selector, 16)
 	word16 cx_283 = 0xFFFF
@@ -6117,7 +6117,7 @@ l0800_2195:
 // LocalsOut: fp(16) Local -0006(32) Local -000C(8) Local -000E(16) Local -001C(16)
 
 l0800_219C:
-	Mem325[es_278:di_297 - 0x0001 + 0x0003:byte] = 0x00
+	Mem325[es_278:di_297 + 0x0002:byte] = 0x00
 	word16 di_327 = bx_74 - 0x0001
 	selector es_328 = SLICE(ptrLoc06_79, selector, 16)
 	word16 cx_333 = 0xFFFF
@@ -6184,7 +6184,7 @@ l0800_21BA:
 // LocalsOut: fp(16) Local -000C(8) Local -000E(16) Local -001C(16)
 
 l0800_21C1:
-	Mem375[es_328:di_347 - 0x0001 + 0x0004:byte] = 0x00
+	Mem375[es_328:di_347 + 0x0003:byte] = 0x00
 	ptr32 es_bx_381 = Mem375[ds_99:0x2E51:segptr32]
 	Mem0[es_bx_381 + 0x0004:byte] = (byte) (ax_29 + (cx_56 + 0x0004) >>u 0x08)
 	Mem0[es_bx_381 + 0x0005:byte] = bLoc0C + bLoc0E
@@ -6348,7 +6348,7 @@ l0800_22D3:
 
 l0800_22DA:
 	Mem204[ds_76:0x45AC:word16] = es_149
-	Mem205[ds_76:0x45AA:word16] = di_170 - 0x0001 + 0x0001
+	Mem205[ds_76:0x45AA:word16] = di_170
 	return ds_76
 // DataOut: ds ss
 // DataOut (flags): 
@@ -6443,7 +6443,7 @@ l0800_2342:
 // LocalsOut: fp(16) Local -0006(16) Local -0008(8) Stack +0002(16) Stack +0004(16)
 
 l0800_2349:
-	word16 di_90 = di_186 - 0x0001 + 0x0005 - wArg02
+	word16 di_90 = di_186 + 0x0004 - wArg02
 	word16 ax_97 = wArg02 + di_90
 	selector ds_117 = fn0800_B0F3(wArg02, wArg04, ax_97, wArg04, dx_30 - ax_97)
 	ptr32 es_bx_124 = Mem0[ds_117:0x2E51:segptr32]
@@ -6584,7 +6584,7 @@ l0800_2419:
 
 l0800_2420:
 	ptr32 es_di_86 = Mem28[ss:bp_22 + 0x0004:segptr32]
-	Mem90[ss:fp - 0x000E:word16] = (int16) Mem28[es_31:di_383 - 0x0001 + 0x0001:byte] << 0x08
+	Mem90[ss:fp - 0x000E:word16] = (int16) Mem28[es_31:di_383:byte] << 0x08
 	word16 di_104 = (word16) es_di_86
 	selector es_135 = SLICE(es_di_86, selector, 16)
 	word16 cx_100 = 0xFFFF
@@ -6721,7 +6721,7 @@ l0800_246E:
 
 l0800_2475:
 	ptr32 es_di_206 = Mem158[ss:bp_22 + 0x0004:segptr32]
-	Mem210[ss:fp - 0x0012:word16] = (int16) Mem158[es_154:di_175 - 0x0001 + 0x0003:byte] << 0x08
+	Mem210[ss:fp - 0x0012:word16] = (int16) Mem158[es_154:di_175 + 0x0002:byte] << 0x08
 	word16 di_207 = (word16) es_di_206
 	selector es_208 = SLICE(es_di_206, selector, 16)
 	word16 cx_217 = 0xFFFF
@@ -7461,7 +7461,7 @@ l0800_285A:
 
 l0800_2861:
 	word16 ax_322 = 0x0000
-	branch di_347 - 0x0001 == 0x0000 l0800_288E
+	branch di_347 == 0x0001 l0800_288E
 // DataOut: ds ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x000E bp:fp - 0x0002 Sequence es:di:<invalid> ax:<invalid> cx:<invalid> di:<invalid> es:0x0000 -14(fp):di -12(fp):si -2(fp):bp
@@ -7753,7 +7753,7 @@ l0800_294D:
 
 l0800_2954:
 	word16 wArg08_224 = 0x0000
-	word16 wArg06_225 = di_264 - 0x0001 + 0x0001
+	word16 wArg06_225 = di_264
 // DataOut: ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0006 bp:fp - 0x0002 Sequence es:di:<invalid> di:<invalid> ax:0x0000 cx:<invalid> es:0x0000 -6(fp):di -4(fp):si -2(fp):bp
@@ -7916,7 +7916,7 @@ l0800_29A1:
 
 l0800_29A8:
 	wArg08_224 = es_178
-	wArg06_225 = di_194 - 0x0001 + 0x0005
+	wArg06_225 = di_194 + 0x0004
 // DataOut: ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x0006 bp:fp - 0x0002 Sequence es:di:<invalid> di:<invalid> ax:<invalid> cx:<invalid> es:<invalid> Sequence es:bx:<invalid> si:<invalid> ds:ds -8(fp):ds -6(fp):di -4(fp):si -2(fp):bp 6(fp):<invalid> 8(fp):<invalid>
@@ -8296,7 +8296,7 @@ l0800_2B0E:
 
 l0800_2B15:
 	Mem747[ds_619:0x45AC:word16] = es_700
-	Mem748[ds_619:0x45AA:word16] = di_715 - 0x0001 + 0x0005
+	Mem748[ds_619:0x45AA:word16] = di_715 + 0x0004
 	return 0x0001
 // DataOut: ax ds ss
 // DataOut (flags): 
@@ -8404,7 +8404,7 @@ l0800_2B40:
 
 l0800_2B47:
 	Mem500[ds:0x45AC:word16] = es_449
-	Mem501[ds:0x45AA:word16] = di_468 - 0x0001 + 0x0005
+	Mem501[ds:0x45AA:word16] = di_468 + 0x0004
 // DataOut: bp ds si sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> bp:<invalid> ax:<invalid> Sequence es:bx:<invalid> al:<invalid> ah:<invalid> cl:<invalid> dl:<invalid> dh:<invalid> dx:<invalid> bx:<invalid> es:<invalid> Sequence es:di:<invalid> cx:<invalid> di:<invalid> ds:<invalid> si:<invalid> bl:<invalid> bh:<invalid> ch:<invalid> -136(fp):<invalid> -134(fp):<invalid> -132(fp):<invalid> -130(fp):<invalid> -128(fp):<invalid> -126(fp):di -124(fp):si -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
@@ -8655,7 +8655,7 @@ l0800_2C41:
 
 l0800_2C48:
 	Mem212[ds:0x45AC:word16] = es_160
-	Mem213[ds:0x45AA:word16] = di_181 - 0x0001 + 0x0001
+	Mem213[ds:0x45AA:word16] = di_181
 // DataOut: bp ds si sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:<invalid> bp:<invalid> ax:<invalid> Sequence es:bx:<invalid> al:<invalid> ah:<invalid> cl:<invalid> dl:<invalid> dh:<invalid> dx:<invalid> bx:<invalid> Sequence es:di:<invalid> di:<invalid> cx:<invalid> es:<invalid> ds:<invalid> si:<invalid> bl:<invalid> bh:<invalid> ch:<invalid> -136(fp):<invalid> -134(fp):<invalid> -132(fp):<invalid> -130(fp):<invalid> -128(fp):<invalid> -126(fp):di -124(fp):si -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
@@ -18068,7 +18068,7 @@ l0800_6B9E:
 	selector ds_231 = fn0800_409C(fp - 0x0002, ds_212, wArg02, wArg04, wArg06)
 	Mem245[ss:fp - 0x0004:word16] = 0x0000
 	word16 dx_240 = DPB(dx_225, 0x00, 8)
-	Mem246[ss:fp - 0x0006:word16] = (DPB(ax_224, 0x00, 8) << 0x08) + dx_240 - 0x000C >>u 0x0001 >>u 0x0001
+	Mem246[ss:fp - 0x0006:word16] = (DPB(ax_224, 0x00, 8) << 0x08) + dx_240 - 0x000C >>u 0x0002
 	Mem248[ss:sp_149 + 0x0004:word16] = Mem246[ds_231:0x29E1:word16]
 	Mem250[ss:sp_149 + 0x0002:word16] = Mem248[ds_231:0x29DF:word16]
 	Mem255[ss:sp_149:word16] = 0x0000
@@ -21635,7 +21635,7 @@ fn0800_87F4_entry:
 
 l0800_87F4:
 	*siOut = si + 0x0002
-	return SLICE(Mem0[ds:si:word16], byte, 8)
+	return Mem0[si + 0x0001:byte]
 // DataOut: al bl di ds es si ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp
@@ -25650,7 +25650,7 @@ l0800_A4D6:
 l0800_A4D9:
 	word16 ax_120 = -ax_124
 	ax_124 = -ax_120
-	*dxOut = -(-dx_146 - (ax_120 == 0x0000)) - (ax_124 == 0x0000)
+	*dxOut = (ax_120 == 0x0000) - -dx_146 - (ax_124 == 0x0000)
 // DataOut: ax ds dx ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x000A bp:<invalid> Sequence es:si:<invalid> ax:<invalid> Sequence dx:ax:<invalid> cx:<invalid> bh:0x00 di:<invalid> bl:<invalid> si:<invalid> dl:<invalid> dx:<invalid> -10(fp):fp - 0x0002 -8(fp):es -6(fp):di -4(fp):si -2(fp):bp
@@ -31293,7 +31293,7 @@ l0800_C04F:
 	selector ds_9
 	*diOut = fn0800_C379(ds, out ds_9)
 	word16 si_26 = Mem0[SLICE(ptrArg02, selector, 16):(word16) ptrArg02:word16]
-	int32 dx_ax_33 = (int32) (si_26 + 0xF844 >> 0x0001 >> 0x0001)
+	int32 dx_ax_33 = (int32) (si_26 + 0xF844 >> 0x0002)
 	int32 dx_ax_60 = (int32) (si_26 + 0xF844 & 0x0003)
 	word16 dx_46
 	word16 dx_73
@@ -31782,7 +31782,7 @@ l0800_C5E4:
 // LocalsOut: fp(16) Stack +0002(16) Stack +0004(16) Stack +0006(16) Stack +0008(8)
 
 l0800_C5E5:
-	word16 cx_97 = cx_117 - SEQ(0x0000, (((wArg02 + 0x0001 >> 0x0001) >> 0x0001) + cx_117) + 0x0171) % 0x0007
+	word16 cx_97 = cx_117 - SEQ(0x0000, ((wArg02 + 0x0001 >> 0x0002) + cx_117) + 0x0171) % 0x0007
 	branch wArg04 != 0x0004 l0800_C61A
 // DataOut: ax cx di ds ss
 // DataOut (flags): 
