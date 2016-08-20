@@ -228,6 +228,7 @@
     <Compile Include="FieldAttribute.cs" />
     <Compile Include="ImageSymbol.cs" />
     <Compile Include="IStorageBinder.cs" />
+    <Compile Include="IVarargsFormatParser.cs" />
     <Compile Include="Lib\PatternCollector.cs" />
     <Compile Include="Lib\PerfectHash.cs" />
     <Compile Include="Lib\SuffixArray.cs" />

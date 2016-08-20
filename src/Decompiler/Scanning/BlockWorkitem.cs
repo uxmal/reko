@@ -60,6 +60,7 @@ namespace Reko.Scanning
         private ExpressionSimplifier eval;
         private int extraLabels;
         private Identifier stackReg;
+        private VarargsFormatScanner vaScanner;
 
         public BlockWorkitem(
             IScanner scanner,
@@ -92,6 +93,7 @@ namespace Reko.Scanning
 
             frame = blockCur.Procedure.Frame;
             this.stackReg = frame.EnsureRegister(arch.StackRegister);
+            this.vaScanner = new VarargsFormatScanner(program, frame, state);
             rtlStream = scanner.GetTrace(addrStart, state, frame)
                 .GetEnumerator();
 
@@ -450,7 +452,7 @@ namespace Reko.Scanning
                 var pcCallee = CreateProcedureConstant(callee);
                 sig = callee.Signature;
                 chr = callee.Characteristics;
-                EmitCall(pcCallee, callee.Signature, callee.Characteristics, site);
+                EmitCall(pcCallee, sig, chr, site);
                 var pCallee = callee as Procedure;
                 if (pCallee != null)
                 {
@@ -470,8 +472,8 @@ namespace Reko.Scanning
             sig = scanner.GetCallSignatureAtAddress(ric.Address);
             if (sig != null)
             {
-                EmitCall(call.Target, sig, null, site);
-                return OnAfterCall(sig, chr);  //$TODO: make characteristics available
+                EmitCall(call.Target, sig, chr, site);
+                return OnAfterCall(sig, chr);
             }
 
             Identifier id; 
@@ -511,9 +513,17 @@ namespace Reko.Scanning
             return OnAfterCall(sig, chr);
         }
 
-        private void EmitCall(Expression callee, FunctionType sig, ProcedureCharacteristics chr, CallSite site)
+        private void EmitCall(
+            Expression callee,
+            FunctionType sig,
+            ProcedureCharacteristics chr,
+            CallSite site)
         {
-            if (sig != null && sig.ParametersValid)
+            if (vaScanner.TryScan(sig, chr))
+            {
+                Emit(vaScanner.BuildInstruction(callee, site));
+            }
+            else if (sig != null && sig.ParametersValid)
             {
                 Emit(BuildApplication(callee, sig, chr, site));
             }
@@ -522,7 +532,7 @@ namespace Reko.Scanning
                 Emit(new CallInstruction(callee, site));
             }
         }
-        
+
         private CallSite OnBeforeCall(Identifier stackReg, int sizeOfRetAddrOnStack)
         {
             if (sizeOfRetAddrOnStack > 0)

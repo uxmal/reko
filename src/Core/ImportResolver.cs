@@ -80,7 +80,11 @@ namespace Reko.Core
                 FunctionType sig;
                 if (program.EnvironmentMetadata.Signatures.TryGetValue(importName, out sig))
                 {
-                    return new ExternalProcedure(importName, sig);
+                    var chr = platform.LookupCharacteristicsByName(importName);
+                    if (chr != null)
+                        return new ExternalProcedure(importName, sig, chr);
+                    else
+                        return new ExternalProcedure(importName, sig);
                 }
             }
 
