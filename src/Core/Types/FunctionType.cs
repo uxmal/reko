@@ -90,6 +90,25 @@ namespace Reko.Core.Types
             return ft;
 		}
 
+        public bool IsVarargs()
+        {
+            var last = Parameters != null ? Parameters.LastOrDefault() : null;
+            return last != null && last.Name == "...";
+        }
+
+        public FunctionType ReplaceVarargs(params Identifier[] parameters)
+        {
+            if (!IsVarargs())
+                throw new NotSupportedException(
+                    "Signature should contain varargs");
+            var sig = (FunctionType)Clone();
+            sig.Parameters = Parameters.
+                Where(a => a.Name != "...").
+                Concat(parameters).
+                ToArray();
+            return sig;
+        }
+
         /// <summary>
         /// The size of the return address if pushed on stack.
         /// </summary>

@@ -60,6 +60,7 @@ namespace Reko.Scanning
         private ExpressionSimplifier eval;
         private int extraLabels;
         private Identifier stackReg;
+        private VarargsFormatScanner vaScanner;
 
         public BlockWorkitem(
             IScanner scanner,
@@ -92,6 +93,7 @@ namespace Reko.Scanning
 
             frame = blockCur.Procedure.Frame;
             this.stackReg = frame.EnsureRegister(arch.StackRegister);
+            this.vaScanner = new VarargsFormatScanner(program, frame, state);
             rtlStream = scanner.GetTrace(addrStart, state, frame)
                 .GetEnumerator();
 
@@ -438,6 +440,7 @@ namespace Reko.Scanning
                         CreateProcedureConstant(
                             new ExternalProcedure(Procedure.GenerateName(addr), sig)),
                         sig,
+                        chr,
                         site);
                     return OnAfterCall(sig, chr);
                 }
@@ -450,7 +453,7 @@ namespace Reko.Scanning
                 var pcCallee = CreateProcedureConstant(callee);
                 sig = callee.Signature;
                 chr = callee.Characteristics;
-                EmitCall(pcCallee, sig, site);
+                EmitCall(pcCallee, sig, chr, site);
                 var pCallee = callee as Procedure;
                 if (pCallee != null)
                 {
@@ -464,13 +467,13 @@ namespace Reko.Scanning
             {
                 sig = procCallee.Procedure.Signature;
                 chr = procCallee.Procedure.Characteristics;
-                EmitCall(procCallee, sig, site);
+                EmitCall(procCallee, sig, chr, site);
                 return OnAfterCall(sig, chr);
             }
             sig = scanner.GetCallSignatureAtAddress(ric.Address);
             if (sig != null)
             {
-                EmitCall(call.Target, sig, site);
+                EmitCall(call.Target, sig, chr, site);
                 return OnAfterCall(sig, chr);  //$TODO: make characteristics available
             }
 
@@ -483,7 +486,7 @@ namespace Reko.Scanning
                     var e = CreateProcedureConstant(ppp);
                     sig = ppp.Signature;
                     chr = ppp.Characteristics;
-                    EmitCall(e, sig, site);
+                    EmitCall(e, sig, chr, site);
                     return OnAfterCall(sig, chr);
                 }
             }
@@ -493,7 +496,7 @@ namespace Reko.Scanning
             {
                 sig = imp.Signature;
                 chr = imp.Characteristics;
-                EmitCall(CreateProcedureConstant(imp), sig, site);
+                EmitCall(CreateProcedureConstant(imp), sig, chr, site);
                 //Emit(BuildApplication(CreateProcedureConstant(imp), sig, site));
                 return OnAfterCall(sig, chr);
             }
@@ -512,9 +515,17 @@ namespace Reko.Scanning
             return OnAfterCall(sig, chr);
         }
 
-        private void EmitCall(Expression callee, FunctionType sig, CallSite site)
+        private void EmitCall(
+            Expression callee,
+            FunctionType sig,
+            ProcedureCharacteristics chr,
+            CallSite site)
         {
-            if (sig != null && sig.ParametersValid)
+            if (vaScanner.TryScan(sig, chr))
+            {
+                Emit(vaScanner.BuildInstruction(callee, site));
+            }
+            else if (sig != null && sig.ParametersValid)
             {
                 Emit(BuildApplication(callee, sig, site));
             }
@@ -523,7 +534,7 @@ namespace Reko.Scanning
                 Emit(new CallInstruction(callee, site));
             }
         }
-        
+
         private CallSite OnBeforeCall(Identifier stackReg, int sizeOfRetAddrOnStack)
         {
             if (sizeOfRetAddrOnStack > 0)

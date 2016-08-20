@@ -12,7 +12,7 @@ int32 main(int32 argc, char * * argv)
 
 void test1(char * arg1, int32 arg2, char * arg3, real32 arg4)
 {
-	printf("%s %d %s %f");
+	printf("%s %d %s %f", arg1, arg2, arg3, (real64) arg4);
 	return;
 }
 
