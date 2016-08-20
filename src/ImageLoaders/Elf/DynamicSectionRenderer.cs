@@ -57,12 +57,16 @@ namespace Reko.ImageLoaders.Elf
 
         protected static Dictionary<long, DynamicSectionEntryRenderer> entries = new Dictionary<long, DynamicSectionEntryRenderer>
         {
-            { DT_DEBUG, new DynamicSectionEntryRenderer { Name = "DT_DEBUG", Format= DtFormat.Hexadecimal } },
-            { DT_FINI, new DynamicSectionEntryRenderer { Name="DT_DEBUG", Format = DtFormat.Address } },
-            { DT_HASH,  new DynamicSectionEntryRenderer { Name = "DT_HASH", Format = DtFormat.Address} },
-            { DT_INIT,  new DynamicSectionEntryRenderer { Name = "DT_INIT", Format = DtFormat.Address} },
+            { DT_DEBUG,   new DynamicSectionEntryRenderer { Name = "DT_DEBUG", Format= DtFormat.Hexadecimal } },
+            { DT_FINI,    new DynamicSectionEntryRenderer { Name="DT_DEBUG", Format = DtFormat.Address } },
+            { DT_HASH,    new DynamicSectionEntryRenderer { Name = "DT_HASH", Format = DtFormat.Address} },
+            { DT_INIT,    new DynamicSectionEntryRenderer { Name = "DT_INIT", Format = DtFormat.Address} },
+            { DT_RELA,    new DynamicSectionEntryRenderer { Name = "DT_RELA", Format = DtFormat.Address} },
+            { DT_RELASZ,  new DynamicSectionEntryRenderer { Name = "DT_RELASZ", Format = DtFormat.Decimal } },
+            { DT_RELAENT, new DynamicSectionEntryRenderer { Name = "DT_RELAENT", Format = DtFormat.Decimal } },
             { DT_PLTGOT,  new DynamicSectionEntryRenderer { Name = "DT_PLTGOT", Format = DtFormat.Address} },
             { DT_PLTREL,  new DynamicSectionEntryRenderer { Name = "DT_PLTREL", Format = DtFormat.Hexadecimal } },
+            { DT_PLTRELSZ, new DynamicSectionEntryRenderer { Name = "DT_PLTRELSZ", Format = DtFormat.Decimal } },
             { DT_JMPREL,  new DynamicSectionEntryRenderer { Name = "DT_JMPREL", Format = DtFormat.Address} },
             { DT_NEEDED,  new DynamicSectionEntryRenderer { Name ="DT_NEEDED",  Format = DtFormat.String } },
             { DT_STRSZ,   new DynamicSectionEntryRenderer { Name = "DT_STRSZ", Format= DtFormat.Hexadecimal } },

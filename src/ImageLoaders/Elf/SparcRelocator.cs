@@ -27,6 +27,7 @@ using System.Text;
 
 namespace Reko.ImageLoaders.Elf
 {
+    // https://docs.oracle.com/cd/E23824_01/html/819-0690/chapter6-1235.html
     public class SparcRelocator : ElfRelocator32
     {
         private ElfLoader32 loader;

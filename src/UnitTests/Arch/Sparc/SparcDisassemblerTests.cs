@@ -208,5 +208,11 @@ namespace Reko.UnitTests.Arch.Sparc
         {
             AssertInstruction(0x81a80aa2, "fcmpes\t%f0,%f2");
         }
+
+        [Test]
+        public void SparcDis_ldd()
+        {
+            AssertInstruction(0xd01be000, "ldd\t[%o7+0],%o0");
+        }
     }
 }

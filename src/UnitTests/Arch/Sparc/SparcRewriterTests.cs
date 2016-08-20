@@ -453,5 +453,24 @@ namespace Reko.UnitTests.Arch.Sparc
                  "0|T--|00100000(4): 1 instructions",
                  "1|TD-|if (Test(GT,N)) branch 000EFFC4");
         }
+
+
+        [Test]
+        public void SparcRw_ldd()
+        {
+            BuildTest(0xd01be000); // ldd\t[%o7+0],%o0
+            AssertCode(
+               "0|L--|00100000(4): 1 instructions",
+               "1|L--|o0 = Mem0[o7:word64]");
+        }
+
+        [Test]
+        public void SparcRw_srl()
+        {
+            BuildTest(0x8532E010); // srl %o3,0x00000010,%g2
+            AssertCode(
+               "0|L--|00100000(4): 1 instructions",
+               "1|L--|g2 = o3 >>u 0x00000010");
+        }
     }
 }
