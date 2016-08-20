@@ -54,13 +54,16 @@ namespace Reko.Scanning
             this.eval = new ExpressionSimplifier(ctx);
         }
 
-        public Instruction BuildInstruction(Expression callee, CallSite site)
+        public Instruction BuildInstruction(
+            Expression callee, 
+            CallSite site,
+            ProcedureCharacteristics chr)
         {
             var pc = callee as ProcedureConstant;
             if (pc != null)
                 pc.Procedure.Signature = this.sig;
             var ab = CreateApplicationBuilder(callee, this.sig, site);
-            return ab.CreateInstruction();
+            return ab.CreateInstruction(this.sig, chr);
         }
 
         public bool TryScan(FunctionType sig, ProcedureCharacteristics chr)
@@ -84,12 +87,11 @@ namespace Reko.Scanning
             FunctionType sig,
             CallSite site)
         {
-            var ab = new ApplicationBuilder(
+            var ab = new FrameApplicationBuilder(
                 arch,
                 frame,
                 site,
                 callee,
-                sig,
                 false);
             return ab;
         }

@@ -169,7 +169,7 @@ namespace Reko.UnitTests.Scanning
             Given_StackString(4, "%d %f");
             Assert.IsTrue(vafs.TryScan(x86PrintfSig, printfChr));
             var c = Constant.Word32(666);
-            var instr = vafs.BuildInstruction(c, new CallSite(4, 0));
+            var instr = vafs.BuildInstruction(c, new CallSite(4, 0), printfChr);
             Assert.AreEqual(
                 "0x0000029A(Mem0[esp:(ptr char)], Mem0[esp + 4:int32], " +
                            "Mem0[esp + 8:real64])",
@@ -184,7 +184,7 @@ namespace Reko.UnitTests.Scanning
             Assert.IsTrue(vafs.TryScan(x86SprintfSig, printfChr));
             var ep = new ExternalProcedure("sprintf", x86SprintfSig);
             var pc = new ProcedureConstant(new CodeType(), ep);
-            var instr = vafs.BuildInstruction(pc, new CallSite(4, 0));
+            var instr = vafs.BuildInstruction(pc, new CallSite(4, 0), printfChr);
             Assert.AreEqual(
                 "sprintf(Mem0[esp:(ptr char)], Mem0[esp + 4:(ptr char)], " +
                         "Mem0[esp + 8:char])",
@@ -204,7 +204,7 @@ namespace Reko.UnitTests.Scanning
             Given_RegString("r3", "%d%d");
             Assert.IsTrue(vafs.TryScan(ppcPrintfSig, printfChr));
             var c = Constant.Word32(0x123);
-            var instr = vafs.BuildInstruction(c, new CallSite(4, 0));
+            var instr = vafs.BuildInstruction(c, new CallSite(4, 0), printfChr);
             Assert.AreEqual(
                 "0x00000123(r3, r4, r5)",
                 instr.ToString());

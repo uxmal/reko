@@ -28,15 +28,31 @@ using Reko.Core;
 using Reko.Analysis;
 using System.IO;
 using System.Diagnostics;
+using Rhino.Mocks;
+using Reko.Core.Services;
 
 namespace Reko.UnitTests.Analysis
 {
     [TestFixture]
     public class UnusedOutValuesRemoverTests
     {
+        private MockRepository mr;
+        private IImportResolver import;
+        private DecompilerEventListener eventListener;
+
+        [SetUp]
+        public void Setup()
+        {
+            this.mr = new MockRepository();
+            this.import = mr.Stub<IImportResolver>();
+            this.eventListener = mr.Stub<DecompilerEventListener>();
+        }
+
         private void RunTest(string sExp, Program program)
         {
-            var dfa = new DataFlowAnalysis(program, null, null);
+            mr.ReplayAll();
+
+            var dfa = new DataFlowAnalysis(program, import, eventListener);
             var ssts = dfa.RewriteProceduresToSsa();
 
             var uvr = new UnusedOutValuesRemover(program, ssts, dfa.DataFlow);
@@ -51,9 +67,10 @@ namespace Reko.UnitTests.Analysis
             var sActual = sb.ToString();
             if (sExp != sActual)
             {
-                Debug.Print(sExp);
+                Debug.Print(sActual);
                 Assert.AreEqual(sExp, sActual);
             }
+            mr.VerifyAll();
         }
 
         [Test]

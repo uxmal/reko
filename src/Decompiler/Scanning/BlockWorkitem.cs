@@ -521,7 +521,7 @@ namespace Reko.Scanning
         {
             if (vaScanner.TryScan(sig, chr))
             {
-                Emit(vaScanner.BuildInstruction(callee, site));
+                Emit(vaScanner.BuildInstruction(callee, site, chr));
             }
             else if (sig != null && sig.ParametersValid)
             {
