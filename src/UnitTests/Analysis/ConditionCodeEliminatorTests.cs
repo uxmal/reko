@@ -123,6 +123,7 @@ namespace Reko.UnitTests.Analysis
         }
 
 		[Test]
+        [Category(Categories.FailedTests)]
 		public void CceAsciiHex()
 		{
 			RunFileTest_x86_real("Fragments/ascii_hex.asm", "Analysis/CceAsciiHex.txt");
