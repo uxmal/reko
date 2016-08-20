@@ -232,21 +232,30 @@ namespace Reko.Analysis
             BuildExpressionTrees2();
         }
 
+        /// <summary>
+        /// Summarizes the net effect each procedure has on registers,
+        /// then removes trashed registers that aren't live-out.
+        /// </summary>
         public void UntangleProcedures2()
         {
             var usb = new UserSignatureBuilder(program);
             usb.BuildSignatures();
+            RewriteProceduresToSsa();
 
+            // Discover values that are live out at each call site.
+            var uvr = new UnusedOutValuesRemover(program, ssts, this.dataFlow);
+            uvr.Transform();
+        }
+
+        public List<SsaTransform2> RewriteProceduresToSsa()
+        {
             this.ssts = new List<SsaTransform2>();
             var sscf = new SccFinder<Procedure>(new ProcedureGraph(program), UntangleProcedureScc);
             foreach (var procedure in program.Procedures.Values)
             {
                 sscf.Find(procedure);
             }
-
-            // Discover values that are live out at each call site.
-            var uvr = new UnusedOutValuesRemover();
-            uvr.Transform(ssts);
+            return ssts;
         }
 
         private void UntangleProcedureScc(IList<Procedure> procs)

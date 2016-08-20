@@ -81,6 +81,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analysis\UnusedOutValuesRemoverTests.cs" />
     <Compile Include="Environments\SysV\GccMangledNameParserTests.cs" />
     <Compile Include="OsPath.cs" />
     <Compile Include="Analysis\AliasStateTests.cs" />

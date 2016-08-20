@@ -37,7 +37,7 @@ namespace Reko.Core
 			inQ = new HashSet<T>();
 		}
 
-		public WorkList(ICollection<T> coll)
+		public WorkList(IEnumerable<T> coll)
 		{
 			q = new Queue<T>(coll);
 			inQ = new HashSet<T>(coll);
