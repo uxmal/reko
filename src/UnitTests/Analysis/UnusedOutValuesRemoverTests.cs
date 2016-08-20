@@ -30,6 +30,7 @@ using System.IO;
 using System.Diagnostics;
 using Rhino.Mocks;
 using Reko.Core.Services;
+using Reko.Core.Types;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -62,7 +63,7 @@ namespace Reko.UnitTests.Analysis
             foreach (var proc in program.Procedures.Values)
             {
                 proc.Write(false, sb);
-                sb.Write("===");
+                sb.WriteLine("===");
             }
             var sActual = sb.ToString();
             if (sExp != sActual)
@@ -77,19 +78,50 @@ namespace Reko.UnitTests.Analysis
         public void Uvr_Simple()
         {
             var pb = new ProgramBuilder();
+            var _r1 = new RegisterStorage("r1", 1, 0, PrimitiveType.Word32);
+
             pb.Add("main", m =>
             {
                 m.Call("foo", 0);
-                m.Return();
             });
             pb.Add("foo", m =>
             {
-                var r1 = m.Register(1);
+                var r1 = m.Frame.EnsureRegister(_r1);
                 m.Assign(r1, m.LoadDw(m.Word32(0x123400)));
                 m.Store(m.Word16(0x123408), r1);
                 m.Return();
             });
-            var sExp = "@@@";
+
+            pb.BuildProgram();
+
+            var sExp =
+            #region Expected
+@"// main
+// Return size: 0
+void main()
+main_entry:
+	// succ:  l1
+l1:
+	call foo (retsize: 0;)
+		defs: r1_1
+main_exit:
+===
+// foo
+// Return size: 0
+void foo()
+foo_entry:
+	def Mem0
+	// succ:  l1
+l1:
+	r1_2 = Mem0[0x00123400:word32]
+	Mem3[0x3408:word32] = r1_2
+	return
+	// succ:  foo_exit
+foo_exit:
+===
+";
+            #endregion
+
             RunTest(sExp, pb.Program);
         }
     }

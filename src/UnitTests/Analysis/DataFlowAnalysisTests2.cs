@@ -228,8 +228,7 @@ void test()
 test_entry:
 	// succ:  l1
 l1:
-	word32 r1_7 = foo(0x00000001, 0x00000002)
-	word32 r63_8 = fp
+	foo(0x00000001, 0x00000002)
 	return
 	// succ:  test_exit
 test_exit:
@@ -329,7 +328,6 @@ main_entry:
 	// succ:  l1
 l1:
 	word32 r1_3
-	word32 r2_4
 	call level1 (retsize: 0;)
 		uses: Mem0[0x00123400:word32]
 		defs: r1_3,r2_4
@@ -426,7 +424,6 @@ l1:
 		uses: Mem0[0x00123400:word32]
 		defs: r1_6
 	Mem8[0x00123404:word32] = r1_6
-	word32 r63_7 = fp
 	return
 	// succ:  main_exit
 main_exit:
@@ -441,7 +438,6 @@ l1:
 	call level2 (retsize: 4;)
 		uses: dwArg04
 		defs: r1_7
-	word32 r63_8 = fp
 	return
 	// succ:  level1_exit
 level1_exit:
@@ -452,7 +448,6 @@ void level2()
 level2_entry:
 	// succ:  l1
 l1:
-	word32 r63_2 = fp
 	word32 r1_5 = dwArg04 + 0x00000001
 	return
 	// succ:  level2_exit
@@ -502,8 +497,6 @@ main_entry:
 l1:
 	call level1 (retsize: 4;)
 		uses: dwArg04
-	word32 r63_2 = fp
-	word32 r1_4 = dwArg04
 	return
 	// succ:  main_exit
 main_exit:
@@ -518,7 +511,6 @@ level1_entry:
 	// succ:  l1
 l1:
 	Mem4[0x00001234:byte] = (byte) r1
-	word32 r63_2 = fp
 	return
 	// succ:  level1_exit
 level1_exit:

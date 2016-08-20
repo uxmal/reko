@@ -133,8 +133,26 @@ namespace Reko.Analysis
 
         private bool RemoveDeadUses(SsaState ssa, CallInstruction ci, HashSet<Storage> deadStgs)
         {
-            throw new NotImplementedException();
+            var deadUses = new List<UseInstruction>();
+            foreach (var use in ci.Uses)
+            {
+                var id = use.Expression as Identifier;
+                if (id == null)
+                    continue;
+                if (deadStgs.Contains(id.Storage))
+                {
+                    deadUses.Add(use);
+                }
+            }
+            if (deadUses.Count > 0)
+            {
+                ci.Uses.ExceptWith(deadUses);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
-
     }
 }
