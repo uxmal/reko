@@ -1244,8 +1244,9 @@ namespace Reko.UnitTests.Arch.PowerPC
         public void PPCrw_lhaux()
         {
             AssertCode(0x7D2E4AEE,  //"lhaux\tr9,r14,r9");
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r9 = (int32) Mem0[r14 + r9:word16]");
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r9 = (int32) Mem0[r14 + r9:word16]",
+                "2|L--|r9 = r14 + r9");
         }
 
         [Test]
@@ -1254,6 +1255,23 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x7D0301D4,  // "addme\tr8,r3,r0");
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r8 = r3 + cr0 - 0xFFFFFFFF");
+        }
+
+        [Test]
+        public void PPCRw_lhau()
+        {
+            AssertCode(0xAD49FFFE, // lhau r10,-2(r9)
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r10 = (int32) Mem0[r9 + -2:word16]",
+                "2|L--|r10 = r9 + -2");
+        }
+
+        [Test]
+        public void PPCRw_crnor()
+        {
+            AssertCode(0x4FDCE042, // crnor 1E,1C,1C
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__crnor(0x0000001E, 0x0000001C, 0x0000001C)");
         }
     }
 }

@@ -246,6 +246,14 @@ namespace Reko.Arch.PowerPC
             emitter.SideEffect(PseudoProc("__creqv", VoidType.Instance, cr, r, i));
         }
 
+        private void RewriteCrnor()
+        {
+            var cr = RewriteOperand(instr.op1);
+            var r = RewriteOperand(instr.op2);
+            var i = RewriteOperand(instr.op3);
+            emitter.SideEffect(PseudoProc("__crnor", VoidType.Instance, cr, r, i));
+        }
+
         private void RewriteCror()
         {
             var cr = RewriteOperand(instr.op1);
