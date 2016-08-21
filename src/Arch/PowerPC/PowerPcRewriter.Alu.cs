@@ -71,6 +71,17 @@ namespace Reko.Arch.PowerPC
             emitter.Assign(xer, emitter.Cond(opD));
         }
 
+        public void RewriteAddme()
+        {
+            var opD = RewriteOperand(instr.op1);
+            var opS = RewriteOperand(instr.op2);
+            var cr0 = frame.EnsureFlagGroup(arch.cr, 0x1, "cr0", PrimitiveType.Byte);
+            emitter.Assign(opD,
+                emitter.ISub(
+                    emitter.IAdd(opS, cr0),
+                    -1));
+        }
+
         public void RewriteAddi()
         {
             var opL = RewriteOperand(instr.op2, true);

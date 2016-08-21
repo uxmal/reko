@@ -79,6 +79,7 @@ namespace Reko.Arch.PowerPC
                 case Opcode.addis: RewriteAddis(); break;
                 case Opcode.add: RewriteAdd(); break;
                 case Opcode.adde: RewriteAdde(); break;
+                case Opcode.addme: RewriteAddme(); break;
                 case Opcode.addze: RewriteAddze(); break;
                 case Opcode.and: RewriteAnd(false); break;
                 case Opcode.andc: RewriteAndc(); break;
@@ -163,6 +164,7 @@ namespace Reko.Arch.PowerPC
                 case Opcode.lfs: RewriteLfs(); break;
                 case Opcode.lfsx: RewriteLzx(PrimitiveType.Real32); break;
                 case Opcode.lha: RewriteLha(); break;
+                case Opcode.lhaux: RewriteLhaux(); break;
                 case Opcode.lhz: RewriteLz(PrimitiveType.Word16); break;
                 case Opcode.lhzu: RewriteLzu(PrimitiveType.Word16); break;
                 case Opcode.lhzx: RewriteLzx(PrimitiveType.Word16); break;
