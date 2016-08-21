@@ -62,6 +62,31 @@ namespace Reko.Arch.PowerPC
                 emitter.Load(PrimitiveType.Int16, ea)));
         }
 
+        private void RewriteLhau()
+        {
+            var opD = RewriteOperand(instr.op1);
+            var opA = EffectiveAddress(instr.op2, emitter);
+            var ea = opA;
+            //$TODO: should be convert...
+            emitter.Assign(opD, emitter.Cast(PrimitiveType.Int32, emitter.LoadW(ea)));
+            emitter.Assign(opD, ea);
+        }
+
+        private void RewriteLhaux()
+        {
+            var opD = RewriteOperand(instr.op1);
+            var opA = RewriteOperand(instr.op2);
+            var opB = RewriteOperand(instr.op3, true);
+            var ea = opA;
+            if (!opB.IsZero)
+            {
+                ea = emitter.IAdd(opA, opB);
+            }
+            //$TODO: should be convert...
+            emitter.Assign(opD, emitter.Cast(PrimitiveType.Int32, emitter.LoadW(ea)));
+            emitter.Assign(opD, ea);
+        }
+
         private void RewriteLvewx()
         {
             var vrt = RewriteOperand(instr.op1);

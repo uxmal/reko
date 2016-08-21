@@ -72,6 +72,12 @@ namespace Reko.UnitTests.Arch.Sparc
         }
 
         [Test]
+        public void SparcDis_subcc()
+        {
+            AssertInstruction(0x986060FF, "subx\t%g1,0x000000FF,%o4");
+        }
+
+        [Test]
         public void SparcDis_or_imm()
         {
             AssertInstruction(0xBE10E004, "or\t%g3,0x00000004,%i7");
@@ -201,6 +207,12 @@ namespace Reko.UnitTests.Arch.Sparc
         public void SparcDis_fcmpes()
         {
             AssertInstruction(0x81a80aa2, "fcmpes\t%f0,%f2");
+        }
+
+        [Test]
+        public void SparcDis_ldd()
+        {
+            AssertInstruction(0xd01be000, "ldd\t[%o7+0],%o0");
         }
     }
 }

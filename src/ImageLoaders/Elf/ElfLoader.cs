@@ -1058,6 +1058,8 @@ namespace Reko.ImageLoaders.Elf
             {
             case SectionHeaderType.SHT_DYNAMIC:
                 return new DynamicSectionRenderer32(this, shdr);
+            case SectionHeaderType.SHT_REL:
+                return new RelSegmentRenderer(this, shdr);
             case SectionHeaderType.SHT_RELA:
                 return new RelaSegmentRenderer(this, shdr);
             case SectionHeaderType.SHT_SYMTAB:

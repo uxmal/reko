@@ -32,17 +32,40 @@ namespace Reko.Arch.Sparc
 {
     public partial class SparcRewriter
     {
-        private void RewriteAlu(Operator op)
+        private void RewriteAddxSubx(Operator op, bool emitCc)
         {
             var dst = RewriteRegister(instrCur.Op3);
             var src1 = RewriteOp(instrCur.Op1);
             var src2 = RewriteOp(instrCur.Op2);
+            var C = frame.EnsureFlagGroup(Registers.C);
+            emitter.Assign(
+                dst,
+                new BinaryExpression(
+                    op,
+                    dst.DataType,
+                    new BinaryExpression(op, src1.DataType, src1, src2),
+                    C));
+            if (emitCc)
+            {
+                EmitCc(dst);
+            }
+        }
+
+        private void RewriteAlu(Operator op, bool negateOp2)
+        {
+            var dst = RewriteRegister(instrCur.Op3);
+            var src1 = RewriteOp(instrCur.Op1);
+            var src2 = RewriteOp(instrCur.Op2);
+            if (negateOp2)
+            {
+                src2 = emitter.Comp(src2);
+            }
             emitter.Assign(dst, new BinaryExpression(op, PrimitiveType.Word32, src1, src2));
         }
 
-        private void RewriteAluCc(Operator op)
+        private void RewriteAluCc(Operator op, bool negateOp2)
         {
-            RewriteAlu(op);
+            RewriteAlu(op, negateOp2);
             var dst = RewriteRegister(instrCur.Op3);
             EmitCc(dst);
         }
