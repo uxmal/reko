@@ -24,6 +24,7 @@ using Reko.Core.Operators;
 using Reko.Core.Types;
 using Reko.Core;
 using System;
+using System.Diagnostics;
 
 namespace Reko.Arch.X86
 {
@@ -222,7 +223,8 @@ namespace Reko.Arch.X86
             if (mem != null && addrWidth == PrimitiveType.Word32 && mem.Base == RegisterStorage.None &&
                 mem.Index == RegisterStorage.None)
             {
-                return host.GetImportedGlobal(Address.Ptr32(mem.Offset.ToUInt32()), addrInstruction);
+                var id = host.GetImportedGlobal(Address.Ptr32(mem.Offset.ToUInt32()), addrInstruction);
+                return id;
             }
             return null;
         }

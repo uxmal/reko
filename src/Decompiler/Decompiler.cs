@@ -248,7 +248,8 @@ namespace Reko
             {
                 interpreter.LoadFromString(script.Script, null);
                 interpreter.Run();
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 eventListener.Error(new NullCodeLocation(""), ex, "An error occurred while running the script.");
             }
@@ -373,7 +374,8 @@ namespace Reko
             {
                 if (eq.DataType != null)
                 {
-                    w.Write("typedef ");
+                    tf.WriteKeyword("typedef");     //$REVIEW: C/C++-specific
+                    tf.Write(" ");
                     fmt.Write(eq.DataType, eq.Name);
                     w.WriteLine(";");
                     w.WriteLine();
