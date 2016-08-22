@@ -64,12 +64,12 @@ word32 fn100011E9(word32 dwArg08)
 	word32 eax_215;
 	if (dwArg08 == 0x00)
 	{
-		if (Mem0[0x10003070:word32] <= 0x00)
+		if (globals->dw10003070 <= 0x00)
 		{
 			eax_215 = 0x00;
 			return eax_215;
 		}
-		globals->t10003070 = globals->t10003070 - 0x01;
+		globals->dw10003070 = globals->dw10003070 - 0x01;
 	}
 	word32 ecx_35 = *adjust_fdiv;
 	globals->dw100033A4 = ecx_35;
@@ -170,7 +170,7 @@ word32 fn100011E9(word32 dwArg08)
 				globals->ptr100033B8();
 			}
 		}
-		Mem140[0x10003070:word32] = Mem45[0x10003070:word32] + 0x01;
+		globals->dw10003070 = globals->dw10003070 + 0x01;
 	}
 	else if (dwArg08 == 0x00)
 	{
@@ -286,7 +286,7 @@ Eq_167 fn10001388(Eq_167 ecx, Eq_167 edx, ui32 ebx, ui32 esi, ui32 edi)
 	ptr32 esp_175 = fp - 0x08;
 	Eq_167 edi_12 = ecx;
 	Eq_167 esi_14 = edx;
-	if (edx == 0x00 && Mem23[0x10003070:word32] == 0x00)
+	if (edx == 0x00 && globals->dw10003070 == 0x00)
 	{
 		(ebp_10 - 0x1C)->t0000.u0 = 0x00;
 		goto l1000147A;

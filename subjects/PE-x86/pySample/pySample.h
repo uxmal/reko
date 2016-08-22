@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (100020CC (ptr code) ptr100020CC) (100020E0 (str char) str100020E0) (100020F4 (str char) str100020F4) (100020FC (str char) str100020FC) (10002110 (str char) str10002110) (10002114 (str char) str10002114) (10002128 (str char) str10002128) (1000212C (str char) str1000212C) (10002140 (str char) str10002140) (10002144 (str char) str10002144) (1000214C (str char) str1000214C) (10002150 (str char) str10002150) (10002158 (str char) str10002158) (10002160 (str char) str10002160) (10002168 (str char) str10002168) (1000216C (str char) str1000216C) (10002174 (str char) str10002174) (10003000 ui32 dw10003000) (10003004 ui32 dw10003004) (10003008 Eq_167 t10003008) (10003010 (arr PyMethodDef 5) methods) (10003070 Eq_117 t10003070) (100033A4 word32 dw100033A4) (100033A8 word32 dw100033A8) (100033AC Eq_138 t100033AC) (100033B0 word32 dw100033B0) (100033B4 word32 dw100033B4) (100033B8 (ptr code) ptr100033B8))
+Eq_1: (struct "Globals" (100020CC (ptr code) ptr100020CC) (100020E0 (str char) str100020E0) (100020F4 (str char) str100020F4) (100020FC (str char) str100020FC) (10002110 (str char) str10002110) (10002114 (str char) str10002114) (10002128 (str char) str10002128) (1000212C (str char) str1000212C) (10002140 (str char) str10002140) (10002144 (str char) str10002144) (1000214C (str char) str1000214C) (10002150 (str char) str10002150) (10002158 (str char) str10002158) (10002160 (str char) str10002160) (10002168 (str char) str10002168) (1000216C (str char) str1000216C) (10002174 (str char) str10002174) (10003000 ui32 dw10003000) (10003004 ui32 dw10003004) (10003008 Eq_167 t10003008) (10003010 (arr PyMethodDef 5) methods) (10003070 int32 dw10003070) (100033A4 word32 dw100033A4) (100033A8 word32 dw100033A8) (100033AC Eq_138 t100033AC) (100033B0 word32 dw100033B0) (100033B4 word32 dw100033B4) (100033B8 (ptr code) ptr100033B8))
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_2: PyObject
 	T_2 (in eax : (ptr Eq_2))
@@ -876,17 +876,17 @@ T_115: (in dwArg08 != 0x00000001 : bool)
   OrigDataType: bool
 T_116: (in 0x10003070 : ptr32)
   Class: Eq_116
-  DataType: (ptr Eq_117)
+  DataType: (ptr int32)
   OrigDataType: (ptr (struct (0 T_117 t0000)))
 T_117: (in Mem0[0x10003070:word32] : word32)
   Class: Eq_117
-  DataType: Eq_117
+  DataType: int32
   OrigDataType: int32
 T_118: (in 0x00000000 : word32)
   Class: Eq_117
-  DataType: Eq_117
+  DataType: int32
   OrigDataType: int32
-T_119: (in Mem0[0x10003070:word32] <= 0x00000000 : bool)
+T_119: (in globals->dw10003070 <= 0x00000000 : bool)
   Class: Eq_119
   DataType: bool
   OrigDataType: bool
@@ -896,24 +896,24 @@ T_120: (in 0x00000000 : word32)
   OrigDataType: word32
 T_121: (in 0x10003070 : ptr32)
   Class: Eq_121
-  DataType: (ptr Eq_117)
+  DataType: (ptr int32)
   OrigDataType: (ptr (struct (0 T_117 t0000)))
 T_122: (in Mem0[0x10003070:word32] : word32)
   Class: Eq_117
-  DataType: Eq_117
-  OrigDataType: int32
+  DataType: int32
+  OrigDataType: word32
 T_123: (in 0x00000001 : word32)
   Class: Eq_123
   DataType: word32
   OrigDataType: word32
-T_124: (in globals->t10003070 - 0x00000001 : word32)
+T_124: (in globals->dw10003070 - 0x00000001 : word32)
   Class: Eq_117
-  DataType: Eq_117
+  DataType: int32
   OrigDataType: word32
 T_125: (in Mem402[0x10003070:word32] : word32)
   Class: Eq_117
-  DataType: Eq_117
-  OrigDataType: (struct (0 T_122 t0000))
+  DataType: int32
+  OrigDataType: word32
 T_126: (in 0x00000000 : word32)
   Class: Eq_103
   DataType: word32
@@ -1808,24 +1808,24 @@ T_348: (in fp + 0xFFFFFFE4 : word32)
   OrigDataType: ptr32
 T_349: (in 0x10003070 : ptr32)
   Class: Eq_349
-  DataType: (ptr Eq_117)
+  DataType: (ptr int32)
   OrigDataType: (ptr (struct (0 T_117 t0000)))
 T_350: (in Mem45[0x10003070:word32] : word32)
   Class: Eq_117
-  DataType: Eq_117
+  DataType: int32
   OrigDataType: word32
 T_351: (in 0x00000001 : word32)
   Class: Eq_351
   DataType: word32
   OrigDataType: word32
-T_352: (in Mem45[0x10003070:word32] + 0x00000001 : word32)
+T_352: (in globals->dw10003070 + 0x00000001 : word32)
   Class: Eq_117
-  DataType: Eq_117
+  DataType: int32
   OrigDataType: word32
 T_353: (in Mem140[0x10003070:word32] : word32)
   Class: Eq_117
-  DataType: Eq_117
-  OrigDataType: (struct (0 T_350 t0000))
+  DataType: int32
+  OrigDataType: word32
 T_354: (in esp_142 : (ptr Eq_354))
   Class: Eq_354
   DataType: (ptr Eq_354)
@@ -2352,17 +2352,17 @@ T_484: (in edx == 0x00000001 : bool)
   OrigDataType: bool
 T_485: (in 0x10003070 : ptr32)
   Class: Eq_485
-  DataType: (ptr Eq_117)
+  DataType: (ptr int32)
   OrigDataType: (ptr (struct (0 T_486 t0000)))
 T_486: (in Mem23[0x10003070:word32] : word32)
   Class: Eq_117
-  DataType: Eq_117
+  DataType: int32
   OrigDataType: word32
 T_487: (in 0x00000000 : word32)
   Class: Eq_117
-  DataType: Eq_117
+  DataType: int32
   OrigDataType: word32
-T_488: (in Mem23[0x10003070:word32] != 0x00000000 : bool)
+T_488: (in globals->dw10003070 != 0x00000000 : bool)
   Class: Eq_488
   DataType: bool
   OrigDataType: bool
@@ -4777,7 +4777,7 @@ typedef struct Globals {
 	ui32 dw10003004;	// 10003004
 	Eq_167 t10003008;	// 10003008
 	PyMethodDef methods[5];	// 10003010
-	Eq_117 t10003070;	// 10003070
+	int32 dw10003070;	// 10003070
 	word32 dw100033A4;	// 100033A4
 	word32 dw100033A8;	// 100033A8
 	Eq_138 t100033AC;	// 100033AC

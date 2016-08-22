@@ -62,7 +62,7 @@ PyMethodDef g_methods[5] =
 			null,
 		},
 	};
-Eq_117 g_t10003070 = ;
+int32 g_dw10003070 = 0;
 word32 g_dw100033A4 = 0x00000000;
 word32 g_dw100033A8 = 0x00000000;
 Eq_138 g_t100033AC = 0;

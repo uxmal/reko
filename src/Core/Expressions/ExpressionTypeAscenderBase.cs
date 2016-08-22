@@ -289,6 +289,8 @@ namespace Reko.Core.Expressions
             DataType dt;
             if (ptEa != null)
             {
+                // If this is a pointer to a structure, determine if there
+                // is a field at offset 0; if so, grab its data type
                 dt = ptEa.Pointee;
                 var str = dt as StructureType;
                 if (str != null)
@@ -296,7 +298,10 @@ namespace Reko.Core.Expressions
                     var field = str.Fields.AtOffset(0);
                     if (field != null)
                     {
+                        // We're collecting _DataTypes_, so if we encounter
+                        // a TypeReference, we need to drill past it.
                         dt = field.DataType.ResolveAs<DataType>();
+                        //$REVIEW: what if sizeof(access) != sizeof(field_at_0)?
                     }
                 }
             }
