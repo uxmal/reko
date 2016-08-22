@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Reko.Core;
+using Reko.Core.Analysis;
 using Reko.Core.CLanguage;
 using Reko.Core.Code;
 using Reko.Core.Expressions;

@@ -21,7 +21,7 @@
 using System.Collections.Generic;
 using Reko.Core.Types;
 
-namespace Reko.Core
+namespace Reko.Core.Analysis
 {
     public interface IVarargsFormatParser
     {

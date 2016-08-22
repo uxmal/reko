@@ -18,16 +18,13 @@
  */
 #endregion
 
-using Reko.Core;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace Reko.Environments.Windows
+namespace Reko.Core.Analysis
 {
-    public class MsPrintfFormatParser : IVarargsFormatParser
+    public class PrintfFormatParser : IVarargsFormatParser
     {
         private int i;
         private string format;
@@ -37,7 +34,7 @@ namespace Reko.Environments.Windows
         private int doubleSize;
         private int pointerSize;
 
-        public MsPrintfFormatParser(
+        public PrintfFormatParser(
             string format,
             bool wideChars,
             int wordSize,
