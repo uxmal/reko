@@ -295,7 +295,9 @@ namespace Reko.Core.Expressions
                 {
                     var field = str.Fields.AtOffset(0);
                     if (field != null)
-                        dt = field.DataType;
+                    {
+                        dt = field.DataType.ResolveAs<DataType>();
+                    }
                 }
             }
             else
