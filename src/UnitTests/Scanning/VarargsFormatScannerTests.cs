@@ -55,8 +55,7 @@ namespace Reko.UnitTests.Scanning
             this.printfChr = new ProcedureCharacteristics()
             {
                 VarargsParserClass =
-                    "Reko.Environments.Windows.MsPrintfFormatParser," +
-                    "Reko.Environments.Windows"
+                    "Reko.Core.Analysis.PrintfFormatParser,Reko.Core"
             };
             this.x86PrintfSig = new FunctionType(
                 null,

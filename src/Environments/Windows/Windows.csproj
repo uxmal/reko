@@ -79,7 +79,6 @@
     <Compile Include="ModuleDefinitionLoader.cs" />
     <Compile Include="MsMangledNameParser.cs" />
     <Compile Include="MsPrintfFormatParser.cs" />
-    <Compile Include="MsPrintfFormatParser.Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SignatureGuesser.cs" />
     <Compile Include="Win16Platform.cs" />
