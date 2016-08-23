@@ -30,9 +30,9 @@ using Reko.Core.Types;
 namespace Reko.UnitTests.Core.Analysis
 {
     [TestFixture]
-    public class PrintfFormatParserTests
+    public class ScanfFormatParserTests
     {
-        private PrintfFormatParser parser;
+        private ScanfFormatParser parser;
         private MockRepository mr;
         private DecompilerEventListener eventListener;
         private ServiceContainer sc;
@@ -59,69 +59,68 @@ namespace Reko.UnitTests.Core.Analysis
         {
             mr.ReplayAll();
 
-            this.parser = new PrintfFormatParser(program, Address.Ptr32(0x123400), formatString, sc);
+            this.parser = new ScanfFormatParser(program, Address.Ptr32(0x123400), formatString, sc);
             parser.Parse();
 
             mr.VerifyAll();
         }
 
         [Test]
-        public void PFP_Empty()
+        public void SFP_Empty()
         {
             ParseChar32("");
             Assert.AreEqual(0, parser.ArgumentTypes.Count);
         }
 
         [Test]
-        public void PFP_NoFormat()
+        public void SFP_NoFormat()
         {
             ParseChar32("Hello world");
             Assert.AreEqual(0, parser.ArgumentTypes.Count);
         }
 
         [Test]
-        public void PFP_LiteralPercent()
+        public void SFP_LiteralPercent()
         {
             ParseChar32("H%%ello world");
             Assert.AreEqual(0, parser.ArgumentTypes.Count);
         }
 
         [Test]
-        public void PFP_32_Decimal()
+        public void SFP_32_Decimal()
         {
             ParseChar32("Total: %d");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
-            Assert.AreEqual("int32", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("(ptr int32)", parser.ArgumentTypes[0].ToString());
         }
 
         [Test]
-        public void PFP_32_Char()
+        public void SFP_32_Char()
         {
             ParseChar32("'%c'");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
-            Assert.AreEqual("char", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("(ptr char)", parser.ArgumentTypes[0].ToString());
         }
 
         [Test]
-        public void PFP_32_TwoFormats()
+        public void SFP_32_TwoFormats()
         {
             ParseChar32("%c%x");
             Assert.AreEqual(2, parser.ArgumentTypes.Count);
-            Assert.AreEqual("char", parser.ArgumentTypes[0].ToString());
-            Assert.AreEqual("uint32", parser.ArgumentTypes[1].ToString());
-
+            Assert.AreEqual("(ptr char)", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("(ptr uint32)", parser.ArgumentTypes[1].ToString());
         }
 
         [Test]
-        public void PFP_32_Short()
+        public void SFP_32_Short()
         {
             ParseChar32("%hd");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
-            Assert.AreEqual("int16", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("(ptr int16)", parser.ArgumentTypes[0].ToString());
         }
 
         [Test]
-        public void PFP_32_I64_is_unknown_Microsoft_extension()
+        public void SFP_32_I64_is_unknown_Microsoft_extension()
         {
             ParseChar32("%I64x");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
@@ -129,7 +128,7 @@ namespace Reko.UnitTests.Core.Analysis
         }
 
         [Test]
-        public void PFP_32_Invalid_S()
+        public void SFP_32_Invalid_S()
         {
             eventListener.Expect(e => e.CreateAddressNavigator(null, null)).IgnoreArguments();
             eventListener.Expect(e => e.Warn(null, null, new object[0])).IgnoreArguments();
@@ -137,35 +136,27 @@ namespace Reko.UnitTests.Core.Analysis
         }
 
         [Test]
-        public void PFP_32_longlong()
+        public void SFP_32_longlong()
         {
             ParseChar32("%lli");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
-            Assert.AreEqual("int64", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("(ptr int64)", parser.ArgumentTypes[0].ToString());
         }
 
         [Test]
-        public void PFP_32_Pointer()
+        public void SFP_32_Pointer()
         {
             ParseChar32("%08p");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
-            Assert.AreEqual("ptr32", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("(ptr ptr32)", parser.ArgumentTypes[0].ToString());
         }
 
         [Test]
-        public void PFP_32_String()
+        public void SFP_32_String()
         {
             ParseChar32("%08s");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
             Assert.AreEqual("(ptr char)", parser.ArgumentTypes[0].ToString());
-        }
-
-        [Test]
-        public void PFP_32_wchar_t()
-        {
-            ParseChar32("%lc");
-            Assert.AreEqual(1, parser.ArgumentTypes.Count);
-            Assert.AreEqual("wchar_t", parser.ArgumentTypes[0].ToString());
         }
     }
 }

@@ -1,35 +1,17 @@
-﻿#region License
-/* 
- * Copyright (C) 1999-2016 John Källén.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
- * any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; see the file COPYING.  If not, write to
- * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
- */
-#endregion
-
-using Reko.Core.CLanguage;
+﻿using Reko.Core.CLanguage;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace Reko.Core.Analysis
 {
     /// <summary>
     /// Parses standard C printf format
     /// </summary>
-    public class PrintfFormatParser : IVarargsFormatParser
+    public class ScanfFormatParser : IVarargsFormatParser
     {
         protected Program program;
         protected Address addr;
@@ -41,7 +23,7 @@ namespace Reko.Core.Analysis
         protected readonly int pointerSize;
         private IServiceProvider services;
 
-        public PrintfFormatParser(
+        public ScanfFormatParser(
             Program program,
             Address addrInstr,
             string format,
@@ -68,7 +50,7 @@ namespace Reko.Core.Analysis
 
             for (this.i = 0; i < format.Length; ++i)
             {
-                if (format[i] != '%' || i == format.Length-1)
+                if (format[i] != '%' || i == format.Length - 1)
                     continue;
                 char ch = format[++i];
                 if (ch == '%')
@@ -109,17 +91,13 @@ namespace Reko.Core.Analysis
             switch (cDomain)
             {
             case 'c':
-                switch (size)
-                {
-                case PrintfSize.Long:
-                    return PrimitiveType.WChar;
-                default:
-                    return PrimitiveType.Char;
-                }
+            case 's':
+                return program.TypeFactory.CreatePointer(
+                    size == PrintfSize.Long ? PrimitiveType.WChar : PrimitiveType.Char,
+                    pointerSize);
             case 'o':
             case 'u':
             case 'x':
-            case 'X':
                 switch (size)
                 {
                 case PrintfSize.HalfHalf: byteSize = 1; break;
@@ -145,13 +123,9 @@ namespace Reko.Core.Analysis
                 domain = Domain.SignedInt;
                 break;
             case 'a':
-            case 'A':
             case 'e':
-            case 'E':
             case 'f':
-            case 'F':
             case 'g':
-            case 'G':
                 byteSize = this.doubleSize;
                 domain = Domain.Real;
                 break;
@@ -159,18 +133,16 @@ namespace Reko.Core.Analysis
                 byteSize = this.pointerSize;
                 domain = Domain.Pointer;
                 break;
-            case 's':
-                return program.TypeFactory.CreatePointer(
-                    size == PrintfSize.Long ? PrimitiveType.WChar : PrimitiveType.Char,
-                    this.pointerSize);
             default:
                 var el = this.services.RequireService<DecompilerEventListener>();
                 el.Warn(
                     el.CreateAddressNavigator(program, addr),
-                    "The format specifier '%{0}' passed to *printf is not known.", cDomain);
+                    "The format specifier '%{0}' passed to *scanf is not known.", cDomain);
                 return new UnknownType();
             }
-            return PrimitiveType.Create(domain, byteSize);
+            return program.TypeFactory.CreatePointer(
+                PrimitiveType.Create(domain, byteSize),
+                pointerSize);
         }
 
         private char CollectDataType()
@@ -184,14 +156,14 @@ namespace Reko.Core.Analysis
         protected virtual PrintfSize CollectSize()
         {
             PrintfSize size = PrintfSize.Default;
-            if (i < format.Length-1)
+            if (i < format.Length - 1)
             {
                 switch (format[i])
                 {
                 case 'h':
                     ++i;
                     size = PrintfSize.Half;
-                    if (i < format.Length-1 && format[i] == 'h')
+                    if (i < format.Length - 1 && format[i] == 'h')
                     {
                         ++i;
                         size = PrintfSize.HalfHalf;
