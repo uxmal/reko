@@ -234,10 +234,11 @@ namespace Reko.Core.Expressions
 
         public DataType VisitConstant(Constant c)
         {
-            return RecordDataType(GlobalType(c) ?? c.DataType, c);
+            var dt = ExistingGlobalField(c) ?? c.DataType;
+            return RecordDataType(dt, c);
         }
 
-        private DataType GlobalType(Constant c)
+        private DataType ExistingGlobalField(Constant c)
         {
             var pt = c.DataType as PrimitiveType;
             if (pt == null || (pt.Domain & Domain.Pointer) == 0)
@@ -282,11 +283,28 @@ namespace Reko.Core.Expressions
 
         public DataType VisitMemoryAccessCommon(Expression access, Expression ea)
         {
-            var dtEa = MemoryAccessType(ea.Accept(this));
+            var dtEa = ea.Accept(this);
+            dtEa = MemoryAccessType(dtEa);
             var ptEa = dtEa.ResolveAs<Pointer>();
             DataType dt;
             if (ptEa != null)
+            {
+                // If this is a pointer to a structure, determine if there
+                // is a field at offset 0; if so, grab its data type
                 dt = ptEa.Pointee;
+                var str = dt as StructureType;
+                if (str != null)
+                {
+                    var field = str.Fields.AtOffset(0);
+                    if (field != null)
+                    {
+                        // We're collecting _DataTypes_, so if we encounter
+                        // a TypeReference, we need to drill past it.
+                        dt = field.DataType.ResolveAs<DataType>();
+                        //$REVIEW: what if sizeof(access) != sizeof(field_at_0)?
+                    }
+                }
+            }
             else
                 dt = access.DataType;
             return RecordDataType(dt, access);

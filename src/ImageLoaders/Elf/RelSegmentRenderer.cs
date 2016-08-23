@@ -31,9 +31,9 @@ namespace Reko.ImageLoaders.Elf
     public class RelSegmentRenderer : ImageSegmentRenderer
     {
         private ElfLoader32 loader;
-        private Elf32_SHdr shdr;
+        private ElfSection shdr;
 
-        public RelSegmentRenderer(ElfLoader32 loader, Elf32_SHdr shdr)
+        public RelSegmentRenderer(ElfLoader32 loader, ElfSection shdr)
         {
             this.loader = loader;
             this.shdr = shdr;
@@ -41,10 +41,10 @@ namespace Reko.ImageLoaders.Elf
 
         public override void Render(ImageSegment segment, Program program, Formatter formatter)
         {
-            var entries = shdr.sh_size / shdr.sh_entsize;
-            var symtab = (int)shdr.sh_link;
-            var rdr = loader.CreateReader(shdr.sh_offset);
-            for (int i = 0; i < entries; ++i)
+            var entries = shdr.Size / shdr.EntrySize;
+            var symtab = shdr.LinkedSection;
+            var rdr = loader.CreateReader(shdr.FileOffset);
+            for (ulong i = 0; i < entries; ++i)
             {
                 uint offset;
                 if (!rdr.TryReadUInt32(out offset))

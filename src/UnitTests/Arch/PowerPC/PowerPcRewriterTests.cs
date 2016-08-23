@@ -1184,7 +1184,7 @@ namespace Reko.UnitTests.Arch.PowerPC
                           "1|L--|v1 = __vcfsx(v12, 0x00000000)");
             AssertCode(0x118c0404, //"vand\tv12,v12,v0");
                           "0|L--|00100000(4): 1 instructions",
-                          "1|L--|v12 = v12 & v0"); 
+                          "1|L--|v12 = v12 & v0");
             AssertCode(0x118c0444, //"vandc\tv12,v12,v0");
                           "0|L--|00100000(4): 1 instructions",
                           "1|L--|v12 = v12 & ~v0");
@@ -1223,21 +1223,55 @@ namespace Reko.UnitTests.Arch.PowerPC
         [Test]
         public void PPCrw_tw()
         {
-             AssertCode(0x7c201008, //"twlgt   r0,r2");
-                                      "0|L--|00100000(4): 1 instructions",
-                                      "1|---|if (r0 >u r2) __trap()");
-             AssertCode(0x7c401008, //"twllt   r0,r2");
-                                      "0|L--|00100000(4): 1 instructions",
-                                      "1|---|if (r0 <u r2) __trap()");
-             AssertCode(0x7c801008, //"tweq    r0,r2");
-                                      "0|L--|00100000(4): 1 instructions",
-                                      "1|---|if (r0 == r2) __trap()");
-             AssertCode(0x7d001008, //"twgt    r0,r2");
-                                      "0|L--|00100000(4): 1 instructions",
-                                      "1|---|if (r0 > r2) __trap()");
-             AssertCode(0x7e001008, //"twlt    r0,r2");
-                                      "0|L--|00100000(4): 1 instructions",
-                                      "1|---|if (r0 < r2) __trap()");
-        } 
+            AssertCode(0x7c201008, //"twlgt   r0,r2");
+                "0|L--|00100000(4): 1 instructions",
+                "1|---|if (r0 >u r2) __trap()");
+            AssertCode(0x7c401008, //"twllt   r0,r2");
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|---|if (r0 <u r2) __trap()");
+            AssertCode(0x7c801008, //"tweq    r0,r2");
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|---|if (r0 == r2) __trap()");
+            AssertCode(0x7d001008, //"twgt    r0,r2");
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|---|if (r0 > r2) __trap()");
+            AssertCode(0x7e001008, //"twlt    r0,r2");
+                "0|L--|00100000(4): 1 instructions",
+                "1|---|if (r0 < r2) __trap()");
+        }
+
+        [Test]
+        public void PPCrw_lhaux()
+        {
+            AssertCode(0x7D2E4AEE,  //"lhaux\tr9,r14,r9");
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r9 = (int32) Mem0[r14 + r9:word16]",
+                "2|L--|r9 = r14 + r9");
+        }
+
+        [Test]
+        public void PPCrw_addme()
+        {
+            AssertCode(0x7D0301D4,  // "addme\tr8,r3,r0");
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r8 = r3 + cr0 - 0xFFFFFFFF");
+        }
+
+        [Test]
+        public void PPCRw_lhau()
+        {
+            AssertCode(0xAD49FFFE, // lhau r10,-2(r9)
+                "0|L--|00100000(4): 2 instructions",
+                "1|L--|r10 = (int32) Mem0[r9 + -2:word16]",
+                "2|L--|r10 = r9 + -2");
+        }
+
+        [Test]
+        public void PPCRw_crnor()
+        {
+            AssertCode(0x4FDCE042, // crnor 1E,1C,1C
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__crnor(0x0000001E, 0x0000001C, 0x0000001C)");
+        }
     }
 }

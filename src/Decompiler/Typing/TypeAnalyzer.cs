@@ -31,9 +31,10 @@ namespace Reko.Typing
 {
 	/// <summary>
 	/// Gathers type information, infers structure, union, and array types,
-	/// then rewrites the program as appropriate to incorporate the inferred types.
-	/// Much of the type inference code in this namespace was inspired by the master's thesis
-	/// "Entwicklung eines Typanalysesystem für einen Decompiler", 2004, by Raimar Falke.
+	/// then rewrites the program as appropriate to incorporate the inferred
+    /// types. Much of the type inference code in this namespace was inspired
+    /// by the master's thesis "Entwicklung eines Typanalysesystem für einen
+    /// Decompiler", 2004, by Raimar Falke.
 	/// </summary>
 	public class TypeAnalyzer
 	{
@@ -56,11 +57,12 @@ namespace Reko.Typing
 		}
 
 		/// <summary>
-		/// Performs type analysis and rewrites program based on the inferred information.
+		/// Performs type analysis and rewrites program based on the inferred
+        /// information.
 		/// </summary>
 		/// <remarks>
-		/// For instance, all MemoryAccesses will be converted to structure field
-		/// accesses or array accesses as appropriate.
+		/// For instance, all MemoryAccesses will be converted to structure
+        /// field accesses or array accesses as appropriate.
 		/// </remarks>
 		/// <param name="program"></param>
 		public void RewriteProgram(Program program)

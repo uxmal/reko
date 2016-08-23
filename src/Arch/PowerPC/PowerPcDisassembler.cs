@@ -827,6 +827,7 @@ namespace Reko.Arch.PowerPC
                     { 0x0C8, new DOpRec(Opcode.subfze, ".r1,r2") },
                     { 0x0CA, new DOpRec(Opcode.addze, ".r1,r2") },
                     { 0x0E9, new DOpRec(Opcode.mulld, ".r1,r2,r3")},
+                    { 0x0EA, new DOpRec(Opcode.addme, ".r1,r2")},
                     { 247, new DOpRec(Opcode.stbux, "r1,r2,r3") },
                     { 0x10A, new DOpRec(Opcode.add, ".r1,r2,r3") },
                     { 279, new DOpRec(Opcode.lhzx, "r1,r2,r3") },
@@ -840,6 +841,7 @@ namespace Reko.Arch.PowerPC
 
                     { 0x153, new SprOpRec(false) },
                     { 0x173, new XfxOpRec(Opcode.mftb, "r1,X3") },
+                    { 0x177, new DOpRec(Opcode.lhaux, "r1,r2,r3") },
                     { 0x197, new DOpRec(Opcode.sthx, "r1,r2,r3") },
                     { 0x1EB, new DOpRec(Opcode.divw, ".r1,r2,r3")},
                     { 0x207, new DOpRec(Opcode.lvlx, "r1,r2,r3") },

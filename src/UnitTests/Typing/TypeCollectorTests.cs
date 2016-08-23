@@ -35,6 +35,14 @@ namespace Reko.UnitTests.Typing
     [TestFixture]
     public class TypeCollectorTests : TypingTestBase
     {
+        private bool buildEquivalenceClasses;
+
+        [SetUp]
+        public void Setup()
+        {
+            this.buildEquivalenceClasses = false;
+        }
+
         protected override void RunTest(Program program, string outputFile)
         {
             FileUnitTester fut = null;
@@ -52,6 +60,12 @@ namespace Reko.UnitTests.Typing
                 aen.Transform(program);
                 eqb.Build(program);
                 tyco.CollectTypes();
+                if (buildEquivalenceClasses)
+                {
+                    store.BuildEquivalenceClassDataTypes(factory);
+                    new TypeVariableReplacer(store).ReplaceTypeVariables();
+                }
+
             }
             catch (Exception ex)
             {
@@ -191,6 +205,17 @@ namespace Reko.UnitTests.Typing
             ProgramBuilder mock = new ProgramBuilder();
             mock.Add(new FramePointerFragment(mock.Program.TypeFactory));
             RunTest(mock, "Typing/TycoFramePointer.txt");
+        }
+
+        [Test]
+        public void TycoReg00300()
+        {
+            buildEquivalenceClasses = true;
+            RunTest(m =>
+            {
+                m.Store(m.Word32(0x123400), m.IAdd(m.LoadDw(m.Word32(0x123400)), 1));
+                m.Store(m.Word32(0x123400), m.IAdd(m.LoadDw(m.Word32(0x123400)), 1));
+            }, "Typing/TycoReg00300.txt");
         }
     }
 }
