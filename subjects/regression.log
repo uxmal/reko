@@ -2744,24 +2744,23 @@ fn0800_1099: warning: Structure analysis stopped making progress, quitting. Plea
    at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 53
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
 
-=== varargs_text.exe
-*** varargs_text.exe
-varargs_text.exe: error: An internal error occurred while decompiling.
-    Could not find file 'D:\dev\uxmal\reko\master\subjects\PE-x86-64\varargs_text.exe'.
-       at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
-   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
-   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access)
-   at Reko.Core.Services.FileSystemServiceImpl.CreateFileStream(String filename, FileMode mode, FileAccess access) in D:\dev\uxmal\reko\master\src\Core\Services\IFileSystemService.cs:line 62
-   at Reko.Loading.Loader.LoadImageBytes(String fileName, Int32 offset) in D:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 253
-   at Reko.DecompilerDriver.Load(String fileName) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 196
-   at Reko.DecompilerDriver.Decompile(String filename) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 97
+=== varargs_test.exe
+*** varargs_test.exe
+varargs_test.exe: warning: Exception table reading not supported for machine #34404.
+0000000140001A14: warning: Unable to resolve imported reference KERNEL32.dll!RtlVirtualUnwind.
+00000001400015AC: warning: Unable to resolve imported reference KERNEL32.dll!RtlVirtualUnwind.
+0000000140001475: error: An error occurred while processing instruction at address 0000000140001475.
+    Expected stack depth to be negative.
+       at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 143
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 206
+: warning: Type transformer has looped 51 times, quitting prematurely.
 
 === test
 *** test
 00000000004003F0: warning: Unable to resolve imported reference __gmon_start__.
 0000000000400430: warning: Unable to resolve imported reference __gmon_start__.
-0000000000400536: warning: Unable to resolve imported reference putchar.
-0000000000400410: warning: Unable to resolve imported reference putchar.
 000000000040051F: warning: Procedure frame_dummy previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000000000400497: error: An error occurred while processing instruction at address 0000000000400497.
     Expected stack depth to be negative.
@@ -2840,6 +2839,8 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
    at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 531
+00600E10: warning: Expected sizes of arrays to have been determined by now
+00600E10: warning: Expected sizes of arrays to have been determined by now
 
 === m68k_jump.dcproject
 === PP.EXE

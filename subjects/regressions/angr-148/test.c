@@ -6,7 +6,7 @@
 
 void _init()
 {
-	word64 rax_4 = Mem0[0x0000000000600FF8 + 0x00:word64];
+	word64 rax_4 = *&globals->qw600FF8;
 	if (rax_4 != 0x00)
 	{
 		word64 rsp_15;
@@ -83,10 +83,10 @@ void register_tm_clones(word64 r8)
 
 void __do_global_dtors_aux(word64 r8)
 {
-	if (Mem0[0x0000000000601040 + 0x00:byte] == 0x00)
+	if (*&globals->b601040 == 0x00)
 	{
 		deregister_tm_clones(r8);
-		Mem17[0x0000000000601040 + 0x00:byte] = 0x01;
+		*&globals->b601040 = 0x01;
 	}
 	return;
 }
@@ -95,7 +95,7 @@ void frame_dummy(word64 r8)
 {
 frame_dummy_entry:
 	rsp = fp
-	SCZO = cond(Mem0[0x0000000000600E20 + 0x00:word64] - 0x00)
+	SCZO = cond(*&globals->qw600E20 - 0x00)
 	Z = SCZO
 	branch Test(EQ,Z) l0000000000400528
 	goto l000000000040050A
@@ -125,25 +125,22 @@ l0000000000400528:
 frame_dummy_exit:
 }
 
-ptr64 f()
+ptr64 f(word64 rax)
 {
-	word64 rsp_9;
-	word64 rbp_10;
-	word32 edi_11;
-	putchar();
+	word64 rax_11 = DPB(rax, putchar(DPB(rdi, 0x78, 0)), 0);
 	return fp + 0x04;
 }
 
 void main()
 {
-	f();
+	f(DPB(rax, 0x00, 0));
 	return;
 }
 
 void __libc_csu_init(word64 rsi)
 {
 	_init();
-	Eq_206 r12_18[] = 0x0000000000600E10;
+	Eq_215 r12_18[] = globals->a600E10;
 	ui64 rbx_27 = DPB(rbx, 0x00, 0);
 	if (0x0000000000600E18 - r12_18 >> 0x03 != 0x00)
 		do

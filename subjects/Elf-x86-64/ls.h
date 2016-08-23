@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (4028C0 Eq_28 t4028C0) (411E60 Eq_31 t411E60) (411ED0 Eq_32 t411ED0))
+Eq_1: (struct "Globals" (4028C0 Eq_28 t4028C0) (411E60 Eq_31 t411E60) (411ED0 Eq_32 t411ED0) (619FF8 word64 qw619FF8))
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_17: (fn void ())
 	T_17 (in rdx : (ptr Eq_17))
@@ -206,6 +206,7 @@ typedef struct Globals {
 	Eq_28 t4028C0;	// 4028C0
 	Eq_31 t411E60;	// 411E60
 	Eq_32 t411ED0;	// 411ED0
+	word64 qw619FF8;	// 619FF8
 } Eq_1;
 
 typedef void (Eq_17)();

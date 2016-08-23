@@ -111,3 +111,4 @@ int _xstat(int version, const char * path, struct stat * statbuf);
 uid_t getuid(void);
 uid_t geteuid(void);
 struct passwd *getpwuid(uid_t uid);
+int putchar(int ch);

@@ -1,1 +1,1 @@
-decompile.exe varargs_text.exe
+decompile.exe varargs_test.exe

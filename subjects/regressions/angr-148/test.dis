@@ -363,26 +363,21 @@ frame_dummy_exit:
 
 
 
-word64 f()
+word64 f(word64 rax)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
-// MayUse: 
+// MayUse:  rax
 // LiveOut: rsp
-// Trashed: di dil edi esp rdi rsp sp spl
+// Trashed: ah al ax di dil eax edi esp rax rdi rsp sp spl
 // Preserved: rbp
 f_entry:
-// DataOut:
+// DataOut: rax
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
 // LocalsOut: fp(64)
 
 l000000000040052D:
-	word64 rsp_9
-	word64 rbp_10
-	word32 edi_11
-	call putchar (retsize: 8; depth: 12)
-		uses: dwLoc04_4,edi_8,qwLoc04_6,rbp_7,rsp_2
-		defs: edi_11,rbp_10,rsp_9
+	word64 rax_11 = DPB(rax, putchar(DPB(rdi, 0x00000078, 0)), 0)
 	return fp + 0x0000000000000004
 // DataOut: rsp
 // DataOut (flags): 
@@ -391,7 +386,7 @@ l000000000040052D:
 f_exit:
 // DataOut: rsp
 // DataOut (flags): 
-// SymbolicIn: rsp:fp + 0x0000000000000004 rbp:rbp edi:0x00000078 -4(fp):rbp
+// SymbolicIn: rsp:fp + 0x0000000000000004 edi:0x00000078 rax:DPB(rax, <invalid>, 0) rbp:rbp -4(fp):rbp
 
 
 
@@ -409,7 +404,7 @@ main_entry:
 // LocalsOut: fp(64)
 
 l000000000040053D:
-	f()
+	f(DPB(rax, 0x00000000, 0))
 	return
 // DataOut:
 // DataOut (flags): 
@@ -418,7 +413,7 @@ l000000000040053D:
 main_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> rbp:<invalid> eax:0x00000000 edi:0x00000078 -4(fp):rbp
+// SymbolicIn: rsp:<invalid> rbp:<invalid> eax:0x00000000 edi:0x00000078 rax:<invalid> -4(fp):rbp
 
 
 

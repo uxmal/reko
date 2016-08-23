@@ -10,4 +10,5 @@ Eq_31 g_t411E60 = Unexpected function type (fn void ())
 ;
 Eq_32 g_t411ED0 = Unexpected function type (fn void ())
 ;
+word64 g_qw619FF8 = 0x0000000000000000;
 
