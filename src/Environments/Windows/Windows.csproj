@@ -77,6 +77,7 @@
   <ItemGroup>
     <Compile Include="MipsProcedureSerializer.cs" />
     <Compile Include="ModuleDefinitionLoader.cs" />
+    <Compile Include="MsAPrintfFormatParser.cs" />
     <Compile Include="MsMangledNameParser.cs" />
     <Compile Include="MsPrintfFormatParser.cs" />
     <Compile Include="MsWprintfFormatParser.cs" />

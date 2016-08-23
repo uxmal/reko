@@ -43,5 +43,17 @@ namespace Reko.Environments.Windows
         base(program, addrInstr, format, services)
         {
         }
+
+        protected override DataType MakeDataType(PrintfSize size, char cDomain)
+        {
+            switch (cDomain)
+            {
+            case 'c': return PrimitiveType.WChar;
+            case 'C': return PrimitiveType.Char;
+            case 's': return program.TypeFactory.CreatePointer(PrimitiveType.WChar, base.pointerSize);
+            case 'S': return program.TypeFactory.CreatePointer(PrimitiveType.Char, base.pointerSize);
+            }
+            return base.MakeDataType(size, cDomain);
+        }
     }
 }

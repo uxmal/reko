@@ -18,23 +18,31 @@
  */
 #endregion
 
-using Reko.Core;
+using Reko.Core.Analysis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Reko.Core.Types;
+using Reko.Core;
 
-namespace Reko.ImageLoaders.MzExe.Pe
+namespace Reko.Environments.Windows
 {
-    public abstract class Relocator
+    /// <summary>
+    /// Microsoft's implementation of wsprintf differs in its interpretation
+    /// of the format string.
+    /// </summary>
+    public class MsAPrintfFormatParser : MsPrintfFormatParser
     {
-        protected Program program;
-
-        public Relocator(Program program)
+        public MsAPrintfFormatParser(
+            Program program,
+            Address addrInstr,
+            string format,
+            IServiceProvider services)
+        :
+        base(program, addrInstr, format, services)
         {
-            this.program = program;
         }
 
-        public abstract void ApplyRelocation(Address baseOfImage, uint page, ImageReader rdr, RelocationDictionary relocations);
     }
 }

@@ -71,6 +71,11 @@ namespace Reko.Environments.Windows
             return new X86ProcedureSerializer((IntelArchitecture)Architecture, typeLoader, defaultConvention);
         }
 
+        public override ImageSymbol FindMainProcedure(Program program, Address addrStart)
+        {
+            return null;
+        }
+
         public override SystemService FindService(int vector, ProcessorState state)
         {
             if (int3svc.SyscallInfo.Matches(vector, state))

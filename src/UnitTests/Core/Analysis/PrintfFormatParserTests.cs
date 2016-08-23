@@ -121,11 +121,11 @@ namespace Reko.UnitTests.Core.Analysis
         }
 
         [Test]
-        public void PFP_32_I64()
+        public void PFP_32_I64_is_unknown_Microsoft_extension()
         {
             ParseChar32("%I64x");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
-            Assert.AreEqual("uint64", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("<unknown>", parser.ArgumentTypes[0].ToString());
         }
 
         [Test]
@@ -151,7 +151,6 @@ namespace Reko.UnitTests.Core.Analysis
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
             Assert.AreEqual("ptr32", parser.ArgumentTypes[0].ToString());
         }
-
 
         [Test]
         public void PFP_32_String()

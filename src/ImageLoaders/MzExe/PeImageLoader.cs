@@ -192,7 +192,7 @@ namespace Reko.ImageLoaders.MzExe
             case MACHINE_ARMNT: return new ArmRelocator(program);
             case MACHINE_i386: return new i386Relocator(Services, program);
             case MACHINE_R4000: return new MipsRelocator(Services, program);
-            case MACHINE_x86_64: return new x86_64Relocator(program);
+            case MACHINE_x86_64: return new x86_64Relocator(Services, program);
             default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE hader.", peMachineType));
             }
         }
@@ -440,7 +440,7 @@ namespace Reko.ImageLoaders.MzExe
 			Section relocSection;
             if ((relocSection = sectionList.Find(section => this.rvaBaseRelocationTable >= section.VirtualAddress && this.rvaBaseRelocationTable < section.VirtualAddress + section.VirtualSize)) != null)
 			{
-                ApplyRelocations(relocSection.OffsetRawData, relocSection.SizeRawData, (uint)addrLoad.ToLinear(), relocations);
+                ApplyRelocations(relocSection.OffsetRawData, relocSection.SizeRawData, addrLoad, relocations);
 			} 
             var addrEp = platform.AdjustProcedureAddress(addrLoad + rvaStartAddress);
             var entrySym = CreateMainEntryPoint(
@@ -646,7 +646,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 }
 
 #endif
-        public void ApplyRelocations(uint rvaReloc, uint size, uint baseOfImage, RelocationDictionary relocations)
+        public void ApplyRelocations(uint rvaReloc, uint size, Address baseOfImage, RelocationDictionary relocations)
 		{
 			ImageReader rdr = new LeImageReader(RawImage, rvaReloc);
 			uint rvaStop = rvaReloc + size;
