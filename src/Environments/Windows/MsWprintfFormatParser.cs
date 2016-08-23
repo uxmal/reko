@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 Pavel Tomin.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,16 +17,33 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
- 
+
+using Reko.Core;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Reko.Core.Types;
 
-namespace Reko.Core
+namespace Reko.Environments.Windows
 {
-    public interface IVarargsFormatParser
+    /// <summary>
+    /// Microsoft's implementation of wsprintf differs in its interpretation
+    /// of the format string.
+    /// </summary>
+    public class MsWprintfFormatParser : IVarargsFormatParser
     {
-        List<DataType> ArgumentTypes { get; }
+        public List<DataType> ArgumentTypes
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
 
-        void Parse();
+        public void Parse()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
