@@ -33,8 +33,8 @@ namespace Reko.Core.Analysis
     {
         protected Program program;
         protected Address addr;
-        private int i;
-        private string format;
+        protected int i;
+        protected string format;
         private bool wideChars;
         protected readonly int wordSize;
         protected readonly int longSize;
@@ -183,7 +183,7 @@ namespace Reko.Core.Analysis
                 return '\0';
         }
 
-        private PrintfSize CollectSize()
+        protected virtual PrintfSize CollectSize()
         {
             PrintfSize size = PrintfSize.Default;
             if (i < format.Length-1)
@@ -206,21 +206,6 @@ namespace Reko.Core.Analysis
                     {
                         ++i;
                         size = PrintfSize.LongLong;
-                    }
-                    break;
-                case 'I':
-                    if (i < format.Length - 3)
-                    {
-                        if (format[i + 1] == '3' && format[i + 2] == '2')
-                        {
-                            i += 3;
-                            return PrintfSize.I32;
-                        }
-                        if (format[i + 1] == '6' && format[i + 2] == '4')
-                        {
-                            i += 3;
-                            return PrintfSize.I64;
-                        }
                     }
                     break;
                 default:

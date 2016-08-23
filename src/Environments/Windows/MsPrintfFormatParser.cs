@@ -50,5 +50,23 @@ namespace Reko.Environments.Windows
             }
             return base.MakeDataType(size, cDomain);
         }
+
+        protected override PrintfSize CollectSize()
+        {
+            if (i < format.Length - 3 && format[i] == 'I')
+            {
+                if (format[i + 1] == '3' && format[i + 2] == '2')
+                {
+                    i += 3;
+                    return PrintfSize.I32;
+                }
+                if (format[i + 1] == '6' && format[i + 2] == '4')
+                {
+                    i += 3;
+                    return PrintfSize.I64;
+                }
+            }
+            return base.CollectSize();
+        }
     }
 }
