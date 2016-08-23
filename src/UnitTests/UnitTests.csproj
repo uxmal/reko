@@ -86,6 +86,8 @@
   <ItemGroup>
     <Compile Include="Environments\SysV\GccMangledNameParserTests.cs" />
     <Compile Include="Environments\Windows\MsPrintfFormatParserTests.cs" />
+    <Compile Include="Environments\Windows\X86_64ProcedureSerializerTests.cs" />
+    <Compile Include="Mocks\FakeTypeDeserializer.cs" />
     <Compile Include="OsPath.cs" />
     <Compile Include="Analysis\AliasStateTests.cs" />
     <Compile Include="Analysis\AliasTests.cs" />

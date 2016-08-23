@@ -53,7 +53,12 @@ namespace Reko.Environments.SysV
         {
             if (ss == null)
                 return null;
-            this.argser = new ArgumentDeserializer(this, Architecture, frame, Architecture.PointerType.Size);
+            this.argser = new ArgumentDeserializer(
+                this,
+                Architecture,
+                frame, 
+                Architecture.PointerType.Size,
+                Architecture.WordWidth.Size);
             Identifier ret = null;
             int fpuDelta = FpuStackOffset;
 

@@ -85,7 +85,7 @@ namespace Reko.Environments.Windows
 
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
-            return new X86ProcedureSerializer((IntelArchitecture)Architecture, typeLoader, defaultConvention);
+            return new X86_64ProcedureSerializer((IntelArchitecture)Architecture, typeLoader, defaultConvention);
         }
 
         public override ImageSymbol FindMainProcedure(Program program, Address addrStart)

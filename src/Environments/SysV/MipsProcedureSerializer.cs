@@ -47,7 +47,7 @@ namespace Reko.Environments.SysV
         {
             if (ss == null)
                 return null;
-            var argser = new ArgumentDeserializer(this, Architecture, frame, 0);
+            var argser = new ArgumentDeserializer(this, Architecture, frame, 0, Architecture.WordWidth.Size);
             Identifier ret = null;
 
             if (ss.ReturnValue != null)

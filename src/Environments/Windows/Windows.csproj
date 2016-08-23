@@ -91,6 +91,7 @@
     <Compile Include="WineSpecFileLoader.cs" />
     <Compile Include="Win_x86_64_Platform.cs" />
     <Compile Include="X86StartFinder.cs" />
+    <Compile Include="X86_64ProcedureSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

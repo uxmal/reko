@@ -67,7 +67,8 @@ namespace Reko.Arch.X86
                 this,
                 Architecture,
                 frame,
-                Architecture.PointerType.Size);//$BUG: x86 real mode?
+                Architecture.PointerType.Size, //$BUG: x86 real mode?
+                Architecture.WordWidth.Size);
             Identifier ret = null;
             int fpuDelta = FpuStackOffset;
 

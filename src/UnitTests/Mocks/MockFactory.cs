@@ -51,85 +51,10 @@ namespace Reko.UnitTests.Mocks
         /// Create a deserializer that doesn't depend on TypeLibrary.
         /// </summary>
         /// <returns></returns>
-        public ISerializedTypeVisitor<DataType> CreateDeserializer()
+        public ISerializedTypeVisitor<DataType> CreateDeserializer(int ptrSize)
         {
-            return new IndependentDeserializer();
+            return new FakeTypeDeserializer(ptrSize);
         }
-
-        #region IndependentDeserializer
-        public class IndependentDeserializer : ISerializedTypeVisitor<DataType>
-        {
-            public DataType VisitArray(ArrayType_v1 array)
-            {
-                throw new NotImplementedException();
-            }
-
-            public DataType VisitCode(CodeType_v1 code)
-            {
-                throw new NotImplementedException();
-            }
-
-            public DataType VisitEnum(SerializedEnumType serializedEnumType)
-            {
-                throw new NotImplementedException();
-            }
-
-            public DataType VisitMemberPointer(MemberPointer_v1 memptr)
-            {
-                throw new NotImplementedException();
-            }
-
-            public DataType VisitPointer(PointerType_v1 pointer)
-            {
-                return new Pointer(pointer.DataType.Accept(this), 4);
-            }
-
-            public DataType VisitPrimitive(PrimitiveType_v1 primitive)
-            {
-                return PrimitiveType.Create(primitive.Domain, primitive.ByteSize);
-            }
-
-            public DataType VisitSignature(SerializedSignature signature)
-            {
-                throw new NotImplementedException();
-            }
-
-            public DataType VisitString(StringType_v2 str)
-            {
-                throw new NotImplementedException();
-            }
-
-            public DataType VisitStructure(StructType_v1 structure)
-            {
-                return new StructureType(structure.Name, 0);
-            }
-
-            public DataType VisitTemplate(SerializedTemplate serializedTemplate)
-            {
-                throw new NotImplementedException();
-            }
-
-            public DataType VisitTypedef(SerializedTypedef typedef)
-            {
-                throw new NotImplementedException();
-            }
-
-            public DataType VisitTypeReference(TypeReference_v1 typeReference)
-            {
-                return new TypeReference(typeReference.TypeName, null);
-            }
-
-            public DataType VisitUnion(UnionType_v1 union)
-            {
-                throw new NotImplementedException();
-            }
-
-            public DataType VisitVoidType(VoidType_v1 serializedVoidType)
-            {
-                throw new NotImplementedException();
-            }
-        }
-        #endregion
 
         public IPlatform CreatePlatform()
         {

@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Environments.SysV
 
         private void Given_ProcedureSerializer()
         {
-            this.deserializer = mockFactory.CreateDeserializer();
+            this.deserializer = mockFactory.CreateDeserializer(arch.PointerType.Size);
             this.ser = new X86ProcedureSerializer(arch, deserializer, "");
         }
 

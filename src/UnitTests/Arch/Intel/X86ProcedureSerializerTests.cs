@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Arch.Intel
         }
         private void Given_ProcedureSerializer(string cConvention)
         {
-            this.deserializer = mockFactory.CreateDeserializer();
+            this.deserializer = new FakeTypeDeserializer(4);
             this.ser = new X86ProcedureSerializer(arch, deserializer, cConvention);
         }
 

@@ -41,7 +41,7 @@ namespace Reko.Arch.M68k
         {
             if (ss == null)
                 return null;
-            var argser = new ArgumentDeserializer(this, Architecture, frame, 4);
+            var argser = new ArgumentDeserializer(this, Architecture, frame, 4, 2);
             Identifier ret = null;
 
             if (ss.ReturnValue != null)

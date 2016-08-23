@@ -60,10 +60,10 @@ namespace Reko.UnitTests.Core.Serialization
                 arch.CreateFrame(),
                 // It's possible that old, hand-written assembler passes
                 // arguments on unaligned offsets
-                13);
+                13,
+                4);
             mr.ReplayAll();
         }
-
 
         [Test]
         public void ArgSer_DeserializeRegister()

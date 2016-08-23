@@ -37,17 +37,20 @@ namespace Reko.Core.Serialization
         private Frame frame;
         private Argument_v1 argCur;
         private int retAddressOnStack;  // number of bytes on the stack occupied by return address
+        private int stackAlignment;
 
         public ArgumentDeserializer(
             ProcedureSerializer procSer, 
             IProcessorArchitecture arch, 
             Frame frame, 
-            int retAddressOnStack)
+            int retAddressOnStack,
+            int stackAlign)
         {
             this.procSer = procSer;
             this.arch = arch;
             this.frame = frame;
             this.retAddressOnStack = retAddressOnStack;
+            this.stackAlignment = stackAlign;
         }
 
         public Identifier VisitRegister(Register_v1 reg)
@@ -101,13 +104,17 @@ namespace Reko.Core.Serialization
                 name,
                 dt,
                 new StackArgumentStorage(procSer.StackOffset + retAddressOnStack, dt));
-            procSer.StackOffset += dt.Size;
+            int words = (dt.Size + (stackAlignment - 1)) / stackAlignment;
+            procSer.StackOffset += words * stackAlignment;
             return idArg;
         }
 
         public Identifier Deserialize(FpuStackVariable_v1 fs)
         {
-            var idArg = procSer.CreateId(argCur.Name ?? "fpArg" + procSer.FpuStackOffset, PrimitiveType.Real64, new FpuStackStorage(procSer.FpuStackOffset, PrimitiveType.Real64));
+            var idArg = procSer.CreateId(
+                argCur.Name ?? "fpArg" + procSer.FpuStackOffset, 
+                PrimitiveType.Real64,
+                new FpuStackStorage(procSer.FpuStackOffset, PrimitiveType.Real64));
             ++procSer.FpuStackOffset;
             return idArg;
         }
