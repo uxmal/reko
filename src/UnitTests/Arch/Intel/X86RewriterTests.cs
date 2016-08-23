@@ -18,7 +18,6 @@
  */
 #endregion
 
-using Microsoft.Office.Core;
 using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Assemblers.x86;
