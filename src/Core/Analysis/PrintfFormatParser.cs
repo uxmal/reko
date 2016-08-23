@@ -18,6 +18,8 @@
  */
 #endregion
 
+using Reko.Core.CLanguage;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -29,29 +31,35 @@ namespace Reko.Core.Analysis
     /// </summary>
     public class PrintfFormatParser : IVarargsFormatParser
     {
+        protected Program program;
+        protected Address addr;
         private int i;
         private string format;
         private bool wideChars;
-        private int wordSize;
-        private int longSize;
-        private int doubleSize;
-        private int pointerSize;
+        protected readonly int wordSize;
+        protected readonly int longSize;
+        protected readonly int doubleSize;
+        protected readonly int pointerSize;
+        private IServiceProvider services;
 
         public PrintfFormatParser(
+            Program program,
+            Address addrInstr,
             string format,
-            bool wideChars,
-            int wordSize,
-            int longSize,
-            int doubleSize,
-            int pointerSize)
+            IServiceProvider services)
         {
             this.ArgumentTypes = new List<DataType>();
-            this.wideChars = wideChars;
+            this.program = program;
+            this.addr = addrInstr;
             this.format = format;
-            this.wordSize = wordSize;
-            this.longSize = longSize;
-            this.doubleSize = doubleSize;
-            this.pointerSize = pointerSize;
+            this.wideChars = false;
+            var platform = program.Platform;
+
+            this.wordSize = platform.Architecture.WordWidth.Size;
+            this.longSize = platform.GetByteSizeFromCBasicType(CBasicType.Long);
+            this.doubleSize = platform.GetByteSizeFromCBasicType(CBasicType.Double);
+            this.pointerSize = platform.PointerType.Size;
+            this.services = services;
         }
 
         public List<DataType> ArgumentTypes { get; private set; }
@@ -85,7 +93,7 @@ namespace Reko.Core.Analysis
             }
         }
 
-        enum PrintfSize
+        protected enum PrintfSize
         {
             Default,
             HalfHalf,
@@ -96,7 +104,7 @@ namespace Reko.Core.Analysis
             I64,
         }
 
-        private DataType MakeDataType(PrintfSize size, char cDomain)
+        protected virtual DataType MakeDataType(PrintfSize size, char cDomain)
         {
             Domain domain = Domain.None;
             int byteSize = this.wordSize;
@@ -155,6 +163,14 @@ namespace Reko.Core.Analysis
                 byteSize = this.pointerSize;
                 domain = Domain.Pointer;
                 break;
+            case 's':
+                return program.TypeFactory.CreatePointer(PrimitiveType.Char, this.pointerSize);
+            default:
+                var el = this.services.RequireService<DecompilerEventListener>();
+                el.Warn(
+                    el.CreateAddressNavigator(program, addr),
+                    "The format specifier '%{0}' passed to *printf is not known.", cDomain);
+                return new UnknownType();
             }
             return PrimitiveType.Create(domain, byteSize);
         }

@@ -2744,6 +2744,18 @@ fn0800_1099: warning: Structure analysis stopped making progress, quitting. Plea
    at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 53
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
 
+=== varargs_text.exe
+*** varargs_text.exe
+varargs_text.exe: error: An internal error occurred while decompiling.
+    Could not find file 'D:\dev\uxmal\reko\master\subjects\PE-x86-64\varargs_text.exe'.
+       at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access)
+   at Reko.Core.Services.FileSystemServiceImpl.CreateFileStream(String filename, FileMode mode, FileAccess access) in D:\dev\uxmal\reko\master\src\Core\Services\IFileSystemService.cs:line 62
+   at Reko.Loading.Loader.LoadImageBytes(String fileName, Int32 offset) in D:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 253
+   at Reko.DecompilerDriver.Load(String fileName) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 196
+   at Reko.DecompilerDriver.Decompile(String filename) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 97
+
 === test
 *** test
 00000000004003F0: warning: Unable to resolve imported reference __gmon_start__.

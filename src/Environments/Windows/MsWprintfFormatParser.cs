@@ -18,12 +18,13 @@
  */
 #endregion
 
-using Reko.Core;
+using Reko.Core.Analysis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Reko.Core.Types;
+using Reko.Core;
 
 namespace Reko.Environments.Windows
 {
@@ -31,19 +32,16 @@ namespace Reko.Environments.Windows
     /// Microsoft's implementation of wsprintf differs in its interpretation
     /// of the format string.
     /// </summary>
-    public class MsWprintfFormatParser : IVarargsFormatParser
+    public class MsWprintfFormatParser : PrintfFormatParser
     {
-        public List<DataType> ArgumentTypes
+        public MsWprintfFormatParser(
+            Program program,
+            Address addrInstr,
+            string format,
+            IServiceProvider services)
+        :
+        base(program, addrInstr, format, services)
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public void Parse()
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Analysis;
 using Reko.Core.Types;
 using System;
@@ -33,14 +34,21 @@ namespace Reko.Environments.Windows
     public class MsPrintfFormatParser : PrintfFormatParser
     {
         public MsPrintfFormatParser(
+            Program program,
+            Address addrInstr,
             string format,
-            bool wideChars,
-            int wordSize,
-            int longSize,
-            int doubleSize,
-            int pointerSize) :
-        base(format, wideChars, wordSize, longSize, doubleSize, pointerSize)
+            IServiceProvider services) :
+        base(program, addrInstr, format, services)
         {
+        }
+
+        protected override DataType MakeDataType(PrintfSize size, char cDomain)
+        {
+            if (cDomain == 'S')
+            {
+                return program.TypeFactory.CreatePointer(PrimitiveType.WChar, base.pointerSize);
+            }
+            return base.MakeDataType(size, cDomain);
         }
     }
 }

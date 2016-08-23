@@ -134,7 +134,7 @@ T_22: (in ptrArg04 : (ptr char))
   Class: Eq_22
   DataType: (ptr char)
   OrigDataType: 
-T_23: (in  : 32)
+T_23: (in  : (ptr char))
   Class: Eq_7
   DataType: (ptr char)
   OrigDataType: 
@@ -142,7 +142,7 @@ T_24: (in  : int32)
   Class: Eq_8
   DataType: int32
   OrigDataType: 
-T_25: (in  : 32)
+T_25: (in  : (ptr char))
   Class: Eq_9
   DataType: (ptr char)
   OrigDataType: 

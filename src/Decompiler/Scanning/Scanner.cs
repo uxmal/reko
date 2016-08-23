@@ -46,6 +46,8 @@ namespace Reko.Scanning
     /// </summary>
     public interface IScanner
     {
+        IServiceProvider Services { get; }
+
         void ScanImage();
         ProcedureBase ScanProcedure(Address addr, string procedureName, ProcessorState state);
 
@@ -125,6 +127,7 @@ namespace Reko.Scanning
             this.program = program;
             this.segmentMap = program.SegmentMap;
             this.importResolver = importResolver;
+            this.Services = services;
             this.eventListener = services.RequireService<DecompilerEventListener>();
             this.cancelSvc = services.GetService<CancellationTokenSource>();
             if (segmentMap == null)
@@ -141,6 +144,8 @@ namespace Reko.Scanning
             this.importReferences = program.ImportReferences;
             this.visitedProcs = new HashSet<Procedure>();
         }
+
+        public IServiceProvider Services { get; private set; }
 
         private class BlockRange
         {

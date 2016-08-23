@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Environments\SysV\GccMangledNameParserTests.cs" />
+    <Compile Include="Environments\Windows\MsPrintfFormatParserTests.cs" />
     <Compile Include="OsPath.cs" />
     <Compile Include="Analysis\AliasStateTests.cs" />
     <Compile Include="Analysis\AliasTests.cs" />

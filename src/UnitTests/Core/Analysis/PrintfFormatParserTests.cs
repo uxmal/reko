@@ -18,45 +18,76 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Analysis;
 using NUnit.Framework;
+using Rhino.Mocks;
+using Reko.Core.Services;
+using System.ComponentModel.Design;
+using Reko.Core.CLanguage;
+using Reko.Core.Types;
 
 namespace Reko.UnitTests.Core.Analysis
 {
     [TestFixture]
     public class PrintfFormatParserTests
     {
-        private  PrintfFormatParser parser;
+        private PrintfFormatParser parser;
+        private MockRepository mr;
+        private DecompilerEventListener eventListener;
+        private ServiceContainer sc;
+        private Program program;
+
+        [SetUp]
+        public void Setup()
+        {
+            this.mr = new MockRepository();
+            this.sc = new ServiceContainer();
+            this.eventListener = mr.Stub<DecompilerEventListener>();
+            this.sc.AddService(typeof(DecompilerEventListener), this.eventListener);
+            var arch = mr.Stub<IProcessorArchitecture>();
+            var platform = mr.Stub<IPlatform>();
+            arch.Stub(a => a.WordWidth).Return(PrimitiveType.Word32);
+            platform.Stub(p => p.Architecture).Return(arch);
+            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Long)).Return(4);
+            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Double)).Return(8);
+            platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
+            this.program = new Program { Platform = platform };
+        }
 
         private void ParseChar32(string formatString)
         {
-            this.parser = new PrintfFormatParser(formatString, false, 4, 4, 4, 4);
+            mr.ReplayAll();
+
+            this.parser = new PrintfFormatParser(program, Address.Ptr32(0x123400), formatString, sc);
             parser.Parse();
+
+            mr.VerifyAll();
         }
 
         [Test]
-        public void MPFP_Empty()
+        public void PFP_Empty()
         {
             ParseChar32("");
             Assert.AreEqual(0, parser.ArgumentTypes.Count);
         }
 
         [Test]
-        public void MPFP_NoFormat()
+        public void PFP_NoFormat()
         {
             ParseChar32("Hello world");
             Assert.AreEqual(0, parser.ArgumentTypes.Count);
         }
 
         [Test]
-        public void MPFP_LiteralPercent()
+        public void PFP_LiteralPercent()
         {
             ParseChar32("H%%ello world");
             Assert.AreEqual(0, parser.ArgumentTypes.Count);
         }
 
         [Test]
-        public void MPFP_32_Decimal()
+        public void PFP_32_Decimal()
         {
             ParseChar32("Total: %d");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
@@ -64,7 +95,7 @@ namespace Reko.UnitTests.Core.Analysis
         }
 
         [Test]
-        public void MPFP_32_Char()
+        public void PFP_32_Char()
         {
             ParseChar32("'%c'");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
@@ -72,7 +103,7 @@ namespace Reko.UnitTests.Core.Analysis
         }
 
         [Test]
-        public void MPFP_32_TwoFormats()
+        public void PFP_32_TwoFormats()
         {
             ParseChar32("%c%x");
             Assert.AreEqual(2, parser.ArgumentTypes.Count);
@@ -82,7 +113,7 @@ namespace Reko.UnitTests.Core.Analysis
         }
 
         [Test]
-        public void MPFP_32_Short()
+        public void PFP_32_Short()
         {
             ParseChar32("%hd");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
@@ -90,7 +121,7 @@ namespace Reko.UnitTests.Core.Analysis
         }
 
         [Test]
-        public void MPFP_32_I64()
+        public void PFP_32_I64()
         {
             ParseChar32("%I64x");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
@@ -98,7 +129,15 @@ namespace Reko.UnitTests.Core.Analysis
         }
 
         [Test]
-        public void MPFP_32_longlong()
+        public void PFP_32_Invalid_S()
+        {
+            eventListener.Expect(e => e.CreateAddressNavigator(null, null)).IgnoreArguments();
+            eventListener.Expect(e => e.Warn(null, null, new object[0])).IgnoreArguments();
+            ParseChar32("%S");
+        }
+
+        [Test]
+        public void PFP_32_longlong()
         {
             ParseChar32("%lli");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
@@ -106,11 +145,20 @@ namespace Reko.UnitTests.Core.Analysis
         }
 
         [Test]
-        public void MPFP_32_Pointer()
+        public void PFP_32_Pointer()
         {
             ParseChar32("%08p");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
             Assert.AreEqual("ptr32", parser.ArgumentTypes[0].ToString());
+        }
+
+
+        [Test]
+        public void PFP_32_String()
+        {
+            ParseChar32("%08s");
+            Assert.AreEqual(1, parser.ArgumentTypes.Count);
+            Assert.AreEqual("(ptr char)", parser.ArgumentTypes[0].ToString());
         }
     }
 }
