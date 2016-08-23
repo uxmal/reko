@@ -24,6 +24,9 @@ using System.Collections.Generic;
 
 namespace Reko.Core.Analysis
 {
+    /// <summary>
+    /// Parses standard C printf format
+    /// </summary>
     public class PrintfFormatParser : IVarargsFormatParser
     {
         private int i;
