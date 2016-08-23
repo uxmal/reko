@@ -828,5 +828,11 @@ movzx	ax,byte ptr [bp+04]
             Assert.AreEqual(Opcode.stos, instr[14].code);
             Assert.AreEqual("word32", instr[14].dataWidth.Name);
         }
+
+        [Test]
+        public void X86Dis_regression()
+        {
+            AssertCode64("movups\t[rsp+20],xmm0", 0x0F, 0x11, 0x44, 0x24, 0x20);
+        }
     }
 }

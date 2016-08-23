@@ -116,8 +116,7 @@ namespace Reko.Typing
             }
             else
             {
-                //$TODO: create Address.ToConstant()
-                this.c = Constant.UInt32((uint)addr.ToLinear());  //$BUG: won't work for x86.
+                this.c = addr.ToConstant();  //$BUG: won't work for x86.
                 var dtInferred = addr.TypeVariable.DataType.ResolveAs<DataType>();
                 this.pOrig = addr.TypeVariable.OriginalDataType as PrimitiveType;
                 this.dereferenced = dereferenced;

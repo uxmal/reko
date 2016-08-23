@@ -37,7 +37,7 @@ namespace Reko.Arch.X86
             instrCur.op1.Width = PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.Size);
             emitter.Assign(SrcOp(instrCur.op1), emitter.Cast(instrCur.op1.Width, SrcOp(instrCur.op2)));
         }
-
+        
         private void RewritePcmpeqb()
         {
             emitter.Assign(

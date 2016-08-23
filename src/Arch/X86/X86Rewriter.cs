@@ -238,12 +238,14 @@ namespace Reko.Arch.X86
                 case Opcode.loopne: RewriteLoop(FlagM.ZF, ConditionCode.NE); break;
                 case Opcode.lss: RewriteLxs(Registers.ss); break;
                 case Opcode.mov: RewriteMov(); break;
+                case Opcode.movaps: RewriteMov(); break;
                 case Opcode.movd: RewriteMovzx(); break;
                 case Opcode.movdqa: RewriteMov(); break;
                 case Opcode.movq: RewriteMov(); break;
                 case Opcode.movs: RewriteStringInstruction(); break;
                 case Opcode.movsb: RewriteStringInstruction(); break;
                 case Opcode.movsx: RewriteMovsx(); break;
+                case Opcode.movups: RewriteMov(); break;
                 case Opcode.movzx: RewriteMovzx(); break;
                 case Opcode.mul: RewriteMultiply(Operator.UMul, Domain.UnsignedInt); break;
                 case Opcode.neg: RewriteNeg(); break;

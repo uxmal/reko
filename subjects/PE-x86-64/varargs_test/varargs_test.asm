@@ -12,8 +12,7 @@ fn0000000140001000()
 	mov	dword ptr [rsp+30],00000063
 	lea	rcx,[rip+000011CB]
 	mov	edx,00000003
-	illegal	
-	and	al,20
+	movups	[rsp+20],xmm0
 	call	0000000140001140
 	lea	rax,[rsp+44]
 	mov	[rsp+38],rax
@@ -34,31 +33,14 @@ fn0000000140001000()
 	call	00000001400011B0
 	add	rsp,+000000C8
 	ret	
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
+00000001400010B1    CC CC CC CC CC CC CC CC CC CC CC CC CC CC CC  ...............
+
+fn00000001400010C0()
 	lea	rax,[rip+00002561]
 	ret	
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
+00000001400010C8                         CC CC CC CC CC CC CC CC         ........
+
+fn00000001400010D0()
 	mov	[rsp+08],rcx
 	mov	[rsp+10],rdx
 	mov	[rsp+18],r8
@@ -84,30 +66,14 @@ fn0000000140001000()
 	pop	rsi
 	pop	rbx
 	ret	
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
+0000000140001122       CC CC CC CC CC CC CC CC CC CC CC CC CC CC   ..............
+
+fn0000000140001130()
 	lea	rax,[rip+000024E9]
 	ret	
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
+0000000140001138                         CC CC CC CC CC CC CC CC         ........
+
+fn0000000140001140()
 	mov	[rsp+08],rcx
 	mov	[rsp+10],rdx
 	mov	[rsp+18],r8
@@ -133,102 +99,42 @@ fn0000000140001000()
 	pop	rsi
 	pop	rbx
 	ret	
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	int	03
-	nop	dword ptr [rax+rax+00000000]
+0000000140001195                CC CC CC CC CC CC CC CC CC CC CC      ...........
+00000001400011A0 CC CC CC CC CC CC 66 66 0F 1F 84 00 00 00 00 00 ......ff........
+
+fn00000001400011B0()
 	cmp	rcx,[rip+00001E49]
 	repne	
 	jnz	00000001400011CC
+
+l00000001400011BA:
 	rol	rcx,10
 	test	cx,FFFF
 	repne	
 	jnz	00000001400011C8
+
+l00000001400011C6:
 	repne	
 	ret	
+
+l00000001400011C8:
 	ror	rcx,10
 	jmp	000000014000147C
-	int	03
-	int	03
-	int	03
-	push	rbx
-	sub	rsp,20
-	mov	ecx,00000001
-	call	0000000140001DF2
-	call	0000000140001920
-	mov	ecx,eax
-	call	0000000140001E28
-	call	0000000140001E58
-	mov	rbx,rax
-	call	0000000140001ABC
-	mov	ecx,00000001
-	mov	[rbx],eax
-	call	000000014000164C
-	test	al,al
-	jz	0000000140001279
-	call	0000000140001B5C
-	lea	rcx,[rip+0000098F]
-	call	0000000140001854
-	call	0000000140001918
-	mov	ecx,eax
-	call	0000000140001DFE
-	test	eax,eax
-	jnz	0000000140001284
-	call	0000000140001928
-	call	0000000140001958
-	test	eax,eax
-	jz	0000000140001248
-	lea	rcx,[rip+00000879]
-	call	0000000140001DF8
-	call	0000000140001DD0
-	call	0000000140001DD0
-	call	0000000140001ABC
-	mov	ecx,eax
-	call	0000000140001E4C
-	call	0000000140001938
-	test	al,al
-	jz	000000014000126C
-	call	0000000140001E04
-	call	0000000140001ABC
-	xor	eax,eax
-	add	rsp,20
-	pop	rbx
-	ret	
-	mov	ecx,00000007
-	call	0000000140001974
-	int	03
-	mov	ecx,00000007
-	call	0000000140001974
-	int	03
-	int	03
-	sub	rsp,28
-	call	000000014000193C
-	xor	eax,eax
-	add	rsp,28
-	ret	
-	sub	rsp,28
-	call	0000000140001B14
-	call	0000000140001ABC
-	mov	ecx,eax
-	add	rsp,28
-	jmp	0000000140001E52
-	int	03
-	int	03
-	int	03
+00000001400011D1    CC CC CC 40 53 48 83 EC 20 B9 01 00 00 00 E8  ...@SH.. ......
+00000001400011E0 0E 0C 00 00 E8 37 07 00 00 8B C8 E8 38 0C 00 00 .....7......8...
+00000001400011F0 E8 63 0C 00 00 48 8B D8 E8 BF 08 00 00 B9 01 00 .c...H..........
+0000000140001200 00 00 89 03 E8 43 04 00 00 84 C0 74 6C E8 4A 09 .....C.....tl.J.
+0000000140001210 00 00 48 8D 0D 8F 09 00 00 E8 36 06 00 00 E8 F5 ..H.......6.....
+0000000140001220 06 00 00 8B C8 E8 D4 0B 00 00 85 C0 75 56 E8 F5 ............uV..
+0000000140001230 06 00 00 E8 20 07 00 00 85 C0 74 0C 48 8D 0D 79 .... .....t.H..y
+0000000140001240 08 00 00 E8 B0 0B 00 00 E8 83 0B 00 00 E8 7E 0B ..............~.
+0000000140001250 00 00 E8 65 08 00 00 8B C8 E8 EE 0B 00 00 E8 D5 ...e............
+0000000140001260 06 00 00 84 C0 74 05 E8 98 0B 00 00 E8 4B 08 00 .....t.......K..
+0000000140001270 00 33 C0 48 83 C4 20 5B C3 B9 07 00 00 00 E8 F1 .3.H.. [........
+0000000140001280 06 00 00 CC B9 07 00 00 00 E8 E6 06 00 00 CC CC ................
+0000000140001290 48 83 EC 28 E8 A3 06 00 00 33 C0 48 83 C4 28 C3 H..(.....3.H..(.
+00000001400012A0 48 83 EC 28 E8 6B 08 00 00 E8 0E 08 00 00 8B C8 H..(.k..........
+00000001400012B0 48 83 C4 28 E9 99 0B 00 00 CC CC CC             H..(........   
 
 l00000001400012BC:
 	mov	[rsp+08],rbx
@@ -373,31 +279,109 @@ fn0000000140001434()
 	call	000000014000186C
 	add	rsp,28
 	jmp	00000001400012BC
-0000000140001446                   CC CC 40 53 48 83 EC 20 48 8B       ..@SH.. H.
-0000000140001450 D9 33 C9 FF 15 0F 0C 00 00 48 8B CB FF 15 AE 0B .3.......H......
-0000000140001460 00 00 FF 15 F8 0B 00 00 48 8B C8 BA 09 04 00 C0 ........H.......
-0000000140001470 48 83 C4 20 5B 48 FF 25 DC 0B 00 00 48 89 4C 24 H.. [H.%....H.L$
-0000000140001480 08 48 83 EC 38 B9 17 00 00 00 E8 E7 09 00 00 85 .H..8...........
-0000000140001490 C0 74 07 B9 02 00 00 00 CD 29 48 8D 0D 3F 1C 00 .t.......)H..?..
-00000001400014A0 00 E8 AA 00 00 00 48 8B 44 24 38 48 89 05 26 1D ......H.D$8H..&.
-00000001400014B0 00 00 48 8D 44 24 38 48 83 C0 08 48 89 05 B6 1C ..H.D$8H...H....
-00000001400014C0 00 00 48 8B 05 0F 1D 00 00 48 89 05 80 1B 00 00 ..H......H......
-00000001400014D0 48 8B 44 24 40 48 89 05 84 1C 00 00 C7 05 5A 1B H.D$@H........Z.
-00000001400014E0 00 00 09 04 00 C0 C7 05 54 1B 00 00 01 00 00 00 ........T.......
-00000001400014F0 C7 05 5E 1B 00 00 01 00 00 00 B8 08 00 00 00 48 ..^............H
-0000000140001500 6B C0 00 48 8D 0D 56 1B 00 00 48 C7 04 01 02 00 k..H..V...H.....
-0000000140001510 00 00 B8 08 00 00 00 48 6B C0 00 48 8B 0D DE 1A .......Hk..H....
-0000000140001520 00 00 48 89 4C 04 20 B8 08 00 00 00 48 6B C0 01 ..H.L. .....Hk..
-0000000140001530 48 8B 0D D1 1A 00 00 48 89 4C 04 20 48 8D 0D BD H......H.L. H...
-0000000140001540 0C 00 00 E8 00 FF FF FF 48 83 C4 38 C3 CC CC CC ........H..8....
-0000000140001550 40 53 56 57 48 83 EC 40 48 8B D9 FF 15 0F 0B 00 @SVWH..@H.......
-0000000140001560 00 48 8B B3 F8 00 00 00 33 FF 45 33 C0 48 8D 54 .H......3.E3.H.T
-0000000140001570 24 60 48 8B CE FF 15 85 0A 00 00 48 85 C0 74 39 $`H........H..t9
-0000000140001580 48 83 64 24 38 00 48 8D 4C 24 68 48 8B 54 24 60 H.d$8.H.L$hH.T$`
-0000000140001590 4C 8B C8 48 89 4C 24 30 4C 8B C6 48 8D 4C 24 70 L..H.L$0L..H.L$p
-00000001400015A0 48 89 4C 24 28 33 C9 48 89 5C 24 20 FF 15 56 0A H.L$(3.H.\$ ..V.
-00000001400015B0 00 00 FF C7 83 FF 02 7C B1 48 83 C4 40 5F 5E 5B .......|.H..@_^[
-00000001400015C0 C3 CC CC CC                                     ....           
+0000000140001446                   CC CC                               ..       
+
+fn0000000140001448()
+	push	rbx
+	sub	rsp,20
+	mov	rbx,rcx
+	xor	ecx,ecx
+	call	dword ptr [rip+00000C0F]
+	mov	rcx,rbx
+	call	dword ptr [rip+00000BAE]
+	call	dword ptr [rip+00000BF8]
+	mov	rcx,rax
+	mov	edx,C0000409
+	add	rsp,20
+	pop	rbx
+	jmp	qword ptr [rip+00000BDC]
+
+l000000014000147C:
+	mov	[rsp+08],rcx
+	sub	rsp,38
+	mov	ecx,00000017
+	call	0000000140001E76
+	test	eax,eax
+	jz	000000014000149A
+
+l0000000140001493:
+	mov	ecx,00000002
+	int	29
+
+l000000014000149A:
+	lea	rcx,[rip+00001C3F]
+	call	0000000140001550
+	mov	rax,[rsp+38]
+	mov	[rip+00001D26],rax
+	lea	rax,[rsp+38]
+	add	rax,08
+	mov	[rip+00001CB6],rax
+	mov	rax,[rip+00001D0F]
+	mov	[rip+00001B80],rax
+	mov	rax,[rsp+40]
+	mov	[rip+00001C84],rax
+	mov	dword ptr [rip+00001B5A],C0000409
+	mov	dword ptr [rip+00001B54],00000001
+	mov	dword ptr [rip+00001B5E],00000001
+	mov	eax,00000008
+	imul	rax,rax,00
+	lea	rcx,[rip+00001B56]
+	mov	qword ptr [rcx+rax],+00000002
+	mov	eax,00000008
+	imul	rax,rax,00
+	mov	rcx,[rip+00001ADE]
+	mov	[rsp+rax+20],rcx
+	mov	eax,00000008
+	imul	rax,rax,01
+	mov	rcx,[rip+00001AD1]
+	mov	[rsp+rax+20],rcx
+	lea	rcx,[rip+00000CBD]
+	call	0000000140001448
+	add	rsp,38
+	ret	
+000000014000154D                                        CC CC CC              ...
+
+fn0000000140001550()
+	push	rbx
+	push	rsi
+	push	rdi
+	sub	rsp,40
+	mov	rbx,rcx
+	call	dword ptr [rip+00000B0F]
+	mov	rsi,[rbx+000000F8]
+	xor	edi,edi
+
+l000000014000156A:
+	xor	r8d,r8d
+	lea	rdx,[rsp+60]
+	mov	rcx,rsi
+	call	dword ptr [rip+00000A85]
+	test	rax,rax
+	jz	00000001400015B9
+
+l0000000140001580:
+	and	qword ptr [rsp+38],00
+	lea	rcx,[rsp+68]
+	mov	rdx,[rsp+60]
+	mov	r9,rax
+	mov	[rsp+30],rcx
+	mov	r8,rsi
+	lea	rcx,[rsp+70]
+	mov	[rsp+28],rcx
+	xor	ecx,ecx
+	mov	[rsp+20],rbx
+	call	dword ptr [rip+00000A56]
+	inc	edi
+	cmp	edi,02
+	jl	000000014000156A
+
+l00000001400015B9:
+	add	rsp,40
+	pop	rdi
+	pop	rsi
+	pop	rbx
+	ret	
+00000001400015C1    CC CC CC                                      ...           
 
 fn00000001400015C4()
 	sub	rsp,28

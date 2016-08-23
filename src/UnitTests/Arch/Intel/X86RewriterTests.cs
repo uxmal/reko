@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Microsoft.Office.Core;
 using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Assemblers.x86;
@@ -1393,6 +1394,24 @@ namespace Reko.UnitTests.Arch.Intel
             AssertCode(
                 "0|L--|0C00:0000(3): 1 instructions",
                 "1|L--|rLoc1 = (real64) Mem0[ds:si + 0x0040:real32]");
+        }
+
+        [Test]
+        public void X86rw_movaps()
+        {
+            Run64bitTest(0x0F, 0x28, 0x05, 0x40, 0x12, 0x00, 0x00); //  movaps xmm0,[rip+00001240]
+            AssertCode(
+                "0|L--|0000000140000000(7): 1 instructions",
+                "1|L--|xmm0 = Mem0[0x0000000140001247:word128]");
+        }
+
+        [Test]
+        public void X86rw_movups()
+        {
+            Run64bitTest(0x0F, 0x11, 0x44, 0x24, 0x20); // "movups\t[rsp+20],xmm0", 
+            AssertCode(
+                  "0|L--|0000000140000000(5): 1 instructions",
+                  "1|L--|Mem0[rsp + 0x0000000000000020:word128] = xmm0");
         }
     }
 }
