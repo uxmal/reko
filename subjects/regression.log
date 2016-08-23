@@ -2746,15 +2746,41 @@ fn0800_1099: warning: Structure analysis stopped making progress, quitting. Plea
 
 === varargs_test.exe
 *** varargs_test.exe
-varargs_test.exe: warning: Exception table reading not supported for machine #34404.
 0000000140001A14: warning: Unable to resolve imported reference KERNEL32.dll!RtlVirtualUnwind.
 00000001400015AC: warning: Unable to resolve imported reference KERNEL32.dll!RtlVirtualUnwind.
+0000000140001E70: warning: Unable to resolve imported reference api-ms-win-crt-runtime-l1-1-0.dll!terminate.
+00000001400011C8: warning: Procedure fn00000001400011B0 previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
+000000014000143D: warning: Procedure Win32CrtStartup previously had a return address of 8 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0000000140001475: error: An error occurred while processing instruction at address 0000000140001475.
     Expected stack depth to be negative.
        at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 143
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 206
+0000000140001EF0: error: An error occurred while processing instruction at address 0000000140001EF0.
+    Expected stack depth to be negative.
+       at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 143
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 206
+0000000140001B8B: error: Indirect call rewriter encountered an error while processing the statement call edi_17 (retsize: 4; depth: 40)	uses: C_40,dwLoc04_8,edi_17,qwLoc04,rbx_21,rcx_52,rdi_37,rsi_22,rsp_24,SCZO_25,SZO_38,Z_39	defs: C_58,edi_62,rbx_54,rcx_61,rdi_56,rsi_55,rsp_53,SCZO_57,SZO_59,Z_60.
+    The method or operation is not implemented.
+       at Reko.Core.Expressions.PhiFunction.CloneExpression() in D:\dev\uxmal\reko\master\src\Core\Expressions\PhiFunction.cs:line 55
+   at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 139
+   at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 148
+   at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
+   at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 139
+   at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 84
+   at Reko.Analysis.IndirectCallRewriter.Rewrite() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 68
+0000000140001BD7: error: Indirect call rewriter encountered an error while processing the statement call edi_17 (retsize: 4; depth: 40)	uses: C_40,dwLoc04_8,edi_17,qwLoc04,rbx_21,rcx_52,rdi_37,rsi_22,rsp_24,SCZO_25,SZO_38,Z_39	defs: C_58,edi_62,rbx_54,rcx_61,rdi_56,rsi_55,rsp_53,SCZO_57,SZO_59,Z_60.
+    The method or operation is not implemented.
+       at Reko.Core.Expressions.PhiFunction.CloneExpression() in D:\dev\uxmal\reko\master\src\Core\Expressions\PhiFunction.cs:line 55
+   at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 139
+   at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 148
+   at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
+   at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 139
+   at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 84
+   at Reko.Analysis.IndirectCallRewriter.Rewrite() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 68
 0000000140001A94: error: An error occurred while processing the statement word32 eax_132 = UnhandledExceptionFilter(tLoc05C0).
     Both structures have names! Woo! Return null and make union of it?
        at Reko.Core.Types.Unifier.UnifyStructures(StructureType a, StructureType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 500
