@@ -2755,7 +2755,39 @@ varargs_test.exe: warning: Exception table reading not supported for machine #34
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 206
-: warning: Type transformer has looped 51 times, quitting prematurely.
+0000000140001A94: error: An error occurred while processing the statement word32 eax_132 = UnhandledExceptionFilter(tLoc05C0).
+    Both structures have names! Woo! Return null and make union of it?
+       at Reko.Core.Types.Unifier.UnifyStructures(StructureType a, StructureType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 500
+   at Reko.Core.Types.Unifier.UnifyInternal(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 365
+   at Reko.Core.Types.Unifier.UnifyInternal(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 267
+   at Reko.Core.Types.Unifier.UnifyInternal(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 292
+   at Reko.Core.Types.Unifier.UnifyInternal(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 267
+   at Reko.Core.Types.Unifier.Unify(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 194
+   at Reko.Core.Types.Unifier.UnifyIntoUnion(UnionType u, DataType dt) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 441
+   at Reko.Core.Types.Unifier.UnifyInternal(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 228
+   at Reko.Core.Types.Unifier.Unify(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 194
+   at Reko.Typing.ExpressionTypeDescender.MeetDataType(TypeVariable tvExp, DataType dt) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 407
+   at Reko.Typing.ExpressionTypeDescender.MeetDataType(Expression exp, DataType dt) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 395
+   at Reko.Typing.ExpressionTypeDescender.BindActualTypesToFormalTypes(Application appl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 111
+   at Reko.Typing.ExpressionTypeDescender.VisitApplication(Application appl, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 92
+   at Reko.Core.Expressions.Application.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 43
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 153
+   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 71
+: error: Error when reconstructing types.
+    Both structures have names! Woo! Return null and make union of it?
+       at Reko.Core.Types.Unifier.UnifyStructures(StructureType a, StructureType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 500
+   at Reko.Core.Types.Unifier.UnifyInternal(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 365
+   at Reko.Core.Types.Unifier.UnifyInternal(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 267
+   at Reko.Core.Types.Unifier.UnifyInternal(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 292
+   at Reko.Core.Types.Unifier.UnifyInternal(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 274
+   at Reko.Core.Types.Unifier.Unify(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 194
+   at Reko.Core.Types.Unifier.UnifyIntoUnion(UnionType u, DataType dt) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 441
+   at Reko.Core.Types.Unifier.UnifyInternal(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 233
+   at Reko.Core.Types.Unifier.Unify(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 194
+   at Reko.Core.Types.TypeStore.BuildEquivalenceClassDataTypes(TypeFactory factory) in D:\dev\uxmal\reko\master\src\Core\Types\TypeStore.cs:line 115
+   at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 91
+   at Reko.DecompilerDriver.ReconstructTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 319
 
 === test
 *** test

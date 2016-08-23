@@ -452,7 +452,8 @@ namespace Reko.Core.Output
 
         public Formatter VisitTypeVariable(TypeVariable t)
 		{
-			throw new NotImplementedException("TypeFormatter.TypeVariable");
+            this.writer.WriteType(t.Name, t);
+            return writer;
 		}
 
         public Formatter VisitUnion(UnionType ut)
