@@ -84,7 +84,6 @@ namespace Reko.UnitTests.Typing
             e.Accept(eq);
 
             var result = e.Accept(exa);
-            Debug.Print("After exa: {0}", result);
             exd.MeetDataType(e, dt);
             e.Accept(exd, e.TypeVariable);
 
@@ -103,7 +102,6 @@ namespace Reko.UnitTests.Typing
             foreach (var t in tests)
             {
                 var result = t.Item1.Accept(exa);
-                Debug.Print("After exa: {0}", result);
                 exd.MeetDataType(t.Item1, t.Item2);
                 t.Item1.Accept(exd, t.Item1.TypeVariable);
             }

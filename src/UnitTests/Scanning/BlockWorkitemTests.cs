@@ -557,7 +557,6 @@ testProc_exit:
             Assert.AreEqual("branch r1 l00100000_ds_t", block.Statements[0].ToString());
             var blFalse = block.ElseBlock;
             var blTrue = block.ThenBlock;
-            proc.Dump(true);
             Assert.AreEqual("l00100000_ds_f", blFalse.Name);     // delay-slot-false
             Assert.AreEqual(1, blFalse.Statements.Count);
             Assert.AreEqual("r0 = r1", blFalse.Statements[0].ToString());
@@ -662,7 +661,6 @@ testProc_exit:
             Assert.AreEqual("branch r1 l00100000_ds_t", block.Statements[0].ToString());
             var blFalse = block.ElseBlock;
             var blTrue = block.ThenBlock;
-            proc.Dump(true);
             Assert.AreEqual("l00100008", blFalse.Name);     // delay-slot was anulled.
             Assert.AreEqual(1, blFalse.Statements.Count);
             Assert.AreEqual("r2 = r1", blFalse.Statements[0].ToString());

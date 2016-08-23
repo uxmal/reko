@@ -144,7 +144,6 @@ namespace Reko.Analysis
             {
                 ReplaceLongAdditions(block);
             }
-            proc.Dump(true);
         }
 
         public void ReplaceLongAdditions(Block block)

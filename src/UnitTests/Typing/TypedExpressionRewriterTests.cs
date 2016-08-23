@@ -76,7 +76,6 @@ namespace Reko.UnitTests.Typing
                 coll.CollectTypes();
 #endif
                 program.TypeStore.BuildEquivalenceClassDataTypes(program.TypeFactory);
-                program.TypeStore.Dump();
                 tvr.ReplaceTypeVariables();
                 trans.Transform();
                 ctn.RenameAllTypes(program.TypeStore);
@@ -126,7 +125,6 @@ namespace Reko.UnitTests.Typing
             tvr.ReplaceTypeVariables();
             trans.Transform();
             ctn.RenameAllTypes(program.TypeStore);
-            program.TypeStore.Dump();
 
             var ter = new TypedExpressionRewriter(program, null);
             try
