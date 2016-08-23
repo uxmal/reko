@@ -227,7 +227,7 @@
     <Compile Include="Expressions\UnaryExpression.cs" />
     <Compile Include="FieldAttribute.cs" />
     <Compile Include="ImageSymbol.cs" />
-    <Compile Include="IVarargsFormatParser.cs" />
+    <Compile Include="Analysis\IVarargsFormatParser.cs" />
     <Compile Include="Lib\PatternCollector.cs" />
     <Compile Include="Lib\PerfectHash.cs" />
     <Compile Include="Lib\SuffixArray.cs" />
@@ -682,6 +682,7 @@
     </Compile>
     <Compile Include="Types\VoidType.cs" />
     <Compile Include="UserData.cs" />
+    <Compile Include="Analysis\PrintfFormatParser.cs" />
     <Compile Include="WorkList.cs">
       <SubType>Code</SubType>
     </Compile>

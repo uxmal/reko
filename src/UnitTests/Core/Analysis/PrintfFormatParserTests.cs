@@ -18,24 +18,19 @@
  */
 #endregion
 
-#if DEBUG
-using Reko.Core.Types;
+using Reko.Core.Analysis;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace Reko.Environments.Windows
+namespace Reko.UnitTests.Core.Analysis
 {
     [TestFixture]
-    public class MsPrintfFormatParserTests
+    public class PrintfFormatParserTests
     {
-        private  MsPrintfFormatParser parser;
+        private  PrintfFormatParser parser;
 
         private void ParseChar32(string formatString)
         {
-            this.parser = new MsPrintfFormatParser(formatString, false, 4, 4, 4, 4);
+            this.parser = new PrintfFormatParser(formatString, false, 4, 4, 4, 4);
             parser.Parse();
         }
 
@@ -119,4 +114,3 @@ namespace Reko.Environments.Windows
         }
     }
 }
-#endif
