@@ -157,6 +157,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Analysis\ScanfFormatParser.cs" />
+    <Compile Include="Analysis\PyBuildValueFormatParser.cs" />
     <Compile Include="ApplicationBuilder.cs" />
     <Compile Include="Archives\Archive.cs" />
     <Compile Include="Archives\ArchiveDirectoryEntry.cs" />

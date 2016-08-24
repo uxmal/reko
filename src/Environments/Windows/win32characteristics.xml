@@ -5,6 +5,11 @@
       <varargs>Reko.Environments.Windows.MsPrintfFormatParser,Reko.Environments.Windows</varargs>
     </characteristics>
   </entry>
+  <entry name="Py_BuildValue">
+    <characteristics>
+      <varargs>Reko.Core.Analysis.PyBuildValueFormatParser,Reko.Core</varargs>
+    </characteristics>
+  </entry>
   <entry name="exit">
     <characteristics>
       <terminates>true</terminates>
