@@ -344,6 +344,22 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\Libraries\Libc\Libc.csproj">
+      <Name>Libc</Name>
+      <Project>{fdaf4ca9-085c-473e-bcb5-0d2a4354a949}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\Python\Python.csproj">
+      <Name>Python</Name>
+      <Project>{c278ca2f-7d7c-47c3-b560-7bc63e1fad96}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WixExtension Include="WixUIExtension">
