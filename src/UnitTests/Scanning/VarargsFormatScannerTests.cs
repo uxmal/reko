@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Scanning
             this.printfChr = new ProcedureCharacteristics()
             {
                 VarargsParserClass =
-                    "Reko.Core.Analysis.PrintfFormatParser,Reko.Core"
+                    "Reko.Libraries.Libc.PrintfFormatParser,Reko.Libraries.Libc"
             };
             this.x86PrintfSig = new FunctionType(
                 null,
