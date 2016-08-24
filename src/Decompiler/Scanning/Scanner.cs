@@ -117,7 +117,6 @@ namespace Reko.Scanning
         private HashSet<Procedure> visitedProcs;
         private CancellationTokenSource cancelSvc;
         private HashSet<Address> scannedGlobalData = new HashSet<Address>();
-        private bool isAlreadyCanceled;
 
         public Scanner(
             Program program, 
@@ -842,11 +841,6 @@ namespace Reko.Scanning
             {
                 if (eventListener.IsCanceled())
                 {
-                    if (!isAlreadyCanceled)
-                    {
-                        isAlreadyCanceled = true;
-                        eventListener.Warn(new NullCodeLocation(""), "Scanning canceled by user.");
-                    }
                     break;
                 }
                 var workitem = queue.Dequeue();

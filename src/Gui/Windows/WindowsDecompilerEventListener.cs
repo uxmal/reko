@@ -86,7 +86,6 @@ namespace Reko.Gui.Windows
         /// <returns></returns>
         public bool StartBackgroundWork(string caption, Action backgroundTask)
         {
-            this.isCanceled = false;
             lastException = null;
             try
             {
@@ -127,6 +126,8 @@ namespace Reko.Gui.Windows
 
         void dlg_Load(object sender, EventArgs e)
         {
+            this.isCanceled = false;
+            dlg.CancellationButton.Enabled = true;
             dlg.Worker.RunWorkerAsync(task);
         }
 
@@ -142,6 +143,8 @@ namespace Reko.Gui.Windows
         {
             cancellationSvc.Cancel();
             this.isCanceled = true;
+            Warn(new NullCodeLocation(""), "User canceled the decompiler.");
+            dlg.CancellationButton.Enabled = false;
         }
 
         void Worker_DoWork(object sender, DoWorkEventArgs e)

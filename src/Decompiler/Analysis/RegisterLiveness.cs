@@ -180,6 +180,8 @@ namespace Reko.Analysis
             BlockFlow item;
             while (worklist.GetWorkItem(out item))
 			{
+                if (eventListener.IsCanceled())
+                    break;
 			    eventListener.ShowProgress(string.Format("Blocks left: {0}", worklist.Count), initial - worklist.Count, initial);
 				ProcessBlock(item);
 			}

@@ -77,7 +77,7 @@ namespace Reko.UnitTests.Analysis
 
             var oldSig = proc.Signature;
             var usb = new UserSignatureBuilder(program);
-            usb.BuildSignatures();
+            usb.BuildSignatures(new FakeDecompilerEventListener());
             Assert.AreSame(oldSig, proc.Signature);
         }
 
@@ -159,7 +159,7 @@ namespace Reko.UnitTests.Analysis
             Given_UserSignature(0x01000, "int test(PLATFORMDEF a, USRDEF b)");
 
             var usb = new UserSignatureBuilder(program);
-            usb.BuildSignatures();
+            usb.BuildSignatures(new FakeDecompilerEventListener());
 
             var sigExp =
 @"Register int32 test(Stack PLATFORMDEF a, Stack USRDEF b)
