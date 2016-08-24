@@ -73,15 +73,15 @@ main_entry:
 // LocalsOut: fp(32)
 
 l00401168:
-	word32 esp_12
-	word32 ebp_13
-	word32 ecx_14
-	word32 eax_15
-	byte SZO_16
-	byte C_17
+	word32 esp_14
+	word32 ebp_15
+	word32 ecx_16
+	word32 eax_17
+	byte SZO_18
+	byte C_19
 	call printf (retsize: 4; depth: 12)
-		uses: dwLoc04_8,dwLoc08_11,ebp_9,esp_10
-		defs: C_17,eax_15,ebp_13,ecx_14,esp_12,SZO_16
+		uses: dwLoc04_10,dwLoc08_13,ebp_11,esp_12
+		defs: C_19,eax_17,ebp_15,ecx_16,esp_14,SZO_18
 	return 0x00000000
 // DataOut:
 // DataOut (flags): 

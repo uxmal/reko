@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Typing
             }
         }
 
-        private void RunTest(Action<ProcedureBuilder> doBuild, string outputFile)
+        protected override void RunTest(Action<ProcedureBuilder> doBuild, string outputFile)
         {
             var pb = new ProgramBuilder();
             pb.Add("proc1", doBuild);

@@ -123,7 +123,7 @@ namespace Reko.UnitTests.Typing
             RunTest(program, outputFile);
         }
 
-        protected void RunTest(Action<ProcedureBuilder> pg, string outputFile)
+        protected virtual void RunTest(Action<ProcedureBuilder> pg, string outputFile)
         {
             ProcedureBuilder m = new ProcedureBuilder();
             pg(m);

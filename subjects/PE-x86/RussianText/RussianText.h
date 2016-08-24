@@ -134,27 +134,27 @@ T_30: (in argv : (ptr (ptr char)))
   Class: Eq_30
   DataType: (ptr (ptr char))
   OrigDataType: (ptr (ptr char))
-T_31: (in esp_12 : word32)
+T_31: (in esp_14 : word32)
   Class: Eq_31
   DataType: word32
   OrigDataType: word32
-T_32: (in ebp_13 : word32)
+T_32: (in ebp_15 : word32)
   Class: Eq_32
   DataType: word32
   OrigDataType: word32
-T_33: (in ecx_14 : word32)
+T_33: (in ecx_16 : word32)
   Class: Eq_33
   DataType: word32
   OrigDataType: word32
-T_34: (in eax_15 : word32)
+T_34: (in eax_17 : word32)
   Class: Eq_34
   DataType: word32
   OrigDataType: word32
-T_35: (in SZO_16 : byte)
+T_35: (in SZO_18 : byte)
   Class: Eq_35
   DataType: byte
   OrigDataType: byte
-T_36: (in C_17 : byte)
+T_36: (in C_19 : byte)
   Class: Eq_36
   DataType: byte
   OrigDataType: byte

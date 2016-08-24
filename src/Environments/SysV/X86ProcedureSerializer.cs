@@ -32,8 +32,6 @@ namespace Reko.Environments.SysV
     public class X86ProcedureSerializer : ProcedureSerializer
     {
         private ArgumentDeserializer argser;
-        private int ir;
-        private int fr;
 
         public X86ProcedureSerializer(IProcessorArchitecture arch, ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
             : base(arch, typeLoader, defaultCc)
