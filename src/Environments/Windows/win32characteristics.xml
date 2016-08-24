@@ -6,8 +6,9 @@
     </characteristics>
   </entry>
   <entry name="Py_BuildValue">
+    <!-- @ptomin This needs to be moved to a 'PythonCharacteristics.xml' file -->
     <characteristics>
-      <varargs>Reko.Core.Analysis.PyBuildValueFormatParser,Reko.Core</varargs>
+      <varargs>Reko.Libraries.Python.PyBuildValueFormatParser,Reko.Libraries.Python</varargs>
     </characteristics>
   </entry>
   <entry name="exit">

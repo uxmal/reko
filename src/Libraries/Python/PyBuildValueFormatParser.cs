@@ -17,16 +17,17 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
- 
+
+using Reko.Core;
+using Reko.Core.Analysis;
+using Reko.Core.CLanguage;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Reko.Core;
-using Reko.Core.CLanguage;
-using Reko.Core.Types;
 
-namespace Reko.Core.Analysis
+namespace Reko.Libraries.Python
 {
     public class PyBuildValueFormatParser : IVarargsFormatParser
     {

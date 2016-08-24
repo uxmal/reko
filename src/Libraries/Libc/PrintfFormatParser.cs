@@ -18,13 +18,15 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Core.Analysis;
 using Reko.Core.CLanguage;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 
-namespace Reko.Core.Analysis
+namespace Reko.Libraries.Libc
 {
     /// <summary>
     /// Parses standard C printf format

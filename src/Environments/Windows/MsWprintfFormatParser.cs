@@ -25,6 +25,7 @@ using System.Linq;
 using System.Text;
 using Reko.Core.Types;
 using Reko.Core;
+using Reko.Libraries.Libc;
 
 namespace Reko.Environments.Windows
 {

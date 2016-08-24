@@ -17,12 +17,12 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
- 
+
 using NUnit.Framework;
 using Reko.Core;
-using Reko.Core.Analysis;
 using Reko.Core.CLanguage;
 using Reko.Core.Types;
+using Reko.Libraries.Python;
 using Rhino.Mocks;
 
 namespace Reko.UnitTests.Core.Analysis
