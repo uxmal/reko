@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2016 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,35 +21,29 @@
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.CLanguage;
-using Reko.Core.Services;
 using Reko.Core.Types;
-using Reko.Libraries.Libc;
+using Reko.Libraries.Python;
 using Rhino.Mocks;
-using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Core.Analysis
 {
     [TestFixture]
-    public class ScanfFormatParserTests
+    public class PyBuildValueFormatParserTests
     {
-        private ScanfFormatParser parser;
+        private PyBuildValueFormatParser parser;
         private MockRepository mr;
-        private DecompilerEventListener eventListener;
-        private ServiceContainer sc;
         private Program program;
 
         [SetUp]
         public void Setup()
         {
             this.mr = new MockRepository();
-            this.sc = new ServiceContainer();
-            this.eventListener = mr.Stub<DecompilerEventListener>();
-            this.sc.AddService(typeof(DecompilerEventListener), this.eventListener);
             var arch = mr.Stub<IProcessorArchitecture>();
             var platform = mr.Stub<IPlatform>();
             arch.Stub(a => a.WordWidth).Return(PrimitiveType.Word32);
             platform.Stub(p => p.Architecture).Return(arch);
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Long)).Return(4);
+            platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.LongLong)).Return(8);
             platform.Stub(p => p.GetByteSizeFromCBasicType(CBasicType.Double)).Return(8);
             platform.Stub(p => p.PointerType).Return(PrimitiveType.Pointer32);
             this.program = new Program { Platform = platform };
@@ -59,104 +53,112 @@ namespace Reko.UnitTests.Core.Analysis
         {
             mr.ReplayAll();
 
-            this.parser = new ScanfFormatParser(program, Address.Ptr32(0x123400), formatString, sc);
+            this.parser = new PyBuildValueFormatParser(
+                program,
+                Address.Ptr32(0x123400),
+                formatString,
+                null);
             parser.Parse();
 
             mr.VerifyAll();
         }
 
         [Test]
-        public void SFP_Empty()
+        public void PBFP_Empty()
         {
             ParseChar32("");
             Assert.AreEqual(0, parser.ArgumentTypes.Count);
         }
 
         [Test]
-        public void SFP_NoFormat()
+        public void PBFP_NoFormat()
         {
-            ParseChar32("Hello world");
+            ParseChar32(":, \t");
             Assert.AreEqual(0, parser.ArgumentTypes.Count);
         }
 
         [Test]
-        public void SFP_LiteralPercent()
+        public void PBFP_Integer()
         {
-            ParseChar32("H%%ello world");
-            Assert.AreEqual(0, parser.ArgumentTypes.Count);
-        }
-
-        [Test]
-        public void SFP_32_Decimal()
-        {
-            ParseChar32("Total: %d");
+            ParseChar32("i:");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
-            Assert.AreEqual("(ptr int32)", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("int32", parser.ArgumentTypes[0].ToString());
         }
 
         [Test]
-        public void SFP_32_Char()
+        public void PBFP_Float()
         {
-            ParseChar32("'%c'");
+            ParseChar32("f");
             Assert.AreEqual(1, parser.ArgumentTypes.Count);
-            Assert.AreEqual("(ptr char)", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("real64", parser.ArgumentTypes[0].ToString());
         }
 
         [Test]
-        public void SFP_32_TwoFormats()
+        public void PBFP_Double()
         {
-            ParseChar32("%c%x");
+            ParseChar32("d");
+            Assert.AreEqual(1, parser.ArgumentTypes.Count);
+            Assert.AreEqual("real64", parser.ArgumentTypes[0].ToString());
+        }
+
+        [Test]
+        public void PBFP_Char()
+        {
+            ParseChar32("c");
+            Assert.AreEqual(1, parser.ArgumentTypes.Count);
+            Assert.AreEqual("int32", parser.ArgumentTypes[0].ToString());
+        }
+
+        [Test]
+        public void PBFP_TwoFormats()
+        {
+            ParseChar32("cs");
+            Assert.AreEqual(2, parser.ArgumentTypes.Count);
+            Assert.AreEqual("int32", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("(ptr char)", parser.ArgumentTypes[1].ToString());
+
+        }
+
+        [Test]
+        public void PBFP_PyObject()
+        {
+            ParseChar32("O");
+            Assert.AreEqual(1, parser.ArgumentTypes.Count);
+            Assert.AreEqual("(ptr PyObject)", parser.ArgumentTypes[0].ToString());
+        }
+
+        [Test]
+        public void PBFP_PyObjectConverter()
+        {
+            ParseChar32("O&");
+            Assert.AreEqual(2, parser.ArgumentTypes.Count);
+            Assert.AreEqual("(ptr code)", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("(ptr void)", parser.ArgumentTypes[1].ToString());
+        }
+
+        [Test]
+        public void PBFP_longlong()
+        {
+            ParseChar32("(LK)");
+            Assert.AreEqual(2, parser.ArgumentTypes.Count);
+            Assert.AreEqual("int64", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("uint64", parser.ArgumentTypes[1].ToString());
+        }
+
+        [Test]
+        public void PBFP_list()
+        {
+            ParseChar32("[(d){d:d}[d,d,d]]");
+            Assert.AreEqual(6, parser.ArgumentTypes.Count);
+        }
+
+        [Test]
+        public void PBFP_StringAndLength()
+        {
+            ParseChar32("s#");
             Assert.AreEqual(2, parser.ArgumentTypes.Count);
             Assert.AreEqual("(ptr char)", parser.ArgumentTypes[0].ToString());
-            Assert.AreEqual("(ptr uint32)", parser.ArgumentTypes[1].ToString());
-        }
-
-        [Test]
-        public void SFP_32_Short()
-        {
-            ParseChar32("%hd");
-            Assert.AreEqual(1, parser.ArgumentTypes.Count);
-            Assert.AreEqual("(ptr int16)", parser.ArgumentTypes[0].ToString());
-        }
-
-        [Test]
-        public void SFP_32_I64_is_unknown_Microsoft_extension()
-        {
-            ParseChar32("%I64x");
-            Assert.AreEqual(1, parser.ArgumentTypes.Count);
-            Assert.AreEqual("<unknown>", parser.ArgumentTypes[0].ToString());
-        }
-
-        [Test]
-        public void SFP_32_Invalid_S()
-        {
-            eventListener.Expect(e => e.CreateAddressNavigator(null, null)).IgnoreArguments();
-            eventListener.Expect(e => e.Warn(null, null, new object[0])).IgnoreArguments();
-            ParseChar32("%S");
-        }
-
-        [Test]
-        public void SFP_32_longlong()
-        {
-            ParseChar32("%lli");
-            Assert.AreEqual(1, parser.ArgumentTypes.Count);
-            Assert.AreEqual("(ptr int64)", parser.ArgumentTypes[0].ToString());
-        }
-
-        [Test]
-        public void SFP_32_Pointer()
-        {
-            ParseChar32("%08p");
-            Assert.AreEqual(1, parser.ArgumentTypes.Count);
-            Assert.AreEqual("(ptr ptr32)", parser.ArgumentTypes[0].ToString());
-        }
-
-        [Test]
-        public void SFP_32_String()
-        {
-            ParseChar32("%08s");
-            Assert.AreEqual(1, parser.ArgumentTypes.Count);
-            Assert.AreEqual("(ptr char)", parser.ArgumentTypes[0].ToString());
+            Assert.AreEqual("int32", parser.ArgumentTypes[1].ToString());
         }
     }
 }

@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Analysis;
 using Reko.Core.Types;
+using Reko.Libraries.Libc;
 using System;
 using System.Collections.Generic;
 using System.Linq;

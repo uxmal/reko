@@ -156,7 +156,6 @@
     <Compile Include="AddressRange.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Analysis\ScanfFormatParser.cs" />
     <Compile Include="ApplicationBuilder.cs" />
     <Compile Include="Archives\Archive.cs" />
     <Compile Include="Archives\ArchiveDirectoryEntry.cs" />
@@ -683,7 +682,6 @@
     </Compile>
     <Compile Include="Types\VoidType.cs" />
     <Compile Include="UserData.cs" />
-    <Compile Include="Analysis\PrintfFormatParser.cs" />
     <Compile Include="WorkList.cs">
       <SubType>Code</SubType>
     </Compile>

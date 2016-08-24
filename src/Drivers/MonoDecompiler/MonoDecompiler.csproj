@@ -202,6 +202,8 @@
     <Environments Include="$(ProjectDir)..\..\Environments\Trs80\$(OutDir)Reko.Environments.Trs80.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\Windows\$(OutDir)Reko.Environments.Windows.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\ZX81\$(OutDir)Reko.Environments.ZX81.*" />
+    <Libraries Include="$(ProjectDir)..\..\Libraries\Libc\$(OutDir)Reko.Libraries.Libc.*" />
+    <Libraries Include="$(ProjectDir)..\..\Libraries\Python\$(OutDir)Reko.Libraries.Python.*" />
     <ConfigurationFiles Include="$(ProjectDir)..\..\Drivers\reko.config" />
   </ItemGroup>
   <Target Name="BeforeBuild">
@@ -213,6 +215,8 @@
     <Copy SourceFiles="@(Architectures)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Copying Environments to $(TargetDir)" />
     <Copy SourceFiles="@(Environments)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <Message Importance="high" Text="Copying Libraries to $(TargetDir)" />
+    <Copy SourceFiles="@(Libraries)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Copying configuration files to $(TargetDir)" />
     <Copy SourceFiles="@(ConfigurationFiles)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
   </Target>

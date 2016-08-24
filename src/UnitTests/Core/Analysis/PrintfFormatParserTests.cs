@@ -18,14 +18,15 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Analysis;
-using NUnit.Framework;
-using Rhino.Mocks;
-using Reko.Core.Services;
-using System.ComponentModel.Design;
 using Reko.Core.CLanguage;
+using Reko.Core.Services;
 using Reko.Core.Types;
+using Reko.Libraries.Libc;
+using Rhino.Mocks;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Core.Analysis
 {
