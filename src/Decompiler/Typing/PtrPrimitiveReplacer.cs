@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -60,7 +61,7 @@ namespace Reko.Typing
 				: null;
 		}
 
-		public bool ReplaceAll()
+		public bool ReplaceAll(DecompilerEventListener eventListener)
 		{
 			changed = false;
 			classesVisited  = new HashSet<EquivalenceClass>();
@@ -68,6 +69,8 @@ namespace Reko.Typing
             // Replace the DataType of all the equivalence classes
 			foreach (TypeVariable tv in store.TypeVariables)
 			{
+                if (eventListener.IsCanceled())
+                    return false;
 				EquivalenceClass eq = tv.Class;
 				if (!classesVisited.Contains(eq))
 				{
@@ -80,12 +83,16 @@ namespace Reko.Typing
             // Replace the DataType of all the TypeVariables
 			foreach (TypeVariable tv in store.TypeVariables)
 			{
+                if (eventListener.IsCanceled())
+                    return false;
                 tv.DataType = Replace(tv.DataType);
 			}
 
 			foreach (EquivalenceClass eq in classesVisited)
 			{
-				if (eq != program.Globals.TypeVariable.Class &&
+                if (eventListener.IsCanceled())
+                    return false;
+                if (eq != program.Globals.TypeVariable.Class &&
                     (eq.DataType is PrimitiveType ||
                     eq.DataType is VoidType ||
 					eq.DataType is EquivalenceClass ||

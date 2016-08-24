@@ -98,7 +98,7 @@ namespace Reko.UnitTests.Typing
             scan.EnqueueImageSymbol(ep, true);
             scan.ScanImage();
 
-            var dfa = new DataFlowAnalysis(program, null, new FakeDecompilerEventListener());
+            var dfa = new DataFlowAnalysis(program, null, eventListener);
             dfa.AnalyzeProgram();
             RunTest(program, outputFile);
         }
@@ -123,7 +123,7 @@ namespace Reko.UnitTests.Typing
             RunTest(program, outputFile);
         }
 
-        protected void RunTest(Action<ProcedureBuilder> pg, string outputFile)
+        protected virtual void RunTest(Action<ProcedureBuilder> pg, string outputFile)
         {
             ProcedureBuilder m = new ProcedureBuilder();
             pg(m);

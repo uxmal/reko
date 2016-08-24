@@ -19,9 +19,8 @@
 #endregion
 
 using NUnit.Framework;
-using System.Text;
-using Reko.Arch.X86;
 using Reko.Arch.PowerPC;
+using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
@@ -29,11 +28,13 @@ using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
+using System.ComponentModel.Design;
+using System.Text;
 
 namespace Reko.UnitTests.Scanning
 {
     [TestFixture]
-    class VarargsFormatScannerTests
+    public class VarargsFormatScannerTests
     {
         private ProcedureBuilder m;
         private X86ArchitectureFlat32 x86;
@@ -45,18 +46,20 @@ namespace Reko.UnitTests.Scanning
         private FunctionType x86PrintfSig;
         private FunctionType x86SprintfSig;
         private FunctionType ppcPrintfSig;
+        private ServiceContainer sc;
+        private Address addrInstr;
 
         [SetUp]
         public void Setup()
         {
+            this.sc = new ServiceContainer();
             this.x86 = new X86ArchitectureFlat32();
             this.ppc = new PowerPcArchitecture32();
             this.m = new ProcedureBuilder();
             this.printfChr = new ProcedureCharacteristics()
             {
                 VarargsParserClass =
-                    "Reko.Environments.Windows.MsPrintfFormatParser," +
-                    "Reko.Environments.Windows"
+                    "Reko.Libraries.Libc.PrintfFormatParser,Reko.Libraries.Libc"
             };
             this.x86PrintfSig = new FunctionType(
                 null,
@@ -74,6 +77,7 @@ namespace Reko.UnitTests.Scanning
                 null,
                 RegId(null,  ppc, "r3", CStringType()),
                 RegId("...", ppc, "r4", new UnknownType()));
+            this.addrInstr = Address.Ptr32(0x123400);
         }
 
         private SegmentMap CreateSegmentMap(uint uiAddr, uint size)
@@ -87,7 +91,7 @@ namespace Reko.UnitTests.Scanning
         {
             this.state = program.Architecture.CreateProcessorState();
             var frame = program.Architecture.CreateFrame();
-            return new VarargsFormatScanner(program, frame, state);
+            return new VarargsFormatScanner(program, frame, state, sc);
         }
 
         private void WriteString(Program program, uint uiAddr, string str)
@@ -152,14 +156,14 @@ namespace Reko.UnitTests.Scanning
             Given_VaScanner(x86);
             var emptyChr = new ProcedureCharacteristics();
             var emptySig = new FunctionType();
-            Assert.IsFalse(vafs.TryScan(null, null));
-            Assert.IsFalse(vafs.TryScan(emptySig, null));
-            Assert.IsFalse(vafs.TryScan(null, emptyChr));
-            Assert.IsFalse(vafs.TryScan(emptySig, emptyChr));
-            Assert.IsFalse(vafs.TryScan(x86PrintfSig, null));
-            Assert.IsFalse(vafs.TryScan(x86PrintfSig, emptyChr));
-            Assert.IsFalse(vafs.TryScan(null, printfChr));
-            Assert.IsFalse(vafs.TryScan(emptySig, printfChr));
+            Assert.IsFalse(vafs.TryScan(addrInstr, null, null));
+            Assert.IsFalse(vafs.TryScan(addrInstr, emptySig, null));
+            Assert.IsFalse(vafs.TryScan(addrInstr, null, emptyChr));
+            Assert.IsFalse(vafs.TryScan(addrInstr, emptySig, emptyChr));
+            Assert.IsFalse(vafs.TryScan(addrInstr, x86PrintfSig, null));
+            Assert.IsFalse(vafs.TryScan(addrInstr, x86PrintfSig, emptyChr));
+            Assert.IsFalse(vafs.TryScan(addrInstr, null, printfChr));
+            Assert.IsFalse(vafs.TryScan(addrInstr, emptySig, printfChr));
         }
 
         [Test]
@@ -167,7 +171,7 @@ namespace Reko.UnitTests.Scanning
         {
             Given_VaScanner(x86);
             Given_StackString(4, "%d %f");
-            Assert.IsTrue(vafs.TryScan(x86PrintfSig, printfChr));
+            Assert.IsTrue(vafs.TryScan(addrInstr, x86PrintfSig, printfChr));
             var c = Constant.Word32(666);
             var instr = vafs.BuildInstruction(c, new CallSite(4, 0), printfChr);
             Assert.AreEqual(
@@ -181,7 +185,7 @@ namespace Reko.UnitTests.Scanning
         {
             Given_VaScanner(x86);
             Given_StackString(8, "%c");
-            Assert.IsTrue(vafs.TryScan(x86SprintfSig, printfChr));
+            Assert.IsTrue(vafs.TryScan(addrInstr, x86SprintfSig, printfChr));
             var ep = new ExternalProcedure("sprintf", x86SprintfSig);
             var pc = new ProcedureConstant(new CodeType(), ep);
             var instr = vafs.BuildInstruction(pc, new CallSite(4, 0), printfChr);
@@ -202,7 +206,7 @@ namespace Reko.UnitTests.Scanning
         {
             Given_VaScanner(ppc);
             Given_RegString("r3", "%d%d");
-            Assert.IsTrue(vafs.TryScan(ppcPrintfSig, printfChr));
+            Assert.IsTrue(vafs.TryScan(addrInstr, ppcPrintfSig, printfChr));
             var c = Constant.Word32(0x123);
             var instr = vafs.BuildInstruction(c, new CallSite(4, 0), printfChr);
             Assert.AreEqual(

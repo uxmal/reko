@@ -181,6 +181,7 @@ namespace Reko.UnitTests.Scanning
             this.state = arch.CreateProcessorState();
             var asm = new X86Assembler(sc, new DefaultPlatform(sc, arch), addr, new List<ImageSymbol>());
             scanner = mr.StrictMock<IScanner>();
+            scanner.Stub(s => s.Services).Return(sc);
             m(asm);
             lr = asm.GetImage();
             host = new RewriterHost(

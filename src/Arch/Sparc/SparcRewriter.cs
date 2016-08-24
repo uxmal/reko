@@ -102,7 +102,8 @@ namespace Reko.Arch.Sparc
                 case Opcode.bleu: RewriteBranch(emitter.Test(ConditionCode.ULE, Grf(FlagM.CF | FlagM.ZF))); break;
                 case Opcode.bcc: RewriteBranch(emitter.Test(ConditionCode.UGE, Grf(FlagM.CF))); break;
                 case Opcode.bcs: RewriteBranch(emitter.Test(ConditionCode.ULT, Grf(FlagM.CF))); break;
-                case Opcode.bpos: RewriteBranch(emitter.Test(ConditionCode.GT, Grf(FlagM.NF))); break;
+                case Opcode.bneg: RewriteBranch(emitter.Test(ConditionCode.LT, Grf(FlagM.NF))); break;
+                case Opcode.bpos: RewriteBranch(emitter.Test(ConditionCode.GE, Grf(FlagM.NF))); break;
                 //                    Z
                 //case Opcode.bgu  not (C or Z)
                 //case Opcode.bleu (C or Z)

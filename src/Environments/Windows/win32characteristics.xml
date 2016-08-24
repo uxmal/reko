@@ -5,6 +5,12 @@
       <varargs>Reko.Environments.Windows.MsPrintfFormatParser,Reko.Environments.Windows</varargs>
     </characteristics>
   </entry>
+  <entry name="Py_BuildValue">
+    <!-- @ptomin This needs to be moved to a 'PythonCharacteristics.xml' file -->
+    <characteristics>
+      <varargs>Reko.Libraries.Python.PyBuildValueFormatParser,Reko.Libraries.Python</varargs>
+    </characteristics>
+  </entry>
   <entry name="exit">
     <characteristics>
       <terminates>true</terminates>
@@ -13,6 +19,16 @@
   <entry name="ExitProcess">
     <characteristics>
       <terminates>true</terminates>
+    </characteristics>
+  </entry>
+  <entry name="sprintf">
+    <characteristics>
+      <varargs>Reko.Environments.Windows.MsPrintfFormatParser,Reko.Environments.Windows</varargs>
+    </characteristics>
+  </entry>
+  <entry name="wprintf">
+    <characteristics>
+      <varargs>Reko.Environments.Windows.MsWPrintfFormatParser,Reko.Environments.Windows</varargs>
     </characteristics>
   </entry>
 </characteristics>

@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Typing
                 var aen = new ExpressionNormalizer(program.Platform.PointerType);
                 var eqb = new EquivalenceClassBuilder(factory, store);
 
-                var tyco = new TypeCollector(factory, store, program, null);
+                var tyco = new TypeCollector(factory, store, program, new FakeDecompilerEventListener());
 
                 aen.Transform(program);
                 eqb.Build(program);
@@ -80,7 +80,7 @@ namespace Reko.UnitTests.Typing
             }
         }
 
-        private void RunTest(Action<ProcedureBuilder> doBuild, string outputFile)
+        protected override void RunTest(Action<ProcedureBuilder> doBuild, string outputFile)
         {
             var pb = new ProgramBuilder();
             pb.Add("proc1", doBuild);

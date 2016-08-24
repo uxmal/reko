@@ -92,6 +92,11 @@ namespace Reko.UnitTests.Mocks
             lastStatus = status;
         }
 
+        public bool IsCanceled()
+        {
+            return false;
+        }
+
         public void CodeStructuringComplete()
         {
         }

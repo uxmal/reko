@@ -157,7 +157,7 @@ namespace Reko.Analysis
 		{
 			var sb = new StringBuilder();
 			var arch = program.Architecture;
-            foreach (var reg in arr.OrderBy(r => r.Name))
+            foreach (var reg in arr.Where(r => r != null).OrderBy(r => r.Name))
             {
                 sb.Append(reg.Name);
                 sb.Append(" ");
@@ -180,6 +180,8 @@ namespace Reko.Analysis
             BlockFlow item;
             while (worklist.GetWorkItem(out item))
 			{
+                if (eventListener.IsCanceled())
+                    break;
 			    eventListener.ShowProgress(string.Format("Blocks left: {0}", worklist.Count), initial - worklist.Count, initial);
 				ProcessBlock(item);
 			}

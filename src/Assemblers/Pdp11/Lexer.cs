@@ -281,7 +281,6 @@ namespace Reko.Assemblers.Pdp11
         {
             this.Type = type;
             this.Linenumber = lineNumber;
-            Debug.Print("Token: {0}", this);
         }
 
         public Token(TokenType type, object value, int linenumber)
@@ -289,7 +288,6 @@ namespace Reko.Assemblers.Pdp11
             this.Type = type;
             this.Value = value;
             this.Linenumber = linenumber;
-            Debug.Print("Token: {0}", this);
         }
 
         public override string ToString()

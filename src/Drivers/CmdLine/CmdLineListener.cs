@@ -100,5 +100,10 @@ namespace Reko.CmdLine
         public void ShowProgress(string caption, int numerator, int denominator)
         {
         }
+
+        public bool IsCanceled()
+        {
+            return false;
+        }
     }
 }

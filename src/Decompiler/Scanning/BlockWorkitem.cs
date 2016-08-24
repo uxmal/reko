@@ -93,7 +93,7 @@ namespace Reko.Scanning
 
             frame = blockCur.Procedure.Frame;
             this.stackReg = frame.EnsureRegister(arch.StackRegister);
-            this.vaScanner = new VarargsFormatScanner(program, frame, state);
+            this.vaScanner = new VarargsFormatScanner(program, frame, state, scanner.Services);
             rtlStream = scanner.GetTrace(addrStart, state, frame)
                 .GetEnumerator();
 
@@ -519,7 +519,7 @@ namespace Reko.Scanning
             ProcedureCharacteristics chr,
             CallSite site)
         {
-            if (vaScanner.TryScan(sig, chr))
+            if (vaScanner.TryScan(ric.Address, sig, chr))
             {
                 Emit(vaScanner.BuildInstruction(callee, site, chr));
             }

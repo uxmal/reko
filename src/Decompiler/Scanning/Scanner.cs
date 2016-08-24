@@ -46,6 +46,8 @@ namespace Reko.Scanning
     /// </summary>
     public interface IScanner
     {
+        IServiceProvider Services { get; }
+
         void ScanImage();
         ProcedureBase ScanProcedure(Address addr, string procedureName, ProcessorState state);
 
@@ -94,6 +96,14 @@ namespace Reko.Scanning
     /// </remarks>
     public class Scanner : IScanner, IRewriterHost
     {
+        private const int PriorityEntryPoint = 5;
+        private const int PriorityJumpTarget = 6;
+        private const int PriorityGlobalData = 7;
+        private const int PriorityVector = 4;
+        private const int PriorityBlockPromote = 3;
+
+        private static TraceSwitch trace = new TraceSwitch("Scanner", "Traces the progress of the Scanner");
+
         private Program program;
         private PriorityQueue<WorkItem> queue;
         private SegmentMap segmentMap;
@@ -106,16 +116,7 @@ namespace Reko.Scanning
         private DecompilerEventListener eventListener;
         private HashSet<Procedure> visitedProcs;
         private CancellationTokenSource cancelSvc;
-
         private HashSet<Address> scannedGlobalData = new HashSet<Address>();
-
-        private static TraceSwitch trace = new TraceSwitch("Scanner", "Traces the progress of the Scanner");
-        
-        private const int PriorityEntryPoint = 5;
-        private const int PriorityJumpTarget = 6;
-        private const int PriorityGlobalData = 7;
-        private const int PriorityVector = 4;
-        private const int PriorityBlockPromote = 3;
 
         public Scanner(
             Program program, 
@@ -125,6 +126,7 @@ namespace Reko.Scanning
             this.program = program;
             this.segmentMap = program.SegmentMap;
             this.importResolver = importResolver;
+            this.Services = services;
             this.eventListener = services.RequireService<DecompilerEventListener>();
             this.cancelSvc = services.GetService<CancellationTokenSource>();
             if (segmentMap == null)
@@ -141,6 +143,8 @@ namespace Reko.Scanning
             this.importReferences = program.ImportReferences;
             this.visitedProcs = new HashSet<Procedure>();
         }
+
+        public IServiceProvider Services { get; private set; }
 
         private class BlockRange
         {
@@ -835,6 +839,10 @@ namespace Reko.Scanning
         {
             while (queue.Count > 0)
             {
+                if (eventListener.IsCanceled())
+                {
+                    break;
+                }
                 var workitem = queue.Dequeue();
                 try
                 {

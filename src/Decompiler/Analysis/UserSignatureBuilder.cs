@@ -23,6 +23,7 @@ using Reko.Core.CLanguage;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -50,12 +51,13 @@ namespace Reko.Analysis
         /// For each procedure, either use a user-supplied signature, 
         /// or the predefined one.
         /// </summary>
-        public void BuildSignatures()
+        public void BuildSignatures(DecompilerEventListener listener)
         {
             foreach (var de in program.Procedures)
             {
+                if (listener.IsCanceled())
+                    break;
                 BuildSignature(de.Key, de.Value);
-                return;
             }
         }
 

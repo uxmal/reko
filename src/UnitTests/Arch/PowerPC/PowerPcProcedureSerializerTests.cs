@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Arch.PowerPC
 
         private void Given_ProcedureSerializer()
         {
-            this.deserializer = mockFactory.CreateDeserializer();
+            this.deserializer = mockFactory.CreateDeserializer(arch.PointerType.Size);
             this.ser = new PowerPcProcedureSerializer(arch, deserializer, "");
         }
 

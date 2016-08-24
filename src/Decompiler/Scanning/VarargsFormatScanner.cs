@@ -22,12 +22,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Reko.Core;
+using Reko.Core.Analysis;
 using Reko.Core.CLanguage;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using Reko.Evaluation;
+using Reko.Core.Services;
 
 namespace Reko.Scanning
 {
@@ -41,17 +43,20 @@ namespace Reko.Scanning
         private IProcessorArchitecture arch;
         private Frame frame;
         private ExpressionSimplifier eval;
+        private IServiceProvider services;
         private FunctionType sig;
 
         public VarargsFormatScanner(
             Program program,
             Frame frame,
-            EvaluationContext ctx)
+            EvaluationContext ctx,
+            IServiceProvider services)
         {
             this.program = program;
             this.arch = program.Architecture;
             this.frame = frame;
             this.eval = new ExpressionSimplifier(ctx);
+            this.services = services;
         }
 
         public Instruction BuildInstruction(
@@ -66,18 +71,18 @@ namespace Reko.Scanning
             return ab.CreateInstruction(this.sig, chr);
         }
 
-        public bool TryScan(FunctionType sig, ProcedureCharacteristics chr)
+        public bool TryScan(Address addrInstr, FunctionType sig, ProcedureCharacteristics chr)
         {
             if (
                 sig == null || !sig.IsVarargs() ||
                 chr == null || !VarargsParserSet(chr)
             )
             {
-                this.sig = null;
+                this.sig = null;    //$out parameter
                 return false;
             }
             var format = ReadVarargsFormat(sig);
-            var argTypes = ParseVarargsFormat(chr, format, program.Platform);
+            var argTypes = ParseVarargsFormat(addrInstr, chr, format);
             this.sig = ReplaceVarargs(sig, argTypes);
             return true;
         }
@@ -146,9 +151,9 @@ namespace Reko.Scanning
         }
 
         private IEnumerable<DataType> ParseVarargsFormat(
+            Address addrInstr,
             ProcedureCharacteristics chr,
-            string format,
-            IPlatform platform)
+            string format)
         {
             var type = Type.GetType(chr.VarargsParserClass);
             if (type == null)
@@ -158,12 +163,10 @@ namespace Reko.Scanning
                         chr.VarargsParserClass));
             var varargsParser = (IVarargsFormatParser)Activator.CreateInstance(
                 type,
+                program,
+                addrInstr,
                 format,
-                false,
-                platform.Architecture.WordWidth.Size,
-                platform.GetByteSizeFromCBasicType(CBasicType.Long),
-                platform.GetByteSizeFromCBasicType(CBasicType.Double),
-                platform.PointerType.Size);
+                services);
             varargsParser.Parse();
             return varargsParser.ArgumentTypes;
         }

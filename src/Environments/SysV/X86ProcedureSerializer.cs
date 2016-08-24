@@ -32,8 +32,6 @@ namespace Reko.Environments.SysV
     public class X86ProcedureSerializer : ProcedureSerializer
     {
         private ArgumentDeserializer argser;
-        private int ir;
-        private int fr;
 
         public X86ProcedureSerializer(IProcessorArchitecture arch, ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
             : base(arch, typeLoader, defaultCc)
@@ -53,7 +51,12 @@ namespace Reko.Environments.SysV
         {
             if (ss == null)
                 return null;
-            this.argser = new ArgumentDeserializer(this, Architecture, frame, Architecture.PointerType.Size);
+            this.argser = new ArgumentDeserializer(
+                this,
+                Architecture,
+                frame, 
+                Architecture.PointerType.Size,
+                Architecture.WordWidth.Size);
             Identifier ret = null;
             int fpuDelta = FpuStackOffset;
 

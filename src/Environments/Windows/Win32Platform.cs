@@ -74,7 +74,7 @@ namespace Reko.Environments.Windows
                         Name = "__fastfail",
                         Signature = new FunctionType(
                             null,
-                            frame.EnsureRegister(Registers.ecx)), //$bug what about win64?
+                            frame.EnsureRegister(Registers.ecx)),
                         Characteristics = new ProcedureCharacteristics
                         {
                             Terminates = true

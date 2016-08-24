@@ -160,8 +160,8 @@ namespace Reko.UnitTests.Arch.Z80
             AssertCode(
                 "0|L--|0100(2): 6 instructions",
                 "1|L--|Mem0[de:byte] = Mem0[hl:byte]",
-                "2|L--|hl = hl + 0x0001",
-                "3|L--|de = de + 0x0001",
+                "2|L--|hl = hl + 1",
+                "3|L--|de = de + 1",
                 "4|L--|bc = bc - 0x0001",
                 "5|T--|if (bc != 0x0000) branch 0100",
                 "6|L--|P = false");

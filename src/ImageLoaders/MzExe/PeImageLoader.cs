@@ -192,7 +192,7 @@ namespace Reko.ImageLoaders.MzExe
             case MACHINE_ARMNT: return new ArmRelocator(program);
             case MACHINE_i386: return new i386Relocator(Services, program);
             case MACHINE_R4000: return new MipsRelocator(Services, program);
-            case MACHINE_x86_64: return new x86_64Relocator(program);
+            case MACHINE_x86_64: return new x86_64Relocator(Services, program);
             default: throw new ArgumentException(string.Format("Unsupported machine type 0x:{0:X4} in PE hader.", peMachineType));
             }
         }
@@ -440,7 +440,7 @@ namespace Reko.ImageLoaders.MzExe
 			Section relocSection;
             if ((relocSection = sectionList.Find(section => this.rvaBaseRelocationTable >= section.VirtualAddress && this.rvaBaseRelocationTable < section.VirtualAddress + section.VirtualSize)) != null)
 			{
-                ApplyRelocations(relocSection.OffsetRawData, relocSection.SizeRawData, (uint)addrLoad.ToLinear(), relocations);
+                ApplyRelocations(relocSection.OffsetRawData, relocSection.SizeRawData, addrLoad, relocations);
 			} 
             var addrEp = platform.AdjustProcedureAddress(addrLoad + rvaStartAddress);
             var entrySym = CreateMainEntryPoint(
@@ -646,7 +646,7 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
 }
 
 #endif
-        public void ApplyRelocations(uint rvaReloc, uint size, uint baseOfImage, RelocationDictionary relocations)
+        public void ApplyRelocations(uint rvaReloc, uint size, Address baseOfImage, RelocationDictionary relocations)
 		{
 			ImageReader rdr = new LeImageReader(RawImage, rvaReloc);
 			uint rvaStop = rvaReloc + size;
@@ -947,35 +947,48 @@ void applyRelX86(uint8_t* Off, uint16_t Type, Defined* Sym,
             var functionStarts = new List<Address>();
             if (rvaExceptionTable == 0 || sizeExceptionTable == 0)
                 return;
+            var rdr = new LeImageReader(this.imgLoaded.Bytes, rvaExceptionTable);
             switch (machine)
             {
             default: 
                 Services.RequireService<IDiagnosticsService>()
                     .Warn(new NullCodeLocation(Filename), "Exception table reading not supported for machine #{0}.", machine);
                 break;
+            case MACHINE_x86_64:
+                while (rdr.Offset < rvaTableEnd)
+                {
+                    var addr = addrLoad + rdr.ReadLeUInt32();
+                    rdr.Seek(8);
+                    AddFunctionSymbol(addr, symbols);
+                }
+                break;
             case MACHINE_R4000:
-                var rdr = new LeImageReader(this.imgLoaded.Bytes, rvaExceptionTable);
                 while (rdr.Offset < rvaTableEnd)
                 {
                     var addr = Address.Ptr32(rdr.ReadLeUInt32());
                     rdr.Seek(16);
-                    ImageSymbol symOld;
-                    ImageSymbol symNew = new ImageSymbol(addr, null, new CodeType())
-                    {
-                        Type = SymbolType.Procedure,
-                        ProcessorState = arch.CreateProcessorState()
-                    };
-                    if (!symbols.TryGetValue(addr, out symOld))
-                    {
-                        symbols.Add(addr, symNew);
-                    }
-                    else
-                    {
-                        if (symOld.Name == null && symNew.Name != null)
-                            symbols[addr] = symNew;
-                    }
+                    AddFunctionSymbol(addr, symbols);
                 }
                 break;
+            }
+        }
+
+        private void AddFunctionSymbol(Address addr, SortedList<Address, ImageSymbol> symbols)
+        {
+            ImageSymbol symOld;
+            ImageSymbol symNew = new ImageSymbol(addr, null, new CodeType())
+            {
+                Type = SymbolType.Procedure,
+                ProcessorState = arch.CreateProcessorState()
+            };
+            if (!symbols.TryGetValue(addr, out symOld))
+            {
+                symbols.Add(addr, symNew);
+            }
+            else
+            {
+                if (symOld.Name == null && symNew.Name != null)
+                    symbols[addr] = symNew;
             }
         }
     }

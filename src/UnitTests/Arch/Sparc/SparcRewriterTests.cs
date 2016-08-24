@@ -451,9 +451,8 @@ namespace Reko.UnitTests.Arch.Sparc
             BuildTest(0x1CBFBFF1);  //  bpos 0001203C
             AssertCode(
                  "0|T--|00100000(4): 1 instructions",
-                 "1|TD-|if (Test(GT,N)) branch 000EFFC4");
+                 "1|TD-|if (Test(GE,N)) branch 000EFFC4");
         }
-
 
         [Test]
         public void SparcRw_ldd()

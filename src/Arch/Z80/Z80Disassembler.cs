@@ -288,6 +288,20 @@ namespace Reko.Arch.Z80
                             Op1 = new ImmediateOperand(Constant.Byte((byte) ((op >> 3) & 0x07))),
                             Op2 = new MemoryOperand(IndexRegister, offset, PrimitiveType.Byte)
                         };
+                    case 2:
+                        return new Z80Instruction
+                        {
+                            Code = Opcode.res,
+                            Op1 = new ImmediateOperand(Constant.Byte((byte)((op >> 3) & 0x07))),
+                            Op2 = new MemoryOperand(IndexRegister, offset, PrimitiveType.Byte)
+                        };
+                    case 3:
+                        return new Z80Instruction
+                        {
+                            Code = Opcode.set,
+                            Op1 = new ImmediateOperand(Constant.Byte((byte)((op >> 3) & 0x07))),
+                            Op2 = new MemoryOperand(IndexRegister, offset, PrimitiveType.Byte)
+                        };
                     }
                 }
                 else
@@ -644,7 +658,7 @@ namespace Reko.Arch.Z80
             new SingleByteOpRec(Opcode.illegal, Opcode.rst, "x18"),
 
             // E0
-            new SingleByteOpRec(Opcode.illegal, Opcode.illegal, ""),
+            new SingleByteOpRec(Opcode.illegal, Opcode.ret, "C"),
             new SingleByteOpRec(Opcode.illegal, Opcode.pop, "Wh"),
             new SingleByteOpRec(Opcode.jpo, Opcode.jp, "C,A"),
             new SingleByteOpRec(Opcode.illegal, Opcode.ex, "Sw,Wh"),

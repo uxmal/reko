@@ -32,6 +32,7 @@ using Rhino.Mocks;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -64,7 +65,7 @@ namespace Reko.UnitTests.Scanning
             r2 = new Identifier("r2", PrimitiveType.Word32, new RegisterStorage("r2", 2, 0, PrimitiveType.Word32));
             sp = new Identifier("sp", PrimitiveType.Word32, new RegisterStorage("sp", 15, 0, PrimitiveType.Word32));
             grf = proc.Frame.EnsureFlagGroup(Registers.eflags, 3, "SCZ", PrimitiveType.Byte);
-
+            var sc = new ServiceContainer();
             scanner = mr.StrictMock<IScanner>();
             arch = mr.Stub<IProcessorArchitecture>();
             program.Architecture = arch;
@@ -79,6 +80,7 @@ namespace Reko.UnitTests.Scanning
             arch.BackToRecord();
             arch.Stub(s => s.StackRegister).Return((RegisterStorage)sp.Storage);
             arch.Stub(s => s.PointerType).Return(PrimitiveType.Pointer32);
+            scanner.Stub(s => s.Services).Return(sc);
         }
 
         private BlockWorkitem CreateWorkItem(Address addr, ProcessorState state)
@@ -253,7 +255,6 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwi_CallingAllocaWithConstant()
         {
-            scanner = mr.StrictMock<IScanner>();
             program.Architecture = new X86ArchitectureFlat32();
             program.Platform = new DefaultPlatform(null, program.Architecture);
             var sig = CreateSignature(Registers.esp, Registers.eax);
@@ -286,7 +287,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwi_CallingAllocaWithNonConstant()
         {
-            scanner = mr.StrictMock<IScanner>();
+            arch = mr.Stub<IProcessorArchitecture>();
             arch = new X86ArchitectureFlat32();
             program.Platform = new DefaultPlatform(null, arch);
 
@@ -324,7 +325,6 @@ namespace Reko.UnitTests.Scanning
                 Terminates = true,
             };
             block = proc.AddBlock("the_block");
-            scanner = mr.StrictMock<IScanner>();
             arch.Stub(a => a.PointerType).Return(PrimitiveType.Word32);
             scanner.Stub(s => s.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
             scanner.Stub(s => s.GetCallSignatureAtAddress(Arg<Address>.Is.Anything)).Return(null);
@@ -554,7 +554,6 @@ testProc_exit:
             Assert.AreEqual("branch r1 l00100000_ds_t", block.Statements[0].ToString());
             var blFalse = block.ElseBlock;
             var blTrue = block.ThenBlock;
-            proc.Dump(true);
             Assert.AreEqual("l00100000_ds_f", blFalse.Name);     // delay-slot-false
             Assert.AreEqual(1, blFalse.Statements.Count);
             Assert.AreEqual("r0 = r1", blFalse.Statements[0].ToString());
@@ -659,7 +658,6 @@ testProc_exit:
             Assert.AreEqual("branch r1 l00100000_ds_t", block.Statements[0].ToString());
             var blFalse = block.ElseBlock;
             var blTrue = block.ThenBlock;
-            proc.Dump(true);
             Assert.AreEqual("l00100008", blFalse.Name);     // delay-slot was anulled.
             Assert.AreEqual(1, blFalse.Statements.Count);
             Assert.AreEqual("r2 = r1", blFalse.Statements[0].ToString());

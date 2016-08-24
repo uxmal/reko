@@ -19,19 +19,54 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Services;
 using System;
 
 namespace Reko.ImageLoaders.MzExe.Pe
 {
     public class x86_64Relocator : Relocator
     {
-        public x86_64Relocator(Program program) : base(program)
+        private DecompilerEventListener dcSvc;
+
+        public x86_64Relocator(IServiceProvider services, Program program) : base(program)
         {
+            this.dcSvc = services.RequireService<DecompilerEventListener>();
         }
 
-        public override void ApplyRelocation(uint baseOfImage, uint page, ImageReader rdr, RelocationDictionary relocations)
+        private const ushort RelocationAbsolute = 0;
+        private const ushort RelocationHigh = 1;
+        private const ushort RelocationLow = 2;
+        private const ushort RelocationHighLow = 3;
+
+
+        public override void ApplyRelocation(Address baseOfImage, uint page, ImageReader rdr, RelocationDictionary relocations)
         {
-            throw new NotImplementedException();
+            ushort fixup = rdr.ReadLeUInt16();
+            Address offset = baseOfImage + page + (fixup & 0x0FFFu);
+            var imgR = program.CreateImageReader(offset);
+            var imgW = program.CreateImageWriter(offset);
+            switch (fixup >> 12)
+            {
+            case RelocationAbsolute:
+                // Used for padding to 4-byte boundary, ignore.
+                break;
+            case RelocationHighLow:
+                {
+                    uint n = (uint)(imgR.ReadUInt32() + (baseOfImage - program.ImageMap.BaseAddress));
+                    imgW.WriteUInt32(n);
+    				relocations.AddPointerReference(offset.ToLinear() - imgW.MemoryArea.BaseAddress.ToLinear(), n);
+                    break;
+                }
+            case 0xA:
+                break;
+            default:
+                dcSvc.Warn(
+                    dcSvc.CreateAddressNavigator(program, offset),
+                    string.Format(
+                        "Unsupported i386 PE fixup type: {0:X}",
+                        fixup >> 12));
+                break;
+            }
         }
     }
 }

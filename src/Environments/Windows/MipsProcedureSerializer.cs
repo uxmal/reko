@@ -56,7 +56,7 @@ namespace Reko.Environments.Windows
         {
             if (ss == null)
                 return null;
-            this.argDeser = new ArgumentDeserializer(this, Architecture, frame, 0);
+            this.argDeser = new ArgumentDeserializer(this, Architecture, frame, 0, Architecture.WordWidth.Size);
             Identifier ret = null;
             int fpuDelta = FpuStackOffset;
 

@@ -74,6 +74,8 @@ namespace Reko.Analysis
             int i = 0;
 			foreach (Procedure proc in program.Procedures.Values)
 			{
+                if (eventListener.IsCanceled())
+                    break;
                 eventListener.ShowProgress("Building complex expressions.", i, program.Procedures.Values.Count);
                 ++i;
 
@@ -204,11 +206,11 @@ namespace Reko.Analysis
 		{
             eventListener.ShowStatus("Eliminating intra-block dead registers.");
             var usb = new UserSignatureBuilder(program);
-            usb.BuildSignatures();
-            CallRewriter.Rewrite(program);
-            IntraBlockDeadRegisters.Apply(program);
+            usb.BuildSignatures(eventListener);
+            CallRewriter.Rewrite(program, eventListener);
+            IntraBlockDeadRegisters.Apply(program, eventListener);
             eventListener.ShowStatus("Finding terminating procedures.");
-            var term = new TerminationAnalysis(flow);
+            var term = new TerminationAnalysis(flow, eventListener);
             term.Analyze(program);
 			eventListener.ShowStatus("Finding trashed registers.");
             var trf = new TrashedRegisterFinder(program, program.Procedures.Values, flow, eventListener);
@@ -218,7 +220,7 @@ namespace Reko.Analysis
             eventListener.ShowStatus("Computing register liveness.");
             var rl = RegisterLiveness.Compute(program, flow, eventListener);
             eventListener.ShowStatus("Rewriting calls.");
-			GlobalCallRewriter.Rewrite(program, flow);
+			GlobalCallRewriter.Rewrite(program, flow, eventListener);
 		}
 
         // EXPERIMENTAL - consult uxmal before using
@@ -239,7 +241,7 @@ namespace Reko.Analysis
         public void UntangleProcedures2()
         {
             var usb = new UserSignatureBuilder(program);
-            usb.BuildSignatures();
+            usb.BuildSignatures(eventListener);
             RewriteProceduresToSsa();
 
             // Discover values that are live out at each call site.

@@ -79,6 +79,8 @@ namespace Reko.Analysis
         {
             foreach (Procedure proc in procedures)
             {
+                if (eventListener.IsCanceled())
+                    break;
                 var pf = flow[proc];
                 foreach (var reg in pf.TrashedRegisters.ToList())
                 {
@@ -101,6 +103,8 @@ namespace Reko.Analysis
             var e = eventListener;
             while (worklist.GetWorkItem(out block))
             {
+                if (e.IsCanceled())
+                    break;
                 eventListener.ShowStatus(string.Format("Blocks left: {0}", worklist.Count));
                 ProcessBlock(block);
             }

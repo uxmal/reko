@@ -204,6 +204,7 @@ namespace Reko.Core
             return this.ToLinear().CompareTo(((Address)a).ToLinear());
 		}
 
+        public abstract Constant ToConstant();
         public abstract ushort ToUInt16();
         public abstract uint ToUInt32();
         public abstract ulong ToLinear();
@@ -312,6 +313,11 @@ namespace Reko.Core
             return new Address16((ushort)offset);
         }
 
+        public override Constant ToConstant()
+        {
+            return Constant.UInt16(uValue);
+        }
+
         public override ushort ToUInt16()
         {
             return uValue;
@@ -371,6 +377,11 @@ namespace Reko.Core
         public override Address NewOffset(ulong offset)
         {
             return new Address32((uint) offset);
+        }
+
+        public override Constant ToConstant()
+        {
+            return Constant.UInt32(uValue);
         }
 
         public override ushort ToUInt16()
@@ -447,6 +458,11 @@ namespace Reko.Core
             throw new InvalidOperationException("Returning UInt16 would lose precision.");
         }
 
+        public override Constant ToConstant()
+        {
+            return Constant.UInt32(ToUInt32());
+        }
+
         public override uint ToUInt32()
         {
             return (((uint)uSegment) << 4) + uOffset;
@@ -511,6 +527,11 @@ namespace Reko.Core
             return new ProtectedSegmentedAddress(uSegment, (ushort)offset);
         }
 
+        public override Constant ToConstant()
+        {
+            return Constant.UInt32(ToUInt32());
+        }
+
         public override ushort ToUInt16()
         {
             throw new InvalidOperationException("Returning UInt16 would lose precision.");
@@ -572,6 +593,11 @@ namespace Reko.Core
         public override Address NewOffset(ulong offset)
         {
             return new Address64(offset);
+        }
+
+        public override Constant ToConstant()
+        {
+            return Constant.UInt64(uValue);
         }
 
         public override ushort ToUInt16()

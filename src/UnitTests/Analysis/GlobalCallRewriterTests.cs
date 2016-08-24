@@ -27,6 +27,7 @@ using Reko.UnitTests.Mocks;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using Rhino.Mocks;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -44,7 +45,7 @@ namespace Reko.UnitTests.Analysis
 			program = new Program();
 			program.Architecture = new X86ArchitectureFlat32();
             program.Platform = new DefaultPlatform(null, program.Architecture);
-			gcr = new GlobalCallRewriter(program, null);
+			gcr = new GlobalCallRewriter(program, null, new FakeDecompilerEventListener());
             proc = new Procedure("foo", program.Architecture.CreateFrame());
 			flow = new ProcedureFlow(proc, program.Architecture);
 		}
@@ -122,7 +123,7 @@ namespace Reko.UnitTests.Analysis
 			f.EnsureStackVariable(Constant.Word16( 6), 2, PrimitiveType.Word16);
 			f.EnsureStackVariable(Constant.Word16( 0x0E), 2, PrimitiveType.Word32);
 
-			GlobalCallRewriter gcr = new GlobalCallRewriter(null, null);
+			GlobalCallRewriter gcr = new GlobalCallRewriter(null, null, new FakeDecompilerEventListener());
 			using (FileUnitTester fut = new FileUnitTester("Analysis/GcrStackParameters.txt"))
 			{
 				foreach (KeyValuePair<int,Identifier> de in gcr.GetSortedStackArguments(f))

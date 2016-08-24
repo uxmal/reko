@@ -34,6 +34,7 @@ namespace Reko.Environments.Windows
 {
     public class Win_x86_64_Platform : Platform
     {
+        private SystemService int29svc;
         private SystemService int3svc;
 
         public Win_x86_64_Platform(IServiceProvider sp, IProcessorArchitecture arch)
@@ -49,6 +50,22 @@ namespace Reko.Environments.Windows
                 Name = "int3",
                 Signature = new FunctionType(null, null, new Identifier[0]),
                 Characteristics = new ProcedureCharacteristics(),
+            };
+            int29svc = new SystemService
+            {
+                SyscallInfo = new SyscallInfo
+                {
+                    Vector = 0x29,
+                    RegisterValues = new RegValue[0]
+                },
+                Name = "__fastfail",
+                Signature = new FunctionType(
+                            null,
+                            new Identifier("rcx", PrimitiveType.Word64, Registers.rcx)),
+                Characteristics = new ProcedureCharacteristics
+                {
+                    Terminates = true
+                }
             };
         }
 
@@ -68,14 +85,21 @@ namespace Reko.Environments.Windows
 
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
-            return new X86ProcedureSerializer((IntelArchitecture)Architecture, typeLoader, defaultConvention);
+            return new X86_64ProcedureSerializer((IntelArchitecture)Architecture, typeLoader, defaultConvention);
+        }
+
+        public override ImageSymbol FindMainProcedure(Program program, Address addrStart)
+        {
+            return null;
         }
 
         public override SystemService FindService(int vector, ProcessorState state)
         {
-            if (int3svc.SyscallInfo.Matches(vector, state))
+            if (vector == 3)
                 return int3svc;
-            throw new NotImplementedException("INT services are not supported by " + this.GetType().Name);
+            if (vector == 0x29)
+                return int29svc;
+            return null;
         }
 
         public override int GetByteSizeFromCBasicType(CBasicType cb)

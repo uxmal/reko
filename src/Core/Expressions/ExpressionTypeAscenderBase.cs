@@ -85,7 +85,7 @@ namespace Reko.Core.Expressions
             DataType dt;
             if (binExp.Operator == Operator.IAdd)
             {
-                dt = FieldType(dtLeft, dtRight, binExp.Right);
+                dt = GetPossibleFieldType(dtLeft, dtRight, binExp.Right);
                 if (dt == null)
                 {
                     dt = PullSumDataType(dtLeft, dtRight);
@@ -149,25 +149,50 @@ namespace Reko.Core.Expressions
             return RecordDataType(dt, binExp);
         }
 
-        private DataType FieldType(DataType dtLeft, DataType dtRight, Expression right)
+        /// <summary>
+        /// If dtLeft is a (ptr (struct ...)) and dtRight is a non-pointer
+        /// constant, this could be a field access.
+        /// </summary>
+        /// <param name="dtLeft">Possible pointer to a structure</param>
+        /// <param name="dtRight">Type of possible offset</param>
+        /// <param name="right">Possible constant offset from start of structure</param>
+        /// <returns>A (ptr field-type) if it was a ptr-to-struct, else null.</returns>
+        private Pointer GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right)
+        {
+            Constant cOffset;
+            if (!right.As(out cOffset))
+                return null;
+            var ptRight = dtRight as PrimitiveType;
+            if (ptRight == null || ptRight.Domain == Domain.Pointer)
+                return null;
+            int offset = cOffset.ToInt32();
+
+            return GetPossibleFieldType(dtLeft, offset);
+        }
+
+        /// <summary>
+        /// If dtLeft is a (ptr (struct ...)) and there is a field at the
+        /// given offset in that structure, this could be a field access.
+        /// </summary>
+        /// <param name="dtLeft">Possible pointer to a structure</param>
+        /// <param name="offset"></param>
+        /// <returns>A (ptr field-type) if it was a ptr-to-struct, else null.</returns>
+        private Pointer GetPossibleFieldType(DataType dtLeft, int offset)
         {
             var ptrLeft = dtLeft.ResolveAs<Pointer>();
-            var ptRight = dtRight as PrimitiveType;
-            if (ptrLeft == null || ptRight == null || ptRight.Domain == Domain.Pointer)
+            if (ptrLeft == null)
                 return null;
 
             var pointee = ptrLeft.Pointee;
             var strPointee = pointee.ResolveAs<StructureType>();
-                Constant cOffset;
-            if (strPointee == null || !right.As(out cOffset))
+            if (strPointee == null)
                 return null;
 
-            int offset = cOffset.ToInt32();
             var field = strPointee.Fields.LowerBound(offset);
             //$BUG: offset != field.Offset?
             if (field == null || offset >= field.Offset + field.DataType.Size)
                 return null;
-            return factory.CreatePointer(field.DataType, dtLeft.Size); 
+            return factory.CreatePointer(field.DataType, dtLeft.Size);
         }
 
         private DataType PullSumDataType(DataType dtLeft, DataType dtRight)
@@ -244,7 +269,7 @@ namespace Reko.Core.Expressions
             if (pt == null || (pt.Domain & Domain.Pointer) == 0)
                 return null;
             var global = factory.CreatePointer(globalFields, pt.Size);
-            return FieldType(global, PrimitiveType.Int32, c);
+            return GetPossibleFieldType(global, PrimitiveType.Int32, c);
         }
 
         public DataType VisitDepositBits(DepositBits d)
@@ -284,8 +309,11 @@ namespace Reko.Core.Expressions
         public DataType VisitMemoryAccessCommon(Expression access, Expression ea)
         {
             var dtEa = ea.Accept(this);
-            dtEa = MemoryAccessType(dtEa);
-            var ptEa = dtEa.ResolveAs<Pointer>();
+            var ptEa = GetPossibleFieldType(dtEa, 0);
+            if (ptEa == null)
+            {
+                ptEa = dtEa.ResolveAs<Pointer>();
+            }
             DataType dt;
             if (ptEa != null)
             {
@@ -308,12 +336,6 @@ namespace Reko.Core.Expressions
             else
                 dt = access.DataType;
             return RecordDataType(dt, access);
-        }
-
-        private DataType MemoryAccessType(DataType dt)
-        {
-            var c = Constant.Zero(PrimitiveType.Int32);
-            return FieldType(dt, c.DataType, c) ?? dt;
         }
 
         public DataType VisitMkSequence(MkSequence seq)

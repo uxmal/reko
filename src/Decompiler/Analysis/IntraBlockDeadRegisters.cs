@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -47,10 +48,12 @@ namespace Reko.Analysis
         private HashSet<RegisterStorage> deadRegs;
         private uint deadFlags;
 
-        public static void Apply(Program program)
+        public static void Apply(Program program, DecompilerEventListener eventListener)
         {
             foreach (var block in program.Procedures.Values.SelectMany(p => p.ControlGraph.Blocks))
             {
+                if (eventListener.IsCanceled())
+                    break;
                 var ibdr = new IntraBlockDeadRegisters();
                 ibdr.Apply(block);
             }

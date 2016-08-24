@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,7 @@ using Procedure = Reko.Core.Procedure;
 using Program = Reko.Core.Program;
 using RegisterStorage = Reko.Core.RegisterStorage;
 using SignatureBuilder = Reko.Core.SignatureBuilder;
-using StackArgumentStorage= Reko.Core.StackArgumentStorage;
+using StackArgumentStorage = Reko.Core.StackArgumentStorage;
 using UseInstruction = Reko.Core.Code.UseInstruction;
 
 namespace Reko.Analysis
@@ -49,7 +50,7 @@ namespace Reko.Analysis
 	{
 		private ProgramDataFlow mpprocflow;
 
-		public GlobalCallRewriter(Program program, ProgramDataFlow mpprocflow) : base(program)
+		public GlobalCallRewriter(Program program, ProgramDataFlow mpprocflow, DecompilerEventListener eventListener) : base(program, eventListener)
 		{
 			this.mpprocflow = mpprocflow;
 		}
@@ -101,12 +102,17 @@ namespace Reko.Analysis
 			flow.LiveOut.IntersectWith(flow.TrashedRegisters);
 		}
 
-		public static void Rewrite(Program program, ProgramDataFlow summaries)
+		public static void Rewrite(
+            Program program, 
+            ProgramDataFlow summaries,
+            DecompilerEventListener eventListener)
 		{
-			GlobalCallRewriter crw = new GlobalCallRewriter(program, summaries);
+			GlobalCallRewriter crw = new GlobalCallRewriter(program, summaries, eventListener);
 			foreach (Procedure proc in program.Procedures.Values)
 			{
-				ProcedureFlow flow = (ProcedureFlow) crw.mpprocflow[proc];
+                if (eventListener.IsCanceled())
+                    return;
+				ProcedureFlow flow = crw.mpprocflow[proc];
                 flow.Dump(program.Architecture);
 				crw.AdjustLiveOut(flow);
 				crw.EnsureSignature(proc, flow);
@@ -115,6 +121,8 @@ namespace Reko.Analysis
 
 			foreach (Procedure proc in program.Procedures.Values)
 			{
+                if (eventListener.IsCanceled())
+                    return;
                 crw.RewriteCalls(proc);
 				crw.RewriteReturns(proc);
 			}
