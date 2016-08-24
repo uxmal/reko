@@ -96,6 +96,14 @@ namespace Reko.Scanning
     /// </remarks>
     public class Scanner : IScanner, IRewriterHost
     {
+        private const int PriorityEntryPoint = 5;
+        private const int PriorityJumpTarget = 6;
+        private const int PriorityGlobalData = 7;
+        private const int PriorityVector = 4;
+        private const int PriorityBlockPromote = 3;
+
+        private static TraceSwitch trace = new TraceSwitch("Scanner", "Traces the progress of the Scanner");
+
         private Program program;
         private PriorityQueue<WorkItem> queue;
         private SegmentMap segmentMap;
@@ -108,16 +116,8 @@ namespace Reko.Scanning
         private DecompilerEventListener eventListener;
         private HashSet<Procedure> visitedProcs;
         private CancellationTokenSource cancelSvc;
-
         private HashSet<Address> scannedGlobalData = new HashSet<Address>();
-
-        private static TraceSwitch trace = new TraceSwitch("Scanner", "Traces the progress of the Scanner");
-        
-        private const int PriorityEntryPoint = 5;
-        private const int PriorityJumpTarget = 6;
-        private const int PriorityGlobalData = 7;
-        private const int PriorityVector = 4;
-        private const int PriorityBlockPromote = 3;
+        private bool isAlreadyCanceled;
 
         public Scanner(
             Program program, 
@@ -842,7 +842,12 @@ namespace Reko.Scanning
             {
                 if (eventListener.IsCanceled())
                 {
-                    eventListener.Warn(new NullCodeLocation(""), "Scanning canceled by user.");
+                    if (!isAlreadyCanceled)
+                    {
+                        isAlreadyCanceled = true;
+                        eventListener.Warn(new NullCodeLocation(""), "Scanning canceled by user.");
+                    }
+                    break;
                 }
                 var workitem = queue.Dequeue();
                 try

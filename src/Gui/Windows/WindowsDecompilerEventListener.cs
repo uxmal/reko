@@ -86,6 +86,7 @@ namespace Reko.Gui.Windows
         /// <returns></returns>
         public bool StartBackgroundWork(string caption, Action backgroundTask)
         {
+            this.isCanceled = false;
             lastException = null;
             try
             {
