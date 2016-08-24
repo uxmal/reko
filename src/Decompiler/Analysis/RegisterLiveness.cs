@@ -157,7 +157,7 @@ namespace Reko.Analysis
 		{
 			var sb = new StringBuilder();
 			var arch = program.Architecture;
-            foreach (var reg in arr.OrderBy(r => r.Name))
+            foreach (var reg in arr.Where(r => r != null).OrderBy(r => r.Name))
             {
                 sb.Append(reg.Name);
                 sb.Append(" ");

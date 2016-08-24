@@ -51,7 +51,7 @@ namespace Reko.Environments.MacOS
 
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
-            throw new NotImplementedException();
+            return new M68kProcedureSerializer((M68kArchitecture) Architecture, typeLoader, defaultConvention);
         }
 
         public override SystemService FindService(int vector, ProcessorState state)

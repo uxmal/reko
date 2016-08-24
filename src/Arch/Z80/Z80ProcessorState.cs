@@ -31,7 +31,8 @@ namespace Reko.Arch.Z80
 {
     public class Z80ProcessorState : ProcessorState
     {
-        const int RegisterFileItems = 8;        // AF, BC, DE, HL, IX, IY, IR
+        const int RegisterFileItems = 32;
+
         private Z80ProcessorArchitecture arch;
         private ushort[] registerFile;
         private bool[] isValid;
