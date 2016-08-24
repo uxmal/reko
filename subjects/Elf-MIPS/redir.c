@@ -3151,9 +3151,9 @@ void request_save_line(Eq_3912 * r4, word32 dwArg00, word32 dwArg04, word32 dwAr
 		word32 r7_98;
 		word32 r3_99;
 		r25_87();
-		(&r4->a0004->dw0000)->a0004[r4->dw0558 * 0x04 + 0x040C].dw0000 = r2_97;
+		(&r4->a0004->t0000)->a0004[r4->dw0558 * 0x04 + 0x040C].t0000.u1 = r2_97;
 		int32 r3_114 = (r4->dw0558 << 0x02) + 1040;
-		word32 r2_117 = (&r4->a0004->dw0000)[r3_114 / 0x055C];
+		Eq_3981 r2_117 = (&r4->a0004->t0000)[r3_114 / 0x055C];
 		if (r2_117 == 0x00)
 		{
 			<anonymous> * r25_124 = globals->ptr100009EC;
@@ -3173,7 +3173,7 @@ void request_save_line(Eq_3912 * r4, word32 dwArg00, word32 dwArg04, word32 dwAr
 		}
 		else
 		{
-			(&r4->a0004->dw0000)[(r4->dw0558 + 0x0510) / 0x055C] = (struct Eq_3912) (byte) (word32) bArg0B;
+			(&r4->a0004->t0000)[(r4->dw0558 + 0x0510) / 0x055C] = (struct Eq_3912) (byte) (word32) bArg0B;
 			<anonymous> * r25_162 = globals->ptr10000A48;
 			word32 sp_163;
 			word32 r28_164;
