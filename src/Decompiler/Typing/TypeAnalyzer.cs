@@ -94,7 +94,7 @@ namespace Reko.Typing
 
             eventListener.ShowStatus("Transforming datatypes.");
 			var ppr = new PtrPrimitiveReplacer(factory, store, program);
-			ppr.ReplaceAll();
+			ppr.ReplaceAll(eventListener);
 
 			trans.Transform();
 			ctn.RenameAllTypes(store);

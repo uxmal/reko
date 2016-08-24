@@ -43,11 +43,13 @@ namespace Reko.Typing
         private Unifier unifier;
         private bool dereferenced;
         private Expression basePtr;
+        private DecompilerEventListener eventListener;
 
         public TypedExpressionRewriter(Program program, DecompilerEventListener eventListener)
         {
             this.program = program;
             this.globals = program.Globals;
+            this.eventListener = eventListener;
             this.compTypes = new DataTypeComparer();
             this.tcr = new TypedConstantRewriter(program, eventListener);
             this.m = new ExpressionEmitter();
@@ -61,6 +63,8 @@ namespace Reko.Typing
                 RewriteFormals(proc.Signature);
                 foreach (Statement stm in proc.Statements)
                 {
+                    if (eventListener.IsCanceled())
+                        return;
                     Debug.Print("{0:X8} {1}", stm.LinearAddress, stm.Instruction);
                     try
                     {

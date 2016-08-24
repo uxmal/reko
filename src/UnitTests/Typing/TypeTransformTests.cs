@@ -57,7 +57,7 @@ namespace Reko.UnitTests.Typing
 			coll.CollectProgramTraits(program);
 			sktore.BuildEquivalenceClassDataTypes(factory);
 #else
-            TypeCollector coll = new TypeCollector(factory, store, program, null);
+            TypeCollector coll = new TypeCollector(factory, store, program, new FakeDecompilerEventListener());
             coll.CollectTypes();
 
             store.BuildEquivalenceClassDataTypes(factory);

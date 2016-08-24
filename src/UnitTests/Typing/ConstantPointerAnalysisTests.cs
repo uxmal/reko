@@ -54,7 +54,7 @@ namespace Reko.UnitTests.Typing
             tv.ReplaceTypeVariables();
             store.CopyClassDataTypesToTypeVariables();
             var ppr = new PtrPrimitiveReplacer(factory, store, program);
-            ppr.ReplaceAll();
+            ppr.ReplaceAll(new FakeDecompilerEventListener());
 
             var cpa = new ConstantPointerAnalysis(factory, store, program);
             cpa.FollowConstantPointers();

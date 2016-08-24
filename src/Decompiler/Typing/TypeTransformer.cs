@@ -233,12 +233,14 @@ namespace Reko.Typing
 		public void Transform()
 		{
 			var ppr = new PtrPrimitiveReplacer(factory, store, program);
-            ppr.ReplaceAll();
+            ppr.ReplaceAll(eventListener);
             var cpa = new ConstantPointerAnalysis(factory, store, program);
             cpa.FollowConstantPointers();
 			int iteration = 0;
 			do
 			{
+                if (eventListener.IsCanceled())
+                    return;
 				++iteration;
                 if (iteration > 50)
                 {
@@ -250,7 +252,9 @@ namespace Reko.Typing
                 this.visitedTypes = new HashSet<DataType>();
 				foreach (TypeVariable tv in store.TypeVariables)
 				{
-					tvCur = tv;
+                    if (eventListener.IsCanceled())
+                        return;
+                    tvCur = tv;
 					EquivalenceClass eq = tv.Class;
 					if (eq.DataType != null)
 					{
@@ -262,7 +266,7 @@ namespace Reko.Typing
                     }
                     // Debug.Print("Transformed {0}:{1}", tv, tv.Class.DataType);
 				}
-				if (ppr.ReplaceAll())
+				if (ppr.ReplaceAll(eventListener))
 					Changed = true;
 				if (NestedComplexTypeExtractor.ReplaceAll(factory, store))
 					Changed = true;

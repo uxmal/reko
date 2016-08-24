@@ -43,15 +43,19 @@ namespace Reko.Typing
         private DecompilerEventListener eventListener;
 
         public TypeCollector(
-            TypeFactory factory, TypeStore store, Program program,
+            TypeFactory factory, 
+            TypeStore store,
+            Program program,
             DecompilerEventListener eventListener)
         {
             this.factory = factory;
             this.store = store;
             this.program = program;
+            if (eventListener == null)
+                throw new ArgumentNullException("eventListener");
+            this.eventListener = eventListener;
             this.asc = new ExpressionTypeAscender(program, store, factory);
             this.desc = new ExpressionTypeDescender(program, store, factory);
-            this.eventListener = eventListener;
         }
 
         public void CollectTypes()
@@ -66,6 +70,8 @@ namespace Reko.Typing
                 CollectProcedureSignature(p);
                 foreach (Statement stm in p.Statements)
                 {
+                    if (eventListener.IsCanceled())
+                        return;
                     try
                     {
                         stm.Instruction.Accept(this);

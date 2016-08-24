@@ -60,6 +60,7 @@ namespace Reko.UnitTests.Typing
 
         protected override void RunTest(Program program, string outputFile)
         {
+            var eventListener = new FakeDecompilerEventListener();
             using (FileUnitTester fut = new FileUnitTester(outputFile))
             {
                 fut.TextWriter.WriteLine("// Before ///////");
@@ -72,14 +73,14 @@ namespace Reko.UnitTests.Typing
                 coll = new TraitCollector(program.TypeFactory, program.TypeStore, dtb, program);
                 coll.CollectProgramTraits(program);
 #else
-                var coll = new TypeCollector(program.TypeFactory, program.TypeStore, program, null);
+                var coll = new TypeCollector(program.TypeFactory, program.TypeStore, program,eventListener);
                 coll.CollectTypes();
 #endif
                 program.TypeStore.BuildEquivalenceClassDataTypes(program.TypeFactory);
                 tvr.ReplaceTypeVariables();
                 trans.Transform();
                 ctn.RenameAllTypes(program.TypeStore);
-                ter = new TypedExpressionRewriter(program, null);
+                ter = new TypedExpressionRewriter(program, eventListener);
                 try
                 {
                     ter.RewriteProgram(program);
@@ -111,6 +112,7 @@ namespace Reko.UnitTests.Typing
             sw.WriteLine("// Before ///////");
             DumpProgram(program, sw);
 
+            var eventListener = new FakeDecompilerEventListener();
             SetupPreStages(program);
             aen.Transform(program);
             eqb.Build(program);
@@ -118,7 +120,7 @@ namespace Reko.UnitTests.Typing
             coll = new TraitCollector(program.TypeFactory, program.TypeStore, dtb, program);
             coll.CollectProgramTraits(program);
 #else
-            var coll = new TypeCollector(program.TypeFactory, program.TypeStore, program, null);
+            var coll = new TypeCollector(program.TypeFactory, program.TypeStore, program, eventListener);
             coll.CollectTypes();
 #endif
             program.TypeStore.BuildEquivalenceClassDataTypes(program.TypeFactory);
@@ -126,7 +128,7 @@ namespace Reko.UnitTests.Typing
             trans.Transform();
             ctn.RenameAllTypes(program.TypeStore);
 
-            var ter = new TypedExpressionRewriter(program, null);
+            var ter = new TypedExpressionRewriter(program, eventListener);
             try
             {
                 ter.RewriteProgram(program);

@@ -523,6 +523,8 @@ namespace Reko
                 int i = 0;
                 foreach (Procedure proc in program.Procedures.Values)
                 {
+                    if (eventListener.IsCanceled())
+                        return;
                     try
                     {
                         eventListener.ShowProgress("Rewriting procedures to high-level language.", i, program.Procedures.Values.Count);

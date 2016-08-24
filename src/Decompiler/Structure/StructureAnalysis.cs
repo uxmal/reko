@@ -110,6 +110,8 @@ namespace Reko.Structure
             int newCount;
             do
             {
+                if (eventListener.IsCanceled())
+                    break;
                 ++iterations;
                 if (iterations > 1000)
                 {
@@ -120,7 +122,6 @@ namespace Reko.Structure
                     break;
                 }
 
-                //if (proc.Name.EndsWith())
                 oldCount = regionGraph.Nodes.Count;
                 this.doms = new DominatorGraph<Region>(this.regionGraph, result.Item2);
                 this.unresolvedCycles = new Queue<Tuple<Region, ISet<Region>>>();
@@ -134,6 +135,8 @@ namespace Reko.Structure
                     didReduce = false;
                     do
                     {
+                        if (eventListener.IsCanceled())
+                            break;
                         didReduce = ReduceAcyclic(n);
                         if (!didReduce && IsCyclic(n))
                         {

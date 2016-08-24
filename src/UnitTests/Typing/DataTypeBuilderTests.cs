@@ -62,7 +62,7 @@ namespace Reko.UnitTests.Typing
         {
             aen.Transform(prog);
             eqb.Build(prog);
-            TypeCollector trco = new TypeCollector(factory, store, prog, null);
+            TypeCollector trco = new TypeCollector(factory, store, prog, new FakeDecompilerEventListener());
             trco.CollectTypes();
             dtb.BuildEquivalenceClassDataTypes();
             Verify(prog, outputFile);

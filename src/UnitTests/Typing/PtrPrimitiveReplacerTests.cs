@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Typing
 			tvr.ReplaceTypeVariables();
 
 			PtrPrimitiveReplacer ppr = new PtrPrimitiveReplacer(factory, store, prog);
-			ppr.ReplaceAll();
+			ppr.ReplaceAll(new FakeDecompilerEventListener());
 
 			Verify(prog, outputFilename);
 		}
@@ -103,7 +103,7 @@ namespace Reko.UnitTests.Typing
 
             var ppr = new PtrPrimitiveReplacer(factory, store, program);
 
-			ppr.ReplaceAll();
+			ppr.ReplaceAll(new FakeDecompilerEventListener());
 
 			Verify(null, "Typing/PprReplaceInts.txt");
 		}
