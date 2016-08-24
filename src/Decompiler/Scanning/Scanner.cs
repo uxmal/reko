@@ -840,6 +840,10 @@ namespace Reko.Scanning
         {
             while (queue.Count > 0)
             {
+                if (eventListener.IsCanceled())
+                {
+                    eventListener.Warn(new NullCodeLocation(""), "Scanning canceled by user.");
+                }
                 var workitem = queue.Dequeue();
                 try
                 {

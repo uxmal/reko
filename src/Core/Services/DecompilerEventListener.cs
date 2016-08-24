@@ -41,6 +41,7 @@ namespace Reko.Core.Services
 
         void ShowStatus(string caption);
         void ShowProgress(string caption, int numerator, int denominator);
+        bool IsCanceled();
     }
 
     public class NullDecompilerEventListener : DecompilerEventListener
@@ -124,6 +125,11 @@ namespace Reko.Core.Services
         public void AddDiagnostic(ICodeLocation location, Diagnostic d)
         {
             throw new NotImplementedException();
+        }
+
+        public bool IsCanceled()
+        {
+            return false;
         }
 
         #endregion
