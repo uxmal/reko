@@ -8,13 +8,15 @@ l0C00_0000:
 	ebx = 0x00000020
 	eax = 0x00000064
 	edx_eax = (int64) eax
-	edx = edx_eax % ebx
-	eax = edx_eax / ebx
+	v7 = edx_eax
+	edx = v7 % ebx
+	eax = v7 / ebx
 	SCZO = cond(eax)
 	cx = Mem0[ds:si:word16]
 	ax = Mem0[ds:si + 0x0002:word16]
 	dx = Mem0[ds:si + 0x0004:word16]
-	dx = dx_ax % cx
-	ax = dx_ax /u cx
+	v15 = dx_ax
+	dx = v15 % cx
+	ax = v15 /u cx
 	SCZO = cond(ax)
 fn0C00_0000_exit:

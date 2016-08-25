@@ -866,10 +866,11 @@ namespace Reko.UnitTests.Arch.Intel
                 m.Div(m.cx);
             });
             AssertCode(
-                    "0|L--|0C00:0000(2): 3 instructions",
-                    "1|L--|dx = dx_ax % cx",
-                    "2|L--|ax = dx_ax /u cx",
-                    "3|L--|SCZO = cond(ax)");
+                "0|L--|0C00:0000(2): 4 instructions",
+                "1|L--|v5 = dx_ax",
+                "2|L--|dx = v5 % cx",
+                "3|L--|ax = v5 /u cx",
+                "4|L--|SCZO = cond(ax)");
         }
 
         [Test]
@@ -880,10 +881,11 @@ namespace Reko.UnitTests.Arch.Intel
                 m.Idiv(m.cx);
             });
             AssertCode(
-                    "0|L--|0C00:0000(2): 3 instructions",
-                    "1|L--|dx = dx_ax % cx",
-                    "2|L--|ax = dx_ax / cx",
-                    "3|L--|SCZO = cond(ax)");
+                    "0|L--|0C00:0000(2): 4 instructions",
+                    "1|L--|v5 = dx_ax",
+                    "2|L--|dx = v5 % cx",
+                    "3|L--|ax = v5 / cx",
+                    "4|L--|SCZO = cond(ax)");
         }
 
         [Test]
@@ -1411,6 +1413,18 @@ namespace Reko.UnitTests.Arch.Intel
             AssertCode(
                   "0|L--|0000000140000000(5): 1 instructions",
                   "1|L--|Mem0[rsp + 0x0000000000000020:word128] = xmm0");
+        }
+
+        [Test]
+        public void X86rw_idiv()
+        {
+            Run32bitTest(0xF7, 0x7C, 0x24, 0x04);       // idiv [esp+04]
+            AssertCode(
+                  "0|L--|10000000(4): 4 instructions",
+                  "1|L--|v5 = edx_eax",
+                  "2|L--|edx = v5 % Mem0[esp + 0x00000004:word32]",
+                  "3|L--|eax = v5 / Mem0[esp + 0x00000004:word32]",
+                  "4|L--|SCZO = cond(eax)");
         }
     }
 }

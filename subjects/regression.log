@@ -3090,7 +3090,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:0D47: error: An error occurred while processing the statement selector ds_32 = fn0800_0DA9(fp - 0x0002, ds_17, wArg00, wArg02).
-    Not handling (memptr T_3168 (struct (0 T_24 t0000))) and mp16 yet
+    Not handling (memptr T_3159 (struct (0 T_24 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3100,7 +3100,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:0D5A: error: An error occurred while processing the statement selector ds_44 = fn0800_0DA9(fp - 0x0002, ds_32, wArg00, wArg02).
-    Not handling (memptr T_3168 (struct (0 T_24 t0000))) and mp16 yet
+    Not handling (memptr T_3159 (struct (0 T_24 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3120,7 +3120,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:1368: error: An error occurred while processing the statement fn0800_0D24(fp - 0x0002, ds_1226, out si_1391, out di_1392, out ds_1226).
-    Not handling (memptr T_4424 (struct (0 T_24 t0000))) and mp16 yet
+    Not handling (memptr T_4415 (struct (0 T_24 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3130,7 +3130,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:138B: error: An error occurred while processing the statement branch fn0800_3E27(fp - 0x0002, ds_1226, wArg00, wArg02, out si_1229, out di_1228, out ds_1226) != 0x4D5A l0800_13BA.
-    Not handling (memptr T_4424 (struct (0 T_24 t0000))) and mp16 yet
+    Not handling (memptr T_4415 (struct (0 T_24 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3142,7 +3142,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:139D: error: An error occurred while processing the statement fn0800_ACB3(fp - 0x0002, ds_1226, ptrArg00, wArg02, wArg08, out ds_1226).
-    Not handling (memptr T_4424 (struct (0 T_24 t0000))) and mp16 yet
+    Not handling (memptr T_4415 (struct (0 T_24 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3152,7 +3152,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:1472: error: An error occurred while processing the statement ds_1226 = fn0800_409C(fp - 0x0002, ds_1304, wArg02, wArg04, wArg06).
-    Not handling (memptr T_4424 (struct (0 T_24 t0000))) and mp16 yet
+    Not handling (memptr T_4415 (struct (0 T_24 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3172,7 +3172,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:1924: error: An error occurred while processing the statement fn0800_0D24(fp - 0x0002, ds_267, out si_265, out di_266, out ds_267).
-    Not handling (memptr T_6307 (struct (0 T_24 t0000))) and mp16 yet
+    Not handling (memptr T_6298 (struct (0 T_24 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3182,7 +3182,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:1A3A: error: An error occurred while processing the statement fn0800_0D24(fp - 0x0002, ds_1014, out si_1012, out di_1013, out ds_1014).
-    Not handling (memptr T_6657 (struct (0 T_24 t0000))) and mp16 yet
+    Not handling (memptr T_6648 (struct (0 T_24 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3192,7 +3192,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:1A8E: error: An error occurred while processing the statement selector ds_107 = fn0800_1CF6(fp - 0x0002, ds_1014).
-    Not handling (memptr T_6657 (struct (0 T_24 t0000))) and mp16 yet
+    Not handling (memptr T_6648 (struct (0 T_24 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3202,7 +3202,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:1D31: error: An error occurred while processing the statement word16 dx_46 = fn0800_3E5D(fp - 0x0002, ds_34, wArg00, wArg02, out ds_45).
-    Not handling (memptr T_7689 (struct (0 T_7688 t0000))) and mp16 yet
+    Not handling (memptr T_7680 (struct (0 T_7679 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3212,7 +3212,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:1D46: error: An error occurred while processing the statement word16 ax_57 = fn0800_4194(fp - 0x0002, ds_45, wArg00, wArg02, out si_55, out ds_261).
-    Not handling (memptr T_7689 (struct (0 T_7688 t0000))) and mp16 yet
+    Not handling (memptr T_7680 (struct (0 T_7679 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3222,7 +3222,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:1D7C: error: An error occurred while processing the statement word16 ax_87 = fn0800_ACB3(fp - 0x0002, ds_261, ptrArg00, wArg02, wArg08, out ds_86).
-    Not handling (memptr T_7689 (struct (0 T_7688 t0000))) and mp16 yet
+    Not handling (memptr T_7680 (struct (0 T_7679 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3232,7 +3232,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:1D8A: error: An error occurred while processing the statement word16 dx_95 = fn0800_3E5D(fp - 0x0002, ds_86, wArg00, wArg02, out ds_244).
-    Not handling (memptr T_7689 (struct (0 T_7688 t0000))) and mp16 yet
+    Not handling (memptr T_7680 (struct (0 T_7679 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3242,7 +3242,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:1D63: error: An error occurred while processing the statement fn0800_0D24(fp - 0x0002, ds_261, out si_259, out di_260, out ds_261).
-    Not handling (memptr T_7689 (struct (0 T_24 t0000))) and mp16 yet
+    Not handling (memptr T_7680 (struct (0 T_24 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3252,7 +3252,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:1DA4: error: An error occurred while processing the statement fn0800_0D24(fp - 0x0002, ds_244, out si_242, out di_243, out ds_244).
-    Not handling (memptr T_7689 (struct (0 T_24 t0000))) and mp16 yet
+    Not handling (memptr T_7680 (struct (0 T_24 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3262,7 +3262,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:1DB2: error: An error occurred while processing the statement fn0800_3E27(fp - 0x0002, ds_244, wArg00, wArg02, out si_106, out di_107, out ds_108).
-    Not handling (memptr T_7689 (struct (0 T_24 t0000))) and mp16 yet
+    Not handling (memptr T_7680 (struct (0 T_24 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3272,7 +3272,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:1DC8: error: An error occurred while processing the statement Mem122[ss:fp - 0x0004 + 0x0000:word16] = fn0800_3E27(fp - 0x0002, ds_108, wArg00, wArg02, out si_117, out di_118, out ds_119).
-    Not handling (memptr T_7689 (struct (0 T_24 t0000))) and mp16 yet
+    Not handling (memptr T_7680 (struct (0 T_24 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3282,7 +3282,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:1E0B: error: An error occurred while processing the statement fn0800_ACB3(fp - 0x0002, ds_126, ptrArg00, wArg02, wArg08, out ds_141).
-    Not handling (memptr T_7689 (struct (0 T_24 t0000) (2 T_7927 t0002))) and mp16 yet
+    Not handling (memptr T_7680 (struct (0 T_24 t0000) (2 T_7918 t0002))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3292,7 +3292,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:1E53: error: An error occurred while processing the statement fn0800_0D24(fp - 0x0002, ds_163, out si_202, out di_203, out ds_163).
-    Not handling (memptr T_7689 (struct (0 T_24 t0000) (2 T_7927 t0002))) and mp16 yet
+    Not handling (memptr T_7680 (struct (0 T_24 t0000) (2 T_7918 t0002))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3302,7 +3302,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:25E1: error: An error occurred while processing the statement word16 dx_293 = fn0800_3E5D(fp - 0x0002, ds_281, wArg00, wArg02, out ds_292).
-    Not handling (memptr T_9887 (struct (0 T_9886 t0000))) and mp16 yet
+    Not handling (memptr T_9878 (struct (0 T_9877 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3312,7 +3312,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:2605: error: An error occurred while processing the statement fn0800_0D24(fp - 0x0002, ds_292, out si_395, out di_396, out ds_292).
-    Not handling (memptr T_9887 (struct (0 T_24 t0000))) and mp16 yet
+    Not handling (memptr T_9878 (struct (0 T_24 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3322,7 +3322,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:265D: error: An error occurred while processing the statement word16 dx_371 = fn0800_3E5D(fp - 0x0002, ds_292, wArg00, wArg02, out ds_370).
-    Not handling (memptr T_9887 (struct (0 T_24 t0000))) and mp16 yet
+    Not handling (memptr T_9878 (struct (0 T_24 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3332,7 +3332,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:261E: error: An error occurred while processing the statement word16 dx_341 = fn0800_3E5D(fp - 0x0002, ds_292, wArg00, wArg02, out ds_340).
-    Not handling (memptr T_9887 (struct (0 T_24 t0000))) and mp16 yet
+    Not handling (memptr T_9878 (struct (0 T_24 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3342,7 +3342,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:2633: error: An error occurred while processing the statement word16 dx_351 = fn0800_3E5D(fp - 0x0002, ds_340, wArg00, wArg02, out ds_350).
-    Not handling (memptr T_9887 (struct (0 T_24 t0000))) and mp16 yet
+    Not handling (memptr T_9878 (struct (0 T_24 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3352,7 +3352,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:2686: error: An error occurred while processing the statement *bpOut = Mem297[ss:fp - 0x0002 + 0x0000:word16].
-    Not handling (memptr T_9887 (struct (0 T_24 t0000))) and mp16 yet
+    Not handling (memptr T_9878 (struct (0 T_24 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3379,7 +3379,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:2F50: error: An error occurred while processing the statement return fn0800_2DE2(fp - 0x0002, si, ds_808, ptrArg00, wArg02, out dl_822, out ds_823).
-    Not handling (memptr T_11973 (struct (0 T_12050 t0000) (2 T_12058 t0002) (4 T_12050 t0004))) and mp16 yet
+    Not handling (memptr T_11964 (struct (0 T_12041 t0000) (2 T_12049 t0002) (4 T_12041 t0004))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3389,7 +3389,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.ReturnInstruction.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 134
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:3083: error: An error occurred while processing the statement branch fn0800_31B4(fp - 0x0002, ds, out ds) == 0x0000 l0800_309E.
-    Not handling (memptr T_11973 (struct (0 T_24 t0000) (2 T_24 t0002) (4 T_24 t0004))) and mp16 yet
+    Not handling (memptr T_11964 (struct (0 T_24 t0000) (2 T_24 t0002) (4 T_24 t0004))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3401,7 +3401,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:30EF: error: An error occurred while processing the statement return fn0800_2DE2(fp - 0x0002, si_426, ds, ptrArg00, wArg02, out dl_448, out ds_449).
-    Not handling (memptr T_11973 (struct (0 T_24 t0000) (2 T_24 t0002) (4 T_24 t0004))) and mp16 yet
+    Not handling (memptr T_11964 (struct (0 T_24 t0000) (2 T_24 t0002) (4 T_24 t0004))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3411,7 +3411,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.ReturnInstruction.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 134
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:31A6: error: An error occurred while processing the statement return fn0800_2DE2(fp - 0x0002, si_1178, ds_270, ptrArg00, wArg02, out dl_291, out ds_292).
-    Not handling (memptr T_11973 (struct (0 T_24 t0000) (2 T_24 t0002) (4 T_24 t0004))) and mp16 yet
+    Not handling (memptr T_11964 (struct (0 T_24 t0000) (2 T_24 t0002) (4 T_24 t0004))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3421,7 +3421,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.ReturnInstruction.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 134
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:2EA4: error: An error occurred while processing the statement return fn0800_2DE2(fp - 0x0002, si, ds_794, DPB(ptrLoc1A, wArg02, 0), wArg04, out dl_904, out ds_905).
-    Not handling (memptr T_11973 (struct (0 T_24 t0000) (2 T_24 t0002) (4 T_24 t0004))) and mp16 yet
+    Not handling (memptr T_11964 (struct (0 T_24 t0000) (2 T_24 t0002) (4 T_24 t0004))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3431,7 +3431,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.ReturnInstruction.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 134
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:3006: error: An error occurred while processing the statement return fn0800_2DE2(fp - 0x0002, si_626, ds_625, ptrArg00, wArg02, out dl_636, out ds_637).
-    Not handling (memptr T_11973 (struct (0 T_24 t0000) (2 T_24 t0002) (4 T_24 t0004))) and mp16 yet
+    Not handling (memptr T_11964 (struct (0 T_24 t0000) (2 T_24 t0002) (4 T_24 t0004))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3455,7 +3455,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:3E7D: error: An error occurred while processing the statement word16 ax_32 = fn0800_3E27(fp - 0x0002, ds_17, wArg00, wArg02, out si_29, out di_30, out ds_31).
-    Not handling (memptr T_17545 (struct (0 T_17533 t0000) (2 T_17566 t0002) (4 T_17558 t0004))) and mp16 yet
+    Not handling (memptr T_17536 (struct (0 T_17524 t0000) (2 T_17557 t0002) (4 T_17549 t0004))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3465,7 +3465,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:3F78: error: An error occurred while processing the statement word16 ax_32 = fn0800_3E27(fp - 0x0002, ds_17, wArg00, wArg02, out si_29, out di_30, out ds_31).
-    Not handling (memptr T_17841 (struct (0 T_17829 t0000) (2 T_17862 t0002) (4 T_17854 t0004))) and mp16 yet
+    Not handling (memptr T_17832 (struct (0 T_17820 t0000) (2 T_17853 t0002) (4 T_17845 t0004))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3475,7 +3475,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:3F98: error: An error occurred while processing the statement fn0800_ACB3(fp - 0x0002, ds_31, ptrArg00, wArg02, wArg08, out ds_52).
-    Not handling (memptr T_17841 (struct (0 T_17829 t0000) (2 T_17829 t0002) (4 T_17829 t0004))) and mp16 yet
+    Not handling (memptr T_17832 (struct (0 T_17820 t0000) (2 T_17820 t0002) (4 T_17820 t0004))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3485,7 +3485,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:40BE: error: An error occurred while processing the statement return fn0800_401E(fp - 0x0002, ds_16, wArg00, wArg02, wArg04).
-    Not handling (memptr T_18150 (struct (0 T_18153 t0000) (2 T_18169 t0002) (6 T_18161 t0006) (8 T_18153 t0008))) and mp16 yet
+    Not handling (memptr T_18141 (struct (0 T_18144 t0000) (2 T_18160 t0002) (6 T_18152 t0006) (8 T_18144 t0008))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3515,7 +3515,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:473D: error: An error occurred while processing the statement word16 ax_73 = fn0800_3FAD(fp - 0x0002, ds_60, wArg00, wArg02, out di_71, out ds_72).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3525,7 +3525,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:4775: error: An error occurred while processing the statement word16 ax_107 = fn0800_ACB3(fp - 0x0002, ds_72, ptrArg00, wArg02, wArg08, out ds_106).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3535,7 +3535,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:478B: error: An error occurred while processing the statement word16 ax_121 = fn0800_8CAA(ax_107, 0x08, fn0800_3F58(fp - 0x0002, ds_106, wArg00, wArg02, out di_114, out ds_115), bp, out dx_120).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3547,7 +3547,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:47C5: error: An error occurred while processing the statement fn0800_ACB3(fp - 0x0002, ds_115, ptrArg00, wArg02, wArg08, out ds_161).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3557,7 +3557,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:47D3: error: An error occurred while processing the statement fn0800_3FAD(fp - 0x0002, ds_161, wArg00, wArg02, out di_169, out ds_170).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3567,7 +3567,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:47E9: error: An error occurred while processing the statement Mem183[ss:fp - 0x000C + 0x0000:word16] = fn0800_3FAD(fp - 0x0002, ds_170, wArg00, wArg02, out di_179, out ds_180).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3577,7 +3577,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:4818: error: An error occurred while processing the statement fn0800_ACB3(fp - 0x0002, ds_180, ptrArg00, wArg02, wArg08, out ds_215).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3587,7 +3587,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:4826: error: An error occurred while processing the statement fn0800_3FAD(fp - 0x0002, ds_215, wArg00, wArg02, out di_223, out ds_224).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3597,7 +3597,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:483A: error: An error occurred while processing the statement Mem237[ss:fp - 0x001E + 0x0000:word16] = fn0800_3FAD(fp - 0x0002, ds_224, wArg00, wArg02, out di_232, out ds_233).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3607,7 +3607,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:484B: error: An error occurred while processing the statement Mem247[ss:fp - 0x0020 + 0x0000:word16] = fn0800_3FAD(fp - 0x0002, ds_233, wArg00, wArg02, out di_242, out ds_243).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3617,7 +3617,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:485C: error: An error occurred while processing the statement Mem257[ss:fp - 0x0012 + 0x0000:word16] = fn0800_3FAD(fp - 0x0002, ds_243, wArg00, wArg02, out di_252, out ds_253).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3627,7 +3627,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:486D: error: An error occurred while processing the statement Mem267[ss:fp - 0x0014 + 0x0000:word16] = fn0800_3FAD(fp - 0x0002, ds_253, wArg00, wArg02, out di_262, out ds_263).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3637,7 +3637,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:487E: error: An error occurred while processing the statement Mem277[ss:fp - 0x001A + 0x0000:word16] = fn0800_3FAD(fp - 0x0002, ds_263, wArg00, wArg02, out di_272, out ds_273).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3647,7 +3647,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:488F: error: An error occurred while processing the statement Mem287[ss:fp - 0x001C + 0x0000:word16] = fn0800_3FAD(fp - 0x0002, ds_273, wArg00, wArg02, out di_282, out ds_283).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3657,7 +3657,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:48A0: error: An error occurred while processing the statement Mem297[ss:fp - 0x0018 + 0x0000:word16] = fn0800_3FAD(fp - 0x0002, ds_283, wArg00, wArg02, out di_292, out ds_293).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3667,7 +3667,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:48B1: error: An error occurred while processing the statement Mem307[ss:fp - 0x0016 + 0x0000:word16] = fn0800_3FAD(fp - 0x0002, ds_293, wArg00, wArg02, out di_302, out ds_303).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3677,7 +3677,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:48C0: error: An error occurred while processing the statement selector ds_316 = fn0800_401E(fp - 0x0002, ds_303, wArg00, wArg02, wArg04).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3687,7 +3687,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:48D2: error: An error occurred while processing the statement selector ds_330 = fn0800_409C(fp - 0x0002, ds_316, wArg02, wArg04, wArg06).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3697,7 +3697,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:48E4: error: An error occurred while processing the statement selector ds_343 = fn0800_409C(fp - 0x0002, ds_330, wArg02, wArg04, wArg06).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3707,7 +3707,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:48F5: error: An error occurred while processing the statement fn0800_40BF(fp - 0x0002, ds_343, bArg00, wArg02, wArg04, out ds_353).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3717,7 +3717,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:4906: error: An error occurred while processing the statement fn0800_40BF(fp - 0x0002, ds_353, bArg00, wArg02, wArg04, out ds_363).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3727,7 +3727,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:4917: error: An error occurred while processing the statement fn0800_40BF(fp - 0x0002, ds_363, bArg00, wArg02, wArg04, out ds_373).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3737,7 +3737,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:4928: error: An error occurred while processing the statement fn0800_40BF(fp - 0x0002, ds_373, bArg00, wArg02, wArg04, out ds_383).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3747,7 +3747,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:4939: error: An error occurred while processing the statement selector ds_395 = fn0800_401E(fp - 0x0002, ds_383, wArg00, wArg02, wArg04).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3757,7 +3757,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:494A: error: An error occurred while processing the statement fn0800_40BF(fp - 0x0002, ds_395, bArg00, wArg02, wArg04, out ds_404).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3767,7 +3767,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:495B: error: An error occurred while processing the statement fn0800_40BF(fp - 0x0002, ds_404, bArg00, wArg02, wArg04, out ds_414).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3777,7 +3777,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:496D: error: An error occurred while processing the statement fn0800_40BF(fp - 0x0002, ds_414, bArg00, wArg02, wArg04, out ds_425).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3787,7 +3787,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:497E: error: An error occurred while processing the statement fn0800_40BF(fp - 0x0002, ds_425, bArg00, wArg02, wArg04, out ds_435).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3797,7 +3797,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:498F: error: An error occurred while processing the statement selector ds_447 = fn0800_401E(fp - 0x0002, ds_435, wArg00, wArg02, wArg04).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3807,7 +3807,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:49AA: error: An error occurred while processing the statement fn0800_ACB3(fp - 0x0002, ds_447, ptrArg00, wArg02, wArg08, out ds_465).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3817,7 +3817,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:49D9: error: An error occurred while processing the statement Mem758[ss:fp - 0x0022 + 0x0000:word16] = fn0800_3FAD(fp - 0x0002, ds_465, wArg00, wArg02, out di_485, out ds_465).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3827,7 +3827,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:49FE: error: An error occurred while processing the statement fn0800_40BF(fp - 0x0002, ds_784, bArg00, wArg02, wArg04, out ds_797).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3837,7 +3837,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:4A0F: error: An error occurred while processing the statement di_485 = fn0800_40BF(fp - 0x0002, ds_797, bArg00, wArg02, wArg04, out ds_465).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3847,7 +3847,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:4AAF: error: An error occurred while processing the statement fn0800_ACB3(fp - 0x0002, ds_465, ptrArg00, wArg02, wArg08, out ds_555).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3857,7 +3857,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:4AB5: error: An error occurred while processing the statement word16 ax_560 = fn0800_5374(fp - 0x0002, ds_555, out ds_559).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3867,7 +3867,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:4AE9: error: An error occurred while processing the statement fn0800_ACB3(fp - 0x0002, ds_559, ptrArg00, wArg02, wArg08, out ds_594).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3877,7 +3877,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:4AFD: error: An error occurred while processing the statement word16 ax_606 = fn0800_4194(fp - 0x0002, ds_594, wArg00, wArg02, out si_602, out ds_603) - Mem601[ss:(fp - 0x0006) + 0x0000:word16].
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3889,7 +3889,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:4B15: error: An error occurred while processing the statement selector ds_624 = fn0800_3B0A(fp - 0x0002, ds_603, wArg08, wArg0A).
-    Not handling (memptr T_19508 (struct (0 T_19507 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_19498 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3899,7 +3899,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:4B47: error: An error occurred while processing the statement fn0800_ACB3(fp - 0x0002, ds_624, ptrArg00, wArg02, wArg08, out ds_654).
-    Not handling (memptr T_19508 (struct (0 T_24 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_24 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3909,7 +3909,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:4B56: error: An error occurred while processing the statement fn0800_40BF(fp - 0x0002, ds_654, bArg00, wArg02, wArg04, out ds_664).
-    Not handling (memptr T_19508 (struct (0 T_24 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_24 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3919,7 +3919,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:4B67: error: An error occurred while processing the statement fn0800_40BF(fp - 0x0002, ds_664, bArg00, wArg02, wArg04, out ds_674).
-    Not handling (memptr T_19508 (struct (0 T_24 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_24 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3929,7 +3929,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:4B78: error: An error occurred while processing the statement fn0800_40BF(fp - 0x0002, ds_674, bArg00, wArg02, wArg04, out ds_684).
-    Not handling (memptr T_19508 (struct (0 T_24 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_24 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3939,7 +3939,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:4B89: error: An error occurred while processing the statement fn0800_40BF(fp - 0x0002, ds_684, bArg00, wArg02, wArg04, out ds_694).
-    Not handling (memptr T_19508 (struct (0 T_24 t0000))) and mp16 yet
+    Not handling (memptr T_19499 (struct (0 T_24 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3949,7 +3949,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:4C88: error: An error occurred while processing the statement selector ds_101 = fn0800_409C(fp - 0x0002, ds_14, wArg02, wArg04, wArg06).
-    Not handling (memptr T_21402 (struct (0 T_21401 t0000))) and mp16 yet
+    Not handling (memptr T_21393 (struct (0 T_21392 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3959,7 +3959,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:4CD2: error: An error occurred while processing the statement Mem441[ss:sp_428 - 0x0004 + 0x0000:word16] = fn0800_3E5D(fp - 0x0002, ds_101, wArg00, wArg02, out ds_436).
-    Not handling (memptr T_21402 (struct (0 T_21401 t0000))) and mp16 yet
+    Not handling (memptr T_21393 (struct (0 T_21392 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3969,7 +3969,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:4CD4: error: An error occurred while processing the statement ds_101 = fn0800_409C(fp - 0x0002, ds_436, wArg02, wArg04, wArg06).
-    Not handling (memptr T_21402 (struct (0 T_21401 t0000))) and mp16 yet
+    Not handling (memptr T_21393 (struct (0 T_21392 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3979,7 +3979,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:4C96: error: An error occurred while processing the statement word16 dx_83 = fn0800_3E5D(fp - 0x0002, ds_101, wArg00, wArg02, out ds_82).
-    Not handling (memptr T_21402 (struct (0 T_21401 t0000))) and mp16 yet
+    Not handling (memptr T_21393 (struct (0 T_21392 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46
@@ -3989,7 +3989,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:4CB4: error: An error occurred while processing the statement ds_101 = fn0800_409C(fp - 0x0002, ds_82, wArg02, wArg04, wArg06).
-    Not handling (memptr T_21402 (struct (0 T_21401 t0000))) and mp16 yet
+    Not handling (memptr T_21393 (struct (0 T_21392 t0000))) and mp16 yet
        at Reko.Typing.ExpressionTypeDescender.PushMinuendDataType(DataType dtDiff, DataType dtSub) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 369
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 217
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 46

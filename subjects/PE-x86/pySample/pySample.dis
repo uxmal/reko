@@ -103,7 +103,7 @@ l100010A0:
 // LocalsOut: fp(32) Local -0004(32) Local -0008(32)
 
 l100010C8:
-	return Py_BuildValue(0x1000214C, SEQ((int64) dwLoc08 % dwLoc04, dwLoc08) / dwLoc04)
+	return Py_BuildValue(0x1000214C, (int64) dwLoc08 / dwLoc04)
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000008 edx:ptrArg08 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg08 -20(fp):0x10002158 -16(fp):fp - 0x00000008 -12(fp):fp - 0x00000004 4(fp):ptrArg04 8(fp):ptrArg08
