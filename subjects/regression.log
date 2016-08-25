@@ -1711,8 +1711,8 @@ pexecute: error: An error occurred during data flow analysis.
    at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0001213C: error: An error occurred while processing the statement savestring(sp_29 + 0x00000060, o2_121 - (sp_29 + 0x00000060)).
-    Pulling difference (ptr (struct 0001 (FFFFFFFF T_1235 tFFFFFFFF))) and ptr32
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 229
+    Pulling difference (ptr (struct 0001 (FFFFFFFF T_1235 tFFFFFFFF))) and (ptr byte)
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 234
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitApplication(Application appl) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 63
@@ -1721,8 +1721,8 @@ pexecute: error: An error occurred during data flow analysis.
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 000120B8: error: An error occurred while processing the statement word32 g0_154 = o2_150 - (sp_29 + 0x00000060).
-    Pulling difference (ptr (struct 0001 (0 T_1370 t0000))) and ptr32
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 229
+    Pulling difference (ptr (struct 0001 (0 T_1370 t0000))) and (ptr byte)
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 234
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 157
@@ -1907,17 +1907,63 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 139
    at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 84
    at Reko.Analysis.IndirectCallRewriter.Rewrite() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 68
+00001416: error: An error occurred while processing the statement branch d2_35 - Mem32[(fp - 0x00000004) + 0x00000000:word32] <= 0x00000000 l0000140E.
+    Pulling difference int32 and ptr32
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 246
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 00001BF0: error: An error occurred while processing the statement d0_1434 = a2_1431 - a4_146.
     Pulling difference ptr32 and (ptr (struct 0001 (0 T_951 t0000)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 229
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 234
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 123
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+00001C00: error: An error occurred while processing the statement branch d5_1438 - Mem238[a7_1010 + 102:word32] >u 0x00000000 l00001C0A.
+    Pulling difference (ptr (struct 0004 (2C (union (cu8 u0) (word32 u1) (T_1002 u2) (T_1486 u3) (T_1492 u4) (T_1566 u5) (T_1731 u6) (T_1738 u7) (T_1744 u8) (T_1782 u9) (T_1789 u10) (T_1816 u11) (T_1858 u12) (T_1889 u13) (T_1903 u14)) u002C) (30 T_942 t0030) (34 T_1551 t0034) (40 T_1002 t0040) (44 T_1864 t0044) (48 T_932 t0048) (62 T_1870 t0062) (66 (union (int32 u0) (uint32 u1) (T_1010 u2) (T_1616 u3) (T_1623 u4) (T_1634 u5) (T_1741 u6) (T_1885 u7)) u0066) (6C T_1789 t006C) (7C T_1861 t007C))) and (union (int32 u0) (uint32 u1) (T_1010 u2) (T_1616 u3) (T_1623 u4) (T_1634 u5) (T_1741 u6) (T_1885 u7))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 234
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+00001D1A: error: An error occurred while processing the statement branch d5_1438 - Mem357[a7_1010 + 102:word32] <=u 0x00000000 l00001D40.
+    Pulling difference (ptr (struct 0004 (2C (union (cu8 u0) (word32 u1) (T_1002 u2) (T_1486 u3) (T_1492 u4) (T_1566 u5) (T_1731 u6) (T_1738 u7) (T_1744 u8) (T_1782 u9) (T_1789 u10) (T_1816 u11) (T_1858 u12) (T_1889 u13) (T_1903 u14)) u002C) (30 T_942 t0030) (34 T_1551 t0034) (40 T_1002 t0040) (44 T_1864 t0044) (48 T_932 t0048) (62 T_1870 t0062) (66 (union (int32 u0) (uint32 u1) (T_1010 u2) (T_1616 u3) (T_1623 u4) (T_1634 u5) (T_1741 u6) (T_1885 u7)) u0066) (6C T_1789 t006C) (7C T_1861 t007C))) and (union (int32 u0) (uint32 u1) (T_1010 u2) (T_1616 u3) (T_1623 u4) (T_1634 u5) (T_1741 u6) (T_1885 u7) (T_2178 u8))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 234
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+000022D8: error: An error occurred while processing the statement branch (Mem0[dwArg04 + 12:word32] & 0x00010000) == 0x00000000 l00002318.
+    Object reference not set to an instance of an object.
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, Int32 offset) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 198
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 170
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 88
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 316
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 311
+   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 00002FE6: error: An error occurred while processing the statement branch d0 - d5_2548 >=u 0x00000000 l00002F9E.
     Pulling difference (ptr (struct 0004 (0 T_810 t0000))) and (union (int32 u0) (uint32 u1))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 229
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 234
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
@@ -1986,18 +2032,54 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 139
    at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 84
    at Reko.Analysis.IndirectCallRewriter.Rewrite() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 68
+00001444: error: An error occurred while processing the statement branch d2_107 - Mem163[a7_132 + 0x00000010:word32] < 0x00000000 l0000144A.
+    Pulling difference int32 and ptr32
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 246
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 00001D20: error: An error occurred while processing the statement d0_1462 = a2_1459 - a4_148.
     Pulling difference ptr32 and (ptr (struct 0001 (0 T_1264 t0000)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 229
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 234
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 123
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-0000301E: error: An error occurred while processing the statement branch d0 - d5_2549 >=u 0x00000000 l00002FD6.
-    Pulling difference (ptr (struct 0004 (0 T_68 t0000))) and (union (int32 u0) (uint32 u1))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 229
+00001D30: error: An error occurred while processing the statement branch d5_1466 - Mem240[a7_1019 + 102:word32] >u 0x00000000 l00001D3A.
+    Pulling difference (ptr (struct 0004 (2C (union (cu8 u0) (word32 u1) (T_1321 u2) (T_1806 u3) (T_1812 u4) (T_1887 u5) (T_2053 u6) (T_2060 u7) (T_2066 u8) (T_2104 u9) (T_2111 u10) (T_2138 u11) (T_2180 u12) (T_2211 u13) (T_2225 u14)) u002C) (30 T_756 t0030) (34 T_1872 t0034) (40 T_1321 t0040) (44 T_2186 t0044) (48 T_1245 t0048) (62 T_2192 t0062) (66 (union (int32 u0) (uint32 u1) (T_1329 u2) (T_1937 u3) (T_1944 u4) (T_1955 u5) (T_2063 u6) (T_2207 u7)) u0066) (6C T_2111 t006C) (7C T_2183 t007C))) and (union (int32 u0) (uint32 u1) (T_1329 u2) (T_1937 u3) (T_1944 u4) (T_1955 u5) (T_2063 u6) (T_2207 u7))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 234
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+00001E4A: error: An error occurred while processing the statement branch d5_1466 - Mem359[a7_1019 + 102:word32] <=u 0x00000000 l00001E70.
+    Pulling difference (ptr (struct 0004 (2C (union (cu8 u0) (word32 u1) (T_1321 u2) (T_1806 u3) (T_1812 u4) (T_1887 u5) (T_2053 u6) (T_2060 u7) (T_2066 u8) (T_2104 u9) (T_2111 u10) (T_2138 u11) (T_2180 u12) (T_2211 u13) (T_2225 u14)) u002C) (30 T_756 t0030) (34 T_1872 t0034) (40 T_1321 t0040) (44 T_2186 t0044) (48 T_1245 t0048) (62 T_2192 t0062) (66 (union (int32 u0) (uint32 u1) (T_1329 u2) (T_1937 u3) (T_1944 u4) (T_1955 u5) (T_2063 u6) (T_2207 u7)) u0066) (6C T_2111 t006C) (7C T_2183 t007C))) and (union (int32 u0) (uint32 u1) (T_1329 u2) (T_1937 u3) (T_1944 u4) (T_1955 u5) (T_2063 u6) (T_2207 u7) (T_2511 u8))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 234
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+00002408: error: An error occurred while processing the statement branch (Mem0[dwArg04 + 12:word32] & 0x00010000) == 0x00000000 l00002448.
+    Object reference not set to an instance of an object.
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, Int32 offset) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 198
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 170
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 88
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 316
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 311
+   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
@@ -2067,15 +2149,51 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallRewriter.Rewrite() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 68
 00001E78: error: An error occurred while processing the statement d0_1462 = a2_1459 - a4_148.
     Pulling difference ptr32 and (ptr (struct 0001 (0 T_1601 t0000)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 229
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 234
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 123
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+00001E88: error: An error occurred while processing the statement branch d5_1466 - Mem240[a7_1019 + 102:word32] >u 0x00000000 l00001E92.
+    Pulling difference (ptr (struct 0004 (2C (union (cu8 u0) (word32 u1) (T_1658 u2) (T_2143 u3) (T_2149 u4) (T_2224 u5) (T_2390 u6) (T_2397 u7) (T_2403 u8) (T_2441 u9) (T_2448 u10) (T_2475 u11) (T_2517 u12) (T_2548 u13) (T_2562 u14)) u002C) (30 T_782 t0030) (34 T_2209 t0034) (40 T_1658 t0040) (44 T_2523 t0044) (48 T_1582 t0048) (62 T_2529 t0062) (66 (union (int32 u0) (uint32 u1) (T_1666 u2) (T_2274 u3) (T_2281 u4) (T_2292 u5) (T_2400 u6) (T_2544 u7)) u0066) (6C T_2448 t006C) (7C T_2520 t007C))) and (union (int32 u0) (uint32 u1) (T_1666 u2) (T_2274 u3) (T_2281 u4) (T_2292 u5) (T_2400 u6) (T_2544 u7))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 234
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+00001FA2: error: An error occurred while processing the statement branch d5_1466 - Mem359[a7_1019 + 102:word32] <=u 0x00000000 l00001FC8.
+    Pulling difference (ptr (struct 0004 (2C (union (cu8 u0) (word32 u1) (T_1658 u2) (T_2143 u3) (T_2149 u4) (T_2224 u5) (T_2390 u6) (T_2397 u7) (T_2403 u8) (T_2441 u9) (T_2448 u10) (T_2475 u11) (T_2517 u12) (T_2548 u13) (T_2562 u14)) u002C) (30 T_782 t0030) (34 T_2209 t0034) (40 T_1658 t0040) (44 T_2523 t0044) (48 T_1582 t0048) (62 T_2529 t0062) (66 (union (int32 u0) (uint32 u1) (T_1666 u2) (T_2274 u3) (T_2281 u4) (T_2292 u5) (T_2400 u6) (T_2544 u7)) u0066) (6C T_2448 t006C) (7C T_2520 t007C))) and (union (int32 u0) (uint32 u1) (T_1666 u2) (T_2274 u3) (T_2281 u4) (T_2292 u5) (T_2400 u6) (T_2544 u7) (T_2848 u8))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 234
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+00002560: error: An error occurred while processing the statement branch (Mem0[dwArg04 + 12:word32] & 0x00010000) == 0x00000000 l000025A0.
+    Object reference not set to an instance of an object.
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, Int32 offset) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 198
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 170
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 88
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 316
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 311
+   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0000326E: error: An error occurred while processing the statement branch d0 - d5_2549 >=u 0x00000000 l00003226.
     Pulling difference (ptr (struct 0004 (0 T_749 t0000))) and (union (int32 u0) (uint32 u1))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 229
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 234
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
@@ -2146,11 +2264,47 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallRewriter.Rewrite() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 68
 00001BB8: error: An error occurred while processing the statement d0_1434 = a2_1431 - a4_146.
     Pulling difference ptr32 and (ptr (struct 0001 (0 T_795 t0000)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 229
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 234
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 123
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+00001BC8: error: An error occurred while processing the statement branch d5_1438 - Mem238[a7_1010 + 102:word32] >u 0x00000000 l00001BD2.
+    Pulling difference (ptr (struct 0004 (2C (union (cu8 u0) (word32 u1) (T_846 u2) (T_1330 u3) (T_1336 u4) (T_1410 u5) (T_1575 u6) (T_1582 u7) (T_1588 u8) (T_1626 u9) (T_1633 u10) (T_1660 u11) (T_1702 u12) (T_1733 u13) (T_1747 u14)) u002C) (30 T_749 t0030) (34 T_1395 t0034) (40 T_846 t0040) (44 T_1708 t0044) (48 T_776 t0048) (62 T_1714 t0062) (66 (union (int32 u0) (uint32 u1) (T_854 u2) (T_1460 u3) (T_1467 u4) (T_1478 u5) (T_1585 u6) (T_1729 u7)) u0066) (6C T_1633 t006C) (7C T_1705 t007C))) and (union (int32 u0) (uint32 u1) (T_854 u2) (T_1460 u3) (T_1467 u4) (T_1478 u5) (T_1585 u6) (T_1729 u7))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 234
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+00001CE2: error: An error occurred while processing the statement branch d5_1438 - Mem357[a7_1010 + 102:word32] <=u 0x00000000 l00001D08.
+    Pulling difference (ptr (struct 0004 (2C (union (cu8 u0) (word32 u1) (T_846 u2) (T_1330 u3) (T_1336 u4) (T_1410 u5) (T_1575 u6) (T_1582 u7) (T_1588 u8) (T_1626 u9) (T_1633 u10) (T_1660 u11) (T_1702 u12) (T_1733 u13) (T_1747 u14)) u002C) (30 T_749 t0030) (34 T_1395 t0034) (40 T_846 t0040) (44 T_1708 t0044) (48 T_776 t0048) (62 T_1714 t0062) (66 (union (int32 u0) (uint32 u1) (T_854 u2) (T_1460 u3) (T_1467 u4) (T_1478 u5) (T_1585 u6) (T_1729 u7)) u0066) (6C T_1633 t006C) (7C T_1705 t007C))) and (union (int32 u0) (uint32 u1) (T_854 u2) (T_1460 u3) (T_1467 u4) (T_1478 u5) (T_1585 u6) (T_1729 u7) (T_2022 u8))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 234
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+000022A0: error: An error occurred while processing the statement branch (Mem0[dwArg04 + 12:word32] & 0x00010000) == 0x00000000 l000022E0.
+    Object reference not set to an instance of an object.
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, Int32 offset) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 198
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 170
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 88
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 316
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 311
+   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 : warning: Type transformer has looped 51 times, quitting prematurely.
 00002BC4: warning: Expected sizes of arrays to have been determined by now
@@ -2211,15 +2365,51 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallRewriter.Rewrite() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 68
 00001C14: error: An error occurred while processing the statement d0_1434 = a2_1431 - a4_146.
     Pulling difference ptr32 and (ptr (struct 0001 (0 T_980 t0000)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 229
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 234
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 123
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+00001C24: error: An error occurred while processing the statement branch d5_1438 - Mem238[a7_1010 + 102:word32] >u 0x00000000 l00001C2E.
+    Pulling difference (ptr (struct 0004 (2C (union (cu8 u0) (word32 u1) (T_1031 u2) (T_1515 u3) (T_1521 u4) (T_1595 u5) (T_1760 u6) (T_1767 u7) (T_1773 u8) (T_1811 u9) (T_1818 u10) (T_1845 u11) (T_1887 u12) (T_1918 u13) (T_1932 u14)) u002C) (30 T_971 t0030) (34 T_1580 t0034) (40 T_1031 t0040) (44 T_1893 t0044) (48 T_961 t0048) (62 T_1899 t0062) (66 (union (int32 u0) (uint32 u1) (T_1039 u2) (T_1645 u3) (T_1652 u4) (T_1663 u5) (T_1770 u6) (T_1914 u7)) u0066) (6C T_1818 t006C) (7C T_1890 t007C))) and (union (int32 u0) (uint32 u1) (T_1039 u2) (T_1645 u3) (T_1652 u4) (T_1663 u5) (T_1770 u6) (T_1914 u7))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 234
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+00001D3E: error: An error occurred while processing the statement branch d5_1438 - Mem357[a7_1010 + 102:word32] <=u 0x00000000 l00001D64.
+    Pulling difference (ptr (struct 0004 (2C (union (cu8 u0) (word32 u1) (T_1031 u2) (T_1515 u3) (T_1521 u4) (T_1595 u5) (T_1760 u6) (T_1767 u7) (T_1773 u8) (T_1811 u9) (T_1818 u10) (T_1845 u11) (T_1887 u12) (T_1918 u13) (T_1932 u14)) u002C) (30 T_971 t0030) (34 T_1580 t0034) (40 T_1031 t0040) (44 T_1893 t0044) (48 T_961 t0048) (62 T_1899 t0062) (66 (union (int32 u0) (uint32 u1) (T_1039 u2) (T_1645 u3) (T_1652 u4) (T_1663 u5) (T_1770 u6) (T_1914 u7)) u0066) (6C T_1818 t006C) (7C T_1890 t007C))) and (union (int32 u0) (uint32 u1) (T_1039 u2) (T_1645 u3) (T_1652 u4) (T_1663 u5) (T_1770 u6) (T_1914 u7) (T_2207 u8))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 234
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+000022FC: error: An error occurred while processing the statement branch (Mem0[dwArg04 + 12:word32] & 0x00010000) == 0x00000000 l0000233C.
+    Object reference not set to an instance of an object.
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, Int32 offset) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 198
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 170
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 88
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 316
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 311
+   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0000300A: error: An error occurred while processing the statement branch d0 - d5_2548 >=u 0x00000000 l00002FC2.
     Pulling difference (ptr (struct 0004 (0 T_768 t0000))) and (union (int32 u0) (uint32 u1))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 229
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 234
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
@@ -2228,9 +2418,63 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 : warning: Type transformer has looped 51 times, quitting prematurely.
+00001410: error: Failed to write global variable g_t1410.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 323
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 79
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 182
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 53
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 300
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 58
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00001420: error: Failed to write global variable g_t1420.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 323
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 79
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 182
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 53
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 300
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 58
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00001424: error: Failed to write global variable g_t1424.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 323
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 79
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 182
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 53
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 300
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 58
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
 000028B1: warning: Expected sizes of arrays to have been determined by now
 000028B1: warning: Expected sizes of arrays to have been determined by now
 00003ED0: warning: Expected sizes of arrays to have been determined by now
+00001410: error: Failed to write global variable g_t1410.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 323
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 79
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 182
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 53
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 300
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 58
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00001420: error: Failed to write global variable g_t1420.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 323
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 79
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 182
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 53
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 300
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 58
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+00001424: error: Failed to write global variable g_t1424.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 323
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 79
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 182
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 53
+   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 300
+   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 58
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
 000028B1: warning: Expected sizes of arrays to have been determined by now
 000028B1: warning: Expected sizes of arrays to have been determined by now
 00003ED0: warning: Expected sizes of arrays to have been determined by now
@@ -2345,8 +2589,24 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallRewriter.Rewrite() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 68
 0000184A: error: An error occurred while processing the statement branch d0 - d5_2548 >=u 0x00000000 l00001802.
     Pulling difference (ptr (struct 0004 (0 T_747 t0000))) and (union (int32 u0) (uint32 u1))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 229
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 234
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+000029C4: error: An error occurred while processing the statement branch (Mem0[dwArg04 + 12:word32] & 0x00010000) == 0x00000000 l00002A04.
+    Object reference not set to an instance of an object.
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, Int32 offset) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 198
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 170
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 88
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 316
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 311
+   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
@@ -2355,11 +2615,31 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 00003694: error: An error occurred while processing the statement d0_1462 = a2_1459 - a4_148.
     Pulling difference ptr32 and (ptr (struct 0001 (0 T_5503 t0000)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 229
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 234
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 123
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+000036A4: error: An error occurred while processing the statement branch d5_1466 - Mem240[a7_1019 + 102:word32] >u 0x00000000 l000036AE.
+    Pulling difference (ptr (struct 0004 (2C (union (cu8 u0) (word32 u1) (T_5560 u2) (T_6045 u3) (T_6051 u4) (T_6126 u5) (T_6292 u6) (T_6299 u7) (T_6305 u8) (T_6343 u9) (T_6350 u10) (T_6377 u11) (T_6419 u12) (T_6450 u13) (T_6464 u14)) u002C) (30 T_697 t0030) (34 T_6111 t0034) (40 T_5560 t0040) (44 T_6425 t0044) (48 T_5484 t0048) (62 T_6431 t0062) (66 (union (int32 u0) (uint32 u1) (T_5568 u2) (T_6176 u3) (T_6183 u4) (T_6194 u5) (T_6302 u6) (T_6446 u7)) u0066) (6C T_6350 t006C) (7C T_6422 t007C))) and (union (int32 u0) (uint32 u1) (T_5568 u2) (T_6176 u3) (T_6183 u4) (T_6194 u5) (T_6302 u6) (T_6446 u7))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 234
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+000037BE: error: An error occurred while processing the statement branch d5_1466 - Mem359[a7_1019 + 102:word32] <=u 0x00000000 l000037E4.
+    Pulling difference (ptr (struct 0004 (2C (union (cu8 u0) (word32 u1) (T_5560 u2) (T_6045 u3) (T_6051 u4) (T_6126 u5) (T_6292 u6) (T_6299 u7) (T_6305 u8) (T_6343 u9) (T_6350 u10) (T_6377 u11) (T_6419 u12) (T_6450 u13) (T_6464 u14)) u002C) (30 T_697 t0030) (34 T_6111 t0034) (40 T_5560 t0040) (44 T_6425 t0044) (48 T_5484 t0048) (62 T_6431 t0062) (66 (union (int32 u0) (uint32 u1) (T_5568 u2) (T_6176 u3) (T_6183 u4) (T_6194 u5) (T_6302 u6) (T_6446 u7)) u0066) (6C T_6350 t006C) (7C T_6422 t007C))) and (union (int32 u0) (uint32 u1) (T_5568 u2) (T_6176 u3) (T_6183 u4) (T_6194 u5) (T_6302 u6) (T_6446 u7) (T_6750 u8))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 234
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 : warning: Type transformer has looped 51 times, quitting prematurely.
 00002BED: warning: Expected sizes of arrays to have been determined by now
@@ -2479,16 +2759,42 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallRewriter.Rewrite() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 68
 00001B78: error: An error occurred while processing the statement d0_1434 = a2_1431 - a4_146.
     Pulling difference ptr32 and (ptr (struct 0001 (0 T_907 t0000)))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 229
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 234
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 123
    at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-00002F6E: error: An error occurred while processing the statement branch d0 - d5_2549 >=u 0x00000000 l00002F26.
-    Pulling difference (ptr (struct 0004 (0 T_68 t0000))) and (union (int32 u0) (uint32 u1))
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 229
+00001B88: error: An error occurred while processing the statement branch d5_1438 - Mem238[a7_1010 + 102:word32] >u 0x00000000 l00001B92.
+    Pulling difference (ptr (struct 0004 (2C (union (cu8 u0) (word32 u1) (T_958 u2) (T_1442 u3) (T_1448 u4) (T_1522 u5) (T_1687 u6) (T_1694 u7) (T_1700 u8) (T_1738 u9) (T_1745 u10) (T_1772 u11) (T_1814 u12) (T_1845 u13) (T_1859 u14)) u002C) (30 T_831 t0030) (34 T_1507 t0034) (40 T_958 t0040) (44 T_1820 t0044) (48 T_888 t0048) (62 T_1826 t0062) (66 (union (int32 u0) (uint32 u1) (T_966 u2) (T_1572 u3) (T_1579 u4) (T_1590 u5) (T_1697 u6) (T_1841 u7)) u0066) (6C T_1745 t006C) (7C T_1817 t007C))) and (union (int32 u0) (uint32 u1) (T_966 u2) (T_1572 u3) (T_1579 u4) (T_1590 u5) (T_1697 u6) (T_1841 u7))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 234
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+00001CA2: error: An error occurred while processing the statement branch d5_1438 - Mem357[a7_1010 + 102:word32] <=u 0x00000000 l00001CC8.
+    Pulling difference (ptr (struct 0004 (2C (union (cu8 u0) (word32 u1) (T_958 u2) (T_1442 u3) (T_1448 u4) (T_1522 u5) (T_1687 u6) (T_1694 u7) (T_1700 u8) (T_1738 u9) (T_1745 u10) (T_1772 u11) (T_1814 u12) (T_1845 u13) (T_1859 u14)) u002C) (30 T_831 t0030) (34 T_1507 t0034) (40 T_958 t0040) (44 T_1820 t0044) (48 T_888 t0048) (62 T_1826 t0062) (66 (union (int32 u0) (uint32 u1) (T_966 u2) (T_1572 u3) (T_1579 u4) (T_1590 u5) (T_1697 u6) (T_1841 u7)) u0066) (6C T_1745 t006C) (7C T_1817 t007C))) and (union (int32 u0) (uint32 u1) (T_966 u2) (T_1572 u3) (T_1579 u4) (T_1590 u5) (T_1697 u6) (T_1841 u7) (T_2134 u8))
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 234
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
+   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+00002260: error: An error occurred while processing the statement branch (Mem0[dwArg04 + 12:word32] & 0x00010000) == 0x00000000 l000022A0.
+    Object reference not set to an instance of an object.
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, Int32 offset) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 198
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 170
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 88
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 316
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 311
+   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
@@ -2686,6 +2992,225 @@ fn0800_1099: warning: Structure analysis stopped making progress, quitting. Plea
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 139
    at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 84
    at Reko.Analysis.IndirectCallRewriter.Rewrite() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 68
+100013FC: error: An error occurred while processing the statement Mem61[esp_56 - 0x00000008 + 0x00000000:word32] = ebx_158.
+    Object reference not set to an instance of an object.
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, Int32 offset) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 198
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 170
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 88
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 316
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 311
+   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
+   at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 209
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+100013FD: error: An error occurred while processing the statement word32 esp_142 = esp_56 + 0x00000004.
+    Object reference not set to an instance of an object.
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, Int32 offset) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 198
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 170
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 88
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 157
+   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+100013D7: error: An error occurred while processing the statement Mem199[fp - 0x00000014 + 0x00000000:word32] = ebx_158.
+    Object reference not set to an instance of an object.
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, Int32 offset) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 198
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 170
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 88
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 316
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 311
+   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
+   at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 209
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+100013E9: error: An error occurred while processing the statement Mem187[esp_182 - 0x00000008 + 0x00000000:word32] = ebx_158.
+    Object reference not set to an instance of an object.
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, Int32 offset) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 198
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 170
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 88
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 316
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 311
+   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
+   at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 209
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+100013EA: error: An error occurred while processing the statement esp_175 = esp_182 + 0x00000004.
+    Object reference not set to an instance of an object.
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, Int32 offset) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 198
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 170
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 88
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 123
+   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+1000140E: error: An error occurred while processing the statement Mem128[esp_56 + 0x00000000:word32] = edi_12.
+    Object reference not set to an instance of an object.
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, Int32 offset) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 198
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 170
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 88
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 316
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 311
+   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
+   at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 209
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+1000140F: error: An error occurred while processing the statement Mem130[esp_56 - 0x00000004 + 0x00000000:word32] = eax_62.
+    Object reference not set to an instance of an object.
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, Int32 offset) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 198
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 170
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 88
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 316
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 311
+   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
+   at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 209
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+10001410: error: An error occurred while processing the statement Mem132[esp_56 - 0x00000008 + 0x00000000:word32] = ebx_158.
+    Object reference not set to an instance of an object.
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, Int32 offset) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 198
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 170
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 88
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 316
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 311
+   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
+   at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 209
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+10001416: error: An error occurred while processing the statement Mem136[esp_56 + 0x00000000:word32] = edi_12.
+    Object reference not set to an instance of an object.
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, Int32 offset) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 198
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 170
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 88
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 316
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 311
+   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
+   at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 209
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+10001417: error: An error occurred while processing the statement Mem138[esp_56 - 0x00000004 + 0x00000000:word32] = 0x00000000.
+    Object reference not set to an instance of an object.
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, Int32 offset) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 198
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 170
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 88
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 316
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 311
+   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
+   at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 209
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+10001419: error: An error occurred while processing the statement Mem140[esp_56 - 0x00000008 + 0x00000000:word32] = ebx_158.
+    Object reference not set to an instance of an object.
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, Int32 offset) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 198
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 170
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 88
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 316
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 311
+   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
+   at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 209
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+1000141A: error: An error occurred while processing the statement esp_142 = esp_56 + 0x00000004.
+    Object reference not set to an instance of an object.
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, Int32 offset) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 198
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 170
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 88
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Typing.TypeCollector.VisitAssignment(Assignment ass) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 123
+   at Reko.Core.Code.Assignment.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 56
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+10001428: error: An error occurred while processing the statement Mem148[esp_56 + 0x00000000:word32] = edi_12.
+    Object reference not set to an instance of an object.
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, Int32 offset) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 198
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 170
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 88
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 316
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 311
+   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
+   at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 209
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+10001429: error: An error occurred while processing the statement Mem150[esp_56 - 0x00000004 + 0x00000000:word32] = 0x00000000.
+    Object reference not set to an instance of an object.
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, Int32 offset) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 198
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 170
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 88
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 316
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 311
+   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
+   at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 209
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+1000142B: error: An error occurred while processing the statement Mem152[esp_56 - 0x00000008 + 0x00000000:word32] = ebx_158.
+    Object reference not set to an instance of an object.
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, Int32 offset) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 198
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 170
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 88
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 316
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 311
+   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
+   at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 209
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+10001439: error: An error occurred while processing the statement Mem85[esp_80 - 0x00000008 + 0x00000000:word32] = ebx_158.
+    Object reference not set to an instance of an object.
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, Int32 offset) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 198
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 170
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 88
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 316
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 311
+   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
+   at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 209
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+10001455: error: An error occurred while processing the statement Mem100[esp_80 + 0x00000000:word32] = edi_12.
+    Object reference not set to an instance of an object.
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, Int32 offset) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 198
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 170
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 88
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 316
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 311
+   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
+   at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 209
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+10001456: error: An error occurred while processing the statement Mem102[esp_80 - 0x00000004 + 0x00000000:word32] = esi_14.
+    Object reference not set to an instance of an object.
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, Int32 offset) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 198
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 170
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 88
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 316
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 311
+   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
+   at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 209
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+10001457: error: An error occurred while processing the statement Mem104[esp_80 - 0x00000008 + 0x00000000:word32] = ebx_158.
+    Object reference not set to an instance of an object.
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, Int32 offset) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 198
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.GetPossibleFieldType(DataType dtLeft, DataType dtRight, Expression right) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 170
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 88
+   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccessCommon(Expression access, Expression ea) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 316
+   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 311
+   at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
+   at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 209
+   at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 10003008: error: Failed to write global variable g_t10003008.
     The method or operation is not implemented.
        at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 323
@@ -2865,21 +3390,21 @@ frame_dummy: error: An error occurred during data flow analysis.
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 87
 0000000000400508: error: An error occurred while processing the statement branch Test(EQ,Z) l0000000000400528.
     The method or operation is not implemented.
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitTestCondition(TestCondition tc) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 424
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitTestCondition(TestCondition tc) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 416
    at Reko.Core.Expressions.TestCondition.Accept[T](ExpressionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 56
    at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0000000000400512: error: An error occurred while processing the statement branch Test(EQ,Z) l0000000000400528.
     The method or operation is not implemented.
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitTestCondition(TestCondition tc) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 424
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitTestCondition(TestCondition tc) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 416
    at Reko.Core.Expressions.TestCondition.Accept[T](ExpressionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 56
    at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0000000000400586: error: An error occurred while processing the statement branch 0x0000000000600E18 - r12_18 >> 0x0000000000000003 == 0x0000000000000000 l00000000004005A6.
     Pulling difference ptr64 and ptr64
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 229
+       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 234
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
@@ -4123,10 +4648,6 @@ fn0800_A96D: error: An error occurred while rewriting procedure to high-level la
 
 === switch.dcproject
 === int16.dll
-=== flags
-=== flags3
-=== unzip.dcproject
-
 === flags
 === flags3
 === unzip.dcproject

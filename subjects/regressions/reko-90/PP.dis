@@ -456,8 +456,8 @@ l0800_0338:
 	word16 ax_204 = fn0800_8BBB(bp_192, si_193, di_194, bp, out dx_200, out bp_201, out si_202, out di_203)
 	Mem206[ss:fp - 0x003A:word16] = dx_200
 	Mem208[ss:fp - 0x003C:word16] = ax_204
-	Mem217[ss:fp - 0x003E:word16] = SEQ(0x0000, si_202) % 0x0064
-	Mem226[ss:fp - 0x0040:word16] = SEQ(0x0000, si_202) /u 0x0064
+	Mem217[ss:fp - 0x003E:word16] = (uint32) (uint16) si_202 % 0x0064
+	Mem226[ss:fp - 0x0040:word16] = (uint32) (uint16) si_202 /u 0x0064
 	Mem228[ss:fp - 0x0042:word16] = Mem226[ds_94:0x29F1:word16]
 	Mem230[ss:fp - 0x0044:word16] = Mem228[ds_94:0x29EF:word16]
 	Mem232[ss:fp - 0x0046:word16] = Mem230[ds_94:0x29F5:word16]
@@ -1693,8 +1693,8 @@ l0800_0ABC:
 	Mem37[ss:fp - 0x001A:word16] = Mem35[ds:0x2A07:word16]
 	word16 di_40
 	word16 ax_41 = fn0800_0B79(fp - 0x0002, wArg02, di, wArg00, wArg02, wArg04, wArg06, out di_40)
-	Mem51[ss:fp - 0x0014:word16] = SEQ(0x0000, ax_41) % 0x0064
-	Mem60[ss:fp - 0x0016:word16] = SEQ(0x0000, ax_41) /u 0x0064
+	Mem51[ss:fp - 0x0014:word16] = (uint32) (uint16) ax_41 % 0x0064
+	Mem60[ss:fp - 0x0016:word16] = (uint32) (uint16) ax_41 /u 0x0064
 	Mem62[ss:fp - 0x0018:word16] = Mem60[ds:0x2A05:word16]
 	Mem64[ss:fp - 0x001A:word16] = Mem62[ds:0x2A03:word16]
 	Mem66[ss:fp - 0x001C:word16] = Mem64[ds:0x2A09:word16]
@@ -1919,7 +1919,7 @@ l0800_0C08:
 // LocalsOut: fp(16)
 
 l0800_0C15:
-	word32 dx_ax_17 = SEQ(0x0000, si_10)
+	word32 dx_ax_17 = (uint32) (uint16) si_10
 	si_10 = dx_ax_17 /u 0x0002
 	branch dx_ax_17 /u 0x0002 != 0x0000 l0800_0C14
 // DataOut: cx ds si ss
@@ -23379,7 +23379,7 @@ l0800_8DBC:
 // LocalsOut: fp(16) Local -0002(16) Local -0028(16) Local -002A(16) Stack +0002(8) Stack +0004(8)
 
 l0800_8DC1:
-	word32 dx_ax_175 = SEQ(0x0000, cx_168)
+	word32 dx_ax_175 = (uint32) (uint16) cx_168
 	word32 dx_ax_181 = SEQ(dx_ax_175 % wArg06, ax_103)
 	Mem190[ss:si_104:byte] = (byte) (dx_ax_181 % wArg06)
 	word16 ax_178 = dx_ax_175 /u wArg06
@@ -23400,7 +23400,7 @@ l0800_8DD9:
 // LocalsOut: fp(16) Local -0002(16) Local -0028(16) Local -002A(16) Stack +0002(8) Stack +0004(8)
 
 l0800_8DD1:
-	word32 dx_ax_106 = SEQ(0x0000, ax_103)
+	word32 dx_ax_106 = (uint32) (uint16) ax_103
 	Mem114[ss:si_104:byte] = (byte) (dx_ax_106 % wArg06)
 	ax_103 = dx_ax_106 /u wArg06
 	si_104 = si_104 + 0x0001
@@ -27645,7 +27645,7 @@ l0800_AC26:
 
 l0800_ABD3:
 	selector ds_165
-	ax_116 = SEQ(0x0000, ax_80 - fn0800_AAB3(dx_100, ds, DPB(ptrLoc14, wArg0A, 0), wArg0C, ax_80, DPB(ptrLoc0E, wArg02, 0), wArg04, out ds_165)) /u wArg06
+	ax_116 = (uint32) (uint16) (ax_80 - fn0800_AAB3(dx_100, ds, DPB(ptrLoc14, wArg0A, 0), wArg0C, ax_80, DPB(ptrLoc0E, wArg02, 0), wArg04, out ds_165)) /u wArg06
 // DataOut: ax ds sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x000A bp:fp - 0x0002 di:<invalid> bx:<invalid> cx:<invalid> ax:<invalid> dx:<invalid> -10(fp):di -8(fp):si -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
@@ -28092,7 +28092,7 @@ l0800_ADEA:
 
 l0800_ADB1:
 	selector ds_172
-	ax_141 = SEQ(0x0000, fn0800_B4BE(ds, DPB(ptrLoc14, wArg0A, 0), wArg0C, ax_94, DPB(ptrLoc0E, wArg02, 0), wArg04, out ds_172)) /u wArg06
+	ax_141 = (uint32) (uint16) fn0800_B4BE(ds, DPB(ptrLoc14, wArg0A, 0), wArg0C, ax_94, DPB(ptrLoc0E, wArg02, 0), wArg04, out ds_172) /u wArg06
 // DataOut: ax ds sp ss
 // DataOut (flags): 
 // SymbolicIn: sp:fp - 0x000A bp:fp - 0x0002 di:<invalid> bx:<invalid> cx:<invalid> ax:<invalid> dx:<invalid> -10(fp):di -8(fp):si -6(fp):<invalid> -4(fp):<invalid> -2(fp):bp
@@ -31948,7 +31948,7 @@ l0800_C5E4:
 // LocalsOut: fp(16) Stack +0002(16) Stack +0004(16) Stack +0006(16) Stack +0008(8)
 
 l0800_C5E5:
-	word16 cx_96 = cx_116 - SEQ(0x0000, ((wArg02 + 0x0001 >> 0x0002) + cx_116) + 0x0171) % 0x0007
+	word16 cx_96 = cx_116 - (uint32) ((uint16) (((wArg02 + 0x0001 >> 0x0002) + cx_116) + 0x0171)) % 0x0007
 	branch wArg04 != 0x0004 l0800_C61A
 // DataOut: ax cx di ds ss
 // DataOut (flags): 
