@@ -189,10 +189,15 @@ namespace Reko.Core.Expressions
                 return null;
 
             var field = strPointee.Fields.LowerBound(offset);
-            //$BUG: offset != field.Offset?
-            if (field == null || offset >= field.Offset + field.DataType.Size)
+            if (field == null)
                 return null;
-            return factory.CreatePointer(field.DataType, dtLeft.Size);
+            // We're collecting _DataTypes_, so if we encounter
+            // a TypeReference, we need to drill past it.
+            var dtField = field.DataType.ResolveAs<DataType>();
+            //$BUG: offset != field.Offset?
+            if (offset >= field.Offset + dtField.Size)
+                return null;
+            return factory.CreatePointer(dtField, dtLeft.Size);
         }
 
         private DataType PullSumDataType(DataType dtLeft, DataType dtRight)
@@ -317,21 +322,8 @@ namespace Reko.Core.Expressions
             DataType dt;
             if (ptEa != null)
             {
-                // If this is a pointer to a structure, determine if there
-                // is a field at offset 0; if so, grab its data type
+                //$REVIEW: what if sizeof(access) != sizeof(field_at_0)?
                 dt = ptEa.Pointee;
-                var str = dt as StructureType;
-                if (str != null)
-                {
-                    var field = str.Fields.AtOffset(0);
-                    if (field != null)
-                    {
-                        // We're collecting _DataTypes_, so if we encounter
-                        // a TypeReference, we need to drill past it.
-                        dt = field.DataType.ResolveAs<DataType>();
-                        //$REVIEW: what if sizeof(access) != sizeof(field_at_0)?
-                    }
-                }
             }
             else
                 dt = access.DataType;

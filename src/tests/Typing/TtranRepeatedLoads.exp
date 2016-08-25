@@ -44,8 +44,8 @@ T_7: (in 0x00000004 : word32)
   OrigDataType: word32
 T_8: (in pfoo + 0x00000004 : word32)
   Class: Eq_8
-  DataType: ptr32
-  OrigDataType: ptr32
+  DataType: (ptr word32)
+  OrigDataType: (ptr word32)
 T_9: (in Mem0[pfoo + 0x00000004:word32] : word32)
   Class: Eq_5
   DataType: word32
