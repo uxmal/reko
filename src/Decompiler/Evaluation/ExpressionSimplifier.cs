@@ -506,6 +506,16 @@ namespace Reko.Evaluation
                 head = seq.Head;
             if (tail == Constant.Invalid)
                 tail = seq.Tail;
+            if (c1 != null && c1.IsZero)
+            {
+                // leading zeros imply a conversion to unsigned.
+                return new Cast(
+                    PrimitiveType.Create(Domain.UnsignedInt, seq.DataType.Size),
+                    new Cast(
+                        PrimitiveType.Create(Domain.UnsignedInt, tail.DataType.Size),
+                        tail));
+
+            }
             return new MkSequence(seq.DataType, head, tail);
         }
 

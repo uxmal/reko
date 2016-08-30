@@ -224,9 +224,30 @@ done:
             RunFileTest_x86_real("Fragments/regressions/r00282.asm", "Analysis/DfaReg00282.txt");
         }
 
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void DfaUnsignedDiv()
+        {
+            var m = new ProcedureBuilder();
+            var r1 = m.Register(1);
+            var r2 = m.Register(2);
+            var r2_r1 = m.Frame.EnsureSequence(r2.Storage, r1.Storage, PrimitiveType.Word64);
+            var tmp = m.Frame.CreateTemporary(r2_r1.DataType);
+            m.Assign(r1, m.LoadDw(m.Word32(0x123400)));
+            m.Assign(r2_r1, m.Seq(m.Word32(0), r1));
+            m.Assign(tmp, r2_r1);
+            m.Assign(r1, m.UDiv(tmp, m.Word32(42)));
+            m.Store(m.Word32(0x123404), r1);
+            m.Return();
+
+            RunFileTest(m, "Analysis/DfaUnsignedDiv.txt");
+        }
+
+        protected override void RunTest(Program prog, TextWriter writer)
         protected override void RunTest(Program program, TextWriter writer)
 		{
-            IImportResolver importResolver = null;
+            IImportResolver importResolver = mr.Stub<IImportResolver>();
+            importResolver.Replay();
 			dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
 			dfa.AnalyzeProgram();
 			foreach (Procedure proc in program.Procedures.Values)
@@ -239,6 +260,5 @@ done:
 				writer.WriteLine();
 			}
 		}	
-
 	}
 }

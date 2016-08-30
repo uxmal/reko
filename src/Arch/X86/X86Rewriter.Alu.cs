@@ -364,13 +364,14 @@ namespace Reko.Arch.X86
                 throw new ArgumentOutOfRangeException(string.Format("{0}-byte divisions not supported.", instrCur.dataWidth.Size));
             };
             PrimitiveType p = ((PrimitiveType)regRemainder.DataType).MaskDomain(domain);
+            var tmp = frame.CreateTemporary(regDividend.DataType);
+            emitter.Assign(tmp, regDividend);
             emitter.Assign(
-                regRemainder, new BinaryExpression(Operator.IMod, p,
-                regDividend,
-                SrcOp(instrCur.op1)));
+                regRemainder, 
+                new BinaryExpression(Operator.IMod, p, tmp, SrcOp(instrCur.op1)));
             emitter.Assign(
-                regQuotient, new BinaryExpression(op, p, regDividend,
-                SrcOp(instrCur.op1)));
+                regQuotient, 
+                new BinaryExpression(op, p, tmp, SrcOp(instrCur.op1)));
             EmitCcInstr(regQuotient, X86Instruction.DefCc(instrCur.code));
         }
 
