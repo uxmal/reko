@@ -21,7 +21,7 @@ l10001000:
 // LocalsOut: fp(32) Local -0004(32) Local -0008(32)
 
 l10001027:
-	return Py_BuildValue(0x1000214C, 0x00000000)
+	return Py_BuildValue(0x1000214C, dwLoc04 + dwLoc08)
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000008 edx:ptrArg08 eax:<invalid> ecx:fp - 0x00000004 -24(fp):ptrArg08 -20(fp):0x10002144 -16(fp):fp - 0x00000004 -12(fp):fp - 0x00000008 4(fp):ptrArg04 8(fp):ptrArg08
@@ -54,21 +54,21 @@ fn10001050_entry:
 // LocalsOut: fp(32) Local -0004(32) Local -0008(32) Stack +0008(32)
 
 l10001050:
-	word32 eax_19 = PyArg_ParseTuple(ptrArg08, 0x10002150, 0x00000000)
-	branch eax_19 != 0x00000000 l10001078
+	word32 eax_21 = PyArg_ParseTuple(ptrArg08, 0x10002150, 0x00000000)
+	branch eax_21 != 0x00000000 l10001078
 // DataOut: eax
 // DataOut (flags): 
 // SymbolicIn: esp:fp
 // LocalsOut: fp(32) Local -0004(32) Local -0008(32)
 
 l10001078:
-	return Py_BuildValue(0x1000214C, 0x00000000)
+	return Py_BuildValue(0x1000214C, dwLoc08 - dwLoc04)
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000008 edx:ptrArg08 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg08 -20(fp):0x10002150 -16(fp):fp - 0x00000008 -12(fp):fp - 0x00000004 4(fp):ptrArg04 8(fp):ptrArg08
 
 l10001074:
-	return eax_19
+	return eax_21
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000008 edx:ptrArg08 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg08 -20(fp):0x10002150 -16(fp):fp - 0x00000008 -12(fp):fp - 0x00000004 4(fp):ptrArg04 8(fp):ptrArg08
@@ -95,21 +95,21 @@ fn100010A0_entry:
 // LocalsOut: fp(32) Local -0004(32) Local -0008(32) Stack +0008(32)
 
 l100010A0:
-	word32 eax_19 = PyArg_ParseTuple(ptrArg08, 0x10002158, 0x00000000)
-	branch eax_19 != 0x00000000 l100010C8
+	word32 eax_21 = PyArg_ParseTuple(ptrArg08, 0x10002158, 0x00000000)
+	branch eax_21 != 0x00000000 l100010C8
 // DataOut: eax
 // DataOut (flags): 
 // SymbolicIn: esp:fp
 // LocalsOut: fp(32) Local -0004(32) Local -0008(32)
 
 l100010C8:
-	return Py_BuildValue(0x1000214C, 0x00000000)
+	return Py_BuildValue(0x1000214C, (int64) dwLoc08 / dwLoc04)
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000008 edx:ptrArg08 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg08 -20(fp):0x10002158 -16(fp):fp - 0x00000008 -12(fp):fp - 0x00000004 4(fp):ptrArg04 8(fp):ptrArg08
 
 l100010C4:
-	return eax_19
+	return eax_21
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000008 edx:ptrArg08 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg08 -20(fp):0x10002158 -16(fp):fp - 0x00000008 -12(fp):fp - 0x00000004 4(fp):ptrArg04 8(fp):ptrArg08
@@ -133,24 +133,24 @@ fn100010F0_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp
-// LocalsOut: fp(32) Local -0004(32) Local -0008(32) Stack +0008(32)
+// LocalsOut: fp(32) Local -0004(0) Local -0008(32) Stack +0008(32)
 
 l100010F0:
-	word32 eax_19 = PyArg_ParseTuple(ptrArg08, 0x10002160, 0x00000000)
-	branch eax_19 != 0x00000000 l10001118
+	word32 eax_21 = PyArg_ParseTuple(ptrArg08, 0x10002160, 0x00000000)
+	branch eax_21 != 0x00000000 l10001118
 // DataOut: eax
 // DataOut (flags): 
 // SymbolicIn: esp:fp
-// LocalsOut: fp(32) Local -0004(32) Local -0008(32)
+// LocalsOut: fp(32) Local -0004(0) Local -0008(32)
 
 l10001118:
-	return Py_BuildValue(0x10002168, 0x00000000)
+	return Py_BuildValue(0x10002168, (real64) rLoc08 / rLoc04)
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000008 edx:ptrArg08 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg08 -20(fp):0x10002160 -16(fp):fp - 0x00000008 -12(fp):fp - 0x00000004 4(fp):ptrArg04 8(fp):ptrArg08
 
 l10001114:
-	return eax_19
+	return eax_21
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000008 edx:ptrArg08 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg08 -20(fp):0x10002160 -16(fp):fp - 0x00000008 -12(fp):fp - 0x00000004 4(fp):ptrArg04 8(fp):ptrArg08
@@ -177,22 +177,22 @@ py_unused_entry:
 // LocalsOut: fp(32) Stack +0008(32)
 
 l10001140:
-	word32 eax_12 = PyArg_ParseTuple(args, 0x1000216C, 0x00000000)
-	branch eax_12 != 0x00000000 l10001158
+	word32 eax_16 = PyArg_ParseTuple(args, 0x1000216C, 0x00000000)
+	branch eax_16 != 0x00000000 l10001158
 // DataOut: eax
 // DataOut (flags): 
 // SymbolicIn: esp:fp
 
 l10001158:
-	word32 eax_21 = &_Py_NoneStruct
-	Mem24[eax_21:word32] = Mem0[eax_21:word32] + 0x00000001
+	word32 eax_25 = &_Py_NoneStruct
+	Mem28[eax_25:word32] = Mem0[eax_25:word32] + 0x00000001
 	return &_Py_NoneStruct
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp eax:<invalid> -8(fp):args -4(fp):0x1000216C 4(fp):self 8(fp):args
 
 l10001157:
-	return eax_12
+	return eax_16
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp eax:<invalid> -8(fp):args -4(fp):0x1000216C 4(fp):self 8(fp):args

@@ -243,7 +243,6 @@ done:
             RunFileTest(m, "Analysis/DfaUnsignedDiv.txt");
         }
 
-        protected override void RunTest(Program prog, TextWriter writer)
         protected override void RunTest(Program program, TextWriter writer)
 		{
             IImportResolver importResolver = mr.Stub<IImportResolver>();

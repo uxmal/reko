@@ -673,8 +673,8 @@ l00401454_ds_f:
 	goto l004015C8
 l00401454_ds_t:
 	Eq_182 r2_976 = dwLoc0150_1314->t0000
-	r3_1018 = (struct Eq_541 *) *r2_976
-	branch fp->aFFFFFED0[dwLoc0150_1314->t0000 >> 0x05] >> r2_976 == 0x01 l00401480_ds_t
+	r3_1018 = (struct Eq_541 *) *r2_976.u0
+	branch fp->aFFFFFED0[dwLoc0150_1314->t0000 >> 0x05] >> r2_976.u0 == 0x01 l00401480_ds_t
 	goto l00401480_ds_f
 l00401468:
 	branch dwLoc0150_1314 != null l00401454_ds_t
@@ -736,8 +736,8 @@ l004015E0_ds_f:
 l004015F0:
 l004015F0_ds_f:
 	Eq_182 r2_889 = dwLoc0158->t0000
-	r3_1018 = (struct Eq_541 *) *r2_889
-	int32 r2_892 = fp->aFFFFFED0[dwLoc0158->t0000 >> 0x05] >> r2_889
+	r3_1018 = (struct Eq_541 *) *r2_889.u0
+	int32 r2_892 = fp->aFFFFFED0[dwLoc0158->t0000 >> 0x05] >> r2_889.u0
 	branch r2_892 == 0x01 l00401608_ds_t
 	goto l00401608_ds_f
 l00401608:
@@ -787,8 +787,8 @@ l00401724_ds_f:
 l00401734:
 l00401734_ds_f:
 	Eq_182 r2_816 = dwLoc0158->t0004
-	r3_1018 = (struct Eq_541 *) *r2_816
-	int32 r2_819 = fp->aFFFFFED0[dwLoc0158->t0004 >> 0x05] >> r2_816
+	r3_1018 = (struct Eq_541 *) *r2_816.u0
+	int32 r2_819 = fp->aFFFFFED0[dwLoc0158->t0004 >> 0x05] >> r2_816.u0
 	branch r2_819 == 0x01 l0040174C_ds_t
 	goto l0040174C_ds_f
 l0040174C:
@@ -826,8 +826,8 @@ l0040184C_ds_f:
 l0040185C:
 l0040185C_ds_f:
 	Eq_182 r2_783 = dwLoc0158->t0000
-	r3_1018 = (struct Eq_541 *) *r2_783
-	branch fp->aFFFFFF50[dwLoc0158->t0000 >> 0x05] >> r2_783 == 0x01 l00401874_ds_t
+	r3_1018 = (struct Eq_541 *) *r2_783.u0
+	branch fp->aFFFFFF50[dwLoc0158->t0000 >> 0x05] >> r2_783.u0 == 0x01 l00401874_ds_t
 	goto l00401874_ds_f
 l00401874:
 l00401874_ds_f:
@@ -845,8 +845,8 @@ l004018F0_ds_f:
 l00401900:
 l00401900_ds_f:
 	Eq_182 r2_753 = dwLoc0158->t0004
-	r3_1018 = (struct Eq_541 *) *r2_753
-	int32 r2_756 = fp->aFFFFFF50[dwLoc0158->t0004 >> 0x05] >> r2_753
+	r3_1018 = (struct Eq_541 *) *r2_753.u0
+	int32 r2_756 = fp->aFFFFFF50[dwLoc0158->t0004 >> 0x05] >> r2_753.u0
 	branch r2_756 == 0x01 l00401918_ds_t
 	goto l00401918_ds_f
 l00401918:
@@ -2115,9 +2115,9 @@ void request_save_line(Eq_2980 * r4, word32 dwArg00, word32 dwArg04, word32 dwAr
 		word32 r2_98;
 		word32 r7_99;
 		r25_88();
-		(&r4->a0004->dw0000)->a0004[r4->dw0558 * 0x04 + 0x040C].dw0000 = r2_98;
+		(&r4->a0004->t0000)->a0004[r4->dw0558 * 0x04 + 0x040C].t0000.u1 = r2_98;
 		int32 r3_115 = (r4->dw0558 << 0x02) + 1040;
-		word32 r2_118 = (&r4->a0004->dw0000)[r3_115 / 0x055C];
+		Eq_3033 r2_118 = (&r4->a0004->t0000)[r3_115 / 0x055C];
 		if (r2_118 == 0x00)
 		{
 			<anonymous> * r25_125 = globals->ptr100009EC;
@@ -2126,9 +2126,9 @@ void request_save_line(Eq_2980 * r4, word32 dwArg00, word32 dwArg04, word32 dwAr
 		}
 		else
 		{
-			(&r4->a0004->dw0000)[(r4->dw0558 + 0x0510) / 0x055C] = (struct Eq_2980) (byte) (word32) bArg0B;
+			(&r4->a0004->t0000)[(r4->dw0558 + 0x0510) / 0x055C] = (struct Eq_2980) (byte) (word32) bArg0B;
 			int32 r3_157 = (r4->dw0558 << 0x02) + 1040;
-			ptr32 r2_159 = (&r4->a0004->dw0000)[r3_157 / 0x055C];
+			ptr32 r2_159 = (&r4->a0004->t0000)[r3_157 / 0x055C];
 			<anonymous> * r25_163 = globals->ptr10000A48;
 			r25_163();
 		}
@@ -2452,8 +2452,8 @@ void properties_load(word32 r4, int32 r5, word32 dwArg00, word32 dwArg04)
 	word32 r4_23 = __lwr(r2_20->dwFFFFA5E3);
 	__lwl(r2_20->dwFFFFA5E4);
 	word32 r5_25 = __lwr(r2_20->dwFFFFA5E7);
-	word32 r6_26 = (word32) r2_20->bFFFFA5E8;
-	word32 r7_27 = (word32) r2_20->bFFFFA5E9;
+	word32 r6_26 = (word32) r2_20->dwFFFFA5E8;
+	word32 r7_27 = (word32) r2_20->dwFFFFA5E9;
 	word32 dwLoc40_28 = __swl(r4_23);
 	word32 dwLoc3D_29 = __swr(r4_23);
 	word32 dwLoc3C_30 = __swl(r5_25);
@@ -2750,7 +2750,7 @@ l0040625C:
 		dwLoc18_114 = (struct Eq_3961 *) r5[r2_452]->b0000;
 	}
 	else
-		dwLoc18_114 = (struct Eq_3961 *) globals->ptr10000880->bFFFFA5E9[0x0087];
+		dwLoc18_114 = Mem0[0x10000880:word32] + -22928;
 l00405E54:
 	int32 r3_116 = (word32) bLoc1C_112;
 	if (r3_116 == 0x0068)

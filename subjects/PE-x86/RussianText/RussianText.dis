@@ -75,7 +75,7 @@ main_entry:
 l00401168:
 	call printf (retsize: 4; depth: 12)
 		uses: 0x004020A4,ebp,fp - 0x00000004,fp - 0x00000008
-		defs: C_18,eax_16,ebp_14,ecx_15,esp_13,SZO_17
+		defs: C_20,eax_18,ebp_16,ecx_17,esp_15,SZO_19
 	return 0x00000000
 // DataOut:
 // DataOut (flags): 
