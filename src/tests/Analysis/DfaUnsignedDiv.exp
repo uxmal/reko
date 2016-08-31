@@ -10,7 +10,7 @@ void ProcedureBuilder()
 ProcedureBuilder_entry:
 	// succ:  l1
 l1:
-	Mem5[0x00123404:word32] = (uint64) (uint32) Mem0[0x00123400:word32] /u 0x0000002A
+	Mem6[0x00123404:word32] = (uint64) (uint32) Mem0[0x00123400:word32] /u 0x0000002A
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:

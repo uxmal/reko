@@ -32,9 +32,13 @@ namespace Reko.Core
 	/// </summary>
 	public class CallGraph
 	{
-		private List<Procedure> entryPoints = new List<Procedure>();	
 		private DirectedGraphImpl<Procedure> graphProcs = new DirectedGraphImpl<Procedure>();
 		private DirectedGraphImpl<object> graphStms = new DirectedGraphImpl<object>();
+
+        public CallGraph()
+        {
+            this.EntryPoints = new List<Procedure>();
+        }
 
 		public void AddEdge(Statement stmCaller, Procedure callee)
 		{
@@ -47,12 +51,14 @@ namespace Reko.Core
 			graphStms.AddEdge(stmCaller, callee);
 		}
 
-		public void AddEntryPoint(Procedure proc)
+        public List<Procedure> EntryPoints { get; private set; }
+
+        public void AddEntryPoint(Procedure proc)
 		{
 			AddProcedure(proc);
-			if (!entryPoints.Contains(proc))
+			if (!EntryPoints.Contains(proc))
 			{
-				entryPoints.Add(proc);
+				EntryPoints.Add(proc);
 			}
 		}
 
@@ -60,11 +66,6 @@ namespace Reko.Core
 		{
 			graphProcs.AddNode(proc);
 			graphStms.AddNode(proc);
-		}
-
-		public void AddStatement(Statement stm)
-		{
-			graphStms.AddNode(stm);
 		}
 
 		public IEnumerable<object> Callees(Statement stm)
@@ -126,17 +127,8 @@ namespace Reko.Core
         {
             public int Compare(Statement a, Statement b)
             {
-                return a.LinearAddress < b.LinearAddress
-                    ? -1
-                    : a.LinearAddress > b.LinearAddress
-                        ? 1
-                        : 0;
+                return a.LinearAddress.CompareTo(b.LinearAddress);
             }
         }
-
-		public List<Procedure> EntryPoints
-		{
-			get { return entryPoints; }
-		}
 	}
 }

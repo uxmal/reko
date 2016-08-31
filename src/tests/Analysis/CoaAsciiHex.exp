@@ -69,6 +69,7 @@ al_16: orig: al
 SCZO_17: orig: SCZO
 C_18: orig: C
 alOut:Out:al
+    def:  use al_20 (=> alOut)
 al_20: orig: al
     def:  al_20 = PHI(al, al_22)
     uses: use al_20 (=> alOut)
