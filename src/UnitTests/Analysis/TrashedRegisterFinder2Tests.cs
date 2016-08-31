@@ -334,6 +334,7 @@ Constants: cl:0x00
                 m.Assign(sp, m.ISub(sp, 4));
                 m.Store(sp, r1);
                 m.Call(fnExit, 4);
+                // No return, so registers are not affected.
             });
         }
 

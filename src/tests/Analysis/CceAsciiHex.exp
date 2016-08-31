@@ -57,7 +57,7 @@ al:al
           SCZO_8 = cond(al - 0x61)
           SCZO_9 = cond(al - 0x66)
           al_12 = al - 0x30
-          al_19 = PHI(al, al_21)
+          al_20 = PHI(al, al_22)
           branch al <u 0x30 l0C00_0032
           branch al <=u 0x39 l0C00_0022
           branch al <u 0x41 l0C00_0032
@@ -73,97 +73,99 @@ al:al
           SCZO_17 = cond(al - 0x57)
 SCZO_4: orig: SCZO
     def:  SCZO_4 = cond(al - 0x30)
-    uses: S_23 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
-          Z_27 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
-          O_30 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
+    uses: S_24 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
+          Z_28 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
+          O_31 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
 SCZO_5: orig: SCZO
 SCZO_6: orig: SCZO
     def:  SCZO_6 = cond(al - 0x41)
-    uses: S_23 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
-          Z_27 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
-          O_30 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
+    uses: S_24 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
+          Z_28 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
+          O_31 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
 SCZO_7: orig: SCZO
 SCZO_8: orig: SCZO
     def:  SCZO_8 = cond(al - 0x61)
-    uses: S_23 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
-          Z_27 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
-          O_30 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
+    uses: S_24 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
+          Z_28 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
+          O_31 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
 SCZO_9: orig: SCZO
     def:  SCZO_9 = cond(al - 0x66)
-    uses: S_23 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
-          Z_27 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
-          O_30 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
+    uses: S_24 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
+          Z_28 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
+          O_31 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
 C_10: orig: C
     def:  C_10 = true
-    uses: C_25 = PHI(C_10, C_18)
+    uses: C_26 = PHI(C_10, C_18)
 al_11: orig: al
     def:  al_11 = PHI(al, al, al)
 al_12: orig: al
     def:  al_12 = al - 0x30
-    uses: al_21 = PHI(al_12, al_14, al_16)
+    uses: al_22 = PHI(al_12, al_14, al_16)
 SCZO_13: orig: SCZO
     def:  SCZO_13 = cond(al - 0x3A)
-    uses: S_24 = PHI(SCZO_13, SCZO_15, SCZO_17)
-          Z_28 = PHI(SCZO_13, SCZO_15, SCZO_17)
-          O_31 = PHI(SCZO_13, SCZO_15, SCZO_17)
+    uses: S_25 = PHI(SCZO_13, SCZO_15, SCZO_17)
+          Z_29 = PHI(SCZO_13, SCZO_15, SCZO_17)
+          O_32 = PHI(SCZO_13, SCZO_15, SCZO_17)
 al_14: orig: al
     def:  al_14 = al - 0x37
-    uses: al_21 = PHI(al_12, al_14, al_16)
+    uses: al_22 = PHI(al_12, al_14, al_16)
 SCZO_15: orig: SCZO
     def:  SCZO_15 = cond(al - 0x47)
-    uses: S_24 = PHI(SCZO_13, SCZO_15, SCZO_17)
-          Z_28 = PHI(SCZO_13, SCZO_15, SCZO_17)
-          O_31 = PHI(SCZO_13, SCZO_15, SCZO_17)
+    uses: S_25 = PHI(SCZO_13, SCZO_15, SCZO_17)
+          Z_29 = PHI(SCZO_13, SCZO_15, SCZO_17)
+          O_32 = PHI(SCZO_13, SCZO_15, SCZO_17)
 al_16: orig: al
     def:  al_16 = al - 0x57
-    uses: al_21 = PHI(al_12, al_14, al_16)
+    uses: al_22 = PHI(al_12, al_14, al_16)
 SCZO_17: orig: SCZO
     def:  SCZO_17 = cond(al - 0x57)
-    uses: S_24 = PHI(SCZO_13, SCZO_15, SCZO_17)
-          Z_28 = PHI(SCZO_13, SCZO_15, SCZO_17)
-          O_31 = PHI(SCZO_13, SCZO_15, SCZO_17)
+    uses: S_25 = PHI(SCZO_13, SCZO_15, SCZO_17)
+          Z_29 = PHI(SCZO_13, SCZO_15, SCZO_17)
+          O_32 = PHI(SCZO_13, SCZO_15, SCZO_17)
 C_18: orig: C
     def:  C_18 = false
-    uses: C_25 = PHI(C_10, C_18)
-al_19: orig: al
-    def:  al_19 = PHI(al, al_21)
-    uses: use al_19 (=> alOut)
-          use al_19
+    uses: C_26 = PHI(C_10, C_18)
+alOut:Out:al
+    def:  use al_20 (=> alOut)
 al_20: orig: al
-    def:  al_20 = PHI(al, al, al, al)
+    def:  al_20 = PHI(al, al_22)
+    uses: use al_20 (=> alOut)
+          use al_20
 al_21: orig: al
-    def:  al_21 = PHI(al_12, al_14, al_16)
-    uses: al_19 = PHI(al, al_21)
-S_22: orig: S
-    def:  S_22 = PHI(S_23, S_24)
-    uses: use C_25 | O_29 | S_22 | Z_26
+    def:  al_21 = PHI(al, al, al, al)
+al_22: orig: al
+    def:  al_22 = PHI(al_12, al_14, al_16)
+    uses: al_20 = PHI(al, al_22)
 S_23: orig: S
-    def:  S_23 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
-    uses: S_22 = PHI(S_23, S_24)
+    def:  S_23 = PHI(S_24, S_25)
+    uses: use C_26 | O_30 | S_23 | Z_27
 S_24: orig: S
-    def:  S_24 = PHI(SCZO_13, SCZO_15, SCZO_17)
-    uses: S_22 = PHI(S_23, S_24)
-C_25: orig: C
-    def:  C_25 = PHI(C_10, C_18)
-    uses: use C_25 | O_29 | S_22 | Z_26
-Z_26: orig: Z
-    def:  Z_26 = PHI(Z_27, Z_28)
-    uses: use C_25 | O_29 | S_22 | Z_26
+    def:  S_24 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
+    uses: S_23 = PHI(S_24, S_25)
+S_25: orig: S
+    def:  S_25 = PHI(SCZO_13, SCZO_15, SCZO_17)
+    uses: S_23 = PHI(S_24, S_25)
+C_26: orig: C
+    def:  C_26 = PHI(C_10, C_18)
+    uses: use C_26 | O_30 | S_23 | Z_27
 Z_27: orig: Z
-    def:  Z_27 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
-    uses: Z_26 = PHI(Z_27, Z_28)
+    def:  Z_27 = PHI(Z_28, Z_29)
+    uses: use C_26 | O_30 | S_23 | Z_27
 Z_28: orig: Z
-    def:  Z_28 = PHI(SCZO_13, SCZO_15, SCZO_17)
-    uses: Z_26 = PHI(Z_27, Z_28)
-O_29: orig: O
-    def:  O_29 = PHI(O_30, O_31)
-    uses: use C_25 | O_29 | S_22 | Z_26
+    def:  Z_28 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
+    uses: Z_27 = PHI(Z_28, Z_29)
+Z_29: orig: Z
+    def:  Z_29 = PHI(SCZO_13, SCZO_15, SCZO_17)
+    uses: Z_27 = PHI(Z_28, Z_29)
 O_30: orig: O
-    def:  O_30 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
-    uses: O_29 = PHI(O_30, O_31)
+    def:  O_30 = PHI(O_31, O_32)
+    uses: use C_26 | O_30 | S_23 | Z_27
 O_31: orig: O
-    def:  O_31 = PHI(SCZO_13, SCZO_15, SCZO_17)
-    uses: O_29 = PHI(O_30, O_31)
+    def:  O_31 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
+    uses: O_30 = PHI(O_31, O_32)
+O_32: orig: O
+    def:  O_32 = PHI(SCZO_13, SCZO_15, SCZO_17)
+    uses: O_30 = PHI(O_31, O_32)
 // fn0C00_000A
 // Return size: 0
 byte fn0C00_000A(byte al, ptr16 & alOut)
@@ -209,28 +211,28 @@ l0C00_002E:
 	SCZO_17 = cond(al - 0x57)
 	// succ:  l0C00_0030
 l0C00_0030:
-	O_31 = PHI(SCZO_13, SCZO_15, SCZO_17)
-	Z_28 = PHI(SCZO_13, SCZO_15, SCZO_17)
-	S_24 = PHI(SCZO_13, SCZO_15, SCZO_17)
-	al_21 = PHI(al_12, al_14, al_16)
+	O_32 = PHI(SCZO_13, SCZO_15, SCZO_17)
+	Z_29 = PHI(SCZO_13, SCZO_15, SCZO_17)
+	S_25 = PHI(SCZO_13, SCZO_15, SCZO_17)
+	al_22 = PHI(al_12, al_14, al_16)
 	C_18 = false
 	return false
 	// succ:  fn0C00_000A_exit
 l0C00_0032:
-	O_30 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
-	Z_27 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
-	S_23 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
+	O_31 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
+	Z_28 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
+	S_24 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
 	C_10 = true
 	return true
 	// succ:  fn0C00_000A_exit
 fn0C00_000A_exit:
-	O_29 = PHI(O_30, O_31)
-	Z_26 = PHI(Z_27, Z_28)
-	C_25 = PHI(C_10, C_18)
-	S_22 = PHI(S_23, S_24)
-	al_19 = PHI(al, al_21)
-	use al_19 (=> alOut)
-	use al_19
-	use C_25 | O_29 | S_22 | Z_26
+	O_30 = PHI(O_31, O_32)
+	Z_27 = PHI(Z_28, Z_29)
+	C_26 = PHI(C_10, C_18)
+	S_23 = PHI(S_24, S_25)
+	al_20 = PHI(al, al_22)
+	use al_20 (=> alOut)
+	use al_20
+	use C_26 | O_30 | S_23 | Z_27
 	use sp_2
 

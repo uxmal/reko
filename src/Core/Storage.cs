@@ -202,10 +202,10 @@ namespace Reko.Core
 
         public override bool Equals(object obj)
         {
-            FlagGroupStorage fgs = obj as FlagGroupStorage;
-            if (fgs == null)
+            FlagGroupStorage that = obj as FlagGroupStorage;
+            if (that == null)
                 return false;
-            return FlagGroupBits == fgs.FlagGroupBits;
+            return this.FlagGroupBits == that.FlagGroupBits;
         }
 
         public override bool Exceeds(Storage sThat)
@@ -291,10 +291,10 @@ namespace Reko.Core
 
         public override bool Equals(object obj)
         {
-            FpuStackStorage fss = obj as FpuStackStorage;
-            if (fss == null)
+            FpuStackStorage that = obj as FpuStackStorage;
+            if (that == null)
                 return false;
-            return FpuStackOffset == fss.FpuStackOffset;
+            return this.FpuStackOffset == that.FpuStackOffset;
         }
 
         public override bool Exceeds(Storage that)

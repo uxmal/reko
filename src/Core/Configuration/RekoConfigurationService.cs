@@ -33,7 +33,7 @@ namespace Reko.Core.Configuration
 {
     /// <summary>
     /// Client code uses this service to access information stored 
-    /// in the app.config file.
+    /// in the reko.config file.
     /// </summary>
     public interface IConfigurationService
     {

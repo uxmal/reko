@@ -249,6 +249,12 @@ namespace Reko.Analysis
             uvr.Transform();
         }
 
+        /// <summary>
+        /// Traverses the call graph, and for each strongly connected
+        /// component (SCC) performs SSA transformation and detection of 
+        /// trashed and preserved registers.
+        /// </summary>
+        /// <returns></returns>
         public List<SsaTransform2> RewriteProceduresToSsa()
         {
             this.ssts = new List<SsaTransform2>();
@@ -260,6 +266,11 @@ namespace Reko.Analysis
             return ssts;
         }
 
+        /// <summary>
+        /// This callback is called from the SccFinder, which passes it a list
+        /// of Procedures that form a SCC.
+        /// </summary>
+        /// <param name="procs"></param>
         private void UntangleProcedureScc(IList<Procedure> procs)
         {
             // Convert all procedures in the SCC to SSA form and perform
@@ -318,14 +329,14 @@ namespace Reko.Analysis
 
         public SsaTransform2 ConvertToSsa(Procedure proc)
         {
-            // Transform the procedure to SSA state. When encountering 'call' instructions,
-            // they can be to functions already visited. If so, they have a "ProcedureFlow" 
-            // associated with them. If they have not been visited, or are computed destinations
-            // (e.g. vtables) they will have no "ProcedureFlow" associated with them yet, in
+            // Transform the procedure to SSA state. When encountering 'call'
+            // instructions, they can be to functions already visited. If so,
+            // they have a "ProcedureFlow" associated with them. If they have
+            // not been visited, or are computed destinations  (e.g. vtables)
+            // they will have no "ProcedureFlow" associated with them yet, in
             // which case the the SSA treats the call as a "hell node".
             var sst = new SsaTransform2(program.Architecture, proc, importResolver, this.dataFlow);
-            sst.Transform();
-            var ssa = sst.SsaState;
+            var ssa = sst.Transform();
 
             // Propagate condition codes and registers. At the end, the hope is that 
             // all statements like (x86) mem[esp_42+4] will have been converted to
@@ -342,10 +353,13 @@ namespace Reko.Analysis
             // This allows us to compute the dataflow of this procedure.
             sst.RenameFrameAccesses = true;
             sst.Transform();
+
+            // By placing use statements in the exit block, we will collect
+            // reaching definitions in the use statements.
             sst.AddUsesToExitBlock();
             sst.RemoveDeadSsaIdentifiers();
 
-            // Propagate those newly discovered identifiers.
+            // Propagate those newly created stack-based identifiers.
             vp.Transform();
 
             return sst;

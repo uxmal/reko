@@ -861,7 +861,7 @@ namespace Reko.Analysis
         /// SsaState property.
         /// </remarks>
         /// <param name="proc"></param>
-        public void Transform()
+        public SsaState Transform()
         {
             this.sidsToRemove = new HashSet<SsaIdentifier>();
 
@@ -881,6 +881,7 @@ namespace Reko.Analysis
                 blockstates[b].Visited = true;
             }
             ProcessIncompletePhis();
+            return ssa;
         }
 
         /// <summary>
@@ -1202,9 +1203,10 @@ namespace Reko.Analysis
 
         public override Instruction TransformUseInstruction(UseInstruction u)
         {
-            if (u.OutArgument != null)
+            if (u.OutArgument != null && !RenameFrameAccesses)
             {
                 var sidOut = ssa.Identifiers.Add(u.OutArgument, null, null, false);
+                sidOut.DefStatement = stmCur;
                 u.OutArgument = sidOut.Identifier;
             }
             return base.TransformUseInstruction(u);

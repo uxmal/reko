@@ -96,8 +96,7 @@ namespace Reko.UnitTests.Analysis
             foreach (Procedure proc in program.Procedures.Values)
             {
                 var sst = new SsaTransform2(program.Architecture, proc, importResolver, dfa.DataFlow);
-                SsaState ssa = sst.SsaState;
-                sst.Transform();
+                var ssa = sst.Transform();
                 proc.Dump(true);
 
                 var larw = new LongAddRewriter2(program.Architecture, ssa);

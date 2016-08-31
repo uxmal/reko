@@ -28,9 +28,10 @@ using System.Text;
 namespace Reko.Core.Code
 {
     /// <summary>
-    /// Base class for intermediate-level instructions. These are generated from the low-level,
-    /// register transfer instructions, and will in turn be converted to Abstract syntax statements by 
-    /// the latter stages of the decompilation.
+    /// Base class for intermediate-level instructions. These are generated 
+    /// from the low-level, register transfer instructions, and will in turn
+    /// be converted to Abstract syntax statements by the latter stages of the
+    /// decompilation.
     /// </summary>
 	public abstract class Instruction
 	{
