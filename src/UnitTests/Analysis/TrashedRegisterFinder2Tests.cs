@@ -363,5 +363,28 @@ Constants: cl:0x00
                 m.Return();
             });
         }
+
+        [Test(Description="Respect user-provided signatures")]
+        public void TrfUserSignature()
+        {
+            var sExp = Expect("Preserved: ", "Trashed: r1", "");
+            RunTest(sExp, "fnSig", m =>
+            {
+                var sp = m.Frame.EnsureIdentifier(m.Architecture.StackRegister);
+                var r1 = m.Reg32("r1", 1);
+                var r2 = m.Reg32("r2", 2);
+                var r3 = m.Reg32("r3", 3);
+                m.Assign(sp, m.Frame.FramePointer);
+                m.Store(m.ISub(sp, 4), r3);
+                m.Assign(r2, m.LoadDw(m.Word32(0x123400)));
+                m.Assign(r3, m.LoadDw(m.ISub(sp, 4)));
+                m.Return();
+
+                m.Procedure.Signature = new FunctionType(
+                    "",
+                    new Identifier("", PrimitiveType.Word32, r1.Storage),
+                    new Identifier("arg1", PrimitiveType.Word32, r1.Storage));
+                });
+        }
     }
 }

@@ -84,15 +84,32 @@ namespace Reko.Analysis
         {
             this.ssa = ssa;
             this.flow = this.progFlow.ProcedureFlows[ssa.Procedure];
-            this.activePhis = new HashSet<PhiAssignment>();
-            foreach (var sid in ssa.Procedure.ExitBlock.Statements
-                .Select(s => s.Instruction as UseInstruction)
-                .Where(u => u != null && u.Expression is Identifier)    //$TODO: fix is Identifier
-                .Select(u=>ssa.Identifiers[(Identifier) u.Expression]))
+            if (ssa.Procedure.Signature.ParametersValid)
             {
-                CategorizeIdentifier(sid);
+                var sig = ssa.Procedure.Signature;
+                if (!sig.HasVoidReturn)
+                {
+                    this.flow.Trashed.Add(sig.ReturnValue.Storage);
+                }
+                foreach (var stg in sig.Parameters
+                    .Select(p => p.Storage)
+                    .OfType<OutArgumentStorage>())
+                {
+                    this.flow.Trashed.Add(stg.OriginalIdentifier.Storage);
+                }
             }
-            return flow;
+            else
+            {
+                this.activePhis = new HashSet<PhiAssignment>();
+                foreach (var sid in ssa.Procedure.ExitBlock.Statements
+                    .Select(s => s.Instruction as UseInstruction)
+                    .Where(u => u != null && u.Expression is Identifier)    //$TODO: fix is Identifier
+                    .Select(u => ssa.Identifiers[(Identifier)u.Expression]))
+                {
+                    CategorizeIdentifier(sid);
+                }
+            }
+            return this.flow;
         }
 
         private void CategorizeIdentifier(SsaIdentifier sid)

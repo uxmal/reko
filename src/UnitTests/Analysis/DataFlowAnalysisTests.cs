@@ -45,6 +45,23 @@ namespace Reko.UnitTests.Analysis
             mr = new MockRepository();
         }
 
+        protected override void RunTest(Program program, TextWriter writer)
+		{
+            IImportResolver importResolver = mr.Stub<IImportResolver>();
+            importResolver.Replay();
+			dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
+			dfa.AnalyzeProgram();
+			foreach (Procedure proc in program.Procedures.Values)
+			{
+				ProcedureFlow flow = dfa.ProgramDataFlow[proc];
+				writer.Write("// ");
+				flow.Signature.Emit(proc.Name, FunctionType.EmitFlags.ArgumentKind|FunctionType.EmitFlags.LowLevelInfo, writer);
+				flow.Emit(program.Architecture, writer);
+				proc.Write(false, writer);
+				writer.WriteLine();
+			}
+		}
+
 		[Test]
 		public void DfaAsciiHex()
 		{
@@ -242,22 +259,5 @@ done:
 
             RunFileTest(m, "Analysis/DfaUnsignedDiv.txt");
         }
-
-        protected override void RunTest(Program program, TextWriter writer)
-		{
-            IImportResolver importResolver = mr.Stub<IImportResolver>();
-            importResolver.Replay();
-			dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
-			dfa.AnalyzeProgram();
-			foreach (Procedure proc in program.Procedures.Values)
-			{
-				ProcedureFlow flow = dfa.ProgramDataFlow[proc];
-				writer.Write("// ");
-				flow.Signature.Emit(proc.Name, FunctionType.EmitFlags.ArgumentKind|FunctionType.EmitFlags.LowLevelInfo, writer);
-				flow.Emit(program.Architecture, writer);
-				proc.Write(false, writer);
-				writer.WriteLine();
-			}
-		}	
 	}
 }
