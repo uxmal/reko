@@ -85,12 +85,14 @@ namespace Reko.Analysis
                 }
             }
 
+            // Now remove statements that are known to be dead.
             foreach (var stm in deadStms)
             {
                 DebugEx.Print(trace.TraceVerbose, "UVR: Deleting {0}", stm.Instruction);
                 ssa.DeleteStatement(stm);
             }
 
+            // Update the callers. 
             if (!ssa.Procedure.Signature.ParametersValid && deadStms.Count > 0)
             {
                 foreach (Statement stm in program.CallGraph.CallerStatements(ssa.Procedure))
