@@ -23,6 +23,7 @@ using Reko.Core.Code;
 using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Reko.Analysis
@@ -34,6 +35,8 @@ namespace Reko.Analysis
     /// </summary>
     public class UnusedOutValuesRemover
     {
+        public static TraceSwitch trace = new TraceSwitch(typeof(UnusedOutValuesRemover).Name, "Trace removal of ununsed out values");
+
         private List<SsaTransform2> ssts;
         private WorkList<SsaState> wl;
         private Program program;
@@ -56,35 +59,13 @@ namespace Reko.Analysis
             SsaState ssa;
             while (wl.GetWorkItem(out ssa))
             {
-                RemoveUnusedOutValues(ssa, wl);
+                RemoveUnusedDefinedValues(ssa, wl);
             }
         }
 
-        public void RemoveUnusedOutValues(SsaState ssa, WorkList<SsaState> wl)
+        public void RemoveUnusedDefinedValues(SsaState ssa, WorkList<SsaState> wl)
         {
-            if (ssa.Procedure.Signature.ParametersValid)
-            {
-                // already have a sig find 
-                return;
-            }
-
-            var liveOutStorages = new HashSet<Storage>();
-            foreach (Statement stm in program.CallGraph.CallerStatements(ssa.Procedure))
-            {
-                var ci = stm.Instruction as CallInstruction;
-                if (ci == null)
-                    continue;
-                var ssaCaller = this.procToSsa[stm.Block.Procedure];
-                foreach (var def in ci.Definitions)
-                {
-                    var id = def.Expression as Identifier;
-                    if (id == null)
-                        continue;
-                    var sid = ssaCaller.Identifiers[id];
-                    if (sid.Uses.Count > 0)
-                        liveOutStorages.Add(id.Storage);
-                }
-            }
+            HashSet<Storage> liveOutStorages = CollectLiveOutStorages(ssa.Procedure);
 
             var deadStms = new HashSet<Statement>();
             var deadStgs = new HashSet<Storage>();
@@ -106,11 +87,11 @@ namespace Reko.Analysis
 
             foreach (var stm in deadStms)
             {
+                DebugEx.Print(trace.TraceVerbose, "UVR: Deleting {0}", stm.Instruction);
                 ssa.DeleteStatement(stm);
             }
 
-
-            if (deadStms.Count > 0)
+            if (!ssa.Procedure.Signature.ParametersValid && deadStms.Count > 0)
             {
                 foreach (Statement stm in program.CallGraph.CallerStatements(ssa.Procedure))
                 {
@@ -126,9 +107,48 @@ namespace Reko.Analysis
             }
         }
 
-        private void RemoveUnusedParameters(SsaState ssa)
+        /// <summary>
+        /// Collects the storages that are live-out by looking at all known
+        /// call sites and forming the union of all live storages at the call
+        /// site.
+        /// </summary>
+        /// <param name="procCallee">Procedure that was called</param>
+        /// <returns></returns>
+        private HashSet<Storage> CollectLiveOutStorages(Procedure procCallee)
         {
-            throw new NotImplementedException();
+            var liveOutStorages = new HashSet<Storage>();
+
+            var sig = procCallee.Signature;
+            if (sig.ParametersValid)
+            {
+                // Already have a signature, use that to define the 
+                // set of live storages.
+
+                if (!sig.HasVoidReturn)
+                {
+                    liveOutStorages.Add(sig.ReturnValue.Storage);
+                }
+            }
+            else
+            {
+                foreach (Statement stm in program.CallGraph.CallerStatements(procCallee))
+                {
+                    var ci = stm.Instruction as CallInstruction;
+                    if (ci == null)
+                        continue;
+                    var ssaCaller = this.procToSsa[stm.Block.Procedure];
+                    foreach (var def in ci.Definitions)
+                    {
+                        var id = def.Expression as Identifier;
+                        if (id == null)
+                            continue;
+                        var sid = ssaCaller.Identifiers[id];
+                        if (sid.Uses.Count > 0)
+                            liveOutStorages.Add(id.Storage);
+                    }
+                }
+            }
+            return liveOutStorages;
         }
 
         private bool RemoveDeadUses(SsaState ssa, CallInstruction ci, HashSet<Storage> deadStgs)

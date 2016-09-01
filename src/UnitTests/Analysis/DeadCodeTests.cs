@@ -35,6 +35,28 @@ namespace Reko.UnitTests.Analysis
 	[TestFixture]
 	public class DeadCodeTests : AnalysisTestBase
 	{
+		protected override void RunTest(Program program, TextWriter writer)
+		{
+			DataFlowAnalysis dfa = new DataFlowAnalysis(program, null,  new FakeDecompilerEventListener());
+			dfa.UntangleProcedures();
+			foreach (Procedure proc in program.Procedures.Values)
+			{
+                var sst = new SsaTransform2(
+                    program.Architecture,
+                    proc,
+                    null,
+                    dfa.ProgramDataFlow.ToDataFlow2(program));
+                sst.Transform();
+				SsaState ssa = sst.SsaState;
+				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform);
+				cce.Transform();
+
+				DeadCode.Eliminate(proc, ssa);
+				ssa.Write(writer);
+				proc.Write(false, writer);
+			}
+		}
+
 		[Test]
 		public void DeadPushPop()
 		{
@@ -73,28 +95,6 @@ namespace Reko.UnitTests.Analysis
 			m.Assign(unused, m.Fn("foo", Constant.Word32(1)));
 			m.Return();
 			RunFileTest(m, "Analysis/DeadFnReturn.txt");
-		}
-
-		protected override void RunTest(Program program, TextWriter writer)
-		{
-			DataFlowAnalysis dfa = new DataFlowAnalysis(program, null,  new FakeDecompilerEventListener());
-			dfa.UntangleProcedures();
-			foreach (Procedure proc in program.Procedures.Values)
-			{
-                var sst = new SsaTransform2(
-                    program.Architecture,
-                    proc,
-                    null,
-                    dfa.ProgramDataFlow.ToDataFlow2(program));
-                sst.Transform();
-				SsaState ssa = sst.SsaState;
-				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform);
-				cce.Transform();
-
-				DeadCode.Eliminate(proc, ssa);
-				ssa.Write(writer);
-				proc.Write(false, writer);
-			}
 		}
  	}
 }
