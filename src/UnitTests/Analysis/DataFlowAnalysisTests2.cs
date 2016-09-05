@@ -148,7 +148,7 @@ test_exit:
         }
 
         [Test]
-        [Ignore("r1 is kept alive by use statements")]
+        //[Ignore("r1 is kept alive by use statements")]
         public void Dfa2_StackArgs()
         {
             var pb = new ProgramBuilder(new FakeArchitecture());
@@ -172,9 +172,7 @@ void test()
 test_entry:
 	// succ:  l1
 l1:
-	Mem6[0x00010008:word32] = dwArg04 + dwArg08
-	word32 r63_1 = fp
-	word32 r2_4 = dwArg08
+	Mem7[0x00010008:word32] = dwArg04 + dwArg08
 	return
 	// succ:  test_exit
 test_exit:
@@ -278,9 +276,7 @@ void test(int32 a, int32 b)
 test_entry:
 	// succ:  l1
 l1:
-	word32 r1_8 = a + b
-	Mem9[0x00010008:word32] = r1_8
-	word32 r2_7 = b
+	Mem9[0x00010008:word32] = a + b
 	return
 	// succ:  test_exit
 test_exit:

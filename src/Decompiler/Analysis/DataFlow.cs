@@ -43,7 +43,7 @@ namespace Reko.Analysis
 		/// <param name="sb">stream into which the data is written</param>
 		public abstract void Emit(IProcessorArchitecture arch, TextWriter sb);
 
-		public static void EmitRegisters(IProcessorArchitecture arch, string caption, uint grfFlags, HashSet<RegisterStorage> regs, TextWriter sb)
+		public static void EmitRegisters(IProcessorArchitecture arch, string caption, uint grfFlags, HashSet<Storage> regs, TextWriter sb)
 		{
 			sb.Write(caption);
 			if (grfFlags != 0)
@@ -53,7 +53,7 @@ namespace Reko.Analysis
 			EmitRegistersCore(arch, regs, sb);
 		}
 
-		public static void EmitRegisters(IProcessorArchitecture arch, string caption, HashSet<RegisterStorage> regs, TextWriter sb)
+		public static void EmitRegisters(IProcessorArchitecture arch, string caption, HashSet<Storage> regs, TextWriter sb)
 		{
 			sb.Write(caption);
 			EmitRegistersCore(arch, regs, sb);
@@ -68,7 +68,7 @@ namespace Reko.Analysis
             }
         }
         
-		private static void EmitRegistersCore(IProcessorArchitecture arch, HashSet<RegisterStorage> regs, TextWriter sb)
+		private static void EmitRegistersCore(IProcessorArchitecture arch, HashSet<Storage> regs, TextWriter sb)
 		{
             foreach (var reg in regs.Where(r => r!= null).OrderBy(r => r.Name))
             {
@@ -83,7 +83,7 @@ namespace Reko.Analysis
             sb.Write(" {0}", arch.GrfToString(grfFlags));
         }
 
-		public string EmitRegisters(IProcessorArchitecture arch, string caption, HashSet<RegisterStorage> regs)
+		public string EmitRegisters(IProcessorArchitecture arch, string caption, HashSet<Storage> regs)
 		{
 			StringWriter sw = new StringWriter();
 			EmitRegisters(arch, caption, regs, sw);

@@ -38,14 +38,14 @@ namespace Reko.Analysis
 	public class BlockFlow : DataFlow
 	{
 		public Block Block;
-		public HashSet<RegisterStorage> DataOut;		// each bit corresponds to a register that is live at the end of the
+		public HashSet<Storage> DataOut;		        // each bit corresponds to a register that is live at the end of the
 		public uint grfOut;							    // each bit corresponds to a condition code register that is live at the end of the block
 		public Dictionary<Storage,int> StackVarsOut;    // stack-based storages that are live at the end of the block.
 		public uint grfTrashedIn;					    // each bit corresponds to a condition code register that is trashed on entrance (fwd analysis)
         public SymbolicEvaluationContext SymbolicIn { get; private set; }    // Symbolic context at block entry (fwd analysis)
         public bool TerminatesProcess;                  // True if entering this block means the process/thread will be terminated.
 
-		public BlockFlow(Block block, HashSet<RegisterStorage> dataOut, SymbolicEvaluationContext ctx)
+		public BlockFlow(Block block, HashSet<Storage> dataOut, SymbolicEvaluationContext ctx)
 		{
 			this.Block = block;
 			this.DataOut = dataOut;

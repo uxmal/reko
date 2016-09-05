@@ -51,7 +51,7 @@ namespace Reko.Analysis
 				{
 					blockFlow[block] = new BlockFlow(
                         block, 
-                        new HashSet<RegisterStorage>(),
+                        new HashSet<Storage>(),
                         new SymbolicEvaluationContext(
                             program.Architecture,
                             proc.Frame));

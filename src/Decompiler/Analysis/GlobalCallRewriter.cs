@@ -31,6 +31,7 @@ using PrimtiveType = Reko.Core.Types.PrimitiveType;
 using Procedure = Reko.Core.Procedure;
 using Program = Reko.Core.Program;
 using RegisterStorage = Reko.Core.RegisterStorage;
+using Storage = Reko.Core.Storage;
 using SignatureBuilder = Reko.Core.SignatureBuilder;
 using StackArgumentStorage = Reko.Core.StackArgumentStorage;
 using UseInstruction = Reko.Core.Code.UseInstruction;
@@ -146,9 +147,9 @@ namespace Reko.Analysis
 			}
 
             var implicitRegs = Program.Platform.CreateImplicitArgumentRegisters();
-            var mayUse = new HashSet<RegisterStorage>(flow.MayUse);
+            var mayUse = new HashSet<RegisterStorage>(flow.MayUse.OfType<RegisterStorage>());
             mayUse.ExceptWith(implicitRegs);
-			foreach (var reg in mayUse.OrderBy(r => r.Number))
+			foreach (var reg in mayUse.OfType<RegisterStorage>().OrderBy(r => r.Number))
 			{
 				if (!IsSubRegisterOfRegisters(reg, mayUse))
 				{
@@ -166,9 +167,9 @@ namespace Reko.Analysis
 				sb.AddFpuStackArgument(de.Key, de.Value);
 			}
 
-            var liveOut = new HashSet<RegisterStorage>(flow.LiveOut);
+            var liveOut = new HashSet<RegisterStorage>(flow.LiveOut.OfType<RegisterStorage>());
             liveOut.ExceptWith(implicitRegs);
-			foreach (var r in liveOut.OrderBy(r => r.Number))
+			foreach (var r in liveOut.OfType<RegisterStorage>().OrderBy(r => r.Number))
 			{
 				if (!IsSubRegisterOfRegisters(r, liveOut))
 				{

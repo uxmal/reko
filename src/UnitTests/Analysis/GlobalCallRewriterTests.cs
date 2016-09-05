@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Analysis
 			program = new Program();
 			program.Architecture = new X86ArchitectureFlat32();
             program.Platform = new DefaultPlatform(null, program.Architecture);
-			gcr = new GlobalCallRewriter(program, null, new FakeDecompilerEventListener());
+			gcr = new GlobalCallRewriter(program, new ProgramDataFlow(), new FakeDecompilerEventListener());
             proc = new Procedure("foo", program.Architecture.CreateFrame());
 			flow = new ProcedureFlow(proc, program.Architecture);
 		}
@@ -106,7 +106,7 @@ namespace Reko.UnitTests.Analysis
 					new Identifier("ecx", PrimitiveType.Word32, Registers.ecx),
 					new Identifier("edxOut", PrimitiveType.Word32, 
 									  new OutArgumentStorage(proc.Frame.EnsureRegister(Registers.edx)))});
-			gcr.EnsureSignature(proc, null);
+			gcr.EnsureSignature(proc, new ProcedureFlow(proc, program.Architecture));
 			gcr.AddUseInstructionsForOutArguments(proc);
 			Assert.AreEqual(1, proc.ExitBlock.Statements.Count);
 			Assert.AreEqual("use edx (=> edxOut)", proc.ExitBlock.Statements[0].Instruction.ToString());

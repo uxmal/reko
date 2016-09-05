@@ -145,7 +145,9 @@ namespace Reko.Analysis
 			if (this.pdf != null)
 			{
 				BlockFlow bf = pdf[block];
-				var marker = new AliasDeadVariableMarker(bf.DataOut, bf.grfOut);
+				var marker = new AliasDeadVariableMarker(
+                    bf.DataOut.OfType<RegisterStorage>().ToHashSet(),
+                    bf.grfOut);
 				deadIn = marker.Compute(arch, proc.Frame);
 			}
 			else

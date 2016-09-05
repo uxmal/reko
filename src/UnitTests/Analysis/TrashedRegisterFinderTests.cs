@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Analysis
         {
             var bflow = new BlockFlow(
                 block,
-                new HashSet<RegisterStorage>(),
+                new HashSet<Storage>(),
                 new SymbolicEvaluationContext(
                     program.Architecture,
                     frame));
@@ -621,7 +621,7 @@ const eax:<invalid>
         {
             frame = new Frame(PrimitiveType.Pointer32);
             ctx = new SymbolicEvaluationContext(arch, frame);
-            blockflow = new BlockFlow(null, new HashSet<RegisterStorage>(), ctx);
+            blockflow = new BlockFlow(null, new HashSet<Storage>(), ctx);
             trf.EnsureEvaluationContext(blockflow);
         }
 

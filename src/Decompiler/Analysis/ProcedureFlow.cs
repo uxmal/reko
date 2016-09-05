@@ -39,23 +39,23 @@ namespace Reko.Analysis
 	{
 		private Procedure proc;
 
-		public HashSet<RegisterStorage> PreservedRegisters;			// Registers explicitly preserved by the procedure.
+		public HashSet<Storage> PreservedRegisters;			// Registers explicitly preserved by the procedure.
 		public uint grfPreserved;
 
 		public uint grfTrashed;
-		public HashSet<RegisterStorage> TrashedRegisters;		// Registers globally trashed by procedure and/or callees.
+		public HashSet<Storage> TrashedRegisters;		// Registers globally trashed by procedure and/or callees.
         public Dictionary<Storage, Constant> ConstantRegisters; // If present, indicates a register always has a constant value leaving the procedure.
 
-		public HashSet<RegisterStorage> ByPass { get; set; }
+		public HashSet<Storage> ByPass { get; set; }
 		public uint grfByPass;
-		public HashSet<RegisterStorage> MayUse;
+		public HashSet<Storage> MayUse;
 		public uint grfMayUse;
-		public HashSet<RegisterStorage> Summary;
+		public HashSet<Storage> Summary;
 		public uint grfSummary;
 
 		public Hashtable StackArguments;		//$REFACTOR: make this a strongly typed dictionary (Var -> PrimitiveType)
 
-		public HashSet<RegisterStorage> LiveOut;
+		public HashSet<Storage> LiveOut;
 		public uint grfLiveOut;
 
 		public FunctionType Signature;
@@ -68,13 +68,13 @@ namespace Reko.Analysis
         {
             this.proc = proc;
 
-            PreservedRegisters = new HashSet<RegisterStorage>();
-            TrashedRegisters = new HashSet<RegisterStorage>();
+            PreservedRegisters = new HashSet<Storage>();
+            TrashedRegisters = new HashSet<Storage>();
             ConstantRegisters = new Dictionary<Storage, Constant>();
 
-            ByPass = new HashSet<RegisterStorage>();
-            MayUse = new HashSet<RegisterStorage>();
-            LiveOut = new HashSet<RegisterStorage>();
+            ByPass = new HashSet<Storage>();
+            MayUse = new HashSet<Storage>();
+            LiveOut = new HashSet<Storage>();
 
             StackArguments = new Hashtable();
         }

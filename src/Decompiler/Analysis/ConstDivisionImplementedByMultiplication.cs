@@ -105,7 +105,6 @@ namespace Reko.Analysis
                 var mediant = Rational.FromIntegers(
                     lower.Numerator + upper.Numerator,
                     lower.Denominator + upper.Denominator);
-                Debug.Print("mediant: {0}", mediant);
                 yield return mediant;
                 var approx = mediant.ToDouble();
                 if (fraction < approx)

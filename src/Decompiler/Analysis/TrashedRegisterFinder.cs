@@ -82,7 +82,7 @@ namespace Reko.Analysis
                 if (eventListener.IsCanceled())
                     break;
                 var pf = flow[proc];
-                foreach (var reg in pf.TrashedRegisters.ToList())
+                foreach (var reg in pf.TrashedRegisters.OfType<RegisterStorage>().ToList())
                 {
                     pf.TrashedRegisters.UnionWith(program.Architecture.GetAliases(reg));
                 }

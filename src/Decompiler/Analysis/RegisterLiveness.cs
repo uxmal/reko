@@ -204,8 +204,8 @@ namespace Reko.Analysis
 				Debug.Write(item.Block.Procedure.Name + ", ");
 				DumpBlock(item.Block);
 			}
-			
-			varLive.Identifiers = new HashSet<RegisterStorage>(item.DataOut);
+
+            varLive.Identifiers = item.DataOut.OfType<RegisterStorage>().ToHashSet();
 			varLive.Grf = item.grfOut;
             varLive.LiveStorages = new Dictionary<Storage,int>(item.StackVarsOut);
 			Debug.WriteLineIf(t, string.Format("   out: {0}", DumpRegisters(varLive.Identifiers)));
@@ -242,7 +242,7 @@ namespace Reko.Analysis
 			}
 		}
 
-		private void Dump(bool enable, string s, HashSet<RegisterStorage> a)
+		private void Dump(bool enable, string s, HashSet<Storage> a)
 		{
 			if (enable)
 			{
@@ -332,17 +332,17 @@ namespace Reko.Analysis
 		/// <param name="stm"></param>
 		private void PropagateToCalleeExitBlocks(Statement stm)
 		{
-			var liveOrig = new HashSet<RegisterStorage>(varLive.Identifiers);
+			var liveOrig = new HashSet<Storage>(varLive.Identifiers);
 			uint grfOrig = varLive.Grf;
             var stackOrig = new Dictionary<Storage, int>(varLive.LiveStorages);
 			foreach (Procedure p in program.CallGraph.Callees(stm))
 			{
 				var flow = mpprocData[p];
-                varLive.Identifiers = new HashSet<RegisterStorage>(liveOrig);
-                varLive.Identifiers.ExceptWith(flow.PreservedRegisters);
+                varLive.Identifiers = liveOrig.OfType<RegisterStorage>().ToHashSet();
+                varLive.Identifiers.ExceptWith(flow.PreservedRegisters.OfType<RegisterStorage>());
 				varLive.LiveStorages = new Dictionary<Storage,int>();
 				MergeBlockInfo(p.ExitBlock);
-				varLive.Identifiers = new HashSet<RegisterStorage>(liveOrig);
+				varLive.Identifiers = liveOrig.OfType<RegisterStorage>().ToHashSet();
 				varLive.Grf = grfOrig;
                 varLive.LiveStorages = new Dictionary<Storage, int>(stackOrig);
 			}
@@ -548,10 +548,10 @@ namespace Reko.Analysis
                 // that were live after the call and were bypassed by the called function
                 // or used by the called function.
 
-                var ids = new HashSet<RegisterStorage>(pi.TrashedRegisters);
-                ids.ExceptWith(pi.ByPass);
+                var ids = pi.TrashedRegisters.OfType<RegisterStorage>().ToHashSet();
+                ids.ExceptWith(pi.ByPass.OfType<RegisterStorage>());
                 varLive.Identifiers.ExceptWith(ids);
-                varLive.Identifiers.UnionWith(pi.MayUse);
+                varLive.Identifiers.UnionWith(pi.MayUse.OfType<RegisterStorage>());
 				// varLive.BitSet = pi.MayUse | ((pi.ByPass    | ~pi.TrashedRegisters) & varLive.BitSet);
 				varLive.Grf = pi.grfMayUse | ((pi.grfByPass | ~pi.grfTrashed) & varLive.Grf);
 				// Any stack parameters are also considered live.
@@ -749,7 +749,7 @@ namespace Reko.Analysis
 
 			public override void UpdateSummary(ProcedureFlow item)
 			{
-                item.ByPass = new HashSet<RegisterStorage>(item.Summary);
+                item.ByPass = new HashSet<Storage>(item.Summary);
                 item.ByPass.ExceptWith(item.TrashedRegisters);
 			}
 
@@ -788,7 +788,7 @@ namespace Reko.Analysis
 
 			public override void InitializeProcedureFlow(ProcedureFlow flow)
 			{
-                flow.ByPass = new HashSet<RegisterStorage>(flow.Summary);
+                flow.ByPass = new HashSet<Storage>(flow.Summary);
                 flow.ByPass.ExceptWith(flow.TrashedRegisters);
                 flow.Summary.Clear();
 				flow.grfByPass = flow.grfSummary;
@@ -797,7 +797,7 @@ namespace Reko.Analysis
 
 			public override void UpdateSummary(ProcedureFlow item)
 			{
-				item.MayUse = new HashSet<RegisterStorage>(item.Summary);
+				item.MayUse = new HashSet<Storage>(item.Summary);
             }
 		}
 
@@ -814,7 +814,7 @@ namespace Reko.Analysis
 
 			public override void InitializeProcedureFlow(ProcedureFlow flow)
 			{
-				flow.MayUse = new HashSet<RegisterStorage>(flow.Summary);
+				flow.MayUse = new HashSet<Storage>(flow.Summary);
                 flow.Summary.Clear();
 				flow.grfMayUse = flow.grfSummary;
 				flow.grfSummary = 0;

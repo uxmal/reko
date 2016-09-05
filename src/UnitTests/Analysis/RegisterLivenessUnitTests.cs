@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Analysis
         {
             return new BlockFlow(
                 block,
-                new HashSet<RegisterStorage>(),
+                new HashSet<Storage>(),
                 new SymbolicEvaluationContext(program.Architecture, frame));
         }
 

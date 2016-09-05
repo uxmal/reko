@@ -7,7 +7,7 @@
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
@@ -24,9 +24,9 @@
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
@@ -49,9 +49,9 @@
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
@@ -74,9 +74,9 @@
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
@@ -1528,14 +1528,14 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 90
@@ -1546,7 +1546,7 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 90
@@ -1557,14 +1557,14 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 90
@@ -1575,14 +1575,14 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 90
@@ -1593,14 +1593,14 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 90
@@ -1611,14 +1611,14 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 90
@@ -1629,14 +1629,14 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 90
@@ -1647,14 +1647,14 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 90
@@ -1671,12 +1671,12 @@ pexecute: error: An error occurred during data flow analysis.
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 90
@@ -1864,9 +1864,9 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
@@ -1880,9 +1880,9 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
@@ -1896,7 +1896,7 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
@@ -1989,9 +1989,9 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
@@ -2005,9 +2005,9 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
@@ -2021,7 +2021,7 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
@@ -2104,9 +2104,9 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
@@ -2120,9 +2120,9 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
@@ -2136,7 +2136,7 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
@@ -2219,9 +2219,9 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
@@ -2235,9 +2235,9 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
@@ -2251,7 +2251,7 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
@@ -2320,9 +2320,9 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
@@ -2336,9 +2336,9 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
@@ -2352,7 +2352,7 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
@@ -2489,9 +2489,9 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
@@ -2505,9 +2505,9 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
@@ -2521,7 +2521,7 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
@@ -2544,9 +2544,9 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
@@ -2560,9 +2560,9 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
@@ -2576,7 +2576,7 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
@@ -2659,9 +2659,9 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
@@ -2675,9 +2675,9 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
@@ -2691,7 +2691,7 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
@@ -2714,9 +2714,9 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
@@ -2730,9 +2730,9 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
@@ -2746,7 +2746,7 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
@@ -2820,7 +2820,7 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 217
+   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 219
    at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 52
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 90
@@ -2831,7 +2831,7 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 217
+   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 219
    at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 52
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 90
@@ -2842,7 +2842,7 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 217
+   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 219
    at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 52
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 90
@@ -2853,7 +2853,7 @@ pexecute: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 217
+   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 219
    at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 52
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 90
@@ -2901,7 +2901,7 @@ fn0800_1099: warning: Structure analysis stopped making progress, quitting. Plea
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 217
+   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 219
    at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 52
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 90
@@ -2912,7 +2912,7 @@ fn0800_1099: warning: Structure analysis stopped making progress, quitting. Plea
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 217
+   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 219
    at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 52
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 90
@@ -2923,7 +2923,7 @@ fn0800_1099: warning: Structure analysis stopped making progress, quitting. Plea
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 217
+   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 219
    at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 52
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 90
@@ -2934,7 +2934,7 @@ fn0800_1099: warning: Structure analysis stopped making progress, quitting. Plea
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 217
+   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 219
    at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 52
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 90
@@ -2979,12 +2979,12 @@ fn0800_1099: warning: Structure analysis stopped making progress, quitting. Plea
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 210
+   at Reko.Core.Code.InstructionTransformer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 212
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 61
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
@@ -3468,7 +3468,7 @@ Borland C v3 runtime detected
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 217
+   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 219
    at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 52
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 90
@@ -3479,7 +3479,7 @@ Borland C v3 runtime detected
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitSegmentedAccess(SegmentedAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 248
+   at Reko.Core.Code.InstructionTransformer.VisitSegmentedAccess(SegmentedAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 250
    at Reko.Core.Expressions.SegmentedAccess.Accept[T](ExpressionVisitor`1 visit) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 105
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 90
@@ -3493,14 +3493,14 @@ Borland C v3 runtime detected
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Core.Code.InstructionTransformer.VisitSegmentedAccess(SegmentedAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 249
+   at Reko.Core.Code.InstructionTransformer.VisitSegmentedAccess(SegmentedAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 251
    at Reko.Core.Expressions.SegmentedAccess.Accept[T](ExpressionVisitor`1 visit) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 105
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 90
@@ -3511,9 +3511,9 @@ Borland C v3 runtime detected
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Core.Code.InstructionTransformer.VisitSegmentedAccess(SegmentedAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 249
+   at Reko.Core.Code.InstructionTransformer.VisitSegmentedAccess(SegmentedAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 251
    at Reko.Core.Expressions.SegmentedAccess.Accept[T](ExpressionVisitor`1 visit) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 105
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 90
@@ -3524,9 +3524,9 @@ Borland C v3 runtime detected
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Core.Code.InstructionTransformer.VisitSegmentedAccess(SegmentedAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 249
+   at Reko.Core.Code.InstructionTransformer.VisitSegmentedAccess(SegmentedAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 251
    at Reko.Core.Expressions.SegmentedAccess.Accept[T](ExpressionVisitor`1 visit) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 105
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 90
@@ -3552,7 +3552,7 @@ fn0800_889A: error: An error occurred during data flow analysis.
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 217
+   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 219
    at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 52
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 90
@@ -3563,7 +3563,7 @@ fn0800_889A: error: An error occurred during data flow analysis.
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 217
+   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 219
    at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 52
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 90
@@ -3574,7 +3574,7 @@ fn0800_889A: error: An error occurred during data flow analysis.
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 217
+   at Reko.Core.Code.InstructionTransformer.VisitMkSequence(MkSequence seq) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 219
    at Reko.Core.Expressions.MkSequence.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MkSequence.cs:line 52
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 90
@@ -3611,9 +3611,9 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallExpander.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 154
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 74
-   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 155
+   at Reko.Core.Code.InstructionTransformer.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 157
    at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 51
-   at Reko.Core.Code.InstructionTransformer.VisitSegmentedAccess(SegmentedAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 249
+   at Reko.Core.Code.InstructionTransformer.VisitSegmentedAccess(SegmentedAccess access) in D:\dev\uxmal\reko\master\src\Core\Code\InstructionTransformer.cs:line 251
    at Reko.Core.Expressions.SegmentedAccess.Accept[T](ExpressionVisitor`1 visit) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 105
    at Reko.Analysis.IndirectCallExpander.Expand(Expression e) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 145
    at Reko.Analysis.IndirectCallRewriter.RewriteCall(Statement stm, CallInstruction call) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\IndirectCallRewriter.cs:line 90
@@ -3923,7 +3923,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Typing.ExpressionTypeDescender.VisitApplication(Application appl, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 88
    at Reko.Core.Expressions.Application.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 43
    at Reko.Typing.TypeCollector.VisitReturnInstruction(ReturnInstruction ret) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
-   at Reko.Core.Code.ReturnInstruction.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 134
+   at Reko.Core.Code.ReturnInstruction.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 135
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:3083: error: An error occurred while processing the statement branch fn0800_31B4(fp - 0x0002, ds, out ds) == 0x0000 l0800_309E.
     Not handling (memptr T_11916 (struct (0 T_24 t0000) (2 T_24 t0002) (4 T_24 t0004))) and mp16 yet
@@ -3945,7 +3945,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Typing.ExpressionTypeDescender.VisitApplication(Application appl, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 88
    at Reko.Core.Expressions.Application.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 43
    at Reko.Typing.TypeCollector.VisitReturnInstruction(ReturnInstruction ret) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
-   at Reko.Core.Code.ReturnInstruction.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 134
+   at Reko.Core.Code.ReturnInstruction.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 135
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:31A6: error: An error occurred while processing the statement return fn0800_2DE2(fp - 0x0002, si_1179, ds_271, ptrArg00, wArg02, out dl_292, out ds_293).
     Not handling (memptr T_11916 (struct (0 T_24 t0000) (2 T_24 t0002) (4 T_24 t0004))) and mp16 yet
@@ -3955,7 +3955,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Typing.ExpressionTypeDescender.VisitApplication(Application appl, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 88
    at Reko.Core.Expressions.Application.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 43
    at Reko.Typing.TypeCollector.VisitReturnInstruction(ReturnInstruction ret) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
-   at Reko.Core.Code.ReturnInstruction.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 134
+   at Reko.Core.Code.ReturnInstruction.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 135
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:2EA4: error: An error occurred while processing the statement return fn0800_2DE2(fp - 0x0002, si, ds_795, DPB(ptrLoc1A, wArg02, 0), wArg04, out dl_905, out ds_906).
     Not handling (memptr T_11916 (struct (0 T_24 t0000) (2 T_24 t0002) (4 T_24 t0004))) and mp16 yet
@@ -3965,7 +3965,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Typing.ExpressionTypeDescender.VisitApplication(Application appl, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 88
    at Reko.Core.Expressions.Application.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 43
    at Reko.Typing.TypeCollector.VisitReturnInstruction(ReturnInstruction ret) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
-   at Reko.Core.Code.ReturnInstruction.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 134
+   at Reko.Core.Code.ReturnInstruction.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 135
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:3006: error: An error occurred while processing the statement return fn0800_2DE2(fp - 0x0002, si_627, ds_626, ptrArg00, wArg02, out dl_637, out ds_638).
     Not handling (memptr T_11916 (struct (0 T_24 t0000) (2 T_24 t0002) (4 T_24 t0004))) and mp16 yet
@@ -3975,7 +3975,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Typing.ExpressionTypeDescender.VisitApplication(Application appl, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 88
    at Reko.Core.Expressions.Application.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 43
    at Reko.Typing.TypeCollector.VisitReturnInstruction(ReturnInstruction ret) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
-   at Reko.Core.Code.ReturnInstruction.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 134
+   at Reko.Core.Code.ReturnInstruction.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 135
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:3659: error: An error occurred while processing the statement branch fn0800_A817((byte) (fp - 0x002E), ds, DPB(ptrLoc38, wArg06, 0), DPB(ptrLoc34, fp - 0x002E, 0), 0x0000, out dl_31) == 0x0000 l0800_3662.
     Not handling mp16 and mp16 yet
@@ -4029,7 +4029,7 @@ fn0800_A96D: error: An error occurred during data flow analysis.
    at Reko.Typing.ExpressionTypeDescender.VisitApplication(Application appl, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 88
    at Reko.Core.Expressions.Application.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 43
    at Reko.Typing.TypeCollector.VisitReturnInstruction(ReturnInstruction ret) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 192
-   at Reko.Core.Code.ReturnInstruction.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 134
+   at Reko.Core.Code.ReturnInstruction.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 135
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 0800:414A: error: An error occurred while processing the statement fn0800_0D24(fp - 0x0002, ds_26, out si, out di_65, out ds_66).
     Not handling mp16 and mp16 yet
@@ -4632,7 +4632,7 @@ fn0800_7FDC: error: An error occurred while rewriting procedure to high-level la
 fn0800_889A: error: An error occurred while rewriting procedure to high-level language.
     The method or operation is not implemented.
        at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
-   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
+   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 90
    at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
    at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
    at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
@@ -4642,7 +4642,7 @@ fn0800_984F: warning: Structure analysis stopped making progress, quitting. Plea
 fn0800_9F92: error: An error occurred while rewriting procedure to high-level language.
     The method or operation is not implemented.
        at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
-   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
+   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 90
    at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
    at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
    at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
@@ -4651,7 +4651,7 @@ fn0800_9F92: error: An error occurred while rewriting procedure to high-level la
 fn0800_A96D: error: An error occurred while rewriting procedure to high-level language.
     The method or operation is not implemented.
        at Reko.Structure.RegionFactory.VisitDefInstruction(DefInstruction def) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 83
-   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 89
+   at Reko.Core.Code.DefInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Instruction.cs:line 90
    at Reko.Structure.RegionFactory.Create(Block b) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\RegionFactory.cs:line 46
    at Reko.Structure.StructureAnalysis.BuildRegionGraph(Procedure proc) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 194
    at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 105
