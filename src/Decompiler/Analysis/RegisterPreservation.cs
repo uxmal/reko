@@ -36,12 +36,12 @@ namespace Reko.Analysis
     /// </summary>
     public class RegisterPreservation
     {
-        private Dictionary<Procedure, SsaState> scc;
-        private DataFlow2 dataFlow;
+        private IEnumerable<SsaState> scc;
+        private ProgramDataFlow dataFlow;
         private ExpressionValueComparer cmp;
         private Identifier idFinal;
 
-        public RegisterPreservation(Dictionary<Procedure, SsaState> scc, DataFlow2 dataFlow)
+        public RegisterPreservation(IEnumerable<SsaState> scc, ProgramDataFlow dataFlow)
         {
             this.scc = scc;
             this.dataFlow = dataFlow;
@@ -50,9 +50,9 @@ namespace Reko.Analysis
 
         public void Compute()
         {
-            foreach (var procedure in scc.Keys)
+            foreach (var ssa in scc)
             {
-                Compute(procedure);
+                Compute(ssa);
             }
         }
 
@@ -67,10 +67,10 @@ namespace Reko.Analysis
         /// enqueue more chains. Eventually we hit either a def statement,
         /// or a load statement. </remarks>
         /// <param name="proc"></param>
-        public void Compute(Procedure proc)
+        public void Compute(SsaState ssa)
         {
-            var procFlow = EnsureProcedureFlow(proc);
-            foreach (var use in proc.ExitBlock.Statements.Select(s => (UseInstruction)s.Instruction))
+            var procFlow = EnsureProcedureFlow(ssa.Procedure);
+            foreach (var use in ssa.Procedure.ExitBlock.Statements.Select(s => (UseInstruction)s.Instruction))
             {
                 this.idFinal = (Identifier)use.Expression;
                 var worklist = new Queue<Identifier>();
@@ -78,7 +78,7 @@ namespace Reko.Analysis
                 while (worklist.Count > 0)
                 {
                     var id = worklist.Dequeue();
-                    var sid = scc[proc].Identifiers[id];
+                    var sid = ssa.Identifiers[id];
                     Debug.Print("id: {0} stm: {1}", id.Name, sid.DefStatement.Instruction);
                     if (sid.DefStatement.Instruction is DefInstruction)
                     {
@@ -108,7 +108,7 @@ namespace Reko.Analysis
             }
         }
 
-        private void ProcessAssignment(Assignment ass, ProcedureFlow2 procFlow, Queue<Identifier> worklist)
+        private void ProcessAssignment(Assignment ass, ProcedureFlow procFlow, Queue<Identifier> worklist)
         {
             if (ass.Src is Constant)
             {
@@ -132,14 +132,14 @@ namespace Reko.Analysis
             }
         }
 
-        private void MarkTrashed(Identifier id, ProcedureFlow2 procFlow)
+        private void MarkTrashed(Identifier id, ProcedureFlow procFlow)
         {
             procFlow.Preserved.Remove(id.Storage);
             procFlow.Trashed.Add(id.Storage);
             procFlow.Constants.Remove(id.Storage);
         }
 
-        private void SetConstant(Identifier id, Constant c, ProcedureFlow2 procFlow)
+        private void SetConstant(Identifier id, Constant c, ProcedureFlow procFlow)
         {
             if (procFlow.Trashed.Contains(id.Storage))
             {
@@ -157,19 +157,19 @@ namespace Reko.Analysis
             }
         }
 
-        private static void MarkPreserved(Identifier id, ProcedureFlow2 procFlow)
+        private static void MarkPreserved(Identifier id, ProcedureFlow procFlow)
         {
             if (procFlow.Trashed.Contains(id.Storage))
                 return;
             procFlow.Preserved.Add(id.Storage);
         }
 
-        private ProcedureFlow2 EnsureProcedureFlow(Procedure proc)
+        private ProcedureFlow EnsureProcedureFlow(Procedure proc)
         {
-            ProcedureFlow2 procFlow;
+            ProcedureFlow procFlow;
             if (!dataFlow.ProcedureFlows.TryGetValue(proc, out procFlow))
             {
-                procFlow = new ProcedureFlow2();
+                procFlow = new ProcedureFlow(proc);
                 dataFlow.ProcedureFlows.Add(proc, procFlow);
             }
 

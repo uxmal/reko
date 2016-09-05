@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Analysis
 		{
 			DataFlowAnalysis dfa = new DataFlowAnalysis(program, null, new FakeDecompilerEventListener());
 			dfa.UntangleProcedures();
-            var dataFlow = new DataFlow2();
+            var dataFlow = new ProgramDataFlow();
 			foreach (Procedure proc in program.Procedures.Values)
 			{
                 SsaTransform2 sst = new SsaTransform2(
@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Analysis
 				OutParameterTransformer opt = new OutParameterTransformer( ssa);
 				opt.Transform();
 
-				DeadCode.Eliminate(proc, ssa);
+				DeadCode.Eliminate(ssa);
 
 				proc.Write(false, fut.TextWriter);
 				fut.TextWriter.WriteLine("====================");

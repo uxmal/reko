@@ -95,7 +95,7 @@ namespace Reko.UnitTests.Analysis
             var eventListener = new FakeDecompilerEventListener();
             foreach (var proc in program.Procedures.Values)
             {
-                var sst = new SsaTransform2(program.Architecture, proc, null, new DataFlow2());
+                var sst = new SsaTransform2(program.Architecture, proc, null, new ProgramDataFlow());
                 sst.Transform();
                 var vp = new ValuePropagator(arch, sst.SsaState);
                 vp.Transform();
@@ -115,7 +115,7 @@ namespace Reko.UnitTests.Analysis
         private void RunTest(Action<ProcedureBuilder> builder)
         {
             builder(m);
-            var sst = new SsaTransform2(arch, m.Procedure, null, new DataFlow2());
+            var sst = new SsaTransform2(arch, m.Procedure, null, new ProgramDataFlow());
             sst.Transform();
             sst.RenameFrameAccesses = true;
             sst.Transform();

@@ -35,16 +35,14 @@ namespace Reko.Analysis
 	/// </summary>
 	public class DeadCode : InstructionVisitorBase
 	{
-		private Procedure proc;
 		private SsaState ssa;
 		private WorkList<SsaIdentifier> liveIds;
 		private CriticalInstruction critical;
 
 		private static TraceSwitch trace = new TraceSwitch("DeadCode", "Traces dead code elimination");
 
-		private DeadCode(Procedure proc, SsaState ssa) 
+		private DeadCode(SsaState ssa) 
 		{
-			this.proc = proc;
 			this.ssa = ssa;
 			this.critical = new CriticalInstruction();
 		}
@@ -55,7 +53,7 @@ namespace Reko.Analysis
 		/// </summary>
 		public void AdjustApplicationsWithDeadReturnValues()
 		{
-			foreach (Block b in proc.ControlGraph.Blocks)
+			foreach (Block b in ssa.Procedure.ControlGraph.Blocks)
 			{
 				for (int iStm = 0; iStm < b.Statements.Count; ++iStm)
 				{
@@ -77,9 +75,9 @@ namespace Reko.Analysis
 			}
 		}
 
-		public static void Eliminate(Procedure proc, SsaState ssa)
+		public static void Eliminate(SsaState ssa)
 		{
-			new DeadCode(proc, ssa).Eliminate();
+			new DeadCode(ssa).Eliminate();
 		}
 
 		private void Eliminate()
@@ -91,7 +89,7 @@ namespace Reko.Analysis
 			// These are calls to other functions, functions (which have side effects) and use statements.
 			// Critical instructions must never be considered dead.
 
-            foreach (var stm in proc.Statements)
+            foreach (var stm in ssa.Procedure.Statements)
             {
                 if (critical.IsCritical(stm.Instruction))
                 {
@@ -121,7 +119,7 @@ namespace Reko.Analysis
 			// We have now marked all the useful instructions in the code. Any non-marked
 			// instruction is now useless and should be deleted.
 
-			foreach (Block b in proc.ControlGraph.Blocks)
+			foreach (Block b in ssa.Procedure.ControlGraph.Blocks)
 			{
 				for (int iStm = 0; iStm < b.Statements.Count; ++iStm)
 				{

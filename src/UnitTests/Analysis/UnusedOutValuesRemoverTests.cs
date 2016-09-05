@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Analysis
             var dfa = new DataFlowAnalysis(program, import, eventListener);
             var ssts = dfa.RewriteProceduresToSsa();
 
-            var uvr = new UnusedOutValuesRemover(program, ssts, dfa.DataFlow);
+            var uvr = new UnusedOutValuesRemover(program, ssts, dfa.ProgramDataFlow);
             uvr.Transform();
 
             var sb = new StringWriter();

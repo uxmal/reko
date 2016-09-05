@@ -33,18 +33,16 @@ namespace Reko.Analysis
 	/// </summary>
 	public class LinearInductionVariableFinder : InstructionVisitorBase
 	{
-		private Procedure proc;
-		private SsaIdentifierCollection ssaIds;
+        private SsaState ssa;
 		private ICollection<SsaIdentifier> operands;
         private List<LinearInductionVariable> ivs;
         private Dictionary<LinearInductionVariable, LinearInductionVariableContext> contexts;
         private LinearInductionVariableContext ctx;
         private BlockDominatorGraph doms;
 
-        public LinearInductionVariableFinder(Procedure proc, SsaIdentifierCollection ssaIds, BlockDominatorGraph doms)
+        public LinearInductionVariableFinder(SsaState ssa, BlockDominatorGraph doms)
 		{
-			this.proc = proc;
-			this.ssaIds = ssaIds;
+			this.ssa = ssa;
 			this.doms = doms;
             this.ctx = new LinearInductionVariableContext();
             this.ivs = new List<LinearInductionVariable>();
@@ -70,7 +68,7 @@ namespace Reko.Analysis
 			if (ctx.PhiIdentifier == null) return null;
 			if (ctx.DeltaValue == null) return null;
 
-			SsaIdentifier sidPhi = ssaIds[ctx.PhiIdentifier];
+			SsaIdentifier sidPhi = ssa.Identifiers[ctx.PhiIdentifier];
 			if (ctx.TestStatement == null && ctx.InitialValue == null)
 			{
 				return new LinearInductionVariable(null, ctx.DeltaValue, null, false);
@@ -135,7 +133,7 @@ namespace Reko.Analysis
 
 		public bool DominatesAllUses(Statement stm, Identifier id)
 		{
-			SsaIdentifier sid = ssaIds[id];
+			SsaIdentifier sid = ssa.Identifiers[id];
 			foreach (Statement u in sid.Uses)
 			{
 				if (u != stm)
@@ -152,8 +150,8 @@ namespace Reko.Analysis
         /// </summary>
         public void Find()
         {
-            var sccFinder = new SccFinder<SsaIdentifier>(new SsaGraph(ssaIds), x=> {}, ProcessScc);
-            foreach (SsaIdentifier sid in ssaIds)
+            var sccFinder = new SccFinder<SsaIdentifier>(new SsaGraph(ssa.Identifiers), x=> {}, ProcessScc);
+            foreach (SsaIdentifier sid in ssa.Identifiers)
             {
                 sccFinder.Find(sid);
             }
@@ -187,8 +185,8 @@ namespace Reko.Analysis
 		{
 			if (phi.Arguments.Length != 2)
 				return null;
-            var sid0 = ssaIds[(Identifier)phi.Arguments[0]];
-            var sid1 = ssaIds[(Identifier)phi.Arguments[1]];
+            var sid0 = ssa.Identifiers[(Identifier)phi.Arguments[0]];
+            var sid1 = ssa.Identifiers[(Identifier)phi.Arguments[1]];
             if (sid0.DefStatement == null || sid1.DefStatement == null)
                 return null;
             var sid = doms.DominatesStrictly(sid1.DefStatement, sid0.DefStatement)
@@ -260,14 +258,14 @@ namespace Reko.Analysis
 
 		public bool IsSingleUsingStatement(Statement stm, Identifier id)
 		{
-			SsaIdentifier sid = ssaIds[id];
+			SsaIdentifier sid = ssa.Identifiers[id];
 			return sid.Uses.Count == 1 && sid.Uses[0] == stm;
 		}
 
 
 		public bool IsIdUsedOnlyBy(Identifier id, Statement stm1, Statement stm2)
 		{
-			SsaIdentifier sid = ssaIds[id];
+			SsaIdentifier sid = ssa.Identifiers[id];
 			foreach (Statement u in sid.Uses)
 			{
 				if (u != stm1 && u != stm2)
@@ -381,7 +379,7 @@ namespace Reko.Analysis
 
 		public override void VisitIdentifier(Identifier id)
 		{
-			operands.Add(ssaIds[id]);
+			operands.Add(ssa.Identifiers[id]);
 		}
 
 		public override void VisitSideEffect(SideEffect side)

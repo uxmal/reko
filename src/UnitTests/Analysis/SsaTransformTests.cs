@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Analysis
     {
         private ProgramBuilder pb;
         private Dictionary<Address, ImportReference> importReferences;
-        private DataFlow2 programFlow2;
+        private ProgramDataFlow programFlow;
         private bool addUseInstructions;
         private IImportResolver importResolver;
 
@@ -60,7 +60,7 @@ namespace Reko.UnitTests.Analysis
 
         private void RunTest(string sExp, Action<ProcedureBuilder> builder)
         {
-            this.programFlow2 = new DataFlow2();
+            this.programFlow = new ProgramDataFlow();
             var proc = pb.Add("proc1", builder);
             RunTest(sExp);
         }
@@ -96,7 +96,7 @@ namespace Reko.UnitTests.Analysis
             var writer = new StringWriter();
             foreach (var proc in this.pb.Program.Procedures.Values)
             {
-                var sst = new SsaTransform2(this.pb.Program.Architecture, proc, importResolver, programFlow2);
+                var sst = new SsaTransform2(this.pb.Program.Architecture, proc, importResolver, programFlow);
                 sst.Transform();
                 if (this.addUseInstructions)
                 {
@@ -126,12 +126,12 @@ namespace Reko.UnitTests.Analysis
         private void RunTest_FrameAccesses(string sExp)
         {
             var program = pb.BuildProgram();
-            this.programFlow2 = new DataFlow2();
+            this.programFlow = new ProgramDataFlow();
             var writer = new StringWriter();
             foreach (var proc in program.Procedures.Values)
             {
                 // Perform initial transformation.
-                var sst = new SsaTransform2(this.pb.Program.Architecture, proc, importResolver, programFlow2);
+                var sst = new SsaTransform2(this.pb.Program.Architecture, proc, importResolver, programFlow);
                 sst.Transform();
 
                 // Propagate values and simplify the results.
@@ -600,8 +600,8 @@ proc1_exit:
                 // Simulate the creation of a subroutine.
                 var procSub = this.pb.Add("Adder", mm => { });
 
-                var procSubFlow = new ProcedureFlow2 { Trashed = { r1.Storage } };
-                programFlow2.ProcedureFlows.Add(procSub, procSubFlow);
+                var procSubFlow = new ProcedureFlow(m.Procedure) { Trashed = { r1.Storage } };
+                programFlow.ProcedureFlows.Add(procSub, procSubFlow);
 
                 m.Assign(r1, 3);
                 m.Assign(r2, 4);

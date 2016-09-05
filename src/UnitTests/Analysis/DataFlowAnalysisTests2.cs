@@ -73,7 +73,7 @@ namespace Reko.UnitTests.Analysis
             Assert.AreEqual(sExp, sw.ToString());
         }
 
-        private void AssertProgramFlow(string sExp, Program program, DataFlow2 flow)
+        private void AssertProgramFlow(string sExp, Program program, ProgramDataFlow flow)
         {
             var sw = new StringWriter();
             var sep = "";
@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Analysis
                 var pflow = flow.ProcedureFlows[proc];
                 sw.WriteLine("// Trashed   {0}", string.Join(", ", pflow.Trashed.OrderBy(s => s.ToString())));
                 sw.WriteLine("// Preserved {0}", string.Join(", ", pflow.Preserved.OrderBy(s => s.ToString())));
-                sw.WriteLine("// Used      {0}", string.Join(", ", pflow.Used.Select(s => string.Format("({0}:{1})", s.Key, s.Value)).OrderBy(s => s)));
+                sw.WriteLine("// Used      {0}", string.Join(", ", pflow.BitsUsed.Select(s => string.Format("({0}:{1})", s.Key, s.Value)).OrderBy(s => s)));
                 flow.ProcedureFlows[proc].ToString();
                 proc.Write(false, sw);
                 sep = "===" + Environment.NewLine;
@@ -512,7 +512,7 @@ l1:
 level1_exit:
 ";
             #endregion
-            AssertProgramFlow(sExp, pb.Program, dfa.DataFlow);
+            AssertProgramFlow(sExp, pb.Program, dfa.ProgramDataFlow);
 
         }
     }

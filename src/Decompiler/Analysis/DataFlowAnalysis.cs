@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Code;
+using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Output;
 using Reko.Core.Services;
@@ -47,7 +48,6 @@ namespace Reko.Analysis
         private IImportResolver importResolver;
 		private ProgramDataFlow flow;
         private List<SsaTransform2> ssts;
-        private DataFlow2 dataFlow;
 
         public DataFlowAnalysis(Program program, IImportResolver importResolver, DecompilerEventListener eventListener)
 		{
@@ -55,7 +55,6 @@ namespace Reko.Analysis
             this.importResolver = importResolver;
             this.eventListener = eventListener;
 			this.flow = new ProgramDataFlow(program);
-            this.dataFlow = new DataFlow2(program);
 		}
 
 		public void AnalyzeProgram()
@@ -99,24 +98,23 @@ namespace Reko.Analysis
                     //var cd = new ConstDivisionImplementedByMultiplication(ssa);
                     //cd.Transform();
 
-                    DeadCode.Eliminate(proc, ssa);
+                    DeadCode.Eliminate(ssa);
 
                     var vp = new ValuePropagator(program.Architecture, ssa);
                     vp.Transform();
-                    DeadCode.Eliminate(proc, ssa);
+                    DeadCode.Eliminate(ssa);
 
                     // Build expressions. A definition with a single use can be subsumed
                     // into the using expression. 
 
                     var coa = new Coalescer(ssa);
                     coa.Transform();
-                    DeadCode.Eliminate(proc, ssa);
+                    DeadCode.Eliminate(ssa);
 
                     vp.Transform();
 
                     var liv = new LinearInductionVariableFinder(
-                        proc,
-                        ssa.Identifiers,
+                        ssa,
                         new BlockDominatorGraph(proc.ControlGraph, proc.EntryBlock));
                     liv.Find();
 
@@ -128,7 +126,7 @@ namespace Reko.Analysis
                     }
                     var opt = new OutParameterTransformer(ssa);
                     opt.Transform();
-                    DeadCode.Eliminate(proc, ssa);
+                    DeadCode.Eliminate(ssa);
 
                     // Definitions with multiple uses and variables joined by PHI functions become webs.
                     var web = new WebBuilder(ssa, program.InductionVariables);
@@ -190,11 +188,6 @@ namespace Reko.Analysis
 			get { return flow; }
 		}
 
-        public DataFlow2 DataFlow
-        {
-            get { return dataFlow; }
-        }
-
 		/// <summary>
 		/// Finds all interprocedural register dependencies (in- and out-parameters) and
 		/// abstracts them away by rewriting as calls.
@@ -245,8 +238,10 @@ namespace Reko.Analysis
             RewriteProceduresToSsa();
 
             // Discover values that are live out at each call site.
-            var uvr = new UnusedOutValuesRemover(program, ssts, this.dataFlow);
+            var uvr = new UnusedOutValuesRemover(program, ssts, this.flow);
             uvr.Transform();
+
+            GlobalCallRewriter.Rewrite(program, this.flow, eventListener);
         }
 
         /// <summary>
@@ -278,52 +273,81 @@ namespace Reko.Analysis
             var ssts = procs.Select(p => ConvertToSsa(p)).ToArray();
             this.ssts.AddRange(ssts);
 
-            // At this point, the computation of ProcedureFlow is be possible.
-            var tid = new TrashedRegisterFinder2(program.Architecture, dataFlow, ssts, this.eventListener);
-            var uid = new UsedRegisterFinder(program.Architecture, dataFlow, ssts, this.eventListener);
+            // At this point, the computation of ProcedureFlow is possible.
+            var trf = new TrashedRegisterFinder2(program.Architecture, flow, ssts, this.eventListener);
+            var uid = new UsedRegisterFinder(program.Architecture, flow, ssts, this.eventListener);
             foreach (var sst in ssts)
             {
-                tid.Compute(sst.SsaState);
-                uid.Compute(sst.SsaState);
+                var ssa = sst.SsaState;
+                trf.Compute(ssa);
+                RemovePreservedUseInstructions(ssa);
+                DeadCode.Eliminate(ssa);
+                uid.Compute(ssa);
+            }
+        }
+
+        /// <summary>
+        /// Remove any Use instruction that uses instructions in the 
+        /// </summary>
+        /// <param name="ssa"></param>
+        private void RemovePreservedUseInstructions(SsaState ssa)
+        {
+            var flow = this.flow[ssa.Procedure];
+            var deadStms = new List<Statement>();
+            foreach (var stm in ssa.Procedure.ExitBlock.Statements)
+            {
+                var u = stm.Instruction as UseInstruction;
+                if (u != null)
+                {
+                    var id = u.Expression as Identifier;
+                    if (id != null && flow.Preserved.Contains(id.Storage))
+                        deadStms.Add(stm);
+                }
+            }
+            foreach (var stm in deadStms)
+            {
+                ssa.DeleteStatement(stm);
             }
         }
 
         public void BuildExpressionTrees2()
         {
-            foreach (var ssa in this.ssts)
+            foreach (var sst in this.ssts)
             {
+                var ssa = sst.SsaState;
+
                 // Procedures should be untangled from each other. Now process each one separately.
-                var proc = ssa.SsaState.Procedure;
-                DeadCode.Eliminate(proc, ssa.SsaState);
+                DeadCode.Eliminate(ssa);
 
                 // Build expressions. A definition with a single use can be subsumed
                 // into the using expression. 
 
-                var coa = new Coalescer(ssa.SsaState);
+                var coa = new Coalescer(ssa);
                 coa.Transform();
-                DeadCode.Eliminate(proc, ssa.SsaState);
+                DeadCode.Eliminate(ssa);
 
                 var liv = new LinearInductionVariableFinder(
-                    proc,
-                    ssa.SsaState.Identifiers,
-                    new BlockDominatorGraph(proc.ControlGraph, proc.EntryBlock));
+                    ssa,
+                    new BlockDominatorGraph(
+                        ssa.Procedure.ControlGraph, 
+                        ssa.Procedure.EntryBlock));
                 liv.Find();
 
                 foreach (var de in liv.Contexts)
                 {
-                    var str = new StrengthReduction(ssa.SsaState, de.Key, de.Value);
+                    var str = new StrengthReduction(ssa, de.Key, de.Value);
                     str.ClassifyUses();
                     str.ModifyUses();
                 }
 
                 //var opt = new OutParameterTransformer(proc, ssa.Identifiers);
                 //opt.Transform();
-                DeadCode.Eliminate(proc, ssa.SsaState);
+                DeadCode.Eliminate(ssa);
 
                 // Definitions with multiple uses and variables joined by PHI functions become webs.
-                var web = new WebBuilder(ssa.SsaState, program.InductionVariables);
+                var web = new WebBuilder(ssa, program.InductionVariables);
                 web.Transform();
-                ssa.SsaState.ConvertBack(false);
+                ssa.ConvertBack(false);
             }
         }
 
@@ -335,7 +359,7 @@ namespace Reko.Analysis
             // not been visited, or are computed destinations  (e.g. vtables)
             // they will have no "ProcedureFlow" associated with them yet, in
             // which case the the SSA treats the call as a "hell node".
-            var sst = new SsaTransform2(program.Architecture, proc, importResolver, this.dataFlow);
+            var sst = new SsaTransform2(program.Architecture, proc, importResolver, this.ProgramDataFlow);
             var ssa = sst.Transform();
 
             // Propagate condition codes and registers. At the end, the hope is that 

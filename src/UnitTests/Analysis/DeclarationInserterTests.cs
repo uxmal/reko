@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Analysis
                 null,
                 proc,
                 null,
-                new DataFlow2());
+                new ProgramDataFlow());
             sst.Transform();
 
 			this.ssaIds = sst.SsaState.Identifiers;

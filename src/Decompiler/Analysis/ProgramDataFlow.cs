@@ -46,7 +46,7 @@ namespace Reko.Analysis
 		{
 			foreach (Procedure proc in program.Procedures.Values)
 			{
-				procFlow[proc] = new ProcedureFlow(proc, program.Architecture);
+				procFlow[proc] = new ProcedureFlow(proc);
 				foreach (Block block in proc.ControlGraph.Blocks)
 				{
 					blockFlow[block] = new BlockFlow(
@@ -76,9 +76,9 @@ namespace Reko.Analysis
 			get { return blockFlow.Values; }
 		}
 
-        public ICollection<ProcedureFlow> ProcedureFlows
+        public IDictionary<Procedure, ProcedureFlow> ProcedureFlows
         {
-            get { return procFlow.Values; }
+            get { return procFlow; }
         }
 
         // These functions are place holders. Once the new SSA is adpoted, they will bcome

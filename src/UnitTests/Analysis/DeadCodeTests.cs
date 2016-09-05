@@ -45,13 +45,13 @@ namespace Reko.UnitTests.Analysis
                     program.Architecture,
                     proc,
                     null,
-                    dfa.ProgramDataFlow.ToDataFlow2(program));
+                    dfa.ProgramDataFlow);
                 sst.Transform();
 				SsaState ssa = sst.SsaState;
 				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform);
 				cce.Transform();
 
-				DeadCode.Eliminate(proc, ssa);
+				DeadCode.Eliminate(ssa);
 				ssa.Write(writer);
 				proc.Write(false, writer);
 			}

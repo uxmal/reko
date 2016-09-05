@@ -59,19 +59,19 @@ namespace Reko.Analysis
             int oldCount;
             if (pf.TerminatesProcess)
             {
-                if (pf.TrashedRegisters.Count > 0)
+                if (pf.Trashed.Count > 0)
                 {
                     changed = true;
-                    pf.TrashedRegisters.Clear();
+                    pf.Trashed.Clear();
                 }
                 if (pf.grfTrashed != 0)
                 {
                     changed = true;
                     pf.grfTrashed = 0;
                 }
-                if (pf.ConstantRegisters.Count > 0)
+                if (pf.Constants.Count > 0)
                 {
-                    pf.ConstantRegisters.Clear();
+                    pf.Constants.Clear();
                     changed = true;
                 }
                 return changed;
@@ -100,10 +100,10 @@ namespace Reko.Analysis
                         if (cNew.IsValid)
                         {
                             Constant cOld;
-                            if (!pf.ConstantRegisters.TryGetValue(de.Key, out cOld))
+                            if (!pf.Constants.TryGetValue(de.Key, out cOld))
                             {
                                 changed = true;
-                                pf.ConstantRegisters[de.Key] = cNew;
+                                pf.Constants[de.Key] = cNew;
                             }
                             else if (!cmp.Equals(cOld, cNew))
                             {
@@ -123,15 +123,15 @@ namespace Reko.Analysis
                 }
             }
 
-            oldCount = pf.TrashedRegisters.Count;
-            pf.TrashedRegisters.UnionWith(trashed);
-            if (pf.TrashedRegisters.Count != oldCount)
+            oldCount = pf.Trashed.Count;
+            pf.Trashed.UnionWith(trashed);
+            if (pf.Trashed.Count != oldCount)
             {
                 changed = true;
             }
-            oldCount = pf.PreservedRegisters.Count;
-            pf.PreservedRegisters.UnionWith(preserved);
-            if (pf.PreservedRegisters.Count != oldCount)
+            oldCount = pf.Preserved.Count;
+            pf.Preserved.UnionWith(preserved);
+            if (pf.Preserved.Count != oldCount)
             {
                 changed = true;
             }
@@ -154,9 +154,9 @@ namespace Reko.Analysis
                 changed |= SetConstant(seq.Tail, constant);
             }
             Constant old;
-            if (!pf.ConstantRegisters.TryGetValue(storage, out old))
+            if (!pf.Constants.TryGetValue(storage, out old))
                 old = null;
-            pf.ConstantRegisters[storage] = constant;
+            pf.Constants[storage] = constant;
             return changed | !cmp.Equals(old , constant);
         }
 

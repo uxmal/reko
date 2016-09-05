@@ -36,7 +36,7 @@ namespace Reko.UnitTests.Analysis
     [TestFixture]
     public class RegisterPreservationTests
     {
-        private DataFlow2 dataFlow;
+        private ProgramDataFlow dataFlow;
         private Program program;
         private IImportResolver importResolver;
 
@@ -76,8 +76,8 @@ namespace Reko.UnitTests.Analysis
         {
             importResolver = MockRepository.GenerateStub<IImportResolver>();
             importResolver.Replay();
-            this.dataFlow = new DataFlow2();
-            var scc = new Dictionary<Procedure, SsaState>();
+            this.dataFlow = new ProgramDataFlow();
+            var scc = new List<SsaState>();
             foreach (var proc in procs)
             {
                 // Transform the procedure to SSA state. When encountering 'call' instructions,
@@ -95,7 +95,7 @@ namespace Reko.UnitTests.Analysis
                 sst.AddUsesToExitBlock();
 
                 var ssa = sst.SsaState;
-                scc.Add(proc, ssa);
+                scc.Add(ssa);
             }
 
             var regp = new RegisterPreservation(scc, dataFlow);

@@ -39,12 +39,12 @@ namespace Reko.Analysis
 	{
 		private Procedure proc;
 
-		public HashSet<Storage> PreservedRegisters;			// Registers explicitly preserved by the procedure.
+		public HashSet<Storage> Preserved;			// Registers explicitly preserved by the procedure.
 		public uint grfPreserved;
 
 		public uint grfTrashed;
-		public HashSet<Storage> TrashedRegisters;		// Registers globally trashed by procedure and/or callees.
-        public Dictionary<Storage, Constant> ConstantRegisters; // If present, indicates a register always has a constant value leaving the procedure.
+		public HashSet<Storage> Trashed;		// Registers globally trashed by procedure and/or callees.
+        public Dictionary<Storage, Constant> Constants; // If present, indicates a register always has a constant value leaving the procedure.
 
 		public HashSet<Storage> ByPass { get; set; }
 		public uint grfByPass;
@@ -59,24 +59,26 @@ namespace Reko.Analysis
 		public uint grfLiveOut;
 
 		public FunctionType Signature;
+        public Dictionary<Storage, int> BitsUsed;
 
         // True if calling this procedure terminates the thread/process. This implies
         // that no code path reached the exit block without first terminating the process.
         public bool TerminatesProcess;
 
-        public ProcedureFlow(Procedure proc, IProcessorArchitecture arch)
+        public ProcedureFlow(Procedure proc)
         {
             this.proc = proc;
 
-            PreservedRegisters = new HashSet<Storage>();
-            TrashedRegisters = new HashSet<Storage>();
-            ConstantRegisters = new Dictionary<Storage, Constant>();
+            Preserved = new HashSet<Storage>();
+            Trashed = new HashSet<Storage>();
+            Constants = new Dictionary<Storage, Constant>();
 
             ByPass = new HashSet<Storage>();
             MayUse = new HashSet<Storage>();
             LiveOut = new HashSet<Storage>();
 
             StackArguments = new Hashtable();
+            this.BitsUsed = new Dictionary<Storage, int>();
         }
 
         [Conditional("DEBUG")]
@@ -89,13 +91,13 @@ namespace Reko.Analysis
 
 		public override void Emit(IProcessorArchitecture arch, TextWriter writer)
 		{
-			EmitRegisters(arch, "// MayUse: ", grfMayUse, MayUse, writer);
+			EmitRegisterValues("// MayUse: ", BitsUsed, writer);
 			writer.WriteLine();
 			EmitRegisters(arch, "// LiveOut:", grfLiveOut, LiveOut, writer);
 			writer.WriteLine();
-			EmitRegisters(arch, "// Trashed:", grfTrashed, TrashedRegisters, writer);
+			EmitRegisters(arch, "// Trashed:", grfTrashed, Trashed, writer);
 			writer.WriteLine();
-			EmitRegisters(arch, "// Preserved:", grfPreserved, PreservedRegisters, writer);
+			EmitRegisters(arch, "// Preserved:", grfPreserved, Preserved, writer);
 			writer.WriteLine();
 			EmitStackArguments(StackArguments, writer);
             if (TerminatesProcess)

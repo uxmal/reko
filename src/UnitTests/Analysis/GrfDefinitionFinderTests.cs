@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Analysis
                     program.Architecture,
                     proc,
                     importResolver,
-                    dfa.DataFlow);
+                    new ProgramDataFlow());
                 sst.Transform();
 				SsaState ssa = sst.SsaState;
 				GrfDefinitionFinder grfd = new GrfDefinitionFinder(ssa.Identifiers);

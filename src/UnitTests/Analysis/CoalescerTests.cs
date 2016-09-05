@@ -120,17 +120,17 @@ namespace Reko.UnitTests.Analysis
 			
 			foreach (Procedure proc in program.Procedures.Values)
 			{
-                SsaTransform2 sst = new SsaTransform2(program.Architecture, proc, importResolver, dfa.DataFlow);
+                SsaTransform2 sst = new SsaTransform2(program.Architecture, proc, importResolver, dfa.ProgramDataFlow);
                 sst.Transform();
 				SsaState ssa = sst.SsaState;
 				
                 ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform);
 				cce.Transform();
-				DeadCode.Eliminate(proc, ssa);
+				DeadCode.Eliminate(ssa);
 
                 ValuePropagator vp = new ValuePropagator(program.Architecture, ssa);
 				vp.Transform();
-				DeadCode.Eliminate(proc, ssa);
+				DeadCode.Eliminate(ssa);
 				Coalescer co = new Coalescer(ssa);
 				co.Transform();
 

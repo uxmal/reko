@@ -54,7 +54,7 @@ namespace Reko.UnitTests.Analysis
             var seqgen = new SequenceIdentifierGenerator(sst);
             seqgen.Transform();
 
-            DeadCode.Eliminate(pb.Procedure, sst.SsaState);
+            DeadCode.Eliminate(sst.SsaState);
 
             var sw = new StringWriter();
             sst.SsaState.Write(sw);

@@ -126,17 +126,17 @@ namespace Reko.UnitTests.Analysis
                 arch,
                 proc,
                 null,
-                new DataFlow2());
+                new ProgramDataFlow());
             sst.Transform();
 			ssa = sst.SsaState;
 			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, platform);
 			cce.Transform();
             ValuePropagator vp = new ValuePropagator(arch, ssa);
 			vp.Transform();
-			DeadCode.Eliminate(proc, ssa);
+			DeadCode.Eliminate(ssa);
 			Coalescer coa = new Coalescer(ssa);
 			coa.Transform();
-			DeadCode.Eliminate(proc, ssa);
+			DeadCode.Eliminate(ssa);
 
 			sla = new SsaLivenessAnalysis(ssa);
 			sla2 = new SsaLivenessAnalysis2(ssa);
@@ -157,6 +157,5 @@ namespace Reko.UnitTests.Analysis
 				Store(Int32(0x10000004), a);
 			}
 		}
-
 	}
 }

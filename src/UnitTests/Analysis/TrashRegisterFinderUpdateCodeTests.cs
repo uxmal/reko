@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Analysis
 
             foreach (var proc in program.Procedures.Values)
             {
-                flow[proc].EmitRegisters(arch, "// Trashed", flow[proc].TrashedRegisters);
+                flow[proc].EmitRegisters(arch, "// Trashed", flow[proc].Trashed);
                 proc.Write(false, writer);
                 writer.WriteLine();
             }

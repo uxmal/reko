@@ -39,10 +39,10 @@ namespace Reko.Analysis
     public class TrashedRegisterFinder2 
     {
         private IProcessorArchitecture arch;
-        private DataFlow2 progFlow;
+        private ProgramDataFlow progFlow;
         private SsaState ssa;
         private DecompilerEventListener decompilerEventListener;
-        private ProcedureFlow2 flow;
+        private ProcedureFlow flow;
         private ISet<SsaTransform2> sccGroup;
         private Dictionary<Procedure, HashSet<Storage>> assumedPreserved;
         private ExpressionValueComparer cmp;
@@ -58,7 +58,7 @@ namespace Reko.Analysis
 
         public TrashedRegisterFinder2(
             IProcessorArchitecture arch,
-            DataFlow2 flow,
+            ProgramDataFlow flow,
             IEnumerable<SsaTransform2> sccGroup,
             DecompilerEventListener listener)
         {
@@ -71,8 +71,8 @@ namespace Reko.Analysis
         }
 
         /// <summary>
-        /// Given an SsaState, computes the summary data flow information for 
-        /// the procedure.
+        /// Given an SsaState of a Procedure, computes the summary data flow
+        /// information for the procedure.
         /// </summary>
         /// <remarks>
         /// Expects that the SSA transform has injected UseInstructions in 
@@ -80,7 +80,7 @@ namespace Reko.Analysis
         /// </remarks>
         /// <param name="ssa"></param>
         /// <returns></returns>
-        public ProcedureFlow2 Compute(SsaState ssa)
+        public ProcedureFlow Compute(SsaState ssa)
         {
             this.ssa = ssa;
             this.flow = this.progFlow.ProcedureFlows[ssa.Procedure];

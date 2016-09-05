@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Analysis
             IImportResolver importResolver = mr.Stub<IImportResolver>();
             importResolver.Replay();
 			dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
-			dfa.AnalyzeProgram();
+			dfa.AnalyzeProgram2();
 			foreach (Procedure proc in program.Procedures.Values)
 			{
 				ProcedureFlow flow = dfa.ProgramDataFlow[proc];

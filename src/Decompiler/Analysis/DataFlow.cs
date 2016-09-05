@@ -28,6 +28,7 @@ using SortedList = System.Collections.SortedList;
 using Storage = Reko.Core.Storage;
 using StringWriter = System.IO.StringWriter;
 using TextWriter = System.IO.TextWriter;
+using System.IO;
 
 namespace Reko.Analysis
 {
@@ -67,8 +68,8 @@ namespace Reko.Analysis
                 sb.Write(" {0}:{1}", de.Key, de.Value);
             }
         }
-        
-		private static void EmitRegistersCore(IProcessorArchitecture arch, HashSet<Storage> regs, TextWriter sb)
+
+        private static void EmitRegistersCore(IProcessorArchitecture arch, HashSet<Storage> regs, TextWriter sb)
 		{
             foreach (var reg in regs.Where(r => r!= null).OrderBy(r => r.Name))
             {

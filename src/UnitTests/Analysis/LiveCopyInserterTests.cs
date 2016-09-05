@@ -184,14 +184,14 @@ namespace Reko.UnitTests.Analysis
                 arch,
                 proc,
                 null,
-                new DataFlow2());
+                new ProgramDataFlow());
             sst.Transform();
             this.ssa = sst.SsaState;
 			this.ssaIds = ssa.Identifiers;
 
 			ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, platform);
 			cce.Transform();
-			DeadCode.Eliminate(proc, ssa);
+			DeadCode.Eliminate(ssa);
 
             ValuePropagator vp = new ValuePropagator(arch, ssa);
 			vp.Transform();
@@ -199,7 +199,7 @@ namespace Reko.UnitTests.Analysis
 			Coalescer coa = new Coalescer(ssa);
 			coa.Transform();
 
-			DeadCode.Eliminate(proc, ssa);
+			DeadCode.Eliminate(ssa);
 		}
 	}
 }

@@ -64,13 +64,13 @@ namespace Reko.UnitTests.Analysis
 				ProcedureFlow flow = dfa.ProgramDataFlow[proc];
 				DataFlow.EmitRegisters(program.Architecture, "\tLiveOut:  ", flow.grfLiveOut, flow.LiveOut, w);
 				w.WriteLine();
-				DataFlow.EmitRegisters(program.Architecture, "\tMayUseIn: ", flow.grfMayUse, flow.MayUse, w);
+				DataFlow.EmitRegisterValues("\tBitsUsed: ", flow.BitsUsed, w);
 				w.WriteLine();
 				DataFlow.EmitRegisters(program.Architecture, "\tBypassIn: ", flow.grfMayUse, flow.ByPass, w);
 				w.WriteLine();
-				DataFlow.EmitRegisters(program.Architecture, "\tTrashed:  ", flow.grfTrashed, flow.TrashedRegisters, w);
+				DataFlow.EmitRegisters(program.Architecture, "\tTrashed:  ", flow.grfTrashed, flow.Trashed, w);
 				w.WriteLine();
-				DataFlow.EmitRegisters(program.Architecture, "\tPreserved:", flow.grfPreserved, flow.PreservedRegisters, w);
+				DataFlow.EmitRegisters(program.Architecture, "\tPreserved:", flow.grfPreserved, flow.Preserved, w);
 				w.WriteLine();
 
 				w.WriteLine("// {0}", proc.Name);

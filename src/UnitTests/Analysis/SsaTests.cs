@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Analysis
 
         protected override void RunTest(Program program, TextWriter writer)
 		{
-            var flow = new DataFlow2();
+            var flow = new ProgramDataFlow();
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             importResolver.Replay();
             foreach (Procedure proc in program.Procedures.Values)
@@ -77,7 +77,7 @@ namespace Reko.UnitTests.Analysis
 
         private void RunUnitTest(ProcedureBuilder m, string outfile)
         {
-            var flow = new DataFlow2();
+            var flow = new ProgramDataFlow();
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             importResolver.Replay();
 

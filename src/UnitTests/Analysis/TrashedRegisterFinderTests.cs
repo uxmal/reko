@@ -94,11 +94,11 @@ namespace Reko.UnitTests.Analysis
         {
             foreach (Procedure proc in program.Procedures.Values)
             {
-                DataFlow.EmitRegisters(program.Architecture, proc.Name, flow[proc].grfTrashed, flow[proc].TrashedRegisters, writer);
+                DataFlow.EmitRegisters(program.Architecture, proc.Name, flow[proc].grfTrashed, flow[proc].Trashed, writer);
                 writer.WriteLine();
-                if (flow[proc].ConstantRegisters.Count > 0)
+                if (flow[proc].Constants.Count > 0)
                 {
-                    DataFlow.EmitRegisterValues("const", flow[proc].ConstantRegisters, writer);
+                    DataFlow.EmitRegisterValues("const", flow[proc].Constants, writer);
                     writer.WriteLine();
                 }
                 foreach (var block in proc.ControlGraph.Blocks.OrderBy(b => b, new Procedure.BlockComparer()))
@@ -266,8 +266,8 @@ namespace Reko.UnitTests.Analysis
             var callee = new Procedure("Callee", program.Architecture.CreateFrame());
             m.Call(callee, 4);
             var stm = m.Block.Statements.Last;
-            var pf = new ProcedureFlow(callee, program.Architecture);
-            pf.TrashedRegisters.Add(Registers.ebx);
+            var pf = new ProcedureFlow(callee);
+            pf.Trashed.Add(Registers.ebx);
             flow[callee] = pf;
 
             trf = CreateTrashedRegisterFinder();
@@ -361,7 +361,7 @@ namespace Reko.UnitTests.Analysis
             Identifier ebx = proc.Frame.EnsureRegister(Registers.ebx);
             Identifier ecx = proc.Frame.EnsureRegister(Registers.ecx);
             Identifier esi = proc.Frame.EnsureRegister(Registers.esi);
-            flow[proc] = new ProcedureFlow(proc, program.Architecture);
+            flow[proc] = new ProcedureFlow(proc);
 
             trf = CreateTrashedRegisterFinder();
             CreateBlockFlow(proc.ExitBlock, proc.Frame);
@@ -372,8 +372,8 @@ namespace Reko.UnitTests.Analysis
             trf.RegisterSymbolicValues[(RegisterStorage) esi.Storage] = Constant.Invalid;				// trashed
             trf.PropagateToProcedureSummary(proc);
             ProcedureFlow pf = flow[proc];
-            Assert.AreEqual(" ebx esi", pf.EmitRegisters(program.Architecture, "", pf.TrashedRegisters));
-            Assert.AreEqual(" eax", pf.EmitRegisters(program.Architecture, "", pf.PreservedRegisters));
+            Assert.AreEqual(" ebx esi", pf.EmitRegisters(program.Architecture, "", pf.Trashed));
+            Assert.AreEqual(" eax", pf.EmitRegisters(program.Architecture, "", pf.Preserved));
         }
 
         [Test]
@@ -384,7 +384,7 @@ namespace Reko.UnitTests.Analysis
             var flags = program.Architecture.GetFlagGroup("SZ");
             var sz = m.Frame.EnsureFlagGroup(flags.FlagRegister, flags.FlagGroupBits, flags.Name, flags.DataType);
             var stm = m.Assign(sz, m.Int32(3));
-            flow[proc] = new ProcedureFlow(proc, program.Architecture);
+            flow[proc] = new ProcedureFlow(proc);
             trf = CreateTrashedRegisterFinder(program);
             CreateBlockFlow(m.Block, m.Frame);
             trf.StartProcessingBlock(m.Block);
@@ -411,7 +411,7 @@ namespace Reko.UnitTests.Analysis
             trf = CreateTrashedRegisterFinder(program);
             trf.Compute();
             ProcedureFlow pf = flow[proc];
-            Assert.AreEqual(" ebp esp", pf.EmitRegisters(program.Architecture, "", pf.PreservedRegisters), "ebp should have been preserved");
+            Assert.AreEqual(" ebp esp", pf.EmitRegisters(program.Architecture, "", pf.Preserved), "ebp should have been preserved");
         }
 
         [Test]
@@ -438,7 +438,7 @@ namespace Reko.UnitTests.Analysis
             m.Call(exit, 4);
 
             flow[m.Block] = CreateBlockFlow(m.Block, m.Frame);
-            flow[exit] = new ProcedureFlow(exit, program.Architecture);
+            flow[exit] = new ProcedureFlow(exit);
             flow[exit].TerminatesProcess = true;
             trf = CreateTrashedRegisterFinder(program);
             trf.ProcessBlock(m.Block);

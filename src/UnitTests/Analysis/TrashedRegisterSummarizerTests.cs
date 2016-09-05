@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Analysis
         {
             arch = new FakeArchitecture();
             proc = new Procedure("Test", new Frame(arch.FramePointerType));
-            flow = new ProcedureFlow(proc, arch);
+            flow = new ProcedureFlow(proc);
             ctx = new SymbolicEvaluationContext(arch, proc.Frame);
             trs = new TrashedRegisterSummarizer(arch, proc, flow, ctx);
         }
@@ -60,8 +60,8 @@ namespace Reko.UnitTests.Analysis
             ctx.RegisterState[reg] = Constant.Word32(1);
             trs.PropagateToProcedureSummary();
 
-            Assert.AreEqual(" r1", flow.EmitRegisters(arch, "", flow.TrashedRegisters));
-            Assert.AreEqual("0x00000001", flow.ConstantRegisters[reg].ToString());
+            Assert.AreEqual(" r1", flow.EmitRegisters(arch, "", flow.Trashed));
+            Assert.AreEqual("0x00000001", flow.Constants[reg].ToString());
         }
 
         [Test]
@@ -73,7 +73,7 @@ namespace Reko.UnitTests.Analysis
             ctx.RegisterState[reg] = Constant.Word32(2);
             trs.PropagateToProcedureSummary();
 
-            Assert.AreEqual("<invalid>", flow.ConstantRegisters[reg].ToString());
+            Assert.AreEqual("<invalid>", flow.Constants[reg].ToString());
         }
 
         [Test]
@@ -86,7 +86,7 @@ namespace Reko.UnitTests.Analysis
             ctx.RegisterState[r4] = Constant.Word32(3);
             trs.PropagateToProcedureSummary();
 
-            Assert.AreEqual("<invalid>", flow.ConstantRegisters[r4].ToString());
+            Assert.AreEqual("<invalid>", flow.Constants[r4].ToString());
         }
 
         [Test]
@@ -99,7 +99,7 @@ namespace Reko.UnitTests.Analysis
             ctx.RegisterState[r4] = new BinaryExpression(Operator.IAdd, PrimitiveType.Word32, id, Constant.Word32(1));
             trs.PropagateToProcedureSummary();
 
-            Assert.AreEqual("<invalid>", flow.ConstantRegisters[r4].ToString());
+            Assert.AreEqual("<invalid>", flow.Constants[r4].ToString());
         }
 
         [Test]
@@ -112,7 +112,7 @@ namespace Reko.UnitTests.Analysis
             ctx.RegisterState[r4] = Constant.Word32(3);
             trs.PropagateToProcedureSummary();
 
-            Assert.AreEqual("0x00000003", flow.ConstantRegisters[r4].ToString());
+            Assert.AreEqual("0x00000003", flow.Constants[r4].ToString());
         }
 
         [Test]
@@ -126,7 +126,7 @@ namespace Reko.UnitTests.Analysis
             ctx.RegisterState[cx] = Constant.Invalid;
             trs.PropagateToProcedureSummary();
 
-            Assert.AreEqual("cl:<invalid>, cx:<invalid>", Dump(flow.ConstantRegisters));
+            Assert.AreEqual("cl:<invalid>, cx:<invalid>", Dump(flow.Constants));
         }
 
         private string Dump(Dictionary<Storage, Constant> dictionary)

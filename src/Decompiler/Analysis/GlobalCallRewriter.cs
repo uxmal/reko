@@ -100,7 +100,7 @@ namespace Reko.Analysis
 		private void AdjustLiveOut(ProcedureFlow flow)
 		{
 			flow.grfLiveOut &= flow.grfTrashed;
-			flow.LiveOut.IntersectWith(flow.TrashedRegisters);
+			flow.LiveOut.IntersectWith(flow.Trashed);
 		}
 
 		public static void Rewrite(
@@ -147,7 +147,7 @@ namespace Reko.Analysis
 			}
 
             var implicitRegs = Program.Platform.CreateImplicitArgumentRegisters();
-            var mayUse = new HashSet<RegisterStorage>(flow.MayUse.OfType<RegisterStorage>());
+            var mayUse = new HashSet<RegisterStorage>(flow.BitsUsed.Keys.OfType<RegisterStorage>());
             mayUse.ExceptWith(implicitRegs);
 			foreach (var reg in mayUse.OfType<RegisterStorage>().OrderBy(r => r.Number))
 			{

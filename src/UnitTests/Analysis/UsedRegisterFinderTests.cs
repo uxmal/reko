@@ -38,13 +38,13 @@ namespace Reko.UnitTests.Analysis
     [TestFixture]
     public class UsedRegisterFinderTests
     {
-        private DataFlow2 pf;
+        private ProgramDataFlow pf;
         private ProgramBuilder progBuilder;
 
         [SetUp]
         public void Setup()
         {
-            this.pf = new DataFlow2();
+            this.pf = new ProgramDataFlow();
             this.progBuilder = new ProgramBuilder();
         }
 
@@ -85,7 +85,7 @@ namespace Reko.UnitTests.Analysis
             };
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             importResolver.Replay();
-            var sst = new SsaTransform2(arch, proc, importResolver, new DataFlow2());
+            var sst = new SsaTransform2(arch, proc, importResolver, new ProgramDataFlow());
             sst.Transform();
             var vp = new ValuePropagator(arch, sst.SsaState);
             vp.Transform();
@@ -97,7 +97,7 @@ namespace Reko.UnitTests.Analysis
 
             vp.Transform();
 
-            pf.ProcedureFlows[proc] = new ProcedureFlow2();
+            pf.ProcedureFlows[proc] = new ProcedureFlow(proc);
             var urf = new UsedRegisterFinder(
                 arch, 
                 pf,
@@ -107,7 +107,7 @@ namespace Reko.UnitTests.Analysis
             var flow = urf.Compute(sst.SsaState);
             var sw = new StringWriter();
             sw.Write("Used: ");
-            sw.WriteLine(string.Join(",", flow.Used.OrderBy(p => p.Key.ToString())));
+            sw.WriteLine(string.Join(",", flow.BitsUsed.OrderBy(p => p.Key.ToString())));
             var sActual = sw.ToString();
             if (sActual != sExp)
             {

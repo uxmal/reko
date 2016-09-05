@@ -821,7 +821,7 @@ namespace Reko.Analysis
     public class SsaTransform2 : InstructionTransformer 
     {
         private IProcessorArchitecture arch;
-        private DataFlow2 programFlow;
+        private ProgramDataFlow programFlow;
         private IImportResolver importResolver;
         private Block block;
         private Statement stmCur;
@@ -831,7 +831,7 @@ namespace Reko.Analysis
         public readonly HashSet<SsaIdentifier> incompletePhis;
         private HashSet<SsaIdentifier> sidsToRemove;
 
-        public SsaTransform2(IProcessorArchitecture arch, Procedure proc, IImportResolver importResolver, DataFlow2 programFlow)
+        public SsaTransform2(IProcessorArchitecture arch, Procedure proc, IImportResolver importResolver, ProgramDataFlow programFlow)
         {
             this.arch = arch;
             this.programFlow = programFlow;
@@ -922,7 +922,8 @@ namespace Reko.Analysis
                 .Select(u => u.Expression)
                 .ToHashSet();
             var reachingIds = ssa.Identifiers
-                .Where(sid => reachingBlocks.Contains(sid.DefStatement.Block) &&
+                .Where(sid => sid.DefStatement != null &&
+                              reachingBlocks.Contains(sid.DefStatement.Block) &&
                               sid.Identifier.Name != sid.OriginalIdentifier.Name &&
                               !(sid.Identifier.Storage is MemoryStorage) &&
                               !(sid.Identifier.Storage is StackStorage) &&
@@ -1049,8 +1050,16 @@ namespace Reko.Analysis
         }
 
         /// <summary>
-        /// Unresolved calls can be "hell nodes". A hell node is an indirect calls or indirect
-        /// jump that prior passes of the decompiler have been unable to resolve.
+        /// Handle a call to another procedure. If the procedure has a
+        /// signature, we can create an Application immediately. If the
+        /// procedure has a defined ProcedureFlow, we use the BitsUsed
+        /// and Trashed sets to set the uses and defs sets of the call
+        /// instruction. If the called procedure is part of a recursive
+        /// nest, or is a "hell node" (a hell node is an indirect call or
+        /// indirect jump that prior Reko passes have been unable to resolve),
+        /// we must assume the worst and use all defined registers and 
+        /// trash everything. The hope is that, for recursive procedures
+        /// at least, we can eliminate some of the uses and defines.
         /// </summary>
         /// <param name="ci"></param>
         /// <returns></returns>
@@ -1064,7 +1073,7 @@ namespace Reko.Analysis
                 var instr = ab.CreateInstruction(callee.Signature, callee.Characteristics);
                 return instr.Accept(this);
             }
-            ProcedureFlow2 calleeFlow;
+            ProcedureFlow calleeFlow;
             var proc = callee as Procedure;
             if (proc != null && programFlow.ProcedureFlows.TryGetValue(proc, out calleeFlow))
             {
@@ -1084,7 +1093,7 @@ namespace Reko.Analysis
             return ab;
         }
 
-        private void GenerateUseDefsForKnownCallee(CallInstruction ci, Procedure callee, ProcedureFlow2 calleeFlow)
+        private void GenerateUseDefsForKnownCallee(CallInstruction ci, Procedure callee, ProcedureFlow calleeFlow)
         {
             if (this.RenameFrameAccesses)
             {
@@ -1096,9 +1105,7 @@ namespace Reko.Analysis
             else
             {
                 var ab = new FrameApplicationBuilder(arch, ssa.Procedure.Frame, ci.CallSite, ci.Callee, false);
-                foreach (var use in calleeFlow.Used.Keys
-                    .Where(d => !(d is TemporaryStorage) &&
-                                !(d is MemoryStorage)))
+                foreach (var use in calleeFlow.BitsUsed.Keys)
                 {
                     {
                         var arg = use.Accept(ab);
@@ -1180,6 +1187,7 @@ namespace Reko.Analysis
                 if (this.RenameFrameAccesses && IsFrameAccess(ssa.Procedure, acc.EffectiveAddress))
                 {
                     ssa.Identifiers[ssa.Procedure.Frame.FramePointer].Uses.Remove(stmCur);
+                    ssa.Identifiers[acc.MemoryId].DefStatement = null;
                     var idFrame = EnsureStackVariable(ssa.Procedure, acc.EffectiveAddress, acc.DataType);
                     var idDst = NewDef(idFrame, store.Src, false);
                     return new Assignment(idDst, store.Src);

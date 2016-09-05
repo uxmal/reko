@@ -36,8 +36,7 @@ namespace Reko.UnitTests.Analysis
 	[TestFixture]
 	public class LinearInductionVariableTests : AnalysisTestBase
 	{
-		private Procedure proc;
-		private SsaIdentifierCollection ssaIds;
+		private SsaState ssa;
 		private BlockDominatorGraph doms;
         private BlockDominatorGraph dom;
 
@@ -62,12 +61,12 @@ namespace Reko.UnitTests.Analysis
             m.Label("b3");
             m.Return();
             this.dom = m.Procedure.CreateBlockDominatorGraph();
-            var ssa = new SsaTransform2(
+            var sst = new SsaTransform2(
                 m.Architecture,
                 m.Procedure,
                 null,
-                new DataFlow2());
-            ssa.Transform();
+                new ProgramDataFlow());
+            sst.Transform();
             /*
             
             proc = new Procedure("test", new Frame(PrimitiveType.Word32));
@@ -96,12 +95,12 @@ namespace Reko.UnitTests.Analysis
 			ssaIds.Add(a2, sid_a2);
 			ssaIds.Add(a3, sid_a3);
             */
-            ssaIds = ssa.SsaState.Identifiers;
+            ssa = sst.SsaState;
 
             List<SsaIdentifier> list = new List<SsaIdentifier> {
-                ssaIds.Where(i => i.Identifier.Name == "a_1").Single(),
-                ssaIds.Where(i => i.Identifier.Name == "a_2").Single(),
-                ssaIds.Where(i => i.Identifier.Name == "a_3").Single(),
+                ssa.Identifiers.Where(i => i.Identifier.Name == "a_1").Single(),
+                ssa.Identifiers.Where(i => i.Identifier.Name == "a_2").Single(),
+                ssa.Identifiers.Where(i => i.Identifier.Name == "a_3").Single(),
             };
 			return list;
 		}
@@ -110,7 +109,7 @@ namespace Reko.UnitTests.Analysis
 		public void Liv_FindPhi()
 		{
 			List<SsaIdentifier> a = BuildScc();
-			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, null, dom);
+			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, dom);
 			PhiFunction p = liv.FindPhiFunction(a);
 			Assert.IsNotNull(p, "Didn't find phi function!");
 		}
@@ -119,7 +118,7 @@ namespace Reko.UnitTests.Analysis
 		public void Liv_FindLinearIncrement()
 		{
             List<SsaIdentifier> a = BuildScc();
-			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, null, dom);
+			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, dom);
 			Constant c = liv.FindLinearIncrement(a);
 			Assert.AreEqual(4, c.ToInt32());
             Assert.AreEqual("a_3 = a_2 + 0x00000004", liv.Context.DeltaStatement.ToString());
@@ -129,7 +128,7 @@ namespace Reko.UnitTests.Analysis
 		public void Liv_FindInitialValue()
 		{
 			List<SsaIdentifier> a = BuildScc();
-			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, ssaIds, dom);
+			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(ssa, dom);
 			PhiFunction phi = liv.FindPhiFunction(a);
 			Constant c = liv.FindInitialValue(phi);
             Assert.AreEqual(0, c.ToInt32());
@@ -140,10 +139,10 @@ namespace Reko.UnitTests.Analysis
 		public void Liv_FindFinalValue()
 		{
 			Prepare(new ByteArrayLoopMock().Procedure);
-			var liv = new LinearInductionVariableFinder(proc, ssaIds, null);
+			var liv = new LinearInductionVariableFinder(ssa, null);
 			var a = new List<SsaIdentifier>();
-			a.Add(ssaIds.Where(s => s.Identifier.Name == "i_2").Single());
-			a.Add(ssaIds.Where(s => s.Identifier.Name == "i_5").Single());
+			a.Add(ssa.Identifiers.Where(s => s.Identifier.Name == "i_2").Single());
+			a.Add(ssa.Identifiers.Where(s => s.Identifier.Name == "i_5").Single());
 			Constant c = liv.FindFinalValue(a);
 			Assert.AreEqual(10, c.ToInt32());
             Assert.AreEqual("branch i_2 < 0x0000000A body", liv.Context.TestStatement.ToString());
@@ -170,8 +169,8 @@ namespace Reko.UnitTests.Analysis
 		public void Create1()
 		{
 			Prepare(new WhileLtIncMock().Procedure);
-			var doms = proc.CreateBlockDominatorGraph();
-			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(proc, ssaIds, doms);
+			var doms = ssa.Procedure.CreateBlockDominatorGraph();
+			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(ssa, doms);
 			Assert.IsNull(liv.Context.PhiIdentifier);
 			Assert.IsNull(liv.Context.PhiStatement);
             Assert.Fail(); /*
@@ -189,21 +188,21 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void Liv_CreateNo()
 		{
-			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, null, null);
+			var liv = new LinearInductionVariableFinder(null, null);
 			Assert.IsNull(liv.CreateInductionVariable());
 		}
 
 		[Test]
 		public void Liv_CreateBareMinimum()
 		{
-			ssaIds = new SsaIdentifierCollection();
+            ssa = new SsaState(null, null);
             Identifier id0 = new Identifier("foo", PrimitiveType.Word32, new TemporaryStorage("foo", 1, PrimitiveType.Word32));
             Identifier id1 = new Identifier("bar", PrimitiveType.Word32, new TemporaryStorage("bar", 1, PrimitiveType.Word32));
             Identifier phi = new Identifier("i_3", PrimitiveType.Word32, null);
-			ssaIds.Add(id0, new SsaIdentifier(id0, id0, null, null, false));
-			ssaIds.Add(id1, new SsaIdentifier(id1, id1, null, null, false));
-            ssaIds.Add(phi, new SsaIdentifier(phi, phi, null, null, false));
-			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, ssaIds, null);
+			ssa.Identifiers.Add(id0, new SsaIdentifier(id0, id0, null, null, false));
+			ssa.Identifiers.Add(id1, new SsaIdentifier(id1, id1, null, null, false));
+            ssa.Identifiers.Add(phi, new SsaIdentifier(phi, phi, null, null, false));
+			var liv = new LinearInductionVariableFinder(ssa, null);
 			liv.Context.PhiStatement = new Statement(0, null, null);
             liv.Context.PhiIdentifier = phi;
 			liv.Context.DeltaValue = Constant.Word32(1);
@@ -214,16 +213,16 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void Liv_CreateIncInitialValue()
 		{
-			ssaIds = new SsaIdentifierCollection();
-			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, ssaIds, null);
+            ssa = new SsaState(null, null);
+			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(ssa, null);
 			liv.Context.InitialValue = Constant.Word32(0);
 			liv.Context.PhiStatement = new Statement(0, null, null);
 			liv.Context.PhiIdentifier = new Identifier("foo_0", PrimitiveType.Word32, null);
-            ssaIds.Add(liv.Context.PhiIdentifier, new SsaIdentifier(liv.Context.PhiIdentifier, liv.Context.PhiIdentifier, liv.Context.PhiStatement, null, false));
+            ssa.Identifiers.Add(liv.Context.PhiIdentifier, new SsaIdentifier(liv.Context.PhiIdentifier, liv.Context.PhiIdentifier, liv.Context.PhiStatement, null, false));
 			liv.Context.DeltaValue = Constant.Word32(1);
 			liv.Context.DeltaStatement = new Statement(0, new Assignment(new Identifier("foo_1", PrimitiveType.Word32, null), 
 				new BinaryExpression(Operator.IAdd, PrimitiveType.Word32, liv.Context.PhiIdentifier, liv.Context.DeltaValue)), null);
-			ssaIds[liv.Context.PhiIdentifier].Uses.Add(liv.Context.DeltaStatement);
+			ssa.Identifiers[liv.Context.PhiIdentifier].Uses.Add(liv.Context.DeltaStatement);
 
 			LinearInductionVariable iv = liv.CreateInductionVariable();
 			Assert.AreEqual("(0x00000001 0x00000001 ?)", iv.ToString());
@@ -233,30 +232,30 @@ namespace Reko.UnitTests.Analysis
 		public void CreateNoincInitialValue()
 		{
 			ProcedureBuilder m = new ProcedureBuilder();
-			ssaIds = new SsaIdentifierCollection();
+            ssa = new SsaState(m.Procedure, null);
 			SsaId(new Identifier("id0", PrimitiveType.Word32, new TemporaryStorage("id0", 0, PrimitiveType.Word32)), null, null, false);
 			SsaId(new Identifier("id1", PrimitiveType.Word32, new TemporaryStorage("id1", 1, PrimitiveType.Word32)), null, null, false);
-			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(null, ssaIds, null);
+			LinearInductionVariableFinder liv = new LinearInductionVariableFinder(ssa, null);
 
 			liv.Context.InitialValue = Constant.Word32(0);
 			Identifier id2 = m.Local32("id_2");
 			SsaId(id2, new Statement(0, null, null), null, false);
-			Assert.AreEqual(3, ssaIds.Count);
+			Assert.AreEqual(3, ssa.Identifiers.Count);
 
 			Identifier id3 = m.Local32("id_3");
 			Identifier id4 = m.Local32("id_4");
 			liv.Context.PhiStatement = m.Phi(id3, id2, id4);
 			liv.Context.PhiIdentifier = id3;
 			SsaId(id3, liv.Context.PhiStatement, ((PhiAssignment)liv.Context.PhiStatement.Instruction).Src, false);
-			Assert.AreEqual(4, ssaIds.Count);
+			Assert.AreEqual(4, ssa.Identifiers.Count);
 
 			Statement use = new Statement(0, null, null);
-			ssaIds[id3].Uses.Add(use);
+			ssa.Identifiers[id3].Uses.Add(use);
 
 			liv.Context.DeltaValue = m.Int32(1);
             m.Assign(id4, m.IAdd(id3, liv.Context.DeltaValue));
             liv.Context.DeltaStatement = m.Block.Statements.Last;
-			ssaIds[id3].Uses.Add(liv.Context.DeltaStatement);
+			ssa.Identifiers[id3].Uses.Add(liv.Context.DeltaStatement);
 
 			LinearInductionVariable iv = liv.CreateInductionVariable();
 			Assert.AreEqual("(0x00000000 0x00000001 ?)", iv.ToString());
@@ -278,7 +277,7 @@ namespace Reko.UnitTests.Analysis
                 m.Store(m.Word32(0x4200), i);
                 m.Return();
             });
-            var liv = new LinearInductionVariableFinder(proc, ssaIds, doms);
+            var liv = new LinearInductionVariableFinder(ssa, doms);
             liv.Find();
             Assert.AreEqual("(? 0x00000001 0x0000000A)", liv.InductionVariables[0].ToString());
         }
@@ -296,7 +295,7 @@ namespace Reko.UnitTests.Analysis
                 m.Store(m.Word32(0x4232), id);
                 m.Return(id);
             });
-            var liv = new LinearInductionVariableFinder(proc, ssaIds, doms);
+            var liv = new LinearInductionVariableFinder(ssa, doms);
             liv.Find();
 			var iv = liv.InductionVariables[0];
 			Assert.AreEqual("(0x00000009 -1 0xFFFFFFFF signed)", iv.ToString());
@@ -335,27 +334,25 @@ namespace Reko.UnitTests.Analysis
 
 		private void Prepare(Procedure proc)
 		{
-			this.proc = proc;
             doms = proc.CreateBlockDominatorGraph();
             SsaTransform2 sst = new SsaTransform2(
                 null,
                 proc,
                 null,
-                new DataFlow2());
+                new ProgramDataFlow());
             sst.Transform();
-			SsaState ssa = sst.SsaState;
-			ssaIds = ssa.Identifiers;
+			this.ssa = sst.SsaState;
 
             var arch = new FakeArchitecture();
             var cce = new ConditionCodeEliminator(ssa, new DefaultPlatform(null, arch));
 			cce.Transform();
 
-			DeadCode.Eliminate(proc, ssa);
+			DeadCode.Eliminate(ssa);
 
             var vp = new ValuePropagator(arch, ssa);
 			vp.Transform();
 
-			DeadCode.Eliminate(proc, ssa);
+			DeadCode.Eliminate(ssa);
 		}
 
         private void Prepare(Action<ProcedureBuilder> m)
@@ -368,7 +365,7 @@ namespace Reko.UnitTests.Analysis
 		private void RunTest(Procedure proc, string outputFile)
 		{
 			Prepare(proc);
-			var liv = new LinearInductionVariableFinder(proc, ssaIds, doms);
+			var liv = new LinearInductionVariableFinder(ssa, doms);
 			liv.Find();
 			using (FileUnitTester fut = new FileUnitTester(outputFile))
 			{
@@ -384,7 +381,7 @@ namespace Reko.UnitTests.Analysis
 
 		private void SsaId(Identifier id, Statement stm, Expression expr, bool isSideEffect)
 		{
-			ssaIds.Add(id, new SsaIdentifier(id, id, stm, expr, isSideEffect));
+			ssa.Identifiers.Add(id, new SsaIdentifier(id, id, stm, expr, isSideEffect));
 		}
 	}
 }

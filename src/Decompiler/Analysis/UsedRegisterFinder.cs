@@ -34,23 +34,29 @@ namespace Reko.Analysis
     /// This class determines what identifier are live-in to a
     /// procedure.
     /// </summary>
+    /// <remarks>
+    /// The idea is to follow the def-use chains from the def statements in
+    /// the procedure entry block to the places where the statements are used.
+    /// We record the "width" actually used by the function. This allows us
+    /// to handle cases where processor registers are 32-bit, but the code 
+    /// only uses the bottom 8 bits.
+    /// </remarks>
     public class UsedRegisterFinder :
         InstructionVisitor<int>,
         ExpressionVisitor<int>
     {
         private IProcessorArchitecture arch;
         private DecompilerEventListener eventListener;
-        private DataFlow2 flow;
+        private ProgramDataFlow flow;
         private Identifier idCur;
-        private ProcedureFlow2 procFlow;
+        private ProcedureFlow procFlow;
         private SsaState ssa;
         private SsaTransform2[] ssts;
         private Dictionary<SsaIdentifier, int> uses;
 
-
         public UsedRegisterFinder(
             IProcessorArchitecture arch,
-            DataFlow2 flow,
+            ProgramDataFlow flow,
             SsaTransform2[] ssts,
             DecompilerEventListener eventListener)
         {
@@ -70,19 +76,27 @@ namespace Reko.Analysis
         /// Assmumes that any live-in parameters are located in the
         /// entry block of the procedure.</remarks>
         /// <param name="ssaState"></param>
-        public ProcedureFlow2 Compute(SsaState ssaState)
+        public ProcedureFlow Compute(SsaState ssaState)
         {
-            this.procFlow = flow.ProcedureFlows[ssaState.Procedure];
+            this.procFlow = flow[ssaState.Procedure];
             this.uses = new Dictionary<SsaIdentifier, int>();
             this.ssa = ssaState;
-            foreach (var sid in ssaState.Identifiers)
+            foreach (var stm in ssa.Procedure.EntryBlock.Statements)
             {
-                if (sid.DefStatement.Block != ssa.Procedure.EntryBlock ||
-                    !(sid.Identifier.Storage is RegisterStorage ||
-                      sid.Identifier.Storage is StackArgumentStorage))
+                DefInstruction def;
+                if (!stm.Instruction.As(out def))
                     continue;
-                int n = Classify(sid);
-                procFlow.Used[sid.Identifier.Storage] = n;
+                Identifier id;
+                if (!def.Expression.As(out id))
+                    continue;
+                var sid = ssa.Identifiers[id];
+                if ((sid.Identifier.Storage is RegisterStorage ||
+                     sid.Identifier.Storage is StackArgumentStorage ||
+                     sid.Identifier.Storage is FpuStackStorage))
+                {
+                    int n = Classify(sid);
+                    procFlow.BitsUsed[sid.Identifier.Storage] = n;
+                }
             }
             return procFlow;
         }
@@ -108,7 +122,7 @@ namespace Reko.Analysis
 
         public int VisitBranch(Branch branch)
         {
-            throw new NotImplementedException();
+            return branch.Condition.Accept(this);
         }
 
         public int VisitCallInstruction(CallInstruction ci)
@@ -135,7 +149,9 @@ namespace Reko.Analysis
 
         public int VisitPhiAssignment(PhiAssignment phi)
         {
-            throw new NotImplementedException();
+            //$BUG: this is not correct.... we need to walk the phi
+            // graph.
+            return idCur.DataType.Size;
         }
 
         public int VisitReturnInstruction(ReturnInstruction ret)
@@ -268,7 +284,9 @@ namespace Reko.Analysis
 
         public int VisitSegmentedAccess(SegmentedAccess access)
         {
-            throw new NotImplementedException();
+            var useBase = access.BasePointer.Accept(this);
+            var useEa = access.EffectiveAddress.Accept(this);
+            return Math.Max(useBase, useEa);
         }
 
         public int VisitSlice(Slice slice)

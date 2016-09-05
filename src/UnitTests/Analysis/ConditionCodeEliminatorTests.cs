@@ -95,7 +95,7 @@ namespace Reko.UnitTests.Analysis
             dfa.UntangleProcedures();
             foreach (Procedure proc in program.Procedures.Values)
             {
-                var sst = new SsaTransform2(program.Architecture, proc, importResolver, dfa.DataFlow);
+                var sst = new SsaTransform2(program.Architecture, proc, importResolver, dfa.ProgramDataFlow);
                 var ssa = sst.Transform();
                 proc.Dump(true);
 
@@ -113,7 +113,7 @@ namespace Reko.UnitTests.Analysis
                 sst.AddUsesToExitBlock();
                 sst.RemoveDeadSsaIdentifiers();
 
-                DeadCode.Eliminate(proc, ssa);
+                DeadCode.Eliminate(ssa);
 
                 ssa.Write(writer);
                 proc.Write(false, writer);

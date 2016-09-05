@@ -339,7 +339,7 @@ namespace Reko.Analysis
 			{
 				var flow = mpprocData[p];
                 varLive.Identifiers = liveOrig.OfType<RegisterStorage>().ToHashSet();
-                varLive.Identifiers.ExceptWith(flow.PreservedRegisters.OfType<RegisterStorage>());
+                varLive.Identifiers.ExceptWith(flow.Preserved.OfType<RegisterStorage>());
 				varLive.LiveStorages = new Dictionary<Storage,int>();
 				MergeBlockInfo(p.ExitBlock);
 				varLive.Identifiers = liveOrig.OfType<RegisterStorage>().ToHashSet();
@@ -548,7 +548,7 @@ namespace Reko.Analysis
                 // that were live after the call and were bypassed by the called function
                 // or used by the called function.
 
-                var ids = pi.TrashedRegisters.OfType<RegisterStorage>().ToHashSet();
+                var ids = pi.Trashed.OfType<RegisterStorage>().ToHashSet();
                 ids.ExceptWith(pi.ByPass.OfType<RegisterStorage>());
                 varLive.Identifiers.ExceptWith(ids);
                 varLive.Identifiers.UnionWith(pi.MayUse.OfType<RegisterStorage>());
@@ -621,7 +621,7 @@ namespace Reko.Analysis
                 if (value == null) 
                     throw new ArgumentNullException();
                 state = value;
-                foreach (ProcedureFlow pi in mpprocData.ProcedureFlows)
+                foreach (ProcedureFlow pi in mpprocData.ProcedureFlows.Values)
                 {
                     state.InitializeProcedureFlow(pi);
                 }
@@ -736,7 +736,7 @@ namespace Reko.Analysis
                     {
                         //Add all registers except preserved registers
                         bf.DataOut.UnionWith(arch.GetRegisters());
-                        bf.DataOut.ExceptWith(flow[block.Procedure].PreservedRegisters);
+                        bf.DataOut.ExceptWith(flow[block.Procedure].Preserved);
                     } 
 				}
 			}
@@ -750,7 +750,7 @@ namespace Reko.Analysis
 			public override void UpdateSummary(ProcedureFlow item)
 			{
                 item.ByPass = new HashSet<Storage>(item.Summary);
-                item.ByPass.ExceptWith(item.TrashedRegisters);
+                item.ByPass.ExceptWith(item.Trashed);
 			}
 
 			public override bool MergeBlockInfo(IdentifierLiveness varLive, BlockFlow blockFlow)
@@ -789,7 +789,7 @@ namespace Reko.Analysis
 			public override void InitializeProcedureFlow(ProcedureFlow flow)
 			{
                 flow.ByPass = new HashSet<Storage>(flow.Summary);
-                flow.ByPass.ExceptWith(flow.TrashedRegisters);
+                flow.ByPass.ExceptWith(flow.Trashed);
                 flow.Summary.Clear();
 				flow.grfByPass = flow.grfSummary;
 				flow.grfSummary = 0;

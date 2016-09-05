@@ -74,18 +74,18 @@ namespace Reko.UnitTests.Analysis
 		private void Build(Program program)
 		{
             var eventListener = new FakeDecompilerEventListener();
-            DataFlowAnalysis dfa = new DataFlowAnalysis(program, null, eventListener);
+            var dfa = new DataFlowAnalysis(program, null, eventListener);
 			dfa.UntangleProcedures();
 			foreach (Procedure proc in program.Procedures.Values)
 			{
-                SsaTransform2 sst = new SsaTransform2(program.Architecture, proc, null, dfa.DataFlow);
+                SsaTransform2 sst = new SsaTransform2(program.Architecture, proc, null, dfa.ProgramDataFlow);
                 sst.Transform();
 				SsaState ssa = sst.SsaState;
 
 				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform);
 				cce.Transform();
 
-				DeadCode.Eliminate(proc, ssa);
+				DeadCode.Eliminate(ssa);
 
                 sst.RenameFrameAccesses = true;
                 sst.Transform();
@@ -93,12 +93,12 @@ namespace Reko.UnitTests.Analysis
                 var vp = new ValuePropagator(program.Architecture, ssa);
 				vp.Transform();
 
-				DeadCode.Eliminate(proc, ssa);
+				DeadCode.Eliminate(ssa);
 
 				Coalescer coa = new Coalescer(ssa);
 				coa.Transform();
 
-				DeadCode.Eliminate(proc, ssa);
+				DeadCode.Eliminate(ssa);
 
 				LiveCopyInserter lci = new LiveCopyInserter(ssa);
 				lci.Transform();

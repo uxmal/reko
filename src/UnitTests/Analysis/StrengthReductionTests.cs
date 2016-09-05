@@ -48,9 +48,9 @@ namespace Reko.UnitTests.Analysis
             Procedure proc = BuildSimpleLoop();
 
             var dom = proc.CreateBlockDominatorGraph();
-            var sst = new SsaTransform2(null, proc, null, new DataFlow2());
+            var sst = new SsaTransform2(null, proc, null, new ProgramDataFlow());
             sst.Transform();
-            var lif = new LinearInductionVariableFinder(proc, sst.SsaState.Identifiers, dom);
+            var lif = new LinearInductionVariableFinder(sst.SsaState, dom);
             lif.Find();
 
             Assert.AreEqual(1, lif.InductionVariables.Count, "Should have found one induction variable");

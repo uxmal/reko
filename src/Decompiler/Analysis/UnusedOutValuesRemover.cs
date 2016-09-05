@@ -41,9 +41,9 @@ namespace Reko.Analysis
         private WorkList<SsaState> wl;
         private Program program;
         private Dictionary<Procedure, SsaState> procToSsa;
-        private DataFlow2 dataFlow;
+        private ProgramDataFlow dataFlow;
       
-        public UnusedOutValuesRemover(Program program, List<SsaTransform2> ssts, DataFlow2 dataFlow)
+        public UnusedOutValuesRemover(Program program, List<SsaTransform2> ssts, ProgramDataFlow dataFlow)
         { 
             this.dataFlow = dataFlow;
             this.program = program;

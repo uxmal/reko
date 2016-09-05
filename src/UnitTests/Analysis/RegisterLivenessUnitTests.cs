@@ -271,7 +271,7 @@ namespace Reko.UnitTests.Analysis
 			callee.Frame.EnsureStackArgument(0, PrimitiveType.Word32);
 			callee.Frame.EnsureStackArgument(4, PrimitiveType.Word32);
 			Assert.AreEqual(8, callee.Frame.GetStackArgumentSpace());
-			ProcedureFlow pf = new ProcedureFlow(callee, program.Architecture);
+            ProcedureFlow pf = new ProcedureFlow(callee);
 			mpprocflow[callee] = pf;
 
 			Identifier loc08 = m.Frame.EnsureStackLocal(-8, PrimitiveType.Word32);
@@ -315,12 +315,12 @@ namespace Reko.UnitTests.Analysis
 		public void Rl_ProcedureWithTrashedAndPreservedRegisters()
 		{
             var proc = new Procedure("test", program.Architecture.CreateFrame());
-			var pf = new ProcedureFlow(proc, program.Architecture);
+            var pf = new ProcedureFlow(proc);
 			mpprocflow[proc] = pf;
-			pf.TrashedRegisters.Add(Registers.eax);
-            pf.TrashedRegisters.Add(Registers.ebx);
-			pf.PreservedRegisters.Add(Registers.ebp);
-			pf.PreservedRegisters.Add(Registers.bp);
+			pf.Trashed.Add(Registers.eax);
+            pf.Trashed.Add(Registers.ebx);
+			pf.Preserved.Add(Registers.ebp);
+			pf.Preserved.Add(Registers.bp);
 
 			RegisterLiveness.State st = new RegisterLiveness.ByPassState(program.Architecture);
 			var bf = CreateBlockFlow(proc.ExitBlock, proc.Frame);

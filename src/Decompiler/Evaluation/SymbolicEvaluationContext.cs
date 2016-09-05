@@ -244,10 +244,10 @@ namespace Reko.Evaluation
         /// <param name="pf"></param>
         public void UpdateRegistersTrashedByProcedure(ProcedureFlow pf)
         {
-            foreach (var reg in pf.TrashedRegisters)
+            foreach (var reg in pf.Trashed)
             {
                 Constant c;
-                if (!pf.ConstantRegisters.TryGetValue(reg, out c))
+                if (!pf.Constants.TryGetValue(reg, out c))
                 {
                     c = Constant.Invalid;
                 }

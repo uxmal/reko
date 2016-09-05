@@ -95,7 +95,7 @@ namespace Reko.UnitTests.Analysis
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             importResolver.Replay();
 
-            var dataFlow = new DataFlow2(this.progBuilder.Program);
+            var dataFlow = new ProgramDataFlow(this.progBuilder.Program);
             var sst = new SsaTransform2(arch, proc, importResolver, dataFlow);
             sst.Transform();
             var vp = new ValuePropagator(arch, sst.SsaState);
