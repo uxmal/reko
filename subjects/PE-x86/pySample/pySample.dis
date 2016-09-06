@@ -13,8 +13,8 @@ fn10001000_entry:
 // LocalsOut: fp(32) Local -0004(32) Local -0008(32) Stack +0008(32)
 
 l10001000:
-	word32 eax_21 = PyArg_ParseTuple(ptrArg08, 0x10002144, SLICE(0x10002144, <unknown>, 32))
-	branch eax_21 != 0x00000000 l10001027
+	word32 eax_20 = PyArg_ParseTuple(ptrArg08, 0x10002144, fp - 0x00000004, fp - 0x00000008)
+	branch eax_20 != 0x00000000 l10001027
 // DataOut: eax
 // DataOut (flags): 
 // SymbolicIn: esp:fp
@@ -27,7 +27,7 @@ l10001027:
 // SymbolicIn: esp:fp - 0x00000008 edx:ptrArg08 eax:<invalid> ecx:fp - 0x00000004 -24(fp):ptrArg08 -20(fp):0x10002144 -16(fp):fp - 0x00000004 -12(fp):fp - 0x00000008 4(fp):ptrArg04 8(fp):ptrArg08
 
 l10001023:
-	return eax_21
+	return eax_20
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000008 edx:ptrArg08 eax:<invalid> ecx:fp - 0x00000004 -24(fp):ptrArg08 -20(fp):0x10002144 -16(fp):fp - 0x00000004 -12(fp):fp - 0x00000008 4(fp):ptrArg04 8(fp):ptrArg08
@@ -54,8 +54,8 @@ fn10001050_entry:
 // LocalsOut: fp(32) Local -0004(32) Local -0008(32) Stack +0008(32)
 
 l10001050:
-	word32 eax_21 = PyArg_ParseTuple(ptrArg08, 0x10002150, SLICE(0x10002150, <unknown>, 32))
-	branch eax_21 != 0x00000000 l10001078
+	word32 eax_20 = PyArg_ParseTuple(ptrArg08, 0x10002150, fp - 0x00000008, fp - 0x00000004)
+	branch eax_20 != 0x00000000 l10001078
 // DataOut: eax
 // DataOut (flags): 
 // SymbolicIn: esp:fp
@@ -68,7 +68,7 @@ l10001078:
 // SymbolicIn: esp:fp - 0x00000008 edx:ptrArg08 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg08 -20(fp):0x10002150 -16(fp):fp - 0x00000008 -12(fp):fp - 0x00000004 4(fp):ptrArg04 8(fp):ptrArg08
 
 l10001074:
-	return eax_21
+	return eax_20
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000008 edx:ptrArg08 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg08 -20(fp):0x10002150 -16(fp):fp - 0x00000008 -12(fp):fp - 0x00000004 4(fp):ptrArg04 8(fp):ptrArg08
@@ -95,8 +95,8 @@ fn100010A0_entry:
 // LocalsOut: fp(32) Local -0004(32) Local -0008(32) Stack +0008(32)
 
 l100010A0:
-	word32 eax_21 = PyArg_ParseTuple(ptrArg08, 0x10002158, SLICE(0x10002158, <unknown>, 32))
-	branch eax_21 != 0x00000000 l100010C8
+	word32 eax_20 = PyArg_ParseTuple(ptrArg08, 0x10002158, fp - 0x00000008, fp - 0x00000004)
+	branch eax_20 != 0x00000000 l100010C8
 // DataOut: eax
 // DataOut (flags): 
 // SymbolicIn: esp:fp
@@ -109,7 +109,7 @@ l100010C8:
 // SymbolicIn: esp:fp - 0x00000008 edx:ptrArg08 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg08 -20(fp):0x10002158 -16(fp):fp - 0x00000008 -12(fp):fp - 0x00000004 4(fp):ptrArg04 8(fp):ptrArg08
 
 l100010C4:
-	return eax_21
+	return eax_20
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000008 edx:ptrArg08 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg08 -20(fp):0x10002158 -16(fp):fp - 0x00000008 -12(fp):fp - 0x00000004 4(fp):ptrArg04 8(fp):ptrArg08
@@ -136,8 +136,8 @@ fn100010F0_entry:
 // LocalsOut: fp(32) Local -0004(0) Local -0008(32) Stack +0008(32)
 
 l100010F0:
-	word32 eax_21 = PyArg_ParseTuple(ptrArg08, 0x10002160, SLICE(0x10002160, <unknown>, 32))
-	branch eax_21 != 0x00000000 l10001118
+	word32 eax_20 = PyArg_ParseTuple(ptrArg08, 0x10002160, fp - 0x00000008, fp - 0x00000004)
+	branch eax_20 != 0x00000000 l10001118
 // DataOut: eax
 // DataOut (flags): 
 // SymbolicIn: esp:fp
@@ -150,7 +150,7 @@ l10001118:
 // SymbolicIn: esp:fp - 0x00000008 edx:ptrArg08 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg08 -20(fp):0x10002160 -16(fp):fp - 0x00000008 -12(fp):fp - 0x00000004 4(fp):ptrArg04 8(fp):ptrArg08
 
 l10001114:
-	return eax_21
+	return eax_20
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000008 edx:ptrArg08 eax:<invalid> ecx:fp - 0x00000008 -24(fp):ptrArg08 -20(fp):0x10002160 -16(fp):fp - 0x00000008 -12(fp):fp - 0x00000004 4(fp):ptrArg04 8(fp):ptrArg08
@@ -169,30 +169,30 @@ PyObject * py_unused(PyObject * self, PyObject * args)
 // LiveOut:
 // Trashed: SCZO ah al ax eax rax
 // Preserved: esp
-// Stack args: Stack +0000(0) Stack +0008(32)
+// Stack args: Stack +0008(32)
 py_unused_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp
-// LocalsOut: fp(32) Stack +0000(0) Stack +0008(32)
+// LocalsOut: fp(32) Stack +0008(32)
 
 l10001140:
-	word32 eax_16 = PyArg_ParseTuple(args, 0x1000216C, tArg00)
-	branch eax_16 != 0x00000000 l10001158
+	word32 eax_15 = PyArg_ParseTuple(args, 0x1000216C)
+	branch eax_15 != 0x00000000 l10001158
 // DataOut: eax
 // DataOut (flags): 
 // SymbolicIn: esp:fp
 
 l10001158:
-	word32 eax_25 = &_Py_NoneStruct
-	Mem28[eax_25:word32] = Mem0[eax_25:word32] + 0x00000001
+	word32 eax_24 = &_Py_NoneStruct
+	Mem27[eax_24:word32] = Mem0[eax_24:word32] + 0x00000001
 	return &_Py_NoneStruct
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp eax:<invalid> -8(fp):args -4(fp):0x1000216C 4(fp):self 8(fp):args
 
 l10001157:
-	return eax_16
+	return eax_15
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp eax:<invalid> -8(fp):args -4(fp):0x1000216C 4(fp):self 8(fp):args
