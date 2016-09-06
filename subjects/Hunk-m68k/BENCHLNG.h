@@ -20183,28 +20183,28 @@ T_3749: (in 12 : int32)
   OrigDataType: int32
 T_3750: (in dwArg04 + 12 : word32)
   Class: Eq_3750
-  DataType: Eq_3750
-  OrigDataType: 
+  DataType: ptr32
+  OrigDataType: ptr32
 T_3751: (in Mem0[dwArg04 + 12:word32] : word32)
-  Class: Eq_3751
-  DataType: Eq_3751
-  OrigDataType: 
+  Class: Eq_78
+  DataType: int32
+  OrigDataType: ui32
 T_3752: (in 0x00010000 : word32)
   Class: Eq_3752
-  DataType: Eq_3752
-  OrigDataType: 
-T_3753: (in Mem0[dwArg04 + 12:word32] & 0x00010000 : word32)
+  DataType: ui32
+  OrigDataType: ui32
+T_3753: (in dwArg04->dw000C & 0x00010000 : word32)
   Class: Eq_3753
-  DataType: Eq_3753
-  OrigDataType: 
+  DataType: ui32
+  OrigDataType: ui32
 T_3754: (in 0x00000000 : word32)
   Class: Eq_3753
-  DataType: Eq_3753
-  OrigDataType: 
-T_3755: (in (Mem0[dwArg04 + 12:word32] & 0x00010000) == 0x00000000 : bool)
+  DataType: ui32
+  OrigDataType: word32
+T_3755: (in (dwArg04->dw000C & 0x00010000) == 0x00000000 : bool)
   Class: Eq_3755
-  DataType: Eq_3755
-  OrigDataType: 
+  DataType: bool
+  OrigDataType: bool
 T_3756: (in 0x00000000 : word32)
   Class: Eq_3756
   DataType: word32

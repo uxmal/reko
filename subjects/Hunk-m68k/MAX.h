@@ -24166,28 +24166,28 @@ T_5076: (in 12 : int32)
   OrigDataType: int32
 T_5077: (in dwArg04 + 12 : word32)
   Class: Eq_5077
-  DataType: Eq_5077
-  OrigDataType: 
+  DataType: ptr32
+  OrigDataType: ptr32
 T_5078: (in Mem0[dwArg04 + 12:word32] : word32)
-  Class: Eq_5078
-  DataType: Eq_5078
-  OrigDataType: 
+  Class: Eq_76
+  DataType: int32
+  OrigDataType: ui32
 T_5079: (in 0x00010000 : word32)
   Class: Eq_5079
-  DataType: Eq_5079
-  OrigDataType: 
-T_5080: (in Mem0[dwArg04 + 12:word32] & 0x00010000 : word32)
+  DataType: ui32
+  OrigDataType: ui32
+T_5080: (in dwArg04->dw000C & 0x00010000 : word32)
   Class: Eq_5080
-  DataType: Eq_5080
-  OrigDataType: 
+  DataType: ui32
+  OrigDataType: ui32
 T_5081: (in 0x00000000 : word32)
   Class: Eq_5080
-  DataType: Eq_5080
-  OrigDataType: 
-T_5082: (in (Mem0[dwArg04 + 12:word32] & 0x00010000) == 0x00000000 : bool)
+  DataType: ui32
+  OrigDataType: word32
+T_5082: (in (dwArg04->dw000C & 0x00010000) == 0x00000000 : bool)
   Class: Eq_5082
-  DataType: Eq_5082
-  OrigDataType: 
+  DataType: bool
+  OrigDataType: bool
 T_5083: (in 0x00000000 : word32)
   Class: Eq_5083
   DataType: word32

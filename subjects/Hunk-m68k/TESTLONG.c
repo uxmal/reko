@@ -1410,7 +1410,7 @@ Eq_34 * fn00002184(word32 dwArg04, word32 dwArg08, ptr32 & d1Out, ptr32 & a0Out)
 					*a0Out = d0_170 + 0x01;
 					a3_124 = Allocate(d0_170 + 0x01, dwArg08);
 l00002256:
-					if ((Mem0[dwArg04 + 0x0C:word32] & 0x00010000) != 0x00)
+					if ((dwArg04->dw000C & 0x00010000) != 0x00)
 					{
 						struct Eq_34 * a2_132 = a3_124;
 						uint32 d2_134 = dwArg08 >> 0x03;

@@ -20242,28 +20242,28 @@ T_4086: (in 12 : int32)
   OrigDataType: int32
 T_4087: (in dwArg04 + 12 : word32)
   Class: Eq_4087
-  DataType: Eq_4087
-  OrigDataType: 
+  DataType: ptr32
+  OrigDataType: ptr32
 T_4088: (in Mem0[dwArg04 + 12:word32] : word32)
-  Class: Eq_4088
-  DataType: Eq_4088
-  OrigDataType: 
+  Class: Eq_77
+  DataType: int32
+  OrigDataType: ui32
 T_4089: (in 0x00010000 : word32)
   Class: Eq_4089
-  DataType: Eq_4089
-  OrigDataType: 
-T_4090: (in Mem0[dwArg04 + 12:word32] & 0x00010000 : word32)
+  DataType: ui32
+  OrigDataType: ui32
+T_4090: (in dwArg04->dw000C & 0x00010000 : word32)
   Class: Eq_4090
-  DataType: Eq_4090
-  OrigDataType: 
+  DataType: ui32
+  OrigDataType: ui32
 T_4091: (in 0x00000000 : word32)
   Class: Eq_4090
-  DataType: Eq_4090
-  OrigDataType: 
-T_4092: (in (Mem0[dwArg04 + 12:word32] & 0x00010000) == 0x00000000 : bool)
+  DataType: ui32
+  OrigDataType: word32
+T_4092: (in (dwArg04->dw000C & 0x00010000) == 0x00000000 : bool)
   Class: Eq_4092
-  DataType: Eq_4092
-  OrigDataType: 
+  DataType: bool
+  OrigDataType: bool
 T_4093: (in 0x00000000 : word32)
   Class: Eq_4093
   DataType: word32

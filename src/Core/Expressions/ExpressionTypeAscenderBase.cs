@@ -194,6 +194,8 @@ namespace Reko.Core.Expressions
             // We're collecting _DataTypes_, so if we encounter
             // a TypeReference, we need to drill past it.
             var dtField = field.DataType.ResolveAs<DataType>();
+            if (dtField == null)
+                return null;
             //$BUG: offset != field.Offset?
             if (offset >= field.Offset + dtField.Size)
                 return null;
