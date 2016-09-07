@@ -55,7 +55,7 @@ globals_t: (in globals : (ptr (struct "Globals")))
 T_2: (in di_0 : (memptr (ptr Eq_5) word16))
   Class: Eq_2
   DataType: (memptr (ptr Eq_5) word16)
-  OrigDataType: (memptr T_5 (struct 0002 (0 T_8 t0000)))
+  OrigDataType: (memptr T_5 (struct 0002 (0 word16 w0000)))
 T_3: (in 0x5388 : word16)
   Class: Eq_2
   DataType: (memptr (ptr Eq_5) word16)
@@ -87,7 +87,7 @@ T_9: (in 0x0002 : word16)
 T_10: (in di_0 + 0x0002 : word16)
   Class: Eq_2
   DataType: (memptr (ptr Eq_5) word16)
-  OrigDataType: (memptr T_5 (struct 0002 (0 T_8 t0000)))
+  OrigDataType: (memptr T_5 (struct 0002 (0 word16 w0000)))
 T_11: (in cx : word16)
   Class: Eq_11
   DataType: word16

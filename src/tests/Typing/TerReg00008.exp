@@ -93,7 +93,7 @@ T_8: (in Mem5[ds:0x9A26:word16] : word16)
 T_9: (in si_10 : (memptr (ptr Eq_12) Eq_9))
   Class: Eq_9
   DataType: (memptr (ptr Eq_12) Eq_9)
-  OrigDataType: (memptr T_12 (struct 0026 (0 T_15 t0000)))
+  OrigDataType: (memptr T_12 (struct 0026 (0 word16 w0000)))
 T_10: (in 0x0000 : word16)
   Class: Eq_9
   DataType: (memptr (ptr Eq_12) Eq_9)
@@ -149,7 +149,7 @@ T_22: (in 0x0026 : word16)
 T_23: (in si_10 + 0x0026 : word16)
   Class: Eq_9
   DataType: (memptr (ptr Eq_12) Eq_9)
-  OrigDataType: (memptr T_12 (struct 0026 (0 T_15 t0000)))
+  OrigDataType: (memptr T_12 (struct 0026 (0 word16 w0000)))
 T_24: (in 0x0000 : word16)
   Class: Eq_6
   DataType: word16
