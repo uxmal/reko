@@ -212,7 +212,7 @@ word32 fn100011E9(word32 dwArg08)
 			if (eax_292 != 0x00)
 			{
 				word32 esp_332;
-				<anonymous> ** eax_333;
+				word32 * eax_333;
 				word32 ebp_334;
 				byte SZO_335;
 				byte C_336;
@@ -222,9 +222,9 @@ word32 fn100011E9(word32 dwArg08)
 				word32 esi_341;
 				word32 edi_342;
 				struct Eq_321 * fs_343;
-				<anonymous> ** ebx_340;
+				word32 * ebx_340;
 				decode_pointer();
-				<anonymous> ** edi_347 = eax_333;
+				word32 * edi_347 = eax_333;
 				while (true)
 				{
 					edi_347 = edi_347 - 0x04;
