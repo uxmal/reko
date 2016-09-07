@@ -1,50 +1,41 @@
 r1:r1
     def:  def r1
-    uses: v8_11 = SEQ(r1, r2) >>u 0x01
+    uses: v7_11 = SEQ(r1, r2) >>u 0x01
 r1_2: orig: r1
-    def:  r1_2 = SLICE(v8_11, word32, 32)
+    def:  r1_2 = SLICE(v7_11, word32, 32)
     uses: Mem8[0x00003004:word32] = r1_2
-          use r1_2
 r2:r2
     def:  def r2
-    uses: v8_11 = SEQ(r1, r2) >>u 0x01
+    uses: v7_11 = SEQ(r1, r2) >>u 0x01
 r2_5: orig: r2
-    def:  r2_5 = (word32) v8_11
-    uses: C_6 = cond(r2_5)
-          Mem7[0x00003000:word32] = r2_5
-          use r2_5
+    def:  r2_5 = (word32) v7_11
+    uses: Mem7[0x00003000:word32] = r2_5
 C_6: orig: C
-    def:  C_6 = cond(r2_5)
-    uses: use C_6
 Mem7: orig: Mem0
     def:  Mem7[0x00003000:word32] = r2_5
 Mem8: orig: Mem0
     def:  Mem8[0x00003004:word32] = r1_2
-v6_9: orig: v6
-v7_10: orig: v7
-v8_11: orig: v8
-    def:  v8_11 = SEQ(r1, r2) >>u 0x01
-    uses: r1_2 = SLICE(v8_11, word32, 32)
-          r2_5 = (word32) v8_11
-          C_3 = cond(v8_11)
+v5_9: orig: v5
+v6_10: orig: v6
+v7_11: orig: v7
+    def:  v7_11 = SEQ(r1, r2) >>u 0x01
+    uses: r1_2 = SLICE(v7_11, word32, 32)
+          r2_5 = (word32) v7_11
+          C_3 = cond(v7_11)
 // main
 // Return size: 0
-void main(word32 r1, word32 r2)
+void main()
 main_entry:
 	def r1
 	def r2
 	// succ:  l1
 l1:
-	v8_11 = SEQ(r1, r2) >>u 0x01
-	r1_2 = SLICE(v8_11, word32, 32)
-	r2_5 = (word32) v8_11
-	C_6 = cond(r2_5)
+	v7_11 = SEQ(r1, r2) >>u 0x01
+	r1_2 = SLICE(v7_11, word32, 32)
+	r2_5 = (word32) v7_11
 	Mem7[0x00003000:word32] = r2_5
 	Mem8[0x00003004:word32] = r1_2
 	return
 	// succ:  main_exit
 main_exit:
-	use C_6
-	use r1_2
-	use r2_5
 

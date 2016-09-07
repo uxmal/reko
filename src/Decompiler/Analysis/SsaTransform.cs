@@ -39,7 +39,7 @@ namespace Reko.Analysis
     /// This class implements the SSA algorithm from Appel's "Modern compiler 
     /// implementation in [language of your choice]."
     /// </remarks>
-    [Obsolete("", false)]
+    [Obsolete("", true)]
 	public class SsaTransform
 	{
         private ProgramDataFlow programFlow;
@@ -1128,32 +1128,32 @@ namespace Reko.Analysis
         {
             //$TODO special case for flags; unify them all into an überflag.
             var existingUses = ci.Uses
-                .Select(u => u.Expression)
-                .OfType<Identifier>()
-                .Select(u => ssa.Identifiers[u].OriginalIdentifier)
+                .Select(u => u.Storage)
                 .ToHashSet();
             var existingDefs = ci.Definitions
-                .Select(d => ssa.Identifiers[(Identifier)d.Expression].OriginalIdentifier)
+                .Select(d => d.Storage)
                 .ToHashSet();
 
             // Hell node implementation - use and define all variables.
             foreach (Identifier id in ssa.Procedure.Frame.Identifiers)
             {
-                if (!existingUses.Contains(id) &&
-                    (id.Storage is RegisterStorage && !(id.Storage is TemporaryStorage))
-                        || id.Storage is StackStorage)
+                if (!existingUses.Contains(id.Storage) &&
+                    ((id.Storage is RegisterStorage && !(id.Storage is TemporaryStorage))
+                        || id.Storage is StackStorage))
                 {
                     ci.Uses.Add(new CallBinding(
                         id.Storage,
                         NewUse(id, stmCur, true)));
+                    existingUses.Add(id.Storage);
                 }
-                if (!existingDefs.Contains(id) &&
-                    (id.Storage is RegisterStorage && !(id.Storage is TemporaryStorage))
-                    || id.Storage is FlagGroupStorage)
+                if (!existingDefs.Contains(id.Storage) &&
+                    ((id.Storage is RegisterStorage && !(id.Storage is TemporaryStorage))
+                    || id.Storage is FlagGroupStorage))
                 {
                     ci.Definitions.Add(new CallBinding(
                         id.Storage,
                         NewDef(id, ci.Callee, false)));
+                    existingDefs.Add(id.Storage);
                 }
             }
         }
@@ -1838,8 +1838,11 @@ namespace Reko.Analysis
                         TryRemoveTrivial(ssaIds[phiAss.Dst]);
                     }
                 }
-                blockstates[phi.DefStatement.Block].currentDef[same.Storage.Domain].SsaId =
-                    outer.ssa.Identifiers[same];
+                AliasState alias;
+                if (blockstates[phi.DefStatement.Block].currentDef.TryGetValue(same.Storage.Domain, out alias))
+                {
+                    alias.SsaId = outer.ssa.Identifiers[same];
+                }
                 phi.DefStatement.Block.Statements.Remove(phi.DefStatement);
                 this.outer.sidsToRemove.Add(phi);
                 return sid;

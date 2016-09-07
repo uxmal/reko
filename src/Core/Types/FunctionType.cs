@@ -188,31 +188,43 @@ namespace Reko.Core.Types
         public void Emit(string fnName, EmitFlags f, Formatter fmt, CodeFormatter w, TypeFormatter t)
         {
             bool emitStorage = (f & EmitFlags.ArgumentKind) == EmitFlags.ArgumentKind;
-            if (emitStorage)
+           
+            if (ParametersValid)
             {
-                if (HasVoidReturn)
+                if (emitStorage)
                 {
-                    fmt.Write("void ");
+                    if (HasVoidReturn)
+                    {
+                        fmt.Write("void ");
+                    }
+                    else
+                    {
+                        w.WriteFormalArgumentType(ReturnValue, emitStorage);
+                        fmt.Write(" ");
+                    }
+                    fmt.Write("{0}(", fnName);
                 }
                 else
                 {
-                    w.WriteFormalArgumentType(ReturnValue, emitStorage);
-                    fmt.Write(" ");
+                    if (HasVoidReturn)
+                    {
+                        fmt.Write("void {0}", fnName);
+                    }
+                    else
+                    {
+                        t.Write(ReturnValue.DataType, fnName);           //$TODO: won't work with fn's that return pointers to functions or arrays.
+                    }
+                    fmt.Write("(");
                 }
-                fmt.Write("{0}(", fnName);
             }
             else
             {
-                if (HasVoidReturn)
-                {
-                    fmt.Write("void {0}", fnName);
-                }
-                else
-                {
-                    t.Write(ReturnValue.DataType, fnName);           //$TODO: won't work with fn's that return pointers to functions or arrays.
-                }
-                fmt.Write("(");
+                fmt.WriteKeyword("%proc");
+                fmt.Write(" ");
+                fmt.Write(fnName);
+                return;
             }
+
             var sep = "";
             if (Parameters != null)
             {

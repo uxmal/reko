@@ -85,10 +85,11 @@ namespace Reko.Core.Code
 
 		public virtual Instruction TransformPhiAssignment(PhiAssignment phi)
 		{
-			for (int i = 0; i < phi.Src.Arguments.Length; ++i)
+            var args = phi.Src.Arguments;
+			for (int i = 0; i < args.Length; ++i)
 			{
-                var v = phi.Src.Arguments[i].Accept(this);
-                phi.Src.Arguments[i] = v;
+                var v = args[i].Accept(this);
+                args[i] = v;
 			}
 			phi.Dst = (Identifier) phi.Dst.Accept(this);
 			return phi;

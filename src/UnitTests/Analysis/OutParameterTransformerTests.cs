@@ -47,20 +47,13 @@ namespace Reko.UnitTests.Analysis
 		private void PerformTest(FileUnitTester fut)
 		{
 			DataFlowAnalysis dfa = new DataFlowAnalysis(program, null, new FakeDecompilerEventListener());
-			dfa.UntangleProcedures();
+			var ssts = dfa.UntangleProcedures2();
             var dataFlow = new ProgramDataFlow();
-			foreach (Procedure proc in program.Procedures.Values)
+			foreach (var sst in ssts)
 			{
-                SsaTransform2 sst = new SsaTransform2(
-                    program.Architecture,
-                    proc,
-                    null,
-                    dataFlow);
-                sst.Transform();
-                sst.AddUsesToExitBlock();
 				SsaState ssa = sst.SsaState;
 
-				proc.Write(false, fut.TextWriter);
+				ssa.Procedure.Write(false, fut.TextWriter);
 				fut.TextWriter.WriteLine();
 
 				OutParameterTransformer opt = new OutParameterTransformer( ssa);
@@ -68,7 +61,7 @@ namespace Reko.UnitTests.Analysis
 
 				DeadCode.Eliminate(ssa);
 
-				proc.Write(false, fut.TextWriter);
+				ssa.Procedure.Write(false, fut.TextWriter);
 				fut.TextWriter.WriteLine("====================");
 			}
 		}

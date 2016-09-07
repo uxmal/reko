@@ -4,28 +4,21 @@ r1:r1
 r2:r2
     def:  def r2
     uses: r4_r2_11 = SEQ(r4, r2)
-          use r2
 r1_3: orig: r1
     def:  r1_3 = (word32) r3_r1_12
-    uses: SZC_4 = cond(r1_3)
-          Mem8[0x00444400:word32] = r1_3
+    uses: Mem8[0x00444400:word32] = r1_3
           r3_r1_12 = r3_r1_10 + r4_r2_11
-          use r1_3
 SZC_4: orig: SZC
-    def:  SZC_4 = cond(r1_3)
-    uses: use SZC_4
 r3:r3
     def:  def r3
     uses: r3_r1_10 = SEQ(r3, r1)
 r4:r4
     def:  def r4
     uses: r4_r2_11 = SEQ(r4, r2)
-          use r4
 r3_7: orig: r3
     def:  r3_7 = SLICE(r3_r1_12, word32, 32)
     uses: Mem9[0x00444404:word32] = r3_7
           r3_r1_12 = r3_r1_10 + r4_r2_11
-          use r3_7
 Mem8: orig: Mem0
     def:  Mem8[0x00444400:word32] = r1_3
 Mem9: orig: Mem0
@@ -40,7 +33,7 @@ r3_r1_12: orig: r3_r1
     def:  r3_r1_12 = r3_r1_10 + r4_r2_11
 // main
 // Return size: 0
-void main(word32 r1, word32 r2, word32 r3, word32 r4)
+void main()
 main_entry:
 	def r1
 	def r2
@@ -48,7 +41,6 @@ main_entry:
 	def r4
 	// succ:  l1
 l1:
-	SZC_4 = cond(r1_3)
 	r3_r1_10 = SEQ(r3, r1)
 	r4_r2_11 = SEQ(r4, r2)
 	r3_r1_12 = r3_r1_10 + r4_r2_11
@@ -59,9 +51,4 @@ l1:
 	return
 	// succ:  main_exit
 main_exit:
-	use r1_3
-	use r2
-	use r3_7
-	use r4
-	use SZC_4
 

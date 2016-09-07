@@ -56,15 +56,9 @@ namespace Reko.UnitTests.Analysis
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             importResolver.Replay();
             var dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
-			dfa.UntangleProcedures();
-			foreach (Procedure proc in program.Procedures.Values)
+			var ssts = dfa.UntangleProcedures2();
+			foreach (var sst in ssts)
 			{
-                SsaTransform2 sst = new SsaTransform2(
-                    program.Architecture,
-                    proc,
-                    importResolver,
-                    new ProgramDataFlow());
-                sst.Transform();
 				SsaState ssa = sst.SsaState;
 				GrfDefinitionFinder grfd = new GrfDefinitionFinder(ssa.Identifiers);
 				foreach (SsaIdentifier sid in ssa.Identifiers)

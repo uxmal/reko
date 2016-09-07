@@ -1,12 +1,9 @@
 r0:r0
     def:  def r0
-    uses: Z_2 = cond(r0)
-          r0_4 = r0 + r1
+    uses: r0_4 = r0 + r1
           r0_5 = PHI(r0, r0_4)
           branch r0 == 0x00000000 skip
 Z_2: orig: Z
-    def:  Z_2 = cond(r0)
-    uses: use Z_2
 r1:r1
     def:  def r1
     uses: r0_4 = r0 + r1
@@ -16,18 +13,16 @@ r0_4: orig: r0
 r0_5: orig: r0
     def:  r0_5 = PHI(r0, r0_4)
     uses: Mem6[0x10003000:word32] = r0_5
-          use r0_5
 Mem6: orig: Mem0
     def:  Mem6[0x10003000:word32] = r0_5
 // CmpMock
 // Return size: 0
-void CmpMock(word32 r0, word32 r1)
+%proc CmpMock
 CmpMock_entry:
 	def r0
 	def r1
 	// succ:  l1
 l1:
-	Z_2 = cond(r0)
 	branch r0 == 0x00000000 skip
 	// succ:  l2 skip
 l2:
@@ -39,6 +34,4 @@ skip:
 	return
 	// succ:  CmpMock_exit
 CmpMock_exit:
-	use r0_5
-	use Z_2
 

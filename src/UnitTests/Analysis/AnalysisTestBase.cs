@@ -199,8 +199,8 @@ namespace Reko.UnitTests.Analysis
             var fakeConfigService = new FakeDecompilerConfiguration();
             var eventListener = new FakeDecompilerEventListener();
             var sc = new ServiceContainer();
-            sc.AddService(typeof(IDiagnosticsService), fakeDiagnosticsService);
-            sc.AddService(typeof(IConfigurationService), fakeConfigService);
+            sc.AddService<IDiagnosticsService>(fakeDiagnosticsService);
+            sc.AddService<IConfigurationService>(fakeConfigService);
             sc.AddService<DecompilerEventListener>(eventListener);
             sc.AddService<DecompilerHost>(new FakeDecompilerHost());
             var loader = new Loader(sc);

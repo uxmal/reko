@@ -45,5 +45,8 @@ namespace Reko.UnitTests
         // disassembler for ARM :-(
         public const string Capstone = "Capstone";
 
+        // Tests that are slower, because they show UI or hit
+        // the file system, are considered integration tests
+        public const string IntegrationTests = "IntegrationTests";
     }
 }

@@ -32,6 +32,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -92,13 +93,10 @@ namespace Reko.UnitTests.Analysis
         {
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
-            dfa.UntangleProcedures();
-            foreach (Procedure proc in program.Procedures.Values)
+            foreach (var proc in program.Procedures.Values)
             {
-                var sst = new SsaTransform2(program.Architecture, proc, importResolver, dfa.ProgramDataFlow);
+                var sst = new SsaTransform2(program.Architecture, proc, importResolver, new ProgramDataFlow());
                 var ssa = sst.Transform();
-                proc.Dump(true);
-
                 var larw = new LongAddRewriter2(program.Architecture, ssa);
                 larw.Transform();
 
@@ -110,19 +108,18 @@ namespace Reko.UnitTests.Analysis
 
                 sst.RenameFrameAccesses = true;
                 sst.Transform();
-                sst.AddUsesToExitBlock();
-                sst.RemoveDeadSsaIdentifiers();
 
+                // We don't add uses to exit block on purpose. We
+                // are not testing interprocedural effects here.
                 DeadCode.Eliminate(ssa);
 
                 ssa.Write(writer);
-                proc.Write(false, writer);
+                ssa.Procedure.Write(false, writer);
                 writer.WriteLine();
             }
         }
 
 		[Test]
-        [Category(Categories.FailedTests)]
 		public void CceAsciiHex()
 		{
 			RunFileTest_x86_real("Fragments/ascii_hex.asm", "Analysis/CceAsciiHex.txt");
@@ -163,13 +160,6 @@ namespace Reko.UnitTests.Analysis
         public void CceReg00005()
 		{
 			RunFileTest_x86_real("Fragments/regressions/r00005.asm", "Analysis/CceReg00005.txt");
-		}
-
-		[Test]
-        [Ignore("The called function is mistakenly identified as returning SZCO when it really just returns C. New SSA analysis fixes this")]
-        public void CceReg00007()
-		{
-			RunFileTest_x86_real("Fragments/regressions/r00007.asm", "Analysis/CceReg00007.txt");
 		}
 
         [Test]

@@ -737,6 +737,7 @@ namespace Reko.Core
         {
             this.StackOffset = cbOffset;
             this.DataType = dt;
+            this.Domain = StorageDomain.Stack + cbOffset;
         }
 
         public DataType DataType { get; private set; }

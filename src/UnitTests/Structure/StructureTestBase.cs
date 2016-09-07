@@ -121,7 +121,7 @@ namespace Reko.UnitTests.Structure
             scan.ScanImage();
 
             var dfa = new DataFlowAnalysis(program, importResolver, eventListener);
-            dfa.AnalyzeProgram();
+            dfa.AnalyzeProgram2();
 
             return program;
         }

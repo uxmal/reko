@@ -38,22 +38,16 @@ namespace Reko.UnitTests.Analysis
 		protected override void RunTest(Program program, TextWriter writer)
 		{
 			DataFlowAnalysis dfa = new DataFlowAnalysis(program, null,  new FakeDecompilerEventListener());
-			dfa.UntangleProcedures();
-			foreach (Procedure proc in program.Procedures.Values)
+			var ssts = dfa.UntangleProcedures2();
+			foreach (var sst in ssts)
 			{
-                var sst = new SsaTransform2(
-                    program.Architecture,
-                    proc,
-                    null,
-                    dfa.ProgramDataFlow);
-                sst.Transform();
 				SsaState ssa = sst.SsaState;
 				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform);
 				cce.Transform();
 
 				DeadCode.Eliminate(ssa);
 				ssa.Write(writer);
-				proc.Write(false, writer);
+				ssa.Procedure.Write(false, writer);
 			}
 		}
 

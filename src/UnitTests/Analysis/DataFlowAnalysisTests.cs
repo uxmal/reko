@@ -181,7 +181,13 @@ namespace Reko.UnitTests.Analysis
 			RunFileTest_x86_real("Fragments/multiple/recurse_with_pushes.asm", "Analysis/DfaRecurseWithPushes.txt");
 		}
 
-		[Test]
+        [Test]
+        public void DfaReg00007()
+        {
+            RunFileTest_x86_real("Fragments/regressions/r00007.asm", "Analysis/DfaReg00007.txt");
+        }
+
+        [Test]
 		public void DfaReg00009()
 		{
 			RunFileTest_x86_real("Fragments/regressions/r00009.asm", "Analysis/DfaReg00009.txt");

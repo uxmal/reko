@@ -28,6 +28,7 @@ using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -75,12 +76,11 @@ namespace Reko.UnitTests.Analysis
 		{
             var eventListener = new FakeDecompilerEventListener();
             var dfa = new DataFlowAnalysis(program, null, eventListener);
-			dfa.UntangleProcedures();
+			var ssts = dfa.UntangleProcedures2();
 			foreach (Procedure proc in program.Procedures.Values)
 			{
-                SsaTransform2 sst = new SsaTransform2(program.Architecture, proc, null, dfa.ProgramDataFlow);
-                sst.Transform();
-				SsaState ssa = sst.SsaState;
+                var sst = ssts.Single(s => s.SsaState.Procedure == proc);
+				var ssa = sst.SsaState;
 
 				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform);
 				cce.Transform();

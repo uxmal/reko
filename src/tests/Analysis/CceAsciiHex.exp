@@ -1,238 +1,115 @@
 fp:fp
     def:  def fp
-    uses: sp_2 = fp
+    uses: call fn0C00_000A (retsize: 2;)	uses: al,ds,fp	defs: al_8,C_4,ds_6,sp_3
 sp_2: orig: sp
-    def:  sp_2 = fp
-    uses: use sp_2
-al:al
-    def:  def al
-    uses: C_5 = fn0C00_000A(al, out al_4)
-al_4: orig: al
-    def:  C_5 = fn0C00_000A(al, out al_4)
-    uses: Mem7[ds:0x0300:byte] = al_4
-          use al_4
-C_5: orig: C
-    def:  C_5 = fn0C00_000A(al, out al_4)
-    uses: branch C_5 l0C00_0009
-          use C_5
+sp_3: orig: sp
+    def:  call fn0C00_000A (retsize: 2;)	uses: al,ds,fp	defs: al_8,C_4,ds_6,sp_3
+C_4: orig: C
+    def:  call fn0C00_000A (retsize: 2;)	uses: al,ds,fp	defs: al_8,C_4,ds_6,sp_3
+    uses: branch C_4 l0C00_0009
 ds:ds
     def:  def ds
-    uses: Mem7[ds:0x0300:byte] = al_4
-Mem7: orig: Mem0
-    def:  Mem7[ds:0x0300:byte] = al_4
+    uses: call fn0C00_000A (retsize: 2;)	uses: al,ds,fp	defs: al_8,C_4,ds_6,sp_3
+ds_6: orig: ds
+    def:  call fn0C00_000A (retsize: 2;)	uses: al,ds,fp	defs: al_8,C_4,ds_6,sp_3
+    uses: Mem9[ds_6:0x0300:byte] = al_8
+al:al
+    def:  def al
+    uses: call fn0C00_000A (retsize: 2;)	uses: al,ds,fp	defs: al_8,C_4,ds_6,sp_3
+al_8: orig: al
+    def:  call fn0C00_000A (retsize: 2;)	uses: al,ds,fp	defs: al_8,C_4,ds_6,sp_3
+    uses: Mem9[ds_6:0x0300:byte] = al_8
+Mem9: orig: Mem0
+    def:  Mem9[ds_6:0x0300:byte] = al_8
 // fn0C00_0000
-// Return size: 0
-void fn0C00_0000(byte al, selector ds)
+// Return size: 2
+void fn0C00_0000()
 fn0C00_0000_entry:
 	def fp
-	def al
 	def ds
+	def al
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp_2 = fp
-	C_5 = fn0C00_000A(al, out al_4)
-	branch C_5 l0C00_0009
+	call fn0C00_000A (retsize: 2;)
+		uses: al,ds,fp
+		defs: al_8,C_4,ds_6,sp_3
+	branch C_4 l0C00_0009
 	// succ:  l0C00_0005 l0C00_0009
 l0C00_0005:
-	Mem7[ds:0x0300:byte] = al_4
+	Mem9[ds_6:0x0300:byte] = al_8
 	// succ:  l0C00_0009
 l0C00_0009:
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
-	use al_4
-	use C_5
-	use sp_2
 
 fp:fp
-    def:  def fp
-    uses: sp_2 = fp
 sp_2: orig: sp
-    def:  sp_2 = fp
-    uses: use sp_2
 al:al
     def:  def al
-    uses: SCZO_4 = cond(al - 0x30)
-          SCZO_6 = cond(al - 0x41)
-          SCZO_8 = cond(al - 0x61)
-          SCZO_9 = cond(al - 0x66)
-          al_12 = al - 0x30
-          al_20 = PHI(al, al_22)
-          branch al <u 0x30 l0C00_0032
+    uses: branch al <u 0x30 l0C00_0032
           branch al <=u 0x39 l0C00_0022
           branch al <u 0x41 l0C00_0032
           branch al <=u 0x46 l0C00_0022
           branch al <u 0x61 l0C00_0032
           branch al >u 0x66 l0C00_0032
-          SCZO_13 = cond(al - 0x3A)
           branch al <u 0x3A l0C00_0030
-          al_14 = al - 0x37
-          SCZO_15 = cond(al - 0x47)
           branch al <u 0x47 l0C00_0030
-          al_16 = al - 0x57
-          SCZO_17 = cond(al - 0x57)
 SCZO_4: orig: SCZO
-    def:  SCZO_4 = cond(al - 0x30)
-    uses: S_24 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
-          Z_28 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
-          O_31 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
 SCZO_5: orig: SCZO
 SCZO_6: orig: SCZO
-    def:  SCZO_6 = cond(al - 0x41)
-    uses: S_24 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
-          Z_28 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
-          O_31 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
 SCZO_7: orig: SCZO
 SCZO_8: orig: SCZO
-    def:  SCZO_8 = cond(al - 0x61)
-    uses: S_24 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
-          Z_28 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
-          O_31 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
 SCZO_9: orig: SCZO
-    def:  SCZO_9 = cond(al - 0x66)
-    uses: S_24 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
-          Z_28 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
-          O_31 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
 C_10: orig: C
-    def:  C_10 = true
-    uses: C_26 = PHI(C_10, C_18)
 al_11: orig: al
     def:  al_11 = PHI(al, al, al)
 al_12: orig: al
-    def:  al_12 = al - 0x30
-    uses: al_22 = PHI(al_12, al_14, al_16)
 SCZO_13: orig: SCZO
-    def:  SCZO_13 = cond(al - 0x3A)
-    uses: S_25 = PHI(SCZO_13, SCZO_15, SCZO_17)
-          Z_29 = PHI(SCZO_13, SCZO_15, SCZO_17)
-          O_32 = PHI(SCZO_13, SCZO_15, SCZO_17)
-al_14: orig: al
-    def:  al_14 = al - 0x37
-    uses: al_22 = PHI(al_12, al_14, al_16)
-SCZO_15: orig: SCZO
-    def:  SCZO_15 = cond(al - 0x47)
-    uses: S_25 = PHI(SCZO_13, SCZO_15, SCZO_17)
-          Z_29 = PHI(SCZO_13, SCZO_15, SCZO_17)
-          O_32 = PHI(SCZO_13, SCZO_15, SCZO_17)
-al_16: orig: al
-    def:  al_16 = al - 0x57
-    uses: al_22 = PHI(al_12, al_14, al_16)
+SCZO_14: orig: SCZO
+al_15: orig: al
+SCZO_16: orig: SCZO
 SCZO_17: orig: SCZO
-    def:  SCZO_17 = cond(al - 0x57)
-    uses: S_25 = PHI(SCZO_13, SCZO_15, SCZO_17)
-          Z_29 = PHI(SCZO_13, SCZO_15, SCZO_17)
-          O_32 = PHI(SCZO_13, SCZO_15, SCZO_17)
-C_18: orig: C
-    def:  C_18 = false
-    uses: C_26 = PHI(C_10, C_18)
-alOut:Out:al
-    def:  use al_20 (=> alOut)
-al_20: orig: al
-    def:  al_20 = PHI(al, al_22)
-    uses: use al_20 (=> alOut)
-          use al_20
-al_21: orig: al
-    def:  al_21 = PHI(al, al, al, al)
-al_22: orig: al
-    def:  al_22 = PHI(al_12, al_14, al_16)
-    uses: al_20 = PHI(al, al_22)
-S_23: orig: S
-    def:  S_23 = PHI(S_24, S_25)
-    uses: use C_26 | O_30 | S_23 | Z_27
-S_24: orig: S
-    def:  S_24 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
-    uses: S_23 = PHI(S_24, S_25)
-S_25: orig: S
-    def:  S_25 = PHI(SCZO_13, SCZO_15, SCZO_17)
-    uses: S_23 = PHI(S_24, S_25)
-C_26: orig: C
-    def:  C_26 = PHI(C_10, C_18)
-    uses: use C_26 | O_30 | S_23 | Z_27
-Z_27: orig: Z
-    def:  Z_27 = PHI(Z_28, Z_29)
-    uses: use C_26 | O_30 | S_23 | Z_27
-Z_28: orig: Z
-    def:  Z_28 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
-    uses: Z_27 = PHI(Z_28, Z_29)
-Z_29: orig: Z
-    def:  Z_29 = PHI(SCZO_13, SCZO_15, SCZO_17)
-    uses: Z_27 = PHI(Z_28, Z_29)
-O_30: orig: O
-    def:  O_30 = PHI(O_31, O_32)
-    uses: use C_26 | O_30 | S_23 | Z_27
-O_31: orig: O
-    def:  O_31 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
-    uses: O_30 = PHI(O_31, O_32)
-O_32: orig: O
-    def:  O_32 = PHI(SCZO_13, SCZO_15, SCZO_17)
-    uses: O_30 = PHI(O_31, O_32)
+al_18: orig: al
+SCZO_19: orig: SCZO
+C_20: orig: C
 // fn0C00_000A
-// Return size: 0
-byte fn0C00_000A(byte al, ptr16 & alOut)
+// Return size: 2
+void fn0C00_000A()
 fn0C00_000A_entry:
-	def fp
 	def al
 	// succ:  l0C00_000A
 l0C00_000A:
-	sp_2 = fp
-	SCZO_4 = cond(al - 0x30)
 	branch al <u 0x30 l0C00_0032
 	// succ:  l0C00_000E l0C00_0032
 l0C00_000E:
 	branch al <=u 0x39 l0C00_0022
 	// succ:  l0C00_0012 l0C00_0022
 l0C00_0012:
-	SCZO_6 = cond(al - 0x41)
 	branch al <u 0x41 l0C00_0032
 	// succ:  l0C00_0016 l0C00_0032
 l0C00_0016:
 	branch al <=u 0x46 l0C00_0022
 	// succ:  l0C00_001A l0C00_0022
 l0C00_001A:
-	SCZO_8 = cond(al - 0x61)
 	branch al <u 0x61 l0C00_0032
 	// succ:  l0C00_001E l0C00_0032
 l0C00_001E:
-	SCZO_9 = cond(al - 0x66)
 	branch al >u 0x66 l0C00_0032
 	// succ:  l0C00_0022 l0C00_0032
 l0C00_0022:
-	al_12 = al - 0x30
-	SCZO_13 = cond(al - 0x3A)
 	branch al <u 0x3A l0C00_0030
 	// succ:  l0C00_0028 l0C00_0030
 l0C00_0028:
-	al_14 = al - 0x37
-	SCZO_15 = cond(al - 0x47)
 	branch al <u 0x47 l0C00_0030
 	// succ:  l0C00_002E l0C00_0030
 l0C00_002E:
-	al_16 = al - 0x57
-	SCZO_17 = cond(al - 0x57)
 	// succ:  l0C00_0030
 l0C00_0030:
-	O_32 = PHI(SCZO_13, SCZO_15, SCZO_17)
-	Z_29 = PHI(SCZO_13, SCZO_15, SCZO_17)
-	S_25 = PHI(SCZO_13, SCZO_15, SCZO_17)
-	al_22 = PHI(al_12, al_14, al_16)
-	C_18 = false
-	return false
+	return
 	// succ:  fn0C00_000A_exit
 l0C00_0032:
-	O_31 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
-	Z_28 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
-	S_24 = PHI(SCZO_4, SCZO_6, SCZO_8, SCZO_9)
-	C_10 = true
-	return true
+	return
 	// succ:  fn0C00_000A_exit
 fn0C00_000A_exit:
-	O_30 = PHI(O_31, O_32)
-	Z_27 = PHI(Z_28, Z_29)
-	C_26 = PHI(C_10, C_18)
-	S_23 = PHI(S_24, S_25)
-	al_20 = PHI(al, al_22)
-	use al_20 (=> alOut)
-	use al_20
-	use C_26 | O_30 | S_23 | Z_27
-	use sp_2
 

@@ -33,6 +33,33 @@ namespace Reko.UnitTests.Analysis
 	[TestFixture]
 	public class CoalescerTests : AnalysisTestBase
 	{
+		protected override void RunTest(Program program, TextWriter fut)
+		{
+            IImportResolver importResolver = null;
+			DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
+			dfa.UntangleProcedures2();
+			
+			foreach (Procedure proc in program.Procedures.Values)
+			{
+                SsaTransform2 sst = new SsaTransform2(program.Architecture, proc, importResolver, dfa.ProgramDataFlow);
+                sst.Transform();
+				SsaState ssa = sst.SsaState;
+				
+                ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform);
+				cce.Transform();
+				DeadCode.Eliminate(ssa);
+
+                ValuePropagator vp = new ValuePropagator(program.Architecture, ssa);
+				vp.Transform();
+				DeadCode.Eliminate(ssa);
+				Coalescer co = new Coalescer(ssa);
+				co.Transform();
+
+				ssa.Write(fut);
+				proc.Write(false, fut);
+				fut.WriteLine();
+			}
+		}
 		[Test]
 		public void Coa3Converge()
 		{
@@ -111,33 +138,5 @@ namespace Reko.UnitTests.Analysis
         {
             RunFileTest_x86_real("Fragments/multiple/sideeffectcalls.asm", "Analysis/CoaSideEffectCalls.txt");
         }
-
-		protected override void RunTest(Program program, TextWriter fut)
-		{
-            IImportResolver importResolver = null;
-			DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
-			dfa.UntangleProcedures();
-			
-			foreach (Procedure proc in program.Procedures.Values)
-			{
-                SsaTransform2 sst = new SsaTransform2(program.Architecture, proc, importResolver, dfa.ProgramDataFlow);
-                sst.Transform();
-				SsaState ssa = sst.SsaState;
-				
-                ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform);
-				cce.Transform();
-				DeadCode.Eliminate(ssa);
-
-                ValuePropagator vp = new ValuePropagator(program.Architecture, ssa);
-				vp.Transform();
-				DeadCode.Eliminate(ssa);
-				Coalescer co = new Coalescer(ssa);
-				co.Transform();
-
-				ssa.Write(fut);
-				proc.Write(false, fut);
-				fut.WriteLine();
-			}
-		}
 	}
 }

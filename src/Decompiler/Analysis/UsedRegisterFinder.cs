@@ -223,7 +223,8 @@ namespace Reko.Analysis
 
         public int VisitDepositBits(DepositBits d)
         {
-            throw new NotImplementedException();
+            int n = d.Source.Accept(this);
+            return Math.Max(n, d.InsertedBits.Accept(this));
         }
 
         public int VisitDereference(Dereference deref)
@@ -238,7 +239,6 @@ namespace Reko.Analysis
 
         public int VisitIdentifier(Identifier id)
         {
-            Debug.Print("Using {0}: {1}", id.Storage, id.Storage.BitSize);
             return (int)id.Storage.BitSize;
         }
 

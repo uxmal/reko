@@ -41,7 +41,7 @@ namespace Reko.UnitTests.Analysis
     /// Therefore they aren't strictly speaking "unit" tests.
     /// </summary>
 	[TestFixture]
-    [Category("IntegrationTests")]
+    [Category(Categories.IntegrationTests)]
 	public class SsaTests : AnalysisTestBase
 	{
 		private SsaState ssa;
@@ -153,8 +153,6 @@ namespace Reko.UnitTests.Analysis
 		{
 			RunFileTest_x86_real("Fragments/nested_repeats.asm", "Analysis/SsaNestedRepeats.txt");
 		}
-
-
 
         [Test]
         public void SsaOutParamters()

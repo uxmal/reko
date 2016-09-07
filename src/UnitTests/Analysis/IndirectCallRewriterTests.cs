@@ -189,17 +189,10 @@ namespace Reko.UnitTests.Analysis
                 program,
                 importResolver,
                 eventListener);
-            dfa.UntangleProcedures();
+            var ssts = dfa.UntangleProcedures2();
 
-            foreach (Procedure proc in program.Procedures.Values)
+            foreach (var sst in ssts)
             {
-                var sst = new SsaTransform2(
-                    null,
-                    proc,
-                    importResolver,
-                    dfa.ProgramDataFlow);
-                sst.Transform();
-
                 SsaState ssa = sst.SsaState;
 
                 var icrw = new IndirectCallRewriter(
@@ -209,7 +202,7 @@ namespace Reko.UnitTests.Analysis
                 icrw.Rewrite();
 
                 ssa.Write(fut);
-                proc.Write(false, fut);
+                ssa.Procedure.Write(false, fut);
                 fut.WriteLine();
             }
         }

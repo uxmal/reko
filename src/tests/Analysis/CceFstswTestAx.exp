@@ -1,97 +1,39 @@
 fp:fp
-    def:  def fp
-    uses: sp_2 = fp
 sp_2: orig: sp
-    def:  sp_2 = fp
-    uses: use sp_2
 rArg0:FPU stack
     def:  def rArg0
-    uses: FPUF_7 = cond(rArg0 - Mem0[ds:bx:real32])
-          branch rArg0 < Mem0[ds:bx:real32] l0C00_000C
+    uses: branch rArg0 < Mem0[ds:bx:real32] l0C00_000C
 ds:ds
     def:  def ds
-    uses: FPUF_7 = cond(rArg0 - Mem0[ds:bx:real32])
-          branch rArg0 < Mem0[ds:bx:real32] l0C00_000C
+    uses: branch rArg0 < Mem0[ds:bx:real32] l0C00_000C
 bx:bx
     def:  def bx
-    uses: FPUF_7 = cond(rArg0 - Mem0[ds:bx:real32])
-          branch rArg0 < Mem0[ds:bx:real32] l0C00_000C
+    uses: branch rArg0 < Mem0[ds:bx:real32] l0C00_000C
 Mem0:Global memory
     def:  def Mem0
-    uses: FPUF_7 = cond(rArg0 - Mem0[ds:bx:real32])
-          branch rArg0 < Mem0[ds:bx:real32] l0C00_000C
+    uses: branch rArg0 < Mem0[ds:bx:real32] l0C00_000C
 FPUF_7: orig: FPUF
-    def:  FPUF_7 = cond(rArg0 - Mem0[ds:bx:real32])
-    uses: SCZO_8 = FPUF_7
-          use FPUF_7
 SCZO_8: orig: SCZO
-    def:  SCZO_8 = FPUF_7
-    uses: S_15 = PHI(SCZO_8, SZO_10)
-          C_16 = PHI(SCZO_8, C_11)
-          Z_17 = PHI(SCZO_8, SZO_10)
-          O_18 = PHI(SCZO_8, SZO_10)
-ecx_9: orig: ecx
-    def:  ecx_9 = 0x00000000
-    uses: ecx_12 = PHI(ecx, ecx_9)
-SZO_10: orig: SZO
-    def:  SZO_10 = cond(0x00000000)
-    uses: S_15 = PHI(SCZO_8, SZO_10)
-          Z_17 = PHI(SCZO_8, SZO_10)
-          O_18 = PHI(SCZO_8, SZO_10)
-C_11: orig: C
-    def:  C_11 = false
-    uses: C_16 = PHI(SCZO_8, C_11)
-ecx_12: orig: ecx
-    def:  ecx_12 = PHI(ecx, ecx_9)
-    uses: use ecx_12
 ecx:ecx
-    def:  def ecx
-    uses: ecx_12 = PHI(ecx, ecx_9)
-S_15: orig: S
-    def:  S_15 = PHI(SCZO_8, SZO_10)
-    uses: use C_16 | O_18 | S_15 | Z_17
-C_16: orig: C
-    def:  C_16 = PHI(SCZO_8, C_11)
-    uses: use C_16 | O_18 | S_15 | Z_17
-Z_17: orig: Z
-    def:  Z_17 = PHI(SCZO_8, SZO_10)
-    uses: use C_16 | O_18 | S_15 | Z_17
-O_18: orig: O
-    def:  O_18 = PHI(SCZO_8, SZO_10)
-    uses: use C_16 | O_18 | S_15 | Z_17
+ecx_10: orig: ecx
+SZO_11: orig: SZO
+C_12: orig: C
 // fn0C00_0000
-// Return size: 0
-void fn0C00_0000(word16 bx, selector ds, real64 rArg0)
+// Return size: 2
+void fn0C00_0000()
 fn0C00_0000_entry:
-	def fp
 	def rArg0
 	def ds
 	def bx
 	def Mem0
-	def ecx
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp_2 = fp
-	FPUF_7 = cond(rArg0 - Mem0[ds:bx:real32])
-	SCZO_8 = FPUF_7
 	branch rArg0 < Mem0[ds:bx:real32] l0C00_000C
 	// succ:  l0C00_0009 l0C00_000C
 l0C00_0009:
-	ecx_9 = 0x00000000
-	SZO_10 = cond(0x00000000)
-	C_11 = false
 	// succ:  l0C00_000C
 l0C00_000C:
-	O_18 = PHI(SCZO_8, SZO_10)
-	Z_17 = PHI(SCZO_8, SZO_10)
-	C_16 = PHI(SCZO_8, C_11)
-	S_15 = PHI(SCZO_8, SZO_10)
-	ecx_12 = PHI(ecx, ecx_9)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
-	use ecx_12
-	use FPUF_7
-	use C_16 | O_18 | S_15 | Z_17
-	use sp_2
 

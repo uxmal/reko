@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -42,12 +43,14 @@ namespace Reko.Analysis
         private Program program;
         private Dictionary<Procedure, SsaState> procToSsa;
         private ProgramDataFlow dataFlow;
-      
-        public UnusedOutValuesRemover(Program program, List<SsaTransform2> ssts, ProgramDataFlow dataFlow)
+        private DecompilerEventListener eventListener;
+
+        public UnusedOutValuesRemover(Program program, List<SsaTransform2> ssts, ProgramDataFlow dataFlow, DecompilerEventListener eventListener)
         { 
             this.dataFlow = dataFlow;
             this.program = program;
             this.ssts = ssts;
+            this.eventListener = eventListener;
             this.procToSsa = ssts
                 .Select(t => t.SsaState)
                 .ToDictionary(s => s.Procedure, s => s);
@@ -57,9 +60,15 @@ namespace Reko.Analysis
         {
             this.wl = new WorkList<SsaState>(ssts.Select(t => t.SsaState));
             SsaState ssa;
-            while (wl.GetWorkItem(out ssa))
+            while (wl.GetWorkItem(out ssa) && !this.eventListener.IsCanceled())
             {
                 RemoveUnusedDefinedValues(ssa, wl);
+            }
+            foreach (var proc in procToSsa.Keys)
+            {
+                var liveOut = CollectLiveOutStorages(proc);
+                var flow = this.dataFlow[proc];
+                flow.LiveOut.UnionWith(liveOut);
             }
         }
 
