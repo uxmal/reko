@@ -350,7 +350,7 @@ namespace Reko.Analysis
                         {
                             continue;
                         }
-                        ci.Definitions.Add(new DefInstruction(id));
+                        ci.Definitions.Add(new CallBinding(id.Storage, id));
                         MarkDefined(id);
                     }
                 }
@@ -527,15 +527,15 @@ namespace Reko.Analysis
                     .Select(id => new Statement(0, new UseInstruction(id), block)));
             }
 
-            private void AddDefInstructions(CallInstruction ci, ProcedureFlow2 flow)
+            private void AddDefBindings(CallInstruction ci, ProcedureFlow2 flow)
             {
                 var existing = ci.Definitions.Select(d => ssa.Identifiers[(Identifier)d.Expression].OriginalIdentifier).ToHashSet();
-                foreach (var idDef in flow.Trashed)
+                foreach (var stgDef in flow.Trashed)
                 {
-                    var idLocal = proc.Frame.EnsureIdentifier(idDef);
+                    var idLocal = proc.Frame.EnsureIdentifier(stgDef);
                     if (!existing.Contains(idLocal))
                     { 
-                        ci.Definitions.Add(new DefInstruction(idLocal));
+                        ci.Definitions.Add(new CallBinding(stgDef, idLocal));
                     }
                 }
                 foreach (var def in ci.Definitions)
@@ -624,7 +624,7 @@ namespace Reko.Analysis
                     ProcedureFlow2 procFlow;
                     if (procCallee != null && programFlow.ProcedureFlows2.TryGetValue(procCallee, out procFlow))
                     {
-                        AddDefInstructions(ci, procFlow);
+                        AddDefBindings(ci, procFlow);
                         return ci;
                     }
                 }
@@ -653,11 +653,11 @@ namespace Reko.Analysis
                         {
                             alreadyExistingUses.Add(id);
                             var newId = NewUse(id, stmCur);
-                            ci.Uses.Add(new UseInstruction(newId));
+                            ci.Uses.Add(new CallBinding(id.Storage, newId));
                         }
                     }
                 }
-                foreach (DefInstruction def in ci.Definitions)
+                foreach (var def in ci.Definitions)
                 {
                     var id = (Identifier)def.Expression;
                     if (IsMutableRegister(id.Storage) || id.Storage is FlagGroupStorage ||
@@ -1110,14 +1110,15 @@ namespace Reko.Analysis
                     {
                         var arg = use.Accept(ab);
                         arg = arg.Accept(this);
-                        ci.Uses.Add(new UseInstruction(arg));
+                        ci.Uses.Add(new CallBinding(use, arg));
                     }
                 }
                 foreach (var def in calleeFlow.Trashed)
                 {
                     var d = ssa.Procedure.Frame.EnsureIdentifier(def);
                     ci.Definitions.Add(
-                        new DefInstruction(
+                        new CallBinding(
+                            def,
                             NewDef(d, ci.Callee, false)));
                 }
             }
@@ -1142,16 +1143,17 @@ namespace Reko.Analysis
                     (id.Storage is RegisterStorage && !(id.Storage is TemporaryStorage))
                         || id.Storage is StackStorage)
                 {
-                    ci.Uses.Add(
-                        new UseInstruction((Identifier)NewUse(id, stmCur, true)));
+                    ci.Uses.Add(new CallBinding(
+                        id.Storage,
+                        NewUse(id, stmCur, true)));
                 }
                 if (!existingDefs.Contains(id) &&
                     (id.Storage is RegisterStorage && !(id.Storage is TemporaryStorage))
                     || id.Storage is FlagGroupStorage)
                 {
-                    ci.Definitions.Add(
-                        new DefInstruction(
-                            NewDef(id, ci.Callee, false)));
+                    ci.Definitions.Add(new CallBinding(
+                        id.Storage,
+                        NewDef(id, ci.Callee, false)));
                 }
             }
         }
@@ -1433,7 +1435,7 @@ namespace Reko.Analysis
 
         public class AliasState
         {
-            public readonly SsaIdentifier SsaId;        // The id that actually was modified.
+            public SsaIdentifier SsaId;        // The id that actually was modified.
             public readonly IDictionary<Identifier, SsaIdentifier> Aliases;     // Other ids that were affected by this stm.
             public AliasState(SsaIdentifier ssaId)
             {
@@ -1836,6 +1838,8 @@ namespace Reko.Analysis
                         TryRemoveTrivial(ssaIds[phiAss.Dst]);
                     }
                 }
+                blockstates[phi.DefStatement.Block].currentDef[same.Storage.Domain].SsaId =
+                    outer.ssa.Identifiers[same];
                 phi.DefStatement.Block.Statements.Remove(phi.DefStatement);
                 this.outer.sidsToRemove.Add(phi);
                 return sid;

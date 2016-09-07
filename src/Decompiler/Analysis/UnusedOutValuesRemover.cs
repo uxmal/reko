@@ -63,12 +63,46 @@ namespace Reko.Analysis
             }
         }
 
+        /// <summary>
+        /// Remove any UseInstructions in the exit block of the procedure that 
+        /// can be proved to be dead out.
+        /// </summary>
+        /// <param name="ssa"></param>
+        /// <param name="wl"></param>
         public void RemoveUnusedDefinedValues(SsaState ssa, WorkList<SsaState> wl)
         {
             HashSet<Storage> liveOutStorages = CollectLiveOutStorages(ssa.Procedure);
 
             var deadStms = new HashSet<Statement>();
             var deadStgs = new HashSet<Storage>();
+            FindDeadStatementsInExitBlock(ssa, liveOutStorages, deadStms, deadStgs);
+
+            // Now remove statements that are known to be dead.
+            foreach (var stm in deadStms)
+            {
+                DebugEx.Print(trace.TraceVerbose, "UVR: Deleting {0}", stm.Instruction);
+                ssa.DeleteStatement(stm);
+            }
+
+            // If any instructions were removed, update the callers. 
+            if (!ssa.Procedure.Signature.ParametersValid && deadStms.Count > 0)
+            {
+                foreach (Statement stm in program.CallGraph.CallerStatements(ssa.Procedure))
+                {
+                    var ci = stm.Instruction as CallInstruction;
+                    if (ci == null)
+                        continue;
+                    var ssaCaller = this.procToSsa[stm.Block.Procedure];
+                    if (RemoveDeadUses(ssaCaller, ci, deadStgs))
+                    {
+                        wl.Add(ssaCaller);
+                    }
+                }
+            }
+        }
+
+        private static void FindDeadStatementsInExitBlock(SsaState ssa, HashSet<Storage> liveOutStorages, HashSet<Statement> deadStms, HashSet<Storage> deadStgs)
+        {
             foreach (var stm in ssa.Procedure.ExitBlock.Statements)
             {
                 var use = stm.Instruction as UseInstruction;
@@ -82,29 +116,6 @@ namespace Reko.Analysis
                 {
                     deadStgs.Add(stg);
                     deadStms.Add(stm);
-                }
-            }
-
-            // Now remove statements that are known to be dead.
-            foreach (var stm in deadStms)
-            {
-                DebugEx.Print(trace.TraceVerbose, "UVR: Deleting {0}", stm.Instruction);
-                ssa.DeleteStatement(stm);
-            }
-
-            // Update the callers. 
-            if (!ssa.Procedure.Signature.ParametersValid && deadStms.Count > 0)
-            {
-                foreach (Statement stm in program.CallGraph.CallerStatements(ssa.Procedure))
-                {
-                    var ci = stm.Instruction as CallInstruction;
-                    if (ci == null)
-                        continue;
-                    var ssaCaller = this.procToSsa[stm.Block.Procedure];
-                    if (RemoveDeadUses(ssaCaller, ci, deadStgs))
-                    {
-                        wl.Add(ssaCaller);
-                    }
                 }
             }
         }
@@ -155,7 +166,7 @@ namespace Reko.Analysis
 
         private bool RemoveDeadUses(SsaState ssa, CallInstruction ci, HashSet<Storage> deadStgs)
         {
-            var deadUses = new List<UseInstruction>();
+            var deadUses = new List<CallBinding>();
             foreach (var use in ci.Uses)
             {
                 var id = use.Expression as Identifier;

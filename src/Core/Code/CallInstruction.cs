@@ -40,19 +40,20 @@ namespace Reko.Core.Code
                 throw new ArgumentNullException("callee");
             this.Callee = callee;
             this.CallSite = site;
-            this.Definitions = new HashSet<DefInstruction>();
-            this.Uses = new HashSet<UseInstruction>();
+            this.Definitions = new HashSet<CallBinding>();
+            this.Uses = new HashSet<CallBinding>();
         }
 
         public Expression Callee { get; set; }
         public CallSite CallSite { get; private set; }
 
-        // Set of variables that reach the call site. These need to be reconciled 
-        // with the variables used by the callee, if these are known.
-        public HashSet<UseInstruction> Uses { get; private set; }
+        // Set of expressions that reach the call site. These need to be 
+        // reconciled  with the storages used by the callee, if these are 
+        // known.
+        public HashSet<CallBinding> Uses { get; private set; }
 
-        // Set of variables that the called function defines.
-        public HashSet<DefInstruction> Definitions { get; private set; }
+        // Set of expressions that the called function defines.
+        public HashSet<CallBinding> Definitions { get; private set; }
 
         public override bool IsControlFlow { get { return false; } }
 
@@ -69,6 +70,18 @@ namespace Reko.Core.Code
         public override void Accept(InstructionVisitor v)
         {
             v.VisitCallInstruction(this);
+        }
+    }
+
+    public class CallBinding
+    {
+        public Storage Storage;
+        public Expression Expression;
+
+        public CallBinding(Storage stg, Expression exp)
+        {
+            this.Storage = stg;
+            this.Expression = exp;
         }
     }
 }

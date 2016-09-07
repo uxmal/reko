@@ -255,7 +255,7 @@ namespace Reko.Analysis
         /// <param name="stg"></param>
         /// <param name="uses"></param>
         /// <returns></returns>
-        private SsaIdentifier GetIdentifierFor(Storage stg, HashSet<UseInstruction> uses)
+        private SsaIdentifier GetIdentifierFor(Storage stg, HashSet<CallBinding> uses)
         {
             foreach (var use in uses)
             {
