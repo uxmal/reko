@@ -18,23 +18,53 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Expressions;
-using Reko.Analysis;
-using Reko.UnitTests.Mocks;
 using NUnit.Framework;
-using System;
-using System.Diagnostics;
+using Reko.Analysis;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
+using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
+using System.Collections.Generic;
 using System.IO;
+using System;
+using System.Linq;
+using System.Diagnostics;
 
 namespace Reko.UnitTests.Analysis
 {
-	/// <summary>
-	/// Tests to make sure DeadCodeElimination works.
-	/// </summary>
-	[TestFixture]
+    /// <summary>
+    /// Tests to make sure DeadCodeElimination works.
+    /// </summary>
+    [TestFixture]
 	public class DeadCodeTests : AnalysisTestBase
 	{
+        private ProgramDataFlow programDataFlow;
+
+        [SetUp]
+        public void Setup()
+        {
+            this.programDataFlow = new ProgramDataFlow();
+        }
+
+        protected void RunTest(string sExp, Action<ProcedureBuilder> builder)
+        {
+            var m = new ProcedureBuilder();
+            builder(m);
+
+            var sst = new SsaTransform2(m.Architecture, m.Procedure, null, programDataFlow);
+            sst.Transform();
+
+            DeadCode.Eliminate(sst.SsaState);
+            var sw = new StringWriter();
+            sst.SsaState.Procedure.Write(false, sw);
+            if (sw.ToString() != sExp)
+            {
+                Debug.WriteLine(sw.ToString());
+                Assert.AreEqual(sExp, sw.ToString());
+            }
+        }
+
 		protected override void RunTest(Program program, TextWriter writer)
 		{
 			DataFlowAnalysis dfa = new DataFlowAnalysis(program, null,  new FakeDecompilerEventListener());
@@ -90,5 +120,54 @@ namespace Reko.UnitTests.Analysis
 			m.Return();
 			RunFileTest(m, "Analysis/DeadFnReturn.txt");
 		}
- 	}
+
+        [Test(Description = "If a call defines a dead variable, remove it from the call instruction")]
+        public void DeadCallDefinition()
+        {
+         var sExp =
+            #region Expected
+@"// ProcedureBuilder
+// Return size: 0
+%proc ProcedureBuilder
+ProcedureBuilder_entry:
+	def r1
+	// succ:  l1
+l1:
+	call foo (retsize: 4;)
+		uses: r1
+		defs: r1_2
+	Mem4[0x00123400:word32] = r1_2
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+";
+            #endregion
+            RunTest(sExp, m =>
+            {
+                var _r1 = new RegisterStorage("r1", 1, 0, PrimitiveType.Word32);
+                var _r2 = new RegisterStorage("r2", 2, 0, PrimitiveType.Word32);
+                var foo = Given_Procedure_With_Flow(m,
+                    "foo",
+                    new Storage[] { _r1 }, 
+                    new Storage[] { _r1, _r2 });
+
+                var r1 = m.Frame.EnsureRegister(_r1);
+                var r2 = m.Frame.EnsureRegister(_r2);
+                var call = m.Call(foo, 4);
+                m.Store(m.Word32(0x123400), r1);
+                m.Return();
+            });
+        }
+
+        private Procedure Given_Procedure_With_Flow(ProcedureBuilder m, string name, Storage[] uses, Storage[] defs)
+        {
+            var sig = new FunctionType();
+            var proc = new Procedure(name, m.Architecture.CreateFrame());
+            var flow = new ProcedureFlow(proc);
+            flow.BitsUsed = uses.ToDictionary(u => u, u => (int)u.BitSize / 8);
+            flow.Trashed = defs.ToHashSet();
+            this.programDataFlow[proc] = flow;
+            return proc;
+        }
+    }
 }

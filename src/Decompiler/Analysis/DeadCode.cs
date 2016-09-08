@@ -75,7 +75,16 @@ namespace Reko.Analysis
 			}
 		}
 
-		public static void Eliminate(SsaState ssa)
+        public void AdjustCallWithDeadDefinitions(CallInstruction call)
+        {
+            call.Definitions.RemoveWhere(def =>
+                {
+                    var id =(Identifier)def.Expression;
+                    return ssa.Identifiers[id].Uses.Count == 0;
+                });
+        }
+
+        public static void Eliminate(SsaState ssa)
 		{
 			new DeadCode(ssa).Eliminate();
 		}
@@ -124,6 +133,11 @@ namespace Reko.Analysis
 				for (int iStm = 0; iStm < b.Statements.Count; ++iStm)
 				{
 					Statement stm = b.Statements[iStm];
+                    CallInstruction call;
+                    if (stm.Instruction.As(out call))
+                    {
+                        AdjustCallWithDeadDefinitions(call);
+                    }
 					if (!marks.Contains(stm))
 					{
 						if (trace.TraceInfo) Debug.WriteLineIf(trace.TraceInfo, string.Format("Deleting: {0}", stm.Instruction));
