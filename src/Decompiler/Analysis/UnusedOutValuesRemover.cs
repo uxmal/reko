@@ -58,12 +58,23 @@ namespace Reko.Analysis
 
         public void Transform()
         {
-            this.wl = new WorkList<SsaState>(ssts.Select(t => t.SsaState));
-            SsaState ssa;
-            while (wl.GetWorkItem(out ssa) && !this.eventListener.IsCanceled())
+            bool change;
+            do
             {
-                RemoveUnusedDefinedValues(ssa, wl);
-            }
+                if (eventListener.IsCanceled())
+                    return;
+                change = false;
+                this.wl = new WorkList<SsaState>(ssts.Select(t => t.SsaState));
+                SsaState ssa;
+                while (wl.GetWorkItem(out ssa))
+                {
+                    if (this.eventListener.IsCanceled())
+                        return;
+                    {
+                        change |= RemoveUnusedDefinedValues(ssa, wl);
+                    }
+                }
+            } while (change);
             foreach (var proc in procToSsa.Keys)
             {
                 var liveOut = CollectLiveOutStorages(proc);
@@ -78,10 +89,11 @@ namespace Reko.Analysis
         /// </summary>
         /// <param name="ssa"></param>
         /// <param name="wl"></param>
-        public void RemoveUnusedDefinedValues(SsaState ssa, WorkList<SsaState> wl)
+        public bool RemoveUnusedDefinedValues(SsaState ssa, WorkList<SsaState> wl)
         {
+            bool change = false;
+            Debug.Print("UVR: {0}", ssa.Procedure);
             HashSet<Storage> liveOutStorages = CollectLiveOutStorages(ssa.Procedure);
-
             var deadStms = new HashSet<Statement>();
             var deadStgs = new HashSet<Storage>();
             FindDeadStatementsInExitBlock(ssa, liveOutStorages, deadStms, deadStgs);
@@ -89,8 +101,9 @@ namespace Reko.Analysis
             // Now remove statements that are known to be dead.
             foreach (var stm in deadStms)
             {
-                DebugEx.Print(trace.TraceVerbose, "UVR: Deleting {0}", stm.Instruction);
+                Debug.Print("UVR: {0}, deleting {1}", ssa.Procedure.Name, stm.Instruction);
                 ssa.DeleteStatement(stm);
+                change = true;
             }
 
             // If any instructions were removed, update the callers. 
@@ -108,6 +121,7 @@ namespace Reko.Analysis
                     }
                 }
             }
+            return change;
         }
 
         private static void FindDeadStatementsInExitBlock(SsaState ssa, HashSet<Storage> liveOutStorages, HashSet<Statement> deadStms, HashSet<Storage> deadStgs)
@@ -176,7 +190,7 @@ namespace Reko.Analysis
         private bool RemoveDeadUses(SsaState ssa, CallInstruction ci, HashSet<Storage> deadStgs)
         {
             var deadUses = new List<CallBinding>();
-            foreach (var use in ci.Uses)
+            foreach (var use in ci.Definitions)
             {
                 var id = use.Expression as Identifier;
                 if (id == null)
@@ -188,7 +202,7 @@ namespace Reko.Analysis
             }
             if (deadUses.Count > 0)
             {
-                ci.Uses.ExceptWith(deadUses);
+                ci.Definitions.ExceptWith(deadUses);
                 return true;
             }
             else

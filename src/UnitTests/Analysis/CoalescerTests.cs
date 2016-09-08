@@ -27,6 +27,7 @@ using NUnit.Framework;
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -37,12 +38,11 @@ namespace Reko.UnitTests.Analysis
 		{
             IImportResolver importResolver = null;
 			DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
-			dfa.UntangleProcedures2();
+			var ssts = dfa.UntangleProcedures2();
 			
 			foreach (Procedure proc in program.Procedures.Values)
 			{
-                SsaTransform2 sst = new SsaTransform2(program.Architecture, proc, importResolver, dfa.ProgramDataFlow);
-                sst.Transform();
+                var sst = ssts.Single(s => s.SsaState.Procedure == proc);
 				SsaState ssa = sst.SsaState;
 				
                 ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform);

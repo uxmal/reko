@@ -23,6 +23,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
+using System.Linq;
 
 namespace Reko.Core
 {
@@ -82,31 +83,41 @@ namespace Reko.Core
 		/// <returns>True if the conversion was possible, false if the procedure didn't have
 		/// a signature yet.</returns>
 		public bool RewriteCall(Procedure proc, Statement stm, CallInstruction call)
-		{
+        {
             var callee = call.Callee as ProcedureConstant;
             if (callee == null)
                 return false;          //$REVIEW: what happens with indirect calls?
-			var procCallee = callee.Procedure;
+            var procCallee = callee.Procedure;
             var sigCallee = procCallee.Signature;
-			var fn = new ProcedureConstant(Program.Platform.PointerType, procCallee);
+            var fn = new ProcedureConstant(Program.Platform.PointerType, procCallee);
             if (sigCallee == null || !sigCallee.ParametersValid)
                 return false;
-
-            var ab = new FrameApplicationBuilder(Program.Architecture, proc.Frame, call.CallSite, fn, true);
-			stm.Instruction = ab.CreateInstruction(sigCallee, procCallee.Characteristics);
+            ApplicationBuilder ab = CreateApplicationBuilder(proc, call, fn);
+            var instr = ab.CreateInstruction(sigCallee, procCallee.Characteristics);
+            stm.Instruction = instr;
             return true;
-		}
+        }
 
-		/// <summary>
-		// Statements of the form:
-		//		call	<proc-operand>
-		// become redefined to 
-		//		ret = <proc-operand>(bindings)
-		// where ret is the return register (if any) and the
-		// bindings are the bindings of the procedure.
-		/// </summary>
-		/// <param name="proc"></param>
-		/// <returns>The number of calls that couldn't be converted</returns>
+        protected virtual ApplicationBuilder CreateApplicationBuilder(Procedure proc, CallInstruction call, ProcedureConstant fn)
+        {
+            return new FrameApplicationBuilder(
+                Program.Architecture,
+                proc.Frame,
+                call.CallSite,
+                fn,
+                true);
+        }
+
+        /// <summary>
+        // Statements of the form:
+        //		call	<proc-operand>
+        // become redefined to 
+        //		ret = <proc-operand>(bindings)
+        // where ret is the return register (if any) and the
+        // bindings are the bindings of the procedure.
+        /// </summary>
+        /// <param name="proc"></param>
+        /// <returns>The number of calls that couldn't be converted</returns>
         public int RewriteCalls(Procedure proc)
         {
             int unConverted = 0;
@@ -132,12 +143,19 @@ namespace Reko.Core
             Identifier idRet = proc.Signature.ReturnValue;
             if (idRet == null || idRet.DataType is VoidType)
                 return;
+            var expRet = proc.ExitBlock.Statements
+                .Select(s => s.Instruction)
+                .OfType<UseInstruction>()
+                .Select(u => u.Expression)
+                .OfType<Identifier>()
+                .Where(id => id.Storage == idRet.Storage)
+                .SingleOrDefault();
             foreach (Statement stm in proc.Statements)
             {
                 var ret = stm.Instruction as ReturnInstruction;
                 if (ret != null)
                 {
-                    ret.Expression = proc.Frame.EnsureIdentifier(idRet.Storage);
+                    ret.Expression = expRet;
                 }
             }
         }

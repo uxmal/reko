@@ -111,6 +111,7 @@
     <Compile Include="Analysis\BlockFlow.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Analysis\CallApplicationBuilder.cs" />
     <Compile Include="Analysis\Coalescer.cs">
       <SubType>Code</SubType>
     </Compile>

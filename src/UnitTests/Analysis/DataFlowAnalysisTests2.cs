@@ -84,7 +84,6 @@ namespace Reko.UnitTests.Analysis
                 sw.WriteLine("// Trashed   {0}", string.Join(", ", pflow.Trashed.OrderBy(s => s.ToString())));
                 sw.WriteLine("// Preserved {0}", string.Join(", ", pflow.Preserved.OrderBy(s => s.ToString())));
                 sw.WriteLine("// Used      {0}", string.Join(", ", pflow.BitsUsed.Select(s => string.Format("({0}:{1})", s.Key, s.Value)).OrderBy(s => s)));
-                flow.ProcedureFlows[proc].ToString();
                 proc.Write(false, sw);
                 sep = "===" + Environment.NewLine;
             }
@@ -168,7 +167,7 @@ test_exit:
             dfa.AnalyzeProgram2();
             var sExp = @"// test
 // Return size: 0
-void test()
+void test(word32 dwArg04, word32 dwArg08)
 test_entry:
 	// succ:  l1
 l1:
@@ -415,37 +414,30 @@ void main()
 main_entry:
 	// succ:  l1
 l1:
-	word32 r1_6
-	call level1 (retsize: 4;)
-		uses: Mem0[0x00123400:word32]
-		defs: r1_6
-	Mem8[0x00123404:word32] = r1_6
+	Mem8[0x00123404:word32] = level1(Mem0[0x00123400:word32])
 	return
 	// succ:  main_exit
 main_exit:
 ===
 // level1
 // Return size: 0
-void level1()
+word32 level1(word32 dwArg04)
 level1_entry:
 	// succ:  l1
 l1:
-	word32 r1_7
-	call level2 (retsize: 4;)
-		uses: dwArg04
-		defs: r1_7
-	return
+	word32 r1_7 = level2(dwArg04)
+	return r1_7
 	// succ:  level1_exit
 level1_exit:
 ===
 // level2
 // Return size: 0
-void level2()
+word32 level2(word32 dwArg04)
 level2_entry:
 	// succ:  l1
 l1:
 	word32 r1_5 = dwArg04 + 0x00000001
-	return
+	return r1_5
 	// succ:  level2_exit
 level2_exit:
 ";
@@ -487,12 +479,11 @@ level2_exit:
 // Used      (Stack +0004:32)
 // main
 // Return size: 0
-void main()
+void main(word32 dwArg04)
 main_entry:
 	// succ:  l1
 l1:
-	call level1 (retsize: 4;)
-		uses: dwArg04
+	level1(dwArg04)
 	return
 	// succ:  main_exit
 main_exit:
@@ -502,7 +493,7 @@ main_exit:
 // Used      (r1:8)
 // level1
 // Return size: 0
-void level1()
+void level1(word32 r1)
 level1_entry:
 	// succ:  l1
 l1:

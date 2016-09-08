@@ -22,19 +22,23 @@ using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CallInstruction = Reko.Core.Code.CallInstruction;
 using CallRewriter = Reko.Core.CallRewriter;
 using FpuStackStorage = Reko.Core.FpuStackStorage;
 using Frame = Reko.Core.Frame;
 using Identifier = Reko.Core.Expressions.Identifier;
+using IStorageBinder = Reko.Core.IStorageBinder;
 using OutArgumentStorage = Reko.Core.OutArgumentStorage;
 using PrimtiveType = Reko.Core.Types.PrimitiveType;
 using Procedure = Reko.Core.Procedure;
 using Program = Reko.Core.Program;
 using RegisterStorage = Reko.Core.RegisterStorage;
-using Storage = Reko.Core.Storage;
 using SignatureBuilder = Reko.Core.SignatureBuilder;
 using StackArgumentStorage = Reko.Core.StackArgumentStorage;
 using UseInstruction = Reko.Core.Code.UseInstruction;
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
 
 namespace Reko.Analysis
 {
@@ -242,5 +246,10 @@ namespace Reko.Analysis
 			}
 			return false;
 		}
-	}
+
+        protected override ApplicationBuilder CreateApplicationBuilder(Procedure proc, CallInstruction call, ProcedureConstant fn)
+        {
+            return new CallApplicationBuilder(base.Program.Architecture, call, fn);
+        }
+    }
 }

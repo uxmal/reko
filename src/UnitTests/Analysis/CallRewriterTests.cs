@@ -35,6 +35,21 @@ namespace Reko.UnitTests.Analysis
 	{
 		private DataFlowAnalysis dfa;
 
+        protected override void RunTest(Program program, TextWriter writer)
+		{
+			dfa = new DataFlowAnalysis(program, null, new FakeDecompilerEventListener());
+			var ssts = dfa.UntangleProcedures2();
+			foreach (var proc in program.Procedures.Values)
+			{
+				ProcedureFlow flow = dfa.ProgramDataFlow[proc];
+				proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.ArgumentKind, new TextFormatter(writer));
+				writer.WriteLine();
+				flow.Emit(program.Architecture, writer);
+				proc.Write(true, writer);
+				writer.Flush();
+			}
+		}
+
 		[Test]
 		public void CrwAsciiHex()
 		{
@@ -143,22 +158,6 @@ namespace Reko.UnitTests.Analysis
 		public void CrwFibonacci()
 		{
 			RunFileTest32("Fragments/multiple/fibonacci.asm", "Analysis/CrwFibonacci.txt");
-		}
-
-
-        protected override void RunTest(Program program, TextWriter writer)
-		{
-			dfa = new DataFlowAnalysis(program, null, new FakeDecompilerEventListener());
-			var ssts = dfa.UntangleProcedures2();
-			foreach (var proc in program.Procedures.Values)
-			{
-				ProcedureFlow flow = dfa.ProgramDataFlow[proc];
-				proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.ArgumentKind, new TextFormatter(writer));
-				writer.WriteLine();
-				flow.Emit(program.Architecture, writer);
-				proc.Write(true, writer);
-				writer.Flush();
-			}
 		}
 	}
 }
