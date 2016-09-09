@@ -1,8 +1,8 @@
 // void fn0C00_0000(Register selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse:  ds
+// MayUse:  ds:16
 // LiveOut:
-// Trashed: ah al ax eax rax
+// Trashed: ax
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -19,9 +19,9 @@ fn0C00_0000_exit:
 
 // void fn0C00_000C(Register selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse:  ds
+// MayUse:  ds:16
 // LiveOut:
-// Trashed: al ax eax rax
+// Trashed:
 // Preserved: ax sp
 // fn0C00_000C
 // Return size: 0
@@ -29,7 +29,7 @@ void fn0C00_000C(selector ds)
 fn0C00_000C_entry:
 	// succ:  l0C00_000C
 l0C00_000C:
-	Mem9[ds:0x0105:byte] = Mem0[ds:0x0104:byte]
+	Mem10[ds:0x0105:byte] = Mem6[ds:0x0104:byte]
 	return
 	// succ:  fn0C00_000C_exit
 fn0C00_000C_exit:

@@ -1,7 +1,7 @@
 void fn0C00_0000(Register selector ds)
-// MayUse:  ds
+// MayUse:  ds:0
 // LiveOut:
-// Trashed: SCZO bh bl bx ebx rbx
+// Trashed:   bx SCZO
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -10,32 +10,36 @@ void fn0C00_0000(Register selector ds)
 // sp:sp
 // ss:ss
 // SCZO:Flags
+// ds:ds
+// bx:bx
+// rLoc1:FPU stack
+// rLoc2:FPU stack
 // wLoc02:Local -0002
 // wLoc04:Local -0004
-// ds:ds
+// S:Flags
+// C:Flags
+// Z:Flags
+// O:Flags
+// wArg02:Stack +0002
+// wArg04:Stack +0004
 // return address size: 2
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
+	def fp
+	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp = fp
-	sp = fp - 0x0002
-	wLoc02 = 0x0320
-	sp = fp - 0x0004
-	wLoc04 = 0x0300
-	fn0C00_0010(ds, wLoc04, wLoc02)
+	fn0C00_0010(ds, wArg02, wArg04)
 	fn0C00_0037(ds)
-	sp = fp
-	SCZO = cond(fp)
+	SCZO_14 = cond(fp)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 void fn0C00_0010(Register selector ds, Stack word16 wArg02, Stack word16 wArg04)
-// MayUse:  ds
+// MayUse:  ds:16 Stack +0002:16 Stack +0004:16
 // LiveOut:
-// Trashed: bh bl bx ebx rbx
+// Trashed:   bx
 // Preserved: bp sp
-// Stack args: Stack +0002(16) Stack +0004(16)
 // fn0C00_0010
 // Return size: 0
 // Mem0:Global memory
@@ -53,35 +57,32 @@ void fn0C00_0010(Register selector ds, Stack word16 wArg02, Stack word16 wArg04)
 // return address size: 2
 void fn0C00_0010(selector ds, word16 wArg02, word16 wArg04)
 fn0C00_0010_entry:
+	def ds
+	def wArg02
+	def wArg04
 	// succ:  l0C00_0010
 l0C00_0010:
-	sp = fp
-	sp = fp - 0x0002
-	wLoc02 = bp
-	bp = fp - 0x0002
-	bx = wArg02
-	rLoc1 = Mem0[ds:bx:real64]
-	rLoc1 = rLoc1 * rLoc1
-	rLoc2 = Mem0[ds:bx + 0x0008:real64]
-	rLoc2 = rLoc2 * rLoc2
-	rLoc1 = rLoc1 + rLoc2
-	rLoc2 = Mem0[ds:bx + 0x0010:real64]
-	rLoc2 = rLoc2 * rLoc2
-	rLoc1 = rLoc1 + rLoc2
-	bx = wArg04
-	Mem0[ds:bx:real64] = rLoc1
-	rLoc1 = (real64) Mem0[ds:bx + 0x0020:int16]
-	Mem0[ds:bx + 0x0028:real64] = rLoc1
-	sp = fp - 0x0002
-	bp = wLoc02
-	sp = fp
+	rLoc1_10 = Mem6[ds:wArg02:real64]
+	rLoc1_11 = rLoc1_10 * rLoc1_10
+	rLoc2_12 = Mem6[ds:wArg02 + 0x0008:real64]
+	rLoc2_13 = rLoc2_12 * rLoc2_12
+	rLoc1_14 = rLoc1_11 + rLoc2_13
+	rLoc2_15 = Mem6[ds:wArg02 + 0x0010:real64]
+	rLoc2_16 = rLoc2_15 * rLoc2_15
+	rLoc1_17 = rLoc1_14 + rLoc2_16
+	bx_18 = wArg04
+	Mem19[ds:wArg04:real64] = rLoc1_17
+	rLoc1_20 = (real64) Mem19[ds:wArg04 + 0x0020:int16]
+	Mem21[ds:wArg04 + 0x0028:real64] = rLoc1_20
 	return
 	// succ:  fn0C00_0010_exit
 fn0C00_0010_exit:
+	use bx_18
+	use rLoc2_16
 void fn0C00_0037(Register selector ds)
-// MayUse:  ds
+// MayUse:  ds:16
 // LiveOut:
-// Trashed:
+// Trashed: 
 // Preserved: sp
 // fn0C00_0037
 // Return size: 0
@@ -93,13 +94,13 @@ void fn0C00_0037(Register selector ds)
 // return address size: 2
 void fn0C00_0037(selector ds)
 fn0C00_0037_entry:
+	def ds
 	// succ:  l0C00_0037
 l0C00_0037:
-	sp = fp
-	rLoc1 = 0.0
-	Mem0[ds:0x0400:real64] = rLoc1
-	rLoc1 = 1.0
-	Mem0[ds:0x0408:int32] = (int32) rLoc1
+	Mem5[ds:0x0400:real64] = 0.0
+	rLoc1_6 = 1.0
+	Mem7[ds:0x0408:int32] = (int32) 1.0
 	return
 	// succ:  fn0C00_0037_exit
 fn0C00_0037_exit:
+	use rLoc1_6

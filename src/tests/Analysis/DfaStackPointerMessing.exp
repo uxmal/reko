@@ -1,8 +1,8 @@
 // void fn0C00_0000(Register word16 bx, Register selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse:  bx ds ss
+// MayUse:  bx:16 ds:16 ss:16
 // LiveOut:
-// Trashed: ah al ax eax esp rax rsp sp spl ss
+// Trashed: ax sp ss
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -10,16 +10,16 @@ void fn0C00_0000(word16 bx, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem6[ds:0x0306:word16] = fn0C00_0008(bx, ds)
+	Mem9[ds:0x0306:word16] = fn0C00_0008(bx, ds)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 
 // Register word16 fn0C00_0008(Register word16 bx, Register selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse:  bx ds ss
+// MayUse:  bx:16 ds:16 ss:16
 // LiveOut: ax
-// Trashed: ah al ax eax esp rax rsp sp spl ss
+// Trashed: ax sp ss
 // Preserved: sp
 // fn0C00_0008
 // Return size: 0
@@ -27,7 +27,7 @@ word16 fn0C00_0008(word16 bx, selector ds)
 fn0C00_0008_entry:
 	// succ:  l0C00_0008
 l0C00_0008:
-	Mem3[ds:0x0300:word16] = fp
+	Mem4[ds:0x0300:word16] = fp
 	Mem6[ds:0x0302:word16] = ss
 	Mem8[ds:0x0308:word16] = bx
 	return Mem8[ds:0x0304:word16]

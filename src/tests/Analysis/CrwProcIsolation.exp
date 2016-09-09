@@ -1,7 +1,7 @@
 void fn0C00_0000(Register word16 di, Register selector ds)
-// MayUse:  di ds
+// MayUse:  di:0 ds:16
 // LiveOut:
-// Trashed: SCZO ah al ax eax rax
+// Trashed: ax
 // Preserved: di sp
 // fn0C00_0000
 // Return size: 0
@@ -16,17 +16,13 @@ void fn0C00_0000(Register word16 di, Register selector ds)
 // return address size: 2
 void fn0C00_0000(word16 di, selector ds)
 fn0C00_0000_entry:
+	def ds
+	def di
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp = fp
 	fn0C00_000F(di, ds)
-	sp = fp - 0x0002
-	wLoc02 = di
-	ax = 0x0100
-	ax = fn0C00_0014(ax)
-	Mem0[ds:0x0300:word16] = ax
-	di = wLoc02
-	sp = fp
+	ax_9 = fn0C00_0014(0x0100)
+	Mem11[ds:0x0300:word16] = ax_9
 	// succ:  l0C00_000E_thunk_fn0C00_000F
 l0C00_000E_thunk_fn0C00_000F:
 	fn0C00_000F(di, ds)
@@ -34,7 +30,7 @@ l0C00_000E_thunk_fn0C00_000F:
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 void fn0C00_000F(Register word16 di, Register selector ds)
-// MayUse:  di ds
+// MayUse:  di:16 ds:16
 // LiveOut:
 // Trashed:
 // Preserved: sp
@@ -48,17 +44,18 @@ void fn0C00_000F(Register word16 di, Register selector ds)
 // return address size: 2
 void fn0C00_000F(word16 di, selector ds)
 fn0C00_000F_entry:
+	def ds
+	def di
 	// succ:  l0C00_000F
 l0C00_000F:
-	sp = fp
-	Mem0[ds:di:word16] = 0x0000
+	Mem5[ds:di:word16] = 0x0000
 	return
 	// succ:  fn0C00_000F_exit
 fn0C00_000F_exit:
 Register word16 fn0C00_0014(Register word16 ax)
-// MayUse:  ax
+// MayUse:  ax:16
 // LiveOut: ax
-// Trashed: SCZO ah al ax di dil eax edi rax rdi
+// Trashed: ax di
 // Preserved: sp
 // fn0C00_0014
 // Return size: 0
@@ -69,16 +66,22 @@ Register word16 fn0C00_0014(Register word16 ax)
 // SZO:Flags
 // C:Flags
 // ax:ax
+// SCZO:Flags
+// S:Flags
+// Z:Flags
+// O:Flags
 // return address size: 2
 word16 fn0C00_0014(word16 ax)
 fn0C00_0014_entry:
+	def ax
 	// succ:  l0C00_0014
 l0C00_0014:
-	sp = fp
-	di = 0x0000
-	C = false
-	ax = ax - 0x0001
-	SZO = cond(ax)
-	return ax
+	di_4 = 0x0000
+	C_6 = false
+	ax_8 = ax - 0x0001
+	SZO_9 = cond(ax - 0x0001)
+	return ax_8
 	// succ:  fn0C00_0014_exit
 fn0C00_0014_exit:
+	use ax_8
+	use C_6 | SZO_9

@@ -662,7 +662,7 @@ namespace Reko.Analysis
                 var asc = MatchAdcSbc(use);
                 if (asc != null)
                 {
-                    Debug.Print("Left sides: [{0}] [{1}]", asc.Left, loInstr.Left);
+                    //Debug.Print("Left sides: [{0}] [{1}]", asc.Left, loInstr.Left);
                     if (asc.Left.GetType() != loInstr.Left.GetType())
                         return null;
                     asc.Statement = use;
