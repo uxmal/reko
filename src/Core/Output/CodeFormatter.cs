@@ -810,7 +810,7 @@ namespace Reko.Core.Output
 
 		public void Write(Procedure proc)
 		{
-			proc.Signature.Emit(proc.QualifiedName(), FunctionType.EmitFlags.None, writer, this, new TypeFormatter(writer, true));
+			proc.Signature.Emit(proc.QualifiedName(), FunctionType.EmitFlags.None, writer, this, new TypeReferenceFormatter(writer));
 			writer.WriteLine();
 			writer.Write("{");
             writer.WriteLine();
@@ -861,7 +861,7 @@ namespace Reko.Core.Output
 			precedenceCur = prec;
 		}
 
-        public void WriteFormalArgument(Identifier arg, bool writeStorage, TypeFormatter t)
+        public void WriteFormalArgument(Identifier arg, bool writeStorage, TypeReferenceFormatter t)
         {
             if (writeStorage)
             {
@@ -873,11 +873,11 @@ namespace Reko.Core.Output
             {
                 if (arg.Storage is OutArgumentStorage)
                 {
-                    t.Write(new ReferenceTo(arg.DataType), arg.Name);
+                    t.WriteDeclaration(new ReferenceTo(arg.DataType), arg.Name);
                 }
                 else
                 {
-                    t.Write(arg.DataType, arg.Name);
+                    t.WriteDeclaration(arg.DataType, arg.Name);
                 }
             }
         }

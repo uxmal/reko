@@ -182,10 +182,10 @@ namespace Reko.Core.Types
 
         public void Emit(string fnName, EmitFlags f, Formatter fmt)
         {
-            Emit(fnName, f, fmt, new CodeFormatter(fmt), new TypeFormatter(fmt, true));
+            Emit(fnName, f, fmt, new CodeFormatter(fmt), new TypeReferenceFormatter(fmt));
         }
 
-        public void Emit(string fnName, EmitFlags f, Formatter fmt, CodeFormatter w, TypeFormatter t)
+        public void Emit(string fnName, EmitFlags f, Formatter fmt, CodeFormatter w, TypeReferenceFormatter t)
         {
             bool emitStorage = (f & EmitFlags.ArgumentKind) == EmitFlags.ArgumentKind;
            
@@ -212,14 +212,14 @@ namespace Reko.Core.Types
                     }
                     else
                     {
-                        t.Write(ReturnValue.DataType, fnName);           //$TODO: won't work with fn's that return pointers to functions or arrays.
+                        t.WriteDeclaration(ReturnValue.DataType, fnName);           //$TODO: won't work with fn's that return pointers to functions or arrays.
                     }
                     fmt.Write("(");
                 }
             }
             else
             {
-                fmt.WriteKeyword("%proc");
+                fmt.WriteKeyword("define");
                 fmt.Write(" ");
                 fmt.Write(fnName);
                 return;
@@ -250,10 +250,10 @@ namespace Reko.Core.Types
 
         public string ToString(string name, EmitFlags flags = EmitFlags.ArgumentKind)
         {
-            StringWriter sw = new StringWriter();
-            TextFormatter f = new TextFormatter(sw);
-            CodeFormatter cf = new CodeFormatter(f);
-            TypeFormatter tf = new TypeFormatter(f, false);
+            var sw = new StringWriter();
+            var f = new TextFormatter(sw);
+            var cf = new CodeFormatter(f);
+            var tf = new TypeReferenceFormatter(f);
             Emit(name, flags, f, cf, tf);
             return sw.ToString();
         }

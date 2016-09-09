@@ -167,6 +167,8 @@ namespace Reko.Analysis
             if (defInstr.As(out phi))
             {
                 Expression value = null;
+                if (activePhis.Contains(phi))
+                    return Constant.Invalid;
                 activePhis.Add(phi);
                 foreach (var id in phi.Src.Arguments.OfType<Identifier>())
                 {

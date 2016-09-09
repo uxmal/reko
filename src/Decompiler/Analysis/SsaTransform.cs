@@ -1107,11 +1107,9 @@ namespace Reko.Analysis
                 var ab = new FrameApplicationBuilder(arch, ssa.Procedure.Frame, ci.CallSite, ci.Callee, false);
                 foreach (var use in calleeFlow.BitsUsed.Keys)
                 {
-                    {
-                        var arg = use.Accept(ab);
-                        arg = arg.Accept(this);
-                        ci.Uses.Add(new CallBinding(use, arg));
-                    }
+                    var arg = use.Accept(ab);
+                    arg = arg.Accept(this);
+                    ci.Uses.Add(new CallBinding(use, arg));
                 }
                 foreach (var def in calleeFlow.Trashed)
                 {

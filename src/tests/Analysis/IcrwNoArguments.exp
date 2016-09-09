@@ -1,42 +1,41 @@
 a:Stack +0004
     def:  def a
-    uses: a_2 = a
-a_2: orig: a
-    def:  a_2 = a
-    uses: eax_5 = a_2
-          ecx_7 = Mem0[a_2:word32]
+    uses: a_10 = a
 fp:fp
     def:  def fp
-    uses: esp_4 = fp
-esp_4: orig: esp
-    def:  esp_4 = fp
+    uses: r63_4 = fp
+Mem3: orig: Mem0
+    uses: eax_5 = a_10
+          ecx_6 = Mem3[eax_5:word32]
+          Mem3[ecx_6:word32]()
+r63_4: orig: r63
+    def:  r63_4 = fp
 eax_5: orig: eax
-    def:  eax_5 = a_2
-Mem0:Global memory
-    def:  def Mem0
-    uses: ecx_7 = Mem0[a_2:word32]
-          Mem0[ecx_7:word32]()
-ecx_7: orig: ecx
-    def:  ecx_7 = Mem0[a_2:word32]
-    uses: Mem0[ecx_7:word32]()
-esp_8: orig: esp
-eax_9: orig: eax
-ecx_10: orig: ecx
-// test
-// Return size: 4
-void test(str * a)
-fn0C00_0000_entry:
+    def:  eax_5 = a_10
+    uses: ecx_6 = Mem3[eax_5:word32]
+ecx_6: orig: ecx
+    def:  ecx_6 = Mem3[eax_5:word32]
+    uses: Mem3[ecx_6:word32]()
+r63_7: orig: r63
+eax_8: orig: eax
+ecx_9: orig: ecx
+a_10: orig: a
+    def:  a_10 = a
+    uses: eax_5 = a_10
+// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder(struct <anonymous> * a)
+ProcedureBuilder_entry:
 	def a
 	def fp
-	def Mem0
-	// succ:  l0C00_0000
-l0C00_0000:
-	a_2 = a
-	esp_4 = fp
-	eax_5 = a_2
-	ecx_7 = Mem0[a_2:word32]
-	Mem0[ecx_7:word32]()
+	// succ:  l1
+l1:
+	a_10 = a
+	r63_4 = fp
+	eax_5 = a_10
+	ecx_6 = Mem3[eax_5:word32]
+	Mem3[ecx_6:word32]()
 	return
-	// succ:  fn0C00_0000_exit
-fn0C00_0000_exit:
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
 

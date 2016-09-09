@@ -48,10 +48,10 @@ namespace Reko.Core
 
 		public override string ToString()
 		{
-			StringWriter sw = new StringWriter();
-            TextFormatter fmt = new TextFormatter(sw);
-            CodeFormatter cf = new CodeFormatter(fmt);
-            TypeFormatter tf = new TypeFormatter(fmt, false);
+			var sw = new StringWriter();
+            var fmt = new TextFormatter(sw);
+            var cf = new CodeFormatter(fmt);
+            var tf = new TypeReferenceFormatter(fmt);
 			Signature.Emit(Name, FunctionType.EmitFlags.ArgumentKind, fmt, cf, tf);
 			return sw.ToString();
 		}

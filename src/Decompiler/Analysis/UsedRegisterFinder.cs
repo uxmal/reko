@@ -161,7 +161,7 @@ namespace Reko.Analysis
 
         public int VisitSideEffect(SideEffect side)
         {
-            throw new NotImplementedException();
+            return side.Expression.Accept(this);
         }
 
         public int VisitStore(Store store)
@@ -301,7 +301,7 @@ namespace Reko.Analysis
 
         public int VisitUnaryExpression(UnaryExpression unary)
         {
-            throw new NotImplementedException();
+            return unary.Expression.Accept(this);
         }
     }
 }

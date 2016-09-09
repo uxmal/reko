@@ -88,7 +88,8 @@ namespace Reko.Analysis
         private void RewriteCall(Statement stm, CallInstruction call)
         {
             var e = expander.Expand(call.Callee);
-            var pt = e.Accept(asc) as Pointer;
+            var dt = e.Accept(asc);
+            var pt = dt as Pointer;
             if (pt == null)
                 return;
             var ft = pt.Pointee as FunctionType;
@@ -150,8 +151,12 @@ namespace Reko.Analysis
             SsaIdentifier sid;
             if (ssa.Identifiers.TryGetValue(id, out sid))
             {
-                if (sid.DefExpression != null)
-                    return Expand(sid.DefExpression);
+                Assignment ass;
+                if (sid.DefStatement != null &&
+                    sid.DefStatement.Instruction.As(out ass))
+                {
+                    return Expand(ass.Src);
+                }
             }
             return id;
         }
@@ -190,7 +195,7 @@ namespace Reko.Analysis
         public override Instruction TransformAssignment(Assignment a)
         {
             a.Src = a.Src.Accept(this);
-            a.Dst = FindDefinedId(call, a.Dst.Storage);
+            a.Dst = (Identifier)FindDefinedId(call, a.Dst.Storage);
             if (a.Dst == null)
                 return new SideEffect(a.Src);
             DefId(a.Dst, a.Src);
@@ -212,7 +217,7 @@ namespace Reko.Analysis
                 return arg;
             var usedId = FindUsedId(call, id.Storage);
             if (usedId != null)
-                UseId(usedId);
+                usedId.Accept(this);
             return usedId ?? InvalidArgument();
         }
 
@@ -246,20 +251,20 @@ namespace Reko.Analysis
             }
         }
 
-        private Identifier FindDefinedId(CallInstruction call, Storage storage)
+        private Expression FindDefinedId(CallInstruction call, Storage storage)
         {
-            return call.Definitions.Select(d => d.Expression).
-                OfType<Identifier>().
-                Where(usedId => usedId.Storage.Equals(storage)).
-                FirstOrDefault();
+            return call.Definitions
+                .Where(d => d.Storage.Equals(storage))
+                .Select(d => d.Expression)
+                .FirstOrDefault();
         }
 
-        private Identifier FindUsedId(CallInstruction call, Storage storage)
+        private Expression FindUsedId(CallInstruction call, Storage storage)
         {
-            return call.Uses.Select(u => u.Expression).
-                OfType<Identifier>().
-                Where(usedId => usedId.Storage.Equals(storage)).
-                FirstOrDefault();
+            return call.Uses
+                .Where(u => u.Storage.Equals(storage))
+                .Select(u => u.Expression)
+                .FirstOrDefault();
         }
     }
 }
