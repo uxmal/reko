@@ -7,7 +7,7 @@
 // ds:ds
 // al:al
 // return address size: 2
-void fn0C00_0000()
+define fn0C00_0000
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
@@ -33,7 +33,7 @@ fn0C00_0000_exit:
 // Z:Flags
 // al:al
 // return address size: 2
-void fn0C00_0015()
+define fn0C00_0015
 fn0C00_0015_entry:
 	// succ:  l0C00_0015
 l0C00_0015:
@@ -68,7 +68,7 @@ fn0C00_0015_exit:
 // Z:Flags
 // al:al
 // return address size: 2
-void fn0C00_0020()
+define fn0C00_0020
 fn0C00_0020_entry:
 	// succ:  l0C00_0020
 l0C00_0020:

@@ -6,7 +6,7 @@
 // ss:ss
 // SCZO:Flags
 // return address size: 2
-void fn0C00_0000()
+define fn0C00_0000
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
@@ -35,7 +35,7 @@ fn0C00_0000_exit:
 // ds:ds
 // rLoc2:FPU stack
 // return address size: 2
-void fn0C00_0010()
+define fn0C00_0010
 fn0C00_0010_entry:
 	// succ:  l0C00_0010
 l0C00_0010:
@@ -71,7 +71,7 @@ fn0C00_0010_exit:
 // rLoc1:FPU stack
 // ds:ds
 // return address size: 2
-void fn0C00_0037()
+define fn0C00_0037
 fn0C00_0037_entry:
 	// succ:  l0C00_0037
 l0C00_0037:

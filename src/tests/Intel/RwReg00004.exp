@@ -20,7 +20,7 @@
 // rLoc3:FPU stack
 // SO:Flags
 // return address size: 4
-void fn10000000()
+define fn10000000
 fn10000000_entry:
 	// succ:  l10000000
 l10000000:
@@ -158,7 +158,7 @@ fn10000000_exit:
 // rArg0:FPU stack
 // eax:eax
 // return address size: 4
-void fn1000010A()
+define fn1000010A
 fn1000010A_entry:
 	// succ:  l1000010A
 l1000010A:

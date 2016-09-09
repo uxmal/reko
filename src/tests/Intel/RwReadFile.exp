@@ -14,7 +14,7 @@
 // SO:Flags
 // al:al
 // return address size: 2
-void fn0C00_0000()
+define fn0C00_0000
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
@@ -49,7 +49,7 @@ fn0C00_0000_exit:
 // ah:ah
 // al:al
 // return address size: 0
-void fn0C00_001F()
+define fn0C00_001F
 fn0C00_001F_entry:
 	// succ:  l0C00_001F
 l0C00_001F:
@@ -72,7 +72,7 @@ fn0C00_001F_exit:
 // ds_dx:Sequence ds:dx
 // ax:ax
 // return address size: 2
-void fn0C00_0023()
+define fn0C00_0023
 fn0C00_0023_entry:
 	// succ:  l0C00_0023
 l0C00_0023:

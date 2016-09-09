@@ -8,7 +8,7 @@
 // ax:ax
 // ds:ds
 // return address size: 2
-void fn0C00_0000()
+define fn0C00_0000
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
@@ -35,7 +35,7 @@ fn0C00_0000_exit:
 // di:di
 // ds:ds
 // return address size: 2
-void fn0C00_000F()
+define fn0C00_000F
 fn0C00_000F_entry:
 	// succ:  l0C00_000F
 l0C00_000F:
@@ -54,7 +54,7 @@ fn0C00_000F_exit:
 // C:Flags
 // ax:ax
 // return address size: 2
-void fn0C00_0014()
+define fn0C00_0014
 fn0C00_0014_entry:
 	// succ:  l0C00_0014
 l0C00_0014:

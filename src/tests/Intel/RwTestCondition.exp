@@ -14,7 +14,7 @@
 // ds:ds
 // SO:Flags
 // return address size: 2
-void fn0C00_0000()
+define fn0C00_0000
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:

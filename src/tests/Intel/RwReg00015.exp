@@ -3,7 +3,7 @@
 // fp:Temporary
 // wLoc04:Local -0004
 // return address size: 2
-void fn0C00_0000()
+define fn0C00_0000
 fn0C00_0000_entry:		// pred:
 	// succ:  l0C00_0000
 l0C00_0000:		// pred: fn0C00_0000_entry
@@ -26,7 +26,7 @@ fn0C00_0000_exit:		// pred: l0C00_0000
 // ax:Register ax
 // wLoc0A:Local -000A
 // return address size: 2
-void fn0C00_0009()
+define fn0C00_0009
 fn0C00_0009_entry:		// pred:
 	// succ:  l0C00_0009
 l0C00_0009:		// pred: fn0C00_0009_entry
@@ -50,7 +50,7 @@ fn0C00_0009_exit:		// pred: l0C00_0009
 // ax:Register ax
 // ds:Register ds
 // return address size: 2
-void fn0C00_0029()
+define fn0C00_0029
 fn0C00_0029_entry:		// pred:
 	// succ:  l0C00_0029
 l0C00_0029:		// pred: fn0C00_0029_entry

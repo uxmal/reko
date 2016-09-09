@@ -21,7 +21,7 @@
 // dx:dx
 // ax:ax
 // return address size: 4
-void fn10000000()
+define fn10000000
 fn10000000_entry:
 	// succ:  l10000000
 l10000000:
@@ -358,7 +358,7 @@ fn10000000_exit:
 // esp:esp
 // eax:eax
 // return address size: 4
-void fn10000233()
+define fn10000233
 fn10000233_entry:
 	// succ:  l10000233
 l10000233:
@@ -375,7 +375,7 @@ fn10000233_exit:
 // esp:esp
 // eax:eax
 // return address size: 4
-void fn10000238()
+define fn10000238
 fn10000238_entry:
 	// succ:  l10000238
 l10000238:
@@ -392,7 +392,7 @@ fn10000238_exit:
 // esp:esp
 // eax:eax
 // return address size: 4
-void fn1000023D()
+define fn1000023D
 fn1000023D_entry:
 	// succ:  l1000023D
 l1000023D:
@@ -409,7 +409,7 @@ fn1000023D_exit:
 // esp:esp
 // eax:eax
 // return address size: 4
-void fn10000242()
+define fn10000242
 fn10000242_entry:
 	// succ:  l10000242
 l10000242:
@@ -426,7 +426,7 @@ fn10000242_exit:
 // esp:esp
 // eax:eax
 // return address size: 4
-void fn1000024C()
+define fn1000024C
 fn1000024C_entry:
 	// succ:  l1000024C
 l1000024C:
@@ -443,7 +443,7 @@ fn1000024C_exit:
 // esp:esp
 // eax:eax
 // return address size: 4
-void fn10000251()
+define fn10000251
 fn10000251_entry:
 	// succ:  l10000251
 l10000251:
@@ -460,7 +460,7 @@ fn10000251_exit:
 // esp:esp
 // eax:eax
 // return address size: 4
-void fn10000256()
+define fn10000256
 fn10000256_entry:
 	// succ:  l10000256
 l10000256:
@@ -477,7 +477,7 @@ fn10000256_exit:
 // esp:esp
 // eax:eax
 // return address size: 4
-void fn1000025B()
+define fn1000025B
 fn1000025B_entry:
 	// succ:  l1000025B
 l1000025B:
@@ -495,7 +495,7 @@ fn1000025B_exit:
 // eax:eax
 // SCZO:Flags
 // return address size: 4
-void fn10000260()
+define fn10000260
 fn10000260_entry:
 	// succ:  l10000260
 l10000260:
@@ -514,7 +514,7 @@ fn10000260_exit:
 // esp:esp
 // eax:eax
 // return address size: 4
-void fn10000269()
+define fn10000269
 fn10000269_entry:
 	// succ:  l10000269
 l10000269:
@@ -532,7 +532,7 @@ fn10000269_exit:
 // eax:eax
 // SCZO:Flags
 // return address size: 4
-void fn1000026E()
+define fn1000026E
 fn1000026E_entry:
 	// succ:  l1000026E
 l1000026E:
@@ -552,7 +552,7 @@ fn1000026E_exit:
 // edx:edx
 // eax:eax
 // return address size: 4
-void fn10000277()
+define fn10000277
 fn10000277_entry:
 	// succ:  l10000277
 l10000277:
@@ -580,7 +580,7 @@ fn10000277_exit:
 // fp:fp
 // esp:esp
 // return address size: 4
-void fn100002A8()
+define fn100002A8
 fn100002A8_entry:
 	// succ:  l100002A8
 l100002A8:
@@ -597,7 +597,7 @@ fn100002A8_exit:
 // edx:edx
 // eax:eax
 // return address size: 4
-void fn100002A9()
+define fn100002A9
 fn100002A9_entry:
 	// succ:  l100002A9
 l100002A9:
