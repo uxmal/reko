@@ -122,7 +122,7 @@ namespace Reko.UnitTests.Scanning
             program.Procedures.Values[0].Write(false, sw);
             var sExp = @"// fn0C00_0000
 // Return size: 2
-void fn0C00_0000()
+define fn0C00_0000
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:

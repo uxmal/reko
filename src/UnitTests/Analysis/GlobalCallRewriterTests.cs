@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void RegisterArgument()
 		{
-            flow.MayUse.Add(Registers.eax); ;
+            flow.BitsUsed.Add(Registers.eax, 32);
 			gcr.EnsureSignature(proc, flow);
 			Assert.AreEqual("void foo(Register word32 eax)", proc.Signature.ToString(proc.Name));
 		}

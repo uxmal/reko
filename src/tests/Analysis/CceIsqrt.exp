@@ -1,26 +1,26 @@
 fp:fp
     def:  def fp
-    uses: call fn0C00_0008 (retsize: 2;)	uses: ds,fp,si	defs: ds_5,si_7,sp_3
+    uses: call fn0C00_0008 (retsize: 2;)	uses: ds:ds,si:si,sp:fp	defs: ds:ds_5,si:si_7
 sp_2: orig: sp
 sp_3: orig: sp
-    def:  call fn0C00_0008 (retsize: 2;)	uses: ds,fp,si	defs: ds_5,si_7,sp_3
+    def:  call fn0C00_0008 (retsize: 2;)	uses: ds:ds,si:si,sp:fp	defs: ds:ds_5,si:si_7
 ds:ds
     def:  def ds
-    uses: call fn0C00_0008 (retsize: 2;)	uses: ds,fp,si	defs: ds_5,si_7,sp_3
+    uses: call fn0C00_0008 (retsize: 2;)	uses: ds:ds,si:si,sp:fp	defs: ds:ds_5,si:si_7
 ds_5: orig: ds
-    def:  call fn0C00_0008 (retsize: 2;)	uses: ds,fp,si	defs: ds_5,si_7,sp_3
+    def:  call fn0C00_0008 (retsize: 2;)	uses: ds:ds,si:si,sp:fp	defs: ds:ds_5,si:si_7
     uses: Mem8[ds_5:0x0304:word16] = si_7
 si:si
     def:  def si
-    uses: call fn0C00_0008 (retsize: 2;)	uses: ds,fp,si	defs: ds_5,si_7,sp_3
+    uses: call fn0C00_0008 (retsize: 2;)	uses: ds:ds,si:si,sp:fp	defs: ds:ds_5,si:si_7
 si_7: orig: si
-    def:  call fn0C00_0008 (retsize: 2;)	uses: ds,fp,si	defs: ds_5,si_7,sp_3
+    def:  call fn0C00_0008 (retsize: 2;)	uses: ds:ds,si:si,sp:fp	defs: ds:ds_5,si:si_7
     uses: Mem8[ds_5:0x0304:word16] = si_7
 Mem8: orig: Mem0
     def:  Mem8[ds_5:0x0304:word16] = si_7
 // fn0C00_0000
 // Return size: 2
-%proc fn0C00_0000
+define fn0C00_0000
 fn0C00_0000_entry:
 	def fp
 	def ds
@@ -28,8 +28,8 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	call fn0C00_0008 (retsize: 2;)
-		uses: ds,fp,si
-		defs: ds_5,si_7,sp_3
+		uses: ds:ds,si:si,sp:fp
+		defs: ds:ds_5,si:si_7
 	Mem8[ds_5:0x0304:word16] = si_7
 	return
 	// succ:  fn0C00_0000_exit
@@ -234,7 +234,7 @@ bx_dx_80: orig: bx_dx
     def:  bx_dx_80 = bx_dx_79 + SEQ(si_28, 0x4000)
 // fn0C00_0008
 // Return size: 2
-%proc fn0C00_0008
+define fn0C00_0008
 fn0C00_0008_entry:
 	def eax
 	ax_70 = (word16) eax (alias)

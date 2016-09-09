@@ -1,6 +1,6 @@
 // TypedAddressOf
 // Return size: 0
-void TypedAddressOf()
+define TypedAddressOf
 TypedAddressOf_entry:
 	// succ:  l1
 l1:

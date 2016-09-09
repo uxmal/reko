@@ -1,6 +1,6 @@
 // Fn1
 // Return size: 0
-void Fn1()
+define Fn1
 Fn1_entry:
 	// succ:  l1
 l1:

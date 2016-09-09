@@ -119,7 +119,7 @@ namespace Reko.UnitTests.Analysis
             #region Expected
 @"// test
 // Return size: 0
-void test()
+define test
 test_entry:
 	// succ:  l1
 l1:
@@ -154,7 +154,7 @@ test:
             #region Expected
 @"// test
 // Return size: 0
-void test()
+define test
 test_entry:
 	def Mem0
 	// succ:  l1
@@ -195,7 +195,7 @@ test:
             #region Expected
 @"// test
 // Return size: 0
-void test()
+define test
 test_entry:
 	def r1
 	// succ:  l1
@@ -254,7 +254,7 @@ test:
             #region Expected
 @"// test
 // Return size: 0
-void test()
+define test
 test_entry:
 	def r1
 	// succ:  l1
@@ -319,7 +319,7 @@ test:
             #region Expected
 @"// test
 // Return size: 0
-void test()
+define test
 test_entry:
 	def r1
 	// succ:  l1
@@ -346,7 +346,7 @@ m_xit:
 test_exit:
 	use r1_10
 	use r2_9
-	use r3_7
+	use r3_3
 
 test:
     Preserved: r1
@@ -366,7 +366,7 @@ test:
             #region Expected
 @"// fact
 // Return size: 0
-void fact()
+define fact
 fact_entry:
 	def fp
 	def r1
@@ -384,7 +384,7 @@ l2:
 	Mem8[r63_7:word32] = r2_4
 	r1_9 = r2_4 - r1_5
 	call fact (retsize: 0;)
-		uses: r1_9,r2_4,r3,r63_7
+		uses: r1:r1_9,f2:r2_4,f3:r3,f63:r63_7
 		defs: cc_15,r1_11,r2_12,r3_14,r63_10
 	r2_16 = Mem8[r63_10:word32]
 	r63_17 = r63_10 + 0x00000004

@@ -343,7 +343,7 @@ namespace Reko.UnitTests.Scanning
             Assert.AreEqual(1, program.Procedures.Count);
             var sExp = @"// fn0C00_0000
 // Return size: 2
-void fn0C00_0000()
+define fn0C00_0000
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
@@ -461,7 +461,7 @@ fn0C00_0000_exit:
             var sExp =
 @"// fn00001000
 // Return size: 0
-void fn00001000()
+define fn00001000
 fn00001000_entry:
 l00001000:
 	r63 = fp
@@ -473,7 +473,7 @@ fn00001000_exit:
 
 // fn00001100
 // Return size: 0
-void fn00001100()
+define fn00001100
 fn00001100_entry:
 	goto l00001100
 l00001004_in_fn00001100:
@@ -599,7 +599,7 @@ fn00001100_exit:
                 arch.CreateProcessorState());
             var sExp = @"// fn1000
 // Return size: 4
-void fn1000()
+define fn1000
 fn1000_entry:
 l00001000:
 	r63 = fp
@@ -618,7 +618,7 @@ fn1000_exit:
 
 // fn00001100
 // Return size: 0
-void fn00001100()
+define fn00001100
 fn00001100_entry:
 l00001100:
 	r63 = fp
@@ -640,7 +640,7 @@ fn00001100_exit:
 
 // fn00001200
 // Return size: 0
-void fn00001200()
+define fn00001200
 fn00001200_entry:
 l00001200:
 	r63 = fp

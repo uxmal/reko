@@ -174,7 +174,7 @@ namespace Reko.UnitTests.Gui.Windows
             interactor.DisplayProcedure(this.program, this.proc);
 
             var sExp =
-@"void fnTest()
+@"define fnTest
 {
 fnTest_entry:
 l1:

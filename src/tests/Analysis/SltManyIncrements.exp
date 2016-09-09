@@ -45,7 +45,7 @@ Mem0:Global memory
     uses: Mem2 = PHI(Mem0, Mem13, Mem7)
 // ManyIncrements
 // Return size: 0
-void ManyIncrements()
+define ManyIncrements
 ManyIncrements_entry:
 	def r0
 	def Mem0

@@ -6,7 +6,7 @@ fn0C00_0000_entry:
 l0C00_0000:
 	fn0C00_000C(ds)
 	fn0C00_0015(ds)
-	Mem4[ds:0x0100:word16] = 0x0000
+	Mem6[ds:0x0100:word16] = 0x0000
 	// succ:  l0C00_0006_thunk_fn0C00_000C
 l0C00_0006_thunk_fn0C00_000C:
 	fn0C00_000C(ds)
@@ -99,7 +99,7 @@ T_12: (in 0x0100 : word16)
   Class: Eq_12
   DataType: (memptr (ptr Eq_2) word16)
   OrigDataType: (memptr T_2 (struct (0 T_13 t0000)))
-T_13: (in Mem4[ds:0x0100:word16] : word16)
+T_13: (in Mem6[ds:0x0100:word16] : word16)
   Class: Eq_11
   DataType: word16
   OrigDataType: word16

@@ -1,7 +1,7 @@
 // Before ///////
 // StaggeredArraysFragment
 // Return size: 0
-void StaggeredArraysFragment()
+define StaggeredArraysFragment
 StaggeredArraysFragment_entry:
 	// succ:  l1
 l1:
@@ -12,7 +12,7 @@ StaggeredArraysFragment_exit:
 // After ///////
 // StaggeredArraysFragment
 // Return size: 0
-void StaggeredArraysFragment()
+define StaggeredArraysFragment
 StaggeredArraysFragment_entry:
 	// succ:  l1
 l1:

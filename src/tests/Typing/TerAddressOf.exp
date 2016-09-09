@@ -1,7 +1,7 @@
 // Before ///////
 // AddressOf
 // Return size: 0
-void AddressOf()
+define AddressOf
 AddressOf_entry:
 	// succ:  l1
 l1:
@@ -15,7 +15,7 @@ AddressOf_exit:
 // After ///////
 // AddressOf
 // Return size: 0
-void AddressOf()
+define AddressOf
 AddressOf_entry:
 	// succ:  l1
 l1:

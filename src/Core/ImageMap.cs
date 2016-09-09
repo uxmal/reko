@@ -39,16 +39,6 @@ namespace Reko.Core
 
 		private SortedList<Address,ImageMapItem> items;
 
-        [Obsolete("Use other ctor")]
-		public ImageMap(Address addrBase, long imageSize)
-		{
-            if (addrBase == null)
-                throw new ArgumentNullException("addrBase");
-            this.BaseAddress = addrBase;
-            items = new SortedList<Address, ImageMapItem>(new ItemComparer());
-			SetAddressSpan(addrBase, (uint) imageSize);
-		}
-
         public ImageMap(Address addrBase)
         {
             if (addrBase == null)

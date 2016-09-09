@@ -1,6 +1,6 @@
 // fn0C00_0000
 // Return size: 2
-void fn0C00_0000()
+define fn0C00_0000
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
@@ -43,7 +43,7 @@ fn0C00_0000_exit:
 
 // fn0C00_0023
 // Return size: 2
-void fn0C00_0023()
+define fn0C00_0023
 fn0C00_0023_entry:
 	// succ:  l0C00_0023
 l0C00_0023:
@@ -67,7 +67,7 @@ fn0C00_0023_exit:
 
 // fn0C00_0034
 // Return size: 2
-void fn0C00_0034()
+define fn0C00_0034
 fn0C00_0034_entry:
 	// succ:  l0C00_0034
 l0C00_0034:
@@ -113,7 +113,7 @@ fn0C00_0034_exit:
 
 // fn0C00_005D
 // Return size: 2
-void fn0C00_005D()
+define fn0C00_005D
 fn0C00_005D_entry:
 	// succ:  l0C00_005D
 l0C00_005D:
@@ -136,7 +136,7 @@ fn0C00_005D_exit:
 
 // fn0C00_0069
 // Return size: 2
-void fn0C00_0069()
+define fn0C00_0069
 fn0C00_0069_entry:
 	// succ:  l0C00_0069
 l0C00_0069:

@@ -1,7 +1,7 @@
 // Before ///////
 // SegMem3Mock
 // Return size: 0
-void SegMem3Mock()
+define SegMem3Mock
 SegMem3Mock_entry:
 	// succ:  l1
 l1:
@@ -13,7 +13,7 @@ SegMem3Mock_exit:
 // After ///////
 // SegMem3Mock
 // Return size: 0
-void SegMem3Mock()
+define SegMem3Mock
 SegMem3Mock_entry:
 	// succ:  l1
 l1:

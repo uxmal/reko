@@ -1,6 +1,6 @@
 // SegmentedArray
 // Return size: 0
-void SegmentedArray()
+define SegmentedArray
 SegmentedArray_entry:
 	// succ:  l1
 l1:

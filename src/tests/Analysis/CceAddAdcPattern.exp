@@ -33,7 +33,7 @@ r3_r1_12: orig: r3_r1
     def:  r3_r1_12 = r3_r1_10 + r4_r2_11
 // main
 // Return size: 0
-void main()
+define main
 main_entry:
 	def r1
 	def r2

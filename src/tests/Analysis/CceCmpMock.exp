@@ -17,7 +17,7 @@ Mem6: orig: Mem0
     def:  Mem6[0x10003000:word32] = r0_5
 // CmpMock
 // Return size: 0
-%proc CmpMock
+define CmpMock
 CmpMock_entry:
 	def r0
 	def r1

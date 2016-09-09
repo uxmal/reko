@@ -4,7 +4,7 @@
 // fp:fp
 // r1:Local -0004
 // return address size: 0
-void ReturnMock()
+define ReturnMock
 ReturnMock_entry:
 	// succ:  l1
 l1:

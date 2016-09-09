@@ -1,6 +1,6 @@
 // SegmentedDoubleReferenceMock
 // Return size: 0
-void SegmentedDoubleReferenceMock()
+define SegmentedDoubleReferenceMock
 SegmentedDoubleReferenceMock_entry:
 	// succ:  l1
 l1:

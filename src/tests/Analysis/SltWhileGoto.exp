@@ -72,7 +72,7 @@ di:di
     def:  def di
     uses: Mem12[ds:di:word16] = ax_8
 // fn0C00_0000
-void fn0C00_0000()
+define fn0C00_0000
 	// liveIn: 
 fn0C00_0000_entry:
 	def si

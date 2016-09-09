@@ -1,6 +1,6 @@
 // ArrayLoopMock
 // Return size: 0
-void ArrayLoopMock()
+define ArrayLoopMock
 ArrayLoopMock_entry:
 	goto l1
 	// succ:  l1

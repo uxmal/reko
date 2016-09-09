@@ -126,7 +126,7 @@ namespace Reko.UnitTests.Scanning
 // V:Flags
 // v10:v10
 // return address size: 4
-void fn00100000()
+define fn00100000
 fn00100000_entry:
 	// succ:  l00100000
 l00100000:
@@ -181,7 +181,7 @@ fn00100000_exit:
 // N:Flags
 // V:Flags
 // return address size: 4
-void fn00001020()
+define fn00001020
 fn00001020_entry:
 	// succ:  l00001020
 l00001020:

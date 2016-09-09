@@ -96,7 +96,7 @@ namespace Reko.UnitTests.Analysis
 
             var sExp = @"// main
 // Return size: 0
-void main()
+define main
 main_entry:
 	// succ:  l1
 l1:
@@ -140,7 +140,7 @@ main_exit:
 
             var sExp = @"// main
 // Return size: 0
-void main()
+define main
 main_entry:
 	// succ:  l1
 l1:
@@ -156,7 +156,7 @@ main_exit:
 
 // foo
 // Return size: 0
-void foo()
+define foo
 foo_entry:
 	// succ:  l1
 l1:
@@ -198,7 +198,7 @@ foo_exit:
 
             var sExp = @"// main
 // Return size: 0
-void main()
+define main
 main_entry:
 	// succ:  l1
 l1:
@@ -211,7 +211,7 @@ main_exit:
 
 // foo
 // Return size: 0
-void foo()
+define foo
 foo_entry:
 	// succ:  l1
 l1:
@@ -250,7 +250,7 @@ foo_exit:
             var sExp =
 @"// main
 // Return size: 0
-void main()
+define main
 main_entry:
 	// succ:  l1
 l1:
@@ -297,7 +297,7 @@ main_exit:
             var sExp =
 @"// main
 // Return size: 0
-void main()
+define main
 main_entry:
 	// succ:  l1
 l1:
@@ -340,7 +340,7 @@ main_exit:
             });
 
             var sExp = @"// main
-void main()
+define main
 main_entry:
 	// succ:  l1
 l1:
@@ -385,7 +385,7 @@ main_exit:
 
             var sExp = @"// LiveLoopMock
 // Return size: 0
-void LiveLoopMock()
+define LiveLoopMock
 LiveLoopMock_entry:
 	goto loop
 	// succ:  loop

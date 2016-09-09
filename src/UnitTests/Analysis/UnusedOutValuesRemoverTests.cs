@@ -101,17 +101,16 @@ namespace Reko.UnitTests.Analysis
             #region Expected
 @"// main
 // Return size: 0
-void main()
+define main
 main_entry:
 	// succ:  l1
 l1:
 	call foo (retsize: 0;)
-		defs: r1_1
 main_exit:
 ===
 // foo
 // Return size: 0
-void foo()
+define foo
 foo_entry:
 	def Mem0
 	// succ:  l1
@@ -158,18 +157,18 @@ foo_exit:
             #region Expected
 @"// main
 // Return size: 0
-void main()
+define main
 main_entry:
 	// succ:  l1
 l1:
 	call foo (retsize: 0;)
-		defs: r1_1,r2_2
+		defs: r1:r1_1,r2:r2_2
 	Mem3[0x00123420:word32] = r1_1
 main_exit:
 ===
 // foo
 // Return size: 0
-void foo()
+define foo
 foo_entry:
 	def Mem0
 	// succ:  l1
@@ -224,7 +223,7 @@ foo_exit:
             #region Expected
 @"// main
 // Return size: 0
-void main()
+define main
 main_entry:
 	def r2
 	// succ:  l1

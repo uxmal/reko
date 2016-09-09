@@ -385,7 +385,7 @@ namespace Reko.UnitTests.Scanning
             var sExp =
 @"// testProc
 // Return size: 0
-void testProc()
+define testProc
 testProc_entry:
 l00100000:
 	branch Test(LT,SCZ) l00100004
@@ -437,7 +437,7 @@ testProc_exit:
             proc.Write(false, sw);
             var sExp = @"// testProc
 // Return size: 0
-void testProc()
+define testProc
 testProc_entry:
 l00100000:
 	r1 = fn2000(r2, r3)

@@ -1,6 +1,6 @@
 // RepeatedLoadsFragment
 // Return size: 0
-void RepeatedLoadsFragment()
+define RepeatedLoadsFragment
 RepeatedLoadsFragment_entry:
 	// succ:  l1
 l1:

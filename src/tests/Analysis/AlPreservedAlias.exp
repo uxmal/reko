@@ -5,7 +5,7 @@ ax:ax (aliases:)
 ds:ds (aliases:)
 // fn0C00_0000
 // Return size: 2
-void fn0C00_0000()
+define fn0C00_0000
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
@@ -27,7 +27,7 @@ ds:ds (aliases:)
 wLoc02:Local -0002 (aliases:)
 // fn0C00_000C
 // Return size: 2
-void fn0C00_000C()
+define fn0C00_000C
 fn0C00_000C_entry:
 	// succ:  l0C00_000C
 l0C00_000C:

@@ -24,7 +24,7 @@ v7_11: orig: v7
           C_3 = cond(v7_11)
 // main
 // Return size: 0
-void main()
+define main
 main_entry:
 	def r1
 	def r2

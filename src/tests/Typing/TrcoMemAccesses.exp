@@ -6,7 +6,7 @@ fn0C00_0000_entry:
 l0C00_0000:
 	fn0C00_000C(ds)
 	fn0C00_0015(ds)
-	Mem4[ds:0x0100:word16] = 0x0000
+	Mem6[ds:0x0100:word16] = 0x0000
 	// succ:  l0C00_0006_thunk_fn0C00_000C
 l0C00_0006_thunk_fn0C00_000C:
 	fn0C00_000C(ds)
@@ -73,7 +73,7 @@ T_11 (in 0x0000 : word16)
 T_12 (in 0x0100 : word16)
 	trait_primitive(word16)
 	trait_mem(T_2:T_13, 0)
-T_13 (in Mem4[ds:0x0100:word16] : word16)
+T_13 (in Mem6[ds:0x0100:word16] : word16)
 	trait_primitive(word16)
 	trait_equal(T_11)
 T_14 (in fn0C00_000C : ptr32)

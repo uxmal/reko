@@ -1,5 +1,5 @@
 // LiveLoopMock
-void LiveLoopMock()
+define LiveLoopMock
 	// liveIn: 
 LiveLoopMock_entry:
 	def i

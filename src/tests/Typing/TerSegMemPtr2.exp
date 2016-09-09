@@ -1,7 +1,7 @@
 // Before ///////
 // SegmentedMemoryPointerMock2
 // Return size: 0
-void SegmentedMemoryPointerMock2()
+define SegmentedMemoryPointerMock2
 SegmentedMemoryPointerMock2_entry:
 	// succ:  l1
 l1:
@@ -12,7 +12,7 @@ SegmentedMemoryPointerMock2_exit:
 // After ///////
 // SegmentedMemoryPointerMock2
 // Return size: 0
-void SegmentedMemoryPointerMock2()
+define SegmentedMemoryPointerMock2
 SegmentedMemoryPointerMock2_entry:
 	// succ:  l1
 l1:

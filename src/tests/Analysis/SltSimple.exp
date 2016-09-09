@@ -11,7 +11,7 @@ Mem4: orig: Mem0
 Mem5: orig: Mem0
     def:  Mem5[0x10000004:word32] = a
 // SimpleMock
-void SimpleMock()
+define SimpleMock
 	// liveIn: 
 SimpleMock_entry:
 	def a

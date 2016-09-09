@@ -122,6 +122,8 @@ namespace Reko.UnitTests.Analysis
 
                 ValuePropagator vp = new ValuePropagator(program.Architecture, ssa);
 				vp.Transform();
+                sst.RenameFrameAccesses = true;
+                sst.Transform();
 
 				ssa.Write(writer);
 				proc.Write(false, writer);
@@ -570,7 +572,7 @@ Mem6: orig: Mem0
     def:  Mem6[a2 + 0x00000004:byte] = tmp_3
 // ProcedureBuilder
 // Return size: 0
-void ProcedureBuilder()
+define ProcedureBuilder
 ProcedureBuilder_entry:
 	def a2
 	def Mem0
@@ -623,7 +625,7 @@ Mem6: orig: Mem0
     def:  Mem6[a2 + 0x00000004:byte] = (byte) tmp_3
 // ProcedureBuilder
 // Return size: 0
-void ProcedureBuilder()
+define ProcedureBuilder
 ProcedureBuilder_entry:
 	def a2
 	def Mem0
@@ -655,7 +657,7 @@ ProcedureBuilder_exit:
     def:  r1_1 = 1.0F
 // ProcedureBuilder
 // Return size: 0
-void ProcedureBuilder()
+define ProcedureBuilder
 ProcedureBuilder_entry:
 	// succ:  l1
 l1:
@@ -763,7 +765,7 @@ r1_5: orig: r1
     def:  r1_5 = r1 * 0x0006
 // ProcedureBuilder
 // Return size: 0
-void ProcedureBuilder()
+define ProcedureBuilder
 ProcedureBuilder_entry:
 	def r1
 	// succ:  l1
@@ -834,7 +836,7 @@ r1_8: orig: r1
     def:  r1_8 = foo(Mem7[fp - 0x00000008:word32], Mem7[fp - 0x00000004:word32])
 // ProcedureBuilder
 // Return size: 0
-void ProcedureBuilder()
+define ProcedureBuilder
 ProcedureBuilder_entry:
 	def fp
 	// succ:  l1

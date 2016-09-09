@@ -1,6 +1,6 @@
 // CmpMock
 // Return size: 0
-void CmpMock()
+define CmpMock
 CmpMock_entry:
 	// succ:  l1
 l1:

@@ -30,7 +30,7 @@ r0:r0
     uses: r0_1 = PHI(r0, r0_3)
 // main
 // Return size: 0
-void main(word32 r0)
+define main
 main_entry:
 	def r0
 	// succ:  l0000
@@ -86,7 +86,7 @@ r0:r0
     uses: r0_1 = PHI(r0, r0_3)
 // main
 // Return size: 0
-void main(word32 r0)
+define main
 main_entry:
 	def r0
 	// succ:  l0000

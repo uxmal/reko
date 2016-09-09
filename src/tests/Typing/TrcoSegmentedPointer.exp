@@ -1,6 +1,6 @@
 // SegmentedPointerProc
 // Return size: 0
-void SegmentedPointerProc()
+define SegmentedPointerProc
 SegmentedPointerProc_entry:
 	// succ:  l1
 l1:

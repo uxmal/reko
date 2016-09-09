@@ -166,7 +166,7 @@ namespace Reko.UnitTests.Environments.Windows
             var ep = win32.SignatureFromName(fnName);
 
             var sigExp =
-@"void foo()
+@"define foo
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 ";
             Assert.AreEqual(sigExp, ep.Signature.ToString("foo", FunctionType.EmitFlags.AllDetails));

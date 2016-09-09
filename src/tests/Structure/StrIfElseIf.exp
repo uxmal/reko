@@ -1,6 +1,6 @@
 // MockIfElseIf
 // Return size: 0
-void MockIfElseIf()
+define MockIfElseIf
 MockIfElseIf_entry:
 	branch r != 0x00000000 not_0
 	goto l2
@@ -42,7 +42,7 @@ not_2:
 	// succ:  l5 default
 MockIfElseIf_exit:
 
-void MockIfElseIf()
+define MockIfElseIf
 {
 	if (r == 0x00000000)
 		x = 0x00000000;

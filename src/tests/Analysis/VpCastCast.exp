@@ -6,7 +6,7 @@ Mem2: orig: Mem0
     def:  Mem2[0x01234000:real32] = (real32) (real64) Mem0[0x00123400:real32]
 // ProcedureBuilder
 // Return size: 0
-void ProcedureBuilder()
+define ProcedureBuilder
 ProcedureBuilder_entry:
 	def Mem0
 	// succ:  l1
@@ -23,7 +23,7 @@ Mem2: orig: Mem0
     def:  Mem2[0x01234000:real32] = Mem0[0x00123400:real32]
 // ProcedureBuilder
 // Return size: 0
-void ProcedureBuilder()
+define ProcedureBuilder
 ProcedureBuilder_entry:
 	def Mem0
 	// succ:  l1

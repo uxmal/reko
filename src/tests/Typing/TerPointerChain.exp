@@ -1,7 +1,7 @@
 // Before ///////
 // PointerChainFragment
 // Return size: 0
-void PointerChainFragment()
+define PointerChainFragment
 PointerChainFragment_entry:
 	// succ:  l1
 l1:
@@ -14,7 +14,7 @@ PointerChainFragment_exit:
 // After ///////
 // PointerChainFragment
 // Return size: 0
-void PointerChainFragment()
+define PointerChainFragment
 PointerChainFragment_entry:
 	// succ:  l1
 l1:

@@ -1,7 +1,7 @@
 // Before ///////
 // ArrayExpressionFragment
 // Return size: 0
-void ArrayExpressionFragment()
+define ArrayExpressionFragment
 ArrayExpressionFragment_entry:
 	// succ:  l1
 l1:
@@ -12,7 +12,7 @@ ArrayExpressionFragment_exit:
 // After ///////
 // ArrayExpressionFragment
 // Return size: 0
-void ArrayExpressionFragment()
+define ArrayExpressionFragment
 ArrayExpressionFragment_entry:
 	// succ:  l1
 l1:

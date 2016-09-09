@@ -1,6 +1,6 @@
 // DpbMock
 // Return size: 0
-void DpbMock()
+define DpbMock
 DpbMock_entry:
 	def dl
 	// succ:  l1

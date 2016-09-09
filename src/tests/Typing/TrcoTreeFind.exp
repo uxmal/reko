@@ -7,11 +7,11 @@ l0_seek:
 	branch t == 0x00000000 l5_found
 	// succ:  l1 l5_found
 l1:
-	word32 vv_8 = Mem0[t + 0x00000000:word32]
-	branch v == vv_8 l5_found
+	word32 vv_3 = Mem0[t + 0x00000000:word32]
+	branch v == vv_3 l5_found
 	// succ:  l2 l5_found
 l2:
-	branch v < vv_8 l4_lt
+	branch v < vv_3 l4_lt
 	// succ:  l3 l4_lt
 l3:
 	t = Mem0[t + 0x00000008:word32]
@@ -47,7 +47,7 @@ T_3 (in 0x00000000 : word32)
 	trait_primitive(word32)
 T_4 (in t == 0x00000000 : bool)
 	trait_primitive(bool)
-T_5 (in vv_8 : word32)
+T_5 (in vv_3 : word32)
 	trait_primitive(word32)
 	trait_equal(T_8)
 	trait_primitive(word32)
@@ -65,9 +65,9 @@ T_9 (in v : word32)
 	trait_primitive(word32)
 	trait_equal(T_5)
 	trait_primitive(int32)
-T_10 (in v == vv_8 : bool)
+T_10 (in v == vv_3 : bool)
 	trait_primitive(bool)
-T_11 (in v < vv_8 : bool)
+T_11 (in v < vv_3 : bool)
 	trait_primitive(bool)
 T_12 (in 0x00000004 : word32)
 	trait_primitive(word32)

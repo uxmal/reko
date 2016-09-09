@@ -1,6 +1,6 @@
 // SegmentedCallFragment
 // Return size: 0
-void SegmentedCallFragment()
+define SegmentedCallFragment
 SegmentedCallFragment_entry:
 	// succ:  l1
 l1:

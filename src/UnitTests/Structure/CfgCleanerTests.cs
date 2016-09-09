@@ -85,7 +85,7 @@ namespace Reko.UnitTests.Structure
             #region Expected
 @"// ProcedureBuilder
 // Return size: 0
-void ProcedureBuilder()
+define ProcedureBuilder
 ProcedureBuilder_entry:
 	pfn()
 	return

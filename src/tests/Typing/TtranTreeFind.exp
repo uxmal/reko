@@ -1,6 +1,6 @@
 // TreeFindMock
 // Return size: 0
-void TreeFindMock()
+define TreeFindMock
 TreeFindMock_entry:
 	// succ:  l0_seek
 l0_seek:

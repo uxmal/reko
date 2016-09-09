@@ -1,6 +1,6 @@
 // LiveLoopMock
 // Return size: 0
-void LiveLoopMock()
+define LiveLoopMock
 LiveLoopMock_entry:
 	def i
 	def Mem0

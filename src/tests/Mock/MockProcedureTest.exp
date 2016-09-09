@@ -7,7 +7,7 @@
 // Z:Flags
 // r1:Local -000C
 // return address size: 0
-void FactorialMock()
+define FactorialMock
 FactorialMock_entry:
 	goto l1
 	// succ:  l1

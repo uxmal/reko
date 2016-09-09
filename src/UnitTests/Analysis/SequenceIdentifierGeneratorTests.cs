@@ -81,7 +81,7 @@ r2_r1:Sequence r2:r1
     uses: Mem3[0x00002000:uipr64] = r2_r1
 // ProcedureBuilder
 // Return size: 0
-void ProcedureBuilder()
+define ProcedureBuilder
 ProcedureBuilder_entry:
 	def r2_r1
 	// succ:  l1
@@ -117,7 +117,7 @@ r2_r1:Sequence r2:r1
           Mem4[0x00002008:uipr64] = r2_r1
 // ProcedureBuilder
 // Return size: 0
-void ProcedureBuilder()
+define ProcedureBuilder
 ProcedureBuilder_entry:
 	def r2_r1
 	// succ:  l1
@@ -159,7 +159,7 @@ Mem6: orig: Mem0
 Mem7: orig: Mem0
 // ProcedureBuilder
 // Return size: 0
-void ProcedureBuilder()
+define ProcedureBuilder
 ProcedureBuilder_entry:
 	def Mem0
 	def r3

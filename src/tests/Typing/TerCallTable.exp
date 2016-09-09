@@ -1,7 +1,7 @@
 // Before ///////
 // IndirectCallFragment
 // Return size: 0
-void IndirectCallFragment()
+define IndirectCallFragment
 IndirectCallFragment_entry:
 	// succ:  l1
 l1:
@@ -13,7 +13,7 @@ IndirectCallFragment_exit:
 // After ///////
 // IndirectCallFragment
 // Return size: 0
-void IndirectCallFragment()
+define IndirectCallFragment
 IndirectCallFragment_entry:
 	// succ:  l1
 l1:

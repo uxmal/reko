@@ -1,11 +1,11 @@
 // fn0C00_0000 /////////////////////
 	LiveOut:  
-	MayUseIn:  ds
+	BitsUsed: 
 	BypassIn: 
 	Trashed:   ah al ax eax esi rax rsi si sil
 	Preserved: sp
 // fn0C00_0000
-void fn0C00_0000()
+define fn0C00_0000
 // SymbolicIn: sp:fp
 fn0C00_0000_entry:
 // DataOut: ds
@@ -31,12 +31,12 @@ fn0C00_0000_exit:
 
 // fn0C00_0015 /////////////////////
 	LiveOut:   al ax ds
-	MayUseIn:  ds si
+	BitsUsed: 
 	BypassIn: 
 	Trashed:   ah al ax eax rax
 	Preserved: sp
 // fn0C00_0015
-void fn0C00_0015()
+define fn0C00_0015
 // SymbolicIn: sp:fp
 fn0C00_0015_entry:
 // DataOut: ds si

@@ -1,6 +1,6 @@
 // WhileLtIncMock
 // Return size: 0
-void WhileLtIncMock()
+define WhileLtIncMock
 WhileLtIncMock_entry:
 	def a
 	// succ:  l1

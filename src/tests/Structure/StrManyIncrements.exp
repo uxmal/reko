@@ -1,6 +1,6 @@
 // ManyIncrements
 // Return size: 0
-void ManyIncrements()
+define ManyIncrements
 ManyIncrements_entry:
 	goto loopTop
 	// succ:  loopTop
@@ -33,7 +33,7 @@ not1:
 	// succ:  l2 done
 ManyIncrements_exit:
 
-void ManyIncrements()
+define ManyIncrements
 {
 	while (true)
 	{

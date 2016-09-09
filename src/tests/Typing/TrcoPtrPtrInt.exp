@@ -1,6 +1,6 @@
 // PtrPtrIntMock
 // Return size: 0
-void PtrPtrIntMock()
+define PtrPtrIntMock
 PtrPtrIntMock_entry:
 	// succ:  l1
 l1:

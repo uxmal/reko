@@ -168,7 +168,7 @@ esi:esi (aliases:)
 r63:r63 (aliases:)
 // ProcedureBuilder
 // Return size: 0
-void ProcedureBuilder()
+define ProcedureBuilder
 ProcedureBuilder_entry:
 	// succ:  l1
 l1:

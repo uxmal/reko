@@ -45,15 +45,14 @@ namespace Reko.UnitTests.Core
 		{
 			Procedure proc1 = Procedure.Create(Address.SegPtr(0x0F00, 0x0BA9), null);
 			Assert.AreEqual("fn0F00_0BA9", proc1.Name);
-			Assert.AreEqual("void fn0F00_0BA9()", proc1.ToString());
+			Assert.AreEqual("define fn0F00_0BA9", proc1.ToString());
 			Procedure proc2 = Procedure.Create(Address.Ptr32(0x0F000BA9), null);
 			Assert.AreEqual("fn0F000BA9", proc2.Name);
-			Assert.AreEqual("void fn0F000BA9()", proc2.ToString());
+			Assert.AreEqual("define fn0F000BA9", proc2.ToString());
 			Procedure proc3 = new Procedure("foo", null);
 			Assert.AreEqual("foo", proc3.Name);
-			Assert.AreEqual("void foo()", proc3.ToString());
+			Assert.AreEqual("define foo", proc3.ToString());
 		}
-
 
 		[Test]
 		public void ProcCharacteristicIsAlloca()

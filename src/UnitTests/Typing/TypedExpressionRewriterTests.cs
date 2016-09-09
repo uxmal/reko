@@ -662,7 +662,7 @@ namespace Reko.UnitTests.Typing
 @"// Before ///////
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	// succ:  l1
 l1:
@@ -672,7 +672,7 @@ proc1_exit:
 // After ///////
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	// succ:  l1
 l1:
@@ -698,7 +698,7 @@ proc1_exit:
 @"// Before ///////
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	// succ:  l1
 l1:
@@ -708,7 +708,7 @@ proc1_exit:
 // After ///////
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	// succ:  l1
 l1:
@@ -736,7 +736,7 @@ proc1_exit:
 @"// Before ///////
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	// succ:  l1
 l1:
@@ -748,7 +748,7 @@ proc1_exit:
 // After ///////
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	// succ:  l1
 l1:
@@ -781,7 +781,7 @@ proc1_exit:
 @"// Before ///////
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	// succ:  l1
 l1:
@@ -794,7 +794,7 @@ proc1_exit:
 // After ///////
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	// succ:  l1
 l1:
@@ -830,7 +830,7 @@ proc1_exit:
 @"// Before ///////
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	// succ:  l1
 l1:
@@ -842,7 +842,7 @@ proc1_exit:
 // After ///////
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	// succ:  l1
 l1:
@@ -880,7 +880,7 @@ proc1_exit:
 @"// Before ///////
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	// succ:  l1
 l1:
@@ -894,7 +894,7 @@ proc1_exit:
 // After ///////
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	// succ:  l1
 l1:
@@ -918,7 +918,7 @@ proc1_exit:
 @"// Before ///////
 // test
 // Return size: 0
-void test()
+define test
 test_entry:
 	// succ:  l1
 l1:
@@ -930,7 +930,7 @@ test_exit:
 // After ///////
 // test
 // Return size: 0
-void test()
+define test
 test_entry:
 	// succ:  l1
 l1:
@@ -957,7 +957,7 @@ test_exit:
             var sExp = @"// Before ///////
 // test
 // Return size: 0
-void test()
+define test
 test_entry:
 	// succ:  l1
 l1:
@@ -967,7 +967,7 @@ test_exit:
 // After ///////
 // test
 // Return size: 0
-void test()
+define test
 test_entry:
 	// succ:  l1
 l1:
@@ -989,7 +989,7 @@ test_exit:
 @"// Before ///////
 // test
 // Return size: 0
-void test()
+define test
 test_entry:
 	// succ:  l1
 l1:
@@ -999,7 +999,7 @@ test_exit:
 // After ///////
 // test
 // Return size: 0
-void test()
+define test
 test_entry:
 	// succ:  l1
 l1:
@@ -1031,7 +1031,7 @@ test_exit:
 @"// Before ///////
 // test
 // Return size: 0
-void test()
+define test
 test_entry:
 	// succ:  l1
 l1:
@@ -1042,7 +1042,7 @@ test_exit:
 // After ///////
 // test
 // Return size: 0
-void test()
+define test
 test_entry:
 	// succ:  l1
 l1:
@@ -1099,7 +1099,7 @@ test_exit:
 @"// Before ///////
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	// succ:  l1
 l1:
@@ -1110,7 +1110,7 @@ proc1_exit:
 // After ///////
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	// succ:  l1
 l1:

@@ -1,7 +1,7 @@
 // Before ///////
 // ConstantUnionMock
 // Return size: 0
-void ConstantUnionMock()
+define ConstantUnionMock
 ConstantUnionMock_entry:
 	// succ:  l1
 l1:
@@ -12,7 +12,7 @@ ConstantUnionMock_exit:
 // After ///////
 // ConstantUnionMock
 // Return size: 0
-void ConstantUnionMock()
+define ConstantUnionMock
 ConstantUnionMock_entry:
 	// succ:  l1
 l1:

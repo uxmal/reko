@@ -1,6 +1,6 @@
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	// succ:  l1
 l1:

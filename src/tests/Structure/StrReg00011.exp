@@ -1,6 +1,6 @@
 // Reg00011Mock
 // Return size: 0
-void Reg00011Mock()
+define Reg00011Mock
 Reg00011Mock_entry:
 	Mem0[0x8416:word16] = Mem0[0x8416:word16] + 0x0001
 	loc02_26 = Mem0[0x53BA:word16]
@@ -55,7 +55,7 @@ l7:
 	// succ:  Reg00011Mock_exit
 Reg00011Mock_exit:
 
-void Reg00011Mock()
+define Reg00011Mock
 {
 	Mem0[0x8416:word16] = Mem0[0x8416:word16] + 0x0001;
 	loc02_26 = Mem0[0x53BA:word16];

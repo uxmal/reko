@@ -1,6 +1,6 @@
 // ProcedureBuilder
 // Return size: 0
-void ProcedureBuilder()
+define ProcedureBuilder
 ProcedureBuilder_entry:
 	goto l1
 	// succ:  l1
