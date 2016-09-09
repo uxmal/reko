@@ -32,7 +32,6 @@ using System.Collections;
 namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]
-    [Ignore("Out parameters have to be discovered properly with SSaTransform2")]
 	public class OutParameterTransformerTests : AnalysisTestBase
 	{
 		private Program program; 
@@ -56,7 +55,7 @@ namespace Reko.UnitTests.Analysis
 				ssa.Procedure.Write(false, fut.TextWriter);
 				fut.TextWriter.WriteLine();
 
-				OutParameterTransformer opt = new OutParameterTransformer( ssa);
+				OutParameterTransformer opt = new OutParameterTransformer(ssa);
 				opt.Transform();
 
 				DeadCode.Eliminate(ssa);

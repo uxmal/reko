@@ -505,48 +505,6 @@ namespace Reko.UnitTests.Typing
             Assert.AreEqual(exp, sb.ToString());
         }
 
-        [Test]
-        [Ignore("Complete the test by seeing the return type T_5 to be of type 'struct 3'")]
-        public void TrcoCallFunctionWithArraySize()
-        {
-            var m = new ProcedureBuilder();
-            var sig = FunctionType.Action(
-                m.Frame.EnsureStackArgument(0, PrimitiveType.Word32));
-            var ex = new ExternalProcedure("malloc", sig, new ProcedureCharacteristics
-            {
-                Allocator = true,
-                ArraySize = new ArraySizeCharacteristic
-                {
-                    Argument = "r",
-                    Factors = new ArraySizeFactor[] 
-                    {
-                        new ArraySizeFactor { Constant = "1" }
-                    }
-                }
-            });
-
-            Identifier eax = m.Local32("eax");
-            var call = m.Assign(eax, m.Fn(new ProcedureConstant(PrimitiveType.Word32, ex), m.Word32(3)));
-
-            coll = CreateCollector();
-            call.Accept(eqb);
-            call.Accept(coll);
-            StringWriter sw = new StringWriter();
-            handler.Traits.Write(sw);
-            string sExp =
-                "T_1 (in malloc : word32)" + nl +
-                "\ttrait_func(T_4 -> T_5)" + nl +
-                "T_3 (in dwArg00 : word32)" + nl +
-                "\ttrait_primitive(word32)" + nl +
-                "T_4 (in 0x00000003 : word32)" + nl +
-                "\ttrait_primitive(word32)" + nl +
-                "\ttrait_equal(T_3)" + nl +
-                "T_5 (in malloc(0x00000003) : word32)" + nl +
-                "\ttrait_primitive(word32)"; 
-            Console.WriteLine(sw.ToString());
-            Assert.AreEqual(sExp, sw.ToString());
-        }
-
         private TraitCollector CreateCollector()
         {
             return CreateCollector(CreateProgram());

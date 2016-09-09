@@ -29,6 +29,7 @@ using Reko.Core.Types;
 using Reko.UnitTests.Mocks;
 using Reko.Core.Expressions;
 using Reko.UnitTests.Fragments;
+using Reko.Core.Serialization;
 
 namespace Reko.UnitTests.Typing
 {
@@ -216,6 +217,34 @@ namespace Reko.UnitTests.Typing
                 m.Store(m.Word32(0x123400), m.IAdd(m.LoadDw(m.Word32(0x123400)), 1));
                 m.Store(m.Word32(0x123400), m.IAdd(m.LoadDw(m.Word32(0x123400)), 1));
             }, "Typing/TycoReg00300.txt");
+        }
+
+
+        [Test]
+        public void TycoCallFunctionWithArraySize()
+        {
+            var m = new ProcedureBuilder();
+            var sig = FunctionType.Func(
+                new Identifier("", new Pointer(VoidType.Instance, 4), null),
+                m.Frame.EnsureStackArgument(0, PrimitiveType.Word32));
+            var ex = new ExternalProcedure("malloc", sig, new ProcedureCharacteristics
+            {
+                Allocator = true,
+                ArraySize = new ArraySizeCharacteristic
+                {
+                    Argument = "r",
+                    Factors = new ArraySizeFactor[]
+                    {
+                        new ArraySizeFactor { Constant = "1" }
+                    }
+                }
+            });
+
+            RunTest(n =>
+            {
+                Identifier eax = m.Local32("eax");
+                var call = n.Assign(eax, n.Fn(new ProcedureConstant(PrimitiveType.Word32, ex), n.Word32(3)));
+            }, "Typing/TycoCallFunctionWithArraySize.txt");
         }
     }
 }

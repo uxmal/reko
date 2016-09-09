@@ -315,7 +315,7 @@ test_exit:
             #region Expected
 @"// main
 // Return size: 0
-void main()
+define main
 main_entry:
 	// succ:  l1
 l1:
@@ -330,7 +330,7 @@ main_exit:
 ===
 // level1
 // Return size: 0
-void level1()
+define level1
 level1_entry:
 	// succ:  l1
 l1:
@@ -345,7 +345,7 @@ level1_exit:
 ===
 // level2
 // Return size: 0
-void level2()
+define level2
 level2_entry:
 	// succ:  l1
 l1:
