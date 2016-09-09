@@ -89,7 +89,7 @@ Mem0:Global memory
     uses: ax_12 = Mem0[ds:si_10:word16]
 // fn0C00_0000
 // Return size: 2
-void fn0C00_0000()
+define fn0C00_0000
 fn0C00_0000_entry:
 	def fp
 	def dx

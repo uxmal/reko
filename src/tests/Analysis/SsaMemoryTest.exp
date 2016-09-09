@@ -58,7 +58,7 @@ Mem16: orig: Mem0
     def:  Mem16[ds:0x012C:word16] = cx_14
 // fn0C00_0000
 // Return size: 2
-void fn0C00_0000()
+define fn0C00_0000
 fn0C00_0000_entry:
 	def fp
 	def ds

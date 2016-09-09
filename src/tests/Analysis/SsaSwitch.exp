@@ -120,7 +120,7 @@ O_32: orig: O
     uses: use C_30 | O_32 | S_29 | Z_31
 // fn0C00_0000
 // Return size: 2
-void fn0C00_0000()
+define fn0C00_0000
 fn0C00_0000_entry:
 	def fp
 	def cs

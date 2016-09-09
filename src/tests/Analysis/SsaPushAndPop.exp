@@ -25,7 +25,7 @@ esp_8: orig: esp
     def:  esp_8 = esp_2 + 0x00000004
 // SsaPushAndPop
 // Return size: 0
-void SsaPushAndPop()
+define SsaPushAndPop
 SsaPushAndPop_entry:
 	def esp
 	def ebp

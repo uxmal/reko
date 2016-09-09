@@ -128,7 +128,7 @@ namespace Reko.UnitTests.Analysis
             #region Expected
 @"// ProcedureBuilder
 // Return size: 0
-%proc ProcedureBuilder
+define ProcedureBuilder
 ProcedureBuilder_entry:
 	def r1
 	// succ:  l1

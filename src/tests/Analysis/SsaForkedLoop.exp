@@ -22,16 +22,10 @@ ax_7: orig: ax
           ax_17 = ax_7 + Mem0[ds:si_16 + 0x0004:word16]
           ax_19 = ax_7 + Mem0[ds:si_13:word16]
           use ax_7
-bx_8: orig: bx
-    def:  bx_8 = PHI(bx, bx_8, bx_8)
-    uses: use bx_8
 SCZO_9: orig: SCZO
     def:  SCZO_9 = cond(ax_7 - bx)
     uses: branch Test(LT,SCZO_9) l0C00_0005
           use SCZO_9
-ds_10: orig: ds
-    def:  ds_10 = PHI(ds, ds_10, ds_10)
-    uses: use ds_10
 si_12: orig: si
     def:  si_12 = Mem0[ds:0x0300:word16]
     uses: si_13 = si_12 | si_12
@@ -65,12 +59,14 @@ SCZO_20: orig: SCZO
 bx:bx
     def:  def bx
     uses: SCZO_9 = cond(ax_7 - bx)
+          use bx
 ds:ds
     def:  def ds
     uses: si_12 = Mem0[ds:0x0300:word16]
           si_16 = Mem0[ds:0x0302:word16]
           ax_17 = ax_7 + Mem0[ds:si_16 + 0x0004:word16]
           ax_19 = ax_7 + Mem0[ds:si_13:word16]
+          use ds
 Mem0:Global memory
     def:  def Mem0
     uses: si_12 = Mem0[ds:0x0300:word16]
@@ -85,7 +81,7 @@ si:si
     uses: si_24 = PHI(si, si_13, si_16)
 // fn0C00_0000
 // Return size: 2
-void fn0C00_0000()
+define fn0C00_0000
 fn0C00_0000_entry:
 	def fp
 	def ax
@@ -129,8 +125,8 @@ l0C00_001D:
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 	use ax_7
-	use bx_8
-	use ds_10
+	use bx
+	use ds
 	use SCZO_9
 	use si_24
 	use sp_2

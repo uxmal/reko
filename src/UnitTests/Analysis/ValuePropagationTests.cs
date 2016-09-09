@@ -712,7 +712,7 @@ Mem9: orig: Mem0
     def:  Mem0[es_bx_4 + 0x0004:byte] = 0x03
 // ProcedureBuilder
 // Return size: 0
-void ProcedureBuilder()
+define ProcedureBuilder
 ProcedureBuilder_entry:
 	def es
 	def bx

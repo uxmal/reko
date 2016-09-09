@@ -5,7 +5,7 @@ ax_2: orig: ax
     def:  ax_2 = wArg04
 // SsaStackReference
 // Return size: 0
-void SsaStackReference()
+define SsaStackReference
 SsaStackReference_entry:
 	def wArg04
 	// succ:  l1

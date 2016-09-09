@@ -1,6 +1,6 @@
 // fn10000000
 // Return size: 4
-void fn10000000()
+define fn10000000
 fn10000000_entry:
 	// succ:  l10000000
 l10000000:
@@ -34,7 +34,7 @@ l10000021:
 fn10000000_exit:
 // fn1000006E
 // Return size: 4
-void fn1000006E()
+define fn1000006E
 fn1000006E_entry:
 	// succ:  l1000006E
 l1000006E:

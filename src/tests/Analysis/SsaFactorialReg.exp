@@ -3,35 +3,35 @@ fp:fp
     uses: sp_2 = fp
 sp_2: orig: sp
     def:  sp_2 = fp
-    uses: call fn0C00_000B (retsize: 2;)	uses: ax,cx_3,ds,sp_2	defs: ax_9,cx_5,ds_7,sp_4
+    uses: call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_3,ds:ds,sp:sp_2	defs: ax:ax_9,cx:cx_5,ds:ds_7,sp:sp_4
 cx_3: orig: cx
     def:  cx_3 = 0x0005
-    uses: call fn0C00_000B (retsize: 2;)	uses: ax,cx_3,ds,sp_2	defs: ax_9,cx_5,ds_7,sp_4
+    uses: call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_3,ds:ds,sp:sp_2	defs: ax:ax_9,cx:cx_5,ds:ds_7,sp:sp_4
 sp_4: orig: sp
-    def:  call fn0C00_000B (retsize: 2;)	uses: ax,cx_3,ds,sp_2	defs: ax_9,cx_5,ds_7,sp_4
+    def:  call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_3,ds:ds,sp:sp_2	defs: ax:ax_9,cx:cx_5,ds:ds_7,sp:sp_4
     uses: use sp_4
 cx_5: orig: cx
-    def:  call fn0C00_000B (retsize: 2;)	uses: ax,cx_3,ds,sp_2	defs: ax_9,cx_5,ds_7,sp_4
+    def:  call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_3,ds:ds,sp:sp_2	defs: ax:ax_9,cx:cx_5,ds:ds_7,sp:sp_4
     uses: use cx_5
 ds:ds
     def:  def ds
-    uses: call fn0C00_000B (retsize: 2;)	uses: ax,cx_3,ds,sp_2	defs: ax_9,cx_5,ds_7,sp_4
+    uses: call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_3,ds:ds,sp:sp_2	defs: ax:ax_9,cx:cx_5,ds:ds_7,sp:sp_4
 ds_7: orig: ds
-    def:  call fn0C00_000B (retsize: 2;)	uses: ax,cx_3,ds,sp_2	defs: ax_9,cx_5,ds_7,sp_4
+    def:  call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_3,ds:ds,sp:sp_2	defs: ax:ax_9,cx:cx_5,ds:ds_7,sp:sp_4
     uses: Mem10[ds_7:0x0064:word16] = ax_9
           use ds_7
 ax:ax
     def:  def ax
-    uses: call fn0C00_000B (retsize: 2;)	uses: ax,cx_3,ds,sp_2	defs: ax_9,cx_5,ds_7,sp_4
+    uses: call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_3,ds:ds,sp:sp_2	defs: ax:ax_9,cx:cx_5,ds:ds_7,sp:sp_4
 ax_9: orig: ax
-    def:  call fn0C00_000B (retsize: 2;)	uses: ax,cx_3,ds,sp_2	defs: ax_9,cx_5,ds_7,sp_4
+    def:  call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_3,ds:ds,sp:sp_2	defs: ax:ax_9,cx:cx_5,ds:ds_7,sp:sp_4
     uses: Mem10[ds_7:0x0064:word16] = ax_9
           use ax_9
 Mem10: orig: Mem0
     def:  Mem10[ds_7:0x0064:word16] = ax_9
 // fn0C00_0000
 // Return size: 2
-void fn0C00_0000()
+define fn0C00_0000
 fn0C00_0000_entry:
 	def fp
 	def ds
@@ -41,8 +41,8 @@ l0C00_0000:
 	sp_2 = fp
 	cx_3 = 0x0005
 	call fn0C00_000B (retsize: 2;)
-		uses: ax,cx_3,ds,sp_2
-		defs: ax_9,cx_5,ds_7,sp_4
+		uses: ax:ax,cx:cx_3,ds:ds,sp:sp_2
+		defs: ax:ax_9,cx:cx_5,ds:ds_7,sp:sp_4
 	Mem10[ds_7:0x0064:word16] = ax_9
 	return
 	// succ:  fn0C00_0000_exit
@@ -61,7 +61,7 @@ sp_2: orig: sp
 sp_3: orig: sp
     def:  sp_3 = sp_2 - 0x0002
     uses: Mem6[ss:sp_3:word16] = si
-          call fn0C00_000B (retsize: 2;)	uses: ax,cx_11,si_10,sp_3,ss	defs: ax_20,cx_16,O_23,S_21,SCZO_17,si_14,sp_13,ss_15,SZO_18,Z_22
+          call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_11,si:si_10,sp:sp_3,ss:ss	defs: ax:ax_20,cx:cx_16,Flags:SCZO_17,Flags:SZO_18,Flags:S_21,Flags:Z_22,Flags:O_23,si:si_14,sp:sp_13,ss:ss_15
           sp_29 = PHI(sp_13, sp_3)
 si:si
     def:  def si
@@ -69,7 +69,7 @@ si:si
 ss:ss
     def:  def ss
     uses: Mem6[ss:sp_3:word16] = si
-          call fn0C00_000B (retsize: 2;)	uses: ax,cx_11,si_10,sp_3,ss	defs: ax_20,cx_16,O_23,S_21,SCZO_17,si_14,sp_13,ss_15,SZO_18,Z_22
+          call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_11,si:si_10,sp:sp_3,ss:ss	defs: ax:ax_20,cx:cx_16,Flags:SCZO_17,Flags:SZO_18,Flags:S_21,Flags:Z_22,Flags:O_23,si:si_14,sp:sp_13,ss:ss_15
           ss_28 = PHI(ss_15, ss)
 Mem6: orig: Mem0
     def:  Mem6[ss:sp_3:word16] = si
@@ -92,41 +92,41 @@ ax_9: orig: ax
     uses: ax_33 = PHI(ax_26, ax_9)
 si_10: orig: si
     def:  si_10 = cx
-    uses: call fn0C00_000B (retsize: 2;)	uses: ax,cx_11,si_10,sp_3,ss	defs: ax_20,cx_16,O_23,S_21,SCZO_17,si_14,sp_13,ss_15,SZO_18,Z_22
+    uses: call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_11,si:si_10,sp:sp_3,ss:ss	defs: ax:ax_20,cx:cx_16,Flags:SCZO_17,Flags:SZO_18,Flags:S_21,Flags:Z_22,Flags:O_23,si:si_14,sp:sp_13,ss:ss_15
 cx_11: orig: cx
     def:  cx_11 = cx - 0x0001
     uses: SZO_12 = cond(cx_11)
-          call fn0C00_000B (retsize: 2;)	uses: ax,cx_11,si_10,sp_3,ss	defs: ax_20,cx_16,O_23,S_21,SCZO_17,si_14,sp_13,ss_15,SZO_18,Z_22
+          call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_11,si:si_10,sp:sp_3,ss:ss	defs: ax:ax_20,cx:cx_16,Flags:SCZO_17,Flags:SZO_18,Flags:S_21,Flags:Z_22,Flags:O_23,si:si_14,sp:sp_13,ss:ss_15
 SZO_12: orig: SZO
     def:  SZO_12 = cond(cx_11)
 sp_13: orig: sp
-    def:  call fn0C00_000B (retsize: 2;)	uses: ax,cx_11,si_10,sp_3,ss	defs: ax_20,cx_16,O_23,S_21,SCZO_17,si_14,sp_13,ss_15,SZO_18,Z_22
+    def:  call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_11,si:si_10,sp:sp_3,ss:ss	defs: ax:ax_20,cx:cx_16,Flags:SCZO_17,Flags:SZO_18,Flags:S_21,Flags:Z_22,Flags:O_23,si:si_14,sp:sp_13,ss:ss_15
     uses: sp_29 = PHI(sp_13, sp_3)
 si_14: orig: si
-    def:  call fn0C00_000B (retsize: 2;)	uses: ax,cx_11,si_10,sp_3,ss	defs: ax_20,cx_16,O_23,S_21,SCZO_17,si_14,sp_13,ss_15,SZO_18,Z_22
+    def:  call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_11,si:si_10,sp:sp_3,ss:ss	defs: ax:ax_20,cx:cx_16,Flags:SCZO_17,Flags:SZO_18,Flags:S_21,Flags:Z_22,Flags:O_23,si:si_14,sp:sp_13,ss:ss_15
     uses: dx_ax_24 = si_14 *s ax_20
 ss_15: orig: ss
-    def:  call fn0C00_000B (retsize: 2;)	uses: ax,cx_11,si_10,sp_3,ss	defs: ax_20,cx_16,O_23,S_21,SCZO_17,si_14,sp_13,ss_15,SZO_18,Z_22
+    def:  call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_11,si:si_10,sp:sp_3,ss:ss	defs: ax:ax_20,cx:cx_16,Flags:SCZO_17,Flags:SZO_18,Flags:S_21,Flags:Z_22,Flags:O_23,si:si_14,sp:sp_13,ss:ss_15
     uses: ss_28 = PHI(ss_15, ss)
 cx_16: orig: cx
-    def:  call fn0C00_000B (retsize: 2;)	uses: ax,cx_11,si_10,sp_3,ss	defs: ax_20,cx_16,O_23,S_21,SCZO_17,si_14,sp_13,ss_15,SZO_18,Z_22
+    def:  call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_11,si:si_10,sp:sp_3,ss:ss	defs: ax:ax_20,cx:cx_16,Flags:SCZO_17,Flags:SZO_18,Flags:S_21,Flags:Z_22,Flags:O_23,si:si_14,sp:sp_13,ss:ss_15
     uses: cx_34 = PHI(cx_16, cx)
 SCZO_17: orig: SCZO
-    def:  call fn0C00_000B (retsize: 2;)	uses: ax,cx_11,si_10,sp_3,ss	defs: ax_20,cx_16,O_23,S_21,SCZO_17,si_14,sp_13,ss_15,SZO_18,Z_22
+    def:  call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_11,si:si_10,sp:sp_3,ss:ss	defs: ax:ax_20,cx:cx_16,Flags:SCZO_17,Flags:SZO_18,Flags:S_21,Flags:Z_22,Flags:O_23,si:si_14,sp:sp_13,ss:ss_15
 SZO_18: orig: SZO
-    def:  call fn0C00_000B (retsize: 2;)	uses: ax,cx_11,si_10,sp_3,ss	defs: ax_20,cx_16,O_23,S_21,SCZO_17,si_14,sp_13,ss_15,SZO_18,Z_22
+    def:  call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_11,si:si_10,sp:sp_3,ss:ss	defs: ax:ax_20,cx:cx_16,Flags:SCZO_17,Flags:SZO_18,Flags:S_21,Flags:Z_22,Flags:O_23,si:si_14,sp:sp_13,ss:ss_15
 ax:ax
     def:  def ax
-    uses: call fn0C00_000B (retsize: 2;)	uses: ax,cx_11,si_10,sp_3,ss	defs: ax_20,cx_16,O_23,S_21,SCZO_17,si_14,sp_13,ss_15,SZO_18,Z_22
+    uses: call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_11,si:si_10,sp:sp_3,ss:ss	defs: ax:ax_20,cx:cx_16,Flags:SCZO_17,Flags:SZO_18,Flags:S_21,Flags:Z_22,Flags:O_23,si:si_14,sp:sp_13,ss:ss_15
 ax_20: orig: ax
-    def:  call fn0C00_000B (retsize: 2;)	uses: ax,cx_11,si_10,sp_3,ss	defs: ax_20,cx_16,O_23,S_21,SCZO_17,si_14,sp_13,ss_15,SZO_18,Z_22
+    def:  call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_11,si:si_10,sp:sp_3,ss:ss	defs: ax:ax_20,cx:cx_16,Flags:SCZO_17,Flags:SZO_18,Flags:S_21,Flags:Z_22,Flags:O_23,si:si_14,sp:sp_13,ss:ss_15
     uses: dx_ax_24 = si_14 *s ax_20
 S_21: orig: S
-    def:  call fn0C00_000B (retsize: 2;)	uses: ax,cx_11,si_10,sp_3,ss	defs: ax_20,cx_16,O_23,S_21,SCZO_17,si_14,sp_13,ss_15,SZO_18,Z_22
+    def:  call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_11,si:si_10,sp:sp_3,ss:ss	defs: ax:ax_20,cx:cx_16,Flags:SCZO_17,Flags:SZO_18,Flags:S_21,Flags:Z_22,Flags:O_23,si:si_14,sp:sp_13,ss:ss_15
 Z_22: orig: Z
-    def:  call fn0C00_000B (retsize: 2;)	uses: ax,cx_11,si_10,sp_3,ss	defs: ax_20,cx_16,O_23,S_21,SCZO_17,si_14,sp_13,ss_15,SZO_18,Z_22
+    def:  call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_11,si:si_10,sp:sp_3,ss:ss	defs: ax:ax_20,cx:cx_16,Flags:SCZO_17,Flags:SZO_18,Flags:S_21,Flags:Z_22,Flags:O_23,si:si_14,sp:sp_13,ss:ss_15
 O_23: orig: O
-    def:  call fn0C00_000B (retsize: 2;)	uses: ax,cx_11,si_10,sp_3,ss	defs: ax_20,cx_16,O_23,S_21,SCZO_17,si_14,sp_13,ss_15,SZO_18,Z_22
+    def:  call fn0C00_000B (retsize: 2;)	uses: ax:ax,cx:cx_11,si:si_10,sp:sp_3,ss:ss	defs: ax:ax_20,cx:cx_16,Flags:SCZO_17,Flags:SZO_18,Flags:S_21,Flags:Z_22,Flags:O_23,si:si_14,sp:sp_13,ss:ss_15
 dx_ax_24: orig: dx_ax
     def:  dx_ax_24 = si_14 *s ax_20
     uses: dx_25 = SLICE(dx_ax_24, word16, 16) (alias)
@@ -184,7 +184,7 @@ O_40: orig: O
     uses: use C_38 | O_40 | S_37 | Z_39
 // fn0C00_000B
 // Return size: 2
-void fn0C00_000B()
+define fn0C00_000B
 fn0C00_000B_entry:
 	def fp
 	def si
@@ -205,8 +205,8 @@ l0C00_0011:
 	cx_11 = cx - 0x0001
 	SZO_12 = cond(cx_11)
 	call fn0C00_000B (retsize: 2;)
-		uses: ax,cx_11,si_10,sp_3,ss
-		defs: ax_20,cx_16,O_23,S_21,SCZO_17,si_14,sp_13,ss_15,SZO_18,Z_22
+		uses: ax:ax,cx:cx_11,si:si_10,sp:sp_3,ss:ss
+		defs: ax:ax_20,cx:cx_16,Flags:SCZO_17,Flags:SZO_18,Flags:S_21,Flags:Z_22,Flags:O_23,si:si_14,sp:sp_13,ss:ss_15
 	dx_ax_24 = si_14 *s ax_20
 	dx_25 = SLICE(dx_ax_24, word16, 16) (alias)
 	ax_26 = (word16) dx_ax_24 (alias)

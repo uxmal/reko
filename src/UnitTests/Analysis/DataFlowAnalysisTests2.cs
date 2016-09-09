@@ -106,8 +106,6 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Ignore()]
-        [Category("investigation")]
         [Category(Categories.UnitTests)]
         public void DfaReg00282()
         {
@@ -115,7 +113,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Ignore("This won't pass until the UseInstructions are eliminated")]
+        [Category(Categories.UnitTests)]
         public void Dfa2_Simple()
         {
             var pb = new ProgramBuilder(new FakeArchitecture());
@@ -138,7 +136,7 @@ void test()
 test_entry:
 	// succ:  l1
 l1:
-	Mem3[0x00010008:word32] = Mem0[0x00010000:word32] + Mem0[0x00010004:word32]
+	Mem4[0x00010008:word32] = Mem0[0x00010000:word32] + Mem0[0x00010004:word32]
 	return
 	// succ:  test_exit
 test_exit:
@@ -147,7 +145,6 @@ test_exit:
         }
 
         [Test]
-        //[Ignore("r1 is kept alive by use statements")]
         public void Dfa2_StackArgs()
         {
             var pb = new ProgramBuilder(new FakeArchitecture());

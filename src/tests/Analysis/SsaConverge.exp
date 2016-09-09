@@ -65,7 +65,7 @@ O_18: orig: O
     uses: use C_16 | O_18 | S_15 | Z_17
 // fn0C00_0000
 // Return size: 2
-void fn0C00_0000()
+define fn0C00_0000
 fn0C00_0000_entry:
 	def fp
 	def bx

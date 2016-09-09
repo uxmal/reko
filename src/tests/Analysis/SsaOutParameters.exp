@@ -5,7 +5,7 @@ Mem2: orig: Mem0
     def:  Mem2[0x00000400:word32] = foo(out r4_1)
 // foo
 // Return size: 0
-void foo()
+define foo
 foo_entry:
 	// succ:  l1
 l1:

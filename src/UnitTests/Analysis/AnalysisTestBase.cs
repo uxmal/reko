@@ -259,6 +259,12 @@ namespace Reko.UnitTests.Analysis
             AssertRunOutput(program, RunTest, sExp);
         }
 
+        protected void RunFileTest(string outputFile, Action<ProcedureBuilder> m)
+        {
+            var program = BuildProgramMock(m);
+            SaveRunOutput(program, RunTest, outputFile);
+        }
+
 		protected void RunFileTest(string sourceFile, string configFile, string outputFile)
 		{
 			Program program = RewriteMsdosAssembler(sourceFile, configFile);

@@ -139,7 +139,6 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        [Ignore("scanning-development")]
         public void DfaReadFile()
 		{
 			RunFileTest_x86_real("Fragments/multiple/read_file.asm", "Analysis/DfaReadFile.txt");
@@ -233,7 +232,6 @@ done:
         }
 
         [Test]
-        [Ignore("scanning-development")]
         public void DfaReg00001()
         {
             var program = RewriteCodeFragment32(UnitTests.Fragments.Regressions.Reg00001.Text);
