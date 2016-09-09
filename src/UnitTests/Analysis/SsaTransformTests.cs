@@ -176,7 +176,7 @@ r1_3: orig: r1
     uses: use r1_3
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	def r1
 	def r2
@@ -218,7 +218,6 @@ r1:r1
     def:  def r1
     uses: dwLoc04_13 = r1
 Mem5: orig: Mem0
-    def:  dwLoc04_13 = r1
 r63_6: orig: r63
     def:  r63_6 = fp - 0x00000008
     uses: use r63_6
@@ -226,7 +225,6 @@ r2:r2
     def:  def r2
     uses: dwLoc08_14 = r2
 Mem8: orig: Mem0
-    def:  dwLoc08_14 = r2
     uses: r1_9 = dwLoc04_13
           r2_10 = dwLoc08_14
 r1_9: orig: r1
@@ -250,7 +248,7 @@ dwLoc08_14: orig: dwLoc08
     uses: r2_10 = dwLoc08_14
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	def fp
 	def r1
@@ -312,7 +310,6 @@ bp:bp
     def:  def bp
     uses: dwLoc04_14 = bp
 Mem5: orig: Mem0
-    def:  dwLoc04_14 = bp
     uses: CZS_7 = cond(wArg04 - 0x0003)
           bp_12 = dwLoc04_14
 bp_6: orig: bp
@@ -348,7 +345,7 @@ r1_19: orig: r1
     uses: use r1_19
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	def fp
 	def bp
@@ -433,7 +430,6 @@ bp:bp
     def:  def bp
     uses: dwLoc04_15 = bp
 Mem5: orig: Mem0
-    def:  dwLoc04_15 = bp
     uses: CZS_7 = wArg04 - 0x0003
 bp_6: orig: bp
     def:  bp_6 = fp - 0x00000004
@@ -442,13 +438,11 @@ CZS_7: orig: CZS
     uses: branch Test(GE,CZS_7) ge3
           use CZS_7
 Mem8: orig: Mem0
-    def:  wArg04_17 = -3
     uses: Mem12 = PHI(Mem10, Mem8)
 r1_9: orig: r1
     def:  r1_9 = 0x00000001
     uses: r1_22 = PHI(r1, r1_9)
 Mem10: orig: Mem0
-    def:  wArg04_18 = 0x0003
     uses: Mem12 = PHI(Mem10, Mem8)
 r63_11: orig: r63
     def:  r63_11 = PHI(r63_3, r63_3)
@@ -479,7 +473,7 @@ r1:r1
     uses: r1_22 = PHI(r1, r1_9)
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	def fp
 	def bp
@@ -556,7 +550,7 @@ proc1_exit:
             #region Expected
 @"// Adder
 // Return size: 0
-void Adder()
+define Adder
 Adder_entry:
 Adder_exit:
 ======
@@ -566,21 +560,21 @@ r2_2: orig: r2
     def:  r2_2 = 0x00000004
     uses: use r2_2
 r1_3: orig: r1
-    def:  call Adder (retsize: 4;)	defs: r1_3
+    def:  call Adder (retsize: 4;)	defs: r1:r1_3
     uses: Mem4[0x00012300:word32] = r1_3
           use r1_3
 Mem4: orig: Mem0
     def:  Mem4[0x00012300:word32] = r1_3
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	// succ:  l1
 l1:
 	r1_1 = 0x00000003
 	r2_2 = 0x00000004
 	call Adder (retsize: 4;)
-		defs: r1_3
+		defs: r1:r1_3
 	Mem4[0x00012300:word32] = r1_3
 	return
 	// succ:  proc1_exit
@@ -612,7 +606,7 @@ proc1_exit:
         }
 
         [Test]
-        public void SsaLocaldiamond()
+        public void SsaLocalDiamond()
         {
             var sExp =
             #region Expected
@@ -630,11 +624,9 @@ bp:bp
     def:  def bp
     uses: dwLoc04_18 = bp
 Mem5: orig: Mem0
-    def:  dwLoc04_18 = bp
 bp_6: orig: bp
     def:  bp_6 = fp - 0x00000004
 Mem7: orig: Mem0
-    def:  dwLoc0C_19 = 0x00000000
     uses: CZS_8 = wArg04 - 0x0003
 CZS_8: orig: CZS
     def:  CZS_8 = wArg04 - 0x0003
@@ -645,10 +637,8 @@ r1:r1
     uses: dwLoc0C_21 = r1
           dwLoc0C_22 = r1
 Mem10: orig: Mem0
-    def:  dwLoc0C_21 = r1
     uses: Mem13 = PHI(Mem11, Mem10)
 Mem11: orig: Mem0
-    def:  dwLoc0C_22 = r1
     uses: Mem13 = PHI(Mem11, Mem10)
 bp_12: orig: bp
     def:  bp_12 = PHI(bp_6, bp_6)
@@ -686,7 +676,7 @@ dwLoc0C_23: orig: dwLoc0C
     uses: r1_14 = dwLoc0C_23
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	def fp
 	def bp
@@ -778,7 +768,7 @@ al_4: orig: al
     def:  al_4 = Test(ULE,C_3 | SZ_2)
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	def esi
 	// succ:  l1
@@ -816,7 +806,7 @@ proc1_exit:
 @"r1:r1
     def:  def r1
     uses: branch r1 true
-          call r3 (retsize: 4;)	uses: r1,r2_7,r3	defs: r1_6,r2_9,r3_10
+          call r3 (retsize: 4;)	uses: r1:r1,r2:r2_7,r3:r3	defs: r1:r1_6,r2:r2_9,r3:r3_10
 r2_2: orig: r2
     def:  r2_2 = 0x00000010
     uses: r2_7 = PHI(r2, r2_2)
@@ -824,28 +814,28 @@ r3_3: orig: r3
     def:  r3_3 = PHI(r3, r3)
 r3:r3
     def:  def r3
-    uses: call r3 (retsize: 4;)	uses: r1,r2_7,r3	defs: r1_6,r2_9,r3_10
-          call r3 (retsize: 4;)	uses: r1,r2_7,r3	defs: r1_6,r2_9,r3_10
+    uses: call r3 (retsize: 4;)	uses: r1:r1,r2:r2_7,r3:r3	defs: r1:r1_6,r2:r2_9,r3:r3_10
+          call r3 (retsize: 4;)	uses: r1:r1,r2:r2_7,r3:r3	defs: r1:r1_6,r2:r2_9,r3:r3_10
 r1_5: orig: r1
     def:  r1_5 = PHI(r1, r1)
 r1_6: orig: r1
-    def:  call r3 (retsize: 4;)	uses: r1,r2_7,r3	defs: r1_6,r2_9,r3_10
+    def:  call r3 (retsize: 4;)	uses: r1:r1,r2:r2_7,r3:r3	defs: r1:r1_6,r2:r2_9,r3:r3_10
     uses: use r1_6
 r2_7: orig: r2
     def:  r2_7 = PHI(r2, r2_2)
-    uses: call r3 (retsize: 4;)	uses: r1,r2_7,r3	defs: r1_6,r2_9,r3_10
+    uses: call r3 (retsize: 4;)	uses: r1:r1,r2:r2_7,r3:r3	defs: r1:r1_6,r2:r2_9,r3:r3_10
 r2:r2
     def:  def r2
     uses: r2_7 = PHI(r2, r2_2)
 r2_9: orig: r2
-    def:  call r3 (retsize: 4;)	uses: r1,r2_7,r3	defs: r1_6,r2_9,r3_10
+    def:  call r3 (retsize: 4;)	uses: r1:r1,r2:r2_7,r3:r3	defs: r1:r1_6,r2:r2_9,r3:r3_10
     uses: use r2_9
 r3_10: orig: r3
-    def:  call r3 (retsize: 4;)	uses: r1,r2_7,r3	defs: r1_6,r2_9,r3_10
+    def:  call r3 (retsize: 4;)	uses: r1:r1,r2:r2_7,r3:r3	defs: r1:r1_6,r2:r2_9,r3:r3_10
     uses: use r3_10
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	def r1
 	def r3
@@ -860,8 +850,8 @@ l2:
 true:
 	r2_7 = PHI(r2, r2_2)
 	call r3 (retsize: 4;)
-		uses: r1,r2_7,r3
-		defs: r1_6,r2_9,r3_10
+		uses: r1:r1,r2:r2_7,r3:r3
+		defs: r1:r1_6,r2:r2_9,r3:r3_10
 	return
 	// succ:  proc1_exit
 proc1_exit:
@@ -894,7 +884,7 @@ proc1_exit:
     def:  def fp
     uses: r63_2 = fp
           r63_7 = fp - 0x00000004
-          call proc1 (retsize: 0;)	uses: dwArg04,dwLoc04_16,fp - 0x00000004,r3,r4_6,r63_14	defs: r3_11,r4_12,r63_9
+          call proc1 (retsize: 0;)	uses: Local -0004:dwLoc04_16,r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0004:dwArg04	defs: r3:r3_11,r4:r4_12,r63:r63_9
 r63_2: orig: r63
     def:  r63_2 = fp
     uses: r63_19 = PHI(r63_14, r63_2)
@@ -912,38 +902,36 @@ r4_5: orig: r4
 r4_6: orig: r4
     def:  r4_6 = Mem0[r4_4 + 0x00000004:word32]
     uses: dwLoc04_16 = r4_6
-          call proc1 (retsize: 0;)	uses: dwArg04,dwLoc04_16,fp - 0x00000004,r3,r4_6,r63_14	defs: r3_11,r4_12,r63_9
+          call proc1 (retsize: 0;)	uses: Local -0004:dwLoc04_16,r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0004:dwArg04	defs: r3:r3_11,r4:r4_12,r63:r63_9
 r63_7: orig: r63
     def:  r63_7 = fp - 0x00000004
 Mem8: orig: Mem0
-    def:  dwLoc04_16 = r4_6
 r63_9: orig: r63
-    def:  call proc1 (retsize: 0;)	uses: dwArg04,dwLoc04_16,fp - 0x00000004,r3,r4_6,r63_14	defs: r3_11,r4_12,r63_9
+    def:  call proc1 (retsize: 0;)	uses: Local -0004:dwLoc04_16,r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0004:dwArg04	defs: r3:r3_11,r4:r4_12,r63:r63_9
     uses: r63_14 = r63_9 + 0x00000004
 r3:r3
     def:  def r3
-    uses: call proc1 (retsize: 0;)	uses: dwArg04,dwLoc04_16,fp - 0x00000004,r3,r4_6,r63_14	defs: r3_11,r4_12,r63_9
+    uses: call proc1 (retsize: 0;)	uses: Local -0004:dwLoc04_16,r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0004:dwArg04	defs: r3:r3_11,r4:r4_12,r63:r63_9
           r3_17 = PHI(r3_11, r3)
 r3_11: orig: r3
-    def:  call proc1 (retsize: 0;)	uses: dwArg04,dwLoc04_16,fp - 0x00000004,r3,r4_6,r63_14	defs: r3_11,r4_12,r63_9
+    def:  call proc1 (retsize: 0;)	uses: Local -0004:dwLoc04_16,r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0004:dwArg04	defs: r3:r3_11,r4:r4_12,r63:r63_9
     uses: r3_17 = PHI(r3_11, r3)
 r4_12: orig: r4
-    def:  call proc1 (retsize: 0;)	uses: dwArg04,dwLoc04_16,fp - 0x00000004,r3,r4_6,r63_14	defs: r3_11,r4_12,r63_9
+    def:  call proc1 (retsize: 0;)	uses: Local -0004:dwLoc04_16,r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0004:dwArg04	defs: r3:r3_11,r4:r4_12,r63:r63_9
     uses: r4_13 = r4_12 + 0x00000001
 r4_13: orig: r4
     def:  r4_13 = r4_12 + 0x00000001
     uses: r4_18 = PHI(r4_13, r4_5)
 r63_14: orig: r63
     def:  r63_14 = r63_9 + 0x00000004
-    uses: call proc1 (retsize: 0;)	uses: dwArg04,dwLoc04_16,fp - 0x00000004,r3,r4_6,r63_14	defs: r3_11,r4_12,r63_9
-          r63_19 = PHI(r63_14, r63_2)
+    uses: r63_19 = PHI(r63_14, r63_2)
 dwArg04:Stack +0004
     def:  def dwArg04
     uses: r4_4 = dwArg04
-          call proc1 (retsize: 0;)	uses: dwArg04,dwLoc04_16,fp - 0x00000004,r3,r4_6,r63_14	defs: r3_11,r4_12,r63_9
+          call proc1 (retsize: 0;)	uses: Local -0004:dwLoc04_16,r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0004:dwArg04	defs: r3:r3_11,r4:r4_12,r63:r63_9
 dwLoc04_16: orig: dwLoc04
     def:  dwLoc04_16 = r4_6
-    uses: call proc1 (retsize: 0;)	uses: dwArg04,dwLoc04_16,fp - 0x00000004,r3,r4_6,r63_14	defs: r3_11,r4_12,r63_9
+    uses: call proc1 (retsize: 0;)	uses: Local -0004:dwLoc04_16,r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0004:dwArg04	defs: r3:r3_11,r4:r4_12,r63:r63_9
 r3_17: orig: r3
     def:  r3_17 = PHI(r3_11, r3)
     uses: use r3_17
@@ -955,7 +943,7 @@ r63_19: orig: r63
     uses: use r63_19
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	def fp
 	def Mem0
@@ -972,8 +960,8 @@ m0Induction:
 	r63_7 = fp - 0x00000004
 	dwLoc04_16 = r4_6
 	call proc1 (retsize: 0;)
-		uses: dwArg04,dwLoc04_16,fp - 0x00000004,r3,r4_6,r63_14
-		defs: r3_11,r4_12,r63_9
+		uses: Local -0004:dwLoc04_16,r3:r3,r4:r4_6,r63:fp - 0x00000004,Stack +0004:dwArg04
+		defs: r3:r3_11,r4:r4_12,r63:r63_9
 	r4_13 = r4_12 + 0x00000001
 	r63_14 = r63_9 + 0x00000004
 	goto m2Done
@@ -1034,7 +1022,7 @@ b_2: orig: b
     def:  b_2 = a_1
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	// succ:  l1
 l1:
@@ -1071,7 +1059,7 @@ Mem2: orig: Mem0
     def:  Mem2[0x00123400:word32] = a
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	def a
 	// succ:  l1
@@ -1112,7 +1100,7 @@ b:b
     uses: b_3 = PHI(b, b_2)
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	def a
 	def b
@@ -1169,7 +1157,7 @@ Mem5: orig: Mem0
     def:  Mem5[0x00001234:byte] = ah_4
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	def eax
 	def Mem0
@@ -1225,7 +1213,7 @@ Mem7: orig: Mem0
     def:  Mem7[0x00010232:word32] = ecx_6
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	def Mem0
 	// succ:  l1
@@ -1293,7 +1281,7 @@ Mem5: orig: Mem0
     def:  Mem5[0x00642300:word32] = eax_4
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	def Mem0
 	// succ:  l1
@@ -1349,7 +1337,7 @@ Mem7: orig: Mem0
     def:  Mem7[0x00642308:byte] = dl_6
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	def Mem0
 	// succ:  l1
@@ -1397,7 +1385,7 @@ Mem4: orig: Mem0
     def:  Mem4[0x00123400:word32] = ebx_2
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	def ebx
 	// succ:  l1
@@ -1453,7 +1441,7 @@ bx_7: orig: bx
     uses: use bx_7
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	def es
 	def bx
@@ -1509,7 +1497,7 @@ Mem6: orig: Mem0
     def:  Mem6[0x00123108:byte] = al_4
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	def eax
 	def Mem0
@@ -1562,7 +1550,7 @@ r14_4: orig: r14
     def:  r14_4 = ImportedFunc(r6)
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	def r6
 	// succ:  l1
@@ -1635,7 +1623,7 @@ Mem0:Global memory
           ebx_7 = Mem0[ebx_2 + 0x00000004:word32]
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	def ebx
 	def Mem0
@@ -1716,7 +1704,7 @@ es_8: orig: es
     uses: use es_8
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	def Mem0
 	// succ:  m0
@@ -1765,7 +1753,6 @@ proc1_exit:
           use r1_1
 r2_2: orig: r2
     def:  r2_2 = PHI(r2, r2_2)
-    uses: use r2_2
 Mem3: orig: Mem0
     def:  Mem3 = PHI(Mem0, Mem3)
 r1_4: orig: r1
@@ -1777,12 +1764,13 @@ r1:r1
 r2:r2
     def:  def r2
     uses: r1_4 = r1_1 + Mem0[r2:word32]
+          use r2
 Mem0:Global memory
     def:  def Mem0
     uses: r1_4 = r1_1 + Mem0[r2:word32]
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	def r1
 	def r2
@@ -1801,7 +1789,7 @@ m3done:
 	// succ:  proc1_exit
 proc1_exit:
 	use r1_1
-	use r2_2
+	use r2
 ======
 ";
             #endregion
@@ -1850,7 +1838,7 @@ Mem7: orig: Mem0
     def:  Mem7[0x1236:word16] = bx_6
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	def Mem0
 	def bx
@@ -1918,7 +1906,7 @@ bx_8: orig: bx
     uses: use bx_8
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	def Mem0
 	def bx
@@ -1999,7 +1987,7 @@ Mem10: orig: Mem0
     def:  Mem10[bx_9:word16] = 0x0000
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	def si
 	def Mem0
@@ -2062,7 +2050,7 @@ C_3: orig: C
     uses: use C_3 | SZ_2
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	def r1
 	// succ:  m0
@@ -2112,7 +2100,7 @@ r1_5: orig: r1
     uses: use r1_5
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	def r1
 	// succ:  l1
@@ -2162,7 +2150,7 @@ Mem0:Global memory
     uses: Mem1 = PHI(Mem0, Mem3)
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	def Mem0
 	// succ:  m1
@@ -2240,7 +2228,7 @@ bh_8: orig: bh
           bx_7 = DPB(bx_6, bh_8, 8) (alias)
 // proc1
 // Return size: 0
-void proc1()
+define proc1
 proc1_entry:
 	def Mem0
 	// succ:  l1

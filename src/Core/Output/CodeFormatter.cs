@@ -455,7 +455,7 @@ namespace Reko.Core.Output
                 writer.Indentation += writer.TabSize;
                 writer.Indent();
                 writer.Write("uses: ");
-                writer.Write(string.Join(",", ci.Uses.OrderBy(u => u.Expression.ToString()).Select(u => u.Expression)));
+                WriteCallBindings(ci.Uses);
                 writer.Terminate();
                 writer.Indentation -= writer.TabSize;
             }
@@ -464,12 +464,24 @@ namespace Reko.Core.Output
                 writer.Indentation += writer.TabSize;
                 writer.Indent();
                 writer.Write("defs: ");
-                writer.Write(string.Join(",", ci.Definitions.OrderBy(d => ((Identifier)d.Expression).Name).Select(d => d.Expression)));
+                WriteCallBindings(ci.Definitions);
                 writer.Terminate();
                 writer.Indentation -= writer.TabSize;
             }
 		}
 
+        private void WriteCallBindings(IEnumerable<CallBinding> bindings)
+        {
+            var sep = "";
+            foreach (var binding in bindings.OrderBy(b => b.Storage.ToString()))
+            {
+                writer.Write(sep);
+                sep = ",";
+                writer.Write(binding.Storage.ToString());
+                writer.Write(":");
+                binding.Expression.Accept(this);
+            }
+        }
 		public void VisitDeclaration(Declaration decl)
 		{
 			writer.Indent();
