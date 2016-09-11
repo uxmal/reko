@@ -58,11 +58,6 @@ namespace Reko.Core
 
         public Program Program { get; private set; }
 
-		public virtual FunctionType GetProcedureSignature(ProcedureBase proc)
-		{
-			return proc.Signature;
-		}
-
 		/// <summary>
 		/// Rewrites CALL instructions to function applications.
 		/// </summary>
@@ -133,11 +128,6 @@ namespace Reko.Core
             return unConverted;
         }
 
-        /// <summary>
-        /// Having identified the return variable -- if any, rewrite all 
-        /// return statements to return that variable.
-        /// </summary>
-        /// <param name="proc"></param>
         public void RewriteReturns(Procedure proc)
         {
             Identifier idRet = proc.Signature.ReturnValue;
@@ -150,6 +140,7 @@ namespace Reko.Core
                 .OfType<Identifier>()
                 .Where(id => id.Storage == idRet.Storage)
                 .SingleOrDefault();
+
             foreach (Statement stm in proc.Statements)
             {
                 var ret = stm.Instruction as ReturnInstruction;

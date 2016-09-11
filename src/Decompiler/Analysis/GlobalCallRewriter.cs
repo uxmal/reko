@@ -27,7 +27,6 @@ using CallRewriter = Reko.Core.CallRewriter;
 using FpuStackStorage = Reko.Core.FpuStackStorage;
 using Frame = Reko.Core.Frame;
 using Identifier = Reko.Core.Expressions.Identifier;
-using IStorageBinder = Reko.Core.IStorageBinder;
 using OutArgumentStorage = Reko.Core.OutArgumentStorage;
 using PrimtiveType = Reko.Core.Types.PrimitiveType;
 using Procedure = Reko.Core.Procedure;
@@ -37,7 +36,6 @@ using SignatureBuilder = Reko.Core.SignatureBuilder;
 using StackArgumentStorage = Reko.Core.StackArgumentStorage;
 using UseInstruction = Reko.Core.Code.UseInstruction;
 using Reko.Core;
-using Reko.Core.Code;
 using Reko.Core.Expressions;
 
 namespace Reko.Analysis
@@ -252,6 +250,16 @@ namespace Reko.Analysis
         protected override ApplicationBuilder CreateApplicationBuilder(Procedure proc, CallInstruction call, ProcedureConstant fn)
         {
             return new CallApplicationBuilder(base.Program.Architecture, call, fn);
+        }
+
+        /// <summary>
+        /// Having identified the return variable -- if any, rewrite all 
+        /// return statements to return that variable.
+        /// </summary>
+        /// <param name="proc"></param>
+        public void RewriteReturns(SsaState ssa)
+        {
+
         }
     }
 }
