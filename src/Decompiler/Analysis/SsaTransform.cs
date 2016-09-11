@@ -931,7 +931,7 @@ namespace Reko.Analysis
                               !existing.Contains(sid.Identifier))
                 .Select(sid => sid.OriginalIdentifier);
             reachingIds = SeparateSequences(reachingIds);
-            reachingIds = GroupFlags(reachingIds);
+            reachingIds = ExpandFlags(reachingIds);
             var sortedIds = ResolveOverlaps(reachingIds)
                 .Distinct()
                 .OrderBy(id => id.Name);    // Sort them for stability; unit test are sensitive to shifting order 
@@ -1012,32 +1012,25 @@ namespace Reko.Analysis
             return registerBag.Values.SelectMany(s => s).Concat(others);
         }
 
-        public IEnumerable<Identifier> GroupFlags(IEnumerable<Identifier> ids)
+        public IEnumerable<Identifier> ExpandFlags(IEnumerable<Identifier> ids)
         {
-            var flags = new Dictionary<FlagRegister, uint>();
-            var others = new List<Identifier>();
+            var output = new List<Identifier>();
             foreach (var id in ids)
             {
                 var grf = id.Storage as FlagGroupStorage;
                 if (grf != null)
                 {
-                    uint u;
-                    if (flags.TryGetValue(grf.FlagRegister, out u))
-                    {
-                        flags[grf.FlagRegister] = u | grf.FlagGroupBits;
-                    }
-                    else
-                    {
-                        flags.Add(grf.FlagRegister, grf.FlagGroupBits);
-                    }
+                    output.AddRange(
+                        grf.GetFlagBitMasks()
+                            .Select(u => ssa.Procedure.Frame.EnsureFlagGroup(
+                                 arch.GetFlagGroup(u))));
                 }
                 else
                 {
-                    others.Add(id);
+                    output.Add(id);
                 }
             }
-            return flags.Select(de => ssa.Procedure.Frame.EnsureFlagGroup(arch.GetFlagGroup(de.Value)))
-                .Concat(others);
+            return output;
         }
 
         public override Instruction TransformAssignment(Assignment a)

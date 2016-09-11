@@ -109,6 +109,7 @@ namespace Reko.Analysis
             // If any instructions were removed, update the callers. 
             if (!ssa.Procedure.Signature.ParametersValid && deadStms.Count > 0)
             {
+                DeadCode.Eliminate(ssa);
                 foreach (Statement stm in program.CallGraph.CallerStatements(ssa.Procedure))
                 {
                     var ci = stm.Instruction as CallInstruction;
@@ -131,14 +132,15 @@ namespace Reko.Analysis
                 var use = stm.Instruction as UseInstruction;
                 if (use == null)
                     continue;
-                var id = use.Expression as Identifier;
-                if (id == null)
-                    continue;
-                var stg = id.Storage;
-                if (!liveOutStorages.Contains(stg))
+                var ids = ExpressionIdentifierUseFinder.Find(ssa.Identifiers, use.Expression);
+                foreach (var id in ids)
                 {
-                    deadStgs.Add(stg);
-                    deadStms.Add(stm);
+                    var stg = id.Storage;
+                    if (!liveOutStorages.Contains(stg))
+                    {
+                        deadStgs.Add(stg);
+                        deadStms.Add(stm);
+                    }
                 }
             }
         }

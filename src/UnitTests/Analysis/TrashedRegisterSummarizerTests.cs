@@ -18,6 +18,7 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Expressions;
@@ -25,12 +26,8 @@ using Reko.Core.Operators;
 using Reko.Core.Types;
 using Reko.Evaluation;
 using Reko.UnitTests.Mocks;
-using NUnit.Framework;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace Reko.UnitTests.Analysis
 {

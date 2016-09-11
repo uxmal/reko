@@ -177,6 +177,13 @@ namespace Reko.Core.Output
             TypeQualifierList(m);
         }
 
+        void ReferenceTo(ReferenceTo r)
+        {
+            WriteSpace();
+            fmt.Write('&');
+            TypeQualifierList(r);
+        }
+
         /* type-specifier:
               void
               char
@@ -297,13 +304,16 @@ namespace Reko.Core.Output
                 TypeQualifierList(t);
             var pt = t as Pointer;
             var mp = t as MemberPointer;
-            if (pt != null || mp != null)
+            var rf = t as ReferenceTo;
+            if (pt != null || mp != null || rf != null)
             {
                 // Get the types-specifier of this type.  
                 DataType pointee = StripPointerOperator(
                     pt != null 
                         ? pt.Pointee
-                        : mp.Pointee);
+                        : mp != null 
+                            ? mp.Pointee
+                            : rf.Referent);
                 SpecifierQualifierList(pointee);
                 if (pointee is ArrayType || pointee is FunctionType)
                 {
@@ -312,8 +322,10 @@ namespace Reko.Core.Output
                 }
                 if (pt != null)
                     Pointer(pt);
-                else
+                else if (mp != null)
                     MemberPointer(mp);
+                else if (rf != null)
+                    ReferenceTo(rf); 
                 --this.depth;
                 return;
             }

@@ -29,6 +29,9 @@ using Reko.Core.Code;
 
 namespace Reko.Analysis
 {
+    /// <summary>
+    /// Builds an application from a call instruction.
+    /// </summary>
     public class CallApplicationBuilder : ApplicationBuilder, StorageVisitor<Expression>
     {
         private IProcessorArchitecture arch;
@@ -69,7 +72,7 @@ namespace Reko.Analysis
 
         public Expression VisitFlagGroupStorage(FlagGroupStorage grf)
         {
-            throw new NotImplementedException();
+            return map[grf];
         }
 
         public Expression VisitFlagRegister(FlagRegister freg)
@@ -97,7 +100,7 @@ namespace Reko.Analysis
 
         public Expression VisitOutArgumentStorage(OutArgumentStorage arg)
         {
-            throw new NotImplementedException();
+            return defs[arg.OriginalIdentifier.Storage];
         }
 
         public Expression VisitRegisterStorage(RegisterStorage reg)

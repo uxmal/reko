@@ -145,9 +145,11 @@ namespace Reko.Analysis
 
 			var sb = new SignatureBuilder(proc, Program.Architecture);
 			var frame = proc.Frame;
-			if (flow.grfLiveOut != 0)
+			foreach (var grf in flow.LiveOut
+                .OfType<FlagGroupStorage>()
+                .OrderBy(g => g.Name))
 			{
-				sb.AddFlagGroupReturnValue(flow.grfLiveOut, frame);
+                sb.AddOutParam(frame.EnsureFlagGroup(grf));
 			}
 
             var implicitRegs = Program.Platform.CreateImplicitArgumentRegisters();

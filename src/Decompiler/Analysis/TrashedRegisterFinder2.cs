@@ -103,8 +103,10 @@ namespace Reko.Analysis
                 this.activePhis = new HashSet<PhiAssignment>();
                 foreach (var sid in ssa.Procedure.ExitBlock.Statements
                     .Select(s => s.Instruction as UseInstruction)
-                    .Where(u => u != null && u.Expression is Identifier)    //$TODO: fix is Identifier
-                    .Select(u => ssa.Identifiers[(Identifier)u.Expression]))
+                    .Where(u => u != null)
+                    .SelectMany(u => 
+                        ExpressionIdentifierUseFinder.Find(ssa.Identifiers, u.Expression)
+                     .Select(id => ssa.Identifiers[id])))
                 {
                     CategorizeIdentifier(sid);
                 }
