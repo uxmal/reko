@@ -170,7 +170,7 @@ namespace Reko.Arch.Pdp11
 
         public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
         {
-            throw new NotImplementedException();
+            return reg;
         }
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
@@ -212,7 +212,7 @@ namespace Reko.Arch.Pdp11
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            return new Pdp11Rewriter(this, new Pdp11Disassembler(rdr, this), frame);
+            return new Pdp11Rewriter(this, new Pdp11Disassembler(rdr, this), frame, host);
         }
 
         public override Address MakeAddressFromConstant(Constant c)

@@ -127,6 +127,7 @@ namespace Reko.Arch.Pdp11
 
         adc,
         add,
+        addb,
         asl,
         asr,
         bcc,
@@ -137,6 +138,7 @@ namespace Reko.Arch.Pdp11
         bhi,
         bic,
         bis,
+        bisb,
         bit,
         ble,
         blos,
@@ -149,6 +151,7 @@ namespace Reko.Arch.Pdp11
         bvc,
         bvs,
         clr,
+        clrflags,
         cmp,
         com,
         dec,
@@ -174,6 +177,7 @@ namespace Reko.Arch.Pdp11
         mtpi,
         mtpd,
         neg,
+        nop,
 
         reset,
         rol,
@@ -183,6 +187,7 @@ namespace Reko.Arch.Pdp11
         rtt,
         rts,
         sbc,
+        setflags,
         sob,
         spl,
         sub,
@@ -190,6 +195,7 @@ namespace Reko.Arch.Pdp11
         sxt,
         trap,
         tst,
+        tstb,
         wait,
         xor,
     }
