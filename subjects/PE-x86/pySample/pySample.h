@@ -257,7 +257,7 @@ Eq_299: (fn Eq_163 (Eq_163, Eq_163))
 	T_343 (in InterlockedExchange : ptr32)
 Eq_321: (segment "Eq_321")
 	T_321 (in fs_343 : (ptr Eq_321))
-Eq_360: (fn void ((ptr (ptr code))))
+Eq_360: (fn void ((ptr word32)))
 	T_360 (in free : ptr32)
 	T_361 (in signature of free : void)
 Eq_375: (segment "Eq_375")
@@ -362,7 +362,7 @@ Eq_833: (struct "Eq_833" (0 word16 w0000) (3C word32 dw003C))
 Eq_839: (struct "Eq_839" (0 word32 dw0000) (18 word16 w0018))
 	T_839 (in eax_21 : (ptr Eq_839))
 	T_843 (in Mem0[dwArg04 + 0x0000003C:word32] + dwArg04 : word32)
-Eq_856: (struct "Eq_856" 0028 (0 uint32 dw0000) (8 uint32 dw0008))
+Eq_856: (struct "Eq_856" 0028 (0 word32 dw0000) (8 uint32 dw0008))
 	T_856 (in eax : (ptr Eq_856))
 	T_872 (in eax_22 : (ptr Eq_856))
 	T_881 (in (word32) ecx_6->w0014 + 0x00000018 + ecx_6 + 0x0000000C : word32)
@@ -882,15 +882,15 @@ T_113: (in eax_24 + 0x00000000 : word32)
   OrigDataType: word32
 T_114: (in Mem0[eax_24 + 0x00000000:word32] : word32)
   Class: Eq_114
-  DataType: int32
-  OrigDataType: int32
+  DataType: word32
+  OrigDataType: word32
 T_115: (in 0x00000001 : word32)
   Class: Eq_115
   DataType: word32
   OrigDataType: word32
 T_116: (in eax_24->ob_refcnt + 0x00000001 : word32)
   Class: Eq_114
-  DataType: int32
+  DataType: word32
   OrigDataType: word32
 T_117: (in 0x00000000 : word32)
   Class: Eq_117
@@ -902,7 +902,7 @@ T_118: (in eax_24 + 0x00000000 : word32)
   OrigDataType: (ptr word32)
 T_119: (in Mem27[eax_24 + 0x00000000:word32] : word32)
   Class: Eq_114
-  DataType: int32
+  DataType: word32
   OrigDataType: word32
 T_120: (in _Py_NoneStruct : PyObject)
   Class: Eq_110
@@ -1672,9 +1672,9 @@ T_311: (in esp_332 : word32)
   Class: Eq_311
   DataType: word32
   OrigDataType: word32
-T_312: (in eax_333 : (ptr (ptr code)))
+T_312: (in eax_333 : (ptr word32))
   Class: Eq_312
-  DataType: (ptr (ptr code))
+  DataType: (ptr word32)
   OrigDataType: word32
 T_313: (in ebp_334 : word32)
   Class: Eq_313
@@ -1712,25 +1712,25 @@ T_321: (in fs_343 : (ptr Eq_321))
   Class: Eq_321
   DataType: (ptr Eq_321)
   OrigDataType: (ptr (segment))
-T_322: (in ebx_340 : (ptr (ptr code)))
+T_322: (in ebx_340 : (ptr word32))
   Class: Eq_312
-  DataType: (ptr (ptr code))
+  DataType: (ptr word32)
   OrigDataType: (ptr void)
 T_323: (in decode_pointer : ptr32)
   Class: Eq_222
   DataType: (ptr code)
   OrigDataType: (ptr code)
-T_324: (in edi_347 : (ptr (ptr code)))
+T_324: (in edi_347 : (ptr word32))
   Class: Eq_312
-  DataType: (ptr (ptr code))
-  OrigDataType: (ptr (struct 0004 (0 T_357 t0000)))
+  DataType: (ptr word32)
+  OrigDataType: (ptr (struct 0004 (0 word32 dw0000)))
 T_325: (in 0x00000004 : word32)
   Class: Eq_325
   DataType: word32
   OrigDataType: word32
 T_326: (in edi_347 - 0x00000004 : word32)
   Class: Eq_312
-  DataType: (ptr (ptr code))
+  DataType: (ptr word32)
   OrigDataType: word32
 T_327: (in edi_347 >= ebx_340 : bool)
   Class: Eq_327
@@ -1874,7 +1874,7 @@ T_361: (in signature of free : void)
   OrigDataType: 
 T_362: (in ptrArg04 : (ptr void))
   Class: Eq_312
-  DataType: (ptr (ptr code))
+  DataType: (ptr word32)
   OrigDataType: 
 T_363: (in free(ebx_340) : void)
   Class: Eq_363
@@ -3915,7 +3915,7 @@ T_871: (in 0x00000000 : word32)
 T_872: (in eax_22 : (ptr Eq_856))
   Class: Eq_856
   DataType: (ptr Eq_856)
-  OrigDataType: (ptr (struct 0028 (0 T_898 t0000) (8 T_892 t0008)))
+  OrigDataType: (ptr (struct 0028 (0 word32 dw0000) (8 uint32 dw0008)))
 T_873: (in 0x00000014 : word32)
   Class: Eq_873
   DataType: word32
@@ -5025,7 +5025,7 @@ typedef LONG (Eq_299)(LONG, LONG);
 typedef struct Eq_321 {
 } Eq_321;
 
-typedef void (Eq_360)(code * *);
+typedef void (Eq_360)(word32 *);
 
 typedef struct Eq_375 {
 } Eq_375;
@@ -5180,7 +5180,7 @@ typedef struct Eq_839 {
 } Eq_839;
 
 typedef struct Eq_856 {	// size: 40 28
-	uint32 dw0000;	// 0
+	word32 dw0000;	// 0
 	uint32 dw0008;	// 8
 } Eq_856;
 

@@ -57,7 +57,7 @@ globals_t: (in globals : (ptr (struct "Globals")))
 T_2: (in ptr_0 : (ptr word32))
   Class: Eq_2
   DataType: (ptr word32)
-  OrigDataType: (ptr (struct 0004 (0 T_9 t0000)))
+  OrigDataType: (ptr (struct 0004 (0 word32 dw0000)))
 T_3: (in 0x04000000 : word32)
   Class: Eq_2
   DataType: (ptr word32)
