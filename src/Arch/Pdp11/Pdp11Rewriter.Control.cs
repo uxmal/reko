@@ -52,6 +52,19 @@ namespace Reko.Arch.Pdp11
             host.PseudoProcedure("__emt", VoidType.Instance, RewriteSrc(instr.op1));
         }
 
+        private void RewriteJmp(Pdp11Instruction instr)
+        {
+            this.rtlCluster.Class = RtlClass.Transfer;
+            var jmpDst = RewriteSrc(instr.op1);
+            var memDst = jmpDst as MemoryAccess;
+            if (memDst != null)
+            {
+                emitter.Goto(memDst.EffectiveAddress);
+                return;
+            }
+            throw new NotImplementedException();
+        }
+
         private void RewriteJsr(Pdp11Instruction instr)
         {
             this.rtlCluster.Class = RtlClass.Transfer;
@@ -64,6 +77,18 @@ namespace Reko.Arch.Pdp11
                 return;
             }
             throw new NotImplementedException();
+        }
+
+        private void RewriteRts(Pdp11Instruction instr)
+        {
+            this.rtlCluster.Class = RtlClass.Transfer;
+            var regLink = (RegisterOperand)instr.op1;
+            if (regLink.Register == Registers.pc)
+            {
+                emitter.Return(2, 0);
+                return;
+            }
+            throw new NotImplementedException(regLink.Register.Name);
         }
     }
 }

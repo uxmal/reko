@@ -199,5 +199,146 @@ namespace Reko.UnitTests.Arch.Pdp11
                 "1|L--|r2 = r2 + 0x00B2",
                 "2|L--|NZVC = cond(r2)");
         }
+
+        [Test]
+        public void Pdp11Rw_sub()
+        {
+            BuildTest(0xE5C6, 0x0010); // sub #0010,sp
+            AssertCode(
+                "0|L--|0200(4): 2 instructions",
+                "1|L--|sp = sp - 0x0010",
+                "2|L--|NZVC = cond(sp)");
+        }
+
+
+        [Test]
+        public void Pdp11Rw_bit()
+        {
+            BuildTest(0x35C0, 0x1000); // bit #1000,r0
+            AssertCode(
+                "0|L--|0200(4): 3 instructions",
+                "1|L--|r0 = r0 & 0x1000",
+                "2|L--|NZ = cond(r0)",
+                "3|L--|V = false");
+        }
+
+        [Test]
+        public void Pdp11Rw_tst_predec()
+        {
+            BuildTest(0x0BE4);          // tst -(r4)
+            AssertCode(
+                "0|L--|0200(2): 6 instructions",
+                "1|L--|r4 = r4 - 0x0002",
+                "2|L--|v4 = Mem0[r4:word16]",
+                "3|L--|v4 = v4 & v4",
+                "4|L--|NZ = cond(v4)",
+                "5|L--|V = false",
+                "6|L--|C = false");
+        }
+
+        [Test]
+        public void Pdp11Rw_dec()
+        {
+            BuildTest(0x0AC2);          // dec r2
+            AssertCode(
+                "0|L--|0200(2): 2 instructions",
+                "1|L--|r2 = r2 - 0x0001",
+                "2|L--|NZV = cond(r2)");
+        }
+
+        [Test]
+        public void Pdp11Rw_Const()
+        {
+            BuildTest(0x15C0, 0x0397);          // mov #0397,r0
+            AssertCode(
+                  "0|L--|0200(4): 3 instructions",
+                  "1|L--|r0 = 0x0397",
+                  "2|L--|NZ = cond(r0)",
+                  "3|L--|V = false");
+        }
+
+        [Test]
+        public void Pdp11Rw_Indexed()
+        {
+            BuildTest(0x65F3, 0x0022, 0x0050); // add #0022,0050(r3)
+            AssertCode(
+                "0|L--|0200(6): 3 instructions",
+                "1|L--|v3 = Mem0[r3 + 0x0050:word16] + 0x0022",
+                "2|L--|Mem0[r3 + 0x0050:word16] = v3",
+                "3|L--|NZVC = cond(v3)");
+        }
+
+        [Test]
+        public void Pdp11Rw_IndexDeferred_pc()
+        {
+            BuildTest(0x453F, 0x7272); // bic(r4)+,@7272(pc)
+            AssertCode(
+                "0|L--|0200(4): 6 instructions",
+                "1|L--|v3 = Mem0[r4:word16]",
+                "2|L--|r4 = r4 + 0x0002",
+                "3|L--|v5 = Mem0[0x0204:word16] & ~v3",
+                "4|L--|Mem0[0x0204:word16] = v5",
+                "5|L--|NZ = cond(v5)",
+                "6|L--|V = false");
+        }
+
+        [Test]
+        public void Pdp11Rw_PreDecDef()
+        {
+            BuildTest(0x1AE6);  //  mov @-(r3),-(sp)
+            AssertCode(
+                "0|L--|0200(2): 6 instructions",
+                "1|L--|r3 = r3 - 0x0002",
+                "2|L--|v3 = Mem0[Mem0[r3:ptr16]:word16]",
+                "3|L--|sp = sp - 0x0002",
+                "4|L--|Mem0[sp:word16] = v3",
+                "5|L--|NZ = cond(v5)",
+                "6|L--|V = false");
+        }
+
+        [Test]
+        public void Pdp11Rw_jmp()
+        {
+            BuildTest(0x004C);  //﻿ 4C 00 jmp @r4
+            AssertCode(
+                "0|T--|0200(2): 1 instructions",
+                "1|T--|goto r4");
+        }
+
+        [Test]
+        public void Pdp11Rw_rts()
+        {
+            BuildTest(0x0087); // rts pc
+            AssertCode(
+                  "0|T--|0200(2): 1 instructions",
+                  "1|T--|return (2,0)");
+        }
+
+        [Test]
+        [Ignore]
+        public void Pdp11Rw_PostIncrDef()
+        {
+            BuildTest(0x0BE4); // jmp @(r4)+
+            AssertCode(
+                 "0|T--|0200(2): 3 instructions",
+                 "1|L--|v3 = Mem0[r4:word16]",
+                 "2|L--|r4 = r4 + 0x0002",
+                 "3|T--|goto v3");
+        }
+
+        [Test]
+        public void Pdp11Rw_PostIncDst()
+        {
+            BuildTest(0x3520);  // bit (r4)+,-(r0)
+            AssertCode(
+                "0|L--|0200(2): 7 instructions",
+                "1|L--|v3 = Mem0[r4:word16]",
+                "2|L--|r4 = r4 + 0x0002",
+                "3|L--|r0 = r0 - 0x0002",
+                "4|L--|v5 = v3 & Mem0[r0:word16]",
+                "5|L--|Mem0[r0:word16] = v5",
+                "6|L--|NZ = cond(v5)",
+                "7|L--|V = false");
+        }
     }
 }

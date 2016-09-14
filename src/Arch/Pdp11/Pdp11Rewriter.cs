@@ -74,6 +74,8 @@ namespace Reko.Arch.Pdp11
                 case Opcodes.bic: RewriteBic(instr); break;
                 case Opcodes.bis: RewriteBis(instr); break;
                 case Opcodes.bisb: RewriteBis(instr); break;
+                case Opcodes.bit: RewriteBit(instr); break;
+                case Opcodes.bitb: RewriteBit(instr); break;
                 case Opcodes.blos: RewriteBxx(instr, ConditionCode.ULE, FlagM.ZF | FlagM.CF); break;
                 case Opcodes.bmi: RewriteBxx(instr, ConditionCode.LT, FlagM.NF); break;
                 case Opcodes.bne: RewriteBxx(instr, ConditionCode.NE, FlagM.ZF); break;
@@ -82,7 +84,9 @@ namespace Reko.Arch.Pdp11
                 case Opcodes.clr: RewriteClr(instr, emitter.Word16(0)); break;
                 case Opcodes.clrb: RewriteClr(instr, emitter.Byte(0)); break;
                 case Opcodes.cmp: RewriteCmp(instr); break;
+                case Opcodes.dec: RewriteDec(instr); break;
                 case Opcodes.emt: RewriteEmt(instr); break;
+                case Opcodes.jmp: RewriteJmp(instr); break;
                 case Opcodes.jsr: RewriteJsr(instr); break;
                 case Opcodes.mov:
                     src = RewriteSrc(instr.op1);
@@ -95,6 +99,8 @@ namespace Reko.Arch.Pdp11
                     SetFlags(dst, FlagM.ZF | FlagM.NF, FlagM.VF, 0);
                     break;
                 case Opcodes.nop: emitter.Nop(); break;
+                case Opcodes.rts: RewriteRts(instr); break;
+                case Opcodes.sub: RewriteSub(instr); break;
                 case Opcodes.tst: RewriteTst(instr); break;
                 case Opcodes.tstb: RewriteTst(instr); break;
                 case Opcodes.xor: RewriteXor(instr); break;
@@ -148,18 +154,27 @@ namespace Reko.Arch.Pdp11
                 switch (memOp.Mode)
                 {
                 default:
-                    throw new NotImplementedException(string.Format("Not implemented: addressing mode {0}.", memOp.Mode));
+                    throw new AddressCorrelatedException(
+                        instrs.Current.Address,
+                        "Not implemented: addressing mode {0}.", 
+                        memOp.Mode);
                 case AddressMode.RegDef:
                     return emitter.Load(this.instrs.Current.DataWidth, r);
                 case AddressMode.Absolute:
                     return emitter.Load(
                            instrs.Current.DataWidth,
                            Address.Ptr16(memOp.EffectiveAddress));
-                    break;
                 case AddressMode.AutoIncr:
                     emitter.Assign(tmp, emitter.Load(op.Width, r));
                     emitter.Assign(r, emitter.IAdd(r, memOp.Width.Size));
                     break;
+                case AddressMode.AutoDecr:
+                    emitter.Assign(r, emitter.ISub(r, memOp.Width.Size));
+                    return emitter.Load(op.Width, r);
+                case AddressMode.AutoDecrDef:
+                    emitter.Assign(r, emitter.ISub(r, memOp.Width.Size));
+                    emitter.Assign(tmp, emitter.Load(op.Width, emitter.Load(PrimitiveType.Ptr16, r)));
+                    return tmp;
                 case AddressMode.Indexed:
                     if (memOp.Register == Registers.pc)
                     {
@@ -242,7 +257,6 @@ namespace Reko.Arch.Pdp11
                 return tmp;
             }
             throw new NotImplementedException(string.Format("Not implemented: addressing mode {0}.", op.GetType().Name));
-
         }
 
         private Expression RewriteDst(MachineOperand op, Expression src, Func<Expression, Expression, Expression> gen)
@@ -262,11 +276,19 @@ namespace Reko.Arch.Pdp11
                 switch (memOp.Mode)
                 {
                 default:
-                    throw new NotImplementedException(string.Format("Not implemented: addressing mode {0}.", memOp.Mode));
+                    throw new AddressCorrelatedException(
+                        instrs.Current.Address,
+                        "Not implemented: addressing mode {0}.",
+                        memOp.Mode);
                 case AddressMode.AutoIncr:
                     emitter.Assign(tmp, gen(src, emitter.Load(tmp.DataType, r)));
                     emitter.Assign(emitter.Load(tmp.DataType, r), tmp);
                     emitter.Assign(r, emitter.IAdd(r, tmp.DataType.Size));
+                    break;
+                case AddressMode.AutoDecr:
+                    emitter.Assign(r, emitter.ISub(r, tmp.DataType.Size));
+                    emitter.Assign(tmp, gen(src, emitter.Load(tmp.DataType, r)));
+                    emitter.Assign(emitter.Load(tmp.DataType, r), tmp);
                     break;
                 case AddressMode.Absolute:
                     emitter.Assign(
@@ -281,6 +303,41 @@ namespace Reko.Arch.Pdp11
                            instrs.Current.DataWidth,
                            Address.Ptr16(memOp.EffectiveAddress)),
                         tmp);
+                    break;
+                case AddressMode.Indexed:
+                    emitter.Assign(
+                        tmp,
+                        gen(
+                            emitter.Load(
+                                instrs.Current.DataWidth,
+                                emitter.IAdd(
+                                    r, memOp.EffectiveAddress)),
+                            src));
+                    emitter.Assign(
+                        emitter.Load(
+                            instrs.Current.DataWidth,
+                            emitter.IAdd(
+                                r, memOp.EffectiveAddress)),
+                        tmp);
+                    break;
+                case AddressMode.IndexedDef:
+                    if (r.Storage == Registers.pc)
+                    {
+                        //$REVIEW: what if there are two of these?
+                        var addr = instrs.Current.Address + instrs.Current.Length;
+                        emitter.Assign(
+                            tmp,
+                            gen(
+                                emitter.Load(instrs.Current.DataWidth, addr),
+                                src));
+                        emitter.Assign(
+                            emitter.Load(instrs.Current.DataWidth, addr),
+                            tmp);
+                    }
+                    else
+                    {
+                        throw new NotImplementedException();
+                    }
                     break;
                 }
                 return tmp;

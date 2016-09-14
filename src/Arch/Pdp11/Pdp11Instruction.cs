@@ -140,6 +140,7 @@ namespace Reko.Arch.Pdp11
         bis,
         bisb,
         bit,
+        bitb,
         ble,
         blos,
         blt,
