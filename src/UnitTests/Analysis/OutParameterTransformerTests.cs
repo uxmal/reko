@@ -46,7 +46,7 @@ namespace Reko.UnitTests.Analysis
 		private void PerformTest(FileUnitTester fut)
 		{
 			DataFlowAnalysis dfa = new DataFlowAnalysis(program, null, new FakeDecompilerEventListener());
-			var ssts = dfa.UntangleProcedures2();
+			var ssts = dfa.UntangleProcedures();
             var dataFlow = new ProgramDataFlow();
 			foreach (var sst in ssts)
 			{

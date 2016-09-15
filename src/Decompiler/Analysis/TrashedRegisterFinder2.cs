@@ -43,7 +43,7 @@ namespace Reko.Analysis
         private SsaState ssa;
         private DecompilerEventListener decompilerEventListener;
         private ProcedureFlow flow;
-        private ISet<SsaTransform2> sccGroup;
+        private ISet<SsaTransform> sccGroup;
         private Dictionary<Procedure, HashSet<Storage>> assumedPreserved;
         private ExpressionValueComparer cmp;
         private HashSet<PhiAssignment> activePhis;
@@ -59,7 +59,7 @@ namespace Reko.Analysis
         public TrashedRegisterFinder2(
             IProcessorArchitecture arch,
             ProgramDataFlow flow,
-            IEnumerable<SsaTransform2> sccGroup,
+            IEnumerable<SsaTransform> sccGroup,
             DecompilerEventListener listener)
         {
             this.arch = arch;

@@ -96,7 +96,7 @@ namespace Reko.UnitTests.Analysis
             importResolver.Replay();
 
             var dataFlow = new ProgramDataFlow(this.progBuilder.Program);
-            var sst = new SsaTransform2(arch, proc, importResolver, dataFlow);
+            var sst = new SsaTransform(arch, proc, importResolver, dataFlow);
             sst.Transform();
             var vp = new ValuePropagator(arch, sst.SsaState);
             vp.Transform();

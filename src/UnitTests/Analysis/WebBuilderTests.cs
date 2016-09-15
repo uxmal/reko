@@ -76,7 +76,7 @@ namespace Reko.UnitTests.Analysis
 		{
             var eventListener = new FakeDecompilerEventListener();
             var dfa = new DataFlowAnalysis(program, null, eventListener);
-			var ssts = dfa.UntangleProcedures2();
+			var ssts = dfa.UntangleProcedures();
 			foreach (Procedure proc in program.Procedures.Values)
 			{
                 var sst = ssts.Single(s => s.SsaState.Procedure == proc);

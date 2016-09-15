@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Analysis
 		{
             IImportResolver importResolver = null;
 			DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
-			var ssts = dfa.UntangleProcedures2();
+			var ssts = dfa.UntangleProcedures();
 			
 			foreach (Procedure proc in program.Procedures.Values)
 			{

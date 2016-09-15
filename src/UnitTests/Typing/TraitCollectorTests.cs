@@ -336,7 +336,7 @@ namespace Reko.UnitTests.Typing
 			m.Add(new IntelIndexedAddressingMode());
 			Program program = m.BuildProgram();
 			DataFlowAnalysis dfa = new DataFlowAnalysis(program, null, new FakeDecompilerEventListener());
-			dfa.AnalyzeProgram2();
+			dfa.AnalyzeProgram();
 			RunTest(program, "Typing/TrcoIntelIndexedAddressingMode.txt");
 		}
 
@@ -347,7 +347,7 @@ namespace Reko.UnitTests.Typing
 			m.Add(new TreeFindMock());
 			Program program = m.BuildProgram();
 			DataFlowAnalysis dfa = new DataFlowAnalysis(program, null, new FakeDecompilerEventListener());
-			dfa.AnalyzeProgram2();
+			dfa.AnalyzeProgram();
 			RunTest(program, "Typing/TrcoTreeFind.txt");
 		}
 

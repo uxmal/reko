@@ -180,7 +180,7 @@ namespace Reko.UnitTests.Analysis
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             importResolver.Replay();
 			var gr = proc.CreateBlockDominatorGraph();
-            SsaTransform2 sst = new SsaTransform2(
+            SsaTransform sst = new SsaTransform(
                 arch,
                 proc,
                 null,

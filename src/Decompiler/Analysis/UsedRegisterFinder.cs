@@ -51,13 +51,13 @@ namespace Reko.Analysis
         private Identifier idCur;
         private ProcedureFlow procFlow;
         private SsaState ssa;
-        private SsaTransform2[] ssts;
+        private SsaTransform[] ssts;
         private Dictionary<SsaIdentifier, int> uses;
 
         public UsedRegisterFinder(
             IProcessorArchitecture arch,
             ProgramDataFlow flow,
-            SsaTransform2[] ssts,
+            SsaTransform[] ssts,
             DecompilerEventListener eventListener)
         {
             this.arch = arch;

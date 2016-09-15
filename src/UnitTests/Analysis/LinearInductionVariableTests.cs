@@ -61,7 +61,7 @@ namespace Reko.UnitTests.Analysis
             m.Label("b3");
             m.Return();
             this.dom = m.Procedure.CreateBlockDominatorGraph();
-            var sst = new SsaTransform2(
+            var sst = new SsaTransform(
                 m.Architecture,
                 m.Procedure,
                 null,
@@ -335,7 +335,7 @@ namespace Reko.UnitTests.Analysis
 		private void Prepare(Procedure proc)
 		{
             doms = proc.CreateBlockDominatorGraph();
-            SsaTransform2 sst = new SsaTransform2(
+            SsaTransform sst = new SsaTransform(
                 null,
                 proc,
                 null,

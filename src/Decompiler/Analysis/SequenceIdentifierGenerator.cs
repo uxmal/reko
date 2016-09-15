@@ -37,11 +37,11 @@ namespace Reko.Analysis
     /// </summary>
     public class SequenceIdentifierGenerator : InstructionTransformer
     {
-        private SsaTransform2 sst;
+        private SsaTransform sst;
         private SsaState ssa;
         private Statement stmCur;
 
-        public SequenceIdentifierGenerator(SsaTransform2 sst)
+        public SequenceIdentifierGenerator(SsaTransform sst)
         {
             this.sst = sst;
             this.ssa = sst.SsaState;

@@ -47,7 +47,7 @@ namespace Reko.Analysis
     /// expected that when it is fully implemented, it will take over from 
     /// SsaTransform above.
     /// </remarks>
-    public class SsaTransform2 : InstructionTransformer 
+    public class SsaTransform : InstructionTransformer 
     {
         private IProcessorArchitecture arch;
         private ProgramDataFlow programFlow;
@@ -60,7 +60,7 @@ namespace Reko.Analysis
         public readonly HashSet<SsaIdentifier> incompletePhis;
         private HashSet<SsaIdentifier> sidsToRemove;
 
-        public SsaTransform2(IProcessorArchitecture arch, Procedure proc, IImportResolver importResolver, ProgramDataFlow programFlow)
+        public SsaTransform(IProcessorArchitecture arch, Procedure proc, IImportResolver importResolver, ProgramDataFlow programFlow)
         {
             this.arch = arch;
             this.programFlow = programFlow;
@@ -679,11 +679,11 @@ namespace Reko.Analysis
 
         public class TransformerFactory : StorageVisitor<SsaIdentifierTransformer>
         {
-            private SsaTransform2 transform;
+            private SsaTransform transform;
             private Identifier id;
             private Statement stm;
 
-            public TransformerFactory(SsaTransform2 transform)
+            public TransformerFactory(SsaTransform transform)
             {
                 this.transform = transform;
             }
@@ -750,11 +750,11 @@ namespace Reko.Analysis
         {
             protected Identifier id;
             protected readonly Statement stm;
-            protected readonly SsaTransform2 outer;
+            protected readonly SsaTransform outer;
             protected readonly SsaIdentifierCollection ssaIds;
             protected readonly IDictionary<Block, SsaBlockState> blockstates;
 
-            public SsaIdentifierTransformer(Identifier id, Statement stm, SsaTransform2 outer)
+            public SsaIdentifierTransformer(Identifier id, Statement stm, SsaTransform outer)
             {
                 this.id = id;
                 this.stm = stm;
@@ -1095,7 +1095,7 @@ namespace Reko.Analysis
 
         public class SsaRegisterTransformer : SsaIdentifierTransformer
         {
-            public SsaRegisterTransformer(Identifier id, Statement stm, SsaTransform2 outer)
+            public SsaRegisterTransformer(Identifier id, Statement stm, SsaTransform outer)
                 : base(id, stm, outer)
             {
             }
@@ -1151,7 +1151,7 @@ namespace Reko.Analysis
             private uint flagMask;
             private FlagGroupStorage flagGroup;
 
-            public FlagGroupTransformer(Identifier id, FlagGroupStorage flagGroup, Statement stm, SsaTransform2 outer)
+            public FlagGroupTransformer(Identifier id, FlagGroupStorage flagGroup, Statement stm, SsaTransform outer)
                 : base(id, stm, outer)
             {
                 this.flagGroup = flagGroup;
@@ -1235,7 +1235,7 @@ namespace Reko.Analysis
                 Identifier id,
                 int stackOffset,
                 Statement stm,
-                SsaTransform2 outer)
+                SsaTransform outer)
                 : base(id, stm, outer)
             {
                 this.stackOffset = stackOffset;
@@ -1284,7 +1284,7 @@ namespace Reko.Analysis
                 Identifier id,
                 SequenceStorage seq,
                 Statement stm,
-                SsaTransform2 outer)
+                SsaTransform outer)
                 : base(id, stm, outer)
             {
                 this.seq = seq;
@@ -1381,7 +1381,7 @@ namespace Reko.Analysis
         {
             private FpuStackStorage fpu;
 
-            public FpuStackTransformer(Identifier id, FpuStackStorage fpu, Statement stm, SsaTransform2 outer) : base(id, stm, outer)
+            public FpuStackTransformer(Identifier id, FpuStackStorage fpu, Statement stm, SsaTransform outer) : base(id, stm, outer)
             {
                 this.fpu = fpu;
             }

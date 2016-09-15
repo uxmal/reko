@@ -122,7 +122,7 @@ namespace Reko.UnitTests.Analysis
 		{
             var platform = new DefaultPlatform(null, arch);
 			this.proc = proc;
-            var sst = new SsaTransform2(
+            var sst = new SsaTransform(
                 arch,
                 proc,
                 null,

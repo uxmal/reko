@@ -52,7 +52,7 @@ namespace Reko.UnitTests.Analysis
             var m = new ProcedureBuilder();
             builder(m);
 
-            var sst = new SsaTransform2(m.Architecture, m.Procedure, null, programDataFlow);
+            var sst = new SsaTransform(m.Architecture, m.Procedure, null, programDataFlow);
             sst.Transform();
 
             DeadCode.Eliminate(sst.SsaState);
@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Analysis
 		protected override void RunTest(Program program, TextWriter writer)
 		{
 			DataFlowAnalysis dfa = new DataFlowAnalysis(program, null,  new FakeDecompilerEventListener());
-			var ssts = dfa.UntangleProcedures2();
+			var ssts = dfa.UntangleProcedures();
 			foreach (var sst in ssts)
 			{
 				SsaState ssa = sst.SsaState;

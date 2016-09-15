@@ -98,7 +98,7 @@ namespace Reko.UnitTests.Analysis
             mr.ReplayAll();
 
             var dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
-            dfa.AnalyzeProgram2();
+            dfa.AnalyzeProgram();
             foreach (var proc in program.Procedures.Values)
             {
                 proc.Write(false, writer);
@@ -129,7 +129,7 @@ namespace Reko.UnitTests.Analysis
             mr.ReplayAll();
 
             var dfa = new DataFlowAnalysis(pb.BuildProgram(), importResolver, new FakeDecompilerEventListener());
-            dfa.AnalyzeProgram2();
+            dfa.AnalyzeProgram();
             var sExp = @"// test
 // Return size: 0
 void test()
@@ -161,7 +161,7 @@ test_exit:
                 m.Return();
             });
             var dfa = new DataFlowAnalysis(pb.BuildProgram(), null, new FakeDecompilerEventListener());
-            dfa.AnalyzeProgram2();
+            dfa.AnalyzeProgram();
             var sExp = @"// test
 // Return size: 0
 void test(word32 dwArg04, word32 dwArg08)
@@ -215,7 +215,7 @@ test_exit:
             });
 
             var dfa = new DataFlowAnalysis(pb.BuildProgram(), null, new FakeDecompilerEventListener());
-            dfa.AnalyzeProgram2();
+            dfa.AnalyzeProgram();
             var sExp = @"// test
 // Return size: 0
 void test()
@@ -265,7 +265,7 @@ test_exit:
             importResolver.Replay();
             program.Platform = platform;
             var dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
-            dfa.AnalyzeProgram2();
+            dfa.AnalyzeProgram();
             var sExp = @"// test
 // Return size: 4
 void test(int32 a, int32 b)
@@ -309,7 +309,7 @@ test_exit:
             mr.ReplayAll();
 
             var dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
-            dfa.AnalyzeProgram2();
+            dfa.AnalyzeProgram();
 
             var sExp =
             #region Expected
@@ -401,7 +401,7 @@ level2_exit:
             mr.ReplayAll();
 
             var dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
-            dfa.AnalyzeProgram2();
+            dfa.AnalyzeProgram();
 
             var sExp =
             #region Expected
@@ -467,7 +467,7 @@ level2_exit:
             mr.ReplayAll();
 
             var dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
-            dfa.AnalyzeProgram2();
+            dfa.AnalyzeProgram();
 
             var sExp =
             #region Expected

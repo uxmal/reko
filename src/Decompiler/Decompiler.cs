@@ -123,12 +123,13 @@ namespace Reko
             var eventListener = services.RequireService<DecompilerEventListener>();
             foreach (var program in project.Programs)
             {
+                if (eventListener.IsCanceled())
+                    return;
                 eventListener.ShowStatus("Performing interprocedural analysis.");
                 var ir = new ImportResolver(project, program, eventListener);
                 var dfa = new DataFlowAnalysis(program, ir, eventListener);
-                dfa.UntangleProcedures2();
-
-                dfa.BuildExpressionTrees2();
+                dfa.UntangleProcedures();
+                dfa.BuildExpressionTrees();
                 host.WriteIntermediateCode(program, writer => { EmitProgram(program, dfa, writer); });
             }
             eventListener.ShowStatus("Interprocedural analysis complete.");

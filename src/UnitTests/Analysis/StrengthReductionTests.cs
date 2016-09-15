@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Analysis
             Procedure proc = BuildSimpleLoop();
 
             var dom = proc.CreateBlockDominatorGraph();
-            var sst = new SsaTransform2(null, proc, null, new ProgramDataFlow());
+            var sst = new SsaTransform(null, proc, null, new ProgramDataFlow());
             sst.Transform();
             var lif = new LinearInductionVariableFinder(sst.SsaState, dom);
             lif.Find();

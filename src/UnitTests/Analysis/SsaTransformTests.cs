@@ -96,7 +96,7 @@ namespace Reko.UnitTests.Analysis
             var writer = new StringWriter();
             foreach (var proc in this.pb.Program.Procedures.Values)
             {
-                var sst = new SsaTransform2(this.pb.Program.Architecture, proc, importResolver, programFlow);
+                var sst = new SsaTransform(this.pb.Program.Architecture, proc, importResolver, programFlow);
                 sst.Transform();
                 if (this.addUseInstructions)
                 {
@@ -131,7 +131,7 @@ namespace Reko.UnitTests.Analysis
             foreach (var proc in program.Procedures.Values)
             {
                 // Perform initial transformation.
-                var sst = new SsaTransform2(this.pb.Program.Architecture, proc, importResolver, programFlow);
+                var sst = new SsaTransform(this.pb.Program.Architecture, proc, importResolver, programFlow);
                 sst.Transform();
 
                 // Propagate values and simplify the results.

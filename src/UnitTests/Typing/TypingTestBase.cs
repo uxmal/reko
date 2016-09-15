@@ -76,7 +76,7 @@ namespace Reko.UnitTests.Typing
 
             var importResolver = new ImportResolver(project, program, eventListener);
             var dfa = new DataFlowAnalysis(program, importResolver, eventListener);
-			dfa.AnalyzeProgram2();
+			dfa.AnalyzeProgram();
             return program;
 		}
 
@@ -99,7 +99,7 @@ namespace Reko.UnitTests.Typing
             scan.ScanImage();
 
             var dfa = new DataFlowAnalysis(program, null, eventListener);
-            dfa.AnalyzeProgram2();
+            dfa.AnalyzeProgram();
             RunTest(program, outputFile);
         }
 
@@ -118,8 +118,8 @@ namespace Reko.UnitTests.Typing
             Program program = mock.BuildProgram();
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
-            dfa.UntangleProcedures2();
-            dfa.BuildExpressionTrees2();
+            dfa.UntangleProcedures();
+            dfa.BuildExpressionTrees();
             RunTest(program, outputFile);
         }
 

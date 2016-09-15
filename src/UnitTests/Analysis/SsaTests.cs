@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Analysis
             importResolver.Replay();
             foreach (Procedure proc in program.Procedures.Values)
             {
-                var sst = new SsaTransform2(program.Architecture, proc, importResolver, flow);
+                var sst = new SsaTransform(program.Architecture, proc, importResolver, flow);
                 sst.Transform();
                 sst.AddUsesToExitBlock();
                 sst.RemoveDeadSsaIdentifiers();
@@ -82,7 +82,7 @@ namespace Reko.UnitTests.Analysis
             importResolver.Replay();
 
             var proc = m.Procedure;
-            var sst = new SsaTransform2(m.Architecture, proc, importResolver, flow);
+            var sst = new SsaTransform(m.Architecture, proc, importResolver, flow);
             sst.Transform();
             ssa = sst.SsaState;
             using (var fut = new FileUnitTester(outfile))

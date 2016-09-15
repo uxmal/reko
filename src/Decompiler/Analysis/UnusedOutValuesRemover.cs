@@ -38,14 +38,14 @@ namespace Reko.Analysis
     {
         public static TraceSwitch trace = new TraceSwitch(typeof(UnusedOutValuesRemover).Name, "Trace removal of ununsed out values");
 
-        private List<SsaTransform2> ssts;
+        private List<SsaTransform> ssts;
         private WorkList<SsaState> wl;
         private Program program;
         private Dictionary<Procedure, SsaState> procToSsa;
         private ProgramDataFlow dataFlow;
         private DecompilerEventListener eventListener;
 
-        public UnusedOutValuesRemover(Program program, List<SsaTransform2> ssts, ProgramDataFlow dataFlow, DecompilerEventListener eventListener)
+        public UnusedOutValuesRemover(Program program, List<SsaTransform> ssts, ProgramDataFlow dataFlow, DecompilerEventListener eventListener)
         { 
             this.dataFlow = dataFlow;
             this.program = program;

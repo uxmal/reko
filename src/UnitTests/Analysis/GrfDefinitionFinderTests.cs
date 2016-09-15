@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Analysis
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             importResolver.Replay();
             var dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
-			var ssts = dfa.UntangleProcedures2();
+			var ssts = dfa.UntangleProcedures();
 			foreach (var sst in ssts)
 			{
 				SsaState ssa = sst.SsaState;
