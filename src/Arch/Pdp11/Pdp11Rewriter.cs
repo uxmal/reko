@@ -98,16 +98,8 @@ namespace Reko.Arch.Pdp11
                 case Opcodes.inc: RewriteIncDec(instr, emitter.IAdd); break;
                 case Opcodes.jmp: RewriteJmp(instr); break;
                 case Opcodes.jsr: RewriteJsr(instr); break;
-                case Opcodes.mov:
-                    src = RewriteSrc(instr.op1);
-                    dst = RewriteDst(instr.op2, src, s => s);
-                    SetFlags(dst, FlagM.ZF | FlagM.NF, FlagM.VF, 0);
-                    break;
-                case Opcodes.movb:
-                    src = RewriteSrc(instr.op1);
-                    dst = RewriteDst(instr.op2, src, s => emitter.Cast(PrimitiveType.Int16, s));
-                    SetFlags(dst, FlagM.ZF | FlagM.NF, FlagM.VF, 0);
-                    break;
+                case Opcodes.mov: RewriteMov(instr); break;
+                case Opcodes.movb: RewriteMov(instr); break;
                 case Opcodes.neg: RewriteNeg(instr); break;
                 case Opcodes.nop: emitter.Nop(); break;
                 case Opcodes.rts: RewriteRts(instr); break;
@@ -302,7 +294,14 @@ namespace Reko.Arch.Pdp11
             var immOp = op as ImmediateOperand;
             if (immOp != null)
             {
-                return immOp.Value;
+                if (instrs.Current.DataWidth.Size == 1)
+                {
+                    return Constant.Byte((byte)immOp.Value.ToInt32());
+                }
+                else
+                {
+                    return immOp.Value;
+                }
             }
             var addrOp = op as AddressOperand;
             if (addrOp != null)

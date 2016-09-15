@@ -109,6 +109,21 @@ namespace Reko.Arch.Pdp11
             SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.VF, 0, 0);
         }
 
+        private void RewriteMov(Pdp11Instruction instr)
+        {
+            var src = RewriteSrc(instr.op1);
+            Expression dst;
+            if (instr.op2 is RegisterOperand && instr.DataWidth.Size == 1)
+            {
+                dst = RewriteDst(instr.op2, src, s => emitter.Cast(PrimitiveType.Int16, s));
+            }
+            else
+            {
+                dst = RewriteDst(instr.op2, src, s => s);
+            }
+            SetFlags(dst, FlagM.ZF | FlagM.NF, FlagM.VF, 0);
+        }
+
         private void RewriteNeg(Pdp11Instruction instr)
         {
             var dst = RewriteDst(instr.op1, null, emitter.Neg);

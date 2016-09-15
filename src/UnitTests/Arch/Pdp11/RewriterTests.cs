@@ -373,5 +373,18 @@ namespace Reko.UnitTests.Arch.Pdp11
                 "3|L--|r1 = v3 % 0x00C8",
                 "4|L--|NZVC = cond(r0)");
         }
+
+        [Test]
+        public void Pdp11Rw_movb_imm()
+        {
+            BuildTest(0x95D5, 0x003D);  // movb #003D,(r5)+
+            AssertCode(
+              "0|L--|0200(4): 5 instructions",
+              "1|L--|v3 = 0x3D",
+              "2|L--|Mem0[r5:byte] = v3",
+              "3|L--|r5 = r5 + 0x0001",
+              "4|L--|NZ = cond(v3)",
+              "5|L--|V = false");
+        }
     }
 }
