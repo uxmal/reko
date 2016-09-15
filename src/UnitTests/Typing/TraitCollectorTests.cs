@@ -445,7 +445,6 @@ namespace Reko.UnitTests.Typing
 			Assert.AreEqual(exp, sb.ToString());
 		}
 
-
         [Test]
         public void TrcoArrayAccess()
         {

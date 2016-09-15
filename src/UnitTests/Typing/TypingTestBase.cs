@@ -118,7 +118,7 @@ namespace Reko.UnitTests.Typing
             Program program = mock.BuildProgram();
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
-            dfa.DumpProgram();
+            dfa.UntangleProcedures2();
             dfa.BuildExpressionTrees2();
             RunTest(program, outputFile);
         }
