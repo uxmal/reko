@@ -227,7 +227,10 @@ namespace Reko.Arch.Pdp11
                 switch (memOp.Mode)
                 {
                 default:
-                    throw new NotImplementedException(string.Format("Not implemented: addressing mode {0}.", memOp.Mode));
+                    throw new AddressCorrelatedException(
+                        instrs.Current.Address,
+                        "Not implemented: addressing mode {0}.",
+                        memOp.Mode);
                 case AddressMode.Absolute:
                     emitter.Assign(
                         emitter.Load(

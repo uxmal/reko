@@ -42,9 +42,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RT11Platform.cs" />
+    <Compile Include="SavFileLoader.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="RT-11-Macros.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Arch\Pdp11\Pdp11.csproj">
+      <Project>{CD10A2C6-246C-4CBB-8E92-86579714795A}</Project>
+      <Name>Pdp11</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\Core.csproj">
+      <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
