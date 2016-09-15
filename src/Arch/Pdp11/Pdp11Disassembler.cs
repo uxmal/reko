@@ -50,9 +50,13 @@ namespace Reko.Arch.Pdp11
             try
             {
                 instrCur = Disassemble();
-            } catch
+            } catch (AddressCorrelatedException)
             {
-                instrCur = new Pdp11Instruction { Opcode = Opcodes.illegal };
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new AddressCorrelatedException(addr, "{0}", ex.Message);
             }
             instrCur.Address = addr;
             instrCur.Length = (int)(rdr.Address - addr);
@@ -238,7 +242,7 @@ namespace Reko.Arch.Pdp11
 
         private Pdp11Instruction FpuArithmetic(ushort opcode)
         {
-            throw new NotImplementedException();
+            return new Pdp11Instruction { Opcode = Opcodes.nop };
         }
 
         private PrimitiveType DataWidthFromSizeBit(uint p)
@@ -330,8 +334,9 @@ namespace Reko.Arch.Pdp11
             case 0x225:
             case 0x226:
             case 0x227:
-                oc = Opcodes.trap; op = null; break;
-
+                oc = Opcodes.trap;
+                op = new ImmediateOperand(Constant.Byte((byte)opcode));
+                break;
             case 0x028:
             case 0x228:
                 oc = dataWidth.Size == 1 ? Opcodes.clrb : Opcodes.clr; op = DecodeOperand(opcode);

@@ -21,6 +21,7 @@
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
+using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -49,34 +50,35 @@ namespace Reko.Arch.Pdp11
         private void RewriteEmt(Pdp11Instruction instr)
         {
             this.rtlCluster.Class = RtlClass.Transfer;
-            host.PseudoProcedure("__emt", VoidType.Instance, RewriteSrc(instr.op1));
+            var imm = ((ImmediateOperand)instr.op1).Value.ToByte();
+            var svc = emitter.Word16((ushort)(0x8800 | imm));
+            emitter.SideEffect(host.PseudoProcedure("__syscall", VoidType.Instance, svc));
+        }
+
+        private void RewriteHalt()
+        {
+            var c = new ProcedureCharacteristics
+            {
+                Terminates = true,
+            };
+            emitter.SideEffect(host.PseudoProcedure("__halt", c, VoidType.Instance));
         }
 
         private void RewriteJmp(Pdp11Instruction instr)
         {
             this.rtlCluster.Class = RtlClass.Transfer;
-            var jmpDst = RewriteSrc(instr.op1);
-            var memDst = jmpDst as MemoryAccess;
-            if (memDst != null)
-            {
-                emitter.Goto(memDst.EffectiveAddress);
-                return;
-            }
-            throw new NotImplementedException();
+            var jmpDst = RewriteJmpSrc(instr.op1);
+            emitter.Goto(jmpDst);
         }
 
         private void RewriteJsr(Pdp11Instruction instr)
         {
             this.rtlCluster.Class = RtlClass.Transfer;
-            var regLink = (RegisterOperand)instr.op1; 
-            if (regLink.Register == Registers.pc)
-            {
-                // no parameters passed on stack.
-                var callDst = RewriteSrc(instr.op2);
-                emitter.Call(callDst, 2);
-                return;
-            }
-            throw new NotImplementedException();
+            var regLink = (RegisterOperand)instr.op1;
+            //$TODO: do something with regLink.
+            var callDst = RewriteJmpSrc(instr.op2);
+            emitter.Call(callDst, 2);
+            return;
         }
 
         private void RewriteRts(Pdp11Instruction instr)
@@ -89,6 +91,14 @@ namespace Reko.Arch.Pdp11
                 return;
             }
             throw new NotImplementedException(regLink.Register.Name);
+        }
+
+        private void RewriteTrap(Pdp11Instruction instr)
+        {
+            this.rtlCluster.Class = RtlClass.Transfer;
+            var imm = ((ImmediateOperand)instr.op1).Value.ToByte();
+            var svc = emitter.Word16((ushort)(0x8900 | imm));
+            emitter.SideEffect(host.PseudoProcedure("__syscall", VoidType.Instance, svc));
         }
     }
 }

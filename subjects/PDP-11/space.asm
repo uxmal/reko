@@ -32,33 +32,179 @@
 01E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
 01F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
 0200 A0 00 C3 1D 20 52 C4 1C 68 00 C1 9C 75 00 DF 1C .... R..h...u...
-0210 6A 00 28 00 02 01 C1 15 01 0A C0 1D 8E 1B 01 03 j.(.............
-0220 C8 09 C6 17 22 00 26 11 C0 15 92 05 FD 88 C5 17 ....".&.........
-0230 28 00 66 11 D5 0B 26 0A E6 15 00 10 80 11 C6 E5 (.f...&.........
-0240 10 00 B6 11 12 00 FD 88 84 1D 02 00 F7 0B 5C 1B ..............\.
-0250 1E 02 C0 15 B8 03 FD 88 C0 35 00 10 03 03 DF 15 .........5......
-0260 00 F0 1E 00 C0 35 00 02 12 02 DF 15 00 02 26 00 .....5........&.
-0270 F7 0B 78 51 0C 03 CE 0B 04 03 C0 15 80 03 E9 88 ..xQ............
-0280 06 01 C0 15 BC 03 FD 88 04 10 1F 0A 26 00 E4 0B ............&...
-0290 00 11 EC 88 C4 17 28 00 05 21 6B 83 C4 E5 B2 00 ......(..!k.....
-02A0 37 11 82 51 03 11 C4 ED 40 51 C4 45 01 00 26 11 7..Q....@Q.E..&.
-02B0 C2 1D 3A 51 5E 03 84 E0 26 11 C4 45 01 00 C4 E5 ..:Q^...&..E....
-02C0 20 00 C2 0A FC 02 26 11 C4 E5 38 00 26 11 05 21  .....&...8.&..!
-02D0 50 83 C2 10 C2 65 B2 00 22 0A 84 20 FD 82 73 90 P....e..".. ..s.
-02E0 74 00 73 90 75 00 B3 15 08 00 B3 15 06 00 B3 15 t.s.u...........
-02F0 04 00 B3 15 02 00 B3 1D 02 00 76 00 B3 1D 04 00 ..........v.....
-0300 78 00 33 11 0A 00 73 11 0C 00 05 21 32 83 F7 0B x.3...s....!2...
-0310 9A 1A 0F 03 C0 15 B8 03 FD 88 C0 35 00 02 09 02 ...........5....
-0320 B7 23 C8 50 06 87 C2 17 22 00 C2 65 00 10 02 21 .#.P...."..e...!
-0330 20 83 C6 65 14 00 F3 15 00 80 10 00 F3 10 50 00  ..e..........P.
-0340 F3 65 22 00 50 00 B3 15 6A 00 84 15 33 11 68 00 .e".P...j...3.h.
-0350 00 15 33 14 7C 00 33 12 7A 00 DF 15 02 02 20 00 ..3.|.3.z..... .
-0360 DF 55 00 20 24 00 F7 09 90 19 F3 8B 75 00 21 03 .U. $.......u.!.
-0370 5C 00 C0 15 97 03 E9 88 DF D5 08 00 2B 00 E8 88 \...........+...
+0210 6A 00 28 00 02 01                               j.(...         
+
+fn0216()
+	mov	#0A01,r1
+	mov	1B8E(pc),r0
+	beq	0222
+
+l0220:
+	jsr	pc,@r0
+
+l0222:
+	mov	@#0022,sp
+	mov	r4,-(sp)
+	mov	#0592,r0
+	emt	#FD
+	mov	@#0028,r5
+	mov	r5,-(sp)
+	tst	(r5)+
+	clr	-(sp)
+	mov	#1000,-(sp)
+	mov	sp,r0
+	sub	#0010,sp
+	mov	sp,0012(sp)
+	emt	#FD
+	mov	0002(sp),r4
+	tst	1B5C(pc)
+	bne	028E
+
+l0252:
+	mov	#03B8,r0
+	emt	#FD
+	bit	#1000,r0
+	beq	0264
+
+l025E:
+	mov	#F000,@#001E
+
+l0264:
+	bit	#0200,r0
+	bne	028E
+
+l026A:
+	mov	#0200,@#0026
+	tst	5178(pc)
+	beq	028E
+
+l0276:
+	tst	@sp
+	beq	0282
+
+l027A:
+	mov	#0380,r0
+	emt	#E9
+	br	028E
+
+l0282:
+	mov	#03BC,r0
+	emt	#FD
+	mov	r0,r4
+	clr	@#0026
+
+l028E:
+	tst	-(r4)
+	mov	r4,r0
+	emt	#EC
+	mov	@#0028,r4
+	cmp	r4,r5
+	blos	0372
+
+l029C:
+	sub	#00B2,r4
+	mov	r4,5182(pc)
+	mov	r4,r3
+	sub	5140(pc),r4
+	bic	#0001,r4
+	mov	r4,-(sp)
+	mov	513A(pc),r2
+	beq	0372
+
+l02B6:
+	sub	r2,r4
+	mov	r4,-(sp)
+	bic	#0001,r4
+
+l02BE:
+	sub	#0020,r4
+	dec	r2
+	bne	02BE
+
+l02C6:
+	mov	r4,-(sp)
+	sub	#0038,r4
+	mov	r4,-(sp)
+	cmp	r4,r5
+	blos	0372
+
+l02D2:
+	mov	r3,r2
+	add	#00B2,r2
+
+l02D8:
+	clr	-(r2)
+	cmp	r2,r4
+	bhi	02D8
+
+l02DE:
+	movb	r1,0074(r3)
+	movb	r1,0075(r3)
+	mov	(sp)+,0008(r3)
+	mov	(sp)+,0006(r3)
+	mov	(sp)+,0004(r3)
+	mov	(sp)+,0002(r3)
+	mov	0002(sp),0076(r3)
+	mov	0004(sp),0078(r3)
+	mov	r4,000A(r3)
+	mov	r5,000C(r3)
+	cmp	r4,r5
+	blos	0372
+
+l030E:
+	tst	1A9A(pc)
+	beq	0332
+
+l0314:
+	mov	#03B8,r0
+	emt	#FD
+	bit	#0200,r0
+	bne	0332
+
+l0320:
+	cmp	@sp,50C8(pc)
+	bcs	0332
+
+l0326:
+	mov	@#0022,r2
+	add	#1000,r2
+	cmp	r4,r2
+	blos	0372
+
+l0332:
+	add	#0014,sp
+	mov	#8000,0010(r3)
+	mov	r3,0050(r3)
+	add	#0022,0050(r3)
+	mov	(sp)+,006A(r3)
+	mov	(sp)+,r4
+	mov	r4,0068(r3)
+	mov	(r4)+,r0
+	mov	(r0)+,007C(r3)
+	mov	@r0,007A(r3)
+	mov	#0202,@#0020
+	bis	#2000,@#0024
+	jsr	pc,1990(pc)
+	tst	0075(r3)
+	beq	03B2
+
+l0370:
+	jmp	@(r4)+
+
+l0372:
+	mov	#0397,r0
+	emt	#E9
+	bis	#0008,@#002B
+	emt	#E8
 0380 3F 45 72 72 20 35 39 20 55 53 52 20 6E 6F 74 20 ?Err 59 USR not 
 0390 6C 6F 63 6B 65 64 00 3F 45 72 72 20 36 32 20 46 locked.?Err 62 F
 03A0 4F 52 54 52 41 4E 20 73 74 61 72 74 20 66 61 69 ORTRAN start fai
-03B0 6C 00 E6 15 96 13 4C 00 00 1C C0 00 00 1C B6 00 l.....L.........
+03B0 6C 00                                           l.             
+
+l03B2:
+	mov	#1396,-(sp)
+	jmp	@r4
+03B8                         00 1C C0 00 00 1C B6 00         ........
 03C0 66 10 81 1D 02 00 26 10 A6 10 E6 10 41 18 C1 45 f.....&.....A..E
 03D0 80 FF C3 1D 50 50 40 10 F7 09 70 01 C2 15 90 10 ....PP@...p.....
 03E0 42 60 A6 92 22 81 05 03 8A 8A 8E 92 01 80 CA 8A B`.."...........
@@ -128,8 +274,19 @@
 07E0 97 25 F6 07 0C 03 02 60 00 0A 09 01 02 60 C0 15 .%.....`.....`..
 07F0 01 00 F7 09 C4 FF 85 0C 44 A1 40 0B 42 0B 85 15 ........D.@.B...
 0800 84 13 0E 10 A6 10 5C 00 8B 89 D6 0B 02 0A EC 01 ......\.........
-0810 8C 89 FC 01 80 11 03 01 40 11 40 63 40 63 D0 0B ........@.@c@c..
-0820 F7 09 82 09 C6 E5 4E 00 C0 15 F0 53 58 00 C2 9C ......N....SX...
+0810 8C 89 FC 01 80 11                               ......         
+
+fn0816()
+	br	081E
+0818                         40 11 40 63 40 63               @.@c@c 
+
+l081E:
+	tst	(r0)+
+	jsr	pc,0982(pc)
+	sub	#004E,sp
+	mov	#53F0,r0
+	jmp	@(r0)+
+082E                                           C2 9C               ..
 0830 A2 00 00 11 C6 65 4E 00 C8 55 00 80 F7 09 B6 3D .....eN..U.....=
 0840 C8 35 00 01 02 03 C8 45 00 80 33 8A A2 00 33 0A .5.....E..3...3.
 0850 72 00 33 0A 14 00 87 00 26 10 F7 35 01 00 CA 4B r.3.....&..5...K
@@ -165,31 +322,136 @@
 0A30 F7 09 F8 0C 04 10 80 15 02 0B 41 0B 74 20 18 00 ..........A.t ..
 0A40 02 83 74 10 18 00 58 00 F7 35 01 00 DA 49 01 03 ..t...X..5...I..
 0A50 C3 89 58 00 F7 35 08 00 D0 49 01 03 C3 89 58 00 ..X..5...I....X.
-0A60 80 11 03 01 40 11 40 63 40 63 D0 0B F7 09 36 07 ....@.@c@c....6.
-0A70 C0 15 14 54 58 00 C2 9C A2 00 F7 09 2A 0A 33 0A ...TX.......*.3.
+0A60 80 11                                           ..             
+
+fn0A62()
+	br	0A6A
+0A64             40 11 40 63 40 63                       @.@c@c     
+
+l0A6A:
+	tst	(r0)+
+	jsr	pc,0736(pc)
+	mov	#5414,r0
+	jmp	@(r0)+
+0A76                   C2 9C A2 00 F7 09 2A 0A 33 0A       ......*.3.
 0A80 72 00 33 0A 14 00 33 8A A2 00 87 00 26 10 F7 35 r.3...3.....&..5
 0A90 01 00 96 49 01 02 94 89 C2 1F 90 49 F7 09 0C 08 ...I.......I....
 0AA0 03 02 77 09 D8 03 94 89 04 10 80 15 58 00 44 1D ..w.........X.D.
 0AB0 02 00 26 1D 02 00 26 13 84 15 1F 09 40 10 C0 0A ..&...&.....@...
 0AC0 80 15 87 00 E6 15 01 01 0E 01 E6 15 04 04 0B 01 ................
 0AD0 E6 15 08 08 08 01 E6 15 02 04 05 01 E6 15 01 04 ................
-0AE0 02 01 E6 15 02 02 E6 10 C3 1D 3A 49 26 0A 8E 9D ..........:I&...
-0AF0 04 00 97 A3 01 00 05 03 97 A3 08 00 02 03 CE 65 ...............e
-0B00 03 00 B6 AD 04 00 05 00 4E 0B B3 15 A4 00 F3 8B ........N.......
-0B10 74 00 07 03 D6 0B B3 15 52 00 B3 15 44 00 DE 09 t.......R...D...
-0B20 5C 00 B3 1D 02 00 52 00 B3 1D 06 00 44 00 83 15 \.....R.....D...
-0B30 D6 0B B6 1D 04 00 02 00 B6 15 02 00 5E 00 E6 15 ............^...
-0B40 02 02 0E 01 E6 15 01 01 0B 01 E6 15 02 04 08 01 ................
+
+fn0AE0()
+	br	0AE6
+0AE2       E6 15 02 02                                 ....         
+
+l0AE6:
+	mov	r3,-(sp)
+	mov	493A(pc),r3
+	clr	-(sp)
+	movb	0004(sp),@sp
+	cmp	@sp,#0001
+	beq	0B02
+
+l0AF8:
+	cmp	@sp,#0008
+	beq	0B02
+
+l0AFE:
+	add	#0003,@sp
+
+l0B02:
+	cmp	0004(sp),0005(sp)
+	adc	@sp
+	mov	(sp)+,00A4(r3)
+	tst	0074(r3)
+	beq	0B22
+
+l0B14:
+	tst	(sp)+
+	mov	(sp)+,0052(r3)
+	mov	(sp)+,0044(r3)
+	jsr	pc,@(sp)+
+	jmp	@(r4)+
+
+l0B22:
+	mov	0002(sp),0052(r3)
+	mov	0006(sp),0044(r3)
+	mov	(sp)+,r3
+	tst	(sp)+
+	mov	0004(sp),0002(sp)
+	mov	(sp)+,0002(sp)
+	jmp	@(sp)+
+0B3E                                           E6 15               ..
+0B40 02 02                                           ..             
+
+fn0B42()
+	br	0B60
+0B44             E6 15 01 01 0B 01 E6 15 02 04 08 01     ............
 0B50 E6 15 01 04 05 01 E6 15 08 08 02 01 E6 15 04 04 ................
-0B60 E6 10 C3 1D C0 48 26 0A 8E 9D 04 00 97 A3 01 00 .....H&.........
-0B70 05 03 97 A3 08 00 02 03 CE 65 03 00 B6 AD 04 00 .........e......
-0B80 05 00 4E 0B B3 15 A4 00 F3 8B 74 00 0B 03 D6 0B ..N.......t.....
-0B90 B3 15 52 00 B3 15 44 00 B3 17 5A 00 F3 15 EC 0B ..R...D...Z.....
-0BA0 7E 00 11 01 26 10 80 11 10 24 33 14 52 00 33 14 ~...&....$3.R.3.
-0BB0 7E 00 33 14 44 00 33 16 5A 00 80 15 B6 15 06 00 ~.3.D.3.Z.......
-0BC0 C6 65 06 00 83 15 DE 09 E6 10 26 10 C3 1D 56 48 .e........&...VH
-0BD0 C0 9C 53 00 33 60 44 00 80 15 F3 0A 5A 00 F2 02 ..S.3`D.....Z...
-0BE0 A6 13 F6 1C 7E 00 02 00 83 15 5E 00 5C 00 C2 15 ....~.....^.\...
+
+l0B60:
+	mov	r3,-(sp)
+	mov	48C0(pc),r3
+	clr	-(sp)
+	movb	0004(sp),@sp
+	cmp	@sp,#0001
+	beq	0B7C
+
+l0B72:
+	cmp	@sp,#0008
+	beq	0B7C
+
+l0B78:
+	add	#0003,@sp
+
+l0B7C:
+	cmp	0004(sp),0005(sp)
+	adc	@sp
+	mov	(sp)+,00A4(r3)
+	tst	0074(r3)
+	beq	0BA4
+
+l0B8E:
+	tst	(sp)+
+	mov	(sp)+,0052(r3)
+	mov	(sp)+,0044(r3)
+	mov	@(sp)+,005A(r3)
+	mov	#0BEC,007E(r3)
+	br	0BC6
+
+l0BA4:
+	mov	r0,-(sp)
+	mov	sp,r0
+	cmp	(r0)+,(r0)+
+	mov	(r0)+,0052(r3)
+	mov	(r0)+,007E(r3)
+	mov	(r0)+,0044(r3)
+	mov	@(r0)+,005A(r3)
+	mov	(sp)+,r0
+	mov	(sp)+,0006(sp)
+	add	#0006,sp
+
+l0BC4:
+	mov	(sp)+,r3
+
+l0BC6:
+	jsr	pc,@(sp)+
+	mov	r3,-(sp)
+	mov	r0,-(sp)
+	mov	4856(pc),r3
+	movb	0053(r3),r0
+	add	r0,0044(r3)
+	mov	(sp)+,r0
+	dec	005A(r3)
+	bne	0BC4
+
+l0BE0:
+	mov	@sp,-(sp)
+	mov	007E(r3),0002(sp)
+	mov	(sp)+,r3
+	jmp	@(sp)+
+0BEC                                     5C 00 C2 15             \...
 0BF0 07 00 02 01 C2 15 09 80 81 15 80 15 83 15 66 10 ..............f.
 0C00 A6 10 01 0A F7 09 42 00 FD 03 CE 0B 0B 80 C2 25 ......B........%
 0C10 0B 00 05 03 C2 25 0D 00 05 02 CE 65 00 40 F7 09 .....%.....e.@..
@@ -214,15 +476,82 @@
 0D40 C2 65 01 F6 FD 80 C2 65 2F 3A 90 90 C2 00 90 90 .e.....e/:......
 0D50 87 00 4A 41 4E 46 45 42 4D 41 52 41 50 52 4D 41 ..JANFEBMARAPRMA
 0D60 59 4A 55 4E 4A 55 4C 41 55 47 53 45 50 4F 43 54 YJUNJULAUGSEPOCT
-0D70 4E 4F 56 44 45 43 E6 15 AA 12 F7 08 BE 04 F7 09 NOVDEC..........
-0D80 DC 06 02 02 C8 55 00 82 C8 0B 07 81 F0 0B 16 00 .....U..........
-0D90 02 03 F0 0A 16 00 C8 55 00 80 DE 09 E6 15 9E 1A .......U........
-0DA0 F3 15 AE 0D 60 00 C8 35 00 02 03 02 A0 89 F7 09 ....`..5........
-0DB0 18 05 F3 1C 1A 00 1C 00 F3 10 18 00 F3 E5 03 00 ................
-0DC0 18 00 87 00 E6 15 AA 12 F7 08 70 04 F7 09 8E 06 ..........p.....
-0DD0 02 02 C8 55 00 02 C8 0B 05 80 C8 45 00 80 C8 8B ...U.......E....
-0DE0 01 81 99 89 DE 09 F3 15 AE 17 60 00 C8 35 00 02 ..........`..5..
-0DF0 01 02 A0 89 77 00 A6 0C 01 17 01 01 01 15 40 14 ....w.........@.
+0D70 4E 4F 56 44 45 43 E6 15                         NOVDEC..       
+
+fn0D78()
+	mov	@r2,@-(r2)
+	jsr	r3,04BE(pc)
+	jsr	pc,06DC(pc)
+	bne	0D88
+
+l0D84:
+	bis	#8200,@r0
+
+l0D88:
+	tst	@r0
+	bmi	0D9A
+
+l0D8C:
+	tst	0016(r0)
+	beq	0D96
+
+l0D92:
+	dec	0016(r0)
+
+l0D96:
+	bis	#8000,@r0
+
+l0D9A:
+	jsr	pc,@(sp)+
+	mov	#1A9E,-(sp)
+	mov	#0DAE,0060(r3)
+	bit	#0200,@r0
+	bne	0DB2
+
+l0DAC:
+	trap	#A0
+	jsr	pc,0518(pc)
+
+l0DB2:
+	mov	001A(r3),001C(r3)
+	mov	r3,0018(r3)
+	sub	#0003,0018(r3)
+	rts	pc
+0DC4             E6 15                                   ..         
+
+fn0DC6()
+	mov	@r2,@-(r2)
+	jsr	r3,0470(pc)
+	jsr	pc,068E(pc)
+	bne	0DD6
+
+l0DD2:
+	bis	#0200,@r0
+
+l0DD6:
+	tst	@r0
+	bpl	0DE4
+
+l0DDA:
+	bic	#8000,@r0
+	tst	@r0
+	bmi	0DE4
+
+l0DE2:
+	trap	#99
+
+l0DE4:
+	jsr	pc,@(sp)+
+	mov	#17AE,0060(r3)
+	bit	#0200,@r0
+	bne	0DF4
+
+l0DF2:
+	trap	#A0
+
+l0DF4:
+	jmp	0CA6(pc)
+0DF8                         01 17 01 01 01 15 40 14         ......@.
 0E00 41 12 82 15 83 15 33 01 00 15 01 0A FA 01 C4 1D A.....3.........
 0E10 14 46 C4 65 2A 00 8C 15 82 15 83 15 80 15 81 15 .F.e*...........
 0E20 26 01 01 17 01 01 01 15 40 14 41 12 04 01 26 0A &.......@.A...&.
@@ -233,30 +562,122 @@
 0E70 02 02 43 20 03 03 80 50 01 86 00 0B 5C 00 C0 1C ..C ...P....\...
 0E80 72 00 01 02 85 00 04 10 40 13 C0 45 80 FF F7 09 r.......@..E....
 0E90 BA F6 C6 1C 64 00 E6 15 F4 0E E6 10 F3 8B 74 00 ....d.........t.
-0EA0 1C 02 36 11 02 00 19 01 E6 10 C3 1D 78 45 33 0A ..6.........xE3.
+0EA0 1C 02 36 11 02 00                               ..6...         
+
+fn0EA6()
+	br	0EDA
+0EA8                         E6 10 C3 1D 78 45 33 0A         ....xE3.
 0EB0 44 00 F3 8B 74 00 05 02 B3 1D 02 00 7E 00 83 15 D...t.......~...
 0EC0 D6 0B DE 09 E6 15 F4 0E E6 10 C3 1D 58 45 F3 8B ............XE..
-0ED0 74 00 03 02 F6 1C 7E 00 02 00 33 0A 72 00 33 0A t.....~...3.r.3.
-0EE0 70 00 33 0A 14 00 F3 1C 58 00 0C 00 33 8A A2 00 p.3.....X...3...
-0EF0 83 15 87 00 5C 00 C1 15 01 0A 80 25 00 15 C3 1D ....\......%....
-0F00 24 45 E6 9C 74 00 E6 1C 0E 00 E6 12 26 14 26 14 $E..t.......&.&.
-0F10 0B 0A B3 11 0E 00 66 10 41 15 08 03 02 14 06 03 ......f.A.......
-0F20 00 12 50 15 C1 0A 02 03 C2 0A FB 02 B3 95 74 00 ..P...........t.
-0F30 01 03 5C 00 CC 09 96 25 C4 1D EA 44 8C 15 B4 15 ..\....%...D....
-0F40 0E 00 B4 95 74 00 87 00 57 A3 02 00 25 02 D5 0B ....t...W...%...
+0ED0 74 00 03 02 F6 1C 7E 00 02 00                   t.....~...     
+
+l0EDA:
+	clr	0072(r3)
+	clr	0070(r3)
+	clr	0014(r3)
+	mov	0058(r3),000C(r3)
+	clrb	00A2(r3)
+	mov	(sp)+,r3
+	rts	pc
+0EF4             5C 00                                   \.         
+
+fn0EF6()
+	mov	#0A01,r1
+	cmp	(sp)+,r0
+	mov	(r4)+,r0
+	mov	4524(pc),r3
+	movb	0074(r3),-(sp)
+	mov	000E(r3),-(sp)
+	mov	@r3,-(sp)
+	mov	(r0)+,-(sp)
+	mov	(r0)+,-(sp)
+	clr	@r3
+	mov	sp,000E(r3)
+	mov	r1,-(sp)
+	mov	(r5)+,r1
+	beq	0F2C
+
+l0F1C:
+	mov	(r0)+,r2
+	beq	0F2C
+
+l0F20:
+	mov	@r0,r0
+
+l0F22:
+	mov	(r5)+,(r0)+
+	dec	r1
+	beq	0F2C
+
+l0F28:
+	dec	r2
+	bne	0F22
+
+l0F2C:
+	movb	(sp)+,0074(r3)
+	beq	0F34
+
+l0F32:
+	jmp	@(r4)+
+
+l0F34:
+	jsr	pc,@r4
+	cmp	(sp)+,(sp)+
+	mov	44EA(pc),r4
+	mov	(sp)+,@r4
+	mov	(sp)+,000E(r4)
+	movb	(sp)+,0074(r4)
+	rts	pc
+0F48                         57 A3 02 00 25 02 D5 0B         W...%...
 0F50 42 15 43 15 80 12 C1 12 1B 03 C1 0C 40 0C 80 62 B.C.........@..b
 0F60 C1 62 40 0B C0 62 02 80 C0 65 00 80 0A 10 4B 10 .b@..b...e....K.
 0F70 C2 15 81 00 C1 0C 40 0C 02 87 C2 0A FB 01 01 8A ......@.........
 0F80 01 D0 C1 00 00 8A 80 D0 C0 00 00 0C 01 0C 05 01 ................
-0F90 C1 15 03 00 80 0A EA 01 90 89 87 00 77 00 0A 04 ............w...
-0FA0 E6 15 AA 12 E6 15 20 10 04 01 E6 15 AA 12 E6 15 ...... .........
-0FB0 1E 10 E6 10 83 11 C3 65 0C 00 E6 10 C3 1D 66 44 .......e......fD
-0FC0 B3 15 64 00 F3 0B 14 00 01 03 9A 89 B3 1D 02 00 ..d.............
-0FD0 14 00 B3 1D 06 00 1C 00 83 15 D6 0B 8E 15 F7 08 ................
-0FE0 5A 02 C3 1D 40 44 F3 1C 1C 00 1A 00 F3 1C 1C 00 Z...@D..........
-0FF0 18 00 B3 15 12 00 B3 67 18 00 F3 10 56 00 F3 15 .......g....V...
-1000 14 10 60 00 F3 15 01 00 62 00 F3 1C 0C 00 58 00 ..`.....b.....X.
-1010 77 00 8E 0A F3 0A 62 00 01 02 87 00 AC 89 00 00 w.....b.........
+0F90 C1 15 03 00 80 0A EA 01 90 89                   ..........     
+
+fn0F9A()
+	rts	pc
+0F9C                                     77 00 0A 04             w...
+0FA0 E6 15                                           ..             
+
+fn0FA2()
+	mov	@r2,@-(r2)
+	mov	#1020,-(sp)
+	br	0FB2
+0FAA                               E6 15 AA 12 E6 15           ......
+0FB0 1E 10                                           ..             
+
+l0FB2:
+	mov	r3,-(sp)
+	mov	sp,r3
+	add	#000C,r3
+	mov	r3,-(sp)
+	mov	4466(pc),r3
+	mov	(sp)+,0064(r3)
+	tst	0014(r3)
+	beq	0FCC
+
+l0FCA:
+	trap	#9A
+
+l0FCC:
+	mov	0002(sp),0014(r3)
+	mov	0006(sp),001C(r3)
+	mov	(sp)+,r3
+	tst	(sp)+
+	mov	(sp)+,@sp
+	jsr	r3,025A(pc)
+	mov	4440(pc),r3
+	mov	001C(r3),001A(r3)
+	mov	001C(r3),0018(r3)
+	mov	(sp)+,0012(r3)
+	add	@(sp)+,0018(r3)
+	mov	r3,0056(r3)
+	mov	#1014,0060(r3)
+	mov	#0001,0062(r3)
+	mov	000C(r3),0058(r3)
+	jmp	0A8E(pc)
+1014             F3 0A 62 00 01 02 87 00 AC 89 00 00     ..b.........
 1020 00 80 C4 1D 00 44 C4 65 2A 00 8C 15 09 01 C4 1D .....D.e*.......
 1030 F4 43 C4 65 2A 00 8C 15 B6 15 02 00 B6 15 02 00 .C.e*...........
 1040 80 15 81 15 03 0A C0 0C 03 0C B1 00 00 8C 02 10 ................
@@ -281,7 +702,11 @@
 1170 30 00 2A 34 32 00 2E 34 36 00 2B 34 33 00 31 34 0.*42..46.+43.14
 1180 39 00 2F 34 37 00 30 34 38 00 40 36 34 00 41 36 9./47.048.@64.A6
 1190 35 00 42 36 36 00 43 36 37 00 33 35 31 00 32 35 5.B66.C67.351.25
-11A0 30 00 00 30 00 00 C3 1D 7C 42 33 10 64 00 F3 1C 0..0....|B3.d...
+11A0 30 00 00 30                                     0..0           
+
+fn11A4()
+	halt
+11A6                   C3 1D 7C 42 33 10 64 00 F3 1C       ..|B3.d...
 11B0 0C 00 58 00 C0 15 1C 54 C1 15 2C 54 C2 15 26 54 ..X....T..,T..&T
 11C0 95 29 83 18 0F 03 04 14 61 17 4E 12 FA 03 A1 00 .)......a.N.....
 11D0 0E 0C 04 86 C4 35 01 00 01 03 4B 15 D3 0B 04 0C .....5....K.....
@@ -290,7 +715,11 @@
 1200 40 00 26 42 1A 03 CC 45 04 00 F4 45 01 00 1C 00 @.&B...E...E....
 1210 C1 1F 24 42 57 20 01 00 03 03 CC 35 40 00 EE 02 ..$BW .....5@...
 1220 57 20 02 00 03 02 CC 55 04 00 07 01 CC 35 04 00 W .....U.....5..
-1230 E5 02 57 20 03 00 01 02 C3 89 58 00 A6 10 82 11 ..W ......X.....
+1230 E5 02 57 20 03 00 01 02 C3 89                   ..W ......     
+
+fn123A()
+	jmp	@(r0)+
+123C                                     A6 10 82 11             ....
 1240 66 10 26 10 E6 15 5A 12 92 24 80 14 D2 0B A6 12 f.&...Z..$......
 1250 0A 10 A6 18 4A 11 22 11 4B 00 85 15 80 15 81 15 ....J.".K.......
 1260 82 15 83 15 84 15 A6 1D 02 00 76 11 04 00 85 1D ..........v.....
@@ -299,7 +728,11 @@
 1290 CD 09 C3 1D 90 41 F3 0B 44 00 DF 02 80 15 81 15 .....A..D.......
 12A0 82 15 83 15 84 15 85 15 87 00 5C 00 C3 1D 76 41 ..........\...vA
 12B0 B3 90 A2 00 F3 0B 14 00 01 03 9A 89 F7 09 60 01 ..............`.
-12C0 33 10 14 00 C8 35 00 08 87 00 66 11 26 11 C4 1C 3....5....f.&...
+12C0 33 10 14 00 C8 35 00 08                         3....5..       
+
+fn12C8()
+	rts	pc
+12CA                               66 11 26 11 C4 1C           f.&...
 12D0 14 00 C1 1C 1A 00 CC 8B 07 80 C0 15 8E 13 E9 88 ................
 12E0 C2 1C 54 00 B3 11 54 00 C0 15 0A 00 CC 35 20 00 ..T...T......5 .
 12F0 16 03 45 94 C5 A5 31 00 02 02 D0 0B 14 01 C5 A5 ..E...1.........
@@ -324,7 +757,11 @@
 1420 C2 0B 03 07 C2 25 63 00 01 04 94 89 E6 1C 04 00 .....%c.........
 1430 81 13 91 A0 0A 03 73 20 02 00 FB 87 81 13 D1 8B ......s ........
 1440 04 03 73 20 02 00 FB 87 95 89 A1 90 C0 1C 06 00 ..s ............
-1450 81 E5 04 03 C0 65 20 00 C1 0A FC 02 87 00 C3 1D .....e .........
+1450 81 E5 04 03 C0 65 20 00 C1 0A FC 02             .....e .....   
+
+fn145C()
+	rts	pc
+145E                                           C3 1D               ..
 1460 C4 3F 80 11 C0 65 16 00 33 10 64 00 B3 90 A2 00 .?...e..3.d.....
 1470 F3 0B 14 00 01 03 9A 89 80 15 B3 15 12 00 82 17 ................
 1480 26 10 F7 09 9A FF 33 10 14 00 C8 35 00 08 DE 09 &.....3....5....
@@ -403,8 +840,15 @@
 1910 CC 45 02 80 CC 35 00 40 03 03 F4 15 FF FF 16 00 .E...5.@........
 1920 DF 8B 2A 00 06 03 33 0A 70 00 C4 1C 72 00 0D 02 ..*...3.p...r...
 1930 97 89 F4 35 08 00 1C 00 DE 02 CC 55 00 10 33 0A ...5.......U..3.
-1940 72 00 C4 1C 70 00 01 02 98 89 77 00 44 F5 01 0A r...p.....w.D...
-1950 C1 DE 12 00 B3 0A 12 00 87 00 F7 09 0C 00 00 92 ................
+1940 72 00 C4 1C 70 00 01 02 98 89 77 00             r...p.....w.   
+
+fn194C()
+	ash	r4,r5
+	clr	r1
+	bis	@0012(r3),r1
+	inc	0012(r3)
+	rts	pc
+195A                               F7 09 0C 00 00 92           ......
 1960 87 00 C0 95 20 20 3B 90 1C 00 C0 1C 1C 00 33 20 ....  ;.......3 
 1970 18 00 02 86 B3 0A 1C 00 87 00 F3 2C 1C 00 46 00 ...........,..F.
 1980 03 86 F3 1C 46 00 1C 00 33 0A 46 00 F3 0B 56 00 ....F...3.F...V.
@@ -424,12 +868,35 @@
 1A60 02 80 F7 09 14 FF F3 0B 44 00 A2 03 F3 0B 5C 00 ........D.....\.
 1A70 1D 02 77 09 08 F4 AE 89 B3 11 56 00 26 01 F3 0B ..w.......V.&...
 1A80 44 00 EC 03 FB 0B 14 00 06 81 C2 1C 18 00 C2 EC D...............
-1A90 1C 00 BB 10 44 00 DE 09 C3 1D 8A 39 16 01 33 0A ....D......9..3.
-1AA0 56 00 33 0A 1E 00 DE 09 C3 1D 7A 39 33 0A 46 00 V.3.......z93.F.
+1A90 1C 00 BB 10 44 00 DE 09 C3 1D 8A 39             ....D......9   
+
+l1A9C:
+	br	1ACA
+1A9E                                           33 0A               3.
+
+l1AA0:
+	jmp	(sp)+
+1AA2       33 0A 1E 00 DE 09 C3 1D 7A 39 33 0A 46 00   3.......z93.F.
 1AB0 FB 0B 14 00 02 81 FB 09 60 00 F3 1C 50 00 20 00 ........`...P. .
-1AC0 F3 1C 12 00 42 00 33 0A 5C 00 02 0A F7 09 7E FE ....B.3.\.....~.
-1AD0 40 90 02 81 01 0A 04 01 F7 09 72 FE C0 45 80 FF @.........r..E..
-1AE0 78 00 C2 1C 82 0A 82 0A 82 0A 82 0A 82 0A 82 0A x...............
+1AC0 F3 1C 12 00 42 00 33 0A 5C 00                   ....B.3.\.     
+
+l1ACA:
+	clr	r2
+	jsr	pc,FE7E(pc)
+	movb	r1,r0
+	bmi	1AD8
+
+l1AD4:
+	clr	r1
+	br	1AE0
+
+l1AD8:
+	jsr	pc,FE72(pc)
+	bic	#FF80,r0
+
+l1AE0:
+	jmp	@1CC2(r0)
+1AE4             82 0A 82 0A 82 0A 82 0A 82 0A 82 0A     ............
 1AF0 82 0A C2 0C B3 90 48 00 33 90 49 00 B3 0A 5C 00 ......H.3.I...\.
 1B00 73 10 4A 00 F7 09 46 FE 73 10 4C 00 C2 25 06 00 s.J...F.s.L..%..
 1B10 04 04 F7 09 38 FE 73 10 4E 00 F3 0B 44 00 9E 03 ....8.s.N...D...
@@ -462,7 +929,12 @@
 1CC0 EB 01 BA 1A DA 19 EA 19 56 1A 16 1A 78 1A 28 1A ........V...x.(.
 1CD0 F0 1A F2 1A EC 1A EE 1A E4 1A E8 1A EA 1A E6 1A ................
 1CE0 30 1A FA 19 7E 1A B2 19 0A 1A F0 1A F2 1A EC 1A 0...~...........
-1CF0 EE 1A E4 1A E8 1A EA 1A E6 1A 87 00 26 10 80 11 ............&...
+1CF0 EE 1A E4 1A E8 1A EA 1A                         ........       
+
+fn1CF8()
+	mov	@-(r3),-(sp)
+	rts	pc
+1CFC                                     26 10 80 11             &...
 1D00 C0 65 0A 00 26 12 26 18 26 18 E0 0B 26 18 D0 15 .e..&.&.&...&...
 1D10 26 1D 26 12 D0 10 90 10 50 10 10 1C F6 FF 30 12 &.&.....P.....0.
 1D20 F4 FF 88 15 87 00 83 15 82 15 81 15 80 15 87 00 ................
@@ -516,13 +988,22 @@ fn1DAE()
 	jsr	pc,0D46(pc)
 	inc	@35D8(pc)
 	mov	#0013,367C(pc)
-	mov	#001B,@35CC(pc)
-	dec	3672(pc)
-	inc	@35C4(pc)
-	cmp	366A(pc),#000C
+
+l1E52:
+	bit	@(r1)+,@15FF(r4)
+	illegal
+	bit	#0AF7,@r4
+	bit	@(r1)+,0ABF(r2)
+	bit	#2DD7,r4
+	bit	@(r1)+,@-(r2)
+	illegal
 	bge	1E74
+
+l1E6A:
 	inc	@35B8(pc)
 	mov	#0012,365C(pc)
+
+l1E74:
 	mov	#001E,@35AC(pc)
 	mov	#0032,3646(pc)
 	inc	@35A2(pc)
@@ -533,9 +1014,13 @@ fn1DAE()
 	mov	#FFFF,363A(pc)
 	inc	@3586(pc)
 	mov	#0001,3632(pc)
+
+l1EA6:
 	mov	#0023,@357A(pc)
 	mov	#0001,3628(pc)
 	mov	#487E,r5
+
+l1EB6:
 	mov	#0024,@356A(pc)
 	mov	3618(pc),r1
 	add	(r5)+,r1
@@ -544,17 +1029,25 @@ fn1DAE()
 	inc	@3558(pc)
 	cmp	3608(pc),#0004
 	bgt	1EEA
+
+l1ED6:
 	mov	#0027,@354A(pc)
 	mov	#000A,5A3E(r1)
 	inc	@3540(pc)
 	clr	5A66(r1)
+
+l1EEA:
 	mov	#0029,@3536(pc)
 	inc	35E6(pc)
 	cmp	35E2(pc),#000A
 	ble	1EB6
+
+l1EFC:
 	inc	35D8(pc)
 	cmp	35D4(pc),#0005
 	ble	1EA6
+
+l1F08:
 	inc	@351A(pc)
 	mov	#48BA,r5
 	jsr	pc,211C(pc)
@@ -562,11 +1055,15 @@ fn1DAE()
 	mov	#0001,35BA(pc)
 	mov	#0050,r4
 	mov	#5464,r5
+
+l1F26:
 	mov	#002C,@34FA(pc)
 	movb	#003D,(r5)+
 	mov	#002D,@34F0(pc)
 	dec	r4
 	bgt	1F26
+
+l1F3A:
 	inc	@34E8(pc)
 	mov	#48D0,r5
 	jsr	pc,22EA(pc)
@@ -607,6 +1104,9 @@ fn1DAE()
 	inc	@3448(pc)
 	mov	#48BA,r5
 	jsr	pc,0EDE(pc)
+
+l1FE4:
+	illegal
 	mov	#003C,@343A(pc)
 	clr	34D4(pc)
 	inc	@3432(pc)
@@ -619,27 +1119,42 @@ fn1DAE()
 	mov	#0001,34C2(pc)
 	mov	#000A,r4
 	mov	#5450,r5
+
+l201E:
 	mov	#0041,@3402(pc)
 	clr	(r5)+
 	mov	#0042,@33FA(pc)
 	dec	r4
 	bgt	201E
+
+l2030:
 	inc	@33F2(pc)
 	mov	#0001,34A0(pc)
 	mov	#0002,34B6(pc)
-	mov	#0044,@33E0(pc)
+
+l203E:
+	bit	(r2)+,15FF(sp)
+	jmp	r4
+	bit	@pc,-(r0)
 	mov	#0001,348C(pc)
 	mov	#000A,34AA(pc)
 	mov	#487E,3462(pc)
 	mov	#0006,3496(pc)
 	mov	#5450,3458(pc)
+
+l2062:
+	bit	(r1)+,@(r0)+
 	mov	#0045,@33BC(pc)
 	mov	346C(pc),r0
 	add	@3448(pc),r0
 	asl	r0
 	tst	58C2(r0)
 	bne	207E
+
+l207A:
 	jmp	026C(pc)
+
+l207E:
 	mov	#0047,@33A2(pc)
 	inc	343C(pc)
 	inc	@339A(pc)
@@ -652,8 +1167,12 @@ fn1DAE()
 	inc	@337A(pc)
 	cmp	r0,343A(pc)
 	bge	20BA
+
+l20B2:
 	inc	@3370(pc)
 	mov	r0,3430(pc)
+
+l20BA:
 	mov	#004C,@3366(pc)
 	mov	3416(pc),r1
 	add	@33F2(pc),r1
@@ -665,81 +1184,131 @@ fn1DAE()
 	inc	@3346(pc)
 	cmp	r0,3404(pc)
 	ble	20EE
+
+l20E6:
 	inc	@333C(pc)
 	mov	r0,33FA(pc)
+
+l20EE:
 	mov	#0050,@3332(pc)
 	mov	33F4(pc),r0
 	cmp	r0,33EA(pc)
 	bge	2106
+
+l20FE:
 	inc	@3324(pc)
 	mov	r0,33E0(pc)
+
+l2106:
 	mov	#0052,@331A(pc)
 	mov	33CA(pc),r0
 	cmp	r0,@33A8(pc)
 	ble	211E
+
+l2116:
 	inc	@330C(pc)
 	mov	r0,@339E(pc)
+
+l211E:
 	mov	#0054,@3302(pc)
 	cmp	33B2(pc),#0003
 	beq	2138
+
+l212C:
 	inc	@32F6(pc)
 	mov	#490C,r5
 	jsr	pc,2004(pc)
+
+l2138:
 	mov	#0056,@32E8(pc)
 	tst	338C(pc)
 	bgt	219A
+
+l2144:
 	mov	#0058,@32DC(pc)
 	cmp	338C(pc),#0002
 	bgt	215E
+
+l2152:
 	inc	@32D0(pc)
 	mov	#4910,r5
 	jsr	pc,20D2(pc)
+
+l215E:
 	mov	#005A,@32C2(pc)
 	cmp	3372(pc),#0003
 	bne	2178
+
+l216C:
 	inc	@32B6(pc)
 	mov	#491A,r5
 	jsr	pc,20B8(pc)
+
+l2178:
 	mov	#005C,@32A8(pc)
 	cmp	3358(pc),#0004
 	blt	2192
+
+l2186:
 	inc	@329C(pc)
 	mov	#4924,r5
 	jsr	pc,209E(pc)
+
+l2192:
 	mov	#005E,@328E(pc)
 	br	21E8
+
+l219A:
 	mov	#005F,@3286(pc)
 	cmp	3336(pc),#0002
 	bgt	21B4
+
+l21A8:
 	inc	@327A(pc)
 	mov	#492E,r5
 	jsr	pc,207C(pc)
+
+l21B4:
 	mov	#0061,@326C(pc)
 	cmp	331C(pc),#0003
 	bne	21CE
+
+l21C2:
 	inc	@3260(pc)
 	mov	#4938,r5
 	jsr	pc,2062(pc)
+
+l21CE:
 	mov	#0063,@3252(pc)
 	cmp	3302(pc),#0004
 	blt	21E8
+
+l21DC:
 	inc	@3246(pc)
 	mov	#4942,r5
 	jsr	pc,2048(pc)
+
+l21E8:
 	mov	#0065,@3238(pc)
 	tst	32D6(pc)
 	beq	220C
+
+l21F4:
 	mov	#0067,@322C(pc)
 	mov	32F0(pc),32F0(pc)
 	inc	32EC(pc)
 	mov	#494C,r5
 	jsr	pc,2024(pc)
+
+l220C:
 	mov	#0068,@3214(pc)
 	mov	#4956,r5
 	jsr	pc,1F22(pc)
 	inc	@3208(pc)
 	tst	32B0(pc)
 	beq	22B4
+
+l2224:
 	mov	#006B,@31FC(pc)
 	mov	#48BA,r5
 	jsr	pc,0C92(pc)
@@ -761,6 +1330,8 @@ fn1DAE()
 	inc	@31B4(pc)
 	cmp	3278(pc),#0001
 	beq	229A
+
+l227A:
 	mov	#0073,@31A6(pc)
 	mov	#495E,r5
 	jsr	pc,1224(pc)
@@ -769,16 +1340,22 @@ fn1DAE()
 	jsr	pc,1B7E(pc)
 	inc	@318E(pc)
 	br	22B4
+
+l229A:
 	mov	#0076,@3186(pc)
 	mov	#48BA,r5
 	jsr	pc,16B4(pc)
 	inc	@317A(pc)
 	mov	#4956,r5
 	jsr	pc,0186(pc)
+
+l22B4:
 	mov	#0078,@316C(pc)
 	inc	@3168(pc)
 	cmp	3212(pc),3208(pc)
 	beq	22EA
+
+l22C6:
 	mov	#007B,@315A(pc)
 	mov	#0003,3220(pc)
 	sub	31F6(pc),321A(pc)
@@ -786,30 +1363,49 @@ fn1DAE()
 	jsr	pc,0B40(pc)
 	inc	@3142(pc)
 	mov	31E4(pc),31EA(pc)
+
+l22E8:
+	bit	pc,@-(r2)
+
+l22EA:
 	mov	#007D,@3136(pc)
 	add	#0002,31C4(pc)
 	add	#0006,31F8(pc)
 	add	#0002,31BA(pc)
 	dec	31F6(pc)
 	ble	230C
+
+l2308:
 	jmp	FD58(pc)
+
+l230C:
 	add	#0002,31E4(pc)
 	inc	31C4(pc)
 	cmp	31C0(pc),#0005
 	bgt	2322
+
+l231E:
 	jmp	FD1E(pc)
+
+l2322:
 	inc	@3100(pc)
 	clr	319E(pc)
 	clr	319C(pc)
 	inc	@30F4(pc)
 	cmp	31B4(pc),#0002
 	bne	2390
+
+l233A:
 	mov	#0081,@30E6(pc)
 	mov	#0001,3192(pc)
+
+l2346:
 	mov	#0082,@30DA(pc)
 	mov	#0001,3188(pc)
 	mov	#0004,r4
 	mov	#487E,r5
+
+l235A:
 	mov	#0083,@30C6(pc)
 	mov	3174(pc),r1
 	mov	r1,r0
@@ -819,13 +1415,19 @@ fn1DAE()
 	mov	#0084,@30B2(pc)
 	dec	r4
 	bgt	235A
+
+l2378:
 	inc	r1
 	mov	r1,315A(pc)
 	cmp	r1,#0005
 	ble	2346
+
+l2384:
 	inc	@309E(pc)
 	mov	#48BA,r5
 	jsr	pc,1A82(pc)
+
+l2390:
 	mov	#0086,@3090(pc)
 	mov	#0001,3136(pc)
 	inc	@3086(pc)
@@ -833,19 +1435,29 @@ fn1DAE()
 	mov	#000A,r3
 	mov	#5450,r4
 	mov	#5A2C,r5
+
+l23B2:
 	mov	#0088,@306E(pc)
 	mov	(r4)+,(r5)+
 	mov	#0089,@3066(pc)
 	dec	r3
 	bgt	23B2
+
+l23C4:
 	inc	@305E(pc)
 	cmp	311A(pc),#0002
 	ble	23E6
+
+l23D0:
 	mov	#008C,@3050(pc)
 	cmp	310E(pc),#0049
 	bge	23E6
+
+l23DE:
 	mov	#008E,@3042(pc)
 	br	2406
+
+l23E6:
 	mov	#008F,@303A(pc)
 	dec	30F4(pc)
 	inc	@3032(pc)
@@ -853,6 +1465,8 @@ fn1DAE()
 	inc	@302A(pc)
 	mov	#4080,30C6(pc)
 	clr	30C4(pc)
+
+l2406:
 	mov	#0092,@301A(pc)
 	add	30D0(pc),30D0(pc)
 	inc	@3010(pc)
@@ -860,24 +1474,25 @@ fn1DAE()
 	inc	@3008(pc)
 	mov	30A2(pc),r0
 	bne	2428
+
+l2424:
 	jmp	FA2C(pc)
+
+l2428:
 	mov	#0096,@2FF8(pc)
 	mov	r0,3094(pc)
 	inc	@2FF0(pc)
 	jmp	FBAC(pc)
-	jsr	r4,EABA(pc)
-	bic	-(r5),@-(r0)
-	mov	#0007,@2FE0(pc)
-	mov	342C(pc),3252(pc)
-	inc	@2FD6(pc)
-	mov	#4D88,r5
-	jsr	pc,1BD8(pc)
-	inc	@2FCA(pc)
-	mov	#4D8A,r5
-	jsr	pc,E3B4(pc)
-	inc	@2FBE(pc)
-	mov	#0001,3236(pc)
-	mov	#5508,r5
+
+fn2438()
+	nop
+243A                               37 09 BA EA 68 49           7...hI
+2440 FF 15 07 00 E0 2F F7 1D 2C 34 52 32 BF 0A D6 2F ...../..,4R2.../
+2450 C5 15 88 4D F7 09 D8 1B BF 0A CA 2F C5 15 8A 4D ...M......./...M
+2460 F7 09 B4 E3 BF 0A BE 2F F7 15 01 00 36 32 C5 15 ......./....62..
+2470 08 55                                           .U             
+
+l2472:
 	mov	#000B,@2FAE(pc)
 	mov	#4D82,-(sp)
 	mov	#499C,-(sp)
@@ -898,6 +1513,8 @@ fn1DAE()
 	mov	#001E,r2
 	mov	#5668,r3
 	mov	#4D3E,r4
+
+l24C4:
 	mov	#000E,@2F5C(pc)
 	mov	31D6(pc),r1
 	mov	r1,r0
@@ -906,12 +1523,16 @@ fn1DAE()
 	mov	#000F,@2F4A(pc)
 	dec	r2
 	bgt	24C4
+
+l24E0:
 	mov	#0010,@2F40(pc)
 	add	#0002,r5
 	inc	r1
 	mov	r1,31B4(pc)
 	cmp	r1,#000A
 	ble	2472
+
+l24F6:
 	inc	@2F2C(pc)
 	mov	#4D96,r5
 	jsr	pc,E562(pc)
@@ -922,20 +1543,28 @@ fn1DAE()
 	mov	#001E,r3
 	mov	#5898,r4
 	mov	#4D3E,r5
+
+l2522:
 	mov	#0014,@2EFE(pc)
 	mov	(r5)+,r0
 	movb	(r4)+,5528(r0)
 	mov	#0015,@2EF2(pc)
 	dec	r3
 	bgt	2522
+
+l2538:
 	mov	#0016,@2EE8(pc)
 	clr	3160(pc)
 	inc	@2EE0(pc)
 	mov	#0001,3158(pc)
 	mov	#550A,r5
+
+l2550:
 	mov	#0018,@2ED0(pc)
 	cmp	FFFE(r5),@r5
 	bge	25C4
+
+l255C:
 	mov	#001A,@2EC4(pc)
 	mov	FFFE(r5),r0
 	inc	@2EBC(pc)
@@ -949,6 +1578,8 @@ fn1DAE()
 	mov	#001E,311E(pc)
 	mov	#4D3E,r3
 	mov	#5668,r4
+
+l2596:
 	mov	#001F,@2E8A(pc)
 	mov	3104(pc),r2
 	add	(r3)+,r2
@@ -960,14 +1591,20 @@ fn1DAE()
 	mov	#0022,@2E68(pc)
 	dec	30EA(pc)
 	bgt	2596
+
+l25C4:
 	mov	#0023,@2E5C(pc)
 	add	#0002,r5
 	inc	30D2(pc)
 	cmp	30CE(pc),#000A
 	ble	2550
+
+l25DA:
 	inc	@2E48(pc)
 	tst	30C0(pc)
 	bne	2538
+
+l25E4:
 	mov	#0026,@2E3C(pc)
 	mov	#4D9E,r5
 	jsr	pc,E226(pc)
@@ -975,7 +1612,11 @@ fn1DAE()
 	mov	327C(pc),r2
 	cmp	r2,327A(pc)
 	ble	2604
+
+l2600:
 	jmp	0446(pc)
+
+l2604:
 	mov	#0029,@2E1C(pc)
 	mov	r2,r1
 	sxt	r0
@@ -985,278 +1626,414 @@ fn1DAE()
 	inc	@2E0A(pc)
 	cmp	@2EE6(pc),#0001
 	bne	2628
+
+l2624:
 	jmp	045C(pc)
+
+l2628:
 	mov	#002C,@2DF8(pc)
 	tst	r2
 	bne	2646
+
+l2632:
 	inc	@2DF0(pc)
 	mov	#4D7C,-(sp)
 	mov	#49E0,-(sp)
 	jsr	pc,E738(pc)
 	jsr	pc,E862(pc)
+
+l2646:
 	mov	#002E,@2DDA(pc)
 	cmp	3226(pc),#0001
 	bne	2668
+
+l2654:
 	inc	@2DCE(pc)
 	mov	#4D7C,-(sp)
 	mov	#49FA,-(sp)
 	jsr	pc,E716(pc)
 	jsr	pc,E840(pc)
+
+l2668:
 	mov	#0030,@2DB8(pc)
 	cmp	3204(pc),#0002
 	bne	268A
+
+l2676:
 	inc	@2DAC(pc)
 	mov	#4D7C,-(sp)
 	mov	#4A17,-(sp)
 	jsr	pc,E6F4(pc)
 	jsr	pc,E81E(pc)
+
+l268A:
 	mov	#0032,@2D96(pc)
 	cmp	31E2(pc),#0003
 	bne	26AC
+
+l2698:
 	inc	@2D8A(pc)
 	mov	#4D7C,-(sp)
 	mov	#4A31,-(sp)
 	jsr	pc,E6D2(pc)
 	jsr	pc,E7FC(pc)
+
+l26AC:
 	mov	#0034,@2D74(pc)
 	cmp	31C0(pc),#0004
 	bne	26CE
+
+l26BA:
 	inc	@2D68(pc)
 	mov	#4D7C,-(sp)
 	mov	#4A4A,-(sp)
 	jsr	pc,E6B0(pc)
 	jsr	pc,E7DA(pc)
+
+l26CE:
 	mov	#0036,@2D52(pc)
 	cmp	319E(pc),#0005
 	bne	26F0
+
+l26DC:
 	inc	@2D46(pc)
 	mov	#4D7C,-(sp)
 	mov	#4A69,-(sp)
 	jsr	pc,E68E(pc)
 	jsr	pc,E7B8(pc)
+
+l26F0:
 	mov	#0038,@2D30(pc)
 	cmp	317C(pc),#0006
 	bne	2712
+
+l26FE:
 	inc	@2D24(pc)
 	mov	#4D7C,-(sp)
 	mov	#4A8A,-(sp)
 	jsr	pc,E66C(pc)
 	jsr	pc,E796(pc)
+
+l2712:
 	mov	#003A,@2D0E(pc)
 	cmp	315A(pc),#0007
 	bne	2734
+
+l2720:
 	inc	@2D02(pc)
 	mov	#4D7C,-(sp)
 	mov	#4AA4,-(sp)
 	jsr	pc,E64A(pc)
 	jsr	pc,E774(pc)
+
+l2734:
 	mov	#003C,@2CEC(pc)
 	cmp	3138(pc),#0008
 	bne	2756
+
+l2742:
 	inc	@2CE0(pc)
 	mov	#4D7C,-(sp)
 	mov	#4ACB,-(sp)
 	jsr	pc,E628(pc)
 	jsr	pc,E752(pc)
+
+l2756:
 	mov	#003E,@2CCA(pc)
 	cmp	3116(pc),#0009
 	bne	2778
+
+l2764:
 	inc	@2CBE(pc)
 	mov	#4D7C,-(sp)
 	mov	#4ADD,-(sp)
 	jsr	pc,E606(pc)
 	jsr	pc,E730(pc)
+
+l2778:
 	mov	#0040,@2CA8(pc)
 	cmp	30F4(pc),#000A
 	bne	279A
+
+l2786:
 	inc	@2C9C(pc)
 	mov	#4D7C,-(sp)
 	mov	#4AF4,-(sp)
 	jsr	pc,E5E4(pc)
 	jsr	pc,E70E(pc)
+
+l279A:
 	mov	#0042,@2C86(pc)
 	cmp	30D2(pc),#000B
 	bne	27BC
+
+l27A8:
 	inc	@2C7A(pc)
 	mov	#4D7C,-(sp)
 	mov	#4B0E,-(sp)
 	jsr	pc,E5C2(pc)
 	jsr	pc,E6EC(pc)
+
+l27BC:
 	mov	#0044,@2C64(pc)
 	cmp	30B0(pc),#000C
 	bne	27DE
+
+l27CA:
 	inc	@2C58(pc)
 	mov	#4D7C,-(sp)
 	mov	#4B29,-(sp)
 	jsr	pc,E5A0(pc)
 	jsr	pc,E6CA(pc)
+
+l27DE:
 	mov	#0046,@2C42(pc)
 	cmp	308E(pc),#000D
 	bne	2800
+
+l27EC:
 	inc	@2C36(pc)
 	mov	#4D7C,-(sp)
 	mov	#4B42,-(sp)
 	jsr	pc,E57E(pc)
 	jsr	pc,E6A8(pc)
+
+l2800:
 	mov	#0048,@2C20(pc)
 	cmp	306C(pc),#000E
 	bne	2822
+
+l280E:
 	inc	@2C14(pc)
 	mov	#4D7C,-(sp)
 	mov	#4B5B,-(sp)
 	jsr	pc,E55C(pc)
 	jsr	pc,E686(pc)
+
+l2822:
 	mov	#004A,@2BFE(pc)
 	cmp	304A(pc),#000F
 	bne	2844
+
+l2830:
 	inc	@2BF2(pc)
 	mov	#4D7C,-(sp)
 	mov	#4B7C,-(sp)
 	jsr	pc,E53A(pc)
 	jsr	pc,E664(pc)
+
+l2844:
 	mov	#004C,@2BDC(pc)
 	cmp	3028(pc),#0010
 	bne	2866
+
+l2852:
 	inc	@2BD0(pc)
 	mov	#4D7C,-(sp)
 	mov	#4B9D,-(sp)
 	jsr	pc,E518(pc)
 	jsr	pc,E642(pc)
+
+l2866:
 	mov	#004E,@2BBA(pc)
 	cmp	3006(pc),#0011
 	bne	2888
+
+l2874:
 	inc	@2BAE(pc)
 	mov	#4D7C,-(sp)
 	mov	#4BB9,-(sp)
 	jsr	pc,E4F6(pc)
 	jsr	pc,E620(pc)
+
+l2888:
 	mov	#0050,@2B98(pc)
 	cmp	2FE4(pc),#0012
 	bne	28AA
+
+l2896:
 	inc	@2B8C(pc)
 	mov	#4D7C,-(sp)
 	mov	#4BD8,-(sp)
 	jsr	pc,E4D4(pc)
 	jsr	pc,E5FE(pc)
+
+l28AA:
 	mov	#0052,@2B76(pc)
 	cmp	2FC2(pc),#0013
 	bne	28CC
+
+l28B8:
 	inc	@2B6A(pc)
 	mov	#4D7C,-(sp)
 	mov	#4BF2,-(sp)
 	jsr	pc,E4B2(pc)
 	jsr	pc,E5DC(pc)
+
+l28CC:
 	mov	#0054,@2B54(pc)
 	cmp	2FA0(pc),#0014
 	bne	28EE
+
+l28DA:
 	inc	@2B48(pc)
 	mov	#4D7C,-(sp)
 	mov	#4C07,-(sp)
 	jsr	pc,E490(pc)
 	jsr	pc,E5BA(pc)
+
+l28EE:
 	mov	#0056,@2B32(pc)
 	cmp	2F7E(pc),#0015
 	bne	2910
+
+l28FC:
 	inc	@2B26(pc)
 	mov	#4D7C,-(sp)
 	mov	#4C24,-(sp)
 	jsr	pc,E46E(pc)
 	jsr	pc,E598(pc)
+
+l2910:
 	mov	#0058,@2B10(pc)
 	cmp	2F5C(pc),#0016
 	bne	2932
+
+l291E:
 	inc	@2B04(pc)
 	mov	#4D7C,-(sp)
 	mov	#4C36,-(sp)
 	jsr	pc,E44C(pc)
 	jsr	pc,E576(pc)
+
+l2932:
 	mov	#005A,@2AEE(pc)
 	cmp	2F3A(pc),#0017
 	bne	2954
+
+l2940:
 	inc	@2AE2(pc)
 	mov	#4D7C,-(sp)
 	mov	#4C4F,-(sp)
 	jsr	pc,E42A(pc)
 	jsr	pc,E554(pc)
+
+l2954:
 	mov	#005C,@2ACC(pc)
 	cmp	2F18(pc),#0018
 	bne	2976
+
+l2962:
 	inc	@2AC0(pc)
 	mov	#4D7C,-(sp)
 	mov	#4C65,-(sp)
 	jsr	pc,E408(pc)
 	jsr	pc,E532(pc)
+
+l2976:
 	mov	#005E,@2AAA(pc)
 	cmp	2EF6(pc),#0019
 	bne	2998
+
+l2984:
 	inc	@2A9E(pc)
 	mov	#4D7C,-(sp)
 	mov	#4C7A,-(sp)
 	jsr	pc,E3E6(pc)
 	jsr	pc,E510(pc)
+
+l2998:
 	mov	#0060,@2A88(pc)
 	cmp	2ED4(pc),#001A
 	bne	29BA
+
+l29A6:
 	inc	@2A7C(pc)
 	mov	#4D7C,-(sp)
 	mov	#4C99,-(sp)
 	jsr	pc,E3C4(pc)
 	jsr	pc,E4EE(pc)
+
+l29BA:
 	mov	#0062,@2A66(pc)
 	cmp	2EB2(pc),#001B
 	bne	29DC
+
+l29C8:
 	inc	@2A5A(pc)
 	mov	#4D7C,-(sp)
 	mov	#4CAF,-(sp)
 	jsr	pc,E3A2(pc)
 	jsr	pc,E4CC(pc)
+
+l29DC:
 	mov	#0064,@2A44(pc)
 	cmp	2E90(pc),#001C
 	bne	29FE
+
+l29EA:
 	inc	@2A38(pc)
 	mov	#4D7C,-(sp)
 	mov	#4CC6,-(sp)
 	jsr	pc,E380(pc)
 	jsr	pc,E4AA(pc)
+
+l29FE:
 	mov	#0066,@2A22(pc)
 	cmp	2E6E(pc),#001D
 	bne	2A20
+
+l2A0C:
 	inc	@2A16(pc)
 	mov	#4D7C,-(sp)
 	mov	#4CE1,-(sp)
 	jsr	pc,E35E(pc)
 	jsr	pc,E488(pc)
+
+l2A20:
 	mov	#0068,@2A00(pc)
 	cmp	2E4C(pc),#001E
 	blt	2A42
+
+l2A2E:
 	inc	@29F4(pc)
 	mov	#4D7C,-(sp)
 	mov	#4D03,-(sp)
 	jsr	pc,E33C(pc)
 	jsr	pc,E466(pc)
+
+l2A42:
 	mov	#006A,@29DE(pc)
+
+l2A48:
 	br	2A6E
-	mov	#006B,@29D6(pc)
-	cmp	@2AB2(pc),#0001
-	beq	2A84
-	mov	#006D,@29C8(pc)
-	mov	#4D7C,-(sp)
-	mov	#4D20,-(sp)
-	jsr	pc,E310(pc)
-	jsr	pc,E43A(pc)
+2A4A                               FF 15 6B 00 D6 29           ..k..)
+2A50 D7 2F B2 2A 01 00 16 03 FF 15 6D 00 C8 29 E6 15 ./.*......m..)..
+2A60 7C 4D E6 15 20 4D F7 09 10 E3 F7 09 3A E4       |M.. M......:. 
+
+l2A6E:
 	mov	#006E,@29B2(pc)
 	mov	#4D7C,-(sp)
 	mov	#49A3,-(sp)
 	jsr	pc,E2FA(pc)
 	jsr	pc,E424(pc)
+
+l2A82:
+	sub	(r0)+,-(r4)
+
+l2A84:
 	mov	#006F,@299C(pc)
 	mov	#0001,2C14(pc)
 	mov	#5508,r5
+
+l2A94:
 	mov	#0070,@298C(pc)
 	mov	#0001,2C06(pc)
 	mov	#001E,r2
 	mov	#4D3E,r3
 	mov	#5668,r4
+
+l2AAC:
 	mov	#0071,@2974(pc)
 	mov	2BEE(pc),r0
 	add	(r3)+,r0
@@ -1264,6 +2041,8 @@ fn1DAE()
 	mov	#0072,@2964(pc)
 	dec	r2
 	bgt	2AAC
+
+l2AC6:
 	inc	@295C(pc)
 	mov	#4D82,-(sp)
 	mov	#499C,-(sp)
@@ -1282,6 +2061,8 @@ fn1DAE()
 	inc	@2922(pc)
 	cmp	@29FE(pc),#0001
 	beq	2B3C
+
+l2B0C:
 	mov	#0077,@2914(pc)
 	mov	#4D7C,-(sp)
 	mov	#49D4,-(sp)
@@ -1294,11 +2075,15 @@ fn1DAE()
 	mov	r5,-(sp)
 	jsr	pc,DFAA(pc)
 	jsr	pc,E36C(pc)
+
+l2B3C:
 	mov	#0078,@28E4(pc)
 	add	#0002,r5
 	inc	2B5A(pc)
 	cmp	2B56(pc),#000A
 	ble	2A94
+
+l2B52:
 	inc	@28D0(pc)
 	mov	#4D7C,-(sp)
 	mov	#4984,-(sp)
@@ -1313,7585 +2098,824 @@ fn1DAE()
 	mov	#4D88,r5
 	jsr	pc,E414(pc)
 	mov	#00A1,@2898(pc)
+
+fn2B8E()
 	rts	pc
-	jsr	r4,E364(pc)
-	bic	15FF(sp),@-(r2)
-	reset
-	cmp	-(r2),@r2
-	mov	#501C,r5
-	jsr	pc,19D8(pc)
-	inc	@287E(pc)
-	mov	#501C,r5
-	jsr	pc,1480(pc)
-	inc	@2872(pc)
-	mov	#0001,2AFE(pc)
-	mov	#001E,r4
-	mov	#5898,r5
-	mov	#0008,@285E(pc)
-	movb	#0020,(r5)+
-	mov	#0009,@2854(pc)
-	dec	r4
-	bgt	2BC2
-	inc	@284C(pc)
-	mov	#501E,r5
-	jsr	pc,155A(pc)
-	inc	@2840(pc)
-	mov	#5022,r5
-	jsr	pc,1484(pc)
-	inc	@2834(pc)
-	mov	#5006,-(sp)
-	mov	#4DE6,-(sp)
-	jsr	pc,E17C(pc)
-	jsr	pc,E2A6(pc)
-	inc	@2820(pc)
-	mov	#5006,-(sp)
-	mov	#4F12,-(sp)
-	jsr	pc,E168(pc)
-	jsr	pc,E292(pc)
-	inc	@280C(pc)
-	mov	#5028,r5
-	jsr	pc,151A(pc)
-	inc	@2800(pc)
-	mov	#502C,r5
-	jsr	pc,1444(pc)
-	inc	@27F4(pc)
-	mov	#5006,-(sp)
-	mov	#4FA0,-(sp)
-	jsr	pc,E13C(pc)
-	jsr	pc,E266(pc)
-	inc	@27E0(pc)
-	mov	#5032,r5
-	jsr	pc,1424(pc)
-	inc	@27D4(pc)
-	mov	#5006,-(sp)
-	mov	#4FBD,-(sp)
-	jsr	pc,E11C(pc)
-	jsr	pc,E246(pc)
-	inc	@27C0(pc)
-	mov	#0001,2A4E(pc)
-	inc	@27B6(pc)
-	mov	#0002,2A46(pc)
-	inc	@27AC(pc)
-	mov	#0001,2A3E(pc)
-	inc	@27A2(pc)
-	mov	#000A,2A36(pc)
-	mov	#0017,@2796(pc)
-	tst	2A2A(pc)
-	ble	2CA2
-	inc	@278C(pc)
-	mov	#5038,r5
-	jsr	pc,158E(pc)
-	mov	#0019,@277E(pc)
-	tst	2A12(pc)
-	bge	2CBA
-	inc	@2774(pc)
-	mov	#5042,r5
-	jsr	pc,1576(pc)
-	mov	#001B,@2766(pc)
-	tst	29FA(pc)
-	ble	2CD2
-	inc	@275C(pc)
-	mov	#504C,r5
-	jsr	pc,155E(pc)
-	mov	#001D,@274E(pc)
-	tst	29E2(pc)
-	bge	2CEA
-	inc	@2744(pc)
-	mov	#5056,r5
-	jsr	pc,1546(pc)
-	mov	#001F,@2736(pc)
-	mov	#501E,r5
-	jsr	pc,1444(pc)
-	inc	@272A(pc)
-	tst	29BE(pc)
-	ble	2D0E
-	inc	@2720(pc)
-	mov	#5060,r5
-	jsr	pc,1522(pc)
-	mov	#0022,@2712(pc)
-	tst	29A6(pc)
-	bge	2D26
-	inc	@2708(pc)
-	mov	#506A,r5
-	jsr	pc,150A(pc)
-	mov	#0024,@26FA(pc)
-	mov	#5028,r5
-	jsr	pc,1408(pc)
-	inc	@26EE(pc)
-	mov	#501C,r5
-	jsr	pc,2D50(pc)
-	movb	r0,r1
-	movb	r1,2970(pc)
-	mov	#0026,@26DA(pc)
-	cmp	r1,#000D
-	beq	2E18
-	mov	#0028,@26CE(pc)
-	cmp	r1,#0020
-	blt	2DC4
-	mov	#002A,@26C2(pc)
-	cmp	r1,#007F
-	beq	2D96
-	mov	#002C,@26B6(pc)
-	mov	2946(pc),r2
-	cmp	r2,#001F
-	beq	2DC4
-	mov	#002E,@26A6(pc)
-	movb	r1,5897(r2)
-	inc	@269E(pc)
-	mov	r2,292E(pc)
-	inc	292A(pc)
-	inc	@2692(pc)
-	br	2DC4
-	mov	#0031,@268A(pc)
-	dec	291A(pc)
-	inc	@2682(pc)
-	tst	2912(pc)
-	bgt	2DB4
-	inc	@2678(pc)
-	mov	#0001,2906(pc)
-	mov	#0034,@266C(pc)
-	mov	28FC(pc),r0
-	movb	#0020,5897(r0)
-	mov	#0035,@265C(pc)
-	mov	#5074,r5
-	jsr	pc,145E(pc)
-	inc	@2650(pc)
-	neg	28E4(pc)
-	inc	@2648(pc)
-	add	28DA(pc),28DC(pc)
-	inc	@263E(pc)
-	cmp	28D4(pc),#003C
-	ble	2DF8
-	inc	@2632(pc)
-	neg	28C4(pc)
-	mov	#003A,@2628(pc)
-	cmp	28BE(pc),#0008
-	bge	2E0E
-	inc	@261C(pc)
-	neg	28AE(pc)
-	mov	#003C,@2612(pc)
-	jmp	FE72(pc)
-	mov	#003D,@2608(pc)
+2B90 37 09 64 E3 AA 4D FF 15 05 00 8A 28 C5 15 1C 50 7.d..M.....(...P
+2BA0 F7 09 D8 19 BF 0A 7E 28 C5 15 1C 50 F7 09 80 14 ......~(...P....
+2BB0 BF 0A 72 28 F7 15 01 00 FE 2A C4 15 1E 00 C5 15 ..r(.....*......
+2BC0 98 58 FF 15 08 00 5E 28 D5 95 20 00 FF 15 09 00 .X....^(.. .....
+2BD0 54 28 C4 0A F6 06 BF 0A 4C 28 C5 15 1E 50 F7 09 T(......L(...P..
+2BE0 5A 15 BF 0A 40 28 C5 15 22 50 F7 09 84 14 BF 0A Z...@(.."P......
+2BF0 34 28 E6 15 06 50 E6 15 E6 4D F7 09 7C E1 F7 09 4(...P...M..|...
+2C00 A6 E2 BF 0A 20 28 E6 15 06 50 E6 15 12 4F F7 09 .... (...P...O..
+2C10 68 E1 F7 09 92 E2 BF 0A 0C 28 C5 15 28 50 F7 09 h........(..(P..
+2C20 1A 15 BF 0A 00 28 C5 15 2C 50 F7 09 44 14 BF 0A .....(..,P..D...
+2C30 F4 27 E6 15 06 50 E6 15 A0 4F F7 09 3C E1 F7 09 .'...P...O..<...
+2C40 66 E2 BF 0A E0 27 C5 15 32 50 F7 09 24 14 BF 0A f....'..2P..$...
+2C50 D4 27 E6 15 06 50 E6 15 BD 4F F7 09 1C E1 F7 09 .'...P...O......
+2C60 46 E2 BF 0A C0 27 F7 15 01 00 4E 2A BF 0A B6 27 F....'....N*...'
+2C70 F7 15 02 00 46 2A BF 0A AC 27 F7 15 01 00 3E 2A ....F*...'....>*
+2C80 BF 0A A2 27 F7 15 0A 00 36 2A FF 15 17 00 96 27 ...'....6*.....'
+2C90 F7 0B 2A 2A 06 07 BF 0A 8C 27 C5 15 38 50 F7 09 ..**.....'..8P..
+2CA0 8E 15 FF 15 19 00 7E 27 F7 0B 12 2A 06 04 BF 0A ......~'...*....
+2CB0 74 27 C5 15 42 50 F7 09 76 15 FF 15 1B 00 66 27 t'..BP..v.....f'
+2CC0 F7 0B FA 29 06 07 BF 0A 5C 27 C5 15 4C 50 F7 09 ...)....\'..LP..
+2CD0 5E 15 FF 15 1D 00 4E 27 F7 0B E2 29 06 04 BF 0A ^.....N'...)....
+2CE0 44 27 C5 15 56 50 F7 09 46 15 FF 15 1F 00 36 27 D'..VP..F.....6'
+2CF0 C5 15 1E 50 F7 09 44 14 BF 0A 2A 27 F7 0B BE 29 ...P..D...*'...)
+2D00 06 07 BF 0A 20 27 C5 15 60 50 F7 09 22 15 FF 15 .... '..`P.."...
+2D10 22 00 12 27 F7 0B A6 29 06 04 BF 0A 08 27 C5 15 "..'...).....'..
+2D20 6A 50 F7 09 0A 15 FF 15 24 00 FA 26 C5 15 28 50 jP......$..&..(P
+2D30 F7 09 08 14 BF 0A EE 26 C5 15 1C 50 F7 09 50 2D .......&...P..P-
+2D40 01 90 77 90 70 29 FF 15 26 00 DA 26 57 A0 0D 00 ..w.p)..&..&W...
+2D50 63 03 FF 15 28 00 CE 26 57 A0 20 00 33 05 FF 15 c...(..&W. .3...
+2D60 2A 00 C2 26 57 A0 7F 00 16 03 FF 15 2C 00 B6 26 *..&W.......,..&
+2D70 C2 1D 46 29 97 20 1F 00 25 03 FF 15 2E 00 A6 26 ..F). ..%......&
+2D80 72 90 97 58 BF 0A 9E 26 B7 10 2E 29 B7 0A 2A 29 r..X...&...)..*)
+2D90 BF 0A 92 26 17 01 FF 15 31 00 8A 26 F7 0A 1A 29 ...&....1..&...)
+2DA0 BF 0A 82 26 F7 0B 12 29 05 06 BF 0A 78 26 F7 15 ...&...)....x&..
+2DB0 01 00 06 29 FF 15 34 00 6C 26 C0 1D FC 28 F0 95 ...)..4.l&...(..
+2DC0 20 00 97 58 FF 15 35 00 5C 26 C5 15 74 50 F7 09  ..X..5.\&..tP..
+2DD0 5E 14 BF 0A 50 26 37 0B E4 28 BF 0A 48 26 F7 6D ^...P&7..(..H&.m
+2DE0 DA 28 DC 28 BF 0A 3E 26 D7 2D D4 28 3C 00 04 07 .(.(..>&.-.(<...
+2DF0 BF 0A 32 26 37 0B C4 28 FF 15 3A 00 28 26 D7 2D ..2&7..(..:.(&.-
+2E00 BE 28 08 00 04 04 BF 0A 1C 26 37 0B AE 28 FF 15 .(.......&7..(..
+2E10 3C 00 12 26 77 00 72 FE FF 15 3D 00 08 26       <..&w.r...=..& 
+
+fn2E1E()
 	rts	pc
-	jsr	r4,E0D4(pc)
-	bis	r1,@15FF(sp)
-	bpt
-	cmp	#15F7,@0001(r2)
-	cmp	-(r2),-(sp)
-	mov	#0010,r4
-	mov	#56C6,r5
-	mov	#0004,@25E6(pc)
-	movb	#003D,(r5)+
-	mov	#0005,@25DC(pc)
-	dec	r4
-	bgt	2E3A
-	inc	@25D4(pc)
-	mov	#5096,r5
-	jsr	pc,13D6(pc)
-	inc	@25C8(pc)
-	tst	@2862(pc)
-	ble	2EB8
-	mov	#0009,@25BC(pc)
-	mov	#50A0,r5
-	jsr	pc,12CA(pc)
-	inc	@25B0(pc)
-	mov	#0001,285C(pc)
-	mov	#000B,@25A4(pc)
-	mov	2852(pc),r1
-	dec	r1
-	mul	#0005,r1
-	inc	r1
-	mov	r1,2848(pc)
-	mov	#50A4,r5
-	jsr	pc,1396(pc)
-	mov	#000C,@2586(pc)
-	inc	2834(pc)
-	cmp	2830(pc),@281A(pc)
-	ble	2E7C
-	inc	@2576(pc)
-	mov	#50AE,r5
-	jsr	pc,1284(pc)
-	mov	#000E,@2568(pc)
-	inc	@2564(pc)
+2E20 37 09 D4 E0 7E 50 FF 15 03 00 FA 25 F7 15 01 00 7...~P.....%....
+2E30 A6 28 C4 15 10 00 C5 15 C6 56 FF 15 04 00 E6 25 .(.......V.....%
+2E40 D5 95 3D 00 FF 15 05 00 DC 25 C4 0A F6 06 BF 0A ..=......%......
+2E50 D4 25 C5 15 96 50 F7 09 D6 13 BF 0A C8 25 FF 0B .%...P.......%..
+2E60 62 28 2A 07 FF 15 09 00 BC 25 C5 15 A0 50 F7 09 b(*......%...P..
+2E70 CA 12 BF 0A B0 25 F7 15 01 00 5C 28 FF 15 0B 00 .....%....\(....
+2E80 A4 25 C1 1D 52 28 C1 0A 57 70 05 00 81 0A 77 10 .%..R(..Wp....w.
+2E90 48 28 C5 15 A4 50 F7 09 96 13 FF 15 0C 00 86 25 H(...P.........%
+2EA0 B7 0A 34 28 FF 2D 30 28 1A 28 E8 07 BF 0A 76 25 ..4(.-0(.(....v%
+2EB0 C5 15 AE 50 F7 09 84 12 FF 15 0E 00 68 25 BF 0A ...P........h%..
+2EC0 64 25                                           d%             
+
+fn2EC2()
 	rts	pc
-	jsr	r4,E030(pc)
-	bis	r2,15FF(r2)
-	illegal
-	cmp	(r5)+,(sp)+
-	mov	#50FA,r5
-	jsr	pc,2BB8(pc)
-	movb	r0,r2
-	movb	r2,2806(pc)
-	inc	@2544(pc)
-	tst	r2
-	bge	2EEA
-	jmp	01AC(pc)
-	mov	#000D,@2536(pc)
-	cmp	r2,#0020
-	beq	2F98
-	mov	#000F,@252A(pc)
-	clr	r0
-	cmp	r2,#002C
-	bne	2F06
-	dec	r0
-	clr	r1
-	cmp	r2,#003C
-	bne	2F10
-	dec	r1
-	bis	r1,r0
-	beq	2F18
-	jmp	0148(pc)
-	mov	#0011,@2508(pc)
-	clr	r0
-	cmp	r2,#002E
-	bne	2F28
-	dec	r0
-	clr	r1
-	cmp	r2,#003E
-	bne	2F32
-	dec	r1
-	bis	r1,r0
-	beq	2F3A
-	jmp	0144(pc)
-	mov	#0013,@24E6(pc)
-	clr	r0
-	cmp	r2,#0041
-	bne	2F4A
-	dec	r0
-	clr	r1
-	cmp	r2,#0061
-	bne	2F54
-	dec	r1
-	bis	r1,r0
-	beq	2F64
-	inc	@24CA(pc)
-	mov	#50FC,r5
-	jsr	pc,F4D6(pc)
-	mov	#0015,@24BC(pc)
-	clr	r0
-	movb	2774(pc),r2
-	cmp	r2,#005A
-	beq	2F78
-	dec	r0
-	clr	r1
-	cmp	r2,#007A
-	beq	2F82
-	dec	r1
-	bit	r0,r1
-	beq	2F8A
-	jmp	010C(pc)
-	mov	#0017,@2496(pc)
-	mov	#5100,r5
-	jsr	pc,F4A2(pc)
-	mov	#0018,@2488(pc)
-	cmp	2920(pc),#0001
-	beq	3096
-	mov	#001A,@247A(pc)
-	mov	#0001,2734(pc)
-	mov	#000D,273E(pc)
-	mov	#001B,@2468(pc)
-	mov	#0001,2724(pc)
-	mov	#50DC,r5
-	mov	#001C,@2458(pc)
-	mov	2714(pc),r2
-	add	(r5)+,r2
-	asl	r2
-	mov	5A3E(r2),r0
-	mov	r0,r3
-	mov	r3,270A(pc)
-	inc	@2442(pc)
-	tst	r3
-	beq	301A
-	mov	#001F,@2438(pc)
-	mov	26F6(pc),r3
-	add	2700(pc),r3
-	mov	r3,26F0(pc)
-	inc	@2428(pc)
-	cmp	28B8(pc),r3
-	bne	301A
-	mov	#0022,@241C(pc)
-	mov	r0,r1
-	dec	r1
-	mov	r1,5A3E(r2)
-	inc	@2410(pc)
-	jmp	01B4(pc)
-	mov	#0024,@2406(pc)
-	inc	26C4(pc)
-	cmp	26C0(pc),#0004
-	ble	2FC8
-	add	#000D,26C4(pc)
-	inc	26B0(pc)
-	cmp	26AC(pc),#0005
-	ble	2FB8
-	inc	@23E4(pc)
-	mov	2874(pc),2876(pc)
-	inc	@23DA(pc)
-	clr	2870(pc)
-	inc	@23D2(pc)
-	mov	#0001,2868(pc)
-	inc	@23C8(pc)
-	br	3096
-	mov	#0029,@23C0(pc)
-	cmp	2850(pc),#0004
-	blt	3096
-	mov	#002B,@23B2(pc)
-	dec	2842(pc)
-	inc	@23AA(pc)
-	br	3096
-	mov	#002D,@23A2(pc)
-	cmp	2832(pc),#004C
-	bgt	3096
-	mov	#002F,@2394(pc)
-	inc	2824(pc)
-	mov	#0030,@238A(pc)
-	tst	2822(pc)
-	bne	30A6
-	jmp	0128(pc)
-	mov	#0032,@237A(pc)
-	cmp	2810(pc),#0015
-	blt	30E2
-	mov	#0034,@236C(pc)
-	mov	2802(pc),2630(pc)
-	inc	262C(pc)
-	mov	#5104,r5
-	jsr	pc,1164(pc)
-	inc	@2356(pc)
-	clr	27EE(pc)
-	inc	@234E(pc)
-	clr	27E4(pc)
-	inc	@2346(pc)
-	br	31CE
-	mov	#0038,@233E(pc)
-	inc	27D4(pc)
-	inc	@2336(pc)
-	mov	27CC(pc),25FC(pc)
-	inc	25F8(pc)
-	mov	#510E,r5
-	jsr	pc,112E(pc)
-	inc	@2320(pc)
-	mov	#0001,25DC(pc)
-	mov	#003B,@2314(pc)
-	mov	#0001,25CE(pc)
-	mov	#50DC,r5
-	mov	#003C,@2304(pc)
-	mov	25C2(pc),r3
-	mov	r3,r1
-	add	(r5)+,r1
-	asl	r1
-	mov	5926(r1),r2
-	mov	r2,25B8(pc)
-	inc	@22EE(pc)
-	mov	598A(r1),r4
-	mov	r4,25AE(pc)
-	inc	@22E2(pc)
-	tst	58C2(r1)
-	beq	3196
-	mov	#0040,@22D6(pc)
-	cmp	r4,276C(pc)
-	bne	3196
-	mov	#0042,@22CA(pc)
-	mov	r2,r0
-	add	#0002,r0
-	mov	2758(pc),r1
-	cmp	r1,r0
-	beq	31CE
-	mov	#0044,@22B6(pc)
-	mov	r2,r0
-	add	#0003,r0
-	cmp	r1,r0
-	beq	31CE
-	mov	#0046,@22A6(pc)
-	cmp	r3,#0003
-	ble	3196
-	mov	#0048,@229A(pc)
-	mov	r2,r0
-	add	#0004,r0
-	cmp	r1,r0
-	beq	31CE
-	mov	#004A,@228A(pc)
-	inc	2546(pc)
-	cmp	2542(pc),#000A
-	ble	311C
-	inc	253C(pc)
-	cmp	2538(pc),#0005
-	ble	310C
-	inc	@226E(pc)
-	cmp	2704(pc),#0001
-	beq	31CE
-	mov	#004D,@2260(pc)
-	mov	#5118,r5
-	jsr	pc,1062(pc)
-	mov	#004E,@2252(pc)
-	cmp	26E4(pc),26E0(pc)
-	beq	3218
-	mov	#0050,@2244(pc)
-	mov	26D4(pc),26D4(pc)
-	inc	@223A(pc)
-	mov	#5100,r5
-	jsr	pc,0F48(pc)
-	inc	@222E(pc)
-	mov	26BE(pc),24F6(pc)
-	sub	#0002,24F0(pc)
-	mov	#5122,r5
-	jsr	pc,1024(pc)
-	inc	@2216(pc)
-	mov	#50FC,r5
-	jsr	pc,0F24(pc)
-	mov	#0054,@2208(pc)
+2EC4             37 09 30 E0 B2 50 FF 15 0A 00 56 25     7.0..P....V%
+2ED0 C5 15 FA 50 F7 09 B8 2B 02 90 B7 90 06 28 BF 0A ...P...+.....(..
+2EE0 44 25 C2 8B 02 04 77 00 AC 01 FF 15 0D 00 36 25 D%....w.......6%
+2EF0 97 A0 20 00 51 03 FF 15 0F 00 2A 25 00 0A 97 A0 .. .Q.....*%....
+2F00 2C 00 01 02 C0 0A 01 0A 97 A0 3C 00 01 02 C1 0A ,.........<.....
+2F10 40 D0 02 03 77 00 48 01 FF 15 11 00 08 25 00 0A @...w.H......%..
+2F20 97 A0 2E 00 01 02 C0 0A 01 0A 97 A0 3E 00 01 02 ............>...
+2F30 C1 0A 40 D0 02 03 77 00 44 01 FF 15 13 00 E6 24 ..@...w.D......$
+2F40 00 0A 97 A0 41 00 01 02 C0 0A 01 0A 97 A0 61 00 ....A.........a.
+2F50 01 02 C1 0A 40 D0 06 03 BF 0A CA 24 C5 15 FC 50 ....@......$...P
+2F60 F7 09 D6 F4 FF 15 15 00 BC 24 00 0A C2 9D 74 27 .........$....t'
+2F70 97 A0 5A 00 01 03 C0 0A 01 0A 97 A0 7A 00 01 03 ..Z.........z...
+2F80 C1 0A 01 B0 02 03 77 00 0C 01 FF 15 17 00 96 24 ......w........$
+2F90 C5 15 00 51 F7 09 A2 F4 FF 15 18 00 88 24 D7 2D ...Q.........$.-
+2FA0 20 29 01 00 78 03 FF 15 1A 00 7A 24 F7 15 01 00  )..x.....z$....
+2FB0 34 27 F7 15 0D 00 3E 27 FF 15 1B 00 68 24 F7 15 4'....>'....h$..
+2FC0 01 00 24 27 C5 15 DC 50 FF 15 1C 00 58 24 C2 1D ..$'...P....X$..
+2FD0 14 27 42 65 C2 0C 80 1C 3E 5A 03 10 F7 10 0A 27 .'Be....>Z.....'
+2FE0 BF 0A 42 24 C3 0B 19 03 FF 15 1F 00 38 24 C3 1D ..B$........8$..
+2FF0 F6 26 C3 6D 00 27 F7 10 F0 26 BF 0A 28 24 C3 2D .&.m.'...&..($.-
+3000 B8 28 0B 02 FF 15 22 00 1C 24 01 10 C1 0A 72 10 .(...."..$....r.
+3010 3E 5A BF 0A 10 24 77 00 B4 01 FF 15 24 00 06 24 >Z...$w.....$..$
+3020 B7 0A C4 26 D7 2D C0 26 04 00 CE 07 F7 65 0D 00 ...&.-.&.....e..
+3030 C4 26 B7 0A B0 26 D7 2D AC 26 05 00 BD 07 BF 0A .&...&.-.&......
+3040 E4 23 F7 1D 74 28 76 28 BF 0A DA 23 37 0A 70 28 .#..t(v(...#7.p(
+3050 BF 0A D2 23 F7 15 01 00 68 28 BF 0A C8 23 1B 01 ...#....h(...#..
+3060 FF 15 29 00 C0 23 D7 2D 50 28 04 00 14 05 FF 15 ..)..#.-P(......
+3070 2B 00 B2 23 F7 0A 42 28 BF 0A AA 23 0C 01 FF 15 +..#..B(...#....
+3080 2D 00 A2 23 D7 2D 32 28 4C 00 05 06 FF 15 2F 00 -..#.-2(L...../.
+3090 94 23 B7 0A 24 28 FF 15 30 00 8A 23 F7 0B 22 28 .#..$(..0..#.."(
+30A0 02 02 77 00 28 01 FF 15 32 00 7A 23 D7 2D 10 28 ..w.(...2.z#.-.(
+30B0 15 00 17 05 FF 15 34 00 6C 23 F7 1D 02 28 30 26 ......4.l#...(0&
+30C0 B7 0A 2C 26 C5 15 04 51 F7 09 64 11 BF 0A 56 23 ..,&...Q..d...V#
+30D0 37 0A EE 27 BF 0A 4E 23 37 0A E4 27 BF 0A 46 23 7..'..N#7..'..F#
+30E0 76 01 FF 15 38 00 3E 23 B7 0A D4 27 BF 0A 36 23 v...8.>#...'..6#
+30F0 F7 1D CC 27 FC 25 B7 0A F8 25 C5 15 0E 51 F7 09 ...'.%...%...Q..
+3100 2E 11 BF 0A 20 23 F7 15 01 00 DC 25 FF 15 3B 00 .... #.....%..;.
+3110 14 23 F7 15 01 00 CE 25 C5 15 DC 50 FF 15 3C 00 .#.....%...P..<.
+3120 04 23 C3 1D C2 25 C1 10 41 65 C1 0C 42 1C 26 59 .#...%..Ae..B.&Y
+3130 B7 10 B8 25 BF 0A EE 22 44 1C 8A 59 37 11 AE 25 ...%..."D..Y7..%
+3140 BF 0A E2 22 F1 0B C2 58 26 03 FF 15 40 00 D6 22 ..."...X&...@.."
+3150 37 21 6C 27 20 02 FF 15 42 00 CA 22 80 10 C0 65 7!l' ...B.."...e
+3160 02 00 C1 1D 58 27 40 20 32 03 FF 15 44 00 B6 22 ....X'@ 2...D.."
+3170 80 10 C0 65 03 00 40 20 2A 03 FF 15 46 00 A6 22 ...e..@ *...F.."
+3180 D7 20 03 00 08 07 FF 15 48 00 9A 22 80 10 C0 65 . ......H.."...e
+3190 04 00 40 20 1C 03 FF 15 4A 00 8A 22 B7 0A 46 25 ..@ ....J.."..F%
+31A0 D7 2D 42 25 0A 00 BA 07 B7 0A 3C 25 D7 2D 38 25 .-B%......<%.-8%
+31B0 05 00 AC 07 BF 0A 6E 22 D7 2D 04 27 01 00 07 03 ......n".-.'....
+31C0 FF 15 4D 00 60 22 C5 15 18 51 F7 09 62 10 FF 15 ..M.`"...Q..b...
+31D0 4E 00 52 22 F7 2D E4 26 E0 26 1E 03 FF 15 50 00 N.R".-.&.&....P.
+31E0 44 22 F7 1D D4 26 D4 26 BF 0A 3A 22 C5 15 00 51 D"...&.&..:"...Q
+31F0 F7 09 48 0F BF 0A 2E 22 F7 1D BE 26 F6 24 F7 E5 ..H...."...&.$..
+3200 02 00 F0 24 C5 15 22 51 F7 09 24 10 BF 0A 16 22 ...$.."Q..$...."
+3210 C5 15 FC 50 F7 09 24 0F FF 15 54 00 08 22       ...P..$...T.." 
+
+fn321E()
 	rts	pc
-	jsr	r4,DCD4(pc)
-	bis	r4,@-(r4)
-	mov	#0009,@21FA(pc)
-	tst	2692(pc)
-	bne	3236
-	jmp	0228(pc)
-	mov	#000B,@21EA(pc)
-	mov	#0001,24CC(pc)
-	mov	#000C,@21DE(pc)
-	mov	#0001,24C2(pc)
-	mov	#513E,24B2(pc)
-	mov	#000D,@21CC(pc)
-	mov	24B0(pc),r3
-	mov	r3,r1
-	add	@24A2(pc),r1
-	asl	r1
-	tst	58C2(r1)
-	beq	3358
-	mov	#000F,@21B4(pc)
-	mov	5926(r1),r2
-	mov	r2,2498(pc)
-	inc	@21A8(pc)
-	mov	598A(r1),2490(pc)
-	inc	@219E(pc)
-	mov	r2,r0
-	add	#0002,r0
-	mov	262C(pc),r1
-	cmp	r1,r0
-	beq	32C2
-	mov	#0013,@218A(pc)
-	mov	r2,r0
-	add	#0003,r0
-	cmp	r1,r0
-	beq	32C2
-	mov	#0015,@217A(pc)
-	cmp	r3,#0003
-	ble	3358
-	mov	#0017,@216E(pc)
-	mov	r2,r0
-	add	#0004,r0
-	cmp	r1,r0
-	bne	3358
-	mov	#0019,@215E(pc)
-	mov	25F4(pc),r1
-	inc	r1
-	cmp	r1,2442(pc)
-	bne	3358
-	mov	#001B,@214C(pc)
-	mov	r1,2438(pc)
-	mov	#515E,r5
-	jsr	pc,0C5C(pc)
-	inc	@213C(pc)
-	clr	25D4(pc)
-	inc	@2134(pc)
-	clr	25CA(pc)
-	inc	@212C(pc)
-	mov	2410(pc),r1
-	mov	r1,r0
-	add	@2402(pc),r0
-	asl	r0
-	clr	58C2(r0)
-	inc	@2118(pc)
-	cmp	r1,#0003
-	ble	331E
-	inc	@210E(pc)
-	add	#000A,2558(pc)
-	mov	#0021,@2102(pc)
-	cmp	23E6(pc),#0003
-	bne	3336
-	inc	@20F6(pc)
-	add	#0014,2540(pc)
-	mov	#0023,@20EA(pc)
-	cmp	23CE(pc),#0003
-	bge	334E
-	inc	@20DE(pc)
-	add	#001E,2528(pc)
-	mov	#0025,@20D2(pc)
-	jmp	0106(pc)
-	mov	#0026,@20C8(pc)
-	add	#0002,23A2(pc)
-	inc	23A8(pc)
-	cmp	23A4(pc),#000A
-	bgt	3374
-	jmp	FEE0(pc)
-	inc	2396(pc)
-	cmp	2392(pc),#0005
-	bgt	3384
-	jmp	FEBE(pc)
-	inc	@209E(pc)
-	tst	2536(pc)
-	beq	345E
-	mov	#0029,@2092(pc)
-	mov	#0001,2376(pc)
-	mov	#5A18,2368(pc)
-	mov	#59F0,2364(pc)
-	mov	#5A04,2360(pc)
-	mov	#002A,@2074(pc)
-	tst	@2352(pc)
-	beq	343A
-	mov	#002C,@2068(pc)
-	mov	@2348(pc),234E(pc)
-	inc	@205E(pc)
-	mov	@2340(pc),2346(pc)
-	inc	@2054(pc)
-	cmp	24E8(pc),233A(pc)
-	bne	343A
-	mov	#0030,@2046(pc)
-	cmp	24DC(pc),232E(pc)
-	bne	343A
-	mov	#0032,@2038(pc)
-	mov	#5164,r5
-	jsr	pc,0B4C(pc)
-	inc	@202C(pc)
-	mov	24C2(pc),2318(pc)
-	inc	2314(pc)
-	mov	#516A,r5
-	jsr	pc,0E24(pc)
-	inc	@2016(pc)
-	clr	@22F6(pc)
-	inc	@200E(pc)
-	clr	@22F0(pc)
-	inc	@2006(pc)
-	clr	@22E4(pc)
-	inc	@1FFE(pc)
-	clr	2494(pc)
-	inc	@1FF6(pc)
-	clr	248E(pc)
-	inc	@1FEE(pc)
-	br	345E
-	mov	#003A,@1FE6(pc)
-	add	#0002,22C2(pc)
-	add	#0002,22BE(pc)
-	add	#0002,22BA(pc)
-	inc	22BA(pc)
-	cmp	22B6(pc),#000A
-	ble	33AC
-	mov	#003B,@1FC2(pc)
-	cmp	@2296(pc),240C(pc)
-	beq	34A4
-	mov	#003D,@1FB4(pc)
-	mov	2400(pc),@2286(pc)
-	inc	@1FAA(pc)
-	mov	#5158,-(sp)
-	mov	#5136,-(sp)
-	mov	#5700,-(sp)
-	jsr	pc,DB18(pc)
-	mov	#5876,-(sp)
-	jsr	pc,D64E(pc)
-	jsr	pc,DA10(pc)
-	inc	@1F8A(pc)
-	mov	#5174,r5
-	jsr	pc,0D8C(pc)
-	mov	#0040,@1F7C(pc)
+3220 37 09 D4 DC 2C 51 FF 15 09 00 FA 21 F7 0B 92 26 7...,Q.....!...&
+3230 02 02 77 00 28 02 FF 15 0B 00 EA 21 F7 15 01 00 ..w.(......!....
+3240 CC 24 FF 15 0C 00 DE 21 F7 15 01 00 C2 24 F7 15 .$.....!.....$..
+3250 3E 51 B2 24 FF 15 0D 00 CC 21 C3 1D B0 24 C1 10 >Q.$.....!...$..
+3260 C1 6F A2 24 C1 0C F1 0B C2 58 76 03 FF 15 0F 00 .o.$.....Xv.....
+3270 B4 21 42 1C 26 59 B7 10 98 24 BF 0A A8 21 77 1C .!B.&Y...$...!w.
+3280 8A 59 90 24 BF 0A 9E 21 80 10 C0 65 02 00 C1 1D .Y.$...!...e....
+3290 2C 26 40 20 16 03 FF 15 13 00 8A 21 80 10 C0 65 ,&@ .......!...e
+32A0 03 00 40 20 0E 03 FF 15 15 00 7A 21 D7 20 03 00 ..@ ......z!. ..
+32B0 53 07 FF 15 17 00 6E 21 80 10 C0 65 04 00 40 20 S.....n!...e..@ 
+32C0 4B 02 FF 15 19 00 5E 21 C1 1D F4 25 81 0A 77 20 K.....^!...%..w 
+32D0 42 24 42 02 FF 15 1B 00 4C 21 77 10 38 24 C5 15 B$B.....L!w.8$..
+32E0 5E 51 F7 09 5C 0C BF 0A 3C 21 37 0A D4 25 BF 0A ^Q..\...<!7..%..
+32F0 34 21 37 0A CA 25 BF 0A 2C 21 C1 1D 10 24 40 10 4!7..%..,!...$@.
+3300 C0 6F 02 24 C0 0C 30 0A C2 58 BF 0A 18 21 57 20 .o.$..0..X...!W 
+3310 03 00 05 07 BF 0A 0E 21 F7 65 0A 00 58 25 FF 15 .......!.e..X%..
+3320 21 00 02 21 D7 2D E6 23 03 00 05 02 BF 0A F6 20 !..!.-.#....... 
+3330 F7 65 14 00 40 25 FF 15 23 00 EA 20 D7 2D CE 23 .e..@%..#.. .-.#
+3340 03 00 05 04 BF 0A DE 20 F7 65 1E 00 28 25 FF 15 ....... .e..(%..
+3350 25 00 D2 20 77 00 06 01 FF 15 26 00 C8 20 F7 65 %.. w.....&.. .e
+3360 02 00 A2 23 B7 0A A8 23 D7 2D A4 23 0A 00 02 06 ...#...#.-.#....
+3370 77 00 E0 FE B7 0A 96 23 D7 2D 92 23 05 00 02 06 w......#.-.#....
+3380 77 00 BE FE BF 0A 9E 20 F7 0B 36 25 68 03 FF 15 w...... ..6%h...
+3390 29 00 92 20 F7 15 01 00 76 23 F7 15 18 5A 68 23 ).. ....v#...Zh#
+33A0 F7 15 F0 59 64 23 F7 15 04 5A 60 23 FF 15 2A 00 ...Yd#...Z`#..*.
+33B0 74 20 FF 0B 52 23 41 03 FF 15 2C 00 68 20 F7 1F t ..R#A...,.h ..
+33C0 48 23 4E 23 BF 0A 5E 20 F7 1F 40 23 46 23 BF 0A H#N#..^ ..@#F#..
+33D0 54 20 F7 2D E8 24 3A 23 30 02 FF 15 30 00 46 20 T .-.$:#0...0.F 
+33E0 F7 2D DC 24 2E 23 29 02 FF 15 32 00 38 20 C5 15 .-.$.#)...2.8 ..
+33F0 64 51 F7 09 4C 0B BF 0A 2C 20 F7 1D C2 24 18 23 dQ..L..., ...$.#
+3400 B7 0A 14 23 C5 15 6A 51 F7 09 24 0E BF 0A 16 20 ...#..jQ..$.... 
+3410 3F 0A F6 22 BF 0A 0E 20 3F 0A F0 22 BF 0A 06 20 ?.."... ?.."... 
+3420 3F 0A E4 22 BF 0A FE 1F 37 0A 94 24 BF 0A F6 1F ?.."....7..$....
+3430 37 0A 8E 24 BF 0A EE 1F 12 01 FF 15 3A 00 E6 1F 7..$........:...
+3440 F7 65 02 00 C2 22 F7 65 02 00 BE 22 F7 65 02 00 .e...".e...".e..
+3450 BA 22 B7 0A BA 22 D7 2D B6 22 0A 00 A7 07 FF 15 ."...".-."......
+3460 3B 00 C2 1F F7 2F 96 22 0C 24 1C 03 FF 15 3D 00 ;..../.".$....=.
+3470 B4 1F FF 1D 00 24 86 22 BF 0A AA 1F E6 15 58 51 .....$."......XQ
+3480 E6 15 36 51 E6 15 00 57 F7 09 18 DB E6 15 76 58 ..6Q...W......vX
+3490 F7 09 4E D6 F7 09 10 DA BF 0A 8A 1F C5 15 74 51 ..N...........tQ
+34A0 F7 09 8C 0D FF 15 40 00 7C 1F                   ......@.|.     
+
+fn34AA()
 	rts	pc
-	jsr	r4,DA48(pc)
-	bis	r5,@15FF(sp)
-	illegal
-	mov	@15F7(r5),@-(sp)
-	wait
-	cmp	@r1,15F7(r2)
-	illegal
-	cmp	@r2,@r4
-	mov	#5A2C,2258(pc)
-	mov	#518E,2254(pc)
-	mov	#000C,@1F50(pc)
-	mov	@2248(pc),r1
-	mov	r1,2254(pc)
-	inc	@1F44(pc)
-	mov	r1,r0
-	add	@223C(pc),r0
-	asl	r0
-	tst	58C2(r0)
-	bne	34F4
-	jmp	011C(pc)
-	mov	#000F,@1F2C(pc)
-	clr	2236(pc)
-	inc	@1F24(pc)
-	mov	#0001,222E(pc)
-	mov	#5A18,r5
-	mov	#0011,@1F14(pc)
-	tst	(r5)+
-	bne	352E
-	mov	#0013,@1F0A(pc)
-	tst	2214(pc)
-	bne	352E
-	mov	#0015,@1EFE(pc)
-	mov	220A(pc),2206(pc)
-	mov	#0016,@1EF2(pc)
-	inc	21FE(pc)
-	cmp	21FA(pc),#000A
-	ble	350C
-	inc	@1EE2(pc)
-	tst	21EC(pc)
-	beq	3610
-	mov	#0019,@1ED6(pc)
-	mov	#51AE,r5
-	jsr	pc,D9F0(pc)
-	mov	r1,-(sp)
-	mov	r0,-(sp)
-	mov	#6666,-(sp)
-	mov	#4066,-(sp)
-	jsr	pc,D8A6(pc)
-	blt	3610
-	mov	#001B,@1EB6(pc)
-	add	2346(pc),2340(pc)
-	inc	@1EAC(pc)
-	add	2342(pc),2338(pc)
-	inc	@1EA2(pc)
-	mov	#0002,21AE(pc)
-	inc	@1E98(pc)
-	cmp	21A0(pc),#0003
-	ble	35A0
-	inc	@1E8C(pc)
-	mov	#0003,2198(pc)
-	mov	#0020,@1E80(pc)
-	mov	#51AE,r5
-	jsr	pc,D99A(pc)
-	mov	r1,-(sp)
-	mov	r0,-(sp)
-	mov	2182(pc),-(sp)
-	jsr	pc,D04E(pc)
-	jsr	pc,D0B2(pc)
-	mov	(sp)+,2188(pc)
-	mov	(sp)+,2186(pc)
-	mov	#51B4,r5
-	jsr	pc,D4E0(pc)
-	mov	r0,2166(pc)
-	inc	@1E50(pc)
-	add	#0002,215C(pc)
-	inc	@1E46(pc)
-	mov	214E(pc),r2
-	add	@213C(pc),r2
-	asl	r2
-	mov	214A(pc),r0
-	add	5926(r2),r0
-	mov	213E(pc),r3
-	asl	r3
-	mov	r0,59EE(r3)
-	inc	@1E26(pc)
-	mov	598A(r2),5A02(r3)
-	inc	@1E1C(pc)
-	mov	#FFFF,5A16(r3)
-	mov	#0025,@1E10(pc)
-	add	#0002,2106(pc)
-	add	#0002,2102(pc)
-	dec	212A(pc)
-	ble	362C
-	jmp	FEA4(pc)
-	inc	@1DF6(pc)
-	mov	#0001,20FA(pc)
-	mov	#000A,2116(pc)
-	mov	#5A18,20E6(pc)
-	mov	#59F0,20E2(pc)
-	mov	#5A04,20DE(pc)
-	mov	#0027,@1DD2(pc)
-	tst	@20D0(pc)
-	bne	365E
-	jmp	02D6(pc)
-	mov	#0029,@1DC2(pc)
-	mov	@20C2(pc),r0
-	mov	r0,20CE(pc)
-	inc	@1DB6(pc)
-	mov	@20B8(pc),r1
-	mov	r1,20C4(pc)
-	inc	@1DAA(pc)
-	cmp	r0,#004F
-	ble	3686
-	jmp	027E(pc)
-	mov	#002D,@1D9A(pc)
-	tst	r0
-	bgt	3694
-	jmp	0270(pc)
-	mov	#002F,@1D8C(pc)
-	cmp	r1,#0013
-	ble	36A4
-	jmp	0260(pc)
-	mov	#0031,@1D7C(pc)
-	tst	r1
-	bgt	36B2
-	jmp	0252(pc)
-	mov	#0033,@1D6E(pc)
-	cmp	@206C(pc),#0001
-	beq	374E
-	mov	#0035,@1D60(pc)
-	sub	21F0(pc),r0
-	mov	r0,2070(pc)
-	inc	@1D54(pc)
-	tst	r0
-	bge	36E2
-	inc	@1D4C(pc)
-	mov	r0,2060(pc)
-	neg	205C(pc)
-	mov	#0038,@1D3E(pc)
-	cmp	2052(pc),#0007
-	blt	375C
-	mov	#003A,@1D30(pc)
-	mov	@2026(pc),-(sp)
-	jsr	pc,CF0A(pc)
-	mov	(sp)+,203E(pc)
-	mov	(sp)+,203C(pc)
-	inc	@1D1C(pc)
-	mov	2034(pc),-(sp)
-	mov	202E(pc),-(sp)
-	clr	-(sp)
-	mov	#4348,-(sp)
-	jsr	pc,D038(pc)
-	mov	(sp)+,2020(pc)
-	mov	(sp)+,201E(pc)
-	inc	@1CFE(pc)
-	mov	#51AE,r5
-	jsr	pc,D818(pc)
-	mov	r1,-(sp)
-	mov	r0,-(sp)
-	mov	200A(pc),-(sp)
-	mov	2004(pc),-(sp)
-	jsr	pc,D6CE(pc)
-	bgt	3746
-	jmp	01BE(pc)
-	mov	#003E,@1CDA(pc)
-	br	375C
-	mov	#003F,@1CD2(pc)
-	mov	#51B8,r5
-	jsr	pc,0AD4(pc)
-	mov	#0040,@1CC4(pc)
-	mov	#0001,@1FC0(pc)
-	inc	@1CBA(pc)
-	mov	1FCC(pc),r0
-	dec	r0
-	mov	r0,1FC6(pc)
-	inc	@1CAC(pc)
-	cmp	r0,#0001
-	beq	3808
-	mov	#0044,@1CA0(pc)
-	cmp	r0,#0002
-	beq	3872
-	mov	#0046,@1C94(pc)
-	mov	#51C2,r5
-	jsr	pc,09A2(pc)
-	inc	@1C88(pc)
-	mov	#51C6,r5
-	jsr	pc,0A8A(pc)
-	inc	@1C7C(pc)
-	mov	#51D0,r5
-	jsr	pc,098A(pc)
-	inc	@1C70(pc)
-	tst	2108(pc)
-	bne	37C0
-	jmp	015E(pc)
-	mov	#004B,@1C60(pc)
-	cmp	1F70(pc),20F2(pc)
-	beq	37D2
-	jmp	014C(pc)
-	mov	#004D,@1C4E(pc)
-	cmp	1F60(pc),20E2(pc)
-	beq	37E4
-	jmp	013A(pc)
-	mov	#004F,@1C3C(pc)
-	clr	20D4(pc)
-	inc	@1C34(pc)
-	clr	20CA(pc)
-	inc	@1C2C(pc)
-	mov	#51D4,r5
-	jsr	pc,0740(pc)
-	inc	@1C20(pc)
-	br	3904
-	mov	#0053,@1C18(pc)
-	mov	20A8(pc),r2
-	mov	1F24(pc),r1
-	cmp	r1,r2
-	beq	383E
-	mov	#0055,@1C06(pc)
-	mov	r2,r0
-	dec	r0
-	cmp	r1,r0
-	beq	383E
-	mov	#0057,@1BF8(pc)
-	mov	r2,r0
-	inc	r0
-	cmp	r1,r0
-	beq	383E
-	mov	#0059,@1BEA(pc)
-	br	3904
-	mov	#005A,@1BE2(pc)
-	mov	#51DA,r5
-	jsr	pc,0110(pc)
-	inc	@1BD6(pc)
-	mov	@1ECA(pc),r0
-	inc	r0
-	mov	r0,@1EC4(pc)
-	inc	@1BC8(pc)
-	cmp	r0,#0004
-	blt	3904
-	mov	#005E,@1BBC(pc)
-	mov	#51D0,r5
-	jsr	pc,EBC8(pc)
-	mov	#005F,@1BAE(pc)
-	mov	#0001,1EC6(pc)
-	mov	#000D,1ECA(pc)
-	mov	#0060,@1B9C(pc)
-	mov	#0001,1EB6(pc)
-	mov	#518E,r5
-	mov	#0061,@1B8C(pc)
-	mov	1EA6(pc),r2
-	add	(r5)+,r2
-	asl	r2
-	mov	5A3E(r2),r0
-	beq	38D8
-	mov	#0063,@1B78(pc)
-	mov	1E94(pc),r3
-	add	1E98(pc),r3
-	mov	r3,1E8E(pc)
-	inc	@1B68(pc)
-	cmp	r3,1E78(pc)
-	bne	38D8
-	mov	#0066,@1B5C(pc)
-	mov	r0,r1
-	dec	r1
-	mov	r1,5A3E(r2)
-	inc	@1B50(pc)
-	br	3904
-	mov	#0068,@1B48(pc)
-	inc	1E64(pc)
-	cmp	1E60(pc),#0004
-	ble	3894
-	add	#000D,1E5E(pc)
-	inc	1E50(pc)
-	cmp	1E4C(pc),#0005
-	ble	3884
-	inc	@1B26(pc)
-	jmp	FE88(pc)
-	mov	#006A,@1B1C(pc)
-	clr	1E2C(pc)
-	inc	@1B14(pc)
-	clr	1E26(pc)
-	inc	@1B0C(pc)
-	clr	@1E0A(pc)
-	mov	#006D,@1B02(pc)
-	mov	1E12(pc),@1E00(pc)
-	inc	@1AF8(pc)
-	mov	1E0A(pc),@1DF8(pc)
-	mov	#006F,@1AEC(pc)
-	add	#0002,1DE8(pc)
-	add	#0002,1DE4(pc)
-	add	#0002,1DE0(pc)
-	dec	1E02(pc)
-	ble	3956
-	jmp	FCF8(pc)
-	inc	@1ACC(pc)
+34AC                                     37 09 48 DA             7.H.
+34B0 7E 51 FF 15 0B 00 6E 1F F7 15 01 00 72 22 F7 15 ~Q....n.....r"..
+34C0 0A 00 8C 22 F7 15 2C 5A 58 22 F7 15 8E 51 54 22 ..."..,ZX"...QT"
+34D0 FF 15 0C 00 50 1F C1 1F 48 22 77 10 54 22 BF 0A ....P...H"w.T"..
+34E0 44 1F 40 10 C0 6F 3C 22 C0 0C F0 0B C2 58 02 02 D.@..o<".....X..
+34F0 77 00 1C 01 FF 15 0F 00 2C 1F 37 0A 36 22 BF 0A w.......,.7.6"..
+3500 24 1F F7 15 01 00 2E 22 C5 15 18 5A FF 15 11 00 $......"...Z....
+3510 14 1F D5 0B 0C 02 FF 15 13 00 0A 1F F7 0B 14 22 ..............."
+3520 06 02 FF 15 15 00 FE 1E F7 1D 0A 22 06 22 FF 15 ..........."."..
+3530 16 00 F2 1E B7 0A FE 21 D7 2D FA 21 0A 00 E6 07 .......!.-.!....
+3540 BF 0A E2 1E F7 0B EC 21 63 03 FF 15 19 00 D6 1E .......!c.......
+3550 C5 15 AE 51 F7 09 F0 D9 66 10 26 10 E6 15 66 66 ...Q....f.&...ff
+3560 E6 15 66 40 F7 09 A6 D8 53 05 FF 15 1B 00 B6 1E ..f@....S.......
+3570 F7 6D 46 23 40 23 BF 0A AC 1E F7 6D 42 23 38 23 .mF#@#.....mB#8#
+3580 BF 0A A2 1E F7 15 02 00 AE 21 BF 0A 98 1E D7 2D .........!.....-
+3590 A0 21 03 00 05 07 BF 0A 8C 1E F7 15 03 00 98 21 .!.............!
+35A0 FF 15 20 00 80 1E C5 15 AE 51 F7 09 9A D9 66 10 .. ......Q....f.
+35B0 26 10 E6 1D 82 21 F7 09 4E D0 F7 09 B2 D0 B7 15 &....!..N.......
+35C0 88 21 B7 15 86 21 C5 15 B4 51 F7 09 E0 D4 37 10 .!...!...Q....7.
+35D0 66 21 BF 0A 50 1E F7 65 02 00 5C 21 BF 0A 46 1E f!..P..e..\!..F.
+35E0 C2 1D 4E 21 C2 6F 3C 21 C2 0C C0 1D 4A 21 80 6C ..N!.o<!....J!.l
+35F0 26 59 C3 1D 3E 21 C3 0C 33 10 EE 59 BF 0A 26 1E &Y..>!..3..Y..&.
+3600 B3 1C 8A 59 02 5A BF 0A 1C 1E F3 15 FF FF 16 5A ...Y.Z.........Z
+3610 FF 15 25 00 10 1E F7 65 02 00 06 21 F7 65 02 00 ..%....e...!.e..
+3620 02 21 F7 0A 2A 21 02 07 77 00 A4 FE BF 0A F6 1D .!..*!..w.......
+3630 F7 15 01 00 FA 20 F7 15 0A 00 16 21 F7 15 18 5A ..... .....!...Z
+3640 E6 20 F7 15 F0 59 E2 20 F7 15 04 5A DE 20 FF 15 . ...Y. ...Z. ..
+3650 27 00 D2 1D FF 0B D0 20 02 02 77 00 D6 02 FF 15 '...... ..w.....
+3660 29 00 C2 1D C0 1F C2 20 37 10 CE 20 BF 0A B6 1D )...... 7.. ....
+3670 C1 1F B8 20 77 10 C4 20 BF 0A AA 1D 17 20 4F 00 ... w.. ..... O.
+3680 02 07 77 00 7E 02 FF 15 2D 00 9A 1D C0 0B 02 06 ..w.~...-.......
+3690 77 00 70 02 FF 15 2F 00 8C 1D 57 20 13 00 02 07 w.p.../...W ....
+36A0 77 00 60 02 FF 15 31 00 7C 1D C1 0B 02 06 77 00 w.`...1.|.....w.
+36B0 52 02 FF 15 33 00 6E 1D D7 2F 6C 20 01 00 47 03 R...3.n../l ..G.
+36C0 FF 15 35 00 60 1D C0 ED F0 21 37 10 70 20 BF 0A ..5.`....!7.p ..
+36D0 54 1D C0 0B 06 04 BF 0A 4C 1D 37 10 60 20 37 0B T.......L.7.` 7.
+36E0 5C 20 FF 15 38 00 3E 1D D7 2D 52 20 07 00 36 05 \ ..8.>..-R ..6.
+36F0 FF 15 3A 00 30 1D E6 1F 26 20 F7 09 0A CF B7 15 ..:.0...& ......
+3700 3E 20 B7 15 3C 20 BF 0A 1C 1D E6 1D 34 20 E6 1D > ..< ......4 ..
+3710 2E 20 26 0A E6 15 48 43 F7 09 38 D0 B7 15 20 20 . &...HC..8...  
+3720 B7 15 1E 20 BF 0A FE 1C C5 15 AE 51 F7 09 18 D8 ... .......Q....
+3730 66 10 26 10 E6 1D 0A 20 E6 1D 04 20 F7 09 CE D6 f.&.... ... ....
+3740 02 06 77 00 BE 01 FF 15 3E 00 DA 1C 07 01 FF 15 ..w.....>.......
+3750 3F 00 D2 1C C5 15 B8 51 F7 09 D4 0A FF 15 40 00 ?......Q......@.
+3760 C4 1C FF 15 01 00 C0 1F BF 0A BA 1C C0 1D CC 1F ................
+3770 C0 0A 37 10 C6 1F BF 0A AC 1C 17 20 01 00 44 03 ..7........ ..D.
+3780 FF 15 44 00 A0 1C 17 20 02 00 73 03 FF 15 46 00 ..D.... ..s...F.
+3790 94 1C C5 15 C2 51 F7 09 A2 09 BF 0A 88 1C C5 15 .....Q..........
+37A0 C6 51 F7 09 8A 0A BF 0A 7C 1C C5 15 D0 51 F7 09 .Q......|....Q..
+37B0 8A 09 BF 0A 70 1C F7 0B 08 21 02 02 77 00 5E 01 ....p....!..w.^.
+37C0 FF 15 4B 00 60 1C F7 2D 70 1F F2 20 02 03 77 00 ..K.`..-p.. ..w.
+37D0 4C 01 FF 15 4D 00 4E 1C F7 2D 60 1F E2 20 02 03 L...M.N..-`.. ..
+37E0 77 00 3A 01 FF 15 4F 00 3C 1C 37 0A D4 20 BF 0A w.:...O.<.7.. ..
+37F0 34 1C 37 0A CA 20 BF 0A 2C 1C C5 15 D4 51 F7 09 4.7.. ..,....Q..
+3800 40 07 BF 0A 20 1C 7E 01 FF 15 53 00 18 1C C2 1D @... .~...S.....
+3810 A8 20 C1 1D 24 1F 42 20 12 03 FF 15 55 00 06 1C . ..$.B ....U...
+3820 80 10 C0 0A 40 20 0B 03 FF 15 57 00 F8 1B 80 10 ....@ ....W.....
+3830 80 0A 40 20 04 03 FF 15 59 00 EA 1B 63 01 FF 15 ..@ ....Y...c...
+3840 5A 00 E2 1B C5 15 DA 51 F7 09 10 01 BF 0A D6 1B Z......Q........
+3850 C0 1F CA 1E 80 0A 3F 10 C4 1E BF 0A C8 1B 17 20 ......?........ 
+3860 04 00 50 05 FF 15 5E 00 BC 1B C5 15 D0 51 F7 09 ..P...^......Q..
+3870 C8 EB FF 15 5F 00 AE 1B F7 15 01 00 C6 1E F7 15 ...._...........
+3880 0D 00 CA 1E FF 15 60 00 9C 1B F7 15 01 00 B6 1E ......`.........
+3890 C5 15 8E 51 FF 15 61 00 8C 1B C2 1D A6 1E 42 65 ...Q..a.......Be
+38A0 C2 0C 80 1C 3E 5A 18 03 FF 15 63 00 78 1B C3 1D ....>Z....c.x...
+38B0 94 1E C3 6D 98 1E F7 10 8E 1E BF 0A 68 1B F7 20 ...m........h.. 
+38C0 78 1E 0A 02 FF 15 66 00 5C 1B 01 10 C1 0A 72 10 x.....f.\.....r.
+38D0 3E 5A BF 0A 50 1B 16 01 FF 15 68 00 48 1B B7 0A >Z..P.....h.H...
+38E0 64 1E D7 2D 60 1E 04 00 D5 07 F7 65 0D 00 5E 1E d..-`......e..^.
+38F0 B7 0A 50 1E D7 2D 4C 1E 05 00 C4 07 BF 0A 26 1B ..P..-L.......&.
+3900 77 00 88 FE FF 15 6A 00 1C 1B 37 0A 2C 1E BF 0A w.....j...7.,...
+3910 14 1B 37 0A 26 1E BF 0A 0C 1B 3F 0A 0A 1E FF 15 ..7.&.....?.....
+3920 6D 00 02 1B FF 1D 12 1E 00 1E BF 0A F8 1A FF 1D m...............
+3930 0A 1E F8 1D FF 15 6F 00 EC 1A F7 65 02 00 E8 1D ......o....e....
+3940 F7 65 02 00 E4 1D F7 65 02 00 E0 1D F7 0A 02 1E .e.....e........
+3950 02 07 77 00 F8 FC BF 0A CC 1A                   ..w.......     
+
+fn395A()
 	rts	pc
-	jsr	r4,D598(pc)
-	bis	pc,@(r4)+
-	mov	#0006,@1ABE(pc)
-	clrb	1DF2(pc)
-	inc	@1AB6(pc)
-	clr	1DEC(pc)
-	mov	#0008,@1AAC(pc)
-	mov	1DE2(pc),1DE4(pc)
-	inc	1DE0(pc)
-	mov	1F32(pc),1DDC(pc)
-	add	1DD2(pc),1DD6(pc)
-	mov	#520A,r5
-	jsr	pc,0898(pc)
-	inc	@1A8A(pc)
-	mov	1DC0(pc),1DC6(pc)
-	inc	1DC2(pc)
-	mov	#5214,r5
-	jsr	pc,0882(pc)
-	inc	@1A74(pc)
-	mov	1DAA(pc),1DB2(pc)
-	inc	1DAE(pc)
-	mov	1EFA(pc),1DAA(pc)
-	sub	1D9A(pc),1DA4(pc)
-	mov	#521E,r5
-	jsr	pc,0860(pc)
-	inc	@1A52(pc)
-	mov	1EE2(pc),1D94(pc)
-	sub	1D82(pc),1D8E(pc)
-	mov	#5228,r5
-	jsr	pc,0848(pc)
-	inc	@1A3A(pc)
-	mov	1ECA(pc),1D7E(pc)
-	add	1D6A(pc),1D78(pc)
-	mov	#5232,r5
-	jsr	pc,0830(pc)
-	inc	@1A22(pc)
-	cmp	1D58(pc),#0005
-	beq	3AC2
-	mov	#000F,@1A14(pc)
-	mov	1D4A(pc),1D6A(pc)
-	add	#0002,1D64(pc)
-	mov	1D60(pc),1D4E(pc)
-	mov	1E92(pc),r0
-	add	1D34(pc),r0
-	inc	r0
-	mov	r0,1D42(pc)
-	mov	#523C,r5
-	jsr	pc,07F6(pc)
-	inc	@19E8(pc)
-	mov	1D40(pc),1D32(pc)
-	mov	#5246,r5
-	jsr	pc,07E4(pc)
-	inc	@19D6(pc)
-	mov	1D0C(pc),r0
-	inc	r0
-	inc	r0
-	mov	r0,1D1C(pc)
-	mov	1E5A(pc),r0
-	dec	r0
-	sub	1CFA(pc),r0
-	mov	r0,1D10(pc)
-	mov	#5250,r5
-	jsr	pc,07BE(pc)
-	inc	@19B0(pc)
-	mov	1E40(pc),r0
-	sub	1CE2(pc),r0
-	dec	r0
-	mov	r0,1CF8(pc)
-	mov	#525A,r5
-	jsr	pc,07A4(pc)
-	inc	@1996(pc)
-	mov	1E26(pc),r0
-	add	1CC8(pc),r0
-	inc	r0
-	mov	r0,1CE0(pc)
-	mov	#5264,r5
-	jsr	pc,078A(pc)
-	inc	@197C(pc)
-	mov	#5208,-(sp)
-	mov	#51F8,-(sp)
-	jsr	pc,D2C4(pc)
-	mov	#575E,-(sp)
-	jsr	pc,D006(pc)
-	jsr	pc,D3E6(pc)
-	mov	#0015,@195E(pc)
-	inc	1C94(pc)
-	cmp	1C90(pc),#0005
-	bgt	3AD8
-	jmp	FE9C(pc)
-	inc	@194A(pc)
-	mov	#0001,1C7E(pc)
-	mov	#0017,@193E(pc)
-	mov	#0001,1C74(pc)
-	mov	#0004,r4
-	mov	#51FE,r5
-	mov	#0018,@192A(pc)
-	mov	1C60(pc),r1
-	mov	r1,r0
-	add	(r5)+,r0
-	asl	r0
-	mov	#FFFF,5A66(r0)
-	mov	#0019,@1914(pc)
-	dec	r4
-	bgt	3AF6
-	inc	r1
-	mov	r1,1C44(pc)
-	cmp	r1,#0005
-	ble	3AE2
-	inc	@1900(pc)
-	mov	#0004,1D8E(pc)
-	inc	@18F6(pc)
-	mov	#FFFF,1D86(pc)
-	inc	@18EC(pc)
+395C                                     37 09 98 D5             7...
+3960 DC 51 FF 15 06 00 BE 1A 37 8A F2 1D BF 0A B6 1A .Q......7.......
+3970 37 0A EC 1D FF 15 08 00 AC 1A F7 1D E2 1D E4 1D 7...............
+3980 B7 0A E0 1D F7 1D 32 1F DC 1D F7 6D D2 1D D6 1D ......2....m....
+3990 C5 15 0A 52 F7 09 98 08 BF 0A 8A 1A F7 1D C0 1D ...R............
+39A0 C6 1D B7 0A C2 1D C5 15 14 52 F7 09 82 08 BF 0A .........R......
+39B0 74 1A F7 1D AA 1D B2 1D B7 0A AE 1D F7 1D FA 1E t...............
+39C0 AA 1D F7 ED 9A 1D A4 1D C5 15 1E 52 F7 09 60 08 ...........R..`.
+39D0 BF 0A 52 1A F7 1D E2 1E 94 1D F7 ED 82 1D 8E 1D ..R.............
+39E0 C5 15 28 52 F7 09 48 08 BF 0A 3A 1A F7 1D CA 1E ..(R..H...:.....
+39F0 7E 1D F7 6D 6A 1D 78 1D C5 15 32 52 F7 09 30 08 ~..mj.x...2R..0.
+3A00 BF 0A 22 1A D7 2D 58 1D 05 00 5B 03 FF 15 0F 00 .."..-X...[.....
+3A10 14 1A F7 1D 4A 1D 6A 1D F7 65 02 00 64 1D F7 1D ....J.j..e..d...
+3A20 60 1D 4E 1D C0 1D 92 1E C0 6D 34 1D 80 0A 37 10 `.N......m4...7.
+3A30 42 1D C5 15 3C 52 F7 09 F6 07 BF 0A E8 19 F7 1D B...<R..........
+3A40 40 1D 32 1D C5 15 46 52 F7 09 E4 07 BF 0A D6 19 @.2...FR........
+3A50 C0 1D 0C 1D 80 0A 80 0A 37 10 1C 1D C0 1D 5A 1E ........7.....Z.
+3A60 C0 0A C0 ED FA 1C 37 10 10 1D C5 15 50 52 F7 09 ......7.....PR..
+3A70 BE 07 BF 0A B0 19 C0 1D 40 1E C0 ED E2 1C C0 0A ........@.......
+3A80 37 10 F8 1C C5 15 5A 52 F7 09 A4 07 BF 0A 96 19 7.....ZR........
+3A90 C0 1D 26 1E C0 6D C8 1C 80 0A 37 10 E0 1C C5 15 ..&..m....7.....
+3AA0 64 52 F7 09 8A 07 BF 0A 7C 19 E6 15 08 52 E6 15 dR......|....R..
+3AB0 F8 51 F7 09 C4 D2 E6 15 5E 57 F7 09 06 D0 F7 09 .Q......^W......
+3AC0 E6 D3 FF 15 15 00 5E 19 B7 0A 94 1C D7 2D 90 1C ......^......-..
+3AD0 05 00 02 06 77 00 9C FE BF 0A 4A 19 F7 15 01 00 ....w.....J.....
+3AE0 7E 1C FF 15 17 00 3E 19 F7 15 01 00 74 1C C4 15 ~.....>.....t...
+3AF0 04 00 C5 15 FE 51 FF 15 18 00 2A 19 C1 1D 60 1C .....Q....*...`.
+3B00 40 10 40 65 C0 0C F0 15 FF FF 66 5A FF 15 19 00 @.@e......fZ....
+3B10 14 19 C4 0A F0 06 81 0A 77 10 44 1C 57 20 05 00 ........w.D.W ..
+3B20 E0 07 BF 0A 00 19 F7 15 04 00 8E 1D BF 0A F6 18 ................
+3B30 F7 15 FF FF 86 1D BF 0A EC 18                   ..........     
+
+fn3B3A()
 	rts	pc
-	jsr	r4,D3B8(pc)
-	bis	@r1,@-(sp)
-	mov	#0007,@18DE(pc)
-	cmp	1C3E(pc),#0001
-	beq	3C36
-	mov	#0009,@18D0(pc)
-	mov	#529C,r5
-	jsr	pc,D3EA(pc)
-	mov	r0,1C2A(pc)
-	mov	r1,1C28(pc)
-	inc	@18BC(pc)
-	mov	1C20(pc),-(sp)
-	mov	1C1A(pc),-(sp)
-	mov	#70A4,-(sp)
-	mov	#407D,-(sp)
-	jsr	pc,D290(pc)
-	blt	3C36
-	mov	#000C,@18A0(pc)
-	mov	#0001,1BFE(pc)
-	inc	@1896(pc)
-	mov	1BFA(pc),-(sp)
-	mov	1BF4(pc),-(sp)
-	mov	#B852,-(sp)
-	mov	#407E,-(sp)
-	jsr	pc,D26A(pc)
-	blt	3BC2
-	mov	#000F,@187A(pc)
-	mov	#004C,1BDE(pc)
-	inc	@1870(pc)
-	mov	#FFFF,1BD6(pc)
-	inc	@1866(pc)
-	br	3BD8
-	mov	#0012,@185E(pc)
-	mov	#0004,1BC2(pc)
-	inc	@1854(pc)
-	mov	#0001,1BBA(pc)
-	mov	#0014,@1848(pc)
-	mov	#529C,r5
-	jsr	pc,D362(pc)
-	mov	r0,1BAA(pc)
-	mov	r1,1BA8(pc)
-	inc	@1834(pc)
-	mov	1BA0(pc),-(sp)
-	mov	1B9A(pc),-(sp)
-	clr	-(sp)
-	mov	#4180,-(sp)
-	jsr	pc,CA6C(pc)
-	mov	(sp)+,1B8C(pc)
-	mov	(sp)+,1B8A(pc)
-	inc	@1816(pc)
-	mov	#52A2,r5
-	jsr	pc,CE96(pc)
-	add	#0013,r0
-	mov	r0,1B78(pc)
-	inc	@1802(pc)
-	cmp	1B70(pc),#0017
-	blt	3C36
-	inc	@17F6(pc)
-	mov	#0016,1B62(pc)
-	mov	#0019,@17EA(pc)
-	tst	1B4A(pc)
-	bne	3C46
-	jmp	01C4(pc)
-	mov	#001B,@17DA(pc)
-	add	1B42(pc),1B3E(pc)
-	inc	@17D0(pc)
-	clr	r0
-	cmp	1B34(pc),#0004
-	bge	3C62
-	dec	r0
-	clr	r1
-	cmp	1B28(pc),#004C
-	ble	3C6E
-	dec	r1
-	bis	r1,r0
-	beq	3C76
-	jmp	0174(pc)
-	mov	#001E,@17AA(pc)
-	mov	1B10(pc),1B1C(pc)
-	dec	1B18(pc)
-	mov	#52A6,r5
-	jsr	pc,05A2(pc)
-	inc	@1794(pc)
-	tst	1C2C(pc)
-	bne	3C9C
-	jmp	016E(pc)
-	mov	#0021,@1784(pc)
-	mov	1C18(pc),r1
-	cmp	r1,1AE6(pc)
-	beq	3CD8
-	mov	#0023,@1774(pc)
-	mov	1ADA(pc),r0
-	inc	r0
-	cmp	r1,r0
-	beq	3CD8
-	mov	#0025,@1764(pc)
-	mov	1ACA(pc),r0
-	add	#0002,r0
-	cmp	r1,r0
-	beq	3CD8
-	mov	#0027,@1752(pc)
-	jmp	0132(pc)
-	mov	#0028,@1748(pc)
-	mov	1BDE(pc),r0
-	inc	r0
-	cmp	r0,1AB0(pc)
-	beq	3CEE
-	jmp	011C(pc)
-	mov	#002A,@1732(pc)
-	mov	1A98(pc),1AA6(pc)
-	dec	1AA2(pc)
-	mov	#52B0,r5
-	jsr	pc,052A(pc)
-	inc	@171C(pc)
-	mov	1A82(pc),1A92(pc)
-	inc	1A8E(pc)
-	mov	#52BA,r5
-	jsr	pc,0226(pc)
-	inc	@1706(pc)
-	clr	1B9C(pc)
-	inc	@16FE(pc)
-	clr	1B92(pc)
-	inc	@16F6(pc)
-	clr	1B8E(pc)
-	inc	@16EE(pc)
-	mov	#529C,r5
-	jsr	pc,D208(pc)
-	mov	r0,1A50(pc)
-	mov	r1,1A4E(pc)
-	inc	@16DA(pc)
-	mov	1A46(pc),-(sp)
-	mov	1A40(pc),-(sp)
-	clr	-(sp)
-	mov	#4220,-(sp)
-	jsr	pc,C912(pc)
-	mov	(sp)+,1A42(pc)
-	mov	(sp)+,1A40(pc)
-	mov	#52C0,r5
-	jsr	pc,CD40(pc)
-	mov	r0,r1
-	mul	#0019,r1
-	add	#0032,r1
-	mov	r1,1A1E(pc)
-	inc	@16A6(pc)
-	mov	#5292,-(sp)
-	mov	#528E,-(sp)
-	mov	#5784,-(sp)
-	jsr	pc,D214(pc)
-	mov	#579A,-(sp)
-	jsr	pc,CD4A(pc)
-	jsr	pc,D10C(pc)
-	inc	@1686(pc)
-	mov	#0001,19F6(pc)
-	mov	#000A,19FE(pc)
-	mov	#0033,@1674(pc)
-	mov	#52C4,r5
-	jsr	pc,0476(pc)
-	inc	@1668(pc)
-	mov	#52CE,r5
-	jsr	pc,046A(pc)
-	mov	#0035,@165A(pc)
-	dec	19DA(pc)
-	bgt	3DAC
-	inc	@1650(pc)
-	add	19C0(pc),1A9A(pc)
-	inc	@1646(pc)
-	clr	19A6(pc)
-	inc	@163E(pc)
-	br	3E0A
-	mov	#0039,@1636(pc)
-	mov	199C(pc),19B2(pc)
-	dec	19AE(pc)
-	mov	#52D8,r5
-	jsr	pc,042E(pc)
-	inc	@1620(pc)
-	clr	1980(pc)
-	mov	#003B,@1616(pc)
+3B3C                                     37 09 B8 D3             7...
+3B40 6E 52 FF 15 07 00 DE 18 D7 2D 3E 1C 01 00 73 03 nR.......->...s.
+3B50 FF 15 09 00 D0 18 C5 15 9C 52 F7 09 EA D3 37 10 .........R....7.
+3B60 2A 1C 77 10 28 1C BF 0A BC 18 E6 1D 20 1C E6 1D *.w.(....... ...
+3B70 1A 1C E6 15 A4 70 E6 15 7D 40 F7 09 90 D2 5B 05 .....p..}@....[.
+3B80 FF 15 0C 00 A0 18 F7 15 01 00 FE 1B BF 0A 96 18 ................
+3B90 E6 1D FA 1B E6 1D F4 1B E6 15 52 B8 E6 15 7E 40 ..........R...~@
+3BA0 F7 09 6A D2 0E 05 FF 15 0F 00 7A 18 F7 15 4C 00 ..j.......z...L.
+3BB0 DE 1B BF 0A 70 18 F7 15 FF FF D6 1B BF 0A 66 18 ....p.........f.
+3BC0 0B 01 FF 15 12 00 5E 18 F7 15 04 00 C2 1B BF 0A ......^.........
+3BD0 54 18 F7 15 01 00 BA 1B FF 15 14 00 48 18 C5 15 T...........H...
+3BE0 9C 52 F7 09 62 D3 37 10 AA 1B 77 10 A8 1B BF 0A .R..b.7...w.....
+3BF0 34 18 E6 1D A0 1B E6 1D 9A 1B 26 0A E6 15 80 41 4.........&....A
+3C00 F7 09 6C CA B7 15 8C 1B B7 15 8A 1B BF 0A 16 18 ..l.............
+3C10 C5 15 A2 52 F7 09 96 CE C0 65 13 00 37 10 78 1B ...R.....e..7.x.
+3C20 BF 0A 02 18 D7 2D 70 1B 17 00 05 05 BF 0A F6 17 .....-p.........
+3C30 F7 15 16 00 62 1B FF 15 19 00 EA 17 F7 0B 4A 1B ....b.........J.
+3C40 02 02 77 00 C4 01 FF 15 1B 00 DA 17 F7 6D 42 1B ..w..........mB.
+3C50 3E 1B BF 0A D0 17 00 0A D7 2D 34 1B 04 00 01 04 >........-4.....
+3C60 C0 0A 01 0A D7 2D 28 1B 4C 00 01 07 C1 0A 40 D0 .....-(.L.....@.
+3C70 02 03 77 00 74 01 FF 15 1E 00 AA 17 F7 1D 10 1B ..w.t...........
+3C80 1C 1B F7 0A 18 1B C5 15 A6 52 F7 09 A2 05 BF 0A .........R......
+3C90 94 17 F7 0B 2C 1C 02 02 77 00 6E 01 FF 15 21 00 ....,...w.n...!.
+3CA0 84 17 C1 1D 18 1C 77 20 E6 1A 16 03 FF 15 23 00 ......w ......#.
+3CB0 74 17 C0 1D DA 1A 80 0A 40 20 0E 03 FF 15 25 00 t.......@ ....%.
+3CC0 64 17 C0 1D CA 1A C0 65 02 00 40 20 05 03 FF 15 d......e..@ ....
+3CD0 27 00 52 17 77 00 32 01 FF 15 28 00 48 17 C0 1D '.R.w.2...(.H...
+3CE0 DE 1B 80 0A 37 20 B0 1A 02 03 77 00 1C 01 FF 15 ....7 ....w.....
+3CF0 2A 00 32 17 F7 1D 98 1A A6 1A F7 0A A2 1A C5 15 *.2.............
+3D00 B0 52 F7 09 2A 05 BF 0A 1C 17 F7 1D 82 1A 92 1A .R..*...........
+3D10 B7 0A 8E 1A C5 15 BA 52 F7 09 26 02 BF 0A 06 17 .......R..&.....
+3D20 37 0A 9C 1B BF 0A FE 16 37 0A 92 1B BF 0A F6 16 7.......7.......
+3D30 37 0A 8E 1B BF 0A EE 16 C5 15 9C 52 F7 09 08 D2 7..........R....
+3D40 37 10 50 1A 77 10 4E 1A BF 0A DA 16 E6 1D 46 1A 7.P.w.N.......F.
+3D50 E6 1D 40 1A 26 0A E6 15 20 42 F7 09 12 C9 B7 15 ..@.&... B......
+3D60 42 1A B7 15 40 1A C5 15 C0 52 F7 09 40 CD 01 10 B...@....R..@...
+3D70 57 70 19 00 C1 65 32 00 77 10 1E 1A BF 0A A6 16 Wp...e2.w.......
+3D80 E6 15 92 52 E6 15 8E 52 E6 15 84 57 F7 09 14 D2 ...R...R...W....
+3D90 E6 15 9A 57 F7 09 4A CD F7 09 0C D1 BF 0A 86 16 ...W..J.........
+3DA0 F7 15 01 00 F6 19 F7 15 0A 00 FE 19 FF 15 33 00 ..............3.
+3DB0 74 16 C5 15 C4 52 F7 09 76 04 BF 0A 68 16 C5 15 t....R..v...h...
+3DC0 CE 52 F7 09 6A 04 FF 15 35 00 5A 16 F7 0A DA 19 .R..j...5.Z.....
+3DD0 ED 06 BF 0A 50 16 F7 6D C0 19 9A 1A BF 0A 46 16 ....P..m......F.
+3DE0 37 0A A6 19 BF 0A 3E 16 10 01 FF 15 39 00 36 16 7.....>.....9.6.
+3DF0 F7 1D 9C 19 B2 19 F7 0A AE 19 C5 15 D8 52 F7 09 .............R..
+3E00 2E 04 BF 0A 20 16 37 0A 80 19 FF 15 3B 00 16 16 .... .7.....;...
+
+fn3E10()
 	rts	pc
-	jsr	r4,D0E2(pc)
-	bis	@r3,-(r2)
-	mov	#0005,@1608(pc)
-	mov	#0001,198E(pc)
-	mov	#000D,1992(pc)
-	mov	#0006,@15F6(pc)
-	mov	#0001,197E(pc)
-	mov	#52EA,1972(pc)
-	mov	#0007,@15E4(pc)
-	mov	196C(pc),r2
-	add	@1964(pc),r2
-	asl	r2
-	mov	5A3E(r2),r1
-	mov	r1,1962(pc)
-	inc	@15CE(pc)
-	mov	5A66(r2),r3
-	mov	r3,1958(pc)
-	inc	@15C2(pc)
-	cmp	r3,r1
-	beq	3F0E
-	mov	#000B,@15B8(pc)
-	mov	r1,5A66(r2)
-	inc	@15B0(pc)
-	mov	193A(pc),193E(pc)
-	add	193C(pc),1938(pc)
-	inc	@15A0(pc)
-	cmp	r1,#000A
-	beq	3EB8
-	mov	#000F,@1594(pc)
-	cmp	r1,#0001
-	beq	3ECA
-	mov	#0011,@1588(pc)
-	tst	r1
-	beq	3EDC
-	mov	#0013,@157E(pc)
-	mov	#0075,r0
-	sub	r1,r0
-	movb	r0,18FE(pc)
-	inc	@1570(pc)
-	br	3EE8
-	mov	#0015,@1568(pc)
-	movb	#0061,18EC(pc)
-	inc	@155E(pc)
-	br	3EE8
-	mov	#0017,@1556(pc)
-	movb	#0069,18DA(pc)
-	inc	@154C(pc)
-	br	3EE8
-	mov	#0019,@1544(pc)
-	movb	#005F,18C8(pc)
-	mov	#001A,@1538(pc)
-	mov	#52F8,r5
-	jsr	pc,0246(pc)
-	inc	@152C(pc)
-	mov	#52FC,r5
-	jsr	pc,032E(pc)
-	inc	@1520(pc)
-	mov	#5306,r5
-	jsr	pc,022E(pc)
-	mov	#001D,@1512(pc)
-	add	#0002,1894(pc)
-	inc	1896(pc)
-	cmp	1892(pc),#0004
-	ble	3E3C
-	add	#000D,1890(pc)
-	inc	1882(pc)
-	cmp	187E(pc),#0005
-	bgt	3F3C
-	jmp	FEEE(pc)
-	inc	@14E6(pc)
+3E12       37 09 E2 D0 E2 52 FF 15 05 00 08 16 F7 15   7....R........
+3E20 01 00 8E 19 F7 15 0D 00 92 19 FF 15 06 00 F6 15 ................
+3E30 F7 15 01 00 7E 19 F7 15 EA 52 72 19 FF 15 07 00 ....~....Rr.....
+3E40 E4 15 C2 1D 6C 19 C2 6F 64 19 C2 0C 81 1C 3E 5A ....l..od.....>Z
+3E50 77 10 62 19 BF 0A CE 15 83 1C 66 5A F7 10 58 19 w.b.......fZ..X.
+3E60 BF 0A C2 15 C1 20 53 03 FF 15 0B 00 B8 15 72 10 ..... S.......r.
+3E70 66 5A BF 0A B0 15 F7 1D 3A 19 3E 19 F7 6D 3C 19 fZ......:.>..m<.
+3E80 38 19 BF 0A A0 15 57 20 0A 00 16 03 FF 15 0F 00 8.....W ........
+3E90 94 15 57 20 01 00 19 03 FF 15 11 00 88 15 C1 0B ..W ............
+3EA0 1D 03 FF 15 13 00 7E 15 C0 15 75 00 40 E0 37 90 ......~...u.@.7.
+3EB0 FE 18 BF 0A 70 15 18 01 FF 15 15 00 68 15 F7 95 ....p.......h...
+3EC0 61 00 EC 18 BF 0A 5E 15 0F 01 FF 15 17 00 56 15 a.....^.......V.
+3ED0 F7 95 69 00 DA 18 BF 0A 4C 15 06 01 FF 15 19 00 ..i.....L.......
+3EE0 44 15 F7 95 5F 00 C8 18 FF 15 1A 00 38 15 C5 15 D..._.......8...
+3EF0 F8 52 F7 09 46 02 BF 0A 2C 15 C5 15 FC 52 F7 09 .R..F...,....R..
+3F00 2E 03 BF 0A 20 15 C5 15 06 53 F7 09 2E 02 FF 15 .... ....S......
+3F10 1D 00 12 15 F7 65 02 00 94 18 B7 0A 96 18 D7 2D .....e.........-
+3F20 92 18 04 00 8B 07 F7 65 0D 00 90 18 B7 0A 82 18 .......e........
+3F30 D7 2D 7E 18 05 00 02 06 77 00 EE FE BF 0A E6 14 .-~.....w.......
+3F40 87 00 37 09 B2 CF 0A 53 FF 15 05 00 D8 14 37 8A ..7....S......7.
+3F50 74 18 BF 0A D0 14 F7 1F 66 18 6C 18 F7 E5 02 00 t.......f.l.....
+3F60 66 18 BF 0A C0 14 C5 15 2A 53 F7 09 C6 05 BF 0A f.......*S......
+3F70 B4 14 F7 15 01 00 52 18 F7 15 0A 00 52 18 FF 15 ......R.....R...
+3F80 09 00 A2 14 E6 15 12 53 E6 15 28 53 E6 1D 32 18 .......S..(S..2.
+3F90 E6 15 C8 57 E6 15 04 00 85 11 F7 09 92 02 C6 65 ...W...........e
+3FA0 0A 00 BF 0A 80 14 E6 15 18 53 E6 15 28 53 E6 1D .........S..(S..
+3FB0 10 18 E6 15 C8 57 E6 15 04 00 85 11 F7 09 70 02 .....W........p.
+3FC0 C6 65 0A 00 FF 15 0B 00 5C 14 F7 0A 02 18 D7 06 .e......\.......
+3FD0 BF 0A 52 14 D7 2F EA 17 02 00 26 02 FF 15 0E 00 ..R../....&.....
+3FE0 44 14 F7 15 01 00 E4 17 FF 15 0F 00 38 14 F7 15 D...........8...
+3FF0 01 00 DA 17 C4 15 04 00 C5 15 1E 53 FF 15 10 00 ...........S....
+4000 24 14 C1 1D C6 17 40 10 40 65 C0 0C F0 15 FF FF $.....@.@e......
+4010 66 5A FF 15 11 00 0E 14 C4 0A F0 06 81 0A 77 10 fZ............w.
+4020 AA 17 57 20 05 00 E0 07 FF 15 12 00 F8 13       ..W .......... 
+
+fn402E()
 	rts	pc
-	jsr	r4,CFB2(pc)
-	bis	@r4,@r2
-	mov	#0005,@14D8(pc)
-	clrb	1874(pc)
-	inc	@14D0(pc)
-	mov	@1866(pc),186C(pc)
-	sub	#0002,1866(pc)
-	inc	@14C0(pc)
-	mov	#532A,r5
-	jsr	pc,05C6(pc)
-	inc	@14B4(pc)
-	mov	#0001,1852(pc)
-	mov	#000A,1852(pc)
-	mov	#0009,@14A2(pc)
-	mov	#5312,-(sp)
-	mov	#5328,-(sp)
-	mov	1832(pc),-(sp)
-	mov	#57C8,-(sp)
-	mov	#0004,-(sp)
-	mov	sp,r5
-	jsr	pc,0292(pc)
-	add	#000A,sp
-	inc	@1480(pc)
-	mov	#5318,-(sp)
-	mov	#5328,-(sp)
-	mov	1810(pc),-(sp)
-	mov	#57C8,-(sp)
-	mov	#0004,-(sp)
-	mov	sp,r5
-	jsr	pc,0270(pc)
-	add	#000A,sp
-	mov	#000B,@145C(pc)
-	dec	1802(pc)
-	bgt	3F7E
-	inc	@1452(pc)
-	cmp	@17EA(pc),#0002
-	bne	4028
-	mov	#000E,@1444(pc)
-	mov	#0001,17E4(pc)
-	mov	#000F,@1438(pc)
-	mov	#0001,17DA(pc)
-	mov	#0004,r4
-	mov	#531E,r5
-	mov	#0010,@1424(pc)
-	mov	17C6(pc),r1
-	mov	r1,r0
-	add	(r5)+,r0
-	asl	r0
-	mov	#FFFF,5A66(r0)
-	mov	#0011,@140E(pc)
-	dec	r4
-	bgt	3FFC
-	inc	r1
-	mov	r1,17AA(pc)
-	cmp	r1,#0005
-	ble	3FE8
-	mov	#0012,@13F8(pc)
+4030 37 09 C4 CE 30 53 FF 15 03 00 EA 13 F7 95 9B 00 7...0S..........
+4040 92 17 BF 0A E0 13 F7 95 48 00 89 17 BF 0A D6 13 ........H.......
+4050 F7 95 9B 00 80 17 BF 0A CC 13 F7 95 4A 00 77 17 ............J.w.
+4060 BF 0A C2 13 C5 15 3E 53 F7 09 C8 04 BF 0A B6 13 ......>S........
+4070 87 00 37 09 82 CE 44 53 FF 15 03 00 A8 13 F7 1F ..7...DS........
+4080 56 17 5C 17 BF 0A 9E 13 F7 1F 4E 17 54 17 BF 0A V.\.......N.T...
+4090 94 13 F7 0B 4A 17 04 04 BF 0A 8A 13 37 0A 40 17 ....J.......7.@.
+40A0 FF 15 07 00 80 13 F7 0B 38 17 04 04 BF 0A 76 13 ........8.....v.
+40B0 37 0A 2E 17 FF 15 09 00 6C 13 D7 2D 22 17 4F 00 7.......l..-".O.
+40C0 05 07 BF 0A 60 13 F7 15 4F 00 14 17 FF 15 0B 00 ....`...O.......
+40D0 54 13 D7 2D 0C 17 17 00 05 07 BF 0A 48 13 F7 15 T..-........H...
+40E0 17 00 FE 16 FF 15 0D 00 3C 13 F7 65 20 00 F0 16 ........<..e ...
+40F0 BF 0A 32 13 37 0B EA 16 F7 65 37 00 E4 16 BF 0A ..2.7....e7.....
+4100 24 13 F7 95 9B 00 D4 16 BF 0A 1A 13 F7 95 59 00 $.............Y.
+4110 CB 16 BF 0A 10 13 C0 9D C8 16 37 90 C0 16 BF 0A ..........7.....
+4120 04 13 C0 9D BA 16 37 90 B5 16 BF 0A F8 12 C5 15 ......7.........
+4130 4E 53 F7 09 FE 03 BF 0A EC 12                   NS........     
+
+fn413A()
 	rts	pc
-	jsr	r4,CEC4(pc)
-	bis	@r4,15FF(r0)
-	bpt
-	mov	@pc,@-(r2)
-	movb	#009B,1792(pc)
-	inc	@13E0(pc)
-	movb	#0048,1789(pc)
-	inc	@13D6(pc)
-	movb	#009B,1780(pc)
-	inc	@13CC(pc)
-	movb	#004A,1777(pc)
-	inc	@13C2(pc)
-	mov	#533E,r5
-	jsr	pc,04C8(pc)
-	inc	@13B6(pc)
+413C                                     37 09 B8 CD             7...
+4140 54 53 FF 15 03 00 DE 12 F7 95 9B 00 98 16 BF 0A TS..............
+4150 D4 12 F7 95 46 00 8F 16 BF 0A CA 12 FF 0B 84 16 ....F...........
+4160 05 02 BF 0A C0 12 F7 95 47 00 7B 16 FF 15 07 00 ........G.{.....
+4170 B4 12 C5 15 62 53 F7 09 BA 03 BF 0A A8 12       ....bS........ 
+
+fn417E()
 	rts	pc
-	jsr	r4,CE82(pc)
-	bis	@r5,r4
-	mov	#0003,@13A8(pc)
-	mov	@1756(pc),175C(pc)
-	inc	@139E(pc)
-	mov	@174E(pc),1754(pc)
-	inc	@1394(pc)
-	tst	174A(pc)
-	bge	40A0
-	inc	@138A(pc)
-	clr	1740(pc)
-	mov	#0007,@1380(pc)
-	tst	1738(pc)
-	bge	40B4
-	inc	@1376(pc)
-	clr	172E(pc)
-	mov	#0009,@136C(pc)
-	cmp	1722(pc),#004F
-	ble	40CC
-	inc	@1360(pc)
-	mov	#004F,1714(pc)
-	mov	#000B,@1354(pc)
-	cmp	170C(pc),#0017
-	ble	40E4
-	inc	@1348(pc)
-	mov	#0017,16FE(pc)
-	mov	#000D,@133C(pc)
-	add	#0020,16F0(pc)
-	inc	@1332(pc)
-	neg	16EA(pc)
-	add	#0037,16E4(pc)
-	inc	@1324(pc)
-	movb	#009B,16D4(pc)
-	inc	@131A(pc)
-	movb	#0059,16CB(pc)
-	inc	@1310(pc)
-	movb	16C8(pc),r0
-	movb	r0,16C0(pc)
-	inc	@1304(pc)
-	movb	16BA(pc),r0
-	movb	r0,16B5(pc)
-	inc	@12F8(pc)
-	mov	#534E,r5
-	jsr	pc,03FE(pc)
-	inc	@12EC(pc)
+4180 37 09 74 CD 68 53 FF 15 05 00 9A 12 C5 15 76 53 7.t.hS........vS
+4190 F7 09 60 CB BF 0A 8E 12 E6 15 74 53 E6 15 70 53 ..`.......tS..pS
+41A0 E6 15 E8 57 F7 09 06 CE E6 15 74 53 E6 15 FA 57 ...W......tS...W
+41B0 F7 09 8A C9 F7 09 F0 CC BF 0A 6A 12 E6 15 74 53 ..........j...tS
+41C0 E6 15 70 53 E6 15 E8 57 F7 09 E2 CD E6 15 74 53 ..pS...W......tS
+41D0 E6 15 FE 57 F7 09 66 C9 F7 09 CC CC BF 0A 46 12 ...W..f.......F.
+41E0 E6 15 74 53 E6 15 70 53 E6 15 E8 57 F7 09 BE CD ..tS..pS...W....
+41F0 E6 15 74 53 E6 15 02 58 F7 09 42 C9 F7 09 A8 CC ..tS...X..B.....
+4200 FF 15 0A 00 20 12 C0 1D F0 15 C0 6D F0 15 C0 6D .... ......m...m
+4210 F0 15 37 10 A0 16 BF 0A 0C 12 C0 1D DE 15 C0 6D ..7............m
+4220 DE 15 C0 6D DE 15 37 10 8E 16 BF 0A F8 11       ...m..7....... 
+
+fn422E()
 	rts	pc
-	jsr	r4,CDB8(pc)
-	bis	@r5,(r4)+
-	mov	#0003,@12DE(pc)
-	movb	#009B,1698(pc)
-	inc	@12D4(pc)
-	movb	#0046,168F(pc)
-	inc	@12CA(pc)
-	tst	@1684(pc)
-	bne	416C
-	inc	@12C0(pc)
-	movb	#0047,167B(pc)
-	mov	#0007,@12B4(pc)
-	mov	#5362,r5
-	jsr	pc,03BA(pc)
-	inc	@12A8(pc)
+4230 37 09 C4 CC 7A 53 FF 15 04 00 EA 11 F7 1F C8 15 7...zS..........
+4240 14 16 BF 0A E0 11 F7 1F C0 15 0C 16 BF 0A D6 11 ................
+4250 F7 0B 02 16 04 04 BF 0A CC 11 37 0A F8 15 FF 15 ..........7.....
+4260 08 00 C2 11 F7 0B F0 15 04 04 BF 0A B8 11 37 0A ..............7.
+4270 E6 15 FF 15 0A 00 AE 11 D7 2D DA 15 4F 00 05 07 .........-..O...
+4280 BF 0A A2 11 F7 15 4F 00 CC 15 FF 15 0C 00 96 11 ......O.........
+4290 D7 2D C4 15 17 00 05 07 BF 0A 8A 11 F7 15 17 00 .-..............
+42A0 B6 15 FF 15 0E 00 7E 11 F7 65 20 00 A8 15 BF 0A ......~..e .....
+42B0 74 11 37 0B A2 15 F7 65 37 00 9C 15 BF 0A 66 11 t.7....e7.....f.
+42C0 F7 95 9B 00 4B 15 BF 0A 5C 11 F7 95 59 00 42 15 ....K...\...Y.B.
+42D0 BF 0A 52 11 C0 9D 80 15 37 90 37 15 BF 0A 46 11 ..R.....7.7...F.
+42E0 C0 9D 72 15 37 90 2C 15 BF 0A 3A 11 F7 95 24 00 ..r.7.,...:...$.
+42F0 1E 15 BF 0A 30 11 D7 2F 12 15 01 00 41 03 FF 15 ....0../....A...
+4300 17 00 22 11 D7 2F 04 15 05 00 5A 03 FF 15 19 00 .."../....Z.....
+4310 14 11 D7 2F F6 14 06 00 02 02 77 00 00 01 FF 15 .../......w.....
+4320 1B 00 02 11 D7 2F E4 14 07 00 02 02 77 00 4A 01 ...../......w.J.
+4330 FF 15 1D 00 F0 10 D7 2F D2 14 1E 00 02 02 77 00 ......./......w.
+4340 94 01 FF 15 1F 00 DE 10 E6 1D BE 14 E6 1D B8 14 ................
+4350 E6 15 02 00 85 11 F7 09 18 FD C6 65 06 00 BF 0A ...........e....
+4360 C4 10 E6 1D A8 14 E6 1D A2 14 E6 15 02 00 85 11 ................
+4370 F7 09 C0 01 C6 65 06 00 BF 0A AA 10 77 00 AC 01 .....e......w...
+4380 FF 15 22 00 A0 10 F7 9F 84 14 89 14 BF 0A 96 10 ..".............
+4390 E6 15 A8 53 E6 15 84 53 F7 09 DE C9 E6 15 A8 53 ...S...S.......S
+43A0 E6 15 10 58 F7 09 9C C7 E6 15 A6 53 E6 15 15 58 ...X.......S...X
+43B0 F7 09 90 C7 F7 09 F0 CA BF 0A 6A 10 77 00 6C 01 ..........j.w.l.
+43C0 FF 15 25 00 60 10 F7 15 01 00 8E 14 C3 15 05 00 ..%.`...........
+43D0 C4 1D 3A 14 C5 15 16 58 FF 15 26 00 48 10 15 95 ..:....X..&.H...
+43E0 FF 15 27 00 40 10 C3 0A F7 06 BF 0A 38 10 E6 15 ..'.@.......8...
+43F0 A8 53 E6 15 8A 53 F7 09 80 C9 E6 15 A8 53 E6 15 .S...S.......S..
+4400 10 58 F7 09 3E C7 E6 15 A8 53 E6 15 16 58 F7 09 .X..>....S...X..
+4410 32 C7 F7 09 92 CA BF 0A 0C 10 77 00 0E 01 FF 15 2.........w.....
+4420 2A 00 02 10 F7 15 01 00 30 14 C3 15 06 00 C4 1D *.......0.......
+4430 DC 13 C5 15 1B 58 FF 15 2B 00 EA 0F 15 95 FF 15 .....X..+.......
+4440 2C 00 E2 0F C3 0A F7 06 BF 0A DA 0F E6 15 A8 53 ,..............S
+4450 E6 15 91 53 F7 09 22 C9 E6 15 A8 53 E6 15 10 58 ...S.."....S...X
+4460 F7 09 E0 C6 E6 15 AA 53 E6 15 1B 58 F7 09 D4 C6 .......S...X....
+4470 F7 09 34 CA BF 0A AE 0F 59 01 FF 15 2F 00 A6 0F ..4.....Y.../...
+4480 F7 15 01 00 D4 13 C3 15 07 00 C4 1D 80 13 C5 15 ................
+4490 21 58 FF 15 30 00 8E 0F 15 95 FF 15 31 00 86 0F !X..0.......1...
+44A0 C3 0A F7 06 BF 0A 7E 0F E6 15 A8 53 E6 15 98 53 ......~....S...S
+44B0 F7 09 C6 C8 E6 15 A8 53 E6 15 10 58 F7 09 84 C6 .......S...X....
+44C0 E6 15 AC 53 E6 15 21 58 F7 09 78 C6 F7 09 D8 C9 ...S..!X..x.....
+44D0 BF 0A 52 0F 2B 01 FF 15 34 00 4A 0F F7 15 01 00 ..R.+...4.J.....
+44E0 78 13 C3 15 1E 00 C4 1D 24 13 C5 15 28 58 FF 15 x.......$...(X..
+44F0 35 00 32 0F 15 95 FF 15 36 00 2A 0F C3 0A F7 06 5.2.....6.*.....
+4500 BF 0A 22 0F E6 15 A8 53 E6 15 9F 53 F7 09 6A C8 .."....S...S..j.
+4510 E6 15 A8 53 E6 15 10 58 F7 09 28 C6 E6 15 AE 53 ...S...X..(....S
+4520 E6 15 28 58 F7 09 1C C6 F7 09 7C C9 FF 15 38 00 ..(X......|...8.
+4530 F4 0E 87 00 37 09 C0 C9 B0 53 FF 15 03 00 E6 0E ....7....S......
+4540 F7 15 01 00 24 13 C4 1F 1A 13 C5 1D 18 13 FF 15 ....$...........
+4550 04 00 D2 0E E6 15 BE 53 E6 15 B8 53 F7 09 1A C8 .......S...S....
+4560 66 11 F7 09 5E C5 F7 09 3E C9 FF 15 05 00 B6 0E f...^...>.......
+4570 85 0A C4 0A EC 06 BF 0A AC 0E 87 00 37 09 78 C9 ............7.x.
+4580 C0 53 FF 15 03 00 9E 0E F7 95 9B 00 E0 12 BF 0A .S..............
+4590 94 0E F7 95 5B 00 D7 12 BF 0A 8A 0E F7 95 3F 00 ....[.........?.
+45A0 CE 12 BF 0A 80 0E F7 95 32 00 C5 12 BF 0A 76 0E ........2.....v.
+45B0 F7 95 6C 00 BC 12 BF 0A 6C 0E C5 15 D2 53 F7 09 ..l.....l....S..
+45C0 72 FF BF 0A 60 0E                               r...`.         
+
+fn45C6()
 	rts	pc
-	jsr	r4,CD74(pc)
-	bis	@r5,@-(r0)
-	mov	#0005,@129A(pc)
-	mov	#5376,r5
-	jsr	pc,CB60(pc)
-	inc	@128E(pc)
-	mov	#5374,-(sp)
-	mov	#5370,-(sp)
-	mov	#57E8,-(sp)
-	jsr	pc,CE06(pc)
-	mov	#5374,-(sp)
-	mov	#57FA,-(sp)
-	jsr	pc,C98A(pc)
-	jsr	pc,CCF0(pc)
-	inc	@126A(pc)
-	mov	#5374,-(sp)
-	mov	#5370,-(sp)
-	mov	#57E8,-(sp)
-	jsr	pc,CDE2(pc)
-	mov	#5374,-(sp)
-	mov	#57FE,-(sp)
-	jsr	pc,C966(pc)
-	jsr	pc,CCCC(pc)
-	inc	@1246(pc)
-	mov	#5374,-(sp)
-	mov	#5370,-(sp)
-	mov	#57E8,-(sp)
-	jsr	pc,CDBE(pc)
-	mov	#5374,-(sp)
-	mov	#5802,-(sp)
-	jsr	pc,C942(pc)
-	jsr	pc,CCA8(pc)
-	mov	#000A,@1220(pc)
-	mov	15F0(pc),r0
-	add	15F0(pc),r0
-	add	15F0(pc),r0
-	mov	r0,16A0(pc)
-	inc	@120C(pc)
-	mov	15DE(pc),r0
-	add	15DE(pc),r0
-	add	15DE(pc),r0
-	mov	r0,168E(pc)
-	inc	@11F8(pc)
-	rts	pc
-	jsr	r4,CCC4(pc)
-	bis	@r5,@15FF(r2)
-	iot
-	mov	pc,@-(r2)
-	mov	@15C8(pc),1614(pc)
-	inc	@11E0(pc)
-	mov	@15C0(pc),160C(pc)
-	inc	@11D6(pc)
-	tst	1602(pc)
-	bge	425E
-	inc	@11CC(pc)
-	clr	15F8(pc)
-	mov	#0008,@11C2(pc)
-	tst	15F0(pc)
-	bge	4272
-	inc	@11B8(pc)
-	clr	15E6(pc)
-	mov	#000A,@11AE(pc)
-	cmp	15DA(pc),#004F
-	ble	428A
-	inc	@11A2(pc)
-	mov	#004F,15CC(pc)
-	mov	#000C,@1196(pc)
-	cmp	15C4(pc),#0017
-	ble	42A2
-	inc	@118A(pc)
-	mov	#0017,15B6(pc)
-	mov	#000E,@117E(pc)
-	add	#0020,15A8(pc)
-	inc	@1174(pc)
-	neg	15A2(pc)
-	add	#0037,159C(pc)
-	inc	@1166(pc)
-	movb	#009B,154B(pc)
-	inc	@115C(pc)
-	movb	#0059,1542(pc)
-	inc	@1152(pc)
-	movb	1580(pc),r0
-	movb	r0,1537(pc)
-	inc	@1146(pc)
-	movb	1572(pc),r0
-	movb	r0,152C(pc)
-	inc	@113A(pc)
-	movb	#0024,151E(pc)
-	inc	@1130(pc)
-	cmp	@1512(pc),#0001
-	beq	4380
-	mov	#0017,@1122(pc)
-	cmp	@1504(pc),#0005
-	beq	43C0
-	mov	#0019,@1114(pc)
-	cmp	@14F6(pc),#0006
-	bne	431E
-	jmp	0100(pc)
-	mov	#001B,@1102(pc)
-	cmp	@14E4(pc),#0007
-	bne	4330
-	jmp	014A(pc)
-	mov	#001D,@10F0(pc)
-	cmp	@14D2(pc),#001E
-	bne	4342
-	jmp	0194(pc)
-	mov	#001F,@10DE(pc)
-	mov	14BE(pc),-(sp)
-	mov	14B8(pc),-(sp)
-	mov	#0002,-(sp)
-	mov	sp,r5
-	jsr	pc,FD18(pc)
-	add	#0006,sp
-	inc	@10C4(pc)
-	mov	14A8(pc),-(sp)
-	mov	14A2(pc),-(sp)
-	mov	#0002,-(sp)
-	mov	sp,r5
-	jsr	pc,01C0(pc)
-	add	#0006,sp
-	inc	@10AA(pc)
-	jmp	01AC(pc)
-	mov	#0022,@10A0(pc)
-	movb	@1484(pc),1489(pc)
-	inc	@1096(pc)
-	mov	#53A8,-(sp)
-	mov	#5384,-(sp)
-	jsr	pc,C9DE(pc)
-	mov	#53A8,-(sp)
-	mov	#5810,-(sp)
-	jsr	pc,C79C(pc)
-	mov	#53A6,-(sp)
-	mov	#5815,-(sp)
-	jsr	pc,C790(pc)
-	jsr	pc,CAF0(pc)
-	inc	@106A(pc)
-	jmp	016C(pc)
-	mov	#0025,@1060(pc)
-	mov	#0001,148E(pc)
-	mov	#0005,r3
-	mov	143A(pc),r4
-	mov	#5816,r5
-	mov	#0026,@1048(pc)
-	movb	(r4)+,(r5)+
-	mov	#0027,@1040(pc)
-	dec	r3
-	bgt	43D8
-	inc	@1038(pc)
-	mov	#53A8,-(sp)
-	mov	#538A,-(sp)
-	jsr	pc,C980(pc)
-	mov	#53A8,-(sp)
-	mov	#5810,-(sp)
-	jsr	pc,C73E(pc)
-	mov	#53A8,-(sp)
-	mov	#5816,-(sp)
-	jsr	pc,C732(pc)
-	jsr	pc,CA92(pc)
-	inc	@100C(pc)
-	jmp	010E(pc)
-	mov	#002A,@1002(pc)
-	mov	#0001,1430(pc)
-	mov	#0006,r3
-	mov	13DC(pc),r4
-	mov	#581B,r5
-	mov	#002B,@0FEA(pc)
-	movb	(r4)+,(r5)+
-	mov	#002C,@0FE2(pc)
-	dec	r3
-	bgt	4436
-	inc	@0FDA(pc)
-	mov	#53A8,-(sp)
-	mov	#5391,-(sp)
-	jsr	pc,C922(pc)
-	mov	#53A8,-(sp)
-	mov	#5810,-(sp)
-	jsr	pc,C6E0(pc)
-	mov	#53AA,-(sp)
-	mov	#581B,-(sp)
-	jsr	pc,C6D4(pc)
-	jsr	pc,CA34(pc)
-	inc	@0FAE(pc)
-	br	452C
-	mov	#002F,@0FA6(pc)
-	mov	#0001,13D4(pc)
-	mov	#0007,r3
-	mov	1380(pc),r4
-	mov	#5821,r5
-	mov	#0030,@0F8E(pc)
-	movb	(r4)+,(r5)+
-	mov	#0031,@0F86(pc)
-	dec	r3
-	bgt	4492
-	inc	@0F7E(pc)
-	mov	#53A8,-(sp)
-	mov	#5398,-(sp)
-	jsr	pc,C8C6(pc)
-	mov	#53A8,-(sp)
-	mov	#5810,-(sp)
-	jsr	pc,C684(pc)
-	mov	#53AC,-(sp)
-	mov	#5821,-(sp)
-	jsr	pc,C678(pc)
-	jsr	pc,C9D8(pc)
-	inc	@0F52(pc)
-	br	452C
-	mov	#0034,@0F4A(pc)
-	mov	#0001,1378(pc)
-	mov	#001E,r3
-	mov	1324(pc),r4
-	mov	#5828,r5
-	mov	#0035,@0F32(pc)
-	movb	(r4)+,(r5)+
-	mov	#0036,@0F2A(pc)
-	dec	r3
-	bgt	44EE
-	inc	@0F22(pc)
-	mov	#53A8,-(sp)
-	mov	#539F,-(sp)
-	jsr	pc,C86A(pc)
-	mov	#53A8,-(sp)
-	mov	#5810,-(sp)
-	jsr	pc,C628(pc)
-	mov	#53AE,-(sp)
-	mov	#5828,-(sp)
-	jsr	pc,C61C(pc)
-	jsr	pc,C97C(pc)
-	mov	#0038,@0EF4(pc)
-	rts	pc
-	jsr	r4,C9C0(pc)
-	bis	@sp,15FF(r0)
-	bpt
-	illegal
-	mov	#0001,1324(pc)
-	mov	@131A(pc),r4
-	mov	1318(pc),r5
-	mov	#0004,@0ED2(pc)
-	mov	#53BE,-(sp)
-	mov	#53B8,-(sp)
-	jsr	pc,C81A(pc)
-	mov	r5,-(sp)
-	jsr	pc,C55E(pc)
-	jsr	pc,C93E(pc)
-	mov	#0005,@0EB6(pc)
-	inc	r5
-	dec	r4
-	bgt	454E
-	inc	@0EAC(pc)
-	rts	pc
-	jsr	r4,C978(pc)
-	bis	@pc,r0
-	mov	#0003,@0E9E(pc)
-	movb	#009B,12E0(pc)
-	inc	@0E94(pc)
-	movb	#005B,12D7(pc)
-	inc	@0E8A(pc)
-	movb	#003F,12CE(pc)
-	inc	@0E80(pc)
-	movb	#0032,12C5(pc)
-	inc	@0E76(pc)
-	movb	#006C,12BC(pc)
-	inc	@0E6C(pc)
-	mov	#53D2,r5
-	jsr	pc,FF72(pc)
-	inc	@0E60(pc)
-	rts	pc
-	jsr	r4,C92C(pc)
-	bis	@pc,@(r0)+
-	mov	#0003,@0E52(pc)
-	movb	#009B,129A(pc)
-	inc	@0E48(pc)
-	movb	#003C,1291(pc)
-	inc	@0E3E(pc)
-	mov	#53E4,r5
-	jsr	pc,FF44(pc)
-	inc	@0E32(pc)
-	rts	pc
-	mov	r5,-(sp)
-	mov	r4,-(sp)
-	mov	r1,-(sp)
-	mov	r0,-(sp)
-	mov	r2,-(sp)
-	clr	r4
-	sub	#000A,r2
-	bmi	460C
-	inc	r4
-	br	4602
-	add	#000A,r2
-	tst	r4
-	bne	461A
-	add	r2,r4
-	mov	#FFE2,r2
-	add	#001E,r4
-	mov	r4,-(sp)
-	asl	r4
-	asl	r4
-	add	(sp)+,r4
-	asl	r4
-	asl	r4
-	asl	r4
-	bpl	4614
-	mov	r0,r5
-	add	#0006,r5
-	mov	@r5,r2
-	bne	465A
-	mov	r4,(r5)+
-	mov	#47E4,r1
-	tst	@r1
-	beq	464A
-	cmp	@r1,@sp
-	beq	464A
-	cmp	(r1)+,(r1)+
-	br	463E
-	mov	-(r1),r2
-	mov	#28AE,(r5)+
-	mov	r4,(r5)+
-	mov	#193C,@r5
-	sub	#0006,r5
-	tst	@r0
-	bmi	4662
-	bis	#0100,@r0
-	mov	0010(r3),r0
-	mov	r0,-(sp)
-	clr	r1
-	inc	r1
-	bvs	46C2
-	ror	r0
-	bcs	466A
-	movb	r1,000B(r5)
-	dec	000B(r5)
-	illegal
-	rol	r0
-	dec	r1
-	bne	467C
-	mov	r0,0010(r3)
-	jsr	pc,CD74(pc)
-	mov	0050(r3),r4
-	mov	r5,r1
-	mov	#474C,r0
-	mov	@#0026,r5
-	beq	46BA
-	add	#1000,r5
-	cmp	r5,#474E
-	blos	46BA
-	mov	#47E0,r5
-	cmp	@#0026,r5
-	bcc	46BA
-	mov	#099E,-(sp)
-	mov	-(r5),-(sp)
-	cmp	r5,r0
-	bhi	46B2
-	mov	sp,r0
-	jsr	pc,@r0
-	asl	r4
-	jmp	46C4(r4)
-	trap
-	trap
-	trap
-	trap
-	br	4712
-	tst	(sp)+
-	movb	000A(r1),r2
-	bne	46D6
-	inc	r2
-	movb	r2,000A(r1)
-	swab	r2
-	mov	r2,FFFE(r1)
-	mov	000C(r3),FFFC(r1)
-	asl	r2
-	add	r2,000C(r3)
-	cmp	@0050(r3),#0014
-	bne	46FA
-	bis	#2000,FFFA(r1)
-	cmp	@0050(r3),#0003
-	bne	4708
-	bis	#0400,FFFA(r1)
-	cmp	000A(r3),000C(r3)
-	bhi	4720
-	trap
-	mov	(sp)+,0010(r3)
-	bis	#0080,FFFA(r1)
-	clrb	000A(r1)
-	mov	(sp)+,r2
-	mov	(sp)+,r0
-	clr	0018(r0)
-	bit	#0018,@r0
-	beq	4736
-	bit	#0010,@r0
-	beq	4740
-	br	473C
-	bit	#0480,@r0
-	beq	4740
-	bis	#0020,@r0
-	bis	#0800,@r0
-	mov	(sp)+,r1
-	mov	(sp)+,r4
-	mov	(sp)+,r5
-	rts	pc
-	emt	#E6
-	clr	-(sp)
-	mov	0008(r3),r0
-	beq	4762
-	mov	r0,-(sp)
-	mov	#0004,r0
-	emt	#EB
-	clr	0008(r3)
-	mov	r1,r0
-	mov	r4,-(sp)
-	emt	#E2
-	bcc	4772
-	mov	r2,@r1
-	mov	r4,-(sp)
-	emt	#E2
-	bcs	47DC
-	mov	(r4)+,r2
-	cmp	#0004,r2
-	beq	47D6
-	mov	(r4)+,r2
-	tst	@r4
-	bne	4796
-	sub	r2,000A(r3)
-	cmp	000A(r3),000C(r3)
-	blos	47D8
-	mov	r1,r0
-	mov	000A(r3),-(sp)
-	emt	#E3
-	bcs	47DC
-	mov	sp,r4
-	clr	-(sp)
-	mov	#0100,r0
-	bit	#0100,FFFA(r1)
-	bne	47AE
-	mov	0012(r1),-(sp)
-	mov	#0200,r0
-	mov	r1,-(sp)
-	bis	000B(r1),r0
-	mov	r0,-(sp)
-	mov	sp,r0
-	emt	#FD
-	mov	r4,sp
-	bcc	47D4
-	bit	#0004,0016(r1)
-	beq	47DA
-	bic	#0100,FFFA(r1)
-	bic	#0004,0016(r1)
-	br	4796
-	inc	@sp
-	inc	@sp
-	inc	@sp
-	inc	@sp
-	emt	#E7
-	mov	(sp)+,r4
-	rts	pc
-	bpl	4824
-	reset
-	bic	0006(sp),r0
-	add	(r1)+,@0008(r0)
-	add	(r1)+,@0009(r0)
-	bpl	4834
-	illegal
-	illegal
-	wait
-	mov	@-(r2),@0000(r0)
-	bit	r4,@r1
-	bit	@-(r2),@r4
-	halt
-	bis	(r1)+,(r0)+
-	bis	r1,(r3)+
-	bic	@r5,r1
-	cmp	@4144(r1),r5
-	jmp	(r4)+
-	blt	4836
-	movb	r0,sp
-	br	4850
-	cmp	r0,sp
-	illegal
-	add	-(r1),r3
-	add	6970(r5),-(r1)
-	illegal
-	cmp	r0,r0
-	bis	@r0,-(r0)
-	add	@r5,-(r5)
-	illegal
-	bit	@-(r1),-(r4)
-	illegal
-	bis	-(r4),-(r0)
-	illegal
-	cmp	r1,6353(r2)
-	illegal
-	bit	@-(r1),-(r5)
-	illegal
-	cmp	r0,-(r0)
-	bit	@2020(r0),@2000(r4)
-	cmp	r0,-(r0)
-	illegal
-	cmp	r0,-(r0)
-	cmp	r0,r0
-	cmp	r0,-(r0)
-	add	r4,@203E(r4)
-	illegal
-	cmp	r0,-(r0)
-	bit	2020(r0),@2000(sp)
-	cmp	r0,-(r0)
-	illegal
-	cmp	r0,-(r0)
-	cmp	r0,r0
-	cmp	r0,-(r0)
-	add	r4,@203C(sp)
-	illegal
-	cmp	r0,-(r0)
-	cmp	r0,-(r0)
-	cmp	r0,-(r0)
-	illegal
-	blt	489C
-	illegal
-	halt
-	illegal
-	halt
-	reset
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	halt
-	illegal
-	wait
-	reset
-	rtt
-	illegal
-	illegal
-	illegal
-	rti
-	iot
-	jmp	(r0)+
-	halt
-	mov	r0,r1
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	halt
-	reset
-	bic	-(r2),@-(r2)
-	bic	-(r2),-(r4)
-	bic	-(r0),sp
-	bic	-(r2),-(r2)
-	bic	-(r2),(sp)+
-	bpt
-	bic	-(r2),(sp)+
-	bic	-(r2),-(r4)
-	bic	-(r2),@-(r0)
-	iot
-	bic	-(r2),@-(r0)
-	bic	-(r2),@-(r0)
-	bic	-(r2),-(sp)
-	bis	(r1)+,-(r4)
-	iot
-	bic	-(r2),-(r4)
-	bic	-(r2),@-(r4)
-	bic	-(r2),-(r0)
-	bic	-(r0),@(r2)+
-	iot
-	bic	-(r2),@-(sp)
-	bic	-(r2),@-(r4)
-	bic	-(r2),@(sp)+
-	bis	-(r1),@0004(r2)
-	bic	-(r2),48AC(r0)
-	bic	-(r2),4826(r2)
-	iot
-	bic	-(r2),48AC(r4)
-	bic	-(r2),@(r0)+
-	bis	(r3)+,@(r4)+
-	iot
-	bic	-(r2),48AC(sp)
-	bic	-(r2),@4830(r0)
-	wait
-	bic	-(r2),(sp)+
-	iot
-	bis	(r3)+,@-(r4)
-	bis	(r3)+,@-(sp)
-	bic	-(r2),@(r2)+
-	bic	-(r0),@0004(sp)
-	bis	(r3)+,@-(r4)
-	bis	(r3)+,@-(sp)
-	bic	-(r2),@(r2)+
-	bic	-(r1),sp
-	iot
-	bis	(r3)+,@-(r4)
-	bis	(r3)+,@-(sp)
-	bic	-(r2),@(r4)+
-	bic	-(r1),@sp
-	iot
-	bis	(r3)+,@-(r4)
-	bis	(r3)+,@-(sp)
-	bic	-(r2),@(r2)+
-	bic	-(r1),(sp)+
-	iot
-	bis	(r3)+,@-(r4)
-	bis	(r3)+,@-(sp)
-	bic	-(r2),@(r2)+
-	bic	-(r1),@(sp)+
-	iot
-	bis	(r3)+,@-(r4)
-	bis	(r3)+,@-(sp)
-	bic	-(r2),@(r4)+
-	bic	-(r1),-(sp)
-	iot
-	bis	(r3)+,@-(r4)
-	bis	(r3)+,489C(r0)
-	bic	-(r1),@-(sp)
-	wait
-	bic	-(r2),@-(r0)
-	wait
-	bis	(r3)+,(sp)+
-	rti
-	bis	(r3)+,@r4
-	bis	(r3)+,sp
-	wait
-	bis	(r3)+,4BC9(r2)
-	com	@r0
-	wait
-	bis	(r4)+,sp
-	bis	r1,(r3)+
-	bic	@r5,r1
-	cmp	@4144(r1),r5
-	jmp	(r4)+
-	bis	r1,(r3)+
-	bic	@r5,r1
-	cmp	@4144(r1),r5
-	jmp	(r4)+
-	jsr	r0,@r0
-	mov	@sp,-(sp)
-	illegal
-	bic	@5255(r5),@(r1)+
-	bis	@r4,-(r0)
-	bic	@4552(r5),r3
-	cmp	r0,-(r0)
-	cmp	r0,-(r0)
-	mov	@r0,-(r0)
-	bgt	49A6
-	blt	49C2
-	movb	r0,sp
-	br	49DC
-	jsr	r0,sp
-	mov	@sp,-(sp)
-	mov	(sp)+,@(sp)+
-	bic	-(r4),-(r0)
-	bis	@(r1)+,@sp
-	bic	(r1)+,r1
-	bis	@r1,r5
-	cmp	r1,(r3)+
-	bis	(r5)+,(r3)+
-	bic	(r5)+,(r0)+
-	cmp	r1,(r2)+
-	bic	(r5)+,@r4
-	bic	@(r5)+,r1
-	bic	(r5)+,(r5)+
-	jsr	r0,@r0
-	mov	059E(sp),-(sp)
-	add	7961(r1),(r0)+
-	div	-(r5),r1
-	mov	@r2,-(sp)
-	bge	490A
-	add	@r5,(r3)+
-	illegal
-	bgt	4A9E
-	blt	49FA
-	illegal
-	mov	A601(sp),(r0)+
-	mov	@r0,r4
-	bgt	49EA
-	mov	149E(sp),-(sp)
-	cmp	@-(r0),@-(r2)
-	bis	@(r4)+,-(r0)
-	bic	r5,@r0
-	cmp	r1,(r4)+
-	bis	(r1)+,(r5)+
-	bic	(r5)+,(r4)+
-	cmp	r1,(r2)+
-	bis	@r1,r3
-	bis	r1,r1
-	cmp	@-(r0),-(r0)
-	bgt	4A4E
-	mov	179E(sp),-(sp)
-	cmp	@-(r0),@-(r2)
-	bic	-(r4),-(r0)
-	add	(r0)+,-(r0)
-	illegal
-	add	@r0,-(r0)
-	add	6569(r1),-(r5)
-	add	(r5)+,6920(sp)
-	cmp	r1,2A2A(r4)
-	cmp	@(r0)+,sp
-	movb	@2A14(r0),@(r5)+
-	cmp	r0,@-(r2)
-	cmp	r0,-(r0)
-	bis	(r5)+,(r2)+
-	bic	@r1,r2
-	bic	-(r5),r2
-	bic	-(r1),(r3)+
-	cmp	r4,-(r0)
-	cmp	r0,-(r1)
-	cmp	r0,-(r0)
-	cmp	@-(r0),@-(r2)
-	cmp	@(r0)+,sp
-	movb	@2A13(r0),@(r5)+
-	cmp	r0,@-(r2)
-	add	-(r1),#7461
-	add	@r4,-(r0)
-	add	@4920(r1),-(r1)
-	div	-(r0),r4
-	xor	-(r1),r5
-	cmp	@-(r0),-(r0)
-	bgt	4A9E
-	mov	199E(sp),-(sp)
-	cmp	@-(r0),@-(r2)
-	bic	@(r0)+,-(r0)
-	illegal
-	cmp	r1,6966(r2)
-	illegal
-	add	(r5)+,2073(r2)
-	illegal
-	add	r5,-(r4)
-	cmp	r1,@2A2A(r1)
-	cmp	@(r0)+,sp
-	movb	@2A1B(r0),@(r5)+
-	cmp	r0,@-(r2)
-	add	r5,(r0)+
-	ash	7420(r3),r1
-	add	(r5)+,@-(r0)
-	add	6761(r4),-(r0)
-	add	@r5,@-(r1)
-	bit	r4,-(r0)
-	bit	r0,2030(r0)
-	cmp	r4,-(r1)
-	cmp	@-(r0),-(r0)
-	bgt	4ADE
-	mov	149E(sp),-(sp)
-	cmp	@-(r0),@-(r2)
-	bic	7375(r4),-(r0)
-	cmp	r1,7274(r4)
-	cmp	r1,@6168(r1)
-	add	(r1)+,7265(r2)
-	cmp	@-(r0),-(r0)
-	bgt	4AF8
-	mov	219E(sp),-(sp)
-	cmp	@-(r0),@-(r2)
-	bis	@(r4)+,-(r0)
-	add	206C(r1),-(r5)
-	cmp	r1,@r1
-	ash	7070(r3),r5
-	illegal
-	cmp	r1,-(r5)
-	add	@2775(r5),@6572(r1)
-	ash	-(r0),r0
-	xor	6E69(r2),r5
-	illegal
-	cmp	@-(r0),@-(r2)
-	cmp	@(r0)+,sp
-	movb	@2A0C(r0),@(r5)+
-	cmp	r0,@-(r2)
-	add	@656D(r5),r3
-	add	@206E(r4),-(r0)
-	cmp	@-(r0),@-(r2)
-	cmp	@(r0)+,sp
-	movb	@2A11(r0),@(r5)+
-	cmp	r0,@-(r2)
-	add	6F6D(r1),r1
-	ash	7420(r3),r1
-	add	(r5)+,@-(r0)
-	add	(r5)+,2A20(r2)
-	bgt	4B48
-	mov	149E(sp),-(sp)
-	cmp	@-(r0),@-(r2)
-	bis	@(r4)+,-(r0)
-	bis	@(r5)+,@pc
-	cmp	r4,-(r0)
-	add	@6576(r4),-(r0)
-	cmp	r1,3032(r2)
-	bit	r0,2A20(r0)
-	bgt	4B62
-	mov	159E(sp),-(sp)
-	cmp	@-(r0),@-(r2)
-	bic	r4,-(r0)
-	add	(r5)+,7920(r2)
-	illegal
-	add	r4,-(r0)
-	bic	@766F(r0),-(r0)
-	add	@r5,@-(r1)
-	cmp	r1,-(r5)
-	cmp	@-(r0),@-(r2)
-	cmp	@(r0)+,sp
-	movb	@2A13(r0),@(r5)+
-	cmp	r0,@-(r2)
-	add	(r5)+,pc
-	ash	6E69(r4),r1
-	illegal
-	add	(r5)+,r2
-	ash	7265(r4),r1
-	cmp	@-(r0),-(r0)
-	bgt	4B96
-	mov	139E(sp),-(sp)
-	cmp	@-(r0),@-(r2)
-	bic	@-(r4),-(r0)
-	add	(r5)+,-(r5)
-	cmp	r1,6E6F(r0)
-	ash	-(r0),r0
-	xor	6E69(r2),r5
-	illegal
-	cmp	@-(r0),@-(r2)
-	cmp	@(r0)+,sp
-	movb	@2A1B(r0),@(r5)+
-	cmp	r0,@-(r2)
-	bit	r0,3030(r3)
-	bic	@656E(r4),-(r0)
-	add	@2066(r4),-(r0)
-	add	-(r1),7365(r4)
-	cmp	r1,-(r5)
-	add	r5,r4
-	div	@2A20(r1),r5
-	bgt	4BD0
-	mov	1B9E(sp),-(sp)
-	cmp	@-(r0),@-(r2)
-	bis	r0,-(r0)
-	add	r5,7463(r2)
-	div	@-(r1),r5
-	cmp	r1,-(r5)
-	add	r5,@-(r5)
-	add	(r5)+,@-(r3)
-	cmp	r1,6570(r3)
-	add	@(r1)+,6365(r2)
-	cmp	r1,2A2A(r4)
-	cmp	@(r0)+,sp
-	movb	@2A16(r0),@(r5)+
-	cmp	r0,@-(r2)
-	bic	@-(r5),@pc
-	add	@776F(r0),-(r0)
-	add	-(r4),-(r0)
-	mul	@-(r5),r1
-	add	(r5)+,7373(r2)
-	add	2065(r4),-(r0)
-	cmp	@-(r0),@-(r2)
-	cmp	@(r0)+,sp
-	movb	@2A19(r0),@(r5)+
-	cmp	r0,@-(r2)
-	add	@2775(r5),@(r1)+
-	add	(r5)+,7020(sp)
-	add	r5,@-(r4)
-	add	(r5)+,@2064(r1)
-	add	(r5)+,-(r2)
-	add	@6572(r5),-(sp)
-	cmp	@-(r0),-(r0)
-	bgt	4C2C
-	mov	149E(sp),-(sp)
-	cmp	@-(r0),@-(r2)
-	bic	-(r4),-(r0)
-	illegal
-	cmp	r1,-(r5)
-	add	(r5)+,6E65(r3)
-	ashc	-(r0),r4
-	illegal
-	add	(r5)+,2A20(r3)
-	bgt	4C46
-	mov	0F9E(sp),-(sp)
-	cmp	@-(r0),@-(r2)
-	bic	@-(r4),-(r0)
-	add	(r5)+,-(r5)
-	cmp	r1,7469(r0)
-	ash	-(r0),r4
-	cmp	r1,2A2A(r0)
-	cmp	@(r0)+,sp
-	movb	@2A17(r0),@(r5)+
-	cmp	r0,@-(r2)
-	ash	@r0,r5
-	div	6861(r2),r1
-	cmp	r4,-(r0)
-	bit	(r0)+,-(r0)
-	bit	r0,2030(r0)
-	ash	-(r2),r5
-	ash	2A20(r3),r1
-	bgt	4C78
-	mov	0C9E(sp),-(sp)
-	cmp	@-(r0),@-(r2)
-	bic	@746F(r0),-(r0)
-	add	@r0,-(r0)
-	add	(r1)+,-(r1)
-	cmp	@-(r0),-(r0)
-	bgt	4C8A
-	mov	139E(sp),-(sp)
-	cmp	@-(r0),@-(r2)
-	bic	@746F(r0),-(r0)
-	add	@r0,-(r0)
-	add	(r1)+,-(r1)
-	add	r4,-(r0)
-	cmp	r1,6C61(r4)
-	cmp	r1,@-(r4)
-	cmp	@-(r0),@-(r2)
-	cmp	@(r0)+,sp
-	movb	@2A10(r0),@(r5)+
-	cmp	r0,@-(r2)
-	div	(r0)+,r1
-	ash	-(r5),r1
-	xor	6620(r4),r5
-	add	-(r5),-(r1)
-	cmp	r1,2A2A(r2)
-	cmp	@(r0)+,sp
-	movb	@2A0F(r0),@(r5)+
-	cmp	r0,@-(r2)
-	add	-(r1),@pc
-	cmp	6320(r0),-(r0)
-	add	@6573(r5),@-(r4)
-	cmp	@-(r0),-(r0)
-	bgt	4CCE
-	mov	199E(sp),-(sp)
-	cmp	@-(r0),@-(r2)
-	bic	-(r4),-(r0)
-	illegal
-	add	736F(r5),@-(r4)
-	cmp	r1,6D69(r4)
-	div	7365(r0),r1
-	add	(r5)+,2064(r3)
-	cmp	@-(r0),@-(r2)
-	cmp	@(r0)+,sp
-	movb	@2A10(r0),@(r5)+
-	cmp	r0,@-(r2)
-	div	(r0)+,r1
-	ash	-(r5),r1
-	xor	4720(r4),r5
-	illegal
-	cmp	@-(r0),@-(r2)
-	cmp	@(r0)+,sp
-	movb	@2A11(r0),@(r5)+
-	cmp	r0,@-(r2)
-	bic	@-(r5),@pc
-	bic	-(r4),-(r0)
-	add	6B69(r0),-(r0)
-	cmp	r1,-(r5)
-	ash	@-(r1),r1
-	cmp	@-(r0),-(r0)
-	bgt	4D1A
-	mov	159E(sp),-(sp)
-	cmp	@-(r0),@-(r2)
-	bis	-(r4),-(r0)
-	illegal
-	illegal
-	cmp	r1,-(r5)
-	illegal
-	ash	6C79(r3),r1
-	cmp	r1,-(r5)
-	cmp	@-(r0),@-(r2)
-	cmp	@(r0)+,sp
-	movb	@2A1C(r0),@(r5)+
-	cmp	r0,@-(r2)
-	add	@656D(r5),r3
-	add	@206E(r4),-(r0)
-	cmp	r0,@-(r4)
-	add	@2075(r5),@6163(r1)
-	cmp	r1,@-(sp)
-	add	@6920(r5),-(r4)
-	cmp	r1,2A2A(r4)
-	cmp	@(r0)+,sp
-	movb	@2A17(r0),@(r5)+
-	cmp	r0,@-(r2)
-	bic	@-(r5),@pc
-	ash	-(r0),r0
-	add	r5,@-(r0)
-	cmp	r1,6177(r4)
-	add	@7427(r1),6220(r3)
-	add	(r1)+,-(r1)
-	cmp	@-(r0),-(r0)
-	bgt	4D74
-	mov	179E(sp),-(sp)
-	add	@676E(r5),r3
-	add	r5,7574(r2)
-	add	r5,@-(r4)
-	add	-(r5),6E6F(r4)
-	cmp	r1,6843(r3)
-	add	2070(r5),-(r1)
-	cmp	r4,-(r1)
-	illegal
-	halt
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	jmp	r2
-	jmp	@r5
-	jmp	@(r0)+
-	jmp	-(r3)
-	jmp	@-(sp)
-	jmp	@0084(r1)
-	illegal
-	illegal
-	nop
-	illegal
-	illegal
-	swab	sp
-	swab	(r1)+
-	swab	@(r4)+
-	illegal
-	swab	00FD(r2)
-	br	4D80
-	br	4D98
-	br	4DB0
-	br	4DC8
-	br	4DE0
-	br	4DF8
-	wait
-	reset
-	illegal
-	mov	r0,r1
-	iot
-	rti
-	halt
-	halt
-	reset
-	bic	4D82(sp),r0
-	bic	-(r5),4D84(r0)
-	bic	0003(r5),@4D7A(r2)
-	bic	4D86(sp),r2
-	reset
-	bic	4D82(sp),r0
-	bic	-(r5),@4D84(r2)
-	bic	3A84(sp),r4
-	div	@(r0)+,r3
-	halt
-	bis	@(r2)+,0020(r2)
-	cmp	r0,-(r0)
-	bit	@2020(r0),@2000(r4)
-	cmp	r0,-(r0)
-	bit	2020(r0),@2000(sp)
-	cmp	r0,-(r0)
-	illegal
-	cmp	r0,-(r0)
-	cmp	r0,r0
-	cmp	r0,-(r0)
-	illegal
-	cmp	r0,-(r0)
-	cmp	r0,r0
-	cmp	r0,-(r0)
-	add	r4,@203E(r4)
-	illegal
-	cmp	r0,-(r0)
-	add	r4,@203C(sp)
-	illegal
-	illegal
-	mov	-(r2),-(sp)
-	mov	@-(sp),@(sp)+
-	add	r5,-(r1)
-	cmp	r1,-(r1)
-	add	r4,-(r0)
-	add	r5,-(r1)
-	cmp	r1,-(r1)
-	cmp	r0,-(r0)
-	add	r4,-(r0)
-	cmp	r0,-(r0)
-	cmp	r0,-(r0)
-	add	r5,-(r1)
-	cmp	r1,-(r1)
-	add	r4,-(r0)
-	add	r5,-(r1)
-	add	r5,-(r1)
-	cmp	@(r0)+,@r0
-	movb	@6118(r0),#2020
-	cmp	r0,-(r0)
-	add	r4,-(r0)
-	cmp	r0,-(r0)
-	add	r4,-(r0)
-	cmp	r0,-(r0)
-	cmp	r1,-(r1)
-	cmp	r1,-(r1)
-	add	r4,-(r0)
-	cmp	r0,-(r0)
-	add	r4,-(r0)
-	add	r4,-(r0)
-	cmp	@(r0)+,@r0
-	movb	@611A(r0),@(r0)+
-	add	r5,-(r1)
-	cmp	r0,-(r0)
-	add	r5,-(r1)
-	add	r5,-(r1)
-	cmp	r0,-(r0)
-	add	r5,-(r1)
-	add	r5,-(r1)
-	cmp	r1,-(r1)
-	cmp	r1,-(r1)
-	cmp	r0,-(r0)
-	cmp	r0,-(r0)
-	add	r5,-(r1)
-	add	r5,-(r1)
-	cmp	@(r0)+,@r0
-	movb	@6114(r0),@(r3)+
-	add	r4,-(r0)
-	cmp	r0,-(r0)
-	cmp	r0,-(r0)
-	add	r4,-(r0)
-	cmp	r0,-(r0)
-	add	r4,-(r0)
-	add	r4,-(r0)
-	cmp	r0,-(r0)
-	add	r4,-(r0)
-	add	r4,-(r0)
-	cmp	@(r0)+,@r0
-	movb	@611B(r0),@(r0)+
-	add	r5,-(r1)
-	cmp	r0,-(r0)
-	cmp	r1,-(r1)
-	cmp	r0,-(r0)
-	cmp	r0,-(r0)
-	cmp	r1,-(r1)
-	cmp	r0,-(r0)
-	cmp	r1,-(r1)
-	add	r4,-(r0)
-	add	r5,-(r1)
-	cmp	r0,-(r0)
-	add	r5,-(r1)
-	add	r5,-(r1)
-	jsr	r1,-(r1)
-	cmp	@(r0)+,@r0
-	movb	@612C(r0),(r0)+
-	add	r5,-(r1)
-	cmp	r0,-(r0)
-	cmp	r1,-(r1)
-	cmp	r0,-(r0)
-	cmp	r1,-(r1)
-	cmp	r1,-(r1)
-	cmp	r0,-(r0)
-	cmp	r1,-(r1)
-	cmp	r0,-(r0)
-	cmp	r1,-(r1)
-	cmp	r0,-(r0)
-	add	r5,-(r1)
-	add	r5,-(r1)
-	cmp	r0,-(r0)
-	add	r5,-(r1)
-	add	r5,-(r1)
-	cmp	r1,-(r1)
-	add	r5,-(r1)
-	add	r5,-(r1)
-	cmp	r0,-(r0)
-	add	r4,-(r0)
-	add	r5,-(r1)
-	cmp	@(r0)+,@r0
-	movb	@6128(r0),(r1)+
-	cmp	r0,-(r0)
-	add	r4,-(r0)
-	cmp	r1,-(r1)
-	add	r4,-(r0)
-	add	r4,-(r0)
-	cmp	r0,-(r0)
-	add	r4,-(r0)
-	cmp	r0,-(r0)
-	cmp	r1,-(r1)
-	cmp	r1,-(r1)
-	add	r4,-(r0)
-	cmp	r0,-(r0)
-	add	r4,-(r0)
-	add	r4,-(r0)
-	cmp	r0,-(r0)
-	cmp	r0,-(r0)
-	add	r4,-(r0)
-	cmp	r0,-(r0)
-	add	r4,-(r0)
-	add	r4,-(r0)
-	cmp	@(r0)+,@r0
-	movb	@612B(r0),(r1)+
-	cmp	r0,-(r0)
-	add	r4,-(r0)
-	add	r4,-(r0)
-	add	r4,-(r0)
-	add	r4,-(r0)
-	cmp	r0,-(r0)
-	add	r4,-(r0)
-	add	r4,-(r0)
-	add	r5,-(r1)
-	add	r5,-(r1)
-	add	r4,-(r0)
-	cmp	r0,-(r0)
-	add	r4,-(r0)
-	add	r4,-(r0)
-	add	r5,-(r1)
-	cmp	r1,-(r1)
-	add	r4,-(r0)
-	add	r5,-(r1)
-	cmp	r1,-(r1)
-	cmp	r0,-(r0)
-	add	r5,-(r1)
-	bgt	4FD4
-	mov	sp,-(sp)
-	cmp	2061(r2),@(sp)+
-	cmp	r0,-(r0)
-	cmp	r1,-(r1)
-	add	r4,-(r0)
-	cmp	r1,-(r1)
-	add	r4,-(r0)
-	add	r4,-(r0)
-	cmp	r0,-(r0)
-	cmp	r1,-(r1)
-	cmp	r0,-(r0)
-	cmp	r1,-(r1)
-	cmp	r1,-(r1)
-	cmp	r0,-(r0)
-	cmp	r1,-(r1)
-	cmp	r1,-(r1)
-	cmp	r0,-(r0)
-	cmp	r0,-(r0)
-	cmp	r1,-(r1)
-	cmp	r1,-(r1)
-	cmp	r0,-(r0)
-	cmp	r0,-(r0)
-	cmp	r0,-(r0)
-	jsr	r1,-(r1)
-	mov	r2,-(sp)
-	cmp	6161(r2),@(sp)+
-	cmp	r1,-(r1)
-	add	r4,-(r0)
-	cmp	r0,-(r0)
-	add	r4,-(r0)
-	cmp	r0,-(r0)
-	add	r4,-(r0)
-	cmp	r0,-(r0)
-	add	r4,-(r0)
-	cmp	r0,-(r0)
-	add	r4,-(r0)
-	add	r4,-(r0)
-	add	r5,-(r1)
-	cmp	r1,-(r1)
-	add	r4,-(r0)
-	add	r5,-(r1)
-	add	r5,-(r1)
-	add	r4,-(r0)
-	cmp	r0,-(r0)
-	cmp	r1,-(r1)
-	cmp	r0,-(r0)
-	add	r5,-(r1)
-	jsr	r1,-(r1)
-	cmp	@(r0)+,@r0
-	movb	@5307(r1),r5
-	bic	@4552(r5),r3
-	bit	@r4,-(r0)
-	jsr	r0,A608(r0)
-	movb	@5307(r1),r5
-	bic	@4552(r5),r3
-	bit	@r0,-(r0)
-	jsr	r0,A608(r0)
-	movb	@5307(r1),r5
-	bic	@4552(r5),r3
-	bit	r4,-(r0)
-	bgt	5000
-	mov	-(sp),@(sp)+
-	bis	@(r4)+,-(r0)
-	add	r5,@-(r0)
-	cmp	@(r5)+,2073(r4)
-	add	@7275(r5),@6E20(r1)
-	add	2065(r5),-(r1)
-	add	-(r1),6E65(r4)
-	bit	@-(r0),-(r0)
-	cmp	r0,@-(r5)
-	movb	@2042(r0),sp
-	cmp	r1,@(r2)+
-	cmp	r0,@-(r5)
-	add	r5,(r0)+
-	add	-(r5),@-(sp)
-	cmp	r1,-(r3)
-	ash	r2,r5
-	ash	6E6F(r4),r1
-	cmp	r0,-(r0)
-	cmp	@2020(r4),-(r0)
-	bis	@r4,-(r0)
-	add	r5,6563(r0)
-	bic	@r0,-(r0)
-	div	-(r1),r1
-	cmp	4620(r4),-(r0)
-	div	@-(r1),r1
-	cmp	r1,-(r5)
-	cmp	r0,-(r0)
-	illegal
-	cmp	r0,-(r0)
-	cmp	r0,@654C(r4)
-	ash	-(sp),r1
-	cmp	r0,-(r0)
-	cmp	@2020(r4),-(r0)
-	bit	@5220(r0),-(r0)
-	add	@(r5)+,@-(r1)
-	ash	@-(r0),r1
-	illegal
-	wait
-	reset
-	rtt
-	illegal
-	illegal
-	halt
-	illegal
-	illegal
-	bpt
-	illegal
-	illegal
-	illegal
-	halt
-	wait
-	bis	r0,r4
-	rti
-	bis	r0,@sp
-	bis	r0,(r0)+
-	wait
-	bis	r0,@sp
-	rti
-	bis	r0,(r2)+
-	bis	r0,(r4)+
-	rti
-	bis	r0,sp
-	bis	r0,r4
-	iot
-	bis	@(r3)+,r0
-	bis	r0,(sp)+
-	bis	r0,@r0
-	bic	0004(sp),56C0(r4)
-	bis	r0,(sp)+
-	bis	r0,@r0
-	bic	0004(sp),@56C0(r4)
-	bis	r0,@(r0)+
-	bis	r0,@r0
-	bic	0004(pc),r4
-	bis	@(r3)+,r0
-	bis	r0,@(r0)+
-	bis	r0,@r0
-	bic	0004(pc),@r4
-	bis	@(r3)+,r0
-	bis	r0,@r0
-	bis	r0,@r2
-	bic	0004(pc),(r4)+
-	bis	@(r3)+,r0
-	bis	r0,@r0
-	bis	r0,@r2
-	bic	0004(pc),@(r4)+
-	bis	r0,@(r2)+
-	bis	r0,(r4)+
-	bis	r0,@r4
-	bis	-(r2),@(r0)+
-	mov	@r3,59E6(sp)
-	wait
-	bis	@(r3)+,r4
-	illegal
-	cmp	@5C61(r4),@003D(r5)
-	wait
-	reset
-	illegal
-	halt
-	iot
-	bis	r2,(r4)+
-	bis	r2,(r4)+
-	bis	r2,(r2)+
-	bis	@(r3)+,sp
-	wait
-	bis	r2,@sp
-	iot
-	bis	@(r3)+,@(r2)+
-	bis	r2,(r4)+
-	bis	r2,(r0)+
-	bis	r2,@r0
-	wait
-	bis	r2,(r4)+
-	asr	@1F40(r3)
-	halt
-	bis	@(r3)+,@(sp)+
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	jmp	r1
-	jmp	-(r1)
-	jmp	@(r2)+
-	jmp	@0020(r2)
-	jmp	@0020(r4)
-	cmp	@5C61(r4),-(r0)
-	illegal
-	halt
-	illegal
-	halt
-	reset
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	halt
-	illegal
-	wait
-	reset
-	halt
-	halt
-	wait
-	bis	r3,@0001(r0)
-	bis	r3,0004(r4)
-	bis	-(r2),@56F0(sp)
-	bis	r3,50CC(r4)
-	iot
-	bis	-(r2),@56F2(sp)
-	bis	r3,50CE(r4)
-	iot
-	bis	-(r2),@58C0(sp)
-	bis	r3,50D0(r4)
-	iot
-	bis	@(r3)+,50F4(r4)
-	bis	r3,50D2(sp)
-	bic	@(r0)+,4B00(r4)
-	wait
-	bis	@(r3)+,@0020(sp)
-	blt	515C
-	illegal
-	halt
-	illegal
-	halt
-	reset
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	halt
-	illegal
-	wait
-	reset
-	jmp	pc
-	illegal
-	rti
-	bis	-(r2),@5716(sp)
-	rti
-	bis	@(r4)+,(r2)+
-	bis	@(r4)+,(r4)+
-	iot
-	bis	-(r2),@5718(sp)
-	bis	r5,(sp)+
-	bis	r4,0004(r4)
-	bis	r5,@(r2)+
-	bis	r5,@(r4)+
-	bis	r5,@(r0)+
-	bis	@(r4)+,r0
-	illegal
-	asr	r0
-	rti
-	bis	@(r4)+,@(sp)+
-	illegal
-	jmp	-(sp)
-	halt
-	illegal
-	halt
-	reset
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	halt
-	illegal
-	wait
-	halt
-	bic	r1,-(sp)
-	add	@(r1)+,-(sp)
-	rti
-	bis	-(r2),58B8(sp)
-	wait
-	bis	@(r5)+,@r2
-	iot
-	bis	@(r4)+,@573C(r2)
-	bis	sp,-(sp)
-	bis	sp,sp
-	wait
-	bis	sp,-(sp)
-	iot
-	bis	@(r4)+,@573C(r2)
-	bis	sp,-(sp)
-	bis	sp,@r0
-	wait
-	bis	sp,@-(r0)
-	rti
-	bis	@(r4)+,@573C(r2)
-	halt
-	illegal
-	mov	-(r4),r0
-	halt
-	bis	@(r5)+,@(r2)+
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	cmp	(r0)+,@(sp)+
-	br	521C
-	illegal
-	halt
-	reset
-	illegal
-	illegal
-	wait
-	reset
-	iot
-	bis	@(r5)+,-(sp)
-	bis	@(r5)+,-(r4)
-	bis	@r0,sp
-	bis	pc,-(r4)
-	iot
-	bis	-(r2),@5768(r2)
-	bis	@r0,sp
-	bis	pc,-(sp)
-	iot
-	bis	@(r5)+,@-(r4)
-	bis	@(r5)+,@-(r2)
-	bis	@r0,sp
-	bis	pc,@-(r0)
-	iot
-	bis	@(r5)+,@-(sp)
-	bis	@r0,sp
-	bis	@r0,sp
-	bis	pc,@-(r2)
-	iot
-	bis	@(r5)+,5206(r0)
-	bis	@r0,sp
-	bis	pc,@-(r4)
-	iot
-	bis	@(r5)+,5772(r4)
-	bis	@r0,sp
-	bis	pc,@-(sp)
-	iot
-	bis	-(r2),@5776(r2)
-	bis	@r0,sp
-	bis	pc,0004(r0)
-	bis	@(r5)+,@5778(r2)
-	bis	@r0,sp
-	bis	pc,0004(r2)
-	bis	@(r5)+,@5206(r4)
-	bis	@r0,sp
-	bis	pc,0004(r4)
-	bis	@(r5)+,@5206(sp)
-	bis	@r0,sp
-	bis	pc,553B(sp)
-	illegal
-	halt
-	bis	@(sp)+,r4
-	bit	3E58(r0),-(r0)
-	illegal
-	cmp	r0,-(r0)
-	cmp	r0,-(r0)
-	illegal
-	cmp	r0,-(r0)
-	cmp	r0,-(r0)
-	illegal
-	cmp	r0,-(r0)
-	cmp	r0,-(r0)
-	illegal
-	blt	52B4
-	illegal
-	reset
-	bic	r1,@70A4(r5)
-	bic	r1,@B852(sp)
-	rti
-	bis	-(r2),58B8(sp)
-	wait
-	bis	@(sp)+,(r4)+
-	iot
-	bis	@(sp)+,@(sp)+
-	bis	@(sp)+,@(r0)+
-	bis	@r2,(r2)+
-	bis	@r1,0004(sp)
-	bis	@(sp)+,-(r0)
-	bis	@(sp)+,@(r0)+
-	bis	@r2,(r2)+
-	bis	@r1,@0002(r4)
-	bis	@(sp)+,-(r2)
-	bis	@(sp)+,@(r0)+
-	wait
-	bis	@(sp)+,-(r4)
-	iot
-	bis	@(sp)+,(r0)+
-	bis	@(sp)+,@(r0)+
-	bis	@r2,(r2)+
-	bis	@(sp)+,r4
-	iot
-	bis	@(sp)+,(r0)+
-	bis	@(sp)+,@(r0)+
-	bis	@r2,(r2)+
-	bis	@r2,r2
-	iot
-	bis	@(sp)+,@-(r0)
-	bis	@(sp)+,@(r0)+
-	bis	@r2,(r2)+
-	bis	@r2,@r0
-	xor	@r4,r0
-	illegal
-	halt
-	bis	@(sp)+,@-(r4)
-	halt
-	reset
-	illegal
-	illegal
-	wait
-	halt
-	rti
-	wait
-	bis	@r3,0004(r2)
-	bis	@(sp)+,@52F6(r2)
-	bis	@r3,57B0(r2)
-	wait
-	bis	@r3,2310(r4)
-	bic	0002(r5),@(r4)+
-	bis	@#2020,r0
-	cmp	r0,@-(r2)
-	illegal
-	cmp	r0,-(r0)
-	cmp	r0,-(r0)
-	illegal
-	halt
-	reset
-	illegal
-	illegal
-	wait
-	reset
-	rti
-	bis	@r4,-(sp)
-	bis	@#14A5,sp
-	jsr	r4,(r0)+
-	halt
-	bis	@#0048,(r4)+
-	jmp	@r2
-	iot
-	rti
-	bis	@r4,@57D4(r4)
-	add	@(r1)+,@-(r3)
-	bit	@-(r5),@-(sp)
-	rti
-	bis	@#0004,@(r0)+
-	rti
-	bis	@r5,@r4
-	bis	@#2E91,@(r4)+
-	add	(r5)+,@r1
-	wait
-	bis	@#0046,-(r4)
-	jmp	pc
-	rti
-	rti
-	bis	@r5,-(r0)
-	bis	@#70B6,-(sp)
-	xor	-(r0),pc
-	halt
-	bis	@#0192,@-(r0)
-	bgt	5376
-	rti
-	wait
-	bis	@#666B,@-(r0)
-	add	r1,r0
-	iot
-	bis	-(r0),@r0
-	illegal
-	bge	52A6
-	mov	r0,r1
-	bgt	538C
-	bge	52AC
-	movb	r0,r1
-	br	5398
-	movb	r0,sp
-	br	539C
-	blt	52B6
-	bgt	539A
-	bge	52BA
-	movb	r0,r1
-	br	53AA
-	movb	r0,sp
-	br	53AA
-	mov	0601(sp),(r0)+
-	wait
-	reset
-	rtt
-	illegal
-	illegal
-	add	r1,r0
-	halt
-	rti
-	bis	-(r1),-(r4)
-	cmp	(r0)+,@(sp)+
-	br	53DC
-	clr	sp
-	reset
-	asl	r3
-	bic	-(r0),r0
-	halt
-	bis	-(r1),@-(sp)
-	jmp	@(r3)+
-	illegal
-	illegal
-	jmp	@-(r4)
-	reset
-	rti
-	bis	@pc,(r0)+
-	bis	-(r1),@-(sp)
-	asr	@C030(pc)
-	halt
-	bis	-(r1),003C(r4)
-	rti
-	rti
-	bis	@pc,-(r2)
-	bis	-(r1),0088(r4)
-	halt
-	rtt
-	mov	pc,@-(r4)
-	jsr	r1,@(r0)+
-	jsr	r1,@096E(r2)
-	jsr	r4,r0
-	mov	pc,@0992(sp)
-	jsr	r5,@r0
-	jsr	sp,09EE(sp)
-	jsr	pc,@0A0E(sp)
-	com	@r0
-	jsr	r2,@r0
-	clr	@(r2)+
-	jsr	r3,@-(r2)
-	com	(r4)+
-	jsr	r0,@-(sp)
-	mov	pc,@-(r4)
-	inc	@r4
-	mov	pc,@0A76(sp)
-	movb	@0002(pc),@0000(pc)
-	bis	(r1)+,@r4
-	bis	(r0)+,@-(r4)
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	tst	(r5)+
-	clr	r0
-	mov	@#0024,r1
-	bis	#5040,@#0024
-	emt	#E0
-	rts	pc
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	halt
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	illegal
-	ille
+45C8                         37 09 2C C9 D8 53 FF 15         7.,..S..
+45D0 03 00 52 0E F7 95 9B 00 9A 12 BF 0A 48 0E F7 95 ..R.........H...
+45E0 3C 00 91 12 BF 0A 3E 0E C5 15 E4 53 F7 09 44 FF <.....>....S..D.
+45F0 BF 0A 32 0E 87 00 66 11 26 11 66 10 26 10 A6 10 ..2...f.&.f.&...
+4600 04 0A C2 E5 0A 00 02 81 84 0A FB 01 C2 65 0A 00 .............e..
+4610 C4 0B 03 02 84 60 C2 15 E2 FF C4 65 1E 00 26 11 .....`.....e..&.
+4620 C4 0C C4 0C 84 65 C4 0C C4 0C C4 0C F3 80 05 10 .....e..........
+4630 C5 65 06 00 42 13 11 02 15 11 C1 15 E4 47 C9 0B .e..B........G..
+4640 04 03 4E 22 02 03 51 24 FA 01 42 18 D5 15 AE 28 ..N"..Q$..B....(
+4650 15 11 CD 15 3C 19 C5 E5 06 00 C8 0B 02 81 C8 55 ....<..........U
+4660 00 01 C0 1C 10 00 26 10 01 0A 81 0A 2A 85 00 0C ......&.....*...
+4670 FC 87 75 90 0B 00 F5 8A 0B 00 B1 00 40 0C C1 0A ..u.........@...
+4680 FD 02 33 10 10 00 F7 09 74 CD C4 1C 50 00 41 11 ..3.....t...P.A.
+4690 C0 15 4C 47 C5 17 26 00 10 03 C5 65 00 10 57 21 ..LG..&....e..W!
+46A0 4E 47 0B 83 C5 15 E0 47 C5 27 26 00 06 86 E6 15 NG.....G.'&.....
+46B0 9E 09 66 19 40 21 FD 82 80 11 C8 09 C4 0C 74 00 ..f.@!........t.
+46C0 C4 46 9F 89 9B 89 9C 89 9D 89 23 01 D6 0B 42 9C .F........#...B.
+46D0 0A 00 01 02 82 0A B1 90 0A 00 C2 00 B1 10 FE FF ................
+46E0 F1 1C 0C 00 FC FF C2 0C B3 60 0C 00 D7 AE 50 00 .........`....P.
+46F0 14 00 03 02 F1 55 00 20 FA FF D7 AE 50 00 03 00 .....U. ....P...
+4700 03 02 F1 55 00 04 FA FF F3 2C 0A 00 0C 00 08 82 ...U.....,......
+4710 9E 89 B3 15 10 00 F1 55 80 00 FA FF 31 8A 0A 00 .......U....1...
+4720 82 15 80 15 30 0A 18 00 C8 35 18 00 04 03 C8 35 ....0....5.....5
+4730 10 00 06 03 03 01 C8 35 80 04 02 03 C8 55 20 00 .......5.....U .
+4740 C8 55 00 08 81 15 84 15 85 15 87 00 E6 88 26 0A .U............&.
+4750 C0 1C 08 00 06 03 26 10 C0 15 04 00 EB 88 33 0A ......&.......3.
+4760 08 00 40 10 26 11 E2 88 04 86 89 10 26 11 E2 88 ..@.&.......&...
+4770 35 87 02 15 C2 A5 04 00 2E 03 02 15 CC 0B 0B 02 5...............
+4780 B3 E0 0A 00 F3 2C 0A 00 0C 00 26 83 40 10 E6 1C .....,....&.@...
+4790 0A 00 E3 88 23 87 84 11 26 0A C0 15 00 01 F1 35 ....#...&......5
+47A0 00 01 FA FF 04 02 66 1C 12 00 C0 15 00 02 66 10 ......f.......f.
+47B0 40 DC 0B 00 26 10 80 11 FD 88 06 11 0B 86 F1 35 @...&..........5
+47C0 04 00 16 00 0A 03 F1 45 00 01 FA FF F1 45 04 00 .......E.....E..
+47D0 16 00 E1 01 8E 0A 8E 0A 8E 0A 8E 0A E7 88 84 15 ................
+47E0 87 00 20 80 05 00 80 4D 06 00 78 64 08 00 78 64 .. ....M..xd..xd
+47F0 09 00 20 80 07 00 A8 7A 01 00 B8 1A 00 00 09 B1 .. ....z........
+4800 8C 3A 00 00 50 54 53 50 41 43 45 2E 44 41 54 00 .:..PTSPACE.DAT.
+4810 12 05 06 90 1D 01 06 20 3D 00 43 68 61 6D 70 69 ....... =.Champi
+4820 6F 6E 3A 20 00 20 20 52 65 63 6F 72 64 3A 20 00 on: .  Record: .
+4830 20 59 6F 75 72 20 53 63 6F 72 65 3A 20 00 20 20  Your Score: .  
+4840 3C 3E 20 20 00 20 20 20 7D 7B 20 20 00 20 20 20 <>  .   }{  .   
+4850 3C 61 3E 20 20 00 20 20 3E 3C 20 20 00 20 20 20 <a>  .  ><  .   
+4860 7B 7D 20 20 00 20 20 20 3E 61 3C 20 20 00 20 20 {}  .   >a<  .  
+4870 20 20 20 20 20 00 12 05 06 0E 00 00 0A 00 00 00      ...........
+4880 05 00 0A 00 0F 00 14 00 19 00 1E 00 23 00 28 00 ............#.(.
+4890 2D 00 00 00 32 00 01 00 05 00 06 00 07 00 1E 00 -...2...........
+48A0 0A 00 02 00 04 00 50 00 00 00 01 10 17 00 0E 00 ......P.........
+48B0 2C 00 09 00 35 00 3A 00 0D 00 00 00 05 00 AA 48 ,...5.:........H
+48C0 A4 48 06 48 A2 48 96 48 03 00 96 48 A4 48 A8 48 .H.H.H.H...H.H.H
+48D0 04 00 A8 48 A8 48 A6 48 64 54 04 00 A4 48 AC 48 ...H.H.HdT...H.H
+48E0 A0 48 1A 48 04 00 AE 48 AC 48 9E 48 7A 58 04 00 .H.H...H.H.HzX..
+48F0 B0 48 AC 48 B2 48 26 48 04 00 B4 48 AC 48 98 48 .H.H.H&H...H.H.H
+4900 DC 54 04 00 B6 48 AC 48 B8 48 30 48 01 00 96 48 .T...H.H.H0H...H
+4910 04 00 EC 54 EE 54 9A 48 3E 48 04 00 EC 54 EE 54 ...T.T.H>H...T.T
+4920 9A 48 46 48 04 00 EC 54 EE 54 9C 48 4E 48 04 00 .HFH...T.T.HNH..
+4930 EC 54 EE 54 9A 48 56 48 04 00 EC 54 EE 54 9A 48 .T.T.HVH...T.T.H
+4940 5E 48 04 00 EC 54 EE 54 9C 48 66 48 04 00 EC 54 ^H...T.T.HfH...T
+4950 F0 54 9C 48 6E 48 01 00 A8 48 01 00 D6 54 02 00 .T.HnH...H...T..
+4960 CC 54 C6 54 01 00 F2 54 C9 4B 48 8A 01 00 06 55 .T.T...T.KH....U
+4970 53 50 41 43 45 2E 44 41 54 00 53 50 41 43 45 2E SPACE.DAT.SPACE.
+4980 44 41 54 00 08 08 A6 13 9E 0E 59 4F 55 52 20 53 DAT.......YOUR S
+4990 43 4F 52 45 20 20 20 20 20 12 05 06 12 05 06 90 CORE     .......
+49A0 1D 01 06 08 A6 13 9E 15 20 49 4E 56 41 44 45 52 ........ INVADER
+49B0 53 20 53 55 50 45 52 20 4C 45 41 47 55 45 08 08 S SUPER LEAGUE..
+49C0 A6 1D 9E 05 50 6C 61 79 65 72 A6 12 9E 04 53 63 ....Player....Sc
+49D0 6F 72 65 06 12 05 A6 0E 90 1D 01 A6 04 12 05 06 ore.............
+49E0 A6 1D 9E 14 2A 2A 20 57 48 41 54 20 55 54 54 45 ....** WHAT UTTE
+49F0 52 20 43 52 41 50 20 2A 2A 06 A6 1D 9E 17 2A 2A R CRAP **.....**
+4A00 20 49 20 64 6F 6E 27 74 20 62 65 6C 69 65 76 65  I don't believe
+4A10 20 69 74 20 2A 2A 06 A6 1D 9E 14 2A 2A 20 20 20  it **.....**   
+4A20 52 55 42 42 42 49 53 48 20 21 21 20 20 20 2A 2A RUBBBISH !!   **
+4A30 06 A6 1D 9E 13 2A 2A 20 57 68 61 74 20 63 61 6E .....** What can
+4A40 20 49 20 73 61 79 20 2A 2A 06 A6 1D 9E 19 2A 2A  I say **.....**
+4A50 20 46 6F 75 72 20 66 69 67 75 72 65 73 20 6F 6E  Four figures on
+4A60 65 20 64 61 79 20 2A 2A 06 A6 1D 9E 1B 2A 2A 20 e day **.....** 
+4A70 50 61 73 74 20 74 68 65 20 6D 61 67 69 63 20 31 Past the magic 1
+4A80 30 30 30 20 21 21 20 2A 2A 06 A6 1D 9E 14 2A 2A 000 !! **.....**
+4A90 20 4D 75 73 74 20 74 72 79 20 68 61 72 64 65 72  Must try harder
+4AA0 20 2A 2A 06 A6 1D 9E 21 2A 2A 20 57 65 6C 6C 20  **....!** Well 
+4AB0 49 20 73 75 70 70 6F 73 65 20 79 6F 75 27 72 65 I suppose you're
+4AC0 20 74 72 79 69 6E 67 20 2A 2A 06 A6 1D 9E 0C 2A  trying **.....*
+4AD0 2A 20 43 6F 6D 65 20 6F 6E 20 2A 2A 06 A6 1D 9E * Come on **....
+4AE0 11 2A 2A 20 41 6C 6D 6F 73 74 20 74 68 65 72 65 .** Almost there
+4AF0 20 2A 2A 06 A6 1D 9E 14 2A 2A 20 57 4F 57 20 21  **.....** WOW !
+4B00 20 6F 76 65 72 20 32 30 30 30 20 2A 2A 06 A6 1D  over 2000 **...
+4B10 9E 15 2A 2A 20 41 72 65 20 79 6F 75 20 61 20 4E ..** Are you a N
+4B20 6F 76 69 63 65 20 2A 2A 06 A6 1D 9E 13 2A 2A 20 ovice **.....** 
+4B30 47 65 74 74 69 6E 67 20 42 65 74 74 65 72 20 2A Getting Better *
+4B40 2A 06 A6 1D 9E 13 2A 2A 20 4B 65 65 70 20 6F 6E *.....** Keep on
+4B50 20 74 72 79 69 6E 67 20 2A 2A 06 A6 1D 9E 1B 2A  trying **.....*
+4B60 2A 20 33 30 30 30 20 4F 6E 65 20 6F 66 20 74 68 * 3000 One of th
+4B70 65 73 65 20 44 61 79 73 20 2A 2A 06 A6 1D 9E 1B ese Days **.....
+4B80 2A 2A 20 50 72 61 63 74 69 73 65 20 6D 61 6B 65 ** Practise make
+4B90 73 20 70 65 72 66 65 63 74 20 2A 2A 06 A6 1D 9E s perfect **....
+4BA0 16 2A 2A 20 4F 4B 20 6E 6F 77 20 69 6D 70 72 65 .** OK now impre
+4BB0 73 73 20 6D 65 20 2A 2A 06 A6 1D 9E 19 2A 2A 20 ss me **.....** 
+4BC0 59 6F 75 27 76 65 20 70 6C 61 79 65 64 20 62 65 You've played be
+4BD0 66 6F 72 65 20 2A 2A 06 A6 1D 9E 14 2A 2A 20 49 fore **.....** I
+4BE0 27 76 65 20 73 65 65 6E 20 77 6F 72 73 65 20 2A 've seen worse *
+4BF0 2A 06 A6 1D 9E 0F 2A 2A 20 4B 65 65 70 20 69 74 *.....** Keep it
+4C00 20 75 70 20 2A 2A 06 A6 1D 9E 17 2A 2A 20 48 75  up **.....** Hu
+4C10 72 72 61 68 20 21 20 34 30 30 30 20 62 75 73 74 rrah ! 4000 bust
+4C20 20 2A 2A 06 A6 1D 9E 0C 2A 2A 20 4E 6F 74 20 62  **.....** Not b
+4C30 61 64 20 2A 2A 06 A6 1D 9E 13 2A 2A 20 4E 6F 74 ad **.....** Not
+4C40 20 62 61 64 20 61 74 20 61 6C 6C 20 2A 2A 06 A6  bad at all **..
+4C50 1D 9E 10 2A 2A 20 50 72 65 74 74 79 20 66 61 69 ...** Pretty fai
+4C60 72 20 2A 2A 06 A6 1D 9E 0F 2A 2A 20 4F 68 20 2C r **.....** Oh ,
+4C70 20 63 6C 6F 73 65 20 2A 2A 06 A6 1D 9E 19 2A 2A  close **.....**
+4C80 20 49 27 6D 20 61 6C 6D 6F 73 74 20 69 6D 70 72  I'm almost impr
+4C90 65 73 73 65 64 20 2A 2A 06 A6 1D 9E 10 2A 2A 20 essed **.....** 
+4CA0 50 72 65 74 74 79 20 47 6F 6F 64 20 2A 2A 06 A6 Pretty Good **..
+4CB0 1D 9E 11 2A 2A 20 4F 4B 20 49 20 6C 69 6B 65 20 ...** OK I like 
+4CC0 69 74 20 2A 2A 06 A6 1D 9E 15 2A 2A 20 59 6F 75 it **.....** You
+4CD0 27 76 65 20 67 6F 74 20 73 74 79 6C 65 20 2A 2A 've got style **
+4CE0 06 A6 1D 9E 1C 2A 2A 20 43 6F 6D 65 20 6F 6E 20 .....** Come on 
+4CF0 2C 20 79 6F 75 20 63 61 6E 20 64 6F 20 69 74 20 , you can do it 
+4D00 2A 2A 06 A6 1D 9E 17 2A 2A 20 4F 4B 20 74 68 61 **.....** OK tha
+4D10 74 20 77 61 73 6E 27 74 20 62 61 64 20 2A 2A 06 t wasn't bad **.
+4D20 A6 1D 9E 17 43 6F 6E 67 72 61 74 75 6C 61 74 69 ....Congratulati
+4D30 6F 6E 73 20 43 68 61 6D 70 20 21 21 06 0E 00 00 ons Champ !!....
+4D40 0B 00 16 00 21 00 2C 00 37 00 42 00 4D 00 58 00 ....!.,.7.B.M.X.
+4D50 63 00 6E 00 79 00 84 00 8F 00 9A 00 A5 00 B0 00 c.n.y...........
+4D60 BB 00 C6 00 D1 00 DC 00 E7 00 F2 00 FD 00 08 01 ................
+4D70 13 01 1E 01 29 01 34 01 3F 01 01 00 05 00 1E 00 ....).4.?.......
+4D80 01 10 04 00 02 00 00 00 00 00 05 00 80 4D 82 4D .............M.M
+4D90 70 49 84 4D 7A 4D 03 00 7A 4D 82 4D 86 4D 05 00 pI.MzM..zM.M.M..
+4DA0 80 4D 82 4D 7A 49 84 4D 84 4D 84 3A D8 72 00 00 .M.MzI.M.M.:.r..
+4DB0 B2 56 20 00 20 20 3C 3E 20 20 00 20 20 20 3E 3C .V .  <>  .   ><
+4DC0 20 20 00 20 20 20 7D 7B 20 20 00 20 20 20 7B 7D   .   }{  .   {}
+4DD0 20 20 00 20 20 20 3C 61 3E 20 20 00 20 20 3E 61   .   <a>  .  >a
+4DE0 3C 20 20 00 20 00 A6 18 9E 1B 61 61 61 20 20 61 <  . .....aaa  a
+4DF0 61 61 61 20 20 20 20 61 20 20 20 20 61 61 61 20 aaa    a    aaa 
+4E00 20 61 61 61 61 61 08 A6 17 9E 18 61 20 20 20 20  aaaaa.....a    
+4E10 20 61 20 20 20 61 20 20 61 20 61 20 20 61 20 20  a   a  a a  a  
+4E20 20 61 20 61 08 A6 18 9E 1A 61 61 61 20 20 61 61  a a.....aaa  aa
+4E30 61 61 20 20 61 61 61 61 61 20 61 20 20 20 20 20 aa  aaaaa a     
+4E40 61 61 61 61 08 A6 1B 9E 14 61 20 61 20 20 20 20 aaaa.....a a    
+4E50 20 61 20 20 20 61 20 61 20 20 20 61 20 61 08 A6  a   a a   a a..
+4E60 18 9E 1B 61 61 61 20 20 61 20 20 20 20 20 61 20 ...aaa  a     a 
+4E70 20 20 61 20 20 61 61 61 20 20 61 61 61 61 61 08   a  aaa  aaaaa.
+4E80 08 A6 10 9E 2C 61 61 61 20 20 61 20 20 20 61 20 ....,aaa  a   a 
+4E90 61 20 20 20 61 20 20 20 61 20 20 20 61 61 61 61 a   a   a   aaaa
+4EA0 20 20 61 61 61 61 61 20 61 61 61 61 20 20 20 61   aaaaa aaaa   a
+4EB0 61 61 08 A6 11 9E 28 61 20 20 20 61 61 20 20 61 aa....(a   aa  a
+4EC0 20 61 20 20 20 61 20 20 61 20 61 20 20 61 20 20  a   a  a a  a  
+4ED0 20 61 20 61 20 20 20 20 20 61 20 20 20 61 20 61  a a     a   a a
+4EE0 08 A6 11 9E 2B 61 20 20 20 61 20 61 20 61 20 61 ....+a   a a a a
+4EF0 20 20 20 61 20 61 61 61 61 61 20 61 20 20 20 61    a aaaaa a   a
+4F00 20 61 61 61 61 20 20 61 61 61 61 20 20 20 61 61  aaaa  aaaa   aa
+4F10 61 06 A6 11 9E 2C 61 20 20 20 61 20 20 61 61 20 a....,a   a  aa 
+4F20 20 61 20 61 20 20 61 20 20 20 61 20 61 20 20 20  a a  a   a a   
+4F30 61 20 61 20 20 20 20 20 61 20 61 20 20 20 20 20 a a     a a     
+4F40 20 20 61 08 A6 10 9E 2C 61 61 61 20 20 61 20 20   a....,aaa  a  
+4F50 20 61 20 20 20 61 20 20 20 61 20 20 20 61 20 61  a   a   a   a a
+4F60 61 61 61 20 20 61 61 61 61 61 20 61 20 20 61 20 aaa  aaaaa a  a 
+4F70 20 20 61 61 61 08 08 A6 45 9E 07 53 43 4F 52 45   aaa...E..SCORE
+4F80 20 33 30 08 08 A6 45 9E 07 53 43 4F 52 45 20 32  30...E..SCORE 2
+4F90 30 08 08 A6 45 9E 07 53 43 4F 52 45 20 31 30 06 0...E..SCORE 10.
+4FA0 9E 19 20 57 68 61 74 27 73 20 79 6F 75 72 20 6E .. What's your n
+4FB0 61 6D 65 20 74 68 65 6E 20 3A 2D 20 06 9E 42 20 ame then :- ..B 
+4FC0 5A 20 2D 20 50 61 6E 69 63 20 42 75 74 74 6F 6E Z - Panic Button
+4FD0 20 20 20 2F 20 20 20 53 70 61 63 65 20 42 61 72    /   Space Bar
+4FE0 20 2D 20 46 69 72 65 20 20 20 2F 20 20 20 3C 20  - Fire   /   < 
+4FF0 4C 65 66 74 20 20 20 2F 20 20 20 3E 20 52 69 67 Left   /   > Rig
+5000 68 74 06 0E 01 00 05 00 06 00 07 00 1E 00 00 00 ht..............
+5010 16 00 14 00 03 00 0A 00 08 00 2F 00 00 00 01 00 ........../.....
+5020 04 50 02 00 0E 50 10 50 01 00 0E 50 02 00 12 50 .P...P.P...P...P
+5030 14 50 02 00 06 50 04 50 04 00 C0 56 16 50 08 50 .P...P.P...V.P.P
+5040 B4 4D 04 00 C0 56 16 50 08 50 BC 4D 04 00 C0 56 .M...V.P.P.M...V
+5050 18 50 08 50 C4 4D 04 00 C0 56 18 50 08 50 CC 4D .P.P.M...V.P.P.M
+5060 04 00 C0 56 08 50 0A 50 D4 4D 04 00 C0 56 08 50 ...V.P.P.M...V.P
+5070 0A 50 DC 4D 04 00 1A 50 14 50 0C 50 98 58 F6 12 .P.M...P.P.P.X..
+5080 E6 59 01 00 C4 56 3D 00 3D 2F 61 5C 3D 00 01 00 .Y...V=.=/a\=...
+5090 05 00 10 00 00 00 04 00 94 50 94 50 92 50 C6 56 .........P.P.P.V
+50A0 01 00 8E 50 04 00 DA 56 94 50 90 50 88 50 01 00 ...P...V.P.P.P..
+50B0 94 50 BB 0C 40 1F 00 00 DE 56 20 00 2C 00 3C 00 .P..@....V .,.<.
+50C0 2E 00 3E 00 41 00 61 00 5A 00 7A 00 20 00 7C 00 ..>.A.a.Z.z. .|.
+50D0 20 00 20 2F 61 5C 20 00 00 00 0A 00 00 00 05 00  . /a\ .........
+50E0 0A 00 0F 00 14 00 19 00 1E 00 23 00 28 00 2D 00 ..........#.(.-.
+50F0 00 00 32 00 01 00 05 00 00 00 00 00 01 00 F8 50 ..2............P
+5100 01 00 F4 50 04 00 BE 58 F0 56 F4 50 CC 50 04 00 ...P...X.V.P.P..
+5110 BE 58 F2 56 F4 50 CE 50 04 00 BE 58 C0 58 F4 50 .X.V.P.P...X.X.P
+5120 D0 50 04 00 F4 56 F4 50 F6 50 D2 50 34 46 00 4B .P...V.P.P.P4F.K
+5130 01 00 FE 56 20 00 12 05 06 0E 00 00 0A 00 00 00 ...V ...........
+5140 05 00 0A 00 0F 00 14 00 19 00 1E 00 23 00 28 00 ............#.(.
+5150 2D 00 00 00 32 00 01 00 05 00 47 00 17 00 02 00 -...2.....G.....
+5160 BE 58 16 57 02 00 12 57 14 57 04 00 BE 58 18 57 .X.W...W.W...X.W
+5170 56 51 34 51 04 00 5A 51 5C 51 58 51 00 57 E5 0E VQ4Q..ZQ\QXQ.W..
+5180 80 0C 02 00 1E 57 20 00 66 00 00 00 0A 00 00 00 .....W .f.......
+5190 05 00 0A 00 0F 00 14 00 19 00 1E 00 23 00 28 00 ............#.(.
+51A0 2D 00 00 00 32 00 01 00 00 00 66 40 66 66 02 00 -...2.....f@ff..
+51B0 B6 58 B8 58 01 00 4A 57 04 00 3A 57 3C 57 A6 51 .X.X..JW..:W<W.Q
+51C0 86 51 01 00 A6 51 04 00 3A 57 3C 57 A6 51 88 51 .Q...Q..:W<W.Q.Q
+51D0 01 00 A8 51 02 00 3A 57 3C 57 00 00 C9 19 00 19 ...Q..:W<W......
+51E0 00 00 5A 57 20 00 20 00 20 00 20 00 20 00 2A 00 ..ZW . . . . .*.
+51F0 2A 00 2A 00 2A 00 2A 00 1E 24 10 01 06 0E 00 00 *.*.*.*..$......
+5200 05 00 0A 00 0F 00 01 00 05 00 04 00 66 57 64 57 ............fWdW
+5210 06 52 E4 51 04 00 BA 58 68 57 06 52 E6 51 04 00 .R.Q...XhW.R.Q..
+5220 6C 57 6A 57 06 52 E8 51 04 00 6E 57 06 52 06 52 lWjW.R.Q..nW.R.R
+5230 EA 51 04 00 70 57 06 52 06 52 EC 51 04 00 74 57 .Q..pW.R.R.Q..tW
+5240 72 57 06 52 EE 51 04 00 BA 58 76 57 06 52 F0 51 rW.R.Q...XvW.R.Q
+5250 04 00 7A 57 78 57 06 52 F2 51 04 00 7C 57 06 52 ..zWxW.R.Q..|W.R
+5260 06 52 F4 51 04 00 7E 57 06 52 06 52 F6 51 3B 55 .R.Q..~W.R.R.Q;U
+5270 DA 7D 00 00 84 57 20 3C 58 3E 20 00 20 20 20 20 .}...W <X> .    
+5280 20 00 20 20 20 20 20 00 20 20 20 20 20 00 12 05  .     .     ...
+5290 06 0E 05 00 7D 40 A4 70 7E 40 52 B8 02 00 B6 58 ....}@.p~@R....X
+52A0 B8 58 01 00 94 57 04 00 9E 57 98 57 92 52 76 52 .X...W...W.W.RvR
+52B0 04 00 A0 57 98 57 92 52 7C 52 02 00 A2 57 98 57 ...W.W.R|R...W.W
+52C0 01 00 A4 57 04 00 90 57 98 57 92 52 84 57 04 00 ...W...W.W.R.W..
+52D0 90 57 98 57 92 52 82 52 04 00 A8 57 98 57 92 52 .W.W.R.R...W.W.R
+52E0 88 52 0C 78 DA 7D 00 00 AC 57 00 00 05 00 0A 00 .R.x.}...W......
+52F0 0F 00 01 00 00 00 02 00 01 00 F2 52 04 00 BA 57 ...........R...W
+5300 F6 52 F2 52 B0 57 01 00 F4 52 10 23 5C 4D 02 00 .R.R.W...R.#\M..
+5310 C0 57 20 20 2A 20 20 00 20 20 20 20 20 00 00 00 .W  *  .     ...
+5320 05 00 0A 00 0F 00 01 00 05 00 02 00 26 53 C6 57 ............&S.W
+5330 A5 14 10 09 00 00 D4 57 48 00 4A 00 04 00 02 00 .......WH.J.....
+5340 3C 53 D4 57 6B 66 6E 3B 02 00 D8 57 04 00 02 00 <S.Wkfn;...W....
+5350 4C 53 DC 57 91 2E 49 65 01 00 E4 57 46 00 47 00 LS.W..Ie...WF.G.
+5360 02 00 02 00 60 53 E6 57 B6 70 E0 79 00 00 E8 57 ....`S.W.p.y...W
+5370 92 01 01 06 02 00 01 00 E8 57 6B 66 40 60 04 00 .........Wkf@`..
+5380 08 58 24 00 90 04 01 10 01 06 90 04 01 90 04 01 .X$.............
+5390 06 90 04 01 90 05 01 06 90 04 01 90 06 01 06 90 ................
+53A0 04 01 90 1D 01 06 01 00 05 00 06 00 07 00 1E 00 ................
+53B0 40 60 00 00 02 00 64 58 1E 24 10 01 06 0A 05 00 @`....dX.$......
+53C0 C3 8C 00 C8 00 00 6E 58 5B 00 3F 00 32 00 6C 00 ......nX[.?.2.l.
+53D0 05 00 02 00 D0 53 6E 58 BF 8C 30 C0 00 00 74 58 .....SnX..0...tX
+53E0 3C 00 02 00 02 00 E2 53 74 58 88 00 00 00 06 00 <......StX......
+53F0 EC 11 58 08 7A 08 6E 09 00 09 FE 11 92 09 48 09 ..X.z.n.......H.
+5400 B6 09 EE 09 FE 09 0E 0A 48 0A 88 08 1A 0A EA 08 ........H.......
+5410 54 0A 2E 08 EC 11 8C 0A FE 11 76 0A FF 9F 02 00 T.........v.....
+5420 00 00 4C 54 2C 54 00 00 00 00 00 00 00 00 00 00 ..LT,T..........
+5430 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5440 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5450 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5460 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5470 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5480 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5490 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+54A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+54B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+54C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+54D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+54E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+54F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5500 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5510 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5520 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5530 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5540 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5550 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5560 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5570 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5580 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5590 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+55A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+55B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+55C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+55D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+55E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+55F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5600 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5610 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5620 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5630 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5640 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5650 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5660 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5670 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5680 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5690 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+56A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+56B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+56C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+56D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+56E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+56F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5700 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5710 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5720 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5730 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5740 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5750 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5760 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5770 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5780 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5790 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+57A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+57B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+57C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+57D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+57E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+57F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5800 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5810 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5820 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5830 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5840 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5850 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5860 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5870 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5880 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5890 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+58A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+58B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+58C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+58D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+58E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+58F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5900 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5910 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5920 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5930 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5940 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5950 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5960 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5970 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5980 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5990 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+59A0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+59B0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+59C0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+59D0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+59E0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+59F0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5A00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5A10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5A20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5A30 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5A40 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5A50 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5A60 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5A70 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5A80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5A90 D5 0B 00 0A C1 17 24 00 DF 55 40 50 24 00 E0 88 ......$..U@P$...
+5AA0 87 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5AB0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5AC0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5AD0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5AE0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5AF0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5B00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5B10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5B20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5B30 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5B40 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5B50 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5B60 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5B70 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5B80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5B90 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5BA0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5BB0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5BC0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5BD0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5BE0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5BF0 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+5C00 1A                                              .              

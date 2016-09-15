@@ -876,6 +876,15 @@ namespace Reko.Scanning
                 args);
         }
 
+        public Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
+        {
+            var ppp = program.EnsurePseudoProcedure(name, returnType, args.Length);
+            ppp.Characteristics = c;
+            return new Application(
+                new ProcedureConstant(program.Architecture.PointerType, ppp),
+                returnType,
+                args);
+        }
         /// <summary>
         /// Generates the name for a block stating at address <paramref name="addr"/>.
         /// </summary>

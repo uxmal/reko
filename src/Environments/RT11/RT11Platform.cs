@@ -25,10 +25,13 @@ using Reko.Core.CLanguage;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System.Collections.Generic;
+using Reko.Core.Rtl;
+using System.Linq;
 
 namespace Reko.Environments.RT11
 {
-    internal class RT11Platform : Platform
+    // http://mdfs.net/Docs/Comp/PDP11/RT11/EMTcalls
+    public class RT11Platform : Platform
     {
         private Pdp11Architecture arch;
         private IServiceProvider services;
@@ -52,12 +55,21 @@ namespace Reko.Environments.RT11
 
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
-            throw new NotImplementedException();
+            return new Rt11ProcedureSerializer(Architecture, typeLoader, defaultConvention);
         }
 
         public override SystemService FindService(int vector, ProcessorState state)
         {
-            throw new NotImplementedException();
+            base.EnsureTypeLibraries(PlatformIdentifier);
+            int uVec = vector & 0xFFFF;
+            foreach (var svc in this.Metadata.Modules.Values.SelectMany(m => m.ServicesByVector.Values))
+            {
+                if (svc.SyscallInfo.Matches(uVec, state))
+                {
+                    return svc;
+                }
+            }
+            return null;
         }
 
         public override int GetByteSizeFromCBasicType(CBasicType cb)

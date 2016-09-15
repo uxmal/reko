@@ -273,7 +273,6 @@ namespace Reko.Core
                                 t.Architecture == Architecture.Name)
                     .OfType<ITypeLibraryElement>())
                 {
-                    Debug.Print("Loading {0}", tl.Name);
                     Metadata = tlSvc.LoadMetadataIntoLibrary(this, tl, Metadata); 
                 }
                 this.CharacteristicsLibs = envCfg.CharacteristicsLibraries

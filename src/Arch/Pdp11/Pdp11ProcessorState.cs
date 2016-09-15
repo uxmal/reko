@@ -29,7 +29,7 @@ using Reko.Core.Types;
 
 namespace Reko.Arch.Pdp11
 {
-    class Pdp11ProcessorState : ProcessorState
+    public class Pdp11ProcessorState : ProcessorState
     {
         private Pdp11Architecture arch;
         private ushort[] regs;
