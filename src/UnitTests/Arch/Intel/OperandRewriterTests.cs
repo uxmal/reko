@@ -26,6 +26,7 @@ using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using Reko.Core.Serialization;
 
 namespace Reko.UnitTests.Arch.Intel
 {
@@ -186,7 +187,17 @@ namespace Reko.UnitTests.Arch.Intel
                 args);
         }
 
-		public FunctionType GetCallSignatureAtAddress(Address addrCallInstruction)
+        public Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
+        {
+            var ppp = program.EnsurePseudoProcedure(name, returnType, args.Length);
+            ppp.Characteristics = c;
+            return new Application(
+                new ProcedureConstant(PrimitiveType.Pointer32, ppp),
+                returnType,
+                args);
+        }
+
+        public FunctionType GetCallSignatureAtAddress(Address addrCallInstruction)
 		{
             FunctionType sig;
             if (callSignatures.TryGetValue(addrCallInstruction, out sig))

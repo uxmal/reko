@@ -53,7 +53,7 @@ T_4: (in &foo : ptr32)
   OrigDataType: (ptr foo)
 T_5: (in 0x1234 : word16)
   Class: Eq_5
-  DataType: int16
+  DataType: word16
   OrigDataType: word16
 T_6: (in 0x00000000 : word32)
   Class: Eq_6
@@ -65,8 +65,8 @@ T_7: (in r1 + 0x00000000 : word32)
   OrigDataType: ptr32
 T_8: (in Mem0[r1 + 0x00000000:word16] : word16)
   Class: Eq_5
-  DataType: int16
-  OrigDataType: int16
+  DataType: word16
+  OrigDataType: word16
 T_9: (in 0x0A : byte)
   Class: Eq_9
   DataType: byte

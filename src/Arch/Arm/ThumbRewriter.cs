@@ -227,25 +227,6 @@ namespace Reko.Arch.Arm
             return frame.EnsureFlagGroup(A32Registers.cpsr, (uint)bits, name, type);
         }
 
-        //$REVIEW: push PseudoProc into the RewriterHost interface"
-        public Expression PseudoProc(string name, DataType retType, params Expression[] args)
-        {
-            var ppp = host.EnsurePseudoProcedure(name, retType, args.Length);
-            return PseudoProc(ppp, retType, args);
-        }
-
-        public Expression PseudoProc(PseudoProcedure ppp, DataType retType, params Expression[] args)
-        {
-            if (args.Length != ppp.Arity)
-                throw new ArgumentOutOfRangeException(
-                    string.Format("Pseudoprocedure {0} expected {1} arguments, but was passed {2}.",
-                    ppp.Name,
-                    ppp.Arity,
-                    args.Length));
-
-            return emitter.Fn(new ProcedureConstant(arch.PointerType, ppp), retType, args);
-        }
-
         private void Predicate(ArmCodeCondition cond, RtlInstruction instr)
         {
             if (cond == ArmCodeCondition.AL)

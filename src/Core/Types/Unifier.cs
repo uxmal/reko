@@ -620,9 +620,9 @@ namespace Reko.Core.Types
 
         private DataType UnifyTypeVariable(TypeVariable tv, DataType dt)
         {
-            tv.DataType = UnifyInternal(tv.DataType, dt);
-            tv.OriginalDataType = UnifyInternal(tv.OriginalDataType, dt);
-            return tv;
+            // TypeVariable should be already unified with this DataType by
+            // ExpressionTypeAscender so just return DataType
+            return dt;
         }
 
         public UnionType UnifyUnions(UnionType u1, UnionType u2)

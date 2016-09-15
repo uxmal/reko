@@ -40,7 +40,7 @@ namespace Reko.Arch.Sparc
         {
             var dst = RewriteOp(instrCur.Op2);
             var src = RewriteOp(instrCur.Op1);
-            emitter.Assign(dst, PseudoProc("fabs", PrimitiveType.Real32, src));
+            emitter.Assign(dst, host.PseudoProcedure("fabs", PrimitiveType.Real32, src));
         }
 
         private void RewriteFadds()

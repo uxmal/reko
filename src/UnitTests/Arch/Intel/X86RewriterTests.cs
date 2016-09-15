@@ -25,6 +25,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
+using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Environments.Msdos;
@@ -148,6 +149,16 @@ namespace Reko.UnitTests.Arch.Intel
             public Expression PseudoProcedure(string name, DataType returnType, params Expression[] args)
             {
                 var ppp = EnsurePseudoProcedure(name, returnType, args.Length);
+                return new Application(
+                    new ProcedureConstant(PrimitiveType.Pointer32, ppp),
+                    returnType,
+                    args);
+            }
+
+            public Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
+            {
+                var ppp = EnsurePseudoProcedure(name, returnType, args.Length);
+                ppp.Characteristics = c;
                 return new Application(
                     new ProcedureConstant(PrimitiveType.Pointer32, ppp),
                     returnType,

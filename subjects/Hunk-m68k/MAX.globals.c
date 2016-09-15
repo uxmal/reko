@@ -17,6 +17,7 @@ struct Eq_2252 g_t2BEC =
 Eq_967 g_a2BED[] = 
 	{
 	};
+byte g_b3888 = 0x25;
 word32 g_dw3D90 = 0x00000000;
 struct Eq_4985 * g_ptr3D94 = &g_t4000;
 word32 g_dw3DC0 = 0x06060606;

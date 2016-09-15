@@ -20,6 +20,7 @@
 
 using Reko.Core.Types;
 using System;
+using System.Linq;
 
 namespace Reko.Core.Expressions
 {
@@ -50,9 +51,10 @@ namespace Reko.Core.Expressions
 			v.VisitPhiFunction(this);
 		}
 
-		public override Expression CloneExpression()
-		{
-			throw new NotImplementedException();
-		}
+        public override Expression CloneExpression()
+        {
+            var args = Arguments.Select(a => a.CloneExpression()).ToArray();
+            return new PhiFunction(DataType, args);
+        }
 	}
 }
