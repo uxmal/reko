@@ -44,7 +44,7 @@ namespace Reko.Arch.PowerPC
             var vrb = RewriteOperand(instr.op3);
             emitter.Assign(
                 vrt,
-                PseudoProc(
+                host.PseudoProcedure(
                     "__vaddfp",
                     new ArrayType(PrimitiveType.Real32, 4),
                     vra,
@@ -58,7 +58,7 @@ namespace Reko.Arch.PowerPC
             var vrb = RewriteOperand(instr.op3);
             emitter.Assign(
                 vrt,
-                PseudoProc(
+                host.PseudoProcedure(
                     "__vadduwm",
                     new ArrayType(PrimitiveType.Real32, 4),
                     vra,
@@ -72,7 +72,7 @@ namespace Reko.Arch.PowerPC
             var vrb = RewriteOperand(instr.op3);
             emitter.Assign(
                 vrt,
-                PseudoProc(
+                host.PseudoProcedure(
                     fnName,
                     new ArrayType(PrimitiveType.Int32, 4),
                     vra,
@@ -87,7 +87,7 @@ namespace Reko.Arch.PowerPC
             var vrb = RewriteOperand(instr.op3);
             emitter.Assign(
                 vrt,
-                PseudoProc(
+                host.PseudoProcedure(
                     fnName,
                     new ArrayType(PrimitiveType.Int32, 4),
                     vra,
@@ -102,7 +102,7 @@ namespace Reko.Arch.PowerPC
             var uim = RewriteOperand(instr.op3);
             emitter.Assign(
                 vrt,
-                PseudoProc(
+                host.PseudoProcedure(
                     name,
                     new ArrayType(dt, 4),
                     vrb,
@@ -117,7 +117,7 @@ namespace Reko.Arch.PowerPC
             var vrc = RewriteOperand(instr.op4);
             emitter.Assign(
                 vrt,
-                PseudoProc(
+                host.PseudoProcedure(
                     "__vmaddfp",
                     new ArrayType(PrimitiveType.Real32, 4),
                     vra,
@@ -132,7 +132,7 @@ namespace Reko.Arch.PowerPC
             var vrb = RewriteOperand(instr.op3);
             emitter.Assign(
                 vrt,
-                PseudoProc(
+                host.PseudoProcedure(
                     "__vmrghw",
                     new ArrayType(PrimitiveType.Real32, 4),
                     vra,
@@ -146,7 +146,7 @@ namespace Reko.Arch.PowerPC
             var vrb = RewriteOperand(instr.op3);
             emitter.Assign(
                 vrt,
-                PseudoProc(
+                host.PseudoProcedure(
                     "__vmrglw",
                     new ArrayType(PrimitiveType.Real32, 4),
                     vra,
@@ -161,7 +161,7 @@ namespace Reko.Arch.PowerPC
             var vrc = RewriteOperand(instr.op4);
             emitter.Assign(
                 vrt,
-                PseudoProc(
+                host.PseudoProcedure(
                     "__vnmsubfp",
                     new ArrayType(PrimitiveType.Real32, 4),
                     vra,
@@ -177,7 +177,7 @@ namespace Reko.Arch.PowerPC
             var vrc = RewriteOperand(instr.op4);
             emitter.Assign(
                 vrt,
-                PseudoProc(
+                host.PseudoProcedure(
                     "__vperm",
                     new ArrayType(PrimitiveType.Real32, 4),
                     vra,
@@ -191,7 +191,7 @@ namespace Reko.Arch.PowerPC
             var vra = RewriteOperand(instr.op2);
             emitter.Assign(
                 vrt,
-                PseudoProc(
+                host.PseudoProcedure(
                     "__vrefp",
                     new ArrayType(PrimitiveType.Real32, 4),
                     vra));
@@ -203,7 +203,7 @@ namespace Reko.Arch.PowerPC
             var vra = RewriteOperand(instr.op2);
             emitter.Assign(
                 vrt,
-                PseudoProc(
+                host.PseudoProcedure(
                     "__vrsqrtefp",
                     new ArrayType(PrimitiveType.Real32, 4),
                     vra));
@@ -217,7 +217,7 @@ namespace Reko.Arch.PowerPC
             var vrc = RewriteOperand(instr.op4);
             emitter.Assign(
                 vrt,
-                PseudoProc(
+                host.PseudoProcedure(
                     "__vsel",
                     PrimitiveType.Word128,
                     vra,
@@ -233,7 +233,7 @@ namespace Reko.Arch.PowerPC
             var vrc = RewriteOperand(instr.op4);
             emitter.Assign(
                 vrt,
-                PseudoProc(
+                host.PseudoProcedure(
                     "__vsldoi",
                     PrimitiveType.Word128,
                     vra,
@@ -248,7 +248,7 @@ namespace Reko.Arch.PowerPC
             var vrb = RewriteOperand(instr.op3);
             emitter.Assign(
                 vrt,
-                PseudoProc(
+                host.PseudoProcedure(
                     "__vslw",
                     new ArrayType(PrimitiveType.Word32, 4),
                     vra,
@@ -261,7 +261,7 @@ namespace Reko.Arch.PowerPC
             var sha = RewriteOperand(instr.op2);
             emitter.Assign(
                 vrt,
-                PseudoProc(
+                host.PseudoProcedure(
                     "__vspltisw",
                     PrimitiveType.Word128,
                     sha));
@@ -273,7 +273,7 @@ namespace Reko.Arch.PowerPC
             var opS = RewriteOperand(instr.op2);
             var opI = RewriteOperand(instr.op3);
 
-            emitter.Assign(opD, PseudoProc("__vspltw", opD.DataType, opS, opI));
+            emitter.Assign(opD, host.PseudoProcedure("__vspltw", opD.DataType, opS, opI));
         }
 
         public void RewriteVsubfp()
@@ -283,7 +283,7 @@ namespace Reko.Arch.PowerPC
             var vrb = RewriteOperand(instr.op3);
             emitter.Assign(
                 vrt,
-                PseudoProc(
+                host.PseudoProcedure(
                     "__vsubfp",
                     new ArrayType(PrimitiveType.Real32, 4),
                     vra,
@@ -298,7 +298,7 @@ namespace Reko.Arch.PowerPC
             var opS = RewriteOperand(instr.op2);
             var opI = RewriteOperand(instr.op3);
 
-            emitter.Assign(opD, PseudoProc("__lvlx", opD.DataType, opS, opI));
+            emitter.Assign(opD, host.PseudoProcedure("__lvlx", opD.DataType, opS, opI));
         }
     }
 }

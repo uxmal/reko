@@ -152,7 +152,7 @@ namespace Reko.Arch.PowerPC
             var op1 = RewriteOperand(instr.op1);
             var op2 = RewriteOperand(instr.op2);
             emitter.SideEffect(
-                PseudoProc("__mtfsf",
+                host.PseudoProcedure("__mtfsf",
                     VoidType.Instance,
                     op2,
                     op1));

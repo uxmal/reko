@@ -103,7 +103,7 @@ namespace Reko.Arch.Sparc
             emitter.If(
                 cond,
                 new RtlSideEffect(
-                    PseudoProc(
+                    host.PseudoProcedure(
                         "__syscall", 
                         VoidType.Instance, 
                         SimplifySum(src1, src2))));

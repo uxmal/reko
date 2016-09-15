@@ -78,9 +78,9 @@ namespace Reko.Arch.Z80
                 case Opcode.djnz: RewriteDjnz(dasm.Current.Op1); break;
                 case Opcode.ex: RewriteEx(); break;
                 case Opcode.exx: RewriteExx(); break;
-                case Opcode.hlt: emitter.SideEffect(PseudoProc("__hlt", VoidType.Instance)); break;
+                case Opcode.hlt: emitter.SideEffect(host.PseudoProcedure("__hlt", VoidType.Instance)); break;
                 case Opcode.im:
-                    emitter.SideEffect(PseudoProc("__im", VoidType.Instance, RewriteOp(dasm.Current.Op1)));
+                    emitter.SideEffect(host.PseudoProcedure("__im", VoidType.Instance, RewriteOp(dasm.Current.Op1)));
                     break;
                 case Opcode.inc: RewriteInc(); break;
                 case Opcode.jp: RewriteJp(dasm.Current); break;
@@ -144,25 +144,6 @@ namespace Reko.Arch.Z80
                 }
                 yield return rtlc;
             }
-        }
-
-        //$REVIEW: push PseudoProc into the RewriterHost interface"
-        public Expression PseudoProc(string name, DataType retType, params Expression[] args)
-        {
-            var ppp = host.EnsurePseudoProcedure(name, retType, args.Length);
-            return PseudoProc(ppp, retType, args);
-        }
-
-        public Expression PseudoProc(PseudoProcedure ppp, DataType retType, params Expression[] args)
-        {
-            if (args.Length != ppp.Arity)
-                throw new ArgumentOutOfRangeException(
-                    string.Format("Pseudoprocedure {0} expected {1} arguments, but was passed {2}.",
-                    ppp.Name,
-                    ppp.Arity,
-                    args.Length));
-
-            return emitter.Fn(new ProcedureConstant(arch.PointerType, ppp), retType, args);
         }
 
         private void RewriteAdc()
@@ -384,7 +365,7 @@ namespace Reko.Arch.Z80
             var a = frame.EnsureRegister(Registers.a);
             emitter.Assign(
                 a,
-                PseudoProc("__daa", PrimitiveType.Byte, a));
+                host.PseudoProcedure("__daa", PrimitiveType.Byte, a));
             AssignCond(FlagM.CF | FlagM.ZF | FlagM.SF | FlagM.PF, a);
         }
 
@@ -539,7 +520,7 @@ namespace Reko.Arch.Z80
         {
             var dst = RewriteOp(dasm.Current.Op1);
             var src = RewriteOp(dasm.Current.Op2);
-            emitter.SideEffect(PseudoProc("__out", PrimitiveType.Byte, dst, src));
+            emitter.SideEffect(host.PseudoProcedure("__out", PrimitiveType.Byte, dst, src));
         }
 
         private void RewritePop()
@@ -562,7 +543,7 @@ namespace Reko.Arch.Z80
         {
             var bit = RewriteOp(dasm.Current.Op1);
             var op = RewriteOp(dasm.Current.Op2);
-            AssignCond(FlagM.ZF, PseudoProc("__bit", PrimitiveType.Bool, op, bit));
+            AssignCond(FlagM.ZF, host.PseudoProcedure("__bit", PrimitiveType.Bool, op, bit));
         }
 
         private void RewriteResSet(string pseudocode)
@@ -574,7 +555,7 @@ namespace Reko.Arch.Z80
                 dst = frame.CreateTemporary(op.DataType);
             else
                 dst = op;
-            emitter.Assign(dst, PseudoProc(pseudocode, dst.DataType, op, bit));
+            emitter.Assign(dst, host.PseudoProcedure(pseudocode, dst.DataType, op, bit));
             if (dst != op)
             {
                 emitter.Assign(op, dst);

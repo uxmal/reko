@@ -92,14 +92,14 @@ namespace Reko.Arch.X86
 
         private void RewriteFabs()
         {
-            emitter.Assign(FpuRegister(0), PseudoProc("fabs", PrimitiveType.Real64, FpuRegister(0)));
+            emitter.Assign(FpuRegister(0), host.PseudoProcedure("fabs", PrimitiveType.Real64, FpuRegister(0)));
         }
 
         private void RewriteFbld()
         {
             state.GrowFpuStack(instrCur.Address);
             emitter.Assign(FpuRegister(0),
-                PseudoProc("__fbld", PrimitiveType.Real64, SrcOp(instrCur.op1)));
+                host.PseudoProcedure("__fbld", PrimitiveType.Real64, SrcOp(instrCur.op1)));
             WriteFpuStack(0);
         }
 
@@ -120,7 +120,7 @@ namespace Reko.Arch.X86
 
         private void RewriteFclex()
         {
-            emitter.SideEffect(PseudoProc("__fclex", VoidType.Instance));
+            emitter.SideEffect(host.PseudoProcedure("__fclex", VoidType.Instance));
         }
 
         private void RewriteFcom(int pops)
@@ -145,14 +145,14 @@ namespace Reko.Arch.X86
         private void RewriteFfree()
         {
             emitter.SideEffect(
-                PseudoProc("__ffree", VoidType.Instance, SrcOp(instrCur.op1)));
+                host.PseudoProcedure("__ffree", VoidType.Instance, SrcOp(instrCur.op1)));
         }
 
         private void RewriteFUnary(string name)
         {
             emitter.Assign(
                 orw.FpuRegister(0, state),
-                PseudoProc(name, PrimitiveType.Real64, orw.FpuRegister(0, state)));
+                host.PseudoProcedure(name, PrimitiveType.Real64, orw.FpuRegister(0, state)));
             WriteFpuStack(0);
         }
 
@@ -222,7 +222,7 @@ namespace Reko.Arch.X86
 
         private void RewriteFldcw()
         {
-            emitter.SideEffect(PseudoProc(
+            emitter.SideEffect(host.PseudoProcedure(
                 "__fldcw",
                 VoidType.Instance,
                 SrcOp(instrCur.op1)));
@@ -230,7 +230,7 @@ namespace Reko.Arch.X86
 
         private void RewriteFldenv()
         {
-            emitter.SideEffect(PseudoProc(
+            emitter.SideEffect(host.PseudoProcedure(
                 "__fldenv",
                 VoidType.Instance,
                 SrcOp(instrCur.op1)));
@@ -238,7 +238,7 @@ namespace Reko.Arch.X86
 
         private void RewriteFstenv()
         {
-            emitter.SideEffect(PseudoProc(
+            emitter.SideEffect(host.PseudoProcedure(
                 "__fstenv",
                 VoidType.Instance,
                 SrcOp(instrCur.op1)));
@@ -249,7 +249,7 @@ namespace Reko.Arch.X86
             Expression op1 = FpuRegister(1);
             Expression op2 = FpuRegister(0);
             state.ShrinkFpuStack(1);
-            emitter.Assign(FpuRegister(0), PseudoProc("atan", PrimitiveType.Real64, op1, op2));
+            emitter.Assign(FpuRegister(0), host.PseudoProcedure("atan", PrimitiveType.Real64, op1, op2));
             WriteFpuStack(0);
         }
 
@@ -269,8 +269,8 @@ namespace Reko.Arch.X86
             emitter.Assign(itmp, FpuRegister(0));
 
             state.GrowFpuStack(instrCur.Address);
-            emitter.Assign(FpuRegister(1), PseudoProc("cos", PrimitiveType.Real64, itmp));
-            emitter.Assign(FpuRegister(0), PseudoProc("sin", PrimitiveType.Real64, itmp));
+            emitter.Assign(FpuRegister(1), host.PseudoProcedure("cos", PrimitiveType.Real64, itmp));
+            emitter.Assign(FpuRegister(0), host.PseudoProcedure("sin", PrimitiveType.Real64, itmp));
             WriteFpuStack(0);
             WriteFpuStack(1);
         }
@@ -293,14 +293,14 @@ namespace Reko.Arch.X86
         private void RewriterFstcw()
         {
 			emitter.Assign(
-                SrcOp(instrCur.op1), 
-                PseudoProc("__fstcw", PrimitiveType.UInt16));
+                SrcOp(instrCur.op1),
+                host.PseudoProcedure("__fstcw", PrimitiveType.UInt16));
         }
 
         private void RewriteFrstor()
         {
             emitter.SideEffect(
-                PseudoProc(
+                host.PseudoProcedure(
                     "__frstor",
                     VoidType.Instance,
                     SrcOp(instrCur.op1)));
@@ -309,7 +309,7 @@ namespace Reko.Arch.X86
         private void RewriteFsave()
         {
             emitter.SideEffect(
-                PseudoProc(
+                host.PseudoProcedure(
                     "__fsave", 
                     VoidType.Instance, 
                     SrcOp(instrCur.op1)));
@@ -319,7 +319,7 @@ namespace Reko.Arch.X86
         {
             emitter.Assign(
                 FpuRegister(0),
-                PseudoProc("scalbn", PrimitiveType.Real64, FpuRegister(0), FpuRegister(1)));
+                host.PseudoProcedure("scalbn", PrimitiveType.Real64, FpuRegister(0), FpuRegister(1)));
         }
 
         private void RewriteFstsw()
@@ -417,14 +417,14 @@ namespace Reko.Arch.X86
             //$REVIEW: Candidate for idiom search.
             Identifier op1 = FpuRegister(0);
             Identifier op2 = FpuRegister(1);
-            emitter.Assign(op1, emitter.ISub(op2, PseudoProc("lg2", PrimitiveType.Real64, op1)));
+            emitter.Assign(op1, emitter.ISub(op2, host.PseudoProcedure("lg2", PrimitiveType.Real64, op1)));
             state.ShrinkFpuStack(1);
             WriteFpuStack(0);
         }
 
         private void RewriteWait()
         {
-            emitter.SideEffect(PseudoProc("__wait", VoidType.Instance));
+            emitter.SideEffect(host.PseudoProcedure("__wait", VoidType.Instance));
         }
 
         private Identifier FpuRegister(int reg)

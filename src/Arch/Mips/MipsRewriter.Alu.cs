@@ -94,14 +94,14 @@ namespace Reko.Arch.Mips
         {
             var opDst = RewriteOperand(instr.op1);
             var opSrc = RewriteOperand(instr.op2);
-            emitter.Assign(opDst, PseudoProc("__lwl", PrimitiveType.Word32, opSrc));
+            emitter.Assign(opDst, host.PseudoProcedure("__lwl", PrimitiveType.Word32, opSrc));
         }
 
         private void RewriteLwr(MipsInstruction instr)
         {
             var opDst = RewriteOperand(instr.op1);
             var opSrc = RewriteOperand(instr.op2);
-            emitter.Assign(opDst, PseudoProc("__lwr", PrimitiveType.Word32, opSrc));
+            emitter.Assign(opDst, host.PseudoProcedure("__lwr", PrimitiveType.Word32, opSrc));
         }
 
         private void RewriteMf(MipsInstruction instr, RegisterStorage reg)
@@ -199,14 +199,14 @@ namespace Reko.Arch.Mips
         {
             var opDst = RewriteOperand(instr.op2);
             var opSrc = RewriteOperand(instr.op1);
-            emitter.Assign(opDst, PseudoProc("__swl", PrimitiveType.Word32, opSrc));
+            emitter.Assign(opDst, host.PseudoProcedure("__swl", PrimitiveType.Word32, opSrc));
         }
 
         private void RewriteSwr(MipsInstruction instr)
         {
             var opDst = RewriteOperand(instr.op2);
             var opSrc = RewriteOperand(instr.op1);
-            emitter.Assign(opDst, PseudoProc("__swr", PrimitiveType.Word32, opSrc));
+            emitter.Assign(opDst, host.PseudoProcedure("__swr", PrimitiveType.Word32, opSrc));
         }
 
         private void RewriteSxx(MipsInstruction instr, Operator op)
