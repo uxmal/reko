@@ -386,5 +386,18 @@ namespace Reko.UnitTests.Arch.Pdp11
               "4|L--|NZ = cond(v3)",
               "5|L--|V = false");
         }
+
+        [Test]
+        public void Pdp11Rw_clrb_reg()
+        {
+            BuildTest(0x8A03);
+            AssertCode(
+              "0|L--|0200(2): 5 instructions",
+              "1|L--|r3 = DPB(r3, 0x00, 0)",
+              "2|L--|N = false",
+              "3|L--|V = false",
+              "4|L--|C = false",
+              "5|L--|Z = true");
+        }
     }
 }

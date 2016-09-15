@@ -317,7 +317,12 @@ namespace Reko.Arch.Pdp11
             if (regOp != null)
             {
                 var dst = frame.EnsureRegister(regOp.Register);
-                emitter.Assign(dst, gen(src));
+                src = gen(src);
+                if (src.DataType.Size < dst.DataType.Size)
+                {
+                    src = emitter.Dpb(dst, src, 0);
+                }
+                emitter.Assign(dst, src);
                 return dst;
             }
             var memOp = op as MemoryOperand;
