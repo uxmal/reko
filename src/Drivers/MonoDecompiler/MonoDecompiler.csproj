@@ -177,6 +177,7 @@
     <Architectures Include="$(ProjectDir)..\..\Arch\M68k\$(OutDir)Reko.Arch.M68k.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Mips\$(OutDir)Reko.Arch.Mips.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Mos6502\$(OutDir)Reko.Arch.Mos6502.*" />
+    <Architectures Include="$(ProjectDir)..\..\Arch\Pdp11\$(OutDir)Reko.Arch.Pdp11.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\PowerPC\$(OutDir)Reko.Arch.PowerPC.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Sparc\$(OutDir)Reko.Arch.Sparc.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Vax\$(OutDir)Reko.Arch.Vax.*" />
