@@ -79,7 +79,6 @@ namespace Reko.UnitTests.Environments.SysV
             mr.ReplayAll();
 
             var sig = new FunctionType(
-                null,
                 new Identifier("rbx", PrimitiveType.Word32, arch.GetRegister("rbx")),
                 new Identifier[] {
                     new Identifier("rbx", PrimitiveType.Word32, arch.GetRegister("rbx"))
@@ -112,7 +111,6 @@ namespace Reko.UnitTests.Environments.SysV
             Procedure proc = new Procedure("foo", arch.CreateFrame())
             {
                 Signature = new FunctionType(
-                    null,
                     new Identifier("rax", PrimitiveType.Word32, arch.GetRegister("rax")),
                     new Identifier[] {
                         new Identifier("arg00", PrimitiveType.Word32, arch.GetRegister("rdi")),

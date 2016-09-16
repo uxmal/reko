@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Scanning
             {
                 argIds.Add(proc.Frame.EnsureRegister(arg));
             }
-            return new FunctionType(null, retReg, argIds.ToArray());
+            return new FunctionType(retReg, argIds.ToArray());
         }
 
         private bool StashArg(ref ProcessorState state, ProcessorState value)
@@ -404,7 +404,6 @@ testProc_exit:
         {
             var proc2 = new Procedure("fn2000", new Frame(PrimitiveType.Pointer32));
             var sig = new FunctionType(
-                null,
                 proc2.Frame.EnsureRegister(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32)),
                 new[] {
                     proc2.Frame.EnsureRegister(new RegisterStorage("r2", 2, 0, PrimitiveType.Word32)),
@@ -459,7 +458,7 @@ testProc_exit:
             var reg1 = proc.Frame.EnsureRegister(new RegisterStorage("r1", 1, 0, PrimitiveType.Pointer32));
             var sysSvc = new SystemService {
                 Name = "SysSvc",
-                Signature = new FunctionType(null, null, new[] { reg1 }),
+                Signature = FunctionType.Action(new[] { reg1 }),
                 Characteristics = new ProcedureCharacteristics()
             };
             platform.Expect(p => p.FindService(null, arch.CreateProcessorState())).IgnoreArguments().Return(sysSvc);
@@ -711,7 +710,6 @@ testProc_exit:
             {
                 Name = "testFn",
                 Signature = new FunctionType(
-                    null,
                     new Identifier("", PrimitiveType.Int32, r0.Storage),
                     new[] {
                         new Identifier("str", new Pointer(PrimitiveType.Char, 4), r0.Storage),

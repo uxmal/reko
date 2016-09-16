@@ -62,7 +62,7 @@ namespace Reko.UnitTests.Analysis
             Identifier returnValue,
             params Identifier[] parameters)
         {
-            return Ptr32(new FunctionType("", returnValue, parameters));
+            return Ptr32(new FunctionType(returnValue, parameters));
         }
 
         private Identifier VoidId()

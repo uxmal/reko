@@ -110,7 +110,7 @@ namespace Reko.Arch.X86
                 fpuDelta -= FpuStackOffset;
             }
             FpuStackOffset = fpuDelta;
-            var sig = new FunctionType(null, ret, args.ToArray());
+            var sig = new FunctionType(ret, args.ToArray());
             sig.IsInstanceMetod = ss.IsInstanceMethod;
             ApplyConvention(ss, sig);
             return sig;

@@ -221,7 +221,6 @@ namespace Reko.UnitTests.Analysis
 		{
 			Procedure callee = new Procedure("callee", null);
 			callee.Signature = new FunctionType(
-                null,
 				f.EnsureRegister(Registers.eax),
 				new Identifier[] {
 					f.EnsureRegister(Registers.ebx),
@@ -243,7 +242,6 @@ namespace Reko.UnitTests.Analysis
 		{
 			Procedure callee = new Procedure("callee", null);
 			callee.Signature = new FunctionType(
-                null,
 				f.EnsureRegister(Registers.eax),
 				new Identifier[] {
                     new Identifier("arg04", PrimitiveType.Word16, new StackArgumentStorage(4, PrimitiveType.Word16)),
@@ -294,7 +292,6 @@ namespace Reko.UnitTests.Analysis
 			Procedure callee = new Procedure("callee", null);
 			Identifier edx = new Identifier("edx", PrimitiveType.Word32, Registers.edx);
 			callee.Signature = new FunctionType(
-                null,
 				new Identifier("eax", PrimitiveType.Word32, Registers.eax),
 				new Identifier[] { new Identifier("ecx",    PrimitiveType.Word32, Registers.ecx),
 								   new Identifier("arg04",  PrimitiveType.Word16, new StackArgumentStorage(4, PrimitiveType.Word16)),

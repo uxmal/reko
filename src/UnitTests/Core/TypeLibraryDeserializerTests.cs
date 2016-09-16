@@ -289,7 +289,6 @@ namespace Reko.UnitTests.Core
             Given_ArchitectureStub();
             var r3 = new RegisterStorage("r3", 3, 0, PrimitiveType.Word32);
             Given_ProcedureSignature(new FunctionType(
-                null,
                 new Identifier("", PrimitiveType.Int32, r3),
                 new[] {
                     new Identifier("", PrimitiveType.Real32, r3)}

@@ -189,9 +189,7 @@ namespace Reko.UnitTests.Analysis
             var usb = new UserSignatureBuilder(program);
             usb.ApplySignatureToProcedure(
                 Address.Create(PrimitiveType.Pointer32, 0x1000),
-                new FunctionType(
-                    null,
-                    null,
+                FunctionType.Action(
                     new Identifier[] {
                         new Identifier("r2", PrimitiveType.Char, r1.Storage),  // perverse but legal.
                         new Identifier("r1", PrimitiveType.Real32, r2.Storage)

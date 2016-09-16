@@ -209,9 +209,7 @@ namespace Reko.UnitTests.Typing
 
         private ExternalProcedure Given_Procedure(string name, params DataType [] argTypes)
         {
-            var sig = new FunctionType(
-                null,
-                null,
+            var sig = FunctionType.Action(
                 argTypes.Select((argType, i) => new Identifier(
                         "arg" + i, 
                         argType,
@@ -595,7 +593,6 @@ namespace Reko.UnitTests.Typing
                 var rand = new ExternalProcedure(
                     "rand",
                     new FunctionType(
-                        null,
                         new Identifier("ax", PrimitiveType.Int16, ax.Storage),
                         new Identifier[0]));
                 m.Declare(ax, m.Fn(rand));

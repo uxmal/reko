@@ -48,7 +48,7 @@ namespace Reko.Environments.Windows
                     RegisterValues = new RegValue[0],
                 },
                 Name = "int3",
-                Signature = new FunctionType(null, null, new Identifier[0]),
+                Signature = FunctionType.Action(new Identifier[0]),
                 Characteristics = new ProcedureCharacteristics(),
             };
             int29svc = new SystemService

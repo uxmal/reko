@@ -146,7 +146,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             form.Show();
             Procedure p = new Procedure("foo_proc", program.Architecture.CreateFrame());
             p.Signature = new FunctionType(
-                null,
                 new Identifier("eax", PrimitiveType.Word32, Registers.eax),
                 new Identifier[] {
                     new Identifier("arg04", PrimitiveType.Word32, new StackArgumentStorage(4, PrimitiveType.Word32))

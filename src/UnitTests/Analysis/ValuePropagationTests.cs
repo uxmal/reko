@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Analysis
 
         private ExternalProcedure CreateExternalProcedure(string name, Identifier ret, params Identifier[] parameters)
         {
-            var ep = new ExternalProcedure(name, new FunctionType(null, ret, parameters));
+            var ep = new ExternalProcedure(name, new FunctionType(ret, parameters));
             ep.Signature.ReturnAddressOnStack = 4;
             return ep;
         }

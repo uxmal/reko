@@ -199,7 +199,6 @@ namespace Reko.UnitTests.Scanning
                     {
                         "GetDC",
                         new FunctionType(
-                            null,
                             new Identifier("", new Pointer(VoidType.Instance, 4), new RegisterStorage("eax", 0, 0, PrimitiveType.Word32)),
                             new [] {
                                 new Identifier("arg",
@@ -334,7 +333,6 @@ namespace Reko.UnitTests.Scanning
             {
                 scanner.Stub(x => x.GetCallSignatureAtAddress(Arg<Address>.Is.Anything)).Return(
                     new FunctionType(
-                        null,
                         Reg(Registers.ax),
                         new Identifier[] { Reg(Registers.cx) }));
 

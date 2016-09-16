@@ -126,9 +126,7 @@ namespace Reko.UnitTests.Core
 			stack += loc02.DataType.Size;
 			Identifier loc04 = f.EnsureStackLocal(-stack, PrimitiveType.Word16, "wLoc04");
 
-			FunctionType sig = new FunctionType(
-                null,
-				null,
+			FunctionType sig = FunctionType.Action(
                 new Identifier[] {
 					new Identifier("arg0", PrimitiveType.Word16, new StackArgumentStorage(4, PrimitiveType.Word16)),
 					new Identifier("arg1", PrimitiveType.Word16, new StackArgumentStorage(6, PrimitiveType.Word16)) });
@@ -155,7 +153,6 @@ namespace Reko.UnitTests.Core
 			Identifier arg1 = f.EnsureStackLocal(-stack, PrimitiveType.Word16);
 
 			FunctionType sig = new FunctionType(
-                null,
                 ax,
                 new Identifier[] {
                     cx,
