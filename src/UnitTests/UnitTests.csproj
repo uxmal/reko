@@ -65,6 +65,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Office, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Rhino.Mocks">
       <HintPath>..\..\external\Rhino.Mocks-3.6\Rhino.Mocks.dll</HintPath>
     </Reference>
@@ -81,6 +84,14 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Analysis\PyArgFormatParserTests.cs" />
+    <Compile Include="Core\Analysis\ScanfFormatParserTests.cs" />
+    <Compile Include="Environments\SysV\GccMangledNameParserTests.cs" />
+    <Compile Include="Environments\Windows\MsPrintfFormatParserTests.cs" />
+    <Compile Include="Environments\Windows\X86_64ProcedureSerializerTests.cs" />
+    <Compile Include="Mocks\FakeTypeDeserializer.cs" />
+    <Compile Include="Core\Analysis\PyBuildValueFormatParserTests.cs" />
+    <Compile Include="OsPath.cs" />
     <Compile Include="Analysis\AliasStateTests.cs" />
     <Compile Include="Analysis\AliasTests.cs" />
     <Compile Include="Analysis\AnalysisTestBase.cs" />
@@ -96,6 +107,7 @@
     <Compile Include="Analysis\BlockDominatorGraphTests.cs" />
     <Compile Include="Analysis\DominatorGraphTests.cs" />
     <Compile Include="Analysis\ExpressionPropagatorTests.cs" />
+    <Compile Include="Analysis\IndirectCallRewriterTests.cs" />
     <Compile Include="Analysis\RegisterPreservationTests.cs" />
     <Compile Include="Analysis\UserSignatureBuilderTests.cs" />
     <Compile Include="Arch\Intel\X86InstructionComparer.Tests.cs" />
@@ -118,6 +130,7 @@
     <Compile Include="Core\Lib\UbjsonWriterTests.cs" />
     <Compile Include="Core\Lib\WildPatternMatcher.Tests.cs" />
     <Compile Include="Core\Output\CTypeReferenceFormatterTests.cs" />
+    <Compile Include="Core\Output\TypeReferenceFormatterTests.cs" />
     <Compile Include="Core\SegmentMapTests.cs" />
     <Compile Include="Core\Serialization\ArgumentDeserializerTests.cs" />
     <Compile Include="Core\Serialization\ArgumentSerializerTests.cs" />
@@ -289,7 +302,7 @@
     <Compile Include="Arch\Intel\IntelAssemblerTests.cs" />
     <Compile Include="Arch\Intel\IntelInstructionTrieTests.cs" />
     <Compile Include="Arch\Intel\IntelRegisterTests.cs" />
-    <Compile Include="Arch\Intel\MsDosPlatformTests.cs" />
+    <Compile Include="Environments\Msdos\MsdosPlatformTests.cs" />
     <Compile Include="Arch\Intel\OperandRewriterRealModeTests.cs" />
     <Compile Include="Arch\Intel\OperandRewriterTests.cs" />
     <Compile Include="Arch\Intel\Rewrite32.cs" />
@@ -489,6 +502,7 @@
     <Compile Include="Scanning\ScannerTests.cs" />
     <Compile Include="Scanning\ShingledScannerTests.cs" />
     <Compile Include="Scanning\StringFinderTests.cs" />
+    <Compile Include="Scanning\VarargsFormatScannerTests.cs" />
     <Compile Include="Scanning\VectorBuilderTests.cs" />
     <Compile Include="Structure\AbsynCodeGeneratorTests.cs" />
     <Compile Include="Structure\AbsynStatementEmitterTests.cs" />
@@ -547,6 +561,7 @@
     <Compile Include="Typing\UnionIntRealMock.cs" />
     <Compile Include="Typing\UnionPointersStructuresMatcherTests.cs" />
     <Compile Include="Fragments\VectorFragment.cs" />
+    <Compile Include="Core\Analysis\PrintfFormatParserTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
@@ -669,6 +684,14 @@
       <Project>{0A1B3397-06E3-4C23-A667-FCCC19DC7D12}</Project>
       <Name>MzExe</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Libraries\Libc\Libc.csproj">
+      <Project>{fdaf4ca9-085c-473e-bcb5-0d2a4354a949}</Project>
+      <Name>Libc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\Python\Python.csproj">
+      <Project>{c278ca2f-7d7c-47c3-b560-7bc63e1fad96}</Project>
+      <Name>Python</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arch\Intel\X86StateTests.cs" />
@@ -689,7 +712,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Core\Machine\" />
-    <Folder Include="Environments\Msdos\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

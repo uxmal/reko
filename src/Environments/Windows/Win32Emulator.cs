@@ -28,6 +28,7 @@ using System.Linq;
 using System.Text;
 using TWord = System.UInt32;
 using Reko.Core.Expressions;
+using Reko.Core.Types;
 
 namespace Reko.Environments.Windows
 {
@@ -241,6 +242,11 @@ namespace Reko.Environments.Windows
         }
 
         public ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Identifier ResolveGlobal(string moduleName, string name, IPlatform platform)
         {
             throw new NotImplementedException();
         }

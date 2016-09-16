@@ -40,49 +40,57 @@ namespace Reko.Core
 	{
 		public TypeLibrary() : this(
             new Dictionary<string, DataType>(),
-            new Dictionary<string, ProcedureSignature>())
+            new Dictionary<string, FunctionType>(),
+            new Dictionary<string, DataType>())
         {
         }
 
         public TypeLibrary(
             IDictionary<string,DataType> types,
-            IDictionary<string, ProcedureSignature> procedures)
+            IDictionary<string, FunctionType> procedures,
+            IDictionary<string, DataType> globals)
         {
             this.Types = types;
             this.Signatures = procedures;
+            this.Globals = globals;
             this.Modules = new Dictionary<string, ModuleDescriptor>();
         }
 
         public IDictionary<string, DataType> Types { get; private set; }
-        public IDictionary<string, ProcedureSignature> Signatures { get; private set; }
+        public IDictionary<string, FunctionType> Signatures { get; private set; }
+        public IDictionary<string, DataType> Globals { get; private set; }
         public IDictionary<string, ModuleDescriptor> Modules { get; private set; }
 
         public TypeLibrary Clone()
         {
             var clone = new TypeLibrary();
             clone.Types = new Dictionary<string, DataType>(this.Types);
-            clone.Signatures = new Dictionary<string, ProcedureSignature>(this.Signatures);
+            clone.Signatures = new Dictionary<string, FunctionType>(this.Signatures);
+            clone.Globals = new Dictionary<string, DataType>(this.Globals);
             clone.Modules = this.Modules.ToDictionary(k => k.Key, v => v.Value.Clone(), StringComparer.InvariantCultureIgnoreCase);
             return clone;
         }
 
 		public void Write(TextWriter writer)
 		{
-            var sl = new SortedList<string, ProcedureSignature>(
-                Signatures,
-                StringComparer.InvariantCulture);
             TextFormatter f = new TextFormatter(writer);
-			foreach (KeyValuePair<string,ProcedureSignature> de in sl)
+			foreach (var de in Signatures.OrderBy(d => d.Key, StringComparer.InvariantCulture))
 			{
-				string name = (string) de.Key;
-				de.Value.Emit(de.Key, ProcedureSignature.EmitFlags.ArgumentKind, f);
+				string name = de.Key;
+				de.Value.Emit(de.Key, FunctionType.EmitFlags.ArgumentKind, f);
 				writer.WriteLine();
 			}
+
+            var tf = new TypeReferenceFormatter(f);
+            foreach (var de in Globals.OrderBy(d => d.Key, StringComparer.InvariantCulture))
+            {
+                tf.WriteDeclaration(de.Value, de.Key);
+            }
 		}
 
-		public ProcedureSignature Lookup(string procedureName)
+		public FunctionType Lookup(string procedureName)
 		{
-			ProcedureSignature sig;
+			FunctionType sig;
             if (!Signatures.TryGetValue(procedureName, out sig))
                 return null;
 			return sig;

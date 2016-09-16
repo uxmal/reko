@@ -61,6 +61,7 @@ namespace Reko.Scanning
         private ExpressionSimplifier eval;
         private int extraLabels;
         private Identifier stackReg;
+        private VarargsFormatScanner vaScanner;
 
         public BlockWorkitem(
             IScanner scanner,
@@ -93,6 +94,7 @@ namespace Reko.Scanning
 
             frame = blockCur.Procedure.Frame;
             this.stackReg = frame.EnsureRegister(arch.StackRegister);
+            this.vaScanner = new VarargsFormatScanner(program, frame, state, scanner.Services);
             rtlStream = scanner.GetTrace(addrStart, state, frame)
                 .GetEnumerator();
 
@@ -115,6 +117,7 @@ namespace Reko.Scanning
         private bool ProcessRtlCluster(RtlInstructionCluster ric)
         {
             state.SetInstructionPointer(ric.Address);
+            SetAssumedRegisterValues(ric.Address);
             foreach (var rtlInstr in ric.Instructions)
             {
                 ri = rtlInstr;
@@ -124,6 +127,25 @@ namespace Reko.Scanning
                 }
             }
             return true;
+        }
+
+        /// <summary>
+        /// If a user has requested register values to be hard wired at a
+        /// particular address, do so by emitting assignments that set
+        /// the relevant registers to the right values.
+        /// </summary>
+        /// <param name="addr"></param>
+        public void SetAssumedRegisterValues(Address addr)
+        {
+            List<Core.Serialization.RegisterValue_v2> regValues;
+            if (!program.User.RegisterValues.TryGetValue(addr, out regValues))
+                return;
+            foreach (var rv in regValues)
+            {
+                var reg = frame.EnsureRegister(program.Architecture.GetRegister(rv.Register));
+                var val = Constant.Create(reg.DataType, Convert.ToUInt64(rv.Value, 16));
+                new RtlAssignment(reg, val).Accept(this);
+            }
         }
 
         /// <summary>
@@ -146,13 +168,13 @@ namespace Reko.Scanning
             return block.Statements.Count > 0;
         }
 
-        private Instruction BuildApplication(Expression fn, ProcedureSignature sig, CallSite site)
+        private Instruction BuildApplication(Expression fn, FunctionType sig, CallSite site)
         {
             var ab = CreateApplicationBuilder(fn, sig, site);
             return ab.CreateInstruction();
         }
 
-        private ApplicationBuilder CreateApplicationBuilder(Expression callee, ProcedureSignature sig, CallSite site)
+        private ApplicationBuilder CreateApplicationBuilder(Expression callee, FunctionType sig, CallSite site)
         {
             var ab = new ApplicationBuilder(
                 arch,
@@ -219,7 +241,8 @@ namespace Reko.Scanning
             // We don't know the 'then' block yet, as the following statements may chop up the block
             // we're presently in. Back-patch in when the block target is obtained.
             var branch = new Branch(b.Condition, new Block(blockCur.Procedure, "TMP!"));
-            
+            Emit(branch, blockCur);
+
             // The following statements may chop up the blockCur, so hang on to the essentials.
             var proc = blockCur.Procedure;
             RtlInstructionCluster ricDelayed = null;
@@ -234,9 +257,9 @@ namespace Reko.Scanning
             var blockThen = BlockFromAddress(ric.Address, b.Target, proc, state.Clone());
 
             var blockElse = FallthroughBlock(ric.Address, proc, fallthruAddress);
-            var branchingBlock = scanner.FindContainingBlock(ric.Address);
-
-            Emit(branch, branchingBlock);
+            var branchingBlock = blockCur.IsSynthesized
+                ? blockCur
+                : scanner.FindContainingBlock(ric.Address);
 
             if ((b.Class & RtlClass.Delay) != 0 &&
                 ricDelayed.Instructions.Count > 0)
@@ -270,13 +293,16 @@ namespace Reko.Scanning
             else
             {
                 branch.Target = blockThen;      // The back-patch referred to above.
-                proc.ControlGraph.AddEdge(branchingBlock, blockElse);
-                proc.ControlGraph.AddEdge(branchingBlock, blockThen);
+                EnsureEdge(proc, branchingBlock, blockElse);
+                if (blockElse != blockThen)
+                    EnsureEdge(proc, branchingBlock, blockThen);
+                else
+                    proc.ControlGraph.AddEdge(branchingBlock, blockThen);
             }
 
             // Now, switch to the fallthru block and keep rewriting.
             blockCur = blockElse;
-            return !blockElse.IsSynthesized;
+            return true;
         }
 
         /// <summary>
@@ -354,7 +380,9 @@ namespace Reko.Scanning
             if (addrTarget != null)
             {
                 var blockTarget = BlockFromAddress(ric.Address, addrTarget, blockCur.Procedure, state);
-                var blockSource = scanner.FindContainingBlock(ric.Address);
+                var blockSource = blockCur.IsSynthesized
+                    ? blockCur
+                    : scanner.FindContainingBlock(ric.Address);
                 EnsureEdge(blockSource.Procedure, blockSource, blockTarget);
                 if (ric.Address == addrTarget)
                 {
@@ -400,7 +428,7 @@ namespace Reko.Scanning
                 ProcessRtlCluster(rtlStream.Current);
             }
             var site = OnBeforeCall(stackReg, call.ReturnAddressSize);
-            ProcedureSignature sig;
+            FunctionType sig;
             ProcedureCharacteristics chr = null;
             Address addr = call.Target as Address;
             if (addr != null)
@@ -408,11 +436,12 @@ namespace Reko.Scanning
                 if (!program.SegmentMap.IsValidAddress(addr))
                 {
                     scanner.Warn(ric.Address, "Target address {0} is invalid.", addr);
-                    sig = new ProcedureSignature();
+                    sig = new FunctionType();
                     EmitCall(
                         CreateProcedureConstant(
                             new ExternalProcedure(Procedure.GenerateName(addr), sig)),
                         sig,
+                        chr,
                         site);
                     return OnAfterCall(sig, chr);
                 }
@@ -425,7 +454,7 @@ namespace Reko.Scanning
                 var pcCallee = CreateProcedureConstant(callee);
                 sig = callee.Signature;
                 chr = callee.Characteristics;
-                EmitCall(pcCallee, sig, site);
+                EmitCall(pcCallee, sig, chr, site);
                 var pCallee = callee as Procedure;
                 if (pCallee != null)
                 {
@@ -439,13 +468,13 @@ namespace Reko.Scanning
             {
                 sig = procCallee.Procedure.Signature;
                 chr = procCallee.Procedure.Characteristics;
-                EmitCall(procCallee, sig, site);
+                EmitCall(procCallee, sig, chr, site);
                 return OnAfterCall(sig, chr);
             }
             sig = scanner.GetCallSignatureAtAddress(ric.Address);
             if (sig != null)
             {
-                EmitCall(call.Target, sig, site);
+                EmitCall(call.Target, sig, chr, site);
                 return OnAfterCall(sig, chr);  //$TODO: make characteristics available
             }
 
@@ -458,7 +487,7 @@ namespace Reko.Scanning
                     var e = CreateProcedureConstant(ppp);
                     sig = ppp.Signature;
                     chr = ppp.Characteristics;
-                    EmitCall(e, sig, site);
+                    EmitCall(e, sig, chr, site);
                     return OnAfterCall(sig, chr);
                 }
             }
@@ -468,7 +497,7 @@ namespace Reko.Scanning
             {
                 sig = imp.Signature;
                 chr = imp.Characteristics;
-                EmitCall(CreateProcedureConstant(imp), sig, site);
+                EmitCall(CreateProcedureConstant(imp), sig, chr, site);
                 //Emit(BuildApplication(CreateProcedureConstant(imp), sig, site));
                 return OnAfterCall(sig, chr);
             }
@@ -487,9 +516,17 @@ namespace Reko.Scanning
             return OnAfterCall(sig, chr);
         }
 
-        private void EmitCall(Expression callee, ProcedureSignature sig, CallSite site)
+        private void EmitCall(
+            Expression callee,
+            FunctionType sig,
+            ProcedureCharacteristics chr,
+            CallSite site)
         {
-            if (sig != null && sig.ParametersValid)
+            if (vaScanner.TryScan(ric.Address, sig, chr))
+            {
+                Emit(vaScanner.BuildInstruction(callee, site));
+            }
+            else if (sig != null && sig.ParametersValid)
             {
                 Emit(BuildApplication(callee, sig, site));
             }
@@ -498,7 +535,7 @@ namespace Reko.Scanning
                 Emit(new CallInstruction(callee, site));
             }
         }
-        
+
         private CallSite OnBeforeCall(Identifier stackReg, int sizeOfRetAddrOnStack)
         {
             if (sizeOfRetAddrOnStack > 0)
@@ -518,7 +555,7 @@ namespace Reko.Scanning
             return state.OnBeforeCall(stackReg, sizeOfRetAddrOnStack);
         }
 
-        private bool OnAfterCall(ProcedureSignature sigCallee, ProcedureCharacteristics characteristics)
+        private bool OnAfterCall(FunctionType sigCallee, ProcedureCharacteristics characteristics)
         {
             UserCallData userCall = null;
             if (program.User.Calls.TryGetUpperBound(ric.Address, out userCall))
@@ -658,9 +695,9 @@ namespace Reko.Scanning
             return false;
         }
 
-        private ProcedureSignature GuessProcedureSignature(CallInstruction call)
+        private FunctionType GuessProcedureSignature(CallInstruction call)
         {
-            return new ProcedureSignature(); //$TODO: attempt to detect parameters of procedure?
+            return new FunctionType(); //$TODO: attempt to detect parameters of procedure?
             // This would have to be arch-dependent + platform-dependent as some arch pass
             // on stack, while others pass in registers, or a combination or both
             // ("thiscall" in x86 µsoft world).
@@ -689,7 +726,7 @@ namespace Reko.Scanning
             return true;
         }
 
-        #endregion
+#endregion
 
         public bool ProcessIndirectControlTransfer(Address addrSwitch, RtlTransfer xfer)
         {
@@ -841,6 +878,7 @@ namespace Reko.Scanning
         private Block AddIntraStatementBlock(Procedure proc)
         {
             var fallthru = new Block(proc, ric.Address.GenerateName("l", string.Format("_{0}", ++extraLabels)));
+            fallthru.IsSynthesized = true;
             proc.ControlGraph.Blocks.Add(fallthru);
             return fallthru;
         }
@@ -936,31 +974,32 @@ namespace Reko.Scanning
         }
 
         //$TODO: merge the followng two procedures?
-        private void AffectProcessorState(ProcedureSignature sig)
+        private void AffectProcessorState(FunctionType sig)
         {
             if (sig == null)
                 return;
-            TrashVariable(sig.ReturnValue);
+            if (!sig.HasVoidReturn)
+                TrashVariable(sig.ReturnValue.Storage);
             for (int i = 0; i < sig.Parameters.Length; ++i)
             {
                 var os = sig.Parameters[i].Storage as OutArgumentStorage;
                 if (os != null)
                 {
-                    TrashVariable(os.OriginalIdentifier);
+                    TrashVariable(os.OriginalIdentifier.Storage);
                 }
             }
         }
 
-        public void TrashVariable(Identifier id)
+        public void TrashVariable(Storage id)
         {
             if (id == null)
                 return;
-            var reg = id.Storage as RegisterStorage;
+            var reg = id as RegisterStorage;
             if (reg != null)
             {
-                state.SetValue(id, Constant.Invalid);
+                state.SetValue(reg, Constant.Invalid);
             }
-            SequenceStorage seq = id.Storage as SequenceStorage;
+            SequenceStorage seq = id as SequenceStorage;
             if (seq != null)
             {
                 TrashVariable(seq.Head);

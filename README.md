@@ -36,26 +36,44 @@ xbuild Reko-decompiler.sln
 on machine with the Mono toolchain. All external dependencies 
 needed to build are included in the `external` directory.
 
+**Note**: some users have reported difficulties with certain 
+Linux distributions that don't support the 4.0 CLR framework 
+(see issue #251 for details). One workaround that has been
+identified is to specify the CLR target framework explicitly 
+at the xbuild command line:
+```
+xbuild /p:TargetFrameworkVersion="v4.5"  Reko-decompiler.sln
+```
+You may be able to work around the problem reported in issue #251
+by downloading the appropriate Mono CLR binaries from
+git://github.com/mono/reference-assemblies.git
+
+**Note**: please let us know if you still are not able to compile,
+so we can help you fix the issue.
+
+### Warnings and errors related to WiX
+You will receive warnings or errors when loading the solution in Visual Studio
+or MonoDevelop if you haven't installed the WiX toolset on your 
+development machine. You can safely ignore the warnings; the WiX
+toolset is only used when making MSI installer packages, and isn't even
+supported in MonoDevelop. You will not need to build an installer if 
+you're already able to compile the project: the build process copies
+all the necessary files into If you do want to build an MSI installer
+with the WiX toolchain, you can download it here:
+http://wixtoolset.org/releases/
+
+### How do I start Reko?
 The solution folder `Drivers` contains the executables that act
 as user interfaces: the directory `WindowsDecompiler` contains
 the GUI client for Windows users; `MonoDecompiler` contains the GUI 
 client for Mono users; `CmdLine` is a command line driver.
-(**Note:** please let us know if you are not able to compile, so we 
-can help you fix the issue).
-
-You will receive warnings or errors when loading the solution in Visual Studio
-or MonoDevelop if you haven't installed the WiX toolset on your 
-development machine. You can safely ignore the warnings; the WiX
-toolset only used when making MSI installer packages, and isn't even
-supported in MonoDevelop. You will not need to build an installer if 
-you're already able to compile the project: the build process copies
-all the necessary files into If you do want to build an MSI installer
-with the WiX toolchain, you can download it here: http://wixtoolset.org/releases/
 
 If you're interested in contributing code, see the 
 [road map](https://github.com/uxmal/reko/wiki/Roadmap) for areas to explore.
 The [Wiki](https://github.com/uxmal/reko/wiki) has more information 
 about the Reko project's internal workings.
+
+
 
 ## Recent versions
 

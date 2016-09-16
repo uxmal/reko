@@ -96,7 +96,7 @@ namespace Reko.CmdLine
 
         public void Warn(ICodeLocation location, string message, params object[] args)
         {
-            throw new NotImplementedException();
+            writer.WriteLine("{0}: warning: {1}", location, string.Format(message, args));
         }
 
         public void Inform(string message)

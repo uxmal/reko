@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,8 @@ namespace Reko.Arch.Z80
 {
     public class Z80ProcessorState : ProcessorState
     {
-        const int RegisterFileItems = 8;        // AF, BC, DE, HL, IX, IY, IR
+        const int RegisterFileItems = 32;
+
         private Z80ProcessorArchitecture arch;
         private ushort[] registerFile;
         private bool[] isValid;
@@ -87,7 +89,7 @@ namespace Reko.Arch.Z80
             return;
         }
 
-        public override void OnProcedureLeft(ProcedureSignature procedureSignature)
+        public override void OnProcedureLeft(FunctionType procedureSignature)
         {
         }
 
@@ -96,7 +98,7 @@ namespace Reko.Arch.Z80
             return new CallSite(returnAddressSize, 0);
         }
 
-        public override void OnAfterCall(ProcedureSignature sigCallee)
+        public override void OnAfterCall(FunctionType sigCallee)
         {
         }
     }

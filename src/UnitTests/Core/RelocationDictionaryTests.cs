@@ -63,12 +63,27 @@ namespace Reko.UnitTests.Core
 		}
 
 		[Test]
-		public void AddressNotInDictionary()
+		public void Reld_AddressNotInDictionary()
 		{
 			RelocationDictionary rd = new RelocationDictionary();
 			rd.AddPointerReference(0x020, 0x12312312);
 			Assert.IsNull(rd[0x3243232]);
 			Assert.IsFalse(rd.Contains(0x2341231));
 		}
+
+        [Test]
+        public void Reld_Overlaps()
+        {
+            var rd = new RelocationDictionary();
+            rd.AddPointerReference(0x2000, 0x12312312);
+            Assert.IsFalse(rd.Overlaps(Address.Ptr32(0x1FFC), 4));
+            Assert.IsFalse(rd.Overlaps(Address.Ptr32(0x2004), 1));
+            Assert.IsTrue(rd.Overlaps(Address.Ptr32(0x2003), 1));
+            Assert.IsTrue(rd.Overlaps(Address.Ptr32(0x1FFC), 5));
+            Assert.IsFalse(rd.Overlaps(Address.Ptr32(0x1FFF), 5));
+            Assert.IsFalse(rd.Overlaps(Address.Ptr32(0x2000), 4));
+            Assert.IsFalse(rd.Overlaps(Address.Ptr32(0x2000), 8));
+            Assert.IsFalse(rd.Overlaps(Address.Ptr32(0x1FFC), 8));
+        }
 	}
 }

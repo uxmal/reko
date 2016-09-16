@@ -57,6 +57,9 @@ namespace Reko.Evaluation
         private Mps_Constant_Rule mpsRule;
         private BinOpWithSelf_Rule binopWithSelf;
         private ConstDivisionImplementedByMultiplication constDiv;
+        private SelfDpbRule selfdpbRule;
+        private IdProcConstRule idProcConstRule;
+        private CastCastRule castCastRule;
 
         public ExpressionSimplifier(EvaluationContext ctx)
         {
@@ -82,6 +85,9 @@ namespace Reko.Evaluation
             this.sliceShift = new SliceShift(ctx);
             this.binopWithSelf = new BinOpWithSelf_Rule();
             this.constDiv = new ConstDivisionImplementedByMultiplication(ctx);
+            this.selfdpbRule = new SelfDpbRule(ctx);
+            this.idProcConstRule = new IdProcConstRule(ctx);
+            this.castCastRule = new CastCastRule(ctx);
         }
 
         public bool Changed { get { return changed; } set { changed = value; } }
@@ -326,53 +332,59 @@ namespace Reko.Evaluation
         public virtual Expression VisitCast(Cast cast)
         {
             var exp = cast.Expression.Accept(this);
-            if (exp == Constant.Invalid)
-                return exp;
-
-            var ptCast = cast.DataType as PrimitiveType;
-            Constant c = exp as Constant;
-            if (c != null)
+            if (exp != Constant.Invalid)
             {
-                PrimitiveType ptSrc = c.DataType as PrimitiveType;
-                if (ptSrc != null)
+                var ptCast = cast.DataType.ResolveAs<PrimitiveType>();
+                Constant c = exp as Constant;
+                if (c != null && ptCast != null)
                 {
-                    if ((ptSrc.Domain & Domain.Integer) != 0)
+                    PrimitiveType ptSrc = c.DataType as PrimitiveType;
+                    if (ptSrc != null)
                     {
-                        Changed = true;
-                        return Constant.Create(cast.DataType, c.ToUInt64());
-                    }
-                    if (ptSrc.Domain == Domain.Real && 
-                        ptCast.Domain == Domain.Real && 
-                        ptCast.Size < ptSrc.Size)
-                    {
-                        Changed = true;
-                        return ConstantReal.Create(ptCast, c.ToReal64());
+                        if ((ptSrc.Domain & Domain.Integer) != 0)
+                        {
+                            Changed = true;
+                            return Constant.Create(ptCast, c.ToUInt64());
+                        }
+                        if (ptSrc.Domain == Domain.Real &&
+                            ptCast.Domain == Domain.Real &&
+                            ptCast.Size < ptSrc.Size)
+                        {
+                            Changed = true;
+                            return ConstantReal.Create(ptCast, c.ToReal64());
+                        }
                     }
                 }
-            }
-            Identifier id;
-            DepositBits dpb;
-            if (exp.As(out id) && ctx.GetDefiningExpression(id).As(out dpb) && dpb.BitPosition == 0)
-            {
-                // If we are casting the result of a DPB, and the deposited part is >= 
-                // the size of the cast, then use deposited part directly.
-                int sizeDiff = dpb.InsertedBits.DataType.Size - cast.DataType.Size;
-                if (sizeDiff >= 0)
+                Identifier id;
+                DepositBits dpb;
+                if (exp.As(out id) && ctx.GetDefiningExpression(id).As(out dpb) && dpb.BitPosition == 0)
                 {
-                    ctx.RemoveIdentifierUse(id);
-                    ctx.UseExpression(dpb.InsertedBits);
-                    Changed = true;
-                    if (sizeDiff > 0)
+                    // If we are casting the result of a DPB, and the deposited part is >= 
+                    // the size of the cast, then use deposited part directly.
+                    int sizeDiff = dpb.InsertedBits.DataType.Size - cast.DataType.Size;
+                    if (sizeDiff >= 0)
                     {
-                        return new Cast(cast.DataType, dpb.InsertedBits);
-                    }
-                    else
-                    {
-                        return dpb.InsertedBits;
+                        ctx.RemoveIdentifierUse(id);
+                        ctx.UseExpression(dpb.InsertedBits);
+                        Changed = true;
+                        if (sizeDiff > 0)
+                        {
+                            return new Cast(cast.DataType, dpb.InsertedBits);
+                        }
+                        else
+                        {
+                            return dpb.InsertedBits;
+                        }
                     }
                 }
+                cast = new Cast(cast.DataType, exp);
             }
-            return new Cast(cast.DataType, exp);
+            if (castCastRule.Match(cast))
+            {
+                Changed = true;
+                return castCastRule.Transform();
+            }
+            return cast;
         }
 
         public virtual Expression VisitConditionOf(ConditionOf c)
@@ -405,6 +417,11 @@ namespace Reko.Evaluation
                 Changed = true;
                 return dpbdpbRule.Transform();
             }
+            if (selfdpbRule.Match(d))
+            {
+                Changed = true;
+                return selfdpbRule.Transform();
+            }
             return d;
         }
 
@@ -424,6 +441,11 @@ namespace Reko.Evaluation
             {
                 Changed = true;
                 return idConst.Transform();
+            }
+            if (idProcConstRule.Match(id))
+            {
+                Changed = true;
+                return idProcConstRule.Transform();
             }
             // jkl: Copy propagation causes real problems when used during trashed register analysis.
             // If needed in other passes, it should be an option for expression e
@@ -486,6 +508,16 @@ namespace Reko.Evaluation
                 head = seq.Head;
             if (tail == Constant.Invalid)
                 tail = seq.Tail;
+            if (c1 != null && c1.IsZero)
+            {
+                // leading zeros imply a conversion to unsigned.
+                return new Cast(
+                    PrimitiveType.Create(Domain.UnsignedInt, seq.DataType.Size),
+                    new Cast(
+                        PrimitiveType.Create(Domain.UnsignedInt, tail.DataType.Size),
+                        tail));
+
+            }
             return new MkSequence(seq.DataType, head, tail);
         }
 

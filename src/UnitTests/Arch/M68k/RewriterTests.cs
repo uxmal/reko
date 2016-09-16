@@ -791,7 +791,7 @@ namespace Reko.UnitTests.Arch.M68k
             Rewrite(0x4AB3, 0x0000);
             AssertCode(
                 "0|L--|00010000(4): 3 instructions",
-                "1|L--|ZN = cond(Mem0[a3 + d0:word32] - 0x00000000)",
+                "1|L--|ZN = cond(Mem0[a3 + (int32) ((int16) d0):word32] - 0x00000000)",
                 "2|L--|C = false",
                 "3|L--|V = false");
         }
@@ -1013,9 +1013,8 @@ namespace Reko.UnitTests.Arch.M68k
             Rewrite(0x2432, 0x04fc);    // move.l\t(-04,a2,d0*2),d2",
             AssertCode(
                 "0|L--|00010000(4): 2 instructions",
-                "1|L--|d2 = Mem0[a2 + -4 + d0 * 2:word32]"
+                "1|L--|d2 = Mem0[a2 + -4 + (int32) ((int16) d0) * 2:word32]"
                 );
-
         }
 
         [Test]
@@ -1091,6 +1090,51 @@ namespace Reko.UnitTests.Arch.M68k
                 "4|L--|a1 = a1 + 0x00000001",
                 "5|L--|v6 = v5 - v3",
                 "6|L--|CVZN = cond(v6)");
+        }
+
+        [Test]
+        public void M68krw_move_pc_indexed()
+        {
+            Rewrite(0x303B, 0x0006);    // move.w (06, pc, d0), d0
+            AssertCode(
+                "0|L--|00010000(4): 3 instructions",
+                "1|L--|v3 = Mem0[0x00010008 + (int32) ((int16) d0):word16]",
+                "2|L--|d0 = DPB(d0, v3, 0)",
+                "3|L--|CVZN = cond(v3)");
+        }
+
+        [Test]
+        public void M68krw_move_sr()
+        {
+            Rewrite(0x40E7);        // move sr,-(a7)
+            AssertCode(
+                "0|L--|00010000(2): 3 instructions",
+                "1|L--|a7 = a7 - 0x00000002",
+                "2|L--|v4 = sr",
+                "3|L--|Mem0[a7:word16] = v4");
+        }
+
+        [Test]
+        public void M68krw_move_sr_2()
+        {
+            Rewrite(0x46FC, 0x2700);        // move #$2700,sr
+            AssertCode(
+                "0|L--|00010000(4): 1 instructions",
+                "1|L--|sr = 0x2700");
+        }
+
+        [Test]
+        public void M68krw_divs()
+        {
+            Rewrite(0x81C1);                // divs
+            AssertCode(
+                "0|L--|00010000(2): 6 instructions",
+                "1|L--|v3 = (int16) (d0 % (word16) d1)",
+                "2|L--|v4 = (int16) (d0 / (word16) d1)",
+                "3|L--|d0 = DPB(d0, v3, 16)",
+                "4|L--|d0 = DPB(d0, v4, 0)",
+                "5|L--|VZN = cond(v4)",
+                "6|L--|C = false");
         }
     }
 }

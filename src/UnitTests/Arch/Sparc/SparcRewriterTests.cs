@@ -34,7 +34,7 @@ using System.Text;
 namespace Reko.UnitTests.Arch.Sparc
 {
     [TestFixture]
-    class SparcRewriterTests : RewriterTestBase
+    public class SparcRewriterTests : RewriterTestBase
     {
         private SparcArchitecture arch = new SparcArchitecture(PrimitiveType.Word32);
         private Address baseAddr = Address.Ptr32(0x00100000);
@@ -51,6 +51,11 @@ namespace Reko.UnitTests.Arch.Sparc
         public override Address LoadAddress
         {
             get { return baseAddr; }
+        }
+
+        protected override IRewriterHost CreateRewriterHost()
+        {
+            return host;
         }
 
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
@@ -187,8 +192,20 @@ namespace Reko.UnitTests.Arch.Sparc
         }
 
         [Test]
+        [Ignore]
         public void SparcRw_mulscc()
         {
+            host.Stub(h => h.PseudoProcedure(
+                Arg<string>.Is.Equal("__mulscc"),
+                Arg<DataType>.Is.Equal(VoidType.Instance),
+                Arg<Expression[]>.Is.NotNull))
+                .Return(new Application(
+                     new ProcedureConstant(
+                        PrimitiveType.Pointer32,
+                        new PseudoProcedure("__mulscc", PrimitiveType.Int32, 2)),
+                VoidType.Instance,
+                Constant.Word32(0x19)));
+
             host.Stub(h => h.EnsurePseudoProcedure("__mulscc", PrimitiveType.Int32, 2))
                 .Return(new PseudoProcedure("__mulscc", PrimitiveType.Int32, 2));
 
@@ -237,11 +254,37 @@ namespace Reko.UnitTests.Arch.Sparc
         }
 
         [Test]
-        [Ignore]
         public void SparcRw_save()
         {
-            BuildTest(0x8BE04009);
-            AssertCode("save\t%g1,%o1,%g5");
+            BuildTest(0x9DE3BEE8); // save\t%g1,%o1,%g5
+            AssertCode(
+                "0|L--|00100000(4): 10 instructions",
+                "1|L--|v3 = sp + 0xFFFFFEE8",
+                "2|L--|i0 = o0",
+                "3|L--|i1 = o1",
+                "4|L--|i2 = o2",
+                "5|L--|i3 = o3",
+                "6|L--|i4 = o4",
+                "7|L--|i5 = o5",
+                "8|L--|i6 = sp",
+                "9|L--|i7 = o7",
+                "10|L--|sp = v3");
+        }
+
+        [Test]
+        public void SparcRw_restore()
+        {
+            BuildTest(0x81E80000); // restore\t%g0,%g0,%g0
+            AssertCode(
+                "0|L--|00100000(4): 8 instructions",
+                "1|L--|o0 = i0",
+                "2|L--|o1 = i1",
+                "3|L--|o2 = i2",
+                "4|L--|o3 = i3",
+                "5|L--|o4 = i4",
+                "6|L--|o5 = i5",
+                "7|L--|sp = i6",
+                "8|L--|o7 = i7");
         }
 
         [Test]
@@ -302,7 +345,16 @@ namespace Reko.UnitTests.Arch.Sparc
         [Test]
         public void SparcRw_ta()
         {
-            host.Stub(h => h.EnsurePseudoProcedure("__syscall", VoidType.Instance, 1)).Return(new PseudoProcedure("__syscall", VoidType.Instance, 1));
+            host.Stub(h => h.PseudoProcedure(
+                Arg<string>.Is.Equal("__syscall"),
+                Arg<DataType>.Is.Equal(VoidType.Instance),
+                Arg<Expression[] >.Is.NotNull))
+                .Return(new Application(
+                    new ProcedureConstant(
+                        PrimitiveType.Pointer32,
+                        new PseudoProcedure("__syscall", VoidType.Instance, 1)),
+                    VoidType.Instance,
+                    Constant.Word32(0x19)));
             BuildTest(0x91D02999);  // ta\t%g1,0x00000019"
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
@@ -372,6 +424,78 @@ namespace Reko.UnitTests.Arch.Sparc
                 "0|L--|00100000(4): 2 instructions",
                 "1|L--|g0 = o0 - 0x00000003",
                 "2|L--|NZVC = cond(g0)");
+        }
+
+        [Test]
+        public void SparcRw_andn()
+        {
+            BuildTest(0x922A0009);   // andn %o0,%o1,%o1
+            AssertCode(
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|o1 = o0 & ~o1");
+        }
+
+        [Test]
+        public void SparcRw_sra()
+        {
+            BuildTest(0x913C3C03);// sra%l2,0x00000003,%o0;
+            AssertCode(
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|o0 = l0 >> 0x00000003");
+        }
+
+        [Test]
+        public void SparcRw_subx()
+        {
+            BuildTest(0x986060FF);  //  subx %g0,0xFFFFFFFF,%o4
+            AssertCode(
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|o4 = g1 - 0x000000FF - C");
+        }
+
+        [Test]
+        public void SparcRw_addx()
+        {
+            BuildTest(0x90402000);  // addx %g0,0x00000000,%o0
+            AssertCode(
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|o0 = 0x00000000 + 0x00000000 + C");
+        }
+
+        [Test]
+        public void SparcRw_xor()
+        {
+            BuildTest(0x901A1A0A);  //  xor%o0,%o2,%o0
+            AssertCode(
+                 "0|L--|00100000(4): 1 instructions",
+                 "1|L--|o0 = o0 ^ o2");
+        }
+
+        [Test]
+        public void SparcRw_bpos()
+        {
+            BuildTest(0x1CBFBFF1);  //  bpos 0001203C
+            AssertCode(
+                 "0|T--|00100000(4): 1 instructions",
+                 "1|TD-|if (Test(GE,N)) branch 000EFFC4");
+        }
+
+        [Test]
+        public void SparcRw_ldd()
+        {
+            BuildTest(0xd01be000); // ldd\t[%o7+0],%o0
+            AssertCode(
+               "0|L--|00100000(4): 1 instructions",
+               "1|L--|o0 = Mem0[o7:word64]");
+        }
+
+        [Test]
+        public void SparcRw_srl()
+        {
+            BuildTest(0x8532E010); // srl %o3,0x00000010,%g2
+            AssertCode(
+               "0|L--|00100000(4): 1 instructions",
+               "1|L--|g2 = o3 >>u 0x00000010");
         }
     }
 }

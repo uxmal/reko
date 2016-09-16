@@ -97,7 +97,7 @@ namespace Reko.Core
         public int ReturnAddressSize { get; set; }
         public bool ReturnAddressKnown { get; set; }
 
-        public Identifier CreateSequence(Identifier head, Identifier tail, DataType dt)
+        public Identifier CreateSequence(Storage head, Storage tail, DataType dt)
         {
             Identifier id = new Identifier(string.Format("{0}_{1}", head.Name, tail.Name), dt, new
                 SequenceStorage(head, tail));
@@ -119,11 +119,16 @@ namespace Reko.Core
                     seq.Head, 
                     seq.Tail, 
                     PrimitiveType.CreateWord(
-                        seq.Head.DataType.Size + seq.Tail.DataType.Size));
+                        (int)(seq.Head.BitSize + seq.Tail.BitSize)/DataType.BitsPerByte));
             var fp = stgForeign as FpuStackStorage;
             if (fp != null)
                 return EnsureFpuStackVariable(fp.FpuStackOffset, fp.DataType);
-            throw new NotImplementedException();
+            var st = stgForeign as StackStorage;
+            if (st != null)
+                return EnsureStackVariable(st.StackOffset, st.DataType);
+            throw new NotImplementedException(string.Format(
+                "Unsupported storage {0}.",
+                stgForeign != null ? stgForeign.ToString() : "(null)"));
         }
 
 		/// <summary>
@@ -143,7 +148,7 @@ namespace Reko.Core
 		public Identifier CreateTemporary(string name, DataType dt)
 		{
 			Identifier id = new Identifier(name, dt, 
-                new TemporaryStorage(name, identifiers.Count, (PrimitiveType) dt));
+                new TemporaryStorage(name, identifiers.Count, dt));
 			identifiers.Add(id);
 			return id;
 		}
@@ -215,7 +220,7 @@ namespace Reko.Core
 			return idOut;
 		}
 
-		public Identifier EnsureSequence(Identifier head, Identifier tail, DataType dt)
+		public Identifier EnsureSequence(Storage head, Storage tail, DataType dt)
 		{
 			Identifier idSeq = FindSequence(head, tail);
 			if (idSeq == null)
@@ -305,7 +310,7 @@ namespace Reko.Core
 			throw new ArgumentOutOfRangeException("var", "Variable must be an argument.");
 		}
 
-		public Identifier FindSequence(Identifier n1, Identifier n2)
+		public Identifier FindSequence(Storage n1, Storage n2)
 		{
 			foreach (Identifier id in identifiers)
 			{

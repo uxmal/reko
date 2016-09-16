@@ -23,6 +23,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 
@@ -39,13 +40,21 @@ namespace Reko.Typing
         private Procedure proc;
         private ExpressionTypeAscender asc;
         private ExpressionTypeDescender desc;
+        private DecompilerEventListener eventListener;
 
-        public TypeCollector(TypeFactory factory, TypeStore store, Program program)
+        public TypeCollector(
+            TypeFactory factory, 
+            TypeStore store,
+            Program program,
+            DecompilerEventListener eventListener)
         {
             this.factory = factory;
             this.store = store;
             this.program = program;
-            this.asc = new ExpressionTypeAscender(program.Platform, store, factory);
+            if (eventListener == null)
+                throw new ArgumentNullException("eventListener");
+            this.eventListener = eventListener;
+            this.asc = new ExpressionTypeAscender(program, store, factory);
             this.desc = new ExpressionTypeDescender(program, store, factory);
         }
 
@@ -61,7 +70,20 @@ namespace Reko.Typing
                 CollectProcedureSignature(p);
                 foreach (Statement stm in p.Statements)
                 {
-                    stm.Instruction.Accept(this);
+                    if (eventListener.IsCanceled())
+                        return;
+                    try
+                    {
+                        stm.Instruction.Accept(this);
+                    }
+                    catch (Exception ex)
+                    {
+                        eventListener.Error(
+                            eventListener.CreateStatementNavigator(program, stm),
+                            ex,
+                            "An error occurred while processing the statement {0}.",
+                            stm);
+                    }
                 }
             }
         }
@@ -82,8 +104,8 @@ namespace Reko.Typing
         /// </summary>
         private void CollectProcedureSignature(Procedure proc)
         {
-            ProcedureSignature sig = proc.Signature;
-            if (sig.ReturnValue != null)
+            FunctionType sig = proc.Signature;
+            if (!sig.HasVoidReturn)
             {
                 desc.MeetDataType(sig.ReturnValue, sig.ReturnValue.DataType);
             }
@@ -128,14 +150,22 @@ namespace Reko.Typing
 
         public void VisitDeclaration(Declaration decl)
         {
+            // Pattern after VisitAssignment
+            DataType dtExp = null;
+            if (decl.Expression != null)
+            {
+                dtExp = decl.Expression.Accept(asc);
+                desc.MeetDataType(decl.Expression, dtExp);
+                decl.Expression.Accept(desc, decl.Expression.TypeVariable);
+            }
             var dt = decl.Identifier.Accept(asc);
             desc.MeetDataType(decl.Identifier, dt);
             decl.Identifier.Accept(desc, decl.Identifier.TypeVariable);
-            if (decl.Expression != null)
+            if (dtExp != null)
             {
-                dt = decl.Expression.Accept(asc);
-                desc.MeetDataType(decl.Expression, dt);
-                decl.Expression.Accept(desc, decl.Expression.TypeVariable);
+                // OK to do this as this is the _declaration_
+                // of the variable. 
+                desc.MeetDataType(decl.Identifier, dtExp);
             }
         }
 

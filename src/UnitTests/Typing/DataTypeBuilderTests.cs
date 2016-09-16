@@ -62,7 +62,7 @@ namespace Reko.UnitTests.Typing
         {
             aen.Transform(prog);
             eqb.Build(prog);
-            TypeCollector trco = new TypeCollector(factory, store, prog);
+            TypeCollector trco = new TypeCollector(factory, store, prog, new FakeDecompilerEventListener());
             trco.CollectTypes();
             dtb.BuildEquivalenceClassDataTypes();
             Verify(prog, outputFile);
@@ -178,16 +178,6 @@ namespace Reko.UnitTests.Typing
             TraitCollector coll = new TraitCollector(factory, store, dtb, program);
             e.Accept(coll);
             Verify("Typing/DtbArrayAccess2.txt");
-        }
-
-        [Test]
-        [Ignore("Frame pointers require escape and alias analysis.")]
-        public void DtbFramePointer()
-        {
-            ProgramBuilder mock = new ProgramBuilder();
-            mock.Add(new FramePointerFragment(factory));
-            RunTest(mock, "Typing/DtbFramePointer.txt");
-            throw new NotImplementedException();
         }
 
         [Test]
@@ -459,7 +449,7 @@ namespace Reko.UnitTests.Typing
             {
                 Identifier arg1 = m.Local32("arg1");
                 Identifier ret = m.Register(1);
-                m.Procedure.Signature = new ProcedureSignature(ret, new Identifier[] { arg1 });
+                m.Procedure.Signature = new FunctionType(null, ret, new Identifier[] { arg1 });
                 m.Procedure.Signature.Parameters[0] = arg1;
                 m.Assign(ret, m.IAdd(arg1, 1));
                 m.Return(ret);
@@ -482,7 +472,7 @@ namespace Reko.UnitTests.Typing
             pp.Add("Fn2", m =>
             {
                 Identifier arg1 = m.Local32("arg1");
-                m.Procedure.Signature = new ProcedureSignature(null, new Identifier[] { arg1 });
+                m.Procedure.Signature = new FunctionType(null, null, new Identifier[] { arg1 });
                 m.Store(m.IAdd(arg1, 8), m.Int32(0x23));
                 m.Return();
             });
@@ -523,19 +513,6 @@ namespace Reko.UnitTests.Typing
             RunTest(prog.BuildProgram(), "Typing/DtbSequenceWithSegment.txt");
         }
 
-        [Test]
-        public void DtbArrayConstantPointers()
-        {
-            ProgramBuilder pp = new ProgramBuilder();
-            pp.Add("Fn", m =>
-            {
-                Identifier a = m.Local32("a");
-                Identifier i = m.Local32("i");
-                m.Assign(a, 0x00123456);		// array pointer
-                m.Store(m.IAdd(a, m.IMul(i, 8)), m.Int32(42));
-            });
-            RunTest(pp.BuildProgram(), "Typing/DtbArrayConstantPointers.txt");
-        }
 
         [Test]
         public void DtbCallTable()

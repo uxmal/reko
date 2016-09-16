@@ -150,8 +150,8 @@ namespace Reko.Analysis
 
 		public Storage VisitSequenceStorage(SequenceStorage seq)
 		{
-			seq.Head.Storage.Accept(this);
-			seq.Tail.Storage.Accept(this);
+			seq.Head.Accept(this);
+			seq.Tail.Accept(this);
 			if (defining)
 			{
 				regDefs[seq] = value;

@@ -7971,7 +7971,7 @@ l00007A78:
 	d0 = d0 - 0x00000001
 	CVZNX = cond(d0)
 	branch Test(UGE,C) l00007A74
-	// succ:  l00007A7C l00007A74 l00007A7C l00007A74
+	// succ:  l00007A7C l00007A74
 l00007A7C:
 	goto l00007A84
 	// succ:  l00007A84

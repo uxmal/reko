@@ -28,7 +28,8 @@ namespace Reko.Scanning
 {
     /// <summary>
     /// The purpose of this class is to discover interesting global variables.
-    /// In particular, we want to discover pointers to procedures in global data.
+    /// In particular, we want to discover pointers to procedures in global
+    /// data.
     /// </summary>
     public class GlobalDataWorkItem : WorkItem, IDataTypeVisitor
     {
@@ -86,12 +87,7 @@ namespace Reko.Scanning
         public void VisitFunctionType(FunctionType ft)
         {
             var addr = rdr.Address;
-            var up = new Procedure_v1
-            {
-                Address = addr.ToString(),
-                Signature = ft.Signature
-            };
-            scanner.EnqueueUserProcedure(up);
+            scanner.EnqueueUserProcedure(addr, ft);
         }
 
         public void VisitPrimitive(PrimitiveType pt)

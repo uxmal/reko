@@ -47,6 +47,11 @@ namespace Reko.UnitTests.Loading
             sc.AddService<IDiagnosticsService>(diagSvc);
         }
 
+        /*
+         * Use this scaffolding  during development testing only, 
+         * it will be converted to a proper unit test once all is 
+         * working.
+         *
         [Test]
         public void Dccs_Load()
         {
@@ -57,5 +62,6 @@ namespace Reko.UnitTests.Loading
             var bytes = File.ReadAllBytes(file);
             dccsl.SetupLibCheck(sc, file, bytes);
         }
+        */
     }
 }

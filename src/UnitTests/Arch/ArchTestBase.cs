@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using Reko.Core.Serialization;
 
 namespace Reko.UnitTests.Arch
 {
@@ -57,6 +58,11 @@ namespace Reko.UnitTests.Arch
                 return new PseudoProcedure(name, returnType, arity);
             }
 
+            public Identifier GetImportedGlobal(Address addrThunk, Address addrInstr)
+            {
+                return null;
+            }
+
             public ExternalProcedure GetImportedProcedure(Address addrThunk, Address addrInstr)
             {
                 throw new NotImplementedException();
@@ -65,6 +71,23 @@ namespace Reko.UnitTests.Arch
             public Expression PseudoProcedure(string name, DataType returnType, params Expression[] args)
             {
                 var ppp = EnsurePseudoProcedure(name, returnType, args.Length);
+                if (args.Length != ppp.Arity)
+                    throw new ArgumentOutOfRangeException(
+                        string.Format("Pseudoprocedure {0} expected {1} arguments, but was passed {2}.",
+                        ppp.Name,
+                        ppp.Arity,
+                        args.Length));
+
+                return new Application(
+                    new ProcedureConstant(arch.PointerType, ppp),
+                    returnType,
+                    args);
+            }
+
+            public Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
+            {
+                var ppp = EnsurePseudoProcedure(name, returnType, args.Length);
+                ppp.Characteristics = c;
                 if (args.Length != ppp.Arity)
                     throw new ArgumentOutOfRangeException(
                         string.Format("Pseudoprocedure {0} expected {1} arguments, but was passed {2}.",

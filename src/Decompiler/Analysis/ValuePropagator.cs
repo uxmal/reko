@@ -39,18 +39,20 @@ namespace Reko.Analysis
     /// </remarks>
     public class ValuePropagator : InstructionVisitor<Instruction>
     {
-        private SsaIdentifierCollection ssaIds;
-        private ExpressionSimplifier eval;
-        private SsaEvaluationContext evalCtx;
-        private Procedure proc;
-
         private static TraceSwitch trace = new TraceSwitch("ValuePropagation", "Traces value propagation");
 
-        public ValuePropagator(IProcessorArchitecture arch, SsaIdentifierCollection ssaIds, Procedure proc)
+        private IProcessorArchitecture arch;
+        private SsaState ssa;
+        private ExpressionSimplifier eval;
+        private SsaEvaluationContext evalCtx;
+        private SsaIdentifierTransformer ssaIdTransformer;
+
+        public ValuePropagator(IProcessorArchitecture arch, SsaState ssa)
         {
-            this.ssaIds = ssaIds;
-            this.proc = proc;
-            this.evalCtx = new SsaEvaluationContext(arch, ssaIds);
+            this.arch = arch;
+            this.ssa = ssa;
+            this.ssaIdTransformer = new SsaIdentifierTransformer(ssa);
+            this.evalCtx = new SsaEvaluationContext(arch, ssa.Identifiers);
             this.eval = new ExpressionSimplifier(evalCtx);
         }
 
@@ -61,7 +63,7 @@ namespace Reko.Analysis
             do
             {
                 Changed = false;
-                foreach (Statement stm in proc.Statements)
+                foreach (Statement stm in ssa.Procedure.Statements)
                 {
                     Transform(stm);
                 }
@@ -102,6 +104,16 @@ namespace Reko.Analysis
         public Instruction VisitCallInstruction(CallInstruction ci)
         {
             ci.Callee = ci.Callee.Accept(eval);
+            var pc = ci.Callee as ProcedureConstant;
+            if (pc != null && pc.Procedure.Signature != null && pc.Procedure.Signature.ParametersValid)
+            {
+                var ab = new ApplicationBuilder(
+                      arch, ssa.Procedure.Frame, ci.CallSite,
+                      ci.Callee, pc.Procedure.Signature, false);
+                evalCtx.Statement.Instruction = ab.CreateInstruction();
+                ssaIdTransformer.Transform(evalCtx.Statement, ci);
+                return evalCtx.Statement.Instruction;
+            }
             return ci;
         }
 

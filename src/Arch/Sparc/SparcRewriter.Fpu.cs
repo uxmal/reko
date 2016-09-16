@@ -40,7 +40,7 @@ namespace Reko.Arch.Sparc
         {
             var dst = RewriteOp(instrCur.Op2);
             var src = RewriteOp(instrCur.Op1);
-            emitter.Assign(dst, PseudoProc("fabs", PrimitiveType.Real32, src));
+            emitter.Assign(dst, host.PseudoProcedure("fabs", PrimitiveType.Real32, src));
         }
 
         private void RewriteFadds()
@@ -82,7 +82,7 @@ namespace Reko.Arch.Sparc
             var r0 = frame.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number));
             var r1 = frame.EnsureRegister(Registers.GetFpuRegister(dst.Register.Number + 1));
             var dt = PrimitiveType.Real64;
-            var fpDst = frame.EnsureSequence(r0, r1, dt);
+            var fpDst = frame.EnsureSequence(r0.Storage, r1.Storage, dt);
             emitter.Assign(fpDst, emitter.Cast(dt, RewriteOp(instrCur.Op1)));
         }
 

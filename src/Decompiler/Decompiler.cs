@@ -153,9 +153,9 @@ namespace Reko
                     ProcedureFlow flow = dfa.ProgramDataFlow[proc];
                     TextFormatter f = new TextFormatter(output);
                     if (flow.Signature != null)
-                        flow.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.LowLevelInfo, f);
+                        flow.Signature.Emit(proc.Name, FunctionType.EmitFlags.LowLevelInfo, f);
                     else if (proc.Signature != null)
-                        proc.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.LowLevelInfo, f);
+                        proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.LowLevelInfo, f);
                     else
                         output.Write("Warning: no signature found for {0}", proc.Name);
                     output.WriteLine();
@@ -248,7 +248,8 @@ namespace Reko
             {
                 interpreter.LoadFromString(script.Script, null);
                 interpreter.Run();
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 eventListener.Error(new NullCodeLocation(""), ex, "An error occurred while running the script.");
             }
@@ -373,7 +374,8 @@ namespace Reko
             {
                 if (eq.DataType != null)
                 {
-                    w.Write("typedef ");
+                    tf.WriteKeyword("typedef");     //$REVIEW: C/C++-specific
+                    tf.Write(" ");
                     fmt.Write(eq.DataType, eq.Name);
                     w.WriteLine(";");
                     w.WriteLine();
@@ -419,10 +421,10 @@ namespace Reko
             {
                 eventListener.ShowStatus("Rewriting reachable machine code.");
                 scanner = CreateScanner(program);
+                var tlDeser = program.CreateTypeLibraryDeserializer();
                 foreach (var global in program.User.Globals)
                 {
                     var addr = global.Key;
-                    var tlDeser = program.CreateTypeLibraryDeserializer();
                     var dt = global.Value.DataType.Accept(tlDeser);
                     scanner.EnqueueUserGlobalData(addr, dt);
                 }
@@ -441,10 +443,6 @@ namespace Reko
                     else
                         scanner.EnqueueImageSymbol(sym, false);
                 }
-                foreach (var addr in program.FunctionHints)
-                {
-                    scanner.EnqueueProcedure(addr);
-                }
                 scanner.ScanImage();
 
                 if (program.User.Heuristics.Contains("HeuristicScanning"))
@@ -455,7 +453,7 @@ namespace Reko
                 if (program.User.Heuristics.Contains("Shingle heuristic"))
                 {
                     eventListener.ShowStatus("Shingle scanning");
-                    var sh = new ShingledScanner(program, (IRewriterHost)scanner);
+                    var sh = new ShingledScanner(program, (IRewriterHost)scanner, eventListener);
                     var watch = new Stopwatch();
                     watch.Start();
                     var procs = sh.Scan();
@@ -468,7 +466,7 @@ namespace Reko
 
                     foreach (var addr in procs)
                     {
-                        scanner.ScanProcedure(addr, null, program.Architecture.CreateProcessorState());
+                        scanner.ScanProcedure(addr.Key, null, program.Architecture.CreateProcessorState());
                     }
                 }
                 eventListener.ShowStatus("Finished rewriting reachable machine code.");
@@ -481,7 +479,7 @@ namespace Reko
             }
         }
 
-        public IDictionary<Address, ProcedureSignature> LoadCallSignatures(
+        public IDictionary<Address, FunctionType> LoadCallSignatures(
             Program program, 
             ICollection<SerializedCall_v1> userCalls)
         {
@@ -495,12 +493,12 @@ namespace Reko
                     Address addr;
                     if (program.Architecture.TryParseAddress(sc.InstructionAddress, out addr))
                     {
-                        return new KeyValuePair<Address, ProcedureSignature>(
+                        return new KeyValuePair<Address, FunctionType>(
                             addr,
                             sser.Deserialize(sc.Signature, program.Architecture.CreateFrame()));
                     }
                     else
-                        return new KeyValuePair<Address, ProcedureSignature>(null, null);
+                        return new KeyValuePair<Address, FunctionType>(null, null);
                 })
                 .ToDictionary(item => item.Key, item => item.Value);
         }
@@ -525,6 +523,8 @@ namespace Reko
                 int i = 0;
                 foreach (Procedure proc in program.Procedures.Values)
                 {
+                    if (eventListener.IsCanceled())
+                        return;
                     try
                     {
                         eventListener.ShowProgress("Rewriting procedures to high-level language.", i, program.Procedures.Values.Count);
@@ -558,8 +558,8 @@ namespace Reko
 		public void WriteHeaderComment(string filename, Program program, TextWriter w)
 		{
 			w.WriteLine("// {0}", filename);
-			w.WriteLine("// Generated by decompiling {0}", program.Filename);
-			w.WriteLine("// using Decompiler version {0}.", AssemblyMetadata.AssemblyFileVersion);
+			w.WriteLine("// Generated by decompiling {0}", Path.GetFileName(program.Filename));
+			w.WriteLine("// using Reko decompiler version {0}.", AssemblyMetadata.AssemblyFileVersion);
 			w.WriteLine();
 		}
 	}

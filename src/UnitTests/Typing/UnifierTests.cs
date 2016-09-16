@@ -23,6 +23,7 @@ using Reko.Core.Types;
 using Reko.Typing;
 using NUnit.Framework;
 using System;
+using Reko.Core.Expressions;
 
 namespace Reko.UnitTests.Typing
 {
@@ -38,6 +39,11 @@ namespace Reko.UnitTests.Typing
 			factory = new TypeFactory();
 			un = new Unifier(factory);
 		}
+
+        private Identifier Id(string name, int regno)
+        {
+            return new Identifier(name, PrimitiveType.Word32, new RegisterStorage(name, regno, 0, PrimitiveType.Word32));
+        }
 
 		[Test]
 		public void UnifyInt32()
@@ -194,9 +200,7 @@ namespace Reko.UnitTests.Typing
                 new StructureType { Fields = { { 0, PrimitiveType.Word32 } } });
 
 			mem = (StructureType) dt;
-			Assert.AreEqual(2, mem.Fields.Count);
-			Assert.IsNotNull((UnionType) mem.Fields[0].DataType);
-			Assert.IsNotNull((TypeVariable) mem.Fields[1].DataType);
+			Assert.AreEqual("(struct (0 word32 dw0000) (4 T_1 t0004))", mem.ToString());
 		}
 
 		[Test]
@@ -419,8 +423,8 @@ namespace Reko.UnitTests.Typing
 		[Test]
 		public void CompatibleFunctions()
 		{
-			FunctionType f1 = new FunctionType(null, null, new DataType[] { PrimitiveType.Int16 }, null );
-			FunctionType f2 = new FunctionType(null, null, new DataType[] { PrimitiveType.Int32 }, null );
+			FunctionType f1 = new FunctionType(null, null, new Identifier("", PrimitiveType.Int16, null));
+			FunctionType f2 = new FunctionType(null, null, new Identifier("", PrimitiveType.Int32, null));
 			Assert.IsTrue(un.AreCompatible(f1, f2));
 		}
 
@@ -486,6 +490,15 @@ namespace Reko.UnitTests.Typing
                 2);
             Assert.IsTrue(un.AreCompatible(t1, t2));
             Assert.AreEqual("(memptr (ptr (segment)) word16)", un.Unify(t1, t2).ToString());
+        }
+
+        [Test]
+        public void Unify_CodeFn()
+        {
+            var t1 = new Pointer(new CodeType(), 4);
+            var t2 = new Pointer(new FunctionType("", Id("r0", 0), new[] { Id("r1", 1), Id("r2", 2) }), 4);
+            Assert.IsTrue(un.AreCompatible(t1, t2));
+            Assert.AreEqual("(ptr (fn word32 (word32, word32)))", un.Unify(t1, t2).ToString());
         }
     }
 }

@@ -25,56 +25,82 @@ using Reko.Core.Code;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Reko.Core.Types;
 
 namespace Reko.Arch.Pdp11
 {
-    class Pdp11ProcessorState : ProcessorState
+    public class Pdp11ProcessorState : ProcessorState
     {
         private Pdp11Architecture arch;
+        private ushort[] regs;
+        private bool[] valid;
 
         public Pdp11ProcessorState(Pdp11Architecture arch)
         {
             this.arch = arch;
+            this.regs = new ushort[8];
+            this.valid = new bool[8];
+        }
+
+        public Pdp11ProcessorState(Pdp11ProcessorState that)
+        {
+            this.arch = that.arch;
+            this.regs = (ushort[])that.regs.Clone();
+            this.valid = (bool[])that.valid.Clone();
         }
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
         
         public override ProcessorState Clone()
         {
-            throw new NotImplementedException();
+            return new Pdp11ProcessorState(this);
         }
 
         public override void SetRegister(RegisterStorage r, Constant v)
         {
-            throw new NotImplementedException();
+            if (v.IsValid)
+            {
+                regs[r.Number] = v.ToUInt16();
+                valid[r.Number] = true;
+            }
+            else
+            {
+                valid[r.Number] = false;
+            }
         }
 
         public override void SetInstructionPointer(Address addr)
         {
-            throw new NotImplementedException();
+            regs[Registers.pc.Number] = addr.ToUInt16();
+            valid[Registers.pc.Number] = true;
         }
 
         public override Constant GetRegister(RegisterStorage r)
         {
-            throw new NotImplementedException();
+            if (valid[r.Number])
+            {
+                return Constant.Word16(regs[r.Number]);
+            }
+            else
+            {
+                return Constant.Invalid;
+            }
         }
 
         public override void OnProcedureEntered()
         {
-            throw new NotImplementedException();
         }
 
-        public override void OnProcedureLeft(ProcedureSignature procedureSignature)
+        public override void OnProcedureLeft(FunctionType procedureSignature)
         {
-            throw new NotImplementedException();
         }
 
         public override CallSite OnBeforeCall(Identifier stackReg, int returnSize)
         {
-            return new CallSite(returnSize, 0);
+            return new CallSite(returnSize, 2);
         }
 
-        public override void OnAfterCall(ProcedureSignature sigCallee)
+        public override void OnAfterCall(FunctionType sigCallee)
         {
         }
     }

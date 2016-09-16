@@ -37,22 +37,22 @@ namespace Reko.UnitTests.Environments.Windows
         private Win32Platform platform;
         private readonly string nl = "\r\n";    // DEF files are from the Windows world, and have CR-LFs in them.
 
-        private void CreateDefFileLoader(string filename, string contents)
+        private void CreateDefFileLoader(string absPath, string contents)
         {
             this.platform = new Win32Platform(null, new X86ArchitectureFlat32());
-            dfl = new ModuleDefinitionLoader(null, filename, Encoding.ASCII.GetBytes(contents));
+            dfl = new ModuleDefinitionLoader(null, absPath, Encoding.ASCII.GetBytes(contents));
         }
 
         [Test]
         public void DFL_Create()
         {
-            CreateDefFileLoader("c:\\bar\\foo.def", "");
+            CreateDefFileLoader(OsPath.Absolute("bar", "foo.def"), "");
         }
 
         [Test]
         public void DFL_CommentLine()
         {
-            CreateDefFileLoader("c:\\bar\\foo.def", "; hello\r\n");
+            CreateDefFileLoader(OsPath.Absolute("bar", "foo.def"), "; hello\r\n");
             TypeLibrary lib = dfl.Load(platform, new TypeLibrary());
             Assert.AreEqual(0, lib.Types.Count);
             Assert.AreEqual(0, lib.Signatures.Count);
@@ -62,7 +62,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void DFL_Read_StdapiExport()
         {
             CreateDefFileLoader(
-                "c:\\bar\\foo.def",
+                OsPath.Absolute( "bar", "foo.def"),
                 "EXPORTS" + nl +
                 " _Foo@4 @4" + nl);
             var lib = dfl.Load(platform, new TypeLibrary());
@@ -77,7 +77,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void DFL_Read_StdapiExport_With_Extra_Spaces()
         {
             CreateDefFileLoader(
-                "c:\\bar\\foo.def",
+                OsPath.Absolute("bar", "foo.def"),
                 "EXPORTS" + nl +
                 " _Foo@4 @ 4" + nl);
             var lib = dfl.Load(platform, new TypeLibrary());
@@ -90,7 +90,7 @@ namespace Reko.UnitTests.Environments.Windows
         public void DFL_LibraryStatement()
         {
             CreateDefFileLoader(
-                "c:\\bar\\foo.def",
+                OsPath.Absolute("bar", "foo.def"),
                 " LIBRARY bar" + nl +
                 "EXPORTS" + nl +
                 " _foo@12 @ 1" + nl);

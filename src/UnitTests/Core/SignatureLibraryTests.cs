@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Core
 	{
 		private void EmitSignature(TypeLibrary lib, string fnName, System.IO.TextWriter tw)
 		{
-			lib.Lookup(fnName).Emit(fnName, ProcedureSignature.EmitFlags.ArgumentKind|ProcedureSignature.EmitFlags.LowLevelInfo, tw);
+			lib.Lookup(fnName).Emit(fnName, FunctionType.EmitFlags.ArgumentKind|FunctionType.EmitFlags.LowLevelInfo, tw);
 		}
 
         [Test]

@@ -76,6 +76,8 @@
     <Compile Include="Pdp11Disassembler.cs" />
     <Compile Include="Pdp11Instruction.cs" />
     <Compile Include="Pdp11ProcessorState.cs" />
+    <Compile Include="Pdp11Rewriter.Alu.cs" />
+    <Compile Include="Pdp11Rewriter.Control.cs" />
     <Compile Include="Pdp11Rewriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

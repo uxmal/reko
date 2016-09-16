@@ -26,12 +26,23 @@ using System.Linq;
 using System.Text;
 using Reko.Core;
 using Reko.Core.Types;
+using Reko.UnitTests.Mocks;
+using Reko.Core.Expressions;
+using Reko.UnitTests.Fragments;
 
 namespace Reko.UnitTests.Typing
 {
     [TestFixture]
     public class TypeCollectorTests : TypingTestBase
     {
+        private bool buildEquivalenceClasses;
+
+        [SetUp]
+        public void Setup()
+        {
+            this.buildEquivalenceClasses = false;
+        }
+
         protected override void RunTest(Program program, string outputFile)
         {
             FileUnitTester fut = null;
@@ -44,21 +55,37 @@ namespace Reko.UnitTests.Typing
                 var aen = new ExpressionNormalizer(program.Platform.PointerType);
                 var eqb = new EquivalenceClassBuilder(factory, store);
 
-                var tyco = new TypeCollector(factory, store, program);
+                var tyco = new TypeCollector(factory, store, program, new FakeDecompilerEventListener());
 
                 aen.Transform(program);
                 eqb.Build(program);
                 tyco.CollectTypes();
-            } catch(Exception ex)
+                if (buildEquivalenceClasses)
+                {
+                    store.BuildEquivalenceClassDataTypes(factory);
+                    new TypeVariableReplacer(store).ReplaceTypeVariables();
+                }
+
+            }
+            catch (Exception ex)
             {
                 fut.TextWriter.WriteLine(ex.Message);
                 fut.TextWriter.WriteLine(ex.StackTrace);
                 throw;
-            } finally
+            }
+            finally
             {
                 DumpProgAndStore(program, fut);
                 fut.Dispose();
             }
+        }
+
+        protected override void RunTest(Action<ProcedureBuilder> doBuild, string outputFile)
+        {
+            var pb = new ProgramBuilder();
+            pb.Add("proc1", doBuild);
+            var program = pb.BuildProgram();
+            RunTest(program, outputFile);
         }
 
         private void DumpProgAndStore(Program prog, FileUnitTester fut)
@@ -93,6 +120,102 @@ namespace Reko.UnitTests.Typing
                                 si),
                            m.Byte(0xF8));
             }, "Typing/TycoIndexedDisplacement.txt");
+        }
+
+        [Test]
+        public void TycoNestedStructsPtr()
+        {
+            RunTest(m =>
+            {
+                var eax = m.Reg32("eax", 0);
+                var ecx = m.Reg32("ecx", 1);
+                var strInner = new StructureType("strInner", 8, true)
+                {
+                    Fields = {
+                        { 0, PrimitiveType.Real32, "innerAttr00" },
+                        { 4, PrimitiveType.Int32, "innerAttr04" },
+                    }
+                };
+                var str = new StructureType("str", 8, true)
+                {
+                    Fields = {
+                        { 0, new Pointer(strInner, 4), "strAttr00" },
+                        { 4, PrimitiveType.Int32, "strAttr04" },
+                    }
+                };
+                var v = m.Frame.EnsureStackArgument(4, new Pointer(str, 4));
+                m.Declare(eax, m.Load(PrimitiveType.Word32, v));
+                m.Declare(ecx, m.Load(PrimitiveType.Word32, eax));
+            }, "Typing/TycoNestedStructsPtr.txt");
+        }
+
+        [Test]
+        public void TycoAddressOf()
+        {
+            RunTest(m =>
+            {
+                var foo = new Identifier("foo", new UnknownType(), new MemoryStorage());
+                var r1 = m.Reg32("r1", 1);
+                m.Assign(r1, m.AddrOf(foo));
+                m.Store(r1, m.Word16(0x1234));
+                m.Store(m.IAdd(r1, 4), m.Byte(0x0A));
+                m.Return();
+            }, "Typing/TycoAddressOf.txt");
+        }
+
+        [Test]
+        public void TycoTypedAddressOf()
+        {
+            RunTest(m =>
+            {
+                var str = new TypeReference("foo", new StructureType("foo", 0)
+                {
+                    Fields = {
+                        { 0, PrimitiveType.Int16, "word00" },
+                        { 4, PrimitiveType.Byte, "byte004"}
+                    }
+                });
+                var foo = new Identifier("foo", str, new MemoryStorage());
+                var r1 = m.Reg32("r1", 1);
+                m.Assign(r1, m.AddrOf(foo));
+                m.Store(r1, m.Word16(0x1234));
+                m.Store(m.IAdd(r1, 4), m.Byte(0x0A));
+                m.Return();
+            }, "Typing/TycoTypedAddressOf.txt");
+        }
+
+        [Test]
+        public void TycoArrayConstantPointers()
+        {
+            ProgramBuilder pp = new ProgramBuilder();
+            pp.Add("Fn", m =>
+            {
+                Identifier a = m.Local32("a");
+                Identifier i = m.Local32("i");
+                m.Assign(a, 0x00123456);		// array pointer
+                m.Store(m.IAdd(a, m.IMul(i, 8)), m.Int32(42));
+            });
+            RunTest(pp.BuildProgram(), "Typing/TycoArrayConstantPointers.txt");
+        }
+
+
+        [Test]
+        public void TycoFramePointer()
+        {
+            ProgramBuilder mock = new ProgramBuilder();
+            mock.Add(new FramePointerFragment(mock.Program.TypeFactory));
+            RunTest(mock, "Typing/TycoFramePointer.txt");
+        }
+
+        [Test]
+        public void TycoReg00300()
+        {
+            buildEquivalenceClasses = true;
+            RunTest(m =>
+            {
+                m.Store(m.Word32(0x123400), m.IAdd(m.LoadDw(m.Word32(0x123400)), 1));
+                m.Store(m.Word32(0x123400), m.IAdd(m.LoadDw(m.Word32(0x123400)), 1));
+            }, "Typing/TycoReg00300.txt");
         }
     }
 }

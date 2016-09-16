@@ -46,7 +46,7 @@ namespace Reko.Core
         public event EventHandler NameChanged;
         private string name;
 
-		public abstract ProcedureSignature Signature { get; set; }
+		public abstract FunctionType Signature { get; set; }
 
 		public ProcedureCharacteristics Characteristics { get; set; }
 
@@ -61,7 +61,7 @@ namespace Reko.Core
         public override string ToString()
         {
             StringWriter sw = new StringWriter();
-            Signature.Emit(this.Name, ProcedureSignature.EmitFlags.ArgumentKind, new TextFormatter(sw));
+            Signature.Emit(this.Name, FunctionType.EmitFlags.ArgumentKind, new TextFormatter(sw));
             return sw.ToString();
         }
 	}

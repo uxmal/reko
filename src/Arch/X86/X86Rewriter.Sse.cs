@@ -37,12 +37,12 @@ namespace Reko.Arch.X86
             instrCur.op1.Width = PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.Size);
             emitter.Assign(SrcOp(instrCur.op1), emitter.Cast(instrCur.op1.Width, SrcOp(instrCur.op2)));
         }
-
+        
         private void RewritePcmpeqb()
         {
             emitter.Assign(
                 SrcOp(instrCur.op1),
-                PseudoProc(
+                host.PseudoProcedure(
                     "__pcmpeqb",
                     instrCur.op1.Width,
                     SrcOp(instrCur.op1),
@@ -53,7 +53,7 @@ namespace Reko.Arch.X86
         {
             emitter.Assign(
                 SrcOp(instrCur.op1),
-                PseudoProc(
+                host.PseudoProcedure(
                     "__pshufd",
                     instrCur.op1.Width,
                     SrcOp(instrCur.op1),
@@ -65,7 +65,7 @@ namespace Reko.Arch.X86
         {
             emitter.Assign(
                 SrcOp(instrCur.op1),
-                PseudoProc(
+                host.PseudoProcedure(
                     "__punpcklbw",
                     instrCur.op1.Width,
                     SrcOp(instrCur.op1),
@@ -76,7 +76,7 @@ namespace Reko.Arch.X86
         {
             emitter.Assign(
                 SrcOp(instrCur.op1),
-                PseudoProc(
+                host.PseudoProcedure(
                     "__punpcklwd",
                     instrCur.op1.Width,
                     SrcOp(instrCur.op1),
@@ -87,7 +87,7 @@ namespace Reko.Arch.X86
         {
             emitter.Assign(
                 SrcOp(instrCur.op1),
-                PseudoProc(
+                host.PseudoProcedure(
                     "__palignr",
                     instrCur.op1.Width,
                     SrcOp(instrCur.op1),

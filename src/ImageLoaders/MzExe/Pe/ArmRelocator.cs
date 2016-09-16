@@ -29,7 +29,7 @@ namespace Reko.ImageLoaders.MzExe.Pe
         {
         }
 
-        public override void ApplyRelocation(uint baseOfImage, uint page, ImageReader rdr, RelocationDictionary relocations)
+        public override void ApplyRelocation(Address baseOfImage, uint page, ImageReader rdr, RelocationDictionary relocations)
         {
             throw new NotImplementedException();
         }

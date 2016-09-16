@@ -25,6 +25,7 @@ using System.Linq;
 using System.Text;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Types;
 
 namespace Reko.Arch.Vax
 {
@@ -61,7 +62,7 @@ namespace Reko.Arch.Vax
                 return Constant.Invalid;
         }
 
-        public override void OnAfterCall(ProcedureSignature sigCallee)
+        public override void OnAfterCall(FunctionType sigCallee)
         {
         }
 
@@ -74,7 +75,7 @@ namespace Reko.Arch.Vax
         {
         }
 
-        public override void OnProcedureLeft(ProcedureSignature procedureSignature)
+        public override void OnProcedureLeft(FunctionType procedureSignature)
         {
         }
 

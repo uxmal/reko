@@ -56,41 +56,43 @@ namespace Reko.Core
 
 		public void AddFpuStackArgument(int x, Identifier id)
 		{
-			AddArgument(proc.Frame.EnsureFpuStackVariable(x, id.DataType), false);
+			AddInParam(proc.Frame.EnsureFpuStackVariable(x, id.DataType));
 		}
 
 		public void AddRegisterArgument(RegisterStorage reg)
 		{
-			AddArgument(proc.Frame.EnsureRegister(reg), false);
+			AddInParam(proc.Frame.EnsureRegister(reg));
 		}
 
-		public void AddArgument(Identifier idOrig, bool isOut)
-		{
-			Identifier arg;
-			if (isOut)
-			{
-				if (ret == null)
-				{
-					ret = idOrig;
-					return;
-				}
-				arg = proc.Frame.EnsureOutArgument(idOrig, arch.FramePointerType);
-			}
-			else
-			{
-				arg = idOrig;
-			}
-			args.Add(arg);
-		}
+        public void AddOutParam(Identifier idOrig)
+        {
+            if (ret == null)
+            {
+                ret = idOrig;
+            }
+            else
+            {
+                //$REVIEW: out arguments are weird, as they are synthetic. It's possible that 
+                // future versions of reko will opt to model multiple values return from functions
+                // explicitly instead of using destructive updates of this kind.
+                var arg = proc.Frame.EnsureOutArgument(idOrig, PrimitiveType.Create(Domain.Pointer, arch.FramePointerType.Size));
+                args.Add(arg);
+            }
+        }
+
+        public void AddInParam(Identifier arg)
+        {
+            args.Add(arg);
+        }
 
 		public void AddStackArgument(int stackOffset, Identifier id)
 		{
 			args.Add(new Identifier(id.Name, id.DataType, new StackArgumentStorage(stackOffset, id.DataType)));
 		}
 
-		public ProcedureSignature BuildSignature()
+		public FunctionType BuildSignature()
 		{
-			return new ProcedureSignature(ret, args.ToArray());
+			return new FunctionType(null, ret, args.ToArray());
 		}
 
 		public Identifier CreateOutIdentifier(Procedure proc, Identifier id)

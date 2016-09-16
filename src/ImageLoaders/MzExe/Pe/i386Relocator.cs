@@ -39,12 +39,12 @@ namespace Reko.ImageLoaders.MzExe.Pe
             this.dcSvc = services.RequireService<DecompilerEventListener>();
         }
 
-        public override void ApplyRelocation(uint baseOfImage, uint page, ImageReader rdr, RelocationDictionary relocations)
+        public override void ApplyRelocation(Address baseOfImage, uint page, ImageReader rdr, RelocationDictionary relocations)
 		{
 			ushort fixup = rdr.ReadLeUInt16();
-			uint offset = baseOfImage + page + (fixup & 0x0FFFu);
-            var imgR = program.CreateImageReader(Address.Ptr32(offset));
-            var imgW = program.CreateImageWriter(Address.Ptr32(offset));
+			Address offset = baseOfImage + page + (fixup & 0x0FFFu);
+            var imgR = program.CreateImageReader(offset);
+            var imgW = program.CreateImageWriter(offset);
             switch (fixup >> 12)
 			{
 			case RelocationAbsolute:
@@ -52,16 +52,16 @@ namespace Reko.ImageLoaders.MzExe.Pe
 				break;
 			case RelocationHighLow:
 			{
-				uint n = (uint) (imgR.ReadUInt32() + (baseOfImage - program.ImageMap.BaseAddress.ToLinear()));
+				uint n = (uint) (imgR.ReadUInt32() + (baseOfImage - program.ImageMap.BaseAddress));
 				imgW.WriteUInt32(n);
-				relocations.AddPointerReference(offset - imgW.MemoryArea.BaseAddress.ToLinear(), n);
+				relocations.AddPointerReference(offset.ToLinear() - imgW.MemoryArea.BaseAddress.ToLinear(), n);
 				break;
 			}
             case 0xA:
             break;
 			default:
                 dcSvc.Warn(
-                    dcSvc.CreateAddressNavigator(program, Address.Ptr32(offset)),
+                    dcSvc.CreateAddressNavigator(program, offset),
                     string.Format(
                         "Unsupported i386 PE fixup type: {0:X}",
                         fixup >> 12));

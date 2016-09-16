@@ -207,6 +207,7 @@ namespace Reko.Arch.X86
         movsb,
         movshdup,
         movsx,
+        movups,
         movzx,
         mul,
         neg,

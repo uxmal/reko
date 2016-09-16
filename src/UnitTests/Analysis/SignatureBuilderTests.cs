@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Analysis
 			IProcessorArchitecture arch = new X86ArchitectureReal();
 			SignatureBuilder sb = new SignatureBuilder(null, arch);
             sb.AddFlagGroupReturnValue((uint) FlagM.CF, arch.CreateFrame());
-			ProcedureSignature sig = sb.BuildSignature();
+			FunctionType sig = sb.BuildSignature();
 			Assert.AreEqual("bool", sig.ReturnValue.DataType.ToString());
 		}
 	}

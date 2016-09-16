@@ -169,6 +169,7 @@ namespace Reko.Arch.Sparc
                 case 'b': return signed ? PrimitiveType.SByte : PrimitiveType.Byte;
                 case 'h': return signed ? PrimitiveType.Int16 : PrimitiveType.UInt16;
                 case 'w': return signed ? PrimitiveType.Int32 : PrimitiveType.UInt32;
+                case 'd': return signed ? PrimitiveType.Int64 : PrimitiveType.UInt64;
                 }
                 throw new NotImplementedException(string.Format("Unknown format character {0}.", fmt[i-1]));
             }

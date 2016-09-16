@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Arch.Intel
         }
         private void Given_ProcedureSerializer(string cConvention)
         {
-            this.deserializer = mockFactory.CreateDeserializer();
+            this.deserializer = new FakeTypeDeserializer(4);
             this.ser = new X86ProcedureSerializer(arch, deserializer, cConvention);
         }
 
@@ -75,7 +75,8 @@ namespace Reko.UnitTests.Arch.Intel
         public void Test()
         {
             Given_ProcedureSerializer("stdapi");
-            ProcedureSignature sig = new ProcedureSignature(
+            FunctionType sig = new FunctionType(
+                null,
                 new Identifier("qax", PrimitiveType.Word32, Registers.eax),
                 new Identifier[] {
                     new Identifier("qbx", PrimitiveType.Word32, Registers.ebx)
@@ -99,13 +100,12 @@ namespace Reko.UnitTests.Arch.Intel
         [Test]
         public void SsigSerializeSequence()
         {
-            Identifier seq = new Identifier("es_bx", PrimitiveType.Word32, new SequenceStorage(
-                new Identifier(Registers.es.Name, Registers.es.DataType, Registers.es),
-                new Identifier(Registers.bx.Name, Registers.bx.DataType, Registers.bx)));
+            Identifier seq = new Identifier("es_bx", PrimitiveType.Word32, 
+                new SequenceStorage(Registers.es, Registers.bx));
             Given_ProcedureSerializer("stdapi");
             mr.ReplayAll();
 
-            SerializedSignature ssig = ser.Serialize(new ProcedureSignature(seq, new Identifier[0]));
+            SerializedSignature ssig = ser.Serialize(new FunctionType(null, seq, new Identifier[0]));
             Verify(ssig, "Core/SsigSerializeSequence.txt");
         }
 
@@ -127,7 +127,8 @@ namespace Reko.UnitTests.Arch.Intel
         {
             Procedure proc = new Procedure("foo", arch.CreateFrame())
             {
-                Signature = new ProcedureSignature(
+                Signature = new FunctionType(
+                    null,
                     new Identifier("eax", PrimitiveType.Word32, Registers.eax),
                     new Identifier[] {
                         new Identifier("arg00", PrimitiveType.Word32, new StackArgumentStorage(0, PrimitiveType.Word32))
@@ -249,6 +250,7 @@ namespace Reko.UnitTests.Arch.Intel
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(4, sig.StackDelta);
+            Assert.AreEqual(4, ((StackArgumentStorage)sig.Parameters[0].Storage).StackOffset);
         }
 
         [Test]
@@ -270,6 +272,7 @@ namespace Reko.UnitTests.Arch.Intel
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(8, sig.StackDelta);
+            Assert.AreEqual(4, ((StackArgumentStorage)sig.Parameters[0].Storage).StackOffset);
         }
 
         [Test]
@@ -296,8 +299,8 @@ namespace Reko.UnitTests.Arch.Intel
             mr.ReplayAll();
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
-            Assert.AreEqual(4, ((StackArgumentStorage)sig.Parameters[0].Storage).StackOffset);
-            Assert.AreEqual(0, ((StackArgumentStorage)sig.Parameters[1].Storage).StackOffset);
+            Assert.AreEqual(8, ((StackArgumentStorage)sig.Parameters[0].Storage).StackOffset);
+            Assert.AreEqual(4, ((StackArgumentStorage)sig.Parameters[1].Storage).StackOffset);
         }
 
         [Test]
@@ -326,10 +329,12 @@ namespace Reko.UnitTests.Arch.Intel
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             var sExp =
-@"void ()(Register (ptr (struct ""CWindow"")) this, Stack int32 XX, Stack int16 arg1)
+@"void memfn(Register (ptr (struct ""CWindow"")) this, Stack int32 XX, Stack int16 arg1)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 ";
-            Assert.AreEqual(sExp, sig.ToString());
+            Assert.AreEqual(sExp, sig.ToString("memfn", FunctionType.EmitFlags.AllDetails));
+            Assert.AreEqual(4, ((StackArgumentStorage)sig.Parameters[1].Storage).StackOffset);
+            Assert.AreEqual(8, ((StackArgumentStorage)sig.Parameters[2].Storage).StackOffset);
         }
     }
 }

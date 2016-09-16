@@ -23,6 +23,8 @@ using Reko.Core.CLanguage;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Serialization;
+using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -49,12 +51,13 @@ namespace Reko.Analysis
         /// For each procedure, either use a user-supplied signature, 
         /// or the predefined one.
         /// </summary>
-        public void BuildSignatures()
+        public void BuildSignatures(DecompilerEventListener listener)
         {
             foreach (var de in program.Procedures)
             {
+                if (listener.IsCanceled())
+                    break;
                 BuildSignature(de.Key, de.Value);
-                return;
             }
         }
 
@@ -94,7 +97,7 @@ namespace Reko.Analysis
             return null;
         }
 
-        public void ApplySignatureToProcedure(Address addr, ProcedureSignature sig, Procedure proc)
+        public void ApplySignatureToProcedure(Address addr, FunctionType sig, Procedure proc)
         {
             proc.Signature = sig;
 
@@ -108,12 +111,12 @@ namespace Reko.Analysis
                 if (starg != null)
                 {
                     proc.Frame.EnsureStackArgument(
-                        starg.StackOffset + sig.ReturnAddressOnStack,
+                        starg.StackOffset,
                         param.DataType,
                         param.Name);
                     var fp = proc.Frame.FramePointer;
                     stmts.Insert(i, linAddr, new Store(
-                        m.Load(param.DataType, m.IAdd(fp, sig.ReturnAddressOnStack + starg.StackOffset)),
+                        m.Load(param.DataType, m.IAdd(fp, starg.StackOffset)),
                         param));
                 }
                 else

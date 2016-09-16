@@ -61,11 +61,11 @@ namespace Reko.Core.Serialization
         /// <param name="ss"></param>
         /// <param name="frame"></param>
         /// <returns></returns>
-        public abstract ProcedureSignature Deserialize(SerializedSignature ss, Frame frame);
+        public abstract FunctionType Deserialize(SerializedSignature ss, Frame frame);
 
         public abstract Storage GetReturnRegister(Argument_v1 sArg, int bitSize);
 
-        public virtual SerializedSignature Serialize(ProcedureSignature sig)
+        public virtual SerializedSignature Serialize(FunctionType sig)
         {
             SerializedSignature ssig = new SerializedSignature();
             if (!sig.ParametersValid)

@@ -138,7 +138,13 @@ namespace Reko.Evaluation
 
         public Expression VisitMkSequence(MkSequence seq)
         {
-            throw new NotImplementedException();
+            var lo = seq.Tail.Accept(this);
+            if (lo == Constant.Invalid)
+                return lo;
+            var hi = seq.Head.Accept(this);
+            if (hi == Constant.Invalid)
+                return hi;
+            return new MkSequence(seq.DataType, hi, lo);
         }
 
         public Expression VisitOutArgument(OutArgument outArg)

@@ -160,6 +160,7 @@
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\wince.inc" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\AmigaOS\exec.funcs" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\MacOS\macos_classic.xml" />
+    <DecompilerMetadata Include="$(SolutionDir)Environments\RT11\rt11_*.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SegaGenesis\SegaGenesis.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\libc.so.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\SysV\Xlib.xml" />
@@ -196,15 +197,18 @@
     <Environments Include="$(SolutionDir)Environments\C64\$(OutDir)Reko.Environments.C64.*" />
     <Environments Include="$(SolutionDir)Environments\Cpm\$(OutDir)Reko.Environments.Cpm.*" />
     <Environments Include="$(SolutionDir)Environments\MacOS\$(OutDir)Reko.Environments.MacOS.*" />
-    <Environments Include="$(SolutionDir)Environments\MsDos\$(OutDir)Reko.Environments.Msdos.*" />
-    <Environments Include="$(SolutionDir)Environments\MsDos.Design\$(OutDir)Reko.Environments.Msdos.Design.*" />
+    <Environments Include="$(SolutionDir)Environments\Msdos\$(OutDir)Reko.Environments.Msdos.*" />
+    <Environments Include="$(SolutionDir)Environments\Msdos.Design\$(OutDir)Reko.Environments.Msdos.Design.*" />
     <Environments Include="$(SolutionDir)Environments\Ps3\$(OutDir)Reko.Environments.Ps3.*" />
     <Environments Include="$(SolutionDir)Environments\RiscOS\$(OutDir)Reko.Environments.RiscOS.*" />
+    <Environments Include="$(SolutionDir)Environments\RT11\$(OutDir)Reko.Environments.RT11.*" />
     <Environments Include="$(SolutionDir)Environments\SegaGenesis\$(OutDir)Reko.Environments.SegaGenesis.*" />
     <Environments Include="$(SolutionDir)Environments\SysV\$(OutDir)Reko.Environments.SysV.*" />
     <Environments Include="$(SolutionDir)Environments\Trs80\$(OutDir)Reko.Environments.Trs80.*" />
     <Environments Include="$(SolutionDir)Environments\Windows\$(OutDir)Reko.Environments.Windows.*" />
     <Environments Include="$(SolutionDir)Environments\ZX81\$(OutDir)Reko.Environments.ZX81.*" />
+    <Libraries Include="$(SolutionDir)Libraries\Libc\$(OutDir)Reko.Libraries.Libc.*" />
+    <Libraries Include="$(SolutionDir)Libraries\Python\$(OutDir)Reko.Libraries.Python.*" />
     <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
     <ConfigurationFiles Include="$(SolutionDir)Drivers\reko.config" />
   </ItemGroup>
@@ -220,6 +224,8 @@
     <Copy SourceFiles="@(Assemblers)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Copying Environments to $(TargetDir)" />
     <Copy SourceFiles="@(Environments)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <Message Importance="high" Text="Copying Libraries to $(TargetDir)" />
+    <Copy SourceFiles="@(Libraries)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Copying Odbg scripts to $(TargetDir)" />
     <Copy SourceFiles="@(OdbgScripts)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Copying external binaries to $(TargetDir)" />

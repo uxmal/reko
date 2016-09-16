@@ -41,6 +41,11 @@ namespace Reko.Core.Serialization
 			DataType = pointee;
 		}
 
+        public static SerializedType Create(SerializedType dt, int n)
+        {
+            return new PointerType_v1 { DataType = dt, PointerSize = n };
+        }
+
         public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
         {
             return visitor.VisitPointer(this);
@@ -50,5 +55,7 @@ namespace Reko.Core.Serialization
 		{
 			return string.Format("ptr({0})", DataType);
 		}
-	}
+
+      
+    }
 }

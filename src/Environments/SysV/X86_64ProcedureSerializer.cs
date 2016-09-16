@@ -42,7 +42,7 @@ namespace Reko.Environments.SysV
         {
         }
 
-        public void ApplyConvention(SerializedSignature ssig, ProcedureSignature sig)
+        public void ApplyConvention(SerializedSignature ssig, FunctionType sig)
         {
             string d = ssig.Convention;
             if (d == null || d.Length == 0)
@@ -51,11 +51,16 @@ namespace Reko.Environments.SysV
             sig.FpuStackDelta = FpuStackOffset;
         }
 
-        public override ProcedureSignature Deserialize(SerializedSignature ss, Frame frame)
+        public override FunctionType Deserialize(SerializedSignature ss, Frame frame)
         {
             if (ss == null)
                 return null;
-            this.argser = new ArgumentDeserializer(this, Architecture, frame, Architecture.PointerType.Size);
+            this.argser = new ArgumentDeserializer(
+                this,
+                Architecture,
+                frame, 
+                Architecture.PointerType.Size,
+                Architecture.WordWidth.Size);
             Identifier ret = null;
             int fpuDelta = FpuStackOffset;
 
@@ -80,7 +85,7 @@ namespace Reko.Environments.SysV
             }
             FpuStackOffset = fpuDelta;
 
-            var sig = new ProcedureSignature(ret, args.ToArray());
+            var sig = new FunctionType(null, ret, args.ToArray());
             ApplyConvention(ss, sig);
             return sig;
         }
@@ -139,9 +144,7 @@ namespace Reko.Environments.SysV
                 if (bitSize <= 128)
                 {
                     var xmm1 = Architecture.GetRegister("xmm1");
-                    return new SequenceStorage(
-                        new Identifier(xmm1.Name, xmm1.DataType, xmm1),
-                        new Identifier(xmm0.Name, xmm0.DataType, xmm0));
+                    return new SequenceStorage(xmm1, xmm0);
                 }
                 throw new NotImplementedException();
             }
@@ -151,9 +154,7 @@ namespace Reko.Environments.SysV
             if (bitSize <= 128)
             {
                 var rdx = Architecture.GetRegister("rdx");
-                return new SequenceStorage(
-                    new Identifier(rdx.Name, rdx.DataType, rdx),
-                    new Identifier(rax.Name, rax.DataType, rax));
+                return new SequenceStorage(rdx, rax);
             }
             throw new NotImplementedException();
         }

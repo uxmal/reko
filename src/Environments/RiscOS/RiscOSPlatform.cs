@@ -69,8 +69,10 @@ namespace Reko.Environments.RiscOS
                     Characteristics = new ProcedureCharacteristics {
                         Terminates = true,
                     },
-                    Signature = new ProcedureSignature(null,
-                        new Identifier("r0", PrimitiveType.Pointer32, A32Registers.r0))
+                    Signature = new FunctionType(null, null,
+                        new Identifier[] {
+                            new Identifier("r0", PrimitiveType.Pointer32, A32Registers.r0)
+                        })
                 };
             }
             throw new NotSupportedException(string.Format("Unknown RiscOS vector &{0:X}.", vector)); 

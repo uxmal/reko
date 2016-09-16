@@ -22,8 +22,8 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp = fp
-	rLoc1 = Mem0[ds:0x0300:real32]
-	rLoc2 = Mem0[ds:0x0304:real32]
+	rLoc1 = (real64) Mem0[ds:0x0300:real32]
+	rLoc2 = (real64) Mem0[ds:0x0304:real32]
 	sp = fp - 0x0002
 	wLoc02 = 0x0308
 	fn0C00_0024(ds, wLoc02, rLoc2, rLoc1)
@@ -103,7 +103,7 @@ l0C00_0031:
 	wLoc02 = bp
 	bp = fp - 0x0002
 	bx = wArg02
-	rLoc1 = Mem0[ds:bx:real32]
+	rLoc1 = (real64) Mem0[ds:bx:real32]
 	bp = wLoc02
 	sp = fp
 	return rLoc1

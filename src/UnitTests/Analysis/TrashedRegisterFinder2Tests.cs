@@ -80,18 +80,18 @@ namespace Reko.UnitTests.Analysis
             };
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             importResolver.Replay();
-            var ssa = new SsaTransform(
+            var sst = new SsaTransform(
                 pf,
                 proc,
                 importResolver, 
                 proc.CreateBlockDominatorGraph(),
                 new HashSet<RegisterStorage>());
-            var vp = new ValuePropagator(arch, ssa.SsaState.Identifiers, proc);
+            var vp = new ValuePropagator(arch, sst.SsaState);
             vp.Transform();
 
-            ssa.RenameFrameAccesses = true;
-            ssa.AddUseInstructions = true;
-            ssa.Transform();
+            sst.RenameFrameAccesses = true;
+            sst.AddUseInstructions = true;
+            sst.Transform();
 
             vp.Transform();
 
@@ -99,7 +99,7 @@ namespace Reko.UnitTests.Analysis
                 arch, 
                 pf,
                 proc, 
-                ssa.SsaState.Identifiers,
+                sst.SsaState.Identifiers,
                 NullDecompilerEventListener.Instance);
             var flow = trf.Compute();
             var sw = new StringWriter();

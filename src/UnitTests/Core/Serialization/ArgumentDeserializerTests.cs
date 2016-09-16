@@ -19,6 +19,7 @@
 #endregion
 
 using NUnit.Framework;
+using Rhino.Mocks;
 using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Expressions;
@@ -39,21 +40,30 @@ namespace Reko.UnitTests.Core.Serialization
         private ProcedureSerializer sigser;
         private ArgumentDeserializer argser;
         private MsdosPlatform platform;
+        private MockRepository mr;
 
         [SetUp]
         public void Setup()
         {
+            mr = new MockRepository();
             var sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             arch = new X86ArchitectureReal();
             platform = new MsdosPlatform(sc, arch);
-            sigser = new X86ProcedureSerializer(
+            sigser = mr.Stub<ProcedureSerializer>(
                 arch,
                 new TypeLibraryDeserializer(platform, true, new TypeLibrary()),
                 "stdapi");
-            argser = new ArgumentDeserializer(sigser, arch, arch.CreateFrame(), 4);
+            argser = new ArgumentDeserializer(
+                sigser,
+                arch,
+                arch.CreateFrame(),
+                // It's possible that old, hand-written assembler passes
+                // arguments on unaligned offsets
+                13,
+                4);
+            mr.ReplayAll();
         }
-
 
         [Test]
         public void ArgSer_DeserializeRegister()
@@ -103,8 +113,34 @@ namespace Reko.UnitTests.Core.Serialization
                 Type = new PointerType_v1 { DataType = new PrimitiveType_v1 { ByteSize = 1, Domain = Domain.Character } }
             };
             var id = argser.Deserialize(arg);
-            Assert.AreEqual("ptrArg04", id.Name);
+            Assert.AreEqual("ptrArg0D", id.Name);
             Assert.AreEqual("(ptr char)", id.DataType.ToString());
+            Assert.AreEqual("Stack +000D", id.Storage.ToString());
+        }
+
+        [Test]
+        public void ArgSer_DeserializeTwoNamedStackVariables()
+        {
+            var argA = new Argument_v1
+            {
+                Name = "a",
+                Kind = new StackVariable_v1(),
+                Type = new PrimitiveType_v1 { ByteSize = 4, Domain = Domain.SignedInt }
+            };
+            var argB = new Argument_v1
+            {
+                Name = "b",
+                Kind = new StackVariable_v1(),
+                Type = new PrimitiveType_v1 { ByteSize = 4, Domain = Domain.Real }
+            };
+            var a = argser.Deserialize(argA);
+            var b = argser.Deserialize(argB);
+            Assert.AreEqual("a", a.Name);
+            Assert.AreEqual("int32", a.DataType.ToString());
+            Assert.AreEqual("Stack +000D", a.Storage.ToString());
+            Assert.AreEqual("b", b.Name);
+            Assert.AreEqual("real32", b.DataType.ToString());
+            Assert.AreEqual("Stack +0011", b.Storage.ToString());
         }
     }
 }

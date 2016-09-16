@@ -31,6 +31,7 @@ namespace Reko.Core.Services
         ICodeLocation CreateAddressNavigator(Program program, Address address);
         ICodeLocation CreateProcedureNavigator(Program program, Procedure proc);
         ICodeLocation CreateBlockNavigator(Program program, Block block);
+        ICodeLocation CreateStatementNavigator(Program program, Statement stm);
         ICodeLocation CreateJumpTableNavigator(Program program, Address addrIndirectJump, Address addrVector);
         void Warn(ICodeLocation location, string message);
         void Warn(ICodeLocation location, string message, params object[] args);
@@ -41,6 +42,7 @@ namespace Reko.Core.Services
 
         void ShowStatus(string caption);
         void ShowProgress(string caption, int numerator, int denominator);
+        bool IsCanceled();
     }
 
     public class NullDecompilerEventListener : DecompilerEventListener
@@ -116,6 +118,11 @@ namespace Reko.Core.Services
             return new NullCodeLocation(block.Name);
         }
 
+        public ICodeLocation CreateStatementNavigator(Program program, Statement stm)
+        {
+            return new NullCodeLocation(program.SegmentMap.MapLinearAddressToAddress(stm.LinearAddress).ToString());
+        }
+
         public ICodeLocation CreateJumpTableNavigator(Program program, Address addrIndirectJump, Address addrVector)
         {
             return new NullCodeLocation(addrIndirectJump.ToString());
@@ -124,6 +131,11 @@ namespace Reko.Core.Services
         public void AddDiagnostic(ICodeLocation location, Diagnostic d)
         {
             throw new NotImplementedException();
+        }
+
+        public bool IsCanceled()
+        {
+            return false;
         }
 
         #endregion

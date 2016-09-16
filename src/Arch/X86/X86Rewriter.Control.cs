@@ -127,7 +127,7 @@ namespace Reko.Arch.X86
 
         private void RewriteInt()
         {
-            emitter.SideEffect(PseudoProc("__syscall", VoidType.Instance, SrcOp(instrCur.op1)));
+            emitter.SideEffect(host.PseudoProcedure("__syscall", VoidType.Instance, SrcOp(instrCur.op1)));
         }
 
         private void RewriteInto()
@@ -135,7 +135,7 @@ namespace Reko.Arch.X86
             emitter.If(
                 emitter.Test(ConditionCode.OV, orw.FlagGroup(FlagM.OF)),
                 new RtlSideEffect(
-                    PseudoProc("__syscall", VoidType.Instance, Constant.Byte(4))));
+                    host.PseudoProcedure("__syscall", VoidType.Instance, Constant.Byte(4))));
         }
 
         private void RewriteJcxz()

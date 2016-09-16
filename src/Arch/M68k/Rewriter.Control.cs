@@ -77,7 +77,7 @@ namespace Reko.Arch.M68k
             ric.Class = RtlClass.ConditionalTransfer;
             if (cc != ConditionCode.None)
             {
-                emitter.Branch(
+                emitter.BranchInMiddleOfInstruction(
                     emitter.Test(cc, orw.FlagGroup(flags)),
                     di.Address + 4,
                     RtlClass.ConditionalTransfer);
@@ -95,7 +95,7 @@ namespace Reko.Arch.M68k
         {
             if (dasm.Current.op1 == null)
                 return false;
-            emitter.SideEffect(PseudoProc("__syscall", VoidType.Instance, RewriteSrcOperand(dasm.Current.op1)));
+            emitter.SideEffect(host.PseudoProcedure("__syscall", VoidType.Instance, RewriteSrcOperand(dasm.Current.op1)));
             return true;
         }
 

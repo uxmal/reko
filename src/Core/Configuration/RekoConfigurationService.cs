@@ -216,7 +216,6 @@ namespace Reko.Core.Configuration
         /// <returns></returns>
         public static RekoConfigurationService Load()
         {
-            var cur = Directory.GetCurrentDirectory();
             var appConfig = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
             var appDir = Path.GetDirectoryName(appConfig);
             var configFileName = ConfigurationManager.AppSettings["RekoConfiguration"];

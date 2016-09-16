@@ -145,6 +145,7 @@
     <Compile Include="Analysis\GrfDefinitionFinder.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Analysis\IndirectCallRewriter.cs" />
     <Compile Include="Analysis\ProcedureFlow2.cs" />
     <Compile Include="Analysis\ProcedureGraph.cs" />
     <Compile Include="Analysis\RegisterPreservation.cs" />
@@ -222,6 +223,9 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Evaluation\CastCastRule.cs" />
+    <Compile Include="Evaluation\IdProcConstRule.cs" />
+    <Compile Include="Evaluation\SelfDpbRule.cs" />
     <Compile Include="Evaluation\Shl_add_Rule.cs" />
     <Compile Include="Evaluation\SliceSegmentedPointer_Rule.cs" />
     <Compile Include="Loading\DccSignatureLoader.cs" />
@@ -289,6 +293,7 @@
     <Compile Include="Scanning\StringSearch.cs" />
     <Compile Include="Scanning\KmpStringSearch.cs" />
     <Compile Include="Scanning\ProcedureWorkItem.cs" />
+    <Compile Include="Scanning\VarargsFormatScanner.cs" />
     <Compile Include="Scanning\VectorWorkItem.cs" />
     <Compile Include="Loading\Loader.cs" />
     <Compile Include="Scanning\EscapedAccessRewriter.cs">

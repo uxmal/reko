@@ -79,6 +79,8 @@ namespace Reko.Analysis
         {
             foreach (Procedure proc in procedures)
             {
+                if (eventListener.IsCanceled())
+                    break;
                 var pf = flow[proc];
                 foreach (var reg in pf.TrashedRegisters.ToList())
                 {
@@ -101,6 +103,8 @@ namespace Reko.Analysis
             var e = eventListener;
             while (worklist.GetWorkItem(out block))
             {
+                if (e.IsCanceled())
+                    break;
                 eventListener.ShowStatus(string.Format("Blocks left: {0}", worklist.Count));
                 ProcessBlock(block);
             }
@@ -170,15 +174,20 @@ namespace Reko.Analysis
         {
             visited.Add(block);
             StartProcessingBlock(block);
-            try
+            foreach (var stm in block.Statements)
             {
-                block.Statements.ForEach(stm => stm.Instruction.Accept(this));
-            } catch (Exception ex)
-            {
-                eventListener.Error(
-                    eventListener.CreateBlockNavigator(program, block),
-                    ex,
-                    "Error while analyzing trashed registers.");
+                try
+                {
+                    stm.Instruction.Accept(this);
+
+                }
+                catch (Exception ex)
+                {
+                    eventListener.Error(
+                        eventListener.CreateStatementNavigator(program, stm),
+                        ex,
+                        "Error while analyzing trashed registers.");
+                }
             }
             if (block == block.Procedure.ExitBlock)
             {
@@ -213,7 +222,7 @@ namespace Reko.Analysis
                 }
                 catch (Exception ex)
                 {
-                    var location = eventListener.CreateBlockNavigator(program, block);
+                    var location = eventListener.CreateStatementNavigator(program, stm);
                     eventListener.Error(
                         location,
                         ex,

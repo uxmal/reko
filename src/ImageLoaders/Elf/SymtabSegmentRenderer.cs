@@ -30,9 +30,9 @@ namespace Reko.ImageLoaders.Elf
     public class SymtabSegmentRenderer32 : ImageSegmentRenderer
     {
         private ElfLoader32 loader;
-        private Elf32_SHdr shdr;
+        private ElfSection shdr;
 
-        public SymtabSegmentRenderer32(ElfLoader32 loader, Elf32_SHdr shdr)
+        public SymtabSegmentRenderer32(ElfLoader32 loader, ElfSection shdr)
         {
             this.loader = loader;
             this.shdr = shdr;
@@ -40,9 +40,9 @@ namespace Reko.ImageLoaders.Elf
 
         public override void Render(ImageSegment segment, Program program, Formatter formatter)
         {
-            var entries = shdr.sh_size / shdr.sh_entsize;
-            var symtab = (int)shdr.sh_link;
-            var rdr = loader.CreateReader(shdr.sh_offset);
+            var entries = shdr.EntryCount();
+            var symtab = shdr.LinkedSection;
+            var rdr = loader.CreateReader(shdr.FileOffset);
             for (int i = 0; i < entries; ++i)
             {
                 uint iName;
@@ -65,7 +65,7 @@ namespace Reko.ImageLoaders.Elf
                     return;
                 string symStr = loader.GetStrPtr(symtab, iName);
                 string segName = loader.GetSectionName(shIndex);
-                formatter.Write("{0,-40} {1:X8} {2:X8} {3:X2} {4}", symStr, value, size, info & 0xFF, segName);
+                formatter.Write("{0:X4} {1,-40} {2:X8} {3:X8} {4:X2} {5}", i, symStr, value, size, info & 0xFF, segName);
                 formatter.WriteLine();
             }
         }

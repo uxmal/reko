@@ -58,7 +58,7 @@ namespace Reko.Environments.Windows
                             RegisterValues = new RegValue[0],
                         },
                         Name = "int3",
-                        Signature = new ProcedureSignature(null, new Identifier[0]),
+                        Signature = new FunctionType(null, null, new Identifier[0]),
                         Characteristics = new ProcedureCharacteristics(),
                     }
                 },
@@ -72,9 +72,9 @@ namespace Reko.Environments.Windows
                             RegisterValues = new RegValue[0]
                         },
                         Name = "__fastfail",
-                        Signature = new ProcedureSignature(
+                        Signature = new FunctionType(
                             null,
-                            frame.EnsureRegister(Registers.ecx)), //$bug what about win64?
+                            frame.EnsureRegister(Registers.ecx)),
                         Characteristics = new ProcedureCharacteristics
                         {
                             Terminates = true
@@ -222,7 +222,7 @@ namespace Reko.Environments.Windows
             }
             else
             {
-                ProcedureSignature sig;
+                FunctionType sig;
                 if (Metadata.Signatures.TryGetValue(procName, out sig))
                     return new ExternalProcedure(procName, sig);
                 else

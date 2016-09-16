@@ -331,15 +331,25 @@ namespace Reko.Core.Expressions
         {
             return new ConstantReal32(PrimitiveType.Real32, f);
         }
-
+   
         public static Constant Real64(double d)
         {
             return new ConstantReal64(PrimitiveType.Real64, d);
         }
 
+        public static Constant UInt16(ushort u)
+        {
+            return new ConstantUInt16(PrimitiveType.UInt16, u);
+        }
+
         public static Constant UInt32(uint w)
         {
             return new ConstantUInt32(PrimitiveType.UInt32, w);
+        }
+
+        public static Constant UInt64(ulong ul)
+        {
+            return new ConstantUInt64(PrimitiveType.UInt64, ul);
         }
 
         public static Constant Word16(ushort n)

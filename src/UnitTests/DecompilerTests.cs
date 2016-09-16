@@ -24,6 +24,7 @@ using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
+using Reko.Core.Types;
 using Reko.Environments.Msdos;
 using Reko.UnitTests.Mocks;
 using Rhino.Mocks;
@@ -90,7 +91,7 @@ namespace Reko.UnitTests
             };
             var sigs = decompiler.LoadCallSignatures(program, al);
 
-            ProcedureSignature ps = sigs[Address.SegPtr(0x0C32, 0x3200)];
+            FunctionType ps = sigs[Address.SegPtr(0x0C32, 0x3200)];
             Assert.IsNotNull(ps, "Expected a call signature for address");
         }
     }

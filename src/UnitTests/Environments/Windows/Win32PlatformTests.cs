@@ -101,7 +101,9 @@ namespace Reko.UnitTests.Environments.Windows
         private void Expect_TypeLibraryLoaderService_LoadLibrary(string expected, IDictionary<string, DataType> types)
         {
             var tl = new TypeLibrary(
-                types, new Dictionary<string, ProcedureSignature>());
+                types, 
+                new Dictionary<string, FunctionType>(),
+                new Dictionary<string, DataType>());
 
             Expect_TypeLibraryLoaderService_LoadLibrary(
                 new TypeLibraryElement
@@ -164,11 +166,10 @@ namespace Reko.UnitTests.Environments.Windows
             var ep = win32.SignatureFromName(fnName);
 
             var sigExp =
-@"void ()()
+@"void foo()
 // stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 ";
-
-            Assert.AreEqual(sigExp, ep.Signature.ToString());
+            Assert.AreEqual(sigExp, ep.Signature.ToString("foo", FunctionType.EmitFlags.AllDetails));
         }
 
         [Test]
@@ -202,11 +203,10 @@ namespace Reko.UnitTests.Environments.Windows
             var sig = ser.Deserialize(sSig, win32.Architecture.CreateFrame());
 
             var sigExp =
-@"Register TESTTYPE1 ()(Stack TESTTYPE2 a, Stack TESTTYPE3 b)
+@"Register TESTTYPE1 foo(Stack TESTTYPE2 a, Stack TESTTYPE3 b)
 // stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
 ";
-
-            Assert.AreEqual(sigExp, sig.ToString());
+            Assert.AreEqual(sigExp, sig.ToString("foo", FunctionType.EmitFlags.AllDetails));
             Assert.AreEqual("byte", (sig.ReturnValue.DataType as TypeReference).Referent.ToString());
             Assert.AreEqual("int16", (sig.Parameters[0].DataType as TypeReference).Referent.ToString());
             Assert.AreEqual("int32", (sig.Parameters[1].DataType as TypeReference).Referent.ToString());

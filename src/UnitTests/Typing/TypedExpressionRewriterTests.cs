@@ -47,19 +47,20 @@ namespace Reko.UnitTests.Typing
         private TypeTransformer trans;
         private ComplexTypeNamer ctn;
         private List<StructureField> userDefinedGlobals;
-        private Dictionary<string, ProcedureSignature> userDefinedProcedures;
+        private Dictionary<string, FunctionType> userDefinedProcedures;
         private Dictionary<Address, ImageSegment> imageSegments;
 
         [SetUp]
         public void Setup()
         {
             userDefinedGlobals = new List<StructureField>();
-            userDefinedProcedures = new Dictionary<string, ProcedureSignature>();
+            userDefinedProcedures = new Dictionary<string, FunctionType>();
             imageSegments = new Dictionary<Address, ImageSegment>();
         }
 
         protected override void RunTest(Program program, string outputFile)
         {
+            var eventListener = new FakeDecompilerEventListener();
             using (FileUnitTester fut = new FileUnitTester(outputFile))
             {
                 fut.TextWriter.WriteLine("// Before ///////");
@@ -72,15 +73,14 @@ namespace Reko.UnitTests.Typing
                 coll = new TraitCollector(program.TypeFactory, program.TypeStore, dtb, program);
                 coll.CollectProgramTraits(program);
 #else
-                var coll = new TypeCollector(program.TypeFactory, program.TypeStore, program);
+                var coll = new TypeCollector(program.TypeFactory, program.TypeStore, program,eventListener);
                 coll.CollectTypes();
 #endif
                 program.TypeStore.BuildEquivalenceClassDataTypes(program.TypeFactory);
-                program.TypeStore.Dump();
                 tvr.ReplaceTypeVariables();
                 trans.Transform();
                 ctn.RenameAllTypes(program.TypeStore);
-                ter = new TypedExpressionRewriter(program, null);
+                ter = new TypedExpressionRewriter(program, eventListener);
                 try
                 {
                     ter.RewriteProgram(program);
@@ -112,6 +112,7 @@ namespace Reko.UnitTests.Typing
             sw.WriteLine("// Before ///////");
             DumpProgram(program, sw);
 
+            var eventListener = new FakeDecompilerEventListener();
             SetupPreStages(program);
             aen.Transform(program);
             eqb.Build(program);
@@ -119,16 +120,15 @@ namespace Reko.UnitTests.Typing
             coll = new TraitCollector(program.TypeFactory, program.TypeStore, dtb, program);
             coll.CollectProgramTraits(program);
 #else
-            var coll = new TypeCollector(program.TypeFactory, program.TypeStore, program);
+            var coll = new TypeCollector(program.TypeFactory, program.TypeStore, program, eventListener);
             coll.CollectTypes();
 #endif
             program.TypeStore.BuildEquivalenceClassDataTypes(program.TypeFactory);
             tvr.ReplaceTypeVariables();
             trans.Transform();
             ctn.RenameAllTypes(program.TypeStore);
-            program.TypeStore.Dump();
 
-            var ter = new TypedExpressionRewriter(program, null);
+            var ter = new TypedExpressionRewriter(program, eventListener);
             try
             {
                 ter.RewriteProgram(program);
@@ -209,7 +209,8 @@ namespace Reko.UnitTests.Typing
 
         private ExternalProcedure Given_Procedure(string name, params DataType [] argTypes)
         {
-            var sig = new ProcedureSignature(
+            var sig = new FunctionType(
+                null,
                 null,
                 argTypes.Select((argType, i) => new Identifier(
                         "arg" + i, 
@@ -255,7 +256,6 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-       [Ignore("scanning-development")]
         public void TerUnionIntReal()
         {
             var mock = CreateProgramBuilder(0x10000, 0x1000);
@@ -594,7 +594,8 @@ namespace Reko.UnitTests.Typing
                 var ax = m.Reg16("ax", 0);
                 var rand = new ExternalProcedure(
                     "rand",
-                    new ProcedureSignature(
+                    new FunctionType(
+                        null,
                         new Identifier("ax", PrimitiveType.Int16, ax.Storage),
                         new Identifier[0]));
                 m.Declare(ax, m.Fn(rand));
@@ -754,7 +755,7 @@ void proc1()
 proc1_entry:
 	// succ:  l1
 l1:
-	Eq_2 * eax
+	struct Eq_2 * eax
 	globals->w1000 = eax->w0000
 	globals->w1002 = eax->w0002
 proc1_exit:
@@ -800,7 +801,7 @@ void proc1()
 proc1_entry:
 	// succ:  l1
 l1:
-	real32 * * * eax1
+	real32 *** eax1
 	eax2 = *eax1
 	eax3 = *eax2
 	globals->r1004 = *eax3
@@ -848,7 +849,7 @@ void proc1()
 proc1_entry:
 	// succ:  l1
 l1:
-	Eq_2 * r1
+	struct Eq_2 * r1
 	r1 = r1->ptr0000
 	globals->b1004 = r1->ptr0000->ptr0000->b0004
 proc1_exit:
@@ -900,7 +901,7 @@ void proc1()
 proc1_entry:
 	// succ:  l1
 l1:
-	Eq_2 * r1
+	struct Eq_2 * r1
 	ptr32 r2
 	r1 = r1->ptr0000
 	globals->b1004 = r1->ptr0000->ptr0000->b0004
@@ -987,7 +988,8 @@ test_exit:
         public void TerNamedGlobal()
         {
             var sExp =
-            #region Expected@"// Before ///////
+            #region Expected
+@"// Before ///////
 // test
 // Return size: 0
 void test()
@@ -1067,6 +1069,101 @@ test_exit:
                 m.Assign(ds, Constant.Create(ds.DataType, 0x1234));
                 m.SegStore(ds, m.Word16(0x10), m.Word32(0x010004));
             }, sExp);
+        }
+
+        [Test]
+        public void TerNestedStructsPtr()
+        {
+            var pm = CreateProgramBuilder(0x1000, 0x1000);
+            pm.Add("proc1", m =>
+            {
+                var eax = m.Reg32("eax", 0);
+                var ecx = m.Reg32("ecx", 1);
+                var strInner = new StructureType("strInner", 8, true)
+                {
+                    Fields = {
+                        { 0, PrimitiveType.Real32, "innerAttr00" },
+                        { 4, PrimitiveType.Int32, "innerAttr04" },
+                    }
+                };
+                var str = new StructureType("str", 8, true)
+                {
+                    Fields = {
+                        { 0, new Pointer(strInner, 4), "strAttr00" },
+                        { 4, PrimitiveType.Int32, "strAttr04" },
+                    }
+                };
+                var v = m.Frame.EnsureStackArgument(4, new Pointer(str, 4));
+                m.Declare(eax, m.Load(PrimitiveType.Word32, v));
+                m.Declare(ecx, m.Load(PrimitiveType.Word32, eax));
+            });
+            var sExp =
+            #region Expected String
+@"// Before ///////
+// proc1
+// Return size: 0
+void proc1()
+proc1_entry:
+	// succ:  l1
+l1:
+	word32 eax = Mem0[ptrArg04:word32]
+	word32 ecx = Mem0[eax:word32]
+proc1_exit:
+
+// After ///////
+// proc1
+// Return size: 0
+void proc1()
+proc1_entry:
+	// succ:  l1
+l1:
+	strInner * eax = ptrArg04->strAttr00
+	real32 ecx = eax->innerAttr00
+proc1_exit:
+
+";
+            #endregion
+            RunTest(pm.BuildProgram(), "Typing/TerNestedStructsPtr.txt");
+        }
+
+
+        [Test]
+        public void TerAddressOf()
+        {
+            var pb = new ProgramBuilder();
+            pb.Add("AddressOf", m =>
+            {
+                var foo = new Identifier("foo", new UnknownType(), new MemoryStorage());
+                var r1 = m.Reg32("r1", 1);
+                m.Declare(r1, m.AddrOf(foo));
+                m.Store(r1, m.Word16(0x1234));
+                m.Store(m.IAdd(r1, 4), m.Byte(0x0A));
+                m.Return();
+            });
+            RunTest(pb.BuildProgram());
+        }
+
+        [Test]
+        public void TerTypedAddressOf()
+        {
+            var pb = new ProgramBuilder();
+            pb.Add("TypedAddressOf", m =>
+            {
+                var str = new TypeReference("foo", new StructureType("foo", 0)
+                {
+                    Fields = {
+                        { 0, PrimitiveType.Int16, "word00" },
+                        { 4, PrimitiveType.Byte, "byte004"}
+                    }
+                });
+                var foo = new Identifier("foo", str, new MemoryStorage());
+                var r1 = m.Reg32("r1", 1);
+                m.Declare(r1, m.AddrOf(foo));
+                m.Store(r1, m.Word16(0x1234));
+                m.Store(m.IAdd(r1, 4), m.Byte(0x0A));
+                m.Return();
+            });
+            RunTest(pb.BuildProgram());
         }
     }
 }

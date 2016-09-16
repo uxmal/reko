@@ -70,7 +70,7 @@ namespace Reko.Analysis
         
 		private static void EmitRegistersCore(IProcessorArchitecture arch, HashSet<RegisterStorage> regs, TextWriter sb)
 		{
-            foreach (var reg in regs.OrderBy(r => r.Name))
+            foreach (var reg in regs.Where(r => r!= null).OrderBy(r => r.Name))
             {
                 sb.Write(" ");
                 sb.Write(reg.Name);

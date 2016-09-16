@@ -112,7 +112,7 @@ namespace Reko.Scanning.Dfa
             var state = new IntermediateState(
                 new SortedSet<TreeNode>(nodeSet, nodeComparer),
                 Dstates.Count);
-            DumpState(state);
+            // DumpState(state);        // This is very verbose in the unit tests
             return state;
         }
 

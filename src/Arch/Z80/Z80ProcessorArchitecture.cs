@@ -34,6 +34,8 @@ namespace Reko.Arch.Z80
 {
     public class Z80ProcessorArchitecture : ProcessorArchitecture
     {
+        private Dictionary<uint, FlagGroupStorage> flagGroups;
+
         public Z80ProcessorArchitecture()
         {
             this.InstructionBitSize = 8;
@@ -42,6 +44,7 @@ namespace Reko.Arch.Z80
             this.WordWidth = PrimitiveType.Word16;
             this.StackRegister = Registers.sp;
             this.CarryFlagMask = (uint)FlagM.CF;
+            this.flagGroups = new Dictionary<uint, FlagGroupStorage>();
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
@@ -101,7 +104,7 @@ namespace Reko.Arch.Z80
 
         public override RegisterStorage GetRegister(string name)
         {
-            throw new NotImplementedException();
+            return Registers.GetRegister(name);
         }
 
         public override RegisterStorage[] GetRegisters()
@@ -129,7 +132,7 @@ namespace Reko.Arch.Z80
 
         public override RegisterStorage GetWidestSubregister(RegisterStorage reg, HashSet<RegisterStorage> regs)
         {
-            ulong mask = regs.Where(b => b.OverlapsWith(reg)).Aggregate(0ul, (a, r) => a | r.BitMask);
+            ulong mask = regs.Where(b => b != null && b.OverlapsWith(reg)).Aggregate(0ul, (a, r) => a | r.BitMask);
             Dictionary<uint, RegisterStorage> subregs;
             if ((mask & reg.BitMask) == reg.BitMask)
                 return reg;
@@ -150,7 +153,16 @@ namespace Reko.Arch.Z80
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
-            throw new NotImplementedException();
+            FlagGroupStorage f;
+            if (flagGroups.TryGetValue(grf, out f))
+            {
+                return f;
+            }
+
+            PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var fl = new FlagGroupStorage(Registers.f, grf, GrfToString(grf), dt);
+            flagGroups.Add(grf, fl);
+            return fl;
         }
 
         public override FlagGroupStorage GetFlagGroup(string name)
@@ -213,13 +225,18 @@ namespace Reko.Arch.Z80
         public static readonly RegisterStorage i = new RegisterStorage("i", 8, 0, PrimitiveType.Byte);
         public static readonly RegisterStorage r = new RegisterStorage("r", 9, 0, PrimitiveType.Byte);
 
-        public static readonly RegisterStorage S = new RegisterStorage("S", 20, 0, PrimitiveType.Bool);
-        public static readonly RegisterStorage Z = new RegisterStorage("Z", 21, 0, PrimitiveType.Bool);
-        public static readonly RegisterStorage P = new RegisterStorage("P", 22, 0, PrimitiveType.Bool);
-        public static readonly RegisterStorage C = new RegisterStorage("C", 23, 0, PrimitiveType.Bool);
+        public static readonly RegisterStorage bc_ = new RegisterStorage("bc'", 12, 0, PrimitiveType.Word16);
+        public static readonly RegisterStorage de_ = new RegisterStorage("de'", 13, 0, PrimitiveType.Word16);
+        public static readonly RegisterStorage hl_ = new RegisterStorage("hl'", 14, 0, PrimitiveType.Word16);
+
+        public static readonly RegisterStorage S = new RegisterStorage("S", 24, 0, PrimitiveType.Bool);
+        public static readonly RegisterStorage Z = new RegisterStorage("Z", 25, 0, PrimitiveType.Bool);
+        public static readonly RegisterStorage P = new RegisterStorage("P", 26, 0, PrimitiveType.Bool);
+        public static readonly RegisterStorage C = new RegisterStorage("C", 27, 0, PrimitiveType.Bool);
 
         internal static RegisterStorage[] All;
         internal static Dictionary<RegisterStorage, Dictionary<uint, RegisterStorage>> SubRegisters;
+        private static Dictionary<string, RegisterStorage> regsByName;
 
         static Registers()
         {
@@ -232,7 +249,7 @@ namespace Reko.Arch.Z80
              h ,
              l ,
              a ,
-             null,
+             f,
                
              bc,
              de,
@@ -248,11 +265,18 @@ namespace Reko.Arch.Z80
              null,
              null,
 
+             bc_,
+             de_,
+             hl_,
+             null,
+
              S ,
              Z ,
              P ,
              C ,
             };
+
+            Registers.regsByName = All.Where(r => r != null).ToDictionary(r => r.Name);
 
             SubRegisters = new Dictionary<
                 RegisterStorage, 
@@ -285,6 +309,11 @@ namespace Reko.Arch.Z80
         internal static RegisterStorage GetRegister(int r)
         {
             return All[r];
+        }
+
+        internal static RegisterStorage GetRegister(string name)
+        {
+            return regsByName[name];
         }
     }
 

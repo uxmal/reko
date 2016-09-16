@@ -137,13 +137,14 @@ namespace Reko.Core.Code
         {
         }
 
-		public virtual void VisitApplication(Application appl)
-		{
-			for (int i = 0; i < appl.Arguments.Length; ++i)
-			{
-				appl.Arguments[i].Accept(this);
-			}
-		}
+        public virtual void VisitApplication(Application appl)
+        {
+            appl.Procedure.Accept(this);
+            for (int i = 0; i < appl.Arguments.Length; ++i)
+            {
+                appl.Arguments[i].Accept(this);
+            }
+        }
 
 		public virtual void VisitArrayAccess(ArrayAccess acc)
 		{

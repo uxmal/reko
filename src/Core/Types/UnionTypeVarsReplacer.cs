@@ -63,11 +63,11 @@ namespace Reko.Core.Types
 
         public DataType VisitFunctionType(FunctionType ft)
         {
-            if (ft.ReturnType != null)
-                ft.ReturnType = ft.ReturnType.Accept(this);
-            for (int i = 0; i < ft.ArgumentTypes.Length; ++i)
+            if (ft.ReturnValue != null)
+                ft.ReturnValue.DataType = ft.ReturnValue.DataType.Accept(this);
+            for (int i = 0; i < ft.Parameters.Length; ++i)
             {
-                ft.ArgumentTypes[i] = ft.ArgumentTypes[i].Accept(this);
+                ft.Parameters[i].DataType = ft.Parameters[i].DataType.Accept(this);
             }
             return ft;
         }

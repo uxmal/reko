@@ -34,6 +34,11 @@ namespace Reko.Typing
     /// <summary>
     /// Pushes type information down from the root of an expression to its leaves.
     /// </summary>
+    /// <remarks>
+    ///    root
+    ///  ↓ /  \ ↓
+    /// leaf  leaf
+    /// </remarks>
     public class ExpressionTypeDescender : ExpressionVisitor<bool, TypeVariable>
     {
         // Matches the effective address of Mem[p + c] where c is a constant.
@@ -110,9 +115,13 @@ namespace Reko.Typing
 
         public void FunctionTrait(Expression function, int funcPtrSize, TypeVariable ret, params TypeVariable[] actuals)
         {
-            DataType[] adt = new DataType[actuals.Length];
-            actuals.CopyTo(adt, 0);
-            var fn = factory.CreateFunctionType(null, ret, adt, null);
+            Identifier[] parameters = actuals
+                .Select(a => new Identifier("", a, null))
+                .ToArray();
+            var fn = factory.CreateFunctionType(
+                null, 
+                new Identifier("", ret, null),
+                parameters);
             var pfn = factory.CreatePointer(fn, funcPtrSize);
             MeetDataType(function, pfn);
         }
@@ -394,7 +403,7 @@ namespace Reko.Typing
                 seg.IsSegment = true;
                 var ptr = factory.CreatePointer(seg, dt.Size);
                 dt = ptr;
-            }
+            } 
             tvExp.DataType = unifier.Unify(tvExp.DataType, dt);
             tvExp.OriginalDataType = unifier.Unify(tvExp.OriginalDataType, dt);
             return tvExp.DataType;
@@ -735,9 +744,12 @@ namespace Reko.Typing
 
         public bool VisitUnaryExpression(UnaryExpression unary, TypeVariable tv)
         {
+            if (unary.Operator == Operator.AddrOf)
+            {
+                MeetDataType(unary, factory.CreatePointer(unary.Expression.DataType, unary.DataType.Size));
+            }
             unary.Expression.Accept(this, unary.Expression.TypeVariable);
             return false;
-            throw new NotImplementedException();
         }
     }
 }

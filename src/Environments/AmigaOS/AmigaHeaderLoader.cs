@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.CLanguage;
 using Reko.Core.Serialization;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;

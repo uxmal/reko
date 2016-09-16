@@ -23,6 +23,7 @@ using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
+using System.Linq;
 
 namespace Reko.Typing
 {
@@ -125,9 +126,8 @@ namespace Reko.Typing
 
 		public DataType FunctionTrait(Expression function, int funcPtrSize, TypeVariable ret, params TypeVariable [] actuals)
 		{
-			DataType [] adt = new DataType[actuals.Length];
-			actuals.CopyTo(adt, 0);
-			var fn = factory.CreateFunctionType(null, ret, adt, null);
+            Identifier[] adt = actuals.Select(a => new Identifier("", a, null)).ToArray();
+			var fn = factory.CreateFunctionType(null, new Identifier("", ret, null), adt);
 			var pfn = factory.CreatePointer(fn, funcPtrSize);
 			return MergeIntoDataType(function, pfn);
 		}

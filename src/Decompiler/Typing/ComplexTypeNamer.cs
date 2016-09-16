@@ -92,12 +92,12 @@ namespace Reko.Typing
 
         public DataType VisitFunctionType(FunctionType ft)
         {
-            foreach (var arg in ft.ArgumentTypes)
+            foreach (var param in ft.Parameters)
             {
-                arg.Accept(this);
+                param.DataType.Accept(this);
             }
-            if (ft.ReturnType != null)
-                ft.ReturnType.Accept(this);
+            if (!ft.HasVoidReturn)
+                ft.ReturnValue.DataType.Accept(this);
             return ft;
         }
 

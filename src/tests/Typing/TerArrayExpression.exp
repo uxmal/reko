@@ -16,7 +16,7 @@ void ArrayExpressionFragment()
 ArrayExpressionFragment_entry:
 	// succ:  l1
 l1:
-	pa = (Eq_2 *) 0x000A0000
+	pa = (struct Eq_2 *) 0x000A0000
 	pa->a0140[i] = 0xF8
 ArrayExpressionFragment_exit:
 

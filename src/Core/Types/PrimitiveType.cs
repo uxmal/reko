@@ -40,17 +40,17 @@ namespace Reko.Core.Types
 	public enum Domain
 	{
 		None = 0,
-		Boolean = 2,                // f
-		Character = 4,              // c
-		SignedInt = 8,              // i 
-		UnsignedInt = 16,           // u
+		Boolean = 1,                // f
+		Character = 2,              // c
+		SignedInt = 4,              // i 
+		UnsignedInt = 8,            // u
         Integer = SignedInt|UnsignedInt,
-        Bcd = 32,                   // b - Binary coded decimal; a decimal digit stored in each nybble of a byte.
-        Real = 64,                  // r
-		Pointer = 128,              // p
-        Offset = 256,               // n
-		Selector = 512,             // S
-        SegPointer = 1024,          // P - Segmented pointer (x86-style)
+        Bcd = 16,                   // b - Binary coded decimal; a decimal digit stored in each nybble of a byte.
+        Real = 32,                  // r
+		Pointer = 64,               // p
+        Offset = 128,               // n - "near pointer" (x86)
+		Selector = 256,             // S
+        SegPointer = 512,           // P - Segmented pointer (x86-style)
 
         Any = Boolean|Character|SignedInt|UnsignedInt|Bcd|Real|Pointer|Offset|Selector|SegPointer
 	}
@@ -323,6 +323,7 @@ namespace Reko.Core.Types
 			Ptr16 = Create(Domain.Pointer, 2);
 			SegmentSelector = Create(Domain.Selector, 2);
             WChar = Create(Domain.Character, 2);
+            Offset16 = Create(Domain.Offset, 2);
 
 			Word32 = CreateWord(4);
 			Int32 = Create(Domain.SignedInt, 4);
@@ -359,6 +360,7 @@ namespace Reko.Core.Types
 		public static PrimitiveType Int16 { get; private set; }
 		public static PrimitiveType UInt16 { get; private set; }
         public static PrimitiveType Ptr16 { get; private set; }
+        public static PrimitiveType Offset16 { get; private set; }
 
 		public static PrimitiveType SegmentSelector  {get; private set; }
 

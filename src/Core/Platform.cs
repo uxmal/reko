@@ -59,10 +59,27 @@ namespace Reko.Core
 
         Address AdjustProcedureAddress(Address addrCode);
         HashSet<RegisterStorage> CreateImplicitArgumentRegisters();
-        IEnumerable<Address> CreatePointerScanner(SegmentMap segmentMap, ImageReader rdr, IEnumerable<Address> address, PointerScannerFlags pointerScannerFlags);
+        IEnumerable<Address> CreatePointerScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> addr, PointerScannerFlags flags);
         ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
         TypeLibrary CreateMetadata();
         SegmentMap CreateAbsoluteMemoryMap();
+
+        /// <summary>
+        /// Given a procedure signature, determines whether it conforms to any
+        /// of the platform's defined calling conventions.
+        /// </summary>
+        /// <remarks>
+        /// Some platforms, like Win32, will have several well known 
+        /// calling conventions. Others, like many ELF implementations,
+        /// will have one and only one calling convention. On such platforms
+        /// we will assume that the calling convention is represented by
+        /// the empty string "". //$REVIEW: this probably highlights the 
+        /// need for a CallingConvention abstraction.
+        /// </remarks>
+        /// <param name="signature"></param>
+        /// <returns>The name of the calling convention, or null
+        /// if no calling convention could be determined.</returns>
+        string DetermineCallingConvention(FunctionType signature);
 
         /// <summary>
         /// Given a C basic type, returns the number of bytes that type is
@@ -81,7 +98,7 @@ namespace Reko.Core
         /// <param name="t">Primitive type</param>
         /// <param name="language">Programming language to use</param>
         /// <returns></returns>
-        string GetPrimitiveTypeName(PrimitiveType t, string v);
+        string GetPrimitiveTypeName(PrimitiveType t, string language);
 
         ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host);
 
@@ -98,9 +115,19 @@ namespace Reko.Core
         SystemService FindService(int vector, ProcessorState state);
         SystemService FindService(RtlInstruction call, ProcessorState state);
         string FormatProcedureName(Program program, Procedure proc);
+
+        /// <summary>
+        /// Injects any platform specific instructions to the beginning 
+        /// of a procedure.
+        /// </summary>
+        /// <param name="emitter"></param>
+        void InjectProcedureEntryStatements(Procedure proc, Address addr, CodeEmitter emitter);
+
         void LoadUserOptions(Dictionary<string, object> options);
         ExternalProcedure LookupProcedureByName(string moduleName, string procName);
         ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal);
+        Identifier LookupGlobalByName(string moduleName, string globalName);
+        ProcedureCharacteristics LookupCharacteristicsByName(string procName);
         Address MakeAddressFromConstant(Constant c);
         Address MakeAddressFromLinear(ulong uAddr);
         bool TryParseAddress(string sAddress, out Address addr);
@@ -219,6 +246,11 @@ namespace Reko.Core
                 segs.Values.ToArray());
         }
 
+        public virtual string DetermineCallingConvention(FunctionType signature)
+        {
+            return null;
+        }
+
         /// <summary>
         /// Utility function for subclasses that loads all type libraries and
         /// characteristics libraries defined in the Reko configuration file.
@@ -241,7 +273,6 @@ namespace Reko.Core
                                 t.Architecture == Architecture.Name)
                     .OfType<ITypeLibraryElement>())
                 {
-                    Debug.Print("Loading {0}", tl.Name);
                     Metadata = tlSvc.LoadMetadataIntoLibrary(this, tl, Metadata); 
                 }
                 this.CharacteristicsLibs = envCfg.CharacteristicsLibraries
@@ -305,6 +336,10 @@ namespace Reko.Core
             return Architecture.MakeAddressFromConstant(c);
         }
 
+        public virtual void InjectProcedureEntryStatements(Procedure proc, Address addr, CodeEmitter emitter)
+        {
+        }
+
         /// <summary>
         /// Given a linear address, converts it to an Address instance. By default,
         /// use the architecture pointer size for the address.
@@ -353,6 +388,19 @@ namespace Reko.Core
         public virtual ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
         {
             return null;
+        }
+
+        public virtual Identifier LookupGlobalByName(string moduleName, string globalName)
+        {
+            return null;
+        }
+
+        public virtual ProcedureCharacteristics LookupCharacteristicsByName(string procName)
+        {
+            EnsureTypeLibraries(PlatformIdentifier);
+            return CharacteristicsLibs.Select(cl => cl.Lookup(procName))
+                .Where(c => c != null)
+                .FirstOrDefault();
         }
     }
 

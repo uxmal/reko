@@ -49,8 +49,6 @@ namespace Reko.Core
             return list;
         }
 
-
-
         public static SortedList<TKey, TValue> ToSortedList<TSource, TKey, TValue>(
             this IEnumerable<TSource> source,
             Func<TSource, TKey> keySelector,

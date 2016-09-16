@@ -4,6 +4,7 @@ TestResults
 /src/Samples/TravisRelease
 /src/.vs
 *.csproj.user
+*.vcxproj.user
 *.opensdf
 *.sdf
 *.suo
@@ -15,3 +16,10 @@ TestResults
 /src/UnitTests/TestResult.xml
 /src/tools/reko.config
 /src/Reko-decompiler.VC.db
+**/ipch/
+
+# MSVC build directories
+**/x86/Debug
+**/x86/Release
+**/x86/Debug
+**/x64/Release

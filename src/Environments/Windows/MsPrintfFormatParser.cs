@@ -18,7 +18,10 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Core.Analysis;
 using Reko.Core.Types;
+using Reko.Libraries.Libc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,207 +29,45 @@ using System.Text;
 
 namespace Reko.Environments.Windows
 {
-    public class MsPrintfFormatParser
+    /// <summary>
+    /// Parses Microsoft printf format which differs from C standard
+    /// </summary>
+    public class MsPrintfFormatParser : PrintfFormatParser
     {
-        private int i;
-        private string format;
-        private bool wideChars;
-        private int wordSize;
-        private int longSize;
-        private int pointerSize;
-
-        public MsPrintfFormatParser(string format, bool wideChars, int wordSize, int longSize, int pointerSize)
+        public MsPrintfFormatParser(
+            Program program,
+            Address addrInstr,
+            string format,
+            IServiceProvider services) :
+        base(program, addrInstr, format, services)
         {
-            this.ArgumentTypes = new List<DataType>();
-            this.wideChars = wideChars;
-            this.format = format;
-            this.wordSize = wordSize;
-            this.longSize = longSize;
-            this.pointerSize = pointerSize;
         }
 
-        public List<DataType> ArgumentTypes { get; private set; }
-
-        public void Parse()
+        protected override DataType MakeDataType(PrintfSize size, char cDomain)
         {
-            // %[flags] [width] [.precision] [{h | l | ll | w | I | I32 | I64}] type
-
-            for (this.i = 0; i < format.Length; ++i)
+            if (cDomain == 'S')
             {
-                if (format[i] != '%' || i == format.Length-1)
-                    continue;
-                char ch = format[++i];
-                if (ch == '%')
-                    continue;
-                // Possible flag?
-                SkipFlag();
-                SkipNumber();
-                if (i < format.Length && format[i] == '.')
-                {
-                    SkipNumber();
-                }
-
-                var byteSize = CollectSize();
-
-                char domain = CollectDataType();
-
-                DataType dt = MakeDataType(byteSize, domain);
-                if (dt != null)
-                    ArgumentTypes.Add(dt);
+                return program.TypeFactory.CreatePointer(PrimitiveType.WChar, base.pointerSize);
             }
+            return base.MakeDataType(size, cDomain);
         }
 
-        enum PrintfSize
+        protected override PrintfSize CollectSize()
         {
-            Default,
-            HalfHalf,
-            Half,
-            Long,
-            LongLong,
-            I32,
-            I64,
-        }
-
-        private DataType MakeDataType(PrintfSize size, char cDomain)
-        {
-            Domain domain = Domain.None;
-            int byteSize = this.wordSize;
-            switch (cDomain)
+            if (i < format.Length - 3 && format[i] == 'I')
             {
-            case 'c':
-                if (wideChars)
-                    return PrimitiveType.WChar;
-                else
-                    return PrimitiveType.Char;
-            case 'C':
-                if (wideChars)
-                    return PrimitiveType.Char;
-                else
-                    return PrimitiveType.WChar;
-            case 'o':
-            case 'u':
-            case 'x':
-            case 'X':
-                switch (size)
+                if (format[i + 1] == '3' && format[i + 2] == '2')
                 {
-                case PrintfSize.HalfHalf: byteSize = 1; break;
-                case PrintfSize.Half: byteSize = 2; break;
-                case PrintfSize.Long: byteSize = this.longSize; break;
-                case PrintfSize.LongLong: byteSize = 8; break;
-                case PrintfSize.I32: byteSize = 4; break;
-                case PrintfSize.I64: byteSize = 8; break;
+                    i += 3;
+                    return PrintfSize.I32;
                 }
-                domain = Domain.UnsignedInt;
-                break;
-            case 'd':
-            case 'i':
-                switch (size)
+                if (format[i + 1] == '6' && format[i + 2] == '4')
                 {
-                case PrintfSize.HalfHalf: byteSize = 1; break;
-                case PrintfSize.Half: byteSize = 2; break;
-                case PrintfSize.Long: byteSize = this.longSize; break;
-                case PrintfSize.LongLong: byteSize = 8; break;
-                case PrintfSize.I32: byteSize = 4; break;
-                case PrintfSize.I64: byteSize = 8; break;
-                }
-                domain = Domain.SignedInt;
-                break;
-            case 'a':
-            case 'A':
-            case 'e':
-            case 'E':
-            case 'f':
-            case 'F':
-            case 'g':
-            case 'G':
-                domain = Domain.Real;
-                break;
-            case 'p':
-                byteSize = this.pointerSize;
-                domain = Domain.Pointer;
-                break;
-            }
-            return PrimitiveType.Create(domain, byteSize);
-        }
-
-        private char CollectDataType()
-        {
-            if (i < format.Length)
-                return format[i];
-            else
-                return '\0';
-        }
-
-        private PrintfSize CollectSize()
-        {
-            PrintfSize size = PrintfSize.Default;
-            if (i < format.Length-1)
-            {
-                switch (format[i])
-                {
-                case 'h':
-                    ++i;
-                    size = PrintfSize.Half;
-                    if (i < format.Length-1 && format[i] == 'h')
-                    {
-                        ++i;
-                        size = PrintfSize.HalfHalf;
-                    }
-                    break;
-                case 'l':
-                    ++i;
-                    size = PrintfSize.Long;
-                    if (i < format.Length - 1 && format[i] == 'l')
-                    {
-                        ++i;
-                        size = PrintfSize.LongLong;
-                    }
-                    break;
-                case 'I':
-                    if (i < format.Length - 3)
-                    {
-                        if (format[i + 1] == '3' && format[i + 2] == '2')
-                        {
-                            i += 3;
-                            return PrintfSize.I32;
-                        }
-                        if (format[i + 1] == '6' && format[i + 2] == '4')
-                        {
-                            i += 3;
-                            return PrintfSize.I64;
-                        }
-                    }
-                    break;
-                default:
-                    return PrintfSize.Default;
+                    i += 3;
+                    return PrintfSize.I64;
                 }
             }
-            return size;
-        }
-
-        private void SkipNumber()
-        {
-            while (i < format.Length && Char.IsDigit(format[i]))
-                ++i;
-        }
-
-        private void SkipFlag()
-        {
-            while (i < format.Length)
-            {
-                switch (format[i])
-                {
-                case '-':
-                case '+':
-                case '0':
-                case '#':
-                case ' ':
-                    ++i;
-                    break;
-                default:
-                    return;
-                }
-            }
+            return base.CollectSize();
         }
     }
 }

@@ -44,6 +44,8 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         private Elf32_EHdr eih;
         private ServiceContainer sc;
         private ElfImageLoader eil;
+        private Program program;
+        private IProcessorArchitecture arch;
 
         [SetUp]
         public void Setup()
@@ -54,8 +56,9 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             platform = mr.Stub<IPlatform>();
             this.sc = new ServiceContainer();
             var cfgSvc = mr.Stub<IConfigurationService>();
-            var arch = mr.Stub<IProcessorArchitecture>();
+            this.arch = mr.Stub<IProcessorArchitecture>();
             cfgSvc.Stub(c => c.GetArchitecture("x86-protected-32")).Return(arch);
+            cfgSvc.Stub(c => c.GetArchitecture("mips-be-32")).Return(arch);
             sc.AddService<IConfigurationService>(cfgSvc);
         }
 
@@ -105,6 +108,21 @@ namespace Reko.UnitTests.ImageLoaders.Elf
                 }
             }
             return flags;
+        }
+
+        private void Given_BE32_GOT(params uint[] aPointers)
+        {
+            var writer = new BeImageWriter();
+            foreach (var ptr in aPointers)
+            {
+                writer.WriteBeUInt32(ptr);
+            }
+            var mem = new MemoryArea(Address.Ptr32(0x10000000), writer.ToArray());
+            program.SegmentMap.AddSegment(mem,  ".got", AccessMode.ReadWriteExecute);
+            arch.Stub(a => a.CreateImageReader(
+                Arg<MemoryArea>.Is.NotNull,
+                Arg<Address>.Is.Equal(mem.BaseAddress)))
+                .Return(new BeImageReader(mem, 0));
         }
 
         private void Given_ImageHeader(ElfMachine machine)
@@ -166,7 +184,6 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             {
                 ElfSeg(1000, 10),
                 ElfSeg(1020, 10),
-
             });
             Assert.AreEqual(2, mems.Count);
         }
@@ -178,7 +195,6 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             {
                 ElfSeg(1000, 20),
                 ElfSeg(1010, 20),
-
             });
             Assert.AreEqual(1, mems.Count);
             Assert.AreEqual(30, mems.Values[0].Length);
@@ -207,6 +223,32 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             });
             Assert.AreEqual(1, mems.Count);
             Assert.AreEqual(30, mems.Values[0].Length);
+        }
+
+        [Test]
+        public void El32_Symbols_ReconstructPlt_BE()
+        {
+            var syms = new ImageSymbol[]
+            {
+                new ImageSymbol(Address.Ptr32(0x04000000)) { Name = "strcpy", Type = SymbolType.Procedure },
+                new ImageSymbol(Address.Ptr32(0x04000010)) { Name = "strcmp", Type = SymbolType.Procedure },
+            }.ToSortedList(k => k.Address);
+
+            Given_ImageHeader(ElfMachine.EM_MIPS);
+            Given_Program();
+            Given_BE32_GOT(0x0000000, 0x00000000, 0x04000010, 0x04000000);
+            mr.ReplayAll();
+
+            When_CreateLoader32();
+
+            el32.LocateGotPointers(program, syms);
+            Assert.AreEqual("strcmp_GOT", syms[Address.Ptr32(0x10000008)].Name);
+            Assert.AreEqual("strcpy_GOT", syms[Address.Ptr32(0x1000000C)].Name);
+        }
+
+        private void Given_Program()
+        {
+            this.program = new Program(new SegmentMap(Address.Ptr32(0x10000)), this.arch, this.platform);
         }
     }
 }

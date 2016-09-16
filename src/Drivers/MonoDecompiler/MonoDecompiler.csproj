@@ -163,6 +163,7 @@
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\Windows\wince.inc" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\AmigaOS\exec.funcs" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\MacOS\macos_classic.xml" />
+    <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\RT11\rt11_*.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\SegaGenesis\SegaGenesis.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\SysV\libc.so.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\SysV\Xlib.xml" />
@@ -176,6 +177,7 @@
     <Architectures Include="$(ProjectDir)..\..\Arch\M68k\$(OutDir)Reko.Arch.M68k.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Mips\$(OutDir)Reko.Arch.Mips.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Mos6502\$(OutDir)Reko.Arch.Mos6502.*" />
+    <Architectures Include="$(ProjectDir)..\..\Arch\Pdp11\$(OutDir)Reko.Arch.Pdp11.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\PowerPC\$(OutDir)Reko.Arch.PowerPC.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Sparc\$(OutDir)Reko.Arch.Sparc.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Vax\$(OutDir)Reko.Arch.Vax.*" />
@@ -193,15 +195,18 @@
     <Environments Include="$(ProjectDir)..\..\Environments\C64\$(OutDir)Reko.Environments.C64.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\Cpm\$(OutDir)Reko.Environments.Cpm.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\MacOS\$(OutDir)Reko.Environments.MacOS.*" />
-    <Environments Include="$(ProjectDir)..\..\Environments\MsDos\$(OutDir)Reko.Environments.Msdos.*" />
-    <Environments Include="$(ProjectDir)..\..\Environments\MsDos.Design\$(OutDir)Reko.Environments.Msdos.Design.*" />
+    <Environments Include="$(ProjectDir)..\..\Environments\Msdos\$(OutDir)Reko.Environments.Msdos.*" />
+    <Environments Include="$(ProjectDir)..\..\Environments\Msdos.Design\$(OutDir)Reko.Environments.Msdos.Design.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\Ps3\$(OutDir)Reko.Environments.Ps3.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\RiscOS\$(OutDir)Reko.Environments.RiscOS.*" />
-    <Environments Include="$(ProjectDir)..\..\SegaGenesis\$(OutDir)Reko.Environments.SegaGenesis.*" />
+    <Environments Include="$(ProjectDir)..\..\Environments\RT11\$(OutDir)Reko.Environments.RT11.*" />
+    <Environments Include="$(ProjectDir)..\..\Environments\SegaGenesis\$(OutDir)Reko.Environments.SegaGenesis.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\SysV\$(OutDir)Reko.Environments.SysV.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\Trs80\$(OutDir)Reko.Environments.Trs80.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\Windows\$(OutDir)Reko.Environments.Windows.*" />
     <Environments Include="$(ProjectDir)..\..\Environments\ZX81\$(OutDir)Reko.Environments.ZX81.*" />
+    <Libraries Include="$(ProjectDir)..\..\Libraries\Libc\$(OutDir)Reko.Libraries.Libc.*" />
+    <Libraries Include="$(ProjectDir)..\..\Libraries\Python\$(OutDir)Reko.Libraries.Python.*" />
     <ConfigurationFiles Include="$(ProjectDir)..\..\Drivers\reko.config" />
   </ItemGroup>
   <Target Name="BeforeBuild">
@@ -213,6 +218,8 @@
     <Copy SourceFiles="@(Architectures)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Copying Environments to $(TargetDir)" />
     <Copy SourceFiles="@(Environments)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <Message Importance="high" Text="Copying Libraries to $(TargetDir)" />
+    <Copy SourceFiles="@(Libraries)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
     <Message Importance="high" Text="Copying configuration files to $(TargetDir)" />
     <Copy SourceFiles="@(ConfigurationFiles)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
   </Target>

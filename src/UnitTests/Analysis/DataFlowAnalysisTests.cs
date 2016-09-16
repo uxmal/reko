@@ -29,6 +29,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using Rhino.Mocks;
+using Reko.Core.Types;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -97,6 +98,7 @@ namespace Reko.UnitTests.Analysis
 		public void DfaGlobalHandle()
 		{
             Given_FakeWin32Platform(mr);
+            this.platform.Stub(p => p.LookupGlobalByName(null, null)).IgnoreArguments().Return(null);
             mr.ReplayAll();
             RunFileTest32("Fragments/import32/GlobalHandle.asm", "Analysis/DfaGlobalHandle.txt");
 		}
@@ -215,21 +217,47 @@ done:
             SaveRunOutput(prog, RunTest, "Analysis/DfaReg00001.txt");
         }
 
-		protected override void RunTest(Program prog, TextWriter writer)
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void DfaReg00282()
+        {
+            RunFileTest("Fragments/regressions/r00282.asm", "Analysis/DfaReg00282.txt");
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void DfaUnsignedDiv()
+        {
+            var m = new ProcedureBuilder();
+            var r1 = m.Register(1);
+            var r2 = m.Register(2);
+            var r2_r1 = m.Frame.EnsureSequence(r2.Storage, r1.Storage, PrimitiveType.Word64);
+            var tmp = m.Frame.CreateTemporary(r2_r1.DataType);
+            m.Assign(r1, m.LoadDw(m.Word32(0x123400)));
+            m.Assign(r2_r1, m.Seq(m.Word32(0), r1));
+            m.Assign(tmp, r2_r1);
+            m.Assign(r1, m.UDiv(tmp, m.Word32(42)));
+            m.Store(m.Word32(0x123404), r1);
+            m.Return();
+
+            RunFileTest(m, "Analysis/DfaUnsignedDiv.txt");
+        }
+
+        protected override void RunTest(Program prog, TextWriter writer)
 		{
-            IImportResolver importResolver = null;
+            IImportResolver importResolver = mr.Stub<IImportResolver>();
+            importResolver.Replay();
 			dfa = new DataFlowAnalysis(prog, importResolver, new FakeDecompilerEventListener());
 			dfa.AnalyzeProgram();
 			foreach (Procedure proc in prog.Procedures.Values)
 			{
 				ProcedureFlow flow = dfa.ProgramDataFlow[proc];
 				writer.Write("// ");
-				flow.Signature.Emit(proc.Name, ProcedureSignature.EmitFlags.ArgumentKind|ProcedureSignature.EmitFlags.LowLevelInfo, writer);
+				flow.Signature.Emit(proc.Name, FunctionType.EmitFlags.ArgumentKind|FunctionType.EmitFlags.LowLevelInfo, writer);
 				flow.Emit(prog.Architecture, writer);
 				proc.Write(false, writer);
 				writer.WriteLine();
 			}
 		}	
-
 	}
 }

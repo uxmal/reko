@@ -6,7 +6,7 @@
     <ProductVersion>3.7</ProductVersion>
     <ProjectGuid>00575bb6-c683-4a83-89d6-ee445ef463a3</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>reko-0.6.0.0</OutputName>
+    <OutputName>reko-0.6.1.0</OutputName>
     <OutputType>Package</OutputType>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
@@ -240,6 +240,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\Environments\RT11\RT11.csproj">
+      <Name>RT11</Name>
+      <Project>{697accc1-ba7b-4b34-bca3-f82113843f40}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Environments\SegaGenesis\SegaGenesis.csproj">
       <Name>SegaGenesis</Name>
       <Project>{46d47ac5-dec2-44e6-942a-f1d9b77bb514}</Project>
@@ -339,6 +347,22 @@
     <ProjectReference Include="..\ImageLoaders\VmsExe\VmsExe.csproj">
       <Name>VmsExe</Name>
       <Project>{4059bebf-7b5c-4701-ac98-ade2515d8823}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\Libc\Libc.csproj">
+      <Name>Libc</Name>
+      <Project>{fdaf4ca9-085c-473e-bcb5-0d2a4354a949}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\Python\Python.csproj">
+      <Name>Python</Name>
+      <Project>{c278ca2f-7d7c-47c3-b560-7bc63e1fad96}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>

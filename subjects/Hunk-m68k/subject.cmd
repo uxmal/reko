@@ -1,4 +1,5 @@
 decompile.exe BENCHFN
+decompile.exe BENCHLNG
 decompile.exe BENCHMUL
 decompile.exe BYTEOPS
 decompile.exe FIBO

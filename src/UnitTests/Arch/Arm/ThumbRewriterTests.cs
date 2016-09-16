@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Reko.Core.Expressions;
+using Reko.Core.Serialization;
 
 namespace Reko.UnitTests.Arch.Arm
 {
@@ -71,6 +72,16 @@ namespace Reko.UnitTests.Arch.Arm
             }
 
             public Expression PseudoProcedure(string name, DataType returnType, params Expression[] args)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Identifier GetImportedGlobal(Address addrThunk, Address addrInstr)
             {
                 throw new NotImplementedException();
             }

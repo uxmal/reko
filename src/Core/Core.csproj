@@ -227,6 +227,7 @@
     <Compile Include="Expressions\UnaryExpression.cs" />
     <Compile Include="FieldAttribute.cs" />
     <Compile Include="ImageSymbol.cs" />
+    <Compile Include="Analysis\IVarargsFormatParser.cs" />
     <Compile Include="Lib\PatternCollector.cs" />
     <Compile Include="Lib\PerfectHash.cs" />
     <Compile Include="Lib\SuffixArray.cs" />
@@ -516,9 +517,6 @@
     <Compile Include="ProcedureBase.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ProcedureSignature.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="ProcessorInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -661,6 +659,7 @@
     <Compile Include="Types\StructureType.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Expressions\ExpressionTypeAscenderBase.cs" />
     <Compile Include="Types\TypeFactory.cs">
       <SubType>Code</SubType>
     </Compile>

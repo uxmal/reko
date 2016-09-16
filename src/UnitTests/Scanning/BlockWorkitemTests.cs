@@ -32,6 +32,7 @@ using Rhino.Mocks;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -64,7 +65,7 @@ namespace Reko.UnitTests.Scanning
             r2 = new Identifier("r2", PrimitiveType.Word32, new RegisterStorage("r2", 2, 0, PrimitiveType.Word32));
             sp = new Identifier("sp", PrimitiveType.Word32, new RegisterStorage("sp", 15, 0, PrimitiveType.Word32));
             grf = proc.Frame.EnsureFlagGroup(Registers.eflags, 3, "SCZ", PrimitiveType.Byte);
-
+            var sc = new ServiceContainer();
             scanner = mr.StrictMock<IScanner>();
             arch = mr.Stub<IProcessorArchitecture>();
             program.Architecture = arch;
@@ -79,6 +80,7 @@ namespace Reko.UnitTests.Scanning
             arch.BackToRecord();
             arch.Stub(s => s.StackRegister).Return((RegisterStorage)sp.Storage);
             arch.Stub(s => s.PointerType).Return(PrimitiveType.Pointer32);
+            scanner.Stub(s => s.Services).Return(sc);
         }
 
         private BlockWorkitem CreateWorkItem(Address addr, ProcessorState state)
@@ -90,7 +92,7 @@ namespace Reko.UnitTests.Scanning
                 addr);
         }
 
-        private ProcedureSignature CreateSignature(RegisterStorage ret, params RegisterStorage[] args)
+        private FunctionType CreateSignature(RegisterStorage ret, params RegisterStorage[] args)
         {
             var retReg = proc.Frame.EnsureRegister(ret);
             var argIds = new List<Identifier>();
@@ -98,7 +100,7 @@ namespace Reko.UnitTests.Scanning
             {
                 argIds.Add(proc.Frame.EnsureRegister(arg));
             }
-            return new ProcedureSignature(retReg, argIds.ToArray());
+            return new FunctionType(null, retReg, argIds.ToArray());
         }
 
         private bool StashArg(ref ProcessorState state, ProcessorState value)
@@ -253,7 +255,6 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwi_CallingAllocaWithConstant()
         {
-            scanner = mr.StrictMock<IScanner>();
             program.Architecture = new X86ArchitectureFlat32();
             program.Platform = new DefaultPlatform(null, program.Architecture);
             var sig = CreateSignature(Registers.esp, Registers.eax);
@@ -286,7 +287,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void Bwi_CallingAllocaWithNonConstant()
         {
-            scanner = mr.StrictMock<IScanner>();
+            arch = mr.Stub<IProcessorArchitecture>();
             arch = new X86ArchitectureFlat32();
             program.Platform = new DefaultPlatform(null, arch);
 
@@ -324,7 +325,6 @@ namespace Reko.UnitTests.Scanning
                 Terminates = true,
             };
             block = proc.AddBlock("the_block");
-            scanner = mr.StrictMock<IScanner>();
             arch.Stub(a => a.PointerType).Return(PrimitiveType.Word32);
             scanner.Stub(s => s.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
             scanner.Stub(s => s.GetCallSignatureAtAddress(Arg<Address>.Is.Anything)).Return(null);
@@ -403,10 +403,13 @@ testProc_exit:
         public void Bwi_CallProcedureWithSignature()
         {
             var proc2 = new Procedure("fn2000", new Frame(PrimitiveType.Pointer32));
-            var sig = new ProcedureSignature(
+            var sig = new FunctionType(
+                null,
                 proc2.Frame.EnsureRegister(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32)),
-                proc2.Frame.EnsureRegister(new RegisterStorage("r2", 2, 0, PrimitiveType.Word32)),
-                proc2.Frame.EnsureRegister(new RegisterStorage("r3", 3, 0, PrimitiveType.Word32)));
+                new[] {
+                    proc2.Frame.EnsureRegister(new RegisterStorage("r2", 2, 0, PrimitiveType.Word32)),
+                    proc2.Frame.EnsureRegister(new RegisterStorage("r3", 3, 0, PrimitiveType.Word32))
+                });
             proc2.Signature = sig;
             var block2 = new Block(proc, "l00100008");
             var block3 = new Block(proc, "l00100004");
@@ -456,7 +459,7 @@ testProc_exit:
             var reg1 = proc.Frame.EnsureRegister(new RegisterStorage("r1", 1, 0, PrimitiveType.Pointer32));
             var sysSvc = new SystemService {
                 Name = "SysSvc",
-                Signature = new ProcedureSignature(null, reg1),
+                Signature = new FunctionType(null, null, new[] { reg1 }),
                 Characteristics = new ProcedureCharacteristics()
             };
             platform.Expect(p => p.FindService(null, arch.CreateProcessorState())).IgnoreArguments().Return(sysSvc);
@@ -554,7 +557,6 @@ testProc_exit:
             Assert.AreEqual("branch r1 l00100000_ds_t", block.Statements[0].ToString());
             var blFalse = block.ElseBlock;
             var blTrue = block.ThenBlock;
-            proc.Dump(true);
             Assert.AreEqual("l00100000_ds_f", blFalse.Name);     // delay-slot-false
             Assert.AreEqual(1, blFalse.Statements.Count);
             Assert.AreEqual("r0 = r1", blFalse.Statements[0].ToString());
@@ -659,7 +661,6 @@ testProc_exit:
             Assert.AreEqual("branch r1 l00100000_ds_t", block.Statements[0].ToString());
             var blFalse = block.ElseBlock;
             var blTrue = block.ThenBlock;
-            proc.Dump(true);
             Assert.AreEqual("l00100008", blFalse.Name);     // delay-slot was anulled.
             Assert.AreEqual(1, blFalse.Statements.Count);
             Assert.AreEqual("r2 = r1", blFalse.Statements[0].ToString());
@@ -709,10 +710,13 @@ testProc_exit:
             var procCallee = new Procedure(null, new Frame(PrimitiveType.Pointer32))
             {
                 Name = "testFn",
-                Signature = new ProcedureSignature(
+                Signature = new FunctionType(
+                    null,
                     new Identifier("", PrimitiveType.Int32, r0.Storage),
-                    new Identifier("str", new Pointer(PrimitiveType.Char, 4), r0.Storage),
-                    new Identifier("f", PrimitiveType.Real32, r1.Storage))
+                    new[] {
+                        new Identifier("str", new Pointer(PrimitiveType.Char, 4), r0.Storage),
+                        new Identifier("f", PrimitiveType.Real32, r1.Storage)
+                    })
             };
             scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
             scanner.Stub(f => f.FindContainingBlock(null)).IgnoreArguments().Return(l00100000);
@@ -768,7 +772,32 @@ testProc_exit:
             Assert.AreSame(blockOther, block.Succ[0]);
             Assert.AreSame(blockOther, block.Succ[1]);
             mr.VerifyAll();
+        }
 
+        [Test(Description = "Tests the implementation of #25; user specified register values at a specific address in the program")]
+        public void BwiUserSpecifiedRegisterValues()
+        {
+            var addrStart = Address.Ptr32(0x00100000);
+            program.User.RegisterValues[addrStart+4] = new List<RegisterValue_v2>
+            {
+                new RegisterValue_v2 { Register= "r1", Value= "4711" },
+                new RegisterValue_v2 { Register= "r2", Value= "1147" },
+            };
+            trace.Add(m => { m.Assign(r1, m.LoadDw(m.Word32(0x112200))); });
+            trace.Add(m => { m.Assign(m.LoadDw(m.Word32(0x112204)), r1); });
+            scanner.Stub(s => s.FindContainingBlock(null)).IgnoreArguments().Return(block);
+            scanner.Stub(s => s.GetTrace(null, null, null)).IgnoreArguments().Return(trace);
+            arch.Stub(s => s.GetRegister("r1")).Return((RegisterStorage)r1.Storage);
+            arch.Stub(s => s.GetRegister("r2")).Return((RegisterStorage)r2.Storage);
+            mr.ReplayAll();
+
+            var wi = CreateWorkItem(addrStart, new FakeProcessorState(arch));
+            wi.Process();
+
+            Assert.AreEqual("r1 = Mem0[0x00112200:word32]", block.Statements[0].Instruction.ToString());
+            Assert.AreEqual("r1 = 0x00004711", block.Statements[1].Instruction.ToString());
+            Assert.AreEqual("r2 = 0x00001147", block.Statements[2].Instruction.ToString());
+            Assert.AreEqual("Mem0[0x00112204:word32] = r1", block.Statements[3].Instruction.ToString());
         }
     }
 }

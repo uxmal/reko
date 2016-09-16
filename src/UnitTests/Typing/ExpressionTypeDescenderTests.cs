@@ -39,6 +39,7 @@ namespace Reko.UnitTests.Typing
         private ExpressionTypeAscender exa;
         private ExpressionTypeDescender exd;
         private FakeArchitecture arch;
+        private Program program;
 
         [SetUp]
         public void Setup()
@@ -47,10 +48,15 @@ namespace Reko.UnitTests.Typing
             this.store = new TypeStore();
             this.factory = new TypeFactory();
             this.arch = new FakeArchitecture();
-            var prog = new Program { Architecture = arch , Platform = new DefaultPlatform(null,arch)};
-            this.exa = new ExpressionTypeAscender(prog.Platform, store, factory);
-            this.exd = new ExpressionTypeDescender(prog, store, factory);
-            store.EnsureExpressionTypeVariable(factory, prog.Globals, "globals_t");
+            this.program = new Program { Architecture = arch , Platform = new DefaultPlatform(null,arch)};
+            this.exa = new ExpressionTypeAscender(program, store, factory);
+            this.exd = new ExpressionTypeDescender(program, store, factory);
+            store.EnsureExpressionTypeVariable(factory, program.Globals, "globals_t");
+        }
+
+        private void Given_GlobalVariable(Address addr, DataType dt)
+        {
+            program.GlobalFields.Fields.Add((int)addr.ToUInt32(), dt);
         }
 
         private Pointer PointerTo(DataType dt)
@@ -78,7 +84,6 @@ namespace Reko.UnitTests.Typing
             e.Accept(eq);
 
             var result = e.Accept(exa);
-            Debug.Print("After exa: {0}", result);
             exd.MeetDataType(e, dt);
             e.Accept(exd, e.TypeVariable);
 
@@ -97,7 +102,6 @@ namespace Reko.UnitTests.Typing
             foreach (var t in tests)
             {
                 var result = t.Item1.Accept(exa);
-                Debug.Print("After exa: {0}", result);
                 exd.MeetDataType(t.Item1, t.Item2);
                 t.Item1.Accept(exd, t.Item1.TypeVariable);
             }
@@ -221,7 +225,7 @@ namespace Reko.UnitTests.Typing
         public void ExdApplication()
         {
             var arg = Id("arg", PrimitiveType.Word32);
-            var sig = new ProcedureSignature(null, Id("r", PrimitiveType.Real32));
+            var sig = new FunctionType(null, null, new[] { Id("r", PrimitiveType.Real32) });
             var ep = new ExternalProcedure("test", sig);
             RunTest(
                 Test(m.Fn(ep, m.Load(PrimitiveType.Word32, m.Word32(0x0300400))), VoidType.Instance));

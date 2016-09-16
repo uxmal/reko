@@ -27,7 +27,8 @@ using System.IO;
 namespace Reko.Core.Rtl
 {
     /// <summary>
-    /// Models conditionally executed statements, like those that appear in the ARM architecture.
+    /// Models conditionally executed statements, like those that appear in 
+    /// the ARM architecture.
     /// </summary>
     public class RtlIf : RtlInstruction
     {

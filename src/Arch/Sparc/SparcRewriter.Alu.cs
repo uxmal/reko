@@ -32,17 +32,40 @@ namespace Reko.Arch.Sparc
 {
     public partial class SparcRewriter
     {
-        private void RewriteAlu(Operator op)
+        private void RewriteAddxSubx(Operator op, bool emitCc)
         {
             var dst = RewriteRegister(instrCur.Op3);
             var src1 = RewriteOp(instrCur.Op1);
             var src2 = RewriteOp(instrCur.Op2);
+            var C = frame.EnsureFlagGroup(Registers.C);
+            emitter.Assign(
+                dst,
+                new BinaryExpression(
+                    op,
+                    dst.DataType,
+                    new BinaryExpression(op, src1.DataType, src1, src2),
+                    C));
+            if (emitCc)
+            {
+                EmitCc(dst);
+            }
+        }
+
+        private void RewriteAlu(Operator op, bool negateOp2)
+        {
+            var dst = RewriteRegister(instrCur.Op3);
+            var src1 = RewriteOp(instrCur.Op1);
+            var src2 = RewriteOp(instrCur.Op2);
+            if (negateOp2)
+            {
+                src2 = emitter.Comp(src2);
+            }
             emitter.Assign(dst, new BinaryExpression(op, PrimitiveType.Word32, src1, src2));
         }
 
-        private void RewriteAluCc(Operator op)
+        private void RewriteAluCc(Operator op, bool negateOp2)
         {
-            RewriteAlu(op);
+            RewriteAlu(op, negateOp2);
             var dst = RewriteRegister(instrCur.Op3);
             EmitCc(dst);
         }
@@ -71,7 +94,7 @@ namespace Reko.Arch.Sparc
             var src2 = RewriteOp(instrCur.Op2);
             emitter.Assign(
                 dst,
-                PseudoProc("__mulscc", PrimitiveType.Int32, src1, src2));
+                host.PseudoProcedure("__mulscc", PrimitiveType.Int32, src1, src2));
             EmitCc(dst);
         }
 
@@ -79,9 +102,13 @@ namespace Reko.Arch.Sparc
         {
             var dst = RewriteOp(instrCur.Op3);
             var src1 = RewriteOp(instrCur.Op1);
-            var src2 = (Constant)RewriteOp(instrCur.Op2);
-            var tmp = frame.CreateTemporary(dst.DataType);
-            emitter.Assign(tmp, emitter.IAdd(src1, -src2.ToInt32()));
+            var src2 = RewriteOp(instrCur.Op2);
+            Identifier tmp = null;
+            if (dst is Identifier && ((Identifier)dst).Storage != Registers.g0)
+            {
+                tmp = frame.CreateTemporary(dst.DataType);
+                emitter.Assign(tmp, emitter.IAdd(src1, src2));
+            }
             Copy(Registers.i0, Registers.o0);
             Copy(Registers.i1, Registers.o1);
             Copy(Registers.i2, Registers.o2);
@@ -90,15 +117,23 @@ namespace Reko.Arch.Sparc
             Copy(Registers.i5, Registers.o5);
             Copy(Registers.i6, Registers.sp);
             Copy(Registers.i7, Registers.o7);
+            if (tmp != null)
+            {
+                emitter.Assign(dst, tmp);
+            }
         }
 
         private void RewriteSave()
         {
             var dst = RewriteOp(instrCur.Op3);
             var src1 = RewriteOp(instrCur.Op1);
-            var src2 = (Constant) RewriteOp(instrCur.Op2);
-            var tmp = frame.CreateTemporary(dst.DataType);
-            emitter.Assign(tmp, emitter.ISub(src1, -src2.ToInt32()));
+            var src2 = RewriteOp(instrCur.Op2);
+            Identifier tmp = null;
+            if (((Identifier)dst).Storage != Registers.g0)
+            {
+                tmp = frame.CreateTemporary(dst.DataType);
+                emitter.Assign(tmp, emitter.IAdd(src1, src2));
+            }
             Copy(Registers.o0, Registers.i0);
             Copy(Registers.o1, Registers.i1);
             Copy(Registers.o2, Registers.i2);
@@ -107,7 +142,12 @@ namespace Reko.Arch.Sparc
             Copy(Registers.o5, Registers.i5);
             Copy(Registers.sp, Registers.i6);
             Copy(Registers.o7, Registers.i7);
+            if (tmp != null)
+            {
+                emitter.Assign(dst, tmp);
+            }
         }
+
 
         private void Copy(RegisterStorage src, RegisterStorage dst)
         {

@@ -35,7 +35,7 @@ namespace Reko.Environments.SysV
         {
         }
 
-        public void ApplyConvention(SerializedSignature ssig, ProcedureSignature sig)
+        public void ApplyConvention(SerializedSignature ssig, FunctionType sig)
         {
             string d = ssig.Convention;
             if (d == null || d.Length == 0)
@@ -44,11 +44,16 @@ namespace Reko.Environments.SysV
             sig.FpuStackDelta = 0;
         }
 
-        public override ProcedureSignature Deserialize(SerializedSignature ss, Frame frame)
+        public override FunctionType Deserialize(SerializedSignature ss, Frame frame)
         {
             if (ss == null)
                 return null;
-            this.argser = new ArgumentDeserializer(this, Architecture, frame, Architecture.PointerType.Size);
+            this.argser = new ArgumentDeserializer(
+                this, 
+                Architecture, 
+                frame, 
+                Architecture.PointerType.Size, 
+                Architecture.WordWidth.Size);
             Identifier ret = null;
 
             if (ss.ReturnValue != null)
@@ -68,7 +73,7 @@ namespace Reko.Environments.SysV
                 }
             }
 
-            var sig = new ProcedureSignature(ret, args.ToArray());
+            var sig = new FunctionType(null, ret, args.ToArray());
             ApplyConvention(ss, sig);
             return sig;
         }
@@ -121,9 +126,7 @@ namespace Reko.Environments.SysV
                     if (ptArg.Size <= 4)
                         return f0;
                     var f1 = Architecture.GetRegister("f1");
-                    return new SequenceStorage(
-                        new Identifier(f1.Name, f1.DataType, f1),
-                        new Identifier(f0.Name, f0.DataType, f0));
+                    return new SequenceStorage(f1, f0);
                 }
                 return Architecture.GetRegister("o0");
             }

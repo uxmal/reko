@@ -56,7 +56,7 @@ namespace Reko.UnitTests.Core
 			Frame f = new Frame(PrimitiveType.Word16);
 			Identifier ax = f.EnsureRegister(Registers.ax);
 			Identifier dx = f.EnsureRegister(Registers.dx);
-			Identifier dxax = f.EnsureSequence(dx, ax, PrimitiveType.Word32);
+			Identifier dxax = f.EnsureSequence(dx.Storage, ax.Storage, PrimitiveType.Word32);
 
 			using (FileUnitTester fut = new FileUnitTester("Core/SequenceTest.txt"))
 			{
@@ -64,7 +64,7 @@ namespace Reko.UnitTests.Core
 				fut.AssertFilesEqual();
 			}
 
-			Identifier dxax2 = f.EnsureSequence(dx,ax, PrimitiveType.Word32);
+			Identifier dxax2 = f.EnsureSequence(dx.Storage, ax.Storage, PrimitiveType.Word32);
 			Assert.IsTrue(dxax2 == dxax);
 		}
 
@@ -103,7 +103,7 @@ namespace Reko.UnitTests.Core
 			Frame f = new Frame(PrimitiveType.Word16);
 			Identifier ax = f.EnsureRegister(Registers.ax);
 			Identifier dx = f.EnsureRegister(Registers.dx);
-			Identifier dx_ax = f.EnsureSequence(dx, ax, PrimitiveType.Word32);
+			Identifier dx_ax = f.EnsureSequence(dx.Storage, ax.Storage, PrimitiveType.Word32);
 			SequenceStorage vDx_ax = (SequenceStorage) dx_ax.Storage;
 			using (FileUnitTester fut = new FileUnitTester("Core/FrSequenceAccess.txt"))
 			{
@@ -126,8 +126,10 @@ namespace Reko.UnitTests.Core
 			stack += loc02.DataType.Size;
 			Identifier loc04 = f.EnsureStackLocal(-stack, PrimitiveType.Word16, "wLoc04");
 
-			ProcedureSignature sig = new ProcedureSignature(
-				null, new Identifier[] {
+			FunctionType sig = new FunctionType(
+                null,
+				null,
+                new Identifier[] {
 					new Identifier("arg0", PrimitiveType.Word16, new StackArgumentStorage(4, PrimitiveType.Word16)),
 					new Identifier("arg1", PrimitiveType.Word16, new StackArgumentStorage(6, PrimitiveType.Word16)) });
 
@@ -152,10 +154,13 @@ namespace Reko.UnitTests.Core
 			int stack = PrimitiveType.Word16.Size;
 			Identifier arg1 = f.EnsureStackLocal(-stack, PrimitiveType.Word16);
 
-			ProcedureSignature sig = new ProcedureSignature(
-				ax,
-			    cx,
-			    new Identifier("arg0", PrimitiveType.Word16, new StackArgumentStorage(0, PrimitiveType.Word16)));
+			FunctionType sig = new FunctionType(
+                null,
+                ax,
+                new Identifier[] {
+                    cx,
+                    new Identifier("arg0", PrimitiveType.Word16, new StackArgumentStorage(0, PrimitiveType.Word16))
+                });
 			
 			var cs = new CallSite(stack, 0);
 			ProcedureConstant fn = new ProcedureConstant(PrimitiveType.Pointer32, new PseudoProcedure("bar", sig));

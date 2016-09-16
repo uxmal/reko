@@ -80,6 +80,7 @@ namespace Reko.Core.Serialization
 		public SerializedRegValue [] RegisterValues;
 	}
 
+    [Obsolete("use RegisterValue_v2")]
 	public class SerializedRegValue
 	{
 		[XmlAttribute("reg")]

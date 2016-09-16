@@ -284,8 +284,7 @@ l01C8:
             };
             return new RelocationResults(
                 new List<ImageSymbol> { sym },
-                new SortedList<Address, ImageSymbol> { { sym.Address, sym } },
-                new List<Address>());
+                new SortedList<Address, ImageSymbol> { { sym.Address, sym } });
 		}
 
 

@@ -144,6 +144,10 @@ namespace Reko.Core.Serialization
 
         [XmlElement("textEncoding")]
         public string TextEncoding;
+
+        [XmlArray("registerValues")]
+        [XmlArrayItem("assume")]
+        public RegisterValue_v2[] RegisterValues;
     }
 
     public class PlatformOptions_v4

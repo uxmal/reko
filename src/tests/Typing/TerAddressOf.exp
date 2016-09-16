@@ -1,0 +1,85 @@
+// Before ///////
+// AddressOf
+// Return size: 0
+void AddressOf()
+AddressOf_entry:
+	// succ:  l1
+l1:
+	word32 r1 = &foo
+	Mem0[r1:word16] = 0x1234
+	Mem0[r1 + 0x00000004:byte] = 0x0A
+	return
+	// succ:  AddressOf_exit
+AddressOf_exit:
+
+// After ///////
+// AddressOf
+// Return size: 0
+void AddressOf()
+AddressOf_entry:
+	// succ:  l1
+l1:
+	struct Eq_2 * r1 = &foo
+	r1->w0000 = 0x1234
+	r1->b0004 = 0x0A
+	return
+	// succ:  AddressOf_exit
+AddressOf_exit:
+
+// Equivalence classes ////////////
+Eq_1: (struct "Globals")
+	globals_t (in globals : (ptr (struct "Globals")))
+Eq_2: (struct "Eq_2" (0 word16 w0000) (4 byte b0004))
+	T_2 (in r1 : (ptr Eq_2))
+	T_4 (in &foo : ptr32)
+Eq_3: <unknown>
+	T_3 (in foo : <unknown>)
+// Type Variables ////////////
+globals_t: (in globals : (ptr (struct "Globals")))
+  Class: Eq_1
+  DataType: (ptr Eq_1)
+  OrigDataType: (ptr (struct "Globals"))
+T_2: (in r1 : (ptr Eq_2))
+  Class: Eq_2
+  DataType: (ptr Eq_2)
+  OrigDataType: (ptr (struct (0 T_8 t0000) (4 T_12 t0004)))
+T_3: (in foo : <unknown>)
+  Class: Eq_3
+  DataType: Eq_3
+  OrigDataType: <unknown>
+T_4: (in &foo : ptr32)
+  Class: Eq_2
+  DataType: (ptr Eq_2)
+  OrigDataType: (ptr <unknown>)
+T_5: (in 0x1234 : word16)
+  Class: Eq_5
+  DataType: word16
+  OrigDataType: word16
+T_6: (in 0x00000000 : word32)
+  Class: Eq_6
+  DataType: word32
+  OrigDataType: word32
+T_7: (in r1 + 0x00000000 : word32)
+  Class: Eq_7
+  DataType: ptr32
+  OrigDataType: ptr32
+T_8: (in Mem0[r1 + 0x00000000:word16] : word16)
+  Class: Eq_5
+  DataType: word16
+  OrigDataType: word16
+T_9: (in 0x0A : byte)
+  Class: Eq_9
+  DataType: byte
+  OrigDataType: byte
+T_10: (in 0x00000004 : word32)
+  Class: Eq_10
+  DataType: word32
+  OrigDataType: word32
+T_11: (in r1 + 0x00000004 : word32)
+  Class: Eq_11
+  DataType: ptr32
+  OrigDataType: ptr32
+T_12: (in Mem0[r1 + 0x00000004:byte] : byte)
+  Class: Eq_9
+  DataType: byte
+  OrigDataType: byte

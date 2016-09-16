@@ -58,6 +58,7 @@ namespace Reko.UnitTests.Analysis
 		public void WebGlobalHandle()
         {
             Given_FakeWin32Platform(mr);
+            this.platform.Stub(p => p.LookupGlobalByName(null, null)).IgnoreArguments().Return(null);
 
             mr.ReplayAll();
 
@@ -88,7 +89,7 @@ namespace Reko.UnitTests.Analysis
 
 				DeadCode.Eliminate(proc, ssa);
 
-				var vp = new ValuePropagator(prog.Architecture, ssa.Identifiers, proc);
+				var vp = new ValuePropagator(prog.Architecture, ssa);
 				vp.Transform();
 
 				DeadCode.Eliminate(proc, ssa);

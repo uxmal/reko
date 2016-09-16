@@ -77,9 +77,10 @@
   <ItemGroup>
     <Compile Include="MipsProcedureSerializer.cs" />
     <Compile Include="ModuleDefinitionLoader.cs" />
+    <Compile Include="MsAPrintfFormatParser.cs" />
     <Compile Include="MsMangledNameParser.cs" />
     <Compile Include="MsPrintfFormatParser.cs" />
-    <Compile Include="MsPrintfFormatParser.Tests.cs" />
+    <Compile Include="MsWprintfFormatParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SignatureGuesser.cs" />
     <Compile Include="Win16Platform.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="WineSpecFileLoader.cs" />
     <Compile Include="Win_x86_64_Platform.cs" />
     <Compile Include="X86StartFinder.cs" />
+    <Compile Include="X86_64ProcedureSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
@@ -135,6 +137,10 @@
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\Libc\Libc.csproj">
+      <Project>{fdaf4ca9-085c-473e-bcb5-0d2a4354a949}</Project>
+      <Name>Libc</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

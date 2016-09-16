@@ -214,8 +214,7 @@ namespace Reko.Environments.C64
         {
             return new RelocationResults(
                 new List<ImageSymbol>(),
-                new SortedList<Address, ImageSymbol>(),
-                new List<Address>());
+                new SortedList<Address, ImageSymbol>());
         }
 
         public List<ArchiveDirectoryEntry> LoadDiskDirectory()

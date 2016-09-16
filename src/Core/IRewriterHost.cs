@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
 
@@ -28,7 +29,9 @@ namespace Reko.Core
     {
         PseudoProcedure EnsurePseudoProcedure(string name, DataType returnType, int arity);
         Expression PseudoProcedure(string name, DataType returnType, params Expression [] args);
+        Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression [] args);
 
+        Identifier GetImportedGlobal(Address addrThunk, Address addrInstr);
         ExternalProcedure GetImportedProcedure(Address addrThunk, Address addrInstr);
         ExternalProcedure GetInterceptedCall(Address addrImportThunk);
 

@@ -29,6 +29,7 @@ using System.Xml.Serialization;
 using Reko.Core.Services;
 using System.Diagnostics;
 using System.Text;
+using Reko.Core.Types;
 
 namespace Reko.Core.Serialization
 {
@@ -183,8 +184,8 @@ namespace Reko.Core.Serialization
         /// <returns></returns>
         public Project LoadProject(string filename, Project_v3 sp)
         {
-            var programs = sp.Inputs.OfType<DecompilerInput_v3>().Select(s => VisitInputFile(filename, s));
-            var typelibs = sp.Inputs.OfType<MetadataFile_v3>().Select(m => VisitMetadataFile(filename, m));
+            var programs = sp.Inputs.OfType<DecompilerInput_v3>().Select(s => VisitInputFile(filename, s)).ToList();
+            var typelibs = sp.Inputs.OfType<MetadataFile_v3>().Select(m => VisitMetadataFile(filename, m)).ToList();
             var asm = sp.Inputs.OfType<AssemblerFile_v3>().Select(s => VisitAssemblerFile(s));
             this.project.LoadedMetadata = this.platform.CreateMetadata();
             project.Programs.AddRange(programs);
@@ -210,6 +211,7 @@ namespace Reko.Core.Serialization
 
         public Program VisitInputFile(string projectFilePath, DecompilerInput_v4 sInput)
         {
+            var binAbsPath = ConvertToAbsolutePath(projectFilePath, sInput.Filename);
             var bytes = loader.LoadImageBytes(ConvertToAbsolutePath(projectFilePath, sInput.Filename), 0);
             var sUser = sInput.User;
             var address = LoadAddress(sUser, this.arch);
@@ -223,13 +225,13 @@ namespace Reko.Core.Serialization
                 var platform = sUser.PlatformOptions != null
                     ? sUser.PlatformOptions.Name
                     : null;
-                program = loader.LoadRawImage(sInput.Filename, bytes, arch, platform, address);
+                program = loader.LoadRawImage(binAbsPath, bytes, arch, platform, address);
             }
             else
             {
-                program = loader.LoadExecutable(sInput.Filename, bytes, address);
+                program = loader.LoadExecutable(binAbsPath, bytes, address);
             }
-            program.Filename = ConvertToAbsolutePath(projectFilePath, sInput.Filename);
+            program.Filename = binAbsPath;
             program.DisassemblyFilename = ConvertToAbsolutePath(projectFilePath, sInput.DisassemblyFilename);
             program.IntermediateFilename = ConvertToAbsolutePath(projectFilePath, sInput.IntermediateFilename);
             program.OutputFilename = ConvertToAbsolutePath(projectFilePath, sInput.OutputFilename);
@@ -262,6 +264,7 @@ namespace Reko.Core.Serialization
             {
                 program = loader.LoadExecutable(sInput.Filename, bytes, address);
             }
+            this.platform = program.Platform;
             program.Filename = ConvertToAbsolutePath(projectFilePath, sInput.Filename);
             program.DisassemblyFilename = ConvertToAbsolutePath(projectFilePath, sInput.DisassemblyFilename);
             program.IntermediateFilename = ConvertToAbsolutePath(projectFilePath, sInput.IntermediateFilename);
@@ -342,14 +345,6 @@ namespace Reko.Core.Serialization
                     .Where(kv => kv.Key != null)
                    .ToSortedList(kv => kv.Key, kv => kv.Value);
             }
-            var tlDeser = CreateTypeLibraryDeserializer();
-            foreach (var kv in user.Globals)
-            {
-                var dt = kv.Value.DataType.Accept(tlDeser);
-                //$BUGBUG: what about x86 segmented binaries?
-                int offset = (int)kv.Key.ToLinear();
-                program.GlobalFields.Fields.Add(offset, dt, kv.Value.Name);
-            }
           
             if (sUser.Heuristics != null)
             {
@@ -378,6 +373,10 @@ namespace Reko.Core.Serialization
                     .Where(c => c != null)
                     .ToSortedList(k => k.Address, v => v);
             }
+            if (sUser.RegisterValues != null)
+            {
+                program.User.RegisterValues = LoadRegisterValues(sUser.RegisterValues);
+            }
             if (sUser.JumpTables != null)
             {
                 program.User.JumpTables = sUser.JumpTables.Select(LoadJumpTable_v4)
@@ -391,6 +390,27 @@ namespace Reko.Core.Serialization
                     .Where(ij => ij != null)
                     .ToSortedList(k => k.Item1, v => v.Item2);
             }
+        }
+
+        private SortedList<Address, List<RegisterValue_v2>> LoadRegisterValues(
+            RegisterValue_v2[] sRegValues)
+        {
+            var allLists = new SortedList<Address, List<RegisterValue_v2>>();
+            foreach (var sRegValue in sRegValues)
+            {
+                Address addr;
+                if (sRegValue != null && platform.TryParseAddress(sRegValue.Address, out addr))
+                {
+                    List<RegisterValue_v2> list;
+                    if (!allLists.TryGetValue(addr, out list))
+                    {
+                        list = new List<RegisterValue_v2>();
+                        allLists.Add(addr, list);
+                    }
+                    list.Add(sRegValue);
+                }
+            }
+            return allLists;
         }
 
         private ImageMapVectorTable LoadJumpTable_v4(JumpTable_v4 sTable)
@@ -416,7 +436,7 @@ namespace Reko.Core.Serialization
                 return null;
 
             var procSer = program.CreateProcedureSerializer();
-            ProcedureSignature sig = null;
+            FunctionType sig = null;
             if (call.Signature != null)
             {
                 sig = procSer.Deserialize(
@@ -499,14 +519,6 @@ namespace Reko.Core.Serialization
                     })
                     .Where(kv => kv.Key != null)
                    .ToSortedList(kv => kv.Key, kv => kv.Value);
-            }
-            var tlDeser = CreateTypeLibraryDeserializer();
-            foreach (var kv in user.Globals)
-            {
-                var dt = kv.Value.DataType.Accept(tlDeser);
-                //$BUGBUG: what about x86 segmented binaries?
-                int offset = (int)kv.Key.ToLinear();
-                program.GlobalFields.Fields.Add(offset, dt, kv.Value.Name);
             }
 
             if (sUser.Heuristics != null)

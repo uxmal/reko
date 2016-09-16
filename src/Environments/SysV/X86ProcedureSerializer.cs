@@ -32,15 +32,13 @@ namespace Reko.Environments.SysV
     public class X86ProcedureSerializer : ProcedureSerializer
     {
         private ArgumentDeserializer argser;
-        private int ir;
-        private int fr;
 
         public X86ProcedureSerializer(IProcessorArchitecture arch, ISerializedTypeVisitor<DataType> typeLoader, string defaultCc)
             : base(arch, typeLoader, defaultCc)
         {
         }
 
-        public void ApplyConvention(SerializedSignature ssig, ProcedureSignature sig)
+        public void ApplyConvention(SerializedSignature ssig, FunctionType sig)
         {
             string d = ssig.Convention;
             if (d == null || d.Length == 0)
@@ -49,11 +47,16 @@ namespace Reko.Environments.SysV
             sig.FpuStackDelta = FpuStackOffset;
         }
 
-        public override ProcedureSignature Deserialize(SerializedSignature ss, Frame frame)
+        public override FunctionType Deserialize(SerializedSignature ss, Frame frame)
         {
             if (ss == null)
                 return null;
-            this.argser = new ArgumentDeserializer(this, Architecture, frame, Architecture.PointerType.Size);
+            this.argser = new ArgumentDeserializer(
+                this,
+                Architecture,
+                frame, 
+                Architecture.PointerType.Size,
+                Architecture.WordWidth.Size);
             Identifier ret = null;
             int fpuDelta = FpuStackOffset;
 
@@ -78,7 +81,7 @@ namespace Reko.Environments.SysV
             }
             FpuStackOffset = fpuDelta;
 
-            var sig = new ProcedureSignature(ret, args.ToArray());
+            var sig = new FunctionType(null, ret, args.ToArray());
             ApplyConvention(ss, sig);
             return sig;
         }
@@ -105,9 +108,7 @@ namespace Reko.Environments.SysV
             if (bitSize <= 64)
             {
                 var edx = Architecture.GetRegister("edx");
-                return new SequenceStorage(
-                    new Identifier(edx.Name, edx.DataType, edx),
-                    new Identifier(eax.Name, eax.DataType, eax));
+                return new SequenceStorage(edx, eax);
             }
             throw new NotImplementedException();
         }

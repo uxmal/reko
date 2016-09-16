@@ -507,6 +507,13 @@ l0800_109F_thunk_fn0800_10A1:
 // DataOut (flags): 
 // SymbolicIn: sp:fp di:di + 0x0001
 
+l0800_109F_thunk_fn0800_10A1:
+	word16 di_17
+	return fn0800_10A1(bp, di_15, out di_17)
+// DataOut: bp bx di ds si ss
+// DataOut (flags): 
+// SymbolicIn: sp:<invalid> di:<invalid> ax:<invalid> es:<invalid> dx:<invalid> cx:<invalid> bx:<invalid>
+
 fn0800_1099_exit:
 // DataOut: bx di
 // DataOut (flags): 

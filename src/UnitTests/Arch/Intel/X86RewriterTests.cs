@@ -25,6 +25,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
+using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Environments.Msdos;
@@ -154,7 +155,22 @@ namespace Reko.UnitTests.Arch.Intel
                     args);
             }
 
-            public ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction)
+            public Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
+            {
+                var ppp = EnsurePseudoProcedure(name, returnType, args.Length);
+                ppp.Characteristics = c;
+                return new Application(
+                    new ProcedureConstant(PrimitiveType.Pointer32, ppp),
+                    returnType,
+                    args);
+            }
+
+            public FunctionType GetCallSignatureAtAddress(Address addrCallInstruction)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Identifier GetImportedGlobal(Address addrThunk, Address addrInstruction)
             {
                 throw new NotImplementedException();
             }
@@ -861,10 +877,11 @@ namespace Reko.UnitTests.Arch.Intel
                 m.Div(m.cx);
             });
             AssertCode(
-                    "0|L--|0C00:0000(2): 3 instructions",
-                    "1|L--|dx = dx_ax % cx",
-                    "2|L--|ax = dx_ax /u cx",
-                    "3|L--|SCZO = cond(ax)");
+                "0|L--|0C00:0000(2): 4 instructions",
+                "1|L--|v5 = dx_ax",
+                "2|L--|dx = v5 % cx",
+                "3|L--|ax = v5 /u cx",
+                "4|L--|SCZO = cond(ax)");
         }
 
         [Test]
@@ -875,10 +892,11 @@ namespace Reko.UnitTests.Arch.Intel
                 m.Idiv(m.cx);
             });
             AssertCode(
-                    "0|L--|0C00:0000(2): 3 instructions",
-                    "1|L--|dx = dx_ax % cx",
-                    "2|L--|ax = dx_ax / cx",
-                    "3|L--|SCZO = cond(ax)");
+                    "0|L--|0C00:0000(2): 4 instructions",
+                    "1|L--|v5 = dx_ax",
+                    "2|L--|dx = v5 % cx",
+                    "3|L--|ax = v5 / cx",
+                    "4|L--|SCZO = cond(ax)");
         }
 
         [Test]
@@ -1370,5 +1388,54 @@ namespace Reko.UnitTests.Arch.Intel
                 "1|L--|Mem0[esp:real32] = (real32) rArg0");
         }
 
+        [Test]
+        public void X86rw_cmpxchg()
+        {
+            Run32bitTest(0xF0, 0x0F, 0xB0, 0x23); // lock cmpxchg[ebx], ah
+            AssertCode(
+                "0|L--|10000000(1): 1 instructions",
+                "1|L--|__lock()",
+                "2|L--|10000001(3): 1 instructions",
+                "3|L--|Z = __cmpxchg(Mem0[ebx:byte], ah, eax, out eax)");
+        }
+
+        [Test]
+        public void X86rw_fld_real32()
+        {
+            Run16bitTest(0xD9, 0x44, 0x40); // fld word ptr [foo]
+            AssertCode(
+                "0|L--|0C00:0000(3): 1 instructions",
+                "1|L--|rLoc1 = (real64) Mem0[ds:si + 0x0040:real32]");
+        }
+
+        [Test]
+        public void X86rw_movaps()
+        {
+            Run64bitTest(0x0F, 0x28, 0x05, 0x40, 0x12, 0x00, 0x00); //  movaps xmm0,[rip+00001240]
+            AssertCode(
+                "0|L--|0000000140000000(7): 1 instructions",
+                "1|L--|xmm0 = Mem0[0x0000000140001247:word128]");
+        }
+
+        [Test]
+        public void X86rw_movups()
+        {
+            Run64bitTest(0x0F, 0x11, 0x44, 0x24, 0x20); // "movups\t[rsp+20],xmm0", 
+            AssertCode(
+                  "0|L--|0000000140000000(5): 1 instructions",
+                  "1|L--|Mem0[rsp + 0x0000000000000020:word128] = xmm0");
+        }
+
+        [Test]
+        public void X86rw_idiv()
+        {
+            Run32bitTest(0xF7, 0x7C, 0x24, 0x04);       // idiv [esp+04]
+            AssertCode(
+                  "0|L--|10000000(4): 4 instructions",
+                  "1|L--|v5 = edx_eax",
+                  "2|L--|edx = v5 % Mem0[esp + 0x00000004:word32]",
+                  "3|L--|eax = v5 / Mem0[esp + 0x00000004:word32]",
+                  "4|L--|SCZO = cond(eax)");
+        }
     }
 }

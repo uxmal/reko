@@ -20,6 +20,7 @@
 
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 
@@ -34,16 +35,21 @@ namespace Reko.Core
     /// </remarks>
 	public class CallRewriter
 	{
-		public CallRewriter(Program program)
+        private DecompilerEventListener listener;
+
+		public CallRewriter(Program program, DecompilerEventListener listener)
 		{
             this.Program = program;
+            this.listener = listener;
         }
 
-        public static void Rewrite(Program program)
+        public static void Rewrite(Program program, DecompilerEventListener listener)
         {
-            var crw = new CallRewriter(program);
+            var crw = new CallRewriter(program, listener);
             foreach (Procedure proc in program.Procedures.Values)
             {
+                if (listener.IsCanceled())
+                    break;
                 crw.RewriteCalls(proc);
                 crw.RewriteReturns(proc);
             }
@@ -51,7 +57,7 @@ namespace Reko.Core
 
         public Program Program { get; private set; }
 
-		public virtual ProcedureSignature GetProcedureSignature(ProcedureBase proc)
+		public virtual FunctionType GetProcedureSignature(ProcedureBase proc)
 		{
 			return proc.Signature;
 		}
@@ -124,7 +130,7 @@ namespace Reko.Core
         public void RewriteReturns(Procedure proc)
         {
             Identifier idRet = proc.Signature.ReturnValue;
-            if (idRet == null)
+            if (idRet == null || idRet.DataType is VoidType)
                 return;
             foreach (Statement stm in proc.Statements)
             {

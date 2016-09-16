@@ -11,9 +11,9 @@ void fn0C00_0000(Register selector ds, Stack segptr32 ptrArg04)
 // sp:sp
 // bp:bp
 // ss:ss
+// es_bx:Sequence es:bx
 // es:es
 // bx:bx
-// es_bx:Sequence es:bx
 // SCZO:Flags
 // ax:ax
 // ds:ds
@@ -70,10 +70,10 @@ Register word16 fn0C00_0020(Stack segptr32 ptrArg02)
 // sp:sp
 // bp:bp
 // ss:ss
-// es:es
-// bx:bx
 // es_bx:Sequence es:bx
 // ax:ax
+// bx:bx
+// es:es
 // wLoc02:Local -0002
 // ptrArg02:Stack +0002
 // return address size: 2
@@ -106,10 +106,10 @@ Register word16 fn0C00_002E(Stack segptr32 ptrArg02, Stack word16 wArg06)
 // sp:sp
 // bp:bp
 // ss:ss
-// es:es
-// bx:bx
 // es_bx:Sequence es:bx
 // ax:ax
+// bx:bx
+// es:es
 // SCZO:Flags
 // wLoc02:Local -0002
 // ptrArg02:Stack +0002

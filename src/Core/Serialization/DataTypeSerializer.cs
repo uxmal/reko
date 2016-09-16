@@ -61,18 +61,17 @@ namespace Reko.Core.Serialization
         public SerializedType VisitFunctionType(FunctionType ft)
         {
             Argument_v1 ret = null;
-            if (ft.ReturnType != null)
+            if (!ft.HasVoidReturn)
             {
-                ret = SerializeArgument(null, null, ft.ReturnType);
+                ret = SerializeArgument(null, null, ft.ReturnValue.DataType);
             }
             Argument_v1[] parms;
-            if (ft.ArgumentTypes != null)
+            if (ft.Parameters != null)
             {
-                parms = new Argument_v1[ft.ArgumentTypes.Length];
-                for (int i = 0; i < ft.ArgumentTypes.Length; ++i)
+                parms = new Argument_v1[ft.Parameters.Length];
+                for (int i = 0; i < ft.Parameters.Length; ++i)
                 {
-                    var type = ft.ArgumentTypes[i].Accept(this);
-                    parms[i] = SerializeArgument(ft.ArgumentNames[i], null, ft.ArgumentTypes[i]);
+                    parms[i] = SerializeArgument(ft.Parameters[i].Name, null, ft.Parameters[i].DataType);
                 }
             }
             else

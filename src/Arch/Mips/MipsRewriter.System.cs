@@ -37,7 +37,7 @@ namespace Reko.Arch.Mips
         private void RewriteBreak(MipsInstruction instr)
         {
             emitter.SideEffect(
-                PseudoProc(
+                host.PseudoProcedure(
                     "__break",
                     VoidType.Instance,
                     this.RewriteOperand(instr.op1)));

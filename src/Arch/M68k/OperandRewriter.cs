@@ -114,6 +114,8 @@ namespace Reko.Arch.M68k
             {
                 Expression ea = RewriteIndirectBaseRegister(indidx, addrInstr);
                 Expression ix = frame.EnsureRegister(indidx.XRegister);
+                if (indidx.XWidth.Size != 4)
+                    ix = m.Cast(PrimitiveType.Int32, m.Cast(PrimitiveType.Int16, ix));
                 if (indidx.Scale > 1)
                     ix = m.IMul(ix, Constant.Int32(indidx.Scale));
                 return m.Load(DataWidth, m.IAdd(ea, ix));
@@ -214,7 +216,7 @@ namespace Reko.Arch.M68k
             {
                 Identifier h = frame.EnsureRegister(dbl.Register1);
                 Identifier l = frame.EnsureRegister( dbl.Register2);
-                var d = frame.EnsureSequence(h, l, PrimitiveType.Word64);
+                var d = frame.EnsureSequence(h.Storage, l.Storage, PrimitiveType.Word64);
                 var result = opGen(src, l);
                 m.Assign(d, result);
                 return d;

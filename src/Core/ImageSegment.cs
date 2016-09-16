@@ -116,6 +116,8 @@ namespace Reko.Core
 
         public Address EndAddress { get { return Address + ContentSize; } }
 
+        public bool IsExecutable { get { return (this.Access & AccessMode.Execute) != 0; } }
+
         /// <summary>
         /// The identifier used in the program to refer to the segment.
         /// </summary>

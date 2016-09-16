@@ -21,12 +21,44 @@
         <address>00401030</address>
         <CSignature>void test1(char *arg1, int arg2, char *arg3, float arg4)</CSignature>
       </procedure>
+      <procedure name="indirect_call_test3">
+        <characteristics />
+        <address>004010B0</address>
+        <CSignature>void indirect_call_test3(cdecl_class *c)</CSignature>
+      </procedure>
       <procedure name="Win32CrtStartup">
         <characteristics />
-        <address>00401353</address>
+        <address>004013C3</address>
         <decompile>false</decompile>
         <CSignature>DWORD Win32CrtStartup()</CSignature>
       </procedure>
+      <call>
+        <address>00401113</address>
+        <signature>
+          <return>
+            <void />
+          </return>
+          <arg name="c">
+            <ptr size="4">
+              <type>cdecl_class</type>
+            </ptr>
+          </arg>
+          <arg name="i">
+            <prim domain="SignedInt" size="4" />
+          </arg>
+          <arg name="f">
+            <prim domain="Real" size="4" />
+          </arg>
+        </signature>
+      </call>
+      <global>
+        <Address>00403018</Address>
+        <type>cdecl_class_ptr</type>
+        <Name>gbl_c</Name>
+      </global>
     </user>
   </input>
+  <metadata>
+    <filename>decl.xml</filename>
+  </metadata>
 </project>

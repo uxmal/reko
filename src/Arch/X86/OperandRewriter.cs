@@ -24,6 +24,7 @@ using Reko.Core.Operators;
 using Reko.Core.Types;
 using Reko.Core;
 using System;
+using System.Diagnostics;
 
 namespace Reko.Arch.X86
 {
@@ -89,10 +90,16 @@ namespace Reko.Arch.X86
 
         public Expression CreateMemoryAccess(X86Instruction instr, MemoryOperand mem, DataType dt, X86State state)
         {
+            var exg = ImportedGlobal(instr.Address, mem.Width, mem);
+            if (exg != null)
+            {
+                return new UnaryExpression(Operator.AddrOf, dt, exg);
+            }
             var exp = ImportedProcedure(instr.Address, mem.Width, mem);
             if (exp != null)
+            {
                 return new ProcedureConstant(arch.PointerType, exp);
-
+            }
             Expression expr = EffectiveAddressExpression(instr, mem, state);
             if (IsSegmentedAccessRequired ||
                 (mem.DefaultSegment != Registers.ds && mem.DefaultSegment != Registers.ss))
@@ -209,6 +216,17 @@ namespace Reko.Arch.X86
         public Identifier FpuRegister(int reg, X86State state)
         {
             return frame.EnsureFpuStackVariable(reg - state.FpuStackItems, PrimitiveType.Real64);
+        }
+
+        public Identifier ImportedGlobal(Address addrInstruction, PrimitiveType addrWidth, MemoryOperand mem)
+        {
+            if (mem != null && addrWidth == PrimitiveType.Word32 && mem.Base == RegisterStorage.None &&
+                mem.Index == RegisterStorage.None)
+            {
+                var id = host.GetImportedGlobal(Address.Ptr32(mem.Offset.ToUInt32()), addrInstruction);
+                return id;
+            }
+            return null;
         }
 
         public ExternalProcedure ImportedProcedure(Address addrInstruction, PrimitiveType addrWidth, MemoryOperand mem)

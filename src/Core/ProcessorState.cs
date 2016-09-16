@@ -25,6 +25,7 @@ using Reko.Core.Rtl;
 using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
+using Reko.Core.Types;
 
 namespace Reko.Core
 {
@@ -63,7 +64,7 @@ namespace Reko.Core
         public abstract void SetInstructionPointer(Address addr);
 
         public abstract void OnProcedureEntered();                 // Some registers need to be updated when a procedure is entered.
-        public abstract void OnProcedureLeft(ProcedureSignature procedureSignature);
+        public abstract void OnProcedureLeft(FunctionType procedureSignature);
 
         /// <summary>
         /// Captures the the processor's state before calling a procedure.
@@ -78,7 +79,7 @@ namespace Reko.Core
         /// specified signature.
         /// </summary>
         /// <param name="sigCallee">The signature of the called procedure.</param>
-        public abstract void OnAfterCall(ProcedureSignature sigCallee);
+        public abstract void OnAfterCall(FunctionType sigCallee);
 
         private bool IsStackRegister(Expression ea)
         {

@@ -50,13 +50,13 @@ namespace Reko.Arch.M68k
             {
                 var opSrc = orw.RewriteSrc(di.op1, di.Address);
                 opDst = orw.RewriteDst(di.op2, di.Address, opSrc, (s, d) =>
-                    PseudoProc(procName, di.dataWidth, d, s));
+                    host.PseudoProcedure(procName, di.dataWidth, d, s));
             }
             else
             {
                 opDst = orw.RewriteDst(di.op1, di.Address,
                     Constant.Byte(1), (s, d) =>
-                        PseudoProc(procName, PrimitiveType.Word32, d, s));
+                        host.PseudoProcedure(procName, PrimitiveType.Word32, d, s));
             }
             emitter.Assign(
                 orw.FlagGroup(FlagM.CF | FlagM.NF | FlagM.ZF),
@@ -68,7 +68,7 @@ namespace Reko.Arch.M68k
         {
             var opSrc = orw.RewriteSrc(di.op1, di.Address);
             var opDst = orw.RewriteDst(di.op2, di.Address, opSrc, (s, d) =>
-                PseudoProc(procName, di.dataWidth, d, s, orw.FlagGroup(FlagM.XF)));
+                host.PseudoProcedure(procName, di.dataWidth, d, s, orw.FlagGroup(FlagM.XF)));
             emitter.Assign(
                 orw.FlagGroup(FlagM.CF | FlagM.NF | FlagM.XF | FlagM.ZF),
                 emitter.Cond(opDst));
@@ -122,7 +122,7 @@ namespace Reko.Arch.M68k
             var opDst = orw.RewriteSrc(di.op2, di.Address);
             emitter.Assign(
                 orw.FlagGroup(FlagM.ZF),
-                PseudoProc(name, PrimitiveType.Bool, opDst, opSrc, emitter.Out(PrimitiveType.Pointer32, opDst)));
+                host.PseudoProcedure(name, PrimitiveType.Bool, opDst, opSrc, emitter.Out(PrimitiveType.Pointer32, opDst)));
         }
 
         public void RewriteExg()
@@ -241,7 +241,7 @@ namespace Reko.Arch.M68k
         {
             var r = (RegisterOperand) di.op1;
             var reg = frame.EnsureRegister(r.Register);
-            emitter.Assign(reg, PseudoProc("__swap", PrimitiveType.Word32, reg));
+            emitter.Assign(reg, host.PseudoProcedure("__swap", PrimitiveType.Word32, reg));
             emitter.Assign(orw.FlagGroup(FlagM.NF | FlagM.ZF), emitter.Cond(reg));
             emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
             emitter.Assign(orw.FlagGroup(FlagM.VF), Constant.False());
@@ -267,7 +267,7 @@ namespace Reko.Arch.M68k
             var opDst = orw.RewriteSrc(di.op2, di.Address);
             emitter.Assign(
                 orw.FlagGroup(FlagM.ZF),
-                PseudoProc("__btst", PrimitiveType.Bool,
+                host.PseudoProcedure("__btst", PrimitiveType.Bool,
                     opDst, opSrc));
         }
 
@@ -292,18 +292,18 @@ namespace Reko.Arch.M68k
                 emitter.Cond(tmp));
         }
 
-        private void RewriteDiv(BinaryOperator op)
+        private void RewriteDiv(Func<Expression,Expression,Expression> op, DataType dt)
         {
             Debug.Print(di.dataWidth.ToString());
             if (di.dataWidth.BitSize == 16)
             {
                 di.dataWidth = PrimitiveType.UInt32;
                 var src = orw.RewriteSrc(di.op1, di.Address);
-                var rem = frame.CreateTemporary(PrimitiveType.UInt16);
-                var quot = frame.CreateTemporary(PrimitiveType.UInt16);
+                var rem = frame.CreateTemporary(dt);
+                var quot = frame.CreateTemporary(dt);
                 var regDst = frame.EnsureRegister(((RegisterOperand) di.op2).Register);
                 emitter.Assign(rem, emitter.Cast(rem.DataType, emitter.Remainder(regDst, src)));
-                emitter.Assign(quot, emitter.Cast(quot.DataType, emitter.UDiv(regDst, src)));
+                emitter.Assign(quot, emitter.Cast(quot.DataType, op(regDst, src)));
                 emitter.Assign(regDst, emitter.Dpb(regDst, rem, 16));
                 emitter.Assign(regDst, emitter.Dpb(regDst, quot, 0));
                 emitter.Assign(
@@ -422,7 +422,8 @@ namespace Reko.Arch.M68k
         {
             var opSrc = orw.RewriteSrc(di.op1, di.Address);
             var opDst = orw.RewriteDst(di.op2, di.Address, opSrc, (s, d) => s);
-            if (setFlag)
+            var isSr = GetRegister(di.op1) == Registers.sr || GetRegister(di.op2) == Registers.sr;
+            if (setFlag && !isSr)
             {
                 emitter.Assign(
                     orw.FlagGroup(FlagM.CVZN),

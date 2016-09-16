@@ -157,7 +157,7 @@ namespace Reko.Analysis
 		{
 			var sb = new StringBuilder();
 			var arch = program.Architecture;
-            foreach (var reg in arr.OrderBy(r => r.Name))
+            foreach (var reg in arr.Where(r => r != null).OrderBy(r => r.Name))
             {
                 sb.Append(reg.Name);
                 sb.Append(" ");
@@ -180,6 +180,8 @@ namespace Reko.Analysis
             BlockFlow item;
             while (worklist.GetWorkItem(out item))
 			{
+                if (eventListener.IsCanceled())
+                    break;
 			    eventListener.ShowProgress(string.Format("Blocks left: {0}", worklist.Count), initial - worklist.Count, initial);
 				ProcessBlock(item);
 			}
@@ -493,7 +495,7 @@ namespace Reko.Analysis
 
 		public override void VisitCallInstruction(CallInstruction ci)
 		{
-            ProcedureSignature sig = GetProcedureSignature(ci.Callee);
+            FunctionType sig = GetProcedureSignature(ci.Callee);
 			if (sig != null && sig.ParametersValid)		
 			{
                 var procCallee = ((ProcedureConstant) ci.Callee).Procedure;
@@ -504,7 +506,7 @@ namespace Reko.Analysis
                     new ProcedureConstant(program.Platform.PointerType, procCallee), 
                     sig, 
                     false);
-				if (sig.ReturnValue != null)
+				if (!sig.HasVoidReturn)
 				{
                     varLive.Def(ab.Bind(sig.ReturnValue));
 				}
@@ -558,7 +560,7 @@ namespace Reko.Analysis
 			}
 		}
 
-        private ProcedureSignature GetProcedureSignature(Expression expr)
+        private FunctionType GetProcedureSignature(Expression expr)
         {
             var pc = expr as ProcedureConstant;
             if (pc == null) return null;
@@ -897,9 +899,9 @@ namespace Reko.Analysis
 
             public bool VisitSequenceStorage(SequenceStorage seq)
 			{
-				var f = seq.Head.Storage.Accept(this);
+				var f = seq.Head.Accept(this);
 				if (!f)
-					f = seq.Tail.Storage.Accept(this);
+					f = seq.Tail.Accept(this);
                 return f;
 			}
 

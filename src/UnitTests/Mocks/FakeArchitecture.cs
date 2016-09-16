@@ -365,7 +365,7 @@ namespace Reko.UnitTests.Mocks
         {
         }
 
-        public override void OnProcedureLeft(ProcedureSignature sig)
+        public override void OnProcedureLeft(FunctionType sig)
         {
         }
 
@@ -383,7 +383,7 @@ namespace Reko.UnitTests.Mocks
             return new CallSite(returnAddressSize, 0);
         }
 
-        public override void OnAfterCall(ProcedureSignature sigCallee)
+        public override void OnAfterCall(FunctionType sigCallee)
         {
         }
 	}

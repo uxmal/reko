@@ -49,6 +49,7 @@ namespace Reko.Gui.Windows
         private string status;
         private const int STATUS_UPDATE_ONLY = -4711;
         private CancellationTokenSource cancellationSvc;
+        private bool isCanceled;
 
         public WindowsDecompilerEventListener(IServiceProvider sp)
         {
@@ -125,6 +126,8 @@ namespace Reko.Gui.Windows
 
         void dlg_Load(object sender, EventArgs e)
         {
+            this.isCanceled = false;
+            dlg.CancellationButton.Enabled = true;
             dlg.Worker.RunWorkerAsync(task);
         }
 
@@ -139,6 +142,9 @@ namespace Reko.Gui.Windows
         private void dlg_Cancelled(object sender, EventArgs e)
         {
             cancellationSvc.Cancel();
+            this.isCanceled = true;
+            Warn(new NullCodeLocation(""), "User canceled the decompiler.");
+            dlg.CancellationButton.Enabled = false;
         }
 
         void Worker_DoWork(object sender, DoWorkEventArgs e)
@@ -235,6 +241,11 @@ namespace Reko.Gui.Windows
             return new ProcedureNavigator(program, proc, sp);
         }
 
+        ICodeLocation DecompilerEventListener.CreateStatementNavigator(Program program, Statement stm)
+        {
+            return new StatementNavigator(program, stm, sp);
+        }
+
         ICodeLocation DecompilerEventListener.CreateJumpTableNavigator(Program program, Address addrIndirectJump, Address addrVector)
         {
             return new JumpVectorNavigator(program, addrIndirectJump, addrVector, sp);
@@ -254,9 +265,13 @@ namespace Reko.Gui.Windows
                 return;
             System.Threading.Interlocked.Exchange<string>(ref status, caption);
             var percentDone = (int)((numerator * 100L) / denominator);
-            if (percentDone < 0)
-                percentDone.ToString();
             dlg.Worker.ReportProgress(percentDone);
+        }
+
+        // Is usually called on a worker thread.
+        bool DecompilerEventListener.IsCanceled()
+        {
+            return this.isCanceled;
         }
 
         #endregion

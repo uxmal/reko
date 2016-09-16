@@ -55,12 +55,13 @@ namespace Reko.Scanning
         void EnqueueProcedure(Address addr);
         Block EnqueueJumpTarget(Address addrSrc, Address addrDst, Procedure proc, ProcessorState state);
         void EnqueueUserProcedure(Procedure_v1 sp);
+        void EnqueueUserProcedure(Address addr, FunctionType sig);
         void EnqueueUserGlobalData(Address addr, DataType dt);
 
         void Warn(Address addr, string message);
         void Warn(Address addr, string message, params object[] args);
         void Error(Address addr, string message);
-        ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction);
+        FunctionType GetCallSignatureAtAddress(Address addrCallInstruction);
         ExternalProcedure GetImportedProcedure(Address addrImportThunk, Address addrInstruction);
         void TerminateBlock(Block block, Address addrEnd);
 
@@ -95,6 +96,14 @@ namespace Reko.Scanning
     /// </remarks>
     public class Scanner : IScanner, IRewriterHost
     {
+        private const int PriorityEntryPoint = 5;
+        private const int PriorityJumpTarget = 6;
+        private const int PriorityGlobalData = 7;
+        private const int PriorityVector = 4;
+        private const int PriorityBlockPromote = 3;
+
+        private static TraceSwitch trace = new TraceSwitch("Scanner", "Traces the progress of the Scanner");
+
         private Program program;
         private PriorityQueue<WorkItem> queue;
         private SegmentMap segmentMap;
@@ -107,16 +116,7 @@ namespace Reko.Scanning
         private DecompilerEventListener eventListener;
         private HashSet<Procedure> visitedProcs;
         private CancellationTokenSource cancelSvc;
-
         private HashSet<Address> scannedGlobalData = new HashSet<Address>();
-
-        private static TraceSwitch trace = new TraceSwitch("Scanner", "Traces the progress of the Scanner");
-        
-        private const int PriorityEntryPoint = 5;
-        private const int PriorityJumpTarget = 6;
-        private const int PriorityGlobalData = 7;
-        private const int PriorityVector = 4;
-        private const int PriorityBlockPromote = 3;
 
         public Scanner(
             Program program, 
@@ -143,6 +143,8 @@ namespace Reko.Scanning
             this.importReferences = program.ImportReferences;
             this.visitedProcs = new HashSet<Procedure>();
         }
+
+        public IServiceProvider Services { get; private set; }
 
         private class BlockRange
         {
@@ -254,10 +256,10 @@ namespace Reko.Scanning
         public IEnumerable<RtlInstructionCluster> GetTrace(Address addrStart, ProcessorState state, Frame frame)
         {
             return program.Architecture.CreateRewriter(
-                    CreateReader(addrStart),
-                    state,
-                    frame,
-                    this);
+                CreateReader(addrStart),
+                state,
+                frame,
+                this);
         }
 
         public PromoteBlockWorkItem CreatePromoteWorkItem(Address addrStart, Block block, Procedure procNew)
@@ -305,6 +307,15 @@ namespace Reko.Scanning
             queue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, addr, sp.Name));
         }
 
+        public void EnqueueUserProcedure(Address addr, FunctionType sig)
+        {
+            if (program.Procedures.ContainsKey(addr))
+                return; // Already scanned. Do nothing.
+            var proc = EnsureProcedure(addr, null);
+            proc.Signature = sig;
+            queue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, addr, proc.Name));
+        }
+
         public Block EnqueueJumpTarget(Address addrSrc, Address addrDest, Procedure proc, ProcessorState state)
         {
             Procedure procDest;
@@ -346,8 +357,8 @@ namespace Reko.Scanning
             }
             else if (block.Procedure != proc)
             {
-                // Jumped to a block with a different procedure than the current one.
-                // Was the jump to the entry of an existing procedure?
+                // Jumped to a block with a different procedure than the 
+                // current one. Was the jump to the entry of an existing procedure?
                 if (program.Procedures.TryGetValue(addrDest, out procDest))
                 {
                     if (procDest == proc)
@@ -381,7 +392,7 @@ namespace Reko.Scanning
                         var blockNew = CreateCallRetThunk(addrSrc, proc, procDest);
                         EstablishInitialState(addrDest, program.Architecture.CreateProcessorState(), procDest);
                         procDest.ControlGraph.AddEdge(procDest.EntryBlock, block);
-                        AddFramePointerAssignment(addrDest, procDest);
+                        InjectProcedureEntryInstructions(addrDest, procDest);
                         var wi = CreatePromoteWorkItem(addrDest, block, procDest);
                         queue.Enqueue(PriorityBlockPromote, wi);
                         return blockNew;
@@ -554,9 +565,10 @@ namespace Reko.Scanning
             var block = EnqueueJumpTarget(addr, addr, proc, st);
             proc.ControlGraph.AddEdge(proc.EntryBlock, block);
             ProcessQueue();
+
             queue = oldQueue;
 
-            AddFramePointerAssignment(addr, proc);
+            InjectProcedureEntryInstructions(addr, proc);
             var usb = new UserSignatureBuilder(program);
             usb.BuildSignature(addr, proc);
             return proc;
@@ -586,11 +598,12 @@ namespace Reko.Scanning
         /// <param name="addr"></param>
         /// <param name="proc"></param>
         /// <param name="sp"></param>
-        public void AddFramePointerAssignment(Address addr, Procedure proc)
+        public void InjectProcedureEntryInstructions(Address addr, Procedure proc)
         {
-            var stmts = proc.EntryBlock.Succ[0].Statements;
+            var bb = new StatementInjector(proc, proc.EntryBlock.Succ[0], addr);
             var sp = proc.Frame.EnsureRegister(program.Architecture.StackRegister);
-            stmts.Insert(0, addr.ToLinear(), new Assignment(sp, proc.Frame.FramePointer));
+            bb.Assign(sp, proc.Frame.FramePointer);
+            program.Platform.InjectProcedureEntryStatements(proc, addr, bb);
         }
 
         private bool TryGetNoDecompiledProcedure(Address addr, out ExternalProcedure ep)
@@ -603,7 +616,7 @@ namespace Reko.Scanning
                 return false;
             }
 
-            ProcedureSignature sig = null;
+            FunctionType sig = null;
             if (!string.IsNullOrEmpty(sProc.CSignature))
             {
                 var usb = new UserSignatureBuilder(program);
@@ -679,6 +692,20 @@ namespace Reko.Scanning
             var rdr = program.CreateImageReader(addr);
             var target = program.Platform.GetTrampolineDestination(rdr, this);
             return target;
+        }
+
+        public Identifier GetImportedGlobal(Address addrImportThunk, Address addrInstruction)
+        {
+            ImportReference impref;
+            if (importReferences.TryGetValue(addrImportThunk, out impref))
+            {
+                var global = impref.ResolveImportedGlobal(
+                    importResolver,
+                    program.Platform,
+                    new AddressContext(program, addrInstruction, this.eventListener));
+                return global;
+            }
+            return null;
         }
 
         /// <summary>
@@ -814,6 +841,10 @@ namespace Reko.Scanning
         {
             while (queue.Count > 0)
             {
+                if (eventListener.IsCanceled())
+                {
+                    break;
+                }
                 var workitem = queue.Dequeue();
                 try
                 {
@@ -847,6 +878,15 @@ namespace Reko.Scanning
                 args);
         }
 
+        public Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
+        {
+            var ppp = program.EnsurePseudoProcedure(name, returnType, args.Length);
+            ppp.Characteristics = c;
+            return new Application(
+                new ProcedureConstant(program.Architecture.PointerType, ppp),
+                returnType,
+                args);
+        }
         /// <summary>
         /// Generates the name for a block stating at address <paramref name="addr"/>.
         /// </summary>
@@ -857,7 +897,7 @@ namespace Reko.Scanning
             return addr.GenerateName("l", "");
         }
 
-        public ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction)
+        public FunctionType GetCallSignatureAtAddress(Address addrCallInstruction)
         {
             UserCallData call = null;
             if (!program.User.Calls.TryGetValue(addrCallInstruction, out call))
@@ -902,6 +942,36 @@ namespace Reko.Scanning
                 proc.Frame.ReturnAddressSize = returnAddressBytes;
                 proc.Frame.ReturnAddressKnown = true;
                 proc.Signature.ReturnAddressOnStack = returnAddressBytes;
+            }
+        }
+
+        private class StatementInjector : CodeEmitter
+        {
+            private Address addr;
+            private Block block;
+            private int iStm;
+            private Procedure proc;
+
+            public StatementInjector(Procedure proc, Block block, Address addr)
+            {
+                this.proc = proc;
+                this.addr = addr;
+                this.block = block;
+                this.iStm = 0;
+            }
+
+            public override Frame Frame { get { return proc.Frame; } }
+
+            public override Statement Emit(Instruction instr)
+            {
+                var stm = block.Statements.Insert(iStm, addr.ToLinear(), instr);
+                ++iStm;
+                return stm;
+            }
+
+            public override Identifier Register(int i)
+            {
+                throw new NotImplementedException();
             }
         }
     }

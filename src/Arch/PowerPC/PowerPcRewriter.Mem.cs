@@ -62,6 +62,31 @@ namespace Reko.Arch.PowerPC
                 emitter.Load(PrimitiveType.Int16, ea)));
         }
 
+        private void RewriteLhau()
+        {
+            var opD = RewriteOperand(instr.op1);
+            var opA = EffectiveAddress(instr.op2, emitter);
+            var ea = opA;
+            //$TODO: should be convert...
+            emitter.Assign(opD, emitter.Cast(PrimitiveType.Int32, emitter.LoadW(ea)));
+            emitter.Assign(opD, ea);
+        }
+
+        private void RewriteLhaux()
+        {
+            var opD = RewriteOperand(instr.op1);
+            var opA = RewriteOperand(instr.op2);
+            var opB = RewriteOperand(instr.op3, true);
+            var ea = opA;
+            if (!opB.IsZero)
+            {
+                ea = emitter.IAdd(opA, opB);
+            }
+            //$TODO: should be convert...
+            emitter.Assign(opD, emitter.Cast(PrimitiveType.Int32, emitter.LoadW(ea)));
+            emitter.Assign(opD, ea);
+        }
+
         private void RewriteLvewx()
         {
             var vrt = RewriteOperand(instr.op1);
@@ -73,7 +98,7 @@ namespace Reko.Arch.PowerPC
             }
             emitter.Assign(
                 vrt,
-                PseudoProc(
+                host.PseudoProcedure(
                     "__lvewx",
                     PrimitiveType.Word128,
                     rb));
@@ -89,7 +114,7 @@ namespace Reko.Arch.PowerPC
                 rb = emitter.IAdd(ra, rb);
             }
             emitter.SideEffect(
-                PseudoProc(
+                host.PseudoProcedure(
                     "__stvewx",
                     PrimitiveType.Word128,
                     vrs,
@@ -106,7 +131,7 @@ namespace Reko.Arch.PowerPC
             }
             emitter.Assign(
                 vrt,
-                PseudoProc(
+                host.PseudoProcedure(
                     "__lvsl",
                     PrimitiveType.Word128,
                     rb));
@@ -122,7 +147,7 @@ namespace Reko.Arch.PowerPC
                 : emitter.IAdd(a, b);
             emitter.Assign(
                 op1,
-                PseudoProc(
+                host.PseudoProcedure(
                     "__reverse_bytes_32",
                     PrimitiveType.Word32,
                     emitter.Load(PrimitiveType.Word32, ea)));
@@ -206,7 +231,7 @@ namespace Reko.Arch.PowerPC
                 : emitter.IAdd(a, b);
             emitter.Assign(
                 emitter.Load(PrimitiveType.Word32, ea),
-                PseudoProc(
+                host.PseudoProcedure(
                     "__reverse_bytes_32",
                     PrimitiveType.Word32,
                     op1));
@@ -225,7 +250,7 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteSync()
         {
-            emitter.SideEffect(PseudoProc("__sync", VoidType.Instance));
+            emitter.SideEffect(host.PseudoProcedure("__sync", VoidType.Instance));
         }
 
         private void RewriteTw()
@@ -257,7 +282,7 @@ namespace Reko.Arch.PowerPC
                     PrimitiveType.Bool,
                     ra, rb),
                 new RtlSideEffect(
-                    PseudoProc(
+                    host.PseudoProcedure(
                         "__trap",
                         VoidType.Instance)));
 

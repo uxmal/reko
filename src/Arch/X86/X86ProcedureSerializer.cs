@@ -47,7 +47,7 @@ namespace Reko.Arch.X86
         {
         }
 
-        public void ApplyConvention(SerializedSignature ssig, ProcedureSignature sig)
+        public void ApplyConvention(SerializedSignature ssig, FunctionType sig)
         {
             string d = ssig.Convention;
             if (d == null || d.Length == 0)
@@ -59,11 +59,16 @@ namespace Reko.Arch.X86
             sig.ReturnAddressOnStack = Architecture.PointerType.Size;   //$BUG: x86 real mode?
         }
 
-        public override ProcedureSignature Deserialize(SerializedSignature ss, Frame frame)
+        public override FunctionType Deserialize(SerializedSignature ss, Frame frame)
         {
             if (ss == null)
                 return null;
-            this.argDeser = new ArgumentDeserializer(this, Architecture, frame, 0);
+            this.argDeser = new ArgumentDeserializer(
+                this,
+                Architecture,
+                frame,
+                Architecture.PointerType.Size, //$BUG: x86 real mode?
+                Architecture.WordWidth.Size);
             Identifier ret = null;
             int fpuDelta = FpuStackOffset;
 
@@ -105,7 +110,7 @@ namespace Reko.Arch.X86
                 fpuDelta -= FpuStackOffset;
             }
             FpuStackOffset = fpuDelta;
-            var sig = new ProcedureSignature(ret, args.ToArray());
+            var sig = new FunctionType(null, ret, args.ToArray());
             sig.IsInstanceMetod = ss.IsInstanceMethod;
             ApplyConvention(ss, sig);
             return sig;
@@ -166,13 +171,13 @@ namespace Reko.Arch.X86
             case 32: 
                 if (Architecture.WordWidth.BitSize == 16)
                     return new SequenceStorage(
-                        new Identifier("dx", PrimitiveType.Word16, Architecture.GetRegister("dx")),
-                        new Identifier("ax", PrimitiveType.Word16, Architecture.GetRegister("ax")));
+                        Architecture.GetRegister("dx"),
+                        Architecture.GetRegister("ax"));
                 break;
             case 64: if (Architecture.WordWidth.BitSize == 32)
                     return new SequenceStorage(
-                        new Identifier("edx", PrimitiveType.Word16, Architecture.GetRegister("edx")),
-                        new Identifier("eax", PrimitiveType.Word16, Architecture.GetRegister("eax")));
+                        Architecture.GetRegister("edx"),
+                        Architecture.GetRegister("eax"));
                 break;
             }
             var reg = Architecture.GetRegister("rax");

@@ -5,12 +5,12 @@ char * get(uint32 n)
 // LiveOut:
 // Trashed: SCZO ah al ax eax rax
 // Preserved: esp
-// Stack args: Stack +0000(32)
+// Stack args: Stack +0004(32)
 get_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp
-// LocalsOut: Stack +0000(32)
+// LocalsOut: Stack +0004(32)
 
 l10071000:
 	branch n >u 0xFFFFFFFE l10071029

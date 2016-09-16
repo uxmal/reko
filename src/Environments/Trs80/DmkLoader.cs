@@ -30,6 +30,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Environments.Trs80
 {
+    // http://www.classiccmp.org/cpmarchives/trs80/mirrors/www.discover-net.net/~dmkeil/coco/cocotech.htm#Technical-DMK-disks
     public class DmkLoader : ImageLoader
     {
         private int TrackLength;
@@ -158,7 +159,7 @@ namespace Reko.Environments.Trs80
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            return new RelocationResults(new List<ImageSymbol>(), new SortedList<Address, ImageSymbol>(), new List<Address>());
+            return new RelocationResults(new List<ImageSymbol>(), new SortedList<Address, ImageSymbol>());
         }
     }
 }

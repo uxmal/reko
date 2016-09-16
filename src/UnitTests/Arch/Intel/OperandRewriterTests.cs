@@ -26,6 +26,7 @@ using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using Reko.Core.Serialization;
 
 namespace Reko.UnitTests.Arch.Intel
 {
@@ -139,17 +140,17 @@ namespace Reko.UnitTests.Arch.Intel
 	public class FakeRewriterHost : IRewriterHost
 	{
         private Program program;
-		private Dictionary<Address,ProcedureSignature> callSignatures;
+		private Dictionary<Address,FunctionType> callSignatures;
 		private Dictionary<Address,Procedure> procedures;
 
 		public FakeRewriterHost(Program prog)
 		{
             this.program = prog;
-			callSignatures = new Dictionary<Address,ProcedureSignature>();
+			callSignatures = new Dictionary<Address,FunctionType>();
 			procedures = new Dictionary<Address,Procedure>();
 		}
 
-		public void AddCallSignature(Address addr, ProcedureSignature sig)
+		public void AddCallSignature(Address addr, FunctionType sig)
 		{
 			callSignatures[addr] = sig;
 		}
@@ -186,9 +187,19 @@ namespace Reko.UnitTests.Arch.Intel
                 args);
         }
 
-		public ProcedureSignature GetCallSignatureAtAddress(Address addrCallInstruction)
+        public Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
+        {
+            var ppp = program.EnsurePseudoProcedure(name, returnType, args.Length);
+            ppp.Characteristics = c;
+            return new Application(
+                new ProcedureConstant(PrimitiveType.Pointer32, ppp),
+                returnType,
+                args);
+        }
+
+        public FunctionType GetCallSignatureAtAddress(Address addrCallInstruction)
 		{
-            ProcedureSignature sig;
+            FunctionType sig;
             if (callSignatures.TryGetValue(addrCallInstruction, out sig))
                 return sig;
             else
@@ -206,7 +217,12 @@ namespace Reko.UnitTests.Arch.Intel
 			return new Procedure[0];
 		}
 
-		public ExternalProcedure GetImportedProcedure(Address addrTunk, Address addrInstruction)
+        public Identifier GetImportedGlobal(Address addrTunk, Address addrInstruction)
+        {
+            return null;
+        }
+
+        public ExternalProcedure GetImportedProcedure(Address addrTunk, Address addrInstruction)
 		{
 			return null;
 		}

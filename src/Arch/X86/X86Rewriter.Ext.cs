@@ -33,8 +33,8 @@ using System.Text;
 namespace Reko.Arch.X86
 {
     /// <summary>
-    /// Rewriter support for "extended" instructions of the x86 architecture. Basically, anything SSE or 
-    /// post-Pentium goes here.
+    /// Rewriter support for "extended" instructions of the x86 architecture.
+    /// Basically, anything SSE or post-Pentium goes here.
     /// </summary>
     public partial class X86Rewriter
     {

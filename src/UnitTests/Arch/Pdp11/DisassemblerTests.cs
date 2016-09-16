@@ -82,6 +82,19 @@ namespace Reko.UnitTests.Arch.Pdp11
         }
 
         [Test]
+        public void Pdp11dis_jsr_relative()
+        {
+            RunTest("jsr\tpc,0582(pc)", 0x09F7, 0x0582);
+        }
+
+        [Test]
+        public void Pdp11dis_jsr_abs()
+        {
+            var instr = RunTest(0x09DF, 0x200);
+            Assert.AreEqual("jsr\tpc,@#0200", instr.ToString());
+        }
+
+        [Test]
         public void Pdp11dis_mov_sp_abs()
         {
             var instr = RunTest(0x119F, 0x1234);
@@ -92,7 +105,7 @@ namespace Reko.UnitTests.Arch.Pdp11
         public void Pdp11dis_mov_ind_ind()
         {
             var instr = RunTest(0x6CB5, 0x0030, 0x0040);
-            Assert.AreEqual("add\t0030(r5),0040(r2)", instr.ToString());
+            Assert.AreEqual("add\t0030(r2),0040(r5)", instr.ToString());
         }
 
         [Test]
@@ -105,22 +118,15 @@ namespace Reko.UnitTests.Arch.Pdp11
         [Test]
         public void Pdp11dis_imm()
         {
-             var instr = RunTest(0x15DF, 0x0030, 0x0040);
+            var instr = RunTest(0x15DF, 0x0030, 0x0040);
             Assert.AreEqual("mov\t#0030,@#0040", instr.ToString());
-        }
-
-        [Test]
-        public void Pdp11dis_jsr_abs()
-        {
-            var instr = RunTest(0x09DF, 0x200);
-            Assert.AreEqual("jsr\tpc,@#0200", instr.ToString());
         }
 
         [Test]
         public void Pdp11dis_sub_r_r()
         {
             var instr = RunTest(0xE083);
-            Assert.AreEqual("sub\tr3,r2", instr.ToString());
+            Assert.AreEqual("sub\tr2,r3", instr.ToString());
         }
 
         [Test]
@@ -152,7 +158,25 @@ namespace Reko.UnitTests.Arch.Pdp11
         [Test]
         public void Pdp11dis_beq()
         {
-            RunTest("beq\t0200", 0x03FE);
+            RunTest("beq\t01FE", 0x03FE);
+        }
+
+        [Test]
+        public void Pdp11dis_sob()
+        {
+            RunTest("sob\tr3,0184", 0x7EFF);
+        }
+
+        [Test]
+        public void Pdp11dis_nop()
+        {
+            RunTest("nop", 0x00A0);
+        }
+
+        [Test]
+        public void Pdp11dis_bis()
+        {
+            RunTest("bis\t#2000,@#0024", 0x55DF, 0x2000, 0x0024);
         }
     }
 }

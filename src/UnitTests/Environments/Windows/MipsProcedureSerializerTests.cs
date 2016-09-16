@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Environments.Windows
         protected readonly VoidType_v1 Void = new VoidType_v1();
 
         private MockRepository mr;
-        private ProcedureSignature sig;
+        private FunctionType sig;
         private SerializedSignature ssig;
         private MipsLe32Architecture arch;
         private ISerializedTypeVisitor<DataType> typeLoader;

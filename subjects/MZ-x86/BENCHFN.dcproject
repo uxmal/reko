@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Decompiler/v2">
   <input>
-    <filename>D:\dev\uxmal\reko\master\subjects\MZ-x86\BENCHFN.EXE</filename>
+    <filename>BENCHFN.EXE</filename>
     <address>0800:0000</address>
     <procedure name="fn0800_0222">
       <address>0800:0222</address>
       <assume reg="ds" value="1000" />
     </procedure>
-    <disassembly>D:\dev\uxmal\reko\master\subjects\MZ-x86\BENCHFN.asm</disassembly>
-    <intermediate-code>D:\dev\uxmal\reko\master\subjects\MZ-x86\BENCHFN.dis</intermediate-code>
-    <output>D:\dev\uxmal\reko\master\subjects\MZ-x86\BENCHFN.c</output>
-    <types-file>D:\dev\uxmal\reko\master\subjects\MZ-x86\BENCHFN.h</types-file>
-    <global-vars>D:\dev\uxmal\reko\master\subjects\MZ-x86\BENCHFN.globals.c</global-vars>
+    <disassembly>BENCHFN.asm</disassembly>
+    <intermediate-code>BENCHFN.dis</intermediate-code>
+    <output>BENCHFN.c</output>
+    <types-file>BENCHFN.h</types-file>
+    <global-vars>BENCHFN.globals.c</global-vars>
     <options>
       <HeuristicScanning>false</HeuristicScanning>
     </options>

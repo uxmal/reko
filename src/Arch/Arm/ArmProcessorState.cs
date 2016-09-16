@@ -84,7 +84,7 @@ namespace Reko.Arch.Arm
         {
         }
 
-        public override void OnProcedureLeft(ProcedureSignature procedureSignature)
+        public override void OnProcedureLeft(FunctionType procedureSignature)
         {
         }
 
@@ -93,7 +93,7 @@ namespace Reko.Arch.Arm
             return new CallSite(0, 0);
         }
 
-        public override void OnAfterCall(ProcedureSignature sigCallee)
+        public override void OnAfterCall(FunctionType sigCallee)
         {
         }
     }

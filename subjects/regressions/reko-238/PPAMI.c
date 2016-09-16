@@ -3868,9 +3868,27 @@ void fn00007A64(word32 dwArg04, word32 dwArg08, word32 dwArg0C)
 	word32 a1_11 = dwArg08;
 	word32 a0_12 = dwArg04;
 	word32 d0_14 = dwArg0C;
-l00007A78:
-	word32 d0_16 = d0_14 - 0x01;
-	d0_14 = d0_16 - 0x01;
+	do
+	{
+		word32 d0_16 = d0_14 - 0x01;
+		d0_14 = d0_16 - 0x01;
+		if (d0_16 <u 0x01)
+			return;
+		byte v10_35 = Mem0[a1_11 + 0x00:byte];
+		Mem38[a0_12 + 0x00:byte] = v10_35;
+		a1_11 = a1_11 + 0x01;
+		a0_12 = a0_12 + 0x01;
+	} while (v10_35 == 0x00);
+	while (true)
+	{
+		d0_14 = d0_14 - 0x01;
+		if (d0_14 <u 0x00)
+			break;
+		Mem50[a0_12 + 0x00:byte] = 0x00;
+		a0_12 = a0_12 + 0x01;
+	}
+	return;
+	return;
 }
 
 word32 fn00007A88(word32 dwArg04, word32 dwArg08, word32 dwArg0C)

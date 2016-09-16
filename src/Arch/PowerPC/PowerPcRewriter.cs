@@ -79,6 +79,7 @@ namespace Reko.Arch.PowerPC
                 case Opcode.addis: RewriteAddis(); break;
                 case Opcode.add: RewriteAdd(); break;
                 case Opcode.adde: RewriteAdde(); break;
+                case Opcode.addme: RewriteAddme(); break;
                 case Opcode.addze: RewriteAddze(); break;
                 case Opcode.and: RewriteAnd(false); break;
                 case Opcode.andc: RewriteAndc(); break;
@@ -129,6 +130,7 @@ namespace Reko.Arch.PowerPC
                 case Opcode.cntlzw: RewriteCntlz("__cntlzw", PrimitiveType.Word32); break;
                 case Opcode.creqv: RewriteCreqv(); break;
                 case Opcode.cror: RewriteCror(); break;
+                case Opcode.crnor: RewriteCrnor(); break;
                 case Opcode.crxor: RewriteCrxor(); break;
                 case Opcode.dcbt: RewriteDcbt(); break;
                 case Opcode.divw: RewriteDivw(); break;
@@ -163,6 +165,8 @@ namespace Reko.Arch.PowerPC
                 case Opcode.lfs: RewriteLfs(); break;
                 case Opcode.lfsx: RewriteLzx(PrimitiveType.Real32); break;
                 case Opcode.lha: RewriteLha(); break;
+                case Opcode.lhau: RewriteLhau(); break;
+                case Opcode.lhaux: RewriteLhaux(); break;
                 case Opcode.lhz: RewriteLz(PrimitiveType.Word16); break;
                 case Opcode.lhzu: RewriteLzu(PrimitiveType.Word16); break;
                 case Opcode.lhzx: RewriteLzx(PrimitiveType.Word16); break;
@@ -285,25 +289,12 @@ namespace Reko.Arch.PowerPC
             if (iOp != null)
             {
                 // Sign-extend the bastard.
-                PrimitiveType iType = (PrimitiveType)iOp.Value.DataType;
-                if (arch.WordWidth.BitSize == 64)
-                {
-                    return (iType.Domain == Domain.SignedInt)
-                        ? Constant.Int64(iOp.Value.ToInt64())
-                        : Constant.Word64(iOp.Value.ToUInt64());
-                }
-                else
-                {
-                    return (iType.Domain == Domain.SignedInt)
-                        ? Constant.Int32(iOp.Value.ToInt32())
-                        : Constant.Word32(iOp.Value.ToUInt32());
-
-                }
+                return SignExtend(iOp.Value);
             }
             var aOp = op as AddressOperand;
             if (aOp != null)
                 return aOp.Address;
-            
+
             throw new NotImplementedException(
                 string.Format("RewriteOperand:{0} ({1}}}", op, op.GetType()));
         }
@@ -336,23 +327,21 @@ namespace Reko.Arch.PowerPC
             }
         }
 
-        //$REVIEW: push PseudoProc into the RewriterHost interface"
-        public Expression PseudoProc(string name, DataType retType, params Expression[] args)
+        private Expression SignExtend(Constant value)
         {
-            var ppp = host.EnsurePseudoProcedure(name, retType, args.Length);
-            return PseudoProc(ppp, retType, args);
-        }
-
-        public Expression PseudoProc(PseudoProcedure ppp, DataType retType, params Expression[] args)
-        {
-            if (args.Length != ppp.Arity)
-                throw new ArgumentOutOfRangeException(
-                    string.Format("Pseudoprocedure {0} expected {1} arguments, but was passed {2}.",
-                    ppp.Name,
-                    ppp.Arity,
-                    args.Length));
-
-            return emitter.Fn(new ProcedureConstant(arch.PointerType, ppp), retType, args);
+            PrimitiveType iType = (PrimitiveType)value.DataType;
+            if (arch.WordWidth.BitSize == 64)
+            {
+                return (iType.Domain == Domain.SignedInt)
+                    ? Constant.Int64(value.ToInt64())
+                    : Constant.Word64(value.ToUInt64());
+            }
+            else
+            {
+                return (iType.Domain == Domain.SignedInt)
+                    ? Constant.Int32(value.ToInt32())
+                    : Constant.Word32(value.ToUInt32());
+            }
         }
 
         private Expression UpdatedRegister(Expression effectiveAddress)

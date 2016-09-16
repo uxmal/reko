@@ -35,6 +35,6 @@ namespace Reko.ImageLoaders.MzExe.Pe
             this.program = program;
         }
 
-        public abstract void ApplyRelocation(uint baseOfImage, uint page, ImageReader rdr, RelocationDictionary relocations);
+        public abstract void ApplyRelocation(Address baseOfImage, uint page, ImageReader rdr, RelocationDictionary relocations);
     }
 }

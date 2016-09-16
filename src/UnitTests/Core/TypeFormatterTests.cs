@@ -24,6 +24,7 @@ using Reko.Core.Types;
 using NUnit.Framework;
 using System;
 using System.IO;
+using Reko.Core.Expressions;
 
 namespace Reko.UnitTests.Core
 {
@@ -141,8 +142,9 @@ struct a {
 		[Test]
 		public void TyfoFn()
 		{
-			FunctionType fn = new FunctionType(null, PrimitiveType.Int32, 
-				new DataType[] { PrimitiveType.Word32 }, null);
+			FunctionType fn = new FunctionType(null, 
+                new Identifier("", PrimitiveType.Int32, null), 
+				new Identifier[] { new Identifier("", PrimitiveType.Word32, null) });
 			tyreffo.WriteDeclaration(fn, "fn");
 			Assert.AreEqual("int32 fn(word32)", 
 				sw.ToString());
@@ -152,10 +154,10 @@ struct a {
 		public void TyfoPfn()
 		{
 			FunctionType fn = new FunctionType(null, null, 
-				new DataType[] { PrimitiveType.Word32 }, null);
+				new Identifier[] { new Identifier("", PrimitiveType.Word32, null)});
 			Pointer pfn = new Pointer(fn, 4);
 			tyreffo.WriteDeclaration(pfn, "pfn");
-			Assert.AreEqual("void ( * pfn)(word32)", 
+			Assert.AreEqual("void (* pfn)(word32)", 
 				sw.ToString());
 		}
 
@@ -171,8 +173,12 @@ struct a {
 		[Test]
 		public void TyfoManyArgs()
 		{
-			FunctionType fn = new FunctionType(null, null, 
-				new DataType[] { PrimitiveType.Pointer32, PrimitiveType.Int64 }, null);
+            FunctionType fn = new FunctionType(
+                null, 
+                null,
+                new Identifier[] {
+                    new Identifier("", PrimitiveType.Pointer32,  null),
+                    new Identifier("", PrimitiveType.Int64 , null)});
 			tyreffo.WriteDeclaration(fn, "fn");
 			Assert.AreEqual("void fn(ptr32, int64)", sw.ToString());
 		}
@@ -206,7 +212,7 @@ struct a {
         }
 
         [Test]
-        [Ignore("This test isn't working presently; focus on passing more important tests first then fix")]
+        //[Ignore("This test isn't working presently; focus on passing more important tests first then fix")]
         public void TyfoMemberPointerCycle()
         {
             var seg = new StructureType("seg", 100);
@@ -226,8 +232,8 @@ struct a {
                 "};" + nl +
                 nl +
                 "struct b {" + nl +
-                "\tstruct a seg::*ptr0000;\t// 0" + nl +
-                "};" + nl;
+                "\tstruct a seg::* ptr0000;\t// 0" + nl +
+                "};" + nl + nl;
 
             Console.Write(sw.ToString());
             Assert.AreEqual(sExp, sw.ToString());
@@ -261,7 +267,7 @@ struct a {
             var ptr2 = new Pointer(ptr, 4);
             tyreffo.WriteDeclaration(ptr2, "ppi");
 
-            string sExp = "int32 * * ppi";
+            string sExp = "int32 ** ppi";
             Assert.AreEqual(sExp, sw.ToString());
         }
 
@@ -329,7 +335,7 @@ public:
 	do_something();
 private:
 	int32 m_n0004;	// 4
-	 TestClass * m_ptr0008;	// 8
+	TestClass * m_ptr0008;	// 8
 }";
             #endregion
             Assert.AreEqual(sExp, sw.ToString());
