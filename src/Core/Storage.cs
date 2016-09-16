@@ -327,6 +327,26 @@ namespace Reko.Core
             }
         }
 
+        public static RegisterStorage Reg8(string name, int number)
+        {
+            return new RegisterStorage(name, number, 0, PrimitiveType.Byte);
+        }
+
+        public static RegisterStorage Reg16(string name, int number)
+        {
+            return new RegisterStorage(name, number, 0, PrimitiveType.Word16);
+        }
+
+        public static RegisterStorage Reg32(string name, int number)
+        {
+            return new RegisterStorage(name, number, 0, PrimitiveType.Word32);
+        }
+
+        public static RegisterStorage Reg64(string name, int number)
+        {
+            return new RegisterStorage(name, number, 0, PrimitiveType.Word64);
+        }
+
         public override ulong BitSize {
             get { return (ulong)DataType.BitSize; }
             set { throw new NotSupportedException(); }

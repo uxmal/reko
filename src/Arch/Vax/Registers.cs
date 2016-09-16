@@ -29,25 +29,25 @@ namespace Reko.Arch.Vax
 {
     public static class Registers
     {
-        public static RegisterStorage r0 = new RegisterStorage("r0", 0, 0, PrimitiveType.Word32);
-        public static RegisterStorage r1 = new RegisterStorage("r1", 1, 0, PrimitiveType.Word32);
-        public static RegisterStorage r2 = new RegisterStorage("r2", 2, 0, PrimitiveType.Word32);
-        public static RegisterStorage r3 = new RegisterStorage("r3", 3, 0, PrimitiveType.Word32);
-                                                                                                
-        public static RegisterStorage r4 = new RegisterStorage("r4", 4, 0, PrimitiveType.Word32);
-        public static RegisterStorage r5 = new RegisterStorage("r5", 5, 0, PrimitiveType.Word32);
-        public static RegisterStorage r6 = new RegisterStorage("r6", 6, 0, PrimitiveType.Word32);
-        public static RegisterStorage r7 = new RegisterStorage("r7", 7, 0, PrimitiveType.Word32);
-                                                                                                
-        public static RegisterStorage r8 = new RegisterStorage("r8", 8, 0, PrimitiveType.Word32);
-        public static RegisterStorage r9 = new RegisterStorage("r9", 9, 0, PrimitiveType.Word32);
-        public static RegisterStorage r10 = new RegisterStorage("r10", 10, 0, PrimitiveType.Word32);
-        public static RegisterStorage r11 = new RegisterStorage("r11", 11, 0, PrimitiveType.Word32);
+        public static RegisterStorage r0 = RegisterStorage.Reg32("r0", 0);
+        public static RegisterStorage r1 = RegisterStorage.Reg32("r1", 1);
+        public static RegisterStorage r2 = RegisterStorage.Reg32("r2", 2);
+        public static RegisterStorage r3 = RegisterStorage.Reg32("r3", 3);
+                                                                        
+        public static RegisterStorage r4 = RegisterStorage.Reg32("r4", 4);
+        public static RegisterStorage r5 = RegisterStorage.Reg32("r5", 5);
+        public static RegisterStorage r6 = RegisterStorage.Reg32("r6", 6);
+        public static RegisterStorage r7 = RegisterStorage.Reg32("r7", 7);
+                                                                        
+        public static RegisterStorage r8 = RegisterStorage.Reg32("r8", 8);
+        public static RegisterStorage r9 = RegisterStorage.Reg32("r9", 9);
+        public static RegisterStorage r10 = RegisterStorage.Reg32("r10", 10);
+        public static RegisterStorage r11 = RegisterStorage.Reg32("r11", 11);
 
-        public static RegisterStorage ap = new RegisterStorage("ap", 12, 0, PrimitiveType.Word32);
-        public static RegisterStorage fp = new RegisterStorage("fp", 13, 0, PrimitiveType.Word32);
-        public static RegisterStorage sp = new RegisterStorage("sp", 14, 0, PrimitiveType.Word32);
-        public static RegisterStorage pc = new RegisterStorage("pc", 15, 0, PrimitiveType.Word32);
+        public static RegisterStorage ap = RegisterStorage.Reg32("ap", 12);
+        public static RegisterStorage fp = RegisterStorage.Reg32("fp", 13);
+        public static RegisterStorage sp = RegisterStorage.Reg32("sp", 14);
+        public static RegisterStorage pc = RegisterStorage.Reg32("pc", 15);
 
         public static readonly FlagRegister psw = new FlagRegister("psw", PrimitiveType.UInt32);
     }

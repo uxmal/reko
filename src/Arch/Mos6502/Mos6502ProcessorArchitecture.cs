@@ -158,10 +158,10 @@ namespace Reko.Arch.Mos6502
 
     public  static class Registers
     {
-        public static readonly RegisterStorage a = new RegisterStorage("a", 0, 0, PrimitiveType.Byte);
-        public static readonly RegisterStorage x = new RegisterStorage("x", 1, 0, PrimitiveType.Byte);
-        public static readonly RegisterStorage y = new RegisterStorage("y", 2, 0, PrimitiveType.Byte);
-        public static readonly RegisterStorage s = new RegisterStorage("s", 3, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage a = RegisterStorage.Reg8("a", 0);
+        public static readonly RegisterStorage x = RegisterStorage.Reg8("x", 1);
+        public static readonly RegisterStorage y = RegisterStorage.Reg8("y", 2);
+        public static readonly RegisterStorage s = RegisterStorage.Reg8("s", 3);
 
         public static readonly FlagRegister p = new FlagRegister("p", PrimitiveType.Byte);
 

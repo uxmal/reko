@@ -30,22 +30,22 @@ namespace Reko.Arch.Arm
 {
     public static class A32Registers
     {
-        public static readonly RegisterStorage r0  = new RegisterStorage("r0", 0, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage r1  = new RegisterStorage("r1", 1, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage r2  = new RegisterStorage("r2", 2, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage r3  = new RegisterStorage("r3", 3, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage r4  = new RegisterStorage("r4", 4, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage r5  = new RegisterStorage("r5", 5, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage r6  = new RegisterStorage("r6", 6, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage r7  = new RegisterStorage("r7", 7, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage r8  = new RegisterStorage("r8", 8, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage r9  = new RegisterStorage("r9", 9, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage r10 = new RegisterStorage("r10", 10, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage r11 = new RegisterStorage("fp", 11, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage ip  = new RegisterStorage("ip", 12, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage sp  = new RegisterStorage("sp", 13, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage lr  = new RegisterStorage("lr", 14, 0, PrimitiveType.Word32);
-        public static readonly RegisterStorage pc  = new RegisterStorage("pc", 15, 0, PrimitiveType.Word32);
+        public static readonly RegisterStorage r0  = RegisterStorage.Reg32("r0", 0);
+        public static readonly RegisterStorage r1  = RegisterStorage.Reg32("r1", 1);
+        public static readonly RegisterStorage r2  = RegisterStorage.Reg32("r2", 2);
+        public static readonly RegisterStorage r3  = RegisterStorage.Reg32("r3", 3);
+        public static readonly RegisterStorage r4  = RegisterStorage.Reg32("r4", 4);
+        public static readonly RegisterStorage r5  = RegisterStorage.Reg32("r5", 5);
+        public static readonly RegisterStorage r6  = RegisterStorage.Reg32("r6", 6);
+        public static readonly RegisterStorage r7  = RegisterStorage.Reg32("r7", 7);
+        public static readonly RegisterStorage r8  = RegisterStorage.Reg32("r8", 8);
+        public static readonly RegisterStorage r9 = RegisterStorage.Reg32("r9", 9);
+        public static readonly RegisterStorage r10 = RegisterStorage.Reg32("r10", 10);
+        public static readonly RegisterStorage r11 = RegisterStorage.Reg32("fp", 11);
+        public static readonly RegisterStorage ip  = RegisterStorage.Reg32("ip", 12);
+        public static readonly RegisterStorage sp  = RegisterStorage.Reg32("sp", 13);
+        public static readonly RegisterStorage lr  = RegisterStorage.Reg32("lr", 14);
+        public static readonly RegisterStorage pc  = RegisterStorage.Reg32("pc", 15);
 
         public static readonly RegisterStorage[] GpRegs;
 
@@ -57,22 +57,22 @@ namespace Reko.Arch.Arm
 
         static A32Registers()
         {
-            r0 = new RegisterStorage("r0", 0, 0, PrimitiveType.Word32);
-            r1 = new RegisterStorage("r1", 1, 0, PrimitiveType.Word32);
-            r2 = new RegisterStorage("r2", 2, 0, PrimitiveType.Word32);
-            r3 = new RegisterStorage("r3", 3, 0, PrimitiveType.Word32);
-            r4 = new RegisterStorage("r4", 4, 0, PrimitiveType.Word32);
-            r5 = new RegisterStorage("r5", 5, 0, PrimitiveType.Word32);
-            r6 = new RegisterStorage("r6", 6, 0, PrimitiveType.Word32);
-            r7 = new RegisterStorage("r7", 7, 0, PrimitiveType.Word32);
-            r8 = new RegisterStorage("r8", 8, 0, PrimitiveType.Word32);
-            r9 = new RegisterStorage("r9", 9, 0, PrimitiveType.Word32);
-            r10 = new RegisterStorage("r10", 10, 0, PrimitiveType.Word32);
-            r11 = new RegisterStorage("fp", 11, 0, PrimitiveType.Word32);
-            ip = new RegisterStorage("ip", 12, 0, PrimitiveType.Word32);
-            sp = new RegisterStorage("sp", 13, 0, PrimitiveType.Word32);
-            lr = new RegisterStorage("lr", 14, 0, PrimitiveType.Word32);
-            pc = new RegisterStorage("pc", 15, 0, PrimitiveType.Word32);
+            r0 = RegisterStorage.Reg32("r0", 0);
+            r1 = RegisterStorage.Reg32("r1", 1);
+            r2 = RegisterStorage.Reg32("r2", 2);
+            r3 = RegisterStorage.Reg32("r3", 3);
+            r4 = RegisterStorage.Reg32("r4", 4);
+            r5 = RegisterStorage.Reg32("r5", 5);
+            r6 = RegisterStorage.Reg32("r6", 6);
+            r7 = RegisterStorage.Reg32("r7", 7);
+            r8 = RegisterStorage.Reg32("r8", 8);
+            r9 = RegisterStorage.Reg32("r9", 9);
+            r10= RegisterStorage.Reg32("r10", 10);
+            r11= RegisterStorage.Reg32("fp", 11);
+            ip = RegisterStorage.Reg32("ip", 12);
+            sp = RegisterStorage.Reg32("sp", 13);
+            lr = RegisterStorage.Reg32("lr", 14);
+            pc = RegisterStorage.Reg32("pc", 15);
 
             GpRegs = new RegisterStorage[] {
                     r0, 
