@@ -682,6 +682,7 @@
     </Compile>
     <Compile Include="Types\VoidType.cs" />
     <Compile Include="UserData.cs" />
+    <Compile Include="UserRegisterValue.cs" />
     <Compile Include="WorkList.cs">
       <SubType>Code</SubType>
     </Compile>

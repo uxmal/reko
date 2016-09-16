@@ -169,8 +169,6 @@ namespace Reko.Scanning
             public ulong End { get; set; }
         }
 
-        public IServiceProvider Services { get; private set; }
-
         /// <summary>
         /// Adds a new basic block to the procedure <paramref name="proc"/>.
         /// </summary>

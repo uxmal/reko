@@ -307,7 +307,6 @@ namespace Reko.Core
     {
         private RegisterStorage(string kind) : base(kind)
         {
-
         }
 
         public RegisterStorage(string regName, int number, uint bitAddress, PrimitiveType dt) : base("Register")

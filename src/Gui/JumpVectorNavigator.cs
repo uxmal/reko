@@ -57,8 +57,8 @@ namespace Reko.Gui
             {
                 if (DialogResult.OK == uiSvc.ShowModalDialog(dlg))
                 {
-                    var indJump = dlg.GetResults();
-                    this.Program.User.JumpTables[indJump.Address] = indJump;
+                    var ujmp = dlg.GetResults();
+                    this.Program.User.JumpTables[ujmp.Address] = ujmp.Table;
                     
                     ///$TODO: register
                     //$TODO: prevent user from proceeding, in effect forcing 

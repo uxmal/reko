@@ -137,14 +137,13 @@ namespace Reko.Scanning
         /// <param name="addr"></param>
         public void SetAssumedRegisterValues(Address addr)
         {
-            List<Core.Serialization.RegisterValue_v2> regValues;
+            List<UserRegisterValue> regValues;
             if (!program.User.RegisterValues.TryGetValue(addr, out regValues))
                 return;
             foreach (var rv in regValues)
             {
-                var reg = frame.EnsureRegister(program.Architecture.GetRegister(rv.Register));
-                var val = Constant.Create(reg.DataType, Convert.ToUInt64(rv.Value, 16));
-                new RtlAssignment(reg, val).Accept(this);
+                var reg = frame.EnsureRegister(rv.Register);
+                new RtlAssignment(reg, rv.Value).Accept(this);
             }
         }
 

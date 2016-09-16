@@ -34,15 +34,15 @@
         </str>
         <Name>g_20000</Name>
       </global>
-      <registerValues>
-        <assume addr="00012310" reg="eax" value="01231" />
-        <assume addr="00012310" reg="ecx" value="42424711" />
-      </registerValues>
       <jumpTable tableAddress="1000:0400">
         <dst>1000:0500</dst>
         <dst>1000:0513</dst>
         <dst>1000:05BA</dst>
       </jumpTable>
+      <registerValues>
+        <assume addr="00012310" reg="eax" value="00001231" />
+        <assume addr="00012310" reg="ecx" value="42424711" />
+      </registerValues>
     </user>
   </input>
 </project>

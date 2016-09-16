@@ -18,16 +18,17 @@
  */
 #endregion
 
-using Reko.Core;
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Gui.Forms
+namespace Reko.Core
 {
-    public interface IJumpTableDialog : IDialog
+    public class UserRegisterValue
     {
-        UserIndirectJump GetResults();
+        public RegisterStorage Register { get; set;  }
+        public Constant Value { get; set; }
     }
 }

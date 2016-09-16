@@ -1097,35 +1097,8 @@ test_exit:
                 m.Declare(eax, m.Load(PrimitiveType.Word32, v));
                 m.Declare(ecx, m.Load(PrimitiveType.Word32, eax));
             });
-            var sExp =
-            #region Expected String
-@"// Before ///////
-// proc1
-// Return size: 0
-void proc1()
-proc1_entry:
-	// succ:  l1
-l1:
-	word32 eax = Mem0[ptrArg04:word32]
-	word32 ecx = Mem0[eax:word32]
-proc1_exit:
-
-// After ///////
-// proc1
-// Return size: 0
-void proc1()
-proc1_entry:
-	// succ:  l1
-l1:
-	strInner * eax = ptrArg04->strAttr00
-	real32 ecx = eax->innerAttr00
-proc1_exit:
-
-";
-            #endregion
             RunTest(pm.BuildProgram(), "Typing/TerNestedStructsPtr.txt");
         }
-
 
         [Test]
         public void TerAddressOf()

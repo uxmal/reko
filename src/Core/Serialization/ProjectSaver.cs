@@ -105,7 +105,7 @@ namespace Reko.Core.Serialization
             };
         }
 
-        private RegisterValue_v2[] SerializeRegisterValues(SortedList<Address, List<RegisterValue_v2>> registerValues)
+        private RegisterValue_v2[] SerializeRegisterValues(SortedList<Address, List<UserRegisterValue>> registerValues)
         {
             var sRegValues = new List<RegisterValue_v2>();
             foreach (var de in registerValues)
@@ -116,8 +116,8 @@ namespace Reko.Core.Serialization
                     sRegValues.Add(new RegisterValue_v2
                     {
                         Address = sAddr,
-                        Register = rv.Register,
-                        Value = rv.Value
+                        Register = rv.Register.Name,
+                        Value = rv.Value.ToString().Replace("0x", ""),
                     });
                 }
             }

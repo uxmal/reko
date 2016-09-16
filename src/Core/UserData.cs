@@ -42,7 +42,7 @@ namespace Reko.Core
             this.JumpTables = new SortedList<Address, ImageMapVectorTable>();
             this.Annotations = new List<Annotation>();
             this.TextEncoding = Encoding.ASCII;
-            this.RegisterValues = new SortedList<Address, List<Serialization.RegisterValue_v2>>();
+            this.RegisterValues = new SortedList<Address, List<UserRegisterValue>>();
         }
 
         // 'Oracular' information provided by the user.
@@ -71,7 +71,10 @@ namespace Reko.Core
         /// </summary>
         public Encoding TextEncoding { get; set; }
 
-        public SortedList<Address, List<Serialization.RegisterValue_v2>> RegisterValues { get; set; }
+        /// <summary>
+        /// Users can set register values at any location.
+        /// </summary>
+        public SortedList<Address, List<UserRegisterValue>> RegisterValues { get; set; }
     }
 
     public class Annotation

@@ -778,10 +778,10 @@ testProc_exit:
         public void BwiUserSpecifiedRegisterValues()
         {
             var addrStart = Address.Ptr32(0x00100000);
-            program.User.RegisterValues[addrStart+4] = new List<RegisterValue_v2>
+            program.User.RegisterValues[addrStart+4] = new List<UserRegisterValue>
             {
-                new RegisterValue_v2 { Register= "r1", Value= "4711" },
-                new RegisterValue_v2 { Register= "r2", Value= "1147" },
+                new UserRegisterValue { Register = (RegisterStorage)r1.Storage, Value= Constant.Word32(0x4711) },
+                new UserRegisterValue { Register = (RegisterStorage)r2.Storage, Value= Constant.Word32(0x1147) },
             };
             trace.Add(m => { m.Assign(r1, m.LoadDw(m.Word32(0x112200))); });
             trace.Add(m => { m.Assign(m.LoadDw(m.Word32(0x112204)), r1); });

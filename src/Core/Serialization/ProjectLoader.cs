@@ -30,6 +30,7 @@ using Reko.Core.Services;
 using System.Diagnostics;
 using System.Text;
 using Reko.Core.Types;
+using Reko.Core.Expressions;
 
 namespace Reko.Core.Serialization
 {
@@ -392,22 +393,31 @@ namespace Reko.Core.Serialization
             }
         }
 
-        private SortedList<Address, List<RegisterValue_v2>> LoadRegisterValues(
+        private SortedList<Address, List<UserRegisterValue>> LoadRegisterValues(
             RegisterValue_v2[] sRegValues)
         {
-            var allLists = new SortedList<Address, List<RegisterValue_v2>>();
+            var allLists = new SortedList<Address, List<UserRegisterValue>>();
             foreach (var sRegValue in sRegValues)
             {
                 Address addr;
                 if (sRegValue != null && platform.TryParseAddress(sRegValue.Address, out addr))
                 {
-                    List<RegisterValue_v2> list;
+                    List<UserRegisterValue> list;
                     if (!allLists.TryGetValue(addr, out list))
                     {
-                        list = new List<RegisterValue_v2>();
+                        list = new List<UserRegisterValue>();
                         allLists.Add(addr, list);
                     }
-                    list.Add(sRegValue);
+                    var reg = platform.Architecture.GetRegister(sRegValue.Register);
+                    var c = Constant.Create(reg.DataType, Convert.ToUInt64(sRegValue.Value, 16));
+                    if (reg != null)
+                    {
+                        list.Add(new UserRegisterValue
+                        {
+                            Register = reg,
+                            Value = c
+                        });
+                    }
                 }
             }
             return allLists;
