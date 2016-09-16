@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            Reko.Gui.Windows.Controls.EmptyEditorModel emptyEditorModel1 = new Reko.Gui.Windows.Controls.EmptyEditorModel();
             this.lblCaption = new System.Windows.Forms.Label();
             this.lblInstruction = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -40,14 +41,22 @@
             this.txtIndirectTable = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.panelSegmentedAddresses = new System.Windows.Forms.Panel();
+            this.rdbRelativeOffsets = new System.Windows.Forms.RadioButton();
             this.ddlSegments = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.rdbOffsets = new System.Windows.Forms.RadioButton();
             this.rdbFarAddresses = new System.Windows.Forms.RadioButton();
             this.label5 = new System.Windows.Forms.Label();
             this.ddlRegisters = new System.Windows.Forms.ComboBox();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.listView1 = new System.Windows.Forms.ListView();
+            this.textView1 = new Reko.Gui.Windows.Controls.TextView();
             ((System.ComponentModel.ISupportInitialize)(this.numEntries)).BeginInit();
             this.panelSegmentedAddresses.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblCaption
@@ -99,10 +108,10 @@
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(141, 303);
+            this.btnOK.Location = new System.Drawing.Point(456, 320);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 6;
+            this.btnOK.TabIndex = 12;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
             // 
@@ -110,10 +119,10 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(222, 303);
+            this.btnCancel.Location = new System.Drawing.Point(537, 320);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 7;
+            this.btnCancel.TabIndex = 13;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
@@ -123,7 +132,7 @@
             this.chkIndirectTable.Location = new System.Drawing.Point(15, 144);
             this.chkIndirectTable.Name = "chkIndirectTable";
             this.chkIndirectTable.Size = new System.Drawing.Size(87, 17);
-            this.chkIndirectTable.TabIndex = 8;
+            this.chkIndirectTable.TabIndex = 6;
             this.chkIndirectTable.Text = "&Indirect table";
             this.chkIndirectTable.UseVisualStyleBackColor = true;
             // 
@@ -142,7 +151,7 @@
             0});
             this.numEntries.Name = "numEntries";
             this.numEntries.Size = new System.Drawing.Size(126, 20);
-            this.numEntries.TabIndex = 9;
+            this.numEntries.TabIndex = 4;
             this.numEntries.Value = new decimal(new int[] {
             1,
             0,
@@ -155,7 +164,7 @@
             this.txtIndirectTable.MaxLength = 16;
             this.txtIndirectTable.Name = "txtIndirectTable";
             this.txtIndirectTable.Size = new System.Drawing.Size(126, 20);
-            this.txtIndirectTable.TabIndex = 10;
+            this.txtIndirectTable.TabIndex = 7;
             // 
             // label3
             // 
@@ -168,23 +177,34 @@
             // 
             // panelSegmentedAddresses
             // 
+            this.panelSegmentedAddresses.Controls.Add(this.rdbRelativeOffsets);
             this.panelSegmentedAddresses.Controls.Add(this.ddlSegments);
             this.panelSegmentedAddresses.Controls.Add(this.label4);
             this.panelSegmentedAddresses.Controls.Add(this.rdbOffsets);
             this.panelSegmentedAddresses.Controls.Add(this.rdbFarAddresses);
             this.panelSegmentedAddresses.Location = new System.Drawing.Point(0, 212);
             this.panelSegmentedAddresses.Name = "panelSegmentedAddresses";
-            this.panelSegmentedAddresses.Size = new System.Drawing.Size(309, 86);
+            this.panelSegmentedAddresses.Size = new System.Drawing.Size(258, 120);
             this.panelSegmentedAddresses.TabIndex = 16;
+            // 
+            // rdbRelativeOffsets
+            // 
+            this.rdbRelativeOffsets.AutoSize = true;
+            this.rdbRelativeOffsets.Location = new System.Drawing.Point(29, 53);
+            this.rdbRelativeOffsets.Name = "rdbRelativeOffsets";
+            this.rdbRelativeOffsets.Size = new System.Drawing.Size(98, 17);
+            this.rdbRelativeOffsets.TabIndex = 9;
+            this.rdbRelativeOffsets.Text = "Relative offsets";
+            this.rdbRelativeOffsets.UseVisualStyleBackColor = true;
             // 
             // ddlSegments
             // 
             this.ddlSegments.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ddlSegments.FormattingEnabled = true;
-            this.ddlSegments.Location = new System.Drawing.Point(156, 52);
+            this.ddlSegments.Location = new System.Drawing.Point(156, 72);
             this.ddlSegments.Name = "ddlSegments";
             this.ddlSegments.Size = new System.Drawing.Size(92, 21);
-            this.ddlSegments.TabIndex = 19;
+            this.ddlSegments.TabIndex = 11;
             // 
             // label4
             // 
@@ -198,21 +218,21 @@
             // rdbOffsets
             // 
             this.rdbOffsets.AutoSize = true;
-            this.rdbOffsets.Location = new System.Drawing.Point(29, 53);
+            this.rdbOffsets.Location = new System.Drawing.Point(29, 76);
             this.rdbOffsets.Name = "rdbOffsets";
             this.rdbOffsets.Size = new System.Drawing.Size(121, 17);
-            this.rdbOffsets.TabIndex = 17;
-            this.rdbOffsets.TabStop = true;
+            this.rdbOffsets.TabIndex = 10;
             this.rdbOffsets.Text = "Offsets into segment";
             this.rdbOffsets.UseVisualStyleBackColor = true;
             // 
             // rdbFarAddresses
             // 
             this.rdbFarAddresses.AutoSize = true;
+            this.rdbFarAddresses.Checked = true;
             this.rdbFarAddresses.Location = new System.Drawing.Point(29, 30);
             this.rdbFarAddresses.Name = "rdbFarAddresses";
             this.rdbFarAddresses.Size = new System.Drawing.Size(92, 17);
-            this.rdbFarAddresses.TabIndex = 16;
+            this.rdbFarAddresses.TabIndex = 8;
             this.rdbFarAddresses.TabStop = true;
             this.rdbFarAddresses.Text = "Full addresses";
             this.rdbFarAddresses.UseVisualStyleBackColor = true;
@@ -233,7 +253,44 @@
             this.ddlRegisters.Location = new System.Drawing.Point(104, 108);
             this.ddlRegisters.Name = "ddlRegisters";
             this.ddlRegisters.Size = new System.Drawing.Size(92, 21);
-            this.ddlRegisters.TabIndex = 20;
+            this.ddlRegisters.TabIndex = 5;
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Location = new System.Drawing.Point(296, 31);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.listView1);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.textView1);
+            this.splitContainer1.Size = new System.Drawing.Size(316, 273);
+            this.splitContainer1.SplitterDistance = 126;
+            this.splitContainer1.TabIndex = 18;
+            // 
+            // listView1
+            // 
+            this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listView1.Location = new System.Drawing.Point(0, 0);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(126, 273);
+            this.listView1.TabIndex = 0;
+            this.listView1.UseCompatibleStateImageBehavior = false;
+            // 
+            // textView1
+            // 
+            this.textView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textView1.Location = new System.Drawing.Point(0, 0);
+            this.textView1.Model = emptyEditorModel1;
+            this.textView1.Name = "textView1";
+            this.textView1.Services = null;
+            this.textView1.Size = new System.Drawing.Size(186, 273);
+            this.textView1.StyleClass = null;
+            this.textView1.TabIndex = 0;
+            this.textView1.Text = "textView1";
             // 
             // JumpTableDialog
             // 
@@ -241,7 +298,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(309, 338);
+            this.ClientSize = new System.Drawing.Size(624, 355);
+            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.ddlRegisters);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.panelSegmentedAddresses);
@@ -266,6 +324,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.numEntries)).EndInit();
             this.panelSegmentedAddresses.ResumeLayout(false);
             this.panelSegmentedAddresses.PerformLayout();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -291,5 +353,9 @@
         private System.Windows.Forms.RadioButton rdbFarAddresses;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox ddlRegisters;
+        private System.Windows.Forms.RadioButton rdbRelativeOffsets;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.ListView listView1;
+        private Controls.TextView textView1;
     }
 }

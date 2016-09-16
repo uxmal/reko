@@ -64,5 +64,6 @@ namespace Reko.Gui.Windows.Forms
         {
             return interactor.GetResults();
         }
+
     }
 }
