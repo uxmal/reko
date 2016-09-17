@@ -59,9 +59,8 @@ namespace Reko.Environments.Windows
                     RegisterValues = new RegValue[0]
                 },
                 Name = "__fastfail",
-                Signature = new FunctionType(
-                            null,
-                            new Identifier("rcx", PrimitiveType.Word64, Registers.rcx)),
+                Signature = FunctionType.Action(
+                            new Identifier("ecx", PrimitiveType.Word32, Registers.ecx)),
                 Characteristics = new ProcedureCharacteristics
                 {
                     Terminates = true

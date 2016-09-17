@@ -681,7 +681,7 @@ namespace Reko.Scanning
                 if (svc.Characteristics.Terminates)
                 {
                     scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
-                    blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
+                    //blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
                     return true;
                 }
                 AffectProcessorState(svc.Signature);

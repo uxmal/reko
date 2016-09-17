@@ -65,7 +65,7 @@ namespace Reko.UnitTests.Core
 		public void PsigValidArguments()
 		{
 			Identifier arg = new Identifier(Registers.eax.Name, Registers.eax.DataType, Registers.eax);
-			FunctionType sig = new FunctionType(null, new Identifier[] { arg });
+			FunctionType sig = FunctionType.Action(new Identifier[] { arg });
 			Assert.IsTrue(sig.ParametersValid);
 
 			sig = new FunctionType(arg, new Identifier[0]);
