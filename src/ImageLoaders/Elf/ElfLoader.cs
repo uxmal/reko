@@ -798,21 +798,21 @@ namespace Reko.ImageLoaders.Elf
 
         public override List<ElfSymbol> LoadSymbolsSection(ElfSection symSection)
         {
-            Debug.Print("Symbols");
+            //Debug.Print("Symbols");
             var stringtableSection = symSection.LinkedSection;
             var rdr = CreateReader(symSection.FileOffset);
             var symbols = new List<ElfSymbol>();
             for (ulong i = 0; i < symSection.Size / symSection.EntrySize; ++i)
             {
                 var sym = Elf64_Sym.Load(rdr);
-                Debug.Print("  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
-                    i,
-                    ReadAsciiString(stringtableSection.FileOffset + sym.st_name),
-                    (ElfSymbolType)(sym.st_info & 0xF),
-                    sym.st_shndx,
-                    GetSectionName(sym.st_shndx),
-                    sym.st_value,
-                    sym.st_size);
+                //Debug.Print("  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
+                //    i,
+                //    ReadAsciiString(stringtableSection.FileOffset + sym.st_name),
+                //    (ElfSymbolType)(sym.st_info & 0xF),
+                //    sym.st_shndx,
+                //    GetSectionName(sym.st_shndx),
+                //    sym.st_value,
+                //    sym.st_size);
                 symbols.Add(new ElfSymbol
                 {
                     Name = ReadAsciiString(stringtableSection.FileOffset + sym.st_name),
@@ -1339,21 +1339,21 @@ namespace Reko.ImageLoaders.Elf
 
         public override List<ElfSymbol> LoadSymbolsSection(ElfSection symSection)
         {
-            Debug.Print("Symbols");
+            //Debug.Print("Symbols");
             var stringtableSection = symSection.LinkedSection;
             var rdr = CreateReader(symSection.FileOffset);
             var symbols = new List<ElfSymbol>();
             for (ulong i = 0; i < symSection.Size / symSection.EntrySize; ++i)
             {
                 var sym = Elf32_Sym.Load(rdr);
-                Debug.Print("  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
-                    i,
-                    ReadAsciiString(stringtableSection.FileOffset + sym.st_name),
-                    (ElfSymbolType)(sym.st_info & 0xF),
-                    sym.st_shndx,
-                    GetSectionName(sym.st_shndx),
-                    sym.st_value,
-                    sym.st_size);
+                //Debug.Print("  {0,3} {1,-25} {2,-12} {3,6} {4,-15} {5:X8} {6,9}",
+                //    i,
+                //    ReadAsciiString(stringtableSection.FileOffset + sym.st_name),
+                //    (ElfSymbolType)(sym.st_info & 0xF),
+                //    sym.st_shndx,
+                //    GetSectionName(sym.st_shndx),
+                //    sym.st_value,
+                //    sym.st_size);
                 symbols.Add(new ElfSymbol
                 {
                     Name = ReadAsciiString(stringtableSection.FileOffset + sym.st_name),

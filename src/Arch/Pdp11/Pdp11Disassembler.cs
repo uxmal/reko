@@ -451,7 +451,7 @@ namespace Reko.Arch.Pdp11
         private MachineOperand DecodeOperand(int operandBits)
         {
             var reg = arch.GetRegister(operandBits & 7);
-            Debug.Print("operandBits {0:X} {1:X} ", (operandBits >> 3) & 7, operandBits & 7);
+            //Debug.Print("operandBits {0:X} {1:X} ", (operandBits >> 3) & 7, operandBits & 7);
             if (reg == Registers.pc)
             {
                 switch ((operandBits >> 3) & 7)

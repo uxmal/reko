@@ -84,7 +84,6 @@ namespace Reko.Gui.Windows
                     stackPosition++;
                     itemsAhead--;
                 }
-                Debug.Print("Removing {0}:{1}", stackPosition, itemsAhead);
                 navStack.RemoveRange(stackPosition, itemsAhead);
             }
             navStack.Add(navControl.CurrentAddress);    // Remember where we were...

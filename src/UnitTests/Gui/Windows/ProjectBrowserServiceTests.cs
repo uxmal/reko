@@ -104,8 +104,15 @@ namespace Reko.UnitTests.Gui.Windows
                     fakeTree.Nodes.Select(n => render(n))));
             xdoc.RemoveAnnotations<XProcessingInstruction>();
             xdoc.WriteTo(new XmlTextWriter(sb));
-            Console.WriteLine(sb.ToString());
-            Assert.AreEqual(sExp, sb.ToString());
+            try
+            {
+                Assert.AreEqual(sExp, sb.ToString());
+            }
+            catch
+            {
+                Console.WriteLine(sb.ToString());
+                throw;
+            }
         }
 
         #region Fake TreeView (Move to UnitTests.Fakes?)

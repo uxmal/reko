@@ -59,7 +59,6 @@ namespace Reko.Scanning
 
 		public bool Match(byte [] arr, int position)
 		{
-			System.Diagnostics.Debug.WriteLine(this);
             int p = position;
 			pos = p;
 			int s = 1;			// state 0 is the error state.
@@ -92,7 +91,7 @@ namespace Reko.Scanning
 
 		public override string ToString()
 		{
-			System.Text.StringBuilder sb = new System.Text.StringBuilder();
+			var sb = new System.Text.StringBuilder();
 			sb.Append("{ alphabet:");
 			for (int i = 0; i != this.mpbytecls.Length; ++i)
 			{

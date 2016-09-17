@@ -276,8 +276,8 @@ namespace Reko.UnitTests.Scanning
         public void Scanner_MatchTest()
         {
             byte[] data = new byte[] {
-										   0x30, 0x34, 0x32, 0x12, 0x55, 0xC3, 0xB8, 0x34, 0x00 
-									   };
+			   0x30, 0x34, 0x32, 0x12, 0x55, 0xC3, 0xB8, 0x34, 0x00 
+			};
 
             Regexp re = Regexp.Compile(".*55C3");
             Assert.IsTrue(re.Match(data, 0), "Should have matched");
