@@ -47,14 +47,12 @@ namespace Reko.UnitTests.Typing
         private TypeTransformer trans;
         private ComplexTypeNamer ctn;
         private List<StructureField> userDefinedGlobals;
-        private Dictionary<string, FunctionType> userDefinedProcedures;
         private Dictionary<Address, ImageSegment> imageSegments;
 
         [SetUp]
         public void Setup()
         {
             userDefinedGlobals = new List<StructureField>();
-            userDefinedProcedures = new Dictionary<string, FunctionType>();
             imageSegments = new Dictionary<Address, ImageSegment>();
         }
 
@@ -69,13 +67,8 @@ namespace Reko.UnitTests.Typing
                 SetupPreStages(program);
                 aen.Transform(program);
                 eqb.Build(program);
-#if OLD
-                coll = new TraitCollector(program.TypeFactory, program.TypeStore, dtb, program);
-                coll.CollectProgramTraits(program);
-#else
                 var coll = new TypeCollector(program.TypeFactory, program.TypeStore, program,eventListener);
                 coll.CollectTypes();
-#endif
                 program.TypeStore.BuildEquivalenceClassDataTypes(program.TypeFactory);
                 tvr.ReplaceTypeVariables();
                 trans.Transform();

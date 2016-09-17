@@ -104,7 +104,6 @@ namespace Reko.UnitTests.Analysis
 		{
 			Build(new LiveLoopMock().Procedure, new FakeArchitecture());
 			var lci = new LiveCopyInserter(proc, ssaIds);
-            proc.ControlGraph.Blocks[1].Dump();
             var i_1 = ssaIds.Where(s => s.Identifier.Name == "i_1").Single();
             var idNew = lci.InsertAssignmentNewId(i_1.Identifier, proc.ControlGraph.Blocks[2], 2);
 			lci.RenameDominatedIdentifiers(i_1, ssaIds[idNew]);
