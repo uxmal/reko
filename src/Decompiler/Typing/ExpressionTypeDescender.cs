@@ -119,7 +119,6 @@ namespace Reko.Typing
                 .Select(a => new Identifier("", a, null))
                 .ToArray();
             var fn = factory.CreateFunctionType(
-                null, 
                 new Identifier("", ret, null),
                 parameters);
             var pfn = factory.CreatePointer(fn, funcPtrSize);

@@ -153,7 +153,7 @@ struct a {
 		[Test]
 		public void TyfoPfn()
 		{
-			FunctionType fn = new FunctionType(null, null, 
+			FunctionType fn = FunctionType.Action(
 				new Identifier[] { new Identifier("", PrimitiveType.Word32, null)});
 			Pointer pfn = new Pointer(fn, 4);
 			tyreffo.WriteDeclaration(pfn, "pfn");

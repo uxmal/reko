@@ -79,7 +79,6 @@ namespace Reko.UnitTests.Arch.PowerPC
             mr.ReplayAll();
 
             FunctionType sig = new FunctionType(
-                null,
                 new Identifier("qax", PrimitiveType.Word32, arch.Registers[3]),
                 new Identifier[] {
                     new Identifier("qbx", PrimitiveType.Word32, arch.Registers[3])
@@ -121,7 +120,6 @@ namespace Reko.UnitTests.Arch.PowerPC
             Procedure proc = new Procedure("foo", arch.CreateFrame())
             {
                 Signature = new FunctionType(
-                    null,
                     new Identifier("eax", PrimitiveType.Word32, arch.Registers[3]),
                     new Identifier[] {
                         new Identifier("arg00", PrimitiveType.Word32, arch.Registers[3])

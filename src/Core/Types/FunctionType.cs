@@ -51,7 +51,6 @@ namespace Reko.Core.Types
         }
 
         public FunctionType(
-            string name,        //$REVIEW: what's the use? function types have no names
             Identifier returnValue,
             params Identifier [] parameters)
         {
@@ -70,9 +69,10 @@ namespace Reko.Core.Types
             return new FunctionType(null, returnId, formals);
         }
 
-        public static FunctionType Action(params Identifier[] formals)
+
+        public static FunctionType Action(params Identifier [] parameters)
         {
-            return new FunctionType(null, null, formals);
+            return new FunctionType(new Identifier("", VoidType.Instance, null), parameters);
         }
 
         public Identifier ReturnValue { get; private set; }
@@ -96,7 +96,7 @@ namespace Reko.Core.Types
             Identifier[] parameters = this.Parameters
                 .Select(p => new Identifier(p.Name, p.DataType.Clone(), p.Storage))
                 .ToArray();
-            var ft = new FunctionType(Name, ret, parameters);
+            var ft = new FunctionType(ret, parameters);
             return ft;
 		}
 

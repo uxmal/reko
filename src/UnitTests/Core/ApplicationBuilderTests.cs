@@ -51,7 +51,9 @@ namespace Reko.UnitTests.Core
 			arg08 = new Identifier("arg08",   PrimitiveType.Word16, new StackArgumentStorage(8, PrimitiveType.Word16));
 			arg0C = new Identifier("arg0C",   PrimitiveType.Byte, new StackArgumentStorage(0x0C, PrimitiveType.Byte));
 			regOut = new Identifier("edxOut", PrimitiveType.Word32, new OutArgumentStorage(frame.EnsureRegister(Registers.edx)));
-            sig = FunctionType.Func(ret, new [] { arg04, arg08, arg0C, regOut });
+            sig = FunctionType.Func(
+                ret,
+                new Identifier[] { arg04, arg08, arg0C, regOut });
         }
 
 		[Test]
@@ -109,6 +111,7 @@ namespace Reko.UnitTests.Core
                 callee.Frame,
                 new CallSite(4, 0), 
                 new Identifier("foo", PrimitiveType.Pointer32, null),
+                new FunctionType(new Identifier("bRet", PrimitiveType.Byte, Registers.eax), new Identifier[0]),
                 true);
             var sig = FunctionType.Func(new Identifier("bRet", PrimitiveType.Byte, Registers.eax));
             var instr = ab.CreateInstruction(sig, null);

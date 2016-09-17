@@ -69,7 +69,7 @@ namespace Reko.Environments.RiscOS
                     Characteristics = new ProcedureCharacteristics {
                         Terminates = true,
                     },
-                    Signature = new FunctionType(null, null,
+                    Signature = FunctionType.Action(
                         new Identifier[] {
                             new Identifier("r0", PrimitiveType.Pointer32, A32Registers.r0)
                         })

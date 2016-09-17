@@ -97,7 +97,7 @@ namespace Reko.Analysis
                 return;
             var returnId = ft.ReturnValue.DataType is VoidType ?
                 null : ft.ReturnValue;
-            var sigCallee = new FunctionType(null, returnId, ft.Parameters);
+            var sigCallee = new FunctionType(returnId, ft.Parameters);
             var ab = new FrameApplicationBuilder(
                  program.Architecture, proc.Frame, call.CallSite,
                  call.Callee, true);

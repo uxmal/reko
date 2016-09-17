@@ -199,7 +199,6 @@ namespace Reko.UnitTests.Scanning
                     {
                         "GetDC",
                         new FunctionType(
-                            null,
                             new Identifier("", new Pointer(VoidType.Instance, 4), new RegisterStorage("eax", 0, 0, PrimitiveType.Word32)),
                             new [] {
                                 new Identifier("arg",

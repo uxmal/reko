@@ -331,7 +331,6 @@ namespace Reko.UnitTests.Analysis
                     new ExternalProcedure(
                         "GlobalHandle",
                         new FunctionType(
-                            null,
                             new Identifier("eax", tHglobal, Reko.Arch.X86.Registers.eax),
                             new Identifier[] {
                                 new Identifier("pv",  tLpvoid, new StackArgumentStorage(4, PrimitiveType.Word32))
@@ -345,7 +344,6 @@ namespace Reko.UnitTests.Analysis
                 .Return(new ExternalProcedure(
                     "GlobalUnlock",
                     new FunctionType(
-                        null,
                         new Identifier("eax",  tBool, Reko.Arch.X86.Registers.eax),
                         new Identifier[] {
                             new Identifier("hMem", tHglobal, new StackArgumentStorage(4, PrimitiveType.Word32))
@@ -360,7 +358,6 @@ namespace Reko.UnitTests.Analysis
              .Return(new ExternalProcedure(
                  "GlobalFree",
                  new FunctionType(
-                     null,
                      new Identifier("eax",  tBool, Reko.Arch.X86.Registers.eax),
                      new[] {
                         new Identifier("hMem", tHglobal, new StackArgumentStorage(4, PrimitiveType.Word32))

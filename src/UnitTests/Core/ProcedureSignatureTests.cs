@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Core
 			FunctionType sig = FunctionType.Action(arg);
 			Assert.IsTrue(sig.ParametersValid);
 
-			sig = new FunctionType(null, arg);
+			sig = new FunctionType(arg, new Identifier[0]);
 			Assert.IsTrue(sig.ParametersValid);
 
 			sig = new FunctionType();

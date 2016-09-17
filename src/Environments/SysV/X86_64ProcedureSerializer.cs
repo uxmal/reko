@@ -85,7 +85,7 @@ namespace Reko.Environments.SysV
             }
             FpuStackOffset = fpuDelta;
 
-            var sig = new FunctionType(null, ret, args.ToArray());
+            var sig = new FunctionType(ret, args.ToArray());
             ApplyConvention(ss, sig);
             return sig;
         }

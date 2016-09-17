@@ -135,7 +135,7 @@ namespace Reko.UnitTests.Core.Serialization
 			Identifier [] args = new Identifier[2];
 			args[0] = new Identifier(Registers.bx.Name, Registers.bx.DataType, Registers.bx);
 			args[1] = new Identifier(Registers.cl.Name, Registers.cl.DataType, Registers.cl);
-			return new FunctionType(null, ret, args);
+			return new FunctionType(ret, args);
 		}
 
 		private SerializedSignature BuildSsigStack()

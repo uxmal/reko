@@ -95,7 +95,6 @@ namespace Reko.UnitTests.Scanning
                 ReturnValue = new Argument_v1(null, new PrimitiveType_v1(Domain.Character, 1), null, false),
             };
             var ft1 = FunctionType.Func(
-                null,
                 new Identifier("", PrimitiveType.Int32, null));
             var ft2 = FunctionType.Func(
                 new Identifier("", PrimitiveType.Char, null));

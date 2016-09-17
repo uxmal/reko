@@ -291,7 +291,7 @@ namespace Reko.UnitTests.Analysis
 		{
 			Procedure callee = new Procedure("callee", null);
 			Identifier edx = new Identifier("edx", PrimitiveType.Word32, Registers.edx);
-			callee.Signature = FunctionType.Func(
+			callee.Signature = new FunctionType(
 				new Identifier("eax", PrimitiveType.Word32, Registers.eax),
 				new Identifier[] { new Identifier("ecx",    PrimitiveType.Word32, Registers.ecx),
 								   new Identifier("arg04",  PrimitiveType.Word16, new StackArgumentStorage(4, PrimitiveType.Word16)),
