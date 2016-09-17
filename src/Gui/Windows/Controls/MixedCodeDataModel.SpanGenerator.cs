@@ -178,7 +178,6 @@ namespace Reko.Gui.Windows.Controls
                 var addrEnd = Address.Min(addrStart + BytesPerLine, item.Address + item.Size);
                 var linStart = addrStart.ToLinear();
                 var linEnd = addrEnd.ToLinear();
-                var lin = linStart;
                 var cbFiller = addr.ToLinear() - linStart;
                 var cbBytes = linEnd - addr.ToLinear();
                 var cbPadding = BytesPerLine - (cbFiller + cbBytes);
@@ -251,7 +250,6 @@ namespace Reko.Gui.Windows.Controls
         // are so small it may not make a difference.
         public static int FindIndexOfInstructionAddress(MachineInstruction[] instrs, Address addr)
         {
-            var ul = addr.ToLinear();
             return Array.FindIndex(
                 instrs,
                 i => i.Contains(addr));

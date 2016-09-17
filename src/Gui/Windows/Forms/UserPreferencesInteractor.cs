@@ -377,7 +377,6 @@ namespace Reko.Gui.Windows.Forms
         {
             var code = new List<AbsynStatement>();
             var ase = new Structure.AbsynStatementEmitter(code);
-            var m = new ExpressionEmitter();
             var a_id = new Identifier("a", PrimitiveType.Int32, null);
             var sum_id = new Identifier("sum", PrimitiveType.Int32, null);
             ase.EmitAssign(a_id, Constant.Int32(10));

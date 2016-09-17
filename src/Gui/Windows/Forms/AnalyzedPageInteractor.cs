@@ -37,18 +37,12 @@ namespace Reko.Gui.Windows.Forms
 
 	public class AnalyzedPageInteractorImpl : PhasePageInteractorImpl, IAnalyzedPageInteractor
 	{
-        private IDecompilerService decompilerSvc;
-        private ICodeViewerService codeViewerSvc;
-        private ILowLevelViewService memViewerSvc;
         private IDisassemblyViewService disasmViewerSvc;
         private IProjectBrowserService projectSvc;
         private bool canAdvance;
 
 		public AnalyzedPageInteractorImpl(IServiceProvider services) : base(services)
 		{
-            decompilerSvc = services.RequireService<IDecompilerService>();
-            codeViewerSvc = services.RequireService<ICodeViewerService>();
-            memViewerSvc = services.RequireService<ILowLevelViewService>();
             disasmViewerSvc = services.RequireService<IDisassemblyViewService>();
             projectSvc = services.RequireService<IProjectBrowserService>();
 

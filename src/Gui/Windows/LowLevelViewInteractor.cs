@@ -85,7 +85,6 @@ namespace Reko.Gui.Windows
         public Control CreateControl()
         {
             var uiService = services.RequireService<IDecompilerShellUiService>();
-            var uiPrefsSvc = services.RequireService<IUiPreferencesService>();
             this.control = new LowLevelView();
             this.Control.Font = new Font("Lucida Console", 10F); //$TODO: use user preference
             this.Control.CurrentAddressChanged += LowLevelView_CurrentAddressChanged;
