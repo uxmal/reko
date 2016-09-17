@@ -748,7 +748,6 @@ namespace Reko.Scanning
             List<Address> vector = builder.BuildAux(bw, addrSwitch, state);
             if (vector.Count == 0)
             {
-                var addrNext = bw.VectorAddress + bw.Stride;
                 var rdr = scanner.CreateReader(bw.VectorAddress);
                 if (!rdr.IsValid)
                     return false;

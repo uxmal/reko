@@ -132,7 +132,7 @@ namespace Reko.Typing
 
         public void VisitBranch(Branch branch)
         {
-            var dt = branch.Condition.Accept(asc);
+            branch.Condition.Accept(asc);
             desc.MeetDataType(branch.Condition, PrimitiveType.Bool);
             branch.Condition.Accept(desc, branch.Condition.TypeVariable);
         }

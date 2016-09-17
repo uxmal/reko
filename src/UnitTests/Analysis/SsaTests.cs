@@ -198,7 +198,7 @@ namespace Reko.UnitTests.Analysis
             trf.Compute();
             trf.RewriteBasicBlocks();
             Dump(prog.CallGraph);
-            var rl = RegisterLiveness.Compute(prog, flow, eventListener);
+            RegisterLiveness.Compute(prog, flow, eventListener);
             GlobalCallRewriter.Rewrite(prog, flow, eventListener);
 
 			foreach (Procedure proc in prog.Procedures.Values)

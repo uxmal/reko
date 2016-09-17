@@ -56,7 +56,6 @@ namespace Reko.Typing
 			var tvGlobals = store.EnsureExpressionTypeVariable(factory, program.Globals, "globals_t");
             tvGlobals.OriginalDataType = program.Globals.DataType;
 
-            this.segTypevars = segTypevars;
             EnsureSegmentTypeVariables(program.SegmentMap.Segments.Values);
             foreach (Procedure proc in program.Procedures.Values)
             {

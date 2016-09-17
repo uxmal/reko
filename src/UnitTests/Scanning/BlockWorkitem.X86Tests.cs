@@ -326,7 +326,6 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void BwiX86_RewriteIndirectCall()
         {
-            var addr = Address.SegPtr(0xC00, 0x0000);
             BuildTest16(delegate(X86Assembler m)
             {
                 scanner.Stub(x => x.GetCallSignatureAtAddress(Arg<Address>.Is.Anything)).Return(

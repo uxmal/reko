@@ -34,7 +34,7 @@ namespace Reko.UnitTests.Fragments
         protected override void BuildBody()
         {
             var ds = Local(PrimitiveType.SegmentSelector, "ds");
-            var cx = Local16("cx");
+            Local16("cx");
             var di = Local16("di");
             Call(
                 Seq(

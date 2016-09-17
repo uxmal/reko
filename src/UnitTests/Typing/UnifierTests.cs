@@ -207,7 +207,6 @@ namespace Reko.UnitTests.Typing
 		public void UnifyUnknownInt()
 		{
 			DataType dt = un.Unify(PrimitiveType.Int32, factory.CreateUnknown());
-			PrimitiveType p = (PrimitiveType) dt;
 			Assert.AreEqual("int32", dt.ToString());
 		}
 

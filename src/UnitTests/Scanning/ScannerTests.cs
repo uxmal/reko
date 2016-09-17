@@ -593,7 +593,7 @@ fn00001100_exit:
             program.Platform = platform;
             fakeArch.Test_AddTraces(RtlEvenOdd.Create(fakeArch));
 
-            var proc = scan.ScanProcedure(
+            scan.ScanProcedure(
                 Address.Ptr32(0x1000),
                 "fn1000",
                 arch.CreateProcessorState());
@@ -688,7 +688,6 @@ fn00001200_exit:
             {
                 m => { m.Return(0, 0); }
             });
-            var state = arch.CreateProcessorState();
             var proc = (Procedure) scanner.ScanProcedure(
                 Address.Ptr32(0x1000), 
                 "fnFoo",
