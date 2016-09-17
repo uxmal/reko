@@ -181,7 +181,7 @@ namespace Reko.UnitTests.Analysis
             ctx.RegisterState[arch.StackRegister] = proc.Frame.FramePointer;
 
             var stms = proc.EntryBlock.Succ[0].Statements;
-            var instr1 = stms[0].Instruction.Accept(ep);
+            stms[0].Instruction.Accept(ep);
             Assert.AreEqual("0x00001234", ctx.GetValue(r2).ToString());
             var instr2 = stms[1].Instruction.Accept(ep);
             Assert.AreEqual("Foo(out r2)", instr2.ToString());

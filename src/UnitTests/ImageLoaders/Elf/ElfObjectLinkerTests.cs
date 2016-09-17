@@ -75,8 +75,8 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         [Test]
         public void Eol32_CollectNeededSegments()
         {
-            int iText = Given_SegName(".text");
-            int iData = Given_SegName(".data");
+            Given_SegName(".text");
+            Given_SegName(".data");
             Given_Section(".text", SectionHeaderType.SHT_PROGBITS, ElfLoader.SHF_ALLOC | ElfLoader.SHF_EXECINSTR, new byte[] { 0xc3 });
             Given_Section(".data", SectionHeaderType.SHT_PROGBITS, ElfLoader.SHF_ALLOC | ElfLoader.SHF_WRITE, new byte[] { 0x01, 0x02, 0x03, 0x04 });
 
@@ -89,8 +89,8 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         [Test]
         public void Eol32_CreateSegmentHeaders()
         {
-            int iText = Given_SegName(".text");
-            int iData = Given_SegName(".data");
+            Given_SegName(".text");
+            Given_SegName(".data");
             Given_Section(".text", SectionHeaderType.SHT_PROGBITS, ElfLoader.SHF_ALLOC | ElfLoader.SHF_EXECINSTR, new byte[] { 0xc3 });
             Given_Section(".data", SectionHeaderType.SHT_PROGBITS, ElfLoader.SHF_ALLOC | ElfLoader.SHF_WRITE, new byte[] { 0x01, 0x02, 0x03, 0x04 });
 
@@ -109,8 +109,8 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         [Test(Description = "SHN_COMMON symbols should be added to the rw segment")]
         public void Eol32_CommonSymbol()
         {
-            int iText = Given_SegName(".text");
-            int iData = Given_SegName(".data");
+            Given_SegName(".text");
+            Given_SegName(".data");
             Given_Section(".text", SectionHeaderType.SHT_PROGBITS, ElfLoader.SHF_ALLOC | ElfLoader.SHF_EXECINSTR, new byte[] { 0xc3 });
             Given_Section(".data", SectionHeaderType.SHT_PROGBITS, ElfLoader.SHF_ALLOC | ElfLoader.SHF_WRITE, new byte[] { 0x01, 0x02, 0x03, 0x04 });
             Given_Symbol(
@@ -120,15 +120,15 @@ namespace Reko.UnitTests.ImageLoaders.Elf
 
             Given_Linker();
 
-            var segs = linker.ComputeSegmentSizes();
+            linker.ComputeSegmentSizes();
             Assert.AreEqual(0x4000, linker.Segments[3].p_pmemsz);
         }
 
         [Test(Description = "Unresolved symbols of STT_NOTYPE should live in their own segment.")]
         public void Eol32_UnresolvedExternals_OwnSegment()
         {
-            int iText = Given_SegName(".text");
-            int iData = Given_SegName(".data");
+            Given_SegName(".text");
+            Given_SegName(".data");
             Given_Section(".text", SectionHeaderType.SHT_PROGBITS, ElfLoader.SHF_ALLOC | ElfLoader.SHF_EXECINSTR, new byte[] { 0xc3 });
             Given_Section(".data", SectionHeaderType.SHT_PROGBITS, ElfLoader.SHF_ALLOC | ElfLoader.SHF_WRITE, new byte[] { 0x01, 0x02, 0x03, 0x04 });
             Given_Symbol(
@@ -142,7 +142,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
 
             Given_Linker();
 
-            var segs = linker.ComputeSegmentSizes();
+            linker.ComputeSegmentSizes();
             Assert.AreEqual(0x0030, linker.Segments[0].p_pmemsz, "Each external symbol is simulated with 16 bytes and added to executable section");
         }
     }

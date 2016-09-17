@@ -89,7 +89,6 @@ namespace Reko.UnitTests.Core
 			t.Add(-10, "-10");
 			t.Add(-5, "-5");
 			t.Add(-7, "-7");
-			string s = Dump(t);
 
 			t.Remove(10);			// 10 should be black, so this forces a rebalance.
 		}

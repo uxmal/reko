@@ -50,7 +50,6 @@ namespace Reko.UnitTests.Arch.Intel
             this.services = mr.Stub<IServiceProvider>();
             var tlSvc = new TypeLibraryLoaderServiceImpl(services);
             var configSvc = mr.StrictMock<IConfigurationService>();
-            var fsSvc = new FileSystemServiceImpl();
             var win32env = new OperatingEnvironmentElement
             {
                 TypeLibraries = 

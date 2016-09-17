@@ -188,7 +188,7 @@ namespace Reko.UnitTests.Scanning
         public void AddBlock()
         {
             var sc = CreateScanner(0x0100, 10);
-            var block = sc.AddBlock(Address.Ptr32(0x102), new Procedure("bob", null), "l0102");
+            sc.AddBlock(Address.Ptr32(0x102), new Procedure("bob", null), "l0102");
             Assert.IsNotNull(sc.FindExactBlock(Address.Ptr32(0x0102)));
         }
 

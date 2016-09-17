@@ -96,7 +96,6 @@ namespace Reko.UnitTests.Core.Serialization
         {
             var ldr = mr.Stub<ILoader>();
             var oracle = mr.StrictMock<IOracleService>();
-            var arch = mr.Stub<IProcessorArchitecture>();
             var platform = mockFactory.CreatePlatform();
             var typeLib = new TypeLibrary();
             ldr.Stub(l => l.LoadMetadata(Arg<string>.Is.NotNull, Arg<IPlatform>.Is.Equal(platform), Arg<TypeLibrary>.Is.NotNull)).Return(typeLib);
@@ -118,37 +117,7 @@ namespace Reko.UnitTests.Core.Serialization
             mr.VerifyAll();
         }
 
-        [Test]
-        [Ignore("do we care about old V2 project files anymore?")]
-        public void Prld_LoadMetadata_SingleBinary_ShouldNotQuery()
-        {
-            var ldr = mr.Stub<ILoader>();
-            var oracle = mr.StrictMock<IOracleService>();
-            var arch = mr.Stub<IProcessorArchitecture>();
-            var platform = mockFactory.CreatePlatform();
-            var typelibrary = new TypeLibrary();
-            Given_Binary(ldr, platform);
-            ldr.Stub(l => l.LoadMetadata(Arg<string>.Is.NotNull, Arg<IPlatform>.Is.Same(platform), Arg<TypeLibrary>.Is.NotNull)).Return(typelibrary);
-            mr.ReplayAll();
-
-            var prld = new ProjectLoader(sc, ldr);
-            prld.LoadProject(
-                "project.dcproj",
-                new Project_v2
-                {
-                    Inputs = {
-                    new DecompilerInput_v2 {
-                        Filename = "foo.exe",
-                    },
-                    new MetadataFile_v2 {
-                        Filename = "foo",
-                    }
-                }
-                });
-            mr.VerifyAll();
-        }
-
-        private void Given_Binary(ILoader ldr, IPlatform platform)
+          private void Given_Binary(ILoader ldr, IPlatform platform)
         {
             ldr.Stub(l => l.LoadImageBytes(
                 Arg<string>.Is.Anything,

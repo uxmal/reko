@@ -273,9 +273,9 @@ namespace Reko.UnitTests.Core.CLanguage
             Lex(
                 "typedef struct _M { int x; } M, *PM;" +
                 "typedef struct _M M, *PM;");
-            var decl1 = parser.Parse_ExternalDecl();
+            parser.Parse_ExternalDecl();
             Assert.IsTrue(parserState.Typedefs.Contains("M"));
-            var decl2 = parser.Parse_ExternalDecl();
+            parser.Parse_ExternalDecl();
         }
 
         [Test]
@@ -284,9 +284,9 @@ namespace Reko.UnitTests.Core.CLanguage
             Lex(
                 "typedef union _M { int x; } M, *PM;" +
                 "typedef union _M M, *PM;");
-            var decl1 = parser.Parse_ExternalDecl();
+            parser.Parse_ExternalDecl();
             Assert.IsTrue(parserState.Typedefs.Contains("M"));
-            var decl2 = parser.Parse_ExternalDecl();
+            parser.Parse_ExternalDecl();
         }
 
         [Test]

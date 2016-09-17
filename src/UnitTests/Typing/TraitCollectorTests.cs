@@ -209,7 +209,6 @@ namespace Reko.UnitTests.Typing
 			ProcedureBuilder m = new ProcedureBuilder();
 			Identifier ds = m.Local16("ds");
 			Identifier bx = m.Local16("bx");
-			Identifier ax = m.Local16("ax");
 			MemberPointerSelector mps = m.MembPtrW(ds, m.IAdd(bx, 4));
 			Expression e = m.Load(PrimitiveType.Byte, mps);
 
@@ -227,7 +226,6 @@ namespace Reko.UnitTests.Typing
 			ProcedureBuilder m = new ProcedureBuilder();
 			Identifier ds = m.Local16("ds");
 			Identifier bx = m.Local16("bx");
-			Identifier ax = m.Local16("ax");
 			Expression e = m.SegMem(PrimitiveType.Word16, ds, m.IAdd(bx, 4));
 
             coll = CreateCollector();
@@ -624,8 +622,6 @@ namespace Reko.UnitTests.Typing
 
     public class TestTraitHandler : ITraitHandler
     {
-        private TypeFactory factory = new TypeFactory();
-
         public TestTraitHandler(TypeStore store)
         {
             this.Traits = new TraitMapping(store);
