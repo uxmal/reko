@@ -88,10 +88,7 @@ namespace Reko.UnitTests.Analysis
         {
             var proc = mkProc();
             progBuilder.ResolveUnresolved();
-            var project = new Project
-            {
-                Programs = { this.progBuilder.Program }
-            };
+           
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             importResolver.Replay();
 

@@ -172,7 +172,6 @@ namespace Reko.Gui.Windows.Controls
         /// <returns></returns>
         public Tuple<int, int> GetPositionAsFraction()
         {
-            var linPos = addrCur;
             long numer = 0;
             foreach (var item in program.ImageMap.Items.Values)
             {
@@ -306,7 +305,6 @@ namespace Reko.Gui.Windows.Controls
                         addrCur = item.Address;
                     }
                 }
-                throw new NotImplementedException();
             }
             throw new NotImplementedException("Moving backwards not implemented yet.");
         }

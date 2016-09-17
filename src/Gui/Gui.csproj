@@ -127,6 +127,7 @@
     <Compile Include="Forms\CallSiteInteractor.cs" />
     <Compile Include="Forms\IAssumedRegisterValuesDialog.cs" />
     <Compile Include="Forms\IDeclarationForm.cs" />
+    <Compile Include="Forms\IProcedureDialog.cs" />
     <Compile Include="Forms\IResourceEditor.cs" />
     <Compile Include="Forms\ResourceEditorInteractor.cs" />
     <Compile Include="ICallGraphViewService.cs" />
@@ -179,7 +180,7 @@
     <Compile Include="IMenuAdapter.cs" />
     <Compile Include="IProgressBar.cs" />
     <Compile Include="IProjectBrowserService.cs" />
-    <Compile Include="ISearchDialog.cs" />
+    <Compile Include="Forms\ISearchDialog.cs" />
     <Compile Include="ISearchResult.cs" />
     <Compile Include="ISearchResultService.cs" />
     <Compile Include="IServiceFactory.cs" />

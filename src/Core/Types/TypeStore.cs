@@ -45,7 +45,6 @@ namespace Reko.Core.Types
     {
         private SortedList<int, EquivalenceClass> usedClasses;
         private Dictionary<TypeVariable, Expression> tvSources;
-        private DataTypeComparer tycomp = new DataTypeComparer();
 
         public TypeStore()
         {

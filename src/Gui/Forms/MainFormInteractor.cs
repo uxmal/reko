@@ -999,7 +999,7 @@ namespace Reko.Gui.Forms
                 {
                     text.Text = null;
                     var st = QueryStatus(cmd.CommandID, status, text);
-                    item.Enabled = (status.Status & MenuStatus.Enabled) != 0;
+					item.Enabled = st && (status.Status & MenuStatus.Enabled) != 0;
                     if (!string.IsNullOrEmpty(text.Text))
                         item.Text = text.Text;
                 }

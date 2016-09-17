@@ -166,7 +166,6 @@ fn00100000_exit:
                 , 0x4E , 0x75);
             var sw = new StringWriter();
             program.Procedures.Values[0].Write(true, sw);
-            Console.WriteLine(sw);
             string sExp = @"// fn00001020
 // Return size: 4
 // Mem0:Global memory

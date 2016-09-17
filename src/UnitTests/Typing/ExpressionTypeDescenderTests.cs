@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Typing
             var eq = new EquivalenceClassBuilder(factory, store);
             e.Accept(eq);
 
-            var result = e.Accept(exa);
+            e.Accept(exa);
             exd.MeetDataType(e, dt);
             e.Accept(exd, e.TypeVariable);
 
@@ -224,7 +224,6 @@ namespace Reko.UnitTests.Typing
         [Test]
         public void ExdApplication()
         {
-            var arg = Id("arg", PrimitiveType.Word32);
             var sig = FunctionType.Action(Id("r", PrimitiveType.Real32));
             var ep = new ExternalProcedure("test", sig);
             RunTest(

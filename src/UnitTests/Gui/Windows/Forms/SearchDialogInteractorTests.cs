@@ -29,6 +29,7 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Reko.Gui.Forms;
 
 namespace Reko.UnitTests.Gui.Windows.Forms
 {

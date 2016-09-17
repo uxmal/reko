@@ -80,7 +80,7 @@ namespace Reko.ImageLoaders.Elf
             int cHeaders = innerLoader.LoadProgramHeaderTable();
             innerLoader.LoadSectionHeaders();
             innerLoader.LoadSymbols();
-            innerLoader.Dump();
+            //innerLoader.Dump();           // This spews a lot into the unit test output.
             if (cHeaders > 0)
             {
                 return innerLoader.LoadImage(platform, RawImage);

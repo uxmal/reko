@@ -209,7 +209,6 @@ namespace Reko.UnitTests.Typing
 			ProcedureBuilder m = new ProcedureBuilder();
 			Identifier ds = m.Local16("ds");
 			Identifier bx = m.Local16("bx");
-			Identifier ax = m.Local16("ax");
 			MemberPointerSelector mps = m.MembPtrW(ds, m.IAdd(bx, 4));
 			Expression e = m.Load(PrimitiveType.Byte, mps);
 
@@ -227,7 +226,6 @@ namespace Reko.UnitTests.Typing
 			ProcedureBuilder m = new ProcedureBuilder();
 			Identifier ds = m.Local16("ds");
 			Identifier bx = m.Local16("bx");
-			Identifier ax = m.Local16("ax");
 			Expression e = m.SegMem(PrimitiveType.Word16, ds, m.IAdd(bx, 4));
 
             coll = CreateCollector();
@@ -403,7 +401,6 @@ namespace Reko.UnitTests.Typing
                 "T_2 (in Mem0[pfn:word32] : word32)" + nl +
                 "\ttrait_primitive((ptr code))" + nl +
                 "\ttrait_primitive(word32)" + nl;
-            Console.WriteLine(sw.ToString());
 			Assert.AreEqual(exp, sw.ToString());
 		}
 
@@ -490,7 +487,6 @@ namespace Reko.UnitTests.Typing
             s.Accept(coll);
             StringWriter sb = new StringWriter();
             handler.Traits.Write(sb);
-            Console.WriteLine(sb);
             string exp =
                 "T_1 (in a : word32)" + nl +
                 "\ttrait_primitive(word32)" + nl +
@@ -579,8 +575,6 @@ namespace Reko.UnitTests.Typing
 
     public class TestTraitHandler : ITraitHandler
     {
-        private TypeFactory factory = new TypeFactory();
-
         public TestTraitHandler(TypeStore store)
         {
             this.Traits = new TraitMapping(store);

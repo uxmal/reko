@@ -33,12 +33,10 @@ namespace Reko.Analysis
     /// </summary>
 	public class DeclarationInserter
 	{
-		private SsaIdentifierCollection ssaIds;
 		private BlockDominatorGraph doms;
 
 		public DeclarationInserter(SsaIdentifierCollection ssaIds, BlockDominatorGraph doms)
 		{
-			this.ssaIds = ssaIds;
 			this.doms = doms;
 		}
 

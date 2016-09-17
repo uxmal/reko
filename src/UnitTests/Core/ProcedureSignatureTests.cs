@@ -57,8 +57,6 @@ namespace Reko.UnitTests.Core
 			Assert.AreEqual(PrimitiveType.Word32, arg.DataType);
 			Assert.AreEqual("eax", arg.Name);
 			Assert.AreEqual(PrimitiveType.Word32, arg.DataType);
-
-			Identifier arg2 = new Identifier(Registers.eax.Name, Registers.eax.DataType, Registers.eax);
 		}
 
 		[Test]

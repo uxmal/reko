@@ -325,7 +325,6 @@ namespace Reko.Typing
 			binExp.Left.Accept(this);
 			var ivLeft = ivCur;
 			binExp.Right.Accept(this);
-			var ivRight = ivCur;
 
 			ivCur = null;
 			if (ivLeft != null)

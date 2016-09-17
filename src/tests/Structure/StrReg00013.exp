@@ -225,7 +225,6 @@ l0C00_024B:
 	// succ:  l0C00_016A
 l0C00_0251:
 	msdos_terminate(0x01)
-	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 
 void fn0C00_0000(selector ds)

@@ -123,7 +123,6 @@ namespace Reko.UnitTests.Typing
             {
                 Identifier = new Identifier(tmp.Name, PrimitiveType.SegmentSelector, tmp)
             };
-            var program = new Program();
             eqb.EnsureSegmentTypeVariables(new[] { segment });
             Constant seg1 = Constant.Create(PrimitiveType.SegmentSelector, 0x1234);
             seg1.Accept(eqb);

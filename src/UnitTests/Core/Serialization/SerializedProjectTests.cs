@@ -381,7 +381,7 @@ namespace Reko.UnitTests.Core.Serialization
             mr.ReplayAll();
 
             var ps = new ProjectSaver(sc);
-            var sProject = ps.Save("c:\\test\\foo.project", project);
+            ps.Save("c:\\test\\foo.project", project);
             Assert.AreEqual(1, project.MetadataFiles.Count);
             Assert.AreEqual("c:\\test\\foo.def", project.MetadataFiles[0].Filename);
             Assert.AreEqual("foo.def", project.MetadataFiles[0].ModuleName);

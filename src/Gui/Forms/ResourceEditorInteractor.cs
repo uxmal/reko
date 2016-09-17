@@ -75,7 +75,6 @@ namespace Reko.Gui.Forms
 
         private void GenerateWindowsIcon()
         {
-            var stm = new MemoryStream();
             var icon = new Icon(new MemoryStream(resource.Bytes));
             dlg.Image = Bitmap.FromHicon(icon.Handle);
             icon.Dispose();

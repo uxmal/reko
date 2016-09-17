@@ -94,9 +94,9 @@ namespace Reko.Environments.C64
             if (!EatSpaces())
                 return;
             byte b = line[i++];
-            switch (b)
+            switch ((Token)b)
             {
-            case (byte)Token.END:
+            case Token.END:
                 var ppp = host.EnsurePseudoProcedure("__End", VoidType.Instance, 0);
                 ppp.Characteristics = new ProcedureCharacteristics
                 {
@@ -105,59 +105,59 @@ namespace Reko.Environments.C64
                 emitter.SideEffect(PseudoProc(ppp, VoidType.Instance));
                 i = line.Length;        // We never return from end.
                 return;
-            case (byte)Token.CLOSE:
+            case Token.CLOSE:
                 RewriteClose();
                 break;
-            case (byte)Token.CLR:
+            case Token.CLR:
                 RewriteClr();
                 break;
-            case (byte)Token.FOR:
+            case Token.FOR:
                 RewriteFor();
                 break;
-            case (byte)Token.GET:
+            case Token.GET:
                 RewriteGet();
                 break;
-            case (byte)Token.GOSUB:
+            case Token.GOSUB:
                 RewriteGosub();
                 break;
-            case (byte)Token.GOTO:
+            case Token.GOTO:
                 RewriteGoto();
                 break;
-            case (byte)Token.IF:
+            case Token.IF:
                 RewriteIf();
                 break;
-            case (byte)Token.INPUT:
+            case Token.INPUT:
                 RewriteInput();
                 break;
-            case (byte)Token.INPUT_hash:
+            case Token.INPUT_hash:
                 RewriteInput_hash();
                 break;
-            case (byte)Token.NEXT:
+            case Token.NEXT:
                 RewriteNext();
                 break;
-            case (byte)Token.OPEN:
+            case Token.OPEN:
                 RewriteOpen();
                 break;
-            case (byte)Token.POKE:
+            case Token.POKE:
                 RewritePoke();
                 break;
-            case (byte)Token.PRINT:
+            case Token.PRINT:
                 RewritePrint();
                 break;
-            case (byte)Token.PRINT_hash:
+            case Token.PRINT_hash:
                 RewritePrint_hash();
                 break;
-            case (byte)Token.REM:
+            case Token.REM:
                 //$TODO: annotation
                 i = line.Length;
                 return;
-            case (byte)Token.RETURN:
+            case Token.RETURN:
                 RewriteReturn();
                 break;
-            case (byte)Token.SYS:
+            case Token.SYS:
                 RewriteSys();
                 break;
-            case (byte)':':
+            case Token.COLON:
                 // Statement separator.
                 break;
             default:
@@ -279,10 +279,10 @@ namespace Reko.Environments.C64
             while (EatSpaces())
             {
                 Func<Expression, Expression, Expression> ctor;
-                switch (line[i])
+                switch ((Token)line[i])
                 {
                 default: return e;
-                case (byte)Token.add: ctor = emitter.IAdd; break;
+                case Token.add: ctor = emitter.IAdd; break;
                 }
                 ++i;
                 var e2 = ParseTerm();
@@ -330,22 +330,22 @@ namespace Reko.Environments.C64
             if (i >= line.Length)
                 return null;
             Expression e;
-            switch (line[i++])
+            switch ((Token)line[i++])
             {
-            case (byte)Token.CHR_s:
+            case Token.CHR_s:
                 Expect((byte)'(');
                 e = ExpectExpr();
                 Expect((byte)')');
                 return PseudoProc("__Chr", strType, e);
-            case (byte)Token.SPC_lp:
+            case Token.SPC_lp:
                 e = ExpectExpr();
                 Expect((byte)')');
                 return PseudoProc("__Spc", strType, e);
-            case (byte)Token.TAB_lp:
+            case Token.TAB_lp:
                 e = ExpectExpr();
                 Expect((byte)')');
                 return PseudoProc("__Tab", strType, e);
-            case (byte)'"':
+            case Token.QUOTE:
                 return ParseStringLiteral();
             default:
                 --i;

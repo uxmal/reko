@@ -64,7 +64,7 @@ namespace Reko.UnitTests.Gui
         public void Tch_AddPage()
         {
             ITabControlHostService host = new TabControlHost(services, tabCtrl);
-            IWindowFrame frame = host.Add(pane, "Foo");
+            host.Add(pane, "Foo");
 
             Assert.AreEqual("Foo", tabCtrl.TabPages[0].Text);
         }

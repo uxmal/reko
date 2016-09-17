@@ -114,7 +114,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void Rl_AlAhUses2()
 		{
-			Identifier al = f.EnsureRegister(Registers.al);
+			f.EnsureRegister(Registers.al);
 			Identifier ah = f.EnsureRegister(Registers.ah);
 			Identifier ax = f.EnsureRegister(Registers.ax);
 
@@ -274,9 +274,9 @@ namespace Reko.UnitTests.Analysis
             ProcedureFlow pf = new ProcedureFlow(callee);
 			mpprocflow[callee] = pf;
 
-			Identifier loc08 = m.Frame.EnsureStackLocal(-8, PrimitiveType.Word32);
-			Identifier loc0C = m.Frame.EnsureStackLocal(-12, PrimitiveType.Word32);
-			Identifier loc10 = m.Frame.EnsureStackLocal(-16, PrimitiveType.Word32);
+			m.Frame.EnsureStackLocal(-8, PrimitiveType.Word32);
+			m.Frame.EnsureStackLocal(-12, PrimitiveType.Word32);
+			m.Frame.EnsureStackLocal(-16, PrimitiveType.Word32);
 			rl.CurrentState = new RegisterLiveness.ByPassState(program.Architecture);
             var ci = new CallInstruction(
                 new ProcedureConstant(PrimitiveType.Pointer32, callee),

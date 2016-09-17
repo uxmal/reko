@@ -241,7 +241,6 @@ test_exit:
                     CSignature = "void test(int a, int b)"
                 },
                 m => {
-                    var sp = m.Register(m.Architecture.StackRegister);
                     var r1 = m.Reg32("r1", 1);
                     var r2 = m.Reg32("r2", 2);
                     var fp = m.Frame.FramePointer;

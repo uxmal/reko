@@ -1660,7 +1660,7 @@ IGNORE tab + cr + lf
             case CTokenType.For:
                 ExpectToken(CTokenType.For);
                 ExpectToken(CTokenType.LParen);
-                Stat initStat;
+                Stat initStat = null;
                 if (IsDecl())
                 {
                     initStat = grammar.DeclStat(Parse_Decl());
@@ -1675,7 +1675,7 @@ IGNORE tab + cr + lf
                 var incr = Parse_Expr();
                 ExpectToken(CTokenType.RParen);
                 var forBody = Parse_Stat();
-                return grammar.ForStatement(null, test, incr, forBody);
+                return grammar.ForStatement(initStat, test, incr, forBody);
             case CTokenType.Goto:
                 ExpectToken(CTokenType.Goto);
                 var gotoLabel = (string) ExpectToken(CTokenType.Id);

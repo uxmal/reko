@@ -56,7 +56,6 @@ l0C00_001F:
 	sp = fp
 	ah = 0x4C
 	msdos_terminate(al)
-	// succ:  fn0C00_001F_exit
 fn0C00_001F_exit:
 // fn0C00_0023
 // Return size: 2

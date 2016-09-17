@@ -188,7 +188,7 @@ namespace Reko.UnitTests.Scanning
         public void AddBlock()
         {
             var sc = CreateScanner(0x0100, 10);
-            var block = sc.AddBlock(Address.Ptr32(0x102), new Procedure("bob", null), "l0102");
+            sc.AddBlock(Address.Ptr32(0x102), new Procedure("bob", null), "l0102");
             Assert.IsNotNull(sc.FindExactBlock(Address.Ptr32(0x0102)));
         }
 
@@ -276,8 +276,8 @@ namespace Reko.UnitTests.Scanning
         public void Scanner_MatchTest()
         {
             byte[] data = new byte[] {
-										   0x30, 0x34, 0x32, 0x12, 0x55, 0xC3, 0xB8, 0x34, 0x00 
-									   };
+			   0x30, 0x34, 0x32, 0x12, 0x55, 0xC3, 0xB8, 0x34, 0x00 
+			};
 
             Regexp re = Regexp.Compile(".*55C3");
             Assert.IsTrue(re.Match(data, 0), "Should have matched");
@@ -593,7 +593,7 @@ fn00001100_exit:
             program.Platform = platform;
             fakeArch.Test_AddTraces(RtlEvenOdd.Create(fakeArch));
 
-            var proc = scan.ScanProcedure(
+            scan.ScanProcedure(
                 Address.Ptr32(0x1000),
                 "fn1000",
                 arch.CreateProcessorState());
@@ -688,7 +688,6 @@ fn00001200_exit:
             {
                 m => { m.Return(0, 0); }
             });
-            var state = arch.CreateProcessorState();
             var proc = (Procedure) scanner.ScanProcedure(
                 Address.Ptr32(0x1000), 
                 "fnFoo",

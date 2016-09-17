@@ -679,7 +679,7 @@ namespace Reko.Scanning
                 if (svc.Characteristics.Terminates)
                 {
                     scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
-                    blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
+                    //blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
                     return true;
                 }
                 AffectProcessorState(svc.Signature);
@@ -751,7 +751,6 @@ namespace Reko.Scanning
             List<Address> vector = builder.BuildAux(bw, addrSwitch, state);
             if (vector.Count == 0)
             {
-                var addrNext = bw.VectorAddress + bw.Stride;
                 var rdr = scanner.CreateReader(bw.VectorAddress);
                 if (!rdr.IsValid)
                     return false;

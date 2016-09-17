@@ -47,14 +47,12 @@ namespace Reko.UnitTests.Typing
         private TypeTransformer trans;
         private ComplexTypeNamer ctn;
         private List<StructureField> userDefinedGlobals;
-        private Dictionary<string, FunctionType> userDefinedProcedures;
         private Dictionary<Address, ImageSegment> imageSegments;
 
         [SetUp]
         public void Setup()
         {
             userDefinedGlobals = new List<StructureField>();
-            userDefinedProcedures = new Dictionary<string, FunctionType>();
             imageSegments = new Dictionary<Address, ImageSegment>();
         }
 
@@ -69,13 +67,8 @@ namespace Reko.UnitTests.Typing
                 SetupPreStages(program);
                 aen.Transform(program);
                 eqb.Build(program);
-#if OLD
-                coll = new TraitCollector(program.TypeFactory, program.TypeStore, dtb, program);
-                coll.CollectProgramTraits(program);
-#else
                 var coll = new TypeCollector(program.TypeFactory, program.TypeStore, program,eventListener);
                 coll.CollectTypes();
-#endif
                 program.TypeStore.BuildEquivalenceClassDataTypes(program.TypeFactory);
                 tvr.ReplaceTypeVariables();
                 trans.Transform();
@@ -395,7 +388,6 @@ namespace Reko.UnitTests.Typing
             ProgramBuilder pb = new ProgramBuilder();
             pb.Add("proc1", m =>
             {
-                Identifier p = m.Local32("p");
                 Identifier ds = m.Local16("ds");
                 ds.DataType = PrimitiveType.SegmentSelector;
                 Identifier ds2 = m.Local16("ds2");
@@ -415,7 +407,6 @@ namespace Reko.UnitTests.Typing
             ProgramBuilder pb = CreateProgramBuilder(0x5000, 0x1000);
             pb.Add("proc1", m =>
             {
-                Identifier p = m.Local32("p");
                 Identifier ds = m.Local16("ds");
                 ds.DataType = PrimitiveType.SegmentSelector;
                 Identifier ds2 = m.Local16("ds2");
@@ -609,7 +600,6 @@ namespace Reko.UnitTests.Typing
             pm.Add("proc1", m =>
                 {
                     var ebp = m.Reg32("ebp", 4);
-                    var esp = m.Reg32("esp", 5);
                     var ecx = m.Reg32("ecx", 1);
                     var eax = m.Reg32("eax", 0);
 
@@ -1094,32 +1084,6 @@ test_exit:
                 m.Declare(eax, m.Load(PrimitiveType.Word32, v));
                 m.Declare(ecx, m.Load(PrimitiveType.Word32, eax));
             });
-            var sExp =
-            #region Expected String
-@"// Before ///////
-// proc1
-// Return size: 0
-define proc1
-proc1_entry:
-	// succ:  l1
-l1:
-	word32 eax = Mem0[ptrArg04:word32]
-	word32 ecx = Mem0[eax:word32]
-proc1_exit:
-
-// After ///////
-// proc1
-// Return size: 0
-define proc1
-proc1_entry:
-	// succ:  l1
-l1:
-	strInner * eax = ptrArg04->strAttr00
-	real32 ecx = eax->innerAttr00
-proc1_exit:
-
-";
-            #endregion
             RunTest(pm.BuildProgram(), "Typing/TerNestedStructsPtr.txt");
         }
 

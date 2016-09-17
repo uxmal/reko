@@ -143,7 +143,6 @@ namespace Reko.UnitTests.Analysis
 			sla2.Analyze();
 		}
 
-
 		public class SimpleMock : ProcedureBuilder
 		{
 			protected override void BuildBody()

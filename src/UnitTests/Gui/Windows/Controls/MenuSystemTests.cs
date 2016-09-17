@@ -123,8 +123,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
 			if (mpCmdIdToStatus.Contains(cmdId.ID))
 			{
 				status.Status = (MenuStatus) mpCmdIdToStatus[cmdId.ID];
-				Console.WriteLine("Testring cmd {0}: status {1}", cmdId.ID, status.Status);
-
+				//Console.WriteLine("Testing cmd {0}: status {1}", cmdId.ID, status.Status);
 				return true;
 			}
 			return false;

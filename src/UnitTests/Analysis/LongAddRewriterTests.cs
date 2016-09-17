@@ -43,9 +43,7 @@ namespace Reko.UnitTests.Analysis
         private Identifier dx;
         private Identifier SCZ;
         private Identifier CF;
-        private PrimitiveType w16 = PrimitiveType.Word16;
         private ProcedureBuilder m;
-        private Block block;
         private FlagRegister flags;
         private SsaState ssa;
 
@@ -286,7 +284,6 @@ namespace Reko.UnitTests.Analysis
 ";
             var sb = new StringWriter();
             block.Write(sb);
-            Console.WriteLine(sb);
             Assert.AreEqual(sExp, sb.ToString());
         }
 
@@ -320,7 +317,6 @@ namespace Reko.UnitTests.Analysis
 ";
             var sb = new StringWriter();
             block.Write(sb);
-            Console.WriteLine(sb);
             Assert.AreEqual(sExp, sb.ToString());
         }
     }

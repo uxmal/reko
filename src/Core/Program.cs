@@ -395,7 +395,6 @@ namespace Reko.Core
             {
                 return (uint)(strDt.Size + strDt.Size);
             }
-            throw new NotImplementedException();
         }
 
         public Address GetProcedureAddress(Procedure proc)

@@ -39,20 +39,20 @@ namespace Reko.UnitTests.Core
         {
             arch = new X86ArchitectureReal();
         }
+
 		[Test]
-		public void RegisterTest()
+		public void FrRegisterTest()
 		{
 			Frame f = new Frame(PrimitiveType.Word16);
 			Identifier id0 = f.EnsureRegister(Registers.ax);
-			Identifier id1 = f.EnsureRegister(Registers.bx);
+			f.EnsureRegister(Registers.bx);
 			Identifier id2 = f.EnsureRegister(Registers.ax);
 			Assert.AreEqual(id0, id2);
 		}
 
 		[Test]
-		public void SequenceTest()
+		public void FrSequenceTest()
 		{
-			IntelArchitecture arch = new X86ArchitectureReal();
 			Frame f = new Frame(PrimitiveType.Word16);
 			Identifier ax = f.EnsureRegister(Registers.ax);
 			Identifier dx = f.EnsureRegister(Registers.dx);
@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Core
 			IntelArchitecture arch = new X86ArchitectureReal();
 			Frame f = new Frame(PrimitiveType.Word16);
 			uint iSz = (uint) (FlagM.ZF|FlagM.SF);
-			Identifier grfSz = f.EnsureFlagGroup(Registers.eflags, iSz, arch.GrfToString(iSz), PrimitiveType.Byte);
+			f.EnsureFlagGroup(Registers.eflags, iSz, arch.GrfToString(iSz), PrimitiveType.Byte);
 			using (FileUnitTester fut = new FileUnitTester("Core/FrGrfTest.txt"))
 			{
 				f.Write(fut.TextWriter);
@@ -124,7 +124,7 @@ namespace Reko.UnitTests.Core
 			int stack = 2;
 			Identifier loc02 = f.EnsureStackLocal(-stack, PrimitiveType.Word16, "wLoc02");
 			stack += loc02.DataType.Size;
-			Identifier loc04 = f.EnsureStackLocal(-stack, PrimitiveType.Word16, "wLoc04");
+			f.EnsureStackLocal(-stack, PrimitiveType.Word16, "wLoc04");
 
 			FunctionType sig = FunctionType.Action(
 					new Identifier("arg0", PrimitiveType.Word16, new StackArgumentStorage(4, PrimitiveType.Word16)),
@@ -149,7 +149,7 @@ namespace Reko.UnitTests.Core
 			Identifier ax = f.EnsureRegister(Registers.ax);
 			Identifier cx = f.EnsureRegister(Registers.cx);
 			int stack = PrimitiveType.Word16.Size;
-			Identifier arg1 = f.EnsureStackLocal(-stack, PrimitiveType.Word16);
+			f.EnsureStackLocal(-stack, PrimitiveType.Word16);
 
             FunctionType sig = FunctionType.Func(
                 ax,

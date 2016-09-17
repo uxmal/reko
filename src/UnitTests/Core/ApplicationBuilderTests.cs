@@ -104,7 +104,6 @@ namespace Reko.UnitTests.Core
         [Test(Description="The byte is smaller than the target register, so we expect a 'DPB' instruction")]
         public void AppBld_BindByteToRegister()
         {
-            var caller = new Procedure("caller", new Frame(PrimitiveType.Pointer32));
             var callee = new Procedure("callee", new Frame(PrimitiveType.Pointer32));
             var ab = new FrameApplicationBuilder(
                 arch, 

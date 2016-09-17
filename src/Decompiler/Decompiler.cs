@@ -259,7 +259,6 @@ namespace Reko
         public void Assemble(string fileName, Assembler asm)
         {
             eventListener.ShowStatus("Assembling program.");
-            byte[] image = loader.LoadImageBytes(fileName, 0);
             var program = loader.AssembleExecutable(fileName, asm, null);
             Project = CreateDefaultProject(fileName, program);
             eventListener.ShowStatus("Assembled program.");

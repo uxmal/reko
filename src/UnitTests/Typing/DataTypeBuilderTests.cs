@@ -105,7 +105,6 @@ namespace Reko.UnitTests.Typing
             {
                 Identifier i = Local32("i");
                 Identifier r = Local32("r");
-                Identifier r2 = Local16("r2");
                 Store(IAdd(IAdd(r, 20), SMul(i, 10)), 0);
                 Return(Load(PrimitiveType.Word16,
                     IAdd(IAdd(r, 16), SMul(i, 10))));
@@ -484,7 +483,6 @@ namespace Reko.UnitTests.Typing
         public void DtbSignedCompare()
         {
             ProcedureBuilder m = new ProcedureBuilder();
-            Identifier p = m.Local32("p");
             Identifier ds = m.Local16("ds");
             ds.DataType = PrimitiveType.SegmentSelector;
             Identifier ds2 = m.Local16("ds2");

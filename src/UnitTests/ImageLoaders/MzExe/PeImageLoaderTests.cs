@@ -395,7 +395,7 @@ namespace Reko.UnitTests.ImageLoaders.MzExe
             Given_PeLoader();
 
             var program = peldr.Load(addrLoad);
-            var rel = peldr.Relocate(program, addrLoad);
+            peldr.Relocate(program, addrLoad);
 
             Assert.AreEqual(2, program.ImportReferences.Count);
             Assert.AreEqual("user32.dll!GetDesktopWindow", program.ImportReferences[Address.Ptr32(0x0010183C)].ToString());

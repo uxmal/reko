@@ -46,9 +46,8 @@ namespace Reko.UnitTests.Environments.Windows
         private Win32Platform win32;
         private Program program;
         private IntelArchitecture arch;
-        private ExternalProcedure extProc;
-        private IConfigurationService dcSvc;
         private TypeLibrary environmentMetadata;
+		private ExternalProcedure extProc;
 
         [SetUp]
         public void Setup()
@@ -56,7 +55,6 @@ namespace Reko.UnitTests.Environments.Windows
             mr = new MockRepository();
             sc = new ServiceContainer();
             arch = new X86ArchitectureFlat32();
-            dcSvc = mr.StrictMock<IConfigurationService>();
         }
 
         private void When_Lookup_Procedure(string moduleName, string procName)
