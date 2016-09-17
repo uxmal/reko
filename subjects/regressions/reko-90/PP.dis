@@ -59,23 +59,22 @@ void fn0800_0164(byte al, byte bArg02)
 // Preserved:
 // Stack args: Stack +0002(8)
 // Terminates process
+fn0800_0164_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
 fn0800_0164_entry:
-// DataOut: al di dl ds ss
+// DataOut: al
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 // LocalsOut: Stack +0002(8)
 
 l0800_0164:
 	msdos_terminate(bArg02)
-// DataOut: di dl ds ss
-// DataOut (flags): 
-// SymbolicIn: sp:fp
-// Terminates process
-
-fn0800_0164_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn:
+// SymbolicIn: sp:fp
 
 
 
