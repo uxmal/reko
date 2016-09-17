@@ -46,6 +46,7 @@ namespace Reko.UnitTests.Analysis
         private ProcedureBuilder m;
         private FlagRegister flags;
         private SsaState ssa;
+        private Block block;
 
         public LongAddRewriterTests()
         {
@@ -64,7 +65,6 @@ namespace Reko.UnitTests.Analysis
             flags = new FlagRegister("flags", 0, PrimitiveType.Word16);
             SCZ = frame.EnsureFlagGroup(flags, 7, "SCZ", PrimitiveType.Byte);
             CF = frame.EnsureFlagGroup(flags, arch.CarryFlagMask, "C", PrimitiveType.Bool);
-
         }
 
         private Identifier GetId(string idName)

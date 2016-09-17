@@ -349,9 +349,6 @@
     <Compile Include="CallGraph.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CallRewriter.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="CodeEmitter.cs">
       <SubType>Code</SubType>
     </Compile>

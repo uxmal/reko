@@ -290,7 +290,6 @@ namespace Reko.Analysis
 					}
 					else
 					{
-
 						LiveInAtStatement(use.Block, use.Block.Statements.IndexOf(use), sid);
 					}
 				}
@@ -365,6 +364,5 @@ namespace Reko.Analysis
 			}
 			return null;
 		}
-
 	}
 }

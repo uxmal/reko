@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Analysis
 			Build(new LiveLoopMock().Procedure, new FakeArchitecture());
 			var lci = new LiveCopyInserter(ssa);
 
-            ssa.DebugDump(true);
+            ssa.Dump(true);
             var i = ssaIds.Where(s => s.Identifier.Name == "i").Single().Identifier;
 			var i_3 = ssaIds.Where(s => s.Identifier.Name == "i_3").Single().Identifier;
             var loopHdr = proc.ControlGraph.Blocks[2];
@@ -72,9 +72,9 @@ namespace Reko.UnitTests.Analysis
 
 			var reg   = ssaIds.Where(s => s.Identifier.Name == "reg").Single();
 			var reg_3 = ssaIds.Where(s => s.Identifier.Name == "reg_3").Single();
-            Assert.IsTrue(ssaIds.Where(s => s.Identifier.Name == "reg_4").Any());
+            var reg_4 = ssaIds.Where(s => s.Identifier.Name == "reg_4").Single();
 
-            ssa.DebugDump(true);
+            ssa.Dump(true);
 			Assert.AreEqual("reg_4 = PHI(reg, reg_3)", reg_4.DefStatement.Instruction.ToString());
 			Assert.IsTrue(lci.IsLiveOut(reg.Identifier, reg_4.DefStatement));
 		}

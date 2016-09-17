@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Analysis
 			program = new Program();
 			program.Architecture = new X86ArchitectureFlat32();
             program.Platform = new DefaultPlatform(null, program.Architecture);
-			gcr = new GlobalCallRewriter(program, new ProgramDataFlow(), new FakeDecompilerEventListener());
+			gcr = new GlobalCallRewriter(program.Platform, new ProgramDataFlow(), new FakeDecompilerEventListener());
             proc = new Procedure("foo", program.Architecture.CreateFrame());
             flow = new ProcedureFlow(proc);
 		}

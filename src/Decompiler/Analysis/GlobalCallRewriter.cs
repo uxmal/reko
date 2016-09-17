@@ -23,7 +23,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CallInstruction = Reko.Core.Code.CallInstruction;
-using CallRewriter = Reko.Core.CallRewriter;
 using FpuStackStorage = Reko.Core.FpuStackStorage;
 using Frame = Reko.Core.Frame;
 using Identifier = Reko.Core.Expressions.Identifier;
@@ -32,9 +31,11 @@ using PrimtiveType = Reko.Core.Types.PrimitiveType;
 using Procedure = Reko.Core.Procedure;
 using Program = Reko.Core.Program;
 using RegisterStorage = Reko.Core.RegisterStorage;
+using ReturnInstruction = Reko.Core.Code.ReturnInstruction;
 using SignatureBuilder = Reko.Core.SignatureBuilder;
 using StackArgumentStorage = Reko.Core.StackArgumentStorage;
 using UseInstruction = Reko.Core.Code.UseInstruction;
+using VoidType = Reko.Core.Types.VoidType;
 using Reko.Core;
 using Reko.Core.Expressions;
 
@@ -49,16 +50,20 @@ namespace Reko.Analysis
 	/// Call Rewriting should take place before SSA conversion and dead 
     /// code removal.
 	/// </remarks>
-	public class GlobalCallRewriter : CallRewriter
+	public class GlobalCallRewriter
 	{
 		private ProgramDataFlow mpprocflow;
+        private DecompilerEventListener listener;
+        private IPlatform platform;
 
-		public GlobalCallRewriter(Program program, ProgramDataFlow mpprocflow, DecompilerEventListener eventListener) : base(program, eventListener)
+        public GlobalCallRewriter(IPlatform platform, ProgramDataFlow mpprocflow, DecompilerEventListener listener) 
 		{
+            this.platform = platform;
 			this.mpprocflow = mpprocflow;
-		}
+            this.listener = listener;
+        }
 
-		public void AddStackArgument(int x, Identifier id, ProcedureFlow flow, SignatureBuilder sb)
+        public void AddStackArgument(int x, Identifier id, ProcedureFlow flow, SignatureBuilder sb)
 		{
 			object o = flow.StackArguments[id];
 			if (o != null)
@@ -106,28 +111,30 @@ namespace Reko.Analysis
 		}
 
 		public static void Rewrite(
-            Program program, 
+            IPlatform platform, 
+            List<SsaTransform> ssts,
             ProgramDataFlow summaries,
             DecompilerEventListener eventListener)
 		{
-			GlobalCallRewriter crw = new GlobalCallRewriter(program, summaries, eventListener);
-			foreach (Procedure proc in program.Procedures.Values)
+			GlobalCallRewriter crw = new GlobalCallRewriter(platform, summaries, eventListener);
+			foreach (SsaTransform sst in ssts)
 			{
                 if (eventListener.IsCanceled())
                     return;
+                var proc = sst.SsaState.Procedure;
 				ProcedureFlow flow = crw.mpprocflow[proc];
-                flow.Dump(program.Architecture);
+                flow.Dump(platform.Architecture);
 				crw.AdjustLiveOut(flow);
 				crw.EnsureSignature(proc, flow);
 				crw.AddUseInstructionsForOutArguments(proc);
 			}
 
-			foreach (Procedure proc in program.Procedures.Values)
+			foreach (SsaTransform sst in ssts)
 			{
                 if (eventListener.IsCanceled())
                     return;
-                crw.RewriteCalls(proc);
-				crw.RewriteReturns(proc);
+                crw.RewriteCalls(sst.SsaState.Procedure);
+				crw.RewriteReturns(sst.SsaState.Procedure);
 			}
 		}
 
@@ -141,7 +148,7 @@ namespace Reko.Analysis
 			if (proc.Signature != null && proc.Signature.ParametersValid)
 				return;
 
-			var sb = new SignatureBuilder(proc, Program.Architecture);
+			var sb = new SignatureBuilder(proc, platform.Architecture);
 			var frame = proc.Frame;
 			foreach (var grf in flow.LiveOut
                 .OfType<FlagGroupStorage>()
@@ -150,7 +157,7 @@ namespace Reko.Analysis
                 sb.AddOutParam(frame.EnsureFlagGroup(grf));
 			}
 
-            var implicitRegs = Program.Platform.CreateImplicitArgumentRegisters();
+            var implicitRegs = platform.CreateImplicitArgumentRegisters();
             var mayUse = new HashSet<RegisterStorage>(flow.BitsUsed.Keys.OfType<RegisterStorage>());
             mayUse.ExceptWith(implicitRegs);
 			foreach (var reg in mayUse.OfType<RegisterStorage>().OrderBy(r => r.Number))
@@ -247,9 +254,81 @@ namespace Reko.Analysis
 			return false;
 		}
 
-        protected override ApplicationBuilder CreateApplicationBuilder(Procedure proc, CallInstruction call, ProcedureConstant fn)
+
+        //protected virtual ApplicationBuilder CreateApplicationBuilder(Procedure proc, CallInstruction call, ProcedureConstant fn)
+        //{
+        //    return new FrameApplicationBuilder(
+        //        Program.Architecture,
+        //        proc.Frame,
+        //        call.CallSite,
+        //        fn,
+        //        true);
+        //}
+
+        private ApplicationBuilder CreateApplicationBuilder(Procedure proc, CallInstruction call, ProcedureConstant fn)
         {
-            return new CallApplicationBuilder(base.Program.Architecture, call, fn);
+            return new CallApplicationBuilder(platform.Architecture, call, fn);
+        }
+
+        /// <summary>
+        /// Rewrites CALL instructions to function applications.
+        /// </summary>
+        /// <remarks>
+        /// Converts an opcode:
+        /// <code>
+        ///   call procExpr 
+        /// </code>
+        /// to one of:
+        /// <code>
+        ///	 ax = procExpr(bindings);
+        ///  procEexpr(bindings);
+        /// </code>
+        /// </remarks>
+        /// <param name="proc">Procedure in which the CALL instruction exists</param>
+        /// <param name="stm">The particular statement of the call instruction</param>
+        /// <param name="call">The actuall CALL instruction.</param>
+        /// <returns>True if the conversion was possible, false if the procedure didn't have
+        /// a signature yet.</returns>
+        public bool RewriteCall(Procedure proc, Statement stm, CallInstruction call)
+        {
+            var callee = call.Callee as ProcedureConstant;
+            if (callee == null)
+                return false;          //$REVIEW: what happens with indirect calls?
+            var procCallee = callee.Procedure;
+            var sigCallee = procCallee.Signature;
+            var fn = new ProcedureConstant(platform.PointerType, procCallee);
+            if (sigCallee == null || !sigCallee.ParametersValid)
+                return false;
+            ApplicationBuilder ab = CreateApplicationBuilder(proc, call, fn);
+            var instr = ab.CreateInstruction(sigCallee, procCallee.Characteristics);
+            stm.Instruction = instr;
+            return true;
+        }
+
+
+        /// <summary>
+        // Statements of the form:
+        //		call	<proc-operand>
+        // become redefined to 
+        //		ret = <proc-operand>(bindings)
+        // where ret is the return register (if any) and the
+        // bindings are the bindings of the procedure.
+        /// </summary>
+        /// <param name="proc"></param>
+        /// <returns>The number of calls that couldn't be converted</returns>
+        public int RewriteCalls(Procedure proc)
+        {
+            int unConverted = 0;
+            foreach (Statement stm in proc.Statements)
+            {
+                CallInstruction ci = stm.Instruction as CallInstruction;
+                if (ci != null)
+                {
+                    if (!RewriteCall(proc, stm, ci))
+                        ++unConverted;
+                }
+            }
+            return unConverted;
         }
 
         /// <summary>
@@ -259,7 +338,29 @@ namespace Reko.Analysis
         /// <param name="proc"></param>
         public void RewriteReturns(SsaState ssa)
         {
+        }
 
+        public void RewriteReturns(Procedure proc)
+        {
+            Identifier idRet = proc.Signature.ReturnValue;
+            if (idRet == null || idRet.DataType is VoidType)
+                return;
+            var expRet = proc.ExitBlock.Statements
+                .Select(s => s.Instruction)
+                .OfType<UseInstruction>()
+                .Select(u => u.Expression)
+                .OfType<Identifier>()
+                .Where(id => id.Storage == idRet.Storage)
+                .SingleOrDefault();
+
+            foreach (Statement stm in proc.Statements)
+            {
+                var ret = stm.Instruction as ReturnInstruction;
+                if (ret != null)
+                {
+                    ret.Expression = expRet;
+                }
+            }
         }
     }
 }

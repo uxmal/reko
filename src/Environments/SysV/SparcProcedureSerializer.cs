@@ -92,7 +92,6 @@ namespace Reko.Environments.SysV
             }
             Identifier arg;
             var dtArg = sArg.Type.Accept(TypeLoader);
-            var prim = dtArg as PrimitiveType;
             if (dtArg.Size <= 8)
             {
                 if (this.ir >= iregs.Length)
