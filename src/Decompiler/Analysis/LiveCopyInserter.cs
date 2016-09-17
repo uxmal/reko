@@ -123,7 +123,7 @@ namespace Reko.Analysis
 					{
 						phi.Src.Arguments[i] = idDst;
 						int idx = IndexOfInsertedCopy(pred);
-						Identifier idNew = InsertAssignment(idDst, id, pred, idx);
+						InsertAssignment(idDst, id, pred, idx);
 					}
 				}
 			}

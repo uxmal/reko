@@ -92,7 +92,6 @@ namespace Reko.UnitTests.Analysis
             SCZ = frame.EnsureFlagGroup(flags, 7, "SCZ", PrimitiveType.Byte);
             CF = frame.EnsureFlagGroup(flags, arch.CarryFlagMask, "C", PrimitiveType.Bool);
             rw = new LongAddRewriter(m.Procedure, arch);
-            Procedure proc = new Procedure("test", frame);
         }
 
         [Test]
@@ -143,7 +142,7 @@ namespace Reko.UnitTests.Analysis
         public void Match_AddRecConst()
         {
             var i1 = m.Assign(ax, m.IAdd(ax, 0x5678));
-            var i2 = m.Assign(CF, m.Cond(ax));
+            m.Assign(CF, m.Cond(ax));
             var i3 = m.Assign(dx, m.IAdd(m.IAdd(dx, 0x1234), CF));
             var instr = CreateLongInstruction(i1, i3);
             Assert.AreEqual("dx_ax = dx_ax + 0x12345678", instr.ToString());
@@ -153,7 +152,7 @@ namespace Reko.UnitTests.Analysis
         public void Match_AddConstant()
         {
             var in1 = m.Assign(ax, m.IAdd(ax, 1));
-            var in2 = m.Assign(CF, m.Cond(ax));
+            m.Assign(CF, m.Cond(ax));
             var in3 = m.Assign(dx, m.IAdd(m.IAdd(dx, 0), CF));
             var instr = CreateLongInstruction(in1, in3);
             Assert.AreEqual("dx_ax = dx_ax + 0x00000001", instr.ToString());

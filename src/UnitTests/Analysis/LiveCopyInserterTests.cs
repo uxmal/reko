@@ -68,7 +68,7 @@ namespace Reko.UnitTests.Analysis
 
 			var reg   = ssaIds.Where(s => s.Identifier.Name == "reg").Single();
 			var reg_5 = ssaIds.Where(s => s.Identifier.Name == "reg_2").Single();
-            var reg_6 = ssaIds.Where(s => s.Identifier.Name == "reg_3").Single();
+			Assert.IsTrue(ssaIds.Where(s => s.Identifier.Name == "reg_3").Any());
 
 			Assert.AreEqual("reg_2 = PHI(reg, reg_3)", reg_5.DefStatement.Instruction.ToString());
 			Assert.IsTrue(lci.IsLiveOut(reg.Identifier, reg_5.DefStatement));

@@ -61,27 +61,27 @@ namespace Reko.UnitTests.Assemblers.Pdp11
         [Test]
         public void Pdp11Tasm_Comment()
         {
-            var ldr = asm.AssembleFragment(Address.Ptr16(0x0100), "; nothing");
+            asm.AssembleFragment(Address.Ptr16(0x0100), "; nothing");
         }
 
         [Test]
         public void Pdp11Tasm_Equate()
         {
-            var ldr = asm.AssembleFragment(Address.Ptr16(0x0100), " a = r");
+            asm.AssembleFragment(Address.Ptr16(0x0100), " a = r");
             Assert.AreEqual("r", asm.Assembler.Equates["a"]);
         }
 
         [Test]
         public void Pdp11Tasm_Decimal()
         {
-            var ldr = asm.AssembleFragment(Address.Ptr16(0x0100), " a = 42.");
+            asm.AssembleFragment(Address.Ptr16(0x0100), " a = 42.");
             Assert.AreEqual(42, asm.Assembler.Equates["a"]);
         }
 
         [Test]
         public void Pdp11Tasm_Sum()
         {
-            var ldr = asm.AssembleFragment(Address.Ptr16(0x0100), @"
+            asm.AssembleFragment(Address.Ptr16(0x0100), @"
 a = 42.; decimal
 b = 10 ; octal
 c = a + b");
@@ -91,7 +91,7 @@ c = a + b");
         [Test]
         public void Pdp11Tasm_PageDirective()
         {
-            var ldr = asm.AssembleFragment(Address.Ptr16(0x0100), ".page");
+            asm.AssembleFragment(Address.Ptr16(0x0100), ".page");
         }
 
         [Test]

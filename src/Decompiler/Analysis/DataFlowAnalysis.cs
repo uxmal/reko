@@ -209,7 +209,7 @@ namespace Reko.Analysis
             eventListener.ShowStatus("Rewriting affine expressions.");
             trf.RewriteBasicBlocks();
             eventListener.ShowStatus("Computing register liveness.");
-            var rl = RegisterLiveness.Compute(program, flow, eventListener);
+            RegisterLiveness.Compute(program, flow, eventListener);
             eventListener.ShowStatus("Rewriting calls.");
 			GlobalCallRewriter.Rewrite(program, flow, eventListener);
 		}

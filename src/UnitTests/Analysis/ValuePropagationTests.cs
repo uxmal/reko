@@ -403,7 +403,6 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void VpShiftSum()
 		{
-			Constant c = Constant.Word32(1);
 			ProcedureBuilder m = new ProcedureBuilder();
 			Expression e = m.Shl(1, m.ISub(Constant.Byte(32), 1));
             var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, ssaIds));
@@ -474,7 +473,7 @@ namespace Reko.UnitTests.Analysis
 			protected override void BuildBody()
 			{
 				var dl = LocalByte("dl");
-				var dx = Local16("dx");
+				Local16("dx");
 				var edx = Local32("edx");
 
 				Assign(edx, Int32(0x0AAA00AA));
@@ -493,7 +492,6 @@ namespace Reko.UnitTests.Analysis
             var m = new ProcedureBuilder();
             var d1 = m.Reg32("d32",0);
             var a1 = m.Reg32("a32",1);
-            var tmp = m.Frame.CreateTemporary(PrimitiveType.Word16);
 
             m.Assign(d1, m.Dpb(d1, m.LoadW(a1), 0));
             m.Assign(d1, m.Dpb(d1, m.LoadW(m.IAdd(a1, 4)), 0));

@@ -92,7 +92,7 @@ namespace Reko.Loading
         /// <returns></returns>
         public ImageLoader FindUnpackerBySignature(string filename, byte[] image, uint entryPointOffset)
         {
-            var sa = EnsureSuffixArray(filename + ".sufa-raw.ubj", image);
+            EnsureSuffixArray(filename + ".sufa-raw.ubj", image);
             var signature = Signatures.Where(s => Matches(s, image, entryPointOffset)).FirstOrDefault();
             if (signature == null)
                 return null;

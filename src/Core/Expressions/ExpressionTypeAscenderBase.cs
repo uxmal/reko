@@ -68,8 +68,8 @@ namespace Reko.Core.Expressions
 
         public DataType VisitArrayAccess(ArrayAccess acc)
         {
-            DataType dtArr = acc.Array.Accept(this);
-            DataType dtIdx = acc.Index.Accept(this);
+            acc.Array.Accept(this);
+            acc.Index.Accept(this);
             return RecordDataType(acc.DataType, acc);
         }
 
@@ -282,7 +282,7 @@ namespace Reko.Core.Expressions
         public DataType VisitDepositBits(DepositBits d)
         {
             var dtSource = d.Source.Accept(this);
-            var dtBits = d.InsertedBits.Accept(this);
+            d.InsertedBits.Accept(this);
             return EnsureDataType(dtSource, d);
         }
 

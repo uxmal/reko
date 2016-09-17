@@ -41,7 +41,6 @@ namespace Reko.UnitTests.Environments.SysV
         private MockFactory mockFactory;
         private SparcArchitecture32 arch;
         private SparcProcedureSerializer ser;
-        private SysVPlatform platform;
         private ISerializedTypeVisitor<DataType> deserializer;
 
         [SetUp]
@@ -50,7 +49,6 @@ namespace Reko.UnitTests.Environments.SysV
             mr = new MockRepository();
             mockFactory = new MockFactory(mr);
             arch = new SparcArchitecture32();
-            platform = new SysVPlatform(null, arch);
         }
 
         private void Given_ProcedureSerializer()
