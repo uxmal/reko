@@ -54,7 +54,7 @@ namespace Reko.UnitTests.Typing
             tv.Class.DataType = a;
             Assert.AreEqual(1, store.UsedEquivalenceClasses.Count);
 
-            DataType dt = tv.Class.DataType.Accept(nct);
+            tv.Class.DataType.Accept(nct);
 
             Assert.AreEqual(2, store.UsedEquivalenceClasses.Count);
             Assert.AreEqual("(arr Eq_2)", store.UsedEquivalenceClasses[0].DataType.ToString());
@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Typing
             tv.Class.DataType = a;
             Assert.AreEqual(1, store.UsedEquivalenceClasses.Count);
 
-            DataType dt = tv.Class.DataType.Accept(nct);
+            tv.Class.DataType.Accept(nct);
 
             Assert.AreEqual(1, store.UsedEquivalenceClasses.Count);
             Assert.AreEqual(

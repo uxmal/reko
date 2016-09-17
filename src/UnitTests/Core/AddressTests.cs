@@ -32,7 +32,6 @@ namespace Reko.UnitTests.Core
         public void Addr_ToString()
         {
             Address addr = Address.SegPtr(0xC00, 0x1234);
-            string str = addr.ToString();
             Assert.AreEqual("0C00:1234", addr.ToString());
         }
 

@@ -84,7 +84,6 @@ namespace Reko.UnitTests.Gui.Windows
 
         private void Expect(string sExp)
         {
-            var x = new XElement("foo");
             Func<ITreeNode, XNode> render = null;
             render = new Func<ITreeNode, XNode>(n =>
             {
@@ -556,7 +555,6 @@ namespace Reko.UnitTests.Gui.Windows
         public void PBS_AfterSelect_Calls_DoDefaultAction()
         {
             var des = mr.StrictMock<TreeNodeDesigner>();
-            var node = mr.Stub<ITreeNode>();
             des.Expect(d => d.DoDefaultAction());
             des.Stub(d => d.Initialize(null)).IgnoreArguments();
             mockTree = new FakeTreeView();

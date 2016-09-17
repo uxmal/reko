@@ -228,7 +228,6 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void TrfCopyBack()
         {
-            var tmp = m.Local32("tmp");
             var esp = m.Frame.EnsureRegister(Registers.esp);
             var r2 = m.Register(2);
             var stm1 = m.Store(m.ISub(esp, 0x10), r2);

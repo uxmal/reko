@@ -53,7 +53,7 @@ namespace Reko.UnitTests.Analysis
             var trf = new TrashedRegisterFinder(program, program.Procedures.Values, dfa.ProgramDataFlow, eventListener);
             trf.Compute();
             trf.RewriteBasicBlocks();
-            RegisterLiveness rl = RegisterLiveness.Compute(program, dfa.ProgramDataFlow, eventListener);
+            RegisterLiveness.Compute(program, dfa.ProgramDataFlow, eventListener);
             foreach (Procedure proc in program.Procedures.Values)
             {
                 LongAddRewriter larw = new LongAddRewriter(proc, program.Architecture);
@@ -144,7 +144,6 @@ namespace Reko.UnitTests.Analysis
         public void AliasStackArgument()
         {
             Identifier argOff = proc.Frame.EnsureStackArgument(4, PrimitiveType.Word16);
-            Identifier argSeg = proc.Frame.EnsureStackArgument(6, PrimitiveType.Word16);
             Identifier argPtr = proc.Frame.EnsureStackArgument(4, PrimitiveType.Pointer32);
             Assignment ass = alias.CreateAliasInstruction(argOff, argPtr);
             Assert.AreEqual("ptrArg04 = DPB(ptrArg04, wArg04, 0) (alias)", ass.ToString());
