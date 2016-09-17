@@ -50,13 +50,13 @@ namespace Reko.Analysis
 	/// Call Rewriting should take place before SSA conversion and dead 
     /// code removal.
 	/// </remarks>
-	public class GlobalCallRewriter
+	public class CallRewriter
 	{
 		private ProgramDataFlow mpprocflow;
         private DecompilerEventListener listener;
         private IPlatform platform;
 
-        public GlobalCallRewriter(IPlatform platform, ProgramDataFlow mpprocflow, DecompilerEventListener listener) 
+        public CallRewriter(IPlatform platform, ProgramDataFlow mpprocflow, DecompilerEventListener listener) 
 		{
             this.platform = platform;
 			this.mpprocflow = mpprocflow;
@@ -116,7 +116,7 @@ namespace Reko.Analysis
             ProgramDataFlow summaries,
             DecompilerEventListener eventListener)
 		{
-			GlobalCallRewriter crw = new GlobalCallRewriter(platform, summaries, eventListener);
+			CallRewriter crw = new CallRewriter(platform, summaries, eventListener);
 			foreach (SsaTransform sst in ssts)
 			{
                 if (eventListener.IsCanceled())

@@ -155,7 +155,6 @@
     <Compile Include="Environments\Windows\WineSpecFileLoaderTests.cs" />
     <Compile Include="Evaluation\ConstDivisionImplementedByMultiplicationTests.cs" />
     <Compile Include="Fragments\EvenOdd.cs" />
-    <Compile Include="Analysis\GlobalCallRewriterTests.cs" />
     <Compile Include="Analysis\GrfDefinitionFinderTests.cs" />
     <Compile Include="Analysis\InterferenceGraphTests.cs" />
     <Compile Include="Analysis\InterferenceTests.cs" />

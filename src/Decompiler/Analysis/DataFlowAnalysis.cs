@@ -119,7 +119,7 @@ namespace Reko.Analysis
             var uvr = new UnusedOutValuesRemover(program, ssts, this.flow, eventListener);
             uvr.Transform();
 
-            GlobalCallRewriter.Rewrite(program.Platform, ssts, this.flow, eventListener);
+            CallRewriter.Rewrite(program.Platform, ssts, this.flow, eventListener);
             return ssts;
         }
 
