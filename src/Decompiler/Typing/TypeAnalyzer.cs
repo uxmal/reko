@@ -98,7 +98,6 @@ namespace Reko.Typing
 
 			trans.Transform();
 			ctn.RenameAllTypes(store);
-			store.Dump();
             eventListener.ShowStatus("Rewriting expressions.");
 			ter.RewriteProgram(program);
 		}

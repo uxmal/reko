@@ -140,8 +140,14 @@ namespace Reko.UnitTests.Structure
                 fmt.Write(proc);
                 sw.WriteLine("===");
             }
-            Console.WriteLine(sw);
-            Assert.AreEqual(expected, sw.ToString());
+            try
+            {
+                Assert.AreEqual(expected, sw.ToString());
+            } catch
+            {
+                Console.WriteLine(sw);
+                throw;
+            }
         }
 
         private void RunTest32(string expected, Program program)

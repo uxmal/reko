@@ -45,7 +45,6 @@ namespace Reko.UnitTests.Scanning
     public class BlockWorkItem_X86Tests
     {
         private MockRepository mr;
-        private IntelArchitecture arch;
         private Procedure proc;
         private Block block;
         private IScanner scanner;
@@ -183,7 +182,6 @@ namespace Reko.UnitTests.Scanning
 
         private void BuildTest(IntelArchitecture arch, Address addr, IPlatform platform, Action<X86Assembler> m)
         {
-            this.arch = new X86ArchitectureFlat32();
             proc = new Procedure("test", arch.CreateFrame());
             block = proc.AddBlock("testblock");
             this.state = arch.CreateProcessorState();
