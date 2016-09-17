@@ -380,8 +380,7 @@ Constants: cl:0x00
                 m.Assign(r3, m.LoadDw(m.ISub(sp, 4)));
                 m.Return();
 
-                m.Procedure.Signature = new FunctionType(
-                    "",
+                m.Procedure.Signature = FunctionType.Func(
                     new Identifier("", PrimitiveType.Word32, r1.Storage),
                     new Identifier("arg1", PrimitiveType.Word32, r1.Storage));
                 });

@@ -66,9 +66,8 @@ namespace Reko.Core.Types
 
         public static FunctionType Func(Identifier returnId, params Identifier[] formals)
         {
-            return new FunctionType(null, returnId, formals);
+            return new FunctionType(returnId, formals);
         }
-
 
         public static FunctionType Action(params Identifier [] parameters)
         {

@@ -211,8 +211,7 @@ foo_exit:
                 m.Store(m.Word32(0x123418), r2);
                 m.Return();
 
-                m.Procedure.Signature = new FunctionType(
-                    "",
+                m.Procedure.Signature = FunctionType.Func(
                     new Identifier(null, PrimitiveType.Word32, _r1),
                     new Identifier("arg1", PrimitiveType.Word32, _r2));
             });

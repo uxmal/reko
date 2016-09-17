@@ -111,7 +111,6 @@ namespace Reko.UnitTests.Core
                 callee.Frame,
                 new CallSite(4, 0), 
                 new Identifier("foo", PrimitiveType.Pointer32, null),
-                new FunctionType(new Identifier("bRet", PrimitiveType.Byte, Registers.eax), new Identifier[0]),
                 true);
             var sig = FunctionType.Func(new Identifier("bRet", PrimitiveType.Byte, Registers.eax));
             var instr = ab.CreateInstruction(sig, null);
