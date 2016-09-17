@@ -403,7 +403,6 @@ namespace Reko.UnitTests.Typing
                 "T_2 (in Mem0[pfn:word32] : word32)" + nl +
                 "\ttrait_primitive((ptr code))" + nl +
                 "\ttrait_primitive(word32)" + nl;
-            Console.WriteLine(sw.ToString());
 			Assert.AreEqual(exp, sw.ToString());
 		}
 

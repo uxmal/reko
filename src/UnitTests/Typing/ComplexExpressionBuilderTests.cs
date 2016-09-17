@@ -228,6 +228,7 @@ namespace Reko.UnitTests.Typing
             var seg = Segment();
             CreateTv(globals, Ptr32(factory.CreateStructureType()), Ptr32(factory.CreateStructureType()));
             CreateTv(ds, Ptr16(seg), Ptr16(factory.CreateStructureType()));
+            var ceb = CreateBuilder(PrimitiveType.Int16, ds, bx);
         }
 
         [Test]

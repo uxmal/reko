@@ -74,6 +74,9 @@ namespace Reko.UnitTests.Core
 
             var tlLdr = new TypeLibraryDeserializer(platform, true, new TypeLibrary());
             TypeLibrary lib = tlLdr.Load(new SerializedLibrary());
+            Assert.AreEqual(0, lib.Types.Count);
+            Assert.AreEqual(0, lib.Signatures.Count);
+            Assert.AreEqual(1, lib.Modules.Count, "The blank module is there");
         }
 
         [Test]
