@@ -338,7 +338,6 @@ namespace Reko.UnitTests.Scanning
             });
             wi.Process();
             var sw = new StringWriter();
-            block.WriteStatements(Console.Out);
             block.WriteStatements(sw);
             string sExp =
                 "\tax = SEQ(cs, Mem0[ds:bx + 0x0004:word16])(cx)" + nl;
@@ -389,7 +388,6 @@ namespace Reko.UnitTests.Scanning
 
             wi.Process();
             var sw = new StringWriter();
-            block.WriteStatements(Console.Out);
             block.WriteStatements(sw);
             string sExp = "\tbx = bx & 0x0003" + nl +
                 "\tSZO = cond(bx)" + nl +
@@ -515,7 +513,6 @@ namespace Reko.UnitTests.Scanning
                 "\treturn" + nl;
             var sw = new StringWriter();
             block.Write(sw);
-            Console.WriteLine(sw.ToString());
             Assert.AreEqual(sExp, sw.ToString());
         }
     }

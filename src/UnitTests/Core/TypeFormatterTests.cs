@@ -210,7 +210,6 @@ struct a {
         }
 
         [Test]
-        //[Ignore("This test isn't working presently; focus on passing more important tests first then fix")]
         public void TyfoMemberPointerCycle()
         {
             var seg = new StructureType("seg", 100);
@@ -233,7 +232,6 @@ struct a {
                 "\tstruct a seg::* ptr0000;\t// 0" + nl +
                 "};" + nl + nl;
 
-            Console.Write(sw.ToString());
             Assert.AreEqual(sExp, sw.ToString());
         }
 
