@@ -151,12 +151,14 @@ namespace Reko.UnitTests.Core.Lib
             graph.AddEdge("right", "join");
 
             CompileTest(graph, "entry");
-            DumpDominatorFrontier(pdg);
+            //DumpDominatorFrontier(pdg);
             Assert.AreEqual(1, pdg.DominatorFrontier("left").Count);
             Assert.AreEqual("join", pdg.DominatorFrontier("left")[0]);
 
         }
 
+        // Use for debugging, but don't leave in the unit tests to avoid
+        // useless "spew".
         private void DumpDominatorFrontier(DominatorGraph<string> pdg)
         {
             foreach (var n in graph.Nodes)

@@ -215,9 +215,7 @@ namespace Reko.UnitTests.Analysis
 ";
             var sb = new StringWriter();
             block.Write(sb);
-            Console.WriteLine(sb);
             Assert.AreEqual(sExp, sb.ToString());
-
         }
 
         [Test]
@@ -247,7 +245,6 @@ namespace Reko.UnitTests.Analysis
 ";
             var sb = new StringWriter();
             block.Write(sb);
-            Console.WriteLine(sb);
             Assert.AreEqual(sExp, sb.ToString());
         }
     }
