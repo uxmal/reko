@@ -36,7 +36,6 @@ namespace Reko.UnitTests.Evaluation
     [TestFixture]
     public class ExpressionSimplifierTests
     {
-        private Dictionary<Expression, Expression> table;
         private ExpressionSimplifier simplifier;
         private Identifier foo;
         private ProcedureBuilder m;
@@ -50,7 +49,6 @@ namespace Reko.UnitTests.Evaluation
         private void Given_ExpressionSimplifier()
         {
             SsaIdentifierCollection ssaIds = BuildSsaIdentifiers();
-            table = new Dictionary<Expression, Expression>();
             simplifier = new ExpressionSimplifier(new SsaEvaluationContext(null, ssaIds));
         }
 

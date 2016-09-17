@@ -42,7 +42,6 @@ namespace Reko.UnitTests.Analysis
         private Identifier dx;
         private Identifier SCZ;
         private Identifier CF;
-        private PrimitiveType w16 = PrimitiveType.Word16;
         private ProcedureBuilder m;
         private FlagRegister flags;
 
