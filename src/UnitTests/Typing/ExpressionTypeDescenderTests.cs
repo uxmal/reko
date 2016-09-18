@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Typing
             this.store = new TypeStore();
             this.factory = new TypeFactory();
             this.arch = new FakeArchitecture();
-            this.program = new Program { Architecture = arch , Platform = new DefaultPlatform(null,arch)};
+            this.program = new Program { Architecture = arch, Platform = new DefaultPlatform(null, arch) };
             this.exa = new ExpressionTypeAscender(program, store, factory);
             this.exd = new ExpressionTypeDescender(program, store, factory);
             store.EnsureExpressionTypeVariable(factory, program.Globals, "globals_t");
@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Typing
             Verify(outputFileName);
         }
 
-        private void RunTest(params Tuple<Expression,DataType> [] tests)
+        private void RunTest(params Tuple<Expression, DataType>[] tests)
         {
             foreach (var t in tests)
             {
@@ -228,6 +228,17 @@ namespace Reko.UnitTests.Typing
             var ep = new ExternalProcedure("test", sig);
             RunTest(
                 Test(m.Fn(ep, m.Load(PrimitiveType.Word32, m.Word32(0x0300400))), VoidType.Instance));
+        }
+
+        [Test]
+        public void ExdSubtraction()
+        {
+            var p = Id("p", PrimitiveType.Word32);
+            RunTest(
+                m.Load(
+                    PrimitiveType.Word32,
+                    m.IAdd(m.ISub(p, m.Word32(4)), m.Word32(0))),
+                PrimitiveType.Word32);
         }
     }
 }
