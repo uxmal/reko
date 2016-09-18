@@ -134,7 +134,7 @@ namespace Reko.Analysis
                 if (eventListener.IsCanceled())
                     return;
                 crw.RewriteCalls(sst.SsaState.Procedure);
-				crw.RewriteReturns(sst.SsaState.Procedure);
+				crw.RewriteReturns(sst.SsaState);
 			}
 		}
 
@@ -335,32 +335,37 @@ namespace Reko.Analysis
         /// Having identified the return variable -- if any, rewrite all 
         /// return statements to return that variable.
         /// </summary>
-        /// <param name="proc"></param>
+        /// <param name="ssa"></param>
         public void RewriteReturns(SsaState ssa)
         {
-        }
-
-        public void RewriteReturns(Procedure proc)
-        {
-            Identifier idRet = proc.Signature.ReturnValue;
+            Identifier idRet = ssa.Procedure.Signature.ReturnValue;
             if (idRet == null || idRet.DataType is VoidType)
                 return;
-            var expRet = proc.ExitBlock.Statements
+            var expRet = ssa.Procedure.ExitBlock.Statements
                 .Select(s => s.Instruction)
                 .OfType<UseInstruction>()
-                .Select(u => u.Expression)
-                .OfType<Identifier>()
-                .Where(id => id.Storage == idRet.Storage)
+                .Select(u => new
+                {
+                    Identifier = u.Expression as Identifier,
+                    Instruction = u
+                })
+                .Where(w => w.Identifier != null && w.Identifier.Storage == idRet.Storage)
                 .SingleOrDefault();
 
-            foreach (Statement stm in proc.Statements)
+            foreach (Statement stm in ssa.Procedure.Statements)
             {
                 var ret = stm.Instruction as ReturnInstruction;
                 if (ret != null)
                 {
-                    ret.Expression = expRet;
+                    ret.Expression =  expRet.Identifier;
                 }
             }
+
+            var sid = ssa.Identifiers[expRet.Identifier];
+            var stmUse = sid.Uses
+                .Where(u => u.Instruction == expRet.Instruction)
+                .Single();
+            ssa.DeleteStatement(stmUse);
         }
     }
 }
