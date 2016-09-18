@@ -3,7 +3,9 @@
 // Mem0:Global memory
 // fp:fp
 // sp:sp
+// v3:v3
 // ss:ss
+// v5:v5
 // SCZO:Flags
 // return address size: 2
 void fn0C00_0000()
@@ -11,10 +13,12 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp = fp
+	v3 = 0x0320
 	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = 0x0320
+	Mem0[ss:sp:word16] = v3
+	v5 = 0x0300
 	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = 0x0300
+	Mem0[ss:sp:word16] = v5
 	call fn0C00_0010 (retsize: 2;)
 	call fn0C00_0037 (retsize: 2;)
 	sp = sp + 0x0004
@@ -29,6 +33,7 @@ fn0C00_0000_exit:
 // fp:fp
 // sp:sp
 // bp:bp
+// v4:v4
 // ss:ss
 // bx:bx
 // rLoc1:FPU stack
@@ -40,8 +45,9 @@ fn0C00_0010_entry:
 	// succ:  l0C00_0010
 l0C00_0010:
 	sp = fp
+	v4 = bp
 	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = bp
+	Mem0[ss:sp:word16] = v4
 	bp = sp
 	bx = Mem0[ss:bp + 0x0004:word16]
 	rLoc1 = Mem0[ds:bx:real64]

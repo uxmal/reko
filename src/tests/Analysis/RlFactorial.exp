@@ -16,6 +16,7 @@ fn0C00_0000_entry:
 l0C00_0000:
 	sp = fp
 	cx = 0x0064
+	v4 = 0x0064
 	sp = fp - 0x0002
 	wLoc02 = 0x0064
 	call fn0C00_000F (retsize: 2; depth: 4)
@@ -48,8 +49,9 @@ fn0C00_000F_entry:
 // SymbolicIn: sp:fp
 l0C00_000F:
 	sp = fp
+	v4 = bp
 	sp = fp - 0x0002
-	wLoc02 = bp
+	wLoc02 = v4
 	bp = fp - 0x0002
 	ax = wArg02
 	ax = ax - 0x0001
@@ -61,8 +63,9 @@ l0C00_000F:
 
 // SymbolicIn: sp:fp - 0x0002 bp:fp - 0x0002 ax:<invalid> -2(fp):bp
 l0C00_0018:
+	v9 = ax
 	sp = fp - 0x0004
-	wLoc04 = ax
+	wLoc04 = v9
 	call fn0C00_000F (retsize: 2; depth: 6)
 	sp = fp - 0x0003
 	SZO = cond(fp - 0x0003)

@@ -9,6 +9,7 @@ void fn0C00_0000(Register word16 di, Register selector ds)
 // fp:fp
 // sp:sp
 // di:di
+// v4:v4
 // ss:ss
 // ax:ax
 // ds:ds
@@ -20,8 +21,9 @@ fn0C00_0000_entry:
 l0C00_0000:
 	sp = fp
 	fn0C00_000F(di, ds)
+	v4 = di
 	sp = fp - 0x0002
-	wLoc02 = di
+	wLoc02 = v4
 	ax = 0x0100
 	ax = fn0C00_0014(ax)
 	Mem0[ds:0x0300:word16] = ax

@@ -84,6 +84,7 @@ l0C00_0038:
 
 // SymbolicIn: sp:fp ax:<invalid>
 l0C00_003D:
+	v10 = 0x0003
 	sp = fp - 0x0002
 	wLoc02 = 0x0003
 	call fn0C00_0069 (retsize: 2; depth: 4)
@@ -167,8 +168,9 @@ fn0C00_0069_entry:
 // SymbolicIn: sp:fp
 l0C00_0069:
 	sp = fp
+	v4 = bp
 	sp = fp - 0x0002
-	wLoc02 = bp
+	wLoc02 = v4
 	bp = fp - 0x0002
 	SCZO = cond(wArg02 - 0x0000)
 	bp = wLoc02

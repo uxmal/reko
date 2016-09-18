@@ -69,8 +69,9 @@ fn0C00_000F_entry:
 // SymbolicIn: sp:fp
 l0C00_000F:
 	sp = fp
+	v4 = si
 	sp = fp - 0x0002
-	wLoc02 = si
+	wLoc02 = v4
 	si = 0x0000
 	SZO = cond(0x0000)
 	C = false

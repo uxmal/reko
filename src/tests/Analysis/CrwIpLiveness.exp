@@ -45,9 +45,10 @@ Register word16 fn0C00_0026(Register word16 si, Register selector ds)
 // fp:fp
 // sp:sp
 // di:di
+// v4:v4
 // ss:ss
 // ds:ds
-// v6:v6
+// v7:v7
 // SZO:Flags
 // wLoc02:Local -0002
 // si:si
@@ -58,12 +59,13 @@ fn0C00_0026_entry:
 	// succ:  l0C00_0026
 l0C00_0026:
 	sp = fp
+	v4 = di
 	sp = fp - 0x0002
-	wLoc02 = di
+	wLoc02 = v4
 	di = Mem0[ds:0x0104:word16]
-	v6 = Mem0[ds:di + 0x0030:word16] + 0x0001
-	Mem0[ds:di + 0x0030:word16] = v6
-	SZO = cond(v6)
+	v7 = Mem0[ds:di + 0x0030:word16] + 0x0001
+	Mem0[ds:di + 0x0030:word16] = v7
+	SZO = cond(v7)
 	ax = fn0C00_0033(si, ds)
 	di = wLoc02
 	sp = fp

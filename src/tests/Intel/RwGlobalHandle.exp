@@ -4,34 +4,46 @@
 // fp:fp
 // esp:esp
 // esi:esi
+// v4:v4
 // edi:edi
+// v6:v6
+// v7:v7
 // eax:eax
+// v9:v9
+// v10:v10
+// v11:v11
 // return address size: 4
 void fn10000000()
 fn10000000_entry:
 	// succ:  l10000000
 l10000000:
 	esp = fp
+	v4 = esi
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = esi
+	Mem0[esp:word32] = v4
 	esi = Mem0[esp + 0x00000008:word32]
+	v6 = edi
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = edi
+	Mem0[esp:word32] = v6
 	edi = GlobalHandle
+	v7 = esi
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = esi
+	Mem0[esp:word32] = v7
 	eax = GlobalHandle(Mem0[esp:LPCVOID])
 	esp = esp + 0x00000004
+	v9 = eax
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = eax
+	Mem0[esp:word32] = v9
 	eax = GlobalUnlock(Mem0[esp:HGLOBAL])
 	esp = esp + 0x00000004
+	v10 = esi
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = esi
+	Mem0[esp:word32] = v10
 	eax = GlobalHandle(Mem0[esp:LPCVOID])
 	esp = esp + 0x00000004
+	v11 = eax
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = eax
+	Mem0[esp:word32] = v11
 	eax = GlobalFree(Mem0[esp:HGLOBAL])
 	esp = esp + 0x00000004
 	edi = Mem0[esp:word32]

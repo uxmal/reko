@@ -633,22 +633,26 @@ namespace Reko.Arch.X86
         {
             if (instrCur.dataWidth == PrimitiveType.Word16)
             {
+                Identifier temp = frame.CreateTemporary(Registers.sp.DataType);
+                emitter.Assign(temp, orw.AluRegister(Registers.sp));
                 RewritePush(Registers.ax);
                 RewritePush(Registers.cx);
                 RewritePush(Registers.dx);
                 RewritePush(Registers.bx);
-                RewritePush(Registers.sp);
+                RewritePush(PrimitiveType.Word16, temp);
                 RewritePush(Registers.bp);
                 RewritePush(Registers.si);
                 RewritePush(Registers.di);
             }
             else
             {
+                Identifier temp = frame.CreateTemporary(Registers.esp.DataType);
+                emitter.Assign(temp, orw.AluRegister(Registers.esp));
                 RewritePush(Registers.eax);
                 RewritePush(Registers.ecx);
                 RewritePush(Registers.edx);
                 RewritePush(Registers.ebx);
-                RewritePush(Registers.esp);
+                RewritePush(PrimitiveType.Word32, temp);
                 RewritePush(Registers.ebp);
                 RewritePush(Registers.esi);
                 RewritePush(Registers.edi);
@@ -759,8 +763,10 @@ namespace Reko.Arch.X86
             // Allocate an local variable for the push.
 
             var sp = StackPointer();
+            Identifier temp = frame.CreateTemporary(sp.DataType);
+            emitter.Assign(temp, expr);
             emitter.Assign(sp, emitter.ISub(sp, dataWidth.Size));
-            emitter.Assign(orw.StackAccess(sp, dataWidth), expr);
+            emitter.Assign(orw.StackAccess(sp, dataWidth), temp);
         }
 
         private void RewriteRotation(string operation, bool useCarry, bool left)

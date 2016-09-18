@@ -4,6 +4,7 @@
 // fp:fp
 // esp:esp
 // eax:eax
+// v4:v4
 // SCZO:Flags
 // ax:ax
 // return address size: 4
@@ -13,8 +14,9 @@ fn10000000_entry:
 l10000000:
 	esp = fp
 	eax = Mem0[0x10003420:word32]
+	v4 = eax
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = eax
+	Mem0[esp:word32] = v4
 	call fn10000017 (retsize: 4;)
 	esp = esp + 0x00000004
 	SCZO = cond(esp)
@@ -29,7 +31,9 @@ fn10000000_exit:
 // fp:fp
 // esp:esp
 // ebp:ebp
+// v4:v4
 // ecx:ecx
+// v6:v6
 // SCZO:Flags
 // Z:Flags
 // ax:ax
@@ -45,11 +49,13 @@ fn10000017_entry:
 	// succ:  l10000017
 l10000017:
 	esp = fp
+	v4 = ebp
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = ebp
+	Mem0[esp:word32] = v4
 	ebp = esp
+	v6 = ecx
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = ecx
+	Mem0[esp:word32] = v6
 	Mem0[ebp - 0x00000004:word16] = 0x0000
 	SCZO = cond(Mem0[ebp + 0x00000008:word32] - 0x00000000)
 	branch Test(NE,Z) l1000002F

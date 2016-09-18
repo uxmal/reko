@@ -8,7 +8,10 @@ void fn0C00_0000(Register selector ds)
 // Mem0:Global memory
 // fp:fp
 // sp:sp
+// v3:v3
 // ss:ss
+// v5:v5
+// v6:v6
 // SCZO:Flags
 // ds:ds
 // ax:ax
@@ -21,10 +24,13 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp = fp
+	v3 = 0x0003
 	sp = fp - 0x0002
 	wLoc02 = 0x0003
+	v5 = 0x0002
 	sp = fp - 0x0004
 	wLoc04 = 0x0002
+	v6 = 0x0001
 	sp = fp - 0x0006
 	wLoc06 = 0x0001
 	ax = fn0C00_0011(wLoc06, wLoc04, wLoc02)
@@ -46,6 +52,7 @@ Register word16 fn0C00_0011(Stack word16 wArg02, Stack word16 wArg04, Stack word
 // fp:fp
 // sp:sp
 // bp:bp
+// v4:v4
 // ss:ss
 // ax:ax
 // SCZO:Flags
@@ -59,8 +66,9 @@ fn0C00_0011_entry:
 	// succ:  l0C00_0011
 l0C00_0011:
 	sp = fp
+	v4 = bp
 	sp = fp - 0x0002
-	wLoc02 = bp
+	wLoc02 = v4
 	bp = fp - 0x0002
 	ax = wArg02
 	ax = ax + wArg04

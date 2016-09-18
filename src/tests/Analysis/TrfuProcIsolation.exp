@@ -6,8 +6,9 @@ fn0C00_0000_entry:
 l0C00_0000:
 	sp = fp
 	call fn0C00_000F (retsize: 2; depth: 2)
+	v4 = di
 	sp = fp - 0x0002
-	wLoc02 = di
+	wLoc02 = v4
 	ax = 0x0100
 	call fn0C00_0014 (retsize: 2; depth: 4)
 	Mem0[ds:0x0300:word16] = ax

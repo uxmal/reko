@@ -29,8 +29,10 @@ fn0C00_0000_exit:
 // fp:fp
 // sp:sp
 // si:si
+// v4:v4
 // ss:ss
 // di:di
+// v7:v7
 // cx:cx
 // SCZO:Flags
 // Z:Flags
@@ -42,10 +44,12 @@ fn0C00_0008_entry:
 	// succ:  l0C00_0008
 l0C00_0008:
 	sp = fp
+	v4 = si
 	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = si
+	Mem0[ss:sp:word16] = v4
+	v7 = di
 	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = di
+	Mem0[ss:sp:word16] = v7
 	si = 0x0000
 	// succ:  l0C00_000D
 l0C00_000D:

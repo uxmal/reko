@@ -16,8 +16,10 @@ fn0C00_0000_entry:
 l0C00_0000:
 	sp = fp
 	cx = 0x002A
+	v4 = 0x0001
 	sp = fp - 0x0002
 	wLoc02 = 0x0001
+	v6 = 0x0002
 	sp = fp - 0x0004
 	wLoc04 = 0x0002
 	call fn0C00_0023 (retsize: 2; depth: 6)
@@ -25,23 +27,31 @@ l0C00_0000:
 	ax = 0x0000
 	SZO = cond(0x0000)
 	C = false
+	v10 = 0x0000
 	sp = fp - 0x0002
 	wLoc02 = 0x0000
+	v11 = 0x0000
 	sp = fp - 0x0004
 	wLoc04 = 0x0000
+	v12 = 0x0000
 	sp = fp - 0x0006
 	wLoc06 = 0x0000
+	v13 = 0x0000
 	sp = fp - 0x0008
 	wLoc08 = 0x0000
+	v14 = 0x0000
 	sp = fp - 0x000A
 	wLoc0A = 0x0000
+	v15 = 0x0000
 	sp = fp - 0x000C
 	wLoc0C = 0x0000
 	call fn0C00_0034 (retsize: 2; depth: 14)
 	sp = fp
 	SCZO = cond(fp)
+	v17 = 0x0001
 	sp = fp - 0x0002
 	wLoc02 = 0x0001
+	v18 = 0x0002
 	sp = fp - 0x0004
 	wLoc04 = 0x0002
 	call fn0C00_005D (retsize: 2; depth: 6)
@@ -73,10 +83,12 @@ fn0C00_0023_entry:
 // SymbolicIn: sp:fp
 l0C00_0023:
 	sp = fp
+	v4 = cx
 	sp = fp - 0x0002
-	wLoc02 = cx
+	wLoc02 = v4
+	v7 = bp
 	sp = fp - 0x0004
-	wLoc04 = bp
+	wLoc04 = v7
 	bp = fp - 0x0004
 	cx = wArg02
 	ax = wArg04
@@ -112,14 +124,18 @@ fn0C00_0034_entry:
 // SymbolicIn: sp:fp
 l0C00_0034:
 	sp = fp
+	v4 = bx
 	sp = fp - 0x0002
-	wLoc02 = bx
+	wLoc02 = v4
+	v7 = cx
 	sp = fp - 0x0004
-	wLoc04 = cx
+	wLoc04 = v7
+	v9 = dx
 	sp = fp - 0x0006
-	wLoc06 = dx
+	wLoc06 = v9
+	v11 = bp
 	sp = fp - 0x0008
-	wLoc08 = bp
+	wLoc08 = v11
 	bp = fp - 0x0008
 	bx = fp + 0x0006
 // DataOut: bx ds
@@ -181,10 +197,12 @@ fn0C00_005D_entry:
 // SymbolicIn: sp:fp
 l0C00_005D:
 	sp = fp
+	v4 = cx
 	sp = fp - 0x0002
-	wLoc02 = cx
+	wLoc02 = v4
+	v7 = bp
 	sp = fp - 0x0004
-	wLoc04 = bp
+	wLoc04 = v7
 	bp = fp - 0x0004
 	ax = wArg04
 	ax = ax + cx

@@ -49,10 +49,12 @@ fn0C00_0008_entry:
 // SymbolicIn: sp:fp
 l0C00_0008:
 	sp = fp
+	v4 = si
 	sp = fp - 0x0002
-	wLoc02 = si
+	wLoc02 = v4
+	v7 = di
 	sp = fp - 0x0004
-	wLoc04 = di
+	wLoc04 = v7
 	si = 0x0000
 // DataOut: cx di ds si
 // DataOut (flags): 

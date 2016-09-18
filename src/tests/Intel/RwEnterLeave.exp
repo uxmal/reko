@@ -4,6 +4,7 @@
 // fp:fp
 // sp:sp
 // bp:bp
+// v4:v4
 // ss:ss
 // bx:bx
 // ds:ds
@@ -13,8 +14,9 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp = fp
+	v4 = bp
 	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = bp
+	Mem0[ss:sp:word16] = v4
 	bp = sp
 	bx = Mem0[ss:bp + 0x0004:word16]
 	Mem0[ds:bx:byte] = 0x00

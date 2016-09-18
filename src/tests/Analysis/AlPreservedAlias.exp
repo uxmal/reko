@@ -21,6 +21,7 @@ Mem0:Global memory (aliases:)
 fp:fp (aliases:)
 sp:sp (aliases:)
 ax:ax (aliases: al)
+v4:v4 (aliases:)
 ss:ss (aliases:)
 al:al (aliases: ax)
 ds:ds (aliases:)
@@ -32,8 +33,9 @@ fn0C00_000C_entry:
 	// succ:  l0C00_000C
 l0C00_000C:
 	sp = fp
+	v4 = ax
 	sp = fp - 0x0002
-	wLoc02 = ax
+	wLoc02 = v4
 	al = Mem0[ds:0x0104:byte]
 	Mem0[ds:0x0105:byte] = al
 	ax = wLoc02

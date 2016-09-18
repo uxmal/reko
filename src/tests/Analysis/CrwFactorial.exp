@@ -9,6 +9,7 @@ void fn0C00_0000(Register selector ds)
 // fp:fp
 // sp:sp
 // cx:cx
+// v4:v4
 // ss:ss
 // SCZO:Flags
 // ds:ds
@@ -21,6 +22,7 @@ fn0C00_0000_entry:
 l0C00_0000:
 	sp = fp
 	cx = 0x0064
+	v4 = 0x0064
 	sp = fp - 0x0002
 	wLoc02 = 0x0064
 	ax = fn0C00_000F(wLoc02)
@@ -42,10 +44,12 @@ Register word16 fn0C00_000F(Stack word16 wArg02)
 // fp:fp
 // sp:sp
 // bp:bp
+// v4:v4
 // ss:ss
 // ax:ax
 // SZO:Flags
 // Z:Flags
+// v9:v9
 // dx:dx
 // dx_ax:Sequence dx:ax
 // SCZO:Flags
@@ -58,8 +62,9 @@ fn0C00_000F_entry:
 	// succ:  l0C00_000F
 l0C00_000F:
 	sp = fp
+	v4 = bp
 	sp = fp - 0x0002
-	wLoc02 = bp
+	wLoc02 = v4
 	bp = fp - 0x0002
 	ax = wArg02
 	ax = ax - 0x0001
@@ -67,8 +72,9 @@ l0C00_000F:
 	branch Test(EQ,Z) l0C00_0026
 	// succ:  l0C00_0018 l0C00_0026
 l0C00_0018:
+	v9 = ax
 	sp = fp - 0x0004
-	wLoc04 = ax
+	wLoc04 = v9
 	ax = fn0C00_000F(wLoc04)
 	sp = fp - 0x0003
 	sp = fp - 0x0002

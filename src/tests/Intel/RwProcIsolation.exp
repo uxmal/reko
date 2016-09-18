@@ -4,6 +4,7 @@
 // fp:fp
 // sp:sp
 // di:di
+// v4:v4
 // ss:ss
 // ax:ax
 // ds:ds
@@ -14,8 +15,9 @@ fn0C00_0000_entry:
 l0C00_0000:
 	sp = fp
 	call fn0C00_000F (retsize: 2;)
+	v4 = di
 	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = di
+	Mem0[ss:sp:word16] = v4
 	ax = 0x0100
 	call fn0C00_0014 (retsize: 2;)
 	Mem0[ds:0x0300:word16] = ax

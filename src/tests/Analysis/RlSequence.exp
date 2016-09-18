@@ -43,8 +43,9 @@ fn0C00_000B_entry:
 // SymbolicIn: sp:fp
 l0C00_000B:
 	sp = fp
+	v4 = si
 	sp = fp - 0x0002
-	wLoc02 = si
+	wLoc02 = v4
 	call fn0C00_0026 (retsize: 2; depth: 4)
 	di = ax
 	Mem0[ds:di:word16] = 0x0000
@@ -80,8 +81,9 @@ fn0C00_0026_entry:
 // SymbolicIn: sp:fp
 l0C00_0026:
 	sp = fp
+	v4 = si
 	sp = fp - 0x0002
-	wLoc02 = si
+	wLoc02 = v4
 	Mem0[ds:si:word16] = 0x0001
 	Mem0[ds:si + 0x0002:word16] = 0x0000
 	ax = si + 0x0004
@@ -113,11 +115,12 @@ fn0C00_0035_entry:
 // SymbolicIn: sp:fp
 l0C00_0035:
 	sp = fp
+	v4 = di
 	sp = fp - 0x0002
-	wLoc02 = di
-	v7 = Mem0[ds:si + 0x0002:word16] + 0x0001
-	Mem0[ds:si + 0x0002:word16] = v7
-	SZO = cond(v7)
+	wLoc02 = v4
+	v8 = Mem0[ds:si + 0x0002:word16] + 0x0001
+	Mem0[ds:si + 0x0002:word16] = v8
+	SZO = cond(v8)
 	ax = Mem0[ds:si + 0x0002:word16]
 	ax = ax << 0x0002
 	SCZO = cond(ax)

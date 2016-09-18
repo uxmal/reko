@@ -5,7 +5,9 @@
 // esp:esp
 // eax:eax
 // ebx:ebx
+// v5:v5
 // ebp:ebp
+// v7:v7
 // ecx:ecx
 // edx:edx
 // SCZO:Flags
@@ -14,7 +16,9 @@
 // Z:Flags
 // rLoc1:FPU stack
 // esi:esi
+// v16:v16
 // edi:edi
+// v18:v18
 // rLoc2:FPU stack
 // FPUF:Flags
 // rLoc3:FPU stack
@@ -26,11 +30,13 @@ fn10000000_entry:
 l10000000:
 	esp = fp
 	eax = Mem0[esp + 0x00000004:word32]
+	v5 = ebx
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = ebx
+	Mem0[esp:word32] = v5
 	ebx = Mem0[esp + 0x00000010:word32]
+	v7 = ebp
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = ebp
+	Mem0[esp:word32] = v7
 	ecx = (int32) Mem0[eax + 0x00000006:word16]
 	edx = (int32) Mem0[eax + 0x00000002:word16]
 	ebp = Mem0[esp + 0x00000010:word32]
@@ -50,10 +56,12 @@ l10000000:
 	// succ:  l10000035 l10000107
 l10000035:
 	rLoc1 = (real64) Mem0[ebx:int32]
+	v16 = esi
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = esi
+	Mem0[esp:word32] = v16
+	v18 = edi
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = edi
+	Mem0[esp:word32] = v18
 	esi = esi ^ esi
 	SZO = cond(esi)
 	C = false
