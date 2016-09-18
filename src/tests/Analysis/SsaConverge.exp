@@ -11,14 +11,14 @@ SCZO_4: orig: SCZO
     def:  SCZO_4 = cond(bx - 0x0000)
     uses: branch Test(EQ,SCZO_4) l0C00_0013
           branch Test(GT,SCZO_4) l0C00_000D
-          S_15 = PHI(SCZO_4, SZO_7, SCZO_4)
-          S_15 = PHI(SCZO_4, SZO_7, SCZO_4)
-          C_16 = PHI(SCZO_4, C_8, SCZO_4)
-          C_16 = PHI(SCZO_4, C_8, SCZO_4)
-          Z_17 = PHI(SCZO_4, SZO_7, SCZO_4)
-          Z_17 = PHI(SCZO_4, SZO_7, SCZO_4)
-          O_18 = PHI(SCZO_4, SZO_7, SCZO_4)
-          O_18 = PHI(SCZO_4, SZO_7, SCZO_4)
+          C_15 = PHI(SCZO_4, C_8, SCZO_4)
+          C_15 = PHI(SCZO_4, C_8, SCZO_4)
+          O_16 = PHI(SCZO_4, SZO_7, SCZO_4)
+          O_16 = PHI(SCZO_4, SZO_7, SCZO_4)
+          S_17 = PHI(SCZO_4, SZO_7, SCZO_4)
+          S_17 = PHI(SCZO_4, SZO_7, SCZO_4)
+          Z_19 = PHI(SCZO_4, SZO_7, SCZO_4)
+          Z_19 = PHI(SCZO_4, SZO_7, SCZO_4)
 ax:ax
     def:  def ax
     uses: ax_6 = ax ^ ax
@@ -29,12 +29,12 @@ ax_6: orig: ax
           ax_11 = PHI(ax_10, ax_6, ax_9)
 SZO_7: orig: SZO
     def:  SZO_7 = cond(ax_6)
-    uses: S_15 = PHI(SCZO_4, SZO_7, SCZO_4)
-          Z_17 = PHI(SCZO_4, SZO_7, SCZO_4)
-          O_18 = PHI(SCZO_4, SZO_7, SCZO_4)
+    uses: O_16 = PHI(SCZO_4, SZO_7, SCZO_4)
+          S_17 = PHI(SCZO_4, SZO_7, SCZO_4)
+          Z_19 = PHI(SCZO_4, SZO_7, SCZO_4)
 C_8: orig: C
     def:  C_8 = false
-    uses: C_16 = PHI(SCZO_4, C_8, SCZO_4)
+    uses: C_15 = PHI(SCZO_4, C_8, SCZO_4)
 ax_9: orig: ax
     def:  ax_9 = 0x0001
     uses: ax_11 = PHI(ax_10, ax_6, ax_9)
@@ -51,18 +51,18 @@ ds:ds
           use ds
 Mem14: orig: Mem0
     def:  Mem14[ds:0x0100:word16] = ax_11
-S_15: orig: S
-    def:  S_15 = PHI(SCZO_4, SZO_7, SCZO_4)
-    uses: use C_16 | O_18 | S_15 | Z_17
-C_16: orig: C
-    def:  C_16 = PHI(SCZO_4, C_8, SCZO_4)
-    uses: use C_16 | O_18 | S_15 | Z_17
-Z_17: orig: Z
-    def:  Z_17 = PHI(SCZO_4, SZO_7, SCZO_4)
-    uses: use C_16 | O_18 | S_15 | Z_17
-O_18: orig: O
-    def:  O_18 = PHI(SCZO_4, SZO_7, SCZO_4)
-    uses: use C_16 | O_18 | S_15 | Z_17
+C_15: orig: C
+    def:  C_15 = PHI(SCZO_4, C_8, SCZO_4)
+    uses: use C_15
+O_16: orig: O
+    def:  O_16 = PHI(SCZO_4, SZO_7, SCZO_4)
+    uses: use O_16
+S_17: orig: S
+    def:  S_17 = PHI(SCZO_4, SZO_7, SCZO_4)
+    uses: use S_17
+Z_19: orig: Z
+    def:  Z_19 = PHI(SCZO_4, SZO_7, SCZO_4)
+    uses: use Z_19
 // fn0C00_0000
 // Return size: 2
 define fn0C00_0000
@@ -94,17 +94,20 @@ l0C00_0013:
 	C_8 = false
 	// succ:  l0C00_0015
 l0C00_0015:
-	O_18 = PHI(SCZO_4, SZO_7, SCZO_4)
-	Z_17 = PHI(SCZO_4, SZO_7, SCZO_4)
-	C_16 = PHI(SCZO_4, C_8, SCZO_4)
-	S_15 = PHI(SCZO_4, SZO_7, SCZO_4)
+	Z_19 = PHI(SCZO_4, SZO_7, SCZO_4)
+	S_17 = PHI(SCZO_4, SZO_7, SCZO_4)
+	O_16 = PHI(SCZO_4, SZO_7, SCZO_4)
+	C_15 = PHI(SCZO_4, C_8, SCZO_4)
 	ax_11 = PHI(ax_10, ax_6, ax_9)
 	Mem14[ds:0x0100:word16] = ax_11
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 	use ax_11
+	use C_15
 	use ds
-	use C_16 | O_18 | S_15 | Z_17
+	use O_16
+	use S_17
 	use sp_2
+	use Z_19
 

@@ -158,6 +158,7 @@ namespace Reko.Analysis
             foreach (var sst in ssts)
             {
                 var ssa = sst.SsaState;
+                flow[ssa.Procedure] = new ProcedureFlow(ssa.Procedure);
                 trf.Compute(ssa);
                 RemovePreservedUseInstructions(ssa);
                 DeadCode.Eliminate(ssa);
