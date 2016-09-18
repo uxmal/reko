@@ -246,8 +246,8 @@ void fn00001278(word32 dwArg04)
 void fn0000127C(int32 d2)
 {
 	struct Eq_509 * a4_0 = (struct Eq_509 *) 37822;
-	struct Eq_31 ** a7_3 = a4_0->ptrFFFF800A;
-	struct Eq_31 * v8_8 = *(a7_3 - 0x04);
+	ptr32 a7_3 = a4_0->ptrFFFF800A;
+	struct Eq_515 * v8_8 = *(a7_3 - 0x04);
 	struct Eq_31 * v6_5 = *(a7_3 - 0x08);
 	if (v8_8->dw0004 != 0x00)
 		execPrivate1();

@@ -3455,8 +3455,8 @@ T_862: (in Mem0[0x00027F50:word32] != 0x00000000 : bool)
   OrigDataType: bool
 T_863: (in l1_110 : word32)
   Class: Eq_156
-  DataType: (union ((ptr (struct 0001 (0 byte b0000))) u0) ((ptr (struct 0001 (0 byte b0000))) u1))
-  OrigDataType: (union ((ptr (struct 0001 (0 byte b0000))) u0) ((ptr (struct 0001 (0 byte b0000))) u1))
+  DataType: (ptr (struct 0001 (0 byte b0000)))
+  OrigDataType: (ptr (struct 0001 (0 byte b0000)))
 T_864: (in 0x00000000 : word32)
   Class: Eq_864
   DataType: word32
@@ -3575,8 +3575,8 @@ T_892: (in l1_110 - (Mem0[0x00027F50:word32] + 0xFFFFFFFE) - Mem0[0x00027F54:wor
   OrigDataType: bool
 T_893: (in o2_46 : word32)
   Class: Eq_156
-  DataType: (union ((ptr (struct 0001 (0 byte b0000))) u0) ((ptr (struct 0001 (0 byte b0000))) u1))
-  OrigDataType: (union ((ptr (struct 0001 (0 byte b0000))) u0) ((ptr (struct 0001 (0 byte b0000))) u1))
+  DataType: int32
+  OrigDataType: int32
 T_894: (in 0x00027F50 : word32)
   Class: Eq_894
   DataType: (ptr (struct (0 T_895 t0000)))
@@ -4083,28 +4083,28 @@ T_1019: (in Mem90[0x00027F50:word32] : word32)
   OrigDataType: word32
 T_1020: (in l0_86 : word32)
   Class: Eq_1020
-  DataType: (union ((ptr (struct 0001 (0 byte b0000))) u0) ((ptr (struct 0001 (0 byte b0000))) u1))
-  OrigDataType: (union ((ptr (struct 0001 (0 byte b0000))) u0) ((ptr (struct 0001 (0 byte b0000))) u1))
+  DataType: ptr32
+  OrigDataType: ptr32
 T_1021: (in l1_110 - o2_46 : word32)
   Class: Eq_1021
-  DataType: (ptr (struct 0001 (0 byte b0000)))
-  OrigDataType: (ptr (struct 0001 (0 byte b0000)))
+  DataType: ptr32
+  OrigDataType: ptr32
 T_1022: (in o2_46 + (l1_110 - o2_46) : word32)
   Class: Eq_1022
-  DataType: int32
-  OrigDataType: int32
+  DataType: ptr32
+  OrigDataType: ptr32
 T_1023: (in o2_46 + (l1_110 - o2_46) - o2_46 : word32)
   Class: Eq_1020
-  DataType: int32
-  OrigDataType: int32
+  DataType: ptr32
+  OrigDataType: ptr32
 T_1024: (in *l0Out : word32)
   Class: Eq_1020
   DataType: word32
   OrigDataType: word32
 T_1025: (in o2_46 + l0_86 : word32)
   Class: Eq_156
-  DataType: (union ((ptr (struct 0001 (0 byte b0000))) u0) ((ptr (struct 0001 (0 byte b0000))) u1))
-  OrigDataType: (union ((ptr (struct 0001 (0 byte b0000))) u0) ((ptr (struct 0001 (0 byte b0000))) u1))
+  DataType: ptr32
+  OrigDataType: ptr32
 T_1026: (in 0x00000001 : word32)
   Class: Eq_1026
   DataType: word32
@@ -4123,8 +4123,8 @@ T_1029: (in 0x00000000 : word32)
   OrigDataType: word32
 T_1030: (in l1_110 + 0x00000000 : word32)
   Class: Eq_1030
-  DataType: (union ((ptr (struct 0001 (0 byte b0000))) u0) ((ptr (struct 0001 (0 byte b0000))) u1))
-  OrigDataType: (union ((ptr (struct 0001 (0 byte b0000))) u0) ((ptr (struct 0001 (0 byte b0000))) u1))
+  DataType: (ptr byte)
+  OrigDataType: (ptr byte)
 T_1031: (in Mem153[l1_110 + 0x00000000:byte] : byte)
   Class: Eq_1028
   DataType: byte
@@ -4139,12 +4139,12 @@ T_1033: (in i0_111 + 0x00000001 : word32)
   OrigDataType: ptr32
 T_1034: (in 0x00000001 : word32)
   Class: Eq_1034
-  DataType: (union ((ptr (struct 0001 (0 byte b0000))) u0) ((ptr (struct 0001 (0 byte b0000))) u1))
-  OrigDataType: (union ((ptr (struct 0001 (0 byte b0000))) u0) ((ptr (struct 0001 (0 byte b0000))) u1))
+  DataType: int32
+  OrigDataType: int32
 T_1035: (in l1_110 + 0x00000001 : word32)
   Class: Eq_156
-  DataType: (union ((ptr (struct 0001 (0 byte b0000))) u0) ((ptr (struct 0001 (0 byte b0000))) u1))
-  OrigDataType: (union ((ptr (struct 0001 (0 byte b0000))) u0) ((ptr (struct 0001 (0 byte b0000))) u1))
+  DataType: ptr32
+  OrigDataType: ptr32
 T_1036: (in 0x00000001 : word32)
   Class: Eq_1036
   DataType: word32
