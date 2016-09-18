@@ -232,7 +232,7 @@ namespace Reko.Core.Expressions
                 dtLeft is Pointer)
             {
                 if (ptRight != null && (ptRight.Domain & Domain.Integer) != 0)
-                    return dtLeft;
+                    return PrimitiveType.Create(Domain.Pointer, dtLeft.Size);
                 throw new NotImplementedException(string.Format("Pulling difference {0} and {1}", dtLeft, dtRight));
             }
             if (ptRight != null && ptRight.Domain == Domain.Pointer || 
