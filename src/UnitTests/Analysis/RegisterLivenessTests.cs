@@ -160,7 +160,7 @@ namespace Reko.UnitTests.Analysis
         [Ignore("scanning-development")]
         public void RlTermination()
 		{
-			RunFileTest("Fragments/multiple/termination.asm", "Fragments/multiple/termination.xml", "Analysis/RlTermination.txt");
+			RunFileTest_x86_real("Fragments/multiple/termination.asm", "Fragments/multiple/termination.xml", "Analysis/RlTermination.txt");
 		}
 
 		[Test]

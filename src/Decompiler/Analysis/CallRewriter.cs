@@ -352,16 +352,17 @@ namespace Reko.Analysis
                 .Where(w => w.Identifier != null && w.Identifier.Storage == idRet.Storage)
                 .SingleOrDefault();
 
+            var sid = ssa.Identifiers[expRet.Identifier];
             foreach (Statement stm in ssa.Procedure.Statements)
             {
                 var ret = stm.Instruction as ReturnInstruction;
                 if (ret != null)
                 {
                     ret.Expression =  expRet.Identifier;
+                    sid.Uses.Add(stm);
                 }
             }
 
-            var sid = ssa.Identifiers[expRet.Identifier];
             var stmUse = sid.Uses
                 .Where(u => u.Instruction == expRet.Instruction)
                 .Single();

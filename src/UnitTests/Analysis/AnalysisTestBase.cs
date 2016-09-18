@@ -107,7 +107,7 @@ namespace Reko.UnitTests.Analysis
             }
         }
 
-        protected Program BuildProgramMock(ProcedureBuilder mock)
+        protected Program BuildProgram(ProcedureBuilder mock)
         {
             var m = new ProgramBuilder();
             m.Add(mock);
@@ -116,7 +116,7 @@ namespace Reko.UnitTests.Analysis
             return program;
         }
 
-        protected Program BuildProgramMock(Action<ProcedureBuilder> buildProc)
+        protected Program BuildProgram(Action<ProcedureBuilder> buildProc)
         {
             var m = new ProgramBuilder();
             var pb = new ProcedureBuilder();
@@ -195,7 +195,6 @@ namespace Reko.UnitTests.Analysis
             return program;
         }
 
-
         protected Program RewriteCodeFragment32(string s)
         {
             Assembler asm = new X86TextAssembler(sc, new X86ArchitectureFlat32());
@@ -235,6 +234,9 @@ namespace Reko.UnitTests.Analysis
             scan.ScanImage();
         }
 
+        #region X86-specific
+        // Run x86-specific test (deprecated for unit testing as they require a specific architecture --
+        // try not to use these)
         public static void RunTest_x86_real(string sourceFile, Action<Program, TextWriter> test, string outputFile)
         {
             Program program = RewriteMsdosAssembler(sourceFile, null);
@@ -247,47 +249,50 @@ namespace Reko.UnitTests.Analysis
             SaveRunOutput(program, RunTest, outputFile);
 		}
 
-		protected void RunFileTest(ProcedureBuilder mock, string outputFile)
-		{
-			Program program = BuildProgramMock(mock);
+        protected void RunFileTest_x86_real(string sourceFile, string configFile, string outputFile)
+        {
+            Program program = RewriteMsdosAssembler(sourceFile, configFile);
+            SaveRunOutput(program, RunTest, outputFile);
+        }
+
+        protected void RunFileTest_x86_32(string sourceFile, string outputFile)
+        {
+            Program program = RewriteFile32(sourceFile);
+            SaveRunOutput(program, RunTest, outputFile);
+        }
+
+        protected void RunFileTest_x86_32(string sourceFile, string configFile, string outputFile)
+        {
+            Program program = RewriteFile32(sourceFile, configFile);
+            SaveRunOutput(program, RunTest, outputFile);
+        }
+
+        #endregion
+
+        protected void RunFileTest(ProcedureBuilder mock, string outputFile)
+        {
+			Program program = BuildProgram(mock);
             SaveRunOutput(program, RunTest, outputFile);
 		}
 
         protected void RunStringTest(string sExp, Action<ProcedureBuilder> m)
         {
-            var program = BuildProgramMock(m);
+            var program = BuildProgram(m);
             AssertRunOutput(program, RunTest, sExp);
         }
 
         protected void RunFileTest(string outputFile, Action<ProcedureBuilder> m)
         {
-            var program = BuildProgramMock(m);
+            var program = BuildProgram(m);
             SaveRunOutput(program, RunTest, outputFile);
         }
-
-		protected void RunFileTest(string sourceFile, string configFile, string outputFile)
-		{
-			Program program = RewriteMsdosAssembler(sourceFile, configFile);
-            SaveRunOutput(program, RunTest, outputFile);
-		}
 
         protected void RunFileTest(Program program, string outputFile)
         {
             SaveRunOutput(program, RunTest, outputFile);
         }
 
-		protected void RunFileTest32(string sourceFile, string outputFile)
-		{
-			Program program = RewriteFile32(sourceFile);
-            SaveRunOutput(program, RunTest, outputFile);
-		}
-
-		protected void RunFileTest32(string sourceFile, string configFile, string outputFile)
-		{
-			Program program = RewriteFile32(sourceFile, configFile);
-			SaveRunOutput(program, RunTest, outputFile);
-		}
-
+        // Override this to do the analysis.
         protected virtual void RunTest(Program program, TextWriter writer)
         {
         }

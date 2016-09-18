@@ -38,7 +38,7 @@ namespace Reko.UnitTests.Analysis
 	{
 		private DataFlowAnalysis dfa;
         private Program program;
-        private CallRewriter gcr;
+        private CallRewriter crw;
         private Procedure proc;
         private ProcedureFlow flow;
 
@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Analysis
             program = new Program();
             program.Architecture = new X86ArchitectureFlat32();
             program.Platform = new DefaultPlatform(null, program.Architecture);
-            gcr = new CallRewriter(program.Platform, new ProgramDataFlow(), new FakeDecompilerEventListener());
+            crw = new CallRewriter(program.Platform, new ProgramDataFlow(), new FakeDecompilerEventListener());
             proc = new Procedure("foo", program.Architecture.CreateFrame());
             flow = new ProcedureFlow(proc);
         }
@@ -157,7 +157,7 @@ namespace Reko.UnitTests.Analysis
         [Ignore("scanning-development")]
         public void CrwMemPreserve()
 		{
-			RunFileTest("Fragments/multiple/mempreserve.asm", "Analysis/CrwMemPreserve.xml", "Analysis/CrwMemPreserve.txt");
+			RunFileTest_x86_real("Fragments/multiple/mempreserve.asm", "Analysis/CrwMemPreserve.xml", "Analysis/CrwMemPreserve.txt");
 		}
 
 		[Test]
@@ -175,7 +175,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void CrwFibonacci()
 		{
-			RunFileTest32("Fragments/multiple/fibonacci.asm", "Analysis/CrwFibonacci.txt");
+			RunFileTest_x86_32("Fragments/multiple/fibonacci.asm", "Analysis/CrwFibonacci.txt");
 		}
 
 
@@ -184,7 +184,7 @@ namespace Reko.UnitTests.Analysis
         public void RegisterArgument()
         {
             flow.BitsUsed.Add(Registers.eax, 32);
-            gcr.EnsureSignature(proc, flow);
+            crw.EnsureSignature(proc, flow);
             Assert.AreEqual("void foo(Register word32 eax)", proc.Signature.ToString(proc.Name));
         }
 
@@ -193,7 +193,7 @@ namespace Reko.UnitTests.Analysis
         {
             flow.LiveOut.Add(Registers.eax);        // becomes the return value.
             flow.LiveOut.Add(Registers.ebx);
-            gcr.EnsureSignature(proc, flow);
+            crw.EnsureSignature(proc, flow);
             Assert.AreEqual("Register word32 foo(Register out ptr32 ebxOut)", proc.Signature.ToString(proc.Name));
         }
 
@@ -201,7 +201,7 @@ namespace Reko.UnitTests.Analysis
         public void FpuArgument()
         {
             proc.Frame.EnsureFpuStackVariable(1, PrimitiveType.Real80);
-            gcr.EnsureSignature(proc, flow);
+            crw.EnsureSignature(proc, flow);
             Assert.AreEqual("void foo(FpuStack real80 rArg1)", proc.Signature.ToString(proc.Name));
         }
 
@@ -212,7 +212,7 @@ namespace Reko.UnitTests.Analysis
             proc.Frame.EnsureFpuStackVariable(0, PrimitiveType.Real80);
             proc.Frame.EnsureFpuStackVariable(1, PrimitiveType.Real80);
             proc.Signature.FpuStackDelta = 1;
-            gcr.EnsureSignature(proc, flow);
+            crw.EnsureSignature(proc, flow);
             Assert.AreEqual("Register word32 foo(FpuStack real80 rArg0, FpuStack real80 rArg1, FpuStack out ptr32 rArg0Out)", proc.Signature.ToString(proc.Name));
         }
 
@@ -221,7 +221,7 @@ namespace Reko.UnitTests.Analysis
         {
             var arg = proc.Frame.EnsureStackArgument(4, PrimitiveType.Word32);
             flow.StackArguments[arg] = 16;
-            gcr.EnsureSignature(proc, flow);
+            crw.EnsureSignature(proc, flow);
             Assert.AreEqual("void foo(Stack uipr16 dwArg04)", proc.Signature.ToString(proc.Name));
         }
 
@@ -236,8 +236,8 @@ namespace Reko.UnitTests.Analysis
                 new Identifier("ecx", PrimitiveType.Word32, Registers.ecx),
                 new Identifier("edxOut", PrimitiveType.Word32,
                                     new OutArgumentStorage(proc.Frame.EnsureRegister(Registers.edx)))});
-            gcr.EnsureSignature(proc, new ProcedureFlow(proc));
-            gcr.AddUseInstructionsForOutArguments(proc);
+            crw.EnsureSignature(proc, new ProcedureFlow(proc));
+            crw.AddUseInstructionsForOutArguments(proc);
             Assert.AreEqual(1, proc.ExitBlock.Statements.Count);
             Assert.AreEqual("use edx (=> edxOut)", proc.ExitBlock.Statements[0].Instruction.ToString());
         }

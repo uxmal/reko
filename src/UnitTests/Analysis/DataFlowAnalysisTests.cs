@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Analysis
         [Ignore("Stack arrays are not supported yet")]
 		public void DfaAutoArray32()
 		{
-			RunFileTest32("Fragments/autoarray32.asm", "Analysis/DfaAutoArray32.txt");
+			RunFileTest_x86_32("Fragments/autoarray32.asm", "Analysis/DfaAutoArray32.txt");
 		}
 
 		[Test]
@@ -90,7 +90,7 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void DfaFibonacci()
 		{
-			RunFileTest32("Fragments/multiple/fibonacci.asm", "Analysis/DfaFibonacci.txt");
+			RunFileTest_x86_32("Fragments/multiple/fibonacci.asm", "Analysis/DfaFibonacci.txt");
 		}
 
 		[Test]
@@ -117,7 +117,7 @@ namespace Reko.UnitTests.Analysis
             Given_FakeWin32Platform(mr);
             this.platform.Stub(p => p.LookupGlobalByName(null, null)).IgnoreArguments().Return(null);
             mr.ReplayAll();
-            RunFileTest32("Fragments/import32/GlobalHandle.asm", "Analysis/DfaGlobalHandle.txt");
+            RunFileTest_x86_32("Fragments/import32/GlobalHandle.asm", "Analysis/DfaGlobalHandle.txt");
 		}
 
 		[Test]

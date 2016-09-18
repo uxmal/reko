@@ -54,7 +54,7 @@ namespace Reko.Analysis
 			this.program = program;
             this.importResolver = importResolver;
             this.eventListener = eventListener;
-			this.flow = new ProgramDataFlow(program);
+			this.flow = new ProgramDataFlow();
 		}
 
 		public void DumpProgram()

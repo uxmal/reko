@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Analysis
 
             mr.ReplayAll();
 
-			RunFileTest32("Fragments/import32/GlobalHandle.asm", "Analysis/WebGlobalHandle.txt");
+			RunFileTest_x86_32("Fragments/import32/GlobalHandle.asm", "Analysis/WebGlobalHandle.txt");
 		}
 
 		[Test]
