@@ -60,7 +60,8 @@ namespace Reko.Tools.C2Xml
             var symbolTable = new SymbolTable(platform)
             {
                 NamedTypes = {
-                    { "size_t", new PrimitiveType_v1 { Domain = Domain.UnsignedInt, ByteSize = 4 } },    //$BUGBUG: arch-dependent!
+                    { "ssize_t", new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize = 4 } },        //$BUGBUG: arch-dependent!
+                    { "size_t", new PrimitiveType_v1 { Domain = Domain.UnsignedInt, ByteSize = 4 } },       //$BUGBUG: arch-dependent!
                     { "va_list", new PrimitiveType_v1 { Domain = Domain.Pointer, ByteSize = platform.PointerType.Size } }
                 }
             };
