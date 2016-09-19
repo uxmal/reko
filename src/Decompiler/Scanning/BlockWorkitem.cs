@@ -776,7 +776,7 @@ namespace Reko.Scanning
                         // Nope, not even that.
                         msg = "No valid entries could be found in jump vector.";
                     }
-                    var nav = listener.CreateJumpTableNavigator(program, addrSwitch, bw.VectorAddress);
+                    var nav = listener.CreateJumpTableNavigator(program, addrSwitch, bw.VectorAddress, bw.Stride);
                     listener.Warn(nav, msg);
                 }
                 imgVector = new ImageMapVectorTable(
@@ -930,6 +930,7 @@ namespace Reko.Scanning
             return null;
         }
 
+        [Conditional("DEBUG")]
         private void DumpCfg()
         {
             foreach (Block block in blockCur.Procedure.ControlGraph.Blocks)

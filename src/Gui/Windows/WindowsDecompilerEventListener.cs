@@ -246,9 +246,9 @@ namespace Reko.Gui.Windows
             return new StatementNavigator(program, stm, sp);
         }
 
-        ICodeLocation DecompilerEventListener.CreateJumpTableNavigator(Program program, Address addrIndirectJump, Address addrVector)
+        ICodeLocation DecompilerEventListener.CreateJumpTableNavigator(Program program, Address addrIndirectJump, Address addrVector, int stride)
         {
-            return new JumpVectorNavigator(program, addrIndirectJump, addrVector, sp);
+            return new JumpVectorNavigator(program, addrIndirectJump, addrVector, stride, sp);
         }
 
         private void ShowStatus(string newStatus)

@@ -167,7 +167,7 @@ namespace Reko.UnitTests.Mocks
             return new NullCodeLocation(program.SegmentMap.MapLinearAddressToAddress(stm.LinearAddress).ToString());
         }
 
-        public ICodeLocation CreateJumpTableNavigator(Program program, Address addrIndirectJump, Address addrVector)
+        public ICodeLocation CreateJumpTableNavigator(Program program, Address addrIndirectJump, Address addrVector, int stride)
         {
             return new NullCodeLocation(addrIndirectJump.ToString());
         }

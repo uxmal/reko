@@ -31,17 +31,19 @@ namespace Reko.Gui
     {
         private readonly IServiceProvider services;
 
-        public JumpVectorNavigator(Program program, Address addrInstr, Address addrVector, IServiceProvider services)
+        public JumpVectorNavigator(Program program, Address addrInstr, Address addrVector, int stride, IServiceProvider services)
         {
             this.Program = program;
             this.IndirectJumpAddress = addrInstr;
             this.VectorAddress = addrVector;
+            this.Stride = stride;
             this.services = services;
         }
 
         public Address IndirectJumpAddress { get; private set; }
         public Address VectorAddress { get; private set; }
         public Program Program { get; private set; }
+        public int Stride { get; private set; }
 
         public string Text { get { return IndirectJumpAddress.ToString();  } }
 
@@ -53,7 +55,7 @@ namespace Reko.Gui
             var dlgSvc = services.RequireService<IDialogFactory>();
             var uiSvc = services.RequireService<IDecompilerShellUiService>();
             var instr = Program.CreateDisassembler(IndirectJumpAddress).First();
-            using (var dlg = dlgSvc.CreateJumpTableDialog(Program, instr, VectorAddress))
+            using (var dlg = dlgSvc.CreateJumpTableDialog(Program, instr, VectorAddress, Stride))
             {
                 if (DialogResult.OK == uiSvc.ShowModalDialog(dlg))
                 {

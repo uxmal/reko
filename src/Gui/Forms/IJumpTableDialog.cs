@@ -35,6 +35,7 @@ namespace Reko.Gui.Forms
         MachineInstruction Instruction { get; set; }
         Address VectorAddress { get; set; }
         Program Program { get; set; }
+        int Stride { get; set; }
 
         ILabel CaptionLabel { get; }
         IComboBox IndexRegister { get; }
@@ -46,7 +47,7 @@ namespace Reko.Gui.Forms
         ITextBox IndirectTable { get; }
         IRadioButton FarAddress { get; }
         IRadioButton RelativeAddress { get; }
-        IRadioButton Offsets { get; }
+        IRadioButton SegmentOffsets { get; }
         IComboBox SegmentList { get; }
 
         IListBox Entries { get; }

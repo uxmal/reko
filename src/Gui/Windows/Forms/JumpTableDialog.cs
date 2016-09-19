@@ -54,7 +54,7 @@ namespace Reko.Gui.Windows.Forms
 
             this.FarAddress = new RadioButtonWrapper(rdbFarAddresses);
             this.RelativeAddress = new RadioButtonWrapper(rdbRelativeOffsets);
-            this.Offsets = new RadioButtonWrapper(rdbOffsets);
+            this.SegmentOffsets = new RadioButtonWrapper(rdbOffsets);
             this.SegmentList = new ComboBoxWrapper(ddlSegments);
 
             this.Entries = new ListboxWrapper(listEntries);
@@ -67,7 +67,8 @@ namespace Reko.Gui.Windows.Forms
         public MachineInstruction Instruction { get; set; }
         public Address VectorAddress { get;  set; }
         public Program Program { get; set; }
-        
+        public int Stride { get; set; }
+
         public ILabel CaptionLabel { get; private set; }
         public IComboBox IndexRegister { get; private set; }
         public ILabel InstructionLabel { get; private set; }
@@ -78,7 +79,7 @@ namespace Reko.Gui.Windows.Forms
         public ITextBox IndirectTable { get; private set; }
         public IRadioButton FarAddress { get; private set; }
         public IRadioButton RelativeAddress { get; private set; }
-        public IRadioButton Offsets { get; private set; }
+        public IRadioButton SegmentOffsets { get; private set; }
         public IComboBox SegmentList { get; private set; }
 
         public IListBox Entries { get; private set; }

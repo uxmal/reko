@@ -156,14 +156,15 @@ namespace Reko.Gui.Windows
             return new DeclarationForm();
         }
 
-        public IJumpTableDialog CreateJumpTableDialog(Program program, MachineInstruction instrIndirectJmp, Address addrVector)
+        public IJumpTableDialog CreateJumpTableDialog(Program program, MachineInstruction instrIndirectJmp, Address addrVector, int stride)
         {
             return new JumpTableDialog()
             {
                 Services = this.services,
                 Program = program,
                 Instruction = instrIndirectJmp,
-                VectorAddress = addrVector
+                VectorAddress = addrVector,
+                Stride = stride
             };
         }
     }

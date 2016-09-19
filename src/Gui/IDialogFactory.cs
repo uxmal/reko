@@ -43,6 +43,6 @@ namespace Reko.Gui
         IWorkerDialog CreateWorkerDialog();
         ITextEncodingDialog CreateTextEncodingDialog();
         IDeclarationForm CreateDeclarationForm();
-        IJumpTableDialog CreateJumpTableDialog(Program program, MachineInstruction instrIndirectJmp, Address addrVector);
+        IJumpTableDialog CreateJumpTableDialog(Program program, MachineInstruction instrIndirectJmp, Address addrVector, int stride);
     }
 }

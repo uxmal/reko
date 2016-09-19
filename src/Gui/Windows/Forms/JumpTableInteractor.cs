@@ -46,7 +46,7 @@ namespace Reko.Gui.Windows.Forms
             dlg.Entries.SelectedIndexChanged += Entries_SelectedIndexChanged;
             dlg.FarAddress.CheckedChanged += FarAddress_CheckedChanged;
             dlg.RelativeAddress.CheckedChanged += RelativeAddress_CheckedChanged;
-            dlg.Offsets.CheckedChanged += Offsets_CheckedChanged;
+            dlg.SegmentOffsets.CheckedChanged += Offsets_CheckedChanged;
         }
 
         private void EnableControls()
@@ -99,6 +99,18 @@ namespace Reko.Gui.Windows.Forms
             };
         }
 
+        private void SetRadioButtons()
+        {
+            if (dlg.Stride == dlg.Program.Platform.PointerType.Size)
+            {
+                dlg.FarAddress.Checked = true;
+            }
+            else
+            {
+                dlg.SegmentOffsets.Checked = true;
+            }
+        }
+
         private int TableStride()
         {
             if (dlg.FarAddress.Checked || dlg.RelativeAddress.Checked)
@@ -125,6 +137,7 @@ namespace Reko.Gui.Windows.Forms
                 .Select(s => s.Name)
                 .OrderBy(s => s)
                 .ToList();
+            SetRadioButtons();
             BuildAddressTable();
             EnableControls();
         }
