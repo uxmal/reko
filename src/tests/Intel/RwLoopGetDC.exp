@@ -9,6 +9,7 @@
 // SZO:Flags
 // C:Flags
 // Z:Flags
+// v9:v9
 // eax:eax
 // SCZO:Flags
 // return address size: 4
@@ -23,8 +24,9 @@ l10000000:
 	goto l10000027
 	// succ:  l10000027
 l10000016:
+	v9 = Mem0[edi:word32]
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = Mem0[edi:word32]
+	Mem0[esp:word32] = v9
 	eax = GetDC(Mem0[esp:HWND])
 	esp = esp + 0x00000004
 	Mem0[edi:word32] = eax

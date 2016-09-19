@@ -56,6 +56,11 @@ namespace Reko.UnitTests.Typing
             program.GlobalFields.Fields.Add((int)addr.ToUInt32(), dt);
         }
 
+        private Pointer PointerTo(DataType dt)
+        {
+            return new Pointer(dt, 4);
+        }
+
         private static Identifier Id(string name, DataType dt)
         {
             return new Identifier(name, dt, RegisterStorage.None);
@@ -181,6 +186,13 @@ namespace Reko.UnitTests.Typing
             Given_GlobalVariable(
                 Address.Ptr32(0x10001200), PrimitiveType.Real32);
             RunTest(Constant.Create(PrimitiveType.Real32, 0x10001200));
+        }
+
+        [Test]
+        public void ExaSubtraction()
+        {
+            var p = Id("p", PointerTo(PrimitiveType.Real64));
+            RunTest(m.ISub(p, m.Word32(4)));
         }
     }
 }
