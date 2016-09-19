@@ -31,6 +31,7 @@ using System.Text;
 namespace Reko.UnitTests.Gui.Windows.Forms
 {
     [TestFixture]
+    [Category(Categories.UserInterface)]
     public class JumpTableInteractorTests
     {
         private JumpTableDialog dlg;
@@ -42,11 +43,25 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             dlg = null;
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            if (dlg != null) dlg.Dispose();
+        }
+
         private void Given_Dialog_32Bit()
+        {
+            this.dlg = new JumpTableDialog()
+            {
+                Program = program,
+                Instruction = new FakeInstruction(Operation.Jump) { Address = Address.Ptr32(0x1000) }
+            };
+        }
+
+        private void Given_Program()
         {
             var arch = new FakeArchitecture();
             var platform = new FakePlatform(null, arch);
-
 
             this.program = new Program
             {
@@ -59,13 +74,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
                 Platform = platform,
                 Architecture = arch,
             };
-            this.dlg = new JumpTableDialog()
-            {
-                Program = program,
-                Instruction = new FakeInstruction(Operation.Jump) {  Address = Address.Ptr32(0x1000) }
-            };
         }
-    
+
         private void Given_Table_UInt32(Address address, params uint[] entries)
         {
             ImageSegment seg;
@@ -80,6 +90,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         [Test]
         public void Jti_GetAddresses_Linear()
         {
+            Given_Program();
             Given_Dialog_32Bit();
             Given_Table_UInt32(Address.Ptr32(0x1000), 0x1010, 0x01023, 0x01018);
 
@@ -95,12 +106,6 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Assert.AreEqual(Address.Ptr32(0x1000), table.Address);
             Assert.AreEqual(3, table.Table.Addresses.Count);
             Assert.AreEqual(Address.Ptr32(0x01018), table.Table.Addresses[2]);
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            if (dlg != null) dlg.Dispose();
         }
     }
 }

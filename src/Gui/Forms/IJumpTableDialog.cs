@@ -33,6 +33,7 @@ namespace Reko.Gui.Forms
         MachineInstruction Instruction { get; set; }
         Address VectorAddress { get; set; }
 
+        
         UserIndirectJump GetResults();
     }
 }

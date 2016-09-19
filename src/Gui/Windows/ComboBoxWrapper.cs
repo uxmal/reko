@@ -22,6 +22,7 @@ using Reko.Gui.Controls;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -46,8 +47,10 @@ namespace Reko.Gui.Windows
 
         public ComboBoxWrapper(ComboBox ddl) { this.ddl = ddl; }
 
+        public Color BackColor { get { return ddl.BackColor; } set { ddl.ForeColor = value;  } }
         public object DataSource { get { return ddl.DataSource; } set { ddl.DataSource = value; } }
         public bool Enabled {  get { return ddl.Enabled; } set { ddl.Enabled = value; } }
+        public Color ForeColor { get { return ddl.ForeColor; } set { ddl.ForeColor = value;  } }
         public IList Items { get { return ddl.Items; } }
         public int SelectedIndex { get { return ddl.SelectedIndex; } set { ddl.SelectedIndex = value; } }
         public object SelectedValue { get { return ddl.SelectedValue; } set { ddl.SelectedValue = value; } }

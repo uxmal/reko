@@ -18,24 +18,27 @@
  */
 #endregion
 
+using Reko.Gui.Controls;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
+using System.Drawing;
 
-namespace Reko.Gui.Controls
+namespace Reko.Gui.Windows
 {
-    public interface IComboBox : IControl
+    public class NumericUpDownWrapper : INumericUpDown
     {
-        event EventHandler TextChanged;
-        event EventHandler SelectedIndexChanged;
+        private NumericUpDown num;
 
-        object DataSource { get; set; }
-        bool Enabled { get; set; }
-        IList Items { get; }
-        int SelectedIndex { get; set; }
-        object SelectedValue { get; set; }
-        string Text { get; set; }
+        public NumericUpDownWrapper(NumericUpDown num)
+        {
+            this.num = num;
+        }
+
+        public Color BackColor { get { return num.BackColor; } set { num.BackColor = value; } }
+        public Color ForeColor { get { return num.ForeColor; } set { num.ForeColor = value; } }
+        public decimal Value { get { return num.Value; } set { num.Value = value; } }
     }
 }

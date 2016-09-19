@@ -45,7 +45,7 @@ namespace Reko.Gui.Windows.Forms
         private void Dlg_Load(object sender, EventArgs e)
         {
             dlg.CaptionLabel.Text = string.Format("Jump table for {0}", dlg.Instruction.Address);
-            dlg.IndirectJumpLabel.Text = dlg.Instruction.ToString().Replace('\t', ' ');
+            dlg.InstructionLabel.Text = dlg.Instruction.ToString().Replace('\t', ' ');
             if (dlg.VectorAddress != null)
             {
                 dlg.JumpTableStartAddress.Text = dlg.VectorAddress.ToString();

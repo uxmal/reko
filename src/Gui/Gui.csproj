@@ -118,6 +118,8 @@
     <Compile Include="Controls\IControl.cs" />
     <Compile Include="Controls\ILabel.cs" />
     <Compile Include="Controls\IListBox.cs" />
+    <Compile Include="Controls\INumericUpDownWrapper.cs" />
+    <Compile Include="Controls\IRadioButton.cs" />
     <Compile Include="Controls\ITypeMarker.cs" />
     <Compile Include="Design\ArchitectureDesigner.cs" />
     <Compile Include="Design\GlobalVariablesNodeDesigner.cs" />
@@ -309,7 +311,9 @@
     <Compile Include="Forms\TextEncodingInteractor.cs" />
     <Compile Include="Windows\LabelWrapper.cs" />
     <Compile Include="Windows\ListboxWrapper.cs" />
+    <Compile Include="Windows\NumericUpDownWrapper.cs" />
     <Compile Include="Windows\ProgressbarWrapper.cs" />
+    <Compile Include="Windows\RadioButtonWrapper.cs" />
     <Compile Include="Windows\StyleStack.cs" />
     <Compile Include="Windows\Controls\TextBuffer.cs" />
     <Compile Include="Windows\Controls\TextPointer.cs" />

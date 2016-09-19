@@ -29,6 +29,7 @@ using System.Text;
 using System.Windows.Forms;
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Gui.Controls;
 
 namespace Reko.Gui.Windows.Forms
 {
@@ -40,6 +41,25 @@ namespace Reko.Gui.Windows.Forms
         {
             InitializeComponent();
             this.interactor = new JumpTableInteractor();
+
+            this.CaptionLabel = new LabelWrapper(lblCaption);
+            this.InstructionLabel = new LabelWrapper(lblInstruction);
+            this.JumpTableStartAddress = new TextBoxWrapper(txtStartAddress);
+            this.EntryCount = new NumericUpDownWrapper(numEntries);
+            this.IndexRegister = new ComboBoxWrapper(ddlRegisters);
+
+            this.IsIndirectTable = new CheckBoxWrapper(chkIndirectTable);
+            this.IndirectLabel = new LabelWrapper(lblIndirectTable);
+            this.IndirectTable = new TextBoxWrapper(txtIndirectTable);
+
+            this.FarAddress = new RadioButtonWrapper(rdbFarAddresses);
+            this.RelativeAddress = new RadioButtonWrapper(rdbRelativeOffsets);
+            this.Offsets = new RadioButtonWrapper(rdbOffsets);
+            this.SegmentList = new ComboBoxWrapper(ddlSegments);
+
+            this.Entries = new ListboxWrapper(listEntries);
+            this.Disassembly = new TextBoxWrapper(txtDasm);
+
             interactor.Attach(this);
         }
 
@@ -48,17 +68,21 @@ namespace Reko.Gui.Windows.Forms
         public Address VectorAddress { get;  set; }
         public Program Program { get; set; }
         
-        public Label CaptionLabel { get { return lblCaption; } }
-        public ComboBox IndexRegister { get { return ddlRegisters; } }
-        public Label IndirectJumpLabel { get { return lblInstruction; } }
-        public TextBox JumpTableStartAddress { get { return txtStartAddress; } }
-        public NumericUpDown EntryCount { get { return numEntries; } }
-        public CheckBox IsIndirectTable { get { return chkIndirectTable; } }
-        public TextBox IndirectTable { get { return txtIndirectTable; } }
-        public Panel SegmentedAddressPanel { get { return panelSegmentedAddresses; } }
-        public RadioButton FarAddress { get { return rdbFarAddresses; } }
-        public RadioButton Offsets { get { return rdbOffsets; } }
-        public ComboBox SegmentList { get { return ddlSegments; } }
+        public ILabel CaptionLabel { get; private set; }
+        public IComboBox IndexRegister { get; private set; }
+        public ILabel InstructionLabel { get; private set; }
+        public ITextBox JumpTableStartAddress { get; private set; }
+        public INumericUpDown EntryCount { get; private set; }
+        public ICheckBox IsIndirectTable { get; private set; }
+        public ILabel IndirectLabel { get; private set; }
+        public ITextBox IndirectTable { get; private set; }
+        public IRadioButton FarAddress { get; private set; }
+        public IRadioButton RelativeAddress { get; private set; }
+        public IRadioButton Offsets { get; private set; }
+        public IComboBox SegmentList { get; private set; }
+
+        public IListBox Entries { get; private set; }
+        public ITextBox Disassembly { get; private set; }
 
         public UserIndirectJump GetResults()
         {

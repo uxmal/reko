@@ -48,8 +48,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.ddlRegisters = new System.Windows.Forms.ComboBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.listView1 = new System.Windows.Forms.ListView();
             this.txtDasm = new System.Windows.Forms.TextBox();
+            this.listEntries = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.numEntries)).BeginInit();
             this.panelSegmentedAddresses.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -261,7 +261,7 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.listView1);
+            this.splitContainer1.Panel1.Controls.Add(this.listEntries);
             // 
             // splitContainer1.Panel2
             // 
@@ -269,15 +269,6 @@
             this.splitContainer1.Size = new System.Drawing.Size(316, 273);
             this.splitContainer1.SplitterDistance = 126;
             this.splitContainer1.TabIndex = 18;
-            // 
-            // listView1
-            // 
-            this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listView1.Location = new System.Drawing.Point(0, 0);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(126, 273);
-            this.listView1.TabIndex = 15;
-            this.listView1.UseCompatibleStateImageBehavior = false;
             // 
             // txtDasm
             // 
@@ -287,6 +278,15 @@
             this.txtDasm.Name = "txtDasm";
             this.txtDasm.Size = new System.Drawing.Size(186, 273);
             this.txtDasm.TabIndex = 16;
+            // 
+            // listEntries
+            // 
+            this.listEntries.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listEntries.FormattingEnabled = true;
+            this.listEntries.Location = new System.Drawing.Point(0, 0);
+            this.listEntries.Name = "listEntries";
+            this.listEntries.Size = new System.Drawing.Size(126, 273);
+            this.listEntries.TabIndex = 0;
             // 
             // JumpTableDialog
             // 
@@ -352,7 +352,7 @@
         private System.Windows.Forms.ComboBox ddlRegisters;
         private System.Windows.Forms.RadioButton rdbRelativeOffsets;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.TextBox txtDasm;
+        private System.Windows.Forms.ListBox listEntries;
     }
 }

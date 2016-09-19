@@ -18,24 +18,26 @@
  */
 #endregion
 
+using Reko.Gui.Controls;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Drawing;
+using System.Windows.Forms;
 
-namespace Reko.Gui.Controls
+namespace Reko.Gui.Windows
 {
-    public interface IComboBox : IControl
+    public class RadioButtonWrapper : IRadioButton
     {
-        event EventHandler TextChanged;
-        event EventHandler SelectedIndexChanged;
+        private RadioButton rdb;
 
-        object DataSource { get; set; }
-        bool Enabled { get; set; }
-        IList Items { get; }
-        int SelectedIndex { get; set; }
-        object SelectedValue { get; set; }
-        string Text { get; set; }
+        public RadioButtonWrapper(RadioButton rdb)
+        {
+            this.rdb = rdb;
+        }
+
+        public Color BackColor { get { return rdb.BackColor; } set { rdb.BackColor = value; } }
+        public Color ForeColor { get { return rdb.ForeColor; } set { rdb.ForeColor = value; } }
     }
 }
