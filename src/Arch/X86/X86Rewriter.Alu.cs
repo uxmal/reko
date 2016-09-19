@@ -633,22 +633,26 @@ namespace Reko.Arch.X86
         {
             if (instrCur.dataWidth == PrimitiveType.Word16)
             {
+                Identifier temp = frame.CreateTemporary(Registers.sp.DataType);
+                emitter.Assign(temp, orw.AluRegister(Registers.sp));
                 RewritePush(Registers.ax);
                 RewritePush(Registers.cx);
                 RewritePush(Registers.dx);
                 RewritePush(Registers.bx);
-                RewritePush(Registers.sp);
+                RewritePush(PrimitiveType.Word16, temp);
                 RewritePush(Registers.bp);
                 RewritePush(Registers.si);
                 RewritePush(Registers.di);
             }
             else
             {
+                Identifier temp = frame.CreateTemporary(Registers.esp.DataType);
+                emitter.Assign(temp, orw.AluRegister(Registers.esp));
                 RewritePush(Registers.eax);
                 RewritePush(Registers.ecx);
                 RewritePush(Registers.edx);
                 RewritePush(Registers.ebx);
-                RewritePush(Registers.esp);
+                RewritePush(PrimitiveType.Word32, temp);
                 RewritePush(Registers.ebp);
                 RewritePush(Registers.esi);
                 RewritePush(Registers.edi);
@@ -756,11 +760,22 @@ namespace Reko.Arch.X86
                 expr = Constant.Create(dataWidth, c.ToInt64());
             }
 
-            // Allocate an local variable for the push.
-
+            // Allocate a local variable for the push.
             var sp = StackPointer();
+            Expression rhs;
+
+            // Check if the push requires preserving the original stack pointer
+            if (expr is Constant || (expr is Identifier && (expr as Identifier).Storage != arch.StackRegister))
+            {
+                rhs = expr;
+            }
+            else
+            {
+                rhs = frame.CreateTemporary(sp.DataType);
+                emitter.Assign(rhs, expr);
+            }
             emitter.Assign(sp, emitter.ISub(sp, dataWidth.Size));
-            emitter.Assign(orw.StackAccess(sp, dataWidth), expr);
+            emitter.Assign(orw.StackAccess(sp, dataWidth), rhs);
         }
 
         private void RewriteRotation(string operation, bool useCarry, bool left)
