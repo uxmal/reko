@@ -107,5 +107,41 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Assert.AreEqual(3, table.Table.Addresses.Count);
             Assert.AreEqual(Address.Ptr32(0x01018), table.Table.Addresses[2]);
         }
+
+        [Test]
+        public void Jti_Load_Segments()
+        {
+            Given_Program();
+            Given_Dialog_32Bit();
+
+            dlg.Show();
+            Assert.AreEqual(1, dlg.SegmentList.Items.Count);
+            Assert.AreEqual(".text", dlg.SegmentList.Items[0]);
+        }
+
+        [Test]
+        public void Jti_Load_Registers()
+        {
+            Given_Program();
+            Given_Dialog_32Bit();
+
+            dlg.Show();
+            Assert.AreEqual(64, dlg.IndexRegister.Items.Count);
+            Assert.AreEqual("r0", dlg.IndexRegister.Items[0].ToString());
+        }
+
+        [Test]
+        public void Jti_Item_Count_Changed()
+        {
+            Given_Program();
+            Given_Dialog_32Bit();
+            Given_Table_UInt32(Address.Ptr32(0x1000), 0x1010, 0x01023, 0x01018);
+
+            dlg.Show();
+            dlg.JumpTableStartAddress.Text = "001000";
+            dlg.EntryCount.Value = 2;
+
+            Assert.AreEqual(2, dlg.Entries.Items.Count);
+        }
     }
 }

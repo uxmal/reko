@@ -40,6 +40,7 @@ namespace Reko.Gui.Windows.Forms
             dlg.IsIndirectTable.CheckedChanged += IsIndirectTable_CheckedChanged;
             dlg.Load += Dlg_Load;
             dlg.FormClosing += Dlg_FormClosing;
+            dlg.EntryCount.ValueChanged += EntryCount_ValueChanged;
         }
 
         private void Dlg_Load(object sender, EventArgs e)
@@ -52,6 +53,10 @@ namespace Reko.Gui.Windows.Forms
             }
             EnableSegmentedPanel(dlg.Program.SegmentMap.BaseAddress.Selector.HasValue);
             dlg.IndexRegister.DataSource = dlg.Program.Architecture.GetRegisters().ToList();
+            dlg.SegmentList.DataSource = dlg.Program.SegmentMap.Segments.Values
+                .Select(s => s.Name)
+                .OrderBy(s => s)
+                .ToList();
         }
 
         private void Dlg_FormClosing(object sender, FormClosingEventArgs e)
@@ -63,6 +68,21 @@ namespace Reko.Gui.Windows.Forms
             {
                 dlg.VectorAddress = addr;
             }
+        }
+
+        private void EntryCount_ValueChanged(object sender, EventArgs e)
+        {
+            var vectorBuilder = new VectorBuilder(null, dlg.Program, null);
+            var addresses = new List<Address>();
+            Address addrTable;
+            if (dlg.Program.Platform.TryParseAddress(dlg.JumpTableStartAddress.Text, out addrTable))
+            {
+                var stride = dlg.Program.Platform.PointerType.Size;
+                var state = dlg.Program.Architecture.CreateProcessorState();
+                state.SetInstructionPointer(dlg.Instruction.Address);
+                addresses = vectorBuilder.BuildTable(addrTable, stride * (int) dlg.EntryCount.Value, null, stride, state);
+            }
+            dlg.Entries.DataSource = addresses;
         }
 
         private void EnableSegmentedPanel(bool hasValue)

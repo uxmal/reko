@@ -37,8 +37,15 @@ namespace Reko.Gui.Windows
             this.num = num;
         }
 
+        public event EventHandler ValueChanged
+        {
+            add { num.ValueChanged += value; }
+            remove { num.ValueChanged -= value; }
+        }
+
         public Color BackColor { get { return num.BackColor; } set { num.BackColor = value; } }
         public Color ForeColor { get { return num.ForeColor; } set { num.ForeColor = value; } }
         public decimal Value { get { return num.Value; } set { num.Value = value; } }
+
     }
 }

@@ -27,6 +27,8 @@ namespace Reko.Gui.Controls
 {
     public interface INumericUpDown : IControl
     {
+        event EventHandler ValueChanged;
+
         decimal Value { get; set; }
     }
 }

@@ -144,10 +144,13 @@ namespace Reko.Scanning
                     var entryAddr = program.Architecture.ReadCodeAddress(stride, rdr, state);
                     if (!segmentMap.IsValidAddress(entryAddr))
                     {
-                        var diagSvc = services.RequireService<DecompilerEventListener>();
-                        diagSvc.Warn(
-                            diagSvc.CreateAddressNavigator(program, addrTable),
-                            "The call or jump table has invalid addresses; stopping.");
+                        if (services != null)
+                        {
+                            var diagSvc = services.RequireService<DecompilerEventListener>();
+                            diagSvc.Warn(
+                                diagSvc.CreateAddressNavigator(program, addrTable),
+                                "The call or jump table has invalid addresses; stopping.");
+                        }
                         break;
                     }
                     vector.Add(entryAddr);
