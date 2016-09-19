@@ -48,8 +48,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.ddlRegisters = new System.Windows.Forms.ComboBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.txtDasm = new System.Windows.Forms.TextBox();
             this.listEntries = new System.Windows.Forms.ListBox();
+            this.txtDasm = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.numEntries)).BeginInit();
             this.panelSegmentedAddresses.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -270,15 +270,6 @@
             this.splitContainer1.SplitterDistance = 126;
             this.splitContainer1.TabIndex = 18;
             // 
-            // txtDasm
-            // 
-            this.txtDasm.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtDasm.Location = new System.Drawing.Point(0, 0);
-            this.txtDasm.Multiline = true;
-            this.txtDasm.Name = "txtDasm";
-            this.txtDasm.Size = new System.Drawing.Size(186, 273);
-            this.txtDasm.TabIndex = 16;
-            // 
             // listEntries
             // 
             this.listEntries.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -287,6 +278,16 @@
             this.listEntries.Name = "listEntries";
             this.listEntries.Size = new System.Drawing.Size(126, 273);
             this.listEntries.TabIndex = 0;
+            // 
+            // txtDasm
+            // 
+            this.txtDasm.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtDasm.Enabled = false;
+            this.txtDasm.Location = new System.Drawing.Point(0, 0);
+            this.txtDasm.Multiline = true;
+            this.txtDasm.Name = "txtDasm";
+            this.txtDasm.Size = new System.Drawing.Size(186, 273);
+            this.txtDasm.TabIndex = 16;
             // 
             // JumpTableDialog
             // 

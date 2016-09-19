@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Gui.Forms;
 using Reko.Scanning;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,52 @@ namespace Reko.Gui.Windows.Forms
             dlg.FormClosing += Dlg_FormClosing;
             dlg.EntryCount.ValueChanged += EntryCount_ValueChanged;
             dlg.Entries.SelectedIndexChanged += Entries_SelectedIndexChanged;
+        }
+
+        private void EnableControls()
+        {
+            dlg.IndirectTable.Enabled = dlg.IsIndirectTable.Checked;
+            dlg.IndirectLabel.Enabled = dlg.IsIndirectTable.Checked;
+        }
+
+        private void EnableSegmentedPanel(bool hasValue)
+        {
+            //foreach (Control control in dlg.SegmentedAddressPanel.Controls)
+            //{
+            //    control.Enabled = hasValue;
+            //}
+            if (hasValue)
+            {
+                dlg.SegmentList.DataSource = dlg.Program.SegmentMap.Segments.Values
+                    .Select(seg => new ListOption { Text = seg.Name, Value = seg.Address })
+                    .ToList();
+            }
+        }
+
+        public UserIndirectJump GetResults()
+        {
+            var vb = new VectorBuilder(dlg.Services, dlg.Program, new DirectedGraphImpl<object>());
+            var stride = 4; //$TODO: get from dialog
+            var entries = vb.BuildTable(dlg.VectorAddress, stride * (int)dlg.EntryCount.Value, null, stride, null);
+            var table = new ImageMapVectorTable(dlg.VectorAddress, entries.ToArray(), 0);
+            return new UserIndirectJump
+            {
+                Address = dlg.Instruction.Address,
+                Table = table,
+                IndexRegister = dlg.Program.Architecture.GetRegister(dlg.IndexRegister.SelectedIndex.ToString())
+            };
+        }
+
+        private int TableStride()
+        {
+            if (dlg.FarAddress.Checked || dlg.RelativeAddress.Checked)
+            {
+                return dlg.Program.Platform.PointerType.Size;
+            }
+            else
+            {
+                return 2;
+            }
         }
 
         private void Dlg_Load(object sender, EventArgs e)
@@ -79,12 +126,13 @@ namespace Reko.Gui.Windows.Forms
             Address addrTable;
             if (dlg.Program.Platform.TryParseAddress(dlg.JumpTableStartAddress.Text, out addrTable))
             {
-                var stride = dlg.Program.Platform.PointerType.Size;
+                var stride = TableStride();
                 var state = dlg.Program.Architecture.CreateProcessorState();
                 state.SetInstructionPointer(dlg.Instruction.Address);
                 addresses = vectorBuilder.BuildTable(addrTable, stride * (int) dlg.EntryCount.Value, null, stride, state);
             }
             dlg.Entries.DataSource = addresses;
+            dlg.Entries.SelectedIndex = addresses.Count - 1;
         }
 
         private void Entries_SelectedIndexChanged(object sender, EventArgs e)
@@ -106,43 +154,9 @@ namespace Reko.Gui.Windows.Forms
             dlg.Disassembly.Text = text;
         }
 
-        private void EnableSegmentedPanel(bool hasValue)
-        {
-            //foreach (Control control in dlg.SegmentedAddressPanel.Controls)
-            //{
-            //    control.Enabled = hasValue;
-            //}
-            if (hasValue)
-            {
-                dlg.SegmentList.DataSource = dlg.Program.SegmentMap.Segments.Values
-                    .Select(seg => new ListOption { Text = seg.Name, Value = seg.Address })
-                    .ToList();
-            }
-        }
-
-        private void EnableControls()
-        {
-            dlg.IndirectTable.Enabled = dlg.IsIndirectTable.Checked;
-            dlg.IndirectLabel.Enabled = dlg.IsIndirectTable.Checked;
-        }
-
         private void IsIndirectTable_CheckedChanged(object sender, EventArgs e)
         {
             EnableControls();
-        }
-
-        public UserIndirectJump GetResults()
-        {
-            var vb = new VectorBuilder(dlg.Services, dlg.Program, new DirectedGraphImpl<object>());
-            var stride = 4; //$TODO: get from dialog
-            var entries = vb.BuildTable(dlg.VectorAddress, stride * (int)dlg.EntryCount.Value, null, stride, null);
-            var table =  new ImageMapVectorTable(dlg.VectorAddress, entries.ToArray(), 0);
-            return new UserIndirectJump
-            {
-                Address = dlg.Instruction.Address,
-                Table = table,
-                IndexRegister = dlg.Program.Architecture.GetRegister(dlg.IndexRegister.SelectedIndex.ToString())
-            };
         }
     }
 }

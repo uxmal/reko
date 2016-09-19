@@ -116,7 +116,12 @@ namespace Reko.Scanning
         /// <param name="stride">The size of the individual addresses in the table.</param>
         /// <param name="state">Current processor state.</param>
         /// <returns>The target addresses reached by the vector</returns>
-        public List<Address> BuildTable(Address addrTable, int limit, int[] permutation, int stride, ProcessorState state)
+        public List<Address> BuildTable(
+            Address addrTable,
+            int limit, 
+            int[] permutation,
+            int stride,
+            ProcessorState state)
         {
             List<Address> vector = new List<Address>();
 

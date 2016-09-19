@@ -20,20 +20,38 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace Reko.Gui.Forms
 {
     public interface IJumpTableDialog : IDialog
     {
-        Program Program { get; set; }
+        IServiceProvider Services { get; set; }
         MachineInstruction Instruction { get; set; }
         Address VectorAddress { get; set; }
+        Program Program { get; set; }
 
-        
+        ILabel CaptionLabel { get; }
+        IComboBox IndexRegister { get; }
+        ILabel InstructionLabel { get; }
+        ITextBox JumpTableStartAddress { get; }
+        INumericUpDown EntryCount { get; }
+        ICheckBox IsIndirectTable { get; }
+        ILabel IndirectLabel { get; }
+        ITextBox IndirectTable { get; }
+        IRadioButton FarAddress { get; }
+        IRadioButton RelativeAddress { get; }
+        IRadioButton Offsets { get; }
+        IComboBox SegmentList { get; }
+
+        IListBox Entries { get; }
+        ITextBox Disassembly { get; }
+
         UserIndirectJump GetResults();
     }
 }

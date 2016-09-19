@@ -37,5 +37,7 @@ namespace Reko.Gui.Windows
         {
             this.rdb = rdb;
         }
+
+        public bool Checked { get { return rdb.Checked; } set { rdb.Checked = value;  } }
     }
 }
