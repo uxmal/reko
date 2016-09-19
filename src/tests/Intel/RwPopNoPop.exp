@@ -28,6 +28,7 @@ fn0C00_0000_exit:
 // fp:fp
 // sp:sp
 // bp:bp
+// v4:v4
 // ss:ss
 // SCZO:Flags
 // Z:Flags
@@ -38,8 +39,9 @@ fn0C00_000A_entry:
 	// succ:  l0C00_000A
 l0C00_000A:
 	sp = fp
+	v4 = bp
 	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = bp
+	Mem0[ss:sp:word16] = v4
 	bp = 0x0300
 	goto l0C00_0014
 	// succ:  l0C00_0014

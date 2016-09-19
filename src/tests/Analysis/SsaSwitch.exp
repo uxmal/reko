@@ -1,141 +1,188 @@
 fp:fp
     def:  def fp
     uses: sp_1 = fp
-          sp_2 = fp - 0x0002
-          sp_6 = fp
+          sp_4 = fp - 0x0002
+          sp_7 = fp
 sp_1: orig: sp
     def:  sp_1 = fp
-sp_2: orig: sp
-    def:  sp_2 = fp - 0x0002
 cs:cs
     def:  def cs
-    uses: wLoc02_4 = cs
-wLoc02_4: orig: wLoc02
-    def:  wLoc02_4 = cs
-    uses: ds_5 = wLoc02_4
-ds_5: orig: ds
-    def:  ds_5 = wLoc02_4
-    uses: bl_9 = Mem0[ds_5:si:byte]
-sp_6: orig: sp
-    def:  sp_6 = fp
+    uses: v4_3 = cs
+          call Mem0[ds_6:bx_34 + 0x0011:word16] (retsize: 4; depth: 4)	uses: ax,bh_36,bl_35,bx_34,C_40,cs,CZ_39,ds_6,SCZO_37,si,sp_7,ss,SZO_38,wLoc02_5	defs: ax_55,bh_51,bl_47,bx_54,C_53,cs_44,CZ_50,ds_46,SCZO_49,si_48,sp_43,ss_45,SZO_52
+          cs_28 = PHI(cs_44, cs)
+v4_3: orig: v4
+    def:  v4_3 = cs
+    uses: wLoc02_5 = v4_3
+sp_4: orig: sp
+    def:  sp_4 = fp - 0x0002
+wLoc02_5: orig: wLoc02
+    def:  wLoc02_5 = v4_3
+    uses: ds_6 = wLoc02_5
+          call Mem0[ds_6:bx_34 + 0x0011:word16] (retsize: 4; depth: 4)	uses: ax,bh_36,bl_35,bx_34,C_40,cs,CZ_39,ds_6,SCZO_37,si,sp_7,ss,SZO_38,wLoc02_5	defs: ax_55,bh_51,bl_47,bx_54,C_53,cs_44,CZ_50,ds_46,SCZO_49,si_48,sp_43,ss_45,SZO_52
+ds_6: orig: ds
+    def:  ds_6 = wLoc02_5
+    uses: bl_10 = Mem0[ds_6:si:byte]
+          call Mem0[ds_6:bx_34 + 0x0011:word16] (retsize: 4; depth: 4)	uses: ax,bh_36,bl_35,bx_34,C_40,cs,CZ_39,ds_6,SCZO_37,si,sp_7,ss,SZO_38,wLoc02_5	defs: ax_55,bh_51,bl_47,bx_54,C_53,cs_44,CZ_50,ds_46,SCZO_49,si_48,sp_43,ss_45,SZO_52
+          call Mem0[ds_6:bx_34 + 0x0011:word16] (retsize: 4; depth: 4)	uses: ax,bh_36,bl_35,bx_34,C_40,cs,CZ_39,ds_6,SCZO_37,si,sp_7,ss,SZO_38,wLoc02_5	defs: ax_55,bh_51,bl_47,bx_54,C_53,cs_44,CZ_50,ds_46,SCZO_49,si_48,sp_43,ss_45,SZO_52
+          ds_26 = PHI(ds_46, ds_6)
+sp_7: orig: sp
+    def:  sp_7 = fp
+    uses: call Mem0[ds_6:bx_34 + 0x0011:word16] (retsize: 4; depth: 4)	uses: ax,bh_36,bl_35,bx_34,C_40,cs,CZ_39,ds_6,SCZO_37,si,sp_7,ss,SZO_38,wLoc02_5	defs: ax_55,bh_51,bl_47,bx_54,C_53,cs_44,CZ_50,ds_46,SCZO_49,si_48,sp_43,ss_45,SZO_52
+          sp_29 = PHI(sp_43, sp_7)
 si:si
     def:  def si
-    uses: bl_9 = Mem0[ds_5:si:byte]
+    uses: bl_10 = Mem0[ds_6:si:byte]
+          call Mem0[ds_6:bx_34 + 0x0011:word16] (retsize: 4; depth: 4)	uses: ax,bh_36,bl_35,bx_34,C_40,cs,CZ_39,ds_6,SCZO_37,si,sp_7,ss,SZO_38,wLoc02_5	defs: ax_55,bh_51,bl_47,bx_54,C_53,cs_44,CZ_50,ds_46,SCZO_49,si_48,sp_43,ss_45,SZO_52
+          si_24 = PHI(si_48, si)
 Mem0:Global memory
     def:  def Mem0
-    uses: bl_9 = Mem0[ds_5:si:byte]
-bl_9: orig: bl
-    def:  bl_9 = Mem0[ds_5:si:byte]
-    uses: bx_11 = DPB(bx, bl_9, 0) (alias)
-          SCZO_12 = cond(bl_9 - 0x02)
-          bl_17 = PHI(bl_9, bl_29, bl_29, bl_29)
+    uses: bl_10 = Mem0[ds_6:si:byte]
+          call Mem0[ds_6:bx_34 + 0x0011:word16] (retsize: 4; depth: 4)	uses: ax,bh_36,bl_35,bx_34,C_40,cs,CZ_39,ds_6,SCZO_37,si,sp_7,ss,SZO_38,wLoc02_5	defs: ax_55,bh_51,bl_47,bx_54,C_53,cs_44,CZ_50,ds_46,SCZO_49,si_48,sp_43,ss_45,SZO_52
+bl_10: orig: bl
+    def:  bl_10 = Mem0[ds_6:si:byte]
+    uses: bx_12 = DPB(bx, bl_10, 0) (alias)
+          SCZO_13 = cond(bl_10 - 0x02)
+          bl_25 = PHI(bl_47, bl_10)
 bx:bx
     def:  def bx
-    uses: bx_11 = DPB(bx, bl_9, 0) (alias)
-bx_11: orig: bx
-    def:  bx_11 = DPB(bx, bl_9, 0) (alias)
-    uses: bx_25 = DPB(bx_11, bh_24, 8) (alias)
-          bx_16 = PHI(bx_11, bx_28, bx_28, bx_28)
-SCZO_12: orig: SCZO
-    def:  SCZO_12 = cond(bl_9 - 0x02)
-    uses: SZO_13 = SCZO_12 (alias)
-          CZ_14 = SCZO_12 (alias)
-          C_15 = SCZO_12 (alias)
-          SCZO_19 = PHI(SCZO_12, SCZO_31, SCZO_31, SCZO_31)
-SZO_13: orig: SZO
-    def:  SZO_13 = SCZO_12 (alias)
-    uses: SZO_20 = PHI(SZO_13, SZO_32, SZO_32, SZO_32)
-CZ_14: orig: CZ
-    def:  CZ_14 = SCZO_12 (alias)
-    uses: branch Test(UGT,CZ_14) l0C00_0023
-          CZ_21 = PHI(CZ_14, CZ_33, CZ_33, CZ_33)
-C_15: orig: C
-    def:  C_15 = SCZO_12 (alias)
-    uses: C_22 = PHI(C_15, C_34, C_34, C_34)
-bx_16: orig: bx
-    def:  bx_16 = PHI(bx_11, bx_28, bx_28, bx_28)
-bl_17: orig: bl
-    def:  bl_17 = PHI(bl_9, bl_29, bl_29, bl_29)
-bh_18: orig: bh
-    def:  bh_18 = PHI(bh, bh_30, bh_30, bh_30)
-SCZO_19: orig: SCZO
-    def:  SCZO_19 = PHI(SCZO_12, SCZO_31, SCZO_31, SCZO_31)
+    uses: bx_12 = DPB(bx, bl_10, 0) (alias)
+bx_12: orig: bx
+    def:  bx_12 = DPB(bx, bl_10, 0) (alias)
+    uses: bx_31 = DPB(bx_12, bh_30, 8) (alias)
+          bx_18 = PHI(bx_54, bx_12)
+SCZO_13: orig: SCZO
+    def:  SCZO_13 = cond(bl_10 - 0x02)
+    uses: SZO_14 = SCZO_13 (alias)
+          CZ_15 = SCZO_13 (alias)
+          C_16 = SCZO_13 (alias)
+          SCZO_23 = PHI(SCZO_49, SCZO_13)
+SZO_14: orig: SZO
+    def:  SZO_14 = SCZO_13 (alias)
+    uses: SZO_20 = PHI(SZO_52, SZO_14)
+CZ_15: orig: CZ
+    def:  CZ_15 = SCZO_13 (alias)
+    uses: branch Test(UGT,CZ_15) l0C00_0023
+          CZ_22 = PHI(CZ_50, CZ_15)
+C_16: orig: C
+    def:  C_16 = SCZO_13 (alias)
+    uses: C_19 = PHI(C_53, C_16)
+ax_17: orig: ax
+    def:  ax_17 = PHI(ax_55, ax_56)
+bx_18: orig: bx
+    def:  bx_18 = PHI(bx_54, bx_12)
+C_19: orig: C
+    def:  C_19 = PHI(C_53, C_16)
 SZO_20: orig: SZO
-    def:  SZO_20 = PHI(SZO_13, SZO_32, SZO_32, SZO_32)
-CZ_21: orig: CZ
-    def:  CZ_21 = PHI(CZ_14, CZ_33, CZ_33, CZ_33)
-C_22: orig: C
-    def:  C_22 = PHI(C_15, C_34, C_34, C_34)
-ax_23: orig: ax
-    def:  ax_23 = PHI(ax_38, ax_36, ax_37, ax_35)
-bh_24: orig: bh
-    def:  bh_24 = 0x00
-    uses: bx_25 = DPB(bx_11, bh_24, 8) (alias)
-bx_25: orig: bx
-    def:  bx_25 = DPB(bx_11, bh_24, 8) (alias)
-    uses: bx_28 = bx_25 + bx_25
-          bx_28 = bx_25 + bx_25
-SZO_26: orig: SZO
-    def:  SZO_26 = cond(0x00)
-C_27: orig: C
-    def:  C_27 = false
-bx_28: orig: bx
-    def:  bx_28 = bx_25 + bx_25
-    uses: bl_29 = (byte) bx_28 (alias)
-          bh_30 = SLICE(bx_28, byte, 8) (alias)
-          SCZO_31 = cond(bx_28)
-          bx_16 = PHI(bx_11, bx_28, bx_28, bx_28)
-          bx_16 = PHI(bx_11, bx_28, bx_28, bx_28)
-          bx_16 = PHI(bx_11, bx_28, bx_28, bx_28)
-bl_29: orig: bl
-    def:  bl_29 = (byte) bx_28 (alias)
-    uses: switch (bl_29) { l0C00_0017 l0C00_001B l0C00_001F }
-          bl_17 = PHI(bl_9, bl_29, bl_29, bl_29)
-          bl_17 = PHI(bl_9, bl_29, bl_29, bl_29)
-          bl_17 = PHI(bl_9, bl_29, bl_29, bl_29)
+    def:  SZO_20 = PHI(SZO_52, SZO_14)
+bh_21: orig: bh
+    def:  bh_21 = PHI(bh_51, bh)
+CZ_22: orig: CZ
+    def:  CZ_22 = PHI(CZ_50, CZ_15)
+SCZO_23: orig: SCZO
+    def:  SCZO_23 = PHI(SCZO_49, SCZO_13)
+si_24: orig: si
+    def:  si_24 = PHI(si_48, si)
+bl_25: orig: bl
+    def:  bl_25 = PHI(bl_47, bl_10)
+ds_26: orig: ds
+    def:  ds_26 = PHI(ds_46, ds_6)
+ss_27: orig: ss
+    def:  ss_27 = PHI(ss_45, ss)
+cs_28: orig: cs
+    def:  cs_28 = PHI(cs_44, cs)
+sp_29: orig: sp
+    def:  sp_29 = PHI(sp_43, sp_7)
 bh_30: orig: bh
-    def:  bh_30 = SLICE(bx_28, byte, 8) (alias)
-    uses: bh_18 = PHI(bh, bh_30, bh_30, bh_30)
-          bh_18 = PHI(bh, bh_30, bh_30, bh_30)
-          bh_18 = PHI(bh, bh_30, bh_30, bh_30)
-SCZO_31: orig: SCZO
-    def:  SCZO_31 = cond(bx_28)
-    uses: SZO_32 = SCZO_31 (alias)
-          CZ_33 = SCZO_31 (alias)
-          C_34 = SCZO_31 (alias)
-          SCZO_19 = PHI(SCZO_12, SCZO_31, SCZO_31, SCZO_31)
-          SCZO_19 = PHI(SCZO_12, SCZO_31, SCZO_31, SCZO_31)
-          SCZO_19 = PHI(SCZO_12, SCZO_31, SCZO_31, SCZO_31)
+    def:  bh_30 = 0x00
+    uses: bx_31 = DPB(bx_12, bh_30, 8) (alias)
+bx_31: orig: bx
+    def:  bx_31 = DPB(bx_12, bh_30, 8) (alias)
+    uses: bx_34 = bx_31 + bx_31
+          bx_34 = bx_31 + bx_31
 SZO_32: orig: SZO
-    def:  SZO_32 = SCZO_31 (alias)
-    uses: SZO_20 = PHI(SZO_13, SZO_32, SZO_32, SZO_32)
-          SZO_20 = PHI(SZO_13, SZO_32, SZO_32, SZO_32)
-          SZO_20 = PHI(SZO_13, SZO_32, SZO_32, SZO_32)
-CZ_33: orig: CZ
-    def:  CZ_33 = SCZO_31 (alias)
-    uses: CZ_21 = PHI(CZ_14, CZ_33, CZ_33, CZ_33)
-          CZ_21 = PHI(CZ_14, CZ_33, CZ_33, CZ_33)
-          CZ_21 = PHI(CZ_14, CZ_33, CZ_33, CZ_33)
-C_34: orig: C
-    def:  C_34 = SCZO_31 (alias)
-    uses: C_22 = PHI(C_15, C_34, C_34, C_34)
-          C_22 = PHI(C_15, C_34, C_34, C_34)
-          C_22 = PHI(C_15, C_34, C_34, C_34)
-ax_35: orig: ax
-    def:  ax_35 = 0x0001
-    uses: ax_23 = PHI(ax_38, ax_36, ax_37, ax_35)
-ax_36: orig: ax
-    def:  ax_36 = 0x0002
-    uses: ax_23 = PHI(ax_38, ax_36, ax_37, ax_35)
-ax_37: orig: ax
-    def:  ax_37 = 0x0003
-    uses: ax_23 = PHI(ax_38, ax_36, ax_37, ax_35)
-ax_38: orig: ax
-    def:  ax_38 = 0x0000
-    uses: ax_23 = PHI(ax_38, ax_36, ax_37, ax_35)
+    def:  SZO_32 = cond(0x00)
+C_33: orig: C
+    def:  C_33 = false
+bx_34: orig: bx
+    def:  bx_34 = bx_31 + bx_31
+    uses: bl_35 = (byte) bx_34 (alias)
+          bh_36 = SLICE(bx_34, byte, 8) (alias)
+          SCZO_37 = cond(bx_34)
+          call Mem0[ds_6:bx_34 + 0x0011:word16] (retsize: 4; depth: 4)	uses: ax,bh_36,bl_35,bx_34,C_40,cs,CZ_39,ds_6,SCZO_37,si,sp_7,ss,SZO_38,wLoc02_5	defs: ax_55,bh_51,bl_47,bx_54,C_53,cs_44,CZ_50,ds_46,SCZO_49,si_48,sp_43,ss_45,SZO_52
+          call Mem0[ds_6:bx_34 + 0x0011:word16] (retsize: 4; depth: 4)	uses: ax,bh_36,bl_35,bx_34,C_40,cs,CZ_39,ds_6,SCZO_37,si,sp_7,ss,SZO_38,wLoc02_5	defs: ax_55,bh_51,bl_47,bx_54,C_53,cs_44,CZ_50,ds_46,SCZO_49,si_48,sp_43,ss_45,SZO_52
+bl_35: orig: bl
+    def:  bl_35 = (byte) bx_34 (alias)
+    uses: call Mem0[ds_6:bx_34 + 0x0011:word16] (retsize: 4; depth: 4)	uses: ax,bh_36,bl_35,bx_34,C_40,cs,CZ_39,ds_6,SCZO_37,si,sp_7,ss,SZO_38,wLoc02_5	defs: ax_55,bh_51,bl_47,bx_54,C_53,cs_44,CZ_50,ds_46,SCZO_49,si_48,sp_43,ss_45,SZO_52
+bh_36: orig: bh
+    def:  bh_36 = SLICE(bx_34, byte, 8) (alias)
+    uses: call Mem0[ds_6:bx_34 + 0x0011:word16] (retsize: 4; depth: 4)	uses: ax,bh_36,bl_35,bx_34,C_40,cs,CZ_39,ds_6,SCZO_37,si,sp_7,ss,SZO_38,wLoc02_5	defs: ax_55,bh_51,bl_47,bx_54,C_53,cs_44,CZ_50,ds_46,SCZO_49,si_48,sp_43,ss_45,SZO_52
+SCZO_37: orig: SCZO
+    def:  SCZO_37 = cond(bx_34)
+    uses: SZO_38 = SCZO_37 (alias)
+          CZ_39 = SCZO_37 (alias)
+          C_40 = SCZO_37 (alias)
+          call Mem0[ds_6:bx_34 + 0x0011:word16] (retsize: 4; depth: 4)	uses: ax,bh_36,bl_35,bx_34,C_40,cs,CZ_39,ds_6,SCZO_37,si,sp_7,ss,SZO_38,wLoc02_5	defs: ax_55,bh_51,bl_47,bx_54,C_53,cs_44,CZ_50,ds_46,SCZO_49,si_48,sp_43,ss_45,SZO_52
+SZO_38: orig: SZO
+    def:  SZO_38 = SCZO_37 (alias)
+    uses: call Mem0[ds_6:bx_34 + 0x0011:word16] (retsize: 4; depth: 4)	uses: ax,bh_36,bl_35,bx_34,C_40,cs,CZ_39,ds_6,SCZO_37,si,sp_7,ss,SZO_38,wLoc02_5	defs: ax_55,bh_51,bl_47,bx_54,C_53,cs_44,CZ_50,ds_46,SCZO_49,si_48,sp_43,ss_45,SZO_52
+CZ_39: orig: CZ
+    def:  CZ_39 = SCZO_37 (alias)
+    uses: call Mem0[ds_6:bx_34 + 0x0011:word16] (retsize: 4; depth: 4)	uses: ax,bh_36,bl_35,bx_34,C_40,cs,CZ_39,ds_6,SCZO_37,si,sp_7,ss,SZO_38,wLoc02_5	defs: ax_55,bh_51,bl_47,bx_54,C_53,cs_44,CZ_50,ds_46,SCZO_49,si_48,sp_43,ss_45,SZO_52
+C_40: orig: C
+    def:  C_40 = SCZO_37 (alias)
+    uses: call Mem0[ds_6:bx_34 + 0x0011:word16] (retsize: 4; depth: 4)	uses: ax,bh_36,bl_35,bx_34,C_40,cs,CZ_39,ds_6,SCZO_37,si,sp_7,ss,SZO_38,wLoc02_5	defs: ax_55,bh_51,bl_47,bx_54,C_53,cs_44,CZ_50,ds_46,SCZO_49,si_48,sp_43,ss_45,SZO_52
+ax:ax
+    def:  def ax
+    uses: call Mem0[ds_6:bx_34 + 0x0011:word16] (retsize: 4; depth: 4)	uses: ax,bh_36,bl_35,bx_34,C_40,cs,CZ_39,ds_6,SCZO_37,si,sp_7,ss,SZO_38,wLoc02_5	defs: ax_55,bh_51,bl_47,bx_54,C_53,cs_44,CZ_50,ds_46,SCZO_49,si_48,sp_43,ss_45,SZO_52
+ss:ss
+    def:  def ss
+    uses: call Mem0[ds_6:bx_34 + 0x0011:word16] (retsize: 4; depth: 4)	uses: ax,bh_36,bl_35,bx_34,C_40,cs,CZ_39,ds_6,SCZO_37,si,sp_7,ss,SZO_38,wLoc02_5	defs: ax_55,bh_51,bl_47,bx_54,C_53,cs_44,CZ_50,ds_46,SCZO_49,si_48,sp_43,ss_45,SZO_52
+          ss_27 = PHI(ss_45, ss)
+sp_43: orig: sp
+    def:  call Mem0[ds_6:bx_34 + 0x0011:word16] (retsize: 4; depth: 4)	uses: ax,bh_36,bl_35,bx_34,C_40,cs,CZ_39,ds_6,SCZO_37,si,sp_7,ss,SZO_38,wLoc02_5	defs: ax_55,bh_51,bl_47,bx_54,C_53,cs_44,CZ_50,ds_46,SCZO_49,si_48,sp_43,ss_45,SZO_52
+    uses: sp_29 = PHI(sp_43, sp_7)
+cs_44: orig: cs
+    def:  call Mem0[ds_6:bx_34 + 0x0011:word16] (retsize: 4; depth: 4)	uses: ax,bh_36,bl_35,bx_34,C_40,cs,CZ_39,ds_6,SCZO_37,si,sp_7,ss,SZO_38,wLoc02_5	defs: ax_55,bh_51,bl_47,bx_54,C_53,cs_44,CZ_50,ds_46,SCZO_49,si_48,sp_43,ss_45,SZO_52
+    uses: cs_28 = PHI(cs_44, cs)
+ss_45: orig: ss
+    def:  call Mem0[ds_6:bx_34 + 0x0011:word16] (retsize: 4; depth: 4)	uses: ax,bh_36,bl_35,bx_34,C_40,cs,CZ_39,ds_6,SCZO_37,si,sp_7,ss,SZO_38,wLoc02_5	defs: ax_55,bh_51,bl_47,bx_54,C_53,cs_44,CZ_50,ds_46,SCZO_49,si_48,sp_43,ss_45,SZO_52
+    uses: ss_27 = PHI(ss_45, ss)
+ds_46: orig: ds
+    def:  call Mem0[ds_6:bx_34 + 0x0011:word16] (retsize: 4; depth: 4)	uses: ax,bh_36,bl_35,bx_34,C_40,cs,CZ_39,ds_6,SCZO_37,si,sp_7,ss,SZO_38,wLoc02_5	defs: ax_55,bh_51,bl_47,bx_54,C_53,cs_44,CZ_50,ds_46,SCZO_49,si_48,sp_43,ss_45,SZO_52
+    uses: ds_26 = PHI(ds_46, ds_6)
+bl_47: orig: bl
+    def:  call Mem0[ds_6:bx_34 + 0x0011:word16] (retsize: 4; depth: 4)	uses: ax,bh_36,bl_35,bx_34,C_40,cs,CZ_39,ds_6,SCZO_37,si,sp_7,ss,SZO_38,wLoc02_5	defs: ax_55,bh_51,bl_47,bx_54,C_53,cs_44,CZ_50,ds_46,SCZO_49,si_48,sp_43,ss_45,SZO_52
+    uses: bl_25 = PHI(bl_47, bl_10)
+si_48: orig: si
+    def:  call Mem0[ds_6:bx_34 + 0x0011:word16] (retsize: 4; depth: 4)	uses: ax,bh_36,bl_35,bx_34,C_40,cs,CZ_39,ds_6,SCZO_37,si,sp_7,ss,SZO_38,wLoc02_5	defs: ax_55,bh_51,bl_47,bx_54,C_53,cs_44,CZ_50,ds_46,SCZO_49,si_48,sp_43,ss_45,SZO_52
+    uses: si_24 = PHI(si_48, si)
+SCZO_49: orig: SCZO
+    def:  call Mem0[ds_6:bx_34 + 0x0011:word16] (retsize: 4; depth: 4)	uses: ax,bh_36,bl_35,bx_34,C_40,cs,CZ_39,ds_6,SCZO_37,si,sp_7,ss,SZO_38,wLoc02_5	defs: ax_55,bh_51,bl_47,bx_54,C_53,cs_44,CZ_50,ds_46,SCZO_49,si_48,sp_43,ss_45,SZO_52
+    uses: SCZO_23 = PHI(SCZO_49, SCZO_13)
+CZ_50: orig: CZ
+    def:  call Mem0[ds_6:bx_34 + 0x0011:word16] (retsize: 4; depth: 4)	uses: ax,bh_36,bl_35,bx_34,C_40,cs,CZ_39,ds_6,SCZO_37,si,sp_7,ss,SZO_38,wLoc02_5	defs: ax_55,bh_51,bl_47,bx_54,C_53,cs_44,CZ_50,ds_46,SCZO_49,si_48,sp_43,ss_45,SZO_52
+    uses: CZ_22 = PHI(CZ_50, CZ_15)
+bh_51: orig: bh
+    def:  call Mem0[ds_6:bx_34 + 0x0011:word16] (retsize: 4; depth: 4)	uses: ax,bh_36,bl_35,bx_34,C_40,cs,CZ_39,ds_6,SCZO_37,si,sp_7,ss,SZO_38,wLoc02_5	defs: ax_55,bh_51,bl_47,bx_54,C_53,cs_44,CZ_50,ds_46,SCZO_49,si_48,sp_43,ss_45,SZO_52
+    uses: bh_21 = PHI(bh_51, bh)
+SZO_52: orig: SZO
+    def:  call Mem0[ds_6:bx_34 + 0x0011:word16] (retsize: 4; depth: 4)	uses: ax,bh_36,bl_35,bx_34,C_40,cs,CZ_39,ds_6,SCZO_37,si,sp_7,ss,SZO_38,wLoc02_5	defs: ax_55,bh_51,bl_47,bx_54,C_53,cs_44,CZ_50,ds_46,SCZO_49,si_48,sp_43,ss_45,SZO_52
+    uses: SZO_20 = PHI(SZO_52, SZO_14)
+C_53: orig: C
+    def:  call Mem0[ds_6:bx_34 + 0x0011:word16] (retsize: 4; depth: 4)	uses: ax,bh_36,bl_35,bx_34,C_40,cs,CZ_39,ds_6,SCZO_37,si,sp_7,ss,SZO_38,wLoc02_5	defs: ax_55,bh_51,bl_47,bx_54,C_53,cs_44,CZ_50,ds_46,SCZO_49,si_48,sp_43,ss_45,SZO_52
+    uses: C_19 = PHI(C_53, C_16)
+bx_54: orig: bx
+    def:  call Mem0[ds_6:bx_34 + 0x0011:word16] (retsize: 4; depth: 4)	uses: ax,bh_36,bl_35,bx_34,C_40,cs,CZ_39,ds_6,SCZO_37,si,sp_7,ss,SZO_38,wLoc02_5	defs: ax_55,bh_51,bl_47,bx_54,C_53,cs_44,CZ_50,ds_46,SCZO_49,si_48,sp_43,ss_45,SZO_52
+    uses: bx_18 = PHI(bx_54, bx_12)
+ax_55: orig: ax
+    def:  call Mem0[ds_6:bx_34 + 0x0011:word16] (retsize: 4; depth: 4)	uses: ax,bh_36,bl_35,bx_34,C_40,cs,CZ_39,ds_6,SCZO_37,si,sp_7,ss,SZO_38,wLoc02_5	defs: ax_55,bh_51,bl_47,bx_54,C_53,cs_44,CZ_50,ds_46,SCZO_49,si_48,sp_43,ss_45,SZO_52
+    uses: ax_17 = PHI(ax_55, ax_56)
+ax_56: orig: ax
+    def:  ax_56 = 0x0000
+    uses: ax_17 = PHI(ax_55, ax_56)
 bh:bh
     def:  def bh
-    uses: bh_18 = PHI(bh, bh_30, bh_30, bh_30)
+    uses: bh_21 = PHI(bh_51, bh)
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(word16 si)
@@ -145,59 +192,58 @@ fn0C00_0000_entry:
 	def si
 	def Mem0
 	def bx
+	def ax
+	def ss
 	def bh
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp_1 = fp
-	sp_2 = fp - 0x0002
-	wLoc02_4 = cs
-	ds_5 = wLoc02_4
-	sp_6 = fp
-	bl_9 = Mem0[ds_5:si:byte]
-	bx_11 = DPB(bx, bl_9, 0) (alias)
-	SCZO_12 = cond(bl_9 - 0x02)
-	SZO_13 = SCZO_12 (alias)
-	CZ_14 = SCZO_12 (alias)
-	C_15 = SCZO_12 (alias)
-	branch Test(UGT,CZ_14) l0C00_0023
+	v4_3 = cs
+	sp_4 = fp - 0x0002
+	wLoc02_5 = v4_3
+	ds_6 = wLoc02_5
+	sp_7 = fp
+	bl_10 = Mem0[ds_6:si:byte]
+	bx_12 = DPB(bx, bl_10, 0) (alias)
+	SCZO_13 = cond(bl_10 - 0x02)
+	SZO_14 = SCZO_13 (alias)
+	CZ_15 = SCZO_13 (alias)
+	C_16 = SCZO_13 (alias)
+	branch Test(UGT,CZ_15) l0C00_0023
 	// succ:  l0C00_0009 l0C00_0023
 l0C00_0009:
-	bh_24 = 0x00
-	bx_25 = DPB(bx_11, bh_24, 8) (alias)
-	SZO_26 = cond(0x00)
-	C_27 = false
-	bx_28 = bx_25 + bx_25
-	bl_29 = (byte) bx_28 (alias)
-	bh_30 = SLICE(bx_28, byte, 8) (alias)
-	SCZO_31 = cond(bx_28)
-	SZO_32 = SCZO_31 (alias)
-	CZ_33 = SCZO_31 (alias)
-	C_34 = SCZO_31 (alias)
-	switch (bl_29) { l0C00_0017 l0C00_001B l0C00_001F }
-	// succ:  l0C00_0017 l0C00_001B l0C00_001F
-l0C00_0017:
-	ax_35 = 0x0001
-	return
-	// succ:  fn0C00_0000_exit
-l0C00_001B:
-	ax_36 = 0x0002
-	return
-	// succ:  fn0C00_0000_exit
-l0C00_001F:
-	ax_37 = 0x0003
+	bh_30 = 0x00
+	bx_31 = DPB(bx_12, bh_30, 8) (alias)
+	SZO_32 = cond(0x00)
+	C_33 = false
+	bx_34 = bx_31 + bx_31
+	bl_35 = (byte) bx_34 (alias)
+	bh_36 = SLICE(bx_34, byte, 8) (alias)
+	SCZO_37 = cond(bx_34)
+	SZO_38 = SCZO_37 (alias)
+	CZ_39 = SCZO_37 (alias)
+	C_40 = SCZO_37 (alias)
+	call Mem0[ds_6:bx_34 + 0x0011:word16] (retsize: 4; depth: 4)
+		uses: ax,bh_36,bl_35,bx_34,C_40,cs,CZ_39,ds_6,SCZO_37,si,sp_7,ss,SZO_38,wLoc02_5
+		defs: ax_55,bh_51,bl_47,bx_54,C_53,cs_44,CZ_50,ds_46,SCZO_49,si_48,sp_43,ss_45,SZO_52
 	return
 	// succ:  fn0C00_0000_exit
 l0C00_0023:
-	ax_38 = 0x0000
+	ax_56 = 0x0000
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
-	bx_16 = PHI(bx_11, bx_28, bx_28, bx_28)
-	bl_17 = PHI(bl_9, bl_29, bl_29, bl_29)
-	bh_18 = PHI(bh, bh_30, bh_30, bh_30)
-	SCZO_19 = PHI(SCZO_12, SCZO_31, SCZO_31, SCZO_31)
-	SZO_20 = PHI(SZO_13, SZO_32, SZO_32, SZO_32)
-	CZ_21 = PHI(CZ_14, CZ_33, CZ_33, CZ_33)
-	C_22 = PHI(C_15, C_34, C_34, C_34)
-	ax_23 = PHI(ax_38, ax_36, ax_37, ax_35)
+	ax_17 = PHI(ax_55, ax_56)
+	bx_18 = PHI(bx_54, bx_12)
+	C_19 = PHI(C_53, C_16)
+	SZO_20 = PHI(SZO_52, SZO_14)
+	bh_21 = PHI(bh_51, bh)
+	CZ_22 = PHI(CZ_50, CZ_15)
+	SCZO_23 = PHI(SCZO_49, SCZO_13)
+	si_24 = PHI(si_48, si)
+	bl_25 = PHI(bl_47, bl_10)
+	ds_26 = PHI(ds_46, ds_6)
+	ss_27 = PHI(ss_45, ss)
+	cs_28 = PHI(cs_44, cs)
+	sp_29 = PHI(sp_43, sp_7)
 

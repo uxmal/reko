@@ -42,15 +42,16 @@ fn0C00_0007_entry:
 // SymbolicIn: sp:fp
 l0C00_0007:
 	sp = fp
+	v4 = si
 	sp = fp - 0x0002
-	wLoc02 = si
+	wLoc02 = v4
 	call fn0C00_0020 (retsize: 2; depth: 4)
 	si = wLoc02
 	sp = fp
 	ax = Mem0[ds:si + 0x0028:word16]
-	v7 = Mem0[ds:0x1444:word16] + ax
-	Mem0[ds:0x1444:word16] = v7
-	SCZO = cond(v7)
+	v8 = Mem0[ds:0x1444:word16] + ax
+	Mem0[ds:0x1444:word16] = v8
+	SCZO = cond(v8)
 	SCZO = cond(Mem0[ds:di + 0x0030:byte] - 0x00)
 	branch Test(EQ,Z) l0C00_001F
 // DataOut: di ds si

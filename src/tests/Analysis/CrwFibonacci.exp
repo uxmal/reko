@@ -10,10 +10,14 @@ Register word32 fn10000000(Stack word32 dwArg04)
 // fp:fp
 // esp:esp
 // esi:esi
+// v4:v4
 // SCZO:Flags
 // SZO:Flags
 // eax:eax
 // edi:edi
+// v9:v9
+// v10:v10
+// v11:v11
 // dwLoc04:Local -0004
 // dwArg04:Stack +0004
 // dwLoc08:Local -0008
@@ -25,8 +29,9 @@ fn10000000_entry:
 	// succ:  l10000000
 l10000000:
 	esp = fp
+	v4 = esi
 	esp = fp - 0x00000004
-	dwLoc04 = esi
+	dwLoc04 = v4
 	esi = dwArg04
 	SCZO = cond(esi - 0x00000001)
 	branch Test(GT,SZO) l10000011
@@ -39,15 +44,18 @@ l1000000A:
 	// succ:  fn10000000_exit
 l10000011:
 	eax = esi - 0x00000002
+	v9 = edi
 	esp = fp - 0x00000008
-	dwLoc08 = edi
+	dwLoc08 = v9
+	v10 = eax
 	esp = fp - 0x0000000C
-	dwLoc0C = eax
+	dwLoc0C = v10
 	eax = fn10000000(dwLoc0C)
 	esi = esi - 0x00000001
 	SZO = cond(esi)
+	v11 = esi
 	esp = fp - 0x00000010
-	dwLoc10 = esi
+	dwLoc10 = v11
 	edi = eax
 	eax = fn10000000(dwLoc10)
 	esp = fp - 0x00000008

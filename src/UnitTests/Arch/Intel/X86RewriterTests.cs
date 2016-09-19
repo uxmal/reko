@@ -395,12 +395,13 @@ namespace Reko.UnitTests.Arch.Intel
                 m.Pop(m.ebx);
             });
             AssertCode(
-                "0|L--|0C00:0000(2): 2 instructions",
-                "1|L--|sp = sp - 0x0004",
-                "2|L--|Mem0[ss:sp:word32] = eax",
-                "3|L--|0C00:0002(2): 2 instructions",
-                "4|L--|ebx = Mem0[ss:sp:word32]",
-                "5|L--|sp = sp + 0x0004");
+                "0|L--|0C00:0000(2): 3 instructions",
+                "1|L--|v4 = eax",
+                "2|L--|sp = sp - 0x0004",
+                "3|L--|Mem0[ss:sp:word32] = v4",
+                "4|L--|0C00:0002(2): 2 instructions",
+                "5|L--|ebx = Mem0[ss:sp:word32]",
+                "6|L--|sp = sp + 0x0004");
         }
 
         [Test]
@@ -610,11 +611,12 @@ namespace Reko.UnitTests.Arch.Intel
                 m.Enter(16, 0);
             });
             AssertCode(
-                "0|L--|0C00:0000(4): 4 instructions",
-                "1|L--|sp = sp - 0x0002",
-                "2|L--|Mem0[ss:sp:word16] = bp",
-                "3|L--|bp = sp",
-                "4|L--|sp = sp - 0x0010");
+                "0|L--|0C00:0000(4): 5 instructions",
+                "1|L--|v4 = bp",
+                "2|L--|sp = sp - 0x0002",
+                "3|L--|Mem0[ss:sp:word16] = v4",
+                "4|L--|bp = sp",
+                "5|L--|sp = sp - 0x0010");
         }
 
         [Test]
@@ -1082,12 +1084,13 @@ namespace Reko.UnitTests.Arch.Intel
                 m.Popf();
             });
             AssertCode(
-                "0|L--|0C00:0000(1): 2 instructions",
-                "1|L--|sp = sp - 0x0002",
-                "2|L--|Mem0[ss:sp:word16] = SCZDOP",
-                "3|L--|0C00:0001(1): 2 instructions",
-                "4|L--|SCZDOP = Mem0[ss:sp:word16]",
-                "5|L--|sp = sp + 0x0002");
+                "0|L--|0C00:0000(1): 3 instructions",
+                "1|L--|v4 = SCZDOP",
+                "2|L--|sp = sp - 0x0002",
+                "3|L--|Mem0[ss:sp:word16] = v4",
+                "4|L--|0C00:0001(1): 2 instructions",
+                "5|L--|SCZDOP = Mem0[ss:sp:word16]",
+                "6|L--|sp = sp + 0x0002");
         }
 
         [Test]

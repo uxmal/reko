@@ -15,8 +15,10 @@ fn0C00_0000_entry:
 // SymbolicIn: sp:fp
 l0C00_0000:
 	sp = fp
+	v3 = 0x0320
 	sp = fp - 0x0002
 	wLoc02 = 0x0320
+	v5 = 0x0300
 	sp = fp - 0x0004
 	wLoc04 = 0x0300
 	call fn0C00_0010 (retsize: 2; depth: 6)
@@ -49,8 +51,9 @@ fn0C00_0010_entry:
 // SymbolicIn: sp:fp
 l0C00_0010:
 	sp = fp
+	v4 = bp
 	sp = fp - 0x0002
-	wLoc02 = bp
+	wLoc02 = v4
 	bp = fp - 0x0002
 	bx = wArg02
 	rLoc1 = Mem0[ds:bx:real64]

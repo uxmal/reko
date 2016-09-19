@@ -284,7 +284,7 @@ ret
             RunTest(@"void fn00400000(word32 dwArg04)
 {
 	if (dwArg04 != 0x00000000)
-		Mem11[0x00123234:word32] = 0x00006423;
+		Mem12[0x00123234:word32] = 0x00006423;
 	return;
 }
 ===
@@ -307,21 +307,21 @@ ret
 ===
 word32 fn0010000C(word32 dwArg04, word32 dwArg08)
 {
-	word32 ecx_12 = Mem0[dwArg04 + 0x0000003C:word32] + dwArg04;
-	word32 esi_20 = (word32) Mem0[ecx_12 + 0x00000006:word16];
-	word32 edx_21 = 0x00000000;
-	word32 eax_24 = (word32) Mem0[ecx_12 + 0x00000014:word16] + 0x00000012 + ecx_12 + 0x0000000C;
+	word32 ecx_13 = Mem0[dwArg04 + 0x0000003C:word32] + dwArg04;
+	word32 esi_23 = (word32) Mem0[ecx_13 + 0x00000006:word16];
+	word32 edx_24 = 0x00000000;
+	word32 eax_28 = (word32) Mem0[ecx_13 + 0x00000014:word16] + 0x00000012 + ecx_13 + 0x0000000C;
 	if (true)
 		do
 		{
-			word32 ecx_56 = Mem0[eax_24 + 0x00000000:word32];
-			if (dwArg08 >=u ecx_56 && dwArg08 <u Mem0[eax_24 + 0x00000008:word32] + ecx_56)
-				return eax_24;
-			edx_21 = edx_21 + 0x00000001;
-			eax_24 = eax_24 + 0x00000028;
-		} while (edx_21 <u esi_20);
-	eax_24 = 0x00000000;
-	return eax_24;
+			word32 ecx_60 = Mem0[eax_28 + 0x00000000:word32];
+			if (dwArg08 >=u ecx_60 && dwArg08 <u Mem0[eax_28 + 0x00000008:word32] + ecx_60)
+				return eax_28;
+			edx_24 = edx_24 + 0x00000001;
+			eax_28 = eax_28 + 0x00000028;
+		} while (edx_24 <u esi_23);
+	eax_28 = 0x00000000;
+	return eax_28;
 }
 ===
 ";

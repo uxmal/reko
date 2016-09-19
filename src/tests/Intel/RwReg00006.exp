@@ -4,9 +4,13 @@
 // fp:fp
 // esp:esp
 // ebx:ebx
+// v4:v4
 // ebp:ebp
+// v6:v6
 // esi:esi
+// v8:v8
 // edi:edi
+// v10:v10
 // di:di
 // bl:bl
 // SZO:Flags
@@ -14,26 +18,67 @@
 // Z:Flags
 // eax:eax
 // SCZO:Flags
+// v18:v18
+// v19:v19
+// v20:v20
 // ecx:ecx
+// v22:v22
+// v23:v23
+// v24:v24
+// v25:v25
 // bp:bp
+// v27:v27
 // edx:edx
+// v29:v29
+// v30:v30
+// v31:v31
+// v32:v32
 // cx:cx
 // dx:dx
+// v35:v35
+// v36:v36
+// v37:v37
+// v38:v38
+// v39:v39
+// v40:v40
+// v41:v41
+// v42:v42
 // ax:ax
+// v44:v44
+// v45:v45
+// v46:v46
+// v47:v47
+// v48:v48
+// v49:v49
+// v50:v50
+// v51:v51
+// v52:v52
+// v53:v53
+// v54:v54
+// v55:v55
+// v56:v56
+// v57:v57
+// v58:v58
+// v59:v59
+// v60:v60
 // return address size: 4
 void fn10000000()
 fn10000000_entry:
 	// succ:  l10000000
 l10000000:
 	esp = fp
+	v4 = ebx
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = ebx
+	Mem0[esp:word32] = v4
+	v6 = ebp
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = ebp
+	Mem0[esp:word32] = v6
+	v8 = esi
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = esi
+	Mem0[esp:word32] = v8
+	v10 = edi
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = edi
+	Mem0[esp:word32] = v10
 	di = Mem0[esp + 0x00000014:word16]
 	bl = bl ^ bl
 	SZO = cond(bl)
@@ -65,20 +110,26 @@ l1000002A:
 	// succ:  l1000002C
 l1000002C:
 	ebp = Mem0[esp + 0x00000020:word32]
+	v18 = 0x1000A700
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = 0x1000A700
+	Mem0[esp:word32] = v18
+	v19 = eax
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = eax
+	Mem0[esp:word32] = v19
 	eax = Mem0[esp + 0x00000020:word32]
+	v20 = 0x00003158
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = 0x00003158
+	Mem0[esp:word32] = v20
 	ecx = Mem0[eax + 0x000000D0:word32]
+	v22 = ecx
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = ecx
+	Mem0[esp:word32] = v22
+	v23 = eax
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = eax
+	Mem0[esp:word32] = v23
+	v24 = ebp
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = ebp
+	Mem0[esp:word32] = v24
 	call fn10000277 (retsize: 4;)
 	esi = eax
 	esp = esp + 0x00000018
@@ -107,8 +158,9 @@ l10000067:
 	Mem0[esi + 0x00000204:byte] = bl
 	// succ:  l1000006D
 l1000006D:
+	v25 = esi
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = esi
+	Mem0[esp:word32] = v25
 	call fn1000023D (retsize: 4;)
 	eax = Mem0[esi:word32]
 	ebp = ebp ^ ebp
@@ -132,8 +184,9 @@ l10000096:
 	branch Test(NE,Z) l100000BC
 	// succ:  l100000A0 l100000BC
 l100000A0:
+	v27 = esi
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = esi
+	Mem0[esp:word32] = v27
 	call fn1000023D (retsize: 4;)
 	edx = Mem0[esi + 0x00000004:word32]
 	esp = esp + 0x00000004
@@ -149,13 +202,15 @@ l100000BC:
 	// succ:  l100000C2 l10000132
 l100000C2:
 	edx = Mem0[esi + 0x00000004:word32]
+	v31 = esi
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = esi
+	Mem0[esp:word32] = v31
 	Mem0[edx + 0x00000030:word32] = ebp
 	call fn1000023D (retsize: 4;)
 	eax = Mem0[esi + 0x00000004:word32]
+	v32 = 0x00000001
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = 0x00000001
+	Mem0[esp:word32] = v32
 	Mem0[eax + 0x00000030:word32] = ebp
 	eax = Mem0[esi + 0x00000004:word32]
 	eax = eax + 0x00000010
@@ -173,19 +228,24 @@ l100000F8:
 	eax = Mem0[esi + 0x00000004:word32]
 	eax = eax + 0x00000010
 	SCZO = cond(eax)
+	v35 = eax
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = eax
+	Mem0[esp:word32] = v35
+	v36 = esi
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = esi
+	Mem0[esp:word32] = v36
 	call fn10000260 (retsize: 4;)
+	v37 = esi
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = esi
+	Mem0[esp:word32] = v37
 	call fn1000025B (retsize: 4;)
+	v38 = esi
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = esi
+	Mem0[esp:word32] = v38
 	call fn10000269 (retsize: 4;)
+	v39 = esi
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = esi
+	Mem0[esp:word32] = v39
 	call fn10000242 (retsize: 4;)
 	esp = esp + 0x0000001C
 	SCZO = cond(esp)
@@ -196,8 +256,9 @@ l10000132:
 	branch Test(NE,Z) l10000146
 	// succ:  l10000138 l10000146
 l10000138:
+	v40 = esi
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = esi
+	Mem0[esp:word32] = v40
 	call fn10000233 (retsize: 4;)
 	esp = esp + 0x00000004
 	SCZO = cond(esp)
@@ -213,8 +274,9 @@ l1000014C:
 	bl = Test(NE,Z)
 	// succ:  l10000158
 l10000158:
+	v41 = esi
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = esi
+	Mem0[esp:word32] = v41
 	call fn10000251 (retsize: 4;)
 	eax = Mem0[esi:word32]
 	esp = esp + 0x00000004
@@ -238,8 +300,9 @@ l1000017D:
 	branch Test(NE,Z) l1000018B
 	// succ:  l10000182 l1000018B
 l10000182:
+	v42 = esi
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = esi
+	Mem0[esp:word32] = v42
 	call fn10000238 (retsize: 4;)
 	esp = esp + 0x00000004
 	SCZO = cond(esp)
@@ -266,53 +329,70 @@ l100001AD:
 	goto l10000158
 	// succ:  l10000158
 l100001B2:
+	v44 = esi
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = esi
+	Mem0[esp:word32] = v44
 	call fn1000024C (retsize: 4;)
+	v45 = esi
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = esi
+	Mem0[esp:word32] = v45
 	call fn10000256 (retsize: 4;)
 	eax = Mem0[esi + 0x00000004:word32]
+	v46 = ebp
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = ebp
+	Mem0[esp:word32] = v46
+	v47 = ebp
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = ebp
+	Mem0[esp:word32] = v47
+	v48 = ebp
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = ebp
+	Mem0[esp:word32] = v48
 	eax = eax + 0x00000034
 	SCZO = cond(eax)
+	v49 = ebp
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = ebp
+	Mem0[esp:word32] = v49
+	v50 = eax
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = eax
+	Mem0[esp:word32] = v50
 	call fn100002A9 (retsize: 4;)
 	ecx = Mem0[esi + 0x00000004:word32]
+	v51 = ebp
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = ebp
+	Mem0[esp:word32] = v51
+	v52 = ebp
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = ebp
+	Mem0[esp:word32] = v52
+	v53 = ebp
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = ebp
+	Mem0[esp:word32] = v53
 	ecx = ecx + 0x00000040
 	SCZO = cond(ecx)
+	v54 = ebp
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = ebp
+	Mem0[esp:word32] = v54
+	v55 = ecx
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = ecx
+	Mem0[esp:word32] = v55
 	call fn100002A9 (retsize: 4;)
 	edx = Mem0[esi + 0x00000004:word32]
+	v56 = ebp
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = ebp
+	Mem0[esp:word32] = v56
+	v57 = ebp
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = ebp
+	Mem0[esp:word32] = v57
+	v58 = ebp
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = ebp
+	Mem0[esp:word32] = v58
 	edx = edx + 0x00000060
 	SCZO = cond(edx)
+	v59 = ebp
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = ebp
+	Mem0[esp:word32] = v59
+	v60 = edx
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = edx
+	Mem0[esp:word32] = v60
 	call fn100002A9 (retsize: 4;)
 	esp = esp + 0x00000044
 	SCZO = cond(esp)
@@ -329,11 +409,13 @@ l10000211:
 	// succ:  l1000021B l1000022E
 l1000021B:
 	ecx = Mem0[esi + 0x00000004:word32]
+	v29 = eax
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = eax
+	Mem0[esp:word32] = v29
 	edx = Mem0[ecx + 0x000000D0:word32]
+	v30 = edx
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = edx
+	Mem0[esp:word32] = v30
 	call fn1000026E (retsize: 4;)
 	esp = esp + 0x00000008
 	SCZO = cond(esp)

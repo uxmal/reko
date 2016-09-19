@@ -68,16 +68,17 @@ fn0C00_0000_exit:
 
 fp:fp
 sp_1: orig: sp
-sp_2: orig: sp
 ax:ax
-wLoc02_4: orig: wLoc02
-Mem5: orig: Mem0
-    def:  Mem5[ds:0x0200:word16] = 0xFFFF
+v4_3: orig: v4
+sp_4: orig: sp
+wLoc02_5: orig: wLoc02
+Mem6: orig: Mem0
+    def:  Mem6[ds:0x0200:word16] = 0xFFFF
 ds:ds
     def:  def ds
-    uses: Mem5[ds:0x0200:word16] = 0xFFFF
-ax_7: orig: ax
-sp_8: orig: sp
+    uses: Mem6[ds:0x0200:word16] = 0xFFFF
+ax_8: orig: ax
+sp_9: orig: sp
 // fn0C00_002A
 // Return size: 0
 void fn0C00_002A(selector ds)
@@ -85,7 +86,7 @@ fn0C00_002A_entry:
 	def ds
 	// succ:  l0C00_002A
 l0C00_002A:
-	Mem5[ds:0x0200:word16] = 0xFFFF
+	Mem6[ds:0x0200:word16] = 0xFFFF
 	return
 	// succ:  fn0C00_002A_exit
 fn0C00_002A_exit:

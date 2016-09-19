@@ -3,6 +3,7 @@
 // Mem0:Global memory
 // fp:fp
 // sp:sp
+// v3:v3
 // ss:ss
 // ds:ds
 // dx:dx
@@ -19,8 +20,9 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp = fp
+	v3 = 0x0D00
 	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = 0x0D00
+	Mem0[ss:sp:word16] = v3
 	ds = Mem0[ss:sp:selector]
 	sp = sp + 0x0002
 	dx = 0x3000

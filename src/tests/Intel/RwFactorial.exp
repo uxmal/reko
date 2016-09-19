@@ -4,6 +4,7 @@
 // fp:fp
 // sp:sp
 // cx:cx
+// v4:v4
 // ss:ss
 // SCZO:Flags
 // ds:ds
@@ -15,8 +16,9 @@ fn0C00_0000_entry:
 l0C00_0000:
 	sp = fp
 	cx = 0x0064
+	v4 = cx
 	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = cx
+	Mem0[ss:sp:word16] = v4
 	call fn0C00_000F (retsize: 2;)
 	sp = sp + 0x0002
 	SCZO = cond(sp)
@@ -30,10 +32,12 @@ fn0C00_0000_exit:
 // fp:fp
 // sp:sp
 // bp:bp
+// v4:v4
 // ss:ss
 // ax:ax
 // SZO:Flags
 // Z:Flags
+// v9:v9
 // dx:dx
 // dx_ax:Sequence dx:ax
 // SCZO:Flags
@@ -43,8 +47,9 @@ fn0C00_000F_entry:
 	// succ:  l0C00_000F
 l0C00_000F:
 	sp = fp
+	v4 = bp
 	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = bp
+	Mem0[ss:sp:word16] = v4
 	bp = sp
 	ax = Mem0[ss:bp + 0x0004:word16]
 	ax = ax - 0x0001
@@ -52,8 +57,9 @@ l0C00_000F:
 	branch Test(EQ,Z) l0C00_0026
 	// succ:  l0C00_0018 l0C00_0026
 l0C00_0018:
+	v9 = ax
 	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = ax
+	Mem0[ss:sp:word16] = v9
 	call fn0C00_000F (retsize: 2;)
 	sp = sp + 0x0001
 	SZO = cond(sp)

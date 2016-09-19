@@ -15,24 +15,30 @@ fn0C00_0000_entry:
 // SymbolicIn: sp:fp
 l0C00_0000:
 	sp = fp
+	v4 = bp
 	sp = fp - 0x0002
-	wLoc02 = bp
+	wLoc02 = v4
 	bp = fp - 0x0002
 	es_bx = ptrArg04
+	v8 = es
 	sp = fp - 0x0004
-	wLoc04 = es
+	wLoc04 = v8
+	v10 = bx
 	sp = fp - 0x0006
-	wLoc06 = bx
+	wLoc06 = v10
 	call fn0C00_0020 (retsize: 2; depth: 8)
 	sp = fp - 0x0002
 	SCZO = cond(fp - 0x0002)
+	v13 = ax
 	sp = fp - 0x0004
-	wLoc04 = ax
+	wLoc04 = v13
 	es_bx = ptrArg04
+	v14 = es
 	sp = fp - 0x0006
-	wLoc06 = es
+	wLoc06 = v14
+	v15 = bx
 	sp = fp - 0x0008
-	wLoc08 = bx
+	wLoc08 = v15
 	call fn0C00_002E (retsize: 2; depth: 10)
 	sp = fp - 0x0002
 	SCZO = cond(fp - 0x0002)
@@ -65,8 +71,9 @@ fn0C00_0020_entry:
 // SymbolicIn: sp:fp
 l0C00_0020:
 	sp = fp
+	v4 = bp
 	sp = fp - 0x0002
-	wLoc02 = bp
+	wLoc02 = v4
 	bp = fp - 0x0002
 	es_bx = ptrArg02
 	ax = Mem0[es:bx + 0x0004:word16]
@@ -99,8 +106,9 @@ fn0C00_002E_entry:
 // SymbolicIn: sp:fp
 l0C00_002E:
 	sp = fp
+	v4 = bp
 	sp = fp - 0x0002
-	wLoc02 = bp
+	wLoc02 = v4
 	bp = fp - 0x0002
 	es_bx = ptrArg02
 	ax = wArg06

@@ -29,7 +29,7 @@ void fn0C00_000C(selector ds)
 fn0C00_000C_entry:
 	// succ:  l0C00_000C
 l0C00_000C:
-	Mem8[ds:0x0105:byte] = Mem0[ds:0x0104:byte]
+	Mem9[ds:0x0105:byte] = Mem0[ds:0x0104:byte]
 	return
 	// succ:  fn0C00_000C_exit
 fn0C00_000C_exit:

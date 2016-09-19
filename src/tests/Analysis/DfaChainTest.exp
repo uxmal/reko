@@ -43,18 +43,18 @@ word16 fn0C00_000F(word16 dx)
 fn0C00_000F_entry:
 	// succ:  l0C00_000F
 l0C00_000F:
-	word16 si_11 = 0x0000
+	word16 si_12 = 0x0000
 	goto l0C00_0018
 	// succ:  l0C00_0018
 l0C00_0015:
-	si_11 = si_11 + dx
+	si_12 = si_12 + dx
 	dx = dx - 0x0001
 	// succ:  l0C00_0018
 l0C00_0018:
 	branch dx >= 0x0000 l0C00_0015
 	// succ:  l0C00_001D l0C00_0015
 l0C00_001D:
-	return si_11
+	return si_12
 	// succ:  fn0C00_000F_exit
 fn0C00_000F_exit:
 

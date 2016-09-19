@@ -4,6 +4,7 @@
 // fp:fp
 // sp:sp
 // cx:cx
+// v4:v4
 // ss:ss
 // cl:cl
 // ax:ax
@@ -18,8 +19,9 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp = fp
+	v4 = cx
 	sp = sp - 0x0002
-	Mem0[ss:sp:word16] = cx
+	Mem0[ss:sp:word16] = v4
 	cl = 0x03
 	cx = DPB(cx, cl, 0) (alias)
 	ax = ax ^ ax

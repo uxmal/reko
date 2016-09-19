@@ -9,6 +9,7 @@ void fn0C00_0000(Register word16 di, Register selector ds)
 // fp:fp
 // sp:sp
 // si:si
+// v4:v4
 // ss:ss
 // SCZO:Flags
 // wLoc02:Local -0002
@@ -22,6 +23,7 @@ l0C00_0000:
 	sp = fp
 	si = 0x0100
 	fn0C00_0010(si, di, ds)
+	v4 = 0x0100
 	sp = fp - 0x0002
 	wLoc02 = 0x0100
 	fn0C00_0017(di, ds, wLoc02)
@@ -67,10 +69,12 @@ void fn0C00_0017(Register word16 di, Register selector ds, Stack word16 wArg02)
 // fp:fp
 // sp:sp
 // bp:bp
+// v4:v4
 // ss:ss
 // bx:bx
 // ax:ax
 // ds:ds
+// v9:v9
 // SCZO:Flags
 // wLoc02:Local -0002
 // wArg02:Stack +0002
@@ -82,13 +86,15 @@ fn0C00_0017_entry:
 	// succ:  l0C00_0017
 l0C00_0017:
 	sp = fp
+	v4 = bp
 	sp = fp - 0x0002
-	wLoc02 = bp
+	wLoc02 = v4
 	bp = fp - 0x0002
 	bx = wArg02
 	ax = Mem0[ds:bx + 0x0002:word16]
+	v9 = ax
 	sp = fp - 0x0004
-	wLoc04 = ax
+	wLoc04 = v9
 	fn0C00_002C(di, ds, wLoc04)
 	sp = fp - 0x0002
 	SCZO = cond(fp - 0x0002)
@@ -132,6 +138,7 @@ void fn0C00_002C(Register word16 di, Register selector ds, Stack word16 wArg02)
 // fp:fp
 // sp:sp
 // bp:bp
+// v4:v4
 // ss:ss
 // ax:ax
 // di:di
@@ -144,8 +151,9 @@ fn0C00_002C_entry:
 	// succ:  l0C00_002C
 l0C00_002C:
 	sp = fp
+	v4 = bp
 	sp = fp - 0x0002
-	wLoc02 = bp
+	wLoc02 = v4
 	bp = fp - 0x0002
 	ax = wArg02
 	Mem0[ds:di:word16] = ax

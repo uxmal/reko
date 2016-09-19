@@ -33,24 +33,24 @@ void fn00100057(word32 dwArg08, word32 dwArg0C)
 fn00100057_entry:
 	// succ:  l00100057
 l00100057:
-	word32 ecx_25 = dwArg08
-	word32 edi_9 = dwArg08 - 0x00000001 + dwArg0C
-	branch dwArg08 >=u edi_9 l00100095
+	word32 ecx_26 = dwArg08
+	word32 edi_10 = dwArg08 - 0x00000001 + dwArg0C
+	branch dwArg08 >=u edi_10 l00100095
 	// succ:  l00100068 l00100095
 l00100068:
-	word32 esi_38 = dwLoc02
+	word32 esi_41 = dwLoc02
 	// succ:  l00100073
 l00100073:
-	word32 edx_43 = SLICE(esi_38 *u 0xCCCCCCCD, word32, 32)
-	Mem52[ecx_25 + 0x00000000:byte] = (byte) (esi_38 - ((edx_43 >>u 0x00000003) + (edx_43 >>u 0x00000003) * 0x00000004) * 0x00000002) + 0x30
-	ecx_25 = ecx_25 + 0x00000001
-	esi_38 = edx_43 >>u 0x00000003
-	branch ecx_25 <u edi_9 l00100073
+	word32 edx_46 = SLICE(esi_41 *u 0xCCCCCCCD, word32, 32)
+	Mem55[ecx_26 + 0x00000000:byte] = (byte) (esi_41 - ((edx_46 >>u 0x00000003) + (edx_46 >>u 0x00000003) * 0x00000004) * 0x00000002) + 0x30
+	ecx_26 = ecx_26 + 0x00000001
+	esi_41 = edx_46 >>u 0x00000003
+	branch ecx_26 <u edi_10 l00100073
 	// succ:  l00100093 l00100073
 l00100093:
 	// succ:  l00100095
 l00100095:
-	Mem30[ecx_25 + 0x00000000:byte] = 0x00
+	Mem31[ecx_26 + 0x00000000:byte] = 0x00
 	return
 	// succ:  fn00100057_exit
 fn00100057_exit:
@@ -135,7 +135,7 @@ T_31 (in fn0010002B(dwArg04 - 0x00000001) + fn0010002B(dwArg04 - 0x00000002) : w
 	trait_primitive(word32)
 T_32 (in 0x00000001 : word32)
 	trait_primitive(word32)
-T_33 (in ecx_25 : word32)
+T_33 (in ecx_26 : word32)
 	trait_primitive(word32)
 	trait_equal(T_34)
 	trait_primitive(word32)
@@ -157,7 +157,7 @@ T_34 (in dwArg08 : word32)
 	trait_primitive(word32)
 	trait_equal(T_35)
 	trait_primitive(up32)
-T_35 (in edi_9 : word32)
+T_35 (in edi_10 : word32)
 	trait_primitive(word32)
 	trait_equal(T_39)
 	trait_primitive(word32)
@@ -172,18 +172,18 @@ T_38 (in dwArg0C : word32)
 	trait_primitive(word32)
 T_39 (in dwArg08 - 0x00000001 + dwArg0C : word32)
 	trait_primitive(word32)
-T_40 (in dwArg08 >=u edi_9 : bool)
+T_40 (in dwArg08 >=u edi_10 : bool)
 	trait_primitive(bool)
 T_41 (in 0x00 : byte)
 	trait_primitive(byte)
 T_42 (in 0x00000000 : word32)
 	trait_primitive(word32)
-T_43 (in ecx_25 + 0x00000000 : word32)
+T_43 (in ecx_26 + 0x00000000 : word32)
 	trait_primitive(word32)
-T_44 (in Mem30[ecx_25 + 0x00000000:byte] : byte)
+T_44 (in Mem31[ecx_26 + 0x00000000:byte] : byte)
 	trait_primitive(byte)
 	trait_equal(T_41)
-T_45 (in esi_38 : word32)
+T_45 (in esi_41 : word32)
 	trait_primitive(word32)
 	trait_equal(T_46)
 	trait_primitive(word32)
@@ -194,7 +194,7 @@ T_45 (in esi_38 : word32)
 	trait_equal(T_68)
 T_46 (in dwLoc02 : word32)
 	trait_primitive(word32)
-T_47 (in edx_43 : word32)
+T_47 (in edx_46 : word32)
 	trait_primitive(word32)
 	trait_equal(T_50)
 	trait_primitive(word32)
@@ -206,10 +206,10 @@ T_47 (in edx_43 : word32)
 T_48 (in 0xCCCCCCCD : word32)
 	trait_primitive(word32)
 	trait_primitive(uint32)
-T_49 (in esi_38 *u 0xCCCCCCCD : uint64)
+T_49 (in esi_41 *u 0xCCCCCCCD : uint64)
 	trait_primitive(uint64)
 	trait_primitive(uint64)
-T_50 (in SLICE(esi_38 *u 0xCCCCCCCD, word32, 32) : word32)
+T_50 (in SLICE(esi_41 *u 0xCCCCCCCD, word32, 32) : word32)
 	trait_primitive(word32)
 T_51 (in 0x00000003 : word32)
 	trait_primitive(word32)
@@ -218,47 +218,47 @@ T_51 (in 0x00000003 : word32)
 	trait_primitive(uint32)
 	trait_primitive(word32)
 	trait_primitive(uint32)
-T_52 (in edx_43 >>u 0x00000003 : word32)
+T_52 (in edx_46 >>u 0x00000003 : word32)
 	trait_primitive(uir32)
 	trait_primitive(uint32)
-T_53 (in edx_43 >>u 0x00000003 : word32)
+T_53 (in edx_46 >>u 0x00000003 : word32)
 	trait_primitive(uir32)
 	trait_primitive(uint32)
 	trait_primitive(ui32)
 T_54 (in 0x00000004 : word32)
 	trait_primitive(word32)
 	trait_primitive(ui32)
-T_55 (in (edx_43 >>u 0x00000003) * 0x00000004 : word32)
+T_55 (in (edx_46 >>u 0x00000003) * 0x00000004 : word32)
 	trait_primitive(ui32)
-T_56 (in (edx_43 >>u 0x00000003) + (edx_43 >>u 0x00000003) * 0x00000004 : word32)
+T_56 (in (edx_46 >>u 0x00000003) + (edx_46 >>u 0x00000003) * 0x00000004 : word32)
 	trait_primitive(word32)
 	trait_primitive(ui32)
 T_57 (in 0x00000002 : word32)
 	trait_primitive(word32)
 	trait_primitive(ui32)
-T_58 (in ((edx_43 >>u 0x00000003) + (edx_43 >>u 0x00000003) * 0x00000004) * 0x00000002 : word32)
+T_58 (in ((edx_46 >>u 0x00000003) + (edx_46 >>u 0x00000003) * 0x00000004) * 0x00000002 : word32)
 	trait_primitive(ui32)
-T_59 (in esi_38 - ((edx_43 >>u 0x00000003) + (edx_43 >>u 0x00000003) * 0x00000004) * 0x00000002 : word32)
+T_59 (in esi_41 - ((edx_46 >>u 0x00000003) + (edx_46 >>u 0x00000003) * 0x00000004) * 0x00000002 : word32)
 	trait_primitive(word32)
-T_60 (in (byte) (esi_38 - ((edx_43 >>u 0x00000003) + (edx_43 >>u 0x00000003) * 0x00000004) * 0x00000002) : byte)
+T_60 (in (byte) (esi_41 - ((edx_46 >>u 0x00000003) + (edx_46 >>u 0x00000003) * 0x00000004) * 0x00000002) : byte)
 	trait_primitive(byte)
 T_61 (in 0x30 : byte)
 	trait_primitive(byte)
-T_62 (in (byte) (esi_38 - ((edx_43 >>u 0x00000003) + (edx_43 >>u 0x00000003) * 0x00000004) * 0x00000002) + 0x30 : byte)
+T_62 (in (byte) (esi_41 - ((edx_46 >>u 0x00000003) + (edx_46 >>u 0x00000003) * 0x00000004) * 0x00000002) + 0x30 : byte)
 	trait_primitive(byte)
 T_63 (in 0x00000000 : word32)
 	trait_primitive(word32)
-T_64 (in ecx_25 + 0x00000000 : word32)
+T_64 (in ecx_26 + 0x00000000 : word32)
 	trait_primitive(word32)
-T_65 (in Mem52[ecx_25 + 0x00000000:byte] : byte)
+T_65 (in Mem55[ecx_26 + 0x00000000:byte] : byte)
 	trait_primitive(byte)
 	trait_equal(T_62)
 T_66 (in 0x00000001 : word32)
 	trait_primitive(word32)
-T_67 (in ecx_25 + 0x00000001 : word32)
+T_67 (in ecx_26 + 0x00000001 : word32)
 	trait_primitive(word32)
-T_68 (in edx_43 >>u 0x00000003 : word32)
+T_68 (in edx_46 >>u 0x00000003 : word32)
 	trait_primitive(uir32)
 	trait_primitive(uint32)
-T_69 (in ecx_25 <u edi_9 : bool)
+T_69 (in ecx_26 <u edi_10 : bool)
 	trait_primitive(bool)

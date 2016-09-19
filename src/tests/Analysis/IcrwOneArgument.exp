@@ -8,7 +8,7 @@ a_1: orig: a
 fp:fp
     def:  def fp
     uses: esp_3 = fp
-          esp_7 = fp - 0x00000004
+          esp_8 = fp - 0x00000004
 esp_3: orig: esp
     def:  esp_3 = fp
 eax_4: orig: eax
@@ -16,18 +16,20 @@ eax_4: orig: eax
 Mem0:Global memory
     def:  def Mem0
     uses: ecx_6 = Mem0[a:word32]
-          Mem0[ecx_6 + 0x00000004:word32](dwLoc04_8)
+          Mem0[ecx_6 + 0x00000004:word32](dwLoc04_9)
 ecx_6: orig: ecx
     def:  ecx_6 = Mem0[a:word32]
-    uses: Mem0[ecx_6 + 0x00000004:word32](dwLoc04_8)
-esp_7: orig: esp
-    def:  esp_7 = fp - 0x00000004
-dwLoc04_8: orig: dwLoc04
-    def:  dwLoc04_8 = 0x0000000A
-    uses: Mem0[ecx_6 + 0x00000004:word32](dwLoc04_8)
-esp_9: orig: esp
-eax_10: orig: eax
-ecx_11: orig: ecx
+    uses: Mem0[ecx_6 + 0x00000004:word32](dwLoc04_9)
+v5_7: orig: v5
+    def:  v5_7 = 0x0000000A
+esp_8: orig: esp
+    def:  esp_8 = fp - 0x00000004
+dwLoc04_9: orig: dwLoc04
+    def:  dwLoc04_9 = 0x0000000A
+    uses: Mem0[ecx_6 + 0x00000004:word32](dwLoc04_9)
+esp_10: orig: esp
+eax_11: orig: eax
+ecx_12: orig: ecx
 // test
 // Return size: 4
 void test(str * a)
@@ -41,9 +43,10 @@ l0C00_0000:
 	esp_3 = fp
 	eax_4 = a_1
 	ecx_6 = Mem0[a:word32]
-	esp_7 = fp - 0x00000004
-	dwLoc04_8 = 0x0000000A
-	Mem0[ecx_6 + 0x00000004:word32](dwLoc04_8)
+	v5_7 = 0x0000000A
+	esp_8 = fp - 0x00000004
+	dwLoc04_9 = 0x0000000A
+	Mem0[ecx_6 + 0x00000004:word32](dwLoc04_9)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

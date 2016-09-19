@@ -44,8 +44,9 @@ fn0C00_000D_entry:
 // SymbolicIn: sp:fp
 l0C00_000D:
 	sp = fp
+	v4 = si
 	sp = fp - 0x0002
-	wLoc02 = si
+	wLoc02 = v4
 	si = Mem0[ds:0x007A:word16]
 	si = Mem0[ds:si + 0x0004:word16]
 	ax = si + 0x0008
@@ -77,8 +78,9 @@ fn0C00_001A_entry:
 // SymbolicIn: sp:fp
 l0C00_001A:
 	sp = fp
+	v4 = si
 	sp = fp - 0x0002
-	wLoc02 = si
+	wLoc02 = v4
 	ax = Mem0[ds:si:word16]
 	si = wLoc02
 	sp = fp

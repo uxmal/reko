@@ -9,6 +9,7 @@
 // SZO:Flags
 // C:Flags
 // Z:Flags
+// v9:v9
 // eax:eax
 // SCZO:Flags
 // return address size: 4
@@ -23,8 +24,9 @@ l10000000:
 	goto l1000002F
 	// succ:  l1000002F
 l10000015:
+	v9 = 0x00000008
 	esp = esp - 0x00000004
-	Mem0[esp:word32] = 0x00000008
+	Mem0[esp:word32] = v9
 	eax = malloc(Mem0[esp:size_t])
 	esp = esp + 0x00000004
 	SCZO = cond(esp)

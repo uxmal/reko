@@ -12,12 +12,12 @@ fn0C00_0000_entry:
 l0C00_0000:
 	word16 dx_6 = Mem0[ds:Mem0[ds:0x9CFD:word16] * 0x0002 + 0x99F8:word16]
 	Mem7[ds:0x9CFF:word16] = dx_6
-	word16 ax_17
-	msdos_read_file(Mem7[ds:0x99D0:word16], 0x0180, SEQ(0x6041, dx_6), out ax_17)
+	word16 ax_19
+	msdos_read_file(Mem7[ds:0x99D0:word16], 0x0180, SEQ(0x6041, dx_6), out ax_19)
 	msdos_close_file(Mem7[ds:0x99D0:word16])
-	Mem28[ds:0xC36A:word16] = Mem7[ds:Mem7[ds:0x9CFD:word16] * 0x0002 + 0x542E:word16]
-	Mem36[ds:0x0100:word16] = ds
-	Mem38[ds:0x0102:word16] = 0x6041
+	Mem30[ds:0xC36A:word16] = Mem7[ds:Mem7[ds:0x9CFD:word16] * 0x0002 + 0x542E:word16]
+	Mem39[ds:0x0100:word16] = ds
+	Mem41[ds:0x0102:word16] = 0x6041
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

@@ -52,12 +52,13 @@ fn0C00_0026_entry:
 // SymbolicIn: sp:fp
 l0C00_0026:
 	sp = fp
+	v4 = di
 	sp = fp - 0x0002
-	wLoc02 = di
+	wLoc02 = v4
 	di = Mem0[ds:0x0104:word16]
-	v6 = Mem0[ds:di + 0x0030:word16] + 0x0001
-	Mem0[ds:di + 0x0030:word16] = v6
-	SZO = cond(v6)
+	v7 = Mem0[ds:di + 0x0030:word16] + 0x0001
+	Mem0[ds:di + 0x0030:word16] = v7
+	SZO = cond(v7)
 	call fn0C00_0033 (retsize: 2; depth: 4)
 	di = wLoc02
 	sp = fp
