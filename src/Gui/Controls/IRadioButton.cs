@@ -27,6 +27,8 @@ namespace Reko.Gui.Controls
 {
     public interface IRadioButton : IControl
     {
+        event EventHandler CheckedChanged;
+
         bool Checked { get; set; }
     }
 }

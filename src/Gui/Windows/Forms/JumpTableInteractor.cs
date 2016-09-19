@@ -44,12 +44,31 @@ namespace Reko.Gui.Windows.Forms
             dlg.FormClosing += Dlg_FormClosing;
             dlg.EntryCount.ValueChanged += EntryCount_ValueChanged;
             dlg.Entries.SelectedIndexChanged += Entries_SelectedIndexChanged;
+            dlg.FarAddress.CheckedChanged += FarAddress_CheckedChanged;
+            dlg.RelativeAddress.CheckedChanged += RelativeAddress_CheckedChanged;
+            dlg.Offsets.CheckedChanged += Offsets_CheckedChanged;
         }
 
         private void EnableControls()
         {
             dlg.IndirectTable.Enabled = dlg.IsIndirectTable.Checked;
             dlg.IndirectLabel.Enabled = dlg.IsIndirectTable.Checked;
+        }
+
+        private void BuildAddressTable()
+        {
+            var vectorBuilder = new VectorBuilder(null, dlg.Program, null);
+            var addresses = new List<Address>();
+            Address addrTable;
+            if (dlg.Program.Platform.TryParseAddress(dlg.JumpTableStartAddress.Text, out addrTable))
+            {
+                var stride = TableStride();
+                var state = dlg.Program.Architecture.CreateProcessorState();
+                state.SetInstructionPointer(dlg.Instruction.Address);
+                addresses = vectorBuilder.BuildTable(addrTable, stride * (int)dlg.EntryCount.Value, null, stride, state);
+            }
+            dlg.Entries.DataSource = addresses;
+            dlg.Entries.SelectedIndex = addresses.Count - 1;
         }
 
         private void EnableSegmentedPanel(bool hasValue)
@@ -106,6 +125,8 @@ namespace Reko.Gui.Windows.Forms
                 .Select(s => s.Name)
                 .OrderBy(s => s)
                 .ToList();
+            BuildAddressTable();
+            EnableControls();
         }
 
         private void Dlg_FormClosing(object sender, FormClosingEventArgs e)
@@ -121,19 +142,10 @@ namespace Reko.Gui.Windows.Forms
 
         private void EntryCount_ValueChanged(object sender, EventArgs e)
         {
-            var vectorBuilder = new VectorBuilder(null, dlg.Program, null);
-            var addresses = new List<Address>();
-            Address addrTable;
-            if (dlg.Program.Platform.TryParseAddress(dlg.JumpTableStartAddress.Text, out addrTable))
-            {
-                var stride = TableStride();
-                var state = dlg.Program.Architecture.CreateProcessorState();
-                state.SetInstructionPointer(dlg.Instruction.Address);
-                addresses = vectorBuilder.BuildTable(addrTable, stride * (int) dlg.EntryCount.Value, null, stride, state);
-            }
-            dlg.Entries.DataSource = addresses;
-            dlg.Entries.SelectedIndex = addresses.Count - 1;
+            BuildAddressTable();
         }
+
+
 
         private void Entries_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -156,6 +168,24 @@ namespace Reko.Gui.Windows.Forms
 
         private void IsIndirectTable_CheckedChanged(object sender, EventArgs e)
         {
+            BuildAddressTable();
+            EnableControls();
+        }
+
+        private void FarAddress_CheckedChanged(object sender, EventArgs e)
+        {
+            BuildAddressTable();
+            EnableControls();
+        }
+        private void RelativeAddress_CheckedChanged(object sender, EventArgs e)
+        {
+            BuildAddressTable();
+            EnableControls();
+        }
+
+        private void Offsets_CheckedChanged(object sender, EventArgs e)
+        {
+            BuildAddressTable();
             EnableControls();
         }
     }

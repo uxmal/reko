@@ -225,7 +225,6 @@ namespace Reko.Scanning
             return new List<Address>();
         }
 
-
         public bool IsValidAddress(Address addr)
         {
             return program.SegmentMap.IsValidAddress(addr);

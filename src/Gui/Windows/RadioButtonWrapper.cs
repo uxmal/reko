@@ -38,6 +38,12 @@ namespace Reko.Gui.Windows
             this.rdb = rdb;
         }
 
+        public event EventHandler CheckedChanged
+        {
+            add { rdb.CheckedChanged += value; }
+            remove { rdb.CheckedChanged -= value; }
+        }
+
         public bool Checked { get { return rdb.Checked; } set { rdb.Checked = value;  } }
     }
 }

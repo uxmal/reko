@@ -91,6 +91,22 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             }
         }
 
+        private void Given_IndirectTable_UInt32(Address address,  Address addrIndirect, params uint[] entries)
+        {
+            ImageSegment seg;
+            program.SegmentMap.Segments.TryGetValue(address, out seg);
+            var writer = new LeImageWriter(seg.MemoryArea, address);
+            foreach (uint entry in entries)
+            {
+                writer.WriteLeUInt32(entry);
+            }
+            writer = new LeImageWriter(seg.MemoryArea, addrIndirect);
+            for (int i = 0; i< entries.Length; ++i)
+            {
+                writer.WriteByte((byte)i);
+            }
+        }
+
         private void Given_Disassembly(Address addr)
         {
             arch.Test_DisassemblyStream = new List<MachineInstruction>
