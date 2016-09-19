@@ -733,6 +733,8 @@ namespace Reko.Scanning
             ImageMapVectorTable imgVector;
             Expression swExp;
             UserIndirectJump indJump;
+
+            var listener = scanner.Services.RequireService<DecompilerEventListener>();
             if (program.User.IndirectJumps.TryGetValue(addrSwitch, out indJump))
             {
                 vector = indJump.Table.Addresses;
@@ -741,21 +743,9 @@ namespace Reko.Scanning
             }
             else
             {
-                var rdr = scanner.CreateReader(bw.VectorAddress);
-                if (!rdr.IsValid)
-                    return false;
                 var bw = new Backwalker(new BackwalkerHost(this), xfer, eval);
                 if (!bw.CanBackwalk())
-                {
                     return false;
-                // Can't determine the size of the table, but surely it has one entry?
-                var addrEntry = arch.ReadCodeAddress(bw.Stride, rdr, state);
-                if (this.program.SegmentMap.IsValidAddress(addrEntry))
-                {
-                    vector.Add(addrEntry);
-                    scanner.Warn(addrSwitch, "Can't determine size of jump vector; probing only one entry.");
-                }
-                else
                 var bwops = bw.BackWalk(blockCur);
                 if (bwops == null || bwops.Count == 0)
                     return false;     //$REVIEW: warn?
@@ -766,16 +756,15 @@ namespace Reko.Scanning
                 VectorBuilder builder = new VectorBuilder(scanner.Services, program, new DirectedGraphImpl<object>());
                 if (bw.VectorAddress == null)
                     return false;
+
                 vector = builder.BuildAux(bw, addrSwitch, state);
                 if (vector.Count == 0)
                 {
-                    var addrNext = bw.VectorAddress + bw.Stride;
                     var rdr = scanner.CreateReader(bw.VectorAddress);
                     if (!rdr.IsValid)
                         return false;
                     // Can't determine the size of the table, but surely it has one entry?
                     var addrEntry = arch.ReadCodeAddress(bw.Stride, rdr, state);
-                    var listener = scanner.Services.RequireService<DecompilerEventListener>();
                     string msg;
                     if (this.program.SegmentMap.IsValidAddress(addrEntry))
                     {

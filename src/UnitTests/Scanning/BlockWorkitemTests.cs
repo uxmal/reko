@@ -33,6 +33,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.ComponentModel.Design;
+using Reko.Core.Services;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -66,6 +67,7 @@ namespace Reko.UnitTests.Scanning
             sp = new Identifier("sp", PrimitiveType.Word32, new RegisterStorage("sp", 15, 0, PrimitiveType.Word32));
             grf = proc.Frame.EnsureFlagGroup(Registers.eflags, 3, "SCZ", PrimitiveType.Byte);
             var sc = new ServiceContainer();
+            var listener = mr.Stub<DecompilerEventListener>();
             scanner = mr.StrictMock<IScanner>();
             arch = mr.Stub<IProcessorArchitecture>();
             program.Architecture = arch;
@@ -81,6 +83,7 @@ namespace Reko.UnitTests.Scanning
             arch.Stub(s => s.StackRegister).Return((RegisterStorage)sp.Storage);
             arch.Stub(s => s.PointerType).Return(PrimitiveType.Pointer32);
             scanner.Stub(s => s.Services).Return(sc);
+            sc.AddService<DecompilerEventListener>(listener);
         }
 
         private BlockWorkitem CreateWorkItem(Address addr, ProcessorState state)
