@@ -225,7 +225,6 @@ namespace Reko.UnitTests.Core.Serialization
             };
             var sw = new StringWriter();
             new ProjectSaver(sc).Save(sp, sw);
-            Console.WriteLine(sw);
         }
     }
 }

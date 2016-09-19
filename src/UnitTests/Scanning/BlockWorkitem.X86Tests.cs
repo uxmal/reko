@@ -45,7 +45,6 @@ namespace Reko.UnitTests.Scanning
     public class BlockWorkItem_X86Tests
     {
         private MockRepository mr;
-        private IntelArchitecture arch;
         private Procedure proc;
         private Block block;
         private IScanner scanner;
@@ -186,7 +185,6 @@ namespace Reko.UnitTests.Scanning
 
         private void BuildTest(IntelArchitecture arch, Address addr, IPlatform platform, Action<X86Assembler> m)
         {
-            this.arch = new X86ArchitectureFlat32();
             proc = new Procedure("test", arch.CreateFrame());
             block = proc.AddBlock("testblock");
             this.state = arch.CreateProcessorState();
@@ -202,7 +200,6 @@ namespace Reko.UnitTests.Scanning
                     {
                         "GetDC",
                         new FunctionType(
-                            null,
                             new Identifier("", new Pointer(VoidType.Instance, 4), new RegisterStorage("eax", 0, 0, PrimitiveType.Word32)),
                             new [] {
                                 new Identifier("arg",
@@ -333,12 +330,10 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void BwiX86_RewriteIndirectCall()
         {
-            var addr = Address.SegPtr(0xC00, 0x0000);
             BuildTest16(delegate(X86Assembler m)
             {
                 scanner.Stub(x => x.GetCallSignatureAtAddress(Arg<Address>.Is.Anything)).Return(
                     new FunctionType(
-                        null,
                         Reg(Registers.ax),
                         new Identifier[] { Reg(Registers.cx) }));
 
@@ -346,7 +341,6 @@ namespace Reko.UnitTests.Scanning
             });
             wi.Process();
             var sw = new StringWriter();
-            block.WriteStatements(Console.Out);
             block.WriteStatements(sw);
             string sExp =
                 "\tax = SEQ(cs, Mem0[ds:bx + 0x0004:word16])(cx)" + nl;
@@ -400,7 +394,6 @@ namespace Reko.UnitTests.Scanning
 
             wi.Process();
             var sw = new StringWriter();
-            block.WriteStatements(Console.Out);
             block.WriteStatements(sw);
             string sExp = "\tbx = bx & 0x0003" + nl +
                 "\tSZO = cond(bx)" + nl +
@@ -526,7 +519,6 @@ namespace Reko.UnitTests.Scanning
                 "\treturn" + nl;
             var sw = new StringWriter();
             block.Write(sw);
-            Console.WriteLine(sw.ToString());
             Assert.AreEqual(sExp, sw.ToString());
         }
     }

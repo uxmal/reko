@@ -62,7 +62,7 @@ namespace Reko.UnitTests.Core.Lib
             int[] expectedLcps = { 0, 1, 4, 1, 1, 0, 3, 0, 0, 0, 2 };
             var sa = SuffixArray.Create(str);
 
-            PrintSortedArray(sa);
+            //DumpSortedArray(sa);
 
             Assert.AreEqual(sa.Length, str.Length, "Wrong SA length");
             Assert.AreEqual(sa.Lcp.Length, str.Length + 1, "Wrong LCP length");
@@ -107,11 +107,11 @@ namespace Reko.UnitTests.Core.Lib
             Assert.AreEqual(sa.IndexOf(new char[0]), -1, "Wrong index");
         }
 
-        public void PrintSortedArray(SuffixArray<char> sa)
+        public void DumpSortedArray(SuffixArray<char> sa)
         {
             for (int i = 0; i < sa.Length; i++)
             {
-                Console.Write("{0,4} {1,4} lcp = {2,4} {3}",
+                Debug.Print("{0,4} {1,4} lcp = {2,4} {3}",
                     i,
                     sa[i],
                     sa.Lcp[i],
@@ -130,7 +130,6 @@ namespace Reko.UnitTests.Core.Lib
         public void Occurences2()
         {
             var sa = SuffixArray.Create("papapa");
-            PrintSortedArray(sa);
             Assert.AreEqual(new[] { 0, 2 }, sa.FindOccurences("papa".ToCharArray()).ToArray());
         }
 
@@ -167,7 +166,7 @@ namespace Reko.UnitTests.Core.Lib
         public void Sufa_Abracadabra()
         {
             var sa = SuffixArray.Create("abracadabra");
-            PrintSortedArray(sa);
+            //DumpSortedArray(sa);
             Debug.Print(sa.ToString());
             Assert.AreEqual(new[] { 0, 3, 5, 7, 10 }, sa.FindOccurences("a".ToCharArray()).OrderBy(i=>i).ToArray());
         }

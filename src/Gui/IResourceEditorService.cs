@@ -59,7 +59,6 @@ namespace Reko.Gui
 
         private string ResourceToString(ProgramResourceInstance resource)
         {
-            var items = new List<string>();
             return string.Format("{0}:{1}", resource.Type, resource.Name);
         }
     }

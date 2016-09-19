@@ -26,6 +26,7 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Reko.Scanning
@@ -212,7 +213,7 @@ namespace Reko.Scanning
 
         private List<Address> PostError(string err, Address addrInstr, Address addrTable)
         {
-            System.Diagnostics.Trace.WriteLine(string.Format("Instruction at {0}, table at {1}: {2}", addrInstr, addrTable, err));
+            Debug.WriteLine(string.Format("Instruction at {0}, table at {1}: {2}", addrInstr, addrTable, err));
             return new List<Address>();
         }
 

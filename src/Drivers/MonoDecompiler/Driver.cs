@@ -48,7 +48,6 @@ namespace Reko.Mono
             }
 			else
 			{
-                var host = NullDecompilerHost.Instance;
                 var listener = NullDecompilerEventListener.Instance;
 
                 services.AddService(typeof (DecompilerEventListener), listener);

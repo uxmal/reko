@@ -59,9 +59,9 @@ namespace Reko.Core.Types
 			return new ArrayType(elType, length);
 		}
 
-		public FunctionType CreateFunctionType(string functionName, Identifier returnType, Identifier [] parameters)
+		public FunctionType CreateFunctionType(Identifier returnType, Identifier [] parameters)
 		{
-			return new FunctionType(functionName, returnType, parameters);
+			return new FunctionType(returnType, parameters);
 		}
 
 		public PrimitiveType CreatePrimitiveType(Domain dom, int size)

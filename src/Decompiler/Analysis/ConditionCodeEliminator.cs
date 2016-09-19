@@ -413,8 +413,6 @@ namespace Reko.Analysis
                 sidGrf.Identifier, sidGrf.DefExpression);
             sidTmp.Uses.Add(sidGrf.DefStatement);
              
-            ssa.DebugDump(true);
-            Debug.Print("sidGrf: *** {0}", sidGrf);
             return sidOrigLo.DefStatement.Instruction;
         }
 

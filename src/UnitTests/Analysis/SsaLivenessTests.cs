@@ -77,7 +77,6 @@ namespace Reko.UnitTests.Analysis
 			}
 
 			Block block = proc.EntryBlock.Succ[0];
-			block.Write(Console.Out);
 			Assert.AreEqual("Mem3[0x10000000:word32] = a + b", block.Statements[0].Instruction.ToString());
 			Assert.AreEqual("Mem4[0x10000004:word32] = a", block.Statements[1].Instruction.ToString());
 
@@ -145,7 +144,6 @@ namespace Reko.UnitTests.Analysis
 			sla2 = new SsaLivenessAnalysis2(proc, ssa.Identifiers);
 			sla2.Analyze();
 		}
-
 
 		public class SimpleMock : ProcedureBuilder
 		{

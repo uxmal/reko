@@ -681,7 +681,7 @@ namespace Reko.Scanning
                 if (svc.Characteristics.Terminates)
                 {
                     scanner.TerminateBlock(blockCur, ric.Address + ric.Length);
-                    blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
+                    //blockCur.Procedure.ControlGraph.AddEdge(blockCur, blockCur.Procedure.ExitBlock);
                     return true;
                 }
                 AffectProcessorState(svc.Signature);
@@ -741,11 +741,21 @@ namespace Reko.Scanning
             }
             else
             {
+                var rdr = scanner.CreateReader(bw.VectorAddress);
+                if (!rdr.IsValid)
+                    return false;
                 var bw = new Backwalker(new BackwalkerHost(this), xfer, eval);
                 if (!bw.CanBackwalk())
                 {
                     return false;
+                // Can't determine the size of the table, but surely it has one entry?
+                var addrEntry = arch.ReadCodeAddress(bw.Stride, rdr, state);
+                if (this.program.SegmentMap.IsValidAddress(addrEntry))
+                {
+                    vector.Add(addrEntry);
+                    scanner.Warn(addrSwitch, "Can't determine size of jump vector; probing only one entry.");
                 }
+                else
                 var bwops = bw.BackWalk(blockCur);
                 if (bwops == null || bwops.Count == 0)
                     return false;     //$REVIEW: warn?

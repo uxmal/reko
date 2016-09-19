@@ -177,7 +177,6 @@ namespace Reko.Scanning.Dfa
                 ++idx;
             }
             return false;
-            throw new NotImplementedException();
         }
 
         private TreeNode ParseCharClass()

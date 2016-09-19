@@ -258,7 +258,6 @@ ProcedureBuilder_exit:
                 var sp = m.Register(m.Architecture.StackRegister);
                 var bp = m.Frame.CreateTemporary("bp", sp.DataType);
                 var r1 = m.Reg32("r1", 1);
-                var r2 = m.Reg32("r2", 2);
                 var flags = m.Architecture.GetFlagGroup(1).FlagRegister;
                 var cr = m.Frame.EnsureFlagGroup(flags, 0x3, "CZS", PrimitiveType.Byte);
                 m.Assign(sp, m.Frame.FramePointer);
@@ -331,7 +330,6 @@ ProcedureBuilder_exit:
                 var sp = m.Register(m.Architecture.StackRegister);
                 var bp = m.Frame.CreateTemporary("bp", sp.DataType);
                 var r1 = m.Reg32("r1", 1);
-                var r2 = m.Reg32("r2", 2);
                 var flags = m.Architecture.GetFlagGroup(1).FlagRegister;
                 var cr = m.Frame.EnsureFlagGroup(flags, 0x3, "CZS", PrimitiveType.Byte);
                 m.Assign(sp, m.Frame.FramePointer);
@@ -449,7 +447,6 @@ ProcedureBuilder_exit:
                 var sp = m.Register(m.Architecture.StackRegister);
                 var bp = m.Frame.CreateTemporary("bp", sp.DataType);
                 var r1 = m.Reg32("r1", 1);
-                var r2 = m.Reg32("r2", 2);
                 var flags = m.Architecture.GetFlagGroup(1).FlagRegister;
                 var cr = m.Frame.EnsureFlagGroup(flags, 0x3, "CZS", PrimitiveType.Byte);
                 m.Assign(sp, m.Frame.FramePointer);

@@ -99,7 +99,7 @@ namespace Reko.Analysis
 		}
 
         [Conditional("DEBUG")]
-		public void DebugDump(bool trace)
+		public void Dump(bool trace)
 		{
 			if (trace)
 			{

@@ -106,7 +106,7 @@ namespace Reko.UnitTests.Analysis
         public void EqualConstants()
         {
             var r4 = arch.GetRegister(4);
-            var id = proc.Frame.EnsureRegister(r4);
+            proc.Frame.EnsureRegister(r4);
             ctx.RegisterState[r4] = Constant.Word32(3);
             trs.PropagateToProcedureSummary();
             ctx.RegisterState[r4] = Constant.Word32(3);

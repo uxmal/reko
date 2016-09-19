@@ -337,7 +337,6 @@ namespace Reko.Scanning
             RegisterStorage regIdx,
             Block block)
         {
-            DumpBlock(regIdx, block);
             return BackwalkInstructions(regIdx, block.Statements.Reverse<Statement>());
         }
 

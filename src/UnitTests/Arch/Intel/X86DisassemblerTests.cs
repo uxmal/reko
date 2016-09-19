@@ -557,6 +557,7 @@ movzx	ax,byte ptr [bp+04]
         {
             var instr = Disassemble32(0xE9, 0x78, 0x56, 0x34, 012);
             var addrOp = (AddressOperand)instr.op1;
+            Assert.AreEqual("0C35567D", addrOp.ToString());
         }
 
         [Test]

@@ -36,10 +36,8 @@ namespace Reko.UnitTests.Evaluation
     [TestFixture]
     public class ExpressionSimplifierTests
     {
-        private Dictionary<Expression, Expression> table;
         private ExpressionSimplifier simplifier;
         private Identifier foo;
-        private Identifier bar;
         private ProcedureBuilder m;
 
         [SetUp]
@@ -51,7 +49,6 @@ namespace Reko.UnitTests.Evaluation
         private void Given_ExpressionSimplifier()
         {
             SsaIdentifierCollection ssaIds = BuildSsaIdentifiers();
-            table = new Dictionary<Expression, Expression>();
             simplifier = new ExpressionSimplifier(new SsaEvaluationContext(null, ssaIds));
         }
 
@@ -60,7 +57,6 @@ namespace Reko.UnitTests.Evaluation
             var mrFoo = new RegisterStorage("foo", 1, 0, PrimitiveType.Word32);
             var mrBar = new RegisterStorage("bar", 2, 1, PrimitiveType.Word32);
             foo = new Identifier(mrFoo.Name, mrFoo.DataType, mrFoo);
-            bar = new Identifier(mrBar.Name, mrBar.DataType, mrBar);
 
             var coll = new SsaIdentifierCollection();
             var src = Constant.Word32(1);

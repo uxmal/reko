@@ -34,8 +34,6 @@ namespace Reko.UnitTests.Mocks
 			Constant offset = Int16(0x300);
 			Identifier si1 = Local16("si1");
 			Identifier si2 = Local16("si2");
-			Identifier ax1 = Local16("ax1");
-			Identifier ax2 = Local16("ax2");
 
 			Assign(si1, SegMemW(ds, offset));
 			Store(SegMemW(ds, Int16(0x100)), SegMemW(ds, IAdd(si1, 0x0004)));

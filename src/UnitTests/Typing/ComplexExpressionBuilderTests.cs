@@ -228,6 +228,7 @@ namespace Reko.UnitTests.Typing
             var seg = Segment();
             CreateTv(globals, Ptr32(factory.CreateStructureType()), Ptr32(factory.CreateStructureType()));
             CreateTv(ds, Ptr16(seg), Ptr16(factory.CreateStructureType()));
+            var ceb = CreateBuilder(PrimitiveType.Int16, ds, bx);
         }
 
         [Test]
@@ -235,8 +236,8 @@ namespace Reko.UnitTests.Typing
         {
             var ds = new Identifier("ds", PrimitiveType.SegmentSelector, null);
             var bx = new Identifier("bx", PrimitiveType.Word16, null);
-            var tvDs = CreateTv(ds, Ptr16(Segment()), ds.DataType);
-            var tvBx = CreateTv(bx, MemPtr(Segment(), PrimitiveType.Word16), MemPtr(new TypeVariable(43), PrimitiveType.Word16));
+            CreateTv(ds, Ptr16(Segment()), ds.DataType);
+            CreateTv(bx, MemPtr(Segment(), PrimitiveType.Word16), MemPtr(new TypeVariable(43), PrimitiveType.Word16));
             var ceb = CreateBuilder(null, ds, bx);
             Assert.AreEqual("ds->*bx", ceb.BuildComplex(true).ToString());
         }
@@ -247,8 +248,8 @@ namespace Reko.UnitTests.Typing
             var dtPseg = Ptr16(Segment());
             var ds = new Identifier("ds", dtPseg, null);
             var bx = new Identifier("bx", PrimitiveType.Word16, null);
-            var tvDs = CreateTv(ds, dtPseg, ds.DataType);
-            var tvBx = CreateTv(bx, MemPtr(dtPseg, PrimitiveType.Real32), MemPtr(new TypeVariable(43), PrimitiveType.Real32));
+            CreateTv(ds, dtPseg, ds.DataType);
+            CreateTv(bx, MemPtr(dtPseg, PrimitiveType.Real32), MemPtr(new TypeVariable(43), PrimitiveType.Real32));
             var ceb = CreateBuilder(null, ds, bx);
             Assert.AreEqual("&(ds->*bx)", ceb.BuildComplex(false).ToString());
         }
@@ -266,7 +267,7 @@ namespace Reko.UnitTests.Typing
             }, 0);
             var a = new Identifier("a", Ptr32(array), null);
             var i = new Identifier("i", PrimitiveType.Int32, null);
-            var tvA = CreateTv(a, array, array);
+            CreateTv(a, array, array);
             var ceb = CreateBuilder(PrimitiveType.Word32, null, a, m.SMul(i, 8));
             Assert.AreEqual("a[i].dw0000", ceb.BuildComplex(true).ToString());
         }

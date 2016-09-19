@@ -68,7 +68,6 @@ namespace Reko.UnitTests.Evaluation
         {
             BinaryExpression b = m.IAdd(id, m.UMul(id, 5));
             Assignment ass = new Assignment(x, b);
-            Statement stm = new Statement(0, ass, null);
             var rule = new Add_mul_id_c_id_Rule(new SsaEvaluationContext(null, ssaIds));
             Assert.IsTrue(rule.Match(b));
             ass.Src = rule.Transform();

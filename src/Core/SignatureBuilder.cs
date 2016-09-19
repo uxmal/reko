@@ -92,7 +92,7 @@ namespace Reko.Core
 
 		public FunctionType BuildSignature()
 		{
-			return new FunctionType(null, ret, args.ToArray());
+			return new FunctionType(ret, args.ToArray());
 		}
 
 		public Identifier CreateOutIdentifier(Procedure proc, Identifier id)

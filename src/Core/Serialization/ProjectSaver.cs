@@ -63,7 +63,6 @@ namespace Reko.Core.Serialization
 
         public ProjectFile_v3 VisitProgram(string projectAbsPath, Program program)
         {
-            var dtSerializer = new DataTypeSerializer();
             return new DecompilerInput_v4
             {
                 Filename = ConvertToProjectRelativePath(projectAbsPath, program.Filename),

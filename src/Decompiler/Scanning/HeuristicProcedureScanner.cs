@@ -144,7 +144,6 @@ namespace Reko.Scanning
         /// <param name="valid"></param>
         private void RemoveBlocksConflictingWithValidBlocks(HashSet<HeuristicBlock> valid)
         {
-            var deleted = new HashSet<HeuristicBlock>();
             foreach (var n in blocks.Nodes.Where(nn => !valid.Contains(nn)).ToList())
             {
                 foreach (var v in valid)

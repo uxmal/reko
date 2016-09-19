@@ -32,8 +32,6 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void CastCreate()
 		{
-			TypeFactory typef = new TypeFactory();
-			
 			var cast = new Cast(PrimitiveType.Word32, Constant.Real32(3.0F));
 			var p = (PrimitiveType) cast.DataType;
 			Assert.AreEqual(PrimitiveType.Word32, p);

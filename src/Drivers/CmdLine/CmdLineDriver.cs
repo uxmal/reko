@@ -120,18 +120,7 @@ namespace Reko.CmdLine
                 throw new ApplicationException(string.Format("Unknown architecture {0}", pArgs["--arch"]));
 
             object sEnv;
-            IPlatform platform;
-            if (pArgs.TryGetValue("--env", out sEnv))
-            {
-                var opEnv = config.GetEnvironment((string)sEnv);
-                if (opEnv == null)
-                    throw new ApplicationException(string.Format("Unknown operating environment {0}", sEnv));
-                platform = opEnv.Load(services, arch);
-            }
-            else
-            {
-                platform = new DefaultPlatform(services, arch);
-            }
+            pArgs.TryGetValue("--env", out sEnv);
 
             Address addrBase;
             Address addrEntry;

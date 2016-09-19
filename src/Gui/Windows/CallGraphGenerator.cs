@@ -63,7 +63,7 @@ namespace Reko.Gui.Windows
                 visited.Add(proc);
                 Debug.Print("Node {0}", proc.Name);
                 visited.Add(proc);
-                var n = Render(proc);
+                Render(proc);
                 foreach (var pred in cgraph.CallerProcedures(proc).Where(p => p != rootProc))
                 {
                     Debug.Print("Edge {0} - {1}", pred.Name, proc.Name);

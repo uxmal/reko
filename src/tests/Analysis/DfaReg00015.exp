@@ -32,7 +32,6 @@ l0C00_001E:
 	Mem44[ss:0x06B6:word16] = Mem10[ss:0x06B6:word16]
 	fn0C00_0037(0x0000, 0x00FF, ds_20)
 	msdos_terminate((byte) Mem44[ss:0x06B6:word16])
-	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 
 // void fn0C00_0037(Register word16 ax, Register word16 dx, Register selector ds)

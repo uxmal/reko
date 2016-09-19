@@ -64,7 +64,7 @@ namespace Reko.UnitTests.Arch.Arm
             uint instr = ParseBitPattern(bitPattern);
             w.WriteLeUInt32(0, instr);
             var b = image.Bytes;
-            Debug.Print("Instruction bytes: {0:X2} {1:X2} {2:X2} {3:X2}", b[0], b[1], b[2], b[3]);
+            //Debug.Print("Instruction bytes: {0:X2} {1:X2} {2:X2} {3:X2}", b[0], b[1], b[2], b[3]); // Spews in the unit tests
             var arch = CreateArchitecture();
             var dasm = arch.CreateDisassembler(image.CreateLeReader(0));
             return dasm.First();

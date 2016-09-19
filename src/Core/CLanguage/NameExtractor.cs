@@ -27,18 +27,13 @@ namespace Reko.Core.CLanguage
 {
     public class NameExtractor : DeclaratorVisitor<string>
     {
-        private IEnumerable<DeclSpec> specs;
-        private ParserState parserState;
-
-        public NameExtractor(IEnumerable<DeclSpec> specs, ParserState parserState)
+        public NameExtractor()
         {
-            this.specs = specs;
-            this.parserState = parserState;
         }
 
         public static string GetName(IEnumerable<DeclSpec> declspecs, Declarator declarator, ParserState state)
         {
-            var ndte = new NameExtractor(declspecs, state);
+            var ndte = new NameExtractor();
             if (declarator != null)
                 return declarator.Accept(ndte);
             else

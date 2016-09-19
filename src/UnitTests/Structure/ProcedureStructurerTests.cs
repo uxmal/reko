@@ -642,7 +642,6 @@ case_2:
         {
             //byte fn0800_0541(byte al, selector ds)
 
-            var al = m.Temp(PrimitiveType.Byte, "al");
             var ds = m.Temp(PrimitiveType.SegmentSelector, "ds");
             var cx_10 = m.Temp(PrimitiveType.Word16, "cx_10");
             var si_12 = m.Temp(PrimitiveType.Word16, "si_12");

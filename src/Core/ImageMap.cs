@@ -138,7 +138,6 @@ namespace Reko.Core
             Debug.Assert(delta >= 0, "Should have found an item at the supplied address.");
             if (delta > 0)
             {
-                uint originalsize = item.Size;
                 int afterOffset = (int)(delta + itemNew.Size);
                 ImageMapItem itemAfter = null;
                 if (item.Size > afterOffset)

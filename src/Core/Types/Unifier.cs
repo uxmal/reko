@@ -458,7 +458,7 @@ namespace Reko.Core.Types
 				var dt = Unify(a.Parameters[i].DataType, b.Parameters[i].DataType);
                 args[i] = new Identifier(null, dt, null);   //$BUG: unify storages!
 			}
-			return factory.CreateFunctionType(null, new Identifier("", ret, null), args);
+			return factory.CreateFunctionType(new Identifier("", ret, null), args);
 		}
 
 		/// <summary>

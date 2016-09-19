@@ -105,7 +105,6 @@ namespace Reko.UnitTests.Typing
             {
                 Identifier i = Local32("i");
                 Identifier r = Local32("r");
-                Identifier r2 = Local16("r2");
                 Store(IAdd(IAdd(r, 20), SMul(i, 10)), 0);
                 Return(Load(PrimitiveType.Word16,
                     IAdd(IAdd(r, 16), SMul(i, 10))));
@@ -449,7 +448,7 @@ namespace Reko.UnitTests.Typing
             {
                 Identifier arg1 = m.Local32("arg1");
                 Identifier ret = m.Register(1);
-                m.Procedure.Signature = new FunctionType(null, ret, new Identifier[] { arg1 });
+                m.Procedure.Signature = new FunctionType(ret, new Identifier[] { arg1 });
                 m.Procedure.Signature.Parameters[0] = arg1;
                 m.Assign(ret, m.IAdd(arg1, 1));
                 m.Return(ret);
@@ -472,7 +471,7 @@ namespace Reko.UnitTests.Typing
             pp.Add("Fn2", m =>
             {
                 Identifier arg1 = m.Local32("arg1");
-                m.Procedure.Signature = new FunctionType(null, null, new Identifier[] { arg1 });
+                m.Procedure.Signature = FunctionType.Action(new Identifier[] { arg1 });
                 m.Store(m.IAdd(arg1, 8), m.Int32(0x23));
                 m.Return();
             });
@@ -484,7 +483,6 @@ namespace Reko.UnitTests.Typing
         public void DtbSignedCompare()
         {
             ProcedureBuilder m = new ProcedureBuilder();
-            Identifier p = m.Local32("p");
             Identifier ds = m.Local16("ds");
             ds.DataType = PrimitiveType.SegmentSelector;
             Identifier ds2 = m.Local16("ds2");

@@ -237,7 +237,6 @@ namespace Reko.Analysis
             var sidOrig = ssa.Identifiers[idOrig];
             var sidDst = ssa.Identifiers[idDst];
             sidOrig.Uses.Remove(sidDst.DefStatement);
-            var oldUses = sidDst.Uses.ToList();
             sidDst.DefStatement.Instruction = new Assignment(
                 idDst,
                 new BinaryExpression(

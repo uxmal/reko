@@ -35,6 +35,7 @@ namespace Reko.Gui
         IFindStringsDialog CreateFindStringDialog();
         IMainForm CreateMainForm();
         IOpenAsDialog CreateOpenAsDialog();
+        IProcedureDialog CreateProcedureDialog(Program program, Core.Serialization.Procedure_v1 sProc);
         IProgramPropertiesDialog CreateProgramPropertiesDialog(Program program);
         IResourceEditor CreateResourceEditor();
         ISearchDialog CreateSearchDialog();

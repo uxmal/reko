@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Analysis
 
         private ExternalProcedure CreateExternalProcedure(string name, Identifier ret, params Identifier[] parameters)
         {
-            var ep = new ExternalProcedure(name, new FunctionType(null, ret, parameters));
+            var ep = new ExternalProcedure(name, new FunctionType(ret, parameters));
             ep.Signature.ReturnAddressOnStack = 4;
             return ep;
         }
@@ -212,7 +212,7 @@ namespace Reko.UnitTests.Analysis
                 m.Label("l0000");
                 m.Store(r, 0);
                 m.Assign(r, m.ISub(r, 4));
-                m.Assign(m.Flags("Z"), m.Cond(r));
+                m.Assign(zf, m.Cond(r));
                 m.BranchCc(ConditionCode.NE, "l0000");
 
                 m.Label("l0001");
@@ -236,8 +236,6 @@ namespace Reko.UnitTests.Analysis
 			SsaTransform sst = new SsaTransform(new ProgramDataFlow(), proc,  null, gr,
                 new HashSet<RegisterStorage>());
 			SsaState ssa = sst.SsaState;
-
-            ssa.DebugDump(true);
 
 			ValuePropagator vp = new ValuePropagator(arch, ssa);
 			vp.Transform();
@@ -278,7 +276,6 @@ namespace Reko.UnitTests.Analysis
 		public void VpAddZero()
 		{
 			Identifier r = Reg32("r");
-			Identifier s = Reg32("s");
 
             var sub = new BinaryExpression(Operator.ISub, PrimitiveType.Word32, new MemoryAccess(MemoryIdentifier.GlobalMemory, r, PrimitiveType.Word32), Constant.Word32(0));
             var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, ssaIds));
@@ -381,7 +378,6 @@ namespace Reko.UnitTests.Analysis
 		public void VpMulAddShift()
 		{
 			Identifier id = Reg32("id");
-			Identifier x =  Reg32("x");
             var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, ssaIds));
 			PrimitiveType t = PrimitiveType.Int32;
 			BinaryExpression b = new BinaryExpression(Operator.Shl, t, 
@@ -407,7 +403,6 @@ namespace Reko.UnitTests.Analysis
 		[Test]
 		public void VpShiftSum()
 		{
-			Constant c = Constant.Word32(1);
 			ProcedureBuilder m = new ProcedureBuilder();
 			Expression e = m.Shl(1, m.ISub(Constant.Byte(32), 1));
             var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, ssaIds));
@@ -430,9 +425,7 @@ namespace Reko.UnitTests.Analysis
         public void SliceShift()
         {
             Constant eight = Constant.Word16(8);
-            Constant ate = Constant.Word32(8);
             Identifier C = Reg8("C");
-            Identifier ax = Reg16("ax");
             Expression e = new Slice(PrimitiveType.Byte, new BinaryExpression(Operator.Shl, PrimitiveType.Word16, C, eight), 8);
             var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, ssaIds));
             e = e.Accept(vp);
@@ -480,7 +473,7 @@ namespace Reko.UnitTests.Analysis
 			protected override void BuildBody()
 			{
 				var dl = LocalByte("dl");
-				var dx = Local16("dx");
+				Local16("dx");
 				var edx = Local32("edx");
 
 				Assign(edx, Int32(0x0AAA00AA));
@@ -499,7 +492,6 @@ namespace Reko.UnitTests.Analysis
             var m = new ProcedureBuilder();
             var d1 = m.Reg32("d32",0);
             var a1 = m.Reg32("a32",1);
-            var tmp = m.Frame.CreateTemporary(PrimitiveType.Word16);
 
             m.Assign(d1, m.Dpb(d1, m.LoadW(a1), 0));
             m.Assign(d1, m.Dpb(d1, m.LoadW(m.IAdd(a1, 4)), 0));

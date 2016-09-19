@@ -94,6 +94,11 @@ namespace Reko.Gui.Windows
             };
         }
 
+        public IProcedureDialog CreateProcedureDialog(Program program, Core.Serialization.Procedure_v1 sProc)
+        {
+            var i = new ProcedureDialogInteractor(program, sProc);
+            return i.CreateDialog();
+        }
         public IProgramPropertiesDialog CreateProgramPropertiesDialog(Program program)
         {
             return new ProgramPropertiesDialog

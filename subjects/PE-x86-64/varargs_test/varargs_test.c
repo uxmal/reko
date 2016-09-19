@@ -221,12 +221,12 @@ void fn00000001400011D4(word64 rbx, word64 r8, word64 r13)
 	{
 		word64 rcx_164;
 		byte bl_165;
-		fn0000000140001974(qwLoc04, qwArg00, qwArg04, qwArg0C, out rcx_164, out bl_165);
+		fn0000000140001974(0x07, qwLoc04, qwArg00, qwArg04, qwArg0C, out rcx_164, out bl_165);
 		int3();
 	}
 	word64 rcx_68;
 	byte bl_69;
-	fn0000000140001974(qwLoc04, qwArg00, qwArg04, qwArg0C, out rcx_68, out bl_69);
+	fn0000000140001974(0x07, qwLoc04, qwArg00, qwArg04, qwArg0C, out rcx_68, out bl_69);
 	int3();
 	int3();
 	fn0000000140001290();
@@ -257,7 +257,7 @@ word64 fn00000001400012BC(word32 edx, word64 rdi, word64 r13, selector gs, word6
 	{
 		word64 rcx_421;
 		byte bl_422;
-		fn0000000140001974(qwLoc04, qwArg00, qwArg04, qwArg0C, out rcx_421, out bl_422);
+		fn0000000140001974(0x07, qwLoc04, qwArg00, qwArg04, qwArg0C, out rcx_421, out bl_422);
 		int3();
 	}
 	Mem23[fp - 0x14 + 0x00:byte] = 0x00;
@@ -266,7 +266,7 @@ word64 fn00000001400012BC(word32 edx, word64 rdi, word64 r13, selector gs, word6
 	if (ecx_33 == 0x01)
 	{
 		word64 rcx_414;
-		fn0000000140001974(qwLoc04, qwArg00, qwArg04, qwArg0C, out rcx_414, out bl_29);
+		fn0000000140001974(0x07, qwLoc04, qwArg00, qwArg04, qwArg0C, out rcx_414, out bl_29);
 		ecx_33 = 0x07;
 	}
 	word64 rax_241;
@@ -540,28 +540,27 @@ word32 fn0000000140001448()
 
 word32 fn000000014000147C(word64 qwArg08, ptr64 & silOut)
 {
-	*silOut = sil;
 	if (IsProcessorFeaturePresent(tLoc38) == 0x00)
 	{
-		byte sil_28;
+		byte sil_15;
 		*silOut = fn0000000140001550(0x00000001400030E0, qwLoc3C, qwLoc2C);
-		Mem31[0x00000001400031D8 + 0x00:word64] = Mem0[fp + 0x00:word64];
-		Mem34[0x0000000140003178 + 0x00:word64] = fp + 0x08;
-		Mem36[0x0000000140003050 + 0x00:word64] = Mem34[0x00000001400031D8 + 0x00:word64];
-		word64 rax_37 = Mem36[fp + 0x08:word64];
-		Mem38[0x0000000140003160 + 0x00:word64] = rax_37;
-		Mem39[0x0000000140003040 + 0x00:word32] = 0xC0000409;
-		Mem40[0x0000000140003044 + 0x00:word32] = 0x01;
-		Mem41[0x0000000140003058 + 0x00:word32] = 0x01;
-		word64 rax_43 = DPB(rax_37, 0x08, 0);
-		0x0000000140003060[rax_43 * 0x00] = 0x02;
-		word64 rax_48 = DPB(rax_43 *s 0x00, 0x08, 0);
-		(fp - 0x18)[rax_48 * 0x00] = Mem46[0x0000000140003000 + 0x00:word64];
-		(fp - 0x18)[DPB(rax_48 *s 0x00, 0x08, 0) * 0x01] = Mem51[0x0000000140003008 + 0x00:word64];
+		Mem18[0x00000001400031D8 + 0x00:word64] = Mem0[fp + 0x00:word64];
+		Mem21[0x0000000140003178 + 0x00:word64] = fp + 0x08;
+		Mem23[0x0000000140003050 + 0x00:word64] = Mem21[0x00000001400031D8 + 0x00:word64];
+		word64 rax_24 = Mem23[fp + 0x08:word64];
+		Mem25[0x0000000140003160 + 0x00:word64] = rax_24;
+		Mem26[0x0000000140003040 + 0x00:word32] = 0xC0000409;
+		Mem27[0x0000000140003044 + 0x00:word32] = 0x01;
+		Mem28[0x0000000140003058 + 0x00:word32] = 0x01;
+		word64 rax_30 = DPB(rax_24, 0x08, 0);
+		0x0000000140003060[rax_30 * 0x00] = 0x02;
+		word64 rax_35 = DPB(rax_30 *s 0x00, 0x08, 0);
+		(fp - 0x18)[rax_35 * 0x00] = Mem33[0x0000000140003000 + 0x00:word64];
+		(fp - 0x18)[DPB(rax_35 *s 0x00, 0x08, 0) * 0x01] = Mem38[0x0000000140003008 + 0x00:word64];
 		return fn0000000140001448();
 	}
 	else
-		__fastfail();
+		__fastfail(0x02);
 }
 
 byte fn0000000140001550(word64 rcx, word64 qwArg04, word64 qwArg14)
@@ -654,7 +653,7 @@ word32 fn000000014000164C(word32 ecx, word64 r8, word64 r13, word64 qwArg08)
 	{
 		word64 rcx_156;
 		byte bl_157;
-		fn0000000140001974(qwLoc48, qwLoc44, qwLoc40, qwLoc38, out rcx_156, out bl_157);
+		fn0000000140001974(0x05, qwLoc48, qwLoc44, qwLoc40, qwLoc38, out rcx_156, out bl_157);
 		int3();
 		int3();
 		int3();
@@ -900,58 +899,53 @@ word64 fn000000014000196C()
 	return 0x0000000140003630;
 }
 
-word32 fn0000000140001974(word64 qwArg04, word64 qwArg08, word64 qwArg0C, word64 qwArg14, ptr64 & rcxOut, ptr64 & blOut)
+word32 fn0000000140001974(word32 ecx, word64 qwArg04, word64 qwArg08, word64 qwArg0C, word64 qwArg14, ptr64 & rcxOut, ptr64 & blOut)
 {
-	byte bl_12 = (byte) ecx;
-	*blOut = bl_12;
 	if (IsProcessorFeaturePresent(tLoc05C4) == 0x00)
 	{
-		Mem74[0x0000000140003610 + 0x00:word32] = Mem0[0x0000000140003610 + 0x00:word32] & 0x00;
-		word32 eax_80 = memset(ptrLoc05C4, dwLoc05BC, tLoc05B4);
+		Mem22[0x0000000140003610 + 0x00:word32] = Mem0[0x0000000140003610 + 0x00:word32] & 0x00;
+		word32 eax_28 = memset(ptrLoc05C4, dwLoc05BC, tLoc05B4);
 		RtlCaptureContext(tLoc05C0);
-		word64 rax_87 = RtlLookupFunctionEntry(qwLoc03DC, fp + 0x14, DPB(r8, 0x00, 0));
-		if (rax_87 != 0x00)
+		word64 rax_37 = RtlLookupFunctionEntry(qwLoc03DC, fp + 0x14, DPB(r8, 0x00, 0));
+		if (rax_37 != 0x00)
 		{
-			word64 rsp_174;
-			word64 rbx_175;
-			word64 rbp_176;
-			byte SCZO_177;
-			word32 ebx_178;
-			word32 ecx_179;
-			word32 eax_180;
-			byte SZO_181;
-			byte C_182;
-			byte Z_183;
-			word64 rcx_184;
-			word32 edx_185;
-			word64 rdx_186;
-			word32 r8d_187;
-			word64 rax_188;
-			word64 r8_189;
-			word64 r9_190;
-			byte bl_191;
+			word64 rsp_138;
+			word64 rbx_139;
+			word64 rbp_140;
+			byte SCZO_141;
+			word32 ebx_142;
+			word32 ecx_143;
+			word32 eax_144;
+			byte SZO_145;
+			byte C_146;
+			byte Z_147;
+			word64 rcx_148;
+			word32 edx_149;
+			word64 rdx_150;
+			word32 r8d_151;
+			word64 rax_152;
+			word64 r8_153;
+			word64 r9_154;
+			byte bl_155;
 			KERNEL32.dll!RtlVirtualUnwind();
 		}
 		memset(ptrLoc05C4, dwLoc05BC, tLoc05B4);
-		word32 eax_118 = IsDebuggerPresent();
+		word32 eax_73 = IsDebuggerPresent();
 		SetUnhandledExceptionFilter(tLoc05C0);
-		word64 rcx_130;
+		word64 rcx_85;
 		*rcxOut = fp - 1412;
-		word32 eax_132 = UnhandledExceptionFilter(tLoc05C0);
-		if (eax_132 == 0x00)
+		word32 eax_109 = UnhandledExceptionFilter(tLoc05C0);
+		if (eax_109 == 0x00)
 		{
-			eax_132 = 0x00 - (-(eax_118 == 0x01) == 0x00);
-			Mem155[0x0000000140003610 + 0x00:word32] = Mem74[0x0000000140003610 + 0x00:word32] & eax_132;
+			eax_109 = 0x00 - (-(eax_73 == 0x01) == 0x00);
+			Mem112[0x0000000140003610 + 0x00:word32] = Mem22[0x0000000140003610 + 0x00:word32] & eax_109;
 		}
-		byte bl_144;
+		byte bl_99;
 		*blOut = (byte) qwArg0C;
-		return eax_132;
+		return eax_109;
 	}
 	else
-	{
-		word64 rcx_53;
-		*rcxOut = __fastfail();
-	}
+		__fastfail(ecx);
 }
 
 void fn0000000140001ABC()

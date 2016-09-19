@@ -209,7 +209,6 @@ namespace Reko.UnitTests.Typing
 			ProcedureBuilder m = new ProcedureBuilder();
 			Identifier ds = m.Local16("ds");
 			Identifier bx = m.Local16("bx");
-			Identifier ax = m.Local16("ax");
 			MemberPointerSelector mps = m.MembPtrW(ds, m.IAdd(bx, 4));
 			Expression e = m.Load(PrimitiveType.Byte, mps);
 
@@ -227,7 +226,6 @@ namespace Reko.UnitTests.Typing
 			ProcedureBuilder m = new ProcedureBuilder();
 			Identifier ds = m.Local16("ds");
 			Identifier bx = m.Local16("bx");
-			Identifier ax = m.Local16("ax");
 			Expression e = m.SegMem(PrimitiveType.Word16, ds, m.IAdd(bx, 4));
 
             coll = CreateCollector();
@@ -403,7 +401,6 @@ namespace Reko.UnitTests.Typing
                 "T_2 (in Mem0[pfn:word32] : word32)" + nl +
                 "\ttrait_primitive((ptr code))" + nl +
                 "\ttrait_primitive(word32)" + nl;
-            Console.WriteLine(sw.ToString());
 			Assert.AreEqual(exp, sw.ToString());
 		}
 
@@ -491,7 +488,6 @@ namespace Reko.UnitTests.Typing
             s.Accept(coll);
             StringWriter sb = new StringWriter();
             handler.Traits.Write(sb);
-            Console.WriteLine(sb);
             string exp =
                 "T_1 (in a : word32)" + nl +
                 "\ttrait_primitive(word32)" + nl +
@@ -503,50 +499,6 @@ namespace Reko.UnitTests.Typing
                 "T_3 (in DPB(a, b, 0) : word32)" + nl +
                 "\ttrait_primitive(word32)" + nl;
             Assert.AreEqual(exp, sb.ToString());
-        }
-
-        [Test]
-        [Ignore("Complete the test by seeing the return type T_5 to be of type 'struct 3'")]
-        public void TrcoCallFunctionWithArraySize()
-        {
-            var m = new ProcedureBuilder();
-            var sig = new FunctionType(
-                null,
-                null,
-                m.Frame.EnsureStackArgument(0, PrimitiveType.Word32));
-            var ex = new ExternalProcedure("malloc", sig, new ProcedureCharacteristics
-            {
-                Allocator = true,
-                ArraySize = new ArraySizeCharacteristic
-                {
-                    Argument = "r",
-                    Factors = new ArraySizeFactor[] 
-                    {
-                        new ArraySizeFactor { Constant = "1" }
-                    }
-                }
-            });
-
-            Identifier eax = m.Local32("eax");
-            var call = m.Assign(eax, m.Fn(new ProcedureConstant(PrimitiveType.Word32, ex), m.Word32(3)));
-
-            coll = CreateCollector();
-            call.Accept(eqb);
-            call.Accept(coll);
-            StringWriter sw = new StringWriter();
-            handler.Traits.Write(sw);
-            string sExp =
-                "T_1 (in malloc : word32)" + nl +
-                "\ttrait_func(T_4 -> T_5)" + nl +
-                "T_3 (in dwArg00 : word32)" + nl +
-                "\ttrait_primitive(word32)" + nl +
-                "T_4 (in 0x00000003 : word32)" + nl +
-                "\ttrait_primitive(word32)" + nl +
-                "\ttrait_equal(T_3)" + nl +
-                "T_5 (in malloc(0x00000003) : word32)" + nl +
-                "\ttrait_primitive(word32)"; 
-            Console.WriteLine(sw.ToString());
-            Assert.AreEqual(sExp, sw.ToString());
         }
 
         private TraitCollector CreateCollector()
@@ -624,8 +576,6 @@ namespace Reko.UnitTests.Typing
 
     public class TestTraitHandler : ITraitHandler
     {
-        private TypeFactory factory = new TypeFactory();
-
         public TestTraitHandler(TypeStore store)
         {
             this.Traits = new TraitMapping(store);

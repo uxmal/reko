@@ -122,7 +122,6 @@ namespace Reko.Core.Output
         {
             BlockGraph graph = proc.ControlGraph;
 
-            DfsIterator<Block> iterator = new DfsIterator<Block>(graph);
             foreach (Block block in new DfsIterator<Block>(graph).PreOrder(proc.EntryBlock))
             {
                 if (ShouldIgnoreBlock(proc, block))

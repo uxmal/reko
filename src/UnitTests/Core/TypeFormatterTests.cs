@@ -142,7 +142,7 @@ struct a {
 		[Test]
 		public void TyfoFn()
 		{
-			FunctionType fn = new FunctionType(null, 
+			FunctionType fn = new FunctionType(
                 new Identifier("", PrimitiveType.Int32, null), 
 				new Identifier[] { new Identifier("", PrimitiveType.Word32, null) });
 			tyreffo.WriteDeclaration(fn, "fn");
@@ -153,7 +153,7 @@ struct a {
 		[Test]
 		public void TyfoPfn()
 		{
-			FunctionType fn = new FunctionType(null, null, 
+			FunctionType fn = FunctionType.Action(
 				new Identifier[] { new Identifier("", PrimitiveType.Word32, null)});
 			Pointer pfn = new Pointer(fn, 4);
 			tyreffo.WriteDeclaration(pfn, "pfn");
@@ -173,9 +173,7 @@ struct a {
 		[Test]
 		public void TyfoManyArgs()
 		{
-            FunctionType fn = new FunctionType(
-                null, 
-                null,
+            FunctionType fn = FunctionType.Action(
                 new Identifier[] {
                     new Identifier("", PrimitiveType.Pointer32,  null),
                     new Identifier("", PrimitiveType.Int64 , null)});
@@ -212,7 +210,6 @@ struct a {
         }
 
         [Test]
-        //[Ignore("This test isn't working presently; focus on passing more important tests first then fix")]
         public void TyfoMemberPointerCycle()
         {
             var seg = new StructureType("seg", 100);
@@ -235,7 +232,6 @@ struct a {
                 "\tstruct a seg::* ptr0000;\t// 0" + nl +
                 "};" + nl + nl;
 
-            Console.Write(sw.ToString());
             Assert.AreEqual(sExp, sw.ToString());
         }
 

@@ -63,17 +63,14 @@ namespace Reko.UnitTests.Scanning
             };
             this.x86PrintfSig = new FunctionType(
                 null,
-                null,
                 StackId(null,   4, CStringType()),
                 StackId("...",  8, new UnknownType()));
             this.x86SprintfSig = new FunctionType(
-                null,
                 null,
                 StackId(null,   4, CStringType()),
                 StackId(null,   8, CStringType()),
                 StackId("...", 12, new UnknownType()));
             this.ppcPrintfSig = new FunctionType(
-                null,
                 null,
                 RegId(null,  ppc, "r3", CStringType()),
                 RegId("...", ppc, "r4", new UnknownType()));
