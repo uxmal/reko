@@ -358,7 +358,7 @@ namespace Reko.Typing
             if (dtDiff is Pointer || ptDiff != null && ptDiff.Domain == Domain.Pointer)
             {
                 if (ptSub != null && (ptSub.Domain & Domain.Integer) != 0)
-                    return dtDiff;  //$REVIEW: is this really OK? should probably be pointer.
+                    return PrimitiveType.Create(Domain.Pointer, dtDiff.Size);
                 throw new NotImplementedException(string.Format("Not handling {0} and {1} yet", dtDiff, dtSub));
             }
             if (dtDiff is MemberPointer || ptDiff != null && ptDiff.Domain == Domain.Offset)
