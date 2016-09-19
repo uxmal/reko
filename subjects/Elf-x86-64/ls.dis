@@ -69,7 +69,7 @@ fn0000000000404890_entry:
 
 l0000000000404890:
 	__align(fp + 0x0000000000000008)
-	word64 rax_19 = DPB(rax, __libc_start_main(0x00000000004028C0, qwArg00, fp + 0x0000000000000008, 0x0000000000411E60, 0x0000000000411ED0, rdx, fp), 0)
+	word64 rax_21 = DPB(rax, __libc_start_main(0x00000000004028C0, qwArg00, fp + 0x0000000000000008, 0x0000000000411E60, 0x0000000000411ED0, rdx, DPB(qwArg00, fp + 0x0000000000000004, 0)), 0)
 	__hlt()
 // DataOut:
 // DataOut (flags): 

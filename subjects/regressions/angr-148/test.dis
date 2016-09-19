@@ -69,7 +69,7 @@ _start_entry:
 
 l0000000000400440:
 	__align(fp + 0x0000000000000008)
-	word64 rax_19 = DPB(rax, __libc_start_main(0x000000000040053D, qwArg00, fp + 0x0000000000000008, 0x0000000000400550, 0x00000000004005C0, rdx, fp), 0)
+	word64 rax_21 = DPB(rax, __libc_start_main(0x000000000040053D, qwArg00, fp + 0x0000000000000008, 0x0000000000400550, 0x00000000004005C0, rdx, DPB(qwArg00, fp + 0x0000000000000004, 0)), 0)
 	__hlt()
 // DataOut:
 // DataOut (flags): 
@@ -432,9 +432,9 @@ __libc_csu_init_entry:
 
 l0000000000400550:
 	_init()
-	word64 r12_18 = 0x0000000000600E10
-	word64 rbx_27 = DPB(rbx, 0x00000000, 0)
-	branch 0x0000000000600E18 - r12_18 >> 0x0000000000000003 == 0x0000000000000000 l00000000004005A6
+	word64 r12_19 = 0x0000000000600E10
+	word64 rbx_28 = DPB(rbx, 0x00000000, 0)
+	branch 0x0000000000600E18 - r12_19 >> 0x0000000000000003 == 0x0000000000000000 l00000000004005A6
 // DataOut: rbp rbx
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
@@ -443,45 +443,45 @@ l0000000000400550:
 l0000000000400588:
 // DataOut: rbp rbx
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000020 r15d:edi r14:rsi r13:rdx r12:0000000000600E10 rbp:0x0000000000600E18 - 0x0000000000600E10 >> 0x0000000000000003 ebx:0x00000000 rax:<invalid> -24(fp):rbx -20(fp):rbp -16(fp):fp - 0x0000000000000010 -12(fp):rbp -8(fp):rsi -4(fp):rdi
+// SymbolicIn: rsp:fp - 0x0000000000000020 r15d:edi r14:rsi r13:rdx r12:0000000000600E10 rbp:0x0000000000600E18 - 0x0000000000600E10 >> 0x0000000000000003 ebx:0x00000000 rax:<invalid> -24(fp):rbx -20(fp):rbp -16(fp):fp - 0x000000000000000C -12(fp):rbp -8(fp):rsi -4(fp):rdi
 // LocalsOut: fp(64) Local -0008(64)
 
 l0000000000400590:
-	word64 rsp_68
-	word64 rdi_69
-	word32 r15d_70
-	word32 edi_71
-	word64 rsi_72
-	word64 r14_73
-	word64 rbp_74
-	word64 r13_75
-	word64 rdx_76
-	word64 r12_77
-	word64 rbx_78
-	byte SCZO_79
-	word32 ebx_80
-	byte SZO_81
-	byte C_82
-	byte Z_83
-	call Mem0[r12_18 + rbx_27 * 0x00000008:word32] (retsize: 4; depth: 36)
-		uses: C_33,dwLoc04_4,dwLoc08_9,dwLoc0C_13,dwLoc10_17,dwLoc14_20,dwLoc18_24,ebx_26,edi_67,qwLoc08,qwLoc10,qwLoc18,r12_18,r13_62,r14_63,r15d_64,rbp_28,rbx_27,rdi,rdx_65,rsi_66,rsp_29,SCZO_30,SZO_31,Z_32
-		defs: C_82,ebx_80,edi_71,r12_77,r13_75,r14_73,r15d_70,rbp_74,rbx_78,rdi_69,rdx_76,rsi_72,rsp_68,SCZO_79,SZO_81,Z_83
-	branch rbx_78 + 0x0000000000000001 != rbp_74 l0000000000400590
+	word64 rsp_69
+	word64 rdi_70
+	word32 r15d_71
+	word32 edi_72
+	word64 rsi_73
+	word64 r14_74
+	word64 rbp_75
+	word64 r13_76
+	word64 rdx_77
+	word64 r12_78
+	word64 rbx_79
+	byte SCZO_80
+	word32 ebx_81
+	byte SZO_82
+	byte C_83
+	byte Z_84
+	call Mem0[r12_19 + rbx_28 * 0x00000008:word32] (retsize: 4; depth: 36)
+		uses: C_34,dwLoc04_4,dwLoc08_9,dwLoc0C_13,dwLoc10_18,dwLoc14_21,dwLoc18_25,ebx_27,edi_68,qwLoc08,qwLoc10,qwLoc18,r12_19,r13_63,r14_64,r15d_65,rbp_29,rbx_28,rdi,rdx_66,rsi_67,rsp_30,SCZO_31,SZO_32,Z_33
+		defs: C_83,ebx_81,edi_72,r12_78,r13_76,r14_74,r15d_71,rbp_75,rbx_79,rdi_70,rdx_77,rsi_73,rsp_69,SCZO_80,SZO_82,Z_84
+	branch rbx_79 + 0x0000000000000001 != rbp_75 l0000000000400590
 // DataOut: rbp rbx
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000020 r15d:edi r14:rsi r13:rdx r12:0000000000600E10 rbp:0x0000000000600E18 - 0x0000000000600E10 >> 0x0000000000000003 ebx:<invalid> rdx:rdx rsi:rsi edi:edi rbx:<invalid> rax:<invalid> -24(fp):rbx -20(fp):rbp -16(fp):fp - 0x0000000000000010 -12(fp):rbp -8(fp):rsi -4(fp):rdi
+// SymbolicIn: rsp:fp - 0x0000000000000020 r15d:edi r14:rsi r13:rdx r12:0000000000600E10 rbp:0x0000000000600E18 - 0x0000000000600E10 >> 0x0000000000000003 ebx:<invalid> rdx:rdx rsi:rsi edi:edi rbx:<invalid> rax:<invalid> -24(fp):rbx -20(fp):rbp -16(fp):fp - 0x000000000000000C -12(fp):rbp -8(fp):rsi -4(fp):rdi
 // LocalsOut: fp(64) Local -0008(64)
 
 l00000000004005A6:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000020 r15d:edi r14:rsi r13:rdx r12:0000000000600E10 rbp:0x0000000000600E18 - 0x0000000000600E10 >> 0x0000000000000003 ebx:<invalid> rdx:rdx rsi:rsi edi:edi rbx:<invalid> rax:<invalid> -24(fp):rbx -20(fp):rbp -16(fp):fp - 0x0000000000000010 -12(fp):rbp -8(fp):rsi -4(fp):rdi
+// SymbolicIn: rsp:fp - 0x0000000000000020 r15d:edi r14:rsi r13:rdx r12:0000000000600E10 rbp:0x0000000000600E18 - 0x0000000000600E10 >> 0x0000000000000003 ebx:<invalid> rdx:rdx rsi:rsi edi:edi rbx:<invalid> rax:<invalid> -24(fp):rbx -20(fp):rbp -16(fp):fp - 0x000000000000000C -12(fp):rbp -8(fp):rsi -4(fp):rdi
 
 __libc_csu_init_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:rsi + 0x0000000000000020 r15d:edi r14:rsi r13:rdx r12:0000000000600E10 rbp:<invalid> ebx:<invalid> rbx:rbx rsi:<invalid> rdi:<invalid> rdx:rdx edi:<invalid> rax:<invalid> -24(fp):rbx -20(fp):rbp -16(fp):fp - 0x0000000000000010 -12(fp):rbp -8(fp):rsi -4(fp):rdi
+// SymbolicIn: rsp:rsi + 0x0000000000000020 r15d:edi r14:rsi r13:rdx r12:0000000000600E10 rbp:<invalid> ebx:<invalid> rbx:rbx rsi:<invalid> rdi:<invalid> rdx:rdx edi:<invalid> rax:<invalid> -24(fp):rbx -20(fp):rbp -16(fp):fp - 0x000000000000000C -12(fp):rbp -8(fp):rsi -4(fp):rdi
 
 
 

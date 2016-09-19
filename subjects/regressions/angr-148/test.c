@@ -23,7 +23,7 @@ void _init()
 void _start(word64 rax,  * rdx, word64 qwArg00, word32 dwArg04)
 {
 	__align(fp + 0x08);
-	word64 rax_19 = DPB(rax, __libc_start_main(&globals->t40053D, qwArg00, fp + 0x08, 0x00400550, 0x004005C0, rdx, fp), 0);
+	word64 rax_21 = DPB(rax, __libc_start_main(&globals->t40053D, qwArg00, fp + 0x08, &globals->t400550, &globals->t4005C0, rdx, DPB(qwArg00, fp + 0x04, 0)), 0);
 	__hlt();
 }
 
@@ -55,10 +55,10 @@ ptr64 deregister_tm_clones(word64 r8)
 void register_tm_clones(word64 r8)
 {
 	int64 rax_4 = DPB(rax, 0x00601040, 0);
-	Eq_76 rdx_13 = rax_4 >> 0x03 >> 0x3F;
+	Eq_79 rdx_13 = rax_4 >> 0x03 >> 0x3F;
 	if ((rax_4 >> 0x03) + rdx_13 >> 0x01 != 0x00)
 	{
-		Eq_87 rdx_45 = DPB(rdx_13, 0x00, 0);
+		Eq_90 rdx_45 = DPB(rdx_13, 0x00, 0);
 		if (rdx_45 != 0x00)
 		{
 			word64 rsp_53;
@@ -140,29 +140,29 @@ void main()
 void __libc_csu_init(word64 rsi)
 {
 	_init();
-	Eq_215 r12_18[] = globals->a600E10;
-	ui64 rbx_27 = DPB(rbx, 0x00, 0);
-	if (0x0000000000600E18 - r12_18 >> 0x03 != 0x00)
+	Eq_218 r12_19[] = globals->a600E10;
+	ui64 rbx_28 = DPB(rbx, 0x00, 0);
+	if (0x0000000000600E18 - r12_19 >> 0x03 != 0x00)
 		do
 		{
-			word64 rsp_68;
-			word64 rdi_69;
-			word32 r15d_70;
-			word32 edi_71;
-			word64 rsi_72;
-			word64 r14_73;
-			word64 rbp_74;
-			word64 r13_75;
-			word64 rdx_76;
-			word64 r12_77;
-			word64 rbx_78;
-			byte SCZO_79;
-			word32 ebx_80;
-			byte SZO_81;
-			byte C_82;
-			byte Z_83;
-			r12_18[rbx_27]();
-		} while (rbx_78 + 0x01 != rbp_74);
+			word64 rsp_69;
+			word64 rdi_70;
+			word32 r15d_71;
+			word32 edi_72;
+			word64 rsi_73;
+			word64 r14_74;
+			word64 rbp_75;
+			word64 r13_76;
+			word64 rdx_77;
+			word64 r12_78;
+			word64 rbx_79;
+			byte SCZO_80;
+			word32 ebx_81;
+			byte SZO_82;
+			byte C_83;
+			byte Z_84;
+			r12_19[rbx_28]();
+		} while (rbx_79 + 0x01 != rbp_75);
 	return;
 }
 
