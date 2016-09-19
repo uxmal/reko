@@ -28,16 +28,14 @@ using System.Windows.Forms;
 
 namespace Reko.Gui.Windows
 {
-    public class RadioButtonWrapper : IRadioButton
+    public class RadioButtonWrapper : ControlWrapper, IRadioButton
     {
         private RadioButton rdb;
 
         public RadioButtonWrapper(RadioButton rdb)
+            : base(rdb)
         {
             this.rdb = rdb;
         }
-
-        public Color BackColor { get { return rdb.BackColor; } set { rdb.BackColor = value; } }
-        public Color ForeColor { get { return rdb.ForeColor; } set { rdb.ForeColor = value; } }
     }
 }

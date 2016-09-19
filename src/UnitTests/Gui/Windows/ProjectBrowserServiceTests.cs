@@ -134,6 +134,7 @@ namespace Reko.UnitTests.Gui.Windows
             private ITreeNode selectedItem;
 
             public bool Focused { get; set; }
+            public bool Enabled { get; set; }
             public ContextMenu ContextMenu { get; set; }
             public bool ShowRootLines { get; set; }
             public bool ShowNodeToolTips { get; set; }

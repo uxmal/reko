@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Lib;
+using Reko.Core.Machine;
 using Reko.Scanning;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,7 @@ namespace Reko.Gui.Windows.Forms
             dlg.Load += Dlg_Load;
             dlg.FormClosing += Dlg_FormClosing;
             dlg.EntryCount.ValueChanged += EntryCount_ValueChanged;
+            dlg.Entries.SelectedIndexChanged += Entries_SelectedIndexChanged;
         }
 
         private void Dlg_Load(object sender, EventArgs e)
@@ -85,6 +87,25 @@ namespace Reko.Gui.Windows.Forms
             dlg.Entries.DataSource = addresses;
         }
 
+        private void Entries_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var addr = (Address)dlg.Entries.SelectedItem;
+            string text;
+            if (addr != null)
+            {
+                var dasm = dlg.Program.CreateDisassembler(addr);
+                text = string.Join(
+                    Environment.NewLine,
+                    dasm.TakeWhile(i => (i.InstructionClass & InstructionClass.Transfer) == 0)
+                        .Select(i => i.ToString()));
+            }
+            else
+            {
+                text = "";
+            }
+            dlg.Disassembly.Text = text;
+        }
+
         private void EnableSegmentedPanel(bool hasValue)
         {
             //foreach (Control control in dlg.SegmentedAddressPanel.Controls)
@@ -102,6 +123,7 @@ namespace Reko.Gui.Windows.Forms
         private void EnableControls()
         {
             dlg.IndirectTable.Enabled = dlg.IsIndirectTable.Checked;
+            dlg.IndirectLabel.Enabled = dlg.IsIndirectTable.Checked;
         }
 
         private void IsIndirectTable_CheckedChanged(object sender, EventArgs e)

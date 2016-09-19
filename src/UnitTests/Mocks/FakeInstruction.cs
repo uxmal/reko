@@ -55,6 +55,11 @@ namespace Reko.UnitTests.Mocks
         {
             throw new NotImplementedException();
         }
+
+        public override void Render(MachineInstructionWriter writer)
+        {
+            writer.WriteOpcode(operation.ToString().ToLower());
+        }
     }
 
     public enum Operation

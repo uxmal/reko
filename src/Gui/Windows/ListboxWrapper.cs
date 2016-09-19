@@ -45,7 +45,8 @@ namespace Reko.Gui.Windows
 
         public object DataSource { get { return lbx.DataSource; } set { lbx.DataSource = value; } }
         public IList Items { get { return lbx.Items; } }
-        public object SelectedItem { get { return lbx.SelectedItem; } }
+        public int SelectedIndex { get { return lbx.SelectedIndex; } set { lbx.SelectedIndex = value; } }
+        public object SelectedItem { get { return lbx.SelectedItem; } set { lbx.SelectedItem = value; } }
 
         public void AddItems(IEnumerable items)
         {

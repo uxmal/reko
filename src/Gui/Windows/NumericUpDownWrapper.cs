@@ -28,11 +28,12 @@ using System.Drawing;
 
 namespace Reko.Gui.Windows
 {
-    public class NumericUpDownWrapper : INumericUpDown
+    public class NumericUpDownWrapper : ControlWrapper, INumericUpDown
     {
         private NumericUpDown num;
 
         public NumericUpDownWrapper(NumericUpDown num)
+            : base(num)
         {
             this.num = num;
         }
@@ -43,9 +44,6 @@ namespace Reko.Gui.Windows
             remove { num.ValueChanged -= value; }
         }
 
-        public Color BackColor { get { return num.BackColor; } set { num.BackColor = value; } }
-        public Color ForeColor { get { return num.ForeColor; } set { num.ForeColor = value; } }
         public decimal Value { get { return num.Value; } set { num.Value = value; } }
-
     }
 }

@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Machine;
 using Reko.Gui.Windows.Forms;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
@@ -34,7 +35,10 @@ namespace Reko.UnitTests.Gui.Windows.Forms
     [Category(Categories.UserInterface)]
     public class JumpTableInteractorTests
     {
+        private readonly string  nl = Environment.NewLine;
+
         private JumpTableDialog dlg;
+        private FakeArchitecture arch;
         private Program program;
 
         [SetUp]
@@ -60,7 +64,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
         private void Given_Program()
         {
-            var arch = new FakeArchitecture();
+            this.arch = new FakeArchitecture();
             var platform = new FakePlatform(null, arch);
 
             this.program = new Program
@@ -85,6 +89,15 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             {
                 writer.WriteLeUInt32(entry);
             }
+        }
+
+        private void Given_Disassembly(Address addr)
+        {
+            arch.Test_DisassemblyStream = new List<MachineInstruction>
+            {
+                new FakeInstruction(Operation.Add),
+                new FakeInstruction(Operation.Branch),
+            };
         }
 
         [Test]
@@ -142,6 +155,21 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             dlg.EntryCount.Value = 2;
 
             Assert.AreEqual(2, dlg.Entries.Items.Count);
+        }
+
+        [Test]
+        public void Jti_Entry_Selected()
+        {
+            Given_Program();
+            Given_Dialog_32Bit();
+            Given_Table_UInt32(Address.Ptr32(0x1000), 0x1010, 0x01023, 0x01018);
+            Given_Disassembly(Address.Ptr32(0x1010));
+            dlg.Show();
+            dlg.JumpTableStartAddress.Text = "001000";
+            dlg.EntryCount.Value = 2;
+            dlg.Entries.SelectedIndex = 1;
+
+            Assert.AreEqual("add" + nl + "branch", dlg.Disassembly.Text);
         }
     }
 }

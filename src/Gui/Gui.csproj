@@ -273,6 +273,7 @@
     <Compile Include="Windows\Controls\RegexValidator.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Windows\ControlWrapper.cs" />
     <Compile Include="Windows\Forms\CallSiteDialog.cs">
       <SubType>Form</SubType>
     </Compile>

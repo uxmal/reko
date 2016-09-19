@@ -194,14 +194,17 @@ namespace Reko.Core
 			return (long) a.ToLinear() - (long) b.ToLinear();
 		}
 
-        public int CompareTo(Address a)
+        public int CompareTo(Address that)
         {
-            return this.ToLinear().CompareTo(a.ToLinear());
+            return this.ToLinear().CompareTo(that.ToLinear());
         }
 
 		public int CompareTo(object a)
 		{
-            return this.ToLinear().CompareTo(((Address)a).ToLinear());
+            var that = a as Address;
+            if (that == null)
+                return 1;
+            return this.ToLinear().CompareTo(that.ToLinear());
 		}
 
         public abstract Constant ToConstant();
