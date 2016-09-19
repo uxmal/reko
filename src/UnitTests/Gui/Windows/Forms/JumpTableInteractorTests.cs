@@ -62,7 +62,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             this.dlg = new JumpTableDialog()
             {
                 Program = program,
-                IndirectJump = new FakeInstruction(Operation.Jump) {  Address = Address.Ptr32(0x1000) }
+                Instruction = new FakeInstruction(Operation.Jump) {  Address = Address.Ptr32(0x1000) }
             };
         }
     

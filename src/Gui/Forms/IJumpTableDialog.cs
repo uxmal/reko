@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,10 @@ namespace Reko.Gui.Forms
 {
     public interface IJumpTableDialog : IDialog
     {
+        Program Program { get; set; }
+        MachineInstruction Instruction { get; set; }
+        Address VectorAddress { get; set; }
+
         UserIndirectJump GetResults();
     }
 }

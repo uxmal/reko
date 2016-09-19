@@ -44,8 +44,8 @@ namespace Reko.Gui.Windows.Forms
 
         private void Dlg_Load(object sender, EventArgs e)
         {
-            dlg.CaptionLabel.Text = string.Format("Jump table for {0}", dlg.IndirectJump.Address);
-            dlg.IndirectJumpLabel.Text = dlg.IndirectJump.ToString().Replace('\t', ' ');
+            dlg.CaptionLabel.Text = string.Format("Jump table for {0}", dlg.Instruction.Address);
+            dlg.IndirectJumpLabel.Text = dlg.Instruction.ToString().Replace('\t', ' ');
             if (dlg.VectorAddress != null)
             {
                 dlg.JumpTableStartAddress.Text = dlg.VectorAddress.ToString();
@@ -97,7 +97,7 @@ namespace Reko.Gui.Windows.Forms
             var table =  new ImageMapVectorTable(dlg.VectorAddress, entries.ToArray(), 0);
             return new UserIndirectJump
             {
-                Address = dlg.IndirectJump.Address,
+                Address = dlg.Instruction.Address,
                 Table = table,
                 IndexRegister = dlg.Program.Architecture.GetRegister(dlg.IndexRegister.SelectedIndex.ToString())
             };

@@ -44,7 +44,7 @@ namespace Reko.Gui.Windows.Forms
         }
 
         public IServiceProvider Services { get; set; }
-        public MachineInstruction IndirectJump { get; set; }
+        public MachineInstruction Instruction { get; set; }
         public Address VectorAddress { get;  set; }
         public Program Program { get; set; }
         

@@ -162,7 +162,7 @@ namespace Reko.Gui.Windows
             {
                 Services = this.services,
                 Program = program,
-                IndirectJump = instrIndirectJmp,
+                Instruction = instrIndirectJmp,
                 VectorAddress = addrVector
             };
         }
