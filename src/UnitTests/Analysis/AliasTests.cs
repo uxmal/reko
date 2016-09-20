@@ -36,6 +36,7 @@ namespace Reko.UnitTests.Analysis
     /// <summary>
     /// Exercises the register aliasing capabilities of Reko
     /// </summary>
+    [Ignore("SSA transform now incorporates this")]
     public class AliasTests : AnalysisTestBase
     {
         private Procedure proc;
