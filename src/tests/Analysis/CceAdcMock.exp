@@ -17,7 +17,7 @@ Mem8: orig: Mem0
     def:  Mem8[0x01001004:word32] = r0_7
 // AdcMock
 // Return size: 0
-void AdcMock()
+define AdcMock
 AdcMock_entry:
 	def Mem0
 	def r1
