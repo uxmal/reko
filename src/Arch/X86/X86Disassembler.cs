@@ -743,12 +743,18 @@ namespace Reko.Arch.X86
         {
             public override X86Instruction Decode(X86Disassembler disasm, byte op, string opFormat)
             {
-                if (disasm.rdr.PeekByte(0) == 0x0F)
+                byte b = disasm.rdr.PeekByte(0);
+                if (b == 0x0F)
                 {
                     disasm.currentDecodingContext.RepetitionPrefixF2 = true;
                     if (!disasm.rdr.TryReadByte(out op))
                         return null;
                     return s_aOpRec[op].Decode(disasm, op, opFormat);
+                }
+                if (b == 0xC3)
+                {
+                    op = disasm.rdr.ReadByte();
+                    return s_aOpRec[b].Decode(disasm, op, opFormat);
                 }
                 return disasm.DecodeOperands(Opcode.repne, 0xF2, opFormat);
             }
