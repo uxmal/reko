@@ -21,23 +21,32 @@
 using System;
 using Reko.Core.Output;
 using Reko.Core.Types;
+using System.Diagnostics;
 
 namespace Reko.Core
 {
     public class TypedDataDumper : IDataTypeVisitor
     {
         private ImageReader rdr;
-        private Formatter stm;
+        private uint cbSize;
+        private Formatter fmt;
 
-        public TypedDataDumper(ImageReader rdr, Formatter stm) 
+        public TypedDataDumper(ImageReader rdr, uint cbSize, Formatter stm) 
         {
             this.rdr = rdr;
-            this.stm = stm;
+            this.cbSize = cbSize;
+            this.fmt = stm;
         }
 
         public void VisitArray(ArrayType at)
         {
-            throw new NotImplementedException();
+            var addrEnd = rdr.Address + cbSize;
+            for (int i = 0; at.IsUnbounded || i < at.Length; ++i)
+            {
+                if (!rdr.IsValid || addrEnd <= rdr.Address)
+                    return;
+                at.ElementType.Accept(this);
+            }
         }
 
         public void VisitClass(ClassType ct)
@@ -75,22 +84,22 @@ namespace Reko.Core
             switch (ptr.Size)
             {
             case 2:
-                stm.WriteKeyword("dw");
-                stm.Write("\t");
-                stm.Write(string.Format("0x{0:X4}", rdr.ReadByte()));
-                stm.WriteLine();
+                fmt.WriteKeyword("dw");
+                fmt.Write("\t");
+                fmt.Write(string.Format("0x{0:X4}", rdr.ReadByte()));
+                fmt.WriteLine();
                 return;
             case 4:
-                stm.WriteKeyword("dd");
-                stm.Write("\t");
-                stm.Write(string.Format("0x{0:X8}", rdr.ReadUInt32()));
-                stm.WriteLine();
+                fmt.WriteKeyword("dd");
+                fmt.Write("\t");
+                fmt.Write(string.Format("0x{0:X8}", rdr.ReadUInt32()));
+                fmt.WriteLine();
                 return;
             case 8:
-                stm.WriteKeyword("dq");
-                stm.Write("\t");
-                stm.Write(string.Format("0x{0:X16}", rdr.ReadUInt32()));
-                stm.WriteLine();
+                fmt.WriteKeyword("dq");
+                fmt.Write("\t");
+                fmt.Write(string.Format("0x{0:X16}", rdr.ReadUInt32()));
+                fmt.WriteLine();
                 return;
             }
         }
@@ -100,28 +109,28 @@ namespace Reko.Core
             switch (pt.Size)
             {
             case 1:
-                stm.WriteKeyword("db");
-                stm.Write("\t");
-                stm.Write(string.Format("0x{0:X2}", rdr.ReadByte()));
-                stm.WriteLine();
+                fmt.WriteKeyword("db");
+                fmt.Write("\t");
+                fmt.Write(string.Format("0x{0:X2}", rdr.ReadByte()));
+                fmt.WriteLine();
                 return;
             case 2:
-                stm.WriteKeyword("dw");
-                stm.Write("\t");
-                stm.Write(string.Format("0x{0:X4}", rdr.ReadByte()));
-                stm.WriteLine();
+                fmt.WriteKeyword("dw");
+                fmt.Write("\t");
+                fmt.Write(string.Format("0x{0:X4}", rdr.ReadUInt16()));
+                fmt.WriteLine();
                 return;
             case 4:
-                stm.WriteKeyword("dd");
-                stm.Write("\t");
-                stm.Write(string.Format("0x{0:X8}", rdr.ReadUInt32()));
-                stm.WriteLine();
+                fmt.WriteKeyword("dd");
+                fmt.Write("\t");
+                fmt.Write(string.Format("0x{0:X8}", rdr.ReadUInt32()));
+                fmt.WriteLine();
                 return;
             case 8:
-                stm.WriteKeyword("dq");
-                stm.Write("\t");
-                stm.Write(string.Format("0x{0:X16}", rdr.ReadUInt32()));
-                stm.WriteLine();
+                fmt.WriteKeyword("dq");
+                fmt.Write("\t");
+                fmt.Write(string.Format("0x{0:X16}", rdr.ReadUInt32()));
+                fmt.WriteLine();
                 return;
             }
             throw new NotImplementedException();
@@ -139,7 +148,36 @@ namespace Reko.Core
 
         public void VisitStructure(StructureType str)
         {
-            throw new NotImplementedException();
+            var structOffset = rdr.Offset;
+            for (int i = 0; i < str.Fields.Count; ++i)
+            {
+                long fieldOffset = structOffset + str.Fields[i].Offset;
+                WritePadBytes(fieldOffset);
+                Debug.Assert(rdr.Offset == fieldOffset);
+                fmt.Indent();
+                str.Fields[i].DataType.Accept(this);
+            }
+            WritePadBytes(structOffset + str.GetInferredSize());
+        }
+
+        private void WritePadBytes(long fieldOffset)
+        {
+            if (rdr.Offset < fieldOffset)
+            {
+                // Need padding.
+                fmt.Indent();
+                fmt.WriteKeyword("db\t");
+                var sep = "";
+                while (rdr.Offset < fieldOffset)
+                {
+                    var b = rdr.ReadByte();
+                    fmt.Write("{0}0x{1:X2}", sep, b);
+                    sep = ",";
+                }
+                fmt.Write("\t");
+                fmt.WriteComment("; padding");
+                fmt.WriteLine();
+            }
         }
 
         public void VisitTypeReference(TypeReference typeref)

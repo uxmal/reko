@@ -175,7 +175,7 @@ __foo@8 proc
         }
 
         [Test]
-        public void Dumper_Data()
+        public void Dumper_Word32()
         {
             Given_32bit_Program();
             program.ImageMap.AddItemWithSize(
@@ -199,6 +199,50 @@ __foo@8 proc
 00010000 00 01 02 03                                     ....           
 l00010004	dd	0x07060504
 00010008                         08 09 0A 0B 0C 0D 0E 0F         ........
+00010010 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F ................
+";
+            #endregion
+            AssertOutput(sExp, sw);
+            mr.VerifyAll();
+        }
+
+        [Test]
+        public void Dumper_Structure()
+        {
+            var str = new StructureType
+            {
+                Fields =
+                {
+                    { 0, PrimitiveType.Byte  },
+                    { 2, PrimitiveType.Word16 },
+                    { 8, PrimitiveType.Word32 }
+                }
+            };
+            Given_32bit_Program();
+            program.ImageMap.AddItemWithSize(
+                Address.Ptr32(0x10004),
+                new ImageMapItem
+                {
+                    Address = Address.Ptr32(0x10004),
+                    DataType = str,
+                    Size = 12,
+                });
+            mr.ReplayAll();
+
+            var dmp = new Dumper(program.Architecture);
+
+            var sw = new StringWriter();
+            dmp.Dump(program, new TextFormatter(sw));
+
+            string sExp =
+            #region Expected
+@";;; Segment .text (00010000)
+00010000 00 01 02 03                                     ....           
+l00010004		db	0x04
+	db	0x05	; padding
+	dw	0x0706
+	db	0x08,0x09,0x0A,0x0B	; padding
+	dd	0x0F0E0D0C
 00010010 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F ................
 ";
             #endregion

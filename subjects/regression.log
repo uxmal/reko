@@ -2359,35 +2359,33 @@ fn1DAE: error: An error occurred while rewriting procedure to high-level languag
 00005A66: warning: Expected sizes of arrays to have been determined by now
 
 === pySample.dcproject
-*** pySample.dcproject
-pySample.dcproject: error: An internal error occurred while decompiling.
-    The method or operation is not implemented.
-       at Reko.Core.TypedDataDumper.VisitArray(ArrayType at) in D:\dev\uxmal\reko\master\src\Core\TypedDataDumper.cs:line 40
-   at Reko.Core.Types.ArrayType.Accept(IDataTypeVisitor v) in D:\dev\uxmal\reko\master\src\Core\Types\ArrayType.cs:line 39
-   at Reko.Core.Dumper.DumpTypedData(SegmentMap map, ImageMapItem item, Formatter stm) in D:\dev\uxmal\reko\master\src\Core\Dumper.cs:line 227
-   at Reko.Core.Dumper.Dump(Program program, Formatter formatter) in D:\dev\uxmal\reko\master\src\Core\Dumper.cs:line 113
-   at Reko.DecompilerDriver.DumpAssembler(Program program, Formatter wr) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 142
-   at Reko.DecompilerDriver.<>c__DisplayClass30_0.<ScanProgram>b__1(Formatter w) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 476
-   at Reko.CmdLine.CmdLineHost.WriteDisassembly(Program program, Action`1 writer) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineHost.cs:line 49
-   at Reko.DecompilerDriver.ScanProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 476
-   at Reko.DecompilerDriver.ScanPrograms() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 413
-   at Reko.DecompilerDriver.Decompile(String filename) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 98
-
 === RussianText.exe
 === VCExeSample.dcproject
 *** VCExeSample.dcproject
-VCExeSample.dcproject: error: An internal error occurred while decompiling.
-    The method or operation is not implemented.
-       at Reko.Core.TypedDataDumper.VisitTypeReference(TypeReference typeref) in D:\dev\uxmal\reko\master\src\Core\TypedDataDumper.cs:line 147
-   at Reko.Core.Types.TypeReference.Accept(IDataTypeVisitor v) in D:\dev\uxmal\reko\master\src\Core\Types\TypeReference.cs:line 52
-   at Reko.Core.Dumper.DumpTypedData(SegmentMap map, ImageMapItem item, Formatter stm) in D:\dev\uxmal\reko\master\src\Core\Dumper.cs:line 227
-   at Reko.Core.Dumper.Dump(Program program, Formatter formatter) in D:\dev\uxmal\reko\master\src\Core\Dumper.cs:line 113
-   at Reko.DecompilerDriver.DumpAssembler(Program program, Formatter wr) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 142
-   at Reko.DecompilerDriver.<>c__DisplayClass30_0.<ScanProgram>b__1(Formatter w) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 476
-   at Reko.CmdLine.CmdLineHost.WriteDisassembly(Program program, Action`1 writer) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineHost.cs:line 49
-   at Reko.DecompilerDriver.ScanProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 476
-   at Reko.DecompilerDriver.ScanPrograms() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 413
-   at Reko.DecompilerDriver.Decompile(String filename) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 98
+004010C4: error: An error occurred while processing the statement Mem0[Mem0[c + 0x00000000:word32] + 0x00000004:word32](c, 0x000003E8).
+    The type inference of indirect calls are not implmented yet.
+       at Reko.Typing.ExpressionTypeDescender.BindActualTypesToFormalTypes(Application appl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 100
+   at Reko.Typing.ExpressionTypeDescender.VisitApplication(Application appl, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 92
+   at Reko.Core.Expressions.Application.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 43
+   at Reko.Typing.TypeCollector.VisitSideEffect(SideEffect side) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 200
+   at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+004010E3: error: An error occurred while processing the statement Mem0[Mem0[Mem0[0x00403018:word32] + 0x00000000:word32] + 0x00000000:word32](Mem0[0x00403018:word32]).
+    The type inference of indirect calls are not implmented yet.
+       at Reko.Typing.ExpressionTypeDescender.BindActualTypesToFormalTypes(Application appl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 100
+   at Reko.Typing.ExpressionTypeDescender.VisitApplication(Application appl, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 92
+   at Reko.Core.Expressions.Application.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 43
+   at Reko.Typing.TypeCollector.VisitSideEffect(SideEffect side) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 200
+   at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
+00401113: error: An error occurred while processing the statement Mem0[Mem0[Mem0[0x00403018:word32] + 0x00000000:word32] + 0x00000004:word32](Mem0[0x00403018:word32], 0x000003E7, Mem0[0x004020EC:real32]).
+    The type inference of indirect calls are not implmented yet.
+       at Reko.Typing.ExpressionTypeDescender.BindActualTypesToFormalTypes(Application appl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 100
+   at Reko.Typing.ExpressionTypeDescender.VisitApplication(Application appl, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 92
+   at Reko.Core.Expressions.Application.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\Application.cs:line 43
+   at Reko.Typing.TypeCollector.VisitSideEffect(SideEffect side) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 200
+   at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
+   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 
 === varargs_test.exe
 *** varargs_test.exe

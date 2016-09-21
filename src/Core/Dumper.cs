@@ -224,7 +224,7 @@ namespace Reko.Core
             stm.Write("\t");
 
             ImageReader rdr = arch.CreateImageReader(segment.MemoryArea, item.Address);
-            item.DataType.Accept(new TypedDataDumper(rdr, stm));
+            item.DataType.Accept(new TypedDataDumper(rdr, item.Size, stm));
         }
 
         public void WriteByteRange(MemoryArea image, Address begin, Address addrEnd, InstrWriter writer)
