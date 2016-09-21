@@ -68,6 +68,10 @@ namespace Reko.Core
                     Procedure proc;
                     if (program.Procedures.TryGetValue(block.Address, out proc))
                     {
+                        stm.WriteComment(string.Format(
+                            ";; {0}: {1}", proc.Name, block.Address));
+                        stm.WriteLine();
+
                         stm.Write(proc.Name);
                         stm.Write(" ");
                         stm.Write("proc");
