@@ -13,7 +13,7 @@ l0C00_0008:
 
 l0C00_0011:
 	ret	
-Code vector at 0C00:0012 (6 bytes)
+;; Code vector at 0C00:0012 (6 bytes)
 	0C00:0018
 	0C00:0022
 	0C00:002C

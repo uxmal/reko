@@ -60,7 +60,9 @@ namespace Reko.UnitTests.Core
                         ".text",
                         new MemoryArea(
                             Address.Ptr32(0x00010000),
-                            new byte[32]),
+                            Enumerable.Range(0, 32)
+                                .Select(i => (byte)i)
+                                .ToArray()),
                         AccessMode.ReadWrite)),
                 arch,
                 platform);
@@ -126,7 +128,7 @@ namespace Reko.UnitTests.Core
             string sExp =
             #region Expected
 @";;; Segment .text (00010000)
-00010000 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00010000 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F ................
 
 ;; fn00010010: 00010010
 fn00010010 proc
@@ -134,13 +136,12 @@ fn00010010 proc
 	Mul
 	Add
 	Ret
-00010018                         00 00 00 00 00 00 00 00         ........
+00010018                         18 19 1A 1B 1C 1D 1E 1F         ........
 ";
             #endregion
             AssertOutput(sExp, sw);
             mr.VerifyAll();
         }
-
 
         [Test]
         public void Dumper_NamedProc()
@@ -158,7 +159,7 @@ fn00010010 proc
             string sExp =
             #region Expected
 @";;; Segment .text (00010000)
-00010000 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00010000 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F ................
 
 ;; __foo@8: 00010010
 __foo@8 proc
@@ -166,7 +167,39 @@ __foo@8 proc
 	Mul
 	Add
 	Ret
-00010018                         00 00 00 00 00 00 00 00         ........
+00010018                         18 19 1A 1B 1C 1D 1E 1F         ........
+";
+            #endregion
+            AssertOutput(sExp, sw);
+            mr.VerifyAll();
+        }
+
+        [Test]
+        public void Dumper_Data()
+        {
+            Given_32bit_Program();
+            program.ImageMap.AddItemWithSize(
+                Address.Ptr32(0x10004),
+                new ImageMapItem
+                {
+                    Address = Address.Ptr32(0x10004),
+                    DataType = PrimitiveType.Word32,
+                    Size = 4,
+                });
+            mr.ReplayAll();
+
+            var dmp = new Dumper(program.Architecture);
+
+            var sw = new StringWriter();
+            dmp.Dump(program, new TextFormatter(sw));
+
+            string sExp =
+            #region Expected
+@";;; Segment .text (00010000)
+00010000 00 01 02 03                                     ....           
+l00010004	dd	0x07060504
+00010008                         08 09 0A 0B 0C 0D 0E 0F         ........
+00010010 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F ................
 ";
             #endregion
             AssertOutput(sExp, sw);

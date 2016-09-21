@@ -20,6 +20,7 @@
 
 using Reko.Core.Machine;
 using Reko.Core.Output;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -43,7 +44,7 @@ namespace Reko.Core
         public bool ShowAddresses { get; set; }
         public bool ShowCodeBytes { get; set; }
 
-        public void Dump(Program program, Formatter stm)
+        public void Dump(Program program, Formatter formatter)
         {
             var map = program.SegmentMap;
             ImageSegment segment = null;
@@ -57,53 +58,60 @@ namespace Reko.Core
                 if (seg != segment)
                 {
                     segment = seg;
-                    stm.WriteLine(";;; Segment {0} ({1})", seg.Name, seg.Address);
+                    formatter.WriteLine(";;; Segment {0} ({1})", seg.Name, seg.Address);
                 }
 
-                // Address addrLast = i.Address + i.Size;
                 ImageMapBlock block = i as ImageMapBlock;
                 if (block != null)
                 {
-                    stm.WriteLine();
+                    formatter.WriteLine();
                     Procedure proc;
                     if (program.Procedures.TryGetValue(block.Address, out proc))
                     {
-                        stm.WriteComment(string.Format(
+                        formatter.WriteComment(string.Format(
                             ";; {0}: {1}", proc.Name, block.Address));
-                        stm.WriteLine();
+                        formatter.WriteLine();
 
-                        stm.Write(proc.Name);
-                        stm.Write(" ");
-                        stm.Write("proc");
-                        stm.WriteLine();
+                        formatter.Write(proc.Name);
+                        formatter.Write(" ");
+                        formatter.Write("proc");
+                        formatter.WriteLine();
                     }
                     else
                     {
-                        stm.Write(block.Block.Name);
-                        stm.Write(":");
-                        stm.WriteLine();
+                        formatter.Write(block.Block.Name);
+                        formatter.Write(":");
+                        formatter.WriteLine();
                     }
-                    DumpAssembler(program.SegmentMap, block.Address, block.Address + block.Size, stm);
+                    DumpAssembler(program.SegmentMap, block.Address, block.Address + block.Size, formatter);
                     continue;
                 }
 
                 ImageMapVectorTable table = i as ImageMapVectorTable;
                 if (table != null)
                 {
-                    stm.WriteLine("Code vector at {0} ({1} bytes)",
+                    formatter.WriteLine(";; Code vector at {0} ({1} bytes)",
                         table.Address, table.Size);
                     foreach (Address addr in table.Addresses)
                     {
-                        stm.WriteLine("\t{0}", addr != null ? addr.ToString() : "-- null --");
+                        formatter.WriteLine("\t{0}", addr != null ? addr.ToString() : "-- null --");
                     }
-                    DumpData(program.SegmentMap, i.Address, i.Size, stm);
+                    DumpData(program.SegmentMap, i.Address, i.Size, formatter);
                 }
                 else
                 {
                     var segLast = segment.Address + segment.Size;
                     var size = segLast - i.Address;
                     size = Math.Min(i.Size, size);
-                    DumpData(program.SegmentMap, i.Address, size, stm);
+                    if (i.DataType == null || i.DataType is UnknownType ||
+                        i.DataType is CodeType)
+                    {
+                        DumpData(program.SegmentMap, i.Address, size, formatter);
+                    }
+                    else
+                    {
+                        DumpTypedData(program.SegmentMap, i, formatter);
+                    }
                 }
             }
         }
@@ -156,7 +164,7 @@ namespace Reko.Core
 				catch
 				{
 					stm.WriteLine();
-					stm.WriteLine("...end of image");
+					stm.WriteLine(";;; ...end of image");
 					return;
 				}
 				stm.WriteLine(sb.ToString());
@@ -207,7 +215,19 @@ namespace Reko.Core
             return true;
         }
 
-		public void WriteByteRange(MemoryArea image, Address begin, Address addrEnd, InstrWriter writer)
+        private void DumpTypedData(SegmentMap map, ImageMapItem item, Formatter stm)
+        {
+            ImageSegment segment;
+            if (!map.TryFindSegment(item.Address, out segment) || segment.MemoryArea == null)
+                return;
+            stm.Write(Block.GenerateName(item.Address));
+            stm.Write("\t");
+
+            ImageReader rdr = arch.CreateImageReader(segment.MemoryArea, item.Address);
+            item.DataType.Accept(new TypedDataDumper(rdr, stm));
+        }
+
+        public void WriteByteRange(MemoryArea image, Address begin, Address addrEnd, InstrWriter writer)
 		{
 			ImageReader rdr = arch.CreateImageReader(image, begin);
 			while (rdr.Address < addrEnd)

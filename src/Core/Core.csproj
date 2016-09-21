@@ -597,6 +597,7 @@
     <Compile Include="SignatureBuilder.cs" />
     <Compile Include="StatementCorrelatedException.cs" />
     <Compile Include="StructureReader.cs" />
+    <Compile Include="TypedDataDumper.cs" />
     <Compile Include="TypeLibrary.cs">
       <SubType>Code</SubType>
     </Compile>
