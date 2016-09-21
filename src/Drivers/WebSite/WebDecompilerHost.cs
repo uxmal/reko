@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Output;
 using System;
 using System.IO;
 using System.Threading;
@@ -67,7 +68,6 @@ namespace Reko.WebSite
 			}
 		}
 
-
 		public TextWriter DecompiledCodeWriter
 		{
 			get { return writer; }
@@ -88,15 +88,14 @@ namespace Reko.WebSite
 			get { return writer; }
 		}
 
-
 		public void WriteDiagnostic(Diagnostic d, string format, params object[] args)
 		{
 			writer.Write("{0}: ", d);
 			writer.Write(format, args);
-			writer.WriteLine("<br>");
+			writer.WriteLine("<br />");
 		}
 
-        public void WriteDisassembly(Program program, Action<TextWriter> writer)
+        public void WriteDisassembly(Program program, Action<Formatter> writer)
         {
             throw new NotImplementedException();
         }

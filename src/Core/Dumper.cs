@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Machine;
+using Reko.Core.Output;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -42,7 +43,7 @@ namespace Reko.Core
         public bool ShowAddresses { get; set; }
         public bool ShowCodeBytes { get; set; }
 
-        public void Dump(Program program, TextWriter stm)
+        public void Dump(Program program, Formatter stm)
         {
             var map = program.SegmentMap;
             ImageSegment segment = null;
@@ -64,13 +65,19 @@ namespace Reko.Core
                 if (block != null)
                 {
                     stm.WriteLine();
-                    if (program.Procedures.ContainsKey(block.Address))
+                    Procedure proc;
+                    if (program.Procedures.TryGetValue(block.Address, out proc))
                     {
-                        stm.WriteLine(block.Address.GenerateName("fn", "()"));
+                        stm.Write(proc.Name);
+                        stm.Write(" ");
+                        stm.Write("proc");
+                        stm.WriteLine();
                     }
                     else
                     {
-                        stm.WriteLine(block.Address.GenerateName("l", ":"));
+                        stm.Write(block.Block.Name);
+                        stm.Write(":");
+                        stm.WriteLine();
                     }
                     DumpAssembler(program.SegmentMap, block.Address, block.Address + block.Size, stm);
                     continue;
@@ -97,19 +104,19 @@ namespace Reko.Core
             }
         }
 
-        public void DumpData(SegmentMap map, Address address, int cbBytes, TextWriter stm)
+        public void DumpData(SegmentMap map, Address address, int cbBytes, Formatter stm)
         {
             if (cbBytes < 0)
                 throw new ArgumentException("Must be a nonnegative number.", "cbBytes"); 
             DumpData(map, address, (uint)cbBytes, stm);
         }
 
-        public void DumpData(SegmentMap map, AddressRange range, TextWriter stm)
+        public void DumpData(SegmentMap map, AddressRange range, Formatter stm)
         {
             DumpData(map, range.Begin, (long) (range.End - range.Begin), stm);
         }
 
-		public void DumpData(SegmentMap map, Address address, long cbBytes, TextWriter stm)
+		public void DumpData(SegmentMap map, Address address, long cbBytes, Formatter stm)
 		{
 			ulong cSkip = address.ToLinear() & 0x0F;
             ImageSegment segment;
@@ -152,7 +159,7 @@ namespace Reko.Core
 			}
 		}
 
-        public void DumpAssembler(SegmentMap map, Address addrStart, Address addrLast, TextWriter writer)
+        public void DumpAssembler(SegmentMap map, Address addrStart, Address addrLast, Formatter formatter)
         {
             ImageSegment segment;
             if (!map.TryFindSegment(addrStart, out segment))
@@ -160,6 +167,7 @@ namespace Reko.Core
             var dasm = arch.CreateDisassembler(arch.CreateImageReader(segment.MemoryArea, addrStart));
             try
             {
+                var writer = new InstrWriter(formatter);
                 foreach (var instr in dasm)
                 {
                     if (instr.Address >= addrLast)
@@ -170,12 +178,12 @@ namespace Reko.Core
             }
             catch (Exception ex)
             {
-                writer.WriteLine(ex.Message);
-                writer.WriteLine();
+                formatter.WriteLine(ex.Message);
+                formatter.WriteLine();
             }
         }
 
-        public bool DumpAssemblerLine(MemoryArea mem, MachineInstruction instr, TextWriter writer)
+        public bool DumpAssemblerLine(MemoryArea mem, MachineInstruction instr, InstrWriter writer)
         {
             Address addrBegin = instr.Address;
             if (ShowAddresses)
@@ -183,23 +191,77 @@ namespace Reko.Core
             if (ShowCodeBytes)
             {
                 StringWriter sw = new StringWriter();
-                WriteByteRange(mem, instr.Address, instr.Address + instr.Length, sw);
-                writer.WriteLine("{0,-16}\t{1}", sw.ToString(), instr);
+                WriteByteRange(mem, instr.Address, instr.Address + instr.Length, writer);
+                if (instr.Length * 3 < 16)
+                {
+                    writer.Write(new string(' ', 16 - (instr.Length * 3)));
+                }
             }
-            else
-            {
-                writer.WriteLine("\t{0}", instr.ToString());
-            }
+            writer.Write("\t");
+            instr.Render(writer);
+            writer.WriteLine();
             return true;
         }
 
-		public void WriteByteRange(MemoryArea image, Address begin, Address addrEnd, TextWriter writer)
+		public void WriteByteRange(MemoryArea image, Address begin, Address addrEnd, InstrWriter writer)
 		{
 			ImageReader rdr = arch.CreateImageReader(image, begin);
 			while (rdr.Address < addrEnd)
 			{
-				writer.Write("{0:X2} ", rdr.ReadByte());
+				writer.Write(string.Format("{0:X2} ", rdr.ReadByte()));
 			}
 		}
-	}
+
+        public class InstrWriter : MachineInstructionWriter
+        {
+            private Formatter formatter;
+
+            public InstrWriter(Formatter formatter)
+            {
+                this.formatter = formatter;
+            }
+
+            public IPlatform Platform { get; private set; }
+
+            public void Tab()
+            {
+                formatter.Write("\t");
+            }
+
+            public void Write(string s)
+            {
+                formatter.Write(s);
+            }
+
+            public void Write(uint n)
+            {
+                formatter.Write(n.ToString());
+            }
+
+            public void Write(char c)
+            {
+                formatter.Write(c);
+            }
+
+            public void Write(string fmt, params object[] parms)
+            {
+                formatter.Write(fmt, parms);
+            }
+
+            public void WriteAddress(string formattedAddress, Address addr)
+            {
+                formatter.WriteHyperlink(formattedAddress, addr);
+            }
+
+            public void WriteOpcode(string opcode)
+            {
+                formatter.Write(opcode);
+            }
+
+            public void WriteLine()
+            {
+                formatter.WriteLine();
+            }
+        }
+    }
 }

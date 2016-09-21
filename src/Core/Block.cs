@@ -83,7 +83,17 @@ namespace Reko.Core
 			next.Succ.Clear();
 		}
 
-		public static bool ReplaceJumpsFrom(Block block, Block next)
+        /// <summary>
+        /// Generates the name for a block stating at address <paramref name="addr"/>.
+        /// </summary>
+        /// <param name="addr"></param>
+        /// <returns>The name as a string.</returns>
+        public static string GenerateName(Address addr)
+        {
+            return addr.GenerateName("l", "");
+        }
+
+        public static bool ReplaceJumpsFrom(Block block, Block next)
 		{
 			bool change = false;
 			foreach (Block s in block.Succ)
