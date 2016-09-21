@@ -144,7 +144,7 @@ namespace Reko.Core
 
         public void VisitTypeReference(TypeReference typeref)
         {
-            throw new NotImplementedException();
+            typeref.Referent.Accept(this);
         }
 
         public void VisitTypeVariable(TypeVariable tv)
