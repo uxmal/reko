@@ -43,7 +43,8 @@
 00000000004003C0 00 00 00 00 00 00 00 00                         ........       
 ;;; Segment .init (00000000004003C8)
 
-fn00000000004003C8()
+;; _init: 00000000004003C8
+_init proc
 	sub	rsp,08
 	call	000000000040043C
 	add	rsp,08
@@ -54,7 +55,8 @@ fn00000000004003C8()
 0000000000400400 FF 25 02 0C 20 00 68 01 00 00 00 E9 D0 FF FF FF .%.. .h.........
 ;;; Segment .text (0000000000400410)
 
-fn0000000000400410()
+;; _start: 0000000000400410
+_start proc
 	xor	ebp,ebp
 	mov	r9,rdx
 	pop	rsi
@@ -69,7 +71,8 @@ fn0000000000400410()
 	hlt	
 000000000040043A                               90 90                       ..   
 
-fn000000000040043C()
+;; call_gmon_start: 000000000040043C
+call_gmon_start proc
 	sub	rsp,08
 	mov	rax,[rip+00200B99]
 	test	rax,rax
@@ -83,7 +86,8 @@ l000000000040044E:
 	ret	
 0000000000400453          90 90 90 90 90 90 90 90 90 90 90 90 90    .............
 
-fn0000000000400460()
+;; deregister_tm_clones: 0000000000400460
+deregister_tm_clones proc
 	mov	eax,0060103F
 	push	rbp
 	sub	r8,+00601038
@@ -106,7 +110,8 @@ l0000000000400481:
 	jmp	eax
 0000000000400489                            0F 1F 80 00 00 00 00          .......
 
-fn0000000000400490()
+;; register_tm_clones: 0000000000400490
+register_tm_clones proc
 	mov	eax,00601038
 	push	rbp
 	sub	r8,+00601038
@@ -134,7 +139,8 @@ l00000000004004BE:
 	jmp	edx
 00000000004004C9                            0F 1F 80 00 00 00 00          .......
 
-fn00000000004004D0()
+;; __do_global_dtors_aux: 00000000004004D0
+__do_global_dtors_aux proc
 	cmp	byte ptr [rip+00200B61],00
 	jnz	00000000004004EA
 
@@ -149,7 +155,8 @@ l00000000004004EA:
 	ret	
 00000000004004EC                                     0F 1F 40 00             ..@.
 
-fn00000000004004F0()
+;; frame_dummy: 00000000004004F0
+frame_dummy proc
 	cmp	qword ptr [rip+00200910],00
 	jz	0000000000400518
 
@@ -171,7 +178,8 @@ l0000000000400518:
 	jmp	0000000000400490
 000000000040051D                                        90 90 90              ...
 
-fn0000000000400520()
+;; verify: 0000000000400520
+verify proc
 	push	rbp
 	mov	rbp,rsp
 	mov	[rbp-18],rdi
@@ -240,7 +248,8 @@ l00000000004005C3:
 	pop	rbp
 	ret	
 
-fn00000000004005C5()
+;; main: 00000000004005C5
+main proc
 	push	rbp
 	mov	rbp,rsp
 	sub	rsp,10
@@ -281,7 +290,8 @@ l000000000040061D:
 	ret	
 000000000040061F                                              90                .
 
-fn0000000000400620()
+;; __libc_csu_init: 0000000000400620
+__libc_csu_init proc
 	mov	[rsp-28],rbp
 	mov	[rsp-20],r12
 	lea	rbp,[rip+002007CF]
@@ -324,12 +334,14 @@ l0000000000400686:
 	ret	
 00000000004006A9                            0F 1F 80 00 00 00 00          .......
 
-fn00000000004006B0()
+;; __libc_csu_fini: 00000000004006B0
+__libc_csu_fini proc
 	ret	
 00000000004006B2       90 90                                       ..           
 ;;; Segment .fini (00000000004006B4)
 
-fn00000000004006B4()
+;; _fini: 00000000004006B4
+_fini proc
 	sub	rsp,08
 	add	rsp,08
 	ret	

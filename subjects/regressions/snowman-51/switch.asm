@@ -1,6 +1,7 @@
 ;;; Segment .text (10071000)
 
-fn10071000()
+;; get: 10071000
+get proc
 	mov	eax,[esp+04]
 	inc	eax
 	cmp	eax,03
@@ -26,7 +27,7 @@ l10071029:
 	mov	eax,10072000
 	ret	
 1007102F                                              90                .
-Code vector at 10071030 (12 bytes)
+;; Code vector at 10071030 (12 bytes)
 	10071011
 	10071017
 	1007101D
@@ -37,7 +38,8 @@ Code vector at 10071030 (12 bytes)
 10071060 10 C3 B8 08 20 07 10 C3 B8 00 20 07 10 C3 8B FF .... ..... .....
 10071070 50 10 07 10 56 10 07 10 5C 10 07 10 62 10 07 10 P...V...\...b...
 
-fn10071080()
+;; DllMain: 10071080
+DllMain proc
 	mov	eax,00000001
 	ret	000C
 ;;; Segment .rdata (10072000)
