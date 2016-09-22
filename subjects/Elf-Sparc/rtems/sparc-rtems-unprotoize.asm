@@ -331,8 +331,7 @@
 00011490 00 00 3B 15 00 00 00 00                         ..;.....       
 ;;; Segment .text (00011498)
 
-;; _start: 00011498
-_start proc
+fn00011498()
 	or	%g0,0x00000000,%i6
 	ld	[%sp+64],%l0
 	add	%sp,0x00000044,%l1
@@ -367,13 +366,11 @@ l000114BC:
 	call	00027C80
 	sethi	0x00000000,%g0
 
-;; fn0001150C: 0001150C
-fn0001150C proc
+fn0001150C()
 	jmpl	%o7,8,%g0
 	add	%o7,%l7,%l7
 
-;; __do_global_dtors_aux: 00011514
-__do_global_dtors_aux proc
+fn00011514()
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x00000000,%o0
 	sethi	0x00000059,%l7
@@ -437,14 +434,12 @@ l000115C4:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; fini_dummy: 000115CC
-fini_dummy proc
+fn000115CC()
 	save	%sp,0xFFFFFF90,%sp
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; frame_dummy: 000115D8
-frame_dummy proc
+fn000115D8()
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x00000000,%o0
 	sethi	0x00000059,%l7
@@ -468,14 +463,12 @@ l00011618:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; init_dummy: 00011620
-init_dummy proc
+fn00011620()
 	save	%sp,0xFFFFFF90,%sp
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; notice: 0001162C
-notice proc
+fn0001162C()
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x000000AD,%o0
 	st	%i1,[%i6+72]
@@ -490,16 +483,14 @@ notice proc
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; xstrerror: 00011660
-xstrerror proc
+fn00011660()
 	save	%sp,0xFFFFFF90,%sp
 	call	00027CB0
 	or	%g0,%i0,%o0
 	jmpl	%i7,8,%g0
 	restore	%g0,%o0,%o0
 
-;; xmalloc: 00011674
-xmalloc proc
+fn00011674()
 	save	%sp,0xFFFFFF90,%sp
 	call	00027CBC
 	or	%g0,%i0,%o0
@@ -520,8 +511,7 @@ l000116A8:
 	jmpl	%i7,8,%g0
 	restore	%g0,%o0,%o0
 
-;; xrealloc: 000116B0
-xrealloc proc
+fn000116B0()
 	save	%sp,0xFFFFFF90,%sp
 	orcc	%i0,0x00000000,%o0
 	be	000116D0
@@ -555,8 +545,7 @@ l00011700:
 	jmpl	%i7,8,%g0
 	restore	%g0,%o0,%o0
 
-;; xfree: 00011708
-xfree proc
+fn00011708()
 	save	%sp,0xFFFFFF90,%sp
 	orcc	%i0,0x00000000,%o0
 	be	00011720
@@ -570,8 +559,7 @@ l00011720:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; savestring: 00011728
-savestring proc
+fn00011728()
 	save	%sp,0xFFFFFF90,%sp
 	or	%g0,%i0,%l0
 	call	00011674
@@ -582,8 +570,7 @@ savestring proc
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; savestring2: 0001174C
-savestring2 proc
+fn0001174C()
 	save	%sp,0xFFFFFF90,%sp
 	add	%i1,%i3,%o0
 	or	%g0,%i0,%l0
@@ -598,8 +585,7 @@ savestring2 proc
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; fancy_abort: 00011780
-fancy_abort proc
+fn00011780()
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x000000A0,%o0
 	ld	[%o0+336],%o1
@@ -609,8 +595,7 @@ fancy_abort proc
 	call	00027C74
 	or	%g0,0x00000021,%o0
 
-;; dupnstr: 000117A0
-dupnstr proc
+fn000117A0()
 	save	%sp,0xFFFFFF90,%sp
 	or	%g0,%i0,%l0
 	call	00011674
@@ -623,8 +608,7 @@ dupnstr proc
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; substr: 000117CC
-substr proc
+fn000117CC()
 	ba	00011810
 	ldsb	[%o0+%g0],%g2
 
@@ -665,8 +649,7 @@ l00011820:
 	jmpl	%o7,8,%g0
 	sethi	0x00000000,%g0
 
-;; safe_read: 00011828
-safe_read proc
+fn00011828()
 	save	%sp,0xFFFFFF90,%sp
 	or	%g0,%i0,%l2
 	or	%g0,%i2,%l0
@@ -710,8 +693,7 @@ l00011880:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; safe_write: 00011888
-safe_write proc
+fn00011888()
 	save	%sp,0xFFFFFF90,%sp
 	subcc	%i2,0x00000000,%g0
 	ble	0001190C
@@ -762,8 +744,7 @@ l0001190C:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; save_pointers: 00011914
-save_pointers proc
+fn00011914()
 	sethi	0x000000A0,%g2
 	ld	[%g2+480],%o2
 	sethi	0x000000A0,%g3
@@ -774,8 +755,7 @@ save_pointers proc
 	jmpl	%o7,8,%g0
 	st	%o1,[%g2+656]
 
-;; restore_pointers: 00011938
-restore_pointers proc
+fn00011938()
 	sethi	0x000000AC,%g2
 	ld	[%g2+640],%o2
 	sethi	0x000000AC,%g3
@@ -786,8 +766,7 @@ restore_pointers proc
 	jmpl	%o7,8,%g0
 	st	%o1,[%g2+528]
 
-;; is_id_char: 0001195C
-is_id_char proc
+fn0001195C()
 	sethi	0x000000AD,%g2
 	or	%g2,0x00000011,%g2
 	and	%o0,0x000000FF,%o0
@@ -812,8 +791,7 @@ l00011990:
 	jmpl	%o7,8,%g0
 	or	%g0,%g2,%o0
 
-;; usage: 00011998
-usage proc
+fn00011998()
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x000000A0,%o0
 	ld	[%o0+336],%o1
@@ -824,16 +802,14 @@ usage proc
 	call	00027C74
 	or	%g0,0x00000021,%o0
 
-;; in_system_include_dir: 000119BC
-in_system_include_dir proc
+fn000119BC()
 	save	%sp,0xFFFFFF90,%sp
 	ldsb	[%i0+%g0],%o0
 	subcc	%o0,0x0000002F,%g0
 	be	000119E0
 	sethi	0x0000009F,%o0
 
-;; fn000119D0: 000119D0
-fn000119D0 proc
+fn000119D0()
 	call	00027D10
 	sethi	0x00000000,%g0
 
@@ -841,8 +817,7 @@ l000119D8:
 	ba	00011A44
 	or	%g0,0x00000001,%i0
 
-;; fn000119E0: 000119E0
-fn000119E0 proc
+fn000119E0()
 	ld	[%o0+720],%o1
 	subcc	%o1,0x00000000,%g0
 	be	00011A40
@@ -883,8 +858,7 @@ l00011A44:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; needs_to_be_converted: 00011A4C
-needs_to_be_converted proc
+fn00011A4C()
 	ld	[%o0+4],%g3
 	subcc	%g3,0x00000000,%g0
 	be	00011A80
@@ -911,8 +885,7 @@ l00011A80:
 	jmpl	%o7,8,%g0
 	sethi	0x00000000,%g0
 
-;; directory_specified_p: 00011A88
-directory_specified_p proc
+fn00011A88()
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x000000AD,%o0
 	ld	[%o0+868],%l1
@@ -984,8 +957,7 @@ l00011B38:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; file_excluded_p: 00011B40
-file_excluded_p proc
+fn00011B40()
 	save	%sp,0xFFFFFF90,%sp
 	call	00027D1C
 	or	%g0,%i0,%o0
@@ -1035,8 +1007,7 @@ l00011BC0:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; string_list_cons: 00011BC8
-string_list_cons proc
+fn00011BC8()
 	save	%sp,0xFFFFFF90,%sp
 	call	00011674
 	or	%g0,0x00000008,%o0
@@ -1045,8 +1016,7 @@ string_list_cons proc
 	jmpl	%i7,8,%g0
 	restore	%g0,%o0,%o0
 
-;; visit_each_hash_node: 00011BE4
-visit_each_hash_node proc
+fn00011BE4()
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x00000006,%o0
 	add	%i0,%o0,%o0
@@ -1080,8 +1050,7 @@ l00011C34:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; add_symbol: 00011C3C
-add_symbol proc
+fn00011C3C()
 	save	%sp,0xFFFFFF90,%sp
 	or	%g0,%i0,%l0
 	st	%g0,[%l0+%g0]
@@ -1095,8 +1064,7 @@ add_symbol proc
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; lookup: 00011C6C
-lookup proc
+fn00011C6C()
 	save	%sp,0xFFFFFF90,%sp
 	ldsb	[%i1+%g0],%o0
 	or	%g0,%i0,%l1
@@ -1172,8 +1140,7 @@ l00011D34:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; free_def_dec: 00011D3C
-free_def_dec proc
+fn00011D3C()
 	save	%sp,0xFFFFFF90,%sp
 	call	00011708
 	ld	[%i0+12],%o0
@@ -1182,8 +1149,7 @@ free_def_dec proc
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; unexpand_if_needed: 00011D58
-unexpand_if_needed proc
+fn00011D58()
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x0000009F,%o0
 	ld	[%o0+848],%l1
@@ -1348,8 +1314,7 @@ l00011F2C:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; abspath: 00011F34
-abspath proc
+fn00011F34()
 	save	%sp,0xFFFFFF90,%sp
 	subcc	%i0,0x00000000,%g0
 	bne	00011F4C
@@ -1555,8 +1520,7 @@ l00012138:
 	jmpl	%i7,8,%g0
 	restore	%g0,%o0,%o0
 
-;; shortpath: 0001214C
-shortpath proc
+fn0001214C()
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x000000AC,%o0
 	ld	[%o0+624],%l0
@@ -1726,8 +1690,7 @@ l000122FC:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; find_file: 00012304
-find_file proc
+fn00012304()
 	save	%sp,0xFFFFFF08,%sp
 	or	%g0,%i0,%l1
 	sethi	0x000000A0,%o0
@@ -1794,8 +1757,7 @@ l000123C8:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; aux_info_corrupted: 000123D0
-aux_info_corrupted proc
+fn000123D0()
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x000000A0,%o0
 	ld	[%o0+336],%o1
@@ -1807,8 +1769,7 @@ aux_info_corrupted proc
 	call	00027C74
 	or	%g0,0x00000021,%o0
 
-;; check_aux_info: 000123F8
-check_aux_info proc
+fn000123F8()
 	save	%sp,0xFFFFFF90,%sp
 	subcc	%i0,0x00000000,%g0
 	bne	00012410
@@ -1822,8 +1783,7 @@ l00012410:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; find_corresponding_lparen: 00012418
-find_corresponding_lparen proc
+fn00012418()
 	add	%o0,0xFFFFFFFF,%o0
 	or	%g0,0x00000001,%g3
 	ldsb	[%o0+%g0],%g2
@@ -1856,8 +1816,7 @@ l00012454:
 	jmpl	%o7,8,%g0
 	add	%o0,0x00000001,%o0
 
-;; referenced_file_is_newer: 0001245C
-referenced_file_is_newer proc
+fn0001245C()
 	save	%sp,0xFFFFFF90,%sp
 	ldsb	[%i0+%g0],%o0
 	xor	%o0,0x0000002F,%o0
@@ -1917,8 +1876,7 @@ l00012514:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; save_def_or_dec: 0001251C
-save_def_or_dec proc
+fn0001251C()
 	save	%sp,0xFFFFFF80,%sp
 	call	00011674
 	or	%g0,0x0000002C,%o0
@@ -2406,8 +2364,7 @@ l00012B5C:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; munge_compile_params: 00012B64
-munge_compile_params proc
+fn00012B64()
 	save	%sp,0xFFFFFF90,%sp
 	call	00027D1C
 	or	%g0,%i0,%o0
@@ -2568,8 +2525,7 @@ l00012D00:
 00012E10 00 01 2C D4 00 01 2C D4 00 01 2C D4 00 01 2C D4 ..,...,...,...,.
 00012E20 00 01 2C D4 00 01 2C D4 00 01 2C 54             ..,...,...,T   
 
-;; gen_aux_info_file: 00012E2C
-gen_aux_info_file proc
+fn00012E2C()
 	save	%sp,0xFFFFFF78,%sp
 	sethi	0x0000009F,%l2
 	ld	[%l2+836],%o0
@@ -2681,8 +2637,7 @@ l0001302C:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; process_aux_info_file: 00013034
-process_aux_info_file proc
+fn00013034()
 	save	%sp,0xFFFFFF08,%sp
 	call	00027D1C
 	or	%g0,%i0,%o0
@@ -3175,8 +3130,7 @@ l000135B8:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; reverse_def_dec_list: 000135C0
-reverse_def_dec_list proc
+fn000135C0()
 	ld	[%o0+8],%o1
 	ld	[%o1+4],%g3
 	subcc	%g3,0x00000000,%g0
@@ -3207,8 +3161,7 @@ l00013604:
 	jmpl	%o7,8,%g0
 	sethi	0x00000000,%g0
 
-;; identify_lineno: 0001360C
-identify_lineno proc
+fn0001360C()
 	sethi	0x000000A0,%g2
 	ld	[%g2+448],%g3
 	or	%g0,%o0,%o1
@@ -3234,8 +3187,7 @@ l00013644:
 	jmpl	%o7,8,%g0
 	sethi	0x00000000,%g0
 
-;; declare_source_confusing: 0001364C
-declare_source_confusing proc
+fn0001364C()
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x0000009F,%o0
 	ld	[%o0+812],%o1
@@ -3282,8 +3234,7 @@ l000136D4:
 	call	00027DB8
 	or	%g0,0x00000001,%o1
 
-;; check_source: 000136E0
-check_source proc
+fn000136E0()
 	save	%sp,0xFFFFFF90,%sp
 	subcc	%i0,0x00000000,%g0
 	bne	000136F8
@@ -3297,8 +3248,7 @@ l000136F8:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; seek_to_line: 00013700
-seek_to_line proc
+fn00013700()
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x000000A0,%o1
 	ld	[%o1+560],%o0
@@ -3361,8 +3311,7 @@ l000137A0:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; forward_to_next_token_char: 000137AC
-forward_to_next_token_char proc
+fn000137AC()
 	save	%sp,0xFFFFFF90,%sp
 	add	%i0,0x00000001,%i0
 	ldub	[%i0+%g0],%o0
@@ -3393,8 +3342,7 @@ l00013800:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; output_bytes: 00013808
-output_bytes proc
+fn00013808()
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x000000A0,%l2
 	ld	[%l2+528],%o1
@@ -3433,8 +3381,7 @@ l00013864:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; output_string: 0001388C
-output_string proc
+fn0001388C()
 	save	%sp,0xFFFFFF90,%sp
 	call	00027D1C
 	or	%g0,%i0,%o0
@@ -3444,8 +3391,7 @@ output_string proc
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; output_up_to: 000138AC
-output_up_to proc
+fn000138AC()
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x000000A0,%o0
 	ld	[%o0+448],%o1
@@ -3468,8 +3414,7 @@ l000138E8:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; other_variable_style_function: 000138F0
-other_variable_style_function proc
+fn000138F0()
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x0000005D,%o1
 	or	%g0,%i0,%o0
@@ -3480,8 +3425,7 @@ other_variable_style_function proc
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; edit_fn_declaration: 00013914
-edit_fn_declaration proc
+fn00013914()
 	save	%sp,0xFFFFFF88,%sp
 	st	%i0,[%i6+68]
 	ld	[%i0+16],%o0
@@ -3547,8 +3491,7 @@ l00013B60:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; edit_formals_lists: 00013B68
-edit_formals_lists proc
+fn00013B68()
 	save	%sp,0xFFFFFF90,%sp
 	add	%i0,0xFFFFFFFF,%l1
 	or	%g0,0x00000001,%l0
@@ -3781,8 +3724,7 @@ l00013DFC:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; find_rightmost_formals_list: 00013E04
-find_rightmost_formals_list proc
+fn00013E04()
 	save	%sp,0xFFFFFF90,%sp
 	ba	00013E14
 	ldsb	[%i0+%g0],%o0
@@ -3860,8 +3802,7 @@ l00013EB4:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; edit_fn_definition: 00013EDC
-edit_fn_definition proc
+fn00013EDC()
 	save	%sp,0xFFFFFF88,%sp
 	st	%i0,[%i6+68]
 	ld	[%i0+16],%o0
@@ -3953,8 +3894,7 @@ l000140AC:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; do_cleaning: 000140B4
-do_cleaning proc
+fn000140B4()
 	save	%sp,0xFFFFFF90,%sp
 	subcc	%i0,%i1,%g0
 	bcc	000143BC
@@ -4056,8 +3996,7 @@ l000143BC:
 00014500 00 01 43 A8 00 01 43 A8 00 01 43 A8 00 01 43 A8 ..C...C...C...C.
 00014510 00 01 43 A8 00 01 43 84                         ..C...C.       
 
-;; careful_find_l_paren: 00014518
-careful_find_l_paren proc
+fn00014518()
 	save	%sp,0xFFFFFF90,%sp
 	add	%i0,0xFFFFFFFF,%i0
 	or	%g0,0x00000001,%l0
@@ -4097,8 +4036,7 @@ l00014570:
 	jmpl	%i7,8,%g0
 	restore	%i0,0x00000001,%o0
 
-;; scan_for_missed_items: 00014578
-scan_for_missed_items proc
+fn00014578()
 	save	%sp,0xFFFFFF88,%sp
 	sethi	0x000000A0,%o0
 	ld	[%o0+448],%o1
@@ -4356,8 +4294,7 @@ l00014870:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; edit_file: 00014878
-edit_file proc
+fn00014878()
 	save	%sp,0xFFFFFF08,%sp
 	ld	[%i0+8],%i0
 	call	00011A4C
@@ -4497,8 +4434,7 @@ l00014E1C:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; do_processing: 00014E24
-do_processing proc
+fn00014E24()
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x0000009F,%o0
 	ld	[%o0+844],%o1
@@ -4540,8 +4476,7 @@ l00014E78:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; main: 00014EA4
-main proc
+fn00014EA4()
 	save	%sp,0xFFFFFF88,%sp
 	st	%i1,[%i6+72]
 	ld	[%i1+%g0],%o0
@@ -4825,8 +4760,7 @@ l00015204:
 	unimp
 	unimp
 
-;; getpwd: 000152B8
-getpwd proc
+fn000152B8()
 	save	%sp,0xFFFFFE80,%sp
 	sethi	0x000000AC,%o0
 	ld	[%o0+672],%i0
@@ -4923,8 +4857,7 @@ l000153BC:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; _obstack_begin: 000153C4
-_obstack_begin proc
+fn000153C4()
 	save	%sp,0xFFFFFF90,%sp
 	subcc	%i2,0x00000000,%g0
 	be,a	000153D4
@@ -4989,8 +4922,7 @@ l00015448:
 	jmpl	%i7,8,%g0
 	restore	%g0,0x00000001,%o0
 
-;; _obstack_begin_1: 00015488
-_obstack_begin_1 proc
+fn00015488()
 	save	%sp,0xFFFFFF90,%sp
 	subcc	%i2,0x00000000,%g0
 	be,a	00015498
@@ -5056,8 +4988,7 @@ l00015510:
 	jmpl	%i7,8,%g0
 	restore	%g0,0x00000001,%o0
 
-;; _obstack_newchunk: 00015550
-_obstack_newchunk proc
+fn00015550()
 	save	%sp,0xFFFFFF90,%sp
 	ld	[%i0+8],%o0
 	ld	[%i0+12],%o1
@@ -5205,8 +5136,7 @@ l000156D0:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; _obstack_allocated_p: 000156F0
-_obstack_allocated_p proc
+fn000156F0()
 	ld	[%o0+4],%g3
 
 l000156F4:
@@ -5229,8 +5159,7 @@ l00015718:
 	jmpl	%o7,8,%g0
 	addx	%g0,0x00000000,%o0
 
-;; _obstack_free: 00015724
-_obstack_free proc
+fn00015724()
 	save	%sp,0xFFFFFF90,%sp
 	ba	00015774
 	ld	[%i0+4],%o3
@@ -5300,8 +5229,7 @@ l000157CC:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; obstack_free: 000157D4
-obstack_free proc
+fn000157D4()
 	save	%sp,0xFFFFFF90,%sp
 	ba	00015824
 	ld	[%i0+4],%o3
@@ -5371,8 +5299,7 @@ l0001587C:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; _obstack_memory_used: 00015884
-_obstack_memory_used proc
+fn00015884()
 	ld	[%o0+4],%g3
 	subcc	%g3,0x00000000,%g0
 	be	000158AC
@@ -5390,8 +5317,7 @@ l000158AC:
 	jmpl	%o7,8,%g0
 	sethi	0x00000000,%g0
 
-;; print_and_abort: 000158B4
-print_and_abort proc
+fn000158B4()
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x0000005E,%o0
 	sethi	0x000000AD,%o1
@@ -5402,8 +5328,7 @@ print_and_abort proc
 	call	00027C74
 	ld	[%o1+48],%o0
 
-;; try: 000158D8
-try proc
+fn000158D8()
 	save	%sp,0xFFFFFF90,%sp
 	subcc	%i1,0x00000000,%g0
 	be	000158F0
@@ -5431,8 +5356,7 @@ l00015910:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; choose_temp_base: 00015918
-choose_temp_base proc
+fn00015918()
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x0000005E,%o0
 	call	00027E0C
@@ -5539,8 +5463,7 @@ l00015A74:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; make_temp_file: 00015A7C
-make_temp_file proc
+fn00015A7C()
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x0000005E,%o0
 	or	%g0,%i0,%l3
@@ -5676,8 +5599,7 @@ l00015C1C:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; my_index: 00015C24
-my_index proc
+fn00015C24()
 	ba	00015C48
 	ldsb	[%o0+%g0],%g2
 
@@ -5704,8 +5626,7 @@ l00015C58:
 	jmpl	%o7,8,%g0
 	sethi	0x00000000,%g0
 
-;; exchange: 00015C60
-exchange proc
+fn00015C60()
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x000000AC,%g2
 	sethi	0x000000A0,%i1
@@ -5804,8 +5725,7 @@ l00015D44:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; _getopt_initialize: 00015D64
-_getopt_initialize proc
+fn00015D64()
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x000000A0,%o0
 	ld	[%o0+104],%o2
@@ -5861,8 +5781,7 @@ l00015DFC:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; _getopt_internal: 00015E04
-_getopt_internal proc
+fn00015E04()
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x000000A0,%o0
 	ld	[%o0+104],%o2
@@ -6946,8 +6865,7 @@ l00016978:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; getopt: 00016980
-getopt proc
+fn00016980()
 	save	%sp,0xFFFFFF90,%sp
 	or	%g0,%i0,%o0
 	or	%g0,%i1,%o1
@@ -6959,8 +6877,7 @@ getopt proc
 	jmpl	%i7,8,%g0
 	restore	%g0,%o0,%o0
 
-;; getopt_long: 000169A8
-getopt_long proc
+fn000169A8()
 	save	%sp,0xFFFFFF90,%sp
 	or	%g0,%i0,%o0
 	or	%g0,%i1,%o1
@@ -6972,8 +6889,7 @@ getopt_long proc
 	jmpl	%i7,8,%g0
 	restore	%g0,%o0,%o0
 
-;; getopt_long_only: 000169D0
-getopt_long_only proc
+fn000169D0()
 	save	%sp,0xFFFFFF90,%sp
 	or	%g0,%i0,%o0
 	or	%g0,%i1,%o1
@@ -6985,8 +6901,7 @@ getopt_long_only proc
 	jmpl	%i7,8,%g0
 	restore	%g0,%o0,%o0
 
-;; pexecute: 000169F8
-pexecute proc
+fn000169F8()
 	save	%sp,0xFFFFFF70,%sp
 	ld	[%i6+92],%o1
 	st	%i0,[%i6+68]
@@ -7189,16 +7104,14 @@ l00016C24:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; pwait: 00016C2C
-pwait proc
+fn00016C2C()
 	save	%sp,0xFFFFFF90,%sp
 	call	00027E84
 	or	%g0,%i1,%o0
 	jmpl	%i7,8,%g0
 	restore	%g0,%o0,%o0
 
-;; mkstemps: 00016C40
-mkstemps proc
+fn00016C40()
 	save	%sp,0xFFFFFF88,%sp
 	call	00027D1C
 	or	%g0,%i0,%o0
@@ -7355,13 +7268,11 @@ l00016E5C:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; fn00016E64: 00016E64
-fn00016E64 proc
+fn00016E64()
 	jmpl	%o7,8,%g0
 	add	%o7,%l7,%l7
 
-;; __do_global_ctors_aux: 00016E6C
-__do_global_ctors_aux proc
+fn00016E6C()
 	save	%sp,0xFFFFFF90,%sp
 	sethi	0x00000000,%o0
 	sethi	0x00000043,%l7
@@ -7387,15 +7298,13 @@ l00016EB4:
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 
-;; init_dummy: 00016EBC
-init_dummy proc
+fn00016EBC()
 	save	%sp,0xFFFFFF90,%sp
 	jmpl	%i7,8,%g0
 	restore	%g0,%g0,%g0
 ;;; Segment .init (00016EC8)
 
-;; _init: 00016EC8
-_init proc
+fn00016EC8()
 	save	%sp,0xFFFFFFA0,%sp
 	call	000115D8
 	sethi	0x00000000,%g0
@@ -7405,8 +7314,7 @@ _init proc
 	restore	%g0,%g0,%g0
 ;;; Segment .fini (00016EE4)
 
-;; _fini: 00016EE4
-_fini proc
+fn00016EE4()
 	save	%sp,0xFFFFFFA0,%sp
 	call	00011514
 	sethi	0x00000000,%g0
@@ -7640,8 +7548,7 @@ _fini proc
 00027C30 00 00 00 00 00 00 00 00                         ........       
 ;;; Segment .plt (00027C38)
 
-;; _PROCEDURE_LINKAGE_TABLE_: 00027C38
-_PROCEDURE_LINKAGE_TABLE_ proc
+fn00027C38()
 	unimp
 	unimp
 	unimp
@@ -7655,182 +7562,152 @@ _PROCEDURE_LINKAGE_TABLE_ proc
 	unimp
 	unimp
 
-;; fn00027C68: 00027C68
-fn00027C68 proc
+fn00027C68()
 	sethi	0x00000030,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027C74: 00027C74
-fn00027C74 proc
+fn00027C74()
 	sethi	0x0000003C,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027C80: 00027C80
-fn00027C80 proc
+fn00027C80()
 	sethi	0x00000048,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027C8C: 00027C8C
-fn00027C8C proc
+fn00027C8C()
 	sethi	0x00000054,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027C98: 00027C98
-fn00027C98 proc
+fn00027C98()
 	sethi	0x00000060,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027CA4: 00027CA4
-fn00027CA4 proc
+fn00027CA4()
 	sethi	0x0000006C,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027CB0: 00027CB0
-fn00027CB0 proc
+fn00027CB0()
 	sethi	0x00000078,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027CBC: 00027CBC
-fn00027CBC proc
+fn00027CBC()
 	sethi	0x00000084,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027CC8: 00027CC8
-fn00027CC8 proc
+fn00027CC8()
 	sethi	0x00000090,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027CD4: 00027CD4
-fn00027CD4 proc
+fn00027CD4()
 	sethi	0x0000009C,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027CE0: 00027CE0
-fn00027CE0 proc
+fn00027CE0()
 	sethi	0x000000A8,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027CEC: 00027CEC
-fn00027CEC proc
+fn00027CEC()
 	sethi	0x000000B4,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027CF8: 00027CF8
-fn00027CF8 proc
+fn00027CF8()
 	sethi	0x000000C0,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027D04: 00027D04
-fn00027D04 proc
+fn00027D04()
 	sethi	0x000000CC,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027D10: 00027D10
-fn00027D10 proc
+fn00027D10()
 	sethi	0x000000D8,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027D1C: 00027D1C
-fn00027D1C proc
+fn00027D1C()
 	sethi	0x000000E4,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027D28: 00027D28
-fn00027D28 proc
+fn00027D28()
 	sethi	0x000000F0,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027D34: 00027D34
-fn00027D34 proc
+fn00027D34()
 	sethi	0x000000FC,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027D40: 00027D40
-fn00027D40 proc
+fn00027D40()
 	sethi	0x00000108,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027D4C: 00027D4C
-fn00027D4C proc
+fn00027D4C()
 	sethi	0x00000114,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027D58: 00027D58
-fn00027D58 proc
+fn00027D58()
 	sethi	0x00000120,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027D64: 00027D64
-fn00027D64 proc
+fn00027D64()
 	sethi	0x0000012C,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027D70: 00027D70
-fn00027D70 proc
+fn00027D70()
 	sethi	0x00000138,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027D7C: 00027D7C
-fn00027D7C proc
+fn00027D7C()
 	sethi	0x00000144,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027D88: 00027D88
-fn00027D88 proc
+fn00027D88()
 	sethi	0x00000150,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027D94: 00027D94
-fn00027D94 proc
+fn00027D94()
 	sethi	0x0000015C,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027DA0: 00027DA0
-fn00027DA0 proc
+fn00027DA0()
 	sethi	0x00000168,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027DAC: 00027DAC
-fn00027DAC proc
+fn00027DAC()
 	sethi	0x00000174,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027DB8: 00027DB8
-fn00027DB8 proc
+fn00027DB8()
 	sethi	0x00000180,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027DC4: 00027DC4
-fn00027DC4 proc
+fn00027DC4()
 	sethi	0x0000018C,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
@@ -7838,32 +7715,27 @@ fn00027DC4 proc
 00027DE0 30 BF FF 96 01 00 00 00 03 00 01 B0 30 BF FF 93 0...........0...
 00027DF0 01 00 00 00 03 00 01 BC 30 BF FF 90 01 00 00 00 ........0.......
 
-;; fn00027E00: 00027E00
-fn00027E00 proc
+fn00027E00()
 	sethi	0x000001C8,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027E0C: 00027E0C
-fn00027E0C proc
+fn00027E0C()
 	sethi	0x000001D4,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027E18: 00027E18
-fn00027E18 proc
+fn00027E18()
 	sethi	0x000001E0,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027E24: 00027E24
-fn00027E24 proc
+fn00027E24()
 	sethi	0x000001EC,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027E30: 00027E30
-fn00027E30 proc
+fn00027E30()
 	sethi	0x000001F8,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
@@ -7871,56 +7743,47 @@ fn00027E30 proc
 00027E40 30 BF FF 7E 01 00 00 00 03 00 02 10 30 BF FF 7B 0..~........0..{
 00027E50 01 00 00 00                                     ....           
 
-;; fn00027E54: 00027E54
-fn00027E54 proc
+fn00027E54()
 	sethi	0x0000021C,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027E60: 00027E60
-fn00027E60 proc
+fn00027E60()
 	sethi	0x00000228,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027E6C: 00027E6C
-fn00027E6C proc
+fn00027E6C()
 	sethi	0x00000234,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027E78: 00027E78
-fn00027E78 proc
+fn00027E78()
 	sethi	0x00000240,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027E84: 00027E84
-fn00027E84 proc
+fn00027E84()
 	sethi	0x0000024C,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027E90: 00027E90
-fn00027E90 proc
+fn00027E90()
 	sethi	0x00000258,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027E9C: 00027E9C
-fn00027E9C proc
+fn00027E9C()
 	sethi	0x00000264,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027EA8: 00027EA8
-fn00027EA8 proc
+fn00027EA8()
 	sethi	0x00000270,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027EB4: 00027EB4
-fn00027EB4 proc
+fn00027EB4()
 	sethi	0x0000027C,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0

@@ -167,6 +167,11 @@ namespace Reko.UnitTests.Mocks
             return new NullCodeLocation(program.SegmentMap.MapLinearAddressToAddress(stm.LinearAddress).ToString());
         }
 
+        public ICodeLocation CreateJumpTableNavigator(Program program, Address addrIndirectJump, Address addrVector, int stride)
+        {
+            return new NullCodeLocation(addrIndirectJump.ToString());
+        }
+
         #region IWorkerDialogService Members
 
         public bool StartBackgroundWork(string caption, Action backgroundWork)

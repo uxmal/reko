@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Gui.Forms;
 using System;
 using Reko.Gui.Windows.Forms;
+using Reko.Core.Machine;
 
 namespace Reko.Gui
 {
@@ -42,5 +43,6 @@ namespace Reko.Gui
         IWorkerDialog CreateWorkerDialog();
         ITextEncodingDialog CreateTextEncodingDialog();
         IDeclarationForm CreateDeclarationForm();
+        IJumpTableDialog CreateJumpTableDialog(Program program, MachineInstruction instrIndirectJmp, Address addrVector, int stride);
     }
 }

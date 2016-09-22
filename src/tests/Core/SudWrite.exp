@@ -4,7 +4,7 @@
     <disassembly>foo.asm</disassembly>
     <intermediate-code>foo.cod</intermediate-code>
     <user>
-      <address>0x1000:0x0</address>
+      <address>1000:0000</address>
       <procedure name="foo">
         <signature>
           <return>
@@ -20,6 +20,12 @@
           </arg>
         </signature>
       </procedure>
+      <indirectJump instrAdress="1000:0220" tableAddress="1000:0228" />
+      <jumpTable tableAddress="1000:0228">
+        <dst>1000:0230</dst>
+        <dst>1000:0244</dst>
+        <dst>1000:033F</dst>
+      </jumpTable>
     </user>
   </input>
 </project>

@@ -30,7 +30,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Reko.Core.Services;
-using Reko.Core.Output;
 
 namespace Reko.UnitTests.Assemblers.x86
 {
@@ -96,10 +95,9 @@ namespace Reko.UnitTests.Assemblers.x86
                 foreach (var segment in program.SegmentMap.Segments.Values)
                 {
                     var mem = segment.MemoryArea;
-                    var formatter = new TextFormatter(fut.TextWriter);
-                    dumper.DumpData(program.SegmentMap, mem.BaseAddress, mem.Length, formatter);
+                    dumper.DumpData(program.SegmentMap, mem.BaseAddress, mem.Length, fut.TextWriter);
                     fut.TextWriter.WriteLine();
-                    dumper.DumpAssembler(program.SegmentMap, mem.BaseAddress, mem.EndAddress, formatter);
+                    dumper.DumpAssembler(program.SegmentMap, mem.BaseAddress, mem.EndAddress, fut.TextWriter);
                     if (program.ImportReferences.Count > 0)
                     {
                         foreach (var de in program.ImportReferences.OrderBy(d => d.Key))
@@ -140,7 +138,7 @@ hello	endp
 			{
 				var arch = new X86ArchitectureReal();
 				var d = new Dumper(arch);
-				d.DumpData(program.SegmentMap, segment.Address, segment.ContentSize, new TextFormatter(fut.TextWriter));
+				d.DumpData(program.SegmentMap, segment.Address, segment.ContentSize, fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
 		}
@@ -249,7 +247,7 @@ foo		endp
 			{
 				Dumper dump = new Dumper(arch);
                 var mem = program.SegmentMap.Segments.Values.First().MemoryArea;
-				dump.DumpData(program.SegmentMap, mem.BaseAddress, mem.Length, new TextFormatter(fut.TextWriter));
+				dump.DumpData(program.SegmentMap, mem.BaseAddress, mem.Length, fut.TextWriter);
 				fut.AssertFilesEqual();
 			}
 		}
@@ -382,12 +380,11 @@ foo		endp
 			{
 				Dumper dump = new Dumper(asm.Architecture);
                 var mem = program.SegmentMap.Segments.Values.First().MemoryArea;
-                var formatter = new TextFormatter(fut.TextWriter);
-				dump.DumpData(program.SegmentMap, mem.BaseAddress, mem.Bytes.Length, formatter);
+				dump.DumpData(program.SegmentMap, mem.BaseAddress, mem.Bytes.Length, fut.TextWriter);
 				fut.TextWriter.WriteLine();
 				dump.ShowAddresses = true;
 				dump.ShowCodeBytes = true;
-				dump.DumpAssembler(program.SegmentMap, mem.BaseAddress, mem.EndAddress, formatter);
+				dump.DumpAssembler(program.SegmentMap, mem.BaseAddress, mem.EndAddress, fut.TextWriter);
 
 				fut.AssertFilesEqual();
 			}	

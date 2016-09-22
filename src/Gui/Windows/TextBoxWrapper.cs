@@ -28,19 +28,17 @@ namespace Reko.Gui.Windows
     /// <summary>
     /// Wraps the Windows Forms textbox with the ITextBox interface.
     /// </summary>
-    public class TextBoxWrapper : ITextBox
+    public class TextBoxWrapper : ControlWrapper, ITextBox
     {
         private TextBox text;
 
         public TextBoxWrapper(TextBox text)
+            : base(text)
         {
             this.text = text;
         }
 
-        public bool Enabled { get { return text.Enabled; } set { text.Enabled = value; } }
         public string Text { get { return text.Text; } set { text.Text = value;  } }
-        public Color BackColor { get { return text.BackColor; } set { text.BackColor = value; } }
-        public Color ForeColor { get { return text.ForeColor; } set { text.ForeColor = value; } }
 
         public void SelectAll() {
             text.SelectAll();

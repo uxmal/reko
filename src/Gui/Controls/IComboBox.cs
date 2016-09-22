@@ -26,7 +26,7 @@ using System.Text;
 
 namespace Reko.Gui.Controls
 {
-    public interface IComboBox
+    public interface IComboBox : IControl
     {
         event EventHandler TextChanged;
         event EventHandler SelectedIndexChanged;

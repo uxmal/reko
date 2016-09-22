@@ -26,7 +26,6 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Reko.Core.Output;
 
 namespace Reko.UnitTests.Assemblers.M68k
 {
@@ -67,10 +66,9 @@ namespace Reko.UnitTests.Assemblers.M68k
                 dumper.ShowAddresses = true;
                 dumper.ShowCodeBytes = true;
                 var mem = prog.SegmentMap.Segments.Values.First().MemoryArea;
-                var formatter = new TextFormatter(fut.TextWriter);
-                dumper.DumpData(prog.SegmentMap, mem.BaseAddress, mem.Bytes.Length, formatter);
+                dumper.DumpData(prog.SegmentMap, mem.BaseAddress, mem.Bytes.Length, fut.TextWriter);
                 fut.TextWriter.WriteLine();
-                dumper.DumpAssembler(prog.SegmentMap, mem.BaseAddress, mem.EndAddress, formatter);
+                dumper.DumpAssembler(prog.SegmentMap, mem.BaseAddress, mem.EndAddress, fut.TextWriter);
                 if (prog.ImportReferences.Count > 0)
                 {
                     var list = new SortedList<Address, ImportReference>(prog.ImportReferences);

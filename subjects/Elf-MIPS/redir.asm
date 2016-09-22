@@ -20,8 +20,7 @@
 004001B0 00 00 00 00 00 00 00 00 00 00 00 00             ............   
 ;;; Segment .init (004001BC)
 
-;; _init: 004001BC
-_init proc
+fn004001BC()
 	lui	r28,+0FC1
 	addiu	r28,r28,-0000795C
 	addu	r28,r28,r25
@@ -51,8 +50,7 @@ _init proc
 	addiu	sp,sp,+00000020
 ;;; Segment .text (00400230)
 
-;; __start: 00400230
-__start proc
+fn00400230()
 	bltzal	r0,00400238
 	nop
 	lui	r28,+0FC1
@@ -137,8 +135,7 @@ l00400284:
 00400600 8F 99 80 10 03 E0 78 21 03 20 F8 09 24 18 00 26 ......x!. ..$..&
 00400610 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
 
-;; __do_global_dtors_aux: 00400620
-__do_global_dtors_aux proc
+fn00400620()
 	lui	r28,+0FC1
 	addiu	r28,r28,-00007DC0
 	addu	r28,r28,r25
@@ -209,8 +206,7 @@ l004006F4:
 	jr	ra
 	addiu	sp,sp,+00000020
 
-;; fini_dummy: 00400704
-fini_dummy proc
+fn00400704()
 	lui	r28,+0FC1
 	addiu	r28,r28,-00007EA4
 	addu	r28,r28,r25
@@ -222,8 +218,7 @@ fini_dummy proc
 	jr	ra
 	addiu	sp,sp,+00000020
 
-;; frame_dummy: 0040072C
-frame_dummy proc
+fn0040072C()
 	lui	r28,+0FC1
 	addiu	r28,r28,-00007ECC
 	addu	r28,r28,r25
@@ -251,8 +246,7 @@ l00400774:
 	jr	ra
 	addiu	sp,sp,+00000020
 
-;; init_dummy: 00400784
-init_dummy proc
+fn00400784()
 	lui	r28,+0FC1
 	addiu	r28,r28,-00007F24
 	addu	r28,r28,r25
@@ -265,8 +259,7 @@ init_dummy proc
 	addiu	sp,sp,+00000020
 004007AC                                     00 00 00 00             ....
 
-;; handle_stop: 004007B0
-handle_stop proc
+fn004007B0()
 	lui	r28,+0FC1
 	addiu	r28,r28,-00007F50
 	addu	r28,r28,r25
@@ -303,8 +296,7 @@ handle_stop proc
 	jr	ra
 	addiu	sp,sp,+00000030
 
-;; handle_log_rotate: 0040083C
-handle_log_rotate proc
+fn0040083C()
 	lui	r28,+0FC1
 	addiu	r28,r28,-00007FDC
 	addu	r28,r28,r25
@@ -343,8 +335,7 @@ handle_log_rotate proc
 	jr	ra
 	addiu	sp,sp,+00000030
 
-;; main: 004008D0
-main proc
+fn004008D0()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00007F90
 	addu	r28,r28,r25
@@ -1754,8 +1745,7 @@ l00401B50:
 	nop
 	nop
 
-;; client_new: 00401B70
-client_new proc
+fn00401B70()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00006CF0
 	addu	r28,r28,r25
@@ -2079,8 +2069,7 @@ l00402014:
 	jr	ra
 	addiu	sp,sp,+00000048
 
-;; client_prepare_connect: 00402028
-client_prepare_connect proc
+fn00402028()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00006838
 	addu	r28,r28,r25
@@ -2180,8 +2169,7 @@ l00402158:
 	jr	ra
 	addiu	sp,sp,+00000140
 
-;; client_copy_request: 004021A0
-client_copy_request proc
+fn004021A0()
 	lui	r28,+0FC0
 	addiu	r28,r28,+000066C0
 	addu	r28,r28,r25
@@ -2224,8 +2212,7 @@ client_copy_request proc
 	jr	ra
 	addiu	sp,sp,+00000028
 
-;; client_parse_request: 00402244
-client_parse_request proc
+fn00402244()
 	lui	r28,+0FC0
 	addiu	r28,r28,+0000661C
 	addu	r28,r28,r25
@@ -2838,8 +2825,7 @@ l00402A4C:
 	jr	ra
 	addiu	sp,sp,+00000838
 
-;; add_to_request: 00402A60
-add_to_request proc
+fn00402A60()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00005E00
 	addu	r28,r28,r25
@@ -2970,8 +2956,7 @@ l00402C08:
 	jr	ra
 	addiu	sp,sp,+00000028
 
-;; get_a_line: 00402C1C
-get_a_line proc
+fn00402C1C()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00005C44
 	addu	r28,r28,r25
@@ -3143,8 +3128,7 @@ l00402E20:
 	jr	ra
 	addiu	sp,sp,+00000010
 
-;; client_read_request: 00402E44
-client_read_request proc
+fn00402E44()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00005A1C
 	addu	r28,r28,r25
@@ -3191,8 +3175,7 @@ client_read_request proc
 	jr	ra
 	addiu	sp,sp,+00000028
 
-;; client_send_request: 00402EF8
-client_send_request proc
+fn00402EF8()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00005968
 	addu	r28,r28,r25
@@ -3303,8 +3286,7 @@ l00403068:
 	jr	ra
 	addiu	sp,sp,+00000038
 
-;; client_read_reply: 0040307C
-client_read_reply proc
+fn0040307C()
 	lui	r28,+0FC0
 	addiu	r28,r28,+000057E4
 	addu	r28,r28,r25
@@ -3355,8 +3337,7 @@ client_read_reply proc
 	jr	ra
 	addiu	sp,sp,+00000028
 
-;; client_parse_reply: 00403140
-client_parse_reply proc
+fn00403140()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00005720
 	addu	r28,r28,r25
@@ -3407,8 +3388,7 @@ l004031C8:
 	jr	ra
 	addiu	sp,sp,+00000028
 
-;; client_copy_reply: 004031DC
-client_copy_reply proc
+fn004031DC()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00005684
 	addu	r28,r28,r25
@@ -3501,8 +3481,7 @@ l00403304:
 	jr	ra
 	addiu	sp,sp,+00000030
 
-;; client_check_reply_http: 00403318
-client_check_reply_http proc
+fn00403318()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00005548
 	addu	r28,r28,r25
@@ -3805,8 +3784,7 @@ l004036A8:
 	jr	ra
 	addiu	sp,sp,+00000030
 
-;; client_close: 004036BC
-client_close proc
+fn004036BC()
 	lui	r28,+0FC0
 	addiu	r28,r28,+000051A4
 	addu	r28,r28,r25
@@ -3872,8 +3850,7 @@ l00403780:
 	jr	ra
 	addiu	sp,sp,+00000028
 
-;; client_destroy: 00403794
-client_destroy proc
+fn00403794()
 	lui	r28,+0FC0
 	addiu	r28,r28,+000050CC
 	addu	r28,r28,r25
@@ -3922,8 +3899,7 @@ l00403810:
 	jr	ra
 	addiu	sp,sp,+00000028
 
-;; client_check_activ: 00403840
-client_check_activ proc
+fn00403840()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00005020
 	addu	r28,r28,r25
@@ -4056,8 +4032,7 @@ l00403A00:
 	jr	ra
 	addiu	sp,sp,+00000040
 
-;; open_destination: 00403A1C
-open_destination proc
+fn00403A1C()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00004E44
 	addu	r28,r28,r25
@@ -4188,8 +4163,7 @@ l00403BDC:
 	addiu	sp,sp,+00000038
 00403BF4             00 00 00 00 00 00 00 00 00 00 00 00     ............
 
-;; clist_new: 00403C00
-clist_new proc
+fn00403C00()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00004C60
 	addu	r28,r28,r25
@@ -4244,8 +4218,7 @@ l00403CA8:
 	jr	ra
 	addiu	sp,sp,+00000030
 
-;; clist_add: 00403CBC
-clist_add proc
+fn00403CBC()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00004BA4
 	addu	r28,r28,r25
@@ -4319,8 +4292,7 @@ l00403D9C:
 	jr	ra
 	addiu	sp,sp,+00000010
 
-;; clist_remove: 00403DBC
-clist_remove proc
+fn00403DBC()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00004AA4
 	addu	r28,r28,r25
@@ -4401,8 +4373,7 @@ l00403EA0:
 	jr	ra
 	addiu	sp,sp,+00000010
 
-;; clist_find_fdin: 00403EC0
-clist_find_fdin proc
+fn00403EC0()
 	lui	r28,+0FC0
 	addiu	r28,r28,+000049A0
 	addu	r28,r28,r25
@@ -4453,8 +4424,7 @@ l00403F44:
 	jr	ra
 	addiu	sp,sp,+00000018
 
-;; clist_find_fdout: 00403F5C
-clist_find_fdout proc
+fn00403F5C()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00004904
 	addu	r28,r28,r25
@@ -4505,8 +4475,7 @@ l00403FE0:
 	jr	ra
 	addiu	sp,sp,+00000018
 
-;; clist_delete: 00403FF8
-clist_delete proc
+fn00403FF8()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00004868
 	addu	r28,r28,r25
@@ -4538,8 +4507,7 @@ clist_delete proc
 	jr	ra
 	addiu	sp,sp,+00000028
 
-;; clist_close_all: 00404070
-clist_close_all proc
+fn00404070()
 	lui	r28,+0FC0
 	addiu	r28,r28,+000047F0
 	addu	r28,r28,r25
@@ -4587,8 +4555,7 @@ l004040F4:
 	jr	ra
 	addiu	sp,sp,+00000030
 
-;; clist_destroy_all: 00404108
-clist_destroy_all proc
+fn00404108()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00004758
 	addu	r28,r28,r25
@@ -4640,8 +4607,7 @@ l0040419C:
 	jr	ra
 	addiu	sp,sp,+00000030
 
-;; clist_destroy: 004041B0
-clist_destroy proc
+fn004041B0()
 	lui	r28,+0FC0
 	addiu	r28,r28,+000046B0
 	addu	r28,r28,r25
@@ -4679,8 +4645,7 @@ clist_destroy proc
 	addiu	sp,sp,+00000028
 0040423C                                     00 00 00 00             ....
 
-;; request_new: 00404240
-request_new proc
+fn00404240()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00004620
 	addu	r28,r28,r25
@@ -4772,8 +4737,7 @@ l00404364:
 	jr	ra
 	addiu	sp,sp,+00000030
 
-;; request_parse_line: 00404378
-request_parse_line proc
+fn00404378()
 	lui	r28,+0FC0
 	addiu	r28,r28,+000044E8
 	addu	r28,r28,r25
@@ -4837,8 +4801,7 @@ l00404444:
 	jr	ra
 	addiu	sp,sp,+00000030
 
-;; request_save_line: 00404458
-request_save_line proc
+fn00404458()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00004408
 	addu	r28,r28,r25
@@ -5009,8 +4972,7 @@ l004046B0:
 	jr	ra
 	addiu	sp,sp,+00000030
 
-;; request_make_url: 004046C4
-request_make_url proc
+fn004046C4()
 	lui	r28,+0FC0
 	addiu	r28,r28,+0000419C
 	addu	r28,r28,r25
@@ -5160,8 +5122,7 @@ l004048C8:
 	jr	ra
 	addiu	sp,sp,+00000038
 
-;; request_add_lines: 004048DC
-request_add_lines proc
+fn004048DC()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00003F84
 	addu	r28,r28,r25
@@ -5335,8 +5296,7 @@ l00404B18:
 	jr	ra
 	addiu	sp,sp,+00000030
 
-;; get_method: 00404B34
-get_method proc
+fn00404B34()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00003D2C
 	addu	r28,r28,r25
@@ -5375,8 +5335,7 @@ get_method proc
 	jr	ra
 	addiu	sp,sp,+00000030
 
-;; get_uri: 00404BC8
-get_uri proc
+fn00404BC8()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00003C98
 	addu	r28,r28,r25
@@ -5415,8 +5374,7 @@ get_uri proc
 	jr	ra
 	addiu	sp,sp,+00000030
 
-;; get_version: 00404C5C
-get_version proc
+fn00404C5C()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00003C04
 	addu	r28,r28,r25
@@ -5455,8 +5413,7 @@ get_version proc
 	jr	ra
 	addiu	sp,sp,+00000030
 
-;; request_get_host: 00404CF0
-request_get_host proc
+fn00404CF0()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00003B70
 	addu	r28,r28,r25
@@ -5670,8 +5627,7 @@ l00404FAC:
 	jr	ra
 	addiu	sp,sp,+00000038
 
-;; request_get_content_length: 00404FC0
-request_get_content_length proc
+fn00404FC0()
 	lui	r28,+0FC0
 	addiu	r28,r28,+000038A0
 	addu	r28,r28,r25
@@ -5874,8 +5830,7 @@ l00405250:
 	jr	ra
 	addiu	sp,sp,+00000038
 
-;; is_a_method: 00405264
-is_a_method proc
+fn00405264()
 	lui	r28,+0FC0
 	addiu	r28,r28,+000035FC
 	addu	r28,r28,r25
@@ -5938,8 +5893,7 @@ l00405314:
 	jr	ra
 	addiu	sp,sp,+00000030
 
-;; request_destroy: 00405328
-request_destroy proc
+fn00405328()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00003538
 	addu	r28,r28,r25
@@ -5999,8 +5953,7 @@ l004053C0:
 	jr	ra
 	addiu	sp,sp,+00000028
 
-;; properties_parse_int: 004053F0
-properties_parse_int proc
+fn004053F0()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00003470
 	addu	r28,r28,r25
@@ -6066,8 +6019,7 @@ l004054BC:
 	jr	ra
 	addiu	sp,sp,+00000038
 
-;; properties_load: 004054D0
-properties_load proc
+fn004054D0()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00003390
 	addu	r28,r28,r25
@@ -6657,8 +6609,7 @@ l00405CBC:
 	jr	ra
 	addiu	sp,sp,+00000170
 
-;; properties_parse_command_line: 00405CD0
-properties_parse_command_line proc
+fn00405CD0()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00002B90
 	addu	r28,r28,r25
@@ -7089,8 +7040,7 @@ l00406274:
 	jr	ra
 	addiu	sp,sp,+00000048
 
-;; properties_print_usage: 0040628C
-properties_print_usage proc
+fn0040628C()
 	lui	r28,+0FC0
 	addiu	r28,r28,+000025D4
 	addu	r28,r28,r25
@@ -7344,8 +7294,7 @@ l004065D0:
 	addiu	sp,sp,+00000030
 00406608                         00 00 00 00 00 00 00 00         ........
 
-;; print_log: 00406610
-print_log proc
+fn00406610()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00002250
 	addu	r28,r28,r25
@@ -7405,8 +7354,7 @@ l004066D4:
 	jr	ra
 	addiu	sp,sp,+00000438
 
-;; open_log: 004066E8
-open_log proc
+fn004066E8()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00002178
 	addu	r28,r28,r25
@@ -7506,8 +7454,7 @@ l00406834:
 	jr	ra
 	addiu	sp,sp,+00000028
 
-;; log_rotate: 00406848
-log_rotate proc
+fn00406848()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00002018
 	addu	r28,r28,r25
@@ -7592,8 +7539,7 @@ l00406944:
 	jr	ra
 	addiu	sp,sp,+00000128
 
-;; log_string: 0040697C
-log_string proc
+fn0040697C()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00001EE4
 	addu	r28,r28,r25
@@ -7765,8 +7711,7 @@ l00406BCC:
 	addiu	sp,sp,+00000068
 00406BE8                         00 00 00 00 00 00 00 00         ........
 
-;; server_new: 00406BF0
-server_new proc
+fn00406BF0()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00001C70
 	addu	r28,r28,r25
@@ -7861,8 +7806,7 @@ l00406D38:
 	jr	ra
 	addiu	sp,sp,+00000030
 
-;; server_open: 00406D4C
-server_open proc
+fn00406D4C()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00001B14
 	addu	r28,r28,r25
@@ -8049,8 +7993,7 @@ l00406FE0:
 	jr	ra
 	addiu	sp,sp,+00000038
 
-;; server_close: 00406FF8
-server_close proc
+fn00406FF8()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00001868
 	addu	r28,r28,r25
@@ -8095,8 +8038,7 @@ l00407074:
 	jr	ra
 	addiu	sp,sp,+00000028
 
-;; server_destroy: 0040708C
-server_destroy proc
+fn0040708C()
 	lui	r28,+0FC0
 	addiu	r28,r28,+000017D4
 	addu	r28,r28,r25
@@ -8146,8 +8088,7 @@ server_destroy proc
 	addiu	sp,sp,+00000030
 00407148                         00 00 00 00 00 00 00 00         ........
 
-;; slist_new: 00407150
-slist_new proc
+fn00407150()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00001710
 	addu	r28,r28,r25
@@ -8202,8 +8143,7 @@ l004071F8:
 	jr	ra
 	addiu	sp,sp,+00000030
 
-;; slist_add: 0040720C
-slist_add proc
+fn0040720C()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00001654
 	addu	r28,r28,r25
@@ -8277,8 +8217,7 @@ l004072EC:
 	jr	ra
 	addiu	sp,sp,+00000010
 
-;; slist_remove: 0040730C
-slist_remove proc
+fn0040730C()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00001554
 	addu	r28,r28,r25
@@ -8359,8 +8298,7 @@ l004073F0:
 	jr	ra
 	addiu	sp,sp,+00000010
 
-;; slist_find_fd: 00407410
-slist_find_fd proc
+fn00407410()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00001450
 	addu	r28,r28,r25
@@ -8411,8 +8349,7 @@ l00407494:
 	jr	ra
 	addiu	sp,sp,+00000018
 
-;; slist_delete: 004074AC
-slist_delete proc
+fn004074AC()
 	lui	r28,+0FC0
 	addiu	r28,r28,+000013B4
 	addu	r28,r28,r25
@@ -8461,8 +8398,7 @@ slist_delete proc
 	jr	ra
 	addiu	sp,sp,+00000030
 
-;; slist_close_all: 00407568
-slist_close_all proc
+fn00407568()
 	lui	r28,+0FC0
 	addiu	r28,r28,+000012F8
 	addu	r28,r28,r25
@@ -8510,8 +8446,7 @@ l004075EC:
 	jr	ra
 	addiu	sp,sp,+00000030
 
-;; slist_destroy_all: 00407600
-slist_destroy_all proc
+fn00407600()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00001260
 	addu	r28,r28,r25
@@ -8563,8 +8498,7 @@ l00407694:
 	jr	ra
 	addiu	sp,sp,+00000030
 
-;; slist_destroy: 004076A8
-slist_destroy proc
+fn004076A8()
 	lui	r28,+0FC0
 	addiu	r28,r28,+000011B8
 	addu	r28,r28,r25
@@ -8602,8 +8536,7 @@ slist_destroy proc
 	addiu	sp,sp,+00000028
 00407734             00 00 00 00 00 00 00 00 00 00 00 00     ............
 
-;; __fixunsdfsi: 00407740
-__fixunsdfsi proc
+fn00407740()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00001120
 	addu	r28,r28,r25
@@ -8649,8 +8582,7 @@ l004077D4:
 	nop
 004077DC                                     00 00 00 00             ....
 
-;; _fpadd_parts: 004077E0
-_fpadd_parts proc
+fn004077E0()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00001080
 	addu	r28,r28,r25
@@ -8878,8 +8810,7 @@ l00407A30:
 	jr	ra
 	nop
 
-;; __addsf3: 00407A38
-__addsf3 proc
+fn00407A38()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00000E28
 	addu	r28,r28,r25
@@ -8923,8 +8854,7 @@ __addsf3 proc
 	jr	ra
 	addiu	sp,sp,+00000060
 
-;; __subsf3: 00407AE0
-__subsf3 proc
+fn00407AE0()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00000D80
 	addu	r28,r28,r25
@@ -8972,8 +8902,7 @@ __subsf3 proc
 	addiu	sp,sp,+00000060
 00407B94             00 00 00 00 00 00 00 00 00 00 00 00     ............
 
-;; __mulsf3: 00407BA0
-__mulsf3 proc
+fn00407BA0()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00000CC0
 	addu	r28,r28,r25
@@ -9173,8 +9102,7 @@ l00407DA4:
 	addiu	sp,sp,+00000060
 00407DCC                                     00 00 00 00             ....
 
-;; __divsf3: 00407DD0
-__divsf3 proc
+fn00407DD0()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00000A90
 	addu	r28,r28,r25
@@ -9320,8 +9248,7 @@ l00407F3C:
 	addiu	sp,sp,+00000050
 00407F64             00 00 00 00 00 00 00 00 00 00 00 00     ............
 
-;; __floatsisf: 00407F70
-__floatsisf proc
+fn00407F70()
 	lui	r28,+0FC0
 	addiu	r28,r28,+000008F0
 	addu	r28,r28,r25
@@ -9396,8 +9323,7 @@ l00408028:
 	addiu	sp,sp,+00000030
 00408038                         00 00 00 00 00 00 00 00         ........
 
-;; __fixsfsi: 00408040
-__fixsfsi proc
+fn00408040()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00000820
 	addu	r28,r28,r25
@@ -9462,8 +9388,7 @@ l004080E8:
 	addiu	sp,sp,+00000038
 004080F8                         00 00 00 00 00 00 00 00         ........
 
-;; __extendsfdf2: 00408100
-__extendsfdf2 proc
+fn00408100()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00000760
 	addu	r28,r28,r25
@@ -9496,8 +9421,7 @@ __extendsfdf2 proc
 	addiu	sp,sp,+00000040
 00408178                         00 00 00 00 00 00 00 00         ........
 
-;; _fpadd_parts: 00408180
-_fpadd_parts proc
+fn00408180()
 	lui	r28,+0FC0
 	addiu	r28,r28,+000006E0
 	addu	r28,r28,r25
@@ -9812,8 +9736,7 @@ l004084F4:
 	jr	ra
 	nop
 
-;; __adddf3: 004084FC
-__adddf3 proc
+fn004084FC()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00000364
 	addu	r28,r28,r25
@@ -9867,8 +9790,7 @@ __adddf3 proc
 	jr	ra
 	addiu	sp,sp,+00000088
 
-;; __subdf3: 004085CC
-__subdf3 proc
+fn004085CC()
 	lui	r28,+0FC0
 	addiu	r28,r28,+00000294
 	addu	r28,r28,r25
@@ -9926,8 +9848,7 @@ __subdf3 proc
 	addiu	sp,sp,+00000088
 004086A8                         00 00 00 00 00 00 00 00         ........
 
-;; __muldf3: 004086B0
-__muldf3 proc
+fn004086B0()
 	lui	r28,+0FC0
 	addiu	r28,r28,+000001B0
 	addu	r28,r28,r25
@@ -10321,8 +10242,7 @@ l00408B58:
 	addiu	sp,sp,+000000A0
 00408B94             00 00 00 00 00 00 00 00 00 00 00 00     ............
 
-;; __divdf3: 00408BA0
-__divdf3 proc
+fn00408BA0()
 	lui	r28,+0FC0
 	addiu	r28,r28,-00000340
 	addu	r28,r28,r25
@@ -10531,8 +10451,7 @@ l00408DDC:
 	addiu	sp,sp,+00000070
 00408E08                         00 00 00 00 00 00 00 00         ........
 
-;; __eqdf2: 00408E10
-__eqdf2 proc
+fn00408E10()
 	lui	r28,+0FC0
 	addiu	r28,r28,-000005B0
 	addu	r28,r28,r25
@@ -10592,8 +10511,7 @@ l00408EC8:
 	jr	ra
 	addiu	sp,sp,+00000070
 
-;; __nedf2: 00408EE0
-__nedf2 proc
+fn00408EE0()
 	lui	r28,+0FC0
 	addiu	r28,r28,-00000680
 	addu	r28,r28,r25
@@ -10653,8 +10571,7 @@ l00408F98:
 	jr	ra
 	addiu	sp,sp,+00000070
 
-;; __gedf2: 00408FB0
-__gedf2 proc
+fn00408FB0()
 	lui	r28,+0FC0
 	addiu	r28,r28,-00000750
 	addu	r28,r28,r25
@@ -10714,8 +10631,7 @@ l00409068:
 	jr	ra
 	addiu	sp,sp,+00000070
 
-;; __ltdf2: 00409080
-__ltdf2 proc
+fn00409080()
 	lui	r28,+0FC0
 	addiu	r28,r28,-00000820
 	addu	r28,r28,r25
@@ -10775,8 +10691,7 @@ l00409138:
 	jr	ra
 	addiu	sp,sp,+00000070
 
-;; __floatsidf: 00409150
-__floatsidf proc
+fn00409150()
 	lui	r28,+0FC0
 	addiu	r28,r28,-000008F0
 	addu	r28,r28,r25
@@ -10864,8 +10779,7 @@ l00409240:
 	jr	ra
 	addiu	sp,sp,+00000038
 
-;; __negdf2: 00409250
-__negdf2 proc
+fn00409250()
 	lui	r28,+0FC0
 	addiu	r28,r28,-000009F0
 	addu	r28,r28,r25
@@ -10897,8 +10811,7 @@ __negdf2 proc
 	addiu	sp,sp,+00000040
 004092C4             00 00 00 00 00 00 00 00 00 00 00 00     ............
 
-;; __make_dp: 004092D0
-__make_dp proc
+fn004092D0()
 	lui	r28,+0FC0
 	addiu	r28,r28,-00000A70
 	addu	r28,r28,r25
@@ -10922,8 +10835,7 @@ __make_dp proc
 	addiu	sp,sp,+00000038
 00409324             00 00 00 00 00 00 00 00 00 00 00 00     ............
 
-;; __truncdfsf2: 00409330
-__truncdfsf2 proc
+fn00409330()
 	lui	r28,+0FC0
 	addiu	r28,r28,-00000AD0
 	addu	r28,r28,r25
@@ -10972,8 +10884,7 @@ l004093B0:
 	addiu	sp,sp,+00000040
 004093D8                         00 00 00 00 00 00 00 00         ........
 
-;; __pack_f: 004093E0
-__pack_f proc
+fn004093E0()
 	or	r6,r4,r0
 	lw	r3,0000(r6)
 	lw	r4,000C(r6)
@@ -11110,8 +11021,7 @@ l00409510:
 	nop
 00409538                         00 00 00 00 00 00 00 00         ........
 
-;; __unpack_f: 00409540
-__unpack_f proc
+fn00409540()
 	lw	r3,0000(r4)
 	lui	r2,+007F
 	srl	r4,r3,17
@@ -11201,8 +11111,7 @@ l00409604:
 	sw	r2,0000(r6)
 00409624             00 00 00 00 00 00 00 00 00 00 00 00     ............
 
-;; __make_fp: 00409630
-__make_fp proc
+fn00409630()
 	lui	r28,+0FC0
 	addiu	r28,r28,-00000DD0
 	addu	r28,r28,r25
@@ -11223,8 +11132,7 @@ __make_fp proc
 	addiu	sp,sp,+00000030
 00409678                         00 00 00 00 00 00 00 00         ........
 
-;; __pack_d: 00409680
-__pack_d proc
+fn00409680()
 	lui	r28,+0FC0
 	addiu	r28,r28,-00000E20
 	addu	r28,r28,r25
@@ -11470,8 +11378,7 @@ l004098B8:
 	nop
 0040992C                                     00 00 00 00             ....
 
-;; __unpack_d: 00409930
-__unpack_d proc
+fn00409930()
 	lui	r28,+0FC0
 	addiu	r28,r28,-000010D0
 	addu	r28,r28,r25
@@ -11587,8 +11494,7 @@ l00409A4C:
 	sw	r2,0000(r10)
 00409A84             00 00 00 00 00 00 00 00 00 00 00 00     ............
 
-;; __fpcmp_parts_d: 00409A90
-__fpcmp_parts_d proc
+fn00409A90()
 	lw	r6,0000(r4)
 	nop
 	sltiu	r2,r6,+00000002
@@ -11737,8 +11643,7 @@ l00409C00:
 	nop
 00409C08                         00 00 00 00 00 00 00 00         ........
 
-;; __do_global_ctors_aux: 00409C10
-__do_global_ctors_aux proc
+fn00409C10()
 	lui	r28,+0FC0
 	addiu	r28,r28,-000013B0
 	addu	r28,r28,r25
@@ -11775,8 +11680,7 @@ l00409C70:
 	jr	ra
 	addiu	sp,sp,+00000028
 
-;; init_dummy: 00409C84
-init_dummy proc
+fn00409C84()
 	lui	r28,+0FC0
 	addiu	r28,r28,-00001424
 	addu	r28,r28,r25
@@ -11790,8 +11694,7 @@ init_dummy proc
 00409CAC                                     00 00 00 00             ....
 ;;; Segment .fini (00409CB0)
 
-;; _fini: 00409CB0
-_fini proc
+fn00409CB0()
 	lui	r28,+0FC0
 	addiu	r28,r28,-00001450
 	addu	r28,r28,r25

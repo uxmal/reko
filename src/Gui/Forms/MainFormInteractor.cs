@@ -21,7 +21,6 @@
 using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Configuration;
-using Reko.Core.Output;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -898,11 +897,11 @@ namespace Reko.Gui.Forms
             return new StreamWriter(fileName, false, new UTF8Encoding(false));
         }
 
-        public void WriteDisassembly(Program program, Action<Formatter> writer)
+        public void WriteDisassembly(Program program, Action<TextWriter> writer)
         {
             using (TextWriter output = CreateTextWriter(program.DisassemblyFilename))
             {
-                writer(new TextFormatter(output));
+                writer(output);
             }
         }
 

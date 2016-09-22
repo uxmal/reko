@@ -151,12 +151,11 @@ namespace Reko.Arch.X86
             switch (convention)
             {
             case "":
-            case "cdecl":
-            case "pascal":
             case "stdapi":
-            case "stdcall":
+            case "cdecl":
             case "__cdecl":
             case "__stdcall":
+            case "pascal":
             case "__thiscall":
                 return argDeser.Deserialize(arg, new StackVariable_v1 { });
             }

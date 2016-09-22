@@ -134,7 +134,7 @@ namespace Reko
             eventListener.ShowStatus("Interprocedural analysis complete.");
         }
 
-        public void DumpAssembler(Program program, Formatter wr)
+        public void DumpAssembler(Program program, TextWriter wr)
         {
             if (wr == null || program.Architecture == null)
                 return;

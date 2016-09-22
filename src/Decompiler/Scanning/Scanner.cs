@@ -328,7 +328,7 @@ namespace Reko.Scanning
                 }
                 else
                 {
-                    block = AddBlock(addrDest, proc, Block.GenerateName(addrDest));
+                    block = AddBlock(addrDest, proc, GenerateBlockName(addrDest));
                 }
 
                 if (proc == block.Procedure)
@@ -430,7 +430,7 @@ namespace Reko.Scanning
             // EvenOdd sample shows how this doesn't work currently. 
             var blockName = string.Format(
                 "{0}_thunk_{1}", 
-                Block.GenerateName(addrFrom),
+                GenerateBlockName(addrFrom),
                 procNew.Name);
             var callRetThunkBlock = procOld.AddBlock(blockName);
             callRetThunkBlock.IsSynthesized = true;
@@ -764,7 +764,7 @@ namespace Reko.Scanning
         public Block SplitBlock(Block blockToSplit, Address addr)
         {
             var graph = blockToSplit.Procedure.ControlGraph;
-            var blockNew = AddBlock(addr, blockToSplit.Procedure, Block.GenerateName(addr));
+            var blockNew = AddBlock(addr, blockToSplit.Procedure, GenerateBlockName(addr));
             foreach (var succ in graph.Successors(blockToSplit))
             {
                 graph.AddEdge(blockNew, succ);
@@ -884,6 +884,15 @@ namespace Reko.Scanning
                 new ProcedureConstant(program.Architecture.PointerType, ppp),
                 returnType,
                 args);
+        }
+        /// <summary>
+        /// Generates the name for a block stating at address <paramref name="addr"/>.
+        /// </summary>
+        /// <param name="addr"></param>
+        /// <returns>The name as a string.</returns>
+        private static string GenerateBlockName(Address addr)
+        {
+            return addr.GenerateName("l", "");
         }
 
         public FunctionType GetCallSignatureAtAddress(Address addrCallInstruction)

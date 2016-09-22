@@ -20,7 +20,6 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
-using Reko.Core.Output;
 using Reko.Core.Types;
 using Reko.Gui.Forms;
 using Reko.Gui.Windows.Controls;
@@ -313,7 +312,7 @@ namespace Reko.Gui.Windows
                 var decompiler = services.GetService<IDecompilerService>().Decompiler;
                 var dumper = new Dumper(decompiler.Project.Programs.First().Architecture);
                 var sb = new StringWriter();
-                dumper.DumpData(control.MemoryView.SegmentMap, range, new TextFormatter(sb));
+                dumper.DumpData(control.MemoryView.SegmentMap, range, sb);
                 Clipboard.SetText(sb.ToString());       //$TODO: abstract this.
             }
             return true;

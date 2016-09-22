@@ -23,7 +23,6 @@ using Reko.Core;
 using System;
 using System.IO;
 using System.Threading;
-using Reko.Core.Output;
 
 namespace Reko
 {
@@ -32,7 +31,7 @@ namespace Reko
 	/// </summary>
 	public interface DecompilerHost
 	{
-        void WriteDisassembly(Program program, Action<Formatter> writer);
+        void WriteDisassembly(Program program, Action<TextWriter> writer);
         void WriteIntermediateCode(Program program, Action<TextWriter> writer);
         void WriteTypes(Program program, Action<TextWriter> writer);
         void WriteDecompiledCode(Program program, Action<TextWriter> writer);
@@ -59,9 +58,9 @@ namespace Reko
             get { throw new NotImplementedException(); }
         }
 
-        public void WriteDisassembly(Program program, Action<Formatter> writer)
+        public void WriteDisassembly(Program program, Action<TextWriter> writer)
         {
-            writer(new NullFormatter());
+            writer(TextWriter.Null);
         }
 
         public void WriteIntermediateCode(Program program, Action<TextWriter> writer)

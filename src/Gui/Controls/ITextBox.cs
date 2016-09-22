@@ -32,7 +32,6 @@ namespace Reko.Gui.Controls
         event KeyEventHandler KeyDown;
         event EventHandler LostFocus;
 
-        bool Enabled { get; set; }
         string Text { get; set; }
 
         void SelectAll();
