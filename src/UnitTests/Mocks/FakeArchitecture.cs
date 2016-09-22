@@ -66,8 +66,6 @@ namespace Reko.UnitTests.Mocks
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public IEnumerable<MachineInstruction> Test_DisassemblyStream { get; set; }
-
         public void Test_AddTrace(RtlTrace trace)
         {
             rewriters.Add(trace);
@@ -213,6 +211,7 @@ namespace Reko.UnitTests.Mocks
 			throw new NotImplementedException("// TODO:  Add ArchitectureMock.RegisterToString implementation");
 		}
 
+        public IEnumerable<MachineInstruction> Test_DisassemblyStream { get; set; }
 		public IEnumerable<MachineInstruction> CreateDisassembler(ImageReader rdr)
 		{
             return new FakeDisassembler(rdr.Address, Test_DisassemblyStream.GetEnumerator());

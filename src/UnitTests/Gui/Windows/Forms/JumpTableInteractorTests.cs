@@ -122,6 +122,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Given_Program();
             Given_Dialog_32Bit();
             Given_Table_UInt32(Address.Ptr32(0x1000), 0x1010, 0x01023, 0x01018);
+            Given_Disassembly(Address.Ptr32(0x1010));
 
             dlg.Show();
             dlg.JumpTableStartAddress.Text = "001000";
@@ -165,6 +166,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Given_Program();
             Given_Dialog_32Bit();
             Given_Table_UInt32(Address.Ptr32(0x1000), 0x1010, 0x01023, 0x01018);
+            Given_Disassembly(Address.Ptr32(0x1010));
 
             dlg.Show();
             dlg.JumpTableStartAddress.Text = "001000";
