@@ -132,10 +132,10 @@ namespace Reko.UnitTests.Core
 
 ;; fn00010010: 00010010
 fn00010010 proc
-	Add
-	Mul
-	Add
-	Ret
+	add
+	mul
+	add
+	ret
 00010018                         18 19 1A 1B 1C 1D 1E 1F         ........
 ";
             #endregion
@@ -163,10 +163,10 @@ fn00010010 proc
 
 ;; __foo@8: 00010010
 __foo@8 proc
-	Add
-	Mul
-	Add
-	Ret
+	add
+	mul
+	add
+	ret
 00010018                         18 19 1A 1B 1C 1D 1E 1F         ........
 ";
             #endregion
