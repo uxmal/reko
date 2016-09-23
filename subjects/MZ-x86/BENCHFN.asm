@@ -32,13 +32,15 @@
 0800:01E0 21 C3 B9 1E 00 90 BA 56 00 2E 8E 1E F8 01 E8 E9 !......V........
 0800:01F0 FF B8 03 00 50 E8 29 FF 00 00                   ....P.)...     
 
-fn0800_01FA()
+;; fn0800_01FA: 0800:01FA
+fn0800_01FA proc
 	push	bp
 	mov	bp,sp
 	pop	bp
 	ret	
 
-fn0800_01FF()
+;; fn0800_01FF: 0800:01FF
+fn0800_01FF proc
 	push	bp
 	mov	bp,sp
 	call	01FA
@@ -54,7 +56,8 @@ fn0800_01FF()
 	pop	bp
 	ret	
 
-fn0800_0222()
+;; fn0800_0222: 0800:0222
+fn0800_0222 proc
 	push	bp
 	mov	bp,sp
 	call	01FF
@@ -70,7 +73,8 @@ fn0800_0222()
 	pop	bp
 	ret	
 
-fn0800_0245()
+;; fn0800_0245: 0800:0245
+fn0800_0245 proc
 	push	bp
 	mov	bp,sp
 	call	0222
@@ -85,7 +89,8 @@ fn0800_0245()
 	pop	bp
 	ret	
 
-fn0800_0265()
+;; main: 0800:0265
+main proc
 	push	bp
 	mov	bp,sp
 	sub	sp,08
@@ -322,7 +327,8 @@ l0800_02B9:
 0800:0E30 74 11 F7 44 02 00 02 75 0A 81 4C 02 10 00 B8 FF t..D...u..L.....
 0800:0E40 FF EB 04 33 C0 EB 00 5F 5E 5D C3                ...3..._^].    
 
-fn0800_0E4B()
+;; fn0800_0E4B: 0800:0E4B
+fn0800_0E4B proc
 	push	bp
 	mov	bp,sp
 	mov	ax,0F81
@@ -373,7 +379,8 @@ l0800_0E62:
 0800:1060 AA 8A C2 D2 E8 D7 AA 8A C2 22 C5 D7 AA EB 00 5D .........".....]
 0800:1070 C2 02 00                                        ...            
 
-fn0800_1073()
+;; fn0800_1073: 0800:1073
+fn0800_1073 proc
 	push	bp
 	mov	bp,sp
 	sub	sp,0098
@@ -386,13 +393,15 @@ fn0800_1073()
 0800:108C                                     57 B9 FF FF             W...
 0800:1090 32 C0 F2 AE F7 D1 49 5F C3                      2.....I_.      
 
-fn0800_1099()
+;; fn0800_1099: 0800:1099
+fn0800_1099 proc
 	mov	[di],al
 	inc	di
 	dec	byte ptr [bp-55]
 	jle	10CC
 
-fn0800_10A1()
+;; fn0800_10A1: 0800:10A1
+fn0800_10A1 proc
 	push	bx
 	push	cx
 	push	dx
@@ -492,7 +501,7 @@ l0800_113C:
 	mov	bx,ax
 	shl	bx,01
 	jmp	word ptr cs:[bx+1145]
-Code vector at 0800:1145 (48 bytes)
+;; Code vector at 0800:1145 (48 bytes)
 	0800:1190
 0800:1145                90 11 78 11 D1 11 84 11 F6 11 00      ..x........
 0800:1150 12 42 12 4C 12 5C 12 B7 11 91 12 6C 12 70 12 74 .B.L.\.....l.p.t
@@ -638,7 +647,8 @@ l0800_158E:
 0800:16C0 F0 3B 36 28 06 75 05 E8 3C FF EB 05 56 E8 8F FF .;6(.u..<...V...
 0800:16D0 59 5E 5D C3                                     Y^].           
 
-fn0800_16D4()
+;; fn0800_16D4: 0800:16D4
+fn0800_16D4 proc
 	push	bp
 	mov	bp,sp
 	lea	ax,[bp+06]
@@ -658,7 +668,8 @@ l0800_16F1:
 	pop	bp
 	ret	
 
-fn0800_16F3()
+;; fn0800_16F3: 0800:16F3
+fn0800_16F3 proc
 	push	bp
 	mov	bp,sp
 	sub	sp,2A
@@ -772,7 +783,7 @@ l0800_17AE:
 	mov	bx,ax
 	shl	bx,01
 	jmp	word ptr cs:[bx+17B7]
-Code vector at 0800:17B7 (47 bytes)
+;; Code vector at 0800:17B7 (47 bytes)
 	0800:17E6
 0800:17B7                      E6 17 E6 17 E6 17 E3 17 E9        .........
 0800:17C0 17 EF 17 C8 19 37 18 37 18 41 18 08 19 03 18 0F .....7.7.A......

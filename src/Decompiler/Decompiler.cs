@@ -134,7 +134,7 @@ namespace Reko
             eventListener.ShowStatus("Interprocedural analysis complete.");
         }
 
-        public void DumpAssembler(Program program, TextWriter wr)
+        public void DumpAssembler(Program program, Formatter wr)
         {
             if (wr == null || program.Architecture == null)
                 return;
@@ -258,7 +258,6 @@ namespace Reko
         public void Assemble(string fileName, Assembler asm)
         {
             eventListener.ShowStatus("Assembling program.");
-            byte[] image = loader.LoadImageBytes(fileName, 0);
             var program = loader.AssembleExecutable(fileName, asm, null);
             Project = CreateDefaultProject(fileName, program);
             eventListener.ShowStatus("Assembled program.");

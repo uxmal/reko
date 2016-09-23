@@ -83,6 +83,7 @@ namespace Reko.UnitTests.Core.Serialization
 
         private void Given_TestOS_Platform()
         {
+
             Debug.Assert(arch != null, "Must call Given_Architecture first.");
             // A very simple dumb platform with no intelligent behaviour.
             this.platform = mr.Stub<IPlatform>();
@@ -95,6 +96,13 @@ namespace Reko.UnitTests.Core.Serialization
             oe.Stub(e => e.Load(sc, arch)).Return(platform);
         }
 
+        private void Given_Platform_Address(string sAddr, uint uAddr)
+        {
+            this.platform.Stub(p => p.TryParseAddress(
+                Arg<string>.Is.Equal(sAddr),
+                out Arg<Address>.Out(Address.Ptr32(uAddr)).Dummy)).Return(true);
+        }
+
         [Test]
         public void Ps_Load_v4()
         {
@@ -104,6 +112,12 @@ namespace Reko.UnitTests.Core.Serialization
                 new Program { Architecture = arch });
             Given_Architecture();
             Given_TestOS_Platform();
+            Given_Platform_Address("113800", 0x113800);
+            Given_Platform_Address("114000", 0x114000);
+            Given_Platform_Address("115000", 0x115000);
+            Given_Platform_Address("115012", 0x115012);
+            Given_Platform_Address("11504F", 0x11504F);
+            arch.Stub(a => a.GetRegister("r1")).Return(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
             mr.ReplayAll();
 
             var sp = new Project_v4
@@ -146,6 +160,28 @@ namespace Reko.UnitTests.Core.Serialization
                                         }
                                     }
                                 }
+                            },
+                            IndirectJumps =
+                            {
+                                new IndirectJump_v4
+                                {
+                                    InstructionAddress = "113800",
+                                    IndexRegister = "r1",
+                                    TableAddress = "114000",
+                                }
+                            },
+                            JumpTables =
+                            {
+                                new JumpTable_v4
+                                {
+                                    TableAddress = "114000",
+                                    Destinations = new []
+                                    {
+                                        "115000",
+                                        "115012",
+                                        "11504F",
+                                    }
+                                }
                             }
                         }
                     }
@@ -157,6 +193,17 @@ namespace Reko.UnitTests.Core.Serialization
             var inputFile = p.Programs[0]; 
             Assert.AreEqual(1, inputFile.User.Procedures.Count);
             Assert.AreEqual("Fn", inputFile.User.Procedures.First().Value.Name);
+
+            Assert.AreEqual(1, inputFile.User.JumpTables.Count);
+            var jumpTable = inputFile.User.JumpTables[Address.Ptr32(0x114000)];
+            Assert.AreEqual(Address.Ptr32(0x00115000), jumpTable.Addresses[0]);
+            Assert.AreEqual(Address.Ptr32(0x00115012), jumpTable.Addresses[1]);
+            Assert.AreEqual(Address.Ptr32(0x0011504F), jumpTable.Addresses[2]);
+
+            Assert.AreEqual(1, inputFile.User.IndirectJumps.Count);
+            var indJump = inputFile.User.IndirectJumps[Address.Ptr32(0x00113800)];
+            Assert.AreSame(jumpTable, indJump.Table);
+
         }
 
         [Test]
@@ -178,7 +225,6 @@ namespace Reko.UnitTests.Core.Serialization
             };
             var sw = new StringWriter();
             new ProjectSaver(sc).Save(sp, sw);
-            Console.WriteLine(sw);
         }
     }
 }

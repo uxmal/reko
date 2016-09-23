@@ -33,6 +33,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.ComponentModel.Design;
+using Reko.Core.Services;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -66,6 +67,7 @@ namespace Reko.UnitTests.Scanning
             sp = new Identifier("sp", PrimitiveType.Word32, new RegisterStorage("sp", 15, 0, PrimitiveType.Word32));
             grf = proc.Frame.EnsureFlagGroup(Registers.eflags, 3, "SCZ", PrimitiveType.Byte);
             var sc = new ServiceContainer();
+            var listener = mr.Stub<DecompilerEventListener>();
             scanner = mr.StrictMock<IScanner>();
             arch = mr.Stub<IProcessorArchitecture>();
             program.Architecture = arch;
@@ -81,6 +83,7 @@ namespace Reko.UnitTests.Scanning
             arch.Stub(s => s.StackRegister).Return((RegisterStorage)sp.Storage);
             arch.Stub(s => s.PointerType).Return(PrimitiveType.Pointer32);
             scanner.Stub(s => s.Services).Return(sc);
+            sc.AddService<DecompilerEventListener>(listener);
         }
 
         private BlockWorkitem CreateWorkItem(Address addr, ProcessorState state)
@@ -100,7 +103,7 @@ namespace Reko.UnitTests.Scanning
             {
                 argIds.Add(proc.Frame.EnsureRegister(arg));
             }
-            return new FunctionType(null, retReg, argIds.ToArray());
+            return new FunctionType(retReg, argIds.ToArray());
         }
 
         private bool StashArg(ref ProcessorState state, ProcessorState value)
@@ -404,7 +407,6 @@ testProc_exit:
         {
             var proc2 = new Procedure("fn2000", new Frame(PrimitiveType.Pointer32));
             var sig = new FunctionType(
-                null,
                 proc2.Frame.EnsureRegister(new RegisterStorage("r1", 1, 0, PrimitiveType.Word32)),
                 new[] {
                     proc2.Frame.EnsureRegister(new RegisterStorage("r2", 2, 0, PrimitiveType.Word32)),
@@ -459,7 +461,7 @@ testProc_exit:
             var reg1 = proc.Frame.EnsureRegister(new RegisterStorage("r1", 1, 0, PrimitiveType.Pointer32));
             var sysSvc = new SystemService {
                 Name = "SysSvc",
-                Signature = new FunctionType(null, null, new[] { reg1 }),
+                Signature = FunctionType.Action(new[] { reg1 }),
                 Characteristics = new ProcedureCharacteristics()
             };
             platform.Expect(p => p.FindService(null, arch.CreateProcessorState())).IgnoreArguments().Return(sysSvc);
@@ -711,7 +713,6 @@ testProc_exit:
             {
                 Name = "testFn",
                 Signature = new FunctionType(
-                    null,
                     new Identifier("", PrimitiveType.Int32, r0.Storage),
                     new[] {
                         new Identifier("str", new Pointer(PrimitiveType.Char, 4), r0.Storage),
@@ -778,10 +779,10 @@ testProc_exit:
         public void BwiUserSpecifiedRegisterValues()
         {
             var addrStart = Address.Ptr32(0x00100000);
-            program.User.RegisterValues[addrStart+4] = new List<RegisterValue_v2>
+            program.User.RegisterValues[addrStart+4] = new List<UserRegisterValue>
             {
-                new RegisterValue_v2 { Register= "r1", Value= "4711" },
-                new RegisterValue_v2 { Register= "r2", Value= "1147" },
+                new UserRegisterValue { Register = (RegisterStorage)r1.Storage, Value= Constant.Word32(0x4711) },
+                new UserRegisterValue { Register = (RegisterStorage)r2.Storage, Value= Constant.Word32(0x1147) },
             };
             trace.Add(m => { m.Assign(r1, m.LoadDw(m.Word32(0x112200))); });
             trace.Add(m => { m.Assign(m.LoadDw(m.Word32(0x112204)), r1); });

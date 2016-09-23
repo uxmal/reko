@@ -328,7 +328,7 @@ namespace Reko.Scanning
                 }
                 else
                 {
-                    block = AddBlock(addrDest, proc, GenerateBlockName(addrDest));
+                    block = AddBlock(addrDest, proc, Block.GenerateName(addrDest));
                 }
 
                 if (proc == block.Procedure)
@@ -430,7 +430,7 @@ namespace Reko.Scanning
             // EvenOdd sample shows how this doesn't work currently. 
             var blockName = string.Format(
                 "{0}_thunk_{1}", 
-                GenerateBlockName(addrFrom),
+                Block.GenerateName(addrFrom),
                 procNew.Name);
             var callRetThunkBlock = procOld.AddBlock(blockName);
             callRetThunkBlock.IsSynthesized = true;
@@ -764,7 +764,7 @@ namespace Reko.Scanning
         public Block SplitBlock(Block blockToSplit, Address addr)
         {
             var graph = blockToSplit.Procedure.ControlGraph;
-            var blockNew = AddBlock(addr, blockToSplit.Procedure, GenerateBlockName(addr));
+            var blockNew = AddBlock(addr, blockToSplit.Procedure, Block.GenerateName(addr));
             foreach (var succ in graph.Successors(blockToSplit))
             {
                 graph.AddEdge(blockNew, succ);
@@ -876,14 +876,14 @@ namespace Reko.Scanning
                 args);
         }
 
-        /// <summary>
-        /// Generates the name for a block stating at address <paramref name="addr"/>.
-        /// </summary>
-        /// <param name="addr"></param>
-        /// <returns>The name as a string.</returns>
-        private static string GenerateBlockName(Address addr)
+        public Expression PseudoProcedure(string name, ProcedureCharacteristics c, DataType returnType, params Expression[] args)
         {
-            return addr.GenerateName("l", "");
+            var ppp = program.EnsurePseudoProcedure(name, returnType, args.Length);
+            ppp.Characteristics = c;
+            return new Application(
+                new ProcedureConstant(program.Architecture.PointerType, ppp),
+                returnType,
+                args);
         }
 
         public FunctionType GetCallSignatureAtAddress(Address addrCallInstruction)

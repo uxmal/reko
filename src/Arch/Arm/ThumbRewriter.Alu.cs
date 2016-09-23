@@ -76,7 +76,7 @@ namespace Reko.Arch.Arm
 
         private void RewriteDmb()
         {
-            emitter.SideEffect(PseudoProc(
+            emitter.SideEffect(host.PseudoProcedure(
                 "__dmb",
                 VoidType.Instance,
                 Constant.String(
@@ -128,7 +128,7 @@ namespace Reko.Arch.Arm
 
         private void RewriteLdrex()
         {
-            emitter.SideEffect(PseudoProc(
+            emitter.SideEffect(host.PseudoProcedure(
                 "__ldrex",
                 VoidType.Instance,
                 Constant.String(
@@ -171,7 +171,7 @@ namespace Reko.Arch.Arm
 
         private void RewriteMrc()
         {
-            emitter.SideEffect(PseudoProc(
+            emitter.SideEffect(host.PseudoProcedure(
                 "__mrc",
                 VoidType.Instance,
                 Constant.String(
@@ -269,7 +269,7 @@ namespace Reko.Arch.Arm
 
         private void RewriteStrex()
         {
-            emitter.SideEffect(PseudoProc(
+            emitter.SideEffect(host.PseudoProcedure(
                 "__strex",
                 VoidType.Instance,
                 Constant.String(

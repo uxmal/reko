@@ -212,6 +212,8 @@ namespace Reko.Environments.C64
 
     public enum Token
     {
+        QUOTE = (byte)'"',
+        COLON = (byte)':',
         END = 0x80,
         FOR = 0x81,
         NEXT = 0x82,

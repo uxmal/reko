@@ -63,7 +63,6 @@ namespace Reko.Core.Serialization
 
         public ProjectFile_v3 VisitProgram(string projectAbsPath, Program program)
         {
-            var dtSerializer = new DataTypeSerializer();
             return new DecompilerInput_v4
             {
                 Filename = ConvertToProjectRelativePath(projectAbsPath, program.Filename),
@@ -79,6 +78,8 @@ namespace Reko.Core.Serialization
                         .Select(uc => SerializeUserCall(program, uc.Value))
                         .Where(uc => uc != null)
                         .ToList(),
+                    IndirectJumps = program.User.IndirectJumps.Select(SerializeIndirectJump).ToList(),
+                    JumpTables = program.User.JumpTables.Select(SerializeJumpTable).ToList(),
                     GlobalData = program.User.Globals
                         .Select(de => new GlobalDataItem_v2
                         {
@@ -103,7 +104,7 @@ namespace Reko.Core.Serialization
             };
         }
 
-        private RegisterValue_v2[] SerializeRegisterValues(SortedList<Address, List<RegisterValue_v2>> registerValues)
+        private RegisterValue_v2[] SerializeRegisterValues(SortedList<Address, List<UserRegisterValue>> registerValues)
         {
             var sRegValues = new List<RegisterValue_v2>();
             foreach (var de in registerValues)
@@ -114,8 +115,8 @@ namespace Reko.Core.Serialization
                     sRegValues.Add(new RegisterValue_v2
                     {
                         Address = sAddr,
-                        Register = rv.Register,
-                        Value = rv.Value
+                        Register = rv.Register.Name,
+                        Value = rv.Value.ToString().Replace("0x", ""),
                     });
                 }
             }
@@ -148,6 +149,25 @@ namespace Reko.Core.Serialization
                 Comment = uc.Comment,
                 NoReturn = uc.NoReturn,
                 Signature = ssig,
+            };
+        }
+
+        private IndirectJump_v4 SerializeIndirectJump(KeyValuePair<Address, UserIndirectJump> de)
+        {
+            return new IndirectJump_v4
+            {
+                InstructionAddress = de.Key.ToString(),
+                TableAddress = de.Value.Address.ToString(),
+                IndexRegister = de.Value.IndexRegister.Name,
+            };
+        }
+
+        private JumpTable_v4 SerializeJumpTable(KeyValuePair<Address, ImageMapVectorTable> de)
+        {
+            return new JumpTable_v4
+            {
+                TableAddress = de.Key.ToString(),
+                Destinations = de.Value.Addresses.Select(a => a.ToString()).ToArray(),
             };
         }
 

@@ -321,13 +321,6 @@ namespace Reko.Arch.X86
             }
         }
 
-        //$TODO: common code.
-        public Expression PseudoProc(string name, DataType retType, params Expression[] args)
-        {
-            var ppp = host.EnsurePseudoProcedure(name, retType, args.Length);
-            return PseudoProc(ppp, retType, args);
-        }
-
         public Expression PseudoProc(PseudoProcedure ppp, DataType retType, params Expression[] args)
         {
             if (args.Length != ppp.Arity)

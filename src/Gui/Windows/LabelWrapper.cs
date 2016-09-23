@@ -27,11 +27,12 @@ using System.Windows.Forms;
 
 namespace Reko.Gui.Windows
 {
-    public class LabelWrapper : ILabel
+    public class LabelWrapper : ControlWrapper, ILabel
     {
         private Label lbl;
 
         public LabelWrapper(Label lbl)
+            : base(lbl)
         {
             this.lbl = lbl;
         }

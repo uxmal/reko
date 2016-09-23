@@ -45,7 +45,6 @@ namespace Reko.UnitTests.ImageLoaders.Elf
         protected List<ProgramHeader> progHeaders;
         protected List<ObjectSection> objectSections;
         protected IConfigurationService cfgSvc;
-        private MemoryStream binaryContents;
         protected byte[] rawBytes;
 
         public class ProgramHeader
@@ -83,8 +82,6 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             this.symbolStringtab = new MemoryStream();
             this.symbolStringtab.WriteByte(0);
             this.symbols = new List<Elf32_Sym> { new Elf32_Sym() };
-
-            this.binaryContents = new MemoryStream();
 
             this.progHeaders = new List<ProgramHeader>();
 

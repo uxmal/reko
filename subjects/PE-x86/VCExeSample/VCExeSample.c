@@ -32,13 +32,20 @@ void indirect_call_test3(cdecl_class * c)
 
 void test4()
 {
-	(**globals->gbl_c)(globals->gbl_c);
+	globals->gbl_c->vtbl->method00(globals->gbl_c);
 	return;
 }
 
 void test5()
 {
-	(**globals->gbl_c)(globals->gbl_c, 999, globals->r4020EC);
+	globals->gbl_c->vtbl->method04(globals->gbl_c, 999, globals->r4020EC);
+	return;
+}
+
+void test6(cdecl_class * c, int32 a, int32 b)
+{
+	c->vtbl->sum(c, a, b);
+	c->vtbl->method04(c, c);
 	return;
 }
 

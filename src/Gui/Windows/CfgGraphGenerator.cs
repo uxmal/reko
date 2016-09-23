@@ -69,7 +69,7 @@ namespace Reko.Gui.Windows
                 visited.Add(b);
                 Debug.Print("Node {0}", b.Name);
                 visited.Add(b);
-                var n = CreateGraphNode(b);
+                CreateGraphNode(b);
                 foreach (var pred in b.Pred.Where(p => p != block.Procedure.EntryBlock))
                 {
                     Debug.Print("Edge {0} - {1}", pred.Name, b.Name);

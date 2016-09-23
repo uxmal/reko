@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Reko.Gui.Forms;
 
 namespace Reko.Gui.Commands
 {
@@ -54,13 +55,11 @@ namespace Reko.Gui.Commands
                 {
                     Name = procedure.Name
                 };
-            //$REVIEW: use dialog factory.
-            var i = new ProcedureDialogInteractor(program, sProc);
-            using (ProcedureDialog dlg = i.CreateDialog())
+            using (IProcedureDialog dlg = dlgFactory.CreateProcedureDialog(program, sProc))
             {
                 if (DialogResult.OK == uiSvc.ShowModalDialog(dlg))
                 {
-                    i.ApplyChanges();
+                    dlg.ApplyChanges();
                     program.User.Procedures[address] = sProc;
                     if (procedure != null)
                         procedure.Name = sProc.Name;

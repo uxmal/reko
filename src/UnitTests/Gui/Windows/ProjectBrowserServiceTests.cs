@@ -57,8 +57,6 @@ namespace Reko.UnitTests.Gui.Windows
         private FakeTreeView fakeTree;
         private ITreeView mockTree;
         private ITreeNodeCollection mockNodes;
-        private IDecompilerService decompilerSvc;
-        private IDecompiler decompiler;
         private Program program;
         private Project project;
         private IDecompilerShellUiService uiSvc;
@@ -71,10 +69,8 @@ namespace Reko.UnitTests.Gui.Windows
             sc = new ServiceContainer();
             mockTree = mr.StrictMock<ITreeView>();
             mockNodes = mr.StrictMock<ITreeNodeCollection>();
-            decompilerSvc = mr.StrictMock<IDecompilerService>();
             uiSvc = mr.StrictMock<IDecompilerShellUiService>();
             uiPrefSvc = mr.Stub<IUiPreferencesService>();
-            decompiler = mr.StrictMock<IDecompiler>();
             mockTree.Stub(t => t.Nodes).Return(mockNodes);
             uiSvc.Stub(u => u.GetContextMenu(0)).IgnoreArguments().Return(new ContextMenu());
             sc.AddService<IDecompilerShellUiService>(uiSvc);
@@ -84,7 +80,6 @@ namespace Reko.UnitTests.Gui.Windows
 
         private void Expect(string sExp)
         {
-            var x = new XElement("foo");
             Func<ITreeNode, XNode> render = null;
             render = new Func<ITreeNode, XNode>(n =>
             {
@@ -105,8 +100,15 @@ namespace Reko.UnitTests.Gui.Windows
                     fakeTree.Nodes.Select(n => render(n))));
             xdoc.RemoveAnnotations<XProcessingInstruction>();
             xdoc.WriteTo(new XmlTextWriter(sb));
-            Console.WriteLine(sb.ToString());
-            Assert.AreEqual(sExp, sb.ToString());
+            try
+            {
+                Assert.AreEqual(sExp, sb.ToString());
+            }
+            catch
+            {
+                Console.WriteLine(sb.ToString());
+                throw;
+            }
         }
 
         #region Fake TreeView (Move to UnitTests.Fakes?)
@@ -132,6 +134,7 @@ namespace Reko.UnitTests.Gui.Windows
             private ITreeNode selectedItem;
 
             public bool Focused { get; set; }
+            public bool Enabled { get; set; }
             public ContextMenu ContextMenu { get; set; }
             public bool ShowRootLines { get; set; }
             public bool ShowNodeToolTips { get; set; }
@@ -556,7 +559,6 @@ namespace Reko.UnitTests.Gui.Windows
         public void PBS_AfterSelect_Calls_DoDefaultAction()
         {
             var des = mr.StrictMock<TreeNodeDesigner>();
-            var node = mr.Stub<ITreeNode>();
             des.Expect(d => d.DoDefaultAction());
             des.Stub(d => d.Initialize(null)).IgnoreArguments();
             mockTree = new FakeTreeView();

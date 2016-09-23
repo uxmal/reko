@@ -79,8 +79,7 @@ namespace Reko.UnitTests.Typing
 		public void Tmer_PointerToSingleItem()
 		{
             var ptr = new Identifier("ptr", PrimitiveType.Word32, null);
-			var tv = CreateTv(ptr, new Pointer(point, 4), new Pointer(point, 4));
-
+            CreateTv(ptr, new Pointer(point, 4), new Pointer(point, 4));
             var tmer = new TypedExpressionRewriter(program, null);
             var access = CreateTv(m.LoadDw(m.IAdd(ptr, 0)));
             Expression e = access.Accept(tmer);

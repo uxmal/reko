@@ -96,12 +96,8 @@ namespace Reko.UnitTests.Typing
         [Test(Description = "Fixes a regression test that failed when the new type system cut over.")]
         public void EqbProcedureSignature()
         {
-            var sig = new FunctionType(
-                null,
-                null,
-                new[] {
-                    new Identifier("dwArg00", PrimitiveType.Word32, new StackArgumentStorage(0, PrimitiveType.Word32))
-                });
+            var sig = FunctionType.Action(
+                new Identifier("dwArg00", PrimitiveType.Word32, new StackArgumentStorage(0, PrimitiveType.Word32)));
             eqb.EnsureSignatureTypeVariables(sig);
             Assert.IsNotNull(sig.Parameters[0].TypeVariable);
         }
@@ -127,7 +123,6 @@ namespace Reko.UnitTests.Typing
             {
                 Identifier = new Identifier(tmp.Name, PrimitiveType.SegmentSelector, tmp)
             };
-            var program = new Program();
             eqb.EnsureSegmentTypeVariables(new[] { segment });
             Constant seg1 = Constant.Create(PrimitiveType.SegmentSelector, 0x1234);
             seg1.Accept(eqb);

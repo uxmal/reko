@@ -68,8 +68,8 @@ namespace Reko.Core.Expressions
 
         public DataType VisitArrayAccess(ArrayAccess acc)
         {
-            DataType dtArr = acc.Array.Accept(this);
-            DataType dtIdx = acc.Index.Accept(this);
+            acc.Array.Accept(this);
+            acc.Index.Accept(this);
             return RecordDataType(acc.DataType, acc);
         }
 
@@ -194,6 +194,8 @@ namespace Reko.Core.Expressions
             // We're collecting _DataTypes_, so if we encounter
             // a TypeReference, we need to drill past it.
             var dtField = field.DataType.ResolveAs<DataType>();
+            if (dtField == null)
+                return null;
             //$BUG: offset != field.Offset?
             if (offset >= field.Offset + dtField.Size)
                 return null;
@@ -230,7 +232,7 @@ namespace Reko.Core.Expressions
                 dtLeft is Pointer)
             {
                 if (ptRight != null && (ptRight.Domain & Domain.Integer) != 0)
-                    return dtLeft;
+                    return PrimitiveType.Create(Domain.Pointer, dtLeft.Size);
                 throw new NotImplementedException(string.Format("Pulling difference {0} and {1}", dtLeft, dtRight));
             }
             if (ptRight != null && ptRight.Domain == Domain.Pointer || 
@@ -280,7 +282,7 @@ namespace Reko.Core.Expressions
         public DataType VisitDepositBits(DepositBits d)
         {
             var dtSource = d.Source.Accept(this);
-            var dtBits = d.InsertedBits.Accept(this);
+            d.InsertedBits.Accept(this);
             return EnsureDataType(dtSource, d);
         }
 

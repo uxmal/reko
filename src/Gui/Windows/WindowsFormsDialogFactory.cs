@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Machine;
 using Reko.Gui.Forms;
 using Reko.Gui.Windows.Forms;
 using System;
@@ -93,6 +94,11 @@ namespace Reko.Gui.Windows
             };
         }
 
+        public IProcedureDialog CreateProcedureDialog(Program program, Core.Serialization.Procedure_v1 sProc)
+        {
+            var i = new ProcedureDialogInteractor(program, sProc);
+            return i.CreateDialog();
+        }
         public IProgramPropertiesDialog CreateProgramPropertiesDialog(Program program)
         {
             return new ProgramPropertiesDialog
@@ -148,6 +154,18 @@ namespace Reko.Gui.Windows
         public IDeclarationForm CreateDeclarationForm()
         {
             return new DeclarationForm();
+        }
+
+        public IJumpTableDialog CreateJumpTableDialog(Program program, MachineInstruction instrIndirectJmp, Address addrVector, int stride)
+        {
+            return new JumpTableDialog()
+            {
+                Services = this.services,
+                Program = program,
+                Instruction = instrIndirectJmp,
+                VectorAddress = addrVector,
+                Stride = stride
+            };
         }
     }
 }

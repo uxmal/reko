@@ -619,7 +619,7 @@ namespace Reko.Gui.Windows
             if (userObj == null)
                 return;
             var blockData = userObj.UserData as CfgBlockNode;
-            Debug.Print("Node: {0}");
+			Debug.Print("Node: {0}", blockData.Block.Name);
         }
 
     }

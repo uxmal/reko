@@ -98,7 +98,7 @@ namespace Reko.Arch.PowerPC
             }
             emitter.Assign(
                 vrt,
-                PseudoProc(
+                host.PseudoProcedure(
                     "__lvewx",
                     PrimitiveType.Word128,
                     rb));
@@ -114,7 +114,7 @@ namespace Reko.Arch.PowerPC
                 rb = emitter.IAdd(ra, rb);
             }
             emitter.SideEffect(
-                PseudoProc(
+                host.PseudoProcedure(
                     "__stvewx",
                     PrimitiveType.Word128,
                     vrs,
@@ -131,7 +131,7 @@ namespace Reko.Arch.PowerPC
             }
             emitter.Assign(
                 vrt,
-                PseudoProc(
+                host.PseudoProcedure(
                     "__lvsl",
                     PrimitiveType.Word128,
                     rb));
@@ -147,7 +147,7 @@ namespace Reko.Arch.PowerPC
                 : emitter.IAdd(a, b);
             emitter.Assign(
                 op1,
-                PseudoProc(
+                host.PseudoProcedure(
                     "__reverse_bytes_32",
                     PrimitiveType.Word32,
                     emitter.Load(PrimitiveType.Word32, ea)));
@@ -231,7 +231,7 @@ namespace Reko.Arch.PowerPC
                 : emitter.IAdd(a, b);
             emitter.Assign(
                 emitter.Load(PrimitiveType.Word32, ea),
-                PseudoProc(
+                host.PseudoProcedure(
                     "__reverse_bytes_32",
                     PrimitiveType.Word32,
                     op1));
@@ -250,7 +250,7 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteSync()
         {
-            emitter.SideEffect(PseudoProc("__sync", VoidType.Instance));
+            emitter.SideEffect(host.PseudoProcedure("__sync", VoidType.Instance));
         }
 
         private void RewriteTw()
@@ -282,7 +282,7 @@ namespace Reko.Arch.PowerPC
                     PrimitiveType.Bool,
                     ra, rb),
                 new RtlSideEffect(
-                    PseudoProc(
+                    host.PseudoProcedure(
                         "__trap",
                         VoidType.Instance)));
 

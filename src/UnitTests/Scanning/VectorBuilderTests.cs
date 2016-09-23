@@ -21,10 +21,12 @@
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Lib;
+using Reko.Core.Services;
 using Reko.Scanning;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -36,16 +38,21 @@ namespace Reko.UnitTests.Scanning
         private MockRepository mr;
         private Program program;
         private MemoryArea mem;
+        private ServiceContainer sc;
+        private IProcessorArchitecture arch;
 
         [SetUp]
         public void Setup()
         {
             mr = new MockRepository();
+            var eventListener = mr.Stub<DecompilerEventListener>();
+            sc = new ServiceContainer();
+            sc.AddService<DecompilerEventListener>(eventListener);
         }
 
         private void Given_Program(byte [] bytes)
         {
-            var arch = mr.Stub<IProcessorArchitecture>();
+            this.arch = mr.Stub<IProcessorArchitecture>();
             arch.Stub(a => a.ReadCodeAddress(0, null, null)).IgnoreArguments()
                 .Do(new Func<int, ImageReader, ProcessorState, Address>(
                     (s, r, st) => Address.Ptr32(r.ReadLeUInt32())));
@@ -69,14 +76,15 @@ namespace Reko.UnitTests.Scanning
                 0xC3, 0xC3, 0xC3, 0xCC,
             });
             var scanner = mr.Stub<IScanner>();
-            scanner.Stub((Function<IScanner, ImageReader>)(s => s.CreateReader((Address)this.program.ImageMap.BaseAddress)))
+            scanner.Stub(s => s.Services).Return(sc);
+            arch.Stub(s => s.CreateImageReader(this.mem, this.program.ImageMap.BaseAddress))
                 .Return(this.mem.CreateLeReader(0));
             var state = mr.Stub<ProcessorState>();
         
             mr.ReplayAll();
 
-            var vb = new VectorBuilder(scanner, program, new DirectedGraphImpl<object>());
-            var vector = vb.BuildTable((Address)this.program.ImageMap.BaseAddress, 12, null, 4, state);
+            var vb = new VectorBuilder(scanner.Services, program, new DirectedGraphImpl<object>());
+            var vector = vb.BuildTable(this.program.ImageMap.BaseAddress, 12, null, 4, state);
             Assert.AreEqual(3, vector.Count);
         }
     }

@@ -48,7 +48,6 @@ namespace Reko.Gui
 
         public void NavigateTo()
         {
-            var dec = sp.RequireService<IDecompilerService>();
             var svc = sp.RequireService<ILowLevelViewService>();
             svc.ShowMemoryAtAddress(Program, Address);
         }

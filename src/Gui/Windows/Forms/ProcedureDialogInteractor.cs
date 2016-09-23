@@ -45,7 +45,7 @@ namespace Reko.Gui.Windows.Forms
 
         public ProcedureDialog CreateDialog()
         {
-            dlg = new ProcedureDialog();
+            dlg = new ProcedureDialog(this);
             PopulateFields();
             dlg.Signature.TextChanged += Signature_TextChanged;
             return dlg;

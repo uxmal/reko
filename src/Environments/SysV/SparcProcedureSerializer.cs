@@ -73,7 +73,7 @@ namespace Reko.Environments.SysV
                 }
             }
 
-            var sig = new FunctionType(null, ret, args.ToArray());
+            var sig = new FunctionType(ret, args.ToArray());
             ApplyConvention(ss, sig);
             return sig;
         }

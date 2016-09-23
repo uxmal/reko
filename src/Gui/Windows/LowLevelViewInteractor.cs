@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Output;
 using Reko.Core.Types;
 using Reko.Gui.Forms;
 using Reko.Gui.Windows.Controls;
@@ -85,7 +86,6 @@ namespace Reko.Gui.Windows
         public Control CreateControl()
         {
             var uiService = services.RequireService<IDecompilerShellUiService>();
-            var uiPrefsSvc = services.RequireService<IUiPreferencesService>();
             this.control = new LowLevelView();
             this.Control.Font = new Font("Lucida Console", 10F); //$TODO: use user preference
             this.Control.CurrentAddressChanged += LowLevelView_CurrentAddressChanged;
@@ -313,7 +313,7 @@ namespace Reko.Gui.Windows
                 var decompiler = services.GetService<IDecompilerService>().Decompiler;
                 var dumper = new Dumper(decompiler.Project.Programs.First().Architecture);
                 var sb = new StringWriter();
-                dumper.DumpData(control.MemoryView.SegmentMap, range, sb);
+                dumper.DumpData(control.MemoryView.SegmentMap, range, new TextFormatter(sb));
                 Clipboard.SetText(sb.ToString());       //$TODO: abstract this.
             }
             return true;

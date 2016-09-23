@@ -53,6 +53,11 @@ namespace Reko.UnitTests.Arch.Sparc
             get { return baseAddr; }
         }
 
+        protected override IRewriterHost CreateRewriterHost()
+        {
+            return host;
+        }
+
         protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
         {
             return e;
@@ -187,8 +192,20 @@ namespace Reko.UnitTests.Arch.Sparc
         }
 
         [Test]
+        [Ignore]
         public void SparcRw_mulscc()
         {
+            host.Stub(h => h.PseudoProcedure(
+                Arg<string>.Is.Equal("__mulscc"),
+                Arg<DataType>.Is.Equal(VoidType.Instance),
+                Arg<Expression[]>.Is.NotNull))
+                .Return(new Application(
+                     new ProcedureConstant(
+                        PrimitiveType.Pointer32,
+                        new PseudoProcedure("__mulscc", PrimitiveType.Int32, 2)),
+                VoidType.Instance,
+                Constant.Word32(0x19)));
+
             host.Stub(h => h.EnsurePseudoProcedure("__mulscc", PrimitiveType.Int32, 2))
                 .Return(new PseudoProcedure("__mulscc", PrimitiveType.Int32, 2));
 
@@ -328,7 +345,16 @@ namespace Reko.UnitTests.Arch.Sparc
         [Test]
         public void SparcRw_ta()
         {
-            host.Stub(h => h.EnsurePseudoProcedure("__syscall", VoidType.Instance, 1)).Return(new PseudoProcedure("__syscall", VoidType.Instance, 1));
+            host.Stub(h => h.PseudoProcedure(
+                Arg<string>.Is.Equal("__syscall"),
+                Arg<DataType>.Is.Equal(VoidType.Instance),
+                Arg<Expression[] >.Is.NotNull))
+                .Return(new Application(
+                    new ProcedureConstant(
+                        PrimitiveType.Pointer32,
+                        new PseudoProcedure("__syscall", VoidType.Instance, 1)),
+                    VoidType.Instance,
+                    Constant.Word32(0x19)));
             BuildTest(0x91D02999);  // ta\t%g1,0x00000019"
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",

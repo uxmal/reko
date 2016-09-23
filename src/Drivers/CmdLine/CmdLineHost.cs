@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Output;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -41,11 +42,11 @@ namespace Reko.CmdLine
             return new StreamWriter(new FileStream(filename, FileMode.Create, FileAccess.Write), new UTF8Encoding(false));
         }
 
-        public void WriteDisassembly(Program program, Action<TextWriter> writer)
+        public void WriteDisassembly(Program program, Action<Formatter> writer)
         {
             using (TextWriter output = CreateTextWriter(program.DisassemblyFilename))
             {
-                writer(output);
+                writer(new TextFormatter(output));
             }
         }
 

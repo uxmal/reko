@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Output;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -51,9 +52,9 @@ namespace Reko.UnitTests.Mocks
             get { return config; }
         }
 
-        public void WriteDisassembly(Program program, Action<TextWriter> writer)
+        public void WriteDisassembly(Program program, Action<Formatter> writer)
         {
-            writer(disassembly);
+            writer(new TextFormatter(disassembly));
         }
 
         public void WriteIntermediateCode(Program program, Action<TextWriter> writer)

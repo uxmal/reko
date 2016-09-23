@@ -37,7 +37,7 @@ namespace Reko.Arch.Mips
         private void RewriteBreak(MipsInstruction instr)
         {
             emitter.SideEffect(
-                PseudoProc(
+                host.PseudoProcedure(
                     "__break",
                     VoidType.Instance,
                     this.RewriteOperand(instr.op1)));
@@ -53,6 +53,15 @@ namespace Reko.Arch.Mips
             default: from = frame.CreateTemporary("__cp" + cpregFrom.Number, PrimitiveType.UInt32); break;
             }
             emitter.Assign(RewriteOperand(instr.op1), from);
+        }
+
+        private void RewriteTrap(MipsInstruction instr, Operator op)
+        {
+            var trap = host.PseudoProcedure("__trap", VoidType.Instance, RewriteOperand(instr.op3));
+            emitter.If(new BinaryExpression(op, PrimitiveType.Bool,
+                RewriteOperand(instr.op1),
+                RewriteOperand(instr.op2)),
+                new RtlSideEffect(trap));
         }
     }
 }

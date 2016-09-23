@@ -35,14 +35,7 @@ namespace Reko.UnitTests.Scanning
 		{
 		}
 
-		[Test]
-		public void Creation()
-		{
-			X86InstructionComparer cmp = new X86InstructionComparer(Normalize.Nothing);
-			var trie = new Trie<MachineInstruction>(cmp);
-		}
-
-		[Test]
+	    [Test]
 		public void Trie_AddInstructions()
 		{
             X86InstructionComparer cmp = new X86InstructionComparer(Normalize.Nothing);

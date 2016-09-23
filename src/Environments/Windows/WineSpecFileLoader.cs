@@ -31,6 +31,7 @@ using System.Text;
 
 namespace Reko.Environments.Windows
 {
+    // https://www.winehq.org/docs/winelib-guide/spec-file
     public class WineSpecFileLoader : MetadataLoader
     {
         private string filename;
@@ -67,51 +68,43 @@ namespace Reko.Environments.Windows
                 if (PeekAndDiscard(TokenType.NL))
                     continue;
                 ParseLine();
-
             }
             return dstLib;
         }
 
- 
         public void ParseLine()
         {
-            var tok = Peek();
-            if (tok.Type == TokenType.NUMBER)
+            int? ordinal = ParseOrdinal();
+
+            string callconv = ParseCallingConvention();
+
+            var options = ParseOptions();
+
+            var tok = Get();
+            string fnName = tok.Value;
+            var ssig = new SerializedSignature
             {
-                tok = Get();
-                int ordinal = Convert.ToInt32(tok.Value);
-
-                Expect(TokenType.ID);
-
-                if (PeekAndDiscard(TokenType.MINUS))
-                {
-                    Expect(TokenType.ID);
-                }
-
-                tok = Get();
-                string fnName = tok.Value;
-                var ssig = new SerializedSignature
-                {
-                    Convention = "pascal"
-                };
-                var args = new List<Argument_v1>();
-                if (PeekAndDiscard(TokenType.LPAREN))
-                {
-                    while (LoadParameter(ssig, args))
-                        ;
-                    Expect(TokenType.RPAREN);
-                }
-                ssig.Arguments = args.ToArray();
-                var deser = new X86ProcedureSerializer((IntelArchitecture) platform.Architecture, tlLoader, "pascal");
-                var sig = deser.Deserialize(ssig, new Frame(PrimitiveType.Word16));
-                var svc = new SystemService
-                {
-                    ModuleName = moduleName.ToUpper(),
-                    Name = fnName,
-                    Signature = sig
-                };
-                tlLoader.LoadService(ordinal, svc);
+                Convention = callconv,
+            };
+            ssig.Arguments = ParseParameters(ssig);
+            
+            var deser = new X86ProcedureSerializer((IntelArchitecture)platform.Architecture, tlLoader, callconv);
+            var sig = deser.Deserialize(ssig, new Frame(platform.FramePointerType));
+            var svc = new SystemService
+            {
+                ModuleName = moduleName.ToUpper(),
+                Name = fnName,
+                Signature = sig
+            };
+            if (ordinal.HasValue)
+            {
+                tlLoader.LoadService(ordinal.Value, svc);
             }
+            else
+            {
+                tlLoader.LoadService(fnName, svc);
+            }
+
             for (;;)
             {
                 // Discared entire line.
@@ -119,7 +112,56 @@ namespace Reko.Environments.Windows
                 if (type == TokenType.EOF || type == TokenType.NL)
                     return;
             }
-        } 
+        }
+
+        private Argument_v1[] ParseParameters(SerializedSignature ssig)
+        {
+            var args = new List<Argument_v1>();
+            if (PeekAndDiscard(TokenType.LPAREN))
+            {
+                while (LoadParameter(ssig, args))
+                    ;
+                Expect(TokenType.RPAREN);
+            }
+            return args.ToArray();
+        }
+
+        private Dictionary<string,string> ParseOptions()
+        {
+            var options = new Dictionary<string,string>();
+            while (PeekAndDiscard(TokenType.MINUS))
+            {
+                var key = Expect(TokenType.ID).Value;
+                var value = "";
+                if (PeekAndDiscard(TokenType.EQ))
+                {
+                    value = Get().Value;
+                }
+                options[key] = value;
+            }
+            return options;
+        }
+
+        private int? ParseOrdinal()
+        {
+            var tok = Peek();
+            int? ordinal = null;
+            if (tok.Type == TokenType.NUMBER)
+            {
+                tok = Get();
+                ordinal = Convert.ToInt32(tok.Value);
+            }
+            else if (tok.Type == TokenType.AT)
+            {
+                Get();
+            }
+            return ordinal; 
+        }
+
+        private string ParseCallingConvention()
+        {
+            return Expect(TokenType.ID).Value;
+        }
 
         private bool LoadParameter(SerializedSignature ssig, List<Argument_v1> args)
         {
@@ -129,38 +171,33 @@ namespace Reko.Environments.Windows
             if (tok.Type != TokenType.ID)
                 return false;
             Get();
+            SerializedType type = null;
             switch (tok.Value)
             {
             case "word":
             case "s_word":
-                ssig.StackDelta += 2;
-                args.Add(new Argument_v1
-                {
-                    Kind = new StackVariable_v1(),
-                    Type = new PrimitiveType_v1(PrimitiveType.Word16.Domain, 2)
-                });
+                type = new PrimitiveType_v1(PrimitiveType.Word16.Domain, 2);
                 break;
             case "long":
-                ssig.StackDelta += 4;
-                args.Add(new Argument_v1
-                {
-                    Kind = new StackVariable_v1(),
-                    Type = new PrimitiveType_v1(PrimitiveType.Word32.Domain, 4)
-                });
+                type = new PrimitiveType_v1(PrimitiveType.Word32.Domain, 4);
                 break;
+            //$TODO: need SegmentedPointerType 
             case "segptr":
             case "segstr":
+                type = new PrimitiveType_v1(Domain.SegPointer, 4);
+                break;
             case "ptr":
+                type = new PrimitiveType_v1(Domain.Pointer, 4);
+                break;
             case "str":
-                ssig.StackDelta += 4;
-                args.Add(new Argument_v1
-                {
-                    Kind = new StackVariable_v1(),
-                    Type = new PrimitiveType_v1(Domain.SegPointer, 4)
-                });
+                type = PointerType_v1.Create(PrimitiveType_v1.Char8(), 4);
+                break;
+            case "wstr":
+                type = PointerType_v1.Create(PrimitiveType_v1.WChar16(), 4);
                 break;
             default: throw new Exception("Unknown: " + tok.Value);
             }
+            args.Add(new Argument_v1 { Type = type });
             return true;
         }
 
@@ -192,10 +229,12 @@ namespace Reko.Environments.Windows
             return t;
         }
 
-        private void Expect(TokenType type)
+        private Token Expect(TokenType type)
         {
-            if (Get().Type != type)
+            var tok = Get();
+            if (tok.Type != type)
                 throw new Exception("Expected " + type);
+            return tok;
         }
 
         private class Lexer
@@ -240,6 +279,7 @@ namespace Reko.Environments.Windows
                         case '-': rdr.Read(); return Tok(TokenType.MINUS);
                         case '(': rdr.Read(); return Tok(TokenType.LPAREN);
                         case ')': rdr.Read(); return Tok(TokenType.RPAREN);
+                        case '=': rdr.Read(); return Tok(TokenType.EQ);
                         default:
                             sb = new StringBuilder();
                             rdr.Read();
@@ -320,6 +360,7 @@ namespace Reko.Environments.Windows
             LPAREN,
             RPAREN,
             AT,
+            EQ,
         }
     }
 }

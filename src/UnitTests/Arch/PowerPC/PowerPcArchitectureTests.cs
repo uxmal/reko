@@ -41,12 +41,6 @@ namespace Reko.UnitTests.Arch.PowerPC
         }
 
         [Test]
-        public void PPCArch_Create()
-        {
-            IProcessorArchitecture arch = new PowerPcArchitecture32();
-        }
-
-        [Test]
         public void PPCArch_GetTrampoline()
         {
             var arch = new PowerPcArchitecture32();

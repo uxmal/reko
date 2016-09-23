@@ -128,4 +128,52 @@ namespace Reko.Core.Output
 			}
 		}
     }
+
+    public class NullFormatter : Formatter
+    {
+        public override void Terminate()
+        {
+        }
+
+        public override Formatter Write(char ch)
+        {
+            return this;
+        }
+
+        public override void Write(string s)
+        {
+        }
+
+        public override void Write(string format, params object[] arguments)
+        {
+        }
+
+        public override void WriteComment(string comment)
+        {
+        }
+
+        public override void WriteHyperlink(string text, object href)
+        {
+        }
+
+        public override void WriteKeyword(string keyword)
+        {
+        }
+
+        public override void WriteLine()
+        {
+        }
+
+        public override void WriteLine(string s)
+        {
+        }
+
+        public override void WriteLine(string format, params object[] arguments)
+        {
+        }
+
+        public override void WriteType(string typeName, DataType dt)
+        {
+        }
+    }
 }

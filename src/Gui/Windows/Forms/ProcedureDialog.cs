@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Gui.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,11 +29,14 @@ using System.Windows.Forms;
 
 namespace Reko.Gui.Windows.Forms
 {
-    public partial class ProcedureDialog : Form, IDialog
+    public partial class ProcedureDialog : Form, IProcedureDialog
     {
-        public ProcedureDialog()
+        private ProcedureDialogInteractor interactor;
+
+        public ProcedureDialog(ProcedureDialogInteractor i)
         {
             InitializeComponent();
+            this.interactor = i;
         }
 
         public TextBox ProcedureName
@@ -61,5 +65,10 @@ namespace Reko.Gui.Windows.Forms
         }
 
         public Button OkButton { get { return btnOK; } }
+
+        public void ApplyChanges()
+        {
+            this.interactor.ApplyChanges();
+        }
     }
 }

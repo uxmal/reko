@@ -38,8 +38,6 @@ namespace Reko.UnitTests.Fragments
         protected override void BuildBody()
         {
             Identifier ds = base.Local(PrimitiveType.SegmentSelector, "ds");
-            Identifier ax = Local16("ax");
-            Identifier ds2 = base.Local(PrimitiveType.SegmentSelector, "ds2");
 
             base.Store(SegMemW(Seg(0x1796), Int16(0x0001)), Seg(0x0800));
             Store(SegMemW(Seg(0x800), Int16(0x5422)), ds);

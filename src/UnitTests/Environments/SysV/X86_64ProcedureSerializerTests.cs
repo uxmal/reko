@@ -41,7 +41,6 @@ namespace Reko.UnitTests.Environments.SysV
         private MockFactory mockFactory;
         private X86ArchitectureFlat64 arch;
         private X86_64ProcedureSerializer ser;
-        private SysVPlatform platform;
         private ISerializedTypeVisitor<DataType> deserializer;
 
         [SetUp]
@@ -50,7 +49,6 @@ namespace Reko.UnitTests.Environments.SysV
             mr = new MockRepository();
             mockFactory = new MockFactory(mr);
             arch = new X86ArchitectureFlat64();
-            platform = new SysVPlatform(null, arch);
         }
 
         private void Given_ProcedureSerializer()
@@ -79,7 +77,6 @@ namespace Reko.UnitTests.Environments.SysV
             mr.ReplayAll();
 
             var sig = new FunctionType(
-                null,
                 new Identifier("rbx", PrimitiveType.Word32, arch.GetRegister("rbx")),
                 new Identifier[] {
                     new Identifier("rbx", PrimitiveType.Word32, arch.GetRegister("rbx"))
@@ -112,7 +109,6 @@ namespace Reko.UnitTests.Environments.SysV
             Procedure proc = new Procedure("foo", arch.CreateFrame())
             {
                 Signature = new FunctionType(
-                    null,
                     new Identifier("rax", PrimitiveType.Word32, arch.GetRegister("rax")),
                     new Identifier[] {
                         new Identifier("arg00", PrimitiveType.Word32, arch.GetRegister("rdi")),

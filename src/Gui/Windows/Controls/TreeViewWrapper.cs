@@ -33,7 +33,7 @@ namespace Reko.Gui.Windows.Controls
     /// <summary>
     /// Wraps a Windows forms TreeView in the platform independent ITreeView interface.
     /// </summary>
-    public class TreeViewWrapper : ITreeView
+    public class TreeViewWrapper : ControlWrapper, ITreeView
     {
         public event EventHandler AfterSelect;
         public event DragEventHandler DragEnter;
@@ -45,6 +45,7 @@ namespace Reko.Gui.Windows.Controls
         private TreeView treeView;
 
         public TreeViewWrapper(TreeView treeView)
+            : base(treeView)
         {
             this.treeView = treeView;
             this.Nodes = new WrappedNodeList(treeView.Nodes);

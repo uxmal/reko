@@ -118,6 +118,8 @@
     <Compile Include="Controls\IControl.cs" />
     <Compile Include="Controls\ILabel.cs" />
     <Compile Include="Controls\IListBox.cs" />
+    <Compile Include="Controls\INumericUpDownWrapper.cs" />
+    <Compile Include="Controls\IRadioButton.cs" />
     <Compile Include="Controls\ITypeMarker.cs" />
     <Compile Include="Design\ArchitectureDesigner.cs" />
     <Compile Include="Design\GlobalVariablesNodeDesigner.cs" />
@@ -127,6 +129,8 @@
     <Compile Include="Forms\CallSiteInteractor.cs" />
     <Compile Include="Forms\IAssumedRegisterValuesDialog.cs" />
     <Compile Include="Forms\IDeclarationForm.cs" />
+    <Compile Include="Forms\IJumpTableDialog.cs" />
+    <Compile Include="Forms\IProcedureDialog.cs" />
     <Compile Include="Forms\IResourceEditor.cs" />
     <Compile Include="Forms\ResourceEditorInteractor.cs" />
     <Compile Include="ICallGraphViewService.cs" />
@@ -135,6 +139,7 @@
     <Compile Include="IResourceEditorService.cs" />
     <Compile Include="Forms\IWorkerDialog.cs" />
     <Compile Include="Forms\ITextEncodingDialog.cs" />
+    <Compile Include="JumpVectorNavigator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BlockNavigator.cs" />
     <Compile Include="CommandGroup.cs" />
@@ -179,7 +184,7 @@
     <Compile Include="IMenuAdapter.cs" />
     <Compile Include="IProgressBar.cs" />
     <Compile Include="IProjectBrowserService.cs" />
-    <Compile Include="ISearchDialog.cs" />
+    <Compile Include="Forms\ISearchDialog.cs" />
     <Compile Include="ISearchResult.cs" />
     <Compile Include="ISearchResultService.cs" />
     <Compile Include="IServiceFactory.cs" />
@@ -268,6 +273,7 @@
     <Compile Include="Windows\Controls\RegexValidator.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Windows\ControlWrapper.cs" />
     <Compile Include="Windows\Forms\CallSiteDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -290,6 +296,13 @@
     <Compile Include="Windows\Forms\DeclarationForm.Designer.cs">
       <DependentUpon>DeclarationForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Windows\Forms\JumpTableDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\Forms\JumpTableDialog.Designer.cs">
+      <DependentUpon>JumpTableDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Forms\JumpTableInteractor.cs" />
     <Compile Include="Windows\Forms\TextEncodingDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -299,7 +312,9 @@
     <Compile Include="Forms\TextEncodingInteractor.cs" />
     <Compile Include="Windows\LabelWrapper.cs" />
     <Compile Include="Windows\ListboxWrapper.cs" />
+    <Compile Include="Windows\NumericUpDownWrapper.cs" />
     <Compile Include="Windows\ProgressbarWrapper.cs" />
+    <Compile Include="Windows\RadioButtonWrapper.cs" />
     <Compile Include="Windows\StyleStack.cs" />
     <Compile Include="Windows\Controls\TextBuffer.cs" />
     <Compile Include="Windows\Controls\TextPointer.cs" />
@@ -594,6 +609,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Forms\FindStringsDialog.resx">
       <DependentUpon>FindStringsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\Forms\JumpTableDialog.resx">
+      <DependentUpon>JumpTableDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

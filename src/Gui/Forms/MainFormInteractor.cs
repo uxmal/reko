@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Assemblers;
 using Reko.Core.Configuration;
+using Reko.Core.Output;
 using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
@@ -897,11 +898,11 @@ namespace Reko.Gui.Forms
             return new StreamWriter(fileName, false, new UTF8Encoding(false));
         }
 
-        public void WriteDisassembly(Program program, Action<TextWriter> writer)
+        public void WriteDisassembly(Program program, Action<Formatter> writer)
         {
             using (TextWriter output = CreateTextWriter(program.DisassemblyFilename))
             {
-                writer(output);
+                writer(new TextFormatter(output));
             }
         }
 
@@ -999,7 +1000,7 @@ namespace Reko.Gui.Forms
                 {
                     text.Text = null;
                     var st = QueryStatus(cmd.CommandID, status, text);
-                    item.Enabled = (status.Status & MenuStatus.Enabled) != 0;
+					item.Enabled = st && (status.Status & MenuStatus.Enabled) != 0;
                     if (!string.IsNullOrEmpty(text.Text))
                         item.Text = text.Text;
                 }

@@ -331,7 +331,7 @@ namespace Reko.UnitTests.Gui.Windows.Controls
 
             var mcdm = new MixedCodeDataModel(program);
 
-            int delta = mcdm.MoveToLine(mcdm.CurrentPosition, 2);
+            mcdm.MoveToLine(mcdm.CurrentPosition, 2);
             var curPos = (Address)mcdm.CurrentPosition;
 
 /*

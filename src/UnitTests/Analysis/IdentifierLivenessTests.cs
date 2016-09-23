@@ -63,7 +63,7 @@ namespace Reko.UnitTests.Analysis
 		public void Idlv_Subregisters()
 		{
 			Identifier ax = frame.EnsureRegister(Registers.ax);
-			Identifier al = frame.EnsureRegister(Registers.al);
+			frame.EnsureRegister(Registers.al);
 			Identifier ah = frame.EnsureRegister(Registers.ah);
 	
 			Use(ax, 0, 16);

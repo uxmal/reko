@@ -42,7 +42,7 @@ namespace Reko.Arch.X86
         {
             emitter.Assign(
                 SrcOp(instrCur.op1),
-                PseudoProc(
+                host.PseudoProcedure(
                     "__pcmpeqb",
                     instrCur.op1.Width,
                     SrcOp(instrCur.op1),
@@ -53,7 +53,7 @@ namespace Reko.Arch.X86
         {
             emitter.Assign(
                 SrcOp(instrCur.op1),
-                PseudoProc(
+                host.PseudoProcedure(
                     "__pshufd",
                     instrCur.op1.Width,
                     SrcOp(instrCur.op1),
@@ -65,7 +65,7 @@ namespace Reko.Arch.X86
         {
             emitter.Assign(
                 SrcOp(instrCur.op1),
-                PseudoProc(
+                host.PseudoProcedure(
                     "__punpcklbw",
                     instrCur.op1.Width,
                     SrcOp(instrCur.op1),
@@ -76,7 +76,7 @@ namespace Reko.Arch.X86
         {
             emitter.Assign(
                 SrcOp(instrCur.op1),
-                PseudoProc(
+                host.PseudoProcedure(
                     "__punpcklwd",
                     instrCur.op1.Width,
                     SrcOp(instrCur.op1),
@@ -87,7 +87,7 @@ namespace Reko.Arch.X86
         {
             emitter.Assign(
                 SrcOp(instrCur.op1),
-                PseudoProc(
+                host.PseudoProcedure(
                     "__palignr",
                     instrCur.op1.Width,
                     SrcOp(instrCur.op1),

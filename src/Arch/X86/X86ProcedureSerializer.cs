@@ -110,7 +110,7 @@ namespace Reko.Arch.X86
                 fpuDelta -= FpuStackOffset;
             }
             FpuStackOffset = fpuDelta;
-            var sig = new FunctionType(null, ret, args.ToArray());
+            var sig = new FunctionType(ret, args.ToArray());
             sig.IsInstanceMetod = ss.IsInstanceMethod;
             ApplyConvention(ss, sig);
             return sig;
@@ -151,11 +151,12 @@ namespace Reko.Arch.X86
             switch (convention)
             {
             case "":
-            case "stdapi":
             case "cdecl":
+            case "pascal":
+            case "stdapi":
+            case "stdcall":
             case "__cdecl":
             case "__stdcall":
-            case "pascal":
             case "__thiscall":
                 return argDeser.Deserialize(arg, new StackVariable_v1 { });
             }

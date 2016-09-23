@@ -105,7 +105,7 @@ l000011F8:
 			int32 d0_226 = (int32) null[d0_217].b0000;
 			Mem227[a0_225 + d0_226:byte] = 0x00;
 			d0_132->ptr0010 = a0_225;
-			byte ** a6_230 = &d0_132->ptr0010;
+			word32 * a6_230 = &d0_132->ptr0010;
 			int32 d3_231 = 0x01;
 			struct Eq_235 * a0_233 = a0 + d2_235;
 l000010DA:
@@ -128,8 +128,8 @@ l000010E6:
 			} while (v37_256 == 0x20 || v37_256 == 0x09);
 			if (d3_231 - d0_132->dw000C != 0x00)
 			{
-				*a6_230 = (byte **) a1_220;
-				a6_230 = a6_230;
+				*a6_230 = a1_220;
+				a6_230 = a6_230 + 0x01;
 				d3_231 = DPB(d3_231, (word16) d3_231 + 0x01, 0);
 				if (v37_256 != 0x22)
 				{
@@ -179,7 +179,7 @@ l00001116:
 			}
 l00001148:
 			*a1_220 = 0x00;
-			*a6_230 = (byte **) null;
+			*a6_230 = 0x00;
 			execPrivate4();
 			a4_6->dwFFFF801E = d0_226;
 			execPrivate5();
@@ -246,8 +246,8 @@ void fn00001278(word32 dwArg04)
 void fn0000127C(int32 d2)
 {
 	struct Eq_509 * a4_0 = (struct Eq_509 *) 0x948A;
-	struct Eq_31 ** a7_3 = a4_0->ptrFFFF800A;
-	struct Eq_31 * v8_8 = *(a7_3 - 0x04);
+	ptr32 a7_3 = a4_0->ptrFFFF800A;
+	struct Eq_515 * v8_8 = *(a7_3 - 0x04);
 	struct Eq_31 * v6_5 = *(a7_3 - 0x08);
 	if (v8_8->dw0004 != 0x00)
 		execPrivate1();

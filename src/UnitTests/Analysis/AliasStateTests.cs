@@ -12,7 +12,6 @@ namespace Reko.UnitTests.Analysis
     public class AliasStateTests
     {
         private RegisterStorage eax = new RegisterStorage("eax", 0, 0, PrimitiveType.Word32);
-        private RegisterStorage ax = new RegisterStorage("ax", 0, 0, PrimitiveType.Word16);
         private RegisterStorage ah = new RegisterStorage("ah", 0, 8, PrimitiveType.Byte) { BitAddress =8 };
         private RegisterStorage al = new RegisterStorage("al", 0, 0, PrimitiveType.Byte);
 

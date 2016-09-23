@@ -55,8 +55,11 @@ namespace Reko.Arch.Pdp11
             {
             case AddressMode.RegDef: fmt = "@{0}"; break;
             case AddressMode.AutoIncr: fmt = "({0})+"; break;
+            case AddressMode.AutoIncrDef: fmt = "@({0})+"; break;
             case AddressMode.AutoDecr: fmt = "-({0})"; break;
+            case AddressMode.AutoDecrDef: fmt = "@-({0})"; break;
             case AddressMode.Indexed: fmt = "{1:X4}({0})"; break;
+            case AddressMode.IndexedDef: fmt = "@{1:X4}({0})"; break;
             //case AddressMode.Immediate : fmt = "#{1:X4}"; break;
             case AddressMode.Absolute: fmt = "@#{1:X4}"; break;
             default: throw new NotImplementedException(string.Format("Unknown mode {0}.", Mode));

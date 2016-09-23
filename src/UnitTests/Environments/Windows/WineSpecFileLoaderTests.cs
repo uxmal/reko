@@ -35,19 +35,25 @@ namespace Reko.UnitTests.Environments.Windows
     {
         private static string nl = Environment.NewLine;
 
-        private Win16Platform platform;
+        private IPlatform platform;
         private WineSpecFileLoader wsfl;
 
-        private void CreateWineSpecFileLoader(string filename, string contents)
+        private void Given_WineSpecLoader_16(string filename, string contents)
         {
             this.platform = new Win16Platform(null, new X86ArchitectureProtected16());
+            wsfl = new WineSpecFileLoader(null, filename, Encoding.ASCII.GetBytes(contents));
+        }
+
+        private void Given_WineSpecLoader_32(string filename, string contents)
+        {
+            this.platform = new Win32Platform(null, new X86ArchitectureFlat32());
             wsfl = new WineSpecFileLoader(null, filename, Encoding.ASCII.GetBytes(contents));
         }
 
         [Test]
         public void Wsfl_Comment()
         {
-            CreateWineSpecFileLoader("foo.spec",
+            Given_WineSpecLoader_16("foo.spec",
                 " # comment");
             var lib = wsfl.Load(platform, new TypeLibrary());
             Assert.AreEqual(0, lib.Modules.Count);
@@ -56,7 +62,7 @@ namespace Reko.UnitTests.Environments.Windows
         [Test]
         public void Wsfl_Line()
         {
-            CreateWineSpecFileLoader("foo.spec",
+            Given_WineSpecLoader_16("foo.spec",
                 " 624 pascal SetFastQueue(long long) SetFastQueue16\n");
             var lib = wsfl.Load(platform, new TypeLibrary());
             var mod = lib.Modules["FOO.DLL"];
@@ -72,7 +78,7 @@ namespace Reko.UnitTests.Environments.Windows
         [Test]
         public void Wsfl_ThreeLines()
         {
-            CreateWineSpecFileLoader("foo.spec",
+            Given_WineSpecLoader_16("foo.spec",
                 " 2   pascal -ret16 ExitKernel() ExitKernel16\n" +
                 "3    pascal GetVersion() GetVersion16\n" +
                 "4   pascal -ret16 LocalInit(word word word) LocalInit16\n");
@@ -90,13 +96,53 @@ namespace Reko.UnitTests.Environments.Windows
                 mod.ServicesByVector[4].Signature.ToString("LocalInit", FunctionType.EmitFlags.AllDetails));
         }
 
-        [Test(Description ="Ignore lines starting with '@'")]
-        public void Wsfl_Ignore_atsign()
+        [Test]
+        public void Wsfl_ParseOptions()
         {
-            CreateWineSpecFileLoader("foo.spec",
+            Given_WineSpecLoader_16("foo.spec",
                 " @ stdcall -arch=win32 -norelay SMapLS_IP_EBP_36()" + nl + "");
             var lib = wsfl.Load(platform, new TypeLibrary());
-            Assert.AreEqual(0, lib.Modules.Count);
+            var mod = lib.Modules["FOO.DLL"];
+            Assert.AreEqual(
+                "void SMapLS_IP_EBP_36()",
+                mod.ServicesByName["SMapLS_IP_EBP_36"].Signature.ToString("SMapLS_IP_EBP_36"));
+        }
+
+        [Test]
+        public void Wsfl_PointerParameter_32()
+        {
+            Given_WineSpecLoader_32("foo.spec",
+                "115 stdcall WSAStartup(long ptr)\n");
+            var lib = wsfl.Load(platform, new TypeLibrary());
+            var mod = lib.Modules["FOO.DLL"];
+            Assert.AreEqual(
+                "void WSAStartup(Stack word32 dwArg04, Stack ptr32 ptrArg08)",
+                mod.ServicesByVector[115].Signature.ToString("WSAStartup", FunctionType.EmitFlags.ArgumentKind));
+        }
+
+        [Test]
+        public void Wsfl_Handle_atsign()
+        {
+            Given_WineSpecLoader_32("foo.spec",
+                "@ stdcall WSCEnableNSProvider(ptr long)\n");
+            var lib = wsfl.Load(platform, new TypeLibrary());
+            var mod = lib.Modules["FOO.DLL"];
+            Assert.AreEqual(
+                "void WSCEnableNSProvider(Stack ptr32 ptrArg04, Stack word32 dwArg08)",
+                mod.ServicesByName["WSCEnableNSProvider"].Signature.ToString("WSCEnableNSProvider", FunctionType.EmitFlags.ArgumentKind));
+        }
+
+        [Test]
+        public void Wsfl_cdecl()
+        {
+            Given_WineSpecLoader_32("msvcrt.spec",
+                " @ cdecl fgets(ptr long ptr) MSVCRT_fgets\n");
+            var lib = wsfl.Load(platform, new TypeLibrary());
+            var mod = lib.Modules["MSVCRT.DLL"];
+            Assert.AreEqual(
+                "void fgets(Stack ptr32 ptrArg04, Stack word32 dwArg08, Stack ptr32 ptrArg0C)" + nl +
+                "// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1" + nl,
+                mod.ServicesByName["fgets"].Signature.ToString("fgets", FunctionType.EmitFlags.AllDetails));
         }
     }
 }

@@ -131,7 +131,7 @@ namespace Reko.Environments.Windows
                     args.Add(arg);
                 }
             }
-            var sig = new FunctionType(null, ret, args.ToArray());
+            var sig = new FunctionType(ret, args.ToArray());
             sig.IsInstanceMetod = ss.IsInstanceMethod;
             ApplyConvention(ss, sig);
             return sig;

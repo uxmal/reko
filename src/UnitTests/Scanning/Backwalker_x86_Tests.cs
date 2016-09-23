@@ -228,7 +228,7 @@ namespace Reko.UnitTests.Scanning
             var eax = m.Frame.EnsureRegister(Registers.eax);
             var edx = m.Frame.EnsureRegister(Registers.edx);
             var al = m.Frame.EnsureRegister(Registers.al);
-            var SCZO = m.Frame.EnsureFlagGroup(Registers.eflags, (uint)(FlagM.SF | FlagM.ZF | FlagM.CF | FlagM.OF), "SCZO", PrimitiveType.Byte);
+            m.Frame.EnsureFlagGroup(Registers.eflags, (uint)(FlagM.SF | FlagM.ZF | FlagM.CF | FlagM.OF), "SCZO", PrimitiveType.Byte);
             var bw = new Backwalker(host, new RtlGoto(m.LoadDw(m.IAdd(eax, 0x1000)), RtlClass.Transfer), expSimp);
             Assert.IsTrue(bw.BackwalkInstruction(
                 m.Assign(al, m.LoadB(m.IAdd(edx, 0x1004)))));
@@ -354,7 +354,7 @@ namespace Reko.UnitTests.Scanning
                 new ExpressionSimplifier(state));
 			var instrs = new StatementList(new Block(null, "foo"));
 			instrs.Add(0, new Assignment(di, new BinaryExpression(Operator.IAdd, di.DataType, di, Constant.Word16(1))));
-			var r = bw.BackwalkInstructions(Registers.di, instrs);
+			bw.BackwalkInstructions(Registers.di, instrs);
 			Assert.AreSame(Registers.di, bw.Index);
 			Assert.AreEqual("+ 1", bw.Operations[0].ToString());
 		}
@@ -390,7 +390,6 @@ namespace Reko.UnitTests.Scanning
             var ebp = m.Frame.EnsureRegister(Registers.ebp);
             var eax = m.Frame.EnsureRegister(Registers.eax);
             var edx = m.Frame.EnsureRegister(Registers.edx);
-            var dl = m.Frame.EnsureRegister(Registers.dl);
             
             // cmp [ebp-66],1D
 

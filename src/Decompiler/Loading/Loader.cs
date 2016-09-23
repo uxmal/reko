@@ -122,8 +122,6 @@ namespace Reko.Loading
         {
             var arch = cfgSvc.GetArchitecture(archName);
             var platform = cfgSvc.GetEnvironment(platformName).Load(Services, arch);
-            var mem = new MemoryArea(addrLoad, image);
-            var segmentMap = CreatePlatformSegmentMap(platform, addrLoad, image);
             var program = new Program(
                 CreatePlatformSegmentMap(platform, addrLoad, image),
                 arch, 

@@ -23,12 +23,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Reko.Core;
 
 namespace Reko.Gui.Controls
 {
     public interface IListBox
     {
-        object SelectedItem { get; }
+        event EventHandler SelectedIndexChanged;
+
+        object DataSource { get; set; }
+        IList Items { get; }
+        int SelectedIndex { get; set; }
+        object SelectedItem { get; set; }
 
         void AddItems(IEnumerable items);
     }

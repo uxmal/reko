@@ -103,8 +103,10 @@ namespace Reko.Core.Serialization
             Procedures = new List<Procedure_v1>();
             GlobalData = new List<GlobalDataItem_v2>();
             Heuristics = new List<Heuristic_v3>();
+            JumpTables = new List<JumpTable_v4>();
             Annotations = new List<Annotation_v3>();
             Calls = new List<SerializedCall_v1>();
+            IndirectJumps = new List<IndirectJump_v4>();
         }
 
         [XmlElement("address")]
@@ -122,6 +124,9 @@ namespace Reko.Core.Serialization
         [XmlElement("call")]
         public List<SerializedCall_v1> Calls;
 
+        [XmlElement("indirectJump")]
+        public List<IndirectJump_v4> IndirectJumps;
+       
         [XmlElement("global")]
         public List<GlobalDataItem_v2> GlobalData;
 
@@ -130,6 +135,9 @@ namespace Reko.Core.Serialization
 
         [XmlElement("onLoad")]
         public Script_v2 OnLoadedScript;
+
+        [XmlElement("jumpTable")]
+        public List<JumpTable_v4> JumpTables;
 
         [XmlElement("annotation")]
         public List<Annotation_v3> Annotations;
@@ -158,5 +166,26 @@ namespace Reko.Core.Serialization
 
         [XmlAnyElement]
         public XmlElement[] Options;
+    }
+
+    public class JumpTable_v4
+    {
+        [XmlAttribute("tableAddress")]
+        public string TableAddress;
+
+        [XmlElement("dst")]
+        public string[] Destinations;
+    }
+
+    public class IndirectJump_v4
+    {
+        [XmlAttribute("instrAdress")]
+        public string InstructionAddress;
+
+        [XmlAttribute("tableAddress")]
+        public string TableAddress;
+
+        [XmlAttribute("idxReg")]
+        public string IndexRegister;
     }
 }

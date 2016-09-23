@@ -62,7 +62,7 @@ namespace Reko.UnitTests.Analysis
             Identifier returnValue,
             params Identifier[] parameters)
         {
-            return Ptr32(new FunctionType("", returnValue, parameters));
+            return Ptr32(new FunctionType(returnValue, parameters));
         }
 
         private Identifier VoidId()
@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Analysis
             return new Identifier(
                 "",
                 PrimitiveType.Word32,
-                new RegisterStorage("eax", 0, 0, PrimitiveType.Word32));
+                RegisterStorage.Reg32("eax", 0));
         }
 
         private Identifier EcxId()
@@ -91,7 +91,7 @@ namespace Reko.UnitTests.Analysis
             return new Identifier(
                 "",
                 PrimitiveType.Word32,
-                new RegisterStorage("ecx", 1, 0, PrimitiveType.Word32));
+                RegisterStorage.Reg32("ecx", 1));
         }
 
         private DataType VtblStr(params DataType[] methods)

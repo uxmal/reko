@@ -213,13 +213,6 @@ namespace Reko.Arch.Sparc
                 emitter.Cond(dst));
         }
 
-        private Application PseudoProc(string name, DataType ret, params Expression[] exprs)
-        {
-            var ppp = host.EnsurePseudoProcedure(name, ret, exprs.Length);
-            var fn = emitter.Fn(ppp, exprs);
-            return fn;
-        }
-
         private Expression RewriteOp(MachineOperand op)
         {
             return RewriteOp(op, false);

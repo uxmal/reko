@@ -18,33 +18,17 @@
  */
 #endregion
 
-using Reko.Gui.Controls;
-using Reko.Scanning;
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Gui
+namespace Reko.Core
 {
-    public interface ISearchDialog : IDialog
+    public class UserRegisterValue
     {
-        event EventHandler Load;
-        event EventHandler Closed;
-
-        IServiceProvider Services { get; }
-        string InitialPattern { get; set; }
-
-        IComboBox Patterns { get; }
-        ICheckBox RegexCheckbox { get; }
-        IComboBox Encodings { get; }
-        IComboBox Scopes { get; }
-        ITextBox StartAddress { get; }
-        ITextBox EndAddress { get; }
-        IButton SearchButton { get; }
-        ICheckBox ScannedMemory { get; }
-        ICheckBox UnscannedMemory { get; }
-
-        StringSearch<byte> ImageSearcher { get; set; }
+        public RegisterStorage Register { get; set;  }
+        public Constant Value { get; set; }
     }
 }

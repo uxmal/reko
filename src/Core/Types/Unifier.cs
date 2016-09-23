@@ -458,7 +458,7 @@ namespace Reko.Core.Types
 				var dt = Unify(a.Parameters[i].DataType, b.Parameters[i].DataType);
                 args[i] = new Identifier(null, dt, null);   //$BUG: unify storages!
 			}
-			return factory.CreateFunctionType(null, new Identifier("", ret, null), args);
+			return factory.CreateFunctionType(new Identifier("", ret, null), args);
 		}
 
 		/// <summary>
@@ -620,9 +620,9 @@ namespace Reko.Core.Types
 
         private DataType UnifyTypeVariable(TypeVariable tv, DataType dt)
         {
-            tv.DataType = UnifyInternal(tv.DataType, dt);
-            tv.OriginalDataType = UnifyInternal(tv.OriginalDataType, dt);
-            return tv;
+            // TypeVariable should be already unified with this DataType by
+            // ExpressionTypeAscender so just return DataType
+            return dt;
         }
 
         public UnionType UnifyUnions(UnionType u1, UnionType u2)

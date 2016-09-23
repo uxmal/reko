@@ -58,8 +58,15 @@ namespace Reko.UnitTests.Analysis
             var sw = new StringWriter();
             program = p.BuildProgram(arch);
             RunTest(program, sw);
-            Console.WriteLine(sw);
-            Assert.AreEqual(sExp, sw.ToString());
+            try
+            {
+                Assert.AreEqual(sExp, sw.ToString());
+            }
+            catch
+            {
+                Console.WriteLine(sw);
+                throw;
+            }
         }
 
         private void RunTest(Program prog, TextWriter writer)

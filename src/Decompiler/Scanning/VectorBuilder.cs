@@ -22,9 +22,11 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Reko.Scanning
@@ -35,14 +37,14 @@ namespace Reko.Scanning
     /// </summary>
     public class VectorBuilder : IBackWalkHost
     {
-        private IScanner scanner;
+        private IServiceProvider services;
         private Program program;
         private Backwalker bw;
         private DirectedGraphImpl<object> jumpGraph;        //$TODO:
 
-        public VectorBuilder(IScanner scanner, Program program, DirectedGraphImpl<object> jumpGraph)
+        public VectorBuilder(IServiceProvider services, Program program, DirectedGraphImpl<object> jumpGraph)
         {
-            this.scanner = scanner;
+            this.services = services;
             this.program = program;
             this.jumpGraph = jumpGraph;
         }
@@ -114,7 +116,12 @@ namespace Reko.Scanning
         /// <param name="stride">The size of the individual addresses in the table.</param>
         /// <param name="state">Current processor state.</param>
         /// <returns>The target addresses reached by the vector</returns>
-        public List<Address> BuildTable(Address addrTable, int limit, int[] permutation, int stride, ProcessorState state)
+        public List<Address> BuildTable(
+            Address addrTable,
+            int limit, 
+            int[] permutation,
+            int stride,
+            ProcessorState state)
         {
             List<Address> vector = new List<Address>();
 
@@ -133,7 +140,7 @@ namespace Reko.Scanning
             }
             else
             {
-                ImageReader rdr = scanner.CreateReader(addrTable);
+                ImageReader rdr = program.CreateImageReader(addrTable);
                 int cItems = limit / stride;
                 var segmentMap = program.SegmentMap;
                 var arch = program.Architecture;
@@ -142,7 +149,13 @@ namespace Reko.Scanning
                     var entryAddr = program.Architecture.ReadCodeAddress(stride, rdr, state);
                     if (!segmentMap.IsValidAddress(entryAddr))
                     {
-                        scanner.Warn(addrTable, "The call or jump table has invalid addresses; stopping.");
+                        if (services != null)
+                        {
+                            var diagSvc = services.RequireService<DecompilerEventListener>();
+                            diagSvc.Warn(
+                                diagSvc.CreateAddressNavigator(program, addrTable),
+                                "The call or jump table has invalid addresses; stopping.");
+                        }
                         break;
                     }
                     vector.Add(entryAddr);
@@ -208,10 +221,9 @@ namespace Reko.Scanning
 
         private List<Address> PostError(string err, Address addrInstr, Address addrTable)
         {
-            System.Diagnostics.Trace.WriteLine(string.Format("Instruction at {0}, table at {1}: {2}", addrInstr, addrTable, err));
+            Debug.WriteLine(string.Format("Instruction at {0}, table at {1}: {2}", addrInstr, addrTable, err));
             return new List<Address>();
         }
-
 
         public bool IsValidAddress(Address addr)
         {

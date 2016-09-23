@@ -1,0 +1,153 @@
+﻿                        RT-11 PDP-11 EMT system calls
+                        =============================
+
+EMT    MACRO    Function
+-------------------------------------------------------------------------------
+340    .TTYIN   Read one character from TTY, Cy=1 if no char pending
+341    .TTYOUT  Write one character to TTY, Cy=1 if no space in output buffer
+342    .DSTAT   Read status of device
+343    .FETCH   Load device handler
+344    .CSIGEN  Call Command String Interpreter in general mode
+345    .CSISPC  Call Command String Interpreter in special mode
+345    .GTLIN   Read input line
+346    .LOCK    Make USR resident
+347    .UNLOCK  Release USR
+-------------------------------------------------------------------------------
+350    .EXIT    Exit
+351    .DPRINT  Insert run-time message
+351    .PRINT   Print message
+352    .SRESET  Reset all channels
+353    .QSET    Increase size of monitor I/O queue
+354    .SETTOP  Set top of memory for user program
+355    .RCTRLO  Enable terminal output, ignore CTRL/O
+356
+357    .HRESET  Terminate I/O and do .SRESET
+-------------------------------------------------------------------------------
+360
+361
+362
+363
+364
+365
+366
+367
+-------------------------------------------------------------------------------
+370
+371
+372
+373    .CALLK   Call in Kernel mode
+-------------------------------------------------------------------------------
+374  R0=function:channel
+374  0 .WAIT    Wait for I/O to complete on channel
+374  1 .SPND    Suspend current job
+374  2 .RSUM    Resume mainline code after .SPND
+374  3 .PURGE   Purge/clear a channel
+374  4 .SERR    Inhibit fatal errors
+374  5 .HERR    Terminate job on fatal error
+374  6 .CLOSE   Close channel
+374  7 .TLOCK   Test USR lock state
+374 10 .CHAIN   Chain background program
+374 11 .MWAIT   MJ: Wait for messages to be processed
+374 12 .DATE    Read date to R0
+374 13 .ABTIO   Abort I/O
+374 14
+374 15
+374 16
+374 17
+-------------------------------------------------------------------------------
+375 R0=>argument block, [R0]=function:subfunction
+375  0 .DELETE  Delete file
+375  1 .LOOKUP  Open existing file and message channel
+375  2 .ENTER   Create new file for output
+375  3 .TRPSET  Claim traps at o0004 and o0010
+375  4 .RENAME  Rename file
+375  5 .SAVESTATUS  Save open file status, release channel
+375  6 .REOPEN  Restore from .SAVESTATUS and reopen channel
+375  7
+375 10 .READ    Read data from channel to memory
+375 11 .WRITE   Write data from memory to channel
+375 12
+375 13 .CHCOPY  MJ: Enable access to other job's channel
+375 14 .DEVICE  Enable device interupts
+375 15 .CDFN    Define channels
+375 16
+375 17
+375 20 .GTJB    Read job parameters
+375 21 .GTIM    Read time of day
+375 22 .MRKT    Mark time
+375 23 .CMKT    Cancel unexpired timer request
+375 24 .TWAIT   Suspend for specied time
+375 25 .SDAT    MJ: Send message/data
+375 26 .RCVD    MJ: Receive message/data
+375 27 .CSTAT   Read status of channel
+375 30 .SFPA    Set floating-point processor interupts
+375 31 .PROTECT Protect 0-476 exclusive to current job
+375 31 .UNPROTECT Cancel .PROTECT
+375 32 .SPFUN   Special device functions
+375 33 .CNTXSW  MJ: Request context switch
+375 34 .PEEK    Read memory location
+375 34 .POKE    Write memory location
+375 34 .GVAL    Read monitor value
+375 34 .PVAL    Set monitor setting
+375 35 .SCCA    Enable CTRL/C
+375 36 .CRAW    MJ: Create window in virtual memory
+375 36 .CRRG    MJ: Create window in extended memory
+375 36 .ELAW    MJ: Eliminate window in virtual memory
+375 36 .ELRG    MJ: Eliminate window in extended memory
+375 36 .GMCX    MJ: Return mapping status of specified window
+375 36 .MAP     MJ: Map a virtual window to extended memory
+375 36 .UNMAP   MJ: Unmap virtual address window
+375 37 .MTATCH  Attach exclusive terminal
+375 37 .MTDTCH  Detach exclusive terminal
+375 37 .MTGET   Read terminal status
+375 37 .MTIN    Multiterminal .TTYON request
+375 37 .MTOUT   Multiterminal .TTYOUT request
+375 37 .MTPRNT  Multiterminal .PRINT request
+375 37 .MTRCTO  Multiterminal .RCTRLO request
+375 37 .MTSET   Modify terminal status
+375 37 .MTSTAT  Read terminal status
+375 40 .SDTTM   Set system date/time
+375 41 .SPCPS   Change flow control of mainline code
+375 42 .SFDAT   Set file creation date from R0
+375 43 .FPROT   Set file protection
+375 44 .GFDAT   Read file creation date to R0
+375 44 .GFINF   Read word from directory entry to R0
+375 44 .GFSTA   Read file status to R0
+375 44 .SFINF   Set directory info from R0
+375 44 .SFSTAT  Set file status from R0
+375 45 .CLOSZ   Close channel opened by .ENTER and set file size
+375 46 .CMAP    MJ: Control I/D space and mapping
+375 46 .GCMAP   MJ: Return CMAP status
+375 46 .MSDS    MJ: Control user/data space
+375 47
+-------------------------------------------------------------------------------
+376             reserved, used internall by monitor
+377             reserved, returns immediately
+-------------------------------------------------------------------------------
+
+
+Version 1 RT-11 passes function:channel in EMT 8-bit number with 4-bit function
+and 4-bit channel. Reimplemented as EMT 374 with R0=function:channel as 16-bit
+number with 8-bit function and 8-bit channel.
+
+EMT call number b4-b7 = function
+                b0-b3 = channel/subfunction
+EMT Function
+-------------------------------------------------------------------------------
+ 0x Delete
+ 1x Lookup
+ 2x Enter
+ 3x unused
+ 4x Rename
+ 5x SaveStatus
+ 6x Reopen
+ 7x Close
+ 8x Read
+ 9x Write
+ Ax Wait
+ Bx unused
+ Cx unused
+ Dx unused
+ Ex I/O functions
+ Fx reserved for internal RT-11 use
+

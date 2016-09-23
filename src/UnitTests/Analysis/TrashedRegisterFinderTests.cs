@@ -122,8 +122,15 @@ namespace Reko.UnitTests.Analysis
             var summary = DumpProcedureSummaries().Trim();
             if (sExp == summary)
                 return;
-            Console.WriteLine(summary);
-            Assert.AreEqual(sExp, summary);
+            try
+            {
+                Assert.AreEqual(sExp, summary);
+            }
+            catch
+            {
+                Console.WriteLine(summary);
+                throw;
+            }
         }
 
         protected override void RunTest(Program prog, TextWriter writer)
@@ -228,7 +235,6 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void TrfCopyBack()
         {
-            var tmp = m.Local32("tmp");
             var esp = m.Frame.EnsureRegister(Registers.esp);
             var r2 = m.Register(2);
             var stm1 = m.Store(m.ISub(esp, 0x10), r2);

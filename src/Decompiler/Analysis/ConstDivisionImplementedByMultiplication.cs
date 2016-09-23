@@ -105,7 +105,7 @@ namespace Reko.Analysis
                 var mediant = Rational.FromIntegers(
                     lower.Numerator + upper.Numerator,
                     lower.Denominator + upper.Denominator);
-                Debug.Print("mediant: {0}", mediant);
+                //Debug.Print("mediant: {0}", mediant);
                 yield return mediant;
                 var approx = mediant.ToDouble();
                 if (fraction < approx)
@@ -237,7 +237,6 @@ namespace Reko.Analysis
             var sidOrig = ssa.Identifiers[idOrig];
             var sidDst = ssa.Identifiers[idDst];
             sidOrig.Uses.Remove(sidDst.DefStatement);
-            var oldUses = sidDst.Uses.ToList();
             sidDst.DefStatement.Instruction = new Assignment(
                 idDst,
                 new BinaryExpression(

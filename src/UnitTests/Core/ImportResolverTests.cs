@@ -146,7 +146,6 @@ namespace Reko.UnitTests.Core
             };
 
             var barSig = new FunctionType(
-                    null,
                     new Identifier(
                         "res",
                         PrimitiveType.Word16,

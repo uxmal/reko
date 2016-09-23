@@ -92,7 +92,6 @@ namespace Reko.UnitTests.Gui.Windows
         public void DviSupportMarkProcedure()
         {
             var status = new CommandStatus();
-            var text = new CommandText();
             var ret = interactor.QueryStatus(new CommandID(CmdSets.GuidReko, CmdIds.ActionMarkProcedure), status, null);
             Assert.IsTrue(ret);
             Assert.AreEqual(MenuStatus.Enabled | MenuStatus.Visible, status.Status);

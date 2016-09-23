@@ -48,7 +48,7 @@ namespace Reko.Environments.Windows
                     RegisterValues = new RegValue[0],
                 },
                 Name = "int3",
-                Signature = new FunctionType(null, null, new Identifier[0]),
+                Signature = FunctionType.Action(new Identifier[0]),
                 Characteristics = new ProcedureCharacteristics(),
             };
             int29svc = new SystemService
@@ -59,9 +59,8 @@ namespace Reko.Environments.Windows
                     RegisterValues = new RegValue[0]
                 },
                 Name = "__fastfail",
-                Signature = new FunctionType(
-                            null,
-                            new Identifier("rcx", PrimitiveType.Word64, Registers.rcx)),
+                Signature = FunctionType.Action(
+                            new Identifier("ecx", PrimitiveType.Word32, Registers.ecx)),
                 Characteristics = new ProcedureCharacteristics
                 {
                     Terminates = true

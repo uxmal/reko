@@ -74,6 +74,9 @@ namespace Reko.UnitTests.Core
 
             var tlLdr = new TypeLibraryDeserializer(platform, true, new TypeLibrary());
             TypeLibrary lib = tlLdr.Load(new SerializedLibrary());
+            Assert.AreEqual(0, lib.Types.Count);
+            Assert.AreEqual(0, lib.Signatures.Count);
+            Assert.AreEqual(1, lib.Modules.Count, "The blank module is there");
         }
 
         [Test]
@@ -289,7 +292,6 @@ namespace Reko.UnitTests.Core
             Given_ArchitectureStub();
             var r3 = new RegisterStorage("r3", 3, 0, PrimitiveType.Word32);
             Given_ProcedureSignature(new FunctionType(
-                null,
                 new Identifier("", PrimitiveType.Int32, r3),
                 new[] {
                     new Identifier("", PrimitiveType.Real32, r3)}

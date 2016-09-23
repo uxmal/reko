@@ -94,7 +94,7 @@ namespace Reko.Arch.Sparc
             var src2 = RewriteOp(instrCur.Op2);
             emitter.Assign(
                 dst,
-                PseudoProc("__mulscc", PrimitiveType.Int32, src1, src2));
+                host.PseudoProcedure("__mulscc", PrimitiveType.Int32, src1, src2));
             EmitCc(dst);
         }
 

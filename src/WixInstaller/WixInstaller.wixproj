@@ -89,6 +89,22 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\Arch\Vax\Vax.csproj">
+      <Name>Vax</Name>
+      <Project>{82777964-b370-431a-ac97-733c594c02b5}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\X86.Design\X86.Design.csproj">
+      <Name>X86.Design</Name>
+      <Project>{370a707f-3b17-4680-bc35-8edc846f058f}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Arch\X86\X86.csproj">
       <Name>X86</Name>
       <Project>{0942acb2-eba0-4e2b-b363-205df72a77b2}</Project>
@@ -193,6 +209,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\Environments\Msdos.Design\Msdos.Design.csproj">
+      <Name>Msdos.Design</Name>
+      <Project>{6b0ded4f-5035-49ce-ae54-be92b3354e44}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Environments\Msdos\Msdos.csproj">
       <Name>Msdos</Name>
       <Project>{a943cf9b-7fcd-413a-b6d9-a199a69af217}</Project>
@@ -212,6 +236,14 @@
     <ProjectReference Include="..\Environments\RiscOS\RiscOS.csproj">
       <Name>RiscOS</Name>
       <Project>{1976b356-7c5e-411a-a409-d3eb349e44fa}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Environments\RT11\RT11.csproj">
+      <Name>RT11</Name>
+      <Project>{697accc1-ba7b-4b34-bca3-f82113843f40}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
@@ -308,6 +340,14 @@
     <ProjectReference Include="..\ImageLoaders\OdbgScript\OdbgScript.csproj">
       <Name>OdbgScript</Name>
       <Project>{2882376f-663a-4fc8-842c-b0300a6829e8}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\ImageLoaders\VmsExe\VmsExe.csproj">
+      <Name>VmsExe</Name>
+      <Project>{4059bebf-7b5c-4701-ac98-ade2515d8823}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>

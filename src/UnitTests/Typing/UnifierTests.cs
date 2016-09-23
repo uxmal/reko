@@ -200,14 +200,13 @@ namespace Reko.UnitTests.Typing
                 new StructureType { Fields = { { 0, PrimitiveType.Word32 } } });
 
 			mem = (StructureType) dt;
-			Assert.AreEqual("(struct (0 T_1 t0000) (4 T_1 t0004))", mem.ToString());
+			Assert.AreEqual("(struct (0 word32 dw0000) (4 T_1 t0004))", mem.ToString());
 		}
 
 		[Test]
 		public void UnifyUnknownInt()
 		{
 			DataType dt = un.Unify(PrimitiveType.Int32, factory.CreateUnknown());
-			PrimitiveType p = (PrimitiveType) dt;
 			Assert.AreEqual("int32", dt.ToString());
 		}
 
@@ -496,7 +495,7 @@ namespace Reko.UnitTests.Typing
         public void Unify_CodeFn()
         {
             var t1 = new Pointer(new CodeType(), 4);
-            var t2 = new Pointer(new FunctionType("", Id("r0", 0), new[] { Id("r1", 1), Id("r2", 2) }), 4);
+            var t2 = new Pointer(new FunctionType(Id("r0", 0), new[] { Id("r1", 1), Id("r2", 2) }), 4);
             Assert.IsTrue(un.AreCompatible(t1, t2));
             Assert.AreEqual("(ptr (fn word32 (word32, word32)))", un.Unify(t1, t2).ToString());
         }
