@@ -123,9 +123,18 @@ namespace Reko.Analysis
                 var fn = ci.Callee.Accept(this);
                 // Hell node: will want to assume that registers which aren't
                 // guaranteed to be preserved by the ABI are trashed.
-                foreach (var reg in platform.CreateTrashedRegisters())
+                foreach (var r in ctx.RegisterState.Keys.ToList())
                 {
-                    ctx.RegisterState[reg] = Constant.Invalid;
+                    foreach (var reg in platform.CreateTrashedRegisters())
+                    {
+                        //$PERF: not happy about the O(n^2) algorithm,
+                        // but this is better in the analysis-development 
+                        // branch.
+                        if (r.Domain == reg.Domain)
+                        {
+                            ctx.RegisterState[r] = Constant.Invalid;
+                        }
+                    }
                 }
                 return new CallInstruction(fn.PropagatedExpression, ci.CallSite);
             }
