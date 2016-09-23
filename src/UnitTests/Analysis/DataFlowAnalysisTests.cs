@@ -21,6 +21,7 @@
 using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Lib;
+using Reko.Core.Serialization;
 using Reko.Analysis;
 using Reko.UnitTests.Mocks;
 using Reko.UnitTests.TestCode;
@@ -38,11 +39,13 @@ namespace Reko.UnitTests.Analysis
 	{
 		private DataFlowAnalysis dfa;
         private MockRepository mr;
+        private string CSignature;
 
         [SetUp]
         public void Setup()
         {
             mr = new MockRepository();
+            this.CSignature = null;
         }
 
 		[Test]
@@ -226,6 +229,14 @@ done:
 
         [Test]
         [Category(Categories.UnitTests)]
+        public void DfaReg00316()
+        {
+            Given_CSignature("long r316(long a)");
+            RunFileTest("Fragments/regressions/r00316.asm", "Analysis/DfaReg00316.txt");
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
         public void DfaUnsignedDiv()
         {
             var m = new ProcedureBuilder();
@@ -243,8 +254,27 @@ done:
             RunFileTest(m, "Analysis/DfaUnsignedDiv.txt");
         }
 
+        private void SetCSignatures(Program program)
+        {
+            foreach (var addr in program.Procedures.Keys)
+            {
+                program.User.Procedures.Add(
+                    addr,
+                    new Procedure_v1
+                    {
+                        CSignature = this.CSignature
+                    });
+            }
+        }
+
+        protected void Given_CSignature(string CSignature)
+        {
+            this.CSignature = CSignature;
+        }
+
         protected override void RunTest(Program prog, TextWriter writer)
 		{
+            SetCSignatures(prog);
             IImportResolver importResolver = mr.Stub<IImportResolver>();
             importResolver.Replay();
 			dfa = new DataFlowAnalysis(prog, importResolver, new FakeDecompilerEventListener());
@@ -253,7 +283,8 @@ done:
 			{
 				ProcedureFlow flow = dfa.ProgramDataFlow[proc];
 				writer.Write("// ");
-				flow.Signature.Emit(proc.Name, FunctionType.EmitFlags.ArgumentKind|FunctionType.EmitFlags.LowLevelInfo, writer);
+                var sig = flow.Signature ?? proc.Signature;
+                sig.Emit(proc.Name, FunctionType.EmitFlags.ArgumentKind|FunctionType.EmitFlags.LowLevelInfo, writer);
 				flow.Emit(prog.Architecture, writer);
 				proc.Write(false, writer);
 				writer.WriteLine();
