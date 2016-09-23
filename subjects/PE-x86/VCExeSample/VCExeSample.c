@@ -42,3 +42,10 @@ void test5()
 	return;
 }
 
+void test6(cdecl_class * c, int32 a, int32 b)
+{
+	c->vtbl->sum(c, a, b);
+	c->vtbl->method04(c, c);
+	return;
+}
+

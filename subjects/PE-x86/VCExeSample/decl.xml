@@ -44,6 +44,26 @@
           </fn>
         </ptr>
       </field>
+      <field offset="8" name="sum">
+        <ptr size="4">
+          <fn>
+            <return>
+              <prim domain="SignedInt" size="4" />
+            </return>
+            <arg>
+              <ptr size="4">
+                <type>cdecl_class</type>
+              </ptr>
+            </arg>
+            <arg>
+              <prim domain="SignedInt" size="4" />
+            </arg>
+            <arg>
+              <prim domain="SignedInt" size="4" />
+            </arg>
+          </fn>
+        </ptr>
+      </field>
     </struct>
     <struct name="cdecl_class">
       <field offset="0" name="vtbl">
