@@ -279,6 +279,7 @@ namespace Reko.Environments.Windows
                         case '-': rdr.Read(); return Tok(TokenType.MINUS);
                         case '(': rdr.Read(); return Tok(TokenType.LPAREN);
                         case ')': rdr.Read(); return Tok(TokenType.RPAREN);
+                        case '=': rdr.Read(); return Tok(TokenType.EQ);
                         default:
                             sb = new StringBuilder();
                             rdr.Read();
@@ -359,6 +360,7 @@ namespace Reko.Environments.Windows
             LPAREN,
             RPAREN,
             AT,
+            EQ,
         }
     }
 }

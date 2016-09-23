@@ -387,7 +387,7 @@ foo		endp
 				fut.TextWriter.WriteLine();
 				dump.ShowAddresses = true;
 				dump.ShowCodeBytes = true;
-				dump.DumpAssembler(program.SegmentMap, mem.BaseAddress, mem.EndAddress, fut.TextWriter);
+				dump.DumpAssembler(program.SegmentMap, mem.BaseAddress, mem.EndAddress, formatter);
 
 				fut.AssertFilesEqual();
 			}	
