@@ -10,6 +10,7 @@ struct cdecl_class_vtbl
 {
     void (*method00)(cdecl_class *);
     void (*method04)(cdecl_class *, int);
+    int (*sum)(cdecl_class *, int, int);
 };
 
 struct cdecl_class
@@ -52,4 +53,11 @@ extern "C" __declspec(dllexport) void test4()
 extern "C" __declspec(dllexport) void test5()
 {
     (( void (*)(cdecl_class *, int, float))gbl_c->vtbl->method04)(gbl_c, 999, 1000.1);
+}
+
+extern "C" __declspec(dllexport) void test6(cdecl_class *c, int a, int b)
+{
+    int sum;
+    sum = c->vtbl->sum(c, a, b);
+    c->vtbl->method04(c, sum);
 }

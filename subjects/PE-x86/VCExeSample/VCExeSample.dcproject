@@ -26,9 +26,14 @@
         <address>004010B0</address>
         <CSignature>void indirect_call_test3(cdecl_class *c)</CSignature>
       </procedure>
+      <procedure name="test6">
+        <characteristics />
+        <address>00401120</address>
+        <CSignature>void test6(cdecl_class *c, int a, int b)</CSignature>
+      </procedure>
       <procedure name="Win32CrtStartup">
         <characteristics />
-        <address>004013C3</address>
+        <address>00401403</address>
         <decompile>false</decompile>
         <CSignature>DWORD Win32CrtStartup()</CSignature>
       </procedure>
