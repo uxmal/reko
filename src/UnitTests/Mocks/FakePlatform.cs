@@ -43,6 +43,12 @@ namespace Reko.UnitTests.Mocks
             return Test_CreateImplicitArgumentRegisters();
         }
 
+        public Func<HashSet<RegisterStorage>> Test_CreateTrashedRegisters;
+        public override HashSet<RegisterStorage> CreateTrashedRegisters()
+        {
+            return Test_CreateTrashedRegisters();
+        }
+
         public Func<ISerializedTypeVisitor<DataType>, string, ProcedureSerializer> Test_CreateProcedureSerializer;
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {

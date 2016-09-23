@@ -81,6 +81,20 @@ namespace Reko.Environments.Windows
             };
         }
 
+        public override HashSet<RegisterStorage> CreateTrashedRegisters()
+        {
+            // https://msdn.microsoft.com/en-us/library/9z1stfyw.aspx
+            return new HashSet<RegisterStorage>
+            {
+                Registers.rax,
+                Registers.rcx,
+                Registers.rdx,
+                Registers.r8,
+                Registers.r9,
+                Registers.r10,
+                Registers.r11
+            };
+        }
 
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {

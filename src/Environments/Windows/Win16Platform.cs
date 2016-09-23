@@ -53,6 +53,17 @@ namespace Reko.Environments.Windows
             };
         }
 
+        public override HashSet<RegisterStorage> CreateTrashedRegisters()
+        {
+            return new HashSet<RegisterStorage>
+            {
+                Registers.ax,
+                Registers.cx,
+                Registers.dx,
+                Registers.bx,
+            };
+        }
+
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
             return new X86ProcedureSerializer((IntelArchitecture)Architecture, typeLoader, defaultConvention);

@@ -53,7 +53,18 @@ namespace Reko.Environments.C64
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
-            return new HashSet<RegisterStorage>();
+            return new HashSet<RegisterStorage>
+            {
+                Registers.s
+            };
+        }
+
+        public override HashSet<RegisterStorage> CreateTrashedRegisters()
+        {
+            return new HashSet<RegisterStorage>
+            {
+                Registers.a
+            };
         }
 
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)

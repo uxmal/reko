@@ -71,6 +71,11 @@ namespace Reko.Environments.SysV
             return new HashSet<RegisterStorage>();
         }
 
+        public override HashSet<RegisterStorage> CreateTrashedRegisters()
+        {
+            return new HashSet<RegisterStorage>();
+        }
+
         public override SystemService FindService(int vector, ProcessorState state)
         {
             throw new NotImplementedException(); 

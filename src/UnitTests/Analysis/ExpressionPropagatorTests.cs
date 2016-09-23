@@ -75,9 +75,10 @@ namespace Reko.UnitTests.Analysis
             });
 
             var arch = new X86ArchitectureFlat32();
+            var platform = new FakePlatform(null, arch);
             var ctx = new SymbolicEvaluationContext(arch, proc.Frame);
             var simplifier = new ExpressionSimplifier(ctx);
-            var ep = new ExpressionPropagator(arch, simplifier, ctx, new ProgramDataFlow());
+            var ep = new ExpressionPropagator(platform, simplifier, ctx, new ProgramDataFlow());
 
             var newInstr = proc.EntryBlock.Succ[0].Statements[2].Instruction.Accept(ep);
             Assert.AreEqual("SZO = cond(v4)", newInstr.ToString());
@@ -121,9 +122,13 @@ namespace Reko.UnitTests.Analysis
                 m.Return();
             });
 
+            var platform = new FakePlatform(null, arch)
+            {
+                Test_CreateTrashedRegisters = () => new HashSet<RegisterStorage>()
+            };
             var ctx = new SymbolicEvaluationContext(arch, proc.Frame);
             var simplifier = new ExpressionSimplifier(ctx);
-            var ep = new ExpressionPropagator(arch, simplifier, ctx, new ProgramDataFlow());
+            var ep = new ExpressionPropagator(platform, simplifier, ctx, new ProgramDataFlow());
 
             ctx.RegisterState[arch.StackRegister] = proc.Frame.FramePointer;
             var stms = proc.EntryBlock.Succ[0].Statements;
@@ -136,6 +141,7 @@ namespace Reko.UnitTests.Analysis
         public void EP_StackReference()
         {
             var arch = new FakeArchitecture();
+            var platform = new FakePlatform(null, arch);
             var p = new ProgramBuilder(arch);
             var proc = p.Add("main", (m) =>
             {
@@ -148,7 +154,7 @@ namespace Reko.UnitTests.Analysis
 
             var ctx = new SymbolicEvaluationContext(arch, proc.Frame);
             var simplifier = new ExpressionSimplifier(ctx);
-            var ep = new ExpressionPropagator(arch, simplifier, ctx, new ProgramDataFlow());
+            var ep = new ExpressionPropagator(platform, simplifier, ctx, new ProgramDataFlow());
 
             ctx.RegisterState[arch.StackRegister] = proc.Frame.FramePointer;
 
@@ -163,6 +169,7 @@ namespace Reko.UnitTests.Analysis
         public void EP_AddrOf()
         {
             var arch = new FakeArchitecture();
+            var platform = new FakePlatform(null, arch);
             var p = new ProgramBuilder(arch);
             Identifier r2 = null, r3 = null;
             var proc = p.Add("main", (m) =>
@@ -176,7 +183,7 @@ namespace Reko.UnitTests.Analysis
 
             var ctx = new SymbolicEvaluationContext(arch, proc.Frame);
             var simplifier = new ExpressionSimplifier(ctx);
-            var ep = new ExpressionPropagator(arch, simplifier, ctx, new ProgramDataFlow());
+            var ep = new ExpressionPropagator(platform, simplifier, ctx, new ProgramDataFlow());
 
             ctx.RegisterState[arch.StackRegister] = proc.Frame.FramePointer;
 
@@ -196,6 +203,7 @@ namespace Reko.UnitTests.Analysis
         public void EP_LValue()
         {
             var arch = new FakeArchitecture();
+            var platform = new FakePlatform(null, arch);
             var p = new ProgramBuilder(arch);
             Identifier r2 = null;
             Identifier sp = null;
@@ -209,7 +217,7 @@ namespace Reko.UnitTests.Analysis
 
             var ctx = new SymbolicEvaluationContext (arch, proc.Frame);
             var simplifier = new ExpressionSimplifier(ctx);
-            var ep = new ExpressionPropagator(arch,simplifier,ctx, new ProgramDataFlow());
+            var ep = new ExpressionPropagator(platform, simplifier,ctx, new ProgramDataFlow());
 
             ctx.RegisterState[arch.StackRegister]= proc.Frame.FramePointer;
 

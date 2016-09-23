@@ -146,6 +146,11 @@ namespace Reko.UnitTests.Core.Serialization
                 throw new NotImplementedException();
             }
 
+            public override HashSet<RegisterStorage> CreateTrashedRegisters()
+            {
+                throw new NotImplementedException();
+            }
+
             public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
             {
                 throw new NotImplementedException();

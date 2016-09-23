@@ -60,6 +60,13 @@ namespace Reko.Environments.Windows
             };
         }
 
+        public override HashSet<RegisterStorage> CreateTrashedRegisters()
+        {
+            return new HashSet<RegisterStorage>();
+        }
+
+
+
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
             return new MipsProcedureSerializer(Architecture, typeLoader, defaultConvention);

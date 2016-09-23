@@ -123,6 +123,15 @@ namespace Reko.Environments.AmigaOS
             return new HashSet<RegisterStorage> { Registers.a7 };
         }
 
+        public override HashSet<RegisterStorage> CreateTrashedRegisters()
+        {
+            return new HashSet<RegisterStorage>
+            {
+                Registers.d0,
+                Registers.a0,
+            };
+        }
+
         public override SystemService FindService(int vector, ProcessorState state)
         {
             return null;

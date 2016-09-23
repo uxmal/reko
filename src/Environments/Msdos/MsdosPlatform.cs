@@ -57,6 +57,19 @@ namespace Reko.Environments.Msdos
             };
         }
 
+        public override HashSet<RegisterStorage> CreateTrashedRegisters()
+        {
+            // On MS-DOS, C and Pascal compilers
+            // typically saved bp, si, and di.
+            return new HashSet<RegisterStorage>
+            {
+                Registers.ax,
+                Registers.cx,
+                Registers.dx,
+                Registers.bx,
+            };
+        }
+
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
             //$BUGBUG: unlikely to be correct in long run.

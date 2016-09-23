@@ -54,7 +54,7 @@ namespace Reko.Analysis
             }
         }
 
-        private IProcessorArchitecture arch;
+        private IPlatform platform;
         private ExpressionSimplifier eval;
         private SymbolicEvaluationContext ctx;
         private Substitutor sub;
@@ -63,12 +63,12 @@ namespace Reko.Analysis
         private bool storing;
 
         public ExpressionPropagator(
-            IProcessorArchitecture arch, 
+            IPlatform platform, 
             ExpressionSimplifier simplifier, 
             SymbolicEvaluationContext ctx, 
             ProgramDataFlow flow)
         {
-            this.arch = arch;
+            this.platform = platform;
             this.eval = simplifier;
             this.ctx = ctx;
             this.flow = flow;
@@ -121,17 +121,19 @@ namespace Reko.Analysis
             else
             {
                 var fn = ci.Callee.Accept(this);
-                //$HACK: all registers should be trashed but it caused
-                // regression. e.g. "ebp" trashing makes local variables
-                // recognition impossible on x86. So just trash "eax"
-                TrashRegister("eax");
+                // Hell node: will want to assume that registers which aren't
+                // guaranteed to be preserved by the ABI are trashed.
+                foreach (var reg in platform.CreateTrashedRegisters())
+                {
+                    ctx.RegisterState[reg] = Constant.Invalid;
+                }
                 return new CallInstruction(fn.PropagatedExpression, ci.CallSite);
             }
         }
 
         private void TrashRegister(string regName)
         {
-            foreach (var reg in arch.GetRegisters())
+            foreach (var reg in platform.Architecture.GetRegisters())
             {
                 if (reg.Name == regName)
                     ctx.RegisterState[reg] = Constant.Invalid;
@@ -140,7 +142,7 @@ namespace Reko.Analysis
 
         private int GetStackDepthBeforeCall()
         {
-            var spVal = ctx.RegisterState[arch.StackRegister];
+            var spVal = ctx.RegisterState[platform.Architecture.StackRegister];
             if (ctx.IsFramePointer(spVal))
                 return 0;
             var bin = spVal as BinaryExpression;
