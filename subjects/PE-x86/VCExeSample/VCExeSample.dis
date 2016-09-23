@@ -192,8 +192,7 @@ test6_entry:
 // LocalsOut: fp(32) Stack +0004(32)
 
 l00401120:
-	Mem0[Mem0[c:word32] + 0x00000008:word32](c, a, b)
-	Mem0[Mem0[c:word32] + 0x00000004:word32](c, c)
+	Mem0[Mem0[c:word32] + 0x00000004:word32](c, Mem0[Mem0[c:word32] + 0x00000008:word32](c, a, b))
 	return
 // DataOut:
 // DataOut (flags): 

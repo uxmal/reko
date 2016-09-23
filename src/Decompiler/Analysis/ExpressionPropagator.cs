@@ -121,7 +121,20 @@ namespace Reko.Analysis
             else
             {
                 var fn = ci.Callee.Accept(this);
+                //$HACK: all registers should be trashed but it caused
+                // regression. e.g. "ebp" trashing makes local variables
+                // recognition impossible on x86. So just trash "eax"
+                TrashRegister("eax");
                 return new CallInstruction(fn.PropagatedExpression, ci.CallSite);
+            }
+        }
+
+        private void TrashRegister(string regName)
+        {
+            foreach (var reg in arch.GetRegisters())
+            {
+                if (reg.Name == regName)
+                    ctx.RegisterState[reg] = Constant.Invalid;
             }
         }
 
