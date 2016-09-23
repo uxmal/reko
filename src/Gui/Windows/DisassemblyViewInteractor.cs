@@ -98,7 +98,7 @@ namespace Reko.Gui.Windows
                             var instr = dasm.Current;
                             if (lines <= 0)
                                 break;
-                            dumper.DumpAssemblerLine(segment.MemoryArea, instr, formatter);
+                            dumper.DumpAssemblerLine(segment.MemoryArea, instr, writer);
                             --lines;
                         }
                     }
