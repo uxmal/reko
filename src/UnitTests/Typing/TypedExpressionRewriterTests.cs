@@ -1087,7 +1087,6 @@ test_exit:
             RunTest(pm.BuildProgram(), "Typing/TerNestedStructsPtr.txt");
         }
 
-
         [Test]
         public void TerAddressOf()
         {

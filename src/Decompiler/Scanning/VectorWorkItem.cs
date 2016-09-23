@@ -1,4 +1,24 @@
-﻿using Reko.Core;
+﻿#region License
+/* 
+ * Copyright (C) 1999-2016 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Lib;
 using Reko.Core.Types;
@@ -35,11 +55,11 @@ namespace Reko.Scanning
 
         public override void Process()
         {
-            var builder = new VectorBuilder(scanner,  program, new DirectedGraphImpl<object>());
-            var vector = builder.Build(Table.TableAddress, AddrFrom, State);
+            var builder = new VectorBuilder(scanner.Services, program, new DirectedGraphImpl<object>());
+            var vector = builder.Build(Table.Address, AddrFrom, State);
             if (vector.Count == 0)
             {
-                Address addrNext = Table.TableAddress + Stride.Size;
+                Address addrNext = Table.Address + Stride.Size;
                 if (program.SegmentMap.IsValidAddress(addrNext))
                 {
                     // Can't determine the size of the table, but surely it has one entry?
@@ -61,8 +81,8 @@ namespace Reko.Scanning
                     scanner.EnqueueJumpTarget(AddrFrom, vector[i], proc, st);
                 }
             }
-            vectorUses[AddrFrom] = new VectorUse(Table.TableAddress, builder.IndexRegister);
-            program.ImageMap.AddItem(Table.TableAddress + builder.TableByteSize, new ImageMapItem());
+            vectorUses[AddrFrom] = new VectorUse(Table.Address, builder.IndexRegister);
+            program.ImageMap.AddItem(Table.Address + builder.TableByteSize, new ImageMapItem());
         }
     }
 }

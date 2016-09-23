@@ -262,12 +262,11 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
-        [Ignore]
         public void MipsRw_tge()
         {
             AssertCode(0x00F000F0,  // tge a3,s0,0x3
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|if (a3 >= s0) __trap(0x03)");
+                "1|---|if (r7 >= r16) __trap(0x0003)");
         }
 
         [Test]

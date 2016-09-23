@@ -20,6 +20,7 @@
 
 using NUnit.Framework;
 using Reko.Core;
+using Reko.Core.Output;
 
 namespace Reko.UnitTests.Arch.Intel
 {
@@ -90,7 +91,7 @@ namespace Reko.UnitTests.Arch.Intel
 			using (FileUnitTester fut = new FileUnitTester("Intel/RwCallTable.txt"))
 			{
 				Dumper dump = new Dumper(program.Architecture);
-				dump.Dump(program, fut.TextWriter);
+				dump.Dump(program, new TextFormatter(fut.TextWriter));
 				fut.TextWriter.WriteLine();
 				program.CallGraph.Write(fut.TextWriter);
 

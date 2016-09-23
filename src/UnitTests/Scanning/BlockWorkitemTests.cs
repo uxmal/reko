@@ -33,6 +33,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.ComponentModel.Design;
+using Reko.Core.Services;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -66,6 +67,7 @@ namespace Reko.UnitTests.Scanning
             sp = new Identifier("sp", PrimitiveType.Word32, new RegisterStorage("sp", 15, 0, PrimitiveType.Word32));
             grf = proc.Frame.EnsureFlagGroup(Registers.eflags, 3, "SCZ", PrimitiveType.Byte);
             var sc = new ServiceContainer();
+            var listener = mr.Stub<DecompilerEventListener>();
             scanner = mr.StrictMock<IScanner>();
             arch = mr.Stub<IProcessorArchitecture>();
             program.Architecture = arch;
@@ -81,6 +83,7 @@ namespace Reko.UnitTests.Scanning
             arch.Stub(s => s.StackRegister).Return((RegisterStorage)sp.Storage);
             arch.Stub(s => s.PointerType).Return(PrimitiveType.Pointer32);
             scanner.Stub(s => s.Services).Return(sc);
+            sc.AddService<DecompilerEventListener>(listener);
         }
 
         private BlockWorkitem CreateWorkItem(Address addr, ProcessorState state)
@@ -772,10 +775,10 @@ testProc_exit:
         public void BwiUserSpecifiedRegisterValues()
         {
             var addrStart = Address.Ptr32(0x00100000);
-            program.User.RegisterValues[addrStart+4] = new List<RegisterValue_v2>
+            program.User.RegisterValues[addrStart+4] = new List<UserRegisterValue>
             {
-                new RegisterValue_v2 { Register= "r1", Value= "4711" },
-                new RegisterValue_v2 { Register= "r2", Value= "1147" },
+                new UserRegisterValue { Register = (RegisterStorage)r1.Storage, Value= Constant.Word32(0x4711) },
+                new UserRegisterValue { Register = (RegisterStorage)r2.Storage, Value= Constant.Word32(0x1147) },
             };
             trace.Add(m => { m.Assign(r1, m.LoadDw(m.Word32(0x112200))); });
             trace.Add(m => { m.Assign(m.LoadDw(m.Word32(0x112204)), r1); });

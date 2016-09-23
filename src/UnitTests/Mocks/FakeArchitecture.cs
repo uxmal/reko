@@ -66,7 +66,7 @@ namespace Reko.UnitTests.Mocks
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public IEnumerable<MachineInstruction> DisassemblyStream { get; set; }
+        public IEnumerable<MachineInstruction> Test_DisassemblyStream { get; set; }
 
         public void Test_AddTrace(RtlTrace trace)
         {
@@ -216,7 +216,7 @@ namespace Reko.UnitTests.Mocks
 
 		public IEnumerable<MachineInstruction> CreateDisassembler(ImageReader rdr)
 		{
-            return new FakeDisassembler(rdr.Address, DisassemblyStream.GetEnumerator());
+            return new FakeDisassembler(rdr.Address, Test_DisassemblyStream.GetEnumerator());
 		}
 
         public IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -268,6 +268,10 @@ namespace Reko.UnitTests.Mocks
 
         public Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
         {
+            if (size == 4)
+            {
+                return Address.Ptr32(rdr.ReadLeUInt32());
+            }
             throw new NotImplementedException();
         }
 

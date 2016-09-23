@@ -1,6 +1,7 @@
 ;;; Segment code (0C00:0000)
 
-fn0C00_0000()
+;; fn0C00_0000: 0C00:0000
+fn0C00_0000 proc
 	call	002C
 	cmp	ax,0002
 	ja	0011
@@ -12,25 +13,28 @@ l0C00_0008:
 
 l0C00_0011:
 	ret	
-Code vector at 0C00:0012 (6 bytes)
+;; Code vector at 0C00:0012 (6 bytes)
 	0C00:0018
 	0C00:0022
 	0C00:002C
 0C00:0012       18 00 22 00 2C 00                           ..".,.       
 
-fn0C00_0018()
+;; fn0C00_0018: 0C00:0018
+fn0C00_0018 proc
 	mov	ax,[si+02]
 	add	ax,[si+04]
 	mov	[si+06],ax
 	ret	
 
-fn0C00_0022()
+;; fn0C00_0022: 0C00:0022
+fn0C00_0022 proc
 	mov	ax,[si+02]
 	sub	ax,[si+04]
 	mov	[si+06],ax
 	ret	
 
-fn0C00_002C()
+;; fn0C00_002C: 0C00:002C
+fn0C00_002C proc
 	mov	ax,[si+02]
 	and	ax,[bx+04]
 	mov	[si+06],ax

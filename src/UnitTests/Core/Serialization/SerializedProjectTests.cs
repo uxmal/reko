@@ -34,6 +34,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 using System;
+using Reko.Core.Expressions;
 
 namespace Reko.UnitTests.Core.Serialization
 {
@@ -138,7 +139,26 @@ namespace Reko.UnitTests.Core.Serialization
                                     }
                                 }
                             },
-                            LoadAddress = "0x1000:0x0",
+                            LoadAddress = "1000:0000",
+                            IndirectJumps =
+                            {
+                                new IndirectJump_v4 {
+                                    InstructionAddress ="1000:0220",
+                                    TableAddress ="1000:0228"
+                                },
+                            },
+                            JumpTables = {
+                                new JumpTable_v4
+                                {
+                                    TableAddress = "1000:0228",
+                                    Destinations = new string[]
+                                    {
+                                        "1000:0230",
+                                        "1000:0244",
+                                        "1000:033F",
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -159,6 +179,16 @@ namespace Reko.UnitTests.Core.Serialization
         {
             Given_Architecture();
             Given_TestOS_Platform();
+            var eax = new RegisterStorage("eax", 0, 0, PrimitiveType.Word32);
+            var ecx = new RegisterStorage("ecx", 1, 0, PrimitiveType.Word32);
+            var jumpTable = new ImageMapVectorTable(
+                Address.SegPtr(0x1000, 0x400),
+                new Address[] {
+                    Address.SegPtr(0x1000, 0x500),
+                    Address.SegPtr(0x1000, 0x513),
+                    Address.SegPtr(0x1000, 0x5BA),
+                }, 0);
+
             Project project = new Project
             {
                 Programs =
@@ -227,12 +257,27 @@ namespace Reko.UnitTests.Core.Serialization
                             {
                                 {
                                     Address.Ptr32(0x012310),
-                                    new List<RegisterValue_v2>
+                                    new List<UserRegisterValue>
                                     {
-                                        new RegisterValue_v2 { Register = "eax", Value="01231" },
-                                        new RegisterValue_v2 { Register = "ecx", Value="42424711" },
+                                        new UserRegisterValue { Register = eax, Value=Constant.Word32(0x01231) },
+                                        new UserRegisterValue { Register = ecx, Value=Constant.Word32(0x42424711) },
                                     }
                                 }
+                            },
+                            IndirectJumps =
+                            {
+                                {
+                                    Address.SegPtr(0x1000, 0x380),
+                                    new UserIndirectJump {
+                                        Address = jumpTable.Address,
+                                        Table = jumpTable,
+                                        IndexRegister = new RegisterStorage("R1", 1, 0, PrimitiveType.Word32)
+                                   }
+                                }
+                            },
+                            JumpTables =
+                            {
+                                { jumpTable.Address, jumpTable }
                             }
                         }
                     }
@@ -449,6 +494,8 @@ namespace Reko.UnitTests.Core.Serialization
             Given_TestOS_Platform();
             Expect_TryParseAddress("0041230", Address.Ptr32(0x0041230));
             Expect_TryParseAddress("00443210", Address.Ptr32(0x00443210));
+            arch.Stub(a => a.GetRegister("eax")).Return(new RegisterStorage("eax", 0, 0, PrimitiveType.Word32));
+            arch.Stub(a => a.GetRegister("ecx")).Return(new RegisterStorage("ecx", 1, 0, PrimitiveType.Word32));
             var loader = mr.Stub<ILoader>();
             loader.Stub(l => l.LoadImageBytes(null, 0))
                 .IgnoreArguments()

@@ -199,11 +199,11 @@ namespace Reko.Arch.Z80
 
     public static class Registers
     {
-        public static readonly RegisterStorage b = new RegisterStorage("b", 1, 0, PrimitiveType.Byte);
-        public static readonly RegisterStorage c = new RegisterStorage("c", 1, 8, PrimitiveType.Byte);
-        public static readonly RegisterStorage d = new RegisterStorage("d", 2, 0, PrimitiveType.Byte);
-        public static readonly RegisterStorage e = new RegisterStorage("e", 2, 8, PrimitiveType.Byte);
-        public static readonly RegisterStorage h = new RegisterStorage("h", 3, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage b = new RegisterStorage("b", 1, 8, PrimitiveType.Byte);
+        public static readonly RegisterStorage c = new RegisterStorage("c", 1, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage d = new RegisterStorage("d", 2, 8, PrimitiveType.Byte);
+        public static readonly RegisterStorage e = new RegisterStorage("e", 2, 0, PrimitiveType.Byte);
+        public static readonly RegisterStorage h = new RegisterStorage("h", 3, 8, PrimitiveType.Byte);
         public static readonly RegisterStorage l = new RegisterStorage("l", 3, 0, PrimitiveType.Byte);
         public static readonly RegisterStorage a = new RegisterStorage("a", 0, 0, PrimitiveType.Byte);
 

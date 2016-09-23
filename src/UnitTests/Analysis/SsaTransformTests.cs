@@ -1034,8 +1034,8 @@ proc1_exit:
 
             RunTest(sExp, m =>
             {
-                var regA = new RegisterStorage("a", 0, 0, PrimitiveType.Word32);
-                var regB = new RegisterStorage("b", 1, 0, PrimitiveType.Word32);
+                var regA = RegisterStorage.Reg32("a", 0);
+                var regB = RegisterStorage.Reg32("b", 1);
                 var a = m.Frame.EnsureRegister(regA);
                 var b = m.Frame.EnsureRegister(regB);
                 m.Assign(a, 3);

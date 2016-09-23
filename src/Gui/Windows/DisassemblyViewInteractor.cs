@@ -29,6 +29,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using Reko.Core.Output;
 
 namespace Reko.Gui.Windows
 {
@@ -90,13 +91,14 @@ namespace Reko.Gui.Windows
                     ImageSegment segment;
                     if (program.SegmentMap.TryFindSegment(StartAddress, out segment))
                     {
+                        var formatter = new Dumper.InstrWriter(new TextFormatter(writer));
                         var dasm = program.CreateDisassembler(StartAddress).GetEnumerator();
                         while (dasm.MoveNext())
                         {
                             var instr = dasm.Current;
                             if (lines <= 0)
                                 break;
-                            dumper.DumpAssemblerLine(segment.MemoryArea, instr, writer);
+                            dumper.DumpAssemblerLine(segment.MemoryArea, instr, formatter);
                             --lines;
                         }
                     }

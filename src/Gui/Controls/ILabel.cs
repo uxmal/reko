@@ -25,7 +25,7 @@ using System.Text;
 
 namespace Reko.Gui.Controls
 {
-    public interface ILabel
+    public interface ILabel : IControl
     {
         string Text { get; set; }
     }
