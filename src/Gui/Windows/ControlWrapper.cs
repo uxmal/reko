@@ -18,15 +18,27 @@
  */
 #endregion
 
+using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Drawing;
+using System.Windows.Forms;
 
-namespace Reko.Gui.Controls
+namespace Reko.Gui.Windows
 {
-    public interface ILabel : IControl
+    public class ControlWrapper : IControl
     {
-        string Text { get; set; }
+        private Control ctrl;
+
+        public ControlWrapper(Control ctrl)
+        {
+            this.ctrl = ctrl;
+        }
+
+        public Color BackColor { get { return ctrl.BackColor; } set { ctrl.BackColor = value; } }
+        public Color ForeColor { get { return ctrl.ForeColor; } set { ctrl.ForeColor = value; } }
+        public bool Enabled { get { return ctrl.Enabled; } set { ctrl.Enabled = value; } }
     }
 }

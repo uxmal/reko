@@ -18,15 +18,32 @@
  */
 #endregion
 
+using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
+using System.Drawing;
 
-namespace Reko.Gui.Controls
+namespace Reko.Gui.Windows
 {
-    public interface ILabel : IControl
+    public class NumericUpDownWrapper : ControlWrapper, INumericUpDown
     {
-        string Text { get; set; }
+        private NumericUpDown num;
+
+        public NumericUpDownWrapper(NumericUpDown num)
+            : base(num)
+        {
+            this.num = num;
+        }
+
+        public event EventHandler ValueChanged
+        {
+            add { num.ValueChanged += value; }
+            remove { num.ValueChanged -= value; }
+        }
+
+        public decimal Value { get { return num.Value; } set { num.Value = value; } }
     }
 }

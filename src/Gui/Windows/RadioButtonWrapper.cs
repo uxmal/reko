@@ -18,15 +18,32 @@
  */
 #endregion
 
+using Reko.Gui.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Drawing;
+using System.Windows.Forms;
 
-namespace Reko.Gui.Controls
+namespace Reko.Gui.Windows
 {
-    public interface ILabel : IControl
+    public class RadioButtonWrapper : ControlWrapper, IRadioButton
     {
-        string Text { get; set; }
+        private RadioButton rdb;
+
+        public RadioButtonWrapper(RadioButton rdb)
+            : base(rdb)
+        {
+            this.rdb = rdb;
+        }
+
+        public event EventHandler CheckedChanged
+        {
+            add { rdb.CheckedChanged += value; }
+            remove { rdb.CheckedChanged -= value; }
+        }
+
+        public bool Checked { get { return rdb.Checked; } set { rdb.Checked = value;  } }
     }
 }

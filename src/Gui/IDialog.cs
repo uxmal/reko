@@ -29,5 +29,6 @@ namespace Reko.Gui
     /// </summary>
     public interface IDialog : IDisposable
     {
+        string Text { get; set; }
     }
 }

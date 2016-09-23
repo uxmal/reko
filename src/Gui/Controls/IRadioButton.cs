@@ -18,15 +18,17 @@
  */
 #endregion
 
-using System;
+ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace Reko.Gui.Controls
 {
-    public interface ILabel : IControl
+    public interface IRadioButton : IControl
     {
-        string Text { get; set; }
+        event EventHandler CheckedChanged;
+
+        bool Checked { get; set; }
     }
 }

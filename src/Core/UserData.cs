@@ -38,9 +38,11 @@ namespace Reko.Core
             this.Calls = new SortedList<Address, UserCallData>();
             this.Globals = new SortedList<Address, Serialization.GlobalDataItem_v2>();
             this.Heuristics = new SortedSet<string>();
+            this.IndirectJumps = new SortedList<Address, UserIndirectJump>();
+            this.JumpTables = new SortedList<Address, ImageMapVectorTable>();
             this.Annotations = new List<Annotation>();
             this.TextEncoding = Encoding.ASCII;
-            this.RegisterValues = new SortedList<Address, List<Serialization.RegisterValue_v2>>();
+            this.RegisterValues = new SortedList<Address, List<UserRegisterValue>>();
         }
 
         // 'Oracular' information provided by the user.
@@ -50,6 +52,8 @@ namespace Reko.Core
         public SortedList<Address, Serialization.Procedure_v1> Procedures { get; set; }
         public SortedList<Address, UserCallData> Calls { get; set; }
         public SortedList<Address, Serialization.GlobalDataItem_v2> Globals { get; set; }
+        public SortedList<Address, UserIndirectJump> IndirectJumps { get; set; }
+        public SortedList<Address, ImageMapVectorTable> JumpTables { get; set; }
         public List<Annotation> Annotations { get; set; }
 
         /// <summary>
@@ -67,7 +71,10 @@ namespace Reko.Core
         /// </summary>
         public Encoding TextEncoding { get; set; }
 
-        public SortedList<Address, List<Serialization.RegisterValue_v2>> RegisterValues { get; set; }
+        /// <summary>
+        /// Users can set register values at any location.
+        /// </summary>
+        public SortedList<Address, List<UserRegisterValue>> RegisterValues { get; set; }
     }
 
     public class Annotation
@@ -88,5 +95,14 @@ namespace Reko.Core
         public bool NoReturn { get; set; }
 
         public FunctionType Signature { get; set; }
+    }
+
+    public class UserIndirectJump
+    {
+        public Address Address { get; set; } // the address of the jump
+
+        public RegisterStorage IndexRegister { get; set; }  // Index register used in jump
+
+        public ImageMapVectorTable Table { get; set; } // Table of destinations
     }
 }

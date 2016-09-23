@@ -79,7 +79,7 @@ namespace Reko.Analysis
                 {
                     var id = worklist.Dequeue();
                     var sid = scc[proc].Identifiers[id];
-                    Debug.Print("id: {0} stm: {1}", id.Name, sid.DefStatement.Instruction);
+                    //Debug.Print("id: {0} stm: {1}", id.Name, sid.DefStatement.Instruction);
                     if (sid.DefStatement.Instruction is DefInstruction)
                     {
                         if (id.Storage != idFinal.Storage)

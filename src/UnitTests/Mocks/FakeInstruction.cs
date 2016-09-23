@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Mocks
 
         public override void Render(MachineInstructionWriter writer)
         {
-            writer.Write(operation.ToString());
+            writer.WriteOpcode(operation.ToString().ToLower());
         }
     }
 

@@ -18,15 +18,17 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Gui.Controls
+namespace Reko.Core
 {
-    public interface ILabel : IControl
+    public class UserRegisterValue
     {
-        string Text { get; set; }
+        public RegisterStorage Register { get; set;  }
+        public Constant Value { get; set; }
     }
 }

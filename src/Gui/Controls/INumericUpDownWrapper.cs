@@ -25,8 +25,10 @@ using System.Text;
 
 namespace Reko.Gui.Controls
 {
-    public interface ILabel : IControl
+    public interface INumericUpDown : IControl
     {
-        string Text { get; set; }
+        event EventHandler ValueChanged;
+
+        decimal Value { get; set; }
     }
 }

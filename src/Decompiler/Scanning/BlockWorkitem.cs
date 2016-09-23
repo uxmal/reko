@@ -32,6 +32,7 @@ using System.Diagnostics;
 using System.Linq;
 using ProcedureCharacteristics = Reko.Core.Serialization.ProcedureCharacteristics;
 using Reko.Analysis;
+using Reko.Core.Services;
 
 namespace Reko.Scanning
 {
@@ -136,14 +137,13 @@ namespace Reko.Scanning
         /// <param name="addr"></param>
         public void SetAssumedRegisterValues(Address addr)
         {
-            List<Core.Serialization.RegisterValue_v2> regValues;
+            List<UserRegisterValue> regValues;
             if (!program.User.RegisterValues.TryGetValue(addr, out regValues))
                 return;
             foreach (var rv in regValues)
             {
-                var reg = frame.EnsureRegister(program.Architecture.GetRegister(rv.Register));
-                var val = Constant.Create(reg.DataType, Convert.ToUInt64(rv.Value, 16));
-                new RtlAssignment(reg, val).Accept(this);
+                var reg = frame.EnsureRegister(rv.Register);
+                new RtlAssignment(reg, rv.Value).Accept(this);
             }
         }
 
@@ -729,42 +729,64 @@ namespace Reko.Scanning
 
         public bool ProcessIndirectControlTransfer(Address addrSwitch, RtlTransfer xfer)
         {
-            var bw = new Backwalker(new BackwalkerHost(this), xfer, eval);
-            if (!bw.CanBackwalk())
+            List<Address> vector;
+            ImageMapVectorTable imgVector;
+            Expression swExp;
+            UserIndirectJump indJump;
+
+            var listener = scanner.Services.RequireService<DecompilerEventListener>();
+            if (program.User.IndirectJumps.TryGetValue(addrSwitch, out indJump))
             {
-                return false;
+                vector = indJump.Table.Addresses;
+                swExp = this.frame.EnsureIdentifier(indJump.IndexRegister);
+                imgVector = indJump.Table;
             }
-            var bwops = bw.BackWalk(blockCur);
-            if (bwops == null || bwops.Count == 0)
-                return false;     //$REVIEW: warn?
-            Identifier idIndex = bw.Index != null
-                ? blockCur.Procedure.Frame.EnsureRegister(bw.Index)
-                : null;
-
-            VectorBuilder builder = new VectorBuilder(scanner, program, new DirectedGraphImpl<object>());
-            if (bw.VectorAddress == null)
-                return false;
-
-            List<Address> vector = builder.BuildAux(bw, addrSwitch, state);
-            if (vector.Count == 0)
+            else
             {
-                var rdr = scanner.CreateReader(bw.VectorAddress);
-                if (!rdr.IsValid)
+                var bw = new Backwalker(new BackwalkerHost(this), xfer, eval);
+                if (!bw.CanBackwalk())
                     return false;
-                // Can't determine the size of the table, but surely it has one entry?
-                var addrEntry = arch.ReadCodeAddress(bw.Stride, rdr, state);
-                if (this.program.SegmentMap.IsValidAddress(addrEntry))
-                {
-                    vector.Add(addrEntry);
-                    scanner.Warn(addrSwitch, "Can't determine size of jump vector; probing only one entry.");
-                }
-                else
-                {
-                    // Nope, not even that.
-                    scanner.Warn(addrSwitch, "No valid entries could be found in jump vector.");
-                }
-            }
+                var bwops = bw.BackWalk(blockCur);
+                if (bwops == null || bwops.Count == 0)
+                    return false;     //$REVIEW: warn?
+                Identifier idIndex = bw.Index != null
+                    ? blockCur.Procedure.Frame.EnsureRegister(bw.Index)
+                    : null;
 
+                VectorBuilder builder = new VectorBuilder(scanner.Services, program, new DirectedGraphImpl<object>());
+                if (bw.VectorAddress == null)
+                    return false;
+
+                vector = builder.BuildAux(bw, addrSwitch, state);
+                if (vector.Count == 0)
+                {
+                    var rdr = scanner.CreateReader(bw.VectorAddress);
+                    if (!rdr.IsValid)
+                        return false;
+                    // Can't determine the size of the table, but surely it has one entry?
+                    var addrEntry = arch.ReadCodeAddress(bw.Stride, rdr, state);
+                    string msg;
+                    if (this.program.SegmentMap.IsValidAddress(addrEntry))
+                    {
+                        vector.Add(addrEntry);
+                        msg = "Can't determine size of jump vector; probing only one entry.";
+                    }
+                    else
+                    {
+                        // Nope, not even that.
+                        msg = "No valid entries could be found in jump vector.";
+                    }
+                    var nav = listener.CreateJumpTableNavigator(program, addrSwitch, bw.VectorAddress, bw.Stride);
+                    listener.Warn(nav, msg);
+                }
+                imgVector = new ImageMapVectorTable(
+                    bw.VectorAddress,
+                    vector.ToArray(),
+                    builder.TableByteSize);
+                swExp = idIndex;
+                if (idIndex == null || idIndex.Name == "None")
+                    swExp = bw.IndexExpression;
+            }
             ScanVectorTargets(xfer, vector);
 
             if (xfer is RtlGoto)
@@ -777,9 +799,7 @@ namespace Reko.Scanning
                     Debug.Assert(dest != null, "The block at address " + addr + "should have been enqueued.");
                     blockSource.Procedure.ControlGraph.AddEdge(blockSource, dest);
                 }
-                Expression swExp = idIndex;
-                if (idIndex == null || idIndex.Name == "None")
-                    swExp = bw.IndexExpression;
+              
                 if (swExp == null)
                 {
                     scanner.Warn(addrSwitch, "Unable to determine index variable for indirect jump.");
@@ -793,17 +813,13 @@ namespace Reko.Scanning
                     Emit(new SwitchInstruction(swExp, blockCur.Procedure.ControlGraph.Successors(blockCur).ToArray()));
                 }
             }
-            var imgVector = new ImageMapVectorTable(
-                        bw.VectorAddress,
-                        vector.ToArray(),
-                        builder.TableByteSize);
-            if (builder.TableByteSize > 0)
+            if (imgVector.Size > 0)
             {
-                program.ImageMap.AddItemWithSize(bw.VectorAddress, imgVector);
+                program.ImageMap.AddItemWithSize(imgVector.Address, imgVector);
             }
             else
             {
-                program.ImageMap.AddItem(bw.VectorAddress, imgVector);
+                program.ImageMap.AddItem(imgVector.Address, imgVector);
             }
             return true;
         }
@@ -914,6 +930,7 @@ namespace Reko.Scanning
             return null;
         }
 
+        [Conditional("DEBUG")]
         private void DumpCfg()
         {
             foreach (Block block in blockCur.Procedure.ControlGraph.Blocks)

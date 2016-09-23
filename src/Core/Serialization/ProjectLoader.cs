@@ -30,6 +30,7 @@ using Reko.Core.Services;
 using System.Diagnostics;
 using System.Text;
 using Reko.Core.Types;
+using Reko.Core.Expressions;
 
 namespace Reko.Core.Serialization
 {
@@ -377,27 +378,65 @@ namespace Reko.Core.Serialization
             {
                 program.User.RegisterValues = LoadRegisterValues(sUser.RegisterValues);
             }
+            if (sUser.JumpTables != null)
+            {
+                program.User.JumpTables = sUser.JumpTables.Select(LoadJumpTable_v4)
+                    .Where(t => t != null)
+                    .ToSortedList(k => k.Address, v => v);
+            }
+            if (user.IndirectJumps != null)
+            {
+                program.User.IndirectJumps = sUser.IndirectJumps
+                    .Select(ij => LoadIndirectJump_v4(ij, program))
+                    .Where(ij => ij != null)
+                    .ToSortedList(k => k.Item1, v => v.Item2);
+            }
         }
 
-        private SortedList<Address, List<RegisterValue_v2>> LoadRegisterValues(
+        private SortedList<Address, List<UserRegisterValue>> LoadRegisterValues(
             RegisterValue_v2[] sRegValues)
         {
-            var allLists = new SortedList<Address, List<RegisterValue_v2>>();
+            var allLists = new SortedList<Address, List<UserRegisterValue>>();
             foreach (var sRegValue in sRegValues)
             {
                 Address addr;
                 if (sRegValue != null && platform.TryParseAddress(sRegValue.Address, out addr))
                 {
-                    List<RegisterValue_v2> list;
+                    List<UserRegisterValue> list;
                     if (!allLists.TryGetValue(addr, out list))
                     {
-                        list = new List<RegisterValue_v2>();
+                        list = new List<UserRegisterValue>();
                         allLists.Add(addr, list);
                     }
-                    list.Add(sRegValue);
+                    var reg = platform.Architecture.GetRegister(sRegValue.Register);
+                    var c = Constant.Create(reg.DataType, Convert.ToUInt64(sRegValue.Value, 16));
+                    if (reg != null)
+                    {
+                        list.Add(new UserRegisterValue
+                        {
+                            Register = reg,
+                            Value = c
+                        });
+                    }
                 }
             }
             return allLists;
+        }
+
+        private ImageMapVectorTable LoadJumpTable_v4(JumpTable_v4 sTable)
+        {
+            Address addr;
+            if (!platform.TryParseAddress(sTable.TableAddress, out addr))
+                return null;
+            var listAddrDst = new List<Address>();
+            foreach (var item in sTable.Destinations)
+            {
+                Address addrDst;
+                if (!platform.TryParseAddress(item, out addrDst))
+                    break;
+                listAddrDst.Add(addrDst);
+            }
+            return new ImageMapVectorTable(addr, listAddrDst.ToArray(), 0);
         }
 
         private UserCallData LoadUserCall(SerializedCall_v1 call, Program program)
@@ -423,6 +462,27 @@ namespace Reko.Core.Serialization
             };
         }
 
+        private Tuple<Address, UserIndirectJump> LoadIndirectJump_v4(IndirectJump_v4 indirJump, Program program)
+        {
+            Address addrInstr;
+            if (!platform.TryParseAddress(indirJump.InstructionAddress, out addrInstr))
+                return null;
+            Address addrTable;
+            if (!platform.TryParseAddress(indirJump.TableAddress, out addrTable))
+                return null;
+            ImageMapVectorTable table;
+            if (!program.User.JumpTables.TryGetValue(addrTable, out table))
+                return null;
+            var reg = program.Architecture.GetRegister(indirJump.IndexRegister);
+            if (reg == null)
+                return null;
+            return Tuple.Create(addrInstr, new UserIndirectJump
+            {
+                Address = addrInstr,
+                Table = table,
+                IndexRegister = reg,
+            });
+        }
 
         public void LoadUserData(UserData_v3 sUser, Program program, UserData user)
         {

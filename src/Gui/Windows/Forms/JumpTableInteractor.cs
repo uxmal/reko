@@ -105,7 +105,7 @@ namespace Reko.Gui.Windows.Forms
             {
                 dlg.FarAddress.Checked = true;
             }
-            else if (dlg.Stride == dlg.Program.Platform.FramePointerType.Size)
+            else
             {
                 dlg.SegmentOffsets.Checked = true;
             }

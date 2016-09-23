@@ -37,7 +37,16 @@ namespace Reko.Gui.Windows
             this.lbx = lbx;
         }
 
-        public object SelectedItem { get { return lbx.SelectedItem; } }
+        public event EventHandler SelectedIndexChanged
+        {
+            add { lbx.SelectedIndexChanged += value; }
+            remove { lbx.SelectedIndexChanged -= value; }
+        }
+
+        public object DataSource { get { return lbx.DataSource; } set { lbx.DataSource = value; } }
+        public IList Items { get { return lbx.Items; } }
+        public int SelectedIndex { get { return lbx.SelectedIndex; } set { lbx.SelectedIndex = value; } }
+        public object SelectedItem { get { return lbx.SelectedItem; } set { lbx.SelectedItem = value; } }
 
         public void AddItems(IEnumerable items)
         {
