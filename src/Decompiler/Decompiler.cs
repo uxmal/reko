@@ -166,8 +166,8 @@ namespace Reko
                         if (block == null)
                             continue;
                         block.Write(output); output.Flush();
-                        BlockFlow bf = dfa.ProgramDataFlow[block];
-                        if (bf != null)
+                        BlockFlow bf;
+                        if (dfa.ProgramDataFlow.BlockFlows.TryGetValue(block, out bf))
                         {
                             bf.Emit(program.Architecture, output);
                             output.WriteLine();

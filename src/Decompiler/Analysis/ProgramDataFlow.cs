@@ -71,9 +71,9 @@ namespace Reko.Analysis
             set { blockFlow[block] = value; }
 		}
 
-		public ICollection<BlockFlow> BlockFlows
+		public IDictionary<Block, BlockFlow> BlockFlows
 		{
-			get { return blockFlow.Values; }
+			get { return blockFlow; }
 		}
 
         public IDictionary<Procedure, ProcedureFlow> ProcedureFlows

@@ -167,7 +167,7 @@ namespace Reko.Analysis
 
 		private void InitializeWorkList()
 		{
-            foreach (BlockFlow bf in mpprocData.BlockFlows)
+            foreach (BlockFlow bf in mpprocData.BlockFlows.Values)
             {
                 worklist.Add(bf);
             }
@@ -625,7 +625,7 @@ namespace Reko.Analysis
                 {
                     state.InitializeProcedureFlow(pi);
                 }
-                foreach (BlockFlow bi in mpprocData.BlockFlows)
+                foreach (BlockFlow bi in mpprocData.BlockFlows.Values)
                 {
                     state.InitializeBlockFlow(bi.Block, mpprocData, bi.Block.Procedure.ExitBlock == bi.Block);
                 }

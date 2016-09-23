@@ -446,7 +446,7 @@ namespace Reko.Analysis
         {
             for (int i = 0; i < appl.Arguments.Length; ++i)
             {
-                var  outArg = appl.Arguments[i] as OutArgument;
+                var outArg = appl.Arguments[i] as OutArgument;
                 if (outArg != null)
                 {
                     var id = outArg.Expression as Identifier;
@@ -460,6 +460,7 @@ namespace Reko.Analysis
                 }
                 appl.Arguments[i] = appl.Arguments[i].Accept(this);
             }
+            appl.Procedure = appl.Procedure.Accept(this);
             return appl;
         }
 

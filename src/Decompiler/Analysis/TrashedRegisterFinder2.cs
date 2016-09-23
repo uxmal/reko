@@ -223,7 +223,7 @@ namespace Reko.Analysis
             ProcedureConstant callee;
             if (!call.Callee.As(out callee))
             {
-                throw new NotImplementedException("Indirect calls not handled yet.");
+                return Constant.Invalid;
             }
 
             // Call trashes this identifier. If it's not in our SCC group we
