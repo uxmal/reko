@@ -157,15 +157,21 @@ byte * verify(word64 rdi)
 void main(word64 rax, Eq_231 * rsi, word32 edi)
 {
 	if (edi != 0x02)
+	{
 		word64 rax_30 = DPB(rax, puts(DPB(rdi, 0x004006C8, 0)), 0);
+	}
 	else
 	{
 		word64 rax_37 = rsi->qw0008;
 		word64 rax_39 = verify(rax_37);
 		if ((word32) rax_39 != 0x00)
+		{
 			word64 rax_50 = DPB(rax_39, puts(DPB(rax_37, 0x004006F0, 0)), 0);
+		}
 		else
+		{
 			word64 rax_53 = DPB(rax_39, puts(DPB(rax_37, 0x00400718, 0)), 0);
+		}
 	}
 	return;
 }

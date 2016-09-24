@@ -143,6 +143,7 @@ void __libc_csu_init(word64 rsi)
 	Eq_218 r12_19[] = globals->a600E10;
 	ui64 rbx_28 = DPB(rbx, 0x00, 0);
 	if (0x0000000000600E18 - r12_19 >> 0x03 != 0x00)
+	{
 		do
 		{
 			word64 rsp_69;
@@ -163,6 +164,7 @@ void __libc_csu_init(word64 rsi)
 			byte Z_84;
 			r12_19[rbx_28]();
 		} while (rbx_79 + 0x01 != rbp_75);
+	}
 	return;
 }
 

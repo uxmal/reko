@@ -330,8 +330,10 @@ word32 is_id_char(word32 o0)
 	{
 		g2_14 = 0x00;
 		if ((o0 & 0xFF) != 0x5F)
+		{
 			if ((o0 & 0xFF) != 0x24)
 				return g2_14;
+		}
 	}
 	g2_14 = 0x01;
 	return g2_14;
@@ -484,6 +486,7 @@ void file_excluded_p(word32 o0)
 	fn00027D1C();
 	word32 l0_23 = Mem0[177160:word32];
 	if (l0_23 != 0x00)
+	{
 		do
 		{
 			word32 o0_43 = Mem0[l0_23 + 0x00:word32];
@@ -500,6 +503,7 @@ void file_excluded_p(word32 o0)
 			else
 				l0_23 = Mem0[l0_23 + 0x04:word32];
 		} while (l0_23 != 0x00);
+	}
 	return;
 }
 
@@ -521,6 +525,7 @@ word32 visit_each_hash_node(word32 o0)
 		while (true)
 		{
 			if (o0_48 != 0x00)
+			{
 				do
 				{
 					word32 sp_99;
@@ -545,6 +550,7 @@ word32 visit_each_hash_node(word32 o0)
 					bool Z_119;
 					i1_102();
 				} while (Mem0[i0_100 + 0x00:word32] != 0x00);
+			}
 			else
 				l0 = i0_4 + 0x0C;
 			i0_4 = l0;
@@ -2129,6 +2135,7 @@ word32 identify_lineno(word32 o0)
 void declare_source_confusing(word32 o0)
 {
 	if (Mem0[0x00027F2C:word32] == 0x00)
+	{
 		if (o0 == 0x00)
 		{
 			shortpath(0x00, Mem0[0x00028180:word32]);
@@ -2140,6 +2147,7 @@ void declare_source_confusing(word32 o0)
 			identify_lineno(o0);
 			notice(0x00017440, dwLoc28, dwLoc24, dwLoc20, dwLoc1C, dwLoc18);
 		}
+	}
 	fn00027DB8();
 }
 
@@ -2850,11 +2858,13 @@ void edit_file(word32 o0)
 				;
 		}
 		if (Mem45[0x00027F2C:word32] == 0x00)
+		{
 			if (in_system_include_dir(Mem45[0x00028180:word32]) == 0x00)
 			{
 				shortpath(0x00, Mem45[0x00028180:word32]);
 				notice(0x00017600, dwArg48, dwArg4C, dwArg50, dwArg54, dwArg58);
 			}
+		}
 	}
 	return;
 }
@@ -3027,6 +3037,7 @@ word32 getpwd()
 				{
 					fn00027D40();
 					if (false)
+					{
 						if (Mem49[fp + -0x0088:word32] - Mem49[fp + -0x0110:word32] == 0x00)
 						{
 							if (Mem49[fp + -0x0098:word32] - Mem49[fp + -288:word32] == 0x00)
@@ -3038,6 +3049,7 @@ word32 getpwd()
 						}
 						else
 							l1_107 = 100;
+					}
 					else
 						l1_107 = 100;
 				}
@@ -3705,9 +3717,11 @@ void _obstack_memory_used(word32 o0)
 {
 	word32 g3_15 = Mem0[o0 + 0x04:word32];
 	if (g3_15 != 0x00)
+	{
 		do
 			g3_15 = Mem0[g3_15 + 0x04:word32];
 		while (g3_15 != 0x00);
+	}
 	return;
 }
 

@@ -46,6 +46,7 @@ word16 fn0216(word16 r4, ptr16 & r2Out, ptr16 & r3Out, ptr16 & r4Out)
 		{
 			*&globals->w0026 = 0x0200;
 			if (21482 != 0x00)
+			{
 				if (*(sp_27 - 0x18) != 0x00)
 					PRINT(&globals->b0380);
 				else
@@ -54,6 +55,7 @@ word16 fn0216(word16 r4, ptr16 & r2Out, ptr16 & r3Out, ptr16 & r4Out)
 					*&globals->w0026 = 0x00;
 					r4_285 = 0x03BC;
 				}
+			}
 		}
 	}
 	SETTOP(r4_285 - 0x02);

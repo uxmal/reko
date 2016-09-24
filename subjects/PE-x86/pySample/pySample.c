@@ -430,6 +430,7 @@ Eq_854 * fn10001700(word32 dwArg04, word32 dwArg08)
 	uint32 edx_15 = 0x00;
 	struct Eq_854 * eax_22 = (ecx_6 + ((word32) ecx_6->w0014 + 0x18) / 22)->w0006 + 0x03;
 	if (true)
+	{
 		do
 		{
 			uint32 ecx_49 = eax_22->dw0000;
@@ -438,6 +439,7 @@ Eq_854 * fn10001700(word32 dwArg04, word32 dwArg08)
 			edx_15 = edx_15 + 0x01;
 			eax_22 = eax_22 + 0x01;
 		} while (edx_15 < esi_14);
+	}
 	eax_22 = null;
 	return eax_22;
 }
