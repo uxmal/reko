@@ -170,7 +170,7 @@ namespace Reko.Core.Configuration
             return new PlatformArchitectureElement
             {
                 Name = spa.Name,
-                TrashedRegisters = spa.TrashedRegisters
+                TrashedRegisters = sTrashedRegs
                     .Split(',')
                     .Select(s =>  s.Trim())
                     .ToList()

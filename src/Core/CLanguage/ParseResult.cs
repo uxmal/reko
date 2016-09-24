@@ -41,6 +41,16 @@ namespace Reko.Core.CLanguage
                 throw new ArgumentNullException("error");
             this.error = error;
         }
+
+        public T Result
+        {
+            get
+            {
+                if (error != null)
+                    throw new InvalidOperationException("Mustn't access the result if an error was encountered.");
+                return result;
+            }
+        }
     }
 
     public static class ParseResult

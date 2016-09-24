@@ -67,7 +67,6 @@ namespace Reko.Arch.Sparc
         private void RewriteJmpl()
         {
             ric.Class = RtlClass.Transfer;
-            var q = instrCur.Op3.GetType();
             var rDst = instrCur.Op3 as RegisterOperand;
             var src1 = RewriteOp(instrCur.Op1);
             var src2 = RewriteOp(instrCur.Op2);

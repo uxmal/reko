@@ -50,7 +50,7 @@ namespace Reko.Analysis
 	{
 		private ProgramDataFlow mpprocflow;
 
-		public GlobalCallRewriter(Program program, ProgramDataFlow mpprocflow, DecompilerEventListener eventListener) : base(program, eventListener)
+		public GlobalCallRewriter(Program program, ProgramDataFlow mpprocflow, DecompilerEventListener eventListener) : base(program)
 		{
 			this.mpprocflow = mpprocflow;
 		}

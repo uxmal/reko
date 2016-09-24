@@ -35,7 +35,6 @@ namespace Reko.Arch.Z80
     public class Z80Rewriter : IEnumerable<RtlInstructionCluster>
     {
         private Z80ProcessorArchitecture arch;
-        private ProcessorState state;
         private Frame frame;
         private IRewriterHost host;
         private IEnumerator<Z80Instruction> dasm;
@@ -45,7 +44,6 @@ namespace Reko.Arch.Z80
         public Z80Rewriter(Z80ProcessorArchitecture arch, ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             this.arch = arch;
-            this.state = state;
             this.frame = frame;
             this.host = host;
             this.dasm = new Z80Disassembler(rdr).GetEnumerator();
@@ -345,7 +343,6 @@ namespace Reko.Arch.Z80
             var a = frame.EnsureRegister(Registers.a);
             var bc = frame.EnsureRegister(Registers.bc);
             var hl = frame.EnsureRegister(Registers.hl);
-            var tmp = frame.CreateTemporary(Registers.a.DataType);
             var z = FlagGroup(FlagM.ZF);
             emitter.Assign(z, emitter.Cond(emitter.ISub(a, emitter.LoadB(hl))));
             emitter.Assign(hl, emitter.IAdd(hl, 1));

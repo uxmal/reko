@@ -35,17 +35,14 @@ namespace Reko.Core
     /// </remarks>
 	public class CallRewriter
 	{
-        private DecompilerEventListener listener;
-
-		public CallRewriter(Program program, DecompilerEventListener listener)
+		public CallRewriter(Program program)
 		{
             this.Program = program;
-            this.listener = listener;
         }
 
         public static void Rewrite(Program program, DecompilerEventListener listener)
         {
-            var crw = new CallRewriter(program, listener);
+            var crw = new CallRewriter(program);
             foreach (Procedure proc in program.Procedures.Values)
             {
                 if (listener.IsCanceled())

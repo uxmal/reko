@@ -46,7 +46,6 @@ namespace Reko.Core.Output
 
         //$TODO: move this to a language-specific class.
 		private static Dictionary<Operator,int> precedences;
-        private static Assoc [] associativities;
         private static HashSet<Type> singleStatements;
 
         private const int PrecedenceApplication = 1;
@@ -112,14 +111,6 @@ namespace Reko.Core.Output
 			precedences[Operator.Or] = 11;
 			precedences[Operator.Cand] = 12;
 			precedences[Operator.Cor] = 13;
-
-            associativities = new [] {
-                Assoc.Left,     // Scope
-                Assoc.Left,     // array, application
-                Assoc.Right,    // Unary
-                Assoc.Left,     // member pointer deref
-                Assoc.Left,     // mul
-            };
 
             singleStatements = new HashSet<Type>
             {
@@ -821,7 +812,7 @@ namespace Reko.Core.Output
 
 		public void Write(Procedure proc)
 		{
-			proc.Signature.Emit(proc.QualifiedName(), FunctionType.EmitFlags.None, writer, this, new TypeFormatter(writer, true));
+			proc.Signature.Emit(proc.QualifiedName(), FunctionType.EmitFlags.None, writer, this, new TypeFormatter(writer));
 			writer.WriteLine();
 			writer.Write("{");
             writer.WriteLine();

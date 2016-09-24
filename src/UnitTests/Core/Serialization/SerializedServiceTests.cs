@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Core.Serialization
             this.arch = new X86ArchitectureReal();
             this.platform = new MsdosPlatform(sc, arch);
 
-            ArgumentSerializer argSer = new ArgumentSerializer(null, arch, null, 0);
+            ArgumentSerializer argSer = new ArgumentSerializer(arch);
 
             svc = new SerializedService
             {

@@ -51,7 +51,7 @@ namespace Reko.Core
 			StringWriter sw = new StringWriter();
             TextFormatter fmt = new TextFormatter(sw);
             CodeFormatter cf = new CodeFormatter(fmt);
-            TypeFormatter tf = new TypeFormatter(fmt, false);
+            TypeFormatter tf = new TypeFormatter(fmt);
 			Signature.Emit(Name, FunctionType.EmitFlags.ArgumentKind, fmt, cf, tf);
 			return sw.ToString();
 		}

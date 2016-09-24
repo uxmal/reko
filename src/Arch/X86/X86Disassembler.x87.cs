@@ -91,7 +91,6 @@ namespace Reko.Arch.X86
         private X86Instruction Emitx87BorlandShortcut()
         {
             byte b1 = rdr.Bytes[rdr.Offset];
-            byte b2 = rdr.Bytes[rdr.Offset + 1];
             rdr.Offset += 2;    // Skip the two trailing bytes.
             switch (b1)
             {
