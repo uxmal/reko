@@ -156,16 +156,22 @@ namespace Reko.Environments.SysV
 
         private void LoadTrashedRegisters()
         {
-            var cfgSvc = Services.RequireService<IConfigurationService>();
-            var pa = cfgSvc.GetEnvironment(this.Name).Architectures.SingleOrDefault(a => a.Name == Architecture.Name);
-            if (pa != null)
+            if (Services == null)
             {
-                this.trashedRegs = pa.TrashedRegisters
-                    .Select(r => Architecture.GetRegister(r))
-                    .Where(r => r != null)
-                    .ToArray();
+                this.trashedRegs = new RegisterStorage[0];
             }
-
+            else
+            {
+                var cfgSvc = Services.RequireService<IConfigurationService>();
+                var pa = cfgSvc.GetEnvironment(this.PlatformIdentifier).Architectures.SingleOrDefault(a => a.Name == Architecture.Name);
+                if (pa != null)
+                {
+                    this.trashedRegs = pa.TrashedRegisters
+                        .Select(r => Architecture.GetRegister(r))
+                        .Where(r => r != null)
+                        .ToArray();
+                }
+            }
         }
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
