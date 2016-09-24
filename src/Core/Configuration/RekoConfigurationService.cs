@@ -130,6 +130,7 @@ namespace Reko.Core.Configuration
                 Heuristics = env.Heuristics,
                 TypeLibraries = LoadCollection(env.TypeLibraries, LoadTypeLibraryReference),
                 CharacteristicsLibraries = LoadCollection(env.Characteristics, LoadTypeLibraryReference),
+                Architectures = LoadCollection(env.Architectures, LoadPlatformArchitecture),
                 Options = env.Options != null
                     ? XmlOptions.LoadIntoDictionary(env.Options
                         .SelectMany(o => o.ChildNodes.OfType<XmlElement>())
@@ -156,6 +157,23 @@ namespace Reko.Core.Configuration
                 Loader = tlibRef.Loader,
                 Module = tlibRef.Module,
                 Name = tlibRef.Name,
+            };
+        }
+
+        /// <summary>
+        /// Loads processor-specific settings for a particular 
+        /// platform.
+        /// </summary>
+        private IPlatformArchitectureElement LoadPlatformArchitecture(PlatformArchitecture_v1 spa)
+        {
+            var sTrashedRegs = spa.TrashedRegisters ?? "";
+            return new PlatformArchitectureElement
+            {
+                Name = spa.Name,
+                TrashedRegisters = spa.TrashedRegisters
+                    .Split(',')
+                    .Select(s =>  s.Trim())
+                    .ToList()
             };
         }
 

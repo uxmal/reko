@@ -60,6 +60,7 @@ Options:
             TextWriter output = Console.Out;
             var sc = new ServiceContainer();
             var rekoCfg = RekoConfigurationService.Load();
+            sc.AddService<IConfigurationService>(rekoCfg);
 
             var docopt = new Docopt();
             IDictionary<string, ValueObject> options;

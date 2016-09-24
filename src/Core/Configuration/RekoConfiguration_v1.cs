@@ -107,12 +107,16 @@ namespace Reko.Core.Configuration
         [XmlArrayItem("TypeLibrary")]
         public TypeLibraryReference_v1[] Characteristics;
 
-        [XmlElement]
+        [XmlElement("Heuristics")]
         public PlatformHeuristics_v1 Heuristics;
 
         [XmlArray("SignatureFiles")]
         [XmlArrayItem("SignatureFile")]
         public SignatureFile_v1[] SignatureFiles;
+
+        [XmlArray("Architectures")]
+        [XmlArrayItem("Architecture")]
+        public PlatformArchitecture_v1[] Architectures;
 
         // Collect any other platform-specific elements in "Options"
         [XmlAnyElement]
@@ -255,6 +259,16 @@ namespace Reko.Core.Configuration
         [XmlArray("ProcedurePrologs")]
         [XmlArrayItem("Pattern")]
         public BytePattern_v1[] ProcedurePrologs;
+    }
+
+    [Serializable]
+    public class PlatformArchitecture_v1
+    {
+        [XmlAttribute("name")]
+        public string Name;
+
+        [XmlElement("TrashedRegisters")]
+        public string TrashedRegisters;
     }
 
     public class BytePattern_v1

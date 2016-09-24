@@ -37,9 +37,12 @@ namespace Reko.Environments.SysV
     //$TODO: rename to Elf-Neutral? Or Posix?
     public class SysVPlatform : Platform
     {
+        private RegisterStorage[] trashedRegs;
+
         public SysVPlatform(IServiceProvider services, IProcessorArchitecture arch)
             : base(services, arch, "elf-neutral")
         {
+            LoadTrashedRegisters();
         }
 
         public override string DefaultCallingConvention
@@ -73,7 +76,7 @@ namespace Reko.Environments.SysV
 
         public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
-            return new HashSet<RegisterStorage>();
+            return this.trashedRegs.ToHashSet();
         }
 
         public override SystemService FindService(int vector, ProcessorState state)
@@ -149,6 +152,20 @@ namespace Reko.Environments.SysV
                 m.Assign(proc.Frame.EnsureRegister(Architecture.GetRegister(25)), Constant.Word32((uint) addr.ToLinear()));
                 break;
             }
+        }
+
+        private void LoadTrashedRegisters()
+        {
+            var cfgSvc = Services.RequireService<IConfigurationService>();
+            var pa = cfgSvc.GetEnvironment(this.Name).Architectures.SingleOrDefault(a => a.Name == Architecture.Name);
+            if (pa != null)
+            {
+                this.trashedRegs = pa.TrashedRegisters
+                    .Select(r => Architecture.GetRegister(r))
+                    .Where(r => r != null)
+                    .ToArray();
+            }
+
         }
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)

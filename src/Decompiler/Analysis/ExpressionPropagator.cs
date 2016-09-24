@@ -140,15 +140,6 @@ namespace Reko.Analysis
             }
         }
 
-        private void TrashRegister(string regName)
-        {
-            foreach (var reg in platform.Architecture.GetRegisters())
-            {
-                if (reg.Name == regName)
-                    ctx.RegisterState[reg] = Constant.Invalid;
-            }
-        }
-
         private int GetStackDepthBeforeCall()
         {
             var spVal = ctx.RegisterState[platform.Architecture.StackRegister];
