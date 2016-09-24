@@ -10,7 +10,7 @@ Eq_20 g_t400620 = Unexpected function type (fn void ())
 ;
 Eq_21 g_t4006B0 = Unexpected function type (fn void ())
 ;
-Eq_299 g_a600DF8[] = 
+Eq_300 g_a600DF8[] = 
 	{
 	};
 word64 g_qw600E08 = 0x0000000000000000;

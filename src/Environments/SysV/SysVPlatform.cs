@@ -81,7 +81,7 @@ namespace Reko.Environments.SysV
 
         public override SystemService FindService(int vector, ProcessorState state)
         {
-            throw new NotImplementedException(); 
+            throw new NotImplementedException();
         }
 
         public override int GetByteSizeFromCBasicType(CBasicType cb)
@@ -89,7 +89,7 @@ namespace Reko.Environments.SysV
             switch (cb)
             {
             case CBasicType.Char: return 1;
-            case CBasicType.WChar_t: return 2; 
+            case CBasicType.WChar_t: return 2;
             case CBasicType.Short: return 2;
             case CBasicType.Int: return 4;
             case CBasicType.Long: return 4;
@@ -149,18 +149,14 @@ namespace Reko.Environments.SysV
             {
             case "mips-be-32":
                 // MIPS ELF ABI: r25 is _always_ set to the address of a procedure on entry.
-                m.Assign(proc.Frame.EnsureRegister(Architecture.GetRegister(25)), Constant.Word32((uint) addr.ToLinear()));
+                m.Assign(proc.Frame.EnsureRegister(Architecture.GetRegister(25)), Constant.Word32((uint)addr.ToLinear()));
                 break;
             }
         }
 
         private void LoadTrashedRegisters()
         {
-            if (Services == null)
-            {
-                this.trashedRegs = new RegisterStorage[0];
-            }
-            else
+            if (Services != null)
             {
                 var cfgSvc = Services.RequireService<IConfigurationService>();
                 var pa = cfgSvc.GetEnvironment(this.PlatformIdentifier).Architectures.SingleOrDefault(a => a.Name == Architecture.Name);
@@ -170,9 +166,11 @@ namespace Reko.Environments.SysV
                         .Select(r => Architecture.GetRegister(r))
                         .Where(r => r != null)
                         .ToArray();
+                    return;
                 }
             }
-        }
+            this.trashedRegs = new RegisterStorage[0];
+        } 
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
