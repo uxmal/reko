@@ -341,7 +341,7 @@ l0000000000400514:
 	qwLoc04 = DPB(qwLoc04, dwLoc04, 0) (alias)
 	edi = 0x00600E20
 	rbp = fp - 0x0000000000000004
-	call 0x00000000 (retsize: 4; depth: 8)
+	call eax (retsize: 4; depth: 8)
 		defs: C,eax,edi,edx,r8,rax,rbp,rdx,rsi,rsp,SCZO,SZO,Z
 	rbp = qwLoc04
 	rsp = fp + 0x0000000000000004

@@ -108,7 +108,7 @@ frame_dummy_entry:
 	goto l00000000004004FA
 l00000000004004F0:
 l00000000004004FA:
-	eax = 0x00
+	eax.u0 = 0x00
 	rax = DPB(rax, eax, 0)
 	SZO = cond(rax & rax)
 	Z = SZO
@@ -120,7 +120,7 @@ l0000000000400504:
 	qwLoc04 = DPB(qwLoc04, dwLoc04, 0)
 	edi = 0x00600E08
 	rbp = fp - 0x04
-	0x00()
+	eax()
 	rbp = qwLoc04
 	rsp = fp + 0x04
 	register_tm_clones(r8)
@@ -154,7 +154,7 @@ byte * verify(word64 rdi)
 	return rax_100;
 }
 
-void main(word64 rax, Eq_231 * rsi, word32 edi)
+void main(word64 rax, Eq_230 * rsi, word32 edi)
 {
 	if (edi != 0x02)
 		word64 rax_30 = DPB(rax, puts(DPB(rdi, 0x004006C8, 0)), 0);
@@ -173,7 +173,7 @@ void main(word64 rax, Eq_231 * rsi, word32 edi)
 void __libc_csu_init()
 {
 	_init();
-	Eq_300 r12_7[] = globals->a600DF8;
+	Eq_299 r12_7[] = globals->a600DF8;
 	if (0x0000000000600E00 - r12_7 >> 0x03 != 0x00)
 	{
 		ui64 rbx_47 = DPB(rbx, 0x00, 0);

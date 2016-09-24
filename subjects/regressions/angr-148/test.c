@@ -101,7 +101,7 @@ frame_dummy_entry:
 	goto l000000000040050A
 l0000000000400500:
 l000000000040050A:
-	eax = 0x00
+	eax.u0 = 0x00
 	rax = DPB(rax, eax, 0)
 	SZO = cond(rax & rax)
 	Z = SZO
@@ -113,7 +113,7 @@ l0000000000400514:
 	qwLoc04 = DPB(qwLoc04, dwLoc04, 0)
 	edi = 0x00600E20
 	rbp = fp - 0x04
-	0x00()
+	eax()
 	rbp = qwLoc04
 	rsp = fp + 0x04
 	register_tm_clones(r8)
@@ -140,7 +140,7 @@ void main()
 void __libc_csu_init(word64 rsi)
 {
 	_init();
-	Eq_218 r12_19[] = globals->a600E10;
+	Eq_217 r12_19[] = globals->a600E10;
 	ui64 rbx_28 = DPB(rbx, 0x00, 0);
 	if (0x0000000000600E18 - r12_19 >> 0x03 != 0x00)
 		do
