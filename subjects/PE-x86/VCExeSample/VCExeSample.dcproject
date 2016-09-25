@@ -33,7 +33,7 @@
       </procedure>
       <procedure name="Win32CrtStartup">
         <characteristics />
-        <address>00401403</address>
+        <address>00401453</address>
         <decompile>false</decompile>
         <CSignature>DWORD Win32CrtStartup()</CSignature>
       </procedure>
@@ -61,6 +61,14 @@
         <type>cdecl_class_ptr</type>
         <Name>gbl_c</Name>
       </global>
+      <global>
+        <Address>0040301C</Address>
+        <ptr size="4">
+          <type>thiscall_class</type>
+        </ptr>
+        <Name>gbl_thiscall</Name>
+      </global>
+      <registerValues />
     </user>
   </input>
   <metadata>
