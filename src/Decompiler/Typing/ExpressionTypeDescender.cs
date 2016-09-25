@@ -380,9 +380,9 @@ namespace Reko.Typing
                     return PrimitiveType.Create(Domain.Integer, dtDiff.Size);
                 throw new NotImplementedException(string.Format("Not handling {0} and {1} yet", dtDiff, dtMin));
             }
-            if (dtDiff is MemberPointer || ptDiff != null && ptDiff.Domain == Domain.Pointer)
+            if (dtDiff is MemberPointer || ptDiff != null && ptDiff.Domain == Domain.Offset)
             {
-                if (dtMin is MemberPointer || ptMin != null && ptMin.Domain == Domain.Pointer)
+                if (dtMin is MemberPointer || ptMin != null && ptMin.Domain == Domain.Offset)
                     return PrimitiveType.Create(Domain.Integer, dtDiff.Size);
                 throw new NotImplementedException(string.Format("Not handling {0} and {1} yet", dtDiff, dtMin));
             }

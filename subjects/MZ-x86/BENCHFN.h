@@ -90,6 +90,9 @@ Eq_200: (struct "Eq_200" (4F9 byte b04F9))
 	T_203 (in DPB(ax_139, bl_143 - 0x20, 0) : word16)
 Eq_207: (segment "Eq_207")
 	T_207 (in ss : selector)
+Eq_224: (fn word16 (byte, (memptr (ptr Eq_258) Eq_164), (memptr (ptr Eq_64) byte), (ptr Eq_64), Eq_230))
+	T_224 (in fn0800_1099 : ptr32)
+	T_225 (in signature of fn0800_1099 : void)
 Eq_230: (union "Eq_230" (ptr16 u0) ((memptr (ptr Eq_64) byte) u1))
 	T_230 (in diOut : Eq_230)
 	T_232 (in out di_107 : mp16)
@@ -663,8 +666,8 @@ T_123: (in fp : mp16)
   OrigDataType: mp16
 T_124: (in 0x00A0 : word16)
   Class: Eq_124
-  DataType: mp16
-  OrigDataType: mp16
+  DataType: ui16
+  OrigDataType: ui16
 T_125: (in fp - 0x00A0 : word16)
   Class: Eq_122
   DataType: mp16
@@ -675,8 +678,8 @@ T_126: (in di_107 : (memptr (ptr Eq_64) byte))
   OrigDataType: (memptr T_113 (struct 0001 (0 byte b0000)))
 T_127: (in 0x0056 : word16)
   Class: Eq_127
-  DataType: mp16
-  OrigDataType: mp16
+  DataType: ui16
+  OrigDataType: ui16
 T_128: (in fp - 0x0056 : word16)
   Class: Eq_126
   DataType: (memptr (ptr Eq_64) byte)
@@ -835,8 +838,8 @@ T_166: (in diOut : Eq_166)
   OrigDataType: ptr16
 T_167: (in 0x0002 : word16)
   Class: Eq_167
-  DataType: mp16
-  OrigDataType: mp16
+  DataType: ui16
+  OrigDataType: ui16
 T_168: (in fp - 0x0002 : word16)
   Class: Eq_164
   DataType: (memptr (ptr Eq_258) Eq_164)
@@ -896,7 +899,7 @@ T_181: (in di_93 : (memptr (ptr Eq_64) byte))
 T_182: (in fn0800_10A1 : ptr32)
   Class: Eq_162
   DataType: (ptr Eq_162)
-  OrigDataType: ptr32
+  OrigDataType: (ptr (fn T_185 (T_183, T_126, T_184)))
 T_183: (in fp - 0x0002 : word16)
   Class: Eq_164
   DataType: (memptr (ptr Eq_258) Eq_164)
@@ -904,9 +907,9 @@ T_183: (in fp - 0x0002 : word16)
 T_184: (in out di_93 : mp16)
   Class: Eq_166
   DataType: Eq_166
-  OrigDataType: word16
+  OrigDataType: ptr16
 T_185: (in fn0800_10A1(fp - 0x0002, di_107, out di_93) : word16)
-  Class: Eq_185
+  Class: Eq_119
   DataType: word16
   OrigDataType: word16
 T_186: (in di_95 : word16)
@@ -916,7 +919,7 @@ T_186: (in di_95 : word16)
 T_187: (in fn0800_10A1 : ptr32)
   Class: Eq_162
   DataType: (ptr Eq_162)
-  OrigDataType: ptr32
+  OrigDataType: (ptr (fn T_190 (T_188, T_181, T_189)))
 T_188: (in fp - 0x0002 : word16)
   Class: Eq_164
   DataType: (memptr (ptr Eq_258) Eq_164)
@@ -924,7 +927,7 @@ T_188: (in fp - 0x0002 : word16)
 T_189: (in out di_95 : mp16)
   Class: Eq_166
   DataType: Eq_166
-  OrigDataType: word16
+  OrigDataType: ptr16
 T_190: (in fn0800_10A1(fp - 0x0002, di_93, out di_95) : word16)
   Class: Eq_119
   DataType: word16
@@ -1063,11 +1066,11 @@ T_223: (in 0x25 : byte)
   OrigDataType: byte
 T_224: (in fn0800_1099 : ptr32)
   Class: Eq_224
-  DataType: ptr32
-  OrigDataType: ptr32
+  DataType: (ptr Eq_224)
+  OrigDataType: (ptr (fn T_233 (T_222, T_231, T_126, T_113, T_232)))
 T_225: (in signature of fn0800_1099 : void)
   Class: Eq_224
-  DataType: ptr32
+  DataType: (ptr Eq_224)
   OrigDataType: 
 T_226: (in al : byte)
   Class: Eq_222
@@ -1096,7 +1099,7 @@ T_231: (in fp - 0x0002 : word16)
 T_232: (in out di_107 : mp16)
   Class: Eq_230
   DataType: Eq_230
-  OrigDataType: (memptr T_113 (struct 0001 (0 byte b0000)))
+  OrigDataType: (union (ptr16 u1) ((memptr (ptr Eq_64) byte) u0))
 T_233: (in fn0800_1099(al_156, fp - 0x0002, di_107, ds, out di_107) : word16)
   Class: Eq_119
   DataType: word16
@@ -1563,8 +1566,8 @@ T_348: (in fp : mp16)
   OrigDataType: mp16
 T_349: (in 0x0002 : word16)
   Class: Eq_349
-  DataType: mp16
-  OrigDataType: mp16
+  DataType: ui16
+  OrigDataType: ui16
 T_350: (in fp - 0x0002 : word16)
   Class: Eq_347
   DataType: (memptr (ptr Eq_381) Eq_347)
@@ -2271,6 +2274,8 @@ typedef struct Eq_200 {
 
 typedef struct Eq_207 {
 } Eq_207;
+
+typedef word16 (Eq_224)(byte, Eq_164 Eq_258::*, byte Eq_64::*, Eq_64 *, Eq_230);
 
 typedef union Eq_230 {
 	ptr16 u0;
