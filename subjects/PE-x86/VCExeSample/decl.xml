@@ -72,5 +72,47 @@
         </ptr>
       </field>
     </struct>
+    <typedef name="thiscall_class">
+      <struct name="thiscall_class" />
+    </typedef>
+    <typedef name="thiscall_class_vtbl">
+      <struct name="thiscall_class_vtbl" />
+    </typedef>
+    <struct name="thiscall_class_vtbl">
+      <field offset="0" name="set_double">
+        <ptr size="4">
+          <fn>
+            <return>
+              <void />
+            </return>
+            <arg>
+              <prim domain="Real" size="8" />
+            </arg>
+          </fn>
+        </ptr>
+      </field>
+      <field offset="4" name="modify_double">
+        <ptr size="4">
+          <fn>
+            <return>
+              <void />
+            </return>
+            <arg>
+              <prim domain="SignedInt" size="4" />
+            </arg>
+            <arg>
+              <prim domain="Real" size="8" />
+            </arg>
+          </fn>
+        </ptr>
+      </field>
+    </struct>
+    <struct name="thiscall_class">
+      <field offset="0" name="vtbl">
+        <ptr size="4">
+          <type>thiscall_class_vtbl</type>
+        </ptr>
+      </field>
+    </struct>
   </Types>
 </library>
