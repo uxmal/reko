@@ -298,4 +298,86 @@
     </signature>
   </procedure>
 
+  <procedure name="_amsg_exit">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg>
+        <type>int</type>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+
+  <procedure name="_initterm">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg name="fStart">
+        <ptr>
+          <ptr>
+            <void />   <!-- //$TODO: actually a void func(void)-->
+          </ptr>
+        </ptr>
+        <stack size="4" />
+      </arg>
+      <arg name="fEnd">
+        <ptr>
+          <ptr>
+            <void />
+            <!-- //$TODO: actually a void func(void)-->
+          </ptr>
+        </ptr>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+
+  <procedure name="_initterm_e">
+    <signature>
+      <return>
+        <void />
+      </return>
+      <arg name="fStart">
+        <ptr>
+          <ptr>
+            <void />
+            <!-- //$TODO: actually a void func(void)-->
+          </ptr>
+        </ptr>
+        <stack size="4" />
+      </arg>
+      <arg name="fEnd">
+        <ptr>
+          <ptr>
+            <void />
+            <!-- //$TODO: actually a void func(void)-->
+          </ptr>
+        </ptr>
+        <stack size="4" />
+      </arg>
+    </signature>
+  </procedure>
+
+  <procedure name="_encoded_null">
+    <signature>
+      <return>
+        <ptr><void /></ptr>
+      </return>
+    </signature>
+  </procedure>
+  
+  
+  <procedure name="_decode_pointer">
+    <signature>
+      <return>
+        <ptr><void /></ptr>
+      </return>
+      <arg>
+        <ptr><void /></ptr>
+      </arg>
+    </signature>
+  </procedure>
 </library>
