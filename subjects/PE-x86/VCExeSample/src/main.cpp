@@ -18,7 +18,15 @@ struct cdecl_class
     cdecl_class_vtbl *vtbl;
 };
 
+class thiscall_class
+{
+public:
+    virtual void set_double(double) = 0;
+    virtual double modify_double(int,double) = 0;
+};
+
 static cdecl_class_ptr gbl_c;
+static thiscall_class *gbl_thiscall;
 
 extern void test1(char *arg1, int arg2, char *arg3, float arg4);
 
@@ -60,4 +68,11 @@ extern "C" __declspec(dllexport) void test6(cdecl_class *c, int a, int b)
     int sum;
     sum = c->vtbl->sum(c, a, b);
     c->vtbl->method04(c, sum);
+}
+
+extern "C" __declspec(dllexport) double test7(double d)
+{
+    if (d > 1.0)
+        gbl_thiscall->set_double(d);
+    return gbl_thiscall->modify_double(13, d);
 }

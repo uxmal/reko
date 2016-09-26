@@ -37,7 +37,6 @@ namespace Reko.Arch.Sparc
     public partial class SparcRewriter : IEnumerable<RtlInstructionCluster>
     {
         private SparcArchitecture arch;
-        private SparcProcessorState state;
         private Frame frame;
         private IRewriterHost host;
         private LookaheadEnumerator<SparcInstruction> dasm;
@@ -48,7 +47,6 @@ namespace Reko.Arch.Sparc
         public SparcRewriter(SparcArchitecture arch, ImageReader rdr, SparcProcessorState state, Frame frame, IRewriterHost host)
         {
             this.arch = arch;
-            this.state = state;
             this.frame = frame;
             this.host = host;
             this.dasm = new LookaheadEnumerator<SparcInstruction>(CreateDisassemblyStream(rdr));
@@ -57,7 +55,6 @@ namespace Reko.Arch.Sparc
         public SparcRewriter(SparcArchitecture arch, IEnumerator<SparcInstruction> instrs, SparcProcessorState state, Frame frame, IRewriterHost host)
         {
             this.arch = arch;
-            this.state = state;
             this.frame = frame;
             this.host = host;
             this.dasm = new LookaheadEnumerator<SparcInstruction>(instrs);

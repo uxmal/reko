@@ -37,45 +37,58 @@ namespace Reko.UnitTests.Environments.SysV
     [TestFixture]
     public class SysVPlatformTests
     {
+        private IProcessorArchitecture arch;
+        private IConfigurationService cfgSvc;
+        private MockRepository mr;
+        private ServiceContainer sc;
+        private ITypeLibraryLoaderService tlSvc;
+
+        [SetUp]
+        public void Setup()
+        {
+            this.mr = new MockRepository();
+            this.sc = new ServiceContainer();
+            this.arch = mr.Stub<IProcessorArchitecture>();
+            this.tlSvc = mr.Stub<ITypeLibraryLoaderService>();
+            this.cfgSvc = mr.Stub<IConfigurationService>();
+            sc.AddService<IConfigurationService>(cfgSvc);
+            sc.AddService<ITypeLibraryLoaderService>(tlSvc);
+
+        }
+
         [Test]
         public void SysV_TerminatingFunction()
         {
-            var mr = new MockRepository();
-            var sc = new ServiceContainer();
-            var arch = mr.Stub<IProcessorArchitecture>();
-            var tlSvc = mr.Stub<ITypeLibraryLoaderService>();
-            var cfgSvc = mr.Stub<IConfigurationService>();
-            sc.AddService<IConfigurationService>(cfgSvc);
-            sc.AddService<ITypeLibraryLoaderService>(tlSvc);
             cfgSvc.Stub(c => c.GetInstallationRelativePath("libc.xml"))
                 .Return("libc.xml");
-            cfgSvc.Stub(c => c.GetEnvironment(null))
-                .IgnoreArguments()
-                .Return(new OperatingEnvironmentElement
-                {
-                     TypeLibraries = 
+
+            var env = new OperatingEnvironmentElement
+            {
+                TypeLibraries =
                      {
-                         new TypeLibraryElement 
+                         new TypeLibraryElement
                          {
                               Name="libc.xml"
                          }
                      },
-                     CharacteristicsLibraries =
+                CharacteristicsLibraries =
                      {
                          new TypeLibraryElement
                          {
                              Name="libcharacteristics.xml",
                          }
                      }
-                });
+            };
+
+            Given_EnvironmentConfiguration(env);
             tlSvc.Stub(t => t.LoadCharacteristics(null))
                 .IgnoreArguments()
                 .Return(new CharacteristicsLibrary
                 {
                     Entries =
                     {
-                        { 
-                            "exit", 
+                        {
+                            "exit",
                             new ProcedureCharacteristics {
                                 Terminates = true
                             }
@@ -99,6 +112,42 @@ namespace Reko.UnitTests.Environments.SysV
             var sysv = new SysVPlatform(sc, arch);
             var proc = sysv.LookupProcedureByName(null, "exit");
             Assert.IsTrue(proc.Characteristics.Terminates, "exit should have been marked as terminating.");
+        }
+
+        private void Given_EnvironmentConfiguration(OperatingEnvironmentElement env)
+        {
+            cfgSvc.Stub(c => c.GetEnvironment(null))
+                .IgnoreArguments()
+                .Return(env);
+        }
+
+        [Test]
+        public void SysV_LoadTrashedRegisters()
+        {
+            arch.Stub(a => a.GetRegister((string)null)).IgnoreArguments()
+                .Do(new Func<string, RegisterStorage>(r => new RegisterStorage(r, (int)r[1], 0, PrimitiveType.Word32)));
+            var env = new OperatingEnvironmentElement
+            {
+                Architectures =
+                {
+                    new PlatformArchitectureElement
+                    {
+                         TrashedRegisters =
+                         {
+                             "r2", "r3"
+                         }
+                    }
+                }
+            };
+
+            Given_EnvironmentConfiguration(env);
+
+            mr.ReplayAll();
+
+            var sysv = new SysVPlatform(sc, arch);
+            var regs = sysv.CreateTrashedRegisters();
+            Assert.AreEqual(2, regs.Count);
+            Assert.AreEqual("r2,r3", string.Join(",", regs.Select(r => r.Name)));
         }
     }
 }

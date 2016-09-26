@@ -52,6 +52,11 @@ namespace Reko.Environments.RiscOS
             return new HashSet<RegisterStorage>();
         }
 
+        public override HashSet<RegisterStorage> CreateTrashedRegisters()
+        {
+            return new HashSet<RegisterStorage>();
+        }
+
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
             throw new NotImplementedException();

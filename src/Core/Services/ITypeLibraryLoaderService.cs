@@ -107,7 +107,6 @@ namespace Reko.Core.Services
             return (MetadataLoader)Activator.CreateInstance(loaderType, services, filename, bytes);
         }
 
- 
         public CharacteristicsLibrary LoadCharacteristics(string name)
         {
             var filename = InstalledFileLocation(name);

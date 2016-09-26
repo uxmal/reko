@@ -57,6 +57,13 @@ namespace Reko.Environments.Ps3
 
         public override HashSet<RegisterStorage>  CreateImplicitArgumentRegisters()
         {
+            //$TODO: find out what registers are always preserved
+            return new HashSet<RegisterStorage>();
+        }
+
+        public override HashSet<RegisterStorage> CreateTrashedRegisters()
+        {
+            //$TODO: find out what registers are always trashed
             return new HashSet<RegisterStorage>();
         }
 

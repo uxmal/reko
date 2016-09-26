@@ -107,9 +107,6 @@
     <Content Include="kernel32.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="msvcrt.xml">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="ntoskrnl.inc" />
     <Content Include="shell32.xml" />
     <Content Include="user32.xml" />
@@ -126,6 +123,10 @@
     <Content Include="oleaut32.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Arch\Arm\Arm.csproj">
+      <Project>{32f09304-51be-4797-a86a-c0befed2422b}</Project>
+      <Name>Arm</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Arch\PowerPC\PowerPC.csproj">
       <Project>{B7DC39DD-6693-4F71-AE7F-007C5C62CBAA}</Project>
       <Name>PowerPC</Name>
@@ -160,12 +161,16 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <TranslateHeader Include="msvcrt.inc" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
   <Target Name="AfterBuild">
+    <Copy SourceFiles="$(ProjectDir)$(OutDir)Reko.Environments.Windows.dll" DestinationFolder="$(SolutionDir)tools" />
+    <Copy SourceFiles="$(SolutionDir)Arch\X86\$(OutDir)Reko.Arch.X86.dll" DestinationFolder="$(SolutionDir)tools" />
+    <Exec Condition=" '$(OS)' == 'Unix' " Command="mono $(SolutionDir)tools/c2xml.exe -a x86-protected-32 -e win32 %(TranslateHeader.Identity) &gt; %(TranslateHeader.Filename).xml" />
+    <Exec Condition=" '$(OS)' != 'Unix' " Command="&quot;$(SolutionDir)tools\c2xml.exe&quot; -a x86-protected-32 -e win32 %(TranslateHeader.Identity) &gt; %(TranslateHeader.Filename).xml" />
   </Target>
-  -->
 </Project>

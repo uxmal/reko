@@ -44,8 +44,19 @@ void test5()
 
 void test6(cdecl_class * c, int32 a, int32 b)
 {
-	c->vtbl->sum(c, a, b);
-	c->vtbl->method04(c, c);
+	c->vtbl->method04(c, c->vtbl->sum(c, a, b));
+	return;
+}
+
+void test7(real64 rArg04)
+{
+	ptr32 esp_12 = fp - 0x04;
+	if (1.0 > rArg04)
+		globals->gbl_thiscall->vtbl->set_double(rArg04);
+	union Eq_112 * esp_13 = esp_12 - 0x08;
+	*esp_13 = (union Eq_112 *) rArg04;
+	*(esp_13 - 0x04) = 0x0D;
+	globals->gbl_thiscall->vtbl->modify_double(~0x45223501, ~0x45223501);
 	return;
 }
 

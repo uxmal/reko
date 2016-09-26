@@ -369,7 +369,7 @@ namespace Reko
             {
                 Indentation = 0,
             };
-            TypeFormatter fmt = new TypeFormatter(tf, false);
+            var fmt = new TypeFormatter(tf);
             foreach (EquivalenceClass eq in program.TypeStore.UsedEquivalenceClasses)
             {
                 if (eq.DataType != null)

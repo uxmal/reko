@@ -124,6 +124,7 @@ namespace Reko.Core.CLanguage
             Dot,
             DotDot,
             Colon,
+            LineComment,
         }
 
         public int LineNumber { get; private set; }
@@ -543,15 +544,13 @@ namespace Reko.Core.CLanguage
                 case State.Slash:
                     if (c < 0)
                         return Tok(CTokenType.Slash);
-                    if (ch == '=')
+                    switch (ch)
                     {
-                        rdr.Read();
-                        return Tok(CTokenType.DivAssign);
+                    case '=': rdr.Read(); return Tok(CTokenType.DivAssign);
+                    case '/': rdr.Read(); state = State.LineComment; break;
+                    default: return Tok(CTokenType.Slash);
                     }
-                    else
-                    {
-                        return Tok(CTokenType.Slash);
-                    }
+                    break;
                 case State.Percent:
                     if (c < 0)
                         return Tok(CTokenType.Percent);
@@ -644,6 +643,20 @@ namespace Reko.Core.CLanguage
                     {
                         return Tok(CTokenType.Xor);
                     }
+                case State.LineComment:
+                    if (c < 0)
+                        return Tok(CTokenType.EOF);
+                    switch (ch)
+                    {
+                    case '\r':
+                    case '\n':
+                        EatWs();
+                        state = State.Start;
+                        break;
+                    default:
+                        rdr.Read(); break;
+                    }
+                    break;
                 default:
                     Nyi(state, ch);
                     break;
@@ -653,7 +666,7 @@ namespace Reko.Core.CLanguage
 
         private void Nyi(State state, char ch)
         {
-            throw new NotImplementedException(string.Format("State {0}, ch: {1}", state, ch));
+            throw new NotImplementedException(string.Format("State {0}, ch: {1} (U+{2:X4})", state, ch, (uint)ch));
         }
 
         private void ClearBuffer()

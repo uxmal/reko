@@ -934,17 +934,15 @@ namespace Reko.Arch.X86
                     ++i;
 
                 pOperand = null;
-                ImmediateOperand immOp;
                 MemoryOperand memOp;
-                X86AddressOperand addrOp;
                 char chFmt = strFormat[i++];
                 switch (chFmt)
                 {
                 case '1':
-                    pOperand = immOp = new ImmediateOperand(Constant.Byte(1));
+                    pOperand = new ImmediateOperand(Constant.Byte(1));
                     break;
                 case '3':
-                    pOperand = immOp = new ImmediateOperand(Constant.Byte(3));
+                    pOperand = new ImmediateOperand(Constant.Byte(3));
                     break;
                 case 'A':		// Absolute memory address.
                     ++i;
@@ -953,7 +951,7 @@ namespace Reko.Arch.X86
                     var addr = mode.CreateSegmentedAddress(seg, off);
                     if (addr == null)
                         return null;
-                    pOperand = addrOp = new X86AddressOperand(addr);
+                    pOperand = new X86AddressOperand(addr);
                     break;
                 case 'E':		// memory or register operand specified by mod & r/m fields.
                     width = OperandWidth(strFormat[i++]);

@@ -81,9 +81,7 @@
     <DecompilerMetadata Include="$(SolutionDir)Environments\Msdos\realmodeintservices.xml">
       <SubType>Designer</SubType>
     </DecompilerMetadata>
-    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\msvcrt.xml">
-      <SubType>Designer</SubType>
-    </DecompilerMetadata>
+    <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\msvcrt.xml" />
     <DecompilerMetadata Include="$(SolutionDir)Environments\Windows\ntoskrnl.xml">
       <SubType>Designer</SubType>
     </DecompilerMetadata>

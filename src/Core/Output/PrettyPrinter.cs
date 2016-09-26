@@ -37,7 +37,6 @@ namespace Reko.Core.Output
     /// </remarks>
     public class PrettyPrinter
     {
-        private TextWriter writer;
         private IDequeue<Token> buffer;
         private IDequeue<Break> breaks;
         private PrettyPrinterOutput output;
@@ -48,7 +47,6 @@ namespace Reko.Core.Output
 
         public PrettyPrinter(TextWriter writer, int width)
         {
-            this.writer = writer;
             this.buffer = new Dequeue<Token>();
             this.breaks = new Dequeue<Break>();
             this.output = new PrettyPrinterOutput(writer, width);

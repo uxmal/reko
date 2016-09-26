@@ -202,7 +202,7 @@ namespace Reko.Analysis
         public void RewriteBlock(Block block)
         {
             StartProcessingBlock(block);
-            var propagator = new ExpressionPropagator(program.Architecture, se.Simplifier, ctx, flow);
+            var propagator = new ExpressionPropagator(program.Platform, se.Simplifier, ctx, flow);
             foreach (Statement stm in block.Statements)
             {
                 try

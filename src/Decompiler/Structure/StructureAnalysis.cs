@@ -754,7 +754,9 @@ doing future pattern matches.
             if (regionGraph.Predecessors(vEdge.To).Count == 0 && vEdge.To != entry)
             {
                 RemoveRegion(vEdge.To);
-            Probe();
+
+
+                Probe();
             }
         }
 

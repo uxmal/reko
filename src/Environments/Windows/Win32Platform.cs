@@ -98,6 +98,17 @@ namespace Reko.Environments.Windows
             return bitset;
         }
 
+        public override HashSet<RegisterStorage> CreateTrashedRegisters()
+        {
+            // Win32 preserves, ebx, esi, edi.
+            return new HashSet<RegisterStorage>
+            {
+                Registers.eax,
+                Registers.ecx,
+                Registers.edx,
+            };
+        }
+
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
             return new X86ProcedureSerializer((IntelArchitecture) Architecture, typeLoader, defaultConvention);

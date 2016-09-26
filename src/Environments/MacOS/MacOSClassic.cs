@@ -49,6 +49,15 @@ namespace Reko.Environments.MacOS
             return new HashSet<RegisterStorage> { Registers.a7 };
         }
 
+        public override HashSet<RegisterStorage> CreateTrashedRegisters()
+        {
+            return new HashSet<RegisterStorage>
+            {
+                Registers.d0,
+                Registers.a0,
+            };
+        }
+
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
             return new M68kProcedureSerializer((M68kArchitecture) Architecture, typeLoader, defaultConvention);

@@ -54,7 +54,7 @@ namespace Reko.Analysis
             }
         }
 
-        private IProcessorArchitecture arch;
+        private IPlatform platform;
         private ExpressionSimplifier eval;
         private SymbolicEvaluationContext ctx;
         private Substitutor sub;
@@ -63,12 +63,12 @@ namespace Reko.Analysis
         private bool storing;
 
         public ExpressionPropagator(
-            IProcessorArchitecture arch, 
+            IPlatform platform, 
             ExpressionSimplifier simplifier, 
             SymbolicEvaluationContext ctx, 
             ProgramDataFlow flow)
         {
-            this.arch = arch;
+            this.platform = platform;
             this.eval = simplifier;
             this.ctx = ctx;
             this.flow = flow;
@@ -121,13 +121,28 @@ namespace Reko.Analysis
             else
             {
                 var fn = ci.Callee.Accept(this);
+                // Hell node: will want to assume that registers which aren't
+                // guaranteed to be preserved by the ABI are trashed.
+                foreach (var r in ctx.RegisterState.Keys.ToList())
+                {
+                    foreach (var reg in platform.CreateTrashedRegisters())
+                    {
+                        //$PERF: not happy about the O(n^2) algorithm,
+                        // but this is better in the analysis-development 
+                        // branch.
+                        if (r.Domain == reg.Domain)
+                        {
+                            ctx.RegisterState[r] = Constant.Invalid;
+                        }
+                    }
+                }
                 return new CallInstruction(fn.PropagatedExpression, ci.CallSite);
             }
         }
 
         private int GetStackDepthBeforeCall()
         {
-            var spVal = ctx.RegisterState[arch.StackRegister];
+            var spVal = ctx.RegisterState[platform.Architecture.StackRegister];
             if (ctx.IsFramePointer(spVal))
                 return 0;
             var bin = spVal as BinaryExpression;

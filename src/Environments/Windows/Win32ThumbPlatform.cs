@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Arch.Arm;
 using Reko.Core;
 using Reko.Core.CLanguage;
 using Reko.Core.Lib;
@@ -123,7 +124,26 @@ namespace Reko.Environments.Windows
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
         {
-            return new HashSet<RegisterStorage>();
+            return new HashSet<RegisterStorage>
+            {
+                A32Registers.r11,
+                A32Registers.sp,
+                A32Registers.lr,
+                A32Registers.pc,
+            };
+        }
+
+        public override HashSet<RegisterStorage> CreateTrashedRegisters()
+        {
+            // https://msdn.microsoft.com/en-us/library/dn736986.aspx 
+            return new HashSet<RegisterStorage>
+            {
+                A32Registers.r0,
+                A32Registers.r1,
+                A32Registers.r2,
+                A32Registers.r3,
+                A32Registers.ip,
+            };
         }
 
         public override ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)

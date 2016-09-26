@@ -11,8 +11,6 @@ namespace Reko.Core.Output
     /// </summary>
     public class BlockDecorator
     {
-        static string[] empty = new string[0];
-
         public bool ShowEdges { get; set; }
 
         public virtual void BeforeBlock(Block block, List<string> lines)

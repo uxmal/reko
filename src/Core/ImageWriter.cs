@@ -31,8 +31,6 @@ namespace Reko.Core
     /// </summary>
     public abstract class ImageWriter
     {
-        private int himark;
-
         public ImageWriter() : this(new byte[16])
         {
         }

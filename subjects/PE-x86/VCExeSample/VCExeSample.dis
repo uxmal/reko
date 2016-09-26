@@ -192,8 +192,7 @@ test6_entry:
 // LocalsOut: fp(32) Stack +0004(32)
 
 l00401120:
-	Mem0[Mem0[c:word32] + 0x00000008:word32](c, a, b)
-	Mem0[Mem0[c:word32] + 0x00000004:word32](c, c)
+	Mem0[Mem0[c:word32] + 0x00000004:word32](c, Mem0[Mem0[c:word32] + 0x00000008:word32](c, a, b))
 	return
 // DataOut:
 // DataOut (flags): 
@@ -203,6 +202,51 @@ test6_exit:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp ebp:ebp eax:<invalid> ecx:<invalid> edx:c -20(fp):c -16(fp):c -12(fp):c -8(fp):c -4(fp):ebp 4(fp):c 8(fp):a 12(fp):b
+
+
+
+void test7(real64 rArg04)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZOFPUF ah al ax bp bpl ch cl cx dh dl dx eax ebp ecx edx esp rax rbp rcx rdx rsp sp spl
+// Preserved:
+// Stack args: Stack +0004(64)
+test7_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32) Stack +0004(64)
+
+l00401160:
+	word32 esp_12 = fp - 0x00000004
+	branch 1.0 <= rArg04 l00401189
+// DataOut: esp
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32)
+
+l0040116F:
+	Mem0[Mem0[Mem0[0x0040301C:word32]:word32]:word32](rArg04)
+// DataOut: esp
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000004 ebp:fp - 0x00000004 -4(fp):ebp
+
+l00401189:
+	word32 esp_13 = esp_12 - 0x00000008
+	Mem16[esp_13:real64] = rArg04
+	Mem18[esp_13 - 0x00000004:word32] = 0x0000000D
+	Mem18[Mem18[Mem18[0x0040301C:word32]:word32] + 0x00000004:word32](0xBADDCAFE, 0xBADDCAFE)
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:<invalid> ebp:fp - 0x00000004 eax:<invalid> edx:<invalid> ecx:<invalid> -12(fp):rLoc1 -4(fp):ebp
+
+test7_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:<invalid> ebp:<invalid> eax:<invalid> edx:<invalid> ecx:<invalid> -12(fp):rLoc1 -4(fp):ebp
 
 
 

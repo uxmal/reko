@@ -59,6 +59,8 @@ namespace Reko.Core
 
         Address AdjustProcedureAddress(Address addrCode);
         HashSet<RegisterStorage> CreateImplicitArgumentRegisters();
+        HashSet<RegisterStorage> CreateTrashedRegisters();
+
         IEnumerable<Address> CreatePointerScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> addr, PointerScannerFlags flags);
         ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention);
         TypeLibrary CreateMetadata();
@@ -194,14 +196,28 @@ namespace Reko.Core
         }
 
         /// <summary>
-        /// Creates a bitset that represents those registers that are never used as arguments to a 
-        /// procedure. 
+        /// Creates a set that represents those registers that are never used
+        /// as arguments to a procedure. 
         /// </summary>
         /// <remarks>
-        /// Typically, the stack pointer register is one of these registers. Some architectures define
-        /// global registers that are preserved across calls; these should also be present in this set.
+        /// Typically, the stack pointer register is one of these registers.
+        /// Some architectures define global registers that are preserved 
+        /// across calls; these should also be present in this set.
         /// </remarks>
         public abstract HashSet<RegisterStorage> CreateImplicitArgumentRegisters();
+
+        /// <summary>
+        /// Creates a set of registers that the "standard" ABI cannot 
+        /// guarantee will survive a call.
+        /// </summary>
+        /// <remarks>
+        /// Reko will do its best to determine what registers are trashed by a
+        /// procedure, but when indirect calls are involved we have to guess.
+        /// If Reko's guess is incorrect, users can override it by proving
+        /// oracular type information.
+        /// </remarks>
+        /// <returns>A set of registers</returns>
+        public abstract HashSet<RegisterStorage> CreateTrashedRegisters();
 
         public IEnumerable<Address> CreatePointerScanner(
             SegmentMap segmentMap,
@@ -426,6 +442,11 @@ namespace Reko.Core
         }
 
         public override HashSet<RegisterStorage> CreateImplicitArgumentRegisters()
+        {
+            return new HashSet<RegisterStorage>();
+        }
+
+        public override HashSet<RegisterStorage> CreateTrashedRegisters()
         {
             return new HashSet<RegisterStorage>();
         }

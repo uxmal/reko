@@ -138,7 +138,6 @@ namespace Reko.Arch.X86
             Expression eIndex = null;
             Expression eBase = null;
             Expression expr = null;
-            PrimitiveType type = PrimitiveType.CreateWord(mem.Width.Size);
             bool ripRelative = false;
 
             if (mem.Base != RegisterStorage.None)

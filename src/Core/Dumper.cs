@@ -202,7 +202,6 @@ namespace Reko.Core
                 writer.Write("{0} ", addrBegin);
             if (ShowCodeBytes)
             {
-                StringWriter sw = new StringWriter();
                 WriteByteRange(mem, instr.Address, instr.Address + instr.Length, writer);
                 if (instr.Length * 3 < 16)
                 {

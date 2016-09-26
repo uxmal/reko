@@ -32,6 +32,7 @@ using System;
 using System.Xml;
 using System.Xml.Serialization;
 using PowerPcProcedureSerializer = Reko.Arch.PowerPC.PowerPcProcedureSerializer;
+using System.ComponentModel.Design;
 
 namespace Reko.UnitTests.Arch.PowerPC
 {
@@ -42,7 +43,6 @@ namespace Reko.UnitTests.Arch.PowerPC
         private MockFactory mockFactory;
         private PowerPcArchitecture arch;
         private PowerPcProcedureSerializer ser;
-        private SysVPlatform platform;
         private ISerializedTypeVisitor<DataType> deserializer;
 
         [SetUp]
@@ -51,7 +51,7 @@ namespace Reko.UnitTests.Arch.PowerPC
             mr = new MockRepository();
             mockFactory = new MockFactory(mr);
             arch = new PowerPcArchitecture32();
-            platform = new SysVPlatform(null, arch);
+            var sc = new ServiceContainer();
         }
 
         private void Given_ProcedureSerializer()

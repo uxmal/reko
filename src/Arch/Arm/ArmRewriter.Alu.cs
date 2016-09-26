@@ -46,7 +46,6 @@ namespace Reko.Arch.Arm
 
         private void RewriteRevBinOp(Operator op, bool setflags)
         {
-            var ops = instr.ArchitectureDetail.Operands.ToArray();
             var opDst = this.Operand(Dst);
             var opSrc1 = this.Operand(Src1);
             var opSrc2 = this.Operand(Src2);

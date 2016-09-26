@@ -32,13 +32,11 @@ namespace Reko.Arch.Sparc
 {
     public class SparcDisassembler : DisassemblerBase<SparcInstruction>
     {
-        private SparcArchitecture arch;
         private SparcInstruction instrCur;
         private ImageReader imageReader;
 
         public SparcDisassembler(SparcArchitecture arch, ImageReader imageReader)
         {
-            this.arch = arch;
             this.imageReader = imageReader;
         }
 

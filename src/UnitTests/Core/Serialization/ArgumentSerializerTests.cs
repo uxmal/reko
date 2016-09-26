@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Core.Serialization
         [SetUp]
         public void Setup()
         {
-            argser = new ArgumentSerializer(null, null, null, 0);
+            argser = new ArgumentSerializer(null);
         }
 
         [Test]

@@ -49,6 +49,12 @@ namespace Reko.Environments.ZX81
             return new HashSet<RegisterStorage> { Registers.sp };
         }
 
+        public override HashSet<RegisterStorage> CreateTrashedRegisters()
+        {
+            // A wild guess, but it's better than nothing. 
+            return new HashSet<RegisterStorage> { Registers.a };
+        }
+
         public override Core.Serialization.ProcedureSerializer CreateProcedureSerializer(ISerializedTypeVisitor<DataType> typeLoader, string defaultConvention)
         {
             throw new NotImplementedException();

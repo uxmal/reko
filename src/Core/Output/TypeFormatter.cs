@@ -36,19 +36,17 @@ namespace Reko.Core.Output
 		private string name;
 		private Dictionary<DataType,object> visited;
 		private Mode mode;
-        private bool typeReference;
 
 		private readonly object Declared = 1;
 		private readonly object Defined = 2;
 
 		public enum Mode { Writing, Scanning }
 
-		public TypeFormatter(Formatter writer, bool typeReference)
+		public TypeFormatter(Formatter writer)
 		{
             this.writer = writer;
 			this.visited = new Dictionary<DataType,object>();
 			this.mode = Mode.Writing;
-            this.typeReference = typeReference;
 		}
 
 		public void BeginLine()

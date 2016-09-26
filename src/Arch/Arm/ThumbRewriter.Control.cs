@@ -78,7 +78,6 @@ namespace Reko.Arch.Arm
         private void RewriteIt()
         {
             this.itState = instr.Bytes[0] & 0xF;
-            this.itStateFirst = instr.Bytes[0] >> 4;
             this.itStateCondition = instr.ArchitectureDetail.CodeCondition;
         }
 

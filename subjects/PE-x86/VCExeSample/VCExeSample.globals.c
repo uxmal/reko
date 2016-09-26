@@ -14,4 +14,5 @@ real32 g_r4020E4 = 8.567F;
 real32 g_r4020E8 = 4.123F;
 real32 g_r4020EC = 1000.1F;
 cdecl_class_ptr g_gbl_c = null;
+thiscall_class * g_gbl_thiscall = null;
 

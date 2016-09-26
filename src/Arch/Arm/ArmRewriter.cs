@@ -38,7 +38,6 @@ namespace Reko.Arch.Arm
     {
         private Arm32ProcessorArchitecture arch;
         private IEnumerator<Arm32Instruction> instrs;
-        private ArmProcessorState state;
         private Frame frame;
         private CapstoneArmInstruction instr;
         private ArmInstructionOperand [] ops;
@@ -50,7 +49,6 @@ namespace Reko.Arch.Arm
         {
             this.arch = arch;
             this.instrs = CreateInstructionStream(rdr);
-            this.state = state;
             this.frame = frame;
             this.host = host;
         }

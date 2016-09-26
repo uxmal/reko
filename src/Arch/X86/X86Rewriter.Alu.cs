@@ -565,7 +565,7 @@ namespace Reko.Arch.X86
                 mem = new MemoryOperand(mem.Width, mem.Base, mem.Index, mem.Scale, Constant.Create(instrCur.addrWidth, 0));
             }
 
-            var ass = emitter.Assign(
+            emitter.Assign(
                 frame.EnsureSequence(seg, reg.Register,
                 PrimitiveType.Pointer32),
                 SrcOp(mem, PrimitiveType.SegPtr32));
