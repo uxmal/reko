@@ -30,7 +30,6 @@ namespace Reko.Core.Services
     public interface ITypeLibraryLoaderService
     {
         TypeLibrary LoadMetadataIntoLibrary(IPlatform platform, ITypeLibraryElement tlElement, TypeLibrary libDst);
-        TypeLibrary LoadLibrary(IPlatform platform, string name, TypeLibrary libDst);
 
         string InstalledFileLocation(string name);
 
@@ -106,32 +105,6 @@ namespace Reko.Core.Services
                 }
             }
             return (MetadataLoader)Activator.CreateInstance(loaderType, services, filename, bytes);
-        }
-
-        [Obsolete("Use LoadMetadataIntoLibrary instead")]
-        public TypeLibrary LoadLibrary(IPlatform platform, string name, TypeLibrary dstLib)
-        {
-            try
-            {
-                string libFileName = InstalledFileLocation(name);
-                if (!File.Exists(libFileName))
-                    return dstLib;
-
-                byte[] bytes;
-                var fsSvc = services.RequireService<IFileSystemService>();
-                using (var stm = fsSvc.CreateFileStream(libFileName, FileMode.Open, FileAccess.Read))
-                {
-                    bytes = new Byte[stm.Length];
-                    stm.Read(bytes, 0, (int)stm.Length);
-                }
-                var tlldr = new TypeLibraryLoader(services, libFileName, bytes);
-                var lib = tlldr.Load(platform, dstLib);
-                return lib;
-            }
-            catch
-            {
-                return dstLib;
-            }
         }
 
         public CharacteristicsLibrary LoadCharacteristics(string name)

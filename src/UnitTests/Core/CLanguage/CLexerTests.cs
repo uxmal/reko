@@ -414,5 +414,12 @@ namespace Reko.UnitTests.Core.CLanguage
             Lex("::");
             AssertToken(CTokenType.ColonColon);
         }
+
+        [Test]
+        public void CLexer_LineComment()
+        {
+            Lex("// foo\nid");
+            AssertToken(CTokenType.Id);
+        }
     }
 }
