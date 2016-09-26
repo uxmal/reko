@@ -84,6 +84,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analysis\SsaStateTests.cs" />
     <Compile Include="Core\Analysis\PyArgFormatParserTests.cs" />
     <Compile Include="Analysis\UnusedOutValuesRemoverTests.cs" />
     <Compile Include="Core\Analysis\ScanfFormatParserTests.cs" />

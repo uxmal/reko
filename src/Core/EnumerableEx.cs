@@ -105,5 +105,36 @@ namespace Reko.Core
             do yield return e.Current;
             while (innerMoveNext());
         }
+
+
+        public static IEnumerable<TResult> ZipMany<TSource, TResult>(
+            IEnumerable<IEnumerable<TSource>> source,
+            Func<IEnumerable<TSource>, TResult> selector)
+        {
+            // ToList is necessary to avoid deferred execution
+            var enumerators = source.Select(seq => seq.GetEnumerator()).ToList();
+            try
+            {
+                while (true)
+                {
+                    bool moved = false;
+                    foreach (var e in enumerators)
+                    {
+                        bool b = e.MoveNext();
+                        if (!b) yield break;
+                        moved = true;
+                    }
+                    if (!moved)
+                        yield break;
+                    // Again, ToList (or ToArray) is necessary to avoid deferred execution
+                    yield return selector(enumerators.Select(e => e.Current).ToList());
+                }
+            }
+            finally
+            {
+                foreach (var e in enumerators)
+                    e.Dispose();
+            }
+        }
     }
 }

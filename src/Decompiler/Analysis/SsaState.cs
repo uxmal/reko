@@ -1,6 +1,6 @@
-#region License
+﻿#region License
 /* 
- * Copyright (C) 1999-2016 John K�ll�n.
+ * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Analysis
@@ -168,6 +169,48 @@ namespace Reko.Analysis
                 sid.Uses.RemoveAll(u => u == stm);
 			}
 		}
+
+        /// <summary>
+        /// Finds all phi statements of a block, and creates a transposition of
+        /// their arguments.
+        /// </summary>
+        /// <remarks>
+        /// The phi statements typically cluster at the top of a basic block, and
+        /// we often want to see how values pass from predecessors to the block.
+        /// We want to "rip" vertical stripes of the phi statements, one 
+        /// stripe for each predecessor;
+        /// <code>
+        /// r_2 = φ(r_0, r_1)
+        /// r_5 = φ(r_3, r_4)
+        /// ...
+        /// r_z = φ(r_x, r_y)
+        /// </code>
+        /// should result in the following "arg lists" (where pred0 and pred1)
+        /// are the block's predecessors.
+        /// <code>
+        /// pred0: (r_0, r_3, ..., r_x)
+        /// pred1: (r_1, r_4, ..., r_y)
+        /// </code>
+        /// </remarks>
+        /// <param name="block"></param>
+        /// <returns></returns>
+        public Dictionary<Block, Expression[]> PredecessorPhiIdentifiers(Block block)
+        {
+            var dict = new Dictionary<Block, Expression[]>();
+            if (block.Pred.Count > 1)
+            {
+                var phis = block.Statements
+                    .Select(s => s.Instruction)
+                    .OfType<PhiAssignment>()
+                    .Select(phi => (IEnumerable<Expression>)phi.Src.Arguments);
+                var arrs = Reko.Core.EnumerableEx.ZipMany(phis, ids => ids.ToArray()).ToArray();
+                for (int p = 0; p < block.Pred.Count; ++p)
+                {
+                    dict.Add(block.Pred[p], arrs[p]);
+                }
+            }
+            return dict;
+        }
 
 		/// <summary>
 		/// Undoes the SSA renaming by replacing each ssa identifier with its original identifier.
