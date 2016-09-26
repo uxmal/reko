@@ -81,7 +81,8 @@
     <struct name="thiscall_class_vtbl">
       <field offset="0" name="set_double">
         <ptr size="4">
-          <fn>
+          <fn convention="__thiscall">
+            <type>thiscall_class</type>
             <return>
               <void />
             </return>
@@ -93,7 +94,8 @@
       </field>
       <field offset="4" name="modify_double">
         <ptr size="4">
-          <fn>
+          <fn convention="__thiscall">
+            <type>thiscall_class</type>
             <return>
               <void />
             </return>
