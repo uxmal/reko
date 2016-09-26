@@ -1,9 +1,9 @@
-﻿//$TODO: port over all the definitions from msvcrt.xml here;
-// we have a C => XML translator, why not use it?
+﻿// Types
 
-typedef (*PVFV)();
+typedef void (*PVFV)(void);
 typedef int time_t;
 
+// Functions
 
 void * malloc(size_t);
 void free(void *);
