@@ -255,9 +255,9 @@ word64 fn00000001400012BC(word32 edx, word64 rdi, word64 r13, selector gs, word6
 {
 	if (fn0000000140001600(0x01, edx, r13) == 0x00)
 	{
-		word64 rcx_360;
-		byte bl_361;
-		fn0000000140001974(0x07, qwLoc04, qwArg00, qwArg04, qwArg0C, out rcx_360, out bl_361);
+		word64 rcx_362;
+		byte bl_363;
+		fn0000000140001974(0x07, qwLoc04, qwArg00, qwArg04, qwArg0C, out rcx_362, out bl_363);
 		int3();
 	}
 	Mem23[fp - 0x14 + 0x00:byte] = 0x00;
@@ -267,26 +267,27 @@ word64 fn00000001400012BC(word32 edx, word64 rdi, word64 r13, selector gs, word6
 	word32 ecx_33 = Mem23[0x00000001400035B0 + 0x00:word32];
 	if (ecx_33 == 0x01)
 	{
-		word64 rcx_353;
-		eax_25 = fn0000000140001974(0x07, qwLoc04, qwArg00, qwArg04, qwArg0C, out rcx_353, out bl_29);
 		ecx_33 = 0x07;
-		rax_28 = DPB(rax, eax_25, 0);
+		word64 rcx_355;
+		rax_28 = DPB(rax, fn0000000140001974(0x07, qwLoc04, qwArg00, qwArg04, qwArg0C, out rcx_355, out bl_29), 0);
 	}
 	word64 rax_233;
 	if (ecx_33 == 0x00)
 	{
 		Mem331[0x00000001400035B0 + 0x00:word32] = 0x01;
-		_initterm_e(Mem331[fp - 0x34 + 0x00:(ptr (ptr void))], Mem331[fp - 44 + 0x00:(ptr (ptr void))]);
-		if (eax_25 != 0x00)
+		word64 rdx_332 = 0x00000001400021D0;
+		word64 rcx_333 = 0x00000001400021B8;
+		word64 rax_334 = DPB(rax_28, _initterm_e(rcx_333, rdx_332), 0);
+		if (_initterm_e(rcx_333, rdx_332) != 0x00)
 		{
 			rax_233 = DPB(rax_28, 0xFF, 0);
 			return rax_233;
 		}
-		_initterm(Mem331[fp - 0x34 + 0x00:(ptr (ptr void))], Mem331[fp - 44 + 0x00:(ptr (ptr void))]);
-		Mem342[0x00000001400035B0 + 0x00:word32] = 0x02;
+		_initterm(0x00000001400021A0, 0x00000001400021B0);
+		Mem344[0x00000001400035B0 + 0x00:word32] = 0x02;
 	}
 	else
-		Mem344[fp - 0x14 + 0x00:byte] = 0x01;
+		Mem346[fp - 0x14 + 0x00:byte] = 0x01;
 	fn00000001400017B4(bl_29);
 	word64 rax_80 = fn0000000140001964();
 	if (Mem23[rax_80 + 0x00:word64] != 0x00)
@@ -312,9 +313,9 @@ word64 fn00000001400012BC(word32 edx, word64 rdi, word64 r13, selector gs, word6
 			byte bl_318;
 			word64 rdx_319;
 			word64 rcx_320;
-			word32 eax_321;
-			byte cl_322;
-			word64 rax_323;
+			word64 rax_321;
+			word32 eax_322;
+			byte cl_323;
 			word32 r8d_324;
 			word32 edx_325;
 			word32 ebx_326;
@@ -346,9 +347,9 @@ word64 fn00000001400012BC(word32 edx, word64 rdi, word64 r13, selector gs, word6
 			byte bl_278;
 			word64 rdx_279;
 			word64 rcx_280;
-			word32 eax_281;
-			byte cl_282;
-			word64 rax_283;
+			word64 rax_281;
+			word32 eax_282;
+			byte cl_283;
 			word32 r8d_284;
 			word32 edx_285;
 			word32 ebx_286;
@@ -373,9 +374,9 @@ word64 fn00000001400012BC(word32 edx, word64 rdi, word64 r13, selector gs, word6
 	byte bl_126;
 	word64 rdx_127;
 	word64 rcx_128;
-	word32 eax_129;
-	byte cl_130;
-	word64 rax_131;
+	word64 rax_129;
+	word32 eax_130;
+	byte cl_131;
 	word32 r8d_132;
 	word32 edx_133;
 	word32 ebx_134;
@@ -398,9 +399,9 @@ word64 fn00000001400012BC(word32 edx, word64 rdi, word64 r13, selector gs, word6
 	byte bl_152;
 	word64 rdx_153;
 	word64 rcx_154;
-	word32 eax_155;
-	byte cl_156;
-	word64 rax_157;
+	word64 rax_155;
+	word32 eax_156;
+	byte cl_157;
 	word32 r8d_158;
 	word32 edx_159;
 	word32 ebx_160;
@@ -423,8 +424,8 @@ word64 fn00000001400012BC(word32 edx, word64 rdi, word64 r13, selector gs, word6
 	byte bl_178;
 	word64 rdx_179;
 	word64 rcx_180;
-	word32 eax_181;
-	byte cl_182;
+	word32 eax_182;
+	byte cl_183;
 	word32 r8d_184;
 	word32 edx_185;
 	word32 ebx_186;
@@ -432,7 +433,7 @@ word64 fn00000001400012BC(word32 edx, word64 rdi, word64 r13, selector gs, word6
 	word64 r13_188;
 	selector gs_189;
 	byte dl_190;
-	word64 rax_183;
+	word64 rax_181;
 	get_initial_narrow_environment();
 	byte sil_195;
 	word32 eax_196 = fn0000000140001000(out sil_195);
@@ -455,8 +456,8 @@ word64 fn00000001400012BC(word32 edx, word64 rdi, word64 r13, selector gs, word6
 		byte bl_245;
 		word64 rdx_246;
 		word64 rcx_247;
-		word32 eax_248;
-		byte cl_249;
+		word32 eax_249;
+		byte cl_250;
 		word32 r8d_251;
 		word32 edx_252;
 		word32 ebx_253;
@@ -466,7 +467,7 @@ word64 fn00000001400012BC(word32 edx, word64 rdi, word64 r13, selector gs, word6
 		byte dl_257;
 		cexit();
 	}
-	rax_233 = DPB(rax_183, fn00000001400017D8(0x00), 0);
+	rax_233 = DPB(rax_181, fn00000001400017D8(0x00), 0);
 	return rax_233;
 }
 

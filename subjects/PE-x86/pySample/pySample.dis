@@ -247,7 +247,7 @@ fn100011E9_entry:
 
 l100011E9:
 	word32 eax_123
-	word32 ebp_204 = 0x00000000
+	word32 ebp_203 = 0x00000000
 	branch dwArg08 != 0x00000000 l10001202
 // DataOut: eax ebp esp fs
 // DataOut (flags): 
@@ -268,7 +268,7 @@ l10001233:
 // SymbolicIn: esp:fp - 0x00000004 eax:<invalid> ebp:0x00000000 -4(fp):ebp
 
 l100011FC:
-	Mem307[0x10003070:word32] = Mem0[0x10003070:word32] - 0x00000001
+	Mem305[0x10003070:word32] = Mem0[0x10003070:word32] - 0x00000001
 // DataOut: eax ebp fs
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000004 eax:<invalid> ebp:0x00000000 -4(fp):ebp
@@ -317,75 +317,75 @@ l10001312:
 // LocalsOut: fp(32)
 
 l10001326:
-	word32 eax_234 = _decode_pointer(Mem45[0x100033B4:word32])
-	word32 ebx_235 = eax_234
-	branch eax_234 == 0x00000000 l1000136F
+	word32 eax_232 = _decode_pointer(Mem45[0x100033B4:word32])
+	word32 ebx_233 = eax_232
+	branch eax_232 == 0x00000000 l1000136F
 // DataOut: ebx fs
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000010 eax:<invalid> ebp:0x00000000 ecx:<invalid> edi:InterlockedCompareExchange esi:0x100033AC -28(fp):0x100033AC -24(fp):0x00000001 -20(fp):0x00000000 -16(fp):edi -12(fp):esi -8(fp):ebx -4(fp):ebp
 // LocalsOut: fp(32)
 
 l1000133B:
-	word32 edi_264 = _decode_pointer(Mem45[0x100033B0:word32])
+	word32 edi_262 = _decode_pointer(Mem45[0x100033B0:word32])
 // DataOut: ebx edi fs
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000010 eax:<invalid> ebp:0x00000000 ecx:<invalid> edi:_decode_pointer esi:0x100033AC ebx:<invalid> -28(fp):0x100033AC -24(fp):0x00000001 -20(fp):<invalid> -16(fp):edi -12(fp):esi -8(fp):ebx -4(fp):ebp
 // LocalsOut: fp(32)
 
 l10001350:
-	edi_264 = edi_264 - 0x00000004
-	branch edi_264 >=u ebx_235 l10001348
+	edi_262 = edi_262 - 0x00000004
+	branch edi_262 >=u ebx_233 l10001348
 // DataOut: ebx edi fs
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000010 eax:<invalid> ebp:0x00000000 ecx:<invalid> edi:<invalid> esi:0x100033AC ebx:<invalid> -28(fp):0x100033AC -24(fp):0x00000001 -20(fp):<invalid> -16(fp):edi -12(fp):esi -8(fp):ebx -4(fp):ebp
 // LocalsOut: fp(32)
 
 l10001348:
-	word32 eax_285 = Mem45[edi_264:word32]
-	branch eax_285 == 0x00000000 l10001350
+	word32 eax_283 = Mem45[edi_262:word32]
+	branch eax_283 == 0x00000000 l10001350
 // DataOut: ebx edi fs
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000010 eax:<invalid> ebp:0x00000000 ecx:<invalid> edi:<invalid> esi:0x100033AC ebx:<invalid> -28(fp):0x100033AC -24(fp):0x00000001 -20(fp):<invalid> -16(fp):edi -12(fp):esi -8(fp):ebx -4(fp):ebp
 // LocalsOut: fp(32)
 
 l1000134E:
-	word32 esp_289
-	word32 eax_290
-	word32 ebp_291
-	byte SZO_292
-	byte C_293
-	byte SCZO_294
-	byte Z_295
-	word32 ecx_296
-	word32 esi_298
-	selector fs_300
-	call eax_285 (retsize: 4; depth: 20)
-		uses: C_288,dwLoc04_6,dwLoc08_38,dwLoc0C_41,dwLoc10_44,dwLoc14_260,dwLoc18_216,dwLoc1C_218,eax_285,ebp_273,ebx_272,ecx_266,edi_275,esi_271,esp_274,fs_265,SCZO_276,SZO_286,tLoc14,Z_287
-		defs: C_293,eax_290,ebp_291,ebx_297,ecx_296,edi_299,esi_298,esp_289,fs_300,SCZO_294,SZO_292,Z_295
+	word32 esp_287
+	word32 eax_288
+	word32 ebp_289
+	byte SZO_290
+	byte C_291
+	byte SCZO_292
+	byte Z_293
+	word32 ecx_294
+	word32 esi_296
+	selector fs_298
+	call eax_283 (retsize: 4; depth: 20)
+		uses: C_286,dwLoc04_6,dwLoc08_38,dwLoc0C_41,dwLoc10_44,dwLoc14_258,dwLoc18_215,dwLoc1C_217,eax_283,ebp_271,ebx_270,ecx_264,edi_273,esi_269,esp_272,fs_263,SCZO_274,SZO_284,Z_285
+		defs: C_291,eax_288,ebp_289,ebx_295,ecx_294,edi_297,esi_296,esp_287,fs_298,SCZO_292,SZO_290,Z_293
 // DataOut: ebx edi fs
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000010 eax:<invalid> ebp:0x00000000 ecx:<invalid> edi:<invalid> esi:0x100033AC ebx:<invalid> -28(fp):0x100033AC -24(fp):0x00000001 -20(fp):<invalid> -16(fp):edi -12(fp):esi -8(fp):ebx -4(fp):ebp
 // LocalsOut: fp(32)
 
 l10001357:
-	free(ebx_235)
-	word32 eax_282 = _encoded_null()
-	Mem283[0x100033B0:word32] = eax_282
-	Mem284[0x100033B4:word32] = eax_282
+	free(ebx_233)
+	word32 eax_280 = _encoded_null()
+	Mem281[0x100033B0:word32] = eax_280
+	Mem282[0x100033B4:word32] = eax_280
 // DataOut: fs
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000010 eax:<invalid> ebp:0x00000000 ecx:<invalid> edi:<invalid> esi:0x100033AC ebx:<invalid> -28(fp):0x100033AC -24(fp):0x00000001 -20(fp):<invalid> -16(fp):edi -12(fp):esi -8(fp):ebx -4(fp):ebp
 // LocalsOut: fp(32)
 
 l1000136F:
-	Mem255[0x100033A8:word32] = 0x00000000
+	Mem253[0x100033A8:word32] = 0x00000000
 	InterlockedExchange(0x100033AC, 0x00000000)
 // DataOut: esp fs
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000010 eax:<invalid> ebp:0x00000000 ecx:<invalid> edi:<invalid> esi:0x100033AC ebx:<invalid> -28(fp):0x100033AC -24(fp):0x00000001 -20(fp):<invalid> -16(fp):edi -12(fp):esi -8(fp):ebx -4(fp):ebp
 
 l1000131C:
-	_amsg_exit((int) 0x0000001F)
+	_amsg_exit(0x0000001F)
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000010 eax:<invalid> ebp:0x00000000 ecx:<invalid> edi:InterlockedCompareExchange esi:0x100033AC -28(fp):0x100033AC -24(fp):0x00000001 -20(fp):0x00000000 -16(fp):edi -12(fp):esi -8(fp):ebx -4(fp):ebp
@@ -413,7 +413,7 @@ l1000123A:
 // LocalsOut: fp(32)
 
 l10001255:
-	ebp_204 = 0x00000001
+	ebp_203 = 0x00000001
 // DataOut: ebp ebx esi fs
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000010 eax:<invalid> ebp:0x00000000 ecx:<invalid> edi:<invalid> ebx:InterlockedCompareExchange esi:0x100033AC -28(fp):0x100033AC -24(fp):<invalid> -20(fp):0x00000000 -16(fp):edi -12(fp):esi -8(fp):ebx -4(fp):ebp
@@ -433,17 +433,15 @@ l10001253:
 // LocalsOut: fp(32)
 
 l10001258:
-	word32 eax_100 = Mem45[0x100033A8:word32]
-	branch eax_100 == 0x00000000 l1000126D
-// DataOut: eax ebp ebx edi esi fs
+	branch Mem45[0x100033A8:word32] == 0x00000000 l1000126D
+// DataOut: ebp ebx edi esi fs
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000010 eax:<invalid> ebp:<invalid> ecx:<invalid> edi:<invalid> ebx:InterlockedCompareExchange esi:0x100033AC -28(fp):0x100033AC -24(fp):<invalid> -20(fp):0x00000000 -16(fp):edi -12(fp):esi -8(fp):ebx -4(fp):ebp
 // LocalsOut: fp(32)
 
 l1000126D:
-	Mem115[0x100033A8:word32] = 0x00000001
-	_initterm_e(0x100020A0, 0x100020A8)
-	branch eax_100 == 0x00000000 l10001293
+	Mem114[0x100033A8:word32] = 0x00000001
+	branch _initterm_e(0x100020A0, 0x100020A8) == 0x00000000 l10001293
 // DataOut: ebp ebx edi esi esp fs
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000010 eax:<invalid> ebp:<invalid> ecx:<invalid> edi:0x00000002 ebx:InterlockedCompareExchange esi:0x100033AC -28(fp):0x100033AC -24(fp):<invalid> -20(fp):0x00000002 -16(fp):edi -12(fp):esi -8(fp):ebx -4(fp):ebp
@@ -452,14 +450,14 @@ l1000126D:
 l10001293:
 	_initterm(0x10002098, 0x1000209C)
 	Mem132[0x100033A8:word32] = 0x00000002
-	branch ebp_204 != 0x00000000 l100012B6
+	branch ebp_203 != 0x00000000 l100012B6
 // DataOut: ebp ebx edi esi esp fs
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000010 eax:<invalid> ebp:<invalid> ecx:0x100020A8 edi:0x00000002 ebx:InterlockedCompareExchange esi:0x100033AC -28(fp):0x100033AC -24(fp):0x100020A0 -20(fp):0x100020A8 -16(fp):edi -12(fp):esi -8(fp):ebx -4(fp):ebp
 // LocalsOut: fp(32)
 
 l100012AE:
-	InterlockedExchange(0x100033AC, ebp_204)
+	InterlockedExchange(0x100033AC, ebp_203)
 // DataOut: ebx edi esi esp fs
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000010 eax:<invalid> ebp:<invalid> ecx:0x1000209C edi:0x00000002 ebx:InterlockedCompareExchange esi:0x100033AC -28(fp):0x100033AC -24(fp):0x10002098 -20(fp):0x1000209C -16(fp):edi -12(fp):esi -8(fp):ebx -4(fp):ebp
@@ -484,21 +482,21 @@ l100012CE:
 	Mem170[fp - 0x00000014:word32] = Mem132[fp + 0x0000000C:word32]
 	Mem172[fp - 0x00000018:word32] = edi_161
 	Mem175[fp - 0x0000001C:word32] = Mem172[fp + 0x00000004:word32]
-	word32 esp_177
-	word32 eax_178
-	word32 ebp_179
-	byte SZO_180
-	byte C_181
-	byte SCZO_182
-	byte Z_183
-	word32 ecx_184
-	word32 ebx_185
-	word32 esi_186
-	word32 edi_187
-	selector fs_188
+	word32 esp_176
+	word32 eax_177
+	word32 ebp_178
+	byte SZO_179
+	byte C_180
+	byte SCZO_181
+	byte Z_182
+	word32 ecx_183
+	word32 ebx_184
+	word32 esi_185
+	word32 edi_186
+	selector fs_187
 	call Mem175[0x100033B8:word32] (retsize: 4; depth: 4)
-		uses: C_165,dwLoc04_6,dwLoc08_38,dwLoc0C_41,dwLoc10_44,dwLoc14_160,dwLoc18_138,dwLoc1C_92,eax_162,ebp_99,ebx_83,ecx_166,edi_161,esi_86,esp_174,fs,SCZO_142,SZO_163,tLoc14,Z_164
-		defs: C_181,eax_178,ebp_179,ebx_185,ecx_184,edi_187,esi_186,esp_177,fs_188,SCZO_182,SZO_180,Z_183
+		uses: C_165,dwLoc04_6,dwLoc08_38,dwLoc0C_41,dwLoc10_44,dwLoc14_160,dwLoc18_138,dwLoc1C_92,eax_162,ebp_99,ebx_83,ecx_166,edi_161,esi_86,esp_174,fs,SCZO_142,SZO_163,Z_164
+		defs: C_180,eax_177,ebp_178,ebx_184,ecx_183,edi_186,esi_185,esp_176,fs_187,SCZO_181,SZO_179,Z_182
 // DataOut: esp fs
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> eax:<invalid> ebp:<invalid> ecx:<invalid> edi:<invalid> ebx:<invalid> esi:<invalid> edx:<invalid> cl:<invalid> -28(fp):0x100033AC -24(fp):<invalid> -20(fp):0x100033B8 -16(fp):edi -12(fp):esi -8(fp):ebx -4(fp):ebp
@@ -538,7 +536,7 @@ fn100011E9_exit:
 // SymbolicIn: esp:<invalid> eax:<invalid> ebp:<invalid> ecx:<invalid> edi:<invalid> esi:<invalid> ebx:<invalid> edx:<invalid> cl:<invalid> -28(fp):0x100033AC -24(fp):<invalid> -20(fp):<invalid> -16(fp):edi -12(fp):esi -8(fp):ebx -4(fp):ebp
 
 l10001264:
-	_amsg_exit((int) 0x0000001F)
+	_amsg_exit(0x0000001F)
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000010 eax:<invalid> ebp:<invalid> ecx:<invalid> edi:0x00000002 ebx:InterlockedCompareExchange esi:0x100033AC -28(fp):0x100033AC -24(fp):<invalid> -20(fp):0x00000002 -16(fp):edi -12(fp):esi -8(fp):ebx -4(fp):ebp

@@ -1178,5 +1178,12 @@ MemoryBarrier (
             }
             Assert.Fail("Should have failed to parse");
         }
+
+        [Test]
+        public void CParser_Argument_Attributes()
+        {
+            Lex("int _ftol([[reko::x87_fpu_arg]]double);");
+            var decl = parser.Parse_ExternalDecl();
+        }
     }
 }

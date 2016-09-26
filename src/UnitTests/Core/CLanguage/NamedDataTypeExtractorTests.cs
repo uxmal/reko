@@ -116,7 +116,6 @@ namespace Reko.UnitTests.Core.CLanguage
             Assert.AreEqual("prim(Real,8)", nt.DataType.ToString());
         }
 
-
         [Test]
         public void NamedDataTypeExtractor_unsigned_short()
         {
@@ -125,7 +124,7 @@ namespace Reko.UnitTests.Core.CLanguage
             Assert.AreEqual("prim(UnsignedInt,2)", nt.DataType.ToString());
         }
 
-        [Test(Description = "If there are not reko attributes present, don't explicitly state the kind, but let the ABI rules decide.")]
+        [Test(Description = "If no reko attributes are present, don't explicitly state the kind, but let the ABI rules decide.")]
         public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_OtherAttrs()
         {
             var ndte = new NamedDataTypeExtractor(platform, new DeclSpec[0], symbolTable);
@@ -133,7 +132,7 @@ namespace Reko.UnitTests.Core.CLanguage
             Assert.IsNull(kind);
         }
 
-        [Test(Description = "If there are not reko attributes present, don't explicitly state the kind, but let the ABI rules decide.")]
+        [Test(Description = "If no reko attributes are present, don't explicitly state the kind, but let the ABI rules decide.")]
         public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_null()
         {
             var ndte = new NamedDataTypeExtractor(platform, new DeclSpec[0], symbolTable);
@@ -148,7 +147,7 @@ namespace Reko.UnitTests.Core.CLanguage
             Assert.IsNull(kind);
         }
 
-        [Test(Description = "If there is a reko::arg attribute present, us it to determine kind.")]
+        [Test(Description = "If there is a reko::arg attribute present, use it to determine kind.")]
         public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_reko_reg()
         {
             var ndte = new NamedDataTypeExtractor(platform, new DeclSpec[0], symbolTable);
@@ -168,6 +167,25 @@ namespace Reko.UnitTests.Core.CLanguage
             Assert.IsNotNull(kind);
             var sReg = (Register_v1)kind;
             Assert.AreEqual("D0", sReg.Name);
+        }
+
+        [Test(Description = "If there is a reko::fpu attribute present, use it to determine kind.")]
+        public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_reko_x87_fpu()
+        {
+            var ndte = new NamedDataTypeExtractor(platform, new DeclSpec[0], symbolTable);
+            var kind = ndte.GetArgumentKindFromAttributes(
+                "arg",
+                new List<CAttribute>
+                {
+                    new CAttribute {
+                         Name = new QualifiedName("reko", "arg"),
+                         Tokens = new List<CToken> {
+                             new CToken(CTokenType.Id, "fpu")
+                         }
+                    }
+                });
+            Assert.IsNotNull(kind);
+            Assert.IsInstanceOf<FpuStackVariable_v1>(kind);
         }
     }
 }
