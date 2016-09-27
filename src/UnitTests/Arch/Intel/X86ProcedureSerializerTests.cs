@@ -227,6 +227,7 @@ namespace Reko.UnitTests.Arch.Intel
             Assert.AreEqual(2, sig.Parameters.Length);
             Assert.AreEqual("this", sig.Parameters[0].ToString());
             Assert.AreEqual("ecx", sig.Parameters[0].Storage.ToString());
+            Assert.AreEqual(8, sig.StackDelta);
         }
 
         [Test]
@@ -252,7 +253,7 @@ namespace Reko.UnitTests.Arch.Intel
         }
 
         [Test]
-        public void ProcSer_Load_stdcall()
+        public void ProcSer_Load_stdapi()
         {
             var ssig = new SerializedSignature
             {
@@ -271,6 +272,53 @@ namespace Reko.UnitTests.Arch.Intel
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(8, sig.StackDelta);
             Assert.AreEqual(4, ((StackArgumentStorage)sig.Parameters[0].Storage).StackOffset);
+            Assert.AreEqual(8, sig.StackDelta);
+        }
+
+        [Test]
+        public void ProcSer_Load_stdcall()
+        {
+            var ssig = new SerializedSignature
+            {
+                Convention = "stdcall",
+                Arguments = new Argument_v1[] {
+                    new Argument_v1
+                    {
+                        Name = "foo",
+                        Type = new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize = 4 },
+                    }
+                }
+            };
+            Given_ProcedureSerializer(ssig.Convention);
+            mr.ReplayAll();
+
+            var sig = ser.Deserialize(ssig, arch.CreateFrame());
+            Assert.AreEqual(8, sig.StackDelta);
+            Assert.AreEqual(4, ((StackArgumentStorage)sig.Parameters[0].Storage).StackOffset);
+            Assert.AreEqual(8, sig.StackDelta);
+        }
+
+        [Test]
+        public void ProcSer_Load___stdcall()
+        {
+            var ssig = new SerializedSignature
+            {
+                Convention = "__stdcall",
+                Arguments = new Argument_v1[] {
+                    new Argument_v1
+                    {
+                        Name = "foo",
+                        Type = new PrimitiveType_v1 { Domain = Domain.SignedInt, ByteSize = 4 },
+                    }
+                }
+            };
+            Given_ProcedureSerializer(ssig.Convention);
+            mr.ReplayAll();
+
+            var sig = ser.Deserialize(ssig, arch.CreateFrame());
+            Assert.AreEqual(8, sig.StackDelta);
+            Assert.AreEqual(4, ((StackArgumentStorage)sig.Parameters[0].Storage).StackOffset);
+            Assert.AreEqual(8, sig.StackDelta);
         }
 
         [Test]
@@ -328,7 +376,7 @@ namespace Reko.UnitTests.Arch.Intel
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             var sExp =
 @"void memfn(Register (ptr (struct ""CWindow"")) this, Stack int32 XX, Stack int16 arg1)
-// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 12; fpuStackDelta: 0; fpuMaxParam: -1
 ";
             Assert.AreEqual(sExp, sig.ToString("memfn", FunctionType.EmitFlags.AllDetails));
             Assert.AreEqual(4, ((StackArgumentStorage)sig.Parameters[1].Storage).StackOffset);
