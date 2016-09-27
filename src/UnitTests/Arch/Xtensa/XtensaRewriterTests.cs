@@ -185,8 +185,17 @@ namespace Reko.UnitTests.Arch.Xtensa
         {
             Rewrite(0x7D48); // "l32i.n\ta4,a13,28"
             AssertCode(
-                "0|L--|00010000(3): 1 instructions",
+                "0|L--|00010000(2): 1 instructions",
                 "1|L--|a4 = Mem0[a13 + 0x0000001C:word32]");
+        }
+
+        [Test]
+        public void Xtrw_movi_n()
+        {
+            Rewrite(0xF37C); // movi.n\ta3,-01",
+            AssertCode(
+                "0|L--|00010000(2): 1 instructions",
+                "1|L--|a3 = -1");
         }
     }
 }

@@ -1,0 +1,3668 @@
+// DebugExceptionVector
+// Return size: 0
+void DebugExceptionVector()
+DebugExceptionVector_entry:
+DebugExceptionVector_exit:
+
+
+// KernelExceptionVector
+// Return size: 0
+void KernelExceptionVector()
+KernelExceptionVector_entry:
+KernelExceptionVector_exit:
+
+
+// call_user_start
+// Return size: 0
+void call_user_start()
+call_user_start_entry:
+	// succ:  l40100214
+l40100214:
+	Mem0 = fp
+	a2 = 0x4010020C
+	VECBASE = a2
+	a1 = a1 | a1
+	a0 = 0x40100220
+	call sdk_user_start (retsize: 0;)
+	__reserved()
+call_user_start_exit:
+
+
+// vTaskPlaceOnEventList
+// Return size: 0
+void vTaskPlaceOnEventList()
+vTaskPlaceOnEventList_entry:
+vTaskPlaceOnEventList_exit:
+
+
+// default_putc
+// Return size: 0
+void default_putc()
+default_putc_entry:
+	// succ:  l40100C58
+l40100C58:
+	Mem0 = fp
+	a4 = 0x40100C54
+default_putc_exit:
+
+
+// sdk_user_start
+// Return size: 0
+void sdk_user_start()
+sdk_user_start_entry:
+	// succ:  l40100D40
+l40100D40:
+	Mem0 = fp
+	a9 = 0x000003A0
+sdk_user_start_exit:
+
+
+// sdk_system_rtc_mem_write
+// Return size: 0
+void sdk_system_rtc_mem_write()
+sdk_system_rtc_mem_write_entry:
+	// succ:  l401014E0
+l401014E0:
+	Mem0 = fp
+	a6 = 0x000000BF
+sdk_system_rtc_mem_write_exit:
+
+
+// sdk_wDev_ProcessFiq
+// Return size: 0
+void sdk_wDev_ProcessFiq()
+sdk_wDev_ProcessFiq_entry:
+sdk_wDev_ProcessFiq_exit:
+
+
+// dump_excinfo
+// Return size: 0
+void dump_excinfo()
+dump_excinfo_entry:
+dump_excinfo_exit:
+
+
+// __fixdfsi
+// Return size: 0
+void __fixdfsi()
+__fixdfsi_entry:
+	// succ:  l40210F58
+l40210F58:
+	Mem0 = fp
+	a6 = 0x40204460
+__fixdfsi_exit:
+
+
+// sdk_ieee80211_send_action
+// Return size: 0
+void sdk_ieee80211_send_action()
+sdk_ieee80211_send_action_entry:
+sdk_ieee80211_send_action_exit:
+
+
+// sdk_ieee80211_recv_action_register
+// Return size: 0
+void sdk_ieee80211_recv_action_register()
+sdk_ieee80211_recv_action_register_entry:
+sdk_ieee80211_recv_action_register_exit:
+
+
+// sdk_ieee80211_recv_action_unregister
+// Return size: 0
+void sdk_ieee80211_recv_action_unregister()
+sdk_ieee80211_recv_action_unregister_entry:
+	// succ:  l4021BB34
+l4021BB34:
+	Mem0 = fp
+	a4 = 0x4021BB30
+sdk_ieee80211_recv_action_unregister_exit:
+
+
+// sdk_ieee80211_recv_action
+// Return size: 0
+void sdk_ieee80211_recv_action()
+sdk_ieee80211_recv_action_entry:
+sdk_ieee80211_recv_action_exit:
+
+
+// sdk_ieee80211_getmgtframe
+// Return size: 0
+void sdk_ieee80211_getmgtframe()
+sdk_ieee80211_getmgtframe_entry:
+sdk_ieee80211_getmgtframe_exit:
+
+
+// sdk_rf_init
+// Return size: 0
+void sdk_rf_init()
+sdk_rf_init_entry:
+sdk_rf_init_exit:
+
+
+// sdk_bb_init
+// Return size: 0
+void sdk_bb_init()
+sdk_bb_init_entry:
+sdk_bb_init_exit:
+
+
+// sdk_phy_init
+// Return size: 0
+void sdk_phy_init()
+sdk_phy_init_entry:
+sdk_phy_init_exit:
+
+
+// sdk_RFChannelSel
+// Return size: 0
+void sdk_RFChannelSel()
+sdk_RFChannelSel_entry:
+sdk_RFChannelSel_exit:
+
+
+// sdk_phy_delete_channel
+// Return size: 0
+void sdk_phy_delete_channel()
+sdk_phy_delete_channel_entry:
+sdk_phy_delete_channel_exit:
+
+
+// sdk_phy_enable_agc
+// Return size: 0
+void sdk_phy_enable_agc()
+sdk_phy_enable_agc_entry:
+sdk_phy_enable_agc_exit:
+
+
+// sdk_phy_disable_agc
+// Return size: 0
+void sdk_phy_disable_agc()
+sdk_phy_disable_agc_entry:
+sdk_phy_disable_agc_exit:
+
+
+// sdk_phy_initialize_bb
+// Return size: 0
+void sdk_phy_initialize_bb()
+sdk_phy_initialize_bb_entry:
+sdk_phy_initialize_bb_exit:
+
+
+// sdk_phy_set_sense
+// Return size: 0
+void sdk_phy_set_sense()
+sdk_phy_set_sense_entry:
+sdk_phy_set_sense_exit:
+
+
+// sdk_ram_pbus_set_rxgain
+// Return size: 0
+void sdk_ram_pbus_set_rxgain()
+sdk_ram_pbus_set_rxgain_entry:
+sdk_ram_pbus_set_rxgain_exit:
+
+
+// sdk_ram_pbus_debugmode
+// Return size: 0
+void sdk_ram_pbus_debugmode()
+sdk_ram_pbus_debugmode_entry:
+sdk_ram_pbus_debugmode_exit:
+
+
+// sdk_ram_pbus_xpd_tx_on
+// Return size: 0
+void sdk_ram_pbus_xpd_tx_on()
+sdk_ram_pbus_xpd_tx_on_entry:
+sdk_ram_pbus_xpd_tx_on_exit:
+
+
+// sdk_set_rf_freq_offset
+// Return size: 0
+void sdk_set_rf_freq_offset()
+sdk_set_rf_freq_offset_entry:
+sdk_set_rf_freq_offset_exit:
+
+
+// sdk_chip_v6_rxmax_ext_ana
+// Return size: 0
+void sdk_chip_v6_rxmax_ext_ana()
+sdk_chip_v6_rxmax_ext_ana_entry:
+sdk_chip_v6_rxmax_ext_ana_exit:
+
+
+// sdk_ram_chip_v6_rx_init
+// Return size: 0
+void sdk_ram_chip_v6_rx_init()
+sdk_ram_chip_v6_rx_init_entry:
+	// succ:  l4021C0A4
+l4021C0A4:
+	Mem0 = fp
+	a2 = 0x00000061
+sdk_ram_chip_v6_rx_init_exit:
+
+
+// sdk_tsen_meas
+// Return size: 0
+void sdk_tsen_meas()
+sdk_tsen_meas_entry:
+sdk_tsen_meas_exit:
+
+
+// sdk_readvdd33
+// Return size: 0
+void sdk_readvdd33()
+sdk_readvdd33_entry:
+sdk_readvdd33_exit:
+
+
+// sdk_txpwr_offset
+// Return size: 0
+void sdk_txpwr_offset()
+sdk_txpwr_offset_entry:
+	// succ:  l4021C310
+l4021C310:
+	Mem0 = fp
+	a3 = 0x4021C304
+sdk_txpwr_offset_exit:
+
+
+// sdk_set_txcap_reg
+// Return size: 0
+void sdk_set_txcap_reg()
+sdk_set_txcap_reg_entry:
+sdk_set_txcap_reg_exit:
+
+
+// sdk_ram_restart_cal
+// Return size: 0
+void sdk_ram_restart_cal()
+sdk_ram_restart_cal_entry:
+	// succ:  l4021C438
+l4021C438:
+	Mem0 = fp
+	a2 = 0x00000062
+sdk_ram_restart_cal_exit:
+
+
+// sdk_wait_rfpll_cal_end
+// Return size: 0
+void sdk_wait_rfpll_cal_end()
+sdk_wait_rfpll_cal_end_entry:
+sdk_wait_rfpll_cal_end_exit:
+
+
+// sdk_ram_rfpll_set_freq
+// Return size: 0
+void sdk_ram_rfpll_set_freq()
+sdk_ram_rfpll_set_freq_entry:
+sdk_ram_rfpll_set_freq_exit:
+
+
+// sdk_ram_set_channel_freq
+// Return size: 0
+void sdk_ram_set_channel_freq()
+sdk_ram_set_channel_freq_entry:
+sdk_ram_set_channel_freq_exit:
+
+
+// sdk_chip_60_set_channel
+// Return size: 0
+void sdk_chip_60_set_channel()
+sdk_chip_60_set_channel_entry:
+	// succ:  l4021C8F8
+l4021C8F8:
+	Mem0 = fp
+	a8 = 0x4021C30C
+sdk_chip_60_set_channel_exit:
+
+
+// sdk_chip_v6_set_chan_offset
+// Return size: 0
+void sdk_chip_v6_set_chan_offset()
+sdk_chip_v6_set_chan_offset_entry:
+sdk_chip_v6_set_chan_offset_exit:
+
+
+// sdk_chip_v6_set_chan
+// Return size: 0
+void sdk_chip_v6_set_chan()
+sdk_chip_v6_set_chan_entry:
+	// succ:  l4021CA50
+l4021CA50:
+	Mem0 = fp
+	a4 = 0x4021CA48
+	a3 = 0x00000001
+sdk_chip_v6_set_chan_exit:
+
+
+// sdk_chip_v6_set_chan_wakeup
+// Return size: 0
+void sdk_chip_v6_set_chan_wakeup()
+sdk_chip_v6_set_chan_wakeup_entry:
+sdk_chip_v6_set_chan_wakeup_exit:
+
+
+// sdk_chip_v6_rf_init
+// Return size: 0
+void sdk_chip_v6_rf_init()
+sdk_chip_v6_rf_init_entry:
+	// succ:  l4021CB48
+l4021CB48:
+	Mem0 = fp
+	a6 = 0x4021CB28
+sdk_chip_v6_rf_init_exit:
+
+
+// sdk_low_power_set
+// Return size: 0
+void sdk_low_power_set()
+sdk_low_power_set_entry:
+	// succ:  l4021CD54
+l4021CD54:
+	Mem0 = fp
+	a6 = 0x4021C30C
+sdk_low_power_set_exit:
+
+
+// sdk_test_tout
+// Return size: 0
+void sdk_test_tout()
+sdk_test_tout_entry:
+sdk_test_tout_exit:
+
+
+// sdk_check_data_flag
+// Return size: 0
+void sdk_check_data_flag()
+sdk_check_data_flag_entry:
+sdk_check_data_flag_exit:
+
+
+// sdk_get_check_flag
+// Return size: 0
+void sdk_get_check_flag()
+sdk_get_check_flag_entry:
+sdk_get_check_flag_exit:
+
+
+// sdk_ram_tx_mac_enable
+// Return size: 0
+void sdk_ram_tx_mac_enable()
+sdk_ram_tx_mac_enable_entry:
+sdk_ram_tx_mac_enable_exit:
+
+
+// sdk_rtc_mem_backup
+// Return size: 0
+void sdk_rtc_mem_backup()
+sdk_rtc_mem_backup_entry:
+sdk_rtc_mem_backup_exit:
+
+
+// sdk_rtc_mem_recovery
+// Return size: 0
+void sdk_rtc_mem_recovery()
+sdk_rtc_mem_recovery_entry:
+sdk_rtc_mem_recovery_exit:
+
+
+// sdk_set_cal_rxdc
+// Return size: 0
+void sdk_set_cal_rxdc()
+sdk_set_cal_rxdc_entry:
+sdk_set_cal_rxdc_exit:
+
+
+// sdk_set_rx_gain_cal_iq
+// Return size: 0
+void sdk_set_rx_gain_cal_iq()
+sdk_set_rx_gain_cal_iq_entry:
+sdk_set_rx_gain_cal_iq_exit:
+
+
+// sdk_gen_rx_gain_table
+// Return size: 0
+void sdk_gen_rx_gain_table()
+sdk_gen_rx_gain_table_entry:
+sdk_gen_rx_gain_table_exit:
+
+
+// sdk_pbus_set_rxbbgain
+// Return size: 0
+void sdk_pbus_set_rxbbgain()
+sdk_pbus_set_rxbbgain_entry:
+sdk_pbus_set_rxbbgain_exit:
+
+
+// sdk_set_rx_gain_testchip_50
+// Return size: 0
+void sdk_set_rx_gain_testchip_50()
+sdk_set_rx_gain_testchip_50_entry:
+sdk_set_rx_gain_testchip_50_exit:
+
+
+// sdk_ram_get_corr_power
+// Return size: 0
+void sdk_ram_get_corr_power()
+sdk_ram_get_corr_power_entry:
+sdk_ram_get_corr_power_exit:
+
+
+// sdk_check_data_func
+// Return size: 0
+void sdk_check_data_func()
+sdk_check_data_func_entry:
+sdk_check_data_func_exit:
+
+
+// sdk_do_noisefloor_lsleep_v50
+// Return size: 0
+void sdk_do_noisefloor_lsleep_v50()
+sdk_do_noisefloor_lsleep_v50_entry:
+	// succ:  l4021DBB0
+l4021DBB0:
+	Mem0 = fp
+	a8 = 0xFFFFFE00
+	a7 = 0x00000142
+	a3 = 0x4021BDC0
+sdk_do_noisefloor_lsleep_v50_exit:
+
+
+// sdk_do_noisefloor
+// Return size: 0
+void sdk_do_noisefloor()
+sdk_do_noisefloor_entry:
+sdk_do_noisefloor_exit:
+
+
+// sdk_start_dig_rx
+// Return size: 0
+void sdk_start_dig_rx()
+sdk_start_dig_rx_entry:
+	// succ:  l4021DC54
+l4021DC54:
+	Mem0 = fp
+	a9 = 0x4021CB28
+	a3 = 0x4021BDC0
+sdk_start_dig_rx_exit:
+
+
+// sdk_stop_dig_rx
+// Return size: 0
+void sdk_stop_dig_rx()
+sdk_stop_dig_rx_entry:
+	// succ:  l4021DC98
+l4021DC98:
+	Mem0 = fp
+	a4 = 0x4021BDC0
+sdk_stop_dig_rx_exit:
+
+
+// sdk_chip_v6_set_chanfreq
+// Return size: 0
+void sdk_chip_v6_set_chanfreq()
+sdk_chip_v6_set_chanfreq_entry:
+sdk_chip_v6_set_chanfreq_exit:
+
+
+// sdk_tx_cap_init
+// Return size: 0
+void sdk_tx_cap_init()
+sdk_tx_cap_init_entry:
+sdk_tx_cap_init_exit:
+
+
+// sdk_target_power_add_backoff
+// Return size: 0
+void sdk_target_power_add_backoff()
+sdk_target_power_add_backoff_entry:
+sdk_target_power_add_backoff_exit:
+
+
+// sdk_tx_pwctrl_init_cal
+// Return size: 0
+void sdk_tx_pwctrl_init_cal()
+sdk_tx_pwctrl_init_cal_entry:
+	// succ:  l4021DEFC
+l4021DEFC:
+	Mem0 = fp
+	a6 = 0x00000064
+sdk_tx_pwctrl_init_cal_exit:
+
+
+// sdk_tx_atten_set_interp
+// Return size: 0
+void sdk_tx_atten_set_interp()
+sdk_tx_atten_set_interp_entry:
+sdk_tx_atten_set_interp_exit:
+
+
+// sdk_tx_pwctrl_init
+// Return size: 0
+void sdk_tx_pwctrl_init()
+sdk_tx_pwctrl_init_entry:
+sdk_tx_pwctrl_init_exit:
+
+
+// sdk_ram_get_noisefloor
+// Return size: 0
+void sdk_ram_get_noisefloor()
+sdk_ram_get_noisefloor_entry:
+	// succ:  l4021E3D4
+l4021E3D4:
+	Mem0 = fp
+	a2 = 0x4021BDC0
+sdk_ram_get_noisefloor_exit:
+
+
+// sdk_get_noisefloor_sat
+// Return size: 0
+void sdk_get_noisefloor_sat()
+sdk_get_noisefloor_sat_entry:
+sdk_get_noisefloor_sat_exit:
+
+
+// sdk_ram_set_noise_floor
+// Return size: 0
+void sdk_ram_set_noise_floor()
+sdk_ram_set_noise_floor_entry:
+sdk_ram_set_noise_floor_exit:
+
+
+// sdk_ram_start_noisefloor
+// Return size: 0
+void sdk_ram_start_noisefloor()
+sdk_ram_start_noisefloor_entry:
+	// succ:  l4021E47C
+l4021E47C:
+	Mem0 = fp
+	a7 = 0x4021BDC0
+sdk_ram_start_noisefloor_exit:
+
+
+// sdk_read_hw_noisefloor
+// Return size: 0
+void sdk_read_hw_noisefloor()
+sdk_read_hw_noisefloor_entry:
+	// succ:  l4021E4C8
+l4021E4C8:
+	Mem0 = fp
+	a3 = 0x4021E4C0
+	a2 = 0x4021E4C4
+sdk_read_hw_noisefloor_exit:
+
+
+// sdk_noise_check_loop
+// Return size: 0
+void sdk_noise_check_loop()
+sdk_noise_check_loop_entry:
+	// succ:  l4021E4F4
+l4021E4F4:
+	Mem0 = fp
+	a7 = 0x4021BDC0
+	a6 = 0x00000200
+	a8 = 0x4021E4E4
+sdk_noise_check_loop_exit:
+
+
+// sdk_noise_init
+// Return size: 0
+void sdk_noise_init()
+sdk_noise_init_entry:
+	// succ:  l4021E65C
+l4021E65C:
+	Mem0 = fp
+	a8 = a2 | a2
+	a9 = 0x4021BCEC
+sdk_noise_init_exit:
+
+
+// sdk_target_power_backoff
+// Return size: 0
+void sdk_target_power_backoff()
+sdk_target_power_backoff_entry:
+sdk_target_power_backoff_exit:
+
+
+// sdk_sdt_on_noise_start
+// Return size: 0
+void sdk_sdt_on_noise_start()
+sdk_sdt_on_noise_start_entry:
+	// succ:  l4021E8B0
+l4021E8B0:
+	Mem0 = fp
+	a7 = a2 | a2
+sdk_sdt_on_noise_start_exit:
+
+
+// sdk_chip_v6_set_chan_rx_cmp
+// Return size: 0
+void sdk_chip_v6_set_chan_rx_cmp()
+sdk_chip_v6_set_chan_rx_cmp_entry:
+sdk_chip_v6_set_chan_rx_cmp_exit:
+
+
+// sdk_chip_v6_set_chan_misc
+// Return size: 0
+void sdk_chip_v6_set_chan_misc()
+sdk_chip_v6_set_chan_misc_entry:
+sdk_chip_v6_set_chan_misc_exit:
+
+
+// sdk_phy_dig_spur_set
+// Return size: 0
+void sdk_phy_dig_spur_set()
+sdk_phy_dig_spur_set_entry:
+sdk_phy_dig_spur_set_exit:
+
+
+// sdk_phy_dig_spur_prot
+// Return size: 0
+void sdk_phy_dig_spur_prot()
+sdk_phy_dig_spur_prot_entry:
+sdk_phy_dig_spur_prot_exit:
+
+
+// sdk_chip_v6_rxmax_ext_dig
+// Return size: 0
+void sdk_chip_v6_rxmax_ext_dig()
+sdk_chip_v6_rxmax_ext_dig_entry:
+sdk_chip_v6_rxmax_ext_dig_exit:
+
+
+// sdk_chip_v6_rxmax_ext
+// Return size: 0
+void sdk_chip_v6_rxmax_ext()
+sdk_chip_v6_rxmax_ext_entry:
+sdk_chip_v6_rxmax_ext_exit:
+
+
+// sdk_phy_bb_rx_cfg
+// Return size: 0
+void sdk_phy_bb_rx_cfg()
+sdk_phy_bb_rx_cfg_entry:
+	// succ:  l4021F154
+l4021F154:
+	Mem0 = fp
+	a6 = 0x4021F0CC
+	a11 = 0x4021CB40
+	a4 = 0x4021D5C8
+	a5 = 0x4021319C
+sdk_phy_bb_rx_cfg_exit:
+
+
+// sdk_uart_wait_idle
+// Return size: 0
+void sdk_uart_wait_idle()
+sdk_uart_wait_idle_entry:
+sdk_uart_wait_idle_exit:
+
+
+// sdk_phy_pbus_soc_cfg
+// Return size: 0
+void sdk_phy_pbus_soc_cfg()
+sdk_phy_pbus_soc_cfg_entry:
+	// succ:  l4021F540
+l4021F540:
+	Mem0 = fp
+	a11 = 0x4021F524
+	a10 = 0x4021CDA8
+	a3 = 0x4021BDB8
+sdk_phy_pbus_soc_cfg_exit:
+
+
+// sdk_phy_gpio_cfg
+// Return size: 0
+void sdk_phy_gpio_cfg()
+sdk_phy_gpio_cfg_entry:
+sdk_phy_gpio_cfg_exit:
+
+
+// sdk_tx_cont_en
+// Return size: 0
+void sdk_tx_cont_en()
+sdk_tx_cont_en_entry:
+sdk_tx_cont_en_exit:
+
+
+// sdk_tx_cont_dis
+// Return size: 0
+void sdk_tx_cont_dis()
+sdk_tx_cont_dis_entry:
+sdk_tx_cont_dis_exit:
+
+
+// sdk_tx_cont_cfg
+// Return size: 0
+void sdk_tx_cont_cfg()
+sdk_tx_cont_cfg_entry:
+sdk_tx_cont_cfg_exit:
+
+
+// sdk_chip_v6_initialize_bb
+// Return size: 0
+void sdk_chip_v6_initialize_bb()
+sdk_chip_v6_initialize_bb_entry:
+sdk_chip_v6_initialize_bb_exit:
+
+
+// sdk_periodic_cal
+// Return size: 0
+void sdk_periodic_cal()
+sdk_periodic_cal_entry:
+	// succ:  l4021FBF0
+l4021FBF0:
+	Mem0 = fp
+	a5 = 0x4021FBE4
+sdk_periodic_cal_exit:
+
+
+// sdk_bbpll_cal
+// Return size: 0
+void sdk_bbpll_cal()
+sdk_bbpll_cal_entry:
+sdk_bbpll_cal_exit:
+
+
+// sdk_periodic_cal_top
+// Return size: 0
+void sdk_periodic_cal_top()
+sdk_periodic_cal_top_entry:
+sdk_periodic_cal_top_exit:
+
+
+// sdk_register_chipv6_phy_init_param
+// Return size: 0
+void sdk_register_chipv6_phy_init_param()
+sdk_register_chipv6_phy_init_param_entry:
+sdk_register_chipv6_phy_init_param_exit:
+
+
+// sdk_change_bbpll160_sleep
+// Return size: 0
+void sdk_change_bbpll160_sleep()
+sdk_change_bbpll160_sleep_entry:
+sdk_change_bbpll160_sleep_exit:
+
+
+// sdk_change_bbpll160
+// Return size: 0
+void sdk_change_bbpll160()
+sdk_change_bbpll160_entry:
+sdk_change_bbpll160_exit:
+
+
+// sdk_set_crystal_uart
+// Return size: 0
+void sdk_set_crystal_uart()
+sdk_set_crystal_uart_entry:
+sdk_set_crystal_uart_exit:
+
+
+// sdk_ant_switch_init
+// Return size: 0
+void sdk_ant_switch_init()
+sdk_ant_switch_init_entry:
+	// succ:  l402201FC
+l402201FC:
+	Mem0 = fp
+	a7 = 0x402201DC
+	a3 = 0x4021BDC0
+sdk_ant_switch_init_exit:
+
+
+// sdk_register_chipv6_phy
+// Return size: 0
+void sdk_register_chipv6_phy()
+sdk_register_chipv6_phy_entry:
+	// succ:  l402202E0
+l402202E0:
+	Mem0 = fp
+	a5 = 0x402125CC
+	a3 = 0x40220298
+sdk_register_chipv6_phy_exit:
+
+
+// sdk_txbbgain2dcoindex
+// Return size: 0
+void sdk_txbbgain2dcoindex()
+sdk_txbbgain2dcoindex_entry:
+sdk_txbbgain2dcoindex_exit:
+
+
+// sdk_dcoindex2txbbgain
+// Return size: 0
+void sdk_dcoindex2txbbgain()
+sdk_dcoindex2txbbgain_entry:
+sdk_dcoindex2txbbgain_exit:
+
+
+// sdk_init_cal_dcoffset
+// Return size: 0
+void sdk_init_cal_dcoffset()
+sdk_init_cal_dcoffset_entry:
+sdk_init_cal_dcoffset_exit:
+
+
+// sdk_set_rfanagain_dc_reg
+// Return size: 0
+void sdk_set_rfanagain_dc_reg()
+sdk_set_rfanagain_dc_reg_entry:
+sdk_set_rfanagain_dc_reg_exit:
+
+
+// sdk_set_txdc_pbus
+// Return size: 0
+void sdk_set_txdc_pbus()
+sdk_set_txdc_pbus_entry:
+sdk_set_txdc_pbus_exit:
+
+
+// sdk_get_rf_gain_qdb
+// Return size: 0
+void sdk_get_rf_gain_qdb()
+sdk_get_rf_gain_qdb_entry:
+sdk_get_rf_gain_qdb_exit:
+
+
+// sdk_correct_rf_ana_gain
+// Return size: 0
+void sdk_correct_rf_ana_gain()
+sdk_correct_rf_ana_gain_entry:
+sdk_correct_rf_ana_gain_exit:
+
+
+// sdk_get_sar_dout
+// Return size: 0
+void sdk_get_sar_dout()
+sdk_get_sar_dout_entry:
+sdk_get_sar_dout_exit:
+
+
+// sdk_cal_rf_ana_gain
+// Return size: 0
+void sdk_cal_rf_ana_gain()
+sdk_cal_rf_ana_gain_entry:
+sdk_cal_rf_ana_gain_exit:
+
+
+// sdk_meas_tone_pwr_db
+// Return size: 0
+void sdk_meas_tone_pwr_db()
+sdk_meas_tone_pwr_db_entry:
+sdk_meas_tone_pwr_db_exit:
+
+
+// sdk_tx_pwr_backoff
+// Return size: 0
+void sdk_tx_pwr_backoff()
+sdk_tx_pwr_backoff_entry:
+sdk_tx_pwr_backoff_exit:
+
+
+// sdk_get_fcc_1m2m_pwr_offset
+// Return size: 0
+void sdk_get_fcc_1m2m_pwr_offset()
+sdk_get_fcc_1m2m_pwr_offset_entry:
+sdk_get_fcc_1m2m_pwr_offset_exit:
+
+
+// sdk_ram_set_txbb_atten
+// Return size: 0
+void sdk_ram_set_txbb_atten()
+sdk_ram_set_txbb_atten_entry:
+sdk_ram_set_txbb_atten_exit:
+
+
+// sdk_txiq_get_mis_pwr
+// Return size: 0
+void sdk_txiq_get_mis_pwr()
+sdk_txiq_get_mis_pwr_entry:
+	// succ:  l40220C1C
+l40220C1C:
+	Mem0 = fp
+	a9 = 0x40204630
+sdk_txiq_get_mis_pwr_exit:
+
+
+// sdk_txiq_cover
+// Return size: 0
+void sdk_txiq_cover()
+sdk_txiq_cover_entry:
+sdk_txiq_cover_exit:
+
+
+// sdk_ram_rfcal_txiq
+// Return size: 0
+void sdk_ram_rfcal_txiq()
+sdk_ram_rfcal_txiq_entry:
+	// succ:  l40220ED8
+l40220ED8:
+	Mem0 = fp
+	a9 = a3 | a3
+sdk_ram_rfcal_txiq_exit:
+
+
+// sdk_rc_cal
+// Return size: 0
+void sdk_rc_cal()
+sdk_rc_cal_entry:
+sdk_rc_cal_exit:
+
+
+// sdk_get_target_power_offset
+// Return size: 0
+void sdk_get_target_power_offset()
+sdk_get_target_power_offset_entry:
+sdk_get_target_power_offset_exit:
+
+
+// sdk_get_pwctrl_correct
+// Return size: 0
+void sdk_get_pwctrl_correct()
+sdk_get_pwctrl_correct_entry:
+sdk_get_pwctrl_correct_exit:
+
+
+// sdk_tx_pwctrl_cal
+// Return size: 0
+void sdk_tx_pwctrl_cal()
+sdk_tx_pwctrl_cal_entry:
+sdk_tx_pwctrl_cal_exit:
+
+
+// sdk_tx_pwctrl_bg_init
+// Return size: 0
+void sdk_tx_pwctrl_bg_init()
+sdk_tx_pwctrl_bg_init_entry:
+	// succ:  l4022178C
+l4022178C:
+	Mem0 = fp
+	a4 = 0x40203F84
+sdk_tx_pwctrl_bg_init_exit:
+
+
+// sdk_tx_pwctrl_background
+// Return size: 0
+void sdk_tx_pwctrl_background()
+sdk_tx_pwctrl_background_entry:
+sdk_tx_pwctrl_background_exit:
+
+
+// sdk_read_sar_dout
+// Return size: 0
+void sdk_read_sar_dout()
+sdk_read_sar_dout_entry:
+	// succ:  l4022192C
+l4022192C:
+	Mem0 = fp
+	a9 = 0x4021C0CC
+	a8 = 0x40221928
+sdk_read_sar_dout_exit:
+
+
+// sdk_ram_get_fm_sar_dout
+// Return size: 0
+void sdk_ram_get_fm_sar_dout()
+sdk_ram_get_fm_sar_dout_entry:
+sdk_ram_get_fm_sar_dout_exit:
+
+
+// sdk_ram_cal_tos_v60
+// Return size: 0
+void sdk_ram_cal_tos_v60()
+sdk_ram_cal_tos_v60_entry:
+sdk_ram_cal_tos_v60_exit:
+
+
+// sdk_ram_get_bb_atten
+// Return size: 0
+void sdk_ram_get_bb_atten()
+sdk_ram_get_bb_atten_entry:
+sdk_ram_get_bb_atten_exit:
+
+
+// sdk_ram_rfcal_txcap
+// Return size: 0
+void sdk_ram_rfcal_txcap()
+sdk_ram_rfcal_txcap_entry:
+sdk_ram_rfcal_txcap_exit:
+
+
+// sdk_ram_rfcal_pwrctrl
+// Return size: 0
+void sdk_ram_rfcal_pwrctrl()
+sdk_ram_rfcal_pwrctrl_entry:
+sdk_ram_rfcal_pwrctrl_exit:
+
+
+// sdk_ram_rxiq_get_mis
+// Return size: 0
+void sdk_ram_rxiq_get_mis()
+sdk_ram_rxiq_get_mis_entry:
+sdk_ram_rxiq_get_mis_exit:
+
+
+// sdk_ram_rxiq_cover_mg_mp
+// Return size: 0
+void sdk_ram_rxiq_cover_mg_mp()
+sdk_ram_rxiq_cover_mg_mp_entry:
+sdk_ram_rxiq_cover_mg_mp_exit:
+
+
+// sdk_ram_rfcal_rxiq
+// Return size: 0
+void sdk_ram_rfcal_rxiq()
+sdk_ram_rfcal_rxiq_entry:
+sdk_ram_rfcal_rxiq_exit:
+
+
+// sdk_dpd_scale_set
+// Return size: 0
+void sdk_dpd_scale_set()
+sdk_dpd_scale_set_entry:
+sdk_dpd_scale_set_exit:
+
+
+// sdk_dpd_mem_write
+// Return size: 0
+void sdk_dpd_mem_write()
+sdk_dpd_mem_write_entry:
+sdk_dpd_mem_write_exit:
+
+
+// sdk_dpd_init
+// Return size: 0
+void sdk_dpd_init()
+sdk_dpd_init_entry:
+	// succ:  l40222670
+l40222670:
+	Mem0 = fp
+	a3 = 0x000000F0
+sdk_dpd_init_exit:
+
+
+// sdk_chip_v6_set_sense
+// Return size: 0
+void sdk_chip_v6_set_sense()
+sdk_chip_v6_set_sense_entry:
+sdk_chip_v6_set_sense_exit:
+
+
+// sdk_chip_v6_get_sense
+// Return size: 0
+void sdk_chip_v6_get_sense()
+sdk_chip_v6_get_sense_entry:
+sdk_chip_v6_get_sense_exit:
+
+
+// sdk_chip_v6_unset_chanfreq
+// Return size: 0
+void sdk_chip_v6_unset_chanfreq()
+sdk_chip_v6_unset_chanfreq_entry:
+sdk_chip_v6_unset_chanfreq_exit:
+
+
+// sdk_data_collect
+// Return size: 0
+void sdk_data_collect()
+sdk_data_collect_entry:
+	// succ:  l40222A34
+l40222A34:
+	Mem0 = fp
+	a2 = 0x40222A2C
+sdk_data_collect_exit:
+
+
+// sdk_operation_test
+// Return size: 0
+void sdk_operation_test()
+sdk_operation_test_entry:
+sdk_operation_test_exit:
+
+
+// sdk_slop_wdt_feed
+// Return size: 0
+void sdk_slop_wdt_feed()
+sdk_slop_wdt_feed_entry:
+	// succ:  l40222B80
+l40222B80:
+	Mem0 = fp
+	a2 = 0x00000073
+	a3 = 0x402125CC
+sdk_slop_wdt_feed_exit:
+
+
+// sdk_slop_test
+// Return size: 0
+void sdk_slop_test()
+sdk_slop_test_entry:
+	// succ:  l40222B94
+l40222B94:
+	Mem0 = fp
+	a2 = 0x40222B90
+sdk_slop_test_exit:
+
+
+// sdk_wd_reset_cnt
+// Return size: 0
+void sdk_wd_reset_cnt()
+sdk_wd_reset_cnt_entry:
+sdk_wd_reset_cnt_exit:
+
+
+// sdk_pm_usec2rtc
+// Return size: 0
+void sdk_pm_usec2rtc()
+sdk_pm_usec2rtc_entry:
+sdk_pm_usec2rtc_exit:
+
+
+// sdk_pm_rtc2usec
+// Return size: 0
+void sdk_pm_rtc2usec()
+sdk_pm_rtc2usec_entry:
+sdk_pm_rtc2usec_exit:
+
+
+// sdk_pm_set_sleep_cycles
+// Return size: 0
+void sdk_pm_set_sleep_cycles()
+sdk_pm_set_sleep_cycles_entry:
+	// succ:  l40222CCC
+l40222CCC:
+	Mem0 = fp
+	a5 = 0x402125CC
+sdk_pm_set_sleep_cycles_exit:
+
+
+// sdk_pm_sleep_opt
+// Return size: 0
+void sdk_pm_sleep_opt()
+sdk_pm_sleep_opt_entry:
+sdk_pm_sleep_opt_exit:
+
+
+// sdk_pm_wakeup_opt
+// Return size: 0
+void sdk_pm_wakeup_opt()
+sdk_pm_wakeup_opt_entry:
+	// succ:  l40222DE4
+l40222DE4:
+	Mem0 = fp
+	a8 = 0xFFFFFFC0
+	a5 = 0x402125CC
+sdk_pm_wakeup_opt_exit:
+
+
+// sdk_get_chip_version
+// Return size: 0
+void sdk_get_chip_version()
+sdk_get_chip_version_entry:
+	// succ:  l40222E1C
+l40222E1C:
+	Mem0 = fp
+	a6 = 0x40222E14
+sdk_get_chip_version_exit:
+
+
+// sdk_pm_sleep_opt_bb_off
+// Return size: 0
+void sdk_pm_sleep_opt_bb_off()
+sdk_pm_sleep_opt_bb_off_entry:
+sdk_pm_sleep_opt_bb_off_exit:
+
+
+// sdk_pm_sleep_opt_bb_on
+// Return size: 0
+void sdk_pm_sleep_opt_bb_on()
+sdk_pm_sleep_opt_bb_on_entry:
+sdk_pm_sleep_opt_bb_on_exit:
+
+
+// sdk_pm_set_pll_xtal_wait_time
+// Return size: 0
+void sdk_pm_set_pll_xtal_wait_time()
+sdk_pm_set_pll_xtal_wait_time_entry:
+sdk_pm_set_pll_xtal_wait_time_exit:
+
+
+// sdk_pm_prepare_to_sleep
+// Return size: 0
+void sdk_pm_prepare_to_sleep()
+sdk_pm_prepare_to_sleep_entry:
+	// succ:  l40222F30
+l40222F30:
+	Mem0 = fp
+	a3 = 0x4021C308
+sdk_pm_prepare_to_sleep_exit:
+
+
+// sdk_pm_sdio_nidle
+// Return size: 0
+void sdk_pm_sdio_nidle()
+sdk_pm_sdio_nidle_entry:
+	// succ:  l40222F54
+l40222F54:
+	Mem0 = fp
+	a7 = 0x4020452C
+	a8 = 0x4021287C
+sdk_pm_sdio_nidle_exit:
+
+
+// sdk_pm_goto_sleep
+// Return size: 0
+void sdk_pm_goto_sleep()
+sdk_pm_goto_sleep_entry:
+sdk_pm_goto_sleep_exit:
+
+
+// sdk_pm_wait4wakeup
+// Return size: 0
+void sdk_pm_wait4wakeup()
+sdk_pm_wait4wakeup_entry:
+sdk_pm_wait4wakeup_exit:
+
+
+// sdk_pm_open_rf
+// Return size: 0
+void sdk_pm_open_rf()
+sdk_pm_open_rf_entry:
+	// succ:  l40223084
+l40223084:
+	Mem0 = fp
+	a8 = 0x4021CDA0
+	a3 = 0x4021BDB8
+	a6 = 0x402125CC
+sdk_pm_open_rf_exit:
+
+
+// sdk_pm_sleep_set_mac
+// Return size: 0
+void sdk_pm_sleep_set_mac()
+sdk_pm_sleep_set_mac_entry:
+	// succ:  l402230C4
+l402230C4:
+	Mem0 = fp
+	a10 = 0x402230B8
+	a3 = 0x40214568
+	a6 = 0x4021319C
+sdk_pm_sleep_set_mac_exit:
+
+
+// sdk_pm_set_wakeup_mac
+// Return size: 0
+void sdk_pm_set_wakeup_mac()
+sdk_pm_set_wakeup_mac_entry:
+	// succ:  l40223148
+l40223148:
+	Mem0 = fp
+	a4 = 0x4021C308
+sdk_pm_set_wakeup_mac_exit:
+
+
+// sdk_pm_check_mac_idle
+// Return size: 0
+void sdk_pm_check_mac_idle()
+sdk_pm_check_mac_idle_entry:
+	// succ:  l402231E4
+l402231E4:
+	Mem0 = fp
+	a2 = 0x00000014
+sdk_pm_check_mac_idle_exit:
+
+
+// sdk_pm_set_sleep_btco
+// Return size: 0
+void sdk_pm_set_sleep_btco()
+sdk_pm_set_sleep_btco_entry:
+sdk_pm_set_sleep_btco_exit:
+
+
+// sdk_pm_set_wakeup_btco
+// Return size: 0
+void sdk_pm_set_wakeup_btco()
+sdk_pm_set_wakeup_btco_entry:
+sdk_pm_set_wakeup_btco_exit:
+
+
+// sdk_pm_set_sleep_mode
+// Return size: 0
+void sdk_pm_set_sleep_mode()
+sdk_pm_set_sleep_mode_entry:
+	// succ:  l402233DC
+l402233DC:
+	Mem0 = fp
+	a3 = 0x00000000
+sdk_pm_set_sleep_mode_exit:
+
+
+// sdk_pm_unmask_bt
+// Return size: 0
+void sdk_pm_unmask_bt()
+sdk_pm_unmask_bt_entry:
+	// succ:  l402234AC
+l402234AC:
+	Mem0 = fp
+	a4 = 0x4021319C
+sdk_pm_unmask_bt_exit:
+
+
+// sdk_pm_wakeup_init
+// Return size: 0
+void sdk_pm_wakeup_init()
+sdk_pm_wakeup_init_entry:
+sdk_pm_wakeup_init_exit:
+
+
+// sdk_sleep_opt_8266
+// Return size: 0
+void sdk_sleep_opt_8266()
+sdk_sleep_opt_8266_entry:
+sdk_sleep_opt_8266_exit:
+
+
+// sdk_sleep_opt_bb_on_8266
+// Return size: 0
+void sdk_sleep_opt_bb_on_8266()
+sdk_sleep_opt_bb_on_8266_entry:
+sdk_sleep_opt_bb_on_8266_exit:
+
+
+// sdk_sleep_reset_analog_rtcreg_8266
+// Return size: 0
+void sdk_sleep_reset_analog_rtcreg_8266()
+sdk_sleep_reset_analog_rtcreg_8266_entry:
+sdk_sleep_reset_analog_rtcreg_8266_exit:
+
+
+// sdk_rom_abs_temp
+// Return size: 0
+void sdk_rom_abs_temp()
+sdk_rom_abs_temp_entry:
+sdk_rom_abs_temp_exit:
+
+
+// sdk_rom_chip_v5_disable_cca
+// Return size: 0
+void sdk_rom_chip_v5_disable_cca()
+sdk_rom_chip_v5_disable_cca_entry:
+	// succ:  l40223864
+l40223864:
+	Mem0 = fp
+	a4 = 0x4021CB40
+	a3 = 0x4021BDC0
+sdk_rom_chip_v5_disable_cca_exit:
+
+
+// sdk_rom_chip_v5_enable_cca
+// Return size: 0
+void sdk_rom_chip_v5_enable_cca()
+sdk_rom_chip_v5_enable_cca_entry:
+	// succ:  l40223880
+l40223880:
+	Mem0 = fp
+	a4 = 0x4022387C
+	a3 = 0x4021BDC0
+sdk_rom_chip_v5_enable_cca_exit:
+
+
+// sdk_rom_chip_v5_sense_backoff
+// Return size: 0
+void sdk_rom_chip_v5_sense_backoff()
+sdk_rom_chip_v5_sense_backoff_entry:
+	// succ:  l402238A0
+l402238A0:
+	Mem0 = fp
+	a3 = 0x4022389C
+	a7 = 0x4021BDC0
+sdk_rom_chip_v5_sense_backoff_exit:
+
+
+// sdk_rom_dc_iq_est
+// Return size: 0
+void sdk_rom_dc_iq_est()
+sdk_rom_dc_iq_est_entry:
+sdk_rom_dc_iq_est_exit:
+
+
+// sdk_rom_en_pwdet
+// Return size: 0
+void sdk_rom_en_pwdet()
+sdk_rom_en_pwdet_entry:
+sdk_rom_en_pwdet_exit:
+
+
+// sdk_rom_get_bb_atten
+// Return size: 0
+void sdk_rom_get_bb_atten()
+sdk_rom_get_bb_atten_entry:
+sdk_rom_get_bb_atten_exit:
+
+
+// sdk_rom_get_corr_power
+// Return size: 0
+void sdk_rom_get_corr_power()
+sdk_rom_get_corr_power_entry:
+	// succ:  l402239E0
+l402239E0:
+	Mem0 = fp
+	a7 = 0x4021BDB8
+sdk_rom_get_corr_power_exit:
+
+
+// sdk_rom_get_fm_sar_dout
+// Return size: 0
+void sdk_rom_get_fm_sar_dout()
+sdk_rom_get_fm_sar_dout_entry:
+sdk_rom_get_fm_sar_dout_exit:
+
+
+// sdk_rom_get_noisefloor
+// Return size: 0
+void sdk_rom_get_noisefloor()
+sdk_rom_get_noisefloor_entry:
+	// succ:  l40223AF8
+l40223AF8:
+	Mem0 = fp
+	a2 = 0x4021BDC0
+sdk_rom_get_noisefloor_exit:
+
+
+// sdk_rom_get_power_db
+// Return size: 0
+void sdk_rom_get_power_db()
+sdk_rom_get_power_db_entry:
+sdk_rom_get_power_db_exit:
+
+
+// sdk_rom_iq_est_disable
+// Return size: 0
+void sdk_rom_iq_est_disable()
+sdk_rom_iq_est_disable_entry:
+	// succ:  l40223B64
+l40223B64:
+	Mem0 = fp
+	a7 = 0x40223B60
+	a6 = 0x402040DC
+	a3 = 0x4021BDB8
+sdk_rom_iq_est_disable_exit:
+
+
+// sdk_rom_iq_est_enable
+// Return size: 0
+void sdk_rom_iq_est_enable()
+sdk_rom_iq_est_enable_entry:
+sdk_rom_iq_est_enable_exit:
+
+
+// sdk_rom_linear_to_db
+// Return size: 0
+void sdk_rom_linear_to_db()
+sdk_rom_linear_to_db_entry:
+sdk_rom_linear_to_db_exit:
+
+
+// sdk_rom_set_txclk_en
+// Return size: 0
+void sdk_rom_set_txclk_en()
+sdk_rom_set_txclk_en_entry:
+sdk_rom_set_txclk_en_exit:
+
+
+// sdk_rom_set_rxclk_en
+// Return size: 0
+void sdk_rom_set_rxclk_en()
+sdk_rom_set_rxclk_en_entry:
+sdk_rom_set_rxclk_en_exit:
+
+
+// sdk_rom_mhz2ieee
+// Return size: 0
+void sdk_rom_mhz2ieee()
+sdk_rom_mhz2ieee_entry:
+	// succ:  l40223CE8
+l40223CE8:
+	Mem0 = fp
+	a6 = 0x40214A20
+	a7 = 0x40214A24
+sdk_rom_mhz2ieee_exit:
+
+
+// sdk_rom_rxiq_get_mis
+// Return size: 0
+void sdk_rom_rxiq_get_mis()
+sdk_rom_rxiq_get_mis_entry:
+sdk_rom_rxiq_get_mis_exit:
+
+
+// sdk_rom_sar_init
+// Return size: 0
+void sdk_rom_sar_init()
+sdk_rom_sar_init_entry:
+sdk_rom_sar_init_exit:
+
+
+// sdk_rom_set_ana_inf_tx_scale
+// Return size: 0
+void sdk_rom_set_ana_inf_tx_scale()
+sdk_rom_set_ana_inf_tx_scale_entry:
+sdk_rom_set_ana_inf_tx_scale_exit:
+
+
+// sdk_rom_set_loopback_gain
+// Return size: 0
+void sdk_rom_set_loopback_gain()
+sdk_rom_set_loopback_gain_entry:
+sdk_rom_set_loopback_gain_exit:
+
+
+// sdk_rom_set_noise_floor
+// Return size: 0
+void sdk_rom_set_noise_floor()
+sdk_rom_set_noise_floor_entry:
+	// succ:  l40223F68
+l40223F68:
+	Mem0 = fp
+	a9 = 0xFFFFFE00
+sdk_rom_set_noise_floor_exit:
+
+
+// sdk_rom_start_noisefloor
+// Return size: 0
+void sdk_rom_start_noisefloor()
+sdk_rom_start_noisefloor_entry:
+	// succ:  l40223FA4
+l40223FA4:
+	Mem0 = fp
+	a9 = 0x4021E474
+	a7 = 0x000001A0
+sdk_rom_start_noisefloor_exit:
+
+
+// sdk_rom_start_tx_tone
+// Return size: 0
+void sdk_rom_start_tx_tone()
+sdk_rom_start_tx_tone_entry:
+sdk_rom_start_tx_tone_exit:
+
+
+// sdk_rom_stop_tx_tone
+// Return size: 0
+void sdk_rom_stop_tx_tone()
+sdk_rom_stop_tx_tone_entry:
+sdk_rom_stop_tx_tone_exit:
+
+
+// sdk_rom_txtone_linear_pwr
+// Return size: 0
+void sdk_rom_txtone_linear_pwr()
+sdk_rom_txtone_linear_pwr_entry:
+sdk_rom_txtone_linear_pwr_exit:
+
+
+// sdk_rom_tx_mac_disable
+// Return size: 0
+void sdk_rom_tx_mac_disable()
+sdk_rom_tx_mac_disable_entry:
+	// succ:  l4022419C
+l4022419C:
+	Mem0 = fp
+	a3 = 0x4021319C
+sdk_rom_tx_mac_disable_exit:
+
+
+// sdk_rom_tx_mac_enable
+// Return size: 0
+void sdk_rom_tx_mac_enable()
+sdk_rom_tx_mac_enable_entry:
+	// succ:  l402241D8
+l402241D8:
+	Mem0 = fp
+	a3 = 0x4021319C
+sdk_rom_tx_mac_enable_exit:
+
+
+// sdk_rom_ana_inf_gating_en
+// Return size: 0
+void sdk_rom_ana_inf_gating_en()
+sdk_rom_ana_inf_gating_en_entry:
+sdk_rom_ana_inf_gating_en_exit:
+
+
+// sdk_rom_set_channel_freq
+// Return size: 0
+void sdk_rom_set_channel_freq()
+sdk_rom_set_channel_freq_entry:
+sdk_rom_set_channel_freq_exit:
+
+
+// sdk_rom_chip_50_set_channel
+// Return size: 0
+void sdk_rom_chip_50_set_channel()
+sdk_rom_chip_50_set_channel_entry:
+sdk_rom_chip_50_set_channel_exit:
+
+
+// sdk_rom_chip_v5_rx_init
+// Return size: 0
+void sdk_rom_chip_v5_rx_init()
+sdk_rom_chip_v5_rx_init_entry:
+	// succ:  l40224874
+l40224874:
+	Mem0 = fp
+	a2 = 0x00000061
+sdk_rom_chip_v5_rx_init_exit:
+
+
+// sdk_rom_chip_v5_tx_init
+// Return size: 0
+void sdk_rom_chip_v5_tx_init()
+sdk_rom_chip_v5_tx_init_entry:
+	// succ:  l402248E0
+l402248E0:
+	Mem0 = fp
+	a2 = 0x0000006B
+sdk_rom_chip_v5_tx_init_exit:
+
+
+// sdk_rom_i2c_readReg
+// Return size: 0
+void sdk_rom_i2c_readReg()
+sdk_rom_i2c_readReg_entry:
+	// succ:  l402249B4
+l402249B4:
+	Mem0 = fp
+	a8 = 0x4021C0CC
+sdk_rom_i2c_readReg_exit:
+
+
+// sdk_rom_i2c_readReg_Mask
+// Return size: 0
+void sdk_rom_i2c_readReg_Mask()
+sdk_rom_i2c_readReg_Mask_entry:
+sdk_rom_i2c_readReg_Mask_exit:
+
+
+// sdk_rom_i2c_writeReg
+// Return size: 0
+void sdk_rom_i2c_writeReg()
+sdk_rom_i2c_writeReg_entry:
+sdk_rom_i2c_writeReg_exit:
+
+
+// sdk_rom_i2c_writeReg_Mask
+// Return size: 0
+void sdk_rom_i2c_writeReg_Mask()
+sdk_rom_i2c_writeReg_Mask_entry:
+sdk_rom_i2c_writeReg_Mask_exit:
+
+
+// sdk_rom_pbus_debugmode
+// Return size: 0
+void sdk_rom_pbus_debugmode()
+sdk_rom_pbus_debugmode_entry:
+sdk_rom_pbus_debugmode_exit:
+
+
+// sdk_rom_pbus_enter_debugmode
+// Return size: 0
+void sdk_rom_pbus_enter_debugmode()
+sdk_rom_pbus_enter_debugmode_entry:
+sdk_rom_pbus_enter_debugmode_exit:
+
+
+// sdk_rom_pbus_exit_debugmode
+// Return size: 0
+void sdk_rom_pbus_exit_debugmode()
+sdk_rom_pbus_exit_debugmode_entry:
+sdk_rom_pbus_exit_debugmode_exit:
+
+
+// sdk_rom_pbus_force_test
+// Return size: 0
+void sdk_rom_pbus_force_test()
+sdk_rom_pbus_force_test_entry:
+sdk_rom_pbus_force_test_exit:
+
+
+// sdk_rom_pbus_rd
+// Return size: 0
+void sdk_rom_pbus_rd()
+sdk_rom_pbus_rd_entry:
+sdk_rom_pbus_rd_exit:
+
+
+// sdk_rom_pbus_set_rxgain
+// Return size: 0
+void sdk_rom_pbus_set_rxgain()
+sdk_rom_pbus_set_rxgain_entry:
+sdk_rom_pbus_set_rxgain_exit:
+
+
+// sdk_rom_pbus_set_txgain
+// Return size: 0
+void sdk_rom_pbus_set_txgain()
+sdk_rom_pbus_set_txgain_entry:
+sdk_rom_pbus_set_txgain_exit:
+
+
+// sdk_rom_pbus_workmode
+// Return size: 0
+void sdk_rom_pbus_workmode()
+sdk_rom_pbus_workmode_entry:
+sdk_rom_pbus_workmode_exit:
+
+
+// sdk_rom_pbus_xpd_rx_off
+// Return size: 0
+void sdk_rom_pbus_xpd_rx_off()
+sdk_rom_pbus_xpd_rx_off_entry:
+sdk_rom_pbus_xpd_rx_off_exit:
+
+
+// sdk_rom_pbus_xpd_rx_on
+// Return size: 0
+void sdk_rom_pbus_xpd_rx_on()
+sdk_rom_pbus_xpd_rx_on_entry:
+sdk_rom_pbus_xpd_rx_on_exit:
+
+
+// sdk_rom_pbus_xpd_tx_off
+// Return size: 0
+void sdk_rom_pbus_xpd_tx_off()
+sdk_rom_pbus_xpd_tx_off_entry:
+sdk_rom_pbus_xpd_tx_off_exit:
+
+
+// sdk_rom_pbus_xpd_tx_on
+// Return size: 0
+void sdk_rom_pbus_xpd_tx_on()
+sdk_rom_pbus_xpd_tx_on_entry:
+sdk_rom_pbus_xpd_tx_on_exit:
+
+
+// sdk_rom_pbus_xpd_tx_on__low_gain
+// Return size: 0
+void sdk_rom_pbus_xpd_tx_on__low_gain()
+sdk_rom_pbus_xpd_tx_on__low_gain_entry:
+sdk_rom_pbus_xpd_tx_on__low_gain_exit:
+
+
+// sdk_rom_phy_reset_req
+// Return size: 0
+void sdk_rom_phy_reset_req()
+sdk_rom_phy_reset_req_entry:
+	// succ:  l40224F3C
+l40224F3C:
+	Mem0 = fp
+	a4 = 0x40224F38
+	a3 = 0x402125CC
+sdk_rom_phy_reset_req_exit:
+
+
+// sdk_rom_restart_cal
+// Return size: 0
+void sdk_rom_restart_cal()
+sdk_rom_restart_cal_entry:
+	// succ:  l40224F54
+l40224F54:
+	Mem0 = fp
+	a2 = 0x00000062
+sdk_rom_restart_cal_exit:
+
+
+// sdk_rom_rfpll_reset
+// Return size: 0
+void sdk_rom_rfpll_reset()
+sdk_rom_rfpll_reset_entry:
+	// succ:  l40224FA0
+l40224FA0:
+	Mem0 = fp
+	a2 = 0x00000062
+sdk_rom_rfpll_reset_exit:
+
+
+// sdk_rom_write_rfpll_sdm
+// Return size: 0
+void sdk_rom_write_rfpll_sdm()
+sdk_rom_write_rfpll_sdm_entry:
+sdk_rom_write_rfpll_sdm_exit:
+
+
+// sdk_rom_rfpll_set_freq
+// Return size: 0
+void sdk_rom_rfpll_set_freq()
+sdk_rom_rfpll_set_freq_entry:
+sdk_rom_rfpll_set_freq_exit:
+
+
+// sdk_rom_cal_tos_v50
+// Return size: 0
+void sdk_rom_cal_tos_v50()
+sdk_rom_cal_tos_v50_entry:
+	// succ:  l40225138
+l40225138:
+	Mem0 = fp
+	a8 = a4 | a4
+sdk_rom_cal_tos_v50_exit:
+
+
+// sdk_rom_pbus_dco___SA2
+// Return size: 0
+void sdk_rom_pbus_dco___SA2()
+sdk_rom_pbus_dco___SA2_entry:
+sdk_rom_pbus_dco___SA2_exit:
+
+
+// sdk_rom_rfcal_pwrctrl
+// Return size: 0
+void sdk_rom_rfcal_pwrctrl()
+sdk_rom_rfcal_pwrctrl_entry:
+sdk_rom_rfcal_pwrctrl_exit:
+
+
+// sdk_rom_rfcal_rxiq
+// Return size: 0
+void sdk_rom_rfcal_rxiq()
+sdk_rom_rfcal_rxiq_entry:
+sdk_rom_rfcal_rxiq_exit:
+
+
+// sdk_rom_rfcal_rxiq_set_reg
+// Return size: 0
+void sdk_rom_rfcal_rxiq_set_reg()
+sdk_rom_rfcal_rxiq_set_reg_entry:
+sdk_rom_rfcal_rxiq_set_reg_exit:
+
+
+// sdk_rom_rfcal_txcap
+// Return size: 0
+void sdk_rom_rfcal_txcap()
+sdk_rom_rfcal_txcap_entry:
+sdk_rom_rfcal_txcap_exit:
+
+
+// sdk_rom_rfcal_txiq
+// Return size: 0
+void sdk_rom_rfcal_txiq()
+sdk_rom_rfcal_txiq_entry:
+sdk_rom_rfcal_txiq_exit:
+
+
+// sdk_rom_rfcal_txiq_cover
+// Return size: 0
+void sdk_rom_rfcal_txiq_cover()
+sdk_rom_rfcal_txiq_cover_entry:
+sdk_rom_rfcal_txiq_cover_exit:
+
+
+// sdk_rom_rfcal_txiq_set_reg
+// Return size: 0
+void sdk_rom_rfcal_txiq_set_reg()
+sdk_rom_rfcal_txiq_set_reg_entry:
+sdk_rom_rfcal_txiq_set_reg_exit:
+
+
+// sdk_rom_rxiq_cover_mg_mp
+// Return size: 0
+void sdk_rom_rxiq_cover_mg_mp()
+sdk_rom_rxiq_cover_mg_mp_entry:
+sdk_rom_rxiq_cover_mg_mp_exit:
+
+
+// sdk_rom_set_txbb_atten
+// Return size: 0
+void sdk_rom_set_txbb_atten()
+sdk_rom_set_txbb_atten_entry:
+sdk_rom_set_txbb_atten_exit:
+
+
+// sdk_rom_set_txiq_cal
+// Return size: 0
+void sdk_rom_set_txiq_cal()
+sdk_rom_set_txiq_cal_entry:
+sdk_rom_set_txiq_cal_exit:
+
+
+// sdk_esf_buf_alloc
+// Return size: 0
+void sdk_esf_buf_alloc()
+sdk_esf_buf_alloc_entry:
+sdk_esf_buf_alloc_exit:
+
+
+// sdk_esf_buf_recycle
+// Return size: 0
+void sdk_esf_buf_recycle()
+sdk_esf_buf_recycle_entry:
+sdk_esf_buf_recycle_exit:
+
+
+// sdk_esf_buf_setup
+// Return size: 0
+void sdk_esf_buf_setup()
+sdk_esf_buf_setup_entry:
+sdk_esf_buf_setup_exit:
+
+
+// sdk_ic_get_addr
+// Return size: 0
+void sdk_ic_get_addr()
+sdk_ic_get_addr_entry:
+	// succ:  l40226818
+l40226818:
+	Mem0 = fp
+	a3 = 0x40226814
+sdk_ic_get_addr_exit:
+
+
+// sdk_ic_set_opmode
+// Return size: 0
+void sdk_ic_set_opmode()
+sdk_ic_set_opmode_entry:
+	// succ:  l40226824
+l40226824:
+	Mem0 = fp
+	a5 = 0x40226814
+sdk_ic_set_opmode_exit:
+
+
+// sdk_ic_enable_interface
+// Return size: 0
+void sdk_ic_enable_interface()
+sdk_ic_enable_interface_entry:
+sdk_ic_enable_interface_exit:
+
+
+// sdk_ic_interface_enabled
+// Return size: 0
+void sdk_ic_interface_enabled()
+sdk_ic_interface_enabled_entry:
+	// succ:  l40226888
+l40226888:
+	Mem0 = fp
+	a3 = 0x40226834
+sdk_ic_interface_enabled_exit:
+
+
+// sdk_ic_disable_interface
+// Return size: 0
+void sdk_ic_disable_interface()
+sdk_ic_disable_interface_entry:
+sdk_ic_disable_interface_exit:
+
+
+// sdk_ic_is_pure_sta
+// Return size: 0
+void sdk_ic_is_pure_sta()
+sdk_ic_is_pure_sta_entry:
+	// succ:  l402268E4
+l402268E4:
+	Mem0 = fp
+	a4 = 0x40226814
+sdk_ic_is_pure_sta_exit:
+
+
+// sdk_ic_get_ptk_alg
+// Return size: 0
+void sdk_ic_get_ptk_alg()
+sdk_ic_get_ptk_alg_entry:
+	// succ:  l40226900
+l40226900:
+	Mem0 = fp
+	a3 = 0x40226814
+sdk_ic_get_ptk_alg_exit:
+
+
+// sdk_ic_get_gtk_alg
+// Return size: 0
+void sdk_ic_get_gtk_alg()
+sdk_ic_get_gtk_alg_entry:
+	// succ:  l40226910
+l40226910:
+	Mem0 = fp
+	a3 = 0x40226814
+sdk_ic_get_gtk_alg_exit:
+
+
+// sdk_ic_set_ptk_alg
+// Return size: 0
+void sdk_ic_set_ptk_alg()
+sdk_ic_set_ptk_alg_entry:
+	// succ:  l40226920
+l40226920:
+	Mem0 = fp
+	a4 = 0x40226814
+sdk_ic_set_ptk_alg_exit:
+
+
+// sdk_ic_set_gtk_alg
+// Return size: 0
+void sdk_ic_set_gtk_alg()
+sdk_ic_set_gtk_alg_entry:
+	// succ:  l40226930
+l40226930:
+	Mem0 = fp
+	a4 = 0x40226814
+sdk_ic_set_gtk_alg_exit:
+
+
+// sdk_ic_interface_is_p2p
+// Return size: 0
+void sdk_ic_interface_is_p2p()
+sdk_ic_interface_is_p2p_entry:
+	// succ:  l40226940
+l40226940:
+	Mem0 = fp
+	a3 = 0x40226814
+sdk_ic_interface_is_p2p_exit:
+
+
+// sdk_ic_set_vif
+// Return size: 0
+void sdk_ic_set_vif()
+sdk_ic_set_vif_entry:
+sdk_ic_set_vif_exit:
+
+
+// sdk_ic_set_sta
+// Return size: 0
+void sdk_ic_set_sta()
+sdk_ic_set_sta_entry:
+sdk_ic_set_sta_exit:
+
+
+// sdk_ic_bss_info_update
+// Return size: 0
+void sdk_ic_bss_info_update()
+sdk_ic_bss_info_update_entry:
+sdk_ic_bss_info_update_exit:
+
+
+// sdk_ic_set_key
+// Return size: 0
+void sdk_ic_set_key()
+sdk_ic_set_key_entry:
+sdk_ic_set_key_exit:
+
+
+// sdk_ic_remove_key
+// Return size: 0
+void sdk_ic_remove_key()
+sdk_ic_remove_key_entry:
+sdk_ic_remove_key_exit:
+
+
+// sdk_lmacInitAc
+// Return size: 0
+void sdk_lmacInitAc()
+sdk_lmacInitAc_entry:
+sdk_lmacInitAc_exit:
+
+
+// sdk_lmacInit
+// Return size: 0
+void sdk_lmacInit()
+sdk_lmacInit_entry:
+sdk_lmacInit_exit:
+
+
+// sdk_pm_rtc_clock_cali_proc
+// Return size: 0
+void sdk_pm_rtc_clock_cali_proc()
+sdk_pm_rtc_clock_cali_proc_entry:
+	// succ:  l40226CF8
+l40226CF8:
+	Mem0 = fp
+	a2 = 0x0000006A
+sdk_pm_rtc_clock_cali_proc_exit:
+
+
+// sdk_pm_set_sleep_time
+// Return size: 0
+void sdk_pm_set_sleep_time()
+sdk_pm_set_sleep_time_entry:
+	// succ:  l40226D30
+l40226D30:
+	Mem0 = fp
+	a3 = 0x40226C9C
+sdk_pm_set_sleep_time_exit:
+
+
+// sdk_pm_rf_is_closed
+// Return size: 0
+void sdk_pm_rf_is_closed()
+sdk_pm_rf_is_closed_entry:
+	// succ:  l40226E74
+l40226E74:
+	Mem0 = fp
+	a4 = 0x40226C9C
+sdk_pm_rf_is_closed_exit:
+
+
+// sdk_pm_set_sleep_type_from_upper
+// Return size: 0
+void sdk_pm_set_sleep_type_from_upper()
+sdk_pm_set_sleep_type_from_upper_entry:
+sdk_pm_set_sleep_type_from_upper_exit:
+
+
+// sdk_pm_get_sleep_type
+// Return size: 0
+void sdk_pm_get_sleep_type()
+sdk_pm_get_sleep_type_entry:
+	// succ:  l40226F1C
+l40226F1C:
+	Mem0 = fp
+	a2 = 0x40226C9C
+sdk_pm_get_sleep_type_exit:
+
+
+// sdk_uart_tx_flush
+// Return size: 0
+void sdk_uart_tx_flush()
+sdk_uart_tx_flush_entry:
+sdk_uart_tx_flush_exit:
+
+
+// sdk_pm_suspend
+// Return size: 0
+void sdk_pm_suspend()
+sdk_pm_suspend_entry:
+sdk_pm_suspend_exit:
+
+
+// sdk_pm_shutdown
+// Return size: 0
+void sdk_pm_shutdown()
+sdk_pm_shutdown_entry:
+	// succ:  l40227364
+l40227364:
+	Mem0 = fp
+	a2 = 0x4022734C
+sdk_pm_shutdown_exit:
+
+
+// sdk_pm_reset_idle_sleep
+// Return size: 0
+void sdk_pm_reset_idle_sleep()
+sdk_pm_reset_idle_sleep_entry:
+sdk_pm_reset_idle_sleep_exit:
+
+
+// sdk_pm_idle_sleep
+// Return size: 0
+void sdk_pm_idle_sleep()
+sdk_pm_idle_sleep_entry:
+sdk_pm_idle_sleep_exit:
+
+
+// sdk_pm_open
+// Return size: 0
+void sdk_pm_open()
+sdk_pm_open_entry:
+sdk_pm_open_exit:
+
+
+// sdk_pm_onBcnRx
+// Return size: 0
+void sdk_pm_onBcnRx()
+sdk_pm_onBcnRx_entry:
+sdk_pm_onBcnRx_exit:
+
+
+// sdk_pm_enable_gpio_wakeup
+// Return size: 0
+void sdk_pm_enable_gpio_wakeup()
+sdk_pm_enable_gpio_wakeup_entry:
+	// succ:  l40227C98
+l40227C98:
+	Mem0 = fp
+	a3 = 0x40226C9C
+sdk_pm_enable_gpio_wakeup_exit:
+
+
+// sdk_pm_attach
+// Return size: 0
+void sdk_pm_attach()
+sdk_pm_attach_entry:
+	// succ:  l40227CDC
+l40227CDC:
+	Mem0 = fp
+	a5 = 0x000000FB
+	a3 = 0x40226C9C
+sdk_pm_attach_exit:
+
+
+// sdk_pm_send_nullfunc
+// Return size: 0
+void sdk_pm_send_nullfunc()
+sdk_pm_send_nullfunc_entry:
+sdk_pm_send_nullfunc_exit:
+
+
+// sdk_pm_is_waked
+// Return size: 0
+void sdk_pm_is_waked()
+sdk_pm_is_waked_entry:
+	// succ:  l40227FBC
+l40227FBC:
+	Mem0 = fp
+	a4 = 0x40226C9C
+sdk_pm_is_waked_exit:
+
+
+// sdk_pm_is_open
+// Return size: 0
+void sdk_pm_is_open()
+sdk_pm_is_open_entry:
+	// succ:  l40227FD4
+l40227FD4:
+	Mem0 = fp
+	a4 = 0x40226C9C
+sdk_pm_is_open_exit:
+
+
+// sdk_pm_scan_lock
+// Return size: 0
+void sdk_pm_scan_lock()
+sdk_pm_scan_lock_entry:
+	// succ:  l40227FEC
+l40227FEC:
+	Mem0 = fp
+	a2 = 0x40227FE8
+sdk_pm_scan_lock_exit:
+
+
+// sdk_pm_try_scan_unlock
+// Return size: 0
+void sdk_pm_try_scan_unlock()
+sdk_pm_try_scan_unlock_entry:
+sdk_pm_try_scan_unlock_exit:
+
+
+// sdk_pm_force_scan_unlock
+// Return size: 0
+void sdk_pm_force_scan_unlock()
+sdk_pm_force_scan_unlock_entry:
+	// succ:  l40228034
+l40228034:
+	Mem0 = fp
+	a2 = 0x40228030
+sdk_pm_force_scan_unlock_exit:
+
+
+// sdk_pm_scan_unlocked
+// Return size: 0
+void sdk_pm_scan_unlocked()
+sdk_pm_scan_unlocked_entry:
+	// succ:  l402280F0
+l402280F0:
+	Mem0 = fp
+	a4 = 0x40226C9C
+sdk_pm_scan_unlocked_exit:
+
+
+// sdk_pm_allow_tx
+// Return size: 0
+void sdk_pm_allow_tx()
+sdk_pm_allow_tx_entry:
+	// succ:  l40228104
+l40228104:
+	Mem0 = fp
+	a6 = 0x40226C9C
+sdk_pm_allow_tx_exit:
+
+
+// sdk_pm_assoc_parse
+// Return size: 0
+void sdk_pm_assoc_parse()
+sdk_pm_assoc_parse_entry:
+sdk_pm_assoc_parse_exit:
+
+
+// sdk_pm_set_addr
+// Return size: 0
+void sdk_pm_set_addr()
+sdk_pm_set_addr_entry:
+sdk_pm_set_addr_exit:
+
+
+// sdk_pm_sleep_for
+// Return size: 0
+void sdk_pm_sleep_for()
+sdk_pm_sleep_for_entry:
+sdk_pm_sleep_for_exit:
+
+
+// sdk_pm_post
+// Return size: 0
+void sdk_pm_post()
+sdk_pm_post_entry:
+sdk_pm_post_exit:
+
+
+// sdk_pm_get_idle_wait_time
+// Return size: 0
+void sdk_pm_get_idle_wait_time()
+sdk_pm_get_idle_wait_time_entry:
+	// succ:  l4022837C
+l4022837C:
+	Mem0 = fp
+	a2 = 0x40226C9C
+sdk_pm_get_idle_wait_time_exit:
+
+
+// sdk_PPWdtReset
+// Return size: 0
+void sdk_PPWdtReset()
+sdk_PPWdtReset_entry:
+sdk_PPWdtReset_exit:
+
+
+// sdk_pp_soft_wdt_init
+// Return size: 0
+void sdk_pp_soft_wdt_init()
+sdk_pp_soft_wdt_init_entry:
+	// succ:  l402283EC
+l402283EC:
+	Mem0 = fp
+	a2 = 0x402283E8
+sdk_pp_soft_wdt_init_exit:
+
+
+// sdk_RxNodeNum
+// Return size: 0
+void sdk_RxNodeNum()
+sdk_RxNodeNum_entry:
+	// succ:  l4022840C
+l4022840C:
+	Mem0 = fp
+	a2 = 0x402266F8
+sdk_RxNodeNum_exit:
+
+
+// sdk_TxNodeNum
+// Return size: 0
+void sdk_TxNodeNum()
+sdk_TxNodeNum_entry:
+	// succ:  l40228430
+l40228430:
+	Mem0 = fp
+	a2 = 0x402266F8
+sdk_TxNodeNum_exit:
+
+
+// sdk_pp_disable_noise_timer
+// Return size: 0
+void sdk_pp_disable_noise_timer()
+sdk_pp_disable_noise_timer_entry:
+	// succ:  l4022847C
+l4022847C:
+	Mem0 = fp
+	a2 = 0x40228478
+sdk_pp_disable_noise_timer_exit:
+
+
+// sdk_pp_enable_noise_timer
+// Return size: 0
+void sdk_pp_enable_noise_timer()
+sdk_pp_enable_noise_timer_entry:
+	// succ:  l40228498
+l40228498:
+	Mem0 = fp
+	a2 = 0x40228478
+sdk_pp_enable_noise_timer_exit:
+
+
+// sdk_pp_noise_test
+// Return size: 0
+void sdk_pp_noise_test()
+sdk_pp_noise_test_entry:
+sdk_pp_noise_test_exit:
+
+
+// sdk_reset_noise_timer
+// Return size: 0
+void sdk_reset_noise_timer()
+sdk_reset_noise_timer_entry:
+sdk_reset_noise_timer_exit:
+
+
+// sdk_pp_disable_idle_timer
+// Return size: 0
+void sdk_pp_disable_idle_timer()
+sdk_pp_disable_idle_timer_entry:
+sdk_pp_disable_idle_timer_exit:
+
+
+// sdk_pp_enable_idle_timer
+// Return size: 0
+void sdk_pp_enable_idle_timer()
+sdk_pp_enable_idle_timer_entry:
+	// succ:  l402285C8
+l402285C8:
+	Mem0 = fp
+	a4 = 0x00000000
+	a2 = 0x40228450
+	a3 = 0x00000001
+sdk_pp_enable_idle_timer_exit:
+
+
+// sdk_pp_try_enable_idle_timer
+// Return size: 0
+void sdk_pp_try_enable_idle_timer()
+sdk_pp_try_enable_idle_timer_entry:
+sdk_pp_try_enable_idle_timer_exit:
+
+
+// sdk_ppPeocessRxPktHdr
+// Return size: 0
+void sdk_ppPeocessRxPktHdr()
+sdk_ppPeocessRxPktHdr_entry:
+	// succ:  l40228620
+l40228620:
+	Mem0 = fp
+	a5 = 0x4022861C
+sdk_ppPeocessRxPktHdr_exit:
+
+
+// sdk_ppTask
+// Return size: 0
+void sdk_ppTask()
+sdk_ppTask_entry:
+	// succ:  l40228680
+l40228680:
+	Mem0 = fp
+	a2 = 0x00000028
+	a3 = 0x00000004
+sdk_ppTask_exit:
+
+
+// sdk_ppTxPkt
+// Return size: 0
+void sdk_ppTxPkt()
+sdk_ppTxPkt_entry:
+sdk_ppTxPkt_exit:
+
+
+// sdk_ppProcessWaitQ
+// Return size: 0
+void sdk_ppProcessWaitQ()
+sdk_ppProcessWaitQ_entry:
+sdk_ppProcessWaitQ_exit:
+
+
+// sdk_ppRegisterTxCallback
+// Return size: 0
+void sdk_ppRegisterTxCallback()
+sdk_ppRegisterTxCallback_entry:
+	// succ:  l40228C18
+l40228C18:
+	Mem0 = fp
+	a7 = 0x40228494
+sdk_ppRegisterTxCallback_exit:
+
+
+// sdk_ppRecycleRxPkt
+// Return size: 0
+void sdk_ppRecycleRxPkt()
+sdk_ppRecycleRxPkt_entry:
+sdk_ppRecycleRxPkt_exit:
+
+
+// sdk_ppCheckTxIdle
+// Return size: 0
+void sdk_ppCheckTxIdle()
+sdk_ppCheckTxIdle_entry:
+sdk_ppCheckTxIdle_exit:
+
+
+// sdk_ppGetTxQFirstAvail_Locked
+// Return size: 0
+void sdk_ppGetTxQFirstAvail_Locked()
+sdk_ppGetTxQFirstAvail_Locked_entry:
+sdk_ppGetTxQFirstAvail_Locked_exit:
+
+
+// sdk_pp_attach
+// Return size: 0
+void sdk_pp_attach()
+sdk_pp_attach_entry:
+sdk_pp_attach_exit:
+
+
+// sdk_RC_SetBasicRate
+// Return size: 0
+void sdk_RC_SetBasicRate()
+sdk_RC_SetBasicRate_entry:
+sdk_RC_SetBasicRate_exit:
+
+
+// sdk_rcUpdatePhyMode
+// Return size: 0
+void sdk_rcUpdatePhyMode()
+sdk_rcUpdatePhyMode_entry:
+sdk_rcUpdatePhyMode_exit:
+
+
+// sdk_rcAttach
+// Return size: 0
+void sdk_rcAttach()
+sdk_rcAttach_entry:
+	// succ:  l402299A8
+l402299A8:
+	Mem0 = fp
+	a4 = 0x40229994
+sdk_rcAttach_exit:
+
+
+// sdk_rcGetTrc
+// Return size: 0
+void sdk_rcGetTrc()
+sdk_rcGetTrc_entry:
+	// succ:  l402299F4
+l402299F4:
+	Mem0 = fp
+	a2 = 0x402299F0
+sdk_rcGetTrc_exit:
+
+
+// sdk_trc_onDisconnect
+// Return size: 0
+void sdk_trc_onDisconnect()
+sdk_trc_onDisconnect_entry:
+sdk_trc_onDisconnect_exit:
+
+
+// sdk_trc_onScanStart
+// Return size: 0
+void sdk_trc_onScanStart()
+sdk_trc_onScanStart_entry:
+sdk_trc_onScanStart_exit:
+
+
+// sdk_trc_onScanDone
+// Return size: 0
+void sdk_trc_onScanDone()
+sdk_trc_onScanDone_entry:
+sdk_trc_onScanDone_exit:
+
+
+// sdk_rc_enable_trc
+// Return size: 0
+void sdk_rc_enable_trc()
+sdk_rc_enable_trc_entry:
+sdk_rc_enable_trc_exit:
+
+
+// sdk_rc_get_mask
+// Return size: 0
+void sdk_rc_get_mask()
+sdk_rc_get_mask_entry:
+	// succ:  l40229B08
+l40229B08:
+	Mem0 = fp
+	a2 = 0x40229994
+sdk_rc_get_mask_exit:
+
+
+// sdk_rc_disable_trc
+// Return size: 0
+void sdk_rc_disable_trc()
+sdk_rc_disable_trc_entry:
+sdk_rc_disable_trc_exit:
+
+
+// sdk_rc_disable_trc_by_interface
+// Return size: 0
+void sdk_rc_disable_trc_by_interface()
+sdk_rc_disable_trc_by_interface_entry:
+	// succ:  l40229B94
+l40229B94:
+	Mem0 = fp
+	a6 = 0x40229994
+sdk_rc_disable_trc_by_interface_exit:
+
+
+// sdk_rc_get_sta_trc
+// Return size: 0
+void sdk_rc_get_sta_trc()
+sdk_rc_get_sta_trc_entry:
+sdk_rc_get_sta_trc_exit:
+
+
+// sdk_rc_get_trc
+// Return size: 0
+void sdk_rc_get_trc()
+sdk_rc_get_trc_entry:
+sdk_rc_get_trc_exit:
+
+
+// sdk_rc_get_trc_by_index
+// Return size: 0
+void sdk_rc_get_trc_by_index()
+sdk_rc_get_trc_by_index_entry:
+	// succ:  l40229C60
+l40229C60:
+	Mem0 = fp
+	a4 = 0x40229994
+sdk_rc_get_trc_by_index_exit:
+
+
+// sdk_rc_only_sta_trc
+// Return size: 0
+void sdk_rc_only_sta_trc()
+sdk_rc_only_sta_trc_entry:
+	// succ:  l40229C80
+l40229C80:
+	Mem0 = fp
+	a2 = 0x40229994
+sdk_rc_only_sta_trc_exit:
+
+
+// sdk_wDev_Option_Init
+// Return size: 0
+void sdk_wDev_Option_Init()
+sdk_wDev_Option_Init_entry:
+	// succ:  l40229CBC
+l40229CBC:
+	Mem0 = fp
+	a9 = 0x40229CB0
+	a8 = 0x40229CB4
+	a3 = 0x4021319C
+sdk_wDev_Option_Init_exit:
+
+
+// sdk_wDev_Enable_Beacon_Tsf
+// Return size: 0
+void sdk_wDev_Enable_Beacon_Tsf()
+sdk_wDev_Enable_Beacon_Tsf_entry:
+	// succ:  l40229D8C
+l40229D8C:
+	Mem0 = fp
+	a4 = 0x40229D88
+	a3 = 0x40229CB4
+sdk_wDev_Enable_Beacon_Tsf_exit:
+
+
+// sdk_wDev_Disable_Beacon_Tsf
+// Return size: 0
+void sdk_wDev_Disable_Beacon_Tsf()
+sdk_wDev_Disable_Beacon_Tsf_entry:
+	// succ:  l40229DA8
+l40229DA8:
+	Mem0 = fp
+	a4 = 0x40229DA4
+	a3 = 0x40229CB4
+sdk_wDev_Disable_Beacon_Tsf_exit:
+
+
+// sdk_wDev_Set_Beacon_Int
+// Return size: 0
+void sdk_wDev_Set_Beacon_Int()
+sdk_wDev_Set_Beacon_Int_entry:
+	// succ:  l40229DC4
+l40229DC4:
+	Mem0 = fp
+	a3 = 0x40229DC0
+sdk_wDev_Set_Beacon_Int_exit:
+
+
+// sdk_wDev_Reset_TBTT
+// Return size: 0
+void sdk_wDev_Reset_TBTT()
+sdk_wDev_Reset_TBTT_entry:
+sdk_wDev_Reset_TBTT_exit:
+
+
+// sdk_wDev_Get_Next_TBTT
+// Return size: 0
+void sdk_wDev_Get_Next_TBTT()
+sdk_wDev_Get_Next_TBTT_entry:
+	// succ:  l40229DFC
+l40229DFC:
+	Mem0 = fp
+	a5 = 0x40229CB4
+	a7 = 0x402266F8
+	a6 = 0x40229DC0
+sdk_wDev_Get_Next_TBTT_exit:
+
+
+// sdk_wDev_MacTim1SetFunc
+// Return size: 0
+void sdk_wDev_MacTim1SetFunc()
+sdk_wDev_MacTim1SetFunc_entry:
+	// succ:  l4022A094
+l4022A094:
+	Mem0 = fp
+	a6 = 0x4020449C
+	a5 = 0x40229CB4
+sdk_wDev_MacTim1SetFunc_exit:
+
+
+// sdk_wDev_Initialize
+// Return size: 0
+void sdk_wDev_Initialize()
+sdk_wDev_Initialize_entry:
+sdk_wDev_Initialize_exit:
+
+
+// sdk_wDevForceAck6M
+// Return size: 0
+void sdk_wDevForceAck6M()
+sdk_wDevForceAck6M_entry:
+	// succ:  l4022A11C
+l4022A11C:
+	Mem0 = fp
+	a4 = 0x402231E0
+sdk_wDevForceAck6M_exit:
+
+
+// sdk_wDev_SetMacAddress
+// Return size: 0
+void sdk_wDev_SetMacAddress()
+sdk_wDev_SetMacAddress_entry:
+sdk_wDev_SetMacAddress_exit:
+
+
+// sdk_wDev_SetRxPolicy
+// Return size: 0
+void sdk_wDev_SetRxPolicy()
+sdk_wDev_SetRxPolicy_entry:
+sdk_wDev_SetRxPolicy_exit:
+
+
+// sdk_wDev_SetBssid
+// Return size: 0
+void sdk_wDev_SetBssid()
+sdk_wDev_SetBssid_entry:
+sdk_wDev_SetBssid_exit:
+
+
+// sdk_wDev_ClearBssid
+// Return size: 0
+void sdk_wDev_ClearBssid()
+sdk_wDev_ClearBssid_entry:
+	// succ:  l4022A300
+l4022A300:
+	Mem0 = fp
+	a4 = 0x4022A1D0
+	a5 = 0x4021319C
+sdk_wDev_ClearBssid_exit:
+
+
+// sdk_wDev_Insert_KeyEntry
+// Return size: 0
+void sdk_wDev_Insert_KeyEntry()
+sdk_wDev_Insert_KeyEntry_entry:
+sdk_wDev_Insert_KeyEntry_exit:
+
+
+// sdk_wDev_remove_KeyEntry
+// Return size: 0
+void sdk_wDev_remove_KeyEntry()
+sdk_wDev_remove_KeyEntry_entry:
+	// succ:  l4022A40C
+l4022A40C:
+	Mem0 = fp
+	a7 = 0x4022A330
+sdk_wDev_remove_KeyEntry_exit:
+
+
+// sdk_wDev_Crypto_Conf
+// Return size: 0
+void sdk_wDev_Crypto_Conf()
+sdk_wDev_Crypto_Conf_entry:
+	// succ:  l4022A44C
+l4022A44C:
+	Mem0 = fp
+	a6 = 0x4022A448
+	a7 = 0x4021CB40
+	a5 = 0x4022A330
+sdk_wDev_Crypto_Conf_exit:
+
+
+// sdk_wDev_Crypto_Disable
+// Return size: 0
+void sdk_wDev_Crypto_Disable()
+sdk_wDev_Crypto_Disable_entry:
+	// succ:  l4022A4E8
+l4022A4E8:
+	Mem0 = fp
+	a6 = 0x40229DC0
+	a4 = 0x4022A330
+sdk_wDev_Crypto_Disable_exit:
+
+
+// sdk_wDevDisableRx
+// Return size: 0
+void sdk_wDevDisableRx()
+sdk_wDevDisableRx_entry:
+	// succ:  l4022A520
+l4022A520:
+	Mem0 = fp
+	a4 = 0x402044FC
+	a3 = 0x40214568
+sdk_wDevDisableRx_exit:
+
+
+// sdk_wDevEnableRx
+// Return size: 0
+void sdk_wDevEnableRx()
+sdk_wDevEnableRx_entry:
+	// succ:  l4022A538
+l4022A538:
+	Mem0 = fp
+	a4 = 0x4020449C
+	a3 = 0x40214568
+sdk_wDevEnableRx_exit:
+
+
+// sdk_wdev_go_sniffer
+// Return size: 0
+void sdk_wdev_go_sniffer()
+sdk_wdev_go_sniffer_entry:
+	// succ:  l4022A55C
+l4022A55C:
+	Mem0 = fp
+	a8 = 0x00000000
+	a2 = 0x4021BDC0
+	a3 = 0x4022A550
+	a7 = 0x402138F8
+	a10 = 0x4022A330
+	a4 = 0x00000001
+	a5 = 0x40229DC0
+sdk_wdev_go_sniffer_exit:
+
+
+// sdk_wdev_exit_sniffer
+// Return size: 0
+void sdk_wdev_exit_sniffer()
+sdk_wdev_exit_sniffer_entry:
+	// succ:  l4022A634
+l4022A634:
+	Mem0 = fp
+	a3 = 0x40229DC0
+sdk_wdev_exit_sniffer_exit:
+
+
+// sdk_hostapd_config_defaults_bss
+// Return size: 0
+void sdk_hostapd_config_defaults_bss()
+sdk_hostapd_config_defaults_bss_entry:
+	// succ:  l4022A6FC
+l4022A6FC:
+	Mem0 = fp
+	a4 = 0x4020A190
+	a3 = 0x0000012C
+sdk_hostapd_config_defaults_bss_exit:
+
+
+// sdk_hostapd_config_defaults
+// Return size: 0
+void sdk_hostapd_config_defaults()
+sdk_hostapd_config_defaults_entry:
+	// succ:  l4022A744
+l4022A744:
+	Mem0 = fp
+	a2 = 0x00000064
+sdk_hostapd_config_defaults_exit:
+
+
+// sdk_hostapd_mac_comp
+// Return size: 0
+void sdk_hostapd_mac_comp()
+sdk_hostapd_mac_comp_entry:
+sdk_hostapd_mac_comp_exit:
+
+
+// sdk_hostapd_mac_comp_empty
+// Return size: 0
+void sdk_hostapd_mac_comp_empty()
+sdk_hostapd_mac_comp_empty_entry:
+	// succ:  l4022A7C8
+l4022A7C8:
+	Mem0 = fp
+	a3 = 0x4022A7C4
+sdk_hostapd_mac_comp_empty_exit:
+
+
+// sdk_hostapd_setup_wpa_psk
+// Return size: 0
+void sdk_hostapd_setup_wpa_psk()
+sdk_hostapd_setup_wpa_psk_entry:
+sdk_hostapd_setup_wpa_psk_exit:
+
+
+// sdk_hostapd_wep_key_cmp
+// Return size: 0
+void sdk_hostapd_wep_key_cmp()
+sdk_hostapd_wep_key_cmp_entry:
+sdk_hostapd_wep_key_cmp_exit:
+
+
+// sdk_hostapd_maclist_found
+// Return size: 0
+void sdk_hostapd_maclist_found()
+sdk_hostapd_maclist_found_entry:
+sdk_hostapd_maclist_found_exit:
+
+
+// sdk_hostapd_rate_found
+// Return size: 0
+void sdk_hostapd_rate_found()
+sdk_hostapd_rate_found_entry:
+sdk_hostapd_rate_found_exit:
+
+
+// sdk_hostapd_get_psk
+// Return size: 0
+void sdk_hostapd_get_psk()
+sdk_hostapd_get_psk_entry:
+sdk_hostapd_get_psk_exit:
+
+
+// sdk_inc_byte_array
+// Return size: 0
+void sdk_inc_byte_array()
+sdk_inc_byte_array_entry:
+sdk_inc_byte_array_exit:
+
+
+// sdk_hex2byte
+// Return size: 0
+void sdk_hex2byte()
+sdk_hex2byte_entry:
+sdk_hex2byte_exit:
+
+
+// sdk_hexstr2bin
+// Return size: 0
+void sdk_hexstr2bin()
+sdk_hexstr2bin_entry:
+sdk_hexstr2bin_exit:
+
+
+// sdk_wpa_get_ntp_timestamp
+// Return size: 0
+void sdk_wpa_get_ntp_timestamp()
+sdk_wpa_get_ntp_timestamp_entry:
+sdk_wpa_get_ntp_timestamp_exit:
+
+
+// sdk_wpa_config_parse_string
+// Return size: 0
+void sdk_wpa_config_parse_string()
+sdk_wpa_config_parse_string_entry:
+sdk_wpa_config_parse_string_exit:
+
+
+// sdk_os_get_time
+// Return size: 0
+void sdk_os_get_time()
+sdk_os_get_time_entry:
+sdk_os_get_time_exit:
+
+
+// os_random
+// Return size: 0
+void os_random()
+os_random_entry:
+os_random_exit:
+
+
+// os_get_random
+// Return size: 0
+void os_get_random()
+os_get_random_entry:
+os_get_random_exit:
+
+
+// sdk_pbkdf2_sha1
+// Return size: 0
+void sdk_pbkdf2_sha1()
+sdk_pbkdf2_sha1_entry:
+sdk_pbkdf2_sha1_exit:
+
+
+// sdk_wpa_auth_for_each_sta
+// Return size: 0
+void sdk_wpa_auth_for_each_sta()
+sdk_wpa_auth_for_each_sta_entry:
+sdk_wpa_auth_for_each_sta_exit:
+
+
+// sdk_wpa_init
+// Return size: 0
+void sdk_wpa_init()
+sdk_wpa_init_entry:
+	// succ:  l4022B010
+l4022B010:
+	Mem0 = fp
+	a6 = a2 | a2
+sdk_wpa_init_exit:
+
+
+// sdk_wpa_auth_sta_init
+// Return size: 0
+void sdk_wpa_auth_sta_init()
+sdk_wpa_auth_sta_init_entry:
+sdk_wpa_auth_sta_init_exit:
+
+
+// sdk_wpa_auth_sta_associated
+// Return size: 0
+void sdk_wpa_auth_sta_associated()
+sdk_wpa_auth_sta_associated_entry:
+sdk_wpa_auth_sta_associated_exit:
+
+
+// sdk_wpa_auth_sta_no_wpa
+// Return size: 0
+void sdk_wpa_auth_sta_no_wpa()
+sdk_wpa_auth_sta_no_wpa_entry:
+sdk_wpa_auth_sta_no_wpa_exit:
+
+
+// sdk_wpa_auth_sta_deinit
+// Return size: 0
+void sdk_wpa_auth_sta_deinit()
+sdk_wpa_auth_sta_deinit_entry:
+sdk_wpa_auth_sta_deinit_exit:
+
+
+// sdk_wpa_receive
+// Return size: 0
+void sdk_wpa_receive()
+sdk_wpa_receive_entry:
+sdk_wpa_receive_exit:
+
+
+// sdk___wpa_send_eapol
+// Return size: 0
+void sdk___wpa_send_eapol()
+sdk___wpa_send_eapol_entry:
+sdk___wpa_send_eapol_exit:
+
+
+// sdk_wpa_remove_ptk
+// Return size: 0
+void sdk_wpa_remove_ptk()
+sdk_wpa_remove_ptk_entry:
+	// succ:  l4022BBB8
+l4022BBB8:
+	Mem0 = fp
+	a4 = 0x00000040
+	a3 = 0x00000000
+sdk_wpa_remove_ptk_exit:
+
+
+// sdk_wpa_auth_sm_event
+// Return size: 0
+void sdk_wpa_auth_sm_event()
+sdk_wpa_auth_sm_event_entry:
+sdk_wpa_auth_sm_event_exit:
+
+
+// sdk_wpa_write_rsn_ie
+// Return size: 0
+void sdk_wpa_write_rsn_ie()
+sdk_wpa_write_rsn_ie_entry:
+sdk_wpa_write_rsn_ie_exit:
+
+
+// sdk_wpa_auth_gen_wpa_ie
+// Return size: 0
+void sdk_wpa_auth_gen_wpa_ie()
+sdk_wpa_auth_gen_wpa_ie_entry:
+	// succ:  l4022CBE0
+l4022CBE0:
+	Mem0 = fp
+	a3 = 0x00000090
+sdk_wpa_auth_gen_wpa_ie_exit:
+
+
+// sdk_wpa_add_kde
+// Return size: 0
+void sdk_wpa_add_kde()
+sdk_wpa_add_kde_entry:
+sdk_wpa_add_kde_exit:
+
+
+// sdk_wpa_validate_wpa_ie
+// Return size: 0
+void sdk_wpa_validate_wpa_ie()
+sdk_wpa_validate_wpa_ie_entry:
+sdk_wpa_validate_wpa_ie_exit:
+
+
+// sdk_wpa_parse_kde_ies
+// Return size: 0
+void sdk_wpa_parse_kde_ies()
+sdk_wpa_parse_kde_ies_entry:
+sdk_wpa_parse_kde_ies_exit:
+
+
+// sdk_wpa_auth_uses_mfp
+// Return size: 0
+void sdk_wpa_auth_uses_mfp()
+sdk_wpa_auth_uses_mfp_entry:
+sdk_wpa_auth_uses_mfp_exit:
+
+
+// sdk_wpa_sm_rx_eapol
+// Return size: 0
+void sdk_wpa_sm_rx_eapol()
+sdk_wpa_sm_rx_eapol_entry:
+sdk_wpa_sm_rx_eapol_exit:
+
+
+// sdk_wpa_register
+// Return size: 0
+void sdk_wpa_register()
+sdk_wpa_register_entry:
+	// succ:  l4022E034
+l4022E034:
+	Mem0 = fp
+	a8 = 0x4022E030
+sdk_wpa_register_exit:
+
+
+// sdk_wpa_set_profile
+// Return size: 0
+void sdk_wpa_set_profile()
+sdk_wpa_set_profile_entry:
+	// succ:  l4022E060
+l4022E060:
+	Mem0 = fp
+	a4 = 0x4022DEC4
+sdk_wpa_set_profile_exit:
+
+
+// sdk_wpa_set_pmk
+// Return size: 0
+void sdk_wpa_set_pmk()
+sdk_wpa_set_pmk_entry:
+sdk_wpa_set_pmk_exit:
+
+
+// sdk_wpa_set_bss
+// Return size: 0
+void sdk_wpa_set_bss()
+sdk_wpa_set_bss_entry:
+sdk_wpa_set_bss_exit:
+
+
+// sdk_pp_michael_mic_failure
+// Return size: 0
+void sdk_pp_michael_mic_failure()
+sdk_pp_michael_mic_failure_entry:
+	// succ:  l4022E280
+l4022E280:
+	Mem0 = fp
+	a4 = 0x4022E270
+sdk_pp_michael_mic_failure_exit:
+
+
+// sdk_eapol_txcb
+// Return size: 0
+void sdk_eapol_txcb()
+sdk_eapol_txcb_entry:
+sdk_eapol_txcb_exit:
+
+
+// sdk_wpa_sm_set_state
+// Return size: 0
+void sdk_wpa_sm_set_state()
+sdk_wpa_sm_set_state_entry:
+sdk_wpa_sm_set_state_exit:
+
+
+// sdk_wpa_parse_wpa_ie_rsn
+// Return size: 0
+void sdk_wpa_parse_wpa_ie_rsn()
+sdk_wpa_parse_wpa_ie_rsn_entry:
+sdk_wpa_parse_wpa_ie_rsn_exit:
+
+
+// sdk_wpa_parse_wpa_ie_wpa
+// Return size: 0
+void sdk_wpa_parse_wpa_ie_wpa()
+sdk_wpa_parse_wpa_ie_wpa_entry:
+sdk_wpa_parse_wpa_ie_wpa_exit:
+
+
+// sdk_wpa_eapol_key_mic
+// Return size: 0
+void sdk_wpa_eapol_key_mic()
+sdk_wpa_eapol_key_mic_entry:
+sdk_wpa_eapol_key_mic_exit:
+
+
+// sdk_wpa_compare_rsn_ie
+// Return size: 0
+void sdk_wpa_compare_rsn_ie()
+sdk_wpa_compare_rsn_ie_entry:
+sdk_wpa_compare_rsn_ie_exit:
+
+
+// sdk_wpa_pmk_to_ptk
+// Return size: 0
+void sdk_wpa_pmk_to_ptk()
+sdk_wpa_pmk_to_ptk_entry:
+sdk_wpa_pmk_to_ptk_exit:
+
+
+// sdk_rsn_pmkid
+// Return size: 0
+void sdk_rsn_pmkid()
+sdk_rsn_pmkid_entry:
+sdk_rsn_pmkid_exit:
+
+
+// sdk_wpa_cipher_key_len
+// Return size: 0
+void sdk_wpa_cipher_key_len()
+sdk_wpa_cipher_key_len_entry:
+sdk_wpa_cipher_key_len_exit:
+
+
+// sdk_wpa_cipher_to_alg
+// Return size: 0
+void sdk_wpa_cipher_to_alg()
+sdk_wpa_cipher_to_alg_entry:
+sdk_wpa_cipher_to_alg_exit:
+
+
+// sdk_wpa_cipher_to_suite
+// Return size: 0
+void sdk_wpa_cipher_to_suite()
+sdk_wpa_cipher_to_suite_entry:
+sdk_wpa_cipher_to_suite_exit:
+
+
+// sdk_rsn_cipher_put_suites
+// Return size: 0
+void sdk_rsn_cipher_put_suites()
+sdk_rsn_cipher_put_suites_entry:
+sdk_rsn_cipher_put_suites_exit:
+
+
+// sdk_wpa_cipher_put_suites
+// Return size: 0
+void sdk_wpa_cipher_put_suites()
+sdk_wpa_cipher_put_suites_entry:
+sdk_wpa_cipher_put_suites_exit:
+
+
+// sdk_wpa_parse_wpa_ie
+// Return size: 0
+void sdk_wpa_parse_wpa_ie()
+sdk_wpa_parse_wpa_ie_entry:
+sdk_wpa_parse_wpa_ie_exit:
+
+
+// sdk_wpa_supplicant_parse_ies
+// Return size: 0
+void sdk_wpa_supplicant_parse_ies()
+sdk_wpa_supplicant_parse_ies_entry:
+sdk_wpa_supplicant_parse_ies_exit:
+
+
+// sdk_wpa_gen_wpa_ie
+// Return size: 0
+void sdk_wpa_gen_wpa_ie()
+sdk_wpa_gen_wpa_ie_entry:
+sdk_wpa_gen_wpa_ie_exit:
+
+
+// sdk_ppInstallKey
+// Return size: 0
+void sdk_ppInstallKey()
+sdk_ppInstallKey_entry:
+	// succ:  l4022EDE8
+l4022EDE8:
+	Mem0 = fp
+	a5 = a3 | a3
+sdk_ppInstallKey_exit:
+
+
+// sdk_wpa_config_profile
+// Return size: 0
+void sdk_wpa_config_profile()
+sdk_wpa_config_profile_entry:
+sdk_wpa_config_profile_exit:
+
+
+// sdk_wpa_config_bss
+// Return size: 0
+void sdk_wpa_config_bss()
+sdk_wpa_config_bss_entry:
+	// succ:  l4022EF28
+l4022EF28:
+	Mem0 = fp
+	a7 = a2 | a2
+sdk_wpa_config_bss_exit:
+
+
+// sdk_wpa_config_assoc_ie
+// Return size: 0
+void sdk_wpa_config_assoc_ie()
+sdk_wpa_config_assoc_ie_entry:
+	// succ:  l4022EF68
+l4022EF68:
+	Mem0 = fp
+	a6 = 0x402035F0
+sdk_wpa_config_assoc_ie_exit:
+
+
+// sdk_dhcp_bind_check
+// Return size: 0
+void sdk_dhcp_bind_check()
+sdk_dhcp_bind_check_entry:
+	// succ:  l4022EF7C
+l4022EF7C:
+	Mem0 = fp
+	a4 = 0x402035F0
+sdk_dhcp_bind_check_exit:
+
+
+// sdk_eagle_auth_done
+// Return size: 0
+void sdk_eagle_auth_done()
+sdk_eagle_auth_done_entry:
+sdk_eagle_auth_done_exit:
+
+
+// sdk_wpa_neg_complete
+// Return size: 0
+void sdk_wpa_neg_complete()
+sdk_wpa_neg_complete_entry:
+sdk_wpa_neg_complete_exit:
+
+
+// sdk_wpa_attach
+// Return size: 0
+void sdk_wpa_attach()
+sdk_wpa_attach_entry:
+	// succ:  l4022F088
+l4022F088:
+	Mem0 = fp
+	a3 = 0x4022F070
+	a5 = 0x4022F078
+	a6 = 0x4022F07C
+	a7 = 0x4022F080
+	a4 = a2 | a2
+sdk_wpa_attach_exit:
+
+
+// sdk_wpa_sm_alloc_eapol
+// Return size: 0
+void sdk_wpa_sm_alloc_eapol()
+sdk_wpa_sm_alloc_eapol_entry:
+sdk_wpa_sm_alloc_eapol_exit:
+
+
+// sdk_wpa_sm_deauthenticate
+// Return size: 0
+void sdk_wpa_sm_deauthenticate()
+sdk_wpa_sm_deauthenticate_entry:
+sdk_wpa_sm_deauthenticate_exit:
+
+
+// sdk_wpa_sm_mlme_setprotection
+// Return size: 0
+void sdk_wpa_sm_mlme_setprotection()
+sdk_wpa_sm_mlme_setprotection_entry:
+sdk_wpa_sm_mlme_setprotection_exit:
+
+
+// sdk_wpa_sm_get_beacon_ie
+// Return size: 0
+void sdk_wpa_sm_get_beacon_ie()
+sdk_wpa_sm_get_beacon_ie_entry:
+sdk_wpa_sm_get_beacon_ie_exit:
+
+
+// sdk_wpa_sm_disassociate
+// Return size: 0
+void sdk_wpa_sm_disassociate()
+sdk_wpa_sm_disassociate_entry:
+sdk_wpa_sm_disassociate_exit:
+
+
+// sdk_aes_unwrap
+// Return size: 0
+void sdk_aes_unwrap()
+sdk_aes_unwrap_entry:
+sdk_aes_unwrap_exit:
+
+
+// sdk_aes_wrap
+// Return size: 0
+void sdk_aes_wrap()
+sdk_aes_wrap_entry:
+sdk_aes_wrap_exit:
+
+
+// sdk_hmac_md5_vector
+// Return size: 0
+void sdk_hmac_md5_vector()
+sdk_hmac_md5_vector_entry:
+	// succ:  l4022F368
+l4022F368:
+	Mem0 = fp
+	a8 = 0x000000D0
+sdk_hmac_md5_vector_exit:
+
+
+// sdk_hmac_md5
+// Return size: 0
+void sdk_hmac_md5()
+sdk_hmac_md5_entry:
+sdk_hmac_md5_exit:
+
+
+// sdk_md5_vector
+// Return size: 0
+void sdk_md5_vector()
+sdk_md5_vector_entry:
+sdk_md5_vector_exit:
+
+
+// sdk_MD5Init
+// Return size: 0
+void sdk_MD5Init()
+sdk_MD5Init_entry:
+	// succ:  l4022F51C
+l4022F51C:
+	Mem0 = fp
+	a3 = 0x4022F518
+	a4 = 0x4022F514
+	a5 = 0x4022F510
+	a6 = 0x4022F50C
+sdk_MD5Init_exit:
+
+
+// sdk_MD5Update
+// Return size: 0
+void sdk_MD5Update()
+sdk_MD5Update_entry:
+sdk_MD5Update_exit:
+
+
+// sdk_MD5Final
+// Return size: 0
+void sdk_MD5Final()
+sdk_MD5Final_entry:
+	// succ:  l4022F5F8
+l4022F5F8:
+	Mem0 = fp
+	a4 = 0x0000003F
+sdk_MD5Final_exit:
+
+
+// sdk_hmac_sha1_vector
+// Return size: 0
+void sdk_hmac_sha1_vector()
+sdk_hmac_sha1_vector_entry:
+	// succ:  l4022FE6C
+l4022FE6C:
+	Mem0 = fp
+	a8 = 0x000000E0
+sdk_hmac_sha1_vector_exit:
+
+
+// sdk_hmac_sha1
+// Return size: 0
+void sdk_hmac_sha1()
+sdk_hmac_sha1_entry:
+sdk_hmac_sha1_exit:
+
+
+// sdk_sha1_prf
+// Return size: 0
+void sdk_sha1_prf()
+sdk_sha1_prf_entry:
+sdk_sha1_prf_exit:
+
+
+// sdk_sha1_vector
+// Return size: 0
+void sdk_sha1_vector()
+sdk_sha1_vector_entry:
+sdk_sha1_vector_exit:
+
+
+// sdk_SHA1Transform
+// Return size: 0
+void sdk_SHA1Transform()
+sdk_SHA1Transform_entry:
+	// succ:  l402300F4
+l402300F4:
+	Mem0 = fp
+	a4 = 0x00000130
+sdk_SHA1Transform_exit:
+
+
+// sdk_SHA1Init
+// Return size: 0
+void sdk_SHA1Init()
+sdk_SHA1Init_entry:
+	// succ:  l402313E0
+l402313E0:
+	Mem0 = fp
+	a3 = 0x402313DC
+	a4 = 0x4022F518
+	a5 = 0x4022F514
+	a6 = 0x4022F510
+	a7 = 0x4022F50C
+sdk_SHA1Init_exit:
+
+
+// sdk_SHA1Update
+// Return size: 0
+void sdk_SHA1Update()
+sdk_SHA1Update_entry:
+sdk_SHA1Update_exit:
+
+
+// sdk_SHA1Final
+// Return size: 0
+void sdk_SHA1Final()
+sdk_SHA1Final_entry:
+sdk_SHA1Final_exit:
+
+
+// sdk_rijndaelKeySetupDec
+// Return size: 0
+void sdk_rijndaelKeySetupDec()
+sdk_rijndaelKeySetupDec_entry:
+sdk_rijndaelKeySetupDec_exit:
+
+
+// sdk_aes_decrypt_init
+// Return size: 0
+void sdk_aes_decrypt_init()
+sdk_aes_decrypt_init_entry:
+sdk_aes_decrypt_init_exit:
+
+
+// sdk_aes_decrypt
+// Return size: 0
+void sdk_aes_decrypt()
+sdk_aes_decrypt_entry:
+sdk_aes_decrypt_exit:
+
+
+// sdk_aes_decrypt_deinit
+// Return size: 0
+void sdk_aes_decrypt_deinit()
+sdk_aes_decrypt_deinit_entry:
+sdk_aes_decrypt_deinit_exit:
+
+
+// sdk_rijndaelEncrypt
+// Return size: 0
+void sdk_rijndaelEncrypt()
+sdk_rijndaelEncrypt_entry:
+sdk_rijndaelEncrypt_exit:
+
+
+// sdk_aes_encrypt_init
+// Return size: 0
+void sdk_aes_encrypt_init()
+sdk_aes_encrypt_init_entry:
+sdk_aes_encrypt_init_exit:
+
+
+// sdk_aes_encrypt
+// Return size: 0
+void sdk_aes_encrypt()
+sdk_aes_encrypt_entry:
+sdk_aes_encrypt_exit:
+
+
+// sdk_aes_encrypt_deinit
+// Return size: 0
+void sdk_aes_encrypt_deinit()
+sdk_aes_encrypt_deinit_entry:
+sdk_aes_encrypt_deinit_exit:
+
+
+// sdk_rijndaelKeySetupEnc
+// Return size: 0
+void sdk_rijndaelKeySetupEnc()
+sdk_rijndaelKeySetupEnc_entry:
+	// succ:  l40231F5C
+l40231F5C:
+	Mem0 = fp
+	a8 = 0x40204514
+	a7 = 0x40204510
+	a6 = 0x40204518
+sdk_rijndaelKeySetupEnc_exit:
+
+
+// sdk_eloop_cancel_timeout
+// Return size: 0
+void sdk_eloop_cancel_timeout()
+sdk_eloop_cancel_timeout_entry:
+sdk_eloop_cancel_timeout_exit:
+
+
+// sdk_eloop_register_timeout
+// Return size: 0
+void sdk_eloop_register_timeout()
+sdk_eloop_register_timeout_entry:
+sdk_eloop_register_timeout_exit:
+
+
+// sdk_rc4_skip
+// Return size: 0
+void sdk_rc4_skip()
+sdk_rc4_skip_entry:
+sdk_rc4_skip_exit:
+
+

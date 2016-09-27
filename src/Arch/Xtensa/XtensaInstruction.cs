@@ -28,7 +28,8 @@ namespace Reko.Arch.Xtensa
     {
         private static readonly Dictionary<Opcodes, string> instrNames = new Dictionary<Opcodes, string>
         {
-            { Opcodes.l32i_n, "l32i.n" }
+            { Opcodes.l32i_n, "l32i.n" },
+            { Opcodes.movi_n, "movi.n" }
         };
 
         public override InstructionClass InstructionClass

@@ -35,6 +35,7 @@ namespace Reko.Arch.Xtensa
         lsx,
         memw,
         movi,
+        movi_n,
         or,
         ret,
         s32i,

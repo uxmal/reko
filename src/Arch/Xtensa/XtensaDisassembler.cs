@@ -277,19 +277,54 @@ namespace Reko.Arch.Xtensa
         {
             private Opcodes opcode;
             private string fmt;
+            private bool twoByte;
 
             public OpRec(Opcodes opcode, string fmt)
             {
                 this.opcode = opcode;
                 this.fmt = fmt;
             }
+            public OpRec(Opcodes opcode, string fmt, bool twoByte)
+            {
+                this.opcode = opcode;
+                this.fmt = fmt;
+                this.twoByte = twoByte;
+            }
 
             public override XtensaInstruction Decode(XtensaDisassembler dasm)
             {
+                if (this.twoByte)
+                    dasm.rdr.Offset -= 1;
                 return dasm.DecodeOperands(opcode, fmt);
             }
         }
 
+        public class OpRecMovi_n : OpRecBase
+        {
+            public override XtensaInstruction Decode(XtensaDisassembler dasm)
+            {
+                var n = 
+                    dasm.state.r |
+                    ((dasm.state.t & 0x7) << 4) |
+                    (((dasm.state.t & 0x6) == 0x6)
+                        ? ~0x1F
+                        : 0);
+                var imm = ImmediateOperand.SByte((sbyte)n);
+
+                // this is a 2-byte instruction, so back up one byte.
+                dasm.rdr.Offset -= 1;
+
+                return new XtensaInstruction
+                {
+                    Opcode = Opcodes.movi_n,
+                    Operands = new MachineOperand[]
+                    {
+                        dasm.GetAluRegister(dasm.state.s),
+                        imm,
+                    }
+                };
+            }
+        }
 
         private static OpRecBase[] oprecs;
 
@@ -359,6 +394,27 @@ namespace Reko.Arch.Xtensa
                 null,
                 null,
                 null,
+
+                null,
+                null,
+                null,
+                null,
+
+                null,
+                null,
+                null,
+                null);
+
+            var oprecST2 = new t_Rec(
+                new OpRecMovi_n(),
+                new OpRecMovi_n(),
+                new OpRecMovi_n(),
+                new OpRecMovi_n(),
+                         
+                new OpRecMovi_n(),
+                new OpRecMovi_n(),
+                new OpRecMovi_n(),
+                new OpRecMovi_n(),
 
                 null,
                 null,
@@ -472,12 +528,12 @@ namespace Reko.Arch.Xtensa
                 null,
                 null,
 
-                new OpRec(Opcodes.l32i_n, "t,s,42"),
+                new OpRec(Opcodes.l32i_n, "t,s,42", true),
                 null,
                 null,
                 null,
 
-                null,
+                oprecST2,
                 null,
                 null,
                 null,

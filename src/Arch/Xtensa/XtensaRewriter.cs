@@ -38,6 +38,7 @@ namespace Reko.Arch.Xtensa
         private IEnumerator<XtensaInstruction> dasm;
         private RtlInstructionCluster rtlc;
         private RtlEmitter emitter;
+        private XtensaInstruction instr;
 
         public XtensaRewriter(XtensaArchitecture arch, ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
@@ -56,19 +57,21 @@ namespace Reko.Arch.Xtensa
                 rtlc = new RtlInstructionCluster(dasm.Current.Address, dasm.Current.Length);
                 rtlc.Class = RtlClass.Linear;
                 emitter = new RtlEmitter(rtlc.Instructions);
-                switch (dasm.Current.Opcode)
+                this.instr = dasm.Current;
+                switch (instr.Opcode)
                 {
                 default:
                     throw new AddressCorrelatedException(
-                       dasm.Current.Address,
+                       instr.Address,
                        "Rewriting of Xtensa instruction '{0}' not implemented yet.",
-                       dasm.Current.Opcode);
+                       instr.Opcode);
                 case Opcodes.call0: RewriteCall0(); break;
                 case Opcodes.ill: RewriteIll(); break;
                 case Opcodes.l32i_n: RewriteL32i(); break;
                 case Opcodes.l32r: RewriteCopy(); break;
                 case Opcodes.memw: RewriteNop(); break;
                 case Opcodes.movi: RewriteCopy(); break;
+                case Opcodes.movi_n: RewriteMovi_n(); break;
                 case Opcodes.or: RewriteOr(); break;
                 case Opcodes.reserved: RewriteReserved(); break;
                 case Opcodes.ret: RewriteRet(); break;

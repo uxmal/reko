@@ -130,5 +130,14 @@ namespace Reko.UnitTests.Arch.Xtensa
         {
             AssertCode("l32i.n\ta4,a13,1C", 0x7D48);
         }
+
+        [Test]
+        public void Xtdasm_movi_n()
+        {
+            AssertCode("movi.n\ta3,-20", 0x036C);
+            AssertCode("movi.n\ta3,-01", 0xF37C);
+            AssertCode("movi.n\ta3,+20", 0x032C);
+            AssertCode("movi.n\ta3,+5F", 0xF35C);
+        }
     }
 }

@@ -51,7 +51,7 @@ namespace Reko.Arch.Xtensa
 
         private void RewriteL32i()
         {
-            var dst = RewriteOp(dasm.Current.Operands[0]);
+            var dst = RewriteOp(this.instr.Operands[0]);
             emitter.Assign(
                 dst,
                 emitter.LoadDw(
@@ -59,6 +59,14 @@ namespace Reko.Arch.Xtensa
                         RewriteOp(dasm.Current.Operands[1]),
                         Constant.UInt32(
                         ((ImmediateOperand)dasm.Current.Operands[2]).Value.ToUInt32()))));
+        }
+
+        private void RewriteMovi_n()
+        {
+            var dst = RewriteOp(this.instr.Operands[0]);
+            var src = Constant.Int32(
+                ((ImmediateOperand)this.instr.Operands[1]).Value.ToInt32());
+            emitter.Assign(dst, src);
         }
 
         private void RewriteS32i()

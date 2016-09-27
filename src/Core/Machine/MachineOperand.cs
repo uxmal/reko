@@ -138,6 +138,11 @@ namespace Reko.Core.Machine
             return new ImmediateOperand(Constant.Byte(value));
         }
 
+        public static ImmediateOperand SByte(sbyte value)
+        {
+            return new ImmediateOperand(Constant.SByte(value));
+        }
+
         public static MachineOperand UInt16(ushort value)
         {
             return new ImmediateOperand(Constant.UInt16(value));
