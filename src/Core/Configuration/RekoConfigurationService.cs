@@ -284,7 +284,7 @@ namespace Reko.Core.Configuration
             if (elem == null)
                 return null;
 
-            Type t = Type.GetType(elem.TypeName, false);
+            Type t = Type.GetType(elem.TypeName, true);
             if (t == null)
                 return null;
             var arch = (IProcessorArchitecture)t.GetConstructor(Type.EmptyTypes).Invoke(null);

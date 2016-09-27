@@ -159,6 +159,8 @@ namespace Reko.ImageLoaders.Elf
         public string ReadAsciiString(ulong fileOffset)
         {
             var bytes = RawImage;
+            if (fileOffset >= (ulong) bytes.Length)
+                return "";
             int u = (int)fileOffset;
             while (bytes[u] != 0)
             {

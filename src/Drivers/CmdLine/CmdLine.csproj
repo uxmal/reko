@@ -115,6 +115,7 @@
     <Architectures Include="$(SolutionDir)Arch\Sparc\$(OutDir)Reko.Arch.Sparc.*" />
     <Architectures Include="$(SolutionDir)Arch\Vax\$(OutDir)Reko.Arch.Vax.*" />
     <Architectures Include="$(SolutionDir)Arch\X86\$(OutDir)Reko.Arch.X86.*" />
+    <Architectures Include="$(SolutionDir)Arch\Xtensa\$(OutDir)Reko.Arch.Xtensa.*" />
     <Architectures Include="$(SolutionDir)Arch\Z80\$(OutDir)Reko.Arch.Z80.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\MzExe\$(OutDir)Reko.ImageLoaders.MzExe.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\BinHex\$(OutDir)Reko.ImageLoaders.BinHex.*" />

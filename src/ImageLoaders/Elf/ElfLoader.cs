@@ -149,6 +149,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_PPC: arch = "ppc32"; break;
             case ElfMachine.EM_PPC64: arch = "ppc64"; break;
             case ElfMachine.EM_ARM: arch = "arm"; break;
+            case ElfMachine.EM_XTENSA: arch = "xtensa"; break;
             default:
                 throw new NotSupportedException(string.Format("Processor format {0} is not supported.", machineType));
             }
@@ -1048,6 +1049,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_MIPS: return new MipsRelocator(this);
             case ElfMachine.EM_PPC: return new PpcRelocator(this);
             case ElfMachine.EM_SPARC: return new SparcRelocator(this);
+            case ElfMachine.EM_XTENSA: return new XtensaRelocator(this);
             }
             return base.CreateRelocator(machine);
         }
@@ -1290,6 +1292,8 @@ namespace Reko.ImageLoaders.Elf
             for (uint i = 0; i < Header.e_shnum; ++i)
             {
                 var shdr = Elf32_SHdr.Load(rdr);
+                if (shdr == null)
+                    break;
                 var section = new ElfSection
                 {
                     Number = i,

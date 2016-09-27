@@ -1,4 +1,16 @@
 === CB80.dcproject
+=== r2-extensa-crash
+*** r2-extensa-crash
+r2-extensa-crash: error: An internal error occurred while decompiling.
+    Could not find file 'D:\dev\uxmal\reko\master\subjects\Elf-Extensa\r2\r2-extensa-crash'.
+       at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access)
+   at Reko.Core.Services.FileSystemServiceImpl.CreateFileStream(String filename, FileMode mode, FileAccess access) in D:\dev\uxmal\reko\master\src\Core\Services\IFileSystemService.cs:line 62
+   at Reko.Loading.Loader.LoadImageBytes(String fileName, Int32 offset) in D:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 251
+   at Reko.DecompilerDriver.Load(String fileName) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 196
+   at Reko.DecompilerDriver.Decompile(String filename) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 97
+
 === redir
 *** redir
 main: error: An error occurred while rewriting procedure to high-level language.
