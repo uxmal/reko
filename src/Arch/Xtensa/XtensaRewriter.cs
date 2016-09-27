@@ -65,11 +65,15 @@ namespace Reko.Arch.Xtensa
                        dasm.Current.Opcode);
                 case Opcodes.call0: RewriteCall0(); break;
                 case Opcodes.ill: RewriteIll(); break;
+                case Opcodes.l32i_n: RewriteL32i(); break;
                 case Opcodes.l32r: RewriteCopy(); break;
+                case Opcodes.memw: RewriteNop(); break;
                 case Opcodes.movi: RewriteCopy(); break;
                 case Opcodes.or: RewriteOr(); break;
                 case Opcodes.reserved: RewriteReserved(); break;
                 case Opcodes.ret: RewriteRet(); break;
+                case Opcodes.s32i: RewriteS32i(); break;
+                case Opcodes.sub: RewriteSub(); break;
                 case Opcodes.wsr: RewriteWsr(); break;
                 }
                 yield return rtlc;

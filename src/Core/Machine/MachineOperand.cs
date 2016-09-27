@@ -138,20 +138,30 @@ namespace Reko.Core.Machine
             return new ImmediateOperand(Constant.Byte(value));
         }
 
+        public static MachineOperand UInt16(ushort value)
+        {
+            return new ImmediateOperand(Constant.UInt16(value));
+        }
+
+        public static MachineOperand UInt32(uint value)
+        {
+            return new ImmediateOperand(Constant.UInt32(value));
+        }
+
+
         public static ImmediateOperand Word32(int value)
         {
             return new ImmediateOperand(Constant.Word32(value));
         }
 
-        public static ImmediateOperand Word32(uint value) { return Word32((int) value); }
+        public static ImmediateOperand Word32(uint value) { return Word32((int)value); }
+
+        public static ImmediateOperand Word64(ulong value) { return Word64((long) value); }
 
         public static ImmediateOperand Word64(long value)
         {
             return new ImmediateOperand(Constant.Word64(value));
         }
-
-        public static ImmediateOperand Word64(ulong value) { return Word64((long) value); }
-
 
         public static ImmediateOperand Int32(int value)
         {
@@ -162,6 +172,8 @@ namespace Reko.Core.Machine
         {
             return new ImmediateOperand(Constant.Int16(value));
         }
+
+ 
 
         public static MachineOperand Word16(ushort value)
         {

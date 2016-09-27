@@ -128,6 +128,8 @@ namespace Reko.Arch.Xtensa
                     string.Format("Operand type {0} not implemented.", fmt[i - 1]));
                 case ',':
                     continue;
+                case '4': op = ImmediateOperand.Byte((byte)(state.r << fmt[i++] - '0')); break;
+                case '8': op = ImmediateOperand.UInt16((ushort)(state.imm8 << fmt[i++] - '0')); break;
                 case 'c': op = CallOffset(state.offset); break;
                 case 'i': op = SplitImmediate(); break;
                 case 'p':
@@ -242,7 +244,6 @@ namespace Reko.Arch.Xtensa
             }
         }
 
-
         public class n_Rec : OpRecBase
         {
             private OpRecBase[] aOprecs;
@@ -258,6 +259,20 @@ namespace Reko.Arch.Xtensa
             }
         }
 
+        public class t_Rec : OpRecBase
+        {
+            private OpRecBase[] aOprecs;
+
+            public t_Rec(params OpRecBase[] aOprecs)
+            {
+                this.aOprecs = aOprecs;
+            }
+
+            public override XtensaInstruction Decode(XtensaDisassembler dasm)
+            {
+                return aOprecs[dasm.state.t].Decode(dasm);
+            }
+        }
         public class OpRec : OpRecBase
         {
             private Opcodes opcode;
@@ -313,10 +328,31 @@ namespace Reko.Arch.Xtensa
                 oprecJR,
                 null);
 
+            var oprecSYNC = new t_Rec(
+                null,
+                null,
+                null,
+                null,
+
+                null,
+                null,
+                null,
+                null,
+
+                null,
+                null,
+                null,
+                null,
+
+                new OpRec(Opcodes.memw, ""),
+                null,
+                null,
+                null);
+
             var oprecST0 = new r_Rec(
                 oprecSNM0,
                 null,
-                null,
+                oprecSYNC,
                 null,
 
                 null,
@@ -350,7 +386,7 @@ namespace Reko.Arch.Xtensa
                 null,
                 null,
 
-                null,
+                new OpRec(Opcodes.sub, "r,s,t"),
                 null,
                 null,
                 null);
@@ -405,7 +441,7 @@ namespace Reko.Arch.Xtensa
 
                 null,
                 null,
-                null,
+                new OpRec(Opcodes.s32i, "t,s,82"),
                 null,
 
                 null,
@@ -436,7 +472,7 @@ namespace Reko.Arch.Xtensa
                 null,
                 null,
 
-                null,
+                new OpRec(Opcodes.l32i_n, "t,s,42"),
                 null,
                 null,
                 null,

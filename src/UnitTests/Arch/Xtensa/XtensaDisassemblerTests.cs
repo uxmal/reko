@@ -105,5 +105,30 @@ namespace Reko.UnitTests.Arch.Xtensa
         {
             AssertCode("movi\ta9,000003A0", 0xA0A392);
         }
+
+        [Test]
+        public void Xtdasm_sub()
+        {
+            AssertCode("sub\ta1,a1,a9", 0xC01190);
+        }
+
+        [Test]
+        public void Xtdasm_s32i()
+        {
+            AssertCode("s32i\ta13,a1,0394", 0xE561D2);
+            AssertCode("s32i\ta0,a1,039C", 0xE76102);
+        }
+   
+        [Test]
+        public void Xtdasm_memw()
+        {
+            AssertCode("memw\t", 0x0020C0);
+        }
+
+        [Test]
+        public void Xtdasm_l32i()
+        {
+            AssertCode("l32i.n\ta4,a13,1C", 0x7D48);
+        }
     }
 }

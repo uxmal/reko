@@ -36,12 +36,49 @@ namespace Reko.Arch.Xtensa
             emitter.Assign(dst, src);
         }
 
+        private void RewriteNop()
+        {
+            emitter.Nop();
+        }
+
         private void RewriteOr()
         {
             var src1 = RewriteOp(dasm.Current.Operands[1]);
             var src2 = RewriteOp(dasm.Current.Operands[2]);
             var dst = RewriteOp(dasm.Current.Operands[0]);
             emitter.Assign(dst, emitter.Or(src1, src2));
+        }
+
+        private void RewriteL32i()
+        {
+            var dst = RewriteOp(dasm.Current.Operands[0]);
+            emitter.Assign(
+                dst,
+                emitter.LoadDw(
+                    emitter.IAdd(
+                        RewriteOp(dasm.Current.Operands[1]),
+                        Constant.UInt32(
+                        ((ImmediateOperand)dasm.Current.Operands[2]).Value.ToUInt32()))));
+        }
+
+        private void RewriteS32i()
+        {
+            var src = RewriteOp(dasm.Current.Operands[0]);
+            emitter.Assign(
+                emitter.LoadDw(
+                    emitter.IAdd(
+                        RewriteOp(dasm.Current.Operands[1]),
+                        Constant.UInt32(
+                        ((ImmediateOperand)dasm.Current.Operands[2]).Value.ToUInt32()))),
+                src);
+        }
+
+        private void RewriteSub()
+        {
+            var src1 = RewriteOp(dasm.Current.Operands[1]);
+            var src2 = RewriteOp(dasm.Current.Operands[2]);
+            var dst = RewriteOp(dasm.Current.Operands[0]);
+            emitter.Assign(dst, emitter.ISub(src1, src2));
         }
     }
 }

@@ -149,5 +149,44 @@ namespace Reko.UnitTests.Arch.Xtensa
                 "0|L--|00010000(3): 1 instructions",
                 "1|L--|a9 = 0x000003A0");
         }
+
+        [Test]
+        public void Xtrw_sub()
+        {
+            Rewrite(0xC01190); // "sub\ta1,a1,a9"
+            AssertCode(
+                "0|L--|00010000(3): 1 instructions");
+        }
+
+        [Test]
+        public void Xtrw_s32i()
+        {
+            Rewrite(0xE561D2); // "s32i\ta13,a1,0x00000394"
+            AssertCode(
+                "0|L--|00010000(3): 1 instructions",
+                "1|L--|Mem0[a1 + 0x00000394:word32] = a13");
+            Rewrite(0xE76102); // "s32i\ta0,a1,0x0000039C"
+            AssertCode(
+                "0|L--|00010000(3): 1 instructions",
+                "1|L--|Mem0[a1 + 0x0000039C:word32] = a0");
+        }
+
+        [Test]
+        public void Xtrw_memw()
+        {
+            Rewrite(0x0020C0); // "memw\t"
+            AssertCode(
+                "0|L--|00010000(3): 1 instructions",
+                "1|L--|nop");
+        }
+
+        [Test]
+        public void Xtrw_l32i()
+        {
+            Rewrite(0x7D48); // "l32i.n\ta4,a13,28"
+            AssertCode(
+                "0|L--|00010000(3): 1 instructions",
+                "1|L--|a4 = Mem0[a13 + 0x0000001C:word32]");
+        }
     }
 }

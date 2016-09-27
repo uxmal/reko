@@ -30,11 +30,15 @@ namespace Reko.Arch.Xtensa
         call8,
         call12,
         ill,
+        l32i_n,
         l32r,
         lsx,
+        memw,
         movi,
         or,
         ret,
+        s32i,
+        sub,
         wsr,
     }
 }

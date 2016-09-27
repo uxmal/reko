@@ -20,11 +20,17 @@
 
 using System;
 using Reko.Core.Machine;
+using System.Collections.Generic;
 
 namespace Reko.Arch.Xtensa
 {
     public class XtensaInstruction : MachineInstruction
     {
+        private static readonly Dictionary<Opcodes, string> instrNames = new Dictionary<Opcodes, string>
+        {
+            { Opcodes.l32i_n, "l32i.n" }
+        };
+
         public override InstructionClass InstructionClass
         {
             get { return InstructionClass.Linear; }
@@ -51,7 +57,12 @@ namespace Reko.Arch.Xtensa
 
         public override void Render(MachineInstructionWriter writer)
         {
-            writer.WriteOpcode(Opcode.ToString());
+            string instrName;
+            if (!instrNames.TryGetValue(Opcode, out instrName))
+            {
+                instrName = Opcode.ToString();
+            }
+            writer.WriteOpcode(instrName);
             writer.Tab();
             var sep = "";
             if (this.Operands != null)
