@@ -18,23 +18,36 @@
  */
 #endregion
 
+using Reko.Core.Serialization;
+using Reko.Core.Types;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
 namespace Reko.Arch.Xtensa
 {
-    public enum Opcodes
+    public partial class XtensaRewriter
     {
-        reserved = -2,
-        invalid = -1,
+        private void RewriteIll()
+        {
+            var c = new ProcedureCharacteristics
+            {
+                Terminates = true,
+            };
+            emitter.SideEffect(host.PseudoProcedure("__ill", c, VoidType.Instance));
+        }
 
-        call0,
-        call4,
-        call8,
-        call12,
-        ill,
-        l32r,
-        lsx,
-        movi,
-        or,
-        ret,
-        wsr,
+        private void RewriteReserved()
+        {
+            emitter.SideEffect(host.PseudoProcedure("__reserved", VoidType.Instance));
+        }
+
+        private void RewriteWsr()
+        {
+            var dst = RewriteOp(dasm.Current.Operands[1]);
+            var src = RewriteOp(dasm.Current.Operands[0]);
+            emitter.Assign(dst, src);
+        }
     }
 }

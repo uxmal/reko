@@ -18,23 +18,30 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
+using Reko.Core.Machine;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
 namespace Reko.Arch.Xtensa
 {
-    public enum Opcodes
+    public partial class XtensaRewriter
     {
-        reserved = -2,
-        invalid = -1,
+        private void RewriteCopy()
+        {
+            var src = RewriteOp(dasm.Current.Operands[1]);
+            var dst = RewriteOp(dasm.Current.Operands[0]);
+            emitter.Assign(dst, src);
+        }
 
-        call0,
-        call4,
-        call8,
-        call12,
-        ill,
-        l32r,
-        lsx,
-        movi,
-        or,
-        ret,
-        wsr,
+        private void RewriteOr()
+        {
+            var src1 = RewriteOp(dasm.Current.Operands[1]);
+            var src2 = RewriteOp(dasm.Current.Operands[2]);
+            var dst = RewriteOp(dasm.Current.Operands[0]);
+            emitter.Assign(dst, emitter.Or(src1, src2));
+        }
     }
 }

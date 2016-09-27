@@ -48,6 +48,10 @@
     <Compile Include="XtensaDisassembler.cs" />
     <Compile Include="XtensaInstruction.cs" />
     <Compile Include="XtensaProcessorState.cs" />
+    <Compile Include="XtensaRewriter.Alu.cs" />
+    <Compile Include="XtensaRewriter.Control.cs" />
+    <Compile Include="XtensaRewriter.cs" />
+    <Compile Include="XtensaRewriter.System.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">

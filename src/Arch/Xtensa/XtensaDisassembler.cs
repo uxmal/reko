@@ -28,7 +28,7 @@ using Reko.Core.Expressions;
 
 namespace Reko.Arch.Xtensa
 {
-    public class XtensaDisassembler : DisassemblerBase<MachineInstruction>
+    public class XtensaDisassembler : DisassemblerBase<XtensaInstruction>
     {
         private XtensaArchitecture arch;
         private ImageReader rdr;
@@ -78,7 +78,7 @@ namespace Reko.Arch.Xtensa
                 return sb.ToString();
             }
         }
-        public override MachineInstruction DisassembleInstruction()
+        public override XtensaInstruction DisassembleInstruction()
         {
             byte b0;
             byte b1;
@@ -92,8 +92,8 @@ namespace Reko.Arch.Xtensa
             // Extract little endian pieces.
             state.op0 = (byte)(b0 & 0x0F);
             state.t = (byte)((b0 & 0xF0) >> 4);
-            state.r = (byte)((b1 & 0x0F));
-            state.s = (byte)((b1 & 0xF0) >> 4);
+            state.s = (byte)((b1 & 0x0F));
+            state.r = (byte)((b1 & 0xF0) >> 4);
             state.op1 = (byte)((b2 & 0x0F));
             state.op2 = (byte)((b2 & 0xF0) >> 4);
             state.imm8 = b2;
@@ -129,13 +129,14 @@ namespace Reko.Arch.Xtensa
                 case ',':
                     continue;
                 case 'c': op = CallOffset(state.offset); break;
+                case 'i': op = SplitImmediate(); break;
                 case 'p':
                     op = NegativePcRelativeAddress();
                     break;
                 case 'r': op = GetAluRegister(state.r); break;
                 case 's': op = GetAluRegister(state.s); break;
                 case 't': op = GetAluRegister(state.t); break;
-                case 'S': op = SpecialRegister((state.s << 4) | state.r); break;
+                case 'S': op = SpecialRegister((state.r << 4) | state.s); break;
                 }
                 ops.Add(op);
             }
@@ -149,6 +150,12 @@ namespace Reko.Arch.Xtensa
         private MachineOperand CallOffset(int offset)
         {
              return AddressOperand.Ptr32((uint)((state.addr.ToUInt32() & ~3) + (offset << 2) + 4));
+        }
+
+        private ImmediateOperand SplitImmediate()
+        {
+            int n = ((state.imm8 | (state.s << 8)) << 20) >> 20;
+            return new ImmediateOperand(Constant.Word32(n));
         }
 
         private MachineOperand GetAluRegister(byte r)
@@ -385,6 +392,27 @@ namespace Reko.Arch.Xtensa
                 null,
                 null,
 
+                new OpRec(Opcodes.reserved, ""),
+                new OpRec(Opcodes.reserved, ""),
+                new OpRec(Opcodes.reserved, ""),
+                new OpRec(Opcodes.reserved, ""));
+
+            var oprecLSAI = new r_Rec(
+                null,
+                null,
+                null,
+                null,
+
+                null,
+                null,
+                null,
+                null,
+
+                null,
+                null,
+                new OpRec(Opcodes.movi, "t,i"),
+                null,
+
                 null,
                 null,
                 null,
@@ -400,7 +428,7 @@ namespace Reko.Arch.Xtensa
             {
                 oprecQRST,
                 new OpRec(Opcodes.l32r, "t,p"),
-                null,
+                oprecLSAI,
                 null,
 
                 null,

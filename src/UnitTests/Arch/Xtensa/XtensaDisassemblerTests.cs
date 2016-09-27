@@ -92,5 +92,18 @@ namespace Reko.UnitTests.Arch.Xtensa
         {
             AssertCode("call0\t00100B24", 0x00B205);
         }
+
+        [Test]
+        public void Xtdasm_reserved()
+        {
+            AssertCode("reserved\t", 0xFE9200);
+            // 00 92 fe
+        }
+
+        [Test]
+        public void Xtdasm_movi()
+        {
+            AssertCode("movi\ta9,000003A0", 0xA0A392);
+        }
     }
 }
