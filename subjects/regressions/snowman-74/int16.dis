@@ -1,5 +1,5 @@
 int32 get(int32 dwArg04)
-// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+// stackDelta: 8; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse:  ecx
 // LiveOut:

@@ -53,7 +53,11 @@ namespace Reko.Arch.X86
             if (d == null || d.Length == 0)
                 d = DefaultConvention;
             sig.StackDelta = Architecture.PointerType.Size;  //$BUG: far/near pointers?
-            if (d == "stdapi" || d == "__stdcall" || d == "pascal")
+            if (d == "stdapi" ||
+                d == "stdcall" ||
+                d == "__stdcall" ||
+                d == "__thiscall" ||
+                d == "pascal")
                 sig.StackDelta += StackOffset;
             sig.FpuStackDelta = FpuStackOffset;
             sig.ReturnAddressOnStack = Architecture.PointerType.Size;   //$BUG: x86 real mode?
