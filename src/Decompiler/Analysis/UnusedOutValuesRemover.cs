@@ -45,7 +45,11 @@ namespace Reko.Analysis
         private ProgramDataFlow dataFlow;
         private DecompilerEventListener eventListener;
 
-        public UnusedOutValuesRemover(Program program, List<SsaTransform> ssts, ProgramDataFlow dataFlow, DecompilerEventListener eventListener)
+        public UnusedOutValuesRemover(
+            Program program,
+            List<SsaTransform> ssts,
+            ProgramDataFlow dataFlow,
+            DecompilerEventListener eventListener)
         { 
             this.dataFlow = dataFlow;
             this.program = program;
@@ -125,7 +129,11 @@ namespace Reko.Analysis
             return change;
         }
 
-        private static void FindDeadStatementsInExitBlock(SsaState ssa, HashSet<Storage> liveOutStorages, HashSet<Statement> deadStms, HashSet<Storage> deadStgs)
+        private static void FindDeadStatementsInExitBlock(
+            SsaState ssa,
+            HashSet<Storage> liveOutStorages,
+            HashSet<Statement> deadStms, 
+            HashSet<Storage> deadStgs)
         {
             foreach (var stm in ssa.Procedure.ExitBlock.Statements)
             {

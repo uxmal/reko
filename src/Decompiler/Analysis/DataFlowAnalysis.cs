@@ -49,7 +49,10 @@ namespace Reko.Analysis
 		private ProgramDataFlow flow;
         private List<SsaTransform> ssts;
 
-        public DataFlowAnalysis(Program program, IImportResolver importResolver, DecompilerEventListener eventListener)
+        public DataFlowAnalysis(
+            Program program,
+            IImportResolver importResolver,
+            DecompilerEventListener eventListener)
 		{
 			this.program = program;
             this.importResolver = importResolver;
@@ -119,6 +122,8 @@ namespace Reko.Analysis
             var uvr = new UnusedOutValuesRemover(program, ssts, this.flow, eventListener);
             uvr.Transform();
 
+            // At this point, the exit blocks contain only live out
+            // registers. We can create signatures from that.
             CallRewriter.Rewrite(program.Platform, ssts, this.flow, eventListener);
             return ssts;
         }

@@ -139,9 +139,9 @@ namespace Reko.Analysis
 		}
 
 		/// <summary>
-		/// Creates a signature for this procedure, and ensures that all 
-        /// registers accessed by the procedure are in the procedure
-		/// Frame.
+		/// Creates a signature for this procedure from the supplied ProcedureFlow,
+        /// and ensures that all registers accessed by the procedure are in the
+        /// procedure SFrame.
 		/// </summary>
 		public void EnsureSignature(Procedure proc, ProcedureFlow flow)
 		{
