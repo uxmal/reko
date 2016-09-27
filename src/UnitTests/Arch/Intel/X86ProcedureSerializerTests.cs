@@ -272,7 +272,6 @@ namespace Reko.UnitTests.Arch.Intel
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(8, sig.StackDelta);
             Assert.AreEqual(4, ((StackArgumentStorage)sig.Parameters[0].Storage).StackOffset);
-            Assert.AreEqual(8, sig.StackDelta);
         }
 
         [Test]
@@ -295,7 +294,6 @@ namespace Reko.UnitTests.Arch.Intel
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(8, sig.StackDelta);
             Assert.AreEqual(4, ((StackArgumentStorage)sig.Parameters[0].Storage).StackOffset);
-            Assert.AreEqual(8, sig.StackDelta);
         }
 
         [Test]
@@ -318,7 +316,6 @@ namespace Reko.UnitTests.Arch.Intel
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             Assert.AreEqual(8, sig.StackDelta);
             Assert.AreEqual(4, ((StackArgumentStorage)sig.Parameters[0].Storage).StackOffset);
-            Assert.AreEqual(8, sig.StackDelta);
         }
 
         [Test]
