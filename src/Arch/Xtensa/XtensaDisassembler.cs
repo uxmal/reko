@@ -30,6 +30,10 @@ namespace Reko.Arch.Xtensa
 {
     public class XtensaDisassembler : DisassemblerBase<XtensaInstruction>
     {
+        private static OpRecBase[] oprecs;
+        private static int[] b4const;
+        private static int[] b4constu;
+
         private XtensaArchitecture arch;
         private ImageReader rdr;
         private State state;
@@ -57,7 +61,6 @@ namespace Reko.Arch.Xtensa
 
             public override string ToString()
             {
-
                 var sb = new StringBuilder();
                 sb.AppendFormat("op0: {0:X2}", op0);
                 sb.AppendLine();
@@ -78,6 +81,7 @@ namespace Reko.Arch.Xtensa
                 return sb.ToString();
             }
         }
+
         public override XtensaInstruction DisassembleInstruction()
         {
             byte b0;
@@ -108,7 +112,8 @@ namespace Reko.Arch.Xtensa
             }
             catch
             {
-                Debug.Print("state: {0}", state);
+                Debug.Print("instr: {0:X2} {1:X2} {2:X2}", b0, b1, b2);
+                Debug.Print("{0}", state);
                 instr = new XtensaInstruction { Opcode = Opcodes.invalid };
             };
             instr.Address = state.addr;
@@ -119,7 +124,7 @@ namespace Reko.Arch.Xtensa
         private XtensaInstruction DecodeOperands(Opcodes opcode, string fmt)
         {
             var ops = new List<MachineOperand>();
-            for (int i =0; i < fmt.Length; ++i)
+            for (int i = 0; i < fmt.Length; ++i)
             {
                 MachineOperand op;
                 switch (fmt[i++])
@@ -130,14 +135,21 @@ namespace Reko.Arch.Xtensa
                     continue;
                 case '4': op = ImmediateOperand.Byte((byte)(state.r << fmt[i++] - '0')); break;
                 case '8': op = ImmediateOperand.UInt16((ushort)(state.imm8 << fmt[i++] - '0')); break;
+                case 'B': op = GetBoolRegister(fmt[i++]); break;
+                case 'F': op = GetFpuRegister(fmt[i++]); break;
+                case 'I': op = ImmediateOperand.Byte(FieldValue(fmt[i++])); break;
+                case 'J': op = LongJumpOffset(); break;
+                case 'R': op = GetAluRegister(fmt[i++]); break;
+                case 'a': op = ImmediateOperand.SByte(state.t == 0 ?(sbyte) -1 : (sbyte)state.t); break;
+                case 'b': op = ImmediateBranchOperand(fmt, ref i); break;
                 case 'c': op = CallOffset(state.offset); break;
+                case 'e': op = L32e_Value(state.r); break;
                 case 'i': op = SplitImmediate(); break;
+                case 'j': op = JumpOffset(state.imm8); break;
+                case 'm': op = Scaled256Immediate(fmt, ref i); break;
                 case 'p':
                     op = NegativePcRelativeAddress();
                     break;
-                case 'r': op = GetAluRegister(state.r); break;
-                case 's': op = GetAluRegister(state.s); break;
-                case 't': op = GetAluRegister(state.t); break;
                 case 'S': op = SpecialRegister((state.r << 4) | state.s); break;
                 }
                 ops.Add(op);
@@ -149,9 +161,59 @@ namespace Reko.Arch.Xtensa
             };
         }
 
+        private MachineOperand L32e_Value(byte r)
+        {
+            var off = ~0x3F | (r << 2);
+            return ImmediateOperand.Int32(off);
+        }
+
+        private MachineOperand ImmediateBranchOperand(string fmt, ref int i)
+        {
+            switch (fmt[i++])
+            {
+            case 'u': return ImmediateOperand.Word32(b4constu[state.r]);
+            case 's': return ImmediateOperand.Int32(b4const[state.r]);
+            default: throw new NotImplementedException();
+            }
+        }
+
+        private byte FieldValue(char f)
+        {
+            switch (f)
+            {
+            default:  throw new NotImplementedException();
+            case 'r': return state.r;
+            case 's': return state.s;
+            case 't': return state.t;
+            case '1': return state.op1;
+            case '2': return state.op2;
+            case 'S': return (byte)(state.t | ((state.op2 & 1) << 4)); // used by slli
+            case 'R': return (byte)(state.s | ((state.op2 & 1) << 4)); // used by srai
+            case 'I': return (byte)(state.s | ((state.r & 1) << 4));   // used by ssai
+            }
+        }
+
+        private ImmediateOperand Scaled256Immediate(string fmt, ref int i)
+        {
+            int n = (sbyte)state.imm8;
+            n <<= (fmt[i++] - '0');
+            return ImmediateOperand.Word32(n);
+        }
+
         private MachineOperand CallOffset(int offset)
         {
-             return AddressOperand.Ptr32((uint)((state.addr.ToUInt32() & ~3) + (offset << 2) + 4));
+            return AddressOperand.Ptr32((uint)((state.addr.ToUInt32() & ~3) + (offset << 2) + 4));
+        }
+
+        private AddressOperand LongJumpOffset()
+        {
+            return AddressOperand.Ptr32((uint)((int)state.addr.ToLinear() + (state.offset + 4)));
+        }
+
+        private MachineOperand JumpOffset(byte offset)
+        {
+            int dst = (int)state.addr.ToUInt32() + (sbyte)offset + 4;
+            return AddressOperand.Ptr32((uint)dst);
         }
 
         private ImmediateOperand SplitImmediate()
@@ -160,9 +222,34 @@ namespace Reko.Arch.Xtensa
             return new ImmediateOperand(Constant.Word32(n));
         }
 
+        private MachineOperand GetAluRegister(char pos)
+        {
+            RegisterStorage reg = arch.GetAluRegister(this.FieldValue(pos));
+            return new RegisterOperand(reg);
+        }
+    
+        private MachineOperand GetFpuRegister(char pos)
+        {
+            var freg = arch.GetFpuRegister(this.FieldValue(pos));
+            return new RegisterOperand(freg);
+        }
+
         private MachineOperand GetAluRegister(byte r)
         {
             return new RegisterOperand(arch.GetAluRegister(r));
+        }
+
+        private MachineOperand GetBoolRegister(char pos)
+        {
+            RegisterStorage reg;
+            switch (pos)
+            {
+            case 'r': reg =  arch.GetBoolRegister(state.r); break;
+            case 's': reg =  arch.GetBoolRegister(state.s); break;
+            case 't': reg =  arch.GetBoolRegister(state.t); break;
+            default: throw new ArgumentOutOfRangeException();
+            }
+            return new RegisterOperand(reg);
         }
 
         private MachineOperand SpecialRegister(int sr)
@@ -189,6 +276,7 @@ namespace Reko.Arch.Xtensa
 
             public Op1Rec(params OpRecBase [] aOprecs)
             {
+                Debug.Assert(aOprecs.Length == 16);
                 this.aOprecs = aOprecs;
             }
 
@@ -204,6 +292,7 @@ namespace Reko.Arch.Xtensa
 
             public Op2Rec(params OpRecBase[] aOprecs)
             {
+                Debug.Assert(aOprecs.Length == 16);
                 this.aOprecs = aOprecs;
             }
 
@@ -220,6 +309,7 @@ namespace Reko.Arch.Xtensa
 
             public r_Rec(params OpRecBase[] aOprecs)
             {
+                Debug.Assert(aOprecs.Length == 16);
                 this.aOprecs = aOprecs;
             }
 
@@ -235,6 +325,7 @@ namespace Reko.Arch.Xtensa
 
             public m_Rec(params OpRecBase[] aOprecs)
             {
+                Debug.Assert(aOprecs.Length == 4);
                 this.aOprecs = aOprecs;
             }
 
@@ -250,6 +341,7 @@ namespace Reko.Arch.Xtensa
 
             public n_Rec(params OpRecBase[] aOprecs)
             {
+                Debug.Assert(aOprecs.Length == 4);
                 this.aOprecs = aOprecs;
             }
 
@@ -259,12 +351,29 @@ namespace Reko.Arch.Xtensa
             }
         }
 
+        public class s_Rec : OpRecBase
+        {
+            private OpRecBase[] aOprecs;
+
+            public s_Rec(params OpRecBase[] aOprecs)
+            {
+                Debug.Assert(aOprecs.Length == 16);
+                this.aOprecs = aOprecs;
+            }
+
+            public override XtensaInstruction Decode(XtensaDisassembler dasm)
+            {
+                return aOprecs[dasm.state.s].Decode(dasm);
+            }
+        }
+
         public class t_Rec : OpRecBase
         {
             private OpRecBase[] aOprecs;
 
             public t_Rec(params OpRecBase[] aOprecs)
             {
+                Debug.Assert(aOprecs.Length == 16);
                 this.aOprecs = aOprecs;
             }
 
@@ -273,6 +382,7 @@ namespace Reko.Arch.Xtensa
                 return aOprecs[dasm.state.t].Decode(dasm);
             }
         }
+
         public class OpRec : OpRecBase
         {
             private Opcodes opcode;
@@ -326,15 +436,185 @@ namespace Reko.Arch.Xtensa
             }
         }
 
-        private static OpRecBase[] oprecs;
+        public class OpRec_bz : OpRecBase
+        {
+            private Opcodes opcode;
+
+            public OpRec_bz(Opcodes opcode)
+            {
+                this.opcode = opcode;
+            }
+
+            public override XtensaInstruction Decode(XtensaDisassembler dasm)
+            {
+                int shoff = dasm.state.imm12;
+                if (shoff > 0x7FF)
+                    shoff |= ~0x7FF;
+                var dst = AddressOperand.Ptr32((uint)
+                    ((int)dasm.state.addr.ToUInt32() + 4 + shoff));
+
+                return new XtensaInstruction
+                {
+                    Opcode = opcode,
+                    Operands = new MachineOperand[]
+                    {
+                        dasm.GetAluRegister(dasm.state.s),
+                        dst,
+                    }
+                };
+
+            }
+        }
+
+        public class OpRecBeqxx_n : OpRecBase
+        {
+            private Opcodes opcode;
+
+            public OpRecBeqxx_n(Opcodes opcode)
+            {
+                this.opcode = opcode;
+            }
+
+            public override XtensaInstruction Decode(XtensaDisassembler dasm)
+            {
+                var n =
+                    dasm.state.r |
+                    ((dasm.state.t & 0x3) << 4);
+                var dst = dasm.JumpOffset((byte)n);
+
+                // this is a 2-byte instruction, so back up one byte.
+                dasm.rdr.Offset -= 1;
+
+                return new XtensaInstruction
+                {
+                    Opcode = opcode,
+                    Operands = new MachineOperand[]
+                    {
+                        dasm.GetAluRegister(dasm.state.s),
+                        dst,
+                    }
+                };
+            }
+        }
+
+        public class OpRec_bbxi : OpRecBase
+        {
+            private Opcodes opcode;
+
+            public OpRec_bbxi(Opcodes opcode)
+            {
+                this.opcode = opcode;
+            }
+
+            public override XtensaInstruction Decode(XtensaDisassembler dasm)
+            {
+                return new XtensaInstruction
+                {
+                    Opcode = this.opcode,
+                    Operands = new MachineOperand[] {
+                        dasm.GetAluRegister(dasm.state.s),
+                        ImmediateOperand.Byte((byte)(((dasm.state.r & 1) << 4) | dasm.state.t)),
+                        dasm.JumpOffset(dasm.state.imm8)
+                    }
+                };
+            }
+        }
+
+        public class ExtuiOpRec : OpRecBase
+        {
+            public override XtensaInstruction Decode(XtensaDisassembler dasm)
+            {
+                return new XtensaInstruction
+                {
+                    Opcode = Opcodes.extui,
+                    Operands = new MachineOperand[]
+                    {
+                        dasm.GetAluRegister(dasm.state.r),
+                        dasm.GetAluRegister(dasm.state.t),
+                        ImmediateOperand.Byte((byte)((dasm.state.s | ((dasm.state.op1 & 1) << 4)))),
+                        ImmediateOperand.Byte((byte)(dasm.state.op2 + 1))
+                    }
+                };
+            }
+        }
 
         static XtensaDisassembler()
         {
+            b4const = new int[16]
+            {
+                -1, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 16, 32, 64, 128, 256
+            };
+
+            b4constu = new int[16]
+            {
+                0x8000,
+                0x10000,
+                0x2,
+                0x3,
+                0x4,
+                0x5,
+                0x6,
+                0x7,
+
+                0x8,
+                0xA,
+                0xC,
+                0x10,
+                0x20,
+                0x40,
+                0x80,
+                0x100,
+            };
+
+            var reserved = new OpRec(Opcodes.reserved, "");
+
             var oprecLSCX = new Op1Rec(
-                new OpRec(Opcodes.lsx,"T,s,r"),
+                new OpRec(Opcodes.lsx,"T,Rs,Rr"),
+                null,
+                reserved,
+                reserved,
+
                 null,
                 null,
-                null,
+                reserved,
+                reserved,
+
+                reserved,
+                reserved,
+                reserved,
+                reserved,
+
+                reserved,
+                reserved,
+                reserved,
+                reserved);
+
+            var oprecLSC4 = new Op2Rec(
+                new OpRec(Opcodes.l32e, "Rt,Rs,e"),
+                reserved,
+                reserved,
+                reserved,
+
+                new OpRec(Opcodes.s32e, "Rt,Rs,e"),
+                reserved,
+                reserved,
+                reserved,
+
+                reserved,
+                reserved,
+                reserved,
+                reserved,
+
+                reserved,
+                reserved,
+                reserved,
+                reserved);
+
+            var oprecFP0 = new Op2Rec(
+                new OpRec(Opcodes.add_s, "Fr,Fs,Ft"),
+                new OpRec(Opcodes.sub_s, "Fr,Fs,Ft"),
+                new OpRec(Opcodes.mul_s, "Fr,Fs,Ft"),
+                reserved,
 
                 null,
                 null,
@@ -344,27 +624,54 @@ namespace Reko.Arch.Xtensa
                 null,
                 null,
                 null,
-                null,
+                new OpRec(Opcodes.floor_s, "Rr,Fs,It"),
 
                 null,
                 null,
                 null,
                 null);
+
+            var oprecFP1 = new Op2Rec(
+                reserved,
+                null,
+                null,
+                new OpRec(Opcodes.ueq_s, "Br,Fs,Ft"),
+
+                null,
+                null,
+                null,
+                null,
+
+                new OpRec(Opcodes.moveqz_s, "Fr,Fs,Rt"),
+                null,
+                null,
+                null,
+
+                null,
+                null,
+                reserved,
+                reserved);
 
             var oprecJR = new n_Rec(
                 new OpRec(Opcodes.ret, ""),
                 null,
-                null,
-                null);
+                new OpRec(Opcodes.jx, "Rs"),
+                reserved);
+
+            var oprecCALLX = new n_Rec(
+                new OpRec(Opcodes.callx0, "Rs"),
+                new OpRec(Opcodes.callx4, "Rs"),
+                new OpRec(Opcodes.callx8, "Rs"),
+                new OpRec(Opcodes.callx12, "Rs"));
 
             var oprecSNM0 = new m_Rec(
                 new OpRec(Opcodes.ill, ""),
                 null,
                 oprecJR,
-                null);
+                oprecCALLX);
 
             var oprecSYNC = new t_Rec(
-                null,
+                new OpRec(Opcodes.isync, ""),
                 null,
                 null,
                 null,
@@ -384,15 +691,103 @@ namespace Reko.Arch.Xtensa
                 null,
                 null);
 
+            var oprecRFET = new s_Rec(
+                new OpRec(Opcodes.rfe, ""),
+                null,
+                null,
+                reserved,
+
+                null,
+                null,
+                reserved,
+                reserved,
+
+                reserved,
+                reserved,
+                reserved,
+                reserved,
+
+                reserved,
+                reserved,
+                reserved,
+                reserved);
+
+            var oprecRFEI = new t_Rec(
+                oprecRFET,
+                new OpRec(Opcodes.rfi, "Is"),
+                null,
+                reserved,
+
+                reserved,
+                reserved,
+                reserved,
+                reserved,
+
+                reserved,
+                reserved,
+                reserved,
+                reserved,
+
+                reserved,
+                reserved,
+                reserved,
+                reserved);
+
+
+            var oprecBZ = new m_Rec(
+                new OpRec_bz(Opcodes.beqz),
+                new OpRec_bz(Opcodes.bnez),
+                new OpRec_bz(Opcodes.bltz),
+                new OpRec_bz(Opcodes.bgez));
+
+            var oprecBI0 = new m_Rec(
+                new OpRec(Opcodes.beqi, "Rs,bs,j"),
+                new OpRec(Opcodes.bnei, "Rs,bs,j"),
+                new OpRec(Opcodes.blti, "Rs,bs,j"),
+                new OpRec(Opcodes.bgei, "Rs,bs,j"));
+
+            var oprecBI1 = new m_Rec(
+                null,
+                null,
+                new OpRec(Opcodes.bltui, "Rs,bu,j"),
+                new OpRec(Opcodes.bgeui, "Rs,bu,j"));
+
+            var oprecSI = new n_Rec(
+                new OpRec(Opcodes.j, "J"),
+                oprecBZ,
+                oprecBI0,
+                oprecBI1);
+
+            var oprecB = new r_Rec(
+               new OpRec(Opcodes.bnone, "Rs,Rt,j"),
+               new OpRec(Opcodes.beq, "Rs,Rt,j"),
+               new OpRec(Opcodes.blt, "Rs,Rt,j"),
+               new OpRec(Opcodes.bltu, "Rs,Rt,j"),
+
+               new OpRec(Opcodes.ball, "Rs,Rt,j"),
+               new OpRec(Opcodes.bbc, "Rs,Rt,j"),
+               new OpRec_bbxi(Opcodes.bbci),
+               new OpRec_bbxi(Opcodes.bbci),
+
+               new OpRec(Opcodes.bany, "Rs,Rt,j"),
+               new OpRec(Opcodes.bne, "Rs,Rt,j"),
+               new OpRec(Opcodes.bge, "Rs,Rt,j"),
+               new OpRec(Opcodes.bgeu, "Rs,Rt,j"),
+
+               new OpRec(Opcodes.bnall, "Rs,Rt,j"),
+               new OpRec(Opcodes.bbs, "Rs,Rt,j"),
+               new OpRec_bbxi(Opcodes.bbsi),
+               new OpRec_bbxi(Opcodes.bbsi));
+
             var oprecST0 = new r_Rec(
                 oprecSNM0,
                 null,
                 oprecSYNC,
-                null,
+                oprecRFEI,
 
+                new OpRec(Opcodes.@break, "Is,It"),
                 null,
-                null,
-                null,
+                new OpRec(Opcodes.rsil, "Rt,Is"),
                 null,
 
                 null,
@@ -404,64 +799,211 @@ namespace Reko.Arch.Xtensa
                 null,
                 null,
                 null);
+
+            var oprecST1 = new r_Rec(
+                new OpRec(Opcodes.ssr, "Rs"),
+                new OpRec(Opcodes.ssl, "Rs"),
+                new OpRec(Opcodes.ssa8l, "Rs"),
+                null,
+
+                new OpRec(Opcodes.ssai, "II"),
+                reserved,
+                null,
+                null,
+
+                null,
+                reserved,
+                reserved,
+                reserved,
+
+                reserved,
+                reserved,
+                new OpRec(Opcodes.nsa, "Rt,Rs"),
+                new OpRec(Opcodes.nsau, "Rt,Rs"));
 
             var oprecST2 = new t_Rec(
                 new OpRecMovi_n(),
                 new OpRecMovi_n(),
                 new OpRecMovi_n(),
                 new OpRecMovi_n(),
-                         
+
                 new OpRecMovi_n(),
                 new OpRecMovi_n(),
                 new OpRecMovi_n(),
                 new OpRecMovi_n(),
 
-                null,
-                null,
-                null,
-                null,
+                new OpRecBeqxx_n(Opcodes.beqz_n),
+                new OpRecBeqxx_n(Opcodes.beqz_n),
+                new OpRecBeqxx_n(Opcodes.beqz_n),
+                new OpRecBeqxx_n(Opcodes.beqz_n),
 
-                null,
-                null,
-                null,
-                null);
+                new OpRecBeqxx_n(Opcodes.bnez_n),
+                new OpRecBeqxx_n(Opcodes.bnez_n),
+                new OpRecBeqxx_n(Opcodes.bnez_n),
+                new OpRecBeqxx_n(Opcodes.bnez_n));
+
+            var oprecS3 = new t_Rec(
+                new OpRec(Opcodes.ret_n, "", true),
+                reserved,
+                reserved,
+                reserved,
+
+                reserved,
+                reserved,
+                reserved,
+                reserved,
+
+                reserved,
+                reserved,
+                reserved,
+                reserved,
+
+                reserved,
+                reserved,
+                reserved,
+                reserved);
+
+            var oprecST3 = new r_Rec(
+                new OpRec(Opcodes.mov_n, "Rt,Rs", true),
+                reserved,
+                reserved,
+                reserved,
+
+                reserved,
+                reserved,
+                reserved,
+                reserved,
+
+                reserved,
+                reserved,
+                reserved,
+                reserved,
+
+                reserved,
+                reserved,
+                reserved,
+                oprecS3);
+
+            var oprecRT0 = new s_Rec(
+                new OpRec(Opcodes.neg, "Rr,Rt"),
+                new OpRec(Opcodes.abs, "Rr,Rt"),
+                reserved,
+                reserved,
+                
+                reserved,
+                reserved,
+                reserved,
+                reserved,
+
+                reserved,
+                reserved,
+                reserved,
+                reserved,
+                
+                reserved,
+                reserved,
+                reserved,
+                reserved);
 
             var oprecRST0 = new Op2Rec(
                 oprecST0,
+                new OpRec(Opcodes.and, "Rr,Rs,Rt"),
+                new OpRec(Opcodes.or, "Rr,Rs,Rt"),
+                new OpRec(Opcodes.xor, "Rr,Rs,Rt"),
+
+                oprecST1,
                 null,
-                new OpRec(Opcodes.or, "r,s,t"),
+                oprecRT0,
+                reserved,
+
+                new OpRec(Opcodes.add, "Rr,Rs,Rt"),
+                new OpRec(Opcodes.addx2, "Rr,Rs,Rt"),
+                new OpRec(Opcodes.addx4, "Rr,Rs,Rt"),
+                new OpRec(Opcodes.addx8, "Rr,Rs,Rt"),
+
+                new OpRec(Opcodes.sub, "Rr,Rs,Rt"),
+                new OpRec(Opcodes.subx2, "Rr,Rs,Rt"),
+                new OpRec(Opcodes.subx4, "Rr,Rs,Rt"),
+                new OpRec(Opcodes.subx8, "Rr,Rs,Rt"));
+
+            var oprecIMP = new r_Rec(
+                reserved,
+                reserved,
+                reserved,
+                reserved,
+
+                reserved,
+                reserved,
+                reserved,
+                reserved,
+
+                reserved,
+                reserved,
+                reserved,
+                reserved,
+
+                reserved,
+                reserved,
+                reserved,
+                new OpRec(Opcodes.ldpte, ""));       //$TODO: doesn't appear to be documented
+
+            var oprecRST1 = new Op2Rec(
+                new OpRec(Opcodes.slli, "Rr,Rs,IS"),
+                new OpRec(Opcodes.slli, "Rr,Rs,IS"),
+                new OpRec(Opcodes.srai, "Rr,Rt,IR"),
+                new OpRec(Opcodes.srai, "Rr,Rt,IR"),
+
+                new OpRec(Opcodes.srli, "Rr,Rt,Is"),
+                reserved,
+                null,
                 null,
 
-                null,
-                null,
+                new OpRec(Opcodes.src, "Rr,Rs,Rt"),
+                new OpRec(Opcodes.srl, "Rr,Rt"),
+                new OpRec(Opcodes.sll, "Rr,Rs"),
+                new OpRec(Opcodes.sra, "Rr,Rs"),
+
+                new OpRec(Opcodes.mul16u, "Rr,Rs,Rt"),
+                new OpRec(Opcodes.mul16s, "Rr,Rs,Rt"),
+                reserved,
+                oprecIMP);
+
+            var oprecRST2 = new Op2Rec(
+                new OpRec(Opcodes.andb, "Br,Bs,Bt"),
+                new OpRec(Opcodes.andbc, "Br,Bs,Bt"),
+                new OpRec(Opcodes.orb, "Br,Bs,Bt"),
+                new OpRec(Opcodes.orbc, "Br,Bs,Bt"),
+
+                new OpRec(Opcodes.xorb, "Br,Bs,Bt"),
+                reserved,
+                reserved,
+                reserved,
+
+                new OpRec(Opcodes.mull, "Rr,Rs,Rt"),
+                reserved,
                 null,
                 null,
 
-                null,
-                null,
-                null,
-                null,
-
-                new OpRec(Opcodes.sub, "r,s,t"),
-                null,
-                null,
-                null);
+                new OpRec(Opcodes.quou, "Rr,Rs,Rt"),
+                new OpRec(Opcodes.quos, "Rr,Rs,Rt"),
+                new OpRec(Opcodes.remu, "Rr,Rs,Rt"),
+                new OpRec(Opcodes.rems, "Rr,Rs,Rt"));
 
             var oprecRST3 = new Op2Rec(
-               null,
-               new OpRec(Opcodes.wsr, "t,S"),
-               null,
-               null,
-
-               null,
-               null,
+               new OpRec(Opcodes.rsr, "Rt,S"),
+               new OpRec(Opcodes.wsr, "Rt,S"),
                null,
                null,
 
-               null,
-               null,
-               null,
-               null,
+               new OpRec(Opcodes.min, "Rr,Rs,Rt"),
+               new OpRec(Opcodes.max, "Rr,Rs,Rt"),
+               new OpRec(Opcodes.minu, "Rr,Rs,Rt"),
+               new OpRec(Opcodes.maxu, "Rr,Rs,Rt"),
+
+               new OpRec(Opcodes.moveqz, "Rr,Rs,Rt"),
+               new OpRec(Opcodes.movnez, "Rr,Rs,Rt"),
+               new OpRec(Opcodes.movltz, "Rr,Rs,Rt"),
+               new OpRec(Opcodes.movgez, "Rr,Rs,Rt"),
 
                null,
                null,
@@ -470,19 +1012,19 @@ namespace Reko.Arch.Xtensa
 
             var oprecQRST = new Op1Rec(
                 oprecRST0,
-                null,
-                null,
+                oprecRST1,
+                oprecRST2,
                 oprecRST3,
 
-                null,
-                null,
-                null,
-                null,
+                new ExtuiOpRec(),
+                new ExtuiOpRec(),
+                new OpRec(Opcodes.cust0, ""),
+                new OpRec(Opcodes.cust1, ""),
 
                 oprecLSCX,
-                null,
-                null,
-                null,
+                oprecLSC4,
+                oprecFP0,
+                oprecFP1,
 
                 new OpRec(Opcodes.reserved, ""),
                 new OpRec(Opcodes.reserved, ""),
@@ -490,6 +1032,73 @@ namespace Reko.Arch.Xtensa
                 new OpRec(Opcodes.reserved, ""));
 
             var oprecLSAI = new r_Rec(
+                new OpRec(Opcodes.l8ui, "Rt,Rs,80"),
+                new OpRec(Opcodes.l16ui, "Rt,Rs,81"),
+                new OpRec(Opcodes.l32i, "Rt,Rs,82"),
+                reserved,
+
+                new OpRec(Opcodes.s8i, "Rt,Rs,80"),
+                new OpRec(Opcodes.s16i, "Rt,Rs,81"),
+                new OpRec(Opcodes.s32i, "Rt,Rs,82"),
+                null,
+
+                null,
+                new OpRec(Opcodes.l16si, "Rt,Rs,81"),
+                new OpRec(Opcodes.movi, "Rt,i"),
+                null,
+
+                new OpRec(Opcodes.addi, "Rt,Rs,m0"),
+                new OpRec(Opcodes.addmi, "Rt,Rs,m8"),
+                null,
+                new OpRec(Opcodes.s32ri, "Rt,Rs,82"));
+
+            var oprecLSCI = new r_Rec(
+                reserved,
+                reserved,
+                reserved,
+                reserved,
+
+                new OpRec(Opcodes.ssi, "Ft,Rs,82"),
+                reserved,
+                reserved,
+                reserved,
+
+                new OpRec(Opcodes.lsiu, "Ft,Rs,82"),
+                reserved,
+                reserved,
+                reserved,
+
+                reserved,
+                reserved,
+                reserved,
+                reserved);
+
+            var oprecMACID = new Op1Rec(
+                reserved,
+                reserved,
+                reserved,
+                reserved,
+
+                reserved,
+                reserved,
+                reserved,
+                reserved,
+
+                null,
+                null,
+                null,
+                null,
+
+                reserved,
+                reserved,
+                reserved,
+                reserved);
+            var oprecMACDD = new Op1Rec(
+                reserved,
+                reserved,
+                reserved,
+                reserved,
+
                 null,
                 null,
                 null,
@@ -497,18 +1106,55 @@ namespace Reko.Arch.Xtensa
 
                 null,
                 null,
-                new OpRec(Opcodes.s32i, "t,s,82"),
                 null,
-
-                null,
-                null,
-                new OpRec(Opcodes.movi, "t,i"),
                 null,
 
                 null,
                 null,
                 null,
                 null);
+
+            var oprecMACC = new Op1Rec(
+                reserved,
+                reserved,
+                reserved,
+                reserved,
+
+                reserved,
+                reserved,
+                reserved,
+                reserved,
+
+                reserved,
+                reserved,
+                reserved,
+                reserved,
+
+                reserved,
+                reserved,
+                reserved,
+                reserved);
+
+            var oprecMAC16 = new Op2Rec(
+                oprecMACID,
+                null,
+                oprecMACDD,
+                null,
+
+                null,
+                null,
+                null,
+                null,
+
+                null,
+                oprecMACC,
+                reserved,
+                reserved,
+
+                reserved,
+                reserved,
+                reserved,
+                reserved);
 
             var oprecCALLN = new n_Rec(
                 new OpRec(Opcodes.call0, "c"),
@@ -519,24 +1165,24 @@ namespace Reko.Arch.Xtensa
             oprecs = new OpRecBase[]
             {
                 oprecQRST,
-                new OpRec(Opcodes.l32r, "t,p"),
+                new OpRec(Opcodes.l32r, "Rt,p"),
                 oprecLSAI,
-                null,
+                oprecLSCI,
 
-                null,
+                oprecMAC16,
                 oprecCALLN,
-                null,
-                null,
+                oprecSI,
+                oprecB,
 
-                new OpRec(Opcodes.l32i_n, "t,s,42", true),
-                null,
-                null,
-                null,
+                new OpRec(Opcodes.l32i_n, "Rt,Rs,42", true),
+                new OpRec(Opcodes.s32i_n, "Rt,Rs,42", true),
+                new OpRec(Opcodes.add_n, "Rr,Rs,Rt", true),
+                new OpRec(Opcodes.addi_n, "Rr,Rs,a", true),
 
                 oprecST2,
-                null,
-                null,
-                null,
+                oprecST3,
+                reserved,
+                reserved,
             };
         }
     }

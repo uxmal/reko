@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Machine;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
 using System;
@@ -29,6 +30,15 @@ namespace Reko.Arch.Xtensa
 {
     public partial class XtensaRewriter
     {
+        private void RewriteBreak()
+        {
+            emitter.SideEffect(host.PseudoProcedure(
+                "__break",
+                VoidType.Instance,
+                RewriteOp(instr.Operands[0]),
+                RewriteOp(instr.Operands[1])));
+        }
+
         private void RewriteIll()
         {
             var c = new ProcedureCharacteristics
@@ -36,6 +46,34 @@ namespace Reko.Arch.Xtensa
                 Terminates = true,
             };
             emitter.SideEffect(host.PseudoProcedure("__ill", c, VoidType.Instance));
+        }
+
+        private void RewriteL32e()
+        {
+            var dst = RewriteOp(this.instr.Operands[0]);
+            var offset = ((ImmediateOperand)dasm.Current.Operands[2]).Value;
+            emitter.Assign(
+                dst,
+                host.PseudoProcedure(
+                    "__l32e",
+                    PrimitiveType.Word32,
+                    emitter.IAdd(
+                        RewriteOp(dasm.Current.Operands[1]),
+                        offset)));
+        }
+
+        private void RewriteS32e()
+        {
+            var src = RewriteOp(this.instr.Operands[0]);
+            var offset = ((ImmediateOperand)dasm.Current.Operands[2]).Value;
+            emitter.SideEffect(
+                host.PseudoProcedure(
+                    "__s32e",
+                    VoidType.Instance,
+                    emitter.IAdd(
+                        RewriteOp(dasm.Current.Operands[1]),
+                        offset),
+                    src));
         }
 
         private void RewriteReserved()

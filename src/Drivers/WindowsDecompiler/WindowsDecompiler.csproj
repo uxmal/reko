@@ -181,8 +181,8 @@
     <Architectures Include="$(SolutionDir)Arch\Sparc\$(OutDir)Reko.Arch.Sparc.*" />
     <Architectures Include="$(SolutionDir)Arch\Vax\$(OutDir)Reko.Arch.Vax.*" />
     <Architectures Include="$(SolutionDir)Arch\X86\$(OutDir)Reko.Arch.X86.*" />
-    <Architectures Include="$(SolutionDir)Arch\Xtensa\$(OutDir)Reko.Arch.Xtensa.*" />
     <Architectures Include="$(SolutionDir)Arch\X86.Design\$(OutDir)Reko.Arch.X86.Design.*" />
+    <Architectures Include="$(SolutionDir)Arch\Xtensa\$(OutDir)Reko.Arch.Xtensa.*" />
     <Architectures Include="$(SolutionDir)Arch\Z80\$(OutDir)Reko.Arch.Z80.*" />
     <Assemblers Include="$(SolutionDir)Assemblers\Pdp11\$(OutDir)Reko.Assemblers.Pdp11.*" />
     <Assemblers Include="$(SolutionDir)Assemblers\x86\$(OutDir)Reko.Assemblers.x86.*" />

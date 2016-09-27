@@ -217,6 +217,11 @@ namespace Reko.Core.Expressions
             return Ge(a, Constant.Create(a.DataType, b));
         }
 
+        public BinaryExpression Ge0(Expression exp)
+        {
+            return new BinaryExpression(Operator.Ge, PrimitiveType.Bool, exp, Constant.Zero(exp.DataType));
+        }
+
         public Expression Gt(Expression a, Expression b)
         {
             return new BinaryExpression(Operator.Gt, PrimitiveType.Bool, a, b);
@@ -290,6 +295,11 @@ namespace Reko.Core.Expressions
         public BinaryExpression Lt(Expression a, int b)
         {
             return Lt(a, Constant.Create(a.DataType, b));
+        }
+
+        public BinaryExpression Lt0(Expression exp)
+        {
+            return new BinaryExpression(Operator.Lt, PrimitiveType.Bool, exp, Constant.Zero(exp.DataType));
         }
 
         public MemberPointerSelector MembPtr8(Expression ptr, Expression membPtr)

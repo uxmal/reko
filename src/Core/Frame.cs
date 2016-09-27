@@ -166,6 +166,11 @@ namespace Reko.Core
 			return id;
 		}
 
+        public object EnsureRegister(object sAR)
+        {
+            throw new NotImplementedException();
+        }
+
         public Identifier EnsureFlagGroup(FlagGroupStorage grf)
         {
             if (grf.FlagGroupBits == 0)
