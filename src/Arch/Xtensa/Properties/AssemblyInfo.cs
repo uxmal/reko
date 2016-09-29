@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Xtensa")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Xtensa plugin for the Reko decompiler")]
+[assembly: AssemblyDescription("Reko decompiler support for the Xtensa architecture")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Xtensa")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyCompany(Reko.AssemblyMetadata.Company)]
+[assembly: AssemblyProduct(Reko.AssemblyMetadata.Product)]
+[assembly: AssemblyCopyright(Reko.AssemblyMetadata.Product)]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion(Reko.AssemblyMetadata.AssemblyVersion)]
+[assembly: AssemblyFileVersion(Reko.AssemblyMetadata.AssemblyFileVersion)]
