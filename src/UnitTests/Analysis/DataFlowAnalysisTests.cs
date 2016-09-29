@@ -254,7 +254,7 @@ done:
         public void DfaReg00316()
         {
             Given_CSignature("long r316(long a)");
-            RunFileTest("Fragments/regressions/r00316.asm", "Analysis/DfaReg00316.txt");
+            RunFileTest_x86_real("Fragments/regressions/r00316.asm", "Analysis/DfaReg00316.txt");
         }
 
         [Test]
