@@ -66,7 +66,25 @@ namespace Reko.UnitTests.Analysis
 			}
 		}
 
-		[Test]
+        private void SetCSignatures(Program program)
+        {
+            foreach (var addr in program.Procedures.Keys)
+            {
+                program.User.Procedures.Add(
+                    addr,
+                    new Procedure_v1
+                    {
+                        CSignature = this.CSignature
+                    });
+            }
+        }
+
+        protected void Given_CSignature(string CSignature)
+        {
+            this.CSignature = CSignature;
+        }
+
+        [Test]
 		public void DfaAsciiHex()
 		{
 			RunFileTest_x86_real("Fragments/ascii_hex.asm", "Analysis/DfaAsciiHex.txt");
@@ -254,7 +272,7 @@ done:
         public void DfaReg00316()
         {
             Given_CSignature("long r316(long a)");
-            RunFileTest("Fragments/regressions/r00316.asm", "Analysis/DfaReg00316.txt");
+            RunFileTest_x86_real("Fragments/regressions/r00316.asm", "Analysis/DfaReg00316.txt");
         }
 
         [Test]
@@ -332,24 +350,5 @@ ProcedureBuilder_exit:
 
             RunFileTest(m, "Analysis/DfaUnsignedDiv.txt");
         }
-
-        private void SetCSignatures(Program program)
-        {
-            foreach (var addr in program.Procedures.Keys)
-            {
-                program.User.Procedures.Add(
-                    addr,
-                    new Procedure_v1
-                    {
-                        CSignature = this.CSignature
-                    });
-            }
-        }
-
-        protected void Given_CSignature(string CSignature)
-        {
-            this.CSignature = CSignature;
-        }
-
 	}
 }
