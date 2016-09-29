@@ -58,6 +58,7 @@
     <Compile Include="SparcProcedureSerializer.cs" />
     <Compile Include="X86ProcedureSerializer.cs" />
     <Compile Include="X86_64ProcedureSerializer.cs" />
+    <Compile Include="XtensaProcedureSerializer.cs" />
     <Content Include="sysvcharacteristics.xml">
       <SubType>Designer</SubType>
     </Content>

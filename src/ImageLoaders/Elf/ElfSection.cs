@@ -66,19 +66,26 @@ namespace Reko.ImageLoaders.Elf
 
         public static Elf32_SHdr Load(ImageReader rdr)
         {
-            return new Elf32_SHdr
+            try
             {
-                sh_name = rdr.ReadUInt32(),
-                sh_type = (SectionHeaderType)rdr.ReadUInt32(),
-                sh_flags = rdr.ReadUInt32(),
-                sh_addr = rdr.ReadUInt32(),        // Address
-                sh_offset = rdr.ReadUInt32(),
-                sh_size = rdr.ReadUInt32(),
-                sh_link = rdr.ReadUInt32(),
-                sh_info = rdr.ReadUInt32(),
-                sh_addralign = rdr.ReadUInt32(),
-                sh_entsize = rdr.ReadUInt32(),
-            };
+                return new Elf32_SHdr
+                {
+                    sh_name = rdr.ReadUInt32(),
+                    sh_type = (SectionHeaderType)rdr.ReadUInt32(),
+                    sh_flags = rdr.ReadUInt32(),
+                    sh_addr = rdr.ReadUInt32(),        // Address
+                    sh_offset = rdr.ReadUInt32(),
+                    sh_size = rdr.ReadUInt32(),
+                    sh_link = rdr.ReadUInt32(),
+                    sh_info = rdr.ReadUInt32(),
+                    sh_addralign = rdr.ReadUInt32(),
+                    sh_entsize = rdr.ReadUInt32(),
+                };
+            } catch
+            {
+                //$TODO: report error?
+                return null;
+            }
         }
 
         public bool ContainsAddress(uint uAddress)

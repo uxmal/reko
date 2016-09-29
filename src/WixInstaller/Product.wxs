@@ -137,6 +137,7 @@
         <File Source="$(var.Vax.TargetPath)" />
         <File Source="$(var.X86.TargetPath)" />
         <File Source="$(var.X86.Design.TargetPath)" />
+        <File Source="$(var.Xtensa.TargetPath)" />
         <File Source="$(var.Z80.TargetPath)" />
 
         <!-- Libraries -->

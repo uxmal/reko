@@ -433,7 +433,7 @@ namespace Reko.Scanning
             {
                 if (!program.SegmentMap.IsValidAddress(addr))
                 {
-                    scanner.Warn(ric.Address, "Target address {0} is invalid.", addr);
+                    scanner.Warn(ric.Address, "Call target address {0} is invalid.", addr);
                     sig = new FunctionType();
                     EmitCall(
                         CreateProcedureConstant(

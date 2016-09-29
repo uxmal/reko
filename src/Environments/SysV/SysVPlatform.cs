@@ -64,6 +64,8 @@ namespace Reko.Environments.SysV
                 return new X86ProcedureSerializer(Architecture, typeLoader, defaultConvention);
             case "x86-protected-64":
                 return new X86_64ProcedureSerializer(Architecture, typeLoader, defaultConvention);
+            case "xtensa":
+                return new XtensaProcedureSerializer(Architecture, typeLoader, defaultConvention);
             default:
                 throw new NotImplementedException(string.Format("Procedure serializer for {0} not implemented yet.", Architecture.Description));
             }

@@ -123,7 +123,7 @@ namespace Reko.Gui
                 Items = new string[] {
                         program.Name ?? "<Program>",
                         addr.ToString(),
-                        item.DataType.ToString(),
+                        item.DataType != null ? item.DataType.ToString() : "<null>",
                         sData,
                     },
                 ImageIndex = 0,

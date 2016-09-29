@@ -97,6 +97,7 @@
     <Compile Include="SymtabSegmentRenderer.cs" />
     <Compile Include="x86Relocator.cs" />
     <Compile Include="x86_64Relocator.cs" />
+    <Compile Include="XtensaRelocator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">

@@ -85,6 +85,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Analysis\SsaStateTests.cs" />
+    <Compile Include="Arch\Xtensa\XtensaDisassemblerTests.cs" />
+    <Compile Include="Arch\Xtensa\XtensaRewriterTests.cs" />
     <Compile Include="Core\Analysis\PyArgFormatParserTests.cs" />
     <Compile Include="Analysis\UnusedOutValuesRemoverTests.cs" />
     <Compile Include="Core\Analysis\ScanfFormatParserTests.cs" />
@@ -611,6 +613,10 @@
     <ProjectReference Include="..\Arch\X86\X86.csproj">
       <Project>{0942ACB2-EBA0-4E2B-B363-205DF72A77B2}</Project>
       <Name>X86</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Arch\Xtensa\Xtensa.csproj">
+      <Project>{bc7d4ad1-795f-4aec-823c-813e65c5557a}</Project>
+      <Name>Xtensa</Name>
     </ProjectReference>
     <ProjectReference Include="..\Arch\Z80\Z80.csproj">
       <Project>{66A00AB2-6964-4815-9140-F28FEE48E6D6}</Project>
