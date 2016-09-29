@@ -228,7 +228,7 @@ l00401160:
 // LocalsOut: fp(32)
 
 l0040116F:
-	Mem0[Mem0[Mem0[0x0040301C:word32]:word32]:word32](rArg04)
+	Mem0[Mem0[Mem0[0x0040301C:word32]:word32]:word32](Mem0[0x0040301C:word32], rArg04)
 // DataOut: esp
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000004 ebp:fp - 0x00000004 -4(fp):ebp
@@ -237,7 +237,7 @@ l00401189:
 	word32 esp_13 = esp_12 - 0x00000008
 	Mem16[esp_13:real64] = rArg04
 	Mem18[esp_13 - 0x00000004:word32] = 0x0000000D
-	Mem18[Mem18[Mem18[0x0040301C:word32]:word32] + 0x00000004:word32](0xBADDCAFE, 0xBADDCAFE)
+	Mem18[Mem18[Mem18[0x0040301C:word32]:word32] + 0x00000004:word32](Mem18[0x0040301C:word32], 0xBADDCAFE, 0xBADDCAFE)
 	return
 // DataOut:
 // DataOut (flags): 
