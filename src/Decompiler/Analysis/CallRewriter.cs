@@ -111,6 +111,22 @@ namespace Reko.Analysis
 			flow.LiveOut.IntersectWith(flow.Trashed);
 		}
 
+        private void AdjustLiveIn(Procedure proc, ProcedureFlow flow)
+        {
+            var liveDefStms = proc.EntryBlock.Statements
+                .Select(s => s.Instruction)
+                .OfType<DefInstruction>()
+                .Select(d => d.Expression)
+                .OfType<Identifier>()
+                .Select(i => i.Storage);
+            var dead = flow.BitsUsed.Keys
+                .Except(liveDefStms).ToList();
+            foreach (var dd in dead)
+            {
+                flow.BitsUsed.Remove(dd);
+            }
+        }
+
 		public static void Rewrite(
             IPlatform platform, 
             List<SsaTransform> ssts,
@@ -126,6 +142,7 @@ namespace Reko.Analysis
 				ProcedureFlow flow = crw.mpprocflow[proc];
                 flow.Dump(platform.Architecture);
 				crw.AdjustLiveOut(flow);
+                crw.AdjustLiveIn(proc, flow);
 				crw.EnsureSignature(proc, flow);
 				crw.AddUseInstructionsForOutArguments(proc);
 			}

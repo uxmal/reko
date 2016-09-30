@@ -131,7 +131,8 @@ namespace Reko.Analysis
         /// <remarks>
         /// Doing this will allow us to detect what definitions reach the end
         /// of the function.
-        /// //$TODO: what about functions that don't terminate, or have branches that don't terminate? In such cases,
+        /// //$TODO: what about functions that don't terminate, or have branches
+        /// that don't terminate? In such cases,
         /// the identifiers should be removed.
         /// </remarks>
         public void AddUsesToExitBlock()
@@ -160,7 +161,7 @@ namespace Reko.Analysis
                               !existing.Contains(sid.Identifier))
                 .Select(sid => sid.OriginalIdentifier);
             reachingIds = SeparateSequences(reachingIds);
-            reachingIds = ExpandFlags(reachingIds);
+            reachingIds = CollectFlags(reachingIds);
             var sortedIds = ResolveOverlaps(reachingIds)
                 .Distinct()
                 .OrderBy(id => id.Name);    // Sort them for stability; unit test are sensitive to shifting order 
@@ -241,25 +242,31 @@ namespace Reko.Analysis
             return registerBag.Values.SelectMany(s => s).Concat(others);
         }
 
-        public IEnumerable<Identifier> ExpandFlags(IEnumerable<Identifier> ids)
+        /// <summary>
+        /// Collects all the processor flags as a summary.
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public IEnumerable<Identifier> CollectFlags(IEnumerable<Identifier> ids)
         {
-            var output = new List<Identifier>();
+            uint grfTotal = 0;
             foreach (var id in ids)
             {
                 var grf = id.Storage as FlagGroupStorage;
                 if (grf != null)
                 {
-                    output.AddRange(
-                        grf.GetFlagBitMasks()
-                            .Select(u => ssa.Procedure.Frame.EnsureFlagGroup(
-                                 arch.GetFlagGroup(u))));
+                    grfTotal |= grf.FlagGroupBits;
                 }
                 else
                 {
-                    output.Add(id);
+                    yield return id;
                 }
             }
-            return output;
+            if (grfTotal != 0)
+            {
+                yield return ssa.Procedure.Frame.EnsureFlagGroup(
+                     arch.GetFlagGroup(grfTotal));
+            }
         }
 
         public override Instruction TransformAssignment(Assignment a)
@@ -1405,7 +1412,5 @@ namespace Reko.Analysis
                 return false;
             }
         }
-
-
     }
 }

@@ -35,6 +35,7 @@ namespace Reko.UnitTests.Analysis
 	/// Used to test register liveness across the whole program.
 	/// </summary>
 	[TestFixture]
+    [Ignore("Register liveness is now handled by the new SsaTransform class")]
 	public class RegisterLivenessTests : AnalysisTestBase
 	{
 		protected override void RunTest(Program program, TextWriter writer)

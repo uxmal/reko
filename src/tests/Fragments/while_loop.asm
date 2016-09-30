@@ -1,3 +1,6 @@
+;; A simple while loop
+;; cx is live in
+
 .i86 
 	push bp
 	mov bp, sp
