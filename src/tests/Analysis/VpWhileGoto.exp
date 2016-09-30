@@ -96,8 +96,8 @@ di:di
     def:  def di
     uses: Mem12[ds:di:word16] = ax_8
 // fn0C00_0000
-// Return size: 0
-void fn0C00_0000(word16 si, word16 di, selector ds)
+// Return size: 2
+define fn0C00_0000
 fn0C00_0000_entry:
 	def fp
 	def si
@@ -246,8 +246,8 @@ di:di
     def:  def di
     uses: Mem12[ds:di:word16] = ax_8
 // fn0C00_0000
-// Return size: 0
-void fn0C00_0000(word16 si, word16 di, selector ds)
+// Return size: 2
+define fn0C00_0000
 fn0C00_0000_entry:
 	def fp
 	def si

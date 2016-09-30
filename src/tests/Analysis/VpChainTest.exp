@@ -4,29 +4,43 @@ fp:fp
     uses: sp_2 = fp
 sp_2: orig: sp
     def:  sp_2 = fp
+    uses: call fn0C00_000B (retsize: 2;)	uses: ax:ax,ds:ds,dx:dx_3,sp:sp_2	defs: ax:ax_9,ds:ds_7,dx:dx_5,sp:sp_4
 dx_3: orig: dx
     def:  dx_3 = 0x001E
-ax:ax
-    def:  def ax
-    uses: Mem6[ds:0x012C:word16] = ax
+    uses: call fn0C00_000B (retsize: 2;)	uses: ax:ax,ds:ds,dx:dx_3,sp:sp_2	defs: ax:ax_9,ds:ds_7,dx:dx_5,sp:sp_4
+sp_4: orig: sp
+    def:  call fn0C00_000B (retsize: 2;)	uses: ax:ax,ds:ds,dx:dx_3,sp:sp_2	defs: ax:ax_9,ds:ds_7,dx:dx_5,sp:sp_4
+dx_5: orig: dx
+    def:  call fn0C00_000B (retsize: 2;)	uses: ax:ax,ds:ds,dx:dx_3,sp:sp_2	defs: ax:ax_9,ds:ds_7,dx:dx_5,sp:sp_4
 ds:ds
     def:  def ds
-    uses: Mem6[ds:0x012C:word16] = ax
-Mem6: orig: Mem0
-    def:  Mem6[ds:0x012C:word16] = ax
+    uses: call fn0C00_000B (retsize: 2;)	uses: ax:ax,ds:ds,dx:dx_3,sp:sp_2	defs: ax:ax_9,ds:ds_7,dx:dx_5,sp:sp_4
+ds_7: orig: ds
+    def:  call fn0C00_000B (retsize: 2;)	uses: ax:ax,ds:ds,dx:dx_3,sp:sp_2	defs: ax:ax_9,ds:ds_7,dx:dx_5,sp:sp_4
+    uses: Mem10[ds_7:0x012C:word16] = ax_9
+ax:ax
+    def:  def ax
+    uses: call fn0C00_000B (retsize: 2;)	uses: ax:ax,ds:ds,dx:dx_3,sp:sp_2	defs: ax:ax_9,ds:ds_7,dx:dx_5,sp:sp_4
+ax_9: orig: ax
+    def:  call fn0C00_000B (retsize: 2;)	uses: ax:ax,ds:ds,dx:dx_3,sp:sp_2	defs: ax:ax_9,ds:ds_7,dx:dx_5,sp:sp_4
+    uses: Mem10[ds_7:0x012C:word16] = ax_9
+Mem10: orig: Mem0
+    def:  Mem10[ds_7:0x012C:word16] = ax_9
 // fn0C00_0000
 // Return size: 2
 define fn0C00_0000
 fn0C00_0000_entry:
 	def fp
-	def ax
 	def ds
+	def ax
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp_2 = fp
 	dx_3 = 0x001E
 	call fn0C00_000B (retsize: 2;)
-	Mem6[ds:0x012C:word16] = ax
+		uses: ax:ax,ds:ds,dx:dx_3,sp:sp_2
+		defs: ax:ax_9,ds:ds_7,dx:dx_5,sp:sp_4
+	Mem10[ds_7:0x012C:word16] = ax_9
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -34,31 +48,44 @@ fn0C00_0000_exit:
 fp:fp
     def:  def fp
     uses: sp_2 = fp
+          call fn0C00_000B (retsize: 2;)	uses: ax:ax,ds:ds,dx:0x001E,sp:fp	defs: ax:ax_9,ds:ds_7,dx:dx_5,sp:sp_4
 sp_2: orig: sp
     def:  sp_2 = fp
 dx_3: orig: dx
     def:  dx_3 = 0x001E
-ax:ax
-    def:  def ax
-    uses: Mem6[ds:0x012C:word16] = ax
+sp_4: orig: sp
+    def:  call fn0C00_000B (retsize: 2;)	uses: ax:ax,ds:ds,dx:0x001E,sp:fp	defs: ax:ax_9,ds:ds_7,dx:dx_5,sp:sp_4
+dx_5: orig: dx
+    def:  call fn0C00_000B (retsize: 2;)	uses: ax:ax,ds:ds,dx:0x001E,sp:fp	defs: ax:ax_9,ds:ds_7,dx:dx_5,sp:sp_4
 ds:ds
     def:  def ds
-    uses: Mem6[ds:0x012C:word16] = ax
-Mem6: orig: Mem0
-    def:  Mem6[ds:0x012C:word16] = ax
+    uses: call fn0C00_000B (retsize: 2;)	uses: ax:ax,ds:ds,dx:0x001E,sp:fp	defs: ax:ax_9,ds:ds_7,dx:dx_5,sp:sp_4
+ds_7: orig: ds
+    def:  call fn0C00_000B (retsize: 2;)	uses: ax:ax,ds:ds,dx:0x001E,sp:fp	defs: ax:ax_9,ds:ds_7,dx:dx_5,sp:sp_4
+    uses: Mem10[ds_7:0x012C:word16] = ax_9
+ax:ax
+    def:  def ax
+    uses: call fn0C00_000B (retsize: 2;)	uses: ax:ax,ds:ds,dx:0x001E,sp:fp	defs: ax:ax_9,ds:ds_7,dx:dx_5,sp:sp_4
+ax_9: orig: ax
+    def:  call fn0C00_000B (retsize: 2;)	uses: ax:ax,ds:ds,dx:0x001E,sp:fp	defs: ax:ax_9,ds:ds_7,dx:dx_5,sp:sp_4
+    uses: Mem10[ds_7:0x012C:word16] = ax_9
+Mem10: orig: Mem0
+    def:  Mem10[ds_7:0x012C:word16] = ax_9
 // fn0C00_0000
 // Return size: 2
 define fn0C00_0000
 fn0C00_0000_entry:
 	def fp
-	def ax
 	def ds
+	def ax
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp_2 = fp
 	dx_3 = 0x001E
 	call fn0C00_000B (retsize: 2;)
-	Mem6[ds:0x012C:word16] = ax
+		uses: ax:ax,ds:ds,dx:0x001E,sp:fp
+		defs: ax:ax_9,ds:ds_7,dx:dx_5,sp:sp_4
+	Mem10[ds_7:0x012C:word16] = ax_9
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -68,6 +95,9 @@ fp:fp
     uses: sp_2 = fp
 sp_2: orig: sp
     def:  sp_2 = fp
+    uses: call fn0C00_000F (retsize: 2;)	uses: sp:sp_2	defs: sp:sp_3
+sp_3: orig: sp
+    def:  call fn0C00_000F (retsize: 2;)	uses: sp:sp_2	defs: sp:sp_3
 // fn0C00_000B
 // Return size: 2
 define fn0C00_000B
@@ -77,6 +107,8 @@ fn0C00_000B_entry:
 l0C00_000B:
 	sp_2 = fp
 	call fn0C00_000F (retsize: 2;)
+		uses: sp:sp_2
+		defs: sp:sp_3
 	return
 	// succ:  fn0C00_000B_exit
 fn0C00_000B_exit:
@@ -84,8 +116,11 @@ fn0C00_000B_exit:
 fp:fp
     def:  def fp
     uses: sp_2 = fp
+          call fn0C00_000F (retsize: 2;)	uses: sp:fp	defs: sp:sp_3
 sp_2: orig: sp
     def:  sp_2 = fp
+sp_3: orig: sp
+    def:  call fn0C00_000F (retsize: 2;)	uses: sp:fp	defs: sp:sp_3
 // fn0C00_000B
 // Return size: 2
 define fn0C00_000B
@@ -95,6 +130,8 @@ fn0C00_000B_entry:
 l0C00_000B:
 	sp_2 = fp
 	call fn0C00_000F (retsize: 2;)
+		uses: sp:fp
+		defs: sp:sp_3
 	return
 	// succ:  fn0C00_000B_exit
 fn0C00_000B_exit:
@@ -211,8 +248,7 @@ fp:fp
     def:  def fp
     uses: sp_2 = fp
           sp_3 = fp - 0x0002
-          Mem6[ss:fp - 0x0002:word16] = si
-          si_21 = Mem6[ss:fp - 0x0002:word16]
+          si_21 = wLoc02_24
           sp_22 = fp
 sp_2: orig: sp
     def:  sp_2 = fp
@@ -220,14 +256,13 @@ sp_3: orig: sp
     def:  sp_3 = fp - 0x0002
 si:si
     def:  def si
-    uses: Mem6[ss:fp - 0x0002:word16] = si
+    uses: wLoc02_24 = si
 ss:ss
     def:  def ss
-    uses: Mem6[ss:fp - 0x0002:word16] = si
-          si_21 = Mem6[ss:fp - 0x0002:word16]
+    uses: wLoc02_24 = si
+          si_21 = wLoc02_24
 Mem6: orig: Mem0
-    def:  Mem6[ss:fp - 0x0002:word16] = si
-    uses: si_21 = Mem6[ss:fp - 0x0002:word16]
+    uses: si_21 = wLoc02_24
 si_7: orig: si
     def:  si_7 = 0x0000
     uses: si_12 = PHI(si_7, si_13)
@@ -268,12 +303,17 @@ sp_19: orig: sp
 Mem20: orig: Mem0
     def:  Mem20 = PHI(Mem6, Mem20)
 si_21: orig: si
-    def:  si_21 = Mem6[ss:fp - 0x0002:word16]
+    def:  si_21 = wLoc02_24
 sp_22: orig: sp
     def:  sp_22 = fp
 dx:dx
     def:  def dx
     uses: dx_10 = PHI(dx, dx_15)
+wLoc02_24: orig: wLoc02
+    def:  wLoc02_24 = si
+    uses: si_21 = wLoc02_24
+wLoc02_25: orig: wLoc02
+    def:  wLoc02_25 = PHI(wLoc02_24, wLoc02_25)
 // fn0C00_000F
 // Return size: 2
 define fn0C00_000F
@@ -286,7 +326,7 @@ fn0C00_000F_entry:
 l0C00_000F:
 	sp_2 = fp
 	sp_3 = fp - 0x0002
-	Mem6[ss:fp - 0x0002:word16] = si
+	wLoc02_24 = si
 	si_7 = 0x0000
 	SZO_8 = cond(0x0000)
 	C_9 = false
@@ -306,7 +346,7 @@ l0C00_0018:
 	// succ:  l0C00_001D l0C00_0015
 l0C00_001D:
 	ax_17 = si_12
-	si_21 = Mem6[ss:fp - 0x0002:word16]
+	si_21 = wLoc02_24
 	sp_22 = fp
 	return
 	// succ:  fn0C00_000F_exit

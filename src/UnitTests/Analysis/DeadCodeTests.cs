@@ -81,7 +81,18 @@ namespace Reko.UnitTests.Analysis
 			}
 		}
 
-		[Test]
+        private Procedure Given_Procedure_With_Flow(ProcedureBuilder m, string name, Storage[] uses, Storage[] defs)
+        {
+            var sig = new FunctionType();
+            var proc = new Procedure(name, m.Architecture.CreateFrame());
+            var flow = new ProcedureFlow(proc);
+            flow.BitsUsed = uses.ToDictionary(u => u, u => (int)u.BitSize / 8);
+            flow.Trashed = defs.ToHashSet();
+            this.programDataFlow[proc] = flow;
+            return proc;
+        }
+
+        [Test]
 		public void DeadPushPop()
 		{
 			RunFileTest_x86_real("Fragments/pushpop.asm", "Analysis/DeadPushPop.txt");
@@ -134,8 +145,8 @@ ProcedureBuilder_entry:
 	// succ:  l1
 l1:
 	call foo (retsize: 4;)
-		uses: r1
-		defs: r1_2
+		uses: r1:r1
+		defs: r1:r1_2
 	Mem4[0x00123400:word32] = r1_2
 	return
 	// succ:  ProcedureBuilder_exit
@@ -157,17 +168,6 @@ ProcedureBuilder_exit:
                 m.Store(m.Word32(0x123400), r1);
                 m.Return();
             });
-        }
-
-        private Procedure Given_Procedure_With_Flow(ProcedureBuilder m, string name, Storage[] uses, Storage[] defs)
-        {
-            var sig = new FunctionType();
-            var proc = new Procedure(name, m.Architecture.CreateFrame());
-            var flow = new ProcedureFlow(proc);
-            flow.BitsUsed = uses.ToDictionary(u => u, u => (int)u.BitSize / 8);
-            flow.Trashed = defs.ToHashSet();
-            this.programDataFlow[proc] = flow;
-            return proc;
         }
     }
 }

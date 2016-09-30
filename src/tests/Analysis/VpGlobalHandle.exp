@@ -2,128 +2,138 @@
 fp:fp
     def:  def fp
     uses: esp_2 = fp
-          esp_3 = fp - 0x00000004
-          esp_8 = fp - 0x00000008
-          esp_12 = fp - 0x0000000C
-          esp_15 = fp - 0x00000008
-          esp_16 = fp - 0x0000000C
-          esp_19 = fp - 0x00000008
-          esp_20 = fp - 0x0000000C
-          esp_23 = fp - 0x00000008
-          esp_24 = fp - 0x0000000C
-          esp_27 = fp - 0x00000008
-          esp_29 = fp - 0x00000004
-          esp_31 = fp
 esp_2: orig: esp
     def:  esp_2 = fp
+    uses: esp_3 = esp_2 - 0x00000004
 esp_3: orig: esp
-    def:  esp_3 = fp - 0x00000004
+    def:  esp_3 = esp_2 - 0x00000004
+    uses: Mem5[esp_3:word32] = esi
+          esi_6 = Mem5[esp_3 + 0x00000008:word32]
+          esp_7 = esp_3 - 0x00000004
 esi:esi
     def:  def esi
-    uses: dwLoc04_5 = esi
-dwLoc04_5: orig: dwLoc04
-    def:  dwLoc04_5 = esi
-    uses: esi_30 = dwLoc04_5
-dwArg04:Stack +0004
-    def:  def dwArg04
-    uses: esi_7 = dwArg04
-esi_7: orig: esi
-    def:  esi_7 = dwArg04
-    uses: dwLoc0C_13 = esi_7
-          dwLoc0C_21 = esi_7
-esp_8: orig: esp
-    def:  esp_8 = fp - 0x00000008
+    uses: Mem5[esp_3:word32] = esi
+Mem5: orig: Mem0
+    def:  Mem5[esp_3:word32] = esi
+    uses: esi_6 = Mem5[esp_3 + 0x00000008:word32]
+esi_6: orig: esi
+    def:  esi_6 = Mem5[esp_3 + 0x00000008:word32]
+    uses: Mem12[esp_11:word32] = esi_6
+          Mem20[esp_19:word32] = esi_6
+esp_7: orig: esp
+    def:  esp_7 = esp_3 - 0x00000004
+    uses: Mem9[esp_7:word32] = edi
+          esp_11 = esp_7 - 0x00000004
 edi:edi
     def:  def edi
-    uses: dwLoc08_10 = edi
-dwLoc08_10: orig: dwLoc08
-    def:  dwLoc08_10 = edi
-    uses: edi_28 = dwLoc08_10
-edi_11: orig: edi
-    def:  edi_11 = GlobalHandle
-esp_12: orig: esp
-    def:  esp_12 = fp - 0x0000000C
-dwLoc0C_13: orig: dwLoc0C
-    def:  dwLoc0C_13 = esi_7
-    uses: eax_14 = GlobalHandle(dwLoc0C_13)
-eax_14: orig: eax
-    def:  eax_14 = GlobalHandle(dwLoc0C_13)
-    uses: dwLoc0C_17 = eax_14
+    uses: Mem9[esp_7:word32] = edi
+Mem9: orig: Mem0
+    def:  Mem9[esp_7:word32] = edi
+edi_10: orig: edi
+    def:  edi_10 = GlobalHandle
+esp_11: orig: esp
+    def:  esp_11 = esp_7 - 0x00000004
+    uses: Mem12[esp_11:word32] = esi_6
+          eax_13 = GlobalHandle(Mem12[esp_11:word32])
+          esp_14 = esp_11 + 0x00000004
+Mem12: orig: Mem0
+    def:  Mem12[esp_11:word32] = esi_6
+    uses: eax_13 = GlobalHandle(Mem12[esp_11:word32])
+eax_13: orig: eax
+    def:  eax_13 = GlobalHandle(Mem12[esp_11:word32])
+    uses: Mem16[esp_15:word32] = eax_13
+esp_14: orig: esp
+    def:  esp_14 = esp_11 + 0x00000004
+    uses: esp_15 = esp_14 - 0x00000004
 esp_15: orig: esp
-    def:  esp_15 = fp - 0x00000008
-esp_16: orig: esp
-    def:  esp_16 = fp - 0x0000000C
-dwLoc0C_17: orig: dwLoc0C
-    def:  dwLoc0C_17 = eax_14
-    uses: eax_18 = GlobalUnlock(dwLoc0C_17)
-eax_18: orig: eax
-    def:  eax_18 = GlobalUnlock(dwLoc0C_17)
+    def:  esp_15 = esp_14 - 0x00000004
+    uses: Mem16[esp_15:word32] = eax_13
+          eax_17 = GlobalUnlock(Mem16[esp_15:word32])
+          esp_18 = esp_15 + 0x00000004
+Mem16: orig: Mem0
+    def:  Mem16[esp_15:word32] = eax_13
+    uses: eax_17 = GlobalUnlock(Mem16[esp_15:word32])
+eax_17: orig: eax
+    def:  eax_17 = GlobalUnlock(Mem16[esp_15:word32])
+esp_18: orig: esp
+    def:  esp_18 = esp_15 + 0x00000004
+    uses: esp_19 = esp_18 - 0x00000004
 esp_19: orig: esp
-    def:  esp_19 = fp - 0x00000008
-esp_20: orig: esp
-    def:  esp_20 = fp - 0x0000000C
-dwLoc0C_21: orig: dwLoc0C
-    def:  dwLoc0C_21 = esi_7
-    uses: eax_22 = GlobalHandle(dwLoc0C_21)
-eax_22: orig: eax
-    def:  eax_22 = GlobalHandle(dwLoc0C_21)
-    uses: dwLoc0C_25 = eax_22
+    def:  esp_19 = esp_18 - 0x00000004
+    uses: Mem20[esp_19:word32] = esi_6
+          eax_21 = GlobalHandle(Mem20[esp_19:word32])
+          esp_22 = esp_19 + 0x00000004
+Mem20: orig: Mem0
+    def:  Mem20[esp_19:word32] = esi_6
+    uses: eax_21 = GlobalHandle(Mem20[esp_19:word32])
+eax_21: orig: eax
+    def:  eax_21 = GlobalHandle(Mem20[esp_19:word32])
+    uses: Mem24[esp_23:word32] = eax_21
+esp_22: orig: esp
+    def:  esp_22 = esp_19 + 0x00000004
+    uses: esp_23 = esp_22 - 0x00000004
 esp_23: orig: esp
-    def:  esp_23 = fp - 0x00000008
-esp_24: orig: esp
-    def:  esp_24 = fp - 0x0000000C
-dwLoc0C_25: orig: dwLoc0C
-    def:  dwLoc0C_25 = eax_22
-    uses: eax_26 = GlobalFree(dwLoc0C_25)
-eax_26: orig: eax
-    def:  eax_26 = GlobalFree(dwLoc0C_25)
-esp_27: orig: esp
-    def:  esp_27 = fp - 0x00000008
-edi_28: orig: edi
-    def:  edi_28 = dwLoc08_10
-esp_29: orig: esp
-    def:  esp_29 = fp - 0x00000004
-esi_30: orig: esi
-    def:  esi_30 = dwLoc04_5
-esp_31: orig: esp
-    def:  esp_31 = fp
+    def:  esp_23 = esp_22 - 0x00000004
+    uses: Mem24[esp_23:word32] = eax_21
+          eax_25 = GlobalFree(Mem24[esp_23:word32])
+          esp_26 = esp_23 + 0x00000004
+Mem24: orig: Mem0
+    def:  Mem24[esp_23:word32] = eax_21
+    uses: eax_25 = GlobalFree(Mem24[esp_23:word32])
+          edi_27 = Mem24[esp_26:word32]
+          esi_29 = Mem24[esp_28:word32]
+eax_25: orig: eax
+    def:  eax_25 = GlobalFree(Mem24[esp_23:word32])
+esp_26: orig: esp
+    def:  esp_26 = esp_23 + 0x00000004
+    uses: edi_27 = Mem24[esp_26:word32]
+          esp_28 = esp_26 + 0x00000004
+edi_27: orig: edi
+    def:  edi_27 = Mem24[esp_26:word32]
+esp_28: orig: esp
+    def:  esp_28 = esp_26 + 0x00000004
+    uses: esi_29 = Mem24[esp_28:word32]
+          esp_30 = esp_28 + 0x00000004
+esi_29: orig: esi
+    def:  esi_29 = Mem24[esp_28:word32]
+esp_30: orig: esp
+    def:  esp_30 = esp_28 + 0x00000004
 // fn10000000
-// Return size: 0
-void fn10000000(word32 dwArg04)
+// Return size: 4
+define fn10000000
 fn10000000_entry:
 	def fp
 	def esi
-	def dwArg04
 	def edi
 	// succ:  l10000000
 l10000000:
 	esp_2 = fp
-	esp_3 = fp - 0x00000004
-	dwLoc04_5 = esi
-	esi_7 = dwArg04
-	esp_8 = fp - 0x00000008
-	dwLoc08_10 = edi
-	edi_11 = GlobalHandle
-	esp_12 = fp - 0x0000000C
-	dwLoc0C_13 = esi_7
-	eax_14 = GlobalHandle(dwLoc0C_13)
-	esp_15 = fp - 0x00000008
-	esp_16 = fp - 0x0000000C
-	dwLoc0C_17 = eax_14
-	eax_18 = GlobalUnlock(dwLoc0C_17)
-	esp_19 = fp - 0x00000008
-	esp_20 = fp - 0x0000000C
-	dwLoc0C_21 = esi_7
-	eax_22 = GlobalHandle(dwLoc0C_21)
-	esp_23 = fp - 0x00000008
-	esp_24 = fp - 0x0000000C
-	dwLoc0C_25 = eax_22
-	eax_26 = GlobalFree(dwLoc0C_25)
-	esp_27 = fp - 0x00000008
-	edi_28 = dwLoc08_10
-	esp_29 = fp - 0x00000004
-	esi_30 = dwLoc04_5
-	esp_31 = fp
+	esp_3 = esp_2 - 0x00000004
+	Mem5[esp_3:word32] = esi
+	esi_6 = Mem5[esp_3 + 0x00000008:word32]
+	esp_7 = esp_3 - 0x00000004
+	Mem9[esp_7:word32] = edi
+	edi_10 = GlobalHandle
+	esp_11 = esp_7 - 0x00000004
+	Mem12[esp_11:word32] = esi_6
+	eax_13 = GlobalHandle(Mem12[esp_11:word32])
+	esp_14 = esp_11 + 0x00000004
+	esp_15 = esp_14 - 0x00000004
+	Mem16[esp_15:word32] = eax_13
+	eax_17 = GlobalUnlock(Mem16[esp_15:word32])
+	esp_18 = esp_15 + 0x00000004
+	esp_19 = esp_18 - 0x00000004
+	Mem20[esp_19:word32] = esi_6
+	eax_21 = GlobalHandle(Mem20[esp_19:word32])
+	esp_22 = esp_19 + 0x00000004
+	esp_23 = esp_22 - 0x00000004
+	Mem24[esp_23:word32] = eax_21
+	eax_25 = GlobalFree(Mem24[esp_23:word32])
+	esp_26 = esp_23 + 0x00000004
+	edi_27 = Mem24[esp_26:word32]
+	esp_28 = esp_26 + 0x00000004
+	esi_29 = Mem24[esp_28:word32]
+	esp_30 = esp_28 + 0x00000004
 	return
 	// succ:  fn10000000_exit
 fn10000000_exit:
@@ -132,127 +142,140 @@ fp:fp
     def:  def fp
     uses: esp_2 = fp
           esp_3 = fp - 0x00000004
-          esp_8 = fp - 0x00000008
-          esp_12 = fp - 0x0000000C
-          esp_15 = fp - 0x00000008
-          esp_16 = fp - 0x0000000C
-          esp_19 = fp - 0x00000008
-          esp_20 = fp - 0x0000000C
-          esp_23 = fp - 0x00000008
-          esp_24 = fp - 0x0000000C
-          esp_27 = fp - 0x00000008
-          esp_29 = fp - 0x00000004
-          esp_31 = fp
+          esp_7 = fp - 0x00000008
+          esp_11 = fp - 0x0000000C
+          esp_14 = fp - 0x00000008
+          esp_15 = fp - 0x0000000C
+          esp_18 = fp - 0x00000008
+          esp_19 = fp - 0x0000000C
+          esp_22 = fp - 0x00000008
+          esp_23 = fp - 0x0000000C
+          esp_26 = fp - 0x00000008
+          esp_28 = fp - 0x00000004
+          esp_30 = fp
 esp_2: orig: esp
     def:  esp_2 = fp
 esp_3: orig: esp
     def:  esp_3 = fp - 0x00000004
 esi:esi
     def:  def esi
-    uses: dwLoc04_5 = esi
-          esi_30 = esi
-dwLoc04_5: orig: dwLoc04
-    def:  dwLoc04_5 = esi
-dwArg04:Stack +0004
-    def:  def dwArg04
-    uses: esi_7 = dwArg04
-          dwLoc0C_13 = dwArg04
-          eax_14 = GlobalHandle(dwArg04)
-          dwLoc0C_21 = dwArg04
-          eax_22 = GlobalHandle(dwArg04)
-esi_7: orig: esi
-    def:  esi_7 = dwArg04
-esp_8: orig: esp
-    def:  esp_8 = fp - 0x00000008
+    uses: dwLoc04_31 = esi
+Mem5: orig: Mem0
+    uses: esi_6 = dwArg04
+esi_6: orig: esi
+    def:  esi_6 = dwArg04
+    uses: dwLoc0C_34 = esi_6
+          dwLoc0C_36 = esi_6
+esp_7: orig: esp
+    def:  esp_7 = fp - 0x00000008
 edi:edi
     def:  def edi
-    uses: dwLoc08_10 = edi
-          edi_28 = edi
-dwLoc08_10: orig: dwLoc08
-    def:  dwLoc08_10 = edi
-edi_11: orig: edi
-    def:  edi_11 = GlobalHandle
-esp_12: orig: esp
-    def:  esp_12 = fp - 0x0000000C
-dwLoc0C_13: orig: dwLoc0C
-    def:  dwLoc0C_13 = dwArg04
-eax_14: orig: eax
-    def:  eax_14 = GlobalHandle(dwArg04)
-    uses: dwLoc0C_17 = eax_14
-          eax_18 = GlobalUnlock(eax_14)
+    uses: dwLoc08_33 = edi
+Mem9: orig: Mem0
+edi_10: orig: edi
+    def:  edi_10 = GlobalHandle
+esp_11: orig: esp
+    def:  esp_11 = fp - 0x0000000C
+Mem12: orig: Mem0
+    uses: eax_13 = GlobalHandle(dwLoc0C_34)
+eax_13: orig: eax
+    def:  eax_13 = GlobalHandle(dwLoc0C_34)
+    uses: dwLoc0C_35 = eax_13
+esp_14: orig: esp
+    def:  esp_14 = fp - 0x00000008
 esp_15: orig: esp
-    def:  esp_15 = fp - 0x00000008
-esp_16: orig: esp
-    def:  esp_16 = fp - 0x0000000C
-dwLoc0C_17: orig: dwLoc0C
-    def:  dwLoc0C_17 = eax_14
-eax_18: orig: eax
-    def:  eax_18 = GlobalUnlock(eax_14)
+    def:  esp_15 = fp - 0x0000000C
+Mem16: orig: Mem0
+    uses: eax_17 = GlobalUnlock(dwLoc0C_35)
+eax_17: orig: eax
+    def:  eax_17 = GlobalUnlock(dwLoc0C_35)
+esp_18: orig: esp
+    def:  esp_18 = fp - 0x00000008
 esp_19: orig: esp
-    def:  esp_19 = fp - 0x00000008
-esp_20: orig: esp
-    def:  esp_20 = fp - 0x0000000C
-dwLoc0C_21: orig: dwLoc0C
-    def:  dwLoc0C_21 = dwArg04
-eax_22: orig: eax
-    def:  eax_22 = GlobalHandle(dwArg04)
-    uses: dwLoc0C_25 = eax_22
-          eax_26 = GlobalFree(eax_22)
+    def:  esp_19 = fp - 0x0000000C
+Mem20: orig: Mem0
+    uses: eax_21 = GlobalHandle(dwLoc0C_36)
+eax_21: orig: eax
+    def:  eax_21 = GlobalHandle(dwLoc0C_36)
+    uses: dwLoc0C_37 = eax_21
+esp_22: orig: esp
+    def:  esp_22 = fp - 0x00000008
 esp_23: orig: esp
-    def:  esp_23 = fp - 0x00000008
-esp_24: orig: esp
-    def:  esp_24 = fp - 0x0000000C
-dwLoc0C_25: orig: dwLoc0C
-    def:  dwLoc0C_25 = eax_22
-eax_26: orig: eax
-    def:  eax_26 = GlobalFree(eax_22)
-esp_27: orig: esp
-    def:  esp_27 = fp - 0x00000008
-edi_28: orig: edi
-    def:  edi_28 = edi
-esp_29: orig: esp
-    def:  esp_29 = fp - 0x00000004
-esi_30: orig: esi
-    def:  esi_30 = esi
-esp_31: orig: esp
-    def:  esp_31 = fp
+    def:  esp_23 = fp - 0x0000000C
+Mem24: orig: Mem0
+    uses: eax_25 = GlobalFree(dwLoc0C_37)
+          edi_27 = dwLoc08_33
+          esi_29 = dwLoc04_31
+eax_25: orig: eax
+    def:  eax_25 = GlobalFree(dwLoc0C_37)
+esp_26: orig: esp
+    def:  esp_26 = fp - 0x00000008
+edi_27: orig: edi
+    def:  edi_27 = dwLoc08_33
+esp_28: orig: esp
+    def:  esp_28 = fp - 0x00000004
+esi_29: orig: esi
+    def:  esi_29 = dwLoc04_31
+esp_30: orig: esp
+    def:  esp_30 = fp
+dwLoc04_31: orig: dwLoc04
+    def:  dwLoc04_31 = esi
+    uses: esi_29 = dwLoc04_31
+dwArg04:Stack +0004
+    def:  def dwArg04
+    uses: esi_6 = dwArg04
+dwLoc08_33: orig: dwLoc08
+    def:  dwLoc08_33 = edi
+    uses: edi_27 = dwLoc08_33
+dwLoc0C_34: orig: dwLoc0C
+    def:  dwLoc0C_34 = esi_6
+    uses: eax_13 = GlobalHandle(dwLoc0C_34)
+dwLoc0C_35: orig: dwLoc0C
+    def:  dwLoc0C_35 = eax_13
+    uses: eax_17 = GlobalUnlock(dwLoc0C_35)
+dwLoc0C_36: orig: dwLoc0C
+    def:  dwLoc0C_36 = esi_6
+    uses: eax_21 = GlobalHandle(dwLoc0C_36)
+dwLoc0C_37: orig: dwLoc0C
+    def:  dwLoc0C_37 = eax_21
+    uses: eax_25 = GlobalFree(dwLoc0C_37)
 // fn10000000
-// Return size: 0
-void fn10000000(word32 dwArg04)
+// Return size: 4
+define fn10000000
 fn10000000_entry:
 	def fp
 	def esi
-	def dwArg04
 	def edi
+	def dwArg04
 	// succ:  l10000000
 l10000000:
 	esp_2 = fp
 	esp_3 = fp - 0x00000004
-	dwLoc04_5 = esi
-	esi_7 = dwArg04
-	esp_8 = fp - 0x00000008
-	dwLoc08_10 = edi
-	edi_11 = GlobalHandle
-	esp_12 = fp - 0x0000000C
-	dwLoc0C_13 = dwArg04
-	eax_14 = GlobalHandle(dwArg04)
-	esp_15 = fp - 0x00000008
-	esp_16 = fp - 0x0000000C
-	dwLoc0C_17 = eax_14
-	eax_18 = GlobalUnlock(eax_14)
-	esp_19 = fp - 0x00000008
-	esp_20 = fp - 0x0000000C
-	dwLoc0C_21 = dwArg04
-	eax_22 = GlobalHandle(dwArg04)
-	esp_23 = fp - 0x00000008
-	esp_24 = fp - 0x0000000C
-	dwLoc0C_25 = eax_22
-	eax_26 = GlobalFree(eax_22)
-	esp_27 = fp - 0x00000008
-	edi_28 = edi
-	esp_29 = fp - 0x00000004
-	esi_30 = esi
-	esp_31 = fp
+	dwLoc04_31 = esi
+	esi_6 = dwArg04
+	esp_7 = fp - 0x00000008
+	dwLoc08_33 = edi
+	edi_10 = GlobalHandle
+	esp_11 = fp - 0x0000000C
+	dwLoc0C_34 = esi_6
+	eax_13 = GlobalHandle(dwLoc0C_34)
+	esp_14 = fp - 0x00000008
+	esp_15 = fp - 0x0000000C
+	dwLoc0C_35 = eax_13
+	eax_17 = GlobalUnlock(dwLoc0C_35)
+	esp_18 = fp - 0x00000008
+	esp_19 = fp - 0x0000000C
+	dwLoc0C_36 = esi_6
+	eax_21 = GlobalHandle(dwLoc0C_36)
+	esp_22 = fp - 0x00000008
+	esp_23 = fp - 0x0000000C
+	dwLoc0C_37 = eax_21
+	eax_25 = GlobalFree(dwLoc0C_37)
+	esp_26 = fp - 0x00000008
+	edi_27 = dwLoc08_33
+	esp_28 = fp - 0x00000004
+	esi_29 = dwLoc04_31
+	esp_30 = fp
 	return
 	// succ:  fn10000000_exit
 fn10000000_exit:

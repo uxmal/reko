@@ -38,6 +38,7 @@ using UseInstruction = Reko.Core.Code.UseInstruction;
 using VoidType = Reko.Core.Types.VoidType;
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Code;
 
 namespace Reko.Analysis
 {
@@ -139,18 +140,25 @@ namespace Reko.Analysis
 		}
 
 		/// <summary>
-		/// Creates a signature for this procedure from the supplied ProcedureFlow,
-        /// and ensures that all registers accessed by the procedure are in the
-        /// procedure SFrame.
+		/// Creates a signature for this procedure by looking at the storages
+        /// modified in the exit block, and ensures that all the registers
+        /// accessed by the procedure are in the procedure Frame.
 		/// </summary>
 		public void EnsureSignature(Procedure proc, ProcedureFlow flow)
 		{
+            // If we already have a signature, we don't need to do this work.
 			if (proc.Signature != null && proc.Signature.ParametersValid)
 				return;
 
+            var liveOut = proc.ExitBlock.Statements
+                .Select(s => s.Instruction)
+                .OfType<UseInstruction>()
+                .Select(u => ((Identifier)u.Expression).Storage)
+                .OfType<RegisterStorage>()
+                .ToHashSet();
 			var sb = new SignatureBuilder(proc, platform.Architecture);
 			var frame = proc.Frame;
-			foreach (var grf in flow.LiveOut
+			foreach (var grf in liveOut
                 .OfType<FlagGroupStorage>()
                 .OrderBy(g => g.Name))
 			{
@@ -160,6 +168,8 @@ namespace Reko.Analysis
             var implicitRegs = platform.CreateImplicitArgumentRegisters();
             var mayUse = new HashSet<RegisterStorage>(flow.BitsUsed.Keys.OfType<RegisterStorage>());
             mayUse.ExceptWith(implicitRegs);
+            //$BUG: should be sorted by ABI register order. Need a new method
+            // IPlatform.CreateAbiRegisterCollator().
 			foreach (var reg in mayUse.OfType<RegisterStorage>().OrderBy(r => r.Number))
 			{
 				if (!IsSubRegisterOfRegisters(reg, mayUse))
@@ -178,7 +188,6 @@ namespace Reko.Analysis
 				sb.AddFpuStackArgument(de.Key, de.Value);
 			}
 
-            var liveOut = new HashSet<RegisterStorage>(flow.LiveOut.OfType<RegisterStorage>());
             liveOut.ExceptWith(implicitRegs);
 			foreach (var r in liveOut.OfType<RegisterStorage>().OrderBy(r => r.Number))
 			{

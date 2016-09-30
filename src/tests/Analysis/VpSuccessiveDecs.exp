@@ -4,24 +4,30 @@ fp:fp
     uses: sp_2 = fp
 sp_2: orig: sp
     def:  sp_2 = fp
+    uses: call fn0C00_000C (retsize: 2;)	uses: ax:ax_5,ds:ds,sp:sp_2	defs: ax:ax_7,ds:ds_8,sp:sp_6
 ds:ds
     def:  def ds
     uses: ax_5 = Mem0[ds:0x0300:word16]
-          Mem7[ds:0x0302:word16] = ax_6
+          call fn0C00_000C (retsize: 2;)	uses: ax:ax_5,ds:ds,sp:sp_2	defs: ax:ax_7,ds:ds_8,sp:sp_6
 Mem0:Global memory
     def:  def Mem0
     uses: ax_5 = Mem0[ds:0x0300:word16]
 ax_5: orig: ax
     def:  ax_5 = Mem0[ds:0x0300:word16]
-    uses: ax_6 = fn0C00_000C(ax_5)
-ax_6: orig: ax
-    def:  ax_6 = fn0C00_000C(ax_5)
-    uses: Mem7[ds:0x0302:word16] = ax_6
-Mem7: orig: Mem0
-    def:  Mem7[ds:0x0302:word16] = ax_6
+    uses: call fn0C00_000C (retsize: 2;)	uses: ax:ax_5,ds:ds,sp:sp_2	defs: ax:ax_7,ds:ds_8,sp:sp_6
+sp_6: orig: sp
+    def:  call fn0C00_000C (retsize: 2;)	uses: ax:ax_5,ds:ds,sp:sp_2	defs: ax:ax_7,ds:ds_8,sp:sp_6
+ax_7: orig: ax
+    def:  call fn0C00_000C (retsize: 2;)	uses: ax:ax_5,ds:ds,sp:sp_2	defs: ax:ax_7,ds:ds_8,sp:sp_6
+    uses: Mem9[ds_8:0x0302:word16] = ax_7
+ds_8: orig: ds
+    def:  call fn0C00_000C (retsize: 2;)	uses: ax:ax_5,ds:ds,sp:sp_2	defs: ax:ax_7,ds:ds_8,sp:sp_6
+    uses: Mem9[ds_8:0x0302:word16] = ax_7
+Mem9: orig: Mem0
+    def:  Mem9[ds_8:0x0302:word16] = ax_7
 // fn0C00_0000
-// Return size: 0
-void fn0C00_0000(selector ds)
+// Return size: 2
+define fn0C00_0000
 fn0C00_0000_entry:
 	def fp
 	def ds
@@ -30,8 +36,10 @@ fn0C00_0000_entry:
 l0C00_0000:
 	sp_2 = fp
 	ax_5 = Mem0[ds:0x0300:word16]
-	ax_6 = fn0C00_000C(ax_5)
-	Mem7[ds:0x0302:word16] = ax_6
+	call fn0C00_000C (retsize: 2;)
+		uses: ax:ax_5,ds:ds,sp:sp_2
+		defs: ax:ax_7,ds:ds_8,sp:sp_6
+	Mem9[ds_8:0x0302:word16] = ax_7
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -39,26 +47,32 @@ fn0C00_0000_exit:
 fp:fp
     def:  def fp
     uses: sp_2 = fp
+          call fn0C00_000C (retsize: 2;)	uses: ax:ax_5,ds:ds,sp:fp	defs: ax:ax_7,ds:ds_8,sp:sp_6
 sp_2: orig: sp
     def:  sp_2 = fp
 ds:ds
     def:  def ds
     uses: ax_5 = Mem0[ds:0x0300:word16]
-          Mem7[ds:0x0302:word16] = ax_6
+          call fn0C00_000C (retsize: 2;)	uses: ax:ax_5,ds:ds,sp:fp	defs: ax:ax_7,ds:ds_8,sp:sp_6
 Mem0:Global memory
     def:  def Mem0
     uses: ax_5 = Mem0[ds:0x0300:word16]
 ax_5: orig: ax
     def:  ax_5 = Mem0[ds:0x0300:word16]
-    uses: ax_6 = fn0C00_000C(ax_5)
-ax_6: orig: ax
-    def:  ax_6 = fn0C00_000C(ax_5)
-    uses: Mem7[ds:0x0302:word16] = ax_6
-Mem7: orig: Mem0
-    def:  Mem7[ds:0x0302:word16] = ax_6
+    uses: call fn0C00_000C (retsize: 2;)	uses: ax:ax_5,ds:ds,sp:fp	defs: ax:ax_7,ds:ds_8,sp:sp_6
+sp_6: orig: sp
+    def:  call fn0C00_000C (retsize: 2;)	uses: ax:ax_5,ds:ds,sp:fp	defs: ax:ax_7,ds:ds_8,sp:sp_6
+ax_7: orig: ax
+    def:  call fn0C00_000C (retsize: 2;)	uses: ax:ax_5,ds:ds,sp:fp	defs: ax:ax_7,ds:ds_8,sp:sp_6
+    uses: Mem9[ds_8:0x0302:word16] = ax_7
+ds_8: orig: ds
+    def:  call fn0C00_000C (retsize: 2;)	uses: ax:ax_5,ds:ds,sp:fp	defs: ax:ax_7,ds:ds_8,sp:sp_6
+    uses: Mem9[ds_8:0x0302:word16] = ax_7
+Mem9: orig: Mem0
+    def:  Mem9[ds_8:0x0302:word16] = ax_7
 // fn0C00_0000
-// Return size: 0
-void fn0C00_0000(selector ds)
+// Return size: 2
+define fn0C00_0000
 fn0C00_0000_entry:
 	def fp
 	def ds
@@ -67,8 +81,10 @@ fn0C00_0000_entry:
 l0C00_0000:
 	sp_2 = fp
 	ax_5 = Mem0[ds:0x0300:word16]
-	ax_6 = fn0C00_000C(ax_5)
-	Mem7[ds:0x0302:word16] = ax_6
+	call fn0C00_000C (retsize: 2;)
+		uses: ax:ax_5,ds:ds,sp:fp
+		defs: ax:ax_7,ds:ds_8,sp:sp_6
+	Mem9[ds_8:0x0302:word16] = ax_7
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -101,28 +117,27 @@ SZO_8: orig: SZO
 ax_9: orig: ax
     def:  ax_9 = ax_7 - 0x0001
     uses: SZO_10 = cond(ax_9)
+          ax_11 = ax_9 ^ ax_9
+          ax_11 = ax_9 ^ ax_9
           branch ax_9 != 0x0000 l0C00_0022
 SZO_10: orig: SZO
     def:  SZO_10 = cond(ax_9)
 ax_11: orig: ax
-    def:  ax_11 = 0x0000
-    uses: return ax_11
+    def:  ax_11 = ax_9 ^ ax_9
+    uses: SZO_12 = cond(ax_11)
 SZO_12: orig: SZO
-    def:  SZO_12 = cond(0x0000)
+    def:  SZO_12 = cond(ax_11)
 C_13: orig: C
     def:  C_13 = false
 ax_14: orig: ax
     def:  ax_14 = 0x0127
-    uses: return ax_14
 ax_15: orig: ax
     def:  ax_15 = 0x0125
-    uses: return ax_15
 ax_16: orig: ax
     def:  ax_16 = 0x0123
-    uses: return ax_16
 // fn0C00_000C
-// Return size: 0
-word16 fn0C00_000C(word16 ax)
+// Return size: 2
+define fn0C00_000C
 fn0C00_000C_entry:
 	def fp
 	def ax
@@ -136,7 +151,7 @@ l0C00_000C:
 	// succ:  l0C00_0010 l0C00_0014
 l0C00_0010:
 	ax_16 = 0x0123
-	return ax_16
+	return
 	// succ:  fn0C00_000C_exit
 l0C00_0014:
 	ax_7 = ax_4 - 0x0001
@@ -145,7 +160,7 @@ l0C00_0014:
 	// succ:  l0C00_0017 l0C00_001B
 l0C00_0017:
 	ax_15 = 0x0125
-	return ax_15
+	return
 	// succ:  fn0C00_000C_exit
 l0C00_001B:
 	ax_9 = ax_7 - 0x0001
@@ -154,13 +169,13 @@ l0C00_001B:
 	// succ:  l0C00_001E l0C00_0022
 l0C00_001E:
 	ax_14 = 0x0127
-	return ax_14
+	return
 	// succ:  fn0C00_000C_exit
 l0C00_0022:
-	ax_11 = 0x0000
-	SZO_12 = cond(0x0000)
+	ax_11 = ax_9 ^ ax_9
+	SZO_12 = cond(ax_11)
 	C_13 = false
-	return ax_11
+	return
 	// succ:  fn0C00_000C_exit
 fn0C00_000C_exit:
 
@@ -207,8 +222,8 @@ ax_15: orig: ax
 ax_16: orig: ax
     def:  ax_16 = 0x0123
 // fn0C00_000C
-// Return size: 0
-word16 fn0C00_000C(word16 ax)
+// Return size: 2
+define fn0C00_000C
 fn0C00_000C_entry:
 	def fp
 	def ax
@@ -222,7 +237,7 @@ l0C00_000C:
 	// succ:  l0C00_0010 l0C00_0014
 l0C00_0010:
 	ax_16 = 0x0123
-	return 0x0123
+	return
 	// succ:  fn0C00_000C_exit
 l0C00_0014:
 	ax_7 = ax - 0x0001
@@ -231,7 +246,7 @@ l0C00_0014:
 	// succ:  l0C00_0017 l0C00_001B
 l0C00_0017:
 	ax_15 = 0x0125
-	return 0x0125
+	return
 	// succ:  fn0C00_000C_exit
 l0C00_001B:
 	ax_9 = ax - 0x0002
@@ -240,12 +255,12 @@ l0C00_001B:
 	// succ:  l0C00_001E l0C00_0022
 l0C00_001E:
 	ax_14 = 0x0127
-	return 0x0127
+	return
 	// succ:  fn0C00_000C_exit
 l0C00_0022:
 	ax_11 = 0x0000
 	SZO_12 = cond(0x0000)
 	C_13 = false
-	return 0x0000
+	return
 	// succ:  fn0C00_000C_exit
 fn0C00_000C_exit:

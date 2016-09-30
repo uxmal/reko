@@ -72,7 +72,6 @@ namespace Reko.UnitTests.Analysis
             return sid.Identifier;
         }
 
-
         private Identifier Reg8(string name)
         {
             var mr = new RegisterStorage(name, ssaIds.Count, 0, PrimitiveType.Byte);

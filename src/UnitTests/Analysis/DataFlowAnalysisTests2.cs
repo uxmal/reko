@@ -314,43 +314,32 @@ test_exit:
             #region Expected
 @"// main
 // Return size: 0
-define main
+void main()
 main_entry:
 	// succ:  l1
 l1:
-	word32 r1_3
-	call level1 (retsize: 0;)
-		uses: Mem0[0x00123400:word32]
-		defs: r1_3,r2_4
-	Mem5[0x00123400:word32] = r1_3
+	Mem5[0x00123400:word32] = level1(Mem0[0x00123400:word32])
 	return
 	// succ:  main_exit
 main_exit:
 ===
 // level1
 // Return size: 0
-define level1
+word32 level1(word32 r1)
 level1_entry:
 	// succ:  l1
 l1:
-	word32 r1_2
-	word32 r2_3
-	call level2 (retsize: 0;)
-		uses: r1
-		defs: r1_2,r2_3
-	return
+	return level2(r1)
 	// succ:  level1_exit
 level1_exit:
 ===
 // level2
 // Return size: 0
-define level2
+word32 level2(word32 r1)
 level2_entry:
 	// succ:  l1
 l1:
-	word32 r2_1 = 0xFFFFFFFF
-	word32 r1_3 = r1 + 0x00000001
-	return
+	return r1 + 0x00000001
 	// succ:  level2_exit
 level2_exit:
 ";
@@ -421,8 +410,7 @@ word32 level1(word32 dwArg04)
 level1_entry:
 	// succ:  l1
 l1:
-	word32 r1_7 = level2(dwArg04)
-	return r1_7
+	return level2(dwArg04)
 	// succ:  level1_exit
 level1_exit:
 ===
@@ -432,8 +420,7 @@ word32 level2(word32 dwArg04)
 level2_entry:
 	// succ:  l1
 l1:
-	word32 r1_5 = dwArg04 + 0x00000001
-	return r1_5
+	return dwArg04 + 0x00000001
 	// succ:  level2_exit
 level2_exit:
 ";
