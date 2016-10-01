@@ -100,7 +100,6 @@ namespace Reko.UnitTests.Analysis
         {
             this.sig = new FunctionType(
                 null,
-                null,
                 new Identifier(
                     "a", 
                     new Pointer(argType, 4),
