@@ -15,6 +15,7 @@ void fn0C00_0000(Register word16 di, Register selector ds)
 // C:Flags
 // SZO:Flags
 // wLoc02:Local -0002
+// SCZO:Flags
 // S:Flags
 // Z:Flags
 // O:Flags
@@ -71,6 +72,7 @@ Register word16 fn0C00_0014(Register word16 ax)
 // SZO:Flags
 // C:Flags
 // ax:ax
+// SCZO:Flags
 // S:Flags
 // Z:Flags
 // O:Flags
@@ -84,4 +86,3 @@ l0C00_0014:
 	return ax_8
 	// succ:  fn0C00_0014_exit
 fn0C00_0014_exit:
-	use ax_8

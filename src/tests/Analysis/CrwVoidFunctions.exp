@@ -1,7 +1,7 @@
 void fn0C00_0000(Register word16 di, Register selector ds)
-// MayUse:  di ds
+// MayUse:  di:0 ds:0
 // LiveOut:
-// Trashed: SCZO ah al ax bh bl bx eax ebx esi rax rbx rsi si sil
+// Trashed: ax bx SCZO si
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -11,29 +11,31 @@ void fn0C00_0000(Register word16 di, Register selector ds)
 // si:si
 // ss:ss
 // SCZO:Flags
-// wLoc02:Local -0002
-// di:di
 // ds:ds
+// di:di
+// ax:ax
+// bx:bx
+// wLoc02:Local -0002
+// S:Flags
+// C:Flags
+// Z:Flags
+// O:Flags
 // return address size: 2
 void fn0C00_0000(word16 di, selector ds)
 fn0C00_0000_entry:
+	def ds
+	def di
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp = fp
-	si = 0x0100
-	fn0C00_0010(si, di, ds)
-	sp = fp - 0x0002
-	wLoc02 = 0x0100
-	fn0C00_0017(di, ds, wLoc02)
-	sp = fp
-	SCZO = cond(fp)
+	fn0C00_0010(0x0100, di, ds)
+	fn0C00_0017(di, ds, 0x0100)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 void fn0C00_0010(Register word16 si, Register word16 di, Register selector ds)
-// MayUse:  di ds si
+// MayUse:  di:0 ds:16 si:16
 // LiveOut:
-// Trashed: ah al ax eax rax
+// Trashed: ax
 // Preserved: sp
 // fn0C00_0010
 // Return size: 0
@@ -47,20 +49,22 @@ void fn0C00_0010(Register word16 si, Register word16 di, Register selector ds)
 // return address size: 2
 void fn0C00_0010(word16 si, word16 di, selector ds)
 fn0C00_0010_entry:
+	def ds
+	def si
+	def Mem0
+	def di
 	// succ:  l0C00_0010
 l0C00_0010:
-	sp = fp
-	ax = Mem0[ds:si + 0x0002:word16]
-	fn0C00_0029(ax, di, ds)
+	ax_6 = Mem0[ds:si + 0x0002:word16]
+	fn0C00_0029(ax_6, di, ds)
 	return
 	// succ:  fn0C00_0010_exit
 fn0C00_0010_exit:
 void fn0C00_0017(Register word16 di, Register selector ds, Stack word16 wArg02)
-// MayUse:  di ds
+// MayUse:  di:0 ds:16 Stack +0002:16
 // LiveOut:
-// Trashed: SCZO ah al ax bh bl bx eax ebx rax rbx
+// Trashed: ax bx SCZO
 // Preserved: bp sp
-// Stack args: Stack +0002(16)
 // fn0C00_0017
 // Return size: 0
 // Mem0:Global memory
@@ -72,33 +76,29 @@ void fn0C00_0017(Register word16 di, Register selector ds, Stack word16 wArg02)
 // ax:ax
 // ds:ds
 // SCZO:Flags
+// di:di
 // wLoc02:Local -0002
 // wArg02:Stack +0002
 // wLoc04:Local -0004
-// di:di
+// S:Flags
+// C:Flags
+// Z:Flags
+// O:Flags
 // return address size: 2
 void fn0C00_0017(word16 di, selector ds, word16 wArg02)
 fn0C00_0017_entry:
+	def ds
+	def di
+	def wArg02
 	// succ:  l0C00_0017
 l0C00_0017:
-	sp = fp
-	sp = fp - 0x0002
-	wLoc02 = bp
-	bp = fp - 0x0002
-	bx = wArg02
-	ax = Mem0[ds:bx + 0x0002:word16]
-	sp = fp - 0x0004
-	wLoc04 = ax
-	fn0C00_002C(di, ds, wLoc04)
-	sp = fp - 0x0002
-	SCZO = cond(fp - 0x0002)
-	bp = wLoc02
-	sp = fp
+	ax_10 = Mem6[ds:wArg02 + 0x0002:word16]
+	fn0C00_002C(di, ds, ax_10)
 	return
 	// succ:  fn0C00_0017_exit
 fn0C00_0017_exit:
 void fn0C00_0029(Register word16 ax, Register word16 di, Register selector ds)
-// MayUse:  ax di ds
+// MayUse:  ax:16 di:16 ds:16
 // LiveOut:
 // Trashed:
 // Preserved: sp
@@ -113,19 +113,20 @@ void fn0C00_0029(Register word16 ax, Register word16 di, Register selector ds)
 // return address size: 2
 void fn0C00_0029(word16 ax, word16 di, selector ds)
 fn0C00_0029_entry:
+	def ax
+	def ds
+	def di
 	// succ:  l0C00_0029
 l0C00_0029:
-	sp = fp
-	Mem0[ds:di:word16] = ax
+	Mem6[ds:di:word16] = ax
 	return
 	// succ:  fn0C00_0029_exit
 fn0C00_0029_exit:
 void fn0C00_002C(Register word16 di, Register selector ds, Stack word16 wArg02)
-// MayUse:  di ds
+// MayUse:  di:16 ds:16 Stack +0002:16
 // LiveOut:
-// Trashed: ah al ax eax rax
+// Trashed: ax
 // Preserved: bp sp
-// Stack args: Stack +0002(16)
 // fn0C00_002C
 // Return size: 0
 // Mem0:Global memory
@@ -141,16 +142,12 @@ void fn0C00_002C(Register word16 di, Register selector ds, Stack word16 wArg02)
 // return address size: 2
 void fn0C00_002C(word16 di, selector ds, word16 wArg02)
 fn0C00_002C_entry:
+	def ds
+	def di
+	def wArg02
 	// succ:  l0C00_002C
 l0C00_002C:
-	sp = fp
-	sp = fp - 0x0002
-	wLoc02 = bp
-	bp = fp - 0x0002
-	ax = wArg02
-	Mem0[ds:di:word16] = ax
-	bp = wLoc02
-	sp = fp
+	Mem11[ds:di:word16] = wArg02
 	return
 	// succ:  fn0C00_002C_exit
 fn0C00_002C_exit:
