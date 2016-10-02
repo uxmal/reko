@@ -4,7 +4,7 @@ fp:fp
     uses: sp_2 = fp
 sp_2: orig: sp
     def:  sp_2 = fp
-    uses: call fn0C00_0026 (retsize: 2;)	uses: ax:ax_27,ds:ds,eax:eax_23,si:si_20,sp:sp_2	defs: ax:ax_28,ds:ds_25,eax:eax_24,si:si_26,sp:sp_22
+    uses: call fn0C00_0026 (retsize: 2;)	uses: ax:ax_25,eax:eax_23,sp:sp_2	defs: ax:ax_26,eax:eax_24,sp:sp_22
 eax:eax
     def:  def eax
     uses: eax_4 = eax + eax * 0x00000004
@@ -24,7 +24,6 @@ ds:ds
           Mem17[ds:0x0308:word16] = ax_14
           ax_18 = Mem17[ds:si_16:word16]
           Mem21[ds:0x030A:word16] = ax_19
-          call fn0C00_0026 (retsize: 2;)	uses: ax:ax_27,ds:ds,eax:eax_23,si:si_20,sp:sp_2	defs: ax:ax_28,ds:ds_25,eax:eax_24,si:si_26,sp:sp_22
 Mem6: orig: Mem0
     def:  Mem6[ds:0x02FC:word32] = eax_4
     uses: eax_8 = Mem6[ds:si:word32]
@@ -74,29 +73,24 @@ ax_19: orig: ax
           eax_23 = DPB(eax, ax_19, 0) (alias)
 si_20: orig: si
     def:  si_20 = si_16 + 0x0002
-    uses: call fn0C00_0026 (retsize: 2;)	uses: ax:ax_27,ds:ds,eax:eax_23,si:si_20,sp:sp_2	defs: ax:ax_28,ds:ds_25,eax:eax_24,si:si_26,sp:sp_22
 Mem21: orig: Mem0
     def:  Mem21[ds:0x030A:word16] = ax_19
 sp_22: orig: sp
-    def:  call fn0C00_0026 (retsize: 2;)	uses: ax:ax_27,ds:ds,eax:eax_23,si:si_20,sp:sp_2	defs: ax:ax_28,ds:ds_25,eax:eax_24,si:si_26,sp:sp_22
+    def:  call fn0C00_0026 (retsize: 2;)	uses: ax:ax_25,eax:eax_23,sp:sp_2	defs: ax:ax_26,eax:eax_24,sp:sp_22
 eax_23: orig: eax
     def:  eax_23 = DPB(eax, ax_19, 0) (alias)
-    uses: call fn0C00_0026 (retsize: 2;)	uses: ax:ax_27,ds:ds,eax:eax_23,si:si_20,sp:sp_2	defs: ax:ax_28,ds:ds_25,eax:eax_24,si:si_26,sp:sp_22
+    uses: call fn0C00_0026 (retsize: 2;)	uses: ax:ax_25,eax:eax_23,sp:sp_2	defs: ax:ax_26,eax:eax_24,sp:sp_22
 eax_24: orig: eax
-    def:  call fn0C00_0026 (retsize: 2;)	uses: ax:ax_27,ds:ds,eax:eax_23,si:si_20,sp:sp_2	defs: ax:ax_28,ds:ds_25,eax:eax_24,si:si_26,sp:sp_22
-    uses: ax_27 = (word16) eax_24 (alias)
-ds_25: orig: ds
-    def:  call fn0C00_0026 (retsize: 2;)	uses: ax:ax_27,ds:ds,eax:eax_23,si:si_20,sp:sp_2	defs: ax:ax_28,ds:ds_25,eax:eax_24,si:si_26,sp:sp_22
-si_26: orig: si
-    def:  call fn0C00_0026 (retsize: 2;)	uses: ax:ax_27,ds:ds,eax:eax_23,si:si_20,sp:sp_2	defs: ax:ax_28,ds:ds_25,eax:eax_24,si:si_26,sp:sp_22
+    def:  call fn0C00_0026 (retsize: 2;)	uses: ax:ax_25,eax:eax_23,sp:sp_2	defs: ax:ax_26,eax:eax_24,sp:sp_22
+    uses: ax_25 = (word16) eax_24 (alias)
+ax_25: orig: ax
+    def:  ax_25 = (word16) eax_24 (alias)
+    uses: call fn0C00_0026 (retsize: 2;)	uses: ax:ax_25,eax:eax_23,sp:sp_2	defs: ax:ax_26,eax:eax_24,sp:sp_22
+          ax_27 = DPB(ax_25, ax_26, 0) (alias)
+ax_26: orig: ax
+    def:  call fn0C00_0026 (retsize: 2;)	uses: ax:ax_25,eax:eax_23,sp:sp_2	defs: ax:ax_26,eax:eax_24,sp:sp_22
 ax_27: orig: ax
-    def:  ax_27 = (word16) eax_24 (alias)
-    uses: call fn0C00_0026 (retsize: 2;)	uses: ax:ax_27,ds:ds,eax:eax_23,si:si_20,sp:sp_2	defs: ax:ax_28,ds:ds_25,eax:eax_24,si:si_26,sp:sp_22
-          ax_29 = DPB(ax_27, ax_28, 0) (alias)
-ax_28: orig: ax
-    def:  call fn0C00_0026 (retsize: 2;)	uses: ax:ax_27,ds:ds,eax:eax_23,si:si_20,sp:sp_2	defs: ax:ax_28,ds:ds_25,eax:eax_24,si:si_26,sp:sp_22
-ax_29: orig: ax
-    def:  ax_29 = DPB(ax_27, ax_28, 0) (alias)
+    def:  ax_27 = DPB(ax_25, ax_26, 0) (alias)
 // fn0C00_0000
 // Return size: 2
 define fn0C00_0000
@@ -126,10 +120,10 @@ l0C00_0000:
 	si_20 = si_16 + 0x0002
 	Mem21[ds:0x030A:word16] = ax_19
 	call fn0C00_0026 (retsize: 2;)
-		uses: ax:ax_27,ds:ds,eax:eax_23,si:si_20,sp:sp_2
-		defs: ax:ax_28,ds:ds_25,eax:eax_24,si:si_26,sp:sp_22
-	ax_27 = (word16) eax_24 (alias)
-	ax_29 = DPB(ax_27, ax_28, 0) (alias)
+		uses: ax:ax_25,eax:eax_23,sp:sp_2
+		defs: ax:ax_26,eax:eax_24,sp:sp_22
+	ax_25 = (word16) eax_24 (alias)
+	ax_27 = DPB(ax_25, ax_26, 0) (alias)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -137,7 +131,7 @@ fn0C00_0000_exit:
 fp:fp
     def:  def fp
     uses: sp_2 = fp
-          call fn0C00_0026 (retsize: 2;)	uses: ax:ax_27,ds:ds,eax:eax_23,si:si + 0x000C,sp:fp	defs: ax:ax_28,ds:ds_25,eax:eax_24,si:si_26,sp:sp_22
+          call fn0C00_0026 (retsize: 2;)	uses: ax:ax_25,eax:eax_23,sp:fp	defs: ax:ax_26,eax:eax_24,sp:sp_22
 sp_2: orig: sp
     def:  sp_2 = fp
 eax:eax
@@ -158,7 +152,6 @@ ds:ds
           Mem17[ds:0x0308:word16] = ax_14
           ax_18 = Mem17[ds:si + 0x000A:word16]
           Mem21[ds:0x030A:word16] = ax_19
-          call fn0C00_0026 (retsize: 2;)	uses: ax:ax_27,ds:ds,eax:eax_23,si:si + 0x000C,sp:fp	defs: ax:ax_28,ds:ds_25,eax:eax_24,si:si_26,sp:sp_22
 Mem6: orig: Mem0
     def:  Mem6[ds:0x02FC:word32] = eax * 0x00000005
     uses: eax_8 = Mem6[ds:si:word32]
@@ -172,7 +165,6 @@ si:si
           si_16 = si + 0x000A
           ax_18 = Mem17[ds:si + 0x000A:word16]
           si_20 = si + 0x000C
-          call fn0C00_0026 (retsize: 2;)	uses: ax:ax_27,ds:ds,eax:eax_23,si:si + 0x000C,sp:fp	defs: ax:ax_28,ds:ds_25,eax:eax_24,si:si_26,sp:sp_22
 eax_8: orig: eax
     def:  eax_8 = Mem6[ds:si:word32]
     uses: Mem10[ds:0x0300:word32] = eax_8
@@ -212,25 +204,21 @@ si_20: orig: si
 Mem21: orig: Mem0
     def:  Mem21[ds:0x030A:word16] = ax_19
 sp_22: orig: sp
-    def:  call fn0C00_0026 (retsize: 2;)	uses: ax:ax_27,ds:ds,eax:eax_23,si:si + 0x000C,sp:fp	defs: ax:ax_28,ds:ds_25,eax:eax_24,si:si_26,sp:sp_22
+    def:  call fn0C00_0026 (retsize: 2;)	uses: ax:ax_25,eax:eax_23,sp:fp	defs: ax:ax_26,eax:eax_24,sp:sp_22
 eax_23: orig: eax
     def:  eax_23 = DPB(eax, ax_19, 0) (alias)
-    uses: call fn0C00_0026 (retsize: 2;)	uses: ax:ax_27,ds:ds,eax:eax_23,si:si + 0x000C,sp:fp	defs: ax:ax_28,ds:ds_25,eax:eax_24,si:si_26,sp:sp_22
+    uses: call fn0C00_0026 (retsize: 2;)	uses: ax:ax_25,eax:eax_23,sp:fp	defs: ax:ax_26,eax:eax_24,sp:sp_22
 eax_24: orig: eax
-    def:  call fn0C00_0026 (retsize: 2;)	uses: ax:ax_27,ds:ds,eax:eax_23,si:si + 0x000C,sp:fp	defs: ax:ax_28,ds:ds_25,eax:eax_24,si:si_26,sp:sp_22
-    uses: ax_27 = (word16) eax_24 (alias)
-ds_25: orig: ds
-    def:  call fn0C00_0026 (retsize: 2;)	uses: ax:ax_27,ds:ds,eax:eax_23,si:si + 0x000C,sp:fp	defs: ax:ax_28,ds:ds_25,eax:eax_24,si:si_26,sp:sp_22
-si_26: orig: si
-    def:  call fn0C00_0026 (retsize: 2;)	uses: ax:ax_27,ds:ds,eax:eax_23,si:si + 0x000C,sp:fp	defs: ax:ax_28,ds:ds_25,eax:eax_24,si:si_26,sp:sp_22
+    def:  call fn0C00_0026 (retsize: 2;)	uses: ax:ax_25,eax:eax_23,sp:fp	defs: ax:ax_26,eax:eax_24,sp:sp_22
+    uses: ax_25 = (word16) eax_24 (alias)
+ax_25: orig: ax
+    def:  ax_25 = (word16) eax_24 (alias)
+    uses: call fn0C00_0026 (retsize: 2;)	uses: ax:ax_25,eax:eax_23,sp:fp	defs: ax:ax_26,eax:eax_24,sp:sp_22
+          ax_27 = DPB(ax_25, ax_26, 0) (alias)
+ax_26: orig: ax
+    def:  call fn0C00_0026 (retsize: 2;)	uses: ax:ax_25,eax:eax_23,sp:fp	defs: ax:ax_26,eax:eax_24,sp:sp_22
 ax_27: orig: ax
-    def:  ax_27 = (word16) eax_24 (alias)
-    uses: call fn0C00_0026 (retsize: 2;)	uses: ax:ax_27,ds:ds,eax:eax_23,si:si + 0x000C,sp:fp	defs: ax:ax_28,ds:ds_25,eax:eax_24,si:si_26,sp:sp_22
-          ax_29 = DPB(ax_27, ax_28, 0) (alias)
-ax_28: orig: ax
-    def:  call fn0C00_0026 (retsize: 2;)	uses: ax:ax_27,ds:ds,eax:eax_23,si:si + 0x000C,sp:fp	defs: ax:ax_28,ds:ds_25,eax:eax_24,si:si_26,sp:sp_22
-ax_29: orig: ax
-    def:  ax_29 = DPB(ax_27, ax_28, 0) (alias)
+    def:  ax_27 = DPB(ax_25, ax_26, 0) (alias)
 // fn0C00_0000
 // Return size: 2
 define fn0C00_0000
@@ -260,10 +248,10 @@ l0C00_0000:
 	si_20 = si + 0x000C
 	Mem21[ds:0x030A:word16] = ax_19
 	call fn0C00_0026 (retsize: 2;)
-		uses: ax:ax_27,ds:ds,eax:eax_23,si:si + 0x000C,sp:fp
-		defs: ax:ax_28,ds:ds_25,eax:eax_24,si:si_26,sp:sp_22
-	ax_27 = (word16) eax_24 (alias)
-	ax_29 = DPB(ax_27, ax_28, 0) (alias)
+		uses: ax:ax_25,eax:eax_23,sp:fp
+		defs: ax:ax_26,eax:eax_24,sp:sp_22
+	ax_25 = (word16) eax_24 (alias)
+	ax_27 = DPB(ax_25, ax_26, 0) (alias)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

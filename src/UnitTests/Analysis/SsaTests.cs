@@ -45,7 +45,16 @@ namespace Reko.UnitTests.Analysis
 	public class SsaTests : AnalysisTestBase
 	{
 		private SsaState ssa;
-        
+        private Identifier r1;
+        private Identifier r2;
+
+        [SetUp]
+        public void Setup()
+        {
+            this.r1 = new Identifier("r1", PrimitiveType.Word32, new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
+            this.r2 = new Identifier("r2", PrimitiveType.Word32, new RegisterStorage("r2", 2, 0, PrimitiveType.Word32));
+        }
+
         private Identifier EnsureRegister16(ProcedureBuilder m, string name)
         {
             return m.Frame.EnsureRegister(new RegisterStorage(name, m.Frame.Identifiers.Count, 0, PrimitiveType.Word16));
@@ -63,7 +72,7 @@ namespace Reko.UnitTests.Analysis
             importResolver.Replay();
             foreach (Procedure proc in program.Procedures.Values)
             {
-                var sst = new SsaTransform(program.Architecture, proc, importResolver, flow);
+                var sst = new SsaTransform(program, proc, importResolver, flow);
                 sst.Transform();
                 sst.AddUsesToExitBlock();
                 sst.RemoveDeadSsaIdentifiers();
@@ -82,7 +91,21 @@ namespace Reko.UnitTests.Analysis
             importResolver.Replay();
 
             var proc = m.Procedure;
-            var sst = new SsaTransform(m.Architecture, proc, importResolver, flow);
+            var platform = new FakePlatform(null, m.Architecture)
+            {
+                Test_CreateTrashedRegisters = () =>
+                    new HashSet<RegisterStorage>()
+                {
+                    (RegisterStorage)r1.Storage,
+                    (RegisterStorage)r2.Storage,
+                }
+            };
+            var program = new Program()
+            {
+                Architecture = m.Architecture,
+                Platform = platform,
+            };
+            var sst = new SsaTransform(program, proc, importResolver, flow);
             sst.Transform();
             ssa = sst.SsaState;
             using (var fut = new FileUnitTester(outfile))

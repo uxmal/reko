@@ -211,6 +211,16 @@ namespace Reko.UnitTests.Analysis
 
         protected override void RunTest(Program program, TextWriter fut)
         {
+            program.Platform = new FakePlatform(null, program.Architecture)
+            {
+                Test_CreateTrashedRegisters = () => 
+                    new HashSet<RegisterStorage>()
+                {
+                    (RegisterStorage)this.eax.Storage,
+                    (RegisterStorage)this.ecx.Storage,
+                    program.Architecture.StackRegister,
+                }
+            };
             InitProgram(program);
             IImportResolver importResolver = null;
             var eventListener = new FakeDecompilerEventListener();
@@ -220,7 +230,7 @@ namespace Reko.UnitTests.Analysis
             var proc = program.Procedures.Values[0];
             var usb = new UserSignatureBuilder(program);
             usb.ApplySignatureToProcedure(addr, proc.Signature, proc);
-            var sst = new SsaTransform(program.Architecture, proc, importResolver, programFlow);
+            var sst = new SsaTransform(program, proc, importResolver, programFlow);
             var ssa = sst.Transform();
             var vp = new ValuePropagator(program.Architecture, ssa);
             vp.Transform();

@@ -1,36 +1,29 @@
 fp:fp
     def:  def fp
-    uses: call fn0C00_0008 (retsize: 2;)	uses: ds:ds,si:si,sp:fp	defs: ds:ds_5,si:si_7
+    uses: call fn0C00_0008 (retsize: 2;)	uses: sp:fp
 sp_2: orig: sp
 sp_3: orig: sp
-    def:  call fn0C00_0008 (retsize: 2;)	uses: ds:ds,si:si,sp:fp	defs: ds:ds_5,si:si_7
-ds:ds
-    def:  def ds
-    uses: call fn0C00_0008 (retsize: 2;)	uses: ds:ds,si:si,sp:fp	defs: ds:ds_5,si:si_7
-ds_5: orig: ds
-    def:  call fn0C00_0008 (retsize: 2;)	uses: ds:ds,si:si,sp:fp	defs: ds:ds_5,si:si_7
-    uses: Mem8[ds_5:0x0304:word16] = si_7
+    def:  call fn0C00_0008 (retsize: 2;)	uses: sp:fp
 si:si
     def:  def si
-    uses: call fn0C00_0008 (retsize: 2;)	uses: ds:ds,si:si,sp:fp	defs: ds:ds_5,si:si_7
-si_7: orig: si
-    def:  call fn0C00_0008 (retsize: 2;)	uses: ds:ds,si:si,sp:fp	defs: ds:ds_5,si:si_7
-    uses: Mem8[ds_5:0x0304:word16] = si_7
-Mem8: orig: Mem0
-    def:  Mem8[ds_5:0x0304:word16] = si_7
+    uses: Mem6[ds:0x0304:word16] = si
+ds:ds
+    def:  def ds
+    uses: Mem6[ds:0x0304:word16] = si
+Mem6: orig: Mem0
+    def:  Mem6[ds:0x0304:word16] = si
 // fn0C00_0000
 // Return size: 2
 define fn0C00_0000
 fn0C00_0000_entry:
 	def fp
-	def ds
 	def si
+	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
 	call fn0C00_0008 (retsize: 2;)
-		uses: ds:ds,si:si,sp:fp
-		defs: ds:ds_5,si:si_7
-	Mem8[ds_5:0x0304:word16] = si_7
+		uses: sp:fp
+	Mem6[ds:0x0304:word16] = si
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

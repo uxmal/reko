@@ -87,7 +87,7 @@ namespace Reko.UnitTests.Analysis
                 // which case the the SSA treats the call as a "hell node".
                 var doms = proc.CreateBlockDominatorGraph();
                 var sst = new SsaTransform(
-                    program.Architecture,
+                    program,
                     proc,
                     importResolver,
                     dataFlow);

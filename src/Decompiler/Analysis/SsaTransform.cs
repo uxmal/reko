@@ -50,6 +50,7 @@ namespace Reko.Analysis
     public class SsaTransform : InstructionTransformer 
     {
         private IProcessorArchitecture arch;
+        private Program program;
         private ProgramDataFlow programFlow;
         private IImportResolver importResolver;
         private Block block;
@@ -60,9 +61,10 @@ namespace Reko.Analysis
         public readonly HashSet<SsaIdentifier> incompletePhis;
         private HashSet<SsaIdentifier> sidsToRemove;
 
-        public SsaTransform(IProcessorArchitecture arch, Procedure proc, IImportResolver importResolver, ProgramDataFlow programFlow)
+        public SsaTransform(Program program, Procedure proc, IImportResolver importResolver, ProgramDataFlow programFlow)
         {
-            this.arch = arch;
+            this.arch = program.Architecture;
+            this.program = program;
             this.programFlow = programFlow;
             this.importResolver = importResolver;
             this.ssa = new SsaState(proc, null);
@@ -365,8 +367,8 @@ namespace Reko.Analysis
             foreach (Identifier id in CollectFlags(ssa.Procedure.Frame.Identifiers))
             {
                 if (!existingUses.Contains(id.Storage) &&
-                    ((id.Storage is RegisterStorage && !(id.Storage is TemporaryStorage))
-                        || id.Storage is StackStorage))
+                    (IsTrashed(id.Storage)
+                    || id.Storage is StackStorage))
                 {
                     ci.Uses.Add(new CallBinding(
                         id.Storage,
@@ -374,7 +376,7 @@ namespace Reko.Analysis
                     existingUses.Add(id.Storage);
                 }
                 if (!existingDefs.Contains(id.Storage) &&
-                    ((id.Storage is RegisterStorage && !(id.Storage is TemporaryStorage))
+                    (IsTrashed(id.Storage)
                     || id.Storage is FlagGroupStorage))
                 {
                     ci.Definitions.Add(new CallBinding(
@@ -383,6 +385,14 @@ namespace Reko.Analysis
                     existingDefs.Add(id.Storage);
                 }
             }
+        }
+
+        private bool IsTrashed(Storage stg)
+        {
+            if (!(stg is RegisterStorage) || stg is TemporaryStorage)
+                return false;
+            return program.Platform.CreateTrashedRegisters()
+                .Where(r => r.OverlapsWith(stg)).Any();
         }
 
         private ProcedureBase GetCalleeProcedure(CallInstruction ci)

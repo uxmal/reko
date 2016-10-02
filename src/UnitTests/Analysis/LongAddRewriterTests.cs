@@ -37,6 +37,7 @@ namespace Reko.UnitTests.Analysis
         private Frame frame;
         private LongAddRewriter2 rw;
         private IProcessorArchitecture arch;
+        private Program program;
         private Identifier ax;
         private Identifier bx;
         private Identifier cx;
@@ -51,6 +52,11 @@ namespace Reko.UnitTests.Analysis
         public LongAddRewriterTests()
         {
             arch = new FakeArchitecture();
+            program = new Program()
+            {
+                Architecture = arch,
+                Platform = platform,
+            };
         }
 
         [SetUp]
@@ -93,7 +99,7 @@ namespace Reko.UnitTests.Analysis
             var eventListener = new FakeDecompilerEventListener();
             foreach (var proc in program.Procedures.Values)
             {
-                var sst = new SsaTransform(program.Architecture, proc, null, new ProgramDataFlow());
+                var sst = new SsaTransform(program, proc, null, new ProgramDataFlow());
                 sst.Transform();
                 var vp = new ValuePropagator(arch, sst.SsaState);
                 vp.Transform();
@@ -113,7 +119,7 @@ namespace Reko.UnitTests.Analysis
         private void RunTest(Action<ProcedureBuilder> builder)
         {
             builder(m);
-            var sst = new SsaTransform(arch, m.Procedure, null, new ProgramDataFlow());
+            var sst = new SsaTransform(program, m.Procedure, null, new ProgramDataFlow());
             sst.Transform();
             sst.RenameFrameAccesses = true;
             sst.Transform();

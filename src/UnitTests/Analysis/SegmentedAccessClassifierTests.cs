@@ -37,7 +37,11 @@ namespace Reko.UnitTests.Analysis
 
 		private void Prepare(ProcedureBuilder mock)
 		{
-            var sst = new SsaTransform(mock.Architecture, mock.Procedure, null, new ProgramDataFlow());
+            var program = new Program()
+            {
+                Architecture = mock.Architecture,
+            };
+            var sst = new SsaTransform(program, mock.Procedure, null, new ProgramDataFlow());
             sst.Transform();
             ssa = sst.SsaState;
 		}

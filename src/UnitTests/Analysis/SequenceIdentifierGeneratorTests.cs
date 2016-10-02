@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Analysis
         {
             var pb = new ProcedureBuilder();
             builder(pb);
-            var sst = new SsaTransform(null, pb.Procedure, importResolver, null);
+            var sst = new SsaTransform(new Program(), pb.Procedure, importResolver, null);
             sst.Transform();
 
             var seqgen = new SequenceIdentifierGenerator(sst);
