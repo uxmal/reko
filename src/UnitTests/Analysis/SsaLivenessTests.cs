@@ -121,9 +121,14 @@ namespace Reko.UnitTests.Analysis
 		private void Build(Procedure proc, IProcessorArchitecture arch)
 		{
             var platform = new DefaultPlatform(null, arch);
-			this.proc = proc;
+            var program = new Program()
+            {
+                Architecture = arch,
+                Platform = platform,
+            };
+            this.proc = proc;
             var sst = new SsaTransform(
-                arch,
+                program,
                 proc,
                 null,
                 new ProgramDataFlow());

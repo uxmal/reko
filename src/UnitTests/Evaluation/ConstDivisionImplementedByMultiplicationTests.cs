@@ -52,7 +52,11 @@ namespace Reko.UnitTests.Evaluation
 
             var proc = m.Procedure;
             var flow = new ProgramDataFlow();
-            var sst = new SsaTransform(m.Architecture, proc, null, flow);
+            var program = new Program()
+            {
+                Architecture = m.Architecture,
+            };
+            var sst = new SsaTransform(program, proc, null, flow);
             sst.Transform();
 
             proc.Dump(true);

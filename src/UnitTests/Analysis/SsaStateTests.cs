@@ -48,7 +48,11 @@ namespace Reko.UnitTests.Analysis
             var pb = new ProcedureBuilder();
             builder(pb);
             var dflow = new ProgramDataFlow();
-            var sst = new SsaTransform(pb.Architecture, pb.Procedure, null, dflow);
+            var program = new Program()
+            {
+                Architecture = pb.Architecture,
+            };
+            var sst = new SsaTransform(program, pb.Procedure, null, dflow);
             this.ssa = sst.Transform();
         }
 

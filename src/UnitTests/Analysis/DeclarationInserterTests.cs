@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Analysis
 			this.doms = proc.CreateBlockDominatorGraph();
 
             SsaTransform sst = new SsaTransform(
-                null,
+                new Program(),
                 proc,
                 null,
                 new ProgramDataFlow());

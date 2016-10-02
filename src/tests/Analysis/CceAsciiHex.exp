@@ -1,42 +1,39 @@
 fp:fp
     def:  def fp
-    uses: call fn0C00_000A (retsize: 2;)	uses: al:al,ds:ds,sp:fp	defs: al:al_7,ds:ds_5,Flags:C_8
+    uses: call fn0C00_000A (retsize: 2;)	uses: al:al,sp:fp	defs: al:al_5,Flags:C_6
 sp_2: orig: sp
 sp_3: orig: sp
-    def:  call fn0C00_000A (retsize: 2;)	uses: al:al,ds:ds,sp:fp	defs: al:al_7,ds:ds_5,Flags:C_8
-ds:ds
-    def:  def ds
-    uses: call fn0C00_000A (retsize: 2;)	uses: al:al,ds:ds,sp:fp	defs: al:al_7,ds:ds_5,Flags:C_8
-ds_5: orig: ds
-    def:  call fn0C00_000A (retsize: 2;)	uses: al:al,ds:ds,sp:fp	defs: al:al_7,ds:ds_5,Flags:C_8
-    uses: Mem9[ds_5:0x0300:byte] = al_7
+    def:  call fn0C00_000A (retsize: 2;)	uses: al:al,sp:fp	defs: al:al_5,Flags:C_6
 al:al
     def:  def al
-    uses: call fn0C00_000A (retsize: 2;)	uses: al:al,ds:ds,sp:fp	defs: al:al_7,ds:ds_5,Flags:C_8
-al_7: orig: al
-    def:  call fn0C00_000A (retsize: 2;)	uses: al:al,ds:ds,sp:fp	defs: al:al_7,ds:ds_5,Flags:C_8
-    uses: Mem9[ds_5:0x0300:byte] = al_7
-C_8: orig: C
-    def:  call fn0C00_000A (retsize: 2;)	uses: al:al,ds:ds,sp:fp	defs: al:al_7,ds:ds_5,Flags:C_8
-    uses: branch C_8 l0C00_0009
-Mem9: orig: Mem0
-    def:  Mem9[ds_5:0x0300:byte] = al_7
+    uses: call fn0C00_000A (retsize: 2;)	uses: al:al,sp:fp	defs: al:al_5,Flags:C_6
+al_5: orig: al
+    def:  call fn0C00_000A (retsize: 2;)	uses: al:al,sp:fp	defs: al:al_5,Flags:C_6
+    uses: Mem8[ds:0x0300:byte] = al_5
+C_6: orig: C
+    def:  call fn0C00_000A (retsize: 2;)	uses: al:al,sp:fp	defs: al:al_5,Flags:C_6
+    uses: branch C_6 l0C00_0009
+ds:ds
+    def:  def ds
+    uses: Mem8[ds:0x0300:byte] = al_5
+Mem8: orig: Mem0
+    def:  Mem8[ds:0x0300:byte] = al_5
 // fn0C00_0000
 // Return size: 2
 define fn0C00_0000
 fn0C00_0000_entry:
 	def fp
-	def ds
 	def al
+	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
 	call fn0C00_000A (retsize: 2;)
-		uses: al:al,ds:ds,sp:fp
-		defs: al:al_7,ds:ds_5,Flags:C_8
-	branch C_8 l0C00_0009
+		uses: al:al,sp:fp
+		defs: al:al_5,Flags:C_6
+	branch C_6 l0C00_0009
 	// succ:  l0C00_0005 l0C00_0009
 l0C00_0005:
-	Mem9[ds_5:0x0300:byte] = al_7
+	Mem8[ds:0x0300:byte] = al_5
 	// succ:  l0C00_0009
 l0C00_0009:
 	return

@@ -52,7 +52,11 @@ namespace Reko.UnitTests.Analysis
             var m = new ProcedureBuilder();
             builder(m);
 
-            var sst = new SsaTransform(m.Architecture, m.Procedure, null, programDataFlow);
+            var program = new Program()
+            {
+                Architecture = m.Architecture,
+            };
+            var sst = new SsaTransform(program, m.Procedure, null, programDataFlow);
             sst.Transform();
 
             DeadCode.Eliminate(sst.SsaState);

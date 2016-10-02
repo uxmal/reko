@@ -49,6 +49,11 @@ namespace Reko.UnitTests.Analysis
         private bool addUseInstructions;
         private IImportResolver importResolver;
 
+        private Identifier r1;
+        private Identifier r2;
+        private Identifier r3;
+        private Identifier r4;
+
         [SetUp]
         public void Setup()
         {
@@ -56,6 +61,10 @@ namespace Reko.UnitTests.Analysis
             this.importReferences = new Dictionary<Address, ImportReference>();
             this.addUseInstructions = false;
             this.importResolver = MockRepository.GenerateStub<IImportResolver>();
+            this.r1 = new Identifier("r1", PrimitiveType.Word32, new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
+            this.r2 = new Identifier("r2", PrimitiveType.Word32, new RegisterStorage("r2", 2, 0, PrimitiveType.Word32));
+            this.r3 = new Identifier("r3", PrimitiveType.Word32, new RegisterStorage("r3", 3, 0, PrimitiveType.Word32));
+            this.r4 = new Identifier("r4", PrimitiveType.Word32, new RegisterStorage("r4", 4, 0, PrimitiveType.Word32));
         }
 
         private void RunTest(string sExp, Action<ProcedureBuilder> builder)
@@ -95,7 +104,7 @@ namespace Reko.UnitTests.Analysis
             var writer = new StringWriter();
             foreach (var proc in this.pb.Program.Procedures.Values)
             {
-                var sst = new SsaTransform(this.pb.Program.Architecture, proc, importResolver, programFlow);
+                var sst = new SsaTransform(this.pb.Program, proc, importResolver, programFlow);
                 sst.Transform();
                 if (this.addUseInstructions)
                 {
@@ -125,12 +134,25 @@ namespace Reko.UnitTests.Analysis
         private void RunTest_FrameAccesses(string sExp)
         {
             var program = pb.BuildProgram();
+            var platform = new FakePlatform(null, program.Architecture)
+            {
+                Test_CreateTrashedRegisters = () =>
+                    new HashSet<RegisterStorage>()
+                {
+                    (RegisterStorage)r1.Storage,
+                    (RegisterStorage)r2.Storage,
+                    (RegisterStorage)r3.Storage,
+                    (RegisterStorage)r4.Storage,
+                    program.Architecture.StackRegister,
+                }
+            };
+            program.Platform = platform;
             this.programFlow = new ProgramDataFlow();
             var writer = new StringWriter();
             foreach (var proc in program.Procedures.Values)
             {
                 // Perform initial transformation.
-                var sst = new SsaTransform(this.pb.Program.Architecture, proc, importResolver, programFlow);
+                var sst = new SsaTransform(this.pb.Program, proc, importResolver, programFlow);
                 sst.Transform();
 
                 // Propagate values and simplify the results.
