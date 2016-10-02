@@ -362,12 +362,13 @@ namespace Reko.Analysis
             var existingDefs = ci.Definitions
                 .Select(d => d.Storage)
                 .ToHashSet();
+            var trashedRegisters = program.Platform.CreateTrashedRegisters();
 
             // Hell node implementation - use and define all variables.
             foreach (Identifier id in CollectFlags(ssa.Procedure.Frame.Identifiers))
             {
                 if (!existingUses.Contains(id.Storage) &&
-                    (IsTrashed(id.Storage)
+                    (IsTrashed(trashedRegisters, id.Storage)
                     || id.Storage is StackStorage))
                 {
                     ci.Uses.Add(new CallBinding(
@@ -376,7 +377,7 @@ namespace Reko.Analysis
                     existingUses.Add(id.Storage);
                 }
                 if (!existingDefs.Contains(id.Storage) &&
-                    (IsTrashed(id.Storage)
+                    (IsTrashed(trashedRegisters, id.Storage)
                     || id.Storage is FlagGroupStorage))
                 {
                     ci.Definitions.Add(new CallBinding(
@@ -387,12 +388,13 @@ namespace Reko.Analysis
             }
         }
 
-        private bool IsTrashed(Storage stg)
+        private bool IsTrashed(
+            HashSet<RegisterStorage> trashedRegisters,
+            Storage stg)
         {
             if (!(stg is RegisterStorage) || stg is TemporaryStorage)
                 return false;
-            return program.Platform.CreateTrashedRegisters()
-                .Where(r => r.OverlapsWith(stg)).Any();
+            return trashedRegisters.Where(r => r.OverlapsWith(stg)).Any();
         }
 
         private ProcedureBase GetCalleeProcedure(CallInstruction ci)
