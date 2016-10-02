@@ -162,7 +162,7 @@ main_entry:
 	// succ:  l1
 l1:
 	call foo (retsize: 0;)
-		defs: r1:r1_1,r2:r2_2
+		defs: r1:r1_1
 	Mem3[0x00123420:word32] = r1_1
 main_exit:
 ===
