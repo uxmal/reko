@@ -30,6 +30,7 @@ using Reko.Core.Types;
 using System.Collections.Generic;
 using Reko.Core.Expressions;
 using Reko.Arch.X86;
+using Reko.Core.Code;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -68,7 +69,13 @@ namespace Reko.UnitTests.Analysis
 			}
 		}
 
-		[Test]
+
+        private void Given_ExitBlockStatement(Identifier id)
+        {
+            proc.ExitBlock.Statements.Add(0x10020, new UseInstruction(id));
+        }
+
+        [Test]
 		public void CrwAsciiHex()
 		{
 			RunFileTest_x86_real("Fragments/ascii_hex.asm", "Analysis/CrwAsciiHex.txt");
@@ -178,10 +185,8 @@ namespace Reko.UnitTests.Analysis
 			RunFileTest_x86_32("Fragments/multiple/fibonacci.asm", "Analysis/CrwFibonacci.txt");
 		}
 
-
-
         [Test]
-        public void RegisterArgument()
+        public void CrwRegisterArgument()
         {
             flow.BitsUsed.Add(Registers.eax, 32);
             crw.EnsureSignature(proc, flow);
@@ -189,8 +194,10 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        public void RegisterOutArgument()
+        public void CrwRegisterOutArgument()
         {
+            Given_ExitBlockStatement(new Identifier("eax", PrimitiveType.Word32, Registers.eax));
+            Given_ExitBlockStatement(new Identifier("ebx", PrimitiveType.Word32, Registers.ebx));
             flow.LiveOut.Add(Registers.eax);        // becomes the return value.
             flow.LiveOut.Add(Registers.ebx);
             crw.EnsureSignature(proc, flow);
@@ -198,7 +205,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        public void FpuArgument()
+        public void CrwFpuArgument()
         {
             proc.Frame.EnsureFpuStackVariable(1, PrimitiveType.Real80);
             crw.EnsureSignature(proc, flow);
@@ -206,9 +213,13 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        public void FpuOutArgument()
+        public void CrwFpuOutArgument()
         {
             flow.LiveOut.Add(Registers.eax);
+            Given_ExitBlockStatement(new Identifier("eax", PrimitiveType.Word32, Registers.eax));
+            Given_ExitBlockStatement(new Identifier("st0", PrimitiveType.Word32, new FpuStackStorage(0, PrimitiveType.Real80)));
+            Given_ExitBlockStatement(new Identifier("st2", PrimitiveType.Word32, new FpuStackStorage(1, PrimitiveType.Real80)));
+
             proc.Frame.EnsureFpuStackVariable(0, PrimitiveType.Real80);
             proc.Frame.EnsureFpuStackVariable(1, PrimitiveType.Real80);
             proc.Signature.FpuStackDelta = 1;
