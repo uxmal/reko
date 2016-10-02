@@ -1,6 +1,6 @@
 fp:fp
     def:  def fp
-    uses: call fn10000017 (retsize: 4;)	uses: ax:ax_10,eax:eax_4,esp:fp - 0x00000004,Local -0004:dwLoc04_16	defs: eax:eax_8,esp:esp_7
+    uses: call fn10000017 (retsize: 4;)	uses: ax:ax_9,eax:eax_4,esp:fp - 0x00000004,Local -0004:dwLoc04_16	defs: eax:eax_8,esp:esp_7
 esp_2: orig: esp
 Mem0:Global memory
     def:  def Mem0
@@ -8,32 +8,32 @@ Mem0:Global memory
 eax_4: orig: eax
     def:  eax_4 = Mem0[0x10003420:word32]
     uses: dwLoc04_16 = eax_4
-          call fn10000017 (retsize: 4;)	uses: ax:ax_10,eax:eax_4,esp:fp - 0x00000004,Local -0004:dwLoc04_16	defs: eax:eax_8,esp:esp_7
+          call fn10000017 (retsize: 4;)	uses: ax:ax_9,eax:eax_4,esp:fp - 0x00000004,Local -0004:dwLoc04_16	defs: eax:eax_8,esp:esp_7
 esp_5: orig: esp
 Mem6: orig: Mem0
 esp_7: orig: esp
-    def:  call fn10000017 (retsize: 4;)	uses: ax:ax_10,eax:eax_4,esp:fp - 0x00000004,Local -0004:dwLoc04_16	defs: eax:eax_8,esp:esp_7
+    def:  call fn10000017 (retsize: 4;)	uses: ax:ax_9,eax:eax_4,esp:fp - 0x00000004,Local -0004:dwLoc04_16	defs: eax:eax_8,esp:esp_7
 eax_8: orig: eax
-    def:  call fn10000017 (retsize: 4;)	uses: ax:ax_10,eax:eax_4,esp:fp - 0x00000004,Local -0004:dwLoc04_16	defs: eax:eax_8,esp:esp_7
-    uses: ax_10 = (word16) eax_8 (alias)
-SCZO_9: orig: SCZO
-    def:  call fn10000017 (retsize: 4;)	uses: ax:ax_10,eax:eax_4,esp:fp - 0x00000004,Local -0004:dwLoc04_16	defs: eax:eax_8,esp:esp_7
+    def:  call fn10000017 (retsize: 4;)	uses: ax:ax_9,eax:eax_4,esp:fp - 0x00000004,Local -0004:dwLoc04_16	defs: eax:eax_8,esp:esp_7
+    uses: ax_9 = (word16) eax_8 (alias)
+ax_9: orig: ax
+    def:  ax_9 = (word16) eax_8 (alias)
+    uses: call fn10000017 (retsize: 4;)	uses: ax:ax_9,eax:eax_4,esp:fp - 0x00000004,Local -0004:dwLoc04_16	defs: eax:eax_8,esp:esp_7
+          ax_11 = DPB(ax_9, ax_10, 0) (alias)
 ax_10: orig: ax
-    def:  ax_10 = (word16) eax_8 (alias)
-    uses: call fn10000017 (retsize: 4;)	uses: ax:ax_10,eax:eax_4,esp:fp - 0x00000004,Local -0004:dwLoc04_16	defs: eax:eax_8,esp:esp_7
-          ax_12 = DPB(ax_10, ax_11, 0) (alias)
+    def:  call fn10000017 (retsize: 4;)	uses: ax:ax_9,eax:eax_4,esp:fp - 0x00000004,Local -0004:dwLoc04_16	defs: eax:eax_8,esp:esp_7
 ax_11: orig: ax
-    def:  call fn10000017 (retsize: 4;)	uses: ax:ax_10,eax:eax_4,esp:fp - 0x00000004,Local -0004:dwLoc04_16	defs: eax:eax_8,esp:esp_7
-ax_12: orig: ax
-    def:  ax_12 = DPB(ax_10, ax_11, 0) (alias)
-    uses: Mem15[0x10003428:word16] = ax_12
+    def:  ax_11 = DPB(ax_9, ax_10, 0) (alias)
+    uses: Mem15[0x10003428:word16] = ax_11
+SCZO_12: orig: SCZO
+    def:  call fn10000017 (retsize: 4;)	uses: ax:ax_9,eax:eax_4,esp:fp - 0x00000004,Local -0004:dwLoc04_16	defs: eax:eax_8,esp:esp_7
 esp_13: orig: esp
 SCZO_14: orig: SCZO
 Mem15: orig: Mem0
-    def:  Mem15[0x10003428:word16] = ax_12
+    def:  Mem15[0x10003428:word16] = ax_11
 dwLoc04_16: orig: dwLoc04
     def:  dwLoc04_16 = eax_4
-    uses: call fn10000017 (retsize: 4;)	uses: ax:ax_10,eax:eax_4,esp:fp - 0x00000004,Local -0004:dwLoc04_16	defs: eax:eax_8,esp:esp_7
+    uses: call fn10000017 (retsize: 4;)	uses: ax:ax_9,eax:eax_4,esp:fp - 0x00000004,Local -0004:dwLoc04_16	defs: eax:eax_8,esp:esp_7
 // fn10000000
 // Return size: 4
 define fn10000000
@@ -45,11 +45,11 @@ l10000000:
 	eax_4 = Mem0[0x10003420:word32]
 	dwLoc04_16 = eax_4
 	call fn10000017 (retsize: 4;)
-		uses: ax:ax_10,eax:eax_4,esp:fp - 0x00000004,Local -0004:dwLoc04_16
+		uses: ax:ax_9,eax:eax_4,esp:fp - 0x00000004,Local -0004:dwLoc04_16
 		defs: eax:eax_8,esp:esp_7
-	ax_10 = (word16) eax_8 (alias)
-	ax_12 = DPB(ax_10, ax_11, 0) (alias)
-	Mem15[0x10003428:word16] = ax_12
+	ax_9 = (word16) eax_8 (alias)
+	ax_11 = DPB(ax_9, ax_10, 0) (alias)
+	Mem15[0x10003428:word16] = ax_11
 	return
 	// succ:  fn10000000_exit
 fn10000000_exit:

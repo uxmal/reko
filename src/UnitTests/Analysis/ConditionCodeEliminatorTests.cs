@@ -146,7 +146,8 @@ namespace Reko.UnitTests.Analysis
 
 		[Test]
 		public void CceFrame32()
-		{
+
+        {
 			RunFileTest_x86_32("Fragments/multiple/frame32.asm", "Analysis/CceFrame32.txt");
 		}
 

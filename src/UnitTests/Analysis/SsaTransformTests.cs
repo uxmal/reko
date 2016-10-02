@@ -81,7 +81,6 @@ namespace Reko.UnitTests.Analysis
             {
                 arch.GetRegister(1)
             };
-            Debug.Print("GetRegister(1) {0}", arch.GetRegister(1));
             program.Platform = platform;
             program.Platform = new FakePlatform(null, new FakeArchitecture());
             program.SegmentMap = new SegmentMap(

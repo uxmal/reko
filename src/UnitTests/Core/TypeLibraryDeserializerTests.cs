@@ -128,7 +128,7 @@ namespace Reko.UnitTests.Core
         public void Tlldr_void_fn()
         {
             Given_ArchitectureStub();
-            Given_ProcedureSignature(new FunctionType());
+            Given_ProcedureSignature(FunctionType.Action());
             mr.ReplayAll();
 
             var tlLdr = new TypeLibraryDeserializer(platform, true, new TypeLibrary());

@@ -362,7 +362,7 @@ namespace Reko.Analysis
                 .ToHashSet();
 
             // Hell node implementation - use and define all variables.
-            foreach (Identifier id in ssa.Procedure.Frame.Identifiers)
+            foreach (Identifier id in CollectFlags(ssa.Procedure.Frame.Identifiers))
             {
                 if (!existingUses.Contains(id.Storage) &&
                     ((id.Storage is RegisterStorage && !(id.Storage is TemporaryStorage))
