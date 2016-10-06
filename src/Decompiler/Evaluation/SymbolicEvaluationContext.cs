@@ -232,6 +232,10 @@ namespace Reko.Evaluation
         {
         }
 
+        public void RemoveExpressionUse(Expression e)
+        {
+        }
+
         public bool IsUsedInPhi(Identifier id)
         {
             return false;
