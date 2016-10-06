@@ -306,7 +306,8 @@ namespace Reko.Analysis
             }
             ProcedureFlow calleeFlow;
             var proc = callee as Procedure;
-            if (proc != null && programFlow.ProcedureFlows.TryGetValue(proc, out calleeFlow))
+            if (proc != null && 
+                programFlow.ProcedureFlows.TryGetValue(proc, out calleeFlow))
             {
                 GenerateUseDefsForKnownCallee(ci, proc, calleeFlow);
             }
