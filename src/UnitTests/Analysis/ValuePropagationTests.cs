@@ -450,7 +450,6 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Ignore("Making this pass breaks a lot of older unit tests. Re-enable once transition to new ProcedureFlow is complete.")]
         public void VpPhiWithConstants()
         {
             Constant c1 = Constant.Word16(0x4711);
@@ -460,9 +459,13 @@ namespace Reko.UnitTests.Analysis
             Identifier r3 = Reg16("r3");
             var stm1 = new Statement(1, new Assignment(r1, c1), null);
             var stm2 = new Statement(2, new Assignment(r2, c2), null);
-            ssaIds[r1].DefStatement = stm1;
-            ssaIds[r2].DefStatement = stm2;
-            var vp = new ValuePropagator(arch, null);
+            var proc = new Procedure("foo", arch.CreateFrame());
+            var ssa = new SsaState(proc, null);
+            var r1Sid = ssa.Identifiers.Add(r1, null, null, false);
+            var r2Sid = ssa.Identifiers.Add(r2, null, null, false);
+            r1Sid.DefStatement = stm1;
+            r2Sid.DefStatement = stm2;
+            var vp = new ValuePropagator(arch, ssa);
             Instruction instr = new PhiAssignment(r3, new PhiFunction(r1.DataType, r1, r2));
             instr = instr.Accept(vp);
             Assert.AreEqual("r3 = 0x4711", instr.ToString());
