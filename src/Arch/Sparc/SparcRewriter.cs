@@ -80,13 +80,13 @@ namespace Reko.Arch.Sparc
                         instrCur.Address,
                         "Rewriting SPARC opcode '{0}' is not supported yet.",
                         instrCur.Opcode);
-                case Opcode.add: RewriteAlu(Operator.IAdd, false); break;
-                case Opcode.addcc: RewriteAluCc(Operator.IAdd, false); break;
-                case Opcode.addx: RewriteAddxSubx(Operator.IAdd, false); break;
-                case Opcode.addxcc: RewriteAddxSubx(Operator.IAdd, true); break;
-                case Opcode.and: RewriteAlu(Operator.And, false); break;
-                case Opcode.andcc: RewriteAluCc(Operator.And, false); break;
-                case Opcode.andn: RewriteAlu(Operator.And, true); break;
+                case Opcode.add: RewriteAlu(emitter.IAdd, false); break;
+                case Opcode.addcc: RewriteAluCc(emitter.IAdd, false); break;
+                case Opcode.addx: RewriteAddxSubx(emitter.IAdd, false); break;
+                case Opcode.addxcc: RewriteAddxSubx(emitter.IAdd, true); break;
+                case Opcode.and: RewriteAlu(emitter.And, false); break;
+                case Opcode.andcc: RewriteAluCc(emitter.And, false); break;
+                case Opcode.andn: RewriteAlu(emitter.And, true); break;
                 case Opcode.ba: RewriteBranch(Constant.True()); break;
                 case Opcode.bn: RewriteBranch(Constant.False()); break;
                 case Opcode.bne: RewriteBranch(emitter.Test(ConditionCode.NE, Grf(FlagM.ZF))); break;
@@ -158,38 +158,38 @@ namespace Reko.Arch.Sparc
                 case Opcode.ldub: RewriteLoad(PrimitiveType.Byte); break;
                 case Opcode.lduh: RewriteLoad(PrimitiveType.Word16); break;
                 case Opcode.mulscc: RewriteMulscc(); break;
-                case Opcode.or: RewriteAlu(Operator.Or, false); break;
-                case Opcode.orcc: RewriteAluCc(Operator.Or, false); break;
+                case Opcode.or: RewriteAlu(emitter.Or, false); break;
+                case Opcode.orcc: RewriteAluCc(emitter.Or, false); break;
                 case Opcode.restore: RewriteRestore(); break;
                 case Opcode.rett: RewriteRett(); break;
                 case Opcode.save: RewriteSave(); break;
                 case Opcode.sethi: RewriteSethi(); break;
-                case Opcode.sdiv: RewriteAlu(Operator.SDiv, false); break;
-                case Opcode.sdivcc: RewriteAlu(Operator.SDiv, false); break;
-                case Opcode.sll: RewriteAlu(Operator.Shl, false); break;
-                case Opcode.smul: RewriteAlu(Operator.SMul, false); break;
-                case Opcode.smulcc: RewriteAluCc(Operator.SMul, false); break;
-                case Opcode.sra: RewriteAlu(Operator.Sar, false); break;
-                case Opcode.srl: RewriteAlu(Operator.Shr, false); break;
+                case Opcode.sdiv: RewriteAlu(emitter.SDiv, false); break;
+                case Opcode.sdivcc: RewriteAlu(emitter.SDiv, false); break;
+                case Opcode.sll: RewriteAlu(emitter.Shl, false); break;
+                case Opcode.smul: RewriteAlu(emitter.SMul, false); break;
+                case Opcode.smulcc: RewriteAluCc(emitter.SMul, false); break;
+                case Opcode.sra: RewriteAlu(emitter.Sar, false); break;
+                case Opcode.srl: RewriteAlu(emitter.Shr, false); break;
                 case Opcode.st: RewriteStore(PrimitiveType.Word32); break;
                 case Opcode.stb: RewriteStore(PrimitiveType.Byte); break;
                 case Opcode.std: RewriteStore(PrimitiveType.Word64); break;
                 case Opcode.stf: RewriteStore(PrimitiveType.Real32); break;
                 case Opcode.sth: RewriteStore(PrimitiveType.Word16); break;
-                case Opcode.sub: RewriteAlu(Operator.ISub, false); break;
-                case Opcode.subcc: RewriteAluCc(Operator.ISub, false); break;
-                case Opcode.subx: RewriteAddxSubx(Operator.ISub, false); break;
-                case Opcode.subxcc: RewriteAddxSubx(Operator.ISub, true); break;
+                case Opcode.sub: RewriteAlu(emitter.ISub, false); break;
+                case Opcode.subcc: RewriteAluCc(emitter.ISub, false); break;
+                case Opcode.subx: RewriteAddxSubx(emitter.ISub, false); break;
+                case Opcode.subxcc: RewriteAddxSubx(emitter.ISub, true); break;
                 case Opcode.ta: RewriteTrap(Constant.True()); break;
                 case Opcode.tn: RewriteTrap(Constant.False()); break;
                 case Opcode.tne: RewriteTrap(emitter.Test(ConditionCode.NE, Grf(FlagM.ZF))); break;
                 case Opcode.te: RewriteTrap(emitter.Test(ConditionCode.EQ, Grf(FlagM.ZF))); break;
 
-                case Opcode.udiv: RewriteAlu(Operator.UDiv, false); break;
-                case Opcode.udivcc: RewriteAluCc(Operator.UDiv, false); break;
-                case Opcode.umul: RewriteAlu(Operator.UMul, false); break;
-                case Opcode.umulcc: RewriteAluCc(Operator.UMul, false); break;
-                case Opcode.xor: RewriteAlu(Operator.Xor, false); break;
+                case Opcode.udiv: RewriteAlu(emitter.UDiv, false); break;
+                case Opcode.udivcc: RewriteAluCc(emitter.UDiv, false); break;
+                case Opcode.umul: RewriteAlu(emitter.UMul, false); break;
+                case Opcode.umulcc: RewriteAluCc(emitter.UMul, false); break;
+                case Opcode.xor: RewriteAlu(emitter.Xor, false); break;
                 }
                 yield return ric;
             }

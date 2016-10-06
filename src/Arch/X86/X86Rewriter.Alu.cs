@@ -109,19 +109,15 @@ namespace Reko.Arch.X86
                 CopyFlags.ForceBreak|CopyFlags.EmitCc);
         }
 
-        public void RewriteAdcSbb(BinaryOperator opr)
+        public void RewriteAdcSbb(Func<Expression,Expression,Expression> opr)
         {
             // We do not take the trouble of widening the CF to the word size
             // to simplify code analysis in later stages. 
             var c = orw.FlagGroup(FlagM.CF);
             EmitCopy(
                 instrCur.op1, 
-                new BinaryExpression(
-                    opr, 
-                    instrCur.dataWidth,
-                    new BinaryExpression(
-                        opr,
-                        instrCur.dataWidth, 
+                opr(
+                    opr(
                         SrcOp(instrCur.op1),
                         SrcOp(instrCur.op2)),
                     c),
@@ -254,7 +250,6 @@ namespace Reko.Arch.X86
                     right = emitter.Const(left.DataType, c.ToInt32());
                 }
             }
-            //EmitCopy(dst, new BinaryExpression(binOp, dtDst, left, right), true, emitCc);
             EmitCopy(dst, new BinaryExpression(binOp, dtDst, left, right), flags);
         }
 
@@ -672,12 +667,12 @@ namespace Reko.Arch.X86
 
         private void RewriteNeg()
         {
-            RewriteUnaryOperator(Operator.Neg, instrCur.op1, instrCur.op1, CopyFlags.ForceBreak|CopyFlags.EmitCc|CopyFlags.SetCfIf0);
+            RewriteUnaryOperator(emitter.Neg, instrCur.op1, instrCur.op1, CopyFlags.ForceBreak|CopyFlags.EmitCc|CopyFlags.SetCfIf0);
         }
 
         private void RewriteNot()
         {
-            RewriteUnaryOperator(Operator.Comp, instrCur.op1, instrCur.op1, CopyFlags.ForceBreak);
+            RewriteUnaryOperator(emitter.Comp, instrCur.op1, instrCur.op1, CopyFlags.ForceBreak);
         }
 
         private void RewriteOut()
@@ -784,9 +779,7 @@ namespace Reko.Arch.X86
             Expression sh;
             if (left)
             {
-                sh = new BinaryExpression(
-                    Operator.ISub,
-                    instrCur.op2.Width,
+                sh = emitter.ISub(
                     Constant.Create(instrCur.op2.Width, instrCur.op1.Width.BitSize),
                     SrcOp(instrCur.op2));
             }
@@ -794,11 +787,7 @@ namespace Reko.Arch.X86
             {
                 sh = SrcOp(instrCur.op2);
             }
-            sh = new BinaryExpression(
-                Operator.Shl,
-                instrCur.op1.Width,
-                Constant.Create(instrCur.op1.Width, 1),
-                sh);
+            sh = emitter.Shl(Constant.Create(instrCur.op1.Width, 1), sh);
             t = frame.CreateTemporary(PrimitiveType.Bool);
             emitter.Assign(t, emitter.Ne0(emitter.And(SrcOp(instrCur.op1), sh)));
             Expression p;
@@ -907,8 +896,7 @@ namespace Reko.Arch.X86
             case Opcode.cmpsb:
                 emitter.Assign(
                     orw.FlagGroup(X86Instruction.DefCc(Opcode.cmp)),
-                    new ConditionOf(
-                    new BinaryExpression(Operator.ISub, instrCur.dataWidth, MemSi(), MemDi())));
+                    emitter.Cond(emitter.ISub(MemSi(), MemDi())));
                 incSi = true;
                 incDi = true;
                 break;
@@ -943,11 +931,7 @@ namespace Reko.Arch.X86
             case Opcode.scasb:
                 emitter.Assign(
                     orw.FlagGroup(X86Instruction.DefCc(Opcode.cmp)),
-                    new ConditionOf(
-                    new BinaryExpression(Operator.ISub,
-                    instrCur.dataWidth,
-                    RegAl,
-                    MemDi())));
+                    emitter.Cond(emitter.ISub(RegAl,MemDi())));
                 incDi = true;
                 break;
             case Opcode.stos:
@@ -964,32 +948,25 @@ namespace Reko.Arch.X86
 
             if (incSi)
             {
-                emitter.Assign(RegSi,
-                    new BinaryExpression(incOperator,
-                    instrCur.addrWidth,
-                    RegSi,
-                    Constant.Create(instrCur.addrWidth, instrCur.dataWidth.Size)));
+                emitter.Assign(RegSi, incOperator(RegSi, instrCur.dataWidth.Size));
             }
 
             if (incDi)
             {
-                emitter.Assign(RegDi,
-                    new BinaryExpression(incOperator,
-                    instrCur.addrWidth,
-                    RegDi,
-                    Constant.Create(instrCur.addrWidth, instrCur.dataWidth.Size)));
+                emitter.Assign(RegDi, incOperator(RegDi, instrCur.dataWidth.Size));
             }
             return true;
         }
 
-        private BinaryOperator GetIncrementOperator()
+        private Func<Expression,int,Expression> GetIncrementOperator()
         {
             Constant direction = state.GetFlagGroup((uint)FlagM.DF);
             if (direction == null || !direction.IsValid)
-                return Operator.IAdd;        // Better safe than sorry.
-            return direction.ToBoolean()
-                ? Operator.ISub
-                : Operator.IAdd;
+                return emitter.IAdd;        // Better safe than sorry.
+            if (direction.ToBoolean())
+                return emitter.ISub;
+            else
+                return emitter.IAdd;
         }
 
         private void RewriteSti()
@@ -999,18 +976,17 @@ namespace Reko.Arch.X86
 
         private void RewriteTest()
         {
-            var src = new BinaryExpression(Operator.And,
-                instrCur.op1.Width,
+            var src = emitter.And(
                 SrcOp(instrCur.op1),
-                                SrcOp(instrCur.op2));
+                SrcOp(instrCur.op2));
 
             EmitCcInstr(src, (X86Instruction.DefCc(instrCur.code) & ~FlagM.CF));
             emitter.Assign(orw.FlagGroup(FlagM.CF), Constant.False());
         }
 
-        private void RewriteUnaryOperator(UnaryOperator op, MachineOperand opDst, MachineOperand opSrc, CopyFlags flags)
+        private void RewriteUnaryOperator(Func<Expression,Expression> op, MachineOperand opDst, MachineOperand opSrc, CopyFlags flags)
         {
-            EmitCopy(opDst, new UnaryExpression(op, opSrc.Width, SrcOp(opSrc)), flags);
+            EmitCopy(opDst, op(SrcOp(opSrc)), flags);
         }
 
         private void RewriteXadd()

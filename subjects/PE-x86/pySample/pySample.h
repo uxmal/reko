@@ -696,7 +696,7 @@ T_95: (in rLoc04 : real32)
   Class: Eq_95
   DataType: Eq_95
   OrigDataType: (union (real32 u0) (real64 u1))
-T_96: (in (real64) rLoc08 / rLoc04 : word32)
+T_96: (in (real64) rLoc08 / rLoc04 : real64)
   Class: Eq_91
   DataType: real64
   OrigDataType: real64

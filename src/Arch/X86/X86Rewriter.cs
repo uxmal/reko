@@ -76,7 +76,7 @@ namespace Reko.Arch.X86
                 ric = new RtlInstructionCluster(instrCur.Address, instrCur.Length);
                 ric.Class = RtlClass.Linear;
                 emitter = new RtlEmitter(ric.Instructions);
-                orw = arch.ProcessorMode.CreateOperandRewriter(arch, frame, host);
+                orw = arch.ProcessorMode.CreateOperandRewriter(arch, emitter, frame, host);
                 switch (instrCur.code)
                 {
                 default:
@@ -89,9 +89,9 @@ namespace Reko.Arch.X86
                 case Opcode.aad: RewriteAad(); break;
                 case Opcode.aam: RewriteAam(); break;
                 case Opcode.aas: RewriteAas(); break;
-                case Opcode.adc: RewriteAdcSbb(BinaryOperator.IAdd); break;
-                case Opcode.add: RewriteAddSub(BinaryOperator.IAdd); break;
-                case Opcode.and: RewriteLogical(BinaryOperator.And); break;
+                case Opcode.adc: RewriteAdcSbb(emitter.IAdd); break;
+                case Opcode.add: RewriteAddSub(Operator.IAdd); break;
+                case Opcode.and: RewriteLogical(Operator.And); break;
                 case Opcode.arpl: RewriteArpl(); break;
                 case Opcode.bound: RewriteBound(); break;
                 case Opcode.bsr: RewriteBsr(); break;
@@ -134,8 +134,8 @@ namespace Reko.Arch.X86
                 case Opcode.div: RewriteDivide(Operator.UDiv, Domain.UnsignedInt); break;
                 case Opcode.enter: RewriteEnter(); break;
                 case Opcode.fabs: RewriteFabs(); break;
-                case Opcode.fadd: EmitCommonFpuInstruction(Operator.FAdd, false, false); break;
-                case Opcode.faddp: EmitCommonFpuInstruction(Operator.FAdd, false, true); break;
+                case Opcode.fadd: EmitCommonFpuInstruction(emitter.FAdd, false, false); break;
+                case Opcode.faddp: EmitCommonFpuInstruction(emitter.FAdd, false, true); break;
                 case Opcode.fbld: RewriteFbld(); break;
                 case Opcode.fbstp: RewriteFbstp(); break;
                 case Opcode.fchs: EmitFchs(); break;
@@ -145,19 +145,19 @@ namespace Reko.Arch.X86
                 case Opcode.fcompp: RewriteFcom(2); break;
                 case Opcode.fcos: RewriteFUnary("cos"); break;
                 case Opcode.fdecstp: RewriteFdecstp(); break;
-                case Opcode.fdiv: EmitCommonFpuInstruction(Operator.FDiv, false, false); break;
-                case Opcode.fdivp: EmitCommonFpuInstruction(Operator.FDiv, false, true); break;
+                case Opcode.fdiv: EmitCommonFpuInstruction(emitter.FDiv, false, false); break;
+                case Opcode.fdivp: EmitCommonFpuInstruction(emitter.FDiv, false, true); break;
                 case Opcode.ffree: RewriteFfree(); break;
-                case Opcode.fiadd: EmitCommonFpuInstruction(Operator.FAdd, false, false, PrimitiveType.Real64); break;
+                case Opcode.fiadd: EmitCommonFpuInstruction(emitter.FAdd, false, false, PrimitiveType.Real64); break;
                 case Opcode.ficom: RewriteFicom(false); break;
                 case Opcode.ficomp: RewriteFicom(true); break;
-                case Opcode.fimul: EmitCommonFpuInstruction(Operator.FMul, false, false, PrimitiveType.Real64); break;
-                case Opcode.fisub: EmitCommonFpuInstruction(Operator.FSub, false, false, PrimitiveType.Real64); break;
-                case Opcode.fisubr: EmitCommonFpuInstruction(Operator.FSub, true, false, PrimitiveType.Real64); break;
-                case Opcode.fidiv: EmitCommonFpuInstruction(Operator.FDiv, false, false, PrimitiveType.Real64); break;
-                case Opcode.fidivr: EmitCommonFpuInstruction(Operator.FDiv, true, false, PrimitiveType.Real64); break;
-                case Opcode.fdivr: EmitCommonFpuInstruction(Operator.FDiv, true, false); break;
-                case Opcode.fdivrp: EmitCommonFpuInstruction(Operator.FDiv, true, true); break;
+                case Opcode.fimul: EmitCommonFpuInstruction(emitter.FMul, false, false, PrimitiveType.Real64); break;
+                case Opcode.fisub: EmitCommonFpuInstruction(emitter.FSub, false, false, PrimitiveType.Real64); break;
+                case Opcode.fisubr: EmitCommonFpuInstruction(emitter.FSub, true, false, PrimitiveType.Real64); break;
+                case Opcode.fidiv: EmitCommonFpuInstruction(emitter.FDiv, false, false, PrimitiveType.Real64); break;
+                case Opcode.fidivr: EmitCommonFpuInstruction(emitter.FDiv, true, false, PrimitiveType.Real64); break;
+                case Opcode.fdivr: EmitCommonFpuInstruction(emitter.FDiv, true, false); break;
+                case Opcode.fdivrp: EmitCommonFpuInstruction(emitter.FDiv, true, true); break;
                 case Opcode.fild: RewriteFild(); break;
                 case Opcode.fincstp: RewriteFincstp(); break;
                 case Opcode.fist: RewriteFist(false); break;
@@ -170,8 +170,8 @@ namespace Reko.Arch.X86
                 case Opcode.fldln2: RewriteFldConst(Constant.Ln2()); break;
                 case Opcode.fldpi: RewriteFldConst(Constant.Pi()); break;
                 case Opcode.fldz: RewriteFldConst(0.0); break;
-                case Opcode.fmul: EmitCommonFpuInstruction(Operator.FMul, false, false); break;
-                case Opcode.fmulp: EmitCommonFpuInstruction(Operator.FMul, false, true); break;
+                case Opcode.fmul: EmitCommonFpuInstruction(emitter.FMul, false, false); break;
+                case Opcode.fmulp: EmitCommonFpuInstruction(emitter.FMul, false, true); break;
                 case Opcode.fpatan: RewriteFpatan(); break;
                 case Opcode.fprem: RewriteFprem(); break;
                 case Opcode.frndint: RewriteFUnary("__rndint"); break;
@@ -186,10 +186,10 @@ namespace Reko.Arch.X86
                 case Opcode.fstcw: RewriterFstcw(); break;
                 case Opcode.fstp: RewriteFst(true); break;
                 case Opcode.fstsw: RewriteFstsw(); break;
-                case Opcode.fsub: EmitCommonFpuInstruction(Operator.FSub, false, false); break;
-                case Opcode.fsubp: EmitCommonFpuInstruction(Operator.FSub, false, true); break;
-                case Opcode.fsubr: EmitCommonFpuInstruction(Operator.FSub, true, false); break;
-                case Opcode.fsubrp: EmitCommonFpuInstruction(Operator.FSub, true, true); break;
+                case Opcode.fsub: EmitCommonFpuInstruction(emitter.FSub, false, false); break;
+                case Opcode.fsubp: EmitCommonFpuInstruction(emitter.FSub, false, true); break;
+                case Opcode.fsubr: EmitCommonFpuInstruction(emitter.FSub, true, false); break;
+                case Opcode.fsubrp: EmitCommonFpuInstruction(emitter.FSub, true, true); break;
                 case Opcode.ftst: RewriteFtst(); break;
                 case Opcode.fucompp: RewriteFcom(2); break;
                 case Opcode.fxam: RewriteFxam(); break;
@@ -278,7 +278,7 @@ namespace Reko.Arch.X86
                 case Opcode.retf: RewriteRet(); break;
                 case Opcode.sahf: emitter.Assign(orw.FlagGroup(X86Instruction.DefCc(instrCur.code)), orw.AluRegister(Registers.ah)); break;
                 case Opcode.sar: RewriteBinOp(Operator.Sar); break;
-                case Opcode.sbb: RewriteAdcSbb(BinaryOperator.ISub); break;
+                case Opcode.sbb: RewriteAdcSbb(emitter.ISub); break;
                 case Opcode.scas: RewriteStringInstruction(); break;
                 case Opcode.scasb: RewriteStringInstruction(); break;
                 case Opcode.seta: RewriteSet(ConditionCode.UGT); break;

@@ -217,18 +217,14 @@ namespace Reko.Arch.M68k
             }
         }
 
-        public void RewriteAddSubx(BinaryOperator opr)
+        public void RewriteAddSubx(Func<Expression,Expression,Expression> opr)
         {
             // We do not take the trouble of widening the CF to the word size
             // to simplify code analysis in later stages. 
             var x = orw.FlagGroup(FlagM.XF);
             var src = orw.RewriteSrc(di.op1, di.Address);
             var dst = orw.RewriteDst(di.op2, di.Address, src, (d, s) => 
-                new BinaryExpression(
-                    opr,
-                    di.dataWidth,
-                    new BinaryExpression(opr, di.dataWidth, d, s),
-                    x));
+                    opr(opr(d, s), x));
             emitter.Assign(orw.FlagGroup(FlagM.CVZNX), emitter.Cond(dst));
         }
 
