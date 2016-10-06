@@ -373,15 +373,15 @@ Z_10: orig: Z
     uses: Z_14 = PHI(Z_10, Z_20)
 di_11: orig: di
     def:  di_11 = PHI(di_6, di_21)
-    uses: di_15 = PHI(di_11, di_21)
-          SCZO_19 = cond(0x00 - Mem0[es:di_11:byte])
+    uses: SCZO_19 = cond(0x00 - Mem0[es:di_11:byte])
           di_21 = di_11 + 0x0001
           branch 0x00 != Mem0[es:di_11:byte] l0C00_0030
+          di_15 = PHI(di_11, di_21)
 cx_12: orig: cx
     def:  cx_12 = PHI(cx_4, cx_22)
     uses: branch cx_12 == 0x0000 l0C00_0032
-          cx_16 = PHI(cx_12, cx_22)
           cx_22 = cx_12 - 0x0001
+          cx_16 = PHI(cx_12, cx_22)
 SCZO_13: orig: SCZO
     def:  SCZO_13 = PHI(SCZO_9, SCZO_19)
 Z_14: orig: Z

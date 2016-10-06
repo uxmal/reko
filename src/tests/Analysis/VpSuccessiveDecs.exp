@@ -236,15 +236,12 @@ Z_5: orig: Z
     uses: Z_8 = PHI(Z_5, Z_14, Z_18, Z_22)
 C_6: orig: C
     def:  C_6 = false
-    uses: C_9 = PHI(C_6, C_6, C_6, C_23)
-          C_9 = PHI(C_6, C_6, C_6, C_23)
-          C_9 = PHI(C_6, C_6, C_6, C_23)
 SZO_7: orig: SZO
     def:  SZO_7 = PHI(SZO_4, SZO_13, SZO_17, SZO_21)
 Z_8: orig: Z
     def:  Z_8 = PHI(Z_5, Z_14, Z_18, Z_22)
 C_9: orig: C
-    def:  C_9 = PHI(C_6, C_6, C_6, C_23)
+    def:  C_9 = false
 ax_10: orig: ax
     def:  ax_10 = PHI(ax_11, ax_15, ax_19, ax_20)
 ax_11: orig: ax
@@ -286,7 +283,6 @@ Z_22: orig: Z
     uses: Z_8 = PHI(Z_5, Z_14, Z_18, Z_22)
 C_23: orig: C
     def:  C_23 = false
-    uses: C_9 = PHI(C_6, C_6, C_6, C_23)
 // fn0C00_000C
 // Return size: 0
 word16 fn0C00_000C(word16 ax)
@@ -336,5 +332,5 @@ l0C00_0022:
 fn0C00_000C_exit:
 	SZO_7 = PHI(SZO_4, SZO_13, SZO_17, SZO_21)
 	Z_8 = PHI(Z_5, Z_14, Z_18, Z_22)
-	C_9 = PHI(C_6, C_6, C_6, C_23)
+	C_9 = false
 	ax_10 = PHI(ax_11, ax_15, ax_19, ax_20)

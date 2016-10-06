@@ -34,8 +34,7 @@ fp:fp
 sp_1: orig: sp
 al:al
     def:  def al
-    uses: al_6 = PHI(al, al_21)
-          al_17 = al - 0x30
+    uses: al_17 = al - 0x30
           branch al <u 0x30 l0C00_0032
           branch al <=u 0x39 l0C00_0022
           branch al <u 0x41 l0C00_0032
@@ -48,6 +47,7 @@ al:al
           branch al <u 0x47 l0C00_0030
           al_29 = al - 0x57
           al_29 = al - 0x57
+          al_6 = PHI(al, al_21)
 SCZO_3: orig: SCZO
 C_4: orig: C
 CZ_5: orig: CZ
