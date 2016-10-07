@@ -19,6 +19,12 @@ word32 fn00401158()
 
 int32 main(int32 argc, char * * argv)
 {
+	word32 esp_14;
+	word32 ebp_15;
+	word32 ecx_16;
+	word32 eax_17;
+	byte SZO_18;
+	byte C_19;
 	printf();
 	return 0x00;
 }
