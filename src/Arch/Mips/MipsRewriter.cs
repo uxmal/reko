@@ -77,37 +77,37 @@ namespace Reko.Arch.Mips
                     RewriteAnd(instr); break;
                 case Opcode.bc1f: RewriteBc1f(instr, false); break;
                 case Opcode.beq:
-                    RewriteBranch(instr, Operator.Eq, false); break;
+                    RewriteBranch(instr, emitter.Eq, false); break;
                 case Opcode.beql:
-                    RewriteBranch(instr, Operator.Eq, true); break;
+                    RewriteBranch(instr, emitter.Eq, true); break;
                 case Opcode.bgez:
-                    RewriteBranch0(instr, Operator.Ge, false); break;
+                    RewriteBranch0(instr, emitter.Ge, false); break;
                 case Opcode.bgezl:
-                    RewriteBranch0(instr, Operator.Ge, true); break;
+                    RewriteBranch0(instr, emitter.Ge, true); break;
                 case Opcode.bgezal:
-                    RewriteBranch0(instr, Operator.Ge, false); break;
+                    RewriteBranch0(instr, emitter.Ge, false); break;
                 case Opcode.bgezall:
-                    RewriteBranch0(instr, Operator.Ge, true); break;
+                    RewriteBranch0(instr, emitter.Ge, true); break;
                 case Opcode.bgtz:
-                    RewriteBranch0(instr, Operator.Gt, false); break;
+                    RewriteBranch0(instr, emitter.Gt, false); break;
                 case Opcode.bgtzl:
-                    RewriteBranch0(instr, Operator.Gt, true); break;
+                    RewriteBranch0(instr, emitter.Gt, true); break;
                 case Opcode.blez:
-                    RewriteBranch0(instr, Operator.Le, false); break;
+                    RewriteBranch0(instr, emitter.Le, false); break;
                 case Opcode.blezl:
-                    RewriteBranch0(instr, Operator.Le, true); break;
+                    RewriteBranch0(instr, emitter.Le, true); break;
                 case Opcode.bltz:
-                    RewriteBranch0(instr, Operator.Lt, false); break;
+                    RewriteBranch0(instr, emitter.Lt, false); break;
                 case Opcode.bltzl:
-                    RewriteBranch0(instr, Operator.Lt, true); break;
+                    RewriteBranch0(instr, emitter.Lt, true); break;
                 case Opcode.bltzal:
-                    RewriteBranch0(instr, Operator.Lt, true); break;
+                    RewriteBranch0(instr, emitter.Lt, true); break;
                 case Opcode.bltzall:
-                    RewriteBranch0(instr, Operator.Lt, true); break;
+                    RewriteBranch0(instr, emitter.Lt, true); break;
                 case Opcode.bne:
-                    RewriteBranch(instr, Operator.Ne, false); break;
+                    RewriteBranch(instr, emitter.Ne, false); break;
                 case Opcode.bnel:
-                    RewriteBranch(instr, Operator.Ne, true); break;
+                    RewriteBranch(instr, emitter.Ne, true); break;
                 case Opcode.@break: RewriteBreak(instr); break;
                 case Opcode.c_le_d: RewriteFpuCmpD(instr, Operator.Fle); break;
                 case Opcode.cfc1: RewriteCfc1(instr); break;
@@ -193,10 +193,10 @@ namespace Reko.Arch.Mips
                 case Opcode.sll:
                 case Opcode.sllv:
                     RewriteSll(instr); break;
-                case Opcode.slt: RewriteSxx(instr, Operator.Lt); break;
-                case Opcode.slti: RewriteSxx(instr, Operator.Lt); break;
-                case Opcode.sltiu: RewriteSxx(instr, Operator.Ult); break;
-                case Opcode.sltu: RewriteSxx(instr, Operator.Ult); break;
+                case Opcode.slt: RewriteSxx(instr, emitter.Lt); break;
+                case Opcode.slti: RewriteSxx(instr, emitter.Lt); break;
+                case Opcode.sltiu: RewriteSxx(instr, emitter.Ult); break;
+                case Opcode.sltu: RewriteSxx(instr, emitter.Ult); break;
                 case Opcode.sra:
                 case Opcode.srav:
                     RewriteSra(instr); break;
@@ -213,7 +213,7 @@ namespace Reko.Arch.Mips
                 case Opcode.swr: RewriteSwr(instr); break;
                 case Opcode.swu:
                     goto default;
-                case Opcode.tge: RewriteTrap(instr, Operator.Ge); break;
+                case Opcode.tge: RewriteTrap(instr, emitter.Ge); break;
                 case Opcode.xor:
                 case Opcode.xori:
                     RewriteXor(instr); break;

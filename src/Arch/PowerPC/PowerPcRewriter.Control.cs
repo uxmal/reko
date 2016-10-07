@@ -127,18 +127,14 @@ namespace Reko.Arch.PowerPC
             return arch.CrRegisters[(int)ccOp.condition >> 2];
         }
         
-        private void RewriteCtrBranch(bool updateLinkRegister, bool toLinkRegister, Operator decOp, bool ifSet)
+        private void RewriteCtrBranch(bool updateLinkRegister, bool toLinkRegister, Func<Expression,Expression,Expression> decOp, bool ifSet)
         {
             cluster.Class = RtlClass.ConditionalTransfer;
             var ctr = frame.EnsureRegister(arch.ctr);
             var ccOp = instr.op1 as ConditionOperand;
             Expression dest;
 
-            Expression cond = new BinaryExpression(
-                decOp, 
-                PrimitiveType.Bool,
-                ctr,
-                Constant.Zero(ctr.DataType));
+            Expression cond = decOp(ctr, Constant.Zero(ctr.DataType));
 
             if (ccOp != null)
             {

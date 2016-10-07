@@ -75,10 +75,6 @@ Eq_101: (fn int32 ((ptr cdecl_class), int32, int32))
 	T_101 (in Mem0[c + 0x00000000:word32] + 0x00000008 : word32)
 Eq_102: (fn int32 ((ptr cdecl_class), int32, int32))
 	T_102 (in Mem0[Mem0[c + 0x00000000:word32] + 0x00000008:word32] : word32)
-Eq_112: (union "Eq_112" (int64 u0) (real64 u1))
-	T_112 (in 1.0 : real64)
-	T_113 (in rArg04 : real64)
-	T_120 (in Mem16[esp_13 + 0x00000000:real64] : real64)
 Eq_127: thiscall_class
 	T_127 (in 0x0040301C : ptr32)
 Eq_128: thiscall_class
@@ -555,19 +551,19 @@ T_111: (in fp - 0x00000004 : word32)
   OrigDataType: ptr32
 T_112: (in 1.0 : real64)
   Class: Eq_112
-  DataType: int64
-  OrigDataType: (union (int64 u0) (real64 u1))
+  DataType: real64
+  OrigDataType: real64
 T_113: (in rArg04 : real64)
   Class: Eq_112
-  DataType: Eq_112
-  OrigDataType: (union (int64 u0) (real64 u1))
+  DataType: real64
+  OrigDataType: real64
 T_114: (in 1.0 <= rArg04 : bool)
   Class: Eq_114
   DataType: bool
   OrigDataType: bool
-T_115: (in esp_13 : (ptr Eq_112))
+T_115: (in esp_13 : (ptr real64))
   Class: Eq_115
-  DataType: (ptr Eq_112)
+  DataType: (ptr real64)
   OrigDataType: (ptr (struct (0 T_120 t0000)))
 T_116: (in 0x00000008 : word32)
   Class: Eq_116
@@ -575,7 +571,7 @@ T_116: (in 0x00000008 : word32)
   OrigDataType: ui32
 T_117: (in esp_12 - 0x00000008 : word32)
   Class: Eq_115
-  DataType: (ptr Eq_112)
+  DataType: (ptr real64)
   OrigDataType: ptr32
 T_118: (in 0x00000000 : word32)
   Class: Eq_118
@@ -587,7 +583,7 @@ T_119: (in esp_13 + 0x00000000 : word32)
   OrigDataType: ptr32
 T_120: (in Mem16[esp_13 + 0x00000000:real64] : real64)
   Class: Eq_112
-  DataType: Eq_112
+  DataType: real64
   OrigDataType: real64
 T_121: (in 0x0000000D : word32)
   Class: Eq_121
@@ -788,11 +784,6 @@ typedef cdecl_class_vtbl Eq_99;
 typedef int32 (Eq_101)(cdecl_class * ptrArg04, int32 dwArg08, int32 dwArg0C);
 
 typedef int32 (Eq_102)(cdecl_class *, int32, int32);
-
-typedef union Eq_112 {
-	int64 u0;
-	real64 u1;
-} Eq_112;
 
 typedef thiscall_class Eq_127;
 

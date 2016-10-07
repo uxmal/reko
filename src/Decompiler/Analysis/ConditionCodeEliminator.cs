@@ -157,7 +157,7 @@ namespace Reko.Analysis
 
 		private BinaryExpression CmpExpressionToZero(Expression e)
 		{
-			return new BinaryExpression(Operator.ISub, e.DataType, e, Constant.Create(e.DataType, 0));
+            return m.ISub(e, 0);
 		}
 
 		public Expression UseGrfConditionally(SsaIdentifier sid, ConditionCode cc)
@@ -174,7 +174,7 @@ namespace Reko.Analysis
 			if (binDef != null)
 			{
 				if (gf.IsNegated)
-					e = new UnaryExpression(Operator.Not, PrimitiveType.Bool, e);
+					e = e.Invert();
 				return e;
 			}
 			ConditionOf cof = e as ConditionOf;
@@ -481,7 +481,7 @@ namespace Reko.Analysis
 				PrimitiveType.Bool, bin);
 			if (isNegated)
 			{
-				e = new UnaryExpression(Operator.Not, PrimitiveType.Bool, e);
+				e = m.Not(e);
 			}
 			return e;
 		}

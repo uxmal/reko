@@ -65,6 +65,12 @@ namespace Reko.Core.Expressions
             return new BinaryExpression(Operator.And, left.DataType, left, right);
         }
 
+        /// <summary>
+        /// Short-circuiting 'and' ('&&' in C family of languages)
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
         public Expression Cand(Expression a, Expression b)
         {
             return new BinaryExpression(Operator.Cand, PrimitiveType.Bool, a, b);
@@ -85,6 +91,12 @@ namespace Reko.Core.Expressions
             return new ConditionOf(expr);
         }
 
+        /// <summary>
+        /// Short-circuiting 'or' ('&&' in C family of languages)
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
         public Expression Cor(Expression a, Expression b)
         {
             return new BinaryExpression(Operator.Cor, PrimitiveType.Bool, a, b);
@@ -115,6 +127,8 @@ namespace Reko.Core.Expressions
             return new BinaryExpression(Operator.Eq, PrimitiveType.Bool, exp, Constant.Create(exp.DataType, 0));
         }
 
+        // Floating point operations.
+
         public Expression FAdd(Expression a, Expression b)
         {
             return new BinaryExpression(Operator.FAdd, PrimitiveType.Real64, a, b);
@@ -125,46 +139,9 @@ namespace Reko.Core.Expressions
             return new BinaryExpression(Operator.FDiv, PrimitiveType.Real64, a, b);
         }
 
-        public FieldAccess Field(DataType dt, Expression e, Field field)
-        {
-            return new FieldAccess(dt, e, field);
-        }
-
-        public FieldAccess Field(DataType dt, Expression e, string fieldName)
-        {
-            var field = new StructureField(0, dt, fieldName);
-            return new FieldAccess(dt, e, field);
-        }
-
         public Expression FMul(Expression a, Expression b)
         {
             return new BinaryExpression(Operator.FMul, a.DataType, a, b);
-        }
-
-        public Application Fn(Expression e, params Expression[] exps)
-        {
-            return Fn(e, PrimitiveType.Word32, exps);
-        }
-
-        public Application Fn(Expression fn, DataType retType, params Expression[] exps)
-        {
-            return new Application(fn, retType, exps);
-        }
-
-        public Application Fn(ExternalProcedure ep, params Expression[] args)
-        {
-            var retType = ep.Signature.ReturnValue != null
-                ? ep.Signature.ReturnValue.DataType
-                : VoidType.Instance;
-            return new Application(
-                new ProcedureConstant(PrimitiveType.Pointer32, ep), 
-                retType,
-                args);
-        }
-
-        public Application Fn(PseudoProcedure ppp, params Expression[] args)
-        {
-            return new Application(new ProcedureConstant(PrimitiveType.Pointer32, ppp), ppp.ReturnType, args);
         }
 
         public Expression FNeg(Expression a)
@@ -205,6 +182,47 @@ namespace Reko.Core.Expressions
         public BinaryExpression FSub(Expression a, Expression b)
         {
             return new BinaryExpression(Operator.FSub, PrimitiveType.Real64, a, b);
+        }
+
+        // Field access: "point.x"
+
+        public FieldAccess Field(DataType dt, Expression e, Field field)
+        {
+            return new FieldAccess(dt, e, field);
+        }
+
+        public FieldAccess Field(DataType dt, Expression e, string fieldName)
+        {
+            var field = new StructureField(0, dt, fieldName);
+            return new FieldAccess(dt, e, field);
+        }
+
+        // Function applications
+
+        public Application Fn(Expression e, params Expression[] exps)
+        {
+            return Fn(e, PrimitiveType.Word32, exps);
+        }
+
+        public Application Fn(Expression fn, DataType retType, params Expression[] exps)
+        {
+            return new Application(fn, retType, exps);
+        }
+
+        public Application Fn(ExternalProcedure ep, params Expression[] args)
+        {
+            var retType = ep.Signature.ReturnValue != null
+                ? ep.Signature.ReturnValue.DataType
+                : VoidType.Instance;
+            return new Application(
+                new ProcedureConstant(PrimitiveType.Pointer32, ep), 
+                retType,
+                args);
+        }
+
+        public Application Fn(PseudoProcedure ppp, params Expression[] args)
+        {
+            return new Application(new ProcedureConstant(PrimitiveType.Pointer32, ppp), ppp.ReturnType, args);
         }
 
         public Expression Ge(Expression a, Expression b)
@@ -317,6 +335,16 @@ namespace Reko.Core.Expressions
             return new BinaryExpression(Operator.IMod, opLeft.DataType, opLeft, opRight);
         }
 
+        public BinaryExpression Ne(Expression a, Expression b)
+        {
+            return new BinaryExpression(Operator.Ne, PrimitiveType.Bool, a, b);
+        }
+
+        public BinaryExpression Ne(Expression a, int n)
+        {
+            return new BinaryExpression(Operator.Ne, PrimitiveType.Bool, a, Constant.Create(a.DataType, n));
+        }
+
         public BinaryExpression Ne0(Expression expr)
         {
             return new BinaryExpression(
@@ -402,16 +430,6 @@ namespace Reko.Core.Expressions
         public Expression UMul(Expression left, int c)
         {
             return new BinaryExpression(Operator.UMul, PrimitiveType.Create(Domain.UnsignedInt, left.DataType.Size), left, Constant.Create(left.DataType, c));
-        }
-
-        public BinaryExpression Ne(Expression a, Expression b)
-        {
-            return new BinaryExpression(Operator.Ne, PrimitiveType.Bool, a, b);
-        }
-
-        public BinaryExpression Ne(Expression a, int n)
-        {
-            return new BinaryExpression(Operator.Ne, PrimitiveType.Bool, a, Constant.Create(a.DataType, n));
         }
 
         /// <summary>

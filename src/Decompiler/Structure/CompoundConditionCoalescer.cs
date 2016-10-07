@@ -40,10 +40,12 @@ namespace Reko.Structure
 	public class CompoundConditionCoalescer
 	{
 		private Procedure proc;
+        private ExpressionEmitter m;
 
 		public CompoundConditionCoalescer(Procedure proc)
 		{
 			this.proc = proc;
+            this.m = new ExpressionEmitter();
 		}
 
 		public void Transform()
@@ -66,7 +68,7 @@ namespace Reko.Structure
 		private void BuildCompoundCondition(
 			Block blockFirst,
 			Block blockSecond,
-			BinaryOperator op, 
+			Func<Expression,Expression,Expression> op, 
 			bool fInvertFirst, 
 			bool fInvertSecond)
 		{
@@ -80,7 +82,7 @@ namespace Reko.Structure
 			{
 				brSecond.Condition = brSecond.Condition.Invert();
 			}
-			brFirst.Condition = new BinaryExpression(op, PrimitiveType.Bool, brFirst.Condition, brSecond.Condition);
+			brFirst.Condition = op(brFirst.Condition, brSecond.Condition);
 		}
 
 		/// <summary>
@@ -105,7 +107,7 @@ namespace Reko.Structure
 					BuildCompoundCondition(
 						block,
 						blockThen,
-						Operator.Cand, false, false);
+						m.Cand, false, false);
 					RebuildCompoundGraph(block, blockThen, blockThen.ThenBlock, blockElse);
 					fChanged = true;
 				}	
@@ -121,7 +123,7 @@ namespace Reko.Structure
 					BuildCompoundCondition(
 						block,
 						blockThen,
-						Operator.Cand, false, true);
+						m.Cand, false, true);
 					RebuildCompoundGraph(block, blockThen, blockThen.ElseBlock, blockElse);
 					fChanged = true;
 				}
@@ -136,7 +138,7 @@ namespace Reko.Structure
 					BuildCompoundCondition(
 						block,
 						blockElse,
-						Operator.Cor, false, false);
+						m.Cor, false, false);
 					RebuildCompoundGraph(block, blockElse, blockElse.ElseBlock, blockThen);
 					fChanged = true;
 				}
@@ -149,7 +151,7 @@ namespace Reko.Structure
 					BuildCompoundCondition(
 						block,
 						blockElse,
-						Operator.Cor, false, true);
+						m.Cor, false, true);
 					RebuildCompoundGraph(block, blockElse, blockElse.ThenBlock, blockThen);
 					fChanged = true;
 				}
