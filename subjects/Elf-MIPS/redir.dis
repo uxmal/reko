@@ -15819,7 +15819,6 @@ l004087EC:
 	word32 lo_288 = (word32) ((dwLoc78 >>u 0x00) *s 0x00000000)
 	word32 r20_269 = r24_259 + ((SLICE(hi_lo_250, word32, 32) + (word32) ((dwLoc5C + -1) *s 0x00000000)) + (word32) ((dwLoc78 >>u 0x00) *s dwLoc60)) + (word32) (r21_264 <u lo_251)
 	word32 dwLoc30_238 = 0x00000000
-	word32 dwLoc2C_239 = 0x00000000
 	word32 lo_276 = (word32) hi_lo_275
 	word32 r16_280 = SLICE(hi_lo_275, word32, 32) + (word32) ((dwLoc5C + -1) *s dwLoc78)
 	word32 lo_282 = (word32) hi_lo_281
@@ -15886,7 +15885,6 @@ l0040891C_ds_f:
 
 l00408924:
 	dwLoc30_238 = 1
-	dwLoc2C_239 = 0
 // DataOut: r16 r17 r18 r19 r20 r4
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:lo r28:0x10008860 r3:lo r2:<invalid> r7:<invalid> r6:<invalid> r8:lo r18:hi + lo + lo r16:hi + lo + lo r4:lo r5:<invalid> r17:lo r22:fp + -136 r11:<invalid> r9:<invalid> Sequence hi:lo:<invalid> r10:0x00000000 r13:lo r14:lo r24:hi + lo + lo r12:(word32) (hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) <u (hi + lo) + lo) r21:lo * 0x00000002 r15:(word32) (lo * 0x00000002 <u lo) r20:hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) r19:lo -144(fp):0x10008860 -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -48(fp):0x00000000 -44(fp):0x00000000 -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
@@ -15894,6 +15892,7 @@ l00408924:
 
 l00408934:
 	word32 r10_305 = r16_296 + (lo_288 + -1) + (word32) (lo_276 <u 0)
+	word32 dwLoc2C_295 = 0x00000000
 	branch (word32) (r10_305 <u r16_296) != 0x00000000 l00408934_ds_t
 // DataOut: r10 r11 r16 r17 r18 r19 r20
 // DataOut (flags): 
@@ -15953,7 +15952,7 @@ l00408970_ds_f:
 
 l00408978:
 	dwLoc30_238 = dwLoc30_238 + (word32) false
-	dwLoc2C_239 = 1
+	dwLoc2C_295 = 1
 // DataOut: r10 r11 r18 r19 r20
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:0 r28:0x10008860 r3:0 r2:<invalid> r7:<invalid> r6:(word32) (lo <u 0) r8:lo r18:hi + lo + lo r16:hi + lo + lo r4:lo r5:0x00000000 r17:lo r22:fp + -136 r11:lo r9:<invalid> Sequence hi:lo:<invalid> r10:hi + lo + lo + (lo + -1) + (word32) (lo <u 0) r13:lo r14:lo r24:lo + -1 r12:(word32) (hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) <u (hi + lo) + lo) r21:lo * 0x00000002 r15:(word32) (lo * 0x00000002 <u lo) r20:hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) r19:lo -144(fp):0x10008860 -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -48(fp):<invalid> -44(fp):0 -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
@@ -15962,7 +15961,7 @@ l00408978:
 l00408998:
 	word32 r7_352
 	word32 r5_315 = (r20_269 >>u 0x00) + -1 + lo_282
-	word32 r13_326 = dwLoc2C_239 + r5_315
+	word32 r13_326 = dwLoc2C_295 + r5_315
 	word32 r12_332 = dwLoc30_238 + (r18_290 + (word32) (r5_315 <u lo_282)) + (word32) (r13_326 <u r5_315)
 	word32 r6_340 = r10_305
 	branch (word32) (0x1FFFFFFF <u r12_332) == 0x00000000 l00408998_ds_t
@@ -16072,7 +16071,7 @@ l00408A90:
 // LocalsOut: fp(32)
 
 l00408AAC:
-	r12_332 = r12_332 << 0x01 | r13_326 >>u 0x1F
+	word32 r12_418 = r12_332 << 0x01 | r13_326 >>u 0x1F
 	r13_326 = r13_326 << 0x01
 	branch (r7_352 | r6_340 + 0x80000000) == 0x00000000 l00408A90_ds_t
 // DataOut: r12 r13 r5 r6 r7
@@ -16100,8 +16099,9 @@ l00408AD0:
 // LocalsOut: fp(32)
 
 l00408AD8:
+	r12_332 = r12_418
 	r6_340 = r6_340 << 0x01 | r7_352 >>u 0x1F
-	branch (word32) (0x0FFFFFFF <u r12_332) == 0x00000000 l00408AD8_ds_t
+	branch (word32) (0x0FFFFFFF <u r12_418) == 0x00000000 l00408AD8_ds_t
 // DataOut: r12 r13 r5 r6 r7
 // DataOut (flags): 
 // SymbolicIn: sp:fp + -160 r25:0 r28:0x10008860 r3:<invalid> r2:<invalid> r7:<invalid> r6:<invalid> r8:0x0FFFFFFF r18:hi + lo + lo r16:hi + lo + lo r4:<invalid> r5:<invalid> r17:lo r22:fp + -136 r11:1 r9:<invalid> Sequence hi:lo:<invalid> r10:0 r13:<invalid> r14:0x80000000 r24:lo + -1 r12:<invalid> r21:lo * 0x00000002 r15:0 r20:hi + lo + lo + ((hi + lo) + lo) + (word32) (lo * 0x00000002 <u lo) r19:lo -144(fp):0x10008860 -84(fp):<invalid> -80(fp):<invalid> -64(fp):f13 -60(fp):f12 -56(fp):f15 -52(fp):f14 -48(fp):<invalid> -44(fp):<invalid> -36(fp):r16 -32(fp):r17 -28(fp):r18 -24(fp):r19 -20(fp):r20 -16(fp):r21 -12(fp):r22 -8(fp):ra
