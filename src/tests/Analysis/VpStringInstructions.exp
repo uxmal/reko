@@ -392,8 +392,8 @@ di_11: orig: di
     def:  di_11 = PHI(di_7, di_14)
     uses: SCZO_13 = cond(0x00 - Mem0[es:di_11:byte])
           di_14 = di_11 + 0x0001
-          di_16 = PHI(di_11, di_14)
           branch 0x00 != Mem0[es:di_11:byte] l0C00_0030
+          di_16 = PHI(di_11, di_14)
 Mem12: orig: Mem0
     def:  Mem12 = PHI(Mem0, Mem12)
 SCZO_13: orig: SCZO

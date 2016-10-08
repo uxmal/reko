@@ -12,18 +12,23 @@ _init_entry:
 // LocalsOut: fp(64)
 
 l00000000004003E0:
-	word64 rax_5 = Mem0[0x0000000000600FF8:word64]
-	byte SZO_6 = cond(rax_5)
-	branch rax_5 == 0x0000000000000000 l00000000004003F5
+	word64 rax_4 = Mem0[0x0000000000600FF8:word64]
+	branch rax_4 == 0x0000000000000000 l00000000004003F5
 // DataOut: rbp rbx
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
 // LocalsOut: fp(8)
 
 l00000000004003F0:
+	word64 rsp_15
+	byte SCZO_16
+	word64 rax_17
+	byte SZO_18
+	byte C_19
+	byte Z_20
 	call __gmon_start__ (retsize: 8; depth: 16)
-		uses: false,fp - 0x0000000000000008,rax_5,SCZO,SZO_6,SZO_6
-		defs: C_20,rax_18,rsp_16,SCZO_17,SZO_19,Z_21
+		uses: C_7,rax_4,rsp_2,SCZO,SZO_5,Z_6
+		defs: C_19,rax_17,rsp_15,SCZO_16,SZO_18,Z_20
 // DataOut: rbp rbx
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000008 rax:<invalid>
@@ -64,7 +69,7 @@ _start_entry:
 
 l0000000000400440:
 	__align(fp + 0x0000000000000008)
-	rax_20 = DPB(rax, __libc_start_main(0x000000000040053D, qwArg00, fp + 0x0000000000000008, 0x0000000000400550, 0x00000000004005C0, rdx, fp), 0)
+	word64 rax_21 = DPB(rax, __libc_start_main(0x000000000040053D, qwArg00, fp + 0x0000000000000008, 0x0000000000400550, 0x00000000004005C0, rdx, DPB(qwArg00, fp + 0x0000000000000004, 0)), 0)
 	__hlt()
 // DataOut:
 // DataOut (flags): 
@@ -86,29 +91,36 @@ deregister_tm_clones_entry:
 // LocalsOut: fp(64)
 
 l0000000000400470:
-	word64 rax_5 = DPB(rax, 0x00601047, 0)
-	byte SCZO_11 = cond(rax_5 - 0x000000000000000E)
-	branch rax_5 >u 0x000000000000000E l0000000000400487
+	branch DPB(rax, 0x00601047, 0) >u 0x000000000000000E l0000000000400487
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
 // LocalsOut: fp(64)
 
 l0000000000400487:
-	word64 rax_38 = DPB(rax, 0x00000000, 0)
-	byte SZO_39 = cond(rax_38)
-	branch rax_38 == 0x0000000000000000 l0000000000400485
+	word64 rax_37 = DPB(rax, 0x00000000, 0)
+	branch rax_37 == 0x0000000000000000 l0000000000400485
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000004 eax:0x00601047 r8:r8 - 6295616 rbp:fp - 0x0000000000000004 -4(fp):rbp
 // LocalsOut: fp(64)
 
 l0000000000400491:
-	word64 rsp_45
+	word64 rsp_44
+	word32 eax_45
+	word64 rbp_46
+	word64 r8_47
+	byte SCZO_48
+	word64 rax_49
+	byte CZ_50
+	byte SZO_51
+	byte C_52
+	byte Z_53
+	word32 edi_54
 	call 0x00000000 (retsize: 4;)
-		uses: 0x00000000,0x00601040,false,fp + 0x0000000000000004,qwLoc04,qwLoc04,r8 - 6295616,rax_38,rbp,SCZO_11,SCZO_11,SZO_39,SZO_39
-		defs: C_53,CZ_51,eax_46,edi_55,r8_48,rax_50,rbp_47,rsp_45,SCZO_49,SZO_52,Z_54
-	return rsp_45
+		uses: C_40,CZ_11,dwLoc04_7,eax_36,edi_43,qwLoc04,r8_9,rax_37,rbp_41,rsp_42,SCZO_10,SZO_38,Z_39
+		defs: C_52,CZ_50,eax_45,edi_54,r8_47,rax_49,rbp_46,rsp_44,SCZO_48,SZO_51,Z_53
+	return rsp_44
 // DataOut: rsp
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000004 eax:0x00000000 r8:r8 - 6295616 rbp:fp - 0x0000000000000004 -4(fp):rbp
@@ -140,29 +152,39 @@ register_tm_clones_entry:
 // LocalsOut: fp(64)
 
 l00000000004004A0:
-	word64 rax_5 = DPB(rax, 0x00601040, 0)
-	word64 rdx_14 = rax_5 >> 0x0000000000000003 >>u 0x000000000000003F
-	word64 rax_15 = (rax_5 >> 0x0000000000000003) + rdx_14
-	byte SCZO_17 = cond(rax_15 >> 0x0000000000000001)
-	branch rax_15 >> 0x0000000000000001 != 0x0000000000000000 l00000000004004C4
+	word64 rax_4 = DPB(rax, 0x00601040, 0)
+	word64 rdx_13 = rax_4 >> 0x0000000000000003 >>u 0x000000000000003F
+	branch (rax_4 >> 0x0000000000000003) + rdx_13 >> 0x0000000000000001 != 0x0000000000000000 l00000000004004C4
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> eax:<invalid> r8:<invalid> rax:<invalid> rdx:<invalid> edx:<invalid> rsi:<invalid> edi:0x00601040
 // LocalsOut: fp(64)
 
 l00000000004004C4:
-	word64 rdx_46 = DPB(rdx_14, 0x00000000, 0)
-	byte SZO_47 = cond(rdx_46)
-	branch rdx_46 == 0x0000000000000000 l00000000004004C2
+	word64 rdx_45 = DPB(rdx_13, 0x00000000, 0)
+	branch rdx_45 == 0x0000000000000000 l00000000004004C2
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000004 eax:<invalid> r8:<invalid> rax:<invalid> rbp:fp - 0x0000000000000004 rdx:<invalid> edx:<invalid> rsi:<invalid> edi:0x00601040 -4(fp):rbp
 // LocalsOut: fp(64)
 
 l00000000004004CE:
+	word64 rsp_53
+	word32 eax_54
+	word64 rbp_55
+	word64 r8_56
+	byte SCZO_57
+	word64 rax_58
+	word64 rdx_59
+	byte Z_60
+	word32 edx_61
+	byte SZO_62
+	byte C_63
+	word64 rsi_64
+	word32 edi_65
 	call 0x00000000 (retsize: 4;)
-		uses: 0x00000000,0x00601040,0x00601040,false,fp + 0x0000000000000004,qwLoc04,qwLoc04,r8 - 6295616,rax_15 >> 0x0000000000000001,rax_15 >> 0x0000000000000001,rbp,rdx_46,SCZO_17,SZO_47,SZO_47
-		defs: C_64,eax_55,edi_66,edx_62,r8_57,rax_59,rbp_56,rdx_60,rsi_65,rsp_54,SCZO_58,SZO_63,Z_61
+		uses: C_48,dwLoc04_7,eax_2,edi_52,edx_44,qwLoc04,r8_9,rax_15,rbp_49,rdx_45,rsi_51,rsp_50,SCZO_16,SZO_46,Z_47
+		defs: C_63,eax_54,edi_65,edx_61,r8_56,rax_58,rbp_55,rdx_59,rsi_64,rsp_53,SCZO_57,SZO_62,Z_60
 	return
 // DataOut:
 // DataOut (flags): 
@@ -203,7 +225,7 @@ l00000000004004E0:
 
 l00000000004004E9:
 	deregister_tm_clones(r8)
-	Mem18[0x0000000000601040:byte] = 0x01
+	Mem17[0x0000000000601040:byte] = 0x01
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
@@ -264,29 +286,39 @@ l0000000000400528:
 // SymbolicIn: rsp:fp eax:0x00000000
 
 l00000000004004A0:
-	word64 rax_5 = DPB(rax, 0x00601040, 0)
-	word64 rdx_14 = rax_5 >> 0x0000000000000003 >>u 0x000000000000003F
-	word64 rax_15 = (rax_5 >> 0x0000000000000003) + rdx_14
-	byte SCZO_17 = cond(rax_15 >> 0x0000000000000001)
-	branch rax_15 >> 0x0000000000000001 != 0x0000000000000000 l00000000004004C4
+	word64 rax_4 = DPB(rax, 0x00601040, 0)
+	word64 rdx_13 = rax_4 >> 0x0000000000000003 >>u 0x000000000000003F
+	branch (rax_4 >> 0x0000000000000003) + rdx_13 >> 0x0000000000000001 != 0x0000000000000000 l00000000004004C4
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> eax:<invalid> r8:<invalid> rax:<invalid> rdx:<invalid> edx:<invalid> rsi:<invalid> edi:0x00601040
 // LocalsOut: fp(64)
 
 l00000000004004C4:
-	word64 rdx_46 = DPB(rdx_14, 0x00000000, 0)
-	byte SZO_47 = cond(rdx_46)
-	branch rdx_46 == 0x0000000000000000 l00000000004004C2
+	word64 rdx_45 = DPB(rdx_13, 0x00000000, 0)
+	branch rdx_45 == 0x0000000000000000 l00000000004004C2
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000004 eax:<invalid> r8:<invalid> rax:<invalid> rbp:fp - 0x0000000000000004 rdx:<invalid> edx:<invalid> rsi:<invalid> edi:0x00601040 -4(fp):rbp
 // LocalsOut: fp(64)
 
 l00000000004004CE:
+	word64 rsp_53
+	word32 eax_54
+	word64 rbp_55
+	word64 r8_56
+	byte SCZO_57
+	word64 rax_58
+	word64 rdx_59
+	byte Z_60
+	word32 edx_61
+	byte SZO_62
+	byte C_63
+	word64 rsi_64
+	word32 edi_65
 	call 0x00000000 (retsize: 4;)
-		uses: 0x00000000,0x00601040,0x00601040,false,fp + 0x0000000000000004,qwLoc04,qwLoc04,r8 - 6295616,rax_15 >> 0x0000000000000001,rax_15 >> 0x0000000000000001,rbp,rdx_46,SCZO_17,SZO_47,SZO_47
-		defs: C_64,eax_55,edi_66,edx_62,r8_57,rax_59,rbp_56,rdx_60,rsi_65,rsp_54,SCZO_58,SZO_63,Z_61
+		uses: C_48,dwLoc04_7,eax_2,edi_52,edx_44,qwLoc04,r8_9,rax_15,rbp_49,rdx_45,rsi_51,rsp_50,SCZO_16,SZO_46,Z_47
+		defs: C_63,eax_54,edi_65,edx_61,r8_56,rax_58,rbp_55,rdx_59,rsi_64,rsp_53,SCZO_57,SZO_62,Z_60
 	return
 // DataOut:
 // DataOut (flags): 
@@ -345,7 +377,7 @@ f_entry:
 // LocalsOut: fp(64)
 
 l000000000040052D:
-	rax_12 = DPB(rax, putchar(DPB(rdi, 0x00000078, 0)), 0)
+	word64 rax_11 = DPB(rax, putchar(DPB(rdi, 0x00000078, 0)), 0)
 	return fp + 0x0000000000000004
 // DataOut: rsp
 // DataOut (flags): 
@@ -401,14 +433,8 @@ __libc_csu_init_entry:
 l0000000000400550:
 	_init()
 	word64 r12_19 = 0x0000000000600E10
-	word64 rbp_26 = 0x0000000000600E18 - r12_19
-	word32 r15d_65 = edi
-	word64 r14_11 = rsi
-	word64 r13_16 = rdx
 	word64 rbx_28 = DPB(rbx, 0x00000000, 0)
-	byte SCZO_31 = cond(fp - 0x0000000000000020)
-	byte SZO_32 = cond(rbp_26 >> 0x0000000000000003)
-	branch rbp_26 >> 0x0000000000000003 == 0x0000000000000000 l00000000004005A6
+	branch 0x0000000000600E18 - r12_19 >> 0x0000000000000003 == 0x0000000000000000 l00000000004005A6
 // DataOut: rbp rbx
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
@@ -417,31 +443,45 @@ l0000000000400550:
 l0000000000400588:
 // DataOut: rbp rbx
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000020 r15d:edi r14:rsi r13:rdx r12:0000000000600E10 rbp:0x0000000000600E18 - 0x0000000000600E10 >> 0x0000000000000003 ebx:0x00000000 rax:<invalid> -24(fp):rbx -20(fp):rbp -16(fp):fp - 0x0000000000000010 -12(fp):rbp -8(fp):rsi -4(fp):rdi
+// SymbolicIn: rsp:fp - 0x0000000000000020 r15d:edi r14:rsi r13:rdx r12:0000000000600E10 rbp:0x0000000000600E18 - 0x0000000000600E10 >> 0x0000000000000003 ebx:0x00000000 rax:<invalid> -24(fp):rbx -20(fp):rbp -16(fp):fp - 0x000000000000000C -12(fp):rbp -8(fp):rsi -4(fp):rdi
 // LocalsOut: fp(64) Local -0008(64)
 
 l0000000000400590:
+	word64 rsp_69
+	word64 rdi_70
+	word32 r15d_71
+	word32 edi_72
+	word64 rsi_73
+	word64 r14_74
 	word64 rbp_75
+	word64 r13_76
+	word64 rdx_77
+	word64 r12_78
 	word64 rbx_79
+	byte SCZO_80
+	word32 ebx_81
+	byte SZO_82
+	byte C_83
+	byte Z_84
 	call Mem0[r12_19 + rbx_28 * 0x00000008:word32] (retsize: 4; depth: 36)
-		uses: 0x00000000,false,fp - 0x0000000000000010,fp - 0x0000000000000020,qwLoc08,qwLoc10,qwLoc18,r12_19,r13_63,r13_63,r14_64,r14_64,r15d_65,r15d_65,rbp,rbp,rbp_26 >> 0x0000000000000003,rbx,rbx_28,rdi,rdi,rsi,SCZO_31,SZO_32,SZO_32
+		uses: C_34,dwLoc04_4,dwLoc08_9,dwLoc0C_13,dwLoc10_18,dwLoc14_21,dwLoc18_25,ebx_27,edi_68,qwLoc08,qwLoc10,qwLoc18,r12_19,r13_63,r14_64,r15d_65,rbp_29,rbx_28,rdi,rdx_66,rsi_67,rsp_30,SCZO_31,SZO_32,Z_33
 		defs: C_83,ebx_81,edi_72,r12_78,r13_76,r14_74,r15d_71,rbp_75,rbx_79,rdi_70,rdx_77,rsi_73,rsp_69,SCZO_80,SZO_82,Z_84
 	branch rbx_79 + 0x0000000000000001 != rbp_75 l0000000000400590
 // DataOut: rbp rbx
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000020 r15d:edi r14:rsi r13:rdx r12:0000000000600E10 rbp:0x0000000000600E18 - 0x0000000000600E10 >> 0x0000000000000003 ebx:<invalid> rdx:rdx rsi:rsi edi:edi rbx:<invalid> rax:<invalid> -24(fp):rbx -20(fp):rbp -16(fp):fp - 0x0000000000000010 -12(fp):rbp -8(fp):rsi -4(fp):rdi
+// SymbolicIn: rsp:fp - 0x0000000000000020 r15d:edi r14:rsi r13:rdx r12:0000000000600E10 rbp:0x0000000000600E18 - 0x0000000000600E10 >> 0x0000000000000003 ebx:<invalid> rdx:rdx rsi:rsi edi:edi rbx:<invalid> rax:<invalid> -24(fp):rbx -20(fp):rbp -16(fp):fp - 0x000000000000000C -12(fp):rbp -8(fp):rsi -4(fp):rdi
 // LocalsOut: fp(64) Local -0008(64)
 
 l00000000004005A6:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000020 r15d:edi r14:rsi r13:rdx r12:0000000000600E10 rbp:0x0000000000600E18 - 0x0000000000600E10 >> 0x0000000000000003 ebx:<invalid> rdx:rdx rsi:rsi edi:edi rbx:<invalid> rax:<invalid> -24(fp):rbx -20(fp):rbp -16(fp):fp - 0x0000000000000010 -12(fp):rbp -8(fp):rsi -4(fp):rdi
+// SymbolicIn: rsp:fp - 0x0000000000000020 r15d:edi r14:rsi r13:rdx r12:0000000000600E10 rbp:0x0000000000600E18 - 0x0000000000600E10 >> 0x0000000000000003 ebx:<invalid> rdx:rdx rsi:rsi edi:edi rbx:<invalid> rax:<invalid> -24(fp):rbx -20(fp):rbp -16(fp):fp - 0x000000000000000C -12(fp):rbp -8(fp):rsi -4(fp):rdi
 
 __libc_csu_init_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:rsi + 0x0000000000000020 r15d:edi r14:rsi r13:rdx r12:0000000000600E10 rbp:<invalid> ebx:<invalid> rbx:rbx rsi:<invalid> rdi:<invalid> rdx:rdx edi:<invalid> rax:<invalid> -24(fp):rbx -20(fp):rbp -16(fp):fp - 0x0000000000000010 -12(fp):rbp -8(fp):rsi -4(fp):rdi
+// SymbolicIn: rsp:rsi + 0x0000000000000020 r15d:edi r14:rsi r13:rdx r12:0000000000600E10 rbp:<invalid> ebx:<invalid> rbx:rbx rsi:<invalid> rdi:<invalid> rdx:rdx edi:<invalid> rax:<invalid> -24(fp):rbx -20(fp):rbp -16(fp):fp - 0x000000000000000C -12(fp):rbp -8(fp):rsi -4(fp):rdi
 
 
 

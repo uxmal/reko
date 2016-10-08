@@ -186,8 +186,8 @@ di_20: orig: di
 di_21: orig: di
     def:  di_21 = di_20 - 0x0001
     uses: SZO_22 = cond(di_21)
-          di_20 = PHI(di_8, di_20, di_21)
           branch di_21 != 0x0000 l0C00_0008
+          di_20 = PHI(di_8, di_20, di_21)
 SZO_22: orig: SZO
     def:  SZO_22 = cond(di_21)
 Mem23: orig: Mem0

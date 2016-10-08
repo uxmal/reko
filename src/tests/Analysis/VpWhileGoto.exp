@@ -158,8 +158,8 @@ sp_2: orig: sp
 si:si
     def:  def si
     uses: bx_4 = si
-          si_6 = PHI(si, si_9, si_9)
           ax_23 = si_9 - si
+          si_6 = PHI(si, si_9, si_9)
 bx_4: orig: bx
     def:  bx_4 = si
 ds_5: orig: ds
@@ -184,9 +184,9 @@ ax_8: orig: ax
 si_9: orig: si
     def:  si_9 = si_6 + 0x0002
     uses: ax_21 = si_9
-          si_6 = PHI(si, si_9, si_9)
-          si_6 = PHI(si, si_9, si_9)
           ax_23 = si_9 - si
+          si_6 = PHI(si, si_9, si_9)
+          si_6 = PHI(si, si_9, si_9)
 SCZO_10: orig: SCZO
     def:  SCZO_10 = cond(ax_8 - 0x0020)
 di_11: orig: di

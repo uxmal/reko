@@ -177,7 +177,7 @@ l000010C0:
 	CVZNX = cond(d2)
 	// succ:  l000010CC
 l000010CC:
-	v45 = Mem0[a2 + d0:byte]
+	v45 = Mem0[a2 + (int32) ((int16) d0):byte]
 	Mem0[a2 + 2 + d2:byte] = v45
 	CVZN = cond(v45)
 	d2 = d2 - 0x00000001
@@ -196,7 +196,7 @@ l000010D8:
 	CVZN = cond(v47)
 	// succ:  l000010E6
 l000010E6:
-	v48 = Mem0[a1 + d2:byte]
+	v48 = Mem0[a1 + (int32) ((int16) d2):byte]
 	Mem0[a1 + 1 + d2:byte] = v48
 	CVZN = cond(v48)
 	d2 = d2 - 0x00000001
@@ -345,6 +345,10 @@ l00001180:
 	branch Test(EQ,Z) l00001190
 	goto l0000118A_thunk_fn0000118C
 	// succ:  l0000118A_thunk_fn0000118C l0000118A_thunk_fn00001190
+l0000118A_thunk_fn0000118C:
+	call fn0000118C (retsize: 0;)
+	return
+	// succ:  fn00001180_exit l0000118A_thunk_fn0000118C
 l0000118A_thunk_fn0000118C:
 	call fn0000118C (retsize: 0;)
 	return
@@ -844,10 +848,10 @@ l00001396:
 	v81 = (word16) d0 + (word16) d0
 	d0 = DPB(d0, v81, 0)
 	CVZNX = cond(v81)
-	v82 = Mem0[0x000013A0 + d0:word16]
+	v82 = Mem0[0x000013A0 + (int32) ((int16) d0):word16]
 	d0 = DPB(d0, v82, 0)
 	CVZN = cond(v82)
-	call 0x000013A2 + d0 (retsize: 4;)
+	call 0x000013A2 + (int32) ((int16) d0) (retsize: 4;)
 	return
 	// succ:  fn000011F8_exit
 l0000148E:
@@ -3306,10 +3310,10 @@ l000026BA:
 	v25 = (word16) d0 + (word16) d0
 	d0 = DPB(d0, v25, 0)
 	CVZNX = cond(v25)
-	v27 = Mem0[0x000026C4 + d0:word16]
+	v27 = Mem0[0x000026C4 + (int32) ((int16) d0):word16]
 	d0 = DPB(d0, v27, 0)
 	CVZN = cond(v27)
-	call 0x000026C6 + d0 (retsize: 4;)
+	call 0x000026C6 + (int32) ((int16) d0) (retsize: 4;)
 	return
 	// succ:  fn00002668_exit
 l00002738:
@@ -3414,10 +3418,10 @@ l00004818:
 	v17 = (word16) d0 + (word16) d0
 	d0 = DPB(d0, v17, 0)
 	CVZNX = cond(v17)
-	v19 = Mem0[0x00004822 + d0:word16]
+	v19 = Mem0[0x00004822 + (int32) ((int16) d0):word16]
 	d0 = DPB(d0, v19, 0)
 	CVZN = cond(v19)
-	call 0x00004824 + d0 (retsize: 4;)
+	call 0x00004824 + (int32) ((int16) d0) (retsize: 4;)
 	return
 	// succ:  fn000047E4_exit
 l00004874:
@@ -7099,6 +7103,10 @@ l00007708:
 l00007714_thunk_fn00007716:
 	call fn00007716 (retsize: 0;)
 	return
+	// succ:  fn00007708_exit l00007714_thunk_fn00007716
+l00007714_thunk_fn00007716:
+	call fn00007716 (retsize: 0;)
+	return
 	// succ:  fn00007708_exit
 l00007714_thunk_fn0000771A:
 	call fn0000771A (retsize: 0;)
@@ -8678,7 +8686,7 @@ l00007CD8:
 	ZN = cond(v9)
 	C = false
 	V = false
-	v13 = Mem0[0x00007CBC + d1:byte]
+	v13 = Mem0[0x00007CBC + (int32) ((int16) d1):byte]
 	Mem0[a1:byte] = v13
 	a1 = a1 + 0x00000001
 	CVZN = cond(v13)
@@ -13613,6 +13621,7 @@ l00009220:
 	CVZNX = cond(v43)
 	d0 = d0 + d1
 	CVZNX = cond(d0)
+	// succ:  l00009224
 l00009224:
 	branch Test(UGE,C) l00009224
 	// succ:  l00009226 l00009224

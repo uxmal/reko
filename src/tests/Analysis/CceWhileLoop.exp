@@ -42,8 +42,8 @@ cx_22: orig: cx
           cx_25 = cx_22 - 0x0001
 bx_23: orig: bx
     def:  bx_23 = bx_21 + cx_22
-    uses: bx_26 = PHI(bx_23, bx_19)
-          bx_21 = PHI(bx_9, bx_23)
+    uses: bx_21 = PHI(bx_9, bx_23)
+          bx_26 = PHI(bx_23, bx_19)
 SCZO_24: orig: SCZO
 cx_25: orig: cx
     def:  cx_25 = cx_22 - 0x0001
