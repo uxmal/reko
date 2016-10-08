@@ -54,10 +54,12 @@ namespace Reko.Analysis
         private SsaState ssa;
         private Rational bestRational;
         private Identifier idOrig;
+        private ExpressionEmitter m;
 
         public ConstDivisionImplementedByMultiplication(SsaState ssa)
         {
             this.ssa = ssa;
+            this.m = new ExpressionEmitter();
         }
 
         public void Transform()
@@ -227,9 +229,7 @@ namespace Reko.Analysis
             var eNum = dividend;
             if (bestRational.Numerator != 1)
             {
-                eNum = new BinaryExpression(
-                    Operator.IMul,
-                    eNum.DataType,
+                eNum = m.IMul(
                     eNum,
                     Constant.Int32((int)bestRational.Numerator));
             }
@@ -238,9 +238,7 @@ namespace Reko.Analysis
             sidOrig.Uses.Remove(sidDst.DefStatement);
             sidDst.DefStatement.Instruction = new Assignment(
                 idDst,
-                new BinaryExpression(
-                    Operator.SDiv,
-                    eNum.DataType,
+                m.SDiv(
                     eNum,
                     Constant.Int32((int)bestRational.Denominator)));
             return sidDst.DefStatement.Instruction as Assignment;

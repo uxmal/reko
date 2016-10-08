@@ -58,7 +58,7 @@ namespace Reko.UnitTests.Arch.Intel
             };
 
             proc = Procedure.Create(procAddress, arch.CreateFrame());
-			orw = new OperandRewriter16(arch, proc.Frame, new FakeRewriterHost(program));
+			orw = new OperandRewriter16(arch, new ExpressionEmitter(), proc.Frame, new FakeRewriterHost(program));
             state = (X86State)arch.CreateProcessorState();
         }
 

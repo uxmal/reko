@@ -74,7 +74,6 @@ namespace Reko.Analysis
             this.assumedPreserved = sccGroup.ToDictionary(k => k.SsaState.Procedure, v => new HashSet<Storage>());
             this.decompilerEventListener = listener;
             this.cmp = new ExpressionValueComparer();
-            this.simpl = new Evaluation.ExpressionSimplifier(new SsaEvaluationContext(arch, ssa.Identifiers));
             foreach (var sst in sccGroup)
             {
                 var proc = sst.SsaState.Procedure;
@@ -95,6 +94,7 @@ namespace Reko.Analysis
         public ProcedureFlow Compute(SsaState ssa)
         {
             this.ssa = ssa;
+            this.simpl = new ExpressionSimplifier(new SsaEvaluationContext(arch, ssa.Identifiers));
             this.flow = this.progFlow.ProcedureFlows[ssa.Procedure];
             if (ssa.Procedure.Signature.ParametersValid)
             {

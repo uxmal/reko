@@ -72,7 +72,7 @@ namespace Reko.Arch.M68k
                 case Opcode.adda: RewriteBinOp((s, d) => emitter.IAdd(d, s)); break;
                 case Opcode.addi: RewriteArithmetic((s, d) => emitter.IAdd(d, s)); break;
                 case Opcode.addq: RewriteAddSubq((s, d) => emitter.IAdd(d, s)); break;
-                case Opcode.addx: RewriteAddSubx(Operator.IAdd); break;
+                case Opcode.addx: RewriteAddSubx(emitter.IAdd); break;
                 
                 case Opcode.and: RewriteLogical((s, d) => emitter.And(d, s)); break;
                 case Opcode.andi: RewriteLogical((s, d) => emitter.And(d, s)); break;

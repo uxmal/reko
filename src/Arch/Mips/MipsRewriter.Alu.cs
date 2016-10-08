@@ -209,20 +209,14 @@ namespace Reko.Arch.Mips
             emitter.Assign(opDst, host.PseudoProcedure("__swr", PrimitiveType.Word32, opSrc));
         }
 
-        private void RewriteSxx(MipsInstruction instr, Operator op)
+        private void RewriteSxx(MipsInstruction instr, Func<Expression,Expression,Expression> op)
         {
             var dst = RewriteOperand(instr.op1);
             var src1 = RewriteOperand(instr.op2);
             var src2 = RewriteOperand(instr.op3);
             emitter.Assign(
                 dst,
-                emitter.Cast(
-                    dst.DataType,
-                    new BinaryExpression(
-                        op,
-                        PrimitiveType.Bool,
-                        src1,
-                        src2)));
+                emitter.Cast(dst.DataType, op(src1,src2)));
         }
 
         private void RewriteXor(MipsInstruction instr)

@@ -32,12 +32,12 @@ namespace Reko.Arch.Arm
 {
     public partial class ArmRewriter
     {
-        private void RewriteBinOp(Operator op, bool setflags)
+        private void RewriteBinOp(Func<Expression,Expression,Expression> op, bool setflags)
         {
             var opDst = this.Operand(Dst);
             var opSrc1 = this.Operand(Src1);
             var opSrc2 = this.Operand(Src2);
-            ConditionalAssign(opDst, new BinaryExpression(op, PrimitiveType.Word32, opSrc1, opSrc2));
+            ConditionalAssign(opDst, op(opSrc1, opSrc2));
             if (setflags)
             {
                 ConditionalAssign(frame.EnsureFlagGroup(A32Registers.cpsr, 0x1111, "SZCO", PrimitiveType.Byte), emitter.Cond(opDst));

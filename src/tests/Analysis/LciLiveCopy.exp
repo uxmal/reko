@@ -1,6 +1,6 @@
 // LiveCopyMock
 // Return size: 0
-void LiveCopyMock()
+define LiveCopyMock
 LiveCopyMock_entry:
 	def reg
 	goto l1

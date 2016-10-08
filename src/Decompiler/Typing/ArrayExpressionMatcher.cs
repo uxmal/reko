@@ -148,7 +148,7 @@ namespace Reko.Typing
                 dtAccess, 
                 ArrayPointer,
                 new BinaryExpression(
-                    BinaryOperator.IMul, 
+                    Operator.IMul, 
                     Index.DataType,
                     Index,
                     ElementSize));

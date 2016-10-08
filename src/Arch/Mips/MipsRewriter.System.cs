@@ -55,10 +55,10 @@ namespace Reko.Arch.Mips
             emitter.Assign(RewriteOperand(instr.op1), from);
         }
 
-        private void RewriteTrap(MipsInstruction instr, Operator op)
+        private void RewriteTrap(MipsInstruction instr, Func<Expression,Expression,Expression> op)
         {
             var trap = host.PseudoProcedure("__trap", VoidType.Instance, RewriteOperand(instr.op3));
-            emitter.If(new BinaryExpression(op, PrimitiveType.Bool,
+            emitter.If(op(
                 RewriteOperand(instr.op1),
                 RewriteOperand(instr.op2)),
                 new RtlSideEffect(trap));

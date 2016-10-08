@@ -47,6 +47,7 @@ namespace Reko.Analysis
     {
         private Program program;
         private IEnumerable<Procedure> procedures;
+        private HashSet<Procedure> procedureSet;
         private ProgramDataFlow flow;
         private BlockFlow bf;
         private WorkList<Block> worklist;
@@ -64,6 +65,7 @@ namespace Reko.Analysis
         {
             this.program = program;
             this.procedures = procedures;
+            this.procedureSet = procedures.ToHashSet();
             this.flow = flow;
             this.eventListener = eventListener ?? NullDecompilerEventListener.Instance;
             this.worklist = new WorkList<Block>();
@@ -179,7 +181,6 @@ namespace Reko.Analysis
                 try
                 {
                     stm.Instruction.Accept(this);
-
                 }
                 catch (Exception ex)
                 {
@@ -259,6 +260,7 @@ namespace Reko.Analysis
             {
                 foreach (Statement stm in program.CallGraph.CallerStatements(proc))
                 {
+                    if (this.procedureSet.Contains(stm.Block.Procedure))
                     if (visited.Contains(stm.Block))
                         worklist.Add(stm.Block);
                 }
