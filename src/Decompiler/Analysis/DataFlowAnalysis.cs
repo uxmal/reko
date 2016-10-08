@@ -276,6 +276,14 @@ namespace Reko.Analysis
             sst.RenameFrameAccesses = true;
             sst.Transform();
 
+            var icrw = new IndirectCallRewriter(program, ssa, eventListener);
+            while (icrw.Rewrite())
+            {
+                vp.Transform();
+                sst.RenameFrameAccesses = true;
+                sst.Transform();
+            }
+
             // By placing use statements in the exit block, we will collect
             // reaching definitions in the use statements.
             sst.AddUsesToExitBlock();

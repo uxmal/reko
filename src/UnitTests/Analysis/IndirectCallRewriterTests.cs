@@ -28,6 +28,7 @@ using Reko.UnitTests.Mocks;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -125,7 +126,15 @@ namespace Reko.UnitTests.Analysis
             Identifier returnValue,
             params Identifier[] parameters)
         {
-            return Ptr32(new FunctionType(returnValue, parameters));
+            var storages = parameters.Select(p => p.Storage as StackStorage)
+                .Where(stg => stg != null);
+            var stackDelta = storages.Count() == 0 ? 4 :
+                storages.Max(stg => stg.StackOffset + stg.DataType.Size);
+            var ft = new FunctionType(returnValue, parameters)
+            {
+                StackDelta = stackDelta,
+            };
+            return Ptr32(ft);
         }
 
         private Identifier VoidId()
