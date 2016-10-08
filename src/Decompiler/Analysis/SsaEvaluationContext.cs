@@ -88,6 +88,14 @@ namespace Reko.Analysis
                 ssaIds[id].Uses.Remove(Statement);
         }
 
+        public void RemoveExpressionUse(Expression exp)
+        {
+            if (Statement == null)
+                return;
+            var xu = new ExpressionUseRemover(Statement, ssaIds);
+            exp.Accept(xu);
+        }
+
         public void SetValue(Identifier id, Expression value)
         {
             throw new NotSupportedException();

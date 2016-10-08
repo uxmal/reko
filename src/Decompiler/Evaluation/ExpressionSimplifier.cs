@@ -20,6 +20,7 @@
 
 using Reko.Evaluation;
 using Reko.Core;
+using Reko.Analysis;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
 using Reko.Core.Types;
@@ -531,23 +532,25 @@ namespace Reko.Evaluation
 
         public virtual Expression VisitPhiFunction(PhiFunction pc)
         {
-            return pc;
-            /*
             var oldChanged = Changed;
             var args = pc.Arguments
                 .Select(a => a.Accept(this))
                 .ToArray();
             Changed = oldChanged;
+
+            args.ToList().ForEach(a => ctx.RemoveExpressionUse(a));
             Expression e = args[0];
             if (args.All(a => new ExpressionValueComparer().Equals(a, e)))
             {
                 Changed = true;
+                ctx.UseExpression(e);
                 return e;
             }
             else
             {
+                ctx.UseExpression(pc);
                 return pc;
-            }*/
+            }
         }
 
         public virtual Expression VisitPointerAddition(PointerAddition pa)

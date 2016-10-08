@@ -1,8 +1,8 @@
 r0:r0
     def:  def r0
     uses: r0_4 = r0 + r1
-          r0_5 = PHI(r0, r0_4)
           branch r0 == 0x00000000 skip
+          r0_5 = PHI(r0, r0_4)
 Z_2: orig: Z
 r1:r1
     def:  def r1

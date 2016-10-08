@@ -35,7 +35,7 @@ namespace Reko.Arch.X86
         private int maxFpuStackWrite;
 
         public void EmitCommonFpuInstruction(
-            BinaryOperator op,
+            Func<Expression,Expression,Expression> op,
             bool fReversed,
             bool fPopStack)
         {
@@ -43,7 +43,7 @@ namespace Reko.Arch.X86
         }
 
         public void EmitCommonFpuInstruction(
-            BinaryOperator op,
+            Func<Expression,Expression,Expression> op,
             bool fReversed,
             bool fPopStack,
             DataType cast)
@@ -61,12 +61,12 @@ namespace Reko.Arch.X86
                     {
                         EmitCopy(
                             instrCur.op1, 
-                            new BinaryExpression(op, instrCur.dataWidth, opRight, MaybeCast(cast, opLeft)),
+                            op(opRight, MaybeCast(cast, opLeft)),
                             CopyFlags.ForceBreak);
                     }
                     else
                     {
-                        emitter.Assign(opLeft, new BinaryExpression(op, instrCur.dataWidth, opLeft, MaybeCast(cast, opRight)));
+                        emitter.Assign(opLeft, op(opLeft, MaybeCast(cast, opRight)));
                     }
                     break;
                 }
@@ -76,8 +76,7 @@ namespace Reko.Arch.X86
                     Expression op2 = SrcOp(instrCur.op2);
                     emitter.Assign(
                         SrcOp(instrCur.op1),
-                        new BinaryExpression(op,
-                            instrCur.op1.Width,
+                        op(
                             fReversed ? op2 : op1,
                             fReversed ? op1 : op2));
                     break;
@@ -131,8 +130,8 @@ namespace Reko.Arch.X86
                 : SrcOp(instrCur.op1);
             emitter.Assign(
                 frame.EnsureRegister(Registers.FPUF),
-                new ConditionOf(
-                    new BinaryExpression(Operator.FSub, instrCur.dataWidth, op1, op2)));
+                emitter.Cond(
+                    emitter.FSub(op1, op2)));
             state.ShrinkFpuStack(pops);
         }
 

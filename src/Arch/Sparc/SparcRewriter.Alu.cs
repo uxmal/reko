@@ -32,7 +32,7 @@ namespace Reko.Arch.Sparc
 {
     public partial class SparcRewriter
     {
-        private void RewriteAddxSubx(Operator op, bool emitCc)
+        private void RewriteAddxSubx(Func<Expression,Expression,Expression> op, bool emitCc)
         {
             var dst = RewriteRegister(instrCur.Op3);
             var src1 = RewriteOp(instrCur.Op1);
@@ -40,18 +40,14 @@ namespace Reko.Arch.Sparc
             var C = frame.EnsureFlagGroup(Registers.C);
             emitter.Assign(
                 dst,
-                new BinaryExpression(
-                    op,
-                    dst.DataType,
-                    new BinaryExpression(op, src1.DataType, src1, src2),
-                    C));
+                op(op(src1, src2), C));
             if (emitCc)
             {
                 EmitCc(dst);
             }
         }
 
-        private void RewriteAlu(Operator op, bool negateOp2)
+        private void RewriteAlu(Func<Expression,Expression,Expression> op, bool negateOp2)
         {
             var dst = RewriteRegister(instrCur.Op3);
             var src1 = RewriteOp(instrCur.Op1);
@@ -60,10 +56,10 @@ namespace Reko.Arch.Sparc
             {
                 src2 = emitter.Comp(src2);
             }
-            emitter.Assign(dst, new BinaryExpression(op, PrimitiveType.Word32, src1, src2));
+            emitter.Assign(dst, op(src1, src2));
         }
 
-        private void RewriteAluCc(Operator op, bool negateOp2)
+        private void RewriteAluCc(Func<Expression, Expression, Expression> op, bool negateOp2)
         {
             RewriteAlu(op, negateOp2);
             var dst = RewriteRegister(instrCur.Op3);

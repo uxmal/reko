@@ -57,6 +57,7 @@ namespace Reko.Core
         Expression GetDefiningExpression(Identifier id);
         void RemoveIdentifierUse(Identifier id);
         void UseExpression(Expression expr);
+        void RemoveExpressionUse(Expression expr);
         void SetValue(Identifier id, Expression value);
         void SetValueEa(Expression ea, Expression value);
         void SetValueEa(Expression basePointer, Expression ea, Expression value);

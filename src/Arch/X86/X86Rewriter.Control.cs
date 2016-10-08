@@ -175,8 +175,8 @@ namespace Reko.Arch.X86
             if (useFlags != 0)
             {
                 emitter.Branch(
-                    new BinaryExpression(Operator.Cand, PrimitiveType.Bool,
-                        new TestCondition(cc, orw.FlagGroup(useFlags)),
+                    emitter.Cand(
+                        emitter.Test(cc, orw.FlagGroup(useFlags)),
                         emitter.Ne0(cx)),
                     OperandAsCodeAddress(instrCur.op1),
                     RtlClass.ConditionalTransfer);

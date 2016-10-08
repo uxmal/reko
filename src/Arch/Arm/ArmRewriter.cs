@@ -489,9 +489,9 @@ namespace Reko.Arch.Arm
                "Rewriting ARM opcode '{0}' is not supported yet.",
                instr.Mnemonic);
 
-                case Opcode.AND: RewriteBinOp(Operator.And, instr.ArchitectureDetail.UpdateFlags); break;
-                case Opcode.ADD: RewriteBinOp(Operator.IAdd, instr.ArchitectureDetail.UpdateFlags); break;
-                case Opcode.EOR: RewriteBinOp(Operator.Xor, instr.ArchitectureDetail.UpdateFlags); break;
+                case Opcode.AND: RewriteBinOp(emitter.And, instr.ArchitectureDetail.UpdateFlags); break;
+                case Opcode.ADD: RewriteBinOp(emitter.IAdd, instr.ArchitectureDetail.UpdateFlags); break;
+                case Opcode.EOR: RewriteBinOp(emitter.Xor, instr.ArchitectureDetail.UpdateFlags); break;
                 case Opcode.B: RewriteB(false); break;
                 case Opcode.BIC: RewriteBic(); break;
                 case Opcode.BL: RewriteB(true); break;
@@ -507,7 +507,7 @@ namespace Reko.Arch.Arm
                 case Opcode.NOP: emitter.Nop(); break;
                 case Opcode.MOV: RewriteMov(); break;
                 case Opcode.MVN: RewriteUnaryOp(Operator.Not); break;
-                case Opcode.ORR: RewriteBinOp(Operator.Or, false); break;
+                case Opcode.ORR: RewriteBinOp(emitter.Or, false); break;
                 case Opcode.PUSH: RewritePush(); break;
                 case Opcode.RSB: RewriteRevBinOp(Operator.ISub, instr.ArchitectureDetail.UpdateFlags); break;
                 case Opcode.STM: RewriteStm(); break;
@@ -516,7 +516,7 @@ namespace Reko.Arch.Arm
                 case Opcode.STR: RewriteStr(PrimitiveType.Word32); break;
                 case Opcode.STRB: RewriteStr(PrimitiveType.Byte); break;
                 case Opcode.STRH: RewriteStr(PrimitiveType.UInt16); break;
-                case Opcode.SUB: RewriteBinOp(Operator.ISub, instr.ArchitectureDetail.UpdateFlags); break;
+                case Opcode.SUB: RewriteBinOp(emitter.ISub, instr.ArchitectureDetail.UpdateFlags); break;
                 case Opcode.SVC: RewriteSvc(); break;
                 case Opcode.TEQ: RewriteTeq(); break;
                 case Opcode.TST: RewriteTst(); break;

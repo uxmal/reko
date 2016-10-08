@@ -33,14 +33,15 @@ namespace Reko.Arch.Mips
 {
     public partial class MipsRewriter
     {
-        private void RewriteBranch(MipsInstruction instr, BinaryOperator condOp, bool link)
+        private void RewriteBranch(MipsInstruction instr, Func<Expression,Expression,Expression> condOp, bool link)
         {
             if (!link)
             {
                 var reg1 = RewriteOperand(instr.op1);
                 var reg2 = RewriteOperand(instr.op2);
                 var addr = (Address)RewriteOperand(instr.op3);
-                if (condOp == Operator.Eq && 
+                var cond = condOp(reg1, reg2);
+                if (condOp == emitter.Eq &&
                     ((RegisterOperand)instr.op1).Register ==
                     ((RegisterOperand)instr.op2).Register)
                 {
@@ -49,7 +50,6 @@ namespace Reko.Arch.Mips
                 }
                 else
                 {
-                    var cond = new BinaryExpression(condOp, PrimitiveType.Bool, reg1, reg2);
                     cluster.Class = RtlClass.ConditionalTransfer;
                     emitter.Branch(cond, addr, RtlClass.ConditionalTransfer | RtlClass.Delay);
                 }
@@ -58,7 +58,7 @@ namespace Reko.Arch.Mips
                 throw new NotImplementedException("Linked branches not implemented yet.");
         }
 
-        private void RewriteBranch0(MipsInstruction instr, BinaryOperator condOp, bool link)
+        private void RewriteBranch0(MipsInstruction instr, Func<Expression, Expression, Expression> condOp, bool link)
         {
             if (link)
             {
@@ -71,12 +71,12 @@ namespace Reko.Arch.Mips
             if (reg is Constant)
             {
                 // r0 has been replaced with '0'.
-                if (condOp == Operator.Lt)
+                if (condOp == emitter.Lt)
                 {
                     return; // Branch will never be taken
                 }
             }
-            var cond = new BinaryExpression(condOp, PrimitiveType.Bool, reg, Constant.Zero(reg.DataType));
+            var cond = condOp(reg, Constant.Zero(reg.DataType));
             cluster.Class = RtlClass.ConditionalTransfer;
             emitter.Branch(cond, addr, RtlClass.ConditionalTransfer | RtlClass.Delay);
         }

@@ -140,6 +140,7 @@
     <Compile Include="Analysis\ExpressionUseAdder.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Analysis\ExpressionUseRemover.cs" />
     <Compile Include="Analysis\CallRewriter.cs">
       <SubType>Code</SubType>
     </Compile>

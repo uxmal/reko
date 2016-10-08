@@ -35,12 +35,14 @@ namespace Reko.Arch.X86
     public abstract class OperandRewriter
     {
         protected readonly IntelArchitecture arch;
+        private readonly ExpressionEmitter m;
         private readonly Frame frame;
         private readonly IRewriterHost host;
 
-        public OperandRewriter(IntelArchitecture arch, Frame frame, IRewriterHost host)
+        public OperandRewriter(IntelArchitecture arch, ExpressionEmitter emitter, Frame frame, IRewriterHost host)
         {
             this.arch = arch;
+            this.m = emitter;
             this.frame = frame;
             this.host = host;
         }
@@ -151,7 +153,7 @@ namespace Reko.Arch.X86
                     eBase = AluRegister(mem.Base);
                     if (expr != null)
                     {
-                        expr = new BinaryExpression(Operator.IAdd, eBase.DataType, eBase, expr);
+                        expr = m.IAdd(eBase, expr);
                     }
                     else
                     {
@@ -191,10 +193,9 @@ namespace Reko.Arch.X86
                 eIndex = AluRegister(mem.Index);
                 if (mem.Scale != 0 && mem.Scale != 1)
                 {
-                    eIndex = new BinaryExpression(
-                        Operator.IMul, eIndex.DataType, eIndex, Constant.Create(mem.Width, mem.Scale));
+                    eIndex = m.IMul(eIndex, Constant.Create(mem.Width, mem.Scale));
                 }
-                expr = new BinaryExpression(Operator.IAdd, expr.DataType, expr, eIndex);
+                expr = m.IAdd(expr, eIndex);
             }
             return expr;
         }
@@ -257,7 +258,7 @@ namespace Reko.Arch.X86
 
     public class OperandRewriter16 : OperandRewriter
     {
-        public OperandRewriter16(IntelArchitecture arch, Frame frame, IRewriterHost host) : base(arch, frame, host) { }
+        public OperandRewriter16(IntelArchitecture arch, ExpressionEmitter m, Frame frame, IRewriterHost host) : base(arch, m, frame, host) { }
 
         public override bool IsSegmentedAccessRequired { get { return true; } }
 
@@ -274,7 +275,7 @@ namespace Reko.Arch.X86
 
     public class OperandRewriter32 : OperandRewriter
     {
-        public OperandRewriter32(IntelArchitecture arch, Frame frame, IRewriterHost host) : base(arch, frame, host) { }
+        public OperandRewriter32(IntelArchitecture arch, ExpressionEmitter m, Frame frame, IRewriterHost host) : base(arch,m, frame, host) { }
 
         public override Address ImmediateAsAddress(Address address, ImmediateOperand imm)
         {
@@ -284,7 +285,7 @@ namespace Reko.Arch.X86
 
     public class OperandRewriter64 : OperandRewriter
     {
-        public OperandRewriter64(IntelArchitecture arch, Frame frame, IRewriterHost host) : base(arch, frame, host) { }
+        public OperandRewriter64(IntelArchitecture arch, ExpressionEmitter m, Frame frame, IRewriterHost host) : base(arch, m, frame, host) { }
 
         public override Address ImmediateAsAddress(Address address, ImmediateOperand imm)
         {

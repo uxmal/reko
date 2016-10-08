@@ -1,16 +1,4 @@
 === CB80.dcproject
-=== r2-extensa-crash
-*** r2-extensa-crash
-r2-extensa-crash: error: An internal error occurred while decompiling.
-    Could not find file 'D:\dev\uxmal\reko\master\subjects\Elf-Extensa\r2\r2-extensa-crash'.
-       at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
-   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
-   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access)
-   at Reko.Core.Services.FileSystemServiceImpl.CreateFileStream(String filename, FileMode mode, FileAccess access) in D:\dev\uxmal\reko\master\src\Core\Services\IFileSystemService.cs:line 62
-   at Reko.Loading.Loader.LoadImageBytes(String fileName, Int32 offset) in D:\dev\uxmal\reko\master\src\Decompiler\Loading\Loader.cs:line 251
-   at Reko.DecompilerDriver.Load(String fileName) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 196
-   at Reko.DecompilerDriver.Decompile(String filename) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 97
-
 === redir
 *** redir
 main: error: An error occurred while rewriting procedure to high-level language.
@@ -1500,8 +1488,8 @@ Parameter name: index
        at System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
    at System.Collections.Generic.List`1.get_Item(Int32 index)
    at Reko.Core.Block.get_ThenBlock() in D:\dev\uxmal\reko\master\src\Core\Block.cs:line 64
-   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 94
-   at Reko.Structure.CompoundConditionCoalescer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 60
+   at Reko.Structure.CompoundConditionCoalescer.MaybeCoalesce(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 96
+   at Reko.Structure.CompoundConditionCoalescer.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\CompoundConditionCoalescer.cs:line 62
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 66
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 532
 safe_write: error: An error occurred while rewriting procedure to high-level language.
@@ -2348,7 +2336,7 @@ fn1DAE: error: An error occurred while rewriting procedure to high-level languag
    at Reko.Typing.TypeCollector.VisitSideEffect(SideEffect side) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 200
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-004011A5: error: An error occurred while processing the statement Mem18[Mem18[Mem18[0x0040301C:word32] + 0x00000000:word32] + 0x00000004:word32](0xBADDCAFE, 0xBADDCAFE).
+004011A5: error: An error occurred while processing the statement Mem18[Mem18[Mem18[0x0040301C:word32] + 0x00000000:word32] + 0x00000004:word32](Mem18[0x0040301C:word32], 0xBADDCAFE, 0xBADDCAFE).
     The type inference of indirect calls are not implmented yet.
        at Reko.Typing.ExpressionTypeDescender.BindActualTypesToFormalTypes(Application appl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 100
    at Reko.Typing.ExpressionTypeDescender.VisitApplication(Application appl, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 92
@@ -2356,7 +2344,7 @@ fn1DAE: error: An error occurred while rewriting procedure to high-level languag
    at Reko.Typing.TypeCollector.VisitSideEffect(SideEffect side) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 200
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-00401187: error: An error occurred while processing the statement Mem0[Mem0[Mem0[0x0040301C:word32] + 0x00000000:word32] + 0x00000000:word32](rArg04).
+00401187: error: An error occurred while processing the statement Mem0[Mem0[Mem0[0x0040301C:word32] + 0x00000000:word32] + 0x00000000:word32](Mem0[0x0040301C:word32], rArg04).
     The type inference of indirect calls are not implmented yet.
        at Reko.Typing.ExpressionTypeDescender.BindActualTypesToFormalTypes(Application appl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 100
    at Reko.Typing.ExpressionTypeDescender.VisitApplication(Application appl, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 92

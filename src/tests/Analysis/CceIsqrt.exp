@@ -70,9 +70,9 @@ dx_24: orig: dx
     uses: bx_dx_71 = SEQ(bx_27, dx_24)
 dx_25: orig: dx
     def:  dx_25 = (word16) bx_dx_72
-    uses: dx_49 = PHI(dx_25, dx_34)
-          bx_dx_72 = bx_dx_71 - SEQ(si_28, 0x4000)
+    uses: bx_dx_72 = bx_dx_71 - SEQ(si_28, 0x4000)
           bx_dx_79 = SEQ(bx_29, dx_25)
+          dx_49 = PHI(dx_25, dx_34)
 SCZO_26: orig: SCZO
 bx_27: orig: bx
     def:  bx_27 = PHI(bx_8, bx_62)
@@ -82,10 +82,10 @@ si_28: orig: si
     uses: si_43 = si_28 * 0x0002 + C_41
 bx_29: orig: bx
     def:  bx_29 = SLICE(bx_dx_72, word16, 16)
-    uses: bx_52 = PHI(bx_29, bx_36)
-          bx_dx_72 = bx_dx_71 - SEQ(si_28, 0x4000)
+    uses: bx_dx_72 = bx_dx_71 - SEQ(si_28, 0x4000)
           bx_dx_79 = SEQ(bx_29, dx_25)
           cx_32 = cx_31 - (bx_29 <u 0x0000)
+          bx_52 = PHI(bx_29, bx_36)
 SCZO_30: orig: SCZO
 cx_31: orig: cx
     def:  cx_31 = PHI(cx_16, cx_64)
@@ -94,21 +94,21 @@ cx_32: orig: cx
     def:  cx_32 = cx_31 - (bx_29 <u 0x0000)
     uses: SCZO_33 = cond(cx_32)
           cx_38 = cx_32 + (bx_36 <u 0x0000)
-          cx_55 = PHI(cx_32, cx_38)
           branch cx_32 >=u 0x0000 l0C00_0030
+          cx_55 = PHI(cx_32, cx_38)
 SCZO_33: orig: SCZO
     def:  SCZO_33 = cond(cx_32)
     uses: C_40 = PHI(SCZO_33, SCZO_39)
 dx_34: orig: dx
     def:  dx_34 = (word16) bx_dx_80
-    uses: dx_49 = PHI(dx_25, dx_34)
-          bx_dx_80 = bx_dx_79 + SEQ(si_28, 0x4000)
+    uses: bx_dx_80 = bx_dx_79 + SEQ(si_28, 0x4000)
+          dx_49 = PHI(dx_25, dx_34)
 SCZO_35: orig: SCZO
 bx_36: orig: bx
     def:  bx_36 = SLICE(bx_dx_80, word16, 16)
-    uses: bx_52 = PHI(bx_29, bx_36)
-          bx_dx_80 = bx_dx_79 + SEQ(si_28, 0x4000)
+    uses: bx_dx_80 = bx_dx_79 + SEQ(si_28, 0x4000)
           cx_38 = cx_32 + (bx_36 <u 0x0000)
+          bx_52 = PHI(bx_29, bx_36)
 SCZO_37: orig: SCZO
 cx_38: orig: cx
     def:  cx_38 = cx_32 + (bx_36 <u 0x0000)
@@ -169,19 +169,19 @@ cx_56: orig: cx
 SCZO_57: orig: SCZO
 ax_58: orig: ax
     def:  ax_58 = (word16) dx_ax_78
-    uses: ax_46 = PHI(ax_70, ax_58)
-          dx_ax_78 = dx_ax_76 + dx_ax_77
+    uses: dx_ax_78 = dx_ax_76 + dx_ax_77
+          ax_46 = PHI(ax_70, ax_58)
 SCZO_59: orig: SCZO
 dx_60: orig: dx
     def:  dx_60 = SLICE(dx_ax_78, word16, 16)
-    uses: dx_24 = PHI(dx_69, dx_60)
-          dx_ax_78 = dx_ax_76 + dx_ax_77
+    uses: dx_ax_78 = dx_ax_76 + dx_ax_77
           bx_62 = bx_53 * 0x0002 + (dx_60 <u 0x0000)
+          dx_24 = PHI(dx_69, dx_60)
 SCZO_61: orig: SCZO
 bx_62: orig: bx
     def:  bx_62 = bx_53 * 0x0002 + (dx_60 <u 0x0000)
-    uses: bx_27 = PHI(bx_8, bx_62)
-          cx_64 = cx_56 * 0x0002 + (bx_62 <u 0x0000)
+    uses: cx_64 = cx_56 * 0x0002 + (bx_62 <u 0x0000)
+          bx_27 = PHI(bx_8, bx_62)
 SCZO_63: orig: SCZO
 cx_64: orig: cx
     def:  cx_64 = cx_56 * 0x0002 + (bx_62 <u 0x0000)
