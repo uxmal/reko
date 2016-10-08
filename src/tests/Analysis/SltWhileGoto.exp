@@ -2,8 +2,8 @@ fp:fp
 sp_1: orig: sp
 si:si
     def:  def si
-    uses: si_4 = PHI(si, si_8, si_8)
-          ax_20 = si_8 - si
+    uses: ax_20 = si_8 - si
+          si_4 = PHI(si, si_8, si_8)
 bx_3: orig: bx
 si_4: orig: si
     def:  si_4 = PHI(si, si_8, si_8)
@@ -27,9 +27,9 @@ ax_7: orig: ax
           branch ax_7 != 0x000D l0C00_001A
 si_8: orig: si
     def:  si_8 = si_4 + 0x0002
-    uses: si_4 = PHI(si, si_8, si_8)
+    uses: ax_20 = si_8 - si
           si_4 = PHI(si, si_8, si_8)
-          ax_20 = si_8 - si
+          si_4 = PHI(si, si_8, si_8)
 SCZO_9: orig: SCZO
 Z_10: orig: Z
 SZO_11: orig: SZO
