@@ -181,6 +181,5 @@ namespace Reko.Core.Serialization
             argCur = arg;
             return kind.Deserialize(this);
         }
-
     }
 }
