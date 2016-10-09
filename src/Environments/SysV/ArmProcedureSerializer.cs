@@ -18,7 +18,6 @@
  */
 #endregion
 
-
 using System;
 using Reko.Core;
 using Reko.Core.Serialization;
@@ -28,17 +27,17 @@ using Reko.Core.Expressions;
 
 namespace Reko.Environments.SysV
 {
-    public class ArmProcedureSerializer : ProcedureSerializer
+    public class Arm32ProcedureSerializer : ProcedureSerializer
     {
-        public ArmProcedureSerializer(
+        private static string[] argRegs = { "r0", "r1", "r2", "r3" };
+
+        public Arm32ProcedureSerializer(
             IProcessorArchitecture arch,
             ISerializedTypeVisitor<DataType> typeLoader, 
             string defaultConvention) 
             : base(arch, typeLoader, defaultConvention)
         {
         }
-
-        private static string[] argRegs = { "r0", "r1", "r2", "r3" };
 
         public override FunctionType Deserialize(SerializedSignature ss, Frame frame)
         {
@@ -53,45 +52,70 @@ namespace Reko.Environments.SysV
                Architecture.PointerType.Size,
                Architecture.WordWidth.Size);
 
-            var ret = argser.DeserializeReturnValue(ss.ReturnValue);
-            var args = new List<Identifier>();
-            foreach (var sArg in ss.Arguments)
+            Identifier ret = null;
+            if (ss.ReturnValue != null)
             {
-                var dt = sArg.Type.Accept(TypeLoader);
-                var sizeInWords = (dt.Size + 3) / 4;
+                ret = argser.DeserializeReturnValue(ss.ReturnValue);
+            }
 
-                if (sizeInWords == 2 && (ncrn & 1) == 1)
-                    ++ncrn;
-                Identifier arg;
-                if (sizeInWords <= 4 - ncrn)
+            var args = new List<Identifier>();
+            if (ss.Arguments != null)
+            {
+                foreach (var sArg in ss.Arguments)
                 {
-                    if (sizeInWords == 2)
+                    var dt = sArg.Type.Accept(TypeLoader);
+                    var sizeInWords = (dt.Size + 3) / 4;
+
+                    if (sizeInWords == 2 && (ncrn & 1) == 1)
+                        ++ncrn;
+                    Identifier arg;
+                    if (sizeInWords <= 4 - ncrn)
                     {
-                        arg = frame.EnsureSequence(
-                            Architecture.GetRegister(argRegs[ncrn]),
-                            Architecture.GetRegister(argRegs[ncrn + 1]),
-                            dt);
-                        ncrn += 2;
+                        if (sizeInWords == 2)
+                        {
+                            arg = frame.EnsureSequence(
+                                Architecture.GetRegister(argRegs[ncrn]),
+                                Architecture.GetRegister(argRegs[ncrn + 1]),
+                                dt);
+                            ncrn += 2;
+                        }
+                        else
+                        {
+                            arg = frame.EnsureRegister(
+                                Architecture.GetRegister(argRegs[ncrn]));
+                            ncrn += 1;
+                        }
                     }
                     else
                     {
-                        arg = frame.EnsureRegister(
-                            Architecture.GetRegister(argRegs[ncrn]));
-                        ncrn += 1;
+                        arg = frame.EnsureStackArgument(nsaa, dt);
+                        nsaa += AlignedStackArgumentSize(dt);
                     }
+                    args.Add(arg);
                 }
-                else
-                {
-                    arg = frame.EnsureStackArgument(nsaa, dt);
-                }
-                args.Add(arg);
             }
             return new FunctionType(ret, args.ToArray());
         }
 
+        private int AlignedStackArgumentSize(DataType dt)
+        {
+            return ((dt.Size + 3) / 4) * 4; 
+        }
+
         public override Storage GetReturnRegister(Argument_v1 sArg, int bitSize)
         {
-            return Architecture.GetRegister("r0");
+            if (bitSize <= 32)
+            {
+                return Architecture.GetRegister("r0");
+            }
+            else if (bitSize <= 64)
+            {
+                return new SequenceStorage(
+                    Architecture.GetRegister("r1"),
+                    Architecture.GetRegister("r0"));
+            }
+            else
+                throw new NotSupportedException(string.Format("Return values of {0} bits are not supported.", bitSize));
         }
     }
 }

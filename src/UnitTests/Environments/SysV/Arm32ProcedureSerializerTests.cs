@@ -36,12 +36,12 @@ namespace Reko.UnitTests.Environments.SysV
 {
     [TestFixture]
     [Category(Categories.Capstone)]
-    public class ArmProcedureSerializerTests
+    public class Arm32ProcedureSerializerTests
     {
         private MockRepository mr;
         private MockFactory mockFactory;
         private Arm32ProcessorArchitecture arch;
-        private SparcProcedureSerializer ser;
+        private Arm32ProcedureSerializer ser;
         private ISerializedTypeVisitor<DataType> deserializer;
 
         [SetUp]
@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Environments.SysV
         private void Given_ProcedureSerializer()
         {
             this.deserializer = mockFactory.CreateDeserializer(arch.PointerType.Size);
-            this.ser = new SparcProcedureSerializer(arch, deserializer, "");
+            this.ser = new Arm32ProcedureSerializer(arch, deserializer, "");
         }
 
         private void Verify(SerializedSignature ssig, string outputFilename)
@@ -78,16 +78,14 @@ namespace Reko.UnitTests.Environments.SysV
             mr.ReplayAll();
 
             var sig = new FunctionType(
-                new Identifier("o0", PrimitiveType.Word32, arch.GetRegister("o0")),
+                new Identifier("r0", PrimitiveType.Word32, arch.GetRegister("r0")),
                 new Identifier[] {
-                    new Identifier("o0", PrimitiveType.Word32, arch.GetRegister("o0"))
+                    new Identifier("r0", PrimitiveType.Word32, arch.GetRegister("r0"))
                 });
 
             SerializedSignature ssig = ser.Serialize(sig);
             Assert.IsNotNull(ssig.ReturnValue);
-            Assert.AreEqual("o0", ssig.ReturnValue.Name);
-            Register_v1 sreg = (Register_v1)ssig.ReturnValue.Kind;
-            Assert.AreEqual("o0", sreg.Name);
+            Assert.AreEqual("r0", ((Register_v1)ssig.ReturnValue.Kind).Name);
         }
 
         [Test]
@@ -110,9 +108,9 @@ namespace Reko.UnitTests.Environments.SysV
             Procedure proc = new Procedure("foo", arch.CreateFrame())
             {
                 Signature = new FunctionType(
-                    new Identifier("o0", PrimitiveType.Word32, arch.GetRegister("o0")),
+                    new Identifier("", PrimitiveType.Word32, arch.GetRegister("r0")),
                     new Identifier[] {
-                        new Identifier("arg00", PrimitiveType.Word32, arch.GetRegister("o0")),
+                        new Identifier("arg00", PrimitiveType.Word32, arch.GetRegister("r0")),
                     })
             };
 
@@ -122,7 +120,7 @@ namespace Reko.UnitTests.Environments.SysV
             mr.ReplayAll();
 
             Procedure_v1 sproc = ser.Serialize(proc, addr);
-            Assert.AreEqual("o0", sproc.Signature.ReturnValue.Name);
+            Assert.AreEqual("r0", ((Register_v1)sproc.Signature.ReturnValue.Kind).Name);
         }
 
         private SerializedType Type(string typeName)
@@ -150,7 +148,7 @@ namespace Reko.UnitTests.Environments.SysV
         }
 
         [Test]
-        public void SvArm32Ps_DeserializeFpuStackReturnValue()
+        public void SvArm32Ps_DeserializeFpuReturnValue()
         {
             var ssig = new SerializedSignature
             {
@@ -164,7 +162,7 @@ namespace Reko.UnitTests.Environments.SysV
             mr.ReplayAll();
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
-            Assert.AreEqual("Sequence f1:f0", sig.ReturnValue.Storage.ToString());
+            Assert.AreEqual("Sequence r1:r0", sig.ReturnValue.Storage.ToString());
         }
 
         [Test]
@@ -236,13 +234,13 @@ namespace Reko.UnitTests.Environments.SysV
 
             var sig = ser.Deserialize(ssig, arch.CreateFrame());
             var args = sig.Parameters;
-            Assert.AreEqual("o0", args[0].Storage.ToString());
-            Assert.AreEqual("o1", args[1].Storage.ToString());
-            Assert.AreEqual("o2", args[2].Storage.ToString());
-            Assert.AreEqual("o3", args[3].Storage.ToString());
-            Assert.AreEqual("o4", args[4].Storage.ToString());
-            Assert.AreEqual("o5", args[5].Storage.ToString());
-            Assert.AreEqual("Stack +0004", args[6].Storage.ToString());
+            Assert.AreEqual("r0", args[0].Storage.ToString());
+            Assert.AreEqual("r1", args[1].Storage.ToString());
+            Assert.AreEqual("r2", args[2].Storage.ToString());
+            Assert.AreEqual("r3", args[3].Storage.ToString());
+            Assert.AreEqual("Stack +0000", args[4].Storage.ToString());
+            Assert.AreEqual("Stack +0004", args[5].Storage.ToString());
+            Assert.AreEqual("Stack +0008", args[6].Storage.ToString());
         }
     }
 }
