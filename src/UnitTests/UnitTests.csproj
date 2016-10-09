@@ -89,6 +89,7 @@
     <Compile Include="Core\Analysis\PyArgFormatParserTests.cs" />
     <Compile Include="Core\Analysis\ScanfFormatParserTests.cs" />
     <Compile Include="Core\DumperTests.cs" />
+    <Compile Include="Environments\SysV\ArmProcedureSerializerTests.cs" />
     <Compile Include="Environments\SysV\GccMangledNameParserTests.cs" />
     <Compile Include="Environments\Windows\MsPrintfFormatParserTests.cs" />
     <Compile Include="Environments\Windows\X86_64ProcedureSerializerTests.cs" />
