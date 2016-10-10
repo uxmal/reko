@@ -215,29 +215,27 @@ namespace Reko.Core.Types
                     }
                     fmt.Write("(");
                 }
+                var sep = "";
+                if (Parameters != null)
+                {
+                    IEnumerable<Identifier> parms = this.IsInstanceMetod
+                        ? Parameters.Skip(1)
+                        : Parameters;
+                    foreach (var p in parms)
+                    {
+                        fmt.Write(sep);
+                        sep = ", ";
+                        w.WriteFormalArgument(p, emitStorage, t);
+                    }
+                }
+                fmt.Write(")");
             }
             else
             {
                 fmt.WriteKeyword("define");
                 fmt.Write(" ");
                 fmt.Write(fnName);
-                return;
             }
-
-            var sep = "";
-            if (Parameters != null)
-            {
-                IEnumerable<Identifier> parms = this.IsInstanceMetod
-                    ? Parameters.Skip(1)
-                    : Parameters;
-                foreach (var p in parms)
-                {
-                    fmt.Write(sep);
-                    sep = ", ";
-                    w.WriteFormalArgument(p, emitStorage, t);
-                }
-            }
-            fmt.Write(")");
 
             if ((f & EmitFlags.LowLevelInfo) == EmitFlags.LowLevelInfo)
             {
