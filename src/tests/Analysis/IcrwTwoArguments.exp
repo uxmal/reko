@@ -6,6 +6,9 @@ fp:fp
     uses: r63_4 = fp
           r63_7 = fp - 0x00000004
           r63_9 = fp - 0x00000008
+          r63_11 = fp - 0x00000008 + 0x00000008
+          Mem10[ecx_6 + 0x00000008:word32](Mem17[fp - 0x00000008:int32], Mem18[fp - 0x00000008 + 4:int32])
+          Mem10[ecx_6 + 0x00000008:word32](Mem17[fp - 0x00000008:int32], Mem18[fp - 0x00000008 + 4:int32])
 Mem3: orig: Mem0
     uses: eax_5 = a_14
           ecx_6 = Mem3[eax_5:word32]
@@ -16,15 +19,16 @@ eax_5: orig: eax
     uses: ecx_6 = Mem3[eax_5:word32]
 ecx_6: orig: ecx
     def:  ecx_6 = Mem3[eax_5:word32]
-    uses: Mem10[ecx_6 + 0x00000008:word32](dwLoc08_16, dwLoc04_15)
+    uses: Mem10[ecx_6 + 0x00000008:word32](Mem17[fp - 0x00000008:int32], Mem18[fp - 0x00000008 + 4:int32])
 r63_7: orig: r63
     def:  r63_7 = fp - 0x00000004
 Mem8: orig: Mem0
 r63_9: orig: r63
     def:  r63_9 = fp - 0x00000008
 Mem10: orig: Mem0
-    uses: Mem10[ecx_6 + 0x00000008:word32](dwLoc08_16, dwLoc04_15)
+    uses: Mem10[ecx_6 + 0x00000008:word32](Mem17[fp - 0x00000008:int32], Mem18[fp - 0x00000008 + 4:int32])
 r63_11: orig: r63
+    def:  r63_11 = fp - 0x00000008 + 0x00000008
 eax_12: orig: eax
 ecx_13: orig: ecx
 a_14: orig: a
@@ -32,10 +36,12 @@ a_14: orig: a
     uses: eax_5 = a_14
 dwLoc04_15: orig: dwLoc04
     def:  dwLoc04_15 = 0x0000000B
-    uses: Mem10[ecx_6 + 0x00000008:word32](dwLoc08_16, dwLoc04_15)
 dwLoc08_16: orig: dwLoc08
     def:  dwLoc08_16 = 0x0000000A
-    uses: Mem10[ecx_6 + 0x00000008:word32](dwLoc08_16, dwLoc04_15)
+Mem17: orig: Mem0
+    uses: Mem10[ecx_6 + 0x00000008:word32](Mem17[fp - 0x00000008:int32], Mem18[fp - 0x00000008 + 4:int32])
+Mem18: orig: Mem0
+    uses: Mem10[ecx_6 + 0x00000008:word32](Mem17[fp - 0x00000008:int32], Mem18[fp - 0x00000008 + 4:int32])
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder(struct <anonymous> * a)
@@ -52,7 +58,8 @@ l1:
 	dwLoc04_15 = 0x0000000B
 	r63_9 = fp - 0x00000008
 	dwLoc08_16 = 0x0000000A
-	Mem10[ecx_6 + 0x00000008:word32](dwLoc08_16, dwLoc04_15)
+	Mem10[ecx_6 + 0x00000008:word32](Mem17[fp - 0x00000008:int32], Mem18[fp - 0x00000008 + 4:int32])
+	r63_11 = fp - 0x00000008 + 0x00000008
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:

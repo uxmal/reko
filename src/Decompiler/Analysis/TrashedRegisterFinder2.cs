@@ -147,6 +147,8 @@ namespace Reko.Analysis
         private Expression GetReachingExpression(SsaIdentifier sid, ISet<PhiAssignment> activePhis)
         {
             var sidOrig = sid;
+            if (sid.DefStatement == null)
+                return Constant.Invalid;
             var defInstr = sid.DefStatement.Instruction;
             if (defInstr is DefInstruction &&
                 sid.DefStatement.Block == ssa.Procedure.EntryBlock)
