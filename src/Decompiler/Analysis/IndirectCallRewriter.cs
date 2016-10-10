@@ -102,7 +102,7 @@ namespace Reko.Analysis
             var ft = pt.Pointee as FunctionType;
             if (ft == null)
                 return;
-            AdjustStack(stm, call, ft.StackDelta);
+            AdjustStackPointerAfterCall(stm, call, ft.StackDelta);
             var ab = new FrameApplicationBuilder(
                  program.Architecture, proc.Frame, call.CallSite,
                  call.Callee, false);
@@ -111,7 +111,7 @@ namespace Reko.Analysis
             changed = true;
         }
 
-        private void AdjustStack(
+        private void AdjustStackPointerAfterCall(
             Statement stm,
             CallInstruction call,
             int stackDelta)
