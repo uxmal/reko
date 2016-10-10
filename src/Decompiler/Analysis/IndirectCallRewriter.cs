@@ -116,6 +116,7 @@ namespace Reko.Analysis
             CallInstruction call,
             int stackDelta)
         {
+            // Locate the post-call definition of the stack pointer, if any
             var defSpBinding = call.Definitions.Where(
                 u => u.Storage == program.Architecture.StackRegister)
                 .FirstOrDefault();
@@ -133,6 +134,8 @@ namespace Reko.Analysis
             var retSize = call.CallSite.SizeOfReturnAddressOnStack;
             var offset = stackDelta - retSize;
             var src = emiter.IAdd(usedSpExp, Constant.Word32(offset));
+            // Generate a statement that adjusts the stack pointer according to
+            // the calling convention.
             var ass = new Assignment(defSpId, src);
             var defSid = ssa.Identifiers[defSpId];
             var stackStm = InsertStatement(stm, ass);
