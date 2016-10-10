@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2016 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -277,7 +277,7 @@ namespace Reko.Analysis
             sst.Transform();
 
             var icrw = new IndirectCallRewriter(program, ssa, eventListener);
-            while (icrw.Rewrite())
+            while (!eventListener.IsCanceled() && icrw.Rewrite())
             {
                 vp.Transform();
                 sst.RenameFrameAccesses = true;
