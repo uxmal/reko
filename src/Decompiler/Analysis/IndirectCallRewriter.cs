@@ -133,7 +133,11 @@ namespace Reko.Analysis
                 return;
             var retSize = call.CallSite.SizeOfReturnAddressOnStack;
             var offset = stackDelta - retSize;
-            var src = emiter.IAdd(usedSpExp, Constant.Word32(offset));
+            Expression src;
+            if (offset == 0)
+                src = usedSpExp;
+            else
+                src = emiter.IAdd(usedSpExp, Constant.Word32(offset));
             // Generate a statement that adjusts the stack pointer according to
             // the calling convention.
             var ass = new Assignment(defSpId, src);
