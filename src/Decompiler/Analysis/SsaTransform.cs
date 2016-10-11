@@ -37,8 +37,6 @@ namespace Reko.Analysis
     /// form.
 	/// </summary>
     /// <remarks>
-    /// EXPERIMENTAL - consult uxmal before using
-    /// 
     /// This class implements an SSA algorithm that doesn't require 
     /// calculation of the dominator graph. It is based on the algorithm
     /// described in "Simple and Efficient Construction of Static Single
@@ -495,10 +493,19 @@ namespace Reko.Analysis
             Expression exp;
             if (id != null)
             {
-                exp = RenameFrameAccesses ? id : NewDef(id, outArg, true);
+                if (RenameFrameAccesses)
+                {
+                    exp = id;
+                }
+                else
+                {
+                    exp = NewDef(id, outArg, true);
+                }
             }
             else
+            {
                 exp = outArg.Expression.Accept(this);
+            }
             return new OutArgument(outArg.DataType, exp);
         }
 
@@ -1380,6 +1387,20 @@ namespace Reko.Analysis
                     {
                         return ssaIds[id];
                     }
+
+                    // Unrelated assignments; insert alias right before
+                    // use.
+                    var seq = new MkSequence(this.id.DataType, head.Identifier, tail.Identifier);
+                    var ass = new AliasAssignment(this.id, seq);
+                    var iStm = this.stm.Block.Statements.IndexOf(this.stm);
+                    var stm = head.DefStatement.Block.Statements.Insert(iStm, this.stm.LinearAddress, ass);
+                    var sidTo = ssaIds.Add(ass.Dst, stm, ass.Src, false);
+                    ass.Dst = sidTo.Identifier;
+                    head.Uses.Add(stm);
+                    tail.Uses.Add(stm);
+                    return sidTo;
+
+
                 }
 
                 throw new NotImplementedException(string.Format(
