@@ -26,6 +26,9 @@ SCZO_9: orig: SCZO
     def:  SCZO_9 = cond(ax_7 - bx)
     uses: branch Test(LT,SCZO_9) l0C00_0005
           use SCZO_9
+          use SCZO_9
+          use SCZO_9
+          use SCZO_9
 si_12: orig: si
     def:  si_12 = Mem0[ds:0x0300:word16]
     uses: si_13 = si_12 | si_12
@@ -126,8 +129,11 @@ l0C00_001D:
 fn0C00_0000_exit:
 	use ax_7
 	use bx
+	use SCZO_9
 	use ds
+	use SCZO_9
 	use SCZO_9
 	use si_24
 	use sp_2
+	use SCZO_9
 

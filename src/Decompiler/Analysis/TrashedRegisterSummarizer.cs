@@ -34,10 +34,10 @@ namespace Reko.Analysis
     /// </summary>
     public class TrashedRegisterSummarizer
     {
-        IProcessorArchitecture arch;
-        Procedure proc;
-        ProcedureFlow pf;
-        SymbolicEvaluationContext ctx;
+        private IProcessorArchitecture arch;
+        private Procedure proc;
+        private ProcedureFlow pf;
+        private SymbolicEvaluationContext ctx;
         private HashSet<RegisterStorage> trashed;
         private HashSet<RegisterStorage> preserved;
         private ExpressionValueComparer cmp;
@@ -47,8 +47,8 @@ namespace Reko.Analysis
             this.arch = arch;
             this.proc = proc;
             this.pf = pf;
-            trashed = new HashSet<RegisterStorage>();
-            preserved = new HashSet<RegisterStorage>();
+            this.trashed = new HashSet<RegisterStorage>();
+            this.preserved = new HashSet<RegisterStorage>();
             this.ctx = ctx;
             this.cmp = new ExpressionValueComparer();
         }

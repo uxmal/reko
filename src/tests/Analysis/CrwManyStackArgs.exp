@@ -1,7 +1,7 @@
 void fn0C00_0000(Register selector ds)
 // MayUse:  ds:16
 // LiveOut:
-// Trashed: ax SCZO
+// Trashed: SCZO ax
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -12,33 +12,28 @@ void fn0C00_0000(Register selector ds)
 // SCZO:Flags
 // ds:ds
 // ax:ax
-// wLoc02:Local -0002
-// wLoc04:Local -0004
-// wLoc06:Local -0006
 // S:Flags
 // C:Flags
 // Z:Flags
 // O:Flags
-// wArg02:Stack +0002
-// wArg04:Stack +0004
-// wArg06:Stack +0006
+// wLoc02:Local -0002
+// wLoc04:Local -0004
+// wLoc06:Local -0006
 // return address size: 2
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
-	def fp
 	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	ax = fn0C00_0011(wArg02, wArg04, wArg06)
-	SCZO_13 = cond(fp)
-	Mem15[ds:0x1300:word16] = ax_10
+	ax_10 = fn0C00_0011(0x0001, 0x0002, 0x0003)
+	Mem18[ds:0x1300:word16] = ax_10
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 Register word16 fn0C00_0011(Stack word16 wArg02, Stack word16 wArg04, Stack word16 wArg06)
 // MayUse:  Stack +0002:16 Stack +0004:16 Stack +0006:16
 // LiveOut: ax
-// Trashed: ax SCZO
+// Trashed: SCZO ax
 // Preserved: bp sp
 // fn0C00_0011
 // Return size: 0
@@ -67,8 +62,6 @@ fn0C00_0011_entry:
 l0C00_0011:
 	ax_9 = wArg02 + wArg04
 	ax_11 = ax_9 + wArg06
-	SCZO_12 = cond(ax_11)
-	return ax
+	return ax_11
 	// succ:  fn0C00_0011_exit
 fn0C00_0011_exit:
-	use ax_11

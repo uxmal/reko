@@ -1,16 +1,16 @@
 // LiveCopyMock
 // Return size: 0
-void LiveCopyMock()
+define LiveCopyMock
 LiveCopyMock_entry:
 	def reg
 	goto l1
 	// succ:  l1
 even:
-	reg_2 = PHI(reg_2, reg_3)
-	return reg_2 - reg
+	reg_4 = PHI(reg_4, reg_3)
+	return reg_4 - reg
 	// succ:  LiveCopyMock_exit
 l1:
-	reg_2 = reg
+	reg_4 = reg
 	branch (reg & 0x00000001) == 0x00000000 even
 	// succ:  l2 even
 l2:

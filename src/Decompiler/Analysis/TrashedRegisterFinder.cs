@@ -79,16 +79,6 @@ namespace Reko.Analysis
 
         public void CompleteWork()
         {
-            foreach (Procedure proc in procedures)
-            {
-                if (eventListener.IsCanceled())
-                    break;
-                var pf = flow[proc];
-                foreach (var reg in pf.Trashed.OfType<RegisterStorage>().ToList())
-                {
-                    pf.Trashed.UnionWith(program.Architecture.GetAliases(reg));
-                }
-            }
         }
 
         public void Compute()
@@ -260,9 +250,11 @@ namespace Reko.Analysis
             {
                 foreach (Statement stm in program.CallGraph.CallerStatements(proc))
                 {
-                    if (this.procedureSet.Contains(stm.Block.Procedure))
-                    if (visited.Contains(stm.Block))
+                    if (this.procedureSet.Contains(stm.Block.Procedure) &&
+                        visited.Contains(stm.Block))
+                    {
                         worklist.Add(stm.Block);
+                    }
                 }
             }
         }

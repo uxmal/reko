@@ -474,13 +474,13 @@ namespace Reko.UnitTests.Analysis
             });
 
             RunTest(p,
-@"main bh bl bx ebx rbx
+@"main ebx
 const ebx:0x01231313
     main_entry esp:fp
     l1 esp:fp
     main_exit eax:eax ebx:0x01231313 esp:fp
 
-TrashEaxEbx ah al ax bh bl bx eax ebx rax rbx
+TrashEaxEbx eax ebx
 const eax:<invalid> ebx:0x01231313
     TrashEaxEbx_entry esp:fp
     l1 esp:fp

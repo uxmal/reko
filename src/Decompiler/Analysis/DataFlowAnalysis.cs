@@ -161,7 +161,7 @@ namespace Reko.Analysis
 
             // Convert all procedures in the SCC to SSA form and perform
             // value propagation.
-            var ssts = procs.Select(p => ConvertToSsa(p)).ToArray();
+            var ssts = procs.Select(ConvertToSsa).ToArray();
             this.ssts.AddRange(ssts);
 
             // At this point, the computation of ProcedureFlow is possible.

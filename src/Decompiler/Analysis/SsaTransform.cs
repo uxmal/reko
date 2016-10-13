@@ -41,9 +41,8 @@ namespace Reko.Analysis
     /// calculation of the dominator graph. It is based on the algorithm
     /// described in "Simple and Efficient Construction of Static Single
     /// Assignment Form" by Matthias Braun, Sebastian Buchwald, Sebastian 
-    /// Hack, Roland Leiﬂa, Christoph Mallon, and Andreas Zwinkau. It is
-    /// expected that when it is fully implemented, it will take over from 
-    /// SsaTransform above.
+    /// Hack, Roland Leiﬂa, Christoph Mallon, and Andreas Zwinkau. 
+    /// It has been augmented with storage analysis
     /// </remarks>
     public class SsaTransform : InstructionTransformer 
     {
@@ -161,7 +160,7 @@ namespace Reko.Analysis
                               !existing.Contains(sid.Identifier))
                 .Select(sid => sid.OriginalIdentifier);
             reachingIds = SeparateSequences(reachingIds);
-            reachingIds = CollectFlags(reachingIds);
+            reachingIds = ExpandFlagGroups(reachingIds);
             var sortedIds = ResolveOverlaps(reachingIds)
                 .Distinct()
                 .OrderBy(id => id.Name);    // Sort them for stability; unit test are sensitive to shifting order 
@@ -269,6 +268,32 @@ namespace Reko.Analysis
             }
         }
 
+        /// <summary>
+        /// Iterates through a list of Identifiers, expading every flag group
+        /// into its constituent flag bits.
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public IEnumerable<Identifier> ExpandFlagGroups(IEnumerable<Identifier> ids)
+        {
+            foreach (var id in ids)
+            {
+                var grf = id.Storage as FlagGroupStorage;
+                if (grf != null)
+                {
+                    foreach (var bit in grf.GetFlagBitMasks())
+                    {
+                        var singleFlag = arch.GetFlagGroup(bit);
+                        yield return ssa.Procedure.Frame.EnsureFlagGroup(singleFlag);
+                    }
+                }
+                else
+                {
+                    yield return id;
+                }
+            }
+        }
+
         public override Instruction TransformAssignment(Assignment a)
         {
             if (a is AliasAssignment)
@@ -348,6 +373,19 @@ namespace Reko.Analysis
                         new CallBinding(
                             def,
                             NewDef(d, ci.Callee, false)));
+                }
+                if (calleeFlow.grfTrashed != 0)
+                {
+                    var grfs = arch.GetFlagGroup(calleeFlow.grfTrashed);
+                    foreach (var bit in grfs.GetFlagBitMasks())
+                    {
+                        var grf = arch.GetFlagGroup(bit);
+                        var d = ssa.Procedure.Frame.EnsureFlagGroup(grf);
+                        ci.Definitions.Add(
+                            new CallBinding(
+                                grf,
+                                NewDef(d, ci.Callee, false)));
+                    }
                 }
             }
         }
@@ -434,7 +472,7 @@ namespace Reko.Analysis
                 }
                 else
                 {
-                    SegmentedAccess sa = acc as SegmentedAccess;
+                    var sa = acc as SegmentedAccess;
                     if (sa != null)
                         sa.BasePointer = sa.BasePointer.Accept(this);
                     acc.EffectiveAddress = acc.EffectiveAddress.Accept(this);
