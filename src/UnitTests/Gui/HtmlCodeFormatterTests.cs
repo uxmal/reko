@@ -75,7 +75,7 @@ namespace Reko.UnitTests.Gui
 
             hcf.Write(m.Procedure);
 
-            var sExp = @"<span class="">define</span>&nbsp;proc<br />
+            var sExp = @"<span class=""kw"">define</span>&nbsp;proc<br />
 {<br />
 proc_entry:<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<span class=""kw"">goto</span>&nbsp;l1<br />
