@@ -166,7 +166,9 @@ namespace Reko.Analysis
         {
             var sidOrig = sid;
             if (sid.DefStatement == null)
-                return Constant.Invalid;
+            {
+                return new Tuple<Expression, SsaIdentifier>(Constant.Invalid, sid);
+            }
             var defInstr = sid.DefStatement.Instruction;
             if (defInstr is DefInstruction &&
                 sid.DefStatement.Block == ssa.Procedure.EntryBlock)

@@ -27,10 +27,10 @@ ds:ds
     uses: Mem14[ds:0x0100:word16] = ax_11
 Mem14: orig: Mem0
     def:  Mem14[ds:0x0100:word16] = ax_11
-S_15: orig: S
-C_16: orig: C
-Z_17: orig: Z
-O_18: orig: O
+C_15: orig: C
+O_16: orig: O
+S_17: orig: S
+Z_19: orig: Z
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(word16 bx, selector ds)
