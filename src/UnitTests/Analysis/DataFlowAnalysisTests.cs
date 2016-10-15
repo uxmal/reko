@@ -51,6 +51,7 @@ namespace Reko.UnitTests.Analysis
 
         protected override void RunTest(Program program, TextWriter writer)
 		{
+            SetCSignatures(program);
             IImportResolver importResolver = mr.Stub<IImportResolver>();
             importResolver.Replay();
 			dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
@@ -59,8 +60,9 @@ namespace Reko.UnitTests.Analysis
 			{
 				ProcedureFlow flow = dfa.ProgramDataFlow[proc];
 				writer.Write("// ");
-				flow.Signature.Emit(proc.Name, FunctionType.EmitFlags.ArgumentKind|FunctionType.EmitFlags.LowLevelInfo, writer);
-				flow.Emit(program.Architecture, writer);
+                var sig = flow.Signature ?? proc.Signature;
+                sig.Emit(proc.Name, FunctionType.EmitFlags.ArgumentKind | FunctionType.EmitFlags.LowLevelInfo, writer);
+                flow.Emit(program.Architecture, writer);
 				proc.Write(false, writer);
 				writer.WriteLine();
 			}
