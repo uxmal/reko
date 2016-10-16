@@ -51,6 +51,7 @@ namespace Reko.UnitTests.Analysis
 
         protected override void RunTest(Program program, TextWriter writer)
 		{
+            SetCSignatures(program);
             IImportResolver importResolver = mr.Stub<IImportResolver>();
             importResolver.Replay();
 			dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
@@ -59,8 +60,9 @@ namespace Reko.UnitTests.Analysis
 			{
 				ProcedureFlow flow = dfa.ProgramDataFlow[proc];
 				writer.Write("// ");
-				flow.Signature.Emit(proc.Name, FunctionType.EmitFlags.ArgumentKind|FunctionType.EmitFlags.LowLevelInfo, writer);
-				flow.Emit(program.Architecture, writer);
+                var sig = flow.Signature ?? proc.Signature;
+                sig.Emit(proc.Name, FunctionType.EmitFlags.ArgumentKind | FunctionType.EmitFlags.LowLevelInfo, writer);
+                flow.Emit(program.Architecture, writer);
 				proc.Write(false, writer);
 				writer.WriteLine();
 			}
@@ -273,6 +275,24 @@ done:
         {
             Given_CSignature("long r316(long a)");
             RunFileTest_x86_real("Fragments/regressions/r00316.asm", "Analysis/DfaReg00316.txt");
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void DfaCastCast()
+        {
+            var m = new ProcedureBuilder();
+            var r1 = m.Register(1);
+            r1.DataType = PrimitiveType.Real32;
+            var r2 = m.Register(2);
+            r2.DataType = PrimitiveType.Real32;
+            var cast = m.Cast(PrimitiveType.Real64, r1);
+            m.Assign(r2, cast);
+            var castCast = m.Cast(PrimitiveType.Real32, r2);
+            m.Store(m.Word32(0x123408), castCast);
+            m.Return();
+
+            RunFileTest(m, "Analysis/DfaCastCast.txt");
         }
 
         [Test]

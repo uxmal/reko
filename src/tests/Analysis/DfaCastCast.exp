@@ -1,0 +1,17 @@
+// void ProcedureBuilder(Register real32 r1)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// MayUse:  r1:32
+// LiveOut:
+// Trashed: r2
+// Preserved:
+// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder(real32 r1)
+ProcedureBuilder_entry:
+	// succ:  l1
+l1:
+	Mem3[0x00123408:real32] = r1
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+

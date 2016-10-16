@@ -222,6 +222,9 @@ namespace Reko.Analysis
                 coa.Transform();
                 DeadCode.Eliminate(ssa);
 
+                var vp = new ValuePropagator(program.Architecture, ssa);
+                vp.Transform();
+
                 var liv = new LinearInductionVariableFinder(
                     ssa,
                     new BlockDominatorGraph(
