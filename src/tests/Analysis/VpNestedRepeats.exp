@@ -179,8 +179,8 @@ cx_12: orig: cx
     uses: cx_23 = cx_12 - 0x0001
 di_13: orig: di
     def:  di_13 = PHI(di_8, di_13, di_25)
-    uses: di_13 = PHI(di_8, di_13, di_25)
-          di_25 = di_13 - 0x0001
+    uses: di_25 = di_13 - 0x0001
+          di_13 = PHI(di_8, di_13, di_25)
 ds:ds
     def:  def ds
     uses: ax_16 = Mem0[ds:si_10:word16]
@@ -198,9 +198,9 @@ si_17: orig: si
 dx_18: orig: dx
     def:  dx_18 = dx_11 + ax_16
     uses: SCZO_19 = cond(dx_18)
-          dx_11 = PHI(dx_2, dx_18, dx_18)
-          dx_11 = PHI(dx_2, dx_18, dx_18)
           Mem29[ds:0x0300:word16] = dx_18
+          dx_11 = PHI(dx_2, dx_18, dx_18)
+          dx_11 = PHI(dx_2, dx_18, dx_18)
 SCZO_19: orig: SCZO
     def:  SCZO_19 = cond(dx_18)
     uses: C_20 = SCZO_19 (alias)
@@ -222,8 +222,8 @@ cx_24: orig: cx
 di_25: orig: di
     def:  di_25 = di_13 - 0x0001
     uses: SZO_26 = cond(di_25)
-          di_13 = PHI(di_8, di_13, di_25)
           branch di_25 != 0x0000 l0C00_0008
+          di_13 = PHI(di_8, di_13, di_25)
 SZO_26: orig: SZO
     def:  SZO_26 = cond(di_25)
     uses: Z_27 = SZO_26 (alias)

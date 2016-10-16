@@ -184,6 +184,10 @@ namespace Reko.Core
         {
         }
 
+        public void RemoveExpressionUse(Expression expr)
+        {
+        }
+
         public void SetValue(Identifier id, Expression value)
         {
             if (id.Storage is TemporaryStorage)

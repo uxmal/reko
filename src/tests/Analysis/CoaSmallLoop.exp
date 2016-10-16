@@ -30,8 +30,8 @@ cx_11: orig: cx
 ax_12: orig: ax
 ax_13: orig: ax
     def:  ax_13 = ax_10 + cx_11 + cx_11
-    uses: ax_10 = PHI(ax_2, ax_13)
-          Mem18[ds:0x0300:word16] = ax_13
+    uses: Mem18[ds:0x0300:word16] = ax_13
+          ax_10 = PHI(ax_2, ax_13)
 SCZO_14: orig: SCZO
 C_15: orig: C
 SZO_16: orig: SZO

@@ -260,8 +260,8 @@ bx_26: orig: bx
     uses: bh_27 = SLICE(bx_26, byte, 8) (alias)
           bl_28 = (byte) bx_26 (alias)
           SZO_29 = cond(bx_26)
-          bx_9 = PHI(bx_6, bx_26)
           branch bx_26 >= 0x0000 l0C00_000C
+          bx_9 = PHI(bx_6, bx_26)
 bh_27: orig: bh
     def:  bh_27 = SLICE(bx_26, byte, 8) (alias)
     uses: bh_10 = PHI(bh_7, bh_27)

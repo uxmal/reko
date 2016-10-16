@@ -156,6 +156,11 @@ namespace Reko.Analysis
                 throw new NotImplementedException();
             }
 
+            public void RemoveExpressionUse(Expression exp)
+            {
+                throw new NotImplementedException();
+            }
+
             public void SetValue(Identifier id, Expression value)
             {
                 throw new NotImplementedException();

@@ -6512,10 +6512,9 @@ l004087D0:
 	word32 lo_288 = (word32) ((dwLoc78 >> 0x00) *s 0x00);
 	uint32 r20_269 = r24_259 + ((SLICE(hi_lo_250, word32, 32) + (word32) (dwLoc5C *s 0x00)) + (word32) ((dwLoc78 >> 0x00) *s dwLoc60)) + (word32) (r21_264 < lo_251);
 	int32 dwLoc30_238 = 0x00;
-	int32 dwLoc2C_239 = 0x00;
-	Eq_8354 lo_276 = (word32) hi_lo_275;
+	Eq_8352 lo_276 = (word32) hi_lo_275;
 	word32 r16_280 = SLICE(hi_lo_275, word32, 32) + (word32) (dwLoc5C *s dwLoc78);
-	Eq_8362 lo_282 = (word32) hi_lo_281;
+	Eq_8360 lo_282 = (word32) hi_lo_281;
 	word32 r18_290 = SLICE(hi_lo_281, word32, 32) + (word32) ((dwLoc60 >> 0x00) *s 0x00) + lo_288;
 	word32 lo_292 = (word32) (dwLoc74 *s dwLoc60);
 	if ((word32) (r20_269 < r24_259) != 0x00)
@@ -6533,17 +6532,17 @@ l004087D0:
 			{
 l00408924:
 				dwLoc30_238 = 0x01;
-				dwLoc2C_239 = 0x00;
 				goto l00408934;
 			}
 		}
 l00408934:
 		uint32 r10_305 = r16_296 + (lo_288 + -0x01) + (word32) (lo_276 < 0x00);
+		int32 dwLoc2C_295 = 0x00;
 		if ((word32) (r10_305 < r16_296) != 0x00)
 		{
 l00408978:
 			dwLoc30_238 = dwLoc30_238 + (word32) false;
-			dwLoc2C_239 = 0x01;
+			dwLoc2C_295 = 0x01;
 			goto l00408998;
 		}
 		else
@@ -6555,9 +6554,9 @@ l00408978:
 					goto l00408978;
 			}
 l00408998:
-			Eq_8354 r7_352;
+			Eq_8352 r7_352;
 			word32 r5_315 = (r20_269 >>u 0x00) + -0x01 + lo_282;
-			Eq_8362 r13_326 = *r5_315.u1;
+			Eq_8360 r13_326 = *r5_315.u1;
 			uint32 r12_332 = dwLoc30_238 + (r18_290 + (word32) (r5_315 < lo_282)) + (word32) (r13_326 < r5_315);
 			uint32 r6_340 = r10_305;
 			if ((word32) (0x1FFFFFFF < r12_332) != 0x00)
@@ -6581,12 +6580,13 @@ l00408998:
 			{
 				while (true)
 				{
-					r12_332 = r12_332 << 0x01 | r13_326 >> 0x1F;
+					uint32 r12_418 = r12_332 << 0x01 | r13_326 >> 0x1F;
 					r13_326 = r13_326 << 0x01;
 					if ((r7_352 | r6_340 + 0x80000000) != 0x00)
 						r13_326 = r13_326 | 0x01;
+					r12_332 = r12_418;
 					r6_340 = r6_340 << 0x01 | r7_352 >> 0x1F;
-					if ((word32) (0x0FFFFFFF < r12_332) != 0x00)
+					if ((word32) (0x0FFFFFFF < r12_418) != 0x00)
 						break;
 					r7_352 = r7_352 << 0x01;
 				}

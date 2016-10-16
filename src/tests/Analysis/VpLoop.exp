@@ -67,8 +67,8 @@ Mem2: orig: Mem0
 r0_3: orig: r0
     def:  r0_3 = r0_1 - 0x00000004
     uses: Z_4 = cond(r0_3)
-          r0_1 = PHI(r0, r0_3)
           branch r0_3 != 0x00000000 l0000
+          r0_1 = PHI(r0, r0_3)
 Z_4: orig: Z
     def:  Z_4 = cond(r0_3)
 r0_5: orig: r0
