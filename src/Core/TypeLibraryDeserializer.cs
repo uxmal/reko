@@ -86,7 +86,7 @@ namespace Reko.Core
                 foreach (var g in sLib.Globals.Where(gg => !string.IsNullOrEmpty(gg.Name) && gg.Type != null))
                 {
                     var dt = this.LoadType(g.Type);
-                    mod.Globals[g.Name] = dt;
+                    mod.GlobalsByName[g.Name] = dt;
                     library.Globals[g.Name] = dt;       //$REVIEW: How to cope with colissions MODULE1!foo and MODULE2!foo?
                 }
             }

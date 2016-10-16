@@ -30,7 +30,7 @@ namespace Reko.Core
     /// <summary>
     /// Represents a reference to an external symbol from another module.
     /// </summary>
-    public abstract class ImportReference
+    public abstract class ImportReference : IComparable<ImportReference>
     {
         public Address ReferenceAddress;
         public string ModuleName;
@@ -43,6 +43,8 @@ namespace Reko.Core
 
         public abstract Identifier ResolveImportedGlobal(IImportResolver importResolver, IPlatform platform, AddressContext ctx);
         public abstract ExternalProcedure ResolveImportedProcedure(IImportResolver importResolver, IPlatform platform, AddressContext ctx);
+
+        public abstract int CompareTo(ImportReference that);
     }
 
     public class NamedImportReference : ImportReference
@@ -53,6 +55,22 @@ namespace Reko.Core
             : base(addr, moduleName)
         {
             this.ImportName = importName;
+        }
+
+        public override int CompareTo(ImportReference that)
+        {
+            if (this.GetType() != that.GetType())
+            {
+                return this.GetType().FullName.CompareTo(this.GetType().FullName);
+            }
+            int cmp = this.ModuleName.CompareTo(that.ModuleName);
+            if (cmp != 0)
+                return cmp;
+            cmp = string.Compare(
+                this.ImportName,
+                ((NamedImportReference)that).ImportName,
+                StringComparison.InvariantCulture);
+            return cmp;
         }
 
         public override Identifier ResolveImportedGlobal(
@@ -103,9 +121,23 @@ namespace Reko.Core
             this.Ordinal = ordinal;
         }
 
+        public override int CompareTo(ImportReference that)
+        {
+            if (this.GetType() != that.GetType())
+            {
+                return this.GetType().FullName.CompareTo(this.GetType().FullName);
+            }
+            int cmp = this.ModuleName.CompareTo(that.ModuleName);
+            if (cmp != 0)
+                return cmp;
+            cmp = this.Ordinal.CompareTo(((OrdinalImportReference)that).Ordinal);
+            return cmp;
+        }
+
         public override Identifier ResolveImportedGlobal(IImportResolver importResolver, IPlatform platform, AddressContext ctx)
         {
             ctx.Warn("Ordinal global imports not supported. Please report this message to the Reko maintainers (https://github.com/uxmal/reko).");
+            var id = importResolver.ResolveGlobal(ModuleName, Ordinal, platform);
             return null;
         }
 

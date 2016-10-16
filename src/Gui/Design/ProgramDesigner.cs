@@ -43,6 +43,11 @@ namespace Reko.Gui.Design
                 Host.AddComponent(program, program.Platform);
             if (program.ImageMap != null)
                 Host.AddComponents(program, program.SegmentMap.Segments.Values);
+            if (program.ImportReferences.Count > 0)
+            {
+                var des = new ImportDesigner(program);
+                Host.AddComponent(program, des);
+            }
             Host.AddComponent(program, program.Resources);
             SetTreeNodeProperties(program);
         }

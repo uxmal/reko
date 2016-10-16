@@ -35,6 +35,40 @@ namespace Reko.ImageLoaders.Elf
             this.loader = loader;
         }
 
+        public override void Relocate(Program program)
+        {
+            base.Relocate(program);
+
+            LoadImportReferencesFromRelPlt(program.ImportReferences);
+        }
+
+        private void LoadImportReferencesFromRelPlt(Dictionary<Address,ImportReference> importReferences)
+        {
+            var rel_plt = loader.GetSectionInfoByName(".rel.plt");
+            var symtab = rel_plt.LinkedSection;
+
+            var plt = loader.GetSectionInfoByName(".plt");
+            var relRdr = loader.CreateReader(rel_plt.FileOffset);
+
+            uint entries = rel_plt.EntryCount();
+            for (uint i = 0; i < entries; ++i)
+            {
+                uint offset;
+                if (!relRdr.TryReadUInt32(out offset))
+                    return;
+                uint info;
+                if (!relRdr.TryReadUInt32(out info))
+                    return;
+
+                uint sym = info >> 8;
+                string symStr = loader.GetSymbolName(symtab, sym);
+
+                var addr = plt.Address + (i + 1) * plt.EntrySize;
+                importReferences[addr] = new NamedImportReference(
+                    addr, null, symStr);
+            }
+        }
+
         public override void RelocateEntry(Program program, ElfSymbol sym, ElfSection referringSection, Elf32_Rela rela)
         {
             if (loader.Sections.Count <= sym.SectionIndex)

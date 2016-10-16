@@ -251,6 +251,11 @@ namespace Reko.Environments.Windows
             throw new NotImplementedException();
         }
 
+        public Identifier ResolveGlobal(string moduleName, int ordinal, IPlatform platform)
+        {
+            throw new NotImplementedException();
+        }
+
         public class SimulatedProc : ExternalProcedure
         {
             public SimulatedProc(string name, Action<IProcessorEmulator> emulator) : base(name, null) { Emulator = emulator; }
