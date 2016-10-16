@@ -217,7 +217,7 @@ namespace Reko.UnitTests.Analysis
             var loader = new Loader(sc);
             var project = string.IsNullOrEmpty(configFile)
                 ? new Project()
-                : new ProjectLoader(sc, loader).LoadProject(FileUnitTester.MapTestPath(configFile));
+                : new ProjectLoader(sc, loader, eventListener).LoadProject(FileUnitTester.MapTestPath(configFile));
             var scan = new Scanner(
                 program,
                 new ImportResolver(project, program, eventListener),

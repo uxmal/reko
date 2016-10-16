@@ -46,17 +46,23 @@ namespace Reko.Core.Serialization
         private Project project;
         private IProcessorArchitecture arch;
         private IPlatform platform;
+        private DecompilerEventListener listener;
 
-        public ProjectLoader(IServiceProvider services, ILoader loader)
-            : this(services, loader, new Project())
+        public ProjectLoader(IServiceProvider services, ILoader loader, DecompilerEventListener listener)
+            : this(services, loader, new Project(), listener)
         {
         }
 
-        public ProjectLoader(IServiceProvider services, ILoader loader, Project project)
+        public ProjectLoader(
+            IServiceProvider services,
+            ILoader loader,
+            Project project,
+            DecompilerEventListener listener)
             : base(services)
         {
             this.loader = loader;
             this.project = project;
+            this.listener = listener;
         }
 
         /// <summary>
@@ -317,12 +323,7 @@ namespace Reko.Core.Serialization
             if (sUser.Procedures != null)
             {
                 user.Procedures = sUser.Procedures
-                    .Select(sup =>
-                    {
-                        Address addr;
-                        program.Architecture.TryParseAddress(sup.Address, out addr);
-                        return new KeyValuePair<Address, Procedure_v1>(addr, sup);
-                    })
+                    .Select(sup => LoadUserProcedure_v1(program, sup))
                     .Where(kv => kv.Key != null)
                     .ToSortedList(kv => kv.Key, kv => kv.Value);
             }
@@ -501,12 +502,7 @@ namespace Reko.Core.Serialization
             if (sUser.Procedures != null)
             {
                 user.Procedures = sUser.Procedures
-                    .Select(sup =>
-                    {
-                        Address addr;
-                        program.Architecture.TryParseAddress(sup.Address, out addr);
-                        return new KeyValuePair<Address, Procedure_v1>(addr, sup);
-                    })
+                    .Select(sup => LoadUserProcedure_v1(program, sup))
                     .Where(kv => kv.Key != null)
                     .ToSortedList(kv => kv.Key, kv => kv.Value);
             }
@@ -566,12 +562,7 @@ namespace Reko.Core.Serialization
             if (sInput.UserProcedures != null)
             {
                 user.Procedures = sInput.UserProcedures
-                        .Select(sup =>
-                        {
-                            Address addr;
-                            program.Architecture.TryParseAddress(sup.Address, out addr);
-                            return new KeyValuePair<Address, Procedure_v1>(addr, sup);
-                        })
+                        .Select(sup => LoadUserProcedure_v1(program, sup))
                         .Where(kv => kv.Key != null)
                         .ToSortedList(kv => kv.Key, kv => kv.Value);
             }
@@ -595,6 +586,23 @@ namespace Reko.Core.Serialization
                 program.User.Heuristics.Add("shingle");
             }
             program.EnvironmentMetadata = project.LoadedMetadata;
+        }
+
+        private KeyValuePair<Address, Procedure_v1> LoadUserProcedure_v1(
+            Program program,
+            Procedure_v1 sup)
+        {
+            Address addr;
+            program.Architecture.TryParseAddress(sup.Address, out addr);
+            if (!sup.Decompile && sup.Signature == null && string.IsNullOrEmpty(sup.CSignature))
+            {
+                listener.Warn(
+                    listener.CreateAddressNavigator(program, addr),
+                    "User procedure '{0}' has been marked 'no decompile' but its signature " +
+                    "has not been specified.",
+                    sup.Name);
+            }
+            return new KeyValuePair<Address, Procedure_v1>(addr, sup);
         }
 
         public MetadataFile VisitMetadataFile(string projectFilePath, MetadataFile_v3 sMetadata)

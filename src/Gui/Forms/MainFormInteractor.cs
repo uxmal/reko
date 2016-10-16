@@ -279,7 +279,11 @@ namespace Reko.Gui.Forms
             if (fileName == null)
                 return;
             mru.Use(fileName);
-            var projectLoader = new ProjectLoader(Services, loader, this.decompilerSvc.Decompiler.Project);
+            var projectLoader = new ProjectLoader(
+                Services,
+                loader,
+                this.decompilerSvc.Decompiler.Project,
+                this.sc.RequireService<DecompilerEventListener>());
             var metadata = projectLoader.LoadMetadataFile(fileName);
             decompilerSvc.Decompiler.Project.MetadataFiles.Add(metadata);
         }

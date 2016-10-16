@@ -179,7 +179,7 @@ namespace Reko.Gui.Windows.Forms
             this.chkDecompile.Name = "chkDecompile";
             this.chkDecompile.Size = new System.Drawing.Size(102, 17);
             this.chkDecompile.TabIndex = 7;
-            this.chkDecompile.Text = "Decompile body";
+            this.chkDecompile.Text = "Decompile body of this procedure";
             this.chkDecompile.UseVisualStyleBackColor = true;
             // 
             // chkMalloc
