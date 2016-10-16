@@ -278,6 +278,24 @@ done:
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
+        public void DfaCastCast()
+        {
+            var m = new ProcedureBuilder();
+            var r1 = m.Register(1);
+            r1.DataType = PrimitiveType.Real32;
+            var r2 = m.Register(2);
+            r2.DataType = PrimitiveType.Real32;
+            var cast = m.Cast(PrimitiveType.Real64, r1);
+            m.Assign(r2, cast);
+            var castCast = m.Cast(PrimitiveType.Real32, r2);
+            m.Store(m.Word32(0x123408), castCast);
+            m.Return();
+
+            RunFileTest(m, "Analysis/DfaCastCast.txt");
+        }
+
+        [Test]
         [Ignore("Fixing this resolves #318")]
         public void Dfa_318_IncrementedSegmentedPointerOffset()
         {
