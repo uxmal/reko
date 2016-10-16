@@ -51,6 +51,7 @@ namespace Reko.UnitTests.Core.Serialization
         private Dictionary<string, object> loadedOptions;
         private ITypeLibraryLoaderService tlSvc;
         private OperatingEnvironment oe;
+        private DecompilerEventListener listener;
 
         [SetUp]
         public void Setup()
@@ -59,6 +60,7 @@ namespace Reko.UnitTests.Core.Serialization
             this.mockFactory = new MockFactory(mr);
             this.sc = new ServiceContainer();
             this.cfgSvc = mr.Stub<IConfigurationService>();
+            this.listener = mr.Stub<DecompilerEventListener>();
             this.sc.AddService<IConfigurationService>(cfgSvc);
         }
 
@@ -103,7 +105,7 @@ namespace Reko.UnitTests.Core.Serialization
             sc.AddService<IOracleService>(oracle);
             mr.ReplayAll();
 
-            var prld = new ProjectLoader(sc, ldr);
+            var prld = new ProjectLoader(sc, ldr, listener);
             prld.LoadProject(
                 "project.dcproj",
                 new Project_v2
@@ -203,7 +205,7 @@ namespace Reko.UnitTests.Core.Serialization
             Expect_LoadOptions();
             mr.ReplayAll();
 
-            var prld = new ProjectLoader(sc, ldr);
+            var prld = new ProjectLoader(sc, ldr, listener);
             prld.LoadProject("/foo/bar", new MemoryStream(Encoding.UTF8.GetBytes(sExp)));
 
             Assert.AreEqual(2, loadedOptions.Count);
@@ -246,7 +248,7 @@ namespace Reko.UnitTests.Core.Serialization
             Expect_LoadOptions();
             mr.ReplayAll();
 
-            var prld = new ProjectLoader(sc, ldr);
+            var prld = new ProjectLoader(sc, ldr, listener);
             prld.LoadProject("/ff/b/foo.proj", new MemoryStream(Encoding.UTF8.GetBytes(sExp)));
 
             var list = (IList)loadedOptions["Names"];
@@ -282,7 +284,7 @@ namespace Reko.UnitTests.Core.Serialization
 
             mr.ReplayAll();
 
-            var prld = new ProjectLoader(sc, ldr);
+            var prld = new ProjectLoader(sc, ldr, listener);
             prld.LoadProject("c:\\foo\\bar.proj", new MemoryStream(Encoding.UTF8.GetBytes(sproject)));
 
             var list = (IDictionary)loadedOptions["Names"];
@@ -311,7 +313,7 @@ namespace Reko.UnitTests.Core.Serialization
             ldr.Stub(l => l.LoadImageBytes(null, 0)).IgnoreArguments().Return(new byte[1000]);
             mr.ReplayAll();
 
-            var prld = new ProjectLoader(sc, ldr);
+            var prld = new ProjectLoader(sc, ldr, listener);
             var project = prld.LoadProject(OsPath.Absolute("users", "bob", "projects", "foo.project"), sProject);
             Assert.AreEqual(OsPath.Absolute("users", "bob", "projects", "foo.exe"), project.Programs[0].Filename);
         }
@@ -367,7 +369,7 @@ namespace Reko.UnitTests.Core.Serialization
             );
             mr.ReplayAll();
 
-            var prld = new ProjectLoader(sc, ldr);
+            var prld = new ProjectLoader(sc, ldr, listener);
             var project = prld.LoadProject(OsPath.Absolute("foo.project"), sProject);
             Assert.AreEqual(2, project.Programs[0].EnvironmentMetadata.Types.Count);
             Assert.AreEqual(
@@ -394,7 +396,7 @@ namespace Reko.UnitTests.Core.Serialization
             Given_Binary(ldr, platform);
             mr.ReplayAll();
 
-            var prld = new ProjectLoader(sc, ldr);
+            var prld = new ProjectLoader(sc, ldr, listener);
             var project = prld.LoadProject("/foo/bar", new MemoryStream(Encoding.UTF8.GetBytes(sExp)));
 
             Assert.AreEqual(1, project.Programs.Count);
@@ -433,7 +435,7 @@ namespace Reko.UnitTests.Core.Serialization
             oe.Stub(o => o.CharacteristicsLibraries).Return(new List<ITypeLibraryElement>());
             mr.ReplayAll();
 
-            var prld = new ProjectLoader(sc, ldr);
+            var prld = new ProjectLoader(sc, ldr, listener);
             var project = prld.LoadProject("/foo/bar", new MemoryStream(Encoding.UTF8.GetBytes(sExp)));
 
             Assert.AreEqual(1, project.Programs.Count);
@@ -478,7 +480,7 @@ namespace Reko.UnitTests.Core.Serialization
             Given_TestOS();
             mr.ReplayAll();
 
-            var prld = new ProjectLoader(sc, ldr);
+            var prld = new ProjectLoader(sc, ldr, listener);
             var project = prld.LoadProject(
                 @"c:\foo\global_user.proj",
                 sproject);
@@ -489,6 +491,49 @@ namespace Reko.UnitTests.Core.Serialization
             Assert.AreEqual("10000010", globalVariable.Address);
             Assert.AreEqual("testVar", globalVariable.Name);
             Assert.AreEqual("arr(Blob,10)", globalVariable.DataType.ToString());
+        }
+
+        [Test(Description = "Issue #9: if user proc has no Decompile set but no signature provided")]
+        public void Prld_Partial_UserProc()
+        {
+            var sProject = new Project_v4
+            {
+                ArchitectureName = "testArch",
+                PlatformName = "testOS",
+                Inputs =
+                {
+                    new DecompilerInput_v4
+                    {
+                        User = new UserData_v4
+                        {
+                            Procedures =
+                            {
+                                new Procedure_v1
+                                {
+                                    Address = "00123400",
+                                    Decompile = false,
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            var ldr = mockFactory.CreateLoader();
+            Given_TestArch();
+            Given_TestOS();
+            var addrNav = mr.Stub<ICodeLocation>();
+            listener.Stub(l => l.CreateAddressNavigator(null, null))
+                .IgnoreArguments()
+                .Return(addrNav);
+            listener.Expect(l => l.Warn(null, null, null))
+                .IgnoreArguments();
+            mr.ReplayAll();
+
+            var prld = new ProjectLoader(sc, ldr, listener);
+            prld.LoadProject("foo.dcproject", sProject);
+
+            mr.VerifyAll();
         }
     }
 }
