@@ -2,7 +2,7 @@
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  ds:16
 // LiveOut:
-// Trashed: ax
+// Trashed: al ax
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -12,7 +12,7 @@ fn0C00_0000_entry:
 l0C00_0000:
 	word16 ax_5 = Mem0[ds:0x0100:word16]
 	fn0C00_000C(ds)
-	Mem6[ds:0x0102:word16] = ax_5
+	Mem8[ds:0x0102:word16] = DPB(ax_5, al_6, 0)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -21,7 +21,7 @@ fn0C00_0000_exit:
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  ds:16
 // LiveOut:
-// Trashed:
+// Trashed: al
 // Preserved: ax sp
 // fn0C00_000C
 // Return size: 0
