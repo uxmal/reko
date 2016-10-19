@@ -20,6 +20,7 @@
 
 using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
 
 namespace Reko.Core.Expressions
 {
@@ -31,6 +32,11 @@ namespace Reko.Core.Expressions
 		}
 
         public ProcedureBase Procedure { get; private set; }
+
+        public override IEnumerable<Expression> Children
+        {
+            get { yield break; }
+        }
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {

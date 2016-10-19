@@ -21,6 +21,7 @@
 using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Reko.Core.Expressions
@@ -36,6 +37,13 @@ namespace Reko.Core.Expressions
 			this.Left = left;
 			this.Right = right;
 		}
+
+        public override IEnumerable<Expression> Children {
+            get {
+                yield return Left;
+                yield return Right;
+            }
+        }
 
         public Operator Operator { get; private set; } 
         public Expression Left { get; set; }

@@ -20,6 +20,7 @@
 
 using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
 
 namespace Reko.Core.Expressions
 {
@@ -45,6 +46,11 @@ namespace Reko.Core.Expressions
 
         public MemoryIdentifier MemoryId { get; set; }
         public Expression EffectiveAddress { get; set; }
+
+        public override IEnumerable<Expression> Children
+        {
+            get { yield return EffectiveAddress; }
+        }
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {

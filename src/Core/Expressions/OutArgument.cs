@@ -33,8 +33,6 @@ namespace Reko.Core.Expressions
     /// </summary>
     public class OutArgument : Expression
     {
-        public Expression Expression { get; private set; }
-
         /// <summary>
         /// Builds an outparameter.
         /// </summary>
@@ -43,6 +41,13 @@ namespace Reko.Core.Expressions
         public OutArgument(DataType refType, Expression id) : base(refType)
         {
             this.Expression = id;
+        }
+
+        public Expression Expression { get; private set; }
+
+        public override IEnumerable<Expression> Children
+        {
+            get { yield return Expression; }
         }
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)

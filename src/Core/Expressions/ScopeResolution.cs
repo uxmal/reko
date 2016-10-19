@@ -20,6 +20,7 @@
 
 using System;
 using Reko.Core.Types;
+using System.Collections.Generic;
 
 namespace Reko.Core.Expressions
 {
@@ -31,6 +32,11 @@ namespace Reko.Core.Expressions
         public ScopeResolution(DataType dt)
             : base(dt)
         {
+        }
+
+        public override IEnumerable<Expression> Children
+        {
+            get { yield break; }
         }
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
