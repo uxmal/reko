@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Reko.Core.Expressions
@@ -49,6 +50,11 @@ namespace Reko.Core.Expressions
         }
 
         public string Name { get; private set; }
+
+        public override IEnumerable<Expression> Children
+        {
+            get { yield break; }
+        }
 
         /// <summary>
         /// What storage area the identifier refers to.

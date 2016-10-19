@@ -20,7 +20,7 @@ fn0C00_0000_exit:
 // MayUse:  bx:16 ds:16 ss:16
 // LiveOut: ax
 // Trashed: ax sp ss
-// Preserved: sp
+// Preserved:
 // fn0C00_0008
 // Return size: 0
 word16 fn0C00_0008(word16 bx, selector ds)

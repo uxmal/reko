@@ -3,7 +3,7 @@
 // MayUse:  r1:32
 // LiveOut:
 // Trashed: r2
-// Preserved: r63
+// Preserved:
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder(real32 r1)

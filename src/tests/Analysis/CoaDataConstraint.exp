@@ -70,16 +70,14 @@ fp:fp
 sp_2: orig: sp
 sp_3: orig: sp
 ax:ax
-ss:ss
-Mem6: orig: Mem0
+wLoc02_5: orig: wLoc02
 ds:ds
     def:  def ds
-    uses: Mem8[ds:0x0200:word16] = 0xFFFF
-Mem8: orig: Mem0
-    def:  Mem8[ds:0x0200:word16] = 0xFFFF
-ax_9: orig: ax
-sp_10: orig: sp
-wLoc02_11: orig: wLoc02
+    uses: Mem7[ds:0x0200:word16] = 0xFFFF
+Mem7: orig: Mem0
+    def:  Mem7[ds:0x0200:word16] = 0xFFFF
+ax_8: orig: ax
+sp_9: orig: sp
 // fn0C00_002A
 // Return size: 0
 void fn0C00_002A(selector ds)
@@ -87,7 +85,7 @@ fn0C00_002A_entry:
 	def ds
 	// succ:  l0C00_002A
 l0C00_002A:
-	Mem8[ds:0x0200:word16] = 0xFFFF
+	Mem7[ds:0x0200:word16] = 0xFFFF
 	return
 	// succ:  fn0C00_002A_exit
 fn0C00_002A_exit:

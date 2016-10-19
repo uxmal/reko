@@ -7,7 +7,7 @@ sp_2: orig: sp
 bp_3: orig: bp
     def:  bp_3 = sp_2
     uses: ax_6 = Mem0[ss:bp_3 + 0x0006:word16]
-          sp_13 = bp_3
+          sp_12 = bp_3
           use bp_3
 ss:ss
     def:  def ss
@@ -22,34 +22,23 @@ ax_6: orig: ax
 ax_7: orig: ax
     def:  ax_7 = ax_6 | ax_6
     uses: SZO_8 = cond(ax_7)
-          ax_14 = PHI(ax_7, ax_11)
+          ax_13 = PHI(ax_7, ax_10)
 SZO_8: orig: SZO
     def:  SZO_8 = cond(ax_7)
-    uses: Z_10 = SLICE(SZO_8, bool, 2) (alias)
-          O_17 = SLICE(SZO_8, bool, 4) (alias)
-          S_19 = SLICE(SZO_8, bool, 0) (alias)
+    uses: branch Test(NE,SZO_8) l0C00_000C
+          use C_9 | SZO_8
 C_9: orig: C
     def:  C_9 = false
-    uses: use C_9
-Z_10: orig: Z
-    def:  Z_10 = SLICE(SZO_8, bool, 2) (alias)
-    uses: branch Test(NE,Z_10) l0C00_000C
-          use Z_10
-ax_11: orig: ax
-    def:  ax_11 = 0xFFFF
-    uses: ax_14 = PHI(ax_7, ax_11)
-sp_13: orig: sp
-    def:  sp_13 = bp_3
-    uses: use sp_13
-ax_14: orig: ax
-    def:  ax_14 = PHI(ax_7, ax_11)
-    uses: use ax_14
-O_17: orig: O
-    def:  O_17 = SLICE(SZO_8, bool, 4) (alias)
-    uses: use O_17
-S_19: orig: S
-    def:  S_19 = SLICE(SZO_8, bool, 0) (alias)
-    uses: use S_19
+    uses: use C_9 | SZO_8
+ax_10: orig: ax
+    def:  ax_10 = 0xFFFF
+    uses: ax_13 = PHI(ax_7, ax_10)
+sp_12: orig: sp
+    def:  sp_12 = bp_3
+    uses: use sp_12
+ax_13: orig: ax
+    def:  ax_13 = PHI(ax_7, ax_10)
+    uses: use ax_13
 // fn0C00_0000
 // Return size: 2
 define fn0C00_0000
@@ -64,26 +53,20 @@ l0C00_0000:
 	ax_6 = Mem0[ss:bp_3 + 0x0006:word16]
 	ax_7 = ax_6 | ax_6
 	SZO_8 = cond(ax_7)
-	Z_10 = SLICE(SZO_8, bool, 2) (alias)
-	O_17 = SLICE(SZO_8, bool, 4) (alias)
-	S_19 = SLICE(SZO_8, bool, 0) (alias)
 	C_9 = false
-	branch Test(NE,Z_10) l0C00_000C
+	branch Test(NE,SZO_8) l0C00_000C
 	// succ:  l0C00_0009 l0C00_000C
 l0C00_0009:
-	ax_11 = 0xFFFF
+	ax_10 = 0xFFFF
 	// succ:  l0C00_000C
 l0C00_000C:
-	ax_14 = PHI(ax_7, ax_11)
-	sp_13 = bp_3
+	ax_13 = PHI(ax_7, ax_10)
+	sp_12 = bp_3
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
-	use ax_14
+	use ax_13
 	use bp_3
-	use C_9
-	use O_17
-	use S_19
-	use sp_13
-	use Z_10
+	use C_9 | SZO_8
+	use sp_12
 

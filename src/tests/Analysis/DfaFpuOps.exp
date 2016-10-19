@@ -2,7 +2,7 @@
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  ds:0
 // LiveOut:
-// Trashed: SCZO bx
+// Trashed:   bx SCZO
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -20,7 +20,7 @@ fn0C00_0000_exit:
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  ds:16 Stack +0002:16 Stack +0004:16
 // LiveOut:
-// Trashed: bx
+// Trashed:   bx
 // Preserved: bp sp
 // fn0C00_0010
 // Return size: 0
@@ -41,7 +41,7 @@ fn0C00_0010_exit:
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  ds:16
 // LiveOut:
-// Trashed:
+// Trashed: 
 // Preserved: sp
 // fn0C00_0037
 // Return size: 0

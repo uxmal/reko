@@ -46,6 +46,11 @@ namespace Reko.Core.Expressions
         public ConditionCode ConditionCode { get; set; }
         public Expression Expression { get; set; }
 
+        public override IEnumerable<Expression> Children
+        {
+            get { yield return Expression; }
+        }
+
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {
             return v.VisitTestCondition(this, context);

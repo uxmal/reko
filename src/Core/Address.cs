@@ -100,6 +100,7 @@ namespace Reko.Core
             }
         }
 
+        public override IEnumerable<Expression> Children { get { yield break; } }
         public abstract bool IsNull { get; }
         public abstract ulong Offset { get; }
         public abstract ushort? Selector { get; }			// Segment selector; return null if the address is linear.

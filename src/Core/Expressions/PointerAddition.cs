@@ -20,6 +20,7 @@
 
 using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
 
 namespace Reko.Core.Expressions
 {
@@ -32,6 +33,11 @@ namespace Reko.Core.Expressions
 
         public Expression Pointer { get; private set; }
         public int Offset { get; private set; }
+
+        public override IEnumerable<Expression> Children
+        {
+            get { yield return Pointer; }
+        }
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {

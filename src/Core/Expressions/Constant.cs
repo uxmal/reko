@@ -22,6 +22,7 @@ using Reko.Core.Types;
 using System;
 using System.IO;
 using System.Globalization;
+using System.Collections.Generic;
 
 namespace Reko.Core.Expressions
 {
@@ -160,8 +161,13 @@ namespace Reko.Core.Expressions
 			return new ConstantBool(PrimitiveType.Bool, false);
 		}
 
+        public override IEnumerable<Expression> Children
+        {
+            get { yield break; }
+        }
+
         public abstract object GetValue();
-	
+
         private static double IntPow(double b, int e)
 		{
 			double acc = 1.0;

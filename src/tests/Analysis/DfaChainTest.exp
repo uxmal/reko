@@ -1,8 +1,8 @@
 // void fn0C00_0000(Register selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse:  ds:16 ss:0
+// MayUse:  ds:16
 // LiveOut:
-// Trashed: SCZO ax dx
+// Trashed: ax dx SCZO
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -10,16 +10,16 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem12[ds:0x012C:word16] = fn0C00_000B(0x001E)
+	Mem8[ds:0x012C:word16] = fn0C00_000B(0x001E)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 
 // Register word16 fn0C00_000B(Register word16 dx)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse:  dx:0 ss:0
+// MayUse:  dx:0
 // LiveOut: ax
-// Trashed: SCZO ax dx
+// Trashed: ax dx SCZO
 // Preserved: sp
 // fn0C00_000B
 // Return size: 0
@@ -33,10 +33,10 @@ fn0C00_000B_exit:
 
 // Register word16 fn0C00_000F(Register word16 dx)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse:  dx:2 ss:16
+// MayUse:  dx:2
 // LiveOut: ax
-// Trashed: SCZO ax dx
-// Preserved: si sp
+// Trashed: ax dx SCZO
+// Preserved: si sp ss
 // fn0C00_000F
 // Return size: 0
 word16 fn0C00_000F(word16 dx)

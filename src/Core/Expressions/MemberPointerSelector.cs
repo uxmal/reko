@@ -20,6 +20,7 @@
 
 using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
 
 namespace Reko.Core.Expressions
 {
@@ -39,6 +40,11 @@ namespace Reko.Core.Expressions
 
         public Expression BasePointer { get; set; }
         public Expression MemberPointer { get; set; }
+
+        public override IEnumerable<Expression> Children
+        {
+            get { yield return BasePointer; yield return MemberPointer; }
+        }
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {

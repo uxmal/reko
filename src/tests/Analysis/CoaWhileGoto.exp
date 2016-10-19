@@ -2,8 +2,8 @@ fp:fp
 sp_2: orig: sp
 si:si
     def:  def si
-    uses: ax_23 = si_9 - si
-          si_6 = PHI(si, si_9, si_9)
+    uses: si_6 = PHI(si, si_9, si_9)
+          ax_23 = si_9 - si
 bx_4: orig: bx
 ds_5: orig: ds
     def:  ds_5 = PHI(ds, ds_5, ds_5)
@@ -22,9 +22,9 @@ ax_8: orig: ax
           branch ax_8 != 0x000D l0C00_001A
 si_9: orig: si
     def:  si_9 = si_6 + 0x0002
-    uses: ax_23 = si_9 - si
+    uses: si_6 = PHI(si, si_9, si_9)
           si_6 = PHI(si, si_9, si_9)
-          si_6 = PHI(si, si_9, si_9)
+          ax_23 = si_9 - si
 SCZO_10: orig: SCZO
 di_11: orig: di
     def:  di_11 = PHI(di, di_11, di_11)
@@ -71,15 +71,6 @@ Mem0:Global memory
 di:di
     def:  def di
     uses: Mem12[ds:di:word16] = ax_8
-bx_31: orig: bx
-C_32: orig: C
-di_33: orig: di
-O_34: orig: O
-S_35: orig: S
-sp_37: orig: sp
-sp_38: orig: sp
-    def:  sp_38 = PHI(sp_2, sp_38, sp_38)
-Z_39: orig: Z
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(word16 si, word16 di, selector ds)

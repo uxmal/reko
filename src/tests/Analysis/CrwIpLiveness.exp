@@ -1,7 +1,7 @@
 void fn0C00_0000(Register selector ds)
 // MayUse:  ds:16
 // LiveOut:
-// Trashed: SCZO ax bx di si
+// Trashed: ax bx di SCZO si
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -13,6 +13,7 @@ void fn0C00_0000(Register selector ds)
 // si:si
 // ax:ax
 // bx:bx
+// SCZO:Flags
 // S:Flags
 // C:Flags
 // Z:Flags
@@ -27,22 +28,22 @@ l0C00_0000:
 	di_5 = Mem0[ds:0x0100:word16]
 	si_6 = Mem0[ds:di_5:word16]
 	ax_7 = fn0C00_0026(si_6, ds)
-	Mem12[ds:di_5 + 0x0002:word16] = ax_7
-	bx_13 = Mem12[ds:0x0102:word16]
-	si_14 = Mem12[ds:bx_13 + 0x0004:word16]
-	ax_15 = fn0C00_0026(si_14, ds)
-	Mem20[ds:bx_13 + 0x0008:word16] = ax_15
-	di_21 = Mem20[ds:0x0104:word16]
-	si_22 = Mem20[ds:di_21:word16]
-	ax_23 = fn0C00_0033(si_22, ds)
-	Mem28[ds:di_21 + 0x0002:word16] = ax_23
+	Mem9[ds:di_5 + 0x0002:word16] = ax_7
+	bx_10 = Mem9[ds:0x0102:word16]
+	si_11 = Mem9[ds:bx_10 + 0x0004:word16]
+	ax_12 = fn0C00_0026(si_11, ds)
+	Mem14[ds:bx_10 + 0x0008:word16] = ax_12
+	di_15 = Mem14[ds:0x0104:word16]
+	si_16 = Mem14[ds:di_15:word16]
+	ax_17 = fn0C00_0033(si_16, ds)
+	Mem19[ds:di_15 + 0x0002:word16] = ax_17
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 Register word16 fn0C00_0026(Register word16 si, Register selector ds)
 // MayUse:  ds:16 si:0
 // LiveOut: ax
-// Trashed: SCZO ax
+// Trashed: ax SCZO
 // Preserved: di sp
 // fn0C00_0026
 // Return size: 0
@@ -56,11 +57,12 @@ Register word16 fn0C00_0026(Register word16 si, Register selector ds)
 // SZO:Flags
 // si:si
 // ax:ax
+// SCZO:Flags
+// wLoc02:Local -0002
 // S:Flags
 // C:Flags
 // Z:Flags
 // O:Flags
-// wLoc02:Local -0002
 // return address size: 2
 word16 fn0C00_0026(word16 si, selector ds)
 fn0C00_0026_entry:
@@ -75,10 +77,11 @@ l0C00_0026:
 	return ax_13
 	// succ:  fn0C00_0026_exit
 fn0C00_0026_exit:
+	use ax_13
 Register word16 fn0C00_0033(Register word16 si, Register selector ds)
 // MayUse:  ds:16 si:16
 // LiveOut: ax
-// Trashed: SCZO ax
+// Trashed: ax SCZO
 // Preserved: sp
 // fn0C00_0033
 // Return size: 0
@@ -103,6 +106,8 @@ fn0C00_0033_entry:
 l0C00_0033:
 	ax_6 = Mem0[ds:si:word16]
 	ax_7 = ax_6 * 0x0002
+	SCZO_8 = cond(ax_6 * 0x0002)
 	return ax_7
 	// succ:  fn0C00_0033_exit
 fn0C00_0033_exit:
+	use ax_7
