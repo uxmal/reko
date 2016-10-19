@@ -18,20 +18,18 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Serialization;
-using Reko.Core.Types;
-using Reko.Loading;
 using NUnit.Framework;
+using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Core.Serialization;
+using Reko.Core.Services;
+using Reko.Core.Types;
 using Rhino.Mocks;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using Reko.Core.Configuration;
-using System.Diagnostics;
 
 namespace Reko.UnitTests.Core.Serialization
 {
@@ -44,6 +42,7 @@ namespace Reko.UnitTests.Core.Serialization
         private IProcessorArchitecture arch;
         private IConfigurationService cfgSvc;
         private IPlatform platform;
+        private DecompilerEventListener listener;
 
         [SetUp]
         public void Setup()
@@ -52,6 +51,7 @@ namespace Reko.UnitTests.Core.Serialization
             this.sc = new ServiceContainer();
             loader = mr.Stub<ILoader>();
             arch = mr.StrictMock<IProcessorArchitecture>();
+            this.listener = mr.Stub<DecompilerEventListener>();
             Address dummy;
             arch.Stub(a => a.TryParseAddress(null, out dummy)).IgnoreArguments().WhenCalled(m =>
             {
@@ -187,7 +187,7 @@ namespace Reko.UnitTests.Core.Serialization
                     }
                 }
             };
-            var ps = new ProjectLoader(sc, loader);
+            var ps = new ProjectLoader(sc, loader, listener);
             var p = ps.LoadProject("c:\\tmp\\fproj.proj", sp);
             Assert.AreEqual(1, p.Programs.Count);
             var inputFile = p.Programs[0]; 

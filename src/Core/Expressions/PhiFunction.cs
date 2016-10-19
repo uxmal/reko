@@ -20,6 +20,7 @@
 
 using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Reko.Core.Expressions
@@ -35,6 +36,11 @@ namespace Reko.Core.Expressions
 		}
 
         public Expression[] Arguments { get; private set; }
+
+        public override IEnumerable<Expression> Children
+        {
+            get { return Arguments; }
+        }
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {

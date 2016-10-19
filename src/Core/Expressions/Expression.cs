@@ -23,6 +23,8 @@ using Reko.Core.Types;
 using Reko.Core.Output;
 using System;
 using System.IO;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Reko.Core.Expressions
 {
@@ -35,6 +37,12 @@ namespace Reko.Core.Expressions
         {
             this.DataType = dataType;
         }
+
+        /// <summary>
+        /// Returns the direct children of this expression, in left-to-right
+        /// order.
+        /// </summary>
+        public abstract IEnumerable<Expression> Children { get; }
 
         /// <summary>
         /// Data type of this expression.
@@ -59,6 +67,7 @@ namespace Reko.Core.Expressions
         public abstract void Accept(IExpressionVisitor visitor);
         public abstract T Accept<T>(ExpressionVisitor<T> visitor);
         public abstract T Accept<T, C>(ExpressionVisitor<T, C> visitor, C context);
+
         public abstract Expression CloneExpression();
 
         /// <summary>

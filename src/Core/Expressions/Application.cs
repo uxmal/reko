@@ -21,6 +21,8 @@
 using Reko.Core.Operators;
 using Reko.Core.Types;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Reko.Core.Expressions
 {
@@ -34,6 +36,11 @@ namespace Reko.Core.Expressions
 			this.Procedure = proc;
 			this.Arguments = arguments;
 		}
+
+        public override IEnumerable<Expression> Children
+        {
+            get { return new Expression[] { Procedure }.Concat(Arguments); }
+        }
 
         public Expression Procedure { get; set; }
         public Expression[] Arguments { get; set; }

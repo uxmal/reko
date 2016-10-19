@@ -364,6 +364,11 @@ namespace Reko.Core.Expressions
                 this.Label = label;
             }
 
+            public override IEnumerable<Expression> Children
+            {
+                get { yield break; }
+            }
+
             public string Label { get; private set; }
 
             public override Expression CloneExpression()
@@ -421,6 +426,11 @@ namespace Reko.Core.Expressions
             }
 
             public string Label { get; private set; }
+
+            public override IEnumerable<Expression> Children
+            {
+                get { yield break; }
+            }
 
             public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
             {

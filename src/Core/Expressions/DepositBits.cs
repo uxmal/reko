@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Reko.Core.Expressions
@@ -49,6 +50,11 @@ namespace Reko.Core.Expressions
 			this.bits = bits;
 			this.bitPos = bitPos;
 		}
+
+        public override IEnumerable<Expression> Children
+        {
+            get { yield return Source; yield return InsertedBits ; }
+        }
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
         {

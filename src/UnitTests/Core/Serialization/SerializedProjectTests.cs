@@ -48,6 +48,7 @@ namespace Reko.UnitTests.Core.Serialization
         private IProcessorArchitecture arch;
         private IPlatform platform;
         private IConfigurationService cfgSvc;
+        private DecompilerEventListener listener;
 
         [SetUp]
         public void Setup()
@@ -55,6 +56,7 @@ namespace Reko.UnitTests.Core.Serialization
             this.mr = new MockRepository();
             this.mockFactory = new MockFactory(mr);
             this.cfgSvc = mr.Stub<IConfigurationService>();
+            this.listener = mr.Stub<DecompilerEventListener>();
             this.sc = new ServiceContainer();
             sc.AddService<IFileSystemService>(new FileSystemServiceImpl('/'));
             sc.AddService<IConfigurationService>(cfgSvc);
@@ -331,7 +333,7 @@ namespace Reko.UnitTests.Core.Serialization
             };
             mr.ReplayAll();
 
-            var ps = new ProjectLoader(sc, loader);
+            var ps = new ProjectLoader(sc, loader, listener);
             var project = ps.LoadProject("project.dcproj", sProject);
             Assert.AreEqual(2, project.Programs.Count);
             var input0 = project.Programs[0];
@@ -452,7 +454,7 @@ namespace Reko.UnitTests.Core.Serialization
             sc.AddService<IOracleService>(oracle);
             mr.ReplayAll();
 
-            var ploader = new ProjectLoader(sc, loader);
+            var ploader = new ProjectLoader(sc, loader, listener);
             var project = ploader.LoadProject("c:\\bar\\bar.dcproj", sProject);
             Assert.AreEqual(1, project.MetadataFiles.Count);
             Assert.AreEqual("c:\\tmp\\foo.def", project.MetadataFiles[0].Filename);
@@ -508,7 +510,7 @@ namespace Reko.UnitTests.Core.Serialization
                 });
             mr.ReplayAll();
 
-            var ploader = new ProjectLoader(sc, loader);
+            var ploader = new ProjectLoader(sc, loader, listener);
             var project = ploader.LoadProject("c:\\tmp\\foo\\bar.proj", sProject);
             Assert.IsTrue(project.Programs[0].User.Heuristics.Contains("HeuristicScanning"));
             Assert.AreEqual("windows-1251", project.Programs[0].User.TextEncoding.WebName);

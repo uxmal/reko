@@ -195,7 +195,7 @@ namespace Reko
         {
             eventListener.ShowStatus("Loading source program.");
             byte[] image = loader.LoadImageBytes(fileName, 0);
-            var projectLoader = new ProjectLoader(this.services, loader);
+            var projectLoader = new ProjectLoader(this.services, loader, eventListener);
             projectLoader.ProgramLoaded += (s, e) => { RunScriptOnProgramImage(e.Program, e.Program.User.OnLoadedScript); };
             Project = projectLoader.LoadProject(fileName, image);
             bool isProject;
