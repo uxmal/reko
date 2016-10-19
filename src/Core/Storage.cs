@@ -137,7 +137,7 @@ namespace Reko.Core
         public FlagRegister(string name, int flagDomain, PrimitiveType size) :
             base(
                 name,
-                (flagDomain + (int)StorageDomain.Flags - (int)StorageDomain.Flags),
+                (flagDomain + (int)StorageDomain.Flags),
                 0,
                 size)
         {

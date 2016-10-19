@@ -140,10 +140,10 @@ namespace Reko.UnitTests.Mocks
         {
             var sb = new StringBuilder();
             if (((uint)grf & 0x01) != 0) sb.Append('S');
-            if (((uint)grf & 0x02) != 0) sb.Append('C');
-            if (((uint)grf & 0x04) != 0) sb.Append('Z');
-            if (((uint)grf & 0x10) != 0) sb.Append('O');
-            if (((uint)grf & 0x20) != 0) sb.Append('O');
+            if (((uint)grf & 0x02) != 0) sb.Append('Z');
+            if (((uint)grf & 0x04) != 0) sb.Append('C');
+            if (((uint)grf & 0x08) != 0) sb.Append('V');
+            if (((uint)grf & 0x10) != 0) sb.Append('X');
             if (sb.Length == 0)
                 return null;
             return new FlagGroupStorage(flags, grf, sb.ToString(), PrimitiveType.Byte);
@@ -157,12 +157,10 @@ namespace Reko.UnitTests.Mocks
                 switch (char.ToUpper(s[i]))
                 {
                 case 'S': grf |= 0x01; break;
-                case 'C': grf |= 0x02; break;
-                case 'Z': grf |= 0x04; break;
-                case 'O': grf |= 0x10; break;
-                case 'V': grf |= 0x10; break;
-                case 'X': grf |= 0x20; break;
-
+                case 'Z': grf |= 0x02; break;
+                case 'C': grf |= 0x04; break;
+                case 'V': grf |= 0x08; break;
+                case 'X': grf |= 0x10; break;
                 }
             }
             if (grf != 0)

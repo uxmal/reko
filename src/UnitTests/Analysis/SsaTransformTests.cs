@@ -322,48 +322,61 @@ proc1_exit:
     uses: r63_2 = fp
           r63_3 = fp - 0x00000004
           bp_6 = fp - 0x00000004
-          r63_13 = fp
+          r63_16 = fp
 r63_2: orig: r63
     def:  r63_2 = fp
 r63_3: orig: r63
     def:  r63_3 = fp - 0x00000004
 bp:bp
     def:  def bp
-    uses: dwLoc04_14 = bp
+    uses: dwLoc04_17 = bp
 Mem5: orig: Mem0
-    uses: CZS_7 = cond(wArg04 - 0x0003)
-          bp_12 = dwLoc04_14
+    uses: SZC_7 = cond(wArg04 - 0x0003)
+          bp_15 = dwLoc04_17
 bp_6: orig: bp
     def:  bp_6 = fp - 0x00000004
-CZS_7: orig: CZS
-    def:  CZS_7 = cond(wArg04 - 0x0003)
-    uses: branch Test(GE,CZS_7) ge3
-          use CZS_7
-r1_8: orig: r1
-    def:  r1_8 = 0x00000001
-    uses: r1_19 = PHI(r1_9, r1_8)
-r1_9: orig: r1
-    def:  r1_9 = 0x00000000
-    uses: r1_19 = PHI(r1_9, r1_8)
-r63_10: orig: r63
-    def:  r63_10 = PHI(r63_3, r63_3)
-Mem11: orig: Mem0
-    def:  Mem11 = PHI(Mem5, Mem5)
-bp_12: orig: bp
-    def:  bp_12 = dwLoc04_14
-    uses: use bp_12
+SZC_7: orig: SZC
+    def:  SZC_7 = cond(wArg04 - 0x0003)
+    uses: S_8 = SLICE(SZC_7, bool, 0) (alias)
+          Z_9 = SLICE(SZC_7, bool, 1) (alias)
+          C_10 = SLICE(SZC_7, bool, 2) (alias)
+S_8: orig: S
+    def:  S_8 = SLICE(SZC_7, bool, 0) (alias)
+    uses: branch Test(GE,C_10 | S_8 | Z_9) ge3
+          use S_8
+Z_9: orig: Z
+    def:  Z_9 = SLICE(SZC_7, bool, 1) (alias)
+    uses: branch Test(GE,C_10 | S_8 | Z_9) ge3
+          use Z_9
+C_10: orig: C
+    def:  C_10 = SLICE(SZC_7, bool, 2) (alias)
+    uses: branch Test(GE,C_10 | S_8 | Z_9) ge3
+          use C_10
+r1_11: orig: r1
+    def:  r1_11 = 0x00000001
+    uses: r1_21 = PHI(r1_12, r1_11)
+r1_12: orig: r1
+    def:  r1_12 = 0x00000000
+    uses: r1_21 = PHI(r1_12, r1_11)
 r63_13: orig: r63
-    def:  r63_13 = fp
-    uses: use r63_13
-dwLoc04_14: orig: dwLoc04
-    def:  dwLoc04_14 = bp
-    uses: bp_12 = dwLoc04_14
+    def:  r63_13 = PHI(r63_3, r63_3)
+Mem14: orig: Mem0
+    def:  Mem14 = PHI(Mem5, Mem5)
+bp_15: orig: bp
+    def:  bp_15 = dwLoc04_17
+    uses: use bp_15
+r63_16: orig: r63
+    def:  r63_16 = fp
+    uses: use r63_16
+dwLoc04_17: orig: dwLoc04
+    def:  dwLoc04_17 = bp
+    uses: bp_15 = dwLoc04_17
 wArg04:Stack +0004
     def:  def wArg04
-    uses: CZS_7 = cond(wArg04 - 0x0003)
-r1_19: orig: r1
-    def:  r1_19 = PHI(r1_9, r1_8)
-    uses: use r1_19
+    uses: SZC_7 = cond(wArg04 - 0x0003)
+r1_21: orig: r1
+    def:  r1_21 = PHI(r1_12, r1_11)
+    uses: use r1_21
 // proc1
 // Return size: 0
 define proc1
@@ -374,32 +387,37 @@ proc1_entry:
 	goto l1
 	// succ:  l1
 done:
-	r1_19 = PHI(r1_9, r1_8)
-	bp_12 = dwLoc04_14
-	r63_13 = fp
+	r1_21 = PHI(r1_12, r1_11)
+	bp_15 = dwLoc04_17
+	r63_16 = fp
 	return
 	// succ:  proc1_exit
 ge3:
-	r1_8 = 0x00000001
+	r1_11 = 0x00000001
 	goto done
 	// succ:  done
 l1:
 	r63_2 = fp
 	r63_3 = fp - 0x00000004
-	dwLoc04_14 = bp
+	dwLoc04_17 = bp
 	bp_6 = fp - 0x00000004
-	CZS_7 = cond(wArg04 - 0x0003)
-	branch Test(GE,CZS_7) ge3
+	SZC_7 = cond(wArg04 - 0x0003)
+	S_8 = SLICE(SZC_7, bool, 0) (alias)
+	Z_9 = SLICE(SZC_7, bool, 1) (alias)
+	C_10 = SLICE(SZC_7, bool, 2) (alias)
+	branch Test(GE,C_10 | S_8 | Z_9) ge3
 	// succ:  l2 ge3
 l2:
-	r1_9 = 0x00000000
+	r1_12 = 0x00000000
 	goto done
 	// succ:  done
 proc1_exit:
-	use bp_12
-	use CZS_7
-	use r1_19
-	use r63_13
+	use bp_15
+	use C_10
+	use r1_21
+	use r63_16
+	use S_8
+	use Z_9
 ======
 ";
             #endregion
@@ -410,7 +428,7 @@ proc1_exit:
                 var bp = m.Reg32("bp", 5);
                 var r1 = m.Reg32("r1", 1);
                 var flags = m.Architecture.GetFlagGroup(1).FlagRegister;
-                var cr = m.Frame.EnsureFlagGroup(flags, 0x3, "CZS", PrimitiveType.Byte);
+                var cr = m.Frame.EnsureFlagGroup(flags, 0x7, "SZC", PrimitiveType.Byte);
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(sp, m.ISub(sp, 4));
                 m.Store(sp, bp);
@@ -441,56 +459,69 @@ proc1_exit:
     uses: r63_2 = fp
           r63_3 = fp - 0x00000004
           bp_6 = fp - 0x00000004
-          r63_14 = fp
+          r63_17 = fp
 r63_2: orig: r63
     def:  r63_2 = fp
 r63_3: orig: r63
     def:  r63_3 = fp - 0x00000004
 bp:bp
     def:  def bp
-    uses: dwLoc04_15 = bp
+    uses: dwLoc04_18 = bp
 Mem5: orig: Mem0
-    uses: CZS_7 = wArg04 - 0x0003
+    uses: SZC_7 = wArg04 - 0x0003
 bp_6: orig: bp
     def:  bp_6 = fp - 0x00000004
-CZS_7: orig: CZS
-    def:  CZS_7 = wArg04 - 0x0003
-    uses: branch Test(GE,CZS_7) ge3
-          use CZS_7
-Mem8: orig: Mem0
-    uses: Mem12 = PHI(Mem10, Mem8)
-r1_9: orig: r1
-    def:  r1_9 = 0x00000001
-    uses: r1_22 = PHI(r1, r1_9)
-Mem10: orig: Mem0
-    uses: Mem12 = PHI(Mem10, Mem8)
-r63_11: orig: r63
-    def:  r63_11 = PHI(r63_3, r63_3)
-Mem12: orig: Mem0
-    def:  Mem12 = PHI(Mem10, Mem8)
-    uses: bp_13 = dwLoc04_15
-bp_13: orig: bp
-    def:  bp_13 = dwLoc04_15
-    uses: use bp_13
+SZC_7: orig: SZC
+    def:  SZC_7 = wArg04 - 0x0003
+    uses: S_8 = SLICE(SZC_7, bool, 0) (alias)
+          Z_9 = SLICE(SZC_7, bool, 1) (alias)
+          C_10 = SLICE(SZC_7, bool, 2) (alias)
+S_8: orig: S
+    def:  S_8 = SLICE(SZC_7, bool, 0) (alias)
+    uses: branch Test(GE,C_10 | S_8 | Z_9) ge3
+          use S_8
+Z_9: orig: Z
+    def:  Z_9 = SLICE(SZC_7, bool, 1) (alias)
+    uses: branch Test(GE,C_10 | S_8 | Z_9) ge3
+          use Z_9
+C_10: orig: C
+    def:  C_10 = SLICE(SZC_7, bool, 2) (alias)
+    uses: branch Test(GE,C_10 | S_8 | Z_9) ge3
+          use C_10
+Mem11: orig: Mem0
+    uses: Mem15 = PHI(Mem13, Mem11)
+r1_12: orig: r1
+    def:  r1_12 = 0x00000001
+    uses: r1_24 = PHI(r1, r1_12)
+Mem13: orig: Mem0
+    uses: Mem15 = PHI(Mem13, Mem11)
 r63_14: orig: r63
-    def:  r63_14 = fp
-    uses: use r63_14
-dwLoc04_15: orig: dwLoc04
-    def:  dwLoc04_15 = bp
-    uses: bp_13 = dwLoc04_15
+    def:  r63_14 = PHI(r63_3, r63_3)
+Mem15: orig: Mem0
+    def:  Mem15 = PHI(Mem13, Mem11)
+    uses: bp_16 = dwLoc04_18
+bp_16: orig: bp
+    def:  bp_16 = dwLoc04_18
+    uses: use bp_16
+r63_17: orig: r63
+    def:  r63_17 = fp
+    uses: use r63_17
+dwLoc04_18: orig: dwLoc04
+    def:  dwLoc04_18 = bp
+    uses: bp_16 = dwLoc04_18
 wArg04:Stack +0004
     def:  def wArg04
-    uses: CZS_7 = wArg04 - 0x0003
-wArg04_17: orig: wArg04
-    def:  wArg04_17 = -3
-wArg04_18: orig: wArg04
-    def:  wArg04_18 = 0x0003
-r1_22: orig: r1
-    def:  r1_22 = PHI(r1, r1_9)
-    uses: use r1_22
+    uses: SZC_7 = wArg04 - 0x0003
+wArg04_20: orig: wArg04
+    def:  wArg04_20 = -3
+wArg04_21: orig: wArg04
+    def:  wArg04_21 = 0x0003
+r1_24: orig: r1
+    def:  r1_24 = PHI(r1, r1_12)
+    uses: use r1_24
 r1:r1
     def:  def r1
-    uses: r1_22 = PHI(r1, r1_9)
+    uses: r1_24 = PHI(r1, r1_12)
 // proc1
 // Return size: 0
 define proc1
@@ -502,34 +533,39 @@ proc1_entry:
 	goto l1
 	// succ:  l1
 done:
-	r1_22 = PHI(r1, r1_9)
-	Mem12 = PHI(Mem10, Mem8)
-	bp_13 = dwLoc04_15
-	r63_14 = fp
+	r1_24 = PHI(r1, r1_12)
+	Mem15 = PHI(Mem13, Mem11)
+	bp_16 = dwLoc04_18
+	r63_17 = fp
 	return
 	// succ:  proc1_exit
 ge3:
-	wArg04_17 = -3
-	r1_9 = 0x00000001
+	wArg04_20 = -3
+	r1_12 = 0x00000001
 	goto done
 	// succ:  done
 l1:
 	r63_2 = fp
 	r63_3 = fp - 0x00000004
-	dwLoc04_15 = bp
+	dwLoc04_18 = bp
 	bp_6 = fp - 0x00000004
-	CZS_7 = wArg04 - 0x0003
-	branch Test(GE,CZS_7) ge3
+	SZC_7 = wArg04 - 0x0003
+	S_8 = SLICE(SZC_7, bool, 0) (alias)
+	Z_9 = SLICE(SZC_7, bool, 1) (alias)
+	C_10 = SLICE(SZC_7, bool, 2) (alias)
+	branch Test(GE,C_10 | S_8 | Z_9) ge3
 	// succ:  l2 ge3
 l2:
-	wArg04_18 = 0x0003
+	wArg04_21 = 0x0003
 	goto done
 	// succ:  done
 proc1_exit:
-	use bp_13
-	use CZS_7
-	use r1_22
-	use r63_14
+	use bp_16
+	use C_10
+	use r1_24
+	use r63_17
+	use S_8
+	use Z_9
 ======
 ";
             #endregion
@@ -540,7 +576,7 @@ proc1_exit:
                 var bp = m.Reg32("bp", 5);
                 var r1 = m.Reg32("r1", 1);
                 var flags = m.Architecture.GetFlagGroup(1).FlagRegister;
-                var cr = m.Frame.EnsureFlagGroup(flags, 0x3, "CZS", PrimitiveType.Byte);
+                var cr = m.Frame.EnsureFlagGroup(flags, 0x7, "SZC", PrimitiveType.Byte);
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(sp, m.ISub(sp, 4));
                 m.Store(sp, bp);
@@ -634,14 +670,14 @@ proc1_exit:
     uses: r63_2 = fp
           r63_3 = fp - 0x00000004
           bp_6 = fp - 0x00000004
-          r63_17 = fp
+          r63_20 = fp
 r63_2: orig: r63
     def:  r63_2 = fp
 r63_3: orig: r63
     def:  r63_3 = fp - 0x00000004
 bp:bp
     def:  def bp
-    uses: dwLoc04_18 = bp
+    uses: dwLoc04_21 = bp
 Mem5: orig: Mem0
 bp_6: orig: bp
     def:  bp_6 = fp - 0x00000004
@@ -649,50 +685,63 @@ Mem7: orig: Mem0
     uses: CZS_8 = wArg04 - 0x0003
 CZS_8: orig: CZS
     def:  CZS_8 = wArg04 - 0x0003
-    uses: branch Test(GE,CZS_8) ge3
-          use CZS_8
+    uses: S_9 = SLICE(CZS_8, bool, 0) (alias)
+          Z_10 = SLICE(CZS_8, bool, 1) (alias)
+          C_11 = SLICE(CZS_8, bool, 2) (alias)
+S_9: orig: S
+    def:  S_9 = SLICE(CZS_8, bool, 0) (alias)
+    uses: branch Test(GE,C_11 | S_9 | Z_10) ge3
+          use S_9
+Z_10: orig: Z
+    def:  Z_10 = SLICE(CZS_8, bool, 1) (alias)
+    uses: branch Test(GE,C_11 | S_9 | Z_10) ge3
+          use Z_10
+C_11: orig: C
+    def:  C_11 = SLICE(CZS_8, bool, 2) (alias)
+    uses: branch Test(GE,C_11 | S_9 | Z_10) ge3
+          use C_11
 r1:r1
     def:  def r1
-    uses: dwLoc0C_21 = r1
-          dwLoc0C_22 = r1
-Mem10: orig: Mem0
-    uses: Mem13 = PHI(Mem11, Mem10)
-Mem11: orig: Mem0
-    uses: Mem13 = PHI(Mem11, Mem10)
-bp_12: orig: bp
-    def:  bp_12 = PHI(bp_6, bp_6)
+    uses: dwLoc0C_24 = r1
+          dwLoc0C_25 = r1
 Mem13: orig: Mem0
-    def:  Mem13 = PHI(Mem11, Mem10)
-    uses: r1_14 = dwLoc0C_23
-          bp_16 = dwLoc04_18
-r1_14: orig: r1
-    def:  r1_14 = dwLoc0C_23
-    uses: use r1_14
-r63_15: orig: r63
-    def:  r63_15 = PHI(r63_3, r63_3)
-bp_16: orig: bp
-    def:  bp_16 = dwLoc04_18
-    uses: use bp_16
-r63_17: orig: r63
-    def:  r63_17 = fp
-    uses: use r63_17
-dwLoc04_18: orig: dwLoc04
-    def:  dwLoc04_18 = bp
-    uses: bp_16 = dwLoc04_18
-dwLoc0C_19: orig: dwLoc0C
-    def:  dwLoc0C_19 = 0x00000000
+    uses: Mem16 = PHI(Mem14, Mem13)
+Mem14: orig: Mem0
+    uses: Mem16 = PHI(Mem14, Mem13)
+bp_15: orig: bp
+    def:  bp_15 = PHI(bp_6, bp_6)
+Mem16: orig: Mem0
+    def:  Mem16 = PHI(Mem14, Mem13)
+    uses: r1_17 = dwLoc0C_26
+          bp_19 = dwLoc04_21
+r1_17: orig: r1
+    def:  r1_17 = dwLoc0C_26
+    uses: use r1_17
+r63_18: orig: r63
+    def:  r63_18 = PHI(r63_3, r63_3)
+bp_19: orig: bp
+    def:  bp_19 = dwLoc04_21
+    uses: use bp_19
+r63_20: orig: r63
+    def:  r63_20 = fp
+    uses: use r63_20
+dwLoc04_21: orig: dwLoc04
+    def:  dwLoc04_21 = bp
+    uses: bp_19 = dwLoc04_21
+dwLoc0C_22: orig: dwLoc0C
+    def:  dwLoc0C_22 = 0x00000000
 wArg04:Stack +0004
     def:  def wArg04
     uses: CZS_8 = wArg04 - 0x0003
-dwLoc0C_21: orig: dwLoc0C
-    def:  dwLoc0C_21 = r1
-    uses: dwLoc0C_23 = PHI(dwLoc0C_22, dwLoc0C_21)
-dwLoc0C_22: orig: dwLoc0C
-    def:  dwLoc0C_22 = r1
-    uses: dwLoc0C_23 = PHI(dwLoc0C_22, dwLoc0C_21)
-dwLoc0C_23: orig: dwLoc0C
-    def:  dwLoc0C_23 = PHI(dwLoc0C_22, dwLoc0C_21)
-    uses: r1_14 = dwLoc0C_23
+dwLoc0C_24: orig: dwLoc0C
+    def:  dwLoc0C_24 = r1
+    uses: dwLoc0C_26 = PHI(dwLoc0C_25, dwLoc0C_24)
+dwLoc0C_25: orig: dwLoc0C
+    def:  dwLoc0C_25 = r1
+    uses: dwLoc0C_26 = PHI(dwLoc0C_25, dwLoc0C_24)
+dwLoc0C_26: orig: dwLoc0C
+    def:  dwLoc0C_26 = PHI(dwLoc0C_25, dwLoc0C_24)
+    uses: r1_17 = dwLoc0C_26
 // proc1
 // Return size: 0
 define proc1
@@ -704,35 +753,40 @@ proc1_entry:
 	goto l1
 	// succ:  l1
 done:
-	dwLoc0C_23 = PHI(dwLoc0C_22, dwLoc0C_21)
-	Mem13 = PHI(Mem11, Mem10)
-	r1_14 = dwLoc0C_23
-	bp_16 = dwLoc04_18
-	r63_17 = fp
+	dwLoc0C_26 = PHI(dwLoc0C_25, dwLoc0C_24)
+	Mem16 = PHI(Mem14, Mem13)
+	r1_17 = dwLoc0C_26
+	bp_19 = dwLoc04_21
+	r63_20 = fp
 	return
 	// succ:  proc1_exit
 ge3:
-	dwLoc0C_21 = r1
+	dwLoc0C_24 = r1
 	goto done
 	// succ:  done
 l1:
 	r63_2 = fp
 	r63_3 = fp - 0x00000004
-	dwLoc04_18 = bp
+	dwLoc04_21 = bp
 	bp_6 = fp - 0x00000004
-	dwLoc0C_19 = 0x00000000
+	dwLoc0C_22 = 0x00000000
 	CZS_8 = wArg04 - 0x0003
-	branch Test(GE,CZS_8) ge3
+	S_9 = SLICE(CZS_8, bool, 0) (alias)
+	Z_10 = SLICE(CZS_8, bool, 1) (alias)
+	C_11 = SLICE(CZS_8, bool, 2) (alias)
+	branch Test(GE,C_11 | S_9 | Z_10) ge3
 	// succ:  l2 ge3
 l2:
-	dwLoc0C_22 = r1
+	dwLoc0C_25 = r1
 	goto done
 	// succ:  done
 proc1_exit:
-	use bp_16
-	use CZS_8
-	use r1_14
-	use r63_17
+	use bp_19
+	use C_11
+	use r1_17
+	use r63_20
+	use S_9
+	use Z_10
 ======
 ";
             #endregion
@@ -743,7 +797,7 @@ proc1_exit:
                 var bp = m.Reg32("bp", 5);
                 var r1 = m.Reg32("r1", 1);
                 var flags = m.Architecture.GetFlagGroup(1).FlagRegister;
-                var cr = m.Frame.EnsureFlagGroup(flags, 0x3, "CZS", PrimitiveType.Byte);
+                var cr = m.Frame.EnsureFlagGroup(flags, 0x7, "CZS", PrimitiveType.Byte);
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(sp, m.ISub(sp, 4));
                 m.Store(sp, bp);
@@ -769,7 +823,6 @@ proc1_exit:
         [Test]
         public void SsaFlagRegisters()
         {
-
             var sExp =
             #region Expected
 @"esi:esi
@@ -778,12 +831,15 @@ proc1_exit:
           SZ_2 = cond(esi & esi)
 SZ_2: orig: SZ
     def:  SZ_2 = cond(esi & esi)
-    uses: al_4 = Test(ULE,C_3 | SZ_2)
+    uses: Z_4 = SLICE(SZ_2, bool, 1) (alias)
 C_3: orig: C
     def:  C_3 = false
-    uses: al_4 = Test(ULE,C_3 | SZ_2)
-al_4: orig: al
-    def:  al_4 = Test(ULE,C_3 | SZ_2)
+    uses: al_5 = Test(ULE,C_3 | Z_4)
+Z_4: orig: Z
+    def:  Z_4 = SLICE(SZ_2, bool, 1) (alias)
+    uses: al_5 = Test(ULE,C_3 | Z_4)
+al_5: orig: al
+    def:  al_5 = Test(ULE,C_3 | Z_4)
 // proc1
 // Return size: 0
 define proc1
@@ -792,8 +848,9 @@ proc1_entry:
 	// succ:  l1
 l1:
 	SZ_2 = cond(esi & esi)
+	Z_4 = SLICE(SZ_2, bool, 1) (alias)
 	C_3 = false
-	al_4 = Test(ULE,C_3 | SZ_2)
+	al_5 = Test(ULE,C_3 | Z_4)
 	return
 	// succ:  proc1_exit
 proc1_exit:
@@ -804,9 +861,9 @@ proc1_exit:
             RunTest(sExp, m =>
             {
                 var flags = m.Architecture.GetFlagGroup(1).FlagRegister;
-                var sz = m.Frame.EnsureFlagGroup(flags, 6, "SZ", PrimitiveType.Byte);
-                var cz = m.Frame.EnsureFlagGroup(flags, 3, "CZ", PrimitiveType.Byte);
-                var c = m.Frame.EnsureFlagGroup(flags, 1, "C", PrimitiveType.Bool);
+                var sz = m.Frame.EnsureFlagGroup(flags, 3, "SZ", PrimitiveType.Byte);
+                var cz = m.Frame.EnsureFlagGroup(flags, 6, "CZ", PrimitiveType.Byte);
+                var c = m.Frame.EnsureFlagGroup(flags, 4, "C", PrimitiveType.Bool);
                 var al = m.Reg8("al", 0);
                 var esi = m.Reg32("esi", 6);
                 m.Assign(sz, m.Cond(m.And(esi, esi)));
@@ -1611,34 +1668,37 @@ proc1_exit:
             #region Expected
 @"eax_1: orig: eax
     def:  eax_1 = 0x00000000
-    uses: eax_4 = PHI(eax_1, eax_6)
+    uses: eax_5 = PHI(eax_1, eax_7)
 ebx_2: orig: ebx
-    def:  ebx_2 = PHI(ebx, ebx_7)
+    def:  ebx_2 = PHI(ebx, ebx_8)
     uses: SCZ_3 = cond(ebx_2 - 0x00000000)
-          eax_6 = eax_4 + Mem0[ebx_2:word32]
-          ebx_7 = Mem0[ebx_2 + 0x00000004:word32]
+          eax_7 = eax_5 + Mem0[ebx_2:word32]
+          ebx_8 = Mem0[ebx_2 + 0x00000004:word32]
 SCZ_3: orig: SCZ
     def:  SCZ_3 = cond(ebx_2 - 0x00000000)
-    uses: branch Test(NE,SCZ_3) l2Body
-eax_4: orig: eax
-    def:  eax_4 = PHI(eax_1, eax_6)
-    uses: eax_6 = eax_4 + Mem0[ebx_2:word32]
-          return eax_4
-Mem5: orig: Mem0
-    def:  Mem5 = PHI(Mem0, Mem5)
-eax_6: orig: eax
-    def:  eax_6 = eax_4 + Mem0[ebx_2:word32]
-    uses: eax_4 = PHI(eax_1, eax_6)
-ebx_7: orig: ebx
-    def:  ebx_7 = Mem0[ebx_2 + 0x00000004:word32]
-    uses: ebx_2 = PHI(ebx, ebx_7)
+    uses: Z_4 = SLICE(SCZ_3, bool, 1) (alias)
+Z_4: orig: Z
+    def:  Z_4 = SLICE(SCZ_3, bool, 1) (alias)
+    uses: branch Test(NE,Z_4) l2Body
+eax_5: orig: eax
+    def:  eax_5 = PHI(eax_1, eax_7)
+    uses: eax_7 = eax_5 + Mem0[ebx_2:word32]
+          return eax_5
+Mem6: orig: Mem0
+    def:  Mem6 = PHI(Mem0, Mem6)
+eax_7: orig: eax
+    def:  eax_7 = eax_5 + Mem0[ebx_2:word32]
+    uses: eax_5 = PHI(eax_1, eax_7)
+ebx_8: orig: ebx
+    def:  ebx_8 = Mem0[ebx_2 + 0x00000004:word32]
+    uses: ebx_2 = PHI(ebx, ebx_8)
 ebx:ebx
     def:  def ebx
-    uses: ebx_2 = PHI(ebx, ebx_7)
+    uses: ebx_2 = PHI(ebx, ebx_8)
 Mem0:Global memory
     def:  def Mem0
-    uses: eax_6 = eax_4 + Mem0[ebx_2:word32]
-          ebx_7 = Mem0[ebx_2 + 0x00000004:word32]
+    uses: eax_7 = eax_5 + Mem0[ebx_2:word32]
+          ebx_8 = Mem0[ebx_2 + 0x00000004:word32]
 // proc1
 // Return size: 0
 define proc1
@@ -1651,17 +1711,18 @@ l1:
 	goto l3Head
 	// succ:  l3Head
 l2Body:
-	eax_6 = eax_4 + Mem0[ebx_2:word32]
-	ebx_7 = Mem0[ebx_2 + 0x00000004:word32]
+	eax_7 = eax_5 + Mem0[ebx_2:word32]
+	ebx_8 = Mem0[ebx_2 + 0x00000004:word32]
 	// succ:  l3Head
 l3Head:
-	eax_4 = PHI(eax_1, eax_6)
-	ebx_2 = PHI(ebx, ebx_7)
+	eax_5 = PHI(eax_1, eax_7)
+	ebx_2 = PHI(ebx, ebx_8)
 	SCZ_3 = cond(ebx_2 - 0x00000000)
-	branch Test(NE,SCZ_3) l2Body
+	Z_4 = SLICE(SCZ_3, bool, 1) (alias)
+	branch Test(NE,Z_4) l2Body
 	// succ:  l4Exit l2Body
 l4Exit:
-	return eax_4
+	return eax_5
 	// succ:  proc1_exit
 proc1_exit:
 ======
@@ -1981,28 +2042,39 @@ Mem0:Global memory
 bl_3: orig: bl
     def:  bl_3 = Mem0[si:byte]
     uses: SCZO_4 = cond(bl_3 - 0x02)
-          bx_7 = DPB(bx, bl_3, 0) (alias)
+          bx_10 = DPB(bx, bl_3, 0) (alias)
 SCZO_4: orig: SCZO
     def:  SCZO_4 = cond(bl_3 - 0x02)
-    uses: branch Test(UGT,SCZO_4) m2
-bh_5: orig: bh
-    def:  bh_5 = 0x00
-    uses: bx_8 = DPB(bx_7, bh_5, 8) (alias)
+    uses: S_5 = SLICE(SCZO_4, bool, 0) (alias)
+          Z_6 = SLICE(SCZO_4, bool, 1) (alias)
+          C_7 = SLICE(SCZO_4, bool, 2) (alias)
+S_5: orig: S
+    def:  S_5 = SLICE(SCZO_4, bool, 0) (alias)
+    uses: branch Test(UGT,C_7 | S_5 | Z_6) m2
+Z_6: orig: Z
+    def:  Z_6 = SLICE(SCZO_4, bool, 1) (alias)
+    uses: branch Test(UGT,C_7 | S_5 | Z_6) m2
+C_7: orig: C
+    def:  C_7 = SLICE(SCZO_4, bool, 2) (alias)
+    uses: branch Test(UGT,C_7 | S_5 | Z_6) m2
+bh_8: orig: bh
+    def:  bh_8 = 0x00
+    uses: bx_11 = DPB(bx_10, bh_8, 8) (alias)
 bx:bx
     def:  def bx
-    uses: bx_7 = DPB(bx, bl_3, 0) (alias)
-bx_7: orig: bx
-    def:  bx_7 = DPB(bx, bl_3, 0) (alias)
-    uses: bx_8 = DPB(bx_7, bh_5, 8) (alias)
-bx_8: orig: bx
-    def:  bx_8 = DPB(bx_7, bh_5, 8) (alias)
-    uses: bx_9 = bx_8 + bx_8
-          bx_9 = bx_8 + bx_8
-bx_9: orig: bx
-    def:  bx_9 = bx_8 + bx_8
-    uses: Mem10[bx_9:word16] = 0x0000
-Mem10: orig: Mem0
-    def:  Mem10[bx_9:word16] = 0x0000
+    uses: bx_10 = DPB(bx, bl_3, 0) (alias)
+bx_10: orig: bx
+    def:  bx_10 = DPB(bx, bl_3, 0) (alias)
+    uses: bx_11 = DPB(bx_10, bh_8, 8) (alias)
+bx_11: orig: bx
+    def:  bx_11 = DPB(bx_10, bh_8, 8) (alias)
+    uses: bx_12 = bx_11 + bx_11
+          bx_12 = bx_11 + bx_11
+bx_12: orig: bx
+    def:  bx_12 = bx_11 + bx_11
+    uses: Mem13[bx_12:word16] = 0x0000
+Mem13: orig: Mem0
+    def:  Mem13[bx_12:word16] = 0x0000
 // proc1
 // Return size: 0
 define proc1
@@ -2013,15 +2085,18 @@ proc1_entry:
 	// succ:  m0
 m0:
 	bl_3 = Mem0[si:byte]
-	bx_7 = DPB(bx, bl_3, 0) (alias)
+	bx_10 = DPB(bx, bl_3, 0) (alias)
 	SCZO_4 = cond(bl_3 - 0x02)
-	branch Test(UGT,SCZO_4) m2
+	S_5 = SLICE(SCZO_4, bool, 0) (alias)
+	Z_6 = SLICE(SCZO_4, bool, 1) (alias)
+	C_7 = SLICE(SCZO_4, bool, 2) (alias)
+	branch Test(UGT,C_7 | S_5 | Z_6) m2
 	// succ:  m1 m2
 m1:
-	bh_5 = 0x00
-	bx_8 = DPB(bx_7, bh_5, 8) (alias)
-	bx_9 = bx_8 + bx_8
-	Mem10[bx_9:word16] = 0x0000
+	bh_8 = 0x00
+	bx_11 = DPB(bx_10, bh_8, 8) (alias)
+	bx_12 = bx_11 + bx_11
+	Mem13[bx_12:word16] = 0x0000
 	// succ:  m2
 m2:
 	return
@@ -2062,10 +2137,17 @@ proc1_exit:
     uses: SZ_2 = cond(r1)
 SZ_2: orig: SZ
     def:  SZ_2 = cond(r1)
-    uses: use C_3 | SZ_2
+    uses: S_4 = SLICE(SZ_2, bool, 0) (alias)
+          Z_5 = SLICE(SZ_2, bool, 1) (alias)
 C_3: orig: C
     def:  C_3 = false
-    uses: use C_3 | SZ_2
+    uses: use C_3
+S_4: orig: S
+    def:  S_4 = SLICE(SZ_2, bool, 0) (alias)
+    uses: use S_4
+Z_5: orig: Z
+    def:  Z_5 = SLICE(SZ_2, bool, 1) (alias)
+    uses: use Z_5
 // proc1
 // Return size: 0
 define proc1
@@ -2074,11 +2156,15 @@ proc1_entry:
 	// succ:  m0
 m0:
 	SZ_2 = cond(r1)
+	S_4 = SLICE(SZ_2, bool, 0) (alias)
+	Z_5 = SLICE(SZ_2, bool, 1) (alias)
 	C_3 = false
 	return
 	// succ:  proc1_exit
 proc1_exit:
-	use C_3 | SZ_2
+	use C_3
+	use S_4
+	use Z_5
 ======
 ";
             #endregion

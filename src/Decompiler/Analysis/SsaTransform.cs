@@ -723,6 +723,7 @@ namespace Reko.Analysis
         {
             public SsaIdentifier SsaId;        // The id that actually was modified.
             public readonly IDictionary<Identifier, SsaIdentifier> Aliases;     // Other ids that were affected by this stm.
+
             public AliasState(SsaIdentifier ssaId)
             {
                 this.SsaId = ssaId;
@@ -1231,7 +1232,7 @@ namespace Reko.Analysis
                 {
                     this.flagMask = flagBitMask;
                     this.id = outer.ssa.Procedure.Frame.EnsureFlagGroup(outer.arch.GetFlagGroup(flagMask));
-                    var sid = ReadVariable(bs, false);
+                    var sid = ReadVariable(bs, true);
                     ids[sid.Identifier] = sid;
                 }
                 if (ids.Count == 1)
@@ -1269,11 +1270,57 @@ namespace Reko.Analysis
             public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs, bool generateAlias)
             {
                 SsaIdentifier ssaId;
-                if (!bs.currentFlagDef.TryGetValue(flagMask, out ssaId))
+                if (!bs.currentFlagDef.TryGetValue(this.flagMask, out ssaId))
                     return null;
-                
+
                 // Defined locally in this block.
-                return ssaId;
+                // Has the alias already been calculated?
+                if (ssaId.OriginalIdentifier == id)
+                {
+                    return ssaId;
+                }
+
+                // Does ssaId intersect the probed value?
+                if (ssaId.Identifier.Storage.OverlapsWith(id.Storage))
+                {
+                    if (generateAlias)
+                    {
+                        var sid = MaybeGenerateAliasStatement(ssaId);
+                        bs.currentFlagDef[this.flagMask] = sid;
+                        return sid;
+                    }
+                    else
+                        return ssaId;
+                }
+                return null;
+            }
+
+            protected SsaIdentifier MaybeGenerateAliasStatement(SsaIdentifier sidFrom)
+            {
+                var b = sidFrom.DefStatement.Block;
+                var stgTo = id.Storage;
+                Storage stgFrom = sidFrom.Identifier.Storage;
+                if (stgFrom == stgTo)
+                {
+                    return sidFrom;
+                }
+
+                Expression e = null;
+                SsaIdentifier sidUse;
+                if (stgFrom.Covers(stgTo))
+                {
+                    int offset = Bits.Log2(this.flagMask);
+                    e = new Slice(PrimitiveType.Bool, sidFrom.Identifier, (uint)offset);
+                    sidUse = sidFrom;
+                }
+                else
+                {
+                    throw new NotImplementedException("How can this happen?");
+                }
+                var ass = new AliasAssignment(id, e);
+                var sidAlias = InsertAfterDefinition(sidFrom.DefStatement, ass);
+                sidUse.Uses.Add(sidAlias.DefStatement);
+                return sidAlias;
             }
 
             public override bool ProbeBlockLocalVariable(SsaBlockState bs)

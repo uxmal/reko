@@ -87,7 +87,6 @@ namespace Reko.Analysis
 			a.Src.Accept(this);
 		}
 
-
 		public override void VisitIdentifier(Identifier id)
 		{
 			sid = ssaIds[id];

@@ -8,11 +8,11 @@ ds:ds
     def:  def ds
     uses: bx_6 = Mem0[ds:bx + 0x0004:word16]
           cx_7 = Mem0[ds:bx_6 + 0x0002:word16]
-          Mem9[ds:bx_6 + 0x0006:word16] = 0x0001
-          cx_11 = Mem9[ds:si:word16]
-          Mem12[ds:bx_6 + 0x0006:word16] = 0x0000
-          cx_13 = Mem12[ds:si:word16]
-          Mem16[ds:0x012C:word16] = cx_14
+          Mem10[ds:bx_6 + 0x0006:word16] = 0x0001
+          cx_12 = Mem10[ds:si:word16]
+          Mem13[ds:bx_6 + 0x0006:word16] = 0x0000
+          cx_14 = Mem13[ds:si:word16]
+          Mem17[ds:0x012C:word16] = cx_15
           use ds
 bx:bx
     def:  def bx
@@ -24,38 +24,53 @@ Mem0:Global memory
 bx_6: orig: bx
     def:  bx_6 = Mem0[ds:bx + 0x0004:word16]
     uses: cx_7 = Mem0[ds:bx_6 + 0x0002:word16]
-          Mem9[ds:bx_6 + 0x0006:word16] = 0x0001
-          Mem12[ds:bx_6 + 0x0006:word16] = 0x0000
+          Mem10[ds:bx_6 + 0x0006:word16] = 0x0001
+          Mem13[ds:bx_6 + 0x0006:word16] = 0x0000
           use bx_6
 cx_7: orig: cx
     def:  cx_7 = Mem0[ds:bx_6 + 0x0002:word16]
     uses: SCZO_8 = cond(cx_7 - 0x0000)
 SCZO_8: orig: SCZO
     def:  SCZO_8 = cond(cx_7 - 0x0000)
-    uses: branch Test(NE,SCZO_8) l0C00_0015
-          use SCZO_8
-Mem9: orig: Mem0
-    def:  Mem9[ds:bx_6 + 0x0006:word16] = 0x0001
-    uses: cx_11 = Mem9[ds:si:word16]
+    uses: Z_9 = SLICE(SCZO_8, bool, 2) (alias)
+          C_20 = SLICE(SCZO_8, bool, 1) (alias)
+          O_22 = SLICE(SCZO_8, bool, 4) (alias)
+          S_24 = SLICE(SCZO_8, bool, 0) (alias)
+Z_9: orig: Z
+    def:  Z_9 = SLICE(SCZO_8, bool, 2) (alias)
+    uses: branch Test(NE,Z_9) l0C00_0015
+          use Z_9
+Mem10: orig: Mem0
+    def:  Mem10[ds:bx_6 + 0x0006:word16] = 0x0001
+    uses: cx_12 = Mem10[ds:si:word16]
 si:si
     def:  def si
-    uses: cx_11 = Mem9[ds:si:word16]
-          cx_13 = Mem12[ds:si:word16]
-cx_11: orig: cx
-    def:  cx_11 = Mem9[ds:si:word16]
-    uses: cx_14 = PHI(cx_13, cx_11)
-Mem12: orig: Mem0
-    def:  Mem12[ds:bx_6 + 0x0006:word16] = 0x0000
-    uses: cx_13 = Mem12[ds:si:word16]
-cx_13: orig: cx
-    def:  cx_13 = Mem12[ds:si:word16]
-    uses: cx_14 = PHI(cx_13, cx_11)
+    uses: cx_12 = Mem10[ds:si:word16]
+          cx_14 = Mem13[ds:si:word16]
+cx_12: orig: cx
+    def:  cx_12 = Mem10[ds:si:word16]
+    uses: cx_15 = PHI(cx_14, cx_12)
+Mem13: orig: Mem0
+    def:  Mem13[ds:bx_6 + 0x0006:word16] = 0x0000
+    uses: cx_14 = Mem13[ds:si:word16]
 cx_14: orig: cx
-    def:  cx_14 = PHI(cx_13, cx_11)
-    uses: Mem16[ds:0x012C:word16] = cx_14
-          use cx_14
-Mem16: orig: Mem0
-    def:  Mem16[ds:0x012C:word16] = cx_14
+    def:  cx_14 = Mem13[ds:si:word16]
+    uses: cx_15 = PHI(cx_14, cx_12)
+cx_15: orig: cx
+    def:  cx_15 = PHI(cx_14, cx_12)
+    uses: Mem17[ds:0x012C:word16] = cx_15
+          use cx_15
+Mem17: orig: Mem0
+    def:  Mem17[ds:0x012C:word16] = cx_15
+C_20: orig: C
+    def:  C_20 = SLICE(SCZO_8, bool, 1) (alias)
+    uses: use C_20
+O_22: orig: O
+    def:  O_22 = SLICE(SCZO_8, bool, 4) (alias)
+    uses: use O_22
+S_24: orig: S
+    def:  S_24 = SLICE(SCZO_8, bool, 0) (alias)
+    uses: use S_24
 // fn0C00_0000
 // Return size: 2
 define fn0C00_0000
@@ -71,26 +86,33 @@ l0C00_0000:
 	bx_6 = Mem0[ds:bx + 0x0004:word16]
 	cx_7 = Mem0[ds:bx_6 + 0x0002:word16]
 	SCZO_8 = cond(cx_7 - 0x0000)
-	branch Test(NE,SCZO_8) l0C00_0015
+	Z_9 = SLICE(SCZO_8, bool, 2) (alias)
+	C_20 = SLICE(SCZO_8, bool, 1) (alias)
+	O_22 = SLICE(SCZO_8, bool, 4) (alias)
+	S_24 = SLICE(SCZO_8, bool, 0) (alias)
+	branch Test(NE,Z_9) l0C00_0015
 	// succ:  l0C00_000B l0C00_0015
 l0C00_000B:
-	Mem12[ds:bx_6 + 0x0006:word16] = 0x0000
-	cx_13 = Mem12[ds:si:word16]
+	Mem13[ds:bx_6 + 0x0006:word16] = 0x0000
+	cx_14 = Mem13[ds:si:word16]
 	goto l0C00_001C
 	// succ:  l0C00_001C
 l0C00_0015:
-	Mem9[ds:bx_6 + 0x0006:word16] = 0x0001
-	cx_11 = Mem9[ds:si:word16]
+	Mem10[ds:bx_6 + 0x0006:word16] = 0x0001
+	cx_12 = Mem10[ds:si:word16]
 	// succ:  l0C00_001C
 l0C00_001C:
-	cx_14 = PHI(cx_13, cx_11)
-	Mem16[ds:0x012C:word16] = cx_14
+	cx_15 = PHI(cx_14, cx_12)
+	Mem17[ds:0x012C:word16] = cx_15
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 	use bx_6
-	use cx_14
+	use C_20
+	use cx_15
 	use ds
-	use SCZO_8
+	use O_22
+	use S_24
 	use sp_2
+	use Z_9
 
