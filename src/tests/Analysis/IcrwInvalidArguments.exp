@@ -10,20 +10,25 @@ fp:fp
     uses: esp_3 = fp
 esp_3: orig: esp
     def:  esp_3 = fp
+    uses: esp_7 = esp_3 + 0x00000004
+          eax_8 = Mem0[ecx_6:word32](ecx_6, Mem10[esp_3:int32])
 eax_4: orig: eax
     def:  eax_4 = a_1
 Mem0:Global memory
     def:  def Mem0
     uses: ecx_6 = Mem0[a:word32]
-          eax_8 = Mem0[ecx_6:word32](ecx_6, 0xBADDCAFE)
+          eax_8 = Mem0[ecx_6:word32](ecx_6, Mem10[esp_3:int32])
 ecx_6: orig: ecx
     def:  ecx_6 = Mem0[a:word32]
-    uses: eax_8 = Mem0[ecx_6:word32](ecx_6, 0xBADDCAFE)
-          eax_8 = Mem0[ecx_6:word32](ecx_6, 0xBADDCAFE)
+    uses: eax_8 = Mem0[ecx_6:word32](ecx_6, Mem10[esp_3:int32])
+          eax_8 = Mem0[ecx_6:word32](ecx_6, Mem10[esp_3:int32])
 esp_7: orig: esp
+    def:  esp_7 = esp_3 + 0x00000004
 eax_8: orig: eax
-    def:  eax_8 = Mem0[ecx_6:word32](ecx_6, 0xBADDCAFE)
+    def:  eax_8 = Mem0[ecx_6:word32](ecx_6, Mem10[esp_3:int32])
 ecx_9: orig: ecx
+Mem10: orig: Mem0
+    uses: eax_8 = Mem0[ecx_6:word32](ecx_6, Mem10[esp_3:int32])
 // test
 // Return size: 4
 void test(str * a)
@@ -37,7 +42,8 @@ l0C00_0000:
 	esp_3 = fp
 	eax_4 = a_1
 	ecx_6 = Mem0[a:word32]
-	eax_8 = Mem0[ecx_6:word32](ecx_6, 0xBADDCAFE)
+	eax_8 = Mem0[ecx_6:word32](ecx_6, Mem10[esp_3:int32])
+	esp_7 = esp_3 + 0x00000004
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

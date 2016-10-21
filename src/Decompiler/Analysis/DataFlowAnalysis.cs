@@ -87,9 +87,15 @@ namespace Reko.Analysis
                     var sst = new SsaTransform(flow, proc, importResolver, doms, new HashSet<RegisterStorage>());
                     var ssa = sst.SsaState;
 
-                    var icrw = new IndirectCallRewriter(program, ssa, eventListener);
-                    icrw.Rewrite();
+                    var vp = new ValuePropagator(program.Architecture, ssa);
 
+                    var icrw = new IndirectCallRewriter(program, ssa, eventListener);
+                    while (!eventListener.IsCanceled() && icrw.Rewrite())
+                    {
+                        vp.Transform();
+                        sst.RenameFrameAccesses = true;
+                        sst.Transform();
+                    }
                     var cce = new ConditionCodeEliminator(ssa, program.Platform);
                     cce.Transform();
                     //var cd = new ConstDivisionImplementedByMultiplication(ssa);
@@ -97,7 +103,6 @@ namespace Reko.Analysis
 
                     DeadCode.Eliminate(proc, ssa);
 
-                    var vp = new ValuePropagator(program.Architecture, ssa);
                     vp.Transform();
                     DeadCode.Eliminate(proc, ssa);
 

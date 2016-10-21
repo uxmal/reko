@@ -10,6 +10,7 @@ fp:fp
     uses: esp_3 = fp
 esp_3: orig: esp
     def:  esp_3 = fp
+    uses: esp_7 = esp_3
 eax_4: orig: eax
     def:  eax_4 = a_1
 Mem0:Global memory
@@ -20,6 +21,7 @@ ecx_6: orig: ecx
     def:  ecx_6 = Mem0[a:word32]
     uses: Mem0[ecx_6:word32]()
 esp_7: orig: esp
+    def:  esp_7 = esp_3
 eax_8: orig: eax
 ecx_9: orig: ecx
 // test
@@ -36,6 +38,7 @@ l0C00_0000:
 	eax_4 = a_1
 	ecx_6 = Mem0[a:word32]
 	Mem0[ecx_6:word32]()
+	esp_7 = esp_3
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
