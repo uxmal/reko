@@ -487,7 +487,7 @@ namespace Reko.Analysis
 								PhiFunction p = phi.Src;
 								// replace 'n's slot with the renamed name of the variable.
 								p.Arguments[j] = 
-									NewUse((Identifier)p.Arguments[j], stm);
+									NewUse((Identifier)p.Arguments[j], stm, true);
 							}
 						}
 					}
@@ -566,8 +566,9 @@ namespace Reko.Analysis
 				return sid.Identifier;
 			}
 
-			private Identifier NewUse(Identifier idOld, Statement stm)
+			private Identifier NewUse(Identifier idOld, Statement stm, bool force)
 			{
+                var idBefore = idOld;
                 SsaIdentifier sid;
                 if (ssa.Identifiers.TryGetValue(idOld, out sid))
                 {
@@ -586,7 +587,9 @@ namespace Reko.Analysis
                     // renamed version of the identifier.
                     sid = ssa.Identifiers[idNew];
                 }
-				sid.Uses.Add(stm);
+                if (renameFrameAccess && !force)
+                    return idBefore;
+                sid.Uses.Add(stm);
 				return sid.Identifier;
 			}
 
@@ -648,7 +651,7 @@ namespace Reko.Analysis
                         if (!alreadyExistingUses.Contains(id))
                         {
                             alreadyExistingUses.Add(id);
-                            var newId = NewUse(id, stmCur);
+                            var newId = NewUse(id, stmCur, false);
                             ci.Uses.Add(new UseInstruction(newId));
                         }
                     }
@@ -703,7 +706,7 @@ namespace Reko.Analysis
 
 			public override Expression VisitIdentifier(Identifier id)
 			{
-                return NewUse(id, stmCur);
+                return NewUse(id, stmCur, false);
 			}
 
             public override Expression VisitMemoryAccess(MemoryAccess access)
@@ -711,7 +714,7 @@ namespace Reko.Analysis
                 if (this.renameFrameAccess && IsFrameAccess(proc, access.EffectiveAddress))
                 {
                     var idFrame = EnsureStackVariable(proc, access.EffectiveAddress, access.DataType);
-                    var idNew = NewUse(idFrame, stmCur);
+                    var idNew = NewUse(idFrame, stmCur, true);
                     return idNew;
                 }
                 var ea = access.EffectiveAddress.Accept(this);
@@ -752,7 +755,7 @@ namespace Reko.Analysis
                 if (this.renameFrameAccess && IsFrameAccess(proc, access.EffectiveAddress))
                 {
                     var idFrame = EnsureStackVariable(proc, access.EffectiveAddress, access.DataType);
-                    var idNew = NewUse(idFrame, stmCur);
+                    var idNew = NewUse(idFrame, stmCur, true);
                     return idNew;
                 }
                 return base.VisitSegmentedAccess(access);
@@ -767,6 +770,8 @@ namespace Reko.Analysis
 				{
                     if (this.renameFrameAccess && IsFrameAccess(proc, acc.EffectiveAddress))
                     {
+                        ssa.Identifiers[proc.Frame.FramePointer].Uses.Remove(stmCur);
+                        ssa.Identifiers[acc.MemoryId].DefStatement = null;
                         var idFrame = EnsureStackVariable(proc, acc.EffectiveAddress, acc.DataType);
                         var idDst = NewDef(idFrame, store.Src, false);
                         return new Assignment(idDst, store.Src);
