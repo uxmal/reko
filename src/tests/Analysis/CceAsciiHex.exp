@@ -46,9 +46,7 @@ al:al
           branch al >u 0x66 l0C00_0032
           branch al <u 0x3A l0C00_0030
           al_23 = al - 0x37
-          al_23 = al - 0x37
           branch al <u 0x47 l0C00_0030
-          al_26 = al - 0x57
           al_26 = al - 0x57
           al_5 = PHI(al, al_19)
 SCZO_3: orig: SCZO
