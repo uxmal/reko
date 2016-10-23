@@ -138,12 +138,9 @@ si:si
           si_8 = si + 0x0004
           eax_10 = Mem9[ds:si + 0x0004:word32]
           si_11 = si + 0x0008
-          si_11 = si + 0x0008
           ax_13 = Mem12[ds:si + 0x0008:word16]
           si_14 = si + 0x000A
-          si_14 = si + 0x000A
           ax_16 = Mem15[ds:si + 0x000A:word16]
-          si_18 = si + 0x000C
           si_18 = si + 0x000C
 eax_7: orig: eax
     def:  eax_7 = Mem4[ds:si:word32]
