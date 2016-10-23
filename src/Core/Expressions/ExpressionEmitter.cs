@@ -506,7 +506,7 @@ namespace Reko.Core.Expressions
 
         public BinaryExpression ISub(Expression left, int right)
         {
-            return ISub(left, Constant.Create(left.DataType, right));
+            return ISub(left, Word(left.DataType.Size, right));
         }
 
         public Slice Slice(PrimitiveType primitiveType, Identifier value, uint bitOffset)
@@ -557,7 +557,7 @@ namespace Reko.Core.Expressions
 
         public Expression Ult(Expression a, int b)
         {
-            return new BinaryExpression(Operator.Ult, PrimitiveType.Bool, a, Constant.Create(PrimitiveType.CreateWord(a.DataType.Size), b));
+            return Ult(a, Word(a.DataType.Size, b));
         }
 
         public Constant Byte(byte b)
@@ -578,6 +578,11 @@ namespace Reko.Core.Expressions
         public Constant Word32(int n)
         {
             return Constant.Word32(n);
+        }
+
+        public Constant Word(int byteSize, int n)
+        {
+            return Constant.Create(PrimitiveType.CreateWord(byteSize), n);
         }
 
         public Expression Xor(Expression a, Expression b)
