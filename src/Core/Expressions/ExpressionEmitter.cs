@@ -580,9 +580,9 @@ namespace Reko.Core.Expressions
             return Constant.Word32(n);
         }
 
-        public Constant Word(int byteSize, int n)
+        public Constant Word(int byteSize, long n)
         {
-            return Constant.Create(PrimitiveType.CreateWord(byteSize), n);
+            return Constant.Word(byteSize, n);
         }
 
         public Expression Xor(Expression a, Expression b)
