@@ -799,6 +799,8 @@ r63:r63
           Mem3[r63 - 0x00000004:word32] = 0x00000003
           r63_4 = r63 - 0x00000008
           Mem5[r63 - 0x00000008:word16] = Mem3[0x01231230:word16]
+          r1_6 = foo(Mem8[r63 - 0x00000008:word32], Mem9[r63 - 0x00000004:word32])
+          r1_6 = foo(Mem8[r63 - 0x00000008:word32], Mem9[r63 - 0x00000004:word32])
 r63_2: orig: r63
     def:  r63_2 = r63 - 0x00000004
 Mem3: orig: Mem0
@@ -809,8 +811,12 @@ r63_4: orig: r63
 Mem5: orig: Mem0
     def:  Mem5[r63 - 0x00000008:word16] = Mem3[0x01231230:word16]
 r1_6: orig: r1
-    def:  r1_6 = foo(Mem0[r63:word32], Mem0[r63 + 0x00000004:word32])
+    def:  r1_6 = foo(Mem8[r63 - 0x00000008:word32], Mem9[r63 - 0x00000004:word32])
 r63_7: orig: r63
+Mem8: orig: Mem0
+    uses: r1_6 = foo(Mem8[r63 - 0x00000008:word32], Mem9[r63 - 0x00000004:word32])
+Mem9: orig: Mem0
+    uses: r1_6 = foo(Mem8[r63 - 0x00000008:word32], Mem9[r63 - 0x00000004:word32])
 // ProcedureBuilder
 // Return size: 0
 void ProcedureBuilder()
@@ -823,13 +829,13 @@ l1:
 	Mem3[r63 - 0x00000004:word32] = 0x00000003
 	r63_4 = r63 - 0x00000008
 	Mem5[r63 - 0x00000008:word16] = Mem3[0x01231230:word16]
-	r1_6 = foo(Mem0[r63:word32], Mem0[r63 + 0x00000004:word32])
+	r1_6 = foo(Mem8[r63 - 0x00000008:word32], Mem9[r63 - 0x00000004:word32])
 	return
 	// succ:  ProcedureBuilder_exit
 ProcedureBuilder_exit:
 ";
             #endregion
-                AssertStringsEqual(sExp, ssa);
+            AssertStringsEqual(sExp, ssa);
         }
 
         [Test]
