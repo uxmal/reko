@@ -11,74 +11,95 @@ ax:ax
 ax_4: orig: ax
     def:  ax_4 = ax ^ ax
     uses: SZO_5 = cond(ax_4)
-          ax_7 = PHI(ax_4, ax_19, ax_17)
+          ax_7 = PHI(ax_4, ax_21, ax_19)
 SZO_5: orig: SZO
     def:  SZO_5 = cond(ax_4)
 C_6: orig: C
     def:  C_6 = false
 ax_7: orig: ax
-    def:  ax_7 = PHI(ax_4, ax_19, ax_17)
+    def:  ax_7 = PHI(ax_4, ax_21, ax_19)
     uses: SCZO_9 = cond(ax_7 - bx)
-          ax_17 = ax_7 + Mem0[ds:si_16 + 0x0004:word16]
-          ax_19 = ax_7 + Mem0[ds:si_13:word16]
+          ax_19 = ax_7 + Mem0[ds:si_18 + 0x0004:word16]
+          ax_21 = ax_7 + Mem0[ds:si_14:word16]
           use ax_7
 SCZO_9: orig: SCZO
     def:  SCZO_9 = cond(ax_7 - bx)
-    uses: branch Test(LT,SCZO_9) l0C00_0005
-          use SCZO_9
-si_12: orig: si
-    def:  si_12 = Mem0[ds:0x0300:word16]
-    uses: si_13 = si_12 | si_12
-          si_13 = si_12 | si_12
+    uses: SO_10 = SLICE(SCZO_9, bool, 4) (alias)
+          C_26 = SLICE(SCZO_9, bool, 1) (alias)
+          Z_32 = SLICE(SCZO_9, bool, 2) (alias)
+SO_10: orig: SO
+    def:  SO_10 = SLICE(SCZO_9, bool, 4) (alias)
+    uses: branch Test(LT,SO_10) l0C00_0005
+          O_27 = SLICE(SO_10, bool, 4) (alias)
+          S_28 = SLICE(SO_10, bool, 0) (alias)
 si_13: orig: si
-    def:  si_13 = si_12 | si_12
-    uses: SZO_14 = cond(si_13)
-          ax_19 = ax_7 + Mem0[ds:si_13:word16]
-          si_24 = PHI(si, si_13, si_16)
-SZO_14: orig: SZO
-    def:  SZO_14 = cond(si_13)
-    uses: branch Test(EQ,SZO_14) l0C00_0012
-C_15: orig: C
-    def:  C_15 = false
-si_16: orig: si
-    def:  si_16 = Mem0[ds:0x0302:word16]
-    uses: ax_17 = ax_7 + Mem0[ds:si_16 + 0x0004:word16]
-          si_24 = PHI(si, si_13, si_16)
-ax_17: orig: ax
-    def:  ax_17 = ax_7 + Mem0[ds:si_16 + 0x0004:word16]
-    uses: SCZO_18 = cond(ax_17)
-          ax_7 = PHI(ax_4, ax_19, ax_17)
-SCZO_18: orig: SCZO
-    def:  SCZO_18 = cond(ax_17)
+    def:  si_13 = Mem0[ds:0x0300:word16]
+    uses: si_14 = si_13 | si_13
+          si_14 = si_13 | si_13
+si_14: orig: si
+    def:  si_14 = si_13 | si_13
+    uses: SZO_15 = cond(si_14)
+          ax_21 = ax_7 + Mem0[ds:si_14:word16]
+          si_29 = PHI(si, si_14, si_18)
+SZO_15: orig: SZO
+    def:  SZO_15 = cond(si_14)
+    uses: Z_17 = SLICE(SZO_15, bool, 2) (alias)
+C_16: orig: C
+    def:  C_16 = false
+Z_17: orig: Z
+    def:  Z_17 = SLICE(SZO_15, bool, 2) (alias)
+    uses: branch Test(EQ,Z_17) l0C00_0012
+si_18: orig: si
+    def:  si_18 = Mem0[ds:0x0302:word16]
+    uses: ax_19 = ax_7 + Mem0[ds:si_18 + 0x0004:word16]
+          si_29 = PHI(si, si_14, si_18)
 ax_19: orig: ax
-    def:  ax_19 = ax_7 + Mem0[ds:si_13:word16]
+    def:  ax_19 = ax_7 + Mem0[ds:si_18 + 0x0004:word16]
     uses: SCZO_20 = cond(ax_19)
-          ax_7 = PHI(ax_4, ax_19, ax_17)
+          ax_7 = PHI(ax_4, ax_21, ax_19)
 SCZO_20: orig: SCZO
     def:  SCZO_20 = cond(ax_19)
+ax_21: orig: ax
+    def:  ax_21 = ax_7 + Mem0[ds:si_14:word16]
+    uses: SCZO_22 = cond(ax_21)
+          ax_7 = PHI(ax_4, ax_21, ax_19)
+SCZO_22: orig: SCZO
+    def:  SCZO_22 = cond(ax_21)
 bx:bx
     def:  def bx
     uses: SCZO_9 = cond(ax_7 - bx)
           use bx
 ds:ds
     def:  def ds
-    uses: si_12 = Mem0[ds:0x0300:word16]
-          si_16 = Mem0[ds:0x0302:word16]
-          ax_17 = ax_7 + Mem0[ds:si_16 + 0x0004:word16]
-          ax_19 = ax_7 + Mem0[ds:si_13:word16]
+    uses: si_13 = Mem0[ds:0x0300:word16]
+          si_18 = Mem0[ds:0x0302:word16]
+          ax_19 = ax_7 + Mem0[ds:si_18 + 0x0004:word16]
+          ax_21 = ax_7 + Mem0[ds:si_14:word16]
           use ds
 Mem0:Global memory
     def:  def Mem0
-    uses: si_12 = Mem0[ds:0x0300:word16]
-          si_16 = Mem0[ds:0x0302:word16]
-          ax_17 = ax_7 + Mem0[ds:si_16 + 0x0004:word16]
-          ax_19 = ax_7 + Mem0[ds:si_13:word16]
-si_24: orig: si
-    def:  si_24 = PHI(si, si_13, si_16)
-    uses: use si_24
+    uses: si_13 = Mem0[ds:0x0300:word16]
+          si_18 = Mem0[ds:0x0302:word16]
+          ax_19 = ax_7 + Mem0[ds:si_18 + 0x0004:word16]
+          ax_21 = ax_7 + Mem0[ds:si_14:word16]
+C_26: orig: C
+    def:  C_26 = SLICE(SCZO_9, bool, 1) (alias)
+    uses: use C_26
+O_27: orig: O
+    def:  O_27 = SLICE(SO_10, bool, 4) (alias)
+    uses: use O_27
+S_28: orig: S
+    def:  S_28 = SLICE(SO_10, bool, 0) (alias)
+    uses: use S_28
+si_29: orig: si
+    def:  si_29 = PHI(si, si_14, si_18)
+    uses: use si_29
 si:si
     def:  def si
-    uses: si_24 = PHI(si, si_13, si_16)
+    uses: si_29 = PHI(si, si_14, si_18)
+Z_32: orig: Z
+    def:  Z_32 = SLICE(SCZO_9, bool, 2) (alias)
+    uses: use Z_32
 // fn0C00_0000
 // Return size: 2
 define fn0C00_0000
@@ -98,27 +119,33 @@ l0C00_0000:
 	goto l0C00_0019
 	// succ:  l0C00_0019
 l0C00_0005:
-	si_12 = Mem0[ds:0x0300:word16]
-	si_13 = si_12 | si_12
-	SZO_14 = cond(si_13)
-	C_15 = false
-	branch Test(EQ,SZO_14) l0C00_0012
+	si_13 = Mem0[ds:0x0300:word16]
+	si_14 = si_13 | si_13
+	SZO_15 = cond(si_14)
+	Z_17 = SLICE(SZO_15, bool, 2) (alias)
+	C_16 = false
+	branch Test(EQ,Z_17) l0C00_0012
 	// succ:  l0C00_000D l0C00_0012
 l0C00_000D:
-	ax_19 = ax_7 + Mem0[ds:si_13:word16]
-	SCZO_20 = cond(ax_19)
+	ax_21 = ax_7 + Mem0[ds:si_14:word16]
+	SCZO_22 = cond(ax_21)
 	goto l0C00_0019
 	// succ:  l0C00_0019
 l0C00_0012:
-	si_16 = Mem0[ds:0x0302:word16]
-	ax_17 = ax_7 + Mem0[ds:si_16 + 0x0004:word16]
-	SCZO_18 = cond(ax_17)
+	si_18 = Mem0[ds:0x0302:word16]
+	ax_19 = ax_7 + Mem0[ds:si_18 + 0x0004:word16]
+	SCZO_20 = cond(ax_19)
 	// succ:  l0C00_0019
 l0C00_0019:
-	si_24 = PHI(si, si_13, si_16)
-	ax_7 = PHI(ax_4, ax_19, ax_17)
+	si_29 = PHI(si, si_14, si_18)
+	ax_7 = PHI(ax_4, ax_21, ax_19)
 	SCZO_9 = cond(ax_7 - bx)
-	branch Test(LT,SCZO_9) l0C00_0005
+	SO_10 = SLICE(SCZO_9, bool, 4) (alias)
+	C_26 = SLICE(SCZO_9, bool, 1) (alias)
+	O_27 = SLICE(SO_10, bool, 4) (alias)
+	S_28 = SLICE(SO_10, bool, 0) (alias)
+	Z_32 = SLICE(SCZO_9, bool, 2) (alias)
+	branch Test(LT,SO_10) l0C00_0005
 	// succ:  l0C00_001D l0C00_0005
 l0C00_001D:
 	return
@@ -126,8 +153,11 @@ l0C00_001D:
 fn0C00_0000_exit:
 	use ax_7
 	use bx
+	use C_26
 	use ds
-	use SCZO_9
-	use si_24
+	use O_27
+	use S_28
+	use si_29
 	use sp_2
+	use Z_32
 

@@ -119,11 +119,11 @@ namespace Reko.UnitTests.Scanning
 // a7:a7
 // d0:d0
 // v4:v4
-// CVZN:Flags
-// Z:Flags
-// C:Flags
-// N:Flags
-// V:Flags
+// CVZN:CVZN
+// Z:Z
+// C:C
+// N:N
+// V:V
 // v10:v10
 // return address size: 4
 define fn00100000
@@ -156,14 +156,14 @@ fn00100000_exit:
         {
             BuildTest32(
                 Address.Ptr32(0x01020),
-                0x41, 0xF9 , 0x00 , 0x00 , 0x3E , 0x94
-                , 0x20 , 0x3C , 0x00 , 0x00 , 0x00 , 0x30
-                , 0x56 , 0x80 
-                , 0xE4 , 0x88
-                , 0x42 , 0x98
-                , 0x53 , 0x80
-                , 0x66 , 0xFA
-                , 0x4E , 0x75);
+                  0x41, 0xF9 , 0x00 , 0x00 , 0x3E , 0x94
+                , 0x20, 0x3C , 0x00 , 0x00 , 0x00 , 0x30
+                , 0x56, 0x80 
+                , 0xE4, 0x88
+                , 0x42, 0x98
+                , 0x53, 0x80
+                , 0x66, 0xFA
+                , 0x4E, 0x75);
             var sw = new StringWriter();
             program.Procedures.Values[0].Write(true, sw);
             string sExp = @"// fn00001020
@@ -173,12 +173,12 @@ fn00100000_exit:
 // a7:a7
 // a0:a0
 // d0:d0
-// CVZN:Flags
-// CVZNX:Flags
-// Z:Flags
-// C:Flags
-// N:Flags
-// V:Flags
+// CVZN:CVZN
+// CVZNX:CVZNX
+// Z:Z
+// C:C
+// N:N
+// V:V
 // return address size: 4
 define fn00001020
 fn00001020_entry:

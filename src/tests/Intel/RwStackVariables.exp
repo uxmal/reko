@@ -8,7 +8,7 @@
 // es_bx:Sequence es:bx
 // es:es
 // bx:bx
-// SCZO:Flags
+// SCZO:SCZO
 // ax:ax
 // ds:ds
 // return address size: 2
@@ -83,7 +83,7 @@ fn0C00_0020_exit:
 // ax:ax
 // bx:bx
 // es:es
-// SCZO:Flags
+// SCZO:SCZO
 // return address size: 2
 define fn0C00_002E
 fn0C00_002E_entry:

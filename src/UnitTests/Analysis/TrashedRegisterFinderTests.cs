@@ -524,7 +524,7 @@ const eax:<invalid> ebx:0x01231313
             });
 
             var sExp =
-@"main SCZO ah al ax eax rax
+@"main SCZ eax
 const eax:<invalid>
     main_entry esp:fp
     l1 esp:fp

@@ -69,7 +69,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-		public void AliasExpandDeadVars()
+		public void AnAliasExpandDeadVars()
 		{
 			Program program = RewriteFile("Fragments/alias_regs2.asm");
 			Procedure proc = program.Procedures.Values[0];

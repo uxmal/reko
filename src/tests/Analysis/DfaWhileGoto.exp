@@ -2,8 +2,8 @@
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  di:16 ds:16 si:16
 // LiveOut:
-// Trashed: ax bx C di ds O S si sp Z
-// Preserved:
+// Trashed: SCZO ax bx si
+// Preserved: sp
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(word16 si, word16 di, selector ds)
@@ -14,31 +14,31 @@ l0C00_0000:
 	goto l0C00_001A
 	// succ:  l0C00_001A
 l0C00_0005:
-	Mem12[ds:di:word16] = ax_8
+	Mem13[ds:di:word16] = ax_8
 	branch ax_8 != 0x0000 l0C00_0011
 	// succ:  l0C00_000B l0C00_0011
 l0C00_000B:
-	ax_20 = 0xFFFF
+	ax_23 = 0xFFFF
 	goto l0C00_0024
 	// succ:  l0C00_0024
 l0C00_0011:
 	branch ax_8 != 0x000D l0C00_001A
 	// succ:  l0C00_0016 l0C00_001A
 l0C00_0016:
-	Mem18[ds:0x0302:word16] = Mem12[ds:0x0302:word16] + 0x0001
+	Mem21[ds:0x0302:word16] = Mem13[ds:0x0302:word16] + 0x0001
 	// succ:  l0C00_001A
 l0C00_001A:
-	word16 ax_20
+	word16 ax_23
 	word16 si_6
 	word16 ax_8 = Mem7[ds:si_6:word16]
 	si_6 = si_6 + 0x0002
 	branch ax_8 != 0x0020 l0C00_0005
 	// succ:  l0C00_0020 l0C00_0005
 l0C00_0020:
-	ax_20 = si_6 - si
+	ax_23 = si_6 - si
 	// succ:  l0C00_0024
 l0C00_0024:
-	Mem27[ds:0x0300:word16] = ax_20
+	Mem30[ds:0x0300:word16] = ax_23
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
