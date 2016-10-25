@@ -4,8 +4,8 @@
 // fp:fp
 // sp:sp
 // eax:eax
-// SCZO:Flags
-// C:Flags
+// SCZO:SCZO
+// C:C
 // ds:ds
 // v7:v7
 // v8:v8

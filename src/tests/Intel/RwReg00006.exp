@@ -9,11 +9,11 @@
 // edi:edi
 // di:di
 // bl:bl
-// SZO:Flags
-// C:Flags
-// Z:Flags
+// SZO:SZO
+// C:C
+// Z:Z
 // eax:eax
-// SCZO:Flags
+// SCZO:SCZO
 // ecx:ecx
 // bp:bp
 // edx:edx
@@ -493,7 +493,7 @@ fn1000025B_exit:
 // fp:fp
 // esp:esp
 // eax:eax
-// SCZO:Flags
+// SCZO:SCZO
 // return address size: 4
 define fn10000260
 fn10000260_entry:
@@ -530,7 +530,7 @@ fn10000269_exit:
 // fp:fp
 // esp:esp
 // eax:eax
-// SCZO:Flags
+// SCZO:SCZO
 // return address size: 4
 define fn1000026E
 fn1000026E_entry:

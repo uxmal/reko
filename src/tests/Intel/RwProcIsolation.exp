@@ -50,8 +50,8 @@ fn0C00_000F_exit:
 // fp:fp
 // sp:sp
 // di:di
-// SZO:Flags
-// C:Flags
+// SZO:SZO
+// C:C
 // ax:ax
 // return address size: 2
 define fn0C00_0014

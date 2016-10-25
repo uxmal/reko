@@ -6,13 +6,13 @@
 // si:si
 // ds:ds
 // cx:cx
-// SZO:Flags
+// SZO:SZO
 // al:al
 // ah:ah
-// SCZO:Flags
-// Z:Flags
+// SCZO:SCZO
+// Z:Z
 // ax:ax
-// C:Flags
+// C:C
 // es:es
 // di:di
 // return address size: 2

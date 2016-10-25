@@ -6,8 +6,8 @@
 // ax:ax
 // ds:ds
 // dx:dx
-// SCZO:Flags
-// C:Flags
+// SCZO:SCZO
+// C:C
 // si:si
 // cx:cx
 // bx:bx

@@ -32,8 +32,8 @@ fn0C00_0000_exit:
 // ss:ss
 // di:di
 // cx:cx
-// SCZO:Flags
-// Z:Flags
+// SCZO:SCZO
+// Z:Z
 // ds:ds
 // ax:ax
 // return address size: 2

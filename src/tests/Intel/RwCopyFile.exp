@@ -5,17 +5,17 @@
 // sp:sp
 // bp:bp
 // ss:ss
-// SCZO:Flags
+// SCZO:SCZO
 // ax:ax
 // dx:dx
-// C:Flags
+// C:C
 // ds:ds
 // ds_dx:Sequence ds:dx
 // al:al
 // bx:bx
 // cx:cx
-// SZO:Flags
-// Z:Flags
+// SZO:SZO
+// Z:Z
 // return address size: 2
 define fn0C00_0000
 fn0C00_0000_entry:
