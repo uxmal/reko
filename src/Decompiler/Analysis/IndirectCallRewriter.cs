@@ -42,7 +42,7 @@ namespace Reko.Analysis
         private IndirectCallExpander expander;
         private SsaIdentifierTransformer ssaIdTransformer;
         private DecompilerEventListener eventListener;
-        private ExpressionEmitter emiter;
+        private ExpressionEmitter m;
         private bool changed;
 
 
@@ -58,7 +58,7 @@ namespace Reko.Analysis
             this.expander = new IndirectCallExpander(ssa);
             this.ssaIdTransformer = new SsaIdentifierTransformer(ssa);
             this.eventListener = eventListener;
-            this.emiter = new ExpressionEmitter();
+            this.m = new ExpressionEmitter();
         }
 
         public bool Rewrite()
@@ -132,7 +132,7 @@ namespace Reko.Analysis
             if (offset == 0)
                 src = usedSpExp;
             else
-                src = emiter.IAdd(usedSpExp, Constant.Word32(offset));
+                src = m.IAdd(usedSpExp, Constant.Word32(offset));
             // Generate a statement that adjusts the stack pointer according to
             // the calling convention.
             var ass = new Assignment(defSpId, src);
