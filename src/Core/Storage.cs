@@ -255,7 +255,7 @@ namespace Reko.Core
 
         public override void Write(TextWriter writer)
         {
-            writer.Write("Flags");
+            writer.Write(Name);
         }
     }
 

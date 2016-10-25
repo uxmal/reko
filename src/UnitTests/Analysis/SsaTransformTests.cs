@@ -831,15 +831,18 @@ proc1_exit:
           SZ_2 = cond(esi & esi)
 SZ_2: orig: SZ
     def:  SZ_2 = cond(esi & esi)
-    uses: Z_4 = SLICE(SZ_2, bool, 1) (alias)
+    uses: Z_5 = SLICE(SZ_2, bool, 1) (alias)
 C_3: orig: C
     def:  C_3 = false
-    uses: al_5 = Test(ULE,C_3 | Z_4)
-Z_4: orig: Z
-    def:  Z_4 = SLICE(SZ_2, bool, 1) (alias)
-    uses: al_5 = Test(ULE,C_3 | Z_4)
-al_5: orig: al
-    def:  al_5 = Test(ULE,C_3 | Z_4)
+    uses: CZ_4 = C_3 | Z_5 (alias)
+CZ_4: orig: CZ
+    def:  CZ_4 = C_3 | Z_5 (alias)
+    uses: al_6 = Test(ULE,CZ_4)
+Z_5: orig: Z
+    def:  Z_5 = SLICE(SZ_2, bool, 1) (alias)
+    uses: CZ_4 = C_3 | Z_5 (alias)
+al_6: orig: al
+    def:  al_6 = Test(ULE,CZ_4)
 // proc1
 // Return size: 0
 define proc1
@@ -848,9 +851,10 @@ proc1_entry:
 	// succ:  l1
 l1:
 	SZ_2 = cond(esi & esi)
-	Z_4 = SLICE(SZ_2, bool, 1) (alias)
+	Z_5 = SLICE(SZ_2, bool, 1) (alias)
 	C_3 = false
-	al_5 = Test(ULE,C_3 | Z_4)
+	CZ_4 = C_3 | Z_5 (alias)
+	al_6 = Test(ULE,CZ_4)
 	return
 	// succ:  proc1_exit
 proc1_exit:
@@ -1607,7 +1611,7 @@ proc1_exit:
                 new RegisterStorage(name, n, 0, PrimitiveType.Word32));
         }
 
-        [Test(Description ="Emulates calling an imported API Win32 on MIPS")]
+        [Test(Description = "Emulates calling an imported API Win32 on MIPS")]
         public void Ssa_ConstantPropagation()
         {
             // 0x00031234
@@ -2373,6 +2377,126 @@ proc1_exit:
 
                 m.Label("m1");
                 m.Return(al);
+            });
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void SsaSingleConditionCode()
+        {
+            var sExp =
+ @"r3:r3
+    def:  def r3
+    uses: Z_2 = cond(r3)
+Z_2: orig: Z
+    def:  Z_2 = cond(r3)
+    uses: r3_3 = (int32) Test(EQ,Z_2)
+r3_3: orig: r3
+    def:  r3_3 = (int32) Test(EQ,Z_2)
+// proc1
+// Return size: 0
+define proc1
+proc1_entry:
+	def r3
+	// succ:  l1
+l1:
+	Z_2 = cond(r3)
+	r3_3 = (int32) Test(EQ,Z_2)
+	return
+	// succ:  proc1_exit
+proc1_exit:
+======
+";
+            RunTest(sExp, m =>
+            {
+                var Z = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("Z"));
+                var r3 = m.Register(3);
+
+                m.Assign(Z, m.Cond(r3));
+                m.Assign(r3, m.Cast(PrimitiveType.Int32, m.Test(ConditionCode.EQ, Z)));
+                m.Return();
+            });
+        }
+
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void SsaConditionCodeExactMatch()
+        {
+            var sExp =
+@"r3:r3
+    def:  def r3
+    uses: CZ_2 = cond(r3)
+CZ_2: orig: CZ
+    def:  CZ_2 = cond(r3)
+    uses: r3_3 = (int32) Test(ULE,CZ_2)
+r3_3: orig: r3
+    def:  r3_3 = (int32) Test(ULE,CZ_2)
+// proc1
+// Return size: 0
+define proc1
+proc1_entry:
+	def r3
+	// succ:  l1
+l1:
+	CZ_2 = cond(r3)
+	r3_3 = (int32) Test(ULE,CZ_2)
+	return
+	// succ:  proc1_exit
+proc1_exit:
+======
+";
+            RunTest(sExp, m =>
+            {
+                var CZ = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("CZ"));
+                var r3 = m.Register(3);
+
+                m.Assign(CZ, m.Cond(r3));
+                m.Assign(r3, m.Cast(PrimitiveType.Int32, m.Test(ConditionCode.ULE, CZ)));
+                m.Return();
+            });
+        }
+
+        [Test(Description = "The flag group being used is a subset of the definition")]
+        [Category(Categories.UnitTests)]
+        public void SsaConditionCode_UseSubset()
+        {
+            var sExp =
+    @"r3:r3
+    def:  def r3
+    uses: SCZ_2 = cond(r3)
+SCZ_2: orig: SCZ
+    def:  SCZ_2 = cond(r3)
+    uses: SZ_3 = SLICE(SCZ_2, bool, 1) (alias)
+SZ_3: orig: SZ
+    def:  SZ_3 = SLICE(SCZ_2, bool, 1) (alias)
+    uses: r3_4 = (int32) Test(LE,SZ_3)
+r3_4: orig: r3
+    def:  r3_4 = (int32) Test(LE,SZ_3)
+// proc1
+// Return size: 0
+define proc1
+proc1_entry:
+	def r3
+	// succ:  l1
+l1:
+	SCZ_2 = cond(r3)
+	SZ_3 = SLICE(SCZ_2, bool, 1) (alias)
+	r3_4 = (int32) Test(LE,SZ_3)
+	return
+	// succ:  proc1_exit
+proc1_exit:
+======
+";
+            RunTest(sExp, m =>
+            {
+                var SCZ = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("SCZ"));
+                var Z = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("SZ"));
+                var r3 = m.Register(3);
+
+                m.Assign(SCZ, m.Cond(r3));
+                m.Assign(r3, m.Cast(PrimitiveType.Int32, m.Test(ConditionCode.LE, Z)));
+                m.Return();
             });
         }
     }
