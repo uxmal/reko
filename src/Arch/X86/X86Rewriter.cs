@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.Text;
 using IEnumerable = System.Collections.IEnumerable;
 using IEnumerator = System.Collections.IEnumerator;
+using System.Diagnostics;
 
 namespace Reko.Arch.X86
 {
