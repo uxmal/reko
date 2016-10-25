@@ -61,6 +61,12 @@ namespace Reko.Analysis
             this.m = new ExpressionEmitter();
         }
 
+        /// <summary>
+        /// Rewrites indirect call statements to applications using
+        /// user-defined data. Also generates statements that adjust
+        /// the stack pointer according to the calling convention.
+        /// </summary>
+        /// <returns>True if statements were changed.</returns>
         public bool Rewrite()
         {
             changed = false;
