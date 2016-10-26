@@ -9389,8 +9389,7 @@ selector fn0800_8407(word16 bp, selector ds, word16 wArg02, segptr32 ptrArg04)
 		ax_17 = fn0800_0C08(wArg02);
 	else
 		ax_17 = wArg02;
-	word16 ax_21 = (word16) (ax_17 *s 0x0C);
-	selector ds_36 = fn0800_8489(fp - 0x02, ds, Mem0[SLICE(ptrArg04, selector, 16):ax_21 + 0x08:word16]);
+	selector ds_36 = fn0800_8489(fp - 0x02, ds, Mem0[SLICE(ptrArg04, selector, 16):(word16) (ax_17 *s 0x0C) + 0x08:word16]);
 	if (Mem0[ss:fp - 0x04 + 0x00:word16] >u 0x01)
 	{
 		Mem57[ss:fp - 0x0A + 0x00:word16] = Mem0[ss:fp - 0x04 + 0x00:word16] - 0x01;
