@@ -312,6 +312,13 @@ ProcedureBuilder_exit:
             RunFileTest(m, "Analysis/DfaUnsignedDiv.txt");
         }
 
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void DfaFpuStackReturn()
+        {
+            RunFileTest("Fragments/fpustackreturn.asm", "Analysis/DfaFpuStackReturn.txt");
+        }
+
         private void SetCSignatures(Program program)
         {
             foreach (var addr in program.Procedures.Keys)
