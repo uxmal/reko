@@ -106,6 +106,7 @@ namespace Reko.Environments.Windows
                 Registers.eax,
                 Registers.ecx,
                 Registers.edx,
+                Registers.esp,
             };
         }
 
