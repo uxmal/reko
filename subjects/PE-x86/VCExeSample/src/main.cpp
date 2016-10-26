@@ -76,3 +76,12 @@ extern "C" __declspec(dllexport) double test7(double d)
         gbl_thiscall->set_double(d);
     return gbl_thiscall->modify_double(13, d);
 }
+
+extern "C" __declspec(dllexport) void nested_if_blocks_test8(double d)
+{
+    gbl_thiscall->modify_double(-1, d);
+    if (d != 123.0)
+        if (d < 321.0)
+            gbl_thiscall->set_double(d);
+    test6(gbl_c, 6, 7);
+}

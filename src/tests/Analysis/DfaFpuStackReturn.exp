@@ -1,0 +1,33 @@
+// void fn0C00_0000(Register selector ds)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// MayUse:  ds
+// LiveOut:
+// Trashed: bh bl bx ebx rbx
+// Preserved: sp
+// fn0C00_0000
+// Return size: 0
+void fn0C00_0000(selector ds)
+fn0C00_0000_entry:
+	// succ:  l0C00_0000
+l0C00_0000:
+	Mem6[ds:0x0400:real64] = fn0C00_000C(Mem0[ds:0x0300:word16], ds)
+	return
+	// succ:  fn0C00_0000_exit
+fn0C00_0000_exit:
+
+// FpuStack real64 fn0C00_000C(Register word16 bx, Register selector ds)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+// MayUse:  bx ds
+// LiveOut:
+// Trashed:
+// Preserved: sp
+// fn0C00_000C
+// Return size: 0
+real64 fn0C00_000C(word16 bx, selector ds)
+fn0C00_000C_entry:
+	// succ:  l0C00_000C
+l0C00_000C:
+	return Mem0[ds:bx:real64] + Mem0[ds:bx + 0x0008:real64]
+	// succ:  fn0C00_000C_exit
+fn0C00_000C_exit:
+

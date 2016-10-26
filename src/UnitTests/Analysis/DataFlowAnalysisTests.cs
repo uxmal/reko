@@ -370,5 +370,12 @@ ProcedureBuilder_exit:
 
             RunFileTest(m, "Analysis/DfaUnsignedDiv.txt");
         }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void DfaFpuStackReturn()
+        {
+            RunFileTest("Fragments/fpustackreturn.asm", "Analysis/DfaFpuStackReturn.txt");
+        }
 	}
 }

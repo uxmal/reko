@@ -56,3 +56,20 @@ void test7(real64 rArg04)
 	return;
 }
 
+void nested_if_blocks_test8(real64 rArg04, real64 rArg0)
+{
+	globals->gbl_thiscall->vtbl->modify_double(globals->gbl_thiscall, ~0x00, rArg04);
+	ptr32 esp_18 = fp - 0x04;
+	if (globals->r4020F8 != rArg04 && globals->r4020F0 < rArg04)
+	{
+		globals->gbl_thiscall->vtbl->set_double(globals->gbl_thiscall, rArg04);
+		esp_18 = fp - 0x10;
+	}
+	int32 * esp_37 = esp_18 - 0x04;
+	*esp_37 = 0x07;
+	*(esp_37 - 0x04) = 0x06;
+	*(esp_37 - 0x08) = (cdecl_class_ptr *) globals->gbl_c;
+	test6(*(esp_37 - 0x08), *(esp_37 - 0x04), *esp_37);
+	return;
+}
+
