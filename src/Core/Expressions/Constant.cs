@@ -383,6 +383,11 @@ namespace Reko.Core.Expressions
             return new ConstantUInt64(PrimitiveType.Word64, n);
         }
 
+        public static Constant Word(int byteSize, long value)
+        {
+            return Create(PrimitiveType.CreateWord(byteSize), value);
+        }
+
         public static Constant Zero(DataType dataType)
         {
             return Constant.Create(dataType, 0);

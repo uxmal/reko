@@ -61,8 +61,7 @@ __start_entry:
 // LocalsOut: fp(32) Stack +0000(32)
 
 l00400230:
-	word32 ra_2 = 0x00400238
-	word32 r25_18 = Mem0[ra_2 + 0x0FC00690:word32]
+	word32 r25_18 = Mem0[0x00400238 + 0x0FC00690:word32]
 	word32 sp_19
 	word32 ra_20
 	word32 r28_21
@@ -19298,8 +19297,7 @@ __do_global_ctors_aux_entry:
 // LocalsOut: fp(32)
 
 l00409C10:
-	word32 r2_11 = Mem0[0x10000878:word32]
-	word32 r25_17 = Mem0[r2_11 + 0x00000854:word32]
+	word32 r25_17 = Mem0[Mem0[0x10000878:word32] + 0x00000854:word32]
 	branch r25_17 == -1 l00409C10_ds_t
 // DataOut: r2
 // DataOut (flags): 
