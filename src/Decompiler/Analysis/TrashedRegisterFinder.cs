@@ -415,6 +415,12 @@ namespace Reko.Analysis
             throw new NotSupportedException();
         }
 
+        /// <summary>
+        /// Returns 'true' if we can prove that expr is a pointer
+        /// to a function that diverges (and doesn't return).
+        /// </summary>
+        /// <param name="expr"></param>
+        /// <returns></returns>
         private bool ProcedureTerminates(Expression expr)
         {
             var pc = expr as ProcedureConstant;
