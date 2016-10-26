@@ -246,3 +246,58 @@ test7_exit:
 
 
 
+void nested_if_blocks_test8(real64 rArg04, real64 rArg0)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZOFPUF ah al ax bp bpl ch cl cx dh dl dx eax ebp ecx edx esp rax rbp rcx rdx rsp sp spl
+// Preserved:
+// Stack args: Stack +0004(64)
+nested_if_blocks_test8_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32) Stack +0004(64)
+
+l004011B0:
+	Mem0[Mem0[Mem0[0x0040301C:word32]:word32] + 0x00000004:word32](Mem0[0x0040301C:word32], 0xFFFFFFFF, rArg04)
+	word32 esp_18 = fp - 0x00000004
+	branch Mem0[0x004020F8:real64] == rArg04 l0040120D
+// DataOut: esp
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32) Stack +0004(64)
+
+l004011E2:
+	branch Mem0[0x004020F0:real64] >= rArg04 l0040120D
+// DataOut: esp
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000010 ebp:fp - 0x00000004 eax:<invalid> edx:<invalid> ecx:<invalid> -16(fp):0xFFFFFFFF -12(fp):rLoc1 -4(fp):ebp
+// LocalsOut: fp(32)
+
+l004011F2:
+	Mem0[Mem0[Mem0[0x0040301C:word32]:word32]:word32](Mem0[0x0040301C:word32], rArg04)
+	esp_18 = fp - 0x00000010
+// DataOut: esp
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000010 ebp:fp - 0x00000004 eax:<invalid> edx:<invalid> ecx:<invalid> -16(fp):0xFFFFFFFF -12(fp):rLoc1 -4(fp):ebp
+
+l0040120D:
+	word32 esp_37 = esp_18 - 0x00000004
+	Mem38[esp_37:word32] = 0x00000007
+	Mem40[esp_37 - 0x00000004:word32] = 0x00000006
+	Mem43[esp_37 - 0x00000008:word32] = Mem40[0x00403018:word32]
+	test6(Mem43[esp_37 - 0x00000008:(ptr cdecl_class)], Mem43[esp_37 - 0x00000004:int32], Mem43[esp_37:int32])
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:<invalid> ebp:fp - 0x00000004 eax:<invalid> edx:<invalid> ecx:<invalid> -24(fp):rArg0 -16(fp):0xFFFFFFFF -12(fp):rLoc1 -4(fp):ebp
+
+nested_if_blocks_test8_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:<invalid> ebp:<invalid> eax:<invalid> edx:<invalid> ecx:<invalid> -28(fp):<invalid> -24(fp):<invalid> -20(fp):0x00000007 -16(fp):0xFFFFFFFF -12(fp):rLoc1 -4(fp):ebp
+
+
+

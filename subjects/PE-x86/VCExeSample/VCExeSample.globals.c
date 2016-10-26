@@ -13,6 +13,8 @@ char g_str4020E0[] = "5";
 real32 g_r4020E4 = 8.567F;
 real32 g_r4020E8 = 4.123F;
 real32 g_r4020EC = 1000.1F;
+real64 g_r4020F0 = 321.0;
+real64 g_r4020F8 = 123.0;
 cdecl_class_ptr g_gbl_c = null;
 thiscall_class * g_gbl_thiscall = null;
 
