@@ -6,11 +6,11 @@
 // edi:edi
 // esi:esi
 // ebx:ebx
-// SZO:Flags
-// C:Flags
-// Z:Flags
+// SZO:SZO
+// C:C
+// Z:Z
 // eax:eax
-// SCZO:Flags
+// SCZO:SCZO
 // return address size: 4
 define fn10000000
 fn10000000_entry:

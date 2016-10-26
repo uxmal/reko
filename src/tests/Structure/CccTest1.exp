@@ -7,14 +7,14 @@ l0C00_0000:
 	branch ax == 0x0001 l0C00_000E
 	// succ:  l0C00_0005 l0C00_000E
 l0C00_0005:
-	Mem10[ds:0x0302:word16] = 0x0000
+	Mem12[ds:0x0302:word16] = 0x0000
 	goto l0C00_0019
 	// succ:  l0C00_0019
 l0C00_000E:
 	branch bx == 0x0002 l0C00_0005
 	// succ:  l0C00_0013 l0C00_0005
 l0C00_0013:
-	Mem8[ds:0x0302:word16] = 0x0001
+	Mem10[ds:0x0302:word16] = 0x0001
 	// succ:  l0C00_0019
 l0C00_0019:
 	branch ax == 0x0001 l0C00_002C
@@ -23,11 +23,11 @@ l0C00_001E:
 	branch bx == 0x0002 l0C00_002C
 	// succ:  l0C00_0023 l0C00_002C
 l0C00_0023:
-	Mem20[ds:0x0304:word16] = 0x0000
+	Mem24[ds:0x0304:word16] = 0x0000
 	goto l0C00_0032
 	// succ:  l0C00_0032
 l0C00_002C:
-	Mem19[ds:0x0304:word16] = 0x0001
+	Mem23[ds:0x0304:word16] = 0x0001
 	// succ:  l0C00_0032
 l0C00_0032:
 	branch ax == 0x0001 l0C00_003C
@@ -36,11 +36,11 @@ l0C00_0037:
 	branch bx == 0x0002 l0C00_0045
 	// succ:  l0C00_003C l0C00_0045
 l0C00_003C:
-	Mem30[ds:0x0306:word16] = 0x0000
+	Mem36[ds:0x0306:word16] = 0x0000
 	goto l0C00_004B
 	// succ:  l0C00_004B
 l0C00_0045:
-	Mem28[ds:0x0306:word16] = 0x0001
+	Mem34[ds:0x0306:word16] = 0x0001
 	// succ:  l0C00_004B
 l0C00_004B:
 	return
@@ -56,12 +56,12 @@ l0C00_0000:
 	branch ax == 0x0001 && bx != 0x0002 l0C00_000E
 	// succ:  l0C00_0005 l0C00_0013
 l0C00_0005:
-	Mem10[ds:0x0302:word16] = 0x0000
+	Mem12[ds:0x0302:word16] = 0x0000
 	goto l0C00_0019
 	// succ:  l0C00_0019
 l0C00_000E:
 l0C00_0013:
-	Mem8[ds:0x0302:word16] = 0x0001
+	Mem10[ds:0x0302:word16] = 0x0001
 	// succ:  l0C00_0019
 l0C00_0019:
 	branch ax == 0x0001 || bx == 0x0002 l0C00_002C
@@ -69,11 +69,11 @@ l0C00_0019:
 	// succ:  l0C00_0023 l0C00_002C
 l0C00_001E:
 l0C00_0023:
-	Mem20[ds:0x0304:word16] = 0x0000
+	Mem24[ds:0x0304:word16] = 0x0000
 	goto l0C00_0032
 	// succ:  l0C00_0032
 l0C00_002C:
-	Mem19[ds:0x0304:word16] = 0x0001
+	Mem23[ds:0x0304:word16] = 0x0001
 	// succ:  l0C00_0032
 l0C00_0032:
 	branch ax == 0x0001 || bx != 0x0002 l0C00_003C
@@ -81,11 +81,11 @@ l0C00_0032:
 	// succ:  l0C00_0045 l0C00_003C
 l0C00_0037:
 l0C00_003C:
-	Mem30[ds:0x0306:word16] = 0x0000
+	Mem36[ds:0x0306:word16] = 0x0000
 	goto l0C00_004B
 	// succ:  l0C00_004B
 l0C00_0045:
-	Mem28[ds:0x0306:word16] = 0x0001
+	Mem34[ds:0x0306:word16] = 0x0001
 	// succ:  l0C00_004B
 l0C00_004B:
 	return

@@ -40,9 +40,9 @@ fn0C00_0000_exit:
 // ds:ds
 // al:al
 // di:di
-// SCZO:Flags
+// SCZO:SCZO
 // es:es
-// Z:Flags
+// Z:Z
 // return address size: 2
 define fn0C00_0026
 fn0C00_0026_entry:

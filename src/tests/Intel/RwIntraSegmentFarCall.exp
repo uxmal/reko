@@ -4,7 +4,7 @@
 // fp:fp
 // sp:sp
 // ss:ss
-// SCZO:Flags
+// SCZO:SCZO
 // return address size: 2
 define fn0C00_0000
 fn0C00_0000_entry:
@@ -45,7 +45,7 @@ fn0C00_0000_exit:
 // bx:bx
 // es:es
 // v9:v9
-// SCZO:Flags
+// SCZO:SCZO
 // return address size: 4
 define fn0C00_0020
 fn0C00_0020_entry:
@@ -77,7 +77,7 @@ fn0C00_0020_exit:
 // bx:bx
 // es:es
 // v9:v9
-// SCZO:Flags
+// SCZO:SCZO
 // return address size: 4
 define fn0C00_002E
 fn0C00_002E_entry:

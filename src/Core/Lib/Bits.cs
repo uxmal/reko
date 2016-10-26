@@ -61,5 +61,24 @@ namespace Reko.Core.Lib
             u = (u & 0x00000000FFFFFFFFUL) + ((u >> 32) & 0x0000000FFFFFFFFUL);
             return (int)u;
         }
+
+        // http://stackoverflow.com/questions/11376288/fast-computing-of-log2-for-64-bit-integers
+        private static readonly int[] log2_tab = {
+             0,  9,  1, 10, 13, 21,  2, 29,
+            11, 14, 16, 18, 22, 25,  3, 30,
+             8, 12, 20, 28, 15, 17, 24,  7,
+            19, 27, 23,  6, 26,  5,  4, 31
+        };
+
+        // http://stackoverflow.com/questions/11376288/fast-computing-of-log2-for-64-bit-integers
+        public static int Log2(uint value)
+        {
+            value |= value >> 1;
+            value |= value >> 2;
+            value |= value >> 4;
+            value |= value >> 8;
+            value |= value >> 16;
+            return log2_tab[(uint)(value * 0x07C4ACDD) >> 27];
+        }
     }
 }

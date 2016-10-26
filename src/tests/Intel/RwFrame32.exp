@@ -4,7 +4,7 @@
 // fp:fp
 // esp:esp
 // eax:eax
-// SCZO:Flags
+// SCZO:SCZO
 // ax:ax
 // return address size: 4
 define fn10000000
@@ -30,14 +30,14 @@ fn10000000_exit:
 // esp:esp
 // ebp:ebp
 // ecx:ecx
-// SCZO:Flags
-// Z:Flags
+// SCZO:SCZO
+// Z:Z
 // ax:ax
-// SZO:Flags
-// C:Flags
+// SZO:SZO
+// C:C
 // eax:eax
 // edx:edx
-// SO:Flags
+// SO:SO
 // cx:cx
 // return address size: 4
 define fn10000017

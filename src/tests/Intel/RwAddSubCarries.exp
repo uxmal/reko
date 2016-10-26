@@ -8,11 +8,11 @@
 // dx:dx
 // cx:cx
 // bx:bx
-// SCZO:Flags
-// C:Flags
+// SCZO:SCZO
+// C:C
 // es_cx:Sequence es:cx
 // es:es
-// SZO:Flags
+// SZO:SZO
 // cl:cl
 // return address size: 2
 define fn0C00_0000

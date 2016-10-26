@@ -313,8 +313,9 @@ namespace Reko.UnitTests.Analysis
 
             var sExp = @"l1:
 	SCZ_2 = cond(cx - 0x0030)
-	ax_3 = 0x0000 + SCZ_2
-	SCZ_4 = cond(ax_3)
+	C_3 = SLICE(SCZ_2, bool, 2)
+	ax_4 = 0x0000 + C_3
+	SCZ_5 = cond(ax_3)
 	SCZ_5 = cond(cx - 0x003A)
 	C_6 = !SCZ_5
 	ax_7 = ax_3 + ax_3 + C_6

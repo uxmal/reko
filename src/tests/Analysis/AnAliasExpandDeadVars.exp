@@ -6,11 +6,11 @@
 // cx:cx
 // bx:bx
 // ds:ds
-// SCZO:Flags
+// SCZO:SCZO
 // ax:ax
 // cl:cl
-// SZO:Flags
-// C:Flags
+// SZO:SZO
+// C:C
 // al:al
 // return address size: 0
 define fn0C00_0000

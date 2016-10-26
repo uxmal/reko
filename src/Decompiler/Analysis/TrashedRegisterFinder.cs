@@ -47,6 +47,7 @@ namespace Reko.Analysis
     {
         private Program program;
         private IEnumerable<Procedure> procedures;
+        private HashSet<Procedure> procedureSet;
         private ProgramDataFlow flow;
         private BlockFlow bf;
         private WorkList<Block> worklist;
@@ -64,6 +65,7 @@ namespace Reko.Analysis
         {
             this.program = program;
             this.procedures = procedures;
+            this.procedureSet = procedures.ToHashSet();
             this.flow = flow;
             this.eventListener = eventListener ?? NullDecompilerEventListener.Instance;
             this.worklist = new WorkList<Block>();
@@ -77,16 +79,6 @@ namespace Reko.Analysis
 
         public void CompleteWork()
         {
-            foreach (Procedure proc in procedures)
-            {
-                if (eventListener.IsCanceled())
-                    break;
-                var pf = flow[proc];
-                foreach (var reg in pf.Trashed.OfType<RegisterStorage>().ToList())
-                {
-                    pf.Trashed.UnionWith(program.Architecture.GetAliases(reg));
-                }
-            }
         }
 
         public void Compute()
@@ -179,7 +171,6 @@ namespace Reko.Analysis
                 try
                 {
                     stm.Instruction.Accept(this);
-
                 }
                 catch (Exception ex)
                 {
@@ -259,8 +250,11 @@ namespace Reko.Analysis
             {
                 foreach (Statement stm in program.CallGraph.CallerStatements(proc))
                 {
-                    if (visited.Contains(stm.Block))
+                    if (this.procedureSet.Contains(stm.Block.Procedure) &&
+                        visited.Contains(stm.Block))
+                    {
                         worklist.Add(stm.Block);
+                    }
                 }
             }
         }
@@ -421,6 +415,12 @@ namespace Reko.Analysis
             throw new NotSupportedException();
         }
 
+        /// <summary>
+        /// Returns 'true' if we can prove that expr is a pointer
+        /// to a function that diverges (and doesn't return).
+        /// </summary>
+        /// <param name="expr"></param>
+        /// <returns></returns>
         private bool ProcedureTerminates(Expression expr)
         {
             var pc = expr as ProcedureConstant;

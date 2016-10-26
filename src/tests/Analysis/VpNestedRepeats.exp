@@ -43,7 +43,7 @@ dx_14: orig: dx
 dx_15: orig: dx
     def:  dx_15 = dx_14 + ax_12
     uses: SCZO_16 = cond(dx_15)
-          Mem23[ds:0x0300:word16] = dx_15
+          Mem24[ds:0x0300:word16] = dx_15
           dx_14 = PHI(dx_4, dx_15, dx_15)
           dx_14 = PHI(dx_4, dx_15, dx_15)
 SCZO_16: orig: SCZO
@@ -69,12 +69,15 @@ di_21: orig: di
           branch di_21 != 0x0000 l0C00_0008
 SZO_22: orig: SZO
     def:  SZO_22 = cond(di_21)
-Mem23: orig: Mem0
-    def:  Mem23[ds:0x0300:word16] = dx_15
+    uses: Z_23 = SLICE(SZO_22, bool, 2) (alias)
+Z_23: orig: Z
+    def:  Z_23 = SLICE(SZO_22, bool, 2) (alias)
+Mem24: orig: Mem0
+    def:  Mem24[ds:0x0300:word16] = dx_15
 ds:ds
     def:  def ds
     uses: ax_12 = Mem0[ds:si_10:word16]
-          Mem23[ds:0x0300:word16] = dx_15
+          Mem24[ds:0x0300:word16] = dx_15
 si:si
     def:  def si
     uses: si_10 = PHI(si, si_13, si_13)
@@ -115,10 +118,11 @@ l0C00_000D:
 	cx_19 = 0x0004
 	di_21 = di_20 - 0x0001
 	SZO_22 = cond(di_21)
+	Z_23 = SLICE(SZO_22, bool, 2) (alias)
 	branch di_21 != 0x0000 l0C00_0008
 	// succ:  l0C00_0013 l0C00_0008
 l0C00_0013:
-	Mem23[ds:0x0300:word16] = dx_15
+	Mem24[ds:0x0300:word16] = dx_15
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -164,7 +168,7 @@ dx_14: orig: dx
 dx_15: orig: dx
     def:  dx_15 = dx_14 + ax_12
     uses: SCZO_16 = cond(dx_15)
-          Mem23[ds:0x0300:word16] = dx_15
+          Mem24[ds:0x0300:word16] = dx_15
           dx_14 = PHI(dx_4, dx_15, dx_15)
           dx_14 = PHI(dx_4, dx_15, dx_15)
 SCZO_16: orig: SCZO
@@ -190,12 +194,15 @@ di_21: orig: di
           di_20 = PHI(di_8, di_20, di_21)
 SZO_22: orig: SZO
     def:  SZO_22 = cond(di_21)
-Mem23: orig: Mem0
-    def:  Mem23[ds:0x0300:word16] = dx_15
+    uses: Z_23 = SLICE(SZO_22, bool, 2) (alias)
+Z_23: orig: Z
+    def:  Z_23 = SLICE(SZO_22, bool, 2) (alias)
+Mem24: orig: Mem0
+    def:  Mem24[ds:0x0300:word16] = dx_15
 ds:ds
     def:  def ds
     uses: ax_12 = Mem0[ds:si_10:word16]
-          Mem23[ds:0x0300:word16] = dx_15
+          Mem24[ds:0x0300:word16] = dx_15
 si:si
     def:  def si
     uses: si_10 = PHI(si, si_13, si_13)
@@ -236,10 +243,11 @@ l0C00_000D:
 	cx_19 = 0x0004
 	di_21 = di_20 - 0x0001
 	SZO_22 = cond(di_21)
+	Z_23 = SLICE(SZO_22, bool, 2) (alias)
 	branch di_21 != 0x0000 l0C00_0008
 	// succ:  l0C00_0013 l0C00_0008
 l0C00_0013:
-	Mem23[ds:0x0300:word16] = dx_15
+	Mem24[ds:0x0300:word16] = dx_15
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

@@ -28,9 +28,9 @@ fn0C00_0000_exit:
 // fp:fp
 // sp:sp
 // ax:ax
-// SZO:Flags
-// C:Flags
-// Z:Flags
+// SZO:SZO
+// C:C
+// Z:Z
 // al:al
 // return address size: 2
 define fn0C00_0015
@@ -63,9 +63,9 @@ fn0C00_0015_exit:
 // fp:fp
 // sp:sp
 // ax:ax
-// SZO:Flags
-// C:Flags
-// Z:Flags
+// SZO:SZO
+// C:C
+// Z:Z
 // al:al
 // return address size: 2
 define fn0C00_0020

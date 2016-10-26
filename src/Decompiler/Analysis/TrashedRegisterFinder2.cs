@@ -21,9 +21,12 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Operators;
 using Reko.Core.Services;
+using Reko.Evaluation;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -46,7 +49,10 @@ namespace Reko.Analysis
         private ISet<SsaTransform> sccGroup;
         private Dictionary<Procedure, HashSet<Storage>> assumedPreserved;
         private ExpressionValueComparer cmp;
+        private ExpressionSimplifier simp;
+        private ExpressionEmitter m;
         private HashSet<PhiAssignment> activePhis;
+        private ExpressionSimplifier simpl;
 
         public enum Effect
         {
@@ -68,6 +74,11 @@ namespace Reko.Analysis
             this.assumedPreserved = sccGroup.ToDictionary(k => k.SsaState.Procedure, v => new HashSet<Storage>());
             this.decompilerEventListener = listener;
             this.cmp = new ExpressionValueComparer();
+            foreach (var sst in sccGroup)
+            {
+                var proc = sst.SsaState.Procedure;
+                flow.ProcedureFlows.Add(proc, new ProcedureFlow(proc));
+            }
         }
 
         /// <summary>
@@ -83,6 +94,7 @@ namespace Reko.Analysis
         public ProcedureFlow Compute(SsaState ssa)
         {
             this.ssa = ssa;
+            this.simpl = new ExpressionSimplifier(new SsaEvaluationContext(arch, ssa.Identifiers));
             this.flow = this.progFlow.ProcedureFlows[ssa.Procedure];
             if (ssa.Procedure.Signature.ParametersValid)
             {
@@ -101,12 +113,8 @@ namespace Reko.Analysis
             else
             {
                 this.activePhis = new HashSet<PhiAssignment>();
-                foreach (var sid in ssa.Procedure.ExitBlock.Statements
-                    .Select(s => s.Instruction as UseInstruction)
-                    .Where(u => u != null)
-                    .SelectMany(u => 
-                        ExpressionIdentifierUseFinder.Find(ssa.Identifiers, u.Expression)
-                     .Select(id => ssa.Identifiers[id])))
+                var sids = GetSsaIdentifiersInExitBlock(ssa);
+                foreach (var sid in sids)
                 {
                     CategorizeIdentifier(sid);
                 }
@@ -114,15 +122,25 @@ namespace Reko.Analysis
             return this.flow;
         }
 
+        private static List<SsaIdentifier> GetSsaIdentifiersInExitBlock(SsaState ssa)
+        {
+            return ssa.Procedure.ExitBlock.Statements
+                .Select(s => s.Instruction as UseInstruction)
+                .Where(u => u != null)
+                .SelectMany(u =>
+                    ExpressionIdentifierUseFinder.Find(ssa.Identifiers, u.Expression)
+                    .Select(id => ssa.Identifiers[id]))
+                .ToList();
+        }
+
         private void CategorizeIdentifier(SsaIdentifier sid)
         {
             var e = GetReachingExpression(sid, activePhis);
             Identifier id;
             Constant c;
-            if (e.As(out id))
+            if (e.Item1.As(out id))
             {
-                if (id == sid.OriginalIdentifier
-                    ||
+                if (id == sid.OriginalIdentifier ||
                     id == ssa.Procedure.Frame.FramePointer)
                 {
                     flow.Preserved.Add(sid.OriginalIdentifier.Storage);
@@ -130,7 +148,7 @@ namespace Reko.Analysis
                 }
                 // Fall through to trash case.
             }
-            else if (e.As(out c) && c.IsValid)
+            else if (e.Item1.As(out c) && c.IsValid)
             {
                 flow.Constants.Add(sid.OriginalIdentifier.Storage, c);
                 // Fall through to trash case.
@@ -144,17 +162,19 @@ namespace Reko.Analysis
         /// <param name="sid"></param>
         /// <param name="activePhis"></param>
         /// <returns></returns>
-        private Expression GetReachingExpression(SsaIdentifier sid, ISet<PhiAssignment> activePhis)
+        private Tuple<Expression,SsaIdentifier> GetReachingExpression(SsaIdentifier sid, ISet<PhiAssignment> activePhis)
         {
             var sidOrig = sid;
             if (sid.DefStatement == null)
-                return Constant.Invalid;
+            {
+                return new Tuple<Expression, SsaIdentifier>(Constant.Invalid, sid);
+            }
             var defInstr = sid.DefStatement.Instruction;
             if (defInstr is DefInstruction &&
                 sid.DefStatement.Block == ssa.Procedure.EntryBlock)
             {
                 // Reaching definition was a DefInstruction;
-                return sid.Identifier;
+                return new Tuple<Expression, SsaIdentifier>(sid.Identifier, sid);
             }
             Assignment ass;
             if (defInstr.As(out ass))
@@ -167,12 +187,14 @@ namespace Reko.Analysis
             {
                 return VisitCall(call, sid);
             }
+            var inv = new Tuple<Expression, SsaIdentifier>(Constant.Invalid, sid);
+
             PhiAssignment phi;
             if (defInstr.As(out phi))
             {
-                Expression value = null;
+                Tuple<Expression,SsaIdentifier> value = null;
                 if (activePhis.Contains(phi))
-                    return Constant.Invalid;
+                    return inv;
                 activePhis.Add(phi);
                 foreach (var id in phi.Src.Arguments.OfType<Identifier>())
                 {
@@ -181,15 +203,15 @@ namespace Reko.Analysis
                     {
                         value = c;
                     }
-                    else if (c == Constant.Invalid || !cmp.Equals(value, c))
+                    else if (c.Item1 == Constant.Invalid || !cmp.Equals(value.Item1, c.Item1))
                     {
-                        value = Constant.Invalid;
+                        value = inv;
                     }
                 }
                 activePhis.Remove(phi);
                 return value;
             }
-            return Constant.Invalid;
+            return inv;
         }
 
         private static Tuple<Effect, Expression> Trash()
@@ -200,14 +222,14 @@ namespace Reko.Analysis
         private static Tuple<Effect, Expression> Preserve()
         {
             return new Tuple<Effect, Expression>(Effect.Preserved, null);
-        }
+        }                                             
 
-        private Expression VisitAssignment(Assignment ass, SsaIdentifier sid)
+        public Tuple<Expression,SsaIdentifier> VisitAssignment(Assignment ass, SsaIdentifier sid)
         {
             Constant c;
             if (ass.Src.As(out c))
             {
-                return c;
+                return new Tuple<Expression,SsaIdentifier>(c, sid);
             }
             Identifier idCopy;
             if (ass.Src.As(out idCopy))
@@ -215,24 +237,40 @@ namespace Reko.Analysis
                 sid = ssa.Identifiers[idCopy];
                 return GetReachingExpression(sid, activePhis);
             }
-            return Constant.Invalid;
+            BinaryExpression bin;
+            if (ass.Src.As(out bin) && 
+                bin.Left.As(out idCopy) &&
+                bin.Right.As(out c))
+            {
+                if (bin.Operator == Operator.IAdd)
+                {
+                    var sidCopy = ssa.Identifiers[idCopy];
+                    var next = GetReachingExpression(sidCopy, activePhis);
+                    if (next.Item1 != Constant.Invalid && next.Item2 != sidCopy)
+                    {
+                        
+                    }
+                }
+            }
+            return  new Tuple<Expression, SsaIdentifier>(Constant.Invalid, sid);
         }
 
-        public Expression VisitCall(CallInstruction call, SsaIdentifier sid)
+        public Tuple<Expression, SsaIdentifier> VisitCall(CallInstruction call, SsaIdentifier sid)
         {
             if (!call.Definitions.Any(d => d.Expression == sid.Identifier))
                 throw new InvalidOperationException("Call should have defined identifier.");
+            var inv = new Tuple<Expression, SsaIdentifier>(Constant.Invalid, sid);
             ProcedureConstant callee;
             if (!call.Callee.As(out callee))
             {
-                return Constant.Invalid;
+                return inv;
             }
 
             // Call trashes this identifier. If it's not in our SCC group we
             // know it to be trashed for sure.
             if (!sccGroup.Any(s => s.SsaState.Procedure == callee.Procedure))
             {
-                return Constant.Invalid;
+                return inv;
             }
 
             // Are we already assuming that sid is preserved? If so, continue.
@@ -273,5 +311,20 @@ namespace Reko.Analysis
             }
             return null;
         }
+
+        // for u in uses:
+        //   e = u.Expression
+        //   s = def(e)
+        //   if s is ass
+        //      if s.dst is (+,Q,c)
+        //          e = (e - c).simplify
+        //          e = Q
+        //      if s.dst is (-,Q,c):
+        //          e = (e + c).simplify
+        //          e = Q
+        //      if s.dst is ID
+        //          e = SRC
+        //   if s is call:
+        //      
     }
 }

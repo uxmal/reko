@@ -4,10 +4,10 @@
 // fp:fp
 // sp:sp
 // ax:ax
-// SZO:Flags
-// C:Flags
+// SZO:SZO
+// C:C
 // ebx:ebx
-// Z:Flags
+// Z:Z
 // ds:ds
 // return address size: 2
 define fn0C00_0000

@@ -6,10 +6,10 @@
 // bx:bx
 // ds:ds
 // cx:cx
-// SZO:Flags
-// C:Flags
+// SZO:SZO
+// C:C
 // si:si
-// SCZO:Flags
+// SCZO:SCZO
 // di:di
 // v11:v11
 // es:es

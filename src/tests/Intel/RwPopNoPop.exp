@@ -3,7 +3,7 @@
 // Mem0:Global memory
 // fp:fp
 // sp:sp
-// C:Flags
+// C:C
 // ds:ds
 // bp:bp
 // return address size: 2
@@ -29,9 +29,9 @@ fn0C00_0000_exit:
 // sp:sp
 // bp:bp
 // ss:ss
-// SCZO:Flags
-// Z:Flags
-// C:Flags
+// SCZO:SCZO
+// Z:Z
+// C:C
 // return address size: 2
 define fn0C00_000A
 fn0C00_000A_entry:

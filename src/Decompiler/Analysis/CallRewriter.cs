@@ -141,8 +141,6 @@ namespace Reko.Analysis
                 var proc = sst.SsaState.Procedure;
 				ProcedureFlow flow = crw.mpprocflow[proc];
                 flow.Dump(platform.Architecture);
-				crw.AdjustLiveOut(flow);
-                crw.AdjustLiveIn(proc, flow);
 				crw.EnsureSignature(proc, flow);
 				crw.AddUseInstructionsForOutArguments(proc);
 			}
@@ -167,20 +165,20 @@ namespace Reko.Analysis
 			if (proc.Signature != null && proc.Signature.ParametersValid)
 				return;
 
-            var liveOut = proc.ExitBlock.Statements
+            var allLiveOut = proc.ExitBlock.Statements
                 .Select(s => s.Instruction)
                 .OfType<UseInstruction>()
-                .Select(u => ((Identifier)u.Expression).Storage)
-                .OfType<RegisterStorage>()
-                .ToHashSet();
+                .Select(u => ((Identifier)u.Expression).Storage);
 			var sb = new SignatureBuilder(proc, platform.Architecture);
 			var frame = proc.Frame;
-			foreach (var grf in liveOut
+			foreach (var grf in allLiveOut
                 .OfType<FlagGroupStorage>()
                 .OrderBy(g => g.Name))
 			{
                 sb.AddOutParam(frame.EnsureFlagGroup(grf));
 			}
+
+            var liveOut = allLiveOut.OfType<RegisterStorage>().ToHashSet();
 
             var implicitRegs = platform.CreateImplicitArgumentRegisters();
             var mayUse = new HashSet<RegisterStorage>(flow.BitsUsed.Keys.OfType<RegisterStorage>());

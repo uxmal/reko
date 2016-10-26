@@ -56,9 +56,20 @@ namespace Reko.UnitTests.Analysis
 
         protected override void RunTest(Program program, TextWriter writer)
 		{
-			dfa = new DataFlowAnalysis(program, null, new FakeDecompilerEventListener());
-			var ssts = dfa.UntangleProcedures();
-			foreach (var proc in program.Procedures.Values)
+            var eventListener = new FakeDecompilerEventListener();
+
+            dfa = new DataFlowAnalysis(program, null, eventListener);
+            var ssts = dfa.RewriteProceduresToSsa();
+
+            // Discover ssaId's that are live out at each call site.
+            // Delete all others.
+            var uvr = new UnusedOutValuesRemover(program, ssts, dfa.ProgramDataFlow, eventListener);
+            uvr.Transform();
+
+            // At this point, the exit blocks contain only live out registers.
+            // We can create signatures from that.
+            CallRewriter.Rewrite(program.Platform, ssts, dfa.ProgramDataFlow, eventListener);
+            foreach (var proc in program.Procedures.Values)
 			{
 				ProcedureFlow flow = dfa.ProgramDataFlow[proc];
 				proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.ArgumentKind, new TextFormatter(writer));

@@ -8,17 +8,17 @@
 // ebp:ebp
 // ecx:ecx
 // edx:edx
-// SCZO:Flags
-// SZO:Flags
-// C:Flags
-// Z:Flags
+// SCZO:SCZO
+// SZO:SZO
+// C:C
+// Z:Z
 // rLoc1:FPU stack
 // esi:esi
 // edi:edi
 // rLoc2:FPU stack
 // FPUF:FPUF
 // rLoc3:FPU stack
-// SO:Flags
+// SO:SO
 // return address size: 4
 define fn10000000
 fn10000000_entry:

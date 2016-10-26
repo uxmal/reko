@@ -95,40 +95,49 @@ ax:ax
 ax_4: orig: ax
     def:  ax_4 = ax | ax
     uses: SZO_5 = cond(ax_4)
-          ax_7 = ax_4 - 0x0001
+          ax_8 = ax_4 - 0x0001
           branch ax_4 != 0x0000 l0C00_0014
 SZO_5: orig: SZO
     def:  SZO_5 = cond(ax_4)
+    uses: Z_7 = SLICE(SZO_5, bool, 2) (alias)
 C_6: orig: C
     def:  C_6 = false
-ax_7: orig: ax
-    def:  ax_7 = ax_4 - 0x0001
-    uses: SZO_8 = cond(ax_7)
-          ax_9 = ax_7 - 0x0001
-          branch ax_7 != 0x0000 l0C00_001B
-SZO_8: orig: SZO
-    def:  SZO_8 = cond(ax_7)
-ax_9: orig: ax
-    def:  ax_9 = ax_7 - 0x0001
-    uses: SZO_10 = cond(ax_9)
-          ax_11 = ax_9 ^ ax_9
-          ax_11 = ax_9 ^ ax_9
-          branch ax_9 != 0x0000 l0C00_0022
-SZO_10: orig: SZO
-    def:  SZO_10 = cond(ax_9)
+Z_7: orig: Z
+    def:  Z_7 = SLICE(SZO_5, bool, 2) (alias)
+ax_8: orig: ax
+    def:  ax_8 = ax_4 - 0x0001
+    uses: SZO_9 = cond(ax_8)
+          ax_11 = ax_8 - 0x0001
+          branch ax_8 != 0x0000 l0C00_001B
+SZO_9: orig: SZO
+    def:  SZO_9 = cond(ax_8)
+    uses: Z_10 = SLICE(SZO_9, bool, 2) (alias)
+Z_10: orig: Z
+    def:  Z_10 = SLICE(SZO_9, bool, 2) (alias)
 ax_11: orig: ax
-    def:  ax_11 = ax_9 ^ ax_9
+    def:  ax_11 = ax_8 - 0x0001
     uses: SZO_12 = cond(ax_11)
+          ax_14 = ax_11 ^ ax_11
+          ax_14 = ax_11 ^ ax_11
+          branch ax_11 != 0x0000 l0C00_0022
 SZO_12: orig: SZO
     def:  SZO_12 = cond(ax_11)
-C_13: orig: C
-    def:  C_13 = false
+    uses: Z_13 = SLICE(SZO_12, bool, 2) (alias)
+Z_13: orig: Z
+    def:  Z_13 = SLICE(SZO_12, bool, 2) (alias)
 ax_14: orig: ax
-    def:  ax_14 = 0x0127
-ax_15: orig: ax
-    def:  ax_15 = 0x0125
-ax_16: orig: ax
-    def:  ax_16 = 0x0123
+    def:  ax_14 = ax_11 ^ ax_11
+    uses: SZO_15 = cond(ax_14)
+SZO_15: orig: SZO
+    def:  SZO_15 = cond(ax_14)
+C_16: orig: C
+    def:  C_16 = false
+ax_17: orig: ax
+    def:  ax_17 = 0x0127
+ax_18: orig: ax
+    def:  ax_18 = 0x0125
+ax_19: orig: ax
+    def:  ax_19 = 0x0123
 // fn0C00_000C
 // Return size: 2
 define fn0C00_000C
@@ -140,35 +149,38 @@ l0C00_000C:
 	sp_2 = fp
 	ax_4 = ax | ax
 	SZO_5 = cond(ax_4)
+	Z_7 = SLICE(SZO_5, bool, 2) (alias)
 	C_6 = false
 	branch ax_4 != 0x0000 l0C00_0014
 	// succ:  l0C00_0010 l0C00_0014
 l0C00_0010:
-	ax_16 = 0x0123
+	ax_19 = 0x0123
 	return
 	// succ:  fn0C00_000C_exit
 l0C00_0014:
-	ax_7 = ax_4 - 0x0001
-	SZO_8 = cond(ax_7)
-	branch ax_7 != 0x0000 l0C00_001B
+	ax_8 = ax_4 - 0x0001
+	SZO_9 = cond(ax_8)
+	Z_10 = SLICE(SZO_9, bool, 2) (alias)
+	branch ax_8 != 0x0000 l0C00_001B
 	// succ:  l0C00_0017 l0C00_001B
 l0C00_0017:
-	ax_15 = 0x0125
+	ax_18 = 0x0125
 	return
 	// succ:  fn0C00_000C_exit
 l0C00_001B:
-	ax_9 = ax_7 - 0x0001
-	SZO_10 = cond(ax_9)
-	branch ax_9 != 0x0000 l0C00_0022
+	ax_11 = ax_8 - 0x0001
+	SZO_12 = cond(ax_11)
+	Z_13 = SLICE(SZO_12, bool, 2) (alias)
+	branch ax_11 != 0x0000 l0C00_0022
 	// succ:  l0C00_001E l0C00_0022
 l0C00_001E:
-	ax_14 = 0x0127
+	ax_17 = 0x0127
 	return
 	// succ:  fn0C00_000C_exit
 l0C00_0022:
-	ax_11 = ax_9 ^ ax_9
-	SZO_12 = cond(ax_11)
-	C_13 = false
+	ax_14 = ax_11 ^ ax_11
+	SZO_15 = cond(ax_14)
+	C_16 = false
 	return
 	// succ:  fn0C00_000C_exit
 fn0C00_000C_exit:
@@ -183,38 +195,47 @@ ax:ax
     uses: ax_4 = ax
           SZO_5 = cond(ax)
           branch ax != 0x0000 l0C00_0014
-          ax_7 = ax - 0x0001
-          SZO_8 = cond(ax - 0x0001)
+          ax_8 = ax - 0x0001
+          SZO_9 = cond(ax - 0x0001)
           branch ax != 0x0001 l0C00_001B
-          ax_9 = ax - 0x0002
-          SZO_10 = cond(ax - 0x0002)
+          ax_11 = ax - 0x0002
+          SZO_12 = cond(ax - 0x0002)
           branch ax != 0x0002 l0C00_0022
 ax_4: orig: ax
     def:  ax_4 = ax
 SZO_5: orig: SZO
     def:  SZO_5 = cond(ax)
+    uses: Z_7 = SLICE(SZO_5, bool, 2) (alias)
 C_6: orig: C
     def:  C_6 = false
-ax_7: orig: ax
-    def:  ax_7 = ax - 0x0001
-SZO_8: orig: SZO
-    def:  SZO_8 = cond(ax - 0x0001)
-ax_9: orig: ax
-    def:  ax_9 = ax - 0x0002
-SZO_10: orig: SZO
-    def:  SZO_10 = cond(ax - 0x0002)
+Z_7: orig: Z
+    def:  Z_7 = SLICE(SZO_5, bool, 2) (alias)
+ax_8: orig: ax
+    def:  ax_8 = ax - 0x0001
+SZO_9: orig: SZO
+    def:  SZO_9 = cond(ax - 0x0001)
+    uses: Z_10 = SLICE(SZO_9, bool, 2) (alias)
+Z_10: orig: Z
+    def:  Z_10 = SLICE(SZO_9, bool, 2) (alias)
 ax_11: orig: ax
-    def:  ax_11 = 0x0000
+    def:  ax_11 = ax - 0x0002
 SZO_12: orig: SZO
-    def:  SZO_12 = cond(0x0000)
-C_13: orig: C
-    def:  C_13 = false
+    def:  SZO_12 = cond(ax - 0x0002)
+    uses: Z_13 = SLICE(SZO_12, bool, 2) (alias)
+Z_13: orig: Z
+    def:  Z_13 = SLICE(SZO_12, bool, 2) (alias)
 ax_14: orig: ax
-    def:  ax_14 = 0x0127
-ax_15: orig: ax
-    def:  ax_15 = 0x0125
-ax_16: orig: ax
-    def:  ax_16 = 0x0123
+    def:  ax_14 = 0x0000
+SZO_15: orig: SZO
+    def:  SZO_15 = cond(0x0000)
+C_16: orig: C
+    def:  C_16 = false
+ax_17: orig: ax
+    def:  ax_17 = 0x0127
+ax_18: orig: ax
+    def:  ax_18 = 0x0125
+ax_19: orig: ax
+    def:  ax_19 = 0x0123
 // fn0C00_000C
 // Return size: 2
 define fn0C00_000C
@@ -226,35 +247,38 @@ l0C00_000C:
 	sp_2 = fp
 	ax_4 = ax
 	SZO_5 = cond(ax)
+	Z_7 = SLICE(SZO_5, bool, 2) (alias)
 	C_6 = false
 	branch ax != 0x0000 l0C00_0014
 	// succ:  l0C00_0010 l0C00_0014
 l0C00_0010:
-	ax_16 = 0x0123
+	ax_19 = 0x0123
 	return
 	// succ:  fn0C00_000C_exit
 l0C00_0014:
-	ax_7 = ax - 0x0001
-	SZO_8 = cond(ax - 0x0001)
+	ax_8 = ax - 0x0001
+	SZO_9 = cond(ax - 0x0001)
+	Z_10 = SLICE(SZO_9, bool, 2) (alias)
 	branch ax != 0x0001 l0C00_001B
 	// succ:  l0C00_0017 l0C00_001B
 l0C00_0017:
-	ax_15 = 0x0125
+	ax_18 = 0x0125
 	return
 	// succ:  fn0C00_000C_exit
 l0C00_001B:
-	ax_9 = ax - 0x0002
-	SZO_10 = cond(ax - 0x0002)
+	ax_11 = ax - 0x0002
+	SZO_12 = cond(ax - 0x0002)
+	Z_13 = SLICE(SZO_12, bool, 2) (alias)
 	branch ax != 0x0002 l0C00_0022
 	// succ:  l0C00_001E l0C00_0022
 l0C00_001E:
-	ax_14 = 0x0127
+	ax_17 = 0x0127
 	return
 	// succ:  fn0C00_000C_exit
 l0C00_0022:
-	ax_11 = 0x0000
-	SZO_12 = cond(0x0000)
-	C_13 = false
+	ax_14 = 0x0000
+	SZO_15 = cond(0x0000)
+	C_16 = false
 	return
 	// succ:  fn0C00_000C_exit
 fn0C00_000C_exit:

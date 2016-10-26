@@ -213,6 +213,7 @@
     <Compile Include="Expressions\Expression.cs" />
     <Compile Include="Expressions\ExpressionEmitter.cs" />
     <Compile Include="Expressions\ExpressionMatcher.cs" />
+    <Compile Include="Expressions\ExpressionTree.cs" />
     <Compile Include="Expressions\ExpressionValueComparer.cs" />
     <Compile Include="Expressions\ExpressionVisitor.cs" />
     <Compile Include="Expressions\FieldAccess.cs" />

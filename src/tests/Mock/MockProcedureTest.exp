@@ -4,7 +4,7 @@
 // fp:fp
 // r2:Local -0004
 // r3:Local -0008
-// Z:Flags
+// Z:Z
 // r1:Local -000C
 // return address size: 0
 define FactorialMock

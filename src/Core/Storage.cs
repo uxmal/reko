@@ -137,7 +137,7 @@ namespace Reko.Core
         public FlagRegister(string name, int flagDomain, PrimitiveType size) :
             base(
                 name,
-                (flagDomain + (int)StorageDomain.Flags - (int)StorageDomain.Flags),
+                flagDomain,
                 0,
                 size)
         {
@@ -255,7 +255,7 @@ namespace Reko.Core
 
         public override void Write(TextWriter writer)
         {
-            writer.Write("Flags");
+            writer.Write(Name);
         }
     }
 

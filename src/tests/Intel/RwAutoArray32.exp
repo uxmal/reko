@@ -3,10 +3,10 @@
 // Mem0:Global memory
 // fp:fp
 // esp:esp
-// SCZO:Flags
+// SCZO:SCZO
 // eax:eax
-// SZO:Flags
-// C:Flags
+// SZO:SZO
+// C:C
 // ecx:ecx
 // edi:edi
 // return address size: 4

@@ -340,7 +340,7 @@ word32 fn0010000C(word32 dwArg04, word32 dwArg08)
                 m.Goto("lupe");
             });
             var sExp =
-@"void haltForever()
+@"define haltForever
 {
 	while (true)
 		;

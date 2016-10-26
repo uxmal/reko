@@ -40,12 +40,15 @@ namespace Reko.UnitTests.Analysis
     [TestFixture]
     public class TrashedRegisterFinder2Tests
     {
+        private MockRepository mr;
         private ProgramBuilder progBuilder;
         private ExternalProcedure fnExit;
+        private IPlatform platform;
 
         [SetUp]
         public void Setup()
         {
+            this.mr = new MockRepository();
             this.progBuilder = new ProgramBuilder();
             this.fnExit = new ExternalProcedure(
               "exit",
@@ -60,6 +63,12 @@ namespace Reko.UnitTests.Analysis
         private static string Expect(string preserved, string trashed, string consts)
         {
             return String.Join(Environment.NewLine, new[] { preserved, trashed, consts });
+        }
+
+        private void Given_PlatformTrashedRegisters(params RegisterStorage[] regs)
+        {
+            platform = mr.Stub<IPlatform>();
+            platform.Stub(p => p.CreateTrashedRegisters()).Return(regs.ToHashSet());
         }
 
         private Procedure RunTest(string sExp, Action<ProcedureBuilder> builder)
@@ -88,11 +97,13 @@ namespace Reko.UnitTests.Analysis
         {
             var proc = mkProc();
             progBuilder.ResolveUnresolved();
+            progBuilder.Program.Platform = platform;
+            mr.ReplayAll();
            
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             importResolver.Replay();
 
-            var dataFlow = new ProgramDataFlow(this.progBuilder.Program);
+            var dataFlow = new ProgramDataFlow();
             var sst = new SsaTransform(progBuilder.Program, proc, importResolver, dataFlow);
             sst.Transform();
             var vp = new ValuePropagator(arch, sst.SsaState);
@@ -381,6 +392,35 @@ Constants: cl:0x00
                     new Identifier("", PrimitiveType.Word32, r1.Storage),
                     new Identifier("arg1", PrimitiveType.Word32, r1.Storage));
                 });
+        }
+
+        [Test(Description = "Exercises a self-recursive function")]
+        public void TrfRecursive()
+        {
+            var sExp = Expect("@@@", "@@@", "@@@" );
+            RunTest(sExp, "fnSig", m =>
+            {
+                var sp = m.Frame.EnsureIdentifier(m.Architecture.StackRegister);
+                Given_PlatformTrashedRegisters((RegisterStorage)sp.Storage);
+
+                var r1 = m.Reg32("r1", 1);
+
+
+                m.Assign(sp, m.Frame.FramePointer); // establish frame
+                m.Assign(sp, m.ISub(sp, 4));        // preserve r1
+                m.Store(sp, r1);
+                m.BranchIf(m.Eq0(r1), "m3");
+
+                m.Label("m2");
+                m.Store(m.Word32(0x123400), r1);    // do something stupid
+                m.Assign(r1, m.ISub(r1, 1));
+                m.Call("fnSig", 0);                 // recurse
+
+                m.Label("m3");
+                m.Assign(r1, m.LoadDw(sp));
+                m.Assign(sp, m.IAdd(sp, 4));
+                m.Return();
+            });
         }
     }
 }

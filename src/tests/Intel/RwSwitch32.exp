@@ -4,11 +4,11 @@
 // fp:fp
 // esp:esp
 // eax:eax
-// SCZO:Flags
-// CZ:Flags
+// SCZO:SCZO
+// CZ:CZ
 // edx:edx
-// SZO:Flags
-// C:Flags
+// SZO:SZO
+// C:C
 // dl:dl
 // return address size: 4
 define fn10000000

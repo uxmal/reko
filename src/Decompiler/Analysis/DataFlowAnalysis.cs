@@ -153,19 +153,22 @@ namespace Reko.Analysis
         /// <param name="procs"></param>
         private void UntangleProcedureScc(IList<Procedure> procs)
         {
+            flow.CreateFlowsFor(program.Architecture, procs);
+
+            // Detect the registers trashed by each procedure in the cluster.
+            var trf = new TrashedRegisterFinder(program, procs, flow, eventListener);
+            trf.Compute();
+
             // Convert all procedures in the SCC to SSA form and perform
             // value propagation.
-            var ssts = procs.Select(p => ConvertToSsa(p)).ToArray();
+            var ssts = procs.Select(ConvertToSsa).ToArray();
             this.ssts.AddRange(ssts);
 
             // At this point, the computation of ProcedureFlow is possible.
-            var trf = new TrashedRegisterFinder2(program.Architecture, flow, ssts, this.eventListener);
             var uid = new UsedRegisterFinder(program.Architecture, flow, ssts, this.eventListener);
             foreach (var sst in ssts)
             {
                 var ssa = sst.SsaState;
-                flow[ssa.Procedure] = new ProcedureFlow(ssa.Procedure);
-                trf.Compute(ssa);
                 RemovePreservedUseInstructions(ssa);
                 DeadCode.Eliminate(ssa);
                 uid.Compute(ssa);

@@ -265,7 +265,7 @@ ds:ds
     def:  def ds
     uses: cx_5 = Mem0[ds:0x0400:word16]
           di_7 = Mem0[ds:0x0402:word16]
-          ds_17 = PHI(ds, ds_18)
+          ds_18 = PHI(ds, ds_19)
 Mem0:Global memory
     def:  def Mem0
     uses: cx_5 = Mem0[ds:0x0400:word16]
@@ -294,30 +294,33 @@ di_11: orig: di
     def:  di_11 = PHI(di_7, di_14)
     uses: SCZO_13 = cond(al_6 - Mem0[es:di_11:byte])
           di_14 = di_11 + 0x0001
-          di_16 = PHI(di_11, di_14)
+          di_17 = PHI(di_11, di_14)
           branch al_6 != Mem0[es:di_11:byte] l0C00_0030
 Mem12: orig: Mem0
     def:  Mem12 = PHI(Mem0, Mem12)
 SCZO_13: orig: SCZO
     def:  SCZO_13 = cond(al_6 - Mem0[es:di_11:byte])
+    uses: Z_16 = SLICE(SCZO_13, bool, 2) (alias)
 di_14: orig: di
     def:  di_14 = di_11 + 0x0001
-    uses: di_16 = PHI(di_11, di_14)
+    uses: di_17 = PHI(di_11, di_14)
           di_11 = PHI(di_7, di_14)
 cx_15: orig: cx
     def:  cx_15 = cx_8 - 0x0001
     uses: cx_8 = PHI(cx_5, cx_15)
-di_16: orig: di
-    def:  di_16 = PHI(di_11, di_14)
-    uses: Mem19[ds_17:0x0404:word16] = di_16
-ds_17: orig: ds
-    def:  ds_17 = PHI(ds, ds_18)
-    uses: Mem19[ds_17:0x0404:word16] = di_16
+Z_16: orig: Z
+    def:  Z_16 = SLICE(SCZO_13, bool, 2) (alias)
+di_17: orig: di
+    def:  di_17 = PHI(di_11, di_14)
+    uses: Mem20[ds_18:0x0404:word16] = di_17
 ds_18: orig: ds
-    def:  ds_18 = PHI(ds, ds_18)
-    uses: ds_17 = PHI(ds, ds_18)
-Mem19: orig: Mem0
-    def:  Mem19[ds_17:0x0404:word16] = di_16
+    def:  ds_18 = PHI(ds, ds_19)
+    uses: Mem20[ds_18:0x0404:word16] = di_17
+ds_19: orig: ds
+    def:  ds_19 = PHI(ds, ds_19)
+    uses: ds_18 = PHI(ds, ds_19)
+Mem20: orig: Mem0
+    def:  Mem20[ds_18:0x0404:word16] = di_17
 es:es
     def:  def es
     uses: SCZO_13 = cond(al_6 - Mem0[es:di_11:byte])
@@ -344,14 +347,15 @@ l0C00_0030:
 	// succ:  l0C00_0030_1 l0C00_0032
 l0C00_0030_1:
 	SCZO_13 = cond(al_6 - Mem0[es:di_11:byte])
+	Z_16 = SLICE(SCZO_13, bool, 2) (alias)
 	di_14 = di_11 + 0x0001
 	cx_15 = cx_8 - 0x0001
 	branch al_6 != Mem0[es:di_11:byte] l0C00_0030
 	// succ:  l0C00_0032 l0C00_0030
 l0C00_0032:
-	ds_17 = PHI(ds, ds_18)
-	di_16 = PHI(di_11, di_14)
-	Mem19[ds_17:0x0404:word16] = di_16
+	ds_18 = PHI(ds, ds_19)
+	di_17 = PHI(di_11, di_14)
+	Mem20[ds_18:0x0404:word16] = di_17
 	return
 	// succ:  fn0C00_0026_exit
 fn0C00_0026_exit:
@@ -365,7 +369,7 @@ ds:ds
     def:  def ds
     uses: cx_5 = Mem0[ds:0x0400:word16]
           di_7 = Mem0[ds:0x0402:word16]
-          ds_17 = PHI(ds, ds_18)
+          ds_18 = PHI(ds, ds_19)
 Mem0:Global memory
     def:  def Mem0
     uses: cx_5 = Mem0[ds:0x0400:word16]
@@ -393,29 +397,32 @@ di_11: orig: di
     uses: SCZO_13 = cond(0x00 - Mem0[es:di_11:byte])
           di_14 = di_11 + 0x0001
           branch 0x00 != Mem0[es:di_11:byte] l0C00_0030
-          di_16 = PHI(di_11, di_14)
+          di_17 = PHI(di_11, di_14)
 Mem12: orig: Mem0
     def:  Mem12 = PHI(Mem0, Mem12)
 SCZO_13: orig: SCZO
     def:  SCZO_13 = cond(0x00 - Mem0[es:di_11:byte])
+    uses: Z_16 = SLICE(SCZO_13, bool, 2) (alias)
 di_14: orig: di
     def:  di_14 = di_11 + 0x0001
-    uses: di_16 = PHI(di_11, di_14)
+    uses: di_17 = PHI(di_11, di_14)
           di_11 = PHI(di_7, di_14)
 cx_15: orig: cx
     def:  cx_15 = cx_8 - 0x0001
     uses: cx_8 = PHI(cx_5, cx_15)
-di_16: orig: di
-    def:  di_16 = PHI(di_11, di_14)
-    uses: Mem19[ds_17:0x0404:word16] = di_16
-ds_17: orig: ds
-    def:  ds_17 = PHI(ds, ds_18)
-    uses: Mem19[ds_17:0x0404:word16] = di_16
+Z_16: orig: Z
+    def:  Z_16 = SLICE(SCZO_13, bool, 2) (alias)
+di_17: orig: di
+    def:  di_17 = PHI(di_11, di_14)
+    uses: Mem20[ds_18:0x0404:word16] = di_17
 ds_18: orig: ds
-    def:  ds_18 = PHI(ds, ds_18)
-    uses: ds_17 = PHI(ds, ds_18)
-Mem19: orig: Mem0
-    def:  Mem19[ds_17:0x0404:word16] = di_16
+    def:  ds_18 = PHI(ds, ds_19)
+    uses: Mem20[ds_18:0x0404:word16] = di_17
+ds_19: orig: ds
+    def:  ds_19 = PHI(ds, ds_19)
+    uses: ds_18 = PHI(ds, ds_19)
+Mem20: orig: Mem0
+    def:  Mem20[ds_18:0x0404:word16] = di_17
 es:es
     def:  def es
     uses: SCZO_13 = cond(0x00 - Mem0[es:di_11:byte])
@@ -442,14 +449,15 @@ l0C00_0030:
 	// succ:  l0C00_0030_1 l0C00_0032
 l0C00_0030_1:
 	SCZO_13 = cond(0x00 - Mem0[es:di_11:byte])
+	Z_16 = SLICE(SCZO_13, bool, 2) (alias)
 	di_14 = di_11 + 0x0001
 	cx_15 = cx_8 - 0x0001
 	branch 0x00 != Mem0[es:di_11:byte] l0C00_0030
 	// succ:  l0C00_0032 l0C00_0030
 l0C00_0032:
-	ds_17 = PHI(ds, ds_18)
-	di_16 = PHI(di_11, di_14)
-	Mem19[ds_17:0x0404:word16] = di_16
+	ds_18 = PHI(ds, ds_19)
+	di_17 = PHI(di_11, di_14)
+	Mem20[ds_18:0x0404:word16] = di_17
 	return
 	// succ:  fn0C00_0026_exit
 fn0C00_0026_exit:

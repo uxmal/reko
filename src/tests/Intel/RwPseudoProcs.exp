@@ -10,15 +10,15 @@
 // al:al
 // v8:v8
 // bx:bx
-// C:Flags
+// C:C
 // v11:v11
 // cx:cx
-// SZO:Flags
+// SZO:SZO
 // es:es
 // di:di
 // ds:ds
 // ax:ax
-// Z:Flags
+// Z:Z
 // eax:eax
 // ecx:ecx
 // return address size: 2

@@ -29,10 +29,10 @@ fn0C00_0000_exit:
 // es:es
 // di:di
 // al:al
-// SZO:Flags
-// C:Flags
-// SCZO:Flags
-// Z:Flags
+// SZO:SZO
+// C:C
+// SCZO:SCZO
+// Z:Z
 // ah:ah
 // ax:ax
 // bx:bx

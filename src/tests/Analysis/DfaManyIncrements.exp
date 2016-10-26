@@ -3,7 +3,7 @@
 // MayUse:  r0:4
 // LiveOut:
 // Trashed: r0 r1
-// Preserved:
+// Preserved: r63
 // ManyIncrements
 // Return size: 0
 void ManyIncrements(word32 r0)

@@ -27,10 +27,10 @@ fn0C00_0000_exit:
 // sp:sp
 // bx:bx
 // ds:ds
-// SCZO:Flags
-// SZO:Flags
+// SCZO:SCZO
+// SZO:SZO
 // ax:ax
-// C:Flags
+// C:C
 // return address size: 2
 define fn0C00_000C
 fn0C00_000C_entry:
@@ -59,10 +59,10 @@ fn0C00_000C_exit:
 // fp:fp
 // sp:sp
 // bx:bx
-// SCZO:Flags
+// SCZO:SCZO
 // ax:ax
 // ds:ds
-// SZO:Flags
+// SZO:SZO
 // return address size: 0
 define fn0C00_0018
 fn0C00_0018_entry:

@@ -33,31 +33,34 @@ namespace Reko.Analysis
 	{
 		private Dictionary<Procedure,ProcedureFlow> procFlow;
         private Dictionary<Block, BlockFlow> blockFlow;
-        private Dictionary<Procedure, ProcedureFlow2> procFlow2;
 
 		public ProgramDataFlow()
 		{
 			procFlow = new Dictionary<Procedure,ProcedureFlow>();
             blockFlow = new Dictionary<Block,BlockFlow>();
-            procFlow2 = new Dictionary<Procedure, ProcedureFlow2>();
 		}
 
 		public ProgramDataFlow(Program program) : this()
 		{
-			foreach (Procedure proc in program.Procedures.Values)
-			{
-				procFlow[proc] = new ProcedureFlow(proc);
-				foreach (Block block in proc.ControlGraph.Blocks)
-				{
-					blockFlow[block] = new BlockFlow(
-                        block, 
+            CreateFlowsFor(program.Architecture, program.Procedures.Values);
+		}
+
+        public void CreateFlowsFor(IProcessorArchitecture arch, IEnumerable<Procedure> procs)
+        {
+            foreach (Procedure proc in procs)
+            {
+                procFlow[proc] = new ProcedureFlow(proc);
+                foreach (var block in proc.ControlGraph.Blocks)
+                {
+                    blockFlow[block] = new Analysis.BlockFlow(
+                        block,
                         new HashSet<Storage>(),
                         new SymbolicEvaluationContext(
-                            program.Architecture,
+                            arch,
                             proc.Frame));
-				}
-			}
-		}
+                }
+            }
+        }
 
 		public ProcedureFlow this[Procedure proc]
 		{
@@ -79,19 +82,6 @@ namespace Reko.Analysis
         public IDictionary<Procedure, ProcedureFlow> ProcedureFlows
         {
             get { return procFlow; }
-        }
-
-        // These functions are place holders. Once the new SSA is adpoted, they will bcome
-        // unnecessary -- like this whole class.
-        public Dictionary<Procedure, ProcedureFlow2> ProcedureFlows2 { get { return procFlow2; } }
-        public DataFlow2 ToDataFlow2(Program program)
-        {
-            var df = new DataFlow2(program);
-            foreach (var de in ProcedureFlows2)
-            {
-                df.ProcedureFlows.Add(de.Key, de.Value);
-            }
-            return df;
         }
 	}
 }

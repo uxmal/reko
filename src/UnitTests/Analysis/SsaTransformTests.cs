@@ -331,14 +331,16 @@ bp:bp
     def:  def bp
     uses: dwLoc04_14 = bp
 Mem5: orig: Mem0
-    uses: CZS_7 = cond(wArg04 - 0x0003)
+    uses: SZC_7 = cond(wArg04 - 0x0003)
           bp_12 = dwLoc04_14
 bp_6: orig: bp
     def:  bp_6 = fp - 0x00000004
-CZS_7: orig: CZS
-    def:  CZS_7 = cond(wArg04 - 0x0003)
-    uses: branch Test(GE,CZS_7) ge3
-          use CZS_7
+SZC_7: orig: SZC
+    def:  SZC_7 = cond(wArg04 - 0x0003)
+    uses: branch Test(GE,SZC_7) ge3
+          C_18 = SLICE(SZC_7, bool, 2) (alias)
+          S_21 = SLICE(SZC_7, bool, 0) (alias)
+          Z_23 = SLICE(SZC_7, bool, 1) (alias)
 r1_8: orig: r1
     def:  r1_8 = 0x00000001
     uses: r1_19 = PHI(r1_9, r1_8)
@@ -360,10 +362,19 @@ dwLoc04_14: orig: dwLoc04
     uses: bp_12 = dwLoc04_14
 wArg04:Stack +0004
     def:  def wArg04
-    uses: CZS_7 = cond(wArg04 - 0x0003)
+    uses: SZC_7 = cond(wArg04 - 0x0003)
+C_18: orig: C
+    def:  C_18 = SLICE(SZC_7, bool, 2) (alias)
+    uses: use C_18
 r1_19: orig: r1
     def:  r1_19 = PHI(r1_9, r1_8)
     uses: use r1_19
+S_21: orig: S
+    def:  S_21 = SLICE(SZC_7, bool, 0) (alias)
+    uses: use S_21
+Z_23: orig: Z
+    def:  Z_23 = SLICE(SZC_7, bool, 1) (alias)
+    uses: use Z_23
 // proc1
 // Return size: 0
 define proc1
@@ -388,8 +399,11 @@ l1:
 	r63_3 = fp - 0x00000004
 	dwLoc04_14 = bp
 	bp_6 = fp - 0x00000004
-	CZS_7 = cond(wArg04 - 0x0003)
-	branch Test(GE,CZS_7) ge3
+	SZC_7 = cond(wArg04 - 0x0003)
+	C_18 = SLICE(SZC_7, bool, 2) (alias)
+	S_21 = SLICE(SZC_7, bool, 0) (alias)
+	Z_23 = SLICE(SZC_7, bool, 1) (alias)
+	branch Test(GE,SZC_7) ge3
 	// succ:  l2 ge3
 l2:
 	r1_9 = 0x00000000
@@ -397,9 +411,11 @@ l2:
 	// succ:  done
 proc1_exit:
 	use bp_12
-	use CZS_7
+	use C_18
 	use r1_19
 	use r63_13
+	use S_21
+	use Z_23
 ======
 ";
             #endregion
@@ -410,7 +426,7 @@ proc1_exit:
                 var bp = m.Reg32("bp", 5);
                 var r1 = m.Reg32("r1", 1);
                 var flags = m.Architecture.GetFlagGroup(1).FlagRegister;
-                var cr = m.Frame.EnsureFlagGroup(flags, 0x3, "CZS", PrimitiveType.Byte);
+                var cr = m.Frame.EnsureFlagGroup(flags, 0x7, "SZC", PrimitiveType.Byte);
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(sp, m.ISub(sp, 4));
                 m.Store(sp, bp);
@@ -450,13 +466,15 @@ bp:bp
     def:  def bp
     uses: dwLoc04_15 = bp
 Mem5: orig: Mem0
-    uses: CZS_7 = wArg04 - 0x0003
+    uses: SZC_7 = wArg04 - 0x0003
 bp_6: orig: bp
     def:  bp_6 = fp - 0x00000004
-CZS_7: orig: CZS
-    def:  CZS_7 = wArg04 - 0x0003
-    uses: branch Test(GE,CZS_7) ge3
-          use CZS_7
+SZC_7: orig: SZC
+    def:  SZC_7 = wArg04 - 0x0003
+    uses: branch Test(GE,SZC_7) ge3
+          C_21 = SLICE(SZC_7, bool, 2) (alias)
+          S_25 = SLICE(SZC_7, bool, 0) (alias)
+          Z_27 = SLICE(SZC_7, bool, 1) (alias)
 Mem8: orig: Mem0
     uses: Mem12 = PHI(Mem10, Mem8)
 r1_9: orig: r1
@@ -480,17 +498,26 @@ dwLoc04_15: orig: dwLoc04
     uses: bp_13 = dwLoc04_15
 wArg04:Stack +0004
     def:  def wArg04
-    uses: CZS_7 = wArg04 - 0x0003
+    uses: SZC_7 = wArg04 - 0x0003
 wArg04_17: orig: wArg04
     def:  wArg04_17 = -3
 wArg04_18: orig: wArg04
     def:  wArg04_18 = 0x0003
+C_21: orig: C
+    def:  C_21 = SLICE(SZC_7, bool, 2) (alias)
+    uses: use C_21
 r1_22: orig: r1
     def:  r1_22 = PHI(r1, r1_9)
     uses: use r1_22
 r1:r1
     def:  def r1
     uses: r1_22 = PHI(r1, r1_9)
+S_25: orig: S
+    def:  S_25 = SLICE(SZC_7, bool, 0) (alias)
+    uses: use S_25
+Z_27: orig: Z
+    def:  Z_27 = SLICE(SZC_7, bool, 1) (alias)
+    uses: use Z_27
 // proc1
 // Return size: 0
 define proc1
@@ -518,8 +545,11 @@ l1:
 	r63_3 = fp - 0x00000004
 	dwLoc04_15 = bp
 	bp_6 = fp - 0x00000004
-	CZS_7 = wArg04 - 0x0003
-	branch Test(GE,CZS_7) ge3
+	SZC_7 = wArg04 - 0x0003
+	C_21 = SLICE(SZC_7, bool, 2) (alias)
+	S_25 = SLICE(SZC_7, bool, 0) (alias)
+	Z_27 = SLICE(SZC_7, bool, 1) (alias)
+	branch Test(GE,SZC_7) ge3
 	// succ:  l2 ge3
 l2:
 	wArg04_18 = 0x0003
@@ -527,9 +557,11 @@ l2:
 	// succ:  done
 proc1_exit:
 	use bp_13
-	use CZS_7
+	use C_21
 	use r1_22
 	use r63_14
+	use S_25
+	use Z_27
 ======
 ";
             #endregion
@@ -540,7 +572,7 @@ proc1_exit:
                 var bp = m.Reg32("bp", 5);
                 var r1 = m.Reg32("r1", 1);
                 var flags = m.Architecture.GetFlagGroup(1).FlagRegister;
-                var cr = m.Frame.EnsureFlagGroup(flags, 0x3, "CZS", PrimitiveType.Byte);
+                var cr = m.Frame.EnsureFlagGroup(flags, 0x7, "SZC", PrimitiveType.Byte);
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(sp, m.ISub(sp, 4));
                 m.Store(sp, bp);
@@ -650,7 +682,9 @@ Mem7: orig: Mem0
 CZS_8: orig: CZS
     def:  CZS_8 = wArg04 - 0x0003
     uses: branch Test(GE,CZS_8) ge3
-          use CZS_8
+          C_26 = SLICE(CZS_8, bool, 2) (alias)
+          S_28 = SLICE(CZS_8, bool, 0) (alias)
+          Z_30 = SLICE(CZS_8, bool, 1) (alias)
 r1:r1
     def:  def r1
     uses: dwLoc0C_21 = r1
@@ -693,6 +727,15 @@ dwLoc0C_22: orig: dwLoc0C
 dwLoc0C_23: orig: dwLoc0C
     def:  dwLoc0C_23 = PHI(dwLoc0C_22, dwLoc0C_21)
     uses: r1_14 = dwLoc0C_23
+C_26: orig: C
+    def:  C_26 = SLICE(CZS_8, bool, 2) (alias)
+    uses: use C_26
+S_28: orig: S
+    def:  S_28 = SLICE(CZS_8, bool, 0) (alias)
+    uses: use S_28
+Z_30: orig: Z
+    def:  Z_30 = SLICE(CZS_8, bool, 1) (alias)
+    uses: use Z_30
 // proc1
 // Return size: 0
 define proc1
@@ -722,6 +765,9 @@ l1:
 	bp_6 = fp - 0x00000004
 	dwLoc0C_19 = 0x00000000
 	CZS_8 = wArg04 - 0x0003
+	C_26 = SLICE(CZS_8, bool, 2) (alias)
+	S_28 = SLICE(CZS_8, bool, 0) (alias)
+	Z_30 = SLICE(CZS_8, bool, 1) (alias)
 	branch Test(GE,CZS_8) ge3
 	// succ:  l2 ge3
 l2:
@@ -730,9 +776,11 @@ l2:
 	// succ:  done
 proc1_exit:
 	use bp_16
-	use CZS_8
+	use C_26
 	use r1_14
 	use r63_17
+	use S_28
+	use Z_30
 ======
 ";
             #endregion
@@ -743,7 +791,7 @@ proc1_exit:
                 var bp = m.Reg32("bp", 5);
                 var r1 = m.Reg32("r1", 1);
                 var flags = m.Architecture.GetFlagGroup(1).FlagRegister;
-                var cr = m.Frame.EnsureFlagGroup(flags, 0x3, "CZS", PrimitiveType.Byte);
+                var cr = m.Frame.EnsureFlagGroup(flags, 0x7, "CZS", PrimitiveType.Byte);
                 m.Assign(sp, m.Frame.FramePointer);
                 m.Assign(sp, m.ISub(sp, 4));
                 m.Store(sp, bp);
@@ -769,7 +817,6 @@ proc1_exit:
         [Test]
         public void SsaFlagRegisters()
         {
-
             var sExp =
             #region Expected
 @"esi:esi
@@ -778,12 +825,18 @@ proc1_exit:
           SZ_2 = cond(esi & esi)
 SZ_2: orig: SZ
     def:  SZ_2 = cond(esi & esi)
-    uses: al_4 = Test(ULE,C_3 | SZ_2)
+    uses: Z_5 = SLICE(SZ_2, bool, 1) (alias)
 C_3: orig: C
     def:  C_3 = false
-    uses: al_4 = Test(ULE,C_3 | SZ_2)
-al_4: orig: al
-    def:  al_4 = Test(ULE,C_3 | SZ_2)
+    uses: CZ_4 = C_3 | Z_5 (alias)
+CZ_4: orig: CZ
+    def:  CZ_4 = C_3 | Z_5 (alias)
+    uses: al_6 = Test(ULE,CZ_4)
+Z_5: orig: Z
+    def:  Z_5 = SLICE(SZ_2, bool, 1) (alias)
+    uses: CZ_4 = C_3 | Z_5 (alias)
+al_6: orig: al
+    def:  al_6 = Test(ULE,CZ_4)
 // proc1
 // Return size: 0
 define proc1
@@ -792,8 +845,10 @@ proc1_entry:
 	// succ:  l1
 l1:
 	SZ_2 = cond(esi & esi)
+	Z_5 = SLICE(SZ_2, bool, 1) (alias)
 	C_3 = false
-	al_4 = Test(ULE,C_3 | SZ_2)
+	CZ_4 = C_3 | Z_5 (alias)
+	al_6 = Test(ULE,CZ_4)
 	return
 	// succ:  proc1_exit
 proc1_exit:
@@ -804,9 +859,9 @@ proc1_exit:
             RunTest(sExp, m =>
             {
                 var flags = m.Architecture.GetFlagGroup(1).FlagRegister;
-                var sz = m.Frame.EnsureFlagGroup(flags, 6, "SZ", PrimitiveType.Byte);
-                var cz = m.Frame.EnsureFlagGroup(flags, 3, "CZ", PrimitiveType.Byte);
-                var c = m.Frame.EnsureFlagGroup(flags, 1, "C", PrimitiveType.Bool);
+                var sz = m.Frame.EnsureFlagGroup(flags, 3, "SZ", PrimitiveType.Byte);
+                var cz = m.Frame.EnsureFlagGroup(flags, 6, "CZ", PrimitiveType.Byte);
+                var c = m.Frame.EnsureFlagGroup(flags, 4, "C", PrimitiveType.Bool);
                 var al = m.Reg8("al", 0);
                 var esi = m.Reg32("esi", 6);
                 m.Assign(sz, m.Cond(m.And(esi, esi)));
@@ -1550,7 +1605,7 @@ proc1_exit:
                 new RegisterStorage(name, n, 0, PrimitiveType.Word32));
         }
 
-        [Test(Description ="Emulates calling an imported API Win32 on MIPS")]
+        [Test(Description = "Emulates calling an imported API Win32 on MIPS")]
         public void Ssa_ConstantPropagation()
         {
             // 0x00031234
@@ -1611,34 +1666,37 @@ proc1_exit:
             #region Expected
 @"eax_1: orig: eax
     def:  eax_1 = 0x00000000
-    uses: eax_4 = PHI(eax_1, eax_6)
+    uses: eax_5 = PHI(eax_1, eax_7)
 ebx_2: orig: ebx
-    def:  ebx_2 = PHI(ebx, ebx_7)
+    def:  ebx_2 = PHI(ebx, ebx_8)
     uses: SCZ_3 = cond(ebx_2 - 0x00000000)
-          eax_6 = eax_4 + Mem0[ebx_2:word32]
-          ebx_7 = Mem0[ebx_2 + 0x00000004:word32]
+          eax_7 = eax_5 + Mem0[ebx_2:word32]
+          ebx_8 = Mem0[ebx_2 + 0x00000004:word32]
 SCZ_3: orig: SCZ
     def:  SCZ_3 = cond(ebx_2 - 0x00000000)
-    uses: branch Test(NE,SCZ_3) l2Body
-eax_4: orig: eax
-    def:  eax_4 = PHI(eax_1, eax_6)
-    uses: eax_6 = eax_4 + Mem0[ebx_2:word32]
-          return eax_4
-Mem5: orig: Mem0
-    def:  Mem5 = PHI(Mem0, Mem5)
-eax_6: orig: eax
-    def:  eax_6 = eax_4 + Mem0[ebx_2:word32]
-    uses: eax_4 = PHI(eax_1, eax_6)
-ebx_7: orig: ebx
-    def:  ebx_7 = Mem0[ebx_2 + 0x00000004:word32]
-    uses: ebx_2 = PHI(ebx, ebx_7)
+    uses: Z_4 = SLICE(SCZ_3, bool, 1) (alias)
+Z_4: orig: Z
+    def:  Z_4 = SLICE(SCZ_3, bool, 1) (alias)
+    uses: branch Test(NE,Z_4) l2Body
+eax_5: orig: eax
+    def:  eax_5 = PHI(eax_1, eax_7)
+    uses: eax_7 = eax_5 + Mem0[ebx_2:word32]
+          return eax_5
+Mem6: orig: Mem0
+    def:  Mem6 = PHI(Mem0, Mem6)
+eax_7: orig: eax
+    def:  eax_7 = eax_5 + Mem0[ebx_2:word32]
+    uses: eax_5 = PHI(eax_1, eax_7)
+ebx_8: orig: ebx
+    def:  ebx_8 = Mem0[ebx_2 + 0x00000004:word32]
+    uses: ebx_2 = PHI(ebx, ebx_8)
 ebx:ebx
     def:  def ebx
-    uses: ebx_2 = PHI(ebx, ebx_7)
+    uses: ebx_2 = PHI(ebx, ebx_8)
 Mem0:Global memory
     def:  def Mem0
-    uses: eax_6 = eax_4 + Mem0[ebx_2:word32]
-          ebx_7 = Mem0[ebx_2 + 0x00000004:word32]
+    uses: eax_7 = eax_5 + Mem0[ebx_2:word32]
+          ebx_8 = Mem0[ebx_2 + 0x00000004:word32]
 // proc1
 // Return size: 0
 define proc1
@@ -1651,17 +1709,18 @@ l1:
 	goto l3Head
 	// succ:  l3Head
 l2Body:
-	eax_6 = eax_4 + Mem0[ebx_2:word32]
-	ebx_7 = Mem0[ebx_2 + 0x00000004:word32]
+	eax_7 = eax_5 + Mem0[ebx_2:word32]
+	ebx_8 = Mem0[ebx_2 + 0x00000004:word32]
 	// succ:  l3Head
 l3Head:
-	eax_4 = PHI(eax_1, eax_6)
-	ebx_2 = PHI(ebx, ebx_7)
+	eax_5 = PHI(eax_1, eax_7)
+	ebx_2 = PHI(ebx, ebx_8)
 	SCZ_3 = cond(ebx_2 - 0x00000000)
-	branch Test(NE,SCZ_3) l2Body
+	Z_4 = SLICE(SCZ_3, bool, 1) (alias)
+	branch Test(NE,Z_4) l2Body
 	// succ:  l4Exit l2Body
 l4Exit:
-	return eax_4
+	return eax_5
 	// succ:  proc1_exit
 proc1_exit:
 ======
@@ -2062,10 +2121,17 @@ proc1_exit:
     uses: SZ_2 = cond(r1)
 SZ_2: orig: SZ
     def:  SZ_2 = cond(r1)
-    uses: use C_3 | SZ_2
+    uses: S_4 = SLICE(SZ_2, bool, 0) (alias)
+          Z_5 = SLICE(SZ_2, bool, 1) (alias)
 C_3: orig: C
     def:  C_3 = false
-    uses: use C_3 | SZ_2
+    uses: use C_3
+S_4: orig: S
+    def:  S_4 = SLICE(SZ_2, bool, 0) (alias)
+    uses: use S_4
+Z_5: orig: Z
+    def:  Z_5 = SLICE(SZ_2, bool, 1) (alias)
+    uses: use Z_5
 // proc1
 // Return size: 0
 define proc1
@@ -2074,11 +2140,15 @@ proc1_entry:
 	// succ:  m0
 m0:
 	SZ_2 = cond(r1)
+	S_4 = SLICE(SZ_2, bool, 0) (alias)
+	Z_5 = SLICE(SZ_2, bool, 1) (alias)
 	C_3 = false
 	return
 	// succ:  proc1_exit
 proc1_exit:
-	use C_3 | SZ_2
+	use C_3
+	use S_4
+	use Z_5
 ======
 ";
             #endregion
@@ -2287,6 +2357,126 @@ proc1_exit:
 
                 m.Label("m1");
                 m.Return(al);
+            });
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void SsaSingleConditionCode()
+        {
+            var sExp =
+ @"r3:r3
+    def:  def r3
+    uses: Z_2 = cond(r3)
+Z_2: orig: Z
+    def:  Z_2 = cond(r3)
+    uses: r3_3 = (int32) Test(EQ,Z_2)
+r3_3: orig: r3
+    def:  r3_3 = (int32) Test(EQ,Z_2)
+// proc1
+// Return size: 0
+define proc1
+proc1_entry:
+	def r3
+	// succ:  l1
+l1:
+	Z_2 = cond(r3)
+	r3_3 = (int32) Test(EQ,Z_2)
+	return
+	// succ:  proc1_exit
+proc1_exit:
+======
+";
+            RunTest(sExp, m =>
+            {
+                var Z = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("Z"));
+                var r3 = m.Register(3);
+
+                m.Assign(Z, m.Cond(r3));
+                m.Assign(r3, m.Cast(PrimitiveType.Int32, m.Test(ConditionCode.EQ, Z)));
+                m.Return();
+            });
+        }
+
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void SsaConditionCodeExactMatch()
+        {
+            var sExp =
+@"r3:r3
+    def:  def r3
+    uses: CZ_2 = cond(r3)
+CZ_2: orig: CZ
+    def:  CZ_2 = cond(r3)
+    uses: r3_3 = (int32) Test(ULE,CZ_2)
+r3_3: orig: r3
+    def:  r3_3 = (int32) Test(ULE,CZ_2)
+// proc1
+// Return size: 0
+define proc1
+proc1_entry:
+	def r3
+	// succ:  l1
+l1:
+	CZ_2 = cond(r3)
+	r3_3 = (int32) Test(ULE,CZ_2)
+	return
+	// succ:  proc1_exit
+proc1_exit:
+======
+";
+            RunTest(sExp, m =>
+            {
+                var CZ = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("CZ"));
+                var r3 = m.Register(3);
+
+                m.Assign(CZ, m.Cond(r3));
+                m.Assign(r3, m.Cast(PrimitiveType.Int32, m.Test(ConditionCode.ULE, CZ)));
+                m.Return();
+            });
+        }
+
+        [Test(Description = "The flag group being used is a subset of the definition")]
+        [Category(Categories.UnitTests)]
+        public void SsaConditionCode_UseSubset()
+        {
+            var sExp =
+    @"r3:r3
+    def:  def r3
+    uses: SCZ_2 = cond(r3)
+SCZ_2: orig: SCZ
+    def:  SCZ_2 = cond(r3)
+    uses: SZ_3 = SLICE(SCZ_2, bool, 1) (alias)
+SZ_3: orig: SZ
+    def:  SZ_3 = SLICE(SCZ_2, bool, 1) (alias)
+    uses: r3_4 = (int32) Test(LE,SZ_3)
+r3_4: orig: r3
+    def:  r3_4 = (int32) Test(LE,SZ_3)
+// proc1
+// Return size: 0
+define proc1
+proc1_entry:
+	def r3
+	// succ:  l1
+l1:
+	SCZ_2 = cond(r3)
+	SZ_3 = SLICE(SCZ_2, bool, 1) (alias)
+	r3_4 = (int32) Test(LE,SZ_3)
+	return
+	// succ:  proc1_exit
+proc1_exit:
+======
+";
+            RunTest(sExp, m =>
+            {
+                var SCZ = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("SCZ"));
+                var Z = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("SZ"));
+                var r3 = m.Register(3);
+
+                m.Assign(SCZ, m.Cond(r3));
+                m.Assign(r3, m.Cast(PrimitiveType.Int32, m.Test(ConditionCode.LE, Z)));
+                m.Return();
             });
         }
     }

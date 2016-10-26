@@ -33,6 +33,29 @@ namespace Reko.UnitTests.Analysis
 	[TestFixture]
 	public class GrfDefinitionFinderTests : AnalysisTestBase
 	{
+		protected override void RunTest(Program program, TextWriter writer)
+		{
+            var importResolver = MockRepository.GenerateStub<IImportResolver>();
+            importResolver.Replay();
+            var dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
+			var ssts = dfa.UntangleProcedures();
+			foreach (var sst in ssts)
+			{
+				var ssa = sst.SsaState;
+				var grfd = new GrfDefinitionFinder(ssa.Identifiers);
+				foreach (SsaIdentifier sid in ssa.Identifiers)
+				{
+                    var id = sid.OriginalIdentifier as Identifier;
+					if (id == null || !(id.Storage is FlagGroupStorage) || sid.Uses.Count == 0)
+						continue;
+					writer.Write("{0}: ", sid.DefStatement.Instruction);
+					grfd.FindDefiningExpression(sid);
+					string fmt = grfd.IsNegated ? "!{0};" : "{0}";
+					writer.WriteLine(fmt, grfd.DefiningExpression);
+				}
+			}
+		}
+
 		[Test]
 		public void GrfdAdcMock()
 		{
@@ -49,29 +72,6 @@ namespace Reko.UnitTests.Analysis
 		public void GrfdCmpMock()
 		{
 			RunFileTest(new CmpMock(), "Analysis/GrfdCmpMock.txt");
-		}
-
-		protected override void RunTest(Program program, TextWriter writer)
-		{
-            var importResolver = MockRepository.GenerateStub<IImportResolver>();
-            importResolver.Replay();
-            var dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
-			var ssts = dfa.UntangleProcedures();
-			foreach (var sst in ssts)
-			{
-				SsaState ssa = sst.SsaState;
-				GrfDefinitionFinder grfd = new GrfDefinitionFinder(ssa.Identifiers);
-				foreach (SsaIdentifier sid in ssa.Identifiers)
-				{
-                    var id = sid.OriginalIdentifier as Identifier;
-					if (id == null || !(id.Storage is FlagGroupStorage) || sid.Uses.Count == 0)
-						continue;
-					writer.Write("{0}: ", sid.DefStatement.Instruction);
-					grfd.FindDefiningExpression(sid);
-					string fmt = grfd.IsNegated ? "!{0};" : "{0}";
-					writer.WriteLine(fmt, grfd.DefiningExpression);
-				}
-			}
 		}
 	}
 }
