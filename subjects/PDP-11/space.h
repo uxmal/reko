@@ -552,9 +552,6 @@ Eq_1517: (fn void ())
 	T_4360 (in fn2B8E : ptr16)
 Eq_1649: (union "Eq_1649" (int16 u0) (ptr16 u1))
 	T_1649 (in 54D8 : ptr16)
-Eq_1650: (union "Eq_1650" (int16 u0) (ptr16 u1))
-	T_1650 (in 0x000A - 0x54D8 : word16)
-	T_1651 (in 0x0000 : ptr16)
 Eq_1662: (union "Eq_1662" (ui16 u0) (ptr16 u1))
 	T_1662 (in r1_175 : Eq_1662)
 	T_1692 (in 0x54D6 + *r5_162 : word16)
@@ -563,14 +560,8 @@ Eq_1691: (union "Eq_1691" (int16 u0) (ptr16 u1))
 	T_2426 (in Mem552[r5_546 + 0x0000:word16] : word16)
 Eq_1710: (union "Eq_1710" (int16 u0) (ptr16 u1))
 	T_1710 (in 54D8 : ptr16)
-Eq_1711: (union "Eq_1711" (int16 u0) (ptr16 u1))
-	T_1711 (in 0x0004 - 0x54D8 : word16)
-	T_1712 (in 0x0000 : ptr16)
 Eq_1724: (union "Eq_1724" (int16 u0) (ptr16 u1))
 	T_1724 (in 54D6 : ptr16)
-Eq_1725: (union "Eq_1725" (int16 u0) (ptr16 u1))
-	T_1725 (in 0x0005 - 0x54D6 : word16)
-	T_1726 (in 0x0000 : ptr16)
 Eq_1752: (fn void ())
 	T_1752 (in fn402E : ptr16)
 	T_1753 (in signature of fn402E : void)
@@ -600,9 +591,6 @@ Eq_2007: (fn void ())
 	T_3126 (in fn2EC2 : ptr16)
 Eq_2165: (union "Eq_2165" (int16 u0) (ptr16 u1))
 	T_2165 (in 54D8 : ptr16)
-Eq_2166: (union "Eq_2166" (int16 u0) (ptr16 u1))
-	T_2166 (in 0x0005 - 0x54D8 : word16)
-	T_2167 (in 0x0000 : ptr16)
 Eq_2177: (union "Eq_2177" (ui16 u0) (ptr16 u1))
 	T_2177 (in 54D8 : ptr16)
 Eq_2183: (union "Eq_2183" (ui16 u0) (ptr16 u1))
@@ -614,9 +602,6 @@ Eq_2197: (union "Eq_2197" (ui16 u0) (ptr16 u1))
 	T_2205 (in 0x54D8 + *pc->ptr33F2 : word16)
 Eq_2288: (union "Eq_2288" (ui16 u0) (ptr16 u1))
 	T_2288 (in 54E8 : ptr16)
-Eq_2289: (union "Eq_2289" (ui16 u0) (ptr16 u1))
-	T_2289 (in 0x0002 - 0x54E8 : word16)
-	T_2290 (in 0x0000 : ptr16)
 Eq_2419: (union "Eq_2419" (int16 u0) (ptr16 u1) (Eq_1691 u2))
 	T_2419 (in r1_553 : word16)
 	T_2420 (in 54D6 : ptr16)
@@ -636,58 +621,28 @@ Eq_2483: (fn void ())
 	T_3212 (in fn3E10 : ptr16)
 Eq_2528: (union "Eq_2528" (ui16 u0) (ptr16 u1))
 	T_2528 (in 54D8 : ptr16)
-Eq_2529: (union "Eq_2529" (ui16 u0) (ptr16 u1))
-	T_2529 (in 0x0003 - 0x54D8 : word16)
-	T_2530 (in 0x0000 : ptr16)
 Eq_2565: (fn void ())
 	T_2565 (in fn413A : ptr16)
 	T_2566 (in signature of fn413A : void)
 	T_3024 (in fn413A : ptr16)
 Eq_2606: (union "Eq_2606" (int16 u0) (ptr16 u1))
 	T_2606 (in 54E4 : ptr16)
-Eq_2607: (union "Eq_2607" (int16 u0) (ptr16 u1))
-	T_2607 (in 0x0002 - 0x54E4 : word16)
-	T_2608 (in 0x0000 : ptr16)
 Eq_2674: (union "Eq_2674" (int16 u0) (ptr16 u1))
 	T_2674 (in 54E6 : ptr16)
-Eq_2675: (union "Eq_2675" (int16 u0) (ptr16 u1))
-	T_2675 (in 0x0049 - 0x54E6 : word16)
-	T_2676 (in 0x0000 : ptr16)
 Eq_2737: (union "Eq_2737" (int16 u0) (ptr16 u1))
 	T_2737 (in 54D8 : ptr16)
-Eq_2738: (union "Eq_2738" (int16 u0) (ptr16 u1))
-	T_2738 (in 0x0002 - 0x54D8 : word16)
-	T_2739 (in 0x0000 : ptr16)
 Eq_2749: (union "Eq_2749" (int16 u0) (ptr16 u1))
 	T_2749 (in 54D8 : ptr16)
-Eq_2750: (union "Eq_2750" (int16 u0) (ptr16 u1))
-	T_2750 (in 0x0002 - 0x54D8 : word16)
-	T_2751 (in 0x0000 : ptr16)
 Eq_2761: (union "Eq_2761" (ui16 u0) (ptr16 u1))
 	T_2761 (in 54D8 : ptr16)
-Eq_2762: (union "Eq_2762" (ui16 u0) (ptr16 u1))
-	T_2762 (in 0x0003 - 0x54D8 : word16)
-	T_2763 (in 0x0000 : ptr16)
 Eq_2825: (union "Eq_2825" (int16 u0) (ptr16 u1))
 	T_2825 (in 54CE : ptr16)
-Eq_2826: (union "Eq_2826" (int16 u0) (ptr16 u1))
-	T_2826 (in 0x000C - 0x54CE : word16)
-	T_2827 (in 0x0000 : ptr16)
 Eq_2837: (union "Eq_2837" (int16 u0) (ptr16 u1))
 	T_2837 (in 54D8 : ptr16)
-Eq_2838: (union "Eq_2838" (int16 u0) (ptr16 u1))
-	T_2838 (in 0x0004 - 0x54D8 : word16)
-	T_2839 (in 0x0000 : ptr16)
 Eq_2958: (union "Eq_2958" (ui16 u0) (ptr16 u1))
 	T_2958 (in 54D8 : ptr16)
-Eq_2959: (union "Eq_2959" (ui16 u0) (ptr16 u1))
-	T_2959 (in 0x0003 - 0x54D8 : word16)
-	T_2960 (in 0x0000 : ptr16)
 Eq_2981: (union "Eq_2981" (int16 u0) (ptr16 u1))
 	T_2981 (in 54D8 : ptr16)
-Eq_2982: (union "Eq_2982" (int16 u0) (ptr16 u1))
-	T_2982 (in 0x0004 - 0x54D8 : word16)
-	T_2983 (in 0x0000 : ptr16)
 Eq_3102: (fn void ())
 	T_3102 (in fn321E : ptr16)
 	T_3103 (in signature of fn321E : void)
@@ -698,9 +653,6 @@ Eq_3114: (fn void ())
 	T_3148 (in fn3B3A : ptr16)
 Eq_3160: (union "Eq_3160" (ui16 u0) (ptr16 u1))
 	T_3160 (in 54EC : ptr16)
-Eq_3161: (union "Eq_3161" (ui16 u0) (ptr16 u1))
-	T_3161 (in 0x0001 - 0x54EC : word16)
-	T_3162 (in 0x0000 : ptr16)
 Eq_3171: (fn void ())
 	T_3171 (in fn395A : ptr16)
 	T_3172 (in signature of fn395A : void)
@@ -731,9 +683,6 @@ Eq_3677: (struct "Eq_3677" 0002 (0 ci16 w0000) (FFFE ci16 wFFFE))
 	T_3696 (in r5_189 + 0x0002 : word16)
 Eq_3698: (union "Eq_3698" (int16 u0) (ptr16 u1))
 	T_3698 (in 56A2 : ptr16)
-Eq_3699: (union "Eq_3699" (int16 u0) (ptr16 u1))
-	T_3699 (in 0x000A - 0x56A2 : word16)
-	T_3700 (in 0x0000 : ptr16)
 Eq_3787: (struct "Eq_3787" (551D byte b551D) (551E byte b551E))
 	T_3787 (in r2_1285 : (ptr Eq_3787))
 	T_3792 (in 0x56A2 + Mem1281[r3_1006 + 0x0000:word16] : word16)
@@ -779,14 +728,8 @@ Eq_3967: (fn (ptr Eq_475) ((ptr Eq_475), Eq_747, (ptr Eq_499), word16, Eq_750))
 	T_5551 (in fn0D78 : ptr16)
 Eq_4022: (union "Eq_4022" (ui16 u0) (ptr16 u1))
 	T_4022 (in 5874 : ptr16)
-Eq_4023: (union "Eq_4023" (ui16 u0) (ptr16 u1))
-	T_4023 (in 0x0001 - 0x5874 : word16)
-	T_4024 (in 0x0000 : ptr16)
 Eq_4213: (union "Eq_4213" (int16 u0) (ptr16 u1))
 	T_4213 (in 56A2 : ptr16)
-Eq_4214: (union "Eq_4214" (int16 u0) (ptr16 u1))
-	T_4214 (in 0x000A - 0x56A2 : word16)
-	T_4215 (in 0x0000 : ptr16)
 Eq_4338: (fn void ())
 	T_4338 (in fn45C6 : ptr16)
 	T_4339 (in signature of fn45C6 : void)
@@ -795,149 +738,62 @@ Eq_4350: (fn void ())
 	T_4351 (in signature of fn0F9A : void)
 Eq_4370: (union "Eq_4370" (ui16 u0) (ptr16 u1))
 	T_4370 (in 5874 : ptr16)
-Eq_4371: (union "Eq_4371" (ui16 u0) (ptr16 u1))
-	T_4371 (in 0x0002 - 0x5874 : word16)
-	T_4372 (in 0x0000 : ptr16)
 Eq_4410: (union "Eq_4410" (ui16 u0) (ptr16 u1))
 	T_4410 (in 5874 : ptr16)
-Eq_4411: (union "Eq_4411" (ui16 u0) (ptr16 u1))
-	T_4411 (in 0x0003 - 0x5874 : word16)
-	T_4412 (in 0x0000 : ptr16)
 Eq_4450: (union "Eq_4450" (ui16 u0) (ptr16 u1))
 	T_4450 (in 5874 : ptr16)
-Eq_4451: (union "Eq_4451" (ui16 u0) (ptr16 u1))
-	T_4451 (in 0x0004 - 0x5874 : word16)
-	T_4452 (in 0x0000 : ptr16)
 Eq_4490: (union "Eq_4490" (ui16 u0) (ptr16 u1))
 	T_4490 (in 5874 : ptr16)
-Eq_4491: (union "Eq_4491" (ui16 u0) (ptr16 u1))
-	T_4491 (in 0x0005 - 0x5874 : word16)
-	T_4492 (in 0x0000 : ptr16)
 Eq_4530: (union "Eq_4530" (ui16 u0) (ptr16 u1))
 	T_4530 (in 5874 : ptr16)
-Eq_4531: (union "Eq_4531" (ui16 u0) (ptr16 u1))
-	T_4531 (in 0x0006 - 0x5874 : word16)
-	T_4532 (in 0x0000 : ptr16)
 Eq_4570: (union "Eq_4570" (ui16 u0) (ptr16 u1))
 	T_4570 (in 5874 : ptr16)
-Eq_4571: (union "Eq_4571" (ui16 u0) (ptr16 u1))
-	T_4571 (in 0x0007 - 0x5874 : word16)
-	T_4572 (in 0x0000 : ptr16)
 Eq_4610: (union "Eq_4610" (ui16 u0) (ptr16 u1))
 	T_4610 (in 5874 : ptr16)
-Eq_4611: (union "Eq_4611" (ui16 u0) (ptr16 u1))
-	T_4611 (in 0x0008 - 0x5874 : word16)
-	T_4612 (in 0x0000 : ptr16)
 Eq_4650: (union "Eq_4650" (ui16 u0) (ptr16 u1))
 	T_4650 (in 5874 : ptr16)
-Eq_4651: (union "Eq_4651" (ui16 u0) (ptr16 u1))
-	T_4651 (in 0x0009 - 0x5874 : word16)
-	T_4652 (in 0x0000 : ptr16)
 Eq_4690: (union "Eq_4690" (ui16 u0) (ptr16 u1))
 	T_4690 (in 5874 : ptr16)
-Eq_4691: (union "Eq_4691" (ui16 u0) (ptr16 u1))
-	T_4691 (in 0x000A - 0x5874 : word16)
-	T_4692 (in 0x0000 : ptr16)
 Eq_4730: (union "Eq_4730" (ui16 u0) (ptr16 u1))
 	T_4730 (in 5874 : ptr16)
-Eq_4731: (union "Eq_4731" (ui16 u0) (ptr16 u1))
-	T_4731 (in 0x000B - 0x5874 : word16)
-	T_4732 (in 0x0000 : ptr16)
 Eq_4770: (union "Eq_4770" (ui16 u0) (ptr16 u1))
 	T_4770 (in 5874 : ptr16)
-Eq_4771: (union "Eq_4771" (ui16 u0) (ptr16 u1))
-	T_4771 (in 0x000C - 0x5874 : word16)
-	T_4772 (in 0x0000 : ptr16)
 Eq_4810: (union "Eq_4810" (ui16 u0) (ptr16 u1))
 	T_4810 (in 5874 : ptr16)
-Eq_4811: (union "Eq_4811" (ui16 u0) (ptr16 u1))
-	T_4811 (in 0x000D - 0x5874 : word16)
-	T_4812 (in 0x0000 : ptr16)
 Eq_4850: (union "Eq_4850" (ui16 u0) (ptr16 u1))
 	T_4850 (in 5874 : ptr16)
-Eq_4851: (union "Eq_4851" (ui16 u0) (ptr16 u1))
-	T_4851 (in 0x000E - 0x5874 : word16)
-	T_4852 (in 0x0000 : ptr16)
 Eq_4890: (union "Eq_4890" (ui16 u0) (ptr16 u1))
 	T_4890 (in 5874 : ptr16)
-Eq_4891: (union "Eq_4891" (ui16 u0) (ptr16 u1))
-	T_4891 (in 0x000F - 0x5874 : word16)
-	T_4892 (in 0x0000 : ptr16)
 Eq_4930: (union "Eq_4930" (ui16 u0) (ptr16 u1))
 	T_4930 (in 5874 : ptr16)
-Eq_4931: (union "Eq_4931" (ui16 u0) (ptr16 u1))
-	T_4931 (in 0x0010 - 0x5874 : word16)
-	T_4932 (in 0x0000 : ptr16)
 Eq_4970: (union "Eq_4970" (ui16 u0) (ptr16 u1))
 	T_4970 (in 5874 : ptr16)
-Eq_4971: (union "Eq_4971" (ui16 u0) (ptr16 u1))
-	T_4971 (in 0x0011 - 0x5874 : word16)
-	T_4972 (in 0x0000 : ptr16)
 Eq_5010: (union "Eq_5010" (ui16 u0) (ptr16 u1))
 	T_5010 (in 5874 : ptr16)
-Eq_5011: (union "Eq_5011" (ui16 u0) (ptr16 u1))
-	T_5011 (in 0x0012 - 0x5874 : word16)
-	T_5012 (in 0x0000 : ptr16)
 Eq_5050: (union "Eq_5050" (ui16 u0) (ptr16 u1))
 	T_5050 (in 5874 : ptr16)
-Eq_5051: (union "Eq_5051" (ui16 u0) (ptr16 u1))
-	T_5051 (in 0x0013 - 0x5874 : word16)
-	T_5052 (in 0x0000 : ptr16)
 Eq_5090: (union "Eq_5090" (ui16 u0) (ptr16 u1))
 	T_5090 (in 5874 : ptr16)
-Eq_5091: (union "Eq_5091" (ui16 u0) (ptr16 u1))
-	T_5091 (in 0x0014 - 0x5874 : word16)
-	T_5092 (in 0x0000 : ptr16)
 Eq_5130: (union "Eq_5130" (ui16 u0) (ptr16 u1))
 	T_5130 (in 5874 : ptr16)
-Eq_5131: (union "Eq_5131" (ui16 u0) (ptr16 u1))
-	T_5131 (in 0x0015 - 0x5874 : word16)
-	T_5132 (in 0x0000 : ptr16)
 Eq_5170: (union "Eq_5170" (ui16 u0) (ptr16 u1))
 	T_5170 (in 5874 : ptr16)
-Eq_5171: (union "Eq_5171" (ui16 u0) (ptr16 u1))
-	T_5171 (in 0x0016 - 0x5874 : word16)
-	T_5172 (in 0x0000 : ptr16)
 Eq_5210: (union "Eq_5210" (ui16 u0) (ptr16 u1))
 	T_5210 (in 5874 : ptr16)
-Eq_5211: (union "Eq_5211" (ui16 u0) (ptr16 u1))
-	T_5211 (in 0x0017 - 0x5874 : word16)
-	T_5212 (in 0x0000 : ptr16)
 Eq_5250: (union "Eq_5250" (ui16 u0) (ptr16 u1))
 	T_5250 (in 5874 : ptr16)
-Eq_5251: (union "Eq_5251" (ui16 u0) (ptr16 u1))
-	T_5251 (in 0x0018 - 0x5874 : word16)
-	T_5252 (in 0x0000 : ptr16)
 Eq_5290: (union "Eq_5290" (ui16 u0) (ptr16 u1))
 	T_5290 (in 5874 : ptr16)
-Eq_5291: (union "Eq_5291" (ui16 u0) (ptr16 u1))
-	T_5291 (in 0x0019 - 0x5874 : word16)
-	T_5292 (in 0x0000 : ptr16)
 Eq_5330: (union "Eq_5330" (ui16 u0) (ptr16 u1))
 	T_5330 (in 5874 : ptr16)
-Eq_5331: (union "Eq_5331" (ui16 u0) (ptr16 u1))
-	T_5331 (in 0x001A - 0x5874 : word16)
-	T_5332 (in 0x0000 : ptr16)
 Eq_5370: (union "Eq_5370" (ui16 u0) (ptr16 u1))
 	T_5370 (in 5874 : ptr16)
-Eq_5371: (union "Eq_5371" (ui16 u0) (ptr16 u1))
-	T_5371 (in 0x001B - 0x5874 : word16)
-	T_5372 (in 0x0000 : ptr16)
 Eq_5410: (union "Eq_5410" (ui16 u0) (ptr16 u1))
 	T_5410 (in 5874 : ptr16)
-Eq_5411: (union "Eq_5411" (ui16 u0) (ptr16 u1))
-	T_5411 (in 0x001C - 0x5874 : word16)
-	T_5412 (in 0x0000 : ptr16)
 Eq_5450: (union "Eq_5450" (ui16 u0) (ptr16 u1))
 	T_5450 (in 5874 : ptr16)
-Eq_5451: (union "Eq_5451" (ui16 u0) (ptr16 u1))
-	T_5451 (in 0x001D - 0x5874 : word16)
-	T_5452 (in 0x0000 : ptr16)
 Eq_5490: (union "Eq_5490" (int16 u0) (ptr16 u1))
 	T_5490 (in 5874 : ptr16)
-Eq_5491: (union "Eq_5491" (int16 u0) (ptr16 u1))
-	T_5491 (in 0x001E - 0x5874 : word16)
-	T_5492 (in 0x0000 : ptr16)
 Eq_5581: (struct "Eq_5581" (0 Eq_206 t0000) (2 Eq_206 t0002))
 	T_5581
 Eq_5582: (struct "Eq_5582" 0001 (0 byte b0000) (C word16 w000C) (14 word16 w0014) (58 word16 w0058) (70 word16 w0070) (72 word16 w0072) (A2 byte b00A2))
@@ -1199,10 +1055,10 @@ T_64: (in 1DAA : ptr16)
   Class: Eq_64
   DataType: ptr16
   OrigDataType: ptr16
-T_65: (in 0x0000 : ptr16)
+T_65: (in 0x0000 : word16)
   Class: Eq_64
   DataType: ptr16
-  OrigDataType: ptr16
+  OrigDataType: word16
 T_66: (in 0x1DAA != 0x0000 : bool)
   Class: Eq_66
   DataType: bool
@@ -2095,10 +1951,10 @@ T_288: (in 1DAA : ptr16)
   Class: Eq_288
   DataType: ptr16
   OrigDataType: ptr16
-T_289: (in 0x0000 : ptr16)
+T_289: (in 0x0000 : word16)
   Class: Eq_288
   DataType: ptr16
-  OrigDataType: ptr16
+  OrigDataType: word16
 T_290: (in 0x1DAA == 0x0000 : bool)
   Class: Eq_290
   DataType: bool
@@ -2759,10 +2615,10 @@ T_454: (in 53EA : ptr16)
   Class: Eq_454
   DataType: ptr16
   OrigDataType: ptr16
-T_455: (in 0x0000 : ptr16)
+T_455: (in 0x0000 : word16)
   Class: Eq_454
   DataType: ptr16
-  OrigDataType: ptr16
+  OrigDataType: word16
 T_456: (in 0x53EA == 0x0000 : bool)
   Class: Eq_456
   DataType: bool
@@ -7541,12 +7397,12 @@ T_1649: (in 54D8 : ptr16)
   OrigDataType: (union (int16 u0) (ptr16 u1))
 T_1650: (in 0x000A - 0x54D8 : word16)
   Class: Eq_1650
-  DataType: Eq_1650
+  DataType: int16
   OrigDataType: int16
-T_1651: (in 0x0000 : ptr16)
+T_1651: (in 0x0000 : word16)
   Class: Eq_1650
-  DataType: Eq_1650
-  OrigDataType: (union (int16 u0) (ptr16 u1))
+  DataType: int16
+  OrigDataType: ci16
 T_1652: (in 0x000A - 0x54D8 <= 0x0000 : bool)
   Class: Eq_1652
   DataType: bool
@@ -7785,12 +7641,12 @@ T_1710: (in 54D8 : ptr16)
   OrigDataType: (union (int16 u0) (ptr16 u1))
 T_1711: (in 0x0004 - 0x54D8 : word16)
   Class: Eq_1711
-  DataType: Eq_1711
+  DataType: int16
   OrigDataType: int16
-T_1712: (in 0x0000 : ptr16)
+T_1712: (in 0x0000 : word16)
   Class: Eq_1711
-  DataType: Eq_1711
-  OrigDataType: (union (int16 u0) (ptr16 u1))
+  DataType: int16
+  OrigDataType: ci16
 T_1713: (in 0x0004 - 0x54D8 > 0x0000 : bool)
   Class: Eq_1713
   DataType: bool
@@ -7841,12 +7697,12 @@ T_1724: (in 54D6 : ptr16)
   OrigDataType: (union (int16 u0) (ptr16 u1))
 T_1725: (in 0x0005 - 0x54D6 : word16)
   Class: Eq_1725
-  DataType: Eq_1725
+  DataType: int16
   OrigDataType: int16
-T_1726: (in 0x0000 : ptr16)
+T_1726: (in 0x0000 : word16)
   Class: Eq_1725
-  DataType: Eq_1725
-  OrigDataType: (union (int16 u0) (ptr16 u1))
+  DataType: int16
+  OrigDataType: ci16
 T_1727: (in 0x0005 - 0x54D6 <= 0x0000 : bool)
   Class: Eq_1727
   DataType: bool
@@ -9605,12 +9461,12 @@ T_2165: (in 54D8 : ptr16)
   OrigDataType: (union (int16 u0) (ptr16 u1))
 T_2166: (in 0x0005 - 0x54D8 : word16)
   Class: Eq_2166
-  DataType: Eq_2166
+  DataType: int16
   OrigDataType: int16
-T_2167: (in 0x0000 : ptr16)
+T_2167: (in 0x0000 : word16)
   Class: Eq_2166
-  DataType: Eq_2166
-  OrigDataType: (union (int16 u0) (ptr16 u1))
+  DataType: int16
+  OrigDataType: ci16
 T_2168: (in 0x0005 - 0x54D8 > 0x0000 : bool)
   Class: Eq_2168
   DataType: bool
@@ -10097,12 +9953,12 @@ T_2288: (in 54E8 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_2289: (in 0x0002 - 0x54E8 : word16)
   Class: Eq_2289
-  DataType: Eq_2289
+  DataType: ui16
   OrigDataType: ui16
-T_2290: (in 0x0000 : ptr16)
+T_2290: (in 0x0000 : word16)
   Class: Eq_2289
-  DataType: Eq_2289
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_2291: (in 0x0002 - 0x54E8 != 0x0000 : bool)
   Class: Eq_2291
   DataType: bool
@@ -11057,12 +10913,12 @@ T_2528: (in 54D8 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_2529: (in 0x0003 - 0x54D8 : word16)
   Class: Eq_2529
-  DataType: Eq_2529
+  DataType: ui16
   OrigDataType: ui16
-T_2530: (in 0x0000 : ptr16)
+T_2530: (in 0x0000 : word16)
   Class: Eq_2529
-  DataType: Eq_2529
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_2531: (in 0x0003 - 0x54D8 == 0x0000 : bool)
   Class: Eq_2531
   DataType: bool
@@ -11369,12 +11225,12 @@ T_2606: (in 54E4 : ptr16)
   OrigDataType: (union (int16 u0) (ptr16 u1))
 T_2607: (in 0x0002 - 0x54E4 : word16)
   Class: Eq_2607
-  DataType: Eq_2607
+  DataType: int16
   OrigDataType: int16
-T_2608: (in 0x0000 : ptr16)
+T_2608: (in 0x0000 : word16)
   Class: Eq_2607
-  DataType: Eq_2607
-  OrigDataType: (union (int16 u0) (ptr16 u1))
+  DataType: int16
+  OrigDataType: ci16
 T_2609: (in 0x0002 - 0x54E4 <= 0x0000 : bool)
   Class: Eq_2609
   DataType: bool
@@ -11641,12 +11497,12 @@ T_2674: (in 54E6 : ptr16)
   OrigDataType: (union (int16 u0) (ptr16 u1))
 T_2675: (in 0x0049 - 0x54E6 : word16)
   Class: Eq_2675
-  DataType: Eq_2675
+  DataType: int16
   OrigDataType: int16
-T_2676: (in 0x0000 : ptr16)
+T_2676: (in 0x0000 : word16)
   Class: Eq_2675
-  DataType: Eq_2675
-  OrigDataType: (union (int16 u0) (ptr16 u1))
+  DataType: int16
+  OrigDataType: ci16
 T_2677: (in 0x0049 - 0x54E6 >= 0x0000 : bool)
   Class: Eq_2677
   DataType: bool
@@ -11893,12 +11749,12 @@ T_2737: (in 54D8 : ptr16)
   OrigDataType: (union (int16 u0) (ptr16 u1))
 T_2738: (in 0x0002 - 0x54D8 : word16)
   Class: Eq_2738
-  DataType: Eq_2738
+  DataType: int16
   OrigDataType: int16
-T_2739: (in 0x0000 : ptr16)
+T_2739: (in 0x0000 : word16)
   Class: Eq_2738
-  DataType: Eq_2738
-  OrigDataType: (union (int16 u0) (ptr16 u1))
+  DataType: int16
+  OrigDataType: ci16
 T_2740: (in 0x0002 - 0x54D8 > 0x0000 : bool)
   Class: Eq_2740
   DataType: bool
@@ -11941,12 +11797,12 @@ T_2749: (in 54D8 : ptr16)
   OrigDataType: (union (int16 u0) (ptr16 u1))
 T_2750: (in 0x0002 - 0x54D8 : word16)
   Class: Eq_2750
-  DataType: Eq_2750
+  DataType: int16
   OrigDataType: int16
-T_2751: (in 0x0000 : ptr16)
+T_2751: (in 0x0000 : word16)
   Class: Eq_2750
-  DataType: Eq_2750
-  OrigDataType: (union (int16 u0) (ptr16 u1))
+  DataType: int16
+  OrigDataType: ci16
 T_2752: (in 0x0002 - 0x54D8 > 0x0000 : bool)
   Class: Eq_2752
   DataType: bool
@@ -11989,12 +11845,12 @@ T_2761: (in 54D8 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_2762: (in 0x0003 - 0x54D8 : word16)
   Class: Eq_2762
-  DataType: Eq_2762
+  DataType: ui16
   OrigDataType: ui16
-T_2763: (in 0x0000 : ptr16)
+T_2763: (in 0x0000 : word16)
   Class: Eq_2762
-  DataType: Eq_2762
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_2764: (in 0x0003 - 0x54D8 != 0x0000 : bool)
   Class: Eq_2764
   DataType: bool
@@ -12245,12 +12101,12 @@ T_2825: (in 54CE : ptr16)
   OrigDataType: (union (int16 u0) (ptr16 u1))
 T_2826: (in 0x000C - 0x54CE : word16)
   Class: Eq_2826
-  DataType: Eq_2826
+  DataType: int16
   OrigDataType: int16
-T_2827: (in 0x0000 : ptr16)
+T_2827: (in 0x0000 : word16)
   Class: Eq_2826
-  DataType: Eq_2826
-  OrigDataType: (union (int16 u0) (ptr16 u1))
+  DataType: int16
+  OrigDataType: ci16
 T_2828: (in 0x000C - 0x54CE >= 0x0000 : bool)
   Class: Eq_2828
   DataType: bool
@@ -12293,12 +12149,12 @@ T_2837: (in 54D8 : ptr16)
   OrigDataType: (union (int16 u0) (ptr16 u1))
 T_2838: (in 0x0004 - 0x54D8 : word16)
   Class: Eq_2838
-  DataType: Eq_2838
+  DataType: int16
   OrigDataType: int16
-T_2839: (in 0x0000 : ptr16)
+T_2839: (in 0x0000 : word16)
   Class: Eq_2838
-  DataType: Eq_2838
-  OrigDataType: (union (int16 u0) (ptr16 u1))
+  DataType: int16
+  OrigDataType: ci16
 T_2840: (in 0x0004 - 0x54D8 < 0x0000 : bool)
   Class: Eq_2840
   DataType: bool
@@ -12777,12 +12633,12 @@ T_2958: (in 54D8 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_2959: (in 0x0003 - 0x54D8 : word16)
   Class: Eq_2959
-  DataType: Eq_2959
+  DataType: ui16
   OrigDataType: ui16
-T_2960: (in 0x0000 : ptr16)
+T_2960: (in 0x0000 : word16)
   Class: Eq_2959
-  DataType: Eq_2959
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_2961: (in 0x0003 - 0x54D8 != 0x0000 : bool)
   Class: Eq_2961
   DataType: bool
@@ -12869,12 +12725,12 @@ T_2981: (in 54D8 : ptr16)
   OrigDataType: (union (int16 u0) (ptr16 u1))
 T_2982: (in 0x0004 - 0x54D8 : word16)
   Class: Eq_2982
-  DataType: Eq_2982
+  DataType: int16
   OrigDataType: int16
-T_2983: (in 0x0000 : ptr16)
+T_2983: (in 0x0000 : word16)
   Class: Eq_2982
-  DataType: Eq_2982
-  OrigDataType: (union (int16 u0) (ptr16 u1))
+  DataType: int16
+  OrigDataType: ci16
 T_2984: (in 0x0004 - 0x54D8 < 0x0000 : bool)
   Class: Eq_2984
   DataType: bool
@@ -12955,10 +12811,10 @@ T_3003: (in 54C6 : ptr16)
   Class: Eq_3003
   DataType: ptr16
   OrigDataType: ptr16
-T_3004: (in 0x0000 : ptr16)
+T_3004: (in 0x0000 : word16)
   Class: Eq_3003
   DataType: ptr16
-  OrigDataType: ptr16
+  OrigDataType: word16
 T_3005: (in 0x54C6 == 0x0000 : bool)
   Class: Eq_3005
   DataType: bool
@@ -13083,10 +12939,10 @@ T_3035: (in 54D0 : ptr16)
   Class: Eq_3035
   DataType: ptr16
   OrigDataType: ptr16
-T_3036: (in 0x0000 : ptr16)
+T_3036: (in 0x0000 : word16)
   Class: Eq_3035
   DataType: ptr16
-  OrigDataType: ptr16
+  OrigDataType: word16
 T_3037: (in 0x54D0 == 0x0000 : bool)
   Class: Eq_3037
   DataType: bool
@@ -13267,7 +13123,7 @@ T_3081: (in 0x54C8 - 0x54D2 : ptr16)
   Class: Eq_3081
   DataType: Eq_3081
   OrigDataType: 
-T_3082: (in 0x0000 : ptr16)
+T_3082: (in 0x0000 : word16)
   Class: Eq_3081
   DataType: Eq_3081
   OrigDataType: 
@@ -13585,12 +13441,12 @@ T_3160: (in 54EC : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_3161: (in 0x0001 - 0x54EC : word16)
   Class: Eq_3161
-  DataType: Eq_3161
+  DataType: ui16
   OrigDataType: ui16
-T_3162: (in 0x0000 : ptr16)
+T_3162: (in 0x0000 : word16)
   Class: Eq_3161
-  DataType: Eq_3161
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_3163: (in 0x0001 - 0x54EC == 0x0000 : bool)
   Class: Eq_3163
   DataType: bool
@@ -15737,12 +15593,12 @@ T_3698: (in 56A2 : ptr16)
   OrigDataType: (union (int16 u0) (ptr16 u1))
 T_3699: (in 0x000A - 0x56A2 : word16)
   Class: Eq_3699
-  DataType: Eq_3699
+  DataType: int16
   OrigDataType: int16
-T_3700: (in 0x0000 : ptr16)
+T_3700: (in 0x0000 : word16)
   Class: Eq_3699
-  DataType: Eq_3699
-  OrigDataType: (union (int16 u0) (ptr16 u1))
+  DataType: int16
+  OrigDataType: ci16
 T_3701: (in 0x000A - 0x56A2 <= 0x0000 : bool)
   Class: Eq_3701
   DataType: bool
@@ -16451,10 +16307,10 @@ T_3877: (in 56A0 : ptr16)
   Class: Eq_3877
   DataType: ptr16
   OrigDataType: ptr16
-T_3878: (in 0x0000 : ptr16)
+T_3878: (in 0x0000 : word16)
   Class: Eq_3877
   DataType: ptr16
-  OrigDataType: ptr16
+  OrigDataType: word16
 T_3879: (in 0x56A0 != 0x0000 : bool)
   Class: Eq_3879
   DataType: bool
@@ -17033,12 +16889,12 @@ T_4022: (in 5874 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_4023: (in 0x0001 - 0x5874 : word16)
   Class: Eq_4023
-  DataType: Eq_4023
+  DataType: ui16
   OrigDataType: ui16
-T_4024: (in 0x0000 : ptr16)
+T_4024: (in 0x0000 : word16)
   Class: Eq_4023
-  DataType: Eq_4023
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_4025: (in 0x0001 - 0x5874 != 0x0000 : bool)
   Class: Eq_4025
   DataType: bool
@@ -17797,12 +17653,12 @@ T_4213: (in 56A2 : ptr16)
   OrigDataType: (union (int16 u0) (ptr16 u1))
 T_4214: (in 0x000A - 0x56A2 : word16)
   Class: Eq_4214
-  DataType: Eq_4214
+  DataType: int16
   OrigDataType: int16
-T_4215: (in 0x0000 : ptr16)
+T_4215: (in 0x0000 : word16)
   Class: Eq_4214
-  DataType: Eq_4214
-  OrigDataType: (union (int16 u0) (ptr16 u1))
+  DataType: int16
+  OrigDataType: ci16
 T_4216: (in 0x000A - 0x56A2 <= 0x0000 : bool)
   Class: Eq_4216
   DataType: bool
@@ -18425,12 +18281,12 @@ T_4370: (in 5874 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_4371: (in 0x0002 - 0x5874 : word16)
   Class: Eq_4371
-  DataType: Eq_4371
+  DataType: ui16
   OrigDataType: ui16
-T_4372: (in 0x0000 : ptr16)
+T_4372: (in 0x0000 : word16)
   Class: Eq_4371
-  DataType: Eq_4371
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_4373: (in 0x0002 - 0x5874 != 0x0000 : bool)
   Class: Eq_4373
   DataType: bool
@@ -18585,12 +18441,12 @@ T_4410: (in 5874 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_4411: (in 0x0003 - 0x5874 : word16)
   Class: Eq_4411
-  DataType: Eq_4411
+  DataType: ui16
   OrigDataType: ui16
-T_4412: (in 0x0000 : ptr16)
+T_4412: (in 0x0000 : word16)
   Class: Eq_4411
-  DataType: Eq_4411
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_4413: (in 0x0003 - 0x5874 != 0x0000 : bool)
   Class: Eq_4413
   DataType: bool
@@ -18745,12 +18601,12 @@ T_4450: (in 5874 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_4451: (in 0x0004 - 0x5874 : word16)
   Class: Eq_4451
-  DataType: Eq_4451
+  DataType: ui16
   OrigDataType: ui16
-T_4452: (in 0x0000 : ptr16)
+T_4452: (in 0x0000 : word16)
   Class: Eq_4451
-  DataType: Eq_4451
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_4453: (in 0x0004 - 0x5874 != 0x0000 : bool)
   Class: Eq_4453
   DataType: bool
@@ -18905,12 +18761,12 @@ T_4490: (in 5874 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_4491: (in 0x0005 - 0x5874 : word16)
   Class: Eq_4491
-  DataType: Eq_4491
+  DataType: ui16
   OrigDataType: ui16
-T_4492: (in 0x0000 : ptr16)
+T_4492: (in 0x0000 : word16)
   Class: Eq_4491
-  DataType: Eq_4491
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_4493: (in 0x0005 - 0x5874 != 0x0000 : bool)
   Class: Eq_4493
   DataType: bool
@@ -19065,12 +18921,12 @@ T_4530: (in 5874 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_4531: (in 0x0006 - 0x5874 : word16)
   Class: Eq_4531
-  DataType: Eq_4531
+  DataType: ui16
   OrigDataType: ui16
-T_4532: (in 0x0000 : ptr16)
+T_4532: (in 0x0000 : word16)
   Class: Eq_4531
-  DataType: Eq_4531
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_4533: (in 0x0006 - 0x5874 != 0x0000 : bool)
   Class: Eq_4533
   DataType: bool
@@ -19225,12 +19081,12 @@ T_4570: (in 5874 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_4571: (in 0x0007 - 0x5874 : word16)
   Class: Eq_4571
-  DataType: Eq_4571
+  DataType: ui16
   OrigDataType: ui16
-T_4572: (in 0x0000 : ptr16)
+T_4572: (in 0x0000 : word16)
   Class: Eq_4571
-  DataType: Eq_4571
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_4573: (in 0x0007 - 0x5874 != 0x0000 : bool)
   Class: Eq_4573
   DataType: bool
@@ -19385,12 +19241,12 @@ T_4610: (in 5874 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_4611: (in 0x0008 - 0x5874 : word16)
   Class: Eq_4611
-  DataType: Eq_4611
+  DataType: ui16
   OrigDataType: ui16
-T_4612: (in 0x0000 : ptr16)
+T_4612: (in 0x0000 : word16)
   Class: Eq_4611
-  DataType: Eq_4611
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_4613: (in 0x0008 - 0x5874 != 0x0000 : bool)
   Class: Eq_4613
   DataType: bool
@@ -19545,12 +19401,12 @@ T_4650: (in 5874 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_4651: (in 0x0009 - 0x5874 : word16)
   Class: Eq_4651
-  DataType: Eq_4651
+  DataType: ui16
   OrigDataType: ui16
-T_4652: (in 0x0000 : ptr16)
+T_4652: (in 0x0000 : word16)
   Class: Eq_4651
-  DataType: Eq_4651
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_4653: (in 0x0009 - 0x5874 != 0x0000 : bool)
   Class: Eq_4653
   DataType: bool
@@ -19705,12 +19561,12 @@ T_4690: (in 5874 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_4691: (in 0x000A - 0x5874 : word16)
   Class: Eq_4691
-  DataType: Eq_4691
+  DataType: ui16
   OrigDataType: ui16
-T_4692: (in 0x0000 : ptr16)
+T_4692: (in 0x0000 : word16)
   Class: Eq_4691
-  DataType: Eq_4691
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_4693: (in 0x000A - 0x5874 != 0x0000 : bool)
   Class: Eq_4693
   DataType: bool
@@ -19865,12 +19721,12 @@ T_4730: (in 5874 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_4731: (in 0x000B - 0x5874 : word16)
   Class: Eq_4731
-  DataType: Eq_4731
+  DataType: ui16
   OrigDataType: ui16
-T_4732: (in 0x0000 : ptr16)
+T_4732: (in 0x0000 : word16)
   Class: Eq_4731
-  DataType: Eq_4731
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_4733: (in 0x000B - 0x5874 != 0x0000 : bool)
   Class: Eq_4733
   DataType: bool
@@ -20025,12 +19881,12 @@ T_4770: (in 5874 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_4771: (in 0x000C - 0x5874 : word16)
   Class: Eq_4771
-  DataType: Eq_4771
+  DataType: ui16
   OrigDataType: ui16
-T_4772: (in 0x0000 : ptr16)
+T_4772: (in 0x0000 : word16)
   Class: Eq_4771
-  DataType: Eq_4771
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_4773: (in 0x000C - 0x5874 != 0x0000 : bool)
   Class: Eq_4773
   DataType: bool
@@ -20185,12 +20041,12 @@ T_4810: (in 5874 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_4811: (in 0x000D - 0x5874 : word16)
   Class: Eq_4811
-  DataType: Eq_4811
+  DataType: ui16
   OrigDataType: ui16
-T_4812: (in 0x0000 : ptr16)
+T_4812: (in 0x0000 : word16)
   Class: Eq_4811
-  DataType: Eq_4811
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_4813: (in 0x000D - 0x5874 != 0x0000 : bool)
   Class: Eq_4813
   DataType: bool
@@ -20345,12 +20201,12 @@ T_4850: (in 5874 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_4851: (in 0x000E - 0x5874 : word16)
   Class: Eq_4851
-  DataType: Eq_4851
+  DataType: ui16
   OrigDataType: ui16
-T_4852: (in 0x0000 : ptr16)
+T_4852: (in 0x0000 : word16)
   Class: Eq_4851
-  DataType: Eq_4851
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_4853: (in 0x000E - 0x5874 != 0x0000 : bool)
   Class: Eq_4853
   DataType: bool
@@ -20505,12 +20361,12 @@ T_4890: (in 5874 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_4891: (in 0x000F - 0x5874 : word16)
   Class: Eq_4891
-  DataType: Eq_4891
+  DataType: ui16
   OrigDataType: ui16
-T_4892: (in 0x0000 : ptr16)
+T_4892: (in 0x0000 : word16)
   Class: Eq_4891
-  DataType: Eq_4891
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_4893: (in 0x000F - 0x5874 != 0x0000 : bool)
   Class: Eq_4893
   DataType: bool
@@ -20665,12 +20521,12 @@ T_4930: (in 5874 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_4931: (in 0x0010 - 0x5874 : word16)
   Class: Eq_4931
-  DataType: Eq_4931
+  DataType: ui16
   OrigDataType: ui16
-T_4932: (in 0x0000 : ptr16)
+T_4932: (in 0x0000 : word16)
   Class: Eq_4931
-  DataType: Eq_4931
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_4933: (in 0x0010 - 0x5874 != 0x0000 : bool)
   Class: Eq_4933
   DataType: bool
@@ -20825,12 +20681,12 @@ T_4970: (in 5874 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_4971: (in 0x0011 - 0x5874 : word16)
   Class: Eq_4971
-  DataType: Eq_4971
+  DataType: ui16
   OrigDataType: ui16
-T_4972: (in 0x0000 : ptr16)
+T_4972: (in 0x0000 : word16)
   Class: Eq_4971
-  DataType: Eq_4971
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_4973: (in 0x0011 - 0x5874 != 0x0000 : bool)
   Class: Eq_4973
   DataType: bool
@@ -20985,12 +20841,12 @@ T_5010: (in 5874 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_5011: (in 0x0012 - 0x5874 : word16)
   Class: Eq_5011
-  DataType: Eq_5011
+  DataType: ui16
   OrigDataType: ui16
-T_5012: (in 0x0000 : ptr16)
+T_5012: (in 0x0000 : word16)
   Class: Eq_5011
-  DataType: Eq_5011
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_5013: (in 0x0012 - 0x5874 != 0x0000 : bool)
   Class: Eq_5013
   DataType: bool
@@ -21145,12 +21001,12 @@ T_5050: (in 5874 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_5051: (in 0x0013 - 0x5874 : word16)
   Class: Eq_5051
-  DataType: Eq_5051
+  DataType: ui16
   OrigDataType: ui16
-T_5052: (in 0x0000 : ptr16)
+T_5052: (in 0x0000 : word16)
   Class: Eq_5051
-  DataType: Eq_5051
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_5053: (in 0x0013 - 0x5874 != 0x0000 : bool)
   Class: Eq_5053
   DataType: bool
@@ -21305,12 +21161,12 @@ T_5090: (in 5874 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_5091: (in 0x0014 - 0x5874 : word16)
   Class: Eq_5091
-  DataType: Eq_5091
+  DataType: ui16
   OrigDataType: ui16
-T_5092: (in 0x0000 : ptr16)
+T_5092: (in 0x0000 : word16)
   Class: Eq_5091
-  DataType: Eq_5091
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_5093: (in 0x0014 - 0x5874 != 0x0000 : bool)
   Class: Eq_5093
   DataType: bool
@@ -21465,12 +21321,12 @@ T_5130: (in 5874 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_5131: (in 0x0015 - 0x5874 : word16)
   Class: Eq_5131
-  DataType: Eq_5131
+  DataType: ui16
   OrigDataType: ui16
-T_5132: (in 0x0000 : ptr16)
+T_5132: (in 0x0000 : word16)
   Class: Eq_5131
-  DataType: Eq_5131
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_5133: (in 0x0015 - 0x5874 != 0x0000 : bool)
   Class: Eq_5133
   DataType: bool
@@ -21625,12 +21481,12 @@ T_5170: (in 5874 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_5171: (in 0x0016 - 0x5874 : word16)
   Class: Eq_5171
-  DataType: Eq_5171
+  DataType: ui16
   OrigDataType: ui16
-T_5172: (in 0x0000 : ptr16)
+T_5172: (in 0x0000 : word16)
   Class: Eq_5171
-  DataType: Eq_5171
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_5173: (in 0x0016 - 0x5874 != 0x0000 : bool)
   Class: Eq_5173
   DataType: bool
@@ -21785,12 +21641,12 @@ T_5210: (in 5874 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_5211: (in 0x0017 - 0x5874 : word16)
   Class: Eq_5211
-  DataType: Eq_5211
+  DataType: ui16
   OrigDataType: ui16
-T_5212: (in 0x0000 : ptr16)
+T_5212: (in 0x0000 : word16)
   Class: Eq_5211
-  DataType: Eq_5211
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_5213: (in 0x0017 - 0x5874 != 0x0000 : bool)
   Class: Eq_5213
   DataType: bool
@@ -21945,12 +21801,12 @@ T_5250: (in 5874 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_5251: (in 0x0018 - 0x5874 : word16)
   Class: Eq_5251
-  DataType: Eq_5251
+  DataType: ui16
   OrigDataType: ui16
-T_5252: (in 0x0000 : ptr16)
+T_5252: (in 0x0000 : word16)
   Class: Eq_5251
-  DataType: Eq_5251
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_5253: (in 0x0018 - 0x5874 != 0x0000 : bool)
   Class: Eq_5253
   DataType: bool
@@ -22105,12 +21961,12 @@ T_5290: (in 5874 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_5291: (in 0x0019 - 0x5874 : word16)
   Class: Eq_5291
-  DataType: Eq_5291
+  DataType: ui16
   OrigDataType: ui16
-T_5292: (in 0x0000 : ptr16)
+T_5292: (in 0x0000 : word16)
   Class: Eq_5291
-  DataType: Eq_5291
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_5293: (in 0x0019 - 0x5874 != 0x0000 : bool)
   Class: Eq_5293
   DataType: bool
@@ -22265,12 +22121,12 @@ T_5330: (in 5874 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_5331: (in 0x001A - 0x5874 : word16)
   Class: Eq_5331
-  DataType: Eq_5331
+  DataType: ui16
   OrigDataType: ui16
-T_5332: (in 0x0000 : ptr16)
+T_5332: (in 0x0000 : word16)
   Class: Eq_5331
-  DataType: Eq_5331
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_5333: (in 0x001A - 0x5874 != 0x0000 : bool)
   Class: Eq_5333
   DataType: bool
@@ -22425,12 +22281,12 @@ T_5370: (in 5874 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_5371: (in 0x001B - 0x5874 : word16)
   Class: Eq_5371
-  DataType: Eq_5371
+  DataType: ui16
   OrigDataType: ui16
-T_5372: (in 0x0000 : ptr16)
+T_5372: (in 0x0000 : word16)
   Class: Eq_5371
-  DataType: Eq_5371
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_5373: (in 0x001B - 0x5874 != 0x0000 : bool)
   Class: Eq_5373
   DataType: bool
@@ -22585,12 +22441,12 @@ T_5410: (in 5874 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_5411: (in 0x001C - 0x5874 : word16)
   Class: Eq_5411
-  DataType: Eq_5411
+  DataType: ui16
   OrigDataType: ui16
-T_5412: (in 0x0000 : ptr16)
+T_5412: (in 0x0000 : word16)
   Class: Eq_5411
-  DataType: Eq_5411
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_5413: (in 0x001C - 0x5874 != 0x0000 : bool)
   Class: Eq_5413
   DataType: bool
@@ -22745,12 +22601,12 @@ T_5450: (in 5874 : ptr16)
   OrigDataType: (union (ui16 u0) (ptr16 u1))
 T_5451: (in 0x001D - 0x5874 : word16)
   Class: Eq_5451
-  DataType: Eq_5451
+  DataType: ui16
   OrigDataType: ui16
-T_5452: (in 0x0000 : ptr16)
+T_5452: (in 0x0000 : word16)
   Class: Eq_5451
-  DataType: Eq_5451
-  OrigDataType: ptr16
+  DataType: ui16
+  OrigDataType: word16
 T_5453: (in 0x001D - 0x5874 != 0x0000 : bool)
   Class: Eq_5453
   DataType: bool
@@ -22905,12 +22761,12 @@ T_5490: (in 5874 : ptr16)
   OrigDataType: (union (int16 u0) (ptr16 u1))
 T_5491: (in 0x001E - 0x5874 : word16)
   Class: Eq_5491
-  DataType: Eq_5491
+  DataType: int16
   OrigDataType: int16
-T_5492: (in 0x0000 : ptr16)
+T_5492: (in 0x0000 : word16)
   Class: Eq_5491
-  DataType: Eq_5491
-  OrigDataType: (union (int16 u0) (ptr16 u1))
+  DataType: int16
+  OrigDataType: ci16
 T_5493: (in 0x001E - 0x5874 < 0x0000 : bool)
   Class: Eq_5493
   DataType: bool
@@ -23990,11 +23846,6 @@ typedef union Eq_1649 {
 	ptr16 u1;
 } Eq_1649;
 
-typedef union Eq_1650 {
-	int16 u0;
-	ptr16 u1;
-} Eq_1650;
-
 typedef union Eq_1662 {
 	ui16 u0;
 	ptr16 u1;
@@ -24010,20 +23861,10 @@ typedef union Eq_1710 {
 	ptr16 u1;
 } Eq_1710;
 
-typedef union Eq_1711 {
-	int16 u0;
-	ptr16 u1;
-} Eq_1711;
-
 typedef union Eq_1724 {
 	int16 u0;
 	ptr16 u1;
 } Eq_1724;
-
-typedef union Eq_1725 {
-	int16 u0;
-	ptr16 u1;
-} Eq_1725;
 
 typedef void (Eq_1752)();
 
@@ -24037,11 +23878,6 @@ typedef union Eq_2165 {
 	int16 u0;
 	ptr16 u1;
 } Eq_2165;
-
-typedef union Eq_2166 {
-	int16 u0;
-	ptr16 u1;
-} Eq_2166;
 
 typedef union Eq_2177 {
 	ui16 u0;
@@ -24067,11 +23903,6 @@ typedef union Eq_2288 {
 	ui16 u0;
 	ptr16 u1;
 } Eq_2288;
-
-typedef union Eq_2289 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_2289;
 
 typedef union Eq_2419 {
 	int16 u0;
@@ -24109,11 +23940,6 @@ typedef union Eq_2528 {
 	ptr16 u1;
 } Eq_2528;
 
-typedef union Eq_2529 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_2529;
-
 typedef void (Eq_2565)();
 
 typedef union Eq_2606 {
@@ -24121,90 +23947,45 @@ typedef union Eq_2606 {
 	ptr16 u1;
 } Eq_2606;
 
-typedef union Eq_2607 {
-	int16 u0;
-	ptr16 u1;
-} Eq_2607;
-
 typedef union Eq_2674 {
 	int16 u0;
 	ptr16 u1;
 } Eq_2674;
-
-typedef union Eq_2675 {
-	int16 u0;
-	ptr16 u1;
-} Eq_2675;
 
 typedef union Eq_2737 {
 	int16 u0;
 	ptr16 u1;
 } Eq_2737;
 
-typedef union Eq_2738 {
-	int16 u0;
-	ptr16 u1;
-} Eq_2738;
-
 typedef union Eq_2749 {
 	int16 u0;
 	ptr16 u1;
 } Eq_2749;
-
-typedef union Eq_2750 {
-	int16 u0;
-	ptr16 u1;
-} Eq_2750;
 
 typedef union Eq_2761 {
 	ui16 u0;
 	ptr16 u1;
 } Eq_2761;
 
-typedef union Eq_2762 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_2762;
-
 typedef union Eq_2825 {
 	int16 u0;
 	ptr16 u1;
 } Eq_2825;
-
-typedef union Eq_2826 {
-	int16 u0;
-	ptr16 u1;
-} Eq_2826;
 
 typedef union Eq_2837 {
 	int16 u0;
 	ptr16 u1;
 } Eq_2837;
 
-typedef union Eq_2838 {
-	int16 u0;
-	ptr16 u1;
-} Eq_2838;
-
 typedef union Eq_2958 {
 	ui16 u0;
 	ptr16 u1;
 } Eq_2958;
 
-typedef union Eq_2959 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_2959;
-
 typedef union Eq_2981 {
 	int16 u0;
 	ptr16 u1;
 } Eq_2981;
-
-typedef union Eq_2982 {
-	int16 u0;
-	ptr16 u1;
-} Eq_2982;
 
 typedef void (Eq_3102)();
 
@@ -24214,11 +23995,6 @@ typedef union Eq_3160 {
 	ui16 u0;
 	ptr16 u1;
 } Eq_3160;
-
-typedef union Eq_3161 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_3161;
 
 typedef void (Eq_3171)();
 
@@ -24260,11 +24036,6 @@ typedef union Eq_3698 {
 	ptr16 u1;
 } Eq_3698;
 
-typedef union Eq_3699 {
-	int16 u0;
-	ptr16 u1;
-} Eq_3699;
-
 typedef struct Eq_3787 {
 	byte b551D;	// 551D
 	byte b551E;	// 551E
@@ -24282,20 +24053,10 @@ typedef union Eq_4022 {
 	ptr16 u1;
 } Eq_4022;
 
-typedef union Eq_4023 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_4023;
-
 typedef union Eq_4213 {
 	int16 u0;
 	ptr16 u1;
 } Eq_4213;
-
-typedef union Eq_4214 {
-	int16 u0;
-	ptr16 u1;
-} Eq_4214;
 
 typedef void (Eq_4338)();
 
@@ -24306,290 +24067,145 @@ typedef union Eq_4370 {
 	ptr16 u1;
 } Eq_4370;
 
-typedef union Eq_4371 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_4371;
-
 typedef union Eq_4410 {
 	ui16 u0;
 	ptr16 u1;
 } Eq_4410;
-
-typedef union Eq_4411 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_4411;
 
 typedef union Eq_4450 {
 	ui16 u0;
 	ptr16 u1;
 } Eq_4450;
 
-typedef union Eq_4451 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_4451;
-
 typedef union Eq_4490 {
 	ui16 u0;
 	ptr16 u1;
 } Eq_4490;
-
-typedef union Eq_4491 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_4491;
 
 typedef union Eq_4530 {
 	ui16 u0;
 	ptr16 u1;
 } Eq_4530;
 
-typedef union Eq_4531 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_4531;
-
 typedef union Eq_4570 {
 	ui16 u0;
 	ptr16 u1;
 } Eq_4570;
-
-typedef union Eq_4571 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_4571;
 
 typedef union Eq_4610 {
 	ui16 u0;
 	ptr16 u1;
 } Eq_4610;
 
-typedef union Eq_4611 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_4611;
-
 typedef union Eq_4650 {
 	ui16 u0;
 	ptr16 u1;
 } Eq_4650;
-
-typedef union Eq_4651 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_4651;
 
 typedef union Eq_4690 {
 	ui16 u0;
 	ptr16 u1;
 } Eq_4690;
 
-typedef union Eq_4691 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_4691;
-
 typedef union Eq_4730 {
 	ui16 u0;
 	ptr16 u1;
 } Eq_4730;
-
-typedef union Eq_4731 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_4731;
 
 typedef union Eq_4770 {
 	ui16 u0;
 	ptr16 u1;
 } Eq_4770;
 
-typedef union Eq_4771 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_4771;
-
 typedef union Eq_4810 {
 	ui16 u0;
 	ptr16 u1;
 } Eq_4810;
-
-typedef union Eq_4811 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_4811;
 
 typedef union Eq_4850 {
 	ui16 u0;
 	ptr16 u1;
 } Eq_4850;
 
-typedef union Eq_4851 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_4851;
-
 typedef union Eq_4890 {
 	ui16 u0;
 	ptr16 u1;
 } Eq_4890;
-
-typedef union Eq_4891 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_4891;
 
 typedef union Eq_4930 {
 	ui16 u0;
 	ptr16 u1;
 } Eq_4930;
 
-typedef union Eq_4931 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_4931;
-
 typedef union Eq_4970 {
 	ui16 u0;
 	ptr16 u1;
 } Eq_4970;
-
-typedef union Eq_4971 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_4971;
 
 typedef union Eq_5010 {
 	ui16 u0;
 	ptr16 u1;
 } Eq_5010;
 
-typedef union Eq_5011 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_5011;
-
 typedef union Eq_5050 {
 	ui16 u0;
 	ptr16 u1;
 } Eq_5050;
-
-typedef union Eq_5051 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_5051;
 
 typedef union Eq_5090 {
 	ui16 u0;
 	ptr16 u1;
 } Eq_5090;
 
-typedef union Eq_5091 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_5091;
-
 typedef union Eq_5130 {
 	ui16 u0;
 	ptr16 u1;
 } Eq_5130;
-
-typedef union Eq_5131 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_5131;
 
 typedef union Eq_5170 {
 	ui16 u0;
 	ptr16 u1;
 } Eq_5170;
 
-typedef union Eq_5171 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_5171;
-
 typedef union Eq_5210 {
 	ui16 u0;
 	ptr16 u1;
 } Eq_5210;
-
-typedef union Eq_5211 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_5211;
 
 typedef union Eq_5250 {
 	ui16 u0;
 	ptr16 u1;
 } Eq_5250;
 
-typedef union Eq_5251 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_5251;
-
 typedef union Eq_5290 {
 	ui16 u0;
 	ptr16 u1;
 } Eq_5290;
-
-typedef union Eq_5291 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_5291;
 
 typedef union Eq_5330 {
 	ui16 u0;
 	ptr16 u1;
 } Eq_5330;
 
-typedef union Eq_5331 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_5331;
-
 typedef union Eq_5370 {
 	ui16 u0;
 	ptr16 u1;
 } Eq_5370;
-
-typedef union Eq_5371 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_5371;
 
 typedef union Eq_5410 {
 	ui16 u0;
 	ptr16 u1;
 } Eq_5410;
 
-typedef union Eq_5411 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_5411;
-
 typedef union Eq_5450 {
 	ui16 u0;
 	ptr16 u1;
 } Eq_5450;
 
-typedef union Eq_5451 {
-	ui16 u0;
-	ptr16 u1;
-} Eq_5451;
-
 typedef union Eq_5490 {
 	int16 u0;
 	ptr16 u1;
 } Eq_5490;
-
-typedef union Eq_5491 {
-	int16 u0;
-	ptr16 u1;
-} Eq_5491;
 
 typedef struct Eq_5581 {
 	Eq_206 t0000;	// 0

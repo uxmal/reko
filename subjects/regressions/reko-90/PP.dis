@@ -20349,8 +20349,7 @@ l0800_8417:
 // LocalsOut: fp(16) Local -0002(16) Stack +0004(32)
 
 l0800_8422:
-	word16 ax_21 = (word16) (ax_17 *s 0x000C)
-	selector ds_36 = fn0800_8489(fp - 0x0002, ds, Mem0[SLICE(ptrArg04, selector, 16):ax_21 + 0x0008:word16])
+	selector ds_36 = fn0800_8489(fp - 0x0002, ds, Mem0[SLICE(ptrArg04, selector, 16):(word16) (ax_17 *s 0x000C) + 0x0008:word16])
 	branch Mem0[ss:fp - 0x0004:word16] <=u 0x0001 l0800_845F
 // DataOut: bp ds si sp ss
 // DataOut (flags): 
