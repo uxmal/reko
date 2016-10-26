@@ -375,7 +375,7 @@ ProcedureBuilder_exit:
         [Category(Categories.UnitTests)]
         public void DfaFpuStackReturn()
         {
-            RunFileTest("Fragments/fpustackreturn.asm", "Analysis/DfaFpuStackReturn.txt");
+            RunFileTest_x86_real("Fragments/fpustackreturn.asm", "Analysis/DfaFpuStackReturn.txt");
         }
 	}
 }
