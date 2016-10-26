@@ -134,7 +134,7 @@ l0000000000400485:
 deregister_tm_clones_exit:
 // DataOut: rsp
 // DataOut (flags): 
-// SymbolicIn: rsp:fp + 0x0000000000000004 eax:<invalid> r8:r8 - 6295616 rbp:rbp edi:0x00601040 -4(fp):rbp
+// SymbolicIn: rsp:fp + 0x0000000000000004 eax:<invalid> r8:<invalid> rbp:rbp edi:<invalid> -4(fp):rbp
 
 
 
@@ -157,7 +157,7 @@ l00000000004004A0:
 	branch (rax_4 >> 0x0000000000000003) + rdx_13 >> 0x0000000000000001 != 0x0000000000000000 l00000000004004C4
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> eax:<invalid> r8:<invalid> rax:<invalid> rdx:<invalid> edx:<invalid> rsi:<invalid> edi:0x00601040
+// SymbolicIn: rsp:<invalid> eax:<invalid> r8:<invalid> rax:<invalid> rdx:<invalid> edx:<invalid> rsi:<invalid> edi:<invalid>
 // LocalsOut: fp(64)
 
 l00000000004004C4:
@@ -165,7 +165,7 @@ l00000000004004C4:
 	branch rdx_45 == 0x0000000000000000 l00000000004004C2
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000004 eax:<invalid> r8:<invalid> rax:<invalid> rbp:fp - 0x0000000000000004 rdx:<invalid> edx:<invalid> rsi:<invalid> edi:0x00601040 -4(fp):rbp
+// SymbolicIn: rsp:fp - 0x0000000000000004 eax:<invalid> r8:<invalid> rax:<invalid> rbp:fp - 0x0000000000000004 rdx:<invalid> edx:<invalid> rsi:<invalid> edi:<invalid> -4(fp):rbp
 // LocalsOut: fp(64)
 
 l00000000004004CE:
@@ -188,18 +188,18 @@ l00000000004004CE:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000004 eax:<invalid> r8:<invalid> rax:<invalid> rbp:fp - 0x0000000000000004 rdx:<invalid> edx:0x00000000 rsi:<invalid> edi:0x00601040 -4(fp):rbp
+// SymbolicIn: rsp:fp - 0x0000000000000004 eax:<invalid> r8:<invalid> rax:<invalid> rbp:fp - 0x0000000000000004 rdx:<invalid> edx:0x00000000 rsi:<invalid> edi:<invalid> -4(fp):rbp
 
 l00000000004004C2:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000004 eax:<invalid> r8:<invalid> rax:<invalid> rbp:fp - 0x0000000000000004 rdx:<invalid> edx:<invalid> rsi:<invalid> edi:0x00601040 -4(fp):rbp
+// SymbolicIn: rsp:fp - 0x0000000000000004 eax:<invalid> r8:<invalid> rax:<invalid> rbp:fp - 0x0000000000000004 rdx:<invalid> edx:<invalid> rsi:<invalid> edi:<invalid> -4(fp):rbp
 
 register_tm_clones_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp + 0x0000000000000004 eax:<invalid> r8:<invalid> rax:<invalid> rbp:rbp rdx:<invalid> edx:<invalid> rsi:<invalid> edi:0x00601040 -4(fp):rbp
+// SymbolicIn: rsp:fp + 0x0000000000000004 eax:<invalid> r8:<invalid> rax:<invalid> rbp:rbp rdx:<invalid> edx:<invalid> rsi:<invalid> edi:<invalid> -4(fp):rbp
 
 
 
@@ -234,12 +234,12 @@ l00000000004004FA:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> rbp:<invalid> eax:<invalid> r8:<invalid> edi:0x00601040 -4(fp):rbp
+// SymbolicIn: rsp:<invalid> rbp:<invalid> eax:<invalid> r8:<invalid> edi:<invalid> -4(fp):rbp
 
 __do_global_dtors_aux_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> rbp:<invalid> eax:<invalid> r8:<invalid> edi:0x00601040 -4(fp):rbp
+// SymbolicIn: rsp:<invalid> rbp:<invalid> eax:<invalid> r8:<invalid> edi:<invalid> -4(fp):rbp
 
 
 
@@ -291,7 +291,7 @@ l00000000004004A0:
 	branch (rax_4 >> 0x0000000000000003) + rdx_13 >> 0x0000000000000001 != 0x0000000000000000 l00000000004004C4
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> eax:<invalid> r8:<invalid> rax:<invalid> rdx:<invalid> edx:<invalid> rsi:<invalid> edi:0x00601040
+// SymbolicIn: rsp:<invalid> eax:<invalid> r8:<invalid> rax:<invalid> rdx:<invalid> edx:<invalid> rsi:<invalid> edi:<invalid>
 // LocalsOut: fp(64)
 
 l00000000004004C4:
@@ -299,7 +299,7 @@ l00000000004004C4:
 	branch rdx_45 == 0x0000000000000000 l00000000004004C2
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000004 eax:<invalid> r8:<invalid> rax:<invalid> rbp:fp - 0x0000000000000004 rdx:<invalid> edx:<invalid> rsi:<invalid> edi:0x00601040 -4(fp):rbp
+// SymbolicIn: rsp:fp - 0x0000000000000004 eax:<invalid> r8:<invalid> rax:<invalid> rbp:fp - 0x0000000000000004 rdx:<invalid> edx:<invalid> rsi:<invalid> edi:<invalid> -4(fp):rbp
 // LocalsOut: fp(64)
 
 l00000000004004CE:
@@ -322,18 +322,18 @@ l00000000004004CE:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000004 eax:<invalid> r8:<invalid> rax:<invalid> rbp:fp - 0x0000000000000004 rdx:<invalid> edx:0x00000000 rsi:<invalid> edi:0x00601040 -4(fp):rbp
+// SymbolicIn: rsp:fp - 0x0000000000000004 eax:<invalid> r8:<invalid> rax:<invalid> rbp:fp - 0x0000000000000004 rdx:<invalid> edx:0x00000000 rsi:<invalid> edi:<invalid> -4(fp):rbp
 
 l00000000004004C2:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000004 eax:<invalid> r8:<invalid> rax:<invalid> rbp:fp - 0x0000000000000004 rdx:<invalid> edx:<invalid> rsi:<invalid> edi:0x00601040 -4(fp):rbp
+// SymbolicIn: rsp:fp - 0x0000000000000004 eax:<invalid> r8:<invalid> rax:<invalid> rbp:fp - 0x0000000000000004 rdx:<invalid> edx:<invalid> rsi:<invalid> edi:<invalid> -4(fp):rbp
 
 register_tm_clones_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp + 0x0000000000000004 eax:<invalid> r8:<invalid> rax:<invalid> rbp:rbp rdx:<invalid> edx:<invalid> rsi:<invalid> edi:0x00601040 -4(fp):rbp
+// SymbolicIn: rsp:fp + 0x0000000000000004 eax:<invalid> r8:<invalid> rax:<invalid> rbp:rbp rdx:<invalid> edx:<invalid> rsi:<invalid> edi:<invalid> -4(fp):rbp
 
 l0000000000400514:
 	rsp = fp - 0x0000000000000004
@@ -354,12 +354,12 @@ l000000000040051F_thunk_register_tm_clones:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp + 0x0000000000000004 eax:0x00000000 edi:0x00600E20 rbp:rbp -4(fp):rbp
+// SymbolicIn: rsp:fp + 0x0000000000000004 eax:<invalid> edi:<invalid> rbp:rbp -4(fp):rbp
 
 frame_dummy_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> eax:<invalid> r8:<invalid> rax:<invalid> rdx:<invalid> edi:0x00601040 rbp:rbp edx:<invalid> rsi:<invalid> -4(fp):rbp
+// SymbolicIn: rsp:<invalid> eax:<invalid> r8:<invalid> rax:<invalid> rdx:<invalid> edi:<invalid> rbp:rbp edx:<invalid> rsi:<invalid> -4(fp):rbp
 
 
 
@@ -422,8 +422,8 @@ void __libc_csu_init(word64 rsi)
 
 // MayUse:  rsi
 // LiveOut:
-// Trashed: SCZO ah al ax bh bl bp bpl bx di dil eax ebp ebx edi esi esp r12 r12b r12d r12w r13 r13b r13d r13w r14 r14b r14d r14w r15 r15b r15d r15w rax rbp rbx rdi rsi rsp si sil sp spl
-// Preserved: rbx rdx
+// Trashed: SCZO ah al ax bh bl bp bpl bx dh di dil dl dx eax ebp ebx edi edx esi esp r12 r12b r12d r12w r13 r13b r13d r13w r14 r14b r14d r14w r15 r15b r15d r15w rax rbp rbx rdi rdx rsi rsp si sil sp spl
+// Preserved: rbx
 __libc_csu_init_entry:
 // DataOut: rsi
 // DataOut (flags): 
@@ -469,19 +469,19 @@ l0000000000400590:
 	branch rbx_79 + 0x0000000000000001 != rbp_75 l0000000000400590
 // DataOut: rbp rbx
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000020 r15d:edi r14:rsi r13:rdx r12:0000000000600E10 rbp:0x0000000000600E18 - 0x0000000000600E10 >> 0x0000000000000003 ebx:<invalid> rdx:rdx rsi:rsi edi:edi rbx:<invalid> rax:<invalid> -24(fp):rbx -20(fp):rbp -16(fp):fp - 0x000000000000000C -12(fp):rbp -8(fp):rsi -4(fp):rdi
+// SymbolicIn: rsp:fp - 0x0000000000000020 r15d:edi r14:rsi r13:rdx r12:0000000000600E10 rbp:0x0000000000600E18 - 0x0000000000600E10 >> 0x0000000000000003 ebx:<invalid> rdx:<invalid> rsi:<invalid> edi:<invalid> rbx:<invalid> rax:<invalid> -24(fp):rbx -20(fp):rbp -16(fp):fp - 0x000000000000000C -12(fp):rbp -8(fp):rsi -4(fp):rdi
 // LocalsOut: fp(64) Local -0008(64)
 
 l00000000004005A6:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000020 r15d:edi r14:rsi r13:rdx r12:0000000000600E10 rbp:0x0000000000600E18 - 0x0000000000600E10 >> 0x0000000000000003 ebx:<invalid> rdx:rdx rsi:rsi edi:edi rbx:<invalid> rax:<invalid> -24(fp):rbx -20(fp):rbp -16(fp):fp - 0x000000000000000C -12(fp):rbp -8(fp):rsi -4(fp):rdi
+// SymbolicIn: rsp:fp - 0x0000000000000020 r15d:edi r14:rsi r13:rdx r12:0000000000600E10 rbp:0x0000000000600E18 - 0x0000000000600E10 >> 0x0000000000000003 ebx:<invalid> rdx:<invalid> rsi:<invalid> edi:<invalid> rbx:<invalid> rax:<invalid> -24(fp):rbx -20(fp):rbp -16(fp):fp - 0x000000000000000C -12(fp):rbp -8(fp):rsi -4(fp):rdi
 
 __libc_csu_init_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:rsi + 0x0000000000000020 r15d:edi r14:rsi r13:rdx r12:0000000000600E10 rbp:<invalid> ebx:<invalid> rbx:rbx rsi:<invalid> rdi:<invalid> rdx:rdx edi:<invalid> rax:<invalid> -24(fp):rbx -20(fp):rbp -16(fp):fp - 0x000000000000000C -12(fp):rbp -8(fp):rsi -4(fp):rdi
+// SymbolicIn: rsp:rsi + 0x0000000000000020 r15d:edi r14:rsi r13:rdx r12:0000000000600E10 rbp:<invalid> ebx:<invalid> rbx:rbx rsi:<invalid> rdi:<invalid> rdx:<invalid> edi:<invalid> rax:<invalid> -24(fp):rbx -20(fp):rbp -16(fp):fp - 0x000000000000000C -12(fp):rbp -8(fp):rsi -4(fp):rdi
 
 
 

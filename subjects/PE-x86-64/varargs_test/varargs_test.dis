@@ -27,7 +27,7 @@ l0000000140001000:
 fn0000000140001000_exit:
 // DataOut: eax sil
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> rax:<invalid> xmm0:<invalid> r9:<invalid> r8:<invalid> rcx:<invalid> edx:<invalid> rdx:<invalid> eax:<invalid> rdi:<invalid> rsi:<invalid> ecx:<invalid> rbx:<invalid> r9d:0x00000000 edi:<invalid> r8d:<invalid> -168(fp):<invalid> -160(fp):fp - 0x0000000000000078 -152(fp):<invalid> -144(fp):<invalid> -16(fp):<invalid>
+// SymbolicIn: rsp:<invalid> rax:<invalid> xmm0:<invalid> r9:<invalid> r8:<invalid> rcx:<invalid> edx:<invalid> rdx:<invalid> eax:<invalid> rdi:<invalid> rsi:<invalid> ecx:<invalid> rbx:<invalid> r9d:<invalid> edi:<invalid> r8d:<invalid> -168(fp):<invalid> -160(fp):fp - 0x0000000000000078 -152(fp):<invalid> -144(fp):<invalid> -16(fp):<invalid>
 
 
 
@@ -112,7 +112,7 @@ l00000001400010D0:
 fn00000001400010D0_exit:
 // DataOut: rsp
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000004 rdi:<invalid> rsi:<invalid> ecx:<invalid> rbx:rdi r9d:0x00000000 r8:rcx rdx:rax rcx:<invalid> rax:<invalid> -36(fp):fp + 0x000000000000001C -12(fp):rdi -8(fp):rsi -4(fp):rbx 8(fp):rcx 16(fp):rdx 24(fp):r8 32(fp):r9
+// SymbolicIn: rsp:fp - 0x0000000000000004 rdi:<invalid> rsi:<invalid> ecx:<invalid> rbx:rdi r9d:<invalid> r8:<invalid> rdx:<invalid> rcx:<invalid> rax:<invalid> -36(fp):fp + 0x000000000000001C -12(fp):rdi -8(fp):rsi -4(fp):rbx 8(fp):rcx 16(fp):rdx 24(fp):r8 32(fp):r9
 
 
 
@@ -197,7 +197,7 @@ l0000000140001140:
 fn0000000140001140_exit:
 // DataOut: rsp
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000004 rdi:<invalid> rsi:<invalid> ecx:<invalid> rbx:rdi r9d:0x00000000 r8:rcx rdx:rax rcx:<invalid> rax:<invalid> -36(fp):fp + 0x000000000000001C -12(fp):rdi -8(fp):rsi -4(fp):rbx 8(fp):rcx 16(fp):rdx 24(fp):r8 32(fp):r9
+// SymbolicIn: rsp:fp - 0x0000000000000004 rdi:<invalid> rsi:<invalid> ecx:<invalid> rbx:rdi r9d:<invalid> r8:<invalid> rdx:<invalid> rcx:<invalid> rax:<invalid> -36(fp):fp + 0x000000000000001C -12(fp):rdi -8(fp):rsi -4(fp):rbx 8(fp):rcx 16(fp):rdx 24(fp):r8 32(fp):r9
 
 
 
@@ -265,7 +265,7 @@ l00000001400011C6_1:
 fn00000001400011B0_exit:
 // DataOut: eax sil
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> rcx:<invalid> ecx:<invalid> eax:<invalid> rax:<invalid> edx:0xC0000409 rbx:<invalid> rsi:<invalid> edi:<invalid> r8d:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid>
+// SymbolicIn: rsp:<invalid> rcx:<invalid> ecx:<invalid> eax:<invalid> rax:<invalid> edx:<invalid> rbx:<invalid> rsi:<invalid> edi:<invalid> r8d:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid>
 
 
 
@@ -444,14 +444,14 @@ l0000000140001267:
 		defs: al_137,bl_144,C_139,eax_135,ecx_134,r13_143,r8_142,rax_136,rbx_132,rcx_141,rsp_131,SCZO_133,SZO_138,Z_140
 // DataOut: rsp
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> ecx:0x00000000 eax:0x00000000 rax:<invalid> rbx:<invalid> rcx:<invalid> al:0x01 rbp:<invalid> ebx:<invalid> rsi:<invalid> r8:<invalid> rdx:<invalid> edx:<invalid> r8d:<invalid> r9:<invalid> bl:<invalid> -4(fp):rbx
+// SymbolicIn: rsp:<invalid> ecx:<invalid> eax:<invalid> rax:<invalid> rbx:<invalid> rcx:<invalid> al:0x01 rbp:<invalid> ebx:<invalid> rsi:<invalid> r8:<invalid> rdx:<invalid> edx:<invalid> r8d:<invalid> r9:<invalid> bl:<invalid> -4(fp):rbx
 
 l000000014000126C:
 	fn0000000140001ABC()
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> ecx:0x00000000 eax:0x00000000 rax:<invalid> rbx:<invalid> rcx:<invalid> al:0x01 rbp:<invalid> ebx:<invalid> rsi:<invalid> r8:<invalid> rdx:<invalid> edx:<invalid> r8d:<invalid> r9:<invalid> bl:<invalid> -4(fp):rbx
+// SymbolicIn: rsp:<invalid> ecx:<invalid> eax:<invalid> rax:<invalid> rbx:<invalid> rcx:<invalid> al:<invalid> rbp:<invalid> ebx:<invalid> rsi:<invalid> r8:<invalid> rdx:<invalid> edx:<invalid> r8d:<invalid> r9:<invalid> bl:<invalid> -4(fp):rbx
 
 fn00000001400011D4_exit:
 // DataOut:
@@ -523,7 +523,7 @@ l0000000140001E52:
 fn00000001400012A0_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp ecx:<invalid> rcx:<invalid> eax:0x00000000
+// SymbolicIn: rsp:fp ecx:<invalid> rcx:<invalid> eax:<invalid>
 
 
 
@@ -663,7 +663,7 @@ l0000000140001395:
 	branch Mem23[rax_107:word64] == 0x0000000000000000 l00000001400013B7
 // DataOut: rax rbx rsp
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> ecx:<invalid> sil:<invalid> bl:<invalid> rdx:<invalid> rcx:<invalid> rax:<invalid> cl:<invalid> edx:<invalid> rbx:<invalid> r8:<invalid> eax:<invalid> al:<invalid> r8d:<invalid> ebx:<invalid> r9:<invalid> r9d:<invalid> r10d:<invalid> r11d:<invalid> edi:<invalid> rdi:<invalid> r11:0x0000000000010001 -20(fp):<invalid> -4(fp):rdi 8(fp):rbx 16(fp):rsi
+// SymbolicIn: rsp:<invalid> ecx:<invalid> sil:<invalid> bl:<invalid> rdx:<invalid> rcx:<invalid> rax:<invalid> cl:<invalid> edx:<invalid> rbx:<invalid> r8:<invalid> eax:<invalid> al:<invalid> r8d:<invalid> ebx:<invalid> r9:<invalid> r9d:<invalid> r10d:<invalid> r11d:<invalid> edi:<invalid> rdi:<invalid> r11:<invalid> -20(fp):<invalid> -4(fp):rdi 8(fp):rbx 16(fp):rsi
 
 l00000001400013A3:
 	word64 rax_260 = fn0000000140001718(rax_107)
@@ -671,7 +671,7 @@ l00000001400013A3:
 	branch al_261 == 0x00 l00000001400013B7
 // DataOut: rax rbx rsp
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> ecx:<invalid> sil:<invalid> bl:<invalid> rdx:<invalid> rcx:<invalid> rax:<invalid> cl:<invalid> edx:<invalid> rbx:<invalid> r8:<invalid> eax:<invalid> al:<invalid> r8d:<invalid> ebx:<invalid> r9:<invalid> r9d:<invalid> r10d:<invalid> r11d:<invalid> edi:<invalid> rdi:<invalid> r11:0x0000000000010001 -20(fp):<invalid> -4(fp):rdi 8(fp):rbx 16(fp):rsi
+// SymbolicIn: rsp:<invalid> ecx:<invalid> sil:<invalid> bl:<invalid> rdx:<invalid> rcx:<invalid> rax:<invalid> cl:<invalid> edx:<invalid> rbx:<invalid> r8:<invalid> eax:<invalid> al:<invalid> r8d:<invalid> ebx:<invalid> r9:<invalid> r9d:<invalid> r10d:<invalid> r11d:<invalid> edi:<invalid> rdi:<invalid> r11:<invalid> -20(fp):<invalid> -4(fp):rdi 8(fp):rbx 16(fp):rsi
 
 l00000001400013AF:
 	word64 rsp_267
@@ -703,7 +703,7 @@ l00000001400013AF:
 		defs: al_273,bl_278,C_275,cl_283,dl_290,eax_282,ebx_286,ecx_272,edx_285,gs_289,r13_288,r8_287,r8d_284,rax_281,rbx_268,rcx_280,rdi_270,rdx_279,rsi_269,rsp_267,SCZO_271,sil_277,SZO_274,Z_276
 // DataOut: rax rsp
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> ecx:<invalid> sil:<invalid> bl:<invalid> rdx:<invalid> rcx:<invalid> rax:<invalid> cl:<invalid> edx:<invalid> rbx:<invalid> r8:<invalid> eax:<invalid> al:<invalid> r8d:<invalid> ebx:<invalid> r9:<invalid> r9d:<invalid> r10d:<invalid> r11d:<invalid> edi:<invalid> rdi:<invalid> r11:0x0000000000010001 -20(fp):<invalid> -4(fp):rdi 8(fp):rbx 16(fp):rsi
+// SymbolicIn: rsp:<invalid> ecx:<invalid> sil:<invalid> bl:<invalid> rdx:<invalid> rcx:<invalid> rax:<invalid> cl:<invalid> edx:<invalid> rbx:<invalid> r8:<invalid> eax:<invalid> al:<invalid> r8d:<invalid> ebx:<invalid> r9:<invalid> r9d:<invalid> r10d:<invalid> r11d:<invalid> edi:<invalid> rdi:<invalid> r11:<invalid> -20(fp):<invalid> -4(fp):rdi 8(fp):rbx 16(fp):rsi
 
 l00000001400013B7:
 	word64 rsp_115
@@ -793,13 +793,13 @@ l00000001400013B7:
 	branch al_200 != 0x00 l00000001400013EB
 // DataOut: ebx rsp sil
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> ecx:<invalid> sil:<invalid> bl:<invalid> rdx:<invalid> rcx:<invalid> rax:<invalid> cl:<invalid> edx:<invalid> rbx:<invalid> r8:<invalid> eax:<invalid> al:<invalid> r8d:<invalid> ebx:<invalid> r9:<invalid> r9d:<invalid> r10d:<invalid> r11d:<invalid> edi:<invalid> rdi:<invalid> r11:0x0000000000010001 -20(fp):<invalid> -4(fp):rdi 8(fp):rbx 16(fp):rsi
+// SymbolicIn: rsp:<invalid> ecx:<invalid> sil:<invalid> bl:<invalid> rdx:<invalid> rcx:<invalid> rax:<invalid> cl:<invalid> edx:<invalid> rbx:<invalid> r8:<invalid> eax:<invalid> al:<invalid> r8d:<invalid> ebx:<invalid> r9:<invalid> r9d:<invalid> r10d:<invalid> r11d:<invalid> edi:<invalid> rdi:<invalid> r11:<invalid> -20(fp):<invalid> -4(fp):rdi 8(fp):rbx 16(fp):rsi
 
 l00000001400013EB:
 	branch sil_195 != 0x00 l00000001400013F5
 // DataOut: rsp
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> ecx:<invalid> sil:<invalid> bl:<invalid> rdx:<invalid> rcx:<invalid> rax:<invalid> cl:<invalid> edx:<invalid> rbx:<invalid> r8:<invalid> eax:<invalid> al:<invalid> rdi:<invalid> xmm0:<invalid> r9:<invalid> rsi:<invalid> r9d:0x00000000 ebx:<invalid> r8d:<invalid> edi:<invalid> r10d:<invalid> r11d:<invalid> r11:0x0000000000010001 -20(fp):<invalid> -4(fp):rdi 8(fp):rbx 16(fp):rsi
+// SymbolicIn: rsp:<invalid> ecx:<invalid> sil:<invalid> bl:<invalid> rdx:<invalid> rcx:<invalid> rax:<invalid> cl:<invalid> edx:<invalid> rbx:<invalid> r8:<invalid> eax:<invalid> al:<invalid> rdi:<invalid> xmm0:<invalid> r9:<invalid> rsi:<invalid> r9d:<invalid> ebx:<invalid> r8d:<invalid> edi:<invalid> r10d:<invalid> r11d:<invalid> r11:<invalid> -20(fp):<invalid> -4(fp):rdi 8(fp):rbx 16(fp):rsi
 
 l00000001400013F0:
 	word64 rsp_234
@@ -830,19 +830,19 @@ l00000001400013F0:
 		defs: al_240,bl_245,C_242,cl_250,dl_257,eax_249,ebx_253,ecx_239,edx_252,gs_256,r13_255,r8_254,r8d_251,rax_248,rbx_235,rcx_247,rdi_237,rdx_246,rsi_236,rsp_234,SCZO_238,sil_244,SZO_241,Z_243
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> ecx:<invalid> sil:<invalid> bl:<invalid> rdx:<invalid> rcx:<invalid> rax:<invalid> cl:<invalid> edx:<invalid> rbx:<invalid> r8:<invalid> eax:<invalid> al:<invalid> rdi:<invalid> xmm0:<invalid> r9:<invalid> rsi:<invalid> r9d:0x00000000 ebx:<invalid> r8d:<invalid> edi:<invalid> r10d:<invalid> r11d:<invalid> r11:0x0000000000010001 -20(fp):<invalid> -4(fp):rdi 8(fp):rbx 16(fp):rsi
+// SymbolicIn: rsp:<invalid> ecx:<invalid> sil:<invalid> bl:<invalid> rdx:<invalid> rcx:<invalid> rax:<invalid> cl:<invalid> edx:<invalid> rbx:<invalid> r8:<invalid> eax:<invalid> al:<invalid> rdi:<invalid> xmm0:<invalid> r9:<invalid> rsi:<invalid> r9d:<invalid> ebx:<invalid> r8d:<invalid> edi:<invalid> r10d:<invalid> r11d:<invalid> r11:<invalid> -20(fp):<invalid> -4(fp):rdi 8(fp):rbx 16(fp):rsi
 
 l00000001400013F5:
 	rax_233 = DPB(rax_181, fn00000001400017D8(0x00), 0) (alias)
 // DataOut: rax rsp
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> ecx:<invalid> sil:<invalid> bl:<invalid> rdx:<invalid> rcx:<invalid> rax:<invalid> cl:<invalid> edx:<invalid> rbx:<invalid> r8:<invalid> eax:<invalid> al:<invalid> rdi:<invalid> xmm0:<invalid> r9:<invalid> rsi:<invalid> r9d:0x00000000 ebx:<invalid> r8d:<invalid> edi:<invalid> r10d:<invalid> r11d:<invalid> r11:0x0000000000010001 -20(fp):<invalid> -4(fp):rdi 8(fp):rbx 16(fp):rsi
+// SymbolicIn: rsp:<invalid> ecx:<invalid> sil:<invalid> bl:<invalid> rdx:<invalid> rcx:<invalid> rax:<invalid> cl:<invalid> edx:<invalid> rbx:<invalid> r8:<invalid> eax:<invalid> al:<invalid> rdi:<invalid> xmm0:<invalid> r9:<invalid> rsi:<invalid> r9d:<invalid> ebx:<invalid> r8d:<invalid> edi:<invalid> r10d:<invalid> r11d:<invalid> r11:<invalid> -20(fp):<invalid> -4(fp):rdi 8(fp):rbx 16(fp):rsi
 
 l00000001400013E4:
 	exit(DPB(rcx_180, eax_196, 0))
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> ecx:<invalid> sil:<invalid> bl:<invalid> rdx:<invalid> rcx:<invalid> rax:<invalid> cl:<invalid> edx:<invalid> rbx:<invalid> r8:<invalid> eax:<invalid> al:<invalid> rdi:<invalid> xmm0:<invalid> r9:<invalid> rsi:<invalid> r9d:0x00000000 ebx:<invalid> r8d:<invalid> edi:<invalid> r10d:<invalid> r11d:<invalid> r11:0x0000000000010001 -20(fp):<invalid> -4(fp):rdi 8(fp):rbx 16(fp):rsi
+// SymbolicIn: rsp:<invalid> ecx:<invalid> sil:<invalid> bl:<invalid> rdx:<invalid> rcx:<invalid> rax:<invalid> cl:<invalid> edx:<invalid> rbx:<invalid> r8:<invalid> eax:<invalid> al:<invalid> rdi:<invalid> xmm0:<invalid> r9:<invalid> rsi:<invalid> r9d:<invalid> ebx:<invalid> r8d:<invalid> edi:<invalid> r10d:<invalid> r11d:<invalid> r11:<invalid> -20(fp):<invalid> -4(fp):rdi 8(fp):rbx 16(fp):rsi
 
 l000000014000132D:
 	rax_233 = DPB(rax_28, 0x000000FF, 0) (alias)
@@ -854,12 +854,12 @@ l0000000140001423:
 	return rax_233
 // DataOut: rax
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> ecx:<invalid> sil:<invalid> bl:<invalid> rdx:<invalid> rcx:<invalid> rax:<invalid> eax:<invalid> al:<invalid> ebx:<invalid> edx:<invalid> rbx:<invalid> r8d:<invalid> r9:<invalid> r8:<invalid> cl:0x01 rdi:<invalid> xmm0:<invalid> rsi:<invalid> r9d:<invalid> edi:<invalid> r10d:<invalid> r11d:<invalid> r11:0x0000000000010001 -20(fp):<invalid> -4(fp):rdi 8(fp):rbx 16(fp):rsi
+// SymbolicIn: rsp:<invalid> ecx:<invalid> sil:<invalid> bl:<invalid> rdx:<invalid> rcx:<invalid> rax:<invalid> eax:<invalid> al:<invalid> ebx:<invalid> edx:<invalid> rbx:<invalid> r8d:<invalid> r9:<invalid> r8:<invalid> cl:0x01 rdi:<invalid> xmm0:<invalid> rsi:<invalid> r9d:<invalid> edi:<invalid> r10d:<invalid> r11d:<invalid> r11:<invalid> -20(fp):<invalid> -4(fp):rdi 8(fp):rbx 16(fp):rsi
 
 fn00000001400012BC_exit:
 // DataOut: rax
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> ecx:<invalid> sil:<invalid> bl:<invalid> rdx:<invalid> rcx:<invalid> rax:<invalid> eax:<invalid> rbx:<invalid> rsi:<invalid> rdi:<invalid> al:<invalid> ebx:<invalid> edx:<invalid> r8d:<invalid> r9:<invalid> r8:<invalid> cl:0x01 xmm0:<invalid> r9d:<invalid> edi:<invalid> r10d:<invalid> r11d:<invalid> r11:0x0000000000010001 -20(fp):<invalid> -4(fp):rdi 8(fp):rbx 16(fp):rsi
+// SymbolicIn: rsp:<invalid> ecx:<invalid> sil:<invalid> bl:<invalid> rdx:<invalid> rcx:<invalid> rax:<invalid> eax:<invalid> rbx:<invalid> rsi:<invalid> rdi:<invalid> al:<invalid> ebx:<invalid> edx:<invalid> r8d:<invalid> r9:<invalid> r8:<invalid> cl:0x01 xmm0:<invalid> r9d:<invalid> edi:<invalid> r10d:<invalid> r11d:<invalid> r11:<invalid> -20(fp):<invalid> -4(fp):rdi 8(fp):rbx 16(fp):rsi
 
 
 
@@ -932,7 +932,7 @@ l0000000140001448:
 fn0000000140001448_exit:
 // DataOut: eax rsp
 // DataOut (flags): 
-// SymbolicIn: rsp:fp + 0x0000000000000004 rbx:rbx ecx:<invalid> eax:<invalid> rcx:rax edx:0xC0000409 -4(fp):rbx
+// SymbolicIn: rsp:fp + 0x0000000000000004 rbx:rbx ecx:<invalid> eax:<invalid> rcx:<invalid> edx:<invalid> -4(fp):rbx
 
 
 
@@ -980,7 +980,7 @@ l000000014000149A:
 fn000000014000147C_exit:
 // DataOut: eax sil
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> ecx:<invalid> eax:<invalid> rcx:<invalid> rax:<invalid> edx:0xC0000409 rbx:<invalid> rsi:<invalid> edi:<invalid> r8d:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> 8(fp):rcx
+// SymbolicIn: rsp:<invalid> ecx:<invalid> eax:<invalid> rcx:<invalid> rax:<invalid> edx:<invalid> rbx:<invalid> rsi:<invalid> edi:<invalid> r8d:<invalid> rdx:<invalid> r9:<invalid> r8:<invalid> 8(fp):rcx
 
 l0000000140001493:
 	__fastfail(0x00000002)
@@ -1331,13 +1331,13 @@ l0000000140001685:
 	eax_105 = DPB(eax_128, eax_128 == 0x00000000, 0) (alias)
 // DataOut: al eax rsp
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x000000000000004C rbp:fp - 0x0000000000000004 ebx:ecx rcx:00000001400035C0 eax:<invalid> al:<invalid> -4(fp):rbp 8(fp):rbx
+// SymbolicIn: rsp:fp - 0x000000000000004C rbp:fp - 0x0000000000000004 ebx:ecx rcx:<invalid> eax:<invalid> al:<invalid> -4(fp):rbp 8(fp):rbx
 
 l0000000140001681:
 	eax_105 = DPB(eax_76, 0x00, 0) (alias)
 // DataOut: al eax rsp
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x000000000000004C rbp:fp - 0x0000000000000004 ebx:ecx rcx:00000001400035C0 eax:<invalid> al:<invalid> -4(fp):rbp 8(fp):rbx
+// SymbolicIn: rsp:fp - 0x000000000000004C rbp:fp - 0x0000000000000004 ebx:ecx rcx:<invalid> eax:<invalid> al:<invalid> -4(fp):rbp 8(fp):rbx
 
 l00000001400016FF:
 	return eax_105
@@ -1847,7 +1847,7 @@ l0000000140001928:
 fn0000000140001928_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp rcx:0000000140003600
+// SymbolicIn: rsp:fp rcx:<invalid>
 
 
 
@@ -2211,7 +2211,7 @@ l0000000140001B14:
 fn0000000140001B14_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp rcx:0000000140001B24
+// SymbolicIn: rsp:fp rcx:<invalid>
 
 
 
@@ -2283,7 +2283,7 @@ l0000000140001B5B_thunk_fn0000000140001B5C:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000028 rax:<invalid> ecx:<invalid> eax:rcx + 0x00000000E66CFAE0
+// SymbolicIn: rsp:fp - 0x0000000000000028 rax:<invalid> ecx:<invalid> eax:<invalid>
 
 l0000000140001B4F:
 	return
@@ -2742,7 +2742,7 @@ l0000000140001E7C:
 fn0000000140001E7C_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> r8:<invalid> rcx:<invalid> rdx:<invalid> eax:0x00000001 r11d:<invalid> r9:<invalid> r10:<invalid> rax:<invalid> ecx:<invalid> edx:0xC0000409 rbx:<invalid> rsi:<invalid> edi:<invalid> r8d:<invalid>
+// SymbolicIn: rsp:<invalid> r8:<invalid> rcx:<invalid> rdx:<invalid> eax:0x00000001 r11d:<invalid> r9:<invalid> r10:<invalid> rax:<invalid> ecx:<invalid> edx:<invalid> rbx:<invalid> rsi:<invalid> edi:<invalid> r8d:<invalid>
 
 
 
@@ -2813,7 +2813,7 @@ l0000000140001EF0_thunk_fn00000001400011B0:
 fn0000000140001E9C_exit:
 // DataOut: rsp
 // DataOut (flags): 
-// SymbolicIn: rsp:<invalid> r11d:<invalid> rbx:<invalid> r9:<invalid> r10:<invalid> eax:<invalid> rcx:<invalid> rax:<invalid> rdx:<invalid> ecx:<invalid> edx:0xC0000409 rsi:<invalid> edi:<invalid> r8d:<invalid> r8:<invalid> -4(fp):rbx
+// SymbolicIn: rsp:<invalid> r11d:<invalid> rbx:<invalid> r9:<invalid> r10:<invalid> eax:<invalid> rcx:<invalid> rax:<invalid> rdx:<invalid> ecx:<invalid> edx:<invalid> rsi:<invalid> edi:<invalid> r8d:<invalid> r8:<invalid> -4(fp):rbx
 
 
 
@@ -2879,7 +2879,7 @@ l0000000140001F12:
 fn0000000140001F12_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: rsp:fp - 0x0000000000000004 rbp:<invalid> rax:<invalid> rdx:rcx ecx:<invalid> -4(fp):rbp
+// SymbolicIn: rsp:fp - 0x0000000000000004 rbp:<invalid> rax:<invalid> rdx:<invalid> ecx:<invalid> -4(fp):rbp
 
 
 
