@@ -865,7 +865,7 @@ l0000136A:
 	branch Mem0[a3_60:word32] != 0x00000000 l0000136A
 // DataOut: a1 a3 a5 a6 d0 d1 d7
 // DataOut (flags): 
-// SymbolicIn: a7:fp - 0x00000008 a3:<invalid> d0:0x00003EAC a2:<invalid> -8(fp):a2 -4(fp):a3
+// SymbolicIn: a7:fp - 0x00000008 a3:<invalid> d0:<invalid> a2:<invalid> -8(fp):a2 -4(fp):a3
 // LocalsOut: fp(32) Local -0004(32) Stack +0004(8)
 
 l00001372:
@@ -876,7 +876,7 @@ l00001372:
 	return
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: a7:fp - 0x00000008 a3:<invalid> d0:0x00003EAC a2:<invalid> -8(fp):a2 -4(fp):a3
+// SymbolicIn: a7:fp - 0x00000008 a3:<invalid> d0:<invalid> a2:<invalid> -8(fp):a2 -4(fp):a3
 
 fn00001354_exit:
 // DataOut:

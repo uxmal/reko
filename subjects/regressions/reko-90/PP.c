@@ -78,6 +78,7 @@ void fn0800_01E6(byte al, word16 si, word16 di, selector es)
 			byte CZ_93;
 			byte al_95;
 			Mem78[es:dx_33 + 0x02:ptr32]();
+			es = Mem78[ss_92:sp_81 + 0x00:selector];
 		}
 		else
 		{
@@ -94,6 +95,7 @@ void fn0800_01E6(byte al, word16 si, word16 di, selector es)
 			byte CZ_110;
 			byte al_112;
 			SEQ(cs, Mem78[es:dx_33 + 0x02:word16])();
+			es = Mem78[ss_109:sp_98 + 0x00:selector];
 		}
 	}
 	return;
@@ -10162,88 +10164,86 @@ l0800_89B1:
 	return;
 }
 
-byte fn0800_8B0D(byte al, selector ds, word16 wArg02, word16 wArg04, word16 wArg06, ptr16 & dsOut)
+byte fn0800_8B0D(byte al, word16 bp, selector ds, word16 wArg02, word16 wArg04, word16 wArg06, ptr16 & dsOut)
 {
 	*dsOut = ds;
+	word16 sp_121 = fp - 0x04;
 	word16 si_11 = wArg06;
 	if (wArg06 == 0x00)
 	{
 		while (Mem0[ds:0x224E:word16] != 0x00)
 		{
-			Mem139[ds:0x224E:word16] = Mem0[ds:0x224E:word16] - 0x01;
-			word16 sp_143;
-			word16 bp_144;
-			selector ss_145;
-			word16 si_146;
-			byte SZO_147;
-			byte C_148;
-			byte Z_149;
-			byte SCZO_150;
-			word16 cx_153;
-			word16 bx_154;
-			byte dl_156;
-			SEQ(cs, SEQ(ds, 20118)[Mem139[ds:0x224E:word16] * 0x02])();
+			Mem136[ds:0x224E:word16] = Mem0[ds:0x224E:word16] - 0x01;
+			word16 sp_140;
+			word16 bp_141;
+			selector ss_142;
+			word16 si_143;
+			byte SZO_144;
+			byte C_145;
+			byte Z_146;
+			byte SCZO_147;
+			word16 cx_150;
+			word16 bx_151;
+			byte dl_153;
+			SEQ(cs, SEQ(ds, 20118)[Mem136[ds:0x224E:word16] * 0x02])();
 		}
 		fn0800_0150(al);
-		word16 sp_124;
-		word16 bp_125;
-		selector ss_126;
-		byte SZO_128;
-		byte C_129;
-		byte Z_130;
-		byte SCZO_131;
-		word16 cx_134;
-		word16 bx_135;
-		byte al_136;
-		byte dl_137;
+		word16 bp_122;
+		byte SZO_125;
+		byte C_126;
+		byte Z_127;
+		byte SCZO_128;
+		word16 cx_131;
+		word16 bx_132;
+		byte al_133;
+		byte dl_134;
 		SEQ(cs, Mem0[ds:0x2352:word16])();
 	}
-	byte dl_107;
-	byte al_106 = fn0800_01B9(ds, out dl_107);
+	byte dl_104;
+	byte al_103 = fn0800_01B9(ds, out dl_104);
 	fn0800_0163();
 	if (wArg04 == 0x00)
 	{
 		if (si_11 == 0x00)
 		{
-			word16 sp_80;
-			word16 bp_81;
-			selector ss_82;
-			word16 si_83;
-			byte SZO_84;
-			byte C_85;
-			byte Z_86;
-			byte SCZO_87;
-			selector ds_88;
-			selector cs_89;
-			word16 cx_90;
-			word16 bx_91;
-			byte al_92;
-			byte dl_93;
+			word16 sp_77;
+			word16 bp_78;
+			selector ss_79;
+			word16 si_80;
+			byte SZO_81;
+			byte C_82;
+			byte Z_83;
+			byte SCZO_84;
+			selector ds_85;
+			selector cs_86;
+			word16 cx_87;
+			word16 bx_88;
+			byte al_89;
+			byte dl_90;
 			SEQ(cs, Mem0[ds:9044:word16])();
-			word16 sp_94;
-			word16 bp_95;
-			selector ss_96;
-			word16 si_97;
-			byte SZO_98;
-			byte C_99;
-			byte Z_100;
-			byte SCZO_101;
-			selector ds_102;
-			selector cs_103;
-			word16 cx_104;
-			word16 bx_105;
-			SEQ(cs_89, Mem0[ds_88:0x2356:word16])();
+			word16 bp_92;
+			word16 si_94;
+			byte SZO_95;
+			byte C_96;
+			byte Z_97;
+			byte SCZO_98;
+			selector ds_99;
+			selector cs_100;
+			word16 cx_101;
+			word16 bx_102;
+			SEQ(cs_86, Mem0[ds_85:0x2356:word16])();
 		}
-		fn0800_0164(al_106, (byte) wArg02);
+		Mem73[ss:sp_121 - 0x02 + 0x00:word16] = wArg02;
+		fn0800_0164(al_103, bArg00);
 	}
-	return dl_107;
+	return dl_104;
 }
 
 byte fn0800_8B5A(selector ds, word16 wArg02, ptr16 & siOut, ptr16 & dsOut)
 {
 	*siOut = si;
 	selector ds_19;
-	return fn0800_8B0D(0x00, ds, wArg02, 0x00, 0x00, out ds_19);
+	return fn0800_8B0D(0x00, fp - 0x02, ds, wArg02, 0x00, 0x00, out ds_19);
 }
 
 void fn0800_8B95(byte al, byte dl, segptr32 ptrArg02)

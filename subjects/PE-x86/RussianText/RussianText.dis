@@ -90,7 +90,7 @@ l00401168:
 main_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:fp + 0xFFFFFFFC ebp:0x004020A4 ecx:<invalid> eax:0x00000000 -8(fp):0x004020A4 -4(fp):ebp 4(fp):argc 8(fp):argv
+// SymbolicIn: esp:<invalid> ebp:<invalid> ecx:<invalid> eax:0x00000000 -8(fp):0x004020A4 -4(fp):ebp 4(fp):argc 8(fp):argv
 
 
 
