@@ -657,8 +657,10 @@ namespace Reko.Analysis
         /// <returns></returns>
         public AddSubCandidate FindUsingInstruction(Identifier cy, AddSubCandidate loInstr)
         {
-            foreach (var use in ssa.Identifiers[cy].Uses)
+            var queue = new Queue<Statement>(ssa.Identifiers[cy].Uses);
+            while (queue.Count > 0)
             {
+                var use = queue.Dequeue();
                 var asc = MatchAdcSbc(use);
                 if (asc != null)
                 {
@@ -671,6 +673,11 @@ namespace Reko.Analysis
                 var ass = use.Instruction as Assignment;
                 if (ass == null)
                     continue;
+                if (ass.Src is Slice)
+                {
+                    queue.EnqueueRange(ssa.Identifiers[ass.Dst].Uses);
+                    continue;
+                }
                 if (IsCarryFlag(ass.Dst))
                     return null;
             }

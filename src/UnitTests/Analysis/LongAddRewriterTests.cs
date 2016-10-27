@@ -159,9 +159,11 @@ namespace Reko.UnitTests.Analysis
                 m.Assign(dx, m.IAdd(m.IAdd(dx, bx), CF));
                 m.Return();
             });
+            m.Procedure.Dump(true);
             var cm = rw.FindConditionOf(block.Statements, 0, GetId("ax_3"));
+            //Assert.AreEqual("ax_3,0,SCZ_4,SCZ_4 = cond(ax_3),SCZ_4", string.Format("{0},{1},{2},{3}", cm.src, cm.StatementIndex, cm.Statement, cm.FlagGroup));
             var asc = rw.FindUsingInstruction(cm.FlagGroup, new AddSubCandidate { Left=ax, Right=cx });
-            Assert.AreEqual("dx_7 = dx + bx + SCZ_4", asc.Statement.ToString());
+            Assert.AreEqual("dx_8 = dx + bx + C_7", asc.Statement.ToString());
         }
 
         [Test]
@@ -313,13 +315,15 @@ namespace Reko.UnitTests.Analysis
 
             var sExp = @"l1:
 	SCZ_2 = cond(cx - 0x0030)
-	C_3 = SLICE(SCZ_2, bool, 2)
+	C_3 = SLICE(SCZ_2, bool, 2) (alias)
 	ax_4 = 0x0000 + C_3
-	SCZ_5 = cond(ax_3)
-	SCZ_5 = cond(cx - 0x003A)
-	C_6 = !SCZ_5
-	ax_7 = ax_3 + ax_3 + C_6
-	SCZ_8 = cond(ax_7)
+	SCZ_5 = cond(ax_4)
+	SCZ_6 = cond(cx - 0x003A)
+	C_7 = SLICE(SCZ_6, bool, 2) (alias)
+	C_8 = !C_7
+	ax_9 = ax_4 + ax_4 + C_8
+	SCZ_10 = cond(ax_9)
+	C_11 = SLICE(SCZ_10, bool, 2) (alias)
 	return
 ";
             var sb = new StringWriter();
