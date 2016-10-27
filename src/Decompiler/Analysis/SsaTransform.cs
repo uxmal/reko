@@ -387,6 +387,16 @@ namespace Reko.Analysis
                                 NewDef(d, ci.Callee, false)));
                     }
                 }
+                //$REVIEW: this is very x86/x87 specific; find a way to generalize
+                // this to any sort of stack-based discipline.
+                for (int i = 0; i < callee.Signature.FpuStackDelta; ++i)
+                {
+                    var fpuArg = ssa.Procedure.Frame.EnsureFpuStackVariable(
+                        ci.CallSite.FpuStackDepthBefore - (i + 1),
+                        PrimitiveType.Real64);
+                    ci.Definitions.Add(
+                        new CallBinding(fpuArg.Storage, fpuArg));
+                }
             }
         }
 
