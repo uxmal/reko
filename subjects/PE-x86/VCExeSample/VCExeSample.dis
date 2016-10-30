@@ -309,7 +309,6 @@ loop_test9_entry:
 // LocalsOut: fp(32) Stack +0004(32)
 
 l00401230:
-	word32 esp_11 = fp - 0x00000010
 	word32 dwLoc08_12 = 0x00000000
 // DataOut: esp
 // DataOut (flags): 
@@ -317,10 +316,7 @@ l00401230:
 // LocalsOut: fp(32) Local -0008(32) Stack +0004(32)
 
 l00401248:
-	word32 esp_16 = esp_11 - 0x00000008
-	Mem18[esp_16:real64] = (real64) rArg04
-	Mem21[esp_16 - 0x00000004:word32] = dwLoc08_12
-	Mem21[Mem21[Mem21[0x0040301C:word32]:word32] + 0x00000004:word32](Mem21[0x0040301C:word32], Mem58[esp_16 - 0x00000004:int32], Mem59[esp_16:real64])
+	Mem21[Mem21[Mem21[0x0040301C:word32]:word32] + 0x00000004:word32](Mem21[0x0040301C:word32], dwLoc08_12, (real64) rArg04)
 	branch rArg0 >= (real64) dwLoc08_12 l00401294
 // DataOut: esp
 // DataOut (flags): 
@@ -340,9 +336,7 @@ loop_test9_exit:
 
 l00401278:
 	rArg0 = (real64) rArg04
-	Mem39[esp_16:real64] = rArg0
-	Mem39[Mem39[Mem39[0x0040301C:word32]:word32]:word32](Mem39[0x0040301C:word32], Mem60[esp_16:real64])
-	esp_11 = esp_16 + 0x00000008
+	Mem39[Mem39[Mem39[0x0040301C:word32]:word32]:word32](Mem39[0x0040301C:word32], rArg0)
 // DataOut: esp
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> ebp:fp - 0x00000004 ecx:<invalid> edx:<invalid> eax:<invalid> -28(fp):0x00000000 -24(fp):rLoc2 -16(fp):rLoc1 -8(fp):<invalid> -4(fp):ebp
