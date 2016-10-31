@@ -67,20 +67,14 @@ void nested_if_blocks_test8(real64 rArg04, real64 rArg0)
 
 void loop_test9(real32 rArg04, real64 rArg0)
 {
-	ptr32 esp_11 = fp - 0x10;
 	word32 dwLoc08_12 = 0x00;
 	while (true)
 	{
-		real64 * esp_16 = esp_11 - 0x08;
-		*esp_16 = (real64) rArg04;
-		*(esp_16 - 0x04) = dwLoc08_12;
-		globals->gbl_thiscall->vtbl->modify_double(globals->gbl_thiscall, *(esp_16 - 0x04), *esp_16);
+		globals->gbl_thiscall->vtbl->modify_double(globals->gbl_thiscall, dwLoc08_12, (real64) rArg04);
 		if (rArg0 >= (real64) dwLoc08_12)
 			break;
 		rArg0 = (real64) rArg04;
-		*esp_16 = rArg0;
-		globals->gbl_thiscall->vtbl->set_double(globals->gbl_thiscall, *esp_16);
-		esp_11 = esp_16 + 0x01;
+		globals->gbl_thiscall->vtbl->set_double(globals->gbl_thiscall, rArg0);
 		dwLoc08_12 = dwLoc08_12 + 0x01;
 	}
 	return;

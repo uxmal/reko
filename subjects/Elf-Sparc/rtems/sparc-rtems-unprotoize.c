@@ -5210,30 +5210,29 @@ void mkstemps(word32 o0, word32 o1)
 			fn00027E90();
 			fn00027E9C();
 			word32 o1_97 = Mem0[fp + -0x0014:word32];
-			word32 o7_100 = Mem0[fp + -0x0018:word32];
 			word32 o1_103 = o1_97 >> 0x1F << 0x10;
+			word32 o7_100 = Mem0[fp + -0x0018:word32];
 			Mem124[0x0002B400:word64] = Mem0[0x0002B400:word64] + (((o1_97 >>u 0x10 | o1_103) ^ o7_100 >> 0x1F) ^ fp + ~0x17 >> 0x1F) + (o1_103 + ((o1_97 << 0x10 ^ o7_100) ^ fp + ~0x17) <u 0x00);
 			word32 l3_127 = 0x00;
-			word32 l1_104 = o7_100;
 			while (true)
 			{
 				fn00027EA8();
-				Mem135[i1_73 + 0x00:byte] = (byte) (word32) Mem124[l1_104 + 97080:byte];
+				Mem135[i1_73 + 0x00:byte] = (byte) (word32) Mem124[o7_100 + 97080:byte];
 				fn00027EB4();
 				fn00027EA8();
-				Mem145[i1_73 + 0x01:byte] = (byte) (word32) Mem135[l1_104 + 97080:byte];
+				Mem145[i1_73 + 0x01:byte] = (byte) (word32) Mem135[o7_100 + 97080:byte];
 				fn00027EB4();
 				fn00027EA8();
-				Mem155[i1_73 + 0x02:byte] = (byte) (word32) Mem145[l1_104 + 97080:byte];
+				Mem155[i1_73 + 0x02:byte] = (byte) (word32) Mem145[o7_100 + 97080:byte];
 				fn00027EB4();
 				fn00027EA8();
-				Mem165[i1_73 + 0x03:byte] = (byte) (word32) Mem155[l1_104 + 97080:byte];
+				Mem165[i1_73 + 0x03:byte] = (byte) (word32) Mem155[o7_100 + 97080:byte];
 				fn00027EB4();
 				fn00027EA8();
-				Mem175[i1_73 + 0x04:byte] = (byte) (word32) Mem165[l1_104 + 97080:byte];
+				Mem175[i1_73 + 0x04:byte] = (byte) (word32) Mem165[o7_100 + 97080:byte];
 				fn00027EB4();
 				fn00027EA8();
-				Mem183[i1_73 + 0x05:byte] = (byte) (word32) Mem175[l1_104 + 97080:byte];
+				Mem183[i1_73 + 0x05:byte] = (byte) (word32) Mem175[o7_100 + 97080:byte];
 				fn00027D88();
 				if (o0 >= 0x00)
 					break;

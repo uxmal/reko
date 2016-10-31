@@ -13727,33 +13727,32 @@ l00016C94:
 	fn00027E90()
 	fn00027E9C()
 	word32 o1_97 = Mem0[fp + -20:word32]
-	word32 o7_100 = Mem0[fp + -24:word32]
 	word32 o1_103 = o1_97 >> 0x0000001F << 0x00000010
+	word32 o7_100 = Mem0[fp + -24:word32]
 	Mem124[0x0002B400:word64] = Mem0[0x0002B400:word64] + (((o1_97 >>u 0x00000010 | o1_103) ^ o7_100 >> 0x0000001F) ^ fp + 0xFFFFFFE8 >> 0x0000001F) + (o1_103 + ((o1_97 << 0x00000010 ^ o7_100) ^ fp + 0xFFFFFFE8) <u 0x00000000)
 	word32 l3_127 = 0x00000000
-	word32 l1_104 = o7_100
 // DataOut: i0 i1 l1 l3 l4 l5
 // DataOut (flags): 
 // SymbolicIn: g0:o0 o1:0x00000000
 
 l00016D0C:
 	fn00027EA8()
-	Mem135[i1_73:byte] = (byte) (word32) Mem124[l1_104 + 0x00017B38:byte]
+	Mem135[i1_73:byte] = (byte) (word32) Mem124[o7_100 + 0x00017B38:byte]
 	fn00027EB4()
 	fn00027EA8()
-	Mem145[i1_73 + 1:byte] = (byte) (word32) Mem135[l1_104 + 0x00017B38:byte]
+	Mem145[i1_73 + 1:byte] = (byte) (word32) Mem135[o7_100 + 0x00017B38:byte]
 	fn00027EB4()
 	fn00027EA8()
-	Mem155[i1_73 + 2:byte] = (byte) (word32) Mem145[l1_104 + 0x00017B38:byte]
+	Mem155[i1_73 + 2:byte] = (byte) (word32) Mem145[o7_100 + 0x00017B38:byte]
 	fn00027EB4()
 	fn00027EA8()
-	Mem165[i1_73 + 3:byte] = (byte) (word32) Mem155[l1_104 + 0x00017B38:byte]
+	Mem165[i1_73 + 3:byte] = (byte) (word32) Mem155[o7_100 + 0x00017B38:byte]
 	fn00027EB4()
 	fn00027EA8()
-	Mem175[i1_73 + 4:byte] = (byte) (word32) Mem165[l1_104 + 0x00017B38:byte]
+	Mem175[i1_73 + 4:byte] = (byte) (word32) Mem165[o7_100 + 0x00017B38:byte]
 	fn00027EB4()
 	fn00027EA8()
-	Mem183[i1_73 + 5:byte] = (byte) (word32) Mem175[l1_104 + 0x00017B38:byte]
+	Mem183[i1_73 + 5:byte] = (byte) (word32) Mem175[o7_100 + 0x00017B38:byte]
 	fn00027D88()
 	branch o0 >= 0x00000000 l00016C94_ds_t
 // DataOut: i0 i1 l1 l3 l4 l5 o0 o3

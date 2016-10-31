@@ -535,12 +535,18 @@ namespace Reko.Evaluation
             var oldChanged = Changed;
             var args = pc.Arguments
                 .Select(a => a.Accept(this))
+                .Where(a =>
+                {
+                    var arg = SimplifyPhiArg(a);
+                    ctx.RemoveExpressionUse(arg);
+                    return ctx.GetValue(arg as Identifier) != pc;
+                })
                 .ToArray();
             Changed = oldChanged;
 
-            args.ToList().ForEach(a => ctx.RemoveExpressionUse(a));
-            Expression e = args[0];
-            if (args.All(a => new ExpressionValueComparer().Equals(a, e)))
+            var cmp = new ExpressionValueComparer();
+            var e = args.FirstOrDefault();
+            if (e != null && args.All(a => cmp.Equals(a, e)))
             {
                 Changed = true;
                 ctx.UseExpression(e);
@@ -551,6 +557,37 @@ namespace Reko.Evaluation
                 ctx.UseExpression(pc);
                 return pc;
             }
+        }
+
+        /// <summary>
+        /// VisitBinaryExpression method could not simplify following statements:
+        ///    y = x - const
+        ///    a = y + const
+        ///    x = phi(a, b)
+        /// to
+        ///    y = x - const
+        ///    a = x
+        ///    x = phi(a, b)
+        /// IdBinIdc rule class processes y as 'used in phi' and prevents propagation.
+        /// This method could be used to do such simplification (y + const ==> x)
+        /// </summary
+        private Expression SimplifyPhiArg(Expression arg)
+        {
+            BinaryExpression bin, binLeft;
+            Identifier idLeft;
+            if (
+                !arg.As(out bin) || !bin.Left.As(out idLeft) ||
+                !ctx.GetValue(idLeft).As(out binLeft)
+            )
+                return arg;
+            ctx.RemoveIdentifierUse(idLeft);
+            ctx.UseExpression(binLeft);
+            bin = new BinaryExpression(
+                bin.Operator,
+                bin.DataType,
+                binLeft,
+                bin.Right);
+            return bin.Accept(this);
         }
 
         public virtual Expression VisitPointerAddition(PointerAddition pa)
