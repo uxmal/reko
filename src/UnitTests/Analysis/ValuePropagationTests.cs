@@ -472,7 +472,10 @@ namespace Reko.UnitTests.Analysis
             Assert.AreEqual("r3 = 0x4711", instr.ToString());
         }
 
-        [Test(Description = "(x = phi(<exp>, <exp>, x, x)) ==> (x = <exp>)")]
+        [Test(Description =
+            "if x = phi(a_1, a_2, ... a_n) and all phi arguments after " +
+            "value propagation are equal to <exp> or x where <exp> is some  " +
+            "expression then replace phi assignment with x = <exp>)")]
         public void VpPhiLoops()
         {
             var m = new ProcedureBuilder();

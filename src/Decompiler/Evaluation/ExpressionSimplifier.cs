@@ -559,6 +559,18 @@ namespace Reko.Evaluation
             }
         }
 
+        /// <summary>
+        /// VisitBinaryExpression method could not simplify following statements:
+        ///    y = x - const
+        ///    a = y + const
+        ///    x = phi(a, b)
+        /// to
+        ///    y = x - const
+        ///    a = x
+        ///    x = phi(a, b)
+        /// IdBinIdc rule class processes y as 'used in phi' and prevents propagation.
+        /// This method could be used to do such simplification (y + const ==> x)
+        /// </summary
         private Expression SimplifyPhiArg(Expression arg)
         {
             BinaryExpression bin, binLeft;
