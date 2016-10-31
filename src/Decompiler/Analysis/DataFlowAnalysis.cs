@@ -172,6 +172,7 @@ namespace Reko.Analysis
                 RemovePreservedUseInstructions(ssa);
                 DeadCode.Eliminate(ssa);
                 uid.Compute(ssa);
+                RemoveDeadArgumentsFromCalls(ssa.Procedure, ssts);
             }
         }
 
@@ -196,6 +197,39 @@ namespace Reko.Analysis
             foreach (var stm in deadStms)
             {
                 ssa.DeleteStatement(stm);
+            }
+        }
+
+        /// <summary>
+        /// After running the Used register analysis, the ProcedureFlow of 
+        /// the procedure <paramref name="proc"/> may have been modified to
+        /// exclude some parameters. Functions in the current SCC need to be
+        /// adjusted to no longer refer to those parameters.
+        /// </summary>
+        /// <param name="proc"></param>
+        private void RemoveDeadArgumentsFromCalls(
+            Procedure proc, 
+            IEnumerable<SsaTransform> ssts)
+        {
+            var mpProcSsa = ssts.ToDictionary(d => d.SsaState.Procedure, d => d.SsaState);
+            var flow = this.flow[proc];
+            foreach (Statement stm in program.CallGraph.CallerStatements(proc))
+            {
+                SsaState ssa;
+                if (!mpProcSsa.TryGetValue(stm.Block.Procedure, out ssa))
+                    continue;
+
+                // We have a call statement that calls `proc`. Make sure 
+                // that only arguments present in the procedure flow are present.
+                var call = (CallInstruction)stm.Instruction;
+                var deadUses =
+                    from u in call.Uses
+                    where !flow.BitsUsed.ContainsKey(u.Storage)
+                    select u;
+                foreach (var du in deadUses.ToList())
+                {
+                    call.Uses.Remove(du);
+                }
             }
         }
 

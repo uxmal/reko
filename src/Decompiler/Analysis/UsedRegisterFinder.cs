@@ -53,6 +53,7 @@ namespace Reko.Analysis
         private SsaState ssa;
         private SsaTransform[] ssts;
         private Dictionary<SsaIdentifier, int> uses;
+        private Dictionary<PhiAssignment, int> visited;
 
         public UsedRegisterFinder(
             IProcessorArchitecture arch,
@@ -83,6 +84,7 @@ namespace Reko.Analysis
             this.ssa = ssaState;
             foreach (var stm in ssa.Procedure.EntryBlock.Statements)
             {
+                this.visited = new Dictionary<PhiAssignment, int>();
                 DefInstruction def;
                 if (!stm.Instruction.As(out def))
                     continue;
@@ -95,22 +97,36 @@ namespace Reko.Analysis
                      sid.Identifier.Storage is FpuStackStorage))
                 {
                     int n = Classify(sid);
-                    procFlow.BitsUsed[sid.Identifier.Storage] = n;
+                    if (n > 0)
+                    {
+                        procFlow.BitsUsed[sid.Identifier.Storage] = n;
+                    }
                 }
             }
             return procFlow;
         }
 
+        /// <summary>
+        /// Find all places where the SSA identifer <paramref name="sid"/> is used,
+        /// discounting any uses in the exit block; uses in the exit block 
+        /// model calling procedures uses of return values.
+        /// </summary>
+        /// <param name="sid"></param>
+        /// <returns></returns>
         private int Classify(SsaIdentifier sid)
         {
             idCur = sid.Identifier;
-            return sid.Uses.Aggregate(0, (w, stm) => Math.Max(w, stm.Instruction.Accept(this)));
+            return sid.Uses
+                .Where(u => u.Block != ssa.Procedure.ExitBlock)
+                .Aggregate(0, (w, stm) => Math.Max(w, stm.Instruction.Accept(this)));
         }
 
         public int VisitAssignment(Assignment ass)
         {
             if (ass.Src == idCur) 
             {
+                // A simple assignment a = b is a copy, and so we must chase
+                // the uses of a.
                 var idOld = idCur;
                 idCur = ass.Dst;
                 var n = Classify(ssa.Identifiers[ass.Dst]);
@@ -149,9 +165,15 @@ namespace Reko.Analysis
 
         public int VisitPhiAssignment(PhiAssignment phi)
         {
-            //$BUG: this is not correct.... we need to walk the phi
-            // graph.
-            return idCur.DataType.Size;
+            // One of the phi arguments was used, but that's a trivial copy. 
+            // Classify the dst of the phi statement
+            int value;
+            if (visited.TryGetValue(phi, out value))
+                return value;       // break cycles of phis.
+            visited[phi] = 0;
+            int n = Classify(ssa.Identifiers[phi.Dst]);
+            visited[phi] = n;
+            return n;
         }
 
         public int VisitReturnInstruction(ReturnInstruction ret)

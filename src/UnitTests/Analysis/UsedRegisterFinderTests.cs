@@ -107,7 +107,7 @@ namespace Reko.UnitTests.Analysis
             var flow = urf.Compute(sst.SsaState);
             var sw = new StringWriter();
             sw.Write("Used: ");
-            sw.WriteLine(string.Join(",", flow.BitsUsed.OrderBy(p => p.Key.ToString())));
+            sw.Write(string.Join(",", flow.BitsUsed.OrderBy(p => p.Key.ToString())));
             var sActual = sw.ToString();
             if (sActual != sExp)
             {
@@ -121,9 +121,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void UrfRegisterArg()
         {
-            var sExp =
-@"Used: [r1, 32]
-";
+            var sExp = "Used: [r1, 32]";
             RunTest(sExp, m =>
             {
                 var r1 = m.Register("r1");
@@ -135,9 +133,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void UrfStackArg()
         {
-            var sExp = 
-@"Used: [Stack +0004, 32]
-";
+            var sExp = "Used: [Stack +0004, 32]";
             RunTest(sExp, m =>
             {
                 var fp = m.Frame.FramePointer;
@@ -151,9 +147,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void UrfCast()
         {
-            var sExp =
-@"Used: [r1, 16]
-";
+            var sExp = @"Used: [r1, 16]";
             RunTest(sExp, m =>
             {
                 var r1 = m.Reg32("r1", 1);
@@ -168,9 +162,7 @@ namespace Reko.UnitTests.Analysis
         [Test(Description = "Identifiers are not considered used if they only are copied.")]
         public void UrfCopy()
         {
-            var sExp =
-@"Used: [r1, 0]
-";
+            var sExp ="Used: [r1, 0]";
             RunTest(sExp, m =>
             {
                 var r1 = m.Reg32("r1", 1);
@@ -183,8 +175,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void UrfBranch()
         {
-            var sExp = @"Used: [r1, 32]
-";
+            var sExp = @"Used: [r1, 32]";
             RunTest(sExp, m =>
             {
                 var r1 = m.Reg32("r1", 1);
@@ -202,8 +193,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void UrfSequence()
         {
-            var sExp = @"Used: [r1, 32],[r2, 32]
-";
+            var sExp = "Used: [r1, 32],[r2, 32]";
 
             RunTest(sExp, m =>
             {
@@ -212,6 +202,24 @@ namespace Reko.UnitTests.Analysis
                 var r2_r1 = m.Frame.EnsureSequence(r2.Storage, r1.Storage, PrimitiveType.Word64);
 
                 m.Store(m.Word32(0x2000), m.Shr(r2_r1, 2));
+                m.Return();
+            });
+        }
+
+        [Test]
+        public void UrfPhiBranch()
+        {
+            var sExp = "Used: [r2, 0]";
+
+            RunTest(sExp, m =>
+            {
+                var r1 = m.Reg32("r1", 1);
+                var r2 = m.Reg32("r2", 2);
+                m.Assign(r1, 0);
+                m.BranchIf(m.Eq0(m.LoadDw(m.Word32(0x00123400))), "skip");
+                m.Assign(r2, m.LoadDw(m.Word32(0x0123408)));
+                m.Assign(r1, m.IMul(r2, 9));
+                m.Label("skip");
                 m.Return();
             });
         }
