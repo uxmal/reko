@@ -156,7 +156,6 @@ namespace Reko.Arch.M68k
         fssub,
         fdsub,
 
-
         jmp,
         jsr,
         lea,

@@ -428,10 +428,22 @@ namespace Reko.Core
     /// </remarks>
     public class DefaultPlatform : Platform
     {
-        public DefaultPlatform(IServiceProvider services, IProcessorArchitecture arch) : base(services, arch, "default")
+        public DefaultPlatform(
+            IServiceProvider services,
+            IProcessorArchitecture arch)
+            : base(services, arch, "default")
         {
             this.TypeLibraries = new List<TypeLibrary>();
             this.Description = "(Unknown operating environment)";
+        }
+
+        public DefaultPlatform(
+            IServiceProvider services,
+            IProcessorArchitecture arch,
+            string description) : base(services, arch, "default")
+        {
+            this.TypeLibraries = new List<TypeLibrary>();
+            this.Description = description;
         }
 
         public List<TypeLibrary> TypeLibraries { get; private set; }

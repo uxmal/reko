@@ -32,6 +32,8 @@ namespace Reko.ImageLoaders.VmsExe
     /// <summary>
     /// Documentation for the VAX VMS .EXE format is hard to obtain and understand(!)
     /// </summary>
+    // https://mail.encompasserve.org/anon/htnotes/note?f1=DEC_SOFTWARE&f2=444.6
+    // http://fossies.org/linux/freevms/sys/src/sysimgact.c
     public class VmsExeLoader : ImageLoader
     {
         public VmsExeLoader(IServiceProvider services, string filename, byte[] imgRaw) 
@@ -47,7 +49,7 @@ namespace Reko.ImageLoaders.VmsExe
             var hdr = LoadHeader(rdr);
             var isds = LoadImageSectionDescriptors(hdr.HdrSize);
 
-            var addr = Address.Ptr32(0x1000);
+            var addr = Address.Ptr32(0x1000);   //$REVIEW: what should this really be?
             var arch = (VaxArchitecture)Services.RequireService<IConfigurationService>()
                 .GetArchitecture("vax");
             return new Program(
@@ -58,7 +60,7 @@ namespace Reko.ImageLoaders.VmsExe
                         new MemoryArea(addr, RawImage),
                         AccessMode.ReadWriteExecute)),
                 arch,
-                new DefaultPlatform(Services, arch));
+                new DefaultPlatform(Services, arch, "VAX VMS"));   //$TODO: VaxVms platform
         }
 
         private Header LoadHeader(LeImageReader rdr)

@@ -215,6 +215,23 @@ namespace Reko.Arch.Xtensa
             throw new NotImplementedException();
         }
 
+        public override SortedList<string, int> GetOpcodeNames()
+        {
+            return Enum.GetValues(typeof(Opcodes))
+            .Cast<Opcodes>()
+            .ToSortedList(
+                v => Enum.GetName(typeof(Opcodes), v).Replace('_','.'),
+                v => (int)v);
+        }
+
+        public override int? GetOpcodeNumber(string name)
+        {
+            Opcodes result;
+            if (!Enum.TryParse(name.Replace('.', '_'), true, out result))
+                return null;
+            return (int)result;
+        }
+
         public override RegisterStorage GetRegister(string name)
         {
             throw new NotImplementedException();

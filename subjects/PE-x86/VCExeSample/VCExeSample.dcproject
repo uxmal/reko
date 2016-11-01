@@ -33,7 +33,7 @@
       </procedure>
       <procedure name="Win32CrtStartup">
         <characteristics />
-        <address>004014D3</address>
+        <address>00401543</address>
         <decompile>false</decompile>
         <CSignature>DWORD Win32CrtStartup()</CSignature>
       </procedure>

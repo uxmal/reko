@@ -54,6 +54,9 @@ namespace Reko.Analysis
             {
                 return ass.Src;
             }
+            var phiAss = sid.DefStatement.Instruction as PhiAssignment;
+            if (phiAss != null && phiAss.Dst == sid.Identifier)
+                return phiAss.Src;
             return null;
         }
 

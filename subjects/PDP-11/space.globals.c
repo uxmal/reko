@@ -4,7 +4,7 @@
 
 #include "space.h"
 
-Eq_1009 g_t000A = 
+Eq_1010 g_t000A = 
 	{
 		null,
 		null,
@@ -355,7 +355,7 @@ word16 g_w2B56 = 0x15E6;
 word16 g_w2B74 = 0x15C5;
 word16 g_w2B80 = 0x15C5;
 word16 g_w2B8E = 0x0087;
-Eq_1691 g_a487E[] = 
+Eq_1695 g_a487E[] = 
 	{
 	};
 word16 g_w4956 = 0x0001;

@@ -254,7 +254,7 @@ namespace Reko.Arch.Vax
  /* CF */ new OpRec(Opcode.casel,  -1),
               
  /* D0 */ new OpRec(Opcode.movl, "rl,wl"), 
- /* D1 */ new OpRec(Opcode.cmpl, "rl,wl"), 
+ /* D1 */ new OpRec(Opcode.cmpl, "rl,rl"), 
  /* D2 */ new OpRec(Opcode.mcoml, "rl,wl"),
  /* D3 */ new OpRec(Opcode.bitl, "rl,rl"),
  /* D4 */ new OpRec(Opcode.clrl, "wl"), //  clrf,  -1), 

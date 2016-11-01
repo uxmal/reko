@@ -365,7 +365,21 @@ namespace Reko.Analysis
                     return ci;
                 }
             }
-            
+            // Hell node: will want to assume that registers which aren't
+            // guaranteed to be preserved by the ABI are trashed.
+            foreach (var r in ctx.RegisterState.Keys.ToList())
+            {
+                foreach (var reg in program.Platform.CreateTrashedRegisters())
+                {
+                    //$PERF: not happy about the O(n^2) algorithm,
+                    // but this is better in the analysis-development 
+                    // branch.
+                    if (r.Domain == reg.Domain)
+                    {
+                        ctx.RegisterState[r] = Constant.Invalid;
+                    }
+                }
+            }
             //$TODO: get trash information from signature?
             return ci;
         }

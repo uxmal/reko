@@ -229,6 +229,21 @@ namespace Reko.Arch.PowerPC
             return new PowerPcState(this);
         }
 
+        public override SortedList<string, int> GetOpcodeNames()
+        {
+            return Enum.GetValues(typeof(Opcode))
+                .Cast<Opcode>()
+                .ToSortedList(v => Enum.GetName(typeof(Opcode), v), v => (int)v);
+        }
+
+        public override int? GetOpcodeNumber(string name)
+        {
+            Opcode result;
+            if (!Enum.TryParse(name, true, out result))
+                return null;
+            return (int)result;
+        }
+
         public override RegisterStorage GetRegister(int i)
         {
             if (0 <= i && i < regs.Count)

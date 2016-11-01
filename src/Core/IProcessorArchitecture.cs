@@ -25,6 +25,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 namespace Reko.Core
 {
@@ -119,6 +120,13 @@ namespace Reko.Core
         IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm);
 
         IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg);
+
+        /// <summary>
+        /// Returns a list of all the available opcodes.
+        /// </summary>
+        /// <returns></returns>
+        SortedList<string, int> GetOpcodeNames();           // Returns all the processor opcode names and their internal Reko numbers.
+        int? GetOpcodeNumber(string name);                  // Returns an internal Reko opcode for an instruction, or null if none is available.
         RegisterStorage GetRegister(int i);                 // Returns register corresponding to number i.
         RegisterStorage GetRegister(string name);           // Returns register whose name is 'name'
         RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width);
@@ -209,25 +217,6 @@ namespace Reko.Core
         public abstract RegisterStorage GetRegister(int i);
         public abstract RegisterStorage GetRegister(string name);
         public abstract RegisterStorage[] GetRegisters();
-
-        /// <summary>
-        /// Create a stack access to a variable offset by <paramref name="cbOffsets"/>
-        /// from the stack pointer
-        /// </summary>
-        /// <remarks>
-        /// This method is the same for all _sane_ architectures. The crazy madness
-        /// of x86 segmented memory accesses is dealt with in that processor's 
-        /// implementation of this method.
-        /// </remarks>
-        /// <param name="bindRegister"></param>
-        /// <param name="cbOffset"></param>
-        /// <param name="dataType"></param>
-        /// <returns></returns>
-        public virtual Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType)
-        {
-            var sp = binder.EnsureRegister(StackRegister);
-            return MemoryAccess.Create(sp, cbOffset, dataType);
-        }
 
         /// <summary>
         /// Get the improper subregister of <paramref name="reg"/> that starts

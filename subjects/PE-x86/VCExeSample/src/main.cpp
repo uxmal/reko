@@ -85,3 +85,9 @@ extern "C" __declspec(dllexport) void nested_if_blocks_test8(double d)
             gbl_thiscall->set_double(d);
     test6(gbl_c, 6, 7);
 }
+
+extern "C" __declspec(dllexport) void loop_test9(float f)
+{
+    for(int i = 0; i < gbl_thiscall->modify_double(i, f); i++)
+        gbl_thiscall->set_double(f);
+}
