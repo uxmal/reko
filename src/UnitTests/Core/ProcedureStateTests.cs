@@ -178,10 +178,6 @@ namespace Reko.UnitTests.Core
             {
                 throw new NotImplementedException();
             }
-            //public Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
-            //{
-            //    throw new NotImplementedException();
-            //}
 
             public Address MakeAddressFromConstant(Constant c)
             {
