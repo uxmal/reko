@@ -42,7 +42,7 @@ void test5()
 	return;
 }
 
-void test6(cdecl_class * c, int32 a, int32 b)
+void test6(Eq_63 c, int32 a, int32 b)
 {
 	c->vtbl->method04(c, c->vtbl->sum(c, a, b));
 	return;
@@ -59,17 +59,24 @@ void test7(real64 rArg04)
 void nested_if_blocks_test8(real64 rArg04, real64 rArg0)
 {
 	globals->gbl_thiscall->vtbl->modify_double(globals->gbl_thiscall, ~0x00, rArg04);
-	ptr32 esp_18 = fp - 0x04;
 	if (globals->r4020F8 != rArg04 && globals->r4020F0 < rArg04)
-	{
 		globals->gbl_thiscall->vtbl->set_double(globals->gbl_thiscall, rArg04);
-		esp_18 = fp - 0x10;
+	test6(globals->gbl_c, 0x06, 0x07);
+	return;
+}
+
+void loop_test9(real32 rArg04, real64 rArg0)
+{
+	word32 dwLoc08_12 = 0x00;
+	while (true)
+	{
+		globals->gbl_thiscall->vtbl->modify_double(globals->gbl_thiscall, dwLoc08_12, (real64) rArg04);
+		if (rArg0 >= (real64) dwLoc08_12)
+			break;
+		rArg0 = (real64) rArg04;
+		globals->gbl_thiscall->vtbl->set_double(globals->gbl_thiscall, rArg0);
+		dwLoc08_12 = dwLoc08_12 + 0x01;
 	}
-	int32 * esp_37 = esp_18 - 0x04;
-	*esp_37 = 0x07;
-	*(esp_37 - 0x04) = 0x06;
-	*(esp_37 - 0x08) = (cdecl_class_ptr *) globals->gbl_c;
-	test6(*(esp_37 - 0x08), *(esp_37 - 0x04), *esp_37);
 	return;
 }
 
