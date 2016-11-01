@@ -94,6 +94,23 @@ namespace Reko.Arch.Mos6502
             throw new NotImplementedException();
         }
 
+        public override SortedList<string, int> GetOpcodeNames()
+        {
+            return Enum.GetValues(typeof(Opcode))
+                .Cast<Opcode>()
+                .ToSortedList(
+                    v => v.ToString(),
+                    v => (int)v);
+        }
+
+        public override int? GetOpcodeNumber(string name)
+        {
+            Opcode result;
+            if (!Enum.TryParse(name, true, out result))
+                return null;
+            return (int)result;
+        }
+
         public override RegisterStorage GetRegister(int i)
         {
             throw new NotImplementedException();

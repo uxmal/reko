@@ -66,52 +66,57 @@ namespace Reko.Arch.Pdp11
                 default: throw new AddressCorrelatedException(
                     instr.Address,
                     "Rewriting of PDP-11 instruction {0} not supported yet.", instr.Opcode);
-                case Opcodes.adc: RewriteAdc(instr); break;
-                case Opcodes.add: RewriteAdd(instr); break;
-                case Opcodes.addb: RewriteAdd(instr); break;
-                case Opcodes.ash: RewriteShift(instr); break;
-                case Opcodes.asl: RewriteAsl(instr); break;
-                case Opcodes.bcs: RewriteBxx(instr, ConditionCode.ULT, FlagM.CF); break;
-                case Opcodes.beq: RewriteBxx(instr, ConditionCode.EQ, FlagM.ZF); break;
-                case Opcodes.bge: RewriteBxx(instr, ConditionCode.GE, FlagM.VF|FlagM.NF); break;
-                case Opcodes.bgt: RewriteBxx(instr, ConditionCode.GT, FlagM.ZF|FlagM.NF|FlagM.VF); break;
-                case Opcodes.bhi: RewriteBxx(instr, ConditionCode.UGT, FlagM.ZF|FlagM.CF); break;
-                case Opcodes.bic: RewriteBic(instr); break;
-                case Opcodes.bis: RewriteBis(instr); break;
-                case Opcodes.bisb: RewriteBis(instr); break;
-                case Opcodes.bit: RewriteBit(instr); break;
-                case Opcodes.bitb: RewriteBit(instr); break;
-                case Opcodes.ble: RewriteBxx(instr, ConditionCode.LE, FlagM.ZF|FlagM.NF|FlagM.VF); break;
-                case Opcodes.blos: RewriteBxx(instr, ConditionCode.ULE, FlagM.ZF | FlagM.CF); break;
-                case Opcodes.blt: RewriteBxx(instr, ConditionCode.LT, FlagM.NF|FlagM.VF); break;
-                case Opcodes.bmi: RewriteBxx(instr, ConditionCode.LT, FlagM.NF); break;
-                case Opcodes.bne: RewriteBxx(instr, ConditionCode.NE, FlagM.ZF); break;
-                case Opcodes.bpl: RewriteBxx(instr, ConditionCode.GT, FlagM.NF); break;
-                case Opcodes.br: RewriteBr(instr); break;
-                case Opcodes.clr: RewriteClr(instr, emitter.Word16(0)); break;
-                case Opcodes.clrb: RewriteClr(instr, emitter.Byte(0)); break;
-                case Opcodes.cmp: RewriteCmp(instr); break;
-                case Opcodes.dec: RewriteIncDec(instr, emitter.ISub); break;
-                case Opcodes.div: RewriteDiv(instr); break;
-                case Opcodes.emt: RewriteEmt(instr); break;
-                case Opcodes.halt: RewriteHalt(); break;
-                case Opcodes.inc: RewriteIncDec(instr, emitter.IAdd); break;
-                case Opcodes.jmp: RewriteJmp(instr); break;
-                case Opcodes.jsr: RewriteJsr(instr); break;
-                case Opcodes.mov: RewriteMov(instr); break;
-                case Opcodes.movb: RewriteMov(instr); break;
-                case Opcodes.neg: RewriteNeg(instr); break;
-                case Opcodes.nop: emitter.Nop(); break;
-                case Opcodes.rts: RewriteRts(instr); break;
-                case Opcodes.sub: RewriteSub(instr); break;
-                case Opcodes.sxt: RewriteSxt(instr); break;
-                case Opcodes.trap: RewriteTrap(instr); break;
-                case Opcodes.tst: RewriteTst(instr); break;
-                case Opcodes.tstb: RewriteTst(instr); break;
-                case Opcodes.xor: RewriteXor(instr); break;
+                case Opcode.adc: RewriteAdc(instr); break;
+                case Opcode.add: RewriteAdd(instr); break;
+                case Opcode.addb: RewriteAdd(instr); break;
+                case Opcode.ash: RewriteShift(instr); break;
+                case Opcode.asl: RewriteAsl(instr); break;
+                case Opcode.bcs: RewriteBxx(instr, ConditionCode.ULT, FlagM.CF); break;
+                case Opcode.beq: RewriteBxx(instr, ConditionCode.EQ, FlagM.ZF); break;
+                case Opcode.bge: RewriteBxx(instr, ConditionCode.GE, FlagM.VF|FlagM.NF); break;
+                case Opcode.bgt: RewriteBxx(instr, ConditionCode.GT, FlagM.ZF|FlagM.NF|FlagM.VF); break;
+                case Opcode.bhi: RewriteBxx(instr, ConditionCode.UGT, FlagM.ZF|FlagM.CF); break;
+                case Opcode.bic: RewriteBic(instr); break;
+                case Opcode.bis: RewriteBis(instr); break;
+                case Opcode.bisb: RewriteBis(instr); break;
+                case Opcode.bit: RewriteBit(instr); break;
+                case Opcode.bitb: RewriteBit(instr); break;
+                case Opcode.ble: RewriteBxx(instr, ConditionCode.LE, FlagM.ZF|FlagM.NF|FlagM.VF); break;
+                case Opcode.blos: RewriteBxx(instr, ConditionCode.ULE, FlagM.ZF | FlagM.CF); break;
+                case Opcode.blt: RewriteBxx(instr, ConditionCode.LT, FlagM.NF|FlagM.VF); break;
+                case Opcode.bmi: RewriteBxx(instr, ConditionCode.LT, FlagM.NF); break;
+                case Opcode.bne: RewriteBxx(instr, ConditionCode.NE, FlagM.ZF); break;
+                case Opcode.bpl: RewriteBxx(instr, ConditionCode.GT, FlagM.NF); break;
+                case Opcode.br: RewriteBr(instr); break;
+                case Opcode.clr: RewriteClr(instr, emitter.Word16(0)); break;
+                case Opcode.clrb: RewriteClr(instr, emitter.Byte(0)); break;
+                case Opcode.cmp: RewriteCmp(instr); break;
+                case Opcode.dec: RewriteIncDec(instr, emitter.ISub); break;
+                case Opcode.div: RewriteDiv(instr); break;
+                case Opcode.emt: RewriteEmt(instr); break;
+                case Opcode.halt: RewriteHalt(); break;
+                case Opcode.inc: RewriteIncDec(instr, emitter.IAdd); break;
+                case Opcode.jmp: RewriteJmp(instr); break;
+                case Opcode.jsr: RewriteJsr(instr); break;
+                case Opcode.mov: RewriteMov(instr); break;
+                case Opcode.movb: RewriteMov(instr); break;
+                case Opcode.neg: RewriteNeg(instr); break;
+                case Opcode.nop: emitter.Nop(); break;
+                case Opcode.rts: RewriteRts(instr); break;
+                case Opcode.sub: RewriteSub(instr); break;
+                case Opcode.sxt: RewriteSxt(instr); break;
+                case Opcode.trap: RewriteTrap(instr); break;
+                case Opcode.tst: RewriteTst(instr); break;
+                case Opcode.tstb: RewriteTst(instr); break;
+                case Opcode.xor: RewriteXor(instr); break;
                 }
                 yield return rtlCluster;
             }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         private void SetFlags(Expression e, FlagM changed, FlagM zeroed, FlagM set)
@@ -142,11 +147,6 @@ namespace Reko.Arch.Pdp11
                 }
                 grfMask <<= 1;
             }
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
 
         private Expression RewriteJmpSrc(MachineOperand op)

@@ -141,6 +141,23 @@ namespace Reko.Environments.C64
             throw new NotImplementedException();
         }
 
+        public override SortedList<string, int> GetOpcodeNames()
+        {
+            return Enumerable.Range(0, C64BasicInstruction.TokenMax - C64BasicInstruction.TokenMin)
+                .ToSortedList(
+                    v => C64BasicInstruction.TokenStrs[v],
+                    v => v);
+        }
+
+        public override int? GetOpcodeNumber(string name)
+        {
+            int i = Array.IndexOf(C64BasicInstruction.TokenStrs, name);
+            if (i < 0)
+                return null;
+            else
+                return i + C64BasicInstruction.TokenMin;
+        }
+
         public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();

@@ -36,8 +36,8 @@ namespace Reko.Environments.C64
         public ushort NextAddress;
         public byte[] Line;
 
-        private const int TokenMin = 0x80;
-        private const int TokenMax = 0xCC;
+        internal const int TokenMin = 0x80;
+        internal const int TokenMax = 0xCC;
 
         public override bool IsValid { get { return true; } }
 
@@ -126,7 +126,7 @@ namespace Reko.Environments.C64
             }
         }
 
-        private static readonly string[] TokenStrs = new string[]
+        internal static readonly string[] TokenStrs = new string[]
         {
             "END",
             "FOR",

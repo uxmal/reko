@@ -202,11 +202,6 @@ namespace Reko.Core
         public RegisterStorage StackRegister { get; protected set; }
         public uint CarryFlagMask { get; protected set; }
 
-        // Implementation detail; override this if you have an enumerated type 
-        // that has all the opcodes of the architecture; otherwise you need to provide
-        // your own opcode parsing.
-        protected virtual Type OpcodeEnumType { get { throw new NotSupportedException(); } }
-
         public abstract IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader);
         public Frame CreateFrame() { return new Frame(FramePointerType); }
         public abstract ImageReader CreateImageReader(MemoryArea img, Address addr);
@@ -235,13 +230,7 @@ namespace Reko.Core
         /// Returns a map of opcode names to their internal (Reko) numbers.
         /// </summary>
         /// <returns></returns>
-        public virtual SortedList<string, int> GetOpcodeNames()
-        {
-            Type enumType = OpcodeEnumType;
-            return Enum.GetValues(enumType)
-                .Cast<object>()
-                .ToSortedList(v => Enum.GetName(enumType, v), v => (int) v);
-        }
+        public abstract SortedList<string, int> GetOpcodeNames();
 
         /// <summary>
         /// Get the improper subregister of <paramref name="reg"/> that starts

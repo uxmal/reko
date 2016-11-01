@@ -63,7 +63,7 @@ namespace Reko.Arch.Pdp11
             return instrCur;
         }
 
-        private Pdp11Instruction DecodeOperands(ushort wOpcode, Opcodes opcode, string fmt)
+        private Pdp11Instruction DecodeOperands(ushort wOpcode, Opcode opcode, string fmt)
         {
             List<MachineOperand> ops = new List<MachineOperand>(2);
             int i = 0;
@@ -102,9 +102,9 @@ namespace Reko.Arch.Pdp11
         class FormatOpRec : OpRec
         {
             private string fmt;
-            private Opcodes opcode;
+            private Opcode opcode;
 
-            public FormatOpRec(string fmt, Opcodes op)
+            public FormatOpRec(string fmt, Opcode op)
             {
                 this.fmt = fmt;
                 this.opcode = op;
@@ -137,21 +137,21 @@ namespace Reko.Arch.Pdp11
         {
             decoders = new OpRec[] {
                 null,
-                new FormatOpRec("w:e,E", Opcodes.mov),
-                new FormatOpRec("e,E", Opcodes.cmp),
-                new FormatOpRec("e,E", Opcodes.bit),
-                new FormatOpRec("e,E", Opcodes.bic),
-                new FormatOpRec("e,E", Opcodes.bis),
-                new FormatOpRec("w:e,E", Opcodes.add),
+                new FormatOpRec("w:e,E", Opcode.mov),
+                new FormatOpRec("e,E", Opcode.cmp),
+                new FormatOpRec("e,E", Opcode.bit),
+                new FormatOpRec("e,E", Opcode.bic),
+                new FormatOpRec("e,E", Opcode.bis),
+                new FormatOpRec("w:e,E", Opcode.add),
                 null,
 
                 null,
-                new FormatOpRec("b:e,E", Opcodes.movb),
-                new FormatOpRec("e,E", Opcodes.cmp),
-                new FormatOpRec("e,E", Opcodes.bit),
-                new FormatOpRec("e,E", Opcodes.bic),
-                new FormatOpRec("e,E", Opcodes.bis),
-                new FormatOpRec("w:e,E", Opcodes.sub),
+                new FormatOpRec("b:e,E", Opcode.movb),
+                new FormatOpRec("e,E", Opcode.cmp),
+                new FormatOpRec("e,E", Opcode.bit),
+                new FormatOpRec("e,E", Opcode.bic),
+                new FormatOpRec("e,E", Opcode.bis),
+                new FormatOpRec("w:e,E", Opcode.sub),
                 null,
             };
         }
@@ -174,7 +174,7 @@ namespace Reko.Arch.Pdp11
                     dataWidth = PrimitiveType.Word16;
                     return new Pdp11Instruction
                     {
-                        Opcode = Opcodes.mul,
+                        Opcode = Opcode.mul,
                         DataWidth = dataWidth,
                         op1 = DecodeOperand(opcode),
                         op2 = new RegisterOperand(arch.GetRegister((opcode >> 6) & 7)),
@@ -183,7 +183,7 @@ namespace Reko.Arch.Pdp11
                     dataWidth = PrimitiveType.Word16;
                     return new Pdp11Instruction
                     {
-                        Opcode = Opcodes.div,
+                        Opcode = Opcode.div,
                         DataWidth = dataWidth,
                         op1 = DecodeOperand(opcode),
                         op2 = new RegisterOperand(arch.GetRegister((opcode >> 6) & 7)),
@@ -192,7 +192,7 @@ namespace Reko.Arch.Pdp11
                     dataWidth = PrimitiveType.Word16;
                     return new Pdp11Instruction
                     {
-                        Opcode = Opcodes.ash,
+                        Opcode = Opcode.ash,
                         DataWidth = dataWidth,
                         op1 = DecodeOperand(opcode),
                         op2 = new RegisterOperand(arch.GetRegister((opcode >> 6) & 7)),
@@ -201,7 +201,7 @@ namespace Reko.Arch.Pdp11
                     dataWidth = PrimitiveType.Word16;
                     return new Pdp11Instruction
                     {
-                        Opcode = Opcodes.ashc,
+                        Opcode = Opcode.ashc,
                         DataWidth = dataWidth,
                         op1 = DecodeOperand(opcode),
                         op2 = new RegisterOperand(arch.GetRegister((opcode >> 6) & 7)),
@@ -210,7 +210,7 @@ namespace Reko.Arch.Pdp11
                     dataWidth = PrimitiveType.Word16;
                     return new Pdp11Instruction
                     {
-                        Opcode = Opcodes.xor,
+                        Opcode = Opcode.xor,
                         DataWidth = dataWidth,
                         op1 = DecodeOperand(opcode),
                         op2 = new RegisterOperand(arch.GetRegister((opcode >> 6) & 7)),
@@ -221,7 +221,7 @@ namespace Reko.Arch.Pdp11
                     dataWidth = PrimitiveType.Word16;
                     return new Pdp11Instruction
                     {
-                        Opcode = Opcodes.sob,
+                        Opcode = Opcode.sob,
                         DataWidth = dataWidth,
                         op1 = new RegisterOperand(arch.GetRegister((opcode >> 6) & 7)),
                         op2 = Imm6(opcode),
@@ -242,7 +242,7 @@ namespace Reko.Arch.Pdp11
 
         private Pdp11Instruction FpuArithmetic(ushort opcode)
         {
-            return new Pdp11Instruction { Opcode = Opcodes.nop };
+            return new Pdp11Instruction { Opcode = Opcode.nop };
         }
 
         private PrimitiveType DataWidthFromSizeBit(uint p)
@@ -254,58 +254,58 @@ namespace Reko.Arch.Pdp11
         {
             switch ((opcode >> 8))
             {
-            case 0x01: return BranchInstruction(opcode, Opcodes.br);
-            case 0x02: return BranchInstruction(opcode, Opcodes.bne);
-            case 0x03: return BranchInstruction(opcode, Opcodes.beq);
-            case 0x04: return BranchInstruction(opcode, Opcodes.bge);
-            case 0x05: return BranchInstruction(opcode, Opcodes.blt);
-            case 0x06: return BranchInstruction(opcode, Opcodes.bgt);
-            case 0x07: return BranchInstruction(opcode, Opcodes.ble);
-            case 0x80: return BranchInstruction(opcode, Opcodes.bpl);
-            case 0x81: return BranchInstruction(opcode, Opcodes.bmi);
-            case 0x82: return BranchInstruction(opcode, Opcodes.bhi);
-            case 0x83: return BranchInstruction(opcode, Opcodes.blos);
-            case 0x84: return BranchInstruction(opcode, Opcodes.bvc);
-            case 0x85: return BranchInstruction(opcode, Opcodes.bvs);
-            case 0x86: return BranchInstruction(opcode, Opcodes.bcc);
-            case 0x87: return BranchInstruction(opcode, Opcodes.bcs);
+            case 0x01: return BranchInstruction(opcode, Opcode.br);
+            case 0x02: return BranchInstruction(opcode, Opcode.bne);
+            case 0x03: return BranchInstruction(opcode, Opcode.beq);
+            case 0x04: return BranchInstruction(opcode, Opcode.bge);
+            case 0x05: return BranchInstruction(opcode, Opcode.blt);
+            case 0x06: return BranchInstruction(opcode, Opcode.bgt);
+            case 0x07: return BranchInstruction(opcode, Opcode.ble);
+            case 0x80: return BranchInstruction(opcode, Opcode.bpl);
+            case 0x81: return BranchInstruction(opcode, Opcode.bmi);
+            case 0x82: return BranchInstruction(opcode, Opcode.bhi);
+            case 0x83: return BranchInstruction(opcode, Opcode.blos);
+            case 0x84: return BranchInstruction(opcode, Opcode.bvc);
+            case 0x85: return BranchInstruction(opcode, Opcode.bvs);
+            case 0x86: return BranchInstruction(opcode, Opcode.bcc);
+            case 0x87: return BranchInstruction(opcode, Opcode.bcs);
             }
 
 
             var dataWidth = DataWidthFromSizeBit(opcode & 0x8000u);
             MachineOperand op = null;
-            Opcodes oc = Opcodes.illegal;
+            Opcode oc = Opcode.illegal;
             switch ((opcode >> 6) & 0x3FF)
             {
             case 0x000:
                 switch (opcode & 0x3F)
                 {
-                case 0x00: op = null; oc = Opcodes.halt; break;
-                case 0x01: op = null; oc = Opcodes.wait; break;
-                case 0x02: op = null; oc = Opcodes.rti; break;
-                case 0x03: op = null; oc = Opcodes.bpt; break;
-                case 0x04: op = null; oc = Opcodes.iot; break;
-                case 0x05: op = null; oc = Opcodes.reset; break;
-                case 0x06: op = null; oc = Opcodes.rtt; break;
-                case 0x07: op = null; oc = Opcodes.illegal; break;
+                case 0x00: op = null; oc = Opcode.halt; break;
+                case 0x01: op = null; oc = Opcode.wait; break;
+                case 0x02: op = null; oc = Opcode.rti; break;
+                case 0x03: op = null; oc = Opcode.bpt; break;
+                case 0x04: op = null; oc = Opcode.iot; break;
+                case 0x05: op = null; oc = Opcode.reset; break;
+                case 0x06: op = null; oc = Opcode.rtt; break;
+                case 0x07: op = null; oc = Opcode.illegal; break;
                 }
                 break;
-            case 0x001: op = DecodeOperand(opcode); oc = Opcodes.jmp; break;
+            case 0x001: op = DecodeOperand(opcode); oc = Opcode.jmp; break;
             case 0x002:
                 switch (opcode & 0x38)
                 {
-                case 0: op = DecodeOperand(opcode & 7); oc = Opcodes.rts; break;
-                case 3: op = DecodeOperand(opcode); oc = Opcodes.spl; break;
+                case 0: op = DecodeOperand(opcode & 7); oc = Opcode.rts; break;
+                case 3: op = DecodeOperand(opcode); oc = Opcode.spl; break;
                 case 4:
                 case 5:
                 case 6:
                 case 7:
                     return DecodeCondCode(opcode);
-                case 0x20: op = null;  oc = Opcodes.nop; break;
+                case 0x20: op = null;  oc = Opcode.nop; break;
                 }
                 break;
             case 0x003:
-                oc = Opcodes.swab; op = DecodeOperand(opcode);
+                oc = Opcode.swab; op = DecodeOperand(opcode);
                 dataWidth = PrimitiveType.Byte;
                 break;
             case 0x020:
@@ -318,7 +318,7 @@ namespace Reko.Arch.Pdp11
             case 0x027:
                 return new Pdp11Instruction
                 {
-                    Opcode = Opcodes.jsr,
+                    Opcode = Opcode.jsr,
                     op1 = Reg(opcode >> 6),
                     op2 = DecodeOperand(opcode),
                     DataWidth = PrimitiveType.Word16
@@ -327,87 +327,87 @@ namespace Reko.Arch.Pdp11
             case 0x221:
             case 0x222:
             case 0x223:
-                oc = Opcodes.emt;
+                oc = Opcode.emt;
                 op = new ImmediateOperand(Constant.Byte((byte)opcode));
                 break;
             case 0x224:
             case 0x225:
             case 0x226:
             case 0x227:
-                oc = Opcodes.trap;
+                oc = Opcode.trap;
                 op = new ImmediateOperand(Constant.Byte((byte)opcode));
                 break;
             case 0x028:
             case 0x228:
-                oc = dataWidth.Size == 1 ? Opcodes.clrb : Opcodes.clr; op = DecodeOperand(opcode);
+                oc = dataWidth.Size == 1 ? Opcode.clrb : Opcode.clr; op = DecodeOperand(opcode);
                 break;
             case 0x029:
             case 0x229:
-                oc = Opcodes.com; op = DecodeOperand(opcode);
+                oc = Opcode.com; op = DecodeOperand(opcode);
                 break;
             case 0x02A:
             case 0x22A:
-                oc = Opcodes.inc; op = DecodeOperand(opcode);
+                oc = Opcode.inc; op = DecodeOperand(opcode);
                 break;
             case 0x02B:
             case 0x22B:
-                oc = Opcodes.dec; op = DecodeOperand(opcode);
+                oc = Opcode.dec; op = DecodeOperand(opcode);
                 break;
             case 0x02C:
             case 0x22C:
-                oc = Opcodes.neg; op = DecodeOperand(opcode);
+                oc = Opcode.neg; op = DecodeOperand(opcode);
                 break;
             case 0x02D:
             case 0x22D:
-                oc = Opcodes.adc; op = DecodeOperand(opcode);
+                oc = Opcode.adc; op = DecodeOperand(opcode);
                 break;
             case 0x02E:
             case 0x22E:
-                oc = Opcodes.sbc; op = DecodeOperand(opcode);
+                oc = Opcode.sbc; op = DecodeOperand(opcode);
                 break;
             case 0x02F:
             case 0x22F:
-                oc = Opcodes.tst; op = DecodeOperand(opcode);
+                oc = Opcode.tst; op = DecodeOperand(opcode);
                 break;
             case 0x030:
             case 0x230:
-                oc = Opcodes.ror; op = DecodeOperand(opcode);
+                oc = Opcode.ror; op = DecodeOperand(opcode);
                 break;
             case 0x031:
             case 0x231:
-                oc = Opcodes.rol; op = DecodeOperand(opcode);
+                oc = Opcode.rol; op = DecodeOperand(opcode);
                 break;
             case 0x032:
             case 0x232:
-                oc = Opcodes.asr; op = DecodeOperand(opcode);
+                oc = Opcode.asr; op = DecodeOperand(opcode);
                 break;
             case 0x033:
             case 0x233:
-                oc = Opcodes.asl; op = DecodeOperand(opcode);
+                oc = Opcode.asl; op = DecodeOperand(opcode);
                 break;
             case 0x034:
-                oc = Opcodes.mark; op = DecodeOperand(opcode);
+                oc = Opcode.mark; op = DecodeOperand(opcode);
                 break;
             case 0x234:
-                oc = Opcodes.mtps; op = DecodeOperand(opcode);
+                oc = Opcode.mtps; op = DecodeOperand(opcode);
                 break;
             case 0x035:
-                oc = Opcodes.mfpi; op = DecodeOperand(opcode);
+                oc = Opcode.mfpi; op = DecodeOperand(opcode);
                 break;
             case 0x235:
-                oc = Opcodes.mfpd; op = DecodeOperand(opcode);
+                oc = Opcode.mfpd; op = DecodeOperand(opcode);
                 break;
             case 0x036:
-                oc = Opcodes.mtpi; op = DecodeOperand(opcode);
+                oc = Opcode.mtpi; op = DecodeOperand(opcode);
                 break;
             case 0x236:
-                oc = Opcodes.mtpd; op = DecodeOperand(opcode);
+                oc = Opcode.mtpd; op = DecodeOperand(opcode);
                 break;
             case 0x037:
-                oc = Opcodes.sxt; op = DecodeOperand(opcode);
+                oc = Opcode.sxt; op = DecodeOperand(opcode);
                 break;
             case 0x237:
-                oc = Opcodes.mfps; op = DecodeOperand(opcode);
+                oc = Opcode.mfps; op = DecodeOperand(opcode);
                 break;
             }
             return new Pdp11Instruction
@@ -422,7 +422,7 @@ namespace Reko.Arch.Pdp11
         {
             return new Pdp11Instruction
             {
-                Opcode = ((opcode & 0x10) != 0) ? Opcodes.setflags : Opcodes.clrflags,
+                Opcode = ((opcode & 0x10) != 0) ? Opcode.setflags : Opcode.clrflags,
                 DataWidth = dataWidth,
                 op1 = new ImmediateOperand(Constant.Byte((byte)(opcode&0xF))),
             };
@@ -438,7 +438,7 @@ namespace Reko.Arch.Pdp11
             throw new NotImplementedException();
         }
 
-        private Pdp11Instruction BranchInstruction(ushort opcode, Opcodes oc)
+        private Pdp11Instruction BranchInstruction(ushort opcode, Opcode oc)
         {
             return new Pdp11Instruction
             {

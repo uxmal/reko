@@ -149,6 +149,16 @@ namespace Reko.Tools.C2Xml.UnitTests
             {
                 throw new NotImplementedException();
             }
+
+            public override int? GetOpcodeNumber(string name)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override SortedList<string, int> GetOpcodeNames()
+            {
+                throw new NotImplementedException();
+            }
         }
 
         void RunTest(string c_code, string expectedXml)

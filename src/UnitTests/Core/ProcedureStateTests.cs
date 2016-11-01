@@ -263,6 +263,16 @@ namespace Reko.UnitTests.Core
                 throw new NotImplementedException();
             }
 
+            public SortedList<string, int> GetOpcodeNames()
+            {
+                throw new NotImplementedException();
+            }
+
+            public int? GetOpcodeNumber(string name)
+            {
+                throw new NotImplementedException();
+            }
+
             #endregion
         }
 

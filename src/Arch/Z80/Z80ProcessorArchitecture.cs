@@ -97,6 +97,25 @@ namespace Reko.Arch.Z80
             return new Z80Rewriter(this, rdr, state, frame, host);
         }
 
+        public override SortedList<string, int> GetOpcodeNames()
+        {
+            return Enum.GetValues(typeof(Opcode))
+                .Cast<Opcode>()
+                .ToSortedList(
+                    v => v == Opcode.ex_af ? "ex" : Enum.GetName(typeof(Opcode), v),
+                    v => (int)v);
+        }
+
+        public override int? GetOpcodeNumber(string name)
+        {
+            Opcode result;
+            if (string.Compare(name, "ex", StringComparison.InvariantCultureIgnoreCase) == 0)
+                return (int)Opcode.ex_af;
+            if (!Enum.TryParse(name, true, out result))
+                return null;
+            return (int)result;
+        }
+
         public override RegisterStorage GetRegister(int i)
         {
             throw new NotImplementedException();

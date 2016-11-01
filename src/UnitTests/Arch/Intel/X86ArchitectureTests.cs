@@ -270,6 +270,22 @@ namespace Reko.UnitTests.Arch.Intel
             Assert.IsTrue(aliases.Contains(Registers.al), "Expected al set");
         }
 
+        [Test]
+        public void X86arch_GetOpcodeNames()
+        {
+            arch = new X86ArchitectureFlat32();
+            Assert.AreEqual(
+                "aaa,aad,aam,aas,adc,add",
+                string.Join(",", arch.GetOpcodeNames().Keys.Take(6)));
+        }
 
+        [Test]
+        public void X86arch_GetOpcodeNumber()
+        {
+            arch = new X86ArchitectureFlat32();
+            Assert.AreEqual(
+                Opcode.mov,
+                (Opcode)arch.GetOpcodeNumber("mov"));
+        }
     }
 }
