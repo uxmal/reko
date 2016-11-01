@@ -76,10 +76,17 @@ namespace Reko.Arch.Vax
                 case 'a':
                     if (!TryDecodeOperand(Width(format[i++]), out op))
                         return null;
+                    if (!(op is MemoryOperand))
+                        op = null;      // Expect a memory reference
                     break;
-                case 'r':
                 case 'w':
                 case 'm':
+                    if (!TryDecodeOperand(Width(format[i++]), out op))
+                        return null;
+                    if (op is ImmediateOperand)
+                        op = null;    // Can't modify a constant! 
+                    break;
+                case 'r':
                 case 'v':
                     if (!TryDecodeOperand(Width(format[i++]), out op))
                         return null;
@@ -92,8 +99,8 @@ namespace Reko.Arch.Vax
                     break;
                 default:
                     throw new NotImplementedException(
-               string.Format(
-                   "Access type {0} not implemented.", format[i - 1]));
+                        string.Format(
+                            "Access type {0} not implemented.", format[i - 1]));
                 }
                 if (op == null)
                 {

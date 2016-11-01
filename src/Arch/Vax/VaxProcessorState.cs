@@ -26,6 +26,7 @@ using System.Text;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
+using System.Diagnostics;
 
 namespace Reko.Arch.Vax
 {
@@ -37,12 +38,14 @@ namespace Reko.Arch.Vax
 
         public VaxProcessorState(VaxArchitecture arch)
         {
+            Debug.Assert(arch != null);
             this.arch = arch;
         }
 
         public VaxProcessorState(VaxProcessorState that)
             : base(that)
         {
+            this.arch = that.arch;
             this.regs = (uint[])that.regs.Clone();
             this.isValid = (bool[])that.isValid.Clone();
         }

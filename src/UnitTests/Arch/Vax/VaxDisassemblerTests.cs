@@ -124,5 +124,11 @@ namespace Reko.UnitTests.Arch.Vax
                 "ap",
                 0x0A, 0xAB, 0x6F, 0x00, 0x05, 0x01, 0x00, 0x5C);
         }
+
+        [Test]
+        public void VaxDis_InvalidWriteToConstant()
+        {
+            AssertCode("Invalid\t", 0xD0, 0x50, 0x03);
+        }
     }
 }
