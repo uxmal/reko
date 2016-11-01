@@ -76,8 +76,6 @@ namespace Reko.Arch.Vax
                 case 'a':
                     if (!TryDecodeOperand(Width(format[i++]), out op))
                         return null;
-                    if (!(op is MemoryOperand))
-                        op = null;      // Expect a memory reference
                     break;
                 case 'w':
                 case 'm':

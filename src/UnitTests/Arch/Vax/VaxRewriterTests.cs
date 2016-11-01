@@ -218,10 +218,10 @@ namespace Reko.UnitTests.Arch.Vax
         [Test]
         public void VaxRw_addp4()
         {
-            BuildTest(0x20, 0x04, 0x54, 0x04, 0x50);	// addp4	#0004,r4,#0004,r0
+            BuildTest(0x20, 0x04, 0x64, 0x04, 0x60);	// addp4	#0004,r4,#0004,r0
             AssertCode(
                 "0|L--|00010000(5): 2 instructions",
-                "1|L--|VZN = vax_addp4(0x0004, r4, 0x0004, r0)",
+                "1|L--|VZN = vax_addp4(0x0004, Mem0[r4:ptr32], 0x0004, Mem0[r0:ptr32])",
                 "2|L--|C = false");
         }
 
@@ -1252,7 +1252,6 @@ namespace Reko.UnitTests.Arch.Vax
                 "0|T--|00010000(6): 1 instructions",
                 "1|T--|call 000212C3 (4)");
         }
-
 
         [Test]
         public void VaxRw_mcomb()

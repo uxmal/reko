@@ -49,7 +49,7 @@ namespace Reko.ImageLoaders.VmsExe
             var hdr = LoadHeader(rdr);
             var isds = LoadImageSectionDescriptors(hdr.HdrSize);
 
-            var addr = Address.Ptr32(0x1000);
+            var addr = Address.Ptr32(0x1000);   //$REVIEW: what should this really be?
             var arch = (VaxArchitecture)Services.RequireService<IConfigurationService>()
                 .GetArchitecture("vax");
             return new Program(
@@ -60,7 +60,7 @@ namespace Reko.ImageLoaders.VmsExe
                         new MemoryArea(addr, RawImage),
                         AccessMode.ReadWriteExecute)),
                 arch,
-                new DefaultPlatform(Services, arch));
+                new DefaultPlatform(Services, arch, "VAX VMS"));   //$TODO: VaxVms platform
         }
 
         private Header LoadHeader(LeImageReader rdr)
