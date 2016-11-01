@@ -573,7 +573,7 @@ const eax:<invalid>
             });
 
             var sExp =
-@"main ah al ax eax rax
+@"main eax
 const eax:<invalid>
     main_entry esp:fp
     l1 esp:fp
