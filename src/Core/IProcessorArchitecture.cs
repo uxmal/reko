@@ -25,6 +25,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 namespace Reko.Core
 {
@@ -119,6 +120,13 @@ namespace Reko.Core
         IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm);
 
         IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg);
+
+        /// <summary>
+        /// Returns a list of all the available opcodes.
+        /// </summary>
+        /// <returns></returns>
+        SortedList<string, int> GetOpcodeNames();           // Returns all the processor opcode names and their internal Reko numbers.
+        int? GetOpcodeNumber(string name);                  // Returns an internal Reko opcode for an instruction, or null if none is available.
         RegisterStorage GetRegister(int i);                 // Returns register corresponding to number i.
         RegisterStorage GetRegister(string name);           // Returns register whose name is 'name'
         RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width);
@@ -194,6 +202,11 @@ namespace Reko.Core
         public RegisterStorage StackRegister { get; protected set; }
         public uint CarryFlagMask { get; protected set; }
 
+        // Implementation detail; override this if you have an enumerated type 
+        // that has all the opcodes of the architecture; otherwise you need to provide
+        // your own opcode parsing.
+        protected virtual Type OpcodeEnumType { get { throw new NotSupportedException(); } }
+
         public abstract IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader);
         public Frame CreateFrame() { return new Frame(FramePointerType); }
         public abstract ImageReader CreateImageReader(MemoryArea img, Address addr);
@@ -211,6 +224,24 @@ namespace Reko.Core
         public abstract RegisterStorage GetRegister(int i);
         public abstract RegisterStorage GetRegister(string name);
         public abstract RegisterStorage[] GetRegisters();
+
+        /// <summary>
+        /// For a particular opcode name, returns its internal (Reko) number.
+        /// </summary>
+        /// <returns></returns>
+        public abstract int? GetOpcodeNumber(string name);
+
+        /// <summary>
+        /// Returns a map of opcode names to their internal (Reko) numbers.
+        /// </summary>
+        /// <returns></returns>
+        public virtual SortedList<string, int> GetOpcodeNames()
+        {
+            Type enumType = OpcodeEnumType;
+            return Enum.GetValues(enumType)
+                .Cast<object>()
+                .ToSortedList(v => Enum.GetName(enumType, v), v => (int) v);
+        }
 
         /// <summary>
         /// Get the improper subregister of <paramref name="reg"/> that starts
