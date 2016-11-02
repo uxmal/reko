@@ -33,6 +33,7 @@ namespace Reko.Core
         ExternalProcedure ResolveProcedure(string moduleName, string importName, IPlatform platform);
         ExternalProcedure ResolveProcedure(string moduleName, int ordinal, IPlatform platform);
         Identifier ResolveGlobal(string moduleName, string globalName, IPlatform platform);
+        Identifier ResolveGlobal(string moduleName, int ordinal, IPlatform platform);
         ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c);
     }
 
@@ -118,7 +119,7 @@ namespace Reko.Core
                     continue;
 
                 DataType dt;
-                if (mod.Globals.TryGetValue(globalName, out dt))
+                if (mod.GlobalsByName.TryGetValue(globalName, out dt))
                 {
                     return new Identifier(globalName, dt, new MemoryStorage());
                 }
@@ -134,6 +135,25 @@ namespace Reko.Core
             }
             return platform.LookupGlobalByName(moduleName, globalName);
         }
+
+        public Identifier ResolveGlobal(string moduleName, int ordinal, IPlatform platform)
+        {
+            foreach (var program in project.Programs)
+            {
+                ModuleDescriptor mod;
+                if (!program.EnvironmentMetadata.Modules.TryGetValue(moduleName, out mod))
+                    continue;
+
+                DataType dt;
+                if (mod.GlobalsByOrdinal.TryGetValue(ordinal, out dt))
+                {
+                    return new Identifier("ExportedGlobal_" + ordinal, dt, new MemoryStorage());
+                }
+            }
+
+            return platform.LookupGlobalByOrdinal(moduleName, ordinal);
+        }
+
 
         public ProcedureConstant ResolveToImportedProcedureConstant(Statement stm, Constant c)
         {

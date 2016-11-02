@@ -118,6 +118,15 @@ namespace Reko.Gui {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Imports.
+        /// </summary>
+        internal static string Node_Imports {
+            get {
+                return ResourceManager.GetString("Node_Imports", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reco&amp;nstruct data types.
         /// </summary>
         internal static string ReconstructDataTypes {
@@ -136,11 +145,11 @@ namespace Reko.Gui {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Segment:.
         /// </summary>
-        internal static string Segment_ {
+        internal static string Segment {
             get {
-                return ResourceManager.GetString("Segment:", resourceCulture);
+                return ResourceManager.GetString("Segment", resourceCulture);
             }
         }
         

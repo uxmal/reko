@@ -166,6 +166,11 @@ namespace Reko.UnitTests.Scanning
                 throw new NotImplementedException();
             }
 
+            public Identifier ResolveGlobal(string moduleName, int ordinal, IPlatform platform)
+            {
+                throw new NotImplementedException();
+            }
+
             public ExternalProcedure GetInterceptedCall(Address addrImportThunk)
             {
                 throw new NotImplementedException();

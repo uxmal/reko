@@ -58,11 +58,11 @@ namespace Reko.Environments.Windows
         public string ClassName;
         public string Scope;
 
-        public StructField_v1 Parse()
+        public Tuple<string,SerializedType,SerializedType> Parse()
         {
             Expect('?');
             string basicName = ParseBasicName();
-            StructField_v1 typeCode;
+            Tuple<string, SerializedType, SerializedType> typeCode;
             var compoundArgs =     new List<Argument_v1>();
             if (PeekAndDiscard('@'))
             {
@@ -222,7 +222,7 @@ namespace Reko.Environments.Windows
             return qualifiers.ToArray();
         }
 
-        public StructField_v1 ParseQualifiedTypeCode(string basicName, string [] qualification, List<Argument_v1> compoundArgs)
+        public Tuple<string, SerializedType, SerializedType> ParseQualifiedTypeCode(string basicName, string[] qualification, List<Argument_v1> compoundArgs)
         {
             this.compoundArgs = new List<Argument_v1>();
             this.Scope = string.Join("::", qualification);
@@ -233,11 +233,10 @@ namespace Reko.Environments.Windows
             case '1':
             case '2':
             case '3':
-                return new StructField_v1
-                {
-                    Type = ParseDataTypeCode(compoundArgs),
-                    Name = basicName
-                };
+                return new Tuple<string, SerializedType, SerializedType>(
+                    basicName,
+                    ParseDataTypeCode(compoundArgs),
+                    CreateEnclosingType(Scope));
             case '6':   // Compiler-generated static
                 //$TODO: deal with const/volatile modifier
                 ParseStorageClass();
@@ -263,37 +262,36 @@ namespace Reko.Environments.Windows
             case 'U': sig = ParseInstanceMethod("public virtual"); break;
             case 'V': sig = ParseInstanceMethod("public virtual far"); break;
 
-            case 'Y': sig = ParseGlobalFunction(""); break;
-            case 'Z': sig = ParseGlobalFunction("far"); break;
-            default: throw new NotImplementedException(string.Format("Character '{0}' not supported", str[i-1]));
-               
+            case 'Y': sig = ParseGlobalFunction( ""); break;
+            case 'Z': sig = ParseGlobalFunction( "far"); break;
+            default: throw new NotImplementedException(string.Format("Character '{0}' not supported", str[i - 1]));
+
             }
-            return new StructField_v1
-            {
-                Type = sig,
-                Name = basicName,
-            };
+            return new Tuple<string, SerializedType, SerializedType>(
+                basicName,
+                sig,
+                sig != null 
+                    ? sig.EnclosingType
+                    : CreateEnclosingType(Scope));
         }
 
-        public StructField_v1 ParseUnqualifiedTypeCode(string basicName)
+        public Tuple<string, SerializedType, SerializedType> ParseUnqualifiedTypeCode(string basicName)
         {
             this.compoundArgs = new List<Argument_v1>();
             if (PeekAndDiscard('Y'))
             {
-                return new StructField_v1
-                {
-                    Name = basicName,
-                    Type = (SerializedSignature) ParseFunctionTypeCode(),
-                };
+                return new Tuple<string, SerializedType, SerializedType>(
+                    basicName,
+                    ParseFunctionTypeCode(),
+                    null);
             }
             else
             {
                 Expect('3');
-                return new StructField_v1
-                {
-                    Name = basicName,
-                    Type = ParseDataTypeCode(new List<Argument_v1>())
-                };
+                return new Tuple<string, SerializedType, SerializedType>(
+                    basicName,
+                    ParseDataTypeCode(new List<Argument_v1>()),
+                    null);
             }
         }
 
@@ -395,12 +393,17 @@ namespace Reko.Environments.Windows
             {
                 Convention = convention,
                 Arguments = args,
-                EnclosingType = !string.IsNullOrEmpty(Scope)
-                    ? new StructType_v1 { Name = Scope, ForceStructure = true }
-                    : null,
-                IsInstanceMethod = isInstanceMethod,
-                ReturnValue = new Argument_v1 { Type= retType ?? new VoidType_v1() }
+                EnclosingType = CreateEnclosingType(Scope),
+                IsInstanceMethod = this.isInstanceMethod,
+                ReturnValue = new Argument_v1 { Type = retType ?? new VoidType_v1() }
             };
+        }
+
+        private StructType_v1 CreateEnclosingType(string scope)
+        {
+            return !string.IsNullOrEmpty(Scope)
+                ? new StructType_v1 { Name = scope, ForceStructure = true }
+                : null;
         }
 
         public MemberPointer_v1 ParseMemberFunctionPointerCode(int byteSize, List<Argument_v1> compoundArgs)

@@ -207,7 +207,7 @@ namespace Reko.UnitTests.Core
 
             var module = new ModuleDescriptor("foo")
             {
-                Globals =
+                GlobalsByName =
                 {
                     {
                          "bar",

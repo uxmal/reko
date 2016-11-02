@@ -278,5 +278,14 @@ namespace Reko.Environments.Windows
                 new TypeLibraryDeserializer(this, true, Metadata),
                 this);
         }
-	}
+
+        public override Tuple<string, DataType, SerializedType> DataTypeFromImportName(string importName)
+        {
+            EnsureTypeLibraries(PlatformIdentifier);
+            return SignatureGuesser.InferTypeFromName(
+                importName,
+                new TypeLibraryDeserializer(this, true, Metadata),
+                this);
+        }
+    }
 }

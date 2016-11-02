@@ -205,6 +205,9 @@ namespace Reko.Gui.Forms
 
             var cgvSvc = svcFactory.CreateCallGraphViewService();
             sc.AddService<ICallGraphViewService>(cgvSvc);
+
+            var viewImpSvc = svcFactory.CreateViewImportService();
+            sc.AddService<IViewImportsService>(viewImpSvc);
         }
 
         public virtual TextWriter CreateTextWriter(string filename)
