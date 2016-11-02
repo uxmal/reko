@@ -136,6 +136,7 @@ namespace Reko.Core
         bool TryParseAddress(string sAddress, out Address addr);
         Dictionary<string, object> SaveUserOptions();
         ExternalProcedure SignatureFromName(string importName);
+        Tuple<string, DataType, SerializedType> DataTypeFromImportName(string importName);
     }
 
     /// <summary>
@@ -398,6 +399,11 @@ namespace Reko.Core
         /// <param name="fnName"></param>
         /// <returns>null if there is no way to guess a ProcedureSignature from the name.</returns>
         public virtual ExternalProcedure SignatureFromName(string fnName)
+        {
+            return null;
+        }
+
+        public virtual Tuple<string, DataType, SerializedType> DataTypeFromImportName(string importName)
         {
             return null;
         }

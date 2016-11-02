@@ -19,7 +19,9 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Serialization;
 using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -79,7 +81,15 @@ namespace Reko.Core
             AddressContext ctx)
         {
             var global = resolver.ResolveGlobal(ModuleName, ImportName, platform);
-            return global;
+            if (global != null)
+                return global;
+            var t = platform.DataTypeFromImportName(ImportName);
+            //$REVIEW: the way imported symbols are resolved as 
+            // globals or functions needs a revisit.
+            if (t != null && !(t.Item2 is FunctionType))
+                return new Identifier(t.Item1, t.Item2, new MemoryStorage());
+            else
+                return null;
         }
 
         public override ExternalProcedure ResolveImportedProcedure(
