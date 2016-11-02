@@ -122,7 +122,9 @@ namespace Reko.Analysis
                 if (((StackStorage)de.Key).StackOffset == localOff)
                     return de.Value;
             }
-            throw new NotImplementedException();
+            throw new NotImplementedException(string.Format("Argument {0} not found in map: {1}",
+                stack,
+                string.Join(",",map.Select(de => string.Format("{0}{1}: {2}{3}", "{", de.Key, de.Value, "}")))));
         }
 
         public Expression VisitStackLocalStorage(StackLocalStorage local)
