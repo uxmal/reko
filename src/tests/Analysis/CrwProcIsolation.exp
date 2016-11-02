@@ -1,5 +1,5 @@
 void fn0C00_0000(Register word16 di, Register selector ds)
-// MayUse:  di:0 ds:16
+// MayUse:  di:16 ds:16
 // LiveOut:
 // Trashed: SCZO ax
 // Preserved: di sp

@@ -143,9 +143,8 @@ namespace Reko.Analysis
 
         public int VisitCallInstruction(CallInstruction ci)
         {
-            //$BUG: the whole premise of this class is buggy. 
-            // we need to review how uses are to be discovered.
-            return 0;
+            return ci.Uses
+                .Max(cb => cb.Expression.Accept(this));
         }
 
         public int VisitDeclaration(Declaration decl)
