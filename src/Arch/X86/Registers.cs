@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -159,7 +160,10 @@ namespace Reko.Arch.X86
         public static readonly RegisterStorage mm14;
         public static readonly RegisterStorage mm15;
 
-        public static readonly RegisterStorage rip;
+        public static readonly RegisterStorage rip;     
+        public static readonly RegisterStorage Top;     // The x87 stack pointer is modelled explicitly.
+        public static readonly MemoryIdentifier ST;
+
 
         internal static readonly Dictionary<RegisterStorage, Dictionary<uint, RegisterStorage>> SubRegisters;
 
@@ -289,6 +293,9 @@ namespace Reko.Arch.X86
             xmm15 = new RegisterStorage("xmm15", 75, 0, PrimitiveType.Word128);
 
             rip = new RegisterStorage("rip", 23, 0, PrimitiveType.Pointer64);
+
+            Top = new RegisterStorage("Top", 76, 0, PrimitiveType.Byte);
+            ST = new MemoryIdentifier("ST", PrimitiveType.Pointer32);
 
             All = new RegisterStorage[] {
 				eax,

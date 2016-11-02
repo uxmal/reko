@@ -100,7 +100,7 @@ namespace Reko.UnitTests.Arch.Intel
 		public void X86Orw32_Fpu()
 		{
 			FpuOperand f = new FpuOperand(3);
-			Identifier id = (Identifier) orw.Transform(instr, f, PrimitiveType.Real64,  state);
+			var id = orw.Transform(instr, f, PrimitiveType.Real64,  state);
 			Assert.AreEqual(PrimitiveType.Real64, id.DataType);
 		}
 

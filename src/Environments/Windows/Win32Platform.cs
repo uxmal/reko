@@ -94,6 +94,7 @@ namespace Reko.Environments.Windows
                  Registers.esp,
                  Registers.fs,
                  Registers.gs,
+                 Registers.Top,
             };
             return bitset;
         }

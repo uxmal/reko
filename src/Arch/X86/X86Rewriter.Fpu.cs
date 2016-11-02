@@ -55,8 +55,8 @@ namespace Reko.Arch.X86
             case 1:
                 {
                     // implicit st(0) operand.
-                    Identifier opLeft = FpuRegister(0);
-                    Expression opRight = SrcOp(instrCur.op1);
+                    var opLeft = FpuRegister(0);
+                    var opRight = SrcOp(instrCur.op1);
                     if (fReversed)
                     {
                         EmitCopy(
@@ -85,7 +85,7 @@ namespace Reko.Arch.X86
 
             if (fPopStack)
             {
-                state.ShrinkFpuStack(1);
+                ShrinkFpuStack(1);
             }
         }
 
@@ -96,7 +96,7 @@ namespace Reko.Arch.X86
 
         private void RewriteFbld()
         {
-            state.GrowFpuStack(instrCur.Address);
+            GrowFpuStack(1);
             emitter.Assign(FpuRegister(0),
                 host.PseudoProcedure("__fbld", PrimitiveType.Real64, SrcOp(instrCur.op1)));
             WriteFpuStack(0);
@@ -106,7 +106,7 @@ namespace Reko.Arch.X86
         {
             instrCur.op1.Width = PrimitiveType.Bcd80;
             emitter.Assign(SrcOp(instrCur.op1), emitter.Cast(instrCur.op1.Width, orw.FpuRegister(0, state)));
-            state.ShrinkFpuStack(1);
+            ShrinkFpuStack(1);
         }
 
         private void EmitFchs()
@@ -124,20 +124,20 @@ namespace Reko.Arch.X86
 
         private void RewriteFcom(int pops)
         {
-            Identifier op1 = FpuRegister(0);
-            Expression op2 = (instrCur.code == Opcode.fcompp || instrCur.code == Opcode.fucompp)
+            var op1 = FpuRegister(0);
+            var op2 = (instrCur.code == Opcode.fcompp || instrCur.code == Opcode.fucompp)
                 ? FpuRegister(1)
                 : SrcOp(instrCur.op1);
             emitter.Assign(
                 frame.EnsureRegister(Registers.FPUF),
                 emitter.Cond(
                     emitter.FSub(op1, op2)));
-            state.ShrinkFpuStack(pops);
+            ShrinkFpuStack(pops);
         }
 
         private void RewriteFdecstp()
         {
-            state.ShrinkFpuStack(1);
+            ShrinkFpuStack(1);
             emitter.Nop();
         }
 
@@ -165,12 +165,12 @@ namespace Reko.Arch.X86
                         emitter.Cast(PrimitiveType.Real64,
                             SrcOp(instrCur.op1)))));
             if (pop)
-                state.ShrinkFpuStack(1);
+                ShrinkFpuStack(1);
         }
 
         private void RewriteFild()
         {
-            state.GrowFpuStack(instrCur.Address);
+            GrowFpuStack(1);
             var iType = PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.Size);
             emitter.Assign(
                 orw.FpuRegister(0, state),
@@ -180,7 +180,7 @@ namespace Reko.Arch.X86
 
         private void RewriteFincstp()
         {
-            state.GrowFpuStack(instrCur.Address);
+            GrowFpuStack(1);
             emitter.Nop();
         }
 
@@ -189,12 +189,12 @@ namespace Reko.Arch.X86
             instrCur.op1.Width = PrimitiveType.Create(Domain.SignedInt, instrCur.op1.Width.Size);
             emitter.Assign(SrcOp(instrCur.op1), emitter.Cast(instrCur.op1.Width, orw.FpuRegister(0, state)));
             if (pop)
-                state.ShrinkFpuStack(1);
+                ShrinkFpuStack(1);
         }
 
         public void RewriteFld()
         {
-            state.GrowFpuStack(instrCur.Address);
+            GrowFpuStack(1);
             var dst = FpuRegister(0);
             var src = SrcOp(instrCur.op1);
             if (src.DataType.Size != dst.DataType.Size)
@@ -214,7 +214,7 @@ namespace Reko.Arch.X86
 
         private void RewriteFldConst(Constant c)
         {
-            state.GrowFpuStack(instrCur.Address);
+            GrowFpuStack(1);
             emitter.Assign(FpuRegister(0), c);
             WriteFpuStack(0);
         }
@@ -247,7 +247,7 @@ namespace Reko.Arch.X86
         {
             Expression op1 = FpuRegister(1);
             Expression op2 = FpuRegister(0);
-            state.ShrinkFpuStack(1);
+            ShrinkFpuStack(1);
             emitter.Assign(FpuRegister(0), host.PseudoProcedure("atan", PrimitiveType.Real64, op1, op2));
             WriteFpuStack(0);
         }
@@ -256,7 +256,7 @@ namespace Reko.Arch.X86
         {
             Expression op1 = FpuRegister(1);
             Expression op2 = FpuRegister(0);
-            state.ShrinkFpuStack(1);
+            ShrinkFpuStack(1);
             emitter.Assign(FpuRegister(0),
                 emitter.Mod(op2, op1));
             WriteFpuStack(0);
@@ -267,7 +267,7 @@ namespace Reko.Arch.X86
             Identifier itmp = frame.CreateTemporary(PrimitiveType.Real64);
             emitter.Assign(itmp, FpuRegister(0));
 
-            state.GrowFpuStack(instrCur.Address);
+            GrowFpuStack(1);
             emitter.Assign(FpuRegister(1), host.PseudoProcedure("cos", PrimitiveType.Real64, itmp));
             emitter.Assign(FpuRegister(0), host.PseudoProcedure("sin", PrimitiveType.Real64, itmp));
             WriteFpuStack(0);
@@ -286,7 +286,7 @@ namespace Reko.Arch.X86
             }
             emitter.Assign(dst, src);
             if (pop)
-                state.ShrinkFpuStack(1);
+                ShrinkFpuStack(1);
         }
 
         private void RewriterFstcw()
@@ -415,10 +415,11 @@ namespace Reko.Arch.X86
         private void RewriteFyl2x()
         {
             //$REVIEW: Candidate for idiom search.
-            Identifier op1 = FpuRegister(0);
-            Identifier op2 = FpuRegister(1);
+            var op1 = FpuRegister(0);
+            var op2 = FpuRegister(1);
             emitter.Assign(op1, emitter.ISub(op2, host.PseudoProcedure("lg2", PrimitiveType.Real64, op1)));
-            state.ShrinkFpuStack(1);
+
+            ShrinkFpuStack(1);
             WriteFpuStack(0);
         }
 
@@ -427,11 +428,10 @@ namespace Reko.Arch.X86
             emitter.SideEffect(host.PseudoProcedure("__wait", VoidType.Instance));
         }
 
-        private Identifier FpuRegister(int reg)
+        private Expression FpuRegister(int reg)
         {
             return orw.FpuRegister(reg, state);
         }
-
 
         public Expression MaybeCast(DataType type, Expression e)
         {
@@ -439,6 +439,23 @@ namespace Reko.Arch.X86
                 return new Cast(type, e);
             else
                 return e;
+        }
+
+        private void GrowFpuStack(int amount)
+        {
+            //$TODO: do this in SSA.
+            //if (FpuStackItems > 7)
+            //{
+            //    Debug.WriteLine(string.Format("Possible FPU stack overflow at address {0}", addrInstr));    //$BUGBUG: should be an exception
+            //}
+            var top = frame.EnsureRegister(Registers.Top);
+            this.emitter.Assign(top, emitter.ISub(top, amount));
+        }
+
+        private void ShrinkFpuStack(int amount)
+        {
+            var top = frame.EnsureRegister(Registers.Top);
+            this.emitter.Assign(top, emitter.IAdd(top, amount));
         }
 
         private void WriteFpuStack(int offset)

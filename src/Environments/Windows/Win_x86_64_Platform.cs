@@ -78,6 +78,7 @@ namespace Reko.Environments.Windows
             return new HashSet<RegisterStorage>
             {
                 Registers.rsp,
+                Registers.Top,
             };
         }
 

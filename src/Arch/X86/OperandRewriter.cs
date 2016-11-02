@@ -213,9 +213,14 @@ namespace Reko.Arch.X86
         /// </summary>
         /// <param name="reg"></param>
         /// <returns></returns>
-        public Identifier FpuRegister(int reg, X86State state)
+        public Expression FpuRegister(int reg, X86State state)
         {
-            return frame.EnsureFpuStackVariable(reg - state.FpuStackItems, PrimitiveType.Real64);
+            Expression idx = frame.EnsureRegister(Registers.Top);
+            if (reg != 0)
+            {
+                idx = m.IAdd(idx, reg);
+            }
+            return new MemoryAccess(Registers.ST, idx, PrimitiveType.Real64);
         }
 
         public Identifier ImportedGlobal(Address addrInstruction, PrimitiveType addrWidth, MemoryOperand mem)

@@ -49,7 +49,7 @@ namespace Reko.Environments.Windows
         {
             return new HashSet<RegisterStorage>
             {
-                Registers.ss, Registers.ds, Registers.sp
+                Registers.ss, Registers.ds, Registers.sp, Registers.Top,
             };
         }
 

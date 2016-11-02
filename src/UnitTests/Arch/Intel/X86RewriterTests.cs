@@ -722,8 +722,9 @@ namespace Reko.UnitTests.Arch.Intel
                 m.Fild(m.MemDw(Registers.ebx, 4));
             });
             AssertCode(
-                "0|L--|10000000(3): 1 instructions",
-                "1|L--|rLoc1 = (real64) Mem0[ebx + 0x00000004:int32]");
+                "0|L--|10000000(3): 2 instructions",
+                "1|L--|Top = Top - 1",
+                "2|L--|ST[iSt] = (real64) Mem0[ebx + 0x00000004:int32]");
         }
 
         [Test]
