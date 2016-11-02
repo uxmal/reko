@@ -162,7 +162,7 @@ namespace Reko.UnitTests.Analysis
         [Test(Description = "Identifiers are not considered used if they only are copied.")]
         public void UrfCopy()
         {
-            var sExp ="Used: [r1, 0]";
+            var sExp ="Used: ";
             RunTest(sExp, m =>
             {
                 var r1 = m.Reg32("r1", 1);
@@ -209,7 +209,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void UrfPhiBranch()
         {
-            var sExp = "Used: [r2, 0]";
+            var sExp = "Used: ";
 
             RunTest(sExp, m =>
             {
