@@ -5,13 +5,13 @@
 #include "Executable.h"
 
 word32 g_dwFFFFFFFD;
-Eq_671 g_t5A4D;
+Eq_673 g_t5A4D;
 word16 g_w400000;
-struct Eq_671 * g_ptr40003C;
+struct Eq_673 * g_ptr40003C;
 <anonymous> g_t401BA4 = <code>;
 <anonymous> * g_ptr4020D0 = &g_t401BA4;
-Eq_189 g_t4020DC = null;
-Eq_189 g_t4020EC = null;
+Eq_191 g_t4020DC = null;
+Eq_191 g_t4020EC = null;
 ui32 g_dw403000 = 0x44BF19B1;
 ui32 g_dw403004 = 0xBB40E64E;
 ui32 g_dw403010 = 0x00000001;

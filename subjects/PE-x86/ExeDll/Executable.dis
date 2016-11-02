@@ -12,15 +12,15 @@ fn00401000_entry:
 // LocalsOut: fp(32)
 
 l00401000:
-	InitializeCriticalSection(DynamicLibrary.dll!?exported_critical_section@@3U_RTL_CRITICAL_SECTION@@A)
+	InitializeCriticalSection(&exported_critical_section)
 	fn00401060(0x00402108)
-	Mem15[fp - 0x0000000C:word32] = 0x00000001
-	Mem18[fp - 0x00000010:word32] = slow_and_safe_increment(Mem15[fp - 0x0000000C:int32])
-	Mem20[fp - 0x00000014:word32] = 0x00402108
+	Mem17[fp - 0x0000000C:word32] = 0x00000001
+	Mem20[fp - 0x00000010:word32] = slow_and_safe_increment(Mem17[fp - 0x0000000C:int32])
+	Mem22[fp - 0x00000014:word32] = 0x00402108
 	fn00401060(dwArg00)
-	Mem26[fp - 0x00000018:word32] = Mem20[DynamicLibrary.dll!?exported_int@@3HA:word32]
-	Mem28[fp - 0x0000001C:word32] = 0x00402108
-	word32 ebp_29
+	Mem29[fp - 0x00000018:word32] = Mem22[&exported_int:word32]
+	Mem31[fp - 0x0000001C:word32] = 0x00402108
+	word32 ebp_32
 	*ebpOut = fn00401060(dwArg00)
 	return 0x00000000
 // DataOut: bl eax ebp fs
