@@ -1,5 +1,5 @@
 void fn0C00_0000(Register selector ds)
-// MayUse:  ds:0
+// MayUse:  ds:16
 // LiveOut:
 // Trashed: SCZO bx
 // Preserved: sp

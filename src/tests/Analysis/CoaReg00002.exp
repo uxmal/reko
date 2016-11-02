@@ -25,6 +25,9 @@ si:si
     uses: Mem13[ds:si + 0x00C8:word32] = -edx
 Mem13: orig: Mem0
     def:  Mem13[ds:si + 0x00C8:word32] = -edx
+O_14: orig: O
+S_15: orig: S
+Z_16: orig: Z
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(byte cl, word32 edx, word16 si, selector ds)

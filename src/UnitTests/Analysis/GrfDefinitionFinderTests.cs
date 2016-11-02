@@ -45,7 +45,7 @@ namespace Reko.UnitTests.Analysis
 				var grfd = new GrfDefinitionFinder(ssa.Identifiers);
 				foreach (SsaIdentifier sid in ssa.Identifiers)
 				{
-                    var id = sid.OriginalIdentifier as Identifier;
+                    var id = sid.OriginalIdentifier;
 					if (id == null || !(id.Storage is FlagGroupStorage) || sid.Uses.Count == 0)
 						continue;
 					writer.Write("{0}: ", sid.DefStatement.Instruction);

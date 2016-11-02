@@ -165,14 +165,16 @@ namespace Reko.Analysis
         public int VisitPhiAssignment(PhiAssignment phi)
         {
             // One of the phi arguments was used, but that's a trivial copy. 
-            // Classify the dst of the phi statement
+            // Classify the dst of the phi statement, but avoid cycles
+            // by memoizing the value we obtained.
             int value;
-            if (visited.TryGetValue(phi, out value))
-                return value;       // break cycles of phis.
-            visited[phi] = 0;
-            int n = Classify(ssa.Identifiers[phi.Dst]);
-            visited[phi] = n;
-            return n;
+            if (!visited.TryGetValue(phi, out value))
+            {
+                visited[phi] = 0;
+                value = Classify(ssa.Identifiers[phi.Dst]);
+                visited[phi] = value;
+            }
+            return value;
         }
 
         public int VisitReturnInstruction(ReturnInstruction ret)
