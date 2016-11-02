@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (FFFFFFFD word32 dwFFFFFFFD) (5A4D Eq_671 t5A4D) (400000 word16 w400000) (40003C (ptr Eq_671) ptr40003C) (4020D0 (ptr code) ptr4020D0) (4020DC Eq_189 t4020DC) (4020EC Eq_189 t4020EC) (403000 ui32 dw403000) (403004 ui32 dw403004) (403010 ui32 dw403010) (403014 word32 dw403014) (403334 word32 dw403334) (403338 word32 dw403338) (403354 byte b403354) (403368 ui32 dw403368) (40336C ui32 dw40336C) (403370 ui32 dw403370) (403384 ptr32 ptr403384) (403388 word32 dw403388))
+Eq_1: (struct "Globals" (FFFFFFFD word32 dwFFFFFFFD) (5A4D Eq_671 t5A4D) (400000 word16 w400000) (40003C (ptr Eq_671) ptr40003C) (401BA4 code t401BA4) (4020D0 (ptr code) ptr4020D0) (4020DC Eq_189 t4020DC) (4020EC Eq_189 t4020EC) (403000 ui32 dw403000) (403004 ui32 dw403004) (403010 ui32 dw403010) (403014 word32 dw403014) (403334 word32 dw403334) (403338 word32 dw403338) (403354 byte b403354) (403368 ui32 dw403368) (40336C ui32 dw40336C) (403370 ui32 dw403370) (403384 ptr32 ptr403384) (403388 word32 dw403388))
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_4: (fn void (Eq_6))
 	T_4 (in InitializeCriticalSection : ptr32)
@@ -5349,6 +5349,7 @@ typedef struct Globals {
 	Eq_671 t5A4D;	// 5A4D
 	word16 w400000;	// 400000
 	struct Eq_671 * ptr40003C;	// 40003C
+	<anonymous> t401BA4;	// 401BA4
 	<anonymous> * ptr4020D0;	// 4020D0
 	Eq_189 t4020DC;	// 4020DC
 	Eq_189 t4020EC;	// 4020EC
