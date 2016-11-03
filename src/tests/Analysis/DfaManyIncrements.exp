@@ -1,6 +1,6 @@
 // void ManyIncrements(Register word32 r0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse:  r0:4
+// MayUse:  r0:32
 // LiveOut:
 // Trashed: r0 r1
 // Preserved: r63

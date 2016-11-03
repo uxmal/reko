@@ -825,18 +825,15 @@ proc1_exit:
           SZ_2 = cond(esi & esi)
 SZ_2: orig: SZ
     def:  SZ_2 = cond(esi & esi)
-    uses: Z_5 = SLICE(SZ_2, bool, 1) (alias)
+    uses: CZ_4 = C_3 | SZ_2 (alias)
 C_3: orig: C
     def:  C_3 = false
-    uses: CZ_4 = C_3 | Z_5 (alias)
+    uses: CZ_4 = C_3 | SZ_2 (alias)
 CZ_4: orig: CZ
-    def:  CZ_4 = C_3 | Z_5 (alias)
-    uses: al_6 = Test(ULE,CZ_4)
-Z_5: orig: Z
-    def:  Z_5 = SLICE(SZ_2, bool, 1) (alias)
-    uses: CZ_4 = C_3 | Z_5 (alias)
-al_6: orig: al
-    def:  al_6 = Test(ULE,CZ_4)
+    def:  CZ_4 = C_3 | SZ_2 (alias)
+    uses: al_5 = Test(ULE,CZ_4)
+al_5: orig: al
+    def:  al_5 = Test(ULE,CZ_4)
 // proc1
 // Return size: 0
 define proc1
@@ -845,10 +842,9 @@ proc1_entry:
 	// succ:  l1
 l1:
 	SZ_2 = cond(esi & esi)
-	Z_5 = SLICE(SZ_2, bool, 1) (alias)
 	C_3 = false
-	CZ_4 = C_3 | Z_5 (alias)
-	al_6 = Test(ULE,CZ_4)
+	CZ_4 = C_3 | SZ_2 (alias)
+	al_5 = Test(ULE,CZ_4)
 	return
 	// succ:  proc1_exit
 proc1_exit:
@@ -2471,11 +2467,74 @@ proc1_exit:
             RunTest(sExp, m =>
             {
                 var SCZ = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("SCZ"));
-                var Z = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("SZ"));
+                var SZ = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("SZ"));
                 var r3 = m.Register(3);
 
                 m.Assign(SCZ, m.Cond(r3));
-                m.Assign(r3, m.Cast(PrimitiveType.Int32, m.Test(ConditionCode.LE, Z)));
+                m.Assign(r3, m.Cast(PrimitiveType.Int32, m.Test(ConditionCode.LE, SZ)));
+                m.Return();
+            });
+        }
+
+        [Test(Description = "Ensures proper aliasing behavior with flag groups")]
+        [Category(Categories.UnitTests)]
+        public void SsaFlagGroupAliasing()
+        {
+            var sExp =
+@"r1:r1
+    def:  def r1
+    uses: SCZ_2 = cond(r1)
+SCZ_2: orig: SCZ
+    def:  SCZ_2 = cond(r1)
+    uses: Z_3 = SLICE(SCZ_2, bool, 1) (alias)
+          SZ_4 = SLICE(SCZ_2, bool, 1) (alias)
+Z_3: orig: Z
+    def:  Z_3 = SLICE(SCZ_2, bool, 1) (alias)
+    uses: branch Test(EQ,Z_3) mZero
+SZ_4: orig: SZ
+    def:  SZ_4 = SLICE(SCZ_2, bool, 1) (alias)
+    uses: branch Test(LT,SZ_4) mLessThan
+// proc1
+// Return size: 0
+define proc1
+proc1_entry:
+	def r1
+	// succ:  l1
+l1:
+	SCZ_2 = cond(r1)
+	Z_3 = SLICE(SCZ_2, bool, 1) (alias)
+	SZ_4 = SLICE(SCZ_2, bool, 1) (alias)
+	branch Test(EQ,Z_3) mZero
+	// succ:  l2 mZero
+l2:
+	branch Test(LT,SZ_4) mLessThan
+	// succ:  l3 mLessThan
+l3:
+	return
+	// succ:  proc1_exit
+mLessThan:
+	return
+	// succ:  proc1_exit
+mZero:
+	goto mLessThan
+	// succ:  mLessThan
+proc1_exit:
+======
+";
+
+            RunTest(sExp, m =>
+            {
+                var SCZ = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("SCZ"));
+                var Z = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("Z"));
+                var SZ = m.Frame.EnsureFlagGroup(m.Architecture.GetFlagGroup("SZ"));
+                var r1 = m.Register(1);
+
+                m.Assign(SCZ, m.Cond(r1));
+                m.BranchIf(m.Test(ConditionCode.EQ, Z), "mZero");
+                m.BranchIf(m.Test(ConditionCode.LT, SZ), "mLessThan");
+                m.Return();
+                m.Label("mZero");
+                m.Label("mLessThan");
                 m.Return();
             });
         }

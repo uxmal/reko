@@ -36,13 +36,13 @@ bl_10: orig: bl
 SCZO_11: orig: SCZO
     def:  SCZO_11 = cond(bl_10 - 0x02)
     uses: CZ_12 = SLICE(SCZO_11, bool, 2) (alias)
-          O_34 = SLICE(SCZO_11, bool, 4) (alias)
-          S_37 = SLICE(SCZO_11, bool, 0) (alias)
+          C_30 = SLICE(SCZO_11, bool, 1) (alias)
+          O_33 = SLICE(SCZO_11, bool, 4) (alias)
+          S_36 = SLICE(SCZO_11, bool, 0) (alias)
+          Z_40 = SLICE(SCZO_11, bool, 2) (alias)
 CZ_12: orig: CZ
     def:  CZ_12 = SLICE(SCZO_11, bool, 2) (alias)
     uses: branch Test(UGT,CZ_12) l0C00_0023
-          C_30 = SLICE(CZ_12, bool, 1) (alias)
-          Z_41 = SLICE(CZ_12, bool, 2) (alias)
 ax_13: orig: ax
     def:  ax_13 = 0x0000
     uses: ax_27 = PHI(ax_13, ax_25, ax_24, ax_26)
@@ -59,6 +59,9 @@ SZO_16: orig: SZO
     def:  SZO_16 = cond(bh_15)
 C_17: orig: C
     def:  C_17 = false
+    uses: C_29 = PHI(C_30, C_17, C_17, C_17)
+          C_29 = PHI(C_30, C_17, C_17, C_17)
+          C_29 = PHI(C_30, C_17, C_17, C_17)
 bx:bx
     def:  def bx
     uses: bx_19 = DPB(bx, bh, 8) (alias)
@@ -79,10 +82,9 @@ bx_21: orig: bx
           bx_28 = PHI(bx_19, bx_21, bx_21, bx_21)
 SCZO_22: orig: SCZO
     def:  SCZO_22 = cond(bx_21)
-    uses: C_31 = SLICE(SCZO_22, bool, 1) (alias)
-          O_35 = SLICE(SCZO_22, bool, 4) (alias)
-          S_38 = SLICE(SCZO_22, bool, 0) (alias)
-          Z_42 = SLICE(SCZO_22, bool, 2) (alias)
+    uses: O_34 = SLICE(SCZO_22, bool, 4) (alias)
+          S_37 = SLICE(SCZO_22, bool, 0) (alias)
+          Z_41 = SLICE(SCZO_22, bool, 2) (alias)
 bl_23: orig: bl
     def:  bl_23 = (byte) bx_21 (alias)
     uses: switch (bl_23) { l0C00_0017 l0C00_001B l0C00_001F }
@@ -102,49 +104,44 @@ bx_28: orig: bx
     def:  bx_28 = PHI(bx_19, bx_21, bx_21, bx_21)
     uses: use bx_28
 C_29: orig: C
-    def:  C_29 = PHI(C_30, C_31, C_31, C_31)
+    def:  C_29 = PHI(C_30, C_17, C_17, C_17)
     uses: use C_29
 C_30: orig: C
-    def:  C_30 = SLICE(CZ_12, bool, 1) (alias)
-    uses: C_29 = PHI(C_30, C_31, C_31, C_31)
-C_31: orig: C
-    def:  C_31 = SLICE(SCZO_22, bool, 1) (alias)
-    uses: C_29 = PHI(C_30, C_31, C_31, C_31)
-          C_29 = PHI(C_30, C_31, C_31, C_31)
-          C_29 = PHI(C_30, C_31, C_31, C_31)
+    def:  C_30 = SLICE(SCZO_11, bool, 1) (alias)
+    uses: C_29 = PHI(C_30, C_17, C_17, C_17)
+O_32: orig: O
+    def:  O_32 = PHI(O_33, O_34, O_34, O_34)
+    uses: use O_32
 O_33: orig: O
-    def:  O_33 = PHI(O_34, O_35, O_35, O_35)
-    uses: use O_33
+    def:  O_33 = SLICE(SCZO_11, bool, 4) (alias)
+    uses: O_32 = PHI(O_33, O_34, O_34, O_34)
 O_34: orig: O
-    def:  O_34 = SLICE(SCZO_11, bool, 4) (alias)
-    uses: O_33 = PHI(O_34, O_35, O_35, O_35)
-O_35: orig: O
-    def:  O_35 = SLICE(SCZO_22, bool, 4) (alias)
-    uses: O_33 = PHI(O_34, O_35, O_35, O_35)
-          O_33 = PHI(O_34, O_35, O_35, O_35)
-          O_33 = PHI(O_34, O_35, O_35, O_35)
+    def:  O_34 = SLICE(SCZO_22, bool, 4) (alias)
+    uses: O_32 = PHI(O_33, O_34, O_34, O_34)
+          O_32 = PHI(O_33, O_34, O_34, O_34)
+          O_32 = PHI(O_33, O_34, O_34, O_34)
+S_35: orig: S
+    def:  S_35 = PHI(S_36, S_37, S_37, S_37)
+    uses: use S_35
 S_36: orig: S
-    def:  S_36 = PHI(S_37, S_38, S_38, S_38)
-    uses: use S_36
+    def:  S_36 = SLICE(SCZO_11, bool, 0) (alias)
+    uses: S_35 = PHI(S_36, S_37, S_37, S_37)
 S_37: orig: S
-    def:  S_37 = SLICE(SCZO_11, bool, 0) (alias)
-    uses: S_36 = PHI(S_37, S_38, S_38, S_38)
-S_38: orig: S
-    def:  S_38 = SLICE(SCZO_22, bool, 0) (alias)
-    uses: S_36 = PHI(S_37, S_38, S_38, S_38)
-          S_36 = PHI(S_37, S_38, S_38, S_38)
-          S_36 = PHI(S_37, S_38, S_38, S_38)
+    def:  S_37 = SLICE(SCZO_22, bool, 0) (alias)
+    uses: S_35 = PHI(S_36, S_37, S_37, S_37)
+          S_35 = PHI(S_36, S_37, S_37, S_37)
+          S_35 = PHI(S_36, S_37, S_37, S_37)
+Z_39: orig: Z
+    def:  Z_39 = PHI(Z_40, Z_41, Z_41, Z_41)
+    uses: use Z_39
 Z_40: orig: Z
-    def:  Z_40 = PHI(Z_41, Z_42, Z_42, Z_42)
-    uses: use Z_40
+    def:  Z_40 = SLICE(SCZO_11, bool, 2) (alias)
+    uses: Z_39 = PHI(Z_40, Z_41, Z_41, Z_41)
 Z_41: orig: Z
-    def:  Z_41 = SLICE(CZ_12, bool, 2) (alias)
-    uses: Z_40 = PHI(Z_41, Z_42, Z_42, Z_42)
-Z_42: orig: Z
-    def:  Z_42 = SLICE(SCZO_22, bool, 2) (alias)
-    uses: Z_40 = PHI(Z_41, Z_42, Z_42, Z_42)
-          Z_40 = PHI(Z_41, Z_42, Z_42, Z_42)
-          Z_40 = PHI(Z_41, Z_42, Z_42, Z_42)
+    def:  Z_41 = SLICE(SCZO_22, bool, 2) (alias)
+    uses: Z_39 = PHI(Z_40, Z_41, Z_41, Z_41)
+          Z_39 = PHI(Z_40, Z_41, Z_41, Z_41)
+          Z_39 = PHI(Z_40, Z_41, Z_41, Z_41)
 // fn0C00_0000
 // Return size: 2
 define fn0C00_0000
@@ -166,10 +163,10 @@ l0C00_0000:
 	bl_10 = Mem6[ds_7:si:byte]
 	SCZO_11 = cond(bl_10 - 0x02)
 	CZ_12 = SLICE(SCZO_11, bool, 2) (alias)
-	C_30 = SLICE(CZ_12, bool, 1) (alias)
-	O_34 = SLICE(SCZO_11, bool, 4) (alias)
-	S_37 = SLICE(SCZO_11, bool, 0) (alias)
-	Z_41 = SLICE(CZ_12, bool, 2) (alias)
+	C_30 = SLICE(SCZO_11, bool, 1) (alias)
+	O_33 = SLICE(SCZO_11, bool, 4) (alias)
+	S_36 = SLICE(SCZO_11, bool, 0) (alias)
+	Z_40 = SLICE(SCZO_11, bool, 2) (alias)
 	branch Test(UGT,CZ_12) l0C00_0023
 	// succ:  l0C00_0009 l0C00_0023
 l0C00_0009:
@@ -180,10 +177,9 @@ l0C00_0009:
 	bx_21 = bx_20 + bx_20
 	bl_23 = (byte) bx_21 (alias)
 	SCZO_22 = cond(bx_21)
-	C_31 = SLICE(SCZO_22, bool, 1) (alias)
-	O_35 = SLICE(SCZO_22, bool, 4) (alias)
-	S_38 = SLICE(SCZO_22, bool, 0) (alias)
-	Z_42 = SLICE(SCZO_22, bool, 2) (alias)
+	O_34 = SLICE(SCZO_22, bool, 4) (alias)
+	S_37 = SLICE(SCZO_22, bool, 0) (alias)
+	Z_41 = SLICE(SCZO_22, bool, 2) (alias)
 	switch (bl_23) { l0C00_0017 l0C00_001B l0C00_001F }
 	// succ:  l0C00_0017 l0C00_001B l0C00_001F
 l0C00_0017:
@@ -203,18 +199,18 @@ l0C00_0023:
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
-	Z_40 = PHI(Z_41, Z_42, Z_42, Z_42)
-	S_36 = PHI(S_37, S_38, S_38, S_38)
-	O_33 = PHI(O_34, O_35, O_35, O_35)
-	C_29 = PHI(C_30, C_31, C_31, C_31)
+	Z_39 = PHI(Z_40, Z_41, Z_41, Z_41)
+	S_35 = PHI(S_36, S_37, S_37, S_37)
+	O_32 = PHI(O_33, O_34, O_34, O_34)
+	C_29 = PHI(C_30, C_17, C_17, C_17)
 	bx_28 = PHI(bx_19, bx_21, bx_21, bx_21)
 	ax_27 = PHI(ax_13, ax_25, ax_24, ax_26)
 	use ax_27
 	use bx_28
 	use C_29
 	use ds_7
-	use O_33
-	use S_36
+	use O_32
+	use S_35
 	use sp_8
-	use Z_40
+	use Z_39
 

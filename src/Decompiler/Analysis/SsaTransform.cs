@@ -85,7 +85,7 @@ namespace Reko.Analysis
         /// Assignment form.
         /// </summary>
         /// <remarks>
-        /// The resulting SSA identifiers are conventiently kept in the
+        /// The resulting SSA identifiers are conveniently kept in the
         /// SsaState property.
         /// </remarks>
         /// <param name="proc"></param>
@@ -804,17 +804,17 @@ namespace Reko.Analysis
 
             public SsaIdentifierTransformer VisitSequenceStorage(SequenceStorage seq)
             {
-                return new SsaSequenceTransformer(id, seq, stm, transform);
+                return new SequenceTransformer(id, seq, stm, transform);
             }
 
             public SsaIdentifierTransformer VisitStackArgumentStorage(StackArgumentStorage stack)
             {
-                return new SsaStackTransformer(id, stack.StackOffset, stm, transform);
+                return new StackTransformer(id, stack.StackOffset, stm, transform);
             }
 
             public SsaIdentifierTransformer VisitStackLocalStorage(StackLocalStorage local)
             {
-                return new SsaStackTransformer(id, local.StackOffset, stm, transform);
+                return new StackTransformer(id, local.StackOffset, stm, transform);
             }
 
             public SsaIdentifierTransformer VisitTemporaryStorage(TemporaryStorage temp)
@@ -1251,51 +1251,72 @@ namespace Reko.Analysis
 
             public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
             {
-                // Remove any flag groups that this covers.
-                for (int i = 0; i < bs.currentFlagDef.Count; ++i)
-                {
-                    if (this.flagGroup.Covers(bs.currentFlagDef[i].Item1))
-                    {
-                        bs.currentFlagDef.RemoveAt(i);
-                        --i;
-                    }
-                }
                 bs.currentFlagDef.Add(Tuple.Create(this.flagGroup, sid));
                 return sid.Identifier;
             }
 
             public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs, bool generateAlias)
             {
+                if (bs.currentFlagDef.Count == 0)
+                    return null;
                 SsaIdentifier sid = null;
-                for (int i = bs.currentFlagDef.Count-1; i >= 0; --i)
-                {
-                    if (bs.currentFlagDef[i].Item1.OverlapsWith(this.flagGroup))
-                    {
-                        sid = bs.currentFlagDef[i].Item2;
-                        break;
-                    }
-                }
-                if (sid == null)
-                    return null; 
+                uint bitsLeft = this.flagGroup.FlagGroupBits;
+                var overlaps = new List<SsaIdentifier>();
 
-                // Defined locally in this block.
-                // Has the alias already been calculated?
-                if (sid.OriginalIdentifier == id)
+                // Find the most recent exact match, if any.
+                for (int i = bs.currentFlagDef.Count - 1; i >= 0; --i)
                 {
-                    return sid;
+                    var f = bs.currentFlagDef[i];
+                    if (f.Item1.FlagGroupBits == this.flagGroup.FlagGroupBits)
+                        return bs.currentFlagDef[i].Item2;
                 }
 
-                // Does ssaId intersect the probed value?
-                if (sid.Identifier.Storage.OverlapsWith(this.flagGroup))
+                // Couldn't find an exact match, go find overlapping matches.
+                for (int i = bs.currentFlagDef.Count - 1; bitsLeft != 0 && i >= 0; --i)
                 {
-                    if (generateAlias)
+                    var f = bs.currentFlagDef[i];
+                    if (!(f.Item2.DefStatement.Instruction is AliasAssignment) &&
+                        f.Item1.OverlapsWith(this.flagGroup))
                     {
-                        sid = MaybeGenerateAliasStatement(sid);
-                        WriteVariable(bs, sid, false);
+                        // An overlap found. Remove the bits that it sets.
+                        bitsLeft &= ~f.Item1.FlagGroupBits;
+                        overlaps.Add(f.Item2);
                     }
-                    return sid;
                 }
-                return null;
+                if (overlaps.Count == 0)
+                    return null;
+
+                if (generateAlias)
+                {
+                    if (overlaps.Count > 1)
+                    {
+                        sid = GenerateFlagConjunction(overlaps);
+                    }
+                    else
+                    {
+                        sid = MaybeGenerateAliasStatement(overlaps[0]);
+                    }
+                    WriteVariable(bs, sid, false);
+                }
+                return sid;
+            }
+
+            private SsaIdentifier GenerateFlagConjunction(List<SsaIdentifier> overlaps)
+            {
+                Debug.Assert(overlaps.Count > 1);
+                Expression e = overlaps[0].Identifier;
+                foreach (var sid in overlaps.Skip(1))
+                {
+                    e = new BinaryExpression(
+                        Operator.Or, e.DataType, e, sid.Identifier);
+                }
+                var ass = new AliasAssignment(id, e);
+                var sidAlias = InsertAfterDefinition(overlaps[0].DefStatement, ass);
+                foreach (var sid in overlaps)
+                {
+                    sid.Uses.Add(sidAlias.DefStatement);
+                }
+                return sidAlias;
             }
 
             /// <summary>
@@ -1365,11 +1386,11 @@ namespace Reko.Analysis
             }
         }
 
-        public class SsaStackTransformer : SsaIdentifierTransformer
+        public class StackTransformer : SsaIdentifierTransformer
         {
             private int stackOffset;
 
-            public SsaStackTransformer(
+            public StackTransformer(
                 Identifier id,
                 int stackOffset,
                 Statement stm,
@@ -1414,11 +1435,11 @@ namespace Reko.Analysis
             }
         }
 
-        public class SsaSequenceTransformer : SsaIdentifierTransformer
+        public class SequenceTransformer : SsaIdentifierTransformer
         {
             private SequenceStorage seq;
 
-            public SsaSequenceTransformer(
+            public SequenceTransformer(
                 Identifier id,
                 SequenceStorage seq,
                 Statement stm,
