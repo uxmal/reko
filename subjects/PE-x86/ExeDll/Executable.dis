@@ -30,7 +30,7 @@ l00401000:
 fn00401000_exit:
 // DataOut: eax ebp
 // DataOut (flags): 
-// SymbolicIn: esp:<invalid> eax:<invalid> ebp:0x00000001 esi:<invalid> ecx:<invalid> -28(fp):0x00402108 -24(fp):<invalid> -20(fp):0x00402108 -16(fp):<invalid> -12(fp):0x00000001 -8(fp):0x00402108 -4(fp):<invalid>
+// SymbolicIn: esp:<invalid> eax:<invalid> ebp:<invalid> esi:<invalid> ecx:<invalid> -28(fp):0x00402108 -24(fp):<invalid> -20(fp):0x00402108 -16(fp):<invalid> -12(fp):0x00000001 -8(fp):0x00402108 -4(fp):<invalid>
 
 
 
@@ -100,7 +100,7 @@ l00401060:
 fn00401060_exit:
 // DataOut: ebp esp
 // DataOut (flags): 
-// SymbolicIn: esp:fp + 0xFFFFFFF8 ebp:0x00000001 esi:fp + 0x00000008 ecx:fp + 0x00000008 eax:0x00403378 -36(fp):<invalid> -32(fp):<invalid> -28(fp):eax -24(fp):<invalid> -20(fp):0x00000000 -16(fp):fp + 0x00000008 -12(fp):0x00000001 -8(fp):esi -4(fp):ebp
+// SymbolicIn: esp:<invalid> ebp:<invalid> esi:<invalid> ecx:<invalid> eax:<invalid> -12(fp):0x00000001 -8(fp):esi -4(fp):ebp
 
 
 
@@ -364,7 +364,7 @@ l0040126C:
 	branch bl_139 != 0x00 l00401275
 // DataOut: ebp esi esp fs
 // DataOut (flags): 
-// SymbolicIn: esp:<invalid> ecx:<invalid> bl:<invalid> eax:<invalid> al:<invalid> esi:<invalid> edi:<invalid> edx:<invalid> ebx:<invalid> ebp:0x00000001 -12(fp):<invalid> -8(fp):0x004024D8 -4(fp):0x00000014
+// SymbolicIn: esp:<invalid> ecx:<invalid> bl:<invalid> eax:<invalid> al:<invalid> esi:<invalid> edi:<invalid> edx:<invalid> ebx:<invalid> ebp:<invalid> -12(fp):<invalid> -8(fp):0x004024D8 -4(fp):0x00000014
 // LocalsOut: Local -0004(32)
 
 l00401270:
@@ -387,7 +387,7 @@ l00401270:
 	esp_159 = esp_195 + 0xFFFFFFFC
 // DataOut: ebp esi esp fs
 // DataOut (flags): 
-// SymbolicIn: esp:<invalid> ecx:<invalid> bl:<invalid> eax:<invalid> al:<invalid> esi:<invalid> edi:<invalid> edx:<invalid> ebx:<invalid> ebp:0x00000001 -12(fp):<invalid> -8(fp):0x004024D8 -4(fp):0x00000014
+// SymbolicIn: esp:<invalid> ecx:<invalid> bl:<invalid> eax:<invalid> al:<invalid> esi:<invalid> edi:<invalid> edx:<invalid> ebx:<invalid> ebp:<invalid> -12(fp):<invalid> -8(fp):0x004024D8 -4(fp):0x00000014
 // LocalsOut: Local -0004(32)
 
 l00401275:
@@ -395,11 +395,11 @@ l00401275:
 	Mem184[esp_183:word32] = 0x00000000
 	Mem186[esp_183 - 0x00000004:word32] = 0x00000001
 	fn004015EB(dwArg00, bArg04)
-	Mem192[0xFFFFFFFD:word32] = 0xFFFFFFFE
+	Mem192[ebp_12 - 0x00000004:word32] = 0xFFFFFFFE
 	eax_193 = esi_161
 // DataOut: eax ebp fs
 // DataOut (flags): 
-// SymbolicIn: esp:<invalid> ecx:<invalid> bl:<invalid> eax:<invalid> al:<invalid> esi:<invalid> edi:<invalid> edx:<invalid> ebx:<invalid> ebp:0x00000001 -12(fp):<invalid> -8(fp):0x004024D8 -4(fp):0x00000014
+// SymbolicIn: esp:<invalid> ecx:<invalid> bl:<invalid> eax:<invalid> al:<invalid> esi:<invalid> edi:<invalid> edx:<invalid> ebx:<invalid> ebp:<invalid> -12(fp):<invalid> -8(fp):0x004024D8 -4(fp):0x00000014
 // LocalsOut: Local -0004(32)
 
 l00401266:
@@ -407,7 +407,7 @@ l00401266:
 	exit(Mem167[esp_133 + 0xFFFFFFF8:int32])
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: esp:<invalid> ecx:<invalid> bl:<invalid> eax:<invalid> al:<invalid> esi:<invalid> edi:<invalid> edx:<invalid> ebx:<invalid> ebp:0x00000001 -12(fp):<invalid> -8(fp):0x004024D8 -4(fp):0x00000014
+// SymbolicIn: esp:<invalid> ecx:<invalid> bl:<invalid> eax:<invalid> al:<invalid> esi:<invalid> edi:<invalid> edx:<invalid> ebx:<invalid> ebp:<invalid> -12(fp):<invalid> -8(fp):0x004024D8 -4(fp):0x00000014
 
 l004011BA:
 	Mem294[ebp_12 - 0x00000004:word32] = 0xFFFFFFFE
@@ -1108,13 +1108,14 @@ void fn00401976()
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 
 // MayUse: 
-// LiveOut:
-// Trashed:
-// Preserved: esp
+// LiveOut: esp
+// Trashed: esp rsp sp spl
+// Preserved:
 fn00401976_entry:
 // DataOut: bl ebx ecx edi fs
 // DataOut (flags): 
 // SymbolicIn: esp:fp
+// LocalsOut: fp(32)
 
 l00401976:
 	word32 esp_3
@@ -1122,14 +1123,14 @@ l00401976:
 		uses: esp_1
 		defs: esp_3
 	return
-// DataOut: bl ebx ecx edi fs
+// DataOut: bl ebx ecx edi esp fs
 // DataOut (flags): 
 // SymbolicIn: esp:fp
 
 fn00401976_exit:
-// DataOut:
+// DataOut: esp
 // DataOut (flags): 
-// SymbolicIn: esp:fp
+// SymbolicIn: esp:<invalid>
 
 
 
@@ -1353,7 +1354,6 @@ l00401ABD:
 // LocalsOut: fp(32) Local -000C(0) Local -0014(0) Local -0024(32)
 
 l00401AD4:
-	word32 eax_143 = ecx_126
 	branch eax_89 < 0x00000007 l00401B1B
 // DataOut: eax ebx edi edx fs
 // DataOut (flags): 
@@ -1366,7 +1366,6 @@ l00401AE9:
 	word32 ecx_212
 	word32 edx_213
 	__cpuid(0x00000007, 0x00000000, &eax_210, &ebx_211, &ecx_212, &edx_213)
-	eax_143 = ecx_126
 	branch (ebx_211 & 0x00000200) == 0x00000000 l00401B1B
 // DataOut: eax edi fs
 // DataOut (flags): 
@@ -1381,7 +1380,7 @@ l00401B12:
 // LocalsOut: fp(32) Local -0014(0)
 
 l00401B1B:
-	branch (eax_143 & 0x00100000) == 0x00000000 l00401B91
+	branch (ecx_126 & 0x00100000) == 0x00000000 l00401B91
 // DataOut: eax fs
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000038 ebp:fp - 0x00000004 ebx:<invalid> eax:<invalid> ecx:<invalid> edi:<invalid> edx:<invalid> esi:<invalid> -60(fp):0x00000001 -56(fp):edi -52(fp):esi -48(fp):ebx -44(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -32(fp):<invalid> -28(fp):<invalid> -24(fp):<invalid> -20(fp):<invalid> -12(fp):<invalid> -8(fp):<invalid> -4(fp):ebp
@@ -1390,14 +1389,14 @@ l00401B1B:
 l00401B24:
 	Mem165[0x00403010:word32] = Mem85[0x00403010:word32] | 0x00000004
 	Mem167[0x0040336C:word32] = 0x00000002
-	branch (eax_143 & 0x08000000) == 0x00000000 l00401B91
+	branch (ecx_126 & 0x08000000) == 0x00000000 l00401B91
 // DataOut: eax fs
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000030 ebp:fp - 0x00000004 ebx:<invalid> eax:<invalid> ecx:<invalid> edi:edi edx:<invalid> esi:esi -60(fp):0x00000001 -56(fp):edi -52(fp):esi -48(fp):ebx -44(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -32(fp):<invalid> -28(fp):<invalid> -24(fp):<invalid> -20(fp):<invalid> -12(fp):<invalid> -8(fp):<invalid> -4(fp):ebp
 // LocalsOut: fp(32) Local -0014(0)
 
 l00401B3C:
-	branch (eax_143 & 0x10000000) == 0x00000000 l00401B91
+	branch (ecx_126 & 0x10000000) == 0x00000000 l00401B91
 // DataOut: fs
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000030 ebp:fp - 0x00000004 ebx:<invalid> eax:<invalid> ecx:<invalid> edi:edi edx:<invalid> esi:esi -60(fp):0x00000001 -56(fp):edi -52(fp):esi -48(fp):ebx -44(fp):<invalid> -40(fp):<invalid> -36(fp):<invalid> -32(fp):<invalid> -28(fp):<invalid> -24(fp):<invalid> -20(fp):<invalid> -12(fp):<invalid> -8(fp):<invalid> -4(fp):ebp

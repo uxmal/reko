@@ -254,7 +254,7 @@ namespace Reko.Analysis
             this.call = call;
             ssa.ReplaceDefinitions(stm, null);
             ssa.RemoveUses(stm);
-            Transform(stm.Instruction);
+            stm.Instruction = Transform(stm.Instruction);
         }
 
         public override Instruction TransformAssignment(Assignment a)

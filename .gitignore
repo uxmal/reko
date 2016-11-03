@@ -12,6 +12,7 @@ TestResults
 *.VC.opendb
 *.VC.db
 /src/UpgradeLog.htm
+/src/UnitTests/UnitTests.VisualState.xml
 /src/UnitTests/UnitTests.csproj.VisualState.xml
 /src/UnitTests/TestResult.xml
 /src/tools/reko.config
