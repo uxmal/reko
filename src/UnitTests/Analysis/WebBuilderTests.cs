@@ -59,6 +59,7 @@ namespace Reko.UnitTests.Analysis
         {
             Given_FakeWin32Platform(mr);
             this.platform.Stub(p => p.LookupGlobalByName(null, null)).IgnoreArguments().Return(null);
+            this.platform.Stub(p => p.DataTypeFromImportName(null)).IgnoreArguments().Return(null);
 
             mr.ReplayAll();
 
