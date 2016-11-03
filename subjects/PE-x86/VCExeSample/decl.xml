@@ -97,7 +97,7 @@
           <fn convention="__thiscall">
             <type>thiscall_class</type>
             <return>
-              <void />
+              <prim domain="Real" size="8" />
             </return>
             <arg>
               <prim domain="SignedInt" size="4" />
