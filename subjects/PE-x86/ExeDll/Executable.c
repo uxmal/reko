@@ -4,7 +4,7 @@
 
 #include "Executable.h"
 
-ptr32 fn00401000(ptr32 & ebpOut)
+word32 fn00401000(ptr32 & ebpOut)
 {
 	InitializeCriticalSection(&exported_critical_section);
 	fn00401060(0x00402108);
@@ -237,7 +237,7 @@ l00401177:
 		*esp_183 = 0x00;
 		*(esp_183 - 0x04) = 0x01;
 		fn004015EB(dwArg00, bArg04);
-		(word32 *) ~0x02 = ~0x01;
+		*(ebp_12 - 0x04) = ~0x01;
 		eax_193 = esi_161;
 l004012C8:
 		word32 ebp_62;
@@ -249,12 +249,12 @@ l004012C8:
 	goto l00401177;
 }
 
-Eq_547 * fn004013FB(word32 dwArg04, ptr32 dwArg08)
+Eq_550 * fn004013FB(word32 dwArg04, ptr32 dwArg08)
 {
-	struct Eq_547 * eax_26;
-	struct Eq_551 * ecx_13 = dwArg04 + dwArg04->dw003C / 0x0040;
-	struct Eq_547 * edx_16 = ecx_13->w0014 + 0x02 + (word32) ecx_13->w0014 / 22;
-	struct Eq_547 * esi_19 = edx_16 + (word32) ecx_13->w0006;
+	struct Eq_550 * eax_26;
+	struct Eq_554 * ecx_13 = dwArg04 + dwArg04->dw003C / 0x0040;
+	struct Eq_550 * edx_16 = ecx_13->w0014 + 0x02 + (word32) ecx_13->w0014 / 22;
+	struct Eq_550 * esi_19 = edx_16 + (word32) ecx_13->w0006;
 	if (edx_16 != esi_19)
 	{
 		do
@@ -315,15 +315,15 @@ byte fn00401474(word32 edx, word32 dwArg04)
 	return 0x00;
 }
 
-Eq_653 * fn00401544(ptr32 ecx, word32 ebx, ptr32 esi, ptr32 edi, ptr32 & ebxOut, ptr32 & esiOut, ptr32 & ediOut)
+Eq_656 * fn00401544(ptr32 ecx, word32 ebx, ptr32 esi, ptr32 edi, ptr32 & ebxOut, ptr32 & esiOut, ptr32 & ediOut)
 {
-	struct Eq_653 * eax_30;
+	struct Eq_656 * eax_30;
 	struct Eq_91 * ebp_11 = fn00401980(ecx, ebx, esi, edi, dwLoc0C, 0x004024F8, 0x08);
 	*(ebp_11 - 0x04) = *(ebp_11 - 0x04) & 0x00;
-	struct Eq_673 * eax_16 = (struct Eq_673 *) 23117;
+	struct Eq_676 * eax_16 = (struct Eq_676 *) 23117;
 	if ((word16 *) 0x00400000 == 23117)
 	{
-		eax_16 = (struct Eq_673 *) (struct Eq_673 **) 0x0040003C;
+		eax_16 = (struct Eq_676 *) (struct Eq_676 **) 0x0040003C;
 		if (eax_16->dw400000 == 0x4550 && eax_16->w400018 == 0x010B)
 		{
 			*(fp - 0x0C) = ebp_11->dw0008 - 0x00400000;
@@ -332,7 +332,7 @@ Eq_653 * fn00401544(ptr32 ecx, word32 ebx, ptr32 esi, ptr32 edi, ptr32 & ebxOut,
 			if (eax_16 != null && eax_16->dw0024 >= 0x00)
 			{
 				*(ebp_11 - 0x04) = ~0x01;
-				eax_30 = (struct Eq_653 *) DPB(eax_16, 0x01, 0);
+				eax_30 = (struct Eq_656 *) DPB(eax_16, 0x01, 0);
 l004015C8:
 				word32 ebp_37;
 				word32 esi_38;
@@ -344,7 +344,7 @@ l004015C8:
 		}
 	}
 	*(ebp_11 - 0x04) = ~0x01;
-	eax_30 = (struct Eq_653 *) DPB(eax_16, 0x00, 0);
+	eax_30 = (struct Eq_656 *) DPB(eax_16, 0x00, 0);
 	goto l004015C8;
 }
 
@@ -416,10 +416,10 @@ void fn00401774(word32 dwArg00, word32 dwArg04)
 
 bool fn0040188F()
 {
-	Eq_907 eax_4 = GetModuleHandleW(null);
+	Eq_910 eax_4 = GetModuleHandleW(null);
 	if (eax_4 != null && eax_4->unused == 23117)
 	{
-		struct Eq_921 * eax_42 = eax_4 + eax_4->dw003C / 0x0040;
+		struct Eq_924 * eax_42 = eax_4 + eax_4->dw003C / 0x0040;
 		if (eax_42->dw0000 == 0x4550 && (eax_42->w0018 == 0x010B && eax_42->dw0074 > 0x0E))
 			return eax_42->dw00E8 != 0x00;
 	}
@@ -475,10 +475,10 @@ word32 fn004019C6(Eq_91 * ebp, ui32 dwArg00, word32 dwArg04, ptr32 dwArg08, word
 		*(ebp - 0x14) = ebp->dw0004;
 		*(ebp - 0x18) = 0x00401090;
 		*(ebp - 0x1C) = 0x00403004;
-		struct Eq_1087 * esp_57;
+		struct Eq_1090 * esp_57;
 		word32 ebp_58;
 		word32 ecx_59;
-		struct Eq_1090 * fs_60;
+		struct Eq_1093 * fs_60;
 		word32 edi_61;
 		word32 esi_62;
 		word32 ebx_63;
@@ -519,7 +519,6 @@ void fn004019FE(word32 edx)
 		}
 		else
 			edi_135 = globals->dw403370;
-		ui32 eax_143 = ecx_126;
 		if (eax_89 >= 0x07)
 		{
 			word32 eax_210;
@@ -527,15 +526,14 @@ void fn004019FE(word32 edx)
 			word32 ecx_212;
 			word32 edx_213;
 			__cpuid(0x07, 0x00, &eax_210, &ebx_211, &ecx_212, &edx_213);
-			eax_143 = ecx_126;
 			if ((ebx_211 & 0x0200) != 0x00)
 				globals->dw403370 = edi_135 | 0x02;
 		}
-		if ((eax_143 & 0x00100000) != 0x00)
+		if ((ecx_126 & 0x00100000) != 0x00)
 		{
 			globals->dw403010 = globals->dw403010 | 0x04;
 			globals->dw40336C = 0x02;
-			if ((eax_143 & 0x08000000) != 0x00 && ((eax_143 & 0x10000000) != 0x00 && (((word32) __xgetbv(0x00) & 0x06) == 0x06 && true)))
+			if ((ecx_126 & 0x08000000) != 0x00 && ((ecx_126 & 0x10000000) != 0x00 && (((word32) __xgetbv(0x00) & 0x06) == 0x06 && true)))
 			{
 				ui32 eax_189 = globals->dw403010;
 				globals->dw40336C = 0x03;
