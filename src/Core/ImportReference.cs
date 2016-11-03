@@ -87,7 +87,7 @@ namespace Reko.Core
             //$REVIEW: the way imported symbols are resolved as 
             // globals or functions needs a revisit.
             if (t != null && !(t.Item2 is FunctionType))
-                return new Identifier(t.Item1, t.Item2, new MemoryStorage());
+                return new Identifier(t.Item1, t.Item2, MemoryStorage.Instance);
             else
                 return null;
         }

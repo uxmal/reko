@@ -147,7 +147,7 @@ namespace Reko.Core
                 DataType dt;
                 if (mod.GlobalsByOrdinal.TryGetValue(ordinal, out dt))
                 {
-                    return new Identifier("ExportedGlobal_" + ordinal, dt, new MemoryStorage());
+                    return new Identifier("ExportedGlobal_" + ordinal, dt, MemoryStorage.Instance);
                 }
             }
 
