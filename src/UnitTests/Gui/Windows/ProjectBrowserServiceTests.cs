@@ -390,6 +390,12 @@ namespace Reko.UnitTests.Gui.Windows
             project.Programs.Add(program);
         }
 
+        private void Given_ImportedFunction(Address addr, string module, string functionName)
+        {
+            Assert.IsNotNull(program);
+            this.program.ImportReferences.Add(addr, new NamedImportReference(addr, module, functionName));
+        }
+
         private void Given_ImageMapItem(uint address)
         {
             this.program.ImageMap.AddItemWithSize(
@@ -693,6 +699,37 @@ namespace Reko.UnitTests.Gui.Windows
                     dObject, 0, 40, 40,
                     DragDropEffects.All,
                     DragDropEffects.All);
+        }
+
+        [Test]
+        public void PBS_SingleBinary_Imports()
+        {
+            var pbs = new ProjectBrowserService(sc, fakeTree);
+            Given_Project();
+            Given_ProgramWithOneSegment();
+            Given_ImportedFunction(Address.Ptr32(0x123400), "KERNEL32", "LoadLibraryA");
+
+            pbs.Load(project);
+
+            Assert.IsTrue(fakeTree.ShowNodeToolTips);
+
+            Expect(
+                "<?xml version=\"1.0\" encoding=\"utf-16\"?>" +
+                "<root>" +
+                "<node " +
+                    "text=\"foo.exe\" " +
+                    "tip=\"c:\\test\\foo.exe" + cr + "12300000\" " +
+                    "tag=\"ProgramDesigner\">" +
+                    "<node text=\"Foo Processor\" tag=\"ArchitectureDesigner\" />" +
+                    "<node text=\"(Unknown operating environment)\" tag=\"PlatformDesigner\" />" +
+                    "<node " +
+                        "text=\".text\" " +
+                        "tip=\".text" + cr + "Address: 12340000" + cr + "Size: 1000" + cr + "r-x" + "\" " +
+                        "tag=\"ImageMapSegmentNodeDesigner\" />" +
+                    "<node text=\"Imports\" tag=\"ImportDesigner\" />" +
+                    "<node tag=\"ProgramResourceGroupDesigner\" />" +
+                "</node>" +
+                "</root>");
         }
     }
 }

@@ -129,12 +129,14 @@ namespace Reko.Core
         ExternalProcedure LookupProcedureByName(string moduleName, string procName);
         ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal);
         Identifier LookupGlobalByName(string moduleName, string globalName);
+        Identifier LookupGlobalByOrdinal(string moduleName, int ordinal);
         ProcedureCharacteristics LookupCharacteristicsByName(string procName);
         Address MakeAddressFromConstant(Constant c);
         Address MakeAddressFromLinear(ulong uAddr);
         bool TryParseAddress(string sAddress, out Address addr);
         Dictionary<string, object> SaveUserOptions();
         ExternalProcedure SignatureFromName(string importName);
+        Tuple<string, DataType, SerializedType> DataTypeFromImportName(string importName);
     }
 
     /// <summary>
@@ -401,12 +403,22 @@ namespace Reko.Core
             return null;
         }
 
+        public virtual Tuple<string, DataType, SerializedType> DataTypeFromImportName(string importName)
+        {
+            return null;
+        }
+
         public virtual ExternalProcedure LookupProcedureByOrdinal(string moduleName, int ordinal)
         {
             return null;
         }
 
         public virtual Identifier LookupGlobalByName(string moduleName, string globalName)
+        {
+            return null;
+        }
+
+        public virtual Identifier LookupGlobalByOrdinal(string moduleName, int ordinal)
         {
             return null;
         }

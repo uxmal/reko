@@ -52,6 +52,11 @@ namespace Reko.ImageLoaders.Elf
 
             this.importReferences = program.ImportReferences;
 
+            LoadImportReferencesFromRelaPlt();
+        }
+
+        private void LoadImportReferencesFromRelaPlt()
+        {
             var rela_plt = loader.GetSectionInfoByName(".rela.plt");
             var plt = loader.GetSectionInfoByName(".plt");
             var relaRdr = loader.CreateReader(rela_plt.FileOffset);

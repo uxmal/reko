@@ -136,14 +136,17 @@
   <data name="Node_GlobalVariables" xml:space="preserve">
     <value>Global variables</value>
   </data>
+  <data name="Node_Imports" xml:space="preserve">
+    <value>Imports</value>
+  </data>
   <data name="ReconstructDataTypes" xml:space="preserve">
     <value>Reco&amp;nstruct data types</value>
   </data>
   <data name="ScanBinaries" xml:space="preserve">
     <value>Sca&amp;n binaries</value>
   </data>
-  <data name="Segment:" xml:space="preserve">
-    <value />
+  <data name="Segment" xml:space="preserve">
+    <value>Segment:</value>
   </data>
   <data name="SegmentGlobalsFmt" xml:space="preserve">
     <value>{0} global variables</value>

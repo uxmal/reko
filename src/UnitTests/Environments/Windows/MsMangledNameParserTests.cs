@@ -37,7 +37,7 @@ namespace Reko.UnitTests.Environments.Windows
             var p = new MsMangledNameParser(parse);
             var sp = p.Parse();
             var sb = new StringBuilder();
-            Assert.AreEqual(expected, new Renderer(sb).Render(p.Modifier, p.Scope, sp.Name, sp.Type));
+            Assert.AreEqual(expected, new Renderer(sb).Render(p.Modifier, p.Scope, sp.Item1, sp.Item2));
         }
 
         class Renderer : ISerializedTypeVisitor<StringBuilder>

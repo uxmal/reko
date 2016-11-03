@@ -30,10 +30,11 @@ namespace Reko.ImageLoaders.Elf
 
     public abstract class DynamicSectionRenderer : ImageSegmentRenderer
     {
-        public const int DT_NULL = 0; // ignored mandatory mandatory
-        public const int DT_NEEDED = 1; // d_val   optional optional
-        public const int DT_PLTRELSZ = 2; // d_val optional optional
-        public const int DT_PLTGOT = 3; // d_ptr optional optional
+                                      //            Executable Shared object
+        public const int DT_NULL = 0; // ignored    mandatory  mandatory
+        public const int DT_NEEDED = 1; // d_val    optional optional
+        public const int DT_PLTRELSZ = 2; // d_val  optional optional
+        public const int DT_PLTGOT = 3; // d_ptr optional   optional
         public const int DT_HASH = 4; // d_ptr mandatory mandatory
         public const int DT_STRTAB = 5; // d_ptr mandatory mandatory
         public const int DT_SYMTAB = 6; // d_ptr mandatory mandatory
@@ -47,6 +48,9 @@ namespace Reko.ImageLoaders.Elf
         public const int DT_SONAME = 14; // d_val ignored optional
         public const int DT_RPATH = 15; // d_val optional ignored
         public const int DT_SYMBOLIC = 16; // ignored ignored optional
+        public const int DT_REL = 17;      // d_ptr mandatory optional
+        public const int DT_RELSZ = 18;// d_val     mandatory optional
+        public const int DT_RELENT = 19; // d_val   mandatory optional
         public const int DT_PLTREL = 20;    // d_val ignored ignored
         public const int DT_DEBUG = 21;
         public const int DT_JMPREL = 23;
@@ -67,6 +71,11 @@ namespace Reko.ImageLoaders.Elf
             { DT_PLTGOT,  new DynamicSectionEntryRenderer { Name = "DT_PLTGOT", Format = DtFormat.Address} },
             { DT_PLTREL,  new DynamicSectionEntryRenderer { Name = "DT_PLTREL", Format = DtFormat.Hexadecimal } },
             { DT_PLTRELSZ, new DynamicSectionEntryRenderer { Name = "DT_PLTRELSZ", Format = DtFormat.Decimal } },
+
+            { DT_REL,     new DynamicSectionEntryRenderer { Name="DT_REL", Format = DtFormat.Address } },
+            { DT_RELSZ,   new DynamicSectionEntryRenderer { Name="DT_RELSZ", Format = DtFormat.Decimal } },
+            { DT_RELENT,  new DynamicSectionEntryRenderer { Name="DT_RELENT", Format = DtFormat.Decimal } },
+
             { DT_JMPREL,  new DynamicSectionEntryRenderer { Name = "DT_JMPREL", Format = DtFormat.Address} },
             { DT_NEEDED,  new DynamicSectionEntryRenderer { Name ="DT_NEEDED",  Format = DtFormat.String } },
             { DT_STRSZ,   new DynamicSectionEntryRenderer { Name = "DT_STRSZ", Format= DtFormat.Hexadecimal } },

@@ -31,6 +31,41 @@ namespace Reko.Environments.Windows
 {
     public class SignatureGuesser
     {
+        public static Tuple<string, DataType, SerializedType> InferTypeFromName(string fnName, TypeLibraryDeserializer loader, IPlatform platform)
+        {
+            if (fnName[0] == '?')
+            {
+                // Microsoft-mangled signatures begin with '?'
+                var pmnp = new MsMangledNameParser(fnName);
+                Tuple<string, SerializedType, SerializedType> field = null;
+                try
+                {
+                    field = pmnp.Parse();
+                }
+                catch (Exception ex)
+                {
+                    Debug.Print("*** Error parsing {0}. {1}", fnName, ex.Message);
+                    return null;
+                }
+                var sproc = field.Item2 as SerializedSignature;
+                if (sproc != null)
+                {
+                    var sser = platform.CreateProcedureSerializer(loader, sproc.Convention);
+                    var sig = sser.Deserialize(sproc, platform.Architecture.CreateFrame());    //$BUGBUG: catch dupes?
+                    return new Tuple<string, DataType, SerializedType>(
+                        field.Item1,
+                        sig,
+                        field.Item3);
+                }
+                else
+                {
+                    var dt = field.Item2.Accept(loader);
+                    return Tuple.Create(field.Item1, dt, field.Item3);
+                }
+            }
+            return null;
+        }
+
         /// <summary>
         /// Guesses the signature of a procedure based on its name.
         /// </summary>
@@ -71,7 +106,7 @@ namespace Reko.Environments.Windows
             {
                 // Microsoft-mangled signatures begin with '?'
                 var pmnp = new MsMangledNameParser(fnName);
-                StructField_v1 field = null;
+                Tuple<string,SerializedType,SerializedType> field = null;
                 try
                 {
                     field = pmnp.Parse();
@@ -81,12 +116,12 @@ namespace Reko.Environments.Windows
                     Debug.Print("*** Error parsing {0}. {1}", fnName, ex.Message);
                     return null;
                 }
-                var sproc = field.Type as SerializedSignature;
+                var sproc = field.Item2 as SerializedSignature;
                 if (sproc != null)
                 {
                     var sser = platform.CreateProcedureSerializer(loader, sproc.Convention);
                     var sig = sser.Deserialize(sproc, platform.Architecture.CreateFrame());    //$BUGBUG: catch dupes?
-                    return new ExternalProcedure(field.Name, sig)
+                    return new ExternalProcedure(field.Item1, sig)
                     {
                         EnclosingType = sproc.EnclosingType
                     };
