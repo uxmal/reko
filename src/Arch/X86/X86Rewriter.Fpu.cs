@@ -363,30 +363,59 @@ namespace Reko.Arch.X86
                     throw new AddressCorrelatedException(nextInstr.Address, "Expected instruction after fstsw;test {0},{1}.", acc.Register, imm.Value);
                 nextInstr = dasm.Current;
                 ric.Length += (byte) nextInstr.Length;
-                //var r = new RtlInstructionCluster(nextInstr.Address, nextInstr.Length);
-                //r.Instructions.AddRange(ric.Instructions);
-                //emitter = new RtlEmitter(r.Instructions);
-                //ric = r;
+
+                /* fcom/fcomp/fcompp Results:
+                    Condition      C3  C2  C0
+                    ST(0) > SRC     0   0   0
+                    ST(0) < SRC     0   0   1
+                    ST(0) = SRC     1   0   0
+                    Unordered       1   1   1
+
+                   Masks:
+                    Mask   Flags
+                    0x01   C0
+                    0x04   C2
+                    0x40   C3
+                    0x05   C2 and C0
+                    0x41   C3 and C0
+                    0x44   C3 and C2
+
+                  Masks && jump operations:
+                    Opcode Mask Condition
+                    jpe    0x05    >=
+                    jpe    0x41    >
+                    jpe    0x44    !=
+                    jpo    0x05    <
+                    jpo    0x41    <=
+                    jpo    0x44    =
+                    jz     0x01    >=
+                    jz     0x40    !=
+                    jz     0x41    >
+                    jnz    0x01    <
+                    jnz    0x40    =
+                    jnz    0x41    <=
+                */
+
                 switch (nextInstr.code)
                 {
                 case Opcode.jpe:
-                    if (mask == 0x05) { Branch(ConditionCode.LE, nextInstr.op1); return true; }
-                    if (mask == 0x41) { Branch(ConditionCode.GE, nextInstr.op1); return true; }
+                    if (mask == 0x05) { Branch(ConditionCode.GE, nextInstr.op1); return true; }
+                    if (mask == 0x41) { Branch(ConditionCode.GT, nextInstr.op1); return true; }
                     if (mask == 0x44) { Branch(ConditionCode.NE, nextInstr.op1); return true; }
                     break;
                 case Opcode.jpo:
                     if (mask == 0x44) { Branch(ConditionCode.EQ, nextInstr.op1); return true;}
-                    if (mask == 0x41) { Branch(ConditionCode.GE, nextInstr.op1); return true;}
+                    if (mask == 0x41) { Branch(ConditionCode.LE, nextInstr.op1); return true;}
                     if (mask == 0x05) { Branch(ConditionCode.LT, nextInstr.op1); return true;}
                     break;
                 case Opcode.jz:
                     if (mask == 0x40) { Branch(ConditionCode.NE, nextInstr.op1); return true; }
-                    if (mask == 0x41) { Branch(ConditionCode.LT, nextInstr.op1); return true; }
+                    if (mask == 0x41) { Branch(ConditionCode.GT, nextInstr.op1); return true; }
                     break;
                 case Opcode.jnz:
                     if (mask == 0x40) { Branch(ConditionCode.EQ, nextInstr.op1); return true; }
-                    if (mask == 0x41) { Branch(ConditionCode.GE, nextInstr.op1); return true; }
-                    if (mask == 0x01) { Branch(ConditionCode.GT, nextInstr.op1); return true; }
+                    if (mask == 0x41) { Branch(ConditionCode.LE, nextInstr.op1); return true; }
+                    if (mask == 0x01) { Branch(ConditionCode.LT, nextInstr.op1); return true; }
                     break;
                 }
 
