@@ -7,7 +7,6 @@ install:
 script:
   - xbuild /p:Configuration=TravisRelease src/Reko-decompiler.sln
   - cp ./src/Environments/Msdos/realmodeintservices.xml ./src/UnitTests/bin/TravisRelease/realmodeintservices.xml
-
+  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./src/UnitTests/bin/TravisRelease/Reko.UnitTests.dll -exclude=UserInterface,Capstone,FailedTests
 # Disabled temporarily as per discussion in #320
-#  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./src/UnitTests/bin/TravisRelease/Reko.UnitTests.dll -exclude=UserInterface,Capstone,FailedTests
 #  - cd subjects; python regressionTests.py --check-output --configuration=TravisRelease
