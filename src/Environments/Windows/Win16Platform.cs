@@ -97,6 +97,11 @@ namespace Reko.Environments.Windows
             return null;
         }
 
+        public override void InjectProcedureEntryStatements(Procedure proc, Address addr, CodeEmitter m)
+        {
+            m.Assign(proc.Frame.EnsureRegister(Registers.Top), 0);
+        }
+
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)
         {
             EnsureTypeLibraries(PlatformIdentifier);

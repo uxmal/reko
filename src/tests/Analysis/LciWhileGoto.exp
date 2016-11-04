@@ -8,36 +8,36 @@ fn0C00_0000_entry:
 	def di
 	// succ:  l0C00_0000
 l0C00_0000:
-	si_6 = si
+	si_7 = si
 	goto l0C00_001A
 	// succ:  l0C00_001A
 l0C00_0005:
-	Mem13[ds:di:word16] = ax_8
-	branch ax_8 != 0x0000 l0C00_0011
+	Mem14[ds:di:word16] = ax_9
+	branch ax_9 != 0x0000 l0C00_0011
 	// succ:  l0C00_000B l0C00_0011
 l0C00_000B:
-	ax_23 = 0xFFFF
+	ax_24 = 0xFFFF
 	goto l0C00_0024
 	// succ:  l0C00_0024
 l0C00_0011:
-	branch ax_8 != 0x000D l0C00_001A
+	branch ax_9 != 0x000D l0C00_001A
 	// succ:  l0C00_0016 l0C00_001A
 l0C00_0016:
-	Mem21[ds:0x0302:word16] = Mem13[ds:0x0302:word16] + 0x0001
+	Mem22[ds:0x0302:word16] = Mem14[ds:0x0302:word16] + 0x0001
 	// succ:  l0C00_001A
 l0C00_001A:
-	Mem7 = PHI(Mem0, Mem13, Mem21)
-	si_6 = PHI(si_6, si_9, si_9)
-	ax_8 = Mem7[ds:si_6:word16]
-	si_9 = si_6 + 0x0002
-	branch ax_8 != 0x0020 l0C00_0005
+	Mem8 = PHI(Mem0, Mem14, Mem22)
+	si_7 = PHI(si_7, si_10, si_10)
+	ax_9 = Mem8[ds:si_7:word16]
+	si_10 = si_7 + 0x0002
+	branch ax_9 != 0x0020 l0C00_0005
 	// succ:  l0C00_0020 l0C00_0005
 l0C00_0020:
-	ax_26 = si_9 - si
+	ax_27 = si_10 - si
 	// succ:  l0C00_0024
 l0C00_0024:
-	ax_28 = PHI(ax_26, ax_23)
-	Mem30[ds:0x0300:word16] = ax_28
+	ax_29 = PHI(ax_27, ax_24)
+	Mem31[ds:0x0300:word16] = ax_29
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

@@ -2,7 +2,7 @@
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  ds:16 si:16
 // LiveOut:
-// Trashed: SCZO ax
+// Trashed: SCZO ax Top
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -10,18 +10,18 @@ void fn0C00_0000(word16 si, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	word16 ax_25 = Mem0[ds:si:word16]
+	word16 ax_26 = Mem0[ds:si:word16]
 	goto l0C00_000E
 	// succ:  l0C00_000E
 l0C00_0005:
-	Mem21[ds:si + 0x0006:word16] = Mem18[ds:si + 0x0006:word16] + Mem18[ds:si + 0x0006:word16]
-	ax_25 = ax_25 - 0x0001
+	Mem22[ds:si + 0x0006:word16] = Mem19[ds:si + 0x0006:word16] + Mem19[ds:si + 0x0006:word16]
+	ax_26 = ax_26 - 0x0001
 	// succ:  l0C00_000E
 l0C00_000E:
-	Mem10[ds:si + 0x0002:word16] = ax_25
-	Mem11[ds:si + 0x0004:word16] = ax_25
-	Mem12[ds:si + 0x0008:word16] = 0x0003
-	branch ax_25 != 0x0000 l0C00_0005
+	Mem11[ds:si + 0x0002:word16] = ax_26
+	Mem12[ds:si + 0x0004:word16] = ax_26
+	Mem13[ds:si + 0x0008:word16] = 0x0003
+	branch ax_26 != 0x0000 l0C00_0005
 	// succ:  l0C00_001E l0C00_0005
 l0C00_001E:
 	return

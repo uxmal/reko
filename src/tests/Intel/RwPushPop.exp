@@ -7,12 +7,14 @@
 // si:si
 // ds:ds
 // ax:ax
+// Top:Top
 // return address size: 2
 define fn0C00_0000
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp = fp
+	Top = 0x00
 	cx = 0x0014
 	call fn0C00_0008 (retsize: 2;)
 	Mem0[ds:si:word16] = ax
@@ -36,12 +38,14 @@ fn0C00_0000_exit:
 // Z:Z
 // ds:ds
 // ax:ax
+// Top:Top
 // return address size: 2
 define fn0C00_0008
 fn0C00_0008_entry:
 	// succ:  l0C00_0008
 l0C00_0008:
 	sp = fp
+	Top = 0x00
 	sp = sp - 0x0002
 	Mem0[ss:sp:word16] = si
 	sp = sp - 0x0002

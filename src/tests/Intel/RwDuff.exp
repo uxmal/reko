@@ -20,12 +20,14 @@
 // v17:v17
 // v18:v18
 // v19:v19
+// Top:Top
 // return address size: 2
 define fn0C00_0000
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp = fp
+	Top = 0x00
 	bx = Mem0[ds:0x003E:word16]
 	cx = Mem0[ds:0x003E:word16]
 	bx = bx & 0x0007

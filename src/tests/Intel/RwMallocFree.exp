@@ -5,12 +5,14 @@
 // esp:esp
 // eax:eax
 // SCZO:SCZO
+// Top:Top
 // return address size: 4
 define fn10000008
 fn10000008_entry:
 	// succ:  l10000008
 l10000008:
 	esp = fp
+	Top = 0x00
 	esp = esp - 0x00000004
 	Mem0[esp:word32] = 0x00000008
 	eax = malloc(Mem0[esp:size_t])

@@ -13,12 +13,14 @@
 // Z:Z
 // ds:ds
 // SO:SO
+// Top:Top
 // return address size: 2
 define fn0C00_0000
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp = fp
+	Top = 0x00
 	ecx = ecx ^ ecx
 	SZO = cond(ecx)
 	C = false

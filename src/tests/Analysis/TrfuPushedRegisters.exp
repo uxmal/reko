@@ -5,6 +5,7 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp = fp
+	Top = 0x00
 	cx = 0x002A
 	sp = fp - 0x0002
 	wLoc02 = 0x0001
@@ -48,6 +49,7 @@ fn0C00_0023_entry:
 	// succ:  l0C00_0023
 l0C00_0023:
 	sp = fp
+	Top = 0x00
 	sp = fp - 0x0002
 	wLoc02 = cx
 	sp = fp - 0x0004
@@ -72,6 +74,7 @@ fn0C00_0034_entry:
 	// succ:  l0C00_0034
 l0C00_0034:
 	sp = fp
+	Top = 0x00
 	sp = fp - 0x0002
 	wLoc02 = bx
 	sp = fp - 0x0004
@@ -118,6 +121,7 @@ fn0C00_005D_entry:
 	// succ:  l0C00_005D
 l0C00_005D:
 	sp = fp
+	Top = 0x00
 	sp = fp - 0x0002
 	wLoc02 = cx
 	sp = fp - 0x0004
@@ -141,6 +145,7 @@ fn0C00_0069_entry:
 	// succ:  l0C00_0069
 l0C00_0069:
 	sp = fp
+	Top = 0x00
 	Mem0[ds:0x0200:word16] = bx
 	Mem0[ds:0x0300:word16] = cx
 	return

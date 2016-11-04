@@ -348,6 +348,7 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp = fp
+	Top = 0x00
 	ax = 0x0000
 	// succ:  l0C00_0003
 l0C00_0003:

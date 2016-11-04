@@ -5,6 +5,7 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp = fp
+	Top = 0x00
 	call fn0C00_000C (retsize: 2; depth: 2)
 	Mem0[ds:0x0300:word16] = bx
 	Mem0[ds:0x0302:byte] = 0x00
@@ -19,6 +20,7 @@ fn0C00_000C_entry:
 	// succ:  l0C00_000C
 l0C00_000C:
 	sp = fp
+	Top = 0x00
 	cx = ds
 	es = cx
 	di = 0x7E0F

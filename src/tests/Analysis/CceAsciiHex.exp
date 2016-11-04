@@ -1,23 +1,24 @@
 fp:fp
     def:  def fp
-    uses: call fn0C00_000A (retsize: 2;)	uses: al:al,sp:fp	defs: al:al_5,C:C_6
+    uses: call fn0C00_000A (retsize: 2;)	uses: al:al,sp:fp	defs: al:al_6,C:C_7
 sp_2: orig: sp
-sp_3: orig: sp
-    def:  call fn0C00_000A (retsize: 2;)	uses: al:al,sp:fp	defs: al:al_5,C:C_6
+Top_3: orig: Top
+sp_4: orig: sp
+    def:  call fn0C00_000A (retsize: 2;)	uses: al:al,sp:fp	defs: al:al_6,C:C_7
 al:al
     def:  def al
-    uses: call fn0C00_000A (retsize: 2;)	uses: al:al,sp:fp	defs: al:al_5,C:C_6
-al_5: orig: al
-    def:  call fn0C00_000A (retsize: 2;)	uses: al:al,sp:fp	defs: al:al_5,C:C_6
-    uses: Mem8[ds:0x0300:byte] = al_5
-C_6: orig: C
-    def:  call fn0C00_000A (retsize: 2;)	uses: al:al,sp:fp	defs: al:al_5,C:C_6
-    uses: branch C_6 l0C00_0009
+    uses: call fn0C00_000A (retsize: 2;)	uses: al:al,sp:fp	defs: al:al_6,C:C_7
+al_6: orig: al
+    def:  call fn0C00_000A (retsize: 2;)	uses: al:al,sp:fp	defs: al:al_6,C:C_7
+    uses: Mem9[ds:0x0300:byte] = al_6
+C_7: orig: C
+    def:  call fn0C00_000A (retsize: 2;)	uses: al:al,sp:fp	defs: al:al_6,C:C_7
+    uses: branch C_7 l0C00_0009
 ds:ds
     def:  def ds
-    uses: Mem8[ds:0x0300:byte] = al_5
-Mem8: orig: Mem0
-    def:  Mem8[ds:0x0300:byte] = al_5
+    uses: Mem9[ds:0x0300:byte] = al_6
+Mem9: orig: Mem0
+    def:  Mem9[ds:0x0300:byte] = al_6
 // fn0C00_0000
 // Return size: 2
 define fn0C00_0000
@@ -29,11 +30,11 @@ fn0C00_0000_entry:
 l0C00_0000:
 	call fn0C00_000A (retsize: 2;)
 		uses: al:al,sp:fp
-		defs: al:al_5,C:C_6
-	branch C_6 l0C00_0009
+		defs: al:al_6,C:C_7
+	branch C_7 l0C00_0009
 	// succ:  l0C00_0005 l0C00_0009
 l0C00_0005:
-	Mem8[ds:0x0300:byte] = al_5
+	Mem9[ds:0x0300:byte] = al_6
 	// succ:  l0C00_0009
 l0C00_0009:
 	return
@@ -42,6 +43,7 @@ fn0C00_0000_exit:
 
 fp:fp
 sp_2: orig: sp
+Top_3: orig: Top
 al:al
     def:  def al
     uses: branch al <u 0x30 l0C00_0032
@@ -52,32 +54,32 @@ al:al
           branch al >u 0x66 l0C00_0032
           branch al <u 0x3A l0C00_0030
           branch al <u 0x47 l0C00_0030
-SCZO_4: orig: SCZO
-C_5: orig: C
-SCZO_6: orig: SCZO
-CZ_7: orig: CZ
-SCZO_8: orig: SCZO
-C_9: orig: C
-SCZO_10: orig: SCZO
-CZ_11: orig: CZ
-SCZO_12: orig: SCZO
-C_13: orig: C
-SCZO_14: orig: SCZO
-CZ_15: orig: CZ
-C_16: orig: C
-al_17: orig: al
-    def:  al_17 = PHI(al, al, al)
+SCZO_5: orig: SCZO
+C_6: orig: C
+SCZO_7: orig: SCZO
+CZ_8: orig: CZ
+SCZO_9: orig: SCZO
+C_10: orig: C
+SCZO_11: orig: SCZO
+CZ_12: orig: CZ
+SCZO_13: orig: SCZO
+C_14: orig: C
+SCZO_15: orig: SCZO
+CZ_16: orig: CZ
+C_17: orig: C
 al_18: orig: al
-SCZO_19: orig: SCZO
+    def:  al_18 = PHI(al, al, al)
+al_19: orig: al
 SCZO_20: orig: SCZO
-C_21: orig: C
-al_22: orig: al
-SCZO_23: orig: SCZO
+SCZO_21: orig: SCZO
+C_22: orig: C
+al_23: orig: al
 SCZO_24: orig: SCZO
-C_25: orig: C
-al_26: orig: al
-SCZO_27: orig: SCZO
-C_28: orig: C
+SCZO_25: orig: SCZO
+C_26: orig: C
+al_27: orig: al
+SCZO_28: orig: SCZO
+C_29: orig: C
 // fn0C00_000A
 // Return size: 2
 define fn0C00_000A

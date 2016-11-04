@@ -1,7 +1,7 @@
 void fn0C00_0000(Register selector ds)
 // MayUse:  ds:16
 // LiveOut:
-// Trashed: ax si
+// Trashed: ax si Top
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -12,24 +12,25 @@ void fn0C00_0000(Register selector ds)
 // ds:ds
 // ax:ax
 // al:al
+// Top:Top
 // return address size: 2
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	ax_5 = fn0C00_0015(0x0200, ds)
-	Mem6[ds:0x0202:word16] = ax_5
-	ax_8 = fn0C00_0015(0x0300, ds)
-	al_9 = (byte) ax_8 (alias)
-	Mem10[ds:0x0302:byte] = al_9
+	ax_7 = fn0C00_0015(0x0200, ds)
+	Mem8[ds:0x0202:word16] = ax_7
+	ax_11 = fn0C00_0015(0x0300, ds)
+	al_12 = (byte) ax_11 (alias)
+	Mem13[ds:0x0302:byte] = al_12
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 Register word16 fn0C00_0015(Register word16 si, Register selector ds)
 // MayUse:  ds:16 si:16
 // LiveOut: ax
-// Trashed: ax
+// Trashed: ax Top
 // Preserved: sp
 // fn0C00_0015
 // Return size: 0
@@ -39,6 +40,7 @@ Register word16 fn0C00_0015(Register word16 si, Register selector ds)
 // ax:ax
 // si:si
 // ds:ds
+// Top:Top
 // return address size: 2
 word16 fn0C00_0015(word16 si, selector ds)
 fn0C00_0015_entry:
@@ -47,7 +49,7 @@ fn0C00_0015_entry:
 	def Mem0
 	// succ:  l0C00_0015
 l0C00_0015:
-	ax_6 = Mem0[ds:si:word16]
-	return ax_6
+	ax_7 = Mem0[ds:si:word16]
+	return ax_7
 	// succ:  fn0C00_0015_exit
 fn0C00_0015_exit:

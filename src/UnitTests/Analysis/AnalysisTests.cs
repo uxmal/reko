@@ -26,7 +26,8 @@ using Reko.Core.Lib;
 namespace Reko.UnitTests.Analysis
 {
 	[TestFixture]
-	public class AnalysisTests : AnalysisTestBase
+    [Ignore("SSA transform now incorporates this")]
+    public class AnalysisTests : AnalysisTestBase
 	{
 		[Test]
         public void DiamondDominatorTest()

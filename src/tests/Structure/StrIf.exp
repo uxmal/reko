@@ -2,32 +2,32 @@
 // Return size: 0
 void fn0C00_0000(word16 ax, word16 si, selector ds)
 fn0C00_0000_entry:
-	word16 bx_6
+	word16 bx_7
 	branch ax != 0x0000 l0C00_000B
 	goto l0C00_0005
 	// succ:  l0C00_0005 l0C00_000B
 l0C00_0000:
 l0C00_0005:
-	bx_6 = 0x1234
+	bx_7 = 0x1234
 	goto l0C00_000E
 	// succ:  l0C00_000E
 l0C00_000B:
-	bx_6 = 0x1211
+	bx_7 = 0x1211
 	// succ:  l0C00_000E
 l0C00_000E:
-	Mem13[ds:si:word16] = bx_6
+	Mem14[ds:si:word16] = bx_7
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 
 void fn0C00_0000(word16 ax, word16 si, selector ds)
 {
-	word16 bx_6;
+	word16 bx_7;
 	if (ax == 0x0000)
-		bx_6 = 0x1234;
+		bx_7 = 0x1234;
 	else
-		bx_6 = 0x1211;
-	Mem13[ds:si:word16] = bx_6;
+		bx_7 = 0x1211;
+	Mem14[ds:si:word16] = bx_7;
 	return;
 }
 ===========================

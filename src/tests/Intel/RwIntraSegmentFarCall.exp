@@ -5,12 +5,14 @@
 // sp:sp
 // ss:ss
 // SCZO:SCZO
+// Top:Top
 // return address size: 2
 define fn0C00_0000
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp = fp
+	Top = 0x00
 	sp = sp - 0x0002
 	Mem0[ss:sp:word16] = 0x0D00
 	sp = sp - 0x0002
@@ -46,12 +48,14 @@ fn0C00_0000_exit:
 // es:es
 // v9:v9
 // SCZO:SCZO
+// Top:Top
 // return address size: 4
 define fn0C00_0020
 fn0C00_0020_entry:
 	// succ:  l0C00_0020
 l0C00_0020:
 	sp = fp
+	Top = 0x00
 	sp = sp - 0x0002
 	Mem0[ss:sp:word16] = bp
 	bp = sp
@@ -78,12 +82,14 @@ fn0C00_0020_exit:
 // es:es
 // v9:v9
 // SCZO:SCZO
+// Top:Top
 // return address size: 4
 define fn0C00_002E
 fn0C00_002E_entry:
 	// succ:  l0C00_002E
 l0C00_002E:
 	sp = fp
+	Top = 0x00
 	sp = sp - 0x0002
 	Mem0[ss:sp:word16] = bp
 	bp = sp
