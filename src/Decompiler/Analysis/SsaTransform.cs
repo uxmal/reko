@@ -395,7 +395,9 @@ namespace Reko.Analysis
                         ci.CallSite.FpuStackDepthBefore - (i + 1),
                         PrimitiveType.Real64);
                     ci.Definitions.Add(
-                        new CallBinding(fpuArg.Storage, fpuArg));
+                        new CallBinding(
+                            fpuArg.Storage,
+                            NewDef(fpuArg, ci.Callee, false)));
                 }
             }
         }
@@ -1251,6 +1253,19 @@ namespace Reko.Analysis
 
             public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
             {
+                // Remove any flag groups that this covers if it
+                // isn't an alias statement.
+                if (!(sid.DefStatement.Instruction is AliasAssignment))
+                {
+                    for (int i = 0; i < bs.currentFlagDef.Count; ++i)
+                    {
+                        if (this.flagGroup.Covers(bs.currentFlagDef[i].Item1))
+                        {
+                            bs.currentFlagDef.RemoveAt(i);
+                            --i;
+                        }
+                    }
+                }
                 bs.currentFlagDef.Add(Tuple.Create(this.flagGroup, sid));
                 return sid.Identifier;
             }

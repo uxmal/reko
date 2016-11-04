@@ -1,8 +1,8 @@
 void fn0C00_0000(Register selector ds)
 // MayUse:  ds:16
 // LiveOut:
-// Trashed:   bx SCZO
-// Preserved: ax sp
+// Trashed: SCZO ax bx
+// Preserved: sp
 // fn0C00_0000
 // Return size: 0
 // Mem0:Global memory
@@ -13,31 +13,28 @@ void fn0C00_0000(Register selector ds)
 // rLoc2:FPU stack
 // ss:ss
 // ax:ax
-// SCZO:Flags
+// SCZO:SCZO
 // bx:bx
 // wLoc02:Local -0002
 // wLoc04:Local -0004
-// S:Flags
-// C:Flags
-// Z:Flags
-// O:Flags
-// wArg02:Stack +0002
+// S:S
+// C:C
+// Z:Z
+// O:O
 // return address size: 2
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
-	def fp
 	def ds
 	def Mem0
 	// succ:  l0C00_0000
 l0C00_0000:
 	rLoc1_5 = (real64) Mem0[ds:0x0300:real32]
 	rLoc2_6 = (real64) Mem0[ds:0x0304:real32]
-	fn0C00_0024(ds, wArg02, rLoc2, rLoc1)
+	fn0C00_0024(ds, 0x0308, rLoc2_6, rLoc1_5)
 	Mem12[ds:0x030C:real32] = 0.0F
 	ax_13 = Mem12[ds:0x0308:word16]
-	rLoc1 = fn0C00_0031(ds, wArg02)
+	rLoc1_17 = fn0C00_0031(ds, ax_13)
 	Mem18[ds:0x030C:real32] = (real32) rLoc1_17
-	SCZO_20 = cond(fp)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -68,7 +65,6 @@ fn0C00_0024_entry:
 	def wArg02
 	// succ:  l0C00_0024
 l0C00_0024:
-	bx_8 = wArg02
 	Mem11[ds:wArg02:real32] = (real32) rArg0
 	Mem13[ds:wArg02 + 0x0004:real32] = (real32) rArg1
 	return
@@ -77,7 +73,7 @@ fn0C00_0024_exit:
 FpuStack real64 fn0C00_0031(Register selector ds, Stack word16 wArg02)
 // MayUse:  ds:16 Stack +0002:16
 // LiveOut: 
-// Trashed:  bx
+// Trashed: bx
 // Preserved: bp sp
 // fn0C00_0031
 // Return size: 0
@@ -98,10 +94,7 @@ fn0C00_0031_entry:
 	def wArg02
 	// succ:  l0C00_0031
 l0C00_0031:
-	bx_8 = wArg02
 	rLoc1_10 = (real64) Mem6[ds:wArg02:real32]
-	return rLoc1
+	return rLoc1_10
 	// succ:  fn0C00_0031_exit
 fn0C00_0031_exit:
-	use bx_8
-	use rLoc1_10

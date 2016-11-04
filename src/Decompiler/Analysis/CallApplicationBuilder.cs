@@ -82,12 +82,10 @@ namespace Reko.Analysis
 
         public Expression VisitFpuStackStorage(FpuStackStorage fpu)
         {
-            var offset = fpu.FpuStackOffset - site.FpuStackDepthBefore;
-
             foreach (var de in this.map
               .Where(d => d.Key is FpuStackStorage))
             {
-                if (((FpuStackStorage)de.Key).FpuStackOffset == offset)
+                if (((FpuStackStorage)de.Key).FpuStackOffset == fpu.FpuStackOffset)
                     return de.Value;
             }
             throw new NotImplementedException(string.Format("Offsets not matching? SP({0})", fpu.FpuStackOffset));

@@ -295,7 +295,8 @@ namespace Reko.UnitTests.Analysis
             Assert.AreEqual(sExp, sb.ToString());
         }
 
-        [Test]
+        [Test(Description = "Avoid building long adds if the instructions shouldn't be paired")]
+        [Category(Categories.UnitTests)]
         public void Larw_Avoid()
         {
             RunTest(m =>
