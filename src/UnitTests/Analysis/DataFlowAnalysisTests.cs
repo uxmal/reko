@@ -126,7 +126,9 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-		public void DfaFpuOps()
+        [Ignore(Categories.ExplicitX87Stack)]
+        [Category(Categories.ExplicitX87Stack)]
+        public void DfaFpuOps()
 		{
 			RunFileTest_x86_real("Fragments/fpuops.asm", "Analysis/DfaFpuOps.txt");
 		}
@@ -272,6 +274,8 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Ignore(Categories.ExplicitX87Stack)]
+        [Category(Categories.ExplicitX87Stack)]
         public void DfaFstsw()
         {
            var program = RewriteCodeFragment(@"
@@ -413,6 +417,8 @@ ProcedureBuilder_exit:
         }
 
         [Test]
+        [Ignore(Categories.ExplicitX87Stack)]
+        [Category(Categories.ExplicitX87Stack)]
         [Category(Categories.UnitTests)]
         public void DfaFpuStackReturn()
         {

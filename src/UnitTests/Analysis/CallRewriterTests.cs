@@ -154,13 +154,17 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-		public void CrwFpuArgs()
+        [Ignore(Categories.ExplicitX87Stack)]
+        [Category(Categories.ExplicitX87Stack)]
+        public void CrwFpuArgs()
 		{
 			RunFileTest_x86_real("Fragments/multiple/fpuArgs.asm", "Analysis/CrwFpuArgs.txt");
 		}
 
 		[Test]
-		public void CrwFpuOps()
+        [Ignore(Categories.ExplicitX87Stack)]
+        [Category(Categories.ExplicitX87Stack)]
+        public void CrwFpuOps()
 		{
 			RunFileTest_x86_real("Fragments/fpuops.asm", "Analysis/CrwFpuOps.txt");
 		}

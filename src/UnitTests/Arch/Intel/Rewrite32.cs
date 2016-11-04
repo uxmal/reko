@@ -92,7 +92,9 @@ namespace Reko.UnitTests.Arch.Intel
 		}
 
 		[Test]
-		public void RwFtol()
+        [Ignore(Categories.ExplicitX87Stack)]
+        [Category(Categories.ExplicitX87Stack)]
+        public void RwFtol()
 		{
 			RunTest("Fragments/import32/ftol.asm", "Intel/RwFtol.txt");
 		}
@@ -116,7 +118,9 @@ namespace Reko.UnitTests.Arch.Intel
 		}
 
 		[Test]
-		public void RwReg00004()
+        [Ignore(Categories.ExplicitX87Stack)]
+        [Category(Categories.ExplicitX87Stack)]
+        public void RwReg00004()
 		{
 			RunTest("Fragments/regressions/r00004.asm", "Intel/RwReg00004.txt");
 		}
