@@ -838,8 +838,8 @@ fn00001200_exit:
             sc.ScanImage();
 
             var sExpSig =
-@"Register real32 fn43210017()
-// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1
+@"FpuStack real32 fn43210017()
+// stackDelta: 4; fpuStackDelta: 1; fpuMaxParam: -1
 ";
             Assert.AreEqual(1, program.Procedures.Count);
             Assert.AreEqual(sExpSig, program.Procedures[Address.Ptr32(0x43210017)].Signature.ToString("fn43210017", FunctionType.EmitFlags.AllDetails));
