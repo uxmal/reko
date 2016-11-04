@@ -36,13 +36,6 @@ namespace Reko.UnitTests.Analysis
 	{
 		private Program program; 
 
-		[Test]
-		public void OutpAsciiHex()
-		{
-			program = RewriteFile("Fragments/ascii_hex.asm");
-			FileUnitTester.RunTest("Analysis/OutpAsciiHex.txt", PerformTest);
-		}
-
 		private void PerformTest(FileUnitTester fut)
 		{
 			DataFlowAnalysis dfa = new DataFlowAnalysis(program, null, new FakeDecompilerEventListener());
@@ -65,7 +58,16 @@ namespace Reko.UnitTests.Analysis
 			}
 		}
 
-		[Test]
+        [Test]
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void OutpAsciiHex()
+        {
+            program = RewriteFile("Fragments/ascii_hex.asm");
+            FileUnitTester.RunTest("Analysis/OutpAsciiHex.txt", PerformTest);
+        }
+
+        [Test]
 		public void OutpReplaceSimple()
 		{
             var m = new ProcedureBuilder();
@@ -161,14 +163,18 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-		public void OutpParameters()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void OutpParameters()
 		{
 			program = RewriteFile("Fragments/multiple/outparameters.asm");
 			FileUnitTester.RunTest("Analysis/OutpParameters.txt", PerformTest);
 		}
 
 		[Test]
-		public void OutpMutual()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void OutpMutual()
 		{
 			program = RewriteFile("Fragments/multiple/mutual.asm");
 			FileUnitTester.RunTest("Analysis/OutpMutual.txt", PerformTest);

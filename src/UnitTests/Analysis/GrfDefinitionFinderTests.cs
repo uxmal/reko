@@ -57,19 +57,25 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-		public void GrfdAdcMock()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void GrfdAdcMock()
 		{
 			RunFileTest(new AdcMock(), "Analysis/GrfdAdcMock.txt");
 		}
 
 		[Test]
-		public void GrfdAddSubCarries()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void GrfdAddSubCarries()
 		{
 			RunFileTest_x86_real("Fragments/addsubcarries.asm", "Analysis/GrfdAddSubCarries.txt");
 		}
 
 		[Test]
-		public void GrfdCmpMock()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void GrfdCmpMock()
 		{
 			RunFileTest(new CmpMock(), "Analysis/GrfdCmpMock.txt");
 		}

@@ -87,7 +87,9 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-		public void DfaAsciiHex()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void DfaAsciiHex()
 		{
 			RunFileTest_x86_real("Fragments/ascii_hex.asm", "Analysis/DfaAsciiHex.txt");
 		}
@@ -100,19 +102,25 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-		public void DfaFactorial()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void DfaFactorial()
 		{
 			RunFileTest_x86_real("Fragments/factorial.asm", "Analysis/DfaFactorial.txt");
 		}
 
 		[Test]
-		public void DfaFactorialReg()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void DfaFactorialReg()
 		{
 			RunFileTest_x86_real("Fragments/factorial_reg.asm", "Analysis/DfaFactorialReg.txt");
 		}
 
 		[Test]
-		public void DfaFibonacci()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void DfaFibonacci()
 		{
 			RunFileTest_x86_32("Fragments/multiple/fibonacci.asm", "Analysis/DfaFibonacci.txt");
 		}
@@ -124,19 +132,25 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-		public void DfaMutualTest()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void DfaMutualTest()
 		{
 			RunFileTest_x86_real("Fragments/multiple/mutual.asm", "Analysis/DfaMutualTest.txt");
 		}
 
 		[Test]
-		public void DfaChainTest()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void DfaChainTest()
 		{
 			RunFileTest_x86_real("Fragments/multiple/chaincalls.asm", "Analysis/DfaChainTest.txt");
 		}
 
 		[Test]
-		public void DfaGlobalHandle()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void DfaGlobalHandle()
 		{
             Given_FakeWin32Platform(mr);
             this.platform.Stub(p => p.LookupGlobalByName(null, null)).IgnoreArguments().Return(null);
@@ -152,18 +166,24 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-		public void DfaNegsNots()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void DfaNegsNots()
 		{
 			RunFileTest_x86_real("Fragments/negsnots.asm", "Analysis/DfaNegsNots.txt");
 		}
 
 		[Test]
-		public void DfaPreservedAlias()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void DfaPreservedAlias()
 		{
 			RunFileTest_x86_real("Fragments/multiple/preserved_alias.asm", "Analysis/DfaPreservedAlias.txt");
 		}
 
 		[Test]
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
         public void DfaReadFile()
 		{
 			RunFileTest_x86_real("Fragments/multiple/read_file.asm", "Analysis/DfaReadFile.txt");
@@ -176,13 +196,17 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-		public void DfaStringInstructions()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void DfaStringInstructions()
 		{
 			RunFileTest_x86_real("Fragments/stringinstr.asm", "Analysis/DfaStringInstructions.txt");
 		}
 
 		[Test]
-		public void DfaSuccessiveDecs()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void DfaSuccessiveDecs()
 		{
 			RunFileTest_x86_real("Fragments/multiple/successivedecs.asm", "Analysis/DfaSuccessiveDecs.txt");
 		}
@@ -200,36 +224,48 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-		public void DfaRecurseWithPushes()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void DfaRecurseWithPushes()
 		{
 			RunFileTest_x86_real("Fragments/multiple/recurse_with_pushes.asm", "Analysis/DfaRecurseWithPushes.txt");
 		}
 
         [Test]
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
         public void DfaReg00007()
         {
             RunFileTest_x86_real("Fragments/regressions/r00007.asm", "Analysis/DfaReg00007.txt");
         }
 
         [Test]
-		public void DfaReg00009()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void DfaReg00009()
 		{
 			RunFileTest_x86_real("Fragments/regressions/r00009.asm", "Analysis/DfaReg00009.txt");
 		}
 
 		[Test]
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
         public void DfaReg00010()
 		{
 			RunFileTest_x86_real("Fragments/regressions/r00010.asm", "Analysis/DfaReg00010.txt");
 		}
 
         [Test]
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
         public void DfaReg00011()
         {
             RunFileTest_x86_real("Fragments/regressions/r00011.asm", "Analysis/DfaReg00011.txt");
         }
 
         [Test]
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
         public void DfaReg00015()
         {
             RunFileTest_x86_real("Fragments/regressions/r00015.asm", "Analysis/DfaReg00015.txt");
@@ -257,6 +293,8 @@ done:
         }
 
         [Test]
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
         public void DfaReg00001()
         {
             var program = RewriteCodeFragment32(UnitTests.Fragments.Regressions.Reg00001.Text);
@@ -264,6 +302,8 @@ done:
         }
 
         [Test]
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
         [Category(Categories.UnitTests)]
         public void DfaReg00282()
         {

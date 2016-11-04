@@ -67,7 +67,9 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-		public void CoaAsciiHex()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void CoaAsciiHex()
 		{
 			RunFileTest_x86_real("Fragments/ascii_hex.asm", "Analysis/CoaAsciiHex.txt");
 		}
@@ -85,7 +87,9 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-		public void CoaFactorialReg()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void CoaFactorialReg()
 		{
 			RunFileTest_x86_real("Fragments/factorial_reg.asm", "Analysis/CoaFactorialReg.txt");
 		}
@@ -134,6 +138,8 @@ namespace Reko.UnitTests.Analysis
 		}
 
         [Test]
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
         public void CoaSideEffectCalls()
         {
             RunFileTest_x86_real("Fragments/multiple/sideeffectcalls.asm", "Analysis/CoaSideEffectCalls.txt");

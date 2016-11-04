@@ -464,6 +464,8 @@ done:
         }
 
         [Test]
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
         public void CceIsqrt()
         {
             RunFileTest_x86_real("Fragments/isqrt.asm", "Analysis/CceIsqrt.txt");

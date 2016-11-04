@@ -575,6 +575,8 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
         public void TerDeclaration()
         {
             ProgramBuilder pm = new ProgramBuilder();
@@ -594,6 +596,8 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
         public void TerShortArray()
         {
             var pm = CreateProgramBuilder(0x00001000, 0x1000);
