@@ -220,7 +220,7 @@ test7_entry:
 // LocalsOut: fp(32) Stack +0004(64)
 
 l00401160:
-	branch 1.0 <= rArg04 l00401189
+	branch 1.0 >= rArg04 l00401189
 // DataOut: esp
 // DataOut (flags): 
 // SymbolicIn: esp:fp
@@ -269,7 +269,7 @@ l004011B0:
 // LocalsOut: Stack +0004(64)
 
 l004011E2:
-	branch Mem0[0x004020F0:real64] >= rArg04 l0040120D
+	branch Mem0[0x004020F0:real64] <= rArg04 l0040120D
 // DataOut: esp
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> ebp:fp - 0x00000004 eax:<invalid> edx:<invalid> ecx:<invalid> -16(fp):0xFFFFFFFF -12(fp):rLoc1 -4(fp):ebp
@@ -317,7 +317,7 @@ l00401230:
 
 l00401248:
 	Mem21[Mem21[Mem21[0x0040301C:word32]:word32] + 0x00000004:word32](Mem21[0x0040301C:word32], dwLoc08_12, (real64) rArg04)
-	branch rArg0 >= (real64) dwLoc08_12 l00401294
+	branch rArg0 <= (real64) dwLoc08_12 l00401294
 // DataOut: esp
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> ebp:fp - 0x00000004 ecx:<invalid> edx:<invalid> eax:<invalid> -28(fp):0x00000000 -24(fp):rLoc2 -16(fp):rLoc1 -8(fp):<invalid> -4(fp):ebp
