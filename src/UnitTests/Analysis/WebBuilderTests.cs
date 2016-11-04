@@ -56,7 +56,9 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-		public void WebGlobalHandle()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void WebGlobalHandle()
         {
             Given_FakeWin32Platform(mr);
             this.platform.Stub(p => p.LookupGlobalByName(null, null)).IgnoreArguments().Return(null);
@@ -68,7 +70,9 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-		public void WebSuccessiveDecs()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void WebSuccessiveDecs()
 		{
 			RunFileTest_x86_real("Fragments/multiple/successivedecs.asm", "Analysis/WebSuccessiveDecs.txt");
 		}

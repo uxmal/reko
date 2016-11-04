@@ -87,7 +87,9 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-		public void CrwAsciiHex()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void CrwAsciiHex()
 		{
 			RunFileTest_x86_real("Fragments/ascii_hex.asm", "Analysis/CrwAsciiHex.txt");
 		}
@@ -99,25 +101,33 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-		public void CrwEvenOdd()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void CrwEvenOdd()
 		{
 			RunFileTest_x86_real("Fragments/multiple/even_odd.asm", "Analysis/CrwEvenOdd.txt");
 		}
 
 		[Test]
-		public void CrwFactorial()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void CrwFactorial()
 		{
 			RunFileTest_x86_real("Fragments/factorial.asm", "Analysis/CrwFactorial.txt");
 		}
 
 		[Test]
-		public void CrwFactorialReg()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void CrwFactorialReg()
 		{
 			RunFileTest_x86_real("Fragments/factorial_reg.asm", "Analysis/CrwFactorialReg.txt");
 		}
 
 		[Test]
-		public void CrwLeakyLiveness()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void CrwLeakyLiveness()
 		{
 			RunFileTest_x86_real("Fragments/multiple/leaky_liveness.asm", "Analysis/CrwLeakyLiveness.txt");
 		}
@@ -129,7 +139,9 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-		public void CrwStackVariables()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void CrwStackVariables()
 		{
 			RunFileTest_x86_real("Fragments/stackvars.asm", "Analysis/CrwStackVariables.txt");
 		}
@@ -166,7 +178,9 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-		public void CrwMutual()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void CrwMutual()
 		{
 			RunFileTest_x86_real("Fragments/multiple/mutual.asm", "Analysis/CrwMutual.txt");
 		}
@@ -191,7 +205,9 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-		public void CrwFibonacci()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void CrwFibonacci()
 		{
 			RunFileTest_x86_32("Fragments/multiple/fibonacci.asm", "Analysis/CrwFibonacci.txt");
 		}

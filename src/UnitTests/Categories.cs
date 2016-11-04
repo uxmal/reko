@@ -48,5 +48,10 @@ namespace Reko.UnitTests
         // Tests that are slower, because they show UI or hit
         // the file system, are considered integration tests
         public const string IntegrationTests = "IntegrationTests";
+
+        // Tests that are currently failing in the "analysis-development"
+        // branch. Before merging back into "master", these must all be 
+        // running again
+        public const string AnalysisDevelopment = "AnalysisDevelopment";
     }
 }

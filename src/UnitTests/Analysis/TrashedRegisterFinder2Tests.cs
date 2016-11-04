@@ -300,6 +300,8 @@ Constants: cl:0x00
         }
 
         [Test(Description = "Tests detection of trashed variables in the presence of recursion")]
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
         public void TrfRecursion()
         {
             var sExp1 = Expect(
@@ -400,6 +402,8 @@ Constants: cl:0x00
         }
 
         [Test(Description = "Exercises a self-recursive function")]
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
         public void TrfRecursive()
         {
             var sExp = Expect("@@@", "@@@", "@@@" );

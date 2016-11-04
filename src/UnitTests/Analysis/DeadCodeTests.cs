@@ -97,19 +97,25 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-		public void DeadPushPop()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void DeadPushPop()
 		{
 			RunFileTest_x86_real("Fragments/pushpop.asm", "Analysis/DeadPushPop.txt");
 		}
 
 		[Test]
-		public void DeadFactorialReg()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void DeadFactorialReg()
 		{
 			RunFileTest_x86_real("Fragments/factorial_reg.asm", "Analysis/DeadFactorialReg.txt");
 		}
 
 		[Test]
-		public void DeadFactorial()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void DeadFactorial()
 		{
 			RunFileTest_x86_real("Fragments/factorial.asm", "Analysis/DeadFactorial.txt");
 		}

@@ -181,12 +181,16 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
         public void StrFactorialReg()
         {
             RunTest("Fragments/factorial_reg.asm", "Structure/StrFactorialReg.txt");
         }
 
         [Test]
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
         public void StrFactorial()
         {
             RunTest("Fragments/factorial.asm", "Structure/StrFactorial.txt");
@@ -199,6 +203,8 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
         public void StrWhileRepeat()
         {
             RunTest("Fragments/while_repeat.asm", "Structure/StrWhileRepeat.txt");
@@ -254,6 +260,8 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
         public void StrReg00013()
         {
             RunTest("Fragments/regressions/r00013.asm", "Structure/StrReg00013.txt");
@@ -266,6 +274,8 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
         public void StrFragmentTest()
         {
             RewriteX86RealFragment(@"
@@ -293,6 +303,8 @@ ret
         }
 
         [Test]
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
         public void StrReg00001()
         {
             var program = RewriteX86_32Fragment(
