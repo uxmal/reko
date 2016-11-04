@@ -143,6 +143,7 @@ namespace Reko.Core.Expressions
         {
 
         }
+
 		static MemoryIdentifier()
 		{
 			g = new MemoryIdentifier(0, new UnknownType());

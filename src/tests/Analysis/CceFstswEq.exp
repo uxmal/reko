@@ -1,28 +1,21 @@
 fp:fp
 sp_2: orig: sp
-Top:Top
-    def:  def Top
-    uses: Mem8[Top - 0x01:real64] = Mem0[ds:si:real64]
-          Mem10[Top - 0x02:real64] = 0.0
-          branch Mem10[Top - 0x02:real64] != Mem10[Top - 0x01:real64] l0C00_0012
-          branch Mem10[Top - 0x02:real64] != Mem10[Top - 0x01:real64] l0C00_0012
+Top_3: orig: Top
 Top_4: orig: Top
 ds:ds
     def:  def ds
-    uses: Mem8[Top - 0x01:real64] = Mem0[ds:si:real64]
+    uses: rLoc1_17 = Mem0[ds:si:real64]
           Mem15[ds:di:word16] = 0x0000
           Mem16[ds:di:word16] = 0x0001
 si:si
     def:  def si
-    uses: Mem8[Top - 0x01:real64] = Mem0[ds:si:real64]
+    uses: rLoc1_17 = Mem0[ds:si:real64]
 Mem0:Global memory
     def:  def Mem0
-    uses: Mem8[Top - 0x01:real64] = Mem0[ds:si:real64]
-Mem8: orig: ST
-    def:  Mem8[Top - 0x01:real64] = Mem0[ds:si:real64]
+    uses: rLoc1_17 = Mem0[ds:si:real64]
+ST8: orig: ST
 Top_9: orig: Top
-Mem10: orig: ST
-    def:  Mem10[Top - 0x02:real64] = 0.0
+ST10: orig: ST
 FPUF_11: orig: FPUF
 Top_12: orig: Top
 SCZO_13: orig: SCZO
@@ -34,20 +27,25 @@ Mem15: orig: Mem0
     def:  Mem15[ds:di:word16] = 0x0000
 Mem16: orig: Mem0
     def:  Mem16[ds:di:word16] = 0x0001
+rLoc1_17: orig: rLoc1
+    def:  rLoc1_17 = Mem0[ds:si:real64]
+    uses: branch rLoc2_18 != rLoc1_17 l0C00_0012
+rLoc2_18: orig: rLoc2
+    def:  rLoc2_18 = 0.0
+    uses: branch rLoc2_18 != rLoc1_17 l0C00_0012
 // fn0C00_0000
 // Return size: 2
 define fn0C00_0000
 fn0C00_0000_entry:
-	def Top
 	def ds
 	def si
 	def Mem0
 	def di
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem8[Top - 0x01:real64] = Mem0[ds:si:real64]
-	Mem10[Top - 0x02:real64] = 0.0
-	branch Mem10[Top - 0x02:real64] != Mem10[Top - 0x01:real64] l0C00_0012
+	rLoc1_17 = Mem0[ds:si:real64]
+	rLoc2_18 = 0.0
+	branch rLoc2_18 != rLoc1_17 l0C00_0012
 	// succ:  l0C00_000D l0C00_0012
 l0C00_000D:
 	Mem16[ds:di:word16] = 0x0001

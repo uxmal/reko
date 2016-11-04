@@ -190,7 +190,7 @@ namespace Reko.UnitTests.Analysis
         {
             Assembler asm = new X86TextAssembler(sc, new X86ArchitectureReal());
             var program = asm.AssembleFragment(Address.SegPtr(0xC00, 0), s);
-            program.Platform = new DefaultPlatform(null, program.Architecture);
+            program.Platform = new MsdosPlatform(null, program.Architecture);
             Rewrite(program, asm, null);
             return program;
         }

@@ -488,6 +488,13 @@ namespace Reko.Analysis
                     var idDst = NewDef(idFrame, store.Src, false);
                     return new Assignment(idDst, store.Src);
                 }
+                else if (this.RenameFrameAccesses && IsFpuStackAccess(ssa.Procedure, acc))
+                {
+                    ssa.Identifiers[acc.MemoryId].DefStatement = null;
+                    var idFrame = ssa.Procedure.Frame.EnsureFpuStackVariable(((Constant)acc.EffectiveAddress).ToInt32(), acc.DataType);
+                    var idDst = NewDef(idFrame, store.Src, false);
+                    return new Assignment(idDst, store.Src);
+                }
                 else
                 {
                     var sa = acc as SegmentedAccess;
@@ -599,6 +606,13 @@ namespace Reko.Analysis
                 var idFrame = EnsureStackVariable(ssa.Procedure, access.EffectiveAddress, access.DataType);
                 var idNew = NewUse(idFrame, stmCur, true);
                 return idNew;
+            } 
+            if (this.RenameFrameAccesses && IsFpuStackAccess(ssa.Procedure, access))
+            {
+                var idFrame = ssa.Procedure.Frame.EnsureFpuStackVariable(
+                    ((Constant)access.EffectiveAddress).ToInt32(), access.DataType);
+                var idNew = NewUse(idFrame, stmCur, true);
+                return idNew;
             }
 
             var ea = access.EffectiveAddress.Accept(this);
@@ -680,6 +694,13 @@ namespace Reko.Analysis
             if (bin.Left != proc.Frame.FramePointer)
                 return false;
             return bin.Right is Constant;
+        }
+
+        private static bool IsFpuStackAccess(Procedure proc, MemoryAccess acc)
+        {
+            if (!acc.MemoryId.Name.StartsWith("ST"))  //$HACK: gross hack but we have to start somewhere.
+                return false;
+            return true;
         }
 
         private static Identifier EnsureStackVariable(Procedure proc, Expression effectiveAddress, DataType dt)

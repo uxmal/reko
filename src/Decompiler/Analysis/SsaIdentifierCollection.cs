@@ -39,7 +39,7 @@ namespace Reko.Analysis
 			if (stmDef != null)
 			{
 				idNew = idOld is MemoryIdentifier
-					? new MemoryIdentifier(i, idOld.DataType)
+					? new MemoryIdentifier(ReplaceNumericSuffix(idOld.Name, i), idOld.DataType)
 					: new Identifier(FormatSsaName(idOld, i), idOld.DataType, StorageOf(idOld));
 			}
 			else
@@ -50,6 +50,7 @@ namespace Reko.Analysis
 			sids.Add(idNew, sid);
 			return sid;
 		}
+
 
 		public SsaIdentifier this[Identifier id]
 		{
@@ -109,6 +110,21 @@ namespace Reko.Analysis
                 throw new NotImplementedException(e.ToString());
             return string.Format("{0}_{1}", prefix, v);
 		}
+
+        private static string ReplaceNumericSuffix(string str, int newSuffix)
+        {
+            for (int i = str.Length-1; i >= 0; --i)
+            {
+                if (!Char.IsDigit(str[i]))
+                {
+                    if (i >= str.Length - 1)
+                        return str + newSuffix;
+                    else
+                        return str.Remove(i + 1) + newSuffix;
+                }
+            }
+            return "" + newSuffix;
+        }
 
         private Storage StorageOf(Expression e)
         {
