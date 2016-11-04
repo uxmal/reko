@@ -31,9 +31,8 @@ fn0C00_0000_exit:
 // bp:bp
 // ss:ss
 // bx:bx
-// rLoc1:FPU stack
+// Top:Top
 // ds:ds
-// rLoc2:FPU stack
 // return address size: 2
 define fn0C00_0010
 fn0C00_0010_entry:
@@ -44,18 +43,26 @@ l0C00_0010:
 	Mem0[ss:sp:word16] = bp
 	bp = sp
 	bx = Mem0[ss:bp + 0x0004:word16]
-	rLoc1 = Mem0[ds:bx:real64]
-	rLoc1 = rLoc1 * rLoc1
-	rLoc2 = Mem0[ds:bx + 0x0008:real64]
-	rLoc2 = rLoc2 * rLoc2
-	rLoc1 = rLoc1 + rLoc2
-	rLoc2 = Mem0[ds:bx + 0x0010:real64]
-	rLoc2 = rLoc2 * rLoc2
-	rLoc1 = rLoc1 + rLoc2
+	Top = Top - 0x01
+	ST[Top:real64] = Mem0[ds:bx:real64]
+	ST[Top:real64] = ST[Top:real64] * ST[Top:real64]
+	Top = Top - 0x01
+	ST[Top:real64] = Mem0[ds:bx + 0x0008:real64]
+	ST[Top:real64] = ST[Top:real64] * ST[Top:real64]
+	ST[Top + 0x01:real64] = ST[Top + 0x01:real64] + ST[Top:real64]
+	Top = Top + 0x01
+	Top = Top - 0x01
+	ST[Top:real64] = Mem0[ds:bx + 0x0010:real64]
+	ST[Top:real64] = ST[Top:real64] * ST[Top:real64]
+	ST[Top + 0x01:real64] = ST[Top + 0x01:real64] + ST[Top:real64]
+	Top = Top + 0x01
 	bx = Mem0[ss:bp + 0x0006:word16]
-	Mem0[ds:bx:real64] = rLoc1
-	rLoc1 = (real64) Mem0[ds:bx + 0x0020:int16]
-	Mem0[ds:bx + 0x0028:real64] = rLoc1
+	Mem0[ds:bx:real64] = ST[Top:real64]
+	Top = Top + 0x01
+	Top = Top - 0x01
+	ST[Top:real64] = (real64) Mem0[ds:bx + 0x0020:int16]
+	Mem0[ds:bx + 0x0028:real64] = ST[Top:real64]
+	Top = Top + 0x01
 	sp = bp
 	bp = Mem0[ss:sp:word16]
 	sp = sp + 0x0002
@@ -68,7 +75,7 @@ fn0C00_0010_exit:
 // Mem0:Global memory
 // fp:fp
 // sp:sp
-// rLoc1:FPU stack
+// Top:Top
 // ds:ds
 // return address size: 2
 define fn0C00_0037
@@ -76,10 +83,14 @@ fn0C00_0037_entry:
 	// succ:  l0C00_0037
 l0C00_0037:
 	sp = fp
-	rLoc1 = 0.0
-	Mem0[ds:0x0400:real64] = rLoc1
-	rLoc1 = 1.0
-	Mem0[ds:0x0408:int32] = (int32) rLoc1
+	Top = Top - 0x01
+	ST[Top:real64] = 0.0
+	Mem0[ds:0x0400:real64] = ST[Top:real64]
+	Top = Top + 0x01
+	Top = Top - 0x01
+	ST[Top:real64] = 1.0
+	Mem0[ds:0x0408:int32] = (int32) ST[Top:real64]
+	Top = Top + 0x01
 	return
 	// succ:  fn0C00_0037_exit
 fn0C00_0037_exit:
