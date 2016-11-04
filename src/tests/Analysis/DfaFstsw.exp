@@ -10,7 +10,7 @@ void fn0C00_0000(word16 bx, word16 si, selector ds, real64 rArg0)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	branch rArg0 >= Mem0[ds:bx:real32] l0C00_000D
+	branch rArg0 <= Mem0[ds:bx:real32] l0C00_000D
 	// succ:  l0C00_0009 l0C00_000D
 l0C00_0009:
 	Mem8[ds:si:word16] = 0x0004
