@@ -49,6 +49,7 @@ namespace Reko.UnitTests.Analysis
         public void Setup()
         {
             this.mr = new MockRepository();
+            this.platform = mr.Stub<IPlatform>();
             this.progBuilder = new ProgramBuilder();
             this.fnExit = new ExternalProcedure(
               "exit",
@@ -67,7 +68,6 @@ namespace Reko.UnitTests.Analysis
 
         private void Given_PlatformTrashedRegisters(params RegisterStorage[] regs)
         {
-            platform = mr.Stub<IPlatform>();
             platform.Stub(p => p.CreateTrashedRegisters()).Return(regs.ToHashSet());
         }
 
@@ -103,8 +103,9 @@ namespace Reko.UnitTests.Analysis
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             importResolver.Replay();
 
+            var program = progBuilder.Program;
             var dataFlow = new ProgramDataFlow();
-            var sst = new SsaTransform(progBuilder.Program, proc, importResolver, dataFlow);
+            var sst = new SsaTransform(program, proc, importResolver, dataFlow);
             sst.Transform();
             var vp = new ValuePropagator(arch, sst.SsaState);
             vp.Transform();
@@ -262,8 +263,10 @@ Constants: cl:0x00
         }
 
         [Test(Description="Tests propagation between caller and callee.")]
+        [Category(Categories.UnitTests)]
         public void TrfSubroutine_WithRegisterParameters()
         {
+
             var sExp1 = Expect(
                 "Preserved: ",
                 "Trashed: r1", "");
@@ -273,9 +276,11 @@ Constants: cl:0x00
             {
                 var r1 = m.Register(1);
                 var r2 = m.Register(2);
+                Given_PlatformTrashedRegisters();
                 m.Assign(r1, m.IAdd(r1, r2));
                 m.Return();
             });
+
 
             var sExp2 = Expect(
                 "Preserved: ",

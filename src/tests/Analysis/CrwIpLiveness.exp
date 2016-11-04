@@ -25,10 +25,12 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	di_5 = Mem0[ds:0x0100:word16]
-	ax_7 = fn0C00_0026(ds)
+	si_6 = Mem0[ds:di_5:word16]
+	ax_7 = fn0C00_0026(si_6, ds)
 	Mem12[ds:di_5 + 0x0002:word16] = ax_7
 	bx_13 = Mem12[ds:0x0102:word16]
-	ax_15 = fn0C00_0026(ds)
+	si_14 = Mem12[ds:bx_13 + 0x0004:word16]
+	ax_15 = fn0C00_0026(si_14, ds)
 	Mem20[ds:bx_13 + 0x0008:word16] = ax_15
 	di_21 = Mem20[ds:0x0104:word16]
 	si_22 = Mem20[ds:di_21:word16]
@@ -37,8 +39,8 @@ l0C00_0000:
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
-Register word16 fn0C00_0026(Register selector ds)
-// MayUse:  ds:16
+Register word16 fn0C00_0026(Register word16 si, Register selector ds)
+// MayUse:  ds:16 si:16
 // LiveOut: ax
 // Trashed: SCZO ax
 // Preserved: di sp
@@ -60,7 +62,7 @@ Register word16 fn0C00_0026(Register selector ds)
 // O:O
 // wLoc02:Local -0002
 // return address size: 2
-word16 fn0C00_0026(selector ds)
+word16 fn0C00_0026(word16 si, selector ds)
 fn0C00_0026_entry:
 	def ds
 	def si

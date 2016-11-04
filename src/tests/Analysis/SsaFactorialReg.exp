@@ -79,12 +79,12 @@ SCZO_8: orig: SCZO
     def:  SCZO_8 = cond(cx - 0x0001)
     uses: SZO_9 = SLICE(SCZO_8, bool, 4) (alias)
           C_31 = SLICE(SCZO_8, bool, 1) (alias)
+          O_37 = SLICE(SCZO_8, bool, 4) (alias)
+          S_40 = SLICE(SCZO_8, bool, 0) (alias)
+          Z_43 = SLICE(SCZO_8, bool, 2) (alias)
 SZO_9: orig: SZO
     def:  SZO_9 = SLICE(SCZO_8, bool, 4) (alias)
     uses: branch Test(LE,SZO_9) l0C00_001C
-          O_37 = SLICE(SZO_9, bool, 4) (alias)
-          S_40 = SLICE(SZO_9, bool, 0) (alias)
-          Z_43 = SLICE(SZO_9, bool, 2) (alias)
 ax_10: orig: ax
     def:  ax_10 = 0x0001
     uses: ax_28 = PHI(ax_21, ax_10)
@@ -166,7 +166,7 @@ O_36: orig: O
     def:  O_36 = SLICE(SCZO_22, bool, 4) (alias)
     uses: O_35 = PHI(O_36, O_37)
 O_37: orig: O
-    def:  O_37 = SLICE(SZO_9, bool, 4) (alias)
+    def:  O_37 = SLICE(SCZO_8, bool, 4) (alias)
     uses: O_35 = PHI(O_36, O_37)
 S_38: orig: S
     def:  S_38 = PHI(S_39, S_40)
@@ -175,7 +175,7 @@ S_39: orig: S
     def:  S_39 = SLICE(SCZO_22, bool, 0) (alias)
     uses: S_38 = PHI(S_39, S_40)
 S_40: orig: S
-    def:  S_40 = SLICE(SZO_9, bool, 0) (alias)
+    def:  S_40 = SLICE(SCZO_8, bool, 0) (alias)
     uses: S_38 = PHI(S_39, S_40)
 Z_41: orig: Z
     def:  Z_41 = PHI(Z_42, Z_43)
@@ -184,7 +184,7 @@ Z_42: orig: Z
     def:  Z_42 = SLICE(SCZO_22, bool, 2) (alias)
     uses: Z_41 = PHI(Z_42, Z_43)
 Z_43: orig: Z
-    def:  Z_43 = SLICE(SZO_9, bool, 2) (alias)
+    def:  Z_43 = SLICE(SCZO_8, bool, 2) (alias)
     uses: Z_41 = PHI(Z_42, Z_43)
 // fn0C00_000B
 // Return size: 2
@@ -204,9 +204,9 @@ l0C00_000B:
 	SCZO_8 = cond(cx - 0x0001)
 	SZO_9 = SLICE(SCZO_8, bool, 4) (alias)
 	C_31 = SLICE(SCZO_8, bool, 1) (alias)
-	O_37 = SLICE(SZO_9, bool, 4) (alias)
-	S_40 = SLICE(SZO_9, bool, 0) (alias)
-	Z_43 = SLICE(SZO_9, bool, 2) (alias)
+	O_37 = SLICE(SCZO_8, bool, 4) (alias)
+	S_40 = SLICE(SCZO_8, bool, 0) (alias)
+	Z_43 = SLICE(SCZO_8, bool, 2) (alias)
 	branch Test(LE,SZO_9) l0C00_001C
 	// succ:  l0C00_0011 l0C00_001C
 l0C00_0011:

@@ -9,7 +9,7 @@ fn0C00_0000_entry:
 l0C00_0000:
 l0C00_0005:
 	cl_11 = 0x00
-	branch true l0C00_000F
+	branch ax <= 0x000C l0C00_000F
 	// succ:  l0C00_000C l0C00_000F
 l0C00_000C:
 	ax = 0x000C
@@ -25,8 +25,8 @@ l0C00_0019:
 	ax = 0xFFF4
 	// succ:  l0C00_001C
 l0C00_001C:
-	Mem21[ds:0x0300:word16] = ax
-	Mem24[ds:0x0302:byte] = cl_11
+	Mem22[ds:0x0300:word16] = ax
+	Mem25[ds:0x0302:byte] = cl_11
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -37,7 +37,7 @@ void fn0C00_0000(word16 ax, selector ds)
 	if (ax >= 0x0000)
 	{
 		cl_11 = 0x00;
-		if (false)
+		if (ax > 0x000C)
 			ax = 0x000C;
 	}
 	else
@@ -46,8 +46,8 @@ void fn0C00_0000(word16 ax, selector ds)
 		if (ax < 0xFFF4)
 			ax = 0xFFF4;
 	}
-	Mem21[ds:0x0300:word16] = ax;
-	Mem24[ds:0x0302:byte] = cl_11;
+	Mem22[ds:0x0300:word16] = ax;
+	Mem25[ds:0x0302:byte] = cl_11;
 	return;
 }
 ===========================

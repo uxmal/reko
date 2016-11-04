@@ -42,7 +42,9 @@ namespace Reko.Analysis
     /// described in "Simple and Efficient Construction of Static Single
     /// Assignment Form" by Matthias Braun, Sebastian Buchwald, Sebastian 
     /// Hack, Roland Leiﬂa, Christoph Mallon, and Andreas Zwinkau. 
-    /// It has been augmented with storage analysis
+    /// It has been augmented with storage analysis, and could be augmented
+    /// with expression simplification if we can prove that the CFG 
+    /// graph is completed (future work).
     /// </remarks>
     public class SsaTransform : InstructionTransformer 
     {
@@ -58,7 +60,11 @@ namespace Reko.Analysis
         public readonly HashSet<SsaIdentifier> incompletePhis;
         private HashSet<SsaIdentifier> sidsToRemove;
 
-        public SsaTransform(Program program, Procedure proc, IImportResolver importResolver, ProgramDataFlow programFlow)
+        public SsaTransform(
+            Program program,
+            Procedure proc,
+            IImportResolver importResolver,
+            ProgramDataFlow programFlow)
         {
             this.arch = program.Architecture;
             this.program = program;
