@@ -1,35 +1,34 @@
 fp:fp
 sp_2: orig: sp
-Top:Top
-    def:  def Top
-    uses: branch ST[Top:real64] < ST[ds:bx:real32] l0C00_000C
-ST:Global memory
-    def:  def ST
-    uses: branch ST[Top:real64] < ST[ds:bx:real32] l0C00_000C
+rArg0:FPU stack
+    def:  def rArg0
+    uses: branch rArg0 > Mem0[ds:bx:real32] l0C00_000C
 ds:ds
     def:  def ds
-    uses: branch ST[Top:real64] < ST[ds:bx:real32] l0C00_000C
+    uses: branch rArg0 > Mem0[ds:bx:real32] l0C00_000C
 bx:bx
     def:  def bx
-    uses: branch ST[Top:real64] < ST[ds:bx:real32] l0C00_000C
+    uses: branch rArg0 > Mem0[ds:bx:real32] l0C00_000C
+Mem0:Global memory
+    def:  def Mem0
+    uses: branch rArg0 > Mem0[ds:bx:real32] l0C00_000C
 FPUF_7: orig: FPUF
-Top_8: orig: Top
-SCZO_9: orig: SCZO
+SCZO_8: orig: SCZO
 ecx:ecx
-ecx_11: orig: ecx
-SZO_12: orig: SZO
-C_13: orig: C
+ecx_10: orig: ecx
+SZO_11: orig: SZO
+C_12: orig: C
 // fn0C00_0000
 // Return size: 2
 define fn0C00_0000
 fn0C00_0000_entry:
-	def Top
-	def ST
+	def rArg0
 	def ds
 	def bx
+	def Mem0
 	// succ:  l0C00_0000
 l0C00_0000:
-	branch ST[Top:real64] < ST[ds:bx:real32] l0C00_000C
+	branch rArg0 > Mem0[ds:bx:real32] l0C00_000C
 	// succ:  l0C00_0009 l0C00_000C
 l0C00_0009:
 	// succ:  l0C00_000C
