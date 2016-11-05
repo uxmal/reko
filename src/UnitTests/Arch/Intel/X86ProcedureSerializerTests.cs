@@ -379,5 +379,27 @@ namespace Reko.UnitTests.Arch.Intel
             Assert.AreEqual(4, ((StackArgumentStorage)sig.Parameters[1].Storage).StackOffset);
             Assert.AreEqual(8, ((StackArgumentStorage)sig.Parameters[2].Storage).StackOffset);
         }
+
+        [Test(Description = "Ensure FPU stack effects are accounted for when returning floats")]
+        public void X86ProcSer_Load_FpuReturnValue()
+        {
+            var ssig = new SerializedSignature
+            {
+                Convention = "__cdecl",
+                ReturnValue = new Argument_v1
+                {
+                    Type = PrimitiveType_v1.Real64()
+                }
+            };
+            Given_ProcedureSerializer(ssig.Convention);
+            mr.ReplayAll();
+
+            var sig = ser.Deserialize(ssig, arch.CreateFrame());
+            var sExp =
+@"FpuStack real64 test()
+// stackDelta: 4; fpuStackDelta: 1; fpuMaxParam: -1
+";
+            Assert.AreEqual(sExp, sig.ToString("test", FunctionType.EmitFlags.AllDetails));
+        }
     }
 }

@@ -602,7 +602,7 @@ T_109: (in rArg04 : real64)
   Class: Eq_108
   DataType: real64
   OrigDataType: real64
-T_110: (in 1.0 <= rArg04 : bool)
+T_110: (in 1.0 >= rArg04 : bool)
   Class: Eq_110
   DataType: bool
   OrigDataType: bool
@@ -806,7 +806,7 @@ T_160: (in Mem0[0x004020F0:real64] : real64)
   Class: Eq_147
   DataType: real64
   OrigDataType: real64
-T_161: (in globals->r4020F0 >= rArg04 : bool)
+T_161: (in globals->r4020F0 <= rArg04 : bool)
   Class: Eq_161
   DataType: bool
   OrigDataType: bool
@@ -926,7 +926,7 @@ T_190: (in (real64) dwLoc08_12 : real64)
   Class: Eq_174
   DataType: real64
   OrigDataType: real64
-T_191: (in rArg0 >= (real64) dwLoc08_12 : bool)
+T_191: (in rArg0 <= (real64) dwLoc08_12 : bool)
   Class: Eq_191
   DataType: bool
   OrigDataType: bool

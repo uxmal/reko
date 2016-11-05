@@ -50,7 +50,7 @@ void test6(Eq_63 c, int32 a, int32 b)
 
 void test7(real64 rArg04)
 {
-	if (1.0 > rArg04)
+	if (1.0 < rArg04)
 		globals->gbl_thiscall->vtbl->set_double(globals->gbl_thiscall, rArg04);
 	globals->gbl_thiscall->vtbl->modify_double(globals->gbl_thiscall, 0x0D, rArg04);
 	return;
@@ -59,7 +59,7 @@ void test7(real64 rArg04)
 void nested_if_blocks_test8(real64 rArg04, real64 rArg0)
 {
 	globals->gbl_thiscall->vtbl->modify_double(globals->gbl_thiscall, ~0x00, rArg04);
-	if (globals->r4020F8 != rArg04 && globals->r4020F0 < rArg04)
+	if (globals->r4020F8 != rArg04 && globals->r4020F0 > rArg04)
 		globals->gbl_thiscall->vtbl->set_double(globals->gbl_thiscall, rArg04);
 	test6(globals->gbl_c, 0x06, 0x07);
 	return;
@@ -71,7 +71,7 @@ void loop_test9(real32 rArg04, real64 rArg0)
 	while (true)
 	{
 		globals->gbl_thiscall->vtbl->modify_double(globals->gbl_thiscall, dwLoc08_12, (real64) rArg04);
-		if (rArg0 >= (real64) dwLoc08_12)
+		if (rArg0 <= (real64) dwLoc08_12)
 			break;
 		rArg0 = (real64) rArg04;
 		globals->gbl_thiscall->vtbl->set_double(globals->gbl_thiscall, rArg0);
