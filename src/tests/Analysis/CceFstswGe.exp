@@ -1,27 +1,33 @@
 fp:fp
 sp_2: orig: sp
-rLoc1_3: orig: rLoc1
+Top_3: orig: Top
+Top_4: orig: Top
+ST5: orig: ST
 ds:ds
     def:  def ds
-    uses: Mem10[ds:di:word16] = 0x0000
-          Mem11[ds:di:word16] = 0x0001
-          branch 0.0 > Mem0[ds:si:real64] l0C00_0010
+    uses: Mem13[ds:di:word16] = 0x0000
+          Mem14[ds:di:word16] = 0x0001
+          branch rLoc1_15 > Mem0[ds:si:real64] l0C00_0010
 si:si
     def:  def si
-    uses: branch 0.0 > Mem0[ds:si:real64] l0C00_0010
-Mem0:Global memory
+    uses: branch rLoc1_15 > Mem0[ds:si:real64] l0C00_0010
+Mem0:Global
     def:  def Mem0
-    uses: branch 0.0 > Mem0[ds:si:real64] l0C00_0010
-FPUF_7: orig: FPUF
-SCZO_8: orig: SCZO
+    uses: branch rLoc1_15 > Mem0[ds:si:real64] l0C00_0010
+FPUF_9: orig: FPUF
+Top_10: orig: Top
+SCZO_11: orig: SCZO
 di:di
     def:  def di
-    uses: Mem10[ds:di:word16] = 0x0000
-          Mem11[ds:di:word16] = 0x0001
-Mem10: orig: Mem0
-    def:  Mem10[ds:di:word16] = 0x0000
-Mem11: orig: Mem0
-    def:  Mem11[ds:di:word16] = 0x0001
+    uses: Mem13[ds:di:word16] = 0x0000
+          Mem14[ds:di:word16] = 0x0001
+Mem13: orig: Mem0
+    def:  Mem13[ds:di:word16] = 0x0000
+Mem14: orig: Mem0
+    def:  Mem14[ds:di:word16] = 0x0001
+rLoc1_15: orig: rLoc1
+    def:  rLoc1_15 = 0.0
+    uses: branch rLoc1_15 > Mem0[ds:si:real64] l0C00_0010
 // fn0C00_0000
 // Return size: 2
 define fn0C00_0000
@@ -32,14 +38,15 @@ fn0C00_0000_entry:
 	def di
 	// succ:  l0C00_0000
 l0C00_0000:
-	branch 0.0 > Mem0[ds:si:real64] l0C00_0010
+	rLoc1_15 = 0.0
+	branch rLoc1_15 > Mem0[ds:si:real64] l0C00_0010
 	// succ:  l0C00_000B l0C00_0010
 l0C00_000B:
-	Mem11[ds:di:word16] = 0x0001
+	Mem14[ds:di:word16] = 0x0001
 	return
 	// succ:  fn0C00_0000_exit
 l0C00_0010:
-	Mem10[ds:di:word16] = 0x0000
+	Mem13[ds:di:word16] = 0x0000
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

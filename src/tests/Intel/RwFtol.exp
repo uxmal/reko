@@ -4,9 +4,10 @@
 // fp:fp
 // esp:esp
 // edi:edi
-// rLoc1:FPU stack
-// rLoc2:FPU stack
+// Top:Top
 // eax:eax
+// rArg0:FPU stack
+// rArg1:FPU stack
 // return address size: 4
 define fn10000000
 fn10000000_entry:
@@ -14,11 +15,13 @@ fn10000000_entry:
 l10000000:
 	esp = fp
 	edi = 0x10001212
-	rLoc1 = Mem0[edi + 0x00000004:real64]
-	rLoc2 = Mem0[edi + 0x0000000C:real64]
-	eax = _ftol(rLoc2)
+	Top = Top - 0x01
+	ST[Top:real64] = Mem0[edi + 0x00000004:real64]
+	Top = Top - 0x01
+	ST[Top:real64] = Mem0[edi + 0x0000000C:real64]
+	eax = _ftol(rArg0)
 	Mem0[edi + 0x00000014:word32] = eax
-	eax = _ftol(rLoc1)
+	eax = _ftol(rArg1)
 	Mem0[edi + 0x0000001C:word32] = eax
 	return
 	// succ:  fn10000000_exit

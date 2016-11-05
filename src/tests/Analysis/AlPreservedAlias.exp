@@ -1,4 +1,4 @@
-Mem0:Global memory (aliases:)
+Mem0:Global (aliases:)
 fp:fp (aliases:)
 sp:sp (aliases:)
 ax:ax (aliases:)
@@ -17,7 +17,7 @@ l0C00_0000:
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 
-Mem0:Global memory (aliases:)
+Mem0:Global (aliases:)
 fp:fp (aliases:)
 sp:sp (aliases:)
 ax:ax (aliases: al)

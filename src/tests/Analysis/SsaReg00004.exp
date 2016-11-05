@@ -46,7 +46,7 @@ ebp:ebp
 dwLoc08_11: orig: dwLoc08
     def:  dwLoc08_11 = ebp
     uses: ebp_58 = dwLoc08_11
-Mem0:Global memory
+Mem0:Global
     def:  def Mem0
     uses: ecx_13 = (int32) Mem0[eax_3 + 0x00000006:word16]
           edx_14 = (int32) Mem0[eax_3 + 0x00000002:word16]

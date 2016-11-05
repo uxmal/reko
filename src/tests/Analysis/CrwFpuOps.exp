@@ -5,7 +5,7 @@ void fn0C00_0000(Register selector ds)
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
-// Mem0:Global memory
+// Mem0:Global
 // fp:fp
 // sp:sp
 // ss:ss
@@ -36,7 +36,7 @@ void fn0C00_0010(Register selector ds, Stack word16 wArg02, Stack word16 wArg04)
 // Preserved: bp sp
 // fn0C00_0010
 // Return size: 0
-// Mem0:Global memory
+// Mem0:Global
 // fp:fp
 // sp:sp
 // bp:bp
@@ -77,7 +77,7 @@ void fn0C00_0037(Register selector ds)
 // Preserved: sp
 // fn0C00_0037
 // Return size: 0
-// Mem0:Global memory
+// Mem0:Global
 // fp:fp
 // sp:sp
 // rLoc1:FPU stack

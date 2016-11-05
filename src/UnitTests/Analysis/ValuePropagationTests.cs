@@ -597,7 +597,7 @@ namespace Reko.UnitTests.Analysis
     def:  def a2
     uses: tmp_3 = Mem0[a2:byte]
           Mem6[a2 + 0x00000004:byte] = tmp_3
-Mem0:Global memory
+Mem0:Global
     def:  def Mem0
     uses: tmp_3 = Mem0[a2:byte]
 tmp_3: orig: tmp
@@ -650,7 +650,7 @@ ProcedureBuilder_exit:
     def:  def a2
     uses: tmp_3 = Mem0[a2:word16]
           Mem6[a2 + 0x00000004:byte] = (byte) tmp_3
-Mem0:Global memory
+Mem0:Global
     def:  def Mem0
     uses: tmp_3 = Mem0[a2:word16]
 tmp_3: orig: tmp
@@ -733,7 +733,7 @@ ProcedureBuilder_exit:
 bx:bx
     def:  def bx
     uses: es_bx_4 = Mem0[es:bx:word32]
-Mem0:Global memory
+Mem0:Global
     def:  def Mem0
     uses: es_bx_4 = Mem0[es:bx:word32]
 es_bx_4: orig: es_bx

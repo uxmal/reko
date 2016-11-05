@@ -274,7 +274,7 @@ ds:ds
     uses: cx_6 = Mem0[ds:0x0400:word16]
           di_8 = Mem0[ds:0x0402:word16]
           ds_19 = PHI(ds, ds_20)
-Mem0:Global memory
+Mem0:Global
     def:  def Mem0
     uses: cx_6 = Mem0[ds:0x0400:word16]
           di_8 = Mem0[ds:0x0402:word16]
@@ -381,7 +381,7 @@ ds:ds
     uses: cx_6 = Mem0[ds:0x0400:word16]
           di_8 = Mem0[ds:0x0402:word16]
           ds_19 = PHI(ds, ds_20)
-Mem0:Global memory
+Mem0:Global
     def:  def Mem0
     uses: cx_6 = Mem0[ds:0x0400:word16]
           di_8 = Mem0[ds:0x0402:word16]

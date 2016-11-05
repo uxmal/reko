@@ -1614,6 +1614,12 @@ namespace Reko.Analysis
                 return sid;
             }
 
+            public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
+            {
+                bs.currentFpuDef[fpu.FpuStackOffset] = sid;
+                return sid.Identifier;
+            }
+
             public override bool ProbeBlockLocalVariable(SsaBlockState bs)
             {
                 return false;

@@ -139,9 +139,8 @@ namespace Reko.Core.Expressions
 		{
 		}
 
-        public MemoryIdentifier(string name, DataType dt) : base(name, dt, MemoryStorage.Instance)
+        public MemoryIdentifier(string name, DataType dt, Storage stg) : base(name, dt, stg)
         {
-
         }
 
 		static MemoryIdentifier()

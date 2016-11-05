@@ -5,7 +5,7 @@ void fn0C00_0000(Register selector ds)
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
-// Mem0:Global memory
+// Mem0:Global
 // fp:fp
 // sp:sp
 // C:Flags
@@ -38,7 +38,7 @@ FlagGroup byte fn0C00_000A(Register selector ds, Register out ptr16 axOut)
 // Preserved: sp
 // fn0C00_000A
 // Return size: 0
-// Mem0:Global memory
+// Mem0:Global
 // fp:fp
 // sp:sp
 // si:si

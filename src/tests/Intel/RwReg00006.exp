@@ -1,6 +1,6 @@
 // fn10000000
 // Return size: 4
-// Mem0:Global memory
+// Mem0:Global
 // fp:fp
 // esp:esp
 // ebx:ebx
@@ -355,7 +355,7 @@ fn10000000_exit:
 
 // fn10000233
 // Return size: 4
-// Mem0:Global memory
+// Mem0:Global
 // fp:fp
 // esp:esp
 // eax:eax
@@ -374,7 +374,7 @@ fn10000233_exit:
 
 // fn10000238
 // Return size: 4
-// Mem0:Global memory
+// Mem0:Global
 // fp:fp
 // esp:esp
 // eax:eax
@@ -393,7 +393,7 @@ fn10000238_exit:
 
 // fn1000023D
 // Return size: 4
-// Mem0:Global memory
+// Mem0:Global
 // fp:fp
 // esp:esp
 // eax:eax
@@ -412,7 +412,7 @@ fn1000023D_exit:
 
 // fn10000242
 // Return size: 4
-// Mem0:Global memory
+// Mem0:Global
 // fp:fp
 // esp:esp
 // eax:eax
@@ -431,7 +431,7 @@ fn10000242_exit:
 
 // fn1000024C
 // Return size: 4
-// Mem0:Global memory
+// Mem0:Global
 // fp:fp
 // esp:esp
 // eax:eax
@@ -450,7 +450,7 @@ fn1000024C_exit:
 
 // fn10000251
 // Return size: 4
-// Mem0:Global memory
+// Mem0:Global
 // fp:fp
 // esp:esp
 // eax:eax
@@ -469,7 +469,7 @@ fn10000251_exit:
 
 // fn10000256
 // Return size: 4
-// Mem0:Global memory
+// Mem0:Global
 // fp:fp
 // esp:esp
 // eax:eax
@@ -488,7 +488,7 @@ fn10000256_exit:
 
 // fn1000025B
 // Return size: 4
-// Mem0:Global memory
+// Mem0:Global
 // fp:fp
 // esp:esp
 // eax:eax
@@ -507,7 +507,7 @@ fn1000025B_exit:
 
 // fn10000260
 // Return size: 4
-// Mem0:Global memory
+// Mem0:Global
 // fp:fp
 // esp:esp
 // eax:eax
@@ -529,7 +529,7 @@ fn10000260_exit:
 
 // fn10000269
 // Return size: 4
-// Mem0:Global memory
+// Mem0:Global
 // fp:fp
 // esp:esp
 // eax:eax
@@ -548,7 +548,7 @@ fn10000269_exit:
 
 // fn1000026E
 // Return size: 4
-// Mem0:Global memory
+// Mem0:Global
 // fp:fp
 // esp:esp
 // eax:eax
@@ -570,7 +570,7 @@ fn1000026E_exit:
 
 // fn10000277
 // Return size: 4
-// Mem0:Global memory
+// Mem0:Global
 // fp:fp
 // esp:esp
 // edx:edx
@@ -602,7 +602,7 @@ fn10000277_exit:
 
 // fn100002A8
 // Return size: 4
-// Mem0:Global memory
+// Mem0:Global
 // fp:fp
 // esp:esp
 // Top:Top
@@ -619,7 +619,7 @@ fn100002A8_exit:
 
 // fn100002A9
 // Return size: 4
-// Mem0:Global memory
+// Mem0:Global
 // fp:fp
 // esp:esp
 // edx:edx

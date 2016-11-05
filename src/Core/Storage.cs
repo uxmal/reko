@@ -330,9 +330,10 @@ namespace Reko.Core
     /// </summary>
     public class MemoryStorage : Storage
     {
-        private MemoryStorage() : base("Global")
+        public MemoryStorage(string name, StorageDomain domain) : base(name)
         {
-            this.Domain = StorageDomain.Memory;
+            this.Name = name;
+            this.Domain = domain;
         }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
@@ -367,14 +368,14 @@ namespace Reko.Core
 
         public override void Write(TextWriter writer)
         {
-            writer.Write("Global memory");
+            writer.Write(Name);
         }
 
         public static MemoryStorage Instance { get; private set; }
 
         static MemoryStorage()
         {
-            Instance = new MemoryStorage();
+            Instance = new MemoryStorage("Global", StorageDomain.Memory);
         }
     }
 

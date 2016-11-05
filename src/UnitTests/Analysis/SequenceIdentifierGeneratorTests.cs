@@ -143,7 +143,7 @@ ProcedureBuilder_exit:
         {
             var sExp =
             #region Expected
-@"Mem0:Global memory
+@"Mem0:Global
     def:  def Mem0
     uses: r2_r1_2 = Mem0[0x2000:word64]
 r2_r1_2: orig: r2_r1

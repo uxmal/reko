@@ -92,7 +92,7 @@ ds:ds
 si:si
     def:  def si
     uses: si_11 = PHI(si, si_14, si_14)
-Mem0:Global memory
+Mem0:Global
     def:  def Mem0
     uses: ax_13 = Mem0[ds:si_11:word16]
 C_29: orig: C

@@ -158,7 +158,7 @@ namespace Reko.UnitTests.Analysis
         public void AliasFlags()
         {
             var sExp =
-@"Mem0:Global memory (aliases:)
+@"Mem0:Global (aliases:)
 fp:fp (aliases:)
 SZ:Flags (aliases: CZ C)
 CZ:Flags (aliases: SZ C)

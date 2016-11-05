@@ -5,7 +5,7 @@ void main(Register selector ds)
 // Preserved: sp
 // main
 // Return size: 0
-// Mem0:Global memory
+// Mem0:Global
 // fp:fp
 // sp:sp
 // ax:ax
@@ -32,7 +32,7 @@ void memfoo()
 // Preserved: sp
 // memfoo
 // Return size: 2
-// Mem0:Global memory
+// Mem0:Global
 // fp:fp
 // sp:sp
 // ds:ds
@@ -69,7 +69,7 @@ Register word16 membar(Register word16 ax, Register selector ds)
 // Preserved: sp
 // membar
 // Return size: 0
-// Mem0:Global memory
+// Mem0:Global
 // fp:fp
 // sp:sp
 // ds:ds

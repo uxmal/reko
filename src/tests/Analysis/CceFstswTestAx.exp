@@ -1,31 +1,34 @@
 fp:fp
 sp_2: orig: sp
-rArg0:FPU stack
-    def:  def rArg0
-    uses: branch rArg0 > Mem0[ds:bx:real32] l0C00_000C
+Top_3: orig: Top
+ST:x87Stack
 ds:ds
     def:  def ds
     uses: branch rArg0 > Mem0[ds:bx:real32] l0C00_000C
 bx:bx
     def:  def bx
     uses: branch rArg0 > Mem0[ds:bx:real32] l0C00_000C
-Mem0:Global memory
+Mem0:Global
     def:  def Mem0
     uses: branch rArg0 > Mem0[ds:bx:real32] l0C00_000C
-FPUF_7: orig: FPUF
-SCZO_8: orig: SCZO
+FPUF_8: orig: FPUF
+Top_9: orig: Top
+SCZO_10: orig: SCZO
 ecx:ecx
-ecx_10: orig: ecx
-SZO_11: orig: SZO
-C_12: orig: C
+ecx_12: orig: ecx
+SZO_13: orig: SZO
+C_14: orig: C
+rArg0:FPU stack
+    def:  def rArg0
+    uses: branch rArg0 > Mem0[ds:bx:real32] l0C00_000C
 // fn0C00_0000
 // Return size: 2
 define fn0C00_0000
 fn0C00_0000_entry:
-	def rArg0
 	def ds
 	def bx
 	def Mem0
+	def rArg0
 	// succ:  l0C00_0000
 l0C00_0000:
 	branch rArg0 > Mem0[ds:bx:real32] l0C00_000C
