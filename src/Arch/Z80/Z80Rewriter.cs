@@ -410,7 +410,6 @@ namespace Reko.Arch.Z80
             emitter.Assign(dst, emitter.IAdd(src, 1));
             AssignCond(FlagM.ZF | FlagM.SF | FlagM.PF, dst);
         }
-
  
         private void RewriteJp(Z80Instruction instr)
         {

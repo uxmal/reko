@@ -206,12 +206,9 @@ namespace Reko.UnitTests.Core
                 get { throw new NotImplementedException(); }
             }
 
-            public PrimitiveType WordWidth
-            {
-                get { throw new NotImplementedException(); }
-            }
-
+            public PrimitiveType WordWidth { get { throw new NotImplementedException(); } }
             public RegisterStorage StackRegister { get; set; }
+            public RegisterStorage FpuStackRegister { get { return null; } }
 
             public uint CarryFlagMask
             {
@@ -269,6 +266,11 @@ namespace Reko.UnitTests.Core
             }
 
             public int? GetOpcodeNumber(string name)
+            {
+                throw new NotImplementedException();
+            }
+
+            public FrameApplicationBuilder CreateFrameApplicationBuilder(IStorageBinder binder, CallSite site, Expression callee)
             {
                 throw new NotImplementedException();
             }

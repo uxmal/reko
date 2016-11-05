@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using Reko.Core.Code;
 
 namespace Reko.Arch.X86
 {
@@ -66,6 +67,7 @@ namespace Reko.Arch.X86
             this.WordWidth = mode.WordWidth;
             this.FramePointerType = mode.FramePointerType;
             this.StackRegister = mode.StackRegister;
+            this.FpuStackRegister = Registers.Top;
             this.Options = new X86Options();
         }
 
@@ -114,6 +116,11 @@ namespace Reko.Arch.X86
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
             return new X86InstructionComparer(norm);
+        }
+
+        public override FrameApplicationBuilder CreateFrameApplicationBuilder(IStorageBinder binder, CallSite site, Expression callee)
+        {
+            return new X86FrameApplicationBuilder(this, binder, site, callee, false);
         }
 
         public override SortedList<string, int> GetOpcodeNames()

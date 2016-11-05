@@ -109,9 +109,8 @@ namespace Reko.Analysis
             if (ft == null)
                 return;
             AdjustStackPointerAfterCall(stm, call, ft.StackDelta);
-            var ab = new FrameApplicationBuilder(
-                 program.Architecture, proc.Frame, call.CallSite,
-                 call.Callee, false);
+            var ab = program.Architecture.CreateFrameApplicationBuilder(
+                 proc.Frame, call.CallSite, call.Callee);
             stm.Instruction = ab.CreateInstruction(ft, null);
             ssaIdTransformer.Transform(stm, call);
             changed = true;

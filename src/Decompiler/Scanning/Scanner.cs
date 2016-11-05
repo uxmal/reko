@@ -957,11 +957,6 @@ namespace Reko.Scanning
                 ++iStm;
                 return stm;
             }
-
-            public override Identifier Register(int i)
-            {
-                throw new NotImplementedException();
-            }
         }
     }
 

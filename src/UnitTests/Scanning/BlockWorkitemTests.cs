@@ -18,22 +18,23 @@
  */
 #endregion
 
+using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Code;
 using Reko.Core.Expressions;
-using Reko.Core.Lib;
 using Reko.Core.Rtl;
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
-using NUnit.Framework;
 using Rhino.Mocks;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.IO;
-using System.ComponentModel.Design;
-using Reko.Core.Services;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -82,6 +83,9 @@ namespace Reko.UnitTests.Scanning
             arch.BackToRecord();
             arch.Stub(s => s.StackRegister).Return((RegisterStorage)sp.Storage);
             arch.Stub(s => s.PointerType).Return(PrimitiveType.Pointer32);
+            arch.Stub(s => s.CreateFrameApplicationBuilder(null, null, null)).IgnoreArguments().Do(
+                new Func<IStorageBinder, CallSite, Expression, FrameApplicationBuilder>(
+                    (frame, site, callee) => new FrameApplicationBuilder(arch, frame, site, callee, false)));
             scanner.Stub(s => s.Services).Return(sc);
             sc.AddService<DecompilerEventListener>(listener);
         }

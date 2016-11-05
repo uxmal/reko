@@ -36,7 +36,6 @@ namespace Reko.Core
 
         public abstract Statement Emit(Instruction instr);
         public abstract Frame Frame { get; }
-        public abstract Identifier Register(int i);
 
         public virtual Assignment Assign(Identifier dst, Expression src)
         {

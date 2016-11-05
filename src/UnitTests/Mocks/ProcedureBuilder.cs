@@ -257,7 +257,7 @@ namespace Reko.UnitTests.Mocks
             get { return Procedure.Frame; }
         }
 
-        public override Identifier Register(int i)
+        public Identifier Register(int i)
         {
             return Frame.EnsureRegister(Architecture.GetRegister(i));
         }

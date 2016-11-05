@@ -350,7 +350,7 @@ namespace Reko.Analysis
         private ApplicationBuilder CreateApplicationBuilder(DataType dt, ProcedureBase eCallee, CallInstruction call)
         {
             var pc = new ProcedureConstant(dt, eCallee);
-            var ab = new FrameApplicationBuilder(arch, ssa.Procedure.Frame, call.CallSite, pc, false);
+            var ab = arch.CreateFrameApplicationBuilder(ssa.Procedure.Frame, call.CallSite, pc);
             return ab;
         }
 
@@ -365,7 +365,7 @@ namespace Reko.Analysis
             }
             else
             {
-                var ab = new FrameApplicationBuilder(arch, ssa.Procedure.Frame, ci.CallSite, ci.Callee, false);
+                var ab = arch.CreateFrameApplicationBuilder(ssa.Procedure.Frame, ci.CallSite, ci.Callee);
                 foreach (var use in calleeFlow.BitsUsed.Keys)
                 {
                     var arg = use.Accept(ab);

@@ -31,7 +31,7 @@ namespace Reko.UnitTests
         public const string UnitTests = "UnitTests";
 
         // The purpose of FailedTests category is to avoid running such unit
-        // tests under Travis CI before fixing of Reko so that they could pass
+        // tests under Travis CI before fixing of Reko so that they could pass.
         public const string FailedTests = "FailedTests";
 
         // The purpose of UserInterface is to avoid running such unit tests
@@ -46,17 +46,17 @@ namespace Reko.UnitTests
         public const string Capstone = "Capstone";
 
         // Tests that are slower, because they show UI or hit
-        // the file system, are considered integration tests
+        // the file system, are considered integration tests.
         public const string IntegrationTests = "IntegrationTests";
 
         // Tests that are currently failing in the "analysis-development"
         // branch. Before merging back into "master", these must all be 
-        // running again
+        // running again.
         public const string AnalysisDevelopment = "AnalysisDevelopment";
 
         // Tests that are currently failing in the "explicit-x87-stack"
         // branch. Before merging back into "master", these must all be 
-        // running again
+        // running again.
         public const string ExplicitX87Stack = "ExplicitX87Stack";
     }
 }

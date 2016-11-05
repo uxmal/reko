@@ -258,6 +258,7 @@ namespace Reko.UnitTests.Mocks
 
         public uint CarryFlagMask { get { return (uint) StatusFlags.C; } }
         public RegisterStorage StackRegister { get { return GetRegister(FakeArchitecture.iStackRegister); } }
+        public RegisterStorage FpuStackRegister { get { return null; } }
 
         public Address MakeAddressFromConstant(Constant c)
         {
@@ -322,6 +323,11 @@ namespace Reko.UnitTests.Mocks
         public int? GetOpcodeNumber(string name)
         {
             throw new NotImplementedException();
+        }
+
+        public FrameApplicationBuilder CreateFrameApplicationBuilder(IStorageBinder binder, CallSite site, Expression callee)
+        {
+            return new FrameApplicationBuilder(this, binder, site, callee, false);
         }
 
         #endregion

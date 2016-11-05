@@ -92,8 +92,7 @@ namespace Reko.UnitTests.Arch.Intel
 		}
 
 		[Test]
-        [Ignore(Categories.ExplicitX87Stack)]
-        [Category(Categories.ExplicitX87Stack)]
+        [Category(Categories.IntegrationTests)]
         public void RwFtol()
 		{
 			RunTest("Fragments/import32/ftol.asm", "Intel/RwFtol.txt");

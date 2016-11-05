@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
@@ -119,6 +120,19 @@ namespace Reko.Core
         /// <returns></returns>
         IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm);
 
+        /// <summary>
+        /// Creates a frame application builder for this architecture.
+        /// </summary>
+        /// <param name="binder"></param>
+        /// <param name="site"></param>
+        /// <param name="callee"></param>
+        /// <param name="ensureVariables"></param>
+        /// <returns></returns>
+        FrameApplicationBuilder CreateFrameApplicationBuilder(
+            IStorageBinder binder,
+            CallSite site,
+            Expression callee);
+
         IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg);
 
         /// <summary>
@@ -158,6 +172,7 @@ namespace Reko.Core
 		PrimitiveType WordWidth { get; }					// Processor's native word size
         int InstructionBitSize { get; }                     // Instruction "granularity" or alignment.
         RegisterStorage StackRegister { get; }              // Stack pointer used by this machine.
+        RegisterStorage FpuStackRegister { get; }           // FPU stack pointer used by this machine, or null if none exists.
         uint CarryFlagMask { get; }                         // Used when building large adds/subs when carry flag is used.
 
         /// <summary>
@@ -200,6 +215,7 @@ namespace Reko.Core
         public PrimitiveType WordWidth { get; protected set; }
         public int InstructionBitSize { get; protected set; }
         public RegisterStorage StackRegister { get; protected set; }
+        public RegisterStorage FpuStackRegister { get; protected set; }
         public uint CarryFlagMask { get; protected set; }
 
         public abstract IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader);
@@ -218,6 +234,14 @@ namespace Reko.Core
         public abstract RegisterStorage GetRegister(int i);
         public abstract RegisterStorage GetRegister(string name);
         public abstract RegisterStorage[] GetRegisters();
+
+        public virtual FrameApplicationBuilder CreateFrameApplicationBuilder(
+            IStorageBinder binder,
+            CallSite site,
+            Expression callee)
+        {
+            return new FrameApplicationBuilder(this, binder, site, callee, false);
+        }
 
         /// <summary>
         /// Create a stack access to a variable offset by <paramref name="cbOffsets"/>

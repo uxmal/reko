@@ -169,18 +169,13 @@ namespace Reko.Scanning
 
         private Instruction BuildApplication(Expression fn, FunctionType sig, ProcedureCharacteristics c, CallSite site)
         {
-            var ab = CreateApplicationBuilder(fn, sig, site);
+            var ab = arch.CreateFrameApplicationBuilder(frame, site, fn);
             return ab.CreateInstruction(sig, c);
         }
 
-        private ApplicationBuilder CreateApplicationBuilder(Expression callee, FunctionType sig, CallSite site)
+        private ApplicationBuilder CreateApplicationBuilder(Expression callee, CallSite site)
         {
-            var ab = new FrameApplicationBuilder(
-                arch,
-                frame,
-                site,
-                callee,
-                false);
+            var ab = arch.CreateFrameApplicationBuilder(frame, site, callee);
             return ab;
         }
 
@@ -598,6 +593,25 @@ namespace Reko.Scanning
                         stackReg,
                         new BinaryExpression(Operator.IAdd, stackReg.DataType, stackReg, d)));
                 }
+                if (sigCallee.FpuStackDelta != 0)
+                {
+                    BinaryOperator op;
+                    int dd = sigCallee.FpuStackDelta;
+                    if (sigCallee.FpuStackDelta > 0)
+                    {
+                        op = Operator.ISub;
+                    }
+                    else
+                    {
+                        op = Operator.IAdd;
+                        dd = -sigCallee.FpuStackDelta;
+                    }
+                    var fpuStackReg = frame.EnsureRegister(arch.FpuStackRegister);
+                    var d = Constant.Create(fpuStackReg.DataType, dd);
+                    this.Emit(new Assignment(
+                        fpuStackReg,
+                        new BinaryExpression(op, fpuStackReg.DataType, fpuStackReg, d)));
+                }
             }
             return true;
         }
@@ -704,12 +718,10 @@ namespace Reko.Scanning
         {
             if (impProc.Signature == null)
                 throw new ApplicationException(string.Format("You must specify a procedure signature for {0} since it has been marked as 'alloca'.", impProc.Name));
-            var ab = CreateApplicationBuilder(
-                new ProcedureConstant(
-                    program.Platform.PointerType,
-                    impProc),
-                impProc.Signature,
-                site);
+            var ab = arch.CreateFrameApplicationBuilder(
+                frame,
+                site,
+                new ProcedureConstant(program.Platform.PointerType, impProc));
             if (impProc.Signature.Parameters.Length != 1)
                 throw new ApplicationException(string.Format("An alloca function must have exactly one parameter, but {0} has {1}.", impProc.Name, impProc.Signature.Parameters.Length));
             var target = ab.Bind(impProc.Signature.Parameters[0]);

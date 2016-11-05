@@ -72,7 +72,6 @@ namespace Reko.UnitTests.Core
             Assert.AreEqual("cond(id)", cond.ToString());
         }
 
-
         private class CodeEmitterImpl : CodeEmitter
         {
             private Frame frame = new Frame(PrimitiveType.Word32);
@@ -86,11 +85,6 @@ namespace Reko.UnitTests.Core
             public override Frame Frame
             {
                 get { return frame;  }
-            }
-
-            public override Identifier Register(int i)
-            {
-                throw new NotImplementedException();
             }
         }
 	}

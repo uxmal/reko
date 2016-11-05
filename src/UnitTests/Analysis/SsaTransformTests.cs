@@ -2279,7 +2279,7 @@ proc1_exit:
         }
 
         [Test]
-        [Category("investigation")]
+        [Category(Categories.UnitTests)]
         public void SsaPartialRegisters()
         {
             var sExp =
