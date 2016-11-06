@@ -67,8 +67,7 @@ namespace Reko.UnitTests.Typing
 		}
 
 		[Test]
-        [Ignore(Categories.ExplicitX87Stack)]
-        [Category(Categories.ExplicitX87Stack)]
+        [Category(Categories.IntegrationTests)]
         public void TrcoFloatingPoint()
 		{
 			RunTest16("Fragments/fpuops.asm", "Typing/TrcoFloatingPoint.txt");
@@ -99,8 +98,7 @@ namespace Reko.UnitTests.Typing
 		}
 
         [Test]
-        [Ignore(Categories.ExplicitX87Stack)]
-        [Category(Categories.ExplicitX87Stack)]
+        [Category(Categories.IntegrationTests)]
         public void TrcoReals()
         {
             RunTest16("Fragments/fpuops.asm", "Typing/TrcoReals.txt");

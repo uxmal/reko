@@ -332,8 +332,7 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-        [Ignore(Categories.ExplicitX87Stack)]
-        [Category(Categories.ExplicitX87Stack)]
+        [Category(Categories.IntegrationTests)]
         public void DtbReals()
         {
             RunTest(RewriteFile16("Fragments/fpuops.asm"), "Typing/DtbReals.txt");

@@ -4,26 +4,26 @@ void fn0C00_0000(word32 eax, word16 bx, word16 si, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	byte al_27
-	Mem18[ds:bx + 0x0004:word32] = Mem0[ds:bx + 0x0000:word32] & 0x000000FF | Mem0[ds:si + 0x0000:word32] & 0xFFFFFF00
-	byte al_19 = Mem18[ds:bx + 0x0008:byte]
-	branch al_19 <u 0x30 l0C00_002A
+	byte al_28
+	Mem19[ds:bx + 0x0004:word32] = Mem0[ds:bx + 0x0000:word32] & 0x000000FF | Mem0[ds:si + 0x0000:word32] & 0xFFFFFF00
+	byte al_20 = Mem19[ds:bx + 0x0008:byte]
+	branch al_20 <u 0x30 l0C00_002A
 	// succ:  l0C00_0021 l0C00_002A
 l0C00_0021:
-	branch al_19 >=u 0x3A l0C00_002A
+	branch al_20 >=u 0x3A l0C00_002A
 	// succ:  l0C00_0025 l0C00_002A
 l0C00_0025:
-	al_27 = 0x01
+	al_28 = 0x01
 	goto l0C00_002C
 	// succ:  l0C00_002C
 l0C00_002A:
-	al_27 = DPB(al_19, 0x00, 0) (alias)
+	al_28 = DPB(al_20, 0x00, 0) (alias)
 	// succ:  l0C00_002C
 l0C00_002C:
-	Mem36[ds:bx + 0x0009:byte] = al_27
-	word32 dx_ax_38 = Mem36[ds:bx + 0x000C:word16] *s Mem36[ds:bx + 0x000A:word16]
-	Mem42[ds:bx + 0x000E:word16] = (word16) dx_ax_38
-	Mem43[ds:bx + 0x0010:word16] = SLICE(dx_ax_38, word16, 16)
+	Mem37[ds:bx + 0x0009:byte] = al_28
+	word32 dx_ax_39 = Mem37[ds:bx + 0x000C:word16] *s Mem37[ds:bx + 0x000A:word16]
+	Mem43[ds:bx + 0x000E:word16] = (word16) dx_ax_39
+	Mem44[ds:bx + 0x0010:word16] = SLICE(dx_ax_39, word16, 16)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -68,7 +68,7 @@ T_5: (in ds : selector)
   Class: Eq_5
   DataType: (ptr Eq_5)
   OrigDataType: (ptr (segment))
-T_6: (in al_27 : byte)
+T_6: (in al_28 : byte)
   Class: Eq_6
   DataType: cu8
   OrigDataType: cu8
@@ -124,11 +124,11 @@ T_19: (in bx + 0x0004 : word16)
   Class: Eq_19
   DataType: (memptr (ptr Eq_5) ui32)
   OrigDataType: (memptr T_5 (struct (0 T_9 t0000)))
-T_20: (in Mem18[ds:bx + 0x0004:word32] : word32)
+T_20: (in Mem19[ds:bx + 0x0004:word32] : word32)
   Class: Eq_17
   DataType: ui32
   OrigDataType: word32
-T_21: (in al_19 : byte)
+T_21: (in al_20 : byte)
   Class: Eq_21
   DataType: cu8
   OrigDataType: cu8
@@ -140,7 +140,7 @@ T_23: (in bx + 0x0008 : word16)
   Class: Eq_23
   DataType: (memptr (ptr Eq_5) Eq_23)
   OrigDataType: (memptr T_5 (struct (0 T_9 t0000) (4 T_20 t0004)))
-T_24: (in Mem18[ds:bx + 0x0008:byte] : byte)
+T_24: (in Mem19[ds:bx + 0x0008:byte] : byte)
   Class: Eq_21
   DataType: cu8
   OrigDataType: byte
@@ -148,7 +148,7 @@ T_25: (in 0x30 : byte)
   Class: Eq_21
   DataType: cu8
   OrigDataType: cu8
-T_26: (in al_19 <u 0x30 : bool)
+T_26: (in al_20 <u 0x30 : bool)
   Class: Eq_26
   DataType: bool
   OrigDataType: bool
@@ -156,7 +156,7 @@ T_27: (in 0x00 : byte)
   Class: Eq_27
   DataType: byte
   OrigDataType: byte
-T_28: (in DPB(al_19, 0x00, 0) : byte)
+T_28: (in DPB(al_20, 0x00, 0) : byte)
   Class: Eq_6
   DataType: cu8
   OrigDataType: cu8
@@ -164,7 +164,7 @@ T_29: (in 0x3A : byte)
   Class: Eq_21
   DataType: cu8
   OrigDataType: cu8
-T_30: (in al_19 >=u 0x3A : bool)
+T_30: (in al_20 >=u 0x3A : bool)
   Class: Eq_30
   DataType: bool
   OrigDataType: bool
@@ -180,11 +180,11 @@ T_33: (in bx + 0x0009 : word16)
   Class: Eq_33
   DataType: (memptr (ptr Eq_5) Eq_33)
   OrigDataType: (memptr T_5 (struct (0 T_9 t0000) (4 T_20 t0004) (8 T_24 t0008)))
-T_34: (in Mem36[ds:bx + 0x0009:byte] : byte)
+T_34: (in Mem37[ds:bx + 0x0009:byte] : byte)
   Class: Eq_6
   DataType: cu8
   OrigDataType: byte
-T_35: (in dx_ax_38 : word32)
+T_35: (in dx_ax_39 : word32)
   Class: Eq_35
   DataType: int32
   OrigDataType: int32
@@ -196,7 +196,7 @@ T_37: (in bx + 0x000C : word16)
   Class: Eq_37
   DataType: (memptr (ptr Eq_5) Eq_37)
   OrigDataType: (memptr T_5 (struct (0 T_9 t0000) (4 T_20 t0004) (8 T_24 t0008) (9 T_34 t0009)))
-T_38: (in Mem36[ds:bx + 0x000C:word16] : word16)
+T_38: (in Mem37[ds:bx + 0x000C:word16] : word16)
   Class: Eq_38
   DataType: int16
   OrigDataType: int16
@@ -208,15 +208,15 @@ T_40: (in bx + 0x000A : word16)
   Class: Eq_40
   DataType: (memptr (ptr Eq_5) Eq_40)
   OrigDataType: (memptr T_5 (struct (0 T_9 t0000) (4 T_20 t0004) (8 T_24 t0008) (9 T_34 t0009)))
-T_41: (in Mem36[ds:bx + 0x000A:word16] : word16)
+T_41: (in Mem37[ds:bx + 0x000A:word16] : word16)
   Class: Eq_41
   DataType: int16
   OrigDataType: int16
-T_42: (in Mem36[ds:bx + 0x000C:word16] *s Mem36[ds:bx + 0x000A:word16] : int32)
+T_42: (in Mem37[ds:bx + 0x000C:word16] *s Mem37[ds:bx + 0x000A:word16] : int32)
   Class: Eq_35
   DataType: int32
   OrigDataType: int32
-T_43: (in (word16) dx_ax_38 : word16)
+T_43: (in (word16) dx_ax_39 : word16)
   Class: Eq_43
   DataType: word16
   OrigDataType: word16
@@ -228,11 +228,11 @@ T_45: (in bx + 0x000E : word16)
   Class: Eq_45
   DataType: (memptr (ptr Eq_5) Eq_45)
   OrigDataType: (memptr T_5 (struct (0 T_9 t0000) (4 T_20 t0004) (8 T_24 t0008) (9 T_34 t0009) (A T_41 t000A) (C T_38 t000C)))
-T_46: (in Mem42[ds:bx + 0x000E:word16] : word16)
+T_46: (in Mem43[ds:bx + 0x000E:word16] : word16)
   Class: Eq_43
   DataType: word16
   OrigDataType: word16
-T_47: (in SLICE(dx_ax_38, word16, 16) : word16)
+T_47: (in SLICE(dx_ax_39, word16, 16) : word16)
   Class: Eq_47
   DataType: word16
   OrigDataType: word16
@@ -244,7 +244,7 @@ T_49: (in bx + 0x0010 : word16)
   Class: Eq_49
   DataType: (memptr (ptr Eq_5) Eq_49)
   OrigDataType: (memptr T_5 (struct (0 T_9 t0000) (4 T_20 t0004) (8 T_24 t0008) (9 T_34 t0009) (A T_41 t000A) (C T_38 t000C) (E T_46 t000E)))
-T_50: (in Mem43[ds:bx + 0x0010:word16] : word16)
+T_50: (in Mem44[ds:bx + 0x0010:word16] : word16)
   Class: Eq_47
   DataType: word16
   OrigDataType: word16

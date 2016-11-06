@@ -37,6 +37,7 @@ namespace Reko.UnitTests.Core
 
         [Test(Description="Found this in a regression.")]
         [Category(Categories.Regressions)]
+        [Category(Categories.UnitTests)]
         public void Addr_Ge()
         {
             Assert.IsTrue(Address.Ptr32(4001) >= Address.Ptr32(4000));

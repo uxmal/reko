@@ -49,7 +49,6 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        [Category(Categories.FailedTests)]
 		public void LciLiveAtLoop()
 		{
 			Build(new LiveLoopMock().Procedure, new FakeArchitecture());
@@ -64,7 +63,6 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        [Category(Categories.FailedTests)]
 		public void LciLiveAtCopy()
 		{
 			Build(new LiveCopyMock().Procedure, new FakeArchitecture());

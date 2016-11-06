@@ -117,8 +117,7 @@ namespace Reko.UnitTests.Arch.Intel
 		}
 
 		[Test]
-        [Ignore(Categories.ExplicitX87Stack)]
-        [Category(Categories.ExplicitX87Stack)]
+        [Category(Categories.IntegrationTests)]
         public void RwReg00004()
 		{
 			RunTest("Fragments/regressions/r00004.asm", "Intel/RwReg00004.txt");

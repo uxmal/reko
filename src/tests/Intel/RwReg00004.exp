@@ -1,6 +1,6 @@
 // fn10000000
 // Return size: 4
-// Mem0:Global memory
+// Mem0:Global
 // fp:fp
 // esp:esp
 // eax:eax
@@ -23,6 +23,7 @@ fn10000000_entry:
 	// succ:  l10000000
 l10000000:
 	esp = fp
+	Top = 0x00
 	eax = Mem0[esp + 0x00000004:word32]
 	esp = esp - 0x00000004
 	Mem0[esp:word32] = ebx
@@ -168,7 +169,7 @@ fn10000000_exit:
 
 // fn1000010A
 // Return size: 4
-// Mem0:Global memory
+// Mem0:Global
 // fp:fp
 // esp:esp
 // Top:Top
@@ -179,6 +180,7 @@ fn1000010A_entry:
 	// succ:  l1000010A
 l1000010A:
 	esp = fp
+	Top = 0x00
 	Mem0[esp - 0x00000004:int32] = (int32) ST[Top:real64]
 	Top = Top + 0x01
 	eax = Mem0[esp - 0x00000004:word32]

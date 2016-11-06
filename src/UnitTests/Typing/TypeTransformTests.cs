@@ -127,8 +127,7 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-        [Ignore(Categories.ExplicitX87Stack)]
-        [Category(Categories.ExplicitX87Stack)]
+        [Category(Categories.IntegrationTests)]
         public void TtranReals()
         {
             RunTest16("Fragments/fpuops.asm", "Typing/TtranReals.txt");

@@ -28,6 +28,7 @@ namespace Reko.UnitTests
     public static class Categories
     {
         public const string Regressions = "Regressions";
+
         public const string UnitTests = "UnitTests";
 
         // The purpose of FailedTests category is to avoid running such unit

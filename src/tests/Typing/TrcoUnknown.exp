@@ -4,7 +4,7 @@ void fn0C00_0000(word16 bx, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem7[ds:bx + 0x0000:word32] = Mem0[ds:bx + 0x0004:word32]
+	Mem8[ds:bx + 0x0000:word32] = Mem0[ds:bx + 0x0004:word32]
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -29,6 +29,6 @@ T_7 (in 0x0000 : word16)
 	trait_primitive(word16)
 T_8 (in bx + 0x0000 : word16)
 	trait_primitive(word16)
-T_9 (in Mem7[ds:bx + 0x0000:word32] : word32)
+T_9 (in Mem8[ds:bx + 0x0000:word32] : word32)
 	trait_primitive(word32)
 	trait_equal(T_6)

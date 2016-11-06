@@ -488,7 +488,7 @@ namespace Reko.Analysis
                     var idDst = NewDef(idFrame, store.Src, false);
                     return new Assignment(idDst, store.Src);
                 }
-                else if (this.RenameFrameAccesses && IsFpuStackAccess(ssa.Procedure, acc))
+                else if (this.RenameFrameAccesses && IsConstFpuStackAccess(ssa.Procedure, acc))
                 {
                     ssa.Identifiers[acc.MemoryId].DefStatement = null;
                     var idFrame = ssa.Procedure.Frame.EnsureFpuStackVariable(((Constant)acc.EffectiveAddress).ToInt32(), acc.DataType);
@@ -607,7 +607,7 @@ namespace Reko.Analysis
                 var idNew = NewUse(idFrame, stmCur, true);
                 return idNew;
             } 
-            if (this.RenameFrameAccesses && IsFpuStackAccess(ssa.Procedure, access))
+            if (this.RenameFrameAccesses && IsConstFpuStackAccess(ssa.Procedure, access))
             {
                 var idFrame = ssa.Procedure.Frame.EnsureFpuStackVariable(
                     ((Constant)access.EffectiveAddress).ToInt32(), access.DataType);
@@ -696,11 +696,11 @@ namespace Reko.Analysis
             return bin.Right is Constant;
         }
 
-        private static bool IsFpuStackAccess(Procedure proc, MemoryAccess acc)
+        private static bool IsConstFpuStackAccess(Procedure proc, MemoryAccess acc)
         {
             if (!acc.MemoryId.Name.StartsWith("ST"))  //$HACK: gross hack but we have to start somewhere.
                 return false;
-            return true;
+            return acc.EffectiveAddress is Constant;
         }
 
         private static Identifier EnsureStackVariable(Procedure proc, Expression effectiveAddress, DataType dt)
