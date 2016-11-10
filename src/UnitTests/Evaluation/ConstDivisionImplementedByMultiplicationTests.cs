@@ -96,16 +96,16 @@ namespace Reko.UnitTests.Evaluation
         {
             var q = (double)num / denom;
             var n = (uint) Math.Round(q * Math.Pow(2.0, 32));
-            var f = n * Math.Pow(2.0, -32);
 
-            var rat = ConstDivisionImplementedByMultiplication.ContinuedFraction(f);
+            var rat = ConstDivisionImplementedByMultiplication.FindBestRational(n);
+            Debug.Print("{0}/{1} - {2}", num, denom, rat);
             if (num != rat.Numerator || 
                denom != rat.Denominator)
             {
                 Debug.Print("***** inexact *****");
             }
-
         }
+
         [Test]
         public void Cdiv_ContinuedFraction()
         {
