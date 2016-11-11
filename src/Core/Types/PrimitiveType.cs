@@ -342,6 +342,8 @@ namespace Reko.Core.Types
 			Real80 = Create(Domain.Real, 10);
             Bcd80 = Create(Domain.Bcd, 10);
 
+            Real96 = Create(Domain.Real, 12);
+
             Word128 = CreateWord(16);
             Real128 = Create(Domain.Real, 16);
         
@@ -380,6 +382,8 @@ namespace Reko.Core.Types
         public static PrimitiveType Word80 { get; private set; }
 		public static PrimitiveType Real80 { get; private set; }
         public static PrimitiveType Bcd80 { get; private set; }
+
+        public static PrimitiveType Real96 { get; private set; }
 
         public static PrimitiveType Word128 { get; private set; }
         public static PrimitiveType Real128 { get; private set; }
