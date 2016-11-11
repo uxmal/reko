@@ -46,7 +46,7 @@ namespace Reko.Arch.X86
             Expression e = binder.EnsureRegister(Registers.Top);
             if (fpu.FpuStackOffset != 0)
             {
-                var op = fpu.FpuStackOffset > 0 ? Operator.IAdd : Operator.ISub;
+                var op = fpu.FpuStackOffset < 0 ? Operator.IAdd : Operator.ISub;
                 e = new BinaryExpression(op, e.DataType, e, Constant.Create(e.DataType, fpu.FpuStackOffset));
             }
             return new MemoryAccess(Registers.ST, e, fpu.DataType);
