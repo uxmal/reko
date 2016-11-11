@@ -1794,7 +1794,7 @@ namespace Reko.Arch.M68k
                             dasm.instr.op1 = new RegisterSetOperand(w2 & 0xFF, PrimitiveType.Real96);
                         }
                         dasm.instr.op2 = dasm.get_ea_mode_str_32(dasm.instruction);
-
+                        //$TODO: remove the below code after 2017-01-01
                         //dasm.g_dasm_str = string.Format("fmovem.x   ");
 
                         //for (i = 0; i < 8; i++)

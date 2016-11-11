@@ -125,6 +125,7 @@ VS Overflow Set 1001 V
                 case Opcode.ext: RewriteExt(); break;
                 case Opcode.extb: RewriteExtb(); break;
                 case Opcode.fmove: RewriteFmove(); break;
+                case Opcode.fmul: RewriteFBinOp((s, d) => emitter.FMul(d,s)); break;
                 case Opcode.illegal: if (!RewriteIllegal()) goto default; break;
                 case Opcode.jmp: RewriteJmp(); break;
                 case Opcode.jsr: RewriteJsr(); break;

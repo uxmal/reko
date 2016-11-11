@@ -35,6 +35,13 @@ namespace Reko.Arch.M68k
             emitter.Assign(frame.EnsureIdentifier(Registers.fpsr), emitter.Cond(opDst));
         }
 
+        private void RewriteFBinOp(Func<Expression,Expression,Expression> binOpGen)
+        {
+            var opSrc = orw.RewriteSrc(di.op1, di.Address);
+            var opDst = orw.RewriteDst(di.op2, di.Address, opSrc, binOpGen);
+            emitter.Assign(frame.EnsureIdentifier(Registers.fpsr), emitter.Cond(opDst));
+        }
+
         private Expression MaybeCastFpuArgs(Expression src, Expression dst)
         {
             if (src.DataType != dst.DataType)

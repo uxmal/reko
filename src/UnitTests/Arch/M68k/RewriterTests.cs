@@ -1146,5 +1146,15 @@ namespace Reko.UnitTests.Arch.M68k
                 "1|L--|fp0 = (real80) Mem0[a6 + 8:real64]",
                 "2|L--|fpsr = cond(fp0)");
         }
+
+        [Test]
+        public void M68krw_fmul_d()
+        {
+            Rewrite(0xF22E, 0x5423, 0x0008); // fmul.d $0008(a6),fp0
+            AssertCode(
+               "0|L--|00010000(6): 2 instructions",
+               "1|L--|fp0 = fp0 * Mem0[a6 + 8:real64]",
+               "2|L--|fpsr = cond(fp0)");
+        }
     }
 }
