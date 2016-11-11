@@ -1570,7 +1570,7 @@ namespace Reko.Arch.M68k
 	    {
             PrimitiveType.Int32,  // ".l",
             PrimitiveType.Real32, // ".s",
-            PrimitiveType.Real80, // ".x",
+            PrimitiveType.Real96, // ".x",
             null,                 // ".p", 
             PrimitiveType.Int16,  // ".w",
             PrimitiveType.Real64, // ".d", 
