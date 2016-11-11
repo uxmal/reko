@@ -103,6 +103,7 @@ namespace Reko.Arch.M68k
         extb,
 
         fmove,
+        fmovem,
         fint,
         fsinh,
         fintrz,

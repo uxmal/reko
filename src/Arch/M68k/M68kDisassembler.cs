@@ -1783,28 +1783,39 @@ namespace Reko.Arch.M68k
                     {
                         int i;
 
-                        dasm.g_dasm_str = string.Format("fmovem.x   ");
-
-                        for (i = 0; i < 8; i++)
+                        dasm.instr.code = Opcode.fmovem;
+                        dasm.instr.dataWidth = PrimitiveType.Real96;
+                        if (((w2 >> 12) & 1) == 0)
                         {
-                            if ((w2 & (1 << i)) != 0)
-                            {
-                                if (((w2 >> 12) & 1) != 0)	// postincrement or control
-                                {
-                                    temp = string.Format("FP{0} ", 7 - i);
-                                }
-                                else			// predecrement
-                                {
-                                    temp = string.Format("FP{0} ", i);
-                                }
-                                dasm.g_dasm_str += temp;
-                            }
+                            dasm.instr.op1 = RegisterSetOperand.CreateReversed((byte)w2, PrimitiveType.Real96);
                         }
+                        else
+                        {
+                            dasm.instr.op1 = new RegisterSetOperand(w2 & 0xFF, PrimitiveType.Real96);
+                        }
+                        dasm.instr.op2 = dasm.get_ea_mode_str_32(dasm.instruction);
 
-                        dasm.g_dasm_str += ", ";
-                        dasm.g_dasm_str += dasm.get_ea_mode_str_32(dasm.instruction);
+                        //dasm.g_dasm_str = string.Format("fmovem.x   ");
+
+                        //for (i = 0; i < 8; i++)
+                        //{
+                        //    if ((w2 & (1 << i)) != 0)
+                        //    {
+                        //        if (((w2 >> 12) & 1) != 0)	// postincrement or control
+                        //        {
+                        //            temp = string.Format("FP{0} ", 7 - i);
+                        //        }
+                        //        else			// predecrement
+                        //        {
+                        //            temp = string.Format("FP{0} ", i);
+                        //        }
+                        //        dasm.g_dasm_str += temp;
+                        //    }
+                        //}
+                        //dasm.g_dasm_str += ", ";
+                        //dasm.g_dasm_str += dasm.get_ea_mode_str_32(dasm.instruction);
                     }
-                    break;
+                    return dasm.instr;
                 }
 
             default:
@@ -3054,11 +3065,11 @@ namespace Reko.Arch.M68k
 	new OpRec(d68000_move_fr_usp  , 0xfff8, 0x4e68, 0x000),
 	new OpRec(d68010_movec        , 0xfffe, 0x4e7a, 0x000),
 	new OpRec(d68000_movem_pd_16  , 0xfff8, 0x48a0, 0x000),
-	new OpRec("sl:M,E0", 0xfff8, 0x48e0, 0x000, Opcode.movem),      // d68000_movem_pd_32  
-	new OpRec("sw:M,E0", 0xffc0, 0x4880, 0x2f8, Opcode.movem),      // d68000_movem_re_16  
-	new OpRec("sl:M,E0", 0xffc0, 0x48c0, 0x2f8, Opcode.movem),      // d68000_movem_re_32
-	new OpRec("sw:nE0,m", 0xffc0, 0x4c80, 0x37b, Opcode.movem),     // d68000_movem_er_16 
-	new OpRec("sl:nE0,m", 0xffc0, 0x4cc0, 0x37b, Opcode.movem),     // d68000_movem_er_32 
+	new OpRec("sl:Ml,E0", 0xfff8, 0x48e0, 0x000, Opcode.movem),      // d68000_movem_pd_32  
+	new OpRec("sw:Mw,E0", 0xffc0, 0x4880, 0x2f8, Opcode.movem),      // d68000_movem_re_16  
+	new OpRec("sl:Ml,E0", 0xffc0, 0x48c0, 0x2f8, Opcode.movem),      // d68000_movem_re_32
+	new OpRec("sw:nE0,mw", 0xffc0, 0x4c80, 0x37b, Opcode.movem),     // d68000_movem_er_16 
+	new OpRec("sl:nE0,ml", 0xffc0, 0x4cc0, 0x37b, Opcode.movem),     // d68000_movem_er_32 
 	new OpRec(d68000_movep_er_16  , 0xf1f8, 0x0108, 0x000),
 	new OpRec(d68000_movep_er_32  , 0xf1f8, 0x0148, 0x000),
 	new OpRec(d68000_movep_re_16  , 0xf1f8, 0x0188, 0x000),
