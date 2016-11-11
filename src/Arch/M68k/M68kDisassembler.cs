@@ -1685,7 +1685,7 @@ namespace Reko.Arch.M68k
                         return new M68kInstruction
                         {
                             code = mnemonic,
-                            dataWidth = PrimitiveType.Real80,
+                            dataWidth = PrimitiveType.Real96,
                             op1 = dasm.get_fp_reg((int) src),
                             op2 = dasm.get_fp_reg((int) dst_reg),
                         };

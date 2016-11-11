@@ -1136,5 +1136,15 @@ namespace Reko.UnitTests.Arch.M68k
                 "5|L--|VZN = cond(v4)",
                 "6|L--|C = false");
         }
+
+        [Test]
+        public void M68krw_fmove_d_to_register()
+        {
+            Rewrite(0xF22E, 0x5400, 0xFFF8); // fmove.d $0008(a6),fp0
+            AssertCode(
+                "0|L--|00010000(6): 2 instructions",
+                "1|L--|fp0 = (real80) Mem0[a6 + 8:real64]",
+                "2|L--|fpsr = cond(fp0)");
+        }
     }
 }

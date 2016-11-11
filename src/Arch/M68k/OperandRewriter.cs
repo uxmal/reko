@@ -182,14 +182,21 @@ namespace Reko.Arch.M68k
             return RewriteDst(operand, addrInstr, this.DataWidth, src, opGen);
         }
 
-        public Expression RewriteDst(MachineOperand operand, Address addrInstr, PrimitiveType dataWidth, Expression src, Func<Expression ,Expression, Expression> opGen)
+        public Expression RewriteDst(
+            MachineOperand operand,
+            Address addrInstr,
+            PrimitiveType dataWidth,
+            Expression src,
+            Func<Expression, Expression, Expression> opGen)
         {
             var reg = operand as RegisterOperand;
             if (reg != null)
             {
                 Expression r = frame.EnsureRegister(reg.Register);
                 Expression tmp = r;
-                if (dataWidth != null && reg.Width.BitSize > dataWidth.BitSize)
+                if (dataWidth != null && 
+                    reg.Width.BitSize > dataWidth.BitSize &&
+                    reg.Width.Domain != Domain.Real)
                 {
                     Expression rSub = m.Cast(dataWidth, r);
                     var srcExp = opGen(src, rSub);

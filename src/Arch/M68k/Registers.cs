@@ -60,6 +60,7 @@ namespace Reko.Arch.M68k
         public static readonly RegisterStorage sr;
         public static readonly RegisterStorage usp;
         public static readonly AddressRegister pc;
+        public static readonly FlagRegister fpsr;
 
         internal static RegisterStorage[] regs;
         internal static int Max;
@@ -84,19 +85,20 @@ namespace Reko.Arch.M68k
             a6 = new AddressRegister("a6", 14, PrimitiveType.Word32);
             a7 = new AddressRegister("a7", 15, PrimitiveType.Word32);
 
-            fp0 = new FpRegister("fp0", 16, PrimitiveType.Real64);
-            fp1 = new FpRegister("fp1", 17, PrimitiveType.Real64);
-            fp2 = new FpRegister("fp2", 18, PrimitiveType.Real64);
-            fp3 = new FpRegister("fp3", 19, PrimitiveType.Real64);
-            fp4 = new FpRegister("fp4", 20, PrimitiveType.Real64);
-            fp5 = new FpRegister("fp5", 21, PrimitiveType.Real64);
-            fp6 = new FpRegister("fp6", 22, PrimitiveType.Real64);
-            fp7 = new FpRegister("fp7", 23, PrimitiveType.Real64);
+            fp0 = new FpRegister("fp0", 16, PrimitiveType.Real80);
+            fp1 = new FpRegister("fp1", 17, PrimitiveType.Real80);
+            fp2 = new FpRegister("fp2", 18, PrimitiveType.Real80);
+            fp3 = new FpRegister("fp3", 19, PrimitiveType.Real80);
+            fp4 = new FpRegister("fp4", 20, PrimitiveType.Real80);
+            fp5 = new FpRegister("fp5", 21, PrimitiveType.Real80);
+            fp6 = new FpRegister("fp6", 22, PrimitiveType.Real80);
+            fp7 = new FpRegister("fp7", 23, PrimitiveType.Real80);
 
             ccr = new FlagRegister("ccr", PrimitiveType.Byte);
             sr = new RegisterStorage("sr", 25, 0, PrimitiveType.Word16);
             usp = new RegisterStorage("usp", 26, 0, PrimitiveType.Word32);
             pc = new AddressRegister("pc", 27, PrimitiveType.Pointer32);
+            fpsr = new FlagRegister("fpsr", PrimitiveType.Word32);
 
             Max = 28;
 
