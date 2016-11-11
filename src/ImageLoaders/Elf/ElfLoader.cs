@@ -1048,6 +1048,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_PPC: return new PpcRelocator(this);
             case ElfMachine.EM_SPARC: return new SparcRelocator(this);
             case ElfMachine.EM_XTENSA: return new XtensaRelocator(this);
+            case ElfMachine.EM_68K: return new M68kRelocator(this);
             }
             return base.CreateRelocator(machine);
         }
