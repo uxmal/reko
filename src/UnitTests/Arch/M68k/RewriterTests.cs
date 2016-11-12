@@ -1167,5 +1167,16 @@ namespace Reko.UnitTests.Arch.M68k
                "1|L--|fp0 = fp0 * Mem0[a6 + 8:real64]",
                "2|L--|fpsr = cond(fp0)");
         }
+
+
+        [Test]
+        public void M68krw_fdivd()
+        {
+            Rewrite(0xF23C, 0x5420, 0x4018, 0x0000, 0x0000, 0x0000); // fdiv.d\t#6.0,fp0
+            AssertCode(
+               "0|L--|00010000(12): 2 instructions",
+               "1|L--|fp0 = fp0 / 6.0",
+               "2|L--|fpsr = cond(fp0)");
+        }
     }
 }
