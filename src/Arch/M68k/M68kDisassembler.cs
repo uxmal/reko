@@ -439,13 +439,7 @@ namespace Reko.Arch.M68k
         {
             val &= 0xffff;
 
-            short s;
-            if (val == 0x8000)
-                s = -0x8000;
-            else if ((val & 0x8000) != 0)
-                s = (short) ((0 - val) & 0x7fff);
-            else
-                s = (short) (val & 0x7fff);
+            short s = (short)val;
             return Constant.Int16(s);
         }
 
@@ -1711,8 +1705,13 @@ namespace Reko.Arch.M68k
                         break;
 
                     default:
-                        dasm.g_dasm_str = string.Format("fmove{0}   FP%d, %s", float_data_format[(w2 >> 10) & 7], dst_reg, dasm.get_ea_mode_str_32(dasm.instruction));
-                        break;
+                        return new M68kInstruction
+                        {
+                            code = Opcode.fmove,
+                            dataWidth = float_data_format[(w2 >> 10) & 7],
+                            op1 = dasm.get_fp_reg((int)dst_reg),
+                            op2 = dasm.get_ea_mode_str_32(dasm.instruction)
+                        };
                     }
                     break;
                 }
