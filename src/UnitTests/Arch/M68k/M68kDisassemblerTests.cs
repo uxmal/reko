@@ -691,5 +691,11 @@ namespace Reko.UnitTests.Arch.M68k
         {
             RunTest("fmove.d\tfp0,$-0008(a6)", 0xF22E, 0x7400, 0xFFF8);
         }
+
+        [Test]
+        public void M68kdis_fdivd()
+        {
+            RunTest("fdiv.d\t#6.0,fp0", 0xF23C, 0x5420, 0x4018, 0x0000, 0x0000, 0x0000);
+        }
     }
 }

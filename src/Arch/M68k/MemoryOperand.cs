@@ -80,7 +80,12 @@ namespace Reko.Arch.M68k
 
         public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
-            writer.Write("#$");
+            writer.Write("#");
+            var pt = Constant.DataType as PrimitiveType;
+            if (pt == null || pt.Domain != Domain.Real)
+            {
+                writer.Write("$");
+            }
             writer.Write(MachineOperand.FormatValue(Constant));
         }
     }

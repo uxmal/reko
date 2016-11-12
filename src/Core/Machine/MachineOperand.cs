@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
+using System.Globalization;
 using System.IO;
 using System.Text;
 
@@ -66,6 +67,8 @@ namespace Reko.Core.Machine
 			return s + tmp.ToString(FormatString(c.DataType));
 		}
 
+        private static readonly char[] floatSpecials = new char[] { '.', 'e', 'E' };
+
         public static string FormatValue(Constant c)
         {
             var pt = (PrimitiveType)c.DataType;
@@ -75,7 +78,12 @@ namespace Reko.Core.Machine
             }
             else if (pt.Domain == Domain.Real)
             {
-                return c.ToReal64().ToString("G");
+                var str = c.ToReal64().ToString("G", CultureInfo.InvariantCulture);
+                if (str.IndexOfAny (floatSpecials) < 0)
+                {
+                    str = str + ".0";
+                }
+                return str;
             }
             else
                 return FormatUnsignedValue(c);

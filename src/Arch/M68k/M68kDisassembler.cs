@@ -357,17 +357,17 @@ namespace Reko.Arch.M68k
             return true;
         }
 
-        private MachineOperand get_ea_mode_str_8(int instruction) { return get_ea_mode_str((uint) instruction, 0); }
-        private MachineOperand get_ea_mode_str_16(int instruction) { return get_ea_mode_str((uint) instruction, 1); }
-        private MachineOperand get_ea_mode_str_32(int instruction) { return get_ea_mode_str((uint) instruction, 2); }
+        private MachineOperand get_ea_mode_str_8(int instruction) { return get_ea_mode_str((uint) instruction, PrimitiveType.Byte); }
+        private MachineOperand get_ea_mode_str_16(int instruction) { return get_ea_mode_str((uint) instruction, PrimitiveType.Word16); }
+        private MachineOperand get_ea_mode_str_32(int instruction) { return get_ea_mode_str((uint) instruction, PrimitiveType.Word32); }
 
         private M68kImmediateOperand get_imm_str_s8() { return get_imm_str_s(0); }
         private M68kImmediateOperand get_imm_str_s16() { return get_imm_str_s(1); }
         private M68kImmediateOperand get_imm_str_s32() { return get_imm_str_s(2); }
 
-        private M68kImmediateOperand get_imm_str_u8() { return get_imm_str_u(0); }
-        private M68kImmediateOperand get_imm_str_u16() { return get_imm_str_u(1); }
-        private M68kImmediateOperand get_imm_str_u32() { return get_imm_str_u(2); }
+        private M68kImmediateOperand get_imm_str_u8() { return get_imm_str_u(PrimitiveType.Byte); }
+        private M68kImmediateOperand get_imm_str_u16() { return get_imm_str_u(PrimitiveType.Word16); }
+        private M68kImmediateOperand get_imm_str_u32() { return get_imm_str_u(PrimitiveType.Word32); }
 
         private static RegisterOperand get_data_reg(int d) { return new RegisterOperand(Registers.DataRegister(d)); }
         private static RegisterOperand get_addr_reg(int a) { return new RegisterOperand(Registers.AddressRegister(a)); }
@@ -474,15 +474,22 @@ namespace Reko.Arch.M68k
             return new M68kImmediateOperand(c);
         }
 
-        private M68kImmediateOperand get_imm_str_u(uint size)
+        private M68kImmediateOperand get_imm_str_u(PrimitiveType dt)
         {
             Constant c;
-            if (size == 0)
-                c = Constant.Byte(read_imm_8());
-            else if (size == 1)
-                c= Constant.Word16(read_imm_16());
+            if (dt.Domain == Domain.Real)
+            {
+                c = rdr.ReadBe(dt);
+            }
             else
-                c = Constant.Word32(read_imm_32());
+            {
+                if (dt.Size == 1)
+                    c = Constant.Byte(read_imm_8());
+                else if (dt.Size == 2)
+                    c = Constant.Word16(read_imm_16());
+                else
+                    c = Constant.Word32(read_imm_32());
+            }
             return new M68kImmediateOperand(c);
         }
 
@@ -496,7 +503,7 @@ namespace Reko.Arch.M68k
         /// <param name="instruction"></param>
         /// <param name="size"></param>
         /// <returns></returns>
-        private MachineOperand get_ea_mode_str(uint instruction, uint size)
+        private MachineOperand get_ea_mode_str(uint instruction, PrimitiveType dataWidth)
         {
             uint extension;
             uint @base;
@@ -508,11 +515,6 @@ namespace Reko.Arch.M68k
             bool comma = false;
             uint temp_value;
 
-            PrimitiveType dataWidth = size == 0
-                ? PrimitiveType.Byte
-                : size == 1
-                    ? PrimitiveType.Word16
-                    : PrimitiveType.Word32;
             /* Switch buffers so we don't clobber on a double-call to this function */
             mode = mode == b1 ? b2 : b1;
 
@@ -786,7 +788,7 @@ namespace Reko.Arch.M68k
                 break;
             case 0x3C:
                 // Immediate 
-                return get_imm_str_u(size);
+                return get_imm_str_u(dataWidth);
             }
             //throw new /*NotImplementedException*/(string.Format("Effective address {0:X2} encoding not supported.", instruction & 0x3F));
             this.instr.code = Opcode.illegal;
@@ -1670,7 +1672,7 @@ namespace Reko.Arch.M68k
                         {
                             code = mnemonic,
                             dataWidth = float_data_format[src],
-                            op1 = dasm.get_ea_mode_str_32(dasm.instruction),
+                            op1 = dasm.get_ea_mode_str(dasm.instruction, float_data_format[src]),
                             op2 = dasm.get_fp_reg((int) dst_reg)
                         };
                     }
@@ -1679,7 +1681,7 @@ namespace Reko.Arch.M68k
                         return new M68kInstruction
                         {
                             code = mnemonic,
-                            dataWidth = PrimitiveType.Real96,
+                            dataWidth = PrimitiveType.Real80,
                             op1 = dasm.get_fp_reg((int) src),
                             op2 = dasm.get_fp_reg((int) dst_reg),
                         };
@@ -1772,11 +1774,15 @@ namespace Reko.Arch.M68k
 
             case 0x7:	// FPU to memory, list
                 {
-                    string temp;
-
                     if (((w2 >> 11) & 1) != 0)	// dynamic register list
                     {
-                        dasm.g_dasm_str = string.Format("fmovem.x   D{0},{1}", (w2 >> 4) & 7, dasm.get_ea_mode_str_32(dasm.instruction));
+                        return new M68kInstruction
+                        {
+                            code = Opcode.fmovem,
+                            dataWidth = PrimitiveType.Real96,
+                            op1 = new RegisterOperand(Registers.GetRegister((int)(w2 >> 4) & 7)),
+                            op2 = dasm.get_ea_mode_str_32(dasm.instruction)
+                        };
                     }
                     else	// static register list
                     {
