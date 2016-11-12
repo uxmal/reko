@@ -75,7 +75,9 @@ namespace Reko.Arch.M68k
             var imm = operand as M68kImmediateOperand;
             if (imm != null)
             {
-               if (DataWidth != null && DataWidth.BitSize > imm.Width.BitSize)
+                if (imm.Width.Domain == Domain.Real)
+                    return imm.Constant.CloneExpression();
+                if (DataWidth != null && DataWidth.BitSize > imm.Width.BitSize)
                     return Constant.Create(DataWidth, imm.Constant.ToInt64());
                 else
                     return Constant.Create(imm.Width, imm.Constant.ToUInt32());

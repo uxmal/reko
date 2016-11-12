@@ -61,7 +61,11 @@ namespace Reko.Evaluation
             DataType dt = unifier.Unify(cSrc.DataType, idDst.DataType);
             var pt = dt.ResolveAs<PrimitiveType>();
             if (pt != null)
-                return Constant.Create(pt, cSrc.ToInt64());
+            {
+                var cNew = cSrc.CloneExpression();
+                cNew.DataType = dt;
+                return cNew;
+            }
             var ptr = dt.ResolveAs<Pointer>();
             if (ptr != null)
             {

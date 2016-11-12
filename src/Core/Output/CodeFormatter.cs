@@ -218,7 +218,7 @@ namespace Reko.Core.Output
                 writer.Write("<invalid>");
                 return;
             }
-            var pt = c.DataType as PrimitiveType;
+            var pt = c.DataType.ResolveAs<PrimitiveType>();
             if (pt != null)
             {
                 if (pt.Domain == Domain.Boolean)
