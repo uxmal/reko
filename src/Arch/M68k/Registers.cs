@@ -134,6 +134,7 @@ namespace Reko.Arch.M68k
                 sr,
                 usp,
                 pc,
+                fpsr,
             };
         }
 

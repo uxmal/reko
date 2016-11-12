@@ -59,7 +59,9 @@ namespace Reko.Arch.M68k
         public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
             uint bitSet = BitSet;
-            WriteRegisterSet(bitSet, writer);
+            WriteRegisterSet(
+                bitSet,
+                writer);
         }
 
         /// <summary>
@@ -75,8 +77,9 @@ namespace Reko.Arch.M68k
         public void WriteRegisterSet(uint data, MachineInstructionWriter writer)
         {
             string sep = "";
-            int bitPos = 15;
-            for (int i = 0; i < 16; i++, --bitPos)
+            int maxReg = this.Width.Domain == Domain.Real ? 8 : 16;
+            int bitPos = maxReg - 1;
+            for (int i = 0; i < maxReg; i++, --bitPos)
             {
                 if (bit(data, bitPos))
                 {

@@ -1741,33 +1741,45 @@ namespace Reko.Arch.M68k
 
             case 0x6:	// memory to FPU, list
                 {
-                    string temp;
-
                     if (((w2 >> 11) & 1) != 0)	// dynamic register list
                     {
                         dasm.g_dasm_str = string.Format("fmovem.x   {0},D{1}", dasm.get_ea_mode_str_32(dasm.instruction), (w2 >> 4) & 7);
                     }
                     else	// static register list
                     {
-                        int i;
-
-                        dasm.g_dasm_str = string.Format("fmovem.x   {0}, ", dasm.get_ea_mode_str_32(dasm.instruction));
-
-                        for (i = 0; i < 8; i++)
+                        dasm.instr.code = Opcode.fmovem;
+                        dasm.instr.dataWidth = PrimitiveType.Real96;
+                        if (((w2 >> 12) & 1) == 0)
                         {
-                            if ((w2 & (1 << i)) != 0)
-                            {
-                                if (((w2 >> 12) & 1) != 0)	// postincrement or control
-                                {
-                                    temp = string.Format("FP{0} ", 7 - i);
-                                }
-                                else			// predecrement
-                                {
-                                    temp = string.Format("FP{0} ", i);
-                                }
-                                dasm.g_dasm_str += temp;
-                            }
+                            dasm.instr.op2 = RegisterSetOperand.CreateReversed((byte)w2, PrimitiveType.Real96);
                         }
+                        else
+                        {
+                            dasm.instr.op2 = new RegisterSetOperand((byte)w2, PrimitiveType.Real96);
+                        }
+                        dasm.instr.op1 = dasm.get_ea_mode_str_32(dasm.instruction);
+                        dasm.instr.ToString();
+                        return dasm.instr;
+
+                        //int i;
+
+                        //dasm.g_dasm_str = string.Format("fmovem.x   {0}, ", dasm.get_ea_mode_str_32(dasm.instruction));
+
+                        //for (i = 0; i < 8; i++)
+                        //{
+                        //    if ((w2 & (1 << i)) != 0)
+                        //    {
+                        //        if (((w2 >> 12) & 1) != 0)	// postincrement or control
+                        //        {
+                        //            temp = string.Format("FP{0} ", 7 - i);
+                        //        }
+                        //        else			// predecrement
+                        //        {
+                        //            temp = string.Format("FP{0} ", i);
+                        //        }
+                        //        dasm.g_dasm_str += temp;
+                        //    }
+                        //}
                     }
                     break;
                 }
@@ -1786,13 +1798,11 @@ namespace Reko.Arch.M68k
                     }
                     else	// static register list
                     {
-                        int i;
-
                         dasm.instr.code = Opcode.fmovem;
                         dasm.instr.dataWidth = PrimitiveType.Real96;
                         if (((w2 >> 12) & 1) == 0)
                         {
-                            dasm.instr.op1 = RegisterSetOperand.CreateReversed((byte)w2, PrimitiveType.Real96);
+                            dasm.instr.op1 = RegisterSetOperand.CreateReversed((ushort)(w2 << 8), PrimitiveType.Real96);
                         }
                         else
                         {

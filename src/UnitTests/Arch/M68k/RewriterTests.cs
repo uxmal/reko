@@ -1025,9 +1025,9 @@ namespace Reko.UnitTests.Arch.M68k
                "0|L--|00010000(8): 5 instructions",
                "1|L--|v2 = 0004000A",
                "2|L--|d0 = Mem0[v2:word16]",
-               "3|L--|v2 = v2 + 0x0002",
+               "3|L--|v2 = v2 + 0x00000002",
                "4|L--|d1 = Mem0[v2:word16]",
-               "5|L--|v2 = v2 + 0x0002");
+               "5|L--|v2 = v2 + 0x00000002");
         }
 
         [Test]
@@ -1216,6 +1216,17 @@ namespace Reko.UnitTests.Arch.M68k
                "0|L--|00010000(4): 2 instructions",
                "1|L--|a7 = a7 - 0x0000000C",
                "2|L--|Mem0[a7:real96] = fp2");
+        }
+
+        [Test]
+        public void M68krw_fmovem_to_reg()
+        {
+            Rewrite(0xF22E, 0xD020, 0xFFE8); //  fmovemx %fp@(-24),%fp2
+            AssertCode(
+                 "0|L--|00010000(6): 3 instructions",
+                 "1|L--|v3 = a6 + -24",
+                 "2|L--|fp2 = Mem0[v3:real96]",
+                 "3|L--|v3 = v3 + 0x0000000C");
         }
     }
 }

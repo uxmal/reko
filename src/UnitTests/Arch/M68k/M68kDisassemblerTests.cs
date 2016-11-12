@@ -687,6 +687,12 @@ namespace Reko.UnitTests.Arch.M68k
         }
 
         [Test]
+        public void M68kdis_fmovem_to_reg()
+        {
+            RunTest("fmovem.x\t$-0018(a6),fp2", 0xF22E, 0xD020, 0xFFE8); 
+        }
+
+        [Test]
         public void M68kdis_fmoved()
         {
             RunTest("fmove.d\tfp0,$-0008(a6)", 0xF22E, 0x7400, 0xFFF8);
