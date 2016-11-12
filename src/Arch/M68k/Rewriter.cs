@@ -132,6 +132,7 @@ VS Overflow Set 1001 V
                 case Opcode.fdiv: RewriteFBinOp((s, d) => emitter.FDiv(d, s)); break;
                 case Opcode.fmove: RewriteFmove(); break;
                 case Opcode.fmovecr: RewriteFmovecr(); break;
+                case Opcode.fmovem: RewriteMovem(i => arch.GetRegister(i + Registers.fp0.Number)); break;
                 case Opcode.fmul: RewriteFBinOp((s, d) => emitter.FMul(d,s)); break;
                 case Opcode.illegal: if (!RewriteIllegal()) goto default; break;
                 case Opcode.jmp: RewriteJmp(); break;
@@ -143,7 +144,7 @@ VS Overflow Set 1001 V
                 case Opcode.move: RewriteMove(true); break;
                 case Opcode.movea: RewriteMove(false); break;
                 case Opcode.moveq: RewriteMoveq(); break;
-                case Opcode.movem: RewriteMovem(); break;
+                case Opcode.movem: RewriteMovem(arch.GetRegister); break;
                 case Opcode.muls: RewriteMul((s, d) => emitter.SMul(d, s)); break;
                 case Opcode.mulu: RewriteMul((s, d) => emitter.UMul(d, s)); break;
                 case Opcode.neg: RewriteUnary(s => emitter.Neg(s), AllConditions); break;

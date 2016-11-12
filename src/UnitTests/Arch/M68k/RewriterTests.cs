@@ -1207,5 +1207,15 @@ namespace Reko.UnitTests.Arch.M68k
                "0|T--|00010000(4): 1 instructions",
                "1|T--|if (Test(LT,fpsr)) branch 000100E2");
         }
+
+        [Test]
+        public void M68krw_fmovem()
+        {
+            Rewrite(0xF227, 0xE004);  // fmovem.x fp2,-(a7)
+            AssertCode(
+               "0|L--|00010000(4): 2 instructions",
+               "1|L--|a7 = a7 - 0x0000000C",
+               "2|L--|Mem0[a7:real96] = fp2");
+        }
     }
 }
