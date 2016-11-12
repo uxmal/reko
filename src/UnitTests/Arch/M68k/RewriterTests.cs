@@ -1178,5 +1178,34 @@ namespace Reko.UnitTests.Arch.M68k
                "1|L--|fp0 = fp0 / 6.0",
                "2|L--|fpsr = cond(fp0)");
         }
+
+        [Test]
+        public void M68krw_fmovecr()
+        {
+            Rewrite(0xF200, 0x5CB2);    // fmove cr#$32,fp1
+            AssertCode(
+               "0|L--|00010000(4): 2 instructions",
+               "1|L--|fp1 = 100.0",
+               "2|L--|fpsr = cond(fp1)");
+        }
+
+        [Test]
+        public void M68krw_fcmp()
+        {
+            Rewrite(0xF22E, 0x5438, 0x0010);  // fcmpd % fp@(16),% fp0 
+            AssertCode(
+               "0|L--|00010000(6): 2 instructions",
+               "1|L--|v4 = (real64) fp0 - Mem0[a6 + 16:real64]",
+               "2|L--|fpsr = cond(v4)");
+        }
+
+        [Test]
+        public void M68krw_fbnge()
+        {
+            Rewrite(0xF29C, 0x00E0);  // fbnge 0x000000e8
+            AssertCode(
+               "0|T--|00010000(4): 1 instructions",
+               "1|T--|if (Test(LT,fpsr)) branch 000100E2");
+        }
     }
 }

@@ -319,17 +319,17 @@ namespace Reko.Arch.M68k
             Opcode.trapt, Opcode.trapf, Opcode.traphi, Opcode.trapls, Opcode.trapcc, Opcode.trapcs, Opcode.trapne, Opcode.trapeq, 
             Opcode.trapvc, Opcode.trapvs, Opcode.trappl, Opcode.trapmi, Opcode.trapge, Opcode.traplt, Opcode.trapgt, Opcode.traple };
 
-        static string[] g_cpcc = new string[64] 
+        static Opcode[] g_cpcc = new Opcode[64] 
         {
-            /* 000    001    010    011    100    101    110    111 */
-	          "f",    "eq",  "ogt", "oge", "olt", "ole", "ogl",  "or", /* 000 */
-	          "un",   "ueq", "ugt", "uge", "ult", "ule",  "ne",   "t", /* 001 */
-	          "sf",   "seq", "gt",  "ge",  "lt",  "le",  "gl",  "gle", /* 010 */
-              "ngle", "ngl", "nle", "nlt", "nge", "ngt", "sne",  "st", /* 011 */
-	          "?",   "?",   "?",   "?",   "?",   "?",   "?",   "?", /* 100 */
-	          "?",   "?",   "?",   "?",   "?",   "?",   "?",   "?", /* 101 */
-	          "?",   "?",   "?",   "?",   "?",   "?",   "?",   "?", /* 110 */
-	          "?",   "?",   "?",   "?",   "?",   "?",   "?",   "?"  /* 111 */
+            /* 000          001           010           011    100    101    110    111 */
+	          Opcode.fbf,   Opcode.fbeq,  Opcode.fbogt, Opcode.fboge, Opcode.fbolt, Opcode.fbole, Opcode.fbogl,  Opcode.fbor, /* 000 */
+	          Opcode.fbun,  Opcode.fbueq, Opcode.fbugt, Opcode.fbuge, Opcode.fbult, Opcode.fbule, Opcode.fbne,   Opcode.fbt, /* 001 */
+	          Opcode.fbsf,  Opcode.fbseq, Opcode.fbgt,  Opcode.fbge,  Opcode.fblt,  Opcode.fble,  Opcode.fbgl,   Opcode.fbgle, /* 010 */
+              Opcode.fbngle, Opcode.fbngl, Opcode.fbnle, Opcode.fbnlt, Opcode.fbnge, Opcode.fbngt, Opcode.fbsne,  Opcode.fbst, /* 011 */
+	          Opcode.illegal, Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,/* 100 */
+	          Opcode.illegal, Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal, /* 101 */
+	          Opcode.illegal, Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal, /* 110 */
+	          Opcode.illegal, Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,/* 111 */
         };
 
         static string[] g_mmuregs = new string[] 
@@ -1360,13 +1360,13 @@ namespace Reko.Arch.M68k
 
         private static M68kInstruction d68020_cpbcc_16(M68kDisassembler dasm)
         {
-            uint extension;
-            uint new_pc =  dasm.rdr.Address.ToUInt32();
+            var new_pc = dasm.rdr.Address;
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
-            extension = dasm.read_imm_16();
-            new_pc = ((uint)(new_pc + make_int_16(dasm.read_imm_16())));
-            dasm.g_dasm_str = string.Format("{0}b{1,4}  {2}; {3:X} (extension = {4:X}) (2-3)", (dasm.instruction >> 9) & 7, g_cpcc[dasm.instruction & 0x3f], dasm.get_imm_str_s16(), new_pc, extension);
-            return new M68kInstruction { code = Opcode.illegal };
+            return new M68kInstruction
+            {
+                code = g_cpcc[dasm.instruction & 0x3f],
+                op1 = new M68kAddressOperand(new_pc + dasm.rdr.ReadBeInt16())
+            };
         }
 
         private static M68kInstruction d68020_cpbcc_32(M68kDisassembler dasm)

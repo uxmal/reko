@@ -102,6 +102,7 @@ namespace Reko.Arch.M68k
                 {
                 case 32: return ".s";
                 case 64: return ".d";
+                case 80: return ".x";   //$REVIEW: not quite true?
                 case 96: return ".x";
                 }
             }
