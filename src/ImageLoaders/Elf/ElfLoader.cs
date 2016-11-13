@@ -50,8 +50,8 @@ namespace Reko.ImageLoaders.Elf
         public const int ELFOSABI_AROS = 15;    // Amiga Research OS 
         public const int ELFOSABI_FENIXOS = 16; // The FenixOS highly scalable multi-core OS 
         
-        public const int ELFDATA2LSB = 1;
-        public const int ELFDATA2MSB = 2;
+        public const byte ELFDATA2LSB = 1;
+        public const byte ELFDATA2MSB = 2;
 
         public const int ELFOSABI_CELL_LV2 = 0x66;     // PS/3 has this in its files
         public const uint SHF_WRITE = 0x1;

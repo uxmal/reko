@@ -55,6 +55,7 @@ namespace Reko.Environments.SysV
             switch (Architecture.Name)
             {
             case "mips-be-32":
+            case "mips-le-32":
                 return new MipsProcedureSerializer(Architecture, typeLoader, defaultConvention);
             case "ppc32":
                 return new PowerPcProcedureSerializer(Architecture, typeLoader, defaultConvention);

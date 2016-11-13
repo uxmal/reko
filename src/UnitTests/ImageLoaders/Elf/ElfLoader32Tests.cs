@@ -133,10 +133,10 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             };
         }
 
-        private void When_CreateLoader32()
+        private void When_CreateLoader32(bool big_endian)
         {
             this.eil = new ElfImageLoader(sc, "foo", this.bytes);
-            this.el32 = new ElfLoader32(eil, eih, this.bytes);
+            this.el32 = new ElfLoader32(eil, eih, this.bytes, big_endian ? ElfLoader.ELFDATA2MSB : ElfLoader.ELFDATA2LSB);
             el32.ProgramHeaders.AddRange(programHeaders);
             el32.Sections.AddRange(sections);
         }
@@ -153,7 +153,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             Given_Section(".bss", 0x2008, "rw");
             mr.ReplayAll();
 
-            When_CreateLoader32();
+            When_CreateLoader32(false);
             var segmentMap = el32.LoadImageBytes(platform, this.bytes, Address.Ptr32(0x1000));
 
             ImageSegment segText;
@@ -239,7 +239,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             Given_BE32_GOT(0x0000000, 0x00000000, 0x04000010, 0x04000000);
             mr.ReplayAll();
 
-            When_CreateLoader32();
+            When_CreateLoader32(true);
 
             el32.LocateGotPointers(program, syms);
             Assert.AreEqual("strcmp_GOT", syms[Address.Ptr32(0x10000008)].Name);

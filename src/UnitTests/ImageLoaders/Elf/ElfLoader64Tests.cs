@@ -118,10 +118,10 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             };
         }
 
-        private void When_CreateLoader64()
+        private void When_CreateLoader64(bool big_endian)
         {
             this.eil = new ElfImageLoader(sc, "foo", this.bytes);
-            this.el64 = new ElfLoader64(eil, eih, this.bytes, 0);
+            this.el64 = new ElfLoader64(eil, eih, this.bytes, 0, big_endian ? ElfLoader.ELFDATA2MSB : ElfLoader.ELFDATA2LSB);
             el64.ProgramHeaders64.AddRange(programHeaders);
             el64.Sections.AddRange(sections);
         }
@@ -138,7 +138,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             Given_Section(".bss", 0x2008, "rw");
             mr.ReplayAll();
 
-            When_CreateLoader64();
+            When_CreateLoader64(false);
             var segmentMap = el64.LoadImageBytes(platform, this.bytes, Address.Ptr64(0x1000));
 
             ImageSegment segText;
