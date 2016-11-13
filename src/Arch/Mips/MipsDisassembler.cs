@@ -287,7 +287,7 @@ namespace Reko.Arch.Mips
             null,
             null,
             null,
-            null, 
+            new AOpRec(Opcode.rdhwr, "R2,H"),
             // 20
             new AOpRec(Opcode.lb, "R2,EB"),
             new AOpRec(Opcode.lh, "R2,EH"),
@@ -400,6 +400,9 @@ namespace Reko.Arch.Mips
                     break;
                 case 'c':   // condition code
                     op = CCodeFlag(wInstr, opFmt, ref i);
+                    break;
+                case 'H':   // hardware register, see instruction rdhwr
+                    op = ImmediateOperand.Byte((byte)((wInstr >> 11) & 0x1f));
                     break;
                 }
                 ops.Add(op);

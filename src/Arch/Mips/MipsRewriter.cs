@@ -217,6 +217,7 @@ namespace Reko.Arch.Mips
                 case Opcode.xor:
                 case Opcode.xori:
                     RewriteXor(instr); break;
+                case Opcode.rdhwr: RewriteReadHardwareRegister(instr); break;
                 }
                 yield return cluster;
             }

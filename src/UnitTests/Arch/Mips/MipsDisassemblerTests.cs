@@ -495,6 +495,26 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+        public void MipsDis_rdhwr()
+        {
+            // Test only the known ones, we'll have to see how this changes things later on with dynamic custom registers
+            var instr = DisassembleBits("011111 00000 00011 00000 00000 111011");
+            Assert.AreEqual("rdhwr\tr3,00", instr.ToString()); // CPU number
+
+            instr = DisassembleBits("011111 00000 00011 00001 00000 111011");
+            Assert.AreEqual("rdhwr\tr3,01", instr.ToString()); // SYNCI step size
+
+            instr = DisassembleBits("011111 00000 00011 00010 00000 111011");
+            Assert.AreEqual("rdhwr\tr3,02", instr.ToString()); // Cycle counter
+
+            instr = DisassembleBits("011111 00000 00011 00011 00000 111011");
+            Assert.AreEqual("rdhwr\tr3,03", instr.ToString()); // Cycle counter resolution
+
+            instr = DisassembleBits("011111 00000 00011 11101 00000 111011");
+            Assert.AreEqual("rdhwr\tr3,1D", instr.ToString()); // OS-specific, thread local pointer on Linux
+        }
+
+        [Test]
         public void MipsDis_instrs1()
         {
             Assert.AreEqual("ctc1\tr1,FCSR", DisassembleWord(0x44C1F800).ToString());
