@@ -341,7 +341,7 @@ namespace Reko.Assemblers.M68k
         {
             //$BUGBUG: lots o' work here :(
             Expect(TokenType.ID);
-            return new RegisterSetOperand(0x42);
+            return new RegisterSetOperand(0x42, null);
         }
 
         private MachineOperand ExpectEffectiveAddress()

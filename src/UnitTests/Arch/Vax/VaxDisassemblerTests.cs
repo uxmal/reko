@@ -103,13 +103,13 @@ namespace Reko.UnitTests.Arch.Vax
         [Test]
         public void VaxDis_cmpf()
         {
-            AssertCode("cmpf\tap,#5", 0x51, 0x5C, 0x1A);
+            AssertCode("cmpf\tap,#5.0", 0x51, 0x5C, 0x1A);
         }
 
         [Test]
         public void VaxDis_literalOperand_f32()
         {
-            Assert.AreEqual("5", VaxDisassembler.LiteralOperand(PrimitiveType.Real32, 0x1A).ToString());
+            Assert.AreEqual("5.0", VaxDisassembler.LiteralOperand(PrimitiveType.Real32, 0x1A).ToString());
         }
 
         [Test]

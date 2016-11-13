@@ -1025,9 +1025,9 @@ namespace Reko.UnitTests.Arch.M68k
                "0|L--|00010000(8): 5 instructions",
                "1|L--|v2 = 0004000A",
                "2|L--|d0 = Mem0[v2:word16]",
-               "3|L--|v2 = v2 + 0x0002",
+               "3|L--|v2 = v2 + 0x00000002",
                "4|L--|d1 = Mem0[v2:word16]",
-               "5|L--|v2 = v2 + 0x0002");
+               "5|L--|v2 = v2 + 0x00000002");
         }
 
         [Test]
@@ -1135,6 +1135,98 @@ namespace Reko.UnitTests.Arch.M68k
                 "4|L--|d0 = DPB(d0, v4, 0)",
                 "5|L--|VZN = cond(v4)",
                 "6|L--|C = false");
+        }
+
+        [Test]
+        public void M68krw_fmove_d_to_register()
+        {
+            Rewrite(0xF22E, 0x5400, 0xFFF8); // fmove.d $-0008(a6),fp0
+            AssertCode(
+                "0|L--|00010000(6): 2 instructions",
+                "1|L--|fp0 = (real80) Mem0[a6 + -8:real64]",
+                "2|L--|fpsr = cond(fp0)");
+        }
+
+        [Test]
+        public void M68krw_fmove_d_to_memory()
+        {
+            Rewrite(0xF22E, 0x7400, 0xFFF8); // fmove.d\tfp0,$-0008(a6)
+            AssertCode(
+                "0|L--|00010000(6): 3 instructions",
+                "1|L--|v4 = (real64) fp0",
+                "2|L--|Mem0[a6 + -8:real64] = v4",
+                "3|L--|fpsr = cond(v4)");
+        }
+
+        [Test]
+        public void M68krw_fmul_d()
+        {
+            Rewrite(0xF22E, 0x5423, 0x0008); // fmul.d $0008(a6),fp0
+            AssertCode(
+               "0|L--|00010000(6): 2 instructions",
+               "1|L--|fp0 = fp0 * Mem0[a6 + 8:real64]",
+               "2|L--|fpsr = cond(fp0)");
+        }
+
+
+        [Test]
+        public void M68krw_fdivd()
+        {
+            Rewrite(0xF23C, 0x5420, 0x4018, 0x0000, 0x0000, 0x0000); // fdiv.d\t#6.0,fp0
+            AssertCode(
+               "0|L--|00010000(12): 2 instructions",
+               "1|L--|fp0 = fp0 / 6.0",
+               "2|L--|fpsr = cond(fp0)");
+        }
+
+        [Test]
+        public void M68krw_fmovecr()
+        {
+            Rewrite(0xF200, 0x5CB2);    // fmove cr#$32,fp1
+            AssertCode(
+               "0|L--|00010000(4): 2 instructions",
+               "1|L--|fp1 = 100.0",
+               "2|L--|fpsr = cond(fp1)");
+        }
+
+        [Test]
+        public void M68krw_fcmp()
+        {
+            Rewrite(0xF22E, 0x5438, 0x0010);  // fcmpd % fp@(16),% fp0 
+            AssertCode(
+               "0|L--|00010000(6): 2 instructions",
+               "1|L--|v4 = (real64) fp0 - Mem0[a6 + 16:real64]",
+               "2|L--|fpsr = cond(v4)");
+        }
+
+        [Test]
+        public void M68krw_fbnge()
+        {
+            Rewrite(0xF29C, 0x00E0);  // fbnge 0x000000e8
+            AssertCode(
+               "0|T--|00010000(4): 1 instructions",
+               "1|T--|if (Test(LT,fpsr)) branch 000100E2");
+        }
+
+        [Test]
+        public void M68krw_fmovem()
+        {
+            Rewrite(0xF227, 0xE004);  // fmovem.x fp2,-(a7)
+            AssertCode(
+               "0|L--|00010000(4): 2 instructions",
+               "1|L--|a7 = a7 - 0x0000000C",
+               "2|L--|Mem0[a7:real96] = fp2");
+        }
+
+        [Test]
+        public void M68krw_fmovem_to_reg()
+        {
+            Rewrite(0xF22E, 0xD020, 0xFFE8); //  fmovemx %fp@(-24),%fp2
+            AssertCode(
+                 "0|L--|00010000(6): 3 instructions",
+                 "1|L--|v3 = a6 + -24",
+                 "2|L--|fp2 = Mem0[v3:real96]",
+                 "3|L--|v3 = v3 + 0x0000000C");
         }
     }
 }

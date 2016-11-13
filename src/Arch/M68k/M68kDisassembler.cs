@@ -319,17 +319,17 @@ namespace Reko.Arch.M68k
             Opcode.trapt, Opcode.trapf, Opcode.traphi, Opcode.trapls, Opcode.trapcc, Opcode.trapcs, Opcode.trapne, Opcode.trapeq, 
             Opcode.trapvc, Opcode.trapvs, Opcode.trappl, Opcode.trapmi, Opcode.trapge, Opcode.traplt, Opcode.trapgt, Opcode.traple };
 
-        static string[] g_cpcc = new string[64] 
+        static Opcode[] g_cpcc = new Opcode[64] 
         {
-            /* 000    001    010    011    100    101    110    111 */
-	          "f",    "eq",  "ogt", "oge", "olt", "ole", "ogl",  "or", /* 000 */
-	          "un",   "ueq", "ugt", "uge", "ult", "ule",  "ne",   "t", /* 001 */
-	          "sf",   "seq", "gt",  "ge",  "lt",  "le",  "gl",  "gle", /* 010 */
-              "ngle", "ngl", "nle", "nlt", "nge", "ngt", "sne",  "st", /* 011 */
-	          "?",   "?",   "?",   "?",   "?",   "?",   "?",   "?", /* 100 */
-	          "?",   "?",   "?",   "?",   "?",   "?",   "?",   "?", /* 101 */
-	          "?",   "?",   "?",   "?",   "?",   "?",   "?",   "?", /* 110 */
-	          "?",   "?",   "?",   "?",   "?",   "?",   "?",   "?"  /* 111 */
+            /* 000          001           010           011    100    101    110    111 */
+	          Opcode.fbf,   Opcode.fbeq,  Opcode.fbogt, Opcode.fboge, Opcode.fbolt, Opcode.fbole, Opcode.fbogl,  Opcode.fbor, /* 000 */
+	          Opcode.fbun,  Opcode.fbueq, Opcode.fbugt, Opcode.fbuge, Opcode.fbult, Opcode.fbule, Opcode.fbne,   Opcode.fbt, /* 001 */
+	          Opcode.fbsf,  Opcode.fbseq, Opcode.fbgt,  Opcode.fbge,  Opcode.fblt,  Opcode.fble,  Opcode.fbgl,   Opcode.fbgle, /* 010 */
+              Opcode.fbngle, Opcode.fbngl, Opcode.fbnle, Opcode.fbnlt, Opcode.fbnge, Opcode.fbngt, Opcode.fbsne,  Opcode.fbst, /* 011 */
+	          Opcode.illegal, Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,/* 100 */
+	          Opcode.illegal, Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal, /* 101 */
+	          Opcode.illegal, Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal, /* 110 */
+	          Opcode.illegal, Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,Opcode.illegal,/* 111 */
         };
 
         static string[] g_mmuregs = new string[] 
@@ -357,17 +357,17 @@ namespace Reko.Arch.M68k
             return true;
         }
 
-        private MachineOperand get_ea_mode_str_8(int instruction) { return get_ea_mode_str((uint) instruction, 0); }
-        private MachineOperand get_ea_mode_str_16(int instruction) { return get_ea_mode_str((uint) instruction, 1); }
-        private MachineOperand get_ea_mode_str_32(int instruction) { return get_ea_mode_str((uint) instruction, 2); }
+        private MachineOperand get_ea_mode_str_8(int instruction) { return get_ea_mode_str((uint) instruction, PrimitiveType.Byte); }
+        private MachineOperand get_ea_mode_str_16(int instruction) { return get_ea_mode_str((uint) instruction, PrimitiveType.Word16); }
+        private MachineOperand get_ea_mode_str_32(int instruction) { return get_ea_mode_str((uint) instruction, PrimitiveType.Word32); }
 
         private M68kImmediateOperand get_imm_str_s8() { return get_imm_str_s(0); }
         private M68kImmediateOperand get_imm_str_s16() { return get_imm_str_s(1); }
         private M68kImmediateOperand get_imm_str_s32() { return get_imm_str_s(2); }
 
-        private M68kImmediateOperand get_imm_str_u8() { return get_imm_str_u(0); }
-        private M68kImmediateOperand get_imm_str_u16() { return get_imm_str_u(1); }
-        private M68kImmediateOperand get_imm_str_u32() { return get_imm_str_u(2); }
+        private M68kImmediateOperand get_imm_str_u8() { return get_imm_str_u(PrimitiveType.Byte); }
+        private M68kImmediateOperand get_imm_str_u16() { return get_imm_str_u(PrimitiveType.Word16); }
+        private M68kImmediateOperand get_imm_str_u32() { return get_imm_str_u(PrimitiveType.Word32); }
 
         private static RegisterOperand get_data_reg(int d) { return new RegisterOperand(Registers.DataRegister(d)); }
         private static RegisterOperand get_addr_reg(int a) { return new RegisterOperand(Registers.AddressRegister(a)); }
@@ -439,13 +439,7 @@ namespace Reko.Arch.M68k
         {
             val &= 0xffff;
 
-            short s;
-            if (val == 0x8000)
-                s = -0x8000;
-            else if ((val & 0x8000) != 0)
-                s = (short) ((0 - val) & 0x7fff);
-            else
-                s = (short) (val & 0x7fff);
+            short s = (short)val;
             return Constant.Int16(s);
         }
 
@@ -480,15 +474,22 @@ namespace Reko.Arch.M68k
             return new M68kImmediateOperand(c);
         }
 
-        private M68kImmediateOperand get_imm_str_u(uint size)
+        private M68kImmediateOperand get_imm_str_u(PrimitiveType dt)
         {
             Constant c;
-            if (size == 0)
-                c = Constant.Byte(read_imm_8());
-            else if (size == 1)
-                c= Constant.Word16(read_imm_16());
+            if (dt.Domain == Domain.Real)
+            {
+                c = rdr.ReadBe(dt);
+            }
             else
-                c = Constant.Word32(read_imm_32());
+            {
+                if (dt.Size == 1)
+                    c = Constant.Byte(read_imm_8());
+                else if (dt.Size == 2)
+                    c = Constant.Word16(read_imm_16());
+                else
+                    c = Constant.Word32(read_imm_32());
+            }
             return new M68kImmediateOperand(c);
         }
 
@@ -502,7 +503,7 @@ namespace Reko.Arch.M68k
         /// <param name="instruction"></param>
         /// <param name="size"></param>
         /// <returns></returns>
-        private MachineOperand get_ea_mode_str(uint instruction, uint size)
+        private MachineOperand get_ea_mode_str(uint instruction, PrimitiveType dataWidth)
         {
             uint extension;
             uint @base;
@@ -514,11 +515,6 @@ namespace Reko.Arch.M68k
             bool comma = false;
             uint temp_value;
 
-            PrimitiveType dataWidth = size == 0
-                ? PrimitiveType.Byte
-                : size == 1
-                    ? PrimitiveType.Word16
-                    : PrimitiveType.Word32;
             /* Switch buffers so we don't clobber on a double-call to this function */
             mode = mode == b1 ? b2 : b1;
 
@@ -792,7 +788,7 @@ namespace Reko.Arch.M68k
                 break;
             case 0x3C:
                 // Immediate 
-                return get_imm_str_u(size);
+                return get_imm_str_u(dataWidth);
             }
             //throw new /*NotImplementedException*/(string.Format("Effective address {0:X2} encoding not supported.", instruction & 0x3F));
             this.instr.code = Opcode.illegal;
@@ -1364,13 +1360,13 @@ namespace Reko.Arch.M68k
 
         private static M68kInstruction d68020_cpbcc_16(M68kDisassembler dasm)
         {
-            uint extension;
-            uint new_pc =  dasm.rdr.Address.ToUInt32();
+            var new_pc = dasm.rdr.Address;
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
-            extension = dasm.read_imm_16();
-            new_pc = ((uint)(new_pc + make_int_16(dasm.read_imm_16())));
-            dasm.g_dasm_str = string.Format("{0}b{1,4}  {2}; {3:X} (extension = {4:X}) (2-3)", (dasm.instruction >> 9) & 7, g_cpcc[dasm.instruction & 0x3f], dasm.get_imm_str_s16(), new_pc, extension);
-            return new M68kInstruction { code = Opcode.illegal };
+            return new M68kInstruction
+            {
+                code = g_cpcc[dasm.instruction & 0x3f],
+                op1 = new M68kAddressOperand(new_pc + dasm.rdr.ReadBeInt16())
+            };
         }
 
         private static M68kInstruction d68020_cpbcc_32(M68kDisassembler dasm)
@@ -1570,7 +1566,7 @@ namespace Reko.Arch.M68k
 	    {
             PrimitiveType.Int32,  // ".l",
             PrimitiveType.Real32, // ".s",
-            PrimitiveType.Real80, // ".x",
+            PrimitiveType.Real96, // ".x",
             null,                 // ".p", 
             PrimitiveType.Int16,  // ".w",
             PrimitiveType.Real64, // ".d", 
@@ -1676,7 +1672,7 @@ namespace Reko.Arch.M68k
                         {
                             code = mnemonic,
                             dataWidth = float_data_format[src],
-                            op1 = dasm.get_ea_mode_str_32(dasm.instruction),
+                            op1 = dasm.get_ea_mode_str(dasm.instruction, float_data_format[src]),
                             op2 = dasm.get_fp_reg((int) dst_reg)
                         };
                     }
@@ -1711,8 +1707,13 @@ namespace Reko.Arch.M68k
                         break;
 
                     default:
-                        dasm.g_dasm_str = string.Format("fmove{0}   FP%d, %s", float_data_format[(w2 >> 10) & 7], dst_reg, dasm.get_ea_mode_str_32(dasm.instruction));
-                        break;
+                        return new M68kInstruction
+                        {
+                            code = Opcode.fmove,
+                            dataWidth = float_data_format[(w2 >> 10) & 7],
+                            op1 = dasm.get_fp_reg((int)dst_reg),
+                            op2 = dasm.get_ea_mode_str_32(dasm.instruction)
+                        };
                     }
                     break;
                 }
@@ -1740,71 +1741,96 @@ namespace Reko.Arch.M68k
 
             case 0x6:	// memory to FPU, list
                 {
-                    string temp;
-
                     if (((w2 >> 11) & 1) != 0)	// dynamic register list
                     {
                         dasm.g_dasm_str = string.Format("fmovem.x   {0},D{1}", dasm.get_ea_mode_str_32(dasm.instruction), (w2 >> 4) & 7);
                     }
                     else	// static register list
                     {
-                        int i;
-
-                        dasm.g_dasm_str = string.Format("fmovem.x   {0}, ", dasm.get_ea_mode_str_32(dasm.instruction));
-
-                        for (i = 0; i < 8; i++)
+                        dasm.instr.code = Opcode.fmovem;
+                        dasm.instr.dataWidth = PrimitiveType.Real96;
+                        if (((w2 >> 12) & 1) == 0)
                         {
-                            if ((w2 & (1 << i)) != 0)
-                            {
-                                if (((w2 >> 12) & 1) != 0)	// postincrement or control
-                                {
-                                    temp = string.Format("FP{0} ", 7 - i);
-                                }
-                                else			// predecrement
-                                {
-                                    temp = string.Format("FP{0} ", i);
-                                }
-                                dasm.g_dasm_str += temp;
-                            }
+                            dasm.instr.op2 = RegisterSetOperand.CreateReversed((byte)w2, PrimitiveType.Real96);
                         }
+                        else
+                        {
+                            dasm.instr.op2 = new RegisterSetOperand((byte)w2, PrimitiveType.Real96);
+                        }
+                        dasm.instr.op1 = dasm.get_ea_mode_str_32(dasm.instruction);
+                        dasm.instr.ToString();
+                        return dasm.instr;
+
+                        //int i;
+
+                        //dasm.g_dasm_str = string.Format("fmovem.x   {0}, ", dasm.get_ea_mode_str_32(dasm.instruction));
+
+                        //for (i = 0; i < 8; i++)
+                        //{
+                        //    if ((w2 & (1 << i)) != 0)
+                        //    {
+                        //        if (((w2 >> 12) & 1) != 0)	// postincrement or control
+                        //        {
+                        //            temp = string.Format("FP{0} ", 7 - i);
+                        //        }
+                        //        else			// predecrement
+                        //        {
+                        //            temp = string.Format("FP{0} ", i);
+                        //        }
+                        //        dasm.g_dasm_str += temp;
+                        //    }
+                        //}
                     }
                     break;
                 }
 
             case 0x7:	// FPU to memory, list
                 {
-                    string temp;
-
                     if (((w2 >> 11) & 1) != 0)	// dynamic register list
                     {
-                        dasm.g_dasm_str = string.Format("fmovem.x   D{0},{1}", (w2 >> 4) & 7, dasm.get_ea_mode_str_32(dasm.instruction));
+                        return new M68kInstruction
+                        {
+                            code = Opcode.fmovem,
+                            dataWidth = PrimitiveType.Real96,
+                            op1 = new RegisterOperand(Registers.GetRegister((int)(w2 >> 4) & 7)),
+                            op2 = dasm.get_ea_mode_str_32(dasm.instruction)
+                        };
                     }
                     else	// static register list
                     {
-                        int i;
-
-                        dasm.g_dasm_str = string.Format("fmovem.x   ");
-
-                        for (i = 0; i < 8; i++)
+                        dasm.instr.code = Opcode.fmovem;
+                        dasm.instr.dataWidth = PrimitiveType.Real96;
+                        if (((w2 >> 12) & 1) == 0)
                         {
-                            if ((w2 & (1 << i)) != 0)
-                            {
-                                if (((w2 >> 12) & 1) != 0)	// postincrement or control
-                                {
-                                    temp = string.Format("FP{0} ", 7 - i);
-                                }
-                                else			// predecrement
-                                {
-                                    temp = string.Format("FP{0} ", i);
-                                }
-                                dasm.g_dasm_str += temp;
-                            }
+                            dasm.instr.op1 = RegisterSetOperand.CreateReversed((ushort)(w2 << 8), PrimitiveType.Real96);
                         }
+                        else
+                        {
+                            dasm.instr.op1 = new RegisterSetOperand(w2 & 0xFF, PrimitiveType.Real96);
+                        }
+                        dasm.instr.op2 = dasm.get_ea_mode_str_32(dasm.instruction);
+                        //$TODO: remove the below code after 2017-01-01
+                        //dasm.g_dasm_str = string.Format("fmovem.x   ");
 
-                        dasm.g_dasm_str += ", ";
-                        dasm.g_dasm_str += dasm.get_ea_mode_str_32(dasm.instruction);
+                        //for (i = 0; i < 8; i++)
+                        //{
+                        //    if ((w2 & (1 << i)) != 0)
+                        //    {
+                        //        if (((w2 >> 12) & 1) != 0)	// postincrement or control
+                        //        {
+                        //            temp = string.Format("FP{0} ", 7 - i);
+                        //        }
+                        //        else			// predecrement
+                        //        {
+                        //            temp = string.Format("FP{0} ", i);
+                        //        }
+                        //        dasm.g_dasm_str += temp;
+                        //    }
+                        //}
+                        //dasm.g_dasm_str += ", ";
+                        //dasm.g_dasm_str += dasm.get_ea_mode_str_32(dasm.instruction);
                     }
-                    break;
+                    return dasm.instr;
                 }
 
             default:
@@ -3054,11 +3080,11 @@ namespace Reko.Arch.M68k
 	new OpRec(d68000_move_fr_usp  , 0xfff8, 0x4e68, 0x000),
 	new OpRec(d68010_movec        , 0xfffe, 0x4e7a, 0x000),
 	new OpRec(d68000_movem_pd_16  , 0xfff8, 0x48a0, 0x000),
-	new OpRec("sl:M,E0", 0xfff8, 0x48e0, 0x000, Opcode.movem),      // d68000_movem_pd_32  
-	new OpRec("sw:M,E0", 0xffc0, 0x4880, 0x2f8, Opcode.movem),      // d68000_movem_re_16  
-	new OpRec("sl:M,E0", 0xffc0, 0x48c0, 0x2f8, Opcode.movem),      // d68000_movem_re_32
-	new OpRec("sw:nE0,m", 0xffc0, 0x4c80, 0x37b, Opcode.movem),     // d68000_movem_er_16 
-	new OpRec("sl:nE0,m", 0xffc0, 0x4cc0, 0x37b, Opcode.movem),     // d68000_movem_er_32 
+	new OpRec("sl:Ml,E0", 0xfff8, 0x48e0, 0x000, Opcode.movem),      // d68000_movem_pd_32  
+	new OpRec("sw:Mw,E0", 0xffc0, 0x4880, 0x2f8, Opcode.movem),      // d68000_movem_re_16  
+	new OpRec("sl:Ml,E0", 0xffc0, 0x48c0, 0x2f8, Opcode.movem),      // d68000_movem_re_32
+	new OpRec("sw:nE0,mw", 0xffc0, 0x4c80, 0x37b, Opcode.movem),     // d68000_movem_er_16 
+	new OpRec("sl:nE0,ml", 0xffc0, 0x4cc0, 0x37b, Opcode.movem),     // d68000_movem_er_32 
 	new OpRec(d68000_movep_er_16  , 0xf1f8, 0x0108, 0x000),
 	new OpRec(d68000_movep_er_32  , 0xf1f8, 0x0148, 0x000),
 	new OpRec(d68000_movep_re_16  , 0xf1f8, 0x0188, 0x000),

@@ -96,13 +96,26 @@ namespace Reko.Arch.M68k
 
         private string DataSizeSuffix(PrimitiveType dataWidth)
         {
-            switch (dataWidth.BitSize)
+            if (dataWidth.Domain == Domain.Real)
             {
-            case 8: return ".b";
-            case 16: return ".w";
-            case 32: return ".l";
-            default: throw new InvalidOperationException(string.Format("Unsupported data width {0}.", dataWidth.BitSize));
+                switch (dataWidth.BitSize)
+                {
+                case 32: return ".s";
+                case 64: return ".d";
+                case 80: return ".x";   //$REVIEW: not quite true?
+                case 96: return ".x";
+                }
             }
+            else
+            {
+                switch (dataWidth.BitSize)
+                {
+                case 8: return ".b";
+                case 16: return ".w";
+                case 32: return ".l";
+                }
+            }
+            throw new InvalidOperationException(string.Format("Unsupported data width {0}.", dataWidth.BitSize));
         }
 
         public override InstructionClass InstructionClass

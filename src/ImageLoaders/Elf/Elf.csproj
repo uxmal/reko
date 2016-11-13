@@ -86,6 +86,7 @@
     <Compile Include="ElfObjectLinker.cs" />
     <Compile Include="ElfRelocator.cs" />
     <Compile Include="ElfSymbol.cs" />
+    <Compile Include="M68kRelocator.cs" />
     <Compile Include="MipsRelocator.cs" />
     <Compile Include="PpcRelocator.cs" />
     <Compile Include="ProgramHeaderType.cs" />

@@ -29,8 +29,8 @@ namespace Reko.Arch.M68k
 {
     public class RegisterSetOperand : M68kOperandImpl
     {
-        public RegisterSetOperand(uint bitset)
-            : base(PrimitiveType.Word16)
+        public RegisterSetOperand(uint bitset, PrimitiveType dt)
+            : base(dt)
         {
             this.BitSet = bitset;
         }
@@ -42,7 +42,7 @@ namespace Reko.Arch.M68k
             return visitor.Visit(this);
         }
 
-        public static MachineOperand CreateReversed(ushort vv)
+        public static MachineOperand CreateReversed(ushort vv, PrimitiveType width)
         {
             int v;
             // Swap odd and even bits
@@ -53,13 +53,15 @@ namespace Reko.Arch.M68k
             v = ((v >> 4) & 0x0F0F) | ((v & 0x0F0F) << 4);
             // swap bytes
             v = ((v >> 8) & 0x00FF) | ((v & 0x00FF) << 8);
-            return new RegisterSetOperand((ushort) v);
+            return new RegisterSetOperand((ushort) v, width);
         }
 
         public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
             uint bitSet = BitSet;
-            WriteRegisterSet(bitSet, writer);
+            WriteRegisterSet(
+                bitSet,
+                writer);
         }
 
         /// <summary>
@@ -75,8 +77,9 @@ namespace Reko.Arch.M68k
         public void WriteRegisterSet(uint data, MachineInstructionWriter writer)
         {
             string sep = "";
-            int bitPos = 15;
-            for (int i = 0; i < 16; i++, --bitPos)
+            int maxReg = this.Width.Domain == Domain.Real ? 8 : 16;
+            int bitPos = maxReg - 1;
+            for (int i = 0; i < maxReg; i++, --bitPos)
             {
                 if (bit(data, bitPos))
                 {
@@ -89,14 +92,22 @@ namespace Reko.Arch.M68k
                         ++run_length;
                     }
                     writer.Write(sep);
-                    writer.Write(Registers.GetRegister(first).ToString());
+                    writer.Write(GetRegister(first).ToString());
                     if (run_length > 0)
-                        writer.Write("-{0}", Registers.GetRegister(first + run_length));
+                        writer.Write("-{0}", GetRegister(first + run_length));
                     sep = "/";
                 }
             }
         }
 
         private static bool bit(uint data, int pos) { return (data & (1 << pos)) != 0; }
+
+        private RegisterStorage GetRegister(int n)
+        {
+            if (this.Width.Domain == Domain.Real)
+                return Registers.GetRegister(n + Registers.fp0.Number);
+            else
+                return Registers.GetRegister(n);
+        }
     }
 }

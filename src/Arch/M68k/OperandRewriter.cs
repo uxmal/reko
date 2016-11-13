@@ -75,7 +75,9 @@ namespace Reko.Arch.M68k
             var imm = operand as M68kImmediateOperand;
             if (imm != null)
             {
-               if (DataWidth != null && DataWidth.BitSize > imm.Width.BitSize)
+                if (imm.Width.Domain == Domain.Real)
+                    return imm.Constant.CloneExpression();
+                if (DataWidth != null && DataWidth.BitSize > imm.Width.BitSize)
                     return Constant.Create(DataWidth, imm.Constant.ToInt64());
                 else
                     return Constant.Create(imm.Width, imm.Constant.ToUInt32());
@@ -182,14 +184,21 @@ namespace Reko.Arch.M68k
             return RewriteDst(operand, addrInstr, this.DataWidth, src, opGen);
         }
 
-        public Expression RewriteDst(MachineOperand operand, Address addrInstr, PrimitiveType dataWidth, Expression src, Func<Expression ,Expression, Expression> opGen)
+        public Expression RewriteDst(
+            MachineOperand operand,
+            Address addrInstr,
+            PrimitiveType dataWidth,
+            Expression src,
+            Func<Expression, Expression, Expression> opGen)
         {
             var reg = operand as RegisterOperand;
             if (reg != null)
             {
                 Expression r = frame.EnsureRegister(reg.Register);
                 Expression tmp = r;
-                if (dataWidth != null && reg.Width.BitSize > dataWidth.BitSize)
+                if (dataWidth != null && 
+                    reg.Width.BitSize > dataWidth.BitSize &&
+                    reg.Width.Domain != Domain.Real)
                 {
                     Expression rSub = m.Cast(dataWidth, r);
                     var srcExp = opGen(src, rSub);

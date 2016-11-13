@@ -68,6 +68,9 @@ namespace Reko.Environments.SysV
                 return new XtensaProcedureSerializer(Architecture, typeLoader, defaultConvention);
             case "arm":
                 return new Arm32ProcedureSerializer(Architecture, typeLoader, defaultConvention);
+            case "m68k":
+                return new M68kProcedureSerializer(Architecture, typeLoader, defaultConvention);
+
             default:
                 throw new NotImplementedException(string.Format("Procedure serializer for {0} not implemented yet.", Architecture.Description));
             }

@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Evaluation
             Assert.IsTrue(ic.Match(edx));
             Expression e = ic.Transform();
             Assert.AreEqual("321", e.ToString());
-            Assert.AreEqual("int32", e.DataType.ToString());
+            Assert.AreEqual("DWORD", e.DataType.ToString());
         }
 
         [Test]

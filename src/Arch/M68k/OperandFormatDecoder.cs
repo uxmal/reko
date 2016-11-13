@@ -79,12 +79,14 @@ namespace Reko.Arch.M68k
                         offset = (sbyte) offset;
                     return new M68kAddressOperand(addr + offset);
                 case 'M':   // Register bitset
-                    return new RegisterSetOperand(rdr.ReadBeUInt16());
+                    var size = GetSizeType(0, args[i++], dataWidth);
+                    return new RegisterSetOperand(rdr.ReadBeUInt16(), size);
                 case 'n':   // cache bitset
                     bitSet = rdr.ReadBeUInt16();
                     break;
                 case 'm':   // Register bitset reversed
-                    return RegisterSetOperand.CreateReversed(bitSet);
+                    size = GetSizeType(0, args[i++], dataWidth);
+                    return RegisterSetOperand.CreateReversed(bitSet, size);
                 case 'q':   // "Small" quick constant (3-bit part of the opcode)
                     return GetQuickImmediate(GetOpcodeOffset(args[i++]), 0x07, 8, PrimitiveType.Byte);
                 case 'Q':   // "Large" quick constant (8-bit part of the opcode)
@@ -173,8 +175,7 @@ namespace Reko.Arch.M68k
             case 'u': return PrimitiveType.UInt16;
             case 'w': return PrimitiveType.Word16;
             case 'l': return PrimitiveType.Word32;
-            default: return SizeField(opcode, GetOpcodeOffset(c)); ;
-                throw new NotImplementedException();
+            default: return SizeField(opcode, GetOpcodeOffset(c));
             }
         }
 

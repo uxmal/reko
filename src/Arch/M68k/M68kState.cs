@@ -34,20 +34,20 @@ namespace Reko.Arch.M68k
     {
         const int RegisterCount = 32;
         private M68kArchitecture arch;
-        private uint[] values;
+        private Constant[] values;
         private bool[] isValid;
 
         public M68kState(M68kArchitecture arch)
         {
             this.arch = arch;
-            this.values = new uint[RegisterCount];
+            this.values = new Constant[RegisterCount];
             this.isValid = new bool[RegisterCount];
         }
 
         public M68kState(M68kState orig) : base(orig)
         {
             this.arch = orig.arch;
-            this.values = (uint[]) orig.values.Clone();
+            this.values = (Constant[]) orig.values.Clone();
             this.isValid = (bool[]) orig.isValid.Clone();
         }
 
@@ -64,7 +64,7 @@ namespace Reko.Arch.M68k
         {
             if (v != null && v.IsValid)
             {
-                values[r.Number] = (uint) v.ToInt32();
+                values[r.Number] = v;
                 isValid[r.Number] = true;
             }
             else
@@ -81,7 +81,7 @@ namespace Reko.Arch.M68k
         {
             if (isValid[r.Number])
             {
-                return Constant.Create(r.DataType, values[r.Number]);
+                return values[r.Number];
             }
             else
             {
