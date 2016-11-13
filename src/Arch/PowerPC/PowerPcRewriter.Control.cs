@@ -209,7 +209,7 @@ namespace Reko.Arch.PowerPC
 
         private void RewriteSc()
         {
-            emitter.SideEffect(host.PseudoProcedure("__syscall", arch.WordWidth));
+            emitter.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, arch.WordWidth));
         }
     }
 }

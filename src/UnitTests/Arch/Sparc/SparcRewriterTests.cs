@@ -346,13 +346,13 @@ namespace Reko.UnitTests.Arch.Sparc
         public void SparcRw_ta()
         {
             host.Stub(h => h.PseudoProcedure(
-                Arg<string>.Is.Equal("__syscall"),
+                Arg<string>.Is.Equal(PseudoProcedure.Syscall),
                 Arg<DataType>.Is.Equal(VoidType.Instance),
                 Arg<Expression[] >.Is.NotNull))
                 .Return(new Application(
                     new ProcedureConstant(
                         PrimitiveType.Pointer32,
-                        new PseudoProcedure("__syscall", VoidType.Instance, 1)),
+                        new PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, 1)),
                     VoidType.Instance,
                     Constant.Word32(0x19)));
             BuildTest(0x91D02999);  // ta\t%g1,0x00000019"

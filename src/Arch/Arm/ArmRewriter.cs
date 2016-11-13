@@ -738,7 +738,7 @@ namespace Reko.Arch.Arm
         private void RewriteSvc()
         {
             emitter.SideEffect(emitter.Fn(
-                host.EnsurePseudoProcedure("__syscall", VoidType.Instance, 2), 
+                host.EnsurePseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, 2), 
                 Operand(Dst)));
         }
     }

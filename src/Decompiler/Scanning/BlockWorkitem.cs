@@ -1017,7 +1017,7 @@ namespace Reko.Scanning
             var ppp = pc.Procedure as PseudoProcedure;
             if (ppp == null)
                 return null;
-            if (ppp.Name != "__syscall" || fn.Arguments.Length == 0)
+            if (ppp.Name != PseudoProcedure.Syscall || fn.Arguments.Length == 0)
                 return null;
 
             var vector = fn.Arguments[0] as Constant;
