@@ -147,12 +147,12 @@ namespace Reko.ImageLoaders.Elf
             if (fileClass == ELFCLASS64)
             {
                 var header64 = Elf64_EHdr.Load(rdr);
-                return new ElfLoader64(this, header64, RawImage, osAbi);
+                return new ElfLoader64(this, header64, RawImage, osAbi, endianness);
             }
             else
             {
                 var header32 = Elf32_EHdr.Load(rdr);
-                return new ElfLoader32(this, header32, RawImage);
+                return new ElfLoader32(this, header32, RawImage, endianness);
             }
         }
 
