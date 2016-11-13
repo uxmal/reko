@@ -49,6 +49,9 @@ namespace Reko.ImageLoaders.Elf
         public const int ELFOSABI_NSK = 14;     // Hewlett-Packard Non-Stop Kernel 
         public const int ELFOSABI_AROS = 15;    // Amiga Research OS 
         public const int ELFOSABI_FENIXOS = 16; // The FenixOS highly scalable multi-core OS 
+        
+        public const int ELFDATA2LSB = 1;
+        public const int ELFDATA2MSB = 2;
 
         public const int ELFOSABI_CELL_LV2 = 0x66;     // PS/3 has this in its files
         public const uint SHF_WRITE = 0x1;
@@ -75,10 +78,10 @@ namespace Reko.ImageLoaders.Elf
         protected IPlatform platform;
         protected byte[] rawImage;
 
-        protected ElfLoader(ElfImageLoader imgLoader, ushort machine)
+        protected ElfLoader(ElfImageLoader imgLoader, ushort machine, byte endianness)
         {
             this.imgLoader = imgLoader;
-            this.Architecture = CreateArchitecture(machine);
+            this.Architecture = CreateArchitecture(machine, endianness);
             this.Symbols = new Dictionary<ElfSection, List<ElfSymbol>>();
             this.Sections = new List<ElfSection>();
             this.ExternalProcedures = new Dictionary<Address, ExternalProcedure>();
@@ -134,7 +137,7 @@ namespace Reko.ImageLoaders.Elf
             return mems;
         }
 
-        protected IProcessorArchitecture CreateArchitecture(ushort machineType)
+        protected IProcessorArchitecture CreateArchitecture(ushort machineType, byte endianness)
         {
             var cfgSvc = Services.RequireService<IConfigurationService>();
             string arch;
@@ -145,7 +148,20 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_386: arch = "x86-protected-32"; break;
             case ElfMachine.EM_X86_64: arch = "x86-protected-64"; break;
             case ElfMachine.EM_68K: arch = "m68k"; break;
-            case ElfMachine.EM_MIPS: arch = "mips-be-32"; break;
+            case ElfMachine.EM_MIPS:
+                if (endianness == ELFDATA2LSB)
+                {
+                    arch = "mips-le-32";
+                }
+                else if (endianness == ELFDATA2MSB)
+                {
+                    arch = "mips-be-32";
+                }
+                else
+                {
+                    throw new NotSupportedException(string.Format("The MIPS architecture does not support ELF endianness value {0}", endianness));
+                }
+                break;
             case ElfMachine.EM_PPC: arch = "ppc32"; break;
             case ElfMachine.EM_PPC64: arch = "ppc64"; break;
             case ElfMachine.EM_ARM: arch = "arm"; break;
@@ -484,8 +500,8 @@ namespace Reko.ImageLoaders.Elf
     {
         private byte osAbi;
 
-        public ElfLoader64(ElfImageLoader imgLoader, Elf64_EHdr elfHeader, byte[] rawImage, byte osAbi)
-            : base(imgLoader, elfHeader.e_machine)
+        public ElfLoader64(ElfImageLoader imgLoader, Elf64_EHdr elfHeader, byte[] rawImage, byte osAbi, byte endianness)
+            : base(imgLoader, elfHeader.e_machine, endianness)
         {
             this.Header64 = elfHeader;
             this.osAbi = osAbi;
@@ -895,8 +911,8 @@ namespace Reko.ImageLoaders.Elf
 
     public class ElfLoader32 : ElfLoader
     {
-        public ElfLoader32(ElfImageLoader imgLoader, Elf32_EHdr header32, byte[] rawImage)
-            : base(imgLoader, header32.e_machine)
+        public ElfLoader32(ElfImageLoader imgLoader, Elf32_EHdr header32, byte[] rawImage, byte endianness)
+            : base(imgLoader, header32.e_machine, endianness)
         {
             if (header32 == null)
                 throw new ArgumentNullException("header32");
