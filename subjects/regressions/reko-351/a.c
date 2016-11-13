@@ -6,7 +6,7 @@
 
 void deregister_tm_clones()
 {
-xif (false)
+	if (false)
 	{
 		<anonymous> * a0_32 = null;
 		if (a0_32 != null)

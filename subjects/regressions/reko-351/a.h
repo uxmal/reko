@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (8000270C (ptr code) ptr8000270C) (80002714 (arr Eq_328) a80002714) (8000271C word32 dw8000271C) (80002724 byte b80002724) (80002726 uint32 dw80002726))
+Eq_1: (struct "Globals" (8000270C (ptr code) ptr8000270C) (80002714 (arr Eq_328) a80002714) (8000271C word32 dw8000271C) (80002724 byte b80002724) (80002726 uint32 dw80002726) (FFFFFFFF code tFFFFFFFF))
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_60: (fn void ())
 	T_60 (in deregister_tm_clones : ptr32)
@@ -1356,6 +1356,7 @@ typedef struct Globals {
 	word32 dw8000271C;	// 8000271C
 	byte b80002724;	// 80002724
 	uint32 dw80002726;	// 80002726
+	<anonymous> tFFFFFFFF;	// FFFFFFFF
 } Eq_1;
 
 typedef void (Eq_60)();
