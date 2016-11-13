@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Analysis\SsaStateTests.cs" />
+    <Compile Include="Arch\Intel\X86FrameApplicationBuilderTests.cs" />
     <Compile Include="Arch\Xtensa\XtensaDisassemblerTests.cs" />
     <Compile Include="Arch\Xtensa\XtensaRewriterTests.cs" />
     <Compile Include="Core\Analysis\PyArgFormatParserTests.cs" />

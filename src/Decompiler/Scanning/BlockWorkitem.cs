@@ -582,7 +582,8 @@ namespace Reko.Scanning
             }
             state.OnAfterCall(sigCallee);
 
-            // Adjust stack after call
+            // Adjust stack after call 
+            //$REVIEW: looks like common code; consider refactoring this.
             if (sigCallee != null)
             {
                 int delta = sigCallee.StackDelta - sigCallee.ReturnAddressOnStack;

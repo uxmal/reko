@@ -98,7 +98,7 @@ namespace Reko.Arch.M68k
             sr = new RegisterStorage("sr", 25, 0, PrimitiveType.Word16);
             usp = new RegisterStorage("usp", 26, 0, PrimitiveType.Word32);
             pc = new AddressRegister("pc", 27, PrimitiveType.Pointer32);
-            fpsr = new FlagRegister("fpsr", PrimitiveType.Word32);
+            fpsr = new FlagRegister("fpsr", 1, PrimitiveType.Word32);
 
             Max = 28;
 
@@ -204,5 +204,4 @@ namespace Reko.Arch.M68k
         {
         }
     }
-
 }

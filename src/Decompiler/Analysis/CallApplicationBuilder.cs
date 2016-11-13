@@ -57,9 +57,9 @@ namespace Reko.Analysis
             return new OutArgument(arch.FramePointerType, exp);
         }
 
-        public override Identifier BindReturnValue(Identifier id)
+        public override Expression BindReturnValue(Identifier id)
         {
-            return (Identifier)With(defs, id.Storage);
+            return With(defs, id.Storage);
         }
 
         private Expression With(Dictionary<Storage, Expression> map, Storage stg)

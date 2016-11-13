@@ -65,14 +65,14 @@ namespace Reko.Core
             return id.Storage.Accept(this);
         }
 
-        public override Identifier BindReturnValue(Identifier id)
+        public override Expression BindReturnValue(Identifier id)
         {
-            Identifier idRet = null;
+            Expression expRet = null;
             if (id != null)
             {
-                idRet = (Identifier) id.Storage.Accept(this);
+                expRet = id.Storage.Accept(this);
             }
-            return idRet;
+            return expRet;
         }
 
         public override OutArgument BindOutArg(Identifier id)

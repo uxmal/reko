@@ -63,7 +63,7 @@ namespace Reko.Core
         }
 
         public abstract OutArgument BindOutArg(Identifier id);
-        public abstract Identifier BindReturnValue(Identifier id);
+        public abstract Expression BindReturnValue(Identifier id);
         public abstract Expression Bind(Identifier id);
 
         /// <summary>
@@ -79,16 +79,20 @@ namespace Reko.Core
             FunctionType sigCallee,
             ProcedureCharacteristics chr)
         {
-            Identifier idOut;
+            if (sigCallee == null || !sigCallee.ParametersValid)
+                throw new InvalidOperationException("No signature available; application cannot be constructed.");
+            this.sigCallee = sigCallee;
+
+            Expression expOut;
             DataType dtOut;
             if (!sigCallee.HasVoidReturn)
             {
-                idOut = BindReturnValue(sigCallee.ReturnValue);
+                expOut = BindReturnValue(sigCallee.ReturnValue);
                 dtOut = sigCallee.ReturnValue.DataType;
             }
             else
             {
-                idOut = null;
+                expOut = null;
                 dtOut = VoidType.Instance;
             }
             var actuals = BindArguments(sigCallee, chr);
@@ -97,17 +101,22 @@ namespace Reko.Core
                 dtOut,
                 actuals.ToArray());
 
-            if (idOut == null)
+            Identifier idOut;
+            if (expOut == null)
             {
                 return new SideEffect(appl);
             }
-            else
+            else if (expOut.As(out idOut))
             {
-                if (idOut.DataType.Size > sigCallee.ReturnValue.DataType.Size)
+                if (expOut.DataType.Size > sigCallee.ReturnValue.DataType.Size)
                 {
-                    appl = new DepositBits(idOut, appl, 0);
+                    appl = new DepositBits(expOut, appl, 0);
                 }
                 return new Assignment(idOut, appl);
+            }
+            else
+            {
+                return new Store(expOut, appl);
             }
         }
 
@@ -120,9 +129,6 @@ namespace Reko.Core
         /// <returns></returns>
         public virtual List<Expression> BindArguments(FunctionType sigCallee, ProcedureCharacteristics chr)
         {
-            if (sigCallee == null || !sigCallee.ParametersValid)
-                throw new InvalidOperationException("No signature available; application cannot be constructed.");
-            this.sigCallee = sigCallee;
             var actuals = new List<Expression>();
             for (int i = 0; i < sigCallee.Parameters.Length; ++i)
             {
