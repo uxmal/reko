@@ -352,12 +352,15 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(0x44C1F800, // "ctc1\tr1,FCSR"
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|FCSR = r1");
+
             AssertCode(0x46206024, // "cvt.w.d\tf0,f12"
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|f0 = (int32) f12_f13");
+
             AssertCode(0x45000012, // "bc1f\tcc0,0010004C"
                 "0|TD-|00100000(4): 1 instructions",
                 "1|TD-|if (!cc0) branch 0010004C");
+
             AssertCode(0x46206000, // "add.d\tf0,f12,f0"
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|f0_f1 = f12_f13 + f0_f1");
