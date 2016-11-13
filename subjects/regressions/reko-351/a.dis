@@ -1,0 +1,1059 @@
+// deregister_tm_clones
+// Return size: 4
+define deregister_tm_clones
+deregister_tm_clones_entry:
+	// succ:  l80000080
+l80000080:
+	a7 = fp
+	a7 = a7 - 0x00000004
+	Mem0[a7:word32] = a6
+	a6 = a7
+	a7 = a7 + 0x00000000
+	d0 = 0x80002724
+	CVZN = cond(d0)
+	d0 = d0 - 0x80002721
+	CVZNX = cond(d0)
+	d1 = 6
+	CVZN = cond(d1)
+	v8 = d1 - d0
+	CVZN = cond(v8)
+	branch Test(UGE,C) l800000AA
+	// succ:  l80000096 l800000AA
+l80000096:
+	a0 = null
+	ZN = cond(a0 - 0x00000000)
+	C = false
+	V = false
+	branch Test(EQ,Z) l800000AA
+	// succ:  l800000A0 l800000AA
+l800000A0:
+	a7 = a7 - 0x00000004
+	Mem0[a7:word32] = 0x80002724
+	call a0 (retsize: 4;)
+	a7 = a7 + 0x00000004
+	// succ:  l800000AA
+l800000AA:
+	a7 = a6
+	a6 = Mem0[a7:word32]
+	a7 = a7 + 0x00000004
+	return
+	// succ:  deregister_tm_clones_exit
+deregister_tm_clones_exit:
+
+
+// register_tm_clones
+// Return size: 0
+define register_tm_clones
+register_tm_clones_entry:
+	// succ:  l800000AE
+l800000AE:
+	a7 = fp
+	a7 = a7 - 0x00000004
+	Mem0[a7:word32] = a6
+	a6 = a7
+	a7 = a7 + 0x00000000
+	d0 = 0x80002724
+	CVZN = cond(d0)
+	d0 = d0 - 0x80002724
+	CVZNX = cond(d0)
+	d0 = d0 >> 0x00000002
+	CVZNX = cond(d0)
+	d0 = d0
+	CVZN = cond(d0)
+	branch Test(GT,N) l800000C6
+	// succ:  l800000C4 l800000C6
+l800000C4:
+	d0 = d0 + 0x00000001
+	CVZNX = cond(d0)
+	// succ:  l800000C6
+l800000C6:
+	d0 = d0 >> 0x00000001
+	CVZNX = cond(d0)
+	branch Test(EQ,Z) l800000E0
+	// succ:  l800000CA l800000E0
+l800000CA:
+	a0 = null
+	ZN = cond(a0 - 0x00000000)
+	C = false
+	V = false
+	branch Test(EQ,Z) l800000E0
+	// succ:  l800000D4 l800000E0
+l800000D4:
+	a7 = a7 - 0x00000004
+	v13 = d0
+	Mem0[a7:word32] = v13
+	CVZN = cond(v13)
+	a7 = a7 - 0x00000004
+	Mem0[a7:word32] = 0x80002724
+	call a0 (retsize: 4;)
+	a7 = a7 + 0x00000008
+	// succ:  l800000E0
+l800000E0:
+	a7 = a6
+	a6 = Mem0[a7:word32]
+	a7 = a7 + 0x00000004
+	return
+	// succ:  register_tm_clones_exit
+register_tm_clones_exit:
+
+
+// __do_global_dtors_aux
+// Return size: 4
+define __do_global_dtors_aux
+__do_global_dtors_aux_entry:
+	// succ:  l800000E4
+l800000E4:
+	a7 = fp
+	a7 = a7 - 0x00000004
+	Mem0[a7:word32] = a6
+	a6 = a7
+	a7 = a7 + 0x00000000
+	a7 = a7 - 0x00000004
+	v5 = a2
+	Mem0[a7:word32] = v5
+	CVZN = cond(v5)
+	a7 = a7 - 0x00000004
+	v8 = d2
+	Mem0[a7:word32] = v8
+	CVZN = cond(v8)
+	ZN = cond(Mem0[0x80002724:byte] - 0x00)
+	C = false
+	V = false
+	branch Test(NE,Z) l8000014C
+	// succ:  l800000F4 l8000014C
+l800000F4:
+	a2 = 0x80002714
+	d0 = Mem0[0x80002726:word32]
+	CVZN = cond(d0)
+	d2 = 0x80002718
+	CVZN = cond(d2)
+	d2 = d2 - 0x80002714
+	CVZNX = cond(d2)
+	d2 = d2 >> 0x00000002
+	CVZNX = cond(d2)
+	d2 = d2 - 0x00000001
+	CVZNX = cond(d2)
+	v15 = d2 - d0
+	CVZN = cond(v15)
+	branch Test(ULE,VZ) l8000012C
+	// succ:  l80000114 l8000012C
+l80000114:
+	d0 = d0 + 0x00000001
+	CVZNX = cond(d0)
+	v17 = d0
+	Mem0[0x80002726:word32] = v17
+	CVZN = cond(v17)
+	a0 = Mem0[a2 + d0 * 2:word32]
+	call a0 (retsize: 4;)
+	d0 = Mem0[0x80002726:word32]
+	CVZN = cond(d0)
+	v19 = d2 - d0
+	CVZN = cond(v19)
+	branch Test(UGT,CZ) l80000114
+	// succ:  l8000012C l80000114
+l8000012C:
+	call deregister_tm_clones (retsize: 4;)
+	a0 = null
+	ZN = cond(a0 - 0x00000000)
+	C = false
+	V = false
+	branch Test(EQ,Z) l80000144
+	// succ:  l8000013A l80000144
+l8000013A:
+	a7 = a7 - 0x00000004
+	Mem0[a7:word32] = 0x8000065C
+	call a0 (retsize: 4;)
+	a7 = a7 + 0x00000004
+	// succ:  l80000144
+l80000144:
+	v21 = 0x01
+	Mem0[0x80002724:byte] = v21
+	CVZN = cond(v21)
+	// succ:  l8000014C
+l8000014C:
+	d2 = Mem0[a6 + -8:word32]
+	CVZN = cond(d2)
+	a2 = Mem0[a6 + -4:word32]
+	a7 = a6
+	a6 = Mem0[a7:word32]
+	a7 = a7 + 0x00000004
+	return
+	// succ:  __do_global_dtors_aux_exit
+__do_global_dtors_aux_exit:
+
+
+// call___do_global_dtors_aux
+// Return size: 4
+define call___do_global_dtors_aux
+call___do_global_dtors_aux_entry:
+	// succ:  l80000158
+l80000158:
+	a7 = fp
+	a7 = a7 - 0x00000004
+	Mem0[a7:word32] = a6
+	a6 = a7
+	a7 = a7 + 0x00000000
+	a7 = a6
+	a6 = Mem0[a7:word32]
+	a7 = a7 + 0x00000004
+	return
+	// succ:  call___do_global_dtors_aux_exit
+call___do_global_dtors_aux_exit:
+
+
+// frame_dummy
+// Return size: 4
+define frame_dummy
+frame_dummy_entry:
+	// succ:  l80000160
+l80000160:
+	a7 = fp
+	a7 = a7 - 0x00000004
+	Mem0[a7:word32] = a6
+	a6 = a7
+	a7 = a7 + 0x00000000
+	a0 = null
+	ZN = cond(a0 - 0x00000000)
+	C = false
+	V = false
+	branch Test(EQ,Z) l8000017E
+	// succ:  l8000016E l8000017E
+l8000016E:
+	a7 = a7 - 0x00000004
+	Mem0[a7:word32] = 0x8000272A
+	a7 = a7 - 0x00000004
+	Mem0[a7:word32] = 0x8000065C
+	call a0 (retsize: 4;)
+	a7 = a7 + 0x00000008
+	// succ:  l8000017E
+l8000017E:
+	a0 = 0x8000271C
+	ZN = cond(Mem0[a0:word32] - 0x00000000)
+	C = false
+	V = false
+	branch Test(NE,Z) l8000018E
+	// succ:  l80000188 l8000018E
+l80000188:
+	a7 = a6
+	a6 = Mem0[a7:word32]
+	a7 = a7 + 0x00000004
+	// succ:  l80000188_thunk_register_tm_clones
+l80000188_thunk_register_tm_clones:
+	call register_tm_clones (retsize: 0;)
+	return
+	// succ:  frame_dummy_exit
+l8000018E:
+	a1 = null
+	ZN = cond(a1 - 0x00000000)
+	C = false
+	V = false
+	branch Test(EQ,Z) l80000188
+	// succ:  l80000198 l80000188
+l80000198:
+	a7 = a7 - 0x00000004
+	v10 = a0
+	Mem0[a7:word32] = v10
+	CVZN = cond(v10)
+	call a1 (retsize: 4;)
+	a7 = a7 + 0x00000004
+	a7 = a6
+	a6 = Mem0[a7:word32]
+	a7 = a7 + 0x00000004
+	// succ:  l8000019E_thunk_register_tm_clones
+l8000019E_thunk_register_tm_clones:
+	call register_tm_clones (retsize: 0;)
+	return
+	// succ:  frame_dummy_exit
+frame_dummy_exit:
+
+
+// call_frame_dummy
+// Return size: 4
+define call_frame_dummy
+call_frame_dummy_entry:
+	// succ:  l800001A4
+l800001A4:
+	a7 = fp
+	a7 = a7 - 0x00000004
+	Mem0[a7:word32] = a6
+	a6 = a7
+	a7 = a7 + 0x00000000
+	a7 = a6
+	a6 = Mem0[a7:word32]
+	a7 = a7 + 0x00000004
+	return
+	// succ:  call_frame_dummy_exit
+call_frame_dummy_exit:
+
+
+// _Z11sine_taylord
+// Return size: 4
+define _Z11sine_taylord
+_Z11sine_taylord_entry:
+	// succ:  l800001AC
+l800001AC:
+	a7 = fp
+	a7 = a7 - 0x00000004
+	Mem0[a7:word32] = a6
+	a6 = a7
+	a7 = a7 - 0x00000050
+	fp0 = (real80) Mem0[a6 + 8:real64]
+	fpsr = cond(fp0)
+	fp0 = fp0 * Mem0[a6 + 8:real64]
+	fpsr = cond(fp0)
+	v6 = (real64) fp0
+	Mem0[a6 + -8:real64] = v6
+	fpsr = cond(v6)
+	fp1 = (real80) Mem0[a6 + -8:real64]
+	fpsr = cond(fp1)
+	fp1 = fp1 * Mem0[a6 + -8:real64]
+	fpsr = cond(fp1)
+	v8 = (real64) fp1
+	Mem0[a6 + -16:real64] = v8
+	fpsr = cond(v8)
+	fp0 = (real80) Mem0[a6 + -8:real64]
+	fpsr = cond(fp0)
+	fp0 = fp0 / 6.0
+	fpsr = cond(fp0)
+	fp1 = 100.0
+	fpsr = cond(fp1)
+	fp1 = fp1 - fp0
+	fpsr = cond(fp1)
+	fp0 = fp1
+	fpsr = cond(fp0)
+	fp1 = fp0
+	fpsr = cond(fp1)
+	fp1 = fp1 * Mem0[a6 + 8:real64]
+	fpsr = cond(fp1)
+	v9 = (real64) fp1
+	Mem0[a6 + -24:real64] = v9
+	fpsr = cond(v9)
+	fp0 = (real80) Mem0[a6 + 8:real64]
+	fpsr = cond(fp0)
+	fp0 = fp0 * Mem0[a6 + -16:real64]
+	fpsr = cond(fp0)
+	v10 = (real64) fp0
+	Mem0[a6 + -32:real64] = v10
+	fpsr = cond(v10)
+	fp0 = (real80) Mem0[a6 + -8:real64]
+	fpsr = cond(fp0)
+	fp0 = fp0 / 42.0
+	fpsr = cond(fp0)
+	fp1 = 100.0
+	fpsr = cond(fp1)
+	fp1 = fp1 - fp0
+	fpsr = cond(fp1)
+	fp0 = fp1
+	fpsr = cond(fp0)
+	fp0 = fp0 * Mem0[a6 + -32:real64]
+	fpsr = cond(fp0)
+	fp1 = fp0
+	fpsr = cond(fp1)
+	fp1 = fp1 / 120.0
+	fpsr = cond(fp1)
+	v11 = (real64) fp1
+	Mem0[a6 + -40:real64] = v11
+	fpsr = cond(v11)
+	fp0 = (real80) Mem0[a6 + -32:real64]
+	fpsr = cond(fp0)
+	fp0 = fp0 * Mem0[a6 + -16:real64]
+	fpsr = cond(fp0)
+	v12 = (real64) fp0
+	Mem0[a6 + -48:real64] = v12
+	fpsr = cond(v12)
+	fp0 = (real80) Mem0[a6 + -8:real64]
+	fpsr = cond(fp0)
+	fp0 = fp0 / 110.0
+	fpsr = cond(fp0)
+	fp1 = 100.0
+	fpsr = cond(fp1)
+	fp1 = fp1 - fp0
+	fpsr = cond(fp1)
+	fp0 = fp1
+	fpsr = cond(fp0)
+	fp0 = fp0 * Mem0[a6 + -48:real64]
+	fpsr = cond(fp0)
+	fp1 = fp0
+	fpsr = cond(fp1)
+	fp1 = fp1 / 362880.0
+	fpsr = cond(fp1)
+	v13 = (real64) fp1
+	Mem0[a6 + -56:real64] = v13
+	fpsr = cond(v13)
+	fp0 = (real80) Mem0[a6 + -48:real64]
+	fpsr = cond(fp0)
+	fp0 = fp0 * Mem0[a6 + -16:real64]
+	fpsr = cond(fp0)
+	v14 = (real64) fp0
+	Mem0[a6 + -64:real64] = v14
+	fpsr = cond(v14)
+	fp0 = (real80) Mem0[a6 + -8:real64]
+	fpsr = cond(fp0)
+	fp0 = fp0 / 210.0
+	fpsr = cond(fp0)
+	fp1 = 100.0
+	fpsr = cond(fp1)
+	fp1 = fp1 - fp0
+	fpsr = cond(fp1)
+	fp0 = fp1
+	fpsr = cond(fp0)
+	fp0 = fp0 * Mem0[a6 + -64:real64]
+	fpsr = cond(fp0)
+	fp1 = fp0
+	fpsr = cond(fp1)
+	fp1 = fp1 / 6227020800.0
+	fpsr = cond(fp1)
+	v15 = (real64) fp1
+	Mem0[a6 + -72:real64] = v15
+	fpsr = cond(v15)
+	v16 = Mem0[a6 + -72:word32]
+	Mem0[a6 + -80:word32] = v16
+	CVZN = cond(v16)
+	v18 = Mem0[a6 + -68:word32]
+	Mem0[a6 + -76:word32] = v18
+	CVZN = cond(v18)
+	fp0 = (real80) Mem0[a6 + -80:real64]
+	fpsr = cond(fp0)
+	fp0 = fp0 + Mem0[a6 + -56:real64]
+	fpsr = cond(fp0)
+	v19 = (real64) fp0
+	Mem0[a6 + -80:real64] = v19
+	fpsr = cond(v19)
+	fp1 = (real80) Mem0[a6 + -80:real64]
+	fpsr = cond(fp1)
+	fp1 = fp1 + Mem0[a6 + -40:real64]
+	fpsr = cond(fp1)
+	v20 = (real64) fp1
+	Mem0[a6 + -80:real64] = v20
+	fpsr = cond(v20)
+	fp0 = (real80) Mem0[a6 + -80:real64]
+	fpsr = cond(fp0)
+	fp0 = fp0 + Mem0[a6 + -24:real64]
+	fpsr = cond(fp0)
+	v21 = (real64) fp0
+	Mem0[a6 + -80:real64] = v21
+	fpsr = cond(v21)
+	d0 = Mem0[a6 + -80:word32]
+	CVZN = cond(d0)
+	d1 = Mem0[a6 + -76:word32]
+	CVZN = cond(d1)
+	a7 = a7 - 0x00000004
+	v24 = d1
+	Mem0[a7:word32] = v24
+	CVZN = cond(v24)
+	a7 = a7 - 0x00000004
+	v25 = d0
+	Mem0[a7:word32] = v25
+	CVZN = cond(v25)
+	v26 = Mem0[a7:real64]
+	a7 = a7 + 0x00000008
+	fp0 = (real80) v26
+	fpsr = cond(fp0)
+	a7 = a6
+	a6 = Mem0[a7:word32]
+	a7 = a7 + 0x00000004
+	return
+	// succ:  _Z11sine_taylord_exit
+_Z11sine_taylord_exit:
+
+
+// _ZL9factoriali
+// Return size: 4
+define _ZL9factoriali
+_ZL9factoriali_entry:
+	// succ:  l8000033C
+l8000033C:
+	a7 = fp
+	a7 = a7 - 0x00000004
+	Mem0[a7:word32] = a6
+	a6 = a7
+	a7 = a7 - 0x00000008
+	d0 = 1
+	CVZN = cond(d0)
+	v6 = d0
+	Mem0[a6 + -8:word32] = v6
+	CVZN = cond(v6)
+	d0 = 2
+	CVZN = cond(d0)
+	v7 = d0
+	Mem0[a6 + -4:word32] = v7
+	CVZN = cond(v7)
+	// succ:  l8000034C
+l8000034C:
+	d0 = Mem0[a6 + -4:word32]
+	CVZN = cond(d0)
+	v8 = d0 - Mem0[a6 + 8:word32]
+	CVZN = cond(v8)
+	branch Test(GT,VZN) l8000036A
+	// succ:  l80000356 l8000036A
+l80000356:
+	d0 = Mem0[a6 + -8:word32]
+	CVZN = cond(d0)
+	d0 = d0 *s Mem0[a6 + -4:word32]
+	VZN = cond(d0)
+	C = false
+	v11 = d0
+	Mem0[a6 + -8:word32] = v11
+	CVZN = cond(v11)
+	v12 = Mem0[a6 + -4:word32] + 0x00000001
+	Mem0[a6 + -4:word32] = v12
+	CVZNX = cond(v12)
+	goto l8000034C
+	// succ:  l8000034C
+l8000036A:
+	d0 = Mem0[a6 + -8:word32]
+	CVZN = cond(d0)
+	a7 = a6
+	a6 = Mem0[a7:word32]
+	a7 = a7 + 0x00000004
+	return
+	// succ:  _ZL9factoriali_exit
+_ZL9factoriali_exit:
+
+
+// _ZL7pow_intdi
+// Return size: 4
+define _ZL7pow_intdi
+_ZL7pow_intdi_entry:
+	// succ:  l80000372
+l80000372:
+	a7 = fp
+	a7 = a7 - 0x00000004
+	Mem0[a7:word32] = a6
+	a6 = a7
+	a7 = a7 - 0x0000000C
+	v4 = 0x3FF00000
+	Mem0[a6 + -12:word32] = v4
+	CVZN = cond(v4)
+	Mem0[a6 + -8:word32] = 0x00000000
+	Z = true
+	C = false
+	N = false
+	V = false
+	Mem0[a6 + -4:word32] = 0x00000000
+	Z = true
+	C = false
+	N = false
+	V = false
+	// succ:  l80000386
+l80000386:
+	d0 = Mem0[a6 + -4:word32]
+	CVZN = cond(d0)
+	v13 = d0 - Mem0[a6 + 16:word32]
+	CVZN = cond(v13)
+	branch Test(GE,VN) l800003A8
+	// succ:  l80000390 l800003A8
+l80000390:
+	fp0 = (real80) Mem0[a6 + -12:real64]
+	fpsr = cond(fp0)
+	fp0 = fp0 * Mem0[a6 + 8:real64]
+	fpsr = cond(fp0)
+	v17 = (real64) fp0
+	Mem0[a6 + -12:real64] = v17
+	fpsr = cond(v17)
+	v18 = Mem0[a6 + -4:word32] + 0x00000001
+	Mem0[a6 + -4:word32] = v18
+	CVZNX = cond(v18)
+	goto l80000386
+	// succ:  l80000386
+l800003A8:
+	d0 = Mem0[a6 + -12:word32]
+	CVZN = cond(d0)
+	d1 = Mem0[a6 + -8:word32]
+	CVZN = cond(d1)
+	a7 = a7 - 0x00000004
+	v21 = d1
+	Mem0[a7:word32] = v21
+	CVZN = cond(v21)
+	a7 = a7 - 0x00000004
+	v22 = d0
+	Mem0[a7:word32] = v22
+	CVZN = cond(v22)
+	v23 = Mem0[a7:real64]
+	a7 = a7 + 0x00000008
+	fp0 = (real80) v23
+	fpsr = cond(fp0)
+	a7 = a6
+	a6 = Mem0[a7:word32]
+	a7 = a7 + 0x00000004
+	return
+	// succ:  _ZL7pow_intdi_exit
+_ZL7pow_intdi_exit:
+
+
+// _Z11sine_taylordi
+// Return size: 4
+define _Z11sine_taylordi
+_Z11sine_taylordi_entry:
+	// succ:  l800003BC
+l800003BC:
+	a7 = fp
+	a7 = a7 - 0x00000004
+	Mem0[a7:word32] = a6
+	a6 = a7
+	a7 = a7 - 0x0000000C
+	a7 = a7 - 0x0000000C
+	Mem0[a7:real96] = fp2
+	v5 = Mem0[a6 + 8:word32]
+	Mem0[a6 + -12:word32] = v5
+	CVZN = cond(v5)
+	v7 = Mem0[a6 + 12:word32]
+	Mem0[a6 + -8:word32] = v7
+	CVZN = cond(v7)
+	d0 = 3
+	CVZN = cond(d0)
+	v9 = d0
+	Mem0[a6 + -4:word32] = v9
+	CVZN = cond(v9)
+	// succ:  l800003D6
+l800003D6:
+	d0 = Mem0[a6 + -4:word32]
+	CVZN = cond(d0)
+	v10 = d0 - Mem0[a6 + 16:word32]
+	CVZN = cond(v10)
+	branch Test(GT,VZN) l80000428
+	// succ:  l800003E0 l80000428
+l800003E0:
+	v12 = Mem0[a6 + -4:word32]
+	a7 = a7 - 0x00000004
+	v13 = v12
+	Mem0[a7:word32] = v13
+	CVZN = cond(v13)
+	v14 = Mem0[a6 + 12:word32]
+	a7 = a7 - 0x00000004
+	v15 = v14
+	Mem0[a7:word32] = v15
+	CVZN = cond(v15)
+	v16 = Mem0[a6 + 8:word32]
+	a7 = a7 - 0x00000004
+	v17 = v16
+	Mem0[a7:word32] = v17
+	CVZN = cond(v17)
+	call _ZL7pow_intdi (retsize: 4;)
+	a7 = a7 + 12
+	fp2 = fp0
+	fpsr = cond(fp2)
+	v20 = Mem0[a6 + -4:word32]
+	a7 = a7 - 0x00000004
+	v21 = v20
+	Mem0[a7:word32] = v21
+	CVZN = cond(v21)
+	call _ZL9factoriali (retsize: 4;)
+	a7 = a7 + 0x00000004
+	fp0 = (real80) d0
+	fpsr = cond(fp0)
+	fp1 = fp2
+	fpsr = cond(fp1)
+	fp1 = fp1 / fp0
+	fpsr = cond(fp1)
+	fp0 = fp1
+	fpsr = cond(fp0)
+	fp1 = (real80) Mem0[a6 + -12:real64]
+	fpsr = cond(fp1)
+	fp1 = fp1 + fp0
+	fpsr = cond(fp1)
+	v23 = (real64) fp1
+	Mem0[a6 + -12:real64] = v23
+	fpsr = cond(v23)
+	v24 = Mem0[a6 + -4:word32] + 0x00000004
+	Mem0[a6 + -4:word32] = v24
+	CVZNX = cond(v24)
+	goto l800003D6
+	// succ:  l800003D6
+l80000428:
+	d0 = 5
+	CVZN = cond(d0)
+	v26 = d0
+	Mem0[a6 + -4:word32] = v26
+	CVZN = cond(v26)
+	// succ:  l8000042E
+l8000042E:
+	d0 = Mem0[a6 + -4:word32]
+	CVZN = cond(d0)
+	v27 = d0 - Mem0[a6 + 16:word32]
+	CVZN = cond(v27)
+	branch Test(GT,VZN) l80000480
+	// succ:  l80000438 l80000480
+l80000438:
+	v28 = Mem0[a6 + -4:word32]
+	a7 = a7 - 0x00000004
+	v29 = v28
+	Mem0[a7:word32] = v29
+	CVZN = cond(v29)
+	v30 = Mem0[a6 + 12:word32]
+	a7 = a7 - 0x00000004
+	v31 = v30
+	Mem0[a7:word32] = v31
+	CVZN = cond(v31)
+	v32 = Mem0[a6 + 8:word32]
+	a7 = a7 - 0x00000004
+	v33 = v32
+	Mem0[a7:word32] = v33
+	CVZN = cond(v33)
+	call _ZL7pow_intdi (retsize: 4;)
+	a7 = a7 + 12
+	fp2 = fp0
+	fpsr = cond(fp2)
+	v34 = Mem0[a6 + -4:word32]
+	a7 = a7 - 0x00000004
+	v35 = v34
+	Mem0[a7:word32] = v35
+	CVZN = cond(v35)
+	call _ZL9factoriali (retsize: 4;)
+	a7 = a7 + 0x00000004
+	fp0 = (real80) d0
+	fpsr = cond(fp0)
+	fp1 = fp2
+	fpsr = cond(fp1)
+	fp1 = fp1 / fp0
+	fpsr = cond(fp1)
+	fp0 = fp1
+	fpsr = cond(fp0)
+	fp1 = (real80) Mem0[a6 + -12:real64]
+	fpsr = cond(fp1)
+	fp1 = fp1 - fp0
+	fpsr = cond(fp1)
+	v36 = (real64) fp1
+	Mem0[a6 + -12:real64] = v36
+	fpsr = cond(v36)
+	v37 = Mem0[a6 + -4:word32] + 0x00000004
+	Mem0[a6 + -4:word32] = v37
+	CVZNX = cond(v37)
+	goto l8000042E
+	// succ:  l8000042E
+l80000480:
+	d0 = Mem0[a6 + -12:word32]
+	CVZN = cond(d0)
+	d1 = Mem0[a6 + -8:word32]
+	CVZN = cond(d1)
+	a7 = a7 - 0x00000004
+	v39 = d1
+	Mem0[a7:word32] = v39
+	CVZN = cond(v39)
+	a7 = a7 - 0x00000004
+	v40 = d0
+	Mem0[a7:word32] = v40
+	CVZN = cond(v40)
+	v41 = Mem0[a7:real64]
+	a7 = a7 + 0x00000008
+	fp0 = (real80) v41
+	fpsr = cond(fp0)
+	v42 = a6 + -24
+	fp2 = Mem0[v42:real96]
+	v42 = v42 + 0x0000000C
+	a7 = a6
+	a6 = Mem0[a7:word32]
+	a7 = a7 + 0x00000004
+	return
+	// succ:  _Z11sine_taylordi_exit
+_Z11sine_taylordi_exit:
+
+
+// main
+// Return size: 4
+define main
+main_entry:
+	// succ:  l8000049A
+l8000049A:
+	a7 = fp
+	a7 = a7 - 0x00000004
+	Mem0[a7:word32] = a6
+	a6 = a7
+	a7 = a7 - 0x00000004
+	a7 = a7 - 0x00000004
+	v4 = 0x51EB851F
+	Mem0[a7:word32] = v4
+	CVZN = cond(v4)
+	a7 = a7 - 0x00000004
+	v6 = 0x40091EB8
+	Mem0[a7:word32] = v6
+	CVZN = cond(v6)
+	call _Z11sine_taylord (retsize: 4;)
+	a7 = a7 + 0x00000008
+	d0 = a6
+	CVZN = cond(d0)
+	d0 = d0 - 0x00000004
+	CVZNX = cond(d0)
+	a7 = a7 - 0x00000004
+	v9 = d0
+	Mem0[a7:word32] = v9
+	CVZN = cond(v9)
+	a7 = a7 - 0x00000004
+	v10 = 0xBC6A7EFA
+	Mem0[a7:word32] = v10
+	CVZN = cond(v10)
+	a7 = a7 - 0x00000004
+	v11 = 0x3F689374
+	Mem0[a7:word32] = v11
+	CVZN = cond(v11)
+	a7 = a7 - 0x00000004
+	v12 = 0x51EB851F
+	Mem0[a7:word32] = v12
+	CVZN = cond(v12)
+	a7 = a7 - 0x00000004
+	v13 = 0x40091EB8
+	Mem0[a7:word32] = v13
+	CVZN = cond(v13)
+	call _Z4_sinddRi (retsize: 4;)
+	a7 = a7 + 20
+	d0 = 0x00000000
+	Z = true
+	C = false
+	N = false
+	V = false
+	a7 = a6
+	a6 = Mem0[a7:word32]
+	a7 = a7 + 0x00000004
+	return
+	// succ:  main_exit
+main_exit:
+
+
+// _Z4_sinddRi
+// Return size: 4
+define _Z4_sinddRi
+_Z4_sinddRi_entry:
+	// succ:  l800004DE
+l800004DE:
+	a7 = fp
+	a7 = a7 - 0x00000004
+	Mem0[a7:word32] = a6
+	a6 = a7
+	a7 = a7 - 0x00000024
+	v4 = Mem0[a6 + 8:word32]
+	Mem0[a6 + -8:word32] = v4
+	CVZN = cond(v4)
+	v6 = Mem0[a6 + 12:word32]
+	Mem0[a6 + -4:word32] = v6
+	CVZN = cond(v6)
+	fp0 = (real80) Mem0[a6 + -8:real64]
+	fpsr = cond(fp0)
+	fp0 = fp0 * Mem0[a6 + -8:real64]
+	fpsr = cond(fp0)
+	v9 = (real64) fp0
+	Mem0[a6 + -36:real64] = v9
+	fpsr = cond(v9)
+	v10 = 0x3FF00000
+	Mem0[a6 + -16:word32] = v10
+	CVZN = cond(v10)
+	Mem0[a6 + -12:word32] = 0x00000000
+	Z = true
+	C = false
+	N = false
+	V = false
+	Mem0[a6 + -24:word32] = 0x00000000
+	Z = true
+	C = false
+	N = false
+	V = false
+	Mem0[a6 + -20:word32] = 0x00000000
+	Z = true
+	C = false
+	N = false
+	V = false
+	d0 = 1
+	CVZN = cond(d0)
+	v19 = d0
+	Mem0[a6 + -28:word32] = v19
+	CVZN = cond(v19)
+	// succ:  l8000051A
+l8000051A:
+	fp0 = (real80) Mem0[a6 + -8:real64]
+	fpsr = cond(fp0)
+	fp0 = fp0 / Mem0[a6 + -16:real64]
+	fpsr = cond(fp0)
+	v20 = (real64) fp0 - Mem0[a6 + 16:real64]
+	fpsr = cond(v20)
+	branch Test(LT,fpsr) l8000060E
+	// succ:  l80000530 l8000060E
+l80000530:
+	fp0 = (real80) Mem0[a6 + -8:real64]
+	fpsr = cond(fp0)
+	fp0 = fp0 / Mem0[a6 + -16:real64]
+	fpsr = cond(fp0)
+	fp1 = (real80) Mem0[a6 + -24:real64]
+	fpsr = cond(fp1)
+	fp1 = fp1 + fp0
+	fpsr = cond(fp1)
+	v22 = (real64) fp1
+	Mem0[a6 + -24:real64] = v22
+	fpsr = cond(v22)
+	fp0 = (real80) Mem0[a6 + -8:real64]
+	fpsr = cond(fp0)
+	fp0 = fp0 * Mem0[a6 + -36:real64]
+	fpsr = cond(fp0)
+	v23 = (real64) fp0
+	Mem0[a6 + -8:real64] = v23
+	fpsr = cond(v23)
+	v24 = Mem0[a6 + -28:word32] + 0x00000001
+	Mem0[a6 + -28:word32] = v24
+	CVZNX = cond(v24)
+	d0 = Mem0[a6 + -28:word32]
+	CVZN = cond(d0)
+	fp0 = (real80) d0
+	fpsr = cond(fp0)
+	fp1 = (real80) Mem0[a6 + -16:real64]
+	fpsr = cond(fp1)
+	fp1 = fp1 * fp0
+	fpsr = cond(fp1)
+	v26 = (real64) fp1
+	Mem0[a6 + -16:real64] = v26
+	fpsr = cond(v26)
+	v27 = Mem0[a6 + -28:word32] + 0x00000001
+	Mem0[a6 + -28:word32] = v27
+	CVZNX = cond(v27)
+	d0 = Mem0[a6 + -28:word32]
+	CVZN = cond(d0)
+	fp0 = (real80) d0
+	fpsr = cond(fp0)
+	fp1 = (real80) Mem0[a6 + -16:real64]
+	fpsr = cond(fp1)
+	fp1 = fp1 * fp0
+	fpsr = cond(fp1)
+	v28 = (real64) fp1
+	Mem0[a6 + -16:real64] = v28
+	fpsr = cond(v28)
+	fp0 = (real80) Mem0[a6 + -8:real64]
+	fpsr = cond(fp0)
+	fp0 = fp0 / Mem0[a6 + -16:real64]
+	fpsr = cond(fp0)
+	fp1 = (real80) Mem0[a6 + -24:real64]
+	fpsr = cond(fp1)
+	fp1 = fp1 - fp0
+	fpsr = cond(fp1)
+	v29 = (real64) fp1
+	Mem0[a6 + -24:real64] = v29
+	fpsr = cond(v29)
+	fp0 = (real80) Mem0[a6 + -8:real64]
+	fpsr = cond(fp0)
+	fp0 = fp0 * Mem0[a6 + -36:real64]
+	fpsr = cond(fp0)
+	v30 = (real64) fp0
+	Mem0[a6 + -8:real64] = v30
+	fpsr = cond(v30)
+	v31 = Mem0[a6 + -28:word32] + 0x00000001
+	Mem0[a6 + -28:word32] = v31
+	CVZNX = cond(v31)
+	d0 = Mem0[a6 + -28:word32]
+	CVZN = cond(d0)
+	fp0 = (real80) d0
+	fpsr = cond(fp0)
+	fp1 = (real80) Mem0[a6 + -16:real64]
+	fpsr = cond(fp1)
+	fp1 = fp1 * fp0
+	fpsr = cond(fp1)
+	v32 = (real64) fp1
+	Mem0[a6 + -16:real64] = v32
+	fpsr = cond(v32)
+	v33 = Mem0[a6 + -28:word32] + 0x00000001
+	Mem0[a6 + -28:word32] = v33
+	CVZNX = cond(v33)
+	d0 = Mem0[a6 + -28:word32]
+	CVZN = cond(d0)
+	fp0 = (real80) d0
+	fpsr = cond(fp0)
+	fp1 = (real80) Mem0[a6 + -16:real64]
+	fpsr = cond(fp1)
+	fp1 = fp1 * fp0
+	fpsr = cond(fp1)
+	v34 = (real64) fp1
+	Mem0[a6 + -16:real64] = v34
+	fpsr = cond(v34)
+	a0 = Mem0[a6 + 24:word32]
+	d0 = Mem0[a0:word32]
+	CVZN = cond(d0)
+	d0 = d0 + 0x00000001
+	CVZNX = cond(d0)
+	a0 = Mem0[a6 + 24:word32]
+	v36 = d0
+	Mem0[a0:word32] = v36
+	CVZN = cond(v36)
+	goto l8000051A
+	// succ:  l8000051A
+l8000060E:
+	d0 = Mem0[a6 + -24:word32]
+	CVZN = cond(d0)
+	d1 = Mem0[a6 + -20:word32]
+	CVZN = cond(d1)
+	a7 = a7 - 0x00000004
+	v38 = d1
+	Mem0[a7:word32] = v38
+	CVZN = cond(v38)
+	a7 = a7 - 0x00000004
+	v39 = d0
+	Mem0[a7:word32] = v39
+	CVZN = cond(v39)
+	v40 = Mem0[a7:real64]
+	a7 = a7 + 0x00000008
+	fp0 = (real80) v40
+	fpsr = cond(fp0)
+	a7 = a6
+	a6 = Mem0[a7:word32]
+	a7 = a7 + 0x00000004
+	return
+	// succ:  _Z4_sinddRi_exit
+_Z4_sinddRi_exit:
+
+
+// __do_global_ctors_aux
+// Return size: 4
+define __do_global_ctors_aux
+__do_global_ctors_aux_entry:
+	// succ:  l80000624
+l80000624:
+	a7 = fp
+	a7 = a7 - 0x00000004
+	Mem0[a7:word32] = a6
+	a6 = a7
+	a7 = a7 + 0x00000000
+	a7 = a7 - 0x00000004
+	v5 = a2
+	Mem0[a7:word32] = v5
+	CVZN = cond(v5)
+	a0 = Mem0[0x8000270C:word32]
+	a2 = 0x8000270C
+	d0 = -1
+	CVZN = cond(d0)
+	v9 = d0 - a0
+	CVZN = cond(v9)
+	branch Test(EQ,Z) l80000646
+	// succ:  l8000063C l80000646
+l8000063C:
+	call a0 (retsize: 4;)
+	a2 = a2 - 0x00000004
+	a0 = Mem0[a2:word32]
+	d0 = -1
+	CVZN = cond(d0)
+	v11 = d0 - a0
+	CVZN = cond(v11)
+	branch Test(NE,Z) l8000063C
+	// succ:  l80000646 l8000063C
+l80000646:
+	a2 = Mem0[a6 + -4:word32]
+	a7 = a6
+	a6 = Mem0[a7:word32]
+	a7 = a7 + 0x00000004
+	return
+	// succ:  __do_global_ctors_aux_exit
+__do_global_ctors_aux_exit:
+
+
+// call___do_global_ctors_aux
+// Return size: 4
+define call___do_global_ctors_aux
+call___do_global_ctors_aux_entry:
+	// succ:  l8000064E
+l8000064E:
+	a7 = fp
+	a7 = a7 - 0x00000004
+	Mem0[a7:word32] = a6
+	a6 = a7
+	a7 = a7 + 0x00000000
+	a7 = a6
+	a6 = Mem0[a7:word32]
+	a7 = a7 + 0x00000004
+	return
+	// succ:  call___do_global_ctors_aux_exit
+call___do_global_ctors_aux_exit:
+
+
