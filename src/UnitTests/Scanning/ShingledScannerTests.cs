@@ -70,6 +70,7 @@ namespace Reko.UnitTests.Scanning
                 .SelectMany(w => w)
                 .ToArray());
             var arch = new MipsLe32Architecture();
+            arch.Name = "mips-le-32";
             CreateProgram(image, arch);
         }
 
