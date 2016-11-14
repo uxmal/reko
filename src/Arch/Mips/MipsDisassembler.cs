@@ -36,11 +36,13 @@ namespace Reko.Arch.Mips
         private MipsInstruction instrCur;
         private Address addr;
         private ImageReader rdr;
+        internal bool isVersion6OrLater;
 
-        public MipsDisassembler(MipsProcessorArchitecture arch, ImageReader imageReader)
+        public MipsDisassembler(MipsProcessorArchitecture arch, ImageReader imageReader, bool isVersion6OrLater)
         {
             this.arch = arch;
             this.rdr = imageReader;
+            this.isVersion6OrLater = isVersion6OrLater;
         }
 
         public override MipsInstruction DisassembleInstruction()

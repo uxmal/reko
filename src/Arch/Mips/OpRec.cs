@@ -255,4 +255,24 @@ namespace Reko.Arch.Mips
             return dasm.DecodeOperands(opcode, wInstr, "c18,j");
         }
     }
+
+    internal class Version6OpRec : OpRec
+    {
+        OpRec preV6Oprec;
+        OpRec v6Oprec;
+
+        public Version6OpRec(OpRec preOprec, OpRec postOprec)
+        {
+            this.preV6Oprec = preOprec;
+            this.v6Oprec = postOprec;
+        }
+
+        internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
+        {
+            if (dasm.isVersion6OrLater)
+                return v6Oprec.Decode(wInstr, dasm);
+            else
+                return preV6Oprec.Decode(wInstr, dasm);
+        }
+    }
 }

@@ -45,7 +45,10 @@ namespace Reko.UnitTests.Arch.Mips
             var bytes = bitStrings.Select(bits => base.ParseBitPattern(bits))
                 .SelectMany(u => new byte[] { (byte)(u >> 24), (byte)(u >> 16), (byte)(u >> 8), (byte)u })
                 .ToArray();
-            dasm = new MipsDisassembler(arch, new BeImageReader(new MemoryArea(Address.Ptr32(0x00100000), bytes), 0));
+            dasm = new MipsDisassembler(
+                arch,
+                new BeImageReader(new MemoryArea(Address.Ptr32(0x00100000), bytes), 0),
+                false);
         }
 
         private void AssertCode(uint instr, params string[] sExp)
@@ -64,7 +67,7 @@ namespace Reko.UnitTests.Arch.Mips
                 (byte) w
             }).ToArray();
             var image = new MemoryArea(LoadAddress, bytes);
-            dasm = new MipsDisassembler(arch, image.CreateBeReader(LoadAddress));
+            dasm = new MipsDisassembler(arch, image.CreateBeReader(LoadAddress), false);
             return image;
         }
 
