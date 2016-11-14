@@ -31,7 +31,14 @@ namespace Reko.UnitTests.Arch.Mips
     [TestFixture]
     public class MipsDisassemblerTests : DisassemblerTestBase<MipsInstruction>
     {
-        private MipsProcessorArchitecture arch = new MipsBe32Architecture();
+        private MipsProcessorArchitecture arch;
+
+        [SetUp]
+        public void Setup()
+        {
+            this.arch = new MipsBe32Architecture();
+            arch.Name = "mips-be-32";
+        }
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
 
@@ -40,6 +47,12 @@ namespace Reko.UnitTests.Arch.Mips
         protected override ImageWriter CreateImageWriter(byte[] bytes)
         {
             return new BeImageWriter(bytes);
+        }
+
+        private void Given_Mips_v6_Architecture()
+        {
+            arch = new MipsBe32Architecture();
+            arch.Name = "mipsv6-be-32";
         }
 
         [Test]
@@ -319,12 +332,6 @@ namespace Reko.UnitTests.Arch.Mips
             instr = DisassembleBits("100101 01001 00011 1111111111001000");
             Assert.AreEqual("lhu\tr3,-0038(r9)", instr.ToString());
 
-            instr = DisassembleBits("110000 01001 00011 1111111111001000");
-            Assert.AreEqual("ll\tr3,-0038(r9)", instr.ToString());
-
-            instr = DisassembleBits("110100 01001 00011 1111111111001000");
-            Assert.AreEqual("lld\tr3,-0038(r9)", instr.ToString());
-
             instr = DisassembleBits("100011 01001 00011 1111111111001000");
             Assert.AreEqual("lw\tr3,-0038(r9)", instr.ToString());
 
@@ -336,6 +343,30 @@ namespace Reko.UnitTests.Arch.Mips
 
             instr = DisassembleBits("100110 01001 00011 1111111111001000");
             Assert.AreEqual("lwr\tr3,-0038(r9)", instr.ToString());
+        }
+
+        [Test]
+        public void MipsDis_ll()
+        {
+            MipsInstruction instr;
+            instr = DisassembleBits("110000 01001 00011 1111111111001000");
+            Assert.AreEqual("ll\tr3,-0038(r9)", instr.ToString());
+
+            instr = DisassembleBits("110100 01001 00011 1111111111001000");
+            Assert.AreEqual("lld\tr3,-0038(r9)", instr.ToString());
+        }
+
+        [Test]
+        public void MipsDis_ll_v6()
+        {
+            Given_Mips_v6_Architecture();
+
+            MipsInstruction instr;
+            instr = DisassembleBits("011111 01001 00011 111111100 0 110110");
+            Assert.AreEqual("ll\tr3,-0004(r9)", instr.ToString());
+
+            instr = DisassembleBits("110100 01001 00011 1111111111001000");
+            Assert.AreEqual("lld\tr3,-0038(r9)", instr.ToString());
         }
 
         [Test]
