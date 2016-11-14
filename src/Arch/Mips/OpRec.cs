@@ -232,7 +232,7 @@ namespace Reko.Arch.Mips
             new AOpRec(Opcode.illegal, ""),
             new AOpRec(Opcode.illegal, ""),
             new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.rdhwr, "R2,H"),
             new AOpRec(Opcode.illegal, ""),
             new AOpRec(Opcode.illegal, ""),
             new AOpRec(Opcode.illegal, ""),
