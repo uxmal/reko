@@ -81,6 +81,20 @@ namespace Reko.Arch.Mips
             emitter.Assign(opDst, opSrc);
         }
 
+        private void RewriteLoadLinked32(MipsInstruction instr)
+        {
+            var opSrc = RewriteOperand(instr.op2);
+            var opDst = RewriteOperand(instr.op1);
+            emitter.Assign(opDst, host.PseudoProcedure("__load_linked_32", PrimitiveType.Word32, opSrc));
+        }
+
+        private void RewriteLoadLinked64(MipsInstruction instr)
+        {
+            var opSrc = RewriteOperand(instr.op2);
+            var opDst = RewriteOperand(instr.op1);
+            emitter.Assign(opDst, host.PseudoProcedure("__load_linked_64", PrimitiveType.Word64, opSrc));
+        }
+
         private void RewriteLui(MipsInstruction instr)
         {
             var immOp = (ImmediateOperand)instr.op2;

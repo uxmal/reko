@@ -63,5 +63,11 @@ namespace Reko.Arch.Mips
                 RewriteOperand(instr.op2)),
                 new RtlSideEffect(trap));
         }
+
+        private void RewriteReadHardwareRegister(MipsInstruction instr)
+        {
+            var rdhwr = host.PseudoProcedure("__read_hardware_register", PrimitiveType.UInt32, this.RewriteOperand(instr.op2));
+            emitter.Assign(this.RewriteOperand(instr.op1), rdhwr);
+        }
     }
 }

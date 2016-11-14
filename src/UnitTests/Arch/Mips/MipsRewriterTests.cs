@@ -102,6 +102,22 @@ namespace Reko.UnitTests.Arch.Mips
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r3 = 0xFFC80000");
         }
+        [Test]
+        public void MipsRw_ll()
+        {
+            RunTest("110000 01010 10101 1111111111001000");
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r21 = __load_linked_32(Mem0[r10 - 0x00000038:word32])");
+        }
+        [Test]
+        public void MipsRw_lld()
+        {
+            RunTest("110100 01010 10101 1111111111001000");
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r21 = __load_linked_64(Mem0[r10 - 0x00000038:word64])");
+        }
 
         [Test]
         public void MipsRw_ori_r0()
@@ -383,6 +399,31 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(0x0410FFFE,      // bltzal r0,000FFFFC
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|ra = 00100008");
+        }
+
+        [Test]
+        public void MipsRw_rdhwr()
+        {
+            // Test only the known ones, we'll have to see how this changes things later on with dynamic custom registers
+            RunTest("011111 00000 00110 00000 00000 111011");   // CPU number
+            AssertCode( "0|L--|00100000(4): 1 instructions",
+                        "1|L--|r6 = __read_hardware_register(0x00)");
+
+            RunTest("011111 00000 01000 00001 00000 111011");   // SYNCI step size
+            AssertCode( "0|L--|00100000(4): 1 instructions",
+                        "1|L--|r8 = __read_hardware_register(0x01)");
+
+            RunTest("011111 00000 00001 00010 00000 111011");   // Cycle counter
+            AssertCode( "0|L--|00100000(4): 1 instructions",
+                        "1|L--|r1 = __read_hardware_register(0x02)");
+
+            RunTest("011111 00000 00011 00011 00000 111011");   // Cycle counter resolution
+            AssertCode( "0|L--|00100000(4): 1 instructions",
+                        "1|L--|r3 = __read_hardware_register(0x03)");
+
+            RunTest("011111 00000 00111 11101 00000 111011");   // OS-specific, thread local pointer on Linux
+            AssertCode( "0|L--|00100000(4): 1 instructions",
+                        "1|L--|r7 = __read_hardware_register(0x1D)");
         }
     }
 }

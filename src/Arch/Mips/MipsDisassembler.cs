@@ -413,6 +413,9 @@ namespace Reko.Arch.Mips
                 case 'c':   // condition code
                     op = CCodeFlag(wInstr, opFmt, ref i);
                     break;
+                case 'H':   // hardware register, see instruction rdhwr
+                    op = ImmediateOperand.Byte((byte)((wInstr >> 11) & 0x1f));
+                    break;
                 }
                 ops.Add(op);
             }
