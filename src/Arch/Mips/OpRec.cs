@@ -225,9 +225,11 @@ namespace Reko.Arch.Mips
             new Version6OpRec(
                 new AOpRec(Opcode.illegal, ""),
                 new AOpRec(Opcode.ll, "R2,ew")),
-            new AOpRec(Opcode.illegal, ""),
+            new Version6OpRec(
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.lld, "R2,el")),
 
-                        new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
             new AOpRec(Opcode.illegal, ""),
             new AOpRec(Opcode.illegal, ""),
             new AOpRec(Opcode.illegal, ""),

@@ -365,8 +365,8 @@ namespace Reko.UnitTests.Arch.Mips
             instr = DisassembleBits("011111 01001 00011 111111100 0 110110");
             Assert.AreEqual("ll\tr3,-0004(r9)", instr.ToString());
 
-            instr = DisassembleBits("110100 01001 00011 1111111111001000");
-            Assert.AreEqual("lld\tr3,-0038(r9)", instr.ToString());
+            instr = DisassembleBits("011111 01001 00011 111111100 0 110111");
+            Assert.AreEqual("lld\tr3,-0004(r9)", instr.ToString());
         }
 
         [Test]

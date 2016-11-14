@@ -319,7 +319,9 @@ namespace Reko.Arch.Mips
             null, 
             new AOpRec(Opcode.pref, "R2,Ew"),
 
-            new AOpRec(Opcode.lld, "R2,Ew"),
+            new Version6OpRec(
+                new AOpRec(Opcode.lld, "R2,El"),
+                new AOpRec(Opcode.illegal, "")),
             null, 
             null,
             new AOpRec(Opcode.ld, "R2,El"),
