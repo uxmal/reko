@@ -154,21 +154,21 @@ namespace Reko.Arch.Mips
                 case Opcode.lh:
                 case Opcode.lhu:
                     RewriteLoad(instr); break;
-                case Opcode.ll:
-                case Opcode.lld:
-                    goto default;
-                case Opcode.lui: RewriteLui(instr); break;
-                case Opcode.lw: RewriteLoad(instr); break;
-                case Opcode.lwl: RewriteLwl(instr); break;
-                case Opcode.lwr: RewriteLwr(instr); break;
+
+                case Opcode.ll:     RewriteLoadLinked32(instr); break;
+                case Opcode.lld:    RewriteLoadLinked64(instr); break;
+                case Opcode.lui:    RewriteLui(instr); break;
+                case Opcode.lw:     RewriteLoad(instr); break;
+                case Opcode.lwl:    RewriteLwl(instr); break;
+                case Opcode.lwr:    RewriteLwr(instr); break;
                 case Opcode.lwu:
                     goto default;
-                case Opcode.mfc0: RewriteMfc0(instr); break;
-                case Opcode.mfc1: RewriteMfc1(instr); break;
-                case Opcode.mfhi: RewriteMf(instr, Registers.hi); break;
-                case Opcode.mflo: RewriteMf(instr, Registers.lo); break;
-                case Opcode.mthi: RewriteMt(instr, Registers.hi); break;
-                case Opcode.mtlo: RewriteMt(instr, Registers.lo); break;
+                case Opcode.mfc0:   RewriteMfc0(instr); break;
+                case Opcode.mfc1:   RewriteMfc1(instr); break;
+                case Opcode.mfhi:   RewriteMf(instr, Registers.hi); break;
+                case Opcode.mflo:   RewriteMf(instr, Registers.lo); break;
+                case Opcode.mthi:   RewriteMt(instr, Registers.hi); break;
+                case Opcode.mtlo:   RewriteMt(instr, Registers.lo); break;
                 case Opcode.movn:
                 case Opcode.movz:
                     goto default;
