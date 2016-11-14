@@ -69,5 +69,15 @@ namespace Reko.Arch.Mips
             var rdhwr = host.PseudoProcedure("__read_hardware_register", PrimitiveType.UInt32, this.RewriteOperand(instr.op2));
             emitter.Assign(this.RewriteOperand(instr.op1), rdhwr);
         }
+
+        private void RewriteSyscall(MipsInstruction instr)
+        {
+            emitter.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, this.RewriteOperand(instr.op1)));
+        }
+
+        private void RewriteSync(MipsInstruction instr)
+        {
+            emitter.SideEffect(host.PseudoProcedure("__sync", VoidType.Instance, this.RewriteOperand(instr.op1)));
+        }
     }
 }
