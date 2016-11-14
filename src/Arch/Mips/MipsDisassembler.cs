@@ -314,12 +314,12 @@ namespace Reko.Arch.Mips
             null, 
             new AOpRec(Opcode.pref, "R2,Ew"),
 
-            new AOpRec(Opcode.lld, "R2,Ew"),
+            new AOpRec(Opcode.lld, "R2,El"),
             null, 
             null,
             new AOpRec(Opcode.ld, "R2,El"),
 
-            new AOpRec(Opcode.sc, "R2,El"),
+            new AOpRec(Opcode.sc, "R2,Ew"),
             new AOpRec(Opcode.swc1, "F2,Ew"),
             null,
             null,

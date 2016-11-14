@@ -113,7 +113,7 @@ namespace Reko.UnitTests.Arch.Mips
             RunTest("110100 01010 10101 1111111111001000");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r21 = __load_linked_64(Mem0[r10 - 0x00000038:word32])");
+                "1|L--|r21 = __load_linked_64(Mem0[r10 - 0x00000038:word64])");
         }
 
         [Test]
