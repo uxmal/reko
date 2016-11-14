@@ -112,7 +112,7 @@ namespace Reko.Arch.Mips
             new AOpRec(Opcode.syscall, "B"),
             new AOpRec(Opcode.@break, "B"),
             new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.sync, ""), 
+            new AOpRec(Opcode.sync, "s"), 
             // 10
             new AOpRec(Opcode.mfhi, "R3"),
             new AOpRec(Opcode.mthi, "R1"),
