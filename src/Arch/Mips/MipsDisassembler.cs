@@ -398,7 +398,7 @@ namespace Reko.Arch.Mips
                 case 'B':
                     op = ImmediateOperand.Word32((wInstr >> 6) & 0xFFFFF);
                     break;
-                case 's':   // Shift amount
+                case 's':   // Shift amount or sync type
                     op = ImmediateOperand.Byte((byte)((wInstr >> 6) & 0x1F));
                     break;
                 case 'E':   // effective address w 16-bit offset
