@@ -49,6 +49,10 @@ namespace Reko.Environments.SysV
             if (!PeekAndDiscard('Z'))
                 return null;
 
+            if (PeekAndDiscard('L'))
+            {
+                //$TODO: local name => in C, this is 'static'
+            }
             if (char.IsDigit(str[i]))
             {
                 var name = SimpleName();
@@ -175,7 +179,7 @@ namespace Reko.Environments.SysV
             case 'f': return PrimitiveType_v1.Real32();
             case 'd': return PrimitiveType_v1.Real64();
             case 'P': return new PointerType_v1 { DataType = Type(), PointerSize = ptrSize };
-            //case 'R': return new ReferenceType_v1 { DataType = Type() };
+            case 'R': return new ReferenceType_v1 { Referent = Type(), Size = ptrSize };
             default:
                 --i;
                 if (char.IsDigit(str[i]))

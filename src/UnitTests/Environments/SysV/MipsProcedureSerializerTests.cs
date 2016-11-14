@@ -109,6 +109,11 @@ namespace Reko.UnitTests.Environments.SysV
                 throw new NotImplementedException();
             }
 
+            public DataType VisitReference(ReferenceType_v1 reference)
+            {
+                throw new NotImplementedException();
+            }
+
             public DataType VisitPrimitive(PrimitiveType_v1 primitive)
             {
                 return PrimitiveType.Create(primitive.Domain, primitive.ByteSize);

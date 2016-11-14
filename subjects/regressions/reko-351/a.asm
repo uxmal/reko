@@ -149,8 +149,8 @@ call_frame_dummy proc
 	unlk	a6
 	rts	
 
-;; _Z11sine_taylord: 800001AC
-_Z11sine_taylord proc
+;; sine_taylor: 800001AC
+sine_taylor proc
 	link	a6,#$FFB0
 	fmove.d	$0008(a6),fp0
 	fmul.d	$0008(a6),fp0
@@ -274,8 +274,8 @@ l800003A8:
 	unlk	a6
 	rts	
 
-;; _Z11sine_taylordi: 800003BC
-_Z11sine_taylordi proc
+;; sine_taylor: 800003BC
+sine_taylor proc
 	link	a6,#$FFF4
 	fmovem.x	fp2,-(a7)
 	move.l	$0008(a6),$-000C(a6)
@@ -367,8 +367,8 @@ main proc
 	unlk	a6
 	rts	
 
-;; _Z4_sinddRi: 800004DE
-_Z4_sinddRi proc
+;; _sin: 800004DE
+_sin proc
 	link	a6,#$FFDC
 	move.l	$0008(a6),$-0008(a6)
 	move.l	$000C(a6),$-0004(a6)

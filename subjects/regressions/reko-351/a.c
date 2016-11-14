@@ -61,7 +61,7 @@ void __do_global_dtors_aux(word32 d2)
 	if (*&globals->b80002724 == 0x00)
 	{
 		uint32 d0_100 = *&globals->dw80002726;
-		Eq_328 a2_101[] = globals->a80002714;
+		Eq_325 a2_101[] = globals->a80002714;
 		if (0x00 - d0_100 > 0x00)
 		{
 			do
@@ -167,7 +167,7 @@ void call_frame_dummy()
 	return;
 }
 
-void _Z11sine_taylord(real64 rArg04)
+void sine_taylor(real64 rArg04)
 {
 	return;
 }
@@ -192,46 +192,47 @@ real80 _ZL7pow_intdi(real64 rArg04, int32 dwArg0C)
 	return (real80) DPB(rLoc18, 0x3FF00000, 0);
 }
 
-void _Z11sine_taylordi(word32 dwArg04, word32 dwArg08, word32 dwArg0C)
+void sine_taylor(real64 rArg04, int32 dwArg0C)
 {
-	int32 dwLoc08_18 = 0x03;
-	while (dwLoc08_18 - dwArg0C <= 0x00)
+	word32 dwArg04_5 = (word32) rArg04;
+	int32 dwLoc08_24 = 0x03;
+	while (dwLoc08_24 - dwArg0C <= 0x00)
 	{
-		rLoc28 = DPB(rLoc28, dwArg04, 0);
-		_ZL7pow_intdi(rLoc28, dwLoc08_18);
-		_ZL9factoriali(dwLoc08_18);
-		dwLoc08_18 = dwLoc08_18 + 0x04;
+		rLoc28 = DPB(rLoc28, dwArg04_5, 0);
+		_ZL7pow_intdi(rLoc28, dwLoc08_24);
+		_ZL9factoriali(dwLoc08_24);
+		dwLoc08_24 = dwLoc08_24 + 0x04;
 	}
-	int32 dwLoc08_103 = 0x05;
-	while (dwLoc08_103 - dwArg0C <= 0x00)
+	int32 dwLoc08_108 = 0x05;
+	while (dwLoc08_108 - dwArg0C <= 0x00)
 	{
-		rLoc28 = DPB(rLoc28, dwArg04, 0);
-		_ZL7pow_intdi(rLoc28, dwLoc08_103);
-		_ZL9factoriali(dwLoc08_103);
-		dwLoc08_103 = dwLoc08_103 + 0x04;
+		rLoc28 = DPB(rLoc28, dwArg04_5, 0);
+		_ZL7pow_intdi(rLoc28, dwLoc08_108);
+		_ZL9factoriali(dwLoc08_108);
+		dwLoc08_108 = dwLoc08_108 + 0x04;
 	}
 	return;
 }
 
 void main()
 {
-	_Z11sine_taylord(DPB(rLoc10, 0x40091EB8, 0));
-	_Z4_sinddRi(0x40091EB8, 1374389535, DPB(rLoc14, 1063818100, 0), fp - 0x08);
+	sine_taylor(DPB(rLoc10, 0x40091EB8, 0));
+	_sin(DPB(rLoc1C, 0x40091EB8, 0), DPB(rLoc14, 1063818100, 0), fp - 0x08);
 	return;
 }
 
-void _Z4_sinddRi(word32 dwArg04, word32 dwArg08, real64 rArg0C, ptr32 dwArg14)
+void _sin(real64 rArg04, real64 rArg0C, Eq_232 tArg14)
 {
-	Eq_244 rLoc0C_14 = DPB(rLoc0C, dwArg08, 32);
-	Eq_248 v9_17 = (real64) ((real80) rLoc0C_14 * rLoc0C_14);
-	int32 dwLoc20_26 = 0x01;
-	while (Test(GE,cond((real64) ((real80) rLoc0C_14 / rLoc14) - rArg0C)))
+	Eq_243 rLoc0C_23 = DPB(rLoc0C, SLICE(rArg04, word32, 32), 32);
+	Eq_247 v9_26 = (real64) ((real80) rLoc0C_23 * rLoc0C_23);
+	int32 dwLoc20_102 = 0x01;
+	while (Test(GE,cond((real64) ((real80) rLoc0C_23 / rLoc14) - rArg0C)))
 	{
-		*dwArg14 = *dwArg14 + 0x01;
-		word32 v24_59 = dwLoc20_26 + 0x01;
-		rLoc0C_14 = (real64) ((real80) (real64) ((real80) rLoc0C_14 * v9_17) * v9_17);
-		dwLoc20_26 = v24_59 + 0x03;
-		rLoc14 = (real64) ((real80) (real64) ((real80) (real64) ((real80) (real64) ((real80) rLoc14 * (real80) v24_59) * (real80) (v24_59 + 0x01)) * (real80) (v24_59 + 0x02)) * (real80) (v24_59 + 0x03));
+		*tArg14 = *tArg14;
+		word32 v24_67 = dwLoc20_102 + 0x01;
+		rLoc0C_23 = (real64) ((real80) (real64) ((real80) rLoc0C_23 * v9_26) * v9_26);
+		dwLoc20_102 = v24_67 + 0x03;
+		rLoc14 = (real64) ((real80) (real64) ((real80) (real64) ((real80) (real64) ((real80) rLoc14 * (real80) v24_67) * (real80) (v24_67 + 0x01)) * (real80) (v24_67 + 0x02)) * (real80) (v24_67 + 0x03));
 	}
 	return;
 }

@@ -2697,7 +2697,7 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
 *** a.out
 80000188: warning: Procedure frame_dummy previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 8000019E: warning: Procedure frame_dummy previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-8000052C: error: An error occurred while processing the statement branch Test(LT,cond((real64) ((real80) rLoc0C_14 / rLoc14) - rArg0C)) l8000060E.
+8000052C: error: An error occurred while processing the statement branch Test(LT,cond((real64) ((real80) rLoc0C_23 / rLoc14) - rArg0C)) l8000060E.
     The method or operation is not implemented.
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitTestCondition(TestCondition tc) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 418
    at Reko.Core.Expressions.TestCondition.Accept[T](ExpressionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 61

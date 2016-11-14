@@ -127,6 +127,18 @@ namespace Reko.UnitTests.Environments.SysV
                 return sb;
             }
 
+            public StringBuilder VisitReference(ReferenceType_v1 reference)
+            {
+                var n = name;
+                name = null;
+                reference.Referent.Accept(this);
+                sb.AppendFormat(" ^");
+                name = n;
+                if (name != null)
+                    sb.AppendFormat(" {0}", name);
+                return sb;
+            }
+
             public StringBuilder VisitMemberPointer(MemberPointer_v1 memptr)
             {
                 var n = name;
@@ -260,6 +272,14 @@ namespace Reko.UnitTests.Environments.SysV
             RunTest(
                 "foo(bar)",
                 "_Z3foo3bar");
+        }
+
+        [Test]
+        public void Gmnp_StaticFunction()
+        {
+            RunTest(
+                "foo(bar)",
+                "_ZL3foo3bar");
         }
 
         /*

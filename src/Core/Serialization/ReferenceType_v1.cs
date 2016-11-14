@@ -25,22 +25,14 @@ using System.Text;
 
 namespace Reko.Core.Serialization
 {
-    public interface ISerializedTypeVisitor<T>
+    public class ReferenceType_v1 : SerializedType
     {
-        T VisitPrimitive(PrimitiveType_v1 primitive);
-        T VisitPointer(PointerType_v1 pointer);
-        T VisitReference(ReferenceType_v1 referenceType_v1);
-        T VisitCode(CodeType_v1 code);
-        T VisitMemberPointer(MemberPointer_v1 memptr);
-        T VisitArray(ArrayType_v1 array);
-        T VisitSignature(SerializedSignature signature);
-        T VisitStructure(StructType_v1 structure);
-        T VisitTypedef(SerializedTypedef typedef);
-        T VisitTypeReference(TypeReference_v1 typeReference);
-        T VisitUnion(UnionType_v1 union);
-        T VisitEnum(SerializedEnumType serializedEnumType);
-        T VisitTemplate(SerializedTemplate serializedTemplate);
-        T VisitVoidType(VoidType_v1 serializedVoidType);
-        T VisitString(StringType_v2 str);
+        public SerializedType Referent;
+        public int Size;
+
+        public override T Accept<T>(ISerializedTypeVisitor<T> visitor)
+        {
+            return visitor.VisitReference(this);
+        }
     }
 }

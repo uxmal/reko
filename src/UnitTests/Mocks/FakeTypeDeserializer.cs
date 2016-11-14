@@ -61,6 +61,11 @@ namespace Reko.UnitTests.Mocks
             return new Pointer(pointer.DataType.Accept(this), ptrSize);
         }
 
+        public DataType VisitReference(ReferenceType_v1 pointer)
+        {
+            return new ReferenceTo(pointer.Referent.Accept(this));
+        }
+
         public DataType VisitPrimitive(PrimitiveType_v1 primitive)
         {
             return PrimitiveType.Create(primitive.Domain, primitive.ByteSize);
