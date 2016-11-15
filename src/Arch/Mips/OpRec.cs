@@ -50,6 +50,29 @@ namespace Reko.Arch.Mips
         }
     }
 
+    /// <summary>
+    /// This instruction encoding is only valid on 64-bit MIPS architecture.
+    /// </summary>
+    class A64OpRec : OpRec
+    {
+        internal Opcode opcode;
+        internal string format;
+
+        public A64OpRec(Opcode opcode, string format)
+        {
+            this.opcode = opcode;
+            this.format = format;
+        }
+
+        internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
+        {
+            if (dasm.arch.PointerType.Size == 8)
+                return dasm.DecodeOperands(opcode, wInstr, format);
+            else
+                return dasm.DecodeOperands(Opcode.illegal, wInstr, "");
+        }
+    }
+
     class SllOprec : AOpRec
     {
         public SllOprec(Opcode opcode, string format) : base(opcode, format) { }
@@ -227,7 +250,7 @@ namespace Reko.Arch.Mips
                 new AOpRec(Opcode.ll, "R2,ew")),
             new Version6OpRec(
                 new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.lld, "R2,el")),
+                new A64OpRec(Opcode.lld, "R2,el")),
 
             new AOpRec(Opcode.illegal, ""),
             new AOpRec(Opcode.illegal, ""),

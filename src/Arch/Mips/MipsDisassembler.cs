@@ -32,11 +32,12 @@ namespace Reko.Arch.Mips
 {
     public class MipsDisassembler : DisassemblerBase<MipsInstruction>
     {
-        private MipsProcessorArchitecture arch;
+        internal MipsProcessorArchitecture arch;
+        internal bool isVersion6OrLater;
+
         private MipsInstruction instrCur;
         private Address addr;
         private ImageReader rdr;
-        internal bool isVersion6OrLater;
 
         public MipsDisassembler(MipsProcessorArchitecture arch, ImageReader imageReader, bool isVersion6OrLater)
         {
@@ -276,11 +277,11 @@ namespace Reko.Arch.Mips
                 new AOpRec(Opcode.illegal, ""),
                 new AOpRec(Opcode.illegal, ""),
                 new AOpRec(Opcode.illegal, "")),
-            null, 
-            new AOpRec(Opcode.beql, "R1,R2,j"), 
-            new AOpRec(Opcode.bnel, "R1,R2,j"), 
-            new AOpRec(Opcode.blezl, "R1,j"), 
-            new AOpRec(Opcode.bgtzl, "R1,j"), 
+            null,
+            new AOpRec(Opcode.beql, "R1,R2,j"),
+            new AOpRec(Opcode.bnel, "R1,R2,j"),
+            new AOpRec(Opcode.blezl, "R1,j"),
+            new AOpRec(Opcode.bgtzl, "R1,j"),
 
             new AOpRec(Opcode.daddi, "R2,R1,I"),
             new AOpRec(Opcode.daddiu, "R2,R1,I"),
@@ -296,12 +297,12 @@ namespace Reko.Arch.Mips
             new AOpRec(Opcode.lh, "R2,EH"),
             new AOpRec(Opcode.lwl, "R2,Ew"),
             new AOpRec(Opcode.lw, "R2,Ew"),
-                              
+
             new AOpRec(Opcode.lbu, "R2,Eb"),
             new AOpRec(Opcode.lhu, "R2,Eh"),
             new AOpRec(Opcode.lwr, "R2,Ew"),
             new AOpRec(Opcode.lwu, "R2,Ew"),
-            
+
             new AOpRec(Opcode.sb, "R2,Eb"),
             new AOpRec(Opcode.sh, "R2,Eh"),
             new AOpRec(Opcode.swl, "R2,Ew"),
@@ -315,14 +316,14 @@ namespace Reko.Arch.Mips
             new Version6OpRec(
                 new AOpRec(Opcode.ll, "R2,Ew"),
                 new AOpRec(Opcode.illegal, "")),
-            null, 
-            null, 
+            null,
+            null,
             new AOpRec(Opcode.pref, "R2,Ew"),
 
             new Version6OpRec(
-                new AOpRec(Opcode.lld, "R2,El"),
+                new A64OpRec(Opcode.lld, "R2,El"),
                 new AOpRec(Opcode.illegal, "")),
-            null, 
+            null,
             null,
             new AOpRec(Opcode.ld, "R2,El"),
 
@@ -333,10 +334,14 @@ namespace Reko.Arch.Mips
             null,
             null,
 
-            new AOpRec(Opcode.scd, "R2,El"),
-            null, 
-            null, 
-            new AOpRec(Opcode.sd, "R2,El"),
+            new Version6OpRec(
+                new A64OpRec(Opcode.scd, "R2,El"),
+                new AOpRec(Opcode.illegal, "")),
+            null,
+            null,
+            new Version6OpRec(
+                new AOpRec(Opcode.sd, "R2,El"),
+                new AOpRec(Opcode.illegal, ""))
         };
 
         public MipsInstruction DecodeOperands(Opcode opcode, uint wInstr, string opFmt)

@@ -55,6 +55,18 @@ namespace Reko.UnitTests.Arch.Mips
             arch.Name = "mipsv6-be-32";
         }
 
+        private void Given_Mips64_Architecture()
+        {
+            arch = new MipsBe64Architecture();
+            arch.Name = "mips-be-64";
+        }
+
+        private void Given_Mips64_v6_Architecture()
+        {
+            arch = new MipsBe64Architecture();
+            arch.Name = "mipsv6-be-32";
+        }
+
         [Test]
         public void MipsDis_addi()
         {
@@ -351,7 +363,15 @@ namespace Reko.UnitTests.Arch.Mips
             MipsInstruction instr;
             instr = DisassembleBits("110000 01001 00011 1111111111001000");
             Assert.AreEqual("ll\tr3,-0038(r9)", instr.ToString());
+        }
 
+        [Test]
+        public void MipsDis_lld()
+        { 
+            var instr = DisassembleBits("110100 01001 00011 1111111111001000");
+            Assert.AreEqual("illegal", instr.ToString());
+
+            Given_Mips64_Architecture();
             instr = DisassembleBits("110100 01001 00011 1111111111001000");
             Assert.AreEqual("lld\tr3,-0038(r9)", instr.ToString());
         }
@@ -364,8 +384,14 @@ namespace Reko.UnitTests.Arch.Mips
             MipsInstruction instr;
             instr = DisassembleBits("011111 01001 00011 111111100 0 110110");
             Assert.AreEqual("ll\tr3,-0004(r9)", instr.ToString());
+        }
 
-            instr = DisassembleBits("011111 01001 00011 111111100 0 110111");
+        [Test]
+        public void MipsDis_lld_v6()
+        {
+            Given_Mips64_v6_Architecture();
+
+            var instr = DisassembleBits("011111 01001 00011 111111100 0 110111");
             Assert.AreEqual("lld\tr3,-0004(r9)", instr.ToString());
         }
 
@@ -434,9 +460,6 @@ namespace Reko.UnitTests.Arch.Mips
             instr = DisassembleBits("111000 01001 00011 1111111111001000");
             Assert.AreEqual("sc\tr3,-0038(r9)", instr.ToString());
 
-            instr = DisassembleBits("111100 01001 00011 1111111111001000");
-            Assert.AreEqual("scd\tr3,-0038(r9)", instr.ToString());
-
             instr = DisassembleBits("111111 01001 00011 1111111111001000");
             Assert.AreEqual("sd\tr3,-0038(r9)", instr.ToString());
 
@@ -457,6 +480,14 @@ namespace Reko.UnitTests.Arch.Mips
 
             instr = DisassembleBits("101110 01001 00011 1111111111001000");
             Assert.AreEqual("swr\tr3,-0038(r9)", instr.ToString());
+        }
+
+        [Test]
+        public void MipsDis_64bit_stores()
+        {
+            Given_Mips64_Architecture();
+            var instr = DisassembleBits("111100 01001 00011 1111111111001000");
+            Assert.AreEqual("scd\tr3,-0038(r9)", instr.ToString());
         }
 
         [Test]

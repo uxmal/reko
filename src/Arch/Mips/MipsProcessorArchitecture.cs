@@ -218,4 +218,84 @@ namespace Reko.Arch.Mips
             return Address.Ptr32(c.ToUInt32());
         }
     }
+
+    public class MipsBe64Architecture : MipsProcessorArchitecture
+    {
+        public MipsBe64Architecture()
+        {
+            this.WordWidth = PrimitiveType.Word64;
+            this.PointerType = PrimitiveType.Word64;
+            this.FramePointerType = PrimitiveType.Word64;
+        }
+
+        public override ImageReader CreateImageReader(MemoryArea image, Address addr)
+        {
+            return new BeImageReader(image, addr);
+        }
+
+        public override ImageReader CreateImageReader(MemoryArea image, ulong offset)
+        {
+            return new BeImageReader(image, offset);
+        }
+
+        public override ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+        {
+            return new BeImageReader(image, addrBegin, addrEnd);
+        }
+
+        public override ImageWriter CreateImageWriter()
+        {
+            return new BeImageWriter();
+        }
+
+        public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
+        {
+            return new BeImageWriter(mem, addr);
+        }
+
+        public override Address MakeAddressFromConstant(Constant c)
+        {
+            return Address.Ptr64(c.ToUInt64());
+        }
+    }
+
+    public class MipsLe64Architecture : MipsProcessorArchitecture
+    {
+        public MipsLe64Architecture()
+        {
+            this.WordWidth = PrimitiveType.Word64;
+            this.PointerType = PrimitiveType.Word64;
+            this.FramePointerType = PrimitiveType.Word64;
+        }
+
+        public override ImageReader CreateImageReader(MemoryArea image, Address addr)
+        {
+            return new LeImageReader(image, addr);
+        }
+
+        public override ImageReader CreateImageReader(MemoryArea image, ulong offset)
+        {
+            return new LeImageReader(image, offset);
+        }
+
+        public override ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+        {
+            return new LeImageReader(image, addrBegin, addrEnd);
+        }
+
+        public override ImageWriter CreateImageWriter()
+        {
+            return new LeImageWriter();
+        }
+
+        public override ImageWriter CreateImageWriter(MemoryArea mem, Address addr)
+        {
+            return new LeImageWriter(mem, addr);
+        }
+
+        public override Address MakeAddressFromConstant(Constant c)
+        {
+            return Address.Ptr64(c.ToUInt64());
+        }
+    }
 }
