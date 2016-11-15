@@ -195,6 +195,15 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
+        public void MipsRw_sd()
+        {
+            Given_Mips64_Architecture();
+            AssertCode(0xFFBF0020,
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|Mem0[sp + 0x0000000000000020:word64] = ra");
+        }
+
+        [Test]
         public void MipsRw_jal()
         {
             AssertCode(0x0C009B2C,
