@@ -8,8 +8,8 @@ int8 g_aFFFFFFEC[];
 <anonymous> g_tFFFFFFFF;
 byte g_b0002;
 int32 g_dw01C4;
-Eq_245 g_t0695;
-struct Eq_21 g_t400238 = 
+Eq_244 g_t0695;
+struct Eq_22 g_t400238 = 
 	{
 		;
 <anonymous> g_t400290 = <code>;
@@ -69,7 +69,7 @@ struct Eq_21 g_t400238 =
 <anonymous> g_t400600 = <code>;
 Eq_17 g_t410000;
 <anonymous> g_t811F260;
-Eq_37 g_t10000000 = 
+Eq_36 g_t10000000 = 
 		{
 			&g_ptr10000860,
 			0,
@@ -80,7 +80,7 @@ int32 g_dw10000014 = 0;
 int32 g_dw10000018 = 4;
 int32 g_dw1000001C = 204800;
 int32 g_dw10000020 = 0;
-Eq_245 g_t10000024 = 
+Eq_244 g_t10000024 = 
 		{
 			
 			{
@@ -95,7 +95,7 @@ word32 g_a100007E0[] =
 		{
 		};
 <anonymous> * g_ptr10000860 = null;
-struct Eq_37 * g_ptr10000878 = &g_t10000000;
+struct Eq_36 * g_ptr10000878 = &g_t10000000;
 ptr32 g_ptr1000087C = 0x00400000;
 struct Eq_17 * g_ptr10000880 = &g_t410000;
 <anonymous> * g_ptr1000088C = &g_t400600;
@@ -199,7 +199,7 @@ int32 * g_ptr10000A28 = &g_dw1000001C;
 <anonymous> * g_ptr10000A34 = &g_t400340;
 <anonymous> * g_ptr10000A38 = request_make_url;
 <anonymous> * g_ptr10000A3C = &g_t400330;
-struct Eq_245 * g_ptr10000A40 = &g_t10000024;
+struct Eq_244 * g_ptr10000A40 = &g_t10000024;
 <anonymous> * g_ptr10000A44 = clist_remove;
 <anonymous> * g_ptr10000A48 = &g_t400320;
 <anonymous> * g_ptr10000A4C = &g_t400310;
@@ -209,7 +209,7 @@ struct Eq_245 * g_ptr10000A40 = &g_t10000024;
 <anonymous> * g_ptr10000A5C = properties_parse_command_line;
 <anonymous> * g_ptr10000A64 = __make_fp;
 <anonymous> * g_ptr10000A68 = __make_dp;
-word16 (** g_ptr10000A6C)[] = null;
+uint16 (** g_ptr10000A6C)[] = null;
 <anonymous> * g_ptr10000A70 = log_rotate;
 <anonymous> * g_ptr10000A74 = &g_t4002F0;
 <anonymous> * g_ptr10000A78 = &g_t4002E0;
