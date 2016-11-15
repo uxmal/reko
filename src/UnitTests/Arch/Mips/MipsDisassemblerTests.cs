@@ -1129,8 +1129,8 @@ namespace Reko.UnitTests.Arch.Mips
             var instr = DisassembleWord(0x45000012); 
             Assert.AreEqual("bc1f\tcc0,0010004C", instr.ToString());
             Assert.AreEqual(Opcode.bc1f, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.cc0, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.f0, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.op1, Registers.cc0, PrimitiveType.Bool);
+            VerifyAddressOperand(instr.op2, Address.Ptr32(0x0010004C), PrimitiveType.Pointer32);
         }
 
         [Test]
