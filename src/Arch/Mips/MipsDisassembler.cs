@@ -210,7 +210,7 @@ namespace Reko.Arch.Mips
                     // fn 30
                     new AOpRec(Opcode.illegal, ""),
                     new AOpRec(Opcode.illegal, ""),
-                    new AOpRec(Opcode.illegal, ""),
+                    new AOpRec(Opcode.c_eq_d, "c8,F3,F2"),
                     new AOpRec(Opcode.illegal, ""),
                     new AOpRec(Opcode.illegal, ""),
                     new AOpRec(Opcode.illegal, ""),
@@ -317,7 +317,7 @@ namespace Reko.Arch.Mips
             new Version6OpRec(
                 new AOpRec(Opcode.ll, "R2,Ew"),
                 new AOpRec(Opcode.illegal, "")),
-            null,
+            new AOpRec(Opcode.lwc1, "F2,Ew"),
             null,
             new AOpRec(Opcode.pref, "R2,Ew"),
 

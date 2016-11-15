@@ -1121,5 +1121,21 @@ namespace Reko.UnitTests.Arch.Mips
             VerifyRegisterOperand(instr.op1, Registers.cc0, PrimitiveType.Bool);
             VerifyAddressOperand(instr.op2, Address.Ptr32(0x0010004C), PrimitiveType.Pointer32);
         }
+
+        [Test]
+        public void MipsDis_c_eq_d()
+        {
+            var instr = DisassembleWord(0x46202032);
+            Assert.AreEqual("c.eq.d\tf4,f0", instr.ToString());
+            Assert.AreEqual(Opcode.c_eq_d, instr.opcode);
+        }
+
+        [Test]
+        public void MipsDis_lwc1()
+        {
+            var instr = DisassembleWord(0xC4230004);
+            Assert.AreEqual("lwc1\tf3,0004(r1)", instr.ToString());
+            Assert.AreEqual(Opcode.lwc1, instr.opcode);
+        }
     }
 }

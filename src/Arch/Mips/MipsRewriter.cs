@@ -119,6 +119,7 @@ namespace Reko.Arch.Mips
                     RewriteAdd(instr, PrimitiveType.Word64); break;
                 case Opcode.daddiu:
                 case Opcode.daddu:
+                    RewriteAdd(instr, PrimitiveType.Word64); break;
                 case Opcode.ddiv:
                 case Opcode.ddivu:
                 case Opcode.div: RewriteDiv(instr, emitter.SDiv); break;
