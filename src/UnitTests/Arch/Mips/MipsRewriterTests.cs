@@ -143,10 +143,11 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsRw_scd()
         {
+            Given_Mips64_Architecture();
             RunTest("111100 01010 10101 1111111111001000");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r21 = __store_conditional_64(Mem0[r10 - 0x00000038:word64], r21)");
+                "1|L--|r21 = __store_conditional_64(Mem0[r10 - 0x0000000000000038:word64], r21)");
         }
 
         [Test]
