@@ -34,16 +34,17 @@ namespace Reko.Arch.Mips
     {
         internal MipsProcessorArchitecture arch;
         internal bool isVersion6OrLater;
-
         private MipsInstruction instrCur;
         private Address addr;
         private ImageReader rdr;
+        private PrimitiveType signedWord;
 
         public MipsDisassembler(MipsProcessorArchitecture arch, ImageReader imageReader, bool isVersion6OrLater)
         {
             this.arch = arch;
             this.rdr = imageReader;
             this.isVersion6OrLater = isVersion6OrLater;
+            this.signedWord = PrimitiveType.Create(Domain.SignedInt, arch.WordWidth.Size);
         }
 
         public override MipsInstruction DisassembleInstruction()
@@ -386,10 +387,10 @@ namespace Reko.Arch.Mips
                     }
                     break;
                 case 'I':
-                    op = ImmediateOperand.Int32((short) wInstr);
+                    op = new ImmediateOperand(Constant.Create(this.signedWord, (short)wInstr));
                     break;
                 case 'U':
-                    op = ImmediateOperand.Word32((ushort) wInstr);
+                    op = new ImmediateOperand(Constant.Create(arch.WordWidth, (ushort) wInstr));
                     break;
                 case 'i':
                     op = ImmediateOperand.Int16((short) wInstr);
