@@ -57,6 +57,8 @@ namespace Reko.Environments.SysV
             {
             case "mips-be-32":
             case "mips-le-32":
+            case "mips-be-64":
+            case "mips-le-64":
                 return new MipsProcedureSerializer(Architecture, typeLoader, defaultConvention);
             case "ppc32":
                 return new PowerPcProcedureSerializer(Architecture, typeLoader, defaultConvention);
@@ -72,7 +74,7 @@ namespace Reko.Environments.SysV
                 return new Arm32ProcedureSerializer(Architecture, typeLoader, defaultConvention);
             case "m68k":
                 return new M68kProcedureSerializer(Architecture, typeLoader, defaultConvention);
-
+            
             default:
                 throw new NotImplementedException(string.Format("Procedure serializer for {0} not implemented yet.", Architecture.Description));
             }

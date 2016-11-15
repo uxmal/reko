@@ -580,6 +580,7 @@ namespace Reko.ImageLoaders.Elf
             {
             case ElfMachine.EM_X86_64: return new x86_64Relocator(this);
             case ElfMachine.EM_PPC64: return new PpcRelocator64(this);
+            case ElfMachine.EM_MIPS: return new MipsRelocator64(this);
             }
             return base.CreateRelocator(machine);
         }
