@@ -81,7 +81,7 @@ namespace Reko.Arch.Mips
             emitter.Branch(cond, addr, RtlClass.ConditionalTransfer | RtlClass.Delay);
         }
 
-        private void RewriteBc1f(MipsInstruction instr, bool opTrue)
+        private void RewriteBranchConditional1(MipsInstruction instr, bool opTrue)
         {
             var cond = RewriteOperand(instr.op1);
             if (!opTrue)
