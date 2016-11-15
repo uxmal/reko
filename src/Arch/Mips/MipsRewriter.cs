@@ -1,5 +1,5 @@
 ﻿#region License
-/* 
+/*
  * Copyright (C) 1999-2016 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -150,6 +150,7 @@ namespace Reko.Arch.Mips
                 case Opcode.ldl:
                 case Opcode.ldr:
                     goto default;
+                case Opcode.ldc1: RewriteLdc1(instr); break;
                 case Opcode.lh:     RewriteLoad(instr, PrimitiveType.Int16); break;
                 case Opcode.lhu:    RewriteLoad(instr, PrimitiveType.UInt16); break;
 
@@ -170,6 +171,7 @@ namespace Reko.Arch.Mips
                 case Opcode.movz:
                     goto default;
                 case Opcode.mtc1: RewriteMtc1(instr); break;
+                case Opcode.mul_d: RewriteMulD(instr); break;
                 case Opcode.mult: RewriteMul(instr, emitter.SMul, PrimitiveType.Int64); break;
                 case Opcode.multu: RewriteMul(instr, emitter.UMul, PrimitiveType.UInt64); break;
                 case Opcode.nop: emitter.Nop(); break;
