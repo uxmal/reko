@@ -96,7 +96,7 @@ namespace Reko.Arch.Mips
             // It should be harmless to set it to a constant value at the
             // entry of the function.
             iregs[25] = ip.ToUInt32();
-            SetRegister(Registers.r25, Constant.UInt32(iregs[25]));
+            SetRegister(arch.GeneralRegs[25], Constant.UInt32(iregs[25]));
         }
 
         public override void OnProcedureLeft(FunctionType procedureSignature)

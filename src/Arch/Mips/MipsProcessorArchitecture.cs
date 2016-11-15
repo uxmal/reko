@@ -33,23 +33,54 @@ namespace Reko.Arch.Mips
 {
     public abstract class MipsProcessorArchitecture : ProcessorArchitecture
     {
-        public MipsProcessorArchitecture()
-        {
-            this.WordWidth = PrimitiveType.Word32;
-            this.PointerType = PrimitiveType.Word32;
-            this.FramePointerType = PrimitiveType.Word32;
-            this.InstructionBitSize = 32;
-            this.StackRegister = Registers.sp;
-        }
+        public Dictionary<uint, RegisterStorage> fpuCtrlRegs;
+        public RegisterStorage[] GeneralRegs;
+        public RegisterStorage[] fpuRegs;
+        public RegisterStorage[] ccRegs;
+        public RegisterStorage LinkRegister;
+        public RegisterStorage hi;
+        public RegisterStorage lo;
+        private Dictionary<string, RegisterStorage> mpNameToReg;
 
-        /// <summary>
-        /// If the architecture name contains "v6" we are a MIPS v6, which
-        /// has different instruction encodings.
-        /// </summary>
-        private bool IsVersion6OrLater
+        public MipsProcessorArchitecture(PrimitiveType wordSize, PrimitiveType ptrSize)
+        {
+            this.WordWidth = wordSize;
+            this.PointerType = ptrSize;
+            this.FramePointerType = ptrSize;
+            this.InstructionBitSize = 32;
+            this.GeneralRegs = CreateGeneralRegisters().ToArray();
+            this.StackRegister = GeneralRegs[29];
+            this.LinkRegister = GeneralRegs[31];
+
+            this.hi = new RegisterStorage("hi", 32, 0, wordSize);
+            this.lo = new RegisterStorage("lo", 33, 0, wordSize);
+            this.fpuRegs = CreateFpuRegisters();
+            this.FCSR = RegisterStorage.Reg32("FCSR", 0x201F);
+            this.ccRegs = CreateCcRegs();
+            this.fpuCtrlRegs = new Dictionary<uint, RegisterStorage>
+            {
+                { 0x1F, FCSR }
+            };
+
+            this.mpNameToReg = GeneralRegs
+                .Concat(fpuRegs)
+                .Concat(fpuCtrlRegs.Values)
+                .Concat(ccRegs)
+                .Concat(new[] { hi, lo })
+                .ToDictionary(k => k.Name);
+
+    }
+
+    /// <summary>
+    /// If the architecture name contains "v6" we are a MIPS v6, which
+    /// has different instruction encodings.
+    /// </summary>
+    private bool IsVersion6OrLater
         {
             get { return this.Name.Contains("v6"); }
         }
+
+        public RegisterStorage FCSR { get; private set; }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
         {
@@ -100,24 +131,24 @@ namespace Reko.Arch.Mips
 
         public override RegisterStorage GetRegister(int i)
         {
-            if (i >= Registers.generalRegs.Length)
+            if (i >= GeneralRegs.Length)
                 return null;
-            return Registers.generalRegs[i];
+            return GeneralRegs[i];
         }
 
         public override RegisterStorage GetRegister(string name)
         {
-            return Registers.mpNameToReg[name];
+            return mpNameToReg[name];
         }
 
         public override RegisterStorage[] GetRegisters()
         {
-            return Registers.generalRegs;
+            return GeneralRegs;
         }
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
-            return Registers.mpNameToReg.TryGetValue(name, out reg);
+            return mpNameToReg.TryGetValue(name, out reg);
         }
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
@@ -151,10 +182,51 @@ namespace Reko.Arch.Mips
         {
             return Address.TryParse32(txtAddress, out addr);
         }
+
+        private IEnumerable<RegisterStorage> CreateGeneralRegisters()
+        {
+            return from i in Enumerable.Range(0, 32)
+                join name in new[] {
+                    new { id = 29, n = "sp" },
+                    new { id = 31, n = "ra" }
+                } on i equals name.id into names
+                from name in names.DefaultIfEmpty()
+                select new RegisterStorage(
+                    name != null 
+                        ? name.n 
+                        : string.Format("r{0}", i),
+                    i,
+                    0,
+                    WordWidth);
+        }
+
+        private RegisterStorage[] CreateFpuRegisters()
+        {
+            return Enumerable.Range(0, 32)
+                .Select(i => new RegisterStorage(
+                    string.Format("f{0}", i),
+                    i + 64,
+                    0,
+                    PrimitiveType.Word64))
+                .ToArray();
+        }
+
+        private RegisterStorage[] CreateCcRegs()
+        {
+            return Enumerable.Range(0, 8)
+                .Select(i => new RegisterStorage(
+                    string.Format("cc{0}", i),
+                    0x3000,
+                    0,
+                    PrimitiveType.Bool))
+                .ToArray();
+        }
     }
 
     public class MipsBe32Architecture : MipsProcessorArchitecture
     {
+        public MipsBe32Architecture() : base(PrimitiveType.Word32, PrimitiveType.Pointer32) { }
+
         public override ImageReader CreateImageReader(MemoryArea image, Address addr)
         {
             return new BeImageReader(image, addr);
@@ -188,6 +260,8 @@ namespace Reko.Arch.Mips
 
     public class MipsLe32Architecture : MipsProcessorArchitecture
     {
+        public MipsLe32Architecture() : base(PrimitiveType.Word32, PrimitiveType.Pointer32) { }
+
         public override ImageReader CreateImageReader(MemoryArea image, Address addr)
         {
             return new LeImageReader(image, addr);
@@ -221,12 +295,8 @@ namespace Reko.Arch.Mips
 
     public class MipsBe64Architecture : MipsProcessorArchitecture
     {
-        public MipsBe64Architecture()
-        {
-            this.WordWidth = PrimitiveType.Word64;
-            this.PointerType = PrimitiveType.Word64;
-            this.FramePointerType = PrimitiveType.Word64;
-        }
+        public MipsBe64Architecture() : base(PrimitiveType.Word64, PrimitiveType.Pointer64)
+        { }
 
         public override ImageReader CreateImageReader(MemoryArea image, Address addr)
         {
@@ -261,11 +331,8 @@ namespace Reko.Arch.Mips
 
     public class MipsLe64Architecture : MipsProcessorArchitecture
     {
-        public MipsLe64Architecture()
+        public MipsLe64Architecture() : base(PrimitiveType.Word64, PrimitiveType.Pointer64)
         {
-            this.WordWidth = PrimitiveType.Word64;
-            this.PointerType = PrimitiveType.Word64;
-            this.FramePointerType = PrimitiveType.Word64;
         }
 
         public override ImageReader CreateImageReader(MemoryArea image, Address addr)

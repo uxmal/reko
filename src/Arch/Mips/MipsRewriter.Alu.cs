@@ -64,8 +64,8 @@ namespace Reko.Arch.Mips
 
         private void RewriteDiv(MipsInstruction instr, Func<Expression, Expression, Expression> ctor)
         {
-            var hi = frame.EnsureRegister(Registers.hi);
-            var lo = frame.EnsureRegister(Registers.lo);
+            var hi = frame.EnsureRegister(arch.hi);
+            var lo = frame.EnsureRegister(arch.lo);
             var opLeft = RewriteOperand(instr.op1);
             var opRight = RewriteOperand(instr.op2);
             emitter.Assign(lo, ctor(opLeft, opRight));
@@ -132,7 +132,7 @@ namespace Reko.Arch.Mips
 
         private void RewriteMul(MipsInstruction instr, Func<Expression,Expression,Expression> fn, PrimitiveType ret)
         {
-            var hilo = frame.EnsureSequence(Registers.hi, Registers.lo, ret);
+            var hilo = frame.EnsureSequence(arch.hi, arch.lo, ret);
             emitter.Assign(
                 hilo,
                 fn(RewriteOperand(instr.op1), RewriteOperand(instr.op2)));

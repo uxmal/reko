@@ -1,52 +1,14 @@
 === CB80.dcproject
 === redir
 *** redir
-main: error: An error occurred while rewriting procedure to high-level language.
-    Sequence contains no elements
-       at System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
-   at Reko.Structure.StructureAnalysis.ReduceSequence(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 366
-   at Reko.Structure.StructureAnalysis.ReduceAcyclic(Region n) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 260
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 140
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 532
-__divdf3: error: An error occurred while rewriting procedure to high-level language.
-    The method or operation is not implemented.
-       at Reko.Structure.StructureAnalysis.DetermineFollowLatch(Region head, ISet`1 loopNodes) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1150
-   at Reko.Structure.StructureAnalysis.RefineLoop(Region head, ISet`1 loopNodes) in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 1000
-   at Reko.Structure.StructureAnalysis.ProcessUnresolvedRegions() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 277
-   at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
-   at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
-   at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 532
-00400238: error: Failed to write global variable g_t400238.
-    Index was outside the bounds of the array.
-       at Reko.Core.MemoryArea.ReadBeInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 352
-   at Reko.Core.MemoryArea.ReadBeUInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 506
-   at Reko.Core.MemoryArea.ReadBe(Byte[] abImage, Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 233
-   at Reko.Core.MemoryArea.ReadBe(Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 171
-   at Reko.Core.ImageReader.ReadBe(PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 205
-   at Reko.Core.BeImageReader.Read(PrimitiveType dataType) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 581
-   at Reko.Core.Output.GlobalDataWriter.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 213
-   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 49
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 300
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 58
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
-100007E0: warning: Expected sizes of arrays to have been determined by now
-1000002C: warning: Expected sizes of arrays to have been determined by now
-00400238: error: Failed to write global variable g_t400238.
-    Index was outside the bounds of the array.
-       at Reko.Core.MemoryArea.ReadBeInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 352
-   at Reko.Core.MemoryArea.ReadBeUInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 506
-   at Reko.Core.MemoryArea.ReadBe(Byte[] abImage, Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 233
-   at Reko.Core.MemoryArea.ReadBe(Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 171
-   at Reko.Core.ImageReader.ReadBe(PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 205
-   at Reko.Core.BeImageReader.Read(PrimitiveType dataType) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 581
-   at Reko.Core.Output.GlobalDataWriter.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 213
-   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 49
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 300
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 58
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
-1000002C: warning: Expected sizes of arrays to have been determined by now
-100007E0: warning: Expected sizes of arrays to have been determined by now
+redir: error: An internal error occurred while decompiling.
+    Specified argument was out of the range of valid values.
+Parameter name: Linear address 00000000 is not in known segment.
+       at Reko.Core.SegmentMap.MapLinearAddressToAddress(UInt64 linearAddress) in D:\dev\uxmal\reko\master\src\Core\SegmentMap.cs:line 161
+   at Reko.CmdLine.CmdLineListener.CreateStatementNavigator(Program program, Statement stm) in D:\dev\uxmal\reko\master\src\Drivers\CmdLine\CmdLineListener.cs:line 49
+   at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 141
+   at Reko.DecompilerDriver.AnalyzeDataFlow() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 131
+   at Reko.DecompilerDriver.Decompile(String filename) in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 99
 
 === sparc-rtems-unprotoize
 *** sparc-rtems-unprotoize

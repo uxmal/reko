@@ -442,12 +442,12 @@ namespace Reko.Arch.Mips
 
         private RegisterOperand FReg(uint regNumber)
         {
-            return new RegisterOperand(Registers.fpuRegs[regNumber & 0x1F]);
+            return new RegisterOperand(arch.fpuRegs[regNumber & 0x1F]);
         }
 
         private RegisterOperand FCReg(uint regNumber)
         {
-            return new RegisterOperand(Registers.fpuCtrlRegs[regNumber & 0x1F]);
+            return new RegisterOperand(arch.fpuCtrlRegs[regNumber & 0x1F]);
         }
 
         private RegisterOperand CCodeFlag(uint wInstr, string fmt, ref int i)
@@ -458,7 +458,7 @@ namespace Reko.Arch.Mips
                 pos = pos * 10 + fmt[i] - '0';
             }
             var regNo = (wInstr >> pos) & 0x7;
-            return new RegisterOperand(Registers.ccRegs[regNo]);
+            return new RegisterOperand(arch.ccRegs[regNo]);
         }
 
         private AddressOperand RelativeBranch(uint wInstr)

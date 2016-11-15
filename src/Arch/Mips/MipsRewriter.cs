@@ -165,10 +165,10 @@ namespace Reko.Arch.Mips
                     goto default;
                 case Opcode.mfc0:   RewriteMfc0(instr); break;
                 case Opcode.mfc1:   RewriteMfc1(instr); break;
-                case Opcode.mfhi:   RewriteMf(instr, Registers.hi); break;
-                case Opcode.mflo:   RewriteMf(instr, Registers.lo); break;
-                case Opcode.mthi:   RewriteMt(instr, Registers.hi); break;
-                case Opcode.mtlo:   RewriteMt(instr, Registers.lo); break;
+                case Opcode.mfhi:   RewriteMf(instr, arch.hi); break;
+                case Opcode.mflo:   RewriteMf(instr, arch.lo); break;
+                case Opcode.mthi:   RewriteMt(instr, arch.hi); break;
+                case Opcode.mtlo:   RewriteMt(instr, arch.lo); break;
                 case Opcode.movn:
                 case Opcode.movz:
                     goto default;

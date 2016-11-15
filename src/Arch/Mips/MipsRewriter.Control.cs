@@ -63,7 +63,7 @@ namespace Reko.Arch.Mips
             if (link)
             {
                 emitter.Assign(
-                    frame.EnsureRegister(Registers.ra),
+                    frame.EnsureRegister(arch.LinkRegister),
                     instr.Address + 8);
             }
             var reg = RewriteOperand(instr.op1);
@@ -108,13 +108,12 @@ namespace Reko.Arch.Mips
             cluster.Class = RtlClass.Transfer;
             var dst = RewriteOperand(instr.op2);
             var lr = ((RegisterOperand)instr.op1).Register;
-            if (lr == Registers.ra)
+            if (lr == arch.LinkRegister)
             {
                 emitter.CallD(dst, 0);
                 return;
             }
             throw new NotImplementedException("jalr to register other than ra not implemented yet.");
-
         }
 
         private void RewriteJr(MipsInstruction instr)
@@ -122,7 +121,7 @@ namespace Reko.Arch.Mips
             cluster.Class = RtlClass.Transfer;
             var dst = RewriteOperand(instr.op1);
             var reg = (RegisterStorage)((Identifier)dst).Storage;
-            if (reg == Registers.ra)
+            if (reg == arch.LinkRegister)
             {
                 emitter.ReturnD(0, 0);
             }

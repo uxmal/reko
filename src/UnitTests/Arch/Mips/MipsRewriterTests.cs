@@ -40,6 +40,12 @@ namespace Reko.UnitTests.Arch.Mips
 
         public override Address LoadAddress { get { return Address.Ptr32(0x00100000); } }
 
+        [SetUp]
+        public void Setup()
+        {
+            this.arch = new MipsBe32Architecture();
+        }
+
         private void RunTest(params string[] bitStrings)
         {
             var bytes = bitStrings.Select(bits => base.ParseBitPattern(bits))
@@ -123,7 +129,7 @@ namespace Reko.UnitTests.Arch.Mips
             RunTest("110100 01010 10101 1111111111001000");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r21 = __load_linked_64(Mem0[r10 - 0x00000038:word64])");
+                "1|L--|r21 = __load_linked_64(Mem0[r10 - 0x0000000000000038:word64])");
         }
 
         [Test]
@@ -352,9 +358,8 @@ namespace Reko.UnitTests.Arch.Mips
         {
             AssertCode(0xE7AC0030, // swc1\tf12,0030(sp)
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|Mem0[sp + 0x00000030:word32] = f12");
+                "1|L--|Mem0[sp + 0x00000030:word32] = (word32) f12");
         }
-
 
         [Test]
         public void MipsRw_cle_d()
