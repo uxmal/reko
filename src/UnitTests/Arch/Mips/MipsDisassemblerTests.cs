@@ -208,6 +208,7 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_dadd()
         {
+            Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00011 00010 11110 00000 101100");
             Assert.AreEqual("dadd\tr30,r3,r2", instr.ToString());
 
@@ -329,15 +330,6 @@ namespace Reko.UnitTests.Arch.Mips
             instr = DisassembleBits("100100 01001 00011 1111111111001000");
             Assert.AreEqual("lbu\tr3,-0038(r9)", instr.ToString());
 
-            instr = DisassembleBits("110111 01001 00011 1111111111001000");
-            Assert.AreEqual("ld\tr3,-0038(r9)", instr.ToString());
-
-            instr = DisassembleBits("011010 01001 00011 1111111111001000");
-            Assert.AreEqual("ldl\tr3,-0038(r9)", instr.ToString());
-
-            instr = DisassembleBits("011011 01001 00011 1111111111001000");
-            Assert.AreEqual("ldr\tr3,-0038(r9)", instr.ToString());
-
             instr = DisassembleBits("100001 01001 00011 1111111111001000");
             Assert.AreEqual("lh\tr3,-0038(r9)", instr.ToString());
 
@@ -347,14 +339,29 @@ namespace Reko.UnitTests.Arch.Mips
             instr = DisassembleBits("100011 01001 00011 1111111111001000");
             Assert.AreEqual("lw\tr3,-0038(r9)", instr.ToString());
 
-            instr = DisassembleBits("100111 01001 00011 1111111111001000");
-            Assert.AreEqual("lwu\tr3,-0038(r9)", instr.ToString());
-
             instr = DisassembleBits("100010 01001 00011 1111111111001000");
             Assert.AreEqual("lwl\tr3,-0038(r9)", instr.ToString());
 
             instr = DisassembleBits("100110 01001 00011 1111111111001000");
             Assert.AreEqual("lwr\tr3,-0038(r9)", instr.ToString());
+        }
+
+        [Test]
+        public void MipsDis_loads_64bit()
+        {
+            Given_Mips64_Architecture();
+
+            var instr = DisassembleBits("110111 01001 00011 1111111111001000");
+            Assert.AreEqual("ld\tr3,-0038(r9)", instr.ToString());
+
+            instr = DisassembleBits("011010 01001 00011 1111111111001000");
+            Assert.AreEqual("ldl\tr3,-0038(r9)", instr.ToString());
+
+            instr = DisassembleBits("011011 01001 00011 1111111111001000");
+            Assert.AreEqual("ldr\tr3,-0038(r9)", instr.ToString());
+
+            instr = DisassembleBits("100111 01001 00011 1111111111001000");
+            Assert.AreEqual("lwu\tr3,-0038(r9)", instr.ToString());
         }
 
         [Test]
@@ -460,15 +467,6 @@ namespace Reko.UnitTests.Arch.Mips
             instr = DisassembleBits("111000 01001 00011 1111111111001000");
             Assert.AreEqual("sc\tr3,-0038(r9)", instr.ToString());
 
-            instr = DisassembleBits("111111 01001 00011 1111111111001000");
-            Assert.AreEqual("sd\tr3,-0038(r9)", instr.ToString());
-
-            instr = DisassembleBits("101100 01001 00011 1111111111001000");
-            Assert.AreEqual("sdl\tr3,-0038(r9)", instr.ToString());
-
-            instr = DisassembleBits("101101 01001 00011 1111111111001000");
-            Assert.AreEqual("sdr\tr3,-0038(r9)", instr.ToString());
-
             instr = DisassembleBits("101001 01001 00011 1111111111001000");
             Assert.AreEqual("sh\tr3,-0038(r9)", instr.ToString());
 
@@ -480,6 +478,20 @@ namespace Reko.UnitTests.Arch.Mips
 
             instr = DisassembleBits("101110 01001 00011 1111111111001000");
             Assert.AreEqual("swr\tr3,-0038(r9)", instr.ToString());
+        }
+
+        [Test]
+        public void MipsDis_stores_64bit()
+        {
+            Given_Mips64_Architecture();
+            var instr = DisassembleBits("111111 01001 00011 1111111111001000");
+            Assert.AreEqual("sd\tr3,-0038(r9)", instr.ToString());
+
+            instr = DisassembleBits("101100 01001 00011 1111111111001000");
+            Assert.AreEqual("sdl\tr3,-0038(r9)", instr.ToString());
+
+            instr = DisassembleBits("101101 01001 00011 1111111111001000");
+            Assert.AreEqual("sdr\tr3,-0038(r9)", instr.ToString());
         }
 
         [Test]

@@ -283,10 +283,10 @@ namespace Reko.Arch.Mips
             new AOpRec(Opcode.blezl, "R1,j"),
             new AOpRec(Opcode.bgtzl, "R1,j"),
 
-            new AOpRec(Opcode.daddi, "R2,R1,I"),
-            new AOpRec(Opcode.daddiu, "R2,R1,I"),
-            new AOpRec(Opcode.ldl, "R2,El"),
-            new AOpRec(Opcode.ldr, "R2,El"),
+            new A64OpRec(Opcode.daddi, "R2,R1,I"),
+            new A64OpRec(Opcode.daddiu, "R2,R1,I"),
+            new A64OpRec(Opcode.ldl, "R2,El"),
+            new A64OpRec(Opcode.ldr, "R2,El"),
             null,
             null,
             null,
@@ -301,7 +301,7 @@ namespace Reko.Arch.Mips
             new AOpRec(Opcode.lbu, "R2,Eb"),
             new AOpRec(Opcode.lhu, "R2,Eh"),
             new AOpRec(Opcode.lwr, "R2,Ew"),
-            new AOpRec(Opcode.lwu, "R2,Ew"),
+            new A64OpRec(Opcode.lwu, "R2,Ew"),
 
             new AOpRec(Opcode.sb, "R2,Eb"),
             new AOpRec(Opcode.sh, "R2,Eh"),
@@ -325,7 +325,7 @@ namespace Reko.Arch.Mips
                 new AOpRec(Opcode.illegal, "")),
             null,
             null,
-            new AOpRec(Opcode.ld, "R2,El"),
+            new A64OpRec(Opcode.ld, "R2,El"),
 
             new Version6OpRec(
                 new AOpRec(Opcode.sc, "R2,El"),
@@ -340,7 +340,7 @@ namespace Reko.Arch.Mips
             null,
             null,
             new Version6OpRec(
-                new AOpRec(Opcode.sd, "R2,El"),
+                new A64OpRec(Opcode.sd, "R2,El"),
                 new AOpRec(Opcode.illegal, ""))
         };
 
@@ -465,13 +465,15 @@ namespace Reko.Arch.Mips
         {
             int off = (short) wInstr;
             off <<= 2;
-            return AddressOperand.Ptr32((uint)(off + rdr.Address.ToUInt32()));
+            return AddressOperand.Create(rdr.Address + off);
         }
 
         private AddressOperand LargeBranch(uint wInstr)
         {
             var off = (wInstr & 0x03FFFFFF) << 2;
-            return AddressOperand.Ptr32((rdr.Address.ToUInt32() & 0xF0000000u) | off);
+            ulong linAddr = (rdr.Address.ToLinear() & ~0x0FFFFFFFul) | off;
+            return AddressOperand.Create(
+                Address.Create(arch.PointerType, linAddr));
         }
 
         private IndirectOperand Ea(uint wInstr, char wCode, int shift, short offset)

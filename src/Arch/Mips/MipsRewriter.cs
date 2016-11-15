@@ -144,25 +144,22 @@ namespace Reko.Arch.Mips
                     RewriteJalr(instr); break;
                 case Opcode.jr:
                     RewriteJr(instr); break;
-                case Opcode.lb:
-                case Opcode.lbu:
-                    RewriteLoad(instr); break;
-                case Opcode.ld:
+                case Opcode.lb:     RewriteLoad(instr, PrimitiveType.SByte); break;
+                case Opcode.lbu:    RewriteLoad(instr, PrimitiveType.Byte); break;
+                case Opcode.ld:     RewriteLoad(instr, PrimitiveType.Word64); break;
                 case Opcode.ldl:
                 case Opcode.ldr:
                     goto default;
-                case Opcode.lh:
-                case Opcode.lhu:
-                    RewriteLoad(instr); break;
+                case Opcode.lh:     RewriteLoad(instr, PrimitiveType.Int16); break;
+                case Opcode.lhu:    RewriteLoad(instr, PrimitiveType.UInt16); break;
 
                 case Opcode.ll:     RewriteLoadLinked32(instr); break;
                 case Opcode.lld:    RewriteLoadLinked64(instr); break;
                 case Opcode.lui:    RewriteLui(instr); break;
-                case Opcode.lw:     RewriteLoad(instr); break;
+                case Opcode.lw:     RewriteLoad(instr, PrimitiveType.Int32); break;
                 case Opcode.lwl:    RewriteLwl(instr); break;
                 case Opcode.lwr:    RewriteLwr(instr); break;
-                case Opcode.lwu:
-                    goto default;
+                case Opcode.lwu:    RewriteLoad(instr, PrimitiveType.UInt32); break;
                 case Opcode.mfc0:   RewriteMfc0(instr); break;
                 case Opcode.mfc1:   RewriteMfc1(instr); break;
                 case Opcode.mfhi:   RewriteMf(instr, arch.hi); break;

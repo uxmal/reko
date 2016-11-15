@@ -103,7 +103,7 @@ namespace Reko.UnitTests.Arch.Mips
             RunTest("100101 01011 01101 1111111111111000");
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
-                "1|L--|r13 = (word32) Mem0[r11 - 0x00000008:word16]");
+                "1|L--|r13 = (word32) Mem0[r11 - 0x00000008:uint16]");
         }
 
         [Test]
@@ -227,6 +227,33 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(0x8fb3FFF0,   // lw s3,16(sp)
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r19 = Mem0[sp - 0x00000010:word32]");
+        }
+
+        [Test(Description = "On MIPS64, lw loads a signed integer")]
+        public void MipsRw_lw_64bit()
+        {
+            Given_Mips64_Architecture();
+            AssertCode(0x8fb3FFF0,   // lw s3,16(sp)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r19 = (word64) Mem0[sp - 0x0000000000000010:int32]");
+        }
+
+        [Test]
+        public void MipsRw_ld()
+        {
+            Given_Mips64_Architecture();
+            AssertCode(0xdfb30010,   // ld s3,16(sp)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r19 = Mem0[sp + 0x0000000000000010:word64]");
+        }
+
+        [Test]
+        public void MipsRw_lwu()
+        {
+            Given_Mips64_Architecture();
+            AssertCode(0x9fb30010,   // ld s3,16(sp)
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r19 = (word64) Mem0[sp + 0x0000000000000010:uint32]");
         }
 
         [Test]

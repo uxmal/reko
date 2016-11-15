@@ -72,12 +72,17 @@ namespace Reko.Arch.Mips
             emitter.Assign(hi, emitter.Mod(opLeft, opRight));
         }
 
-        private void RewriteLoad(MipsInstruction instr)
+        private void RewriteLoad(MipsInstruction instr, PrimitiveType dtSmall)
         {
             var opSrc = RewriteOperand(instr.op2);
             var opDst = RewriteOperand(instr.op1);
             if (opDst.DataType.Size != opSrc.DataType.Size)
+            {
+                // If the source is smaller than the destination register,
+                // perform a sign/zero extension.
+                opSrc.DataType = dtSmall;
                 opSrc = emitter.Cast(arch.WordWidth, opSrc);
+            }
             emitter.Assign(opDst, opSrc);
         }
 
