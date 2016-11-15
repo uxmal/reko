@@ -100,6 +100,20 @@ namespace Reko.Arch.Mips
             emitter.Assign(opDst, host.PseudoProcedure("__load_linked_64", PrimitiveType.Word64, opSrc));
         }
 
+        private void RewriteStoreConditional32(MipsInstruction instr)
+        {
+            var opMem = RewriteOperand(instr.op2);
+            var opReg = RewriteOperand(instr.op1);
+            emitter.Assign(opReg, host.PseudoProcedure("__store_conditional_32", PrimitiveType.Word32, opMem, opReg));
+        }
+
+        private void RewriteStoreConditional64(MipsInstruction instr)
+        {
+            var opMem = RewriteOperand(instr.op2);
+            var opReg = RewriteOperand(instr.op1);
+            emitter.Assign(opReg, host.PseudoProcedure("__store_conditional_64", PrimitiveType.Word64, opMem, opReg));
+        }
+
         private void RewriteLui(MipsInstruction instr)
         {
             var immOp = (ImmediateOperand)instr.op2;

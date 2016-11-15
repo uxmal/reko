@@ -182,8 +182,8 @@ namespace Reko.Arch.Mips
                 case Opcode.pref:
                     goto default;
                 case Opcode.sb: RewriteStore(instr); break;
-                case Opcode.sc:
-                case Opcode.scd:
+                case Opcode.sc: RewriteStoreConditional32(instr); break;
+                case Opcode.scd: RewriteStoreConditional64(instr); break;
                     goto default;
                 case Opcode.sd: RewriteStore(instr); break;
                 case Opcode.sdl:

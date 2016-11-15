@@ -328,7 +328,7 @@ namespace Reko.Arch.Mips
             new A64OpRec(Opcode.ld, "R2,El"),
 
             new Version6OpRec(
-                new AOpRec(Opcode.sc, "R2,El"),
+                new AOpRec(Opcode.sc, "R2,Ew"),
                 new AOpRec(Opcode.illegal, "")),
             new AOpRec(Opcode.swc1, "F2,Ew"),
             null,
