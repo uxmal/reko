@@ -21,10 +21,6 @@
 using Reko.Arch.Mips;
 using Reko.Core;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using Reko.Core.Expressions;
@@ -61,7 +57,7 @@ namespace Reko.UnitTests.Arch.Mips
         private void VerifyRegisterOperand(MachineOperand op, RegisterStorage reg, PrimitiveType type)
         {
             Assert.IsAssignableFrom(typeof(RegisterOperand), op);
-            RegisterOperand opReg = op as RegisterOperand;
+            var opReg = op as RegisterOperand;
             Assert.AreEqual(reg, opReg.Register);
             Assert.AreEqual(type, opReg.Register.DataType);
             Assert.AreEqual(type, opReg.Width);
@@ -69,7 +65,7 @@ namespace Reko.UnitTests.Arch.Mips
         private void VerifyIndirectOperand(MachineOperand op, RegisterStorage reg, int offset, PrimitiveType type)
         {
             Assert.IsAssignableFrom(typeof(IndirectOperand), op);
-            IndirectOperand opReg = op as IndirectOperand;
+            var opReg = op as IndirectOperand;
             Assert.AreEqual(reg, opReg.Base);
             Assert.AreEqual(offset, opReg.Offset);
             Assert.AreEqual(type, opReg.Width);
@@ -77,7 +73,7 @@ namespace Reko.UnitTests.Arch.Mips
         private void VerifyImmediateOperand(MachineOperand op, Constant val, PrimitiveType type)
         {
             Assert.IsAssignableFrom(typeof(ImmediateOperand), op);
-            ImmediateOperand opReg = op as ImmediateOperand;
+            var opReg = op as ImmediateOperand;
             Assert.AreEqual(type, opReg.Width);
             Assert.AreEqual(type, opReg.Value.DataType);
             Assert.AreEqual(val.GetValue(), opReg.Value.GetValue());
@@ -85,7 +81,7 @@ namespace Reko.UnitTests.Arch.Mips
         private void VerifyAddressOperand(MachineOperand op, Address addr, PrimitiveType type)
         {
             Assert.IsAssignableFrom(typeof(AddressOperand), op);
-            AddressOperand opReg = op as AddressOperand;
+            var opReg = op as AddressOperand;
             Assert.AreEqual(type, opReg.Width);
             Assert.AreEqual(addr, opReg.Address);
         }
@@ -577,7 +573,7 @@ namespace Reko.UnitTests.Arch.Mips
             var instr = DisassembleBits("000000 01001 00000 11111 00000 001001");
             Assert.AreEqual("jalr\tra,r9", instr.ToString());
             Assert.AreEqual(Opcode.jalr, instr.opcode);
-            VerifyRegisterOperand(instr.op1, "ra", PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.op1, Registers.ra, PrimitiveType.Word32);
             VerifyRegisterOperand(instr.op2, Registers.r9, PrimitiveType.Word32);
         }
 
@@ -588,7 +584,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("lb\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Opcode.lb, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, "r9", -0x38, PrimitiveType.SByte);
+            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.SByte);
         }
 
         [Test]
@@ -598,7 +594,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("lbu\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Opcode.lbu, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, "r9", -0x38, PrimitiveType.Byte);
+            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Byte);
         }
 
         [Test]
@@ -608,7 +604,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("ld\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Opcode.ld, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word64);
-            VerifyIndirectOperand(instr.op2, "r9", -0x38, PrimitiveType.Word64);
+            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Word64);
         }
 
         [Test]
@@ -618,7 +614,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("ldl\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Opcode.ldl, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word64);
-            VerifyIndirectOperand(instr.op2, "r9", -0x38, PrimitiveType.Word64);
+            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Word64);
         }
 
         [Test]
@@ -628,7 +624,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("ldr\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Opcode.ldr, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word64);
-            VerifyIndirectOperand(instr.op2, "r9", -0x38, PrimitiveType.Word64);
+            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Word64);
         }
 
         [Test]
@@ -638,7 +634,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("lh\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Opcode.lh, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, "r9", -0x38, PrimitiveType.Int16);
+            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Int16);
         }
 
         [Test]
@@ -648,7 +644,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("lhu\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Opcode.lhu, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, "r9", -0x38, PrimitiveType.Word16);
+            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Word16);
         }
 
         [Test]
@@ -658,7 +654,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("lw\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Opcode.lw, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, "r9", -0x38, PrimitiveType.Word32);
+            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Word32);
         }
 
         [Test]
@@ -668,7 +664,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("lwu\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Opcode.lwu, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, "r9", -0x38, PrimitiveType.Word32);
+            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Word32);
         }
 
         [Test]
@@ -678,7 +674,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("lwl\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Opcode.lwl, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, "r9", -0x38, PrimitiveType.Word32);
+            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Word32);
         }
 
         [Test]
@@ -688,7 +684,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("lwr\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Opcode.lwr, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, "r9", -0x38, PrimitiveType.Word32);
+            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Word32);
         }
 
         [Test]
@@ -699,7 +695,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("ll\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Opcode.ll, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, "r9", -0x38, PrimitiveType.Word32);
+            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Word32);
         }
 
         [Test]
@@ -709,7 +705,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("lld\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Opcode.lld, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word64);
-            VerifyIndirectOperand(instr.op2, "r9", -0x38, PrimitiveType.Word64);
+            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Word64);
         }
 
         [Test]
@@ -722,7 +718,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("ll\tr3,-0004(r9)", instr.ToString());
             Assert.AreEqual(Opcode.ll, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, "r9", -0x4, PrimitiveType.Word32);
+            VerifyIndirectOperand(instr.op2, Registers.r9, -0x4, PrimitiveType.Word32);
         }
 
         [Test]
@@ -734,7 +730,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("lld\tr3,-0004(r9)", instr.ToString());
             Assert.AreEqual(Opcode.lld, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word64);
-            VerifyIndirectOperand(instr.op2, "r9", -0x4, PrimitiveType.Word64);
+            VerifyIndirectOperand(instr.op2, Registers.r9, -0x4, PrimitiveType.Word64);
         }
 
         [Test]
@@ -865,7 +861,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("sb\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Opcode.sb, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, "r9", -0x38, PrimitiveType.Byte);
+            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Byte);
         }
 
         [Test]
@@ -875,7 +871,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("sd\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Opcode.sd, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word64);
-            VerifyIndirectOperand(instr.op2, "r9", -0x38, PrimitiveType.Word64);
+            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Word64);
         }
 
         [Test]
@@ -885,7 +881,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("sdl\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Opcode.sdl, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word64);
-            VerifyIndirectOperand(instr.op2, "r9", -0x38, PrimitiveType.Word64);
+            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Word64);
         }
 
         [Test]
@@ -895,7 +891,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("sdr\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Opcode.sdr, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word64);
-            VerifyIndirectOperand(instr.op2, "r9", -0x38, PrimitiveType.Word64);
+            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Word64);
         }
 
         [Test]
@@ -905,7 +901,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("sh\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Opcode.sh, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, "r9", -0x38, PrimitiveType.Word16);
+            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Word16);
         }
 
         [Test]
@@ -915,7 +911,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("sw\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Opcode.sw, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, "r9", -0x38, PrimitiveType.Word32);
+            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Word32);
         }
 
         [Test]
@@ -925,7 +921,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("swl\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Opcode.swl, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, "r9", -0x38, PrimitiveType.Word32);
+            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Word32);
         }
 
         [Test]
@@ -935,7 +931,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("swr\tr3,-0038(r9)", instr.ToString());
             Assert.AreEqual(Opcode.swr, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, "r9", -0x38, PrimitiveType.Word32);
+            VerifyIndirectOperand(instr.op2, Registers.r9, -0x38, PrimitiveType.Word32);
         }
         
         [Test]
@@ -945,7 +941,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("sc\tr21,-0038(r10)", instr.ToString());
             Assert.AreEqual(Opcode.sc, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r21, PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, "r10", -0x38, PrimitiveType.Word32);
+            VerifyIndirectOperand(instr.op2, Registers.r10, -0x38, PrimitiveType.Word32);
         }
         [Test]
         public void MipsDis_scd()
@@ -954,7 +950,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("scd\tr21,-0038(r10)", instr.ToString());
             Assert.AreEqual(Opcode.scd, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r21, PrimitiveType.Word64);
-            VerifyIndirectOperand(instr.op2, "r10", -0x38, PrimitiveType.Word64);
+            VerifyIndirectOperand(instr.op2, Registers.r10, -0x38, PrimitiveType.Word64);
         }
 
         [Test]
@@ -1026,7 +1022,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual("mtc1\tr12,f1", instr.ToString());
             Assert.AreEqual(Opcode.mtc1, instr.opcode);
             VerifyRegisterOperand(instr.op1, Registers.r12, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, "f1", PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.op2, Registers.f1, PrimitiveType.Word32);
         }
 
         [Test]
@@ -1035,8 +1031,8 @@ namespace Reko.UnitTests.Arch.Mips
             var instr = DisassembleWord(0xE7AC0030);
             Assert.AreEqual("swc1\tf12,0030(sp)", instr.ToString());
             Assert.AreEqual(Opcode.swc1, instr.opcode);
-            VerifyRegisterOperand(instr.op1, "f12", PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, "sp", 0x30, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.op1, Registers.f12, PrimitiveType.Word32);
+            VerifyIndirectOperand(instr.op2, Registers.sp, 0x30, PrimitiveType.Word32);
         }
 
         [Test]
@@ -1045,6 +1041,9 @@ namespace Reko.UnitTests.Arch.Mips
             var instr = DisassembleWord(0x462C003E);
             Assert.AreEqual("c.le.d\tcc0,f0,f12", instr.ToString());
             Assert.AreEqual(Opcode.c_le_d, instr.opcode);
+            VerifyRegisterOperand(instr.op1, Registers.cc0, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.op2, Registers.f0, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.op3, Registers.f12, PrimitiveType.Word64);
         }
 
         [Test]
@@ -1053,6 +1052,8 @@ namespace Reko.UnitTests.Arch.Mips
             var instr = DisassembleWord(0x4443F800);
             Assert.AreEqual("cfc1\tr3,FCSR", instr.ToString());
             Assert.AreEqual(Opcode.cfc1, instr.opcode);
+            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.op2, Registers.FCSR, PrimitiveType.Word32);
         }
 
         [Test]
@@ -1091,15 +1092,56 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
-        public void MipsDis_instrs1()
+        public void MipsDis_ctc1()
         {
-            Assert.AreEqual("ctc1\tr1,FCSR", DisassembleWord(0x44C1F800).ToString());
-            Assert.AreEqual("cvt.w.d\tf0,f12", DisassembleWord(0x46206024).ToString());
-            Assert.AreEqual("ctc1\tr3,FCSR", DisassembleWord(0x44C3F800).ToString());
-            Assert.AreEqual("bc1f\tcc0,0010004C", DisassembleWord(0x45000012).ToString());
-            Assert.AreEqual("add.d\tf0,f12,f0", DisassembleWord(0x46206000).ToString());
-            Assert.AreEqual("cfc1\tr3,FCSR", DisassembleWord(0x4443F800).ToString());
-            Assert.AreEqual("cvt.w.d\tf2,f0", DisassembleWord(0x462000A4).ToString());
+            var instr = DisassembleWord(0x44C1F800);
+            Assert.AreEqual("ctc1\tr1,FCSR", instr.ToString());
+            Assert.AreEqual(Opcode.ctc1, instr.opcode);
+            VerifyRegisterOperand(instr.op1, Registers.r1, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.op2, Registers.FCSR, PrimitiveType.Word32);
+
+            instr = DisassembleWord(0x44C3F800);
+            Assert.AreEqual("ctc1\tr3,FCSR", instr.ToString());
+            Assert.AreEqual(Opcode.ctc1, instr.opcode);
+            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.op2, Registers.FCSR, PrimitiveType.Word32);
+        }
+
+        [Test]
+        public void MipsDis_cvt_w_d()
+        {
+            var instr = DisassembleWord(0x46206024); 
+            Assert.AreEqual("cvt.w.d\tf0,f12", instr.ToString());
+            Assert.AreEqual(Opcode.cvt_w_d, instr.opcode);
+            VerifyRegisterOperand(instr.op1, Registers.f0, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.op2, Registers.f12, PrimitiveType.Word64);
+
+            instr = DisassembleWord(0x462000A4);
+            Assert.AreEqual("cvt.w.d\tf2,f0", instr.ToString());
+            Assert.AreEqual(Opcode.cvt_w_d, instr.opcode);
+            VerifyRegisterOperand(instr.op1, Registers.f2, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.op2, Registers.f0, PrimitiveType.Word64);
+        }
+
+        [Test]
+        public void MipsDis_bc1f()
+        {
+            var instr = DisassembleWord(0x45000012); 
+            Assert.AreEqual("bc1f\tcc0,0010004C", instr.ToString());
+            Assert.AreEqual(Opcode.bc1f, instr.opcode);
+            VerifyRegisterOperand(instr.op1, Registers.cc0, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.op2, Registers.f0, PrimitiveType.Word32);
+        }
+
+        [Test]
+        public void MipsDis_add_d()
+        {
+            var instr = DisassembleWord(0x46206000); 
+            Assert.AreEqual("add.d\tf0,f12,f0", instr.ToString());
+            Assert.AreEqual(Opcode.add_d, instr.opcode);
+            VerifyRegisterOperand(instr.op1, Registers.f0, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.op2, Registers.f12, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.op2, Registers.f0, PrimitiveType.Word64);
         }
     }
 }
