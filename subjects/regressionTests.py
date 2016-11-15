@@ -8,6 +8,7 @@
 from optparse import OptionParser
 import os
 import os.path
+import re
 import subprocess
 import sys
 
@@ -57,6 +58,10 @@ def execute_in_dir(fn, dir, fname):
 def execute_reko_project(dir, pname):
     execute_command([ reko_cmdline, pname ], pname)
 
+# Remove any comment on the line
+def strip_comment(line):
+    return re.sub('#.*', '', line)
+
 # Find all commands to execute.
 def execute_command_file(dir, scr_name):
     f = open("subject.cmd")
@@ -65,6 +70,7 @@ def execute_command_file(dir, scr_name):
     if (lines is None):
         return
     for line in lines:
+        line = strip_comment(line)
         exe_and_args = line.split()
         if len(exe_and_args) <= 1:
             continue
