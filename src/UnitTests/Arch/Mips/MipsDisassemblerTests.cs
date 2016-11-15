@@ -402,21 +402,23 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_ddiv()
         {
+            Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00011 00101 00000 00000 011110");
             Assert.AreEqual("ddiv\tr3,r5", instr.ToString());
             Assert.AreEqual(Opcode.ddiv, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word64);
         }
 
         [Test]
         public void MipsDis_ddivu()
         {
+            Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00011 00101 00000 00000 011111");
             Assert.AreEqual("ddivu\tr3,r5", instr.ToString());
             Assert.AreEqual(Opcode.ddivu, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word64);
         }
 
         [Test]
@@ -442,21 +444,23 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_dmult()
         {
+            Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00011 00101 00000 00000 011100");
             Assert.AreEqual("dmult\tr3,r5", instr.ToString());
             Assert.AreEqual(Opcode.dmult, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word64);
         }
 
         [Test]
         public void MipsDis_dmultu()
         {
+            Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00011 00101 00000 00000 011101");
             Assert.AreEqual("dmultu\tr3,r5", instr.ToString());
             Assert.AreEqual(Opcode.dmultu, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.op1, Registers.r3, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word64);
         }
 
         [Test]
@@ -561,23 +565,25 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_dsub()
         {
+            Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00011 00010 11110 00000 101110");
             Assert.AreEqual("dsub\tr30,r3,r2", instr.ToString());
             Assert.AreEqual(Opcode.dsub, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r30, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r3, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op3, Registers.r2, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.op1, Registers.r30, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.op2, Registers.r3, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.op3, Registers.r2, PrimitiveType.Word64);
         }
 
         [Test]
         public void MipsDis_dsubu()
         {
+            Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00011 00010 11110 00000 101111");
             Assert.AreEqual("dsubu\tr30,r3,r2", instr.ToString());
             Assert.AreEqual(Opcode.dsubu, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r30, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r3, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op3, Registers.r2, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.op1, Registers.r30, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.op2, Registers.r3, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.op3, Registers.r2, PrimitiveType.Word64);
         }
 
         [Test]

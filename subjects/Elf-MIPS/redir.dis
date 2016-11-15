@@ -627,7 +627,7 @@ l00400D6C:
 	r2 = 2
 	Mem0[r30 + 0x00000058:word16] = (word16) r2
 	r2 = Mem0[r28 - 0x00007E20:word32]
-	r2 = (word32) Mem0[r2 + 0x000002F6:word16]
+	r2 = (word32) Mem0[r2 + 0x000002F6:uint16]
 	Mem0[r30 + 0x0000005A:word16] = (word16) r2
 	r4 = Mem0[r28 - 0x00007E20:word32]
 	r4 = r4 + 469
@@ -1733,7 +1733,7 @@ l00401BFC:
 	Mem0[r3 + 0x00001798:word16] = (word16) r2
 	r3 = Mem0[r30 + 0x0000002C:word32]
 	r2 = Mem0[r30 + 0x00000048:word32]
-	r2 = (word32) Mem0[r2 + 0x00000002:word16]
+	r2 = (word32) Mem0[r2 + 0x00000002:uint16]
 	Mem0[r3 + 0x0000179A:word16] = (word16) r2
 	r3 = Mem0[r30 + 0x0000002C:word32]
 	r2 = Mem0[r30 + 0x00000048:word32]
@@ -1757,7 +1757,7 @@ l00401BFC:
 	Mem0[r3 + 0x000017A8:word16] = (word16) r2
 	r3 = Mem0[r30 + 0x0000002C:word32]
 	r2 = Mem0[r30 + 0x0000004C:word32]
-	r2 = (word32) Mem0[r2 + 0x00000002:word16]
+	r2 = (word32) Mem0[r2 + 0x00000002:uint16]
 	Mem0[r3 + 0x000017AA:word16] = (word16) r2
 	r3 = Mem0[r30 + 0x0000002C:word32]
 	r2 = Mem0[r30 + 0x0000004C:word32]
@@ -1982,11 +1982,11 @@ l00402028:
 	r28 = Mem0[r30 + 0x00000020:word32]
 	r3 = r2
 	r2 = Mem0[r30 + 0x00000140:word32]
-	r2 = (word32) Mem0[r2 + 0x0000179A:word16]
+	r2 = (word32) Mem0[r2 + 0x0000179A:uint16]
 	Mem0[sp + 0x00000010:word32] = r2
 	Mem0[sp + 0x00000014:word32] = r3
 	r2 = Mem0[r30 + 0x00000140:word32]
-	r2 = (word32) Mem0[r2 + 0x0000179A:word16]
+	r2 = (word32) Mem0[r2 + 0x0000179A:uint16]
 	Mem0[sp + 0x00000018:word32] = r2
 	r4 = r30 + 40
 	r5 = 256
@@ -7012,7 +7012,7 @@ l00406150:
 	r2 = Mem0[r28 - 0x00007DF4:word32]
 	r2 = Mem0[r2:word32]
 	r2 = r3 + r2
-	r2 = (word32) Mem0[r2:word16]
+	r2 = (word32) Mem0[r2:uint16]
 	r2 = r2 + 0x00000001
 	r2 = r2 + 0x0000FFFF
 	Mem0[r4:word32] = r2
@@ -7195,7 +7195,7 @@ l004063B4:
 	r2 = Mem0[r28 - 0x00007DF4:word32]
 	r2 = Mem0[r2:word32]
 	r2 = r3 + r2
-	r2 = (word32) Mem0[r2:word16]
+	r2 = (word32) Mem0[r2:uint16]
 	r2 = r2 + 0x00000001
 	r2 = r2 + 0x0000FFFF
 	branch r2 == 0x00000000 l004063B4_ds_t
@@ -7790,7 +7790,7 @@ l00406C7C:
 	r2 = 2
 	Mem0[r3 + 0x00000008:word16] = (word16) r2
 	r3 = Mem0[r30 + 0x00000018:word32]
-	r2 = (word32) Mem0[r30 + 0x00000036:word16]
+	r2 = (word32) Mem0[r30 + 0x00000036:uint16]
 	Mem0[r3 + 0x0000000A:word16] = (word16) r2
 	r4 = Mem0[r30 + 0x00000030:word32]
 	r25 = Mem0[r28 - 0x00007EA8:word32]
