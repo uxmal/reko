@@ -32,6 +32,14 @@ namespace Reko.Arch.Mips
         private const InstructionClass Transfer = InstructionClass.Transfer | InstructionClass.Delay;
         private const InstructionClass LinkTransfer = InstructionClass.Transfer | InstructionClass.Call | InstructionClass.Delay;
 
+        private static readonly Dictionary<Opcode, string> instrNames = new Dictionary<Opcode, string>
+        {
+            { Opcode.add_d,   "add.d" },
+            { Opcode.c_eq_d,  "c.eq.d" },
+            { Opcode.c_le_d,  "c.le.d" },
+            { Opcode.cvt_w_d, "cvt.w.d" },
+        };
+
         private static Dictionary<Opcode, InstructionClass> classOf;
 
         public Opcode opcode;
@@ -69,7 +77,13 @@ namespace Reko.Arch.Mips
 
         public override void Render(MachineInstructionWriter writer)
         {
-            writer.WriteOpcode(GetOpcodeString(opcode));
+            string name;
+            if (!instrNames.TryGetValue(opcode, out name))
+            {
+                name = opcode.ToString();
+            }
+            writer.WriteOpcode(name);
+
             if (op1 != null)
             {
                 writer.Tab();
@@ -87,16 +101,7 @@ namespace Reko.Arch.Mips
             }
         }
 
-        private string GetOpcodeString(Opcode opcode)
-        {
-            switch (opcode)
-            {
-            case Opcode.add_d: return "add.d";
-            case Opcode.c_le_d: return "c.le.d";
-            case Opcode.cvt_w_d: return "cvt.w.d";
-            default: return opcode.ToString();
-            }
-        }
+ 
 
         static MipsInstruction()
         {

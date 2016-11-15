@@ -1126,7 +1126,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsDis_c_eq_d()
         {
             var instr = DisassembleWord(0x46202032);
-            Assert.AreEqual("c.eq.d\tf4,f0", instr.ToString());
+            Assert.AreEqual("c.eq.d\tcc0,f4,f0", instr.ToString());
             Assert.AreEqual(Opcode.c_eq_d, instr.opcode);
         }
 
