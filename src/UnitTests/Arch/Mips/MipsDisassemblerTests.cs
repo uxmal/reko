@@ -106,6 +106,7 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual(offset, opReg.Offset);
             Assert.AreEqual(type, opReg.Width);
         }
+
         private void VerifyImmediateOperand(MachineOperand op, Constant val, PrimitiveType type)
         {
             Assert.IsAssignableFrom(typeof(ImmediateOperand), op);
@@ -122,39 +123,6 @@ namespace Reko.UnitTests.Arch.Mips
             Assert.AreEqual(type, opReg.Width);
             Assert.AreEqual(addr, opReg.Address);
         }
-
-        private void VerifyRegisterOperand(MachineOperand op, RegisterStorage reg, PrimitiveType type)
-        {
-            Assert.IsAssignableFrom(typeof(RegisterOperand), op);
-            var opReg = op as RegisterOperand;
-            Assert.AreEqual(reg, opReg.Register);
-            Assert.AreEqual(type, opReg.Register.DataType);
-            Assert.AreEqual(type, opReg.Width);
-        }
-        private void VerifyIndirectOperand(MachineOperand op, RegisterStorage reg, int offset, PrimitiveType type)
-        {
-            Assert.IsAssignableFrom(typeof(IndirectOperand), op);
-            var opReg = op as IndirectOperand;
-            Assert.AreEqual(reg, opReg.Base);
-            Assert.AreEqual(offset, opReg.Offset);
-            Assert.AreEqual(type, opReg.Width);
-        }
-        private void VerifyImmediateOperand(MachineOperand op, Constant val, PrimitiveType type)
-        {
-            Assert.IsAssignableFrom(typeof(ImmediateOperand), op);
-            var opReg = op as ImmediateOperand;
-            Assert.AreEqual(type, opReg.Width);
-            Assert.AreEqual(type, opReg.Value.DataType);
-            Assert.AreEqual(val.GetValue(), opReg.Value.GetValue());
-        }
-        private void VerifyAddressOperand(MachineOperand op, Address addr, PrimitiveType type)
-        {
-            Assert.IsAssignableFrom(typeof(AddressOperand), op);
-            var opReg = op as AddressOperand;
-            Assert.AreEqual(type, opReg.Width);
-            Assert.AreEqual(addr, opReg.Address);
-        }
-
 
         [Test]
         public void MipsDis_addi()
@@ -980,16 +948,6 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
-        public void MipsDis_sc()
-        {
-            var instr = DisassembleBits("111000 01010 10101 1111111111001000");
-            Assert.AreEqual("sc\tr21,-0038(r10)", instr.ToString());
-            Assert.AreEqual(Opcode.sc, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r21, PrimitiveType.Word32);
-            VerifyIndirectOperand(instr.op2, Registers.r10, -0x38, PrimitiveType.Word32);
-        }
-
-        [Test]
         public void MipsDis_stores_64bit()
         {
             Given_Mips64_Architecture();
@@ -1004,14 +962,6 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
-        public void MipsDis_sc_64bit()
-        {
-            Given_Mips64_Architecture();
-            var instr = DisassembleBits("111100 01001 00011 1111111111001000");
-            Assert.AreEqual("scd\tr3,-0038(r9)", instr.ToString());
-        }
-
-        [Test]
         public void MipsDis_sc()
         {
             var instr = DisassembleBits("111000 01010 10101 1111111111001000");
@@ -1020,6 +970,16 @@ namespace Reko.UnitTests.Arch.Mips
             VerifyRegisterOperand(instr.op1, Registers.r21, PrimitiveType.Word32);
             VerifyIndirectOperand(instr.op2, Registers.r10, -0x38, PrimitiveType.Word32);
         }
+
+        [Test]
+        public void MipsDis_sc_64bit()
+        {
+            Given_Mips64_Architecture();
+            var instr = DisassembleBits("111100 01001 00011 1111111111001000");
+            Assert.AreEqual("scd\tr3,-0038(r9)", instr.ToString());
+        }
+
+ 
 
         [Test]
         public void MipsDis_xor()

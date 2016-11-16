@@ -151,23 +151,6 @@ namespace Reko.UnitTests.Arch.Mips
         }
 
         [Test]
-        public void MipsRw_sc()
-        {
-            RunTest("111000 01010 10101 1111111111001000");
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r21 = __store_conditional_32(Mem0[r10 - 0x00000038:word32], r21)");
-        }
-        [Test]
-        public void MipsRw_scd()
-        {
-            RunTest("111100 01010 10101 1111111111001000");
-            AssertCode(
-                "0|L--|00100000(4): 1 instructions",
-                "1|L--|r21 = __store_conditional_64(Mem0[r10 - 0x00000038:word64], r21)");
-        }
-
-        [Test]
         public void MipsRw_ori_r0()
         {
             RunTest("001101 00000 00101 1111100000100111");
