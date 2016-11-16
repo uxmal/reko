@@ -118,10 +118,10 @@ namespace Reko.Arch.Mips
             new AOpRec(Opcode.mthi, "R1"),
             new AOpRec(Opcode.mflo, "R3"),
             new AOpRec(Opcode.mtlo, "R1"),
-            new AOpRec(Opcode.dsllv, "R3,R2,R1"),
+            new A64OpRec(Opcode.dsllv, "R3,R2,R1"),
             new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.dsrlv, "R3,R2,R1"),
-            new AOpRec(Opcode.dsrav, "R3,R2,R1"),
+            new A64OpRec(Opcode.dsrlv, "R3,R2,R1"),
+            new A64OpRec(Opcode.dsrav, "R3,R2,R1"),
 
             new AOpRec(Opcode.mult, "R1,R2"),
             new AOpRec(Opcode.multu, "R1,R2"),
@@ -159,14 +159,14 @@ namespace Reko.Arch.Mips
             new AOpRec(Opcode.tne, "R1,R2,T"),
             new AOpRec(Opcode.illegal, ""),
 
-            new AOpRec(Opcode.dsll, "R3,R2,s"),
+            new A64OpRec(Opcode.dsll, "R3,R2,s"),
             new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.dsrl, "R3,R2,s"),
-            new AOpRec(Opcode.dsra, "R3,R2,s"),
-            new AOpRec(Opcode.dsll32, "R3,R2,s"),
+            new A64OpRec(Opcode.dsrl, "R3,R2,s"),
+            new A64OpRec(Opcode.dsra, "R3,R2,s"),
+            new A64OpRec(Opcode.dsll32, "R3,R2,s"),
             new AOpRec(Opcode.illegal, ""), 
-            new AOpRec(Opcode.dsrl32, "R3,R2,s"),
-            new AOpRec(Opcode.dsra32, "R3,R2,s"),
+            new A64OpRec(Opcode.dsrl32, "R3,R2,s"),
+            new A64OpRec(Opcode.dsra32, "R3,R2,s"),
         };
         internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
         {

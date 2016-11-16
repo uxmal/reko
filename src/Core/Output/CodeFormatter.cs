@@ -96,11 +96,13 @@ namespace Reko.Core.Output
 			precedences[Operator.Le] = 7;
 			precedences[Operator.Gt] = 7;
 			precedences[Operator.Ge] = 7;
+			precedences[Operator.Feq] = 7;
 			precedences[Operator.Flt] = 7;
-			precedences[Operator.Fle] = 7;
+            precedences[Operator.Fle] = 7;
 			precedences[Operator.Fgt] = 7;
 			precedences[Operator.Fge] = 7;
-			precedences[Operator.Ult] = 7;
+			precedences[Operator.Fne] = 7;
+            precedences[Operator.Ult] = 7;
 			precedences[Operator.Ule] = 7;
 			precedences[Operator.Ugt] = 7;
 			precedences[Operator.Uge] = 7;

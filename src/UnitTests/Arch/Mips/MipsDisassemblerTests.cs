@@ -466,100 +466,109 @@ namespace Reko.UnitTests.Arch.Mips
         [Test]
         public void MipsDis_dsll()
         {
+            Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00000 00101 00111 01001 111000");
             Assert.AreEqual("dsll\tr7,r5,09", instr.ToString());
             Assert.AreEqual(Opcode.dsll, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r7, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.op1, Registers.r7, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word64);
             VerifyImmediateOperand(instr.op3, Constant.Byte(0x09), PrimitiveType.Byte);
         }
 
         [Test]
         public void MipsDis_dsl32()
         {
+            Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00000 00101 00111 01001 111100");
             Assert.AreEqual("dsll32\tr7,r5,09", instr.ToString());
             Assert.AreEqual(Opcode.dsll32, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r7, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.op1, Registers.r7, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word64);
             VerifyImmediateOperand(instr.op3, Constant.Byte(0x09), PrimitiveType.Byte);
         }
 
         [Test]
         public void MipsDis_dsllv()
         {
+            Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00011 00101 00111 00000 010100");
             Assert.AreEqual("dsllv\tr7,r5,r3", instr.ToString());
             Assert.AreEqual(Opcode.dsllv, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r7, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op3, Registers.r3, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.op1, Registers.r7, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.op3, Registers.r3, PrimitiveType.Word64);
         }
 
         [Test]
         public void MipsDis_dsra()
         {
+            Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00000 00101 00111 01001 111011");
             Assert.AreEqual("dsra\tr7,r5,09", instr.ToString());
             Assert.AreEqual(Opcode.dsra, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r7, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.op1, Registers.r7, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word64);
             VerifyImmediateOperand(instr.op3, Constant.Byte(0x09), PrimitiveType.Byte);
         }
 
         [Test]
         public void MipsDis_dsra32()
         {
+            Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00000 00101 00111 01001 111111");
             Assert.AreEqual("dsra32\tr7,r5,09", instr.ToString());
             Assert.AreEqual(Opcode.dsra32, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r7, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.op1, Registers.r7, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word64);
             VerifyImmediateOperand(instr.op3, Constant.Byte(0x09), PrimitiveType.Byte);
         }
 
         [Test]
         public void MipsDis_dsrav()
         {
+            Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00011 00101 00111 00000 010111");
             Assert.AreEqual("dsrav\tr7,r5,r3", instr.ToString());
             Assert.AreEqual(Opcode.dsrav, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r7, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op3, Registers.r3, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.op1, Registers.r7, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.op3, Registers.r3, PrimitiveType.Word64);
         }
 
         [Test]
         public void MipsDis_dsrl()
         {
+            Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00000 00101 00111 01001 111010");
             Assert.AreEqual("dsrl\tr7,r5,09", instr.ToString());
             Assert.AreEqual(Opcode.dsrl, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r7, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.op1, Registers.r7, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word64);
             VerifyImmediateOperand(instr.op3, Constant.Byte(0x09), PrimitiveType.Byte);
         }
 
         [Test]
         public void MipsDis_dsrl32()
         {
+            Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00000 00101 00111 01001 111110");
             Assert.AreEqual("dsrl32\tr7,r5,09", instr.ToString());
             Assert.AreEqual(Opcode.dsrl32, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r7, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.op1, Registers.r7, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word64);
             VerifyImmediateOperand(instr.op3, Constant.Byte(0x09), PrimitiveType.Byte);
         }
 
         [Test]
         public void MipsDis_dsrlv()
         {
+            Given_Mips64_Architecture();
             var instr = DisassembleBits("000000 00011 00101 00111 00000 010110");
             Assert.AreEqual("dsrlv\tr7,r5,r3", instr.ToString());
             Assert.AreEqual(Opcode.dsrlv, instr.opcode);
-            VerifyRegisterOperand(instr.op1, Registers.r7, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word32);
-            VerifyRegisterOperand(instr.op3, Registers.r3, PrimitiveType.Word32);
+            VerifyRegisterOperand(instr.op1, Registers.r7, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.op2, Registers.r5, PrimitiveType.Word64);
+            VerifyRegisterOperand(instr.op3, Registers.r3, PrimitiveType.Word64);
         }
 
         [Test]
@@ -1136,6 +1145,18 @@ namespace Reko.UnitTests.Arch.Mips
             var instr = DisassembleWord(0xC4230004);
             Assert.AreEqual("lwc1\tf3,0004(r1)", instr.ToString());
             Assert.AreEqual(Opcode.lwc1, instr.opcode);
+        }
+
+        [Test]
+        public void MipsDis_cvt()
+        {
+            var instr = DisassembleWord(0x46a00861);
+            Assert.AreEqual("cvt.d.l\tf1,f1", instr.ToString());
+            Assert.AreEqual(Opcode.cvt_d_l, instr.opcode);
+
+            instr = DisassembleWord(0x46200820);
+            Assert.AreEqual("cvt.s.d\tf0,f1", instr.ToString());
+            Assert.AreEqual(Opcode.cvt_s_d, instr.opcode);
         }
     }
 }

@@ -351,7 +351,7 @@ namespace Reko.UnitTests.Arch.Mips
         public void MipsRw_tge()
         {
             AssertCode(0x00F000F0,  // tge a3,s0,0x3
-                "0|L--|00100000(4): 1 instructions",
+                "0|T--|00100000(4): 1 instructions",
                 "1|---|if (r7 >= r16) __trap(0x0003)");
         }
 
@@ -472,24 +472,215 @@ namespace Reko.UnitTests.Arch.Mips
         {
             // Test only the known ones, we'll have to see how this changes things later on with dynamic custom registers
             RunTest("011111 00000 00110 00000 00000 111011");   // CPU number
-            AssertCode( "0|L--|00100000(4): 1 instructions",
+            AssertCode("0|L--|00100000(4): 1 instructions",
                         "1|L--|r6 = __read_hardware_register(0x00)");
 
             RunTest("011111 00000 01000 00001 00000 111011");   // SYNCI step size
-            AssertCode( "0|L--|00100000(4): 1 instructions",
+            AssertCode("0|L--|00100000(4): 1 instructions",
                         "1|L--|r8 = __read_hardware_register(0x01)");
 
             RunTest("011111 00000 00001 00010 00000 111011");   // Cycle counter
-            AssertCode( "0|L--|00100000(4): 1 instructions",
+            AssertCode("0|L--|00100000(4): 1 instructions",
                         "1|L--|r1 = __read_hardware_register(0x02)");
 
             RunTest("011111 00000 00011 00011 00000 111011");   // Cycle counter resolution
-            AssertCode( "0|L--|00100000(4): 1 instructions",
+            AssertCode("0|L--|00100000(4): 1 instructions",
                         "1|L--|r3 = __read_hardware_register(0x03)");
 
             RunTest("011111 00000 00111 11101 00000 111011");   // OS-specific, thread local pointer on Linux
-            AssertCode( "0|L--|00100000(4): 1 instructions",
+            AssertCode("0|L--|00100000(4): 1 instructions",
                         "1|L--|r7 = __read_hardware_register(0x1D)");
+        }
+
+        [Test]
+        public void MipsRw_trap()
+        {
+            AssertCode(0x00000034, // teq zero, zero	 
+                "0|T--|00100000(4): 1 instructions",
+                "1|---|if (0x00000000 == 0x00000000) __trap(0x0000)");
+        }
+
+        [Test]
+        public void MipsRw_Shifts_64bit()
+        {
+            Given_Mips64_Architecture();
+            AssertCode(0x001FE03E, // dsrl32 gp,ra,0x0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r28 = ra >>u 0x00 + 0x20");
+
+            AssertCode(0x001ce03c, // dsll32 gp,gp,0x0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r28 = r28 << 0x00 + 0x20");
+
+            AssertCode(0x0062182f, // dsubu v1, v1, v0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r3 = r3 - r2");
+
+
+            AssertCode(0x000208fa, // dsrl at,v0,0x3
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r1 = r2 >>u 0x03");
+
+            AssertCode(0x000510f8, // dsll v0, a1,0x3
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r2 = r5 << 0x03");
+
+            AssertCode(0x00410814, // dsllv at, at, v0	      
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r1 = r1 >>u r2");
+        }
+
+        [Test]
+        public void MipsRw_Mult_64bit()
+        {
+            Given_Mips64_Architecture();
+            AssertCode(0x00c2001d, // dmultu a2,v0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|hi_lo = r6 *u r2");
+
+            AssertCode(0x0082001c, // dmult a0,v0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|hi_lo = r4 *s r2");
+        }
+
+        [Test]
+        public void MipsRw_Various_FPU_instructions()
+        {
+            AssertCode(0x46200832, // c.eq.d $f1,$f0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|cc0 = f1_f2 == f0_f1");
+
+            AssertCode(0x46A008E1, // cvt.d.l $f3,$f1
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f3 = (real64) f1_f2");
+
+            AssertCode(0x46200820, // cvt.s.d $f0,$f1
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f0 = (real32) f1_f2");
+        }
+
+        [Test]
+        public void MipsRw_dmtc1()
+        {
+            Given_Mips64_Architecture();
+            AssertCode(0x44A40800, // dmtc1 a0,$f1
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f1 = r4");
+        }
+
+        [Test]
+        public void MipsRw_sub_d()
+        {
+            AssertCode(0x463AD601, // sub.d $f24,$f26,$f26
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f24_f25 = f26_f27 - f26_f27");
+        }
+
+        [Test]
+        public void MipsRw_trunc_l_d()
+        {
+            AssertCode(0x46200049, // trunc.l.d $f1,$f0
+            "0|L--|00100000(4): 2 instructions",
+            "1|L--|v2 = f0",
+            "2|L--|f1 = (int64) trunc(v2)");
+        }
+
+        [Test]
+        public void MipsRw_sdc1()
+        {
+            Given_Mips64_Architecture();
+            AssertCode(0xf7a10018, // sdc1 $f1,24(sp)
+            "0|L--|00100000(4): 1 instructions",
+            "1|L--|Mem0[sp + 0x0000000000000018:word64] = f1");
+        }
+
+        [Test]
+        public void MipsRw_mov_d()
+        {
+            AssertCode(0x46200806, // mov.d $f0,$f1
+            "0|L--|00100000(4): 1 instructions",
+            "1|L--|f0 = f1");
+        }
+
+        [Test]
+        public void MipsRw_div_d()
+        {
+            AssertCode(0x46220003, // div.d $f0,$f0,$f2
+            "0|L--|00100000(4): 1 instructions",
+            "1|L--|f0_f1 = f0_f1 / f2_f3");
+        }
+
+        [Test]
+        public void MipsRw_dsrlv()
+        {
+            Given_Mips64_Architecture();
+            AssertCode(0x00221016, // dsrlv v0, v0, at
+            "0|L--|00100000(4): 1 instructions",
+            "1|L--|r2 = r2 >>u r1");
+        }
+
+        [Test]
+        public void MipsRw_lwc1()
+        {
+            AssertCode(0xc4240000, // lwc1 $f4,0(at)
+            "0|L--|00100000(4): 1 instructions",
+            "1|L--|f4 = (word32) Mem0[r1:real32]");
+        }
+
+        [Test]
+        public void MipsRw_c_lt_d()
+        {
+            AssertCode(0x4620083c, // c.lt.d $f1,$f0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|cc0 = f1_f2 < f0_f1");
+        }
+
+        [Test]
+        public void MipsRw_dmfc1()        {
+            Given_Mips64_Architecture();
+            AssertCode(0x44210800, // dmfc1 at,$f1
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r1 = f1");
+        }
+
+        [Test]
+        public void MipsRw_mul_s()
+        {
+            AssertCode(0x46020842, // mul.s $f1,$f1,$f2
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f1 = f1 * f2");
+        }
+
+        [Test]
+        public void MipsRw_c_eq_s()
+        {
+            AssertCode(0x46002032, // c.eq.s $f4,$f0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|cc0 = f4_f5 == f0_f1");
+        }
+
+        [Test]
+        public void MipsRw_c_lt_s()
+        {
+            AssertCode(0x4600083c, // c.lt.s $f1,$f0 
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|cc0 = f1_f2 < f0_f1");
+        }
+
+        [Test]
+        public void MipsRw_c_le_s()
+        {
+            AssertCode(0x4600083e, // c.le.s $f1,$f0
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|cc0 = f1_f2 <= f0_f1");
+        }
+
+        [Test]
+        public void MipsRw_mov_s()
+        {
+            AssertCode(0x46001046, // mov.s $f1,$f2
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|f1 = f2");
         }
     }
 }

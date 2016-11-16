@@ -62,14 +62,37 @@ namespace Reko.Arch.Mips
             emitter.Assign(opDst, opSrc);
         }
 
+        private void RewriteCopy(MipsInstruction instr)
+        {
+            var dst = RewriteOperand(instr.op1);
+            var src = RewriteOperand(instr.op2);
+            emitter.Assign(dst, src);
+        }
+
         private void RewriteDiv(MipsInstruction instr, Func<Expression, Expression, Expression> ctor)
         {
-            var hi = frame.EnsureRegister(arch.hi);
-            var lo = frame.EnsureRegister(arch.lo);
-            var opLeft = RewriteOperand(instr.op1);
-            var opRight = RewriteOperand(instr.op2);
-            emitter.Assign(lo, ctor(opLeft, opRight));
-            emitter.Assign(hi, emitter.Mod(opLeft, opRight));
+            var op1 = RewriteOperand(instr.op1);
+            var op2 = RewriteOperand(instr.op2);
+            if (instr.op3 != null)
+            {
+                var op3 = RewriteOperand(instr.op3);
+                emitter.Assign(op1, ctor(op2, op3));
+            }
+            else
+            {
+                var hi = frame.EnsureRegister(arch.hi);
+                var lo = frame.EnsureRegister(arch.lo);
+                emitter.Assign(lo, ctor(op1, op2));
+                emitter.Assign(hi, emitter.Mod(op1, op2));
+            }
+        }
+
+        private void RewriteDshift32(MipsInstruction instr, Func<Expression, Expression, Expression> ctor)
+        {
+            var dst = RewriteOperand(instr.op1);
+            var src = RewriteOperand(instr.op2);
+            var sh = emitter.IAdd(RewriteOperand(instr.op3), 32);
+            emitter.Assign(dst, ctor(src, sh));
         }
 
         private void RewriteLoad(MipsInstruction instr, PrimitiveType dtSmall)
@@ -156,12 +179,20 @@ namespace Reko.Arch.Mips
             emitter.Assign(frame.EnsureRegister(reg), opSrc);
         }
 
-        private void RewriteMul(MipsInstruction instr, Func<Expression, Expression, Expression> fn, PrimitiveType ret)
+        private void RewriteMul(MipsInstruction instr, Func<Expression, Expression, Expression> ctor, PrimitiveType dt)
         {
-            var hilo = frame.EnsureSequence(arch.hi, arch.lo, ret);
-            emitter.Assign(
-                hilo,
-                fn(RewriteOperand(instr.op1), RewriteOperand(instr.op2)));
+            var op1 = RewriteOperand(instr.op1);
+            var op2 = RewriteOperand(instr.op2);
+            if (instr.op3 != null)
+            {
+                var op3 = RewriteOperand(instr.op3);
+                emitter.Assign(op1, ctor(op2, op3));
+            }
+            else
+            {
+                var hilo = frame.EnsureSequence(arch.hi, arch.lo, dt);
+                emitter.Assign(hilo, ctor(op1, op2));
+            }
         }
 
         private void RewriteNor(MipsInstruction instr)

@@ -35,7 +35,6 @@ namespace Reko.Arch.Mips
         private Identifier GetFpuRegPair(MachineOperand op)
         {
             var freg0 = ((RegisterOperand)op).Register;
-            Debug.Assert(freg0.Number % 2 == 0);
             var freg1 = arch.fpuRegs[1 + (freg0.Number & 0x1F)];
             var seq = frame.EnsureSequence(
                 freg0,
@@ -44,13 +43,14 @@ namespace Reko.Arch.Mips
             return seq;
         }
 
-        private void RewriteAddD(MipsInstruction instr)
+        private void RewriteFpuBinopD(MipsInstruction instr, Func<Expression,Expression,Expression> ctor)
         {
             var dst = GetFpuRegPair(instr.op1);
             var src1 = GetFpuRegPair(instr.op2);
             var src2 = GetFpuRegPair(instr.op3);
-            emitter.Assign(dst, emitter.FAdd(src1, src2));
+            emitter.Assign(dst, ctor(src1, src2));
         }
+
         private void RewriteMulD(MipsInstruction instr)
         {
             var dst = GetFpuRegPair(instr.op1);
@@ -98,6 +98,16 @@ namespace Reko.Arch.Mips
         private void RewriteMtc1(MipsInstruction instr)
         {
             emitter.Assign(RewriteOperand(instr.op2), RewriteOperand(instr.op1));
+        }
+
+        private void RewriteTrunc(MipsInstruction instr, string fn, PrimitiveType dtSrc, PrimitiveType dtDst)
+        {
+            var tmp = frame.CreateTemporary(dtSrc);
+            emitter.Assign(tmp, RewriteOperand(instr.op2));
+            var ppp = host.PseudoProcedure(fn, dtSrc, tmp);
+            emitter.Assign(
+                RewriteOperand(instr.op1),
+                emitter.Cast(dtDst, ppp));
         }
     }
 }
