@@ -31,6 +31,13 @@ using System.Linq;
 
 namespace Reko.Arch.Mips
 {
+    /// <summary>
+    /// MIPS processor architecture
+    /// </summary>
+    /// <remarks>
+    /// R4000 = MIPS III instruction set
+    /// MIPS16 = compact 16-bit encoding
+    /// </remarks>
     public abstract class MipsProcessorArchitecture : ProcessorArchitecture
     {
         public Dictionary<uint, RegisterStorage> fpuCtrlRegs;
