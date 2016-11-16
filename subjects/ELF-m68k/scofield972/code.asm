@@ -1,51 +1,51 @@
-;;; Segment code (00000000)
+;;; Segment code (80000000)
 
-;; fn00000000: 00000000
-fn00000000 proc
+;; fn80000000: 80000000
+fn80000000 proc
 	jsr.l	$03CC(pc)
 	rts	
-00000006                   4E 71 4E 71 4E 71 4E 71 4E 71       NqNqNqNqNq
-00000010 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
-00000020 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
-00000030 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
-00000040 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
-00000050 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
-00000060 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
-00000070 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
-00000080 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
-00000090 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
-000000A0 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
-000000B0 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
-000000C0 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
-000000D0 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
-000000E0 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
-000000F0 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
-00000100 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
-00000110 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
-00000120 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
-00000130 4E 71                                           Nq             
+80000006                   4E 71 4E 71 4E 71 4E 71 4E 71       NqNqNqNqNq
+80000010 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
+80000020 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
+80000030 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
+80000040 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
+80000050 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
+80000060 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
+80000070 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
+80000080 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
+80000090 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
+800000A0 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
+800000B0 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
+800000C0 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
+800000D0 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
+800000E0 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
+800000F0 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
+80000100 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
+80000110 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
+80000120 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
+80000130 4E 71                                           Nq             
 
-;; fn00000132: 00000132
-fn00000132 proc
+;; fn80000132: 80000132
+fn80000132 proc
 	link	a6,#$FFF0
 	move.l	d2,-(a7)
 	fmove.x	$800004FC,fp0
 	fmove.x	fp0,$-000C(a6)
 	clr.l	$-0010(a6)
 
-l0000014A:
+l8000014A:
 	fmove.l	$-0010(a6),fp0
 	fcmp.x	$0014(a6),fp0
-	fbnlt	$00000172
+	fbnlt	$80000172
 
-l0000015A:
+l8000015A:
 	fmove.x	$-000C(a6),fp0
 	fmul.x	$0008(a6),fp0
 	fmove.x	fp0,$-000C(a6)
 	addq.l	#$01,$-0010(a6)
-	bra	$0000014A
+	bra	$8000014A
 
-l00000172:
+l80000172:
 	move.l	$-000C(a6),d0
 	move.l	$-0008(a6),d1
 	move.l	$-0004(a6),d2
@@ -57,8 +57,8 @@ l00000172:
 	unlk	a6
 	rts	
 
-;; fn0000018E: 0000018E
-fn0000018E proc
+;; fn8000018E: 8000018E
+fn8000018E proc
 	link	a6,#$FFF0
 	move.l	d2,-(a7)
 	fmove.x	$80000508,fp0
@@ -66,20 +66,20 @@ fn0000018E proc
 	moveq	#$+01,d0
 	move.l	d0,$-0010(a6)
 
-l000001A8:
+l800001A8:
 	fmove.l	$-0010(a6),fp0
 	fcmp.x	$0008(a6),fp0
-	fbnle	$000001D4
+	fbnle	$800001D4
 
-l000001B8:
+l800001B8:
 	fmove.l	$-0010(a6),fp0
 	fmove.x	$-000C(a6),fp1
 	fmul.x	fp0,fp1
 	fmove.x	fp1,$-000C(a6)
 	addq.l	#$01,$-0010(a6)
-	bra	$000001A8
+	bra	$800001A8
 
-l000001D4:
+l800001D4:
 	nop	
 	move.l	$-000C(a6),d0
 	move.l	$-0008(a6),d1
@@ -92,8 +92,8 @@ l000001D4:
 	unlk	a6
 	rts	
 
-;; fn000001F2: 000001F2
-fn000001F2 proc
+;; fn800001F2: 800001F2
+fn800001F2 proc
 	link	a6,#$FFE4
 	fmovem.x	fp2,-(a7)
 	move.l	d2,-(a7)
@@ -104,12 +104,12 @@ fn000001F2 proc
 	moveq	#$+03,d0
 	move.l	d0,$-001C(a6)
 
-l0000021C:
+l8000021C:
 	moveq	#$+64,d0
 	cmp.l	$-001C(a6),d0
-	blt	$0000028A
+	blt	$8000028A
 
-l00000224:
+l80000224:
 	fmove.l	$-001C(a6),fp0
 	fmove.x	fp0,-(a7)
 	fmove.x	$0008(a6),fp0
@@ -131,9 +131,9 @@ l00000224:
 	fneg.x	$-0018(a6),fp0
 	fmove.x	fp0,$-0018(a6)
 	addq.l	#$02,$-001C(a6)
-	bra	$0000021C
+	bra	$8000021C
 
-l0000028A:
+l8000028A:
 	move.l	$-000C(a6),d0
 	move.l	$-0008(a6),d1
 	move.l	$-0004(a6),d2
@@ -146,8 +146,8 @@ l0000028A:
 	unlk	a6
 	rts	
 
-;; fn000002AE: 000002AE
-fn000002AE proc
+;; fn800002AE: 800002AE
+fn800002AE proc
 	link	a6,#$FFE4
 	fmovem.x	fp2,-(a7)
 	move.l	d2,-(a7)
@@ -158,12 +158,12 @@ fn000002AE proc
 	moveq	#$+02,d0
 	move.l	d0,$-001C(a6)
 
-l000002DA:
+l800002DA:
 	moveq	#$+64,d0
 	cmp.l	$-001C(a6),d0
-	blt	$00000348
+	blt	$80000348
 
-l000002E2:
+l800002E2:
 	fmove.l	$-001C(a6),fp0
 	fmove.x	fp0,-(a7)
 	fmove.x	$0008(a6),fp0
@@ -185,9 +185,9 @@ l000002E2:
 	fneg.x	$-0018(a6),fp0
 	fmove.x	fp0,$-0018(a6)
 	addq.l	#$02,$-001C(a6)
-	bra	$000002DA
+	bra	$800002DA
 
-l00000348:
+l80000348:
 	move.l	$-000C(a6),d0
 	move.l	$-0008(a6),d1
 	move.l	$-0004(a6),d2
@@ -200,8 +200,8 @@ l00000348:
 	unlk	a6
 	rts	
 
-;; fn0000036C: 0000036C
-fn0000036C proc
+;; fn8000036C: 8000036C
+fn8000036C proc
 	link	a6,#$0000
 	fmovem.x	fp2,-(a7)
 	move.l	d2,-(a7)
@@ -230,8 +230,8 @@ fn0000036C proc
 	unlk	a6
 	rts	
 
-;; fn000003CC: 000003CC
-fn000003CC proc
+;; fn800003CC: 800003CC
+fn800003CC proc
 	link	a6,#$FFF4
 	fmove.x	$80000538,fp0
 	fmove.x	fp0,$-000C(a6)
