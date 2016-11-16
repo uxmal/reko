@@ -9,8 +9,10 @@
     <types-file>code.h</types-file>
     <global-vars>code.globals.c</global-vars>
     <user>
-      <address>00000000</address>
       <processor name="m68k" />
+      <procedure name="fn00000000">
+        <address>00000000</address>
+      </procedure>
       <registerValues />
     </user>
   </input>

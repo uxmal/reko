@@ -1,5 +1,10 @@
 ;;; Segment code (00000000)
-00000000 4E BA 03 CA 4E 75 4E 71 4E 71 4E 71 4E 71 4E 71 N...NuNqNqNqNqNq
+
+;; fn00000000: 00000000
+fn00000000 proc
+	jsr.l	$03CC(pc)
+	rts	
+00000006                   4E 71 4E 71 4E 71 4E 71 4E 71       NqNqNqNqNq
 00000010 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
 00000020 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
 00000030 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
@@ -18,53 +23,240 @@
 00000100 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
 00000110 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
 00000120 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 4E 71 NqNqNqNqNqNqNqNq
-00000130 4E 71 4E 56 FF F0 2F 02 F2 39 48 00 80 00 04 FC NqNV../..9H.....
-00000140 F2 2E 68 00 FF F4 42 AE FF F0 F2 2E 40 00 FF F0 ..h...B.....@...
-00000150 F2 2E 48 38 00 14 F2 9B 00 1A F2 2E 48 00 FF F4 ..H8........H...
-00000160 F2 2E 48 23 00 08 F2 2E 68 00 FF F4 52 AE FF F0 ..H#....h...R...
-00000170 60 D8 20 2E FF F4 22 2E FF F8 24 2E FF FC 2F 02 `. ..."...$.../.
-00000180 2F 01 2F 00 F2 1F 48 00 24 1F 4E 5E 4E 75 4E 56 /./...H.$.N^NuNV
-00000190 FF F0 2F 02 F2 39 48 00 80 00 05 08 F2 2E 68 00 ../..9H.......h.
-000001A0 FF F4 70 01 2D 40 FF F0 F2 2E 40 00 FF F0 F2 2E ..p.-@....@.....
-000001B0 48 38 00 08 F2 9A 00 1E F2 2E 40 00 FF F0 F2 2E H8........@.....
-000001C0 48 80 FF F4 F2 00 00 A3 F2 2E 68 80 FF F4 52 AE H.........h...R.
-000001D0 FF F0 60 D4 4E 71 20 2E FF F4 22 2E FF F8 24 2E ..`.Nq ..."...$.
-000001E0 FF FC 2F 02 2F 01 2F 00 F2 1F 48 00 24 1F 4E 5E ../././...H.$.N^
-000001F0 4E 75 4E 56 FF E4 F2 27 E0 04 2F 02 F2 2E 48 00 NuNV...'../...H.
-00000200 00 08 F2 2E 68 00 FF F4 F2 39 48 80 80 00 05 14 ....h....9H.....
-00000210 F2 2E 68 80 FF E8 70 03 2D 40 FF E4 70 64 B0 AE ..h...p.-@..pd..
-00000220 FF E4 6D 66 F2 2E 40 00 FF E4 F2 27 68 00 F2 2E ..mf..@....'h...
-00000230 48 00 00 08 F2 27 68 00 4E BA FE F8 4F EF 00 18 H....'h.N...O...
-00000240 F2 00 01 00 F2 2E 40 00 FF E4 F2 27 68 00 4E BA ......@....'h.N.
-00000250 FF 3E 4F EF 00 0C F2 00 08 80 F2 00 00 A0 F2 00 .>O.............
-00000260 04 00 F2 2E 48 23 FF E8 F2 2E 48 80 FF F4 F2 00 ....H#....H.....
-00000270 00 A2 F2 2E 68 80 FF F4 F2 2E 48 1A FF E8 F2 2E ....h.....H.....
-00000280 68 00 FF E8 54 AE FF E4 60 92 20 2E FF F4 22 2E h...T...`. ...".
-00000290 FF F8 24 2E FF FC 2F 02 2F 01 2F 00 F2 1F 48 00 ..$.../././...H.
-000002A0 24 2E FF D4 F2 2E D0 20 FF D8 4E 5E 4E 75 4E 56 $...... ..N^NuNV
-000002B0 FF E4 F2 27 E0 04 2F 02 F2 39 48 00 80 00 05 20 ...'../..9H.... 
-000002C0 F2 2E 68 00 FF F4 F2 39 48 80 80 00 05 2C F2 2E ..h....9H....,..
-000002D0 68 80 FF E8 70 02 2D 40 FF E4 70 64 B0 AE FF E4 h...p.-@..pd....
-000002E0 6D 66 F2 2E 40 00 FF E4 F2 27 68 00 F2 2E 48 00 mf..@....'h...H.
-000002F0 00 08 F2 27 68 00 4E BA FE 3A 4F EF 00 18 F2 00 ...'h.N..:O.....
-00000300 01 00 F2 2E 40 00 FF E4 F2 27 68 00 4E BA FE 80 ....@....'h.N...
-00000310 4F EF 00 0C F2 00 08 80 F2 00 00 A0 F2 00 04 00 O...............
-00000320 F2 2E 48 23 FF E8 F2 2E 48 80 FF F4 F2 00 00 A2 ..H#....H.......
-00000330 F2 2E 68 80 FF F4 F2 2E 48 1A FF E8 F2 2E 68 00 ..h.....H.....h.
-00000340 FF E8 54 AE FF E4 60 92 20 2E FF F4 22 2E FF F8 ..T...`. ..."...
-00000350 24 2E FF FC 2F 02 2F 01 2F 00 F2 1F 48 00 24 2E $.../././...H.$.
-00000360 FF D4 F2 2E D0 20 FF D8 4E 5E 4E 75 4E 56 00 00 ..... ..N^NuNV..
-00000370 F2 27 E0 04 2F 02 F2 2E 48 00 00 08 F2 27 68 00 .'../...H....'h.
-00000380 4E BA FE 70 4F EF 00 0C F2 00 01 00 F2 2E 48 80 N..pO.........H.
-00000390 00 08 F2 27 68 80 4E BA FF 16 4F EF 00 0C F2 00 ...'h.N...O.....
-000003A0 08 80 F2 00 00 A0 F2 00 04 00 F2 27 68 00 20 1F ...........'h. .
-000003B0 22 1F 24 1F 2F 02 2F 01 2F 00 F2 1F 48 00 24 2E ".$./././...H.$.
-000003C0 FF F0 F2 2E D0 20 FF F4 4E 5E 4E 75 4E 56 FF F4 ..... ..N^NuNV..
-000003D0 F2 39 48 00 80 00 05 38 F2 2E 68 00 FF F4 F2 2E .9H....8..h.....
-000003E0 48 00 FF F4 F2 27 68 00 F2 2E 48 00 FF F4 F2 27 H....'h...H....'
-000003F0 68 00 4E BA FD 3E 4F EF 00 18 F2 2E 48 00 FF F4 h.N..>O.....H...
-00000400 F2 27 68 00 4E BA FD 88 4F EF 00 0C F2 2E 48 00 .'h.N...O.....H.
-00000410 FF F4 F2 27 68 00 4E BA FD DA 4F EF 00 0C F2 2E ...'h.N...O.....
-00000420 48 00 FF F4 F2 27 68 00 4E BA FE 84 4F EF 00 0C H....'h.N...O...
-00000430 F2 2E 48 00 FF F4 F2 27 68 00 4E BA FF 30 4F EF ..H....'h.N..0O.
-00000440 00 0C 42 80 4E 5E 4E 75                         ..B.N^Nu       
+00000130 4E 71                                           Nq             
+
+;; fn00000132: 00000132
+fn00000132 proc
+	link	a6,#$FFF0
+	move.l	d2,-(a7)
+	fmove.x	$800004FC,fp0
+	fmove.x	fp0,$-000C(a6)
+	clr.l	$-0010(a6)
+
+l0000014A:
+	fmove.l	$-0010(a6),fp0
+	fcmp.x	$0014(a6),fp0
+	fbnlt	$00000172
+
+l0000015A:
+	fmove.x	$-000C(a6),fp0
+	fmul.x	$0008(a6),fp0
+	fmove.x	fp0,$-000C(a6)
+	addq.l	#$01,$-0010(a6)
+	bra	$0000014A
+
+l00000172:
+	move.l	$-000C(a6),d0
+	move.l	$-0008(a6),d1
+	move.l	$-0004(a6),d2
+	move.l	d2,-(a7)
+	move.l	d1,-(a7)
+	move.l	d0,-(a7)
+	fmove.x	(a7)+,fp0
+	move.l	(a7)+,d2
+	unlk	a6
+	rts	
+
+;; fn0000018E: 0000018E
+fn0000018E proc
+	link	a6,#$FFF0
+	move.l	d2,-(a7)
+	fmove.x	$80000508,fp0
+	fmove.x	fp0,$-000C(a6)
+	moveq	#$+01,d0
+	move.l	d0,$-0010(a6)
+
+l000001A8:
+	fmove.l	$-0010(a6),fp0
+	fcmp.x	$0008(a6),fp0
+	fbnle	$000001D4
+
+l000001B8:
+	fmove.l	$-0010(a6),fp0
+	fmove.x	$-000C(a6),fp1
+	fmul.x	fp0,fp1
+	fmove.x	fp1,$-000C(a6)
+	addq.l	#$01,$-0010(a6)
+	bra	$000001A8
+
+l000001D4:
+	nop	
+	move.l	$-000C(a6),d0
+	move.l	$-0008(a6),d1
+	move.l	$-0004(a6),d2
+	move.l	d2,-(a7)
+	move.l	d1,-(a7)
+	move.l	d0,-(a7)
+	fmove.x	(a7)+,fp0
+	move.l	(a7)+,d2
+	unlk	a6
+	rts	
+
+;; fn000001F2: 000001F2
+fn000001F2 proc
+	link	a6,#$FFE4
+	fmovem.x	fp2,-(a7)
+	move.l	d2,-(a7)
+	fmove.x	$0008(a6),fp0
+	fmove.x	fp0,$-000C(a6)
+	fmove.x	$80000514,fp1
+	fmove.x	fp1,$-0018(a6)
+	moveq	#$+03,d0
+	move.l	d0,$-001C(a6)
+
+l0000021C:
+	moveq	#$+64,d0
+	cmp.l	$-001C(a6),d0
+	blt	$0000028A
+
+l00000224:
+	fmove.l	$-001C(a6),fp0
+	fmove.x	fp0,-(a7)
+	fmove.x	$0008(a6),fp0
+	fmove.x	fp0,-(a7)
+	jsr.l	$-0106(pc)
+	lea	$0018(a7),a7
+	fmove.x	fp0,fp2
+	fmove.l	$-001C(a6),fp0
+	fmove.x	fp0,-(a7)
+	jsr.l	$-00C0(pc)
+	lea	$000C(a7),a7
+	fmove.x	fp2,fp1
+	fdiv.x	fp0,fp1
+	fmove.x	fp1,fp0
+	fmul.x	$-0018(a6),fp0
+	fmove.x	$-000C(a6),fp1
+	fadd.x	fp0,fp1
+	fmove.x	fp1,$-000C(a6)
+	fneg.x	$-0018(a6),fp0
+	fmove.x	fp0,$-0018(a6)
+	addq.l	#$02,$-001C(a6)
+	bra	$0000021C
+
+l0000028A:
+	move.l	$-000C(a6),d0
+	move.l	$-0008(a6),d1
+	move.l	$-0004(a6),d2
+	move.l	d2,-(a7)
+	move.l	d1,-(a7)
+	move.l	d0,-(a7)
+	fmove.x	(a7)+,fp0
+	move.l	$-002C(a6),d2
+	fmovem.x	$-0028(a6),fp2
+	unlk	a6
+	rts	
+
+;; fn000002AE: 000002AE
+fn000002AE proc
+	link	a6,#$FFE4
+	fmovem.x	fp2,-(a7)
+	move.l	d2,-(a7)
+	fmove.x	$80000520,fp0
+	fmove.x	fp0,$-000C(a6)
+	fmove.x	$8000052C,fp1
+	fmove.x	fp1,$-0018(a6)
+	moveq	#$+02,d0
+	move.l	d0,$-001C(a6)
+
+l000002DA:
+	moveq	#$+64,d0
+	cmp.l	$-001C(a6),d0
+	blt	$00000348
+
+l000002E2:
+	fmove.l	$-001C(a6),fp0
+	fmove.x	fp0,-(a7)
+	fmove.x	$0008(a6),fp0
+	fmove.x	fp0,-(a7)
+	jsr.l	$-01C4(pc)
+	lea	$0018(a7),a7
+	fmove.x	fp0,fp2
+	fmove.l	$-001C(a6),fp0
+	fmove.x	fp0,-(a7)
+	jsr.l	$-017E(pc)
+	lea	$000C(a7),a7
+	fmove.x	fp2,fp1
+	fdiv.x	fp0,fp1
+	fmove.x	fp1,fp0
+	fmul.x	$-0018(a6),fp0
+	fmove.x	$-000C(a6),fp1
+	fadd.x	fp0,fp1
+	fmove.x	fp1,$-000C(a6)
+	fneg.x	$-0018(a6),fp0
+	fmove.x	fp0,$-0018(a6)
+	addq.l	#$02,$-001C(a6)
+	bra	$000002DA
+
+l00000348:
+	move.l	$-000C(a6),d0
+	move.l	$-0008(a6),d1
+	move.l	$-0004(a6),d2
+	move.l	d2,-(a7)
+	move.l	d1,-(a7)
+	move.l	d0,-(a7)
+	fmove.x	(a7)+,fp0
+	move.l	$-002C(a6),d2
+	fmovem.x	$-0028(a6),fp2
+	unlk	a6
+	rts	
+
+;; fn0000036C: 0000036C
+fn0000036C proc
+	link	a6,#$0000
+	fmovem.x	fp2,-(a7)
+	move.l	d2,-(a7)
+	fmove.x	$0008(a6),fp0
+	fmove.x	fp0,-(a7)
+	jsr.l	$-018E(pc)
+	lea	$000C(a7),a7
+	fmove.x	fp0,fp2
+	fmove.x	$0008(a6),fp1
+	fmove.x	fp1,-(a7)
+	jsr.l	$-00E8(pc)
+	lea	$000C(a7),a7
+	fmove.x	fp2,fp1
+	fdiv.x	fp0,fp1
+	fmove.x	fp1,fp0
+	fmove.x	fp0,-(a7)
+	move.l	(a7)+,d0
+	move.l	(a7)+,d1
+	move.l	(a7)+,d2
+	move.l	d2,-(a7)
+	move.l	d1,-(a7)
+	move.l	d0,-(a7)
+	fmove.x	(a7)+,fp0
+	move.l	$-0010(a6),d2
+	fmovem.x	$-000C(a6),fp2
+	unlk	a6
+	rts	
+
+;; fn000003CC: 000003CC
+fn000003CC proc
+	link	a6,#$FFF4
+	fmove.x	$80000538,fp0
+	fmove.x	fp0,$-000C(a6)
+	fmove.x	$-000C(a6),fp0
+	fmove.x	fp0,-(a7)
+	fmove.x	$-000C(a6),fp0
+	fmove.x	fp0,-(a7)
+	jsr.l	$-02C0(pc)
+	lea	$0018(a7),a7
+	fmove.x	$-000C(a6),fp0
+	fmove.x	fp0,-(a7)
+	jsr.l	$-0276(pc)
+	lea	$000C(a7),a7
+	fmove.x	$-000C(a6),fp0
+	fmove.x	fp0,-(a7)
+	jsr.l	$-0224(pc)
+	lea	$000C(a7),a7
+	fmove.x	$-000C(a6),fp0
+	fmove.x	fp0,-(a7)
+	jsr.l	$-017A(pc)
+	lea	$000C(a7),a7
+	fmove.x	$-000C(a6),fp0
+	fmove.x	fp0,-(a7)
+	jsr.l	$-00CE(pc)
+	lea	$000C(a7),a7
+	clr.l	d0
+	unlk	a6
+	rts	

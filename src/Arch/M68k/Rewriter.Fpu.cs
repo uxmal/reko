@@ -61,7 +61,12 @@ namespace Reko.Arch.M68k
             emitter.Assign(frame.EnsureIdentifier(Registers.fpsr), emitter.Cond(opDst));
         }
 
-   
+        private void RewriteFUnaryOp(Func<Expression, Expression> unaryOpGen)
+        {
+            var op = orw.RewriteUnary(di.op1, di.Address, di.dataWidth, unaryOpGen);
+            emitter.Assign(frame.EnsureIdentifier(Registers.fpsr), emitter.Cond(op));
+        }
+
         private void RewriteFcmp()
         {
             var opSrc = orw.RewriteSrc(di.op1, di.Address);

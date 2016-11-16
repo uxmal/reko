@@ -10,44 +10,50 @@ void fn00000000(word32 d2)
 	return;
 }
 
-void fn00000132(real96 rArg10)
+real80 fn00000132(word32 d2, real96 rArg04, real96 rArg10)
 {
-fn00000132_entry:
-l00000132:
-fn00000132_exit:
+	word32 dwLoc14_17 = 0x00;
+	while (Test(LT,cond((real96) (real80) dwLoc14_17 - rArg10)))
+		dwLoc14_17 = dwLoc14_17 + 0x01;
+	return (real80) DPB(rLoc24, dwLoc10, 0);
 }
 
-void fn0000018E(real96 rArg04)
+real80 fn0000018E(word32 d2, real96 rArg04)
 {
-fn0000018E_entry:
-l0000018E:
-fn0000018E_exit:
+	do
+		;
+	while (Test(GT,0x01));
+	return (real80) DPB(rLoc24, dwLoc10, 0);
 }
 
 real80 fn000001F2(word32 d2, real96 rArg04)
 {
-	if (false)
-		return (real80) DPB(rLoc3C, dwLoc10, 0);
-	else
+	int32 dwLoc20_24 = 0x03;
+	while (100 - dwLoc20_24 >= 0x00)
 	{
-		fn00000132((real96) (real80) 0x03);
-		fn0000018E((real96) (real80) 0x03);
+		fn00000132(d2, (real96) (real80) rArg04, (real96) (real80) dwLoc20_24);
+		real96 v19_64 = (real96) (real80) dwLoc20_24;
+		fn0000018E(d2, v19_64);
+		rLoc3C = v19_64;
+		dwLoc20_24 = dwLoc20_24 + 0x02;
 	}
+	return (real80) DPB(rLoc3C, dwLoc10, 0);
 }
 
-real80 fn000002AE(word32 d2, real96 rArg04, Eq_31 & fp2Out)
+real80 fn000002AE(word32 d2, real96 rArg04, Eq_66 & fp2Out)
 {
-	if (false)
+	int32 dwLoc20_23 = 0x02;
+	while (100 - dwLoc20_23 >= 0x00)
 	{
-		real80 fp2_89;
-		*fp2Out = fp2;
-		return (real80) DPB(rLoc3C, dwLoc10, 0);
+		fn00000132(d2, (real96) (real80) rArg04, (real96) (real80) dwLoc20_23);
+		real96 v19_64 = (real96) (real80) dwLoc20_23;
+		fn0000018E(d2, v19_64);
+		rLoc3C = v19_64;
+		dwLoc20_23 = dwLoc20_23 + 0x02;
 	}
-	else
-	{
-		fn00000132((real96) (real80) 0x02);
-		fn0000018E((real96) (real80) 0x02);
-	}
+	real80 fp2_115;
+	*fp2Out = fp2;
+	return (real80) DPB(rLoc3C, dwLoc10, 0);
 }
 
 void fn0000036C(word32 d2, real96 rArg04)
@@ -61,11 +67,11 @@ void fn0000036C(word32 d2, real96 rArg04)
 void fn000003CC(word32 d2)
 {
 	real96 v6_10 = (real96) (real80) *(real96 *) 0x80000538;
-	fn00000132((real96) (real80) v6_10);
-	fn0000018E((real96) (real80) v6_10);
+	fn00000132(d2, (real96) (real80) v6_10, (real96) (real80) v6_10);
+	fn0000018E(d2, (real96) (real80) v6_10);
 	fn000001F2(d2, (real96) (real80) v6_10);
-	real80 fp2_48;
-	fn000002AE(d2, (real96) (real80) v6_10, out fp2_48);
+	real80 fp2_50;
+	fn000002AE(d2, (real96) (real80) v6_10, out fp2_50);
 	fn0000036C(d2, (real96) (real80) v6_10);
 	return;
 }
