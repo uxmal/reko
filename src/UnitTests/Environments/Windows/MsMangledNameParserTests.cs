@@ -121,6 +121,18 @@ namespace Reko.UnitTests.Environments.Windows
                 return sb;
             }
 
+            public StringBuilder VisitReference(ReferenceType_v1 reference)
+            {
+                var n = name;
+                name = null;
+                reference.Referent.Accept(this);
+                sb.AppendFormat(" ^");
+                name = n;
+                if (name != null)
+                    sb.AppendFormat(" {0}", name);
+                return sb;
+            }
+
             public StringBuilder VisitMemberPointer(MemberPointer_v1 memptr)
             {
                 var n = name;

@@ -44,6 +44,7 @@ namespace Reko.Core
         public const string Rol = "__rol";      // binary: Rotate left
         public const string RorC = "__rcr";     // ternary: rotate right, passing in the contents of a processor flag (not necessarily the Carry flag)
         public const string RolC = "__rcl";     // ternary: rotate left, passing in the contents of a processor flag
+        public const string Syscall = "__syscall";  // Invokes a system call.
 
         /// <summary>
         /// Use this constructor for pseudoprocedures that model operators that may have parameters of varying sizes.

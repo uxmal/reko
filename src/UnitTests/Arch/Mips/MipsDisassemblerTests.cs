@@ -31,7 +31,14 @@ namespace Reko.UnitTests.Arch.Mips
     [TestFixture]
     public class MipsDisassemblerTests : DisassemblerTestBase<MipsInstruction>
     {
-        private MipsProcessorArchitecture arch = new MipsBe32Architecture();
+        private MipsProcessorArchitecture arch;
+
+        [SetUp]
+        public void Setup()
+        {
+            this.arch = new MipsBe32Architecture();
+            arch.Name = "mips-be-32";
+        }
 
         public override IProcessorArchitecture Architecture { get { return arch; } }
 
@@ -40,6 +47,12 @@ namespace Reko.UnitTests.Arch.Mips
         protected override ImageWriter CreateImageWriter(byte[] bytes)
         {
             return new BeImageWriter(bytes);
+        }
+
+        private void Given_Mips_v6_Architecture()
+        {
+            arch = new MipsBe32Architecture();
+            arch.Name = "mipsv6-be-32";
         }
 
         [Test]
@@ -185,10 +198,13 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000000 00011 00010 11110 00000 101100");
             Assert.AreEqual("dadd\tr30,r3,r2", instr.ToString());
+
             instr = DisassembleBits("011000 00011 00010 1111000000101100");
             Assert.AreEqual("daddi\tr2,r3,-00000FD4", instr.ToString());
+
             instr = DisassembleBits("011001 00011 00010 1111000000101100");
             Assert.AreEqual("daddiu\tr2,r3,-00000FD4", instr.ToString());
+
             instr = DisassembleBits("000000 00011 00010 11110 00000 101101");
             Assert.AreEqual("daddu\tr30,r3,r2", instr.ToString());
         }
@@ -198,6 +214,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000000 00011 00101 00000 00000 011110");
             Assert.AreEqual("ddiv\tr3,r5", instr.ToString());
+
             instr = DisassembleBits("000000 00011 00101 00000 00000 011111");
             Assert.AreEqual("ddivu\tr3,r5", instr.ToString());
         }
@@ -207,6 +224,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000000 00011 00101 00000 00000 011010");
             Assert.AreEqual("div\tr3,r5", instr.ToString());
+
             instr = DisassembleBits("000000 00011 00101 00000 00000 011011");
             Assert.AreEqual("divu\tr3,r5", instr.ToString());
         }
@@ -216,6 +234,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000000 00011 00101 00000 00000 011100");
             Assert.AreEqual("dmult\tr3,r5", instr.ToString());
+
             instr = DisassembleBits("000000 00011 00101 00000 00000 011101");
             Assert.AreEqual("dmultu\tr3,r5", instr.ToString());
         }
@@ -225,8 +244,10 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000000 00000 00101 00111 01001 111000");
             Assert.AreEqual("dsll\tr7,r5,09", instr.ToString());
+
             instr = DisassembleBits("000000 00000 00101 00111 01001 111100");
             Assert.AreEqual("dsll32\tr7,r5,09", instr.ToString());
+
             instr = DisassembleBits("000000 00011 00101 00111 00000 010100");
             Assert.AreEqual("dsllv\tr7,r5,r3", instr.ToString());
         }
@@ -236,8 +257,10 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000000 00000 00101 00111 01001 111011");
             Assert.AreEqual("dsra\tr7,r5,09", instr.ToString());
+
             instr = DisassembleBits("000000 00000 00101 00111 01001 111111");
             Assert.AreEqual("dsra32\tr7,r5,09", instr.ToString());
+
             instr = DisassembleBits("000000 00011 00101 00111 00000 010111");
             Assert.AreEqual("dsrav\tr7,r5,r3", instr.ToString());
         }
@@ -247,8 +270,10 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000000 00000 00101 00111 01001 111010");
             Assert.AreEqual("dsrl\tr7,r5,09", instr.ToString());
+
             instr = DisassembleBits("000000 00000 00101 00111 01001 111110");
             Assert.AreEqual("dsrl32\tr7,r5,09", instr.ToString());
+
             instr = DisassembleBits("000000 00011 00101 00111 00000 010110");
             Assert.AreEqual("dsrlv\tr7,r5,r3", instr.ToString());
         }
@@ -258,6 +283,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000000 00011 00010 11110 00000 101110");
             Assert.AreEqual("dsub\tr30,r3,r2", instr.ToString());
+
             instr = DisassembleBits("000000 00011 00010 11110 00000 101111");
             Assert.AreEqual("dsubu\tr30,r3,r2", instr.ToString());
         }
@@ -267,6 +293,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000010 11111111111111111111111111");
             Assert.AreEqual("j\t0FFFFFFC", instr.ToString());
+
             instr = DisassembleBits("000011 11111111111111111111111111");
             Assert.AreEqual("jal\t0FFFFFFC", instr.ToString());
         }
@@ -276,6 +303,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000000 01001 00000 11111 00000 001001");
             Assert.AreEqual("jalr\tra,r9", instr.ToString());
+
             instr = DisassembleBits("000000 01001 000000000000000 001000");
             Assert.AreEqual("jr\tr9", instr.ToString());
         }
@@ -285,30 +313,60 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("100000 01001 00011 1111111111001000");
             Assert.AreEqual("lb\tr3,-0038(r9)", instr.ToString());
+
             instr = DisassembleBits("100100 01001 00011 1111111111001000");
             Assert.AreEqual("lbu\tr3,-0038(r9)", instr.ToString());
+
             instr = DisassembleBits("110111 01001 00011 1111111111001000");
             Assert.AreEqual("ld\tr3,-0038(r9)", instr.ToString());
+
             instr = DisassembleBits("011010 01001 00011 1111111111001000");
             Assert.AreEqual("ldl\tr3,-0038(r9)", instr.ToString());
+
             instr = DisassembleBits("011011 01001 00011 1111111111001000");
             Assert.AreEqual("ldr\tr3,-0038(r9)", instr.ToString());
+
             instr = DisassembleBits("100001 01001 00011 1111111111001000");
             Assert.AreEqual("lh\tr3,-0038(r9)", instr.ToString());
+
             instr = DisassembleBits("100101 01001 00011 1111111111001000");
             Assert.AreEqual("lhu\tr3,-0038(r9)", instr.ToString());
-            instr = DisassembleBits("110000 01001 00011 1111111111001000");
-            Assert.AreEqual("ll\tr3,-0038(r9)", instr.ToString());
-            instr = DisassembleBits("110100 01001 00011 1111111111001000");
-            Assert.AreEqual("lld\tr3,-0038(r9)", instr.ToString());
+
             instr = DisassembleBits("100011 01001 00011 1111111111001000");
             Assert.AreEqual("lw\tr3,-0038(r9)", instr.ToString());
+
             instr = DisassembleBits("100111 01001 00011 1111111111001000");
             Assert.AreEqual("lwu\tr3,-0038(r9)", instr.ToString());
+
             instr = DisassembleBits("100010 01001 00011 1111111111001000");
             Assert.AreEqual("lwl\tr3,-0038(r9)", instr.ToString());
+
             instr = DisassembleBits("100110 01001 00011 1111111111001000");
             Assert.AreEqual("lwr\tr3,-0038(r9)", instr.ToString());
+        }
+
+        [Test]
+        public void MipsDis_ll()
+        {
+            MipsInstruction instr;
+            instr = DisassembleBits("110000 01001 00011 1111111111001000");
+            Assert.AreEqual("ll\tr3,-0038(r9)", instr.ToString());
+
+            instr = DisassembleBits("110100 01001 00011 1111111111001000");
+            Assert.AreEqual("lld\tr3,-0038(r9)", instr.ToString());
+        }
+
+        [Test]
+        public void MipsDis_ll_v6()
+        {
+            Given_Mips_v6_Architecture();
+
+            MipsInstruction instr;
+            instr = DisassembleBits("011111 01001 00011 111111100 0 110110");
+            Assert.AreEqual("ll\tr3,-0004(r9)", instr.ToString());
+
+            instr = DisassembleBits("011111 01001 00011 111111100 0 110111");
+            Assert.AreEqual("lld\tr3,-0004(r9)", instr.ToString());
         }
 
         [Test]
@@ -323,10 +381,13 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000000 00000 00000 01010 00000 010000");
             Assert.AreEqual("mfhi\tr10", instr.ToString());
+
             instr = DisassembleBits("000000 00000 00000 01010 00000 010010");
             Assert.AreEqual("mflo\tr10", instr.ToString());
+
             instr = DisassembleBits("000000 01010 00000 00000 00000 010001");
             Assert.AreEqual("mthi\tr10", instr.ToString());
+
             instr = DisassembleBits("000000 01010 00000 00000 00000 010011");
             Assert.AreEqual("mtlo\tr10", instr.ToString());
         }
@@ -336,6 +397,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000000 00001 00101 01010 00000 001011");
             Assert.AreEqual("movn\tr10,r1,r5", instr.ToString());
+
             instr = DisassembleBits("000000 00001 00101 01010 00000 001010");
             Assert.AreEqual("movz\tr10,r1,r5", instr.ToString());
         }
@@ -345,6 +407,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000000 00011 00101 00000 00000 011000");
             Assert.AreEqual("mult\tr3,r5", instr.ToString());
+
             instr = DisassembleBits("000000 00011 00101 00000 00000 011001");
             Assert.AreEqual("multu\tr3,r5", instr.ToString());
         }
@@ -354,8 +417,10 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000000 00011 00101 00111 00000 100101");
             Assert.AreEqual("or\tr7,r3,r5", instr.ToString());
+
             instr = DisassembleBits("000000 00011 00101 00111 00000 100111");
             Assert.AreEqual("nor\tr7,r3,r5", instr.ToString());
+
             instr = DisassembleBits("001101 00011 00101 0011100000100111");
             Assert.AreEqual("ori\tr5,r3,00003827", instr.ToString());
         }
@@ -365,22 +430,31 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("101000 01001 00011 1111111111001000");
             Assert.AreEqual("sb\tr3,-0038(r9)", instr.ToString());
+
             instr = DisassembleBits("111000 01001 00011 1111111111001000");
             Assert.AreEqual("sc\tr3,-0038(r9)", instr.ToString());
+
             instr = DisassembleBits("111100 01001 00011 1111111111001000");
             Assert.AreEqual("scd\tr3,-0038(r9)", instr.ToString());
+
             instr = DisassembleBits("111111 01001 00011 1111111111001000");
             Assert.AreEqual("sd\tr3,-0038(r9)", instr.ToString());
+
             instr = DisassembleBits("101100 01001 00011 1111111111001000");
             Assert.AreEqual("sdl\tr3,-0038(r9)", instr.ToString());
+
             instr = DisassembleBits("101101 01001 00011 1111111111001000");
             Assert.AreEqual("sdr\tr3,-0038(r9)", instr.ToString());
+
             instr = DisassembleBits("101001 01001 00011 1111111111001000");
             Assert.AreEqual("sh\tr3,-0038(r9)", instr.ToString());
+
             instr = DisassembleBits("101011 01001 00011 1111111111001000");
             Assert.AreEqual("sw\tr3,-0038(r9)", instr.ToString());
+
             instr = DisassembleBits("101010 01001 00011 1111111111001000");
             Assert.AreEqual("swl\tr3,-0038(r9)", instr.ToString());
+
             instr = DisassembleBits("101110 01001 00011 1111111111001000");
             Assert.AreEqual("swr\tr3,-0038(r9)", instr.ToString());
         }
@@ -390,6 +464,7 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleBits("000000 00011 00101 00111 00000 100110");
             Assert.AreEqual("xor\tr7,r3,r5", instr.ToString());
+
             instr = DisassembleBits("001110 00011 00101 0011100000100111");
             Assert.AreEqual("xori\tr5,r3,00003827", instr.ToString());
         }
@@ -448,6 +523,26 @@ namespace Reko.UnitTests.Arch.Mips
         {
             var instr = DisassembleWord(0x4443F800);
             Assert.AreEqual("cfc1\tr3,FCSR", instr.ToString());
+        }
+
+        [Test]
+        public void MipsDis_rdhwr()
+        {
+            // Test only the known ones, we'll have to see how this changes things later on with dynamic custom registers
+            var instr = DisassembleBits("011111 00000 00011 00000 00000 111011");
+            Assert.AreEqual("rdhwr\tr3,00", instr.ToString()); // CPU number
+
+            instr = DisassembleBits("011111 00000 00011 00001 00000 111011");
+            Assert.AreEqual("rdhwr\tr3,01", instr.ToString()); // SYNCI step size
+
+            instr = DisassembleBits("011111 00000 00011 00010 00000 111011");
+            Assert.AreEqual("rdhwr\tr3,02", instr.ToString()); // Cycle counter
+
+            instr = DisassembleBits("011111 00000 00011 00011 00000 111011");
+            Assert.AreEqual("rdhwr\tr3,03", instr.ToString()); // Cycle counter resolution
+
+            instr = DisassembleBits("011111 00000 00011 11101 00000 111011");
+            Assert.AreEqual("rdhwr\tr3,1D", instr.ToString()); // OS-specific, thread local pointer on Linux
         }
 
         [Test]

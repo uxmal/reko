@@ -36,11 +36,13 @@ namespace Reko.Arch.Mips
         private MipsInstruction instrCur;
         private Address addr;
         private ImageReader rdr;
+        internal bool isVersion6OrLater;
 
-        public MipsDisassembler(MipsProcessorArchitecture arch, ImageReader imageReader)
+        public MipsDisassembler(MipsProcessorArchitecture arch, ImageReader imageReader, bool isVersion6OrLater)
         {
             this.arch = arch;
             this.rdr = imageReader;
+            this.isVersion6OrLater = isVersion6OrLater;
         }
 
         public override MipsInstruction DisassembleInstruction()
@@ -287,7 +289,8 @@ namespace Reko.Arch.Mips
             null,
             null,
             null,
-            null, 
+            new Special3OpRec(), 
+
             // 20
             new AOpRec(Opcode.lb, "R2,EB"),
             new AOpRec(Opcode.lh, "R2,EH"),
@@ -309,17 +312,23 @@ namespace Reko.Arch.Mips
             new AOpRec(Opcode.swr, "R2,Ew"),
             null,
             // 30
-            new AOpRec(Opcode.ll, "R2,Ew"),
+            new Version6OpRec(
+                new AOpRec(Opcode.ll, "R2,Ew"),
+                new AOpRec(Opcode.illegal, "")),
             null, 
             null, 
             new AOpRec(Opcode.pref, "R2,Ew"),
 
-            new AOpRec(Opcode.lld, "R2,Ew"),
+            new Version6OpRec(
+                new AOpRec(Opcode.lld, "R2,El"),
+                new AOpRec(Opcode.illegal, "")),
             null, 
             null,
             new AOpRec(Opcode.ld, "R2,El"),
 
-            new AOpRec(Opcode.sc, "R2,El"),
+            new Version6OpRec(
+                new AOpRec(Opcode.sc, "R2,El"),
+                new AOpRec(Opcode.illegal, "")),
             new AOpRec(Opcode.swc1, "F2,Ew"),
             null,
             null,
@@ -392,14 +401,20 @@ namespace Reko.Arch.Mips
                 case 's':   // Shift amount
                     op = ImmediateOperand.Byte((byte)((wInstr >> 6) & 0x1F));
                     break;
-                case 'E':   // effective address.
-                    op = Ea(wInstr, opFmt[++i]);
+                case 'E':   // effective address w 16-bit offset
+                    op = Ea(wInstr, opFmt[++i], 21, (short)wInstr);
+                    break;
+                case 'e':   // effective address w 9-bit offset
+                    op = Ea(wInstr, opFmt[++i], 21, (short)(((short)wInstr) >> 7));
                     break;
                 case 'T':   // trap code
                     op = ImmediateOperand.Word16((ushort)((wInstr >> 6) & 0x03FF));
                     break;
                 case 'c':   // condition code
                     op = CCodeFlag(wInstr, opFmt, ref i);
+                    break;
+                case 'H':   // hardware register, see instruction rdhwr
+                    op = ImmediateOperand.Byte((byte)((wInstr >> 11) & 0x1f));
                     break;
                 }
                 ops.Add(op);
@@ -454,7 +469,7 @@ namespace Reko.Arch.Mips
             return AddressOperand.Ptr32((rdr.Address.ToUInt32() & 0xF0000000u) | off);
         }
 
-        private IndirectOperand Ea(uint wInstr, char wCode)
+        private IndirectOperand Ea(uint wInstr, char wCode, int shift, short offset)
         {
             PrimitiveType dataWidth;
             switch (wCode)
@@ -469,8 +484,7 @@ namespace Reko.Arch.Mips
             case 'l': dataWidth = PrimitiveType.Word64; break;
             case 'L': dataWidth = PrimitiveType.Int64; break;
             }
-            var baseReg = arch.GetRegister((int)(wInstr >> 21) & 0x1F);
-            int offset = (short) wInstr;
+            var baseReg = arch.GetRegister((int)(wInstr >> shift) & 0x1F);
             return new IndirectOperand(dataWidth, offset, baseReg);
         }
     }

@@ -83,12 +83,12 @@ namespace Reko.Arch.Arm
 
         private void RewriteTrap()
         {
-            emitter.SideEffect(host.PseudoProcedure("__syscall", VoidType.Instance, Constant.UInt32(instr.Bytes[0])));
+            emitter.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, Constant.UInt32(instr.Bytes[0])));
         }
 
         private void RewriteUdf()
         {
-            emitter.SideEffect(host.PseudoProcedure("__syscall", VoidType.Instance, Constant.UInt32(instr.Bytes[0])));
+            emitter.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, Constant.UInt32(instr.Bytes[0])));
         }
     }
 }

@@ -45,7 +45,10 @@ namespace Reko.UnitTests.Arch.Mips
             var bytes = bitStrings.Select(bits => base.ParseBitPattern(bits))
                 .SelectMany(u => new byte[] { (byte)(u >> 24), (byte)(u >> 16), (byte)(u >> 8), (byte)u })
                 .ToArray();
-            dasm = new MipsDisassembler(arch, new BeImageReader(new MemoryArea(Address.Ptr32(0x00100000), bytes), 0));
+            dasm = new MipsDisassembler(
+                arch,
+                new BeImageReader(new MemoryArea(Address.Ptr32(0x00100000), bytes), 0),
+                false);
         }
 
         private void AssertCode(uint instr, params string[] sExp)
@@ -64,7 +67,7 @@ namespace Reko.UnitTests.Arch.Mips
                 (byte) w
             }).ToArray();
             var image = new MemoryArea(LoadAddress, bytes);
-            dasm = new MipsDisassembler(arch, image.CreateBeReader(LoadAddress));
+            dasm = new MipsDisassembler(arch, image.CreateBeReader(LoadAddress), false);
             return image;
         }
 
@@ -98,6 +101,22 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r3 = 0xFFC80000");
+        }
+        [Test]
+        public void MipsRw_ll()
+        {
+            RunTest("110000 01010 10101 1111111111001000");
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r21 = __load_linked_32(Mem0[r10 - 0x00000038:word32])");
+        }
+        [Test]
+        public void MipsRw_lld()
+        {
+            RunTest("110100 01010 10101 1111111111001000");
+            AssertCode(
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r21 = __load_linked_64(Mem0[r10 - 0x00000038:word64])");
         }
 
         [Test]
@@ -352,12 +371,15 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(0x44C1F800, // "ctc1\tr1,FCSR"
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|FCSR = r1");
+
             AssertCode(0x46206024, // "cvt.w.d\tf0,f12"
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|f0 = (int32) f12_f13");
+
             AssertCode(0x45000012, // "bc1f\tcc0,0010004C"
                 "0|TD-|00100000(4): 1 instructions",
                 "1|TD-|if (!cc0) branch 0010004C");
+
             AssertCode(0x46206000, // "add.d\tf0,f12,f0"
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|f0_f1 = f12_f13 + f0_f1");
@@ -377,6 +399,31 @@ namespace Reko.UnitTests.Arch.Mips
             AssertCode(0x0410FFFE,      // bltzal r0,000FFFFC
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|ra = 00100008");
+        }
+
+        [Test]
+        public void MipsRw_rdhwr()
+        {
+            // Test only the known ones, we'll have to see how this changes things later on with dynamic custom registers
+            RunTest("011111 00000 00110 00000 00000 111011");   // CPU number
+            AssertCode( "0|L--|00100000(4): 1 instructions",
+                        "1|L--|r6 = __read_hardware_register(0x00)");
+
+            RunTest("011111 00000 01000 00001 00000 111011");   // SYNCI step size
+            AssertCode( "0|L--|00100000(4): 1 instructions",
+                        "1|L--|r8 = __read_hardware_register(0x01)");
+
+            RunTest("011111 00000 00001 00010 00000 111011");   // Cycle counter
+            AssertCode( "0|L--|00100000(4): 1 instructions",
+                        "1|L--|r1 = __read_hardware_register(0x02)");
+
+            RunTest("011111 00000 00011 00011 00000 111011");   // Cycle counter resolution
+            AssertCode( "0|L--|00100000(4): 1 instructions",
+                        "1|L--|r3 = __read_hardware_register(0x03)");
+
+            RunTest("011111 00000 00111 11101 00000 111011");   // OS-specific, thread local pointer on Linux
+            AssertCode( "0|L--|00100000(4): 1 instructions",
+                        "1|L--|r7 = __read_hardware_register(0x1D)");
         }
     }
 }

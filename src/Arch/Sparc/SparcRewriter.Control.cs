@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
@@ -103,7 +104,7 @@ namespace Reko.Arch.Sparc
                 cond,
                 new RtlSideEffect(
                     host.PseudoProcedure(
-                        "__syscall", 
+                        PseudoProcedure.Syscall, 
                         VoidType.Instance, 
                         SimplifySum(src1, src2))));
         }

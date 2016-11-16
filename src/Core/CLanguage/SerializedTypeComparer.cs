@@ -85,6 +85,12 @@ namespace Reko.Core.CLanguage
             return pX.DataType.Accept(this);
         }
 
+        public bool VisitReference(ReferenceType_v1 rX)
+        {
+            y = ((ReferenceType_v1)y).Referent;
+            return rX.Referent.Accept(this);
+        }
+
         public bool VisitMemberPointer(MemberPointer_v1 mpX)
         {
             var mpY = (MemberPointer_v1) y;

@@ -29,6 +29,7 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -55,6 +56,7 @@ namespace Reko.Environments.SysV
             switch (Architecture.Name)
             {
             case "mips-be-32":
+            case "mips-le-32":
                 return new MipsProcedureSerializer(Architecture, typeLoader, defaultConvention);
             case "ppc32":
                 return new PowerPcProcedureSerializer(Architecture, typeLoader, defaultConvention);
@@ -193,6 +195,35 @@ namespace Reko.Environments.SysV
             if (characteristics != null)
                 proc.Characteristics = characteristics;
             return proc;
+        }
+
+        public override ExternalProcedure SignatureFromName(string fnName)
+        {
+            StructField_v1 field = null;
+            try
+            {
+                var gcc = new GccMangledNameParser(fnName, this.PointerType.Size);
+                field = gcc.Parse();
+            }
+            catch (Exception ex)
+            {
+                Debug.Print("*** Error parsing {0}. {1}", fnName, ex.Message);
+                return null;
+            }
+            if (field == null)
+                return null;
+            var sproc = field.Type as SerializedSignature;
+            if (sproc != null)
+            {
+                var loader = new TypeLibraryDeserializer(this, false, Metadata);
+                var sser = this.CreateProcedureSerializer(loader, sproc.Convention);
+                var sig = sser.Deserialize(sproc, this.Architecture.CreateFrame());    //$BUGBUG: catch dupes?
+                return new ExternalProcedure(field.Name, sig)
+                {
+                    EnclosingType = sproc.EnclosingType
+                };
+            }
+            return null;
         }
     }
 }

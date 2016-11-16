@@ -115,6 +115,7 @@ namespace Reko.Arch.Mips
         or,
         ori,
         pref,
+        rdhwr,
         sb,
         sc,
         scd,

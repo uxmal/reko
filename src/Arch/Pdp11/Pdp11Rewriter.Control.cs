@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
@@ -52,7 +53,7 @@ namespace Reko.Arch.Pdp11
             this.rtlCluster.Class = RtlClass.Transfer;
             var imm = ((ImmediateOperand)instr.op1).Value.ToByte();
             var svc = emitter.Word16((ushort)(0x8800 | imm));
-            emitter.SideEffect(host.PseudoProcedure("__syscall", VoidType.Instance, svc));
+            emitter.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, svc));
         }
 
         private void RewriteHalt()
@@ -98,7 +99,7 @@ namespace Reko.Arch.Pdp11
             this.rtlCluster.Class = RtlClass.Transfer;
             var imm = ((ImmediateOperand)instr.op1).Value.ToByte();
             var svc = emitter.Word16((ushort)(0x8900 | imm));
-            emitter.SideEffect(host.PseudoProcedure("__syscall", VoidType.Instance, svc));
+            emitter.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, svc));
         }
     }
 }

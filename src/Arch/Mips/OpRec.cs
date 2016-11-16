@@ -154,6 +154,101 @@ namespace Reko.Arch.Mips
         }
     }
 
+    class Special3OpRec : OpRec
+    {
+        private static OpRec[] specialOpRecs = new OpRec[]
+        {
+            // 00
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+
+            // 10
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+
+            // 20
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+
+            // 30
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new Version6OpRec(
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.ll, "R2,ew")),
+            new Version6OpRec(
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.lld, "R2,el")),
+
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.rdhwr, "R2,H"),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+            new AOpRec(Opcode.illegal, ""),
+
+        };
+
+        internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
+        {
+            Debug.Assert(specialOpRecs.Length == 64, specialOpRecs.Length.ToString());
+            var opRec = specialOpRecs[wInstr & 0x3F];
+            // Debug.Print("  Special3OpRec {0:X8} => oprec {1} {2}", wInstr, wInstr & 0x3F, opRec == null ? "(null!)" : "");
+            return opRec.Decode(wInstr, dasm);
+        }
+    }
+
     class CondOpRec : OpRec
     {
         static Opcode[] opcodes = 
@@ -253,6 +348,26 @@ namespace Reko.Arch.Mips
         {
             var opcode = ((wInstr & (1u << 16)) != 0) ? opTrue : opFalse;
             return dasm.DecodeOperands(opcode, wInstr, "c18,j");
+        }
+    }
+
+    internal class Version6OpRec : OpRec
+    {
+        OpRec preV6Oprec;
+        OpRec v6Oprec;
+
+        public Version6OpRec(OpRec preOprec, OpRec postOprec)
+        {
+            this.preV6Oprec = preOprec;
+            this.v6Oprec = postOprec;
+        }
+
+        internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
+        {
+            if (dasm.isVersion6OrLater)
+                return v6Oprec.Decode(wInstr, dasm);
+            else
+                return preV6Oprec.Decode(wInstr, dasm);
         }
     }
 }

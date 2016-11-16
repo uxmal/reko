@@ -60,6 +60,11 @@ namespace Reko.Core.CLanguage
             return 4;           //$BUGBUG: architecture dependent
         }
 
+        public int VisitReference(ReferenceType_v1 pointer)
+        {
+            return 4;           //$BUGBUG: architecture dependent
+        }
+
         public int VisitMemberPointer(MemberPointer_v1 memptr)
         {
             return 4;       //$BUGBUG: architecture dependent

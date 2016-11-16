@@ -46,7 +46,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
 
 
 
-        private void Given_Linker()
+        private void Given_Linker(bool big_endian)
         {
             BuildObjectFile32();
             mr.ReplayAll();
@@ -54,7 +54,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             var eil = new ElfImageLoader(sc, "foo.o", rawBytes);
             eil.LoadElfIdentification();
             var eh = Elf32_EHdr.Load(new BeImageReader(rawBytes, ElfImageLoader.HEADER_OFFSET));
-            var el = new ElfLoader32(eil, eh, rawBytes);
+            var el = new ElfLoader32(eil, eh, rawBytes, big_endian ? ElfLoader.ELFDATA2MSB : ElfLoader.ELFDATA2LSB);
             el.LoadSectionHeaders();
             el.LoadSymbols();
             this.linker = new ElfObjectLinker32(el, arch, rawBytes);
@@ -80,7 +80,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             Given_Section(".text", SectionHeaderType.SHT_PROGBITS, ElfLoader.SHF_ALLOC | ElfLoader.SHF_EXECINSTR, new byte[] { 0xc3 });
             Given_Section(".data", SectionHeaderType.SHT_PROGBITS, ElfLoader.SHF_ALLOC | ElfLoader.SHF_WRITE, new byte[] { 0x01, 0x02, 0x03, 0x04 });
 
-            Given_Linker();
+            Given_Linker(false);
 
             var segs = linker.ComputeSegmentSizes();
             Assert.AreEqual(4, segs.Count);
@@ -94,7 +94,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             Given_Section(".text", SectionHeaderType.SHT_PROGBITS, ElfLoader.SHF_ALLOC | ElfLoader.SHF_EXECINSTR, new byte[] { 0xc3 });
             Given_Section(".data", SectionHeaderType.SHT_PROGBITS, ElfLoader.SHF_ALLOC | ElfLoader.SHF_WRITE, new byte[] { 0x01, 0x02, 0x03, 0x04 });
 
-            Given_Linker();
+            Given_Linker(false);
 
             var segs = linker.ComputeSegmentSizes();
             var segmentMap = linker.CreateSegments(Address.Ptr32(0x00800000), segs);
@@ -118,7 +118,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
                 ElfLoader32.ELF32_ST_INFO(0, ElfSymbolType.STT_OBJECT),
                 0xFFF2);
 
-            Given_Linker();
+            Given_Linker(false);
 
             linker.ComputeSegmentSizes();
             Assert.AreEqual(0x4000, linker.Segments[3].p_pmemsz);
@@ -140,7 +140,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
                 ElfLoader32.ELF32_ST_INFO(0, ElfSymbolType.STT_NOTYPE),
                 0);
 
-            Given_Linker();
+            Given_Linker(false);
 
             linker.ComputeSegmentSizes();
             Assert.AreEqual(0x0030, linker.Segments[0].p_pmemsz, "Each external symbol is simulated with 16 bytes and added to executable section");

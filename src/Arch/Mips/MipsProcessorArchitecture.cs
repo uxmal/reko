@@ -42,9 +42,18 @@ namespace Reko.Arch.Mips
             this.StackRegister = Registers.sp;
         }
 
+        /// <summary>
+        /// If the architecture name contains "v6" we are a MIPS v6, which
+        /// has different instruction encodings.
+        /// </summary>
+        private bool IsVersion6OrLater
+        {
+            get { return this.Name.Contains("v6"); }
+        }
+
         public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
         {
-            return new MipsDisassembler(this, imageReader);
+            return new MipsDisassembler(this, imageReader, this.IsVersion6OrLater);
         }
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
@@ -61,7 +70,7 @@ namespace Reko.Arch.Mips
         {
             return new MipsRewriter(
                 this,
-                new MipsDisassembler(this, rdr),
+                new MipsDisassembler(this, rdr, IsVersion6OrLater),
                 frame,
                 host);
         }

@@ -33,6 +33,23 @@ int sprintf(char * buffer, char * format, ...);
 void free(void * p);
 
 
+int getpagesize(void);
+
+
+void *mmap(void *addr, size_t length, int prot, int flags, int fd, off_t offset);
+void *mmap2(void *addr, size_t length, int prot, int flags, int fd, off_t pgoffset);
+int munmap(void *addr, size_t length);
+
+int mprotect(void *addr, size_t len, int prot);
+
+int mlock(const void *addr, size_t len);
+int mlock2(const void *addr, size_t len, int flags);
+int munlock(const void *addr, size_t len);
+int mlockall(int flags);
+int munlockall(void);
+
+
+
 void * malloc(size_t size);
 size_t strlen(char *);
 char * strchr(char *, char);

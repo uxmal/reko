@@ -212,6 +212,16 @@ namespace Reko.Core
             return new MemberPointer(baseType, dt, platform.PointerType.Size);
         }
 
+        public DataType VisitReference(ReferenceType_v1 reference)
+        {
+            DataType dt;
+            if (reference.Referent == null)
+                dt = new UnknownType();
+            else
+                dt = reference.Referent.Accept(this);
+            return new ReferenceTo(dt);
+        }
+
         public DataType VisitArray(ArrayType_v1 array)
         {
             var dt = array.ElementType.Accept(this);

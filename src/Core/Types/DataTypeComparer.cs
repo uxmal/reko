@@ -161,6 +161,13 @@ namespace Reko.Core.Types
 				return Compare(mX.Pointee, mY.Pointee, ++count);
 			}
 
+            ReferenceTo rX = x as ReferenceTo;
+            ReferenceTo rY = y as ReferenceTo;
+            if (rX != null && rY != null)
+            {
+                return Compare(rX.Referent, rY.Referent, ++count);
+            }
+
 			StructureType sX = x as StructureType;
 			StructureType sY = y as StructureType;
 			if (sX != null && sY != null)
