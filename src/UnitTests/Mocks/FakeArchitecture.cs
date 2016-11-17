@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Mocks
 	public class FakeArchitecture : IProcessorArchitecture
 	{
 		private static RegisterStorage [] registers;
-        private static FlagRegister flags = new FlagRegister("flags", PrimitiveType.Word32);
+        private static FlagRegister flags = new FlagRegister("flags", 70, PrimitiveType.Word32);
         private RtlTraceBuilder rewriters;
 
 		internal const int RegisterCount = 64;

@@ -94,11 +94,11 @@ namespace Reko.Arch.M68k
             fp6 = new FpRegister("fp6", 22, PrimitiveType.Real80);
             fp7 = new FpRegister("fp7", 23, PrimitiveType.Real80);
 
-            ccr = new FlagRegister("ccr", PrimitiveType.Byte);
+            ccr = new FlagRegister("ccr", 24, PrimitiveType.Byte);
             sr = new RegisterStorage("sr", 25, 0, PrimitiveType.Word16);
             usp = new RegisterStorage("usp", 26, 0, PrimitiveType.Word32);
             pc = new AddressRegister("pc", 27, PrimitiveType.Pointer32);
-            fpsr = new FlagRegister("fpsr", PrimitiveType.Word32);
+            fpsr = new FlagRegister("fpsr", 28, PrimitiveType.Word32);
 
             Max = 28;
 

@@ -88,8 +88,8 @@ namespace Reko.Core
     /// </summary>
     public class FlagRegister : RegisterStorage
     {
-        public FlagRegister(string name, PrimitiveType size) :
-            base(name, 0, 0, size)
+        public FlagRegister(string name, int number, PrimitiveType size) :
+            base(name, number, 0, size)
         {
         }
 

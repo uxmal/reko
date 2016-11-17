@@ -48,7 +48,7 @@ namespace Reko.Arch.Pdp11
         public static RegisterStorage V = new RegisterStorage("V", 10, 0, PrimitiveType.Bool);
         public static RegisterStorage C = new RegisterStorage("C", 11, 0, PrimitiveType.Bool);
 
-        public static FlagRegister psw = new FlagRegister("psw", PrimitiveType.Word16);
+        public static FlagRegister psw = new FlagRegister("psw", 12, PrimitiveType.Word16);
     }
 
     [Flags]

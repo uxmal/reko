@@ -50,7 +50,7 @@ namespace Reko.UnitTests.Analysis
             m = new ProcedureBuilder();
             ssaState = new SsaState(m.Procedure, null);
             ssaIds = ssaState.Identifiers;
-            freg = new FlagRegister("flags", PrimitiveType.Word32);
+            freg = new FlagRegister("flags", 32, PrimitiveType.Word32);
 		}
 
         private void Given_ConditionCodeEliminator()
@@ -408,7 +408,7 @@ done:
                 var r2 = MockReg(m, 2);
                 var r3 = MockReg(m, 3);
                 var r4 = MockReg(m, 4);
-                var flags = new FlagRegister("flags", PrimitiveType.Word32);
+                var flags = new FlagRegister("flags", 0x0A, PrimitiveType.Word32);
                 var SCZ = m.Frame.EnsureFlagGroup(flags, 0x7, "SZC", PrimitiveType.Byte);
                 var C = m.Frame.EnsureFlagGroup(flags, 0x4, "C", PrimitiveType.Byte);
 

@@ -319,6 +319,7 @@ namespace Reko.Evaluation
 
             public Storage VisitFlagRegister(FlagRegister freg)
             {
+                ctx.RegisterState[freg] = Constant.Invalid;
                 return freg;
             }
 
