@@ -72,8 +72,9 @@ namespace Reko.Arch.M68k
             var opSrc = orw.RewriteSrc(di.op1, di.Address);
             var opDst = orw.RewriteSrc(di.op2, di.Address);
             var tmp = frame.CreateTemporary(opDst.DataType);
-            emitter.Assign(tmp, emitter.ISub(opDst, opSrc));
-            emitter.Assign(frame.EnsureIdentifier(Registers.fpsr), emitter.Cond(tmp));
+            emitter.Assign(
+                frame.EnsureIdentifier(Registers.fpsr), 
+                emitter.Cond(emitter.FSub(opDst, opSrc)));
         }
 
         private void RewriteFmove()
