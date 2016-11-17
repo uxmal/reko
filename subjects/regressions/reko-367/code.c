@@ -20,38 +20,38 @@ real80 fn80000132(word32 d2, real96 rArg04, real96 rArg10)
 
 real80 fn8000018E(word32 d2, real96 rArg04)
 {
-	do
-		;
-	while (Test(GT,0x01));
+	int32 dwLoc14_19 = 0x01;
+	while (Test(LE,cond((real96) (real80) dwLoc14_19 - rArg04)))
+		dwLoc14_19 = dwLoc14_19 + 0x01;
 	return (real80) DPB(rLoc24, dwLoc10, 0);
 }
 
 real80 fn800001F2(word32 d2, real96 rArg04)
 {
-	int32 dwLoc20_24 = 0x03;
-	while (100 - dwLoc20_24 >= 0x00)
+	int32 dwLoc20_28 = 0x03;
+	while (100 - dwLoc20_28 >= 0x00)
 	{
-		fn80000132(d2, (real96) (real80) rArg04, (real96) (real80) dwLoc20_24);
-		real96 v19_64 = (real96) (real80) dwLoc20_24;
-		fn8000018E(d2, v19_64);
-		rLoc3C = v19_64;
-		dwLoc20_24 = dwLoc20_24 + 0x02;
+		fn80000132(d2, (real96) (real80) rArg04, (real96) (real80) dwLoc20_28);
+		real96 v19_67 = (real96) (real80) dwLoc20_28;
+		fn8000018E(d2, v19_67);
+		rLoc3C = v19_67;
+		dwLoc20_28 = dwLoc20_28 + 0x02;
 	}
 	return (real80) DPB(rLoc3C, dwLoc10, 0);
 }
 
-real80 fn800002AE(word32 d2, real96 rArg04, Eq_66 & fp2Out)
+real80 fn800002AE(word32 d2, real96 rArg04, Eq_74 & fp2Out)
 {
-	int32 dwLoc20_23 = 0x02;
-	while (100 - dwLoc20_23 >= 0x00)
+	int32 dwLoc20_27 = 0x02;
+	while (100 - dwLoc20_27 >= 0x00)
 	{
-		fn80000132(d2, (real96) (real80) rArg04, (real96) (real80) dwLoc20_23);
-		real96 v19_64 = (real96) (real80) dwLoc20_23;
-		fn8000018E(d2, v19_64);
-		rLoc3C = v19_64;
-		dwLoc20_23 = dwLoc20_23 + 0x02;
+		fn80000132(d2, (real96) (real80) rArg04, (real96) (real80) dwLoc20_27);
+		real96 v19_67 = (real96) (real80) dwLoc20_27;
+		fn8000018E(d2, v19_67);
+		rLoc3C = v19_67;
+		dwLoc20_27 = dwLoc20_27 + 0x02;
 	}
-	real80 fp2_115;
+	real80 fp2_118;
 	*fp2Out = fp2;
 	return (real80) DPB(rLoc3C, dwLoc10, 0);
 }

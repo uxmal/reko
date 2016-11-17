@@ -223,16 +223,16 @@ void main()
 
 void _sin(real64 rArg04, real64 rArg0C, Eq_232 tArg14)
 {
-	Eq_243 rLoc0C_23 = DPB(rLoc0C, SLICE(rArg04, word32, 32), 32);
-	Eq_247 v9_26 = (real64) ((real80) rLoc0C_23 * rLoc0C_23);
-	int32 dwLoc20_102 = 0x01;
-	while (Test(GE,cond((real64) ((real80) rLoc0C_23 / rLoc14) - rArg0C)))
+	Eq_243 rLoc0C_118 = DPB(rLoc0C, SLICE(rArg04, word32, 32), 32);
+	Eq_247 v9_28 = (real64) ((real80) rLoc0C_118 * rLoc0C_118);
+	int32 dwLoc20_133 = 0x01;
+	while (Test(GE,cond((real64) ((real80) rLoc0C_118 / rLoc14) - rArg0C)))
 	{
 		*tArg14 = *tArg14;
-		word32 v24_67 = dwLoc20_102 + 0x01;
-		rLoc0C_23 = (real64) ((real80) (real64) ((real80) rLoc0C_23 * v9_26) * v9_26);
-		dwLoc20_102 = v24_67 + 0x03;
-		rLoc14 = (real64) ((real80) (real64) ((real80) (real64) ((real80) (real64) ((real80) rLoc14 * (real80) v24_67) * (real80) (v24_67 + 0x01)) * (real80) (v24_67 + 0x02)) * (real80) (v24_67 + 0x03));
+		word32 v24_78 = dwLoc20_133 + 0x01;
+		rLoc0C_118 = (real64) ((real80) (real64) ((real80) rLoc0C_118 * v9_28) * v9_28);
+		dwLoc20_133 = v24_78 + 0x03;
+		rLoc14 = (real64) ((real80) (real64) ((real80) (real64) ((real80) (real64) ((real80) rLoc14 * (real80) v24_78) * (real80) (v24_78 + 0x01)) * (real80) (v24_78 + 0x02)) * (real80) (v24_78 + 0x03));
 	}
 	return;
 }
