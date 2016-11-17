@@ -313,12 +313,12 @@ namespace Reko.Analysis
 			}
 			else
 			{
-				if (liveStackVars.ContainsKey(tmp))
-				{
-					liveStackVars[tmp] = Math.Max(useBitSize, liveStackVars[tmp]);
-				}
-				else
-					liveStackVars.Add(tmp, useBitSize != 0 ? useBitSize : id.DataType.BitSize);
+                if (liveStackVars.ContainsKey(tmp))
+                {
+                    liveStackVars[tmp] = Math.Max(useBitSize, liveStackVars[tmp]);
+                }
+                else
+                    liveStackVars.Add(tmp, useBitSize != 0 ? useBitSize : (int) tmp.BitSize);
 			}
             return null;
 		}

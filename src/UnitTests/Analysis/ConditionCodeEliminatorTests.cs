@@ -26,6 +26,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Operators;
 using Reko.Core.Types;
+using Reko.UnitTests.Fragments;
 using Reko.UnitTests.Mocks;
 using Rhino.Mocks;
 using System;
@@ -447,7 +448,7 @@ done:
         [Test]
         public void CceShlRclPattern()
         {
-            var p = new ProgramBuilder(new FakeArchitecture());
+            var p = new ProgramBuilder();
             p.Add("main", (m) =>
             {
                 var C = m.Flags("C");
@@ -471,6 +472,14 @@ done:
         public void CceIsqrt()
         {
             RunFileTest("Fragments/isqrt.asm", "Analysis/CceIsqrt.txt");
+        }
+
+        [Test]
+        public void CceFCmp()
+        {
+            var p = new ProgramBuilder();
+            p.Add(new FCmpFragment());
+            RunTest(p, "Analysis/CceFCmp.txt");
         }
 	}
 }

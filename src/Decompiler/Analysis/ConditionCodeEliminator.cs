@@ -129,7 +129,10 @@ namespace Reko.Analysis
 
         private bool IsLocallyDefinedFlagGroup(SsaIdentifier sid)
         {
-            return sid.OriginalIdentifier.Storage is FlagGroupStorage && sid.DefStatement != null;
+            var stg = sid.OriginalIdentifier.Storage;
+            return (stg is FlagGroupStorage ||
+                    stg is FlagRegister)
+                && sid.DefStatement != null;
 		}
 
         /// <summary>

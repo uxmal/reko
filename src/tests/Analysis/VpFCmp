@@ -1,0 +1,54 @@
+= ProcedureBuilder ========================
+a6:a6
+    def:  def a6
+    uses: fp0_2 = (real80) Mem0[a6 - 0x00000010:int32]
+          v4_3 = (real96) fp0_2 - Mem0[a6 + 0x00000008:real96]
+Mem0:Global memory
+    def:  def Mem0
+    uses: fp0_2 = (real80) Mem0[a6 - 0x00000010:int32]
+          v4_3 = (real96) fp0_2 - Mem0[a6 + 0x00000008:real96]
+fp0_2: orig: fp0
+    def:  fp0_2 = (real80) Mem0[a6 - 0x00000010:int32]
+    uses: v4_3 = (real96) fp0_2 - Mem0[a6 + 0x00000008:real96]
+v4_3: orig: v4
+    def:  v4_3 = (real96) fp0_2 - Mem0[a6 + 0x00000008:real96]
+// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder(ptr32 a6)
+ProcedureBuilder_entry:
+	def a6
+	def Mem0
+	// succ:  l1
+l1:
+	fp0_2 = (real80) Mem0[a6 - 0x00000010:int32]
+	v4_3 = (real96) fp0_2 - Mem0[a6 + 0x00000008:real96]
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
+
+a6:a6
+    def:  def a6
+    uses: fp0_2 = (real80) Mem0[a6 - 0x00000010:int32]
+          v4_3 = (real96) fp0_2 - Mem0[a6 + 0x00000008:real96]
+Mem0:Global memory
+    def:  def Mem0
+    uses: fp0_2 = (real80) Mem0[a6 - 0x00000010:int32]
+          v4_3 = (real96) fp0_2 - Mem0[a6 + 0x00000008:real96]
+fp0_2: orig: fp0
+    def:  fp0_2 = (real80) Mem0[a6 - 0x00000010:int32]
+    uses: v4_3 = (real96) fp0_2 - Mem0[a6 + 0x00000008:real96]
+v4_3: orig: v4
+    def:  v4_3 = (real96) fp0_2 - Mem0[a6 + 0x00000008:real96]
+// ProcedureBuilder
+// Return size: 0
+void ProcedureBuilder(ptr32 a6)
+ProcedureBuilder_entry:
+	def a6
+	def Mem0
+	// succ:  l1
+l1:
+	fp0_2 = (real80) Mem0[a6 - 0x00000010:int32]
+	v4_3 = (real96) fp0_2 - Mem0[a6 + 0x00000008:real96]
+	return
+	// succ:  ProcedureBuilder_exit
+ProcedureBuilder_exit:
