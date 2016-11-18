@@ -76,22 +76,33 @@ namespace Reko.Arch.Mips
         static MipsDisassembler()
         {
             var cop1_s = new FpuOpRec(PrimitiveType.Real32,
+                // 00
                 new AOpRec(Opcode.add_s, "F4,F3,F2"),
                 new AOpRec(Opcode.sub_s, "F4,F3,F2"),
                 new AOpRec(Opcode.mul_s, "F4,F3,F2"),
                 new AOpRec(Opcode.div_s, "F4,F3,F2"),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.sqrt_s, "F4,F3"),
+                new AOpRec(Opcode.abs_s, "F4,F3"),
                 new AOpRec(Opcode.mov_s, "F4,F3"),
                 new AOpRec(Opcode.neg_s, "F4,F3"),
 
+                new A64OpRec(Opcode.round_l_s, "F4,F3"),
+                new A64OpRec(Opcode.trunc_l_s, "F4,F3"),
+                new A64OpRec(Opcode.ceil_l_s, "F4,F3"),
+                new A64OpRec(Opcode.floor_l_s, "F4,F3"),
+                new AOpRec(Opcode.round_w_s, "F4,F3"),
+                new AOpRec(Opcode.trunc_w_s, "F4,F3"),
+                new AOpRec(Opcode.ceil_w_s, "F4,F3"),
+                new AOpRec(Opcode.floor_w_s, "F4,F3"),
+
+                // 10
                 new AOpRec(Opcode.illegal, ""),
                 new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.movz_s, "F4,F3,R2"),
+                new AOpRec(Opcode.movn_s, "F4,F3,R2"),
                 new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new A64OpRec(Opcode.recip_s, "F4,F3"),
+                new A64OpRec(Opcode.rsqrt_s, "F4,F3"),
                 new AOpRec(Opcode.illegal, ""),
 
                 new AOpRec(Opcode.illegal, ""),
@@ -103,22 +114,14 @@ namespace Reko.Arch.Mips
                 new AOpRec(Opcode.illegal, ""),
                 new AOpRec(Opcode.illegal, ""),
 
+                // 20
                 new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.cvt_d_s, "F4,F3"),
+                new AOpRec(Opcode.cvt_w_s, "F4,F3"),
                 new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.cvt_w_s, "F4,F3"),
+                new A64OpRec(Opcode.cvt_l_s, "F4,F3"),
+                new A64OpRec(Opcode.cvt_PS_s, "F4,F3,F2"),
                 new AOpRec(Opcode.illegal, ""),
 
                 new AOpRec(Opcode.illegal, ""),
@@ -130,6 +133,7 @@ namespace Reko.Arch.Mips
                 new AOpRec(Opcode.illegal, ""),
                 new AOpRec(Opcode.illegal, ""),
 
+                // 30
                 new AOpRec(Opcode.illegal, ""),
                 new AOpRec(Opcode.illegal, ""),
                 new AOpRec(Opcode.c_eq_s, "c8,F3,F2"),
@@ -154,28 +158,28 @@ namespace Reko.Arch.Mips
                 new AOpRec(Opcode.sub_d, "F4,F3,F2"),
                 new AOpRec(Opcode.mul_d, "F4,F3,F2"),
                 new AOpRec(Opcode.div_d, "F4,F3,F2"),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.sqrt_d, "F4,F3"),
+                new AOpRec(Opcode.abs_d, "F4,F3"),
                 new AOpRec(Opcode.mov_d, "F4,F3"),
                 new AOpRec(Opcode.neg_d, "F4,F3"),
 
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.trunc_l_d, "F4,F3"),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new A64OpRec(Opcode.round_l_d, "F4,F3"),
+                new A64OpRec(Opcode.trunc_l_d, "F4,F3"),
+                new A64OpRec(Opcode.ceil_l_d, "F4,F3"),
+                new A64OpRec(Opcode.floor_l_d, "F4,F3"),
+                new AOpRec(Opcode.round_w_d, "F4,F3"),
+                new AOpRec(Opcode.trunc_w_d, "F4,F3"),
+                new AOpRec(Opcode.ceil_w_d, "F4,F3"),
+                new AOpRec(Opcode.floor_w_d, "F4,F3"),
 
                 // fn 10
                 new AOpRec(Opcode.illegal, ""),
                 new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.movz_d, "F4,F3,R2"),
+                new AOpRec(Opcode.movn_d, "F4,F3,R2"),
                 new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new A64OpRec(Opcode.recip_d, "F4,F3"),
+                new A64OpRec(Opcode.rsqrt_d, "F4,F3"),
                 new AOpRec(Opcode.illegal, ""),
 
                 new AOpRec(Opcode.illegal, ""),
@@ -193,7 +197,7 @@ namespace Reko.Arch.Mips
                 new AOpRec(Opcode.illegal, ""),
                 new AOpRec(Opcode.illegal, ""),
                 new AOpRec(Opcode.cvt_w_d, "F4,F3"),
-                new AOpRec(Opcode.illegal, ""),
+                new A64OpRec(Opcode.cvt_l_d, "F4,F3"),
                 new AOpRec(Opcode.illegal, ""),
                 new AOpRec(Opcode.illegal, ""),
 
@@ -265,8 +269,8 @@ namespace Reko.Arch.Mips
                 new AOpRec(Opcode.illegal, ""),
 
                 // fn 20
-                new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.cvt_s_w, "F4,F3"),
+                new AOpRec(Opcode.cvt_d_w, "F4,F3"),
                 new AOpRec(Opcode.illegal, ""),
                 new AOpRec(Opcode.illegal, ""),
                 new AOpRec(Opcode.illegal, ""),
@@ -379,7 +383,85 @@ namespace Reko.Arch.Mips
                 new AOpRec(Opcode.illegal, ""),
                 new AOpRec(Opcode.illegal, ""));
 
+            var cop1_PS = new FpuOpRec(PrimitiveType.Int64,
+                // fn 00
+                new A64OpRec(Opcode.add_PS, "F4,F3,F2"),
+                new A64OpRec(Opcode.sub_PS, "F4,F3,F2"),
+                new A64OpRec(Opcode.mul_PS, "F4,F3,F2"),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new A64OpRec(Opcode.abs_PS, "F4,F3"),
+                new A64OpRec(Opcode.mov_PS, "F4,F3"),
+                new A64OpRec(Opcode.neg_PS, "F4,F3"),
+
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+
+                // fn 10
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new A64OpRec(Opcode.movz_PS, "F4,F3,R2"),
+                new A64OpRec(Opcode.movn_PS, "F4,F3,R2"),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+
+                // fn 20
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new A64OpRec(Opcode.pll_PS, "F4,F3"),
+                new A64OpRec(Opcode.plu_PS, "F4,F3"),
+                new A64OpRec(Opcode.pul_PS, "F4,F3"),
+                new A64OpRec(Opcode.puu_PS, "F4,F3"),
+
+                // fn 30
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""),
+                new AOpRec(Opcode.illegal, ""));
+
             var cop1 = new CoprocessorOpRec(
+                // 00
                 new AOpRec(Opcode.mfc1, "R2,F3"),
                 new A64OpRec(Opcode.dmfc1, "R2,F3"),
                 new AOpRec(Opcode.cfc1, "R2,f3"),
@@ -398,13 +480,14 @@ namespace Reko.Arch.Mips
                 new AOpRec(Opcode.illegal, ""),
                 new AOpRec(Opcode.illegal, ""),
 
+                // 10
                 cop1_s,
                 cop1_d,
                 new AOpRec(Opcode.illegal, ""),
                 new AOpRec(Opcode.illegal, ""),
                 cop1_w,
                 cop1_l,
-                new AOpRec(Opcode.illegal, ""),
+                cop1_PS,
                 new AOpRec(Opcode.illegal, ""),
 
                 new AOpRec(Opcode.illegal, ""),

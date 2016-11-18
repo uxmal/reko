@@ -231,6 +231,11 @@ namespace Reko.Arch.Mips
                 case Opcode.syscall: RewriteSyscall(instr); break;
                 case Opcode.teq: RewriteTrap(instr, emitter.Eq); break;
                 case Opcode.trunc_l_d: RewriteTrunc(instr, "trunc", PrimitiveType.Real64, PrimitiveType.Int64); break;
+                case Opcode.ceil_l_d: RewriteTrunc(instr, "ceil", PrimitiveType.Real64, PrimitiveType.Int64); break;
+                case Opcode.floor_l_d: RewriteTrunc(instr, "floor", PrimitiveType.Real64, PrimitiveType.Int64); break;
+                case Opcode.trunc_w_d: RewriteTrunc(instr, "trunc", PrimitiveType.Real64, PrimitiveType.Int32); break;
+                case Opcode.ceil_w_d: RewriteTrunc(instr, "ceil", PrimitiveType.Real64, PrimitiveType.Int32); break;
+                case Opcode.floor_w_d: RewriteTrunc(instr, "floor", PrimitiveType.Real64, PrimitiveType.Int32); break;
                 case Opcode.tge: RewriteTrap(instr, emitter.Ge); break;
                 case Opcode.xor:
                 case Opcode.xori:
