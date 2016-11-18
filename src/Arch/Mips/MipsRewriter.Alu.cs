@@ -62,22 +62,50 @@ namespace Reko.Arch.Mips
             emitter.Assign(opDst, opSrc);
         }
 
-        private void RewriteDiv(MipsInstruction instr, Func<Expression, Expression, Expression> ctor)
+        private void RewriteCopy(MipsInstruction instr)
         {
-            var hi = frame.EnsureRegister(Registers.hi);
-            var lo = frame.EnsureRegister(Registers.lo);
-            var opLeft = RewriteOperand(instr.op1);
-            var opRight = RewriteOperand(instr.op2);
-            emitter.Assign(lo, ctor(opLeft, opRight));
-            emitter.Assign(hi, emitter.Mod(opLeft, opRight));
+            var dst = RewriteOperand(instr.op1);
+            var src = RewriteOperand(instr.op2);
+            emitter.Assign(dst, src);
         }
 
-        private void RewriteLoad(MipsInstruction instr)
+        private void RewriteDiv(MipsInstruction instr, Func<Expression, Expression, Expression> ctor)
+        {
+            var op1 = RewriteOperand(instr.op1);
+            var op2 = RewriteOperand(instr.op2);
+            if (instr.op3 != null)
+            {
+                var op3 = RewriteOperand(instr.op3);
+                emitter.Assign(op1, ctor(op2, op3));
+            }
+            else
+            {
+                var hi = frame.EnsureRegister(arch.hi);
+                var lo = frame.EnsureRegister(arch.lo);
+                emitter.Assign(lo, ctor(op1, op2));
+                emitter.Assign(hi, emitter.Mod(op1, op2));
+            }
+        }
+
+        private void RewriteDshift32(MipsInstruction instr, Func<Expression, Expression, Expression> ctor)
+        {
+            var dst = RewriteOperand(instr.op1);
+            var src = RewriteOperand(instr.op2);
+            var sh = emitter.IAdd(RewriteOperand(instr.op3), 32);
+            emitter.Assign(dst, ctor(src, sh));
+        }
+
+        private void RewriteLoad(MipsInstruction instr, PrimitiveType dtSmall)
         {
             var opSrc = RewriteOperand(instr.op2);
             var opDst = RewriteOperand(instr.op1);
             if (opDst.DataType.Size != opSrc.DataType.Size)
+            {
+                // If the source is smaller than the destination register,
+                // perform a sign/zero extension.
+                opSrc.DataType = dtSmall;
                 opSrc = emitter.Cast(arch.WordWidth, opSrc);
+            }
             emitter.Assign(opDst, opSrc);
         }
 
@@ -93,6 +121,20 @@ namespace Reko.Arch.Mips
             var opSrc = RewriteOperand(instr.op2);
             var opDst = RewriteOperand(instr.op1);
             emitter.Assign(opDst, host.PseudoProcedure("__load_linked_64", PrimitiveType.Word64, opSrc));
+        }
+
+        private void RewriteStoreConditional32(MipsInstruction instr)
+        {
+            var opMem = RewriteOperand(instr.op2);
+            var opReg = RewriteOperand(instr.op1);
+            emitter.Assign(opReg, host.PseudoProcedure("__store_conditional_32", PrimitiveType.Word32, opMem, opReg));
+        }
+
+        private void RewriteStoreConditional64(MipsInstruction instr)
+        {
+            var opMem = RewriteOperand(instr.op2);
+            var opReg = RewriteOperand(instr.op1);
+            emitter.Assign(opReg, host.PseudoProcedure("__store_conditional_64", PrimitiveType.Word64, opMem, opReg));
         }
 
         private void RewriteLui(MipsInstruction instr)
@@ -118,6 +160,13 @@ namespace Reko.Arch.Mips
             emitter.Assign(opDst, host.PseudoProcedure("__lwr", PrimitiveType.Word32, opSrc));
         }
 
+        private void RewriteLdc1(MipsInstruction instr)
+        {
+            var opDstFloat = RewriteOperand(instr.op1);
+            var opSrcMem = RewriteOperand(instr.op2);
+            emitter.Assign(opDstFloat, opSrcMem);
+        }
+
         private void RewriteMf(MipsInstruction instr, RegisterStorage reg)
         {
             var opDst = RewriteOperand(instr.op1);
@@ -130,14 +179,22 @@ namespace Reko.Arch.Mips
             emitter.Assign(frame.EnsureRegister(reg), opSrc);
         }
 
-        private void RewriteMul(MipsInstruction instr, Func<Expression,Expression,Expression> fn, PrimitiveType ret)
+        private void RewriteMul(MipsInstruction instr, Func<Expression, Expression, Expression> ctor, PrimitiveType dt)
         {
-            var hilo = frame.EnsureSequence(Registers.hi, Registers.lo, ret);
-            emitter.Assign(
-                hilo,
-                fn(RewriteOperand(instr.op1), RewriteOperand(instr.op2)));
+            var op1 = RewriteOperand(instr.op1);
+            var op2 = RewriteOperand(instr.op2);
+            if (instr.op3 != null)
+            {
+                var op3 = RewriteOperand(instr.op3);
+                emitter.Assign(op1, ctor(op2, op3));
+            }
+            else
+            {
+                var hilo = frame.EnsureSequence(arch.hi, arch.lo, dt);
+                emitter.Assign(hilo, ctor(op1, op2));
+            }
         }
-        
+
         private void RewriteNor(MipsInstruction instr)
         {
             var opLeft = RewriteOperand(instr.op2);
@@ -223,14 +280,14 @@ namespace Reko.Arch.Mips
             emitter.Assign(opDst, host.PseudoProcedure("__swr", PrimitiveType.Word32, opSrc));
         }
 
-        private void RewriteSxx(MipsInstruction instr, Func<Expression,Expression,Expression> op)
+        private void RewriteSxx(MipsInstruction instr, Func<Expression, Expression, Expression> op)
         {
             var dst = RewriteOperand(instr.op1);
             var src1 = RewriteOperand(instr.op2);
             var src2 = RewriteOperand(instr.op3);
             emitter.Assign(
                 dst,
-                emitter.Cast(dst.DataType, op(src1,src2)));
+                emitter.Cast(dst.DataType, op(src1, src2)));
         }
 
         private void RewriteXor(MipsInstruction instr)

@@ -50,6 +50,29 @@ namespace Reko.Arch.Mips
         }
     }
 
+    /// <summary>
+    /// This instruction encoding is only valid on 64-bit MIPS architecture.
+    /// </summary>
+    class A64OpRec : OpRec
+    {
+        internal Opcode opcode;
+        internal string format;
+
+        public A64OpRec(Opcode opcode, string format)
+        {
+            this.opcode = opcode;
+            this.format = format;
+        }
+
+        internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
+        {
+            if (dasm.arch.PointerType.Size == 8)
+                return dasm.DecodeOperands(opcode, wInstr, format);
+            else
+                return dasm.DecodeOperands(Opcode.illegal, wInstr, "");
+        }
+    }
+
     class SllOprec : AOpRec
     {
         public SllOprec(Opcode opcode, string format) : base(opcode, format) { }
@@ -95,19 +118,19 @@ namespace Reko.Arch.Mips
             new AOpRec(Opcode.mthi, "R1"),
             new AOpRec(Opcode.mflo, "R3"),
             new AOpRec(Opcode.mtlo, "R1"),
-            new AOpRec(Opcode.dsllv, "R3,R2,R1"),
+            new A64OpRec(Opcode.dsllv, "R3,R2,R1"),
             new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.dsrlv, "R3,R2,R1"),
-            new AOpRec(Opcode.dsrav, "R3,R2,R1"),
+            new A64OpRec(Opcode.dsrlv, "R3,R2,R1"),
+            new A64OpRec(Opcode.dsrav, "R3,R2,R1"),
 
             new AOpRec(Opcode.mult, "R1,R2"),
             new AOpRec(Opcode.multu, "R1,R2"),
             new AOpRec(Opcode.div, "R1,R2"),
             new AOpRec(Opcode.divu, "R1,R2"),
-            new AOpRec(Opcode.dmult, "R1,R2"),
-            new AOpRec(Opcode.dmultu, "R1,R2"),
-            new AOpRec(Opcode.ddiv, "R1,R2"),
-            new AOpRec(Opcode.ddivu, "R1,R2"),
+            new A64OpRec(Opcode.dmult, "R1,R2"),
+            new A64OpRec(Opcode.dmultu, "R1,R2"),
+            new A64OpRec(Opcode.ddiv, "R1,R2"),
+            new A64OpRec(Opcode.ddivu, "R1,R2"),
             // 20
             new AOpRec(Opcode.add, "R3,R1,R2"),
             new AOpRec(Opcode.addu, "R3,R1,R2"),
@@ -122,10 +145,10 @@ namespace Reko.Arch.Mips
             new AOpRec(Opcode.illegal, ""), 
             new AOpRec(Opcode.slt, "R3,R1,R2"),
             new AOpRec(Opcode.sltu, "R3,R1,R2"),
-            new AOpRec(Opcode.dadd, "R3,R1,R2"),
-            new AOpRec(Opcode.daddu, "R3,R1,R2"),
-            new AOpRec(Opcode.dsub, "R3,R1,R2"),
-            new AOpRec(Opcode.dsubu, "R3,R1,R2"),
+            new A64OpRec(Opcode.dadd, "R3,R1,R2"),
+            new A64OpRec(Opcode.daddu, "R3,R1,R2"),
+            new A64OpRec(Opcode.dsub, "R3,R1,R2"),
+            new A64OpRec(Opcode.dsubu, "R3,R1,R2"),
             // 30
             new AOpRec(Opcode.tge, "R1,R2,T"),
             new AOpRec(Opcode.tgeu, "R1,R2,T"),
@@ -136,14 +159,14 @@ namespace Reko.Arch.Mips
             new AOpRec(Opcode.tne, "R1,R2,T"),
             new AOpRec(Opcode.illegal, ""),
 
-            new AOpRec(Opcode.dsll, "R3,R2,s"),
+            new A64OpRec(Opcode.dsll, "R3,R2,s"),
             new AOpRec(Opcode.illegal, ""),
-            new AOpRec(Opcode.dsrl, "R3,R2,s"),
-            new AOpRec(Opcode.dsra, "R3,R2,s"),
-            new AOpRec(Opcode.dsll32, "R3,R2,s"),
+            new A64OpRec(Opcode.dsrl, "R3,R2,s"),
+            new A64OpRec(Opcode.dsra, "R3,R2,s"),
+            new A64OpRec(Opcode.dsll32, "R3,R2,s"),
             new AOpRec(Opcode.illegal, ""), 
-            new AOpRec(Opcode.dsrl32, "R3,R2,s"),
-            new AOpRec(Opcode.dsra32, "R3,R2,s"),
+            new A64OpRec(Opcode.dsrl32, "R3,R2,s"),
+            new A64OpRec(Opcode.dsra32, "R3,R2,s"),
         };
         internal override MipsInstruction Decode(uint wInstr, MipsDisassembler dasm)
         {
@@ -227,7 +250,7 @@ namespace Reko.Arch.Mips
                 new AOpRec(Opcode.ll, "R2,ew")),
             new Version6OpRec(
                 new AOpRec(Opcode.illegal, ""),
-                new AOpRec(Opcode.lld, "R2,el")),
+                new A64OpRec(Opcode.lld, "R2,el")),
 
             new AOpRec(Opcode.illegal, ""),
             new AOpRec(Opcode.illegal, ""),

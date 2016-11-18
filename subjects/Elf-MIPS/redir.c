@@ -3682,7 +3682,7 @@ void request_get_content_length(Eq_4466 * r4, uint32 r5, word32 dwArg00, word32 
 			word32 r6_197;
 			word32 r7_198;
 			r25_187();
-			r4->dw0554 = fp + -0x0014;
+			r4->ptr0554 = fp + -0x0014;
 			return;
 		}
 	}
@@ -4019,7 +4019,7 @@ void properties_load(word32 r4, word32 r5, word32 dwArg00, word32 dwArg04)
 				word32 r7_218;
 				bcuiposr0 None_219;
 				r25_207();
-				int8 * r2_223 = fp + -0x0148 + (fp + -0x0148);
+				word32 r2_223 = fp + -0x0148 + (fp + -0x0148);
 				if ((word32) *r2_223 != 0x00)
 				{
 					<anonymous> * r25_232 = globals->ptr1000091C;
@@ -4865,7 +4865,7 @@ void log_string(word32 r5, word32 dwArg00)
 	return;
 }
 
-void server_new(word32 r2, word32 r6, word32 r7, word32 dwArg00, word32 dwArg04, word16 wArg06, word32 dwArg08, word32 dwArg0C)
+void server_new(word32 r2, word32 r6, word32 r7, word32 dwArg00, word32 dwArg04, uint16 wArg06, word32 dwArg08, word32 dwArg0C)
 {
 	<anonymous> * r25_23 = globals->ptr10000A34;
 	word32 sp_24;
@@ -5415,17 +5415,26 @@ void slist_destroy(word32 dwArg00)
 	return;
 }
 
-void __fixunsdfsi(word32 f12, word32 f13, word32 FCSR)
+void __fixunsdfsi(word64 f12, word64 f13, word32 FCSR)
 {
-	return;
+__fixunsdfsi_entry:
+	def f12_f13
+	f0_8.u1 = 0x00
+	f0_f1_9 = f0_8
+	cc0_11 = f0_f1_9 <= f12_f13
+	return
+l00407740:
+l00407790:
+l004077D4:
+__fixunsdfsi_exit:
 }
 
-void _fpadd_parts(Eq_6818 * r4, Eq_6819 * r5, Eq_6820 * r6)
+void _fpadd_parts(Eq_6821 * r4, Eq_6822 * r5, Eq_6823 * r6)
 {
-	Eq_6821 r7_9 = r4->t0000;
+	Eq_6824 r7_9 = r4->t0000;
 	if ((word32) (r7_9 < 0x02) == 0x00)
 	{
-		Eq_6830 r4_29 = r5->t0000;
+		Eq_6833 r4_29 = r5->t0000;
 		if ((word32) (r4_29 < 0x02) == 0x00)
 		{
 			if ((r7_9 ^ 0x04) == 0x00)
@@ -5455,7 +5464,7 @@ void _fpadd_parts(Eq_6818 * r4, Eq_6819 * r5, Eq_6820 * r6)
 				{
 					int32 r8_140 = r4->dw0008;
 					int32 r7_137 = r5->dw0008;
-					Eq_6887 r10_141 = r4->t000C;
+					Eq_6890 r10_141 = r4->t000C;
 					int32 r2_164 = r8_140 - r7_137;
 					uint32 r9_136 = r5->dw000C;
 					if (r2_164 < 0x00)
@@ -5507,11 +5516,11 @@ void _fpadd_parts(Eq_6818 * r4, Eq_6819 * r5, Eq_6820 * r6)
 							r10_141.u0 = 0x00;
 						}
 					}
-					Eq_6887 r7_103;
+					Eq_6890 r7_103;
 					int32 r4_77 = r4->dw0004;
 					if (r4_77 != r5->dw0004)
 					{
-						Eq_6887 r3_127;
+						Eq_6890 r3_127;
 						if (r4_77 == 0x00)
 							r3_127 = r10_141 - r9_136;
 						else
@@ -5534,7 +5543,7 @@ void _fpadd_parts(Eq_6818 * r4, Eq_6819 * r5, Eq_6820 * r6)
 							while (true)
 							{
 								r6->dw0008 = r6->dw0008 + -0x01;
-								Eq_6887 r5_104 = r7_103 << 0x01;
+								Eq_6890 r5_104 = r7_103 << 0x01;
 								r6->t000C = r5_104;
 								if ((word32) (0x3FFFFFFE < r5_104) != 0x00)
 									break;
@@ -5547,7 +5556,7 @@ void _fpadd_parts(Eq_6818 * r4, Eq_6819 * r5, Eq_6820 * r6)
 					{
 						r6->dw0004 = r4_77;
 						r6->dw0008 = r8_140;
-						Eq_6887 r2_129 = *r10_141.u0;
+						Eq_6890 r2_129 = *r10_141.u0;
 						r6->t000C = r2_129;
 						r7_103 = r2_129;
 					}
@@ -5567,7 +5576,7 @@ void _fpadd_parts(Eq_6818 * r4, Eq_6819 * r5, Eq_6820 * r6)
 	return;
 }
 
-void __addsf3()
+void __addsf3(word64 f12, word64 f14)
 {
 	<anonymous> * r17_11 = globals->ptr100009DC;
 	word32 sp_23;
@@ -5578,8 +5587,8 @@ void __addsf3()
 	word32 r16_28;
 	word32 r4_29;
 	word32 r5_30;
-	word32 f12_31;
-	word32 f14_32;
+	word64 f12_31;
+	word64 f14_32;
 	word32 r6_33;
 	bcuiposr0 None_34;
 	word32 r2_35;
@@ -5592,8 +5601,8 @@ void __addsf3()
 	word32 r16_46;
 	word32 r4_47;
 	word32 r5_48;
-	word32 f12_49;
-	word32 f14_50;
+	word64 f12_49;
+	word64 f14_50;
 	word32 r6_51;
 	bcuiposr0 None_52;
 	word32 r2_53;
@@ -5606,8 +5615,8 @@ void __addsf3()
 	word32 r16_65;
 	word32 r4_66;
 	word32 r5_67;
-	word32 f12_68;
-	word32 f14_69;
+	word64 f12_68;
+	word64 f14_69;
 	word32 r6_70;
 	bcuiposr0 None_71;
 	word32 r2_72;
@@ -5621,8 +5630,8 @@ void __addsf3()
 	word32 r16_81;
 	word32 r4_82;
 	word32 r5_83;
-	word32 f12_84;
-	word32 f14_85;
+	word64 f12_84;
+	word64 f14_85;
 	word32 r6_86;
 	bcuiposr0 None_87;
 	word32 r2_88;
@@ -5630,7 +5639,7 @@ void __addsf3()
 	return;
 }
 
-void __subsf3()
+void __subsf3(word64 f12, word64 f14)
 {
 	<anonymous> * r17_11 = globals->ptr100009DC;
 	word32 sp_23;
@@ -5641,8 +5650,8 @@ void __subsf3()
 	word32 r16_28;
 	word32 r4_29;
 	word32 r5_30;
-	word32 f12_31;
-	word32 f14_32;
+	word64 f12_31;
+	word64 f14_32;
 	word32 r2_33;
 	word32 r6_34;
 	bcuiposr0 None_35;
@@ -5655,8 +5664,8 @@ void __subsf3()
 	word32 r16_46;
 	word32 r4_47;
 	word32 r5_48;
-	word32 f12_49;
-	word32 f14_50;
+	word64 f12_49;
+	word64 f14_50;
 	word32 r2_51;
 	word32 r6_52;
 	bcuiposr0 None_53;
@@ -5669,8 +5678,8 @@ void __subsf3()
 	word32 r16_69;
 	word32 r4_70;
 	word32 r5_71;
-	word32 f12_72;
-	word32 f14_73;
+	word64 f12_72;
+	word64 f14_73;
 	word32 r2_74;
 	word32 r6_75;
 	bcuiposr0 None_76;
@@ -5684,8 +5693,8 @@ void __subsf3()
 	word32 r16_85;
 	word32 r4_86;
 	word32 r5_87;
-	word32 f12_88;
-	word32 f14_89;
+	word64 f12_88;
+	word64 f14_89;
 	word32 r2_90;
 	word32 r6_91;
 	bcuiposr0 None_92;
@@ -5693,7 +5702,7 @@ void __subsf3()
 	return;
 }
 
-void __mulsf3()
+void __mulsf3(word64 f12, word64 f14)
 {
 	<anonymous> * r17_11 = globals->ptr100009DC;
 	word32 sp_23;
@@ -5704,8 +5713,8 @@ void __mulsf3()
 	word32 r16_28;
 	word32 r4_29;
 	word32 r5_30;
-	word32 f12_31;
-	word32 f14_32;
+	word64 f12_31;
+	word64 f14_32;
 	word32 r2_33;
 	word32 r7_34;
 	word32 r3_35;
@@ -5721,8 +5730,8 @@ void __mulsf3()
 	word32 r16_49;
 	word32 r4_50;
 	word32 r5_51;
-	word32 f12_52;
-	word32 f14_53;
+	word64 f12_52;
+	word64 f14_53;
 	word32 r2_54;
 	word32 r7_55;
 	word32 r3_56;
@@ -5758,14 +5767,14 @@ l00407C8C:
 	if ((dwLoc38 ^ 0x02) == 0x00)
 		goto l00407C8C;
 	uint32 r4_165;
-	Eq_7297 hi_lo_142 = dwLoc3C * dwLoc2C;
+	Eq_7306 hi_lo_142 = dwLoc3C * dwLoc2C;
 	int32 hi_144 = SLICE(hi_lo_142, word32, 32);
 	uint32 lo_143 = (word32) hi_lo_142;
-	Eq_7305 r6_160 = hi_144 >> 0x00;
+	Eq_7314 r6_160 = hi_144 >> 0x00;
 	if (hi_144 >> 0x00 < 0x00)
 	{
 		r4_165 = lo_143;
-		Eq_7316 r2_209 = (hi_144 >> 0x00) + 0x01;
+		Eq_7325 r2_209 = (hi_144 >> 0x00) + 0x01;
 		while (true)
 		{
 			if (r2_209 != 0x00)
@@ -5815,8 +5824,8 @@ l00407DA4:
 	word32 r16_77;
 	word32 r4_78;
 	word32 r5_79;
-	word32 f12_80;
-	word32 f14_81;
+	word64 f12_80;
+	word64 f14_81;
 	word32 r2_82;
 	word32 r7_83;
 	word32 r3_84;
@@ -5827,7 +5836,7 @@ l00407DA4:
 	return;
 }
 
-void __divsf3()
+void __divsf3(word64 f12, word64 f14)
 {
 	<anonymous> * r17_11 = globals->ptr100009DC;
 	word32 sp_23;
@@ -5838,8 +5847,8 @@ void __divsf3()
 	word32 r16_28;
 	word32 r4_29;
 	word32 r5_30;
-	word32 f12_31;
-	word32 f14_32;
+	word64 f12_31;
+	word64 f14_32;
 	word32 r6_33;
 	word32 r8_34;
 	word32 r2_35;
@@ -5854,8 +5863,8 @@ void __divsf3()
 	word32 r16_48;
 	word32 r4_49;
 	word32 r5_50;
-	word32 f12_51;
-	word32 f14_52;
+	word64 f12_51;
+	word64 f14_52;
 	word32 r6_53;
 	word32 r8_54;
 	word32 r2_55;
@@ -5875,8 +5884,8 @@ l00407F3C:
 		word32 r16_73;
 		word32 r4_74;
 		word32 r5_75;
-		word32 f12_76;
-		word32 f14_77;
+		word64 f12_76;
+		word64 f14_77;
 		word32 r6_78;
 		word32 r8_79;
 		word32 r2_80;
@@ -5970,14 +5979,14 @@ void __floatsisf(uint32 r4)
 	word32 r4_45;
 	word32 ra_46;
 	word32 r1_47;
-	word32 f0_48;
+	word64 f0_48;
 	word32 r6_49;
 	word32 r5_50;
 	r25_34();
 	return;
 }
 
-void __fixsfsi()
+void __fixsfsi(word64 f12)
 {
 	<anonymous> * r25_9 = globals->ptr100009DC;
 	word32 sp_16;
@@ -5986,7 +5995,7 @@ void __fixsfsi()
 	word32 r4_19;
 	word32 r5_20;
 	word32 ra_21;
-	word32 f12_22;
+	word64 f12_22;
 	word32 r3_23;
 	word32 r2_24;
 	r25_9();
@@ -6005,7 +6014,7 @@ void __fixsfsi()
 	return;
 }
 
-void __extendsfdf2()
+void __extendsfdf2(word64 f12)
 {
 	<anonymous> * r25_11 = globals->ptr100009DC;
 	word32 sp_16;
@@ -6014,7 +6023,7 @@ void __extendsfdf2()
 	word32 ra_19;
 	word32 r4_20;
 	word32 r5_21;
-	word32 f12_22;
+	word64 f12_22;
 	word32 r2_23;
 	word32 r3_24;
 	word32 r7_25;
@@ -6027,7 +6036,7 @@ void __extendsfdf2()
 	word32 ra_47;
 	word32 r4_48;
 	word32 r5_49;
-	word32 f12_50;
+	word64 f12_50;
 	word32 r2_51;
 	word32 r3_52;
 	word32 r7_53;
@@ -6036,12 +6045,12 @@ void __extendsfdf2()
 	return;
 }
 
-void _fpadd_parts(Eq_7578 * r4, Eq_7579 * r5, Eq_7580 * r6)
+void _fpadd_parts(Eq_7591 * r4, Eq_7592 * r5, Eq_7593 * r6)
 {
-	Eq_7581 r7_9 = r4->t0000;
+	Eq_7594 r7_9 = r4->t0000;
 	if ((word32) (r7_9 < 0x02) == 0x00)
 	{
-		Eq_7590 r4_42 = r5->t0000;
+		Eq_7603 r4_42 = r5->t0000;
 		if ((word32) (r4_42 < 0x02) != 0x00)
 			return;
 		if ((r7_9 ^ 0x04) == 0x00)
@@ -6074,11 +6083,11 @@ void _fpadd_parts(Eq_7578 * r4, Eq_7579 * r5, Eq_7580 * r6)
 		{
 			int32 r12_251 = r4->dw0008;
 			int32 r7_243 = r5->dw0008;
-			Eq_7653 r10_252 = r4->t0010;
-			Eq_7659 r11_253 = r4->t0014;
+			Eq_7666 r10_252 = r4->t0010;
+			Eq_7672 r11_253 = r4->t0014;
 			int32 r2_291 = r12_251 - r7_243;
 			uint32 r8_241 = r5->dw0010;
-			Eq_7659 r9_100 = r5->t0014;
+			Eq_7672 r9_100 = r5->t0014;
 			if (r2_291 < 0x00)
 				r2_291 = 0x00 - r2_291;
 			if ((word32) (r2_291 < 0x0040) != 0x00)
@@ -6145,8 +6154,8 @@ void _fpadd_parts(Eq_7578 * r4, Eq_7579 * r5, Eq_7580 * r6)
 				goto l00408490;
 			}
 			uint32 r2_144 = (word32) (r9_100 < r11_253);
-			Eq_7653 r4_148;
-			Eq_7659 r5_145 = r9_100 - r11_253;
+			Eq_7666 r4_148;
+			Eq_7672 r5_145 = r9_100 - r11_253;
 			uint32 r4_146 = r8_241 - r10_252;
 			if (r6_105 == 0x00)
 			{
@@ -6166,12 +6175,12 @@ void _fpadd_parts(Eq_7578 * r4, Eq_7579 * r5, Eq_7580 * r6)
 			{
 				r6->dw0004 = 0x01;
 				r6->dw0008 = r12_251;
-				Eq_7659 r5_215 = 0x00 - r5_145;
+				Eq_7672 r5_215 = 0x00 - r5_145;
 				r6->t0010 = 0x00 - r4_148 - (word32) (0x00 < r5_215);
 				r6->t0014 = r5_215;
 			}
-			Eq_7659 r9_151 = r6->t0014;
-			Eq_7653 r8_150 = r6->t0010;
+			Eq_7672 r9_151 = r6->t0014;
+			Eq_7666 r8_150 = r6->t0010;
 			uint32 r4_156 = *r8_150;
 			if ((word32) (0x0FFFFFFF < r4_156) == 0x00)
 			{
@@ -6188,8 +6197,8 @@ l0040840C:
 				ui32 r6_168 = r8_150 << 0x01;
 				while (true)
 				{
-					Eq_7659 r7_176 = r9_151 << 0x01;
-					Eq_7653 r6_174 = r6_168 | r2_167;
+					Eq_7672 r7_176 = r9_151 << 0x01;
+					Eq_7666 r6_174 = r6_168 | r2_167;
 					r6->dw0008 = r6->dw0008 + -0x01;
 					r6->t0010 = r6_174;
 					r6->t0014 = r7_176;
@@ -6214,8 +6223,8 @@ l00408490:
 			if ((word32) (0x1FFFFFFF < r6->t0010) != 0x00)
 			{
 				r6->t0000.u0 = 0x03;
-				Eq_7653 r4_126 = r6->t0010;
-				Eq_7659 r5_127 = r6->t0014;
+				Eq_7666 r4_126 = r6->t0010;
+				Eq_7672 r5_127 = r6->t0014;
 				int32 r6_135 = r6->dw0008;
 				r6->t0010 = r4_126 | r4_126 >> 0x01;
 				r6->t0014 = r5_127.u1 | (r5_127 >> 0x01 | r4_126 << 0x1F);
@@ -6236,13 +6245,13 @@ void __adddf3()
 	word32 r28_36;
 	word32 r25_37;
 	word32 r3_38;
-	word32 f12_39;
+	word64 f12_39;
 	word32 r2_40;
-	word32 f13_41;
+	word64 f13_41;
 	word32 r7_42;
-	word32 f14_43;
+	word64 f14_43;
 	word32 r6_44;
-	word32 f15_45;
+	word64 f15_45;
 	word32 r8_46;
 	<anonymous> * r18_47;
 	word32 r17_48;
@@ -6256,13 +6265,13 @@ void __adddf3()
 	word32 r28_60;
 	word32 r25_61;
 	word32 r3_62;
-	word32 f12_63;
+	word64 f12_63;
 	word32 r2_64;
-	word32 f13_65;
+	word64 f13_65;
 	word32 r7_66;
-	word32 f14_67;
+	word64 f14_67;
 	word32 r6_68;
-	word32 f15_69;
+	word64 f15_69;
 	word32 r8_70;
 	word32 r18_71;
 	word32 r17_72;
@@ -6276,13 +6285,13 @@ void __adddf3()
 	word32 r28_85;
 	word32 r25_86;
 	word32 r3_87;
-	word32 f12_88;
+	word64 f12_88;
 	word32 r2_89;
-	word32 f13_90;
+	word64 f13_90;
 	word32 r7_91;
-	word32 f14_92;
+	word64 f14_92;
 	word32 r6_93;
-	word32 f15_94;
+	word64 f15_94;
 	word32 r8_95;
 	word32 r18_96;
 	word32 r17_97;
@@ -6297,13 +6306,13 @@ void __adddf3()
 	word32 r28_107;
 	word32 r25_108;
 	word32 r3_109;
-	word32 f12_110;
+	word64 f12_110;
 	word32 r2_111;
-	word32 f13_112;
+	word64 f13_112;
 	word32 r7_113;
-	word32 f14_114;
+	word64 f14_114;
 	word32 r6_115;
-	word32 f15_116;
+	word64 f15_116;
 	word32 r8_117;
 	word32 r18_118;
 	word32 r17_119;
@@ -6323,13 +6332,13 @@ void __subdf3()
 	word32 r28_36;
 	word32 r25_37;
 	word32 r3_38;
-	word32 f12_39;
+	word64 f12_39;
 	word32 r2_40;
-	word32 f13_41;
+	word64 f13_41;
 	word32 r7_42;
-	word32 f14_43;
+	word64 f14_43;
 	word32 r6_44;
-	word32 f15_45;
+	word64 f15_45;
 	word32 r8_46;
 	<anonymous> * r18_47;
 	word32 r17_48;
@@ -6343,13 +6352,13 @@ void __subdf3()
 	word32 r28_60;
 	word32 r25_61;
 	word32 r3_62;
-	word32 f12_63;
+	word64 f12_63;
 	word32 r2_64;
-	word32 f13_65;
+	word64 f13_65;
 	word32 r7_66;
-	word32 f14_67;
+	word64 f14_67;
 	word32 r6_68;
-	word32 f15_69;
+	word64 f15_69;
 	word32 r8_70;
 	word32 r18_71;
 	word32 r17_72;
@@ -6363,13 +6372,13 @@ void __subdf3()
 	word32 r28_89;
 	word32 r25_90;
 	word32 r3_91;
-	word32 f12_92;
+	word64 f12_92;
 	word32 r2_93;
-	word32 f13_94;
+	word64 f13_94;
 	word32 r7_95;
-	word32 f14_96;
+	word64 f14_96;
 	word32 r6_97;
-	word32 f15_98;
+	word64 f15_98;
 	word32 r8_99;
 	word32 r18_100;
 	word32 r17_101;
@@ -6384,13 +6393,13 @@ void __subdf3()
 	word32 r28_111;
 	word32 r25_112;
 	word32 r3_113;
-	word32 f12_114;
+	word64 f12_114;
 	word32 r2_115;
-	word32 f13_116;
+	word64 f13_116;
 	word32 r7_117;
-	word32 f14_118;
+	word64 f14_118;
 	word32 r6_119;
-	word32 f15_120;
+	word64 f15_120;
 	word32 r8_121;
 	word32 r18_122;
 	word32 r17_123;
@@ -6410,13 +6419,13 @@ void __muldf3()
 	word32 r28_44;
 	word32 r25_45;
 	word32 r3_46;
-	word32 f12_47;
+	word64 f12_47;
 	word32 r2_48;
-	word32 f13_49;
+	word64 f13_49;
 	word32 r7_50;
-	word32 f14_51;
+	word64 f14_51;
 	word32 r6_52;
-	word32 f15_53;
+	word64 f15_53;
 	word32 r8_54;
 	<anonymous> * r18_55;
 	word32 r16_56;
@@ -6443,13 +6452,13 @@ void __muldf3()
 	word32 r28_81;
 	word32 r25_82;
 	word32 r3_83;
-	word32 f12_84;
+	word64 f12_84;
 	word32 r2_85;
-	word32 f13_86;
+	word64 f13_86;
 	word32 r7_87;
-	word32 f14_88;
+	word64 f14_88;
 	word32 r6_89;
-	word32 f15_90;
+	word64 f15_90;
 	word32 r8_91;
 	word32 r18_92;
 	word32 r16_93;
@@ -6500,20 +6509,20 @@ l004087D0:
 	if ((dwLoc70 ^ 0x02) == 0x00)
 		goto l004087D0;
 	uint32 r16_296;
-	Eq_8287 hi_lo_244 = (dwLoc60 >> 0x00) * dwLoc74;
-	Eq_8295 hi_lo_250 = dwLoc5C * (dwLoc78 >> 0x00);
+	Eq_8300 hi_lo_244 = (dwLoc60 >> 0x00) * dwLoc74;
+	Eq_8308 hi_lo_250 = dwLoc5C * (dwLoc78 >> 0x00);
 	uint32 lo_245 = (word32) hi_lo_244;
 	uint32 lo_251 = (word32) hi_lo_250;
 	uint32 r21_264 = lo_245 + lo_251;
 	uint32 r24_259 = SLICE(hi_lo_244, word32, 32) + (word32) ((dwLoc60 >> 0x00) *s dwLoc78) + (word32) (dwLoc74 *s 0x00);
-	Eq_8320 hi_lo_275 = dwLoc5C * dwLoc74;
-	Eq_8324 hi_lo_281 = (dwLoc60 >> 0x00) * (dwLoc78 >> 0x00);
+	Eq_8333 hi_lo_275 = dwLoc5C * dwLoc74;
+	Eq_8337 hi_lo_281 = (dwLoc60 >> 0x00) * (dwLoc78 >> 0x00);
 	word32 lo_288 = (word32) ((dwLoc78 >> 0x00) *s 0x00);
 	uint32 r20_269 = r24_259 + ((SLICE(hi_lo_250, word32, 32) + (word32) (dwLoc5C *s 0x00)) + (word32) ((dwLoc78 >> 0x00) *s dwLoc60)) + (word32) (r21_264 < lo_251);
 	int32 dwLoc30_238 = 0x00;
-	Eq_8350 lo_276 = (word32) hi_lo_275;
+	Eq_8363 lo_276 = (word32) hi_lo_275;
 	word32 r16_280 = SLICE(hi_lo_275, word32, 32) + (word32) (dwLoc5C *s dwLoc78);
-	Eq_8358 lo_282 = (word32) hi_lo_281;
+	Eq_8371 lo_282 = (word32) hi_lo_281;
 	word32 r18_290 = SLICE(hi_lo_281, word32, 32) + (word32) ((dwLoc60 >> 0x00) *s 0x00) + lo_288;
 	word32 lo_292 = (word32) (dwLoc74 *s dwLoc60);
 	if ((word32) (r20_269 < r24_259) != 0x00)
@@ -6553,9 +6562,9 @@ l00408978:
 					goto l00408978;
 			}
 l00408998:
-			Eq_8350 r7_352;
+			Eq_8363 r7_352;
 			word32 r5_315 = (r20_269 >>u 0x00) + -0x01 + lo_282;
-			Eq_8358 r13_326 = *r5_315.u1;
+			Eq_8371 r13_326 = *r5_315.u1;
 			uint32 r12_332 = dwLoc30_238 + (r18_290 + (word32) (r5_315 < lo_282)) + (word32) (r13_326 < r5_315);
 			uint32 r6_340 = r10_305;
 			if ((word32) (0x1FFFFFFF < r12_332) != 0x00)
@@ -6614,13 +6623,13 @@ l00408B58:
 			word32 r28_128;
 			word32 r25_129;
 			word32 r3_130;
-			word32 f12_131;
+			word64 f12_131;
 			word32 r2_132;
-			word32 f13_133;
+			word64 f13_133;
 			word32 r7_134;
-			word32 f14_135;
+			word64 f14_135;
 			word32 r6_136;
-			word32 f15_137;
+			word64 f15_137;
 			word32 r8_138;
 			word32 r18_139;
 			word32 r16_140;
@@ -6656,13 +6665,13 @@ __divdf3_entry:
 	word32 r28_36
 	word32 r25_37
 	word32 r3_38
-	word32 f12_39
+	word64 f12_39
 	word32 r2_40
-	word32 f13_41
+	word64 f13_41
 	word32 r7_42
-	word32 f14_43
+	word64 f14_43
 	word32 r6_44
-	word32 f15_45
+	word64 f15_45
 	word32 r8_46
 	<anonymous> * r18_47
 	word32 r16_48
@@ -6682,13 +6691,13 @@ __divdf3_entry:
 	word32 r28_66
 	word32 r25_67
 	word32 r3_68
-	word32 f12_69
+	word64 f12_69
 	word32 r2_70
-	word32 f13_71
+	word64 f13_71
 	word32 r7_72
-	word32 f14_73
+	word64 f14_73
 	word32 r6_74
-	word32 f15_75
+	word64 f15_75
 	word32 r8_76
 	word32 r18_77
 	word32 r16_78
@@ -6755,7 +6764,7 @@ l00408CEC:
 	r14_176 = (word32) (r4_173 < dwLoc30)
 l00408D08:
 	uint32 r10_183 = 0x10000000
-	Eq_8638 r11_184 = 0x00
+	Eq_8651 r11_184 = 0x00
 	ui32 r12_185 = 0x00
 	int32 r13_186 = 0x00
 	goto l00408D18
@@ -6818,13 +6827,13 @@ l00408DDC:
 	word32 r28_102
 	word32 r25_103
 	word32 r3_104
-	word32 f12_105
+	word64 f12_105
 	word32 r2_106
-	word32 f13_107
+	word64 f13_107
 	word32 r7_108
-	word32 f14_109
+	word64 f14_109
 	word32 r6_110
-	word32 f15_111
+	word64 f15_111
 	word32 r8_112
 	word32 r18_113
 	word32 r16_114
@@ -6851,13 +6860,13 @@ void __eqdf2()
 	word32 r28_36;
 	word32 r25_37;
 	word32 r3_38;
-	word32 f12_39;
+	word64 f12_39;
 	word32 r2_40;
-	word32 f13_41;
+	word64 f13_41;
 	word32 r7_42;
-	word32 f14_43;
+	word64 f14_43;
 	word32 r6_44;
-	word32 f15_45;
+	word64 f15_45;
 	word32 r8_46;
 	<anonymous> * r18_47;
 	word32 r16_48;
@@ -6870,13 +6879,13 @@ void __eqdf2()
 	word32 r28_59;
 	word32 r25_60;
 	word32 r3_61;
-	word32 f12_62;
+	word64 f12_62;
 	word32 r2_63;
-	word32 f13_64;
+	word64 f13_64;
 	word32 r7_65;
-	word32 f14_66;
+	word64 f14_66;
 	word32 r6_67;
-	word32 f15_68;
+	word64 f15_68;
 	word32 r8_69;
 	word32 r18_70;
 	word32 r16_71;
@@ -6895,13 +6904,13 @@ void __eqdf2()
 			word32 r28_106;
 			word32 r25_107;
 			word32 r3_108;
-			word32 f12_109;
+			word64 f12_109;
 			word32 r2_110;
-			word32 f13_111;
+			word64 f13_111;
 			word32 r7_112;
-			word32 f14_113;
+			word64 f14_113;
 			word32 r6_114;
-			word32 f15_115;
+			word64 f15_115;
 			word32 r8_116;
 			word32 r18_117;
 			word32 r16_118;
@@ -6922,13 +6931,13 @@ void __nedf2()
 	word32 r28_36;
 	word32 r25_37;
 	word32 r3_38;
-	word32 f12_39;
+	word64 f12_39;
 	word32 r2_40;
-	word32 f13_41;
+	word64 f13_41;
 	word32 r7_42;
-	word32 f14_43;
+	word64 f14_43;
 	word32 r6_44;
-	word32 f15_45;
+	word64 f15_45;
 	word32 r8_46;
 	<anonymous> * r18_47;
 	word32 r16_48;
@@ -6941,13 +6950,13 @@ void __nedf2()
 	word32 r28_59;
 	word32 r25_60;
 	word32 r3_61;
-	word32 f12_62;
+	word64 f12_62;
 	word32 r2_63;
-	word32 f13_64;
+	word64 f13_64;
 	word32 r7_65;
-	word32 f14_66;
+	word64 f14_66;
 	word32 r6_67;
-	word32 f15_68;
+	word64 f15_68;
 	word32 r8_69;
 	word32 r18_70;
 	word32 r16_71;
@@ -6966,13 +6975,13 @@ void __nedf2()
 			word32 r28_106;
 			word32 r25_107;
 			word32 r3_108;
-			word32 f12_109;
+			word64 f12_109;
 			word32 r2_110;
-			word32 f13_111;
+			word64 f13_111;
 			word32 r7_112;
-			word32 f14_113;
+			word64 f14_113;
 			word32 r6_114;
-			word32 f15_115;
+			word64 f15_115;
 			word32 r8_116;
 			word32 r18_117;
 			word32 r16_118;
@@ -6993,13 +7002,13 @@ void __gedf2()
 	word32 r28_36;
 	word32 r25_37;
 	word32 r3_38;
-	word32 f12_39;
+	word64 f12_39;
 	word32 r2_40;
-	word32 f13_41;
+	word64 f13_41;
 	word32 r7_42;
-	word32 f14_43;
+	word64 f14_43;
 	word32 r6_44;
-	word32 f15_45;
+	word64 f15_45;
 	word32 r8_46;
 	<anonymous> * r18_47;
 	word32 r16_48;
@@ -7012,13 +7021,13 @@ void __gedf2()
 	word32 r28_59;
 	word32 r25_60;
 	word32 r3_61;
-	word32 f12_62;
+	word64 f12_62;
 	word32 r2_63;
-	word32 f13_64;
+	word64 f13_64;
 	word32 r7_65;
-	word32 f14_66;
+	word64 f14_66;
 	word32 r6_67;
-	word32 f15_68;
+	word64 f15_68;
 	word32 r8_69;
 	word32 r18_70;
 	word32 r16_71;
@@ -7037,13 +7046,13 @@ void __gedf2()
 			word32 r28_106;
 			word32 r25_107;
 			word32 r3_108;
-			word32 f12_109;
+			word64 f12_109;
 			word32 r2_110;
-			word32 f13_111;
+			word64 f13_111;
 			word32 r7_112;
-			word32 f14_113;
+			word64 f14_113;
 			word32 r6_114;
-			word32 f15_115;
+			word64 f15_115;
 			word32 r8_116;
 			word32 r18_117;
 			word32 r16_118;
@@ -7064,13 +7073,13 @@ void __ltdf2()
 	word32 r28_36;
 	word32 r25_37;
 	word32 r3_38;
-	word32 f12_39;
+	word64 f12_39;
 	word32 r2_40;
-	word32 f13_41;
+	word64 f13_41;
 	word32 r7_42;
-	word32 f14_43;
+	word64 f14_43;
 	word32 r6_44;
-	word32 f15_45;
+	word64 f15_45;
 	word32 r8_46;
 	<anonymous> * r18_47;
 	word32 r16_48;
@@ -7083,13 +7092,13 @@ void __ltdf2()
 	word32 r28_59;
 	word32 r25_60;
 	word32 r3_61;
-	word32 f12_62;
+	word64 f12_62;
 	word32 r2_63;
-	word32 f13_64;
+	word64 f13_64;
 	word32 r7_65;
-	word32 f14_66;
+	word64 f14_66;
 	word32 r6_67;
-	word32 f15_68;
+	word64 f15_68;
 	word32 r8_69;
 	word32 r18_70;
 	word32 r16_71;
@@ -7108,13 +7117,13 @@ void __ltdf2()
 			word32 r28_106;
 			word32 r25_107;
 			word32 r3_108;
-			word32 f12_109;
+			word64 f12_109;
 			word32 r2_110;
-			word32 f13_111;
+			word64 f13_111;
 			word32 r7_112;
-			word32 f14_113;
+			word64 f14_113;
 			word32 r6_114;
-			word32 f15_115;
+			word64 f15_115;
 			word32 r8_116;
 			word32 r18_117;
 			word32 r16_118;
@@ -7128,17 +7137,17 @@ void __ltdf2()
 	return;
 }
 
-void __floatsidf(Eq_8996 r4)
+void __floatsidf(Eq_9009 r4)
 {
 	if (r4 != 0x00)
 	{
-		Eq_8996 dwLoc0C_103;
-		Eq_9000 dwLoc10_102;
+		Eq_9009 dwLoc0C_103;
+		Eq_9013 dwLoc10_102;
 		if (r4 >> 0x1F != 0x00)
 		{
 			if (r4 == 0x80000000)
 				return;
-			Eq_8996 r2_99 = 0x00 - r4;
+			Eq_9009 r2_99 = 0x00 - r4;
 			dwLoc10_102 = r2_99 >> 0x1F;
 			dwLoc0C_103 = r2_99;
 		}
@@ -7151,7 +7160,7 @@ void __floatsidf(Eq_8996 r4)
 		{
 			do
 			{
-				Eq_9000 r2_85 = dwLoc10_102 << 0x01 | dwLoc0C_103 >> 0x1F;
+				Eq_9013 r2_85 = dwLoc10_102 << 0x01 | dwLoc0C_103 >> 0x1F;
 				dwLoc10_102 = r2_85;
 				dwLoc0C_103 = dwLoc0C_103 << 0x01;
 			} while ((word32) (0x0FFFFFFF < r2_85) == 0x00);
@@ -7166,8 +7175,8 @@ void __floatsidf(Eq_8996 r4)
 	word32 r4_49;
 	word32 ra_50;
 	word32 r1_51;
-	word32 f1_52;
-	word32 f0_53;
+	word64 f1_52;
+	word64 f0_53;
 	word32 r6_54;
 	word32 r5_55;
 	r25_37();
@@ -7181,9 +7190,9 @@ void __negdf2()
 	word32 r28_22;
 	word32 r25_23;
 	word32 r3_24;
-	word32 f12_25;
+	word64 f12_25;
 	word32 r2_26;
-	word32 f13_27;
+	word64 f13_27;
 	word32 r6_28;
 	word32 ra_29;
 	word32 r4_30;
@@ -7194,9 +7203,9 @@ void __negdf2()
 	word32 r28_41;
 	word32 r25_42;
 	word32 r3_43;
-	word32 f12_44;
+	word64 f12_44;
 	word32 r2_45;
-	word32 f13_46;
+	word64 f13_46;
 	word32 r6_47;
 	word32 ra_48;
 	word32 r4_49;
@@ -7228,9 +7237,9 @@ void __truncdfsf2()
 	word32 r28_22;
 	word32 r25_23;
 	word32 r3_24;
-	word32 f12_25;
+	word64 f12_25;
 	word32 r2_26;
-	word32 f13_27;
+	word64 f13_27;
 	word32 r6_28;
 	word32 ra_29;
 	word32 r4_30;
@@ -7243,9 +7252,9 @@ void __truncdfsf2()
 	word32 r28_56;
 	word32 r25_57;
 	word32 r3_58;
-	word32 f12_59;
+	word64 f12_59;
 	word32 r2_60;
-	word32 f13_61;
+	word64 f13_61;
 	word32 r6_62;
 	word32 ra_63;
 	word32 r4_64;
@@ -7255,10 +7264,10 @@ void __truncdfsf2()
 	return;
 }
 
-void __pack_f(Eq_9127 * r4)
+void __pack_f(Eq_9140 * r4)
 {
-	Eq_9128 r3_6 = r4->t0000;
-	Eq_9132 r4_66 = r4->t000C;
+	Eq_9141 r3_6 = r4->t0000;
+	Eq_9145 r4_66 = r4->t000C;
 	if ((word32) (r3_6 < 0x02) == 0x00)
 	{
 		if ((r3_6 ^ 0x04) != 0x00)
@@ -7299,7 +7308,7 @@ void __pack_f(Eq_9127 * r4)
 		return;
 }
 
-void __unpack_f(uint32 * r4, Eq_9203 * r5)
+void __unpack_f(uint32 * r4, Eq_9216 * r5)
 {
 	uint32 r3_5 = *r4;
 	r5->dw0004 = r3_5 >> 0x1F;
@@ -7373,11 +7382,11 @@ void __make_fp()
 	return;
 }
 
-void __pack_d(Eq_9319 * r4)
+void __pack_d(Eq_9332 * r4)
 {
-	Eq_9320 r3_8 = r4->t0000;
-	Eq_9324 r10_163 = r4->t0010;
-	Eq_9328 r11_10 = r4->t0014;
+	Eq_9333 r3_8 = r4->t0000;
+	Eq_9337 r10_163 = r4->t0010;
+	Eq_9341 r11_10 = r4->t0014;
 	if ((word32) (r3_8 < 0x02) != 0x00)
 		return;
 	if ((r3_8 ^ 0x04) == 0x00)
@@ -7390,7 +7399,7 @@ void __pack_d(Eq_9319 * r4)
 	if ((word32) (r4_62 < -1022) != 0x00)
 	{
 		uint32 r10_107;
-		Eq_9361 r11_123;
+		Eq_9374 r11_123;
 		int32 r4_80 = -1022 - r4_62;
 		if ((word32) (r4_80 < 0x0039) == 0x00)
 		{
@@ -7457,10 +7466,10 @@ void __pack_d(Eq_9319 * r4)
 	return;
 }
 
-void __unpack_d(Eq_9458 * r4, Eq_9459 * r5)
+void __unpack_d(Eq_9471 * r4, Eq_9472 * r5)
 {
 	uint32 r2_8 = r4->dw0000;
-	Eq_9464 r3_9 = r4->t0004;
+	Eq_9477 r3_9 = r4->t0004;
 	r5->dw0004 = (r2_8 >> 0x1F) + 0x01;
 	int32 r7_16 = (r2_8 >> 0x14) + 0x07FF;
 	if (r7_16 != 0x00)
@@ -7493,7 +7502,7 @@ void __unpack_d(Eq_9458 * r4, Eq_9459 * r5)
 	{
 		r5->dw0008 = -1022;
 		uint32 r8_37 = r2_8 + 0x000FFFFF << 0x08 | r3_9 >> 0x18;
-		Eq_9503 r9_38 = r3_9 << 0x08;
+		Eq_9516 r9_38 = r3_9 << 0x08;
 		if ((word32) (0x0FFFFFFF < r8_37) == 0x00)
 		{
 			r5->dw0000 = 0x03;
@@ -7521,12 +7530,12 @@ void __unpack_d(Eq_9458 * r4, Eq_9459 * r5)
 	}
 }
 
-void __fpcmp_parts_d(Eq_9613 * r4, Eq_9614 * r5)
+void __fpcmp_parts_d(Eq_9626 * r4, Eq_9627 * r5)
 {
-	Eq_9615 r6_5 = r4->t0000;
+	Eq_9628 r6_5 = r4->t0000;
 	if ((word32) (r6_5 < 0x02) != 0x00)
 		return;
-	Eq_9624 r3_17 = r5->t0000;
+	Eq_9637 r3_17 = r5->t0000;
 	if ((word32) (r3_17 < 0x02) != 0x00)
 		return;
 	if ((r6_5 ^ 0x04) == 0x00)
@@ -7589,7 +7598,7 @@ void __do_global_ctors_aux()
 			word32 sp_29;
 			word32 r28_30;
 			word32 r25_31;
-			struct Eq_9731 * r16_32;
+			struct Eq_9744 * r16_32;
 			word32 r2_33;
 			word32 ra_34;
 			word32 r17_35;

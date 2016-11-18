@@ -43,4 +43,24 @@ namespace Reko.ImageLoaders.Elf
             throw new NotImplementedException();
         }
     }
+
+    public class MipsRelocator64 : ElfRelocator64
+    {
+        private ElfLoader64 elfLoader;
+
+        public MipsRelocator64(ElfLoader64 elfLoader) : base(elfLoader)
+        {
+            this.elfLoader = elfLoader;
+        }
+
+        public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, Elf64_Rela rela)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string RelocationTypeToString(uint type)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
