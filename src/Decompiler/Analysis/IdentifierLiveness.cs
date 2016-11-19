@@ -318,7 +318,9 @@ namespace Reko.Analysis
                     liveStackVars[tmp] = Math.Max(useBitSize, liveStackVars[tmp]);
                 }
                 else
-                    liveStackVars.Add(tmp, useBitSize != 0 ? useBitSize : (int) tmp.BitSize);
+                {
+                    liveStackVars.Add(tmp, useBitSize != 0 ? useBitSize : (int)tmp.DataType.BitSize);
+                }
 			}
             return null;
 		}

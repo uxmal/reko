@@ -689,7 +689,10 @@ namespace Reko.Core
         {
             Domain = StorageDomain.Temporary + number;
             Name = name;
+            DataType = dt;
 		}
+
+        public DataType DataType { get; private set; }
 
         public override T Accept<T>(StorageVisitor<T> visitor)
         {
