@@ -178,12 +178,12 @@ namespace Reko.UnitTests.Gui.Windows
 {
 fnTest_entry:
 l1:
-    'return'
+    return
 fnTest_exit:
 }
 
 
-int32 iVar = 1000;
+`int32` iVar = 1000;
 
 ";
             Assert.AreEqual(sExp, Flatten(combinedCodeView.CodeView.Model));
@@ -200,7 +200,7 @@ int32 iVar = 1000;
             When_MovedTo(0x00000015);
 
             sExp =
-@"int32 iVar = 1000;
+@"`int32` iVar = 1000;
 
 ";
             Assert.AreEqual(sExp, Flatten(combinedCodeView.CodeView.Model));
@@ -232,7 +232,7 @@ int32 iVar = 1000;
             interactor.DisplayGlobals(this.program, segment);
 
             var sExp =
-@"int32 iVar = 1000;
+@"`int32` iVar = 1000;
 
 ";
             Assert.AreEqual(sExp, Flatten(combinedCodeView.CodeView.Model));

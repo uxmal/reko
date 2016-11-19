@@ -258,13 +258,13 @@ namespace Reko.Core.Output
 
         public virtual void WritePrimitiveTypeName(PrimitiveType t)
         {
-            fmt.Write(t.Name);
+            fmt.WriteType(t.Name, t);
             wantSpace = true;
         }
 
         public virtual void WriteVoidType(VoidType t)
         {
-            fmt.Write(t.Name);
+            fmt.WriteType(t.Name, t);
             wantSpace = true;
         }
 
