@@ -802,12 +802,12 @@ void fn00001354(word32 dwArg04, word32 dwArg08)
 // LiveOut:
 // Trashed: CVZNX a0 a1 a2 a3 a4 a5 a6 a7 d0 d1 d2
 // Preserved: a2 a3 a7
-// Stack args: Stack +0004(8)
+// Stack args: Stack +0004(32)
 fn00001354_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Stack +0004(8)
+// LocalsOut: fp(32) Stack +0004(32)
 
 l00001354:
 	word32 a3_45 = 0x000014CC
@@ -815,14 +815,14 @@ l00001354:
 // DataOut: a3
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Stack +0004(8)
+// LocalsOut: fp(32) Stack +0004(32)
 
 l00001366:
 	branch Mem0[a3_45:word32] == 0x00000000 l00001372
 // DataOut: a3
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000008 a3:000014CC d0:0x000014C8 -8(fp):a2 -4(fp):a3
-// LocalsOut: fp(32) Stack +0004(8)
+// LocalsOut: fp(32) Stack +0004(32)
 
 l0000136A:
 	word32 a7_52
@@ -840,7 +840,7 @@ l0000136A:
 // DataOut: a3
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000008 a3:<invalid> d0:<invalid> a2:<invalid> -8(fp):a2 -4(fp):a3
-// LocalsOut: fp(32) Stack +0004(8)
+// LocalsOut: fp(32) Stack +0004(32)
 
 l00001372:
 	fn00001468()

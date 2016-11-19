@@ -1194,9 +1194,8 @@ namespace Reko.UnitTests.Arch.M68k
         {
             Rewrite(0xF22E, 0x5438, 0x0010);  // fcmpd % fp@(16),% fp0 
             AssertCode(
-               "0|L--|00010000(6): 2 instructions",
-               "1|L--|v4 = (real64) fp0 - Mem0[a6 + 16:real64]",
-               "2|L--|fpsr = cond(v4)");
+               "0|L--|00010000(6): 1 instructions",
+               "1|L--|fpsr = cond((real64) fp0 - Mem0[a6 + 16:real64])");
         }
 
         [Test]

@@ -49,7 +49,7 @@ namespace Reko.Arch.Arm
 
         public static readonly RegisterStorage[] GpRegs;
 
-        public static readonly FlagRegister cpsr = new FlagRegister("cpsr", 0, PrimitiveType.Word32);
+        public static readonly FlagRegister cpsr = new FlagRegister("cpsr", 31, PrimitiveType.Word32);
 
         public static readonly Dictionary<ArmRegister, RegisterStorage> RegisterByCapstoneID;
 

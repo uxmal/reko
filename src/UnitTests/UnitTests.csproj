@@ -97,8 +97,10 @@
     <Compile Include="Environments\SysV\GccMangledNameParserTests.cs" />
     <Compile Include="Environments\Windows\MsPrintfFormatParserTests.cs" />
     <Compile Include="Environments\Windows\X86_64ProcedureSerializerTests.cs" />
+    <Compile Include="Fragments\FCmpFragment.cs" />
     <Compile Include="Mocks\FakeTypeDeserializer.cs" />
     <Compile Include="Core\Analysis\PyBuildValueFormatParserTests.cs" />
+    <Compile Include="Mocks\XmlnsHidingWriter.cs" />
     <Compile Include="OsPath.cs" />
     <Compile Include="Analysis\AliasStateTests.cs" />
     <Compile Include="Analysis\AliasTests.cs" />

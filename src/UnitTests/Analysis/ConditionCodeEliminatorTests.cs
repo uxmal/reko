@@ -26,6 +26,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Operators;
 using Reko.Core.Types;
+using Reko.UnitTests.Fragments;
 using Reko.UnitTests.Mocks;
 using Rhino.Mocks;
 using System;
@@ -51,7 +52,7 @@ namespace Reko.UnitTests.Analysis
             m = new ProcedureBuilder();
             ssaState = new SsaState(m.Procedure, null);
             ssaIds = ssaState.Identifiers;
-            freg = new FlagRegister("flags", 0, PrimitiveType.Word32);
+            freg = new FlagRegister("flags", 32, PrimitiveType.Word32);
 		}
 
         private void Given_ConditionCodeEliminator()
@@ -403,7 +404,7 @@ done:
                 var r2 = m.Reg32("r2", 2);
                 var r3 = m.Reg32("r3", 3);
                 var r4 = m.Reg32("r4", 4);
-                var flags = new FlagRegister("flags", 0, PrimitiveType.Word32);
+                var flags = new FlagRegister("flags", 0x0A, PrimitiveType.Word32);
                 var SCZ = m.Frame.EnsureFlagGroup(flags, 0x7, "SZC", PrimitiveType.Byte);
                 var C = m.Frame.EnsureFlagGroup(flags, 0x4, "C", PrimitiveType.Byte);
 
@@ -443,7 +444,7 @@ done:
         [Test]
         public void CceShlRclPattern()
         {
-            var p = new ProgramBuilder(new FakeArchitecture());
+            var p = new ProgramBuilder();
             p.Add("main", (m) =>
             {
                 var C = m.Flags("C");
@@ -469,6 +470,14 @@ done:
         public void CceIsqrt()
         {
             RunFileTest_x86_real("Fragments/isqrt.asm", "Analysis/CceIsqrt.txt");
+        }
+
+        [Test]
+        public void CceFCmp()
+        {
+            var p = new ProgramBuilder();
+            p.Add(new FCmpFragment());
+            RunTest(p, "Analysis/CceFCmp.txt");
         }
 	}
 }

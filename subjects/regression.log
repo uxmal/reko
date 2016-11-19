@@ -2694,19 +2694,7 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
 
 === m68k_jump.dcproject
 === a.out
-*** a.out
-80000188: warning: Procedure frame_dummy previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-8000019E: warning: Procedure frame_dummy previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
-8000052C: error: An error occurred while processing the statement branch Test(LT,cond((real64) ((real80) rLoc0C_23 / rLoc14) - rArg0C)) l8000060E.
-    The method or operation is not implemented.
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitTestCondition(TestCondition tc) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 418
-   at Reko.Core.Expressions.TestCondition.Accept[T](ExpressionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Expressions\TestCondition.cs:line 61
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-80002714: warning: Expected sizes of arrays to have been determined by now
-80002714: warning: Expected sizes of arrays to have been determined by now
-
+=== code.dcproject
 === PP.EXE
 *** PP.EXE
 Borland C v3 runtime detected

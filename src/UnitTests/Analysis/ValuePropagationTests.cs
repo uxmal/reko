@@ -34,6 +34,7 @@ using System.Linq;
 using Rhino.Mocks;
 using System.Diagnostics;
 using System.Collections.Generic;
+using Reko.UnitTests.Fragments;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -917,6 +918,15 @@ ProcedureBuilder_exit:
 
             Assert.IsNotNull(importResolver);
             RunFileTest(m, "Analysis/VpCastCast.txt");
+        }
+
+        [Test(Description = "m68k floating-point comparison")]
+        public void VpFCmp()
+        {
+            var m = new FCmpFragment();
+            mr.ReplayAll();
+
+            RunFileTest(m, "Analysis/VpFCmp.txt");
         }
     }
 }
