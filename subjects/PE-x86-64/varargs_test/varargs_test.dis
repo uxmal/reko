@@ -1371,7 +1371,7 @@ l0000000140001718:
 // DataOut: r8 rbx
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
-// LocalsOut: fp(8)
+// LocalsOut: fp(64)
 
 l000000014000172D:
 	rax = (int64) Mem0[0x000000014000003C:word32]
@@ -1381,21 +1381,21 @@ l000000014000172D:
 // DataOut: r8 rbx rcx rdx
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000018 r8:rcx eax:0x00005A4D
-// LocalsOut: fp(8)
+// LocalsOut: fp(64)
 
 l0000000140001747:
 	branch Mem0[rcx_52 + 0x0000000000000018:word16] != 0x020B l00000001400017A6
 // DataOut: r8 rbx rcx rdx
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000018 r8:rcx eax:<invalid> rax:(int64) Mem0[0x000000014000003C:word32] rdx:0000000140000000 rcx:(int64) Mem0[0x000000014000003C:word32] + 0x0000000140000000
-// LocalsOut: fp(8)
+// LocalsOut: fp(64)
 
 l00000001400017A6:
 	rax_103 = DPB(rax, 0x00, 0) (alias)
 // DataOut: al eax rax rbx
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000018 r8:rcx eax:<invalid> rax:<invalid> rdx:0000000140000000 rcx:(int64) Mem0[0x000000014000003C:word32] + 0x0000000140000000
-// LocalsOut: fp(8)
+// LocalsOut: fp(64)
 
 l0000000140001752:
 	word64 rax_115 = DPB(rax, (word32) Mem0[rcx_52 + 0x0000000000000006:word16], 0)
@@ -1406,21 +1406,21 @@ l0000000140001752:
 // DataOut: r8 r9 rbx rdx
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000018 r8:rcx eax:0x0000020B rax:<invalid> rdx:0000000140000000 rcx:(int64) Mem0[0x000000014000003C:word32] + 0x0000000140000000
-// LocalsOut: fp(8)
+// LocalsOut: fp(64)
 
 l000000014000176C:
 	branch rdx_117 == r9_70 l000000014000178D
 // DataOut: r8 r9 rbx rdx
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000018 r8:rcx - 0x0000000140000000 eax:<invalid> rax:<invalid> rdx:<invalid> rcx:<invalid> r9:<invalid> ecx:<invalid> -24(fp):<invalid>
-// LocalsOut: fp(8)
+// LocalsOut: fp(64)
 
 l000000014000178D:
 	rdx_117 = DPB(rdx_117, 0x00000000, 0) (alias)
 // DataOut: rbx rdx
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000018 r8:rcx - 0x0000000140000000 eax:<invalid> rax:<invalid> rdx:<invalid> rcx:<invalid> r9:<invalid> ecx:<invalid> -24(fp):<invalid>
-// LocalsOut: fp(8)
+// LocalsOut: fp(64)
 
 l0000000140001775:
 	word32 ecx_110 = Mem0[rdx_117 + 0x000000000000000C:word32]
@@ -1429,7 +1429,7 @@ l0000000140001775:
 // DataOut: ecx r8 r9 rbx rdx
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000018 r8:rcx - 0x0000000140000000 eax:<invalid> rax:<invalid> rdx:<invalid> rcx:<invalid> r9:<invalid> ecx:<invalid> -24(fp):<invalid>
-// LocalsOut: fp(8)
+// LocalsOut: fp(64)
 
 l000000014000177D:
 	rax_115 = DPB(rax_115, Mem0[rdx_117 + 0x0000000000000008:word32] + ecx_110, 0) (alias)
@@ -1437,42 +1437,42 @@ l000000014000177D:
 // DataOut: r8 r9 rbx rdx
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000018 r8:rcx - 0x0000000140000000 eax:<invalid> rax:<invalid> rdx:<invalid> rcx:<invalid> r9:<invalid> ecx:<invalid> -24(fp):<invalid>
-// LocalsOut: fp(8)
+// LocalsOut: fp(64)
 
 l000000014000178F:
 	branch rdx_117 != 0x0000000000000000 l0000000140001798
 // DataOut: rbx rdx
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000018 r8:rcx - 0x0000000140000000 eax:<invalid> rax:<invalid> rdx:<invalid> rcx:<invalid> r9:<invalid> edx:0x00000000 ecx:<invalid> -24(fp):<invalid>
-// LocalsOut: fp(8)
+// LocalsOut: fp(64)
 
 l0000000140001798:
 	branch Mem0[rdx_117 + 0x0000000000000024:word32] >= 0x00000000 l00000001400017A2
 // DataOut: rbx
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000018 r8:rcx - 0x0000000140000000 eax:<invalid> rax:<invalid> rdx:<invalid> rcx:<invalid> r9:<invalid> edx:0x00000000 ecx:<invalid> -24(fp):<invalid>
-// LocalsOut: fp(8)
+// LocalsOut: fp(64)
 
 l00000001400017A2:
 	rax_103 = DPB(rax_115, 0x01, 0) (alias)
 // DataOut: al eax rax rbx
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000018 r8:rcx - 0x0000000140000000 eax:<invalid> rax:<invalid> rdx:<invalid> rcx:<invalid> r9:<invalid> edx:0x00000000 ecx:<invalid> -24(fp):<invalid>
-// LocalsOut: fp(8)
+// LocalsOut: fp(64)
 
 l000000014000179E:
 	rax_103 = DPB(rax_115, 0x00, 0) (alias)
 // DataOut: al eax rax rbx
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000018 r8:rcx - 0x0000000140000000 eax:<invalid> rax:<invalid> rdx:<invalid> rcx:<invalid> r9:<invalid> edx:0x00000000 ecx:<invalid> -24(fp):<invalid>
-// LocalsOut: fp(8)
+// LocalsOut: fp(64)
 
 l0000000140001794:
 	rax_103 = DPB(rax_115, 0x00, 0) (alias)
 // DataOut: al eax rax rbx
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000018 r8:rcx - 0x0000000140000000 eax:<invalid> rax:<invalid> rdx:<invalid> rcx:<invalid> r9:<invalid> edx:0x00000000 ecx:<invalid> -24(fp):<invalid>
-// LocalsOut: fp(8)
+// LocalsOut: fp(64)
 
 l00000001400017AC:
 	return rax_103
@@ -1490,7 +1490,7 @@ l0000000140001787:
 // DataOut: r8 r9 rbx rdx
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000018 r8:rcx - 0x0000000140000000 eax:<invalid> rax:<invalid> rdx:<invalid> rcx:<invalid> r9:<invalid> ecx:<invalid> -24(fp):<invalid>
-// LocalsOut: fp(8)
+// LocalsOut: fp(64)
 
 
 
@@ -2127,14 +2127,14 @@ l0000000140001AC0:
 // DataOut: ebx rcx sil
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
-// LocalsOut: fp(8)
+// LocalsOut: fp(64)
 
 l0000000140001AD8:
 	branch Mem0[rax_7:word16] != 0x5A4D l0000000140001AD4
 // DataOut: ebx rcx sil
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000028 ecx:<invalid> eax:<invalid> rcx:rax
-// LocalsOut: fp(8)
+// LocalsOut: fp(64)
 
 l0000000140001AE2:
 	word64 rax_49 = (int64) Mem0[rax_7 + 0x000000000000003C:word32] + rax_7
@@ -2142,35 +2142,35 @@ l0000000140001AE2:
 // DataOut: ebx rax sil
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000028 ecx:<invalid> eax:0x00005A4D rcx:rax
-// LocalsOut: fp(8)
+// LocalsOut: fp(64)
 
 l0000000140001AF1:
 	branch Mem0[rax_49 + 0x0000000000000018:word16] != 0x020B l0000000140001AD4
 // DataOut: ebx rax sil
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000028 ecx:<invalid> eax:<invalid> rcx:rax rax:(int64) Mem0[rax + 0x000000000000003C:word32] + rax
-// LocalsOut: fp(8)
+// LocalsOut: fp(64)
 
 l0000000140001AFC:
 	branch Mem0[rax_49 + 0x0000000000000084:word32] <=u 0x0000000E l0000000140001AD4
 // DataOut: ebx rax sil
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000028 ecx:0x0000020B eax:<invalid> rcx:<invalid> rax:(int64) Mem0[rax + 0x000000000000003C:word32] + rax
-// LocalsOut: fp(8)
+// LocalsOut: fp(64)
 
 l0000000140001B05:
 	al_21 = Mem0[rax_49 + 0x00000000000000F8:word32] != 0x00000000
 // DataOut: al ebx sil
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000028 ecx:0x0000020B eax:<invalid> rcx:<invalid> rax:(int64) Mem0[rax + 0x000000000000003C:word32] + rax
-// LocalsOut: fp(8)
+// LocalsOut: fp(64)
 
 l0000000140001AD4:
 	al_21 = 0x00
 // DataOut: al ebx sil
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000028 ecx:<invalid> eax:<invalid> rcx:<invalid> rax:(int64) Mem0[rax + 0x000000000000003C:word32] + rax
-// LocalsOut: fp(8)
+// LocalsOut: fp(64)
 
 l0000000140001B0F:
 	return al_21
@@ -2234,14 +2234,14 @@ l0000000140001B24:
 // DataOut: rax
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
-// LocalsOut: fp(8)
+// LocalsOut: fp(64)
 
 l0000000140001B33:
 	branch Mem0[rax_5 + 0x0000000000000018:word32] != 0x00000004 l0000000140001B4F
 // DataOut: rax
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000028 rax:<invalid>
-// LocalsOut: fp(8)
+// LocalsOut: fp(64)
 
 l0000000140001B39:
 	word32 ecx_32 = Mem0[rax_5 + 0x0000000000000020:word32]
@@ -2250,14 +2250,14 @@ l0000000140001B39:
 // DataOut: ecx
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000028 rax:<invalid>
-// LocalsOut: fp(8)
+// LocalsOut: fp(64)
 
 l0000000140001B47:
 	branch ecx_32 == 0x01994000 l0000000140001B56
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000028 rax:<invalid> ecx:<invalid> eax:rcx + 0x00000000E66CFAE0
-// LocalsOut: fp(8)
+// LocalsOut: fp(64)
 
 l0000000140001B56:
 	word64 rsp_37

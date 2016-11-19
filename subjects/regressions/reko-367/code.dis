@@ -31,26 +31,26 @@ real80 fn80000132(word32 d2, real96 rArg04, real96 rArg10)
 // LiveOut: fp0
 // Trashed: CVZNX d0 d1 fp0 fpsr
 // Preserved: a6 a7 d2
-// Stack args: Stack +0004(96) Stack +0010(32)
+// Stack args: Stack +0004(96) Stack +0010(96)
 fn80000132_entry:
 // DataOut: d2
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Stack +0004(96) Stack +0010(32)
+// LocalsOut: fp(32) Stack +0004(96) Stack +0010(96)
 
 l80000132:
 	word32 dwLoc14_17 = 0x00000000
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Local -0010(32) Local -0014(80) Local -0018(32) Stack +0004(96) Stack +0010(32)
+// LocalsOut: fp(32) Local -0010(32) Local -0014(80) Local -0018(32) Stack +0004(96) Stack +0010(96)
 
 l8000014A:
-	branch Test(GE,cond((real96) (real80) dwLoc14_17 - rArg10)) l80000172
+	branch (real96) (real80) dwLoc14_17 >= rArg10 l80000172
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000018 a6:fp - 0x00000004 fp0:<invalid> fpsr:<invalid> -24(fp):d2 -20(fp):<invalid> -16(fp):<invalid> -4(fp):a6
-// LocalsOut: fp(32) Local -0010(32) Local -0014(8) Local -0018(32) Stack +0004(96) Stack +0010(32)
+// LocalsOut: fp(32) Local -0010(32) Local -0014(32) Local -0018(32) Stack +0004(96) Stack +0010(96)
 
 l80000172:
 	return (real80) DPB(rLoc24, dwLoc10, 0)
@@ -68,7 +68,7 @@ l8000015A:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000018 a6:fp - 0x00000004 fp0:<invalid> fpsr:<invalid> -24(fp):d2 -20(fp):<invalid> -16(fp):<invalid> -4(fp):a6
-// LocalsOut: fp(32) Local -0010(32) Local -0014(80) Local -0018(32) Stack +0004(96) Stack +0010(32)
+// LocalsOut: fp(32) Local -0010(32) Local -0014(80) Local -0018(32) Stack +0004(96) Stack +0010(96)
 
 
 
@@ -79,26 +79,26 @@ real80 fn8000018E(word32 d2, real96 rArg04)
 // LiveOut: fp0
 // Trashed: CVZNX d0 d1 fp0 fp1 fpsr
 // Preserved: a6 a7 d2
-// Stack args: Stack +0004(32)
+// Stack args: Stack +0004(96)
 fn8000018E_entry:
 // DataOut: d2 fp2
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Stack +0004(32)
+// LocalsOut: fp(32) Stack +0004(96)
 
 l8000018E:
 	word32 dwLoc14_19 = 1
 // DataOut: fp2
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Local -0010(32) Local -0014(80) Local -0018(32) Stack +0004(32)
+// LocalsOut: fp(32) Local -0010(32) Local -0014(80) Local -0018(32) Stack +0004(96)
 
 l800001A8:
-	branch Test(GT,cond((real96) (real80) dwLoc14_19 - rArg04)) l800001D4
+	branch (real96) (real80) dwLoc14_19 > rArg04 l800001D4
 // DataOut: fp2
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000018 a6:fp - 0x00000004 fp0:<invalid> fpsr:<invalid> d0:1 fp1:<invalid> -24(fp):d2 -20(fp):<invalid> -16(fp):<invalid> -4(fp):a6
-// LocalsOut: fp(32) Local -0010(32) Local -0014(80) Local -0018(32) Stack +0004(32)
+// LocalsOut: fp(32) Local -0010(32) Local -0014(80) Local -0018(32) Stack +0004(96)
 
 l800001D4:
 	return (real80) DPB(rLoc24, dwLoc10, 0)
@@ -116,7 +116,7 @@ l800001B8:
 // DataOut: fp2
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000018 a6:fp - 0x00000004 fp0:<invalid> fpsr:<invalid> d0:1 fp1:<invalid> -24(fp):d2 -20(fp):<invalid> -16(fp):<invalid> -4(fp):a6
-// LocalsOut: fp(32) Local -0010(32) Local -0014(80) Local -0018(32) Stack +0004(32)
+// LocalsOut: fp(32) Local -0010(32) Local -0014(80) Local -0018(32) Stack +0004(96)
 
 
 

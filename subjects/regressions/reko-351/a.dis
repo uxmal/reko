@@ -434,12 +434,12 @@ word32 _ZL9factoriali(word32 dwArg04)
 // LiveOut: d0
 // Trashed: CVZNX d0
 // Preserved: a6 a7
-// Stack args: Stack +0004(8)
+// Stack args: Stack +0004(32)
 _ZL9factoriali_entry:
 // DataOut: fp2
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Stack +0004(8)
+// LocalsOut: fp(32) Stack +0004(32)
 
 l8000033C:
 	word32 dwLoc0C_15 = 1
@@ -447,14 +447,14 @@ l8000033C:
 // DataOut: fp2
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Local -0008(32) Local -000C(32) Stack +0004(8)
+// LocalsOut: fp(32) Local -0008(32) Local -000C(32) Stack +0004(32)
 
 l8000034C:
 	branch dwLoc08_12 - dwArg04 > 0x00000000 l8000036A
 // DataOut: fp2
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 d0:<invalid> -12(fp):<invalid> -8(fp):<invalid> -4(fp):a6
-// LocalsOut: fp(32) Local -0008(8) Local -000C(32) Stack +0004(8)
+// LocalsOut: fp(32) Local -0008(32) Local -000C(32) Stack +0004(32)
 
 l8000036A:
 	return dwLoc0C_15
@@ -473,7 +473,7 @@ l80000356:
 // DataOut: fp2
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000000C a6:fp - 0x00000004 d0:<invalid> -12(fp):<invalid> -8(fp):<invalid> -4(fp):a6
-// LocalsOut: fp(32) Local -0008(32) Local -000C(32) Stack +0004(8)
+// LocalsOut: fp(32) Local -0008(32) Local -000C(32) Stack +0004(32)
 
 
 
@@ -484,26 +484,26 @@ real80 _ZL7pow_intdi(real64 rArg04, word32 dwArg0C)
 // LiveOut: fp0
 // Trashed: CVZNX d0 d1 fp0 fpsr
 // Preserved: a6 a7
-// Stack args: Stack +0004(64) Stack +000C(8)
+// Stack args: Stack +0004(64) Stack +000C(32)
 _ZL7pow_intdi_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Stack +0004(64) Stack +000C(8)
+// LocalsOut: fp(32) Stack +0004(64) Stack +000C(32)
 
 l80000372:
 	word32 dwLoc08_10 = 0x00000000
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Local -0008(32) Local -0010(32) Stack +0004(64) Stack +000C(8)
+// LocalsOut: fp(32) Local -0008(32) Local -0010(32) Stack +0004(64) Stack +000C(32)
 
 l80000386:
 	branch dwLoc08_10 - dwArg0C >= 0x00000000 l800003A8
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000010 a6:fp - 0x00000004 d0:<invalid> fp0:<invalid> fpsr:<invalid> -16(fp):<invalid> -12(fp):0x00000000 -8(fp):<invalid> -4(fp):a6
-// LocalsOut: fp(32) Local -0008(8) Local -0010(32) Stack +0004(64) Stack +000C(8)
+// LocalsOut: fp(32) Local -0008(32) Local -0010(32) Stack +0004(64) Stack +000C(32)
 
 l800003A8:
 	return (real80) DPB(rLoc18, 0x3FF00000, 0)
@@ -521,7 +521,7 @@ l80000390:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000010 a6:fp - 0x00000004 d0:<invalid> fp0:<invalid> fpsr:<invalid> -16(fp):<invalid> -12(fp):0x00000000 -8(fp):<invalid> -4(fp):a6
-// LocalsOut: fp(32) Local -0008(32) Local -0010(32) Stack +0004(64) Stack +000C(8)
+// LocalsOut: fp(32) Local -0008(32) Local -0010(32) Stack +0004(64) Stack +000C(32)
 
 
 
@@ -532,12 +532,12 @@ void sine_taylor(real64 rArg04, int32 dwArg0C)
 // LiveOut:
 // Trashed: CVZNX d0 d1 fp0 fp1 fp2 fpsr
 // Preserved: a6 a7
-// Stack args: Stack +0004(80) Stack +0008(32) Stack +000C(8)
+// Stack args: Stack +0004(80) Stack +0008(32) Stack +000C(32)
 _Z11sine_taylordi_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Stack +0004(80) Stack +0008(32) Stack +000C(8)
+// LocalsOut: fp(32) Stack +0004(80) Stack +0008(32) Stack +000C(32)
 
 l800003BC:
 	word32 dwArg04_5 = (word32) rArg04
@@ -545,28 +545,28 @@ l800003BC:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Local -0008(32) Local -0010(80) Stack +0004(32) Stack +0008(32) Stack +000C(8)
+// LocalsOut: fp(32) Local -0008(32) Local -0010(80) Stack +0004(32) Stack +0008(32) Stack +000C(32)
 
 l800003D6:
 	branch dwLoc08_24 - dwArg0C > 0x00000000 l80000428
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000001C a6:fp - 0x00000004 d0:<invalid> fp2:<invalid> fpsr:<invalid> fp0:<invalid> fp1:<invalid> d1:0x00000000 -40(fp):(word32) rArg04 -36(fp):SLICE(rArg04, word32, 32) -32(fp):<invalid> -28(fp):fp2 -16(fp):<invalid> -12(fp):SLICE(rArg04, word32, 32) -8(fp):<invalid> -4(fp):a6 4(fp):rArg04 12(fp):dwArg0C
-// LocalsOut: fp(32) Local -0008(32) Local -0010(80) Stack +0004(32) Stack +0008(32) Stack +000C(8)
+// LocalsOut: fp(32) Local -0008(32) Local -0010(80) Stack +0004(32) Stack +0008(32) Stack +000C(32)
 
 l80000428:
 	word32 dwLoc08_108 = 5
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000001C a6:fp - 0x00000004 d0:<invalid> fp2:<invalid> fpsr:<invalid> fp0:<invalid> fp1:<invalid> d1:0x00000000 -40(fp):(word32) rArg04 -36(fp):SLICE(rArg04, word32, 32) -32(fp):<invalid> -28(fp):fp2 -16(fp):<invalid> -12(fp):SLICE(rArg04, word32, 32) -8(fp):<invalid> -4(fp):a6 4(fp):rArg04 12(fp):dwArg0C
-// LocalsOut: fp(80) Local -0008(32) Local -0010(32) Stack +0004(32) Stack +0008(32) Stack +000C(8)
+// LocalsOut: fp(80) Local -0008(32) Local -0010(32) Stack +0004(32) Stack +0008(32) Stack +000C(32)
 
 l8000042E:
 	branch dwLoc08_108 - dwArg0C > 0x00000000 l80000480
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000001C a6:fp - 0x00000004 d0:<invalid> fp2:<invalid> fpsr:<invalid> fp0:<invalid> fp1:<invalid> d1:0x00000000 -40(fp):(word32) rArg04 -36(fp):SLICE(rArg04, word32, 32) -32(fp):<invalid> -28(fp):fp2 -16(fp):<invalid> -12(fp):SLICE(rArg04, word32, 32) -8(fp):<invalid> -4(fp):a6 4(fp):rArg04 12(fp):dwArg0C
-// LocalsOut: fp(80) Local -0008(32) Local -0010(32) Stack +0004(32) Stack +0008(32) Stack +000C(8)
+// LocalsOut: fp(80) Local -0008(32) Local -0010(32) Stack +0004(32) Stack +0008(32) Stack +000C(32)
 
 l80000480:
 	return
@@ -587,7 +587,7 @@ l80000438:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000001C a6:fp - 0x00000004 d0:<invalid> fp2:<invalid> fpsr:<invalid> fp0:<invalid> fp1:<invalid> d1:0x00000000 -40(fp):(word32) rArg04 -36(fp):SLICE(rArg04, word32, 32) -32(fp):<invalid> -28(fp):fp2 -16(fp):<invalid> -12(fp):SLICE(rArg04, word32, 32) -8(fp):<invalid> -4(fp):a6 4(fp):rArg04 12(fp):dwArg0C
-// LocalsOut: fp(80) Local -0008(32) Local -0010(32) Stack +0004(32) Stack +0008(32) Stack +000C(8)
+// LocalsOut: fp(80) Local -0008(32) Local -0010(32) Stack +0004(32) Stack +0008(32) Stack +000C(32)
 
 l800003E0:
 	rLoc28 = DPB(rLoc28, dwArg04_5, 0) (alias)
@@ -597,7 +597,7 @@ l800003E0:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x0000001C a6:fp - 0x00000004 d0:<invalid> fp2:<invalid> fpsr:<invalid> fp0:<invalid> fp1:<invalid> d1:0x00000000 -40(fp):(word32) rArg04 -36(fp):SLICE(rArg04, word32, 32) -32(fp):<invalid> -28(fp):fp2 -16(fp):<invalid> -12(fp):SLICE(rArg04, word32, 32) -8(fp):<invalid> -4(fp):a6 4(fp):rArg04 12(fp):dwArg0C
-// LocalsOut: fp(32) Local -0008(32) Local -0010(80) Stack +0004(32) Stack +0008(32) Stack +000C(8)
+// LocalsOut: fp(32) Local -0008(32) Local -0010(80) Stack +0004(32) Stack +0008(32) Stack +000C(32)
 
 
 
@@ -636,28 +636,28 @@ void _sin(real64 rArg04, real64 rArg0C, int32 & tArg14)
 // LiveOut:
 // Trashed: CVZNX a0 d0 d1 fp0 fp1 fpsr
 // Preserved: a6 a7
-// Stack args: Stack +0004(80) Stack +000C(32) Stack +0014(32)
+// Stack args: Stack +0004(80) Stack +000C(64) Stack +0014(32)
 _Z4_sinddRi_entry:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Stack +0004(80) Stack +000C(32) Stack +0014(32)
+// LocalsOut: fp(32) Stack +0004(80) Stack +000C(64) Stack +0014(32)
 
 l800004DE:
-	real64 rLoc0C_118 = DPB(rLoc0C, SLICE(rArg04, word32, 32), 32)
-	real64 v9_28 = (real64) ((real80) rLoc0C_118 * rLoc0C_118)
-	word32 dwLoc20_133 = 1
+	real64 rLoc0C_117 = DPB(rLoc0C, SLICE(rArg04, word32, 32), 32)
+	real64 v9_28 = (real64) ((real80) rLoc0C_117 * rLoc0C_117)
+	word32 dwLoc20_132 = 1
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp
-// LocalsOut: fp(32) Local -000C(80) Local -0014(80) Local -001C(32) Local -0020(32) Local -0028(0) Stack +000C(32) Stack +0014(32)
+// LocalsOut: fp(32) Local -000C(80) Local -0014(80) Local -001C(32) Local -0020(32) Local -0028(0) Stack +000C(64) Stack +0014(32)
 
 l8000051A:
-	branch Test(LT,cond((real64) ((real80) rLoc0C_118 / rLoc14) - rArg0C)) l8000060E
+	branch (real64) ((real80) rLoc0C_117 / rLoc14) < rArg0C l8000060E
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000028 a6:fp - 0x00000004 fp0:<invalid> fpsr:<invalid> d0:<invalid> fp1:<invalid> a0:tArg14 -40(fp):<invalid> -32(fp):<invalid> -28(fp):<invalid> -24(fp):0x00000000 -20(fp):<invalid> -16(fp):0x00000000 -12(fp):<invalid> -8(fp):SLICE(rArg04, word32, 32) -4(fp):a6 4(fp):rArg04 12(fp):rArg0C 20(fp):tArg14
-// LocalsOut: fp(32) Local -000C(80) Local -0014(80) Local -001C(32) Local -0020(32) Local -0028(0) Stack +000C(32) Stack +0014(32)
+// LocalsOut: fp(32) Local -000C(80) Local -0014(80) Local -001C(32) Local -0020(32) Local -0028(0) Stack +000C(64) Stack +0014(32)
 
 l8000060E:
 	return
@@ -671,15 +671,15 @@ _Z4_sinddRi_exit:
 // SymbolicIn: a7:fp a6:a6 fp0:<invalid> fpsr:<invalid> d0:<invalid> d1:0x00000000 fp1:<invalid> a0:tArg14 -48(fp):<invalid> -44(fp):0x00000000 -40(fp):<invalid> -32(fp):<invalid> -28(fp):<invalid> -24(fp):0x00000000 -20(fp):<invalid> -16(fp):0x00000000 -12(fp):<invalid> -8(fp):SLICE(rArg04, word32, 32) -4(fp):a6 4(fp):rArg04 12(fp):rArg0C 20(fp):tArg14
 
 l80000530:
-	Mem151[tArg14:word32] = Mem0[tArg14:word32] + 0x00000001
-	word32 v24_78 = dwLoc20_133 + 0x00000001
-	rLoc0C_118 = (real64) ((real80) (real64) ((real80) rLoc0C_118 * v9_28) * v9_28)
-	dwLoc20_133 = v24_78 + 0x00000003
-	rLoc14 = (real64) ((real80) (real64) ((real80) (real64) ((real80) (real64) ((real80) rLoc14 * (real80) v24_78) * (real80) (v24_78 + 0x00000001)) * (real80) (v24_78 + 0x00000002)) * (real80) (v24_78 + 0x00000003))
+	Mem150[tArg14:word32] = Mem0[tArg14:word32] + 0x00000001
+	word32 v24_77 = dwLoc20_132 + 0x00000001
+	rLoc0C_117 = (real64) ((real80) (real64) ((real80) rLoc0C_117 * v9_28) * v9_28)
+	dwLoc20_132 = v24_77 + 0x00000003
+	rLoc14 = (real64) ((real80) (real64) ((real80) (real64) ((real80) (real64) ((real80) rLoc14 * (real80) v24_77) * (real80) (v24_77 + 0x00000001)) * (real80) (v24_77 + 0x00000002)) * (real80) (v24_77 + 0x00000003))
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: a7:fp - 0x00000028 a6:fp - 0x00000004 fp0:<invalid> fpsr:<invalid> d0:<invalid> fp1:<invalid> a0:tArg14 -40(fp):<invalid> -32(fp):<invalid> -28(fp):<invalid> -24(fp):0x00000000 -20(fp):<invalid> -16(fp):0x00000000 -12(fp):<invalid> -8(fp):SLICE(rArg04, word32, 32) -4(fp):a6 4(fp):rArg04 12(fp):rArg0C 20(fp):tArg14
-// LocalsOut: fp(32) Local -000C(80) Local -0014(80) Local -001C(32) Local -0020(32) Local -0028(0) Stack +000C(32) Stack +0014(32)
+// LocalsOut: fp(32) Local -000C(80) Local -0014(80) Local -001C(32) Local -0020(32) Local -0028(0) Stack +000C(64) Stack +0014(32)
 
 
 
