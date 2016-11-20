@@ -98,7 +98,7 @@ namespace Reko.UnitTests.Gui.Windows
 
         private void EmitSpanWrapper(TextSpan span, StringBuilder sb)
         {
-            if (span.Style == "kw")
+            if (span.Style == "code-kw")
                 sb.Append("'");
             if (span.Style == "cmt")
                 sb.Append("rem ");
@@ -178,7 +178,7 @@ namespace Reko.UnitTests.Gui.Windows
 {
 fnTest_entry:
 l1:
-    return
+    'return'
 fnTest_exit:
 }
 
