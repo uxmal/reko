@@ -37,6 +37,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Drawing;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace Reko.UnitTests.Gui.Windows.Forms
@@ -231,7 +232,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             interactor.Save();
             string s =
 @"<?xml version=""1.0"" encoding=""utf-16""?>
-<project xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns=""http://schemata.jklnet.org/Reko/v4"">
+<project xmlns=""http://schemata.jklnet.org/Reko/v4"">
   <arch>x86-protected-32</arch>
   <platform>TestPlatform</platform>
   <input>
@@ -246,7 +247,10 @@ namespace Reko.UnitTests.Gui.Windows.Forms
     </user>
   </input>
 </project>";
-            Assert.AreEqual(s, interactor.Test_SavedProjectXml);
+            // xml namespaces appear in different order on different platforms, so remove
+            Regex namespaces = new Regex(@"\s+xmlns:\w+=""[^""]+""");
+            string normalizedProjectXml = namespaces.Replace(interactor.Test_SavedProjectXml, "");
+            Assert.AreEqual(s, normalizedProjectXml);
             mr.VerifyAll();
         }
 
