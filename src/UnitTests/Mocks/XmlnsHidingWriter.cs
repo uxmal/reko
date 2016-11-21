@@ -37,6 +37,11 @@ namespace Reko.UnitTests.Mocks
         {
         }
 
+        public XmlnsHidingWriter(Stream stm, Encoding encoding)
+            : base(stm, encoding)
+        {
+        }
+
         public override void WriteStartAttribute(string prefix, string localName, string ns)
         {
             if (prefix == "xmlns")

@@ -37,8 +37,9 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Drawing;
 using System.IO;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Xml;
+using System.Text;
 
 namespace Reko.UnitTests.Gui.Windows.Forms
 {
@@ -231,7 +232,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
             interactor.Save();
             string s =
-@"<?xml version=""1.0"" encoding=""utf-16""?>
+@"<?xml version=""1.0"" encoding=""utf-8""?>
 <project xmlns=""http://schemata.jklnet.org/Reko/v4"">
   <arch>x86-protected-32</arch>
   <platform>TestPlatform</platform>
@@ -247,10 +248,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
     </user>
   </input>
 </project>";
-            // xml namespaces appear in different order on different platforms, so remove
-            Regex namespaces = new Regex(@"\s+xmlns:\w+=""[^""]+""");
-            string normalizedProjectXml = namespaces.Replace(interactor.Test_SavedProjectXml, "");
-            Assert.AreEqual(s, normalizedProjectXml);
+            Assert.AreEqual(s, interactor.Test_SavedProjectXml);
             mr.VerifyAll();
         }
 
@@ -640,6 +638,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private ILoader ldr;
 		private Program program;
         private StringWriter sw;
+        private XmlTextWriter xw;
+        private MemoryStream xmlStm;
         private string testFilename;
         private bool promptedForSaving;
 
@@ -677,6 +677,15 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             return sw;
         }
 
+        public override XmlWriter CreateXmlWriter(string filename)
+        {
+            testFilename = filename;
+            xmlStm = new MemoryStream();
+            xw = new XmlnsHidingWriter(xmlStm, new UTF8Encoding(false));
+            xw.Formatting = Formatting.Indented;
+            return xw;
+        }
+
         protected override string PromptForFilename(string suggestedName)
         {
             promptedForSaving = true;
@@ -684,10 +693,9 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             return suggestedName;
         }
 
-
         public string Test_SavedProjectXml
         {
-            get { return sw.ToString(); }
+            get { return Encoding.UTF8.GetString(xmlStm.ToArray()); }
         }
 
         public string Test_Filename

@@ -37,6 +37,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace Reko.Gui.Forms
 {
@@ -216,6 +217,16 @@ namespace Reko.Gui.Forms
                 return StreamWriter.Null;
             var fsSvc = Services.RequireService<IFileSystemService>();
             return new StreamWriter(fsSvc.CreateFileStream(filename, FileMode.Create, FileAccess.Write), new UTF8Encoding(false));
+        }
+
+        public virtual XmlWriter CreateXmlWriter(string filename)
+        {
+            if (string.IsNullOrEmpty(filename))
+                return new XmlTextWriter(StreamWriter.Null);
+            var fsSvc = Services.RequireService<IFileSystemService>();
+            var xw = new XmlTextWriter(fsSvc.CreateFileStream(filename, FileMode.Create, FileAccess.Write), new UTF8Encoding(false));
+            xw.Formatting = Formatting.Indented;
+            return xw;
         }
 
         public IPhasePageInteractor CurrentPhase
@@ -646,9 +657,11 @@ namespace Reko.Gui.Forms
                 mru.Use(newName);
             }
 
-            using (TextWriter sw = CreateTextWriter(ProjectFileName))
+            using (var xw = CreateXmlWriter(ProjectFileName))
             {
-                new ProjectSaver(sc).Save(ProjectFileName, decompilerSvc.Decompiler.Project, sw);
+                var saver = new ProjectSaver(sc);
+                var sProject = saver.Save(ProjectFileName, decompilerSvc.Decompiler.Project);
+                saver.Save(sProject, xw);
             }
             return true;
         }
