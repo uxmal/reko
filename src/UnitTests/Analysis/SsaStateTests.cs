@@ -52,7 +52,11 @@ namespace Reko.UnitTests.Analysis
             {
                 Architecture = pb.Architecture,
             };
-            var sst = new SsaTransform(program, pb.Procedure, null, dflow);
+            var sst = new SsaTransform(
+                program, pb.Procedure, 
+                new HashSet<Procedure>(),
+                null,
+                dflow);
             this.ssa = sst.Transform();
         }
 

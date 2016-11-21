@@ -59,10 +59,12 @@ namespace Reko.Analysis
         private TransformerFactory factory;
         public readonly HashSet<SsaIdentifier> incompletePhis;
         private HashSet<SsaIdentifier> sidsToRemove;
+        private HashSet<Procedure> sccProcs;
 
         public SsaTransform(
             Program program,
             Procedure proc,
+            HashSet<Procedure> sccProcs,
             IImportResolver importResolver,
             ProgramDataFlow programFlow)
         {
@@ -70,6 +72,7 @@ namespace Reko.Analysis
             this.program = program;
             this.programFlow = programFlow;
             this.importResolver = importResolver;
+            this.sccProcs = sccProcs;
             this.ssa = new SsaState(proc, null);
             this.blockstates = ssa.Procedure.ControlGraph.Blocks.ToDictionary(k => k, v => new SsaBlockState(v));
             this.factory = new TransformerFactory(this);
@@ -329,6 +332,7 @@ namespace Reko.Analysis
             ProcedureBase callee = GetCalleeProcedure(ci);
             if (callee != null && callee.Signature != null && callee.Signature.ParametersValid)
             {
+                // Signature is known: build the application immediately.
                 var ab = CreateApplicationBuilder(ci.Callee.DataType, callee, ci);
                 var instr = ab.CreateInstruction(callee.Signature, callee.Characteristics);
                 return instr.Accept(this);

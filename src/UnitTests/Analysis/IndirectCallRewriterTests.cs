@@ -239,7 +239,12 @@ namespace Reko.UnitTests.Analysis
             var proc = program.Procedures.Values[0];
             var usb = new UserSignatureBuilder(program);
             usb.ApplySignatureToProcedure(addr, proc.Signature, proc);
-            var sst = new SsaTransform(program, proc, importResolver, programFlow);
+            var sst = new SsaTransform(
+                program, 
+                proc,
+                new HashSet<Procedure>(),
+                importResolver,
+                programFlow);
             var ssa = sst.Transform();
             var vp = new ValuePropagator(program.Architecture, ssa);
             vp.Transform();

@@ -130,6 +130,7 @@ namespace Reko.UnitTests.Analysis
             var sst = new SsaTransform(
                 program,
                 proc,
+                new HashSet<Procedure>(),
                 null,
                 new ProgramDataFlow());
             sst.Transform();

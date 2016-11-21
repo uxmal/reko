@@ -116,7 +116,12 @@ namespace Reko.UnitTests.Analysis
 			foreach (Procedure proc in program.Procedures.Values)
 			{
 				writer.WriteLine("= {0} ========================", proc.Name);
-                SsaTransform sst = new SsaTransform(program, proc, importResolver, dfa.ProgramDataFlow);
+                SsaTransform sst = new SsaTransform(
+                    program, 
+                    proc, 
+                    new HashSet<Procedure>(),
+                    importResolver, 
+                    dfa.ProgramDataFlow);
                 sst.Transform();
 				SsaState ssa = sst.SsaState;
                 var cce = new ConditionCodeEliminator(ssa, program.Platform);
@@ -237,7 +242,12 @@ namespace Reko.UnitTests.Analysis
 		public void VpDbp()
 		{
 			Procedure proc = new DpbMock().Procedure;
-            var sst = new SsaTransform(program, proc, importResolver, new ProgramDataFlow());
+            var sst = new SsaTransform(
+                program,
+                proc,
+                new HashSet<Procedure>(),
+                importResolver, 
+                new ProgramDataFlow());
             sst.Transform();
             SsaState ssa = sst.SsaState;
 
@@ -308,7 +318,12 @@ namespace Reko.UnitTests.Analysis
             m.Return();
             var importResolver = mr.Stub<IImportResolver>();
             importResolver.Replay();
-            var sst = new SsaTransform(program, m.Procedure, importResolver, new ProgramDataFlow());
+            var sst = new SsaTransform(
+                program, 
+                m.Procedure, 
+                new HashSet<Procedure>(),
+                importResolver, 
+                new ProgramDataFlow());
             sst.Transform();
 
             var vp = new ValuePropagator(arch, sst.SsaState);
@@ -333,7 +348,12 @@ namespace Reko.UnitTests.Analysis
             var importResolver = mr.Stub<IImportResolver>();
             importResolver.Replay();
 
-            var sst = new SsaTransform(program, m.Procedure, importResolver, new ProgramDataFlow());
+            var sst = new SsaTransform(
+                program,
+                m.Procedure, 
+                new HashSet<Procedure>(),
+                importResolver, 
+                new ProgramDataFlow());
             sst.Transform();
             ssaIds = sst.SsaState.Identifiers;
             var stms = m.Procedure.EntryBlock.Succ[0].Statements;
@@ -550,7 +570,12 @@ namespace Reko.UnitTests.Analysis
 			var gr = proc.CreateBlockDominatorGraph();
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             importResolver.Replay();
-			var sst = new SsaTransform(program, proc, importResolver, new ProgramDataFlow());
+			var sst = new SsaTransform(
+                program,
+                proc, 
+                new HashSet<Procedure>(),
+                importResolver,
+                new ProgramDataFlow());
             sst.Transform();
 			var ssa = sst.SsaState;
 
@@ -569,7 +594,12 @@ namespace Reko.UnitTests.Analysis
         {
             var proc = m.Procedure;
             var gr = proc.CreateBlockDominatorGraph();
-            var sst = new SsaTransform(program, proc, importResolver, new ProgramDataFlow());
+            var sst = new SsaTransform(
+                program, 
+                proc, 
+                new HashSet<Procedure>(),
+                importResolver, 
+                new ProgramDataFlow());
             var ssa = sst.SsaState;
             sst.Transform();
 

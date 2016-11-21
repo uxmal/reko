@@ -105,7 +105,12 @@ namespace Reko.UnitTests.Analysis
 
             var program = progBuilder.Program;
             var dataFlow = new ProgramDataFlow();
-            var sst = new SsaTransform(program, proc, importResolver, dataFlow);
+            var sst = new SsaTransform(
+                program, 
+                proc,
+                new HashSet<Procedure>(),
+                importResolver, 
+                dataFlow);
             sst.Transform();
             var vp = new ValuePropagator(arch, sst.SsaState);
             vp.Transform();

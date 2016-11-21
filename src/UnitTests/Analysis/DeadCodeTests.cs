@@ -56,7 +56,12 @@ namespace Reko.UnitTests.Analysis
             {
                 Architecture = m.Architecture,
             };
-            var sst = new SsaTransform(program, m.Procedure, null, programDataFlow);
+            var sst = new SsaTransform(
+                program,
+                m.Procedure,
+                new HashSet<Procedure>(),
+                null,
+                programDataFlow);
             sst.Transform();
 
             DeadCode.Eliminate(sst.SsaState);
@@ -105,7 +110,6 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void DeadFactorialReg()
 		{

@@ -41,7 +41,12 @@ namespace Reko.UnitTests.Analysis
             {
                 Architecture = mock.Architecture,
             };
-            var sst = new SsaTransform(program, mock.Procedure, null, new ProgramDataFlow());
+            var sst = new SsaTransform(
+                program, 
+                mock.Procedure, 
+                new HashSet<Procedure>(),
+                null,
+                new ProgramDataFlow());
             sst.Transform();
             ssa = sst.SsaState;
 		}

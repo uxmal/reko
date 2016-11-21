@@ -28,6 +28,7 @@ using NUnit.Framework;
 using System;
 using System.IO;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -99,7 +100,12 @@ namespace Reko.UnitTests.Analysis
             var eventListener = new FakeDecompilerEventListener();
             foreach (var proc in program.Procedures.Values)
             {
-                var sst = new SsaTransform(program, proc, null, new ProgramDataFlow());
+                var sst = new SsaTransform(
+                    program,
+                    proc,
+                    new HashSet<Procedure>(),
+                    null, 
+                    new ProgramDataFlow());
                 sst.Transform();
                 var vp = new ValuePropagator(arch, sst.SsaState);
                 vp.Transform();
@@ -119,7 +125,12 @@ namespace Reko.UnitTests.Analysis
         private void RunTest(Action<ProcedureBuilder> builder)
         {
             builder(m);
-            var sst = new SsaTransform(program, m.Procedure, null, new ProgramDataFlow());
+            var sst = new SsaTransform(
+                program, 
+                m.Procedure,
+                new HashSet<Procedure>(),
+                null,
+                new ProgramDataFlow());
             sst.Transform();
             sst.RenameFrameAccesses = true;
             sst.Transform();

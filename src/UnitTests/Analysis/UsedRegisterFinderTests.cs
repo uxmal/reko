@@ -85,7 +85,12 @@ namespace Reko.UnitTests.Analysis
             };
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             importResolver.Replay();
-            var sst = new SsaTransform(progBuilder.Program, proc, importResolver, new ProgramDataFlow());
+            var sst = new SsaTransform(
+                progBuilder.Program, 
+                proc, 
+                new HashSet<Procedure>(),
+                importResolver, 
+                new ProgramDataFlow());
             sst.Transform();
             var vp = new ValuePropagator(arch, sst.SsaState);
             vp.Transform();

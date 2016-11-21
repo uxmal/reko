@@ -48,6 +48,7 @@ namespace Reko.Analysis
         private IImportResolver importResolver;
 		private ProgramDataFlow flow;
         private List<SsaTransform> ssts;
+        private HashSet<Procedure> sccProcs;
 
         public DataFlowAnalysis(
             Program program,
@@ -153,6 +154,7 @@ namespace Reko.Analysis
         /// <param name="procs"></param>
         private void UntangleProcedureScc(IList<Procedure> procs)
         {
+            this.sccProcs = procs.ToHashSet();
             flow.CreateFlowsFor(program.Architecture, procs);
 
             // Detect the registers trashed by each procedure in the cluster.
@@ -296,7 +298,7 @@ namespace Reko.Analysis
             // not been visited, or are computed destinations  (e.g. vtables)
             // they will have no "ProcedureFlow" associated with them yet, in
             // which case the the SSA treats the call as a "hell node".
-            var sst = new SsaTransform(program, proc, importResolver, this.ProgramDataFlow);
+            var sst = new SsaTransform(program, proc, sccProcs, importResolver, this.ProgramDataFlow);
             var ssa = sst.Transform();
 
             // Propagate condition codes and registers. At the end, the hope

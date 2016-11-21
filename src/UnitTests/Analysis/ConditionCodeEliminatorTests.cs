@@ -96,7 +96,12 @@ namespace Reko.UnitTests.Analysis
             DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
             foreach (var proc in program.Procedures.Values)
             {
-                var sst = new SsaTransform(program, proc, importResolver, new ProgramDataFlow());
+                var sst = new SsaTransform(
+                    program,
+                    proc,
+                    new HashSet<Procedure>(),
+                    importResolver, 
+                    new ProgramDataFlow());
                 var ssa = sst.Transform();
                 var larw = new LongAddRewriter2(program.Architecture, ssa);
                 larw.Transform();
