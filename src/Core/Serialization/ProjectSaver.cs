@@ -46,7 +46,7 @@ namespace Reko.Core.Serialization
         /// <param name="projectAbsPath"></param>
         /// <param name="project"></param>
         /// <returns></returns>
-        public Project_v4 Save(string projectAbsPath, Project project)
+        public Project_v4 Serialize(string projectAbsPath, Project project)
         {
             var inputs = new List<ProjectFile_v3>();
             inputs.AddRange(project.Programs.Select(p => VisitProgram(projectAbsPath, p)));
