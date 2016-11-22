@@ -212,7 +212,11 @@ namespace Reko.Evaluation
             {
                 cRight = ReinterpretAsIeeeFloat(cRight);
                 right = cRight;
-                binExp.Right = cRight;
+                binExp = new BinaryExpression(
+                    binExp.Operator,
+                    binExp.DataType,
+                    binExp.Left,
+                    cRight);
             }
 
             var binLeft = left as BinaryExpression;

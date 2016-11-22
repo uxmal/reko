@@ -46,7 +46,7 @@ namespace Reko.Core.Expressions
         }
 
         public Operator Operator { get; private set; } 
-        public Expression Left { get; set; }
+        public Expression Left { get; private set; }
         public Expression Right { get; set; }
 
         public override T Accept<T, C>(ExpressionVisitor<T, C> v, C context)
