@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -39,6 +40,8 @@ namespace Reko.Gui.Windows.Controls
             OnProgramChanged();
 
             this.Disposed += MixedCodeDataControl_Disposed;
+            this.SpanEnter += MixedCodeDataControl_SpanEnter;
+            this.SpanLeave += MixedCodeDataControl_SpanLeave;
         }
 
         public Program Program {
@@ -62,7 +65,6 @@ namespace Reko.Gui.Windows.Controls
 
         public Address TopAddress { get { return addrTop; } set { addrTop = value; OnTopAddressChanged(); } }
         private Address addrTop;
-
 
         private void OnProgramChanged()
         {
@@ -130,6 +132,14 @@ namespace Reko.Gui.Windows.Controls
             if (memoryTextSpan == null || memoryTextSpan.Address == null)
                 return anchorPos.Line as Address;
             return memoryTextSpan.Address;
+        }
+
+        private void MixedCodeDataControl_SpanLeave(object sender, SpanEventArgs e)
+        {
+        }
+
+        private void MixedCodeDataControl_SpanEnter(object sender, SpanEventArgs e)
+        {
         }
     }
 }
