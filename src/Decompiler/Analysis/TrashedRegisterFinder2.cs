@@ -49,7 +49,6 @@ namespace Reko.Analysis
         private ISet<SsaTransform> sccGroup;
         private Dictionary<Procedure, HashSet<Storage>> assumedPreserved;
         private ExpressionValueComparer cmp;
-        private ExpressionSimplifier simp;
         private ExpressionEmitter m;
         private HashSet<PhiAssignment> activePhis;
         private ExpressionSimplifier simpl;
@@ -74,11 +73,11 @@ namespace Reko.Analysis
             this.assumedPreserved = sccGroup.ToDictionary(k => k.SsaState.Procedure, v => new HashSet<Storage>());
             this.decompilerEventListener = listener;
             this.cmp = new ExpressionValueComparer();
-            foreach (var sst in sccGroup)
-            {
-                var proc = sst.SsaState.Procedure;
-                flow.ProcedureFlows.Add(proc, new ProcedureFlow(proc));
-            }
+            //foreach (var sst in sccGroup)
+            //{
+            //    var proc = sst.SsaState.Procedure;
+            //    flow.ProcedureFlows.Add(proc, new ProcedureFlow(proc));
+            //}
         }
 
         /// <summary>
@@ -122,6 +121,11 @@ namespace Reko.Analysis
             return this.flow;
         }
 
+        /// <summary>
+        /// Get all SSA ids used in the exit block.
+        /// </summary>
+        /// <param name="ssa"></param>
+        /// <returns></returns>
         private static List<SsaIdentifier> GetSsaIdentifiersInExitBlock(SsaState ssa)
         {
             return ssa.Procedure.ExitBlock.Statements
@@ -187,31 +191,42 @@ namespace Reko.Analysis
             {
                 return VisitCall(call, sid);
             }
-            var inv = new Tuple<Expression, SsaIdentifier>(Constant.Invalid, sid);
 
             PhiAssignment phi;
             if (defInstr.As(out phi))
             {
-                Tuple<Expression,SsaIdentifier> value = null;
-                if (activePhis.Contains(phi))
-                    return inv;
-                activePhis.Add(phi);
-                foreach (var id in phi.Src.Arguments.OfType<Identifier>())
-                {
-                    var c = GetReachingExpression(ssa.Identifiers[id], activePhis);
-                    if (value == null)
-                    {
-                        value = c;
-                    }
-                    else if (c.Item1 == Constant.Invalid || !cmp.Equals(value.Item1, c.Item1))
-                    {
-                        value = inv;
-                    }
-                }
-                activePhis.Remove(phi);
-                return value;
+                return VisitPhi(activePhis, phi, sid);
             }
-            return inv;
+            return new Tuple<Expression, SsaIdentifier>(Constant.Invalid, sid);
+        }
+
+        private Tuple<Expression, SsaIdentifier> VisitPhi(
+            ISet<PhiAssignment> activePhis,
+            PhiAssignment phi,
+            SsaIdentifier sid)
+        {
+            var inv = new Tuple<Expression, SsaIdentifier>(Constant.Invalid, sid);
+
+            Tuple<Expression, SsaIdentifier> value = null;
+            if (activePhis.Contains(phi))
+            {
+                return new Tuple<Expression,SsaIdentifier>(sid.Identifier, sid);
+            }
+            activePhis.Add(phi);
+            foreach (var id in phi.Src.Arguments.OfType<Identifier>())
+            {
+                var c = GetReachingExpression(ssa.Identifiers[id], activePhis);
+                if (value == null)
+                {
+                    value = c;
+                }
+                else if (c.Item1 != sid.Identifier && (c.Item1 == Constant.Invalid || !cmp.Equals(value.Item1, c.Item1)))
+                {
+                    value = inv;
+                }
+            }
+            activePhis.Remove(phi);
+            return value;
         }
 
         private static Tuple<Effect, Expression> Trash()
@@ -266,8 +281,8 @@ namespace Reko.Analysis
                 return inv;
             }
 
-            // Call trashes this identifier. If it's not in our SCC group we
-            // know it to be trashed for sure.
+            // Call defined this identifier. If it's not in our SCC group we
+            // can rely on the procedureflow information.
             if (!sccGroup.Any(s => s.SsaState.Procedure == callee.Procedure))
             {
                 return inv;
@@ -285,7 +300,8 @@ namespace Reko.Analysis
                 return exBeforeCall;
             }
 
-            // Assume that it preserves it.
+            // Assume that it preserves it; skip across the call to
+            // use the reaching expression.
             preserved.Add(stg);
             var sidUse = GetIdentifierFor(stg, call.Uses);
             var ex = GetReachingExpression(sidUse, new HashSet<PhiAssignment>());

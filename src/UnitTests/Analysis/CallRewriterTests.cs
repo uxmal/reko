@@ -133,7 +133,9 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-		public void CrwManyStackArgs()
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void CrwManyStackArgs()
 		{
 			RunFileTest_x86_real("Fragments/multiple/many_stack_args.asm", "Analysis/CrwManyStackArgs.txt");
 		}

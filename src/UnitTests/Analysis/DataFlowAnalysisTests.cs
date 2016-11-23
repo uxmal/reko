@@ -315,6 +315,8 @@ done:
         }
 
         [Test]
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
         [Category(Categories.UnitTests)]
         public void DfaReg00316()
         {

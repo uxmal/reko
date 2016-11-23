@@ -1,7 +1,7 @@
 void fn0C00_0000(Register word16 di, Register selector ds)
 // MayUse:  di:16 ds:16
 // LiveOut:
-// Trashed: SCZO ax Top
+// Trashed: ax C O S Top Z
 // Preserved: di sp
 // fn0C00_0000
 // Return size: 0
@@ -13,10 +13,10 @@ void fn0C00_0000(Register word16 di, Register selector ds)
 // ax:ax
 // ds:ds
 // Top:Top
-// S:S
 // C:C
-// Z:Z
 // O:O
+// S:S
+// Z:Z
 // wLoc02:Local -0002
 // return address size: 2
 void fn0C00_0000(word16 di, selector ds)
@@ -26,8 +26,8 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	fn0C00_000F(di, ds)
-	ax_13 = fn0C00_0014(0x0100)
-	Mem18[ds:0x0300:word16] = ax_13
+	ax_11 = fn0C00_0014(0x0100)
+	Mem18[ds:0x0300:word16] = ax_11
 	// succ:  l0C00_000E_thunk_fn0C00_000F
 l0C00_000E_thunk_fn0C00_000F:
 	fn0C00_000F(di, ds)
@@ -61,7 +61,7 @@ fn0C00_000F_exit:
 Register word16 fn0C00_0014(Register word16 ax)
 // MayUse:  ax:16
 // LiveOut: ax
-// Trashed: SCZO ax di Top
+// Trashed: ax C di O S Top Z
 // Preserved: sp
 // fn0C00_0014
 // Return size: 0

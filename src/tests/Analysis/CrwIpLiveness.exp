@@ -1,7 +1,7 @@
 void fn0C00_0000(Register selector ds)
 // MayUse:  ds:16
 // LiveOut:
-// Trashed: SCZO ax bx di si Top
+// Trashed: ax bx C di O S si Top Z
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -14,10 +14,10 @@ void fn0C00_0000(Register selector ds)
 // ax:ax
 // bx:bx
 // Top:Top
-// S:S
 // C:C
-// Z:Z
 // O:O
+// S:S
+// Z:Z
 // return address size: 2
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
@@ -27,23 +27,23 @@ fn0C00_0000_entry:
 l0C00_0000:
 	di_6 = Mem0[ds:0x0100:word16]
 	si_7 = Mem0[ds:di_6:word16]
-	ax_9 = fn0C00_0026(si_7, ds)
-	Mem14[ds:di_6 + 0x0002:word16] = ax_9
+	ax_8 = fn0C00_0026(si_7, ds)
+	Mem14[ds:di_6 + 0x0002:word16] = ax_8
 	bx_15 = Mem14[ds:0x0102:word16]
 	si_16 = Mem14[ds:bx_15 + 0x0004:word16]
-	ax_18 = fn0C00_0026(si_16, ds)
-	Mem23[ds:bx_15 + 0x0008:word16] = ax_18
+	ax_17 = fn0C00_0026(si_16, ds)
+	Mem23[ds:bx_15 + 0x0008:word16] = ax_17
 	di_24 = Mem23[ds:0x0104:word16]
 	si_25 = Mem23[ds:di_24:word16]
-	ax_27 = fn0C00_0033(si_25, ds)
-	Mem32[ds:di_24 + 0x0002:word16] = ax_27
+	ax_26 = fn0C00_0033(si_25, ds)
+	Mem32[ds:di_24 + 0x0002:word16] = ax_26
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 Register word16 fn0C00_0026(Register word16 si, Register selector ds)
 // MayUse:  ds:16 si:16
 // LiveOut: ax
-// Trashed: SCZO ax Top
+// Trashed: ax C O S Top Z
 // Preserved: di sp
 // fn0C00_0026
 // Return size: 0
@@ -58,10 +58,10 @@ Register word16 fn0C00_0026(Register word16 si, Register selector ds)
 // Top:Top
 // si:si
 // ax:ax
-// S:S
 // C:C
-// Z:Z
 // O:O
+// S:S
+// Z:Z
 // wLoc02:Local -0002
 // return address size: 2
 word16 fn0C00_0026(word16 si, selector ds)
@@ -73,14 +73,14 @@ l0C00_0026:
 	di_9 = Mem7[ds:0x0104:word16]
 	v6_10 = Mem7[ds:di_9 + 0x0030:word16] + 0x0001
 	Mem11[ds:di_9 + 0x0030:word16] = v6_10
-	ax_15 = fn0C00_0033(si, ds)
-	return ax_15
+	ax_14 = fn0C00_0033(si, ds)
+	return ax_14
 	// succ:  fn0C00_0026_exit
 fn0C00_0026_exit:
 Register word16 fn0C00_0033(Register word16 si, Register selector ds)
 // MayUse:  ds:16 si:16
 // LiveOut: ax
-// Trashed: SCZO ax Top
+// Trashed: ax C O S Top Z
 // Preserved: sp
 // fn0C00_0033
 // Return size: 0

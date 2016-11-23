@@ -104,7 +104,7 @@ namespace Reko.UnitTests.Analysis
             importResolver.Replay();
 
             var program = progBuilder.Program;
-            var dataFlow = new ProgramDataFlow();
+            var dataFlow = new ProgramDataFlow(program);
             var sst = new SsaTransform(
                 program, 
                 proc,
@@ -305,7 +305,6 @@ Constants: cl:0x00
         }
 
         [Test(Description = "Tests detection of trashed variables in the presence of recursion")]
-        [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void TrfRecursion()
         {
@@ -315,6 +314,8 @@ Constants: cl:0x00
                 "");
             RunTest(sExp1, "fact", m =>
             {
+                Given_PlatformTrashedRegisters();
+
                 var fp = m.Frame.FramePointer;
                 var r1 = m.Register(1);
                 var r2 = m.Register(2);
@@ -407,11 +408,10 @@ Constants: cl:0x00
         }
 
         [Test(Description = "Exercises a self-recursive function")]
-        [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void TrfRecursive()
         {
-            var sExp = Expect("@@@", "@@@", "@@@" );
+            var sExp = Expect("Preserved: r1,r63", "Trashed: ", "");
             RunTest(sExp, "fnSig", m =>
             {
                 var sp = m.Frame.EnsureIdentifier(m.Architecture.StackRegister);

@@ -2,8 +2,8 @@
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
 // MayUse:  ds:16 si:16
 // LiveOut:
-// Trashed: SCZO ax Top
-// Preserved: sp
+// Trashed: ax C O S Top Z
+// Preserved: ds si sp ss
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(word16 si, selector ds)

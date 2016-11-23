@@ -19,10 +19,10 @@ fn0C00_0000_entry:
 	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	ax_7 = fn0C00_0015(0x0200, ds)
-	Mem8[ds:0x0202:word16] = ax_7
-	ax_11 = fn0C00_0015(0x0300, ds)
-	al_12 = (byte) ax_11 (alias)
+	ax_6 = fn0C00_0015(0x0200, ds)
+	Mem8[ds:0x0202:word16] = ax_6
+	ax_10 = fn0C00_0015(0x0300, ds)
+	al_12 = (byte) ax_10 (alias)
 	Mem13[ds:0x0302:byte] = al_12
 	return
 	// succ:  fn0C00_0000_exit

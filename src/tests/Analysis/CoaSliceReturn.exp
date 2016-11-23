@@ -8,15 +8,15 @@ ds:ds
           Mem8[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
           Mem13[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
           Mem13[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
-Top_6: orig: Top
+ax_6: orig: ax
+Top_7: orig: Top
     def:  Mem8[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
-ax_7: orig: ax
 Mem8: orig: Mem0
     def:  Mem8[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
 si_9: orig: si
-Top_10: orig: Top
+ax_10: orig: ax
+Top_11: orig: Top
     def:  Mem13[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
-ax_11: orig: ax
 al_12: orig: al
 Mem13: orig: Mem0
     def:  Mem13[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
