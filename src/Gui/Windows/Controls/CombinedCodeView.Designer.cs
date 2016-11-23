@@ -134,6 +134,7 @@
             this.mixedCodeDataControl.TabIndex = 0;
             this.mixedCodeDataControl.Text = "mixedCodeDataControl1";
             this.mixedCodeDataControl.TopAddress = null;
+            this.mixedCodeDataControl.EnablePopup = true;
             // 
             // codeTextView
             // 

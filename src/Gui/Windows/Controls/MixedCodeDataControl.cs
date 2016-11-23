@@ -23,8 +23,10 @@ using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace Reko.Gui.Windows.Controls
 {
@@ -33,6 +35,9 @@ namespace Reko.Gui.Windows.Controls
     /// </summary>
     public class MixedCodeDataControl : TextView
     {
+        private Control popupWindow;
+        private bool insidePopup;
+
         public MixedCodeDataControl()
         {
             this.ProgramChanged += delegate { OnProgramChanged(); };
@@ -44,11 +49,9 @@ namespace Reko.Gui.Windows.Controls
             this.SpanLeave += MixedCodeDataControl_SpanLeave;
         }
 
-        public Program Program {
-            get
-            {
-                return program;
-            }
+        public Program Program
+        {
+            get { return program; }
             set
             {
                 if (program != null)
@@ -59,12 +62,15 @@ namespace Reko.Gui.Windows.Controls
                 ProgramChanged.Fire(this);
             }
         }
-
         private Program program;
         public event EventHandler ProgramChanged;
 
         public Address TopAddress { get { return addrTop; } set { addrTop = value; OnTopAddressChanged(); } }
         private Address addrTop;
+
+        public bool EnablePopup { get { return enablePopup; } set { enablePopup = value; } }
+        private bool enablePopup;
+
 
         private void OnProgramChanged()
         {
@@ -94,6 +100,15 @@ namespace Reko.Gui.Windows.Controls
                 UpdateScrollbar();
                 Invalidate();
             }
+        }
+
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            if (popupWindow != null)
+            {
+                DestroyPopupWindow();
+            }
+            base.OnMouseDown(e);
         }
 
         protected override void OnScroll()
@@ -136,10 +151,68 @@ namespace Reko.Gui.Windows.Controls
 
         private void MixedCodeDataControl_SpanLeave(object sender, SpanEventArgs e)
         {
+            if (!insidePopup)
+                DestroyPopupWindow();
         }
 
         private void MixedCodeDataControl_SpanEnter(object sender, SpanEventArgs e)
         {
+            if (popupWindow != null || !EnablePopup)
+                return;
+            if (e.Span.Style == null || !e.Span.Style.Contains("dasm-addrText"))
+                return;
+
+            var rcF = e.Span.ContentExtent;
+            var pt = new Point(
+                (int) 100,
+                (int) rcF.Bottom);
+
+            var nested = new MixedCodeDataControl
+            {
+                Model = ((MixedCodeDataModel)this.Model).Clone(),
+                Dock = DockStyle.Fill,
+                Services = this.Services,
+                StyleClass = this.StyleClass,
+            };
+            nested.VScrollBar.Visible = false;
+
+            var lbl = new Panel
+            {
+                AutoSize = false,
+                Padding = new Padding(3),
+                BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle,
+                Width = 500,
+                Height = 200,
+                Location = pt,
+                Controls = {
+                   nested
+                }
+            };
+            base.Controls.Add(lbl);
+            this.popupWindow = lbl;
+            nested.MouseLeave += Lbl_MouseLeave;
+            nested.MouseEnter += Lbl_MouseEnter;
+            this.insidePopup = false;
+        }
+
+        private void Lbl_MouseLeave(object sender, EventArgs e)
+        {
+            DestroyPopupWindow();
+        }
+
+        private void Lbl_MouseEnter(object sender, EventArgs e)
+        {
+            insidePopup = true;
+        }
+
+        private void DestroyPopupWindow()
+        {
+            if (popupWindow == null)
+                return;
+            Controls.Remove(popupWindow);
+            popupWindow.Dispose();
+            popupWindow = null;
+            insidePopup = false;
         }
     }
 }

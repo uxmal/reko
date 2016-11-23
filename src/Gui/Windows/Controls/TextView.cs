@@ -75,11 +75,17 @@ namespace Reko.Gui.Windows.Controls
 
         public TextSelection Selection { get; private set; }
 
+        /// <summary>
+        /// Performs the same function as the HTML "class" attribute.
+        /// </summary>
         public string StyleClass { get { return styleClass; } set { styleClass = value; StyleClassChanged.Fire(this); } }
         public event EventHandler StyleClassChanged;
         private string styleClass;
 
-
+        /// <summary>
+        /// Exposes the vertical scrollbar.
+        /// </summary>
+        public VScrollBar VScrollBar { get { return vScroll; } }
 
         /// <summary>
         /// The ClientSize is the client area minus the space taken up by
@@ -89,8 +95,9 @@ namespace Reko.Gui.Windows.Controls
         {
             get
             {
+                int cxScroll = vScroll.Visible ? vScroll.Width : 0;
                 return new Size(
-                    base.ClientSize.Width - vScroll.Width,
+                    base.ClientSize.Width - cxScroll,
                     base.ClientSize.Height);
             }
         }
