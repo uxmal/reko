@@ -161,6 +161,9 @@ namespace Reko.Gui.Windows.Controls
                 return;
             if (e.Span.Style == null || !e.Span.Style.Contains("dasm-addrText"))
                 return;
+            var address = e.Span.Tag as Address;
+            if (address == null)
+                return;
 
             var rcF = e.Span.ContentExtent;
             var pt = new Point(
@@ -170,16 +173,17 @@ namespace Reko.Gui.Windows.Controls
             var nested = new MixedCodeDataControl
             {
                 Model = ((MixedCodeDataModel)this.Model).Clone(),
+                program = this.program,      // Don't use property to avoid triggering recalc
                 Dock = DockStyle.Fill,
                 Services = this.Services,
                 StyleClass = this.StyleClass,
+                Padding = new Padding(3),
             };
             nested.VScrollBar.Visible = false;
 
-            var lbl = new Panel
+            var frame = new Panel
             {
                 AutoSize = false,
-                Padding = new Padding(3),
                 BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle,
                 Width = 500,
                 Height = 200,
@@ -188,8 +192,10 @@ namespace Reko.Gui.Windows.Controls
                    nested
                 }
             };
-            base.Controls.Add(lbl);
-            this.popupWindow = lbl;
+            base.Controls.Add(frame);
+            this.popupWindow = frame;
+            nested.TopAddress = address;
+
             nested.MouseLeave += Lbl_MouseLeave;
             nested.MouseEnter += Lbl_MouseEnter;
             this.insidePopup = false;
