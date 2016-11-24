@@ -25,7 +25,6 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
-#if DEBUG
 namespace Reko.UnitTests.Mocks
 {
     public class XmlnsHidingWriter : XmlTextWriter
@@ -62,4 +61,3 @@ namespace Reko.UnitTests.Mocks
         }
     }
 }
-#endif

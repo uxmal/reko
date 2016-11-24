@@ -292,7 +292,7 @@ namespace Reko.UnitTests.Core.Serialization
                 FilteringXmlWriter writer = new FilteringXmlWriter(fut.TextWriter);
                 writer.Formatting = System.Xml.Formatting.Indented;
                 XmlSerializer ser = SerializedLibrary.CreateSerializer_v4(typeof(Project_v4));
-                Project_v4 ud = new ProjectSaver(sc).Save("/var/foo/foo.proj", project);
+                Project_v4 ud = new ProjectSaver(sc).Serialize("/var/foo/foo.proj", project);
                 ser.Serialize(writer, ud);
                 fut.AssertFilesEqual();
             }
@@ -428,7 +428,7 @@ namespace Reko.UnitTests.Core.Serialization
             mr.ReplayAll();
 
             var ps = new ProjectSaver(sc);
-            ps.Save("c:\\test\\foo.project", project);
+            ps.Serialize("c:\\test\\foo.project", project);
             Assert.AreEqual(1, project.MetadataFiles.Count);
             Assert.AreEqual("c:\\test\\foo.def", project.MetadataFiles[0].Filename);
             Assert.AreEqual("foo.def", project.MetadataFiles[0].ModuleName);

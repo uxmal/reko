@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Xml;
 
 namespace Reko.Core.Services
 {
@@ -33,6 +34,7 @@ namespace Reko.Core.Services
         Stream CreateFileStream(string filename, FileMode mode);
         Stream CreateFileStream(string filename, FileMode mode, FileAccess access);
         Stream CreateFileStream(string filename, FileMode mode, FileAccess access, FileShare share);
+        XmlWriter CreateXmlWriter(string filename);
         bool FileExists(string filePath);
         string MakeRelativePath(string fromPath, string toPath);
         byte[] ReadAllBytes(string filePath);
@@ -65,6 +67,14 @@ namespace Reko.Core.Services
         public Stream CreateFileStream(string filename, FileMode mode, FileAccess access, FileShare share)
         {
             return new FileStream(filename, mode, access, share);
+        }
+
+        public XmlWriter CreateXmlWriter(string filename)
+        {
+            return new XmlTextWriter(filename, new UTF8Encoding(false))
+            {
+                Formatting = Formatting.Indented
+            };
         }
 
         public bool FileExists(string filePath)

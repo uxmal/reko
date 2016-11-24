@@ -657,10 +657,11 @@ namespace Reko.Gui.Forms
                 mru.Use(newName);
             }
 
-            using (var xw = CreateXmlWriter(ProjectFileName))
+            var fsSvc = Services.RequireService<IFileSystemService>();
+            using (var xw = fsSvc.CreateXmlWriter(ProjectFileName))
             {
                 var saver = new ProjectSaver(sc);
-                var sProject = saver.Save(ProjectFileName, decompilerSvc.Decompiler.Project);
+                var sProject = saver.Serialize(ProjectFileName, decompilerSvc.Decompiler.Project);
                 saver.Save(sProject, xw);
             }
             return true;
