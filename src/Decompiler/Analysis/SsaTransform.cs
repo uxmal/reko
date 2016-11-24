@@ -307,6 +307,8 @@ namespace Reko.Analysis
         {
             if (a is AliasAssignment)
                 return a;
+            if (a.Dst.ToString() == "cx") //$DEBUG
+                a.ToString();
             var src = a.Src.Accept(this);
             Identifier idNew = this.RenameFrameAccesses ? a.Dst : NewDef(a.Dst, src, false);
             return new Assignment(idNew, src);

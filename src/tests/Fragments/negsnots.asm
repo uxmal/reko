@@ -1,4 +1,5 @@
-;;;; Test for not and neg instructions, which lead to UnaryExpressions.
+;;; negsnots.asm
+;;; Test for not and neg instructions, which lead to UnaryExpressions.
 
 	.i86
 	

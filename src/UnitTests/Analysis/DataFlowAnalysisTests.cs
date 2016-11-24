@@ -126,7 +126,6 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void DfaFpuOps()
 		{
@@ -142,7 +141,6 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void DfaChainTest()
 		{
@@ -168,8 +166,8 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
+        [Ignore(Categories.AnalysisDevelopment)]
         public void DfaNegsNots()
 		{
 			RunFileTest_x86_real("Fragments/negsnots.asm", "Analysis/DfaNegsNots.txt");

@@ -140,7 +140,7 @@ namespace Reko.Arch.X86
 
         public override void OnProcedureLeft(FunctionType sig)
         {
-            sig.FpuStackDelta = FpuStackItems;     
+            sig.FpuStackDelta = FpuStackItems;
         }
 
         public override CallSite OnBeforeCall(Identifier sp, int returnAddressSize)

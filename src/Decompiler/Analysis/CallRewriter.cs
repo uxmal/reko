@@ -382,7 +382,7 @@ namespace Reko.Analysis
             // Single definition
             var sid = ssa.Identifiers[expRet.Identifier];
             var phi = sid.DefStatement.Instruction as PhiAssignment;
-            if (phi != null)
+            if (phi != null && sid.DefStatement.Block == exitBlock)
             {
                 // Multiple reaching definitions.
                 for (int i = 0; i < phi.Src.Arguments.Length; ++i)

@@ -213,7 +213,10 @@ namespace Reko.Analysis
 
         public BitRange VisitApplication(Application appl)
         {
-            return BitRange.Empty;
+            return appl.Arguments
+                .Aggregate(
+                    BitRange.Empty,
+                    (br, e) => br | e.Accept(this));
         }
 
         public BitRange VisitArrayAccess(ArrayAccess acc)
@@ -281,7 +284,14 @@ namespace Reko.Analysis
 
         public BitRange VisitOutArgument(OutArgument outArgument)
         {
-            throw new NotImplementedException();
+            if (outArgument.Expression is Identifier)
+            {
+                return BitRange.Empty;
+            }
+            else
+            {
+                return outArgument.Accept(this);
+            }
         }
 
         public BitRange VisitPhiFunction(PhiFunction phi)
