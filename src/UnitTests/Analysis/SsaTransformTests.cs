@@ -2548,5 +2548,51 @@ proc1_exit:
                 m.Return();
             });
         }
+
+        [Test]
+        public void SsaHiwordLoword()
+        {
+            var sExp =
+            #region Expected
+                @"Mem0:Global
+    def:  def Mem0
+    uses: al_2 = Mem0[0x1234:byte]
+al_2: orig: al
+    def:  al_2 = Mem0[0x1234:byte]
+    uses: Mem4[0x1236:byte] = al_2 *u ah_3
+ah_3: orig: ah
+    def:  ah_3 = 0x03
+    uses: Mem4[0x1236:byte] = al_2 *u ah_3
+Mem4: orig: Mem0
+    def:  Mem4[0x1236:byte] = al_2 *u ah_3
+// proc1
+// Return size: 0
+define proc1
+proc1_entry:
+	def Mem0
+	// succ:  l1
+l1:
+	al_2 = Mem0[0x1234:byte]
+	ah_3 = 0x03
+	Mem4[0x1236:byte] = al_2 *u ah_3
+	return
+	// succ:  proc1_exit
+proc1_exit:
+======
+";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                var al = m.Frame.EnsureRegister(new RegisterStorage("al", 0, 0, PrimitiveType.Byte));
+                var ah = m.Frame.EnsureRegister(new RegisterStorage("ah", 0, 8, PrimitiveType.Byte));
+
+                m.Assign(al, m.LoadB(m.Word16(0x1234)));
+                m.Assign(ah, 3);
+                m.Store(m.Word16(0x1236), m.UMul(al, ah));
+                m.Return();
+            });
+        }
     }
+
 }

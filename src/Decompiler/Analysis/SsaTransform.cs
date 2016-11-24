@@ -766,11 +766,13 @@ namespace Reko.Analysis
         public class AliasState
         {
             public SsaIdentifier SsaId;        // The id that actually was modified.
+            public readonly AliasState PrevState;
             public readonly IDictionary<Identifier, SsaIdentifier> Aliases;     // Other ids that were affected by this stm.
 
-            public AliasState(SsaIdentifier ssaId)
+            public AliasState(SsaIdentifier ssaId, AliasState prevState)
             {
                 this.SsaId = ssaId;
+                this.PrevState = prevState;
                 this.Aliases = new Dictionary<Identifier, SsaIdentifier>();
             }
 
@@ -897,6 +899,9 @@ namespace Reko.Analysis
             /// <returns></returns>
             public virtual Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
             {
+                AliasState prevState;
+                bs.currentDef.TryGetValue(id.Storage.Domain, out prevState);
+
                 if (performProbe)
                 {
                     // Did a previous SSA id modify storage that overlaps id?
@@ -913,18 +918,15 @@ namespace Reko.Analysis
                         sidPrev = InsertAfterDefinition(sid.DefStatement, ass);
                         sidPrevOld.Uses.Add(sidPrev.DefStatement);
 
-                        var alias = new AliasState(sidPrev);
+                        var alias = new AliasState(sidPrev, prevState);
                         alias.Aliases.Add(id, sid);
                         //Debug.Print("--- {0}: {1}", bs.Block.Name, sid.Identifier.Name);
                         bs.currentDef[id.Storage.Domain] = alias;
                         return sid.Identifier;
                     }
                 }
-                //if (!(sid.DefStatement.Instruction is AliasAssignment))
-                {
-                    //Debug.Print("--- {0}: {1}", bs.Block.Name, sid.Identifier.Name);
-                    bs.currentDef[id.Storage.Domain] = new AliasState(sid);
-                }
+
+                bs.currentDef[id.Storage.Domain] = new AliasState(sid, prevState);
                 return sid.Identifier;
             }
 
@@ -978,7 +980,7 @@ namespace Reko.Analysis
                 if (false)  // !sealedBlocks.Contains(b))
                 {
                     // Incomplete CFG
-                    //val = newPhi(id, b);
+                    //val = NewPhi(id, bs.Block);
                     //incompletePhis[b][id.Storage] = val;
                 }
                 else if (bs.Block.Pred.Count == 0)
@@ -988,6 +990,7 @@ namespace Reko.Analysis
                 }
                 else if (bs.Block.Pred.Count == 1)
                 {
+                    // Search for the variable in the single predecessor.
                     val = ReadVariable(blockstates[bs.Block.Pred[0]], generateAlias);
                 }
                 else
@@ -1219,24 +1222,27 @@ namespace Reko.Analysis
 
                 // Defined locally in this block.
                 // Has the alias already been calculated?
-                SsaIdentifier ssaId = alias.SsaId;
-                if (alias.SsaId.OriginalIdentifier == id ||
-                    alias.Aliases.TryGetValue(id, out ssaId))
+                for (var a = alias; a != null; a = a.PrevState)
                 {
-                    return ssaId;
-                }
-
-                // Does ssaId intersect the probed value?
-                if (alias.SsaId.Identifier.Storage.OverlapsWith(id.Storage))
-                {
-                    if (generateAlias)
+                    SsaIdentifier ssaId = a.SsaId;
+                    if (a.SsaId.OriginalIdentifier == id ||
+                        a.Aliases.TryGetValue(id, out ssaId))
                     {
-                        var sid = MaybeGenerateAliasStatement(alias);
-                        bs.currentDef[id.Storage.Domain] = alias;
-                        return sid;
+                        return ssaId;
                     }
-                    else
-                        return alias.SsaId;
+
+                    // Does ssaId intersect the probed value?
+                    if (a.SsaId.Identifier.Storage.OverlapsWith(id.Storage))
+                    {
+                        if (generateAlias)
+                        {
+                            var sid = MaybeGenerateAliasStatement(a);
+                            bs.currentDef[id.Storage.Domain] = a;
+                            return sid;
+                        }
+                        else
+                            return alias.SsaId;
+                    }
                 }
                 return null;
             }
@@ -1246,9 +1252,14 @@ namespace Reko.Analysis
                 AliasState alias;
                 if (bs.currentDef.TryGetValue(id.Storage.Domain, out alias))
                 {
-                    return 
-                        alias.SsaId.Identifier.Storage.OverlapsWith(id.Storage) &&
-                        alias.SsaId.Identifier.Storage.Exceeds(id.Storage);
+                    while (alias != null)
+                    {
+                        if (alias.SsaId.Identifier.Storage.OverlapsWith(id.Storage) &&
+                            alias.SsaId.Identifier.Storage.Exceeds(id.Storage))
+                            return true;
+                        alias = alias.PrevState;
+                    }
+                    return false;
                 }
                 else
                 {
