@@ -31,6 +31,7 @@ using System.Collections.Generic;
 using Reko.Core.Expressions;
 using Reko.Arch.X86;
 using Reko.Core.Code;
+using System.Diagnostics;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -52,6 +53,37 @@ namespace Reko.UnitTests.Analysis
             crw = new CallRewriter(program.Platform, new ProgramDataFlow(), new FakeDecompilerEventListener());
             proc = new Procedure("foo", program.Architecture.CreateFrame());
             flow = new ProcedureFlow(proc);
+        }
+
+        private class NestedProgram
+        {
+            public static Program Build()
+            {
+                ProgramBuilder m = new ProgramBuilder();
+                m.Add(new MainFn());
+                m.Add(new Leaf());
+                return m.BuildProgram();
+            }
+
+            public class MainFn : ProcedureBuilder
+            {
+                private FakeArchitecture arch = new FakeArchitecture();
+
+                protected override void BuildBody()
+                {
+                    base.Call("Leaf", 4);
+                    Store(Int32(0x320123), base.Register(0));
+                }
+            }
+
+            public class Leaf : ProcedureBuilder
+            {
+                protected override void BuildBody()
+                {
+                    Assign(Register(0), Int32(3));
+                    Return();
+                }
+            }
         }
 
         protected override void RunTest(Program program, TextWriter writer)
@@ -80,10 +112,22 @@ namespace Reko.UnitTests.Analysis
 			}
 		}
 
-
         private void Given_ExitBlockStatement(Identifier id)
         {
             proc.ExitBlock.Statements.Add(0x10020, new UseInstruction(id));
+        }
+
+        private void AssertExpected(string sExp, SsaState ssa)
+        {
+            var sw = new StringWriter();
+            ssa.Write(sw);
+            ssa.Procedure.Write(false, sw);
+            var sActual = sw.ToString();
+            if (sExp != sActual)
+            {
+                Debug.WriteLine(sActual);
+                Assert.AreEqual(sExp, sActual);
+            }
         }
 
         [Test]
@@ -310,35 +354,52 @@ namespace Reko.UnitTests.Analysis
             }
         }
 
-        private class NestedProgram
+        [Test]
+        public void CrwSinglePredecessorToExitBlock()
         {
-            public static Program Build()
-            {
-                ProgramBuilder m = new ProgramBuilder();
-                m.Add(new MainFn());
-                m.Add(new Leaf());
-                return m.BuildProgram();
-            }
+            var m = new ProcedureBuilder("CrwSinglePredecessorToExitBlock");
+            var eax = m.Frame.EnsureRegister(Registers.eax);
+            m.Assign(eax, m.LoadDw(eax));
+            m.Return();
 
-            public class MainFn : ProcedureBuilder
-            {
-                private FakeArchitecture arch = new FakeArchitecture();
+            var flow = new ProgramDataFlow(program);
+            var sst = new SsaTransform(program, m.Procedure, new HashSet<Procedure>(), null, new ProgramDataFlow());
+            sst.Transform();
+            sst.AddUsesToExitBlock();
+            sst.SsaState.Procedure.Signature = FunctionType.Func(
+                new Identifier("", PrimitiveType.Word32, Registers.eax),
+                new Identifier("eax", PrimitiveType.Word32, Registers.eax));
 
-                protected override void BuildBody()
-                {
-                    base.Call("Leaf", 4);
-                    Store(Int32(0x320123), base.Register(0));
-                }
-            }
+            var crw = new CallRewriter(this.platform, flow, new FakeDecompilerEventListener());
+            crw.RewriteReturns(sst.SsaState);
 
-            public class Leaf : ProcedureBuilder
-            {
-                protected override void BuildBody()
-                {
-                    Assign(Register(0), Int32(3));
-                    Return();
-                }
-            }
+            var sExp =
+            #region Expected 
+@"eax:eax
+    def:  def eax
+    uses: eax_3 = Mem0[eax:word32]
+Mem0:Global
+    def:  def Mem0
+    uses: eax_3 = Mem0[eax:word32]
+eax_3: orig: eax
+    def:  eax_3 = Mem0[eax:word32]
+    uses: return eax_3
+// CrwSinglePredecessorToExitBlock
+// Return size: 0
+word32 CrwSinglePredecessorToExitBlock(word32 eax)
+CrwSinglePredecessorToExitBlock_entry:
+	def eax
+	def Mem0
+	// succ:  l1
+l1:
+	eax_3 = Mem0[eax:word32]
+	return eax_3
+	// succ:  CrwSinglePredecessorToExitBlock_exit
+CrwSinglePredecessorToExitBlock_exit:
+";
+            #endregion
+            AssertExpected(sExp, sst.SsaState);
         }
+
     }
 }

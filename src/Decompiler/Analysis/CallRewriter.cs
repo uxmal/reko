@@ -365,6 +365,8 @@ namespace Reko.Analysis
             Identifier idRet = ssa.Procedure.Signature.ReturnValue;
             if (idRet == null || idRet.DataType is VoidType)
                 return;
+
+            // Find the returned identifier
             var expRet = ssa.Procedure.ExitBlock.Statements
                 .Select(s => s.Instruction)
                 .OfType<UseInstruction>()
@@ -374,23 +376,42 @@ namespace Reko.Analysis
                     Instruction = u
                 })
                 .Where(w => w.Identifier != null && w.Identifier.Storage == idRet.Storage)
-                .SingleOrDefault();
+                .Single();
 
+            // Single definition
             var sid = ssa.Identifiers[expRet.Identifier];
-            foreach (Statement stm in ssa.Procedure.Statements)
+            var phi = sid.DefStatement.Instruction as PhiAssignment;
+            if (phi != null)
             {
-                var ret = stm.Instruction as ReturnInstruction;
-                if (ret != null)
-                {
-                    ret.Expression =  expRet.Identifier;
-                    sid.Uses.Add(stm);
-                }
+                // Multiple reaching definitions.
+                throw new NotImplementedException();
+            }
+            else
+            {
+                // Single reaching definition.
+                var block = ssa.Procedure.ExitBlock.Pred[0];
+                SetReturnExpression(block, sid);
             }
 
             var stmUse = sid.Uses
                 .Where(u => u.Instruction == expRet.Instruction)
                 .Single();
             ssa.DeleteStatement(stmUse);
+        }
+
+        private void SetReturnExpression(Block block, SsaIdentifier sid)
+        {
+            for (int i = block.Statements.Count-1; i >=0; --i)
+            {
+                var stm = block.Statements[i];
+                var ret = stm.Instruction as ReturnInstruction;
+                if (ret != null)
+                {
+                    ret.Expression = sid.Identifier;
+                    sid.Uses.Add(stm);
+                }
+            }
+
         }
     }
 }
