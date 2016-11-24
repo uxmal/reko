@@ -1,8 +1,13 @@
+;;; r00011.asm
+;;; Various nasty bit manipulations, using the high- and low-byte parts
+;;; of x86 registers.
+
 main proc
 	call foo
 	ret
 	endp
 
+;;; foo - No registers should be live in
 foo proc
 	mov	ax,0x4DE1
 	mov	es,ax
