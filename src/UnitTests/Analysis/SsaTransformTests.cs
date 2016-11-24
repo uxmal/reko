@@ -1276,20 +1276,21 @@ proc1_exit:
           branch Mem0[0x00010042:bool] mBranch2
 ecx_2: orig: ecx
     def:  ecx_2 = Mem0[0x00542300:word32]
-    uses: ecx_5 = DPB(ecx_2, cl_4, 0) (alias)
+    uses: ecx_6 = DPB(ecx_2, cl_4, 0) (alias)
 ecx_3: orig: ecx
     def:  ecx_3 = 0x00000020
-    uses: ecx_6 = PHI(ecx_5, ecx_3)
+    uses: ecx_5 = PHI(ecx_6, ecx_3)
 cl_4: orig: cl
     def:  cl_4 = 0x2A
+    uses: ecx_6 = DPB(ecx_2, cl_4, 0) (alias)
 ecx_5: orig: ecx
-    def:  ecx_5 = DPB(ecx_2, cl_4, 0) (alias)
-    uses: ecx_6 = PHI(ecx_5, ecx_3)
+    def:  ecx_5 = PHI(ecx_6, ecx_3)
+    uses: Mem7[0x00010232:word32] = ecx_5
 ecx_6: orig: ecx
-    def:  ecx_6 = PHI(ecx_5, ecx_3)
-    uses: Mem7[0x00010232:word32] = ecx_6
+    def:  ecx_6 = DPB(ecx_2, cl_4, 0) (alias)
+    uses: ecx_5 = PHI(ecx_6, ecx_3)
 Mem7: orig: Mem0
-    def:  Mem7[0x00010232:word32] = ecx_6
+    def:  Mem7[0x00010232:word32] = ecx_5
 // proc1
 // Return size: 0
 define proc1
@@ -1302,15 +1303,15 @@ l1:
 	// succ:  mBranch1 mBranch2
 mBranch1:
 	cl_4 = 0x2A
-	ecx_5 = DPB(ecx_2, cl_4, 0) (alias)
+	ecx_6 = DPB(ecx_2, cl_4, 0) (alias)
 	goto mCommon
 	// succ:  mCommon
 mBranch2:
 	ecx_3 = 0x00000020
 	// succ:  mCommon
 mCommon:
-	ecx_6 = PHI(ecx_5, ecx_3)
-	Mem7[0x00010232:word32] = ecx_6
+	ecx_5 = PHI(ecx_6, ecx_3)
+	Mem7[0x00010232:word32] = ecx_5
 	return
 	// succ:  proc1_exit
 proc1_exit:

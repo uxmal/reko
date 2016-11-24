@@ -307,7 +307,7 @@ namespace Reko.Analysis
         {
             if (a is AliasAssignment)
                 return a;
-            if (a.Dst.ToString() == "cx") //$DEBUG
+            if (a.Dst.ToString() == "es_cx") //$DEBUG
                 a.ToString();
             var src = a.Src.Accept(this);
             Identifier idNew = this.RenameFrameAccesses ? a.Dst : NewDef(a.Dst, src, false);
@@ -903,31 +903,11 @@ namespace Reko.Analysis
             {
                 AliasState prevState;
                 bs.currentDef.TryGetValue(id.Storage.Domain, out prevState);
-
-                if (performProbe)
+                if (prevState != null && 
+                    id.Storage.Covers(prevState.SsaId.Identifier.Storage))
                 {
-                    // Did a previous SSA id modify storage that overlaps id?
-                    if (ProbeVariable(bs))
-                    {
-                        var id = this.id;
-                        var sidPrev = ReadVariable(bs, false);
-
-                        // Generate a DPB so the previous modification "shines
-                        // through".
-                        var sidPrevOld = sidPrev;
-                        var dpb = new DepositBits(sidPrev.Identifier, sid.Identifier, (int)id.Storage.BitAddress);
-                        var ass = new AliasAssignment(sidPrev.OriginalIdentifier, dpb);
-                        sidPrev = InsertAfterDefinition(sid.DefStatement, ass);
-                        sidPrevOld.Uses.Add(sidPrev.DefStatement);
-
-                        var alias = new AliasState(sidPrev, prevState);
-                        alias.Aliases.Add(id, sid);
-                        //Debug.Print("--- {0}: {1}", bs.Block.Name, sid.Identifier.Name);
-                        bs.currentDef[id.Storage.Domain] = alias;
-                        return sid.Identifier;
-                    }
+                    prevState = null;
                 }
-
                 bs.currentDef[id.Storage.Domain] = new AliasState(sid, prevState);
                 return sid.Identifier;
             }
