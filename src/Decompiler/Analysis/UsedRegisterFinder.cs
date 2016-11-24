@@ -42,8 +42,8 @@ namespace Reko.Analysis
     /// only uses the bottom 8 bits.
     /// </remarks>
     public class UsedRegisterFinder :
-        InstructionVisitor<int>,
-        ExpressionVisitor<int>
+        InstructionVisitor<BitRange>,
+        ExpressionVisitor<BitRange>
     {
         private IProcessorArchitecture arch;
         private DecompilerEventListener eventListener;
@@ -53,7 +53,7 @@ namespace Reko.Analysis
         private SsaState ssa;
         private SsaTransform[] ssts;
         private Dictionary<SsaIdentifier, int> uses;
-        private Dictionary<PhiAssignment, int> visited;
+        private Dictionary<PhiAssignment, BitRange> visited;
 
         public UsedRegisterFinder(
             IProcessorArchitecture arch,
@@ -84,7 +84,7 @@ namespace Reko.Analysis
             this.ssa = ssaState;
             foreach (var stm in ssa.Procedure.EntryBlock.Statements)
             {
-                this.visited = new Dictionary<PhiAssignment, int>();
+                this.visited = new Dictionary<PhiAssignment, BitRange>();
                 DefInstruction def;
                 if (!stm.Instruction.As(out def))
                     continue;
@@ -96,8 +96,8 @@ namespace Reko.Analysis
                      sid.Identifier.Storage is StackArgumentStorage ||
                      sid.Identifier.Storage is FpuStackStorage))
                 {
-                    int n = Classify(sid);
-                    if (n > 0)
+                    var n = Classify(sid);
+                    if (!n.IsEmpty)
                     {
                         procFlow.BitsUsed[sid.Identifier.Storage] = n;
                     }
@@ -112,16 +112,16 @@ namespace Reko.Analysis
         /// model calling procedures uses of return values.
         /// </summary>
         /// <param name="sid"></param>
-        /// <returns></returns>
-        private int Classify(SsaIdentifier sid)
+        /// <returns>The bit range used by sid</returns>
+        private BitRange Classify(SsaIdentifier sid)
         {
             idCur = sid.Identifier;
             return sid.Uses
                 .Where(u => u.Block != ssa.Procedure.ExitBlock)
-                .Aggregate(0, (w, stm) => Math.Max(w, stm.Instruction.Accept(this)));
+                .Aggregate(BitRange.Empty, (w, stm) => w | stm.Instruction.Accept(this));
         }
 
-        public int VisitAssignment(Assignment ass)
+        public BitRange VisitAssignment(Assignment ass)
         {
             if (ass.Src == idCur) 
             {
@@ -136,193 +136,192 @@ namespace Reko.Analysis
             return ass.Src.Accept(this);
         }
 
-        public int VisitBranch(Branch branch)
+        public BitRange VisitBranch(Branch branch)
         {
             return branch.Condition.Accept(this);
         }
 
-        public int VisitCallInstruction(CallInstruction ci)
+        public BitRange VisitCallInstruction(CallInstruction ci)
         {
             return ci.Uses
-                .Max(cb => cb.Expression.Accept(this));
+                .Aggregate(
+                    BitRange.Empty,
+                    (br, cb) => cb.Expression.Accept(this));
         }
 
-        public int VisitDeclaration(Declaration decl)
+        public BitRange VisitDeclaration(Declaration decl)
         {
             throw new NotImplementedException();
         }
 
-        public int VisitDefInstruction(DefInstruction def)
+        public BitRange VisitDefInstruction(DefInstruction def)
         {
             throw new NotImplementedException();
         }
 
-        public int VisitGotoInstruction(GotoInstruction gotoInstruction)
+        public BitRange VisitGotoInstruction(GotoInstruction gotoInstruction)
         {
             throw new NotImplementedException();
         }
 
-        public int VisitPhiAssignment(PhiAssignment phi)
+        public BitRange VisitPhiAssignment(PhiAssignment phi)
         {
             // One of the phi arguments was used, but that's a trivial copy. 
             // Classify the dst of the phi statement, but avoid cycles
             // by memoizing the value we obtained.
-            int value;
+            BitRange value;
             if (!visited.TryGetValue(phi, out value))
             {
-                visited[phi] = 0;
+                visited[phi] = BitRange.Empty;
                 value = Classify(ssa.Identifiers[phi.Dst]);
                 visited[phi] = value;
             }
             return value;
         }
 
-        public int VisitReturnInstruction(ReturnInstruction ret)
+        public BitRange VisitReturnInstruction(ReturnInstruction ret)
         {
             throw new NotImplementedException();
         }
 
-        public int VisitSideEffect(SideEffect side)
+        public BitRange VisitSideEffect(SideEffect side)
         {
             return side.Expression.Accept(this);
         }
 
-        public int VisitStore(Store store)
+        public BitRange VisitStore(Store store)
         {
-            return Math.Max(
-                store.Dst.Accept(this),
-                store.Src.Accept(this));
+            return store.Dst.Accept(this) | store.Src.Accept(this);
         }
 
-        public int VisitSwitchInstruction(SwitchInstruction si)
+        public BitRange VisitSwitchInstruction(SwitchInstruction si)
         {
             throw new NotImplementedException();
         }
 
-        public int VisitUseInstruction(UseInstruction use)
+        public BitRange VisitUseInstruction(UseInstruction use)
         {
             if (IgnoreUseInstructions)
-                return 0;
+                return BitRange.Empty;
             return use.Expression.Accept(this);
         }
 
-        public int VisitAddress(Address addr)
+        public BitRange VisitAddress(Address addr)
         {
             throw new NotImplementedException();
         }
 
-        public int VisitApplication(Application appl)
+        public BitRange VisitApplication(Application appl)
         {
-            return 0;
+            return BitRange.Empty;
         }
 
-        public int VisitArrayAccess(ArrayAccess acc)
+        public BitRange VisitArrayAccess(ArrayAccess acc)
         {
             throw new NotImplementedException();
         }
 
-        public int VisitBinaryExpression(BinaryExpression binExp)
+        public BitRange VisitBinaryExpression(BinaryExpression binExp)
         {
-            return Math.Max(
-                binExp.Left.Accept(this),
-                binExp.Right.Accept(this));
+            return binExp.Left.Accept(this) | binExp.Right.Accept(this);
         }
 
-        public int VisitCast(Cast cast)
+        public BitRange VisitCast(Cast cast)
         {
-            int n = cast.Expression.Accept(this);
-            return Math.Min(n, cast.DataType.BitSize);
+            var n = cast.Expression.Accept(this);
+            return new BitRange(n.Lsb, Math.Min(n.Msb, cast.DataType.BitSize));
         }
 
-        public int VisitConditionOf(ConditionOf cof)
+        public BitRange VisitConditionOf(ConditionOf cof)
         {
             return cof.Expression.Accept(this);
         }
 
-        public int VisitConstant(Constant c)
+        public BitRange VisitConstant(Constant c)
         {
-            return 0;
+            return BitRange.Empty;
         }
 
-        public int VisitDepositBits(DepositBits d)
+        public BitRange VisitDepositBits(DepositBits d)
         {
-            int n = d.Source.Accept(this);
-            return Math.Max(n, d.InsertedBits.Accept(this));
+            // The bits being inserted into, d.Source, are "inert" 
+            var br = d.InsertedBits.Accept(this);
+            return new BitRange(br.Lsb + d.BitPosition, br.Msb + d.BitPosition);
         }
 
-        public int VisitDereference(Dereference deref)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int VisitFieldAccess(FieldAccess acc)
+        public BitRange VisitDereference(Dereference deref)
         {
             throw new NotImplementedException();
         }
 
-        public int VisitIdentifier(Identifier id)
-        {
-            return (int)id.Storage.BitSize;
-        }
-
-        public int VisitMemberPointerSelector(MemberPointerSelector mps)
+        public BitRange VisitFieldAccess(FieldAccess acc)
         {
             throw new NotImplementedException();
         }
 
-        public int VisitMemoryAccess(MemoryAccess access)
+        public BitRange VisitIdentifier(Identifier id)
+        {
+            return new BitRange(0, (int)id.Storage.BitSize);
+        }
+
+        public BitRange VisitMemberPointerSelector(MemberPointerSelector mps)
+        {
+            throw new NotImplementedException();
+        }
+
+        public BitRange VisitMemoryAccess(MemoryAccess access)
         {
             return access.EffectiveAddress.Accept(this);
         }
 
-        public int VisitMkSequence(MkSequence seq)
+        public BitRange VisitMkSequence(MkSequence seq)
         {
-            return Math.Max(seq.Head.Accept(this), seq.Tail.Accept(this));
+            return seq.Head.Accept(this) | seq.Tail.Accept(this);
         }
 
-        public int VisitOutArgument(OutArgument outArgument)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int VisitPhiFunction(PhiFunction phi)
+        public BitRange VisitOutArgument(OutArgument outArgument)
         {
             throw new NotImplementedException();
         }
 
-        public int VisitPointerAddition(PointerAddition pa)
+        public BitRange VisitPhiFunction(PhiFunction phi)
         {
             throw new NotImplementedException();
         }
 
-        public int VisitProcedureConstant(ProcedureConstant pc)
+        public BitRange VisitPointerAddition(PointerAddition pa)
         {
             throw new NotImplementedException();
         }
 
-        public int VisitScopeResolution(ScopeResolution scopeResolution)
+        public BitRange VisitProcedureConstant(ProcedureConstant pc)
         {
             throw new NotImplementedException();
         }
 
-        public int VisitSegmentedAccess(SegmentedAccess access)
+        public BitRange VisitScopeResolution(ScopeResolution scopeResolution)
+        {
+            throw new NotImplementedException();
+        }
+
+        public BitRange VisitSegmentedAccess(SegmentedAccess access)
         {
             var useBase = access.BasePointer.Accept(this);
             var useEa = access.EffectiveAddress.Accept(this);
-            return Math.Max(useBase, useEa);
+            return useBase | useEa;
         }
 
-        public int VisitSlice(Slice slice)
+        public BitRange VisitSlice(Slice slice)
         {
             throw new NotImplementedException();
         }
 
-        public int VisitTestCondition(TestCondition tc)
+        public BitRange VisitTestCondition(TestCondition tc)
         {
             throw new NotImplementedException();
         }
 
-        public int VisitUnaryExpression(UnaryExpression unary)
+        public BitRange VisitUnaryExpression(UnaryExpression unary)
         {
             return unary.Expression.Accept(this);
         }

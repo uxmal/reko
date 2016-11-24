@@ -1,5 +1,5 @@
 void fn0C00_0000(Register word16 ax, Register word16 bx, Register selector ds)
-// MayUse:  ax:16 bx:16 ds:16
+// MayUse:  ax:[0..15] bx:[0..15] ds:[0..15]
 // LiveOut:
 // Trashed: ax C O S Top Z
 // Preserved: ds sp

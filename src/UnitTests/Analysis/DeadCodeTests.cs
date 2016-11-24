@@ -95,7 +95,7 @@ namespace Reko.UnitTests.Analysis
             var sig = new FunctionType();
             var proc = new Procedure(name, m.Architecture.CreateFrame());
             var flow = new ProcedureFlow(proc);
-            flow.BitsUsed = uses.ToDictionary(u => u, u => (int)u.BitSize / 8);
+            flow.BitsUsed = uses.ToDictionary(u => u, u => new BitRange(0, (int)u.BitSize / 8));
             flow.Trashed = defs.ToHashSet();
             this.programDataFlow[proc] = flow;
             return proc;

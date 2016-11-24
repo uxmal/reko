@@ -1,6 +1,6 @@
 // void ProcedureBuilder(Register real32 r1)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse:  r1:32
+// MayUse:  r1:[0..31]
 // LiveOut:
 // Trashed: r2
 // Preserved:

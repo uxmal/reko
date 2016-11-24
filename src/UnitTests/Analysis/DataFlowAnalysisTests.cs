@@ -258,8 +258,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void DfaReg00011()
         {
             RunFileTest_x86_real("Fragments/regressions/r00011.asm", "Analysis/DfaReg00011.txt");

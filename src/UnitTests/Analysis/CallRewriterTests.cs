@@ -221,7 +221,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void CrwRegisterArgument()
         {
-            flow.BitsUsed.Add(Registers.eax, 32);
+            flow.BitsUsed.Add(Registers.eax, new BitRange(0, 32));
             crw.EnsureSignature(proc, flow);
             Assert.AreEqual("void foo(Register word32 eax)", proc.Signature.ToString(proc.Name));
         }

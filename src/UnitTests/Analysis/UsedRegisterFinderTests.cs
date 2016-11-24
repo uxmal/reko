@@ -126,7 +126,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void UrfRegisterArg()
         {
-            var sExp = "Used: [r1, 32]";
+            var sExp = "Used: [r1, [0..31]]";
             RunTest(sExp, m =>
             {
                 var r1 = m.Register("r1");
@@ -138,7 +138,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void UrfStackArg()
         {
-            var sExp = "Used: [Stack +0004, 32]";
+            var sExp = "Used: [Stack +0004, [0..31]]";
             RunTest(sExp, m =>
             {
                 var fp = m.Frame.FramePointer;
@@ -152,7 +152,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void UrfCast()
         {
-            var sExp = @"Used: [r1, 16]";
+            var sExp = @"Used: [r1, [0..15]]";
             RunTest(sExp, m =>
             {
                 var r1 = m.Reg32("r1", 1);
@@ -180,7 +180,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void UrfBranch()
         {
-            var sExp = @"Used: [r1, 32]";
+            var sExp = @"Used: [r1, [0..31]]";
             RunTest(sExp, m =>
             {
                 var r1 = m.Reg32("r1", 1);
@@ -198,7 +198,7 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void UrfSequence()
         {
-            var sExp = "Used: [r1, 32],[r2, 32]";
+            var sExp = "Used: [r1, [0..31]],[r2, [0..31]]";
 
             RunTest(sExp, m =>
             {

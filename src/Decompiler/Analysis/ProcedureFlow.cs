@@ -59,7 +59,7 @@ namespace Reko.Analysis
 		public uint grfLiveOut;
 
 		public FunctionType Signature;
-        public Dictionary<Storage, int> BitsUsed;
+        public Dictionary<Storage, BitRange> BitsUsed;
 
         // True if calling this procedure terminates the thread/process. This implies
         // that no code path reached the exit block without first terminating the process.
@@ -78,7 +78,7 @@ namespace Reko.Analysis
             LiveOut = new HashSet<Storage>();
 
             StackArguments = new Hashtable();
-            this.BitsUsed = new Dictionary<Storage, int>();
+            this.BitsUsed = new Dictionary<Storage, BitRange>();
         }
 
         [Conditional("DEBUG")]

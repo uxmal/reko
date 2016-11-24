@@ -461,7 +461,7 @@ level2_exit:
             #region Expected
 @"// Trashed   r1
 // Preserved r63
-// Used      (Stack +0004:32)
+// Used      (Stack +0004:[0..31])
 // main
 // Return size: 0
 void main(word32 dwArg04)
@@ -475,7 +475,7 @@ main_exit:
 ===
 // Trashed   
 // Preserved r63
-// Used      (r1:8)
+// Used      (r1:[0..7])
 // level1
 // Return size: 0
 void level1(word32 r1)

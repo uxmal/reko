@@ -1,5 +1,5 @@
 void fn0C00_0000(Register word16 di, Register selector ds)
-// MayUse:  di:16 ds:16
+// MayUse:  di:[0..15] ds:[0..15]
 // LiveOut:
 // Trashed: ax C O S Top Z
 // Preserved: di sp
@@ -35,7 +35,7 @@ l0C00_000E_thunk_fn0C00_000F:
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 void fn0C00_000F(Register word16 di, Register selector ds)
-// MayUse:  di:16 ds:16
+// MayUse:  di:[0..15] ds:[0..15]
 // LiveOut:
 // Trashed: Top
 // Preserved: sp
@@ -59,7 +59,7 @@ l0C00_000F:
 	// succ:  fn0C00_000F_exit
 fn0C00_000F_exit:
 Register word16 fn0C00_0014(Register word16 ax)
-// MayUse:  ax:16
+// MayUse:  ax:[0..15]
 // LiveOut: ax
 // Trashed: ax C di O S Top Z
 // Preserved: sp
