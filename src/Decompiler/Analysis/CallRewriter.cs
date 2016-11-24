@@ -367,7 +367,8 @@ namespace Reko.Analysis
                 return;
 
             // Find the returned identifier
-            var expRet = ssa.Procedure.ExitBlock.Statements
+            var exitBlock = ssa.Procedure.ExitBlock;
+            var expRet = exitBlock.Statements
                 .Select(s => s.Instruction)
                 .OfType<UseInstruction>()
                 .Select(u => new
@@ -384,12 +385,20 @@ namespace Reko.Analysis
             if (phi != null)
             {
                 // Multiple reaching definitions.
-                throw new NotImplementedException();
+                for (int i = 0; i < phi.Src.Arguments.Length; ++i)
+                {
+                    var pred = exitBlock.Pred[i];
+                    SetReturnExpression(
+                        pred, 
+                        ssa.Identifiers[(Identifier)phi.Src.Arguments[i]]);
+                }
+                // Delete the phi statement
+                ssa.DeleteStatement(sid.DefStatement);
             }
             else
             {
                 // Single reaching definition.
-                var block = ssa.Procedure.ExitBlock.Pred[0];
+                var block = exitBlock.Pred[0];
                 SetReturnExpression(block, sid);
             }
 
@@ -411,7 +420,6 @@ namespace Reko.Analysis
                     sid.Uses.Add(stm);
                 }
             }
-
         }
     }
 }

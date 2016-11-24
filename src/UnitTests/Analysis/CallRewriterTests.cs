@@ -401,5 +401,82 @@ CrwSinglePredecessorToExitBlock_exit:
             AssertExpected(sExp, sst.SsaState);
         }
 
+        [Test]
+        public void CrwManyPredecessorsToExitBlock()
+        {
+            var m = new ProcedureBuilder("CrwManyPredecessorsToExitBlock");
+            var eax = m.Frame.EnsureRegister(Registers.eax);
+
+            m.BranchIf(m.Ge0(eax), "m2Ge");
+
+            m.Label("m1Lt");
+            m.Assign(eax, -1);
+            m.Return();
+
+            m.Label("m2Ge");
+            m.BranchIf(m.Ne0(eax), "m4Gt");
+
+            m.Label("m3Eq");
+            m.Return();
+
+            m.Label("m4Gt");
+            m.Assign(eax, 1);
+            m.Return();
+
+            var flow = new ProgramDataFlow(program);
+            var sst = new SsaTransform(program, m.Procedure, new HashSet<Procedure>(), null, new ProgramDataFlow());
+            sst.Transform();
+            sst.AddUsesToExitBlock();
+            sst.SsaState.Procedure.Signature = FunctionType.Func(
+                new Identifier("", PrimitiveType.Word32, Registers.eax),
+                new Identifier("eax", PrimitiveType.Word32, Registers.eax));
+
+            var crw = new CallRewriter(this.platform, flow, new FakeDecompilerEventListener());
+            crw.RewriteReturns(sst.SsaState);
+
+            var sExp =
+            #region Expected 
+@"eax:eax
+    def:  def eax
+    uses: branch eax >= 0x00000000 m2Ge
+          branch eax != 0x00000000 m4Gt
+          return eax
+eax_2: orig: eax
+    def:  eax_2 = 0x00000001
+    uses: return eax_2
+eax_3: orig: eax
+    def:  eax_3 = 0xFFFFFFFF
+    uses: return eax_3
+eax_4: orig: eax
+// CrwManyPredecessorsToExitBlock
+// Return size: 0
+word32 CrwManyPredecessorsToExitBlock(word32 eax)
+CrwManyPredecessorsToExitBlock_entry:
+	def eax
+	// succ:  l1
+l1:
+	branch eax >= 0x00000000 m2Ge
+	// succ:  m1Lt m2Ge
+m1Lt:
+	eax_3 = 0xFFFFFFFF
+	return eax_3
+	// succ:  CrwManyPredecessorsToExitBlock_exit
+m2Ge:
+	branch eax != 0x00000000 m4Gt
+	// succ:  m3Eq m4Gt
+m3Eq:
+	return eax
+	// succ:  CrwManyPredecessorsToExitBlock_exit
+m4Gt:
+	eax_2 = 0x00000001
+	return eax_2
+	// succ:  CrwManyPredecessorsToExitBlock_exit
+CrwManyPredecessorsToExitBlock_exit:
+";
+            #endregion
+            AssertExpected(sExp, sst.SsaState);
+        }
+
+
     }
 }
