@@ -28,7 +28,7 @@ namespace Reko.Core
     /// <summary>
     /// Represents a bit range within a register as two shorts.
     /// </summary>
-    public struct BitRange : IComparable<BitRange>
+    public struct BitRange
     {
         public static readonly BitRange Empty = new BitRange(0, 0);
 
@@ -53,17 +53,19 @@ namespace Reko.Core
                 Math.Max(a.Msb, b.Msb));
         }
 
+        public static BitRange operator & (BitRange a, BitRange b)
+        {
+            return new BitRange(
+                Math.Max(a.Lsb, b.Lsb),
+                Math.Min(a.Msb, b.Msb));
+        }
+
         public override string ToString()
         {
             if (IsEmpty)
                 return "[]";
             else
                 return string.Format("[{0}..{1}]", Lsb, Msb - 1);
-        }
-
-        public int CompareTo(BitRange other)
-        {
-            throw new NotImplementedException();
         }
     }
 }

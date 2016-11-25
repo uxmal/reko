@@ -94,6 +94,11 @@ namespace Reko.Core
             throw new NotImplementedException(string.Format("Exceeds not implemented for {0}.", that.GetType().Name));
         }
 
+        public virtual BitRange GetBitRange()
+        {
+            return new BitRange(0, (int)BitSize);
+        }
+
         public virtual SerializedKind Serialize()
         {
             throw new NotImplementedException(this.GetType().Name + ".Serialize not implemented.");
@@ -544,6 +549,13 @@ namespace Reko.Core
         public override int GetHashCode()
         {
             return (int)Domain * 17 ^ BitAddress.GetHashCode() ^ BitSize.GetHashCode();
+        }
+
+        public override BitRange GetBitRange()
+        {
+            int bitOffset = (int)BitAddress;
+            int bitSize = (int)BitSize;
+            return new BitRange(bitOffset, bitOffset + bitSize);
         }
 
         /// <summary>

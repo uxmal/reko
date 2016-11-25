@@ -46,15 +46,18 @@ namespace Reko.Core
         IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader);
 
         /// <summary>
-        /// Creates an instance of a ProcessorState appropriate for this processor.
+        /// Creates an instance of a ProcessorState appropriate for this
+        /// processor.
         /// </summary>
         /// <returns></returns>
 		ProcessorState CreateProcessorState();
 
         /// <summary>
-        /// Returns a stream of machine-independent instructions, which it generates by successively disassembling
-        /// machine-specific instructions and rewriting them into one or more machine-independent RtlInstructions codes. These are then 
-        /// returned as clusters of RtlInstructions.
+        /// Returns a stream of machine-independent instructions, which it
+        /// generates by successively disassembling machine-specific
+        /// instructions and rewriting them into one or more machine-
+        /// independent RtlInstructions codes. These are then returned as
+        /// clusters of RtlInstructions.
         /// </summary>
         IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host);
 
@@ -78,7 +81,8 @@ namespace Reko.Core
         Frame CreateFrame();
 
         /// <summary>
-        /// Creates an <see cref="ImageReader" /> with the preferred endianness of the processor.
+        /// Creates an <see cref="ImageReader" /> with the preferred
+        /// endianness of the processor.
         /// </summary>
         /// <param name="img">Program image to read</param>
         /// <param name="addr">Address at which to start</param>
@@ -87,7 +91,8 @@ namespace Reko.Core
 
         /// <summary>
         /// Creates an <see cref="ImageReader" /> with the preferred 
-        /// endianness of the processor, limited to the specified address range.
+        /// endianness of the processor, limited to the specified address
+        /// range.
         /// </summary>
         /// <param name="img">Program image to read</param>
         /// <param name="addr">Address at which to start</param>
@@ -176,7 +181,8 @@ namespace Reko.Core
         uint CarryFlagMask { get; }                         // Used when building large adds/subs when carry flag is used.
 
         /// <summary>
-        /// Parses an address according to the preferred base of the architecture.
+        /// Parses an address according to the preferred base of the 
+        /// architecture.
         /// </summary>
         /// <param name="txtAddr"></param>
         /// <param name="addr"></param>
@@ -195,7 +201,8 @@ namespace Reko.Core
     }
 
     /// <summary>
-    /// Normalize enumeration controls the operation of instruction comparer. 
+    /// Normalize enumeration controls the operation of instruction
+    /// comparer. 
     /// </summary>
     [Flags]
     public enum Normalize

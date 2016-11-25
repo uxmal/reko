@@ -792,7 +792,7 @@ namespace Reko.Analysis
 #endif
         }
 
-        public class TransformerFactory : StorageVisitor<SsaIdentifierTransformer>
+        public class TransformerFactory : StorageVisitor<IdentifierTransformer>
         {
             private SsaTransform transform;
             private Identifier id;
@@ -803,65 +803,65 @@ namespace Reko.Analysis
                 this.transform = transform;
             }
 
-            public SsaIdentifierTransformer Create(Identifier id, Statement stm)
+            public IdentifierTransformer Create(Identifier id, Statement stm)
             {
                 this.id = id;
                 this.stm = stm;
                 return id.Storage.Accept(this);
             }
 
-            public SsaIdentifierTransformer VisitFlagGroupStorage(FlagGroupStorage grf)
+            public IdentifierTransformer VisitFlagGroupStorage(FlagGroupStorage grf)
             {
                 return new FlagGroupTransformer(id, grf, stm, transform);
             }
 
-            public SsaIdentifierTransformer VisitFlagRegister(FlagRegister freg)
+            public IdentifierTransformer VisitFlagRegister(FlagRegister freg)
             {
                 return new RegisterTransformer(id, stm, transform);
             }
 
-            public SsaIdentifierTransformer VisitFpuStackStorage(FpuStackStorage fpu)
+            public IdentifierTransformer VisitFpuStackStorage(FpuStackStorage fpu)
             {
                 return new FpuStackTransformer(id, fpu, stm, transform);
             }
 
-            public SsaIdentifierTransformer VisitMemoryStorage(MemoryStorage global)
+            public IdentifierTransformer VisitMemoryStorage(MemoryStorage global)
             {
                 return new RegisterTransformer(id, stm, transform);
             }
 
-            public SsaIdentifierTransformer VisitOutArgumentStorage(OutArgumentStorage arg)
+            public IdentifierTransformer VisitOutArgumentStorage(OutArgumentStorage arg)
             {
                 throw new NotImplementedException();
             }
 
-            public SsaIdentifierTransformer VisitRegisterStorage(RegisterStorage reg)
+            public IdentifierTransformer VisitRegisterStorage(RegisterStorage reg)
             {
                 return new RegisterTransformer(id, stm, transform);
             }
 
-            public SsaIdentifierTransformer VisitSequenceStorage(SequenceStorage seq)
+            public IdentifierTransformer VisitSequenceStorage(SequenceStorage seq)
             {
                 return new SequenceTransformer(id, seq, stm, transform);
             }
 
-            public SsaIdentifierTransformer VisitStackArgumentStorage(StackArgumentStorage stack)
+            public IdentifierTransformer VisitStackArgumentStorage(StackArgumentStorage stack)
             {
                 return new StackTransformer(id, stack.StackOffset, stm, transform);
             }
 
-            public SsaIdentifierTransformer VisitStackLocalStorage(StackLocalStorage local)
+            public IdentifierTransformer VisitStackLocalStorage(StackLocalStorage local)
             {
                 return new StackTransformer(id, local.StackOffset, stm, transform);
             }
 
-            public SsaIdentifierTransformer VisitTemporaryStorage(TemporaryStorage temp)
+            public IdentifierTransformer VisitTemporaryStorage(TemporaryStorage temp)
             {
                 return new RegisterTransformer(id, stm, transform);
             }
         }
 
-        public abstract class SsaIdentifierTransformer
+        public abstract class IdentifierTransformer
         {
             protected Identifier id;
             protected readonly Statement stm;
@@ -869,7 +869,7 @@ namespace Reko.Analysis
             protected readonly SsaIdentifierCollection ssaIds;
             protected readonly IDictionary<Block, SsaBlockState> blockstates;
 
-            public SsaIdentifierTransformer(Identifier id, Statement stm, SsaTransform outer)
+            public IdentifierTransformer(Identifier id, Statement stm, SsaTransform outer)
             {
                 this.id = id;
                 this.stm = stm;
@@ -902,8 +902,7 @@ namespace Reko.Analysis
             public virtual Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
             {
                 AliasState prevState;
-                bs.currentDef.TryGetValue(id.Storage.Domain, out prevState);
-                if (prevState != null && 
+                if (bs.currentDef.TryGetValue(id.Storage.Domain, out prevState) &&
                     id.Storage.Covers(prevState.SsaId.Identifier.Storage))
                 {
                     prevState = null;
@@ -995,16 +994,16 @@ namespace Reko.Analysis
             /// <param name="idTo"></param>
             /// <param name="sidFrom"></param>
             /// <returns></returns>
-            protected SsaIdentifier MaybeGenerateAliasStatement(AliasState alias)
+            protected SsaIdentifier MaybeGenerateAliasStatement(AliasState aliasFrom)
             {
-                var b = alias.SsaId.DefStatement.Block;
-                var sidFrom = alias.SsaId;
+                var b = aliasFrom.SsaId.DefStatement.Block;
+                var sidFrom = aliasFrom.SsaId;
                 var stgTo = id.Storage;
-                Storage stgFrom = sidFrom.Identifier.Storage;
+                var stgFrom = sidFrom.Identifier.Storage;
                 if (stgFrom == stgTo)
                 {
-                    alias.Aliases[id] = sidFrom;
-                    return alias.SsaId;
+                    aliasFrom.Aliases[id] = sidFrom;
+                    return aliasFrom.SsaId;
                 }
 
                 Expression e = null;
@@ -1016,20 +1015,35 @@ namespace Reko.Analysis
                         e = new Slice(id.DataType, sidFrom.Identifier, (uint)offset);
                     else
                         e = new Cast(id.DataType, sidFrom.Identifier);
-                    sidUse = alias.SsaId;
+                    sidUse = aliasFrom.SsaId;
                 }
                 else
                 {
-                    sidUse = ReadVariableRecursive(blockstates[alias.SsaId.DefStatement.Block], true);
-                    e = new DepositBits(sidUse.Identifier, alias.SsaId.Identifier, (int)stgFrom.BitAddress);
+                    if (aliasFrom.PrevState != null)
+                    {
+                        sidUse = MaybeGenerateAliasStatement(aliasFrom.PrevState);
+                    }
+                    else
+                    {
+                        sidUse = ReadVariableRecursive(blockstates[aliasFrom.SsaId.DefStatement.Block], true);
+                    }
+                    e = new DepositBits(sidUse.Identifier, aliasFrom.SsaId.Identifier, (int)stgFrom.BitAddress);
                 }
                 var ass = new AliasAssignment(id, e);
                 var sidAlias = InsertAfterDefinition(sidFrom.DefStatement, ass);
                 sidUse.Uses.Add(sidAlias.DefStatement);
                 if (e is DepositBits)
                     sidFrom.Uses.Add(sidAlias.DefStatement);
-                alias.Aliases[id] = sidAlias;
+                aliasFrom.Aliases[id] = sidAlias;
                 return sidAlias;
+            }
+
+            private BitRange GetBitRange(Storage stg)
+            {
+                var reg = (RegisterStorage)stg;
+                return new BitRange(
+                    (int)reg.BitAddress, 
+                    (int)(reg.BitAddress + reg.BitSize));
             }
 
             /// <summary>
@@ -1189,11 +1203,14 @@ namespace Reko.Analysis
             }
         }
 
-        public class RegisterTransformer : SsaIdentifierTransformer
+        public class RegisterTransformer : IdentifierTransformer
         {
-            public RegisterTransformer(Identifier id, Statement stm, SsaTransform outer)
+            private BitRange liveBits;
+
+            public RegisterTransformer(Identifier id,  Statement stm, SsaTransform outer)
                 : base(id, stm, outer)
             {
+                this.liveBits = id.Storage.GetBitRange();
             }
 
             public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs, bool generateAlias)
@@ -1213,7 +1230,7 @@ namespace Reko.Analysis
                         return ssaId;
                     }
 
-                    // Does ssaId intersect the probed value?
+                    // Does ssaId cover the probed value?
                     if (a.SsaId.Identifier.Storage.OverlapsWith(id.Storage))
                     {
                         if (generateAlias)
@@ -1250,7 +1267,7 @@ namespace Reko.Analysis
             }
         }
 
-        public class FlagGroupTransformer : SsaIdentifierTransformer
+        public class FlagGroupTransformer : IdentifierTransformer
         {
             private uint flagMask;
             private FlagGroupStorage flagGroup;
@@ -1426,7 +1443,7 @@ namespace Reko.Analysis
             }
         }
 
-        public class StackTransformer : SsaIdentifierTransformer
+        public class StackTransformer : IdentifierTransformer
         {
             private int stackOffset;
 
@@ -1475,7 +1492,7 @@ namespace Reko.Analysis
             }
         }
 
-        public class SequenceTransformer : SsaIdentifierTransformer
+        public class SequenceTransformer : IdentifierTransformer
         {
             private SequenceStorage seq;
 
@@ -1590,7 +1607,7 @@ namespace Reko.Analysis
             }
         }
 
-        public class FpuStackTransformer : SsaIdentifierTransformer
+        public class FpuStackTransformer : IdentifierTransformer
         {
             private FpuStackStorage fpu;
 

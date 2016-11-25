@@ -1773,15 +1773,16 @@ Mem3: orig: Mem0
     uses: es_cx_4 = Mem3[0x00001238:word32]
 es_cx_4: orig: es_cx
     def:  es_cx_4 = Mem3[0x00001238:word32]
-    uses: es_cx_6 = DPB(es_cx_4, 0x2D, 0) (alias)
+    uses: cx_6 = (word16) es_cx_4 (alias)
           es_8 = SLICE(es_cx_4, word16, 16) (alias)
 cl_5: orig: cl
     def:  cl_5 = 0x2D
-es_cx_6: orig: es_cx
-    def:  es_cx_6 = DPB(es_cx_4, 0x2D, 0) (alias)
-    uses: cx_7 = (word16) es_cx_6 (alias)
+    uses: cx_7 = DPB(cx_6, cl_5, 0) (alias)
+cx_6: orig: cx
+    def:  cx_6 = (word16) es_cx_4 (alias)
+    uses: cx_7 = DPB(cx_6, cl_5, 0) (alias)
 cx_7: orig: cx
-    def:  cx_7 = (word16) es_cx_6 (alias)
+    def:  cx_7 = DPB(cx_6, cl_5, 0) (alias)
     uses: use cx_7
 es_8: orig: es
     def:  es_8 = SLICE(es_cx_4, word16, 16) (alias)
@@ -1796,10 +1797,10 @@ m0:
 	cx_2 = Mem0[0x1234:word16]
 	Mem3[0x00001236:word16] = cx_2
 	es_cx_4 = Mem3[0x00001238:word32]
+	cx_6 = (word16) es_cx_4 (alias)
 	es_8 = SLICE(es_cx_4, word16, 16) (alias)
 	cl_5 = 0x2D
-	es_cx_6 = DPB(es_cx_4, 0x2D, 0) (alias)
-	cx_7 = (word16) es_cx_6 (alias)
+	cx_7 = DPB(cx_6, cl_5, 0) (alias)
 	return
 	// succ:  proc1_exit
 proc1_exit:
@@ -2591,6 +2592,32 @@ proc1_exit:
                 m.Assign(al, m.LoadB(m.Word16(0x1234)));
                 m.Assign(ah, 3);
                 m.Store(m.Word16(0x1236), m.UMul(al, ah));
+                m.Return();
+            });
+        }
+
+        [Test]
+        public void SsaHiwordLoword_SeparateBlocks()
+        {
+            var sExp =
+            #region Expected
+                "";
+            #endregion
+
+            RunTest(sExp, m =>
+            {
+                var al = m.Frame.EnsureRegister(new RegisterStorage("al", 0, 0, PrimitiveType.Byte));
+                var ah = m.Frame.EnsureRegister(new RegisterStorage("ah", 0, 8, PrimitiveType.Byte));
+                var ax = m.Frame.EnsureRegister(new RegisterStorage("ax", 0, 0, PrimitiveType.Word16));
+
+                m.Assign(al, m.LoadB(m.Word16(0x1234)));
+                m.BranchIf(m.Uge(al, 4), "m2_out_of_bounds");
+
+                m.Label("m1_process");
+                m.Assign(ah, 0);                // zero-extend unsigned byte in al
+                m.Store(m.Word32(0x1236), ax);
+
+                m.Label("m2_out_of_bounds");
                 m.Return();
             });
         }

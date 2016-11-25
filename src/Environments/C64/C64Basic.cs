@@ -121,11 +121,6 @@ namespace Reko.Environments.C64
             return new RegisterStorage[0];
         }
 
-        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
-        {
-            throw new NotImplementedException();
-        }
-
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
             throw new NotImplementedException();
