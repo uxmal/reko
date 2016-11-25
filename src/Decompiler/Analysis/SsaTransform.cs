@@ -864,6 +864,7 @@ namespace Reko.Analysis
         public abstract class IdentifierTransformer
         {
             protected Identifier id;
+            protected BitRange liveBits;
             protected readonly Statement stm;
             protected readonly SsaTransform outer;
             protected readonly SsaIdentifierCollection ssaIds;
@@ -872,6 +873,7 @@ namespace Reko.Analysis
             public IdentifierTransformer(Identifier id, Statement stm, SsaTransform outer)
             {
                 this.id = id;
+                this.liveBits = id.Storage.GetBitRange();
                 this.stm = stm;
                 this.ssaIds = outer.ssa.Identifiers;
                 this.blockstates = outer.blockstates;
@@ -1025,6 +1027,7 @@ namespace Reko.Analysis
                     }
                     else
                     {
+                        this.liveBits = this.liveBits - stgFrom.GetBitRange();
                         sidUse = ReadVariableRecursive(blockstates[aliasFrom.SsaId.DefStatement.Block], true);
                     }
                     e = new DepositBits(sidUse.Identifier, aliasFrom.SsaId.Identifier, (int)stgFrom.BitAddress);
@@ -1205,12 +1208,9 @@ namespace Reko.Analysis
 
         public class RegisterTransformer : IdentifierTransformer
         {
-            private BitRange liveBits;
-
             public RegisterTransformer(Identifier id,  Statement stm, SsaTransform outer)
                 : base(id, stm, outer)
             {
-                this.liveBits = id.Storage.GetBitRange();
             }
 
             public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs, bool generateAlias)
