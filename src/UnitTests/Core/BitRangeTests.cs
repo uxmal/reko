@@ -38,5 +38,32 @@ namespace Reko.UnitTests.Core
             var c = a | b;
             Assert.AreEqual(new BitRange(0, 16), c);
         }
+
+        [Test]
+        public void Bitr_Difference_LowOverlap()
+        {
+            var a = new BitRange(0, 16);
+            var b = new BitRange(0, 8);
+            var c = a - b;
+            Assert.AreEqual(new BitRange(8, 16), c);
+        }
+
+        [Test]
+        public void Bitr_Difference_HighOverlap()
+        {
+            var a = new BitRange(0, 16);
+            var b = new BitRange(8, 16);
+            var c = a - b;
+            Assert.AreEqual(new BitRange(0, 8), c);
+        }
+
+        [Test]
+        public void Bitr_Difference_Contains()
+        {
+            var a = new BitRange(0, 32);
+            var b = new BitRange(8, 16);
+            var c = a - b;
+            Assert.AreEqual(new BitRange(0, 32), c);
+        }
     }
 }

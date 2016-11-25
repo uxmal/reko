@@ -60,6 +60,23 @@ namespace Reko.Core
                 Math.Min(a.Msb, b.Msb));
         }
 
+
+        public static BitRange operator -(BitRange a, BitRange b)
+        {
+            var d = a & b;
+            if (d.IsEmpty)
+                return a;
+            if (d.Lsb == a.Lsb)
+            {
+                return new BitRange(d.Msb, a.Msb);
+            }
+            else if (d.Msb == a.Msb)
+            {
+                return new BitRange(a.Lsb, d.Lsb);
+            }
+            return a;
+        }
+
         public override string ToString()
         {
             if (IsEmpty)
