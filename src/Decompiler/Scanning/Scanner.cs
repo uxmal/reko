@@ -479,10 +479,9 @@ namespace Reko.Scanning
             {
                 Address addr = sym.Address;
                 Procedure proc;
-                ExternalProcedure extProc;
                 if (program.Procedures.TryGetValue(addr, out proc))
                     return; // Already scanned. Do nothing.
-                if (TryGetNoDecompiledProcedure(addr, out extProc))
+                if (IsNoDecompiledProcedure(addr))
                     return;
 
                 proc = EnsureProcedure(addr, sym.Name);
@@ -604,11 +603,27 @@ namespace Reko.Scanning
             program.Platform.InjectProcedureEntryStatements(proc, addr, bb);
         }
 
+        private bool TryGetNoDecompiledProcedure(Address addr, out Procedure_v1 sProc)
+        {
+            if (!program.User.Procedures.TryGetValue(addr, out sProc) ||
+                sProc.Decompile)
+            {
+                sProc = null;
+                return false;
+            }
+            return true;
+        }
+
+        private bool IsNoDecompiledProcedure(Address addr)
+        {
+            Procedure_v1 sProc;
+            return TryGetNoDecompiledProcedure(addr, out sProc);
+        }
+
         private bool TryGetNoDecompiledProcedure(Address addr, out ExternalProcedure ep)
         {
             Procedure_v1 sProc;
-            if (!program.User.Procedures.TryGetValue(addr, out sProc) ||
-                sProc.Decompile)
+            if (!TryGetNoDecompiledProcedure(addr, out sProc))
             {
                 ep = null;
                 return false;
