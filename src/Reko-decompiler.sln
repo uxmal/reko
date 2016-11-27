@@ -326,6 +326,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RT11", "Environments\RT11\R
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xtensa", "Arch\Xtensa\Xtensa.csproj", "{BC7D4AD1-795F-4AEC-823C-813E65C5557A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RiscV", "Arch\RiscV\RiscV.csproj", "{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET
@@ -1844,6 +1846,36 @@ Global
 		{BC7D4AD1-795F-4AEC-823C-813E65C5557A}.TravisRelease|Win32.Build.0 = Release|Any CPU
 		{BC7D4AD1-795F-4AEC-823C-813E65C5557A}.TravisRelease|x86.ActiveCfg = Release|Any CPU
 		{BC7D4AD1-795F-4AEC-823C-813E65C5557A}.TravisRelease|x86.Build.0 = Release|Any CPU
+		{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}.Debug|.NET.Build.0 = Debug|Any CPU
+		{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}.Debug|Win32.Build.0 = Debug|Any CPU
+		{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}.Debug|x86.Build.0 = Debug|Any CPU
+		{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}.Release|.NET.ActiveCfg = Release|Any CPU
+		{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}.Release|.NET.Build.0 = Release|Any CPU
+		{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}.Release|Win32.ActiveCfg = Release|Any CPU
+		{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}.Release|Win32.Build.0 = Release|Any CPU
+		{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}.Release|x86.ActiveCfg = Release|Any CPU
+		{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}.Release|x86.Build.0 = Release|Any CPU
+		{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}.TravisRelease|.NET.ActiveCfg = Release|Any CPU
+		{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}.TravisRelease|.NET.Build.0 = Release|Any CPU
+		{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}.TravisRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}.TravisRelease|Any CPU.Build.0 = Release|Any CPU
+		{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}.TravisRelease|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}.TravisRelease|Mixed Platforms.Build.0 = Release|Any CPU
+		{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}.TravisRelease|Win32.ActiveCfg = Release|Any CPU
+		{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}.TravisRelease|Win32.Build.0 = Release|Any CPU
+		{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}.TravisRelease|x86.ActiveCfg = Release|Any CPU
+		{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D}.TravisRelease|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1905,6 +1937,7 @@ Global
 		{C278CA2F-7D7C-47C3-B560-7BC63E1FAD96} = {D35CD07C-C6BE-467D-B50D-EE9EDCC74D4E}
 		{697ACCC1-BA7B-4B34-BCA3-F82113843F40} = {E6A2E818-3AB9-47FC-9266-4E72ECBB13F4}
 		{BC7D4AD1-795F-4AEC-823C-813E65C5557A} = {18994109-C4D5-49F9-86E0-3B5B1046C08E}
+		{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D} = {18994109-C4D5-49F9-86E0-3B5B1046C08E}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Drivers\MonoDecompiler\MonoDecompiler.csproj

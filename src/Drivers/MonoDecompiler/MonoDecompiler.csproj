@@ -179,10 +179,11 @@
     <Architectures Include="$(ProjectDir)..\..\Arch\Mos6502\$(OutDir)Reko.Arch.Mos6502.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Pdp11\$(OutDir)Reko.Arch.Pdp11.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\PowerPC\$(OutDir)Reko.Arch.PowerPC.*" />
+    <Architectures Include="$(ProjectDir)..\..\Arch\RiscV\$(OutDir)Reko.Arch.RiscV.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Sparc\$(OutDir)Reko.Arch.Sparc.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Vax\$(OutDir)Reko.Arch.Vax.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\X86\$(OutDir)Reko.Arch.X86.*" />
-    <Architectures Include="$(SolutionDir)..\..\Arch\Xtensa\$(OutDir)Reko.Arch.Xtensa.*" />
+    <Architectures Include="$(ProjectDir)..\..\Arch\Xtensa\$(OutDir)Reko.Arch.Xtensa.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\X86.Design\$(OutDir)Reko.Arch.X86.Design.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Z80\$(OutDir)Reko.Arch.Z80.*" />
     <ImageLoaders Include="$(ProjectDir)..\..\ImageLoaders\MzExe\$(OutDir)Reko.ImageLoaders.MzExe.*" />

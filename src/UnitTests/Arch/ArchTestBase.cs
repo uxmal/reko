@@ -153,9 +153,9 @@ namespace Reko.UnitTests.Arch
                     break;
                 }
             }
-            if (cBits != Architecture.InstructionBitSize)
+            if (cBits == 0 || cBits % Architecture.InstructionBitSize != 0)
                 throw new ArgumentException(
-                    string.Format("Bit pattern didn't contain exactly {0} binary digits, but {1}.", Architecture.InstructionBitSize, cBits),
+                    string.Format("Bit pattern didn't contain exactly a multiple of {0} binary digits, but {1}.", Architecture.InstructionBitSize, cBits),
                     "bitPattern");
             return instr;
         }
