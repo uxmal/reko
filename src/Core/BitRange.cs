@@ -77,6 +77,16 @@ namespace Reko.Core
             return a;
         }
 
+        public static bool operator ==(BitRange a, BitRange b)
+        {
+            return a.Lsb == b.Lsb && a.Msb == b.Msb;
+        }
+
+        public static bool operator !=(BitRange a, BitRange b)
+        {
+            return a.Lsb != b.Lsb || a.Msb != b.Msb;
+        }
+
         public override string ToString()
         {
             if (IsEmpty)

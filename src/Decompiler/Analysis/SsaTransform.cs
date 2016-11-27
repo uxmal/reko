@@ -1021,16 +1021,23 @@ namespace Reko.Analysis
                 }
                 else
                 {
+                    var brFrom = stgFrom.GetBitRange();
                     if (aliasFrom.PrevState != null)
                     {
                         sidUse = MaybeGenerateAliasStatement(aliasFrom.PrevState);
+                        e = new DepositBits(sidUse.Identifier, aliasFrom.SsaId.Identifier, (int)stgFrom.BitAddress);
                     }
-                    else
+                    //else if (brFrom == liveBits)
+                    //{
+                    //    e = new Cast(id.DataType, aliasFrom.SsaId.Identifier);
+                    //    sidUse = aliasFrom.SsaId;
+                    //}
+                    else 
                     {
                         this.liveBits = this.liveBits - stgFrom.GetBitRange();
                         sidUse = ReadVariableRecursive(blockstates[aliasFrom.SsaId.DefStatement.Block], true);
+                        e = new DepositBits(sidUse.Identifier, aliasFrom.SsaId.Identifier, (int)stgFrom.BitAddress);
                     }
-                    e = new DepositBits(sidUse.Identifier, aliasFrom.SsaId.Identifier, (int)stgFrom.BitAddress);
                 }
                 var ass = new AliasAssignment(id, e);
                 var sidAlias = InsertAfterDefinition(sidFrom.DefStatement, ass);

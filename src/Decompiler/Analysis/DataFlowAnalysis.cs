@@ -177,7 +177,8 @@ namespace Reko.Analysis
         }
 
         /// <summary>
-        /// Remove any Use instruction that uses instructions in the 
+        /// Remove any Use instruction that uses identifiers
+        /// that are marked as preserved.
         /// </summary>
         /// <param name="ssa"></param>
         private void RemovePreservedUseInstructions(SsaState ssa)

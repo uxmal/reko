@@ -2595,32 +2595,5 @@ proc1_exit:
                 m.Return();
             });
         }
-
-        [Test]
-        public void SsaHiwordLoword_SeparateBlocks()
-        {
-            var sExp =
-            #region Expected
-                "";
-            #endregion
-
-            RunTest(sExp, m =>
-            {
-                var al = m.Frame.EnsureRegister(new RegisterStorage("al", 0, 0, PrimitiveType.Byte));
-                var ah = m.Frame.EnsureRegister(new RegisterStorage("ah", 0, 8, PrimitiveType.Byte));
-                var ax = m.Frame.EnsureRegister(new RegisterStorage("ax", 0, 0, PrimitiveType.Word16));
-
-                m.Assign(al, m.LoadB(m.Word16(0x1234)));
-                m.BranchIf(m.Uge(al, 4), "m2_out_of_bounds");
-
-                m.Label("m1_process");
-                m.Assign(ah, 0);                // zero-extend unsigned byte in al
-                m.Store(m.Word32(0x1236), ax);
-
-                m.Label("m2_out_of_bounds");
-                m.Return();
-            });
-        }
     }
-
 }
