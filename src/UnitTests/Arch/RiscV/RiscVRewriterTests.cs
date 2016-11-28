@@ -108,5 +108,32 @@ namespace Reko.UnitTests.Arch.RiscV
                 "0|T--|0000000000010000(4): 1 instructions",
                 "1|T--|call 000000000000F1F4 (0)");
         }
+
+        [Test]
+        public void RiscV_rw_jalr_zero()
+        {
+            Rewrite(0x00078067); // jalr zero, a5, 0
+            AssertCode(
+                "0|T--|0000000000010000(4): 1 instructions",
+                "1|T--|goto a5");
+        }
+
+        [Test]
+        public void RiscV_rw_jalr_zero_ra()
+        {
+            Rewrite(0x00008067); // jalr zero,ra,0
+            AssertCode(
+                "0|T--|0000000000010000(4): 1 instructions",
+                "1|T--|return (0,0)");
+        }
+
+        [Test]
+        public void RiscV_rw_jalr_ra()
+        {
+            Rewrite(0x003780E7);    // jalr ra,a5,0
+            AssertCode(
+                "0|T--|0000000000010000(4): 1 instructions",
+                "1|T--|call a5 + 3 (0)");
+        }
     }
 }

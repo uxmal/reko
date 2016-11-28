@@ -70,6 +70,7 @@ namespace Reko.Arch.RiscV
                 case Opcode.andi: RewriteAnd(); break;
                 case Opcode.auipc: RewriteAuipc(); break;
                 case Opcode.jal: RewriteJal(); break;
+                case Opcode.jalr: RewriteJalr(); break;
                 case Opcode.lb: RewriteLoad(PrimitiveType.Byte); break;
                 case Opcode.ld: RewriteLoad(PrimitiveType.Word64); break;
                 }
@@ -106,7 +107,6 @@ namespace Reko.Arch.RiscV
                 return addrop.Address;
             }
             throw new NotImplementedException();
-
         }
     }
 }

@@ -42,7 +42,6 @@ namespace Reko.Arch.RiscV
         {
             var continuation = ((RegisterOperand)instr.op1).Register;
             var dst = RewriteOp(instr.op2);
-            rtlc.Class = RtlClass.Transfer;
             if (continuation.Number == 0)
             {
                 m.Goto(dst);
@@ -50,6 +49,40 @@ namespace Reko.Arch.RiscV
             else
             {
                 m.Call(dst, 0);
+            }
+        }
+
+        private void RewriteJalr()
+        {
+            var continuation = ((RegisterOperand)instr.op1).Register;
+            var rDst = ((RegisterOperand)instr.op2).Register;
+            var dst = RewriteOp(instr.op2);
+            var off = RewriteOp(instr.op3);
+            rtlc.Class = RtlClass.Transfer;
+            if (!off.IsZero)
+            {
+                dst = m.IAdd(dst, off);
+            }
+            if (continuation.Number == 0)       // 'zero' 
+            {
+                if (rDst.Number == 1 && off.IsZero)
+                {
+                    m.Return(0, 0);
+                }
+                else
+                {
+                    m.Goto(dst);
+                }
+            }
+            else if (continuation.Number == 1)     // 'r1'
+            {
+                m.Call(dst, 0);
+            } 
+            else 
+            {
+                throw new AddressCorrelatedException(
+                    instr.Address,
+                    "Rewriting of {0} not implemented.", instr);
             }
         }
     }
