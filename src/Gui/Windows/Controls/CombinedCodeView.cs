@@ -48,6 +48,7 @@ namespace Reko.Gui.Windows.Controls
 
         public MixedCodeDataControl MixedCodeDataView { get { return this.mixedCodeDataControl; } }
         public TextView CodeView { get { return this.codeTextView; } }
+        public Timer PreviewTimer { get { return this.previewTimer; } }
 
         public Address CurrentAddress
         {
