@@ -42,6 +42,7 @@ namespace Reko.Arch.RiscV
         {
             var continuation = ((RegisterOperand)instr.op1).Register;
             var dst = RewriteOp(instr.op2);
+            rtlc.Class = RtlClass.Transfer;
             if (continuation.Number == 0)
             {
                 m.Goto(dst);
@@ -80,9 +81,10 @@ namespace Reko.Arch.RiscV
             } 
             else 
             {
-                throw new AddressCorrelatedException(
-                    instr.Address,
-                    "Rewriting of {0} not implemented.", instr);
+                m.Assign(
+                    RewriteOp(instr.op1),
+                    instr.Address + instr.Length);
+                m.Goto(dst, 0);
             }
         }
     }
