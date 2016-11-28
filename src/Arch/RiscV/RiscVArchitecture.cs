@@ -70,6 +70,7 @@ namespace Reko.Arch.RiscV
                         0,
                         PrimitiveType.Word64)))
                 .ToArray();
+            this.StackRegister = regs[2];       // sp
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)

@@ -181,7 +181,8 @@ namespace Reko.Arch.RiscV
 
         private static ulong sextract64(ulong value, int start, int length)
         {
-            return (ulong)((long)(value << (64 - length - start))) >> (64 - length);
+            long n = ((long)(value << (64 - length - start))) >> (64 - length);
+            return (ulong)n;
         }
 
         private AddressOperand GetBranchTarget(uint wInstr)

@@ -69,6 +69,7 @@ namespace Reko.Arch.RiscV
                 case Opcode.addi: RewriteAdd(); break;
                 case Opcode.andi: RewriteAnd(); break;
                 case Opcode.auipc: RewriteAuipc(); break;
+                case Opcode.jal: RewriteJal(); break;
                 case Opcode.lb: RewriteLoad(PrimitiveType.Byte); break;
                 case Opcode.ld: RewriteLoad(PrimitiveType.Word64); break;
                 }

@@ -90,5 +90,23 @@ namespace Reko.UnitTests.Arch.RiscV
                "0|L--|0000000000010000(4): 1 instructions",
                "1|L--|gp = Mem0[sp + -1936:byte]");
         }
+
+        [Test]
+        public void RiscV_rw_jal_zero()
+        {
+            Rewrite(0x9F4FF06Fu);
+            AssertCode(
+                "0|T--|0000000000010000(4): 1 instructions",
+                "1|T--|goto 000000000000F1F4");
+        }
+
+        [Test]
+        public void RiscV_rw_jal_not_zero()
+        {
+            Rewrite(0x9F4FF0EFu);
+            AssertCode(
+                "0|T--|0000000000010000(4): 1 instructions",
+                "1|T--|call 000000000000F1F4 (0)");
+        }
     }
 }

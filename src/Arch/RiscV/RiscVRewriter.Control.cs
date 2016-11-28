@@ -18,7 +18,9 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +36,21 @@ namespace Reko.Arch.RiscV
             var addr = instr.Address + offset;
             var dst = RewriteOp(instr.op1);
             m.Assign(dst, addr);
+        }
+
+        private void RewriteJal()
+        {
+            var continuation = ((RegisterOperand)instr.op1).Register;
+            var dst = RewriteOp(instr.op2);
+            rtlc.Class = RtlClass.Transfer;
+            if (continuation.Number == 0)
+            {
+                m.Goto(dst);
+            }
+            else
+            {
+                m.Call(dst, 0);
+            }
         }
     }
 }
