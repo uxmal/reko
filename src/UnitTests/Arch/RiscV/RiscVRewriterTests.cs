@@ -135,5 +135,14 @@ namespace Reko.UnitTests.Arch.RiscV
                 "0|T--|0000000000010000(4): 1 instructions",
                 "1|T--|call a5 + 3 (0)");
         }
+
+        [Test]
+        public void RiscV_rw_sd()
+        {
+            Rewrite(0x19513423u);    // sd\ts5,sp,392
+            AssertCode(
+                "0|L--|0000000000010000(4): 1 instructions",
+                "1|L--|Mem0[sp + 392:word64] = s5");
+        }
     }
 }

@@ -70,5 +70,18 @@ namespace Reko.Arch.RiscV
             }
             m.Assign(dst, m.Load(dt, ea));
         }
+
+        private void RewriteStore(DataType dt)
+        {
+            var src = RewriteOp(instr.op1);
+            var baseReg = RewriteOp(instr.op2);
+            var offset = ((ImmediateOperand)instr.op3).Value;
+            Expression ea = baseReg;
+            if (!offset.IsZero)
+            {
+                ea = m.IAdd(ea, offset);
+            }
+            m.Assign(m.Load(dt, ea), src);
+        }
     }
 }

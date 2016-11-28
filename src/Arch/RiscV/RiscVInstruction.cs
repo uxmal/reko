@@ -27,6 +27,7 @@ namespace Reko.Arch.RiscV
     public class RiscVInstruction : MachineInstruction
     {
         private static Dictionary<Opcode, string> opcodeNames;
+        private static Dictionary<Opcode, InstructionClass> instrClasses;
 
         internal Opcode opcode;
         internal MachineOperand op1;
@@ -42,9 +43,31 @@ namespace Reko.Arch.RiscV
                 { Opcode.fmv_d_x, "fmv.d.x" },
                 { Opcode.fmv_s_x, "fmv.s.x" },
             };
+
+            instrClasses = new Dictionary<Opcode, InstructionClass>
+            {
+                { Opcode.jal, InstructionClass.Transfer },
+                { Opcode.jalr, InstructionClass.Transfer },
+                { Opcode.beq, InstructionClass.Transfer | InstructionClass.Conditional },
+                { Opcode.bne, InstructionClass.Transfer | InstructionClass.Conditional },
+                { Opcode.blt, InstructionClass.Transfer | InstructionClass.Conditional },
+                { Opcode.bltu, InstructionClass.Transfer | InstructionClass.Conditional },
+                { Opcode.bge, InstructionClass.Transfer | InstructionClass.Conditional },
+                { Opcode.bgeu, InstructionClass.Transfer | InstructionClass.Conditional },
+            };
         }
 
-        public override InstructionClass InstructionClass { get { throw new NotImplementedException(); } }
+        public override InstructionClass InstructionClass
+        {
+            get {
+                InstructionClass c;
+                if (!instrClasses.TryGetValue(opcode, out c))
+                {
+                    return InstructionClass.Linear;
+                }
+                return c;
+            }
+        }
 
         public override bool IsValid { get { throw new NotImplementedException(); } }
 

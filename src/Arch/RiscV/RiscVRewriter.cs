@@ -73,6 +73,7 @@ namespace Reko.Arch.RiscV
                 case Opcode.jalr: RewriteJalr(); break;
                 case Opcode.lb: RewriteLoad(PrimitiveType.Byte); break;
                 case Opcode.ld: RewriteLoad(PrimitiveType.Word64); break;
+                case Opcode.sd: RewriteStore(PrimitiveType.Word64); break;
                 }
                 yield return rtlc;
             }

@@ -1,23 +1,46 @@
-// fn0000000000015EB8
-// Return size: 0
-void fn0000000000015EB8()
+void fn0000000000015EB8(word64 qwArg00)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: a0 a1 a2 a3 a4 a5 a6 gp sp t1 t3
+// Preserved:
 fn0000000000015EB8_entry:
-	// succ:  l0000000000015EB8
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+// LocalsOut: fp(64)
+
 l0000000000015EB8:
-	Mem0 = fp
-	gp = 0x0000000000012EB8
-	gp = gp + 1424
-	a5 = a0
-	a0 = 0x0000000000014EC4
-	a0 = a0 + 700
-	a1 = Mem0[sp:word64]
-	a2 = sp + 8
-	sp = sp & -16
-	a3 = 0x0000000000017ED8
-	a3 = a3 + 1040
-	a4 = 0x0000000000017EE0
-	a4 = a4 + 1176
-	a6 = sp
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp
+
+l00000000000150E0:
+	word64 t3_19 = Mem0[0x000000000001A0E0 + 16:word64]
+	word64 sp_21
+	word64 gp_22
+	word64 a5_23
+	word64 a0_24
+	word64 a1_25
+	word64 a2_26
+	word64 a3_27
+	word64 a4_28
+	word64 a6_29
+	word64 t3_30
+	word64 t1_31
+	call t3_19 (retsize: 0; depth: 16)
+		uses: a0_7,a1_9,a2_10,a3_13,a4_15,a5_5,a6_16,gp_3,sp_11,t1_20,t3_19
+		defs: a0_24,a1_25,a2_26,a3_27,a4_28,a5_23,a6_29,gp_22,sp_21,t1_31,t3_30
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp & -16 gp:0x0000000000012EB8 + 1424 a5:a0 a0:0x0000000000014EC4 + 700 a1:<invalid> a2:fp + 8 a3:0x0000000000017ED8 + 1040 a4:0x0000000000017EE0 + 1176 a6:fp & -16
+
 fn0000000000015EB8_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp & -16 gp:0x0000000000012EB8 + 1424 a5:a0 a0:0x0000000000014EC4 + 700 a1:<invalid> a2:fp + 8 a3:0x0000000000017ED8 + 1040 a4:0x0000000000017EE0 + 1176 a6:fp & -16 t3:<invalid> t1:00000000000150EC
+
 
 

@@ -165,7 +165,7 @@ namespace Reko.Arch.RiscV
 
         public override string GrfToString(uint grf)
         {
-            throw new NotImplementedException();
+            return "";
         }
 
         public override Address MakeAddressFromConstant(Constant c)
