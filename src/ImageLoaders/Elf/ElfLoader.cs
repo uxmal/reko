@@ -166,6 +166,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_PPC64: arch = "ppc64"; break;
             case ElfMachine.EM_ARM: arch = "arm"; break;
             case ElfMachine.EM_XTENSA: arch = "xtensa"; break;
+            case ElfMachine.EM_RISCV: arch = "risc-v"; break;
             default:
                 throw new NotSupportedException(string.Format("Processor format {0} is not supported.", machineType));
             }
@@ -548,6 +549,7 @@ namespace Reko.ImageLoaders.Elf
             {
             case ElfMachine.EM_X86_64: return new x86_64Relocator(this);
             case ElfMachine.EM_PPC64: return new PpcRelocator64(this);
+            case ElfMachine.EM_RISCV: return new RiscVRelocator64(this);
             }
             return base.CreateRelocator(machine);
         }

@@ -93,6 +93,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RelaSegmentRenderer.cs" />
     <Compile Include="RelSegmentRenderer.cs" />
+    <Compile Include="RiscVRelocator.cs" />
     <Compile Include="SectionHeaderType.cs" />
     <Compile Include="SparcRelocator.cs" />
     <Compile Include="SymtabSegmentRenderer.cs" />
