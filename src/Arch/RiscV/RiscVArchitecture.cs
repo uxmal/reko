@@ -32,19 +32,44 @@ namespace Reko.Arch.RiscV
 {
     public class RiscVArchitecture : ProcessorArchitecture
     {
+
+        static string [] regnames = {
+            "zero", "ra", "sp", "gp", "tp", "t0", "t1", "t2",
+            "s0",   "s1", "a0", "a1", "a2", "a3", "a4", "a5",
+            "a6",   "a7", "s2", "s3", "s4", "s5", "s6", "s7",
+            "s8",   "s9", "s10","s11","t3", "t4", "t5", "t6"
+        };
+
+        static string[]  fpuregnames = {
+          "ft0", "ft1", "ft2",  "ft3",  "ft4", "ft5", "ft6",  "ft7",
+          "fs0", "fs1", "fa0",  "fa1",  "fa2", "fa3", "fa4",  "fa5",
+          "fa6", "fa7", "fs2",  "fs3",  "fs4", "fs5", "fs6",  "fs7",
+          "fs8", "fs9", "fs10", "fs11", "ft8", "ft9", "ft10", "ft11"
+        };
+
         private RegisterStorage[] regs;
 
         public RiscVArchitecture()
         {
             this.InstructionBitSize = 16;
-            this.regs = Enumerable.Range(0, 32)
-                .Select(n => new RegisterStorage(
-                    string.Format("x{0}", n),
+            //$TODO: what about 32-bit version of arch?
+            this.PointerType = PrimitiveType.Pointer64;
+            this.WordWidth = PrimitiveType.Word64;
+            this.FramePointerType = PrimitiveType.Pointer64;
+            this.regs = regnames
+                .Select((n, i) => new RegisterStorage(
                     n,
+                    i,
                     0,
-                    PrimitiveType.Word32)) //$TODO: setting!
+                    PrimitiveType.Word64)) //$TODO: setting!
+                .Concat(
+                    fpuregnames
+                    .Select((n, i) => new RegisterStorage(
+                        n,
+                        i + 32,
+                        0,
+                        PrimitiveType.Word64)))
                 .ToArray();
-
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
@@ -59,7 +84,7 @@ namespace Reko.Arch.RiscV
 
         public override ImageReader CreateImageReader(MemoryArea img, Address addr)
         {
-            throw new NotImplementedException();
+            return new LeImageReader(img, addr);
         }
 
         public override ImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
@@ -89,7 +114,7 @@ namespace Reko.Arch.RiscV
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new RiscVState(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)

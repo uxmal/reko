@@ -23,6 +23,22 @@ namespace Reko.Arch.RiscV
     public enum Opcode
     {
         invalid,
-        lui
+
+        addi,
+        andi,
+
+        lui,
+        lb,
+        ld,
+        lh,
+        ori,
+        lw,
+        sb,
+        sd,
+        sh,
+        sw,
+        slti,
+        sltiu,
+        xori,
     }
 }
