@@ -57,10 +57,7 @@ namespace Reko.Gui.Windows
         private ImageSegment segment;
         private bool showProcedures;
 
-        private Control previewWindow;
-        private bool insidePreview;
-        private Address addressPreview;
-        private LayoutSpan previewSpan;
+        private PreviewInteractor previewInteractor;
 
         public CombinedCodeViewInteractor()
         {
@@ -231,8 +228,6 @@ namespace Reko.Gui.Windows
             this.combinedCodeView.MixedCodeDataView.MouseDown += MixedCodeDataView_MouseDown;
             this.combinedCodeView.MixedCodeDataView.ModelChanged += MixedCodeDataView_ModelChanged;
             this.combinedCodeView.MixedCodeDataView.Navigate += TextView_Navigate;
-            this.combinedCodeView.MixedCodeDataView.SpanEnter += MixedCodeDataControl_SpanEnter;
-            this.combinedCodeView.MixedCodeDataView.SpanLeave += MixedCodeDataControl_SpanLeave;
 
             this.combinedCodeView.CodeView.VScrollValueChanged += CodeView_VScrollValueChanged;
             this.combinedCodeView.CodeView.Services = services;
@@ -243,8 +238,6 @@ namespace Reko.Gui.Windows
 
             this.combinedCodeView.ToolBarGoButton.Click += ToolBarGoButton_Click;
             this.combinedCodeView.ToolBarAddressTextbox.KeyDown += ToolBarAddressTextbox_KeyDown;
-
-            this.combinedCodeView.PreviewTimer.Tick += PreviewTimer_Tick;
 
             this.gViewer = new GViewer();
             this.gViewer.Dock = DockStyle.Fill;
@@ -272,6 +265,11 @@ namespace Reko.Gui.Windows
             this.navInteractor.Attach(this.combinedCodeView);
 
             declarationFormInteractor = new DeclarationFormInteractor(services);
+            previewInteractor = new PreviewInteractor(
+                services, 
+                this.program,
+                this.combinedCodeView.PreviewTimer,
+                this.combinedCodeView.MixedCodeDataView);
 
             return combinedCodeView;
         }
@@ -455,10 +453,6 @@ namespace Reko.Gui.Windows
         private void MixedCodeDataView_MouseDown(object sender, MouseEventArgs e)
         {
             combinedCodeView.CodeView.ClearSelection();
-            if (previewWindow != null)
-            {
-                DestroyPreviewWindow();
-            }
         }
 
         private void CodeView_MouseDown(object sender, MouseEventArgs e)
@@ -635,90 +629,5 @@ namespace Reko.Gui.Windows
 			Debug.Print("Node: {0}", blockData.Block.Name);
         }
 
-        private void MixedCodeDataControl_SpanLeave(object sender, SpanEventArgs e)
-        {
-            if (!insidePreview)
-                DestroyPreviewWindow();
-        }
-
-        private void MixedCodeDataControl_SpanEnter(object sender, SpanEventArgs e)
-        {
-            if (previewWindow != null)
-            {
-                // Preview window already visible.
-                return;
-            }
-
-            if (e.Span.Style == null || !e.Span.Style.Contains("dasm-addrText"))
-                return;
-            this.addressPreview = e.Span.Tag as Address;
-            if (this.addressPreview == null)
-                return;
-
-            // Start the timer; when it ticks, it will pop up the window.
-            this.combinedCodeView.PreviewTimer.Enabled = true;
-            this.previewSpan = e.Span;
-        }
-
-        private void PreviewTimer_Tick(object sender, EventArgs e)
-        {
-            // Timer needs to be disabled now so we don't get more ticks.
-            this.combinedCodeView.PreviewTimer.Enabled = false;
-
-            var rcF = previewSpan.ContentExtent;
-            var pt = new System.Drawing.Point(100, (int)rcF.Bottom);
-
-            var nested = new MixedCodeDataControl
-            {
-                Model = ((MixedCodeDataModel)this.combinedCodeView.MixedCodeDataView.Model).Clone(),
-                Program = this.program,      //$TODO: would be nice to avoid triggering recalc
-                Dock = DockStyle.Fill,
-                Services = this.services,
-                StyleClass = this.combinedCodeView.MixedCodeDataView.StyleClass,
-                Padding = new Padding(3),
-            };
-            nested.VScrollBar.Visible = false;
-
-            var frame = new Panel
-            {
-                AutoSize = false,
-                BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle,
-                Width = 500,
-                Height = 200,
-                Location = pt,
-                Controls = {
-                   nested
-                }
-            };
-            this.combinedCodeView.MixedCodeDataView.Controls.Add(frame);
-            this.previewWindow = frame;
-            nested.TopAddress = this.addressPreview;
-
-            nested.MouseLeave += Lbl_MouseLeave;
-            nested.MouseEnter += Lbl_MouseEnter;
-            this.insidePreview = false;
-        }
-
-        private void Lbl_MouseLeave(object sender, EventArgs e)
-        {
-            DestroyPreviewWindow();
-        }
-
-        private void Lbl_MouseEnter(object sender, EventArgs e)
-        {
-            insidePreview = true;
-        }
-
-        private void DestroyPreviewWindow()
-        {
-            if (previewWindow == null)
-                return;
-            this.combinedCodeView.MixedCodeDataView.Controls.Remove(previewWindow);
-            previewWindow.Dispose();
-            previewWindow = null;
-            insidePreview = false;
-            previewSpan = null;
-            addressPreview = null;
-        }
     }
 }
