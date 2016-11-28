@@ -151,16 +151,15 @@ namespace Reko.Core.Machine
             return new ImmediateOperand(Constant.SByte(value));
         }
 
-        public static MachineOperand UInt16(ushort value)
+        public static ImmediateOperand UInt16(ushort value)
         {
             return new ImmediateOperand(Constant.UInt16(value));
         }
 
-        public static MachineOperand UInt32(uint value)
+        public static ImmediateOperand UInt32(uint value)
         {
             return new ImmediateOperand(Constant.UInt32(value));
         }
-
 
         public static ImmediateOperand Word32(int value)
         {
@@ -222,6 +221,11 @@ namespace Reko.Core.Machine
         public static AddressOperand Ptr64(ulong a)
         {
             return new AddressOperand(Address.Ptr64(a), PrimitiveType.Pointer64);
+        }
+
+        public static AddressOperand Create(Address addr)
+        {
+            return new AddressOperand(addr, PrimitiveType.Create(Domain.Pointer, addr.DataType.Size));
         }
 
         public override void Write(bool fExplicit, MachineInstructionWriter writer)

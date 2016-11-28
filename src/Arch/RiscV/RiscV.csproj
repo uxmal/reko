@@ -46,6 +46,8 @@
     <Compile Include="RiscVArchitecture.cs" />
     <Compile Include="RiscVDisassembler.cs" />
     <Compile Include="RiscVInstruction.cs" />
+    <Compile Include="RiscVRewriter.Control.cs" />
+    <Compile Include="RiscVRewriter.cs" />
     <Compile Include="RiscVState.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -53,6 +55,9 @@
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="RiscVRewriter.Alu.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

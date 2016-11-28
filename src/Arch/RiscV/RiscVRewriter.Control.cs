@@ -18,73 +18,22 @@
  */
 #endregion
 
+using Reko.Core.Machine;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
 namespace Reko.Arch.RiscV
 {
-    public enum Opcode
+    public partial class RiscVRewriter
     {
-        invalid, 
-
-        and,
-        addi,
-        addiw,
-        andi,
-        auipc,
-
-        beq,
-        bge,
-        bgeu,
-        blt,
-        bltu,
-        bne,
-
-        flw,
-
-        jal,
-        jalr,
-
-        lui,
-
-        lb,
-        ld,
-        lh,
-
-        or,
-        ori,
-        lw,
-        sb,
-        sd,
-        sh,
-        sw,
-
-        slli,
-        sra,
-        srai,
-        srl,
-        srli,
-
-        slti,
-        sltiu,
-        xori,
-        add,
-        sub,
-        sll,
-        slt,
-        sltu,
-        xor,
-        addw,
-        subw,
-        sllw,
-        srlw,
-        sraw,
-        slliw,
-        srliw,
-        sraiw,
-        lbu,
-        lhu,
-        fadd_d,
-        fadd_s,
-        fmv_d_x,
-        fmv_s_x,
-        lwu,
+        private void RewriteAuipc()
+        {
+            var offset = ((ImmediateOperand)instr.op2).Value.ToInt32() << 12;
+            var addr = instr.Address + offset;
+            var dst = RewriteOp(instr.op1);
+            m.Assign(dst, addr);
+        }
     }
 }

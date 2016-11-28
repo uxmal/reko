@@ -119,7 +119,7 @@ namespace Reko.Arch.RiscV
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new RiscVRewriter(this, rdr, state, frame, host);
         }
 
         public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
@@ -159,7 +159,7 @@ namespace Reko.Arch.RiscV
 
         public override RegisterStorage[] GetRegisters()
         {
-            throw new NotImplementedException();
+            return regs;
         }
 
         public override string GrfToString(uint grf)
@@ -184,7 +184,8 @@ namespace Reko.Arch.RiscV
 
         public override bool TryParseAddress(string txtAddr, out Address addr)
         {
-            throw new NotImplementedException();
+            //$TODO: what if 32-bit?
+            return Address.TryParse64(txtAddr, out addr);
         }
     }
 }

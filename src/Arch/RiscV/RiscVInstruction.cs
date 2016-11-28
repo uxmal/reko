@@ -20,15 +20,29 @@
 
 using System;
 using Reko.Core.Machine;
+using System.Collections.Generic;
 
 namespace Reko.Arch.RiscV
 {
     public class RiscVInstruction : MachineInstruction
     {
+        private static Dictionary<Opcode, string> opcodeNames;
+
         internal Opcode opcode;
         internal MachineOperand op1;
         internal MachineOperand op2;
         internal MachineOperand op3;
+
+        static RiscVInstruction()
+        {
+            opcodeNames = new Dictionary<Opcode, string>
+            {
+                { Opcode.fadd_s, "fadd.s" },
+                { Opcode.fadd_d, "fadd.d" },
+                { Opcode.fmv_d_x, "fmv.d.x" },
+                { Opcode.fmv_s_x, "fmv.s.x" },
+            };
+        }
 
         public override InstructionClass InstructionClass { get { throw new NotImplementedException(); } }
 
@@ -43,7 +57,12 @@ namespace Reko.Arch.RiscV
 
         public override void Render(MachineInstructionWriter writer)
         {
-            writer.Write(opcode.ToString());
+            string name;
+            if (!opcodeNames.TryGetValue(opcode, out name))
+            {
+                name = opcode.ToString();
+            }
+            writer.WriteOpcode(name);
             if (op1 == null)
                 return;
             writer.Tab();
@@ -70,6 +89,13 @@ namespace Reko.Arch.RiscV
             if (immop != null)
             {
                 writer.Write(immop.Value.ToString());
+                return;
+            }
+            var addrop = op as AddressOperand;
+            if (addrop != null)
+            {
+                //$TODO: 32-bit?
+                writer.WriteAddress(string.Format("{0:X16}", addrop.Address.ToLinear()), addrop.Address);
                 return;
             }
             throw new NotImplementedException();

@@ -29,6 +29,7 @@ namespace Reko.Arch.RiscV
     public class RiscVState : ProcessorState
     {
         private RiscVArchitecture arch;
+        private Address pc;
 
         public RiscVState(RiscVArchitecture arch)
         {
@@ -62,22 +63,19 @@ namespace Reko.Arch.RiscV
 
         public override void OnProcedureEntered()
         {
-            throw new NotImplementedException();
         }
 
         public override void OnProcedureLeft(FunctionType procedureSignature)
         {
-            throw new NotImplementedException();
         }
 
         public override void SetInstructionPointer(Address addr)
         {
-            throw new NotImplementedException();
+            pc = addr;
         }
 
         public override void SetRegister(RegisterStorage r, Constant v)
         {
-            throw new NotImplementedException();
         }
     }
 }
