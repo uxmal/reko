@@ -399,5 +399,16 @@ namespace Reko.UnitTests.Arch.Pdp11
               "4|L--|C = false",
               "5|L--|Z = true");
         }
+
+        [Test]
+        public void Pdp11Rw_pc_relative()
+        {
+            BuildTest(0x1DC0, 0x1B8E);
+            AssertCode(
+              "0|L--|0200(4): 3 instructions",
+              "1|L--|r0 = Mem0[0x1D90:word16]",
+              "2|L--|NZ = cond(r0)",
+              "3|L--|V = false");
+        }
     }
 }
