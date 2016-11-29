@@ -61,7 +61,7 @@ __start_entry:
 // LocalsOut: fp(32) Stack +0000(32)
 
 l00400230:
-	word32 r25_18 = Mem0[0x00400238 + 0x0FC00690:word32]
+	word32 r25_18 = Mem0[0x100107F8:word32]
 	word32 sp_19
 	word32 ra_20
 	word32 r28_21
@@ -81,7 +81,7 @@ l00400230:
 l00400284:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp ra:0x00000000 r28:0x00400238 + 0x0FC08628 r4:<invalid> r5:<invalid> r6:<invalid> r7:<invalid> r2:<invalid> r25:<invalid> -8(fp):<invalid>
+// SymbolicIn: sp:fp ra:0x00000000 r28:10008860 r4:<invalid> r5:<invalid> r6:<invalid> r7:<invalid> r2:<invalid> r25:<invalid> -8(fp):<invalid>
 
 
 

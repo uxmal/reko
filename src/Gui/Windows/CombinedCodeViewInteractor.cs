@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Microsoft.Msagl.Core.Geometry;
 using Microsoft.Msagl.Drawing;
 using Microsoft.Msagl.GraphViewerGdi;
 using Reko.Core;
@@ -55,6 +56,8 @@ namespace Reko.Gui.Windows
 
         private ImageSegment segment;
         private bool showProcedures;
+
+        private PreviewInteractor previewInteractor;
 
         public CombinedCodeViewInteractor()
         {
@@ -262,6 +265,11 @@ namespace Reko.Gui.Windows
             this.navInteractor.Attach(this.combinedCodeView);
 
             declarationFormInteractor = new DeclarationFormInteractor(services);
+            previewInteractor = new PreviewInteractor(
+                services, 
+                this.program,
+                this.combinedCodeView.PreviewTimer,
+                this.combinedCodeView.MixedCodeDataView);
 
             return combinedCodeView;
         }
@@ -430,7 +438,6 @@ namespace Reko.Gui.Windows
             if (combinedCodeView.MixedCodeDataView.Focused)
                 return MixedCodeDataView_GetAnchorAddress();
             return null;
-
         }
 
         private void EditDeclaration()

@@ -179,8 +179,7 @@ void main(word64 rax, Eq_231 * rsi, word32 edi)
 void __libc_csu_init()
 {
 	_init();
-	Eq_300 r12_7[] = globals->a600DF8;
-	if (0x0000000000600E00 - r12_7 >> 0x03 != 0x00)
+	if (0x0000000000600E00 - 0x0000000000600DF8 >> 0x03 != 0x00)
 	{
 		ui64 rbx_47 = DPB(rbx, 0x00, 0);
 		do
@@ -201,7 +200,7 @@ void __libc_csu_init()
 			byte C_70;
 			byte Z_71;
 			word32 ebx_72;
-			r12_7[rbx_47]();
+			(*globals->a600DF8)();
 		} while (rbx_63 + 0x01 != rbp_58);
 	}
 	return;

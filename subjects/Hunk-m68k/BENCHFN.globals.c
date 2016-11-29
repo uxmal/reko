@@ -5,27 +5,30 @@
 #include "BENCHFN.h"
 
 ***************************************************************************************************** g_ptr0000;
-Eq_938 g_t0001;
-Eq_8393 g_a0005[];
+Eq_956 g_t0001;
 word32 g_a0008[];
 ui32 g_a0010[];
 byte g_b1DE4 = 0x25;
-struct Eq_5730 g_t288C = 
-	{
-		
-		{
-		},
-	};
-Eq_4442 g_a288D[] = 
+Eq_4460 g_a288D[] = 
 	{
 	};
-word32 g_dw3E70 = 0x00000000;
-struct Eq_3238 * g_ptr3E74 = &g_t4000;
+ptr32 g_ptr3E70 = 0x00000000;
+struct Eq_5 * g_ptr3E74 = &g_t4000;
+struct Eq_32 * g_ptr3E78 = null;
+struct Eq_68 * g_ptr3E7C = &g_t10202;
+struct Eq_68 * g_ptr3E80 = &g_t3030303;
+int32 g_dw3E84 = 67372036;
+int32 g_dw3E88 = 67372036;
+ui32 g_dw3E8C = 0x05050505;
+word32 g_dw3E98 = 0x05050505;
+ptr32 g_ptr3E9C = 0x06060606;
 word32 g_dw3EA0 = 0x06060606;
 word32 g_dw3EA4 = 0x06060606;
 word32 g_dw3EA8 = 0x06060606;
-Eq_3582 g_a3EAC[] = 
+Eq_3600 g_a3EAC[] = 
 	{
 	};
-Eq_3238 g_t4000;
+Eq_5 g_t4000;
+Eq_68 g_t10202;
+Eq_68 g_t3030303;
 

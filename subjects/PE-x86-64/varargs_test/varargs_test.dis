@@ -592,10 +592,8 @@ l0000000140001356:
 
 l000000014000130C:
 	Mem331[0x00000001400035B0:word32] = 0x00000001
-	word64 rdx_332 = 0x00000001400021D0
-	word64 rcx_333 = 0x00000001400021B8
-	word64 rax_334 = DPB(rax_28, _initterm_e(rcx_333, rdx_332), 0)
-	branch _initterm_e(rcx_333, rdx_332) == 0x00000000 l0000000140001337
+	word64 rax_334 = DPB(rax_28, _initterm_e(0x00000001400021B8, 0x00000001400021D0), 0)
+	branch _initterm_e(0x00000001400021B8, 0x00000001400021D0) == 0x00000000 l0000000140001337
 // DataOut: bl rsp
 // DataOut (flags): 
 // SymbolicIn: rsp:<invalid> ecx:<invalid> sil:0x00 bl:<invalid> al:<invalid> ebx:<invalid> eax:<invalid> edx:<invalid> rbx:<invalid> rdx:<invalid> rcx:<invalid> r8d:<invalid> rax:<invalid> r9:<invalid> r8:<invalid> r9d:<invalid> r10d:<invalid> r11d:<invalid> edi:<invalid> rdi:<invalid> r11:0x0000000000010001 -20(fp):0x00 -4(fp):rdi 8(fp):rbx 16(fp):rsi
@@ -1375,8 +1373,7 @@ l0000000140001718:
 
 l000000014000172D:
 	rax = (int64) Mem0[0x000000014000003C:word32]
-	word64 rdx_50 = 0x0000000140000000
-	word64 rcx_52 = rax + rdx_50
+	word64 rcx_52 = rax + 0x0000000140000000
 	branch Mem0[rcx_52:word32] != 0x00004550 l00000001400017A6
 // DataOut: r8 rbx rcx rdx
 // DataOut (flags): 
@@ -1400,7 +1397,7 @@ l00000001400017A6:
 l0000000140001752:
 	word64 rax_115 = DPB(rax, (word32) Mem0[rcx_52 + 0x0000000000000006:word16], 0)
 	word64 rdx_117 = rcx_52 + 0x0000000000000018 + DPB(rax, (word32) Mem0[rcx_52 + 0x0000000000000014:word16], 0)
-	word64 r8_60 = rcx - rdx_50
+	word64 r8_60 = rcx - 0x0000000140000000
 	word64 rcx_111 = rax_115 * 0x0000000000000005
 	word64 r9_70 = rdx_117 + (rax_115 * 0x0000000000000005) * 0x0000000000000008
 // DataOut: r8 r9 rbx rdx

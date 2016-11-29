@@ -64,11 +64,25 @@ namespace Reko.Gui.Windows.Controls
             }
         }
 
-        public object CurrentPosition {  get { return addrCur; } }
-        public object StartPosition { get; private set;  }
+        public MixedCodeDataModel(MixedCodeDataModel that)
+        {
+            this.program = that.program;
+            this.addrCur = that.addrCur;
+            this.addrEnd = that.addrEnd;
+            this.instructions = that.instructions;
+            this.LineCount = that.LineCount;
+        }
+
+        public object CurrentPosition { get { return addrCur; } }
+        public object StartPosition { get; private set; }
         public object EndPosition { get { return addrEnd; } }
 
         public int LineCount { get; private set; }
+
+        public MixedCodeDataModel Clone()
+        {
+            return new MixedCodeDataModel(this);
+        }
 
         private int CountLines()
         {

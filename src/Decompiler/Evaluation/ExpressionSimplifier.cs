@@ -198,7 +198,6 @@ namespace Reko.Evaluation
                 Changed = true;
                 return constConstBin.Transform();
             }
-
             Identifier idLeft = left as Identifier;
             Identifier idRight = right as Identifier;
 

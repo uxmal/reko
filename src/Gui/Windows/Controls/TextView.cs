@@ -41,6 +41,9 @@ namespace Reko.Gui.Windows.Controls
         public event EventHandler<EditorNavigationArgs> Navigate;
         public event EventHandler SelectionChanged; // Fired whenever the selection changes.
         public event EventHandler VScrollValueChanged;
+        public event EventHandler<SpanEventArgs> SpanEnter;
+        public event EventHandler<SpanEventArgs> SpanLeave;
+
 
         private StringFormat stringFormat;
         private TextViewLayout layout;
@@ -49,6 +52,7 @@ namespace Reko.Gui.Windows.Controls
         internal TextPointer anchorPos;
         private StyleStack styleStack;
         private bool dragging;
+        private LayoutSpan spanHover;       // The span over which the mouse is hovering.
 
         public TextView()
         {
@@ -71,11 +75,17 @@ namespace Reko.Gui.Windows.Controls
 
         public TextSelection Selection { get; private set; }
 
+        /// <summary>
+        /// Performs the same function as the HTML "class" attribute.
+        /// </summary>
         public string StyleClass { get { return styleClass; } set { styleClass = value; StyleClassChanged.Fire(this); } }
         public event EventHandler StyleClassChanged;
         private string styleClass;
 
-
+        /// <summary>
+        /// Exposes the vertical scrollbar.
+        /// </summary>
+        public VScrollBar VScrollBar { get { return vScroll; } }
 
         /// <summary>
         /// The ClientSize is the client area minus the space taken up by
@@ -85,8 +95,9 @@ namespace Reko.Gui.Windows.Controls
         {
             get
             {
+                int cxScroll = vScroll.Visible ? vScroll.Width : 0;
                 return new Size(
-                    base.ClientSize.Width - vScroll.Width,
+                    base.ClientSize.Width - cxScroll,
                     base.ClientSize.Height);
             }
         }
@@ -216,6 +227,18 @@ namespace Reko.Gui.Windows.Controls
                 else
                 {
                     this.Cursor = Cursors.Default;
+                }
+                if (span != spanHover)
+                {
+                    if (spanHover != null)
+                    {
+                        SpanLeave.Fire(this, new SpanEventArgs(spanHover));
+                    }
+                    spanHover = span;
+                    if (span != null)
+                    {
+                        SpanEnter.Fire(this, new SpanEventArgs(span));
+                    }
                 }
             }
             base.OnMouseMove(e);
@@ -593,5 +616,15 @@ namespace Reko.Gui.Windows.Controls
         }
         
         public object Destination { get; private set; }
+    }
+
+    public class SpanEventArgs : EventArgs
+    {
+        public SpanEventArgs(LayoutSpan span)
+        {
+            this.Span = span;
+        }
+
+        public LayoutSpan Span { get; private set; }
     }
 }

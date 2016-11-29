@@ -1,0 +1,41 @@
+= VpAddress32Const ========================
+r1_0: orig: r1
+    def:  r1_0 = 0x00123400
+    uses: r1_2 = Mem0[r1_0 + 0x00000056:word32]
+Mem0:Global memory
+    def:  def Mem0
+    uses: r1_2 = Mem0[r1_0 + 0x00000056:word32]
+r1_2: orig: r1
+    def:  r1_2 = Mem0[r1_0 + 0x00000056:word32]
+// VpAddress32Const
+// Return size: 0
+void VpAddress32Const()
+VpAddress32Const_entry:
+	def Mem0
+	// succ:  l1
+l1:
+	r1_0 = 0x00123400
+	r1_2 = Mem0[r1_0 + 0x00000056:word32]
+	return
+	// succ:  VpAddress32Const_exit
+VpAddress32Const_exit:
+
+r1_0: orig: r1
+    def:  r1_0 = 0x00123400
+Mem0:Global memory
+    def:  def Mem0
+    uses: r1_2 = Mem0[0x00123456:word32]
+r1_2: orig: r1
+    def:  r1_2 = Mem0[0x00123456:word32]
+// VpAddress32Const
+// Return size: 0
+void VpAddress32Const()
+VpAddress32Const_entry:
+	def Mem0
+	// succ:  l1
+l1:
+	r1_0 = 0x00123400
+	r1_2 = Mem0[0x00123456:word32]
+	return
+	// succ:  VpAddress32Const_exit
+VpAddress32Const_exit:

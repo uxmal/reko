@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CombinedCodeView));
             Reko.Gui.Windows.Controls.EmptyEditorModel emptyEditorModel1 = new Reko.Gui.Windows.Controls.EmptyEditorModel();
             Reko.Gui.Windows.Controls.EmptyEditorModel emptyEditorModel2 = new Reko.Gui.Windows.Controls.EmptyEditorModel();
@@ -40,6 +41,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.mixedCodeDataControl = new Reko.Gui.Windows.Controls.MixedCodeDataControl();
             this.codeTextView = new Reko.Gui.Windows.Controls.TextView();
+            this.previewTimer = new System.Windows.Forms.Timer(this.components);
             this.toolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -124,12 +126,12 @@
             // 
             this.mixedCodeDataControl.BackColor = System.Drawing.SystemColors.Window;
             this.mixedCodeDataControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mixedCodeDataControl.Location = new System.Drawing.Point(1, 1);
+            this.mixedCodeDataControl.Location = new System.Drawing.Point(0, 0);
             this.mixedCodeDataControl.Model = emptyEditorModel1;
             this.mixedCodeDataControl.Name = "mixedCodeDataControl";
             this.mixedCodeDataControl.Program = null;
             this.mixedCodeDataControl.Services = null;
-            this.mixedCodeDataControl.Size = new System.Drawing.Size(190, 353);
+            this.mixedCodeDataControl.Size = new System.Drawing.Size(192, 355);
             this.mixedCodeDataControl.StyleClass = null;
             this.mixedCodeDataControl.TabIndex = 0;
             this.mixedCodeDataControl.Text = "mixedCodeDataControl1";
@@ -139,14 +141,18 @@
             // 
             this.codeTextView.BackColor = System.Drawing.SystemColors.Window;
             this.codeTextView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.codeTextView.Location = new System.Drawing.Point(1, 1);
+            this.codeTextView.Location = new System.Drawing.Point(0, 0);
             this.codeTextView.Model = emptyEditorModel2;
             this.codeTextView.Name = "codeTextView";
             this.codeTextView.Services = null;
-            this.codeTextView.Size = new System.Drawing.Size(381, 353);
+            this.codeTextView.Size = new System.Drawing.Size(383, 355);
             this.codeTextView.StyleClass = null;
             this.codeTextView.TabIndex = 0;
             this.codeTextView.Text = "codeTextView";
+            // 
+            // previewTimer
+            // 
+            this.previewTimer.Interval = 500;
             // 
             // CombinedCodeView
             // 
@@ -178,5 +184,6 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private TextView codeTextView;
         private MixedCodeDataControl mixedCodeDataControl;
+        private System.Windows.Forms.Timer previewTimer;
     }
 }

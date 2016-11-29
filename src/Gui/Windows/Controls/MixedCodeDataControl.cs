@@ -22,8 +22,11 @@ using Reko.Core;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace Reko.Gui.Windows.Controls
 {
@@ -32,6 +35,7 @@ namespace Reko.Gui.Windows.Controls
     /// </summary>
     public class MixedCodeDataControl : TextView
     {
+  
         public MixedCodeDataControl()
         {
             this.ProgramChanged += delegate { OnProgramChanged(); };
@@ -39,13 +43,11 @@ namespace Reko.Gui.Windows.Controls
             OnProgramChanged();
 
             this.Disposed += MixedCodeDataControl_Disposed;
-        }
+       }
 
-        public Program Program {
-            get
-            {
-                return program;
-            }
+        public Program Program
+        {
+            get { return program; }
             set
             {
                 if (program != null)
@@ -56,14 +58,13 @@ namespace Reko.Gui.Windows.Controls
                 ProgramChanged.Fire(this);
             }
         }
-
         private Program program;
         public event EventHandler ProgramChanged;
 
         public Address TopAddress { get { return addrTop; } set { addrTop = value; OnTopAddressChanged(); } }
         private Address addrTop;
 
-
+ 
         private void OnProgramChanged()
         {
             try
@@ -93,6 +94,8 @@ namespace Reko.Gui.Windows.Controls
                 Invalidate();
             }
         }
+
+ 
 
         protected override void OnScroll()
         {

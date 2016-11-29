@@ -23,7 +23,7 @@ void _init()
 
 void __start(word32 dwArg00)
 {
-	<anonymous> * r25_18 = (&globals->t400238)->ptrFC00690;
+	<anonymous> * r25_18 = *(<anonymous> **) 0x100107F8;
 	word32 sp_19;
 	word32 ra_20;
 	word32 r28_21;
