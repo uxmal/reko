@@ -21,7 +21,7 @@
 using System;
 using Reko.Core;
 
-namespace Reko.ImageLoaders.Elf
+namespace Reko.ImageLoaders.Elf.Relocators
 {
     public class XtensaRelocator : ElfRelocator
     {

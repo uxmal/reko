@@ -24,7 +24,7 @@ using System.Linq;
 using System.Text;
 using Reko.Core;
 
-namespace Reko.ImageLoaders.Elf
+namespace Reko.ImageLoaders.Elf.Relocators
 {
     public class M68kRelocator : ElfRelocator32
     {

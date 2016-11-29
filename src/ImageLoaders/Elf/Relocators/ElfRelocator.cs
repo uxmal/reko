@@ -25,7 +25,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Reko.ImageLoaders.Elf
+namespace Reko.ImageLoaders.Elf.Relocators
 {
     public abstract class ElfRelocator
     {
