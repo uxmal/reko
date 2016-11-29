@@ -6,24 +6,20 @@
 
 void deregister_tm_clones()
 {
-	if (false)
+	if (false && 0x00 != 0x00)
 	{
-		<anonymous> * a0_32 = null;
-		if (a0_32 != null)
-		{
-			word32 a7_39;
-			word32 a6_40;
-			word32 d0_41;
-			byte CVZN_42;
-			byte CVZNX_43;
-			word32 d1_44;
-			byte C_45;
-			word32 a0_46;
-			byte ZN_47;
-			byte V_48;
-			byte Z_49;
-			a0_32();
-		}
+		word32 a7_39;
+		word32 a6_40;
+		word32 d0_41;
+		byte CVZN_42;
+		byte CVZNX_43;
+		word32 d1_44;
+		byte C_45;
+		word32 a0_46;
+		byte ZN_47;
+		byte V_48;
+		byte Z_49;
+		null();
 	}
 	return;
 }
@@ -34,24 +30,20 @@ void register_tm_clones()
 	if (true)
 		d0_11 = 0x01;
 	int32 d0_15 = d0_11 >> 0x01;
-	if (d0_15 != 0x00)
+	if (d0_15 != 0x00 && 0x00 != 0x00)
 	{
-		<anonymous> * a0_38 = null;
-		if (a0_38 != null)
-		{
-			word32 a7_49;
-			word32 a6_50;
-			word32 d0_51;
-			byte CVZN_52;
-			byte CVZNX_53;
-			byte N_54;
-			byte Z_55;
-			word32 a0_56;
-			byte ZN_57;
-			byte C_58;
-			byte V_59;
-			a0_38();
-		}
+		word32 a7_49;
+		word32 a6_50;
+		word32 d0_51;
+		byte CVZN_52;
+		byte CVZNX_53;
+		byte N_54;
+		byte Z_55;
+		word32 a0_56;
+		byte ZN_57;
+		byte C_58;
+		byte V_59;
+		null();
 	}
 	return;
 }
@@ -61,7 +53,7 @@ void __do_global_dtors_aux(word32 d2)
 	if (*&globals->b80002724 == 0x00)
 	{
 		uint32 d0_100 = *&globals->dw80002726;
-		Eq_323 a2_101[] = globals->a80002714;
+		Eq_322 a2_101[] = globals->a80002714;
 		if (0x00 - d0_100 > 0x00)
 		{
 			do
@@ -87,8 +79,7 @@ void __do_global_dtors_aux(word32 d2)
 			} while (0x00 - d0_100 > 0x00);
 		}
 		deregister_tm_clones();
-		<anonymous> * a0_61 = null;
-		if (a0_61 != null)
+		if (0x00 != 0x00)
 		{
 			word32 a7_85;
 			word32 a6_86;
@@ -104,7 +95,7 @@ void __do_global_dtors_aux(word32 d2)
 			byte VZ_96;
 			word32 a0_97;
 			byte CZ_98;
-			a0_61();
+			null();
 		}
 		*&globals->b80002724 = 0x01;
 	}
@@ -118,8 +109,7 @@ void call___do_global_dtors_aux()
 
 void frame_dummy()
 {
-	<anonymous> * a0_7 = null;
-	if (a0_7 != null)
+	if (0x00 != 0x00)
 	{
 		word32 a7_83;
 		word32 a6_84;
@@ -133,33 +123,31 @@ void frame_dummy()
 		word32 d0_92;
 		byte CVZNX_93;
 		byte N_94;
-		a0_7();
+		null();
 	}
-	word32 * a0_28 = &globals->dw8000271C;
-	if (*a0_28 != 0x00)
+	if (*&globals->dw8000271C != 0x00 && 0x00 != 0x00)
 	{
-		<anonymous> * a1_55 = null;
-		if (a1_55 != null)
-		{
-			word32 a7_64;
-			word32 a6_65;
-			word32 a0_66;
-			byte ZN_67;
-			byte C_68;
-			byte V_69;
-			byte Z_70;
-			word32 a1_71;
-			byte CVZN_72;
-			word32 d0_73;
-			byte CVZNX_74;
-			byte N_75;
-			a1_55();
-			register_tm_clones();
-			return;
-		}
+		word32 a7_64;
+		word32 a6_65;
+		word32 a0_66;
+		byte ZN_67;
+		byte C_68;
+		byte V_69;
+		byte Z_70;
+		word32 a1_71;
+		byte CVZN_72;
+		word32 d0_73;
+		byte CVZNX_74;
+		byte N_75;
+		null();
+		register_tm_clones();
+		return;
 	}
-	register_tm_clones();
-	return;
+	else
+	{
+		register_tm_clones();
+		return;
+	}
 }
 
 void call_frame_dummy()
@@ -221,10 +209,10 @@ void main()
 	return;
 }
 
-void _sin(real64 rArg04, real64 rArg0C, Eq_232 tArg14)
+void _sin(real64 rArg04, real64 rArg0C, Eq_231 tArg14)
 {
-	Eq_243 rLoc0C_117 = DPB(rLoc0C, SLICE(rArg04, word32, 32), 32);
-	Eq_247 v9_28 = (real64) ((real80) rLoc0C_117 * rLoc0C_117);
+	Eq_242 rLoc0C_117 = DPB(rLoc0C, SLICE(rArg04, word32, 32), 32);
+	Eq_246 v9_28 = (real64) ((real80) rLoc0C_117 * rLoc0C_117);
 	int32 dwLoc20_132 = 0x01;
 	while ((real64) ((real80) rLoc0C_117 / rLoc14) >= rArg0C)
 	{

@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Types;
 using Reko.ImageLoaders.Elf;
 using Rhino.Mocks;
 using System;
@@ -57,6 +58,7 @@ namespace Reko.UnitTests.ImageLoaders.Elf
             this.sc = new ServiceContainer();
             var cfgSvc = mr.Stub<IConfigurationService>();
             this.arch = mr.Stub<IProcessorArchitecture>();
+            arch.Stub(a => a.PointerType).Return(PrimitiveType.Pointer32);
             cfgSvc.Stub(c => c.GetArchitecture("x86-protected-32")).Return(arch);
             cfgSvc.Stub(c => c.GetArchitecture("mips-be-32")).Return(arch);
             sc.AddService<IConfigurationService>(cfgSvc);

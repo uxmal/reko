@@ -5317,14 +5317,14 @@ void _PROCEDURE_LINKAGE_TABLE_()
 {
 _PROCEDURE_LINKAGE_TABLE__entry:
 l00027C38:
+l00027C38:
 _PROCEDURE_LINKAGE_TABLE__exit:
 }
 
 void fn00027C68()
 {
-fn00027C68_entry:
-l00027C68:
-fn00027C68_exit:
+	_PROCEDURE_LINKAGE_TABLE_();
+	return;
 }
 
 void fn00027C74()
@@ -5347,9 +5347,8 @@ void fn00027C8C()
 
 void fn00027C98()
 {
-fn00027C98_entry:
-l00027C98:
-fn00027C98_exit:
+	_PROCEDURE_LINKAGE_TABLE_();
+	return;
 }
 
 void fn00027CA4()

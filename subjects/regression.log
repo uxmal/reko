@@ -37,43 +37,13 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
    at Reko.Structure.StructureAnalysis.Execute() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 152
    at Reko.Structure.StructureAnalysis.Structure() in D:\dev\uxmal\reko\master\src\Decompiler\Structure\StructureAnalysis.cs:line 69
    at Reko.DecompilerDriver.StructureProgram() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 532
-00400238: error: Failed to write global variable g_t400238.
-    Index was outside the bounds of the array.
-       at Reko.Core.MemoryArea.ReadBeInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 352
-   at Reko.Core.MemoryArea.ReadBeUInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 506
-   at Reko.Core.MemoryArea.ReadBe(Byte[] abImage, Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 233
-   at Reko.Core.MemoryArea.ReadBe(Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 171
-   at Reko.Core.ImageReader.ReadBe(PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 205
-   at Reko.Core.BeImageReader.Read(PrimitiveType dataType) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 581
-   at Reko.Core.Output.GlobalDataWriter.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 213
-   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 49
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 300
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 58
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
 100007E0: warning: Expected sizes of arrays to have been determined by now
 1000002C: warning: Expected sizes of arrays to have been determined by now
-00400238: error: Failed to write global variable g_t400238.
-    Index was outside the bounds of the array.
-       at Reko.Core.MemoryArea.ReadBeInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 352
-   at Reko.Core.MemoryArea.ReadBeUInt32(Byte[] abImage, Int64 off) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 506
-   at Reko.Core.MemoryArea.ReadBe(Byte[] abImage, Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 233
-   at Reko.Core.MemoryArea.ReadBe(Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 171
-   at Reko.Core.ImageReader.ReadBe(PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 205
-   at Reko.Core.BeImageReader.Read(PrimitiveType dataType) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 581
-   at Reko.Core.Output.GlobalDataWriter.VisitPointer(Pointer ptr) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 213
-   at Reko.Core.Types.Pointer.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\Pointer.cs:line 49
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 300
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 58
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
 1000002C: warning: Expected sizes of arrays to have been determined by now
 100007E0: warning: Expected sizes of arrays to have been determined by now
 
 === sparc-rtems-unprotoize
 *** sparc-rtems-unprotoize
-00027C38: error: Rewriting SPARC opcode 'unimp' is not supported yet.
-00027C38: error: Rewriting SPARC opcode 'unimp' is not supported yet.
-00027C38: error: Rewriting SPARC opcode 'unimp' is not supported yet.
-0001520C: error: Rewriting SPARC opcode 'unimp' is not supported yet.
 00011698: error: An error occurred while processing instruction at address 00011698.
     The given key was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -2275,7 +2245,7 @@ frame_dummy: error: An error occurred during data flow analysis.
    at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-0000000000400668: error: An error occurred while processing the statement branch 0x0000000000600E00 - r12_7 >> 0x0000000000000003 == 0x0000000000000000 l0000000000400686.
+0000000000400668: error: An error occurred while processing the statement branch 0x0000000000600E00 - 0x0000000000600DF8 >> 0x0000000000000003 == 0x0000000000000000 l0000000000400686.
     Pulling difference ptr64 and ptr64
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 236
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
@@ -2331,9 +2301,7 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 : warning: Type transformer has looped 51 times, quitting prematurely.
 0000288D: warning: Expected sizes of arrays to have been determined by now
-0000288D: warning: Expected sizes of arrays to have been determined by now
 00003EAC: warning: Expected sizes of arrays to have been determined by now
-0000288D: warning: Expected sizes of arrays to have been determined by now
 0000288D: warning: Expected sizes of arrays to have been determined by now
 00003EAC: warning: Expected sizes of arrays to have been determined by now
 
@@ -2381,9 +2349,7 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 : warning: Type transformer has looped 51 times, quitting prematurely.
 000028C5: warning: Expected sizes of arrays to have been determined by now
-000028C5: warning: Expected sizes of arrays to have been determined by now
 00003E5C: warning: Expected sizes of arrays to have been determined by now
-000028C5: warning: Expected sizes of arrays to have been determined by now
 000028C5: warning: Expected sizes of arrays to have been determined by now
 00003E5C: warning: Expected sizes of arrays to have been determined by now
 
@@ -2421,9 +2387,7 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 : warning: Type transformer has looped 51 times, quitting prematurely.
 00002B15: warning: Expected sizes of arrays to have been determined by now
-00002B15: warning: Expected sizes of arrays to have been determined by now
 00004134: warning: Expected sizes of arrays to have been determined by now
-00002B15: warning: Expected sizes of arrays to have been determined by now
 00002B15: warning: Expected sizes of arrays to have been determined by now
 00004134: warning: Expected sizes of arrays to have been determined by now
 
@@ -2497,9 +2461,7 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 : warning: Type transformer has looped 51 times, quitting prematurely.
 000028B1: warning: Expected sizes of arrays to have been determined by now
-000028B1: warning: Expected sizes of arrays to have been determined by now
 00003ED0: warning: Expected sizes of arrays to have been determined by now
-000028B1: warning: Expected sizes of arrays to have been determined by now
 000028B1: warning: Expected sizes of arrays to have been determined by now
 00003ED0: warning: Expected sizes of arrays to have been determined by now
 
@@ -2538,9 +2500,7 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 : warning: Type transformer has looped 51 times, quitting prematurely.
 00002BED: warning: Expected sizes of arrays to have been determined by now
-00002BED: warning: Expected sizes of arrays to have been determined by now
 00003DCC: warning: Expected sizes of arrays to have been determined by now
-00002BED: warning: Expected sizes of arrays to have been determined by now
 00002BED: warning: Expected sizes of arrays to have been determined by now
 00003DCC: warning: Expected sizes of arrays to have been determined by now
 
@@ -2579,15 +2539,12 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 : warning: Type transformer has looped 51 times, quitting prematurely.
 00002815: warning: Expected sizes of arrays to have been determined by now
-00002815: warning: Expected sizes of arrays to have been determined by now
 00003DAC: warning: Expected sizes of arrays to have been determined by now
-00002815: warning: Expected sizes of arrays to have been determined by now
 00002815: warning: Expected sizes of arrays to have been determined by now
 00003DAC: warning: Expected sizes of arrays to have been determined by now
 
 === BENCHFN.dcproject
 *** BENCHFN.dcproject
-0800:0000: warning: The user-defined procedure at address 0800:0000 did not have a signature.
 0800:1140: warning: Can't determine size of jump vector; probing only one entry.
 0800:17B2: warning: Can't determine size of jump vector; probing only one entry.
 0800:1737: error: Indirect call rewriter encountered an error while processing the statement call SEQ(cs_40, Mem149[ss_43:bp_50 + 0x0004:word16]) (retsize: 2; depth: 2)	uses: al_55,ax_142,bh_35,bl_36,bLoc2B,bp_50,bx_37,C_59,cs_40,cx_44,CZ_34,D_42,di_143,ds_41,es_46,S_38,SCZO_94,si_54,SO_39,sp_148,ss_43,SZO_146,wLoc02_4,wLoc24,wLoc28_145,wLoc2A_14,wLoc2E_10,wLoc30_13,wLoc32_18,Z_95	defs: al_160,ax_165,bh_172,bl_171,bp_153,bx_170,C_163,cs_166,cx_167,CZ_173,D_159,di_157,ds_161,es_158,S_169,SCZO_155,si_156,SO_168,sp_152,ss_154,SZO_162,Z_164.
@@ -2639,7 +2596,6 @@ fn0800_1099: warning: Structure analysis stopped making progress, quitting. Plea
 
 === BENCHFN.EXE
 *** BENCHFN.EXE
-0800:0000: warning: The user-defined procedure at address 0800:0000 did not have a signature.
 0800:1140: warning: Can't determine size of jump vector; probing only one entry.
 0800:17B2: warning: Can't determine size of jump vector; probing only one entry.
 0800:1737: error: Indirect call rewriter encountered an error while processing the statement call SEQ(cs_40, Mem149[ss_43:bp_50 + 0x0004:word16]) (retsize: 2; depth: 2)	uses: al_55,ax_142,bh_35,bl_36,bLoc2B,bp_50,bx_37,C_59,cs_40,cx_44,CZ_34,D_42,di_143,ds_41,es_46,S_38,SCZO_94,si_54,SO_39,sp_148,ss_43,SZO_146,wLoc02_4,wLoc24,wLoc28_145,wLoc2A_14,wLoc2E_10,wLoc30_13,wLoc32_18,Z_95	defs: al_160,ax_165,bh_172,bl_171,bp_153,bx_170,C_163,cs_166,cx_167,CZ_173,D_159,di_157,ds_161,es_158,S_169,SCZO_155,si_156,SO_168,sp_152,ss_154,SZO_162,Z_164.
@@ -2758,16 +2714,6 @@ fn0800_1099: warning: Structure analysis stopped making progress, quitting. Plea
    at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
    at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
    at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
-02AA: error: An error occurred while processing the statement word16 r4_86 = r4_62 - 0x00B2 - 0x53E8 & ~0x0001.
-    Pulling difference cu16 and ptr16
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitDeclaration(Declaration decl) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 157
-   at Reko.Core.Code.Declaration.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Declaration.cs:line 49
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 02DC: error: An error occurred while processing the statement branch r4_101 - 0x0038 - r2_116 >u 0x0000 l02D8.
     Pulling difference cu16 and (ptr (struct 0002 (0 word16 w0000)))
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 248
@@ -2779,7 +2725,7 @@ fn0800_1099: warning: Structure analysis stopped making progress, quitting. Plea
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 02DE: error: An error occurred while processing the statement Mem124[r4_62 - 0x003E + 0x0000:byte] = 0x0A01.
-    Not handling (ptr (struct (0 T_205 t0000))) and (union (cu16 u0) (ptr16 u1)) yet
+    Not handling (ptr (struct (0 T_217 t0000))) and (union (cu16 u0) (ptr16 u1)) yet
        at Reko.Typing.ExpressionTypeDescender.PushSubtrahendDataType(DataType dtDiff, DataType dtMin) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 381
    at Reko.Typing.ExpressionTypeDescender.VisitBinaryExpression(BinaryExpression binExp, TypeVariable tv) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\ExpressionTypeDescender.cs:line 218
    at Reko.Core.Expressions.BinaryExpression.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 54
@@ -2788,58 +2734,6 @@ fn0800_1099: warning: Structure analysis stopped making progress, quitting. Plea
    at Reko.Core.Expressions.MemoryAccess.Accept[T,C](ExpressionVisitor`2 v, C context) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 57
    at Reko.Typing.TypeCollector.VisitStore(Store store) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 211
    at Reko.Core.Code.Store.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 90
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-20B0: error: An error occurred while processing the statement branch 0x54E8 - (0x54E2 - 0x54F4) >= 0x0000 l20BA.
-    Pulling difference ptr16 and ptr16
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 236
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 84
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-20E4: error: An error occurred while processing the statement branch 0x54E6 - r0_610 <= 0x0000 l20EE.
-    Pulling difference ptr16 and ptr16
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 236
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-20FC: error: An error occurred while processing the statement branch 0x54E4 - 0x54EA >= 0x0000 l2106.
-    Pulling difference ptr16 and ptr16
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 236
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-22C4: error: An error occurred while processing the statement branch 0x54C8 - 0x54D2 == 0x0000 l22EA.
-    Pulling difference ptr16 and ptr16
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 236
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
-   at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-25FE: error: An error occurred while processing the statement branch 0x5876 - r2_1006 <= 0x0000 l2604.
-    Pulling difference ptr16 and ptr16
-       at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 236
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 83
-   at Reko.Core.Expressions.BinaryExpression.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\BinaryExpression.cs:line 59
-   at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
-   at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
 fn1DAE: error: An error occurred while rewriting procedure to high-level language.
     The method or operation is not implemented.
@@ -2938,7 +2832,22 @@ fn1DAE: error: An error occurred while rewriting procedure to high-level languag
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
 0000487E: warning: Expected sizes of arrays to have been determined by now
 00004D3E: warning: Expected sizes of arrays to have been determined by now
-00005424: error: Failed to write global variable g_t5424.
+00005450: warning: Expected sizes of arrays to have been determined by now
+00005464: warning: Expected sizes of arrays to have been determined by now
+0000550A: warning: Expected sizes of arrays to have been determined by now
+00005668: warning: Expected sizes of arrays to have been determined by now
+00005874: error: Failed to write global variable g_u5874.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 323
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 79
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
+000058C2: warning: Expected sizes of arrays to have been determined by now
+00005926: warning: Expected sizes of arrays to have been determined by now
+0000598A: warning: Expected sizes of arrays to have been determined by now
+00005A2C: warning: Expected sizes of arrays to have been determined by now
+00005A3E: warning: Expected sizes of arrays to have been determined by now
+00005A66: warning: Expected sizes of arrays to have been determined by now
+0000542C: error: Failed to write global variable g_t542C.
     The method or operation is not implemented.
        at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 323
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 79
@@ -2946,28 +2855,9 @@ fn1DAE: error: An error occurred while rewriting procedure to high-level languag
    at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 53
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 300
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 58
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 182
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 53
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
-00005450: warning: Expected sizes of arrays to have been determined by now
-00005464: warning: Expected sizes of arrays to have been determined by now
-000054C2: error: Failed to write global variable g_t54C2.
-    Index was outside the bounds of the array.
-       at Reko.Core.MemoryArea.ReadLe(Byte[] abImage, Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 210
-   at Reko.Core.MemoryArea.ReadLe(Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 163
-   at Reko.Core.ImageReader.ReadLe(PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 183
-   at Reko.Core.LeImageReader.Read(PrimitiveType dataType) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 535
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 202
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 85
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 300
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 58
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
-0000550A: warning: Expected sizes of arrays to have been determined by now
-00005668: warning: Expected sizes of arrays to have been determined by now
-000058C2: warning: Expected sizes of arrays to have been determined by now
-00005926: warning: Expected sizes of arrays to have been determined by now
-0000598A: warning: Expected sizes of arrays to have been determined by now
-00005A2C: warning: Expected sizes of arrays to have been determined by now
-00005A3E: warning: Expected sizes of arrays to have been determined by now
-00005A66: warning: Expected sizes of arrays to have been determined by now
 0000001E: error: Failed to write global variable g_t001E.
     The method or operation is not implemented.
        at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 323
@@ -3057,7 +2947,7 @@ fn1DAE: error: An error occurred while rewriting procedure to high-level languag
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
 0000487E: warning: Expected sizes of arrays to have been determined by now
 00004D3E: warning: Expected sizes of arrays to have been determined by now
-00005424: error: Failed to write global variable g_t5424.
+0000542C: error: Failed to write global variable g_t542C.
     The method or operation is not implemented.
        at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 323
    at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 79
@@ -3065,22 +2955,18 @@ fn1DAE: error: An error occurred while rewriting procedure to high-level languag
    at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 53
    at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 300
    at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 58
+   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 182
+   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 53
    at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
 00005450: warning: Expected sizes of arrays to have been determined by now
 00005464: warning: Expected sizes of arrays to have been determined by now
-000054C2: error: Failed to write global variable g_t54C2.
-    Index was outside the bounds of the array.
-       at Reko.Core.MemoryArea.ReadLe(Byte[] abImage, Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 210
-   at Reko.Core.MemoryArea.ReadLe(Int64 imageOffset, PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\MemoryArea.cs:line 163
-   at Reko.Core.ImageReader.ReadLe(PrimitiveType type) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 183
-   at Reko.Core.LeImageReader.Read(PrimitiveType dataType) in D:\dev\uxmal\reko\master\src\Core\ImageReader.cs:line 535
-   at Reko.Core.Output.GlobalDataWriter.VisitPrimitive(PrimitiveType pt) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 202
-   at Reko.Core.Types.PrimitiveType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\PrimitiveType.cs:line 85
-   at Reko.Core.Output.GlobalDataWriter.VisitStructure(StructureType str) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 300
-   at Reko.Core.Types.StructureType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\StructureType.cs:line 58
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
 0000550A: warning: Expected sizes of arrays to have been determined by now
 00005668: warning: Expected sizes of arrays to have been determined by now
+00005874: error: Failed to write global variable g_u5874.
+    The method or operation is not implemented.
+       at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 323
+   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 79
+   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
 000058C2: warning: Expected sizes of arrays to have been determined by now
 00005926: warning: Expected sizes of arrays to have been determined by now
 0000598A: warning: Expected sizes of arrays to have been determined by now
@@ -3292,7 +3178,7 @@ frame_dummy: error: An error occurred during data flow analysis.
    at Reko.Typing.TypeCollector.VisitBranch(Branch branch) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 135
    at Reko.Core.Code.Branch.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\Branch.cs:line 55
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-0000000000400586: error: An error occurred while processing the statement branch 0x0000000000600E18 - r12_19 >> 0x0000000000000003 == 0x0000000000000000 l00000000004005A6.
+0000000000400586: error: An error occurred while processing the statement branch 0x0000000000600E18 - 0x0000000000600E10 >> 0x0000000000000003 == 0x0000000000000000 l00000000004005A6.
     Pulling difference ptr64 and ptr64
        at Reko.Core.Expressions.ExpressionTypeAscenderBase.PullDiffDataType(DataType dtLeft, DataType dtRight) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 236
    at Reko.Core.Expressions.ExpressionTypeAscenderBase.VisitBinaryExpression(BinaryExpression binExp) in D:\dev\uxmal\reko\master\src\Core\Expressions\ExpressionTypeAscenderBase.cs:line 96
@@ -3320,7 +3206,6 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
 === PP.EXE
 *** PP.EXE
 Borland C v3 runtime detected
-0800:0000: warning: The user-defined procedure at address 0800:0000 did not have a signature.
 0800:98F9: warning: Can't determine size of jump vector; probing only one entry.
 0800:8BC5: warning: Procedure fn0800_8BC2 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:9F9D: warning: Procedure fn0800_9F89 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.

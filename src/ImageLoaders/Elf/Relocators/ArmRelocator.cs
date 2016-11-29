@@ -18,18 +18,21 @@
  */
 #endregion
 
+using Reko.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Reko.Core;
 
-namespace Reko.ImageLoaders.Elf
+namespace Reko.ImageLoaders.Elf.Relocators
 {
-    public class M68kRelocator : ElfRelocator32
+    public class ArmRelocator : ElfRelocator32
     {
-        public M68kRelocator(ElfLoader32 loader) : base(loader)
+        private ElfLoader32 loader;
+
+        public ArmRelocator(ElfLoader32 loader) : base(loader)
         {
+            this.loader = loader;
         }
 
         public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, Elf32_Rela rela)

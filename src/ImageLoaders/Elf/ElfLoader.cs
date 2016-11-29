@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Lib;
 using Reko.Core.Types;
+using Reko.ImageLoaders.Elf.Relocators;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -72,6 +73,7 @@ namespace Reko.ImageLoaders.Elf
         public const uint PF_W = 2;
         public const uint PF_X = 1;
 
+        protected ElfMachine machine;
         protected ElfImageLoader imgLoader;
         protected Address m_uPltMin;
         protected Address m_uPltMax;
@@ -81,6 +83,7 @@ namespace Reko.ImageLoaders.Elf
         protected ElfLoader(ElfImageLoader imgLoader, ushort machine, byte endianness)
         {
             this.imgLoader = imgLoader;
+            this.machine = (ElfMachine) machine;
             this.Architecture = CreateArchitecture(machine, endianness);
             this.Symbols = new Dictionary<ElfSection, List<ElfSymbol>>();
             this.Sections = new List<ElfSection>();
@@ -933,7 +936,11 @@ namespace Reko.ImageLoaders.Elf
                     if (symbol.Type == SymbolType.Procedure)
                     {
                         //$TODO: look up function signature.
-                        var gotSym = new ImageSymbol(addrGot, symbol.Name + "_GOT", new Pointer(new CodeType(), 4));
+                        var gotSym = new ImageSymbol(addrGot, symbol.Name + "_GOT", new Pointer(new CodeType(), 8))
+                        {
+                            Type = SymbolType.Data,
+                            Size = (uint) Architecture.PointerType.Size
+                        };
                         symbols[addrGot] = gotSym;
                         Debug.Print("Found GOT entry at {0}, changing symbol at {1}", gotSym, symbol);
                     }
@@ -1102,12 +1109,12 @@ namespace Reko.ImageLoaders.Elf
             return base.CreateRelocator(machine);
         }
 
-        public ImageSegmentRenderer CreateRenderer(ElfSection shdr)
+        public ImageSegmentRenderer CreateRenderer(ElfSection shdr, ElfMachine machine)
         {
             switch (shdr.Type)
             {
             case SectionHeaderType.SHT_DYNAMIC:
-                return new DynamicSectionRenderer32(this, shdr);
+                return new DynamicSectionRenderer32(this, shdr, machine);
             case SectionHeaderType.SHT_REL:
                 return new RelSegmentRenderer(this, shdr);
             case SectionHeaderType.SHT_RELA:
@@ -1310,7 +1317,7 @@ namespace Reko.ImageLoaders.Elf
                     {
                         Size = (uint)section.Size
                     });
-                    seg.Designer = CreateRenderer(section);
+                    seg.Designer = CreateRenderer(section, machine);
                 } else
                 {
                     //$TODO: warn
@@ -1482,7 +1489,11 @@ namespace Reko.ImageLoaders.Elf
                     if (symbol.Type == SymbolType.Procedure)
                     {
                         //$TODO: look up function signature.
-                        var gotSym = new ImageSymbol(addrGot, symbol.Name + "_GOT",  new Pointer(new CodeType(), 4));
+                        var gotSym = new ImageSymbol(addrGot, symbol.Name + "_GOT", new Pointer(new CodeType(), 4))
+                        {
+                            Type = SymbolType.Data,
+                            Size = (uint) Architecture.PointerType.Size
+                        };
                         symbols[addrGot] = gotSym;
                         Debug.Print("Found GOT entry at {0}, changing symbol at {1}", gotSym, symbol);
                     }
