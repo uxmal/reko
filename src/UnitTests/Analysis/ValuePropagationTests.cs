@@ -905,5 +905,18 @@ ProcedureBuilder_exit:
 
             RunFileTest(m, "Analysis/VpFCmp.txt");
         }
+
+        [Test(Description = "Should be able to simplify address +/- constant")]
+        public void VpAddress32Const()
+        {
+            var m = new ProcedureBuilder("VpAddress32Const");
+            var r1 = m.Reg32("r1", 1);
+            m.Assign(r1, Address.Ptr32(0x00123400));
+            m.Assign(r1, m.Load(r1.DataType, m.IAdd(r1, 0x56)));
+            m.Return();
+
+            mr.ReplayAll();
+            RunFileTest(m, "Analysis/VpAddress32Const.txt");
+        }
     }
 }

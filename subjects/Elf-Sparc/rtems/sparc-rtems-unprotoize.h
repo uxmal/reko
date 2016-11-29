@@ -2979,8 +2979,8 @@ T_743: (in Mem25[o0 + 8:word32] : word32)
   OrigDataType: word32
 T_744: (in o0 : word32)
   Class: Eq_744
-  DataType: (ptr (struct (0 (arr T_8481) a0000)))
-  OrigDataType: (ptr (struct (0 (arr T_8481) a0000)))
+  DataType: (ptr (struct (0 (arr T_8485) a0000)))
+  OrigDataType: (ptr (struct (0 (arr T_8485) a0000)))
 T_745: (in o1 : word32)
   Class: Eq_156
   DataType: (ptr (struct (0 T_750 t0000)))
@@ -33925,8 +33925,24 @@ T_8480: (in _PROCEDURE_LINKAGE_TABLE_() : void)
   Class: Eq_8480
   DataType: 
   OrigDataType: 
-T_8481:
-  Class: Eq_8481
+T_8481: (in _PROCEDURE_LINKAGE_TABLE_ : ptr32)
+  Class: Eq_8396
+  DataType: 
+  OrigDataType: 
+T_8482: (in _PROCEDURE_LINKAGE_TABLE_() : void)
+  Class: Eq_8482
+  DataType: 
+  OrigDataType: 
+T_8483: (in _PROCEDURE_LINKAGE_TABLE_ : ptr32)
+  Class: Eq_8396
+  DataType: 
+  OrigDataType: 
+T_8484: (in _PROCEDURE_LINKAGE_TABLE_() : void)
+  Class: Eq_8484
+  DataType: 
+  OrigDataType: 
+T_8485:
+  Class: Eq_8485
   DataType: (struct 000C (0 T_792 t0000))
   OrigDataType: (struct 000C (0 T_792 t0000))
 */

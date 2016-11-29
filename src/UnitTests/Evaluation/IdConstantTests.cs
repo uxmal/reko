@@ -96,5 +96,21 @@ namespace Reko.UnitTests.Evaluation
             Assert.AreEqual("00000567", e.ToString());
             Assert.AreEqual("(ptr int32)", e.DataType.ToString());
         }
+
+        [Test]
+        public void Idc_ConstantAddress()
+        {
+            var intptr = new TypeReference("INTPTR", new Pointer(PrimitiveType.Int32, 4));
+            Identifier edx = new Identifier("edx", intptr, Registers.edx);
+
+            var ctx = new SymbolicEvaluationContext(null, null);
+            ctx.SetValue(edx, Address.Ptr32(0x00123400));
+
+            IdConstant ic = new IdConstant(ctx, new Unifier(null));
+            Assert.IsTrue(ic.Match(edx));
+            Expression e = ic.Transform();
+            Assert.AreEqual("00123400", e.ToString());
+            Assert.AreEqual("(ptr int32)", e.DataType.ToString());
+        }
     }
 }

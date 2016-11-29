@@ -269,7 +269,7 @@ namespace Reko.Arch.Pdp11
                         var offset = (short)memOp.EffectiveAddress;
                         var addrBase = (long) rtlCluster.Address.ToLinear();
                         var addr = Address.Ptr16((ushort)(2 + addrBase + offset));
-                        return addr;
+                        return emitter.Load(memOp.Width, addr);
                     }
                     else
                     {

@@ -2,6 +2,7 @@
 
 typedef void (*PVFV)(void);
 typedef int time_t;
+typedef struct _iob FILE;
 
 // Functions
 
@@ -15,8 +16,15 @@ int atol(char *);
 time_t time(time_t * ptime);
 void srand(unsigned int);
 int _ftol([[reko::arg(fpu)]]double);
+double floor(double);
 int printf(char *, ...);
+int scanf(char * format, ...);
 int sprintf(char *, char *, ...);
+FILE * fopen(const char * file, const char * mode);
+int fprintf(FILE * fp, char * format,...);
+int fscanf(FILE * fp, char * format,...);
+size_t fread(void *buffer, size_t size, size_t count, FILE *stream);
+int fclose(FILE * fp);
 double _CIpow([[reko::arg(fpu)]]double, [[reko::arg(fpu)]] double); 
 double _CIacos([[reko::arg(fpu)]]double);
 char * strncpy(char *,char *,size_t);

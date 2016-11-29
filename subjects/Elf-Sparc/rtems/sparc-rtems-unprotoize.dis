@@ -83,7 +83,7 @@ void __do_global_dtors_aux(word32 o7)
 
 // MayUse:  o7
 // LiveOut:
-// Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l7 o0
+// Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l7 o0 o7
 // Preserved: o1 o2 o3 o4 o5 o7 sp
 __do_global_dtors_aux_entry:
 // DataOut: o7
@@ -205,7 +205,7 @@ l000115C4:
 __do_global_dtors_aux_exit:
 // DataOut:
 // DataOut (flags): 
-// SymbolicIn: sp:fp i0:o0 i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 o0:<invalid> l7:<invalid> o1:o1 o2:o2 g0:<invalid> o3:o3 o4:o4 o5:o5 o7:o7 l0:<invalid>
+// SymbolicIn: sp:fp i0:o0 i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 o0:<invalid> l7:<invalid> o1:o1 o2:o2 g0:<invalid> o3:o3 o4:o4 o5:o5 o7:<invalid> l0:<invalid>
 
 l00011590_ds_f:
 // DataOut: l7
@@ -1838,7 +1838,7 @@ word32 visit_each_hash_node(word32 o0)
 
 // MayUse:  o0
 // LiveOut: l0
-// Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 o0
+// Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l1 o0 o7
 // Preserved: o1 o2 o3 o4 o5 o7 sp
 visit_each_hash_node_entry:
 // DataOut: l0 o0
@@ -1948,7 +1948,7 @@ l00011C34:
 visit_each_hash_node_exit:
 // DataOut: l0
 // DataOut (flags): 
-// SymbolicIn: sp:fp i0:<invalid> i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 o0:<invalid> g0:<invalid> l1:0x00003000 o1:o1 o2:o2 o3:o3 o4:o4 o5:o5 o7:o7 l0:<invalid>
+// SymbolicIn: sp:fp i0:<invalid> i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 o0:<invalid> g0:<invalid> l1:0x00003000 o1:o1 o2:o2 o3:o3 o4:o4 o5:o5 o7:<invalid> l0:<invalid>
 
 
 
@@ -13859,7 +13859,7 @@ word32 __do_global_ctors_aux(word32 o7)
 
 // MayUse:  o7
 // LiveOut: l0
-// Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l7 o0
+// Trashed: NZVC g0 i0 i1 i2 i3 i4 i5 i6 i7 l0 l7 o0 o7
 // Preserved: o1 o2 o3 o4 o5 o7 sp
 __do_global_ctors_aux_entry:
 // DataOut: o7
@@ -13938,7 +13938,7 @@ l00016EB4:
 __do_global_ctors_aux_exit:
 // DataOut: l0
 // DataOut (flags): 
-// SymbolicIn: sp:fp i0:o0 i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 o0:<invalid> l7:<invalid> o1:o1 o2:o2 g0:<invalid> l0:<invalid> o3:o3 o4:o4 o5:o5 o7:o7
+// SymbolicIn: sp:fp i0:o0 i1:o1 i2:o2 i3:o3 i4:o4 i5:o5 i6:fp i7:o7 o0:<invalid> l7:<invalid> o1:o1 o2:o2 g0:<invalid> l0:<invalid> o3:o3 o4:o4 o5:o5 o7:<invalid>
 
 
 
@@ -14030,6 +14030,11 @@ void _PROCEDURE_LINKAGE_TABLE_()
 // Trashed:
 // Preserved:
 // Terminates process
+l00027C38:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
 _PROCEDURE_LINKAGE_TABLE__exit:
 // DataOut:
 // DataOut (flags): 
@@ -14055,20 +14060,28 @@ void fn00027C68()
 // Trashed:
 // Preserved:
 // Terminates process
-fn00027C68_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
 fn00027C68_entry:
-// DataOut:
+// DataOut: o7
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
 l00027C68:
-// DataOut:
+// DataOut: o7
 // DataOut (flags): 
 // SymbolicIn: sp:fp
+
+l00027C6C_thunk__PROCEDURE_LINKAGE_TABLE_:
+	_PROCEDURE_LINKAGE_TABLE_()
+	return
+// DataOut: o7
+// DataOut (flags): 
+// SymbolicIn: sp:fp g1:0x0000C000
+// Terminates process
+
+fn00027C68_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
 
 
 
@@ -14179,11 +14192,6 @@ void fn00027C98()
 // Trashed:
 // Preserved:
 // Terminates process
-fn00027C98_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
 fn00027C98_entry:
 // DataOut:
 // DataOut (flags): 
@@ -14193,6 +14201,19 @@ l00027C98:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
+
+l00027C9C_thunk__PROCEDURE_LINKAGE_TABLE_:
+	_PROCEDURE_LINKAGE_TABLE_()
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp g1:0x00018000
+// Terminates process
+
+fn00027C98_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
 
 
 
@@ -14944,7 +14965,7 @@ l00027DAC:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
-l00027DAC_thunk__PROCEDURE_LINKAGE_TABLE_:
+l00027DB0_thunk__PROCEDURE_LINKAGE_TABLE_:
 	_PROCEDURE_LINKAGE_TABLE_()
 	return
 // DataOut: i2 i6 l0 l1 l3 l4 l6 l7 o0 o3
