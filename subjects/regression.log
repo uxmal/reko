@@ -50,10 +50,6 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
 
 === sparc-rtems-unprotoize
 *** sparc-rtems-unprotoize
-00027C38: error: Rewriting SPARC opcode 'unimp' is not supported yet.
-00027C38: error: Rewriting SPARC opcode 'unimp' is not supported yet.
-00027C38: error: Rewriting SPARC opcode 'unimp' is not supported yet.
-0001520C: error: Rewriting SPARC opcode 'unimp' is not supported yet.
 00011698: error: An error occurred while processing instruction at address 00011698.
     The given key was not present in the dictionary.
        at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
@@ -1965,7 +1961,6 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
 
 === BENCHFN.dcproject
 *** BENCHFN.dcproject
-0800:0000: warning: The user-defined procedure at address 0800:0000 did not have a signature.
 0800:1140: warning: Can't determine size of jump vector; probing only one entry.
 0800:17B2: warning: Can't determine size of jump vector; probing only one entry.
 0800:1737: error: Indirect call rewriter encountered an error while processing the statement call SEQ(cs_40, Mem149[ss_43:bp_50 + 0x0004:word16]) (retsize: 2; depth: 2)	uses: al_55,ax_142,bh_35,bl_36,bLoc2B,bp_50,bx_37,C_59,cs_40,cx_44,CZ_34,D_42,di_143,ds_41,es_46,S_38,SCZO_94,si_54,SO_39,sp_148,ss_43,SZO_146,wLoc02_4,wLoc24,wLoc28_145,wLoc2A_14,wLoc2E_10,wLoc30_13,wLoc32_18,Z_95	defs: al_160,ax_165,bh_172,bl_171,bp_153,bx_170,C_163,cs_166,cx_167,CZ_173,D_159,di_157,ds_161,es_158,S_169,SCZO_155,si_156,SO_168,sp_152,ss_154,SZO_162,Z_164.
@@ -2017,7 +2012,6 @@ fn0800_1099: warning: Structure analysis stopped making progress, quitting. Plea
 
 === BENCHFN.EXE
 *** BENCHFN.EXE
-0800:0000: warning: The user-defined procedure at address 0800:0000 did not have a signature.
 0800:1140: warning: Can't determine size of jump vector; probing only one entry.
 0800:17B2: warning: Can't determine size of jump vector; probing only one entry.
 0800:1737: error: Indirect call rewriter encountered an error while processing the statement call SEQ(cs_40, Mem149[ss_43:bp_50 + 0x0004:word16]) (retsize: 2; depth: 2)	uses: al_55,ax_142,bh_35,bl_36,bLoc2B,bp_50,bx_37,C_59,cs_40,cx_44,CZ_34,D_42,di_143,ds_41,es_46,S_38,SCZO_94,si_54,SO_39,sp_148,ss_43,SZO_146,wLoc02_4,wLoc24,wLoc28_145,wLoc2A_14,wLoc2E_10,wLoc30_13,wLoc32_18,Z_95	defs: al_160,ax_165,bh_172,bl_171,bp_153,bx_170,C_163,cs_166,cx_167,CZ_173,D_159,di_157,ds_161,es_158,S_169,SCZO_155,si_156,SO_168,sp_152,ss_154,SZO_162,Z_164.
@@ -2698,7 +2692,6 @@ frame_dummy: error: An error occurred while rewriting procedure to high-level la
 === PP.EXE
 *** PP.EXE
 Borland C v3 runtime detected
-0800:0000: warning: The user-defined procedure at address 0800:0000 did not have a signature.
 0800:98F9: warning: Can't determine size of jump vector; probing only one entry.
 0800:8BC5: warning: Procedure fn0800_8BC2 previously had a return address of 4 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.
 0800:9F9D: warning: Procedure fn0800_9F89 previously had a return address of 2 bytes on the stack, but now seems to have a return address of 0 bytes on the stack.

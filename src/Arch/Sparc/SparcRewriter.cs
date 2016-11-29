@@ -189,6 +189,7 @@ namespace Reko.Arch.Sparc
                 case Opcode.udivcc: RewriteAluCc(emitter.UDiv, false); break;
                 case Opcode.umul: RewriteAlu(emitter.UMul, false); break;
                 case Opcode.umulcc: RewriteAluCc(emitter.UMul, false); break;
+                case Opcode.unimp: emitter.Invalid(); break;
                 case Opcode.xor: RewriteAlu(emitter.Xor, false); break;
                 }
                 yield return ric;

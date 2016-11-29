@@ -14030,6 +14030,11 @@ void _PROCEDURE_LINKAGE_TABLE_()
 // Trashed:
 // Preserved:
 // Terminates process
+l00027C38:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
+
 _PROCEDURE_LINKAGE_TABLE__exit:
 // DataOut:
 // DataOut (flags): 
@@ -14055,20 +14060,28 @@ void fn00027C68()
 // Trashed:
 // Preserved:
 // Terminates process
-fn00027C68_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
 fn00027C68_entry:
-// DataOut:
+// DataOut: o7
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
 l00027C68:
-// DataOut:
+// DataOut: o7
 // DataOut (flags): 
 // SymbolicIn: sp:fp
+
+l00027C6C_thunk__PROCEDURE_LINKAGE_TABLE_:
+	_PROCEDURE_LINKAGE_TABLE_()
+	return
+// DataOut: o7
+// DataOut (flags): 
+// SymbolicIn: sp:fp g1:0x0000C000
+// Terminates process
+
+fn00027C68_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
 
 
 
@@ -14179,11 +14192,6 @@ void fn00027C98()
 // Trashed:
 // Preserved:
 // Terminates process
-fn00027C98_exit:
-// DataOut:
-// DataOut (flags): 
-// SymbolicIn:
-
 fn00027C98_entry:
 // DataOut:
 // DataOut (flags): 
@@ -14193,6 +14201,19 @@ l00027C98:
 // DataOut:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
+
+l00027C9C_thunk__PROCEDURE_LINKAGE_TABLE_:
+	_PROCEDURE_LINKAGE_TABLE_()
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: sp:fp g1:0x00018000
+// Terminates process
+
+fn00027C98_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn:
 
 
 
@@ -14944,7 +14965,7 @@ l00027DAC:
 // DataOut (flags): 
 // SymbolicIn: sp:fp
 
-l00027DAC_thunk__PROCEDURE_LINKAGE_TABLE_:
+l00027DB0_thunk__PROCEDURE_LINKAGE_TABLE_:
 	_PROCEDURE_LINKAGE_TABLE_()
 	return
 // DataOut: i2 i6 l0 l1 l3 l4 l6 l7 o0 o3
