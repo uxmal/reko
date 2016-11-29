@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Gui.Windows.Controls;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -98,8 +99,11 @@ namespace Reko.Gui.Windows
             // Timer needs to be disabled now so we don't get more ticks.
             this.previewTimer.Enabled = false;
 
+            // Popup a sizeable tool window with a mixed code data control inside.
             var rcF = previewSpan.ContentExtent;
-            var pt = new System.Drawing.Point(100, (int)rcF.Bottom);
+            var rc = mixedCodeDataControl.ClientRectangle;
+            var ptScreen = mixedCodeDataControl.PointToScreen(
+                new System.Drawing.Point(100, (int)rcF.Bottom));
 
             var nested = new MixedCodeDataControl
             {
@@ -112,23 +116,26 @@ namespace Reko.Gui.Windows
             };
             nested.VScrollBar.Visible = false;
 
-            var frame = new Panel
+            var parentForm = this.mixedCodeDataControl.FindForm();
+            var frame = new Form
             {
                 AutoSize = false,
-                BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle,
+                FormBorderStyle = FormBorderStyle.SizableToolWindow,
                 Width = 500,
                 Height = 200,
-                Location = pt,
-                Controls = {
-                   nested
-                }
+                StartPosition = FormStartPosition.Manual,
+                Location = ptScreen,
+                Controls = { nested },
+                ShowInTaskbar = false,
+                ControlBox = false,
             };
-            this.mixedCodeDataControl.Controls.Add(frame);
+            parentForm.AddOwnedForm(frame);
+            frame.Show();
             this.previewWindow = frame;
             nested.TopAddress = this.addressPreview;
 
-            nested.MouseLeave += Lbl_MouseLeave;
-            nested.MouseEnter += Lbl_MouseEnter;
+            frame.MouseLeave += Lbl_MouseLeave;
+            frame.MouseEnter += Lbl_MouseEnter;
             this.insidePreview = false;
         }
 
