@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,14 @@ namespace Reko.Arch.RiscV
 {
     public partial class RiscVRewriter
     {
+        private void RewriteFcmp(PrimitiveType dt, Func<Expression, Expression,Expression> fn)
+        {
+            var dst = RewriteOp(instr.op1);
+            var left = RewriteOp(instr.op2);
+            var right = RewriteOp(instr.op3);
+            m.Assign(dst, m.Cast(dst.DataType, fn(m.Cast(dt, left), m.Cast(dt, right))));
+        }
+
         private void RewriteFcvt(PrimitiveType dt)
         {
             var dst = RewriteOp(instr.op1);

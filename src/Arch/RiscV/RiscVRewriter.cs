@@ -80,6 +80,8 @@ namespace Reko.Arch.RiscV
                 case Opcode.bltu: RewriteBranch(m.Ult); break;
                 case Opcode.bne: RewriteBranch(m.Ne); break;
                 case Opcode.fcvt_d_s: RewriteFcvt(PrimitiveType.Real64); break;
+                case Opcode.feq_s: RewriteFcmp(PrimitiveType.Real32, m.FEq); break;
+                case Opcode.fmv_d_x: RewriteFcvt(PrimitiveType.Real64); break;
                 case Opcode.fmv_s_x: RewriteFcvt(PrimitiveType.Real32); break;
                 case Opcode.flw: RewriteFload(PrimitiveType.Real32); break;
                 case Opcode.jal: RewriteJal(); break;
