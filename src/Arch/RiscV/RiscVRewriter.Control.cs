@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using System;
@@ -36,6 +37,17 @@ namespace Reko.Arch.RiscV
             var addr = instr.Address + offset;
             var dst = RewriteOp(instr.op1);
             m.Assign(dst, addr);
+        }
+
+        private void RewriteBranch(Func<Expression, Expression, Expression> fn)
+        {
+            var opLeft = RewriteOp(instr.op1);
+            var opRight = RewriteOp(instr.op2);
+            rtlc.Class = RtlClass.ConditionalTransfer;
+            m.Branch(
+                fn(opLeft, opRight),
+                ((AddressOperand)instr.op3).Address,
+                RtlClass.ConditionalTransfer);
         }
 
         private void RewriteJal()

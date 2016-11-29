@@ -66,19 +66,47 @@ namespace Reko.Arch.RiscV
                        instr.Address,
                        "Rewriting of Risc-V instruction '{0}' not implemented yet.",
                        instr.opcode);
+                case Opcode.add: RewriteAdd(); break;
                 case Opcode.addi: RewriteAdd(); break;
+                case Opcode.addiw: RewriteAddiw(); break;
+                case Opcode.and: RewriteAnd(); break;
                 case Opcode.andi: RewriteAnd(); break;
                 case Opcode.auipc: RewriteAuipc(); break;
+                case Opcode.beq: RewriteBranch(m.Eq); break;
+                case Opcode.bge: RewriteBranch(m.Ge); break;
+                case Opcode.bgeu: RewriteBranch(m.Uge); break;
+                case Opcode.blt: RewriteBranch(m.Lt); break;
+                case Opcode.bltu: RewriteBranch(m.Ult); break;
+                case Opcode.bne: RewriteBranch(m.Ne); break;
                 case Opcode.jal: RewriteJal(); break;
                 case Opcode.jalr: RewriteJalr(); break;
-                case Opcode.lb: RewriteLoad(PrimitiveType.Byte); break;
+                case Opcode.lb: RewriteLoad(PrimitiveType.SByte); break;
+                case Opcode.lbu: RewriteLoad(PrimitiveType.Byte); break;
                 case Opcode.ld: RewriteLoad(PrimitiveType.Word64); break;
+                case Opcode.lui: RewriteLui(); break;
+                case Opcode.lw: RewriteLoad(PrimitiveType.Int32); break;
+                case Opcode.lwu: RewriteLoad(PrimitiveType.UInt32); break;
+                case Opcode.or: RewriteOr(); break;
+                case Opcode.ori: RewriteOr(); break;
+                case Opcode.sb: RewriteStore(PrimitiveType.Byte); break;
                 case Opcode.sd: RewriteStore(PrimitiveType.Word64); break;
+                case Opcode.sh: RewriteStore(PrimitiveType.Word16); break;
+                case Opcode.sw: RewriteStore(PrimitiveType.Word32); break;
+                case Opcode.slli: RewriteShift(m.Shl); break;
+                case Opcode.slliw: RewriteShiftw(m.Shl); break;
+                case Opcode.srai: RewriteShift(m.Sar); break;
+                case Opcode.srli: RewriteShift(m.Shr); break;
+                case Opcode.srliw: RewriteShiftw(m.Shr); break;
+                case Opcode.subw: RewriteSubw(); break;
+                case Opcode.xor: RewriteXor(); break;
+                case Opcode.xori: RewriteXor(); break;
                 }
                 yield return rtlc;
             }
             yield break;
         }
+
+           
 
         IEnumerator IEnumerable.GetEnumerator()
         {

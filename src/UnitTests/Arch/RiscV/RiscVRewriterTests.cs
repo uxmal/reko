@@ -144,5 +144,14 @@ namespace Reko.UnitTests.Arch.RiscV
                 "0|L--|0000000000010000(4): 1 instructions",
                 "1|L--|Mem0[sp + 392:word64] = s5");
         }
+
+        [Test]
+        public void RiscV_rw_lui()
+        {
+            Rewrite(0x000114B7u);   // lui s1,0x00000011
+            AssertCode(
+                 "0|L--|0000000000010000(4): 1 instructions",
+                 "1|L--|s1 = 0x0000000000011000");
+        }
     }
 }

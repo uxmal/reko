@@ -50,6 +50,27 @@ namespace Reko.Arch.RiscV
             m.Assign(dst, src);
         }
 
+        private void RewriteAddiw()
+        {
+            var dst = RewriteOp(instr.op1);
+            var src1 = RewriteOp(instr.op2);
+            var src2 = ((ImmediateOperand)instr.op3).Value.ToInt32();
+            Expression src;
+            if (src1.IsZero)
+            {
+                src = m.Word32(src2);
+            }
+            else if (src2 == 0)
+            {
+                src = m.Cast(PrimitiveType.Word32, src1);
+            }
+            else
+            {
+                src = m.IAdd(m.Cast(PrimitiveType.Word32, src1), src2);
+            }
+            m.Assign(dst, m.Cast(PrimitiveType.Int64, src));
+        }
+
         private void RewriteAnd()
         {
             var dst = RewriteOp(instr.op1);
@@ -68,7 +89,49 @@ namespace Reko.Arch.RiscV
             {
                 ea = m.IAdd(ea, offset);
             }
-            m.Assign(dst, m.Load(dt, ea));
+            Expression src = m.Load(dt, ea);
+            if (dst.DataType.Size != src.DataType.Size)
+            {
+                src = m.Cast(arch.WordWidth, src);
+            }
+            m.Assign(dst, src);
+        }
+
+        private void RewriteLui()
+        {
+            var dst = RewriteOp(instr.op1);
+            var ui = ((ImmediateOperand)instr.op2).Value;
+            m.Assign(dst, Constant.Word(dst.DataType.Size, ui.ToUInt32() << 12));
+        }
+
+        private void RewriteOr()
+        {
+            var dst = RewriteOp(instr.op1);
+            var left = RewriteOp(instr.op2);
+            var right = RewriteOp(instr.op3);
+            var src = left;
+            if (!right.IsZero)
+            {
+                src = m.Or(src, right);
+            }
+            m.Assign(dst, src);
+        }
+
+        private void RewriteShift(Func<Expression, Expression, Expression> fn)
+        {
+            var dst = RewriteOp(instr.op1);
+            var left = RewriteOp(instr.op2);
+            var right = RewriteOp(instr.op3);
+            m.Assign(dst, fn(left, right));
+        }
+
+        private void RewriteShiftw(Func<Expression, Expression, Expression> fn)
+        {
+            var dst = RewriteOp(instr.op1);
+            var left = RewriteOp(instr.op2);
+            var right = RewriteOp(instr.op3);
+            var src = m.Cast(PrimitiveType.Int32, fn(left, right));
+            m.Assign(dst, m.Cast(PrimitiveType.Int64, src));
         }
 
         private void RewriteStore(DataType dt)
@@ -82,6 +145,33 @@ namespace Reko.Arch.RiscV
                 ea = m.IAdd(ea, offset);
             }
             m.Assign(m.Load(dt, ea), src);
+        }
+
+        private void RewriteSubw()
+        {
+            var dst = RewriteOp(instr.op1);
+            var left = RewriteOp(instr.op2);
+            var right = RewriteOp(instr.op3);
+            var src = left;
+            if (!right.IsZero)
+            {
+                src = m.ISub(src, right);
+                src.DataType = PrimitiveType.Int32;
+            }
+            m.Assign(dst, m.Cast(PrimitiveType.Int64, src));
+        }
+
+        private void RewriteXor()
+        {
+            var dst = RewriteOp(instr.op1);
+            var left = RewriteOp(instr.op2);
+            var right = RewriteOp(instr.op3);
+            var src = left;
+            if (!right.IsZero)
+            {
+                src = m.Xor(src, right);
+            }
+            m.Assign(dst, src);
         }
     }
 }
