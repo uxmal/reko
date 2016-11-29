@@ -5,8 +5,12 @@
 #include "MATRIXMU.h"
 
 ***************************************************************************************************** g_ptr0000;
-Eq_837 g_a0005[];
 word32 g_a0008[];
 ui32 g_a0010[];
-word32 g_dw1494 = 0x00000000;
+ptr32 g_ptr1494 = 0x00000000;
+struct Eq_4 * g_ptr1498 = null;
+struct Eq_31 * g_ptr149C = null;
+struct Eq_67 * g_ptr14A0 = null;
+struct Eq_67 * g_ptr14A4 = null;
+int32 g_dw14A8 = 0;
 

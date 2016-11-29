@@ -275,10 +275,8 @@ word64 fn00000001400012BC(word32 edx, word64 rdi, word64 r13, selector gs, word6
 	if (ecx_33 == 0x00)
 	{
 		Mem331[0x00000001400035B0 + 0x00:word32] = 0x01;
-		word64 rdx_332 = 0x00000001400021D0;
-		word64 rcx_333 = 0x00000001400021B8;
-		word64 rax_334 = DPB(rax_28, _initterm_e(rcx_333, rdx_332), 0);
-		if (_initterm_e(rcx_333, rdx_332) != 0x00)
+		word64 rax_334 = DPB(rax_28, _initterm_e(0x00000001400021B8, 0x00000001400021D0), 0);
+		if (_initterm_e(0x00000001400021B8, 0x00000001400021D0) != 0x00)
 		{
 			rax_233 = DPB(rax_28, 0xFF, 0);
 			return rax_233;
@@ -689,13 +687,12 @@ word64 fn0000000140001718(word64 rcx)
 	if (Mem0[0x0000000140000000 + 0x00:word16] == 23117)
 	{
 		rax = (int64) Mem0[0x000000014000003C + 0x00:word32];
-		word64 rdx_50 = 0x0000000140000000;
-		word64 rcx_52 = rax + rdx_50;
+		word64 rcx_52 = rax + 0x0000000140000000;
 		if (Mem0[rcx_52 + 0x00:word32] == 0x4550 && Mem0[rcx_52 + 0x18:word16] == 0x020B)
 		{
 			word64 rax_115 = DPB(rax, (word32) Mem0[rcx_52 + 0x06:word16], 0);
 			word64 rdx_117 = rcx_52 + 0x18 + DPB(rax, (word32) Mem0[rcx_52 + 0x14:word16], 0);
-			word64 r8_60 = rcx - rdx_50;
+			word64 r8_60 = rcx - 0x0000000140000000;
 			word64 rcx_111 = rax_115 * 0x05;
 			word64 r9_70 = rdx_117 + (rax_115 * 0x05) * 0x08;
 			while (rdx_117 != r9_70)

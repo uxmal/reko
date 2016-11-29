@@ -9,9 +9,6 @@ int8 g_aFFFFFFEC[];
 byte g_b0002;
 int32 g_dw01C4;
 Eq_244 g_t0695;
-struct Eq_22 g_t400238 = 
-	{
-		;
 <anonymous> g_t400290 = <code>;
 <anonymous> g_t4002A0 = <code>;
 <anonymous> g_t4002B0 = <code>;
@@ -70,30 +67,30 @@ struct Eq_22 g_t400238 =
 Eq_17 g_t410000;
 <anonymous> g_t811F260;
 Eq_36 g_t10000000 = 
-		{
-			&g_ptr10000860,
-			0,
-			0,
-			&g_tFFFFFFFF,
-		};
+	{
+		&g_ptr10000860,
+		0,
+		0,
+		&g_tFFFFFFFF,
+	};
 int32 g_dw10000014 = 0;
 int32 g_dw10000018 = 4;
 int32 g_dw1000001C = 204800;
 int32 g_dw10000020 = 0;
 Eq_244 g_t10000024 = 
+	{
+		
 		{
-			
-			{
-			},
-			4,
-			0x00000000,
-			300,
-			0x000000C8,
-			47,
-		};
+		},
+		4,
+		0x00000000,
+		300,
+		0x000000C8,
+		47,
+	};
 word32 g_a100007E0[] = 
-		{
-		};
+	{
+	};
 <anonymous> * g_ptr10000860 = null;
 struct Eq_36 * g_ptr10000878 = &g_t10000000;
 ptr32 g_ptr1000087C = 0x00400000;
