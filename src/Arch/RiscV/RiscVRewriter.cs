@@ -68,7 +68,8 @@ namespace Reko.Arch.RiscV
                        instr.opcode);
                 case Opcode.add: RewriteAdd(); break;
                 case Opcode.addi: RewriteAdd(); break;
-                case Opcode.addiw: RewriteAddiw(); break;
+                case Opcode.addiw: RewriteAddw(); break;
+                case Opcode.addw: RewriteAddw(); break;
                 case Opcode.and: RewriteAnd(); break;
                 case Opcode.andi: RewriteAnd(); break;
                 case Opcode.auipc: RewriteAuipc(); break;
@@ -78,6 +79,9 @@ namespace Reko.Arch.RiscV
                 case Opcode.blt: RewriteBranch(m.Lt); break;
                 case Opcode.bltu: RewriteBranch(m.Ult); break;
                 case Opcode.bne: RewriteBranch(m.Ne); break;
+                case Opcode.fcvt_d_s: RewriteFcvt(PrimitiveType.Real64); break;
+                case Opcode.fmv_s_x: RewriteFcvt(PrimitiveType.Real32); break;
+                case Opcode.flw: RewriteFload(PrimitiveType.Real32); break;
                 case Opcode.jal: RewriteJal(); break;
                 case Opcode.jalr: RewriteJalr(); break;
                 case Opcode.lb: RewriteLoad(PrimitiveType.SByte); break;
@@ -94,19 +98,21 @@ namespace Reko.Arch.RiscV
                 case Opcode.sw: RewriteStore(PrimitiveType.Word32); break;
                 case Opcode.slli: RewriteShift(m.Shl); break;
                 case Opcode.slliw: RewriteShiftw(m.Shl); break;
+                case Opcode.sllw: RewriteShiftw(m.Shl); break;
+                case Opcode.slt: RewriteSlt(false); break;
+                case Opcode.sltu: RewriteSlt(true); break;
                 case Opcode.srai: RewriteShift(m.Sar); break;
+                case Opcode.sraiw: RewriteShiftw(m.Sar); break;
                 case Opcode.srli: RewriteShift(m.Shr); break;
                 case Opcode.srliw: RewriteShiftw(m.Shr); break;
+                case Opcode.sub: RewriteSub(); break;
                 case Opcode.subw: RewriteSubw(); break;
                 case Opcode.xor: RewriteXor(); break;
                 case Opcode.xori: RewriteXor(); break;
                 }
                 yield return rtlc;
             }
-            yield break;
         }
-
-           
 
         IEnumerator IEnumerable.GetEnumerator()
         {

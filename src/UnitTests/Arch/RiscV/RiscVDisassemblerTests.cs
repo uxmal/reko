@@ -191,19 +191,32 @@ namespace Reko.UnitTests.Arch.RiscV
         [Test]
         public void RiscV_dasm_fmv_s_x()
         {
-            AssertCode("fmv.s.x\tfa5,ft0", 0xF00007D3u);
+            AssertCode("fmv.s.x\tfa5,zero", 0xF00007D3u);
         }
 
         [Test]
         public void RiscV_dasm_fmv_d_x()
         {
-            AssertCode("fmv.d.x\tfa4,fa4", 0xE2070753u);
+            AssertCode("fmv.d.x\tfa4,a4", 0xE2070753u);
         }
 
         [Test]
         public void RiscV_dasm_lwu()
         {
             AssertCode("lwu\ta4,s0,4", 0x00446703u);
+        }
+
+        [Test]
+        public void RiscV_dasm_fcvt_d_s()
+        {
+            AssertCode("fcvt.d.s\tfa4,fa4", 0x42070753u);
+        }
+
+        [Test]
+        public void RiscV_dasm_feq_s()
+        {
+            // 1010000 011110111001001111 10100 11
+            AssertCode("feq.s\ta5,fa4,fa5", 0xA0F727D3u);
         }
     }
 }

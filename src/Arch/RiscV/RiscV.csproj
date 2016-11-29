@@ -48,6 +48,7 @@
     <Compile Include="RiscVInstruction.cs" />
     <Compile Include="RiscVRewriter.Control.cs" />
     <Compile Include="RiscVRewriter.cs" />
+    <Compile Include="RiscVRewriter.Fpu.cs" />
     <Compile Include="RiscVState.cs" />
   </ItemGroup>
   <ItemGroup>

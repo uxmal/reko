@@ -40,6 +40,9 @@ namespace Reko.Arch.RiscV
             {
                 { Opcode.fadd_s, "fadd.s" },
                 { Opcode.fadd_d, "fadd.d" },
+                { Opcode.fcvt_d_s, "fcvt.d.s" },
+                { Opcode.fcvt_s_d, "fcvt.s.d" },
+                { Opcode.feq_s, "feq.s" },
                 { Opcode.fmv_d_x, "fmv.d.x" },
                 { Opcode.fmv_s_x, "fmv.s.x" },
             };

@@ -455,8 +455,14 @@ namespace Reko.Arch.RiscV
             {
                 { 0x00, new FpuOpRec(Opcode.fadd_s, "Fd,F1,F2") },
                 { 0x01, new FpuOpRec(Opcode.fadd_d, "Fd,F1,F2") },
-                { 0x71, new FpuOpRec(Opcode.fmv_d_x, "Fd,F1") },
-                { 0x78, new FpuOpRec(Opcode.fmv_s_x, "Fd,F1") },
+                { 0x21, new FpuOpRec(Opcode.fcvt_d_s, "Fd,F1") },
+                { 0x50, new SparseMaskOpRec(12, 7, new Dictionary<int, OpRec>
+                    {
+                        { 2, new WOpRec(Opcode.feq_s, "d,F1,F2") }
+                    })
+                },
+                { 0x71, new FpuOpRec(Opcode.fmv_d_x, "Fd,1") },
+                { 0x78, new FpuOpRec(Opcode.fmv_s_x, "Fd,1") },
             };
 
             var branches = new OpRec[]

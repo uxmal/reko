@@ -88,7 +88,7 @@ namespace Reko.UnitTests.Arch.RiscV
             Rewrite(0x87010183u);
             AssertCode(
                "0|L--|0000000000010000(4): 1 instructions",
-               "1|L--|gp = Mem0[sp + -1936:byte]");
+               "1|L--|gp = (word64) Mem0[sp + -1936:int8]");
         }
 
         [Test]

@@ -50,17 +50,27 @@ namespace Reko.Arch.RiscV
             m.Assign(dst, src);
         }
 
-        private void RewriteAddiw()
+        private void RewriteAddw()
         {
             var dst = RewriteOp(instr.op1);
             var src1 = RewriteOp(instr.op2);
-            var src2 = ((ImmediateOperand)instr.op3).Value.ToInt32();
+            var imm2 = instr.op3 as ImmediateOperand;
+            Expression src2;
+            if (imm2 != null)
+            {
+                src2 = Constant.Int32(imm2.Value.ToInt32());
+            }
+            else
+            {
+                src2 = RewriteOp(instr.op3);
+            }
+                    
             Expression src;
             if (src1.IsZero)
             {
-                src = m.Word32(src2);
+                src = src2;
             }
-            else if (src2 == 0)
+            else if (src2.IsZero)
             {
                 src = m.Cast(PrimitiveType.Word32, src1);
             }
@@ -134,6 +144,30 @@ namespace Reko.Arch.RiscV
             m.Assign(dst, m.Cast(PrimitiveType.Int64, src));
         }
 
+        private void RewriteSlt(bool unsigned)
+        {
+            var dst = RewriteOp(instr.op1);
+            var left = RewriteOp(instr.op2);
+            var right = RewriteOp(instr.op3);
+            Expression src;
+            if (unsigned)
+            {
+                if (left.IsZero)
+                {
+                    src = m.Ne0(right);
+                }
+                else
+                {
+                    src = m.Ult(left, right);
+                }
+            }
+            else
+            {
+                src = m.Lt(left, right);
+            }
+            m.Assign(dst, m.Cast(arch.WordWidth, src));
+        }
+
         private void RewriteStore(DataType dt)
         {
             var src = RewriteOp(instr.op1);
@@ -145,6 +179,14 @@ namespace Reko.Arch.RiscV
                 ea = m.IAdd(ea, offset);
             }
             m.Assign(m.Load(dt, ea), src);
+        }
+
+        private void RewriteSub()
+        {
+            var dst = RewriteOp(instr.op1);
+            var left = RewriteOp(instr.op2);
+            var right = RewriteOp(instr.op3);
+            m.Assign(dst, m.ISub(left, right));
         }
 
         private void RewriteSubw()
