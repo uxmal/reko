@@ -6,8 +6,8 @@
        at Reko.Analysis.ValuePropagator.Transform(Statement stm) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 83
    at Reko.Analysis.ValuePropagator.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 68
    at Reko.Analysis.DataFlowAnalysis.BuildExpressionTrees() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\DataFlowAnalysis.cs:line 106
-       at Reko.Evaluation.IdConstant.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Evaluation\IdConstant.cs:line 76
-   at Reko.Evaluation.ExpressionSimplifier.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 444
+       at Reko.Evaluation.IdConstant.Transform() in D:\dev\uxmal\reko\master\src\Decompiler\Evaluation\IdConstant.cs:line 88
+   at Reko.Evaluation.ExpressionSimplifier.VisitIdentifier(Identifier id) in D:\dev\uxmal\reko\master\src\Decompiler\Evaluation\ExpressionSimplifier.cs:line 443
    at Reko.Core.Expressions.Identifier.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\Identifier.cs:line 80
    at Reko.Analysis.ValuePropagator.VisitAssignment(Assignment a) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ValuePropagator.cs:line 94
    at Reko.Core.Code.Assignment.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\Assignment.cs:line 51

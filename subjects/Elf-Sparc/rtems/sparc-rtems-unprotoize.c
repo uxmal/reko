@@ -560,7 +560,7 @@ void add_symbol(Eq_726 * o0, Eq_156 o1)
 	return;
 }
 
-void lookup(Eq_8481 o0[], Eq_156 o1)
+void lookup(Eq_8485 o0[], Eq_156 o1)
 {
 	int32 o3_25 = 0x00;
 	if ((int32) *o1 != 0x00)
@@ -3327,7 +3327,7 @@ void _obstack_newchunk(Eq_5530 * o0, int32 o1)
 	else
 		i0_130->ptr0004 = l0_291;
 	word32 g2_239;
-	Eq_8511 i1_129[];
+	Eq_8515 i1_129[];
 	int32 o0_246;
 	l0_291->ptr0004 = l1_290;
 	ptr32 o1_84 = l0_291 + i1_273 / 0x08;
@@ -3336,7 +3336,7 @@ void _obstack_newchunk(Eq_5530 * o0, int32 o1)
 	if (i0_130->dw0018 > 0x06)
 	{
 		Eq_5674 o0_233 = l2_122 >> 0x02;
-		i1_129 = (Eq_8511 (*)[]) &l0_291->ptr0004;
+		i1_129 = (Eq_8515 (*)[]) &l0_291->ptr0004;
 		int32 o3_236 = o0_233;
 		if (o0_233 >= ~0x00)
 		{
@@ -3358,14 +3358,14 @@ void _obstack_newchunk(Eq_5530 * o0, int32 o1)
 	else
 	{
 		o0_246 = 0x00;
-		i1_129 = (Eq_8511 (*)[]) &l0_291->ptr0004;
+		i1_129 = (Eq_8515 (*)[]) &l0_291->ptr0004;
 		g2_239 = &l1_290->ptr0004;
 	}
-	Eq_8511 (* o0_106)[];
+	Eq_8515 (* o0_106)[];
 	int32 o3_101 = o0_246;
 	if (o0_246 - l2_122 < 0x00)
 	{
-		Eq_8511 o0_220[] = i0_130->ptr0008;
+		Eq_8515 o0_220[] = i0_130->ptr0008;
 		while (true)
 		{
 			i1_129[o3_101 / 0x04].u0 = (byte) (word32) o0_220[o3_101 / 0x04];

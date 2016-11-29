@@ -192,11 +192,11 @@ uint32 g_dw28200 = 0x00000000;
 uint32 g_dw28210 = 0x00000000;
 int8 * g_ptr28220 = null;
 int32 g_dw28230 = 0;
-Eq_8481 g_a28240[] = 
+Eq_8485 g_a28240[] = 
 												{
 												};
 word32 g_dw28248 = 0x00000000;
-Eq_8481 g_a29A40[] = 
+Eq_8485 g_a29A40[] = 
 												{
 												};
 struct Eq_2321 * g_ptr29A48 = null;
