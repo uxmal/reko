@@ -95,7 +95,7 @@ namespace Reko.Gui.Windows
         {
             currentSpan = null;
             var span = EnsureSpan();
-            span.Style = "kw";
+            span.Style = "code-kw";
             span.Text.Append(keyword);
             currentSpan = null;
         }

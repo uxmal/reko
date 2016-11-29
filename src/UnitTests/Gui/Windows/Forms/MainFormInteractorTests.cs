@@ -38,6 +38,9 @@ using System.ComponentModel.Design;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using System.Xml;
+using System.Text;
+using Reko.UnitTests.Core.Serialization;
 
 namespace Reko.UnitTests.Gui.Windows.Forms
 {
@@ -50,6 +53,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private IMainForm form;
 		private TestMainFormInteractor interactor;
         private Program program;
+        private MemoryStream xmlStm;
         private IArchiveBrowserService archSvc;
         private IDialogFactory dlgFactory;
         private IServiceFactory svcFactory;
@@ -91,6 +95,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             brSvc.Stub(d => d.Clear());
             Given_DecompilerInstance();
             dcSvc.Stub(d => d.Decompiler = null);
+            Given_XmlWriter();
             Given_SavePrompt(true);
             fsSvc.Stub(f => f.MakeRelativePath("foo.dcproject", "foo.exe")).Return("foo.exe");
             fsSvc.Stub(f => f.MakeRelativePath(Arg<string>.Is.Equal("foo.dcproject"), Arg<string>.Is.Null)).Return(null);
@@ -115,6 +120,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Expect_UiPreferences_Loaded();
             Expect_MainForm_SizeSet();
             Given_DecompilerInstance();
+            Given_XmlWriter();
             Given_SavePrompt(true);
             dcSvc.Expect(d => d.Decompiler = null);
             fsSvc.Stub(f => f.MakeRelativePath("foo.dcproject", "foo.exe")).Return("foo.exe");
@@ -138,6 +144,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             dcSvc.Expect(d => d.Decompiler = null);
             Expect_UiPreferences_Loaded();
             Expect_MainForm_SizeSet();
+            Given_XmlWriter();
             Given_SavePrompt(true);
             diagnosticSvc.Stub(d => d.ClearDiagnostics());
             fsSvc.Stub(f => f.MakeRelativePath("foo.dcproject", "foo.exe")).Return("foo.exe");
@@ -172,6 +179,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             brSvc.Stub(b => b.Clear());
             Given_LoadPreferences();
             Given_DecompilerInstance();
+            Given_XmlWriter();
             Given_SavePrompt(true);
             dcSvc.Stub(d => d.Decompiler = null);
             uiSvc.Stub(u => u.DocumentWindows).Return(new List<IWindowFrame>());
@@ -205,6 +213,16 @@ namespace Reko.UnitTests.Gui.Windows.Forms
                 });
         }
 
+        private void Given_XmlWriter()
+        {
+            this.xmlStm = new MemoryStream();
+            var xw = new XmlnsHidingWriter(xmlStm, new UTF8Encoding(false))
+            {
+                Formatting = Formatting.Indented,
+            };
+            fsSvc.Stub(f => f.CreateXmlWriter(null)).IgnoreArguments().Return(xw);
+        }
+
         [Test]
         public void Mfi_Save()
         {
@@ -212,17 +230,18 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Given_MainFormInteractor();
             Given_LoadPreferences();
             Given_DecompilerInstance();
+            Given_XmlWriter();
             fsSvc.Stub(f => f.MakeRelativePath("foo.dcproject", "foo.exe")).Return("foo.exe");
             fsSvc.Stub(f => f.MakeRelativePath(Arg<string>.Is.Equal("foo.dcproject"), Arg<string>.Is.Null)).Return(null);
-
             mr.ReplayAll();
 
             When_CreateMainFormInteractor();
             Assert.IsNotNull(loader);
             dcSvc.Decompiler.Load("foo.exe");
-            var p = new Reko.Core.Serialization.Procedure_v1 {
+            var p = new Reko.Core.Serialization.Procedure_v1
+            {
                 Address = "12345",
-                Name = "MyProc", 
+                Name = "MyProc",
             };
             var program = dcSvc.Decompiler.Project.Programs[0];
             program.User.Procedures.Add(Address.Ptr32(0x12345), p);
@@ -230,8 +249,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
 
             interactor.Save();
             string s =
-@"<?xml version=""1.0"" encoding=""utf-16""?>
-<project xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns=""http://schemata.jklnet.org/Reko/v4"">
+@"<?xml version=""1.0"" encoding=""utf-8""?>
+<project xmlns=""http://schemata.jklnet.org/Reko/v4"">
   <arch>x86-protected-32</arch>
   <platform>TestPlatform</platform>
   <input>
@@ -246,7 +265,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
     </user>
   </input>
 </project>";
-            Assert.AreEqual(s, interactor.Test_SavedProjectXml);
+            Assert.AreEqual(s, Encoding.UTF8.GetString(xmlStm.ToArray()));
             mr.VerifyAll();
         }
 
@@ -256,6 +275,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             Given_MainFormInteractor();
             Given_Loader();
             Given_DecompilerInstance();
+            Given_XmlWriter();
             fsSvc.Stub(f => f.MakeRelativePath("foo.dcproject", "foo.exe")).Return("foo.exe");
             fsSvc.Stub(f => f.MakeRelativePath(Arg<string>.Is.Equal("foo.dcproject"), Arg<string>.Is.Null)).Return(null);
             mr.ReplayAll();
@@ -478,6 +498,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             diagnosticSvc.Expect(d => d.ClearDiagnostics());
             Given_DecompilerInstance();
             Given_SavePrompt(true);
+            Given_XmlWriter();
             dcSvc.Expect(d => d.Decompiler = Arg<IDecompiler>.Is.Anything);
             fsSvc.Stub(f => f.MakeRelativePath("foo.dcproject", "foo.exe")).Return("foo.exe");
             fsSvc.Stub(f => f.MakeRelativePath(Arg<string>.Is.Anything, Arg<string>.Is.Null)).Return(null);
@@ -636,6 +657,8 @@ namespace Reko.UnitTests.Gui.Windows.Forms
         private ILoader ldr;
 		private Program program;
         private StringWriter sw;
+        private XmlTextWriter xw;
+        private MemoryStream xmlStm;
         private string testFilename;
         private bool promptedForSaving;
 
@@ -673,6 +696,15 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             return sw;
         }
 
+        public override XmlWriter CreateXmlWriter(string filename)
+        {
+            testFilename = filename;
+            xmlStm = new MemoryStream();
+            xw = new XmlnsHidingWriter(xmlStm, new UTF8Encoding(false));
+            xw.Formatting = Formatting.Indented;
+            return xw;
+        }
+
         protected override string PromptForFilename(string suggestedName)
         {
             promptedForSaving = true;
@@ -680,10 +712,9 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             return suggestedName;
         }
 
-
         public string Test_SavedProjectXml
         {
-            get { return sw.ToString(); }
+            get { return Encoding.UTF8.GetString(xmlStm.ToArray()); }
         }
 
         public string Test_Filename

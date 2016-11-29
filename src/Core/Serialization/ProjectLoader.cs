@@ -246,6 +246,7 @@ namespace Reko.Core.Serialization
             program.GlobalsFilename = ConvertToAbsolutePath(projectFilePath, sInput.GlobalsFilename);
             program.EnsureFilenames(program.Filename);
             LoadUserData(sUser, program, program.User);
+            program.User.LoadAddress = address;
             ProgramLoaded.Fire(this, new ProgramEventArgs(program));
             return program;
         }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Reko/v4">
+  <arch>m68k</arch>
+  <input>
+    <filename>code.bin</filename>
+    <disassembly>code.asm</disassembly>
+    <intermediate-code>code.dis</intermediate-code>
+    <output>code.c</output>
+    <types-file>code.h</types-file>
+    <global-vars>code.globals.c</global-vars>
+    <user>
+      <address>80000000</address>
+      <processor name="m68k" />
+      <procedure name="fn80000000">
+        <address>80000000</address>
+      </procedure>
+      <registerValues />
+    </user>
+  </input>
+</project>

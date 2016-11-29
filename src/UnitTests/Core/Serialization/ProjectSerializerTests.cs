@@ -223,8 +223,8 @@ namespace Reko.UnitTests.Core.Serialization
                     new AssemblerFile_v3 { Filename="foo.asm", Assembler="x86-att" }
                 }
             };
-            var sw = new StringWriter();
-            new ProjectSaver(sc).Save(sp, sw);
+            var xw = new FilteringXmlWriter(new StringWriter());
+            new ProjectSaver(sc).Save(sp, xw);
         }
     }
 }

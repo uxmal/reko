@@ -61,14 +61,20 @@ namespace Reko.Arch.M68k
             emitter.Assign(frame.EnsureIdentifier(Registers.fpsr), emitter.Cond(opDst));
         }
 
-   
+        private void RewriteFUnaryOp(Func<Expression, Expression> unaryOpGen)
+        {
+            var op = orw.RewriteUnary(di.op1, di.Address, di.dataWidth, unaryOpGen);
+            emitter.Assign(frame.EnsureIdentifier(Registers.fpsr), emitter.Cond(op));
+        }
+
         private void RewriteFcmp()
         {
             var opSrc = orw.RewriteSrc(di.op1, di.Address);
             var opDst = orw.RewriteSrc(di.op2, di.Address);
             var tmp = frame.CreateTemporary(opDst.DataType);
-            emitter.Assign(tmp, emitter.ISub(opDst, opSrc));
-            emitter.Assign(frame.EnsureIdentifier(Registers.fpsr), emitter.Cond(tmp));
+            emitter.Assign(
+                frame.EnsureIdentifier(Registers.fpsr), 
+                emitter.Cond(emitter.FSub(opDst, opSrc)));
         }
 
         private void RewriteFmove()

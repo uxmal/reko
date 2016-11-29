@@ -42,7 +42,7 @@ namespace Reko.UnitTests.Core
 		[Test]
 		public void VisitFlagGroup()
 		{
-            var flags = new FlagRegister("flags", PrimitiveType.Word32);
+            var flags = new FlagRegister("flags", 16, PrimitiveType.Word32);
 			var f = new Identifier("grf", PrimitiveType.Word16, new FlagGroupStorage(flags, 0x11, "ZO", PrimitiveType.Byte));
 			var type = f.Storage.Accept(this);
 			Assert.AreEqual("grf", type);

@@ -129,12 +129,15 @@ VS Overflow Set 1001 V
                 case Opcode.fadd: RewriteFBinOp((s, d) => emitter.FAdd(d, s)); break;
                     //$REVIEW: the following don't respect NaN, but NaN typically doesn't exist in HLLs.
                 case Opcode.fbnge: RewriteFbcc(ConditionCode.LT); break;
+                case Opcode.fbnlt: RewriteFbcc(ConditionCode.GE); break;
+                case Opcode.fbnle: RewriteFbcc(ConditionCode.GT); break;
                 case Opcode.fcmp: RewriteFcmp(); break;
                 case Opcode.fdiv: RewriteFBinOp((s, d) => emitter.FDiv(d, s)); break;
                 case Opcode.fmove: RewriteFmove(); break;
                 case Opcode.fmovecr: RewriteFmovecr(); break;
                 case Opcode.fmovem: RewriteMovem(i => arch.GetRegister(i+Registers.fp0.Number)); break;
                 case Opcode.fmul: RewriteFBinOp((s, d) => emitter.FMul(d,s)); break;
+                case Opcode.fneg: RewriteFUnaryOp(emitter.Neg); break;
                 case Opcode.fsub: RewriteFBinOp((s, d) => emitter.FSub(d, s)); break;
 
                 case Opcode.illegal: if (!RewriteIllegal()) goto default; break;

@@ -61,7 +61,7 @@ void __do_global_dtors_aux(word32 d2)
 	if (*&globals->b80002724 == 0x00)
 	{
 		uint32 d0_100 = *&globals->dw80002726;
-		Eq_325 a2_101[] = globals->a80002714;
+		Eq_323 a2_101[] = globals->a80002714;
 		if (0x00 - d0_100 > 0x00)
 		{
 			do
@@ -223,16 +223,16 @@ void main()
 
 void _sin(real64 rArg04, real64 rArg0C, Eq_232 tArg14)
 {
-	Eq_243 rLoc0C_23 = DPB(rLoc0C, SLICE(rArg04, word32, 32), 32);
-	Eq_247 v9_26 = (real64) ((real80) rLoc0C_23 * rLoc0C_23);
-	int32 dwLoc20_102 = 0x01;
-	while (Test(GE,cond((real64) ((real80) rLoc0C_23 / rLoc14) - rArg0C)))
+	Eq_243 rLoc0C_117 = DPB(rLoc0C, SLICE(rArg04, word32, 32), 32);
+	Eq_247 v9_28 = (real64) ((real80) rLoc0C_117 * rLoc0C_117);
+	int32 dwLoc20_132 = 0x01;
+	while ((real64) ((real80) rLoc0C_117 / rLoc14) >= rArg0C)
 	{
 		*tArg14 = *tArg14;
-		word32 v24_67 = dwLoc20_102 + 0x01;
-		rLoc0C_23 = (real64) ((real80) (real64) ((real80) rLoc0C_23 * v9_26) * v9_26);
-		dwLoc20_102 = v24_67 + 0x03;
-		rLoc14 = (real64) ((real80) (real64) ((real80) (real64) ((real80) (real64) ((real80) rLoc14 * (real80) v24_67) * (real80) (v24_67 + 0x01)) * (real80) (v24_67 + 0x02)) * (real80) (v24_67 + 0x03));
+		word32 v24_77 = dwLoc20_132 + 0x01;
+		rLoc0C_117 = (real64) ((real80) (real64) ((real80) rLoc0C_117 * v9_28) * v9_28);
+		dwLoc20_132 = v24_77 + 0x03;
+		rLoc14 = (real64) ((real80) (real64) ((real80) (real64) ((real80) (real64) ((real80) rLoc14 * (real80) v24_77) * (real80) (v24_77 + 0x01)) * (real80) (v24_77 + 0x02)) * (real80) (v24_77 + 0x03));
 	}
 	return;
 }

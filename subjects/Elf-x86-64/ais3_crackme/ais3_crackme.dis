@@ -74,7 +74,7 @@ l000000000040043C:
 // DataOut: rbp
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
-// LocalsOut: fp(8)
+// LocalsOut: fp(64)
 
 l000000000040044C:
 	word64 rsp_17
@@ -90,7 +90,7 @@ l000000000040044C:
 // DataOut: rbp
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000008 rax:<invalid>
-// LocalsOut: fp(8)
+// LocalsOut: fp(64)
 
 l000000000040044E:
 	return
@@ -547,14 +547,14 @@ l0000000000400620:
 // DataOut: rbp
 // DataOut (flags): 
 // SymbolicIn: rsp:fp
-// LocalsOut: fp(8)
+// LocalsOut: fp(64)
 
 l000000000040066A:
 	word64 rbx_47 = DPB(rbx, 0x00000000, 0)
 // DataOut: rbp rbx
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000038 rbp:0x0000000000600E00 - 0x0000000000600DF8 >> 0x0000000000000003 r12:0000000000600DF8 r13d:edi r14:rsi r15:rdx rax:<invalid> -48(fp):rbx -40(fp):rbp -32(fp):r12 -24(fp):r13 -16(fp):r14 -8(fp):r15
-// LocalsOut: fp(8)
+// LocalsOut: fp(64)
 
 l0000000000400670:
 	word64 rsp_57
@@ -580,7 +580,7 @@ l0000000000400670:
 // DataOut: rbp rbx
 // DataOut (flags): 
 // SymbolicIn: rsp:fp - 0x0000000000000038 rbp:0x0000000000600E00 - 0x0000000000600DF8 >> 0x0000000000000003 r12:0000000000600DF8 r13d:edi r14:rsi r15:rdx ebx:<invalid> rdx:<invalid> rsi:<invalid> edi:<invalid> rbx:<invalid> rax:<invalid> -48(fp):rbx -40(fp):rbp -32(fp):r12 -24(fp):r13 -16(fp):r14 -8(fp):r15
-// LocalsOut: fp(8)
+// LocalsOut: fp(64)
 
 l0000000000400686:
 	return

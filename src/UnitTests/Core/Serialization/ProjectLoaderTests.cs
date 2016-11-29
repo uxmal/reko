@@ -330,6 +330,10 @@ namespace Reko.UnitTests.Core.Serialization
                     new DecompilerInput_v4
                     {
                         Filename = "foo.exe",
+                        User = new UserData_v4
+                        {
+                            LoadAddress = "00123400"
+                        }
                     },
                     new MetadataFile_v3 {
                         Filename = "meta1.xml",
@@ -352,7 +356,10 @@ namespace Reko.UnitTests.Core.Serialization
             var ldr = mockFactory.CreateLoader();
             Given_TestArch();
             Given_TestOS();
-
+            arch.Stub(a => a.TryParseAddress(
+                Arg<string>.Is.Equal("00123400"),
+                out Arg<Address>.Out(Address.Ptr32(0x00123400)).Dummy))
+                .Return(true);
             mockFactory.CreateLoadMetadataStub(
                 OsPath.Absolute("meta1.xml"),
                 this.platform,
@@ -380,6 +387,9 @@ namespace Reko.UnitTests.Core.Serialization
                 "word32",
                 project.Programs[0].EnvironmentMetadata.Types["USRTYPE2"].ToString()
             );
+            Assert.AreEqual(
+                Address.Ptr32(0x00123400),
+                project.Programs[0].User.LoadAddress);
         }
 
         [Test]
