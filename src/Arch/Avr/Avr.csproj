@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Avr8Architecture.cs" />
+    <Compile Include="Avr8Disassembler.cs" />
+    <Compile Include="AvrInstruction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -32,9 +32,9 @@ namespace Reko.Arch.Avr
 {
     public class Avr8Architecture : ProcessorArchitecture
     {
-        public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
+        public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader rdr)
         {
-            throw new NotImplementedException();
+            return new Avr8Disassembler(this, rdr);
         }
 
         public override ImageReader CreateImageReader(MemoryArea img, ulong off)
