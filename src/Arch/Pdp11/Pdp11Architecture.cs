@@ -208,7 +208,6 @@ namespace Reko.Arch.Pdp11
             throw new NotImplementedException();
         }
 
-
         public override string GrfToString(uint grf)
         {
 			var s = new StringBuilder();

@@ -93,6 +93,7 @@
     <Compile Include="Relocators\M68kRelocator.cs" />
     <Compile Include="Relocators\MipsRelocator.cs" />
     <Compile Include="Relocators\PpcRelocator.cs" />
+    <Compile Include="Relocators\RiscVRelocator.cs" />
     <Compile Include="Relocators\SparcRelocator.cs" />
     <Compile Include="Relocators\x86Relocator.cs" />
     <Compile Include="Relocators\x86_64Relocator.cs" />
