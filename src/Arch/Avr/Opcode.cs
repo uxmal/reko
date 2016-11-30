@@ -28,8 +28,15 @@ namespace Reko.Arch.Avr
     public enum Opcode
     {
         invalid,
+        cli,
         eor,
-        rjmp,
+        ldi,
         @out,
+        push,
+        rcall,
+        rjmp,
+        @in,
+        pop,
+        ret,
     }
 }

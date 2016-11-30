@@ -42,7 +42,6 @@ namespace Reko.UnitTests.Arch.Avr
             AssertCode("rjmp\t001A", 0xC00C);
         }
 
-
         [Test]
         public void Avr8_dis_eor()
         {
@@ -53,6 +52,48 @@ namespace Reko.UnitTests.Arch.Avr
         public void Avr8_dis_out()
         {
             AssertCode("out\t3F,r1", 0xBE1F);
+        }
+
+        [Test]
+        public void Avr8_dis_in()
+        {
+            AssertCode("in\tr1,3F", 0xB61F);
+        }
+
+        [Test]
+        public void Avr8_dis_ldi()
+        {
+            AssertCode("ldi\tr28,5F", 0xE5CF);
+        }
+
+        [Test]
+        public void Avr8_dis_rcall()
+        {
+            AssertCode("rcall\t0006", 0xD002);
+        }
+
+        [Test]
+        public void Avr8_dis_push()
+        {
+            AssertCode("push\tr29", 0x93DF);
+        }
+
+        [Test]
+        public void Avr8_dis_pop()
+        {
+            AssertCode("pop\tr28", 0x91CF);
+        }
+
+        [Test]
+        public void Avr8_dis_ret()
+        {
+            AssertCode("ret", 0x9508);
+        }
+
+        [Test]
+        public void Avr8_dis_cli()
+        {
+            AssertCode("cli", 0x94F8);
         }
     }
 }

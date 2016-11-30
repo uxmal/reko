@@ -63,7 +63,7 @@ namespace Reko.Arch.Avr
                 case ',':
                     continue;
                 case 'A': // I/O location
-                    op = ImmediateOperand.Byte((byte)((wInstr >> 5 & 0x30) | (wInstr & 0xF)));
+                    op = ImmediateOperand.Byte((byte)(((wInstr >> 5) & 0x30) | (wInstr & 0xF)));
                     break;
                 case 'J': // Relative jump
                     int offset = ((wInstr & 0xFFF) << 4) >> 3;
@@ -72,15 +72,20 @@ namespace Reko.Arch.Avr
                 case 'D': // Destination register
                     op = Register((wInstr >> 4) & 0x1F);
                     break;
+                case 'd': // Destination register (r16-r31)
+                    op = Register(0x10 | (wInstr >> 4) & 0x1F);
+                    break;
                 case 'R': // source register
                     op = Register((wInstr >> 5) & 0x10 | (wInstr >> 4) & 0x0F);
                     break;
                 case 'r': // source register
                     op = Register((wInstr >> 4) & 0x10 | (wInstr >> 4) & 0x0F);
                     break;
-
+                case 'K':
+                    op = ImmediateOperand.Byte((byte)(((wInstr >> 4) & 0xF0) | (wInstr & 0xF)));
+                    break;
                 default:
-                    throw new NotImplementedException();  
+                    throw new NotImplementedException();
                 }
                 ops.Add(op);
             }
@@ -105,6 +110,34 @@ namespace Reko.Arch.Avr
                 new BOpRec(Opcode.invalid, ""),
                 new BOpRec(Opcode.invalid, ""),
             };
+
+            var oprecs94 = new Dictionary<int, OpRec>
+            {
+                { 0x04F8, new BOpRec(Opcode.cli, "") },
+                { 0x0508, new BOpRec(Opcode.ret, "") },
+            };
+
+            var oprecs9 = new OpRec[]
+            {
+                new BOpRec(Opcode.pop, "D"),
+                new BOpRec(Opcode.push, "D"),
+                new SparseOpRec(0, 12, oprecs94),
+                new BOpRec(Opcode.invalid, ""),
+
+                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.invalid, ""),
+            };
+
+
+
+            var oprecsB = new OpRec[]
+            {
+                new BOpRec(Opcode.@in, "D,A"),
+                new BOpRec(Opcode.@out, "A,D"),
+            };
+
             oprecs = new OpRec[]
             {
                 new BOpRec(Opcode.invalid, ""),
@@ -118,13 +151,13 @@ namespace Reko.Arch.Avr
                 new BOpRec(Opcode.invalid, ""),
 
                 new BOpRec(Opcode.invalid, ""),
+                new GrpOpRec(9, 3, oprecs9),
                 new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.@out, "A,r"),
+                new GrpOpRec(0xB, 1, oprecsB),
 
                 new BOpRec(Opcode.rjmp, "J"),
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.rcall, "J"),
+                new BOpRec(Opcode.ldi, "d,K"),
                 new BOpRec(Opcode.invalid, ""),
             };
         }
@@ -168,6 +201,31 @@ namespace Reko.Arch.Avr
             {
                 int slot = (wInstr >> shift) & mask;
                 return oprecs[slot].Decode(dasm, wInstr);
+            }
+        }
+
+        public class SparseOpRec : OpRec
+        {
+            private int shift;
+            private int mask;
+            private Dictionary<int, OpRec> oprecs;
+
+            public SparseOpRec(int shift, int length, Dictionary<int, OpRec> oprecs)
+            {
+                this.shift = shift;
+                this.mask = (1 << length) - 1;
+                this.oprecs = oprecs;
+            }
+
+            public override AvrInstruction Decode(Avr8Disassembler dasm, ushort wInstr)
+            {
+                int slot = (wInstr >> shift) & mask;
+                OpRec oprec;
+                if (!oprecs.TryGetValue(slot, out oprec))
+                {
+                    return dasm.Decode(wInstr, Opcode.invalid, "");
+                }
+                return oprec.Decode(dasm, wInstr);
             }
         }
     }
