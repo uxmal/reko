@@ -107,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <Architectures Include="$(SolutionDir)Arch\Arm\$(OutDir)Reko.Arch.Arm.*" />
+    <Architectures Include="$(SolutionDir)Arch\Avr\$(OutDir)Reko.Arch.Avr.*" />
     <Architectures Include="$(SolutionDir)Arch\M68k\$(OutDir)Reko.Arch.M68k.*" />
     <Architectures Include="$(SolutionDir)Arch\Mips\$(OutDir)Reko.Arch.Mips.*" />
     <Architectures Include="$(SolutionDir)Arch\Mos6502\$(OutDir)Reko.Arch.Mos6502.*" />
