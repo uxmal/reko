@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Reko/v4">
+  <arch>risc-v</arch>
+  <platform>elf-neutral</platform>
+  <input>
+    <filename>ipcalc</filename>
+    <disassembly>ipcalc.asm</disassembly>
+    <intermediate-code>ipcalc.dis</intermediate-code>
+    <output>ipcalc.c</output>
+    <types-file>ipcalc.h</types-file>
+    <global-vars>ipcalc.globals.c</global-vars>
+    <user>
+      <procedure name="fn0000000000015180">
+        <address>0000000000015180</address>
+      </procedure>
+      <procedure name="fn0000000000015EF0">
+        <address>0000000000015EF0</address>
+      </procedure>
+      <procedure name="fn0000000000015F24">
+        <address>0000000000015F24</address>
+      </procedure>
+      <procedure name="fn0000000000015F64">
+        <address>0000000000015F64</address>
+      </procedure>
+      <procedure name="fn0000000000015F94">
+        <address>0000000000015F94</address>
+      </procedure>
+      <procedure name="fn00000000000168B8">
+        <address>00000000000168B8</address>
+      </procedure>
+      <procedure name="fn0000000000016B38">
+        <address>0000000000016B38</address>
+      </procedure>
+      <procedure name="fn00000000000182E8">
+        <address>00000000000182E8</address>
+      </procedure>
+      <procedure name="fn0000000000018378">
+        <address>0000000000018378</address>
+      </procedure>
+      <registerValues />
+    </user>
+  </input>
+</project>

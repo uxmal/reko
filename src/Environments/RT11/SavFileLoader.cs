@@ -40,6 +40,7 @@ namespace Reko.Environments.RT11
         public override Program Load(Address addrLoad)
         {
             var arch = new Pdp11Architecture();
+            arch.Name = "pdp11";
 
             return new Program(
                 new SegmentMap(addrLoad,

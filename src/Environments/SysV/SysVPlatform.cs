@@ -72,7 +72,10 @@ namespace Reko.Environments.SysV
                 return new Arm32ProcedureSerializer(Architecture, typeLoader, defaultConvention);
             case "m68k":
                 return new M68kProcedureSerializer(Architecture, typeLoader, defaultConvention);
-
+            case "avr8":
+                return new Avr8ProcedureSerializer(Architecture, typeLoader, defaultConvention);
+            case "risc-v":
+                return new RiscVProcedureSerializer(Architecture, typeLoader, defaultConvention);
             default:
                 throw new NotImplementedException(string.Format("Procedure serializer for {0} not implemented yet.", Architecture.Description));
             }

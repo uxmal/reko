@@ -209,5 +209,6 @@ namespace Reko.ImageLoaders.Elf
         EM_NORC = 218,           // Nanoradio Optimized RISC
         EM_CSR_KALIMBA = 219,    // CSR Kalimba architecture family
         EM_AMDGPU = 224,         // AMD GPU architecture
+        EM_RISCV = 243,          // RISC-V
     }
 }
