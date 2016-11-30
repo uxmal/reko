@@ -240,7 +240,8 @@ namespace Reko.Arch.Pdp11
 
         public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
         {
-            throw new NotImplementedException();
+            ushort uAddr = rdr.ReadLeUInt16();
+            return Address.Ptr16(uAddr);
         }
 
         public override bool TryParseAddress(string txtAddress, out Address addr)
