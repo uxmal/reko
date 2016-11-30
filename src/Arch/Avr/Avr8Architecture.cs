@@ -98,7 +98,7 @@ namespace Reko.Arch.Avr
             throw new NotImplementedException();
         }
 
-        public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        public override Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }
