@@ -1840,8 +1840,8 @@ Global
 		{BC7D4AD1-795F-4AEC-823C-813E65C5557A}.TravisRelease|.NET.Build.0 = Release|Any CPU
 		{BC7D4AD1-795F-4AEC-823C-813E65C5557A}.TravisRelease|Any CPU.ActiveCfg = Release|Any CPU
 		{BC7D4AD1-795F-4AEC-823C-813E65C5557A}.TravisRelease|Any CPU.Build.0 = Release|Any CPU
-		{BC7D4AD1-795F-4AEC-823C-813E65C5557A}.TravisRelease|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{BC7D4AD1-795F-4AEC-823C-813E65C5557A}.TravisRelease|Mixed Platforms.Build.0 = Release|Any CPU
+		{BC7D4AD1-795F-4AEC-823C-813E65C5557A}.TravisRelease|Mixed Platforms.ActiveCfg = TravisRelease|Any CPU
+		{BC7D4AD1-795F-4AEC-823C-813E65C5557A}.TravisRelease|Mixed Platforms.Build.0 = TravisRelease|Any CPU
 		{BC7D4AD1-795F-4AEC-823C-813E65C5557A}.TravisRelease|Win32.ActiveCfg = Release|Any CPU
 		{BC7D4AD1-795F-4AEC-823C-813E65C5557A}.TravisRelease|Win32.Build.0 = Release|Any CPU
 		{BC7D4AD1-795F-4AEC-823C-813E65C5557A}.TravisRelease|x86.ActiveCfg = Release|Any CPU
@@ -1870,8 +1870,8 @@ Global
 		{5E75D702-3032-41FE-8D09-86428555A8ED}.TravisRelease|.NET.Build.0 = Release|Any CPU
 		{5E75D702-3032-41FE-8D09-86428555A8ED}.TravisRelease|Any CPU.ActiveCfg = Release|Any CPU
 		{5E75D702-3032-41FE-8D09-86428555A8ED}.TravisRelease|Any CPU.Build.0 = Release|Any CPU
-		{5E75D702-3032-41FE-8D09-86428555A8ED}.TravisRelease|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{5E75D702-3032-41FE-8D09-86428555A8ED}.TravisRelease|Mixed Platforms.Build.0 = Release|Any CPU
+		{5E75D702-3032-41FE-8D09-86428555A8ED}.TravisRelease|Mixed Platforms.ActiveCfg = TravisRelease|Any CPU
+		{5E75D702-3032-41FE-8D09-86428555A8ED}.TravisRelease|Mixed Platforms.Build.0 = TravisRelease|Any CPU
 		{5E75D702-3032-41FE-8D09-86428555A8ED}.TravisRelease|Win32.ActiveCfg = Release|Any CPU
 		{5E75D702-3032-41FE-8D09-86428555A8ED}.TravisRelease|Win32.Build.0 = Release|Any CPU
 		{5E75D702-3032-41FE-8D09-86428555A8ED}.TravisRelease|x86.ActiveCfg = Release|Any CPU

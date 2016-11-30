@@ -169,6 +169,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_PPC64: arch = "ppc64"; break;
             case ElfMachine.EM_ARM: arch = "arm"; break;
             case ElfMachine.EM_XTENSA: arch = "xtensa"; break;
+            case ElfMachine.EM_AVR: arch = "avr8"; break;
             default:
                 throw new NotSupportedException(string.Format("Processor format {0} is not supported.", machineType));
             }
@@ -1052,7 +1053,7 @@ namespace Reko.ImageLoaders.Elf
 
             return Address.Ptr32(
                 ProgramHeaders
-                .Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0)
+                .Where(ph => ph.p_filesz > 0)
                 .Min(ph => ph.p_vaddr));
         }
 
@@ -1072,6 +1073,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_SPARC: return new SparcRelocator(this);
             case ElfMachine.EM_XTENSA: return new XtensaRelocator(this);
             case ElfMachine.EM_68K: return new M68kRelocator(this);
+            case ElfMachine.EM_AVR: return new AvrRelocator(this);
             }
             return base.CreateRelocator(machine);
         }

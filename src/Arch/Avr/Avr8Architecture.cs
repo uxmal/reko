@@ -32,6 +32,11 @@ namespace Reko.Arch.Avr
 {
     public class Avr8Architecture : ProcessorArchitecture
     {
+        public Avr8Architecture()
+        {
+            this.PointerType = PrimitiveType.Ptr16;
+        }
+        
         public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader rdr)
         {
             return new Avr8Disassembler(this, rdr);

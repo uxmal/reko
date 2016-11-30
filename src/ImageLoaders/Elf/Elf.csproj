@@ -88,6 +88,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RelaSegmentRenderer.cs" />
     <Compile Include="Relocators\ArmRelocator.cs" />
+    <Compile Include="Relocators\AvrRelocator.cs" />
     <Compile Include="Relocators\ElfRelocator.cs" />
     <Compile Include="Relocators\M68kRelocator.cs" />
     <Compile Include="Relocators\MipsRelocator.cs" />
