@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArmProcedureSerializer.cs" />
+    <Compile Include="Avr8ProcedureSerializer.cs" />
     <Compile Include="GccMangledNameParser.cs" />
     <Compile Include="M68kProcedureSerializer.cs" />
     <Compile Include="MipsProcedureSerializer.cs" />

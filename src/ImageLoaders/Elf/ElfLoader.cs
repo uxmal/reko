@@ -169,6 +169,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_PPC64: arch = "ppc64"; break;
             case ElfMachine.EM_ARM: arch = "arm"; break;
             case ElfMachine.EM_XTENSA: arch = "xtensa"; break;
+            case ElfMachine.EM_AVR: arch = "avr8"; break;
             default:
                 throw new NotSupportedException(string.Format("Processor format {0} is not supported.", machineType));
             }
@@ -473,9 +474,9 @@ namespace Reko.ImageLoaders.Elf
             return imgLoader.ReadAsciiString(sect.sh_offset + offset);
         }
 
-        protected bool IsLoadable(ulong p_vaddr, ProgramHeaderType p_type)
+        protected bool IsLoadable(ulong p_pmemsz, ProgramHeaderType p_type)
         {
-            if (p_vaddr == 0)
+            if (p_pmemsz == 0)
                 return false;
             return (p_type == ProgramHeaderType.PT_LOAD ||
                     p_type == ProgramHeaderType.PT_DYNAMIC);
@@ -700,14 +701,14 @@ namespace Reko.ImageLoaders.Elf
         {
             var segMap = AllocateMemoryAreas(
                 ProgramHeaders64
-                    .Where(p => IsLoadable(p.p_vaddr, p.p_type))
+                    .Where(p => IsLoadable(p.p_pmemsz, p.p_type))
                     .Select(p => Tuple.Create(
                         platform.MakeAddressFromLinear(p.p_vaddr),
                         (uint)p.p_pmemsz)));
             foreach (var ph in ProgramHeaders64)
             {
                 Debug.Print("ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.p_vaddr, ph.p_filesz, ph.p_pmemsz);
-                if (!IsLoadable(ph.p_vaddr, ph.p_type))
+                if (!IsLoadable(ph.p_pmemsz, ph.p_type))
                     continue;
                 var vaddr = platform.MakeAddressFromLinear(ph.p_vaddr);
                 MemoryArea mem;
@@ -1052,7 +1053,7 @@ namespace Reko.ImageLoaders.Elf
 
             return Address.Ptr32(
                 ProgramHeaders
-                .Where(ph => ph.p_vaddr > 0 && ph.p_filesz > 0)
+                .Where(ph => ph.p_filesz > 0)
                 .Min(ph => ph.p_vaddr));
         }
 
@@ -1072,6 +1073,7 @@ namespace Reko.ImageLoaders.Elf
             case ElfMachine.EM_SPARC: return new SparcRelocator(this);
             case ElfMachine.EM_XTENSA: return new XtensaRelocator(this);
             case ElfMachine.EM_68K: return new M68kRelocator(this);
+            case ElfMachine.EM_AVR: return new AvrRelocator(this);
             }
             return base.CreateRelocator(machine);
         }
@@ -1247,7 +1249,7 @@ namespace Reko.ImageLoaders.Elf
         {
             var segMap = AllocateMemoryAreas(
                 ProgramHeaders
-                    .Where(p => IsLoadable(p.p_vaddr, p.p_type))
+                    .Where(p => IsLoadable(p.p_pmemsz, p.p_type))
                     .Select(p => Tuple.Create(
                         Address.Ptr32(p.p_vaddr),
                         p.p_pmemsz)));
@@ -1255,7 +1257,7 @@ namespace Reko.ImageLoaders.Elf
             foreach (var ph in ProgramHeaders)
             {
                 Debug.Print("ph: addr {0:X8} filesize {0:X8} memsize {0:X8}", ph.p_vaddr, ph.p_filesz, ph.p_pmemsz);
-                if (!IsLoadable(ph.p_vaddr, ph.p_type))
+                if (!IsLoadable(ph.p_pmemsz, ph.p_type))
                     continue;
                 var vaddr = Address.Ptr32(ph.p_vaddr);
                 MemoryArea mem;
@@ -1321,9 +1323,7 @@ namespace Reko.ImageLoaders.Elf
                     Number = i,
                     Type = shdr.sh_type,
                     Flags = shdr.sh_flags,
-                    Address = shdr.sh_addr != 0
-                        ? Address.Ptr32(shdr.sh_addr)
-                        : null,
+                    Address = Address.Ptr32(shdr.sh_addr),
                     FileOffset = shdr.sh_offset,
                     Size = shdr.sh_size,
                     Alignment = shdr.sh_addralign,
