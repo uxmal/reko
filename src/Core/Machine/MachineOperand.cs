@@ -208,9 +208,9 @@ namespace Reko.Core.Machine
             Address = a;
         }
 
-        public static MachineOperand Create(Address addr)
+        public static AddressOperand Create(Address addr)
         {
-            return new AddressOperand(addr, (PrimitiveType)addr.DataType);
+            return new AddressOperand(addr, PrimitiveType.Create(Domain.Pointer, addr.DataType.Size));
         }
 
         public static AddressOperand Ptr16(ushort a)
@@ -226,11 +226,6 @@ namespace Reko.Core.Machine
         public static AddressOperand Ptr64(ulong a)
         {
             return new AddressOperand(Address.Ptr64(a), PrimitiveType.Pointer64);
-        }
-
-        public static AddressOperand Create(Address addr)
-        {
-            return new AddressOperand(addr, PrimitiveType.Create(Domain.Pointer, addr.DataType.Size));
         }
 
         public override void Write(bool fExplicit, MachineInstructionWriter writer)
