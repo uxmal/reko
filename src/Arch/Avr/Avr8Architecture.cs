@@ -35,6 +35,8 @@ namespace Reko.Arch.Avr
         public Avr8Architecture()
         {
             this.PointerType = PrimitiveType.Ptr16;
+            this.FramePointerType = PrimitiveType.UInt8;
+            this.InstructionBitSize = 16;
         }
         
         public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader rdr)
@@ -44,17 +46,17 @@ namespace Reko.Arch.Avr
 
         public override ImageReader CreateImageReader(MemoryArea img, ulong off)
         {
-            throw new NotImplementedException();
+            return new LeImageReader(img, off);
         }
 
         public override ImageReader CreateImageReader(MemoryArea img, Address addr)
         {
-            throw new NotImplementedException();
+            return new LeImageReader(img, addr);
         }
 
         public override ImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
         {
-            throw new NotImplementedException();
+            return new LeImageReader(img, addrBegin, addrEnd);
         }
 
         public override ImageWriter CreateImageWriter()
@@ -79,7 +81,7 @@ namespace Reko.Arch.Avr
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new Avr8State(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
