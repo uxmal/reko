@@ -188,12 +188,6 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-		public void VpStringInstructions()
-		{
-			RunFileTest_x86_real("Fragments/stringinstr.asm", "Analysis/VpStringInstructions.txt");
-		}
-
-		[Test]
 		public void VpSuccessiveDecs()
 		{
 			RunFileTest_x86_real("Fragments/multiple/successivedecs.asm", "Analysis/VpSuccessiveDecs.txt");
@@ -206,6 +200,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
         [Test]
+        [Ignore(Categories.AnalysisDevelopment)]
         public void VpReg00011()
         {
             RunFileTest_x86_real("Fragments/regressions/r00011.asm", "Analysis/VpReg00011.txt");

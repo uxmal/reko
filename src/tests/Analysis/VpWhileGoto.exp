@@ -5,7 +5,7 @@ fp:fp
 sp_2: orig: sp
     def:  sp_2 = fp
 Top_3: orig: Top
-    def:  Top_3 = 0x00
+    def:  Top_3 = 0
 si:si
     def:  def si
     uses: bx_5 = si
@@ -118,7 +118,7 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp_2 = fp
-	Top_3 = 0x00
+	Top_3 = 0
 	bx_5 = si
 	goto l0C00_001A
 	// succ:  l0C00_001A
@@ -171,7 +171,7 @@ fp:fp
 sp_2: orig: sp
     def:  sp_2 = fp
 Top_3: orig: Top
-    def:  Top_3 = 0x00
+    def:  Top_3 = 0
 si:si
     def:  def si
     uses: bx_5 = si
@@ -283,7 +283,7 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp_2 = fp
-	Top_3 = 0x00
+	Top_3 = 0
 	bx_5 = si
 	goto l0C00_001A
 	// succ:  l0C00_001A

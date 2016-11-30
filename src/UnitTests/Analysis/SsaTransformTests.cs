@@ -32,6 +32,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Rhino.Mocks;
+using Reko.Core.Code;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -2592,6 +2593,52 @@ proc1_exit:
                 m.Assign(al, m.LoadB(m.Word16(0x1234)));
                 m.Assign(ah, 3);
                 m.Store(m.Word16(0x1236), m.UMul(al, ah));
+                m.Return();
+            });
+        }
+
+        [Test]
+        public void SsaFpuReturn()
+        {
+            var sExp =
+            #region Expected
+@"Top_1: orig: Top
+    def:  Top_1 = 0x00
+Top_2: orig: Top
+    def:  Top_2 = 0xFF
+    uses: use Top_2
+ST3: orig: ST
+rLoc1_4: orig: rLoc1
+    def:  rLoc1_4 = 2.0
+    uses: use rLoc1_4
+// proc1
+// Return size: 0
+define proc1
+proc1_entry:
+	// succ:  l1
+l1:
+	Top_1 = 0x00
+	Top_2 = 0xFF
+	rLoc1_4 = 2.0
+	return
+	// succ:  proc1_exit
+proc1_exit:
+	use rLoc1_4
+	use Top_2
+======
+";
+            #endregion
+
+            RunTest_FrameAccesses(sExp, m =>
+            {
+                var ST = new MemoryIdentifier("ST", PrimitiveType.Pointer32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
+                var Top = m.Frame.EnsureRegister(new RegisterStorage("Top", 76, 0, PrimitiveType.Byte));
+
+                m.Assign(Top, 0);
+                m.Assign(Top, m.ISub(Top, 1));
+                m.Emit(new Store(
+                    new MemoryAccess(ST, Top, PrimitiveType.Real64),
+                    Constant.Real64(2.0)));
                 m.Return();
             });
         }

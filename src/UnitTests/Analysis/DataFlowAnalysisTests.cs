@@ -166,6 +166,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
+        [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void DfaNegsNots()
 		{
@@ -195,7 +196,6 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void DfaStringInstructions()
 		{
@@ -255,6 +255,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
         [Test]
+        [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.IntegrationTests)]
         public void DfaReg00011()
         {
@@ -270,7 +271,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
+        //[Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void DfaFstsw()
         {

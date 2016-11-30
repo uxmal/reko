@@ -18,7 +18,7 @@ ecx:ecx
 ecx_12: orig: ecx
 SZO_13: orig: SZO
 C_14: orig: C
-rArg0:FPU stack
+rArg0:FPU +0
     def:  def rArg0
     uses: branch rArg0 > Mem0[ds:bx:real32] l0C00_000C
 // fn0C00_0000

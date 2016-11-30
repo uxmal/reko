@@ -77,6 +77,7 @@ namespace Reko.Analysis
 			foreach (Web web in this.webs)
 			{
                 if (web.Uses.Count > 0 &&
+                    !web.Uses.All(u => u.Instruction is PhiAssignment) &&
                     !(web.Identifier is MemoryIdentifier)
                     || web.DefExprs.OfType<OutArgument>().Count() > 0)
                 {

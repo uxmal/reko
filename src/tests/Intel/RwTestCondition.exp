@@ -20,7 +20,7 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp = fp
-	Top = 0x00
+	Top = 0
 	ecx = ecx ^ ecx
 	SZO = cond(ecx)
 	C = false

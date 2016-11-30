@@ -34,6 +34,7 @@ using System.Text;
 using Rhino.Mocks;
 using Reko.Core.Expressions;
 using Reko.Core.Serialization;
+using Reko.Core.Code;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -52,12 +53,12 @@ namespace Reko.UnitTests.Analysis
             this.platform = mr.Stub<IPlatform>();
             this.progBuilder = new ProgramBuilder();
             this.fnExit = new ExternalProcedure(
-              "exit",
-              FunctionType.Action(new Identifier("code", PrimitiveType.Int32, new StackArgumentStorage(4, PrimitiveType.Int32))),
-              new ProcedureCharacteristics
-              {
-                  Terminates = true,
-              });
+                "exit",
+                FunctionType.Action(new Identifier("code", PrimitiveType.Int32, new StackArgumentStorage(4, PrimitiveType.Int32))),
+                new ProcedureCharacteristics
+                {
+                    Terminates = true,
+                });
             this.fnExit.Signature.ReturnAddressOnStack = 4;
         }
 
@@ -136,7 +137,7 @@ namespace Reko.UnitTests.Analysis
             if (flow.Constants.Count > 0)
             {
                 sw.Write("Constants: ");
-                sw.WriteLine(string.Join(
+                sw.Write(string.Join(
                     ",",
                     flow.Constants
                         .OrderBy(kv => kv.Key.ToString())
@@ -159,8 +160,7 @@ namespace Reko.UnitTests.Analysis
             var sExp =
 @"Preserved: 
 Trashed: r1
-Constants: r1:0x0000002A
-";
+Constants: r1:0x0000002A";
             RunTest(sExp, m =>
             {
                 var r1 = m.Register("r1");
@@ -199,8 +199,7 @@ Trashed:
             var sExp =
 @"Preserved: r63
 Trashed: ds
-Constants: ds:0x0C00
-";
+Constants: ds:0x0C00";
 
             RunTest(sExp, m =>
             {
@@ -433,6 +432,28 @@ Constants: cl:0x00
                 m.Label("m3");
                 m.Assign(r1, m.LoadDw(sp));
                 m.Assign(sp, m.IAdd(sp, 4));
+                m.Return();
+            });
+        }
+
+        [Test]
+        public void TrfFpuReturn()
+        {
+            var sExp = Expect(
+                "Preserved: ",
+                "Trashed: FPU -1,Top",
+                "Constants: FPU -1:2.0,Top:0xFF");
+
+            RunTest(sExp, "TrfRecursive", m =>
+            {
+                var ST = new MemoryIdentifier("ST", PrimitiveType.Pointer32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
+                var Top = m.Frame.EnsureRegister(new RegisterStorage("Top", 76, 0, PrimitiveType.Byte));
+
+                m.Assign(Top, 0);
+                m.Assign(Top, m.ISub(Top, 1));
+                m.Emit(new Store(
+                    new MemoryAccess(ST, Top, PrimitiveType.Real64),
+                    Constant.Real64(2.0)));
                 m.Return();
             });
         }

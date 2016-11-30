@@ -16,7 +16,7 @@ fn10000000_entry:
 	// succ:  l10000000
 l10000000:
 	esp = fp
-	Top = 0x00
+	Top = 0
 	esp = esp - 0x0000000C
 	SCZO = cond(esp)
 	eax = eax ^ eax

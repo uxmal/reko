@@ -6,7 +6,7 @@ sp_2: orig: sp
     def:  sp_2 = fp
     uses: call fn0C00_000B (retsize: 2;)	uses: ax:ax,dx:dx_4,sp:sp_2	defs: ax:ax_8,dx:dx_6,sp:sp_5
 Top_3: orig: Top
-    def:  Top_3 = 0x00
+    def:  Top_3 = 0
 dx_4: orig: dx
     def:  dx_4 = 0x001E
     uses: call fn0C00_000B (retsize: 2;)	uses: ax:ax,dx:dx_4,sp:sp_2	defs: ax:ax_8,dx:dx_6,sp:sp_5
@@ -35,7 +35,7 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp_2 = fp
-	Top_3 = 0x00
+	Top_3 = 0
 	dx_4 = 0x001E
 	call fn0C00_000B (retsize: 2;)
 		uses: ax:ax,dx:dx_4,sp:sp_2
@@ -52,7 +52,7 @@ fp:fp
 sp_2: orig: sp
     def:  sp_2 = fp
 Top_3: orig: Top
-    def:  Top_3 = 0x00
+    def:  Top_3 = 0
 dx_4: orig: dx
     def:  dx_4 = 0x001E
 sp_5: orig: sp
@@ -80,7 +80,7 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp_2 = fp
-	Top_3 = 0x00
+	Top_3 = 0
 	dx_4 = 0x001E
 	call fn0C00_000B (retsize: 2;)
 		uses: ax:ax,dx:0x001E,sp:fp
@@ -97,7 +97,7 @@ sp_2: orig: sp
     def:  sp_2 = fp
     uses: call fn0C00_000F (retsize: 2;)	uses: sp:sp_2	defs: sp:sp_4
 Top_3: orig: Top
-    def:  Top_3 = 0x00
+    def:  Top_3 = 0
 sp_4: orig: sp
     def:  call fn0C00_000F (retsize: 2;)	uses: sp:sp_2	defs: sp:sp_4
 // fn0C00_000B
@@ -108,7 +108,7 @@ fn0C00_000B_entry:
 	// succ:  l0C00_000B
 l0C00_000B:
 	sp_2 = fp
-	Top_3 = 0x00
+	Top_3 = 0
 	call fn0C00_000F (retsize: 2;)
 		uses: sp:sp_2
 		defs: sp:sp_4
@@ -123,7 +123,7 @@ fp:fp
 sp_2: orig: sp
     def:  sp_2 = fp
 Top_3: orig: Top
-    def:  Top_3 = 0x00
+    def:  Top_3 = 0
 sp_4: orig: sp
     def:  call fn0C00_000F (retsize: 2;)	uses: sp:fp	defs: sp:sp_4
 // fn0C00_000B
@@ -134,7 +134,7 @@ fn0C00_000B_entry:
 	// succ:  l0C00_000B
 l0C00_000B:
 	sp_2 = fp
-	Top_3 = 0x00
+	Top_3 = 0
 	call fn0C00_000F (retsize: 2;)
 		uses: sp:fp
 		defs: sp:sp_4
@@ -149,7 +149,7 @@ sp_2: orig: sp
     def:  sp_2 = fp
     uses: sp_4 = sp_2 - 0x0002
 Top_3: orig: Top
-    def:  Top_3 = 0x00
+    def:  Top_3 = 0
 sp_4: orig: sp
     def:  sp_4 = sp_2 - 0x0002
     uses: Mem7[ss:sp_4:word16] = si
@@ -228,7 +228,7 @@ fn0C00_000F_entry:
 	// succ:  l0C00_000F
 l0C00_000F:
 	sp_2 = fp
-	Top_3 = 0x00
+	Top_3 = 0
 	sp_4 = sp_2 - 0x0002
 	Mem7[ss:sp_4:word16] = si
 	si_8 = si ^ si
@@ -266,7 +266,7 @@ fp:fp
 sp_2: orig: sp
     def:  sp_2 = fp
 Top_3: orig: Top
-    def:  Top_3 = 0x00
+    def:  Top_3 = 0
 sp_4: orig: sp
     def:  sp_4 = fp - 0x0002
 si:si
@@ -343,7 +343,7 @@ fn0C00_000F_entry:
 	// succ:  l0C00_000F
 l0C00_000F:
 	sp_2 = fp
-	Top_3 = 0x00
+	Top_3 = 0
 	sp_4 = fp - 0x0002
 	wLoc02_26 = si
 	si_8 = 0x0000

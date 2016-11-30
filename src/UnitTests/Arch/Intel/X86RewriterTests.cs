@@ -737,7 +737,7 @@ namespace Reko.UnitTests.Arch.Intel
             AssertCode(
                 "0|L--|10000000(3): 2 instructions",
                 "1|L--|Mem0[ebx + 0x00000004:real32] = (real32) ST[Top:real64]",
-                "2|L--|Top = Top + 0x01");
+                "2|L--|Top = Top + 1");
         }
         [Test]
         public void X86Rw_RepScasb()
@@ -868,7 +868,7 @@ namespace Reko.UnitTests.Arch.Intel
             });
             AssertCode(
                 "0|L--|0C00:0000(2): 1 instructions",
-                "1|L--|ST[Top:real64] = ST[Top:real64] * ST[Top + 0x01:real64]");
+                "1|L--|ST[Top:real64] = ST[Top:real64] * ST[Top + 1:real64]");
         }
 
         [Test]
@@ -974,8 +974,8 @@ namespace Reko.UnitTests.Arch.Intel
             });
             AssertCode(
                 "0|L--|0C00:0000(2): 2 instructions",
-                "1|L--|FPUF = cond(ST[Top:real64] - ST[Top + 0x01:real64])",
-                "2|L--|Top = Top + 0x02",
+                "1|L--|FPUF = cond(ST[Top:real64] - ST[Top + 1:real64])",
+                "2|L--|Top = Top + 2",
                 "3|L--|0C00:0002(7): 2 instructions",
                 "4|L--|SCZO = FPUF",
                 "5|T--|if (Test(NE,FPUF)) branch 0C00:0000");
@@ -1210,8 +1210,8 @@ namespace Reko.UnitTests.Arch.Intel
             Run32bitTest(0xDA, 0xE9);
             AssertCode(
               "0|L--|10000000(2): 2 instructions",
-              "1|L--|FPUF = cond(ST[Top:real64] - ST[Top + 0x01:real64])",
-              "2|L--|Top = Top + 0x02");
+              "1|L--|FPUF = cond(ST[Top:real64] - ST[Top + 1:real64])",
+              "2|L--|Top = Top + 2");
         }
 
         [Test]
@@ -1390,7 +1390,7 @@ namespace Reko.UnitTests.Arch.Intel
             AssertCode(
                 "0|L--|10000000(3): 2 instructions",
                 "1|L--|Mem0[esp:real32] = (real32) ST[Top:real64]",
-                "2|L--|Top = Top + 0x01");
+                "2|L--|Top = Top + 1");
         }
 
         [Test]

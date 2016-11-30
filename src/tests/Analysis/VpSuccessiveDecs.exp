@@ -6,7 +6,7 @@ sp_2: orig: sp
     def:  sp_2 = fp
     uses: call fn0C00_000C (retsize: 2;)	uses: ax:ax_6,sp:sp_2	defs: ax:ax_8,sp:sp_7
 Top_3: orig: Top
-    def:  Top_3 = 0x00
+    def:  Top_3 = 0
 ds:ds
     def:  def ds
     uses: ax_6 = Mem0[ds:0x0300:word16]
@@ -34,7 +34,7 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp_2 = fp
-	Top_3 = 0x00
+	Top_3 = 0
 	ax_6 = Mem0[ds:0x0300:word16]
 	call fn0C00_000C (retsize: 2;)
 		uses: ax:ax_6,sp:sp_2
@@ -51,7 +51,7 @@ fp:fp
 sp_2: orig: sp
     def:  sp_2 = fp
 Top_3: orig: Top
-    def:  Top_3 = 0x00
+    def:  Top_3 = 0
 ds:ds
     def:  def ds
     uses: ax_6 = Mem0[ds:0x0300:word16]
@@ -79,7 +79,7 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp_2 = fp
-	Top_3 = 0x00
+	Top_3 = 0
 	ax_6 = Mem0[ds:0x0300:word16]
 	call fn0C00_000C (retsize: 2;)
 		uses: ax:ax_6,sp:fp
@@ -95,7 +95,7 @@ fp:fp
 sp_2: orig: sp
     def:  sp_2 = fp
 Top_3: orig: Top
-    def:  Top_3 = 0x00
+    def:  Top_3 = 0
 ax:ax
     def:  def ax
     uses: ax_5 = ax | ax
@@ -155,7 +155,7 @@ fn0C00_000C_entry:
 	// succ:  l0C00_000C
 l0C00_000C:
 	sp_2 = fp
-	Top_3 = 0x00
+	Top_3 = 0
 	ax_5 = ax | ax
 	SZO_6 = cond(ax_5)
 	Z_8 = SLICE(SZO_6, bool, 2) (alias)
@@ -200,7 +200,7 @@ fp:fp
 sp_2: orig: sp
     def:  sp_2 = fp
 Top_3: orig: Top
-    def:  Top_3 = 0x00
+    def:  Top_3 = 0
 ax:ax
     def:  def ax
     uses: ax_5 = ax
@@ -256,7 +256,7 @@ fn0C00_000C_entry:
 	// succ:  l0C00_000C
 l0C00_000C:
 	sp_2 = fp
-	Top_3 = 0x00
+	Top_3 = 0
 	ax_5 = ax
 	SZO_6 = cond(ax)
 	Z_8 = SLICE(SZO_6, bool, 2) (alias)

@@ -12,17 +12,17 @@ fn10000000_entry:
 	// succ:  l10000000
 l10000000:
 	esp = fp
-	Top = 0x00
+	Top = 0
 	edi = 0x10001212
 	Top = Top - 0x01
 	ST[Top:real64] = Mem0[edi + 0x00000004:real64]
 	Top = Top - 0x01
 	ST[Top:real64] = Mem0[edi + 0x0000000C:real64]
 	eax = _ftol(ST[Top:real64])
-	Top = Top + 0x01
+	Top = Top + 1
 	Mem0[edi + 0x00000014:word32] = eax
 	eax = _ftol(ST[Top:real64])
-	Top = Top + 0x01
+	Top = Top + 1
 	Mem0[edi + 0x0000001C:word32] = eax
 	return
 	// succ:  fn10000000_exit

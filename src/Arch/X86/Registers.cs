@@ -294,7 +294,7 @@ namespace Reko.Arch.X86
 
             rip = new RegisterStorage("rip", 23, 0, PrimitiveType.Pointer64);
 
-            Top = new RegisterStorage("Top", 76, 0, PrimitiveType.Byte);
+            Top = new RegisterStorage("Top", 76, 0, PrimitiveType.SByte);
             ST = new MemoryIdentifier("ST", PrimitiveType.Pointer32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
 
             All = new RegisterStorage[] {

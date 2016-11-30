@@ -27,7 +27,7 @@ fn10000000_entry:
 	// succ:  l10000000
 l10000000:
 	esp = fp
-	Top = 0x00
+	Top = 0
 	esp = esp - 0x00000004
 	Mem0[esp:word32] = ebx
 	esp = esp - 0x00000004
@@ -366,7 +366,7 @@ fn10000233_entry:
 	// succ:  l10000233
 l10000233:
 	esp = fp
-	Top = 0x00
+	Top = 0
 	eax = Mem0[esp + 0x00000004:word32]
 	return
 	// succ:  fn10000233_exit
@@ -385,7 +385,7 @@ fn10000238_entry:
 	// succ:  l10000238
 l10000238:
 	esp = fp
-	Top = 0x00
+	Top = 0
 	eax = Mem0[esp + 0x00000004:word32]
 	return
 	// succ:  fn10000238_exit
@@ -404,7 +404,7 @@ fn1000023D_entry:
 	// succ:  l1000023D
 l1000023D:
 	esp = fp
-	Top = 0x00
+	Top = 0
 	eax = Mem0[esp + 0x00000004:word32]
 	return
 	// succ:  fn1000023D_exit
@@ -423,7 +423,7 @@ fn10000242_entry:
 	// succ:  l10000242
 l10000242:
 	esp = fp
-	Top = 0x00
+	Top = 0
 	eax = Mem0[esp + 0x00000004:word32]
 	return
 	// succ:  fn10000242_exit
@@ -442,7 +442,7 @@ fn1000024C_entry:
 	// succ:  l1000024C
 l1000024C:
 	esp = fp
-	Top = 0x00
+	Top = 0
 	eax = Mem0[esp + 0x00000004:word32]
 	return
 	// succ:  fn1000024C_exit
@@ -461,7 +461,7 @@ fn10000251_entry:
 	// succ:  l10000251
 l10000251:
 	esp = fp
-	Top = 0x00
+	Top = 0
 	eax = Mem0[esp + 0x00000004:word32]
 	return
 	// succ:  fn10000251_exit
@@ -480,7 +480,7 @@ fn10000256_entry:
 	// succ:  l10000256
 l10000256:
 	esp = fp
-	Top = 0x00
+	Top = 0
 	eax = Mem0[esp + 0x00000004:word32]
 	return
 	// succ:  fn10000256_exit
@@ -499,7 +499,7 @@ fn1000025B_entry:
 	// succ:  l1000025B
 l1000025B:
 	esp = fp
-	Top = 0x00
+	Top = 0
 	eax = Mem0[esp + 0x00000004:word32]
 	return
 	// succ:  fn1000025B_exit
@@ -519,7 +519,7 @@ fn10000260_entry:
 	// succ:  l10000260
 l10000260:
 	esp = fp
-	Top = 0x00
+	Top = 0
 	eax = Mem0[esp + 0x00000008:word32]
 	eax = eax + Mem0[esp + 0x00000004:word32]
 	SCZO = cond(eax)
@@ -540,7 +540,7 @@ fn10000269_entry:
 	// succ:  l10000269
 l10000269:
 	esp = fp
-	Top = 0x00
+	Top = 0
 	eax = Mem0[esp + 0x00000004:word32]
 	return
 	// succ:  fn10000269_exit
@@ -560,7 +560,7 @@ fn1000026E_entry:
 	// succ:  l1000026E
 l1000026E:
 	esp = fp
-	Top = 0x00
+	Top = 0
 	eax = Mem0[esp + 0x00000008:word32]
 	eax = eax + Mem0[esp + 0x00000004:word32]
 	SCZO = cond(eax)
@@ -582,7 +582,7 @@ fn10000277_entry:
 	// succ:  l10000277
 l10000277:
 	esp = fp
-	Top = 0x00
+	Top = 0
 	edx = Mem0[0x20000000:word32]
 	eax = Mem0[esp + 0x00000004:word32]
 	Mem0[edx + 0x00000004:word32] = eax
@@ -612,7 +612,7 @@ fn100002A8_entry:
 	// succ:  l100002A8
 l100002A8:
 	esp = fp
-	Top = 0x00
+	Top = 0
 	return
 	// succ:  fn100002A8_exit
 fn100002A8_exit:
@@ -631,7 +631,7 @@ fn100002A9_entry:
 	// succ:  l100002A9
 l100002A9:
 	esp = fp
-	Top = 0x00
+	Top = 0
 	edx = Mem0[0x20000000:word32]
 	eax = Mem0[esp + 0x00000004:word32]
 	Mem0[edx + 0x00000004:word32] = eax

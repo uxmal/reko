@@ -11,47 +11,47 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp = fp
-	Top = 0x00
+	Top = 0
 	Top = Top - 0x01
 	ST[Top:real64] = Mem0[ds:0x0300:real64]
 	Top = Top - 0x01
 	ST[Top:real64] = Mem0[ds:0x0310:real64]
-	ST[Top + 0x01:real64] = ST[Top + 0x01:real64] - ST[Top:real64]
-	Top = Top + 0x01
+	ST[Top + 1:real64] = ST[Top + 1:real64] - ST[Top:real64]
+	Top = Top + 1
 	Mem0[ds:0x0400:real64] = ST[Top:real64]
-	Top = Top + 0x01
+	Top = Top + 1
 	Top = Top - 0x01
 	ST[Top:real64] = Mem0[ds:0x0320:real64]
 	Top = Top - 0x01
 	ST[Top:real64] = Mem0[ds:0x0330:real64]
-	ST[Top + 0x01:real64] = ST[Top + 0x01:real64] / ST[Top:real64]
-	Top = Top + 0x01
+	ST[Top + 1:real64] = ST[Top + 1:real64] / ST[Top:real64]
+	Top = Top + 1
 	Mem0[ds:0x0338:real64] = ST[Top:real64]
-	Top = Top + 0x01
+	Top = Top + 1
 	Top = Top - 0x01
 	ST[Top:real64] = Mem0[ds:0x0328:real64]
 	Top = Top - 0x01
 	ST[Top:real64] = Mem0[ds:0x0320:real64]
-	ST[Top + 0x01:real64] = ST[Top + 0x01:real64] / ST[Top:real64]
-	Top = Top + 0x01
+	ST[Top + 1:real64] = ST[Top + 1:real64] / ST[Top:real64]
+	Top = Top + 1
 	Mem0[ds:0x0408:real64] = ST[Top:real64]
-	Top = Top + 0x01
+	Top = Top + 1
 	Top = Top - 0x01
 	ST[Top:real64] = Mem0[ds:0x0320:real64]
 	Top = Top - 0x01
 	ST[Top:real64] = Mem0[ds:0x0330:real64]
-	ST[Top + 0x01:real64] = ST[Top:real64] - ST[Top + 0x01:real64]
-	Top = Top + 0x01
+	ST[Top + 1:real64] = ST[Top:real64] - ST[Top + 1:real64]
+	Top = Top + 1
 	Mem0[ds:0x0338:real64] = ST[Top:real64]
-	Top = Top + 0x01
+	Top = Top + 1
 	Top = Top - 0x01
 	ST[Top:real64] = Mem0[ds:0x0320:real64]
 	Top = Top - 0x01
 	ST[Top:real64] = Mem0[ds:0x0330:real64]
-	ST[Top + 0x01:real64] = ST[Top:real64] / ST[Top + 0x01:real64]
-	Top = Top + 0x01
+	ST[Top + 1:real64] = ST[Top:real64] / ST[Top + 1:real64]
+	Top = Top + 1
 	Mem0[ds:0x0340:real64] = ST[Top:real64]
-	Top = Top + 0x01
+	Top = Top + 1
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

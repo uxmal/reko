@@ -18,7 +18,7 @@ fn10000000_entry:
 	// succ:  l10000000
 l10000000:
 	esp = fp
-	Top = 0x00
+	Top = 0
 	edi = 0x10000034
 	esi = 0x00000003
 	ebx = malloc

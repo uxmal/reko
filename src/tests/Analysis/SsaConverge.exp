@@ -5,7 +5,7 @@ sp_2: orig: sp
     def:  sp_2 = fp
     uses: use sp_2
 Top_3: orig: Top
-    def:  Top_3 = 0x00
+    def:  Top_3 = 0
     uses: use Top_3
 bx:bx
     def:  def bx
@@ -101,7 +101,7 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp_2 = fp
-	Top_3 = 0x00
+	Top_3 = 0
 	SCZO_5 = cond(bx - 0x0000)
 	Z_6 = SLICE(SCZO_5, bool, 2) (alias)
 	SZO_11 = SLICE(SCZO_5, bool, 4) (alias)

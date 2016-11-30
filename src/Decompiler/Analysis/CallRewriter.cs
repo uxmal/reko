@@ -356,7 +356,7 @@ namespace Reko.Analysis
         }
 
         /// <summary>
-        /// Having identified the return variable -- if any, rewrite all 
+        /// Having identified the return variable -- if any -- rewrite all
         /// return statements to return that variable.
         /// </summary>
         /// <param name="ssa"></param>
@@ -377,7 +377,9 @@ namespace Reko.Analysis
                     Instruction = u
                 })
                 .Where(w => w.Identifier != null && w.Identifier.Storage == idRet.Storage)
-                .Single();
+                .SingleOrDefault();
+            if (expRet == null)
+                return;
 
             // Single definition
             var sid = ssa.Identifiers[expRet.Identifier];

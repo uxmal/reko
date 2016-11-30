@@ -326,7 +326,14 @@ namespace Reko.Core
 
         public override void Write(TextWriter writer)
         {
-            writer.Write("FPU stack");
+            if (FpuStackOffset >= 0)
+            {
+                writer.Write("FPU +{0}", FpuStackOffset);
+            }
+            else
+            {
+                writer.Write("FPU -{0}", -FpuStackOffset);
+            }
         }
     }
 

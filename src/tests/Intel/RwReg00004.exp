@@ -23,7 +23,7 @@ fn10000000_entry:
 	// succ:  l10000000
 l10000000:
 	esp = fp
-	Top = 0x00
+	Top = 0
 	eax = Mem0[esp + 0x00000004:word32]
 	esp = esp - 0x00000004
 	Mem0[esp:word32] = ebx
@@ -59,7 +59,7 @@ l10000035:
 	C = false
 	edi = 0x000186A0
 	Mem0[esp + 0x00000014:real32] = (real32) ST[Top:real64]
-	Top = Top + 0x01
+	Top = Top + 1
 	Top = Top - 0x01
 	ST[Top:real64] = (real64) Mem0[esp + 0x0000001C:int32]
 	// succ:  l10000048
@@ -76,7 +76,7 @@ l10000048:
 	Top = Top - 0x01
 	ST[Top:real64] = (real64) Mem0[esp + 0x0000001C:int32]
 	FPUF = cond(ST[Top:real64] - Mem0[esp + 0x00000014:real32])
-	Top = Top + 0x01
+	Top = Top + 1
 	SCZO = FPUF
 	branch Test(EQ,FPUF) l1000007F
 	// succ:  l10000072 l1000007F
@@ -87,7 +87,7 @@ l10000072:
 	Top = Top - 0x01
 	ST[Top:real64] = (real64) Mem0[esp + 0x00000014:int32]
 	Mem0[esp + 0x00000014:real32] = (real32) ST[Top:real64]
-	Top = Top + 0x01
+	Top = Top + 1
 	// succ:  l1000007F
 l1000007F:
 	ST[Top:real64] = ST[Top:real64] * Mem0[0x10033290:real64]
@@ -99,9 +99,9 @@ l1000007F:
 	Top = Top - 0x01
 	ST[Top:real64] = (real64) Mem0[esp + 0x0000001C:int32]
 	Top = Top - 0x01
-	ST[Top:real64] = ST[Top + 0x01:real64]
-	FPUF = cond(ST[Top:real64] - ST[Top + 0x01:real64])
-	Top = Top + 0x02
+	ST[Top:real64] = ST[Top + 1:real64]
+	FPUF = cond(ST[Top:real64] - ST[Top + 1:real64])
+	Top = Top + 2
 	SCZO = FPUF
 	branch Test(EQ,FPUF) l100000AD
 	// succ:  l100000A2 l100000AD
@@ -109,7 +109,7 @@ l100000A2:
 	ecx = ecx + 0x00000001
 	SZO = cond(ecx)
 	ST[Top:real64] = ST[Top:real64]
-	Top = Top + 0x01
+	Top = Top + 1
 	Mem0[esp + 0x0000001C:word32] = ecx
 	Top = Top - 0x01
 	ST[Top:real64] = (real64) Mem0[esp + 0x0000001C:int32]
@@ -118,13 +118,13 @@ l100000AD:
 	Top = Top - 0x01
 	ST[Top:real64] = (real64) Mem0[esp + 0x00000014:real32]
 	FPUF = cond(ST[Top:real64] - Mem0[0x10033298:real64])
-	Top = Top + 0x01
+	Top = Top + 1
 	SCZO = FPUF
 	branch Test(NE,FPUF) l100000D7
 	// succ:  l100000BF l100000D7
 l100000BF:
 	FPUF = cond(ST[Top:real64] - Mem0[0x10033298:real64])
-	Top = Top + 0x00
+	Top = Top + 0
 	SCZO = FPUF
 	branch Test(NE,FPUF) l100000D7
 	// succ:  l100000CD l100000D7
@@ -180,9 +180,9 @@ fn1000010A_entry:
 	// succ:  l1000010A
 l1000010A:
 	esp = fp
-	Top = 0x00
+	Top = 0
 	Mem0[esp - 0x00000004:int32] = (int32) ST[Top:real64]
-	Top = Top + 0x01
+	Top = Top + 1
 	eax = Mem0[esp - 0x00000004:word32]
 	return
 	// succ:  fn1000010A_exit

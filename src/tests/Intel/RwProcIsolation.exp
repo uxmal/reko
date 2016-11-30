@@ -14,7 +14,7 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	sp = fp
-	Top = 0x00
+	Top = 0
 	call fn0C00_000F (retsize: 2;)
 	sp = sp - 0x0002
 	Mem0[ss:sp:word16] = di
@@ -43,7 +43,7 @@ fn0C00_000F_entry:
 	// succ:  l0C00_000F
 l0C00_000F:
 	sp = fp
-	Top = 0x00
+	Top = 0
 	Mem0[ds:di:word16] = 0x0000
 	return
 	// succ:  fn0C00_000F_exit
@@ -64,7 +64,7 @@ fn0C00_0014_entry:
 	// succ:  l0C00_0014
 l0C00_0014:
 	sp = fp
-	Top = 0x00
+	Top = 0
 	di = di ^ di
 	SZO = cond(di)
 	C = false

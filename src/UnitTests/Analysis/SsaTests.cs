@@ -186,6 +186,12 @@ namespace Reko.UnitTests.Analysis
 		}
 
         [Test]
+        public void SsaReg00011()
+        {
+            RunFileTest_x86_real("Fragments/regressions/r00011.asm", "Analysis/SsaReg00011.txt");
+        }
+
+        [Test]
         public void SsaOutParamters()
         {
             var m = new ProcedureBuilder("foo");
