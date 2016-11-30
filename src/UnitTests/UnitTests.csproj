@@ -84,6 +84,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Arch\Avr\Avr8DisassemblerTests.cs" />
     <Compile Include="Arch\RiscV\RiscVDisassemblerTests.cs" />
     <Compile Include="Arch\RiscV\RiscVRewriterTests.cs" />
     <Compile Include="Arch\Xtensa\XtensaDisassemblerTests.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Core\Analysis\PyArgFormatParserTests.cs" />
     <Compile Include="Core\Analysis\ScanfFormatParserTests.cs" />
     <Compile Include="Core\DumperTests.cs" />
+    <Compile Include="Environments\RT11\LdaFileLoaderTests.cs" />
     <Compile Include="Environments\SysV\Arm32ProcedureSerializerTests.cs" />
     <Compile Include="Environments\SysV\GccMangledNameParserTests.cs" />
     <Compile Include="Environments\Windows\MsPrintfFormatParserTests.cs" />
@@ -580,6 +582,10 @@
       <Project>{32F09304-51BE-4797-A86A-C0BEFED2422B}</Project>
       <Name>Arm</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Arch\Avr\Avr.csproj">
+      <Project>{5E75D702-3032-41FE-8D09-86428555A8ED}</Project>
+      <Name>Avr</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Arch\Cil\Cil.csproj">
       <Project>{F6F2225D-B778-4FD2-9BA9-A8E2B58ACCCC}</Project>
       <Name>Cil</Name>
@@ -663,6 +669,10 @@
     <ProjectReference Include="..\Environments\Msdos\Msdos.csproj">
       <Project>{A943CF9B-7FCD-413A-B6D9-A199A69AF217}</Project>
       <Name>Msdos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Environments\RT11\RT11.csproj">
+      <Project>{697ACCC1-BA7B-4B34-BCA3-F82113843F40}</Project>
+      <Name>RT11</Name>
     </ProjectReference>
     <ProjectReference Include="..\Environments\SegaGenesis\SegaGenesis.csproj">
       <Project>{46d47ac5-dec2-44e6-942a-f1d9b77bb514}</Project>

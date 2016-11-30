@@ -5,27 +5,30 @@
 #include "TESTLONG.h"
 
 ***************************************************************************************************** g_ptr0000;
-Eq_894 g_t0001;
-Eq_8231 g_a0005[];
+Eq_913 g_t0001;
 word32 g_a0008[];
 ui32 g_a0010[];
 byte g_b1D6C = 0x25;
-struct Eq_5693 g_t2814 = 
-	{
-		
-		{
-		},
-	};
-Eq_4398 g_a2815[] = 
+Eq_4417 g_a2815[] = 
 	{
 	};
-word32 g_dw3D70 = 0x00000000;
-struct Eq_3187 * g_ptr3D74 = &g_t4000;
+ptr32 g_ptr3D70 = 0x00000000;
+struct Eq_5 * g_ptr3D74 = &g_t4000;
+struct Eq_34 * g_ptr3D78 = null;
+struct Eq_70 * g_ptr3D7C = &g_t10202;
+struct Eq_70 * g_ptr3D80 = &g_t3030303;
+int32 g_dw3D84 = 67372036;
+int32 g_dw3D88 = 67372036;
+ui32 g_dw3D8C = 0x05050505;
+word32 g_dw3D98 = 0x05050505;
+ptr32 g_ptr3D9C = 0x06060606;
 word32 g_dw3DA0 = 0x06060606;
 word32 g_dw3DA4 = 0x06060606;
 word32 g_dw3DA8 = 0x06060606;
-Eq_3531 g_a3DAC[] = 
+Eq_3550 g_a3DAC[] = 
 	{
 	};
-Eq_3187 g_t4000;
+Eq_5 g_t4000;
+Eq_70 g_t10202;
+Eq_70 g_t3030303;
 

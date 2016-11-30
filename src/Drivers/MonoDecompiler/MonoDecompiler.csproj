@@ -174,6 +174,7 @@
     <DecompilerMetadata Include="$(ProjectDir)..\..\Decompiler\Loading\Signatures\*.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\..\external\wine\*.spec" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Arm\$(OutDir)Reko.Arch.Arm.*" />
+    <Architectures Include="$(ProjectDir)..\..\Arch\Avr\$(OutDir)Reko.Arch.Avr.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\M68k\$(OutDir)Reko.Arch.M68k.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Mips\$(OutDir)Reko.Arch.Mips.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Mos6502\$(OutDir)Reko.Arch.Mos6502.*" />

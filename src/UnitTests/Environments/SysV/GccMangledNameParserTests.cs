@@ -283,6 +283,7 @@ namespace Reko.UnitTests.Environments.SysV
         }
 
         /*
+_ZSt18_Rb_tree_incrementPSt18_Rb_tree_node_base
  _ZN5Timer14getElapsedTimeEv
 _ZN15TAnimatedSpriteD2Ev
 _ZNSt6vectorIcSaIcEE15_M_range_insertIPcEEvN9__gnu_cxx17__normal_iteratorIS3_S1_EET_S7_St20forward_iterator_tag

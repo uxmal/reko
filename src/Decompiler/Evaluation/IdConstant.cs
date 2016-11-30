@@ -28,13 +28,14 @@ using System;
 namespace Reko.Evaluation
 {
 	/// <summary>
-	/// Implements constant propagation.
+	/// Implements constant propagation. Addresses are considered
+    /// constants.
 	/// </summary>
     public class IdConstant
     {
         private EvaluationContext ctx;
         private Unifier unifier;
-        private Constant cSrc;
+        private Expression src;
         private Identifier idDst;
 
         public IdConstant(EvaluationContext ctx, Unifier u)
@@ -45,10 +46,13 @@ namespace Reko.Evaluation
 
         public bool Match(Identifier id)
         {
-            Expression e = ctx.GetValue(id);
-            cSrc = e as Constant;
+            this.src = ctx.GetValue(id);
+            var cSrc = src as Constant;
             if (cSrc == null || !cSrc.IsValid)
-                return false;
+            {
+                if (!(src is Address))
+                    return false;
+            }
             idDst = id;
             return true;
         }
@@ -56,22 +60,30 @@ namespace Reko.Evaluation
         public Expression Transform()
         {
             ctx.RemoveIdentifierUse(idDst);
-            if (!cSrc.IsValid)
-                return cSrc;
-            DataType dt = unifier.Unify(cSrc.DataType, idDst.DataType);
+            DataType dt = unifier.Unify(src.DataType, idDst.DataType);
             var pt = dt.ResolveAs<PrimitiveType>();
             if (pt != null)
             {
-                var cNew = cSrc.CloneExpression();
+                var cNew = src.CloneExpression();
                 cNew.DataType = dt;
                 return cNew;
             }
             var ptr = dt.ResolveAs<Pointer>();
+            var cSrc = src as Constant;
             if (ptr != null)
             {
-                var addr = Address.Create(ptr, cSrc.ToUInt64());
-                addr.DataType = ptr;
-                return addr;
+                if (cSrc != null)
+                {
+                    var addr = Address.Create(ptr, cSrc.ToUInt64());
+                    addr.DataType = ptr;
+                    return addr;
+                }
+                if (src is Address)
+                {
+                    var addr = src.CloneExpression();
+                    addr.DataType = ptr;
+                    return addr;
+                }
             }
             throw new NotSupportedException(string.Format("Resulting type is {0}, which isn't supported yet.", dt));
         }

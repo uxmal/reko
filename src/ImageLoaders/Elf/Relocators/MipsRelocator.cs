@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using Reko.Core;
 
-namespace Reko.ImageLoaders.Elf
+namespace Reko.ImageLoaders.Elf.Relocators
 {
     public class MipsRelocator : ElfRelocator32
     {

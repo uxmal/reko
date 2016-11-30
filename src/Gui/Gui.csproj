@@ -315,6 +315,7 @@
     <Compile Include="Windows\LabelWrapper.cs" />
     <Compile Include="Windows\ListboxWrapper.cs" />
     <Compile Include="Windows\NumericUpDownWrapper.cs" />
+    <Compile Include="Windows\PreviewInteractor.cs" />
     <Compile Include="Windows\ProgressbarWrapper.cs" />
     <Compile Include="Windows\RadioButtonWrapper.cs" />
     <Compile Include="Windows\StyleStack.cs" />

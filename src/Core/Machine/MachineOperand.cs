@@ -208,6 +208,11 @@ namespace Reko.Core.Machine
             Address = a;
         }
 
+        public static MachineOperand Create(Address addr)
+        {
+            return new AddressOperand(addr, (PrimitiveType)addr.DataType);
+        }
+
         public static AddressOperand Ptr16(ushort a)
         {
             return new AddressOperand(Address.Ptr16(a), PrimitiveType.Ptr16);
