@@ -111,6 +111,13 @@ namespace Reko.Core
             Store s = new Store(new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, size), src);
             return Emit(s);
         }
+
+        public Statement Store(MemoryIdentifier mid, Expression ea, Expression src)
+        {
+            Store s = new Store(new MemoryAccess(mid, ea, src.DataType), src);
+            return Emit(s);
+        }
+
         public Statement SegStore(Expression basePtr, Expression ea, Expression src)
         {
             Store s = new Store(new SegmentedAccess(MemoryIdentifier.GlobalMemory, basePtr, ea, src.DataType), src);
@@ -120,16 +127,6 @@ namespace Reko.Core
         public Statement Store(SegmentedAccess s, Expression exp)
         {
             return Emit(new Store(s, exp));
-        }
-
-        public Statement Sub(Identifier diff, Expression left, Expression right)
-        {
-            return Emit(new Assignment(diff, ISub(left, right)));
-        }
-
-        public Statement Sub(Identifier diff, Expression left, int right)
-        {
-            return Sub(diff, left, Int32(right));
         }
 
         public Identifier Local(PrimitiveType primitiveType, string name)

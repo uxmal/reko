@@ -451,9 +451,29 @@ Constants: cl:0x00
 
                 m.Assign(Top, 0);
                 m.Assign(Top, m.ISub(Top, 1));
-                m.Emit(new Store(
-                    new MemoryAccess(ST, Top, PrimitiveType.Real64),
-                    Constant.Real64(2.0)));
+                m.Store(ST, Top, Constant.Real64(2.0));
+                m.Return();
+            });
+        }
+
+        [Test]
+        public void TrfFpuReturnTwoValues()
+        {
+            var sExp = Expect(
+                "Preserved: ",
+                "Trashed: FPU -1,FPU -2,Top",
+                "Constants: FPU -1:2.0,FPU -2:1.0,Top:0xFE");
+
+            RunTest(sExp, "TrfRecursive", m =>
+            {
+                var ST = new MemoryIdentifier("ST", PrimitiveType.Pointer32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
+                var Top = m.Frame.EnsureRegister(new RegisterStorage("Top", 76, 0, PrimitiveType.Byte));
+
+                m.Assign(Top, 0);
+                m.Assign(Top, m.ISub(Top, 1));
+                m.Store(ST, Top, Constant.Real64(2.0));
+                m.Assign(Top, m.ISub(Top, 1));
+                m.Store(ST, Top, Constant.Real64(1.0));
                 m.Return();
             });
         }

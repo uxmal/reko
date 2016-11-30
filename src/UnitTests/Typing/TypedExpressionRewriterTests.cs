@@ -534,7 +534,6 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-        //[Ignore("scanning-development")]
         public void TerSegmentedCall()
         {
             var pb = new ProgramBuilder();

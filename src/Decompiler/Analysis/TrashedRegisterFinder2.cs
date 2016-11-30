@@ -73,11 +73,6 @@ namespace Reko.Analysis
             this.assumedPreserved = sccGroup.ToDictionary(k => k.SsaState.Procedure, v => new HashSet<Storage>());
             this.decompilerEventListener = listener;
             this.cmp = new ExpressionValueComparer();
-            //foreach (var sst in sccGroup)
-            //{
-            //    var proc = sst.SsaState.Procedure;
-            //    flow.ProcedureFlows.Add(proc, new ProcedureFlow(proc));
-            //}
         }
 
         /// <summary>
