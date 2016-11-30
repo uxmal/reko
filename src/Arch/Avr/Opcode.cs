@@ -19,41 +19,14 @@
 #endregion
 
 using System;
-using Reko.Core.Machine;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace Reko.Arch.Avr
 {
-    public class AvrInstruction : MachineInstruction
+    public enum Opcode
     {
-        public Opcode opcode;
-
-        public override InstructionClass InstructionClass
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public override bool IsValid
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public override int OpcodeAsInteger
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public override MachineOperand GetOperand(int i)
-        {
-            throw new NotImplementedException();
-        }
+        invalid,
     }
 }

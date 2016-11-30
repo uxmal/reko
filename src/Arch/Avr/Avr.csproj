@@ -54,6 +54,7 @@
     <Compile Include="Avr8Disassembler.cs" />
     <Compile Include="Avr8State.cs" />
     <Compile Include="AvrInstruction.cs" />
+    <Compile Include="Opcode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

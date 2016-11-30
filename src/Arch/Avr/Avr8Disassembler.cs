@@ -27,6 +27,7 @@ namespace Reko.Arch.Avr
 {
     public class Avr8Disassembler : DisassemblerBase<AvrInstruction>
     {
+        private Address addr;
         private Avr8Architecture avr8Architecture;
         private ImageReader rdr;
 
@@ -38,7 +39,17 @@ namespace Reko.Arch.Avr
 
         public override AvrInstruction DisassembleInstruction()
         {
-            throw new NotImplementedException();
+            ushort wInstr;
+            this.addr = rdr.Address;
+            if (!rdr.TryReadUInt16(out wInstr))
+                return null;
+            var length = rdr.Address - addr;
+            return new AvrInstruction
+            {
+                opcode = Opcode.invalid,
+                Address = addr,
+                Length = (int)length
+            };
         }
     }
 }
