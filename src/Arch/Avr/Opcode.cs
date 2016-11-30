@@ -28,5 +28,8 @@ namespace Reko.Arch.Avr
     public enum Opcode
     {
         invalid,
+        eor,
+        rjmp,
+        @out,
     }
 }

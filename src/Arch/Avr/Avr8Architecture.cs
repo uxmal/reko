@@ -32,11 +32,20 @@ namespace Reko.Arch.Avr
 {
     public class Avr8Architecture : ProcessorArchitecture
     {
+        private RegisterStorage [] regs;
+
         public Avr8Architecture()
         {
             this.PointerType = PrimitiveType.Ptr16;
             this.FramePointerType = PrimitiveType.UInt8;
             this.InstructionBitSize = 16;
+            this.regs = Enumerable.Range(0, 32)
+                .Select(n => new RegisterStorage(
+                    string.Format("r{0}", n),
+                    n,
+                    0,
+                    PrimitiveType.Byte))
+                .ToArray();
         }
         
         public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader rdr)
@@ -121,7 +130,7 @@ namespace Reko.Arch.Avr
 
         public override RegisterStorage GetRegister(int i)
         {
-            throw new NotImplementedException();
+            return regs[i];
         }
 
         public override RegisterStorage[] GetRegisters()
