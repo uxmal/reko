@@ -281,6 +281,11 @@ namespace Reko.UnitTests.Analysis
             AssertRunOutput(program, RunTest, sExp);
         }
 
+        protected void RunStringTest(string sExp, Program program)
+        {
+            AssertRunOutput(program, RunTest, sExp);
+        }
+
         protected void RunFileTest(string outputFile, Action<ProcedureBuilder> m)
         {
             var program = BuildProgram(m);

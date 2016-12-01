@@ -43,8 +43,13 @@ namespace Reko.Analysis
 		public uint grfPreserved;
 
 		public uint grfTrashed;
-		public HashSet<Storage> Trashed;		// Registers globally trashed by procedure and/or callees.
-        public Dictionary<Storage, Constant> Constants; // If present, indicates a register always has a constant value leaving the procedure.
+		public HashSet<Storage> Trashed;        // Registers globally trashed by procedure and/or callees.
+        
+        /// <summary>
+        /// If present, indicates a register always has a constant value
+        /// leaving the procedure.
+        /// </summary>
+        public Dictionary<Storage, Constant> Constants; 
 
 		public HashSet<Storage> ByPass { get; set; }
 		public uint grfByPass;

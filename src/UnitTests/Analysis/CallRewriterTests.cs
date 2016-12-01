@@ -32,13 +32,14 @@ using Reko.Core.Expressions;
 using Reko.Arch.X86;
 using Reko.Core.Code;
 using System.Diagnostics;
+using Rhino.Mocks;
 
 namespace Reko.UnitTests.Analysis
 {
-	[TestFixture]
-	public class CallRewriterTests : AnalysisTestBase
-	{
-		private DataFlowAnalysis dfa;
+    [TestFixture]
+    public class CallRewriterTests : AnalysisTestBase
+    {
+        private DataFlowAnalysis dfa;
         private Program program;
         private CallRewriter crw;
         private Procedure proc;
@@ -87,10 +88,12 @@ namespace Reko.UnitTests.Analysis
         }
 
         protected override void RunTest(Program program, TextWriter writer)
-		{
+        {
             var eventListener = new FakeDecompilerEventListener();
+            var importResolver = MockRepository.GenerateStub<IImportResolver>();
+            importResolver.Replay();
 
-            dfa = new DataFlowAnalysis(program, null, eventListener);
+            dfa = new DataFlowAnalysis(program, importResolver, eventListener);
             var ssts = dfa.RewriteProceduresToSsa();
 
             // Discover ssaId's that are live out at each call site.
@@ -102,15 +105,15 @@ namespace Reko.UnitTests.Analysis
             // We can create signatures from that.
             CallRewriter.Rewrite(program.Platform, ssts, dfa.ProgramDataFlow, eventListener);
             foreach (var proc in program.Procedures.Values)
-			{
-				ProcedureFlow flow = dfa.ProgramDataFlow[proc];
-				proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.ArgumentKind, new TextFormatter(writer));
-				writer.WriteLine();
-				flow.Emit(program.Architecture, writer);
-				proc.Write(true, writer);
-				writer.Flush();
-			}
-		}
+            {
+                ProcedureFlow flow = dfa.ProgramDataFlow[proc];
+                proc.Signature.Emit(proc.Name, FunctionType.EmitFlags.ArgumentKind, new TextFormatter(writer));
+                writer.WriteLine();
+                flow.Emit(program.Architecture, writer);
+                proc.Write(true, writer);
+                writer.Flush();
+            }
+        }
 
         private void Given_ExitBlockStatement(Identifier id)
         {
@@ -134,133 +137,133 @@ namespace Reko.UnitTests.Analysis
         [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void CrwAsciiHex()
-		{
-			RunFileTest_x86_real("Fragments/ascii_hex.asm", "Analysis/CrwAsciiHex.txt");
-		}
+        {
+            RunFileTest_x86_real("Fragments/ascii_hex.asm", "Analysis/CrwAsciiHex.txt");
+        }
 
-		[Test]
-		public void CrwNoCalls()
-		{
-			RunFileTest_x86_real("Fragments/diamond.asm", "Analysis/CrwNoCalls.txt");
-		}
+        [Test]
+        public void CrwNoCalls()
+        {
+            RunFileTest_x86_real("Fragments/diamond.asm", "Analysis/CrwNoCalls.txt");
+        }
 
-		[Test]
+        [Test]
         [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void CrwEvenOdd()
-		{
-			RunFileTest_x86_real("Fragments/multiple/even_odd.asm", "Analysis/CrwEvenOdd.txt");
-		}
+        {
+            RunFileTest_x86_real("Fragments/multiple/even_odd.asm", "Analysis/CrwEvenOdd.txt");
+        }
 
-		[Test]
+        [Test]
         [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void CrwFactorial()
-		{
-			RunFileTest_x86_real("Fragments/factorial.asm", "Analysis/CrwFactorial.txt");
-		}
+        {
+            RunFileTest_x86_real("Fragments/factorial.asm", "Analysis/CrwFactorial.txt");
+        }
 
-		[Test]
+        [Test]
         [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void CrwFactorialReg()
-		{
-			RunFileTest_x86_real("Fragments/factorial_reg.asm", "Analysis/CrwFactorialReg.txt");
-		}
+        {
+            RunFileTest_x86_real("Fragments/factorial_reg.asm", "Analysis/CrwFactorialReg.txt");
+        }
 
-		[Test]
+        [Test]
         [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void CrwLeakyLiveness()
-		{
-			RunFileTest_x86_real("Fragments/multiple/leaky_liveness.asm", "Analysis/CrwLeakyLiveness.txt");
-		}
+        {
+            RunFileTest_x86_real("Fragments/multiple/leaky_liveness.asm", "Analysis/CrwLeakyLiveness.txt");
+        }
 
-		[Test]
+        [Test]
         [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void CrwManyStackArgs()
-		{
-			RunFileTest_x86_real("Fragments/multiple/many_stack_args.asm", "Analysis/CrwManyStackArgs.txt");
-		}
+        {
+            RunFileTest_x86_real("Fragments/multiple/many_stack_args.asm", "Analysis/CrwManyStackArgs.txt");
+        }
 
-		[Test]
+        [Test]
         [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void CrwStackVariables()
-		{
-			RunFileTest_x86_real("Fragments/stackvars.asm", "Analysis/CrwStackVariables.txt");
-		}
+        {
+            RunFileTest_x86_real("Fragments/stackvars.asm", "Analysis/CrwStackVariables.txt");
+        }
 
-		[Test]
-		[Ignore("Won't pass until ProcedureSignatures for call tables and call pointers are implemented")]
-		public void CrwCallTables()
-		{
-			RunFileTest_x86_real("Fragments/multiple/calltables.asm", "Analysis/CrwCallTables.txt");
-		}
+        [Test]
+        [Ignore("Won't pass until ProcedureSignatures for call tables and call pointers are implemented")]
+        public void CrwCallTables()
+        {
+            RunFileTest_x86_real("Fragments/multiple/calltables.asm", "Analysis/CrwCallTables.txt");
+        }
 
-		[Test]
+        [Test]
         [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void CrwFpuArgs()
-		{
-			RunFileTest_x86_real("Fragments/multiple/fpuArgs.asm", "Analysis/CrwFpuArgs.txt");
-		}
+        {
+            RunFileTest_x86_real("Fragments/multiple/fpuArgs.asm", "Analysis/CrwFpuArgs.txt");
+        }
 
-		[Test]
+        [Test]
         [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void CrwFpuOps()
-		{
-			RunFileTest_x86_real("Fragments/fpuops.asm", "Analysis/CrwFpuOps.txt");
-		}
+        {
+            RunFileTest_x86_real("Fragments/fpuops.asm", "Analysis/CrwFpuOps.txt");
+        }
 
-		[Test]
-		public void CrwIpLiveness()
-		{
-			RunFileTest_x86_real("Fragments/multiple/ipliveness.asm", "Analysis/CrwIpLiveness.txt");
-		}
+        [Test]
+        public void CrwIpLiveness()
+        {
+            RunFileTest_x86_real("Fragments/multiple/ipliveness.asm", "Analysis/CrwIpLiveness.txt");
+        }
 
-		[Test]
-		public void CrwVoidFunctions()
-		{
-			RunFileTest_x86_real("Fragments/multiple/voidfunctions.asm", "Analysis/CrwVoidFunctions.txt");
-		}
+        [Test]
+        public void CrwVoidFunctions()
+        {
+            RunFileTest_x86_real("Fragments/multiple/voidfunctions.asm", "Analysis/CrwVoidFunctions.txt");
+        }
 
-		[Test]
+        [Test]
         [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void CrwMutual()
-		{
-			RunFileTest_x86_real("Fragments/multiple/mutual.asm", "Analysis/CrwMutual.txt");
-		}
+        {
+            RunFileTest_x86_real("Fragments/multiple/mutual.asm", "Analysis/CrwMutual.txt");
+        }
 
-		[Test]
+        [Test]
         [Ignore("scanning-development")]
         public void CrwMemPreserve()
-		{
-			RunFileTest_x86_real("Fragments/multiple/mempreserve.asm", "Analysis/CrwMemPreserve.xml", "Analysis/CrwMemPreserve.txt");
-		}
+        {
+            RunFileTest_x86_real("Fragments/multiple/mempreserve.asm", "Analysis/CrwMemPreserve.xml", "Analysis/CrwMemPreserve.txt");
+        }
 
-		[Test]
-		public void CrwSliceReturn()
-		{
-			RunFileTest_x86_real("Fragments/multiple/slicereturn.asm", "Analysis/CrwSliceReturn.txt");
-		}
+        [Test]
+        public void CrwSliceReturn()
+        {
+            RunFileTest_x86_real("Fragments/multiple/slicereturn.asm", "Analysis/CrwSliceReturn.txt");
+        }
 
-		[Test]
-		public void CrwProcIsolation()
-		{
-			RunFileTest_x86_real("Fragments/multiple/procisolation.asm", "Analysis/CrwProcIsolation.txt");
-		}
+        [Test]
+        public void CrwProcIsolation()
+        {
+            RunFileTest_x86_real("Fragments/multiple/procisolation.asm", "Analysis/CrwProcIsolation.txt");
+        }
 
-		[Test]
+        [Test]
         [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void CrwFibonacci()
-		{
-			RunFileTest_x86_32("Fragments/multiple/fibonacci.asm", "Analysis/CrwFibonacci.txt");
-		}
+        {
+            RunFileTest_x86_32("Fragments/multiple/fibonacci.asm", "Analysis/CrwFibonacci.txt");
+        }
 
         [Test]
         public void CrwRegisterArgument()
@@ -477,6 +480,52 @@ CrwManyPredecessorsToExitBlock_exit:
             AssertExpected(sExp, sst.SsaState);
         }
 
+        [Test(Description = "Pops three values off FPU stack and places one back.")]
+        public void CrwFpuMultiplyAdd()
+        {
+            var ST = new MemoryIdentifier("ST", PrimitiveType.Pointer32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
+            var dt = PrimitiveType.Real64;
+            var _top = new RegisterStorage("Top", 76, 0, PrimitiveType.Byte);
 
+            var arch = new FakeArchitecture
+            {
+                FpuStackRegister = _top
+            };
+            var pb = new ProgramBuilder(arch);
+            pb.Add("main", m =>
+            {
+                var Top = m.Frame.EnsureRegister(_top);
+
+                m.Assign(Top, 0);
+                m.Assign(Top, m.ISub(Top, 1));
+                m.Store(ST, Top, Constant.Real64(3.0));
+                m.Assign(Top, m.ISub(Top, 1));
+                m.Store(ST, Top, Constant.Real64(4.0));
+                m.Assign(Top, m.ISub(Top, 1));
+                m.Store(ST, Top, Constant.Real64(5.0));
+                m.Call("FpuMultiplyAdd", 0);
+                m.Store(m.Word32(0x00123400), m.Load(ST, dt, Top));
+                m.Return();
+            });
+            pb.Add("FpuMultiplyAdd", m =>
+            {
+                var Top = m.Frame.EnsureRegister(_top);
+
+                m.Assign(Top, 0);
+                m.Store(ST, m.IAdd(Top, 1), m.FAdd(
+                    m.Load(ST, dt, m.IAdd(Top, 1)),
+                    m.Load(ST, dt, Top)));
+                m.Assign(Top, m.IAdd(Top, 1));
+                m.Store(ST, m.IAdd(Top, 1), m.FAdd(
+                    m.Load(ST, dt, m.IAdd(Top, 1)),
+                    m.Load(ST, dt, Top)));
+                m.Assign(Top, m.IAdd(Top, 1));
+
+                m.Return();
+            });
+
+            var sExp = "";
+            RunStringTest(sExp, pb.BuildProgram());
+        }
     }
 }

@@ -379,6 +379,7 @@ namespace Reko.Analysis
                     arg = arg.Accept(this);
                     ci.Uses.Add(new CallBinding(use, arg));
                 }
+
                 foreach (var def in calleeFlow.Trashed)
                 {
                     var d = ssa.Procedure.Frame.EnsureIdentifier(def);

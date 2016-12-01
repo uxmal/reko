@@ -464,7 +464,7 @@ Constants: cl:0x00
                 "Trashed: FPU -1,FPU -2,Top",
                 "Constants: FPU -1:2.0,FPU -2:1.0,Top:0xFE");
 
-            RunTest(sExp, "TrfRecursive", m =>
+            RunTest(sExp, "TrfFpuReturnTwoValues", m =>
             {
                 var ST = new MemoryIdentifier("ST", PrimitiveType.Pointer32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
                 var Top = m.Frame.EnsureRegister(new RegisterStorage("Top", 76, 0, PrimitiveType.Byte));
@@ -474,6 +474,32 @@ Constants: cl:0x00
                 m.Store(ST, Top, Constant.Real64(2.0));
                 m.Assign(Top, m.ISub(Top, 1));
                 m.Store(ST, Top, Constant.Real64(1.0));
+                m.Return();
+            });
+        }
+
+        [Test(Description = "Pops three values off FPU stack and places one back.")]
+        public void TrfFpuMultiplyAdd()
+        {
+            var sExp = Expect(
+                "Preserved: ",
+                "Trashed: FPU +1,FPU +2,Top",
+                "Constants: Top:0x02");
+            RunTest(sExp, "TrfFpuMultiplyAdd", m =>
+            {
+                var ST = new MemoryIdentifier("ST", PrimitiveType.Pointer32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
+                var Top = m.Frame.EnsureRegister(new RegisterStorage("Top", 76, 0, PrimitiveType.Byte));
+                var dt = PrimitiveType.Real64;
+                m.Assign(Top, 0);
+                m.Store(ST, m.IAdd(Top, 1), m.FAdd(
+                    m.Load(ST, dt, m.IAdd(Top, 1)),
+                    m.Load(ST, dt, Top)));
+                m.Assign(Top, m.IAdd(Top, 1));
+                m.Store(ST, m.IAdd(Top, 1), m.FAdd(
+                    m.Load(ST, dt, m.IAdd(Top, 1)),
+                    m.Load(ST, dt, Top)));
+                m.Assign(Top, m.IAdd(Top, 1));
+
                 m.Return();
             });
         }

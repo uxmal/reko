@@ -258,7 +258,7 @@ namespace Reko.UnitTests.Mocks
 
         public uint CarryFlagMask { get { return (uint) StatusFlags.C; } }
         public RegisterStorage StackRegister { get { return GetRegister(FakeArchitecture.iStackRegister); } }
-        public RegisterStorage FpuStackRegister { get { return null; } }
+        public RegisterStorage FpuStackRegister { get; set; }
 
         public Address MakeAddressFromConstant(Constant c)
         {

@@ -183,6 +183,7 @@ namespace Reko.Analysis
             var implicitRegs = platform.CreateImplicitArgumentRegisters();
             var mayUse = new HashSet<RegisterStorage>(flow.BitsUsed.Keys.OfType<RegisterStorage>());
             mayUse.ExceptWith(implicitRegs);
+            
             //$BUG: should be sorted by ABI register order. Need a new method
             // IPlatform.CreateAbiRegisterCollator().
 			foreach (var reg in mayUse.OfType<RegisterStorage>().OrderBy(r => r.Number))
@@ -222,9 +223,22 @@ namespace Reko.Analysis
 			}
 
             var sig = sb.BuildSignature();
+            sig.FpuStackDelta = GetFpuStackDelta(flow);
             flow.Signature = sig;
 			proc.Signature = sig;
 		}
+
+        private int GetFpuStackDelta(ProcedureFlow flow)
+        {
+            Constant c;
+            var fpuStackReg = platform.Architecture.FpuStackRegister;
+            if (fpuStackReg == null ||
+                !flow.Constants.TryGetValue(fpuStackReg, out c))
+            {
+                return 0;
+            }
+            return -c.ToInt32();
+        }
 
 		public SortedList<int, Identifier> GetSortedArguments(Frame f, Type type, int startOffset)
 		{

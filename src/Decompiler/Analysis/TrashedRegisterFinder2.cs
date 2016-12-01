@@ -92,6 +92,8 @@ namespace Reko.Analysis
             this.flow = this.progFlow.ProcedureFlows[ssa.Procedure];
             if (ssa.Procedure.Signature.ParametersValid)
             {
+                //$REVIEW: do we need this? if a procedure has a signature,
+                // we will always trust that rather than the flow.
                 var sig = ssa.Procedure.Signature;
                 if (!sig.HasVoidReturn)
                 {

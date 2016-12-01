@@ -280,6 +280,11 @@ namespace Reko.Core.Expressions
             return new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, dt);
         }
 
+        public MemoryAccess Load(MemoryIdentifier mid, DataType dt, Expression ea)
+        {
+            return new MemoryAccess(mid, ea, dt);
+        }
+
         public Expression LoadB(Expression ea)
         {
             return new MemoryAccess(MemoryIdentifier.GlobalMemory, ea, PrimitiveType.Byte);

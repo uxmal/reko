@@ -53,7 +53,6 @@ namespace Reko.Arch.M68k
                 RtlClass.ConditionalTransfer);
         }
 
-
         private void RewriteFBinOp(Func<Expression, Expression, Expression> binOpGen)
         {
             var opSrc = orw.RewriteSrc(di.op1, di.Address);
