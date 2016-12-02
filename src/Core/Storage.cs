@@ -275,6 +275,7 @@ namespace Reko.Core
             this.DataType = dataType;
         }
 
+        public override ulong BitSize { get { return (ulong) DataType.BitSize; } }
         public DataType DataType { get; private set; }
         public int FpuStackOffset { get; private set; }
 

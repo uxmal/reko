@@ -512,7 +512,7 @@ CrwManyPredecessorsToExitBlock_exit:
                 var Top = m.Frame.EnsureRegister(_top);
 
                 m.Assign(Top, 0);
-                m.Store(ST, m.IAdd(Top, 1), m.FAdd(
+                m.Store(ST, m.IAdd(Top, 1), m.FMul(
                     m.Load(ST, dt, m.IAdd(Top, 1)),
                     m.Load(ST, dt, Top)));
                 m.Assign(Top, m.IAdd(Top, 1));

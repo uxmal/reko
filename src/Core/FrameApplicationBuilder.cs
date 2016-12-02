@@ -95,7 +95,7 @@ namespace Reko.Core
 
         public virtual Expression VisitFpuStackStorage(FpuStackStorage fpu)
         {
-            throw new NotSupportedException();
+            return binder.EnsureFpuStackVariable(fpu.Number, fpu.DataType);
         }
 
         public Expression VisitMemoryStorage(MemoryStorage global)

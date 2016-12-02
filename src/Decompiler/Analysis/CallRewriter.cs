@@ -170,17 +170,11 @@ namespace Reko.Analysis
                 .OfType<UseInstruction>()
                 .Select(u => ((Identifier)u.Expression).Storage);
 			var sb = new SignatureBuilder(proc, platform.Architecture);
-			var frame = proc.Frame;
-			foreach (var grf in allLiveOut
-                .OfType<FlagGroupStorage>()
-                .OrderBy(g => g.Name))
-			{
-                sb.AddOutParam(frame.EnsureFlagGroup(grf));
-			}
-
-            var liveOut = allLiveOut.OfType<RegisterStorage>().ToHashSet();
-
+            var frame = proc.Frame;
             var implicitRegs = platform.CreateImplicitArgumentRegisters();
+
+            AddModifiedFlags(frame, allLiveOut, sb);
+
             var mayUse = new HashSet<RegisterStorage>(flow.BitsUsed.Keys.OfType<RegisterStorage>());
             mayUse.ExceptWith(implicitRegs);
             
@@ -204,8 +198,10 @@ namespace Reko.Analysis
 				sb.AddFpuStackArgument(de.Key, de.Value);
 			}
 
+            var liveOut = allLiveOut.OfType<RegisterStorage>().ToHashSet();
             liveOut.ExceptWith(implicitRegs);
-			foreach (var r in liveOut.OfType<RegisterStorage>().OrderBy(r => r.Number))
+
+            foreach (var r in liveOut.OfType<RegisterStorage>().OrderBy(r => r.Number))
 			{
 				if (!IsSubRegisterOfRegisters(r, liveOut))
 				{
@@ -227,6 +223,16 @@ namespace Reko.Analysis
             flow.Signature = sig;
 			proc.Signature = sig;
 		}
+
+        private void AddModifiedFlags(Frame frame, IEnumerable<Storage> allLiveOut, SignatureBuilder sb)
+        {
+            foreach (var grf in allLiveOut
+                .OfType<FlagGroupStorage>()
+                .OrderBy(g => g.Name))
+            {
+                sb.AddOutParam(frame.EnsureFlagGroup(grf));
+            }
+        }
 
         private int GetFpuStackDelta(ProcedureFlow flow)
         {
