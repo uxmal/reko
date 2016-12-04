@@ -414,6 +414,46 @@ namespace Reko.Analysis
                             NewDef(fpuArg, ci.Callee, false)));
                 }
             }
+
+            //$REFACTOR: this is common code with BlockWorkItem; find
+            // a way to reuse it
+            int fpuStackDelta = GetFpuStackDelta(calleeFlow);
+            if (fpuStackDelta != 0)
+            {
+                BinaryOperator op;
+                int dd = fpuStackDelta;
+                if (dd > 0)
+                {
+                    op = Operator.ISub;
+                }
+                else
+                {
+                    op = Operator.IAdd;
+                    dd = -dd;
+                }
+                var fpuStackReg = SsaState.Procedure.Frame.EnsureRegister(arch.FpuStackRegister);
+                var d = Constant.Create(fpuStackReg.DataType, dd);
+                var iCur = stmCur.Block.Statements.IndexOf(stmCur);
+                stmCur = stmCur.Block.Statements.Insert(iCur + 1,
+                    stmCur.LinearAddress,
+                    new Assignment(
+                        fpuStackReg,
+                        new BinaryExpression(op, fpuStackReg.DataType, fpuStackReg, d)));
+
+                stmCur.Instruction = stmCur.Instruction.Accept(this);
+            }
+        }
+
+        private int GetFpuStackDelta(ProcedureFlow flow)
+        {
+            Constant c;
+            var fpuStackReg = arch.FpuStackRegister;
+            if (fpuStackReg == null ||
+                !flow.Constants.TryGetValue(fpuStackReg, out c))
+            {
+                return 0;
+            }
+            return -c.ToInt32();
         }
 
         private void GenerateUseDefsForUnknownCallee(CallInstruction ci)

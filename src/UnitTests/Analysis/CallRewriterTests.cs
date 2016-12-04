@@ -503,8 +503,10 @@ CrwManyPredecessorsToExitBlock_exit:
                 m.Store(ST, Top, Constant.Real64(4.0));
                 m.Assign(Top, m.ISub(Top, 1));
                 m.Store(ST, Top, Constant.Real64(5.0));
+                // At this point there are 3 values on the FPU stack
                 m.Call("FpuMultiplyAdd", 0);
                 m.Store(m.Word32(0x00123400), m.Load(ST, dt, Top));
+                m.Assign(Top, m.IAdd(Top, 1));
                 m.Return();
             });
             pb.Add("FpuMultiplyAdd", m =>
@@ -521,6 +523,8 @@ CrwManyPredecessorsToExitBlock_exit:
                     m.Load(ST, dt, Top)));
                 m.Assign(Top, m.IAdd(Top, 1));
 
+                // At this point two values have been popped from the
+                // FPU stack, leaving one.
                 m.Return();
             });
 

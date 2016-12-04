@@ -95,7 +95,14 @@ namespace Reko.Core
 
         public virtual Expression VisitFpuStackStorage(FpuStackStorage fpu)
         {
-            return binder.EnsureFpuStackVariable(fpu.Number, fpu.DataType);
+            if (ensureVariables)
+            {
+                return binder.EnsureFpuStackVariable(fpu.FpuStackOffset, fpu.DataType);
+            }
+            else
+            {
+                return binder.EnsureFpuStackVariable(fpu.FpuStackOffset, fpu.DataType);
+            }
         }
 
         public Expression VisitMemoryStorage(MemoryStorage global)

@@ -173,12 +173,6 @@ namespace Reko.Scanning
             return ab.CreateInstruction(sig, c);
         }
 
-        private ApplicationBuilder CreateApplicationBuilder(Expression callee, CallSite site)
-        {
-            var ab = arch.CreateFrameApplicationBuilder(frame, site, callee);
-            return ab;
-        }
-
         public Expression GetValue(Expression op)
         {
             return op.Accept<Expression>(eval);

@@ -132,7 +132,7 @@ namespace Reko.UnitTests.Core
 
 			var cs = new CallSite(f.ReturnAddressSize + 2 * 4, 0);
 			var fn = new ProcedureConstant(PrimitiveType.Pointer32, new PseudoProcedure("foo", sig));
-			var ab = new FrameApplicationBuilder(arch, f, cs, fn, true);
+			var ab = arch.CreateFrameApplicationBuilder(f, cs, fn);
             Instruction instr = ab.CreateInstruction(sig, null); 
 			using (FileUnitTester fut = new FileUnitTester("Core/FrBindStackParameters.txt"))
 			{

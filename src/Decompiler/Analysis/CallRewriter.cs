@@ -39,6 +39,7 @@ using VoidType = Reko.Core.Types.VoidType;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Code;
+using Reko.Core.Operators;
 
 namespace Reko.Analysis
 {
@@ -209,7 +210,8 @@ namespace Reko.Analysis
 				}
 			}
 
-            foreach (KeyValuePair<int, Identifier> de in GetSortedFpuStackArguments(proc.Frame, -proc.Signature.FpuStackDelta))
+            var fpuStackDelta = GetFpuStackDelta(flow);
+            foreach (KeyValuePair<int, Identifier> de in GetSortedFpuStackArguments(proc.Frame, -fpuStackDelta))
 			{
 				int i = de.Key;
 				if (i <= proc.Signature.FpuStackOutArgumentMax)
@@ -219,7 +221,7 @@ namespace Reko.Analysis
 			}
 
             var sig = sb.BuildSignature();
-            sig.FpuStackDelta = GetFpuStackDelta(flow);
+            sig.FpuStackDelta = fpuStackDelta;
             flow.Signature = sig;
 			proc.Signature = sig;
 		}

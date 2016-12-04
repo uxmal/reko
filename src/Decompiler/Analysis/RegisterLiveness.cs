@@ -499,12 +499,10 @@ namespace Reko.Analysis
 			if (sig != null && sig.ParametersValid)		
 			{
                 var procCallee = ((ProcedureConstant) ci.Callee).Procedure;
-                var ab = new FrameApplicationBuilder(
-                    program.Architecture,
+                var ab = program.Architecture.CreateFrameApplicationBuilder(
                     Procedure.Frame,
                     ci.CallSite,
-                    new ProcedureConstant(program.Platform.PointerType, procCallee),
-                    false);
+                    new ProcedureConstant(program.Platform.PointerType, procCallee));
 				if (!sig.HasVoidReturn)
 				{
                     varLive.Def(ab.Bind(sig.ReturnValue));

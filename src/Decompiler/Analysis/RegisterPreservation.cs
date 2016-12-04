@@ -176,22 +176,5 @@ namespace Reko.Analysis
             return procFlow;
         }
     }
-
-    public class DataFlow2
-    {
-        public Dictionary<Procedure, ProcedureFlow2> ProcedureFlows { get; private set; }
-
-        public DataFlow2()
-        {
-            this.ProcedureFlows = new Dictionary<Procedure, ProcedureFlow2>();
-        }
-
-        public DataFlow2(Program program)
-        {
-            this.ProcedureFlows = program.Procedures.Values.ToDictionary(
-                p => p,
-                p => new ProcedureFlow2());
-        }
-    }
 }
 

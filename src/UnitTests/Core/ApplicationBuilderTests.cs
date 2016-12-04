@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Core
 		[Test]
         public void AppBld_BindReturnValue()
 		{
-            ab  = new FrameApplicationBuilder(arch, frame, new CallSite(4, 0), new Identifier("foo", PrimitiveType.Word32, null), false);
+            ab  = arch.CreateFrameApplicationBuilder(frame, new CallSite(4, 0), new Identifier("foo", PrimitiveType.Word32, null));
 			var r = ab.Bind(ret);
 			Assert.AreEqual("eax", r.ToString());
 		}
@@ -67,7 +67,7 @@ namespace Reko.UnitTests.Core
 		[Test]
         public void AppBld_BindOutParameter()
 		{
-            ab = new FrameApplicationBuilder(arch, frame, new CallSite(4, 0), new Identifier("foo", PrimitiveType.Word32, null), false);
+            ab = arch.CreateFrameApplicationBuilder(frame, new CallSite(4, 0), new Identifier("foo", PrimitiveType.Word32, null));
             var o = ab.Bind(regOut);
 			Assert.AreEqual("edx", o.ToString());
 		}
@@ -76,7 +76,7 @@ namespace Reko.UnitTests.Core
         public void AppBld_BuildApplication()
 		{
 			Assert.IsTrue(sig.Parameters[3].Storage is OutArgumentStorage);
-            ab = new FrameApplicationBuilder(arch, frame, new CallSite(4, 0), new Identifier("foo", PrimitiveType.Word32, null), false);
+            ab = arch.CreateFrameApplicationBuilder(frame, new CallSite(4, 0), new Identifier("foo", PrimitiveType.Word32, null));
             var instr = ab.CreateInstruction(sig, null);
 			Assert.AreEqual("eax = foo(Mem0[esp:word32], Mem0[esp + 4:word16], Mem0[esp + 8:byte], out edx)", instr.ToString());
 		}
@@ -96,7 +96,7 @@ namespace Reko.UnitTests.Core
             {
                 StackDepthOnEntry = 6
             };
-            ab = new FrameApplicationBuilder(arch, caller.Frame, cs, new ProcedureConstant(PrimitiveType.Pointer32, callee), true); 
+            ab = new FrameApplicationBuilder(arch, caller.Frame, cs, new ProcedureConstant(PrimitiveType.Pointer32, callee), true);
             var instr = ab.CreateInstruction(callee.Signature, callee.Characteristics);
             Assert.AreEqual("callee(bindToArg02, bindToArg04)", instr.ToString());
         }
@@ -105,12 +105,10 @@ namespace Reko.UnitTests.Core
         public void AppBld_BindByteToRegister()
         {
             var callee = new Procedure("callee", new Frame(PrimitiveType.Pointer32));
-            var ab = new FrameApplicationBuilder(
-                arch, 
+            var ab = arch.CreateFrameApplicationBuilder(
                 callee.Frame,
-                new CallSite(4, 0), 
-                new Identifier("foo", PrimitiveType.Pointer32, null),
-                true);
+                new CallSite(4, 0),
+                new Identifier("foo", PrimitiveType.Pointer32, null));
             var sig = FunctionType.Func(new Identifier("bRet", PrimitiveType.Byte, Registers.eax));
             var instr = ab.CreateInstruction(sig, null);
             Assert.AreEqual("eax = DPB(eax, foo(), 0)", instr.ToString());
@@ -122,12 +120,10 @@ namespace Reko.UnitTests.Core
         {
             var caller = new Procedure("caller", new Frame(PrimitiveType.Pointer32));
             var callee = new Procedure("callee", new Frame(PrimitiveType.Pointer32));
-            var ab = new FrameApplicationBuilder(
-                arch, 
+            var ab = arch.CreateFrameApplicationBuilder(
                 caller.Frame,
-                new CallSite(4, 0), 
-                new ProcedureConstant(PrimitiveType.Pointer32, callee),
-                true);
+                new CallSite(4, 0),
+                new ProcedureConstant(PrimitiveType.Pointer32, callee));
             var sig = FunctionType.Action(new Identifier("...", new UnknownType(), new StackArgumentStorage(0, null)));
             var instr = ab.CreateInstruction(sig, null);
             Assert.AreEqual("callee(0x00000000)", instr.ToString());//$BUG: obviously wrong

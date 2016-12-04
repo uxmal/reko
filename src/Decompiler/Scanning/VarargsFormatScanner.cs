@@ -67,7 +67,7 @@ namespace Reko.Scanning
             var pc = callee as ProcedureConstant;
             if (pc != null)
                 pc.Procedure.Signature = this.sig;
-            var ab = CreateApplicationBuilder(callee, this.sig, site);
+            var ab = arch.CreateFrameApplicationBuilder(frame, site, callee);
             return ab.CreateInstruction(this.sig, chr);
         }
 
@@ -85,20 +85,6 @@ namespace Reko.Scanning
             var argTypes = ParseVarargsFormat(addrInstr, chr, format);
             this.sig = ReplaceVarargs(sig, argTypes);
             return true;
-        }
-
-        private ApplicationBuilder CreateApplicationBuilder(
-            Expression callee,
-            FunctionType sig,
-            CallSite site)
-        {
-            var ab = new FrameApplicationBuilder(
-                arch,
-                frame,
-                site,
-                callee,
-                false);
-            return ab;
         }
 
         private Expression GetValue(Expression op)
