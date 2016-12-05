@@ -481,7 +481,7 @@ namespace Reko.Scanning
                 Procedure proc;
                 if (program.Procedures.TryGetValue(addr, out proc))
                     return; // Already scanned. Do nothing.
-                if (IsNoDecompiledProcedure(addr))
+                if (sym.NoDecompile || IsNoDecompiledProcedure(addr))
                     return;
 
                 proc = EnsureProcedure(addr, sym.Name);

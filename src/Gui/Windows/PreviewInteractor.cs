@@ -23,6 +23,7 @@ using Reko.Gui.Windows.Controls;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -43,6 +44,7 @@ namespace Reko.Gui.Windows
         private LayoutSpan previewSpan;
         private Timer previewTimer;
         private Program program;
+        private Size szPreview;
 
         public PreviewInteractor(
             IServiceProvider services,
@@ -54,6 +56,7 @@ namespace Reko.Gui.Windows
             this.previewTimer = previewTimer;
             this.program = program;
             this.mixedCodeDataControl = mixedCodeDataControl;
+            this.szPreview = new Size(500, 200); //$REVIEW: should this be a user preference?
 
             this.mixedCodeDataControl.MouseDown += MixedCodeDataControl_MouseDown;
             this.mixedCodeDataControl.SpanEnter += MixedCodeDataControl_SpanEnter;
@@ -121,8 +124,7 @@ namespace Reko.Gui.Windows
             {
                 AutoSize = false,
                 FormBorderStyle = FormBorderStyle.SizableToolWindow,
-                Width = 500,
-                Height = 200,
+                Size = szPreview,
                 StartPosition = FormStartPosition.Manual,
                 Location = ptScreen,
                 Controls = { nested },
@@ -155,6 +157,7 @@ namespace Reko.Gui.Windows
             if (previewWindow == null)
                 return;
             this.mixedCodeDataControl.Controls.Remove(previewWindow);
+            szPreview = previewWindow.Size;
             previewWindow.Dispose();
             previewWindow = null;
             insidePreview = false;
