@@ -116,6 +116,7 @@
         <File Source="$(var.SysV.ProjectDir)libc.so.xml" />
         <File Source="$(var.SysV.ProjectDir)Xlib.xml" />
         <File Source="$(var.SysV.ProjectDir)sysvcharacteristics.xml" />
+        <File Source="$(var.Trs80.ProjectDir)Trs80Rom.xml" />
         <File Source="$(var.Windows.TargetPath)" />
         <File Source="$(var.Windows.ProjectDir)windows32.xml" />
         <File Source="$(var.Windows.ProjectDir)windows64.xml" />

@@ -186,7 +186,18 @@ namespace Reko.Arch.Z80
 
         public override FlagGroupStorage GetFlagGroup(string name)
         {
-            throw new NotImplementedException();
+            FlagM flags = 0;
+            foreach (char c in name)
+            {
+                switch (c)
+                {
+                case 'Z': flags |= FlagM.ZF; break;
+                default: throw new ArgumentException("name");
+                }
+            }
+            if (flags == 0)
+                throw new ArgumentException("name");
+            return GetFlagGroup((uint)flags);
         }
 
         public override Core.Expressions.Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)

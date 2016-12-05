@@ -32,6 +32,7 @@ using Reko.Core.CLanguage;
 
 namespace Reko.Environments.Trs80
 {
+    // http://www.trs-80.com/trs80-zaps-internals.htm
     public class Trs80Platform : Platform
     {
         public Trs80Platform(IServiceProvider services, IProcessorArchitecture arch) : base( services,  arch, "trs80")
@@ -87,7 +88,7 @@ namespace Reko.Environments.Trs80
 
         public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public override ExternalProcedure LookupProcedureByName(string moduleName, string procName)

@@ -49,9 +49,9 @@ namespace Reko.Environments.SegaGenesis
             var env = cfgService.GetEnvironment("sega-genesis");
             var platform = env.Load(Services, arch);
 
-            var imageMap = CreateSegmentMap(mem, platform);
+            var segmentMap = CreateSegmentMap(mem, platform);
 
-            return new Program(imageMap, arch, platform);
+            return new Program(segmentMap, arch, platform);
         }
 
         private SegmentMap CreateSegmentMap(MemoryArea mem, IPlatform platform)
