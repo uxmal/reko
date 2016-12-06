@@ -123,6 +123,11 @@ namespace Reko.Analysis
             {
                 use.Expression = use.Expression.Accept(eval);
             }
+            foreach (var def in ci.Definitions
+                .Where(d => !( d.Expression is Identifier)))
+            {
+                def.Expression = def.Expression.Accept(eval);
+            }
             return ci;
         }
 

@@ -363,15 +363,22 @@ namespace Reko.Analysis
 
         private void GenerateUseDefsForKnownCallee(CallInstruction ci, Procedure callee, ProcedureFlow calleeFlow)
         {
+            int fpuStackDelta;
             if (this.RenameFrameAccesses)
             {
+                fpuStackDelta = callee.Signature.FpuStackDelta;
                 foreach (var use in ci.Uses)
                 {
                     use.Expression = use.Expression.Accept(this);
                 }
+                foreach (var def in ci.Definitions)
+                {
+                    def.Expression = TransformLValue(def.Expression, ci.Callee);
+                }
             }
             else
             {
+                fpuStackDelta = GetFpuStackDelta(calleeFlow);
                 var ab = arch.CreateFrameApplicationBuilder(ssa.Procedure.Frame, ci.CallSite, ci.Callee);
                 foreach (var use in calleeFlow.BitsUsed.Keys)
                 {
@@ -380,9 +387,17 @@ namespace Reko.Analysis
                     ci.Uses.Add(new CallBinding(use, arg));
                 }
 
-                foreach (var def in calleeFlow.Trashed)
+                foreach (var def in calleeFlow.Trashed.Where(dd => !(dd is FpuStackStorage)))
                 {
                     var d = ssa.Procedure.Frame.EnsureIdentifier(def);
+
+                    //$HACK: special case for FPU stacks; is there a cleaner way
+                    // to do this?
+                    if (def == arch.FpuStackRegister && calleeFlow.Constants.ContainsKey(def))
+                    {
+                        // We will add an explicit increment statement later.
+                        continue;
+                    }
                     ci.Definitions.Add(
                         new CallBinding(
                             def,
@@ -403,32 +418,35 @@ namespace Reko.Analysis
                 }
                 //$REVIEW: this is very x86/x87 specific; find a way to generalize
                 // this to any sort of stack-based discipline.
-                for (int i = 0; i < callee.Signature.FpuStackDelta; ++i)
+                foreach (var def in calleeFlow.Trashed.OfType<FpuStackStorage>()
+                    .Where(def => def.FpuStackOffset >= 0))
                 {
-                    var fpuArg = ssa.Procedure.Frame.EnsureFpuStackVariable(
-                        ci.CallSite.FpuStackDepthBefore - (i + 1),
-                        PrimitiveType.Real64);
+                    var arg = def.Accept(ab);
+                    var fpuDefExpr = arch.CreateFpuStackAccess(
+                        ssa.Procedure.Frame, 
+                        def.FpuStackOffset,
+                        PrimitiveType.Word64); //$TODO: datatype?
+                    fpuDefExpr = fpuDefExpr.Accept(this);
                     ci.Definitions.Add(
                         new CallBinding(
-                            fpuArg.Storage,
-                            NewDef(fpuArg, ci.Callee, false)));
+                            def,
+                            fpuDefExpr));
                 }
             }
 
             //$REFACTOR: this is common code with BlockWorkItem; find
             // a way to reuse it
-            int fpuStackDelta = GetFpuStackDelta(calleeFlow);
             if (fpuStackDelta != 0)
             {
                 BinaryOperator op;
                 int dd = fpuStackDelta;
                 if (dd > 0)
                 {
-                    op = Operator.ISub;
+                    op = Operator.IAdd;
                 }
                 else
                 {
-                    op = Operator.IAdd;
+                    op = Operator.ISub;
                     dd = -dd;
                 }
                 var fpuStackReg = SsaState.Procedure.Frame.EnsureRegister(arch.FpuStackRegister);
@@ -444,6 +462,11 @@ namespace Reko.Analysis
             }
         }
 
+        /// <summary>
+        /// Returns the change in the FPU stack register.
+        /// </summary>
+        /// <param name="flow"></param>
+        /// <returns></returns>
         private int GetFpuStackDelta(ProcedureFlow flow)
         {
             Constant c;
@@ -453,7 +476,7 @@ namespace Reko.Analysis
             {
                 return 0;
             }
-            return -c.ToInt32();
+            return c.ToInt32();
         }
 
         private void GenerateUseDefsForUnknownCallee(CallInstruction ci)
@@ -525,7 +548,22 @@ namespace Reko.Analysis
         public override Instruction TransformStore(Store store)
         {
             store.Src = store.Src.Accept(this);
-            var acc = store.Dst as MemoryAccess;
+            var exp = TransformLValue(store.Dst, store.Src);
+            var idDst = exp as Identifier;
+            if (idDst != null)
+            {
+                return new Assignment(idDst, store.Src);
+            }
+            else
+            {
+                store.Dst = exp;
+                return store;
+            }
+        }
+
+        private Expression TransformLValue(Expression exp, Expression src)
+        { 
+            var acc = exp as MemoryAccess;
             if (acc != null)
             {
                 if (this.RenameFrameAccesses && IsFrameAccess(ssa.Procedure, acc.EffectiveAddress))
@@ -533,15 +571,15 @@ namespace Reko.Analysis
                     ssa.Identifiers[ssa.Procedure.Frame.FramePointer].Uses.Remove(stmCur);
                     ssa.Identifiers[acc.MemoryId].DefStatement = null;
                     var idFrame = EnsureStackVariable(ssa.Procedure, acc.EffectiveAddress, acc.DataType);
-                    var idDst = NewDef(idFrame, store.Src, false);
-                    return new Assignment(idDst, store.Src);
+                    var idDst = NewDef(idFrame, src, false);
+                    return idDst;
                 }
                 else if (this.RenameFrameAccesses && IsConstFpuStackAccess(ssa.Procedure, acc))
                 {
                     ssa.Identifiers[acc.MemoryId].DefStatement = null;
                     var idFrame = ssa.Procedure.Frame.EnsureFpuStackVariable(((Constant)acc.EffectiveAddress).ToInt32(), acc.DataType);
-                    var idDst = NewDef(idFrame, store.Src, false);
-                    return new Assignment(idDst, store.Src);
+                    var idDst = NewDef(idFrame, src, false);
+                    return idDst;
                 }
                 else
                 {
@@ -551,13 +589,13 @@ namespace Reko.Analysis
                     acc.EffectiveAddress = acc.EffectiveAddress.Accept(this);
                     if (!this.RenameFrameAccesses)
                         UpdateMemoryIdentifier(acc, true);
+                    return acc;
                 }
             }
             else
             {
-                store.Dst = store.Dst.Accept(this);
+                return exp.Accept(this);
             }
-            return store;
         }
 
         public override Instruction TransformUseInstruction(UseInstruction u)

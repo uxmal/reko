@@ -489,7 +489,8 @@ CrwManyPredecessorsToExitBlock_exit:
 
             var arch = new FakeArchitecture
             {
-                FpuStackRegister = _top
+                FpuStackRegister = _top,
+                FpuStackBase = ST,
             };
             var pb = new ProgramBuilder(arch);
             pb.Add("main", m =>
@@ -528,7 +529,7 @@ CrwManyPredecessorsToExitBlock_exit:
                 m.Return();
             });
 
-            var sExp = "";
+            var sExp = "void main()";
             RunStringTest(sExp, pb.BuildProgram());
         }
     }
