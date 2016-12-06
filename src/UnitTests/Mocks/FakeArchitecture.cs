@@ -30,6 +30,7 @@ using System.Linq;
 using System.Text;
 using System.Collections.Generic;
 using Reko.Core.Serialization;
+using Reko.Core.Operators;
 
 namespace Reko.UnitTests.Mocks
 {
@@ -259,6 +260,7 @@ namespace Reko.UnitTests.Mocks
         public uint CarryFlagMask { get { return (uint) StatusFlags.C; } }
         public RegisterStorage StackRegister { get { return GetRegister(FakeArchitecture.iStackRegister); } }
         public RegisterStorage FpuStackRegister { get; set; }
+        public MemoryIdentifier FpuStackBase { get; set; }
 
         public Address MakeAddressFromConstant(Constant c)
         {
@@ -328,6 +330,26 @@ namespace Reko.UnitTests.Mocks
         public FrameApplicationBuilder CreateFrameApplicationBuilder(IStorageBinder binder, CallSite site, Expression callee)
         {
             return new FrameApplicationBuilder(this, binder, site, callee, false);
+        }
+
+        public Expression CreateFpuStackAccess(IStorageBinder binder, int offset, DataType dataType)
+        {
+            Expression e = binder.EnsureRegister(FpuStackRegister);
+            if (offset != 0)
+            {
+                BinaryOperator op;
+                if (offset < 0)
+                {
+                    offset = -offset;
+                    op = Operator.ISub;
+                }
+                else
+                {
+                    op = Operator.IAdd;
+                }
+                e = new BinaryExpression(op, e.DataType, e, Constant.Create(e.DataType, offset));
+            }
+            return new MemoryAccess(FpuStackBase, e, PrimitiveType.Real64);
         }
 
         #endregion

@@ -30,6 +30,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using Reko.Core.Code;
+using Reko.Core.Operators;
 
 namespace Reko.Arch.X86
 {
@@ -184,6 +185,27 @@ namespace Reko.Arch.X86
         public override Expression CreateStackAccess(IStorageBinder binder, int offset, DataType dataType)
         {
             return mode.CreateStackAccess(binder, offset, dataType);
+        }
+
+        //$REFACTOR: this probably should live in X86FrameApplicationBuilder
+        public override Expression CreateFpuStackAccess(IStorageBinder binder, int offset, DataType dataType)
+        {
+            Expression e = binder.EnsureRegister(Registers.Top);
+            if (offset != 0)
+            {
+                BinaryOperator op;
+                if (offset < 0)
+                {
+                    offset = -offset;
+                    op = Operator.ISub;
+                }
+                else
+                {
+                    op = Operator.IAdd;
+                }
+                e = new BinaryExpression(op, e.DataType, e, Constant.Create(e.DataType, offset));
+            }
+            return new MemoryAccess(Registers.ST, e, dataType);
         }
 
         public override Address MakeAddressFromConstant(Constant c)

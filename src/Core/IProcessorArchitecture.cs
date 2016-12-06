@@ -165,6 +165,8 @@ namespace Reko.Core
         FlagGroupStorage GetFlagGroup(uint grf);		    // Returns flag group matching the bitflags.
 		FlagGroupStorage GetFlagGroup(string name);
         Expression CreateStackAccess(IStorageBinder binder, int cbOffset, DataType dataType);
+        //$REFACTOR: this should probably live in FrameApplicationBuilder instead.
+        Expression CreateFpuStackAccess(IStorageBinder binder, int offset, DataType dataType);  //$REVIEW: generalize these two methods?
         Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state);
         Address MakeSegmentedAddress(Constant seg, Constant offset);
 
@@ -267,6 +269,12 @@ namespace Reko.Core
         {
             var sp = binder.EnsureRegister(StackRegister);
             return MemoryAccess.Create(sp, cbOffset, dataType);
+        }
+
+        public virtual Expression CreateFpuStackAccess(IStorageBinder binder, int offset, DataType dataType)
+        {
+            // Only Intel x86/x87 has a FPU stack
+            throw new NotSupportedException();
         }
 
         /// For a particular opcode name, returns its internal (Reko) number.

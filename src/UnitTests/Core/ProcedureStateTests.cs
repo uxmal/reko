@@ -23,6 +23,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
+using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 using NUnit.Framework;
@@ -271,6 +272,11 @@ namespace Reko.UnitTests.Core
             }
 
             public FrameApplicationBuilder CreateFrameApplicationBuilder(IStorageBinder binder, CallSite site, Expression callee)
+            {
+                throw new NotImplementedException();
+            }
+
+            public Expression CreateFpuStackAccess(IStorageBinder binder, int offset, DataType dataType)
             {
                 throw new NotImplementedException();
             }
