@@ -583,5 +583,105 @@ FpuMultiplyAdd_exit:
             #endregion
             RunStringTest(sExp, pb.BuildProgram());
         }
+
+        [Test(Description = "Handle procedure with out parameters")]
+        public void CrwOutParameter()
+        {
+            var pb = new ProgramBuilder();
+            pb.Add("main", m =>
+            {
+                var r1 = m.Reg32("r1", 1);
+                var r2 = m.Reg32("r2", 2);
+                m.Call("fnOutParam", 0);
+                m.Store(m.Word32(0x00123400), r1);
+                m.Store(m.Word32(0x00123404), r2);
+                m.Return();
+            });
+            pb.Add("fnOutParam", m =>
+            {
+                var r1 = m.Reg32("r1", 1);
+                var r2 = m.Reg32("r2", 2);
+
+                m.Label("m0");
+                m.BranchIf(m.Eq0(r1), "m2");
+
+                m.Label("m1");
+                m.Assign(r1, m.IAdd(r1, 3));
+                m.Assign(r2, m.ISub(r2, 3));
+                m.Return();
+
+                m.Label("m2");
+                m.Assign(r1, 0);
+                m.Assign(r2, 0);
+                m.Return();
+            });
+
+            var sExp =
+            #region Expected
+                @"void main(Register word32 r1, Register word32 r2)
+// MayUse:  r1:[0..31] r2:[0..31]
+// LiveOut:
+// Trashed: r1 r2
+// Preserved:
+// main
+// Return size: 0
+// Mem0:Global
+// fp:fp
+// r1:r1
+// r2:r2
+// r1:r1
+// r2:r2
+// return address size: 0
+void main(word32 r1, word32 r2)
+main_entry:
+	def r1
+	def r2
+	// succ:  l1
+l1:
+	r1_3 = fnOutParam(r1, r2, out r2_4)
+	r1_5 = (word32) r1_3 (alias)
+	r2_7 = (word32) r2_4 (alias)
+	Mem6[0x00123400:word32] = r1_5
+	Mem8[0x00123404:word32] = r2_7
+	return
+	// succ:  main_exit
+main_exit:
+Register word32 fnOutParam(Register word32 r1, Register word32 r2, Register out ptr32 r2Out)
+// MayUse:  r1:[0..31] r2:[0..31]
+// LiveOut: r1 r2
+// Trashed: r1 r2
+// Preserved:
+// fnOutParam
+// Return size: 0
+// Mem0:Global
+// fp:fp
+// r1:r1
+// r2:r2
+// r2Out:Out:r2
+// return address size: 0
+word32 fnOutParam(word32 r1, word32 r2, ptr32 & r2Out)
+fnOutParam_entry:
+	def r1
+	def r2
+	// succ:  m0
+m0:
+	branch r1 == 0x00000000 m2
+	// succ:  m1 m2
+m1:
+	r1_4 = r1 + 0x00000003
+	r2_6 = r2 - 0x00000003
+	return r1_4
+	// succ:  fnOutParam_exit
+m2:
+	r1_2 = 0x00000000
+	r2_3 = 0x00000000
+	r2Out = r2_3
+	return r1_2
+	// succ:  fnOutParam_exit
+fnOutParam_exit:
+";
+            #endregion
+            RunStringTest(sExp, pb.BuildProgram());
+        }
     }
 }
