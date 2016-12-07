@@ -176,7 +176,6 @@
     <Compile Include="Analysis\IsLiveHelperTests.cs" />
     <Compile Include="Analysis\LinearInductionVariableTests.cs" />
     <Compile Include="Analysis\LiveCopyInserterTests.cs" />
-    <Compile Include="Analysis\OutParameterTransformerTests.cs" />
     <Compile Include="Analysis\RegisterLivenessTests.cs" />
     <Compile Include="Analysis\RegisterLivenessUnitTests.cs" />
     <Compile Include="Analysis\SegmentedAccessClassifierTests.cs" />

@@ -667,5 +667,13 @@ fnOutParam_exit:
             #endregion
             RunStringTest(sExp, pb.BuildProgram());
         }
+
+        [Test]
+        [Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.AnalysisDevelopment)]
+        public void CrwParameters()
+        {
+            RunFileTest_x86_real("Fragments/multiple/outparameters.asm", "Analysis/CrwParameters.txt");
+        }
     }
 }

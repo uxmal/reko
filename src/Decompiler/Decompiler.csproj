@@ -171,9 +171,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Analysis\LongAddRewriter.cs" />
-    <Compile Include="Analysis\OutParameterTransformer.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Analysis\ProcedureFlow.cs">
       <SubType>Code</SubType>
     </Compile>

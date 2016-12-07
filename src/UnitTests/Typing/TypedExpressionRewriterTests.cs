@@ -574,8 +574,6 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
-        [Category(Categories.AnalysisDevelopment)]
         public void TerDeclaration()
         {
             ProgramBuilder pm = new ProgramBuilder();
@@ -587,7 +585,7 @@ namespace Reko.UnitTests.Typing
                     FunctionType.Func(
                         new Identifier("ax", PrimitiveType.Int16, ax.Storage),
                         new Identifier[0]));
-                m.Declare(ax, m.Fn(rand));
+                m.Assign(ax, m.Fn(rand));
                 m.Store(m.Word16(0x1300), ax);
                 m.Return();
             });
@@ -595,8 +593,6 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
-        [Category(Categories.AnalysisDevelopment)]
         public void TerShortArray()
         {
             var pm = CreateProgramBuilder(0x00001000, 0x1000);
