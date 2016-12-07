@@ -11,13 +11,12 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	word16 ax_12 = fn0C00_0023(0x0100, 0x3000, Mem6[0x0D00:0x0300:word16], 0x0D00)
-	word16 ax_15 = ax_12
 	branch ax_12 >= 0x0000 l0C00_001A
 	// succ:  l0C00_0015 l0C00_001A
 l0C00_0015:
 	fn0C00_001F(0x01)
 l0C00_001A:
-	Mem23[0x0D00:0x0302:word16] = ax_15
+	Mem19[0x0D00:0x0302:word16] = ax_12
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
@@ -28,8 +27,8 @@ fn0C00_0000_exit:
 // LiveOut:
 // Trashed:
 // Preserved:
-// fn0C00_001F
 // Terminates process
+// fn0C00_001F
 // Return size: 0
 void fn0C00_001F(byte al)
 fn0C00_001F_entry:

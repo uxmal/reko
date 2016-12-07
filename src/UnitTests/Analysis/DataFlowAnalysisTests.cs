@@ -181,7 +181,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        [Ignore(Categories.AnalysisDevelopment)]
+        //[Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void DfaReadFile()
 		{

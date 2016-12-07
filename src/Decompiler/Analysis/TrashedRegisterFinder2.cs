@@ -90,7 +90,16 @@ namespace Reko.Analysis
             this.ssa = ssa;
             this.simpl = new ExpressionSimplifier(new SsaEvaluationContext(arch, ssa.Identifiers));
             this.flow = this.progFlow.ProcedureFlows[ssa.Procedure];
-            if (ssa.Procedure.Signature.ParametersValid)
+
+            if (ssa.Procedure.ExitBlock.Pred.Count == 0)
+            {
+                // We have proved that no code reaches the exit block; this
+                // procedure is "no-return". The net effect is callers see 
+                // no trashed registers because control never returns to 
+                // them.
+                this.flow.TerminatesProcess = true;
+            }
+            else if (ssa.Procedure.Signature.ParametersValid)
             {
                 //$REVIEW: do we need this? if a procedure has a signature,
                 // we will always trust that rather than the flow.

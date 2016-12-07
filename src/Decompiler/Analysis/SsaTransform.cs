@@ -114,8 +114,14 @@ namespace Reko.Analysis
                     this.stmCur = s;
                     //Debug.Print("***  {0}", s.Instruction);
                     s.Instruction = s.Instruction.Accept(this);
+                    if (blockstates[b].terminates)
+                    {
+                        TerminateBlockAfterStatement(b, s);
+                        break;
+                    }
                 }
                 blockstates[b].Visited = true;
+                blockstates[b].terminates = false;
             }
             ProcessIncompletePhis();
             return ssa;
@@ -303,6 +309,30 @@ namespace Reko.Analysis
             }
         }
 
+        /// <summary>
+        /// Removes any statements after stm in the block and removes 
+        /// all out edges from the 
+        /// </summary>
+        /// <param name="block"></param>
+        /// <param name="stm"></param>
+        private void TerminateBlockAfterStatement(Block block, Statement stm)
+        {
+            int iStm = block.Statements.IndexOf(stm);
+            Debug.Assert(iStm >= 0);
+            for (int i = block.Statements.Count - 1; i > iStm; --i)
+            {
+                // We're assuming these statements haven't been visited 
+                // by SSA transform yet, so they are not in the SSA graph.
+                block.Statements.RemoveAt(i);
+            }
+            // Now remove edges from CFG
+            var succs = block.Succ.ToList();
+            foreach (var s in succs)
+            {
+                block.Procedure.ControlGraph.RemoveEdge(block, s);
+            }
+        }
+
         public override Instruction TransformAssignment(Assignment a)
         {
             if (a is AliasAssignment)
@@ -399,6 +429,13 @@ namespace Reko.Analysis
                                 use,
                                 fpuUseExpr));
                     }
+                }
+
+                if (calleeFlow.TerminatesProcess)
+                {
+                    // We just discovered this basic block doesn't terminate.
+                    this.blockstates[block].terminates = true;
+                    return;
                 }
 
                 foreach (var def in calleeFlow.Trashed.Where(dd => !(dd is FpuStackStorage)))
@@ -816,6 +853,7 @@ namespace Reko.Analysis
             public readonly Dictionary<int, SsaIdentifier> currentStackDef;
             public readonly Dictionary<int, SsaIdentifier> currentFpuDef;
             public bool Visited;
+            internal bool terminates;
 
             public SsaBlockState(Block block)
             {
