@@ -25,6 +25,7 @@ using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Reko.Analysis
@@ -67,21 +68,6 @@ namespace Reko.Analysis
 				}
 			}
 			sb.AddStackArgument(x, id);
-		}
-
-		public void AddUseInstructionsForOutArguments(Procedure proc)
-		{
-			foreach (Identifier id in proc.Signature.Parameters)
-			{
-				var os = id.Storage as OutArgumentStorage;
-				if (os == null)
-					continue;
-				var r = os.OriginalIdentifier.Storage as RegisterStorage;
-				if (r == null)
-					continue;
-
-				proc.ExitBlock.Statements.Add(0, new UseInstruction(os.OriginalIdentifier, id));
-			}
 		}
 
 		/// <summary>
@@ -129,7 +115,6 @@ namespace Reko.Analysis
 				ProcedureFlow flow = crw.mpprocflow[proc];
                 flow.Dump(platform.Architecture);
 				crw.EnsureSignature(proc, flow);
-				crw.AddUseInstructionsForOutArguments(proc);
 			}
 
 			foreach (SsaTransform sst in ssts)
@@ -381,13 +366,27 @@ namespace Reko.Analysis
             var reachingBlocks = ssa.PredecessorPhiIdentifiers(ssa.Procedure.ExitBlock);
             foreach (var reachingBlock in reachingBlocks)
             {
+                var block = reachingBlock.Key;
                 var idRet = ssa.Procedure.Signature.ReturnValue;
                 if (idRet != null && !(idRet.DataType is VoidType))
                 {
-                    var idStg = reachingBlock.Value.Where(cb => cb.Storage == idRet.Storage).First();
+                    var idStg = reachingBlock.Value
+                        .Where(cb => cb.Storage == idRet.Storage).First();
                     SetReturnExpression(
-                        reachingBlock.Key,
+                        block,
                         ssa.Identifiers[(Identifier)idStg.Expression]);
+                }
+                int insertPos = block.Statements.FindIndex(s => s.Instruction is ReturnInstruction);
+                Debug.Assert(insertPos >= 0);
+                foreach (var parameter in ssa.Procedure.Signature.Parameters
+                                             .Where(p => p.Storage is OutArgumentStorage))
+                {
+                    var outStg = (OutArgumentStorage)parameter.Storage;
+                    var idStg = reachingBlock.Value
+                        .Where(cb => cb.Storage == outStg.OriginalIdentifier.Storage).First();
+                    var sid = ssa.Identifiers[(Identifier)idStg.Expression];
+                    InsertOutArgumentAssignment(parameter, sid, block, insertPos);
+                    ++insertPos;
                 }
             }
 
@@ -396,6 +395,8 @@ namespace Reko.Analysis
                 //ssa.DeleteStatement(sid.DefStatement);
             //ssa.DeleteStatement(stmUse);
         }
+
+     
 
         private void SetReturnExpression(Block block, SsaIdentifier sid)
         {
@@ -409,6 +410,12 @@ namespace Reko.Analysis
                     sid.Uses.Add(stm);
                 }
             }
+        }
+
+        private void InsertOutArgumentAssignment(Identifier parameter, SsaIdentifier sid, Block block, int insertPos)
+        {
+            var stm = block.Statements.Insert(insertPos, 0, new Store(parameter, sid.Identifier));
+            sid.Uses.Add(stm);
         }
     }
 }

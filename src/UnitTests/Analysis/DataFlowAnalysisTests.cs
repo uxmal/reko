@@ -126,7 +126,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void DfaFpuOps()
 		{
 			RunFileTest_x86_real("Fragments/fpuops.asm", "Analysis/DfaFpuOps.txt");
@@ -141,7 +141,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void DfaChainTest()
 		{
 			RunFileTest_x86_real("Fragments/multiple/chaincalls.asm", "Analysis/DfaChainTest.txt");
@@ -196,7 +196,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void DfaStringInstructions()
 		{
 			RunFileTest_x86_real("Fragments/stringinstr.asm", "Analysis/DfaStringInstructions.txt");

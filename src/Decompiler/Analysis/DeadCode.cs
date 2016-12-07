@@ -173,7 +173,11 @@ namespace Reko.Analysis
 
 		public override void VisitStore(Store store)
 		{
-			store.Dst.Accept(this);
+            var idDst = store.Dst as Identifier;
+            if (idDst == null || (!(idDst.Storage is OutArgumentStorage)))
+            {
+                store.Dst.Accept(this);
+            }
 			store.Src.Accept(this);
 		}
 	}

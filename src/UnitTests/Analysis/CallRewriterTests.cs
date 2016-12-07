@@ -313,23 +313,6 @@ namespace Reko.UnitTests.Analysis
             Assert.AreEqual("void foo(Stack uipr16 dwArg04)", proc.Signature.ToString(proc.Name));
         }
 
-        // Ensure that UseInstructions for "out" parameters are generated even when a signature is pre-specified.
-        [Test]
-        public void GenerateUseInstructionsForSpecifiedSignature()
-        {
-            Procedure proc = new Procedure("foo", program.Architecture.CreateFrame());
-            proc.Signature = FunctionType.Func(
-                new Identifier("eax", PrimitiveType.Word32, Registers.eax),
-                new Identifier[] {
-                new Identifier("ecx", PrimitiveType.Word32, Registers.ecx),
-                new Identifier("edxOut", PrimitiveType.Word32,
-                                    new OutArgumentStorage(proc.Frame.EnsureRegister(Registers.edx)))});
-            crw.EnsureSignature(proc, new ProcedureFlow(proc));
-            crw.AddUseInstructionsForOutArguments(proc);
-            Assert.AreEqual(1, proc.ExitBlock.Statements.Count);
-            Assert.AreEqual("use edx (=> edxOut)", proc.ExitBlock.Statements[0].Instruction.ToString());
-        }
-
         [Test]
         public void GcrStackArguments()
         {
@@ -670,6 +653,7 @@ m0:
 m1:
 	r1_4 = r1 + 0x00000003
 	r2_6 = r2 - 0x00000003
+	r2Out = r2_6
 	return r1_4
 	// succ:  fnOutParam_exit
 m2:

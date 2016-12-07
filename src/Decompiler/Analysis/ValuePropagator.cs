@@ -175,7 +175,11 @@ namespace Reko.Analysis
         public Instruction VisitStore(Store store)
         {
             store.Src = store.Src.Accept(eval);
-            store.Dst = store.Dst.Accept(eval);
+            var idDst = store.Dst as Identifier;
+            if (idDst == null || (!(idDst.Storage is OutArgumentStorage)))
+            {
+                store.Dst = store.Dst.Accept(eval);
+            }
             return store;
         }
 

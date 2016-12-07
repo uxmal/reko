@@ -1,20 +1,21 @@
 fp:fp
 sp_2: orig: sp
-bx_3: orig: bx
-    def:  fn0C00_000E(out bx_3)
+Top_3: orig: Top
 ax_4: orig: ax
+    def:  fn0C00_000E(out bx_5)
+bx_5: orig: bx
+    def:  fn0C00_000E(out bx_5)
+    uses: Mem7[ds:0x0300:word16] = bx_5
 ds:ds
     def:  def ds
-    uses: Mem6[ds:0x0300:word16] = 0x002B
-          fn0C00_0015(ax_8, bx_7, ds)
-Mem6: orig: Mem0
-    def:  Mem6[ds:0x0300:word16] = 0x002B
-bx_7: orig: bx
-    def:  ax_8 = fn0C00_000E(out bx_7)
-    uses: fn0C00_0015(ax_8, bx_7, ds)
+    uses: Mem7[ds:0x0300:word16] = bx_5
+          fn0C00_0015(fn0C00_000E(out bx_9), bx_9, ds)
+Mem7: orig: Mem0
+    def:  Mem7[ds:0x0300:word16] = bx_5
 ax_8: orig: ax
-    def:  ax_8 = fn0C00_000E(out bx_7)
-    uses: fn0C00_0015(ax_8, bx_7, ds)
+bx_9: orig: bx
+    def:  fn0C00_0015(fn0C00_000E(out bx_9), bx_9, ds)
+    uses: fn0C00_0015(fn0C00_000E(out bx_9), bx_9, ds)
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(selector ds)
@@ -22,50 +23,46 @@ fn0C00_0000_entry:
 	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	fn0C00_000E(out bx_3)
-	Mem6[ds:0x0300:word16] = 0x002B
-	ax_8 = fn0C00_000E(out bx_7)
-	fn0C00_0015(ax_8, bx_7, ds)
+	fn0C00_000E(out bx_5)
+	Mem7[ds:0x0300:word16] = bx_5
+	fn0C00_0015(fn0C00_000E(out bx_9), bx_9, ds)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 
 fp:fp
 sp_2: orig: sp
-ax_3: orig: ax
-bx_4: orig: bx
-    def:  bx_4 = 0x002B
-    uses: use bx_4 (=> bxOut)
-bxOut:Out:bx
-    def:  use bx_4 (=> bxOut)
+Top_3: orig: Top
+ax_4: orig: ax
+bx_5: orig: bx
 // fn0C00_000E
 // Return size: 0
 word16 fn0C00_000E(ptr16 & bxOut)
 fn0C00_000E_entry:
 	// succ:  l0C00_000E
 l0C00_000E:
-	bx_4 = 0x002B
+	bxOut = 0x002B
 	return 0x002A
 	// succ:  fn0C00_000E_exit
 fn0C00_000E_exit:
-	use bx_4 (=> bxOut)
 
 fp:fp
 sp_2: orig: sp
+Top_3: orig: Top
 ax:ax
     def:  def ax
-    uses: Mem5[ds:0x0400:word16] = ax
+    uses: Mem6[ds:0x0400:word16] = ax
 ds:ds
     def:  def ds
-    uses: Mem5[ds:0x0400:word16] = ax
-          Mem7[ds:0x0402:word16] = bx
-Mem5: orig: Mem0
-    def:  Mem5[ds:0x0400:word16] = ax
+    uses: Mem6[ds:0x0400:word16] = ax
+          Mem8[ds:0x0402:word16] = bx
+Mem6: orig: Mem0
+    def:  Mem6[ds:0x0400:word16] = ax
 bx:bx
     def:  def bx
-    uses: Mem7[ds:0x0402:word16] = bx
-Mem7: orig: Mem0
-    def:  Mem7[ds:0x0402:word16] = bx
+    uses: Mem8[ds:0x0402:word16] = bx
+Mem8: orig: Mem0
+    def:  Mem8[ds:0x0402:word16] = bx
 // fn0C00_0015
 // Return size: 0
 void fn0C00_0015(word16 ax, word16 bx, selector ds)
@@ -75,8 +72,8 @@ fn0C00_0015_entry:
 	def bx
 	// succ:  l0C00_0015
 l0C00_0015:
-	Mem5[ds:0x0400:word16] = ax
-	Mem7[ds:0x0402:word16] = bx
+	Mem6[ds:0x0400:word16] = ax
+	Mem8[ds:0x0402:word16] = bx
 	return
 	// succ:  fn0C00_0015_exit
 fn0C00_0015_exit:

@@ -92,9 +92,9 @@ namespace Reko.UnitTests.Analysis
             BuildTest(m =>
             {
                 m.Label("bloq");
-                m.Return();
+                m.TerminateBlock();
             });
-            var block = FindBlock("bloq");
+            var block = ssa.Procedure.ExitBlock;
 
             var dict = this.ssa.PredecessorPhiIdentifiers(block);
             Assert.AreEqual(0, dict.Count);

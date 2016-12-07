@@ -138,7 +138,6 @@ namespace Reko.UnitTests.Analysis
 		}
 
         [Test]
-        [Category(Categories.AnalysisDevelopment)]
         public void CoaSideEffectCalls()
         {
             RunFileTest_x86_real("Fragments/multiple/sideeffectcalls.asm", "Analysis/CoaSideEffectCalls.txt");
