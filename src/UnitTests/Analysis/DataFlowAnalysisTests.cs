@@ -174,8 +174,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        [Ignore(Categories.AnalysisDevelopment)]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void DfaPreservedAlias()
 		{
 			RunFileTest_x86_real("Fragments/multiple/preserved_alias.asm", "Analysis/DfaPreservedAlias.txt");
@@ -190,8 +189,9 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void DfaStackPointerMessing()
-		{
+        {
 			RunFileTest_x86_real("Fragments/multiple/stackpointermessing.asm", "Analysis/DfaStackPointerMessing.txt");
 		}
 
@@ -203,14 +203,14 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        [Ignore(Categories.AnalysisDevelopment)]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void DfaSuccessiveDecs()
-		{
+        {
 			RunFileTest_x86_real("Fragments/multiple/successivedecs.asm", "Analysis/DfaSuccessiveDecs.txt");
 		}
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void DfaWhileBigHead()
 		{
 			RunFileTest_x86_real("Fragments/while_bighead.asm", "Analysis/DfaWhileBigHead.txt");

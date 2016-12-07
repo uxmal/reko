@@ -199,7 +199,6 @@ namespace Reko.UnitTests.Typing
             RunTest(pp.BuildProgram(), "Typing/TycoArrayConstantPointers.txt");
         }
 
-
         [Test]
         public void TycoFramePointer()
         {
