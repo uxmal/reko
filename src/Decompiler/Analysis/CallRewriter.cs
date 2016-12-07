@@ -204,17 +204,6 @@ namespace Reko.Analysis
             }
         }
 
-        private int GetFpuStackDelta(ProcedureFlow flow)
-        {
-            Constant c;
-            var fpuStackReg = platform.Architecture.FpuStackRegister;
-            if (fpuStackReg == null ||
-                !flow.Constants.TryGetValue(fpuStackReg, out c))
-            {
-                return 0;
-            }
-            return -c.ToInt32();
-        }
 
 		public SortedList<int, Identifier> GetSortedArguments(Frame f, Type type, int startOffset)
 		{

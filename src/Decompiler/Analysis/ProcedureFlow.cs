@@ -37,9 +37,9 @@ namespace Reko.Analysis
 	/// </summary>
 	public class ProcedureFlow : DataFlow
 	{
-		private Procedure proc;
+        public Procedure Procedure { get; private set; }
 
-		public HashSet<Storage> Preserved;			// Registers explicitly preserved by the procedure.
+        public HashSet<Storage> Preserved;			// Registers explicitly preserved by the procedure.
 		public uint grfPreserved;
 
 		public uint grfTrashed;
@@ -72,7 +72,7 @@ namespace Reko.Analysis
 
         public ProcedureFlow(Procedure proc)
         {
-            this.proc = proc;
+            this.Procedure = proc;
 
             Preserved = new HashSet<Storage>();
             Trashed = new HashSet<Storage>();
@@ -145,9 +145,23 @@ namespace Reko.Analysis
 			return false;
 		}
 
-		public Procedure Procedure
-		{
-			get { return proc; } 
-		}
+        /// <summary>
+        /// Returns the number of slots the FPU stack grew.
+        /// If the architecture doesn't support FPU stacks, 
+        /// returns 0.
+        /// </summary>
+        /// <param name="arch"></param>
+        /// <returns></returns>
+        public int GetFpuStackDelta(IProcessorArchitecture arch)
+        {
+            Constant c;
+            var fpuStackReg = arch.FpuStackRegister;
+            if (fpuStackReg == null ||
+                !Constants.TryGetValue(fpuStackReg, out c))
+            {
+                return 0;
+            }
+            return c.ToInt32();
+        }
     }
 }

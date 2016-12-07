@@ -1,8 +1,8 @@
 // void fn0C00_0000(Register selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse:  ds
+// MayUse:  ds:[0..63]
 // LiveOut:
-// Trashed: bh bl bx ebx rbx
+// Trashed: bx FPU -1 Top
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -10,16 +10,16 @@ void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem6[ds:0x0400:real64] = fn0C00_000C(Mem0[ds:0x0300:word16], ds)
+	Mem9[ds:0x0400:real64] = fn0C00_000C(Mem0[ds:0x0300:word16], ds)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 
 // FpuStack real64 fn0C00_000C(Register word16 bx, Register selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse:  bx ds
-// LiveOut:
-// Trashed:
+// MayUse:  bx:[0..15] ds:[0..15]
+// LiveOut: FPU -1
+// Trashed: FPU -1 FPU -2 Top
 // Preserved: sp
 // fn0C00_000C
 // Return size: 0

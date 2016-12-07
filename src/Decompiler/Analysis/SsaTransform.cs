@@ -378,7 +378,7 @@ namespace Reko.Analysis
             }
             else
             {
-                fpuStackDelta = GetFpuStackDelta(calleeFlow);
+                fpuStackDelta = calleeFlow.GetFpuStackDelta(arch);
                 var ab = arch.CreateFrameApplicationBuilder(ssa.Procedure.Frame, ci.CallSite, ci.Callee);
                 foreach (var use in calleeFlow.BitsUsed.Keys)
                 {
@@ -435,7 +435,7 @@ namespace Reko.Analysis
                 //$REVIEW: this is very x86/x87 specific; find a way to generalize
                 // this to any sort of stack-based discipline.
                 foreach (var def in calleeFlow.Trashed.OfType<FpuStackStorage>()
-                    .Where(def => def.FpuStackOffset >= 0))
+                    .Where(def => def.FpuStackOffset >= fpuStackDelta))
                 {
                     var fpuDefExpr = arch.CreateFpuStackAccess(
                         ssa.Procedure.Frame, 
@@ -475,23 +475,6 @@ namespace Reko.Analysis
 
                 stmCur.Instruction = stmCur.Instruction.Accept(this);
             }
-        }
-
-        /// <summary>
-        /// Returns the change in the FPU stack register.
-        /// </summary>
-        /// <param name="flow"></param>
-        /// <returns></returns>
-        private int GetFpuStackDelta(ProcedureFlow flow)
-        {
-            Constant c;
-            var fpuStackReg = arch.FpuStackRegister;
-            if (fpuStackReg == null ||
-                !flow.Constants.TryGetValue(fpuStackReg, out c))
-            {
-                return 0;
-            }
-            return c.ToInt32();
         }
 
         private void GenerateUseDefsForUnknownCallee(CallInstruction ci)

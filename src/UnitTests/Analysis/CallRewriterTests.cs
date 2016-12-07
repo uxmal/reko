@@ -531,8 +531,8 @@ void main()
 main_entry:
 	// succ:  l1
 l1:
-	rLoc1_15 = FpuMultiplyAdd(5.0, 4.0, 3.0)
-	Mem9[0x00123400:real64] = rLoc1_15
+	rLoc1_14 = FpuMultiplyAdd(5.0, 4.0, 3.0)
+	Mem9[0x00123400:real64] = rLoc1_14
 	return
 	// succ:  main_exit
 main_exit:

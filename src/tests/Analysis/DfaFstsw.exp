@@ -1,8 +1,8 @@
 // void fn0C00_0000(Register word16 bx, Register word16 si, Register selector ds, FpuStack real64 rArg0)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse:  bx:16 ds:16 FPU stack:16 si:16
+// MayUse:  bx:[0..63] ds:[0..63] FPU +0:[0..63] si:[0..15]
 // LiveOut:
-// Trashed: SCZO FPUF
+// Trashed: C FPUF O S Top Z
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -13,7 +13,7 @@ l0C00_0000:
 	branch rArg0 <= Mem0[ds:bx:real32] l0C00_000D
 	// succ:  l0C00_0009 l0C00_000D
 l0C00_0009:
-	Mem10[ds:si:word16] = 0x0004
+	Mem12[ds:si:word16] = 0x0004
 	// succ:  l0C00_000D
 l0C00_000D:
 	return
