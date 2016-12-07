@@ -287,24 +287,21 @@ namespace Reko.UnitTests.Analysis
         [Test]
         public void CrwFpuArgument()
         {
-            proc.Frame.EnsureFpuStackVariable(1, PrimitiveType.Real80);
+            flow.BitsUsed.Add(new FpuStackStorage(0, PrimitiveType.Real80), new BitRange(0, 80));
             crw.EnsureSignature(proc, flow);
-            Assert.AreEqual("void foo(FpuStack real80 rArg1)", proc.Signature.ToString(proc.Name));
+            Assert.AreEqual("void foo(FpuStack real80 rArg0)", proc.Signature.ToString(proc.Name));
         }
 
         [Test]
         public void CrwFpuOutArgument()
         {
+            flow.BitsUsed.Add(new FpuStackStorage(0, PrimitiveType.Real80), new BitRange(0, 80));
             flow.LiveOut.Add(Registers.eax);
-            Given_ExitBlockStatement(new Identifier("eax", PrimitiveType.Word32, Registers.eax));
-            Given_ExitBlockStatement(new Identifier("st0", PrimitiveType.Word32, new FpuStackStorage(0, PrimitiveType.Real80)));
-            Given_ExitBlockStatement(new Identifier("st2", PrimitiveType.Word32, new FpuStackStorage(1, PrimitiveType.Real80)));
+            flow.LiveOut.Add(new FpuStackStorage(0, PrimitiveType.Real80));
+            flow.LiveOut.Add(new FpuStackStorage(1, PrimitiveType.Real80));
 
-            proc.Frame.EnsureFpuStackVariable(0, PrimitiveType.Real80);
-            proc.Frame.EnsureFpuStackVariable(1, PrimitiveType.Real80);
-            proc.Signature.FpuStackDelta = 1;
             crw.EnsureSignature(proc, flow);
-            Assert.AreEqual("Register word32 foo(FpuStack real80 rArg0, FpuStack real80 rArg1, FpuStack out ptr32 rArg0Out)", proc.Signature.ToString(proc.Name));
+            Assert.AreEqual("Register word32 foo(FpuStack real80 rArg0, FpuStack out ptr32 rArg0Out, FpuStack out ptr32 rArg1Out)", proc.Signature.ToString(proc.Name));
         }
 
         [Test]

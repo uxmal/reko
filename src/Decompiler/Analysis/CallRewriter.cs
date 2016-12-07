@@ -191,9 +191,13 @@ namespace Reko.Analysis
 				AddStackArgument(de.Key, de.Value, flow, sb);
 			}
 
-            foreach (KeyValuePair<int, Identifier> de in GetSortedFpuStackArguments(proc.Frame, 0))
+            foreach (var oFpu in flow.BitsUsed.
+                Where(f => f.Key is FpuStackStorage)
+                .OrderBy(r => ((FpuStackStorage) r.Key).FpuStackOffset))
 			{
-				sb.AddFpuStackArgument(de.Key, de.Value);
+                var fpu = (FpuStackStorage)oFpu.Key;
+                var id = frame.EnsureFpuStackVariable(fpu.FpuStackOffset, fpu.DataType);
+                sb.AddFpuStackArgument(fpu.FpuStackOffset, id);
 			}
 
             var liveOut = allLiveOut.OfType<RegisterStorage>().ToHashSet();
@@ -207,15 +211,13 @@ namespace Reko.Analysis
 				}
 			}
 
-            var fpuStackDelta = GetFpuStackDelta(flow);
-            foreach (KeyValuePair<int, Identifier> de in GetSortedFpuStackArguments(proc.Frame, -fpuStackDelta))
-			{
-				int i = de.Key;
-				sb.AddOutParam(frame.EnsureFpuStackVariable(i, de.Value.DataType));
+            foreach (var fpu in allLiveOut.OfType<FpuStackStorage>().OrderBy(r => r.FpuStackOffset))
+            {
+                sb.AddOutParam(frame.EnsureFpuStackVariable(fpu.FpuStackOffset, fpu.DataType));
 			}
 
             var sig = sb.BuildSignature();
-            sig.FpuStackDelta = fpuStackDelta;
+            //sig.FpuStackDelta = fpuStackDelta;
             flow.Signature = sig;
 			proc.Signature = sig;
 		}
