@@ -87,5 +87,10 @@ namespace Reko.Core.Code
             this.Storage = stg;
             this.Expression = exp;
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0}:{1}", Storage, Expression);
+        }
     }
 }

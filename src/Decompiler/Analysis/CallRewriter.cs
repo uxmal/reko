@@ -18,28 +18,14 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
 using Reko.Core.Services;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using CallInstruction = Reko.Core.Code.CallInstruction;
-using FpuStackStorage = Reko.Core.FpuStackStorage;
-using Frame = Reko.Core.Frame;
-using Identifier = Reko.Core.Expressions.Identifier;
-using OutArgumentStorage = Reko.Core.OutArgumentStorage;
-using PrimtiveType = Reko.Core.Types.PrimitiveType;
-using Procedure = Reko.Core.Procedure;
-using Program = Reko.Core.Program;
-using RegisterStorage = Reko.Core.RegisterStorage;
-using ReturnInstruction = Reko.Core.Code.ReturnInstruction;
-using SignatureBuilder = Reko.Core.SignatureBuilder;
-using StackArgumentStorage = Reko.Core.StackArgumentStorage;
-using UseInstruction = Reko.Core.Code.UseInstruction;
-using VoidType = Reko.Core.Types.VoidType;
-using Reko.Core;
-using Reko.Core.Expressions;
-using Reko.Core.Code;
-using Reko.Core.Operators;
 
 namespace Reko.Analysis
 {
@@ -73,10 +59,10 @@ namespace Reko.Analysis
 				int bitWidth = (int) o;
 				if (bitWidth < id.DataType.BitSize)
 				{
-					PrimtiveType pt = id.DataType as PrimtiveType;
+					PrimitiveType pt = id.DataType as PrimitiveType;
 					if (pt != null)
 					{
-						id.DataType = PrimtiveType.Create(pt.Domain, bitWidth/8);
+						id.DataType = PrimitiveType.Create(pt.Domain, bitWidth/8);
 					}
 				}
 			}
@@ -152,6 +138,7 @@ namespace Reko.Analysis
                     return;
                 crw.RewriteCalls(sst.SsaState.Procedure);
 				crw.RewriteReturns(sst.SsaState);
+                crw.RemoveStatementsFromExitBlock(sst.SsaState);
 			}
 		}
 
@@ -312,6 +299,14 @@ namespace Reko.Analysis
             return new CallApplicationBuilder(platform.Architecture, call, fn);
         }
 
+        public void RemoveStatementsFromExitBlock(SsaState ssa)
+        {
+            foreach (var stm in ssa.Procedure.ExitBlock.Statements.ToList())
+            {
+                ssa.DeleteStatement(stm);
+            }
+        }
+
         /// <summary>
         /// Rewrites CALL instructions to function applications.
         /// </summary>
@@ -347,7 +342,6 @@ namespace Reko.Analysis
             return true;
         }
 
-
         /// <summary>
         // Statements of the form:
         //		call	<proc-operand>
@@ -380,52 +374,27 @@ namespace Reko.Analysis
         /// <param name="ssa"></param>
         public void RewriteReturns(SsaState ssa)
         {
-            Identifier idRet = ssa.Procedure.Signature.ReturnValue;
-            if (idRet == null || idRet.DataType is VoidType)
-                return;
+            // For each basic block reaching the exit block, get all reaching
+            // definitions and then either replace the return expression or 
+            // inject out variable assignments as Stores.
+
+            var reachingBlocks = ssa.PredecessorPhiIdentifiers(ssa.Procedure.ExitBlock);
+            foreach (var reachingBlock in reachingBlocks)
+            {
+                var idRet = ssa.Procedure.Signature.ReturnValue;
+                if (idRet != null && !(idRet.DataType is VoidType))
+                {
+                    var idStg = reachingBlock.Value.Where(cb => cb.Storage == idRet.Storage).First();
+                    SetReturnExpression(
+                        reachingBlock.Key,
+                        ssa.Identifiers[(Identifier)idStg.Expression]);
+                }
+            }
 
             // Find the returned identifier
-            var exitBlock = ssa.Procedure.ExitBlock;
-            var expRet = exitBlock.Statements
-                .Select(s => s.Instruction)
-                .OfType<UseInstruction>()
-                .Select(u => new
-                {
-                    Identifier = u.Expression as Identifier,
-                    Instruction = u
-                })
-                .Where(w => w.Identifier != null && w.Identifier.Storage == idRet.Storage)
-                .SingleOrDefault();
-            if (expRet == null)
-                return;
-
-            // Single definition
-            var sid = ssa.Identifiers[expRet.Identifier];
-            var phi = sid.DefStatement.Instruction as PhiAssignment;
-            if (phi != null && sid.DefStatement.Block == exitBlock)
-            {
-                // Multiple reaching definitions.
-                for (int i = 0; i < phi.Src.Arguments.Length; ++i)
-                {
-                    var pred = exitBlock.Pred[i];
-                    SetReturnExpression(
-                        pred, 
-                        ssa.Identifiers[(Identifier)phi.Src.Arguments[i]]);
-                }
                 // Delete the phi statement
-                ssa.DeleteStatement(sid.DefStatement);
-            }
-            else
-            {
-                // Single reaching definition.
-                var block = exitBlock.Pred[0];
-                SetReturnExpression(block, sid);
-            }
-
-            var stmUse = sid.Uses
-                .Where(u => u.Instruction == expRet.Instruction)
-                .Single();
-            ssa.DeleteStatement(stmUse);
+                //ssa.DeleteStatement(sid.DefStatement);
+            //ssa.DeleteStatement(stmUse);
         }
 
         private void SetReturnExpression(Block block, SsaIdentifier sid)

@@ -103,7 +103,10 @@ namespace Reko.Analysis
 
         public Expression VisitRegisterStorage(RegisterStorage reg)
         {
-            return map[reg];
+            Expression e;
+            return map.TryGetValue(reg, out e)
+                ? e 
+                : null;
         }
 
         public Expression VisitSequenceStorage(SequenceStorage seq)

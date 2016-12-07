@@ -83,17 +83,12 @@ namespace Reko.Core
                 throw new InvalidOperationException("No signature available; application cannot be constructed.");
             this.sigCallee = sigCallee;
 
-            Expression expOut;
-            DataType dtOut;
+            Expression expOut = null;
+            DataType dtOut = VoidType.Instance;
             if (!sigCallee.HasVoidReturn)
             {
                 expOut = BindReturnValue(sigCallee.ReturnValue);
                 dtOut = sigCallee.ReturnValue.DataType;
-            }
-            else
-            {
-                expOut = null;
-                dtOut = VoidType.Instance;
             }
             var actuals = BindArguments(sigCallee, chr);
             Expression appl = new Application(

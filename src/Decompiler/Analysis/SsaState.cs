@@ -194,20 +194,36 @@ namespace Reko.Analysis
         /// </remarks>
         /// <param name="block"></param>
         /// <returns></returns>
-        public Dictionary<Block, Expression[]> PredecessorPhiIdentifiers(Block block)
+        public Dictionary<Block, CallBinding[]> PredecessorPhiIdentifiers(Block block)
         {
-            var dict = new Dictionary<Block, Expression[]>();
+            var dict = new Dictionary<Block, CallBinding[]>();
             if (block.Pred.Count > 1)
             {
                 var phis = block.Statements
                     .Select(s => s.Instruction)
                     .OfType<PhiAssignment>()
-                    .Select(phi => (IEnumerable<Expression>)phi.Src.Arguments);
-                var arrs = Reko.Core.EnumerableEx.ZipMany(phis, ids => ids.ToArray()).ToArray();
+                    .Select(phi => phi.Src.Arguments
+                        .Select(a => new CallBinding(
+                            phi.Dst.Storage,
+                            a)));
+                var arrs = Reko.Core.EnumerableEx.ZipMany(
+                    phis,
+                    ids => ids.ToArray()).ToArray();
                 for (int p = 0; p < block.Pred.Count; ++p)
                 {
                     dict.Add(block.Pred[p], arrs[p]);
                 }
+            }
+            else if (block.Pred.Count == 1)
+            {
+                var uses = block.Statements
+                    .Select(s => s.Instruction)
+                    .OfType<UseInstruction>()
+                    .Select(u => 
+                        new CallBinding(
+                            ((Identifier)u.Expression).Storage,
+                            u.Expression));
+                dict.Add(block.Pred[0], uses.ToArray());
             }
             return dict;
         }

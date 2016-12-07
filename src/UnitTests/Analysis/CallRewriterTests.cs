@@ -372,6 +372,7 @@ namespace Reko.UnitTests.Analysis
 
             var crw = new CallRewriter(this.platform, flow, new FakeDecompilerEventListener());
             crw.RewriteReturns(sst.SsaState);
+            crw.RemoveStatementsFromExitBlock(sst.SsaState);
 
             var sExp =
             #region Expected 
@@ -433,6 +434,7 @@ CrwSinglePredecessorToExitBlock_exit:
 
             var crw = new CallRewriter(this.platform, flow, new FakeDecompilerEventListener());
             crw.RewriteReturns(sst.SsaState);
+            crw.RemoveStatementsFromExitBlock(sst.SsaState);
 
             var sExp =
             #region Expected 

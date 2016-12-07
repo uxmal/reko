@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
+using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.UnitTests.Mocks;
 using System;
@@ -53,7 +54,7 @@ namespace Reko.UnitTests.Analysis
                 Architecture = pb.Architecture,
             };
             var sst = new SsaTransform(
-                program, pb.Procedure, 
+                program, pb.Procedure,
                 new HashSet<Procedure>(),
                 null,
                 dflow);
@@ -65,13 +66,13 @@ namespace Reko.UnitTests.Analysis
             return ssa.Procedure.ControlGraph.Blocks.Single(b => b.Name == blockName);
         }
 
-        private void AssertOutput(string sExp, Dictionary<Block, Expression[]> dict)
+        private void AssertOutput(string sExp, Dictionary<Block, CallBinding[]> dict)
         {
             var sb = new StringBuilder();
             foreach (var de in dict.OrderBy(d => d.Key.Name))
             {
                 sb.AppendFormat(
-                    "{0}: [{1}]", 
+                    "{0}: [{1}]",
                     de.Key,
                     string.Join(",", de.Value.Select(i => i.ToString())));
                 sb.AppendLine();
@@ -120,8 +121,8 @@ namespace Reko.UnitTests.Analysis
             var dict = this.ssa.PredecessorPhiIdentifiers(block);
             var sExp =
             #region Expected
-@"m1: [r0]
-m2: [r0_2]
+@"m1: [r0:r0]
+m2: [r0:r0_2]
 ";
             #endregion
             AssertOutput(sExp, dict);
@@ -159,9 +160,9 @@ m2: [r0_2]
             var dict = this.ssa.PredecessorPhiIdentifiers(block);
             var sExp =
             #region Expected
-@"m2: [r0_4]
-m4: [r0_3]
-m5: [r0_2]
+@"m2: [r0:r0_4]
+m4: [r0:r0_3]
+m5: [r0:r0_2]
 ";
             #endregion
             AssertOutput(sExp, dict);
@@ -198,8 +199,36 @@ m5: [r0_2]
             var dict = this.ssa.PredecessorPhiIdentifiers(block);
             var sExp =
             #region Expected
-@"m2: [r2_5,r1_4]
-m3: [r2_3,r1_2]
+@"m2: [r2:r2_5,r1:r1_4]
+m3: [r2:r2_3,r1:r1_2]
+";
+            #endregion
+            AssertOutput(sExp, dict);
+        }
+
+        [Test(Description = "Get all identifiers for procedure whose exit block only has one predecessor")]
+        public void SsaState_GenerateStrips_SinglePredecessor()
+        {
+            BuildTest(m =>
+            {
+                var r0 = m.Reg32("r0", 0);
+                var r1 = m.Reg32("r1", 1);
+                var r2 = m.Reg32("r2", 2);
+                m.Label("m1");
+                m.Assign(r1, m.LoadDw(m.IAdd(r0, 32)));
+                m.Assign(r2, 314159);
+                m.Label("m2");
+                m.Use(r0);
+                m.Use(r1);
+                m.Use(r2);
+            });
+
+            var block = FindBlock("m2");
+
+            var dict = this.ssa.PredecessorPhiIdentifiers(block);
+            var sExp =
+            #region Expected
+               @"m1: [r0:r0,r1:r1_3,r2:r2_4]
 ";
             #endregion
             AssertOutput(sExp, dict);
