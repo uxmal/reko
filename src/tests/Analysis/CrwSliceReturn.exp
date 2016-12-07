@@ -20,10 +20,10 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	ax_6 = fn0C00_0015(0x0200, ds)
-	Mem8[ds:0x0202:word16] = ax_6
-	ax_10 = fn0C00_0015(0x0300, ds)
-	al_12 = (byte) ax_10 (alias)
-	Mem13[ds:0x0302:byte] = al_12
+	Mem7[ds:0x0202:word16] = ax_6
+	ax_9 = fn0C00_0015(0x0300, ds)
+	al_10 = (byte) ax_9 (alias)
+	Mem11[ds:0x0302:byte] = al_10
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

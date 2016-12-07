@@ -26,8 +26,8 @@ fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
 	fn0C00_000F(di, ds)
-	ax_11 = fn0C00_0014(0x0100)
-	Mem18[ds:0x0300:word16] = ax_11
+	ax_10 = fn0C00_0014(0x0100)
+	Mem16[ds:0x0300:word16] = ax_10
 	// succ:  l0C00_000E_thunk_fn0C00_000F
 l0C00_000E_thunk_fn0C00_000F:
 	fn0C00_000F(di, ds)

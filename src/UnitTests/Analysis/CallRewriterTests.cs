@@ -529,7 +529,59 @@ CrwManyPredecessorsToExitBlock_exit:
                 m.Return();
             });
 
-            var sExp = "void main()";
+            var sExp =
+            #region Expected
+@"void main()
+// MayUse: 
+// LiveOut:
+// Trashed: FPU -1 FPU -2 FPU -3 Top
+// Preserved:
+// main
+// Return size: 0
+// Mem0:Global
+// fp:fp
+// Top:Top
+// rLoc1:FPU -1
+// rLoc2:FPU -2
+// rLoc3:FPU -3
+// return address size: 0
+void main()
+main_entry:
+	// succ:  l1
+l1:
+	rLoc1_15 = FpuMultiplyAdd(5.0, 4.0, 3.0)
+	Mem9[0x00123400:real64] = rLoc1_15
+	return
+	// succ:  main_exit
+main_exit:
+FpuStack real64 FpuMultiplyAdd(FpuStack real64 rArg0, FpuStack real64 rArg1, FpuStack real64 rArg2)
+// MayUse:  FPU +0:[0..63] FPU +1:[0..63] FPU +2:[0..63]
+// LiveOut: FPU +2
+// Trashed: FPU +1 FPU +2 Top
+// Preserved:
+// FpuMultiplyAdd
+// Return size: 0
+// Mem0:Global
+// fp:fp
+// Top:Top
+// rArg1:FPU +1
+// rArg0:FPU +0
+// rArg2:FPU +2
+// return address size: 0
+real64 FpuMultiplyAdd(real64 rArg0, real64 rArg1, real64 rArg2)
+FpuMultiplyAdd_entry:
+	def rArg1
+	def rArg0
+	def rArg2
+	// succ:  l1
+l1:
+	rArg1_9 = rArg1 * rArg0
+	rArg2_11 = rArg2 + rArg1_9
+	return rArg2_11
+	// succ:  FpuMultiplyAdd_exit
+FpuMultiplyAdd_exit:
+";
+            #endregion
             RunStringTest(sExp, pb.BuildProgram());
         }
     }

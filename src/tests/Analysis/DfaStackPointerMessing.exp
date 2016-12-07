@@ -10,7 +10,7 @@ void fn0C00_0000(word16 bx, selector ds)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem11[ds:0x0306:word16] = fn0C00_0008(bx, ds)
+	Mem10[ds:0x0306:word16] = fn0C00_0008(bx, ds)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

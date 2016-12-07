@@ -4,22 +4,18 @@ Top_3: orig: Top
 si_4: orig: si
 ds:ds
     def:  def ds
-    uses: Mem8[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
-          Mem8[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
-          Mem13[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
-          Mem13[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
+    uses: Mem7[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
+          Mem7[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
+          Mem11[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
+          Mem11[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
 ax_6: orig: ax
-Top_7: orig: Top
-    def:  Mem8[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
-Mem8: orig: Mem0
-    def:  Mem8[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
-si_9: orig: si
-ax_10: orig: ax
-Top_11: orig: Top
-    def:  Mem13[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
-al_12: orig: al
-Mem13: orig: Mem0
-    def:  Mem13[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
+Mem7: orig: Mem0
+    def:  Mem7[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
+si_8: orig: si
+ax_9: orig: ax
+al_10: orig: al
+Mem11: orig: Mem0
+    def:  Mem11[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(selector ds)
@@ -27,8 +23,8 @@ fn0C00_0000_entry:
 	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem8[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
-	Mem13[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
+	Mem7[ds:0x0202:word16] = fn0C00_0015(0x0200, ds)
+	Mem11[ds:0x0302:byte] = (byte) fn0C00_0015(0x0300, ds)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:

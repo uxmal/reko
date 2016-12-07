@@ -166,10 +166,7 @@ namespace Reko.Analysis
 			if (proc.Signature != null && proc.Signature.ParametersValid)
 				return;
 
-            var allLiveOut = proc.ExitBlock.Statements
-                .Select(s => s.Instruction)
-                .OfType<UseInstruction>()
-                .Select(u => ((Identifier)u.Expression).Storage);
+            var allLiveOut = flow.LiveOut;
 			var sb = new SignatureBuilder(proc, platform.Architecture);
             var frame = proc.Frame;
             var implicitRegs = platform.CreateImplicitArgumentRegisters();
@@ -214,10 +211,7 @@ namespace Reko.Analysis
             foreach (KeyValuePair<int, Identifier> de in GetSortedFpuStackArguments(proc.Frame, -fpuStackDelta))
 			{
 				int i = de.Key;
-				if (i <= proc.Signature.FpuStackOutArgumentMax)
-				{
-					sb.AddOutParam(frame.EnsureFpuStackVariable(i, de.Value.DataType));
-				}
+				sb.AddOutParam(frame.EnsureFpuStackVariable(i, de.Value.DataType));
 			}
 
             var sig = sb.BuildSignature();

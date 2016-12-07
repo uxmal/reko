@@ -273,6 +273,14 @@ namespace Reko.Core
         {
             this.FpuStackOffset = depth;
             this.DataType = dataType;
+            if (FpuStackOffset >= 0)
+            {
+                Name = string.Format("FPU +{0}", FpuStackOffset);
+            }
+            else
+            {
+                Name = string.Format("FPU -{0}", -FpuStackOffset);
+            }
         }
 
         public override ulong BitSize { get { return (ulong) DataType.BitSize; } }

@@ -192,7 +192,7 @@ namespace Reko.Analysis
                             continue;
                         var sid = ssaCaller.Identifiers[id];
                         if (sid.Uses.Count > 0)
-                            liveOutStorages.Add(id.Storage);
+                            liveOutStorages.Add(def.Storage);
                     }
                 }
             }

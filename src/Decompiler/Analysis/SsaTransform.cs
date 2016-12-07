@@ -382,9 +382,25 @@ namespace Reko.Analysis
                 var ab = arch.CreateFrameApplicationBuilder(ssa.Procedure.Frame, ci.CallSite, ci.Callee);
                 foreach (var use in calleeFlow.BitsUsed.Keys)
                 {
-                    var arg = use.Accept(ab);
-                    arg = arg.Accept(this);
-                    ci.Uses.Add(new CallBinding(use, arg));
+                    var fpuUse = use as FpuStackStorage;
+                    if (fpuUse == null)
+                    {
+                        var arg = use.Accept(ab);
+                        arg = arg.Accept(this);
+                        ci.Uses.Add(new CallBinding(use, arg));
+                    }
+                    else
+                    {
+                        var fpuUseExpr = arch.CreateFpuStackAccess(
+                            ssa.Procedure.Frame,
+                            fpuUse.FpuStackOffset,
+                            PrimitiveType.Word64); //$TODO: datatype?
+                        fpuUseExpr = fpuUseExpr.Accept(this);
+                        ci.Uses.Add(
+                            new CallBinding(
+                                use,
+                                fpuUseExpr));
+                    }
                 }
 
                 foreach (var def in calleeFlow.Trashed.Where(dd => !(dd is FpuStackStorage)))
@@ -421,7 +437,6 @@ namespace Reko.Analysis
                 foreach (var def in calleeFlow.Trashed.OfType<FpuStackStorage>()
                     .Where(def => def.FpuStackOffset >= 0))
                 {
-                    var arg = def.Accept(ab);
                     var fpuDefExpr = arch.CreateFpuStackAccess(
                         ssa.Procedure.Frame, 
                         def.FpuStackOffset,
