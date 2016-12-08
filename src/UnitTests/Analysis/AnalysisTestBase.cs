@@ -168,12 +168,13 @@ namespace Reko.UnitTests.Analysis
         private Program RewriteFile32(string relativePath, string configFile)
         {
             Program program;
-            var asm = new X86TextAssembler(sc, new X86ArchitectureReal());
+            var arch = new X86ArchitectureFlat32();
+            var asm = new X86TextAssembler(sc, arch);
             using (var rdr = new StreamReader(FileUnitTester.MapTestPath(relativePath)))
             {
                 if (this.platform == null)
                 {
-                    this.platform = new Reko.Environments.Windows.Win32Platform(sc, new X86ArchitectureFlat32());
+                    this.platform = new Reko.Environments.Windows.Win32Platform(sc, arch);
                 }
                 asm.Platform = this.platform;
                 program = asm.Assemble(Address.Ptr32(0x10000000), rdr);
@@ -330,10 +331,12 @@ namespace Reko.UnitTests.Analysis
 
         protected void Given_FakeWin32Platform(MockRepository mr)
         {
+            var arch = new X86ArchitectureFlat32();
             var platform = mr.StrictMock<IPlatform>();
             var tHglobal = new TypeReference("HGLOBAL", PrimitiveType.Pointer32);
             var tLpvoid = new TypeReference("LPVOID", PrimitiveType.Pointer32);
             var tBool = new TypeReference("BOOL", PrimitiveType.Int32);
+            platform.Stub(p => p.Architecture).Return(arch);
             platform.Stub(p => p.LookupProcedureByName(
                 Arg<string>.Is.Anything,
                 Arg<string>.Is.Equal("GlobalHandle")))

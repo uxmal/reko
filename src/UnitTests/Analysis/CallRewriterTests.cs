@@ -134,7 +134,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
+ //       [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
         public void CrwAsciiHex()
         {
@@ -172,16 +172,15 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
-        [Category(Categories.AnalysisDevelopment)]
+        //[Ignore(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void CrwLeakyLiveness()
         {
             RunFileTest_x86_real("Fragments/multiple/leaky_liveness.asm", "Analysis/CrwLeakyLiveness.txt");
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void CrwManyStackArgs()
         {
             RunFileTest_x86_real("Fragments/multiple/many_stack_args.asm", "Analysis/CrwManyStackArgs.txt");
@@ -203,16 +202,14 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void CrwFpuArgs()
         {
             RunFileTest_x86_real("Fragments/multiple/fpuArgs.asm", "Analysis/CrwFpuArgs.txt");
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void CrwFpuOps()
         {
             RunFileTest_x86_real("Fragments/fpuops.asm", "Analysis/CrwFpuOps.txt");
@@ -669,8 +666,7 @@ fnOutParam_exit:
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void CrwParameters()
         {
             RunFileTest_x86_real("Fragments/multiple/outparameters.asm", "Analysis/CrwParameters.txt");

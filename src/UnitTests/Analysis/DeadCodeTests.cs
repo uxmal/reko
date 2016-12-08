@@ -102,8 +102,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void DeadPushPop()
 		{
 			RunFileTest_x86_real("Fragments/pushpop.asm", "Analysis/DeadPushPop.txt");

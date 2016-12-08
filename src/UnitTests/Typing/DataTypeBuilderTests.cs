@@ -406,8 +406,7 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void DtbReg00011()
         {
             RunTest16("Fragments/regressions/r00011.asm", "Typing/DtbReg00011.txt");

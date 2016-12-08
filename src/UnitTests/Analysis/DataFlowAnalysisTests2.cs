@@ -106,15 +106,6 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
-        [Category(Categories.AnalysisDevelopment)]
-        [Category(Categories.UnitTests)]
-        public void DfaReg00282()
-        {
-            AnalysisTestBase.RunTest_x86_real("Fragments/regressions/r00282.asm", RunTest, "Analysis/DfaReg00282.txt");
-        }
-
-        [Test]
         [Category(Categories.UnitTests)]
         public void Dfa2_Simple()
         {

@@ -1,6 +1,6 @@
 // void fn0C00_0000(Register word16 ax, Register word16 dx, Register word16 bx)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse:  ax bx dx ss
+// MayUse:  ax:[0..15] bx:[0..15] dx:[0..15] ss:[0..15]
 // LiveOut:
 // Trashed:
 // Preserved:
@@ -11,34 +11,34 @@ void fn0C00_0000(word16 ax, word16 dx, word16 bx)
 fn0C00_0000_entry:
 	// succ:  l0C00_0000
 l0C00_0000:
-	Mem4[ss:0x06B6:word16] = bx
-	Mem8[ss:0x06B4:word16] = ax
-	Mem11[ss:0x06B2:word16] = dx
-	word16 ax_18
-	msdos_open_file(0800:0887, 0x01, out ax_18)
-	selector ds_21 = Mem11[ss:0x06B2:selector]
-	word16 dx_23 = Mem11[ss:0x06B4:word16]
-	word32 ds_dx_24 = SEQ(ds_21, dx_23)
-	word16 si_26 = dx_23
+	Mem8[ss:0x06B6:word16] = bx
+	Mem11[ss:0x06B4:word16] = ax
+	Mem14[ss:0x06B2:word16] = dx
+	word16 ax_21
+	msdos_open_file(0800:0887, 0x01, out ax_21)
+	word16 dx_26 = Mem14[ss:0x06B4:word16]
+	selector ds_24 = Mem14[ss:0x06B2:selector]
+	word16 si_28 = dx_26
 	// succ:  l0C00_0019
 l0C00_0019:
-	si_26 = si_52 + 0x0001
-	si_52 = si_26
-	branch Mem11[ds_21:si_52:byte] != 0x00 l0C00_0019
+	si_28 = si_59 + 0x0001
+	word32 ds_dx_44 = SEQ(ds_24, dx_26)
+	si_59 = si_28
+	branch Mem14[ds_24:si_59:byte] != 0x00 l0C00_0019
 	// succ:  l0C00_001E l0C00_0019
 l0C00_001E:
-	word16 ax_40
-	msdos_write_file(0x3D01, si_26 - dx_23 - 0x0001, ds_dx_24, out ax_40)
-	Mem45[ss:0x06B6:word16] = Mem11[ss:0x06B6:word16]
-	fn0C00_0037(0x0000, 0x00FF, ds_21)
-	msdos_terminate((byte) Mem45[ss:0x06B6:word16])
+	word16 ax_45
+	msdos_write_file(ax_21, si_28 - dx_26 - 0x0001, ds_dx_44, out ax_45)
+	Mem52[ss:0x06B6:word16] = Mem14[ss:0x06B6:word16]
+	fn0C00_0037(0x0000, 0x00FF, ds_24)
+	msdos_terminate((byte) Mem52[ss:0x06B6:word16])
 fn0C00_0000_exit:
 
 // void fn0C00_0037(Register word16 ax, Register word16 dx, Register selector ds)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse:  ax ds dx
+// MayUse:  ax:[0..15] ds:[0..15] dx:[0..15]
 // LiveOut:
-// Trashed:
+// Trashed: Top
 // Preserved: sp
 // fn0C00_0037
 // Return size: 0
@@ -46,8 +46,8 @@ void fn0C00_0037(word16 ax, word16 dx, selector ds)
 fn0C00_0037_entry:
 	// succ:  l0C00_0037
 l0C00_0037:
-	Mem4[ds:0x0300:word16] = ax
-	Mem7[ds:0x0302:word16] = dx
+	Mem6[ds:0x0300:word16] = ax
+	Mem8[ds:0x0302:word16] = dx
 	return
 	// succ:  fn0C00_0037_exit
 fn0C00_0037_exit:

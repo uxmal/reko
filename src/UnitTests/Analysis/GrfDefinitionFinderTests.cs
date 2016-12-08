@@ -33,48 +33,42 @@ namespace Reko.UnitTests.Analysis
 	[TestFixture]
 	public class GrfDefinitionFinderTests : AnalysisTestBase
 	{
-		protected override void RunTest(Program program, TextWriter writer)
-		{
+        protected override void RunTest(Program program, TextWriter writer)
+        {
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
             importResolver.Replay();
-            var dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
-			var ssts = dfa.UntangleProcedures();
-			foreach (var sst in ssts)
-			{
-				var ssa = sst.SsaState;
-				var grfd = new GrfDefinitionFinder(ssa.Identifiers);
-				foreach (SsaIdentifier sid in ssa.Identifiers)
-				{
-                    var id = sid.OriginalIdentifier;
-					if (id == null || !(id.Storage is FlagGroupStorage) || sid.Uses.Count == 0)
-						continue;
-					writer.Write("{0}: ", sid.DefStatement.Instruction);
-					grfd.FindDefiningExpression(sid);
-					string fmt = grfd.IsNegated ? "!{0};" : "{0}";
-					writer.WriteLine(fmt, grfd.DefiningExpression);
-				}
-			}
-		}
+            var flow = new ProgramDataFlow(program);
+            var sst = new SsaTransform(program, program.Procedures.Values[0], new HashSet<Procedure>(), importResolver, flow);
+            var ssa = sst.Transform();
+            var grfd = new GrfDefinitionFinder(ssa.Identifiers);
+            foreach (SsaIdentifier sid in ssa.Identifiers)
+            {
+                var id = sid.OriginalIdentifier;
+                if (id == null || !(id.Storage is FlagGroupStorage) || sid.Uses.Count == 0)
+                    continue;
+                writer.Write("{0}: ", sid.DefStatement.Instruction);
+                grfd.FindDefiningExpression(sid);
+                string fmt = grfd.IsNegated ? "!{0};" : "{0}";
+                writer.WriteLine(fmt, grfd.DefiningExpression);
+            }
+        }
 
 		[Test]
-        [Ignore(Categories.AnalysisDevelopment)]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void GrfdAdcMock()
 		{
 			RunFileTest(new AdcMock(), "Analysis/GrfdAdcMock.txt");
 		}
 
 		[Test]
-        [Ignore(Categories.AnalysisDevelopment)]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void GrfdAddSubCarries()
 		{
 			RunFileTest_x86_real("Fragments/addsubcarries.asm", "Analysis/GrfdAddSubCarries.txt");
 		}
 
 		[Test]
-        [Ignore(Categories.AnalysisDevelopment)]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void GrfdCmpMock()
 		{
 			RunFileTest(new CmpMock(), "Analysis/GrfdCmpMock.txt");

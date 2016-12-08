@@ -1,5 +1,9 @@
-SCZO_10 = cond(ax_9): cond(ax_9)
-SCZO_21 = cond(ax_20): cond(ax_20)
-SCZO_28 = cond(cl_26 - 0x30): cond(cl_26 - 0x30)
-SCZO_32 = cond(cl_31 - 0x3A): cond(cl_31 - 0x3A)
-C_33 = !SCZO_32: !cond(cl_31 - 0x3A);
+SCZO_11 = cond(ax_10): cond(ax_10)
+C_12 = SLICE(SCZO_11, bool, 1) (alias): cond(ax_10)
+SCZO_24 = cond(ax_23): cond(ax_23)
+C_26 = SLICE(SCZO_24, bool, 1) (alias): cond(ax_23)
+SCZO_34 = cond(cl_33 - 0x30): cond(cl_33 - 0x30)
+C_35 = SLICE(SCZO_34, bool, 1) (alias): cond(cl_33 - 0x30)
+SCZO_39 = cond(cl_38 - 0x3A): cond(cl_38 - 0x3A)
+C_40 = SLICE(SCZO_39, bool, 1) (alias): cond(cl_38 - 0x3A)
+C_41 = !C_40: !cond(cl_38 - 0x3A);

@@ -274,8 +274,7 @@ namespace Reko.UnitTests.Structure
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.UnitTests)]
         public void StrFragmentTest()
         {
             RewriteX86RealFragment(@"
@@ -294,7 +293,7 @@ ret
             RunTest(@"void fn00400000(word32 dwArg04)
 {
 	if (dwArg04 != 0x00000000)
-		Mem12[0x00123234:word32] = 0x00006423;
+		Mem9[0x00123234:word32] = 0x00006423;
 	return;
 }
 ===

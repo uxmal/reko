@@ -652,9 +652,10 @@ namespace Reko.Analysis
                     var id = outArg.Expression as Identifier;
                     if (id != null)
                     {
-                        appl.Arguments[i] = new OutArgument(
-                            outArg.DataType,
-                            NewDef(id, appl, true));
+                        var idOut = NewDef(id, appl, true);
+                        outArg = new OutArgument(outArg.DataType, idOut);
+                        appl.Arguments[i] = outArg;
+                        ssa.Identifiers[idOut].DefExpression = outArg;
                         continue;
                     }
                 }
@@ -1695,26 +1696,23 @@ namespace Reko.Analysis
                     {
                         return ssaIds[id];
                     }
-
-                    // Unrelated assignments; insert alias right before
-                    // use.
-                    var seq = new MkSequence(this.id.DataType, head.Identifier, tail.Identifier);
-                    var ass = new AliasAssignment(this.id, seq);
-                    var iStm = this.stm.Block.Statements.IndexOf(this.stm);
-                    var stm = head.DefStatement.Block.Statements.Insert(iStm, this.stm.LinearAddress, ass);
-                    var sidTo = ssaIds.Add(ass.Dst, stm, ass.Src, false);
-                    ass.Dst = sidTo.Identifier;
-                    head.Uses.Add(stm);
-                    tail.Uses.Add(stm);
-                    return sidTo;
-
-
                 }
 
-                throw new NotImplementedException(string.Format(
-                    "Can't fuse {0} and {1}.",
-                    head,
-                    tail));
+                // Unrelated assignments; insert alias right before use.
+                return FuseIntoMkSequence(head, tail);
+            }
+
+            private SsaIdentifier FuseIntoMkSequence(SsaIdentifier head, SsaIdentifier tail)
+            {
+                var seq = new MkSequence(this.id.DataType, head.Identifier, tail.Identifier);
+                var ass = new AliasAssignment(this.id, seq);
+                var iStm = this.stm.Block.Statements.IndexOf(this.stm);
+                var stm = head.DefStatement.Block.Statements.Insert(iStm, this.stm.LinearAddress, ass);
+                var sidTo = ssaIds.Add(ass.Dst, stm, ass.Src, false);
+                ass.Dst = sidTo.Identifier;
+                head.Uses.Add(stm);
+                tail.Uses.Add(stm);
+                return sidTo;
             }
 
             public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)

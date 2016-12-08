@@ -148,8 +148,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        [Ignore(Categories.AnalysisDevelopment)]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void DfaGlobalHandle()
 		{
             Given_FakeWin32Platform(mr);
@@ -160,6 +159,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void DfaMoveChain()
 		{
 			RunFileTest_x86_real("Fragments/move_sequence.asm", "Analysis/DfaMoveChain.txt");
@@ -181,8 +181,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
-        //[Ignore(Categories.AnalysisDevelopment)]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void DfaReadFile()
 		{
 			RunFileTest_x86_real("Fragments/multiple/read_file.asm", "Analysis/DfaReadFile.txt");
@@ -239,8 +238,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void DfaReg00009()
 		{
 			RunFileTest_x86_real("Fragments/regressions/r00009.asm", "Analysis/DfaReg00009.txt");
@@ -248,7 +246,7 @@ namespace Reko.UnitTests.Analysis
 
 		[Test]
         [Ignore(Categories.AnalysisDevelopment)]
-        [Category(Categories.AnalysisDevelopment)]
+ //       [Category(Categories.AnalysisDevelopment)]
         public void DfaReg00010()
 		{
 			RunFileTest_x86_real("Fragments/regressions/r00010.asm", "Analysis/DfaReg00010.txt");
@@ -263,8 +261,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void DfaReg00015()
         {
             RunFileTest_x86_real("Fragments/regressions/r00015.asm", "Analysis/DfaReg00015.txt");
@@ -292,8 +289,7 @@ done:
         }
 
         [Test]
-        [Ignore(Categories.AnalysisDevelopment)]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void DfaReg00001()
         {
             var program = RewriteCodeFragment32(UnitTests.Fragments.Regressions.Reg00001.Text);
@@ -303,7 +299,6 @@ done:
         [Test]
         [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
-        [Category(Categories.UnitTests)]
         public void DfaReg00282()
         {
             RunFileTest_x86_real("Fragments/regressions/r00282.asm", "Analysis/DfaReg00282.txt");
@@ -312,7 +307,6 @@ done:
         [Test]
         [Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.AnalysisDevelopment)]
-        [Category(Categories.UnitTests)]
         public void DfaReg00316()
         {
             Given_CSignature("long r316(long a)");

@@ -1,27 +1,130 @@
 fp:fp
 sp_2: orig: sp
-cx_3: orig: cx
-    def:  cx_3 = 0x0014
-    uses: ax_6 = fn0C00_0008(cx_3, di, ds)
-          fn0C00_0008(cx_3, di, ds)
+Top_3: orig: Top
+sp_4: orig: sp
+si:si
+ss:ss
+Mem7: orig: Mem0
+sp_8: orig: sp
 di:di
     def:  def di
-    uses: ax_6 = fn0C00_0008(cx_3, di, ds)
-          fn0C00_0008(cx_3, di, ds)
+    uses: di_25 = PHI(di, di_28)
+Mem10: orig: Mem0
+    uses: si_26 = si_15 + Mem10[ds:di_25:word16]
+si_11: orig: si
+    def:  si_11 = 0x0000
+    uses: si_15 = PHI(si_11, si_26)
+cx_12: orig: cx
+    def:  cx_12 = PHI(cx, cx_12)
+SCZO_13: orig: SCZO
+Z_14: orig: Z
+si_15: orig: si
+    def:  si_15 = PHI(si_11, si_26)
+    uses: ax_16 = si_15
+          si_26 = si_15 + Mem10[ds:di_25:word16]
+ax_16: orig: ax
+    def:  ax_16 = si_15
+    uses: return ax_16
+ss_17: orig: ss
+    def:  ss_17 = PHI(ss, ss_17)
+sp_18: orig: sp
+    def:  sp_18 = PHI(sp_8, sp_18)
+Mem19: orig: Mem0
+    def:  Mem19 = PHI(Mem10, Mem19)
+di_20: orig: di
+sp_21: orig: sp
+si_22: orig: si
+sp_23: orig: sp
+ds_24: orig: ds
+    def:  ds_24 = PHI(ds, ds_24)
+di_25: orig: di
+    def:  di_25 = PHI(di, di_28)
+    uses: si_26 = si_15 + Mem10[ds:di_25:word16]
+          di_28 = di_25 + 0x0002
+si_26: orig: si
+    def:  si_26 = si_15 + Mem10[ds:di_25:word16]
+    uses: si_15 = PHI(si_11, si_26)
+SCZO_27: orig: SCZO
+di_28: orig: di
+    def:  di_28 = di_25 + 0x0002
+    uses: di_25 = PHI(di, di_28)
+SCZO_29: orig: SCZO
+cx:cx
+    def:  def cx
+    uses: branch cx == 0x0000 l0C00_001A
 ds:ds
     def:  def ds
-    uses: ax_6 = fn0C00_0008(cx_3, di, ds)
-          Mem8[ds:si:word16] = ax_6
-          fn0C00_0008(cx_3, di, ds)
-ax_6: orig: ax
-    def:  ax_6 = fn0C00_0008(cx_3, di, ds)
-    uses: Mem8[ds:si:word16] = ax_6
+    uses: si_26 = si_15 + Mem10[ds:di_25:word16]
+wLoc02_32: orig: wLoc02
+wLoc04_33: orig: wLoc04
+C_36: orig: C
+O_37: orig: O
+S_38: orig: S
+// fn0C00_0008
+// Return size: 0
+word16 fn0C00_0008(word16 cx, word16 di, selector ds)
+fn0C00_0008_entry:
+	def di
+	def cx
+	def ds
+	// succ:  l0C00_0008
+l0C00_0008:
+	si_11 = 0x0000
+	// succ:  l0C00_000D
+l0C00_000D:
+	di_25 = PHI(di, di_28)
+	si_15 = PHI(si_11, si_26)
+	branch cx == 0x0000 l0C00_001A
+	// succ:  l0C00_0012 l0C00_001A
+l0C00_0012:
+	si_26 = si_15 + Mem10[ds:di_25:word16]
+	di_28 = di_25 + 0x0002
+	goto l0C00_000D
+	// succ:  l0C00_000D
+l0C00_001A:
+	ax_16 = si_15
+	return ax_16
+	// succ:  fn0C00_0008_exit
+fn0C00_0008_exit:
+fp:fp
+sp_2: orig: sp
+Top_3: orig: Top
+cx_4: orig: cx
+di:di
+    def:  def di
+    uses: ax_7 = fn0C00_0008(0x0014, di, ds)
+          fn0C00_0008(0x0014, di, ds)
+ds:ds
+    def:  def ds
+    uses: ax_7 = fn0C00_0008(0x0014, di, ds)
+          Mem13[ds:si:word16] = ax_7
+          fn0C00_0008(0x0014, di, ds)
+ax_7: orig: ax
+    def:  ax_7 = fn0C00_0008(0x0014, di, ds)
+    uses: Mem13[ds:si:word16] = ax_7
+C_8: orig: C
+    def:  ax_7 = fn0C00_0008(0x0014, di, ds)
+O_9: orig: O
+    def:  ax_7 = fn0C00_0008(0x0014, di, ds)
+S_10: orig: S
+    def:  ax_7 = fn0C00_0008(0x0014, di, ds)
+Z_11: orig: Z
+    def:  ax_7 = fn0C00_0008(0x0014, di, ds)
 si:si
     def:  def si
-    uses: Mem8[ds:si:word16] = ax_6
-Mem8: orig: Mem0
-    def:  Mem8[ds:si:word16] = ax_6
-ax_9: orig: ax
+    uses: Mem13[ds:si:word16] = ax_7
+Mem13: orig: Mem0
+    def:  Mem13[ds:si:word16] = ax_7
+ax_14: orig: ax
+    def:  fn0C00_0008(0x0014, di, ds)
+C_15: orig: C
+    def:  fn0C00_0008(0x0014, di, ds)
+O_16: orig: O
+    def:  fn0C00_0008(0x0014, di, ds)
+S_17: orig: S
+    def:  fn0C00_0008(0x0014, di, ds)
+Z_18: orig: Z
+    def:  fn0C00_0008(0x0014, di, ds)
 // fn0C00_0000
 // Return size: 0
 void fn0C00_0000(word16 si, word16 di, selector ds)
@@ -31,96 +134,11 @@ fn0C00_0000_entry:
 	def si
 	// succ:  l0C00_0000
 l0C00_0000:
-	cx_3 = 0x0014
-	ax_6 = fn0C00_0008(cx_3, di, ds)
-	Mem8[ds:si:word16] = ax_6
+	ax_7 = fn0C00_0008(0x0014, di, ds)
+	Mem13[ds:si:word16] = ax_7
 	// succ:  l0C00_0006_thunk_fn0C00_0008
 l0C00_0006_thunk_fn0C00_0008:
-	fn0C00_0008(cx_3, di, ds)
+	fn0C00_0008(0x0014, di, ds)
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
-fp:fp
-sp_2: orig: sp
-sp_3: orig: sp
-si:si
-wLoc02_5: orig: wLoc02
-sp_6: orig: sp
-di:di
-    def:  def di
-    uses: di_22 = PHI(di, di_25)
-wLoc04_8: orig: wLoc04
-si_9: orig: si
-    def:  si_9 = 0x0000
-    uses: si_12 = PHI(si_9, si_24)
-cx_10: orig: cx
-    def:  cx_10 = PHI(cx, cx_10)
-SCZO_11: orig: SCZO
-si_12: orig: si
-    def:  si_12 = PHI(si_9, si_24)
-    uses: ax_13 = si_12
-          si_24 = si_12 + Mem0[ds:di_22:word16]
-ax_13: orig: ax
-    def:  ax_13 = si_12
-    uses: return ax_13
-wLoc04_14: orig: wLoc04
-    def:  wLoc04_14 = PHI(wLoc04_8, wLoc04_14)
-di_15: orig: di
-fp_16: orig: fp
-    def:  fp_16 = PHI(fp, fp_16)
-sp_17: orig: sp
-wLoc02_18: orig: wLoc02
-    def:  wLoc02_18 = PHI(wLoc02_5, wLoc02_18)
-si_19: orig: si
-sp_20: orig: sp
-ds_21: orig: ds
-    def:  ds_21 = PHI(ds, ds_21)
-di_22: orig: di
-    def:  di_22 = PHI(di, di_25)
-    uses: si_24 = si_12 + Mem0[ds:di_22:word16]
-          di_25 = di_22 + 0x0002
-Mem23: orig: Mem0
-    def:  Mem23 = PHI(Mem0, Mem23)
-si_24: orig: si
-    def:  si_24 = si_12 + Mem0[ds:di_22:word16]
-    uses: si_12 = PHI(si_9, si_24)
-di_25: orig: di
-    def:  di_25 = di_22 + 0x0002
-    uses: di_22 = PHI(di, di_25)
-SCZO_26: orig: SCZO
-cx:cx
-    def:  def cx
-    uses: branch cx == 0x0000 l0C00_001A
-ds:ds
-    def:  def ds
-    uses: si_24 = si_12 + Mem0[ds:di_22:word16]
-Mem0:Global
-    def:  def Mem0
-    uses: si_24 = si_12 + Mem0[ds:di_22:word16]
-// fn0C00_0008
-// Return size: 0
-word16 fn0C00_0008(word16 cx, word16 di, selector ds)
-fn0C00_0008_entry:
-	def di
-	def cx
-	def ds
-	def Mem0
-	// succ:  l0C00_0008
-l0C00_0008:
-	si_9 = 0x0000
-	// succ:  l0C00_000D
-l0C00_000D:
-	di_22 = PHI(di, di_25)
-	si_12 = PHI(si_9, si_24)
-	branch cx == 0x0000 l0C00_001A
-	// succ:  l0C00_0012 l0C00_001A
-l0C00_0012:
-	si_24 = si_12 + Mem0[ds:di_22:word16]
-	di_25 = di_22 + 0x0002
-	goto l0C00_000D
-	// succ:  l0C00_000D
-l0C00_001A:
-	ax_13 = si_12
-	return ax_13
-	// succ:  fn0C00_0008_exit
-fn0C00_0008_exit:

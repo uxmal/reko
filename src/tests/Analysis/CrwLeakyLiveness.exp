@@ -1,40 +1,45 @@
 void fn0C00_0000(Register selector ds)
-// MayUse:  ds
+// MayUse:  ds:[0..15]
 // LiveOut:
-// Trashed: SCZO ah al ax eax esi rax rsi si sil
+// Trashed: ax C O S si Top Z
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
 // Mem0:Global
 // fp:fp
 // sp:sp
-// C:Flags
+// C:C
 // ds:ds
 // ax:ax
 // v6:v6
-// SCZO:Flags
+// SCZO:SCZO
+// Top:Top
+// O:O
+// S:S
+// si:si
+// Z:Z
 // return address size: 2
 void fn0C00_0000(selector ds)
 fn0C00_0000_entry:
+	def ds
+	def Mem0
 	// succ:  l0C00_0000
 l0C00_0000:
-	sp = fp
-	C = fn0C00_000A(ds, out ax)
-	branch Test(ULT,C) l0C00_0009
+	C_6 = fn0C00_000A(ds, out ax_5)
+	branch C_6 l0C00_0009
 	// succ:  l0C00_0005 l0C00_0009
 l0C00_0005:
-	v6 = Mem0[ds:0x0300:word16] + ax
-	Mem0[ds:0x0300:word16] = v6
-	SCZO = cond(v6)
+	v6_12 = Mem0[ds:0x0300:word16] + ax_5
+	Mem13[ds:0x0300:word16] = v6_12
 	// succ:  l0C00_0009
 l0C00_0009:
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 FlagGroup byte fn0C00_000A(Register selector ds, Register out ptr16 axOut)
-// MayUse:  ds
-// LiveOut: C ax
-// Trashed: SCZO ah al ax eax esi rax rsi si sil
+// MayUse:  ds:[0..15]
+// LiveOut: ax C
+// Trashed: ax C O S si Top Z
 // Preserved: sp
 // fn0C00_000A
 // Return size: 0
@@ -43,34 +48,36 @@ FlagGroup byte fn0C00_000A(Register selector ds, Register out ptr16 axOut)
 // sp:sp
 // si:si
 // ds:ds
-// SCZO:Flags
-// Z:Flags
+// SCZO:SCZO
+// Z:Z
 // ax:ax
-// SZO:Flags
-// C:Flags
+// SZO:SZO
+// C:C
+// Top:Top
+// S:S
+// O:O
 // axOut:Out:ax
 // return address size: 2
 byte fn0C00_000A(selector ds, ptr16 & axOut)
 fn0C00_000A_entry:
+	def ds
+	def Mem0
+	def ax
 	// succ:  l0C00_000A
 l0C00_000A:
-	sp = fp
-	si = Mem0[ds:0x0100:word16]
-	SCZO = cond(si - Mem0[ds:0x0102:word16])
-	branch Test(EQ,Z) l0C00_001E
+	si_6 = Mem0[ds:0x0100:word16]
+	branch si_6 == Mem0[ds:0x0102:word16] l0C00_001E
 	// succ:  l0C00_0014 l0C00_001E
 l0C00_0014:
-	ax = Mem0[ds:si:word16]
-	si = si + 0x0001
-	si = si + 0x0001
-	SZO = cond(si)
-	Mem0[ds:0x0100:word16] = si
-	C = false
-	return C
+	ax_10 = Mem0[ds:si_6:word16]
+	Mem15[ds:0x0100:word16] = si_6 + 0x0002
+	C_16 = false
+	axOut = ax_10
+	return C_16
 	// succ:  fn0C00_000A_exit
 l0C00_001E:
-	C = true
-	return C
+	C_9 = true
+	axOut = ax
+	return C_9
 	// succ:  fn0C00_000A_exit
 fn0C00_000A_exit:
-	use ax (=> axOut)

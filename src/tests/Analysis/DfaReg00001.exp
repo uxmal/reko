@@ -1,58 +1,57 @@
-// void fn00400000()
+// void fn00400000(Stack word32 dwArg00, Stack word32 dwArg04)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse: 
+// MayUse:  Stack +0000:[0..31] Stack +0004:[0..31]
 // LiveOut:
-// Trashed: SCZO eax ecx edx ax cx dx al cl dl ah ch dh
-// Preserved: esp
+// Trashed: C eax ebp ebx ecx edi edx esi esp O S Z
+// Preserved:
 // fn00400000
 // Return size: 0
-void fn00400000()
+void fn00400000(word32 dwArg00, word32 dwArg04)
 fn00400000_entry:
 	// succ:  l00400000
 l00400000:
-	Mem5[0x02000000:word32] = fn0040000C(dwArg00, dwArg04)
+	Mem16[0x02000000:word32] = fn0040000C(dwArg00, dwArg04)
 	return
 	// succ:  fn00400000_exit
 fn00400000_exit:
 
 // Register word32 fn0040000C(Stack word32 dwArg04, Stack word32 dwArg08)
 // stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
-// MayUse: 
+// MayUse:  Stack +0004:[0..31] Stack +0008:[0..31]
 // LiveOut: eax
-// Trashed: SCZO eax ecx edx ax cx dx al cl dl ah ch dh
-// Preserved: ebx esp ebp esi edi
-// Stack args: Stack +0004(32) Stack +0008(32)
+// Trashed: C eax ebp ebx ecx edi edx esi esp O S Z
+// Preserved:
 // fn0040000C
 // Return size: 0
 word32 fn0040000C(word32 dwArg04, word32 dwArg08)
 fn0040000C_entry:
 	// succ:  l0040000C
 l0040000C:
-	word32 ecx_12 = Mem0[dwArg04 + 0x0000003C:word32] + dwArg04
-	word32 esi_20 = (word32) Mem0[ecx_12 + 0x00000006:word16]
-	word32 edx_21 = 0x00000000
-	word32 eax_24 = (word32) Mem0[ecx_12 + 0x00000014:word16] + 0x00000012 + ecx_12 + 0x0000000C
-	branch esi_20 < @@@@ l0040004B
+	word32 ecx_11 = Mem7[dwArg04 + 0x0000003C:word32] + dwArg04
+	word32 esi_20 = (word32) Mem19[ecx_11 + 0x00000006:word16]
+	word32 edx_22 = 0x00000000
+	word32 eax_27 = (word32) Mem7[ecx_11 + 0x00000014:word16] + 0x00000012 + ecx_11 + 0x0000000C
+	branch cond(esi_20) l0040004B
 	// succ:  l0040002E l0040004B
 l0040002E:
 	// succ:  l00400031
 l00400031:
-	word32 ecx_56 = Mem0[eax_24 + 0x00000000:word32]
-	branch dwArg08 <u ecx_56 l00400041
+	word32 ecx_34 = Mem26[eax_27 + 0x00000000:word32]
+	branch dwArg08 <u ecx_34 l00400041
 	// succ:  l00400038 l00400041
 l00400038:
-	branch dwArg08 <u Mem0[eax_24 + 0x00000008:word32] + ecx_56 l0040004D
+	branch dwArg08 <u Mem26[eax_27 + 0x00000008:word32] + ecx_34 l0040004D
 	// succ:  l00400041 l0040004D
 l00400041:
-	edx_21 = edx_21 + 0x00000001
-	eax_24 = eax_24 + 0x00000028
-	branch edx_21 <u esi_20 l00400031
+	edx_22 = edx_22 + 0x00000001
+	eax_27 = eax_27 + 0x00000028
+	branch edx_22 <u esi_20 l00400031
 	// succ:  l0040004B l00400031
 l0040004B:
-	eax_24 = 0x00000000
+	eax_27 = 0x00000000
 	// succ:  l0040004D
 l0040004D:
-	return eax_24
+	return eax_27
 	// succ:  fn0040000C_exit
 fn0040000C_exit:
 

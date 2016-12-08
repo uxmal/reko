@@ -1,35 +1,41 @@
 void fn0C00_0000(Register byte al, Register selector ds)
-// MayUse:  al ds
+// MayUse:  al:[0..7] ds:[0..15]
 // LiveOut:
-// Trashed: SCZO al ax eax rax
+// Trashed: al C O S Top Z
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
 // Mem0:Global
 // fp:fp
 // sp:sp
-// C:Flags
+// C:C
 // ds:ds
 // al:al
+// Top:Top
+// O:O
+// S:S
+// Z:Z
 // return address size: 2
 void fn0C00_0000(byte al, selector ds)
 fn0C00_0000_entry:
+	def al
+	def ds
 	// succ:  l0C00_0000
 l0C00_0000:
-	C_5 = fn0C00_000A(al, out al_4)
-	branch C_5 l0C00_0009
+	C_6 = fn0C00_000A(al, out al_5)
+	branch C_6 l0C00_0009
 	// succ:  l0C00_0005 l0C00_0009
 l0C00_0005:
-	Mem10[ds:0x0300:byte] = al_4
+	Mem11[ds:0x0300:byte] = al_5
 	// succ:  l0C00_0009
 l0C00_0009:
 	return
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 FlagGroup byte fn0C00_000A(Register byte al, Register out ptr16 alOut)
-// MayUse:  al:8
+// MayUse:  al:[0..7]
 // LiveOut: al C
-// Trashed: al C O S Z
+// Trashed: al C O S Top Z
 // Preserved: sp
 // fn0C00_000A
 // Return size: 0
@@ -37,12 +43,13 @@ FlagGroup byte fn0C00_000A(Register byte al, Register out ptr16 alOut)
 // fp:fp
 // sp:sp
 // al:al
-// SCZO:Flags
-// C:Flags
-// CZ:Flags
-// Z:Flags
-// S:Flags
-// O:Flags
+// SCZO:SCZO
+// C:C
+// CZ:CZ
+// Top:Top
+// S:S
+// Z:Z
+// O:O
 // alOut:Out:al
 // return address size: 2
 byte fn0C00_000A(byte al, ptr16 & alOut)
@@ -53,12 +60,10 @@ l0C00_000A:
 	branch al <u 0x30 l0C00_0032
 	// succ:  l0C00_000E l0C00_0032
 l0C00_000E:
-	SCZO = cond(al - 0x39)
-	branch Test(ULE,CZ) l0C00_0022
+	branch al <=u 0x39 l0C00_0022
 	// succ:  l0C00_0012 l0C00_0022
 l0C00_0012:
-	SCZO = cond(al - 0x41)
-	branch Test(ULT,C) l0C00_0032
+	branch al <u 0x41 l0C00_0032
 	// succ:  l0C00_0016 l0C00_0032
 l0C00_0016:
 	branch al <=u 0x46 l0C00_0022
@@ -70,24 +75,25 @@ l0C00_001E:
 	branch al >u 0x66 l0C00_0032
 	// succ:  l0C00_0022 l0C00_0032
 l0C00_0022:
-	al_12 = al - 0x30
+	al_19 = al - 0x30
 	branch al <u 0x3A l0C00_0030
 	// succ:  l0C00_0028 l0C00_0030
 l0C00_0028:
-	al_15 = al - 0x37
+	al_23 = al - 0x37
 	branch al <u 0x47 l0C00_0030
 	// succ:  l0C00_002E l0C00_0030
 l0C00_002E:
-	al = al - 0x20
-	SCZO = cond(al)
+	al_27 = al - 0x57
 	// succ:  l0C00_0030
 l0C00_0030:
-	C_20 = false
-	return C_20
+	al_32 = PHI(al_19, al_23, al_27)
+	C_29 = false
+	alOut = al_32
+	return C_29
 	// succ:  fn0C00_000A_exit
 l0C00_0032:
-	C_10 = true
-	return C_10
+	C_17 = true
+	alOut = al
+	return C_17
 	// succ:  fn0C00_000A_exit
 fn0C00_000A_exit:
-	use al (=> alOut)
