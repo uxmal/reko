@@ -161,7 +161,6 @@ esi:esi
     def:  def esi
     uses: dwLoc04_31 = esi
 Mem5: orig: Mem0
-    uses: esi_6 = dwArg04
 esi_6: orig: esi
     def:  esi_6 = dwArg04
     uses: dwLoc0C_34 = esi_6
@@ -177,7 +176,6 @@ edi_10: orig: edi
 esp_11: orig: esp
     def:  esp_11 = fp - 0x0000000C
 Mem12: orig: Mem0
-    uses: eax_13 = GlobalHandle(dwLoc0C_34)
 eax_13: orig: eax
     def:  eax_13 = GlobalHandle(dwLoc0C_34)
     uses: dwLoc0C_35 = eax_13
@@ -186,7 +184,6 @@ esp_14: orig: esp
 esp_15: orig: esp
     def:  esp_15 = fp - 0x0000000C
 Mem16: orig: Mem0
-    uses: eax_17 = GlobalUnlock(dwLoc0C_35)
 eax_17: orig: eax
     def:  eax_17 = GlobalUnlock(dwLoc0C_35)
 esp_18: orig: esp
@@ -194,7 +191,6 @@ esp_18: orig: esp
 esp_19: orig: esp
     def:  esp_19 = fp - 0x0000000C
 Mem20: orig: Mem0
-    uses: eax_21 = GlobalHandle(dwLoc0C_36)
 eax_21: orig: eax
     def:  eax_21 = GlobalHandle(dwLoc0C_36)
     uses: dwLoc0C_37 = eax_21
@@ -203,9 +199,6 @@ esp_22: orig: esp
 esp_23: orig: esp
     def:  esp_23 = fp - 0x0000000C
 Mem24: orig: Mem0
-    uses: eax_25 = GlobalFree(dwLoc0C_37)
-          edi_27 = dwLoc08_33
-          esi_29 = dwLoc04_31
 eax_25: orig: eax
     def:  eax_25 = GlobalFree(dwLoc0C_37)
 esp_26: orig: esp

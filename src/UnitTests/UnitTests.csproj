@@ -97,6 +97,7 @@
     <Compile Include="Core\BitRangeTests.cs" />
     <Compile Include="Core\DumperTests.cs" />
     <Compile Include="Core\Expressions\ExpressionTreeTests.cs" />
+    <Compile Include="Core\Lib\IntervalTreeTests.cs" />
     <Compile Include="Environments\RT11\LdaFileLoaderTests.cs" />
     <Compile Include="Environments\SysV\Arm32ProcedureSerializerTests.cs" />
     <Compile Include="Environments\SysV\GccMangledNameParserTests.cs" />

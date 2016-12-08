@@ -71,10 +71,7 @@ ebp_14: orig: ebp
     def:  ebp_14 = PHI(ebp_7, ebp_14)
 Mem15: orig: Mem0
     def:  Mem15 = PHI(Mem11, Mem31)
-    uses: eax_16 = (int32) wLoc08_43
-          ecx_17 = dwArg04
-          edx_18 = (int32) Mem15[ecx_17 + eax_16:byte]
-          eax_22 = (int32) wLoc08_45
+    uses: edx_18 = (int32) Mem15[ecx_17 + eax_16:byte]
 eax_16: orig: eax
     def:  eax_16 = (int32) wLoc08_43
     uses: edx_18 = (int32) Mem15[ecx_17 + eax_16:byte]

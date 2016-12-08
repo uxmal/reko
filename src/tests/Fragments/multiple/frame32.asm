@@ -13,7 +13,7 @@ main proc
 foo	proc
 	push	ebp
 	mov	ebp,esp
-	push	ecx
+	push	ecx		; net effect is to subtract 4 from esp, allocating space for a variable
 	mov	word ptr [ebp-04],0000
 	cmp	dword ptr [ebp+08],00
 	jnz	l10001365

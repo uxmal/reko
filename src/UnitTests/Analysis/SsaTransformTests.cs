@@ -257,8 +257,6 @@ r2:r2
     def:  def r2
     uses: dwLoc08_14 = r2
 Mem8: orig: Mem0
-    uses: r1_9 = dwLoc04_13
-          r2_10 = dwLoc08_14
 r1_9: orig: r1
     def:  r1_9 = dwLoc04_13
     uses: r1_11 = r1_9 + r2_10
@@ -342,8 +340,6 @@ bp:bp
     def:  def bp
     uses: dwLoc04_14 = bp
 Mem5: orig: Mem0
-    uses: SZC_7 = cond(wArg04 - 0x0003)
-          bp_12 = dwLoc04_14
 bp_6: orig: bp
     def:  bp_6 = fp - 0x00000004
 SZC_7: orig: SZC
@@ -477,7 +473,6 @@ bp:bp
     def:  def bp
     uses: dwLoc04_15 = bp
 Mem5: orig: Mem0
-    uses: SZC_7 = wArg04 - 0x0003
 bp_6: orig: bp
     def:  bp_6 = fp - 0x00000004
 SZC_7: orig: SZC
@@ -497,7 +492,6 @@ r63_11: orig: r63
     def:  r63_11 = PHI(r63_3, r63_3)
 Mem12: orig: Mem0
     def:  Mem12 = PHI(Mem10, Mem8)
-    uses: bp_13 = dwLoc04_15
 bp_13: orig: bp
     def:  bp_13 = dwLoc04_15
     uses: use bp_13
@@ -689,7 +683,6 @@ Mem5: orig: Mem0
 bp_6: orig: bp
     def:  bp_6 = fp - 0x00000004
 Mem7: orig: Mem0
-    uses: CZS_8 = wArg04 - 0x0003
 CZS_8: orig: CZS
     def:  CZS_8 = wArg04 - 0x0003
     uses: branch Test(GE,CZS_8) ge3
@@ -708,8 +701,6 @@ bp_12: orig: bp
     def:  bp_12 = PHI(bp_6, bp_6)
 Mem13: orig: Mem0
     def:  Mem13 = PHI(Mem11, Mem10)
-    uses: r1_14 = dwLoc0C_23
-          bp_16 = dwLoc04_18
 r1_14: orig: r1
     def:  r1_14 = dwLoc0C_23
     uses: use r1_14
@@ -970,8 +961,7 @@ r63_2: orig: r63
     uses: r63_19 = PHI(r63_14, r63_2)
 Mem0:Global
     def:  def Mem0
-    uses: r4_4 = dwArg04
-          r4_6 = Mem0[r4_4 + 0x00000004:word32]
+    uses: r4_6 = Mem0[r4_4 + 0x00000004:word32]
 r4_4: orig: r4
     def:  r4_4 = dwArg04
     uses: branch r4_4 == 0x00000000 m1Base
@@ -2649,7 +2639,53 @@ proc1_exit:
         {
             var sExp =
             #region Expected
-                "";
+@"fp:fp
+    def:  def fp
+    uses: r63_2 = fp
+          r63_3 = fp - 0x00000002
+          r63_5 = fp - 0x00000004
+r63_2: orig: r63
+    def:  r63_2 = fp
+r63_3: orig: r63
+    def:  r63_3 = fp - 0x00000002
+Mem4: orig: Mem0
+r63_5: orig: r63
+    def:  r63_5 = fp - 0x00000004
+    uses: use r63_5
+Mem6: orig: Mem0
+r1_7: orig: r1
+    def:  r1_7 = dwLoc04_10
+    uses: use r1_7
+wLoc02_8: orig: wLoc02
+    def:  wLoc02_8 = 0x1234
+    uses: dwLoc04_10 = SEQ(wLoc02_8, wLoc04_9) (alias)
+wLoc04_9: orig: wLoc04
+    def:  wLoc04_9 = 0x5678
+    uses: dwLoc04_10 = SEQ(wLoc02_8, wLoc04_9) (alias)
+dwLoc04_10: orig: dwLoc04
+    def:  dwLoc04_10 = SEQ(wLoc02_8, wLoc04_9) (alias)
+    uses: r1_7 = dwLoc04_10
+// proc1
+// Return size: 0
+define proc1
+proc1_entry:
+	def fp
+	// succ:  l1
+l1:
+	r63_2 = fp
+	r63_3 = fp - 0x00000002
+	wLoc02_8 = 0x1234
+	r63_5 = fp - 0x00000004
+	wLoc04_9 = 0x5678
+	dwLoc04_10 = SEQ(wLoc02_8, wLoc04_9) (alias)
+	r1_7 = dwLoc04_10
+	return
+	// succ:  proc1_exit
+proc1_exit:
+	use r1_7
+	use r63_5
+======
+";
             #endregion
 
             RunTest_FrameAccesses(sExp, m =>
@@ -2660,12 +2696,103 @@ proc1_exit:
                 m.Assign(sp, m.Frame.FramePointer);
                 // Push two word16's on stack
                 m.Assign(sp, m.ISub(sp, 2));
-                m.Store(sp, m.Word16(0x5678));
-                m.Assign(sp, m.ISub(sp, 2));
                 m.Store(sp, m.Word16(0x1234));
+                m.Assign(sp, m.ISub(sp, 2));
+                m.Store(sp, m.Word16(0x5678));
                 m.Assign(r1, m.LoadDw(sp));
                 m.Return();
             });
         }
+
+        [Test(Description = "Ignore dead storage")]
+        [Category(Categories.UnitTests)]
+        public void SsaLoadDpb()
+        {
+            var sExp =
+            #region Expected
+@"fp:fp
+    def:  def fp
+    uses: r63_2 = fp
+          r63_3 = fp - 0x00000004
+r63_2: orig: r63
+    def:  r63_2 = fp
+r63_3: orig: r63
+    def:  r63_3 = fp - 0x00000004
+    uses: use r63_3
+r1:r1
+    def:  def r1
+    uses: dwLoc04_8 = r1
+Mem5: orig: Mem0
+Mem6: orig: Mem0
+t2_7: orig: t2
+    def:  t2_7 = wLoc04_9
+dwLoc04_8: orig: dwLoc04
+    def:  dwLoc04_8 = r1
+wLoc04_9: orig: wLoc04
+    def:  wLoc04_9 = 0x0000
+    uses: t2_7 = wLoc04_9
+// proc1
+// Return size: 0
+define proc1
+proc1_entry:
+	def fp
+	def r1
+	// succ:  l1
+l1:
+	r63_2 = fp
+	r63_3 = fp - 0x00000004
+	dwLoc04_8 = r1
+	wLoc04_9 = 0x0000
+	t2_7 = wLoc04_9
+	return
+	// succ:  proc1_exit
+proc1_exit:
+	use r63_3
+======
+";
+            #endregion
+
+            RunTest_FrameAccesses(sExp, m =>
+            {
+                var sp = m.Register(m.Architecture.StackRegister);
+                var r1 = m.Reg32("r1", 1);
+                var t2 = m.Temp(PrimitiveType.Word16, "t2");
+                m.Assign(sp, m.Frame.FramePointer);
+                // Push word32 on stack -- really only to make space
+                m.Assign(sp, m.ISub(sp, 4));
+                m.Store(sp, r1);
+                m.Store(sp, m.Word16(0));
+                m.Assign(t2, m.LoadW(sp));
+                m.Return();
+            });
+        }
+        // 
+        // W: [----------]
+        // R: [----------]
+        // R = W
+
+        // W: [----------]
+        // R: [----]
+        // R = slice(W)
+
+        // W1: [-hi-]
+        // W2:       [-lo-]
+        // R:  [----------]
+        // R = SEQ(W1,W2)
+
+        // W1: [----------]
+        // W2: [----]
+        // R:  [----------]
+        // R = DPB(W1, W2)
+
+        // W1:       [----------]
+        // W2: [----------]
+        // R:        [----------]
+        // R = DPB(W1, SLICE(W2))
+
+        // W1:       [----------]
+        // W2:  [----------]
+        // W3:      [---------]
+        // R      [
     }
 }

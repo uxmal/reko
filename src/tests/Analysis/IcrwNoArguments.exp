@@ -6,8 +6,7 @@ fp:fp
     uses: r63_4 = fp
           r63_7 = fp
 Mem3: orig: Mem0
-    uses: eax_5 = a_10
-          ecx_6 = Mem3[eax_5:word32]
+    uses: ecx_6 = Mem3[eax_5:word32]
           Mem3[ecx_6:word32]()
 r63_4: orig: r63
     def:  r63_4 = fp

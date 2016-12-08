@@ -722,6 +722,7 @@ namespace Reko.Analysis
         {
             if (this.RenameFrameAccesses && IsFrameAccess(ssa.Procedure, access.EffectiveAddress))
             {
+                ssa.Identifiers[access.MemoryId].Uses.Remove(stmCur);
                 ssa.Identifiers[ssa.Procedure.Frame.FramePointer].Uses.Remove(stmCur);
                 var idFrame = EnsureStackVariable(ssa.Procedure, access.EffectiveAddress, access.DataType);
                 var idNew = NewUse(idFrame, stmCur, true);
@@ -851,7 +852,7 @@ namespace Reko.Analysis
             public readonly Block Block;
             public readonly Dictionary<StorageDomain, AliasState> currentDef;
             public readonly List<Tuple<FlagGroupStorage, SsaIdentifier>> currentFlagDef;
-            public readonly Dictionary<int, SsaIdentifier> currentStackDef;
+            public readonly IntervalTree<int, SsaIdentifier> currentStackDef;
             public readonly Dictionary<int, SsaIdentifier> currentFpuDef;
             public bool Visited;
             internal bool terminates;
@@ -862,7 +863,7 @@ namespace Reko.Analysis
                 this.Visited = false;
                 this.currentDef = new Dictionary<StorageDomain, AliasState>();
                 this.currentFlagDef = new List<Tuple<FlagGroupStorage,SsaIdentifier>>();
-                this.currentStackDef = new Dictionary<int, SsaIdentifier>();
+                this.currentStackDef = new IntervalTree<int, SsaIdentifier>();
                 this.currentFpuDef = new Dictionary<int, SsaIdentifier>();
             }
 
@@ -1566,7 +1567,7 @@ namespace Reko.Analysis
 
         public class StackTransformer : IdentifierTransformer
         {
-            private int stackOffset;
+            private Interval<int> offsetInterval;
 
             public StackTransformer(
                 Identifier id,
@@ -1575,7 +1576,9 @@ namespace Reko.Analysis
                 SsaTransform outer)
                 : base(id, stm, outer)
             {
-                this.stackOffset = stackOffset;
+                this.offsetInterval = Interval.Create(
+                    stackOffset,
+                    stackOffset + id.DataType.Size);
             }
 
             public override Expression NewUse(SsaBlockState bs)
@@ -1592,23 +1595,114 @@ namespace Reko.Analysis
 
             public override SsaIdentifier ReadBlockLocalVariable(SsaBlockState bs, bool generateAlias)
             {
-                SsaIdentifier ssaId;
-                if (bs.currentStackDef.TryGetValue(stackOffset, out ssaId))
+                var ints = bs.currentStackDef.GetIntervalsOverlappingWith(offsetInterval)
+                    .OrderByDescending(i => i.Key.End - i.Key.Start)
+                    .ThenBy(i => i.Key.Start)
+                    .Select(SliceAndShift)
+                    .ToArray();
+                if (ints.Length == 0)
+                    return null;
+                // Defined locally in this block.
+                if (ints.Length == 1)
                 {
-                    // Defined locally in this block.
-                    return ssaId;
+                    if (offsetInterval.Start == ints[0].Item3.Start &&
+                        offsetInterval.End == ints[0].Item3.End)
+                    {
+                        // Exact match
+                        return ints[0].Item1;
+                    }
+                    return null;
+                }
+                else
+                {
+                    var prev = offsetInterval;
+                    var sequence = new List<SsaIdentifier>();
+                    foreach (var src in ints)
+                    {
+                        Debug.Print("Analyze: {0} {1} {2}", src.Item1, src.Item2, src.Item3);
+                        if (prev.End == src.Item3.Start)
+                        {
+                            // Previous item ended where next starts:
+                            // extend it and create a sequence.
+                            prev = Interval.Create(prev.Start, src.Item3.End);
+                            sequence.Add(src.Item1);
+                        }
+                        else if (prev.End < src.Item3.Start)
+                        {
+                            // Gap betweeen prev item and this item.
+                            // Emit the sequence somehow.
+                            throw new NotImplementedException("do something with slice");
+                        }
+                        else if (src.Item3.Covers(prev))
+                        {
+                            sequence.Clear();
+                            sequence.Add(src.Item1);
+                            prev = src.Item3;
+                        }
+                        else if (sequence.Count > 0 && src.Item3.OverlapsWith(prev))
+                        {
+                            var dpb = new DepositBits(sequence[0].Identifier, src.Item2, src.Item3.Start - prev.Start);
+                            var ass = new AliasAssignment(id, dpb);
+                            var iStm = outer.stmCur.Block.Statements.IndexOf(outer.stmCur);
+                            var stm = outer.stmCur.Block.Statements.Insert(iStm, outer.stmCur.LinearAddress, ass);
+                            var sidTo = ssaIds.Add(ass.Dst, stm, ass.Src, false);
+                            ass.Dst = sidTo.Identifier;
+                            sequence[0].Uses.Add(stm);
+                            src.Item1.Uses.Add(stm);
+                            sequence = new List<SsaIdentifier> { sidTo };
+                        }
+                        else
+                        {
+                            prev = Interval.Create(prev.Start, src.Item3.End);
+                            sequence.Add(src.Item1);
+                        }
+                    }
+                    if (sequence.Count == 1)
+                        return sequence[0];
+                    if (sequence.Count > 1)
+                    {
+                        var head = sequence[1];
+                        var tail = sequence[0];
+                        var seq = new MkSequence(this.id.DataType, head.Identifier, tail.Identifier);
+                        var ass = new AliasAssignment(id, seq);
+                        var iStm = outer.stmCur.Block.Statements.IndexOf(outer.stmCur);
+                        var stm = outer.stmCur.Block.Statements.Insert(iStm, outer.stmCur.LinearAddress, ass);
+                        var sidTo = ssaIds.Add(ass.Dst, stm, ass.Src, false);
+                        ass.Dst = sidTo.Identifier;
+                        head.Uses.Add(stm);
+                        tail.Uses.Add(stm);
+                        return sidTo;
+                    }
                 }
                 return null;
             }
 
+            private Tuple<SsaIdentifier, Expression, Interval<int>> SliceAndShift(KeyValuePair<Interval<int>, SsaIdentifier> arg)
+            {
+                return new Tuple<SsaIdentifier, Expression, Interval<int>>(
+                    arg.Value,
+                    arg.Value.Identifier,
+                    arg.Key.Intersect(this.offsetInterval));
+            }
+
             public override bool ProbeBlockLocalVariable(SsaBlockState bs)
             {
-                return bs.currentStackDef.ContainsKey(stackOffset);
+                return bs.currentStackDef.GetIntervalsOverlappingWith(
+                    this.offsetInterval).Count() > 0;
             }
 
             public override Identifier WriteVariable(SsaBlockState bs, SsaIdentifier sid, bool performProbe)
             {
-                bs.currentStackDef[stackOffset] = sid;
+                var ints = bs.currentStackDef.GetIntervalsOverlappingWith(offsetInterval);
+                foreach (var i in ints)
+                {
+                    if (this.offsetInterval.Covers(i.Key))
+                    { 
+                        // None of the bits of interval `i` will shone thr
+                        bs.currentStackDef.Delete(i.Key);
+                    }
+                }
+                bs.currentStackDef.Add(this.offsetInterval, sid);
                 return sid.Identifier;
             }
         }

@@ -9,8 +9,11 @@
 namespace Reko.Core.Lib
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.IO;
+    using System.Linq;
 
     /// <summary>
     /// Interval structure
@@ -23,13 +26,39 @@ namespace Reko.Core.Lib
 
         public Interval(T start, T end)
         {
-            if (start.CompareTo(end) >= 0)
+            if (start.CompareTo(end) > 0)
             {
                 throw new ArgumentException("The start value of the interval must be smaller than the end value. Null intervals are not allowed.");
             }
 
             this.Start = start;
             this.End = end;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is Interval<T>))
+                return false;
+            var that = (Interval<T>)obj;
+            return this.Start.CompareTo(that.Start) ==0 &&
+                   this.End.CompareTo(that.End)==0;
+        }
+
+        public override int GetHashCode()
+        {
+            return Start.GetHashCode() ^ End.GetHashCode() * 17;
+        }
+
+        public static bool operator == (Interval<T> a, Interval<T> b)
+        {
+            return a.Start.CompareTo(b.Start) == 0 &&
+                   a.End.CompareTo(b.End) == 0;
+        }
+
+        public static bool operator !=(Interval<T> a, Interval<T> b)
+        {
+            return a.Start.CompareTo(b.Start) != 0 ||
+                   a.End.CompareTo(b.End) != 0;
         }
 
         /// <summary>
@@ -44,9 +73,56 @@ namespace Reko.Core.Lib
             return this.Start.CompareTo(other.End) < 0 && this.End.CompareTo(other.Start) > 0;
         }
 
+        /// <summary>
+        /// Returns true if this interval covers the interval `that`.
+        /// </summary>
+        /// <param name="that"></param>
+        /// <returns></returns>
+        public bool Covers(Interval<T> that)
+        {
+            return this.Start.CompareTo(that.Start) <= 0 && this.End.CompareTo(that.End) >= 0;
+        }
+
         public override string ToString()
         {
             return string.Format("[{0}, {1}]", this.Start.ToString(), this.End.ToString());
+        }
+
+        public Interval<T> Intersect(Interval<T> that)
+        {
+            T min = this.Start.CompareTo(that.Start) >= 0
+                ? this.Start
+                : that.Start;
+            T max = this.End.CompareTo(that.End) <= 0
+                ? this.End
+                : that.End;
+            if (min.CompareTo(max) > 0)
+                max = min;
+            return new Interval<T>(min, max);
+        }
+
+        public Interval<T> Except(Interval<T> that)
+        {
+            var newBegin = this.Start.CompareTo(that.End) > 0
+                ? that.End
+                : this.Start;
+
+            var newEnd = this.End.CompareTo(that.Start) > 0
+                ? that.Start
+                : this.End;
+
+            if (newBegin.CompareTo(newEnd) > 0)
+                newEnd = newBegin;
+            return new Interval<T>(newBegin, newEnd);
+        }
+    }
+
+    public static class Interval
+    {
+        public static Interval<T> Create<T>(T begin, T end)
+            where T : IComparable<T>
+        {
+            return new Interval<T>(begin, end);
         }
     }
 
@@ -54,7 +130,9 @@ namespace Reko.Core.Lib
     /// Interval Tree class
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class IntervalTree<T, TypeValue> where T : IComparable<T>
+    public class IntervalTree<T, TypeValue> :
+        IEnumerable<KeyValuePair<Interval<T>, TypeValue>>
+        where T : IComparable<T>
     {
         private IntervalNode root;
         private IComparer<T> comparer;
@@ -86,25 +164,19 @@ namespace Reko.Core.Lib
 
         public int Count { get; private set; }
 
-        #region Delegates
-
-        /// <summary>
-        /// visitor delegate
-        /// </summary>
-        /// <typeparam name="TNode">The type of the node.</typeparam>
-        /// <param name="node">The node.</param>
-        /// <param name="level">The level.</param>
-        private delegate void VisitNodeHandler<TNode>(TNode node, int level);
-
-        #endregion
-
         #region Methods
 
         /// <summary>
         /// Adds the specified interval.
-        /// If there is more than one interval starting at the same time/value, the intervalnode.Interval stores the start time and the maximum end time of all intervals starting at the same value.
-        /// All end values (except the maximum end time/value which is stored in the interval node itself) are stored in the Range list in decreasing order.
-        /// Note: this is okay for problems where intervals starting at the same time /value is not a frequent occurrence, however you can use other data structure for better performance depending on your problem needs
+        /// If there is more than one interval starting at the same value, the
+        /// intervalnode.Interval stores the start time and the maximum end
+        /// time of all intervals starting at the same value. All end values
+        /// (except the maximum end time/value which is stored in the interval
+        /// node itself) are stored in the Range list in decreasing order.
+        /// Note: this is okay for problems where intervals starting at the
+        /// same time /value is not a frequent occurrence, however you can use
+        /// other data structure for better performance depending on your
+        /// problem needs.
         /// </summary>
         /// <param name="arg">The arg.</param>
         public void Add(T x, T y, TypeValue value)
@@ -114,9 +186,15 @@ namespace Reko.Core.Lib
 
         /// <summary>
         /// Adds the specified interval.
-        /// If there is more than one interval starting at the same time/value, the intervalnode.Interval stores the start time and the maximum end time of all intervals starting at the same value.
-        /// All end values (except the maximum end time/value which is stored in the interval node itself) are stored in the Range list in decreasing order.
-        /// Note: this is okay for problems where intervals starting at the same time /value is not a frequent occurrence, however you can use other data structure for better performance depending on your problem needs
+        /// If there is more than one interval starting at the same value, the
+        /// intervalnode.Interval stores the start value and the maximum end
+        /// value of all intervals starting at the same value. All end values
+        /// (except the maximum end value which is stored in the interval node
+        /// itself) are stored in the Range list in decreasing order.
+        /// Note: this is okay for problems where intervals starting at the
+        /// same value is not a frequent occurrence, however you can use other
+        /// data structure for better performance depending on your problem
+        /// needs
         /// </summary>
         /// <param name="arg">The arg.</param>
         public bool Add(Interval<T> interval, TypeValue value)
@@ -140,9 +218,14 @@ namespace Reko.Core.Lib
 
         /// <summary>
         /// Deletes the specified interval.
-        /// If the interval tree is used with unique intervals, this method removes the interval specified as an argument.
-        /// If multiple identical intervals (starting at the same time and also ending at the same time) are allowed, this function will delete one of them( see procedure DeleteIntervalFromNodeWithRange for details)
-        /// In this case, it is easy enough to either specify the (interval, value) pair to be deleted or enforce uniqueness by changing the Add procedure.
+        /// If the interval tree is used with unique intervals, this method
+        /// removes the interval specified as an argument. If multiple
+        /// identical intervals (starting at the same time and also ending
+        /// at the same time) are allowed, this function will delete one of
+        /// them (see procedure DeleteIntervalFromNodeWithRange for details).
+        /// In this case, it is easy enough to either specify the (interval,
+        /// value) pair to be deleted or enforce uniqueness by changing the
+        /// Add procedure.
         /// </summary>
         /// <param name="arg">The arg.</param>
         public bool Delete(Interval<T> arg)
@@ -192,7 +275,14 @@ namespace Reko.Core.Lib
         /// <returns></returns>
         public IEnumerable<KeyValuePair<Interval<T>, TypeValue>> GetIntervalsOverlappingWith(Interval<T> toFind)
         {
-            return (this.root != null) ? this.root.GetIntervalsOverlappingWith(toFind) : null;
+            if (this.root != null)
+            {
+                return this.root.GetIntervalsOverlappingWith(toFind);
+            }
+            else
+            {
+                return Enumerable.Empty<KeyValuePair<Interval<T>, TypeValue>>();
+            }
         }
 
         /// <summary>
@@ -239,7 +329,7 @@ namespace Reko.Core.Lib
         /// Gets the collection of values (ascending order)
         /// Those intervals starting at the same time/value are sorted further based on their End value (i.e. returned in ascending order of their End values)
         /// </summary>
-        public IEnumerable<TypeValue> Values
+        public IEnumerator<TypeValue> Values
         {
             get
             {
@@ -289,6 +379,16 @@ namespace Reko.Core.Lib
             }
         }
 
+        public IEnumerator<KeyValuePair<Interval<T>, TypeValue>> GetEnumerator()
+        {
+            return IntervalValuePairs.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return IntervalValuePairs.GetEnumerator();
+        }
+
 #endif
 
         /// <summary>
@@ -313,26 +413,34 @@ namespace Reko.Core.Lib
         }
 
         /// <summary>
-        /// Prints this instance (to console).
+        /// Writes this instance to a TextWriter
         /// </summary>
-        public void Print()
+        public void Write(TextWriter w)
         {
             this.Visit((node, level) =>
             {
-                Console.Write(new string(' ', 2 * level));
-                Console.Write(string.Format("{0}.{1}", node.Interval.ToString(), node.Max));
+                w.Write(new string(' ', 2 * level));
+                w.Write(string.Format("{0}.{1}", node.Interval, node.Max));
 
                 if (node.Range != null)
                 {
-                    Console.Write(" ... ");
+                    w.Write(" ... ");
                     foreach (var rangeNode in node.GetRange())
                     {
-                        Console.Write(string.Format("{0}  ", rangeNode.Key));
+                        w.Write(string.Format("{0}  ", rangeNode.Key));
                     }
                 }
 
-                Console.WriteLine();
+                w.WriteLine();
             });
+        }
+
+        [Conditional("DEBUG")]
+        public void Dump()
+        {
+            var sw = new StringWriter();
+            Write(sw);
+            Debug.Write(sw);
         }
 
         /// <summary>
@@ -381,7 +489,7 @@ namespace Reko.Core.Lib
         /// Visit_inorders the specified visitor. Defined for debugging purposes only
         /// </summary>
         /// <param name="visitor">The visitor.</param>
-        private void Visit(VisitNodeHandler<IntervalNode> visitor)
+        private void Visit(Action<IntervalNode,int> visitor)
         {
             if (this.root != null)
             {
@@ -1052,7 +1160,7 @@ namespace Reko.Core.Lib
                 }
             }
 
-            public void Visit(VisitNodeHandler<IntervalNode> visitor, int level)
+            public void Visit(Action<IntervalNode, int> visitor, int level)
             {
                 if (this.Left != null)
                 {
@@ -1296,7 +1404,7 @@ namespace Reko.Core.Lib
             /// </returns>
             public int Compare(KeyValuePair<TKey, TValue> x, KeyValuePair<TKey, TValue> y)
             {
-                return (-1) * this.keyComparer.Compare(x.Key, y.Key);
+                return 0 - this.keyComparer.Compare(x.Key, y.Key);
             }
 
             /// <summary>
