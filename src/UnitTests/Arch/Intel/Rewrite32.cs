@@ -80,12 +80,14 @@ namespace Reko.UnitTests.Arch.Intel
 		}
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void RwMallocFree()
 		{
 			RunTest("Fragments/import32/mallocfree.asm", "Intel/RwMallocFree.txt");
 		}
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void RwFrame32()
 		{
 			RunTest("Fragments/multiple/frame32.asm", "Intel/RwFrame32.txt");
@@ -99,18 +101,21 @@ namespace Reko.UnitTests.Arch.Intel
 		}
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void RwGlobalHandle()
 		{
 			RunTest("Fragments/import32/GlobalHandle.asm", "Intel/RwGlobalHandle.txt");
 		}
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void RwLoopMalloc()
 		{
 			RunTest("Fragments/import32/loopmalloc.asm", "Intel/RwLoopMalloc.txt");
 		}
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void RwLoopGetDC()
 		{
 			RunTest("Fragments/import32/loop_GetDC.asm", "Intel/RwLoopGetDC.txt");

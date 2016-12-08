@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Evaluation
         }
 
         [Test]
-        public void EvaluateConstantAssignment()
+        public void SymevEvaluateConstantAssignment()
         {
             var name = "edx";
             var edx = Tmp32(name);
@@ -96,7 +96,7 @@ namespace Reko.UnitTests.Evaluation
 
 
         [Test]
-        public void IdentifierCopy()
+        public void SymevIdentifierCopy()
         {
             esp = Tmp32("esp");
             var ebp = Tmp32("ebp");
@@ -107,7 +107,7 @@ namespace Reko.UnitTests.Evaluation
         }
 
         [Test]
-        public void AdjustValue()
+        public void SymevAdjustValue()
         {
             esp = Tmp32("esp");
             CreateSymbolicEvaluator(frame);
@@ -117,18 +117,20 @@ namespace Reko.UnitTests.Evaluation
         }
 
         [Test]
-        public void LoadFromMemoryTrashes()
+        public void SymevLoadFromMemoryTrashes()
         {
             var ebx = Tmp32("ebx");
             var al = Tmp8("al");
-            CreateSymbolicEvaluator(frame);
-            var ass = new Assignment(al, new MemoryAccess(ebx, al.DataType));
-            se.Evaluate(ass);
+            RunBlockTest(m =>
+            {
+                CreateSymbolicEvaluator(frame);
+                m.Assign(al, m.Load(al.DataType, ebx));
+            });
             Assert.AreEqual("<invalid>", ctx.TemporaryState[al.Storage].ToString());
         }
 
         [Test]
-        public void PushConstant()
+        public void SymevPushConstant()
         {
             RunBlockTest(delegate(ProcedureBuilder m)
             {
@@ -143,7 +145,7 @@ namespace Reko.UnitTests.Evaluation
         }
 
         [Test]
-        public void PushPop()
+        public void SymevPushPop()
         {
             Identifier eax = null;
             RunBlockTest(delegate(ProcedureBuilder m)
@@ -160,7 +162,7 @@ namespace Reko.UnitTests.Evaluation
         }
 
         [Test]
-        public void FramePointer()
+        public void SymevFramePointer()
         {
             Identifier eax = null;
             RunBlockTest(delegate(ProcedureBuilder m)
@@ -185,7 +187,7 @@ namespace Reko.UnitTests.Evaluation
         }
 
         [Test]
-        public void ApplWithOutParameter()
+        public void SymevApplWithOutParameter()
         {
             Identifier r1 = null;
             RunBlockTest(delegate(ProcedureBuilder m)
@@ -198,7 +200,7 @@ namespace Reko.UnitTests.Evaluation
         }
 
         [Test]
-        public void Appl()
+        public void SymevAppl()
         {
             Identifier r1 = null;
             RunBlockTest(delegate(ProcedureBuilder m)
@@ -210,7 +212,7 @@ namespace Reko.UnitTests.Evaluation
         }
 
         [Test]
-        public void RegisterPairStoreLoad()
+        public void SymevRegisterPairStoreLoad()
         {
             Identifier ds = null;
             Identifier ax = null;
@@ -229,7 +231,7 @@ namespace Reko.UnitTests.Evaluation
         }
 
         [Test]
-        public void Slice()
+        public void SymevSlice()
         {
             Identifier ax = null;
             Identifier cx = null;
@@ -251,7 +253,7 @@ namespace Reko.UnitTests.Evaluation
         }
 
         [Test]
-        public void AssignToTemporary()
+        public void SymevAssignToTemporary()
         {
             Identifier tmp = null;
             RunBlockTest(delegate(ProcedureBuilder m)
@@ -263,7 +265,7 @@ namespace Reko.UnitTests.Evaluation
         }
 
         [Test]
-        public void AssignToFlag()
+        public void SymevAssignToFlag()
         {
             Identifier flag = null;
             RunBlockTest(delegate(ProcedureBuilder m)
@@ -276,7 +278,7 @@ namespace Reko.UnitTests.Evaluation
         }
 
         [Test]
-        public void OffsetToInvalidIsInvalid()
+        public void SymevOffsetToInvalidIsInvalid()
         {
             Identifier si = null;
             RunBlockTest(m =>

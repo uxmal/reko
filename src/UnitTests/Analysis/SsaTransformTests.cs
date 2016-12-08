@@ -2642,5 +2642,30 @@ proc1_exit:
                 m.Return();
             });
         }
+
+        [Test(Description = "Merge variables in stack frame")]
+        [Category(Categories.UnitTests)]
+        public void SsaJoinSsaPieces()
+        {
+            var sExp =
+            #region Expected
+                "";
+            #endregion
+
+            RunTest_FrameAccesses(sExp, m =>
+            {
+                var sp = m.Register(m.Architecture.StackRegister);
+                var r1 = m.Reg32("r1", 1);
+                var r2 = m.Reg32("r2", 2);
+                m.Assign(sp, m.Frame.FramePointer);
+                // Push two word16's on stack
+                m.Assign(sp, m.ISub(sp, 2));
+                m.Store(sp, m.Word16(0x5678));
+                m.Assign(sp, m.ISub(sp, 2));
+                m.Store(sp, m.Word16(0x1234));
+                m.Assign(r1, m.LoadDw(sp));
+                m.Return();
+            });
+        }
     }
 }
