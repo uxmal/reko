@@ -69,7 +69,7 @@ namespace Reko.Core.Expressions
 
         public override Expression CloneExpression()
         {
-            return new MemoryAccess(EffectiveAddress.CloneExpression(), DataType);
+            return new MemoryAccess(this.MemoryId, EffectiveAddress.CloneExpression(), DataType);
         }
 
         public static MemoryAccess Create(Expression baseRegister, int offset, DataType dt)

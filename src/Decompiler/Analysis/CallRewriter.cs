@@ -403,7 +403,9 @@ namespace Reko.Analysis
 
         private void InsertOutArgumentAssignment(Identifier parameter, SsaIdentifier sid, Block block, int insertPos)
         {
-            var stm = block.Statements.Insert(insertPos, 0, new Store(parameter, sid.Identifier));
+            var stm = block.Statements.Insert(
+                insertPos, 0, 
+                new Store(parameter, sid.Identifier));
             sid.Uses.Add(stm);
         }
     }

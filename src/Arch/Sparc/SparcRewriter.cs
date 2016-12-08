@@ -263,7 +263,7 @@ namespace Reko.Arch.Sparc
                 else
                     throw new NotImplementedException(string.Format("Unknown memory operand {0} ({1})", op, op.GetType().Name));
             }
-            return new MemoryAccess(SimplifySum(baseReg, offset), size);
+            return emitter.Load(size, SimplifySum(baseReg, offset));
         }
 
         private Expression SimplifySum(Expression srcLeft, Expression srcRight)

@@ -60,29 +60,32 @@ namespace Reko.UnitTests.Analysis
 				fut.WriteLine();
 			}
 		}
+
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void Coa3Converge()
 		{
 			RunFileTest_x86_real("Fragments/3converge.asm", "Analysis/Coa3Converge.txt");
 		}
 
 		[Test]
-        [Ignore(Categories.AnalysisDevelopment)]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void CoaAsciiHex()
 		{
 			RunFileTest_x86_real("Fragments/ascii_hex.asm", "Analysis/CoaAsciiHex.txt");
 		}
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void CoaDataConstraint()
-		{
+        {
 			RunFileTest_x86_real("Fragments/data_constraint.asm", "Analysis/CoaDataConstraint.txt");
 		}
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void CoaMoveChain()
-		{
+        {
 			RunFileTest_x86_real("Fragments/move_sequence.asm", "Analysis/CoaMoveChain.txt");
 		}
 

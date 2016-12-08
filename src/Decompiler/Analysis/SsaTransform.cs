@@ -42,9 +42,9 @@ namespace Reko.Analysis
     /// described in "Simple and Efficient Construction of Static Single
     /// Assignment Form" by Matthias Braun, Sebastian Buchwald, Sebastian 
     /// Hack, Roland Leiﬂa, Christoph Mallon, and Andreas Zwinkau. 
-    /// It has been augmented with storage analysis, and could be augmented
-    /// with expression simplification if we can prove that the CFG 
-    /// graph is completed (future work).
+    /// It has been augmented with storage alias analysis, and could be
+    /// augmented with expression simplification if we can prove that the
+    /// CFG graph is completed (future work).
     /// </remarks>
     public class SsaTransform : InstructionTransformer 
     {

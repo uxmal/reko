@@ -124,6 +124,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void UrfRegisterArg()
         {
             var sExp = "Used: [r1, [0..31]]";
@@ -136,6 +137,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void UrfStackArg()
         {
             var sExp = "Used: [Stack +0004, [0..31]]";
@@ -150,6 +152,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void UrfCast()
         {
             var sExp = @"Used: [r1, [0..15]]";
@@ -165,6 +168,7 @@ namespace Reko.UnitTests.Analysis
 
 
         [Test(Description = "Identifiers are not considered used if they only are copied.")]
+        [Category(Categories.UnitTests)]
         public void UrfCopy()
         {
             var sExp ="Used: ";
@@ -178,6 +182,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void UrfBranch()
         {
             var sExp = @"Used: [r1, [0..31]]";
@@ -196,6 +201,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void UrfSequence()
         {
             var sExp = "Used: [r1, [0..31]],[r2, [0..31]]";
@@ -212,6 +218,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void UrfPhiBranch()
         {
             var sExp = "Used: ";
@@ -225,6 +232,21 @@ namespace Reko.UnitTests.Analysis
                 m.Assign(r2, m.LoadDw(m.Word32(0x0123408)));
                 m.Assign(r1, m.IMul(r2, 9));
                 m.Label("skip");
+                m.Return();
+            });
+        }
+
+        [Test]
+        [Category(Categories.UnitTests)]
+        public void UrfSlice()
+        {
+            var sExp = "Used: [r1, [16..31]]";
+
+            RunTest(sExp, m =>
+            {
+                var r1 = m.Reg32("r1", 1);
+
+                m.Store(m.Word16(0x00123400), m.Slice(PrimitiveType.Word16, r1, 16));
                 m.Return();
             });
         }

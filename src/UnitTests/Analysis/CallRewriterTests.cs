@@ -171,7 +171,6 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
-        //[Ignore(Categories.AnalysisDevelopment)]
         [Category(Categories.IntegrationTests)]
         public void CrwLeakyLiveness()
         {

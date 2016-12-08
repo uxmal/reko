@@ -323,7 +323,11 @@ namespace Reko.Analysis
 
         public BitRange VisitSlice(Slice slice)
         {
-            throw new NotImplementedException();
+            var use = slice.Expression.Accept(this);
+            var useSlice = new BitRange(
+                Math.Max(use.Lsb, slice.Offset),
+                Math.Min(use.Msb, slice.Offset + slice.DataType.BitSize));
+            return useSlice;
         }
 
         public BitRange VisitTestCondition(TestCondition tc)

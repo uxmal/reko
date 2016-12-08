@@ -48,6 +48,10 @@ namespace Reko.Core
 
         public static BitRange operator | (BitRange a, BitRange b)
         {
+            if (a.IsEmpty)
+                return b;
+            if (b.IsEmpty)
+                return a;
             return new BitRange(
                 Math.Min(a.Lsb, b.Lsb),
                 Math.Max(a.Msb, b.Msb));

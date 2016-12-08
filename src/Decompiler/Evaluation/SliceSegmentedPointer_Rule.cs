@@ -87,7 +87,7 @@ namespace Reko.Evaluation
             Expression ea;
             if (segMem.EffectiveAddress == idOff)
             {
-                ea = new MemoryAccess(segPtr, segMem.DataType);
+                ea = new MemoryAccess(segMem.MemoryId, segPtr, segMem.DataType);
             }
             else
             {
@@ -100,7 +100,7 @@ namespace Reko.Evaluation
                     throw new NotImplementedException();
             }
             ctx.UseExpression(segPtr);
-            return new MemoryAccess(ea, segMem.DataType);
+            return new MemoryAccess(segMem.MemoryId, ea, segMem.DataType);
         }
     }
 }

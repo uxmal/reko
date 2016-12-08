@@ -140,6 +140,24 @@ namespace Reko.UnitTests.Analysis
 			}
 		}
 
+        private SsaState RunTest(ProcedureBuilder m)
+        {
+            var proc = m.Procedure;
+            var gr = proc.CreateBlockDominatorGraph();
+            var sst = new SsaTransform(
+                program,
+                proc,
+                new HashSet<Procedure>(),
+                importResolver,
+                new ProgramDataFlow());
+            var ssa = sst.SsaState;
+            sst.Transform();
+
+            var vp = new ValuePropagator(arch, ssa);
+            vp.Transform();
+            return ssa;
+        }
+
         private void AssertStringsEqual(string sExp, SsaState ssa)
         {
             var sw = new StringWriter();
@@ -154,18 +172,21 @@ namespace Reko.UnitTests.Analysis
         }
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void VpChainTest()
 		{
 			RunFileTest_x86_real("Fragments/multiple/chaincalls.asm", "Analysis/VpChainTest.txt");
 		}
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void VpConstPropagation()
 		{
 			RunFileTest_x86_real("Fragments/constpropagation.asm", "Analysis/VpConstPropagation.txt");
 		}
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void VpGlobalHandle()
 		{
             Given_FakeWin32Platform(mr);
@@ -176,24 +197,28 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void VpNegsNots()
 		{
 			RunFileTest_x86_real("Fragments/negsnots.asm", "Analysis/VpNegsNots.txt");
 		}
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void VpNestedRepeats()
 		{
 			RunFileTest_x86_real("Fragments/nested_repeats.asm", "Analysis/VpNestedRepeats.txt");
 		}
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void VpSuccessiveDecs()
 		{
 			RunFileTest_x86_real("Fragments/multiple/successivedecs.asm", "Analysis/VpSuccessiveDecs.txt");
 		}
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void VpWhileGoto()
 		{
 			RunFileTest_x86_real("Fragments/while_goto.asm", "Analysis/VpWhileGoto.txt");
@@ -207,6 +232,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void VpLoop()
         {
             var b = new ProgramBuilder();
@@ -234,9 +260,10 @@ namespace Reko.UnitTests.Analysis
         }
 
 		[Test]
+        [Category(Categories.IntegrationTests)]
 		public void VpDbp()
 		{
-			Procedure proc = new DpbMock().Procedure;
+			Procedure proc = new DpbFragment().Procedure;
             var sst = new SsaTransform(
                 program,
                 proc,
@@ -258,6 +285,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
+        [Category(Categories.UnitTests)]
 		public void VpEquality()
 		{
 			Identifier foo = Reg32("foo");
@@ -282,6 +310,7 @@ namespace Reko.UnitTests.Analysis
         }
 
 		[Test]
+        [Category(Categories.UnitTests)]
 		public void VpAddZero()
 		{
 			Identifier r = Reg32("r");
@@ -293,6 +322,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
+        [Category(Categories.UnitTests)]
 		public void VpEquality2()
 		{
             // Makes sure that 
@@ -328,6 +358,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
+        [Category(Categories.UnitTests)]
 		public void VpCopyPropagate()
 		{
             var m = new ProcedureBuilder();
@@ -375,6 +406,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
+        [Category(Categories.UnitTests)]
 		public void VpSliceConstant()
 		{
             var vp = new ExpressionSimplifier(new SsaEvaluationContext(arch, ssaIds));
@@ -383,6 +415,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
+        [Category(Categories.UnitTests)]
 		public void VpNegSub()
 		{
 			Identifier x = Reg32("x");
@@ -398,6 +431,7 @@ namespace Reko.UnitTests.Analysis
 		/// (<< (+ (* id c1) id) c2))
 		/// </summary>
 		[Test] 
+        [Category(Categories.UnitTests)]
 		public void VpMulAddShift()
 		{
 			Identifier id = Reg32("id");
@@ -413,6 +447,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
+        [Category(Categories.UnitTests)]
 		public void VpShiftShift()
 		{
 			Identifier id = Reg32("id");
@@ -424,6 +459,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
+        [Category(Categories.UnitTests)]
 		public void VpShiftSum()
 		{
 			ProcedureBuilder m = new ProcedureBuilder();
@@ -434,6 +470,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
+        [Category(Categories.UnitTests)]
 		public void VpSequenceOfConstants()
 		{
 			Constant pre = Constant.Word16(0x0001);
@@ -445,6 +482,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void SliceShift()
         {
             Constant eight = Constant.Word16(8);
@@ -456,6 +494,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void VpMkSequenceToAddress()
         {
             Constant seg = Constant.Create(PrimitiveType.SegmentSelector, 0x4711);
@@ -473,6 +512,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void VpPhiWithConstants()
         {
             Constant c1 = Constant.Word16(0x4711);
@@ -498,6 +538,7 @@ namespace Reko.UnitTests.Analysis
             "if x = phi(a_1, a_2, ... a_n) and all phi arguments after " +
             "value propagation are equal to <exp> or x where <exp> is some  " +
             "expression then replace phi assignment with x = <exp>)")]
+        [Category(Categories.UnitTests)]
         public void VpPhiLoops()
         {
             var m = new ProcedureBuilder();
@@ -533,25 +574,8 @@ namespace Reko.UnitTests.Analysis
             Assert.AreEqual("x = fp - 0x000C", phiStm.Instruction.ToString());
         }
 
-        private class DpbMock : ProcedureBuilder
-		{
-			protected override void BuildBody()
-			{
-				var dl = LocalByte("dl");
-				Local16("dx");
-				var edx = Local32("edx");
-
-				Assign(edx, Int32(0x0AAA00AA));
-				Assign(edx, Dpb(edx, Int8(0x55), 8));
-				Store(Int32(0x1000000), edx);
-
-				Assign(edx, Int32(0));
-                Assign(edx, Dpb(edx, dl, 0));
-				Return(edx);
-			}
-		}
-
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void VpDbpDbp()
         {
             var m = new ProcedureBuilder();
@@ -585,25 +609,8 @@ namespace Reko.UnitTests.Analysis
 			}
 		}
 
-        private SsaState RunTest(ProcedureBuilder m)
-        {
-            var proc = m.Procedure;
-            var gr = proc.CreateBlockDominatorGraph();
-            var sst = new SsaTransform(
-                program, 
-                proc, 
-                new HashSet<Procedure>(),
-                importResolver, 
-                new ProgramDataFlow());
-            var ssa = sst.SsaState;
-            sst.Transform();
-
-            var vp = new ValuePropagator(arch, ssa);
-            vp.Transform();
-            return ssa;
-        }
-
         [Test(Description = "Casting a DPB should result in the deposited bits.")]
+        [Category(Categories.UnitTests)]
         public void VpLoadDpb()
         {
             var m = new ProcedureBuilder();
@@ -657,6 +664,7 @@ ProcedureBuilder_exit:
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void VpLoadDpbSmallerCast()
         {
             var m = new ProcedureBuilder();
@@ -710,6 +718,7 @@ ProcedureBuilder_exit:
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void VpCastRealConstant()
         {
             var m = new ProcedureBuilder();
@@ -737,6 +746,7 @@ ProcedureBuilder_exit:
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void VpUndoUnnecessarySlicingOfSegmentPointer()
         {
             var m = new ProcedureBuilder();
@@ -768,7 +778,7 @@ es_bx_4: orig: es_bx
           bx_6 = (word16) es_bx_4 (alias)
           es_7 = SLICE(es_bx_4, word16, 16)
           bx_8 = (word16) es_bx_4
-          Mem0[es_bx_4 + 0x0004:byte] = 0x03
+          Mem9[es_bx_4 + 0x0004:byte] = 0x03
 es_5: orig: es
     def:  es_5 = SLICE(es_bx_4, word16, 16) (alias)
 bx_6: orig: bx
@@ -778,7 +788,7 @@ es_7: orig: es
 bx_8: orig: bx
     def:  bx_8 = (word16) es_bx_4
 Mem9: orig: Mem0
-    def:  Mem0[es_bx_4 + 0x0004:byte] = 0x03
+    def:  Mem9[es_bx_4 + 0x0004:byte] = 0x03
 // ProcedureBuilder
 // Return size: 0
 define ProcedureBuilder
@@ -793,7 +803,7 @@ l1:
 	bx_6 = (word16) es_bx_4 (alias)
 	es_7 = SLICE(es_bx_4, word16, 16)
 	bx_8 = (word16) es_bx_4
-	Mem0[es_bx_4 + 0x0004:byte] = 0x03
+	Mem9[es_bx_4 + 0x0004:byte] = 0x03
 ProcedureBuilder_exit:
 ";
             #endregion
@@ -802,6 +812,7 @@ ProcedureBuilder_exit:
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void VpMulBy6()
         {
             var m = new ProcedureBuilder();
@@ -849,6 +860,7 @@ ProcedureBuilder_exit:
         }
 
         [Test]
+        [Category(Categories.UnitTests)]
         public void VpIndirectCall()
         {
             var callee = CreateExternalProcedure("foo", RegArg(1, "r1"), StackArg(4), StackArg(8));
@@ -928,6 +940,7 @@ ProcedureBuilder_exit:
         }
 
         [Test]
+        [Category(Categories.IntegrationTests)]
         public void VpCastCast()
         {
             var m = new ProcedureBuilder();
@@ -946,6 +959,7 @@ ProcedureBuilder_exit:
         }
 
         [Test(Description = "m68k floating-point comparison")]
+        [Category(Categories.IntegrationTests)]
         public void VpFCmp()
         {
             var m = new FCmpFragment();
@@ -955,6 +969,7 @@ ProcedureBuilder_exit:
         }
 
         [Test(Description = "Should be able to simplify address +/- constant")]
+        [Category(Categories.IntegrationTests)]
         public void VpAddress32Const()
         {
             var m = new ProcedureBuilder("VpAddress32Const");
