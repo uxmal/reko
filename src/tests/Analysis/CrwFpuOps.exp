@@ -1,7 +1,7 @@
 void fn0C00_0000(Register selector ds)
-// MayUse:  ds:16
+// MayUse:  ds:[0..15]
 // LiveOut:
-// Trashed: SCZO bx
+// Trashed: bx C O S Top Z
 // Preserved: sp
 // fn0C00_0000
 // Return size: 0
@@ -10,6 +10,7 @@ void fn0C00_0000(Register selector ds)
 // sp:sp
 // ss:ss
 // SCZO:SCZO
+// Top:Top
 // ds:ds
 // bx:bx
 // wLoc02:Local -0002
@@ -30,9 +31,9 @@ l0C00_0000:
 	// succ:  fn0C00_0000_exit
 fn0C00_0000_exit:
 void fn0C00_0010(Register selector ds, Stack word16 wArg02, Stack word16 wArg04)
-// MayUse:  ds:16 Stack +0002:16 Stack +0004:16
+// MayUse:  ds:[0..63] Stack +0002:[0..15] Stack +0004:[0..63]
 // LiveOut:
-// Trashed: bx
+// Trashed: bx FPU -1 FPU -2 Top
 // Preserved: bp sp
 // fn0C00_0010
 // Return size: 0
@@ -42,11 +43,12 @@ void fn0C00_0010(Register selector ds, Stack word16 wArg02, Stack word16 wArg04)
 // bp:bp
 // ss:ss
 // bx:bx
-// rLoc1:FPU stack
+// Top:Top
 // ds:ds
-// rLoc2:FPU stack
 // wLoc02:Local -0002
 // wArg02:Stack +0002
+// rLoc1:FPU -1
+// rLoc2:FPU -2
 // wArg04:Stack +0004
 // return address size: 2
 void fn0C00_0010(selector ds, word16 wArg02, word16 wArg04)
@@ -56,40 +58,41 @@ fn0C00_0010_entry:
 	def wArg04
 	// succ:  l0C00_0010
 l0C00_0010:
-	rLoc1_10 = Mem6[ds:wArg02:real64]
-	rLoc1_11 = rLoc1_10 * rLoc1_10
-	rLoc2_12 = Mem6[ds:wArg02 + 0x0008:real64]
-	rLoc2_13 = rLoc2_12 * rLoc2_12
-	rLoc1_14 = rLoc1_11 + rLoc2_13
-	rLoc2_15 = Mem6[ds:wArg02 + 0x0010:real64]
-	rLoc2_16 = rLoc2_15 * rLoc2_15
-	rLoc1_17 = rLoc1_14 + rLoc2_16
-	Mem19[ds:wArg04:real64] = rLoc1_17
-	rLoc1_20 = (real64) Mem19[ds:wArg04 + 0x0020:int16]
-	Mem21[ds:wArg04 + 0x0028:real64] = rLoc1_20
+	rLoc1_36 = Mem7[ds:wArg02:real64]
+	rLoc1_37 = rLoc1_36 * rLoc1_36
+	rLoc2_38 = Mem7[ds:wArg02 + 0x0008:real64]
+	rLoc2_39 = rLoc2_38 * rLoc2_38
+	rLoc1_40 = rLoc1_37 + rLoc2_39
+	rLoc2_41 = Mem7[ds:wArg02 + 0x0010:real64]
+	rLoc2_42 = rLoc2_41 * rLoc2_41
+	rLoc1_43 = rLoc1_40 + rLoc2_42
+	Mem25[ds:wArg04:real64] = rLoc1_43
+	rLoc1_45 = (real64) Mem25[ds:wArg04 + 0x0020:int16]
+	Mem29[ds:wArg04 + 0x0028:real64] = rLoc1_45
 	return
 	// succ:  fn0C00_0010_exit
 fn0C00_0010_exit:
 void fn0C00_0037(Register selector ds)
-// MayUse:  ds:16
+// MayUse:  ds:[0..15]
 // LiveOut:
-// Trashed:
+// Trashed: FPU -1 Top
 // Preserved: sp
 // fn0C00_0037
 // Return size: 0
 // Mem0:Global
 // fp:fp
 // sp:sp
-// rLoc1:FPU stack
+// Top:Top
 // ds:ds
+// rLoc1:FPU -1
 // return address size: 2
 void fn0C00_0037(selector ds)
 fn0C00_0037_entry:
 	def ds
 	// succ:  l0C00_0037
 l0C00_0037:
-	Mem5[ds:0x0400:real64] = 0.0
-	Mem7[ds:0x0408:int32] = (int32) 1.0
+	Mem7[ds:0x0400:real64] = 0.0
+	Mem11[ds:0x0408:int32] = (int32) 1.0
 	return
 	// succ:  fn0C00_0037_exit
 fn0C00_0037_exit:

@@ -134,8 +134,7 @@ namespace Reko.UnitTests.Analysis
         }
 
         [Test]
- //       [Ignore(Categories.AnalysisDevelopment)]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void CrwAsciiHex()
         {
             RunFileTest_x86_real("Fragments/ascii_hex.asm", "Analysis/CrwAsciiHex.txt");

@@ -315,22 +315,23 @@ namespace Reko.UnitTests.Typing
 		}
 
         [Test]
-        //[Ignore(Categories.AnalysisDevelopment)]
-        [Category(Categories.AnalysisDevelopment)]
+        [Category(Categories.IntegrationTests)]
         public void TrcoReg00011()
         {
             RunTest16("Fragments/regressions/r00011.asm", "Typing/TrcoReg00011.txt");
         }
 
         [Test]
-        [Ignore("Re-enable when new SSA is in place")]
+        [Category(Categories.AnalysisDevelopment)]
+        [Ignore(Categories.AnalysisDevelopment)]
         public void TrcoReg00012()
         {
             RunTest16("Fragments/regressions/r00012.asm", "Typing/TrcoReg00012.txt");
         }
 
         [Test]
-        [Category(Categories.IntegrationTests)]
+        [Category(Categories.AnalysisDevelopment)]
+        [Ignore(Categories.AnalysisDevelopment)]
         public void TrcoReg00014()
         {
             RunTest32("Fragments/regressions/r00014.asm", "Typing/TrcoReg00014.txt");
