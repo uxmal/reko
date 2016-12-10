@@ -122,7 +122,6 @@ namespace Reko.Analysis
                 else
                 {
                     var paramId = proc.Frame.EnsureIdentifier(param.Storage);
-                    paramId.DataType = param.DataType;
 
                     // Need to take an extra step with parameters being passed
                     // in a register. It's perfectly possible for a user to 
