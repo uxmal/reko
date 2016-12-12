@@ -221,7 +221,13 @@ namespace Reko.Environments.Windows
 
         private string DefaultModuleName(string filename)
         {
-            return Path.GetFileNameWithoutExtension(filename).ToUpper() + ".DLL";
+			string libName = Path.GetFileNameWithoutExtension (filename).ToUpper ();
+
+			if (Path.GetExtension (libName).Length > 0) {
+				return libName;
+			} else {
+				return libName + ".DLL";
+			}
         }
 
         private Token Peek()
