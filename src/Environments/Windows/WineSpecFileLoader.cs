@@ -31,7 +31,10 @@ using System.Text;
 
 namespace Reko.Environments.Windows
 {
-    // https://www.winehq.org/docs/winelib-guide/spec-file
+    /// <summary>
+    /// Loads metadata info encoded as a WINE spec file
+    /// (see https://www.winehq.org/docs/winelib-guide/spec-file for details)
+    /// </summary>
     public class WineSpecFileLoader : MetadataLoader
     {
         private string filename;
@@ -107,7 +110,7 @@ namespace Reko.Environments.Windows
 
             for (;;)
             {
-                // Discared entire line.
+                // Discard entire line.
                 var type = Get().Type;
                 if (type == TokenType.EOF || type == TokenType.NL)
                     return;

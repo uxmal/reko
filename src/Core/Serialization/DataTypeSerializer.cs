@@ -121,7 +121,11 @@ namespace Reko.Core.Serialization
 
         public SerializedType VisitReference(ReferenceTo refTo)
         {
-            throw new NotImplementedException();
+            return new ReferenceType_v1
+            {
+                Referent = refTo.Referent.Accept(this),
+                Size = refTo.Size,
+            };
         }
 
         public SerializedType VisitString(StringType str)
