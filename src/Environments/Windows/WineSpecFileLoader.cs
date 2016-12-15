@@ -32,7 +32,10 @@ using System.Text;
 
 namespace Reko.Environments.Windows
 {
-    // https://www.winehq.org/docs/winelib-guide/spec-file
+    /// <summary>
+    /// Loads metadata info encoded as a WINE spec file
+    /// (see https://www.winehq.org/docs/winelib-guide/spec-file for details)
+    /// </summary>
     public class WineSpecFileLoader : MetadataLoader
     {
         private string filename;
@@ -216,6 +219,24 @@ namespace Reko.Environments.Windows
             case "wstr":
                 type = PointerType_v1.Create(PrimitiveType_v1.WChar16(), 4);
                 break;
+			case "uint16":
+				type = PrimitiveType_v1.UInt16();
+				break;
+			case "uint32":
+				type = PrimitiveType_v1.UInt32();
+				break;
+			case "uint64":
+				type = PrimitiveType_v1.UInt64();
+				break;
+			case "int16":
+				type = PrimitiveType_v1.Int16();
+				break;
+			case "int32":
+				type = PrimitiveType_v1.Int32();
+				break;
+			case "int64":
+				type = PrimitiveType_v1.Int64();
+				break;
             default: throw new Exception("Unknown: " + tok.Value);
             }
             args.Add(new Argument_v1 { Type = type });
@@ -224,7 +245,13 @@ namespace Reko.Environments.Windows
 
         private string DefaultModuleName(string filename)
         {
-            return Path.GetFileNameWithoutExtension(filename).ToUpper() + ".DLL";
+			string libName = Path.GetFileNameWithoutExtension (filename).ToUpper ();
+
+			if (Path.GetExtension (libName).Length > 0) {
+				return libName;
+			} else {
+				return libName + ".DLL";
+			}
         }
 
         private Token Peek()

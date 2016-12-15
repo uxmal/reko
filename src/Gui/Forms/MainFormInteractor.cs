@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2016 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -287,6 +287,9 @@ namespace Reko.Gui.Forms
             }
         }
 
+        /// <summary>
+        /// Prompts the user for a metadata file and adds to the project.
+        /// </summary>
         public void AddMetadataFile()
         {
             var fileName = uiSvc.ShowOpenFileDialog(null);
@@ -298,8 +301,16 @@ namespace Reko.Gui.Forms
                 loader,
                 this.decompilerSvc.Decompiler.Project,
                 this.sc.RequireService<DecompilerEventListener>());
-            var metadata = projectLoader.LoadMetadataFile(fileName);
-            decompilerSvc.Decompiler.Project.MetadataFiles.Add(metadata);
+
+            try
+            {
+                var metadata = projectLoader.LoadMetadataFile(fileName);
+                decompilerSvc.Decompiler.Project.MetadataFiles.Add(metadata);
+            }
+            catch (Exception e)
+            {
+                uiSvc.ShowError(e, "An error occured while parsing the metadata file {0}", fileName);
+            }
         }
 
         public bool AssembleFile()
