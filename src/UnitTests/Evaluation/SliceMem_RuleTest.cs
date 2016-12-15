@@ -53,6 +53,5 @@ namespace Reko.UnitTests.Evaluation
 			var e = r.Transform();
 			Assert.AreEqual("Mem0[ptr + 0x00000000:word16]", e.ToString());
 		}
-
 	}
 }

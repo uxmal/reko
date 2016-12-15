@@ -61,6 +61,7 @@ namespace Reko.Evaluation
         private SelfDpbRule selfdpbRule;
         private IdProcConstRule idProcConstRule;
         private CastCastRule castCastRule;
+        private MkSeqFromSlices_Rule mkSeqFromSlicesRule;
 
         public ExpressionSimplifier(EvaluationContext ctx)
         {
@@ -89,6 +90,7 @@ namespace Reko.Evaluation
             this.selfdpbRule = new SelfDpbRule(ctx);
             this.idProcConstRule = new IdProcConstRule(ctx);
             this.castCastRule = new CastCastRule(ctx);
+            this.mkSeqFromSlicesRule = new MkSeqFromSlices_Rule(ctx);
         }
 
         public bool Changed { get { return changed; } set { changed = value; } }
@@ -520,7 +522,10 @@ namespace Reko.Evaluation
                     new Cast(
                         PrimitiveType.Create(Domain.UnsignedInt, tail.DataType.Size),
                         tail));
-
+            }
+            if (mkSeqFromSlicesRule.Match(seq))
+            {
+                return mkSeqFromSlicesRule.Transform();
             }
             return new MkSequence(seq.DataType, head, tail);
         }

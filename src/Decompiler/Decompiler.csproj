@@ -221,6 +221,7 @@
     </Compile>
     <Compile Include="Evaluation\CastCastRule.cs" />
     <Compile Include="Evaluation\IdProcConstRule.cs" />
+    <Compile Include="Evaluation\MkSeqFromSlices_Rule.cs" />
     <Compile Include="Evaluation\SelfDpbRule.cs" />
     <Compile Include="Evaluation\Shl_add_Rule.cs" />
     <Compile Include="Evaluation\SliceSegmentedPointer_Rule.cs" />
