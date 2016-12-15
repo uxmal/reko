@@ -33,7 +33,10 @@ namespace Reko.Core
     {
         public MetadataLoader(IServiceProvider services, string filename, byte[] bytes)
         {
+            this.Services = services;
         }
+
+        public IServiceProvider Services { get; private set; }
 
         public abstract TypeLibrary Load(IPlatform platform, TypeLibrary dstLib);
     }

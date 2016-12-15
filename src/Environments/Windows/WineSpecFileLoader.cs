@@ -22,6 +22,7 @@ using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -67,50 +68,70 @@ namespace Reko.Environments.Windows
                     break;
                 if (PeekAndDiscard(TokenType.NL))
                     continue;
-                ParseLine();
+                var line =  ParseLine();
+                if (line != null)
+                {
+                    if (line.Item1.HasValue)
+                    {
+                        tlLoader.LoadService(line.Item1.Value, line.Item2);
+                    }
+                    else
+                    {
+                        tlLoader.LoadService(line.Item2.Name, line.Item2);
+                    }
+                }
             }
             return dstLib;
         }
 
-        public void ParseLine()
+        public Tuple<int?, SystemService> ParseLine()
         {
-            int? ordinal = ParseOrdinal();
-
-            string callconv = ParseCallingConvention();
-
-            var options = ParseOptions();
-
-            var tok = Get();
-            string fnName = tok.Value;
-            var ssig = new SerializedSignature
+            try
             {
-                Convention = callconv,
-            };
-            ssig.Arguments = ParseParameters(ssig);
-            
-            var deser = new X86ProcedureSerializer((IntelArchitecture)platform.Architecture, tlLoader, callconv);
-            var sig = deser.Deserialize(ssig, new Frame(platform.FramePointerType));
-            var svc = new SystemService
-            {
-                ModuleName = moduleName.ToUpper(),
-                Name = fnName,
-                Signature = sig
-            };
-            if (ordinal.HasValue)
-            {
-                tlLoader.LoadService(ordinal.Value, svc);
+                int? ordinal = ParseOrdinal();
+
+                string callconv = ParseCallingConvention();
+
+                var options = ParseOptions();
+
+                var tok = Get();
+                string fnName = tok.Value;
+                var ssig = new SerializedSignature
+                {
+                    Convention = callconv,
+                };
+                ssig.Arguments = ParseParameters(ssig);
+                SkipToEndOfLine();
+
+                var deser = new X86ProcedureSerializer((IntelArchitecture)platform.Architecture, tlLoader, callconv);
+                var sig = deser.Deserialize(ssig, new Frame(platform.FramePointerType));
+                var svc = new SystemService
+                {
+                    ModuleName = moduleName.ToUpper(),
+                    Name = fnName,
+                    Signature = sig
+                };
+                return Tuple.Create(ordinal, svc);
             }
-            else
+            catch
             {
-                tlLoader.LoadService(fnName, svc);
+                Services.RequireService<DecompilerEventListener>().Warn(
+                    new NullCodeLocation(moduleName),
+                    "Line {0} in the Wine spec file could not be read; skipping.",
+                    lexer.lineNumber);
+                SkipToEndOfLine();
+                return null;
             }
+        }
 
+        private void SkipToEndOfLine()
+        {
             for (;;)
             {
-                // Discared entire line.
+                // Discard rest of line.
                 var type = Get().Type;
                 if (type == TokenType.EOF || type == TokenType.NL)
-                    return;
+                    break;
             }
         }
 
@@ -239,7 +260,7 @@ namespace Reko.Environments.Windows
 
         private class Lexer
         {
-            private int lineNumber;
+            internal int lineNumber;
             private TextReader rdr;
 
             enum State
@@ -361,6 +382,12 @@ namespace Reko.Environments.Windows
             RPAREN,
             AT,
             EQ,
+        }
+
+        public class ParseResults
+        {
+            public SortedList<int, SystemService> ServicesByOrdinal;
+            public SortedList<string, SystemService> ServicesByName;
         }
     }
 }
