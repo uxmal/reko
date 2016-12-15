@@ -1,5 +1,5 @@
 void fn0C00_0000(Register selector ds, Stack segptr32 ptrArg04)
-// MayUse:  ds:[0..15] Stack +0004:[0..15]
+// MayUse:  ds:[0..15] Stack +0004:[0..31]
 // LiveOut:
 // Trashed: ax bx C es O S Top Z
 // Preserved: bp sp

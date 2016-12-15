@@ -95,6 +95,7 @@ namespace Reko.Analysis
         public Instruction VisitAssignment(Assignment a)
         {
             a.Src = a.Src.Accept(eval);
+            ssa.Identifiers[a.Dst].DefExpression = a.Src;
             return a;
         }
 
