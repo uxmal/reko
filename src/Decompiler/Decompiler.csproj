@@ -207,6 +207,7 @@
     <Compile Include="Analysis\TrashedStorageHelper.cs" />
     <Compile Include="Analysis\UsedRegisterFinder.cs" />
     <Compile Include="Analysis\UserSignatureBuilder.cs" />
+    <Compile Include="Analysis\ValueNumbering.cs" />
     <Compile Include="Analysis\ValuePropagator.cs">
       <SubType>Code</SubType>
     </Compile>
