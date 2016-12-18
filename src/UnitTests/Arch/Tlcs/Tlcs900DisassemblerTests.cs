@@ -19,7 +19,7 @@
 #endregion
 
 using NUnit.Framework;
-using Reko.Architectures.Tlcs;
+using Reko.Arch.Tlcs;
 using Reko.Core;
 using System;
 using System.Collections.Generic;

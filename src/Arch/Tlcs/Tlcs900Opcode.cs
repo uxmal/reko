@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.Architectures.Tlcs
+namespace Reko.Arch.Tlcs
 {
     public enum Tlcs900Opcode
     {

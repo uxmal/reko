@@ -23,8 +23,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Opcode = Reko.Arch.Tlcs.Tlcs900Opcode;
 
-namespace Reko.Architectures.Tlcs
+namespace Reko.Arch.Tlcs
 {
     public class Tlcs900Instruction : MachineInstruction
     {
@@ -33,14 +34,14 @@ namespace Reko.Architectures.Tlcs
             get { return InstructionClass.Linear; }
         }
 
-        public Tlcs900Opcode Opcode;
+        public Opcode Opcode;
         public MachineOperand op1;
         public MachineOperand op2;
         public MachineOperand op3;
 
         public override bool IsValid 
         {
-            get { return Opcode != Tlcs900Opcode.invalid; }
+            get { return Opcode != Opcode.invalid; }
         }
 
         public override int OpcodeAsInteger

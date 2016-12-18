@@ -182,6 +182,7 @@
     <Architectures Include="$(ProjectDir)..\..\Arch\PowerPC\$(OutDir)Reko.Arch.PowerPC.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\RiscV\$(OutDir)Reko.Arch.RiscV.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Sparc\$(OutDir)Reko.Arch.Sparc.*" />
+    <Architectures Include="$(ProjectDir)..\..\Arch\Tlcs\$(OutDir)Reko.Arch.Tlcs.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Vax\$(OutDir)Reko.Arch.Vax.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\X86\$(OutDir)Reko.Arch.X86.*" />
     <Architectures Include="$(ProjectDir)..\..\Arch\Xtensa\$(OutDir)Reko.Arch.Xtensa.*" />

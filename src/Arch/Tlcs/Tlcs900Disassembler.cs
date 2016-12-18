@@ -25,9 +25,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Opcode = Reko.Architectures.Tlcs.Tlcs900Opcode;
+using Opcode = Reko.Arch.Tlcs.Tlcs900Opcode;
 
-namespace Reko.Architectures.Tlcs
+namespace Reko.Arch.Tlcs
 {
     public partial class Tlcs900Disassembler : DisassemblerBase<Tlcs900Instruction>
     {

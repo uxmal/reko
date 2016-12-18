@@ -28,11 +28,20 @@ using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 
-namespace Reko.Architectures.Tlcs
+namespace Reko.Arch.Tlcs
 {
     // https://toshiba.semicon-storage.com/product/micro/900H1_CPU_BOOK_CP3_CPU_en.pdf
     public class Tlcs900Architecture : ProcessorArchitecture
     {
+        public Tlcs900Architecture()
+        {
+            this.InstructionBitSize = 8;        // Instruction alignment, really.
+            this.FramePointerType = PrimitiveType.Pointer32;
+            this.PointerType = PrimitiveType.Pointer32;
+            this.WordWidth = PrimitiveType.Word32;
+            this.StackRegister = Tlcs900Registers.xsp;
+        }
+
         public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader rdr)
         {
             return new Tlcs900Disassembler(this, rdr);
@@ -45,7 +54,7 @@ namespace Reko.Architectures.Tlcs
 
         public override ImageReader CreateImageReader(MemoryArea img, Address addr)
         {
-            throw new NotImplementedException();
+            return new LeImageReader(img, addr);
         }
 
         public override ImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
@@ -145,7 +154,7 @@ namespace Reko.Architectures.Tlcs
 
         public override bool TryParseAddress(string txtAddr, out Address addr)
         {
-            throw new NotImplementedException();
+            return Address.TryParse32(txtAddr, out addr);
         }
     }
 }
