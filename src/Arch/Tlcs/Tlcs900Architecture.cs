@@ -35,7 +35,7 @@ namespace Reko.Architectures.Tlcs
     {
         public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader rdr)
         {
-            return new Tlcs900Disassembler(rdr);
+            return new Tlcs900Disassembler(this, rdr);
         }
 
         public override ImageReader CreateImageReader(MemoryArea img, ulong off)

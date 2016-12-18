@@ -40,7 +40,7 @@ namespace Reko.Architectures.Tlcs
 
         public override bool IsValid 
         {
-            get { return Opcode != Tlcs900Opcode.Invalid; }
+            get { return Opcode != Tlcs900Opcode.invalid; }
         }
 
         public override int OpcodeAsInteger
@@ -53,5 +53,29 @@ namespace Reko.Architectures.Tlcs
             throw new NotImplementedException();
         }
 
+        public override void Render(MachineInstructionWriter writer)
+        {
+            writer.WriteOpcode(Opcode.ToString());
+            if (op1 != null)
+            {
+                writer.Tab();
+                WriteOperand(op1, writer);
+                if (op2 != null)
+                {
+                    writer.Write(",");
+                    WriteOperand(op2, writer);
+                    if (op3 != null)
+                    {
+                        writer.Write(",");
+                        WriteOperand(op2, writer);
+                    }
+                }
+            }
+        }
+
+        private void WriteOperand(MachineOperand op, MachineInstructionWriter writer)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

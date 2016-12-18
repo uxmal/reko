@@ -27,6 +27,7 @@ namespace Reko.Architectures.Tlcs
 {
     public enum Tlcs900Opcode
     {
-        Invalid,
+        invalid,
+        nop,
     }
 }
