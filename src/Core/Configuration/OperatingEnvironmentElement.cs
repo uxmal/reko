@@ -167,8 +167,8 @@ namespace Reko.Core.Configuration
             }
             else
             {
-                bytes = LoadHexPattern(sPattern.Bytes);
-                mask = LoadHexPattern(sPattern.Mask);
+                bytes = LoadHexBytes(sPattern.Bytes);
+                mask = LoadHexBytes(sPattern.Mask);
             }
             if (bytes.Count == 0)
                 return null;
@@ -181,7 +181,8 @@ namespace Reko.Core.Configuration
 
         }
 
-        private List<byte> LoadHexPattern(string sBytes)
+        //$REFACTOR: this is so generic it should live somewhere else.
+        public static List<byte> LoadHexBytes(string sBytes)
         {
             int shift = 4;
             int bb = 0;

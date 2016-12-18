@@ -30,6 +30,7 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 using Reko.Core.Serialization;
+using Reko.Core.Configuration;
 
 namespace Reko.UnitTests.Arch
 {
@@ -159,5 +160,12 @@ namespace Reko.UnitTests.Arch
                     "bitPattern");
             return instr;
         }
+
+        public byte[] ParseHexPattern(string hexPattern)
+        {
+            return OperatingEnvironmentElement.LoadHexBytes(hexPattern)
+                .ToArray();
+        }
+
     }
 }
