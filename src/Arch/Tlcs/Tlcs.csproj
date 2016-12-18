@@ -46,6 +46,7 @@
     <Compile Include="Tlcs900Disassembler.cs" />
     <Compile Include="Tlcs900Instruction.cs" />
     <Compile Include="Tlcs900Opcode.cs" />
+    <Compile Include="Tlcs900Registers.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">

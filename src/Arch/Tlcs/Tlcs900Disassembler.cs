@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,11 +59,38 @@ namespace Reko.Architectures.Tlcs
                 Address = this.addr,
 
             };
-            for (int i =0; i< fmt.Length; ++i)
+            var ops = new List<MachineOperand>();
+            MachineOperand op = null;
+            for (int i = 0; i< fmt.Length; ++i)
             {
-
+                switch (fmt[i++])
+                {
+                case ',': continue;
+                case 'R':   // 16 bit register encoded in lsb
+                    op = Reg16(b & 0x7);
+                    break;
+                }
+                ops.Add(op);
+            }
+            if (ops.Count > 0)
+            {
+                instr.op1 = ops[0];
+                if (ops.Count > 1)
+                {
+                    instr.op2 = ops[1];
+                    if (ops.Count > 2)
+                    {
+                        instr.op3 = ops[2];
+                    }
+                }
             }
             return instr;
+        }
+
+        private RegisterOperand Reg16(int regNum)
+        {
+            return new RegisterOperand(
+                Tlcs900Registers.regs[8 + (regNum & 7)]);
         }
 
         public class OpRec
@@ -83,6 +111,7 @@ namespace Reko.Architectures.Tlcs
         }
 
         private static OpRec[] opRecs = {
+            // 00
             new OpRec(Opcode.nop, ""),    
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
@@ -122,7 +151,27 @@ namespace Reko.Architectures.Tlcs
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
-            // 10
+            // 20
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+
+            new OpRec(Opcode.push, "R"),
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.invalid, ""),
+            // 30
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
@@ -142,7 +191,7 @@ namespace Reko.Architectures.Tlcs
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
-            // 10
+            // 40
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
@@ -162,7 +211,7 @@ namespace Reko.Architectures.Tlcs
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
-            // 10
+            // 50
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
@@ -182,7 +231,7 @@ namespace Reko.Architectures.Tlcs
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
-            // 10
+            // 60
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
@@ -202,7 +251,7 @@ namespace Reko.Architectures.Tlcs
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
-            // 10
+            // 70
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
@@ -222,7 +271,7 @@ namespace Reko.Architectures.Tlcs
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
-            // 10
+            // 80
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
@@ -242,7 +291,7 @@ namespace Reko.Architectures.Tlcs
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
-            // 10
+            // 90
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
@@ -262,7 +311,7 @@ namespace Reko.Architectures.Tlcs
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
-            // 10
+            // A0
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
@@ -282,7 +331,7 @@ namespace Reko.Architectures.Tlcs
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
-            // 10
+            // B0
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
@@ -302,7 +351,7 @@ namespace Reko.Architectures.Tlcs
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
-            // 10
+            // C0
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
@@ -322,7 +371,7 @@ namespace Reko.Architectures.Tlcs
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
-            // 10
+            // D0
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
@@ -342,7 +391,7 @@ namespace Reko.Architectures.Tlcs
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
-            // 10
+            // E0
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
@@ -362,7 +411,7 @@ namespace Reko.Architectures.Tlcs
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
-            // 10
+            // F0
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
@@ -382,26 +431,6 @@ namespace Reko.Architectures.Tlcs
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
-            // 10
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            };
+        };
     }
 }

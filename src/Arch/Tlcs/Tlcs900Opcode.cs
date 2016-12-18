@@ -29,5 +29,6 @@ namespace Reko.Architectures.Tlcs
     {
         invalid,
         nop,
+        push,
     }
 }

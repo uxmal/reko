@@ -75,6 +75,12 @@ namespace Reko.Architectures.Tlcs
 
         private void WriteOperand(MachineOperand op, MachineInstructionWriter writer)
         {
+            var r = op as RegisterOperand;
+            if (op != null)
+            {
+                writer.Write(r.Register.Name);
+                return;
+            }
             throw new NotImplementedException();
         }
     }
