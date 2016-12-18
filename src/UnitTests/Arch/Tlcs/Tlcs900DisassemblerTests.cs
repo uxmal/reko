@@ -67,5 +67,11 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("push\twa", "28");
         }
+
+        [Test]
+        public void Tlcs900_dis_ld_reg_byte()
+        {
+            AssertCode("push\twa", "CA89");
+        }
     }
 }
