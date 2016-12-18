@@ -71,7 +71,28 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_dis_ld_reg_byte()
         {
-            AssertCode("push\twa", "CA89");
+            AssertCode("ld\ta,b", "CA89");
+        }
+
+        [Test]
+        public void Tlcs900_dis_add_reg_indirect_word()
+        {
+            AssertCode("add\tbc,(xhl)", "9381");
+        }
+
+        [Test]
+        public void Tlcs900_dis_sub_reg_indexed_8()
+        {
+            AssertCode("sub\tde,(xsp+-4)", "9FFCA2");
+        }
+
+        [Test]
+        [Ignore("Learn how to properly decode this")]
+        public void Tlcs900_dis_xor_reg_indexed_16()
+        {
+            //$TODO: which of the following two is correct?
+            AssertCode("xor\tde,(xsp+-4)", "C3FCFFD2");
+            AssertCode("xor\tde,(xsp+-4)", "C3D2FCFF");
         }
     }
 }

@@ -59,29 +59,18 @@ namespace Reko.Architectures.Tlcs
             if (op1 != null)
             {
                 writer.Tab();
-                WriteOperand(op1, writer);
+                op1.Write(false, writer);
                 if (op2 != null)
                 {
                     writer.Write(",");
-                    WriteOperand(op2, writer);
+                    op2.Write(false, writer);
                     if (op3 != null)
                     {
                         writer.Write(",");
-                        WriteOperand(op2, writer);
+                        op3.Write(false, writer);
                     }
                 }
             }
-        }
-
-        private void WriteOperand(MachineOperand op, MachineInstructionWriter writer)
-        {
-            var r = op as RegisterOperand;
-            if (op != null)
-            {
-                writer.Write(r.Register.Name);
-                return;
-            }
-            throw new NotImplementedException();
         }
     }
 }

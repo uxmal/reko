@@ -41,9 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MemoryOperand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tlcs900Architecture.cs" />
     <Compile Include="Tlcs900Disassembler.cs" />
+    <Compile Include="Tlcs900Disassembler.dst.cs" />
+    <Compile Include="Tlcs900Disassembler.mem.cs" />
+    <Compile Include="Tlcs900Disassembler.reg.cs" />
     <Compile Include="Tlcs900Instruction.cs" />
     <Compile Include="Tlcs900Opcode.cs" />
     <Compile Include="Tlcs900Registers.cs" />

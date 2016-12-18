@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,7 @@ using Opcode = Reko.Architectures.Tlcs.Tlcs900Opcode;
 
 namespace Reko.Architectures.Tlcs
 {
-    public class Tlcs900Disassembler : DisassemblerBase<Tlcs900Instruction>
+    public partial class Tlcs900Disassembler : DisassemblerBase<Tlcs900Instruction>
     {
         private Tlcs900Architecture arch;
         private ImageReader rdr;
@@ -74,7 +75,7 @@ namespace Reko.Architectures.Tlcs
                 {
                 case ',': continue;
                 case 'R':   // 16 bit register encoded in lsb
-                    op = Reg(fmt[i++], b & 0x7);
+                    op = new RegisterOperand( Reg(fmt[i++], b & 0x7));
                     break;
                 }
                 ops.Add(op);
@@ -96,31 +97,65 @@ namespace Reko.Architectures.Tlcs
 
         private MachineOperand DecodeOperand(byte b, string fmt)
         {
+            MachineOperand op;
             switch (fmt[0])
             {
-            case 'r': return Reg(fmt[1], b & 0x7);
+            case 'r': // Register
+                op = new RegisterOperand(Reg(fmt[1], b & 0x7));
+                SetSize(fmt[1]);
+                return op;
+            case 'M': // Register indirect
+                op = MemoryOperand.Indirect(Size(fmt[1]), Reg('x', b & 7));
+                SetSize(fmt[1]);
+                return op;
+            case 'N': // indexed (8-bit offset)
+                byte o8;
+                if (!rdr.TryReadByte(out o8))
+                    return null;
+                op = MemoryOperand.Indexed8(Size(fmt[1]), Reg('x', b & 7), (sbyte)o8);
+                SetSize(fmt[1]);
+                return op;
             default: throw new FormatException(
                 string.Format(
                     "Unknown format {0} decoding byte {1:X2}", fmt[0], (int)b));
             }
         }
 
-        private RegisterOperand Reg(char size, int regNum)
+        private RegisterStorage Reg(char size, int regNum)
         {
             int r = regNum & 7;
-            RegisterStorage reg;
             if (size == 'z')
             {
                 size = this.opSize;
             }
             switch (size)
             {
-            case 'x': this.opSize = size; reg = Tlcs900Registers.regs[8 + r]; break;
-            case 'w': this.opSize = size; reg = Tlcs900Registers.regs[8 + r]; break;
-            case 'b': this.opSize = size; reg = Tlcs900Registers.regs[16 + r]; break;
+            case 'x': return Tlcs900Registers.regs[r];
+            case 'w': return Tlcs900Registers.regs[8 + r];
+            case 'b': return Tlcs900Registers.regs[16 + r];
             default: throw new FormatException();
             }
-            return new RegisterOperand(reg);
+        }
+
+        private PrimitiveType Size(char size)
+        {
+            if (size == 'z')
+            {
+                size = this.opSize;
+            }
+            switch (size)
+            {
+            case 'x': this.opSize = size; return PrimitiveType.Word32;
+            case 'w': this.opSize = size; return PrimitiveType.Word16;
+            case 'b': this.opSize = size; return PrimitiveType.Byte;
+            default: throw new FormatException();
+            }
+        }
+
+        private void SetSize(char size)
+        {
+            if (size != 'z')
+                this.opSize = size;
         }
 
         public abstract class OpRecBase
@@ -157,9 +192,27 @@ namespace Reko.Architectures.Tlcs
             public override Tlcs900Instruction Decode(byte b, Tlcs900Disassembler dasm)
             {
                 dasm.opSrc = dasm.DecodeOperand(b, this.fmt);
-                if (!dasm.rdr.TryReadByte(out b))
+                if (dasm.opSrc == null || !dasm.rdr.TryReadByte(out b))
                     return dasm.Decode(b, Opcode.invalid, "");
                 return regOpRecs[b].Decode(b, dasm);
+            }
+        }
+
+        private class MemOpRec : OpRecBase
+        {
+            private string fmt;
+
+            public MemOpRec(string fmt)
+            {
+                this.fmt = fmt;
+            }
+
+            public override Tlcs900Instruction Decode(byte b, Tlcs900Disassembler dasm)
+            {
+                dasm.opSrc = dasm.DecodeOperand(b, this.fmt);
+                if (dasm.opSrc == null || !dasm.rdr.TryReadByte(out b))
+                    return dasm.Decode(b, Opcode.invalid, "");
+                return memOpRecs[b].Decode(b, dasm);
             }
         }
 
@@ -177,6 +230,8 @@ namespace Reko.Architectures.Tlcs
             public override Tlcs900Instruction Decode(byte b, Tlcs900Disassembler dasm)
             {
                 dasm.opDst = dasm.DecodeOperand(b, this.fmt);
+                if (dasm.opDst == null)
+                    return dasm.Decode(b, Opcode.invalid, "");
                 return new Tlcs900Instruction
                 {
                     Opcode = this.opcode,
@@ -349,65 +404,65 @@ namespace Reko.Architectures.Tlcs
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             // 80
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new MemOpRec("Mb"),
+            new MemOpRec("Mb"),
+            new MemOpRec("Mb"),
+            new MemOpRec("Mb"),
 
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new MemOpRec("Mb"),
+            new MemOpRec("Mb"),
+            new MemOpRec("Mb"),
+            new MemOpRec("Mb"),
 
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new MemOpRec("Nb"),
+            new MemOpRec("Nb"),
+            new MemOpRec("Nb"),
+            new MemOpRec("Nb"),
 
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new MemOpRec("Nb"),
+            new MemOpRec("Nb"),
+            new MemOpRec("Nb"),
+            new MemOpRec("Nb"),
             // 90
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new MemOpRec("Mw"),
+            new MemOpRec("Mw"),
+            new MemOpRec("Mw"),
+            new MemOpRec("Mw"),
 
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new MemOpRec("Mw"),
+            new MemOpRec("Mw"),
+            new MemOpRec("Mw"),
+            new MemOpRec("Mw"),
 
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new MemOpRec("Nw"),
+            new MemOpRec("Nw"),
+            new MemOpRec("Nw"),
+            new MemOpRec("Nw"),
 
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new MemOpRec("Nw"),
+            new MemOpRec("Nw"),
+            new MemOpRec("Nw"),
+            new MemOpRec("Nw"),
             // A0
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new MemOpRec("Mx"),
+            new MemOpRec("Mx"),
+            new MemOpRec("Mx"),
+            new MemOpRec("Mx"),
 
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new MemOpRec("Mx"),
+            new MemOpRec("Mx"),
+            new MemOpRec("Mx"),
+            new MemOpRec("Mx"),
 
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new MemOpRec("Nx"),
+            new MemOpRec("Nx"),
+            new MemOpRec("Nx"),
+            new MemOpRec("Nx"),
 
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new MemOpRec("Nx"),
+            new MemOpRec("Nx"),
+            new MemOpRec("Nx"),
+            new MemOpRec("Nx"),
             // B0
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
@@ -429,13 +484,13 @@ namespace Reko.Architectures.Tlcs
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             // C0
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new MemOpRec("Ob"),
+            new MemOpRec("Pb"),
+            new MemOpRec("Qb"),
+            new MemOpRec("mb"),
 
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new MemOpRec("+b"),
+            new MemOpRec("-b"),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
 
@@ -449,13 +504,13 @@ namespace Reko.Architectures.Tlcs
             new RegOpRec("rb"),
             new RegOpRec("rb"),
             // D0
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new MemOpRec("Ow"),
+            new MemOpRec("Pw"),
+            new MemOpRec("Qw"),
+            new MemOpRec("mw"),
 
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new MemOpRec("+w"),
+            new MemOpRec("-w"),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
 
@@ -469,349 +524,26 @@ namespace Reko.Architectures.Tlcs
             new RegOpRec("rw"),
             new RegOpRec("rw"),
             // E0
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new MemOpRec("Ox"),
+            new MemOpRec("Px"),
+            new MemOpRec("Qx"),
+            new MemOpRec("mx"),
 
+            new MemOpRec("+x"),
+            new MemOpRec("-x"),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new RegOpRec("rx"),
-            new RegOpRec("rx"),
-            new RegOpRec("rx"),
-            new RegOpRec("rx"),
 
             new RegOpRec("rx"),
             new RegOpRec("rx"),
             new RegOpRec("rx"),
             new RegOpRec("rx"),
 
-            // F0
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new RegOpRec("rx"),
+            new RegOpRec("rx"),
+            new RegOpRec("rx"),
+            new RegOpRec("rx"),
 
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-        };
-
-        private static OpRecBase[] regOpRecs = {
-            // 00
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            // 10
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            // 20
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.push, "Rw"),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            // 30
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            // 40
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            // 50
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            // 60
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            // 70
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            // 80
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new DstOpRec(Opcode.ld, "rz"),
-            new DstOpRec(Opcode.ld, "rz"),
-            new DstOpRec(Opcode.ld, "rz"),
-            new DstOpRec(Opcode.ld, "rz"),
-
-            new DstOpRec(Opcode.ld, "rz"),
-            new DstOpRec(Opcode.ld, "rz"),
-            new DstOpRec(Opcode.ld, "rz"),
-            new DstOpRec(Opcode.ld, "rz"),
-            // 90
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            // A0
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            // B0
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            // C0
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            // D0
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            // E0
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
             // F0
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),

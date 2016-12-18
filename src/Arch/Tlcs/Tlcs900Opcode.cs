@@ -28,8 +28,16 @@ namespace Reko.Architectures.Tlcs
     public enum Tlcs900Opcode
     {
         invalid,
-        nop,
-        push,
+        adc,
+        add,
+        and,
+        cp,
         ld,
+        nop,
+        or,
+        push,
+        sbc,
+        sub,
+        xor,
     }
 }
