@@ -267,5 +267,18 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("cpl\thl", "DB06");
         }
+
+        [Test]
+        public void Tlcs900_dis_post_inc()
+        {
+            AssertCode("ld\twa,(xhl+)", "D50D20");
+        }
+
+        [Test]
+        public void Tlcs900_dis_post_inc_odd()
+        {
+            //$REVIEW: increment and data size don't match. Is this OK?
+            AssertCode("ld\ta,(xhl+)", "C50E21");
+        }
     }
 }
