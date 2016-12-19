@@ -64,6 +64,7 @@
     <Compile Include="Tlcs900ProcessorState.cs" />
     <Compile Include="Tlcs900Registers.cs" />
     <Compile Include="Tlcs900Rewriter.cs" />
+    <Compile Include="Tlcs900Rewriter.Control.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Core.csproj">

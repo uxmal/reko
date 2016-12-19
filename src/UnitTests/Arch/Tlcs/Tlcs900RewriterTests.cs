@@ -88,5 +88,53 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "2|L--|N = false",
                 "3|L--|SZHVC = cond(xbc)");
         }
+
+        [Test]
+        public void Tlcs900_rw_inc_predec()
+        {
+            RewriteCode("E40961"); // inc\t00000001,(-xde)
+            AssertCode(
+                "0|L--|00010000(3): 5 instructions",
+                "1|L--|xde = xde - 0x00000004",
+                "2|L--|v3 = Mem0[xde:word32] + 0x00000001",
+                "3|L--|Mem0[xde:word32] = v3",
+                "4|L--|N = false",
+                "5|L--|SZHV = cond(v3)");
+        }
+
+        [Test]
+        public void Tlcs900_rw_sub_postinc()
+        {
+            RewriteCode("E509A8"); // sub\t,(xde+),xwa
+            AssertCode(
+                "0|L--|00010000(3): 5 instructions",
+                "1|L--|v4 = Mem0[xde:word32] - xwa",
+                "2|L--|Mem0[xde:word32] = v4",
+                "3|L--|xde = xde + 0x00000004",
+                "4|L--|N = true",
+                "5|L--|SZHVC = cond(v4)");
+        }
+
+        [Test]
+        public void Tlcs900_rw_jp_cc()
+        {
+            //$REVIEW: not sure if I agree here. Shouldn't this be
+            // simply if (Test(GE,SV) goto xwa?
+            RewriteCode("B0D9"); // jp\tGE,(xwa)
+            AssertCode(
+                "0|T--|00010000(2): 2 instructions",
+                "1|L--|v4 = Mem0[xwa:word32]",
+                "2|T--|if (Test(GE,SV)) goto v4");
+        }
+
+        [Test]
+        public void Tlcs900_rw_call()
+        {
+            RewriteCode("1D563412"); // call\t123456
+            AssertCode(
+                "0|T--|00010000(4): 1 instructions",
+                "1|T--|call 00123456 (4)");
+
+        }
     }
 }

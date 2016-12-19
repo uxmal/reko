@@ -261,5 +261,11 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("unlk\txiy", "ED0D");
         }
+
+        [Test]
+        public void Tlcs900_dis_cpl()
+        {
+            AssertCode("cpl\thl", "DB06");
+        }
     }
 }

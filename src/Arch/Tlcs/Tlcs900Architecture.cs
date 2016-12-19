@@ -101,7 +101,20 @@ namespace Reko.Arch.Tlcs
 
         public override FlagGroupStorage GetFlagGroup(string name)
         {
-            throw new NotImplementedException();
+            uint grf = 0;
+            foreach (var c in name)
+            {
+                switch (c)
+                {
+                case 'S': grf |= Registers.S.FlagGroupBits; break;
+                case 'Z': grf |= Registers.Z.FlagGroupBits; break;
+                case 'H': grf |= Registers.H.FlagGroupBits; break;
+                case 'V': grf |= Registers.V.FlagGroupBits; break;
+                case 'N': grf |= Registers.N.FlagGroupBits; break;
+                case 'C': grf |= Registers.C.FlagGroupBits; break;
+                }
+            }
+            return GetFlagGroup(grf);
         }
 
         public override FlagGroupStorage GetFlagGroup(uint grf)

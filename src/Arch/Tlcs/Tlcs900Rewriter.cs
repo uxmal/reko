@@ -68,8 +68,12 @@ namespace Reko.Arch.Tlcs
                        instr.Address,
                        "Rewriting of TLCS-900 instruction '{0}' not implemented yet.",
                        instr.Opcode);
-                case Opcode.add: RewriteBinOp(m.IAdd); break;
+                case Opcode.add: RewriteBinOp(m.IAdd, "***V0*"); break;
+                case Opcode.call: RewriteCall(); break;
+                case Opcode.inc: RewriteIncDec(m.IAdd, "****0-"); break;
+                case Opcode.jp: RewriteJp(); break;
                 case Opcode.ld: RewriteLd(); break;
+                case Opcode.sub: RewriteBinOp(m.ISub, "***V1*"); break;
                 }
                 yield return rtlc;
             }
@@ -82,6 +86,16 @@ namespace Reko.Arch.Tlcs
 
         private Expression RewriteSrc(MachineOperand op)
         {
+            var reg = op as RegisterOperand;
+            if (reg != null)
+            {
+                return frame.EnsureRegister(reg.Register);
+            }
+            var addr = op as AddressOperand;
+            if (addr != null)
+            {
+                return addr.Address;
+            }
             var imm = op as ImmediateOperand;
             if (imm != null)
             {
@@ -122,6 +136,38 @@ namespace Reko.Arch.Tlcs
                 m.Assign(id, fn(id, src));
                 return id;
             }
+            var addr = op as AddressOperand;
+            if (addr != null)
+            {
+                return addr.Address;
+            }
+            var mem = op as MemoryOperand;
+            if (mem != null)
+            {
+                Expression ea;
+                if (mem.Base != null)
+                {
+                    ea = frame.EnsureRegister(mem.Base);
+                    if (mem.Increment < 0)
+                    {
+                        m.Assign(ea, m.ISub(ea, mem.Width.Size));
+                    }
+                    var load = m.Load(mem.Width, ea);
+                    var tmp = frame.CreateTemporary(ea.DataType);
+                    m.Assign(tmp, fn(load, src));
+                    m.Assign(m.Load(mem.Width, ea), tmp);
+                    if (mem.Increment > 0)
+                    {
+                        m.Assign(ea, m.IAdd(ea, mem.Width.Size));
+                    }
+                    return tmp;
+                }
+                else
+                {
+                    throw new NotImplementedException(op.ToString());
+                }
+
+            }
             throw new NotImplementedException(op.GetType().Name);
         }
 
@@ -157,6 +203,34 @@ namespace Reko.Arch.Tlcs
                     frame.EnsureFlagGroup(arch.GetFlagGroup(grf)),
                     m.Cond(exp));
             }
+        }
+
+        private Expression GenerateTestExpression(ConditionOperand cOp, bool invert)
+        {
+            ConditionCode cc = ConditionCode.ALWAYS;
+            string flags = "";
+            switch (cOp.Code)
+            {
+            case CondCode.F: return invert ? Constant.True() : Constant.False();
+            case CondCode.LT: cc = invert ? ConditionCode.GE : ConditionCode.LT; flags = "SV"; break;
+            case CondCode.LE: cc = invert ? ConditionCode.GT : ConditionCode.LE; flags = "SZV"; break;
+            case CondCode.ULE: cc = invert ? ConditionCode.UGT : ConditionCode.ULE; flags = "ZC"; break;
+            case CondCode.OV: cc = invert ? ConditionCode.NO : ConditionCode.OV; flags = "V"; break;
+            case CondCode.MI: cc = invert ? ConditionCode.NS : ConditionCode.SG; flags = "S"; break;
+            case CondCode.Z: cc = invert ? ConditionCode.NE : ConditionCode.EQ; flags = "Z"; break;
+            case CondCode.C: cc = invert ? ConditionCode.UGE : ConditionCode.ULT; flags = "Z"; break;
+            case CondCode.T: return invert ? Constant.False() : Constant.True();
+            case CondCode.GE: cc = invert ? ConditionCode.LT : ConditionCode.GE; flags = "SV"; break;
+            case CondCode.GT: cc = invert ? ConditionCode.LE : ConditionCode.GT; flags = "SZV"; break;
+            case CondCode.UGT: cc = invert ? ConditionCode.ULE : ConditionCode.UGT; flags = "ZC"; break;
+            case CondCode.NV: cc = invert ? ConditionCode.OV : ConditionCode.NO; flags = "V"; break;
+            case CondCode.PL: cc = invert ? ConditionCode.SG : ConditionCode.NS; flags = "S"; break;
+            case CondCode.NZ: cc = invert ? ConditionCode.EQ : ConditionCode.NE; flags = "Z"; break;
+            case CondCode.NC: cc = invert ? ConditionCode.ULT : ConditionCode.UGE; flags = "Z"; break;
+            }
+            return m.Test(
+                cc,
+                frame.EnsureFlagGroup(arch.GetFlagGroup(flags)));
         }
     }
 }

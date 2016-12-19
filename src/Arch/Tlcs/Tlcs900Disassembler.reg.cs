@@ -40,8 +40,8 @@ namespace Reko.Arch.Tlcs
 
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new SecondOpRec(Opcode.cpl, ""),
+            new SecondOpRec(Opcode.neg, ""),
 
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),

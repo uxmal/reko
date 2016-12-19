@@ -28,11 +28,18 @@ namespace Reko.Arch.Tlcs
 {
     public partial class Tlcs900Rewriter
     {
-        private void RewriteBinOp(Func<Expression, Expression, Expression> fn)
+        private void RewriteBinOp(Func<Expression, Expression, Expression> fn, string flags)
         {
             var src = RewriteSrc(this.instr.op2);
             var dst = RewriteDst(this.instr.op1, src, fn);
-            EmitCc(dst, "***V0*");
+            EmitCc(dst, flags);
+        }
+
+        private void RewriteIncDec(Func<Expression, Expression, Expression> fn, string flags)
+        {
+            var src = RewriteSrc(this.instr.op1);
+            var dst = RewriteDst(this.instr.op2, src, fn);
+            EmitCc(dst, flags);
         }
 
         private void RewriteLd()

@@ -430,6 +430,11 @@ namespace Reko.Arch.Tlcs
                 {
                     instr.op1.Width = instr.op2.Width;
                 }
+                if (instr.op2 != null && instr.op2.Width == null)
+                {
+                    //$HACK to get conditional calls/jumps to work
+                    instr.op2.Width = PrimitiveType.Word32;
+                }
                 return instr;
             }
         }
