@@ -175,5 +175,30 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("swi\t05", "FD");
         }
+
+        [Test]
+        public void Tlcs900_dis_xor_imm()
+        {
+            AssertCode("xor\tiz,1234", "DECD3412");
+        }
+
+        [Test]
+        public void Tlcs900_dis_cp_imm()
+        {
+            AssertCode("cp\tiz,0005", "DEDD");
+        }
+
+        [Test]
+        public void Tlcs900_dis_cp()
+        {
+            AssertCode("cp\te,(xsp-0x3E)", "8FC2F5");
+        }
+
+        [Test]
+        public void Tlcs900_dis_rlc()
+        {
+            AssertCode("rlc\t04,e", "CDE804");
+            AssertCode("rlc\ta,e", "CDF8");
+        }
     }
 }

@@ -146,6 +146,7 @@ namespace Reko.Arch.Tlcs
         {
             MachineOperand op;
             byte r;
+            Constant c;
             switch (fmt[0])
             {
             case '+': // Predecrement
@@ -161,11 +162,22 @@ namespace Reko.Arch.Tlcs
                 SetSize(fmt[1]);
                 return op;
             case '3': // Immediate encoded in low 3 bits
-                var c = Constant.Create(Size(fmt[1]), imm3Const[b & 7]);
+                c = Constant.Create(Size(fmt[1]), b & 7);
                 SetSize(fmt[1]);
                 return new ImmediateOperand(c);
+            case '#': // Immediate encoded in low 3 bits, with 8 encoded as 0
+                c = Constant.Create(Size(fmt[1]), imm3Const[b & 7]);
+                SetSize(fmt[1]);
+                return new ImmediateOperand(c);
+
+            case 'A': // A register
+                op = new RegisterOperand(Tlcs900Registers.a);
+                return op;
             case 'C': // condition code
                 op = new ConditionOperand((CondCode)(b & 0xF));
+                return op;
+            case 'I': // immediate
+                op = Immediate(fmt[1]);
                 return op;
             case 'r': // Register
             case 'R':
@@ -274,6 +286,10 @@ namespace Reko.Arch.Tlcs
 
         private MachineOperand Immediate(char size)
         {
+            if (size == 'z')
+            {
+                size = this.opSize;
+            }
             switch (size)
             {
             case 'b':
@@ -281,6 +297,16 @@ namespace Reko.Arch.Tlcs
                 if (!rdr.TryReadByte(out b))
                     return null;
                 return ImmediateOperand.Byte(b);
+            case 'w':
+                ushort w;
+                if (!rdr.TryReadLeUInt16(out w))
+                    return null;
+                return ImmediateOperand.Word16(w);
+            case 'x':
+                uint u;
+                if (!rdr.TryReadLeUInt32(out u))
+                    return null;
+                return ImmediateOperand.Word32(u);
             }
             return null;
         }
