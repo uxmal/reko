@@ -59,7 +59,7 @@ namespace Reko.Arch.Tlcs
 
         public override ImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
         {
-            throw new NotImplementedException();
+            return new LeImageReader(img, addrBegin, addrEnd);
         }
 
         public override ImageWriter CreateImageWriter()

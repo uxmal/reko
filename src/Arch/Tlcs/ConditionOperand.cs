@@ -17,7 +17,9 @@
  * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 #endregion
- 
+
+using Reko.Core.Machine;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,42 +27,39 @@ using System.Text;
 
 namespace Reko.Arch.Tlcs
 {
-    public enum Tlcs900Opcode
+    public class ConditionOperand : MachineOperand
     {
-        invalid,
-        adc,
-        add,
-        and,
-        call,
-        calr,
-        ccf,
-        cp,
-        dec,
-        decf,
-        di,
-        ei,
-        exts,
-        extz,
-        halt,
-        inc,
-        incf,
-        jp,
-        jr,
-        ld,
-        lda,
-        nop,
-        or,
-        pop,
-        push,
-        rcf,
-        ret,
-        retd,
-        reti,
-        sbc,
-        scf,
-        sub,
-        swi,
-        xor,
-        zcf,
+        public CondCode Code;
+
+        public ConditionOperand(CondCode cc) : base(PrimitiveType.Byte)
+        {
+            this.Code = cc;
+        }
+
+        public override void Write(bool fExplicit, MachineInstructionWriter writer)
+        {
+            writer.Write(Code.ToString());
+        }
+    }
+
+    public enum CondCode
+    {
+        F,
+        LT,
+        LE,
+        ULE,
+        OV,
+        MI,
+        Z,
+        C,
+
+        T,
+        GE,
+        GT,
+        UGT,
+        NV,
+        PL,
+        NZ,
+        NC
     }
 }

@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Arch.Tlcs
             get { return arch; }
         }
 
-        public override Address LoadAddress { get { return Address.Ptr16(0x0000); } }
+        public override Address LoadAddress { get { return Address.Ptr32(0x00010000); } }
 
         protected override ImageWriter CreateImageWriter(byte[] bytes)
         {
@@ -128,6 +128,52 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("extz\thl", "DB12");
             AssertCode("exts\txde", "EA13");
+        }
+
+        [Test]
+        public void Tlcs900_dis_jr()
+        {
+            AssertCode("jr\tZ,00010030", "662E");
+            AssertCode("jr\t0000FF00", "78FDFE");
+        }
+
+        [Test]
+        public void Tlcs900_dis_push_pop_sr()
+        {
+            AssertCode("push\tsr", "02");
+            AssertCode("pop\tsr", "03");
+        }
+
+        [Test]
+        public void Tlcs900_dis_push_ei_nn()
+        {
+            AssertCode("ei\t05", "0605");
+        }
+
+        [Test]
+        public void Tlcs900_dis_jp_abs()
+        {
+            AssertCode("jp\t00001234", "1A3412");
+            AssertCode("jp\t00123456", "1B563412");
+        }
+
+        [Test]
+        public void Tlcs900_dis_call_abs()
+        {
+            AssertCode("call\t00001234", "1C3412");
+            AssertCode("call\t00123456", "1D563412");
+        }
+
+        [Test]
+        public void Tlcs900_dis_calr()
+        {
+            AssertCode("calr\t00010200", "1EFD01");
+        }
+
+        [Test]
+        public void Tlcs900_dis_swi()
+        {
+            AssertCode("swi\t05", "FD");
         }
     }
 }

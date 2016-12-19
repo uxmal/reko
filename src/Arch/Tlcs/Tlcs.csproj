@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConditionOperand.cs" />
     <Compile Include="MemoryOperand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tlcs900Architecture.cs" />
