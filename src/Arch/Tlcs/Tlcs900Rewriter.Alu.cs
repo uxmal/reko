@@ -18,45 +18,27 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Types;
-using Reko.Core.Rtl;
-using NUnit.Framework;
+using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Reko.UnitTests.Arch
+namespace Reko.Arch.Tlcs
 {
-    public abstract class RewriterTestBase : ArchTestBase
+    public partial class Tlcs900Rewriter
     {
-        private MemoryArea instructions;
-
-        public void Rewrite(params uint [] words)
+        private void RewriteBinOp(Func<Expression, Expression, Expression> fn)
         {
-            instructions = RewriteCode(words);
+            var src = RewriteSrc(this.instr.op2);
+            var dst = RewriteDst(this.instr.op1, src, fn);
+            EmitCc(dst, "***V0*");
         }
 
-        public void Rewrite(string hexbytes)
+        private void RewriteLd()
         {
-            instructions = RewriteCode(hexbytes);
-        }
-
-        protected virtual MemoryArea RewriteCode(string hexBytes)
-        {
-            Assert.Fail();
-            return null;
-        }
-        protected virtual MemoryArea RewriteCode(uint [] words)
-        {
-            Assert.Fail();
-            return null;
-        }
-
-        protected virtual IRewriterHost CreateHost()
-        {
-            return null;
+            var src = RewriteSrc(this.instr.op2);
+            var dst = RewriteDst(this.instr.op1, src, (d, s) => s);
         }
     }
 }

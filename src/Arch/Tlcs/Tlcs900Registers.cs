@@ -56,10 +56,22 @@ namespace Reko.Arch.Tlcs
         public static readonly RegisterStorage h = new RegisterStorage("h", 3, 8, PrimitiveType.Byte);
         public static readonly RegisterStorage l = new RegisterStorage("l", 3, 0, PrimitiveType.Byte);
 
-        public static readonly RegisterStorage sr = new RegisterStorage("sr", 8, 0, PrimitiveType.Word16);
-        public static readonly RegisterStorage f = new RegisterStorage("f", 8, 0, PrimitiveType.Byte);
+        public static readonly FlagRegister sr = new FlagRegister("sr", 8, PrimitiveType.Word16);
+        public static readonly FlagRegister f = new FlagRegister("f", 8, PrimitiveType.Byte);
 
         internal static RegisterStorage[] regs;
+
+        public static readonly FlagGroupStorage S = new FlagGroupStorage(sr, 32, "S", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage Z = new FlagGroupStorage(sr, 16, "Z", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage H = new FlagGroupStorage(sr,  8, "H", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage V = new FlagGroupStorage(sr,  4, "V", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage N = new FlagGroupStorage(sr,  2, "N", PrimitiveType.Bool);
+        public static readonly FlagGroupStorage C = new FlagGroupStorage(sr,  1, "C", PrimitiveType.Bool);
+
+        internal static FlagGroupStorage[] flagBits =
+        {
+            S,Z,H,V,N,C,
+        };
 
         static Tlcs900Registers()
         {

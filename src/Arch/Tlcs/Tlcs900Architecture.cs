@@ -27,6 +27,8 @@ using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
+using Reko.Core.Lib;
+using Registers = Reko.Arch.Tlcs.Tlcs900Registers;
 
 namespace Reko.Arch.Tlcs
 {
@@ -84,12 +86,12 @@ namespace Reko.Arch.Tlcs
 
         public override ProcessorState CreateProcessorState()
         {
-            throw new NotImplementedException();
+            return new Tlcs900ProcessorState(this);
         }
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new Tlcs900Rewriter(this, rdr, state, frame, host);
         }
 
         public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
@@ -104,7 +106,15 @@ namespace Reko.Arch.Tlcs
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
-            throw new NotImplementedException();
+            foreach (FlagGroupStorage f in Registers.flagBits)
+            {
+                if (f.FlagGroupBits == grf)
+                    return f;
+            }
+
+            PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+            var fl = new FlagGroupStorage(Registers.sr, grf, GrfToString(grf), dt);
+            return fl;
         }
 
         public override SortedList<string, int> GetOpcodeNames()
@@ -134,7 +144,13 @@ namespace Reko.Arch.Tlcs
 
         public override string GrfToString(uint grf)
         {
-            throw new NotImplementedException();
+            StringBuilder s = new StringBuilder();
+            foreach (var freg in Registers.flagBits)
+            {
+                if ((freg.FlagGroupBits & grf) != 0)
+                    s.Append(freg.Name);
+            }
+            return s.ToString();
         }
 
         public override Address MakeAddressFromConstant(Constant c)

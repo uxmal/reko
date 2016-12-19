@@ -88,6 +88,7 @@
     <Compile Include="Arch\RiscV\RiscVDisassemblerTests.cs" />
     <Compile Include="Arch\RiscV\RiscVRewriterTests.cs" />
     <Compile Include="Arch\Tlcs\Tlcs900DisassemblerTests.cs" />
+    <Compile Include="Arch\Tlcs\Tlcs900RewriterTests.cs" />
     <Compile Include="Arch\Xtensa\XtensaDisassemblerTests.cs" />
     <Compile Include="Arch\Xtensa\XtensaRewriterTests.cs" />
     <Compile Include="Core\Analysis\PyArgFormatParserTests.cs" />
