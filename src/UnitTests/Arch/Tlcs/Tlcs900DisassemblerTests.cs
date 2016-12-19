@@ -83,13 +83,13 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_dis_sub_reg_indexed_8()
         {
-            AssertCode("sub\tde,(xsp+-4)", "9FFCA2");
+            AssertCode("sub\tde,(xsp-0x04)", "9FFCA2");
         }
 
         [Test]
         public void Tlcs900_dis_xor_reg_indexed_16()
         {
-            AssertCode("xor\tde,(xsp+-4)", "D31DFCFFD2");
+            AssertCode("xor\tde,(xsp-0x04)", "D31DFCFFD2");
         }
 
         [Test]
@@ -102,6 +102,25 @@ namespace Reko.UnitTests.Arch.Tlcs
         public void Tlcs900_dis_inc_predec()
         {
             AssertCode("inc\t00000001,(-xde)", "E40961");
+        }
+
+        [Test]
+        public void Tlcs900_dis_ld_absolute()
+        {
+            AssertCode("ld\txbc,(0000069C)", "E29C060021");
+        }
+
+        [Test]
+        public void Tlcs900_dis_store_to_mem()
+        {
+            AssertCode("ld\t(xbc+0x26),xwa", "B92660");
+        }
+
+        [Test]
+        public void Tlcs900_dis_lda()
+        {
+            AssertCode("lda\tix,(xbc+0x26)",  "B92624");
+            AssertCode("lda\txiz,(xbc+0x26)", "B92636");
         }
     }
 }

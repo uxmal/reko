@@ -119,6 +119,8 @@ namespace Reko.Arch.Tlcs
                 SetSize(fmt[1]);
                 return new ImmediateOperand(c);
             case 'r': // Register
+            case 'R':
+                //$TODO: 'r' may encode other registers. manual is dense
                 op = new RegisterOperand(Reg(fmt[1], b & 0x7));
                 SetSize(fmt[1]);
                 return op;
@@ -170,6 +172,9 @@ namespace Reko.Arch.Tlcs
                 }
                 SetSize(fmt[1]);
                 return op;
+            case 'O': return Absolute(1, fmt[1]);
+            case 'P': return Absolute(2, fmt[1]);
+            case 'Q': return Absolute(3, fmt[1]);
             default: throw new FormatException(
                 string.Format(
                     "Unknown format {0} decoding byte {1:X2}.", fmt[0], (int)b));
@@ -200,9 +205,14 @@ namespace Reko.Arch.Tlcs
             }
             switch (size)
             {
+            
             case 'x': this.opSize = size; return PrimitiveType.Word32;
             case 'w': this.opSize = size; return PrimitiveType.Word16;
             case 'b': this.opSize = size; return PrimitiveType.Byte;
+            case '?':
+                // Don't know the size yet, second operand will 
+                // provide size.
+                this.opSize = size; return null;
             default: throw new FormatException();
             }
         }
@@ -212,6 +222,23 @@ namespace Reko.Arch.Tlcs
             if (size != 'z')
                 this.opSize = size;
         }
+
+        private MachineOperand Absolute(int addrBytes, char size)
+        {
+            uint uAddr = 0;
+            int sh = 0;
+            while (--addrBytes >= 0)
+            {
+                byte b;
+                if (!rdr.TryReadByte(out b))
+                    return null;
+                uAddr |= (uint)b << sh;
+                sh += 8;
+            }
+            SetSize(size);
+            return MemoryOperand.Absolute(Size(size), uAddr);
+        }
+
 
         public abstract class OpRecBase
         {
@@ -273,10 +300,30 @@ namespace Reko.Arch.Tlcs
 
         private class DstOpRec : OpRecBase
         {
+            private string fmt;
+
+            public DstOpRec(string fmt)
+            {
+                this.fmt = fmt;
+            }
+
+            public override Tlcs900Instruction Decode(byte b, Tlcs900Disassembler dasm)
+            {
+                dasm.opSrc = dasm.DecodeOperand(b, this.fmt);
+                if (dasm.opSrc == null || !dasm.rdr.TryReadByte(out b))
+                    return dasm.Decode(b, Opcode.invalid, "");
+                var instr = dstOpRecs[b].Decode(b, dasm);
+                instr.op1.Width = instr.op2.Width;
+                return instr;
+            }
+        }
+
+        private class SecondOpRec : OpRecBase
+        {
             private Opcode opcode;
             private string fmt;
 
-            public DstOpRec(Opcode opcode, string fmt)
+            public SecondOpRec(Opcode opcode, string fmt)
             {
                 this.opcode = opcode;
                 this.fmt = fmt;
@@ -556,25 +603,25 @@ namespace Reko.Arch.Tlcs
             new MemOpRec("Nx"),
             new MemOpRec("Nx"),
             // B0
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new DstOpRec("M?"),
+            new DstOpRec("M?"),
+            new DstOpRec("M?"),
+            new DstOpRec("M?"),
 
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new DstOpRec("M?"),
+            new DstOpRec("M?"),
+            new DstOpRec("M?"),
+            new DstOpRec("M?"),
 
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new DstOpRec("N?"),
+            new DstOpRec("N?"),
+            new DstOpRec("N?"),
+            new DstOpRec("N?"),
 
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new DstOpRec("N?"),
+            new DstOpRec("N?"),
+            new DstOpRec("N?"),
+            new DstOpRec("N?"),
             // C0
             new MemOpRec("Ob"),
             new MemOpRec("Pb"),

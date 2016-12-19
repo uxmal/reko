@@ -35,6 +35,7 @@ namespace Reko.Arch.Tlcs
         dec,
         inc,
         ld,
+        lda,
         nop,
         or,
         push,

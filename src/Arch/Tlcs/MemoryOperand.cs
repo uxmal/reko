@@ -24,6 +24,7 @@ using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -93,6 +94,14 @@ namespace Reko.Arch.Tlcs
             };
         }
 
+        public static MachineOperand Absolute(PrimitiveType size, uint uAddr)
+        {
+            return new MemoryOperand(size)
+            {
+                Offset = Constant.Word32(uAddr)
+            };
+        }
+
         public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
             writer.Write('(');
@@ -110,17 +119,41 @@ namespace Reko.Arch.Tlcs
                 }
                 else if (Offset != null)
                 {
-                    writer.Write('+');
-                    writer.Write(Offset.ToString());
-                } 
+                    int off = Offset.ToInt32();
+                    int absOff;
+                    if (off < 0)
+                    {
+                        writer.Write('-');
+                        absOff = -off;
+                    }
+                    else
+                    {
+                        writer.Write('+');
+                        absOff = off;
+                    }
+                    writer.Write("0x");
+                    writer.Write(OffsetFormat(off), absOff);
+                }
                 if (Increment > 0)
                 {
                     writer.Write('+');
                 }
             }
+            else
+            {
+                var addr = Address.Ptr32(Offset.ToUInt32());
+                writer.WriteAddress(addr.ToString(), addr);
+            }
             writer.Write(')');
         }
 
-    
+        private string OffsetFormat(int off)
+        {
+            if (-0x80 <= off && off < 0x80)
+                return "{0:X2}";
+            if (-0x8000 <= off && off < 0x8000)
+                return "{0:X4}";
+            return "{0:X8}";
+        }
     }
 }
