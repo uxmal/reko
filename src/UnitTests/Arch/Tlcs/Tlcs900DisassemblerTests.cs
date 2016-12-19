@@ -237,5 +237,17 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("ret", "B0F8");
         }
+
+        [Test]
+        public void Tlcs900_dis_sll_mem()
+        {
+            AssertCode("sll\t(xwa+0x0C)", "A80C7E");
+        }
+
+        [Test]
+        public void Tlcs900_dis_pop_mem()
+        {
+            AssertCode("pop\t(xde+0x7C)", "BA7C06");
+        }
     }
 }

@@ -30,7 +30,8 @@ namespace Reko.Arch.Tlcs
 {
     partial class Tlcs900Disassembler
     {
-        private static OpRecBase[] regOpRecs = {
+        private static OpRecBase[] regOpRecs = 
+        {
             // 00
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),

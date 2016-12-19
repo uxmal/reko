@@ -457,17 +457,30 @@ namespace Reko.Arch.Tlcs
                     };
                 }
 
-                dasm.opDst = dasm.DecodeOperand(b, this.fmt);
-                if (dasm.opDst == null)
-                    return dasm.Decode(b, Opcode.invalid, "");
-
-                return new Tlcs900Instruction
+                if (this.fmt[0] == 'Z')
                 {
-                    Opcode = this.opcode,
-                    Address = dasm.addr,
-                    op1 = dasm.opDst,
-                    op2 = dasm.opSrc,
-                };
+                    // Override the size of opSrc
+                    dasm.opSrc.Width = dasm.Size(fmt[1]);
+                    return new Tlcs900Instruction
+                    {
+                        Opcode = this.opcode,
+                        Address = dasm.addr,
+                        op1 = dasm.opSrc,
+                    };
+                }
+                else
+                {
+                    dasm.opDst = dasm.DecodeOperand(b, this.fmt);
+                    if (dasm.opDst == null)
+                        return dasm.Decode(b, Opcode.invalid, "");
+                    return new Tlcs900Instruction
+                    {
+                        Opcode = this.opcode,
+                        Address = dasm.addr,
+                        op1 = dasm.opDst,
+                        op2 = dasm.opSrc,
+                    };
+                }
             }
         }
 
