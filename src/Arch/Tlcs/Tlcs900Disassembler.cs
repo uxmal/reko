@@ -115,9 +115,46 @@ namespace Reko.Arch.Tlcs
                 op = MemoryOperand.Indexed8(Size(fmt[1]), Reg('x', b & 7), (sbyte)o8);
                 SetSize(fmt[1]);
                 return op;
+            case 'm': // various mem formats
+                byte m;
+                if (!rdr.TryReadByte(out m))
+                    return null;
+                switch (m & 3)
+                {
+                case 0: // Register indirect
+                    op = MemoryOperand.Indirect(Size(fmt[1]), Reg('x', (m >> 2) & 0x3F));
+                    break;
+                case 1: // indexed (16-bit offset)
+                    short o16;
+                    if (!rdr.TryReadLeInt16(out o16))
+                        return null;
+                    op = MemoryOperand.Indexed16(Size(fmt[1]), Reg('x', (m >> 2) & 0x3F), o16);
+                    SetSize(fmt[1]);
+                    return op;
+                case 3:
+                    if (m != 3 && m != 7)
+                        return null;
+                    byte rBase;
+                    if (!rdr.TryReadByte(out rBase))
+                        return null;
+                    byte rIdx;
+                    if (!rdr.TryReadByte(out rIdx))
+                        return null;
+                    var regBase = Reg('x', rBase);
+                    var regIdx = Reg(m == 3 ? 'b' : 'w', rIdx);
+                    op = MemoryOperand.RegisterIndexed(Size(fmt[1]), regBase, regIdx);
+                    SetSize(fmt[1]);
+                    return op;
+                default:
+                    throw new FormatException(string.Format(
+                        "Unknown format {0] decoding bytes {1:X2}{2:X2}.",
+                            fmt[0], (int)b, (int)m));
+                }
+                SetSize(fmt[1]);
+                return op;
             default: throw new FormatException(
                 string.Format(
-                    "Unknown format {0} decoding byte {1:X2}", fmt[0], (int)b));
+                    "Unknown format {0} decoding byte {1:X2}.", fmt[0], (int)b));
             }
         }
 

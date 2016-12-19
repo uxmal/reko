@@ -56,6 +56,24 @@ namespace Reko.Arch.Tlcs
             };
         }
 
+        public static MachineOperand Indexed16(PrimitiveType size, RegisterStorage reg, short offset)
+        {
+            return new MemoryOperand(size)
+            {
+                Base = reg,
+                Offset = Constant.Int16(offset)
+            };
+        }
+
+        public static MachineOperand RegisterIndexed(PrimitiveType size, RegisterStorage rBase, RegisterStorage rIdx)
+        {
+            return new MemoryOperand(size)
+            {
+                Base = rBase,
+                Index = rIdx
+            };
+        }
+
         public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
             writer.Write('(');

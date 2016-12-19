@@ -139,7 +139,7 @@ namespace Reko.Arch.Tlcs
 
         public override Address MakeAddressFromConstant(Constant c)
         {
-            throw new NotImplementedException();
+            return Address.Ptr32(c.ToUInt32());
         }
 
         public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)

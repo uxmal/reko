@@ -87,12 +87,9 @@ namespace Reko.UnitTests.Arch.Tlcs
         }
 
         [Test]
-        [Ignore("Learn how to properly decode this")]
         public void Tlcs900_dis_xor_reg_indexed_16()
         {
-            //$TODO: which of the following two is correct?
-            AssertCode("xor\tde,(xsp+-4)", "C3FCFFD2");
-            AssertCode("xor\tde,(xsp+-4)", "C3D2FCFF");
+            AssertCode("xor\tde,(xsp+-4)", "D31DFCFFD2");
         }
     }
 }
