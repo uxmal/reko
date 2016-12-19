@@ -48,8 +48,8 @@ namespace Reko.Arch.Tlcs
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
 
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new InvOpRec(Opcode.link, "Iw"),
+            new SecondOpRec(Opcode.unlk, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             // 10

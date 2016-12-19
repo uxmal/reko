@@ -249,5 +249,17 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("pop\t(xde+0x7C)", "BA7C06");
         }
+
+        [Test]
+        public void Tlcs900_dis_link()
+        {
+            AssertCode("link\txiy,0124", "ED0C2401");
+        }
+
+        [Test]
+        public void Tlcs900_dis_unlk()
+        {
+            AssertCode("unlk\txiy", "ED0D");
+        }
     }
 }

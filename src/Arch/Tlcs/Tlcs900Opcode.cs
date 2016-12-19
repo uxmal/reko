@@ -54,6 +54,7 @@ namespace Reko.Arch.Tlcs
         jr,
         ld,
         lda,
+        link,
         mul,
         mula,
         muls,
@@ -83,6 +84,7 @@ namespace Reko.Arch.Tlcs
         sub,
         swi,
         tset,
+        unlk,
         xor,
         zcf,
     }
