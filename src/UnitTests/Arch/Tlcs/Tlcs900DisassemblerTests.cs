@@ -122,5 +122,12 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode("lda\tix,(xbc+0x26)",  "B92624");
             AssertCode("lda\txiz,(xbc+0x26)", "B92636");
         }
+
+        [Test]
+        public void Tlcs900_dis_ext()
+        {
+            AssertCode("extz\thl", "DB12");
+            AssertCode("exts\txde", "EA13");
+        }
     }
 }

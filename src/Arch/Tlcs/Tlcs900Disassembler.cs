@@ -331,9 +331,20 @@ namespace Reko.Arch.Tlcs
 
             public override Tlcs900Instruction Decode(byte b, Tlcs900Disassembler dasm)
             {
+                if (this.fmt.Length == 0)
+                {
+                    return new Tlcs900Instruction
+                    {
+                        Opcode = this.opcode,
+                        Address = dasm.addr,
+                        op1 = dasm.opSrc
+                    };
+                }
+
                 dasm.opDst = dasm.DecodeOperand(b, this.fmt);
                 if (dasm.opDst == null)
                     return dasm.Decode(b, Opcode.invalid, "");
+
                 return new Tlcs900Instruction
                 {
                     Opcode = this.opcode,

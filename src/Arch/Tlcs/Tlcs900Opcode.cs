@@ -33,6 +33,8 @@ namespace Reko.Arch.Tlcs
         and,
         cp,
         dec,
+        exts,
+        extz,
         inc,
         ld,
         lda,
