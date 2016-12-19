@@ -43,10 +43,10 @@ namespace Reko.Arch.Tlcs
             new SecondOpRec(Opcode.cpl, ""),
             new SecondOpRec(Opcode.neg, ""),
 
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new InvOpRec(Opcode.mul, "Iz"),
+            new InvOpRec(Opcode.muls, "Iz"),
+            new InvOpRec(Opcode.div, "Iz"),
+            new InvOpRec(Opcode.divs, "Iz"),
 
             new InvOpRec(Opcode.link, "Iw"),
             new SecondOpRec(Opcode.unlk, ""),
@@ -68,7 +68,7 @@ namespace Reko.Arch.Tlcs
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
 
-            new OpRec(Opcode.invalid, ""),
+            new InvOpRec(Opcode.djnz, "jb"),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),

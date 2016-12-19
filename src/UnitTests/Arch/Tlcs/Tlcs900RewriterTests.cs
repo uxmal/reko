@@ -134,7 +134,16 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode(
                 "0|T--|00010000(4): 1 instructions",
                 "1|T--|call 00123456 (4)");
+        }
 
+        [Test]
+        public void Tlcs900_rw_djnz()
+        {
+            RewriteCode("D91CED");      // djnz\tbc,0000FFF0
+            AssertCode(
+                "0|T--|00010000(3): 2 instructions",
+                "1|L--|bc = bc - 0x0001",
+                "2|T--|if (bc != 0x0000) branch 0000FFF0");
         }
     }
 }

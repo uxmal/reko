@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,7 @@ namespace Reko.Arch.Tlcs
             var co = instr.op1 as ConditionOperand;
             if (co != null)
             {
-                 rtlc.Class = RtlClass.ConditionalTransfer;
+                rtlc.Class = RtlClass.ConditionalTransfer;
                 m.BranchInMiddleOfInstruction(
                     GenerateTestExpression(co, true),
                     instr.Address + instr.Length,
@@ -47,6 +48,15 @@ namespace Reko.Arch.Tlcs
                 rtlc.Class = RtlClass.Transfer;
                 m.Call(RewriteSrc(instr.op1), 4);
             }
+        }
+
+        private void RewriteDjnz()
+        {
+            rtlc.Class = RtlClass.ConditionalTransfer;
+            var reg = RewriteSrc(instr.op1);
+            var dst = ((AddressOperand)instr.op2).Address;
+            m.Assign(reg, m.ISub(reg, 1));
+            m.Branch(m.Ne0(reg), dst, RtlClass.ConditionalTransfer);
         }
 
         private void RewriteJp()

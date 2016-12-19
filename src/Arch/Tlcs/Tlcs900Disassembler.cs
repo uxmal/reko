@@ -30,6 +30,9 @@ using Opcode = Reko.Arch.Tlcs.Tlcs900Opcode;
 
 namespace Reko.Arch.Tlcs
 {
+    /// <summary>
+    /// Disassembler for the 32-bit Toshiba TLCS-900 processor.
+    /// </summary>
     public partial class Tlcs900Disassembler : DisassemblerBase<Tlcs900Instruction>
     {
         private Tlcs900Architecture arch;
@@ -66,7 +69,6 @@ namespace Reko.Arch.Tlcs
             {
                 Opcode = opcode,
                 Address = this.addr,
-
             };
             var ops = new List<MachineOperand>();
             MachineOperand op = null;
@@ -147,6 +149,8 @@ namespace Reko.Arch.Tlcs
             MachineOperand op;
             byte r;
             Constant c;
+            byte o8;
+
             switch (fmt[0])
             {
             case '+': // Predecrement
@@ -179,6 +183,22 @@ namespace Reko.Arch.Tlcs
             case 'I': // immediate
                 op = Immediate(fmt[1]);
                 return op;
+            case 'j': // Relative jump
+                switch (fmt[1])
+                {
+                case 'b':
+                    if (!rdr.TryReadByte(out o8))
+                        return  null;
+                    else
+                        return AddressOperand.Create(rdr.Address + (sbyte)o8);
+                case 'w':
+                    short o16;
+                    if (!rdr.TryReadLeInt16(out o16))
+                        return null;
+                    else
+                        return AddressOperand.Create(rdr.Address + o16);
+                }
+                return null;
             case 'r': // Register
             case 'R':
                 //$TODO: 'r' may encode other registers. manual is dense
@@ -190,7 +210,6 @@ namespace Reko.Arch.Tlcs
                 SetSize(fmt[1]);
                 return op;
             case 'N': // indexed (8-bit offset)
-                byte o8;
                 if (!rdr.TryReadByte(out o8))
                     return null;
                 op = MemoryOperand.Indexed8(Size(fmt[1]), Reg('x', b & 7), (sbyte)o8);

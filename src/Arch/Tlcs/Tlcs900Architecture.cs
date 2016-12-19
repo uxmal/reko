@@ -32,6 +32,10 @@ using Registers = Reko.Arch.Tlcs.Tlcs900Registers;
 
 namespace Reko.Arch.Tlcs
 {
+    /// <summary>
+    /// Architecture definition for the 32-bit Toshiba TLCS-900
+    /// processor.
+    /// </summary>
     // https://toshiba.semicon-storage.com/product/micro/900H1_CPU_BOOK_CP3_CPU_en.pdf
     public class Tlcs900Architecture : ProcessorArchitecture
     {
@@ -41,7 +45,7 @@ namespace Reko.Arch.Tlcs
             this.FramePointerType = PrimitiveType.Pointer32;
             this.PointerType = PrimitiveType.Pointer32;
             this.WordWidth = PrimitiveType.Word32;
-            this.StackRegister = Tlcs900Registers.xsp;
+            this.StackRegister = Registers.xsp;
         }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader rdr)

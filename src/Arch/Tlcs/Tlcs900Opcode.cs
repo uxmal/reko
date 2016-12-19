@@ -44,6 +44,7 @@ namespace Reko.Arch.Tlcs
         di,
         div,
         divs,
+        djnz,
         ei,
         ex,
         exts,

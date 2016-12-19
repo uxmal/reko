@@ -101,7 +101,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_dis_inc_predec()
         {
-            AssertCode("inc\t00000001,(-xde)", "E40961");
+            AssertCode("inc\t00000001,(4:-xde)", "E40A61");
         }
 
         [Test]
@@ -271,14 +271,20 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_dis_post_inc()
         {
-            AssertCode("ld\twa,(xhl+)", "D50D20");
+            AssertCode("ld\twa,(xhl+:2)", "D50D20");
         }
 
         [Test]
         public void Tlcs900_dis_post_inc_odd()
         {
             //$REVIEW: increment and data size don't match. Is this OK?
-            AssertCode("ld\ta,(xhl+)", "C50E21");
+            AssertCode("ld\ta,(xhl+:4)", "C50E21");
+        }
+
+        [Test]
+        public void Tlcs900_dis_djnz()
+        {
+            AssertCode("djnz\tbc,0000FFF0", "D91CED");
         }
     }
 }

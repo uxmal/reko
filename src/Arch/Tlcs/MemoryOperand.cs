@@ -109,7 +109,7 @@ namespace Reko.Arch.Tlcs
             {
                 if (Increment < 0)
                 {
-                    writer.Write('-');
+                    writer.Write("{0}:-", -Increment);
                 }
                 writer.Write(Base.Name);
                 if (Index != null)
@@ -136,7 +136,7 @@ namespace Reko.Arch.Tlcs
                 }
                 if (Increment > 0)
                 {
-                    writer.Write('+');
+                    writer.Write("+:{0}", Increment);
                 }
             }
             else
