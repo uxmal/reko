@@ -32,6 +32,8 @@ namespace Reko.Arch.Tlcs
         add,
         and,
         cp,
+        dec,
+        inc,
         ld,
         nop,
         or,

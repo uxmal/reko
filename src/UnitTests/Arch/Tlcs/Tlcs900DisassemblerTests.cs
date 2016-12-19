@@ -91,5 +91,17 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("xor\tde,(xsp+-4)", "D31DFCFFD2");
         }
+
+        [Test]
+        public void Tlcs900_dis_inc_reg()
+        {
+            AssertCode("inc\t00000004,xbc", "E964");
+        }
+
+        [Test]
+        public void Tlcs900_dis_inc_predec()
+        {
+            AssertCode("inc\t00000001,(-xde)", "E40961");
+        }
     }
 }

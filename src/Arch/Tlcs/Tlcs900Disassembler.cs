@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core;
+using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
@@ -98,8 +99,25 @@ namespace Reko.Arch.Tlcs
         private MachineOperand DecodeOperand(byte b, string fmt)
         {
             MachineOperand op;
+            byte r;
             switch (fmt[0])
             {
+            case '+': // Predecrement
+                if (!rdr.TryReadByte(out r))
+                    return null;
+                op = MemoryOperand.PostIncrement(Size(fmt[1]), incDecSize[r & 3], Reg('x', (r >> 2) & 0x3F));
+                SetSize(fmt[1]);
+                return op;
+            case '-':
+                if (!rdr.TryReadByte(out r))
+                    return null;
+                op = MemoryOperand.PreDecrement(Size(fmt[1]), incDecSize[r & 3], Reg('x', (r >> 2) & 0x3F));
+                SetSize(fmt[1]);
+                return op;
+            case '3': // Immediate encoded in low 3 bits
+                var c = Constant.Create(Size(fmt[1]), imm3Const[b & 7]);
+                SetSize(fmt[1]);
+                return new ImmediateOperand(c);
             case 'r': // Register
                 op = new RegisterOperand(Reg(fmt[1], b & 0x7));
                 SetSize(fmt[1]);
@@ -278,6 +296,43 @@ namespace Reko.Arch.Tlcs
                 };
             }
         }
+
+        // Inverts the order of the decoded operands
+        private class InvOpRec : OpRecBase
+        {
+            private Opcode opcode;
+            private string fmt;
+
+            public InvOpRec(Opcode opcode, string fmt)
+            {
+                this.opcode = opcode;
+                this.fmt = fmt;
+            }
+
+            public override Tlcs900Instruction Decode(byte b, Tlcs900Disassembler dasm)
+            {
+                dasm.opDst = dasm.DecodeOperand(b, this.fmt);
+                if (dasm.opDst == null)
+                    return dasm.Decode(b, Opcode.invalid, "");
+                return new Tlcs900Instruction
+                {
+                    Opcode = this.opcode,
+                    Address = dasm.addr,
+                    op1 = dasm.opSrc,
+                    op2 = dasm.opDst,
+                };
+            }
+        }
+
+        private static int[] imm3Const = new int[8]
+        {
+            8, 1, 2, 3, 4, 5, 6, 7,
+        };
+
+        private static int[] incDecSize = new int[3]
+        {
+            1, 2, 4
+        };
 
         private static OpRecBase[] opRecs = {
             // 00
@@ -526,8 +581,8 @@ namespace Reko.Arch.Tlcs
             new MemOpRec("Qb"),
             new MemOpRec("mb"),
 
-            new MemOpRec("+b"),
             new MemOpRec("-b"),
+            new MemOpRec("+b"),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
 
@@ -546,8 +601,8 @@ namespace Reko.Arch.Tlcs
             new MemOpRec("Qw"),
             new MemOpRec("mw"),
 
-            new MemOpRec("+w"),
             new MemOpRec("-w"),
+            new MemOpRec("+w"),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
 
@@ -566,8 +621,8 @@ namespace Reko.Arch.Tlcs
             new MemOpRec("Qx"),
             new MemOpRec("mx"),
 
-            new MemOpRec("+x"),
             new MemOpRec("-x"),
+            new MemOpRec("+x"),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
 

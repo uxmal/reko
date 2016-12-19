@@ -34,6 +34,7 @@ namespace Reko.Arch.Tlcs
         public RegisterStorage Base;
         public RegisterStorage Index;
         public Constant Offset;
+        public int Increment;
 
         private MemoryOperand(PrimitiveType size) : base(size)
         {
@@ -74,11 +75,33 @@ namespace Reko.Arch.Tlcs
             };
         }
 
+        public static MachineOperand PreDecrement(PrimitiveType size, int decrement, RegisterStorage reg)
+        {
+            return new MemoryOperand(size)
+            {
+                Base = reg,
+                Increment = -decrement,
+            };
+        }
+
+        public static MachineOperand PostIncrement(PrimitiveType size, int increment, RegisterStorage reg)
+        {
+            return new MemoryOperand(size)
+            {
+                Base = reg,
+                Increment = increment,
+            };
+        }
+
         public override void Write(bool fExplicit, MachineInstructionWriter writer)
         {
             writer.Write('(');
             if (Base != null)
             {
+                if (Increment < 0)
+                {
+                    writer.Write('-');
+                }
                 writer.Write(Base.Name);
                 if (Index != null)
                 {
@@ -89,6 +112,10 @@ namespace Reko.Arch.Tlcs
                 {
                     writer.Write('+');
                     writer.Write(Offset.ToString());
+                } 
+                if (Increment > 0)
+                {
+                    writer.Write('+');
                 }
             }
             writer.Write(')');
