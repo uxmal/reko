@@ -119,7 +119,7 @@ namespace Reko.UnitTests.Arch.Tlcs
         [Test]
         public void Tlcs900_dis_lda()
         {
-            AssertCode("lda\tix,(xbc+0x26)",  "B92624");
+            AssertCode("lda\tix,(xbc+0x26)", "B92624");
             AssertCode("lda\txiz,(xbc+0x26)", "B92636");
         }
 
@@ -199,6 +199,43 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("rlc\t04,e", "CDE804");
             AssertCode("rlc\ta,e", "CDF8");
+        }
+
+        [Test]
+        public void Tlcs900_dis_ld_reg()
+        {
+            AssertCode("ld\txbc,xiy", "ED89");
+            AssertCode("ld\txiy,xbc", "ED99");
+        }
+
+        [Test]
+        public void Tlcs900_dis_scc()
+        {
+            AssertCode("scc\tGE,iy", "DD79");
+        }
+
+        [Test]
+        public void Tlcs900_dis_jp_cc()
+        {
+            AssertCode("jp\tGE,(xwa)", "B0D9");
+        }
+
+        [Test]
+        public void Tlcs900_dis_call_cc()
+        {
+            AssertCode("call\tGE,(xbc+0x14)", "B914E9");
+        }
+
+        [Test]
+        public void Tlcs900_dis_ret_cc()
+        {
+            AssertCode("ret\tGE", "B0F9");
+        }
+
+        [Test]
+        public void Tlcs900_dis_ret()
+        {
+            AssertCode("ret", "B0F8");
         }
     }
 }

@@ -426,7 +426,10 @@ namespace Reko.Arch.Tlcs
                 if (dasm.opSrc == null || !dasm.rdr.TryReadByte(out b))
                     return dasm.Decode(b, Opcode.invalid, "");
                 var instr = dstOpRecs[b].Decode(b, dasm);
-                instr.op1.Width = instr.op2.Width;
+                if (instr.op1 != null && instr.op2 != null)
+                {
+                    instr.op1.Width = instr.op2.Width;
+                }
                 return instr;
             }
         }
