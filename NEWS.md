@@ -4,8 +4,8 @@
 
 * Combined code and low-level viewer, to allow users to compare Reko's output
   with the original binary.
-* A graph viewer, to help users to visualize procedure call graph 
-* Image map view shows an overview of the image bytes as pixels 
+* A graph viewer, to help users to visualize procedure call graph
+* Image map view shows an overview of the image bytes as pixels
 * Allow user to specify the encoding used for text when displaying character data
 * New reko configuration and project file formats
 * Improvements in user-specified data types
@@ -35,7 +35,7 @@
 
 ### Version 0.5.3.0
 
-* Support for the MIPS architecture, and MIPS support in the 
+* Support for the MIPS architecture, and MIPS support in the
   PE and ELF image format
 * TextViewer now supports free selection of text.
 
