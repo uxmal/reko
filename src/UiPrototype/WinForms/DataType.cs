@@ -25,7 +25,7 @@ namespace Reko.UiPrototype.WinForms
         Boolean =    0x0001,
         Character =  0x0002,
         Integral =   0x0004,
-        Real =       0x0008,
+        Real =       0x0008,     // IEEE format
         Pointer =    0x0010,
         Offset =     0x0020,
         Segment =    0x0040,     // x86-style

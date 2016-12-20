@@ -317,5 +317,12 @@ namespace Reko.UnitTests.Arch.Tlcs
             AssertCode("bs1f\ta,hl", "DB0E");
             AssertCode("bs1b\ta,hl", "DB0F");   
         }
+
+        [Test]
+        public void Tlcs900_dis_push_n()
+        {
+            AssertCode("push\t0E", "090E");
+            AssertCode("push\t1234", "0B3412");
+        }
     }
 }

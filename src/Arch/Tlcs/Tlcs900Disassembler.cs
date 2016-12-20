@@ -558,9 +558,9 @@ namespace Reko.Arch.Tlcs
             new OpRec(Opcode.reti, ""),
 
             new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.push, "Ib"),
             new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.push, "Iw"),
 
             new OpRec(Opcode.incf, ""),
             new OpRec(Opcode.decf, ""),
@@ -572,10 +572,10 @@ namespace Reko.Arch.Tlcs
             new OpRec(Opcode.ccf, ""),
             new OpRec(Opcode.zcf, ""),
 
+            new OpRec(Opcode.push, "A"),
+            new OpRec(Opcode.pop, "A"),
             new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new OpRec(Opcode.ldf, "Ib"),
 
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
