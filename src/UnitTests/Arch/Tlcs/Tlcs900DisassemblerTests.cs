@@ -286,5 +286,36 @@ namespace Reko.UnitTests.Arch.Tlcs
         {
             AssertCode("djnz\tbc,0000FFF0", "D91CED");
         }
+
+        [Test]
+        public void Tlcs900_dis_daa()
+        {
+            AssertCode("daa\tb", "CA10");
+        }
+
+        [Test]
+        public void Tlcs900_dis_paa()
+        {
+            AssertCode("paa\txde", "EA14");
+        }
+
+        [Test]
+        public void Tlcs900_dis_ld_reg_imm()
+        {
+            AssertCode("ld\txde,12345678", "EA0378563412");
+        }
+
+        [Test]
+        public void Tlcs900_dis_pop_r()
+        {
+            AssertCode("pop\tl", "CF05");
+        }
+
+        [Test]
+        public void Tlcs900_dis_bs1x()
+        {
+            AssertCode("bs1f\ta,hl", "DB0E");
+            AssertCode("bs1b\ta,hl", "DB0F");   
+        }
     }
 }

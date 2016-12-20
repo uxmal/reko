@@ -101,7 +101,6 @@ namespace Reko.Arch.Tlcs
                     c,
                     d,
                     e,
-                    f,
                     h,
                     l,
             };

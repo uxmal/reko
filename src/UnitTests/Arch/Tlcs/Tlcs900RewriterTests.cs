@@ -145,5 +145,15 @@ namespace Reko.UnitTests.Arch.Tlcs
                 "1|L--|bc = bc - 0x0001",
                 "2|T--|if (bc != 0x0000) branch 0000FFF0");
         }
+
+        [Test]
+        public void Tlcs900_rw_daa()
+        {
+            RewriteCode("CA10");    // daa\tb
+            AssertCode(
+                "0|L--|00010000(2): 2 instructions",
+                "1|L--|b = __daa(b)",
+                "2|L--|SZHVC = cond(b)");
+        }
     }
 }

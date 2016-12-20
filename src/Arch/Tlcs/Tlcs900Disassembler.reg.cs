@@ -36,10 +36,10 @@ namespace Reko.Arch.Tlcs
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new InvOpRec(Opcode.ld, "Iz"),
 
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new SecondOpRec(Opcode.push, ""),
+            new SecondOpRec(Opcode.pop, ""),
             new SecondOpRec(Opcode.cpl, ""),
             new SecondOpRec(Opcode.neg, ""),
 
@@ -50,15 +50,15 @@ namespace Reko.Arch.Tlcs
 
             new InvOpRec(Opcode.link, "Iw"),
             new SecondOpRec(Opcode.unlk, ""),
-            new OpRec(Opcode.invalid, ""),
-            new OpRec(Opcode.invalid, ""),
+            new SecondOpRec(Opcode.bs1f, "A"),
+            new SecondOpRec(Opcode.bs1b, "A"),
             // 10
-            new OpRec(Opcode.invalid, ""),
+            new SecondOpRec(Opcode.daa, ""),
             new OpRec(Opcode.invalid, ""),
             new SecondOpRec(Opcode.extz, ""),
             new SecondOpRec(Opcode.exts, ""),
 
-            new OpRec(Opcode.invalid, ""),
+            new SecondOpRec(Opcode.paa, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),
             new OpRec(Opcode.invalid, ""),

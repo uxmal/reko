@@ -19,6 +19,7 @@
 #endregion
 
 using Reko.Core.Expressions;
+using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +34,14 @@ namespace Reko.Arch.Tlcs
             var src = RewriteSrc(this.instr.op2);
             var dst = RewriteDst(this.instr.op1, src, fn);
             EmitCc(dst, flags);
+        }
+
+        private void RewriteDaa(string flags)
+        {
+            var src = RewriteSrc(this.instr.op1);
+            var fn = host.PseudoProcedure("__daa", PrimitiveType.Byte, src);
+            m.Assign(src, fn);
+            EmitCc(src, flags);
         }
 
         private void RewriteIncDec(Func<Expression, Expression, Expression> fn, string flags)

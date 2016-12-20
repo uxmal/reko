@@ -70,6 +70,7 @@ namespace Reko.Arch.Tlcs
                        instr.Opcode);
                 case Opcode.add: RewriteBinOp(m.IAdd, "***V0*"); break;
                 case Opcode.call: RewriteCall(); break;
+                case Opcode.daa: RewriteDaa("****-*"); break;
                 case Opcode.djnz: RewriteDjnz(); break;
                 case Opcode.inc: RewriteIncDec(m.IAdd, "****0-"); break;
                 case Opcode.jp: RewriteJp(); break;
