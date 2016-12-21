@@ -80,3 +80,17 @@ void loop_test9(real32 rArg04, real64 rArg0)
 	return;
 }
 
+void const_div_test10(word32 dwArg04)
+{
+	Eq_207 eax_16 = 0x0A;
+	Eq_209 ecx_19 = 0x03;
+	if (dwArg04 != 0x00)
+	{
+		eax_16.u1 = 0x03;
+		ecx_19.u1 = 0x01;
+	}
+	globals->t40301C = ecx_19;
+	globals->t403020 = eax_16;
+	return;
+}
+

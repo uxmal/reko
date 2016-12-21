@@ -169,10 +169,20 @@ namespace Reko.Analysis
 			}
 		}
 
-		/// <summary>
-		/// Undoes the SSA renaming by replacing each ssa identifier with its original identifier.
-		/// </summary>
-		private class UnSSA : InstructionTransformer
+        /// <summary>
+        /// Add all identifiers used in <paramref name="stm"/>.
+        /// </summary>
+        /// <param name="stm"></param>
+        public void AddUses(Statement stm)
+        {
+            var iua = new InstructionUseAdder(stm, Identifiers);
+            stm.Instruction.Accept(iua);
+        }
+
+        /// <summary>
+        /// Undoes the SSA renaming by replacing each ssa identifier with its original identifier.
+        /// </summary>
+        private class UnSSA : InstructionTransformer
 		{
 			private SsaState ssa;
 

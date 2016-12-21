@@ -118,7 +118,7 @@ namespace Reko.Analysis
         {
             if (Statement == null)
                 return;
-            var xu = new ExpressionUseAdder(Statement, ssaIds);
+            var xu = new InstructionUseAdder(Statement, ssaIds);
             exp.Accept(xu);
         }
 

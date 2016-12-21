@@ -227,13 +227,13 @@ l00401160:
 // LocalsOut: fp(32)
 
 l0040116F:
-	Mem0[Mem0[Mem0[0x0040301C:word32]:word32]:word32](Mem0[0x0040301C:word32], rArg04)
+	Mem0[Mem0[Mem0[0x00403024:word32]:word32]:word32](Mem0[0x00403024:word32], rArg04)
 // DataOut: esp
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000004 ebp:fp - 0x00000004 -4(fp):ebp
 
 l00401189:
-	Mem18[Mem18[Mem18[0x0040301C:word32]:word32] + 0x00000004:word32](Mem18[0x0040301C:word32], 0x0000000D, rArg04)
+	Mem18[Mem18[Mem18[0x00403024:word32]:word32] + 0x00000004:word32](Mem18[0x00403024:word32], 0x0000000D, rArg04)
 	return
 // DataOut:
 // DataOut (flags): 
@@ -261,7 +261,7 @@ nested_if_blocks_test8_entry:
 // LocalsOut: fp(32) Stack +0004(64)
 
 l004011B0:
-	Mem0[Mem0[Mem0[0x0040301C:word32]:word32] + 0x00000004:word32](Mem0[0x0040301C:word32], 0xFFFFFFFF, rArg04)
+	Mem0[Mem0[Mem0[0x00403024:word32]:word32] + 0x00000004:word32](Mem0[0x00403024:word32], 0xFFFFFFFF, rArg04)
 	branch Mem0[0x004020F8:real64] == rArg04 l0040120D
 // DataOut: esp
 // DataOut (flags): 
@@ -275,7 +275,7 @@ l004011E2:
 // SymbolicIn: esp:<invalid> ebp:fp - 0x00000004 eax:<invalid> edx:<invalid> ecx:<invalid> -16(fp):0xFFFFFFFF -12(fp):rLoc1 -4(fp):ebp
 
 l004011F2:
-	Mem52[Mem52[Mem52[0x0040301C:word32]:word32]:word32](Mem52[0x0040301C:word32], rArg04)
+	Mem52[Mem52[Mem52[0x00403024:word32]:word32]:word32](Mem52[0x00403024:word32], rArg04)
 // DataOut: esp
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> ebp:fp - 0x00000004 eax:<invalid> edx:<invalid> ecx:<invalid> -16(fp):0xFFFFFFFF -12(fp):rLoc1 -4(fp):ebp
@@ -316,7 +316,7 @@ l00401230:
 // LocalsOut: fp(32) Local -0008(32) Stack +0004(32)
 
 l00401248:
-	Mem21[Mem21[Mem21[0x0040301C:word32]:word32] + 0x00000004:word32](Mem21[0x0040301C:word32], dwLoc08_12, (real64) rArg04)
+	Mem21[Mem21[Mem21[0x00403024:word32]:word32] + 0x00000004:word32](Mem21[0x00403024:word32], dwLoc08_12, (real64) rArg04)
 	branch rArg0 <= (real64) dwLoc08_12 l00401294
 // DataOut: esp
 // DataOut (flags): 
@@ -336,7 +336,7 @@ loop_test9_exit:
 
 l00401278:
 	rArg0 = (real64) rArg04
-	Mem39[Mem39[Mem39[0x0040301C:word32]:word32]:word32](Mem39[0x0040301C:word32], rArg0)
+	Mem39[Mem39[Mem39[0x00403024:word32]:word32]:word32](Mem39[0x00403024:word32], rArg0)
 // DataOut: esp
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> ebp:fp - 0x00000004 ecx:<invalid> edx:<invalid> eax:<invalid> -28(fp):0x00000000 -24(fp):rLoc2 -16(fp):rLoc1 -8(fp):<invalid> -4(fp):ebp
@@ -348,6 +348,50 @@ l0040123F:
 // DataOut (flags): 
 // SymbolicIn: esp:<invalid> ebp:fp - 0x00000004 ecx:<invalid> edx:<invalid> eax:<invalid> -28(fp):0x00000000 -24(fp):rLoc2 -16(fp):rLoc1 -8(fp):<invalid> -4(fp):ebp
 // LocalsOut: fp(32) Local -0008(32) Stack +0004(32)
+
+
+
+void const_div_test10(word32 dwArg04)
+// stackDelta: 0; fpuStackDelta: 0; fpuMaxParam: -1
+
+// MayUse: 
+// LiveOut:
+// Trashed: SCZO ah al ax ch cl cx dh dl dx eax ecx edx rax rcx rdx
+// Preserved: ebp esp
+// Stack args: Stack +0004(32)
+const_div_test10_entry:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+// LocalsOut: fp(32) Stack +0004(32)
+
+l004012A0:
+	word32 eax_16 = 0x0000000A
+	word32 ecx_19 = 0x00000003
+	branch dwArg04 == 0x00000000 l004012BA
+// DataOut: eax ecx
+// DataOut (flags): 
+// SymbolicIn: esp:fp
+
+l004012B4:
+	eax_16 = 0x0000000000000003
+	ecx_19 = 0x0000000000000001
+// DataOut: eax ecx
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000004 ebp:fp - 0x00000004 eax:0x0000000A ecx:0x00000003 edx:<invalid> -4(fp):ebp
+
+l004012BA:
+	Mem20[0x0040301C:word32] = ecx_19
+	Mem21[0x00403020:word32] = eax_16
+	return
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp - 0x00000004 ebp:fp - 0x00000004 eax:<invalid> ecx:<invalid> edx:<invalid> -4(fp):ebp
+
+const_div_test10_exit:
+// DataOut:
+// DataOut (flags): 
+// SymbolicIn: esp:fp ebp:ebp eax:<invalid> ecx:<invalid> edx:<invalid> -4(fp):ebp
 
 
 

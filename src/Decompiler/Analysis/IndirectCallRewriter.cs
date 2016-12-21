@@ -152,7 +152,7 @@ namespace Reko.Analysis
 
         private void Use(Statement stm, Expression e)
         {
-            e.Accept(new ExpressionUseAdder(stm, ssa.Identifiers));
+            e.Accept(new InstructionUseAdder(stm, ssa.Identifiers));
         }
 
         private Statement InsertStatement(Statement stm, Instruction instr)
