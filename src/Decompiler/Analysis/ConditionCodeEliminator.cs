@@ -509,7 +509,7 @@ namespace Reko.Analysis
 
 		private void Use(Expression expr, Statement stm)
 		{
-			ExpressionUseAdder eua = new ExpressionUseAdder(stm, ssaIds);
+			var eua = new InstructionUseAdder(stm, ssaIds);
 			expr.Accept(eua);
 		}
 	}

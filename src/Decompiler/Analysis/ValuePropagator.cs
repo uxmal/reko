@@ -23,6 +23,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Diagnostics;
@@ -46,14 +47,26 @@ namespace Reko.Analysis
         private ExpressionSimplifier eval;
         private SsaEvaluationContext evalCtx;
         private SsaIdentifierTransformer ssaIdTransformer;
+        DecompilerEventListener eventListener;
 
-        public ValuePropagator(IProcessorArchitecture arch, SsaState ssa)
+        [Obsolete]
+        public ValuePropagator(
+            IProcessorArchitecture arch,
+            SsaState ssa) : this(arch, ssa, NullDecompilerEventListener.Instance)
+        {
+        }
+
+        public ValuePropagator(
+            IProcessorArchitecture arch,
+            SsaState ssa,
+            DecompilerEventListener eventListener)
         {
             this.arch = arch;
             this.ssa = ssa;
             this.ssaIdTransformer = new SsaIdentifierTransformer(ssa);
             this.evalCtx = new SsaEvaluationContext(arch, ssa.Identifiers);
             this.eval = new ExpressionSimplifier(evalCtx);
+            this.eventListener = eventListener;
         }
 
         public bool Changed { get { return eval.Changed; } set { eval.Changed = value; } }
@@ -72,6 +85,7 @@ namespace Reko.Analysis
 
         public void Transform(Statement stm)
         {
+            bool changedBefore = Changed;
             evalCtx.Statement = stm;
             try
             {
@@ -80,10 +94,16 @@ namespace Reko.Analysis
                 if (trace.TraceVerbose) Debug.WriteLine(string.Format("  To: {0}", stm.Instruction.ToString()));
             } catch (Exception ex)
             {
-                throw new StatementCorrelatedException(
-                    stm, 
-                    string.Format("An error occurred while processing the statement {0}.", stm),
-                    ex);
+                // try to restore after exception and continue work
+                eventListener.Error(
+                    new NullCodeLocation(ssa.Procedure.Name),
+                    ex,
+                    string.Format("An error occurred while processing the statement {0}.", stm));
+                // restore changed flag to avoid infinite loops
+                Changed = changedBefore;
+                //reset uses back to correct state
+                ssa.RemoveUses(stm);
+                ssa.AddUses(stm);
             }
         }
 
