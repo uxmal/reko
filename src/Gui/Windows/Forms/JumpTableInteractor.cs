@@ -95,7 +95,7 @@ namespace Reko.Gui.Windows.Forms
             {
                 Address = dlg.Instruction.Address,
                 Table = table,
-                IndexRegister = dlg.Program.Architecture.GetRegister(dlg.IndexRegister.SelectedIndex.ToString())
+                IndexRegister = dlg.Program.Architecture.GetRegister(dlg.IndexRegister.SelectedValue.ToString())
             };
         }
 
