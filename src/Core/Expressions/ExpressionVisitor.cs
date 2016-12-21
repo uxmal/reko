@@ -176,7 +176,8 @@ namespace Reko.Core.Expressions
 		public void VisitMemoryAccess(MemoryAccess access)
 		{
 			access.EffectiveAddress.Accept(this);
-		}
+            access.MemoryId.Accept(this);
+        }
 
 		public void VisitMkSequence(MkSequence seq)
 		{
