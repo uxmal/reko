@@ -59,8 +59,6 @@ namespace Reko.Arch.Pdp11
                 this.rtlCluster = new RtlInstructionCluster(instr.Address, instr.Length);
                 this.rtlCluster.Class = RtlClass.Linear;
                 m = new RtlEmitter(rtlCluster.Instructions);
-                Expression src;
-                Expression dst;
                 switch (instr.Opcode)
                 {
                 default: throw new AddressCorrelatedException(

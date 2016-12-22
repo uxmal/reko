@@ -2658,11 +2658,11 @@ T_502: (in NZ_20 : byte)
   Class: Eq_502
   DataType: byte
   OrigDataType: byte
-T_503: (in V_21 : bool)
+T_503: (in C_21 : bool)
   Class: Eq_503
   DataType: bool
   OrigDataType: bool
-T_504: (in C_22 : bool)
+T_504: (in V_22 : bool)
   Class: Eq_504
   DataType: bool
   OrigDataType: bool
@@ -2706,11 +2706,11 @@ T_514: (in NZ_18 : byte)
   Class: Eq_514
   DataType: byte
   OrigDataType: byte
-T_515: (in V_19 : bool)
+T_515: (in C_19 : bool)
   Class: Eq_515
   DataType: bool
   OrigDataType: bool
-T_516: (in C_20 : bool)
+T_516: (in V_20 : bool)
   Class: Eq_516
   DataType: bool
   OrigDataType: bool
@@ -2934,11 +2934,11 @@ T_571: (in pc_112 : word16)
   Class: Eq_571
   DataType: word16
   OrigDataType: word16
-T_572: (in N_113 : bool)
+T_572: (in C_113 : bool)
   Class: Eq_572
   DataType: bool
   OrigDataType: bool
-T_573: (in C_114 : bool)
+T_573: (in N_114 : bool)
   Class: Eq_573
   DataType: bool
   OrigDataType: bool
@@ -3006,11 +3006,11 @@ T_589: (in pc_70 : word16)
   Class: Eq_589
   DataType: word16
   OrigDataType: word16
-T_590: (in N_71 : bool)
+T_590: (in C_71 : bool)
   Class: Eq_590
   DataType: bool
   OrigDataType: bool
-T_591: (in C_72 : bool)
+T_591: (in N_72 : bool)
   Class: Eq_591
   DataType: bool
   OrigDataType: bool
@@ -3046,11 +3046,11 @@ T_599: (in pc_82 : word16)
   Class: Eq_599
   DataType: word16
   OrigDataType: word16
-T_600: (in N_83 : bool)
+T_600: (in C_83 : bool)
   Class: Eq_600
   DataType: bool
   OrigDataType: bool
-T_601: (in C_84 : bool)
+T_601: (in N_84 : bool)
   Class: Eq_601
   DataType: bool
   OrigDataType: bool
@@ -3422,11 +3422,11 @@ T_693: (in pc_60 : word16)
   Class: Eq_693
   DataType: word16
   OrigDataType: word16
-T_694: (in N_61 : bool)
+T_694: (in C_61 : bool)
   Class: Eq_694
   DataType: bool
   OrigDataType: bool
-T_695: (in C_62 : bool)
+T_695: (in N_62 : bool)
   Class: Eq_695
   DataType: bool
   OrigDataType: bool
@@ -3710,11 +3710,11 @@ T_765: (in pc_97 : word16)
   Class: Eq_765
   DataType: word16
   OrigDataType: word16
-T_766: (in N_98 : bool)
+T_766: (in C_98 : bool)
   Class: Eq_766
   DataType: bool
   OrigDataType: bool
-T_767: (in C_99 : bool)
+T_767: (in N_99 : bool)
   Class: Eq_767
   DataType: bool
   OrigDataType: bool
@@ -5134,11 +5134,11 @@ T_1121: (in r3_102 : word16)
   Class: Eq_1121
   DataType: word16
   OrigDataType: word16
-T_1122: (in N_103 : bool)
+T_1122: (in C_103 : bool)
   Class: Eq_1122
   DataType: bool
   OrigDataType: bool
-T_1123: (in C_104 : bool)
+T_1123: (in N_104 : bool)
   Class: Eq_1123
   DataType: bool
   OrigDataType: bool
@@ -5274,11 +5274,11 @@ T_1156: (in r3_87 : word16)
   Class: Eq_1156
   DataType: word16
   OrigDataType: word16
-T_1157: (in N_88 : bool)
+T_1157: (in C_88 : bool)
   Class: Eq_1157
   DataType: bool
   OrigDataType: bool
-T_1158: (in C_89 : bool)
+T_1158: (in N_89 : bool)
   Class: Eq_1158
   DataType: bool
   OrigDataType: bool
