@@ -54,10 +54,10 @@ namespace Reko.Arch.Pdp11
     [Flags]
     public enum FlagM
     {
-        NF = 1,
-        ZF = 2,
-        VF = 4,
-        CF = 8,
+        NF = 8,
+        ZF = 4,
+        VF = 2,
+        CF = 1,
     }
 
     public class Pdp11Architecture : ProcessorArchitecture
@@ -224,11 +224,8 @@ namespace Reko.Arch.Pdp11
 			var s = new StringBuilder();
 			foreach (var r in flagRegs)
 			{
-                if (grf == 0)
-                    break;
-				if ((grf & 1) != 0)
+				if ((grf & r.FlagGroupBits) != 0)
 					s.Append(r.Name);
-                grf >>= 1;
 			}
 			return s.ToString();
 		}

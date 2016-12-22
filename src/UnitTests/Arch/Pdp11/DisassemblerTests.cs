@@ -178,5 +178,11 @@ namespace Reko.UnitTests.Arch.Pdp11
         {
             RunTest("bis\t#2000,@#0024", 0x55DF, 0x2000, 0x0024);
         }
+
+        [Test]
+        public void Pdp11dis_setflags()
+        {
+            RunTest("setflags\t#04", 0x00B4);
+        }
     }
 }
