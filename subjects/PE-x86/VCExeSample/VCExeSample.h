@@ -4,7 +4,7 @@
 
 /*
 // Equivalence classes ////////////
-Eq_1: (struct "Globals" (4020C0 (str char) str4020C0) (4020C8 (str char) str4020C8) (4020D4 (str char) str4020D4) (4020D8 (str char) str4020D8) (4020DC (str char) str4020DC) (4020E0 (str char) str4020E0) (4020E4 real32 r4020E4) (4020E8 real32 r4020E8) (4020EC real32 r4020EC) (4020F0 real64 r4020F0) (4020F8 real64 r4020F8) (403018 cdecl_class_ptr gbl_c) (40301C Eq_209 t40301C) (403020 Eq_207 t403020) (403024 (ptr thiscall_class) gbl_thiscall))
+Eq_1: (struct "Globals" (4020C0 (str char) str4020C0) (4020C8 (str char) str4020C8) (4020D4 (str char) str4020D4) (4020D8 (str char) str4020D8) (4020DC (str char) str4020DC) (4020E0 (str char) str4020E0) (4020E4 real32 r4020E4) (4020E8 real32 r4020E8) (4020EC real32 r4020EC) (4020F0 real64 r4020F0) (4020F8 real64 r4020F8) (403018 cdecl_class_ptr gbl_c) (40301C uint32 dw40301C) (403020 uint32 dw403020) (403024 (ptr thiscall_class) gbl_thiscall))
 	globals_t (in globals : (ptr (struct "Globals")))
 Eq_5: (fn void ((ptr char), int32, (ptr char), real32))
 	T_5 (in test1 : ptr32)
@@ -165,16 +165,6 @@ Eq_200: (fn void ((ptr thiscall_class), real64))
 	T_200 (in Mem39[Mem39[Mem39[0x00403024:word32] + 0x00000000:word32] + 0x00000000:word32] : word32)
 Eq_201: thiscall_class
 	T_201 (in 0x00403024 : ptr32)
-Eq_207: (union "Eq_207" (word32 u0) (uipr64 u1))
-	T_207 (in eax_16 : Eq_207)
-	T_208 (in 0x0000000A : word32)
-	T_217 (in Mem21[0x00403020:word32] : word32)
-	T_218 (in 0x0000000000000003 : uipr64)
-Eq_209: (union "Eq_209" (word32 u0) (uipr64 u1))
-	T_209 (in ecx_19 : Eq_209)
-	T_210 (in 0x00000003 : word32)
-	T_215 (in Mem20[0x0040301C:word32] : word32)
-	T_219 (in 0x0000000000000001 : uipr64)
 // Type Variables ////////////
 globals_t: (in globals : (ptr (struct "Globals")))
   Class: Eq_1
@@ -1000,21 +990,21 @@ T_206: (in dwArg04 : word32)
   Class: Eq_206
   DataType: word32
   OrigDataType: word32
-T_207: (in eax_16 : Eq_207)
+T_207: (in eax_16 : uint32)
   Class: Eq_207
-  DataType: Eq_207
-  OrigDataType: uipr64
+  DataType: uint32
+  OrigDataType: uint32
 T_208: (in 0x0000000A : word32)
   Class: Eq_207
-  DataType: word32
+  DataType: uint32
   OrigDataType: word32
-T_209: (in ecx_19 : Eq_209)
+T_209: (in ecx_19 : uint32)
   Class: Eq_209
-  DataType: Eq_209
-  OrigDataType: uipr64
+  DataType: uint32
+  OrigDataType: uint32
 T_210: (in 0x00000003 : word32)
   Class: Eq_209
-  DataType: word32
+  DataType: uint32
   OrigDataType: word32
 T_211: (in dwArg04 : word32)
   Class: Eq_211
@@ -1030,28 +1020,28 @@ T_213: (in dwArg04 == 0x00000000 : bool)
   OrigDataType: bool
 T_214: (in 0x0040301C : ptr32)
   Class: Eq_214
-  DataType: (ptr Eq_209)
+  DataType: (ptr uint32)
   OrigDataType: (ptr (struct (0 T_215 t0000)))
 T_215: (in Mem20[0x0040301C:word32] : word32)
   Class: Eq_209
-  DataType: Eq_209
+  DataType: uint32
   OrigDataType: word32
 T_216: (in 0x00403020 : word32)
   Class: Eq_216
-  DataType: (ptr Eq_207)
+  DataType: (ptr uint32)
   OrigDataType: (ptr (struct (0 T_217 t0000)))
 T_217: (in Mem21[0x00403020:word32] : word32)
   Class: Eq_207
-  DataType: Eq_207
+  DataType: uint32
   OrigDataType: word32
-T_218: (in 0x0000000000000003 : uipr64)
+T_218: (in 0x00000003 : uint32)
   Class: Eq_207
-  DataType: uipr64
-  OrigDataType: uipr64
-T_219: (in 0x0000000000000001 : uipr64)
+  DataType: uint32
+  OrigDataType: uint32
+T_219: (in 0x00000001 : uint32)
   Class: Eq_209
-  DataType: uipr64
-  OrigDataType: uipr64
+  DataType: uint32
+  OrigDataType: uint32
 */
 typedef struct Globals {
 	char str4020C0[];	// 4020C0
@@ -1066,8 +1056,8 @@ typedef struct Globals {
 	real64 r4020F0;	// 4020F0
 	real64 r4020F8;	// 4020F8
 	cdecl_class_ptr gbl_c;	// 403018
-	Eq_209 t40301C;	// 40301C
-	Eq_207 t403020;	// 403020
+	uint32 dw40301C;	// 40301C
+	uint32 dw403020;	// 403020
 	thiscall_class * gbl_thiscall;	// 403024
 } Eq_1;
 
@@ -1214,14 +1204,4 @@ typedef void (Eq_199)(thiscall_class * this, real64 rArg04);
 typedef void (Eq_200)(thiscall_class *, real64);
 
 typedef thiscall_class Eq_201;
-
-typedef union Eq_207 {
-	word32 u0;
-	uipr64 u1;
-} Eq_207;
-
-typedef union Eq_209 {
-	word32 u0;
-	uipr64 u1;
-} Eq_209;
 

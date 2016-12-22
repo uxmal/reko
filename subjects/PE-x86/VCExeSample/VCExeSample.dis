@@ -374,8 +374,8 @@ l004012A0:
 // SymbolicIn: esp:fp
 
 l004012B4:
-	eax_16 = 0x0000000000000003
-	ecx_19 = 0x0000000000000001
+	eax_16 = 0x00000003
+	ecx_19 = 0x00000001
 // DataOut: eax ecx
 // DataOut (flags): 
 // SymbolicIn: esp:fp - 0x00000004 ebp:fp - 0x00000004 eax:0x0000000A ecx:0x00000003 edx:<invalid> -4(fp):ebp
