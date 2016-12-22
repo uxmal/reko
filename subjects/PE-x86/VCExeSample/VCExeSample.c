@@ -82,15 +82,15 @@ void loop_test9(real32 rArg04, real64 rArg0)
 
 void const_div_test10(word32 dwArg04)
 {
-	Eq_207 eax_16 = 0x0A;
-	Eq_209 ecx_19 = 0x03;
+	uint32 eax_16 = 0x0A;
+	uint32 ecx_19 = 0x03;
 	if (dwArg04 != 0x00)
 	{
-		eax_16.u1 = 0x03;
-		ecx_19.u1 = 0x01;
+		eax_16 = 0x03;
+		ecx_19 = 0x01;
 	}
-	globals->t40301C = ecx_19;
-	globals->t403020 = eax_16;
+	globals->dw40301C = ecx_19;
+	globals->dw403020 = eax_16;
 	return;
 }
 
