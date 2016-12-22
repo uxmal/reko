@@ -95,6 +95,13 @@ namespace Reko.Arch.Pdp11
             SetFlags(tmp, FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF, 0, 0);
         }
 
+        private void RewriteCom(Pdp11Instruction instr)
+        {
+            var src = RewriteSrc(instr.op1);
+            var dst = RewriteDst(instr.op1, src, m.Comp);
+            SetFlags(dst, FlagM.NF | FlagM.ZF, FlagM.VF, FlagM.CF);
+        }
+    
         private void RewriteDiv(Pdp11Instruction instr)
         {
             var reg = ((RegisterOperand)instr.op2).Register;

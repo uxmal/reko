@@ -137,7 +137,7 @@
     <Compile Include="Analysis\DefinedIdentifierFinder.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Analysis\ExpressionUseAdder.cs">
+    <Compile Include="Analysis\InstructionUseAdder.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Analysis\ExpressionUseRemover.cs" />

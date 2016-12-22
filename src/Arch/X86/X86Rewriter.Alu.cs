@@ -324,7 +324,7 @@ namespace Reko.Arch.X86
                 orw.AddrOf(orw.AluRegister(Registers.al))));
         }
 
-        private void RewriteDivide(BinaryOperator op, Domain domain)
+        private void RewriteDivide(Func<Expression, Expression, Expression> op, Domain domain)
         {
             if (instrCur.Operands != 1)
                 throw new ArgumentOutOfRangeException("Intel DIV/IDIV instructions only take one operand");
@@ -362,10 +362,10 @@ namespace Reko.Arch.X86
             emitter.Assign(tmp, regDividend);
             emitter.Assign(
                 regRemainder, 
-                new BinaryExpression(Operator.IMod, p, tmp, SrcOp(instrCur.op1)));
+                emitter.Cast(p, emitter.Mod(tmp, SrcOp(instrCur.op1))));
             emitter.Assign(
                 regQuotient, 
-                new BinaryExpression(op, p, tmp, SrcOp(instrCur.op1)));
+                emitter.Cast(p, op(tmp, SrcOp(instrCur.op1))));
             EmitCcInstr(regQuotient, X86Instruction.DefCc(instrCur.code));
         }
 

@@ -59,7 +59,7 @@ namespace Reko.UnitTests.Analysis
         public void Setup()
         {
             this.pb = new ProgramBuilder();
-            this.importReferences = new Dictionary<Address, ImportReference>();
+            this.importReferences = pb.Program.ImportReferences;
             this.addUseInstructions = false;
             this.importResolver = MockRepository.GenerateStub<IImportResolver>();
             this.r1 = new Identifier("r1", PrimitiveType.Word32, new RegisterStorage("r1", 1, 0, PrimitiveType.Word32));
@@ -82,6 +82,7 @@ namespace Reko.UnitTests.Analysis
             {
                 Programs = { program }
             };
+            var listener = new FakeDecompilerEventListener();
             var arch = new FakeArchitecture();
             var platform = new FakePlatform(null, arch);
 
@@ -92,7 +93,6 @@ namespace Reko.UnitTests.Analysis
                 arch.GetRegister(1)
             };
             program.Platform = platform;
-            program.Platform = new FakePlatform(null, new FakeArchitecture());
             program.SegmentMap = new SegmentMap(
                 Address.Ptr32(0x0000),
                 new ImageSegment(
@@ -139,6 +139,7 @@ namespace Reko.UnitTests.Analysis
 
         private void RunTest_FrameAccesses(string sExp)
         {
+            var listener = new FakeDecompilerEventListener();
             var program = pb.BuildProgram();
             var platform = new FakePlatform(null, program.Architecture)
             {
@@ -174,7 +175,7 @@ namespace Reko.UnitTests.Analysis
                 //   esp_2 = fp - 4
                 //   mov [fp - 8],eax
 
-                var vp = new ValuePropagator(this.pb.Program.Architecture, sst.SsaState);
+                var vp = new ValuePropagator(this.pb.Program.Architecture, sst.SsaState, listener);
                 vp.Transform();
 
                 sst.RenameFrameAccesses = true;

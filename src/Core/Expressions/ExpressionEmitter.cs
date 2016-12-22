@@ -81,6 +81,11 @@ namespace Reko.Core.Expressions
             return new Cast(dataType, expr);
         }
 
+        /// <summary>
+        /// Bitwise complement.
+        /// </summary>
+        /// <param name="expr"></param>
+        /// <returns></returns>
         public Expression Comp(Expression expr)
         {
             return new UnaryExpression(Operator.Comp, expr.DataType, expr); 

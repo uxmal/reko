@@ -339,6 +339,7 @@ namespace Reko.UnitTests.Analysis
 
 		private void Prepare(Procedure proc)
 		{
+            var listener = new FakeDecompilerEventListener();
             doms = proc.CreateBlockDominatorGraph();
             SsaTransform sst = new SsaTransform(
                 new Program(),
@@ -355,7 +356,7 @@ namespace Reko.UnitTests.Analysis
 
 			DeadCode.Eliminate(ssa);
 
-            var vp = new ValuePropagator(arch, ssa);
+			var vp = new ValuePropagator(arch, ssa, listener);
 			vp.Transform();
 
 			DeadCode.Eliminate(ssa);

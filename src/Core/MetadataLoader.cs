@@ -33,8 +33,17 @@ namespace Reko.Core
     {
         public MetadataLoader(IServiceProvider services, string filename, byte[] bytes)
         {
+            this.Services = services;
         }
 
+        public IServiceProvider Services { get; private set; }
+
+        /// <summary>
+        /// Loads metadata from the file specified in the constructor.
+        /// </summary>
+        /// <param name="platform"></param>
+        /// <param name="dstLib"></param>
+        /// <returns></returns>
         public abstract TypeLibrary Load(IPlatform platform, TypeLibrary dstLib);
     }
 

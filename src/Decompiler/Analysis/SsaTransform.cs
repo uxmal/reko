@@ -730,6 +730,7 @@ namespace Reko.Analysis
             } 
             if (this.RenameFrameAccesses && IsConstFpuStackAccess(ssa.Procedure, access))
             {
+                ssa.Identifiers[access.MemoryId].Uses.Remove(stmCur);
                 var idFrame = ssa.Procedure.Frame.EnsureFpuStackVariable(
                     ((Constant)access.EffectiveAddress).ToInt32(), access.DataType);
                 var idNew = NewUse(idFrame, stmCur, true);

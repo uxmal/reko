@@ -566,10 +566,6 @@
     <Compile Include="Serialization\PrimitiveType_v1.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Serialization\SerializedProcedure.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Serialization\SerializedProcedureBase.cs" />
     <Compile Include="Serialization\Register_v1.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -257,7 +257,7 @@ namespace Reko.Analysis
                 coa.Transform();
                 DeadCode.Eliminate(ssa);
 
-                var vp = new ValuePropagator(program.Architecture, ssa);
+                var vp = new ValuePropagator(program.Architecture, ssa, eventListener);
                 vp.Transform();
 
                 var liv = new LinearInductionVariableFinder(
@@ -307,7 +307,7 @@ namespace Reko.Analysis
             // sites.
             var cce = new ConditionCodeEliminator(ssa, program.Platform);
             cce.Transform();
-            var vp = new ValuePropagator(program.Architecture, ssa);
+            var vp = new ValuePropagator(program.Architecture, ssa, eventListener);
             vp.Transform();
 
             // Now compute SSA for the stack-based variables as well. That is:

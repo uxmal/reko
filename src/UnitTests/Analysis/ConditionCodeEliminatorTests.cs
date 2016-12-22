@@ -93,7 +93,8 @@ namespace Reko.UnitTests.Analysis
         protected override void RunTest(Program program, TextWriter writer)
         {
             var importResolver = MockRepository.GenerateStub<IImportResolver>();
-            DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
+            var listener = new FakeDecompilerEventListener();
+            DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver, listener);
             foreach (var proc in program.Procedures.Values)
             {
                 var sst = new SsaTransform(
@@ -109,7 +110,7 @@ namespace Reko.UnitTests.Analysis
                 var cce = new ConditionCodeEliminator(ssa, program.Platform);
                 cce.Transform();
 
-                var vp = new ValuePropagator(program.Architecture, ssa);
+                var vp = new ValuePropagator(program.Architecture, ssa, listener);
                 vp.Transform();
 
                 sst.RenameFrameAccesses = true;

@@ -93,6 +93,7 @@ namespace Reko.Arch.Pdp11
                 case Opcode.clr: RewriteClr(instr, m.Word16(0)); break;
                 case Opcode.clrb: RewriteClr(instr, m.Byte(0)); break;
                 case Opcode.cmp: RewriteCmp(instr); break;
+                case Opcode.com: RewriteCom(instr); break;
                 case Opcode.dec: RewriteIncDec(instr, m.ISub); break;
                 case Opcode.div: RewriteDiv(instr); break;
                 case Opcode.emt: RewriteEmt(instr); break;

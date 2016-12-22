@@ -36,12 +36,14 @@ namespace Reko.UnitTests.Evaluation
 	{
 		private ProcedureBuilder m;
         private SsaIdentifierCollection ssa;
+        private FakeDecompilerEventListener listener;
 
-		[SetUp]
+        [SetUp]
 		public void Setup()
 		{
 			m = new ProcedureBuilder();
             ssa = new SsaIdentifierCollection();
+            listener = new FakeDecompilerEventListener();
 		}
 
 		[Test]
@@ -59,7 +61,7 @@ namespace Reko.UnitTests.Evaluation
             ((SideEffect)use.Instruction).Expression = sid_ds.Identifier;
 			sid_ds.Uses.Add(use);
 
-			IdConstant ic = new IdConstant(new SsaEvaluationContext(null, ssa), new Unifier(null));
+			IdConstant ic = new IdConstant(new SsaEvaluationContext(null, ssa), new Unifier(null), listener);
             Assert.IsTrue(ic.Match(sid_ds.Identifier));
 			Expression e = ic.Transform();
 			Assert.AreEqual("selector", e.DataType.ToString());
@@ -74,7 +76,7 @@ namespace Reko.UnitTests.Evaluation
             var ctx = new SymbolicEvaluationContext(null, null);
             ctx.SetValue(edx, Constant.Int32(321));
 
-            IdConstant ic = new IdConstant(ctx, new Unifier(null));
+            IdConstant ic = new IdConstant(ctx, new Unifier(null), listener);
             Assert.IsTrue(ic.Match(edx));
             Expression e = ic.Transform();
             Assert.AreEqual("321", e.ToString());
@@ -90,7 +92,7 @@ namespace Reko.UnitTests.Evaluation
             var ctx = new SymbolicEvaluationContext(null, null);
             ctx.SetValue(edx, Constant.Int32(0x567));
 
-            IdConstant ic = new IdConstant(ctx, new Unifier(null));
+            IdConstant ic = new IdConstant(ctx, new Unifier(null), listener);
             Assert.IsTrue(ic.Match(edx));
             Expression e = ic.Transform();
             Assert.AreEqual("00000567", e.ToString());
@@ -106,7 +108,7 @@ namespace Reko.UnitTests.Evaluation
             var ctx = new SymbolicEvaluationContext(null, null);
             ctx.SetValue(edx, Address.Ptr32(0x00123400));
 
-            IdConstant ic = new IdConstant(ctx, new Unifier(null));
+            IdConstant ic = new IdConstant(ctx, new Unifier(null), listener);
             Assert.IsTrue(ic.Match(edx));
             Expression e = ic.Transform();
             Assert.AreEqual("00123400", e.ToString());

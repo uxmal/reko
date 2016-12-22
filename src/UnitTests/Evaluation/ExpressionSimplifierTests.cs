@@ -49,7 +49,8 @@ namespace Reko.UnitTests.Evaluation
         private void Given_ExpressionSimplifier()
         {
             SsaIdentifierCollection ssaIds = BuildSsaIdentifiers();
-            simplifier = new ExpressionSimplifier(new SsaEvaluationContext(null, ssaIds));
+            var listener = new FakeDecompilerEventListener();
+            simplifier = new ExpressionSimplifier(new SsaEvaluationContext(null, ssaIds), listener);
         }
 
         private SsaIdentifierCollection BuildSsaIdentifiers()

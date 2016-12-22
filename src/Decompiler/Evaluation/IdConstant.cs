@@ -1,4 +1,4 @@
- #region License
+#region License
 /* 
  * Copyright (C) 1999-2016 John Källén.
  *
@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Typing;
 using System;
@@ -37,11 +38,16 @@ namespace Reko.Evaluation
         private Unifier unifier;
         private Expression src;
         private Identifier idDst;
+        private DecompilerEventListener listener;
+        private DataType dt;
+        private PrimitiveType pt;
+        private Pointer ptr;
 
-        public IdConstant(EvaluationContext ctx, Unifier u)
+        public IdConstant(EvaluationContext ctx, Unifier u, DecompilerEventListener listener)
         {
             this.ctx = ctx;
             this.unifier = u;
+            this.listener = listener;
         }
 
         public bool Match(Identifier id)
@@ -54,38 +60,44 @@ namespace Reko.Evaluation
                     return false;
             }
             idDst = id;
-            return true;
+            this.dt = unifier.Unify(src.DataType, idDst.DataType);
+            this.pt = dt.ResolveAs<PrimitiveType>();
+            this.ptr = dt.ResolveAs<Pointer>();
+            return pt != null || this.ptr != null;
         }
 
         public Expression Transform()
         {
-            ctx.RemoveIdentifierUse(idDst);
-            DataType dt = unifier.Unify(src.DataType, idDst.DataType);
-            var pt = dt.ResolveAs<PrimitiveType>();
-            if (pt != null)
+            if (this.pt != null)
             {
+                ctx.RemoveIdentifierUse(idDst);
                 var cNew = src.CloneExpression();
                 cNew.DataType = dt;
                 return cNew;
             }
-            var ptr = dt.ResolveAs<Pointer>();
             var cSrc = src as Constant;
-            if (ptr != null)
+            if (this.ptr != null)
             {
                 if (cSrc != null)
                 {
+                    ctx.RemoveIdentifierUse(idDst);
                     var addr = Address.Create(ptr, cSrc.ToUInt64());
                     addr.DataType = ptr;
                     return addr;
                 }
                 if (src is Address)
                 {
+                    ctx.RemoveIdentifierUse(idDst);
                     var addr = src.CloneExpression();
                     addr.DataType = ptr;
                     return addr;
                 }
             }
-            throw new NotSupportedException(string.Format("Resulting type is {0}, which isn't supported yet.", dt));
+            listener.Warn(
+                new NullCodeLocation(""),
+                "Constant propagation failed. Resulting type is {0}, which isn't supported yet.", 
+                dt);
+            return idDst;
         }
     }
 }

@@ -246,7 +246,7 @@ namespace Reko.UnitTests.Analysis
                 importResolver,
                 programFlow);
             var ssa = sst.Transform();
-            var vp = new ValuePropagator(program.Architecture, ssa);
+            var vp = new ValuePropagator(program.Architecture, ssa, eventListener);
             vp.Transform();
             sst.RenameFrameAccesses = true;
             sst.Transform();

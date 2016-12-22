@@ -18,6 +18,7 @@ Mem0:Global
     def:  def Mem0
     uses: fp0_3 = (real80) Mem0[a6 - 0x00000010:int32]
           flags_4 = cond((real96) fp0_3 - Mem0[a6 + 0x00000008:real96])
+          branch (real96) fp0_3 == Mem0[a6 + 0x00000008:real96] l1
 // FCmpFragment
 // Return size: 0
 define FCmpFragment
@@ -54,6 +55,7 @@ Mem0:Global
     def:  def Mem0
     uses: fp0_3 = (real80) Mem0[a6 - 0x00000010:int32]
           flags_4 = cond((real96) fp0_3 - Mem0[a6 + 0x00000008:real96])
+          branch (real96) fp0_3 == Mem0[a6 + 0x00000008:real96] l1
 // FCmpFragment
 // Return size: 0
 define FCmpFragment

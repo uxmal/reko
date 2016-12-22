@@ -26,14 +26,23 @@ using System.IO;
 using System.Diagnostics;
 using System.Collections.Generic;
 using Reko.Core.Lib;
+using Reko.UnitTests.Mocks;
 
 namespace Reko.UnitTests.Analysis
 {
+    [Ignore("May not be needed after all")]
 	public class ValueNumberingTests : AnalysisTestBase
 	{
         private Program program;
         private ProgramDataFlow progFlow;
         private List<ValueNumbering> vns;
+        private FakeDecompilerEventListener listener;
+
+        [SetUp]
+        public void Setup()
+        {
+            this.listener = new FakeDecompilerEventListener();
+        }
 
         protected override void RunTest(Program program, TextWriter writer)
         {
@@ -61,7 +70,7 @@ namespace Reko.UnitTests.Analysis
             { 
                 var sst = new SsaTransform(program, proc, group, null, progFlow);
                 SsaState ssa = sst.Transform();
-				ValueNumbering vn = new ValueNumbering(ssa);
+				ValueNumbering vn = new ValueNumbering(ssa, listener);
                 vns.Add(vn);
 			}
 		}
@@ -92,7 +101,7 @@ namespace Reko.UnitTests.Analysis
                     null,
                     new ProgramDataFlow(prog));
 				SsaState ssa = sst.Transform();
-				ValueNumbering vn = new ValueNumbering(ssa);
+				ValueNumbering vn = new ValueNumbering(ssa, listener);
 				DumpProc(ssa, fut.TextWriter);
 				vn.Write(fut.TextWriter);
 				fut.AssertFilesEqual();
@@ -123,7 +132,7 @@ namespace Reko.UnitTests.Analysis
                 SsaTransform sst = new SsaTransform(program, proc, new HashSet<Procedure>(),
                     null, new ProgramDataFlow(program));
 				SsaState ssa = sst.SsaState;
-				ValueNumbering vn = new ValueNumbering(ssa);
+				ValueNumbering vn = new ValueNumbering(ssa, listener);
 				DumpProc(ssa, fut.TextWriter);
 				vn.Write(fut.TextWriter);
 				fut.AssertFilesEqual();
@@ -165,7 +174,7 @@ done:
 
 				DumpProc(ssa, fut.TextWriter);
 
-				ValueNumbering vn = new ValueNumbering(ssa);
+				ValueNumbering vn = new ValueNumbering(ssa, listener);
 				vn.Write(fut.TextWriter);
 
 				fut.AssertFilesEqual();
@@ -199,7 +208,7 @@ done:
                     new ProgramDataFlow(program));
                 SsaState ssa = sst.Transform();
 				DumpProc(ssa, fut.TextWriter);
-				ValueNumbering vn = new ValueNumbering(ssa);
+				ValueNumbering vn = new ValueNumbering(ssa, listener);
 				vn.Write(fut.TextWriter);
 
 				fut.AssertFilesEqual();
@@ -237,7 +246,7 @@ looptest:
                     new ProgramDataFlow(program));
                 SsaState ssa = sst.Transform();
 				DumpProc(ssa, fut.TextWriter);
-				ValueNumbering vn = new ValueNumbering(ssa);
+				ValueNumbering vn = new ValueNumbering(ssa, listener);
 				vn.Write(fut.TextWriter);
 
 				fut.AssertFilesEqual();

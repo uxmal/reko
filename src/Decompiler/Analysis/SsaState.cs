@@ -1,6 +1,6 @@
-﻿#region License
+#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2016 John K�ll�n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -171,6 +171,16 @@ namespace Reko.Analysis
 		}
 
         /// <summary>
+        /// Add all identifiers used in <paramref name="stm"/>.
+        /// </summary>
+        /// <param name="stm"></param>
+        public void AddUses(Statement stm)
+        {
+            var iua = new InstructionUseAdder(stm, Identifiers);
+            stm.Instruction.Accept(iua);
+        }
+
+        /// <summary>
         /// Finds all phi statements of a block, and creates a transposition of
         /// their arguments.
         /// </summary>
@@ -180,10 +190,10 @@ namespace Reko.Analysis
         /// We want to "rip" vertical stripes of the phi statements, one 
         /// stripe for each predecessor;
         /// <code>
-        /// r_2 = φ(r_0, r_1)
-        /// r_5 = φ(r_3, r_4)
+        /// r_2 = f(r_0, r_1)
+        /// r_5 = f(r_3, r_4)
         /// ...
-        /// r_z = φ(r_x, r_y)
+        /// r_z = f(r_x, r_y)
         /// </code>
         /// should result in the following "arg lists" (where pred0 and pred1)
         /// are the block's predecessors.

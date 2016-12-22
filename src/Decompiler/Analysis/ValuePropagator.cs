@@ -23,6 +23,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Operators;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Diagnostics;
@@ -49,13 +50,18 @@ namespace Reko.Analysis
         private ExpressionSimplifier eval;
         private SsaEvaluationContext evalCtx;
         private SsaIdentifierTransformer ssaIdTransformer;
+        DecompilerEventListener eventListener;
 
-        public ValuePropagator(IProcessorArchitecture arch, SsaState ssa)
+        public ValuePropagator(
+            IProcessorArchitecture arch,
+            SsaState ssa,
+            DecompilerEventListener eventListener)
         {
             this.arch = arch;
             this.ssa = ssa;
             this.evalCtx = new SsaEvaluationContext(arch, ssa.Identifiers);
-            this.eval = new ExpressionSimplifier(evalCtx);
+            this.eval = new ExpressionSimplifier(evalCtx, eventListener);
+            this.eventListener = eventListener;
             this.ssaIdTransformer = new SsaIdentifierTransformer(ssa);
         }
 
@@ -76,19 +82,10 @@ namespace Reko.Analysis
         public void Transform(Statement stm)
         {
             evalCtx.Statement = stm;
-            try
-            {
                 if (trace.TraceVerbose) Debug.WriteLine(string.Format("From: {0}", stm.Instruction.ToString()));
                 stm.Instruction = stm.Instruction.Accept(this);
                 if (trace.TraceVerbose) Debug.WriteLine(string.Format("  To: {0}", stm.Instruction.ToString()));
-            } catch (Exception ex)
-            {
-                throw new StatementCorrelatedException(
-                    stm, 
-                    string.Format("An error occurred while processing the statement {0}.", stm),
-                    ex);
             }
-        }
 
         #region InstructionVisitor<Instruction> Members
 

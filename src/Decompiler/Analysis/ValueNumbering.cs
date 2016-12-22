@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using TextWriter = System.IO.TextWriter;
 using StringWriter = System.IO.StringWriter;
+using Reko.Core.Services;
 
 namespace Reko.Analysis
 {
@@ -45,6 +46,7 @@ namespace Reko.Analysis
 		private Stack<Node> stack;
 		private int iDFS;
 		private Dictionary<Identifier,Node> nodes;
+        private DecompilerEventListener listener;
 
 		private static Constant zero;
 		private static TraceSwitch trace = new TraceSwitch("ValueNumbering", "Follows the flow of value numbering");
@@ -54,13 +56,14 @@ namespace Reko.Analysis
             new UnknownType(),
             new TemporaryStorage("any", -1, new UnknownType()));
 
-		public ValueNumbering(SsaState ssa)
+		public ValueNumbering(SsaState ssa, DecompilerEventListener listener)
 		{
 			this.ssaIds = ssa.Identifiers;
             this.Procedure = ssa.Procedure;
             optimistic = new Dictionary<Expression, Expression>();
 			valid = new Dictionary<Expression,Expression>();
 			stack = new Stack<Node>();
+            this.listener = listener;
 
 			// Set initial value numbers for all nodes (SSA identifiers). 
 			// Value numbers for the original values at procedure entry are just the
@@ -198,7 +201,7 @@ namespace Reko.Analysis
 		/// <returns></returns>
 		private bool AssignValueNumber(Node n, Dictionary<Expression,Expression> table)
 		{
-            var  simp = new ExpressionSimplifier(new ValueNumberingContext(ssaIds, table));
+            var  simp = new ExpressionSimplifier(new ValueNumberingContext(ssaIds, table), listener);
 			Expression expr;
 			if (n.definingExpr == null)
 			{

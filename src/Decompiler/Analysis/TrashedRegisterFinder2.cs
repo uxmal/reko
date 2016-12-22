@@ -44,7 +44,7 @@ namespace Reko.Analysis
         private IProcessorArchitecture arch;
         private ProgramDataFlow progFlow;
         private SsaState ssa;
-        private DecompilerEventListener decompilerEventListener;
+        private DecompilerEventListener listener;
         private ProcedureFlow flow;
         private ISet<SsaTransform> sccGroup;
         private Dictionary<Procedure, HashSet<Storage>> assumedPreserved;
@@ -71,7 +71,7 @@ namespace Reko.Analysis
             this.progFlow = flow;
             this.sccGroup = sccGroup.ToHashSet();
             this.assumedPreserved = sccGroup.ToDictionary(k => k.SsaState.Procedure, v => new HashSet<Storage>());
-            this.decompilerEventListener = listener;
+            this.listener = listener;
             this.cmp = new ExpressionValueComparer();
         }
 
@@ -88,7 +88,9 @@ namespace Reko.Analysis
         public ProcedureFlow Compute(SsaState ssa)
         {
             this.ssa = ssa;
-            this.simpl = new ExpressionSimplifier(new SsaEvaluationContext(arch, ssa.Identifiers));
+            this.simpl = new ExpressionSimplifier(
+                new SsaEvaluationContext(arch, ssa.Identifiers),
+                listener);
             this.flow = this.progFlow.ProcedureFlows[ssa.Procedure];
 
             if (ssa.Procedure.ExitBlock.Pred.Count == 0)

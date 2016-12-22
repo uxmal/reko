@@ -25,6 +25,7 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Scanning;
 using Reko.UnitTests.Mocks;
@@ -75,6 +76,8 @@ namespace Reko.UnitTests.Scanning
                 RegId(null,  ppc, "r3", CStringType()),
                 RegId("...", ppc, "r4", new UnknownType()));
             this.addrInstr = Address.Ptr32(0x123400);
+            var listener = new FakeDecompilerEventListener();
+            sc.AddService<DecompilerEventListener>(listener);
         }
 
         private SegmentMap CreateSegmentMap(uint uiAddr, uint size)
