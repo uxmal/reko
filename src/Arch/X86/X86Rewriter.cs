@@ -131,7 +131,7 @@ namespace Reko.Arch.X86
                 case Opcode.daa: EmitDaaDas("__daa"); break;
                 case Opcode.das: EmitDaaDas("__das"); break;
                 case Opcode.dec: RewriteIncDec(-1); break;
-                case Opcode.div: RewriteDivide(Operator.UDiv, Domain.UnsignedInt); break;
+                case Opcode.div: RewriteDivide(emitter.UDiv, Domain.UnsignedInt); break;
                 case Opcode.enter: RewriteEnter(); break;
                 case Opcode.fabs: RewriteFabs(); break;
                 case Opcode.fadd: EmitCommonFpuInstruction(emitter.FAdd, false, false); break;
@@ -196,7 +196,7 @@ namespace Reko.Arch.X86
                 case Opcode.fxch: RewriteExchange(); break;
                 case Opcode.fyl2x: RewriteFyl2x(); break;
                 case Opcode.hlt: RewriteHlt(); break;
-                case Opcode.idiv: RewriteDivide(Operator.SDiv, Domain.SignedInt); break;
+                case Opcode.idiv: RewriteDivide(emitter.SDiv, Domain.SignedInt); break;
                 case Opcode.@in: RewriteIn(); break;
                 case Opcode.imul: RewriteMultiply(Operator.SMul, Domain.SignedInt); break;
                 case Opcode.inc: RewriteIncDec(1); break;
