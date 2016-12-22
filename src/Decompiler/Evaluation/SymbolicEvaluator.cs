@@ -46,10 +46,6 @@ namespace Reko.Evaluation
             this.sub = new Substitutor(ctx);
         }
 
-        public SymbolicEvaluator(EvaluationContext ctx) : this(new ExpressionSimplifier(ctx), ctx)
-        {
-        }
-
         public ExpressionSimplifier Simplifier { get { return eval; } }
 
         public void Evaluate(Instruction instr)

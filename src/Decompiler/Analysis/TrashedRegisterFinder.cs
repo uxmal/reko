@@ -453,7 +453,7 @@ namespace Reko.Analysis
             private SymbolicEvaluationContext ctx;
 
             public TrashedExpressionSimplifier(TrashedRegisterFinder trf, SymbolicEvaluationContext ctx)
-                : base(ctx)
+                : base(ctx, trf.eventListener)
             {
                 this.trf = trf;
                 this.ctx = ctx;

@@ -1,4 +1,4 @@
- #region License
+#region License
 /* 
  * Copyright (C) 1999-2016 John Källén.
  *
@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Typing;
 using System;
@@ -37,11 +38,13 @@ namespace Reko.Evaluation
         private Unifier unifier;
         private Expression src;
         private Identifier idDst;
+        private DecompilerEventListener listener;
 
-        public IdConstant(EvaluationContext ctx, Unifier u)
+        public IdConstant(EvaluationContext ctx, Unifier u, DecompilerEventListener listener)
         {
             this.ctx = ctx;
             this.unifier = u;
+            this.listener = listener;
         }
 
         public bool Match(Identifier id)

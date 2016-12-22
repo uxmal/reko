@@ -73,7 +73,9 @@ namespace Reko.Scanning
             this.program = program;
             this.arch = program.Architecture;   // cached since it's used heavily.
             this.state = state;
-            this.eval = new ExpressionSimplifier(state);
+            this.eval = new ExpressionSimplifier(
+                state,
+                scanner.Services.RequireService<DecompilerEventListener>());
             this.addrStart = addr;
             this.blockCur = null;
         }

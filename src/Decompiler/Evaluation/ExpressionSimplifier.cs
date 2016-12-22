@@ -27,6 +27,7 @@ using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Reko.Core.Services;
 
 namespace Reko.Evaluation 
 {
@@ -62,7 +63,7 @@ namespace Reko.Evaluation
         private IdProcConstRule idProcConstRule;
         private CastCastRule castCastRule;
 
-        public ExpressionSimplifier(EvaluationContext ctx)
+        public ExpressionSimplifier(EvaluationContext ctx, DecompilerEventListener listener)
         {
             this.ctx = ctx;
 
@@ -71,7 +72,7 @@ namespace Reko.Evaluation
             this.addMici = new Add_mul_id_c_id_Rule(ctx);
             this.dpbConstantRule = new DpbConstantRule();
             this.dpbdpbRule = new DpbDpbRule(ctx);
-            this.idConst = new IdConstant(ctx, new Unifier());
+            this.idConst = new IdConstant(ctx, new Unifier(), listener);
             this.idCopyPropagation = new IdCopyPropagationRule(ctx);
             this.idBinIdc = new IdBinIdc_Rule(ctx);
             this.sliceConst = new SliceConstant_Rule();

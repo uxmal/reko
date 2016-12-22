@@ -37,6 +37,13 @@ namespace Reko.UnitTests.Analysis
     [TestFixture]
     public class ExpressionPropagatorTests
     {
+        private FakeDecompilerEventListener listener;
+
+        [SetUp]
+        public void Setup()
+        {
+            this.listener = new FakeDecompilerEventListener();
+        }
         [Test]
         public void EP_TestCondition()
         {
@@ -51,7 +58,7 @@ namespace Reko.UnitTests.Analysis
             var proc = p.BuildProgram().Procedures.Values.First();
             var arch = new X86ArchitectureFlat32();
             var ctx = new SymbolicEvaluationContext(arch, proc.Frame);
-            var simplifier = new ExpressionSimplifier(ctx);
+            var simplifier = new ExpressionSimplifier(ctx, listener);
             var ep = new ExpressionPropagator(null, simplifier, ctx, new ProgramDataFlow());
 
             var newInstr = proc.EntryBlock.Succ[0].Statements[0].Instruction.Accept(ep);
@@ -77,7 +84,7 @@ namespace Reko.UnitTests.Analysis
             var arch = new X86ArchitectureFlat32();
             var platform = new FakePlatform(null, arch);
             var ctx = new SymbolicEvaluationContext(arch, proc.Frame);
-            var simplifier = new ExpressionSimplifier(ctx);
+            var simplifier = new ExpressionSimplifier(ctx, listener);
             var ep = new ExpressionPropagator(platform, simplifier, ctx, new ProgramDataFlow());
 
             var newInstr = proc.EntryBlock.Succ[0].Statements[2].Instruction.Accept(ep);
@@ -99,7 +106,7 @@ namespace Reko.UnitTests.Analysis
 
             var arch = new FakeArchitecture();
             var ctx = new SymbolicEvaluationContext(arch, proc.Frame);
-            var simplifier = new ExpressionSimplifier(ctx);
+            var simplifier = new ExpressionSimplifier(ctx, listener);
             var ep = new ExpressionPropagator(null, simplifier, ctx, new ProgramDataFlow());
 
             var stms = proc.EntryBlock.Succ[0].Statements;
@@ -127,7 +134,7 @@ namespace Reko.UnitTests.Analysis
                 Test_CreateTrashedRegisters = () => new HashSet<RegisterStorage>()
             };
             var ctx = new SymbolicEvaluationContext(arch, proc.Frame);
-            var simplifier = new ExpressionSimplifier(ctx);
+            var simplifier = new ExpressionSimplifier(ctx, listener);
             var ep = new ExpressionPropagator(platform, simplifier, ctx, new ProgramDataFlow());
 
             ctx.RegisterState[arch.StackRegister] = proc.Frame.FramePointer;
@@ -153,7 +160,7 @@ namespace Reko.UnitTests.Analysis
             });
 
             var ctx = new SymbolicEvaluationContext(arch, proc.Frame);
-            var simplifier = new ExpressionSimplifier(ctx);
+            var simplifier = new ExpressionSimplifier(ctx, listener);
             var ep = new ExpressionPropagator(platform, simplifier, ctx, new ProgramDataFlow());
 
             ctx.RegisterState[arch.StackRegister] = proc.Frame.FramePointer;
@@ -182,7 +189,7 @@ namespace Reko.UnitTests.Analysis
             });
 
             var ctx = new SymbolicEvaluationContext(arch, proc.Frame);
-            var simplifier = new ExpressionSimplifier(ctx);
+            var simplifier = new ExpressionSimplifier(ctx, listener);
             var ep = new ExpressionPropagator(platform, simplifier, ctx, new ProgramDataFlow());
 
             ctx.RegisterState[arch.StackRegister] = proc.Frame.FramePointer;
@@ -216,7 +223,7 @@ namespace Reko.UnitTests.Analysis
             });
 
             var ctx = new SymbolicEvaluationContext (arch, proc.Frame);
-            var simplifier = new ExpressionSimplifier(ctx);
+            var simplifier = new ExpressionSimplifier(ctx, listener);
             var ep = new ExpressionPropagator(platform, simplifier,ctx, new ProgramDataFlow());
 
             ctx.RegisterState[arch.StackRegister]= proc.Frame.FramePointer;

@@ -65,7 +65,7 @@ namespace Reko.Analysis
             this.ssa = ssa;
             this.ssaIdTransformer = new SsaIdentifierTransformer(ssa);
             this.evalCtx = new SsaEvaluationContext(arch, ssa.Identifiers);
-            this.eval = new ExpressionSimplifier(evalCtx);
+            this.eval = new ExpressionSimplifier(evalCtx, eventListener);
             this.eventListener = eventListener;
         }
 
@@ -85,26 +85,10 @@ namespace Reko.Analysis
 
         public void Transform(Statement stm)
         {
-            bool changedBefore = Changed;
             evalCtx.Statement = stm;
-            try
-            {
-                if (trace.TraceVerbose) Debug.WriteLine(string.Format("From: {0}", stm.Instruction.ToString()));
-                stm.Instruction = stm.Instruction.Accept(this);
-                if (trace.TraceVerbose) Debug.WriteLine(string.Format("  To: {0}", stm.Instruction.ToString()));
-            } catch (Exception ex)
-            {
-                // try to restore after exception and continue work
-                eventListener.Error(
-                    new NullCodeLocation(ssa.Procedure.Name),
-                    ex,
-                    string.Format("An error occurred while processing the statement {0}.", stm));
-                // restore changed flag to avoid infinite loops
-                Changed = changedBefore;
-                //reset uses back to correct state
-                ssa.RemoveUses(stm);
-                ssa.AddUses(stm);
-            }
+            if (trace.TraceVerbose) Debug.WriteLine(string.Format("From: {0}", stm.Instruction.ToString()));
+            stm.Instruction = stm.Instruction.Accept(this);
+            if (trace.TraceVerbose) Debug.WriteLine(string.Format("  To: {0}", stm.Instruction.ToString()));
         }
 
         #region InstructionVisitor<Instruction> Members
