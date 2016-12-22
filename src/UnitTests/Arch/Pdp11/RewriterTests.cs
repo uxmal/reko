@@ -410,5 +410,17 @@ namespace Reko.UnitTests.Arch.Pdp11
               "2|L--|NZ = cond(r0)",
               "3|L--|V = false");
         }
+
+        [Test]
+        public void Pdp11Rw_com()
+        {
+            BuildTest(0x0A43);
+            AssertCode(
+              "0|L--|0200(2): 4 instructions",
+              "1|L--|r3 = ~r3",
+              "2|L--|NZ = cond(r3)",
+              "3|L--|V = false",
+              "4|L--|C = true");
+        }
     }
 }
