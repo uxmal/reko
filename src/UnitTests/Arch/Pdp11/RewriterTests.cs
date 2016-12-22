@@ -422,5 +422,18 @@ namespace Reko.UnitTests.Arch.Pdp11
               "3|L--|V = false",
               "4|L--|C = true");
         }
+
+        [Test]
+        public void Pdp11Rw_rts_r5()
+        {
+            BuildTest(0x0085);
+            AssertCode(
+              "0|T--|0200(2): 5 instructions",
+              "1|L--|v2 = r5",
+              "2|L--|r5 = Mem0[sp:word16]",
+              "3|L--|sp = sp + 0x0002",
+              "4|T--|call v2 (0)",
+              "5|T--|return (0,0)");
+        }
     }
 }
