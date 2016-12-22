@@ -115,7 +115,8 @@ namespace Reko.UnitTests.Analysis
 		protected override void RunTest(Program program, TextWriter fut)
 		{
             IImportResolver importResolver = null;
-			DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
+            var listener = new FakeDecompilerEventListener();
+            DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver, listener);
 			dfa.UntangleProcedures();
 			
 			foreach (Procedure proc in program.Procedures.Values)
@@ -129,7 +130,7 @@ namespace Reko.UnitTests.Analysis
 				cce.Transform();
 				DeadCode.Eliminate(proc, ssa);
 
-				ValuePropagator vp = new ValuePropagator(program.Architecture, ssa);
+				ValuePropagator vp = new ValuePropagator(program.Architecture, ssa, listener);
 				vp.Transform();
 				DeadCode.Eliminate(proc, ssa);
 				Coalescer co = new Coalescer(proc, ssa);

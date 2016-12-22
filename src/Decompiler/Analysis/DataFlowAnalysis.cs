@@ -265,7 +265,7 @@ namespace Reko.Analysis
                 // are propagated to the corresponding call sites.
                 var cce = new ConditionCodeEliminator(ssa, program.Platform);
                 cce.Transform();
-                var vp = new ValuePropagator(program.Architecture, ssa);
+                var vp = new ValuePropagator(program.Architecture, ssa, eventListener);
                 vp.Transform();
 
                 // Now compute SSA for the stack-based variables as well. That is:

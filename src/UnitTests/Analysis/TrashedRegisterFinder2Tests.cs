@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Analysis
                 importResolver, 
                 proc.CreateBlockDominatorGraph(),
                 new HashSet<RegisterStorage>());
-            var vp = new ValuePropagator(arch, sst.SsaState);
+            var vp = new ValuePropagator(arch, sst.SsaState, NullDecompilerEventListener.Instance);
             vp.Transform();
 
             sst.RenameFrameAccesses = true;

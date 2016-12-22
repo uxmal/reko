@@ -63,10 +63,11 @@ namespace Reko.UnitTests.Analysis
             {
                 Programs = { this.pb.Program }
             };
+            var listener = new FakeDecompilerEventListener();
             var importResolver = new ImportResolver(
                 project,
                 this.pb.Program,
-                new FakeDecompilerEventListener());
+                listener);
             var arch = new FakeArchitecture();
             
             var platform = new FakePlatform(null, arch);
@@ -99,7 +100,7 @@ namespace Reko.UnitTests.Analysis
             //   esp_2 = fp - 4
             //   mov [fp - 8],eax
 
-            var vp = new ValuePropagator(this.pb.Program.Architecture, ssa.SsaState);
+            var vp = new ValuePropagator(this.pb.Program.Architecture, ssa.SsaState, listener);
             vp.Transform();
 
             ssa.RenameFrameAccesses = true;

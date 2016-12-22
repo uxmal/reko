@@ -49,13 +49,6 @@ namespace Reko.Analysis
         private SsaIdentifierTransformer ssaIdTransformer;
         DecompilerEventListener eventListener;
 
-        [Obsolete]
-        public ValuePropagator(
-            IProcessorArchitecture arch,
-            SsaState ssa) : this(arch, ssa, NullDecompilerEventListener.Instance)
-        {
-        }
-
         public ValuePropagator(
             IProcessorArchitecture arch,
             SsaState ssa,
