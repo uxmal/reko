@@ -99,7 +99,8 @@ namespace Reko.Analysis
 				}
 				else
 				{
-					stmDef.Block.Statements.Insert(iStmDef + 1, 0, new Store(Dereference(idOut, a.Dst.DataType), a.Dst));
+					var stm = stmDef.Block.Statements.Insert(iStmDef + 1, 0, new Store(Dereference(idOut, a.Dst.DataType), a.Dst));
+                    ssa.Uses.Add(stm);
 				}
 			}
 			return a;
@@ -112,8 +113,9 @@ namespace Reko.Analysis
 
 		public override Instruction TransformDefInstruction(DefInstruction def)
 		{
-			stmDef.Block.Statements.Insert(iStmDef + 1, 0, new Store(Dereference(idOut, def.Expression.DataType), def.Expression));
-			return def;
+            var stm = stmDef.Block.Statements.Insert(iStmDef + 1, 0, new Store(Dereference(idOut, def.Expression.DataType), def.Expression));
+            ssa.Uses.Add(stm);
+            return def;
 		}
 
 		public override Instruction TransformPhiAssignment(PhiAssignment phi)
