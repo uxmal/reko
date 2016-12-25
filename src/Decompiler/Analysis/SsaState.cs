@@ -110,12 +110,67 @@ namespace Reko.Analysis
 			}
 		}
 
-		/// <summary>
-		/// Deletes a statement by removing all the ids it references 
-		/// from SSA state, then removes the statement itself from code.
-		/// </summary>
-		/// <param name="pstm"></param>
- 		public void DeleteStatement(Statement stm)
+        [Conditional("DEBUG")]
+        public void CheckUses()
+        {
+            CheckUses(s => Debug.WriteLine(s));
+        }
+
+        public void CheckUses(Action<string> error)
+        {
+            foreach (var stm in Procedure.Statements)
+            {
+                var idMapBefore = GetStatemenIdentifiers(stm);
+                RemoveUses(stm);
+                AddUses(stm);
+                var idMapAfter = GetStatemenIdentifiers(stm);
+                foreach (var id in idMapBefore.Keys)
+                {
+                    if (!idMapAfter.ContainsKey(id) || idMapAfter[id] < idMapBefore[id])
+                        error(
+                            string.Format(
+                                "{0}: incorrect {1} id in {2} uses",
+                                Procedure.Name,
+                                id,
+                                stm));
+                }
+                foreach (var id in idMapAfter.Keys)
+                {
+                    if (!idMapBefore.ContainsKey(id) || idMapBefore[id] < idMapAfter[id])
+                        error(
+                            string.Format(
+                                "{0}: there is no {1} id in {2} uses",
+                                Procedure.Name,
+                                id,
+                                stm));
+                }
+            }
+        }
+
+        private IDictionary<Identifier, int> GetStatemenIdentifiers(Statement stm)
+        {
+            var idMap = new Dictionary<Identifier, int>();
+            foreach (var sid in Identifiers)
+            {
+                foreach (var use in sid.Uses)
+                {
+                    var id = sid.Identifier;
+                    if (use == stm)
+                        if (idMap.ContainsKey(id))
+                            idMap[id]++;
+                        else
+                            idMap[id] = 1;
+                }
+            }
+            return idMap;
+        }
+
+        /// <summary>
+        /// Deletes a statement by removing all the ids it references 
+        /// from SSA state, then removes the statement itself from code.
+        /// </summary>
+        /// <param name="pstm"></param>
+        public void DeleteStatement(Statement stm)
 		{
 			// Remove all definitions and uses.
 			ReplaceDefinitions(stm, null);

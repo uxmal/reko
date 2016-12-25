@@ -44,6 +44,13 @@ namespace Reko.Analysis
             a.Src.Accept(this);
         }
 
+        public override void VisitCallInstruction(CallInstruction ci)
+        {
+            ci.Callee.Accept(this);
+            foreach(var use in ci.Uses)
+                use.Accept(this);
+        }
+
         public override void VisitDeclaration(Declaration decl)
         {
             if (decl.Expression != null)
@@ -52,6 +59,26 @@ namespace Reko.Analysis
 
         public override void VisitDefInstruction(DefInstruction def)
         {
+        }
+
+        public override void VisitStore(Store store)
+        {
+            store.Src.Accept(this);
+            /* ecxOut should not be added to use list of statements like
+               `*ecxOut = ecx` */
+            if (store.Dst is Dereference)
+                return;
+            /* do not add memory identifier to uses*/
+            var access = store.Dst as MemoryAccess;
+            if (access != null)
+            {
+                var sa = access as SegmentedAccess;
+                if (sa != null)
+                    sa.BasePointer.Accept(this);
+                access.EffectiveAddress.Accept(this);
+                return;
+            }
+            store.Dst.Accept(this);
         }
 
         public override void VisitPhiAssignment(PhiAssignment phi)
@@ -67,6 +94,10 @@ namespace Reko.Analysis
         public override void VisitIdentifier(Identifier id)
         {
             ssaIds[id].Uses.Add(user);
+        }
+
+        public override void VisitOutArgument(OutArgument outArg)
+        {
         }
 
         #endregion
