@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2016 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -69,10 +69,6 @@ namespace Reko.UnitTests.Analysis
 
 				proc.Write(false, fut.TextWriter);
 				fut.TextWriter.WriteLine("====================");
-                //$REVIEW: OutpMutual test failed. OutParameterTransformer
-                // removes phi assignments from uses. Is it correct, John?*/
-                if (proc.Name == "fn0C00_0004")
-                    continue;
                 ssa.CheckUses(s => Assert.Fail(s));
 			}
 		}
