@@ -22,6 +22,7 @@ using Reko.Core.Expressions;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Reko.Core.Code
 {
@@ -81,16 +82,24 @@ namespace Reko.Core.Code
     {
         public Storage Storage;
         public Expression Expression;
+        public BitRange BitRange;
 
-        public CallBinding(Storage stg, Expression exp)
+        public CallBinding(Storage stg, Expression exp, BitRange range)
         {
             this.Storage = stg;
             this.Expression = exp;
+            this.BitRange = new BitRange(0, exp.DataType.BitSize);
         }
 
         public override string ToString()
         {
-            return string.Format("{0}:{1}", Storage, Expression);
+            var sb = new StringBuilder();
+            sb.AppendFormat("{0}:{1}", Storage, Expression);
+            if (BitRange.Lsb != 0 || (uint)BitRange.Msb != Storage.BitSize)
+            {
+                sb.Append(BitRange.ToString());
+            }
+            return sb.ToString();
         }
     }
 }
