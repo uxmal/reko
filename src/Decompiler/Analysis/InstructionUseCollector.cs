@@ -1,6 +1,6 @@
-#region License
+﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2016 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,24 +22,32 @@ using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 using System;
+using System.Collections.Generic;
 
 namespace Reko.Analysis
 {
-    public class InstructionUseAdder : InstructionUseVisitorBase
+    public class InstructionUseCollector : InstructionUseVisitorBase
     {
-        private Statement user;
-        private SsaIdentifierCollection ssaIds;
+        private IDictionary<Identifier, int> idMap;
 
-        public InstructionUseAdder(Statement user, SsaIdentifierCollection ssaIds)
+        public InstructionUseCollector()
         {
-            if (user == null)
-                throw new ArgumentNullException("user");
-            this.user = user; this.ssaIds = ssaIds;
+            this.idMap = new Dictionary<Identifier, int>();
+        }
+
+        public IDictionary<Identifier, int> CollectUses(Statement stm)
+        {
+            idMap.Clear();
+            stm.Instruction.Accept(this);
+            return idMap;
         }
 
         protected override void UseIdentifier(Identifier id)
         {
-            ssaIds[id].Uses.Add(user);
+            if (idMap.ContainsKey(id))
+                idMap[id]++;
+            else
+                idMap.Add(id, 1);
         }
     }
 }

@@ -116,17 +116,19 @@ namespace Reko.Analysis
             CheckUses(s => Debug.WriteLine(s));
         }
 
+        /// <summary>
+        /// Compare uses stored in SsaState with actual ones
+        /// </summary>
         public void CheckUses(Action<string> error)
         {
+            var uc = new InstructionUseCollector();
             foreach (var stm in Procedure.Statements)
             {
-                var idMapBefore = GetStatemenIdentifiers(stm);
-                RemoveUses(stm);
-                AddUses(stm);
-                var idMapAfter = GetStatemenIdentifiers(stm);
-                foreach (var id in idMapBefore.Keys)
+                var idMapStored = GetStatemenIdentifiers(stm);
+                var idMapActual = uc.CollectUses(stm);
+                foreach (var id in idMapStored.Keys)
                 {
-                    if (!idMapAfter.ContainsKey(id) || idMapAfter[id] < idMapBefore[id])
+                    if (!idMapActual.ContainsKey(id) || idMapActual[id] < idMapStored[id])
                         error(
                             string.Format(
                                 "{0}: incorrect {1} id in {2} uses",
@@ -134,9 +136,9 @@ namespace Reko.Analysis
                                 id,
                                 stm));
                 }
-                foreach (var id in idMapAfter.Keys)
+                foreach (var id in idMapActual.Keys)
                 {
-                    if (!idMapBefore.ContainsKey(id) || idMapBefore[id] < idMapAfter[id])
+                    if (!idMapStored.ContainsKey(id) || idMapStored[id] < idMapActual[id])
                         error(
                             string.Format(
                                 "{0}: there is no {1} id in {2} uses",
