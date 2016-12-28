@@ -405,7 +405,10 @@ namespace Reko.Analysis
             /// (including phi-functions). 
             /// </summary>
             /// <param name="ssa">SSA identifiers</param>
-            /// <param name="p">procedure to rename</param>
+            /// <param name="newPhiStatements">
+            /// Phi statements added during current pass of SsaTransform. Used
+            /// to avoid extra use of identifiers in existing phi assignments
+            /// </param>
             public VariableRenamer(SsaTransform ssaXform, HashSet<Statement> newPhiStatements)
 			{
                 this.programFlow = ssaXform.programFlow;
