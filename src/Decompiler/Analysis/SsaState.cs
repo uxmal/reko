@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Analysis
@@ -151,19 +152,13 @@ namespace Reko.Analysis
 
         private IDictionary<Identifier, int> GetStatemenIdentifiers(Statement stm)
         {
-            var idMap = new Dictionary<Identifier, int>();
-            foreach (var sid in Identifiers)
-            {
-                foreach (var use in sid.Uses)
-                {
-                    var id = sid.Identifier;
-                    if (use == stm)
-                        if (idMap.ContainsKey(id))
-                            idMap[id]++;
-                        else
-                            idMap[id] = 1;
-                }
-            }
+            var idMap =
+               (from sid in Identifiers
+                from use in sid.Uses
+                where use == stm
+                group new { sid.Identifier, use } by sid.Identifier into g
+                select new { Key = g.Key, Value = g.Count() })
+                .ToDictionary(de => de.Key, de => de.Value);
             return idMap;
         }
 
