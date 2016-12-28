@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2016 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -64,11 +64,11 @@ namespace Reko.Analysis
         public override void VisitStore(Store store)
         {
             store.Src.Accept(this);
-            /* ecxOut should not be added to use list of statements like
-               `*ecxOut = ecx` */
+            // ecxOut should not be added to use list of statements like
+            // '*ecxOut = ecx'
             if (store.Dst is Dereference)
                 return;
-            /* do not add memory identifier to uses*/
+            // Do not add memory identifier to uses
             var access = store.Dst as MemoryAccess;
             if (access != null)
             {
