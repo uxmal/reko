@@ -246,7 +246,7 @@ namespace Reko.UnitTests.Analysis
                 m.Store(r, 0);
                 m.Assign(r, m.ISub(r, 4));
                 m.Assign(zf, m.Cond(r));
-                m.BranchCc(ConditionCode.NE, "l0000");
+                m.BranchIf(m.Test(ConditionCode.NE, zf), "l0000");
 
                 m.Label("l0001");
                 m.Assign(r, 42);
