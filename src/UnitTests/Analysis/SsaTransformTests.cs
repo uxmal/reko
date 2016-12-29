@@ -113,6 +113,7 @@ namespace Reko.UnitTests.Analysis
             if (sActual != sExp)
                 Debug.Print(sActual);
             Assert.AreEqual(sExp, sActual);
+            ssa.SsaState.CheckUses(s => Assert.Fail(s));
         }
 
         private void RunTest2(string sExp, Action<ProcedureBuilder> builder)

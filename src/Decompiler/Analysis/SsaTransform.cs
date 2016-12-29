@@ -77,14 +77,14 @@ namespace Reko.Analysis
 		/// <param name="b">Block into which the phi statement is inserted</param>
 		/// <param name="v">Destination variable for the phi assignment</param>
 		/// <returns>The inserted phi Assignment</returns>
-		private Instruction InsertPhiStatement(Block b, Identifier v)
+		private Statement InsertPhiStatement(Block b, Identifier v)
 		{
 			var stm = new Statement(
                 0,
 				new PhiAssignment(v, b.Pred.Count),
 				b);
 			b.Statements.Insert(0, stm);
-			return stm.Instruction;
+			return stm;
 		}
 
 		private IEnumerable<Identifier> LocateAllDefinedVariables(Dictionary<Expression, byte>[] defOrig)
@@ -117,9 +117,10 @@ namespace Reko.Analysis
             }
 		}
 
-		private void PlacePhiFunctions()
+		private HashSet<Statement> PlacePhiFunctions()
 		{
-			var defVars = LocateAllDefinedVariables(AOrig);
+            HashSet<Statement> phiStatements = new HashSet<Statement>();
+            var defVars = LocateAllDefinedVariables(AOrig);
 			MarkTemporariesDeadIn(AOrig);
 
 			// For each defined variable in block n, collect the places where it is defined
@@ -151,7 +152,8 @@ namespace Reko.Analysis
                         {
                             bits |= BitHasPhi;
                             dict[a] = bits;
-                            InsertPhiStatement(y, a);
+                            var stm = InsertPhiStatement(y, a);
+                            phiStatements.Add(stm);
                             if ((bits & BitDefined) == 0)
                             {
                                 W.Add(y);
@@ -160,6 +162,7 @@ namespace Reko.Analysis
                     }
                 }
 			}
+            return phiStatements;
 		}
 
         private Dictionary<Expression, byte>[] CreateA()
@@ -198,8 +201,8 @@ namespace Reko.Analysis
 
         public SsaState Transform()
 		{
-			PlacePhiFunctions();
-			var rn = new VariableRenamer(this);
+			var newPhiStatements = PlacePhiFunctions();
+			var rn = new VariableRenamer(this, newPhiStatements);
 			rn.RenameBlock(proc.EntryBlock);
             return SsaState;
 		}
@@ -395,14 +398,18 @@ namespace Reko.Analysis
 			private Procedure proc;
             private IImportResolver importResolver;
             private HashSet<Expression> existingDefs;
+            private HashSet<Statement> newPhiStatements;
 
-			/// <summary>
-			/// Walks the dominator tree, renaming the different definitions of variables
-			/// (including phi-functions). 
-			/// </summary>
-			/// <param name="ssa">SSA identifiers</param>
-			/// <param name="p">procedure to rename</param>
-			public VariableRenamer(SsaTransform ssaXform)
+            /// <summary>
+            /// Walks the dominator tree, renaming the different definitions of variables
+            /// (including phi-functions). 
+            /// </summary>
+            /// <param name="ssa">SSA identifiers</param>
+            /// <param name="newPhiStatements">
+            /// Phi statements added during current pass of SsaTransform. Used
+            /// to avoid extra use of identifiers in existing phi assignments
+            /// </param>
+            public VariableRenamer(SsaTransform ssaXform, HashSet<Statement> newPhiStatements)
 			{
                 this.programFlow = ssaXform.programFlow;
 				this.ssa = ssaXform.SsaState;
@@ -418,6 +425,7 @@ namespace Reko.Analysis
                     .Where(d => d != null)
                     .Select(d => d.Expression)
                     .ToHashSet();
+                this.newPhiStatements = newPhiStatements;
 			}
 
             /// <summary>
@@ -482,12 +490,13 @@ namespace Reko.Analysis
 
 							foreach (Statement stm in y.Statements.Where(s => s.Instruction is PhiAssignment))
 							{
+                                var newPhi = newPhiStatements.Contains(stm);
 								stmCur = stm;
 								PhiAssignment phi = (PhiAssignment) stmCur.Instruction;
 								PhiFunction p = phi.Src;
 								// replace 'n's slot with the renamed name of the variable.
 								p.Arguments[j] = 
-									NewUse((Identifier)p.Arguments[j], stm, true);
+									NewUse((Identifier)p.Arguments[j], stm, newPhi);
 							}
 						}
 					}
@@ -515,11 +524,18 @@ namespace Reko.Analysis
                     .Where(u => u != null)
                     .Select(u => u.Expression)
                     .ToHashSet();
-                block.Statements.AddRange(rename.Values
+                var stms = rename.Values
                     .Where(id => !existing.Contains(id) &&
                                  !(id.Storage is StackArgumentStorage))
                     .OrderBy(id => id.Name)     // Sort them for stability; unit test are sensitive to shifting order 
-                    .Select(id => new Statement(0, new UseInstruction(id), block)));
+                    .Select(id => new Statement(0, new UseInstruction(id), block))
+                    .ToList();
+                block.Statements.AddRange(stms);
+                stms.ForEach(u =>
+                {
+                    var use = (UseInstruction)u.Instruction;
+                    use.Expression = NewUse((Identifier)use.Expression, u, true);
+                });
             }
 
             private void AddDefInstructions(CallInstruction ci, ProcedureFlow2 flow)
@@ -651,7 +667,7 @@ namespace Reko.Analysis
                         if (!alreadyExistingUses.Contains(id))
                         {
                             alreadyExistingUses.Add(id);
-                            var newId = NewUse(id, stmCur, false);
+                            var newId = NewUse(id, stmCur, true);
                             ci.Uses.Add(new UseInstruction(newId));
                         }
                     }
@@ -713,6 +729,8 @@ namespace Reko.Analysis
             {
                 if (this.renameFrameAccess && IsFrameAccess(proc, access.EffectiveAddress))
                 {
+                    ssa.Identifiers[proc.Frame.FramePointer].Uses.Remove(stmCur);
+                    ssa.Identifiers[access.MemoryId].Uses.Remove(stmCur);
                     var idFrame = EnsureStackVariable(proc, access.EffectiveAddress, access.DataType);
                     var idNew = NewUse(idFrame, stmCur, true);
                     return idNew;
@@ -777,7 +795,7 @@ namespace Reko.Analysis
                         return new Assignment(idDst, store.Src);
                     }
 					acc.MemoryId = (MemoryIdentifier) NewDef(acc.MemoryId, store.Src, false);
-					SegmentedAccess sa = acc as SegmentedAccess;
+                    SegmentedAccess sa = acc as SegmentedAccess;
 					if (sa != null)
 						sa.BasePointer = sa.BasePointer.Accept(this);
 					acc.EffectiveAddress = acc.EffectiveAddress.Accept(this);

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2016 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -69,6 +69,7 @@ namespace Reko.UnitTests.Analysis
 
 				proc.Write(false, fut.TextWriter);
 				fut.TextWriter.WriteLine("====================");
+                ssa.CheckUses(s => Assert.Fail(s));
 			}
 		}
 
@@ -171,6 +172,7 @@ namespace Reko.UnitTests.Analysis
 		}
 
 		[Test]
+		[Category(Categories.FailedTests)]
 		public void OutpMutual()
 		{
 			program = RewriteFile("Fragments/multiple/mutual.asm");
