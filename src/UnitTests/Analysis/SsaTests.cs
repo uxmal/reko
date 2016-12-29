@@ -175,6 +175,7 @@ namespace Reko.UnitTests.Analysis
                 ssa.Write(fut.TextWriter);
                 proc.Write(false, fut.TextWriter);
                 fut.AssertFilesEqual();
+                ssa.CheckUses(s => Assert.Fail(s));
             }
         }
 
@@ -216,6 +217,7 @@ namespace Reko.UnitTests.Analysis
 				ssa.Write(writer);
 				proc.Write(false, true, writer);
 				writer.WriteLine();
+                ssa.CheckUses(s => Assert.Fail(s));
 			}
 		}
 
