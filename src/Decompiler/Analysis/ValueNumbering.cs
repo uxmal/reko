@@ -29,6 +29,7 @@ using System.Diagnostics;
 using TextWriter = System.IO.TextWriter;
 using StringWriter = System.IO.StringWriter;
 using Reko.Core.Services;
+using System.Linq;
 
 namespace Reko.Analysis
 {
@@ -40,6 +41,7 @@ namespace Reko.Analysis
 	/// </summary>
 	public class ValueNumbering
 	{
+        private HashSet<Procedure> recursiveGroup;
         private SsaIdentifierCollection ssaIds;
         private Dictionary<Expression, Expression> optimistic;	// maps <valnum> -> <node>
         private Dictionary<Expression, Expression> valid;
@@ -56,14 +58,19 @@ namespace Reko.Analysis
             new UnknownType(),
             new TemporaryStorage("any", -1, new UnknownType()));
 
-		public ValueNumbering(SsaState ssa, DecompilerEventListener listener)
-		{
-			this.ssaIds = ssa.Identifiers;
+        public ValueNumbering(HashSet<Procedure> recursiveGroup, DecompilerEventListener listener)
+        {
+            this.recursiveGroup = recursiveGroup;
+            this.listener = listener;
+        }
+
+        public void Compute(SsaState ssa)
+        {
+		    this.ssaIds = ssa.Identifiers;
             this.Procedure = ssa.Procedure;
             optimistic = new Dictionary<Expression, Expression>();
 			valid = new Dictionary<Expression,Expression>();
 			stack = new Stack<Node>();
-            this.listener = listener;
 
 			// Set initial value numbers for all nodes (SSA identifiers). 
 			// Value numbers for the original values at procedure entry are just the
@@ -134,12 +141,12 @@ namespace Reko.Analysis
 
             public Expression GetValue(MemoryAccess access)
             {
-                return null;
+                return access;
             }
 
             public Expression GetValue(SegmentedAccess access)
             {
-                return null;
+                return access;
             }
 
             public Expression GetValue(Application appl)
@@ -158,12 +165,10 @@ namespace Reko.Analysis
 
             public void UseExpression(Expression expr)
             {
-                throw new NotImplementedException();
             }
 
             public void RemoveExpressionUse(Expression exp)
             {
-                throw new NotImplementedException();
             }
 
             public void SetValue(Identifier id, Expression value)
@@ -211,7 +216,7 @@ namespace Reko.Analysis
 			else
 			{
 				if (trace.TraceVerbose) Debug.Write("Simplified: " + n.definingExpr);
-				expr = n.definingExpr.Accept(simp);
+                expr = n.definingExpr.Accept(simp);
 				if (trace.TraceVerbose) Debug.Write(" to: " + expr);
 			}
 			Expression tmp = Lookup(expr, table, n.lvalue);
@@ -513,8 +518,9 @@ namespace Reko.Analysis
 			private List<Node> scc;
 			private bool inductive = true;
 			private Constant stride;
+            private Identifier identifier;
 
-			public RegionConstantFinder(List<Node> scc, SsaIdentifierCollection ssaIds)
+            public RegionConstantFinder(List<Node> scc, SsaIdentifierCollection ssaIds)
 			{
 				this.ssaIds = ssaIds;
 				this.scc = scc;
@@ -553,13 +559,12 @@ namespace Reko.Analysis
 
 			public override void VisitIdentifier(Identifier id)
 			{
-                throw new NotImplementedException();
-                //inductive = scc.Contains(id);
-                //if (inductive)
-                //    identifier = id;
-                //else
-                //    identifier = null;
-			}
-		}
+                inductive = scc.Any(n => n.info.Identifier == id);
+                if (inductive)
+                    identifier = id;
+                else
+                    identifier = null;
+            }
+        }
 	}
 }

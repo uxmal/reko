@@ -27,11 +27,13 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using Reko.Core.Lib;
 using Reko.UnitTests.Mocks;
+using Reko.Core.Types;
 
 namespace Reko.UnitTests.Analysis
 {
+    [TestFixture]
     [Ignore("May not be needed after all")]
-	public class ValueNumberingTests : AnalysisTestBase
+    public class ValueNumberingTests : AnalysisTestBase
 	{
         private Program program;
         private ProgramDataFlow progFlow;
@@ -42,6 +44,7 @@ namespace Reko.UnitTests.Analysis
         public void Setup()
         {
             this.listener = new FakeDecompilerEventListener();
+            vns = new List<ValueNumbering>();
         }
 
         protected override void RunTest(Program program, TextWriter writer)
@@ -70,7 +73,14 @@ namespace Reko.UnitTests.Analysis
             { 
                 var sst = new SsaTransform(program, proc, group, null, progFlow);
                 SsaState ssa = sst.Transform();
-				ValueNumbering vn = new ValueNumbering(ssa, listener);
+                var vp = new ValuePropagator(program.Architecture, ssa, listener);
+                vp.Transform();
+                sst.RenameFrameAccesses = true;
+                sst.Transform();
+                sst.AddUsesToExitBlock();
+                vp.Transform();
+			    var vn = new ValueNumbering(group, listener);
+                vn.Compute(ssa);
                 vns.Add(vn);
 			}
 		}
@@ -101,7 +111,7 @@ namespace Reko.UnitTests.Analysis
                     null,
                     new ProgramDataFlow(prog));
 				SsaState ssa = sst.Transform();
-				ValueNumbering vn = new ValueNumbering(ssa, listener);
+				ValueNumbering vn = new ValueNumbering(new HashSet<Procedure> { proc }, listener);
 				DumpProc(ssa, fut.TextWriter);
 				vn.Write(fut.TextWriter);
 				fut.AssertFilesEqual();
@@ -131,8 +141,9 @@ namespace Reko.UnitTests.Analysis
 				Procedure proc = program.Procedures.Values[0];
                 SsaTransform sst = new SsaTransform(program, proc, new HashSet<Procedure>(),
                     null, new ProgramDataFlow(program));
-				SsaState ssa = sst.SsaState;
-				ValueNumbering vn = new ValueNumbering(ssa, listener);
+                SsaState ssa = sst.Transform();
+				ValueNumbering vn = new ValueNumbering(new HashSet<Procedure> { proc }, listener);
+                vn.Compute(ssa);
 				DumpProc(ssa, fut.TextWriter);
 				vn.Write(fut.TextWriter);
 				fut.AssertFilesEqual();
@@ -167,14 +178,15 @@ done:
                     new HashSet<Procedure>(),
                     null,
                     new ProgramDataFlow(program));
-                SsaState ssa = sst.SsaState;
+                SsaState ssa = sst.Transform();
 				DumpProc(ssa, fut.TextWriter);
 
 				DeadCode.Eliminate(ssa);
 
 				DumpProc(ssa, fut.TextWriter);
 
-				ValueNumbering vn = new ValueNumbering(ssa, listener);
+				ValueNumbering vn = new ValueNumbering(new HashSet<Procedure> { proc }, listener);
+                vn.Compute(ssa);
 				vn.Write(fut.TextWriter);
 
 				fut.AssertFilesEqual();
@@ -208,7 +220,8 @@ done:
                     new ProgramDataFlow(program));
                 SsaState ssa = sst.Transform();
 				DumpProc(ssa, fut.TextWriter);
-				ValueNumbering vn = new ValueNumbering(ssa, listener);
+				ValueNumbering vn = new ValueNumbering(new HashSet<Procedure> { proc }, listener);
+                vn.Compute(ssa);
 				vn.Write(fut.TextWriter);
 
 				fut.AssertFilesEqual();
@@ -236,8 +249,6 @@ looptest:
 			{
 				Procedure proc = program.Procedures.Values[0];
 				var gr = proc.CreateBlockDominatorGraph();
-				Aliases alias = new Aliases(proc, program.Architecture);
-				alias.Transform();
 				SsaTransform sst = new SsaTransform(
                     program,
                     proc,
@@ -245,8 +256,11 @@ looptest:
                     null,
                     new ProgramDataFlow(program));
                 SsaState ssa = sst.Transform();
+                sst.RenameFrameAccesses = true;
+                sst.Transform();
 				DumpProc(ssa, fut.TextWriter);
-				ValueNumbering vn = new ValueNumbering(ssa, listener);
+				ValueNumbering vn = new ValueNumbering(new HashSet<Procedure> { proc }, listener);
+                vn.Compute(ssa);
 				vn.Write(fut.TextWriter);
 
 				fut.AssertFilesEqual();
@@ -270,5 +284,68 @@ looptest:
 		{
             RunFileTest_x86_real("Fragments/stringinstr.asm", "Analysis/VnStringInstructions.txt");
 		}
+
+        [Test]
+        public void VnFactorial_CalleeCleanup()
+        {
+            var pb = new ProgramBuilder();
+            pb.Add("main", m =>
+            {
+                var r1 = m.Frame.EnsureRegister(pb.Program.Architecture.GetRegister(1));
+                var sp = m.Frame.EnsureRegister(pb.Program.Architecture.StackRegister);
+                m.Assign(r1, 10);
+                m.Assign(sp, m.ISub(sp, 4));
+                m.Store(sp, r1);
+                m.Call("foo", 4);
+                m.Store(m.Word32(0x00123400), r1);
+                m.Return();
+            });
+            pb.Add("foo", m =>
+            {
+                var r1 = m.Frame.EnsureRegister(pb.Program.Architecture.GetRegister(1));
+                var r2 = m.Frame.EnsureRegister(pb.Program.Architecture.GetRegister(2));
+                var sp = m.Frame.EnsureRegister(pb.Program.Architecture.StackRegister);
+                m.Assign(r1, m.LoadDw(m.IAdd(sp, 8)));
+                m.BranchIf(m.Le(r1, 1), "m00002");
+
+                m.Label("m00001");
+                m.Assign(sp, m.ISub(sp, 4));
+                m.Store(sp, m.ISub(r1, 1));
+                m.Call("foo", 0);
+                m.Assign(r1, m.IMul(r1, m.ISub(sp, 8)));
+                m.Goto("m00003");
+
+                m.Label("m00002");
+                m.Assign(r1, 1);
+
+                m.Label("m00003");
+                m.Assign(sp, m.IAdd(sp, 4));
+                m.Return();
+            });
+            this.program = pb.BuildProgram();
+            this.program.Platform = new DefaultPlatform(null, program.Architecture);
+            this.progFlow = new ProgramDataFlow(program);
+
+            var sscf = new SccFinder<Procedure>(new ProcedureGraph(program), ProcessScc);
+            foreach (var procedure in program.Procedures.Values)
+            {
+                sscf.Find(procedure);
+            }
+
+            var writer = new StringWriter();
+            foreach (var vn in vns)
+            {
+                vn.Procedure.Write(false, writer);
+                vn.Write(writer);
+                writer.WriteLine();
+            }
+
+            var sExp = "@@@";
+            if (sExp != writer.ToString())
+            {
+                Console.WriteLine(writer.ToString());
+                Assert.AreEqual(sExp, writer.ToString());
+            }
+        }
 	}
 }
