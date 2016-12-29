@@ -84,7 +84,7 @@ namespace Reko.Core.Code
         public Expression Expression;
         public BitRange BitRange;
 
-        public CallBinding(Storage stg, Expression exp, BitRange range)
+        public CallBinding(Storage stg, Expression exp)
         {
             this.Storage = stg;
             this.Expression = exp;
