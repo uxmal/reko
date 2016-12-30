@@ -111,7 +111,7 @@ namespace Reko.UnitTests.Analysis
                     new HashSet<Procedure>(),
                     importResolver,
                     programFlow);
-                sst.Transform();
+                var ssa = sst.Transform();
                 if (this.addUseInstructions)
                 {
                     sst.AddUsesToExitBlock();
@@ -120,6 +120,7 @@ namespace Reko.UnitTests.Analysis
                 sst.SsaState.Write(writer);
                 proc.Write(false, writer);
                 writer.WriteLine("======");
+                ssa.CheckUses(s => { ssa.Dump(true); Assert.Fail(s); });
             }
             var sActual = writer.ToString();
             if (sActual != sExp)
@@ -1614,7 +1615,6 @@ proc1_exit:
     def:  r13_1 = 0x00030000
 r12_2: orig: r12
     def:  r12_2 = ImportedFunc
-    uses: r14_4 = ImportedFunc(r6)
 r6:r6
     def:  def r6
     uses: r14_4 = ImportedFunc(r6)

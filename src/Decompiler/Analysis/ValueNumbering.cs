@@ -68,7 +68,7 @@ namespace Reko.Analysis
         {
 		    this.ssaIds = ssa.Identifiers;
             this.Procedure = ssa.Procedure;
-            optimistic = new Dictionary<Expression, Expression>();
+            optimistic = new Dictionary<Expression, Expression>(new ExpressionValueComparer());
 			valid = new Dictionary<Expression,Expression>();
 			stack = new Stack<Node>();
 
@@ -105,10 +105,10 @@ namespace Reko.Analysis
 		public void AssignInitialValueNumbers()
 		{
             nodes = new Dictionary<Identifier, Node>();
-			foreach (var id in ssaIds)
+			foreach (var sid in ssaIds)
 			{
-				Node n = new Node(id);
-				if (id.IsOriginal)
+				Node n = new Node(sid);
+				if (sid.IsOriginal)
 				{
 					n.vn = Lookup(n.info.Identifier, valid, n.info.Identifier);
 				}
@@ -116,7 +116,7 @@ namespace Reko.Analysis
 				{
 					n.vn = AnyValueNumber;
 				}
-				nodes[id.Identifier] = n;
+				nodes[sid.Identifier] = n;
 			}
 		}
 

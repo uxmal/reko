@@ -905,7 +905,6 @@ r63_2: orig: r63
     def:  r63_2 = fp
 r1_3: orig: r1
     def:  r1_3 = foo
-    uses: r1_8 = foo(Mem7[fp - 0x00000008:word32], Mem7[fp - 0x00000004:word32])
 r63_4: orig: r63
     def:  r63_4 = fp - 0x00000004
 Mem5: orig: Mem0

@@ -176,8 +176,8 @@ void fn0816(Eq_496 * r0)
 	word16 sp_18;
 	word16 r0_19;
 	byte NZ_20;
-	bool V_21;
-	bool C_22;
+	bool C_21;
+	bool V_22;
 	word16 pc_23;
 	byte NZVC_24;
 	globals->ptr53F0();
@@ -190,8 +190,8 @@ void fn0A62(Eq_496 * r0)
 	word16 sp_16;
 	word16 r0_17;
 	byte NZ_18;
-	bool V_19;
-	bool C_20;
+	bool C_19;
+	bool V_20;
 	word16 pc_21;
 	globals->ptr5414();
 	return;
@@ -214,8 +214,8 @@ Eq_520 * fn0AE0(Eq_520 * r3, Eq_521 r4, word16 wArg00, word16 wArg01, word16 wAr
 		byte NZ_110;
 		bool V_111;
 		word16 pc_112;
-		bool N_113;
-		bool C_114;
+		bool C_113;
+		bool N_114;
 		bool Z_115;
 		byte NZVC_116;
 		word16 r4_117;
@@ -231,8 +231,8 @@ Eq_520 * fn0AE0(Eq_520 * r3, Eq_521 r4, word16 wArg00, word16 wArg01, word16 wAr
 		byte NZ_68;
 		bool V_69;
 		word16 pc_70;
-		bool N_71;
-		bool C_72;
+		bool C_71;
+		bool N_72;
 		bool Z_73;
 		byte NZVC_74;
 		<anonymous> ** r4_75;
@@ -242,8 +242,8 @@ Eq_520 * fn0AE0(Eq_520 * r3, Eq_521 r4, word16 wArg00, word16 wArg01, word16 wAr
 		byte NZ_80;
 		bool V_81;
 		word16 pc_82;
-		bool N_83;
-		bool C_84;
+		bool C_83;
+		bool N_84;
 		bool Z_85;
 		byte NZVC_86;
 		word16 r4_87;
@@ -275,8 +275,8 @@ l0BC6:
 		byte NZ_58;
 		bool V_59;
 		word16 pc_60;
-		bool N_61;
-		bool C_62;
+		bool C_61;
+		bool N_62;
 		bool Z_63;
 		byte NZVC_64;
 		word16 r0_65;
@@ -297,8 +297,8 @@ l0BC6:
 			byte NZ_95;
 			bool V_96;
 			word16 pc_97;
-			bool N_98;
-			bool C_99;
+			bool C_98;
+			bool N_99;
 			bool Z_100;
 			byte NZVC_101;
 			struct Eq_496 * r0_102;
@@ -467,8 +467,8 @@ l0F2C:
 		word16 r4_100;
 		word16 pc_101;
 		word16 r3_102;
-		bool N_103;
-		bool C_104;
+		bool C_103;
+		bool N_104;
 		bool Z_105;
 		word16 r5_106;
 		word16 r2_107;
@@ -492,8 +492,8 @@ l0F2C:
 		word16 r4_85;
 		word16 pc_86;
 		word16 r3_87;
-		bool N_88;
-		bool C_89;
+		bool C_88;
+		bool N_89;
 		bool Z_90;
 		word16 r5_91;
 		word16 r2_92;

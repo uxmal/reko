@@ -20,7 +20,7 @@ The decompiler engine then proceeds to analyze the input binary.
 
 Please note that many software licenses prohibit decompilation or
 other reverse engineering of their machine code binaries. Use this
-decompiler only if you have legal rights to decompiler the binary
+decompiler only if you have legal rights to decompile the binary
 (for instance if the binary is your own.)
 
 ## Hacking
@@ -35,13 +35,13 @@ wish to build using the command line, use the commands
 msbuild Reko-decompiler.sln
 ```
 
-on Windows machines and
+on Windows machines or
 
 ```sh
 xbuild Reko-decompiler.sln
 ```
 
-on machine with the Mono toolchain. All external dependencies
+on machines with the Mono toolchain. All external dependencies
 needed to build are included in the `external` directory.
 
 **Note**: some users have reported difficulties with certain

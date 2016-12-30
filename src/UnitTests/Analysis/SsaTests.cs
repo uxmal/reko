@@ -243,6 +243,7 @@ namespace Reko.UnitTests.Analysis
             m.Call(r1, 4);
             m.Return();
 
+            ssa.CheckUses(s => Assert.Fail(s));
             RunUnitTest(m, "Analysis/SsaCallIndirect.txt");
         }
 	}

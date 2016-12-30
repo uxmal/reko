@@ -362,7 +362,10 @@ namespace Reko.Analysis
             ProcedureBase callee = GetCalleeProcedure(ci);
             if (callee != null && callee.Signature != null && callee.Signature.ParametersValid)
             {
+
                 // Signature is known: build the application immediately.
+                // First, remove all uses of the old call.
+                ssa.RemoveUses(stmCur);
                 var ab = CreateApplicationBuilder(ci.Callee.DataType, callee, ci);
                 var instr = ab.CreateInstruction(callee.Signature, callee.Characteristics);
                 return instr.Accept(this);

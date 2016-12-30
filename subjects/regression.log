@@ -2838,6 +2838,100 @@ fn1DAE: error: An error occurred while rewriting procedure to high-level languag
 00005A3E: warning: Expected sizes of arrays to have been determined by now
 00005A66: warning: Expected sizes of arrays to have been determined by now
 
+=== spcinv.sav
+*** spcinv.sav
+0426: error: Rewriting of PDP-11 instruction illegal not supported yet.
+02A2: error: An error occurred while processing instruction at address 02A2.
+    The given key was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 145
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
+02C2: error: An error occurred while processing instruction at address 02C2.
+    The given key was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 145
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
+033E: error: An error occurred while processing instruction at address 033E.
+    The given key was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 145
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
+0348: error: An error occurred while processing instruction at address 0348.
+    The given key was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 145
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
+036C: error: An error occurred while processing instruction at address 036C.
+    The given key was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 145
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
+0370: error: An error occurred while processing instruction at address 0370.
+    The given key was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 145
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
+0374: error: An error occurred while processing instruction at address 0374.
+    The given key was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 145
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
+0378: error: An error occurred while processing instruction at address 0378.
+    The given key was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 145
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
+037C: error: An error occurred while processing instruction at address 037C.
+    The given key was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 145
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
+038E: error: An error occurred while processing instruction at address 038E.
+    The given key was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 145
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
+040A: error: An error occurred while processing instruction at address 040A.
+    The given key was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 145
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
+0482: error: An error occurred while processing instruction at address 0482.
+    The given key was not present in the dictionary.
+       at System.Collections.Generic.Dictionary`2.get_Item(TKey key)
+   at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 145
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
+0AF4: error: An error occurred while processing instruction at address 0AF4.
+    Expected stack depth to be negative.
+       at Reko.Analysis.ExpressionPropagator.GetStackDepthBeforeCall() in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 158
+   at Reko.Analysis.ExpressionPropagator.VisitCallInstruction(CallInstruction ci) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\ExpressionPropagator.cs:line 108
+   at Reko.Core.Code.CallInstruction.Accept[T](InstructionVisitor`1 visitor) in D:\dev\uxmal\reko\master\src\Core\Code\CallInstruction.cs:line 66
+   at Reko.Analysis.TrashedRegisterFinder.RewriteBlock(Block block) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\TrashedRegisterFinder.cs:line 210
+
 === Executable.exe
 === pySample.dcproject
 === RussianText.exe
@@ -2925,34 +3019,6 @@ fn1DAE: error: An error occurred while rewriting procedure to high-level languag
    at Reko.Typing.TypeCollector.VisitSideEffect(SideEffect side) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 200
    at Reko.Core.Code.SideEffect.Accept(InstructionVisitor v) in D:\dev\uxmal\reko\master\src\Core\Code\SideEffect.cs:line 51
    at Reko.Typing.TypeCollector.CollectTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeCollector.cs:line 77
-0040301C: error: Failed to write global variable g_t40301C.
-    The method or operation is not implemented.
-       at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 323
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 79
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 182
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 53
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
-00403020: error: Failed to write global variable g_t403020.
-    The method or operation is not implemented.
-       at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 323
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 79
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 182
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 53
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
-0040301C: error: Failed to write global variable g_t40301C.
-    The method or operation is not implemented.
-       at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 323
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 79
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 182
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 53
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
-00403020: error: Failed to write global variable g_t403020.
-    The method or operation is not implemented.
-       at Reko.Core.Output.GlobalDataWriter.VisitUnion(UnionType ut) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 323
-   at Reko.Core.Types.UnionType.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\UnionType.cs:line 79
-   at Reko.Core.Output.GlobalDataWriter.VisitEquivalenceClass(EquivalenceClass eq) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 182
-   at Reko.Core.Types.EquivalenceClass.Accept[T](IDataTypeVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Types\EquivalenceClass.cs:line 53
-   at Reko.Core.Output.GlobalDataWriter.WriteGlobalVariable(StructureField field) in D:\dev\uxmal\reko\master\src\Core\Output\GlobalDataWriter.cs:line 83
 
 === varargs_test.exe
 *** varargs_test.exe

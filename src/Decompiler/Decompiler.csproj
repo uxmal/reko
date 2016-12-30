@@ -149,6 +149,8 @@
     </Compile>
     <Compile Include="Analysis\IdentifierReplacer.cs" />
     <Compile Include="Analysis\IndirectCallRewriter.cs" />
+    <Compile Include="Analysis\InstructionUseCollector.cs" />
+    <Compile Include="Analysis\InstructionUseVisitorBase.cs" />
     <Compile Include="Analysis\ProcedureGraph.cs" />
     <Compile Include="Analysis\RegisterPreservation.cs" />
     <Compile Include="Analysis\SequenceIdentifierGenerator.cs" />
