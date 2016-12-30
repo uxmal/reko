@@ -135,7 +135,7 @@ namespace Reko.UnitTests.Analysis
             m.Assign(r3, m.IAdd(r3, 4));
             m.Call(r3, 4);
             m.Return();
-            RunFileTest(m, "Analysis/CoaCallCalee.txt");
+            RunFileTest(m, "Analysis/CoaCallCallee.txt");
         }
 
         protected override void RunTest(Program program, TextWriter fut)
