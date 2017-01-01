@@ -18,8 +18,6 @@
  */
 #endregion
 
-#define NEW_SSA2
-
 using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.Lib;
@@ -84,6 +82,7 @@ namespace Reko.UnitTests.Analysis
                 ssa.Write(writer);
                 proc.Write(false, true, writer);
                 writer.WriteLine();
+                ssa.CheckUses(s => Assert.Fail(s));
             }
 		}
 
@@ -121,6 +120,7 @@ namespace Reko.UnitTests.Analysis
                 ssa.Write(fut.TextWriter);
                 proc.Write(false, fut.TextWriter);
                 fut.AssertFilesEqual();
+                ssa.CheckUses(s => Assert.Fail(s));
             }
         }
 
@@ -243,7 +243,6 @@ namespace Reko.UnitTests.Analysis
             m.Call(r1, 4);
             m.Return();
 
-            ssa.CheckUses(s => Assert.Fail(s));
             RunUnitTest(m, "Analysis/SsaCallIndirect.txt");
         }
 	}
