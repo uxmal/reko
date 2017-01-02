@@ -1,20 +1,18 @@
 r2:r2
     def:  def r2
-    uses: r4_2 = r2()
-          call r3 (retsize: 4;)	uses: r2:r2,r3:r3,r4:r4_2
+    uses: call r3 (retsize: 4;)	uses: r2:r2,r3:r3,r4:r2()
+          call r3 (retsize: 4;)	uses: r2:r2,r3:r3,r4:r2()
 r4_2: orig: r4
-    def:  r4_2 = r2()
-    uses: call r3 (retsize: 4;)	uses: r2:r2,r3:r3,r4:r4_2
 r3:r3
     def:  def r3
-    uses: call r3 (retsize: 4;)	uses: r2:r2,r3:r3,r4:r4_2
-          call r3 (retsize: 4;)	uses: r2:r2,r3:r3,r4:r4_2
+    uses: call r3 (retsize: 4;)	uses: r2:r2,r3:r3,r4:r2()
+          call r3 (retsize: 4;)	uses: r2:r2,r3:r3,r4:r2()
 r2_4: orig: r2
-    def:  call r3 (retsize: 4;)	uses: r2:r2,r3:r3,r4:r4_2
+    def:  call r3 (retsize: 4;)	uses: r2:r2,r3:r3,r4:r2()
 r3_5: orig: r3
-    def:  call r3 (retsize: 4;)	uses: r2:r2,r3:r3,r4:r4_2
+    def:  call r3 (retsize: 4;)	uses: r2:r2,r3:r3,r4:r2()
 r4_6: orig: r4
-    def:  call r3 (retsize: 4;)	uses: r2:r2,r3:r3,r4:r4_2
+    def:  call r3 (retsize: 4;)	uses: r2:r2,r3:r3,r4:r2()
 // foo
 // Return size: 0
 void foo(word32 r2, word32 r3)
@@ -23,9 +21,8 @@ foo_entry:
 	def r3
 	// succ:  l1
 l1:
-	r4_2 = r2()
 	call r3 (retsize: 4;)
-		uses: r2:r2,r3:r3,r4:r4_2
+		uses: r2:r2,r3:r3,r4:r2()
 	return
 	// succ:  foo_exit
 foo_exit:

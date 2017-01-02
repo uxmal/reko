@@ -93,14 +93,6 @@ namespace Reko.Analysis
 				return false;
 			if (use.Instruction is UseInstruction)
 				return false;
-            // Do not replace call uses
-            //$TODO: remove this in analysis branch
-            var ci = use.Instruction as CallInstruction;
-            if (
-                ci != null
-                && ci.Uses.Select(u => u.Expression).Contains(sid.Identifier)
-            )
-                return false;
 
             //$PERFORMANCE: this loop might be slow and should be improved if possible.
             List<SsaIdentifier> sids;
