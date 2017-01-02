@@ -125,16 +125,17 @@ namespace Reko.Analysis
             var uc = new InstructionUseCollector();
             foreach (var stm in Procedure.Statements)
             {
-                var idMapStored = GetStatemenIdentifiers(stm);
+                var idMapStored = GetStatemenIdentifierCounts(stm);
                 var idMapActual = uc.CollectUses(stm);
                 foreach (var id in idMapStored.Keys)
                 {
                     if (!idMapActual.ContainsKey(id) || idMapActual[id] < idMapStored[id])
                         error(
                             string.Format(
-                                "{0}: incorrect {1} id in {2} uses",
+                                "{0}: incorrect {1} id in {2}:{3} uses",
                                 Procedure.Name,
                                 id,
+                                stm.Block,
                                 stm));
                 }
                 foreach (var id in idMapActual.Keys)
@@ -142,15 +143,22 @@ namespace Reko.Analysis
                     if (!idMapStored.ContainsKey(id) || idMapStored[id] < idMapActual[id])
                         error(
                             string.Format(
-                                "{0}: there is no {1} id in {2} uses",
+                                "{0}: there is no {1} id in {2}:{3} uses",
                                 Procedure.Name,
                                 id,
+                                stm.Block,
                                 stm));
                 }
             }
         }
 
-        private IDictionary<Identifier, int> GetStatemenIdentifiers(Statement stm)
+        /// <summary>
+        /// Counts the number of uses of each identifier referenced in the 
+        /// statement <paramref name="stm"/> by consulting the SSA state.
+        /// </summary>
+        /// <param name="stm"></param>
+        /// <returns></returns>
+        private IDictionary<Identifier, int> GetStatemenIdentifierCounts(Statement stm)
         {
             var idMap =
                (from sid in Identifiers

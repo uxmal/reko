@@ -215,6 +215,7 @@ namespace Reko.UnitTests.Analysis
             sc.AddService<IConfigurationService>(fakeConfigService);
             sc.AddService<DecompilerEventListener>(eventListener);
             sc.AddService<DecompilerHost>(new FakeDecompilerHost());
+            sc.AddService<IFileSystemService>(new FileSystemServiceImpl());
             var loader = new Loader(sc);
             var project = string.IsNullOrEmpty(configFile)
                 ? new Project()

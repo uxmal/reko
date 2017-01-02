@@ -362,7 +362,6 @@ namespace Reko.Analysis
             ProcedureBase callee = GetCalleeProcedure(ci);
             if (callee != null && callee.Signature != null && callee.Signature.ParametersValid)
             {
-
                 // Signature is known: build the application immediately.
                 // First, remove all uses of the old call.
                 ssa.RemoveUses(stmCur);
@@ -556,6 +555,10 @@ namespace Reko.Analysis
         {
             if (!(stg is RegisterStorage) || stg is TemporaryStorage)
                 return false;
+            // If the platform has no clue what registers may be affected by call,
+            // assume all are.
+            if (trashedRegisters.Count == 0)
+                return true;
             return trashedRegisters.Where(r => r.OverlapsWith(stg)).Any();
         }
 

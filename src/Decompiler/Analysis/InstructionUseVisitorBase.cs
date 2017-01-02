@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Code;
 using Reko.Core.Expressions;
 
@@ -52,9 +53,10 @@ namespace Reko.Analysis
         public override void VisitStore(Store store)
         {
             store.Src.Accept(this);
-            // ecxOut should not be added to use list of statements like
-            // '*ecxOut = ecx'
-            if (store.Dst is Dereference)
+
+            // Do not count assignments to out identifiers as uses.
+            Identifier idOut;
+            if (store.Dst.As(out idOut) && idOut.Storage is OutArgumentStorage)
                 return;
             // Do not add memory identifier to uses
             var access = store.Dst as MemoryAccess;
