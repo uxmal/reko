@@ -51,6 +51,13 @@ namespace Reko.Arch.Mips
             var src2 = GetFpuRegPair(instr.op3);
             emitter.Assign(dst, emitter.FAdd(src1, src2));
         }
+        private void RewriteMulD(MipsInstruction instr)
+        {
+            var dst = GetFpuRegPair(instr.op1);
+            var src1 = GetFpuRegPair(instr.op2);
+            var src2 = GetFpuRegPair(instr.op3);
+            emitter.Assign(dst, emitter.FMul(src1, src2));
+        }
 
         private void RewriteFpuCmpD(MipsInstruction instr, Operator cmp)
         {
