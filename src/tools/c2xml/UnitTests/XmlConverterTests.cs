@@ -32,7 +32,7 @@ using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 
-#if DEBUG
+#if DEBUG || TRAVIS_RELEASE
 namespace Reko.Tools.C2Xml.UnitTests
 {
     [TestFixture]
