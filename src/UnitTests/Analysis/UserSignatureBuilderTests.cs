@@ -114,6 +114,18 @@ namespace Reko.UnitTests.Analysis
             Assert.AreEqual("real32", ass.Src.DataType.ToString());
         }
 
+        [Test(Description = "Verifies stack delta of stdcall function.")]
+        public void Usb_BuildSignature_Stdcall()
+        {
+            Given_Procedure(0x1000);
+            Given_UserSignature(0x01000, "char * __stdcall test(int i, float f, double d)");
+
+            var usb = new UserSignatureBuilder(program);
+            usb.BuildSignature(Address.Ptr32(0x1000), proc);
+
+            Assert.AreEqual(20, proc.Signature.StackDelta);
+        }
+
         [Test]
         public void Usb_ParseFunctionDeclaration_PlatfromTypes()
         {
