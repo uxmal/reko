@@ -35,9 +35,14 @@ namespace Reko.UnitTests.Scanning
     [TestFixture]
     public class ProcedureDetectorTests
     {
+        // Labels for the addresses used in the unit tests.
+        const int Even = 4;
+        const int Odd = 7;
+
         private ScanResults sr;
         private Program program;
         private FakeDecompilerEventListener listener;
+        private ProcedureDetector prdet;
 
         [SetUp]
         public void Setup()
@@ -76,7 +81,9 @@ namespace Reko.UnitTests.Scanning
             sr.DirectlyCalledAddresses.Add(aTo);
         }
 
-        private void AssertCluster(string sExp, ProcedureDetector.Cluster cluster)
+        private void AssertCluster(
+            string sExp, 
+            ProcedureDetector.Cluster cluster)
         {
             var sw = new StringWriter();
             WriteCluster(cluster, sw);
@@ -91,7 +98,7 @@ namespace Reko.UnitTests.Scanning
         {
             foreach (var node in cluster.Blocks.OrderBy(n => n))
             {
-                sw.WriteLine("  {0}", node);
+                sw.WriteLine("{0} {1}", cluster.Entries.Contains(node) ? "*" : " ", node);
                 var succs = sr.ICFG.Successors(node).OrderBy(n => n).ToList();
                 if (succs.Count > 0)
                 {
@@ -111,10 +118,13 @@ namespace Reko.UnitTests.Scanning
             }
         }
 
+        private void Given_ProcedureDetector()
+        {
+            this.prdet = new ProcedureDetector(this.program, this.sr, this.listener);
+        }
+
         private void Given_EvenOdd()
         {
-            const int Even = 4;
-            const int Odd = 7;
             // Main program, calls both even and odd.
             Given_Edge(1, 2);
             Given_DirectCall(1, Even);
@@ -130,7 +140,6 @@ namespace Reko.UnitTests.Scanning
             Given_Edge(Odd, 9);
             Given_Edge(9, Even);    // tail call to Even.
         }
-
 
         [Test]
         public void Prdet_BuildCluster()
@@ -159,11 +168,11 @@ namespace Reko.UnitTests.Scanning
         }
 
         [Test(Description = "EvenOdd are a pair of mutually recursive functions that call each other with tail calls")]
-        public void Prdet_EvenOdd()
+        public void Prdet_FindClusters_EvenOdd()
         {
             Given_EvenOdd();
+            Given_ProcedureDetector();
 
-            var prdet = new ProcedureDetector(this.program, this.sr, this.listener);
             var clusters = prdet.FindClusters();
 
             Assert.AreEqual(3, clusters.Count);
@@ -188,6 +197,29 @@ namespace Reko.UnitTests.Scanning
 ";
             #endregion
             AssertCluster(sExp, clusters[2]);
+        }
+
+        [Test(Description = "Find the procedure entries for the EvenOdd test case")]
+        public void Prdet_FindEntries_EvenOdd()
+        {
+            Given_EvenOdd();
+            Given_ProcedureDetector();
+
+            var clusters = prdet.FindClusters();
+            // Get the 'Odd' cluster and find its entries.
+            var clOdd = clusters.Single(c => c.Blocks.Contains(Address.Ptr32(Odd)));
+            prdet.FindClusterEntries(clOdd);
+
+            var sExp =
+            #region Expected
+@"* 00000007
+      00000008 00000009
+  00000008
+  00000009
+      *00000004
+";
+            #endregion
+            AssertCluster(sExp, clOdd);
         }
     }
 }

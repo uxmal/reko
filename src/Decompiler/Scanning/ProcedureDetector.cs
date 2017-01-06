@@ -72,6 +72,7 @@ namespace Reko.Scanning
         public class Cluster
         {
             public SortedSet<Address> Blocks = new SortedSet<Address>();
+            public SortedSet<Address> Entries = new SortedSet<Address>();
         }
 
         /// <summary>
@@ -95,6 +96,16 @@ namespace Reko.Scanning
             return clusters;
         }
 
+        /// <summary>
+        /// Build the weakly connected component for a cluster by following 
+        /// both predecessors and successors in the graph. However, we never
+        /// follow the predecessors of nodes that are marked directly called,
+        /// and we never follow successors that are marked directly called
+        /// (tail calls).
+        /// </summary>
+        /// <param name="addr"></param>
+        /// <param name="cluster"></param>
+        /// <param name="nodesLeft"></param>
         private void BuildWCC(Address addr, Cluster cluster, HashSet<Address> nodesLeft)
         {
             nodesLeft.Remove(addr);
@@ -102,13 +113,19 @@ namespace Reko.Scanning
 
             foreach (var s in sr.ICFG.Successors(addr))
             {
-                if (nodesLeft.Contains(s) && !sr.DirectlyCalledAddresses.Contains(s))
+                if (nodesLeft.Contains(s))
                 {
-                    BuildWCC(s, cluster, nodesLeft);
+                    // Only add if successor is not CALLed.
+                    if (!sr.DirectlyCalledAddresses.Contains(s))
+                    {
+                        BuildWCC(s, cluster, nodesLeft);
+                    }
                 }
             }
             if (!sr.DirectlyCalledAddresses.Contains(addr))
             {
+                // Only backtrack through predecessors if the node
+                // is not CALLed.
                 foreach (var p in sr.ICFG.Predecessors(addr))
                 {
                     if (nodesLeft.Contains(p))
@@ -131,8 +148,8 @@ namespace Reko.Scanning
             var procs = new List<Procedure>();
             foreach (var cluster in clusters)
             {
-                var entries = FindClusterEntries(cluster);
-                procs.AddRange(PostProcessCluster(cluster, entries));
+                FindClusterEntries(cluster);
+                procs.AddRange(PostProcessCluster(cluster));
             }
             return procs;
         }
@@ -142,32 +159,33 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="sr"></param>
         /// <param name="cluster"></param>
-        /// <returns></returns>
-        public HashSet<Address> FindClusterEntries(Cluster cluster)
+        public void FindClusterEntries(Cluster cluster)
         {
-            var entries = new HashSet<Address>();
             var preds = new Dictionary<Address, int>();
             foreach (var block in cluster.Blocks)
             {
                 if (sr.DirectlyCalledAddresses.Contains(block))
                 {
-                    entries.Add(block);
+                    cluster.Entries.Add(block);
                 }
                 preds[block] = sr.ICFG.Predecessors(block).Count;
             }
 
             // If one or more nodes were the destination of a direct call,
             // use those as entries.
-            if (entries.Count > 0)
-                return entries;
+            if (cluster.Entries.Count > 0)
+                return;
 
             // Otherwise, if one or more nodes has zero predecessors, pick it.
             if (preds.Count > 0)
-                return preds.Keys.ToHashSet();
+            {
+                cluster.Entries.UnionWith(preds.Keys);
+                return;
+            }
 
             // If we can't find another possibility, return the node with the
             // lowest address.
-            return new HashSet<Address> { cluster.Blocks.Min() };
+            cluster.Entries.Add(cluster.Blocks.Min());
         }
 
         /// <summary>
@@ -176,10 +194,11 @@ namespace Reko.Scanning
         /// <param name="cluster"></param>
         /// <param name="entries"></param>
         /// <returns></returns>
-        public List<Procedure> PostProcessCluster(Cluster cluster, HashSet<Address> entries)
+        public List<Procedure> PostProcessCluster(Cluster cluster)
         {
+            var entries = cluster.Entries;
             var procs = new List<Procedure>();
-            // Create BBs from addresses.
+
             // Remove all nodes with no predecessors which haven't been marked as entries.
             var deadNodes = cluster.Blocks
                 .Where(b => !entries.Contains(b) && sr.ICFG.Predecessors(b).Count == 0)
