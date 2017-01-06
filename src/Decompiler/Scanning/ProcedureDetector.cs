@@ -51,17 +51,17 @@ namespace Reko.Scanning
 
         public void DetectProcedures()
         {
-            PreprocessIcfg(sr);
+            PreprocessIcfg();
             var clusters = FindClusters();
-            BuildProcedures(sr, clusters);
+            BuildProcedures(clusters);
         }
 
-        private void PreprocessIcfg(ScanResults sr)
+        private void PreprocessIcfg()
         {
-            ProcessIndirectJumps(sr);
+            ProcessIndirectJumps();
         }
 
-        private void ProcessIndirectJumps(ScanResults sr)
+        private void ProcessIndirectJumps()
         {
         }
 
@@ -90,12 +90,12 @@ namespace Reko.Scanning
                 var cluster = new Cluster();
                 clusters.Add(cluster);
 
-                BuildWCC(sr, node, cluster, nodesLeft);
+                BuildWCC(node, cluster, nodesLeft);
             }
             return clusters;
         }
 
-        private void BuildWCC(ScanResults sr, Address addr, Cluster cluster, HashSet<Address> nodesLeft)
+        private void BuildWCC(Address addr, Cluster cluster, HashSet<Address> nodesLeft)
         {
             nodesLeft.Remove(addr);
             cluster.Blocks.Add(addr);
@@ -104,7 +104,7 @@ namespace Reko.Scanning
             {
                 if (nodesLeft.Contains(s) && !sr.DirectlyCalledAddresses.Contains(s))
                 {
-                    BuildWCC(sr, s, cluster, nodesLeft);
+                    BuildWCC(s, cluster, nodesLeft);
                 }
             }
             if (!sr.DirectlyCalledAddresses.Contains(addr))
@@ -113,24 +113,25 @@ namespace Reko.Scanning
                 {
                     if (nodesLeft.Contains(p))
                     {
-                        BuildWCC(sr, p, cluster, nodesLeft);
+                        BuildWCC(p, cluster, nodesLeft);
                     }
                 }
             }
         }
 
         /// <summary>
-        /// Given a set of clusters, finds all the entries for each cluster and
-        /// tries to partition each cluster into procedures with single entries and exits.
+        /// Given a set of clusters, finds all the entries for each cluster 
+        /// and tries to partition each cluster into procedures with single
+        /// entries and exits.
         /// </summary>
         /// <param name="sr"></param>
         /// <param name="clusters"></param>
-        public List<Procedure> BuildProcedures(ScanResults sr, IEnumerable<Cluster> clusters)
+        public List<Procedure> BuildProcedures(IEnumerable<Cluster> clusters)
         {
             var procs = new List<Procedure>();
             foreach (var cluster in clusters)
             {
-                var entries = FindClusterEntries(sr, cluster);
+                var entries = FindClusterEntries(cluster);
                 procs.AddRange(PostProcessCluster(cluster, entries));
             }
             return procs;
@@ -142,7 +143,7 @@ namespace Reko.Scanning
         /// <param name="sr"></param>
         /// <param name="cluster"></param>
         /// <returns></returns>
-        public HashSet<Address> FindClusterEntries(ScanResults sr, Cluster cluster)
+        public HashSet<Address> FindClusterEntries(Cluster cluster)
         {
             var entries = new HashSet<Address>();
             var preds = new Dictionary<Address, int>();
