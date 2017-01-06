@@ -60,9 +60,11 @@ namespace Reko.Scanning
         private readonly Address bad;
         private IRewriterHost host;
         private DecompilerEventListener eventListener;
-        private IDictionary<Address, int> possibleCallDestinationTallies;
+        private IDictionary<Address, int> possiblyDirectCalls;
         private IDictionary<Address, int> possiblePointerTargetTallies;
         private SortedList<Address, MachineInstruction> instructions;
+        private HashSet<Address> indirectCalls;
+        private HashSet<Address> indirectJumps;
 
         public ShingledScanner(Program program, IRewriterHost host, DecompilerEventListener eventListener)
         {
@@ -70,9 +72,11 @@ namespace Reko.Scanning
             this.host = host;
             this.eventListener = eventListener;
             this.bad = program.Platform.MakeAddressFromLinear(~0ul);
-            this.possibleCallDestinationTallies = new Dictionary<Address,int>();
+            this.possiblyDirectCalls = new Dictionary<Address,int>();
             this.possiblePointerTargetTallies = new Dictionary<Address, int>();
             this.instructions = new SortedList<Address, MachineInstruction>();
+            this.indirectCalls = new HashSet<Address>();
+            this.indirectJumps = new HashSet<Address>();
         }
 
         /// <summary>
@@ -183,9 +187,9 @@ namespace Reko.Scanning
                                 if ((i.InstructionClass & InstructionClass.Call) != 0)
                                 {
                                     int callTally;
-                                    if (!this.possibleCallDestinationTallies.TryGetValue(addrDest, out callTally))
+                                    if (!this.possiblyDirectCalls.TryGetValue(addrDest, out callTally))
                                         callTally = 0;
-                                    this.possibleCallDestinationTallies[addrDest] = callTally + 1;
+                                    this.possiblyDirectCalls[addrDest] = callTally + 1;
                                 }
                             }
                             else
@@ -193,6 +197,17 @@ namespace Reko.Scanning
                                 // Jump to data / hyperspace.
                                 AddEdge(G, bad, i.Address);
                                 y[a] = Data;
+                            }
+                        }
+                        else
+                        {
+                            if ((i.InstructionClass & InstructionClass.Call) != 0)
+                            {
+                                this.indirectCalls.Add(i.Address);
+                            }
+                            else
+                            {
+                                this.indirectJumps.Add(i.Address);
                             }
                         }
                     }
@@ -215,7 +230,7 @@ namespace Reko.Scanning
                     instructions.Remove(a);
 
                     // Destination can't be a call destination.
-                    possibleCallDestinationTallies.Remove(a);
+                    possiblyDirectCalls.Remove(a);
                 }
             }
 
@@ -442,7 +457,7 @@ namespace Reko.Scanning
         public IEnumerable<KeyValuePair<Address, int>> SpeculateCallDests(IDictionary<ImageSegment, byte[]> map)
         {
             var addrs = 
-                from addr in this.possibleCallDestinationTallies
+                from addr in this.possiblyDirectCalls
                 orderby addr.Value descending
                 where IsPossibleExecutableCodeDestination(addr.Key, map)
                 select addr;

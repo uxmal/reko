@@ -507,6 +507,7 @@
     <Compile Include="Scanning\HeuristicTestBase.cs" />
     <Compile Include="Scanning\InstructionTrieTests.cs" />
     <Compile Include="Scanning\InterProceduralJumpTests.cs" />
+    <Compile Include="Scanning\ProcedureDetectorTests.cs" />
     <Compile Include="Scanning\Scanner.M68kTests.cs" />
     <Compile Include="Scanning\ScannerTestPrograms.cs" />
     <Compile Include="Scanning\ScannerTests.cs" />

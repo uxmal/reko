@@ -229,6 +229,7 @@
     <Compile Include="FieldAttribute.cs" />
     <Compile Include="ImageSymbol.cs" />
     <Compile Include="Analysis\IVarargsFormatParser.cs" />
+    <Compile Include="Lib\ArticulationPointFinder.cs" />
     <Compile Include="Lib\PatternCollector.cs" />
     <Compile Include="Lib\PerfectHash.cs" />
     <Compile Include="Lib\SuffixArray.cs" />
