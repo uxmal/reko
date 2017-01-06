@@ -36,8 +36,13 @@ namespace Reko.UnitTests.Scanning
     public class ProcedureDetectorTests
     {
         // Labels for the addresses used in the unit tests.
-        const int Even = 4;
-        const int Odd = 7;
+        const uint Even = 4;
+        const uint Odd = 7;
+
+        const uint Fused1 = 0x10;
+        const uint Fused2 = 0x20;
+        const uint Fused3 = 0x30;
+        const uint FusedExit = 0x13;
 
         private ScanResults sr;
         private Program program;
@@ -141,6 +146,29 @@ namespace Reko.UnitTests.Scanning
             Given_Edge(9, Even);    // tail call to Even.
         }
 
+        private void Given_FusedExitNode()
+        {
+            // This models a common case in modern compilers/linkers, where
+            // the exit blocks of functions are "fused". We have three procedures
+            // 'Fused1', 'Fused2', and 'Fused3' who all jump to the exit node
+            // 'FusedExit'.
+
+            Given_Edge(Fused1, 0x11);
+            Given_Edge(Fused1, 0x12);
+            Given_Edge(0x11, FusedExit);
+            Given_Edge(0x12, FusedExit);
+
+            Given_Edge(Fused2, 0x21);
+            Given_Edge(Fused2, 0x22);
+            Given_Edge(0x21, FusedExit);
+            Given_Edge(0x22, FusedExit);
+
+            Given_Edge(Fused3, 0x31);
+            Given_Edge(Fused3, 0x32);
+            Given_Edge(0x31, FusedExit);
+            Given_Edge(0x32, FusedExit);
+        }
+
         [Test]
         public void Prdet_BuildCluster()
         {
@@ -220,6 +248,46 @@ namespace Reko.UnitTests.Scanning
 ";
             #endregion
             AssertCluster(sExp, clOdd);
+        }
+
+        [Test]
+        public void Prdef_FindEntries_FusedExit()
+        {
+            Given_FusedExitNode();
+            Given_DirectCall(0x42, Fused1);
+            Given_DirectCall(0x42, Fused2);
+            Given_DirectCall(0x42, Fused3);
+            Given_ProcedureDetector();
+
+            var clusters = prdet.FindClusters();
+            Assert.AreEqual(1, clusters.Count);
+            prdet.FindClusterEntries(clusters[0]);
+
+            var sExp =
+            #region Expected
+@"* 00000010
+      00000011 00000012
+  00000011
+      00000013
+  00000012
+      00000013
+  00000013
+* 00000020
+      00000021 00000022
+  00000021
+      00000013
+  00000022
+      00000013
+* 00000030
+      00000031 00000032
+  00000031
+      00000013
+  00000032
+      00000013
+";
+            #endregion
+
+            AssertCluster(sExp, clusters[0]);
         }
     }
 }
