@@ -62,14 +62,18 @@ namespace Reko.UnitTests.Scanning
 
         public void Given_Edge(uint from, uint to)
         {
-            sr.ICFG.AddEdge(Address.Ptr32(from), Address.Ptr32(to));
+            var aFrom = Address.Ptr32(from);
+            var aTo = Address.Ptr32(to);
+            sr.ICFG.Nodes.Add(aFrom);
+            sr.ICFG.Nodes.Add(aTo);
+            sr.ICFG.AddEdge(aFrom, aTo);
         }
 
-        public void Given_DirectCalls(params uint[] directCallDestinations)
+        public void Given_DirectCall(uint from, uint to)
         {
-            sr.DirectlyCalledAddresses = directCallDestinations
-                .Select(uAddr => Address.Ptr32(uAddr))
-                .ToHashSet();
+            var aFrom = Address.Ptr32(from);
+            var aTo = Address.Ptr32(to);
+            sr.DirectlyCalledAddresses.Add(aTo);
         }
 
         private void AssertCluster(string sExp, ProcedureDetector.Cluster cluster)
@@ -91,15 +95,46 @@ namespace Reko.UnitTests.Scanning
                 var succs = sr.ICFG.Successors(node).OrderBy(n => n).ToList();
                 if (succs.Count > 0)
                 {
-                    sw.WriteLine("      {0}", string.Join(" ", succs));
+                    sw.Write("     ");
+                    foreach (var s in succs)
+                    {
+                        sw.Write(" ");
+                        if (!cluster.Blocks.Contains(s))
+                        {
+                            // cross procedure tail call.
+                            sw.Write("*");
+                        }
+                        sw.Write(s);
+                    }
+                    sw.WriteLine();
                 }
             }
         }
 
+        private void Given_EvenOdd()
+        {
+            const int Even = 4;
+            const int Odd = 7;
+            // Main program, calls both even and odd.
+            Given_Edge(1, 2);
+            Given_DirectCall(1, Even);
+            Given_DirectCall(1, Odd);
+
+            // Even:
+            Given_Edge(Even, 5);
+            Given_Edge(Even, 6);
+            Given_Edge(6, Odd);     // tail call to Odd.
+
+            // Odd:
+            Given_Edge(Odd, 8);
+            Given_Edge(Odd, 9);
+            Given_Edge(9, Even);    // tail call to Even.
+        }
+
+
         [Test]
         public void Prdet_BuildCluster()
         {
-            Given_Addresses(1, 2, 3, 4);
             Given_Edge(1, 2);
             Given_Edge(1, 3);
             Given_Edge(2, 4);
@@ -121,6 +156,38 @@ namespace Reko.UnitTests.Scanning
 ";
             #endregion
             AssertCluster(sExp, clusters[0]);
+        }
+
+        [Test(Description = "EvenOdd are a pair of mutually recursive functions that call each other with tail calls")]
+        public void Prdet_EvenOdd()
+        {
+            Given_EvenOdd();
+
+            var prdet = new ProcedureDetector(this.program, this.sr, this.listener);
+            var clusters = prdet.FindClusters();
+
+            Assert.AreEqual(3, clusters.Count);
+            var sExp =
+            #region Expected 
+@"  00000004
+      00000005 00000006
+  00000005
+  00000006
+      *00000007
+";
+            #endregion
+            AssertCluster(sExp, clusters[1]);
+
+            sExp =
+            #region Expected
+@"  00000007
+      00000008 00000009
+  00000008
+  00000009
+      *00000004
+";
+            #endregion
+            AssertCluster(sExp, clusters[2]);
         }
     }
 }
