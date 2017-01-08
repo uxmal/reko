@@ -25,7 +25,7 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
-#if DEBUG
+#if DEBUG || TRAVIS_RELEASE
 namespace Reko.Tools.C2Xml.UnitTests
 {
     public class XmlnsHidingWriter : XmlTextWriter

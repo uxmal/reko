@@ -710,7 +710,7 @@ T_156: (in rbp : word64)
 T_157: (in dwLoc04 : word32)
   Class: Eq_156
   DataType: Eq_156
-  OrigDataType: (union (ptr64 u0) (word32 u1))
+  OrigDataType: (union (ptr64 u1) (word32 u0))
 T_158: (in qwLoc04 : word64)
   Class: Eq_156
   DataType: Eq_156

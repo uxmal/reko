@@ -6719,7 +6719,7 @@ T_1341: (in a7_208->t0030 <= 0x70 : bool)
 T_1342: (in v103_1416 : Eq_876)
   Class: Eq_876
   DataType: Eq_876
-  OrigDataType: (union (int32 u0) (byte u1))
+  OrigDataType: (union (int32 u1) (byte u0))
 T_1343: (in 0x00000030 : word32)
   Class: Eq_1343
   DataType: word32
@@ -14771,7 +14771,7 @@ T_3354: (in d1 : Eq_3330)
 T_3355: (in d2 : Eq_746)
   Class: Eq_746
   DataType: Eq_746
-  OrigDataType: (union (int32 u0) (uint32 u1))
+  OrigDataType: (union (int32 u1) (uint32 u0))
 T_3356: (in d1Out : Eq_3356)
   Class: Eq_3356
   DataType: Eq_3356

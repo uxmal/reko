@@ -124,6 +124,30 @@ namespace Reko.UnitTests.Core.CLanguage
             Assert.AreEqual("prim(UnsignedInt,2)", nt.DataType.ToString());
         }
 
+        [Test(Description = "Verifies call convention.")]
+        public void NamedDataTypeExtractor_ptrchar_stdcall_fn()
+        {
+            Run(new[] { SType(CTokenType.Char) },
+                new PointerDeclarator()
+                {
+                    Pointee = new CallConventionDeclarator()
+                    {
+                        Convention = CTokenType.__Stdcall,
+                        Declarator = new FunctionDeclarator()
+                        {
+                            Declarator = new IdDeclarator()
+                            {
+                                Name = "test"
+                            },
+                            Parameters = new List<ParamDecl>()
+                        }
+                    }
+                });
+            Assert.AreEqual(
+                "fn(__stdcall,arg(ptr(prim(Character,1))),()",
+                nt.DataType.ToString());
+        }
+
         [Test(Description = "If no reko attributes are present, don't explicitly state the kind, but let the ABI rules decide.")]
         public void NamedDataTypeExtractor_GetArgumentKindFromAttributes_OtherAttrs()
         {

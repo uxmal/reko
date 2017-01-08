@@ -39,7 +39,7 @@ Eq_2: (ptr (fn T_4 ()))
 	T_3 (in signature of fn0C00_0004 : void)
 Eq_4: void
 	T_4 (in fn0C00_0004() : void)
-Eq_5: (union (ci16 u0) ((memptr T_24 (struct (0 T_27 t0000))) u1))
+Eq_5: (union (ci16 u1) ((memptr T_24 (struct (0 T_27 t0000))) u0))
 	T_5 (in bx_23 : word16)
 	T_6 (in 0x0FFF : word16)
 	T_29 (in bx_23 - 0x0001 : word16)
@@ -110,11 +110,11 @@ T_4: (in fn0C00_0004() : void)
   OrigDataType: void
 T_5: (in bx_23 : word16)
   Class: Eq_5
-  DataType: (union (ci16 u0) ((memptr T_24 (struct (0 T_27 t0000))) u1))
-  OrigDataType: (union (ci16 u0) ((memptr T_24 (struct (0 T_27 t0000))) u1))
+  DataType: (union (ci16 u1) ((memptr T_24 (struct (0 T_27 t0000))) u0))
+  OrigDataType: (union (ci16 u1) ((memptr T_24 (struct (0 T_27 t0000))) u0))
 T_6: (in 0x0FFF : word16)
   Class: Eq_5
-  DataType: (union (ci16 u0) ((memptr T_24 (struct (0 T_27 t0000))) u1))
+  DataType: (union (ci16 u1) ((memptr T_24 (struct (0 T_27 t0000))) u0))
   OrigDataType: word16
 T_7: (in bh_24 : byte)
   Class: Eq_7
@@ -206,7 +206,7 @@ T_28: (in 0x0001 : word16)
   OrigDataType: ui16
 T_29: (in bx_23 - 0x0001 : word16)
   Class: Eq_5
-  DataType: (union (ci16 u0) ((memptr T_24 (struct (0 T_27 t0000))) u1))
+  DataType: (union (ci16 u1) ((memptr T_24 (struct (0 T_27 t0000))) u0))
   OrigDataType: (memptr T_24 (struct (0 T_27 t0000)))
 T_30: (in SLICE(bx_23, byte, 8) : byte)
   Class: Eq_7
@@ -218,7 +218,7 @@ T_31: (in (byte) bx_23 : byte)
   OrigDataType: byte
 T_32: (in 0x0000 : word16)
   Class: Eq_5
-  DataType: (union (ci16 u0) ((memptr T_24 (struct (0 T_27 t0000))) u1))
+  DataType: (union (ci16 u1) ((memptr T_24 (struct (0 T_27 t0000))) u0))
   OrigDataType: ci16
 T_33: (in bx_23 >= 0x0000 : bool)
   Class: Eq_33
