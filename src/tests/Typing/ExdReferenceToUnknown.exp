@@ -7,7 +7,7 @@ globals_t: (in globals : (ptr (struct "Globals")))
 T_2: (in p : word32)
   Class: Eq_2
   DataType: (ptr UNKNOWN_TYPE)
-  OrigDataType: (ptr (union (UNKNOWN_TYPE u1)))
+  OrigDataType: (ptr UNKNOWN_TYPE)
 T_3: (in 0x00000004 : word32)
   Class: Eq_3
   DataType: word32
