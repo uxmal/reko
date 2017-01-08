@@ -55,7 +55,7 @@ namespace Reko.UnitTests.Scanning
             sr = new ScanResults
             {
                 ICFG = new DiGraph<Address>(),
-                DirectlyCalledAddresses = new HashSet<Address>(),
+                DirectlyCalledAddresses = new Dictionary<Address, int>(),
             };
             this.program = new Program();
             this.listener = new FakeDecompilerEventListener();
@@ -88,7 +88,7 @@ namespace Reko.UnitTests.Scanning
         {
             var aFrom = Addr(from);
             var aTo = Addr(to);
-            sr.DirectlyCalledAddresses.Add(aTo);
+            sr.DirectlyCalledAddresses.Add(aTo, 1);
         }
 
         private void AssertCluster(

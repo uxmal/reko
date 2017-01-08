@@ -67,7 +67,7 @@ namespace Reko.Scanning
 
         public void RemoveJumpsToDirectCalls()
         {
-            foreach (var calldest in sr.DirectlyCalledAddresses)
+            foreach (var calldest in sr.DirectlyCalledAddresses.Keys)
             {
                 var preds = sr.ICFG.Predecessors(calldest).ToList();
                 foreach (var p in preds)
@@ -132,13 +132,13 @@ namespace Reko.Scanning
                 if (nodesLeft.Contains(s))
                 {
                     // Only add if successor is not CALLed.
-                    if (!sr.DirectlyCalledAddresses.Contains(s))
+                    if (!sr.DirectlyCalledAddresses.ContainsKey(s))
                     {
                         BuildWCC(s, cluster, nodesLeft);
                     }
                 }
             }
-            if (!sr.DirectlyCalledAddresses.Contains(addr))
+            if (!sr.DirectlyCalledAddresses.ContainsKey(addr))
             {
                 // Only backtrack through predecessors if the node
                 // is not CALLed.
@@ -180,7 +180,7 @@ namespace Reko.Scanning
             var preds = new Dictionary<Address, int>();
             foreach (var block in cluster.Blocks)
             {
-                if (sr.DirectlyCalledAddresses.Contains(block))
+                if (sr.DirectlyCalledAddresses.ContainsKey(block))
                 {
                     cluster.Entries.Add(block);
                 }

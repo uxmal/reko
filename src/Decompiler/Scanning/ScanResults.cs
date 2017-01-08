@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Lib;
+using Reko.Core.Machine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,8 +30,43 @@ namespace Reko.Scanning
 {
     public class ScanResults
     {
-        public DirectedGraph<Address> ICFG;             // interprocedural control flow graph;
-        public HashSet<Address> DirectlyCalledAddresses;  // Addresses called directly by code.
-        public HashSet<Address> IndirectJumps;          // Addresses at which indirect jumps happen.
+        /// <summary>
+        /// All the discovered machine instructions.
+        /// </summary>
+        public SortedList<Address, MachineInstruction> Instructions;
+
+        /// <summary>
+        /// Interprocedural control flow graph, consisting of all
+        /// direct calls and jumps. Each edge goes from a jump or a call
+        /// to its destination. Branches have two destinations.
+        /// </summary>
+        public DirectedGraph<Address> ICFG; 
+
+        /// <summary>
+        /// Tally of how many times each address is called by a direct call
+        /// instruction.
+        /// </summary>
+        public Dictionary<Address, int> DirectlyCalledAddresses;
+
+        /// <summary>
+        /// Tally of occurrences of bitpatterns that look like addresses,
+        /// excluding relocations which are known to be addresses.
+        /// </summary>
+        /// <remarks>
+        /// shorter the addresses are, the less reliable this information
+        /// becomes as the probability that a random bit pattern coincides
+        /// with a real address increases the shorter the bit pattern is.
+        /// </remarks>
+        public Dictionary<Address, int> PossibleAddresses;
+
+        /// <summary>
+        /// Addresses at which indirect jumps happen.
+        /// </summary>
+        public HashSet<Address> IndirectJumps;
+
+        /// <summary>
+        /// Addresses at which indirect calls happen
+        /// </summary>
+        public HashSet<Address> IndirectCalls;  
     }
 }

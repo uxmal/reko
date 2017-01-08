@@ -21,6 +21,7 @@
 using NUnit.Framework;
 using Reko.Arch.Mips;
 using Reko.Arch.X86;
+using Reko.Assemblers.x86;
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Machine;
@@ -31,6 +32,8 @@ using Reko.UnitTests.Mocks;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -54,6 +57,34 @@ namespace Reko.UnitTests.Scanning
             rd = null;
             this.graph = new DiGraph<Address>();
             this.instrs = new SortedList<Address, MachineInstruction>();
+        }
+
+        [Conditional("DEBUG")]
+        private void Dump(ScanResults sr)
+        {
+            var sw = new StringWriter();
+            sw.WriteLine("ICFG");
+            foreach (var node in sr.ICFG.Nodes.OrderBy(n => n))
+            {
+                sw.WriteLine("{0} {1}", sr.DirectlyCalledAddresses.ContainsKey(node) ? "C" : " ", node);
+                var succs = sr.ICFG.Successors(node).OrderBy(n => n).ToList();
+                if (succs.Count > 0)
+                {
+                    sw.Write("     ");
+                    foreach (var s in succs)
+                    {
+                        sw.Write(" ");
+                        if (!sr.DirectlyCalledAddresses.ContainsKey(s))
+                        {
+                            // cross procedure tail call.
+                            sw.Write("*");
+                        }
+                        sw.Write(s);
+                    }
+                    sw.WriteLine();
+                }
+            }
+            Debug.WriteLine(sw.ToString());
         }
 
         private void Given_Mips_Image(params uint[] words)
@@ -82,6 +113,16 @@ namespace Reko.UnitTests.Scanning
             this.rd = image.Relocations;
             var arch = new X86ArchitectureFlat32();
             CreateProgram(image, arch);
+        }
+
+        private void Given_x86_Image(Action<X86Assembler> asm)
+        {
+            var addrBase = Address.Ptr32(0x100000);
+            var entry = new ImageSymbol(addrBase) { Type = SymbolType.Procedure };
+            var arch = new X86ArchitectureFlat32();
+            var m = new X86Assembler(null, new DefaultPlatform(null, arch), addrBase, new List<ImageSymbol> { entry });
+            asm(m);
+            this.program = m.GetImage();
         }
 
         private void Given_x86_64_Image(params byte[] bytes)
@@ -430,6 +471,24 @@ namespace Reko.UnitTests.Scanning
                 "00010009 - 0001000A" + nl;
             Assert.AreEqual(sExp, DumpBlocks(scseg.Blocks));
         }
+
+        [Test]
+        public void Shsc_Results()
+        {
+            Given_x86_Image(m =>
+            {
+                m.Cmp(m.eax, m.ebx);
+                m.Jc("skip");
+                m.Call("go");
+                m.Inc(m.eax);
+                m.Label("go");
+                m.Mov(m.MemDw(m.esi, 4), m.eax);
+                m.Ret();
+            });
+            Given_Scanner();
+            var sr = sh.ScanNew();
+            Dump(sr);
+        }     
     }
 }
 

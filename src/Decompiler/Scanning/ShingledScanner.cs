@@ -60,11 +60,12 @@ namespace Reko.Scanning
         private readonly Address bad;
         private IRewriterHost host;
         private DecompilerEventListener eventListener;
-        private IDictionary<Address, int> possiblyDirectCalls;
-        private IDictionary<Address, int> possiblePointerTargetTallies;
+        private Dictionary<Address, int> possiblyDirectCalls;
+        private Dictionary<Address, int> possiblePointerTargetTallies;
         private SortedList<Address, MachineInstruction> instructions;
         private HashSet<Address> indirectCalls;
         private HashSet<Address> indirectJumps;
+        private DiGraph<Address> icfg;
 
         public ShingledScanner(Program program, IRewriterHost host, DecompilerEventListener eventListener)
         {
@@ -77,6 +78,7 @@ namespace Reko.Scanning
             this.instructions = new SortedList<Address, MachineInstruction>();
             this.indirectCalls = new HashSet<Address>();
             this.indirectJumps = new HashSet<Address>();
+            this.icfg = new DiGraph<Address>();
         }
 
         /// <summary>
@@ -98,6 +100,40 @@ namespace Reko.Scanning
             }
         }
 
+        /// <summary>
+        /// Performs a shingle scan of the executable segments of the program,
+        /// returning the interprocedural control flow graph (ICFG) and locations
+        /// of likely call destinations.
+        /// </summary>
+        /// <returns></returns>
+        public ScanResults ScanNew()
+        {
+            ICodeLocation location = null;
+            Exception error;
+            try
+            {
+                var q = ScanExecutableSegments();
+            }
+            catch (AddressCorrelatedException aex)
+            {
+                location = eventListener.CreateAddressNavigator(program, aex.Address);
+                error = aex;
+            }
+            catch (Exception ex)
+            {
+                location = new NullCodeLocation("");
+                error = ex;
+            }
+            if (location != null)
+            {
+                eventListener.Error(location, "An error occurred while scanning {0}.");
+            }
+            return new ScanResults
+            {
+                ICFG = this.icfg,
+                DirectlyCalledAddresses = possiblePointerTargetTallies,
+            };
+        }
 
         public Dictionary<ImageSegment, byte[]> ScanExecutableSegments()
         {
