@@ -29,7 +29,7 @@ namespace Reko.Core.Lib
     public class ArticulationPointFinder<T>
     {
         DirectedGraph<T> graph;
-        private HashSet<T> ap;
+        private HashSet<T> aps;
         private Dictionary<T, int> depth;
         private Dictionary<T, int> low;
         private Dictionary<T, T> parent;
@@ -61,31 +61,33 @@ namespace Reko.Core.Lib
             if (!parent.ContainsKey(i))
             {
                 if (childCount > 1)
-                    ap.Add(i);
+                    aps.Add(i);
             }
             else if (isArticulation)
             {
-                ap.Add(i);
+                aps.Add(i);
             }
         }
 
-        public void FindArticulationPoints()
+        public HashSet<T> FindArticulationPoints(DirectedGraph<T> graph, IEnumerable<T> nodes)
         {
+            this.graph = graph;
             this.visited = new HashSet<T>();
             this.depth = new Dictionary<T, int>();
             this.low = new Dictionary<T, int>();
             this.parent = new Dictionary<T, T>();
-            this.ap = new HashSet<T>();
+            this.aps = new HashSet<T>();
 
             // Call the recursive helper function to find articulation
             // points in DFS tree rooted with vertex 'i'
-            foreach (var i in graph.Nodes)
+            foreach (var i in nodes)
             {
                 if (!visited.Contains(i))
                 {
                     GetArticulationPoints(i, 0);
                 }
             }
+            return aps;
         }
     }
 }

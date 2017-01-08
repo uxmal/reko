@@ -2901,8 +2901,10 @@ namespace Reko.Arch.M68k
         static OpRec[] g_opcode_info;
 
         /// <summary>
-        /// Generates the table of opcode decoders. Should only be called once per execution, as the table is expensive to build.
-        /// Fortunately, OpRecs have no mutable state, so the table is reused for all disassembler instances.
+        /// Generates the table of opcode decoders. Should only be called once
+        /// per execution, as the table is expensive to build. Fortunately,
+        /// OpRecs have no mutable state, so the table is reused for all
+        /// disassembler instances.
         /// </summary>
         private static void GenTable()
         {
