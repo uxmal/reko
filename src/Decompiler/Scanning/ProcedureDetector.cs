@@ -41,12 +41,14 @@ namespace Reko.Scanning
         private Program program;
         private ScanResults sr;
         private DecompilerEventListener listener;
+        private HashSet<Address> pseudoEntries;
 
         public ProcedureDetector(Program program, ScanResults sr, DecompilerEventListener listener)
         {
             this.program = program;
             this.sr = sr;
             this.listener = listener;
+            this.pseudoEntries = new HashSet<Address>();
         }
 
         public void DetectProcedures()
@@ -58,7 +60,21 @@ namespace Reko.Scanning
 
         private void PreprocessIcfg()
         {
+            RemoveJumpsToDirectCalls();
+            //BuildDominatorTree();
             ProcessIndirectJumps();
+        }
+
+        public void RemoveJumpsToDirectCalls()
+        {
+            foreach (var calldest in sr.DirectlyCalledAddresses)
+            {
+                var preds = sr.ICFG.Predecessors(calldest).ToList();
+                foreach (var p in preds)
+                {
+                    sr.ICFG.RemoveEdge(p, calldest);
+                }
+            }
         }
 
         private void ProcessIndirectJumps()
@@ -208,17 +224,8 @@ namespace Reko.Scanning
             // If the cluster has more than one entry, we have to try to pick it apart.
             if (entries.Count > 1)
             {
-                // common special case.
-                var aps = new List<Address>();      // articulation points
-                foreach(var ap in aps)
-                {
-                    if (sr.ICFG.Successors(ap).Count == 0)
-                    {
-                        var preds = sr.ICFG.Predecessors(ap).ToList();
-                        cluster.Blocks.Remove(ap);
-                        sr.ICFG.Nodes.Remove(ap);
-                    }
-                }
+                var fusedTails = DetachFusedTails(cluster);
+
                 // for each Articulation point ap:
                 //    if (ap.Succ.Count(1) == 0 || is_return_ap
                 //      preds = ap.preds;
@@ -246,6 +253,25 @@ namespace Reko.Scanning
                 procs.Add(BuildProcedure(cluster, entries.First()));
             }
             return procs;
+        }
+
+        private HashSet<Address> DetachFusedTails(Cluster cluster)
+        {
+            var aps = new ArticulationPointFinder<Address>().FindArticulationPoints(sr.ICFG, cluster.Entries);
+            aps.IntersectWith(cluster.Blocks);
+            var fusedTails = new HashSet<Address>();
+
+            foreach (var ap in aps)
+            {
+                if (sr.ICFG.Successors(ap).Count == 0)
+                {
+                    var preds = sr.ICFG.Predecessors(ap).ToList();
+                    cluster.Blocks.Remove(ap);
+                    sr.ICFG.Nodes.Remove(ap);
+                    fusedTails.Add(ap);
+                }
+            }
+            return fusedTails;
         }
 
         private Procedure BuildProcedure(Cluster cluster, Address entry)

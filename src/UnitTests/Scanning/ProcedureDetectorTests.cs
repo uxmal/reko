@@ -61,19 +61,24 @@ namespace Reko.UnitTests.Scanning
             this.listener = new FakeDecompilerEventListener();
         }
 
+        private Address Addr(uint uAddr)
+        {
+            return Address.Ptr32(uAddr);
+        }
+
         public void Given_Addresses(params uint [] addrs)
         {
             sr.ICFG = new DiGraph<Address>();
             foreach (var uAddr in addrs)
             {
-                sr.ICFG.Nodes.Add(Address.Ptr32(uAddr));
+                sr.ICFG.Nodes.Add(Addr(uAddr));
             }
         }
 
         public void Given_Edge(uint from, uint to)
         {
-            var aFrom = Address.Ptr32(from);
-            var aTo = Address.Ptr32(to);
+            var aFrom = Addr(from);
+            var aTo = Addr(to);
             sr.ICFG.Nodes.Add(aFrom);
             sr.ICFG.Nodes.Add(aTo);
             sr.ICFG.AddEdge(aFrom, aTo);
@@ -81,8 +86,8 @@ namespace Reko.UnitTests.Scanning
 
         public void Given_DirectCall(uint from, uint to)
         {
-            var aFrom = Address.Ptr32(from);
-            var aTo = Address.Ptr32(to);
+            var aFrom = Addr(from);
+            var aTo = Addr(to);
             sr.DirectlyCalledAddresses.Add(aTo);
         }
 
@@ -97,6 +102,14 @@ namespace Reko.UnitTests.Scanning
                 Debug.Print(sw.ToString());
                 Assert.AreEqual(sExp, sw.ToString());
             }
+        }
+
+        private List<ProcedureDetector.Cluster> SortClusters(IEnumerable<ProcedureDetector.Cluster> clusters)
+        {
+            // sort clusters by finding the node with min address.
+            return (from c in clusters
+                    orderby c.Blocks.Min()
+                    select c).ToList();
         }
 
         private void WriteCluster(ProcedureDetector.Cluster cluster, StringWriter sw)
@@ -167,6 +180,10 @@ namespace Reko.UnitTests.Scanning
             Given_Edge(Fused3, 0x32);
             Given_Edge(0x31, FusedExit);
             Given_Edge(0x32, FusedExit);
+
+            Given_DirectCall(0x42, Fused1);
+            Given_DirectCall(0x42, Fused2);
+            Given_DirectCall(0x42, Fused3);
         }
 
         [Test]
@@ -235,7 +252,7 @@ namespace Reko.UnitTests.Scanning
 
             var clusters = prdet.FindClusters();
             // Get the 'Odd' cluster and find its entries.
-            var clOdd = clusters.Single(c => c.Blocks.Contains(Address.Ptr32(Odd)));
+            var clOdd = clusters.Single(c => c.Blocks.Contains(Addr(Odd)));
             prdet.FindClusterEntries(clOdd);
 
             var sExp =
@@ -254,9 +271,6 @@ namespace Reko.UnitTests.Scanning
         public void Prdef_FindEntries_FusedExit()
         {
             Given_FusedExitNode();
-            Given_DirectCall(0x42, Fused1);
-            Given_DirectCall(0x42, Fused2);
-            Given_DirectCall(0x42, Fused3);
             Given_ProcedureDetector();
 
             var clusters = prdet.FindClusters();
@@ -288,6 +302,28 @@ namespace Reko.UnitTests.Scanning
             #endregion
 
             AssertCluster(sExp, clusters[0]);
+        }
+
+
+        [Test(Description = "Remove all jumps to known direct call targets")]
+        public void Prdef_Remove_TailCall_Edges()
+        {
+            Given_Edge(1, 2);   // main program
+            Given_Edge(2, 3);
+            Given_Edge(3, 2);
+            Given_Edge(3, 4);
+            Given_Edge(4, 10);      // tail call
+
+            Given_Edge(10, 11);
+
+            Given_DirectCall(99, 10);       // someone else (99) called 10.
+
+            Given_FusedExitNode();
+            Given_ProcedureDetector();
+
+            prdet.RemoveJumpsToDirectCalls();
+
+            Assert.False(sr.ICFG.ContainsEdge(Addr(4), Addr(10)), "Should have removed tail call to 10");
         }
     }
 }
