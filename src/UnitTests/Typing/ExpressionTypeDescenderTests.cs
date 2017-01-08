@@ -259,7 +259,7 @@ namespace Reko.UnitTests.Typing
             Assert.IsNotNull(ptr, "Should be pointer");
             var tRef = ptr.Pointee as TypeReference;
             Assert.IsNotNull(tRef, "Should be type reference");
-            Assert.AreEqual("(struct (4 T_5 t0004))", tRef.Referent.ToString());
+            Assert.AreEqual("(struct (4 T_5 t0004_))", tRef.Referent.ToString());
         }
     }
 }
