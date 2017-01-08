@@ -9924,7 +9924,7 @@ T_1803: (in a7_210->t0030 <= 0x70 : bool)
 T_1804: (in v103_1444 : Eq_1337)
   Class: Eq_1337
   DataType: Eq_1337
-  OrigDataType: (union (int32 u0) (byte u1))
+  OrigDataType: (union (int32 u1) (byte u0))
 T_1805: (in 0x00000030 : word32)
   Class: Eq_1805
   DataType: word32
@@ -18368,7 +18368,7 @@ T_3914: (in d1 : Eq_1008)
 T_3915: (in d2 : Eq_95)
   Class: Eq_95
   DataType: Eq_95
-  OrigDataType: (union (int32 u0) (uint32 u1))
+  OrigDataType: (union (int32 u1) (uint32 u0))
 T_3916: (in d1Out : Eq_3916)
   Class: Eq_3916
   DataType: Eq_3916
@@ -33220,7 +33220,7 @@ T_7627: (in Mem2206[a7_1138 + 44:byte] : byte)
 T_7628: (in v470_2207 : Eq_7628)
   Class: Eq_7628
   DataType: Eq_7628
-  OrigDataType: (union (int32 u0) (byte u1))
+  OrigDataType: (union (int32 u1) (byte u0))
 T_7629: (in 44 : int32)
   Class: Eq_7629
   DataType: int32

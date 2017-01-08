@@ -462,7 +462,6 @@ namespace Reko.Typing
 
         public bool VisitIdentifier(Identifier id, TypeVariable tv)
         {
-            MeetDataType(id, tv.DataType);
             return false;
         }
 
