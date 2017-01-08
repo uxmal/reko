@@ -37,8 +37,9 @@ namespace Reko.ImageLoaders.Dol
 			for (uint i=0, snum=1; i<7; i++, snum++) {
 				if (hdr.addressText[i] == new Address32(0))
 					continue;
+
 				segments.Add(new ImageSegment(
-					snum.ToString(),
+					string.Format("Text{0}", snum),
 					new MemoryArea(hdr.addressText[i], RawImage),
 					AccessMode.ReadWriteExecute
 				));
@@ -49,9 +50,9 @@ namespace Reko.ImageLoaders.Dol
 				if (hdr.addressData[i] == new Address32(0))
 					continue;
 				segments.Add(new ImageSegment(
-					snum.ToString(),
+					string.Format("Data{0}", snum),
 					new MemoryArea(hdr.addressText[i], RawImage),
-					AccessMode.ReadWriteExecute
+					AccessMode.ReadWrite
 				));
 			}
 
