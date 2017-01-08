@@ -686,7 +686,7 @@ T_152: (in rbp : word64)
 T_153: (in dwLoc04 : word32)
   Class: Eq_152
   DataType: Eq_152
-  OrigDataType: (union (ptr64 u0) (word32 u1))
+  OrigDataType: (union (ptr64 u1) (word32 u0))
 T_154: (in qwLoc04 : word64)
   Class: Eq_152
   DataType: Eq_152
