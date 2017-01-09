@@ -977,7 +977,7 @@ T_164: (in dwArg08 != 0x00000000 : bool)
 T_165: (in edi_82 : Eq_139)
   Class: Eq_139
   DataType: Eq_139
-  OrigDataType: (union (LONG u1))
+  OrigDataType: LONG
 T_166: (in fs : selector)
   Class: Eq_166
   DataType: (ptr Eq_166)

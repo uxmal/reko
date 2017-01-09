@@ -240,5 +240,26 @@ namespace Reko.UnitTests.Typing
                     m.IAdd(m.ISub(p, m.Word32(4)), m.Word32(0))),
                 PrimitiveType.Word32);
         }
+
+        [Test]
+        public void ExdReferenceToUnknown()
+        {
+            var p = Id("p", PrimitiveType.Word32);
+            store.EnsureExpressionTypeVariable(factory, p);
+            p.TypeVariable.OriginalDataType = PointerTo(
+                new TypeReference("UNKNOWN_TYPE", new UnknownType()));
+            p.TypeVariable.DataType = PointerTo(
+                new TypeReference("UNKNOWN_TYPE", new UnknownType()));
+            RunTest(
+                m.Load(
+                    PrimitiveType.Word32,
+                    m.IAdd(p, m.Word32(4))),
+                PrimitiveType.Word32);
+            var ptr = p.TypeVariable.OriginalDataType as Pointer;
+            Assert.IsNotNull(ptr, "Should be pointer");
+            var tRef = ptr.Pointee as TypeReference;
+            Assert.IsNotNull(tRef, "Should be type reference");
+            Assert.AreEqual("(struct (4 T_5 t0004))", tRef.Referent.ToString());
+        }
     }
 }

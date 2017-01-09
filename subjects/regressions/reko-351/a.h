@@ -970,7 +970,7 @@ T_230: (in rArg0C : real64)
 T_231: (in tArg14 : Eq_231)
   Class: Eq_231
   DataType: Eq_231
-  OrigDataType: (union ((ptr (struct (0 T_254 t0000))) u0) ((ref int32) u2))
+  OrigDataType: (union ((ptr (struct (0 T_254 t0000))) u1) ((ref int32) u0))
 T_232: (in rLoc1C : real64)
   Class: Eq_232
   DataType: real64
