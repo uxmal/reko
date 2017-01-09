@@ -346,6 +346,7 @@ namespace Reko.Core
     public class Address32 : Address
     {
         private uint uValue;
+		public static readonly Address NULL = Address32.Ptr32(0);
 
         public Address32(uint addr)
             : base(PrimitiveType.Pointer32)
@@ -560,8 +561,9 @@ namespace Reko.Core
     public class Address64 : Address
     {
         private readonly ulong uValue;
+		public static readonly Address NULL = Address32.Ptr64(0);
 
-        public Address64(ulong addr)
+		public Address64(ulong addr)
             : base(PrimitiveType.Pointer64)
         {
             this.uValue = addr;
