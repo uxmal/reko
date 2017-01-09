@@ -88,6 +88,7 @@
         <!-- Image loaders -->
         <File Source="$(var.BinHex.TargetPath)" />
         <File Source="$(var.Coff.TargetPath)" />
+        <File Source="$(var.Dol.TargetPath)" />
         <File Source="$(var.Elf.TargetPath)" />
         <File Source="$(var.Hunk.TargetPath)" />
         <File Source="$(var.MachO.TargetPath)" />
@@ -117,6 +118,7 @@
         <File Source="$(var.SysV.ProjectDir)Xlib.xml" />
         <File Source="$(var.SysV.ProjectDir)sysvcharacteristics.xml" />
         <File Source="$(var.Trs80.ProjectDir)Trs80Rom.xml" />
+        <File Source="$(var.Wii.TargetPath)" />
         <File Source="$(var.Windows.TargetPath)" />
         <File Source="$(var.Windows.ProjectDir)windows32.xml" />
         <File Source="$(var.Windows.ProjectDir)windows64.xml" />

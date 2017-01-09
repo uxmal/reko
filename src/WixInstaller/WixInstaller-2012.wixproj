@@ -288,6 +288,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\Environments\Wii\Wii.csproj">
+      <Name>Wii</Name>
+      <Project>{958a95bd-260b-4d90-a7a3-0f514d117298}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Environments\Windows\Windows.csproj">
       <Name>Windows</Name>
       <Project>{4a298321-9855-43de-aa9c-79e4efa0ae56}</Project>
@@ -323,6 +331,14 @@
     <ProjectReference Include="..\ImageLoaders\Coff\Coff.csproj">
       <Name>Coff</Name>
       <Project>{02595a47-2592-441d-b44d-8ea8c19ee5e2}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\ImageLoaders\Dol\Dol.csproj">
+      <Name>Dol</Name>
+      <Project>{5b6da2ca-5ca1-4a84-8084-9d6780f64bcf}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
