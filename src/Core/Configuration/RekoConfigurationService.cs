@@ -186,13 +186,22 @@ namespace Reko.Core.Configuration
                 Description = sRaw.Description,
                 EntryPoint = LoadEntryPoint(sRaw.Entry),
                 Environment = sRaw.Environment,
-                LoaderType = sRaw.LoaderType,
+                Loader = sRaw.LoaderType,
                 Name = sRaw.Name,
             };
         }
 
         private EntryPointElement LoadEntryPoint(EntryPoint_v1 sEntry)
         {
+            if (sEntry == null)
+            {
+                return new EntryPointElement
+                {
+                    Address = null,
+                    Follow = false,
+                    Name = null,
+                };
+            }
             return new EntryPointElement
             {
                 Address = sEntry.Address,

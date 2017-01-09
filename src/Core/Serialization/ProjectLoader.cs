@@ -232,11 +232,11 @@ namespace Reko.Core.Serialization
                 var platform = sUser.PlatformOptions != null
                     ? sUser.PlatformOptions.Name
                     : null;
-                program = loader.LoadRawImage(binAbsPath, bytes, arch, platform, address);
+                program = loader.LoadRawImage(binAbsPath, bytes, sUser.Loader, arch, platform, address);
             }
             else
             {
-                program = loader.LoadExecutable(binAbsPath, bytes, address);
+                program = loader.LoadExecutable(binAbsPath, bytes, sUser.Loader, address);
             }
             program.Filename = binAbsPath;
             program.DisassemblyFilename = ConvertToAbsolutePath(projectFilePath, sInput.DisassemblyFilename);
@@ -266,11 +266,11 @@ namespace Reko.Core.Serialization
                 var platform = sUser.PlatformOptions != null
                     ? sUser.PlatformOptions.Name
                     : null;
-                program = loader.LoadRawImage(sInput.Filename, bytes, arch, platform, address);
+                program = loader.LoadRawImage(sInput.Filename, bytes, null, arch, platform, address);
             }
             else
             {
-                program = loader.LoadExecutable(sInput.Filename, bytes, address);
+                program = loader.LoadExecutable(sInput.Filename, bytes, null, address);
             }
             this.platform = program.Platform;
             program.Filename = ConvertToAbsolutePath(projectFilePath, sInput.Filename);
@@ -544,7 +544,7 @@ namespace Reko.Core.Serialization
         {
             var binFilename = ConvertToAbsolutePath(projectFilePath, sInput.Filename);
             var bytes = loader.LoadImageBytes(binFilename, 0);
-            var program = loader.LoadExecutable(binFilename, bytes, null);
+            var program = loader.LoadExecutable(binFilename, bytes, null, null);
             program.Filename = binFilename;
             LoadUserData(sInput, program, program.User);
 

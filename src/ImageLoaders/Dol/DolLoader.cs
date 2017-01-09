@@ -112,13 +112,13 @@ namespace Reko.ImageLoaders.Dol
 		public class FileHeader {
 			public uint[] offsetText = new uint[7];
 			public uint[] offsetData = new uint[11];
-			public Address32[] addressText = new Address32[7];
-			public Address32[] addressData = new Address32[11];
+			public Address[] addressText = new Address[7];
+			public Address[] addressData = new Address[11];
 			public uint[] sizeText = new uint[7];
 			public uint[] sizeData = new uint[11];
-			public Address32 addressBSS;
+			public Address addressBSS;
 			public uint sizeBSS;
-			public Address32 entrypoint;
+			public Address entrypoint;
 
 			public FileHeader(BeImageReader rdr) {
 				uint uAddress;

@@ -113,7 +113,7 @@ namespace Reko.Core.Serialization
         public string LoadAddress;
 
         [XmlElement("loader")]
-        public string LoaderType;
+        public string Loader;
 
         [XmlElement("processor")]
         public ProcessorOptions_v4 Processor;

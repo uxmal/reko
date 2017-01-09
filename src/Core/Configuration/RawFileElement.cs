@@ -33,6 +33,7 @@ namespace Reko.Core.Configuration
         string Architecture { get; set; }
         string Environment { get; set; }
         string BaseAddress { get; set; }
+        string Loader { get; set; }
         EntryPointElement EntryPoint { get; }
     }
 
@@ -62,7 +63,7 @@ namespace Reko.Core.Configuration
 
         public string BaseAddress { get; set; }
 
-        public string LoaderType { get; set; }
+        public string Loader { get; set; }
 
         public EntryPointElement EntryPoint { get; set; }
     }

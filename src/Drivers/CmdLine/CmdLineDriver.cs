@@ -81,7 +81,9 @@ namespace Reko.CmdLine
             }
             else if (pArgs.ContainsKey("filename"))
             {
-                dec.Decompile((string)pArgs["filename"]);
+                object loader;
+                pArgs.TryGetValue("--loader", out loader);
+                dec.Decompile((string)pArgs["filename"], (string)loader);
             }
             else
             {
@@ -134,9 +136,10 @@ namespace Reko.CmdLine
             else
                 addrEntry = addrBase;
 
-
+            object sLoader;
+            pArgs.TryGetValue("--loader", out sLoader);
             var state = CreateInitialState(arch, pArgs);
-            dec.LoadRawImage((string)pArgs["filename"], (string)pArgs["--arch"], (string) sEnv, addrBase);
+            dec.LoadRawImage((string)pArgs["filename"], (string) sLoader, (string)pArgs["--arch"], (string) sEnv, addrBase);
             dec.Project.Programs[0].EntryPoints.Add(
                 addrEntry,
                 new ImageSymbol(addrEntry)
@@ -220,6 +223,11 @@ namespace Reko.CmdLine
                     if (i < args.Length - 1)
                         parsedArgs["--default-to"] = args[++i];
                 }
+                else if (args[i] == "-l" || args[i] == "--loader")
+                {
+                    if (i < args.Length - 1)
+                        parsedArgs["--loader"] = args[++i];
+                }
                 else if (args[i] == "--reg" || args[i] == "-r")
                 {
                     if (i < args.Length - 1)
@@ -275,6 +283,9 @@ namespace Reko.CmdLine
             w.WriteLine("Options:");
             w.WriteLine(" --version                Show version number and exit");
             w.WriteLine(" -h, --help               Show this message and exit");
+            w.WriteLine(" -l, --loader <ldr>       Use a custom loader where <ldr> is either the file name");
+            w.WriteLine("                          containing a loader script or the CLR type name of the");
+            w.WriteLine("                          loader.");
             w.WriteLine(" --arch <architecture>    Use an architecture from the following:");
             DumpArchitectures(config, w, "    {0,-25} {1}");
             w.WriteLine(" --env <environment>      Use an operating environment from the following:");
@@ -286,8 +297,10 @@ namespace Reko.CmdLine
             w.WriteLine(" --entry <address>        Use <address> as an entry point to the program");
             w.WriteLine(" --reg <regInit>          Set register to value, where regInit is formatted as");
             w.WriteLine("                          reg_name:value, e.g. sp:FF00");
-            w.WriteLine(" --heuristic <h1>[,<h2>...] Use one of the following heuristics to examine binary:");
+            w.WriteLine(" --heuristic <h1>[,<h2>...] Use one of the following heuristics to examine");
+            w.WriteLine("                          the binary:");
             w.WriteLine("    shingle               Use shingle assembler to discard data ");
+            //           01234567890123456789012345678901234567890123456789012345678901234567890123456789
         }
 
         private static void DumpArchitectures(RekoConfigurationService config, TextWriter w, string fmtString)

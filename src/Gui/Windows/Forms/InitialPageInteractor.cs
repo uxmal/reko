@@ -118,6 +118,7 @@ namespace Reko.Gui.Windows.Forms
             return isOldProject;
         }
 
+        //$TODO: change signature to OpenAs(raw)
         public bool OpenBinaryAs(
             string file, 
             string arch,
@@ -137,7 +138,7 @@ namespace Reko.Gui.Windows.Forms
                 }
                 else
                 {
-                   program= Decompiler.LoadRawImage(file, arch, platform, addrBase);
+                   program= Decompiler.LoadRawImage(file, null, arch, platform, addrBase);
                 }
                 program.User.Processor = arch;
                 program.User.Environment = platform;

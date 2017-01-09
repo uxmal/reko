@@ -36,9 +36,9 @@ namespace Reko.Core
         string DefaultToFormat { get; set; }
 
         byte[] LoadImageBytes(string fileName, int offset);
-        Program LoadExecutable(string fileName, byte[] bytes, Address loadAddress);
-        Program LoadRawImage(string fileName, byte[] image, RawFileElement raw);
-        Program LoadRawImage(string filename, byte[] bytes, string archName, string platformName, Address loadAddress);
+        Program LoadExecutable(string fileName, byte[] bytes, string loader, Address loadAddress);
+        Program LoadRawImage(string fileName, byte[] image, Address loadAddress, RawFileElement raw);
+        Program LoadRawImage(string filename, byte[] bytes, string loader, string archName, string platformName, Address loadAddress);
         Program AssembleExecutable(string fileName, string asmName, Address loadAddress);
         Program AssembleExecutable(string fileName, Assembler asm, Address loadAddress);
         Program AssembleExecutable(string fileName, byte[] bytes, Assembler asm, Address loadAddress);
