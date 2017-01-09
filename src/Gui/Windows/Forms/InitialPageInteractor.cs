@@ -134,7 +134,8 @@ namespace Reko.Gui.Windows.Forms
                 Program program;
                 if (raw != null)
                 {
-                   program = Decompiler.LoadRawImage(file, raw);
+                    program = Decompiler.LoadRawImage(file, raw);
+                    program.User.Loader = raw.Loader;
                 }
                 else
                 {
@@ -142,9 +143,7 @@ namespace Reko.Gui.Windows.Forms
                 }
                 program.User.Processor = arch;
                 program.User.Environment = platform;
-                program.User.LoadAddress = program.ImageMap.BaseAddress; ;
-                svc.SetCaption("Scanning source program.");
-                Decompiler.ScanPrograms();
+                program.User.LoadAddress = program.ImageMap.BaseAddress;
             });
             var browserSvc = Services.RequireService<IProjectBrowserService>();
             browserSvc.Load(Decompiler.Project);

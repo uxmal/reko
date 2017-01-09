@@ -63,27 +63,29 @@ namespace Reko.ImageLoaders.Dol
 			BeImageReader rdr = new BeImageReader(this.RawImage, 0);
 			this.hdr = new FileHeader(rdr);
 
+            var addrNull = Address.Ptr32(0);
+            var mem = new MemoryArea(addrLoad, this.RawImage);
+			var segments = new List<ImageSegment>();
 
-			List<ImageSegment> segments = new List<ImageSegment>();
-			// add the code segment
+			// Create code segments
 			for (uint i=0, snum=1; i<7; i++, snum++) {
-				if (hdr.addressText[i] == new Address32(0))
+				if (hdr.addressText[i] == addrNull)
 					continue;
 
 				segments.Add(new ImageSegment(
 					string.Format("Text{0}", snum),
-					new MemoryArea(hdr.addressText[i], RawImage),
-					AccessMode.ReadWriteExecute
+                    mem,
+					AccessMode.ReadExecute
 				));
 			}
 
-			// create all data segments
+			// Create all data segments
 			for (uint i = 0, snum = 1; i < 11; i++, snum++) {
-				if (hdr.addressData[i] == new Address32(0))
+				if (hdr.addressData[i] == addrNull)
 					continue;
 				segments.Add(new ImageSegment(
 					string.Format("Data{0}", snum),
-					new MemoryArea(hdr.addressText[i], RawImage),
+                    mem,
 					AccessMode.ReadWrite
 				));
 			}
@@ -91,18 +93,23 @@ namespace Reko.ImageLoaders.Dol
 			if (hdr.addressBSS != new Address32(0)) {
 				segments.Add(new ImageSegment(
 					".bss",
-					new MemoryArea(hdr.addressBSS, RawImage),
+					new MemoryArea(hdr.addressBSS, new byte[hdr.sizeBSS]),
 					AccessMode.ReadWrite
 				));
 			}
 
-			SegmentMap segmentMap = new SegmentMap(hdr.entrypoint, segments.ToArray());
+			var segmentMap = new SegmentMap(addrLoad, segments.ToArray());
+            var entryPoint = new ImageSymbol(hdr.entrypoint) { Type = SymbolType.Procedure };
 
-			return new Program(
-				segmentMap,
-				arch,
-                platform
-			);
+            var program = new Program(
+                segmentMap,
+                arch,
+                platform)
+            {
+                ImageSymbols = { { hdr.entrypoint, entryPoint } },
+                EntryPoints = { { hdr.entrypoint, entryPoint } }
+            };
+            return program;
 		}
 
 		public override RelocationResults Relocate(Program program, Address addrLoad) {
@@ -124,34 +131,34 @@ namespace Reko.ImageLoaders.Dol
 				uint uAddress;
 
 				bool result;
-				for (uint i = 0; i < 7; i++) {
+				for (uint i = 0; i < offsetText.Length; i++) {
 					result = rdr.TryReadUInt32(out offsetText[i]);
 					if (!result)
 						goto fail;
 				}
-				for (uint i = 0; i < 11; i++) {
+				for (uint i = 0; i < offsetData.Length; i++) {
 					result = rdr.TryReadUInt32(out offsetData[i]);
 					if (!result)
 						goto fail;
 				}
-				for (uint i = 0; i < 7; i++) {
+				for (uint i = 0; i < addressText.Length; i++) {
 					result = rdr.TryReadUInt32(out uAddress);
 					if (!result)
 						goto fail;
 					addressText[i] = Address.Ptr32(uAddress);
 				}
-				for (uint i = 0; i < 11; i++) {
+				for (uint i = 0; i < addressData.Length; i++) {
 					result = rdr.TryReadUInt32(out uAddress);
 					if (!result)
 						goto fail;
 					addressData[i] = Address.Ptr32(uAddress);
 				}
-				for (uint i = 0; i < 7; i++) {
+				for (uint i = 0; i < sizeText.Length; i++) {
 					result = rdr.TryReadUInt32(out sizeText[i]);
 					if (!result)
 						goto fail;
 				}
-				for (uint i = 0; i < 11; i++) {
+				for (uint i = 0; i < sizeData.Length; i++) {
 					result = rdr.TryReadUInt32(out sizeData[i]);
 					if (!result)
 						goto fail;

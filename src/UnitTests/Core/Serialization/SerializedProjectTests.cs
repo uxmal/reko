@@ -204,6 +204,7 @@ namespace Reko.UnitTests.Core.Serialization
                         IntermediateFilename = "foo.cod",
                         User = new UserData
                         {
+                            Loader = "CustomLoader",
                             Procedures =
                             {
                                 {

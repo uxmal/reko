@@ -68,6 +68,7 @@ namespace Reko.Core.Serialization
                 Filename = ConvertToProjectRelativePath(projectAbsPath, program.Filename),
                 User = new UserData_v4
                 {
+                    Loader = program.User.Loader,
                     Procedures = program.User.Procedures
                         .Select(de => { de.Value.Address = de.Key.ToString(); return de.Value; })
                         .ToList(),
