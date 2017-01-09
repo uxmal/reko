@@ -62,6 +62,8 @@ namespace Reko.Core.Configuration
 
         public string BaseAddress { get; set; }
 
+        public string LoaderType { get; set; }
+
         public EntryPointElement EntryPoint { get; set; }
     }
 

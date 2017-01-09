@@ -186,6 +186,7 @@ namespace Reko.Core.Configuration
                 Description = sRaw.Description,
                 EntryPoint = LoadEntryPoint(sRaw.Entry),
                 Environment = sRaw.Environment,
+                LoaderType = sRaw.LoaderType,
                 Name = sRaw.Name,
             };
         }

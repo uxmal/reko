@@ -1,4 +1,24 @@
-﻿using Reko.Core;
+﻿#region License
+/* 
+ * Copyright (C) 1999-2017 John Källén.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file COPYING.  If not, write to
+ * the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+ */
+#endregion
+
+using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Environments.Wii;
 using System;
@@ -11,8 +31,10 @@ namespace Reko.ImageLoaders.Dol
 {
 	/* Adapted from https://github.com/heinermann/ida-wii-loaders */
 	/* Format Reference: http://wiibrew.org/wiki/DOL */
-	public class DolLoader : ImageLoader {
+	public class DolLoader : ImageLoader
+    {
 		private FileHeader hdr;
+
 		public DolLoader(IServiceProvider services, string filename, byte[] imgRaw) : base(services, filename, imgRaw) {
 		}
 
@@ -64,13 +86,12 @@ namespace Reko.ImageLoaders.Dol
 				));
 			}
 
-
 			SegmentMap segmentMap = new SegmentMap(hdr.entrypoint, segments.ToArray());
 
 			return new Program(
 				segmentMap,
 				arch,
-				new WiiPlatform(Services, arch, "Wii")
+				new WiiPlatform(Services, arch)
 			);
 		}
 
