@@ -103,9 +103,9 @@ namespace Reko.Loading
             else
             {
                 imgLoader = FindImageLoader(
-                filename,
-                image,
-                () => CreateDefaultImageLoader(filename, image));
+                    filename,
+                    image,
+                    () => CreateDefaultImageLoader(filename, image));
             }
             if (addrLoad == null)
             {
@@ -142,6 +142,14 @@ namespace Reko.Loading
         { 
             var arch = cfgSvc.GetArchitecture(raw.Architecture);
             var platform = cfgSvc.GetEnvironment(raw.Environment).Load(Services, arch);
+            if (addrLoad == null)
+            {
+                if (!arch.TryParseAddress(raw.BaseAddress, out addrLoad))
+                {
+                    throw new ApplicationException(
+                        "Unable to determine base address for executable. A default address should have been present in the reko.config file.");
+                }
+            }
             Program program;
             if (!string.IsNullOrEmpty(raw.Loader))
             {
@@ -389,6 +397,14 @@ namespace Reko.Loading
             {
                 return new NullImageLoader(services, filename, bytes);
             }
+
+            var cfgSvc = services.RequireService<IConfigurationService>();
+            var ldrCfg = cfgSvc.GetImageLoaders().FirstOrDefault(e => e.Label == loader);
+            if (ldrCfg != null)
+            {
+                return CreateImageLoader<ImageLoader>(services, ldrCfg.TypeName, filename, bytes);
+            }
+
             //$TODO: detect file extensions and load appropriate interpreter.
             var ass = Assembly.LoadFrom(loader);
             var t = ass.GetTypes().SingleOrDefault(tt => typeof(ImageLoader).IsAssignableFrom(tt));

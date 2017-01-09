@@ -218,6 +218,7 @@
     <Assemblers Include="$(SolutionDir)Assemblers\x86\$(OutDir)Reko.Assemblers.x86.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\MzExe\$(OutDir)Reko.ImageLoaders.MzExe.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\BinHex\$(OutDir)Reko.ImageLoaders.BinHex.*" />
+    <ImageLoaders Include="$(SolutionDir)ImageLoaders\Dol\$(OutDir)Reko.ImageLoaders.Dol.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Elf\$(OutDir)Reko.ImageLoaders.Elf.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\Hunk\$(OutDir)Reko.ImageLoaders.Hunk.*" />
     <ImageLoaders Include="$(SolutionDir)ImageLoaders\MachO\$(OutDir)Reko.ImageLoaders.MachO.*" />
@@ -235,6 +236,7 @@
     <Environments Include="$(SolutionDir)Environments\SegaGenesis\$(OutDir)Reko.Environments.SegaGenesis.*" />
     <Environments Include="$(SolutionDir)Environments\SysV\$(OutDir)Reko.Environments.SysV.*" />
     <Environments Include="$(SolutionDir)Environments\Trs80\$(OutDir)Reko.Environments.Trs80.*" />
+    <Environments Include="$(SolutionDir)Environments\Wii\$(OutDir)Reko.Environments.Wii.*" />
     <Environments Include="$(SolutionDir)Environments\Windows\$(OutDir)Reko.Environments.Windows.*" />
     <Environments Include="$(SolutionDir)Environments\ZX81\$(OutDir)Reko.Environments.ZX81.*" />
     <Libraries Include="$(SolutionDir)Libraries\Libc\$(OutDir)Reko.Libraries.Libc.*" />
