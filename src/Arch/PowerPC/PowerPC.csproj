@@ -82,6 +82,7 @@
     <Compile Include="PowerPcRewriter.cs" />
     <Compile Include="PowerPcRewriter.Fpu.cs" />
     <Compile Include="PowerPcRewriter.Mem.cs" />
+    <Compile Include="PowerPcRewriter.System.cs" />
     <Compile Include="PowerPcRewriter.Vector.cs" />
     <Compile Include="PowerPcState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -20,6 +20,7 @@
 
 using Reko.Core;
 using Reko.Core.Expressions;
+using Reko.Core.Machine;
 using Reko.Core.Operators;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
@@ -194,6 +195,25 @@ namespace Reko.Arch.PowerPC
             var s = RewriteOperand(instr.op1);
             var ea = EffectiveAddress_r0(instr.op2, emitter);
             emitter.Assign(emitter.Load(dataType, ea), s);
+        }
+
+        private void RewriteStmw()
+        {
+            var r = ((RegisterOperand)instr.op1).Register.Number;
+            var ea = EffectiveAddress_r0(instr.op2, emitter);
+            var tmp = frame.CreateTemporary(ea.DataType);
+            while (r <= 31)
+            {
+                var reg = arch.GetRegister(r);
+                Expression w = frame.EnsureRegister(reg);
+                if (reg.DataType.Size > 4)
+                {
+                    w = emitter.Slice(PrimitiveType.Word32, w, 0);
+                }
+                emitter.Assign(emitter.LoadDw(tmp), w);
+                emitter.Assign(tmp, emitter.IAdd(tmp, emitter.Int32(4)));
+                ++r;
+            }
         }
 
         private void RewriteStu(PrimitiveType dataType)

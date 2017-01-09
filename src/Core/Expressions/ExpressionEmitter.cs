@@ -514,7 +514,7 @@ namespace Reko.Core.Expressions
             return ISub(left, Word(left.DataType.Size, right));
         }
 
-        public Slice Slice(PrimitiveType primitiveType, Identifier value, uint bitOffset)
+        public Slice Slice(PrimitiveType primitiveType, Expression value, uint bitOffset)
         {
             return new Slice(primitiveType, value, bitOffset);
         }

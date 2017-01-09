@@ -803,6 +803,9 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x7C6000A6, "mfmsr\tr3");
             AssertCode(0x7C7A03A6, "mtspr\t00000340,r3");
+            AssertCode(0x7C600124, "mtmsr\tr3");
+            AssertCode(0x4C00012C, "isync");
+
         }
     }
 }

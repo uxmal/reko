@@ -155,6 +155,7 @@ namespace Reko.Arch.PowerPC
                 case Opcode.frsp: RewriteFrsp(); break;
                 case Opcode.fsub: RewriteFsub(); break;
                 case Opcode.fsubs: RewriteFsub(); break;
+                case Opcode.isync: RewriteIsync(); break;
                 case Opcode.lbz: RewriteLz(PrimitiveType.Byte); break;
                 case Opcode.lbzx: RewriteLzx(PrimitiveType.Byte); break;
                 case Opcode.lbzu: RewriteLzu(PrimitiveType.Byte); break;
@@ -184,9 +185,11 @@ namespace Reko.Arch.PowerPC
                 case Opcode.mftb: RewriteMftb(); break;
                 case Opcode.mffs: RewriteMffs(); break;
                 case Opcode.mflr: RewriteMflr(); break;
+                case Opcode.mfmsr: RewriteMfmsr(); break;
                 case Opcode.mtcrf: RewriteMtcrf(); break;
                 case Opcode.mtctr: RewriteMtctr(); break;
                 case Opcode.mtfsf: RewriteMtfsf(); break;
+                case Opcode.mtspr: RewriteMtspr(); break;
                 case Opcode.mtlr: RewriteMtlr(); break;
                 case Opcode.mulhw: RewriteMulhw(); break;
                 case Opcode.mulhwu: RewriteMulhwu(); break;
@@ -224,6 +227,7 @@ namespace Reko.Arch.PowerPC
                 case Opcode.sth: RewriteSt(PrimitiveType.Word16); break;
                 case Opcode.sthu: RewriteStu(PrimitiveType.Word16); break;
                 case Opcode.sthx: RewriteStx(PrimitiveType.Word16); break;
+                case Opcode.stmw: RewriteStmw(); break;
                 case Opcode.stvewx: RewriteStvewx(); break;
                 case Opcode.stvx: RewriteStx(PrimitiveType.Word128); break;
                 case Opcode.stw: RewriteSt(PrimitiveType.Word32); break;

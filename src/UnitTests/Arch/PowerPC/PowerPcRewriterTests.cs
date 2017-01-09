@@ -1273,5 +1273,33 @@ namespace Reko.UnitTests.Arch.PowerPC
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|__crnor(0x0000001E, 0x0000001C, 0x0000001C)");
         }
+
+
+        [Test]
+        public void PPCRw_mtspr()
+        {
+            AssertCode(0x7C7A03A6, // mtspr 0000340, r3
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__write_spr(0x00000340, r3)");
+        }
+
+        [Test]
+        public void PPCRw_stmw()
+        {
+            AssertCode(0xBFC10008, // stmw r30,8(r1)
+                "0|L--|00100000(4): 4 instructions",
+                "1|L--|Mem0[v3:word32] = r30",
+                "2|L--|v3 = v3 + 0x00000004",
+                "3|L--|Mem0[v3:word32] = r31",
+                "4|L--|v3 = v3 + 0x00000004");
+        }
+
+        [Test]
+        public void PPCRw_mfmsr()
+        {
+            AssertCode(0x7C6000A6, // mfmsr r3
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r3 = __read_msr()");
+        }
     }
 }
