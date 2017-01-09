@@ -104,6 +104,7 @@ namespace Reko.Arch.PowerPC
                 case Opcode.bgel: RewriteBranch(true, false,ConditionCode.GE); break;
                 case Opcode.bgt: RewriteBranch(false, false,ConditionCode.GT); break;
                 case Opcode.bgtl: RewriteBranch(true, false,ConditionCode.GT); break;
+                case Opcode.bgtlr: RewriteBranch(false, true,ConditionCode.GT); break;
                 case Opcode.bl: RewriteBl(); break;
                 case Opcode.blr: RewriteBlr(); break;
                 case Opcode.ble: RewriteBranch(false, false, ConditionCode.LE); break;
@@ -171,6 +172,7 @@ namespace Reko.Arch.PowerPC
                 case Opcode.lhz: RewriteLz(PrimitiveType.Word16); break;
                 case Opcode.lhzu: RewriteLzu(PrimitiveType.Word16); break;
                 case Opcode.lhzx: RewriteLzx(PrimitiveType.Word16); break;
+                case Opcode.lmw: RewriteLmw(); break;
                 case Opcode.lvewx: RewriteLvewx(); break;
                 case Opcode.lvlx: RewriteLvlx(); break;
                 case Opcode.lvsl: RewriteLvsl(); break;
@@ -186,9 +188,11 @@ namespace Reko.Arch.PowerPC
                 case Opcode.mffs: RewriteMffs(); break;
                 case Opcode.mflr: RewriteMflr(); break;
                 case Opcode.mfmsr: RewriteMfmsr(); break;
+                case Opcode.mfspr: RewriteMfspr(); break;
                 case Opcode.mtcrf: RewriteMtcrf(); break;
                 case Opcode.mtctr: RewriteMtctr(); break;
                 case Opcode.mtfsf: RewriteMtfsf(); break;
+                case Opcode.mtmsr: RewriteMtmsr(); break;
                 case Opcode.mtspr: RewriteMtspr(); break;
                 case Opcode.mtlr: RewriteMtlr(); break;
                 case Opcode.mulhw: RewriteMulhw(); break;
@@ -203,6 +207,7 @@ namespace Reko.Arch.PowerPC
                 case Opcode.orc: RewriteOrc(false); break;
                 case Opcode.ori: RewriteOr(false); break;
                 case Opcode.oris: RewriteOris(); break;
+                case Opcode.rfi: RewriteRfi(); break;
                 case Opcode.rldicl: RewriteRldicl(); break;
                 case Opcode.rlwinm: RewriteRlwinm(); break;
                 case Opcode.rlwimi: RewriteRlwimi(); break;

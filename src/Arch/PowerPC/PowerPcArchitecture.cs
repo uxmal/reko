@@ -39,6 +39,7 @@ namespace Reko.Arch.PowerPC
         private ReadOnlyCollection<RegisterStorage> fpregs;
         private ReadOnlyCollection<RegisterStorage> vregs;
         private ReadOnlyCollection<RegisterStorage> cregs;
+        private Dictionary<int, RegisterStorage> spregs;
 
         public RegisterStorage lr { get; private set; }
         public RegisterStorage ctr { get; private set; }
@@ -86,6 +87,12 @@ namespace Reko.Arch.PowerPC
             cregs = new ReadOnlyCollection<RegisterStorage>(
                 regs.Skip(0x60).Take(0x8).ToList());
 
+            spregs = new Dictionary<int, RegisterStorage>
+            {
+                { 26, new RegisterStorage("srr0", 0x0100 + 26, 0, PrimitiveType.Word32) },
+                { 27, new RegisterStorage("srr1", 0x0100 + 27, 0, PrimitiveType.Word32) },
+            };
+
             //$REVIEW: using R1 as the stack register is a _convention_. It 
             // should be platform-specific at the very least.
             StackRegister = regs[1];
@@ -108,6 +115,10 @@ namespace Reko.Arch.PowerPC
         public ReadOnlyCollection<RegisterStorage> CrRegisters
         {
             get { return cregs; }
+        }
+        public Dictionary<int, RegisterStorage> SpRegisters
+        {
+            get { return spregs; }
         }
 
         #region IProcessorArchitecture Members

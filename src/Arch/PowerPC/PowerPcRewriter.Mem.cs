@@ -88,6 +88,32 @@ namespace Reko.Arch.PowerPC
             emitter.Assign(opD, ea);
         }
 
+        private void RewriteLmw()
+        {
+            var r = ((RegisterOperand)instr.op1).Register.Number;
+            var ea = EffectiveAddress_r0(instr.op2, emitter);
+            var tmp = frame.CreateTemporary(ea.DataType);
+            emitter.Assign(tmp, ea);
+            while (r <= 31)
+            {
+                var reg = frame.EnsureRegister(arch.GetRegister(r));
+                Expression w = reg;
+                if (reg.DataType.Size > 4)
+                {
+                    var tmp2 = frame.CreateTemporary(PrimitiveType.Word32);
+                    emitter.Assign(tmp2, emitter.LoadDw(tmp));
+                    emitter.Assign(reg, emitter.Dpb(reg, tmp2, 0));
+                }
+                else
+                {
+                    emitter.Assign(reg, emitter.LoadDw(tmp));
+                }
+                emitter.Assign(tmp, emitter.IAdd(tmp, emitter.Int32(4)));
+                ++r;
+            }
+        }
+
+
         private void RewriteLvewx()
         {
             var vrt = RewriteOperand(instr.op1);

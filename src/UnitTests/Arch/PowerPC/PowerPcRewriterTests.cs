@@ -1301,5 +1301,52 @@ namespace Reko.UnitTests.Arch.PowerPC
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|r3 = __read_msr()");
         }
+
+        [Test]
+        public void PPCRw_mtmsr()
+        {
+            AssertCode(0x7C600124, // mfmsr r3
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__write_msr(r3)");
+        }
+
+        [Test]
+        public void PPCrw_rfi()
+        {
+            AssertCode(0x4C000064, //  rfi
+                "0|T--|00100000(4): 2 instructions",
+                "1|L--|__write_msr(srr1)",
+                "2|T--|goto srr0");
+        }
+
+        [Test]
+        public void PPCrw_bgtlr()
+        {
+            AssertCode(0x4D9D0020, // bgtlrcr7
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (Test(GT,cr7)) return (0,0)");
+        }
+
+        [Test]
+        public void PPCrw_lmw()
+        {
+            AssertCode(0xBBA1000C, // lmwr29,12(r1)
+                "0|L--|00100000(4): 7 instructions",
+                "1|L--|v3 = r1 + 12",
+                "2|L--|r29 = Mem0[v3:word32]",
+                "3|L--|v3 = v3 + 0x00000004",
+                "4|L--|r30 = Mem0[v3:word32]",
+                "5|L--|v3 = v3 + 0x00000004",
+                "6|L--|r31 = Mem0[v3:word32]",
+                "7|L--|v3 = v3 + 0x00000004");
+        }
+
+        [Test]
+        public void PPCRw_mfspr()
+        {
+            AssertCode(0x7CB0E2A6, // mfspr 0000021C,r5
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r5 = __read_spr(0x0000021C)");
+        }
     }
 }
