@@ -204,6 +204,7 @@ namespace Reko.UnitTests.Core.Serialization
                         IntermediateFilename = "foo.cod",
                         User = new UserData
                         {
+                            Loader = "CustomLoader",
                             Procedures =
                             {
                                 {
@@ -363,6 +364,7 @@ namespace Reko.UnitTests.Core.Serialization
             loader.Stub(l => l.LoadExecutable(
                 Arg<string>.Matches(s => s.EndsWith(exeName)),
                 Arg<byte[]>.Is.NotNull,
+                Arg<string>.Is.Null,
                 Arg<Address>.Is.Null)).Return(program);
         }
 
@@ -385,6 +387,7 @@ namespace Reko.UnitTests.Core.Serialization
             loader.Stub(l => l.LoadExecutable(
                 Arg<string>.Matches(s => s.EndsWith(exeName)),
                 Arg<byte[]>.Is.NotNull,
+                Arg<string>.Is.Null,
                 Arg<Address>.Is.Null)).Return(program);
         }
 
@@ -502,7 +505,7 @@ namespace Reko.UnitTests.Core.Serialization
             loader.Stub(l => l.LoadImageBytes(null, 0))
                 .IgnoreArguments()
                 .Return(new byte[10]);
-            loader.Stub(l => l.LoadExecutable(null, null, null))
+            loader.Stub(l => l.LoadExecutable(null, null, null, null))
                 .IgnoreArguments()
                 .Return(new Program
                 {

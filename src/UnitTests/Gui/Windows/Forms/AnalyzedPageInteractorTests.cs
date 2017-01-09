@@ -77,7 +77,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             var bytes = new byte[4711];
             var arch = new X86ArchitectureFlat32();
             var mem = new MemoryArea(loadAddress, bytes);
-            Program prog = new Program
+            Program program = new Program
             {
                 SegmentMap = new SegmentMap(
                     mem.BaseAddress,
@@ -86,7 +86,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
                 Platform = platform,
             };
             ILoader ldr = mr.StrictMock<ILoader>();
-            ldr.Stub(l => l.LoadExecutable(null, null, null)).IgnoreArguments().Return(prog);
+            ldr.Stub(l => l.LoadExecutable(null, null, null, null)).IgnoreArguments().Return(program);
             ldr.Stub(l => l.LoadImageBytes(null, 0)).IgnoreArguments().Return(bytes);
             ldr.Replay();
             sc.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
@@ -94,7 +94,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             this.decSvc = new DecompilerService();
             decSvc.Decompiler = new DecompilerDriver(ldr, sc);
             decSvc.Decompiler.Load("test.exe");
-            program = decSvc.Decompiler.Project.Programs.First();
+            this.program = this.decSvc.Decompiler.Project.Programs.First();
             decSvc.Decompiler.ScanPrograms();
             sc.AddService(typeof(IDecompilerService), decSvc);
 

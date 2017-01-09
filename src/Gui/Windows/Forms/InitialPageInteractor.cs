@@ -118,6 +118,7 @@ namespace Reko.Gui.Windows.Forms
             return isOldProject;
         }
 
+        //$TODO: change signature to OpenAs(raw)
         public bool OpenBinaryAs(
             string file, 
             string arch,
@@ -133,17 +134,16 @@ namespace Reko.Gui.Windows.Forms
                 Program program;
                 if (raw != null)
                 {
-                   program = Decompiler.LoadRawImage(file, raw);
+                    program = Decompiler.LoadRawImage(file, raw);
+                    program.User.Loader = raw.Loader;
                 }
                 else
                 {
-                   program= Decompiler.LoadRawImage(file, arch, platform, addrBase);
+                   program= Decompiler.LoadRawImage(file, null, arch, platform, addrBase);
                 }
                 program.User.Processor = arch;
                 program.User.Environment = platform;
-                program.User.LoadAddress = program.ImageMap.BaseAddress; ;
-                svc.SetCaption("Scanning source program.");
-                Decompiler.ScanPrograms();
+                program.User.LoadAddress = program.ImageMap.BaseAddress;
             });
             var browserSvc = Services.RequireService<IProjectBrowserService>();
             browserSvc.Load(Decompiler.Project);
