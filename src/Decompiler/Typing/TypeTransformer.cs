@@ -40,8 +40,6 @@ namespace Reko.Typing
 		private TypeStore store;
         private Program program;
 		private Unifier unifier;
-		private DataTypeComparer comparer;
-		private TypeVariable tvCur;
         private DecompilerEventListener eventListener;
 
 		private static TraceSwitch trace = new TraceSwitch("TypeTransformer", "Traces the transformation of types");
@@ -59,7 +57,6 @@ namespace Reko.Typing
             this.program = program;
 			this.eventListener = eventListener;
 			this.unifier = new Unifier(factory);
-			this.comparer = new DataTypeComparer();
             this.visitedTypes = new HashSet<DataType>();
         }
 
@@ -254,7 +251,6 @@ namespace Reko.Typing
 				{
                     if (eventListener.IsCanceled())
                         return;
-                    tvCur = tv;
 					EquivalenceClass eq = tv.Class;
 					if (eq.DataType != null)
 					{
