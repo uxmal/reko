@@ -797,5 +797,12 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x7D2E4AEE, "lhaux\tr9,r14,r9");
             AssertCode(0x7D0301D4, "addme\tr8,r3");
         }
+
+        [Test]
+        public void PPCDis_regression6()
+        {
+            AssertCode(0x7C6000A6, "mfmsr\tr3");
+            AssertCode(0x7C7A03A6, "mtspr\t00000340,r3");
+        }
     }
 }

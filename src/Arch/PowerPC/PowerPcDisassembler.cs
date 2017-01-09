@@ -623,18 +623,24 @@ namespace Reko.Arch.PowerPC
 
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
-                var reg = dasm.RegFromBits(wInstr >> 21);
+                MachineOperand op1 = dasm.RegFromBits(wInstr >> 21);
+                MachineOperand op2 = null;
                 var spr = (wInstr >> 11) & 0x3FF;
                 Opcode opcode ;
                 switch (spr)
                 {
-                default: throw new NotImplementedException(string.Format("Unknown special register {0:X}.", spr));
                 case 0x0100: opcode = to ? Opcode.mtlr : Opcode.mflr; break;
                 case 0x0120: opcode = to ? Opcode.mtctr : Opcode.mfctr; break;
+                default:
+                    opcode = to ? Opcode.mtspr : Opcode.mfspr;
+                    op2 = op1;
+                    op1 = ImmediateOperand.UInt32(spr);
+                    break;
                 }
                 return new PowerPcInstruction(opcode)
                 {
-                    op1 = reg
+                    op1 = op1,
+                    op2 = op2
                 };
             }
         }
@@ -809,6 +815,7 @@ namespace Reko.Arch.PowerPC
                     { 0x03C, new DOpRec(Opcode.andc, ".r2,r1,r3")},
                     { 0x047, new DOpRec(Opcode.lvewx, "v1,r2,r3")},
                     { 0x04B, new DOpRec(Opcode.mulhw, ".r1,r2,r3")},
+                    { 0x053, new FpuOpRecAux(Opcode.mfmsr, "r1") },
                     { 0x057, new DOpRec(Opcode.lbzx, "r1,r2,r3") },
                     { 0x067, new DOpRec(Opcode.lvx, "v1,r2,r3") },
                     { 0x068, new DOpRec(Opcode.neg, "r1,r2") },
@@ -836,13 +843,13 @@ namespace Reko.Arch.PowerPC
                     { 0x19C, new DOpRec(Opcode.orc, ".r2,r1,r3") },
                     { 444, new DOpRec(Opcode.or, ".r2,r1,r3") },
                     { 459, new DOpRec(Opcode.divwu, ".r1,r2,r3") },
-                    { 467, new SprOpRec(true) },
                     { 0x1DC, new DOpRec(Opcode.nand, ".r2,r1,r3") },
 
                     { 0x153, new SprOpRec(false) },
                     { 0x173, new XfxOpRec(Opcode.mftb, "r1,X3") },
                     { 0x177, new DOpRec(Opcode.lhaux, "r1,r2,r3") },
                     { 0x197, new DOpRec(Opcode.sthx, "r1,r2,r3") },
+                    { 0x1D3, new SprOpRec(true) },
                     { 0x1EB, new DOpRec(Opcode.divw, ".r1,r2,r3")},
                     { 0x207, new DOpRec(Opcode.lvlx, "r1,r2,r3") },
                     { 0x216, new DOpRec(Opcode.lwbrx, "r1,r2,r3") },
