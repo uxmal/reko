@@ -21,7 +21,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -216,7 +216,6 @@
     <Environments Include="$(SolutionDir)Environments\ZX81\$(OutDir)Reko.Environments.ZX81.*" />
     <Libraries Include="$(SolutionDir)Libraries\Libc\$(OutDir)Reko.Libraries.Libc.*" />
     <Libraries Include="$(SolutionDir)Libraries\Python\$(OutDir)Reko.Libraries.Python.*" />
-    <ExternalComponents Include="$(SolutionDir)..\external\Capstone.NET\*.dll" />
     <ConfigurationFiles Include="$(SolutionDir)Drivers\reko.config" />
   </ItemGroup>
   <Target Name="BeforeBuild">

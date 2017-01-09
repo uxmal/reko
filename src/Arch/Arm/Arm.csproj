@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Reko.Arch.Arm</RootNamespace>
     <AssemblyName>Reko.Arch.Arm</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -68,9 +68,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Gee.External.Capstone">
-      <HintPath>..\..\..\external\Capstone.NET\Gee.External.Capstone.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="A64Registers.cs" />
@@ -95,6 +92,11 @@
     <Compile Include="ThumbRewriter.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\external\Capstone.NET\Gee.External.Capstone\Gee.External.Capstone.csproj">
+      <Project>{1297dcee-009d-4739-8124-3f064ea9ea10}</Project>
+      <Name>Gee.External.Capstone</Name>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{5C315C78-1F97-4B16-81AA-917284969DFE}</Project>
       <Name>Core</Name>
