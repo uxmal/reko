@@ -75,8 +75,8 @@ namespace Reko.Core
 
         /// <summary>
         /// Loads the image into memory at the specified address, using the 
-        /// provided IProcessorArchitectur and IPlatform. Not all image 
-        /// formats can support this.
+        /// provided IProcessorArchitecture and IPlatform. Used when loading
+        /// raw files; not all image loaders can support this.
         /// </summary>
         /// <param name="addrLoad"></param>
         /// <param name="arch"></param>
@@ -84,7 +84,10 @@ namespace Reko.Core
         /// <returns></returns>
         public virtual Program Load(Address addrLoad, IProcessorArchitecture arch, IPlatform platform)
         {
-            throw new NotSupportedException(string.Format("Image loader {0} doesn't support overriding the processor architecture or platform.", GetType().FullName));
+            throw new NotSupportedException(
+                string.Format(
+                    "Image loader {0} doesn't support overriding the processor architecture or platform.",
+                    GetType().FullName));
         }
 
         /// <summary>

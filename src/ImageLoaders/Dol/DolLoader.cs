@@ -31,6 +31,9 @@ namespace Reko.ImageLoaders.Dol
 {
 	/* Adapted from https://github.com/heinermann/ida-wii-loaders */
 	/* Format Reference: http://wiibrew.org/wiki/DOL */
+    /// <summary>
+    /// Image loader for Nintendo DOL file format.
+    /// </summary>
 	public class DolLoader : ImageLoader
     {
 		private FileHeader hdr;
@@ -47,12 +50,19 @@ namespace Reko.ImageLoaders.Dol
 			}
 		}
 
-		public override Program Load(Address addrLoad) {
+        public override Program Load(Address addrLoad)
+        {
+            var cfgSvc = Services.RequireService<IConfigurationService>();
+            var arch = cfgSvc.GetArchitecture("ppc");
+            var platform = new WiiPlatform(Services, arch);
+            return Load(addrLoad, arch, platform);
+        }
+
+        public override Program Load(Address addrLoad, IProcessorArchitecture arch, IPlatform platform)
+        {
 			BeImageReader rdr = new BeImageReader(this.RawImage, 0);
 			this.hdr = new FileHeader(rdr);
 
-			var cfgSvc = Services.RequireService<IConfigurationService>();
-			var arch = cfgSvc.GetArchitecture("ppc");
 
 			List<ImageSegment> segments = new List<ImageSegment>();
 			// add the code segment
@@ -91,7 +101,7 @@ namespace Reko.ImageLoaders.Dol
 			return new Program(
 				segmentMap,
 				arch,
-				new WiiPlatform(Services, arch)
+                platform
 			);
 		}
 
@@ -109,7 +119,6 @@ namespace Reko.ImageLoaders.Dol
 			public Address32 addressBSS;
 			public uint sizeBSS;
 			public Address32 entrypoint;
-
 
 			public FileHeader(BeImageReader rdr) {
 				uint uAddress;
@@ -129,13 +138,13 @@ namespace Reko.ImageLoaders.Dol
 					result = rdr.TryReadUInt32(out uAddress);
 					if (!result)
 						goto fail;
-					addressText[i] = new Address32(uAddress);
+					addressText[i] = Address.Ptr32(uAddress);
 				}
 				for (uint i = 0; i < 11; i++) {
 					result = rdr.TryReadUInt32(out uAddress);
 					if (!result)
 						goto fail;
-					addressData[i] = new Address32(uAddress);
+					addressData[i] = Address.Ptr32(uAddress);
 				}
 				for (uint i = 0; i < 7; i++) {
 					result = rdr.TryReadUInt32(out sizeText[i]);
@@ -151,7 +160,7 @@ namespace Reko.ImageLoaders.Dol
 				result = rdr.TryReadUInt32(out uAddress);
 				if (!result)
 					goto fail;
-				this.addressBSS = new Address32(uAddress);
+				this.addressBSS = Address.Ptr32(uAddress);
 
 				result = rdr.TryReadUInt32(out sizeBSS);
 				if (!result)
@@ -160,7 +169,8 @@ namespace Reko.ImageLoaders.Dol
 				result = rdr.TryReadUInt32(out uAddress);
 				if (!result)
 					goto fail;
-				this.entrypoint = new Address32(uAddress);
+				this.entrypoint = Address.Ptr32(uAddress);
+                return;
 
 				fail:
 				throw new BadImageFormatException("Invalid DOL header.");
