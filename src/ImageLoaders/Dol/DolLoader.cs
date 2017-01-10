@@ -50,7 +50,7 @@ namespace Reko.ImageLoaders.Dol
 		public UInt32 entrypoint;
 	}
 
-	public class DolHeader {
+	public unsafe class DolHeader {
 		public UInt32[] offsetText = new UInt32[7];
 		public UInt32[] offsetData = new UInt32[11];
 		public Address32[] addressText = new Address32[7];
@@ -76,91 +76,91 @@ namespace Reko.ImageLoaders.Dol
 			this.addressBSS = new Address32(hdr.addressBSS);
 			this.entrypoint = new Address32(hdr.entrypoint);
 		}
+	}
 
-		/* Adapted from https://github.com/heinermann/ida-wii-loaders */
-		/* Format Reference: http://wiibrew.org/wiki/DOL */
-		/// <summary>
-		/// Image loader for Nintendo DOL file format.
-		/// </summary>
-		public class DolLoader : ImageLoader {
-			private DolHeader hdr;
+	/* Adapted from https://github.com/heinermann/ida-wii-loaders */
+	/* Format Reference: http://wiibrew.org/wiki/DOL */
+	/// <summary>
+	/// Image loader for Nintendo DOL file format.
+	/// </summary>
+	public class DolLoader : ImageLoader {
+		private DolHeader hdr;
 
-			public DolLoader(IServiceProvider services, string filename, byte[] imgRaw) : base(services, filename, imgRaw) {
+		public DolLoader(IServiceProvider services, string filename, byte[] imgRaw) : base(services, filename, imgRaw) {
+		}
+
+		public override Address PreferredBaseAddress {
+			get {
+				return this.hdr.entrypoint;
 			}
-
-			public override Address PreferredBaseAddress {
-				get {
-					return this.hdr.entrypoint;
-				}
-				set {
-					throw new NotImplementedException();
-				}
-			}
-
-			public override Program Load(Address addrLoad) {
-				var cfgSvc = Services.RequireService<IConfigurationService>();
-				var arch = cfgSvc.GetArchitecture("ppc");
-				var platform = new WiiPlatform(Services, arch);
-				return Load(addrLoad, arch, platform);
-			}
-
-			public override Program Load(Address addrLoad, IProcessorArchitecture arch, IPlatform platform) {
-				BeImageReader rdr = new BeImageReader(this.RawImage, 0);
-				try {
-					this.hdr = new DolHeader(new StructureReader<DolStructure>(rdr).Read());
-				} catch (Exception ex) {
-					throw new BadImageFormatException("Invalid DOL header. " + ex.Message);
-				}
-
-				var segments = new List<ImageSegment>();
-
-				// Create code segments
-				for (uint i = 0, snum = 1; i < 7; i++, snum++) {
-					if (hdr.addressText[i] == Address32.NULL)
-						continue;
-
-					segments.Add(new ImageSegment(
-						string.Format("Text{0}", snum),
-						hdr.addressText[i], hdr.sizeText[i],
-						AccessMode.ReadExecute
-					));
-				}
-
-				// Create all data segments
-				for (uint i = 0, snum = 1; i < 11; i++, snum++) {
-					if (hdr.addressData[i] == Address32.NULL)
-						continue;
-					segments.Add(new ImageSegment(
-						string.Format("Data{0}", snum),
-						hdr.addressData[i], hdr.sizeData[i],
-						AccessMode.ReadWrite
-					));
-				}
-
-				if (hdr.addressBSS != Address32.NULL) {
-					segments.Add(new ImageSegment(
-						".bss",
-						hdr.addressBSS, hdr.sizeBSS,
-						AccessMode.ReadWrite
-					));
-				}
-
-				var segmentMap = new SegmentMap(addrLoad, segments.ToArray());
-
-				var entryPoint = new ImageSymbol(this.hdr.entrypoint) { Type = SymbolType.Procedure };
-				var program = new Program(
-					segmentMap,
-					arch,
-					platform) {
-					ImageSymbols = { { this.hdr.entrypoint, entryPoint } },
-					EntryPoints = { { this.hdr.entrypoint, entryPoint } }
-				};
-				return program;
-			}
-
-			public override RelocationResults Relocate(Program program, Address addrLoad) {
+			set {
 				throw new NotImplementedException();
 			}
+		}
+
+		public override Program Load(Address addrLoad) {
+			var cfgSvc = Services.RequireService<IConfigurationService>();
+			var arch = cfgSvc.GetArchitecture("ppc");
+			var platform = new WiiPlatform(Services, arch);
+			return Load(addrLoad, arch, platform);
+		}
+
+		public override Program Load(Address addrLoad, IProcessorArchitecture arch, IPlatform platform) {
+			BeImageReader rdr = new BeImageReader(this.RawImage, 0);
+			try {
+				this.hdr = new DolHeader(new StructureReader<DolStructure>(rdr).Read());
+			} catch (Exception ex) {
+				throw new BadImageFormatException("Invalid DOL header. " + ex.Message);
+			}
+
+			var segments = new List<ImageSegment>();
+
+			// Create code segments
+			for (uint i = 0, snum = 1; i < 7; i++, snum++) {
+				if (hdr.addressText[i] == Address32.NULL)
+					continue;
+
+				segments.Add(new ImageSegment(
+					string.Format("Text{0}", snum),
+					hdr.addressText[i], hdr.sizeText[i],
+					AccessMode.ReadExecute
+				));
+			}
+
+			// Create all data segments
+			for (uint i = 0, snum = 1; i < 11; i++, snum++) {
+				if (hdr.addressData[i] == Address32.NULL)
+					continue;
+				segments.Add(new ImageSegment(
+					string.Format("Data{0}", snum),
+					hdr.addressData[i], hdr.sizeData[i],
+					AccessMode.ReadWrite
+				));
+			}
+
+			if (hdr.addressBSS != Address32.NULL) {
+				segments.Add(new ImageSegment(
+					".bss",
+					hdr.addressBSS, hdr.sizeBSS,
+					AccessMode.ReadWrite
+				));
+			}
+
+			var segmentMap = new SegmentMap(addrLoad, segments.ToArray());
+
+			var entryPoint = new ImageSymbol(this.hdr.entrypoint) { Type = SymbolType.Procedure };
+			var program = new Program(
+				segmentMap,
+				arch,
+				platform) {
+				ImageSymbols = { { this.hdr.entrypoint, entryPoint } },
+				EntryPoints = { { this.hdr.entrypoint, entryPoint } }
+			};
+			return program;
+		}
+
+		public override RelocationResults Relocate(Program program, Address addrLoad) {
+			throw new NotImplementedException();
 		}
 	}
 }

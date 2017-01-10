@@ -73,20 +73,44 @@ namespace Reko.Core
             return ((FieldAttribute)attrs[0]).Align; 
         }
 
+		private int FieldSize(FieldInfo field) {
+			if (field.FieldType.IsArray) {
+				MarshalAsAttribute attr = (MarshalAsAttribute)field.GetCustomAttribute(typeof(MarshalAsAttribute), false);
+				return Marshal.SizeOf(field.FieldType.GetElementType()) * attr.SizeConst;
+			} else {
+				return Marshal.SizeOf(field.FieldType);
+			}
+		}
+
+		private void SwapEndian(byte[] data, Type type, FieldInfo field) {
+			int offset = Marshal.OffsetOf(type, field.Name).ToInt32();
+			if (field.FieldType.IsArray) {
+				MarshalAsAttribute attr = (MarshalAsAttribute)field.GetCustomAttribute(typeof(MarshalAsAttribute), false);
+				int subSize = Marshal.SizeOf(field.FieldType.GetElementType());
+				for(int i=0; i<attr.SizeConst; i++) {
+					Array.Reverse(data, offset + (i * subSize), subSize);
+				}
+			} else {
+				Array.Reverse(data, offset, FieldSize(field));
+			}
+		}
+
 		/* Adapted from http://stackoverflow.com/a/2624377 */
 		private void RespectEndianness(Type type, byte[] data) {
-			var fields = type.GetFields().Where(f => f.IsDefined(typeof(EndianAttribute), false))
-				.Select(f => new {
-					Field = f,
-					Attribute = (EndianAttribute)f.GetCustomAttributes(typeof(EndianAttribute), false)[0],
-					Offset = Marshal.OffsetOf(type, f.Name).ToInt32()
-				}).ToList();
-
-			foreach (var field in fields) {
-				if (
-					((field.Attribute.Endianness == Endianness.BigEndian || this.defaultEndianess == Endianness.BigEndian)	&& BitConverter.IsLittleEndian) ||
-					((field.Attribute.Endianness == Endianness.LittleEndian || this.defaultEndianess == Endianness.LittleEndian) && !BitConverter.IsLittleEndian)) {
-					Array.Reverse(data, field.Offset, Marshal.SizeOf(field.Field.FieldType));
+			foreach (var field in type.GetFields()) {
+				if (field.IsDefined(typeof(EndianAttribute), false)) {
+					Endianness fieldEndianess = ((EndianAttribute)field.GetCustomAttributes(typeof(EndianAttribute), false)[0]).Endianness;
+					if (
+						(fieldEndianess == Endianness.BigEndian && BitConverter.IsLittleEndian) ||
+						(fieldEndianess == Endianness.LittleEndian && !BitConverter.IsLittleEndian)
+					) {
+						SwapEndian(data, type, field);
+					}
+				} else if (
+					(this.defaultEndianess == Endianness.BigEndian && BitConverter.IsLittleEndian) ||
+					(this.defaultEndianess == Endianness.LittleEndian && !BitConverter.IsLittleEndian)
+				) {
+					SwapEndian(data, type, field);
 				}
 			}
 		}
