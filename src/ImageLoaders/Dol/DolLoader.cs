@@ -50,7 +50,7 @@ namespace Reko.ImageLoaders.Dol
 		public UInt32 entrypoint;
 	}
 
-	public unsafe class DolHeader {
+	public class DolHeader {
 		public UInt32[] offsetText = new UInt32[7];
 		public UInt32[] offsetData = new UInt32[11];
 		public Address32[] addressText = new Address32[7];
