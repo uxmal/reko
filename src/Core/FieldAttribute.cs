@@ -84,7 +84,8 @@ namespace Reko.Core
         }
     }
 
-    [AttributeUsage(AttributeTargets.Field)]
+#if false
+	[AttributeUsage(AttributeTargets.Field)]
     public class PointerFieldAttribute : FieldAttribute
     {
         public int Size;
@@ -144,4 +145,5 @@ namespace Reko.Core
             throw new NotImplementedException();
         }
     }
+#endif
 }
