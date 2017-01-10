@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Reko.Core {
 	/* http://stackoverflow.com/a/2624377 */
-	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Struct | AttributeTargets.Class, Inherited = true)]
+	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Struct, Inherited = true)]
 	public class EndianAttribute : Attribute {
 		public Endianness Endianness { get; private set; }
 
