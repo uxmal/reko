@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Core
         [Test]
         public void Sr_ReadLeUInt16_Field()
         {
-            var rdr = new LeImageReader(new byte[] { 0x34, 0x12 }, 0);
+            var rdr = new LeImageReader(new byte[] { 0x34, 0x12 });
 			var test = new StructureReader<TestStruct>(rdr).Read();
 			Assert.AreEqual((ushort) 0x1234, test.usField);
         }
@@ -54,7 +54,7 @@ namespace Reko.UnitTests.Core
         [Test]
         public void Sr_ReadLeInt32_Field()
         {
-            var rdr = new LeImageReader(new byte[] { 0x34, 0x12, 0xAB, 0xCD, 0x78, 0x56, 0x34, 0x12 }, 0);
+            var rdr = new LeImageReader(new byte[] { 0x34, 0x12, 0xAB, 0xCD, 0x78, 0x56, 0x34, 0x12 });
 			var test = new StructureReader<TestStruct2>(rdr).Read();
             Assert.AreEqual((int) 0x12345678, test.lField);
         }
@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Core
             var rdr = new LeImageReader(new byte[] { 
                 0x34, 0x12,
                 0xAB, 0xCD, 
-                0x78, 0x56, 0x34, 0x12 }, 0);
+                0x78, 0x56, 0x34, 0x12 });
 			var test = new StructureReader<TestStruct3>(rdr).Read();
             Assert.AreEqual((int) 0x12345678, test.lField);
         }
@@ -90,11 +90,12 @@ namespace Reko.UnitTests.Core
         [Test]
         public void Sr_ReadLeInt32_String()
         {
-            var rdr = new LeImageReader(new byte[] { 
+            var rdr = new ImageReader(new byte[] { 
                 0x34, 0x12, 
                 0xAB, 0xCD,
                 0x48, 0x69, 0x00,
                 0x42, 0x79, 0x65, 0x21, 0x00});
+
 			var test = new StructureReader<TestStruct4>(rdr).Read();
             Assert.AreEqual("Hi", test.sField04);
             Assert.AreEqual("Bye!", test.sFieldnn);
