@@ -34,7 +34,7 @@ namespace Reko.Core.Output
     public class GlobalDataWriter : IDataTypeVisitor<CodeFormatter>
     {
         private Program program;
-        private ImageReader rdr;
+        private EndianImageReader rdr;
         private CodeFormatter codeFormatter;
         private StructureType globals;
         private IServiceProvider services;

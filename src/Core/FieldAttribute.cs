@@ -32,7 +32,7 @@ namespace Reko.Core
     {
         public int Align = 1;
 
-        private static Dictionary<Type, Func<ImageReader, object>> readers = new Dictionary<Type,Func<ImageReader,object>>
+        private static Dictionary<Type, Func<EndianImageReader, object>> readers = new Dictionary<Type,Func<EndianImageReader, object>>
         {
             { typeof(ushort), r => r.ReadUInt16() },
             { typeof(uint), r => r.ReadUInt32() },
@@ -40,9 +40,9 @@ namespace Reko.Core
             { typeof(int), r => r.ReadInt32() },
         };
                 
-        public virtual object ReadValue(System.Reflection.FieldInfo f, ImageReader rdr, ReaderContext ctx)
+        public virtual object ReadValue(System.Reflection.FieldInfo f, EndianImageReader rdr, ReaderContext ctx)
         {
-            Func<ImageReader, object> fn;
+            Func<EndianImageReader, object> fn;
             if (readers.TryGetValue(f.FieldType, out fn))
             {
                 return fn(rdr);
@@ -72,7 +72,7 @@ namespace Reko.Core
     {
         public bool NullTerminated;
 
-        public override object ReadValue(FieldInfo f, ImageReader rdr, ReaderContext ctx)
+        public override object ReadValue(FieldInfo f, EndianImageReader rdr, ReaderContext ctx)
         {
             int i = 0;
             for (; rdr.PeekByte(i) != 0; ++i)

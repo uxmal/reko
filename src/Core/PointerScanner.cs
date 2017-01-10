@@ -36,11 +36,11 @@ namespace Reko.Core
     /// </remarks>
     public abstract class PointerScanner<T> : IEnumerable<T>
     {
-        private ImageReader rdr;
+        private EndianImageReader rdr;
         private HashSet<T> knownLinAddresses;
         private PointerScannerFlags flags;
 
-        public PointerScanner(ImageReader rdr, HashSet<T> knownLinAddresses, PointerScannerFlags flags)
+        public PointerScanner(EndianImageReader rdr, HashSet<T> knownLinAddresses, PointerScannerFlags flags)
         {
             this.rdr = rdr;
             this.knownLinAddresses = knownLinAddresses;

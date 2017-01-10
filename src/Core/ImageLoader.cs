@@ -29,7 +29,7 @@ namespace Reko.Core
     /// generate a Program after carrying out relocations, resolving external
     /// symbols etc.
 	/// </summary>
-	public class ImageLoader
+	public abstract class ImageLoader
 	{
         public ImageLoader(IServiceProvider services, string filename, byte[] imgRaw)
         {
