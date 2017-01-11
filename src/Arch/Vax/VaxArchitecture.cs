@@ -66,22 +66,22 @@ namespace Reko.Arch.Vax
             this.PointerType = PrimitiveType.Pointer32;
         }
 
-        public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
+        public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
             return new VaxDisassembler(this, imageReader);
         }
 
-        public override ImageReader CreateImageReader(MemoryArea img, ulong off)
+        public override EndianImageReader CreateImageReader(MemoryArea img, ulong off)
         {
             return new LeImageReader(img, off);
         }
 
-        public override ImageReader CreateImageReader(MemoryArea img, Address addr)
+        public override EndianImageReader CreateImageReader(MemoryArea img, Address addr)
         {
             return new LeImageReader(img, addr);
         }
 
-        public override ImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
+        public override EndianImageReader CreateImageReader(MemoryArea img, Address addrBegin, Address addrEnd)
         {
             return new LeImageReader(img, addrBegin, addrEnd);
         }
@@ -101,7 +101,7 @@ namespace Reko.Arch.Vax
             throw new NotImplementedException();
         }
 
-        public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
         }
@@ -111,7 +111,7 @@ namespace Reko.Arch.Vax
             return new VaxProcessorState(this);
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             return new VaxRewriter(this, rdr, state, frame, host);
         }
@@ -185,7 +185,7 @@ namespace Reko.Arch.Vax
             return Address.Ptr32(c.ToUInt32());
         }
 
-        public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
         }

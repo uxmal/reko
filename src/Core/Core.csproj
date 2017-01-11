@@ -230,6 +230,7 @@
     <Compile Include="Expressions\TestCondition.cs" />
     <Compile Include="Expressions\UnaryExpression.cs" />
     <Compile Include="FieldAttribute.cs" />
+    <Compile Include="ImageReader.cs" />
     <Compile Include="ImageSymbol.cs" />
     <Compile Include="Analysis\IVarargsFormatParser.cs" />
     <Compile Include="Lib\PatternCollector.cs" />
@@ -415,9 +416,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ImageMapVectorTable.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ImageReader.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ImageWriter.cs" />

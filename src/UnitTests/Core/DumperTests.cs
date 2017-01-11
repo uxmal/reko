@@ -70,7 +70,7 @@ namespace Reko.UnitTests.Core
                 new Func<Frame>(
                     () => new Frame(PrimitiveType.Pointer32)));
             arch.Stub(a => a.CreateImageReader(null, null)).IgnoreArguments()
-                .Do(new Func<MemoryArea, Address, ImageReader>(
+                .Do(new Func<MemoryArea, Address, EndianImageReader>(
                     (m, a) => new LeImageReader(m, a)));
             arch.Stub(a => a.CreateDisassembler(null)).IgnoreArguments()
                 .Return(new[]

@@ -56,7 +56,7 @@ namespace Reko.ImageLoaders.MzExe.Pe
             return ReadResourceDirectory(rdr);
         }
 
-        public List<ProgramResource> ReadResourceDirectory(ImageReader rdr)
+        public List<ProgramResource> ReadResourceDirectory(EndianImageReader rdr)
         {
             const uint DIR_MASK = 0x80000000;
             var flags = rdr.ReadUInt32();
@@ -100,7 +100,7 @@ namespace Reko.ImageLoaders.MzExe.Pe
             return entries;
         }
 
-        public List<ProgramResource> ReadNameDirectory(ImageReader rdr, uint resourceType)
+        public List<ProgramResource> ReadNameDirectory(EndianImageReader rdr, uint resourceType)
         {
             const uint DIR_MASK = 0x80000000;
             var flags = rdr.ReadUInt32();
@@ -140,7 +140,7 @@ namespace Reko.ImageLoaders.MzExe.Pe
             return entries;
         }
 
-        public List<ProgramResource> ReadLanguageDirectory(ImageReader rdr, uint resourceType, string resourceId)
+        public List<ProgramResource> ReadLanguageDirectory(EndianImageReader rdr, uint resourceType, string resourceId)
         {
             const uint DIR_MASK = 0x80000000;
             var flags = rdr.ReadUInt32();
@@ -170,7 +170,7 @@ namespace Reko.ImageLoaders.MzExe.Pe
             return entries;
         }
 
-        public ProgramResourceInstance ReadResourceEntry(ImageReader rdr, string resourceId, string langId, uint resourceType)
+        public ProgramResourceInstance ReadResourceEntry(EndianImageReader rdr, string resourceId, string langId, uint resourceType)
         {
             var rvaData = rdr.ReadUInt32();
             var size = rdr.ReadUInt32();

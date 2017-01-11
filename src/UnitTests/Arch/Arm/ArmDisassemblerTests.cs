@@ -39,7 +39,7 @@ namespace Reko.UnitTests.Arch.Arm
             return dasm.First();
         }
 
-        protected virtual IEnumerator<MachineInstruction> CreateDisassembler(IProcessorArchitecture arch, ImageReader rdr)
+        protected virtual IEnumerator<MachineInstruction> CreateDisassembler(IProcessorArchitecture arch, EndianImageReader rdr)
         {
             return arch.CreateDisassembler(rdr).GetEnumerator();
         }

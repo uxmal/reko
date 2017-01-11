@@ -350,7 +350,7 @@ namespace Reko.UnitTests.Analysis
                          StackDelta = 4,
                      }));
             platform.Stub(p => p.GetTrampolineDestination(
-                Arg<ImageReader>.Is.NotNull,
+                Arg<EndianImageReader>.Is.NotNull,
                 Arg<IRewriterHost>.Is.NotNull))
                 .Return(null);
 

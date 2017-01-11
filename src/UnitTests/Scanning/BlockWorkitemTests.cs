@@ -150,7 +150,7 @@ namespace Reko.UnitTests.Scanning
             {
                 arch.Stub(x => x.PointerType).Return(PrimitiveType.Pointer32);
                 arch.Stub(x => x.CreateRewriter(
-                    Arg<ImageReader>.Is.Anything,
+                    Arg<EndianImageReader>.Is.Anything,
                     Arg<ProcessorState>.Is.Anything,
                     Arg<Frame>.Is.Anything,
                     Arg<IRewriterHost>.Is.Anything)).Return(trace);
@@ -190,7 +190,7 @@ namespace Reko.UnitTests.Scanning
             {
                 arch.Stub(a => a.FramePointerType).Return(PrimitiveType.Pointer32);
                 arch.Stub(x => x.CreateRewriter(
-                    Arg<ImageReader>.Is.Anything,
+                    Arg<EndianImageReader>.Is.Anything,
                     Arg<ProcessorState>.Is.Anything,
                     Arg<Frame>.Is.Anything,
                     Arg<IRewriterHost>.Is.Anything)).Return(trace);
@@ -228,7 +228,7 @@ namespace Reko.UnitTests.Scanning
             using (mr.Record())
             {
                 arch.Stub(x => x.CreateRewriter(
-                    Arg<ImageReader>.Is.Anything,
+                    Arg<EndianImageReader>.Is.Anything,
                     Arg<ProcessorState>.Is.Anything,
                     Arg<Frame>.Is.Anything,
                     Arg<IRewriterHost>.Is.Anything)).Return(trace);

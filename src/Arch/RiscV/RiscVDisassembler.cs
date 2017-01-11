@@ -38,10 +38,10 @@ namespace Reko.Arch.RiscV
         private static OpRec[] compressed2;
 
         private RiscVArchitecture arch;
-        private ImageReader rdr;
+        private EndianImageReader rdr;
         private Address addrInstr;
 
-        public RiscVDisassembler(RiscVArchitecture arch, ImageReader rdr)
+        public RiscVDisassembler(RiscVArchitecture arch, EndianImageReader rdr)
         {
             this.arch = arch;
             this.rdr = rdr;

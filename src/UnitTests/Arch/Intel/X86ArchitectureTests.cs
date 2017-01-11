@@ -189,12 +189,12 @@ namespace Reko.UnitTests.Arch.Intel
 			Assert.IsNull(arch.GetRegister("NonExistingRegisterName"));
 		}
 
-        private ImageReader CreateImageReader(params byte[] bytes)
+        private EndianImageReader CreateImageReader(params byte[] bytes)
         {
             return new LeImageReader(bytes, 0);
         }
 
-        private ImageReader CreateImageReader(Address address, params byte[] bytes)
+        private EndianImageReader CreateImageReader(Address address, params byte[] bytes)
         {
             return new LeImageReader(new MemoryArea(address, bytes), 0);
         }

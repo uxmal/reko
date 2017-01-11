@@ -86,7 +86,7 @@ namespace Reko.Environments.RT11
             throw new NotImplementedException();
         }
 
-        public override ProcedureBase GetTrampolineDestination(ImageReader imageReader, IRewriterHost host)
+        public override ProcedureBase GetTrampolineDestination(EndianImageReader imageReader, IRewriterHost host)
         {
             return null;
         }

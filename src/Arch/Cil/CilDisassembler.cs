@@ -30,10 +30,10 @@ namespace Reko.Arch.Cil
 {
     public class CilDisassembler : DisassemblerBase<CilInstruction>
     {
-        private ImageReader rdr;
+        private EndianImageReader rdr;
         private CilInstruction instr;
 
-        public CilDisassembler(ImageReader rdr)
+        public CilDisassembler(EndianImageReader rdr)
         {
             this.rdr = rdr;
         }

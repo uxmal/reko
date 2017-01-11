@@ -44,22 +44,22 @@ namespace Reko.Arch.Mos6502
             WordWidth = PrimitiveType.Byte;       // 8-bit, baby!
         }
 
-        public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader imageReader)
+        public override IEnumerable<MachineInstruction> CreateDisassembler(EndianImageReader imageReader)
         {
             return new Disassembler(imageReader.Clone());
         }
 
-        public override ImageReader CreateImageReader(MemoryArea image, Address addr)
+        public override EndianImageReader CreateImageReader(MemoryArea image, Address addr)
         {
             return new LeImageReader(image, addr);
         }
 
-        public override ImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
+        public override EndianImageReader CreateImageReader(MemoryArea image, Address addrBegin, Address addrEnd)
         {
             return new LeImageReader(image, addrBegin, addrEnd);
         }
 
-        public override ImageReader CreateImageReader(MemoryArea image, ulong offset)
+        public override EndianImageReader CreateImageReader(MemoryArea image, ulong offset)
         {
             return new LeImageReader(image, offset);
         }
@@ -84,12 +84,12 @@ namespace Reko.Arch.Mos6502
             return new Mos6502ProcessorState(this);
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(EndianImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             return new Rewriter(this, rdr.Clone(), state, frame, host);
         }
 
-        public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
+        public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, EndianImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
         {
             throw new NotImplementedException();
         }
@@ -156,7 +156,7 @@ namespace Reko.Arch.Mos6502
             return Address.Ptr16(c.ToUInt16());
         }
 
-        public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
+        public override Address ReadCodeAddress(int size, EndianImageReader rdr, ProcessorState state)
         {
             throw new NotImplementedException();
         }

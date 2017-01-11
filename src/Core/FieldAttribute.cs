@@ -90,12 +90,12 @@ namespace Reko.Core
     {
         public int Size;
 
-        public override object ReadValue(FieldInfo f, ImageReader rdr, ReaderContext ctx)
+        public override object ReadValue(FieldInfo f, EndianImageReader rdr, ReaderContext ctx)
         {
             return ReadPointer(f.FieldType, Size, rdr, ctx);
         }
 
-        public static object ReadPointer(Type pointerType, int size, ImageReader rdr, ReaderContext ctx)
+        public static object ReadPointer(Type pointerType, int size, EndianImageReader rdr, ReaderContext ctx)
         {
             Debug.Print("Reading pointer at offset {0}, size {1}", rdr.Offset, size);
             uint newOffset;
@@ -124,7 +124,7 @@ namespace Reko.Core
         public int Length;
         public int PointerElementSize;
 
-        public override object ReadValue(FieldInfo f, ImageReader rdr, ReaderContext ctx)
+        public override object ReadValue(FieldInfo f, EndianImageReader rdr, ReaderContext ctx)
         {
             var elemType = f.FieldType.GetElementType(); 
             if (Length > 0)

@@ -176,7 +176,7 @@ namespace Reko.Arch.M68k
             }
         }
 
-        private static bool TryGetImmediate(ImageReader rdr, PrimitiveType type, out MachineOperand op)
+        private static M68kImmediateOperand GetImmediate(EndianImageReader rdr, PrimitiveType type)
         {
             if (type.Size == 1)
             {
@@ -194,7 +194,7 @@ namespace Reko.Arch.M68k
             }
         }
 
-        public bool TryParseOperand(ushort opcode, int bitOffset, PrimitiveType dataWidth, ImageReader rdr, out MachineOperand op)
+        public MachineOperand ParseOperand(ushort opcode, int bitOffset, PrimitiveType dataWidth, EndianImageReader rdr)
         {
             opcode >>= bitOffset;
             byte operandBits = (byte) (opcode & 7);
@@ -202,7 +202,7 @@ namespace Reko.Arch.M68k
             return TryParseOperandInner(addressMode, operandBits, dataWidth, rdr, out op);
         }
 
-        private bool TryParseSwappedOperand(ushort opcode, int bitOffset, PrimitiveType dataWidth, ImageReader rdr, out MachineOperand op)
+        private MachineOperand ParseSwappedOperand(ushort opcode, int bitOffset, PrimitiveType dataWidth, EndianImageReader rdr)
         {
             opcode >>= bitOffset;
             byte addressMode = (byte) (opcode & 7);
@@ -233,7 +233,7 @@ namespace Reko.Arch.M68k
             }
         }
 
-        private bool TryParseOperandInner(byte addressMode, byte operandBits, PrimitiveType dataWidth, ImageReader rdr, out MachineOperand op)
+        private MachineOperand ParseOperandInner(byte addressMode, byte operandBits, PrimitiveType dataWidth, EndianImageReader rdr)
         {
             Constant offset;
             switch (addressMode)
@@ -368,7 +368,7 @@ namespace Reko.Arch.M68k
             }
         }
 
-        private bool TryAddressRegisterIndirectWithIndex(PrimitiveType dataWidth, ImageReader rdr, out MachineOperand op)
+        private bool TryAddressRegisterIndirectWithIndex(PrimitiveType dataWidth, EndianImageReader rdr, out MachineOperand op)
         {
             ushort extension;
             if (!rdr.TryReadBeUInt16(out extension))

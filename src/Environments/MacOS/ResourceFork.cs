@@ -331,7 +331,7 @@ namespace Reko.Environments.MacOS
         private void ProcessJumpTable(uint jtOffset)
         {
             var j = new JumpTable();
-            ImageReader ir = new BeImageReader(image, jtOffset);
+            EndianImageReader ir = new BeImageReader(image, jtOffset);
             j.AboveA5Size = ir.ReadBeUInt32();
             j.BelowA5Size = ir.ReadBeUInt32();
             j.JumpTableSize = ir.ReadBeUInt32();

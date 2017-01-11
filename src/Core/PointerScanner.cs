@@ -57,9 +57,9 @@ namespace Reko.Core
         private class Enumerator : IEnumerator<T>
         {
             private PointerScanner<T> scanner;
-            private ImageReader r;
+            private EndianImageReader r;
 
-            public Enumerator(PointerScanner<T> scanner, ImageReader rdr)
+            public Enumerator(PointerScanner<T> scanner, EndianImageReader rdr)
             {
                 this.scanner = scanner;
                 this.r = rdr;
@@ -92,7 +92,7 @@ namespace Reko.Core
             public void Dispose() { }
         }
 
-        public virtual bool ProbeForPointer(ImageReader rdr, out T linAddrInstr)
+        public virtual bool ProbeForPointer(EndianImageReader rdr, out T linAddrInstr)
         {
             linAddrInstr = GetLinearAddress(rdr.Address);
             T target;
@@ -140,12 +140,12 @@ namespace Reko.Core
         /// fit comfortably in a System.UInt32.</remarks>
         /// <param name="rdr"></param>
         /// <returns>The opcode at the current position of the reader.</returns>
-        public abstract bool TryPeekOpcode(ImageReader rdr, out uint opcode);
+        public abstract bool TryPeekOpcode(EndianImageReader rdr, out uint opcode);
 
-        public abstract bool TryPeekPointer(ImageReader rdr, out T target);
+        public abstract bool TryPeekPointer(EndianImageReader rdr, out T target);
 
-        public abstract bool MatchCall(ImageReader rdr, uint opcode, out T target);
+        public abstract bool MatchCall(EndianImageReader rdr, uint opcode, out T target);
 
-        public abstract bool MatchJump(ImageReader rdr, uint opcode, out T target);
+        public abstract bool MatchJump(EndianImageReader rdr, uint opcode, out T target);
     }
 }

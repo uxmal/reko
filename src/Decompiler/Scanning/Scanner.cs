@@ -75,7 +75,7 @@ namespace Reko.Scanning
         Block FindExactBlock(Address addr);
         Block SplitBlock(Block block, Address addr);
 
-        ImageReader CreateReader(Address addr);
+        EndianImageReader CreateReader(Address addr);
 
         Block CreateCallRetThunk(Address addrFrom, Procedure procOld, Procedure procNew);
         void SetProcedureReturnAddressBytes(Procedure proc, int returnAddressBytes, Address address);
@@ -227,7 +227,7 @@ namespace Reko.Scanning
             eventListener.Error(eventListener.CreateAddressNavigator(program, addr), message);
         }
 
-        public ImageReader CreateReader(Address addr)
+        public EndianImageReader CreateReader(Address addr)
         {
             return program.CreateImageReader(addr);
         }
