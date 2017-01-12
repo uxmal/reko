@@ -45,8 +45,7 @@ namespace Reko
         Project Project { get; }
 
         bool Load(string fileName, string loader=null);
-        Program LoadRawImage(string file, RawFileElement raw);
-        Program LoadRawImage(string fileName, string loader, string arch, string platform, Address addrBase);
+        Program LoadRawImage(string file, LoadDetails raw);
         void ScanPrograms();
         ProcedureBase ScanProcedure(ProgramAddress paddr);
         void AnalyzeDataFlow();
@@ -269,17 +268,8 @@ namespace Reko
         /// <param name="fileName"></param>
         /// <param name="arch"></param>
         /// <param name="platform"></param>
-        public Program LoadRawImage(string fileName, string loaderName, string arch, string platform, Address addrBase)
-        {
-            eventListener.ShowStatus("Loading raw bytes.");
-            byte[] image = loader.LoadImageBytes(fileName, 0);
-            var program = loader.LoadRawImage(fileName, image, loaderName, arch, platform, addrBase);
-            Project = CreateDefaultProject(fileName, program);
-            eventListener.ShowStatus("Raw bytes loaded.");
-            return program;
-        }
 
-        public Program LoadRawImage(string fileName, RawFileElement raw)
+        public Program LoadRawImage(string fileName, LoadDetails raw)
         {
             eventListener.ShowStatus("Loading raw bytes.");
             byte[] image = loader.LoadImageBytes(fileName, 0);

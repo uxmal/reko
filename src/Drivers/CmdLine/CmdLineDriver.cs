@@ -130,7 +130,7 @@ namespace Reko.CmdLine
                 throw new ApplicationException(string.Format("'{0}' doesn't appear to be a valid address.", pArgs["--base"]));
             if (pArgs.ContainsKey("--entry"))
             {
-                if (!arch.TryParseAddress((string)pArgs["--base"], out addrEntry))
+                if (!arch.TryParseAddress((string)pArgs["--entry"], out addrEntry))
                     throw new ApplicationException(string.Format("'{0}' doesn't appear to be a valid address.", pArgs["--base"]));
             }
             else
@@ -139,7 +139,14 @@ namespace Reko.CmdLine
             object sLoader;
             pArgs.TryGetValue("--loader", out sLoader);
             var state = CreateInitialState(arch, pArgs);
-            dec.LoadRawImage((string)pArgs["filename"], (string) sLoader, (string)pArgs["--arch"], (string) sEnv, addrBase);
+            dec.LoadRawImage((string)pArgs["filename"], new LoadDetails
+            {
+                LoaderName = (string)sLoader,
+                ArchitectureName = (string)pArgs["--arch"],
+                PlatformName = (string)sEnv,
+                LoadAddress = (string)pArgs["--base"],
+                EntryPoint = new EntryPointElement { Address = (string)pArgs["--entry"] }
+            });
             dec.Project.Programs[0].EntryPoints.Add(
                 addrEntry,
                 new ImageSymbol(addrEntry)

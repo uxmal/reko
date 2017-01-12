@@ -347,8 +347,6 @@ namespace Reko.Gui.Forms
                 if (uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
                     return true;
 
-                mru.Use(dlg.FileName.Text);
-
                 var rawFileOption = (ListOption)dlg.RawFileTypes.SelectedValue;
                 string archName = null;
                 string envName = null;
@@ -378,19 +376,19 @@ namespace Reko.Gui.Forms
                 if (!arch.TryParseAddress(sAddr, out addrBase))
                     throw new ApplicationException(string.Format("'{0}' doesn't appear to be a valid address.", sAddr));
 
-                var newRaw = new RawFileElementImpl
+                var details = new LoadDetails
                 {
-                    Loader = loader,
-                    Architecture = archName,
-                    Environment = envName,
-                    BaseAddress = sAddr,
+                    LoaderName = loader,
+                    ArchitectureName = archName,
+                    PlatformName = envName,
+                    LoadAddress = sAddr,
                     EntryPoint = entry,
                 };
 
                 OpenBinary(dlg.FileName.Text, (f) =>
                     pageInitial.OpenBinaryAs(
                         f,
-                        newRaw));
+                        details));
             }
             catch (Exception ex)
             {

@@ -127,33 +127,22 @@ namespace Reko.Loading
             return program;
         }
 
-        public Program LoadRawImage(string filename, byte[] image, string loader, string archName, string platformName, Address addrLoad)
-        {
-            var program = LoadRawImage(filename, image, addrLoad, new RawFileElementImpl
-            {
-                Architecture = archName,
-                Environment = platformName,
-                Loader = loader,
-            });
-            return program;
-        }
-
-        public Program LoadRawImage(string filename, byte[] image, Address addrLoad, RawFileElement raw)
+        public Program LoadRawImage(string filename, byte[] image, Address addrLoad, LoadDetails details)
         { 
-            var arch = cfgSvc.GetArchitecture(raw.Architecture);
-            var platform = cfgSvc.GetEnvironment(raw.Environment).Load(Services, arch);
+            var arch = cfgSvc.GetArchitecture(details.ArchitectureName);
+            var platform = cfgSvc.GetEnvironment(details.PlatformName).Load(Services, arch);
             if (addrLoad == null)
             {
-                if (!arch.TryParseAddress(raw.BaseAddress, out addrLoad))
+                if (!arch.TryParseAddress(details.LoadAddress, out addrLoad))
                 {
                     throw new ApplicationException(
                         "Unable to determine base address for executable. A default address should have been present in the reko.config file.");
                 }
             }
             Program program;
-            if (!string.IsNullOrEmpty(raw.Loader))
+            if (!string.IsNullOrEmpty(details.LoaderName))
             {
-                var imgLoader = CreateCustomImageLoader(Services, raw.Loader, filename, image);
+                var imgLoader = CreateCustomImageLoader(Services, details.LoaderName, filename, image);
                 program = imgLoader.Load(addrLoad, arch, platform);
             }
             else
@@ -164,7 +153,7 @@ namespace Reko.Loading
                     arch,
                     platform);
                 Address addrEp;
-                if (raw.EntryPoint != null && arch.TryParseAddress(raw.EntryPoint.Address, out addrEp))
+                if (details.EntryPoint != null && arch.TryParseAddress(details.EntryPoint.Address, out addrEp))
                 {
                     program.EntryPoints.Add(addrEp, new Core.ImageSymbol(addrEp) { Type = SymbolType.Procedure });
                 }
@@ -172,7 +161,7 @@ namespace Reko.Loading
             program.Name = Path.GetFileName(filename);
             program.User.Processor = arch.Name;
             program.User.Environment = platform.Name;
-            program.User.Loader = raw.Loader;
+            program.User.Loader = details.LoaderName;
             program.ImageMap = program.SegmentMap.CreateImageMap();
             return program;
         }
