@@ -95,7 +95,7 @@ namespace Reko.Arch.Avr
 
         public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
-            throw new NotImplementedException();
+            return new Avr8Rewriter(this, rdr, state, frame, host);
         }
 
         public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)

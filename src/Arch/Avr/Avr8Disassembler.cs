@@ -25,6 +25,8 @@ using Reko.Core.Machine;
 
 namespace Reko.Arch.Avr
 {
+    // Opcode map: http://lyons42.com/AVR/Opcodes/AVRAllOpcodes.html
+
     public class Avr8Disassembler : DisassemblerBase<AvrInstruction>
     {
         private static OpRec[] oprecs;
@@ -65,6 +67,9 @@ namespace Reko.Arch.Avr
                 case 'A': // I/O location
                     op = ImmediateOperand.Byte((byte)(((wInstr >> 5) & 0x30) | (wInstr & 0xF)));
                     break;
+                case 'i': // 16-bit immediate 
+                    op = ImmediateOperand.Byte((byte)((wInstr >> 4) & 0x0F));
+                    break;
                 case 'J': // Relative jump
                     int offset = ((wInstr & 0xFFF) << 4) >> 3;
                     op = AddressOperand.Create(this.addr + 2 + offset);
@@ -75,14 +80,23 @@ namespace Reko.Arch.Avr
                 case 'd': // Destination register (r16-r31)
                     op = Register(0x10 | (wInstr >> 4) & 0x1F);
                     break;
-                case 'R': // source register
+                case 'R': // source register (from 32)
                     op = Register((wInstr >> 5) & 0x10 | (wInstr >> 4) & 0x0F);
                     break;
-                case 'r': // source register
+                case 'r': // source register (from 16)
                     op = Register((wInstr >> 4) & 0x10 | (wInstr >> 4) & 0x0F);
                     break;
                 case 'K':
                     op = ImmediateOperand.Byte((byte)(((wInstr >> 4) & 0xF0) | (wInstr & 0xF)));
+                    break;
+                case 'Q':   // absolute address used by jump and call.
+                    ushort w2;
+                    if (!rdr.TryReadLeUInt16(out w2))
+                        return null;
+                    op = AddressOperand.Ptr32(
+                        (uint)(((wInstr >> 4) & 0x1F) << 17) |
+                        (uint)((wInstr & 1) << 16) |
+                        w2);
                     break;
                 default:
                     throw new NotImplementedException();
@@ -107,21 +121,89 @@ namespace Reko.Arch.Avr
             {
                 new BOpRec(Opcode.invalid, ""),
                 new BOpRec(Opcode.eor, "D,R"),
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.or, "D,R"),
+                new BOpRec(Opcode.mov, "R,r"),
             };
 
-            var oprecs94 = new Dictionary<int, OpRec>
+            var oprecs94_8 = new OpRec[]
             {
-                { 0x04F8, new BOpRec(Opcode.cli, "") },
-                { 0x0508, new BOpRec(Opcode.ret, "") },
+                new BOpRec(Opcode.sec, ""),
+                new BOpRec(Opcode.sez, ""),
+                new BOpRec(Opcode.sen, ""),
+                new BOpRec(Opcode.sev, ""),
+
+                new BOpRec(Opcode.ses, ""),
+                new BOpRec(Opcode.seh, ""),
+                new BOpRec(Opcode.set, ""),
+                new BOpRec(Opcode.sei, ""),
+
+                new BOpRec(Opcode.clc, ""),
+                new BOpRec(Opcode.clz, ""),
+                new BOpRec(Opcode.cln, ""),
+                new BOpRec(Opcode.clv, ""),
+
+                new BOpRec(Opcode.cls, ""),
+                new BOpRec(Opcode.clh, ""),
+                new BOpRec(Opcode.clt, ""),
+                new BOpRec(Opcode.cli, ""),
+
+                new BOpRec(Opcode.ret, ""),
+                new BOpRec(Opcode.reti, ""),
+                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.invalid, ""),
+
+                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.invalid, ""),
+
+                new BOpRec(Opcode.sleep, ""),
+                new BOpRec(Opcode.@break, ""),
+                new BOpRec(Opcode.wdr, ""),
+                new BOpRec(Opcode.invalid, ""),
+
+                new BOpRec(Opcode.lpm, ""),
+                new BOpRec(Opcode.elpm, ""),
+                new BOpRec(Opcode.spm, ""),
+                new BOpRec(Opcode.spm, ""),
+            };
+
+            var oprecs94_9 = new Dictionary<int, OpRec>
+            {
+                { 0, new BOpRec(Opcode.ijmp, "") },
+                { 1, new BOpRec(Opcode.eijmp, "") },
+                { 16, new BOpRec(Opcode.icall, "") },
+                { 17, new BOpRec(Opcode.eicall, "") },
+            };
+
+            var oprecs94 = new OpRec[]
+            {
+                new BOpRec(Opcode.com, "R"),
+                new BOpRec(Opcode.neg, "R"),
+                new BOpRec(Opcode.swap, "R"),
+                new BOpRec(Opcode.inc, "R"),
+
+                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.asr, "R"),
+                new BOpRec(Opcode.lsr, "R"),
+                new BOpRec(Opcode.ror, "R"),
+
+                new GrpOpRec(4, 5, oprecs94_8),
+                new SparseOpRec(4, 5, oprecs94_9),
+                new BOpRec(Opcode.dec, "R"),
+                new BOpRec(Opcode.des, "i"),
+
+                new BOpRec(Opcode.jmp, "Q"),
+                new BOpRec(Opcode.jmp, "Q"),
+                new BOpRec(Opcode.call, "Q"),
+                new BOpRec(Opcode.call, "Q"),
             };
 
             var oprecs9 = new OpRec[]
             {
                 new BOpRec(Opcode.pop, "D"),
                 new BOpRec(Opcode.push, "D"),
-                new SparseOpRec(0, 12, oprecs94),
+                new GrpOpRec(0, 4, oprecs94),
                 new BOpRec(Opcode.invalid, ""),
 
                 new BOpRec(Opcode.invalid, ""),
@@ -129,8 +211,6 @@ namespace Reko.Arch.Avr
                 new BOpRec(Opcode.invalid, ""),
                 new BOpRec(Opcode.invalid, ""),
             };
-
-
 
             var oprecsB = new OpRec[]
             {

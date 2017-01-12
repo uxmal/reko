@@ -29,6 +29,7 @@ namespace Reko.Arch.Avr
     public class Avr8State : ProcessorState
     {
         private Avr8Architecture arch;
+        private Address ip;
 
         public Avr8State(Avr8Architecture arch)
         {
@@ -59,17 +60,15 @@ namespace Reko.Arch.Avr
 
         public override void OnProcedureEntered()
         {
-            throw new NotImplementedException();
         }
 
         public override void OnProcedureLeft(FunctionType procedureSignature)
         {
-            throw new NotImplementedException();
         }
 
         public override void SetInstructionPointer(Address addr)
         {
-            throw new NotImplementedException();
+            this.ip = addr;
         }
 
         public override void SetRegister(RegisterStorage r, Constant v)
