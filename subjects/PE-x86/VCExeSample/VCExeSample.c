@@ -12,13 +12,7 @@ int32 main(int32 argc, char * * argv)
 
 void test1(char * arg1, int32 arg2, char * arg3, real32 arg4)
 {
-	word32 esp_37;
-	word32 ebp_38;
-	byte SCZO_39;
-	word32 eax_40;
-	word32 ecx_41;
-	word32 edx_42;
-	MSVCR80.dll!printf();
+	printf("%s %d %s %f", arg1, arg2, arg3, (real64) arg4);
 	return;
 }
 
@@ -48,7 +42,7 @@ void test5()
 	return;
 }
 
-void test6(Eq_56 c, int32 a, int32 b)
+void test6(Eq_63 c, int32 a, int32 b)
 {
 	c->vtbl->method04(c, c->vtbl->sum(c, a, b));
 	return;

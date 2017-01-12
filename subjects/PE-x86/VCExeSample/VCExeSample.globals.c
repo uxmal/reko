@@ -5,6 +5,7 @@
 #include "VCExeSample.h"
 
 char g_str4020C0[] = "test123";
+char g_str4020C8[] = "%s %d %s %f";
 char g_str4020D4[] = "3";
 char g_str4020D8[] = "1";
 char g_str4020DC[] = "7";
