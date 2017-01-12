@@ -385,7 +385,6 @@ namespace Reko.Loading
         /// Expects the provided assembly to contain exactly one type that implements
         /// ImageLoader, then loads that.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="services"></param>
         /// <param name="typeName"></param>
         /// <param name="filename"></param>

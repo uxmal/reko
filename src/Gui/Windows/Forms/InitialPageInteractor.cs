@@ -35,7 +35,7 @@ namespace Reko.Gui.Windows.Forms
     public interface InitialPageInteractor : IPhasePageInteractor
     {
         bool OpenBinary(string file);
-        bool OpenBinaryAs(string file, string arch, string platform, Address addrBase, RawFileElement raw);
+        bool OpenBinaryAs(string file, RawFileElement raw);
         bool Assemble(string file, Assembler asm);
     }
 
@@ -121,9 +121,6 @@ namespace Reko.Gui.Windows.Forms
         //$TODO: change signature to OpenAs(raw)
         public bool OpenBinaryAs(
             string file, 
-            string arch,
-            string platform, 
-            Address addrBase, 
             RawFileElement raw)
         {
             var ldr = Services.RequireService<ILoader>();
@@ -131,19 +128,7 @@ namespace Reko.Gui.Windows.Forms
             IWorkerDialogService svc = Services.RequireService<IWorkerDialogService>();
             svc.StartBackgroundWork("Loading program", delegate()
             {
-                Program program;
-                if (raw != null)
-                {
-                    program = Decompiler.LoadRawImage(file, raw);
-                    program.User.Loader = raw.Loader;
-                }
-                else
-                {
-                   program= Decompiler.LoadRawImage(file, null, arch, platform, addrBase);
-                }
-                program.User.Processor = arch;
-                program.User.Environment = platform;
-                program.User.LoadAddress = program.ImageMap.BaseAddress;
+                Program program = Decompiler.LoadRawImage(file, raw);
             });
             var browserSvc = Services.RequireService<IProjectBrowserService>();
             browserSvc.Load(Decompiler.Project);

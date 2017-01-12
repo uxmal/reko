@@ -116,7 +116,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             return false;
         }
 
-        public bool OpenBinaryAs(string file, string arch, string platform, Address addrBase, RawFileElement raw)
+        public bool OpenBinaryAs(string file, RawFileElement raw)
         {
             throw new NotImplementedException();
         }
