@@ -346,6 +346,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dol", "ImageLoaders\Dol\Dol
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wii", "Environments\Wii\Wii.csproj", "{958A95BD-260B-4D90-A7A3-0F514D117298}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntelHex", "ImageLoaders\IntelHex\IntelHex.csproj", "{72641087-68D2-41E7-9B29-BC9D4213940A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|.NET = Debug|.NET
@@ -1984,6 +1986,36 @@ Global
 		{958A95BD-260B-4D90-A7A3-0F514D117298}.TravisRelease|Win32.Build.0 = Release|Any CPU
 		{958A95BD-260B-4D90-A7A3-0F514D117298}.TravisRelease|x86.ActiveCfg = Release|Any CPU
 		{958A95BD-260B-4D90-A7A3-0F514D117298}.TravisRelease|x86.Build.0 = Release|Any CPU
+		{72641087-68D2-41E7-9B29-BC9D4213940A}.Debug|.NET.ActiveCfg = Debug|Any CPU
+		{72641087-68D2-41E7-9B29-BC9D4213940A}.Debug|.NET.Build.0 = Debug|Any CPU
+		{72641087-68D2-41E7-9B29-BC9D4213940A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72641087-68D2-41E7-9B29-BC9D4213940A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72641087-68D2-41E7-9B29-BC9D4213940A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{72641087-68D2-41E7-9B29-BC9D4213940A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{72641087-68D2-41E7-9B29-BC9D4213940A}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{72641087-68D2-41E7-9B29-BC9D4213940A}.Debug|Win32.Build.0 = Debug|Any CPU
+		{72641087-68D2-41E7-9B29-BC9D4213940A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{72641087-68D2-41E7-9B29-BC9D4213940A}.Debug|x86.Build.0 = Debug|Any CPU
+		{72641087-68D2-41E7-9B29-BC9D4213940A}.Release|.NET.ActiveCfg = Release|Any CPU
+		{72641087-68D2-41E7-9B29-BC9D4213940A}.Release|.NET.Build.0 = Release|Any CPU
+		{72641087-68D2-41E7-9B29-BC9D4213940A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72641087-68D2-41E7-9B29-BC9D4213940A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72641087-68D2-41E7-9B29-BC9D4213940A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{72641087-68D2-41E7-9B29-BC9D4213940A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{72641087-68D2-41E7-9B29-BC9D4213940A}.Release|Win32.ActiveCfg = Release|Any CPU
+		{72641087-68D2-41E7-9B29-BC9D4213940A}.Release|Win32.Build.0 = Release|Any CPU
+		{72641087-68D2-41E7-9B29-BC9D4213940A}.Release|x86.ActiveCfg = Release|Any CPU
+		{72641087-68D2-41E7-9B29-BC9D4213940A}.Release|x86.Build.0 = Release|Any CPU
+		{72641087-68D2-41E7-9B29-BC9D4213940A}.TravisRelease|.NET.ActiveCfg = Release|Any CPU
+		{72641087-68D2-41E7-9B29-BC9D4213940A}.TravisRelease|.NET.Build.0 = Release|Any CPU
+		{72641087-68D2-41E7-9B29-BC9D4213940A}.TravisRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{72641087-68D2-41E7-9B29-BC9D4213940A}.TravisRelease|Any CPU.Build.0 = Release|Any CPU
+		{72641087-68D2-41E7-9B29-BC9D4213940A}.TravisRelease|Mixed Platforms.ActiveCfg = TravisRelease|Any CPU
+		{72641087-68D2-41E7-9B29-BC9D4213940A}.TravisRelease|Mixed Platforms.Build.0 = TravisRelease|Any CPU
+		{72641087-68D2-41E7-9B29-BC9D4213940A}.TravisRelease|Win32.ActiveCfg = Release|Any CPU
+		{72641087-68D2-41E7-9B29-BC9D4213940A}.TravisRelease|Win32.Build.0 = Release|Any CPU
+		{72641087-68D2-41E7-9B29-BC9D4213940A}.TravisRelease|x86.ActiveCfg = Release|Any CPU
+		{72641087-68D2-41E7-9B29-BC9D4213940A}.TravisRelease|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -2049,6 +2081,7 @@ Global
 		{E0697F4C-5F5E-4037-9F0E-7A9064A55B4D} = {18994109-C4D5-49F9-86E0-3B5B1046C08E}
 		{5B6DA2CA-5CA1-4A84-8084-9D6780F64BCF} = {E34BB92E-9C1E-41E8-8333-8BB69831BB63}
 		{958A95BD-260B-4D90-A7A3-0F514D117298} = {E6A2E818-3AB9-47FC-9266-4E72ECBB13F4}
+		{72641087-68D2-41E7-9B29-BC9D4213940A} = {E34BB92E-9C1E-41E8-8333-8BB69831BB63}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Drivers\MonoDecompiler\MonoDecompiler.csproj

@@ -91,6 +91,7 @@
         <File Source="$(var.Dol.TargetPath)" />
         <File Source="$(var.Elf.TargetPath)" />
         <File Source="$(var.Hunk.TargetPath)" />
+        <File Source="$(var.IntelHex.TargetPath)" />
         <File Source="$(var.MachO.TargetPath)" />
         <File Source="$(var.MzExe.TargetPath)" />
         <File Source="$(var.OdbgScript.TargetPath)" />
