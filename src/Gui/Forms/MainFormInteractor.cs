@@ -347,42 +347,48 @@ namespace Reko.Gui.Forms
                 if (uiSvc.ShowModalDialog(dlg) != DialogResult.OK)
                     return true;
 
-                mru.Use(dlg.FileName.Text);
-
                 var rawFileOption = (ListOption)dlg.RawFileTypes.SelectedValue;
-                string archName;
-                string envName;
-                string sAddr;
-                RawFileElement raw = null;
+                string archName = null;
+                string envName = null;
+                string sAddr = null;
+                string loader = null;
+                EntryPointElement entry = null;
+
                 if (rawFileOption != null && rawFileOption.Value != null)
                 {
+                    RawFileElement raw = null;
                     raw = (RawFileElement)rawFileOption.Value;
+                    loader = raw.Loader;
                     archName = raw.Architecture;
                     envName = raw.Environment;
                     sAddr = raw.BaseAddress;
+                    entry = raw.EntryPoint;
                 }
-                else
-                {
-                    var archOption = (ListOption)dlg.Architectures.SelectedValue;
-                    archName = (string)archOption.Value;
-                    var envOption = (OperatingEnvironment)((ListOption)dlg.Platforms.SelectedValue).Value;
-                    envName = envOption != null? envOption.Name : null;
-                    sAddr = dlg.AddressTextBox.Text.Trim();
-                }
+                archName = archName ?? (string) ((ListOption)dlg.Architectures.SelectedValue).Value;
+                var envOption = (OperatingEnvironment)((ListOption)dlg.Platforms.SelectedValue).Value;
+                envName =  envName ?? (envOption != null? envOption.Name : null);
+                sAddr = sAddr ?? dlg.AddressTextBox.Text.Trim();
 
                 arch = config.GetArchitecture(archName);
                 if (arch == null)
                     throw new InvalidOperationException(string.Format("Unable to load {0} architecture.", archName));
                 Address addrBase;
-                    if (!arch.TryParseAddress(sAddr, out addrBase))
-                        throw new ApplicationException(string.Format("'{0}' doesn't appear to be a valid address.", sAddr));
-                    OpenBinary(dlg.FileName.Text, (f) =>
-                        pageInitial.OpenBinaryAs(
-                            f,
-                            archName,
-                            envName,
-                            addrBase,
-                            raw));
+                if (!arch.TryParseAddress(sAddr, out addrBase))
+                    throw new ApplicationException(string.Format("'{0}' doesn't appear to be a valid address.", sAddr));
+
+                var details = new LoadDetails
+                {
+                    LoaderName = loader,
+                    ArchitectureName = archName,
+                    PlatformName = envName,
+                    LoadAddress = sAddr,
+                    EntryPoint = entry,
+                };
+
+                OpenBinary(dlg.FileName.Text, (f) =>
+                    pageInitial.OpenBinaryAs(
+                        f,
+                        details));
             }
             catch (Exception ex)
             {

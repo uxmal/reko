@@ -165,6 +165,9 @@ namespace Reko.Core.Configuration
 
         [XmlAttribute("Base")]
         public string Base;
+
+        [XmlAttribute("Loader")]
+        public string LoaderType;
     }
 
     [Serializable]

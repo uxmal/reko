@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Loading
             Loader ldr = mr.PartialMock<Loader>(sc);
             ldr.Replay();
 
-            Program prog = ldr.LoadExecutable("", testImage, null);
+            Program prog = ldr.LoadExecutable("", testImage,  null, null);
 
             Assert.AreEqual("WarningDiagnostic -  - The format of the file is unknown." , eventListener.LastDiagnostic);
             Assert.AreEqual(0, prog.ImageMap.BaseAddress.Offset);
@@ -99,12 +99,12 @@ namespace Reko.UnitTests.Loading
             ldr.Replay();
 
             ldr.DefaultToFormat = "ms-dos-com";
-            Program prog = ldr.LoadExecutable("", testImage, null);
+            Program program = ldr.LoadExecutable("", testImage, null, null);
 
             Assert.IsNull(eventListener.LastDiagnostic);
-            Assert.AreEqual("0C00:0100", prog.ImageMap.BaseAddress.ToString());
-            Assert.AreSame(x86arch, prog.Architecture);
-            Assert.AreSame(msdosPlatform, prog.Platform);
+            Assert.AreEqual("0C00:0100", program.ImageMap.BaseAddress.ToString());
+            Assert.AreSame(x86arch, program.Architecture);
+            Assert.AreSame(msdosPlatform, program.Platform);
             mr.VerifyAll();
         }
 

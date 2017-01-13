@@ -203,7 +203,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             loader = mr.StrictMock<ILoader>();
             loader.Stub(l => l.LoadImageBytes(null, 0)).IgnoreArguments()
                 .Return(bytes);
-            loader.Stub(l => l.LoadExecutable(null, null, null)).IgnoreArguments()
+            loader.Stub(l => l.LoadExecutable(null, null, null, null)).IgnoreArguments()
                 .Return(new Program
                 {
                     SegmentMap = new SegmentMap(
@@ -397,7 +397,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             
             dcSvc.Stub(d => d.Decompiler).Return(decompiler);
             decompiler.Stub(d => d.Project).Return(project);
-            decompiler.Stub(d => d.Load(Arg<string>.Is.NotNull)).Return(false);
+            decompiler.Stub(d => d.Load(Arg<string>.Is.NotNull, Arg<string>.Is.Null)).Return(false);
         }
 
         private void Given_NoDecompilerInstance()

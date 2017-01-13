@@ -6,6 +6,7 @@
     <disassembly>foo.asm</disassembly>
     <intermediate-code>foo.cod</intermediate-code>
     <user>
+      <loader>CustomLoader</loader>
       <procedure name="foo">
         <signature>
           <return>

@@ -25,6 +25,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Reko.Core;
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace Reko.UnitTests.Arch.Xtensa
 {
@@ -601,6 +604,75 @@ namespace Reko.UnitTests.Arch.Xtensa
         public void Xtdasm_min()
         {
             AssertCode("min\ta2,a0,a1", 0x432010);
+        }
+
+        private uint ToHex(string value)
+        {
+            uint n = 0;
+            uint f = 1u;
+            for (int i = 0; i < value.Length; i += 2)
+            {
+                n = Convert.ToUInt32(value.Substring(i, 2), 16) * f + n;
+                f = f << 8;
+            }
+            return n;
+        }
+
+        public void Xtdasm_swallow()
+        {
+            var rdr = new StreamReader("boot.txt");
+            var re = new Regex("^[^:]+:\t([0-9a-f]+)[ \t]+([^;]+)", RegexOptions.CultureInvariant|RegexOptions.IgnoreCase);
+            int c = 0;
+
+            var ignore = new HashSet<uint>
+            {
+                0x00FF00, 0x3FFFC208, 0x4000DC3C, 0x3FFFD650,
+                0x000024, 0x000020, 0x000018, 0x000014,
+                0xF43347, 0x002E05, 0x00334B,
+                0x000369, 0x00554B, 0xFFD411, 0x00000C, 0x38000000, 0x1FFFFF,
+                0x080000, 0x7FF00000, 0xFFFFFF, 0x400000, 0x7f800000, 0xfefefeff,
+                0x0041F0, 0x00BA05, 0xF83677, 0x00664B, 0x000609, 0x00090C, 0x2ED2F6,
+            };
+
+            for (;;)
+            {
+                string line = rdr.ReadLine();
+                if (line == null || c >= 100)
+                    break;
+
+                // Chop the line into hex bytes and instruction.
+                var m = re.Match(line);
+                if (m.Groups.Count != 3)
+                    continue;
+
+                // Convert hex to word.
+
+                uint uInstr = ToHex(m.Groups[1].Value);
+                if (ignore.Contains(uInstr))
+                    continue;
+                var i = DisassembleWord(uInstr);
+                if (!(m.Groups[2].Value.StartsWith(".long") ||
+                      m.Groups[2].Value.StartsWith(".byte"))
+                      &&
+                    (i.ToString().StartsWith("inval") || 
+                    i.ToString().StartsWith("rese")))
+                /*
+                if (i.ToString()
+                    .Replace(" ", "") 
+                    .Replace("\t", "") != m.Groups[2].Value
+                    .Replace(" ", "")
+                    .Replace("\t", ""))*/
+                {
+                    Debug.Print("        [Test]");
+                    Debug.Print("        public void Xtdasm_{0}()", m.Groups[2].Value.Split(' ')[0]);
+                    Debug.Print("        {");
+                    Debug.Print("            AssertCode(\"{0}\", 0x{1:X6}); // {2}", m.Groups[2].Value, uInstr, i);
+                    Debug.Print("        }");
+                    Debug.Print("");
+                    ++c;
+                }
+            }
+            Assert.AreEqual(0, c, "C tests failed");
         }
     }
 }

@@ -88,6 +88,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             ldr.Stub(l => l.LoadExecutable(
                 Arg<string>.Is.NotNull,
                 Arg<byte[]>.Is.NotNull,
+                Arg<string>.Is.Null,
                 Arg<Address>.Is.Null)).Return(program);
             ldr.Replay();
             decSvc.Decompiler = new DecompilerDriver(ldr, sc);

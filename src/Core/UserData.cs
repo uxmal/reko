@@ -46,6 +46,7 @@ namespace Reko.Core
         }
 
         // 'Oracular' information provided by the user.
+        public string Loader { get; set; }
         public string Processor { get; set; }
         public string Environment { get; set; }
         public Address LoadAddress { get; set; }
