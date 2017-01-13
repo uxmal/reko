@@ -19,8 +19,7 @@ loop proc
 	ldi	r23,03
 	ldi	r24,00
 	ldi	r25,00
-	invalid
-	invalid
+	call	0000017C
 	ret
 
 ;; __vector_16: 00A0
@@ -37,42 +36,42 @@ __vector_16 proc
 	push	r26
 	push	r27
 	pop	r24
-	invalid
+	movw	r0,r8
 	pop	r25
-	invalid
+	movw	r0,r10
 	pop	r26
-	invalid
+	movw	r0,r12
 	pop	r27
-	invalid
+	movw	r0,r14
 	pop	r19
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	movw	r0,r16
+	adiw	r24,01
+	adc	r26,r1
+	adc	r27,r1
+	mov	r19,r18
+	subi	r18,FD
+	cpi	r18,7D
+	brcs	00DE
+	subi	r18,7D
+	adiw	r24,01
+	adc	r26,r1
+	adc	r27,r1
 	push	r18
-	invalid
+	movw	r0,r16
 	push	r24
-	invalid
+	movw	r0,r8
 	push	r25
-	invalid
+	movw	r0,r10
 	push	r26
-	invalid
+	movw	r0,r12
 	push	r27
-	invalid
+	movw	r0,r14
 	pop	r24
-	invalid
+	movw	r0,r0
 	pop	r25
-	invalid
+	movw	r0,r2
 	pop	r26
-	invalid
+	movw	r0,r4
 0100 B0 91 03 01                                     ....           
 0104             01 96 A1 1D                             ....       
 0108                         B1                              .      
@@ -85,40 +84,40 @@ micros proc
 	in	r25,3F
 	cli
 	pop	r18
-	invalid
+	movw	r0,r0
 	pop	r19
-	invalid
+	movw	r0,r2
 	pop	r20
-	invalid
+	movw	r0,r4
 	pop	r21
-	invalid
+	movw	r0,r6
 	in	r24,26
 	invalid
 	rjmp	0156
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	cpi	r24,FF
+	breq	0154
+	subi	r18,FF
+	sbci	r19,FF
+	sbci	r20,FF
+	sbci	r21,FF
 	out	3F,r25
-	invalid
-	invalid
-	invalid
+	mov	r20,r21
+	mov	r19,r20
+	mov	r18,r19
 	eor	r18,r18
-	invalid
-	invalid
-	invalid
-	invalid
+	add	r18,r24
+	adc	r19,r1
+	adc	r20,r1
+	adc	r21,r1
 	ldi	r24,02
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	add	r18,r18
+	adc	r19,r19
+	adc	r20,r20
+	adc	r21,r21
+	dec	r24
+	brid	0168
+	movw	r22,r18
+	movw	r24,r20
 	ret
 
 ;; delay: 017C
@@ -129,31 +128,29 @@ delay proc
 	push	r17
 	push	r28
 	push	r29
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	movw	r14,r22
+	movw	r16,r24
+	call	00000130
+	movw	r28,r22
 	rjmp	01B0
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	call	00000130
+	sub	r22,r28
+	sbc	r23,r29
+	subi	r22,E8
+	sbci	r23,03
+	brie	0192
+	sec
+	sbc	r14,r1
+	sbc	r15,r1
+	sbc	r16,r1
+	sbc	r17,r1
+	subi	r28,18
+	sbci	r29,FC
+	cp	r14,r1
+	cpc	r15,r1
+	cpc	r16,r1
+	cpc	r17,r1
+	brid	0192
 	pop	r29
 	pop	r28
 	pop	r17
@@ -164,61 +161,61 @@ delay proc
 
 ;; init: 01C8
 init proc
-	invalid
+	sei
 	in	r24,24
-	invalid
+	ori	r24,02
 	out	24,r24
 	in	r24,24
-	invalid
+	ori	r24,01
 	out	24,r24
 	in	r24,25
-	invalid
+	ori	r24,02
 	out	25,r24
 	in	r24,25
-	invalid
+	ori	r24,01
 	out	25,r24
 	ldi	r30,6E
 	ldi	r31,00
 	invalid
-	invalid
+	ori	r24,01
 	invalid
 	ldi	r30,81
 	ldi	r31,00
 	invalid
 	invalid
+	ori	r24,02
 	invalid
 	invalid
-	invalid
-	invalid
+	ori	r24,01
 	invalid
 	ldi	r30,80
 	ldi	r31,00
 	invalid
-	invalid
+	ori	r24,01
 	invalid
 	ldi	r30,B1
 	ldi	r31,00
 	invalid
-	invalid
+	ori	r24,04
 	invalid
 	ldi	r30,B0
 	ldi	r31,00
 	invalid
-	invalid
+	ori	r24,01
 	invalid
 	ldi	r30,7A
 	ldi	r31,00
 	invalid
+	ori	r24,04
 	invalid
 	invalid
+	ori	r24,02
 	invalid
 	invalid
+	ori	r24,01
 	invalid
 	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	ori	r24,80
 	invalid
 	push	r1
 	invalid
@@ -226,12 +223,9 @@ init proc
 
 ;; main: 023E
 main proc
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
-	invalid
+	call	000001C8
+	call	00000090
+	call	00000092
 	rjmp	2246
 	cli
 	rjmp	224E

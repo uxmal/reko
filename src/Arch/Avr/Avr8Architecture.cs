@@ -39,15 +39,23 @@ namespace Reko.Arch.Avr
             this.PointerType = PrimitiveType.Ptr16;
             this.FramePointerType = PrimitiveType.UInt8;
             this.InstructionBitSize = 16;
+            this.X = new RegisterStorage("X", 33, 0, PrimitiveType.Word16);
+            this.Y = new RegisterStorage("Y", 34, 0, PrimitiveType.Word16);
+            this.Z = new RegisterStorage("Z", 35, 0, PrimitiveType.Word16);
             this.regs = Enumerable.Range(0, 32)
                 .Select(n => new RegisterStorage(
                     string.Format("r{0}", n),
                     n,
                     0,
                     PrimitiveType.Byte))
+                .Concat(new [] { this.X, this.Y, this.Z })
                 .ToArray();
         }
         
+        public RegisterStorage X { get; private set; }
+        public RegisterStorage Y { get; private set; }
+        public RegisterStorage Z { get; private set; }
+
         public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader rdr)
         {
             return new Avr8Disassembler(this, rdr);

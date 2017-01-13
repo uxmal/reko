@@ -22,11 +22,14 @@ using System;
 using System.Collections.Generic;
 using Reko.Core;
 using Reko.Core.Machine;
+using Reko.Core.Types;
+using Reko.Core.Expressions;
+using System.Diagnostics;
 
 namespace Reko.Arch.Avr
 {
     // Opcode map: http://lyons42.com/AVR/Opcodes/AVRAllOpcodes.html
-
+    // Opcode map: https://en.wikipedia.org/wiki/Atmel_AVR_instruction_set
     public class Avr8Disassembler : DisassemblerBase<AvrInstruction>
     {
         private static OpRec[] oprecs;
@@ -57,6 +60,8 @@ namespace Reko.Arch.Avr
         public AvrInstruction Decode(ushort wInstr, Opcode opcode, string fmt)
         {
             var ops = new List<MachineOperand>();
+            int offset;
+            ushort w2;
             for (int i = 0; i < fmt.Length; ++i)
             {
                 MachineOperand op;
@@ -64,14 +69,33 @@ namespace Reko.Arch.Avr
                 {
                 case ',':
                     continue;
+                case '+':
+                    op = IncDec(true, fmt[i++]);
+                    break;
+                case '-':
+                    op = IncDec(false, fmt[i++]);
+                    break;
                 case 'A': // I/O location
                     op = ImmediateOperand.Byte((byte)(((wInstr >> 5) & 0x30) | (wInstr & 0xF)));
                     break;
-                case 'i': // 16-bit immediate 
+                case 'B': // 8-bit immediate at bits 8..11 and 0..3
+                    op = ImmediateOperand.Byte((byte)(((wInstr >> 4) & 0xF0) | (wInstr & 0x0F)));
+                    break;
+                case 'g': // 4-bit field in sgis
+                    op = ImmediateOperand.Byte((byte)((wInstr >> 3) & 0x0F));
+                    break;
+                case 'h': // 3-bit field in sgis, indicating bit nr.
+                    op = ImmediateOperand.Byte((byte)(wInstr & 7));
+                    break;
+                case 'I': // 4-bit immediate at bit 0
+                    op = ImmediateOperand.Byte((byte)(wInstr & 0x0F));
+                    break;
+                case 'i': // 4-bit immediate at bit 4
                     op = ImmediateOperand.Byte((byte)((wInstr >> 4) & 0x0F));
                     break;
                 case 'J': // Relative jump
-                    int offset = ((wInstr & 0xFFF) << 4) >> 3;
+                    offset = (short)((wInstr & 0xFFF) << 4);
+                    offset = offset >> 3;
                     op = AddressOperand.Create(this.addr + 2 + offset);
                     break;
                 case 'D': // Destination register
@@ -80,26 +104,64 @@ namespace Reko.Arch.Avr
                 case 'd': // Destination register (r16-r31)
                     op = Register(0x10 | (wInstr >> 4) & 0x1F);
                     break;
-                case 'R': // source register (from 32)
-                    op = Register((wInstr >> 5) & 0x10 | (wInstr >> 4) & 0x0F);
+                case 'R': // source register (5 bits)
+                    op = Register((wInstr >> 5) & 0x10 | (wInstr) & 0x0F);
                     break;
-                case 'r': // source register (from 16)
+                case 'r': // source register (4 bits)
                     op = Register((wInstr >> 4) & 0x10 | (wInstr >> 4) & 0x0F);
                     break;
                 case 'K':
                     op = ImmediateOperand.Byte((byte)(((wInstr >> 4) & 0xF0) | (wInstr & 0xF)));
                     break;
+                case 'P': // register pair source
+                    op = Register((wInstr << 1) & ~1);
+                    break;
+                case 'p': // register pair destination
+                    op = Register((wInstr >> 3) & ~1);
+                    break;
                 case 'Q':   // absolute address used by jump and call.
-                    ushort w2;
                     if (!rdr.TryReadLeUInt16(out w2))
                         return null;
                     op = AddressOperand.Ptr32(
-                        (uint)(((wInstr >> 4) & 0x1F) << 17) |
-                        (uint)((wInstr & 1) << 16) |
-                        w2);
+                        (uint)(((wInstr >> 4) & 0x1F) << 18) |
+                        (uint)((wInstr & 1) << 17) |
+                        (uint)(w2 << 1));
+                    break;
+                case 'q':   // register pair used by adiw
+                    op = Register(24 + ((wInstr >> 3) & 6));
+                    break;
+                case 's':   // immediate used by adiw/sbiw
+                    op = ImmediateOperand.Byte((byte)(((wInstr >> 2) & 0x30) | (wInstr & 0xF)));
+                    break;
+                case 'w': // Trailing 16-bit absolute address
+                    if (!rdr.TryReadLeUInt16(out w2))
+                        return null;
+                    op = AddressOperand.Ptr32(w2);
+                    break;
+                case 'o':   // Branch offset
+                    offset = (short)wInstr;
+                    offset = (short)(offset << 6);
+                    offset = (short)(offset >> 8);
+                    offset = (short)(offset & ~1);
+                    op = AddressOperand.Create(this.addr + offset);
+                    break;
+                case 'X':
+                    op = MemD(arch.X, 0);
+                    break;
+                case 'Y':
+                    op = MemD(arch.Y, 0);
+                    break;
+                case 'y':
+                    op = MemD(arch.Y, Displacement(wInstr));
+                    break;
+                case 'Z':
+                    op = MemD(arch.Z, 0);
+                    break;
+                case 'z':
+                    op = MemD(arch.Z, Displacement(wInstr));
                     break;
                 default:
-                    throw new NotImplementedException();
+                    throw new NotImplementedException(string.Format("Unimplemented AVR8 format symbol '{0}'.'", fmt[i - 1]));
                 }
                 ops.Add(op);
             }
@@ -115,14 +177,141 @@ namespace Reko.Arch.Avr
             return new RegisterOperand(arch.GetRegister(v & 0x1F));
         }
 
+        private MachineOperand MemD(RegisterStorage baseReg, int displacement)
+        {
+            return new MemoryOperand(PrimitiveType.Byte)
+            {
+                Base = baseReg,
+                Displacement = displacement
+            };
+        }
+
+        private MachineOperand IncDec(bool inc, char cReg)
+        {
+            RegisterStorage reg;
+            switch (cReg)
+            {
+            case 'X': reg = arch.X; break;
+            case 'Y': reg = arch.Y; break;
+            case 'Z': reg = arch.Z; break;
+            default: Debug.Assert(false, "Must be X,Y, or Z");
+                reg = null;
+                break;
+            }
+            return new MemoryOperand(PrimitiveType.Byte)
+            {
+                Base = reg,
+                PostIncrement = inc,
+                PreDecrement = !inc,
+            };
+        }
+
+        private int Displacement(ushort wInstr)
+        {
+            return
+                ((wInstr >> 8) & 0x20)
+                | ((wInstr >> 6) & 0x18)
+                | (wInstr & 7);
+        }
+
         static Avr8Disassembler()
         {
-            var oprecs2 = new OpRec[]
+            var oprecs0 = new OpRec[]
             {
                 new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.movw, "p,P"),
+                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.invalid, ""),
+
+                new BOpRec(Opcode.cpc, "D,R"),
+                new BOpRec(Opcode.cpc, "D,R"),
+                new BOpRec(Opcode.cpc, "D,R"),
+                new BOpRec(Opcode.cpc, "D,R"),
+
+                new BOpRec(Opcode.sbc, "D,R"),
+                new BOpRec(Opcode.sbc, "D,R"),
+                new BOpRec(Opcode.sbc, "D,R"),
+                new BOpRec(Opcode.sbc, "D,R"),
+
+                new BOpRec(Opcode.add, "D,R"),
+                new BOpRec(Opcode.add, "D,R"),
+                new BOpRec(Opcode.add, "D,R"),
+                new BOpRec(Opcode.add, "D,R"),
+            };
+
+            var oprecs1 = new OpRec[]
+            {
+                new BOpRec(Opcode.cpse, "D,R"),
+                new BOpRec(Opcode.cp,   "D,R"),
+                new BOpRec(Opcode.sub,  "D,R"),
+                new BOpRec(Opcode.adc,  "D,R"),
+            };
+
+            var oprecs2 = new OpRec[]
+            {
+                new BOpRec(Opcode.and, "D,R"),
                 new BOpRec(Opcode.eor, "D,R"),
                 new BOpRec(Opcode.or, "D,R"),
                 new BOpRec(Opcode.mov, "R,r"),
+            };
+
+            var oprecs80 = new OpRec[]
+            {
+                new BOpRec(Opcode.ld,  "D,X"),
+                new BOpRec(Opcode.ldd, "D,z"),
+                new BOpRec(Opcode.ldd, "D,z"),
+                new BOpRec(Opcode.ldd, "D,z"),
+
+                new BOpRec(Opcode.ldd, "D,z"),
+                new BOpRec(Opcode.ldd, "D,z"),
+                new BOpRec(Opcode.ldd, "D,z"),
+                new BOpRec(Opcode.ldd, "D,z"),
+
+                new BOpRec(Opcode.ld,  "D,Y"),
+                new BOpRec(Opcode.ldd, "D,y"),
+                new BOpRec(Opcode.ldd, "D,y"),
+                new BOpRec(Opcode.ldd, "D,y"),
+
+                new BOpRec(Opcode.ldd, "D,y"),
+                new BOpRec(Opcode.ldd, "D,y"),
+                new BOpRec(Opcode.ldd, "D,y"),
+                new BOpRec(Opcode.ldd, "D,y"),
+            };
+
+            var oprecs82 = new OpRec[]
+            {
+                new BOpRec(Opcode.st, "Z,D"),
+                new BOpRec(Opcode.std, "z,D"),
+                new BOpRec(Opcode.std, "z,D"),
+                new BOpRec(Opcode.std, "z,D"),
+
+                new BOpRec(Opcode.std, "z,D"),
+                new BOpRec(Opcode.std, "z,D"),
+                new BOpRec(Opcode.std, "z,D"),
+                new BOpRec(Opcode.std, "z,D"),
+
+                new BOpRec(Opcode.st, "Y,D"),
+                new BOpRec(Opcode.std, "y,D"),
+                new BOpRec(Opcode.std, "y,D"),
+                new BOpRec(Opcode.std, "y,D"),
+
+                new BOpRec(Opcode.std, "y,D"),
+                new BOpRec(Opcode.std, "y,D"),
+                new BOpRec(Opcode.std, "y,D"),
+                new BOpRec(Opcode.std, "y,D"),
+            };
+
+            var oprecs8 = new OpRec[]
+            {
+                new GrpOpRec(0, 4, oprecs80),
+                new GrpOpRec(0, 4, oprecs82),
+                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.invalid, ""),
+
+                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.invalid, ""),
             };
 
             var oprecs94_8 = new OpRec[]
@@ -176,21 +365,67 @@ namespace Reko.Arch.Avr
                 { 17, new BOpRec(Opcode.eicall, "") },
             };
 
-            var oprecs94 = new OpRec[]
+            var oprecs90 = new OpRec[]
             {
-                new BOpRec(Opcode.com, "R"),
-                new BOpRec(Opcode.neg, "R"),
-                new BOpRec(Opcode.swap, "R"),
-                new BOpRec(Opcode.inc, "R"),
+                new BOpRec(Opcode.lds, "D,w"),
+                new BOpRec(Opcode.ld, "D,+Z"),
+                new BOpRec(Opcode.ld, "D,-Z"),
+                new BOpRec(Opcode.invalid, ""),
+
+                new BOpRec(Opcode.lpm, "D,Z"),
+                new BOpRec(Opcode.lpm, "D,+Z"),
+                new BOpRec(Opcode.elpm, "D,Z"),
+                new BOpRec(Opcode.elpm, "D,+Z"),
 
                 new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.asr, "R"),
-                new BOpRec(Opcode.lsr, "R"),
-                new BOpRec(Opcode.ror, "R"),
+                new BOpRec(Opcode.ld, "D,+Y"),
+                new BOpRec(Opcode.ld, "D,-Y"),
+                new BOpRec(Opcode.invalid, ""),
+
+                new BOpRec(Opcode.ld, "D,X"),
+                new BOpRec(Opcode.ld, "D,+X"),
+                new BOpRec(Opcode.ld, "D,-X"),
+                new BOpRec(Opcode.pop, "D"),
+            };
+
+            var oprecs92 = new OpRec[]
+            {
+                new BOpRec(Opcode.sts, "w,D"),
+                new BOpRec(Opcode.st, "+Z,D"),
+                new BOpRec(Opcode.st, "-Z,D"),
+                new BOpRec(Opcode.invalid, ""),
+
+                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.invalid, ""),
+
+                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.st, "+Y,D"),
+                new BOpRec(Opcode.st, "-Y,D"),
+                new BOpRec(Opcode.invalid, ""),
+
+                new BOpRec(Opcode.st, "X,D"),
+                new BOpRec(Opcode.st, "+X,D"),
+                new BOpRec(Opcode.st, "-X,D"),
+                new BOpRec(Opcode.push, "D"),
+            };
+
+            var oprecs94 = new OpRec[]
+            {
+                new BOpRec(Opcode.com, "D"),
+                new BOpRec(Opcode.neg, "D"),
+                new BOpRec(Opcode.swap, "D"),
+                new BOpRec(Opcode.inc, "D"),
+
+                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.asr, "D"),
+                new BOpRec(Opcode.lsr, "D"),
+                new BOpRec(Opcode.ror, "D"),
 
                 new GrpOpRec(4, 5, oprecs94_8),
                 new SparseOpRec(4, 5, oprecs94_9),
-                new BOpRec(Opcode.dec, "R"),
+                new BOpRec(Opcode.dec, "D"),
                 new BOpRec(Opcode.des, "i"),
 
                 new BOpRec(Opcode.jmp, "Q"),
@@ -201,10 +436,20 @@ namespace Reko.Arch.Avr
 
             var oprecs9 = new OpRec[]
             {
-                new BOpRec(Opcode.pop, "D"),
-                new BOpRec(Opcode.push, "D"),
+                new GrpOpRec(0, 4, oprecs90),
+                new GrpOpRec(0, 4, oprecs90),
+                new GrpOpRec(0, 4, oprecs92),
+                new GrpOpRec(0, 4, oprecs92),
+
                 new GrpOpRec(0, 4, oprecs94),
+                new GrpOpRec(0, 4, oprecs94),   //$TODO: may need a oprecs95 for all the invalid "des"
+                new BOpRec(Opcode.adiw, "q,s"),
+                new BOpRec(Opcode.sbiw, "q,s"),
+
                 new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.sbis, "g,h"),
 
                 new BOpRec(Opcode.invalid, ""),
                 new BOpRec(Opcode.invalid, ""),
@@ -218,27 +463,50 @@ namespace Reko.Arch.Avr
                 new BOpRec(Opcode.@out, "A,D"),
             };
 
+            var oprecsF = new OpRec[]
+            {
+                new CondOpRec(),
+                new CondOpRec(),
+                new CondOpRec(),
+                new CondOpRec(),
+
+                new CondOpRec(),
+                new CondOpRec(),
+                new CondOpRec(),
+                new CondOpRec(),
+
+                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.invalid, ""),
+
+                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.invalid, ""),
+            };
+
             oprecs = new OpRec[]
             {
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
+                new GrpOpRec(8, 4, oprecs0),
+                new GrpOpRec(10, 2, oprecs1),
                 new GrpOpRec(10, 2, oprecs2),
-                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.cpi, "d,B"),
 
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.invalid, ""),
+                new BOpRec(Opcode.sbci, "d,B"),
+                new BOpRec(Opcode.subi, "d,B"),
+                new BOpRec(Opcode.ori, "d,B"),
+                new BOpRec(Opcode.andi, "d,B"),
 
-                new BOpRec(Opcode.invalid, ""),
-                new GrpOpRec(9, 3, oprecs9),
+                new GrpOpRec(9, 3, oprecs8),
+                new GrpOpRec(8, 4, oprecs9),
                 new BOpRec(Opcode.invalid, ""),
                 new GrpOpRec(0xB, 1, oprecsB),
 
                 new BOpRec(Opcode.rjmp, "J"),
                 new BOpRec(Opcode.rcall, "J"),
                 new BOpRec(Opcode.ldi, "d,K"),
-                new BOpRec(Opcode.invalid, ""),
+                new GrpOpRec(8, 4, oprecsF),
             };
         }
 
@@ -306,6 +574,24 @@ namespace Reko.Arch.Avr
                     return dasm.Decode(wInstr, Opcode.invalid, "");
                 }
                 return oprec.Decode(dasm, wInstr);
+            }
+        }
+
+        public class CondOpRec : OpRec
+        {
+            static Opcode[] branches = new Opcode[]
+            {
+                Opcode.brcs, Opcode.breq, Opcode.brmi, Opcode.brvs,
+                Opcode.brlt, Opcode.brhs, Opcode.brts, Opcode.brie,
+
+                Opcode.brcc, Opcode.brne, Opcode.brpl, Opcode.brvc,
+                Opcode.brge, Opcode.brhc, Opcode.brtc, Opcode.brid
+            };
+
+            public override AvrInstruction Decode(Avr8Disassembler dasm, ushort wInstr)
+            {
+                int br = (((wInstr >> 7) & 8) | (wInstr & 7)) & 0xF;
+                return dasm.Decode(wInstr, branches[br], "o");
             }
         }
     }

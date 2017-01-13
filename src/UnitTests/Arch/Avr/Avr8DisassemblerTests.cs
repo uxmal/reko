@@ -50,10 +50,10 @@ namespace Reko.UnitTests.Arch.Avr
             return new LeImageWriter(bytes);
         }
 
-        private void AssertCode(string sExp, params ushort [] uInstrs)
+        private void AssertCode(string sExp, params ushort[] uInstrs)
         {
             // Convert to LE.
-            var bytes = 
+            var bytes =
             uInstrs.Select(u => new byte[] { (byte)u, (byte)(u >> 8) })
                 .SelectMany(b => b)
                 .ToArray();
@@ -136,239 +136,83 @@ namespace Reko.UnitTests.Arch.Avr
             AssertCode("ijmp", 0x9409);
             AssertCode("dec\tr0", 0x940A);
             AssertCode("des\t00", 0x940B);
-            AssertCode("jmp\t00300000", 0x958C, 0x0000);
-            AssertCode("jmp\t00210000", 0x950D, 0x0000);
-            AssertCode("call\t00220000", 0x951E, 0x0000);
-            AssertCode("call\t003F1234", 0x95FF, 0x1234);
+            AssertCode("jmp\t00600000", 0x958C, 0x0000);
+            AssertCode("jmp\t00420000", 0x950D, 0x0000);
+            AssertCode("call\t00440000", 0x951E, 0x0000);
+            AssertCode("call\t007F2468", 0x95FF, 0x9234);
         }
-/*
-}        0E 94
-         1F 01
-         0C 94
-         26 01
-         0C 94
-         00 00
-         08 95
-         68 EE
-         73 E0
-         80 E0
-         90 E0
-         0E 94
-         BE 00
-         08 95
-         1F 92
-         0F 92
-         0F B6
-         0F 92
-         11 24
-         2F 93
-         3F 93
-         8F 93
-         9F 93
-         AF 93
-         BF 93
-         80 91
-         04 01
-         90 91
-         05 01
-         A0 91
-         06 01
-         B0 91
-         07 01
-         30 91
-         08 01
-         01 96
-         A1 1D
-         B1 1D
-         23 2F
-         2D 5F
-         2D 37
-         20 F0
-         2D 57
-         01 96
-         A1 1D
-         B1 1D
-         20 93
-         08 01
-         80 93
-         04 01
-         90 93
-         05 01
-         A0 93
-         06 01
-         B0 93
-         07 01
-         80 91
-         00 01
-         90 91
-         01 01
-         A0 91
-         02 01
-         B0 91
-         03 01
-         01 96
-         A1 1D
-         B1 1D
-         80 93
-         00 01
-         90 93
-         01 01
-         A0 93
-         02 01
-         B0 93
-         03 01
-         BF 91
-         AF 91
-         9F 91
-         8F 91
-         3F 91
-         2F 91
-         0F 90
-         0F BE
-         0F 90
-         1F 90
-         18 95
-         9F B7
-         F8 94
-         20 91
-         00 01
-         30 91
-         01 01
-         40 91
-         02 01
-         50 91
-         03 01
-         86 B5
-         A8 9B
-         06 C0
-         8F 3F
-         21 F0
-         2F 5F
-         3F 4F
-         4F 4F
-         5F 4F
-         9F BF
-         54 2F
-         43 2F
-         32 2F
-         22 27
-         28 0F
-         31 1D
-         41 1D
-         51 1D
-         82 E0
-         22 0F
-         33 1F
-         44 1F
-         55 1F
-         8A 95
-         D1 F7
-         B9 01
-         CA 01
-         08 95
-         EF 92
-         FF 92
-         0F 93
-         1F 93
-         CF 93
-         DF 93
-         7B 01
-         8C 01
-         0E 94
-         98 00
-         EB 01
-         0E C0
-         0E 94
-         98 00
-         6C 1B
-         7D 0B
-         68 5E
-         73 40
-         C8 F3
-         08 94
-         E1 08
-         F1 08
-         01 09
-         11 09
-         C8 51
-         DC 4F
-         E1 14
-         F1 04
-         01 05
-         11 05
-         69 F7
-         DF 91
-         CF 91
-         1F 91
-         0F 91
-         FF 90
-         EF 90
-         08 95
-         78 94
-         84 B5
-         82 60
-         84 BD
-         84 B5
-         81 60
-         84 BD
-         85 B5
-         82 60
-         85 BD
-         85 B5
-         81 60
-         85 BD
-         EE E6
-         F0 E0
-         80 81
-         81 60
-         80 83
-         E1 E8
-         F0 E0
-         10 82
-         80 81
-         82 60
-         80 83
-         80 81
-         81 60
-         80 83
-         E0 E8
-         F0 E0
-         80 81
-         81 60
-         80 83
-         E1 EB
-         F0 E0
-         80 81
-         84 60
-         80 83
-         E0 EB
-         F0 E0
-         80 81
-         81 60
-         80 83
-         EA E7
-         F0 E0
-         80 81
-         84 60
-         80 83
-         80 81
-         82 60
-         80 83
-         80 81
-         81 60
-         80 83
-         80 81
-         80 68
-         80 83
-         10 92
-         C1 00
-         08 95
-         0E 94
-         E4 00
-         0E 94
-         48 00
-         0E 94
-         49 00
-         */
+
+        [Test]
+        public void Avr8_dis_cpi()
+        {
+            AssertCode("cpi\tr26,09", 0x30A9);
+            AssertCode("cpi\tr31,FF", 0x3FFF);
+        }
+
+        [Test]
+        public void Avr8_dis_cpc()
+        {
+            AssertCode("cpc\tr18,r4", 0x0524);
+            AssertCode("cpc\tr31,r31", 0x07FF);
+        }
+
+        [Test]
+        public void Avr8_dis_brcc()
+        {
+            AssertCode("brcs\t0000", 0xF000);
+            AssertCode("brid\t003E", 0xF4FF);
+        }
+
+        [Test]
+        public void Avr8_dis_movw()
+        {
+            AssertCode("movw\tr0,r8", 0x0104);
+            AssertCode("movw\tr30,r28", 0x01FE);
+        }
+
+        [Test]
+        public void Avr8_dis_adiw()
+        {
+            AssertCode("adiw\tr24,01", 0x9601);
+            AssertCode("adiw\tr26,15", 0x9655);
+        }
+
+        [Test]
+        public void Avr_dis_adc()
+        {
+            AssertCode("adc\tr26,r1", 0x1DA1);
+        }
+
+        [Test]
+        public void Avr_dis_sts()
+        {
+            AssertCode("sts\t00001234,r1", 0x9210, 0x1234);
+        }
+
+        [Test]
+        public void Avr_dis_st_z()
+        {
+            AssertCode("st\tZ,r24", 0x8380);
+        }
+
+        [Test]
+        public void Avr_dis_st_z_postinc()
+        {
+            AssertCode("st\tZ+,r9", 0x9291);
+        }
+        
+        [Test]
+        public void Avr_dis_regression1()
+        {
+            AssertCode("sbis\t05,00", 0x9BA8);
+            AssertCode("ld\tr24,X", 0x8180);
+            AssertCode("rjmp\tFFFC", 0xCFFD);
+        }
+
+        [Test]
+        public void Avr_dis_regression2()
+        {
+            AssertCode("lds\tr18,00000080", 0x9120, 0x0080);
+        }
     }
 }
