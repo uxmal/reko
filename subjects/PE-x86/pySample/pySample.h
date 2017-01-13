@@ -757,7 +757,7 @@ T_109: (in eax_15 != null : bool)
 T_110: (in eax_24 : (ptr Eq_110))
   Class: Eq_110
   DataType: (ptr Eq_110)
-  OrigDataType: (ptr (struct (0 T_115 t0000)))
+  OrigDataType: (ptr PyObject)
 T_111: (in _Py_NoneStruct : PyObject)
   Class: Eq_111
   DataType: Eq_111
@@ -772,19 +772,19 @@ T_113: (in 0x00000000 : word32)
   OrigDataType: word32
 T_114: (in eax_24 + 0x00000000 : word32)
   Class: Eq_114
-  DataType: word32
-  OrigDataType: word32
+  DataType: (ptr int32)
+  OrigDataType: (ptr int32)
 T_115: (in Mem0[eax_24 + 0x00000000:word32] : word32)
   Class: Eq_115
-  DataType: word32
-  OrigDataType: word32
+  DataType: int32
+  OrigDataType: int32
 T_116: (in 0x00000001 : word32)
   Class: Eq_116
   DataType: word32
   OrigDataType: word32
 T_117: (in eax_24->ob_refcnt + 0x00000001 : word32)
-  Class: Eq_115
-  DataType: word32
+  Class: Eq_117
+  DataType: int32
   OrigDataType: word32
 T_118: (in 0x00000000 : word32)
   Class: Eq_118
@@ -792,12 +792,12 @@ T_118: (in 0x00000000 : word32)
   OrigDataType: word32
 T_119: (in eax_24 + 0x00000000 : word32)
   Class: Eq_119
-  DataType: (ptr word32)
-  OrigDataType: (ptr word32)
+  DataType: (ptr int32)
+  OrigDataType: (ptr int32)
 T_120: (in Mem27[eax_24 + 0x00000000:word32] : word32)
-  Class: Eq_115
-  DataType: word32
-  OrigDataType: word32
+  Class: Eq_117
+  DataType: int32
+  OrigDataType: int32
 T_121: (in _Py_NoneStruct : PyObject)
   Class: Eq_111
   DataType: Eq_111
