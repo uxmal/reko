@@ -108,7 +108,7 @@ namespace Reko.UnitTests.Arch
 
             public void Error(Address address, string message)
             {
-                throw new NotImplementedException();
+                throw new Exception(string.Format("{0}: {1}", address, message));
             }
         }
 

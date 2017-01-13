@@ -136,7 +136,7 @@ namespace Reko.Arch.Avr
                 case 'w': // Trailing 16-bit absolute address
                     if (!rdr.TryReadLeUInt16(out w2))
                         return null;
-                    op = AddressOperand.Ptr32(w2);
+                    op = AddressOperand.Ptr16(w2);
                     break;
                 case 'o':   // Branch offset
                     offset = (short)wInstr;
@@ -146,19 +146,19 @@ namespace Reko.Arch.Avr
                     op = AddressOperand.Create(this.addr + offset);
                     break;
                 case 'X':
-                    op = MemD(arch.X, 0);
+                    op = MemD(arch.x, 0);
                     break;
                 case 'Y':
-                    op = MemD(arch.Y, 0);
+                    op = MemD(arch.y, 0);
                     break;
                 case 'y':
-                    op = MemD(arch.Y, Displacement(wInstr));
+                    op = MemD(arch.y, Displacement(wInstr));
                     break;
                 case 'Z':
-                    op = MemD(arch.Z, 0);
+                    op = MemD(arch.z, 0);
                     break;
                 case 'z':
-                    op = MemD(arch.Z, Displacement(wInstr));
+                    op = MemD(arch.z, Displacement(wInstr));
                     break;
                 default:
                     throw new NotImplementedException(string.Format("Unimplemented AVR8 format symbol '{0}'.'", fmt[i - 1]));
@@ -191,10 +191,10 @@ namespace Reko.Arch.Avr
             RegisterStorage reg;
             switch (cReg)
             {
-            case 'X': reg = arch.X; break;
-            case 'Y': reg = arch.Y; break;
-            case 'Z': reg = arch.Z; break;
-            default: Debug.Assert(false, "Must be X,Y, or Z");
+            case 'X': reg = arch.x; break;
+            case 'Y': reg = arch.y; break;
+            case 'Z': reg = arch.z; break;
+            default: Debug.Assert(false, "Must be X,y, or Z");
                 reg = null;
                 break;
             }
@@ -267,7 +267,7 @@ namespace Reko.Arch.Avr
                 new BOpRec(Opcode.ldd, "D,z"),
                 new BOpRec(Opcode.ldd, "D,z"),
 
-                new BOpRec(Opcode.ld,  "D,Y"),
+                new BOpRec(Opcode.ld,  "D,y"),
                 new BOpRec(Opcode.ldd, "D,y"),
                 new BOpRec(Opcode.ldd, "D,y"),
                 new BOpRec(Opcode.ldd, "D,y"),
@@ -290,7 +290,7 @@ namespace Reko.Arch.Avr
                 new BOpRec(Opcode.std, "z,D"),
                 new BOpRec(Opcode.std, "z,D"),
 
-                new BOpRec(Opcode.st, "Y,D"),
+                new BOpRec(Opcode.st, "y,D"),
                 new BOpRec(Opcode.std, "y,D"),
                 new BOpRec(Opcode.std, "y,D"),
                 new BOpRec(Opcode.std, "y,D"),
@@ -378,8 +378,8 @@ namespace Reko.Arch.Avr
                 new BOpRec(Opcode.elpm, "D,+Z"),
 
                 new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.ld, "D,+Y"),
-                new BOpRec(Opcode.ld, "D,-Y"),
+                new BOpRec(Opcode.ld, "D,+y"),
+                new BOpRec(Opcode.ld, "D,-y"),
                 new BOpRec(Opcode.invalid, ""),
 
                 new BOpRec(Opcode.ld, "D,X"),
@@ -401,8 +401,8 @@ namespace Reko.Arch.Avr
                 new BOpRec(Opcode.invalid, ""),
 
                 new BOpRec(Opcode.invalid, ""),
-                new BOpRec(Opcode.st, "+Y,D"),
-                new BOpRec(Opcode.st, "-Y,D"),
+                new BOpRec(Opcode.st, "+y,D"),
+                new BOpRec(Opcode.st, "-y,D"),
                 new BOpRec(Opcode.invalid, ""),
 
                 new BOpRec(Opcode.st, "X,D"),

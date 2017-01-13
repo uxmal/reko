@@ -178,41 +178,48 @@ namespace Reko.UnitTests.Arch.Avr
         }
 
         [Test]
-        public void Avr_dis_adc()
+        public void Avr8_dis_adc()
         {
             AssertCode("adc\tr26,r1", 0x1DA1);
         }
 
         [Test]
-        public void Avr_dis_sts()
+        public void Avr8_dis_sts()
         {
-            AssertCode("sts\t00001234,r1", 0x9210, 0x1234);
+            AssertCode("sts\t1234,r1", 0x9210, 0x1234);
         }
 
         [Test]
-        public void Avr_dis_st_z()
+        public void Avr8_dis_st_z()
         {
-            AssertCode("st\tZ,r24", 0x8380);
+            AssertCode("st\tz,r24", 0x8380);
         }
 
         [Test]
-        public void Avr_dis_st_z_postinc()
+        public void Avr8_dis_st_z_postinc()
         {
-            AssertCode("st\tZ+,r9", 0x9291);
+            AssertCode("st\tz+,r9", 0x9291);
         }
         
         [Test]
-        public void Avr_dis_regression1()
+        public void Avr8_dis_regression1()
         {
             AssertCode("sbis\t05,00", 0x9BA8);
-            AssertCode("ld\tr24,X", 0x8180);
+            AssertCode("ld\tr24,x", 0x8180);
             AssertCode("rjmp\tFFFC", 0xCFFD);
         }
 
         [Test]
-        public void Avr_dis_regression2()
+        public void Avr8_dis_lds()
         {
-            AssertCode("lds\tr18,00000080", 0x9120, 0x0080);
+            AssertCode("lds\tr18,0080", 0x9120, 0x0080);
+        }
+
+        [Test]
+        public void Avr8_dis_lpm()
+        {
+            AssertCode("lpm", 0x95C8);
+            AssertCode("lpm\tr25,z+", 0x9195);
         }
     }
 }

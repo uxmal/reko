@@ -45,17 +45,16 @@ namespace Reko.Arch.Avr
 
         public override Constant GetRegister(RegisterStorage r)
         {
-            throw new NotImplementedException();
+            return Constant.Invalid;
         }
 
         public override void OnAfterCall(FunctionType sigCallee)
         {
-            throw new NotImplementedException();
         }
 
         public override CallSite OnBeforeCall(Identifier stackReg, int returnAddressSize)
         {
-            throw new NotImplementedException();
+            return new CallSite(returnAddressSize, 0);
         }
 
         public override void OnProcedureEntered()
@@ -73,7 +72,6 @@ namespace Reko.Arch.Avr
 
         public override void SetRegister(RegisterStorage r, Constant v)
         {
-            throw new NotImplementedException();
         }
     }
 }

@@ -27,34 +27,54 @@ using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
+using Reko.Core.Lib;
 
 namespace Reko.Arch.Avr
 {
     public class Avr8Architecture : ProcessorArchitecture
     {
-        private RegisterStorage [] regs;
+        private RegisterStorage[] regs;
+        private Dictionary<uint, FlagGroupStorage> grfs;
+        private List<Tuple<FlagM, char>> grfToString;
 
         public Avr8Architecture()
         {
             this.PointerType = PrimitiveType.Ptr16;
             this.FramePointerType = PrimitiveType.UInt8;
             this.InstructionBitSize = 16;
-            this.X = new RegisterStorage("X", 33, 0, PrimitiveType.Word16);
-            this.Y = new RegisterStorage("Y", 34, 0, PrimitiveType.Word16);
-            this.Z = new RegisterStorage("Z", 35, 0, PrimitiveType.Word16);
+            this.x = new RegisterStorage("x", 33, 0, PrimitiveType.Word16);
+            this.y = new RegisterStorage("y", 34, 0, PrimitiveType.Word16);
+            this.z = new RegisterStorage("z", 35, 0, PrimitiveType.Word16);
+            this.sreg = new FlagRegister("sreg", 36, PrimitiveType.Byte);
+            this.code = new RegisterStorage("code", 100, 0, PrimitiveType.SegmentSelector);
+            this.StackRegister = new RegisterStorage("SP", 0x3D, 0, PrimitiveType.Word16); 
             this.regs = Enumerable.Range(0, 32)
                 .Select(n => new RegisterStorage(
                     string.Format("r{0}", n),
                     n,
                     0,
                     PrimitiveType.Byte))
-                .Concat(new [] { this.X, this.Y, this.Z })
+                .Concat(new[] { this.x, this.y, this.z, this.sreg })
                 .ToArray();
+            this.grfs = new Dictionary<uint, FlagGroupStorage>();
+            this.grfToString = new List<Tuple<FlagM, char>>
+            {
+                Tuple.Create(FlagM.IF, 'I'),
+                Tuple.Create(FlagM.TF, 'T'),
+                Tuple.Create(FlagM.HF, 'H'),
+                Tuple.Create(FlagM.SF, 'S'),
+                Tuple.Create(FlagM.VF, 'V'),
+                Tuple.Create(FlagM.NF, 'N'),
+                Tuple.Create(FlagM.ZF, 'Z'),
+                Tuple.Create(FlagM.CF, 'C'),
+            };
         }
-        
-        public RegisterStorage X { get; private set; }
-        public RegisterStorage Y { get; private set; }
-        public RegisterStorage Z { get; private set; }
+
+        public FlagRegister sreg { get; private set; }
+        public RegisterStorage x { get; private set; }
+        public RegisterStorage y { get; private set; }
+        public RegisterStorage z { get; private set; }
+        public RegisterStorage code { get; private set; }
 
         public override IEnumerable<MachineInstruction> CreateDisassembler(ImageReader rdr)
         {
@@ -118,7 +138,14 @@ namespace Reko.Arch.Avr
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
         {
-            throw new NotImplementedException();
+            FlagGroupStorage fl;
+            if (!grfs.TryGetValue(grf, out fl))
+            {
+                PrimitiveType dt = Bits.IsSingleBitSet(grf) ? PrimitiveType.Bool : PrimitiveType.Byte;
+                fl = new FlagGroupStorage(this.sreg, grf, GrfToString(grf), dt);
+                grfs.Add(grf, fl);
+            }
+            return fl;
         }
 
         public override SortedList<string, int> GetOpcodeNames()
@@ -146,9 +173,29 @@ namespace Reko.Arch.Avr
             throw new NotImplementedException();
         }
 
+        public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
+        {
+            if (reg == this.z)
+            {
+                if (offset == 0)
+                    return regs[30];
+                else
+                    return regs[31];
+            }
+            throw new NotImplementedException();
+        }
+
         public override string GrfToString(uint grf)
         {
-            throw new NotImplementedException();
+            var s = new StringBuilder();
+            foreach (var tpl in this.grfToString)
+            {
+                if ((grf & (uint)tpl.Item1) != 0)
+                {
+                    s.Append(tpl.Item2);
+                }
+            }
+            return s.ToString();
         }
 
         public override Address MakeAddressFromConstant(Constant c)
@@ -170,5 +217,18 @@ namespace Reko.Arch.Avr
         {
             return Address.TryParse16(txtAddr, out addr);
         }
+    }
+
+    [Flags]
+    public enum FlagM
+    {
+        CF = 1,
+        ZF = 2,
+        NF = 4,
+        VF = 8,
+        SF = 16,
+        HF = 32,
+        TF = 64,
+        IF = 128
     }
 }
