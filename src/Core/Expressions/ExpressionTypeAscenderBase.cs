@@ -423,7 +423,7 @@ namespace Reko.Core.Expressions
             var dt = unary.Expression.Accept(this);
             if (unary.Operator == Operator.AddrOf)
             {
-                dt = unary.DataType;
+                dt = factory.CreatePointer(dt, unary.DataType.Size);
             }
             return RecordDataType(dt, unary);
         }

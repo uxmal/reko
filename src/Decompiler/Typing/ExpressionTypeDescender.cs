@@ -742,10 +742,6 @@ namespace Reko.Typing
 
         public bool VisitUnaryExpression(UnaryExpression unary, TypeVariable tv)
         {
-            if (unary.Operator == Operator.AddrOf)
-            {
-                MeetDataType(unary, factory.CreatePointer(unary.Expression.DataType, unary.DataType.Size));
-            }
             unary.Expression.Accept(this, unary.Expression.TypeVariable);
             return false;
         }
