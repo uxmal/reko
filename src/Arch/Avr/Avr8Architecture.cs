@@ -170,7 +170,7 @@ namespace Reko.Arch.Avr
 
         public override RegisterStorage[] GetRegisters()
         {
-            throw new NotImplementedException();
+            return regs;
         }
 
         public override RegisterStorage GetSubregister(RegisterStorage reg, int offset, int width)
@@ -182,7 +182,7 @@ namespace Reko.Arch.Avr
                 else
                     return regs[31];
             }
-            throw new NotImplementedException();
+            return reg;
         }
 
         public override string GrfToString(uint grf)
@@ -200,7 +200,7 @@ namespace Reko.Arch.Avr
 
         public override Address MakeAddressFromConstant(Constant c)
         {
-            throw new NotImplementedException();
+            return Address.Ptr16((ushort)c.ToUInt32());
         }
 
         public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)

@@ -36,16 +36,17 @@ namespace Reko.Arch.Avr
         private Avr8Architecture arch;
         private Frame frame;
         private IRewriterHost host;
-        private Avr8Disassembler dasm;
+        private IEnumerator<AvrInstruction> dasm;
         private ProcessorState state;
         private AvrInstruction instr;
         private RtlInstructionCluster rtlc;
+        private List<RtlInstructionCluster> clusters;
         private RtlEmitter m;
 
         public Avr8Rewriter(Avr8Architecture arch, ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
         {
             this.arch = arch;
-            this.dasm = new Avr8Disassembler(arch, rdr);
+            this.dasm = new Avr8Disassembler(arch, rdr).GetEnumerator();
             this.state = state;
             this.frame = frame;
             this.host = host;
@@ -53,74 +54,85 @@ namespace Reko.Arch.Avr
 
         public IEnumerator<RtlInstructionCluster> GetEnumerator()
         {
-            foreach (var instr in dasm)
+            while (dasm.MoveNext())
             {
-                this.instr = instr;
-                this.rtlc = new RtlInstructionCluster(instr.Address, instr.Length);
-                this.rtlc.Class = RtlClass.Linear;
-                this.m = new RtlEmitter(rtlc.Instructions);
-                switch (instr.opcode)
+                this.clusters = new List<RtlInstructionCluster>();
+                Rewrite(dasm.Current);
+                foreach (var rtlc in clusters)
                 {
-                case Opcode.adc: RewriteAdcSbc(m.IAdd); break;
-                case Opcode.add: RewriteBinOp(m.IAdd, CmpFlags); break;
-                case Opcode.adiw: RewriteAddSubIW(m.IAdd); break;
-                case Opcode.and: RewriteBinOp(m.And, FlagM.SF|FlagM.NF|FlagM.ZF, FlagM.VF); break;
-                case Opcode.andi: RewriteBinOp(m.And, FlagM.SF|FlagM.NF|FlagM.ZF, FlagM.VF); break;
-                case Opcode.asr: RewriteAsr(); break;
-                case Opcode.brcc: RewriteBranch(ConditionCode.UGE, FlagM.CF); break;
-                case Opcode.brcs: RewriteBranch(ConditionCode.ULT, FlagM.CF); break;
-                case Opcode.breq: RewriteBranch(ConditionCode.EQ, FlagM.ZF); break;
-                case Opcode.brid: RewriteBranch(FlagM.IF, false); break;
-                case Opcode.brne: RewriteBranch(ConditionCode.NE, FlagM.ZF); break;
-                case Opcode.call: RewriteCall(); break;
-                case Opcode.cli: RewriteCli(); break;
-                case Opcode.com: RewriteUnary(m.Comp, FlagM.SF | FlagM.NF | FlagM.ZF, FlagM.VF, FlagM.CF); break;
-                case Opcode.cp: RewriteCp(); break;
-                case Opcode.cpi: RewriteCp(); break;
-                case Opcode.cpc: RewriteCpc(); break;
-                case Opcode.dec: RewriteIncDec(m.ISub); break;
-                case Opcode.des: RewriteDes(); break;
-                case Opcode.eor: RewriteBinOp(m.Xor, LogicalFlags, FlagM.VF); break;
-                case Opcode.icall: RewriteIcall(); break;
-                case Opcode.@in: RewriteIn(); break;
-                case Opcode.inc: RewriteIncDec(m.IAdd); break;
-                case Opcode.ijmp: RewriteIjmp(); break;
-                case Opcode.jmp: RewriteJmp(); break;
-                case Opcode.ld: RewriteLd(); break;
-                case Opcode.ldi: RewriteLdi(); break;
-                case Opcode.lds: RewriteLds(); break;
-                case Opcode.lpm: RewriteLpm(); break;
-                case Opcode.lsr: RewriteLsr(); break;
-                case Opcode.mov: RewriteMov(); break;
-                case Opcode.movw: RewriteMovw(); break;
-                case Opcode.neg: RewriteUnary(m.Neg, CmpFlags); break;
-                case Opcode.@out: RewriteOut(); break;
-                case Opcode.or: RewriteBinOp(m.Or, FlagM.SF|FlagM.NF|FlagM.ZF, FlagM.VF); break;
-                case Opcode.ori: RewriteBinOp(m.Or, FlagM.SF|FlagM.NF|FlagM.ZF, FlagM.VF); break;
-                case Opcode.pop: RewritePop(); break;
-                case Opcode.push: RewritePush(); break;
-                case Opcode.rcall: RewriteCall(); break;
-                case Opcode.ror: RewriteRor(); break;
-                case Opcode.ret: RewriteRet(); break;
-                case Opcode.reti: RewriteRet(); break;  //$TODO: more to indicate interrupt return?
-                case Opcode.rjmp: RewriteJmp(); break;
-                case Opcode.sbc: RewriteAdcSbc(m.ISub); break;
-                case Opcode.sbci: RewriteAdcSbc(m.ISub); break;
-                case Opcode.sbiw: RewriteAddSubIW(m.ISub); break;
-                case Opcode.sec: RewriteSetBit(FlagM.CF, true); break;
-                case Opcode.sei: RewriteSei(); break;
-                case Opcode.st: RewriteSt(); break;
-                case Opcode.sts: RewriteSts(); break;
-                case Opcode.sub: RewriteBinOp(m.ISub, CmpFlags); break;
-                case Opcode.subi: RewriteBinOp(m.ISub, CmpFlags); break;
-                case Opcode.swap: RewriteSwap(); break;
-                default:
-                    host.Error(instr.Address, string.Format("AVR8 instruction '{0}' is not supported yet.", instr.opcode));
-                    m.Invalid();
-                    break;
+                    yield return rtlc;
                 }
-                yield return rtlc;
             }
+        }
+
+        public void Rewrite(AvrInstruction instr)
+        {
+            this.instr = instr;
+            this.rtlc = new RtlInstructionCluster(instr.Address, instr.Length);
+            this.rtlc.Class = RtlClass.Linear;
+            this.m = new RtlEmitter(rtlc.Instructions);
+            switch (instr.opcode)
+            {
+            case Opcode.adc: RewriteAdcSbc(m.IAdd); break;
+            case Opcode.add: RewriteBinOp(m.IAdd, CmpFlags); break;
+            case Opcode.adiw: RewriteAddSubIW(m.IAdd); break;
+            case Opcode.and: RewriteBinOp(m.And, FlagM.SF | FlagM.NF | FlagM.ZF, FlagM.VF); break;
+            case Opcode.andi: RewriteBinOp(m.And, FlagM.SF | FlagM.NF | FlagM.ZF, FlagM.VF); break;
+            case Opcode.asr: RewriteAsr(); break;
+            case Opcode.brcc: RewriteBranch(ConditionCode.UGE, FlagM.CF); break;
+            case Opcode.brcs: RewriteBranch(ConditionCode.ULT, FlagM.CF); break;
+            case Opcode.breq: RewriteBranch(ConditionCode.EQ, FlagM.ZF); break;
+            case Opcode.brid: RewriteBranch(FlagM.IF, false); break;
+            case Opcode.brne: RewriteBranch(ConditionCode.NE, FlagM.ZF); break;
+            case Opcode.call: RewriteCall(); break;
+            case Opcode.cli: RewriteCli(); break;
+            case Opcode.com: RewriteUnary(m.Comp, FlagM.SF | FlagM.NF | FlagM.ZF, FlagM.VF, FlagM.CF); break;
+            case Opcode.cp: RewriteCp(); break;
+            case Opcode.cpi: RewriteCp(); break;
+            case Opcode.cpc: RewriteCpc(); break;
+            case Opcode.dec: RewriteIncDec(m.ISub); break;
+            case Opcode.des: RewriteDes(); break;
+            case Opcode.eor: RewriteBinOp(m.Xor, LogicalFlags, FlagM.VF); break;
+            case Opcode.icall: RewriteIcall(); break;
+            case Opcode.@in: RewriteIn(); break;
+            case Opcode.inc: RewriteIncDec(m.IAdd); break;
+            case Opcode.ijmp: RewriteIjmp(); break;
+            case Opcode.jmp: RewriteJmp(); break;
+            case Opcode.ld: RewriteLd(); break;
+            case Opcode.ldi: RewriteLdi(); break;
+            case Opcode.lds: RewriteLds(); break;
+            case Opcode.lpm: RewriteLpm(); break;
+            case Opcode.lsr: RewriteLsr(); break;
+            case Opcode.mov: RewriteMov(); break;
+            case Opcode.movw: RewriteMovw(); break;
+            case Opcode.neg: RewriteUnary(m.Neg, CmpFlags); break;
+            case Opcode.@out: RewriteOut(); break;
+            case Opcode.or: RewriteBinOp(m.Or, FlagM.SF | FlagM.NF | FlagM.ZF, FlagM.VF); break;
+            case Opcode.ori: RewriteBinOp(m.Or, FlagM.SF | FlagM.NF | FlagM.ZF, FlagM.VF); break;
+            case Opcode.pop: RewritePop(); break;
+            case Opcode.push: RewritePush(); break;
+            case Opcode.rcall: RewriteCall(); break;
+            case Opcode.ror: RewriteRor(); break;
+            case Opcode.ret: RewriteRet(); break;
+            case Opcode.reti: RewriteRet(); break;  //$TODO: more to indicate interrupt return?
+            case Opcode.rjmp: RewriteJmp(); break;
+            case Opcode.sbc: RewriteAdcSbc(m.ISub); break;
+            case Opcode.sbci: RewriteAdcSbc(m.ISub); break;
+            case Opcode.sbis: RewriteSbis(); return; // We've already added ourself to clusters.
+            case Opcode.sbiw: RewriteAddSubIW(m.ISub); break;
+            case Opcode.sec: RewriteSetBit(FlagM.CF, true); break;
+            case Opcode.sei: RewriteSei(); break;
+            case Opcode.st: RewriteSt(); break;
+            case Opcode.sts: RewriteSts(); break;
+            case Opcode.sub: RewriteBinOp(m.ISub, CmpFlags); break;
+            case Opcode.subi: RewriteBinOp(m.ISub, CmpFlags); break;
+            case Opcode.swap: RewriteSwap(); break;
+            default:
+                host.Error(instr.Address, string.Format("AVR8 instruction '{0}' is not supported yet.", instr.opcode));
+                m.Invalid();
+                break;
+            }
+            clusters.Add(rtlc);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -312,7 +324,8 @@ namespace Reko.Arch.Avr
         {
             var operand = instr.operands[0];
             var regPair = RegisterPair(operand);
-            m.Assign(regPair, fn(regPair, ((ImmediateOperand)instr.operands[1]).Value));
+            var imm = ((ImmediateOperand)instr.operands[1]).Value;
+            m.Assign(regPair, fn(regPair, Constant.Word16(imm.ToUInt16())));
             EmitFlags(regPair, ArithFlags);
         }
 
@@ -491,6 +504,22 @@ namespace Reko.Arch.Avr
             var reg = RewriteOp(0);
             m.Assign(reg, host.PseudoProcedure(PseudoProcedure.RorC, PrimitiveType.Byte, reg, c));
             EmitFlags(reg, CmpFlags);
+        }
+
+        private void RewriteSbis()
+        {
+            var io = host.PseudoProcedure("__in", PrimitiveType.Byte, RewriteOp(0));
+            var bis = host.PseudoProcedure("__bit_set", PrimitiveType.Bool, io, RewriteOp(1));
+            if (!dasm.MoveNext())
+            {
+                m.Invalid();
+                return;
+            }
+            var addrSkip = dasm.Current.Address + dasm.Current.Length;
+            var branch = m.BranchInMiddleOfInstruction(bis, addrSkip, RtlClass.ConditionalTransfer);
+            rtlc.Class = RtlClass.ConditionalTransfer;
+            clusters.Add(rtlc);
+            Rewrite(dasm.Current);
         }
 
         private void RewriteSei()

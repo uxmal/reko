@@ -393,13 +393,15 @@ namespace Reko.UnitTests.Arch.Avr
         }
 
         [Test]
-        [Ignore("argh. recursive call?")]
         public void Avr8_rw_sbis()
         {
-            Rewrite(0x9BA8); // "sbis\t05,00"
+            Rewrite(0x9BA8, 0x9291); // "sbis\t05,00; "st\tZ+,r9
             AssertCode(
-                "0|L--|0100(2): 1 instructions",
-                "1|L--|@@@");
+                "0|T--|0100(2): 1 instructions",
+                "1|T--|if (__bit_set(__in(0x05), 0x00)) branch 0104",
+                "2|L--|0102(2): 2 instructions",
+                "3|L--|Mem0[z:byte] = r9",
+                "4|L--|z = z + 1");
         }
 
         [Test]

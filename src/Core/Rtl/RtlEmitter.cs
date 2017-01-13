@@ -67,11 +67,12 @@ namespace Reko.Core.Rtl
         /// <param name="condition"></param>
         /// <param name="target"></param>
         /// <param name="?"></param>
-        public void BranchInMiddleOfInstruction(Expression condition, Address target, RtlClass rtlClass)
+        public RtlBranch BranchInMiddleOfInstruction(Expression condition, Address target, RtlClass rtlClass)
         {
             var branch = new RtlBranch(condition, target, rtlClass);
             branch.NextStatementRequiresLabel = true;
             instrs.Add(branch);
+            return branch;
         }
 
         /// <summary>
