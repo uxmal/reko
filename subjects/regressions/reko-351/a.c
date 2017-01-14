@@ -227,7 +227,7 @@ void _sin(real64 rArg04, real64 rArg0C, Eq_231 tArg14)
 
 void __do_global_ctors_aux()
 {
-	<anonymous> * a0_12 = *&globals->ptr8000270C;
+	<anonymous> * a0_12 = globals->ptr8000270C;
 	if (-0x01 - a0_12 != 0x00)
 	{
 		do
