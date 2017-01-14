@@ -21,13 +21,13 @@ void fn00001000(int32 d0, byte * a0)
 		} while (d0_508 != 0x00);
 	}
 	*&globals->ptr2B88 = fp;
-	*&globals->ptr2B8C = (struct Eq_4 **) a6_8;
+	globals->ptr2B8C = a6_8;
 	struct Eq_25 * d0_19 = FindTask(0x00);
 	struct Eq_31 * d0_112 = OpenLibrary(0x12BC, 0x00);
 	if (d0_112 != null)
 	{
 		int32 d4_460;
-		*&globals->ptr2B90 = (struct Eq_31 **) d0_112;
+		globals->ptr2B90 = d0_112;
 		if (d0_19->ptr00AC == null)
 		{
 			d4_460 = 0x02;
@@ -69,8 +69,8 @@ void fn00001000(int32 d0, byte * a0)
 			if (d0_151 == null)
 			{
 				fn00001214(d0_19);
-				*&globals->ptr2B94 = (struct Eq_67 **) d0_151;
-				*&globals->ptr2B98 = (struct Eq_67 **) d0_151;
+				globals->ptr2B94 = d0_151;
+				globals->ptr2B98 = d0_151;
 				Mem403[0x00:word32] = 0x00;
 				dwLoc14_159 = d0_151;
 				ui32 d0_406 = d0_151->dw0024;
@@ -1295,7 +1295,7 @@ Eq_2989 fn00001FF4(word32 dwArg04, ptr32 & a0Out)
 Eq_31 * fn000021C4(word32 dwArg04, word32 dwArg08, ptr32 & a0Out)
 {
 	struct Eq_31 * d0_45;
-	struct Eq_3059 * a0_31 = *&globals->ptr2B8C;
+	struct Eq_3059 * a0_31 = globals->ptr2B8C;
 	*a0Out = a0_31;
 	if (a0_31->w0014 >= 0x27)
 	{
@@ -1381,7 +1381,7 @@ l00002296:
 Eq_31 * fn000022E8(word32 dwArg04, word32 dwArg08, word32 dwArg0C, ptr32 & a0Out)
 {
 	struct Eq_31 * d0_30;
-	struct Eq_3250 * a0_19 = *&globals->ptr2B8C;
+	struct Eq_3250 * a0_19 = globals->ptr2B8C;
 	*a0Out = a0_19;
 	if (a0_19->w0014 >= 0x27)
 		d0_30 = CreatePrivatePool(dwArg04, dwArg08, dwArg0C);

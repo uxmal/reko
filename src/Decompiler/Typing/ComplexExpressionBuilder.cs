@@ -160,6 +160,12 @@ namespace Reko.Typing
         {
             if (enclosingPtr != null)
             {
+                var unary = expComplex as UnaryExpression;
+                if (unary != null && unary.Operator == Operator.AddrOf)
+                {
+                    dereferenceGenerated = true;
+                    return unary.Expression;
+                }
                 return expComplex;
             }
             var pointee = ptr.Pointee;

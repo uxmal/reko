@@ -1318,7 +1318,7 @@ T_288: (in 0x0024 : word16)
   Class: Eq_287
   DataType: cu16
   OrigDataType: cu16
-T_289: (in **&globals->ptr13CC < 0x0024 : bool)
+T_289: (in globals->ptr13CC->w0014 < 0x0024 : bool)
   Class: Eq_289
   DataType: bool
   OrigDataType: bool

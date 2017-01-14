@@ -21,13 +21,13 @@ void fn00001000(int32 d0, int32 d7, byte * a0)
 		} while (d0_513 != 0x00);
 	}
 	*&globals->ptr3E94 = fp;
-	*&globals->ptr3E98 = (struct Eq_5 **) a6_8;
+	globals->ptr3E98 = a6_8;
 	struct Eq_26 * d0_19 = FindTask(0x00);
 	struct Eq_32 * d0_112 = OpenLibrary(0x12BC, 0x00);
 	if (d0_112 != null)
 	{
 		int32 d4_465;
-		*&globals->ptr3E9C = (struct Eq_32 **) d0_112;
+		globals->ptr3E9C = d0_112;
 		if (d0_19->ptr00AC == null)
 		{
 			d4_465 = 0x02;
@@ -68,8 +68,8 @@ void fn00001000(int32 d0, int32 d7, byte * a0)
 			if (d0_151 == null)
 			{
 				fn00001214(d0_19);
-				*&globals->ptr3EA0 = (struct Eq_68 **) d0_151;
-				*&globals->ptr3EA4 = (struct Eq_68 **) d0_151;
+				globals->ptr3EA0 = d0_151;
+				globals->ptr3EA4 = d0_151;
 				Mem405[0x00:word32] = 0x00;
 				dwLoc14_158 = d0_151;
 				ui32 d0_408 = d0_151->dw0024;
@@ -1363,7 +1363,7 @@ Eq_32 * fn00002220(word32 dwArg04, word32 dwArg08, ptr32 & d1Out, ptr32 & a0Out)
 {
 	*d1Out = d1;
 	struct Eq_32 * d0_45;
-	struct Eq_3263 * a0_31 = *&globals->ptr3E98;
+	struct Eq_3263 * a0_31 = globals->ptr3E98;
 	*a0Out = a0_31;
 	if (a0_31->w0014 >= 0x27)
 	{
@@ -1455,7 +1455,7 @@ word32 fn00002344(word32 dwArg04, word32 dwArg08, word32 dwArg0C, ptr32 & d1Out,
 	*a1Out = a1;
 	*d1Out = d1;
 	word32 d0_30;
-	struct Eq_3462 * a0_19 = *&globals->ptr3E98;
+	struct Eq_3462 * a0_19 = globals->ptr3E98;
 	*a0Out = a0_19;
 	if (a0_19->w0014 >= 0x27)
 	{
