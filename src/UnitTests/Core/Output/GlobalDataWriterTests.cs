@@ -339,5 +339,23 @@ struct test g_t1004 =
 };
 ");
         }
+
+        [Test]
+        public void GdwUnionInts()
+        {
+            var u = new UnionType("u", null,
+                PrimitiveType.UInt32,
+                PrimitiveType.Int32);
+            Given_Memory(0x1000)
+                .WriteLeInt32(2);
+            Given_Globals(
+                Given_Field(0x1000, u));
+            RunTest(
+@"union u g_u1000 = 
+{
+    2
+};
+");
+        }
     }
 }
