@@ -194,5 +194,12 @@ namespace Reko.UnitTests.Typing
             var p = Id("p", PointerTo(PrimitiveType.Real64));
             RunTest(m.ISub(p, m.Word32(4)));
         }
+
+        [Test]
+        public void ExaAddrOf()
+        {
+            var p = Id("p", PrimitiveType.Real64);
+            RunTest(m.AddrOf(p));
+        }
     }
 }

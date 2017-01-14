@@ -463,8 +463,8 @@ T_46: (in 0x00000000 : word32)
   OrigDataType: word32
 T_47: (in &exported_int + 0x00000000 : word32)
   Class: Eq_47
-  DataType: word32
-  OrigDataType: word32
+  DataType: ptr32
+  OrigDataType: ptr32
 T_48: (in Mem22[&exported_int + 0x00000000:word32] : word32)
   Class: Eq_48
   DataType: word32
