@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -778,7 +778,7 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x7c01042e, "lfsx\tf0,r1,r0");
         }
-        
+
         [Test]
         public void PPCDis_mffs()
         {
@@ -796,6 +796,41 @@ namespace Reko.UnitTests.Arch.PowerPC
         {
             AssertCode(0x7D2E4AEE, "lhaux\tr9,r14,r9");
             AssertCode(0x7D0301D4, "addme\tr8,r3");
+        }
+
+        [Test]
+        public void PPCDis_regression6()
+        {
+            AssertCode(0x7C6000A6, "mfmsr\tr3");
+            AssertCode(0x7C7A03A6, "mtspr\t00000340,r3");
+            AssertCode(0x7C600124, "mtmsr\tr3");
+            AssertCode(0x4C00012C, "isync");
+        }
+
+        [Test]
+        public void PPCDis_regression7()
+        {
+            AssertCode(0x7CA464AA, "lswi\tr5,r4,0C");
+            AssertCode(0x7CA965AA, "stswi\tr5,r9,0C");
+            AssertCode(0x7C0018AC, "dcbf\tr0,r3");
+            //AssertCode(0x7c00188c, ".long 0x7c00188c");
+            AssertCode(0xE0030000, "lq\tr0,0(r3)");
+            AssertCode(0xF0090000, "xsaddsp\tv0,v9,v0");
+            AssertCode(0x7D0B506E, "lwzux\tr8,r11,r10");
+
+            AssertCode(0x7c001fac, "icbi\tr0,r3");
+            AssertCode(0x7c001bac, "dcbi\tr0,r3");
+            AssertCode(0x7c0006ac, "eieio");
+            AssertCode(0x7c0b4e2c, "lhbrx\tr0,r11,r9");
+            AssertCode(0x7fa65aae, "lhax\tr29,r6,r11");
+            AssertCode(0xf0030008, "xsmaddasp\tv0,v3,v0");
+            //AssertCode(0x10400c60, "vmhaddshs\tv2,v0,v1,v17");
+            //AssertCode(0xf0030018, "psq_st\tf0,24(r3),0,0");
+            //AssertCode(0xF0430010, "xxsldwi\tvs2,vs3,vs0,0");
+            AssertCode(0x7C0534AE, "lfdx\tf0,r5,r6");
+            AssertCode(0x7D6525AE, "stfdx\tf11,r5,r4");
+            AssertCode(0x7C3DF52E, "stfsx\tf1,r29,r30");
+            AssertCode(0x7DAB4D6E, "stfsux\tf13,r11,r9");
         }
     }
 }

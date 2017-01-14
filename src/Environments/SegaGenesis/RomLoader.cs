@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,9 +49,9 @@ namespace Reko.Environments.SegaGenesis
             var env = cfgService.GetEnvironment("sega-genesis");
             var platform = env.Load(Services, arch);
 
-            var imageMap = CreateSegmentMap(mem, platform);
+            var segmentMap = CreateSegmentMap(mem, platform);
 
-            return new Program(imageMap, arch, platform);
+            return new Program(segmentMap, arch, platform);
         }
 
         private SegmentMap CreateSegmentMap(MemoryArea mem, IPlatform platform)

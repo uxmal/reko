@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 Pavel Tomin.
+ * Copyright (C) 1999-2017 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,7 +55,9 @@ namespace Reko.Scanning
             this.program = program;
             this.arch = program.Architecture;
             this.frame = frame;
-            this.eval = new ExpressionSimplifier(ctx);
+            this.eval = new ExpressionSimplifier(
+                ctx,
+                services.RequireService<DecompilerEventListener>());
             this.services = services;
         }
 

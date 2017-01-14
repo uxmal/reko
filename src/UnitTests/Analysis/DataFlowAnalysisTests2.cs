@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -229,7 +229,8 @@ void test(int32 a, int32 b)
 test_entry:
 	// succ:  l1
 l1:
-	Mem8[0x00010008:word32] = a + b
+	word32 r1_7 = a + b
+	Mem8[0x00010008:word32] = r1_7
 	word32 r2_6 = b
 	return
 	// succ:  test_exit

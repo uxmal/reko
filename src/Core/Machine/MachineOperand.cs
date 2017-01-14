@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -151,16 +151,15 @@ namespace Reko.Core.Machine
             return new ImmediateOperand(Constant.SByte(value));
         }
 
-        public static MachineOperand UInt16(ushort value)
+        public static ImmediateOperand UInt16(ushort value)
         {
             return new ImmediateOperand(Constant.UInt16(value));
         }
 
-        public static MachineOperand UInt32(uint value)
+        public static ImmediateOperand UInt32(uint value)
         {
             return new ImmediateOperand(Constant.UInt32(value));
         }
-
 
         public static ImmediateOperand Word32(int value)
         {

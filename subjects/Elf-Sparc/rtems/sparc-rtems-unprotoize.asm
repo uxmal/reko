@@ -7655,20 +7655,20 @@ _PROCEDURE_LINKAGE_TABLE_ proc
 	unimp
 	unimp
 
-;; fn00027C68: 00027C68
-fn00027C68 proc
+;; atexit: 00027C68
+atexit proc
 	sethi	0x00000030,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027C74: 00027C74
-fn00027C74 proc
+;; exit: 00027C74
+exit proc
 	sethi	0x0000003C,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027C80: 00027C80
-fn00027C80 proc
+;; _exit: 00027C80
+_exit proc
 	sethi	0x00000048,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
@@ -7685,152 +7685,152 @@ fn00027C98 proc
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027CA4: 00027CA4
-fn00027CA4 proc
+;; vfprintf: 00027CA4
+vfprintf proc
 	sethi	0x0000006C,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027CB0: 00027CB0
-fn00027CB0 proc
+;; strerror: 00027CB0
+strerror proc
 	sethi	0x00000078,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027CBC: 00027CBC
-fn00027CBC proc
+;; malloc: 00027CBC
+malloc proc
 	sethi	0x00000084,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027CC8: 00027CC8
-fn00027CC8 proc
+;; realloc: 00027CC8
+realloc proc
 	sethi	0x00000090,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027CD4: 00027CD4
-fn00027CD4 proc
+;; free: 00027CD4
+free proc
 	sethi	0x0000009C,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027CE0: 00027CE0
-fn00027CE0 proc
+;; strcpy: 00027CE0
+strcpy proc
 	sethi	0x000000A8,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027CEC: 00027CEC
-fn00027CEC proc
+;; strncpy: 00027CEC
+strncpy proc
 	sethi	0x000000B4,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027CF8: 00027CF8
-fn00027CF8 proc
+;; read: 00027CF8
+read proc
 	sethi	0x000000C0,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027D04: 00027D04
-fn00027D04 proc
+;; write: 00027D04
+write proc
 	sethi	0x000000CC,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027D10: 00027D10
-fn00027D10 proc
+;; abort: 00027D10
+abort proc
 	sethi	0x000000D8,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027D1C: 00027D1C
-fn00027D1C proc
+;; strlen: 00027D1C
+strlen proc
 	sethi	0x000000E4,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027D28: 00027D28
-fn00027D28 proc
+;; strncmp: 00027D28
+strncmp proc
 	sethi	0x000000F0,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027D34: 00027D34
-fn00027D34 proc
+;; strcmp: 00027D34
+strcmp proc
 	sethi	0x000000FC,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027D40: 00027D40
-fn00027D40 proc
+;; stat: 00027D40
+stat proc
 	sethi	0x00000108,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027D4C: 00027D4C
-fn00027D4C proc
+;; atoi: 00027D4C
+atoi proc
 	sethi	0x00000114,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027D58: 00027D58
-fn00027D58 proc
+;; memcpy: 00027D58
+memcpy proc
 	sethi	0x00000120,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027D64: 00027D64
-fn00027D64 proc
+;; fprintf: 00027D64
+fprintf proc
 	sethi	0x0000012C,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027D70: 00027D70
-fn00027D70 proc
+;; strcat: 00027D70
+strcat proc
 	sethi	0x00000138,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027D7C: 00027D7C
-fn00027D7C proc
+;; access: 00027D7C
+access proc
 	sethi	0x00000144,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027D88: 00027D88
-fn00027D88 proc
+;; open: 00027D88
+open proc
 	sethi	0x00000150,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027D94: 00027D94
-fn00027D94 proc
+;; close: 00027D94
+close proc
 	sethi	0x0000015C,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027DA0: 00027DA0
-fn00027DA0 proc
+;; unlink: 00027DA0
+unlink proc
 	sethi	0x00000168,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027DAC: 00027DAC
-fn00027DAC proc
+;; strrchr: 00027DAC
+strrchr proc
 	sethi	0x00000174,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027DB8: 00027DB8
-fn00027DB8 proc
+;; longjmp: 00027DB8
+longjmp proc
 	sethi	0x00000180,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027DC4: 00027DC4
-fn00027DC4 proc
+;; setjmp: 00027DC4
+setjmp proc
 	sethi	0x0000018C,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
@@ -7838,32 +7838,32 @@ fn00027DC4 proc
 00027DE0 30 BF FF 96 01 00 00 00 03 00 01 B0 30 BF FF 93 0...........0...
 00027DF0 01 00 00 00 03 00 01 BC 30 BF FF 90 01 00 00 00 ........0.......
 
-;; fn00027E00: 00027E00
-fn00027E00 proc
+;; setlocale: 00027E00
+setlocale proc
 	sethi	0x000001C8,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027E0C: 00027E0C
-fn00027E0C proc
+;; getenv: 00027E0C
+getenv proc
 	sethi	0x000001D4,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027E18: 00027E18
-fn00027E18 proc
+;; getcwd: 00027E18
+getcwd proc
 	sethi	0x000001E0,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027E24: 00027E24
-fn00027E24 proc
+;; fputs: 00027E24
+fputs proc
 	sethi	0x000001EC,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027E30: 00027E30
-fn00027E30 proc
+;; mktemp: 00027E30
+mktemp proc
 	sethi	0x000001F8,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
@@ -7871,56 +7871,56 @@ fn00027E30 proc
 00027E40 30 BF FF 7E 01 00 00 00 03 00 02 10 30 BF FF 7B 0..~........0..{
 00027E50 01 00 00 00                                     ....           
 
-;; fn00027E54: 00027E54
-fn00027E54 proc
+;; pipe: 00027E54
+pipe proc
 	sethi	0x0000021C,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027E60: 00027E60
-fn00027E60 proc
+;; sleep: 00027E60
+sleep proc
 	sethi	0x00000228,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027E6C: 00027E6C
-fn00027E6C proc
+;; vfork: 00027E6C
+vfork proc
 	sethi	0x00000234,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027E78: 00027E78
-fn00027E78 proc
+;; dup: 00027E78
+dup proc
 	sethi	0x00000240,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027E84: 00027E84
-fn00027E84 proc
+;; wait: 00027E84
+wait proc
 	sethi	0x0000024C,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027E90: 00027E90
-fn00027E90 proc
+;; gettimeofday: 00027E90
+gettimeofday proc
 	sethi	0x00000258,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027E9C: 00027E9C
-fn00027E9C proc
+;; getpid: 00027E9C
+getpid proc
 	sethi	0x00000264,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027EA8: 00027EA8
-fn00027EA8 proc
+;; __urem64: 00027EA8
+__urem64 proc
 	sethi	0x00000270,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0
 
-;; fn00027EB4: 00027EB4
-fn00027EB4 proc
+;; __udiv64: 00027EB4
+__udiv64 proc
 	sethi	0x0000027C,%g1
 	ba,a	00027C38
 	sethi	0x00000000,%g0

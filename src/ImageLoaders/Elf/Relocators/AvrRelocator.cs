@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,27 +18,25 @@
  */
 #endregion
 
-using Reko.Core;
-using Reko.Core.Expressions;
 using System;
+using Reko.Core;
 
-namespace Reko.Analysis
+namespace Reko.ImageLoaders.Elf.Relocators
 {
-	public class ExpressionUseAdder : ExpressionVisitorBase
-	{
-		private Statement user;
-		private SsaIdentifierCollection ssaIds;
+    public class AvrRelocator : ElfRelocator32
+    {
+        public AvrRelocator(ElfLoader32 ldr) : base(ldr)
+        {
+        }
 
-		public ExpressionUseAdder(Statement user, SsaIdentifierCollection ssaIds)
-		{
-            if (user == null)
-                throw new ArgumentNullException("user");
-			this.user = user; this.ssaIds = ssaIds;
-		}
+        public override void RelocateEntry(Program program, ElfSymbol symbol, ElfSection referringSection, Elf32_Rela rela)
+        {
+            throw new NotImplementedException();
+        }
 
-		public override void VisitIdentifier(Identifier id)
-		{
-			ssaIds[id].Uses.Add(user);
-		}
-	}
+        public override string RelocationTypeToString(uint type)
+        {
+            return null;
+        }
+    }
 }

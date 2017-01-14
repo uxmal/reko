@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ namespace Reko.Arch.Pdp11
         private IEnumerator<Pdp11Instruction> instrs;
         private Frame frame;
         private RtlInstructionCluster rtlCluster;
-        private RtlEmitter emitter;
+        private RtlEmitter m;
         private IRewriterHost host;
 
         public Pdp11Rewriter(
@@ -58,9 +58,7 @@ namespace Reko.Arch.Pdp11
                 var instr = instrs.Current;
                 this.rtlCluster = new RtlInstructionCluster(instr.Address, instr.Length);
                 this.rtlCluster.Class = RtlClass.Linear;
-                emitter = new RtlEmitter(rtlCluster.Instructions);
-                Expression src;
-                Expression dst;
+                m = new RtlEmitter(rtlCluster.Instructions);
                 switch (instr.Opcode)
                 {
                 default: throw new AddressCorrelatedException(
@@ -71,6 +69,8 @@ namespace Reko.Arch.Pdp11
                 case Opcode.addb: RewriteAdd(instr); break;
                 case Opcode.ash: RewriteShift(instr); break;
                 case Opcode.asl: RewriteAsl(instr); break;
+                case Opcode.asr: RewriteAsr(instr); break;
+                case Opcode.bcc: RewriteBxx(instr, ConditionCode.UGE, FlagM.CF); break;
                 case Opcode.bcs: RewriteBxx(instr, ConditionCode.ULT, FlagM.CF); break;
                 case Opcode.beq: RewriteBxx(instr, ConditionCode.EQ, FlagM.ZF); break;
                 case Opcode.bge: RewriteBxx(instr, ConditionCode.GE, FlagM.VF|FlagM.NF); break;
@@ -88,26 +88,30 @@ namespace Reko.Arch.Pdp11
                 case Opcode.bne: RewriteBxx(instr, ConditionCode.NE, FlagM.ZF); break;
                 case Opcode.bpl: RewriteBxx(instr, ConditionCode.GT, FlagM.NF); break;
                 case Opcode.br: RewriteBr(instr); break;
-                case Opcode.clr: RewriteClr(instr, emitter.Word16(0)); break;
-                case Opcode.clrb: RewriteClr(instr, emitter.Byte(0)); break;
+                case Opcode.clr: RewriteClr(instr, m.Word16(0)); break;
+                case Opcode.clrb: RewriteClr(instr, m.Byte(0)); break;
                 case Opcode.cmp: RewriteCmp(instr); break;
-                case Opcode.dec: RewriteIncDec(instr, emitter.ISub); break;
+                case Opcode.com: RewriteCom(instr); break;
+                case Opcode.dec: RewriteIncDec(instr, m.ISub); break;
                 case Opcode.div: RewriteDiv(instr); break;
                 case Opcode.emt: RewriteEmt(instr); break;
                 case Opcode.halt: RewriteHalt(); break;
-                case Opcode.inc: RewriteIncDec(instr, emitter.IAdd); break;
+                case Opcode.inc: RewriteIncDec(instr, m.IAdd); break;
                 case Opcode.jmp: RewriteJmp(instr); break;
                 case Opcode.jsr: RewriteJsr(instr); break;
                 case Opcode.mov: RewriteMov(instr); break;
                 case Opcode.movb: RewriteMov(instr); break;
                 case Opcode.neg: RewriteNeg(instr); break;
-                case Opcode.nop: emitter.Nop(); break;
+                case Opcode.nop: m.Nop(); break;
+                case Opcode.reset: RewriteReset(); break;
+                case Opcode.rol: RewriteRol(instr); break;
                 case Opcode.rts: RewriteRts(instr); break;
                 case Opcode.sub: RewriteSub(instr); break;
                 case Opcode.sxt: RewriteSxt(instr); break;
                 case Opcode.trap: RewriteTrap(instr); break;
                 case Opcode.tst: RewriteTst(instr); break;
                 case Opcode.tstb: RewriteTst(instr); break;
+                case Opcode.wait: RewriteWait(); break;
                 case Opcode.xor: RewriteXor(instr); break;
                 }
                 yield return rtlCluster;
@@ -125,7 +129,7 @@ namespace Reko.Arch.Pdp11
             if (uChanged != 0)
             {
                 var grfChanged = frame.EnsureFlagGroup(this.arch.GetFlagGroup(uChanged));
-                emitter.Assign(grfChanged, emitter.Cond(e));
+                m.Assign(grfChanged, m.Cond(e));
             }
             uint grfMask = 1;
             while (grfMask <= (uint)zeroed)
@@ -133,7 +137,7 @@ namespace Reko.Arch.Pdp11
                 if ((grfMask & (uint)zeroed) != 0)
                 {
                     var grfZeroed = frame.EnsureFlagGroup(this.arch.GetFlagGroup(grfMask));
-                    emitter.Assign(grfZeroed, 0);
+                    m.Assign(grfZeroed, 0);
                 }
                 grfMask <<= 1;
             }
@@ -143,7 +147,7 @@ namespace Reko.Arch.Pdp11
                 if ((grfMask & (uint)set) != 0)
                 {
                     var grfZeroed = frame.EnsureFlagGroup(this.arch.GetFlagGroup(grfMask));
-                    emitter.Assign(grfZeroed, 1);
+                    m.Assign(grfZeroed, 1);
                 }
                 grfMask <<= 1;
             }
@@ -173,19 +177,19 @@ namespace Reko.Arch.Pdp11
             case AddressMode.Absolute:
                 return Address.Ptr16(memOp.EffectiveAddress);
             case AddressMode.AutoIncr:
-                emitter.Assign(tmp, emitter.Load(op.Width, emitter.Load(PrimitiveType.Ptr16, r)));
-                emitter.Assign(r, emitter.IAdd(r, memOp.Width.Size));
+                m.Assign(tmp, m.Load(op.Width, m.Load(PrimitiveType.Ptr16, r)));
+                m.Assign(r, m.IAdd(r, memOp.Width.Size));
                 break;
             case AddressMode.AutoIncrDef:
-                emitter.Assign(tmp, emitter.Load(op.Width, r));
-                emitter.Assign(r, emitter.IAdd(r, memOp.Width.Size));
+                m.Assign(tmp, m.Load(op.Width, r));
+                m.Assign(r, m.IAdd(r, memOp.Width.Size));
                 break;
             case AddressMode.AutoDecr:
-                emitter.Assign(r, emitter.ISub(r, memOp.Width.Size));
-                return emitter.Load(op.Width, r);
+                m.Assign(r, m.ISub(r, memOp.Width.Size));
+                return m.Load(op.Width, r);
             case AddressMode.AutoDecrDef:
-                emitter.Assign(r, emitter.ISub(r, memOp.Width.Size));
-                emitter.Assign(tmp, emitter.Load(op.Width, emitter.Load(PrimitiveType.Ptr16, r)));
+                m.Assign(r, m.ISub(r, memOp.Width.Size));
+                m.Assign(tmp, m.Load(op.Width, m.Load(PrimitiveType.Ptr16, r)));
                 return tmp;
             case AddressMode.Indexed:
                 if (memOp.Register == Registers.pc)
@@ -197,24 +201,29 @@ namespace Reko.Arch.Pdp11
                 }
                 else
                 {
-                    return emitter.Load(
+                    return m.Load(
                         this.instrs.Current.DataWidth,
-                        emitter.IAdd(r, Constant.Word16(memOp.EffectiveAddress)));
+                        m.IAdd(r, Constant.Word16(memOp.EffectiveAddress)));
                 }
             case AddressMode.IndexedDef:
                 if (memOp.Register == Registers.pc)
                 {
-                    throw new NotImplementedException();
+                    var offset = (short)memOp.EffectiveAddress;
+                    var addrBase = (long)rtlCluster.Address.ToLinear() + rtlCluster.Length;
+                    var addr = Constant.Word16((ushort) (addrBase + offset));
+                    return m.Load(
+                        PrimitiveType.Word16,
+                        addr);
                 }
                 else
                 {
-                    return emitter.Load(
+                    return m.Load(
                         PrimitiveType.Ptr16,
-                        emitter.IAdd(r, Constant.Word16(memOp.EffectiveAddress)));
+                        m.IAdd(r, Constant.Word16(memOp.EffectiveAddress)));
                 }
             }
             return tmp;
-        
+        /*
             var immOp = op as ImmediateOperand;
             if (immOp != null)
             {
@@ -226,6 +235,7 @@ namespace Reko.Arch.Pdp11
                 return addrOp.Address;
             }
             throw new NotImplementedException();
+            */
         }
 
         private Expression RewriteSrc(MachineOperand op)
@@ -243,25 +253,25 @@ namespace Reko.Arch.Pdp11
                         "Not implemented: addressing mode {0}.", 
                         memOp.Mode);
                 case AddressMode.RegDef:
-                    return emitter.Load(this.instrs.Current.DataWidth, r);
+                    return m.Load(this.instrs.Current.DataWidth, r);
                 case AddressMode.Absolute:
-                    return emitter.Load(
+                    return m.Load(
                            instrs.Current.DataWidth,
                            Address.Ptr16(memOp.EffectiveAddress));
                 case AddressMode.AutoIncr:
-                    emitter.Assign(tmp, emitter.Load(op.Width, r));
-                    emitter.Assign(r, emitter.IAdd(r, memOp.Width.Size));
+                    m.Assign(tmp, m.Load(op.Width, r));
+                    m.Assign(r, m.IAdd(r, memOp.Width.Size));
                     break;
                 case AddressMode.AutoIncrDef:
-                    emitter.Assign(tmp, emitter.Load(op.Width, emitter.Load(PrimitiveType.Ptr16, r)));
-                    emitter.Assign(r, emitter.IAdd(r, memOp.Width.Size));
+                    m.Assign(tmp, m.Load(op.Width, m.Load(PrimitiveType.Ptr16, r)));
+                    m.Assign(r, m.IAdd(r, memOp.Width.Size));
                     break;
                 case AddressMode.AutoDecr:
-                    emitter.Assign(r, emitter.ISub(r, memOp.Width.Size));
-                    return emitter.Load(op.Width, r);
+                    m.Assign(r, m.ISub(r, memOp.Width.Size));
+                    return m.Load(op.Width, r);
                 case AddressMode.AutoDecrDef:
-                    emitter.Assign(r, emitter.ISub(r, memOp.Width.Size));
-                    emitter.Assign(tmp, emitter.Load(op.Width, emitter.Load(PrimitiveType.Ptr16, r)));
+                    m.Assign(r, m.ISub(r, memOp.Width.Size));
+                    m.Assign(tmp, m.Load(op.Width, m.Load(PrimitiveType.Ptr16, r)));
                     return tmp;
                 case AddressMode.Indexed:
                     if (memOp.Register == Registers.pc)
@@ -269,20 +279,20 @@ namespace Reko.Arch.Pdp11
                         var offset = (short)memOp.EffectiveAddress;
                         var addrBase = (long) rtlCluster.Address.ToLinear();
                         var addr = Address.Ptr16((ushort)(2 + addrBase + offset));
-                        return emitter.Load(memOp.Width, addr);
+                        return m.Load(memOp.Width, addr);
                     }
                     else
                     {
-                        return emitter.Load(
+                        return m.Load(
                             this.instrs.Current.DataWidth,
-                            emitter.IAdd(r, Constant.Word16(memOp.EffectiveAddress)));
+                            m.IAdd(r, Constant.Word16(memOp.EffectiveAddress)));
                     }
                 case AddressMode.IndexedDef:
-                    return emitter.Load(
+                    return m.Load(
                         this.instrs.Current.DataWidth,
-                        emitter.Load(
+                        m.Load(
                             PrimitiveType.Ptr16,
-                            emitter.IAdd(r, Constant.Word16(memOp.EffectiveAddress))));
+                            m.IAdd(r, Constant.Word16(memOp.EffectiveAddress))));
                 }
                 return tmp;
             }
@@ -320,9 +330,9 @@ namespace Reko.Arch.Pdp11
                 src = gen(src);
                 if (src.DataType.Size < dst.DataType.Size)
                 {
-                    src = emitter.Dpb(dst, src, 0);
+                    src = m.Dpb(dst, src, 0);
                 }
-                emitter.Assign(dst, src);
+                m.Assign(dst, src);
                 return dst;
             }
             var memOp = op as MemoryOperand;
@@ -338,49 +348,49 @@ namespace Reko.Arch.Pdp11
                         "Not implemented: addressing mode {0}.",
                         memOp.Mode);
                 case AddressMode.Absolute:
-                    emitter.Assign(
-                        emitter.Load(
+                    m.Assign(
+                        m.Load(
                             instrs.Current.DataWidth,
                             Address.Ptr16(memOp.EffectiveAddress)),
                         gen(src));
                     break;
                 case AddressMode.RegDef:
-                    emitter.Assign(emitter.Load(tmp.DataType, r), gen(src));
+                    m.Assign(m.Load(tmp.DataType, r), gen(src));
                     break;
                 case AddressMode.AutoIncr:
-                    emitter.Assign(tmp, gen(src));
-                    emitter.Assign(emitter.Load(tmp.DataType, r), tmp);
-                    emitter.Assign(r, emitter.IAdd(r, tmp.DataType.Size));
+                    m.Assign(tmp, gen(src));
+                    m.Assign(m.Load(tmp.DataType, r), tmp);
+                    m.Assign(r, m.IAdd(r, tmp.DataType.Size));
                     break;
                 case AddressMode.AutoDecr:
-                    emitter.Assign(r, emitter.ISub(r, tmp.DataType.Size));
-                    emitter.Assign(emitter.Load(tmp.DataType, r), gen(src));
+                    m.Assign(r, m.ISub(r, tmp.DataType.Size));
+                    m.Assign(m.Load(tmp.DataType, r), gen(src));
                     break;
                 case AddressMode.AutoDecrDef:
-                    emitter.Assign(r, emitter.ISub(r, tmp.DataType.Size));
-                    emitter.Assign(
-                        emitter.Load(
+                    m.Assign(r, m.ISub(r, tmp.DataType.Size));
+                    m.Assign(
+                        m.Load(
                             tmp.DataType, 
-                            emitter.Load(PrimitiveType.Ptr16, r)),
+                            m.Load(PrimitiveType.Ptr16, r)),
                         gen(src));
                     break;
                 case AddressMode.Indexed:
                     if (r.Storage == Registers.pc)
                     {
                         var addr = instrs.Current.Address + instrs.Current.Length;
-                        emitter.Assign(
+                        m.Assign(
                            tmp,
-                           gen(emitter.Load(instrs.Current.DataWidth, addr)));
-                        emitter.Assign(
-                            emitter.Load(instrs.Current.DataWidth, addr),
+                           gen(m.Load(instrs.Current.DataWidth, addr)));
+                        m.Assign(
+                            m.Load(instrs.Current.DataWidth, addr),
                             tmp);
                     }
                     else
                     {
-                        emitter.Assign(
-                            emitter.Load(
+                        m.Assign(
+                            m.Load(
                                 this.instrs.Current.DataWidth,
-                                emitter.IAdd(
+                                m.IAdd(
                                     r,
                                     Constant.Word16(memOp.EffectiveAddress))),
                             gen(src));
@@ -391,11 +401,11 @@ namespace Reko.Arch.Pdp11
                     {
                         //$REVIEW: what if there are two of these?
                         var addr = instrs.Current.Address + instrs.Current.Length;
-                        emitter.Assign(
+                        m.Assign(
                             tmp,
-                            gen(emitter.Load(instrs.Current.DataWidth, addr)));
-                        emitter.Assign(
-                            emitter.Load(instrs.Current.DataWidth, addr),
+                            gen(m.Load(instrs.Current.DataWidth, addr)));
+                        m.Assign(
+                            m.Load(instrs.Current.DataWidth, addr),
                             tmp);
                     }
                     else
@@ -413,7 +423,7 @@ namespace Reko.Arch.Pdp11
             if (regOp != null)
             {
                 var dst = frame.EnsureRegister(regOp.Register);
-                emitter.Assign(dst, gen(dst, src));
+                m.Assign(dst, gen(dst, src));
                 return dst;
             }
             var memOp = op as MemoryOperand;
@@ -429,51 +439,51 @@ namespace Reko.Arch.Pdp11
                         "Not implemented: addressing mode {0}.",
                         memOp.Mode);
                 case AddressMode.RegDef:
-                    emitter.Assign(tmp, gen(src, emitter.Load(tmp.DataType, r)));
-                    emitter.Assign(emitter.Load(tmp.DataType, r), tmp);
+                    m.Assign(tmp, gen(src, m.Load(tmp.DataType, r)));
+                    m.Assign(m.Load(tmp.DataType, r), tmp);
                     break;
                 case AddressMode.AutoIncr:
-                    emitter.Assign(tmp, gen(src, emitter.Load(tmp.DataType, r)));
-                    emitter.Assign(emitter.Load(tmp.DataType, r), tmp);
-                    emitter.Assign(r, emitter.IAdd(r, tmp.DataType.Size));
+                    m.Assign(tmp, gen(src, m.Load(tmp.DataType, r)));
+                    m.Assign(m.Load(tmp.DataType, r), tmp);
+                    m.Assign(r, m.IAdd(r, tmp.DataType.Size));
                     break;
                 case AddressMode.AutoDecr:
-                    emitter.Assign(r, emitter.ISub(r, tmp.DataType.Size));
-                    emitter.Assign(tmp, gen(src, emitter.Load(tmp.DataType, r)));
-                    emitter.Assign(emitter.Load(tmp.DataType, r), tmp);
+                    m.Assign(r, m.ISub(r, tmp.DataType.Size));
+                    m.Assign(tmp, gen(src, m.Load(tmp.DataType, r)));
+                    m.Assign(m.Load(tmp.DataType, r), tmp);
                     break;
                 case AddressMode.AutoDecrDef:
-                    emitter.Assign(r, emitter.ISub(r, tmp.DataType.Size));
-                    emitter.Assign(tmp, gen(src, emitter.Load(tmp.DataType, emitter.Load(PrimitiveType.Ptr16, r))));
-                    emitter.Assign(emitter.Load(tmp.DataType, emitter.Load(PrimitiveType.Ptr16, r)), tmp);
+                    m.Assign(r, m.ISub(r, tmp.DataType.Size));
+                    m.Assign(tmp, gen(src, m.Load(tmp.DataType, m.Load(PrimitiveType.Ptr16, r))));
+                    m.Assign(m.Load(tmp.DataType, m.Load(PrimitiveType.Ptr16, r)), tmp);
                     break;
                 case AddressMode.Absolute:
-                    emitter.Assign(
+                    m.Assign(
                         tmp,
                         gen(
-                            emitter.Load(
+                            m.Load(
                                 instrs.Current.DataWidth,
                                 Address.Ptr16(memOp.EffectiveAddress)),
                             src));
-                    emitter.Assign(
-                        emitter.Load(
+                    m.Assign(
+                        m.Load(
                            instrs.Current.DataWidth,
                            Address.Ptr16(memOp.EffectiveAddress)),
                         tmp);
                     break;
                 case AddressMode.Indexed:
-                    emitter.Assign(
+                    m.Assign(
                         tmp,
                         gen(
-                            emitter.Load(
+                            m.Load(
                                 instrs.Current.DataWidth,
-                                emitter.IAdd(
+                                m.IAdd(
                                     r, memOp.EffectiveAddress)),
                             src));
-                    emitter.Assign(
-                        emitter.Load(
+                    m.Assign(
+                        m.Load(
                             instrs.Current.DataWidth,
-                            emitter.IAdd(
+                            m.IAdd(
                                 r, memOp.EffectiveAddress)),
                         tmp);
                     break;
@@ -482,33 +492,33 @@ namespace Reko.Arch.Pdp11
                     {
                         //$REVIEW: what if there are two of these?
                         var addr = instrs.Current.Address + instrs.Current.Length;
-                        emitter.Assign(
+                        m.Assign(
                             tmp,
                             gen(
-                                emitter.Load(instrs.Current.DataWidth, addr),
+                                m.Load(instrs.Current.DataWidth, addr),
                                 src));
-                        emitter.Assign(
-                            emitter.Load(instrs.Current.DataWidth, addr),
+                        m.Assign(
+                            m.Load(instrs.Current.DataWidth, addr),
                             tmp);
                     }
                     else
                     {
-                        emitter.Assign(
+                        m.Assign(
                            tmp,
                            gen(
-                               emitter.Load(
+                               m.Load(
                                    instrs.Current.DataWidth,
-                                   emitter.Load(
+                                   m.Load(
                                        PrimitiveType.Ptr16,
-                                       emitter.IAdd(
+                                       m.IAdd(
                                            r, memOp.EffectiveAddress))),
                                    src));
-                        emitter.Assign(
-                            emitter.Load(
+                        m.Assign(
+                            m.Load(
                                 instrs.Current.DataWidth,
-                                emitter.Load(
+                                m.Load(
                                     PrimitiveType.Ptr16,
-                                    emitter.IAdd(
+                                    m.IAdd(
                                         r, memOp.EffectiveAddress))),
                             tmp);
                     }

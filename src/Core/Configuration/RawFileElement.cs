@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@ namespace Reko.Core.Configuration
         string Architecture { get; set; }
         string Environment { get; set; }
         string BaseAddress { get; set; }
+        string Loader { get; set; }
         EntryPointElement EntryPoint { get; }
     }
 
@@ -61,6 +62,8 @@ namespace Reko.Core.Configuration
         public string Environment { get; set; }
 
         public string BaseAddress { get; set; }
+
+        public string Loader { get; set; }
 
         public EntryPointElement EntryPoint { get; set; }
     }

@@ -1,6 +1,6 @@
-#region License
+ï»¿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,28 @@
  */
 #endregion
 
-using System.ComponentModel;
-using System.Xml.Serialization;
+using NUnit.Framework;
+using Reko.Arch.Avr;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-namespace Reko.Core.Serialization
+namespace Reko.UnitTests.Arch.Avr
 {
+    [TestFixture]
+    public class Avr8ArchitectureTests
+    {
+        [Test]
+        public void Avr8_arch_AliasZRegister()
+        {
+            var arch = new Avr8Architecture();
+            var r30 = arch.GetRegister(30);
+            var r31 = arch.GetRegister(31);
+            var z = arch.z;
 
+            Assert.AreSame(r30, arch.GetSubregister(z, 0, 8));
+            Assert.AreSame(r31, arch.GetSubregister(z, 8, 8));
+        }
+    }
 }
-

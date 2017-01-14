@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,10 +63,11 @@ namespace Reko.UnitTests.Analysis
             {
                 Programs = { this.pb.Program }
             };
+            var listener = new FakeDecompilerEventListener();
             var importResolver = new ImportResolver(
                 project,
                 this.pb.Program,
-                new FakeDecompilerEventListener());
+                listener);
             var arch = new FakeArchitecture();
             
             var platform = new FakePlatform(null, arch);
@@ -99,7 +100,7 @@ namespace Reko.UnitTests.Analysis
             //   esp_2 = fp - 4
             //   mov [fp - 8],eax
 
-            var vp = new ValuePropagator(this.pb.Program.Architecture, ssa.SsaState);
+            var vp = new ValuePropagator(this.pb.Program.Architecture, ssa.SsaState, listener);
             vp.Transform();
 
             ssa.RenameFrameAccesses = true;
@@ -112,6 +113,7 @@ namespace Reko.UnitTests.Analysis
             if (sActual != sExp)
                 Debug.Print(sActual);
             Assert.AreEqual(sExp, sActual);
+            ssa.SsaState.CheckUses(s => Assert.Fail(s));
         }
 
         private void RunTest2(string sExp, Action<ProcedureBuilder> builder)

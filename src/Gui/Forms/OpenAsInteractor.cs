@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,14 +49,25 @@ namespace Reko.Gui.Forms
             PopulateArchitectures(dcCfg);
             PopulatePlatforms(dcCfg);
             dlg.AddressTextBox.Text = "0";
+            EnableControls();
         }
 
         private void EnableControls()
         {
-            var unknownRawFileFormat = ((ListOption)dlg.RawFileTypes.SelectedValue).Value == null;
-            dlg.Platforms.Enabled = unknownRawFileFormat;
-            dlg.Architectures.Enabled = unknownRawFileFormat;
-            dlg.AddressTextBox.Enabled = unknownRawFileFormat;
+            var rawfile = ((ListOption)dlg.RawFileTypes.SelectedValue).Value as RawFileElement;
+            var unknownRawFileFormat = rawfile == null;
+            bool platformRequired = unknownRawFileFormat;
+            bool archRequired= unknownRawFileFormat;
+            bool addrRequired = unknownRawFileFormat;
+            if (!unknownRawFileFormat)
+            {
+                platformRequired = string.IsNullOrEmpty(rawfile.Environment);
+                archRequired = string.IsNullOrEmpty(rawfile.Architecture);
+                addrRequired = string.IsNullOrEmpty(rawfile.BaseAddress);
+            }
+            dlg.Platforms.Enabled = platformRequired;
+            dlg.Architectures.Enabled = archRequired;
+            dlg.AddressTextBox.Enabled = addrRequired;
             dlg.OkButton.Enabled = dlg.FileName.Text.Length > 0 || !unknownRawFileFormat;
         }
 

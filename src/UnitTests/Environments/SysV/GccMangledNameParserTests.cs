@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -283,6 +283,7 @@ namespace Reko.UnitTests.Environments.SysV
         }
 
         /*
+_ZSt18_Rb_tree_incrementPSt18_Rb_tree_node_base
  _ZN5Timer14getElapsedTimeEv
 _ZN15TAnimatedSpriteD2Ev
 _ZNSt6vectorIcSaIcEE15_M_range_insertIPcEEvN9__gnu_cxx17__normal_iteratorIS3_S1_EET_S7_St20forward_iterator_tag

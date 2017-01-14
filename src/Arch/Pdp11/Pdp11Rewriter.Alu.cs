@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
  */
 #endregion
 
+using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Machine;
 using Reko.Core.Types;
@@ -33,42 +34,49 @@ namespace Reko.Arch.Pdp11
         private void RewriteAdc(Pdp11Instruction instr)
         {
             var src = frame.EnsureFlagGroup(this.arch.GetFlagGroup((uint)FlagM.CF));
-            var dst = RewriteDst(instr.op1, src, emitter.IAdd);
+            var dst = RewriteDst(instr.op1, src, m.IAdd);
             SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF, 0, 0);
         }
 
         private void RewriteAdd(Pdp11Instruction instr)
         {
             var src = RewriteSrc(instr.op1);
-            var dst = RewriteDst(instr.op2, src, emitter.IAdd);
+            var dst = RewriteDst(instr.op2, src, m.IAdd);
             SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF, 0, 0);
         }
 
         private void RewriteAsl(Pdp11Instruction instr)
         {
             var src = Constant.Int16(1);
-            var dst = RewriteDst(instr.op1, src, emitter.Shl);
+            var dst = RewriteDst(instr.op1, src, m.Shl);
+            SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF, 0, 0);
+        }
+
+        private void RewriteAsr(Pdp11Instruction instr)
+        {
+            var src = Constant.Int16(1);
+            var dst = RewriteDst(instr.op1, src, m.Sar);
             SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF, 0, 0);
         }
 
         private void RewriteBic(Pdp11Instruction instr)
         {
             var src = RewriteSrc(instr.op1);
-            var dst = RewriteDst(instr.op2, src, (a, b) => emitter.And(a, emitter.Comp(b)));
+            var dst = RewriteDst(instr.op2, src, (a, b) => m.And(a, m.Comp(b)));
             SetFlags(dst, FlagM.NF | FlagM.ZF, FlagM.VF, 0);
         }
 
         private void RewriteBis(Pdp11Instruction instr)
         {
             var src = RewriteSrc(instr.op1);
-            var dst = RewriteDst(instr.op2, src, emitter.Or);
+            var dst = RewriteDst(instr.op2, src, m.Or);
             SetFlags(dst, FlagM.NF | FlagM.ZF, FlagM.VF, 0);
         }
 
         private void RewriteBit(Pdp11Instruction instr)
         {
             var src = RewriteSrc(instr.op1);
-            var dst = RewriteDst(instr.op2, src, emitter.And);
+            var dst = RewriteDst(instr.op2, src, m.And);
             SetFlags(dst, FlagM.NF | FlagM.ZF, FlagM.VF, 0);
         }
 
@@ -83,10 +91,17 @@ namespace Reko.Arch.Pdp11
             var src = RewriteSrc(instr.op1);
             var dst = RewriteSrc(instr.op2);
             var tmp = frame.CreateTemporary(src.DataType);
-            emitter.Assign(tmp, emitter.ISub(dst, src));
+            m.Assign(tmp, m.ISub(dst, src));
             SetFlags(tmp, FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF, 0, 0);
         }
 
+        private void RewriteCom(Pdp11Instruction instr)
+        {
+            var src = RewriteSrc(instr.op1);
+            var dst = RewriteDst(instr.op1, src, m.Comp);
+            SetFlags(dst, FlagM.NF | FlagM.ZF, FlagM.VF, FlagM.CF);
+        }
+    
         private void RewriteDiv(Pdp11Instruction instr)
         {
             var reg = ((RegisterOperand)instr.op2).Register;
@@ -96,9 +111,9 @@ namespace Reko.Arch.Pdp11
             var divisor = RewriteSrc(instr.op1);
             var quotient = frame.EnsureRegister(reg);
             var remainder = frame.EnsureRegister(reg1);
-            emitter.Assign(dividend, reg_reg);
-            emitter.Assign(quotient, emitter.SDiv(dividend, divisor));
-            emitter.Assign(remainder, emitter.Mod(dividend, divisor));
+            m.Assign(dividend, reg_reg);
+            m.Assign(quotient, m.SDiv(dividend, divisor));
+            m.Assign(remainder, m.Mod(dividend, divisor));
             SetFlags(quotient, FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF, 0, 0);
         }
 
@@ -115,7 +130,7 @@ namespace Reko.Arch.Pdp11
             Expression dst;
             if (instr.op2 is RegisterOperand && instr.DataWidth.Size == 1)
             {
-                dst = RewriteDst(instr.op2, src, s => emitter.Cast(PrimitiveType.Int16, s));
+                dst = RewriteDst(instr.op2, src, s => m.Cast(PrimitiveType.Int16, s));
             }
             else
             {
@@ -126,8 +141,17 @@ namespace Reko.Arch.Pdp11
 
         private void RewriteNeg(Pdp11Instruction instr)
         {
-            var dst = RewriteDst(instr.op1, null, emitter.Neg);
+            var src = RewriteSrc(instr.op1);
+            var dst = RewriteDst(instr.op1, src, m.Neg);
             SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.VF, 0, 0);
+        }
+
+        private void RewriteRol(Pdp11Instruction instr)
+        {
+            var src = RewriteSrc(instr.op1);
+            var dst = RewriteDst(instr.op1, src, (a, b) =>
+                host.PseudoProcedure(PseudoProcedure.Rol, instr.DataWidth, a, b));
+            SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF, 0, 0);
         }
 
         private void RewriteShift(Pdp11Instruction instr)
@@ -140,12 +164,12 @@ namespace Reko.Arch.Pdp11
                 int sh = immSrc.ToInt32();
                 if (sh < 0)
                 {
-                    fn = emitter.Sar;
+                    fn = m.Sar;
                     src = Constant.Int16((short)-sh);
                 }
                 else
                 {
-                    fn = emitter.Shl;
+                    fn = m.Shl;
                     src = Constant.Int16((short)sh);
                 }
             }
@@ -161,7 +185,7 @@ namespace Reko.Arch.Pdp11
         private void RewriteSub(Pdp11Instruction instr)
         {
             var src = RewriteSrc(instr.op1);
-            var dst = RewriteDst(instr.op2, src, emitter.ISub);
+            var dst = RewriteDst(instr.op2, src, m.ISub);
             SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF, 0, 0);
         }
 
@@ -169,7 +193,7 @@ namespace Reko.Arch.Pdp11
         {
             var n  = frame.EnsureFlagGroup(this.arch.GetFlagGroup((uint)FlagM.NF));
 
-            var src = emitter.ISub(Constant.Int16(0), n);
+            var src = m.ISub(Constant.Int16(0), n);
             var dst = RewriteDst(instr.op1, src, s => s);
             SetFlags(dst, FlagM.ZF, 0, 0);
         }
@@ -178,15 +202,15 @@ namespace Reko.Arch.Pdp11
         {
             var src = RewriteSrc(instr.op1);
             var tmp = frame.CreateTemporary(src.DataType);
-            emitter.Assign(tmp, src);
-            emitter.Assign(tmp, emitter.And(tmp, tmp));
+            m.Assign(tmp, src);
+            m.Assign(tmp, m.And(tmp, tmp));
             SetFlags(tmp, FlagM.NF | FlagM.ZF, FlagM.VF | FlagM.CF, 0);
         }
 
         private void RewriteXor(Pdp11Instruction instr)
         {
             var src = RewriteSrc(instr.op1);
-            var dst = RewriteDst(instr.op2, src, emitter.Xor);
+            var dst = RewriteDst(instr.op2, src, m.Xor);
             SetFlags(dst, FlagM.ZF | FlagM.NF, FlagM.CF | FlagM.VF, 0);
         }
     }

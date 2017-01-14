@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,8 +33,17 @@ namespace Reko.Core
     {
         public MetadataLoader(IServiceProvider services, string filename, byte[] bytes)
         {
+            this.Services = services;
         }
 
+        public IServiceProvider Services { get; private set; }
+
+        /// <summary>
+        /// Loads metadata from the file specified in the constructor.
+        /// </summary>
+        /// <param name="platform"></param>
+        /// <param name="dstLib"></param>
+        /// <returns></returns>
         public abstract TypeLibrary Load(IPlatform platform, TypeLibrary dstLib);
     }
 

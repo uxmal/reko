@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,20 +52,23 @@ namespace Reko.Arch.Mips
             if (!rdr.IsValid)
                 return null; 
             this.addr = rdr.Address;
-            OpRec opRec;
             uint wInstr;
-            if (rdr.TryReadUInt32(out wInstr))
+            if (!rdr.TryReadUInt32(out wInstr))
             {
-                opRec = opRecs[wInstr >> 26];
+                return null;
             }
-            else
+            var opRec = opRecs[wInstr >> 26];
+            try
             {
-                opRec = null;
+                if (opRec == null)
+                    instrCur = new MipsInstruction { opcode = Opcode.illegal };
+                else
+                    instrCur = opRec.Decode(wInstr, this);
             }
-            if (opRec == null)
+            catch
+            {
                 instrCur = new MipsInstruction { opcode = Opcode.illegal };
-            else 
-                instrCur = opRec.Decode(wInstr, this);
+            }
             instrCur.Address = this.addr;
             instrCur.Length = 4;
             return instrCur;

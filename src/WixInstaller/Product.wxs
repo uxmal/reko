@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 /*
-* Copyright (C) 1999-2016 John Källén.
+* Copyright (C) 1999-2017 John Källén.
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -88,8 +88,10 @@
         <!-- Image loaders -->
         <File Source="$(var.BinHex.TargetPath)" />
         <File Source="$(var.Coff.TargetPath)" />
+        <File Source="$(var.Dol.TargetPath)" />
         <File Source="$(var.Elf.TargetPath)" />
         <File Source="$(var.Hunk.TargetPath)" />
+        <File Source="$(var.IntelHex.TargetPath)" />
         <File Source="$(var.MachO.TargetPath)" />
         <File Source="$(var.MzExe.TargetPath)" />
         <File Source="$(var.OdbgScript.TargetPath)" />
@@ -116,6 +118,8 @@
         <File Source="$(var.SysV.ProjectDir)libc.so.xml" />
         <File Source="$(var.SysV.ProjectDir)Xlib.xml" />
         <File Source="$(var.SysV.ProjectDir)sysvcharacteristics.xml" />
+        <File Source="$(var.Trs80.ProjectDir)Trs80Rom.xml" />
+        <File Source="$(var.Wii.TargetPath)" />
         <File Source="$(var.Windows.TargetPath)" />
         <File Source="$(var.Windows.ProjectDir)windows32.xml" />
         <File Source="$(var.Windows.ProjectDir)windows64.xml" />
@@ -133,6 +137,7 @@
         <File Source="$(var.Mos6502.TargetPath)" />
         <File Source="$(var.Pdp11.TargetPath)" />
         <File Source="$(var.PowerPC.TargetPath)" />
+        <File Source="$(var.RiscV.TargetPath)" />
         <File Source="$(var.Sparc.TargetPath)" />
         <File Source="$(var.Vax.TargetPath)" />
         <File Source="$(var.X86.TargetPath)" />

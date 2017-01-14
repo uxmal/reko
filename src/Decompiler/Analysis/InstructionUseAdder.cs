@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John KÃ¤llÃ©n.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,28 @@
  */
 #endregion
 
+using Reko.Core;
+using Reko.Core.Code;
+using Reko.Core.Expressions;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Xml.Serialization;
 
-namespace Reko.Core.Serialization
+namespace Reko.Analysis
 {
+    public class InstructionUseAdder : InstructionUseVisitorBase
+    {
+        private Statement user;
+        private SsaIdentifierCollection ssaIds;
+
+        public InstructionUseAdder(Statement user, SsaIdentifierCollection ssaIds)
+        {
+            if (user == null)
+                throw new ArgumentNullException("user");
+            this.user = user; this.ssaIds = ssaIds;
+        }
+
+        protected override void UseIdentifier(Identifier id)
+        {
+            ssaIds[id].Uses.Add(user);
+        }
+    }
 }

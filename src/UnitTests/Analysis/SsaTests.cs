@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -175,6 +175,7 @@ namespace Reko.UnitTests.Analysis
                 ssa.Write(fut.TextWriter);
                 proc.Write(false, fut.TextWriter);
                 fut.AssertFilesEqual();
+                ssa.CheckUses(s => Assert.Fail(s));
             }
         }
 
@@ -216,6 +217,7 @@ namespace Reko.UnitTests.Analysis
 				ssa.Write(writer);
 				proc.Write(false, true, writer);
 				writer.WriteLine();
+                ssa.CheckUses(s => Assert.Fail(s));
 			}
 		}
 

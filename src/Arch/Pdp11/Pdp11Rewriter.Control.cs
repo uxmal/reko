@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,14 +36,14 @@ namespace Reko.Arch.Pdp11
         private void RewriteBr(Pdp11Instruction instr)
         {
             this.rtlCluster.Class = RtlClass.Transfer;
-            emitter.Goto(((AddressOperand)instr.op1).Address);
+            m.Goto(((AddressOperand)instr.op1).Address);
         }
 
         private void RewriteBxx(Pdp11Instruction instr, ConditionCode cc, FlagM flags)
         {
             this.rtlCluster.Class = RtlClass.Transfer;
-            emitter.Branch(
-                emitter.Test(cc, frame.EnsureFlagGroup(arch.GetFlagGroup((uint)flags))),
+            m.Branch(
+                m.Test(cc, frame.EnsureFlagGroup(arch.GetFlagGroup((uint)flags))),
                 ((AddressOperand)instr.op1).Address,
                 RtlClass.ConditionalTransfer);
         }
@@ -52,8 +52,8 @@ namespace Reko.Arch.Pdp11
         {
             this.rtlCluster.Class = RtlClass.Transfer;
             var imm = ((ImmediateOperand)instr.op1).Value.ToByte();
-            var svc = emitter.Word16((ushort)(0x8800 | imm));
-            emitter.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, svc));
+            var svc = m.Word16((ushort)(0x8800 | imm));
+            m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, svc));
         }
 
         private void RewriteHalt()
@@ -62,14 +62,14 @@ namespace Reko.Arch.Pdp11
             {
                 Terminates = true,
             };
-            emitter.SideEffect(host.PseudoProcedure("__halt", c, VoidType.Instance));
+            m.SideEffect(host.PseudoProcedure("__halt", c, VoidType.Instance));
         }
 
         private void RewriteJmp(Pdp11Instruction instr)
         {
             this.rtlCluster.Class = RtlClass.Transfer;
             var jmpDst = RewriteJmpSrc(instr.op1);
-            emitter.Goto(jmpDst);
+            m.Goto(jmpDst);
         }
 
         private void RewriteJsr(Pdp11Instruction instr)
@@ -78,8 +78,13 @@ namespace Reko.Arch.Pdp11
             var regLink = (RegisterOperand)instr.op1;
             //$TODO: do something with regLink.
             var callDst = RewriteJmpSrc(instr.op2);
-            emitter.Call(callDst, 2);
+            m.Call(callDst, 2);
             return;
+        }
+
+        private void RewriteReset()
+        {
+            m.SideEffect(host.PseudoProcedure("__reset", VoidType.Instance));
         }
 
         private void RewriteRts(Pdp11Instruction instr)
@@ -88,18 +93,33 @@ namespace Reko.Arch.Pdp11
             var regLink = (RegisterOperand)instr.op1;
             if (regLink.Register == Registers.pc)
             {
-                emitter.Return(2, 0);
+                m.Return(2, 0);
                 return;
             }
-            throw new NotImplementedException(regLink.Register.Name);
+            else
+            {
+                var tmp = frame.CreateTemporary(regLink.Width);
+                var sp = frame.EnsureRegister(Registers.sp);
+                var reg = frame.EnsureRegister(regLink.Register);
+                m.Assign(tmp, reg);
+                m.Assign(reg, m.Load(regLink.Width, sp));
+                m.Assign(sp, m.IAdd(sp, reg.DataType.Size));
+                m.Call(tmp, 0);
+                m.Return(0, 0);
+            }
         }
 
         private void RewriteTrap(Pdp11Instruction instr)
         {
             this.rtlCluster.Class = RtlClass.Transfer;
             var imm = ((ImmediateOperand)instr.op1).Value.ToByte();
-            var svc = emitter.Word16((ushort)(0x8900 | imm));
-            emitter.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, svc));
+            var svc = m.Word16((ushort)(0x8900 | imm));
+            m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, svc));
+        }
+
+        private void RewriteWait()
+        {
+            m.SideEffect(host.PseudoProcedure("__wait", VoidType.Instance));
         }
     }
 }

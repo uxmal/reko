@@ -1,7 +1,9 @@
+# TODO
+
 The current version of Reko is quite crude and could use assistance.
 
 * Support for more processor architectures and platforms. Currently Reko
-  has support for x86, Motorola 68k, and MS-DOS, Win32, ELF, and Hunk 
+  has support for x86, Motorola 68k, and MS-DOS, Win32, ELF, and Hunk
   executable formats. See the "How to..." wiki page for how to contribute
   new architectures and platforms.
 

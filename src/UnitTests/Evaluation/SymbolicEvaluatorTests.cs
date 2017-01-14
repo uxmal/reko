@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,12 +41,14 @@ namespace Reko.UnitTests.Evaluation
         private SymbolicEvaluationContext ctx;
         private IProcessorArchitecture arch;
         private Frame frame;
+        private FakeDecompilerEventListener listener;
 
         [SetUp]
         public void Setup()
         {
             arch = new X86ArchitectureFlat32();
             frame = new Frame(arch.FramePointerType);
+            listener = new FakeDecompilerEventListener();
         }
 
         private Expression GetRegisterState(SymbolicEvaluator se, Identifier id)
@@ -67,7 +69,9 @@ namespace Reko.UnitTests.Evaluation
         private void CreateSymbolicEvaluator(Frame frame)
         {
             ctx = new SymbolicEvaluationContext(arch, frame);
-            se = new SymbolicEvaluator(ctx);
+            se = new SymbolicEvaluator(
+                new ExpressionSimplifier(ctx, listener),
+                ctx);
             if (esp == null)
                 esp = Tmp32("esp");
             ctx.SetValue(esp, frame.FramePointer);

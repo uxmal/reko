@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -193,6 +193,13 @@ namespace Reko.UnitTests.Typing
         {
             var p = Id("p", PointerTo(PrimitiveType.Real64));
             RunTest(m.ISub(p, m.Word32(4)));
+        }
+
+        [Test]
+        public void ExaAddrOf()
+        {
+            var p = Id("p", PrimitiveType.Real64);
+            RunTest(m.AddrOf(p));
         }
     }
 }

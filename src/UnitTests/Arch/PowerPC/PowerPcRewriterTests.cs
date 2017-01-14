@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1272,6 +1272,81 @@ namespace Reko.UnitTests.Arch.PowerPC
             AssertCode(0x4FDCE042, // crnor 1E,1C,1C
                 "0|L--|00100000(4): 1 instructions",
                 "1|L--|__crnor(0x0000001E, 0x0000001C, 0x0000001C)");
+        }
+
+
+        [Test]
+        public void PPCRw_mtspr()
+        {
+            AssertCode(0x7C7A03A6, // mtspr 0000340, r3
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__write_spr(0x00000340, r3)");
+        }
+
+        [Test]
+        public void PPCRw_stmw()
+        {
+            AssertCode(0xBFC10008, // stmw r30,8(r1)
+                "0|L--|00100000(4): 4 instructions",
+                "1|L--|Mem0[v3:word32] = r30",
+                "2|L--|v3 = v3 + 0x00000004",
+                "3|L--|Mem0[v3:word32] = r31",
+                "4|L--|v3 = v3 + 0x00000004");
+        }
+
+        [Test]
+        public void PPCRw_mfmsr()
+        {
+            AssertCode(0x7C6000A6, // mfmsr r3
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r3 = __read_msr()");
+        }
+
+        [Test]
+        public void PPCRw_mtmsr()
+        {
+            AssertCode(0x7C600124, // mfmsr r3
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|__write_msr(r3)");
+        }
+
+        [Test]
+        public void PPCrw_rfi()
+        {
+            AssertCode(0x4C000064, //  rfi
+                "0|T--|00100000(4): 2 instructions",
+                "1|L--|__write_msr(srr1)",
+                "2|T--|goto srr0");
+        }
+
+        [Test]
+        public void PPCrw_bgtlr()
+        {
+            AssertCode(0x4D9D0020, // bgtlrcr7
+                "0|T--|00100000(4): 1 instructions",
+                "1|T--|if (Test(GT,cr7)) return (0,0)");
+        }
+
+        [Test]
+        public void PPCrw_lmw()
+        {
+            AssertCode(0xBBA1000C, // lmwr29,12(r1)
+                "0|L--|00100000(4): 7 instructions",
+                "1|L--|v3 = r1 + 12",
+                "2|L--|r29 = Mem0[v3:word32]",
+                "3|L--|v3 = v3 + 0x00000004",
+                "4|L--|r30 = Mem0[v3:word32]",
+                "5|L--|v3 = v3 + 0x00000004",
+                "6|L--|r31 = Mem0[v3:word32]",
+                "7|L--|v3 = v3 + 0x00000004");
+        }
+
+        [Test]
+        public void PPCRw_mfspr()
+        {
+            AssertCode(0x7CB0E2A6, // mfspr 0000021C,r5
+                "0|L--|00100000(4): 1 instructions",
+                "1|L--|r5 = __read_spr(0x0000021C)");
         }
     }
 }

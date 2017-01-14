@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -122,7 +122,6 @@ namespace Reko.Analysis
                 else
                 {
                     var paramId = proc.Frame.EnsureIdentifier(param.Storage);
-                    paramId.DataType = param.DataType;
 
                     // Need to take an extra step with parameters being passed
                     // in a register. It's perfectly possible for a user to 

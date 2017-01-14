@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,27 +43,27 @@ namespace Reko.Arch.Pdp11
         public static RegisterStorage sp = new RegisterStorage("sp", 6, 0, PrimitiveType.Word16);
         public static RegisterStorage pc = new RegisterStorage("pc", 7, 0, PrimitiveType.Word16);
 
-        public static RegisterStorage N = new RegisterStorage("N", 8, 0, PrimitiveType.Bool);
-        public static RegisterStorage Z = new RegisterStorage("Z", 9, 0, PrimitiveType.Bool);
-        public static RegisterStorage V = new RegisterStorage("V", 10, 0, PrimitiveType.Bool);
-        public static RegisterStorage C = new RegisterStorage("C", 11, 0, PrimitiveType.Bool);
-
         public static FlagRegister psw = new FlagRegister("psw", 12, PrimitiveType.Word16);
+
+        public static FlagGroupStorage N = new FlagGroupStorage(psw, 8, "N",PrimitiveType.Bool);
+        public static FlagGroupStorage Z = new FlagGroupStorage(psw, 4, "Z",PrimitiveType.Bool);
+        public static FlagGroupStorage V = new FlagGroupStorage(psw, 2, "V", PrimitiveType.Bool);
+        public static FlagGroupStorage C = new FlagGroupStorage(psw, 1, "C", PrimitiveType.Bool);
     }
 
     [Flags]
     public enum FlagM
     {
-        NF = 1,
-        ZF = 2,
-        VF = 4,
-        CF = 8,
+        NF = 8,
+        ZF = 4,
+        VF = 2,
+        CF = 1,
     }
 
     public class Pdp11Architecture : ProcessorArchitecture
     {
         private RegisterStorage[] regs;
-        private RegisterStorage[] flagRegs;
+        private FlagGroupStorage[] flagRegs;
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
         public Pdp11Architecture()
@@ -71,7 +71,7 @@ namespace Reko.Arch.Pdp11
             regs = new RegisterStorage[] { 
                 Registers.r0, Registers.r1, Registers.r2, Registers.r3, 
                 Registers.r4, Registers.r5, Registers.sp, Registers.pc, };
-            flagRegs = new RegisterStorage[] 
+            flagRegs = new FlagGroupStorage[] 
             {
                 Registers.N, Registers.Z, Registers.V, Registers.C
             };
@@ -205,20 +205,27 @@ namespace Reko.Arch.Pdp11
 
         public override FlagGroupStorage GetFlagGroup(string name)
         {
-            throw new NotImplementedException();
+            uint grf = 0;
+            foreach (var c in name)
+            {
+                switch (c)
+                {
+                case 'N': grf |= Registers.N.FlagGroupBits; break;
+                case 'Z': grf |= Registers.Z.FlagGroupBits; break;
+                case 'V': grf |= Registers.V.FlagGroupBits; break;
+                case 'C': grf |= Registers.C.FlagGroupBits; break;
+                }
+            }
+            return new FlagGroupStorage(Registers.psw, grf, name, PrimitiveType.Byte);
         }
-
 
         public override string GrfToString(uint grf)
         {
 			var s = new StringBuilder();
 			foreach (var r in flagRegs)
 			{
-                if (grf == 0)
-                    break;
-				if ((grf & 1) != 0)
+				if ((grf & r.FlagGroupBits) != 0)
 					s.Append(r.Name);
-                grf >>= 1;
 			}
 			return s.ToString();
 		}
@@ -240,7 +247,8 @@ namespace Reko.Arch.Pdp11
 
         public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
         {
-            throw new NotImplementedException();
+            ushort uAddr = rdr.ReadLeUInt16();
+            return Address.Ptr16(uAddr);
         }
 
         public override bool TryParseAddress(string txtAddress, out Address addr)

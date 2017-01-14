@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -108,7 +108,7 @@ namespace Reko.UnitTests.Arch
 
             public void Error(Address address, string message)
             {
-                throw new NotImplementedException();
+                throw new Exception(string.Format("{0}: {1}", address, message));
             }
         }
 
@@ -153,9 +153,9 @@ namespace Reko.UnitTests.Arch
                     break;
                 }
             }
-            if (cBits != Architecture.InstructionBitSize)
+            if (cBits == 0 || cBits % Architecture.InstructionBitSize != 0)
                 throw new ArgumentException(
-                    string.Format("Bit pattern didn't contain exactly {0} binary digits, but {1}.", Architecture.InstructionBitSize, cBits),
+                    string.Format("Bit pattern didn't contain exactly a multiple of {0} binary digits, but {1}.", Architecture.InstructionBitSize, cBits),
                     "bitPattern");
             return instr;
         }

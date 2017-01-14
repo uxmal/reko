@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -97,6 +97,7 @@ namespace Reko.Core.Output
 			precedences[Operator.Gt] = 7;
 			precedences[Operator.Ge] = 7;
 			precedences[Operator.Feq] = 7;
+			precedences[Operator.Fne] = 7;
 			precedences[Operator.Flt] = 7;
             precedences[Operator.Fle] = 7;
 			precedences[Operator.Fgt] = 7;

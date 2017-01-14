@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ using Reko.Core.Machine;
 using Reko.Core.Rtl;
 using Reko.Core.Types;
 
-#if DEBUG
+#if DEBUG || TRAVIS_RELEASE
 namespace Reko.Tools.C2Xml.UnitTests
 {
     [TestFixture]
@@ -727,7 +727,7 @@ namespace Reko.Tools.C2Xml.UnitTests
   <Types>
     <typedef name=""PRTL_RUN_ONCE_INIT_FN"">
       <ptr size=""4"">
-        <fn>
+        <fn convention=""__stdcall"">
           <return>
             <prim domain=""SignedInt"" size=""4"" />
           </return>
