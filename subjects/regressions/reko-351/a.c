@@ -50,16 +50,16 @@ void register_tm_clones()
 
 void __do_global_dtors_aux(word32 d2)
 {
-	if (*&globals->b80002724 == 0x00)
+	if (globals->b80002724 == 0x00)
 	{
-		uint32 d0_100 = *&globals->dw80002726;
+		uint32 d0_100 = globals->dw80002726;
 		Eq_322 a2_101[] = globals->a80002714;
 		if (0x00 - d0_100 > 0x00)
 		{
 			do
 			{
 				ui32 d0_102 = d0_100 + 0x01;
-				*&globals->dw80002726 = d0_102;
+				globals->dw80002726 = d0_102;
 				<anonymous> * a0_107 = a2_101[d0_102].ptr0000;
 				word32 a7_108;
 				word32 a6_109;
@@ -75,7 +75,7 @@ void __do_global_dtors_aux(word32 d2)
 				word32 a0_120;
 				byte CZ_121;
 				a0_107();
-				d0_100 = *&globals->dw80002726;
+				d0_100 = globals->dw80002726;
 			} while (0x00 - d0_100 > 0x00);
 		}
 		deregister_tm_clones();
@@ -97,7 +97,7 @@ void __do_global_dtors_aux(word32 d2)
 			byte CZ_98;
 			null();
 		}
-		*&globals->b80002724 = 0x01;
+		globals->b80002724 = 0x01;
 	}
 	return;
 }
@@ -125,7 +125,7 @@ void frame_dummy()
 		byte N_94;
 		null();
 	}
-	if (*&globals->dw8000271C != 0x00 && 0x00 != 0x00)
+	if (globals->dw8000271C != 0x00 && 0x00 != 0x00)
 	{
 		word32 a7_64;
 		word32 a6_65;
