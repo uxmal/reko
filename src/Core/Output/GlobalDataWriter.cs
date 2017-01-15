@@ -42,13 +42,13 @@ namespace Reko.Core.Output
         private Formatter formatter;
         private TypeReferenceFormatter tw;
         private Queue<StructureField> queue;
-        private UnionComparer unionCmp;
+        private DataTypeComparer cmp;
 
         public GlobalDataWriter(Program program, IServiceProvider services)
         {
             this.program = program;
             this.services = services;
-            this.unionCmp = new UnionComparer();
+            this.cmp = new DataTypeComparer();
         }
 
         public void WriteGlobals(Formatter formatter)
@@ -334,7 +334,7 @@ namespace Reko.Core.Output
             // union initializers use the first member of the union.
             // It may be unstable as the first member may vary from run to run.
             // Try tp pick the "best" alternative.
-            var alt = ut.Alternatives.Values.OrderBy(v => v.DataType, unionCmp).First();
+            var alt = ut.Alternatives.Values.OrderBy(v => v.DataType, cmp).First();
 
             fmt.Indent();
             alt.DataType.Accept(this);
@@ -354,35 +354,6 @@ namespace Reko.Core.Output
         public CodeFormatter VisitVoidType(VoidType voidType)
         {
             throw new NotImplementedException();
-        }
-
-        private class UnionComparer : IComparer<DataType>
-        {
-            private Dictionary<Type, int> priority = new Dictionary<Type, int>
-            {
-                { typeof(PrimitiveType), 1 },
-                { typeof(Pointer), 2 },
-                { typeof(StructureType), 3 },
-                { typeof(ClassType), 4 },
-            };
-
-            public int Compare(DataType x, DataType y)
-            {
-                int prioX, prioY;
-                if (!priority.TryGetValue(x.GetType(), out prioX))
-                    return 1;
-                if (!priority.TryGetValue(y.GetType(), out prioY))
-                    return -1;
-                if (prioX != prioY)
-                    return prioX.CompareTo(prioY);
-                if (x.Name == null && y.Name == null)
-                    return 0;
-                if (x.Name == null)
-                    return -1;
-                if (y.Name == null)
-                    return 1;
-                return x.Name.CompareTo(y.Name);
-            }
         }
     }
 }
