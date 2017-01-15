@@ -1808,7 +1808,7 @@ T_114: (in Mem86[0x00002B90 + 0x00000000:word32] : word32)
   Class: Eq_110
   DataType: word32
   OrigDataType: word32
-T_115: (in CloseLibrary(*&globals->ptr2B90) : void)
+T_115: (in CloseLibrary(globals->ptr2B90) : void)
   Class: Eq_115
   DataType: void
   OrigDataType: void
@@ -1827,7 +1827,7 @@ T_118: (in Alert(0x00010000) : void)
 T_119: (in a6_162 : Eq_119)
   Class: Eq_119
   DataType: Eq_119
-  OrigDataType: (ptr Eq_119)
+  OrigDataType: (ptr (struct (14 T_289 t0014)))
 T_120: (in dwLoc14_159 : (ptr Eq_67))
   Class: Eq_67
   DataType: (ptr Eq_67)
@@ -3620,7 +3620,7 @@ T_567: (in Mem0[0x00002B90 + 0x00000000:word32] : word32)
   Class: Eq_110
   DataType: word32
   OrigDataType: word32
-T_568: (in CloseLibrary(*&globals->ptr2B90) : void)
+T_568: (in CloseLibrary(globals->ptr2B90) : void)
   Class: Eq_115
   DataType: void
   OrigDataType: void
@@ -3912,7 +3912,7 @@ T_640: (in 0x00000000 : word32)
   Class: Eq_639
   DataType: word32
   OrigDataType: word32
-T_641: (in *&globals->dw2BB8 != 0x00000000 : bool)
+T_641: (in globals->dw2BB8 != 0x00000000 : bool)
   Class: Eq_641
   DataType: bool
   OrigDataType: bool
@@ -13352,7 +13352,7 @@ T_3000: (in 0x00000000 : word32)
   Class: Eq_2999
   DataType: word32
   OrigDataType: word32
-T_3001: (in *&globals->dw2BC0 != 0x00000000 : bool)
+T_3001: (in globals->dw2BC0 != 0x00000000 : bool)
   Class: Eq_3001
   DataType: bool
   OrigDataType: bool
@@ -13380,7 +13380,7 @@ T_3007: (in 0x00000000 : word32)
   Class: Eq_3006
   DataType: word32
   OrigDataType: word32
-T_3008: (in *&globals->dw2BC0 != 0x00000000 : bool)
+T_3008: (in globals->dw2BC0 != 0x00000000 : bool)
   Class: Eq_3008
   DataType: bool
   OrigDataType: bool
@@ -13524,7 +13524,7 @@ T_3043: (in out a0_65 : ptr32)
   Class: Eq_3036
   DataType: ptr32
   OrigDataType: ptr32
-T_3044: (in fn000021C4(*&globals->dw2BC0, dwArg04 + 4, out a0_65) : word32)
+T_3044: (in fn000021C4(globals->dw2BC0, dwArg04 + 4, out a0_65) : word32)
   Class: Eq_3031
   DataType: (ptr word32)
   OrigDataType: word32

@@ -2825,7 +2825,7 @@ T_112: (in Mem86[0x00003D98 + 0x00000000:word32] : word32)
   Class: Eq_108
   DataType: word32
   OrigDataType: word32
-T_113: (in CloseLibrary(*&globals->ptr3D98) : void)
+T_113: (in CloseLibrary(globals->ptr3D98) : void)
   Class: Eq_113
   DataType: void
   OrigDataType: void
@@ -2844,7 +2844,7 @@ T_116: (in Alert(0x00010000) : void)
 T_117: (in a6_161 : Eq_117)
   Class: Eq_117
   DataType: Eq_117
-  OrigDataType: (ptr Eq_117)
+  OrigDataType: (ptr (struct (14 T_288 t0014)))
 T_118: (in dwLoc14_158 : (ptr Eq_67))
   Class: Eq_67
   DataType: (ptr Eq_67)
@@ -4697,7 +4697,7 @@ T_580: (in Mem0[0x00003D98 + 0x00000000:word32] : word32)
   Class: Eq_108
   DataType: word32
   OrigDataType: word32
-T_581: (in CloseLibrary(*&globals->ptr3D98) : void)
+T_581: (in CloseLibrary(globals->ptr3D98) : void)
   Class: Eq_113
   DataType: void
   OrigDataType: void
@@ -5053,7 +5053,7 @@ T_669: (in 0x00000000 : word32)
   Class: Eq_668
   DataType: word32
   OrigDataType: word32
-T_670: (in *&globals->dw3DC0 != 0x00000000 : bool)
+T_670: (in globals->dw3DC0 != 0x00000000 : bool)
   Class: Eq_670
   DataType: bool
   OrigDataType: bool
@@ -22117,7 +22117,7 @@ T_4935: (in 0x00000000 : word32)
   Class: Eq_4934
   DataType: word32
   OrigDataType: word32
-T_4936: (in *&globals->dw3DC8 != 0x00000000 : bool)
+T_4936: (in globals->dw3DC8 != 0x00000000 : bool)
   Class: Eq_4936
   DataType: bool
   OrigDataType: bool
@@ -22145,7 +22145,7 @@ T_4942: (in 0x00000000 : word32)
   Class: Eq_4941
   DataType: word32
   OrigDataType: word32
-T_4943: (in *&globals->dw3DC8 != 0x00000000 : bool)
+T_4943: (in globals->dw3DC8 != 0x00000000 : bool)
   Class: Eq_4943
   DataType: bool
   OrigDataType: bool
@@ -22325,7 +22325,7 @@ T_4987: (in out a0_72 : ptr32)
   Class: Eq_4979
   DataType: ptr32
   OrigDataType: ptr32
-T_4988: (in fn000028E8(*&globals->dw3DC8, dwArg04 + 4, out d1_71, out a0_72) : word32)
+T_4988: (in fn000028E8(globals->dw3DC8, dwArg04 + 4, out d1_71, out a0_72) : word32)
   Class: Eq_4973
   DataType: (ptr word32)
   OrigDataType: word32

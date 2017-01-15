@@ -160,12 +160,6 @@ namespace Reko.Typing
         {
             if (enclosingPtr != null)
             {
-                var unary = expComplex as UnaryExpression;
-                if (unary != null && unary.Operator == Operator.AddrOf)
-                {
-                    dereferenceGenerated = true;
-                    return unary.Expression;
-                }
                 return expComplex;
             }
             var pointee = ptr.Pointee;
@@ -362,8 +356,11 @@ namespace Reko.Typing
         private Expression CreateDereference(DataType dt, Expression e)
         {
             this.dereferenceGenerated = true;
+            var unary = e as UnaryExpression;
             if (basePtr != null)
                 return new MemberPointerSelector(dt, new Dereference(dt, basePtr), e);
+            else if (unary != null && unary.Operator == Operator.AddrOf)
+                return unary.Expression;
             else if (e != null)
                 return new Dereference(dt, e);
             else

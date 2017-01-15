@@ -38,25 +38,25 @@ void fn0200(word16 r4, Eq_3 * pc)
 			break;
 		r2_103 = 0x00;
 	} while (61611 == 0x00);
-	*&globals->w0244 = *&globals->w0244;
-	*&globals->w0248 = *&globals->w0248;
-	*&globals->w0024 = *&globals->w0024 | 0x1040;
+	globals->w0244 = globals->w0244;
+	globals->w0248 = globals->w0248;
+	globals->w0024 = globals->w0024 | 0x1040;
 	globals->w1166 = 0x1100;
 	globals->w1168 = 4464;
 	FnSubfn(&globals->w1166);
-	*&globals->w0264 = *&globals->w0264;
-	*&globals->w0268 = *&globals->w0268;
+	globals->w0264 = globals->w0264;
+	globals->w0268 = globals->w0268;
 	globals->w1166 = 0x0101;
 	globals->w1168 = 4446;
 	FnSubfn(&globals->w1166);
-	*&globals->w0244 = *&globals->w0244;
-	*&globals->w0248 = *&globals->w0248;
-	*&globals->w0024 = *&globals->w0024 | 0x1040;
+	globals->w0244 = globals->w0244;
+	globals->w0248 = globals->w0248;
+	globals->w0024 = globals->w0024 | 0x1040;
 	globals->w1166 = 0x1100;
 	globals->w1168 = 4464;
 	FnSubfn(&globals->w1166);
-	*&globals->w0264 = *&globals->w0264;
-	*&globals->w0268 = *&globals->w0268;
+	globals->w0264 = globals->w0264;
+	globals->w0268 = globals->w0268;
 	globals->w1166 = 0x0101;
 	globals->w1168 = 4446;
 	FnSubfn(&globals->w1166);
@@ -82,9 +82,9 @@ l02A0:
 	fn0C1E();
 l02A6:
 	word16 r0_105;
-	if (!TTYIN(out r0_105) && *(&globals->ptr0EFA) == 0x00)
+	if (!TTYIN(out r0_105) && globals->ptr0EFA == 0x00)
 	{
-		*&globals->b02B4 = *&globals->b02B4;
+		globals->b02B4 = globals->b02B4;
 		word16 * r1_319 = &globals->w02C6;
 		do
 		{
@@ -113,34 +113,34 @@ l02A6:
 	globals->w1166 = 0x1100;
 	globals->w1168 = 4464;
 	FnSubfn(&globals->w1166);
-	ci16 r0_115 = *&globals->w1170 - *(&globals->w1172);
+	ci16 r0_115 = globals->w1170 - globals->w1172;
 	if (r0_115 < 0x00)
 	{
 		if (0x1178 - r4 == 0x00)
 			goto l02A6;
 		fn0AF4(wArg00);
 	}
-	*&globals->w031C = *&globals->w031C;
+	globals->w031C = globals->w031C;
 	pc->w0E52 = pc->w0E52 + 0x01;
-	word16 v64_138 = ~*&globals->w0326;
-	*&globals->w0326 = v64_138;
+	word16 v64_138 = ~globals->w0326;
+	globals->w0326 = v64_138;
 	if (v64_138 == 0x00)
-		*&globals->w032C = ~*&globals->w032C;
-	if (*&globals->ptr0EFA != 0x00)
+		globals->w032C = ~globals->w032C;
+	if (globals->ptr0EFA != 0x00)
 	{
-		word16 v70_284 = *&globals->w0336 - 0x01;
-		*&globals->w0336 = v70_284;
+		word16 v70_284 = globals->w0336 - 0x01;
+		globals->w0336 = v70_284;
 		if (v70_284 != 0x00)
 			goto l0370;
-		if (*&globals->w0F18 == 0x00)
+		if (globals->w0F18 == 0x00)
 			goto l03AE;
 		fn0484();
-		*&globals->w0348 = *&globals->w0348;
+		globals->w0348 = globals->w0348;
 		fn046E(r2_103, r4);
-		*&globals->w0352 = *&globals->w0352;
+		globals->w0352 = globals->w0352;
 		sp_104 = sp_104 + ~0x01;
 	}
-	if (*&globals->w0EF8 != 0x00)
+	if (globals->w0EF8 != 0x00)
 	{
 l036C:
 		byte NZ_261;
@@ -158,13 +158,13 @@ l036C:
 	}
 	else
 	{
-		if (0x08 - *(&globals->w0F14) < 0x00)
+		if (0x08 - globals->w0F14 < 0x00)
 		{
-			ci16 v106_277 = *&globals->w0364 - 0x01;
-			*&globals->w0364 = v106_277;
+			ci16 v106_277 = globals->w0364 - 0x01;
+			globals->w0364 = v106_277;
 			if (v106_277 <= 0x00)
 			{
-				*&globals->w036C = *&globals->w036C;
+				globals->w036C = globals->w036C;
 				goto l036C;
 			}
 		}
@@ -175,20 +175,20 @@ l0370:
 		fn0996();
 		if (0x1178 - r4 != 0x00)
 			break;
-		if (*&globals->w0F12 != 0x00)
+		if (globals->w0F12 != 0x00)
 			continue;
-		if (*&globals->w0F02 != 0x00)
+		if (globals->w0F02 != 0x00)
 			continue;
 		if (true)
 		{
-			*&globals->w03AA = *&globals->w03AA + 0x01;
+			globals->w03AA = globals->w03AA + 0x01;
 			goto l02A0;
 		}
 l03AE:
-		cu16 v82_157 = *&globals->w0B5A - *(&globals->w0B5A);
+		cu16 v82_157 = globals->w0B5A - globals->w0B5A;
 		if (v82_157 > 0x00)
 		{
-			*&globals->w03BC = *&globals->w03BC;
+			globals->w03BC = globals->w03BC;
 			globals->w1166 = 0x0101;
 			globals->w1168 = 4446;
 			FnSubfn(&globals->w1166);

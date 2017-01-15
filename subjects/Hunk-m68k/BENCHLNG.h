@@ -3169,7 +3169,7 @@ T_115: (in Mem86[0x00003E28 + 0x00000000:word32] : word32)
   Class: Eq_111
   DataType: word32
   OrigDataType: word32
-T_116: (in CloseLibrary(*&globals->ptr3E28) : void)
+T_116: (in CloseLibrary(globals->ptr3E28) : void)
   Class: Eq_116
   DataType: void
   OrigDataType: void
@@ -5057,7 +5057,7 @@ T_587: (in Mem0[0x00003E28 + 0x00000000:word32] : word32)
   Class: Eq_111
   DataType: word32
   OrigDataType: word32
-T_588: (in CloseLibrary(*&globals->ptr3E28) : void)
+T_588: (in CloseLibrary(globals->ptr3E28) : void)
   Class: Eq_116
   DataType: void
   OrigDataType: void
@@ -5413,7 +5413,7 @@ T_676: (in 0x00000000 : word32)
   Class: Eq_675
   DataType: word32
   OrigDataType: word32
-T_677: (in *&globals->dw3E50 != 0x00000000 : bool)
+T_677: (in globals->dw3E50 != 0x00000000 : bool)
   Class: Eq_677
   DataType: bool
   OrigDataType: bool
@@ -16805,7 +16805,7 @@ T_3524: (in 0x00000000 : word32)
   Class: Eq_3523
   DataType: word32
   OrigDataType: word32
-T_3525: (in *&globals->dw3E58 != 0x00000000 : bool)
+T_3525: (in globals->dw3E58 != 0x00000000 : bool)
   Class: Eq_3525
   DataType: bool
   OrigDataType: bool
@@ -16833,7 +16833,7 @@ T_3531: (in 0x00000000 : word32)
   Class: Eq_3530
   DataType: word32
   OrigDataType: word32
-T_3532: (in *&globals->dw3E58 != 0x00000000 : bool)
+T_3532: (in globals->dw3E58 != 0x00000000 : bool)
   Class: Eq_3532
   DataType: bool
   OrigDataType: bool
@@ -17013,7 +17013,7 @@ T_3576: (in out a0_72 : ptr32)
   Class: Eq_3568
   DataType: ptr32
   OrigDataType: ptr32
-T_3577: (in fn0000232C(*&globals->dw3E58, dwArg04 + 4, out d1_71, out a0_72) : word32)
+T_3577: (in fn0000232C(globals->dw3E58, dwArg04 + 4, out d1_71, out a0_72) : word32)
   Class: Eq_3562
   DataType: (ptr word32)
   OrigDataType: word32

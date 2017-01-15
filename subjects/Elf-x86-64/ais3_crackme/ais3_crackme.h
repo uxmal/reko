@@ -555,7 +555,7 @@ T_118: (in 0x00 : byte)
   Class: Eq_117
   DataType: byte
   OrigDataType: byte
-T_119: (in *&globals->b601038 != 0x00 : bool)
+T_119: (in globals->b601038 != 0x00 : bool)
   Class: Eq_119
   DataType: bool
   OrigDataType: bool
@@ -623,11 +623,11 @@ T_135: (in 0x0000000000000000 : word64)
   Class: Eq_135
   DataType: word64
   OrigDataType: word64
-T_136: (in *&globals->qw600E08 - 0x0000000000000000 : word64)
+T_136: (in globals->qw600E08 - 0x0000000000000000 : word64)
   Class: Eq_136
   DataType: word64
   OrigDataType: word64
-T_137: (in cond(*&globals->qw600E08 - 0x0000000000000000) : byte)
+T_137: (in cond(globals->qw600E08 - 0x0000000000000000) : byte)
   Class: Eq_137
   DataType: byte
   OrigDataType: byte
