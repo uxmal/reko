@@ -223,5 +223,16 @@ namespace Reko.UnitTests.Environments.Windows
             Assert.AreEqual("__int64",  win32.GetPrimitiveTypeName(PrimitiveType.Int64, "C"));
             Assert.AreEqual("unsigned __int64",  win32.GetPrimitiveTypeName(PrimitiveType.UInt64, "C"));
         }
+
+        [Test]
+        public void Win32_VtblFromMsMangledName()
+        {
+            Given_TypeLibraryLoaderService();
+            Given_Configuration_With_Win32_Element();
+            When_Creating_Win32_Platform();
+
+            var type = win32.DataTypeFromImportName("??_7Scope@@6B@");
+            Assert.IsInstanceOf<UnknownType>(type.Item2);
+        }
     }
 }
