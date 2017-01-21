@@ -1,5 +1,31 @@
 ## Recent versions of Reko
 
+### Version 0.6.2.0
+
+* Function previewer in the mixed-asm-data window
+* Added support for Wii and RT-11 platforms
+* Added support for RT-11 LDA and SAV files, and Nintendo DOL files.
+* Add support for custom loader. Users can provide their own front-
+  ends to Reko.
+* Support for parsing GCC symbols
+* Added support for Atmel AVR8, Risc-V, and Xtensa AVR8 processor architectures
+* Added [[reko::arg(fpu)]] C++-style attribute 
+* #213: more work on the jump table dialog
+
+### Version 0.6.1.0
+
+* Implemented a general varargs processing mechanism, and specific instances for standard
+  C printf and scanf function families, as well as the Py_BuildValue function from the 
+  Python runtime.
+* Early support for dealing with indirect function calls.
+* Improved ELF support for x86, x86-64, MIPS, PowerPC, ARM, and Sparc
+* Improved PE support for x86, x86-64, MIPS, and ARM
+* Added support for lifting more instructions in x86, M68k, VAX, Sparc, MIPS, Z80 architectures.
+* Beginning support for signature libraries.
+* The cancel button actually works now!
+* Support for "No decompile"
+* General bugfixes
+
 ### Version 0.6.0.0
 
 * Combined code and low-level viewer, to allow users to compare Reko's output

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 using Reko.Core.Code;
 
 using System;
+using System.Collections.Generic;
 
 namespace Reko.Core.Types
 {
@@ -56,8 +57,8 @@ namespace Reko.Core.Types
 		/// The equivalence class this type variable belongs to.
 		/// </summary>
 		public EquivalenceClass Class { get; set; }
-		
-		public override DataType Clone()
+
+        public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
 		{
 			return this;
 		}

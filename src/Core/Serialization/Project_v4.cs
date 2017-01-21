@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -111,6 +111,9 @@ namespace Reko.Core.Serialization
 
         [XmlElement("address")]
         public string LoadAddress;
+
+        [XmlElement("loader")]
+        public string Loader;
 
         [XmlElement("processor")]
         public ProcessorOptions_v4 Processor;

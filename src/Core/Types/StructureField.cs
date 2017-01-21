@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,9 +57,9 @@ namespace Reko.Core.Types
 
         public int Offset { get; set; }
 
-        public StructureField Clone()
+        public StructureField Clone(IDictionary<DataType, DataType> clonedTypes = null)
 		{
-			return new StructureField(Offset, DataType.Clone(), name);
+			return new StructureField(Offset, DataType.Clone(clonedTypes), name);
 		}
 
         private string GenerateDefaultName()

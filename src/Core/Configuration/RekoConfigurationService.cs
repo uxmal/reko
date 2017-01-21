@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -186,12 +186,22 @@ namespace Reko.Core.Configuration
                 Description = sRaw.Description,
                 EntryPoint = LoadEntryPoint(sRaw.Entry),
                 Environment = sRaw.Environment,
+                Loader = sRaw.LoaderType,
                 Name = sRaw.Name,
             };
         }
 
         private EntryPointElement LoadEntryPoint(EntryPoint_v1 sEntry)
         {
+            if (sEntry == null)
+            {
+                return new EntryPointElement
+                {
+                    Address = null,
+                    Follow = false,
+                    Name = null,
+                };
+            }
             return new EntryPointElement
             {
                 Address = sEntry.Address,

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -154,10 +154,10 @@ namespace Reko.Gui.Windows.Controls
             long offset = Math.BigMul(numerator, (int)mem.Length) / denominator;
             if (offset < 0)
                 offset = 0;
-            else if (offset > mem.Bytes.Length)
-                offset = mem.Bytes.Length;
-
-            this.position = program.SegmentMap.MapLinearAddressToAddress(addrStart.ToLinear() + (uint)offset);
+            var addr = addrStart + offset;
+            if (addr >= addrEnd)
+                addr = addrEnd-1;
+            this.position = addr;
         }
 
         /// <summary>

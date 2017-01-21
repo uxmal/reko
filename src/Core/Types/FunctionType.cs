@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -89,11 +89,11 @@ namespace Reko.Core.Types
             return v.VisitFunctionType(this);
         }
 
-		public override DataType Clone()
+        public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
 		{
-            Identifier ret = new Identifier("", ReturnValue.DataType.Clone(), ReturnValue.Storage);
+            Identifier ret = new Identifier("", ReturnValue.DataType.Clone(clonedTypes), ReturnValue.Storage);
             Identifier[] parameters = this.Parameters
-                .Select(p => new Identifier(p.Name, p.DataType.Clone(), p.Storage))
+                .Select(p => new Identifier(p.Name, p.DataType.Clone(clonedTypes), p.Storage))
                 .ToArray();
             var ft = new FunctionType(ret, parameters);
             return ft;

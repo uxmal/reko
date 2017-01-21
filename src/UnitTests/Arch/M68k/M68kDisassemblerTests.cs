@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -708,6 +708,15 @@ namespace Reko.UnitTests.Arch.M68k
         public void M68kdis_fbnge()
         {
             RunTest("fbnge\t$100000E2", 0xF29C, 0x00E0);  
+        }
+
+        [Test]
+        public void M68kdis_fbcc_illegalEncoding()
+        {
+            // This is an fbcc instruction, which uses an encoding
+            // which is not valid with a 68k FPU; it should
+            // decode to an illegal instruction
+            RunTest("illegal\t", 0xF2BC, 0x00E0);
         }
     }
 }

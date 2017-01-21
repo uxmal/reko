@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -108,7 +108,7 @@ namespace Reko.UnitTests.Core.Serialization
         {
             var bytes = new byte[100];
             loader.Stub(l => l.LoadImageBytes(null, 0)).IgnoreArguments().Return(bytes);
-            loader.Stub(l => l.LoadExecutable(null, null, null)).IgnoreArguments().Return(
+            loader.Stub(l => l.LoadExecutable(null, null, null, null)).IgnoreArguments().Return(
                 new Program { Architecture = arch });
             Given_Architecture();
             Given_TestOS_Platform();

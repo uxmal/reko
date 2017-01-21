@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@ using System.ComponentModel.Design;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace Reko.Loading
@@ -92,12 +93,20 @@ namespace Reko.Loading
         /// </summary>
         /// <param name="rawBytes">Image of the executeable file.</param>
         /// <param name="addrLoad">Address into which to load the file.</param>
-        public Program LoadExecutable(string filename, byte[] image, Address addrLoad)
+        public Program LoadExecutable(string filename, byte[] image, string loader, Address addrLoad)
         {
-            ImageLoader imgLoader = FindImageLoader(
-                filename, 
-                image,
-                () => CreateDefaultImageLoader(filename, image));
+            ImageLoader imgLoader;
+            if (!string.IsNullOrEmpty(loader))
+            {
+                imgLoader = CreateCustomImageLoader(Services, loader, filename, image);
+            }
+            else
+            {
+                imgLoader = FindImageLoader(
+                    filename,
+                    image,
+                    () => CreateDefaultImageLoader(filename, image));
+            }
             if (addrLoad == null)
             {
                 addrLoad = imgLoader.PreferredBaseAddress;     //$REVIEW: Should be a configuration property.
@@ -118,62 +127,63 @@ namespace Reko.Loading
             return program;
         }
 
-        public Program LoadRawImage(string filename, byte[] image, string archName, string platformName, Address addrLoad)
-        {
-            var arch = cfgSvc.GetArchitecture(archName);
-            var platform = cfgSvc.GetEnvironment(platformName).Load(Services, arch);
-            var program = new Program(
-                CreatePlatformSegmentMap(platform, addrLoad, image),
-                arch, 
-                platform);
+        public Program LoadRawImage(string filename, byte[] image, Address addrLoad, LoadDetails details)
+        { 
+            var arch = cfgSvc.GetArchitecture(details.ArchitectureName);
+            var platform = cfgSvc.GetEnvironment(details.PlatformName).Load(Services, arch);
+            if (addrLoad == null)
+            {
+                if (!arch.TryParseAddress(details.LoadAddress, out addrLoad))
+                {
+                    throw new ApplicationException(
+                        "Unable to determine base address for executable. A default address should have been present in the reko.config file.");
+                }
+            }
+            Program program;
+            if (!string.IsNullOrEmpty(details.LoaderName))
+            {
+                var imgLoader = CreateCustomImageLoader(Services, details.LoaderName, filename, image);
+                program = imgLoader.Load(addrLoad, arch, platform);
+            }
+            else
+            {
+                var imgLoader = new NullImageLoader(Services, filename, image);
+                program = new Program(
+                    CreatePlatformSegmentMap(platform, addrLoad, image),
+                    arch,
+                    platform);
+                Address addrEp;
+                if (details.EntryPoint != null && arch.TryParseAddress(details.EntryPoint.Address, out addrEp))
+                {
+                    program.EntryPoints.Add(addrEp, new Core.ImageSymbol(addrEp) { Type = SymbolType.Procedure });
+                }
+            }
             program.Name = Path.GetFileName(filename);
             program.User.Processor = arch.Name;
             program.User.Environment = platform.Name;
-            return program;
-        }
-
-
-        public Program LoadRawImage(string filename, byte[] image, RawFileElement raw)
-        {
-            var imgLoader = CreateRawImageLoader(image, new NullImageLoader(Services, filename, image), raw);
-            var program = imgLoader.Load(imgLoader.PreferredBaseAddress);
-            program.SegmentMap = CreatePlatformSegmentMap(program.Platform, imgLoader.PreferredBaseAddress, image);
-            program.Name = Path.GetFileName(filename);
-            var relocations = imgLoader.Relocate(program, imgLoader.PreferredBaseAddress);
-            foreach (var sym in relocations.Symbols.Values)
-            {
-                program.ImageSymbols[sym.Address] = sym;
-            }
-            foreach (var ep in relocations.EntryPoints)
-            {
-                program.EntryPoints.Add(ep.Address, ep);
-            }
+            program.User.Loader = details.LoaderName;
             program.ImageMap = program.SegmentMap.CreateImageMap();
             return program;
         }
 
         public ImageLoader CreateDefaultImageLoader(string filename, byte[] image)
         {
-            var imgLoader = new NullImageLoader(Services, filename, image);
             var rawFile = cfgSvc.GetRawFile(DefaultToFormat);
             if (rawFile == null)
             {
                 this.Services.RequireService<DecompilerEventListener>().Warn(
                     new NullCodeLocation(""),
                     "The format of the file is unknown.");
-                return imgLoader;
+                return new NullImageLoader(Services, filename, image);
             }
-
-            return CreateRawImageLoader(image, imgLoader, rawFile);
+            return CreateRawImageLoader(filename, image, rawFile);
         }
 
-        private ImageLoader CreateRawImageLoader(byte[] image, NullImageLoader imgLoader, RawFileElement rawFile)
+        private ImageLoader CreateRawImageLoader(string filename, byte[] image, RawFileElement rawFile)
         {
             var arch = cfgSvc.GetArchitecture(rawFile.Architecture);
             var env = cfgSvc.GetEnvironment(rawFile.Environment);
             IPlatform platform;
-            Address baseAddr;
-            Address entryAddr;
             if (env != null)
             {
                 platform = env.Load(Services, arch);
@@ -182,18 +192,33 @@ namespace Reko.Loading
             {
                 platform = new DefaultPlatform(Services, arch);
             }
-            //ApplyMemoryMap(platform, image
-            imgLoader.Architecture = arch;
-            imgLoader.Platform = platform;
+
+            Address entryAddr = null;
+            Address baseAddr;
             if (arch.TryParseAddress(rawFile.BaseAddress, out baseAddr))
             {
-                imgLoader.PreferredBaseAddress = baseAddr;
                 entryAddr = GetRawBinaryEntryAddress(rawFile, image, arch, baseAddr);
-                var state = arch.CreateProcessorState();
-                imgLoader.EntryPoints.Add(new ImageSymbol(entryAddr)
+            }
+            var imgLoader = new NullImageLoader(Services, filename, image)
+            {
+                Architecture = arch,
+                Platform = platform,
+                PreferredBaseAddress = entryAddr,
+            };
+            Address addrEp;
+            if (rawFile.EntryPoint != null)
+            {
+                if (!string.IsNullOrEmpty(rawFile.EntryPoint.Address))
                 {
-                    Name = rawFile.EntryPoint.Name,
-                    ProcessorState = state
+                    arch.TryParseAddress(rawFile.EntryPoint.Address, out addrEp);
+                }
+                else
+                {
+                    addrEp = baseAddr;
+                }
+                imgLoader.EntryPoints.Add(new ImageSymbol(addrEp)
+                {
+                    Type = SymbolType.Procedure
                 });
             }
             return imgLoader;
@@ -342,6 +367,37 @@ namespace Reko.Loading
             if (t == null)
                 throw new ApplicationException(string.Format("Unable to find loader {0}.", typeName));
             return (T) Activator.CreateInstance(t, services, filename, bytes);
+        }
+
+        /// <summary>
+        /// Expects the provided assembly to contain exactly one type that implements
+        /// ImageLoader, then loads that.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="typeName"></param>
+        /// <param name="filename"></param>
+        /// <param name="bytes"></param>
+        /// <returns></returns>
+        public static ImageLoader CreateCustomImageLoader(IServiceProvider services, string loader, string filename, byte[] bytes)
+        {
+            if (string.IsNullOrEmpty(loader))
+            {
+                return new NullImageLoader(services, filename, bytes);
+            }
+
+            var cfgSvc = services.RequireService<IConfigurationService>();
+            var ldrCfg = cfgSvc.GetImageLoaders().FirstOrDefault(e => e.Label == loader);
+            if (ldrCfg != null)
+            {
+                return CreateImageLoader<ImageLoader>(services, ldrCfg.TypeName, filename, bytes);
+            }
+
+            //$TODO: detect file extensions and load appropriate interpreter.
+            var ass = Assembly.LoadFrom(loader);
+            var t = ass.GetTypes().SingleOrDefault(tt => typeof(ImageLoader).IsAssignableFrom(tt));
+            if (t == null)
+                throw new ApplicationException(string.Format("Unable to find image loader in {0}.", loader));
+            return (ImageLoader) Activator.CreateInstance(t, services, filename, bytes);
         }
 
         protected void CopyImportReferences(Dictionary<Address, ImportReference> importReference, Program program)

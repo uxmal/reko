@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -86,7 +86,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
                 Platform = platform,
             };
             ILoader ldr = mr.StrictMock<ILoader>();
-            ldr.Stub(l => l.LoadExecutable(null, null, null)).IgnoreArguments().Return(program);
+            ldr.Stub(l => l.LoadExecutable(null, null, null, null)).IgnoreArguments().Return(program);
             ldr.Stub(l => l.LoadImageBytes(null, 0)).IgnoreArguments().Return(bytes);
             ldr.Replay();
             sc.AddService(typeof(DecompilerEventListener), new FakeDecompilerEventListener());
@@ -94,7 +94,7 @@ namespace Reko.UnitTests.Gui.Windows.Forms
             this.decSvc = new DecompilerService();
             decSvc.Decompiler = new DecompilerDriver(ldr, sc);
             decSvc.Decompiler.Load("test.exe");
-            program = decSvc.Decompiler.Project.Programs.First();
+            this.program = this.decSvc.Decompiler.Project.Programs.First();
             decSvc.Decompiler.ScanPrograms();
             sc.AddService(typeof(IDecompilerService), decSvc);
 

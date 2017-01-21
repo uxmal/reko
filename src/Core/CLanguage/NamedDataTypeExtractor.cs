@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -279,7 +279,15 @@ namespace Reko.Core.CLanguage
         
         public Func<NamedDataType,NamedDataType> VisitCallConvention(CallConventionDeclarator conv)
         {
+            ApplyCallConvention(conv.Convention);
             return (nt) => conv.Declarator.Accept(this)(nt);
+        }
+
+        private void ApplyCallConvention(CTokenType convention)
+        {
+            if (callingConvention != CTokenType.None)
+                throw new FormatException(string.Format("Unexpected extra calling convention specifier '{0}'.", callingConvention));
+            callingConvention = convention;
         }
 
         public SerializedType VisitSimpleType(SimpleTypeSpec simpleType)
@@ -532,9 +540,7 @@ namespace Reko.Core.CLanguage
             case CTokenType.__Cdecl:
             case CTokenType.__Fastcall:
             case CTokenType.__Stdcall:
-                if (callingConvention != CTokenType.None)
-                    throw new FormatException(string.Format("Unexpected extra calling convention specifier '{0}'.", callingConvention));
-                callingConvention = storageClassSpec.Type;
+                ApplyCallConvention(storageClassSpec.Type);
                 break;
             }
             return dt;       //$TODO make use of CDECL.

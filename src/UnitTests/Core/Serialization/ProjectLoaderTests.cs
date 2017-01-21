@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -127,6 +127,7 @@ namespace Reko.UnitTests.Core.Serialization
             ldr.Stub(l => l.LoadExecutable(
                 Arg<string>.Is.Anything,
                 Arg<byte[]>.Is.Anything,
+                Arg<string>.Is.Anything,
                 Arg<Address>.Is.Anything)).Return(new Program { Platform = platform, Architecture = arch });
         }
 
@@ -309,7 +310,7 @@ namespace Reko.UnitTests.Core.Serialization
             Given_TestArch();
             Given_TestOS();
             var ldr = mr.Stub<ILoader>();
-            ldr.Stub(l => l.LoadExecutable(null, null, null)).IgnoreArguments().Return(new Program());
+            ldr.Stub(l => l.LoadExecutable(null, null, null, null)).IgnoreArguments().Return(new Program());
             ldr.Stub(l => l.LoadImageBytes(null, 0)).IgnoreArguments().Return(new byte[1000]);
             mr.ReplayAll();
 
