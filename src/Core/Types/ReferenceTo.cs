@@ -49,9 +49,9 @@ namespace Reko.Core.Types
             return v.VisitReference(this);
         }
 
-        public override DataType Clone()
+        public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
         {
-            return new ReferenceTo(Referent.Clone());
+            return new ReferenceTo(Referent.Clone(clonedTypes));
         }
     }
 }
