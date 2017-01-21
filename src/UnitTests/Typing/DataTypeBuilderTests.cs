@@ -407,13 +407,14 @@ namespace Reko.UnitTests.Typing
 
         [Test]
         [Category(Categories.IntegrationTests)]
+        [Ignore(Categories.AnalysisDevelopment)]
         public void DtbReg00011()
         {
             RunTest16("Fragments/regressions/r00011.asm", "Typing/DtbReg00011.txt");
         }
 
         [Test]
-        [Ignore("Re-enable when new SSA is in place")]
+        [Ignore(Categories.AnalysisDevelopment)]
         public void DtbReg00012()
         {
             RunTest16("Fragments/regressions/r00012.asm", "Typing/DtbReg00012.txt");
