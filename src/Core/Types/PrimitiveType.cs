@@ -85,7 +85,7 @@ namespace Reko.Core.Types
             return v.VisitPrimitive(this);
         }
 
-		public override DataType Clone()
+        public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
 		{
 			return this;
 		}

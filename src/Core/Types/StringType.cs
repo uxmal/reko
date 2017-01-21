@@ -65,7 +65,7 @@ namespace Reko.Core.Types
             return v.VisitString(this);
         }
 
-        public override DataType Clone()
+        public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
         {
             return new StringType(this.ElementType, this.LengthPrefixType, this.PrefixOffset);
         }

@@ -20,6 +20,7 @@
 
 using System;
 using System.IO;
+using System.Collections.Generic;
 
 namespace Reko.Core.Types
 {
@@ -44,7 +45,7 @@ namespace Reko.Core.Types
             return v.VisitArray(this);
         }
 
-		public override DataType Clone()
+        public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
 		{
 			return new ArrayType(ElementType, Length);
 		}

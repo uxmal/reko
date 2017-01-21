@@ -21,6 +21,7 @@
 using Reko.Core.Code;
 
 using System;
+using System.Collections.Generic;
 
 namespace Reko.Core.Types
 {
@@ -56,8 +57,8 @@ namespace Reko.Core.Types
 		/// The equivalence class this type variable belongs to.
 		/// </summary>
 		public EquivalenceClass Class { get; set; }
-		
-		public override DataType Clone()
+
+        public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
 		{
 			return this;
 		}

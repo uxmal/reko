@@ -496,7 +496,7 @@ namespace Reko.Core.Expressions
                 throw new NotImplementedException();
             }
 
-            public override DataType Clone()
+            public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
             {
                 throw new NotImplementedException();
             }
