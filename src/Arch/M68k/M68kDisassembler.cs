@@ -1362,10 +1362,11 @@ namespace Reko.Arch.M68k
         {
             var new_pc = dasm.rdr.Address;
             dasm.LIMIT_CPU_TYPES(M68020_PLUS);
+            Opcode opcode = g_cpcc[dasm.instruction & 0x3f];
             return new M68kInstruction
             {
-                code = g_cpcc[dasm.instruction & 0x3f],
-                op1 = new M68kAddressOperand(new_pc + dasm.rdr.ReadBeInt16())
+                code = opcode,
+                op1 = (opcode != Opcode.illegal) ? new M68kAddressOperand(new_pc + dasm.rdr.ReadBeInt16()) : null
             };
         }
 
