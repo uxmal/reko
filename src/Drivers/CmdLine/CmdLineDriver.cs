@@ -145,7 +145,7 @@ namespace Reko.CmdLine
                 ArchitectureName = (string)pArgs["--arch"],
                 PlatformName = (string)sEnv,
                 LoadAddress = (string)pArgs["--base"],
-                EntryPoint = new EntryPointElement { Address = (string)pArgs["--entry"] }
+                EntryPoint = null
             });
             dec.Project.Programs[0].EntryPoints.Add(
                 addrEntry,
