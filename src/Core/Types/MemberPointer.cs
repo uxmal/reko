@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Reko.Core.Types
@@ -52,9 +53,9 @@ namespace Reko.Core.Types
             return v.VisitMemberPointer(this);
         }
 
-		public override DataType Clone()
+        public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
 		{
-			return new MemberPointer(BasePointer.Clone(), Pointee.Clone(), byteSize);
+			return new MemberPointer(BasePointer.Clone(clonedTypes), Pointee.Clone(clonedTypes), byteSize);
 		}
 
 		public override bool IsComplex
