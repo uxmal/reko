@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using Reko.Core.Lib;
 using Reko.UnitTests.Mocks;
 using Reko.Core.Types;
+using Rhino.Mocks;
 
 namespace Reko.UnitTests.Analysis
 {
@@ -66,19 +67,48 @@ namespace Reko.UnitTests.Analysis
             }
         }
 
+        private void RunTest(ProgramBuilder pb, string sExp)
+        {
+            this.program = pb.BuildProgram();
+            this.program.Platform = new DefaultPlatform(null, program.Architecture);
+            this.progFlow = new ProgramDataFlow(program);
+
+            var sscf = new SccFinder<Procedure>(new ProcedureGraph(program), ProcessScc);
+            foreach (var procedure in program.Procedures.Values)
+            {
+                sscf.Find(procedure);
+            }
+
+            var writer = new StringWriter();
+            foreach (var vn in vns)
+            {
+                vn.Procedure.Write(false, writer);
+                vn.Write(writer);
+                writer.WriteLine();
+            }
+
+            if (sExp != writer.ToString())
+            {
+                Console.WriteLine(writer.ToString());
+                Assert.AreEqual(sExp, writer.ToString());
+            }
+        }
+
         void ProcessScc(IList<Procedure> scc)
         {
             var group = new HashSet<Procedure>(scc);
             foreach (var proc in scc)
-            { 
-                var sst = new SsaTransform(program, proc, group, null, progFlow);
+            {
+                var ir = MockRepository.GenerateStub<IImportResolver>();
+                ir.Replay();
+                var sst = new SsaTransform(program, proc, group, ir, progFlow);
                 SsaState ssa = sst.Transform();
-                var vp = new ValuePropagator(program.Architecture, ssa, listener);
-                vp.Transform();
-                sst.RenameFrameAccesses = true;
-                sst.Transform();
+                //var vp = new ValuePropagator(program.Architecture, ssa, listener);
+                //vp.Transform();
+                //sst.RenameFrameAccesses = true;
+                //sst.Transform();
                 sst.AddUsesToExitBlock();
-                vp.Transform();
+                //vp.Transform();
 			    var vn = new ValueNumbering(group, listener);
                 vn.Compute(ssa);
                 vns.Add(vn);
@@ -305,6 +335,8 @@ looptest:
                 var r1 = m.Frame.EnsureRegister(pb.Program.Architecture.GetRegister(1));
                 var r2 = m.Frame.EnsureRegister(pb.Program.Architecture.GetRegister(2));
                 var sp = m.Frame.EnsureRegister(pb.Program.Architecture.StackRegister);
+                m.Assign(sp, m.Frame.FramePointer);
+                m.Assign(sp, m.ISub(sp, 4));
                 m.Assign(r1, m.LoadDw(m.IAdd(sp, 8)));
                 m.BranchIf(m.Le(r1, 1), "m00002");
 
@@ -312,7 +344,7 @@ looptest:
                 m.Assign(sp, m.ISub(sp, 4));
                 m.Store(sp, m.ISub(r1, 1));
                 m.Call("foo", 0);
-                m.Assign(r1, m.IMul(r1, m.ISub(sp, 8)));
+                m.Assign(r1, m.IMul(r1, m.LoadDw(m.ISub(sp, 8))));
                 m.Goto("m00003");
 
                 m.Label("m00002");
@@ -322,30 +354,170 @@ looptest:
                 m.Assign(sp, m.IAdd(sp, 4));
                 m.Return();
             });
-            this.program = pb.BuildProgram();
-            this.program.Platform = new DefaultPlatform(null, program.Architecture);
-            this.progFlow = new ProgramDataFlow(program);
 
-            var sscf = new SccFinder<Procedure>(new ProcedureGraph(program), ProcessScc);
-            foreach (var procedure in program.Procedures.Values)
-            {
-                sscf.Find(procedure);
-            }
+            var sExp =
+            #region Expected
+@"// foo
+// Return size: 0
+define foo
+foo_entry:
+	def r63
+	def Mem0
+	def r2
+	// succ:  l1
+l1:
+	r1_3 = Mem0[r63 + 0x00000008:word32]
+	branch r1_3 <= 0x00000001 m00002
+	// succ:  m00001 m00002
+m00001:
+	r63_5 = r63 - 0x00000004
+	Mem6[r63 - 0x00000004:word32] = r1_3 - 0x00000001
+	call foo (retsize: 0;)
+		uses: r1:r1_3,r2:r2,r63:r63 - 0x00000004
+		defs: r1:r1_7,r2:r2_9,r63:r63_10
+	r1_11 = r1_7 * Mem6[r63_10 - 0x00000008:word32]
+	goto m00003
+	// succ:  m00003
+m00002:
+	r1_4 = 0x00000001
+	// succ:  m00003
+m00003:
+	r2_15 = PHI(r2_9, r2)
+	r1_14 = PHI(r1_11, r1_4)
+	r63_12 = PHI(r63_10, r63)
+	r63_13 = r63_12 + 0x00000004
+	return
+	// succ:  foo_exit
+foo_exit:
+	use r1_14
+	use r2_15
+	use r63_13
+Values:
+	0x00000001: <r1_4>
+	Mem0: <Mem0>
+	Mem0[r63 + 0x00000008:word32]: <r1_3>
+	Mem6: <Mem6>
+	PHI(r1_11, r1_4): <r1_14>
+	PHI(r2_9, r2): <r2_15>
+	PHI(r63_10, r63): <r63_12>
+	r1_14: <r1_7>
+	r1_7 * (r63_10 - 0x00000008): <r1_11>
+	r2: <r2>
+	r2_15: <r2_9>
+	r63 - 0x00000004: <r63_5>
+	r63: <r63>
+	r63_12 + 0x00000004: <r63_13>
+	r63_13: <r63_10>
+Identifiers:
+	r63: <r63>
+	Mem0: <Mem0>
+	r1_3: <r1_3>
+	r1_4: <r1_4>
+	r63_5: <r63_5>
+	Mem6: <Mem6>
+	r1_7: <r1_7>
+	r2: <r2>
+	r2_9: <r2_9>
+	r63_10: <r63_10>
+	r1_11: <r1_11>
+	r63_12: <r63_12>
+	r63_13: <r63_13>
+	r1_14: <r1_14>
+	r2_15: <r2_15>
 
-            var writer = new StringWriter();
-            foreach (var vn in vns)
-            {
-                vn.Procedure.Write(false, writer);
-                vn.Write(writer);
-                writer.WriteLine();
-            }
+// main
+// Return size: 0
+define main
+main_entry:
+	def r63
+	// succ:  l1
+l1:
+	r1_1 = 0x0000000A
+	r63_3 = r63 - 0x00000004
+	Mem4[r63 - 0x00000004:word32] = 0x0000000A
+	call foo (retsize: 4;)
+	Mem5[0x00123400:word32] = 0x0000000A
+	return
+	// succ:  main_exit
+main_exit:
+	use r1_1
+	use r63_3
+Values:
+	0x0000000A: <r1_1>
+	Mem4: <Mem4>
+	Mem5: <Mem5>
+	r63 - 0x00000004: <r63_3>
+	r63: <r63>
+Identifiers:
+	r1_1: <r1_1>
+	r63: <r63>
+	r63_3: <r63_3>
+	Mem4: <Mem4>
+	Mem5: <Mem5>
+";
+            #endregion
 
-            var sExp = "@@@";
-            if (sExp != writer.ToString())
-            {
-                Console.WriteLine(writer.ToString());
-                Assert.AreEqual(sExp, writer.ToString());
-            }
+            RunTest(pb, sExp);
         }
-	}
+
+        [Test]
+        public void VnPhiLoop()
+        {
+            var pb = new ProgramBuilder();
+            pb.Add("foo", m =>
+            {
+                var i = m.Reg32("i", 1);
+                var j = m.Reg32("j", 2);
+                m.Label("m0");
+                m.Assign(i, 1);
+                m.Assign(j, 1);
+                m.Goto("m2");
+
+                m.Label("m2");
+                m.Assign(i, m.IAdd(i, 4));
+                m.Assign(j, m.IAdd(j, 4));
+
+                m.Label("m1");
+                m.BranchIf(m.Ne0(m.LoadDw(m.Word32(0x00123404))), "m2");
+
+                m.Label("m3");
+                m.Store(m.Word32(0x00123408), i);
+                m.Store(m.Word32(0x0012340C), j);
+                m.Return();
+            });
+            var sExp =
+                "@@@";
+            RunTest(pb, sExp);
+        }
+
+
+        [Test]
+        public void VnPhiLoop_UselessConstant()
+        {
+            var pb = new ProgramBuilder();
+            pb.Add("foo", m =>
+            {
+                var i = m.Reg32("i", 1);
+                var j = m.Reg32("j", 2);
+                m.Label("m0");
+                m.Assign(i, 1);
+                m.Goto("m2");
+
+                m.Label("m2");
+                m.Assign(i, m.IAdd(i, 0));
+                m.Assign(j, i);
+
+                m.Label("m1");
+                m.BranchIf(m.Ne0(m.LoadDw(m.Word32(0x00123404))), "m2");
+
+                m.Label("m3");
+                m.Store(m.Word32(0x00123408), i);
+                m.Store(m.Word32(0x0012340C), j);
+                m.Return();
+            });
+            var sExp =
+                "@@@";
+            RunTest(pb, sExp);
+        }
+    }
 }

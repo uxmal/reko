@@ -58,5 +58,8 @@ namespace Reko.UnitTests
         // branch. Before merging back into "master", these must all be 
         // running again.
         public const string ExplicitX87Stack = "ExplicitX87Stack";
+
+        // Tests that may fail due to work in progress
+        public const string WorkInProgress = "WIP";
     }
 }

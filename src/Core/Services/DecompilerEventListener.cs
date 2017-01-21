@@ -95,7 +95,7 @@ namespace Reko.Core.Services
 
         public void ShowStatus(string caption)
         {
-            throw new NotImplementedException();
+            Debug.Print("Status: {0}", caption);
         }
 
         public void ShowProgress(string caption, int numerator, int denominator)
@@ -120,7 +120,7 @@ namespace Reko.Core.Services
 
         public ICodeLocation CreateStatementNavigator(Program program, Statement stm)
         {
-            return new NullCodeLocation(program.SegmentMap.MapLinearAddressToAddress(stm.LinearAddress).ToString());
+            return new NullCodeLocation(stm.LinearAddress.ToString());
         }
 
         public ICodeLocation CreateJumpTableNavigator(Program program, Address addrIndirectJump, Address addrVector, int stride)

@@ -125,16 +125,12 @@ namespace Reko.Analysis
 
             oldCount = pf.Trashed.Count;
             pf.Trashed.UnionWith(trashed);
-            if (pf.Trashed.Count != oldCount)
-            {
-                changed = true;
-            }
+            changed |= (pf.Trashed.Count != oldCount);
+            
             oldCount = pf.Preserved.Count;
             pf.Preserved.UnionWith(preserved);
-            if (pf.Preserved.Count != oldCount)
-            {
-                changed = true;
-            }
+            changed |= (pf.Preserved.Count != oldCount);
+            
             uint grfNew = pf.grfTrashed | ctx.TrashedFlags;
             if (grfNew != pf.grfTrashed)
             {

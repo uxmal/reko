@@ -39,18 +39,27 @@ using Reko.Core.Code;
 namespace Reko.UnitTests.Analysis
 {
     [TestFixture]
+    [Ignore(Categories.WorkInProgress)]
     public class TrashedRegisterFinder2Tests
     {
         private MockRepository mr;
         private ProgramBuilder progBuilder;
         private ExternalProcedure fnExit;
         private IPlatform platform;
+        private IImportResolver importResolver;
+        private Program program;
+        private ProgramDataFlow dataFlow;
+        private StringBuilder sbExpected;
 
         [SetUp]
         public void Setup()
         {
             this.mr = new MockRepository();
             this.platform = mr.Stub<IPlatform>();
+            this.importResolver = mr.Stub<IImportResolver>();
+            importResolver.Replay();
+
+            this.sbExpected = new StringBuilder();
             this.progBuilder = new ProgramBuilder();
             this.fnExit = new ExternalProcedure(
                 "exit",
@@ -62,9 +71,10 @@ namespace Reko.UnitTests.Analysis
             this.fnExit.Signature.ReturnAddressOnStack = 4;
         }
 
-        private static string Expect(string preserved, string trashed, string consts)
+        private void Expect(string fnName, string preserved, string trashed, string consts)
         {
-            return String.Join(Environment.NewLine, new[] { preserved, trashed, consts });
+            fnName = string.Format("== {0} ====", fnName);
+            sbExpected.AppendLine(String.Join(Environment.NewLine, new[] { fnName, preserved, trashed, consts }));
         }
 
         private void Given_PlatformTrashedRegisters(params RegisterStorage[] regs)
@@ -72,111 +82,100 @@ namespace Reko.UnitTests.Analysis
             platform.Stub(p => p.CreateTrashedRegisters()).Return(regs.ToHashSet());
         }
 
-        private Procedure RunTest(string sExp, Action<ProcedureBuilder> builder)
+        private void AddProcedure(string fnName, Action<ProcedureBuilder> builder)
         {
-            var pb = new ProcedureBuilder();
-            return RunTest(sExp, pb.Architecture, () =>
-            {
-                builder(pb);
-                progBuilder.Add(pb);
-                return pb.Procedure;
-            });
+            progBuilder.Add(fnName, builder);
         }
 
-        private Procedure RunTest(string sExp, string fnName, Action<ProcedureBuilder> builder)
+        public void RunTest()
         {
-            var pb = new ProcedureBuilder(fnName);
-            return RunTest(sExp, pb.Architecture, () =>
-            {
-                builder(pb);
-                progBuilder.Add(pb);
-                return pb.Procedure;
-            });
-        }
-
-        private Procedure RunTest(string sExp, IProcessorArchitecture arch, Func<Procedure> mkProc)
-        {
-            var proc = mkProc();
             progBuilder.ResolveUnresolved();
             progBuilder.Program.Platform = platform;
             mr.ReplayAll();
-           
-            var importResolver = MockRepository.GenerateStub<IImportResolver>();
-            importResolver.Replay();
 
-            var program = progBuilder.Program;
-            var dataFlow = new ProgramDataFlow(program);
-            var sst = new SsaTransform(
-                program, 
-                proc,
-                new HashSet<Procedure>(),
-                importResolver, 
-                dataFlow);
-            sst.Transform();
-            var vp = new ValuePropagator(arch, sst.SsaState, NullDecompilerEventListener.Instance);
-            vp.Transform();
-
-            sst.RenameFrameAccesses = true;
-            sst.Transform();
-            sst.AddUsesToExitBlock();
-            sst.RemoveDeadSsaIdentifiers();
-
-            vp.Transform();
-
-            var trf = new TrashedRegisterFinder2(
-                arch, 
-                dataFlow,
-                new[] { sst },
-                NullDecompilerEventListener.Instance);
-            var flow = trf.Compute(sst.SsaState);
-            var sw = new StringWriter();
-            sw.Write("Preserved: ");
-            sw.WriteLine(string.Join(",", flow.Preserved.OrderBy(p => p.ToString())));
-            sw.Write("Trashed: ");
-            sw.WriteLine(string.Join(",", flow.Trashed.OrderBy(p => p.ToString())));
-            if (flow.Constants.Count > 0)
+            this.program = progBuilder.Program;
+            this.dataFlow = new ProgramDataFlow(program);
+            var sscf = new SccFinder<Procedure>(new ProcedureGraph(program), ProcessScc);
+            foreach (var procedure in program.Procedures.Values)
             {
-                sw.Write("Constants: ");
-                sw.Write(string.Join(
-                    ",",
-                    flow.Constants
-                        .OrderBy(kv => kv.Key.ToString())
-                        .Select(kv => string.Format(
-                            "{0}:{1}", kv.Key, kv.Value))));
+                sscf.Find(procedure);
             }
+            var trf = new TrashedRegisterFinder(program, program.Procedures.Values, dataFlow, NullDecompilerEventListener.Instance);
+            trf.Compute();
+
+            var sw = new StringWriter();
+            foreach (var procedure in program.Procedures.Values)
+            {
+                var flow = dataFlow[procedure];
+                sw.WriteLine("== {0} ====", procedure.Name);
+                sw.Write("Preserved: ");
+                sw.WriteLine(string.Join(",", flow.Preserved.OrderBy(p => p.ToString())));
+                sw.Write("Trashed: ");
+                sw.WriteLine(string.Join(",", flow.Trashed.OrderBy(p => p.ToString())));
+                if (flow.Constants.Count > 0)
+                {
+                    sw.Write("Constants: ");
+                    sw.Write(string.Join(
+                        ",",
+                        flow.Constants
+                            .OrderBy(kv => kv.Key.ToString())
+                            .Select(kv => string.Format(
+                                "{0}:{1}", kv.Key, kv.Value))));
+                }
+                sw.WriteLine();
+            }
+            var sExp = sbExpected.ToString();
             var sActual = sw.ToString();
             if (sActual != sExp)
             {
-                proc.Dump(true);
+                foreach (var proc in program.Procedures.Values)
+                {
+                    Debug.Print("------");
+                    proc.Dump(true);
+                }
                 Debug.WriteLine(sActual);
                 Assert.AreEqual(sExp, sActual);
             }
-            return proc;
+        }
+
+        private void ProcessScc(IList<Procedure> scc)
+        {
+            foreach (var proc in scc)
+            {
+                var sst = new SsaTransform(
+                    program,
+                    proc,
+                    new HashSet<Procedure>(),
+                    importResolver,
+                    dataFlow);
+                sst.Transform();
+                var vp = new ValuePropagator(program.Architecture, sst.SsaState, NullDecompilerEventListener.Instance);
+                vp.Transform();
+            }
         }
 
         [Test]
         public void TrfSimple()
         {
-            var sExp =
-@"Preserved: 
-Trashed: r1
-Constants: r1:0x0000002A";
-            RunTest(sExp, m =>
+            Expect("TrfSimple", "Preserved: r63", "Trashed: r1", "Constants: r1:0x0000002A");
+            AddProcedure("TrfSimple", m =>
             {
                 var r1 = m.Register("r1");
                 m.Assign(r1, m.Word32(42));
                 m.Return();
             });
+            RunTest();
         }
 
         [Test(Description = "Tests that registers pushed on stack are preserved")]
         public void TrfStackPreserved()
         {
-            var sExp =
-@"Preserved: r1,r63
-Trashed: 
-";
-            RunTest(sExp, m =>
+            Expect(
+                "TrfStackPreserved",
+                "Preserved: r1,r63",
+                "Trashed: ",
+                "");
+            AddProcedure("TrfStackPreserved", m =>
             {
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
                 var r1 = m.Register("r1");
@@ -191,17 +190,14 @@ Trashed:
                 m.Assign(sp, m.IAdd(sp, 4));
                 m.Return();
             });
+            RunTest();
         }
 
         [Test(Description = "Tests that constants are discovered")]
         public void TrfConstants()
         {
-            var sExp =
-@"Preserved: r63
-Trashed: ds
-Constants: ds:0x0C00";
-
-            RunTest(sExp, m =>
+            Expect("TrfConstants", "Preserved: r63", "Trashed: ds", "Constants: ds:0x0C00");
+            AddProcedure("TrfConstants", m =>
             {
                 var sp = m.Frame.EnsureRegister(m.Architecture.StackRegister);
                 var ds = m.Reg16("ds", 10);
@@ -212,16 +208,14 @@ Constants: ds:0x0C00";
                 m.Assign(sp, m.IAdd(sp, 2));
                 m.Return();
             });
+            RunTest();
         }
 
         [Test(Description = "Constant in one branch, not constant in the other")]
         public void TrfConstNonConst()
         {
-            var sExp =
-@"Preserved: 
-Trashed: cl,cx
-";
-            RunTest(sExp, m =>
+            Expect("TrfConstNonConst", "Preserved: r63", "Trashed: cl,cx", "");
+            AddProcedure("TrfConstNonConst", m =>
             {
                 var ax = m.Frame.EnsureRegister(new RegisterStorage("ax", 0, 0, PrimitiveType.Word16));
                 var cl = m.Frame.EnsureRegister(new RegisterStorage("cl", 9, 0, PrimitiveType.Byte));
@@ -236,6 +230,7 @@ Trashed: cl,cx
                 m.Assign(cx, m.LoadW(ax));
                 m.Return();
             });
+            RunTest();
         }
 
         [Test(Description = "Same constant in both branches")]
@@ -247,7 +242,7 @@ Trashed: cl,cx
 Trashed: cl,cx
 Constants: cl:0x00
 ";
-            RunTest(sExp, m =>
+            AddProcedure(sExp, m =>
             {
                 var ax = m.Frame.EnsureRegister(new RegisterStorage("ax", 0, 0, PrimitiveType.Word16));
                 var cl = m.Frame.EnsureRegister(new RegisterStorage("cl", 9, 0, PrimitiveType.Byte));
@@ -264,19 +259,21 @@ Constants: cl:0x00
                 m.Label("done");
                 m.Return();
             });
+            RunTest();
         }
 
         [Test(Description="Tests propagation between caller and callee.")]
         [Category(Categories.UnitTests)]
         public void TrfSubroutine_WithRegisterParameters()
         {
-
-            var sExp1 = Expect(
-                "Preserved: ",
-                "Trashed: r1", "");
+            Expect(
+                "Addition",
+                "Preserved: r63",
+                "Trashed: r1",
+                "");
 
             // Subroutine does a small calculation in registers
-            RunTest(sExp1, "Addition", m =>
+            AddProcedure("Addition", m =>
             {
                 var r1 = m.Register(1);
                 var r2 = m.Register(2);
@@ -285,13 +282,13 @@ Constants: cl:0x00
                 m.Return();
             });
 
-
-            var sExp2 = Expect(
-                "Preserved: ",
+            Expect(
+                "main",
+                "Preserved: r63",
                 "Trashed: r1,r2",
                 "");
 
-            RunTest(sExp2, m =>
+            AddProcedure("main", m =>
             {
                 var r1 = m.Register(1);
                 var r2 = m.Register(2);
@@ -301,16 +298,19 @@ Constants: cl:0x00
                 m.Store(m.Word32(0x123000), r1);
                 m.Return();
             });
+
+            RunTest();
         }
 
         [Test(Description = "Tests detection of trashed variables in the presence of recursion")]
         public void TrfRecursion()
         {
-            var sExp1 = Expect(
-                "Preserved: r2",
+            Expect(
+                "fact",
+                "Preserved: r2,r63",
                 "Trashed: r1",
-                "");
-            RunTest(sExp1, "fact", m =>
+                "Constants: r1:<invalid>");
+            AddProcedure("fact", m =>
             {
                 Given_PlatformTrashedRegisters();
 
@@ -334,16 +334,18 @@ Constants: cl:0x00
                 m.Assign(r2, m.LoadDw(m.ISub(fp, 4)));    // restore r2
                 m.Return();
             });
+            RunTest();
         }
 
         [Test(Description = "Test that functions that don't return don't affect register state")]
         public void TrfNonReturningProcedure()
         {
-            var sExp = Expect(
+            Expect(
+                "callExit",
                 "Preserved: ",
                 "Trashed: ",
                 "");
-            RunTest(sExp, "callExit", m =>
+            AddProcedure("callExit", m =>
             {
                 var sp = m.Frame.EnsureIdentifier(m.Architecture.StackRegister);
                 var r1 = m.Reg32("r1", 1);
@@ -355,13 +357,13 @@ Constants: cl:0x00
                 m.Call(fnExit, 4);
                 // No return, so registers are not affected.
             });
+            RunTest();
         }
 
         [Test(Description = "Only registers modified on paths that reach the exit affect register state")]
         public void TrfBranchedNonReturningProcedure()
         {
-            var sExp = Expect("Preserved: r63", "Trashed: r1", "");
-            RunTest(sExp, "callExitBranch", m =>
+            AddProcedure("callExitBranch", m =>
             {
                 var sp = m.Frame.EnsureIdentifier(m.Architecture.StackRegister);
                 var r1 = m.Reg32("r1", 1);
@@ -376,18 +378,20 @@ Constants: cl:0x00
                 m.Assign(sp, m.ISub(sp, 4));
                 m.Store(sp, r2);
                 m.Call(fnExit, 4);
-                m.ExitThread();
+                m.ExitThread();         // Never reaches end.
 
                 m.Label("m3return");
                 m.Return();
             });
+            Expect("callExitBranch", "Preserved: r63", "Trashed: r1", "Constants: r1:<invalid>");
+
+            RunTest();
         }
 
         [Test(Description="Respect user-provided signatures")]
         public void TrfUserSignature()
         {
-            var sExp = Expect("Preserved: ", "Trashed: r1", "");
-            RunTest(sExp, "fnSig", m =>
+            AddProcedure("fnSig", m =>
             {
                 var sp = m.Frame.EnsureIdentifier(m.Architecture.StackRegister);
                 var r1 = m.Reg32("r1", 1);
@@ -403,13 +407,15 @@ Constants: cl:0x00
                     new Identifier("", PrimitiveType.Word32, r1.Storage),
                     new Identifier("arg1", PrimitiveType.Word32, r1.Storage));
                 });
+            Expect("fnSig", "Preserved: ", "Trashed: r1", "");
+            RunTest();
         }
 
         [Test(Description = "Exercises a self-recursive function")]
         public void TrfRecursive()
         {
-            var sExp = Expect("Preserved: r1,r63", "Trashed: ", "");
-            RunTest(sExp, "fnSig", m =>
+            Expect("fnSig", "Preserved: r1,r63", "Trashed: ", "");
+            AddProcedure("fnSig", m =>
             {
                 var sp = m.Frame.EnsureIdentifier(m.Architecture.StackRegister);
                 Given_PlatformTrashedRegisters((RegisterStorage)sp.Storage);
@@ -432,17 +438,19 @@ Constants: cl:0x00
                 m.Assign(sp, m.IAdd(sp, 4));
                 m.Return();
             });
+            RunTest();
         }
 
         [Test]
         public void TrfFpuReturn()
         {
-            var sExp = Expect(
+            Expect(
+                "TrfFpuReturn",
                 "Preserved: ",
                 "Trashed: FPU -1,Top",
                 "Constants: FPU -1:2.0,Top:0xFF");
 
-            RunTest(sExp, "TrfRecursive", m =>
+            AddProcedure("TrfFpuReturn", m =>
             {
                 var ST = new MemoryIdentifier("ST", PrimitiveType.Pointer32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
                 var Top = m.Frame.EnsureRegister(new RegisterStorage("Top", 76, 0, PrimitiveType.Byte));
@@ -452,17 +460,19 @@ Constants: cl:0x00
                 m.Store(ST, Top, Constant.Real64(2.0));
                 m.Return();
             });
+            RunTest();
         }
 
         [Test]
         public void TrfFpuReturnTwoValues()
         {
-            var sExp = Expect(
+            Expect(
+                "TrfFpuReturnTwoValues",
                 "Preserved: ",
                 "Trashed: FPU -1,FPU -2,Top",
                 "Constants: FPU -1:2.0,FPU -2:1.0,Top:0xFE");
 
-            RunTest(sExp, "TrfFpuReturnTwoValues", m =>
+            AddProcedure("TrfFpuReturnTwoValues", m =>
             {
                 var ST = new MemoryIdentifier("ST", PrimitiveType.Pointer32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
                 var Top = m.Frame.EnsureRegister(new RegisterStorage("Top", 76, 0, PrimitiveType.Byte));
@@ -474,16 +484,18 @@ Constants: cl:0x00
                 m.Store(ST, Top, Constant.Real64(1.0));
                 m.Return();
             });
+            RunTest();
         }
 
         [Test(Description = "Pops three values off FPU stack and places one back.")]
         public void TrfFpuMultiplyAdd()
         {
-            var sExp = Expect(
+            Expect(
+                "TrfFpuMultiplyAdd",
                 "Preserved: ",
                 "Trashed: FPU +1,FPU +2,Top",
                 "Constants: Top:0x02");
-            RunTest(sExp, "TrfFpuMultiplyAdd", m =>
+            AddProcedure("TrfFpuMultiplyAdd", m =>
             {
                 var ST = new MemoryIdentifier("ST", PrimitiveType.Pointer32, new MemoryStorage("x87Stack", StorageDomain.Register + 400));
                 var Top = m.Frame.EnsureRegister(new RegisterStorage("Top", 76, 0, PrimitiveType.Byte));
@@ -500,6 +512,7 @@ Constants: cl:0x00
 
                 m.Return();
             });
+            RunTest();
         }
     }
 }

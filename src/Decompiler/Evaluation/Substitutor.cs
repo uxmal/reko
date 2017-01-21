@@ -154,7 +154,15 @@ namespace Reko.Evaluation
 
         public Expression VisitPhiFunction(PhiFunction phi)
         {
-            throw new NotImplementedException();
+            var exprs = new Expression[phi.Arguments.Length];
+            for (int i = 0; i < exprs.Length; ++i)
+            {
+                var exp = phi.Arguments[i].Accept(this);
+                if (exp == Constant.Invalid)
+                    return exp;
+                exprs[i] = exp;
+            }
+            return new PhiFunction(phi.DataType, exprs);
         }
 
         public Expression VisitPointerAddition(PointerAddition pa)

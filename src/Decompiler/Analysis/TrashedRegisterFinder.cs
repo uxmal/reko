@@ -56,6 +56,7 @@ namespace Reko.Analysis
         private SymbolicEvaluationContext ctx;
         private DecompilerEventListener eventListener;
         private ExpressionValueComparer ecomp;
+        private Block blockCur;
 
         public TrashedRegisterFinder(
             Program program,
@@ -106,8 +107,28 @@ namespace Reko.Analysis
         {
             foreach (Procedure proc in procedures)
             {
-                worklist.Add(proc.EntryBlock);
-                SetInitialValueOfStackPointer(proc);
+                if (proc.Signature.ParametersValid)
+                {
+                    //$REVIEW: do we need this? if a procedure has a signature,
+                    // we will always trust that rather than the flow.
+                    var procFlow = flow[proc];
+                    var sig = proc.Signature;
+                    if (!sig.HasVoidReturn)
+                    {
+                        procFlow.Trashed.Add(sig.ReturnValue.Storage);
+                    }
+                    foreach (var stg in sig.Parameters
+                        .Select(p => p.Storage)
+                        .OfType<OutArgumentStorage>())
+                    {
+                        procFlow.Trashed.Add(stg.OriginalIdentifier.Storage);
+                    }
+                }
+                else
+                {
+                    worklist.Add(proc.EntryBlock);
+                    SetInitialValueOfStackPointer(proc);
+                }
             }
         }
 
@@ -142,6 +163,9 @@ namespace Reko.Analysis
         /// <param name="proc"></param>
         private void SetInitialValueOfStackPointer(Procedure proc)
         {
+            //$REVIEW: is this needed? Scanner injects a literal
+            // SP = fp
+            // assignment in a platform-independent way.
             flow[proc.EntryBlock].SymbolicIn.SetValue(
                 proc.Frame.EnsureRegister(program.Architecture.StackRegister),
                 proc.Frame.FramePointer);
@@ -165,6 +189,7 @@ namespace Reko.Analysis
         public void ProcessBlock(Block block)
         {
             visited.Add(block);
+            this.blockCur = block;
             StartProcessingBlock(block);
             foreach (var stm in block.Statements)
             {
@@ -269,23 +294,32 @@ namespace Reko.Analysis
             }
         }
 
+        public bool MergeRegister(Storage reg, Expression value, SymbolicEvaluationContext ctx)
+        {
+            Expression oldValue;
+            if (!ctx.RegisterState.TryGetValue(reg, out oldValue))
+            {
+                ctx.RegisterState[reg] = value;
+                return  true;
+            }
+            else if (oldValue != Constant.Invalid && !ecomp.Equals(oldValue, value))
+            {
+                ctx.RegisterState[reg] = Constant.Invalid;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public bool MergeDataFlow(BlockFlow succFlow)
         {
             var ctxSucc = succFlow.SymbolicIn;
             bool changed = false;
             foreach (var de in ctx.RegisterState)
             {
-                Expression oldValue;
-                if (!ctxSucc.RegisterState.TryGetValue(de.Key, out oldValue))
-                {
-                    ctxSucc.RegisterState[de.Key] = de.Value;
-                    changed = true;
-                }
-                else if (oldValue != Constant.Invalid && !ecomp.Equals(oldValue, de.Value))
-                {
-                    ctxSucc.RegisterState[de.Key] = Constant.Invalid;
-                    changed = true;
-                }
+                changed |= MergeRegister(de.Key, de.Value, ctxSucc);
             }
 
             foreach (var de in ctx.StackState)
@@ -401,7 +435,7 @@ namespace Reko.Analysis
 
         public Instruction VisitPhiAssignment(PhiAssignment phi)
         {
-            return se.VisitPhiAssignment(phi);
+            return phi;
         }
 
         public Instruction VisitSideEffect(SideEffect side)
