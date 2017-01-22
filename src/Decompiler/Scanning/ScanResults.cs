@@ -49,11 +49,17 @@ namespace Reko.Scanning
         public Dictionary<Address, int> DirectlyCalledAddresses;
 
         /// <summary>
+        /// These are addresses that are known, because metadata data
+        /// in the executable image describes them as such.
+        /// </summary>
+        public Dictionary<Address, ImageSymbol> KnownAddresses;
+
+        /// <summary>
         /// Tally of occurrences of bitpatterns that look like addresses,
         /// excluding relocations which are known to be addresses.
         /// </summary>
         /// <remarks>
-        /// shorter the addresses are, the less reliable this information
+        /// The shorter the addresses are, the less reliable this information
         /// becomes as the probability that a random bit pattern coincides
         /// with a real address increases the shorter the bit pattern is.
         /// </remarks>

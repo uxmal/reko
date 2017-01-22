@@ -247,6 +247,14 @@ namespace Reko.Scanning
                 //                  else addEdge(node, s)
                 //          }
                 //      }
+
+                // $TODO: Build dominator trees for each entry. Nodes dominated
+                // by an entry constitute a procedure.
+
+                // After removing the nodes in the dominator trees, there may be 
+                // nodes left. Each one of those nodes is part of 1..n clusters.
+                // Redo the processing work on those.
+
             }
             else
             {
