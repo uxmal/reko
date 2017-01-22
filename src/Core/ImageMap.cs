@@ -160,6 +160,9 @@ namespace Reko.Core
             }
             else
             {
+                if (itemNew.Address.ToLinear() == 0x081B991C) //$DEBUG
+                    addr.ToString();
+
                 if (!(item.DataType is UnknownType) &&
                     !(item.DataType is CodeType))
                     throw new NotSupportedException("Haven't handled this case yet.");
@@ -168,7 +171,7 @@ namespace Reko.Core
                 item.Size -= itemNew.Size;
 
                 items.Add(addr, itemNew);
-                if (item.Size > 0)
+                if (item.Size > 0 && !items.ContainsKey(item.Address))
                 {
                     items.Add(item.Address, item);
                 }
