@@ -71,27 +71,25 @@ namespace Reko.Environments.SysV
                     Type = type,
                 };
             }
-            if (char.IsDigit(str[i]))
+            var name = UnscopedName();
+            var args = Arguments();
+            return new StructField_v1
             {
-                var name = UnqualifiedName();
-                var args = Arguments();
-                return new StructField_v1
+                Name = name,
+                Type = new SerializedSignature
                 {
-                    Name = name,
-                    Type = new SerializedSignature
-                    {
-                        Arguments = args
-                    }
-                };
-            }
-            throw new NotImplementedException();
+                    Arguments = args
+                }
+            };
         }
 
         private List<string> NestedName()
         {
             Expect('N');
             var items = Prefix();
-            items.Add(UnqualifiedName());
+            var name = UnqualifiedName();
+            name = string.Format(name, items != null ? items.LastOrDefault() : "");
+            items.Add(name);
             Expect('E');
             return items;
         }
@@ -114,8 +112,24 @@ namespace Reko.Environments.SysV
                 {
                     "std", "ostream"
                 };
+            case 's':
+                ++i;
+                return new List<string>
+                {
+                    "std", "string"
+                };
             }
             throw new NotImplementedException();
+        }
+
+        private string UnscopedName()
+        {
+            if (i < str.Length - 1 && str[i] == 'S' && str[i+1] == 't')
+            {
+                i += 2;
+                return "std::" + UnqualifiedName();
+            }
+            return UnqualifiedName();
         }
 
         private string UnqualifiedName()
@@ -129,6 +143,12 @@ namespace Reko.Environments.SysV
                     return "operator<<";
                 }
                 throw new NotImplementedException();
+            case 'D':
+                // D0	# deleting destructor
+                // D1	# complete object destructor
+                // D2	# base object destructor
+                i += 2;
+                return "~{0}";
             }
             int n = NameLength();
             var name = str.Substring(i, n);
@@ -223,7 +243,29 @@ namespace Reko.Environments.SysV
             case 'f': return PrimitiveType_v1.Real32();
             case 'd': return PrimitiveType_v1.Real64();
             case 'P': return new PointerType_v1 { DataType = Type(), PointerSize = ptrSize };
-            case 'R': return new ReferenceType_v1 { Referent = Type(), Size = ptrSize };
+            case 'R':
+                //$TODO: Reko doesn't have a concept of 'const' or 'volatile'. 
+                // Needs to be implemented for completeness, but should not affect
+                // quality of decompilation.
+                var qual = CvQualifier();
+                return new ReferenceType_v1 { Referent = Type(), Size = ptrSize };
+            case 'S':
+                switch (str[i++])
+                {
+                case 't':
+                    return new TypeReference_v1
+                    {
+                        Scope = new[] { "std" },
+                        TypeName = Type().ToString(),
+                    };
+                case 's':
+                    return new TypeReference_v1
+                    {
+                        Scope = new[] { "std" },
+                        TypeName = "string"
+                    };
+                }
+                throw new NotImplementedException();
             default:
                 --i;
                 if (char.IsDigit(str[i]))
@@ -235,6 +277,19 @@ namespace Reko.Environments.SysV
                 }
                 throw new NotImplementedException(string.Format("Unknown GCC type code '{0}'.", str[i]));
             }
+        }
+
+        private char CvQualifier()
+        {
+            char c = str[i];
+            if (c == 'K' ||  // const
+                c == 'V' ||  // volatile
+                c == 'r')    // restrict
+            {
+                ++i;
+                return c;
+            }
+            return '\0';
         }
     }
 }
