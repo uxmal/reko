@@ -26,6 +26,7 @@ using System.Text;
 
 namespace Reko.Environments.SysV
 {
+    // https://mentorembedded.github.io/cxx-abi/abi.html#mangling-type
     public class GccMangledNameParser
     {
         private string str;
@@ -53,9 +54,26 @@ namespace Reko.Environments.SysV
             {
                 //$TODO: local name => in C, this is 'static'
             }
+            else if (Peek('N'))
+            {
+                var qname = NestedName();
+                SerializedType type = null;
+                if (i < str.Length)
+                {
+                    type = new SerializedSignature
+                    {
+                        Arguments = Arguments()
+                    };
+                }
+                return new StructField_v1
+                {
+                    Name = string.Join("::", qname),
+                    Type = type,
+                };
+            }
             if (char.IsDigit(str[i]))
             {
-                var name = SimpleName();
+                var name = UnqualifiedName();
                 var args = Arguments();
                 return new StructField_v1
                 {
@@ -66,31 +84,52 @@ namespace Reko.Environments.SysV
                     }
                 };
             }
-            var qname = QualifiedName();
-            return new StructField_v1
-            {
-                Name = string.Join("::", qname)
-            };
-
+            throw new NotImplementedException();
         }
 
-        private List<string> QualifiedName()
+        private List<string> NestedName()
         {
             Expect('N');
-            var items = new List<string>();
-            for (;;)
-            {
-                var item = SimpleName();
-                if (item == null)
-                    break;
-                items.Add(item);
-            }
+            var items = Prefix();
+            items.Add(UnqualifiedName());
             Expect('E');
             return items;
         }
 
-        private string SimpleName()
+        private List<string> Prefix()
         {
+            if (Peek('S'))
+                return Substitution();
+            throw new NotImplementedException();
+        }
+
+        private List<string> Substitution()
+        {
+            Expect('S');
+            switch (str[i])
+            {
+            case 'o':
+                ++i;
+                return new List<string>
+                {
+                    "std", "ostream"
+                };
+            }
+            throw new NotImplementedException();
+        }
+
+        private string UnqualifiedName()
+        {
+            switch (str[i])
+            {
+            case 'l':
+                if (str[i + 1] == 's')
+                {
+                    i += 2;
+                    return "operator<<";
+                }
+                throw new NotImplementedException();
+            }
             int n = NameLength();
             var name = str.Substring(i, n);
             i += n;
@@ -124,6 +163,11 @@ namespace Reko.Environments.SysV
         {
             if (str[i++] != ch)
                 Error("Expected '{0}' but found '{1}'.", ch, str[i - 1]);
+        }
+
+        private bool Peek(char ch)
+        {
+            return str[i] == ch;
         }
 
         private bool PeekAndDiscard(char ch)
@@ -186,7 +230,7 @@ namespace Reko.Environments.SysV
                 {
                     return new TypeReference_v1
                     {
-                        TypeName = SimpleName(),
+                        TypeName = UnqualifiedName(),
                     };
                 }
                 throw new NotImplementedException(string.Format("Unknown GCC type code '{0}'.", str[i]));
