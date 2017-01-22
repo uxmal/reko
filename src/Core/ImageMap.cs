@@ -160,9 +160,6 @@ namespace Reko.Core
             }
             else
             {
-                if (itemNew.Address.ToLinear() == 0x081B991C) //$DEBUG
-                    addr.ToString();
-
                 if (!(item.DataType is UnknownType) &&
                     !(item.DataType is CodeType))
                     throw new NotSupportedException("Haven't handled this case yet.");
