@@ -220,7 +220,7 @@ namespace Reko.Environments.SysV
         {
             switch (str[i])
             {
-            case 'z': ++i; return new Argument_v1 { Name = "..." };
+            case 'z': ++i; return new Argument_v1 { Name = "...", Type = new VoidType_v1() };
             case 'v': ++i; return null;
             default: return new Argument_v1 { Type = Type() };
             }
