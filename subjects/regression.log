@@ -2863,7 +2863,7 @@ fn1DAE: error: An error occurred while rewriting procedure to high-level languag
    at Reko.Core.Types.Unifier.UnifyIntoUnion(UnionType u, DataType dt) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 441
    at Reko.Core.Types.Unifier.UnifyInternal(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 233
    at Reko.Core.Types.Unifier.Unify(DataType a, DataType b) in D:\dev\uxmal\reko\master\src\Core\Types\Unifier.cs:line 194
-   at Reko.Core.Types.TypeStore.BuildEquivalenceClassDataTypes(TypeFactory factory) in D:\dev\uxmal\reko\master\src\Core\Types\TypeStore.cs:line 114
+   at Reko.Core.Types.TypeStore.BuildEquivalenceClassDataTypes(TypeFactory factory) in D:\dev\uxmal\reko\master\src\Core\Types\TypeStore.cs:line 108
    at Reko.Typing.TypeAnalyzer.RewriteProgram(Program program) in D:\dev\uxmal\reko\master\src\Decompiler\Typing\TypeAnalyzer.cs:line 91
    at Reko.DecompilerDriver.ReconstructTypes() in D:\dev\uxmal\reko\master\src\Decompiler\Decompiler.cs:line 309
 
