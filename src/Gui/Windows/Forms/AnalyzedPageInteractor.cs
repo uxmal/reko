@@ -85,6 +85,10 @@ namespace Reko.Gui.Windows.Forms
             {
                 switch (cmdId.ID)
                 {
+                case CmdIds.ActionFinishDecompilation:
+                case CmdIds.ActionRestartDecompilation:
+                    status.Status = MenuStatus.Visible | MenuStatus.Enabled;
+                    return true;
                 case CmdIds.ActionNextPhase:
                     status.Status = MenuStatus.Visible | MenuStatus.Enabled;
                     text.Text = Resources.ReconstructDataTypes;

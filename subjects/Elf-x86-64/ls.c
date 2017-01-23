@@ -6,7 +6,7 @@
 
 void _init()
 {
-	word64 rax_4 = *&globals->qw619FF8;
+	word64 rax_4 = globals->qw619FF8;
 	if (rax_4 != 0x00)
 	{
 		word64 rsp_15;

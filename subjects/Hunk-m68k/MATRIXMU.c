@@ -20,14 +20,14 @@ void fn00001000(int32 d0, byte * a0)
 			d0_505 = d0_505 - 0x01;
 		} while (d0_505 != 0x00);
 	}
-	*&globals->ptr1494 = fp;
-	*&globals->ptr1498 = (struct Eq_4 **) a6_8;
+	globals->ptr1494 = fp;
+	globals->ptr1498 = a6_8;
 	struct Eq_25 * d0_19 = FindTask(0x00);
 	struct Eq_31 * d0_112 = OpenLibrary(0x12BC, 0x00);
 	if (d0_112 != null)
 	{
 		int32 d4_457;
-		*&globals->ptr149C = (struct Eq_31 **) d0_112;
+		globals->ptr149C = d0_112;
 		if (d0_19->ptr00AC == null)
 		{
 			d4_457 = 0x02;
@@ -67,8 +67,8 @@ void fn00001000(int32 d0, byte * a0)
 			if (d0_151 == null)
 			{
 				fn00001214(d0_19);
-				*&globals->ptr14A0 = (struct Eq_67 **) d0_151;
-				*&globals->ptr14A4 = (struct Eq_67 **) d0_151;
+				globals->ptr14A0 = d0_151;
+				globals->ptr14A4 = d0_151;
 				Mem401[0x00:word32] = 0x00;
 				dwLoc14_159 = d0_151;
 				ui32 d0_404 = d0_151->dw0024;
@@ -81,7 +81,7 @@ void fn00001000(int32 d0, byte * a0)
 					fn0000127C(0x0014);
 					return;
 				}
-				*&globals->dw14A8 = d0_404;
+				globals->dw14A8 = d0_404;
 				*(ui32 *) 5292 = d0_404;
 				*(ui32 *) 0x14B0 = d0_404;
 				d0_19->dw009C = d0_404;
@@ -182,12 +182,12 @@ l00001148:
 			*a1_220 = 0x00;
 			*a6_230 = 0x00;
 			execPrivate4();
-			*&globals->dw14A8 = d0_226;
+			globals->dw14A8 = d0_226;
 			execPrivate5();
 			*(int32 *) 5292 = d0_226;
 			dwLoc14_159 = &d0_132->ptr0010;
 			dwLoc18 = d3_231;
-			if (**&globals->ptr1498 >= 0x24)
+			if (globals->ptr1498->w0014 >= 0x24)
 			{
 				word32 v87_298 = d0_19->dw00E0;
 				*(word32 *) 0x14B0 = v87_298;
@@ -211,7 +211,7 @@ l00001202:
 			*(int32 *) 0x14B0 = d0_226;
 			goto l0000117E;
 		}
-		CloseLibrary(*&globals->ptr149C);
+		CloseLibrary(globals->ptr149C);
 		Alert(0x00010000);
 	}
 	else
@@ -246,12 +246,12 @@ void fn00001278(word32 dwArg04)
 
 void fn0000127C(int32 d2)
 {
-	ptr32 a7_3 = *&globals->ptr1494;
+	ptr32 a7_3 = globals->ptr1494;
 	struct Eq_528 * v8_8 = *(a7_3 - 0x04);
 	struct Eq_31 * v6_5 = *(a7_3 - 0x08);
 	if (v8_8->dw0004 != 0x00)
 		execPrivate1();
-	CloseLibrary(*&globals->ptr149C);
+	CloseLibrary(globals->ptr149C);
 	if (v6_5 != null)
 		fn0000126C(v6_5);
 	FreeMem(v8_8, v8_8->dw0000);

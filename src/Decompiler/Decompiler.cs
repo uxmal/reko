@@ -51,6 +51,7 @@ namespace Reko
         void AnalyzeDataFlow();
         void ReconstructTypes();
         void StructureProgram();
+        void WriteDecompilerProducts();
 
         void Assemble(string file, Assembler asm);
     }

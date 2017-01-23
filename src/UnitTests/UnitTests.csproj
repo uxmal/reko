@@ -94,6 +94,7 @@
     <Compile Include="Core\Analysis\PyArgFormatParserTests.cs" />
     <Compile Include="Core\Analysis\ScanfFormatParserTests.cs" />
     <Compile Include="Core\DumperTests.cs" />
+    <Compile Include="Drivers\CmdLine\CmdLineDriverTests.cs" />
     <Compile Include="Environments\RT11\LdaFileLoaderTests.cs" />
     <Compile Include="Environments\SysV\Arm32ProcedureSerializerTests.cs" />
     <Compile Include="Environments\SysV\GccMangledNameParserTests.cs" />
@@ -657,6 +658,10 @@
     <ProjectReference Include="..\Decompiler\Decompiler.csproj">
       <Project>{5E21C722-F9C6-4192-95EC-89FCEF2ACDB7}</Project>
       <Name>Decompiler</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Drivers\CmdLine\CmdLine.csproj">
+      <Project>{D439868B-C78F-472F-82F2-1E3E5C88163B}</Project>
+      <Name>CmdLine</Name>
     </ProjectReference>
     <ProjectReference Include="..\Environments\AmigaOS\AmigaOS.csproj">
       <Project>{0B2DCD75-44FF-4AF6-AA08-AAF4EA30C402}</Project>

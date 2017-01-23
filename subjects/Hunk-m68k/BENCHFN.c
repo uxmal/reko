@@ -20,14 +20,14 @@ void fn00001000(int32 d0, int32 d7, byte * a0)
 			d0_511 = d0_511 - 0x01;
 		} while (d0_511 != 0x00);
 	}
-	*&globals->ptr3E70 = fp;
-	*&globals->ptr3E74 = (struct Eq_5 **) a6_8;
+	globals->ptr3E70 = fp;
+	globals->ptr3E74 = a6_8;
 	struct Eq_26 * d0_19 = FindTask(0x00);
 	struct Eq_32 * d0_112 = OpenLibrary(0x12BC, 0x00);
 	if (d0_112 != null)
 	{
 		int32 d4_463;
-		*&globals->ptr3E78 = (struct Eq_32 **) d0_112;
+		globals->ptr3E78 = d0_112;
 		if (d0_19->ptr00AC == null)
 		{
 			d4_463 = 0x02;
@@ -68,8 +68,8 @@ void fn00001000(int32 d0, int32 d7, byte * a0)
 			if (d0_151 == null)
 			{
 				fn00001214(d0_19);
-				*&globals->ptr3E7C = (struct Eq_68 **) d0_151;
-				*&globals->ptr3E80 = (struct Eq_68 **) d0_151;
+				globals->ptr3E7C = d0_151;
+				globals->ptr3E80 = d0_151;
 				Mem404[0x00:word32] = 0x00;
 				dwLoc14_158 = d0_151;
 				ui32 d0_407 = d0_151->dw0024;
@@ -84,15 +84,15 @@ void fn00001000(int32 d0, int32 d7, byte * a0)
 					fn0000127C(0x0014, out a1_419, out a5_420);
 					return;
 				}
-				*&globals->dw3E84 = d0_407;
-				*&globals->dw3E88 = d0_407;
-				*&globals->dw3E8C = d0_407;
+				globals->dw3E84 = d0_407;
+				globals->dw3E88 = d0_407;
+				globals->dw3E8C = d0_407;
 				d0_19->dw009C = d0_407;
 				d0_19->dw00A0 = d0_407;
 				word32 d0_435 = ((word32[]) 0x08)[d0_407];
 				if (d0_435 != 0x00)
 					d0_19->dw00A4 = d0_435;
-				a6_161 = *&globals->ptr3E74;
+				a6_161 = globals->ptr3E74;
 l000011F8:
 				a0_163 = d0_19->dw003A;
 				goto l00001202;
@@ -186,16 +186,16 @@ l00001148:
 			*a1_223 = 0x00;
 			*a6_233 = 0x00;
 			execPrivate4();
-			*&globals->dw3E84 = d0_229;
+			globals->dw3E84 = d0_229;
 			execPrivate5();
-			*&globals->dw3E88 = d0_229;
-			a6_161 = *&globals->ptr3E74;
+			globals->dw3E88 = d0_229;
+			a6_161 = globals->ptr3E74;
 			dwLoc14_158 = &d0_132->ptr0010;
 			dwLoc18 = d3_234;
 			if (*a6_161 >= 0x24)
 			{
 				word32 v87_301 = d0_19->dw00E0;
-				*&globals->dw3E8C = v87_301;
+				globals->dw3E8C = v87_301;
 				if (v87_301 != 0x00)
 				{
 l0000117E:
@@ -204,8 +204,8 @@ l0000117E:
 						word32 * a0_291 = d0_19->ptr00B0;
 						a0_163 = a0_291 + 0x01 - *a0_291;
 l00001202:
-						*&globals->dw3E98 = a0_163;
-						*&globals->ptr3E9C = fp - 0x18;
+						globals->dw3E98 = a0_163;
+						globals->ptr3E9C = fp - 0x18;
 						fn00001354(d7, d0_19, a6_161, dwLoc18, dwLoc14_158);
 						word32 a1_179;
 						word32 a5_180;
@@ -215,10 +215,10 @@ l00001202:
 					goto l000011F8;
 				}
 			}
-			*&globals->dw3E8C = d0_229;
+			globals->dw3E8C = d0_229;
 			goto l0000117E;
 		}
-		CloseLibrary(*&globals->ptr3E78);
+		CloseLibrary(globals->ptr3E78);
 		Alert(0x00010000);
 	}
 	else
@@ -254,7 +254,7 @@ word32 fn00001278(word32 dwArg04, ptr32 & a1Out, ptr32 & a5Out)
 
 word32 fn0000127C(int32 d2, ptr32 & a1Out, ptr32 & a5Out)
 {
-	ptr32 a7_3 = *&globals->ptr3E70;
+	ptr32 a7_3 = globals->ptr3E70;
 	struct Eq_555 * v8_8 = *(a7_3 - 0x04);
 	struct Eq_32 * v6_5 = *(a7_3 - 0x08);
 	word32 a5_10;
@@ -262,7 +262,7 @@ word32 fn0000127C(int32 d2, ptr32 & a1Out, ptr32 & a5Out)
 	word32 d1_11 = v8_8->dw0004;
 	if (d1_11 != 0x00)
 		execPrivate1();
-	CloseLibrary(*&globals->ptr3E78);
+	CloseLibrary(globals->ptr3E78);
 	if (v6_5 != null)
 		fn0000126C(v6_5);
 	FreeMem(v8_8, v8_8->dw0000);
@@ -317,10 +317,10 @@ word32 fn0000131C(ptr32 dwArg04, ptr32 & a1Out, ptr32 & a5Out)
 {
 	*a1Out = a1;
 	*a5Out = a5;
-	if (*&globals->dw3EA0 == 0x00)
+	if (globals->dw3EA0 == 0x00)
 	{
 		struct Eq_673 * a3_36 = *(struct Eq_673 **) 0x3FC8;
-		*&globals->dw3EA0 = 0x01;
+		globals->dw3EA0 = 0x01;
 		if (a3_36 != null)
 		{
 			do
@@ -1345,22 +1345,22 @@ Eq_3169 fn0000202C(word32 dwArg04, ptr32 & d1Out, ptr32 & a0Out, ptr32 & a1Out)
 		d0_20.u0 = 0x00;
 	else
 	{
-		if (*&globals->dw3EA8 == 0x00)
+		if (globals->dw3EA8 == 0x00)
 		{
-			word32 a0_86 = *&globals->dw3EA4;
+			word32 a0_86 = globals->dw3EA4;
 			Mem94[0x00:word32] = 0x00;
 			word32 d1_100;
 			word32 a0_101;
 			word32 a1_102;
-			*&globals->dw3EA8 = fn00002320(dwLoc10, a0_86, a0_86, out d1_100, out a0_101, out a1_102);
+			globals->dw3EA8 = fn00002320(dwLoc10, a0_86, a0_86, out d1_100, out a0_101, out a1_102);
 		}
-		if (*&globals->dw3EA8 == 0x00)
+		if (globals->dw3EA8 == 0x00)
 			d0_20.u0 = 0x00;
 		else
 		{
 			word32 d1_71;
 			word32 a0_72;
-			word32 * d0_73 = fn000021FC(*&globals->dw3EA8, dwArg04 + 0x04, out d1_71, out a0_72);
+			word32 * d0_73 = fn000021FC(globals->dw3EA8, dwArg04 + 0x04, out d1_71, out a0_72);
 			word32 a1_74;
 			*a1Out = d0_73;
 			if (d0_73 == null)
@@ -1381,7 +1381,7 @@ Eq_32 * fn000021FC(word32 dwArg04, word32 dwArg08, ptr32 & d1Out, ptr32 & a0Out)
 {
 	*d1Out = d1;
 	struct Eq_32 * d0_45;
-	struct Eq_3256 * a0_31 = *&globals->ptr3E74;
+	struct Eq_3256 * a0_31 = globals->ptr3E74;
 	*a0Out = a0_31;
 	if (a0_31->w0014 >= 0x27)
 	{
@@ -1473,7 +1473,7 @@ word32 fn00002320(word32 dwArg04, word32 dwArg08, word32 dwArg0C, ptr32 & d1Out,
 	*a1Out = a1;
 	*d1Out = d1;
 	word32 d0_30;
-	struct Eq_3455 * a0_19 = *&globals->ptr3E74;
+	struct Eq_3455 * a0_19 = globals->ptr3E74;
 	*a0Out = a0_19;
 	if (a0_19->w0014 >= 0x27)
 	{

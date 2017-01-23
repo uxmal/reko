@@ -59,7 +59,9 @@ namespace Reko.Environments.Windows
                 }
                 else
                 {
-                    var dt = field.Item2.Accept(loader);
+                    var dt = (field.Item2 == null) ?
+                        new UnknownType() :
+                        field.Item2.Accept(loader);
                     return Tuple.Create(field.Item1, dt, field.Item3);
                 }
             }

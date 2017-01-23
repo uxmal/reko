@@ -147,6 +147,11 @@ namespace Reko.Environments.Windows
                     ;
                 Expect(TokenType.RPAREN);
             }
+            if (ssig.Convention == "varargs")
+            {
+                args.Add(new Argument_v1 { Name = "..." });
+                ssig.Convention = "__cdecl";
+            }
             return args.ToArray();
         }
 

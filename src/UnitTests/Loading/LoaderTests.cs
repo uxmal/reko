@@ -229,5 +229,30 @@ namespace Reko.UnitTests.Loading
                 throw new NotImplementedException();
             }
         }
+
+        [Test(Description = "Validate that entry points are added to the Program instance when loading a 'raw' file.")]
+        public void Ldr_RawFileEntryPoint()
+        {
+            var arch = mr.Stub<IProcessorArchitecture>();
+            var openv = mr.Stub<OperatingEnvironment>();
+            cfgSvc.Stub(s => s.GetArchitecture("mmix")).Return(arch);
+            cfgSvc.Stub(s => s.GetEnvironment(null)).Return(openv);
+            openv.Stub(o => o.Load(null, null)).IgnoreArguments().Return(new DefaultPlatform(sc, arch));
+            arch.Stub(a => a.TryParseAddress(
+                Arg<string>.Is.Equal("00123500"),
+                out Arg<Address>.Out(Address.Ptr32(0x00123500)).Dummy)).Return(true);
+            mr.ReplayAll();
+
+            var ldr = new Loader(sc);
+            var program = ldr.LoadRawImage("foo.bin", new byte[0], Address.Ptr32(0x00123400), new LoadDetails
+            {
+                ArchitectureName = "mmix",
+                EntryPoint = new EntryPointElement {  Address = "00123500" }
+            });
+
+            Assert.AreEqual(1, program.EntryPoints.Count);
+            Assert.AreEqual(SymbolType.Procedure, program.EntryPoints[Address.Ptr32(0x00123500)].Type);
+            mr.VerifyAll();
+        }
 	}
 }
