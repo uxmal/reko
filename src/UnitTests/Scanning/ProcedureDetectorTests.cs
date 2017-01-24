@@ -268,7 +268,7 @@ namespace Reko.UnitTests.Scanning
         }
 
         [Test]
-        public void Prdef_FindEntries_FusedExit()
+        public void Prdet_FindEntries_FusedExit()
         {
             Given_FusedExitNode();
             Given_ProcedureDetector();
@@ -306,7 +306,7 @@ namespace Reko.UnitTests.Scanning
 
 
         [Test(Description = "Remove all jumps to known direct call targets")]
-        public void Prdef_Remove_TailCall_Edges()
+        public void Prdet_Remove_TailCall_Edges()
         {
             Given_Edge(1, 2);   // main program
             Given_Edge(2, 3);
@@ -321,7 +321,7 @@ namespace Reko.UnitTests.Scanning
             Given_FusedExitNode();
             Given_ProcedureDetector();
 
-            prdet.RemoveJumpsToDirectCalls();
+            prdet.RemoveJumpsToKnownProcedures();
 
             Assert.False(sr.ICFG.ContainsEdge(Addr(4), Addr(10)), "Should have removed tail call to 10");
         }

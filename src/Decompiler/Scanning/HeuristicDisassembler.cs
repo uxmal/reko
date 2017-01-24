@@ -27,23 +27,31 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using Reko.Core.Lib;
 
 namespace Reko.Scanning
 {
+    /// <summary>
+    /// Disassembles basic blocks of instructions and places them in 
+    /// the provided control flow graph.
+    /// </summary>
     public class HeuristicDisassembler
     {
         private Program program;
-        private HeuristicProcedure proc;
         private IRewriterHost host;
         private Dictionary<Address, HeuristicBlock> blockMap;
+        private DirectedGraph<HeuristicBlock> cfg;
+        private Func<Address, bool> isAddrValid;
 
         public HeuristicDisassembler(
             Program program,
-            HeuristicProcedure proc,
+            DirectedGraph<HeuristicBlock> cfg,
+            Func<Address, bool> isAddrValid,
             IRewriterHost host)
         {
             this.program = program;
-            this.proc = proc;
+            this.cfg = cfg;
+            this.isAddrValid = isAddrValid;
             this.host = host;
             blockMap = new Dictionary<Address, HeuristicBlock>();
         }
@@ -59,7 +67,7 @@ namespace Reko.Scanning
         {
             var current = new HeuristicBlock(addr, string.Format("l{0:X}", addr));
             var dasm = program.CreateDisassembler(addr);
-            foreach (var instr in dasm.TakeWhile(r => r.Address < proc.EndAddress))
+            foreach (var instr in dasm.TakeWhile(i => isAddrValid(i.Address)))
             {
                 HeuristicBlock block;
                 if (blockMap.TryGetValue(instr.Address, out block))
@@ -78,7 +86,7 @@ namespace Reko.Scanning
                     {
                         // Fell into 'block' while disassembling
                         // 'current'. Create a fall-though edge
-                        if (!proc.Cfg.Nodes.Contains(current))
+                        if (!cfg.Nodes.Contains(current))
                         {
                             AddNode(current);
                         }
@@ -93,17 +101,17 @@ namespace Reko.Scanning
                     current.Instructions.Add(instr);
                     blockMap.Add(instr.Address, current);
                     var op0 = instr.GetOperand(0);
-                    var addrOp= op0 as AddressOperand;
+                    var addrOp = op0 as AddressOperand;
                     switch (instr.InstructionClass)
                     {
                     case InstructionClass.Invalid:
                         current.IsValid = false;
                         return current;
                     case InstructionClass.Transfer | InstructionClass.Call:
+                        // Calls may terminate, so stop scanning.
                         return current;
                     case InstructionClass.Transfer:
-                        if (addrOp != null &&
-                            proc.BeginAddress <= addrOp.Address && addrOp.Address < proc.EndAddress)
+                        if (addrOp != null && isAddrValid(addrOp.Address))
                         {
                             block = Disassemble(addrOp.Address);
                             AddEdge(current, block);
@@ -114,7 +122,7 @@ namespace Reko.Scanning
                         if (addrOp != null && program.SegmentMap.IsValidAddress(addrOp.Address))
                         {
                             block = Disassemble(addrOp.Address);
-                            Debug.Assert(proc.Cfg.Nodes.Contains(block));
+                            Debug.Assert(cfg.Nodes.Contains(block));
                             AddEdge(current, block);
                         }
                         block = Disassemble(instr.Address + instr.Length);
@@ -127,10 +135,16 @@ namespace Reko.Scanning
             return current;
         }
 
+        /// <summary>
+        /// Split a block at address <paramref name="addr" />.
+        /// </summary>
+        /// <param name="block"></param>
+        /// <param name="addr"></param>
+        /// <returns></returns>
         private HeuristicBlock SplitBlock(HeuristicBlock block, Address addr)
         {
             var newBlock = new HeuristicBlock(addr, string.Format("l{0:X}", addr));
-            proc.Cfg.Nodes.Add(newBlock);
+            cfg.Nodes.Add(newBlock);
             newBlock.Instructions.AddRange(
                 block.Instructions.Where(r => r.Address >= addr).OrderBy(r => r.Address));
             foreach (var de in blockMap.Where(d => d.Key >= addr && d.Value == block).ToList())
@@ -138,7 +152,7 @@ namespace Reko.Scanning
                 blockMap[de.Key] = newBlock;
             }
             block.Instructions.RemoveAll(r => r.Address >= addr);
-            var succs = proc.Cfg.Successors(block).ToArray();
+            var succs = cfg.Successors(block).ToArray();
             foreach (var s in succs)
             {
                 AddEdge(newBlock, s);
@@ -150,18 +164,18 @@ namespace Reko.Scanning
 
         private void AddEdge(HeuristicBlock from, HeuristicBlock to)
         {
-            proc.Cfg.AddEdge(from, to);
+            cfg.AddEdge(from, to);
         }
 
         private void AddNode(HeuristicBlock block)
         {
-            if (!proc.Cfg.Nodes.Contains(block))
-                proc.Cfg.Nodes.Add(block);
+            if (!cfg.Nodes.Contains(block))
+                cfg.Nodes.Add(block);
         }
 
         private void RemoveEdge(HeuristicBlock from, HeuristicBlock to)
         {
-            proc.Cfg.RemoveEdge(from, to);
+            cfg.RemoveEdge(from, to);
         }
     }
 }

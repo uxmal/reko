@@ -350,7 +350,7 @@ namespace Reko.UnitTests.Scanning
         private string DumpBlocks(SortedList<Address, ShingledScanner.ShingleBlock> blocks)
         {
             var sb = new StringBuilder();
-            foreach (var block in blocks.Values)
+            foreach (var block in blocks.Values.OrderBy(b => b.BaseAddress))
             {
                 sb.AppendFormat("{0} - {1}", block.BaseAddress, block.EndAddress);
                 sb.AppendLine();

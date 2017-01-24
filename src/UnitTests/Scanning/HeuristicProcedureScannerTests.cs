@@ -120,8 +120,8 @@ namespace Reko.UnitTests.Scanning
             mr.ReplayAll();
 
             When_DisassembleProcedure();
-            var hps = new HeuristicProcedureScanner(program, proc, host);
-            hps.BlockConflictResolution();
+            var hps = new HeuristicProcedureScanner(program, proc.Cfg, proc.IsValidAddress, host);
+            hps.BlockConflictResolution(proc.BeginAddress);
 
             var sExp =
             #region Expected
@@ -158,8 +158,8 @@ l00010009:  // pred: l00010008
             mr.ReplayAll();
 
             When_DisassembleProcedure();
-            var hps = new HeuristicProcedureScanner(program, proc, host);
-            hps.BlockConflictResolution();
+            var hps = new HeuristicProcedureScanner(program, proc.Cfg, proc.IsValidAddress, host);
+            hps.BlockConflictResolution(proc.BeginAddress);
 
             var sExp =
             #region Expected

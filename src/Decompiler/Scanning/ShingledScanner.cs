@@ -356,7 +356,6 @@ namespace Reko.Scanning
 
         private List<ShingleBlock> TerminateBlocks(List<ShingleBlock> blocks, Address addrTerm)
         {
-
             var live = blocks.Where(de => de.EndAddress == addrTerm)
                 .ToList();
             return live;

@@ -38,30 +38,31 @@ namespace Reko.Scanning
     public class HeuristicProcedureScanner
     {
         private Program program;
-        private HeuristicProcedure proc;
         private IRewriterHost host;
         private DirectedGraph<HeuristicBlock> blocks;
+        private Func<Address, bool> isAddressValid;
         private HashSet<Tuple<HeuristicBlock, HeuristicBlock>> conflicts;
 
         public HeuristicProcedureScanner(
             Program program, 
-            HeuristicProcedure proc,
+            DirectedGraph<HeuristicBlock> blocks,
+            Func<Address,bool> isAddressValid,
             IRewriterHost host)
         {
             this.program = program;
-            this.proc = proc;
             this.host = host;
-            this.blocks = proc.Cfg;
-            this.conflicts = BuildConflictGraph(proc.Cfg.Nodes);
+            this.blocks = blocks;
+            this.isAddressValid = isAddressValid;
+            this.conflicts = BuildConflictGraph(blocks.Nodes);
         }
 
         /// <summary>
         /// Resolve all block conflicts.
         /// </summary>
         /// <param name="blocks"></param>
-        public void BlockConflictResolution()
+        public void BlockConflictResolution(Address addrProcedureStart)
         {
-            var valid = TraceReachableBlocks();
+            var valid = TraceReachableBlocks(addrProcedureStart);
             ComputeStatistics(valid);
             DumpGraph();
             RemoveBlocksEndingWithInvalidInstruction();
@@ -81,9 +82,9 @@ namespace Reko.Scanning
         /// Trace the reachable blocks using DFS; call them 'valid'.
         /// </summary>
         /// <returns>A set of blocks considered "valid".</returns>
-        private HashSet<HeuristicBlock> TraceReachableBlocks()
+        private HashSet<HeuristicBlock> TraceReachableBlocks(Address addrProcStart)
         {
-            var entry = blocks.Nodes.Where(b => b.Address == proc.BeginAddress).FirstOrDefault();
+            var entry = blocks.Nodes.Where(b => b.Address == addrProcStart).FirstOrDefault();
             var valid = new DfsIterator<HeuristicBlock>(blocks).PreOrder(entry).ToHashSet();
             foreach (var item in valid.OrderBy(i => i.Address))
             {
@@ -92,6 +93,13 @@ namespace Reko.Scanning
             return valid;
         }
 
+        /// <summary>
+        /// Given a set of the provably valid basic blocks in the program,
+        /// create a five-level deep trie of instructions. Blocks that haven't
+        /// been proved valid, but which starting with such instructions are
+        /// likely to be valid.
+        /// </summary>
+        /// <param name="valid"></param>
         private void ComputeStatistics(ISet<HeuristicBlock> valid)
         {
             var cmp = program.Architecture.CreateInstructionComparer(Normalize.Constants);
@@ -214,7 +222,7 @@ namespace Reko.Scanning
 
         private bool Remaining(Tuple<HeuristicBlock, HeuristicBlock> c)
         {
-            var nodes = proc.Cfg.Nodes;
+            var nodes = blocks.Nodes;
             return 
                 nodes.Contains(c.Item1) &&
                 nodes.Contains(c.Item2);
@@ -262,7 +270,7 @@ namespace Reko.Scanning
 
         private IEnumerable<Tuple<Address, Address>> GetGaps()
         {
-            var blockMap = proc.Cfg.Nodes.OrderBy(n => n.Address).ToList();
+            var blockMap = blocks.Nodes.OrderBy(n => n.Address).ToList();
             var addrLastEnd = blockMap[0].Address;
             foreach (var b in blockMap)
             {
@@ -377,7 +385,7 @@ namespace Reko.Scanning
                 Address target;
                 if (rtlGoto.Target.As<Address>(out target))
                 {
-                    return !(proc.BeginAddress <= target && target < proc.EndAddress);
+                    return !isAddressValid(target);
                 }
                 return true;
             }
@@ -486,12 +494,12 @@ namespace Reko.Scanning
         [Conditional("DEBUG")]
         public void DumpGraph()
         {
-            Debug.Print("{0} nodes", proc.Cfg.Nodes.Count);
-            foreach (var block in proc.Cfg.Nodes.OrderBy(n => n.Address))
+            Debug.Print("{0} nodes", blocks.Nodes.Count);
+            foreach (var block in blocks.Nodes.OrderBy(n => n.Address))
             {
                 var addrEnd = block.GetEndAddress();
                 Debug.Write(string.Format("{0}: ", block.Name));
-                Debug.Print("  {0}", string.Join(" ", proc.Cfg.Predecessors(block)
+                Debug.Print("  {0}", string.Join(" ", blocks.Predecessors(block)
                     .OrderBy(n => n.Address)
                     .Select(n => n.Address)));
                 var sb = new StringBuilder("  ");
@@ -501,7 +509,7 @@ namespace Reko.Scanning
                     sb.AppendFormat("{0:X2} ", (int)rdr.ReadByte());
                 }
                 Debug.WriteLine(sb.ToString());
-                Debug.Print("  {0}", string.Join(" ", proc.Cfg.Successors(block)
+                Debug.Print("  {0}", string.Join(" ", blocks.Successors(block)
                     .OrderBy(n => n.Address)
                     .Select(n => n.Address)));
             }

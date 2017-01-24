@@ -68,7 +68,7 @@ namespace Reko.Scanning
         ///  - pointers to those candidates.
         /// Each time we find a call, we increase the score of the candidate.
         /// At the end we have a list of scored candidates.
-        public void ScanImageHeuristically()
+        public ScanResults ScanImageHeuristically()
         {
             var sw = new Stopwatch();
             sw.Start();
@@ -79,8 +79,8 @@ namespace Reko.Scanning
             foreach (var range in fnRanges)
             {
                 var hproc = DisassembleProcedure(range.Item1, range.Item2);
-                var hps = new HeuristicProcedureScanner(program, hproc, host);
-                hps.BlockConflictResolution();
+                var hps = new HeuristicProcedureScanner(program, hproc.Cfg, hproc.IsValidAddress, host);
+                hps.BlockConflictResolution(hproc.BeginAddress);
                 DumpBlocks(hproc.Cfg.Nodes);
                 hps.GapResolution();
                 // TODO: add all guessed code to image map -- clearly labelled.
@@ -89,11 +89,14 @@ namespace Reko.Scanning
                 eventListener.ShowProgress("Estimating procedures", n, fnRanges.Count);
                 ++n;
             }
-            eventListener.Warn(
-                new Reko.Core.Services.NullCodeLocation("Heuristics"),
+            eventListener.Info(
+                new NullCodeLocation("Heuristics"),
                 string.Format("Scanned image in {0} seconds, finding {1} blocks.",
                     sw.Elapsed.TotalSeconds, list.Count));
             list.ToString();
+            return new ScanResults
+            {
+            };
         }
 
         private void AddBlocks(HeuristicProcedure hproc)
@@ -183,6 +186,9 @@ namespace Reko.Scanning
             {
                 var possibleEntries = FindPossibleProcedureEntries(range.Item1, range.Item2, range.Item3)
                     .Concat(program.EntryPoints.Keys)
+                    .Concat(program.ImageSymbols.Values
+                        .Where(s => s.Type == SymbolType.Procedure)
+                        .Select(s => s.Address))
                     .ToSortedSet();
                 var e = possibleEntries.GetEnumerator();
                 Address aEnd = range.Item2;
@@ -215,7 +221,11 @@ namespace Reko.Scanning
                 EndAddress = addrEnd,
                 Frame = program.Architecture.CreateFrame()
             };
-            var dasm = new HeuristicDisassembler(program, proc, host);
+            var dasm = new HeuristicDisassembler(
+                program, 
+                proc.Cfg, 
+                proc.IsValidAddress,
+                host);
             int instrByteGranularity = program.Architecture.InstructionBitSize / 8;
             for (Address addr = addrStart; addr < addrEnd; addr = addr + instrByteGranularity)
             {

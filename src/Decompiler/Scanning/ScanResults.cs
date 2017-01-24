@@ -49,8 +49,8 @@ namespace Reko.Scanning
         public Dictionary<Address, int> DirectlyCalledAddresses;
 
         /// <summary>
-        /// These are addresses that are known, because metadata data
-        /// in the executable image describes them as such.
+        /// These are addresses that are known, because metadata in the
+        /// executable image describes them as such.
         /// </summary>
         public Dictionary<Address, ImageSymbol> KnownAddresses;
 

@@ -42,6 +42,7 @@ namespace Reko.Scanning
         private ScanResults sr;
         private DecompilerEventListener listener;
         private HashSet<Address> pseudoEntries;
+        private HashSet<Address> knownProcedures;
 
         public ProcedureDetector(Program program, ScanResults sr, DecompilerEventListener listener)
         {
@@ -49,6 +50,7 @@ namespace Reko.Scanning
             this.sr = sr;
             this.listener = listener;
             this.pseudoEntries = new HashSet<Address>();
+            this.knownProcedures = CollectKnownProcedures();
         }
 
         public void DetectProcedures()
@@ -60,15 +62,37 @@ namespace Reko.Scanning
 
         private void PreprocessIcfg()
         {
-            RemoveJumpsToDirectCalls();
+            RemoveJumpsToKnownProcedures();
             //BuildDominatorTree();
             ProcessIndirectJumps();
         }
 
-        public void RemoveJumpsToDirectCalls()
+        public HashSet<Address> CollectKnownProcedures()
         {
-            foreach (var calldest in sr.DirectlyCalledAddresses.Keys)
+            // The set of known procedures is...
+            var knownProcedureAddresses = new HashSet<Address>();
+            // ...all procedures the loader was able to deduce
+            // from symbols and other metadata..
+            knownProcedureAddresses.UnionWith(
+                program.ImageSymbols.Values
+                    .Where(s => s.Type == SymbolType.Procedure)
+                    .Select(s => s.Address));
+            // ...all procedures the user has told us about...
+            knownProcedureAddresses.UnionWith(
+                program.User.Procedures.Keys);
+            // ...and all addresses that the Scanner was able to
+            //   detect as being called directly.
+            knownProcedureAddresses.UnionWith(
+                sr.DirectlyCalledAddresses.Keys);
+            return knownProcedureAddresses;
+        }
+
+        public void RemoveJumpsToKnownProcedures()
+        {
+            foreach (var calldest in this.knownProcedures)
             {
+                if (listener.IsCanceled())
+                    break;
                 var preds = sr.ICFG.Predecessors(calldest).ToList();
                 foreach (var p in preds)
                 {
@@ -79,6 +103,7 @@ namespace Reko.Scanning
 
         private void ProcessIndirectJumps()
         {
+            //$TODO: need some form of backwalking here.
         }
 
         /// <summary>
@@ -103,6 +128,8 @@ namespace Reko.Scanning
             var clusters = new List<Cluster>();
             while (nodesLeft.Count > 0)
             {
+                if (listener.IsCanceled())
+                    break;
                 var node = nodesLeft.First();
                 var cluster = new Cluster();
                 clusters.Add(cluster);
@@ -132,13 +159,13 @@ namespace Reko.Scanning
                 if (nodesLeft.Contains(s))
                 {
                     // Only add if successor is not CALLed.
-                    if (!sr.DirectlyCalledAddresses.ContainsKey(s))
+                    if (!knownProcedures.Contains(s))
                     {
                         BuildWCC(s, cluster, nodesLeft);
                     }
                 }
             }
-            if (!sr.DirectlyCalledAddresses.ContainsKey(addr))
+            if (!knownProcedures.Contains(addr))
             {
                 // Only backtrack through predecessors if the node
                 // is not CALLed.
@@ -164,6 +191,8 @@ namespace Reko.Scanning
             var procs = new List<Procedure>();
             foreach (var cluster in clusters)
             {
+                if (listener.IsCanceled())
+                    break;
                 FindClusterEntries(cluster);
                 procs.AddRange(PostProcessCluster(cluster));
             }
@@ -180,7 +209,7 @@ namespace Reko.Scanning
             var preds = new Dictionary<Address, int>();
             foreach (var block in cluster.Blocks)
             {
-                if (sr.DirectlyCalledAddresses.ContainsKey(block))
+                if (knownProcedures.Contains(block))
                 {
                     cluster.Entries.Add(block);
                 }
