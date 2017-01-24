@@ -26,6 +26,10 @@ using System.Text;
 
 namespace Reko.Core.Services
 {
+    /// <summary>
+    /// This interface is used by the worker thread to communicate with the 
+    /// driver, be it a command line or a GUI.
+    /// </summary>
     public interface DecompilerEventListener
     {
         ICodeLocation CreateAddressNavigator(Program program, Address address);

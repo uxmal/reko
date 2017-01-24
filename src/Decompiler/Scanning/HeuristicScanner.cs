@@ -50,7 +50,10 @@ namespace Reko.Scanning
         private IRewriterHost host;
         private DecompilerEventListener eventListener;
 
-        public HeuristicScanner(Program program, IRewriterHost host, DecompilerEventListener eventListener)
+        public HeuristicScanner(
+            Program program, 
+            IRewriterHost host, 
+            DecompilerEventListener eventListener)
         {
             this.program = program;
             this.host = host;
