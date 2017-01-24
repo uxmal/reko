@@ -115,6 +115,7 @@
         <File Source="$(var.RT11.ProjectDir)rt11_services.xml" />
         <File Source="$(var.SegaGenesis.TargetPath)" />
         <File Source="$(var.SysV.TargetPath)" />
+        <File Source="$(var.SysV.ProjectDir)lp32.xml" />
         <File Source="$(var.SysV.ProjectDir)libc.so.xml" />
         <File Source="$(var.SysV.ProjectDir)Xlib.xml" />
         <File Source="$(var.SysV.ProjectDir)sysvcharacteristics.xml" />

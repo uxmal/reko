@@ -484,10 +484,13 @@ namespace Reko.Arch.Arm
         case Opcode.SEVL:
         case Opcode.VPUSH:
         case Opcode.VPOP:
-            throw new AddressCorrelatedException(
-               instrs.Current.Address,
-               "Rewriting ARM opcode '{0}' is not supported yet.",
-               instr.Mnemonic);
+                    host.Error(
+                        instrs.Current.Address,
+                        string.Format(
+                            "Rewriting ARM opcode '{0}' is not supported yet.",
+                            instr.Mnemonic));
+                    emitter.Invalid();
+                    break;
 
                 case Opcode.AND: RewriteBinOp(emitter.And, instr.ArchitectureDetail.UpdateFlags); break;
                 case Opcode.ADD: RewriteBinOp(emitter.IAdd, instr.ArchitectureDetail.UpdateFlags); break;

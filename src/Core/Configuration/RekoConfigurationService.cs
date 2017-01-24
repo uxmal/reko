@@ -167,13 +167,15 @@ namespace Reko.Core.Configuration
         private IPlatformArchitectureElement LoadPlatformArchitecture(PlatformArchitecture_v1 spa)
         {
             var sTrashedRegs = spa.TrashedRegisters ?? "";
+            var sLibraries = spa.TypeLibraries ?? new TypeLibraryReference_v1[0];
             return new PlatformArchitectureElement
             {
                 Name = spa.Name,
                 TrashedRegisters = sTrashedRegs
                     .Split(',')
                     .Select(s =>  s.Trim())
-                    .ToList()
+                    .ToList(),
+                TypeLibraries = LoadCollection(sLibraries, LoadTypeLibraryReference)
             };
         }
 

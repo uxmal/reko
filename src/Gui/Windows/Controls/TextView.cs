@@ -341,6 +341,23 @@ namespace Reko.Gui.Windows.Controls
             Invalidate();
         }
 
+        public void SelectAll()
+        {
+            anchorPos = new TextPointer
+            {
+                Line = model.StartPosition,
+                Span = 0,
+                Character = 0
+            };
+            cursorPos = new TextPointer
+            {
+                Line = model.EndPosition,
+                Span = 0,
+                Character = 0
+            };
+            Invalidate();
+        }
+
         /// <summary>
         /// Computes the layout of all visible text spans and stores them the 
         /// member variable 'visibleLines'. This includes a final partial item on the end.

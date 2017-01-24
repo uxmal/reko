@@ -165,6 +165,7 @@
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\MacOS\macos_classic.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\RT11\rt11_*.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\SegaGenesis\SegaGenesis.xml" />
+    <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\SysV\lp32.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\SysV\libc.so.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\SysV\Xlib.xml" />
     <DecompilerMetadata Include="$(ProjectDir)..\..\Environments\SysV\linux-syscalls-i386.xml" />
