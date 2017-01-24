@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -72,8 +72,8 @@ namespace Reko.UnitTests.Arch.Pdp11
                 "2|L--|r1 = r1 + 0x0002",
                 "3|L--|r0 = r0 ^ v3",
                 "4|L--|NZ = cond(r0)",
-                "5|L--|V = false",
-                "6|L--|C = false");
+                "5|L--|C = false",
+                "6|L--|V = false");
         }
 
         [Test]
@@ -107,9 +107,9 @@ namespace Reko.UnitTests.Arch.Pdp11
                 "1|L--|v3 = 0x00",
                 "2|L--|Mem0[r0:byte] = v3",
                 "3|L--|r0 = r0 + 0x0001",
-                "4|L--|N = false",
+                "4|L--|C = false",
                 "5|L--|V = false",
-                "6|L--|C = false",
+                "6|L--|N = false",
                 "7|L--|Z = true");
         }
 
@@ -148,9 +148,9 @@ namespace Reko.UnitTests.Arch.Pdp11
                 "0|L--|0200(2): 6 instructions",
                 "1|L--|r2 = r2 - 0x0002",
                 "2|L--|Mem0[r2:word16] = 0x0000",
-                "3|L--|N = false",
+                "3|L--|C = false",
                 "4|L--|V = false",
-                "5|L--|C = false",
+                "5|L--|N = false",
                 "6|L--|Z = true");
         }
 
@@ -175,8 +175,8 @@ namespace Reko.UnitTests.Arch.Pdp11
                 "1|L--|v4 = Mem0[r3 + 0x0075:byte]",
                 "2|L--|v4 = v4 & v4",
                 "3|L--|NZ = cond(v4)",
-                "4|L--|V = false",
-                "5|L--|C = false");
+                "4|L--|C = false",
+                "5|L--|V = false");
         }
 
         [Test]
@@ -232,8 +232,8 @@ namespace Reko.UnitTests.Arch.Pdp11
                 "2|L--|v4 = Mem0[r4:word16]",
                 "3|L--|v4 = v4 & v4",
                 "4|L--|NZ = cond(v4)",
-                "5|L--|V = false",
-                "6|L--|C = false");
+                "5|L--|C = false",
+                "6|L--|V = false");
         }
 
         [Test]
@@ -394,9 +394,9 @@ namespace Reko.UnitTests.Arch.Pdp11
             AssertCode(
               "0|L--|0200(2): 5 instructions",
               "1|L--|r3 = DPB(r3, 0x00, 0)",
-              "2|L--|N = false",
+              "2|L--|C = false",
               "3|L--|V = false",
-              "4|L--|C = false",
+              "4|L--|N = false",
               "5|L--|Z = true");
         }
 
@@ -409,6 +409,51 @@ namespace Reko.UnitTests.Arch.Pdp11
               "1|L--|r0 = Mem0[0x1D90:word16]",
               "2|L--|NZ = cond(r0)",
               "3|L--|V = false");
+        }
+
+        [Test]
+        public void Pdp11Rw_com()
+        {
+            BuildTest(0x0A43);
+            AssertCode(
+              "0|L--|0200(2): 4 instructions",
+              "1|L--|r3 = ~r3",
+              "2|L--|NZ = cond(r3)",
+              "3|L--|V = false",
+              "4|L--|C = true");
+        }
+
+        [Test]
+        public void Pdp11Rw_rts_r5()
+        {
+            BuildTest(0x0085);
+            AssertCode(
+              "0|T--|0200(2): 5 instructions",
+              "1|L--|v2 = r5",
+              "2|L--|r5 = Mem0[sp:word16]",
+              "3|L--|sp = sp + 0x0002",
+              "4|T--|call v2 (0)",
+              "5|T--|return (0,0)");
+        }
+
+        [Test]
+        public void Pdp11Rw_jsr_indirect_relative()
+        {
+            // 036C FF 09 8A 0B jsrpc,@0B8A(pc)
+            BuildTest(0x09FF, 0x0B8A);
+            AssertCode(
+                "0|T--|0200(4): 1 instructions",
+                "1|T--|call Mem0[0x0D8E:word16] (2)");
+        }
+
+        [Test]
+        public void Pdp11Rw_jmp_indirect()
+        {
+            // 79 00 CC 02 jmp@02CC(r1)
+            BuildTest(0x0079, 0x02CC);
+            AssertCode(
+                "0|T--|0200(4): 1 instructions",
+                "1|T--|goto Mem0[r1 + 0x02CC:ptr16]");
         }
     }
 }

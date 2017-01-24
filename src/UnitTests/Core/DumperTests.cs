@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ namespace Reko.UnitTests.Core
             mr = new MockRepository();
         }
 
-        private void Given_32bit_Program()
+        private void Given_32bit_Program(int size = 32)
         {
             this.arch = mr.Stub<IProcessorArchitecture>();
             this.arch.Stub(a => a.FramePointerType).Return(PrimitiveType.Pointer32);
@@ -60,7 +60,7 @@ namespace Reko.UnitTests.Core
                         ".text",
                         new MemoryArea(
                             Address.Ptr32(0x00010000),
-                            Enumerable.Range(0, 32)
+                            Enumerable.Range(0, size)
                                 .Select(i => (byte)i)
                                 .ToArray()),
                         AccessMode.ReadWrite)),
@@ -85,6 +85,26 @@ namespace Reko.UnitTests.Core
                 }));
 
             arch.Replay();
+        }
+
+        private void Given_32bit_Program_Zeros(int size = 32)
+        {
+            this.arch = mr.Stub<IProcessorArchitecture>();
+            this.arch.Stub(a => a.FramePointerType).Return(PrimitiveType.Pointer32);
+            this.platform = mr.Stub<IPlatform>();
+            this.program = new Program(
+                new SegmentMap(
+                    Address.Ptr32(0x00010000),
+                    new ImageSegment(
+                        ".text",
+                        new MemoryArea(
+                            Address.Ptr32(0x00010000),
+                            Enumerable.Range(0, size)
+                                .Select(i => (byte)0)
+                                .ToArray()),
+                        AccessMode.ReadWrite)),
+                arch,
+                platform);
         }
 
         private Procedure Given_ProcedureAt(Address address)
@@ -244,6 +264,36 @@ l00010004		db	0x04
 	db	0x08,0x09,0x0A,0x0B	; padding
 	dd	0x0F0E0D0C
 00010010 10 11 12 13 14 15 16 17 18 19 1A 1B 1C 1D 1E 1F ................
+";
+            #endregion
+            AssertOutput(sExp, sw);
+            mr.VerifyAll();
+        }
+
+        [Test]
+        public void Dumper_LotsOfZeros()
+        {
+            Given_32bit_Program_Zeros(110);
+            arch.Stub(a => a.CreateImageReader(null, null)).IgnoreArguments()
+                .Do(new Func<MemoryArea, Address, ImageReader>(
+                    (m, a) => new LeImageReader(m, a)));
+            mr.ReplayAll();
+
+            var addr = program.ImageMap.BaseAddress + 8;
+            var item = new ImageMapItem(90) { Address = addr };
+            program.ImageMap.AddItem(item.Address, item);
+            var dmp = new Dumper(program.Architecture);
+            var sw = new StringWriter();
+            dmp.Dump(program, new TextFormatter(sw));
+
+            var sExp =
+            #region Expected
+@";;; Segment .text (00010000)
+00010000 00 00 00 00 00 00 00 00                         ........       
+00010008                         00 00 00 00 00 00 00 00         ........
+00010010 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+; ...
+00010060 00 00 00 00 00 00 00 00 00 00 00 00 00 00       .............. 
 ";
             #endregion
             AssertOutput(sExp, sw);

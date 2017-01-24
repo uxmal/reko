@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -73,7 +73,9 @@ namespace Reko.Scanning
             this.program = program;
             this.arch = program.Architecture;   // cached since it's used heavily.
             this.state = state;
-            this.eval = new ExpressionSimplifier(state);
+            this.eval = new ExpressionSimplifier(
+                state,
+                scanner.Services.RequireService<DecompilerEventListener>());
             this.addrStart = addr;
             this.blockCur = null;
         }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -623,18 +623,24 @@ namespace Reko.Arch.PowerPC
 
             public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
             {
-                var reg = dasm.RegFromBits(wInstr >> 21);
+                MachineOperand op1 = dasm.RegFromBits(wInstr >> 21);
+                MachineOperand op2 = null;
                 var spr = (wInstr >> 11) & 0x3FF;
                 Opcode opcode ;
                 switch (spr)
                 {
-                default: throw new NotImplementedException(string.Format("Unknown special register {0:X}.", spr));
                 case 0x0100: opcode = to ? Opcode.mtlr : Opcode.mflr; break;
                 case 0x0120: opcode = to ? Opcode.mtctr : Opcode.mfctr; break;
+                default:
+                    opcode = to ? Opcode.mtspr : Opcode.mfspr;
+                    op2 = op1;
+                    op1 = ImmediateOperand.UInt32(spr);
+                    break;
                 }
                 return new PowerPcInstruction(opcode)
                 {
-                    op1 = reg
+                    op1 = op1,
+                    op2 = op2
                 };
             }
         }
@@ -707,6 +713,31 @@ namespace Reko.Arch.PowerPC
             }
         }
 
+        private class XX3OpRec : OpRec
+        {
+            private Dictionary<uint, OpRec> xoprecs;
+
+            public XX3OpRec(Dictionary<uint, OpRec> xoprecs)
+            {
+                this.xoprecs = xoprecs;
+            }
+
+            public override PowerPcInstruction Decode(PowerPcDisassembler dasm, uint wInstr)
+            {
+                var subOp = (wInstr & 0xFFFF) >> 3;
+                OpRec oprec;
+                if (xoprecs.TryGetValue(subOp, out oprec))
+                {
+                    return oprec.Decode(dasm, wInstr);
+                }
+                else
+                {
+                    Debug.Print("Unknown PowerPC XX3 instruction {0:X8} {1:X2}-{2:X3}", wInstr, wInstr >> 26, subOp);
+                    return new PowerPcInstruction(Opcode.illegal);
+                }
+            }
+        }
+
         static OpRec[] oprecs;
 
         static PowerPcDisassembler()
@@ -717,9 +748,10 @@ namespace Reko.Arch.PowerPC
                 new InvalidOpRec(),
                 new InvalidOpRec(),
                 new DOpRec(Opcode.twi, "I1,r2,S"),
-                new VXOpRec(new Dictionary<uint, OpRec>()
+                new VXOpRec(new Dictionary<uint, OpRec>     // 4
                     {
                         { 0x00A, new DOpRec(Opcode.vaddfp, "v1,v2,v3") },
+                        { 0x020, new DOpRec(Opcode.vmhaddshs, "v1,v2,v3,v4") },
                         { 0x04A, new DOpRec(Opcode.vsubfp, "v1,v2,v3") },
                         { 0x080, new DOpRec(Opcode.vadduwm, "v1,v2,v3") },
                         { 0x086, new DOpRec(Opcode.vcmpequw, "v1,v2,v3") },
@@ -768,9 +800,10 @@ namespace Reko.Arch.PowerPC
                 new XOpRec(new Dictionary<uint, OpRec>()
                 {
                     { 0, new DOpRec(Opcode.mcrf, "C1,C2")},
-                    { 16, new BclrOpRec() }, 
+                    { 16, new BclrOpRec() },
                     { 33, new DOpRec(Opcode.crnor, "I1,I2,I3") },
                     { 50, new DOpRec(Opcode.rfi, "") },
+                    { 0x96, new DOpRec(Opcode.isync, "") },
                     { 449, new DOpRec(Opcode.cror, "I1,I2,I3") },
                     { 0x0C1, new DOpRec(Opcode.crxor, "I1,I2,I3") },
                     { 0x121, new DOpRec(Opcode.creqv, "I1,I2,I3") },
@@ -788,7 +821,7 @@ namespace Reko.Arch.PowerPC
                 new DOpRec(Opcode.andi, ":r2,r1,U"),
                 new DOpRec(Opcode.andis, ":r2,r1,U"),
                 new MDOpRec(),
-                new XOpRec(new Dictionary<uint, OpRec>()
+                new XOpRec(new Dictionary<uint, OpRec>      // 1F
                 {
                     { 0, new CmpOpRec(Opcode.cmp, "C1,r2,r3") },
                     { 4, new DOpRec(Opcode.tw, "I1,r2,r3") },
@@ -805,10 +838,13 @@ namespace Reko.Arch.PowerPC
                     { 0x020, new CmpOpRec(Opcode.cmpl, "C1,r2,r3") },
                     { 0x014, new DOpRec(Opcode.lwarx, "r1,r2,r3") },
                     { 0x028, new DOpRec(Opcode.subf, ".r1,r2,r3")},
+                    { 0x037, new DOpRec(Opcode.lwzux, "r1,r2,r3")},
                     { 0x03A, new DOpRec(Opcode.cntlzd, "r2,r1")},
                     { 0x03C, new DOpRec(Opcode.andc, ".r2,r1,r3")},
                     { 0x047, new DOpRec(Opcode.lvewx, "v1,r2,r3")},
                     { 0x04B, new DOpRec(Opcode.mulhw, ".r1,r2,r3")},
+                    { 0x053, new DOpRec(Opcode.mfmsr, "r1") },
+                    { 0x056, new DOpRec(Opcode.dcbf, "r2,r3") },
                     { 0x057, new DOpRec(Opcode.lbzx, "r1,r2,r3") },
                     { 0x067, new DOpRec(Opcode.lvx, "v1,r2,r3") },
                     { 0x068, new DOpRec(Opcode.neg, "r1,r2") },
@@ -817,6 +853,7 @@ namespace Reko.Arch.PowerPC
                     { 0x088, new DOpRec(Opcode.subfe, "r1,r2,r3")},
                     { 0x08A, new DOpRec(Opcode.adde, ".r1,r2,r3")},
                     { 0x090, new DOpRec(Opcode.mtcrf, "M,r1")},
+                    { 0x092, new DOpRec(Opcode.mtmsr, "r1") },
                     { 0x095, new DOpRec(Opcode.stdx, "r1,r2,r3") },
                     { 0x097, new DOpRec(Opcode.stwx, "r1,r2,r3") },
                     { 0x0C7, new DOpRec(Opcode.stvewx, "v1,r2,r3")},
@@ -836,28 +873,39 @@ namespace Reko.Arch.PowerPC
                     { 0x19C, new DOpRec(Opcode.orc, ".r2,r1,r3") },
                     { 444, new DOpRec(Opcode.or, ".r2,r1,r3") },
                     { 459, new DOpRec(Opcode.divwu, ".r1,r2,r3") },
-                    { 467, new SprOpRec(true) },
                     { 0x1DC, new DOpRec(Opcode.nand, ".r2,r1,r3") },
 
                     { 0x153, new SprOpRec(false) },
                     { 0x173, new XfxOpRec(Opcode.mftb, "r1,X3") },
                     { 0x177, new DOpRec(Opcode.lhaux, "r1,r2,r3") },
                     { 0x197, new DOpRec(Opcode.sthx, "r1,r2,r3") },
+                    { 0x157, new DOpRec(Opcode.lhax, "r1,r2,r3")},
+                    { 0x1D3, new SprOpRec(true) },
+                    { 0x1D6, new DOpRec(Opcode.dcbi, "r2,r3")},
                     { 0x1EB, new DOpRec(Opcode.divw, ".r1,r2,r3")},
                     { 0x207, new DOpRec(Opcode.lvlx, "r1,r2,r3") },
                     { 0x216, new DOpRec(Opcode.lwbrx, "r1,r2,r3") },
                     { 0x217, new DOpRec(Opcode.lfsx, "f1,r2,r3") },
                     { 0x218, new DOpRec(Opcode.srw, ".r2,r1,r3") },
                     { 0x21B, new DOpRec(Opcode.srd, ".r2,r1,r3") },
+                    { 0x255, new DOpRec(Opcode.lswi, "r1,r2,I3") },
+                    { 0x257, new DOpRec(Opcode.lfdx, "f1,r2,r3") },
                     { 0x256, new DOpRec(Opcode.sync, "") },
                     { 0x296, new DOpRec(Opcode.stwbrx, ".r2,r1,r3") },
+                    { 0x297, new DOpRec(Opcode.stfsx, "f1,r2,r3") },
+                    { 0x2B7, new DOpRec(Opcode.stfsux, "f1,r2,r3") },
+                    { 0x2D5, new DOpRec(Opcode.stswi, "r1,r2,I3") },
+                    { 0x2D7, new DOpRec(Opcode.stfdx, "f1,r2,r3") },
+                    { 0x316, new DOpRec(Opcode.lhbrx, "r1,r2,r3")},
                     { 0x318, new DOpRec(Opcode.sraw, ".r2,r1,r2")},
                     { 0x33A, new DOpRec(Opcode.sradi, ".r2,r1,I3") },
+                    { 0x338, new DOpRec(Opcode.srawi, "r2,r1,I3") },
                     { 0x33B, new XSOpRec(Opcode.sradi, ".r2,r1,I3") },
-                    { 824, new DOpRec(Opcode.srawi, "r2,r1,I3") },
+                    { 0x356, new DOpRec(Opcode.eieio, "") },
                     { 0x39A, new DOpRec(Opcode.extsh, ".r2,r1")},
                     { 0x3BA, new DOpRec(Opcode.extsb, ".r2,r1")},
                     { 0x3D7, new DOpRec(Opcode.stfiwx, "f1,r2,r3")},
+                    { 0x3D6, new DOpRec(Opcode.icbi, "r2,r3")},
                     { 0x3DA, new DOpRec(Opcode.extsw, ".r2,r1")}
                 }),
                 // 20
@@ -888,7 +936,7 @@ namespace Reko.Arch.PowerPC
                 new DOpRec(Opcode.stfd, "f1,E2"),
                 new DOpRec(Opcode.stfdu, "f1,E2"),
 
-                new InvalidOpRec(),
+                new DOpRec(Opcode.lq, "r1,E2"),
                 new InvalidOpRec(),
                 new DSOpRec(Opcode.ld, Opcode.ldu, "r1,E2"),
                 new FpuOpRec(1, 0x1F, new Dictionary<uint, OpRec>()
@@ -905,10 +953,16 @@ namespace Reko.Arch.PowerPC
                     { 31, new FpuOpRecAux(Opcode.fnmadds, ".f1,f2,f3,f4") },
                 }),
 
-                new InvalidOpRec(),
+                new XX3OpRec(new Dictionary<uint, OpRec>                // 3C
+                {
+                    { 0x00, new DOpRec(Opcode.xsaddsp, "v1,v2,v3") },
+                    { 0x01, new DOpRec(Opcode.xsmaddasp, "v1,v2,v3") },
+                    //{ 0x02, new DOpRec(Opcode.xxsldwi, "v1,v2,v3") },       //$TODO need extra work.
+                    { 0x09, new DOpRec(Opcode.xsmaddmsp, "v1,v2,v3") },
+                }),
                 new InvalidOpRec(),
                 new DSOpRec(Opcode.std, Opcode.stdu, "r1,E2"),
-                new FpuOpRec(1, 0x1F, new Dictionary<uint, OpRec>()
+                new FpuOpRec(1, 0x1F, new Dictionary<uint, OpRec>()     // 3F
                 {
                     { 0x00, new FpuOpRec(6, 0x1F, new Dictionary<uint, OpRec>
                         {
@@ -971,6 +1025,7 @@ namespace Reko.Arch.PowerPC
                     { 0x1E, new FpuOpRecAux(Opcode.fnmsub, ".f1,f2,f4,f3") },
                     { 0x1F, new FpuOpRecAux(Opcode.fnmadd, ".f1,f2,f4,f3") },
                 })
+
             };
         }
     }

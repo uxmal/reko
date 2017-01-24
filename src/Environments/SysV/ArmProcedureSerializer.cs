@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,6 +63,11 @@ namespace Reko.Environments.SysV
             {
                 foreach (var sArg in ss.Arguments)
                 {
+                    if (sArg.Name == "...")
+                    {
+                        argser.Deserialize(sArg);
+                        continue;
+                    }
                     var dt = sArg.Type.Accept(TypeLoader);
                     var sizeInWords = (dt.Size + 3) / 4;
 

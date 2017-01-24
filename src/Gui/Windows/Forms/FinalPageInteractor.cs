@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -80,6 +80,9 @@ namespace Reko.Gui.Windows.Forms
             {
                 switch (cmdId.ID)
                 {
+                case CmdIds.ActionRestartDecompilation:
+                    status.Status = MenuStatus.Visible | MenuStatus.Enabled;
+                    return true;
                 case CmdIds.ActionNextPhase:
                 case CmdIds.ActionFinishDecompilation:
                     status.Status = MenuStatus.Visible;

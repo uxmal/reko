@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -112,10 +112,37 @@ namespace Reko.UnitTests.Analysis
             RunFileTest("Fragments/multiple/sideeffectcalls.asm", "Analysis/CoaSideEffectCalls.txt");
         }
 
-		protected override void RunTest(Program program, TextWriter fut)
+        [Test]
+        public void CoaCallUses()
+        {
+            var m = new ProcedureBuilder("foo");
+            var r2 = m.Register(2);
+            var r3 = m.Register(3);
+            var r4 = m.Register(4);
+            m.Assign(r4, m.Fn(r2));
+            m.Call(r3, 4);
+            m.Return();
+            RunFileTest(m, "Analysis/CoaCallUses.txt");
+        }
+
+        [Test]
+        public void CoaCallCallee()
+        {
+            var m = new ProcedureBuilder("foo");
+            var r2 = m.Register(2);
+            var r3 = m.Register(3);
+            m.Assign(r3, m.Fn(r2));
+            m.Assign(r3, m.IAdd(r3, 4));
+            m.Call(r3, 4);
+            m.Return();
+            RunFileTest(m, "Analysis/CoaCallCallee.txt");
+        }
+
+        protected override void RunTest(Program program, TextWriter fut)
 		{
             IImportResolver importResolver = null;
-			DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver, new FakeDecompilerEventListener());
+            var listener = new FakeDecompilerEventListener();
+            DataFlowAnalysis dfa = new DataFlowAnalysis(program, importResolver, listener);
 			dfa.UntangleProcedures();
 			
 			foreach (Procedure proc in program.Procedures.Values)
@@ -129,7 +156,7 @@ namespace Reko.UnitTests.Analysis
 				cce.Transform();
 				DeadCode.Eliminate(proc, ssa);
 
-				ValuePropagator vp = new ValuePropagator(program.Architecture, ssa);
+				ValuePropagator vp = new ValuePropagator(program.Architecture, ssa, listener);
 				vp.Transform();
 				DeadCode.Eliminate(proc, ssa);
 				Coalescer co = new Coalescer(proc, ssa);
@@ -138,7 +165,9 @@ namespace Reko.UnitTests.Analysis
 				ssa.Write(fut);
 				proc.Write(false, fut);
 				fut.WriteLine();
-			}
+
+                ssa.CheckUses(s => Assert.Fail(s));
+            }
 		}
 	}
 }

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -58,15 +59,20 @@ namespace Reko.Core.Types
             return v.VisitStructure(this);
         }
 
-		public override DataType Clone()
+        public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
 		{
+            if (clonedTypes == null)
+                clonedTypes = new Dictionary<DataType, DataType>();
+            if (clonedTypes.ContainsKey(this))
+                return clonedTypes[this];
 			var s = new StructureType(Name, Size);
+            clonedTypes[this] = s;
             s.UserDefined = UserDefined;
 			s.IsSegment = IsSegment;
             s.ForceStructure = ForceStructure;
-			foreach (StructureField f in Fields)
+			foreach (var f in Fields)
 			{
-				s.Fields.Add(f.Clone());
+				s.Fields.Add(f.Clone(clonedTypes));
 			}
 			return s;
 		}

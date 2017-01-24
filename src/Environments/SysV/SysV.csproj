@@ -79,6 +79,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <TranslateHeader Include="lp32.inc" />
     <TranslateHeader Include="libc.so.inc" />
     <TranslateHeader Include="Xlib.inc" />
   </ItemGroup>

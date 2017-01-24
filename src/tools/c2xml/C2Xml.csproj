@@ -57,7 +57,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TravisRelease|AnyCPU'">
     <OutputPath>bin\TravisRelease\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;TRAVIS_RELEASE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -79,7 +79,6 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UnitTests\NamedDataTypeExtractorTests.cs" />
     <Compile Include="UnitTests\XmlConverterTests.cs" />
     <Compile Include="UnitTests\XmlnsHidingWriter.cs" />
     <Compile Include="XmlConverter.cs" />

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Reko.Analysis
 {
@@ -32,15 +33,15 @@ namespace Reko.Analysis
 
 		public Web()
 		{
-			this.Members = new List<SsaIdentifier>();
-			this.Definitions = new List<Statement>();
-			this.Uses = new List<Statement>();
+			this.Members = new HashSet<SsaIdentifier>();
+			this.Definitions = new HashSet<Statement>();
+			this.Uses = new HashSet<Statement>();
 		}
 
         public Identifier Identifier { get; private set; }
-        public List<SsaIdentifier> Members { get; private set; }
-        public List<Statement> Uses { get; private set; }
-        public List<Statement> Definitions { get; private set; }
+        public HashSet<SsaIdentifier> Members { get; private set; }
+        public HashSet<Statement> Uses { get; private set; }
+        public HashSet<Statement> Definitions { get; private set; }
 
         public void Add(SsaIdentifier sid)
 		{
@@ -90,7 +91,7 @@ namespace Reko.Analysis
 		public void Write(TextWriter writer)
 		{
 			writer.Write("{0}: {{ ", Identifier.Name);
-			foreach (SsaIdentifier m in Members)
+			foreach (SsaIdentifier m in Members.OrderBy(mm => mm.Identifier.Name))
 			{
 				writer.Write("{0} ", m.Identifier.Name);
 			}

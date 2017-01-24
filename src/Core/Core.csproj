@@ -678,7 +678,6 @@
     <Compile Include="Types\UnionType.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Types\UnionTypeVarsReplacer.cs" />
     <Compile Include="Types\UnknownType.cs">
       <SubType>Code</SubType>
     </Compile>

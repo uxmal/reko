@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -112,6 +112,18 @@ namespace Reko.UnitTests.Analysis
             // verify that data type of register was not overwritten
             Assert.AreEqual("word32", ass.Dst.DataType.ToString());
             Assert.AreEqual("real32", ass.Src.DataType.ToString());
+        }
+
+        [Test(Description = "Verifies stack delta of stdcall function.")]
+        public void Usb_BuildSignature_Stdcall()
+        {
+            Given_Procedure(0x1000);
+            Given_UserSignature(0x01000, "char * __stdcall test(int i, float f, double d)");
+
+            var usb = new UserSignatureBuilder(program);
+            usb.BuildSignature(Address.Ptr32(0x1000), proc);
+
+            Assert.AreEqual(20, proc.Signature.StackDelta);
         }
 
         [Test]
