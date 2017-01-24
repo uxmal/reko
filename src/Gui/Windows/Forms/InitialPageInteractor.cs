@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ namespace Reko.Gui.Windows.Forms
     public interface InitialPageInteractor : IPhasePageInteractor
     {
         bool OpenBinary(string file);
-        bool OpenBinaryAs(string file, string arch, string platform, Address addrBase, RawFileElement raw);
+        bool OpenBinaryAs(string file, LoadDetails details);
         bool Assemble(string file, Assembler asm);
     }
 
@@ -118,32 +118,17 @@ namespace Reko.Gui.Windows.Forms
             return isOldProject;
         }
 
+        //$TODO: change signature to OpenAs(raw)
         public bool OpenBinaryAs(
             string file, 
-            string arch,
-            string platform, 
-            Address addrBase, 
-            RawFileElement raw)
+            LoadDetails details)
         {
             var ldr = Services.RequireService<ILoader>();
             this.Decompiler = CreateDecompiler(ldr);
             IWorkerDialogService svc = Services.RequireService<IWorkerDialogService>();
             svc.StartBackgroundWork("Loading program", delegate()
             {
-                Program program;
-                if (raw != null)
-                {
-                   program = Decompiler.LoadRawImage(file, raw);
-                }
-                else
-                {
-                   program= Decompiler.LoadRawImage(file, arch, platform, addrBase);
-                }
-                program.User.Processor = arch;
-                program.User.Environment = platform;
-                program.User.LoadAddress = program.ImageMap.BaseAddress; ;
-                svc.SetCaption("Scanning source program.");
-                Decompiler.ScanPrograms();
+                Program program = Decompiler.LoadRawImage(file, details);
             });
             var browserSvc = Services.RequireService<IProjectBrowserService>();
             browserSvc.Load(Decompiler.Project);

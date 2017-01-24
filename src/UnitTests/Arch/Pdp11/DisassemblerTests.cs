@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -177,6 +177,12 @@ namespace Reko.UnitTests.Arch.Pdp11
         public void Pdp11dis_bis()
         {
             RunTest("bis\t#2000,@#0024", 0x55DF, 0x2000, 0x0024);
+        }
+
+        [Test]
+        public void Pdp11dis_setflags()
+        {
+            RunTest("setflags\t#04", 0x00B4);
         }
     }
 }

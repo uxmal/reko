@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ using System.Text;
 
 namespace Reko.Environments.SysV
 {
+    // https://mentorembedded.github.io/cxx-abi/abi.html#mangling-type
     public class GccMangledNameParser
     {
         private string str;
@@ -53,44 +54,102 @@ namespace Reko.Environments.SysV
             {
                 //$TODO: local name => in C, this is 'static'
             }
-            if (char.IsDigit(str[i]))
+            else if (Peek('N'))
             {
-                var name = SimpleName();
-                var args = Arguments();
+                var qname = NestedName();
+                SerializedType type = null;
+                if (i < str.Length)
+                {
+                    type = new SerializedSignature
+                    {
+                        Arguments = Arguments()
+                    };
+                }
                 return new StructField_v1
                 {
-                    Name = name,
-                    Type = new SerializedSignature
-                    {
-                        Arguments = args
-                    }
+                    Name = string.Join("::", qname),
+                    Type = type,
                 };
             }
-            var qname = QualifiedName();
+            var name = UnscopedName();
+            var args = Arguments();
             return new StructField_v1
             {
-                Name = string.Join("::", qname)
+                Name = name,
+                Type = new SerializedSignature
+                {
+                    Arguments = args
+                }
             };
-
         }
 
-        private List<string> QualifiedName()
+        private List<string> NestedName()
         {
             Expect('N');
-            var items = new List<string>();
-            for (;;)
-            {
-                var item = SimpleName();
-                if (item == null)
-                    break;
-                items.Add(item);
-            }
+            var items = Prefix();
+            var name = UnqualifiedName();
+            name = string.Format(name, items != null ? items.LastOrDefault() : "");
+            items.Add(name);
             Expect('E');
             return items;
         }
 
-        private string SimpleName()
+        private List<string> Prefix()
         {
+            if (Peek('S'))
+                return Substitution();
+            throw new NotImplementedException();
+        }
+
+        private List<string> Substitution()
+        {
+            Expect('S');
+            switch (str[i])
+            {
+            case 'o':
+                ++i;
+                return new List<string>
+                {
+                    "std", "ostream"
+                };
+            case 's':
+                ++i;
+                return new List<string>
+                {
+                    "std", "string"
+                };
+            }
+            throw new NotImplementedException();
+        }
+
+        private string UnscopedName()
+        {
+            if (i < str.Length - 1 && str[i] == 'S' && str[i+1] == 't')
+            {
+                i += 2;
+                return "std::" + UnqualifiedName();
+            }
+            return UnqualifiedName();
+        }
+
+        private string UnqualifiedName()
+        {
+            switch (str[i])
+            {
+            case 'l':
+                if (str[i + 1] == 's')
+                {
+                    i += 2;
+                    return "operator<<";
+                }
+                throw new NotImplementedException();
+            case 'D':
+                // D0	# deleting destructor
+                // D1	# complete object destructor
+                // D2	# base object destructor
+                i += 2;
+                return "~{0}";
+            }
             int n = NameLength();
             var name = str.Substring(i, n);
             i += n;
@@ -126,6 +185,11 @@ namespace Reko.Environments.SysV
                 Error("Expected '{0}' but found '{1}'.", ch, str[i - 1]);
         }
 
+        private bool Peek(char ch)
+        {
+            return str[i] == ch;
+        }
+
         private bool PeekAndDiscard(char ch)
         {
             if (str[i] == ch)
@@ -156,7 +220,7 @@ namespace Reko.Environments.SysV
         {
             switch (str[i])
             {
-            case 'z': ++i; return new Argument_v1 { Name = "..." };
+            case 'z': ++i; return new Argument_v1 { Name = "...", Type = new VoidType_v1() };
             case 'v': ++i; return null;
             default: return new Argument_v1 { Type = Type() };
             }
@@ -179,18 +243,53 @@ namespace Reko.Environments.SysV
             case 'f': return PrimitiveType_v1.Real32();
             case 'd': return PrimitiveType_v1.Real64();
             case 'P': return new PointerType_v1 { DataType = Type(), PointerSize = ptrSize };
-            case 'R': return new ReferenceType_v1 { Referent = Type(), Size = ptrSize };
+            case 'R':
+                //$TODO: Reko doesn't have a concept of 'const' or 'volatile'. 
+                // Needs to be implemented for completeness, but should not affect
+                // quality of decompilation.
+                var qual = CvQualifier();
+                return new ReferenceType_v1 { Referent = Type(), Size = ptrSize };
+            case 'S':
+                switch (str[i++])
+                {
+                case 't':
+                    return new TypeReference_v1
+                    {
+                        Scope = new[] { "std" },
+                        TypeName = Type().ToString(),
+                    };
+                case 's':
+                    return new TypeReference_v1
+                    {
+                        Scope = new[] { "std" },
+                        TypeName = "string"
+                    };
+                }
+                throw new NotImplementedException();
             default:
                 --i;
                 if (char.IsDigit(str[i]))
                 {
                     return new TypeReference_v1
                     {
-                        TypeName = SimpleName(),
+                        TypeName = UnqualifiedName(),
                     };
                 }
                 throw new NotImplementedException(string.Format("Unknown GCC type code '{0}'.", str[i]));
             }
+        }
+
+        private char CvQualifier()
+        {
+            char c = str[i];
+            if (c == 'K' ||  // const
+                c == 'V' ||  // volatile
+                c == 'r')    // restrict
+            {
+                ++i;
+                return c;
+            }
+            return '\0';
         }
     }
 }

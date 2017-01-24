@@ -1,5 +1,5 @@
 #region License
-/* Copyright (C) 1999-2016 John Källén.
+/* Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,14 +44,14 @@ namespace Reko
     {
         Project Project { get; }
 
-        bool Load(string fileName);
-        Program LoadRawImage(string file, RawFileElement raw);
-        Program LoadRawImage(string fileName, string arch, string platform, Address addrBase);
+        bool Load(string fileName, string loader=null);
+        Program LoadRawImage(string file, LoadDetails raw);
         void ScanPrograms();
         ProcedureBase ScanProcedure(ProgramAddress paddr);
         void AnalyzeDataFlow();
         void ReconstructTypes();
         void StructureProgram();
+        void WriteDecompilerProducts();
 
         void Assemble(string file, Assembler asm);
     }
@@ -90,11 +90,11 @@ namespace Reko
         /// <summary>
         /// Main entry point of the decompiler. Loads, decompiles, and outputs the results.
         /// </summary>
-        public void Decompile(string filename)
+        public void Decompile(string filename, string loader = null)
         {
             try
             {
-                Load(filename);
+                Load(filename, loader);
                 ScanPrograms();
                 AnalyzeDataFlow();
                 ReconstructTypes();
@@ -190,7 +190,7 @@ namespace Reko
         /// <returns>True if what was loaded was an actual project</returns>
         /// <param name="program"></param>
         /// <param name="cfg"></param>
-        public bool Load(string fileName)
+        public bool Load(string fileName, string loaderName=null)
         {
             eventListener.ShowStatus("Loading source program.");
             byte[] image = loader.LoadImageBytes(fileName, 0);
@@ -204,7 +204,7 @@ namespace Reko
             }
             else 
             {
-                var program = loader.LoadExecutable(fileName, image, null);
+                var program = loader.LoadExecutable(fileName, image, loaderName, null);
                 Project = CreateDefaultProject(fileName, program);
                 Project.LoadedMetadata = program.Platform.CreateMetadata();
                 program.EnvironmentMetadata = Project.LoadedMetadata;
@@ -269,21 +269,12 @@ namespace Reko
         /// <param name="fileName"></param>
         /// <param name="arch"></param>
         /// <param name="platform"></param>
-        public Program LoadRawImage(string fileName, string arch, string platform, Address addrBase)
-        {
-            eventListener.ShowStatus("Loading raw bytes.");
-            byte[] image = loader.LoadImageBytes(fileName, 0);
-            var program = loader.LoadRawImage(fileName, image, arch, platform, addrBase);
-            Project = CreateDefaultProject(fileName, program);
-            eventListener.ShowStatus("Raw bytes loaded.");
-            return program;
-        }
 
-        public Program LoadRawImage(string fileName, RawFileElement raw)
+        public Program LoadRawImage(string fileName, LoadDetails raw)
         {
             eventListener.ShowStatus("Loading raw bytes.");
             byte[] image = loader.LoadImageBytes(fileName, 0);
-            var program = loader.LoadRawImage(fileName, image, raw);
+            var program = loader.LoadRawImage(fileName, image, null, raw);
             Project = CreateDefaultProject(fileName, program);
             eventListener.ShowStatus("Raw bytes loaded.");
             return program;

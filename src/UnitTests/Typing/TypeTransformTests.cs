@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -239,7 +239,70 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-        public void MergeIdenticalStructureFields()
+        public void TtranUnionPointersStructures()
+        {
+            UnionType ut = factory.CreateUnionType("foo", null);
+            var str1 = new StructureType()
+            {
+                Fields =
+                {
+                    {0, PrimitiveType.Word32},
+                    {4, PrimitiveType.Int32},
+                },
+            };
+            var str2 = new StructureType()
+            {
+                Fields =
+                {
+                    {0, PrimitiveType.Real32},
+                    {4, PrimitiveType.Word32},
+                },
+            };
+            var eq1 = new EquivalenceClass(factory.CreateTypeVariable(), str1);
+            var eq2 = new EquivalenceClass(factory.CreateTypeVariable(), str2);
+            ut.AddAlternative(new Pointer(eq1, 4));
+            ut.AddAlternative(new Pointer(eq2, 4));
+            var trans = new TypeTransformer(factory, null, null);
+            var ptr = (Pointer)ut.Accept(trans);
+            var eq = (EquivalenceClass)ptr.Pointee;
+            Assert.AreEqual(
+                "(struct (0 real32 r0000) (4 int32 dw0004))",
+                eq.DataType.ToString());
+        }
+
+        [Test]
+        public void TtranUnionPointersStructuresWithDifferentSizes()
+        {
+            UnionType ut = factory.CreateUnionType("foo", null);
+            var str1 = new StructureType(12)
+            {
+                Fields =
+                {
+                    {0, PrimitiveType.Word32},
+                    {4, PrimitiveType.Int32},
+                },
+            };
+            var str2 = new StructureType(16)
+            {
+                Fields =
+                {
+                    {0, PrimitiveType.Real32},
+                    {4, PrimitiveType.Word32},
+                },
+            };
+            var eq1 = new EquivalenceClass(factory.CreateTypeVariable(), str1);
+            var eq2 = new EquivalenceClass(factory.CreateTypeVariable(), str2);
+            ut.AddAlternative(new Pointer(eq1, 4));
+            ut.AddAlternative(new Pointer(eq2, 4));
+            var trans = new TypeTransformer(factory, null, null);
+            var dt = ut.Accept(trans);
+            Assert.AreEqual(
+                "(union \"foo\" ((ptr Eq_1) u0) ((ptr Eq_2) u1))",
+                dt.ToString());
+        }
+
+        [Test]
+        public void TtranMergeIdenticalStructureFields()
         {
             StructureType s = factory.CreateStructureType(null, 0);
             s.Fields.Add(4, new TypeVariable(1));
@@ -258,7 +321,7 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-        public void HasCoincidentFields()
+        public void TtranHasCoincidentFields()
         {
             StructureType s = new StructureType(null, 0);
             s.Fields.Add(4, new TypeVariable(1));
@@ -269,7 +332,7 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-        public void HasNoCoincidentFields()
+        public void TtranHasNoCoincidentFields()
         {
             StructureType s = new StructureType(null, 0);
             s.Fields.Add(4, new TypeVariable(1));
@@ -280,7 +343,7 @@ namespace Reko.UnitTests.Typing
         }
 
         [Test]
-        public void HasCoincidentUnion()
+        public void TtranHasCoincidentUnion()
         {
             var eq = new EquivalenceClass(
                 new TypeVariable(42),

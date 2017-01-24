@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -97,12 +97,6 @@ namespace Reko.Core.Types
 
         public void BuildEquivalenceClassDataTypes(TypeFactory factory)
         {
-            var utv = new UnionTypeVarsReplacer(this);
-            foreach (TypeVariable tv in TypeVariables)
-            {
-                if (tv.OriginalDataType != null)
-                    tv.OriginalDataType.Accept(utv);
-            }
             Unifier u = new DataTypeBuilderUnifier(factory, this);
             foreach (TypeVariable tv in TypeVariables)
             {

@@ -28,6 +28,9 @@ public:
 static cdecl_class_ptr gbl_c;
 static thiscall_class *gbl_thiscall;
 
+static int remainder;
+static int quotient;
+
 extern void test1(char *arg1, int arg2, char *arg3, float arg4);
 
 
@@ -90,4 +93,22 @@ extern "C" __declspec(dllexport) void loop_test9(float f)
 {
     for(int i = 0; i < gbl_thiscall->modify_double(i, f); i++)
         gbl_thiscall->set_double(f);
+}
+
+extern "C" __declspec(dllexport) void const_div_test10(int f)
+{
+    __asm
+    {
+        mov eax, 0x0000000A
+        mov ecx, 0x00000003
+        mov edx, f
+        test edx, edx
+        jz store
+        xor edx, edx
+        div ecx
+        mov ecx, edx
+store:
+        mov remainder, ecx
+        mov quotient, eax
+    }
 }

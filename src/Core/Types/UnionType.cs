@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -91,12 +91,12 @@ namespace Reko.Core.Types
             return alt;
         }
 
-		public override DataType Clone()
+        public override DataType Clone(IDictionary<DataType, DataType> clonedTypes)
 		{
-			DataType pre = PreferredType != null ? PreferredType.Clone() : null;
-			UnionType u = new UnionType(Name, pre);
+			var pre = PreferredType != null ? PreferredType.Clone(clonedTypes) : null;
+			var u = new UnionType(Name, pre);
             u.UserDefined = UserDefined;
-            foreach (UnionAlternative a in this.Alternatives.Values)
+            foreach (var a in this.Alternatives.Values)
 			{
                 u.Alternatives.Add(a.Clone());
 			}

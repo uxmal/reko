@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -338,6 +338,23 @@ namespace Reko.Gui.Windows.Controls
         public void ClearSelection()
         {
             anchorPos = cursorPos;
+            Invalidate();
+        }
+
+        public void SelectAll()
+        {
+            anchorPos = new TextPointer
+            {
+                Line = model.StartPosition,
+                Span = 0,
+                Character = 0
+            };
+            cursorPos = new TextPointer
+            {
+                Line = model.EndPosition,
+                Span = 0,
+                Character = 0
+            };
             Invalidate();
         }
 

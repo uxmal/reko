@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -96,7 +96,17 @@ namespace Reko.Arch.Pdp11
                 m.Return(2, 0);
                 return;
             }
-            throw new NotImplementedException(regLink.Register.Name);
+            else
+            {
+                var tmp = frame.CreateTemporary(regLink.Width);
+                var sp = frame.EnsureRegister(Registers.sp);
+                var reg = frame.EnsureRegister(regLink.Register);
+                m.Assign(tmp, reg);
+                m.Assign(reg, m.Load(regLink.Width, sp));
+                m.Assign(sp, m.IAdd(sp, reg.DataType.Size));
+                m.Call(tmp, 0);
+                m.Return(0, 0);
+            }
         }
 
         private void RewriteTrap(Pdp11Instruction instr)

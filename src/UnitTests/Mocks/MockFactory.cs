@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 Pavel Tomin.
+ * Copyright (C) 1999-2017 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -111,7 +111,7 @@ namespace Reko.UnitTests.Mocks
                 new ImageSegment(".text", mem, AccessMode.ReadExecute));
             program.ImageMap = program.SegmentMap.CreateImageMap();
             loader.Stub(
-                l => l.LoadExecutable(null, null, null)
+                l => l.LoadExecutable(null, null, null, null)
             ).IgnoreArguments().Return(program);
 
             loader.Stub(

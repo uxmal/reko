@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ using Reko.Core;
 using Reko.Core.Configuration;
 using Reko.Core.Services;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace Reko.Core.Serialization
     /// <summary>
     /// Describes the absolute memory layout of a particular platform.
     /// </summary>
-    [XmlRoot(ElementName = "memory", Namespace = "http://schemata.jklnet.org/Reko/v4")]
+    [XmlRoot(ElementName = "memory", Namespace = SerializedLibrary.Namespace_v4)]
     public class MemoryMap_v1
     {
         [XmlElement("segment")]
@@ -53,7 +54,9 @@ namespace Reko.Core.Serialization
             try
             {
                 var filePath = cfgSvc.GetInstallationRelativePath(mmapFileName);
-                XmlSerializer ser = new XmlSerializer(typeof(MemoryMap_v1));
+                var ser = SerializedLibrary.CreateSerializer(
+                    typeof(MemoryMap_v1),
+                    SerializedLibrary.Namespace_v4);
                 using (var stm = fsSvc.CreateFileStream(filePath, FileMode.Open))
                 {
                     var mmap = (MemoryMap_v1)ser.Deserialize(stm);
@@ -124,5 +127,17 @@ namespace Reko.Core.Serialization
 
         [XmlElement("description")]
         public string Description;
+
+        //$REVIEW: tantalizing similarity to 
+        // SerializedLibrary. 
+        [XmlArray("types")]
+        public SerializedType[] Types;
+
+        [XmlElement("procedure", typeof(Procedure_v1))]
+        [XmlElement("service", typeof(SerializedService))]
+        public List<ProcedureBase_v1> Procedures;
+
+        [XmlElement("global", typeof(GlobalVariable_v1))]
+        public List<GlobalVariable_v1> Globals;
     }
 }

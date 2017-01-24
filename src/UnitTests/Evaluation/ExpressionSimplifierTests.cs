@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,7 +49,8 @@ namespace Reko.UnitTests.Evaluation
         private void Given_ExpressionSimplifier()
         {
             SsaIdentifierCollection ssaIds = BuildSsaIdentifiers();
-            simplifier = new ExpressionSimplifier(new SsaEvaluationContext(null, ssaIds));
+            var listener = new FakeDecompilerEventListener();
+            simplifier = new ExpressionSimplifier(new SsaEvaluationContext(null, ssaIds), listener);
         }
 
         private SsaIdentifierCollection BuildSsaIdentifiers()

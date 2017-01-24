@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -104,7 +104,7 @@ namespace Reko.UnitTests.Scanning
             arch = new X86ArchitectureFlat32();
             m = new ProcedureBuilder();
             state = arch.CreateProcessorState();
-            expSimp = new ExpressionSimplifier(arch.CreateProcessorState());
+            expSimp = new ExpressionSimplifier(arch.CreateProcessorState(), new FakeDecompilerEventListener());
             SCZO = m.Frame.EnsureFlagGroup(Registers.eflags, (uint)(FlagM.SF | FlagM.CF | FlagM.ZF | FlagM.OF), "SCZO", PrimitiveType.Byte);
             host = new BackwalkerHost(arch);
         }
@@ -351,7 +351,7 @@ namespace Reko.UnitTests.Scanning
             var state = arch.CreateProcessorState();
             var di = new Identifier("di", Registers.di.DataType, Registers.di);
 			Backwalker bw = new Backwalker(host, new RtlGoto(new MemoryAccess(di, di.DataType), RtlClass.Transfer),
-                new ExpressionSimplifier(state));
+                new ExpressionSimplifier(state, new FakeDecompilerEventListener()));
 			var instrs = new StatementList(new Block(null, "foo"));
 			instrs.Add(0, new Assignment(di, new BinaryExpression(Operator.IAdd, di.DataType, di, Constant.Word16(1))));
 			bw.BackwalkInstructions(Registers.di, instrs);

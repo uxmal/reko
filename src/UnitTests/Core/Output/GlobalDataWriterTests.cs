@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -336,6 +336,24 @@ struct test g_t1004 =
     1,
     2,
     funcTest,
+};
+");
+        }
+
+        [Test]
+        public void GdwUnionInts()
+        {
+            var u = new UnionType("u", null,
+                PrimitiveType.UInt32,
+                PrimitiveType.Int32);
+            Given_Memory(0x1000)
+                .WriteLeInt32(2);
+            Given_Globals(
+                Given_Field(0x1000, u));
+            RunTest(
+@"union u g_u1000 = 
+{
+    2
 };
 ");
         }

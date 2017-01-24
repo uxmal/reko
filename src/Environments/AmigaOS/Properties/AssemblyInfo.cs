@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using Reko;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -8,9 +9,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("AmigaOS")]
 [assembly: AssemblyDescription("Support for the AmigaOS environment")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany(Reko.AssemblyMetadata.Company)]
-[assembly: AssemblyProduct(Reko.AssemblyMetadata.Product)]
-[assembly: AssemblyCopyright(Reko.AssemblyMetadata.Copyright)]
+[assembly: AssemblyCompany(AssemblyMetadata.Company)]
+[assembly: AssemblyProduct(AssemblyMetadata.Product)]
+[assembly: AssemblyCopyright(AssemblyMetadata.Copyright)]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -21,5 +22,5 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("77e212b4-45e6-4f4f-9bd1-001b8f836d54")]
-[assembly: AssemblyVersion(Reko.AssemblyMetadata.AssemblyVersion)]
-[assembly: AssemblyFileVersion(Reko.AssemblyMetadata.AssemblyFileVersion)]
+[assembly: AssemblyVersion(AssemblyMetadata.AssemblyVersion)]
+[assembly: AssemblyFileVersion(AssemblyMetadata.AssemblyFileVersion)]

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -66,7 +66,7 @@ namespace Reko.Arch.PowerPC
 
         public override Constant GetRegister(RegisterStorage reg)
         {
-            if ((valid[reg.Number] & reg.BitMask) == reg.BitMask)
+            if (reg.Number < valid.Length &&  (valid[reg.Number] & reg.BitMask) == reg.BitMask)
             {
                 var val = (regs[reg.Number] & reg.BitMask) >> (int)reg.BitAddress;
                 return Constant.Create(reg.DataType, val);

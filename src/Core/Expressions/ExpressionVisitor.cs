@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -176,7 +176,8 @@ namespace Reko.Core.Expressions
 		public void VisitMemoryAccess(MemoryAccess access)
 		{
 			access.EffectiveAddress.Accept(this);
-		}
+            access.MemoryId.Accept(this);
+        }
 
 		public void VisitMkSequence(MkSequence seq)
 		{

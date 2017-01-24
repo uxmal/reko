@@ -1,11 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<library xmlns="http://schemata.jklnet.org/Decompiler">
-  <procedure name="PutChar">
-    <address>0033</address>
-    <signature>
-      <arg name="a">
-        <reg>a</reg>
-      </arg>
-    </signature>
-  </procedure>
-</library>
+<!-- http://www.trs-80.com/trs80-zaps-internals.htm -->
+<!-- http://www.classiccmp.org/cpmarchives/trs80/mirrors/trs-80.com/early/www.trs-80.com/trs80-p.htm#romaddr -->
+<memory xmlns="http://schemata.jklnet.org/Reko/v4">
+  <segment name="ROM" addr="0" size="3000" attr="rx">
+    <procedure name="VDCHAR">
+      <address>0033</address>
+      <decompile>false</decompile>
+      <signature>
+        <arg name="a">
+          <reg>a</reg>
+        </arg>
+      </signature>
+    </procedure>
+  </segment>
+
+  <segment name="videoRAM" addr="3C00" size="0400" attr="rw" >
+  </segment>
+
+  <segment name="basicRAM" addr="4000" size="0200" attr="rwx" >
+    <procedure name="trs80_rst08" >
+      <address>4000</address>
+    </procedure>
+  </segment>
+</memory>

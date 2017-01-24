@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ using Reko.Arch.X86;
 using Reko.Core;
 using Reko.Core.Expressions;
 using Reko.Core.Serialization;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,10 @@ using System.Text;
 
 namespace Reko.Environments.Windows
 {
-    // https://www.winehq.org/docs/winelib-guide/spec-file
+    /// <summary>
+    /// Loads metadata info encoded as a WINE spec file
+    /// (see https://www.winehq.org/docs/winelib-guide/spec-file for details)
+    /// </summary>
     public class WineSpecFileLoader : MetadataLoader
     {
         private string filename;
@@ -67,50 +71,70 @@ namespace Reko.Environments.Windows
                     break;
                 if (PeekAndDiscard(TokenType.NL))
                     continue;
-                ParseLine();
+                var line =  ParseLine();
+                if (line != null)
+                {
+                    if (line.Item1.HasValue)
+                    {
+                        tlLoader.LoadService(line.Item1.Value, line.Item2);
+                    }
+                    else
+                    {
+                        tlLoader.LoadService(line.Item2.Name, line.Item2);
+                    }
+                }
             }
             return dstLib;
         }
 
-        public void ParseLine()
+        public Tuple<int?, SystemService> ParseLine()
         {
-            int? ordinal = ParseOrdinal();
-
-            string callconv = ParseCallingConvention();
-
-            var options = ParseOptions();
-
-            var tok = Get();
-            string fnName = tok.Value;
-            var ssig = new SerializedSignature
+            try
             {
-                Convention = callconv,
-            };
-            ssig.Arguments = ParseParameters(ssig);
-            
-            var deser = new X86ProcedureSerializer((IntelArchitecture)platform.Architecture, tlLoader, callconv);
-            var sig = deser.Deserialize(ssig, new Frame(platform.FramePointerType));
-            var svc = new SystemService
-            {
-                ModuleName = moduleName.ToUpper(),
-                Name = fnName,
-                Signature = sig
-            };
-            if (ordinal.HasValue)
-            {
-                tlLoader.LoadService(ordinal.Value, svc);
+                int? ordinal = ParseOrdinal();
+
+                string callconv = ParseCallingConvention();
+
+                var options = ParseOptions();
+
+                var tok = Get();
+                string fnName = tok.Value;
+                var ssig = new SerializedSignature
+                {
+                    Convention = callconv,
+                };
+                ssig.Arguments = ParseParameters(ssig);
+                SkipToEndOfLine();
+
+                var deser = new X86ProcedureSerializer((IntelArchitecture)platform.Architecture, tlLoader, callconv);
+                var sig = deser.Deserialize(ssig, new Frame(platform.FramePointerType));
+                var svc = new SystemService
+                {
+                    ModuleName = moduleName.ToUpper(),
+                    Name = fnName,
+                    Signature = sig
+                };
+                return Tuple.Create(ordinal, svc);
             }
-            else
+            catch
             {
-                tlLoader.LoadService(fnName, svc);
+                Services.RequireService<DecompilerEventListener>().Warn(
+                    new NullCodeLocation(moduleName),
+                    "Line {0} in the Wine spec file could not be read; skipping.",
+                    lexer.lineNumber);
+                SkipToEndOfLine();
+                return null;
             }
+        }
 
+        private void SkipToEndOfLine()
+        {
             for (;;)
             {
-                // Discared entire line.
+                // Discard rest of line.
                 var type = Get().Type;
                 if (type == TokenType.EOF || type == TokenType.NL)
-                    return;
+                    break;
             }
         }
 
@@ -122,6 +146,11 @@ namespace Reko.Environments.Windows
                 while (LoadParameter(ssig, args))
                     ;
                 Expect(TokenType.RPAREN);
+            }
+            if (ssig.Convention == "varargs")
+            {
+                args.Add(new Argument_v1 { Name = "...", Type = new VoidType_v1() });
+                ssig.Convention = "__cdecl";
             }
             return args.ToArray();
         }
@@ -195,6 +224,24 @@ namespace Reko.Environments.Windows
             case "wstr":
                 type = PointerType_v1.Create(PrimitiveType_v1.WChar16(), 4);
                 break;
+			case "uint16":
+				type = PrimitiveType_v1.UInt16();
+				break;
+			case "uint32":
+				type = PrimitiveType_v1.UInt32();
+				break;
+			case "uint64":
+				type = PrimitiveType_v1.UInt64();
+				break;
+			case "int16":
+				type = PrimitiveType_v1.Int16();
+				break;
+			case "int32":
+				type = PrimitiveType_v1.Int32();
+				break;
+			case "int64":
+				type = PrimitiveType_v1.Int64();
+				break;
             default: throw new Exception("Unknown: " + tok.Value);
             }
             args.Add(new Argument_v1 { Type = type });
@@ -203,7 +250,13 @@ namespace Reko.Environments.Windows
 
         private string DefaultModuleName(string filename)
         {
-            return Path.GetFileNameWithoutExtension(filename).ToUpper() + ".DLL";
+			string libName = Path.GetFileNameWithoutExtension (filename).ToUpper ();
+
+			if (Path.GetExtension (libName).Length > 0) {
+				return libName;
+			} else {
+				return libName + ".DLL";
+			}
         }
 
         private Token Peek()
@@ -239,7 +292,7 @@ namespace Reko.Environments.Windows
 
         private class Lexer
         {
-            private int lineNumber;
+            internal int lineNumber;
             private TextReader rdr;
 
             enum State
@@ -361,6 +414,12 @@ namespace Reko.Environments.Windows
             RPAREN,
             AT,
             EQ,
+        }
+
+        public class ParseResults
+        {
+            public SortedList<int, SystemService> ServicesByOrdinal;
+            public SortedList<string, SystemService> ServicesByName;
         }
     }
 }

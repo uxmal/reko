@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -115,6 +115,7 @@ namespace Reko.Scanning
         private Dictionary<Address, ImportReference> importReferences;
         private DecompilerEventListener eventListener;
         private HashSet<Procedure> visitedProcs;
+        private Dictionary<Address, Procedure_v1> noDecompiledProcs;
         private CancellationTokenSource cancelSvc;
         private HashSet<Address> scannedGlobalData = new HashSet<Address>();
 
@@ -142,6 +143,7 @@ namespace Reko.Scanning
             this.pseudoProcs = program.PseudoProcedures;
             this.importReferences = program.ImportReferences;
             this.visitedProcs = new HashSet<Procedure>();
+            this.noDecompiledProcs = new Dictionary<Address, Procedure_v1>();
         }
 
         public IServiceProvider Services { get; private set; }
@@ -310,7 +312,7 @@ namespace Reko.Scanning
             if (program.Procedures.ContainsKey(addr))
                 return; // Already scanned. Do nothing.
             var proc = EnsureProcedure(addr, null);
-            proc.Signature = sig;
+            proc.Signature = (FunctionType)sig.Clone();
             queue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, addr, proc.Name));
         }
 
@@ -481,7 +483,7 @@ namespace Reko.Scanning
                 Procedure proc;
                 if (program.Procedures.TryGetValue(addr, out proc))
                     return; // Already scanned. Do nothing.
-                if (IsNoDecompiledProcedure(addr))
+                if (sym.NoDecompile || IsNoDecompiledProcedure(addr))
                     return;
 
                 proc = EnsureProcedure(addr, sym.Name);
@@ -620,33 +622,49 @@ namespace Reko.Scanning
             return TryGetNoDecompiledProcedure(addr, out sProc);
         }
 
-        private bool TryGetNoDecompiledProcedure(Address addr, out ExternalProcedure ep)
+        private bool TryGetNoDecompiledParsedProcedure(Address addr, out Procedure_v1 parsedProc)
         {
             Procedure_v1 sProc;
             if (!TryGetNoDecompiledProcedure(addr, out sProc))
             {
+                parsedProc = null;
+                return false;
+            }
+            if (noDecompiledProcs.TryGetValue(addr, out parsedProc))
+                return true;
+            parsedProc = new Procedure_v1()
+            {
+                Name = sProc.Name,
+            };
+            noDecompiledProcs[addr] = parsedProc;
+            if (string.IsNullOrEmpty(sProc.CSignature))
+            {
+                Warn(addr, "The user-defined procedure at address {0} did not have a signature.", addr);
+                return true;
+            }
+            var usb = new UserSignatureBuilder(program);
+            var procDecl = usb.ParseFunctionDeclaration(sProc.CSignature);
+            if (procDecl == null)
+            {
+                Warn(addr, "The user-defined procedure signature at address {0} could not be parsed.", addr);
+                return true;
+            }
+            parsedProc.Signature = procDecl.Signature;
+            return true;
+        }
+
+        private bool TryGetNoDecompiledProcedure(Address addr, out ExternalProcedure ep)
+        {
+            Procedure_v1 sProc;
+            if (!TryGetNoDecompiledParsedProcedure(addr, out sProc))
+            {
                 ep = null;
                 return false;
             }
-
-            FunctionType sig = null;
-            if (!string.IsNullOrEmpty(sProc.CSignature))
-            {
-                var usb = new UserSignatureBuilder(program);
-                var procDecl = usb.ParseFunctionDeclaration(sProc.CSignature);
-                if (procDecl != null)
-                {
-                    var ser = program.CreateProcedureSerializer();
-                    sig = ser.Deserialize(
-                        procDecl.Signature,
-                        program.Architecture.CreateFrame());
-                }
-            }
-            else
-            {
-                Warn(addr, "The user-defined procedure at address {0} did not have a signature.", addr); 
-            }
-
+            var ser = program.CreateProcedureSerializer();
+            var sig = ser.Deserialize(
+                sProc.Signature,
+                program.Architecture.CreateFrame());
             ep = new ExternalProcedure(sProc.Name, sig);
             return true;
         }

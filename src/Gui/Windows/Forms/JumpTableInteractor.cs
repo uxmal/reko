@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -95,7 +95,7 @@ namespace Reko.Gui.Windows.Forms
             {
                 Address = dlg.Instruction.Address,
                 Table = table,
-                IndexRegister = dlg.Program.Architecture.GetRegister(dlg.IndexRegister.SelectedIndex.ToString())
+                IndexRegister = dlg.Program.Architecture.GetRegister(dlg.IndexRegister.SelectedValue.ToString())
             };
         }
 

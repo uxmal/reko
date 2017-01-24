@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Reko.Analysis;
 using Reko.Core;
 using Reko.Core.CLanguage;
+using Reko.Core.Code;
 using Reko.Core.Expressions;
 using Reko.Core.Serialization;
 using Reko.Core.Types;
@@ -92,6 +93,37 @@ namespace Reko.UnitTests.Analysis
             Assert.AreEqual(
                 "fn(arg(prim(SignedInt,4)),(arg(ptr(prim(Character,1))))",
                 sProc.Signature.ToString());
+        }
+
+        [Test(Description = "Verifies that data type of register was not overwritten.")]
+        public void Usb_BuildSignature_KeepRegisterType()
+        {
+            Given_Procedure(0x1000);
+            Given_UserSignature(0x01000, "void test([[reko::arg(register,\"ecx\")]] float f)");
+
+            var usb = new UserSignatureBuilder(program);
+            usb.BuildSignature(Address.Ptr32(0x1000), proc);
+
+            var ass = proc.Statements
+                .Select(stm => stm.Instruction as Assignment)
+                .Where(instr => instr != null)
+                .Single();
+            Assert.AreEqual("ecx = f", ass.ToString());
+            // verify that data type of register was not overwritten
+            Assert.AreEqual("word32", ass.Dst.DataType.ToString());
+            Assert.AreEqual("real32", ass.Src.DataType.ToString());
+        }
+
+        [Test(Description = "Verifies stack delta of stdcall function.")]
+        public void Usb_BuildSignature_Stdcall()
+        {
+            Given_Procedure(0x1000);
+            Given_UserSignature(0x01000, "char * __stdcall test(int i, float f, double d)");
+
+            var usb = new UserSignatureBuilder(program);
+            usb.BuildSignature(Address.Ptr32(0x1000), proc);
+
+            Assert.AreEqual(20, proc.Signature.StackDelta);
         }
 
         [Test]

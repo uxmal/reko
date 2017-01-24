@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Analysis
@@ -110,12 +111,63 @@ namespace Reko.Analysis
 			}
 		}
 
-		/// <summary>
-		/// Deletes a statement by removing all the ids it references 
-		/// from SSA state, then removes the statement itself from code.
-		/// </summary>
-		/// <param name="pstm"></param>
- 		public void DeleteStatement(Statement stm)
+        [Conditional("DEBUG")]
+        public void CheckUses()
+        {
+            CheckUses(s => Debug.WriteLine(s));
+        }
+
+        /// <summary>
+        /// Compare uses stored in SsaState with actual ones
+        /// </summary>
+        public void CheckUses(Action<string> error)
+        {
+            var uc = new InstructionUseCollector();
+            foreach (var stm in Procedure.Statements)
+            {
+                var idMapStored = GetStatemenIdentifiers(stm);
+                var idMapActual = uc.CollectUses(stm);
+                foreach (var id in idMapStored.Keys)
+                {
+                    if (!idMapActual.ContainsKey(id) || idMapActual[id] < idMapStored[id])
+                        error(
+                            string.Format(
+                                "{0}: incorrect {1} id in {2} uses",
+                                Procedure.Name,
+                                id,
+                                stm));
+                }
+                foreach (var id in idMapActual.Keys)
+                {
+                    if (!idMapStored.ContainsKey(id) || idMapStored[id] < idMapActual[id])
+                        error(
+                            string.Format(
+                                "{0}: there is no {1} id in {2} uses",
+                                Procedure.Name,
+                                id,
+                                stm));
+                }
+            }
+        }
+
+        private IDictionary<Identifier, int> GetStatemenIdentifiers(Statement stm)
+        {
+            var idMap =
+               (from sid in Identifiers
+                from use in sid.Uses
+                where use == stm
+                group new { sid.Identifier, use } by sid.Identifier into g
+                select new { Key = g.Key, Value = g.Count() })
+                .ToDictionary(de => de.Key, de => de.Value);
+            return idMap;
+        }
+
+        /// <summary>
+        /// Deletes a statement by removing all the ids it references 
+        /// from SSA state, then removes the statement itself from code.
+        /// </summary>
+        /// <param name="pstm"></param>
+        public void DeleteStatement(Statement stm)
 		{
 			// Remove all definitions and uses.
 			ReplaceDefinitions(stm, null);
@@ -169,10 +221,20 @@ namespace Reko.Analysis
 			}
 		}
 
-		/// <summary>
-		/// Undoes the SSA renaming by replacing each ssa identifier with its original identifier.
-		/// </summary>
-		private class UnSSA : InstructionTransformer
+        /// <summary>
+        /// Add all identifiers used in <paramref name="stm"/>.
+        /// </summary>
+        /// <param name="stm"></param>
+        public void AddUses(Statement stm)
+        {
+            var iua = new InstructionUseAdder(stm, Identifiers);
+            stm.Instruction.Accept(iua);
+        }
+
+        /// <summary>
+        /// Undoes the SSA renaming by replacing each ssa identifier with its original identifier.
+        /// </summary>
+        private class UnSSA : InstructionTransformer
 		{
 			private SsaState ssa;
 

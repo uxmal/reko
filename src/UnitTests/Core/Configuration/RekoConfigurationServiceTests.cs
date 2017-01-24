@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,6 +55,20 @@ namespace Reko.UnitTests.Core.Configuration
                                     Bytes= "55 ?? 30"
                                 }
                             }
+                        },
+                        Architectures = new[]
+                        {
+                            new PlatformArchitecture_v1
+                            {
+                                Name="testCPU",
+                                 TypeLibraries = new[]
+                                 {
+                                     new TypeLibraryReference_v1
+                                     {
+                                         Name = "lp32.xml",
+                                     }
+                                 }
+                            }
                         }
                     }
                 }
@@ -69,6 +83,10 @@ namespace Reko.UnitTests.Core.Configuration
             var pattern1 = env.Heuristics.ProcedurePrologs[1];
             Assert.AreEqual("55 ?? 30", pattern1.Bytes);
             Assert.IsNull(pattern1.Mask);
+
+            var archs = env.Architectures;
+            Assert.AreEqual(1, archs.Count);
+            Assert.AreEqual("lp32.xml", archs[0].TypeLibraries[0].Name);
         }
     }
 }

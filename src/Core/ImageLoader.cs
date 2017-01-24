@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -72,6 +72,23 @@ namespace Reko.Core
 		/// <param name="addrLoad">Base address of program image</param>
 		/// <returns></returns>
         public abstract Program Load(Address addrLoad);
+
+        /// <summary>
+        /// Loads the image into memory at the specified address, using the 
+        /// provided IProcessorArchitecture and IPlatform. Used when loading
+        /// raw files; not all image loaders can support this.
+        /// </summary>
+        /// <param name="addrLoad"></param>
+        /// <param name="arch"></param>
+        /// <param name="platform"></param>
+        /// <returns></returns>
+        public virtual Program Load(Address addrLoad, IProcessorArchitecture arch, IPlatform platform)
+        {
+            throw new NotSupportedException(
+                string.Format(
+                    "Image loader {0} doesn't support overriding the processor architecture or platform.",
+                    GetType().FullName));
+        }
 
         /// <summary>
         /// Performs fix-ups of the loaded image, adding findings to the supplied collections.

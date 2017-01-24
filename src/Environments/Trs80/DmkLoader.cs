@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
 
 using Reko.Arch.Z80;
 using Reko.Core;
+using Reko.Core.Configuration;
+using Reko.Core.Serialization;
 using Reko.Environments.Trs80.Dmk;
 using System;
 using System.Collections.Generic;
@@ -44,7 +46,9 @@ namespace Reko.Environments.Trs80
 
         public override Address PreferredBaseAddress
         {
-            get { return Address.Ptr16(0x4000); }
+            // TRS-80 Model I would read the 0'th sector into address 0x4200
+            // TRS-80 Model III would read it into 0x4300....
+            get { return Address.Ptr16(0x4200); }
             set { throw new NotImplementedException(); }
         }
 
@@ -58,13 +62,30 @@ namespace Reko.Environments.Trs80
                 .SelectMany(s => s.GetData())
                 .ToArray();
             var mem = new MemoryArea(addrLoad, bytes);
-            var segmentMap = new SegmentMap(addrLoad,
-                new ImageSegment("", mem, AccessMode.ReadWriteExecute));
+            var cfgSvc = Services.RequireService<IConfigurationService>();
+            var arch = cfgSvc.GetArchitecture("z80");
+            var platform = cfgSvc.GetEnvironment("trs80").Load(Services, arch);
+            var segmentMap = CreateMemoryMap(platform, mem);
             return new Program
             {
-                Architecture = new Z80ProcessorArchitecture(),
+                Architecture = arch,
+                Platform = platform,
                 SegmentMap = segmentMap,
             };
+        }
+
+        private SegmentMap CreateMemoryMap(IPlatform platform, MemoryArea mem)
+        {
+            var segmentMap = platform.CreateAbsoluteMemoryMap();
+            foreach (var seg in segmentMap.Segments.Values)
+            {
+                seg.MemoryArea = new MemoryArea(seg.Address, new byte[seg.Size]);
+            }
+            segmentMap.AddSegment(new ImageSegment(
+                "code", 
+                mem, 
+                AccessMode.ReadWriteExecute));
+            return segmentMap;
         }
 
         private List<Track> BuildTrackList(int trackLength)
@@ -159,7 +180,35 @@ namespace Reko.Environments.Trs80
 
         public override RelocationResults Relocate(Program program, Address addrLoad)
         {
-            return new RelocationResults(new List<ImageSymbol>(), new SortedList<Address, ImageSymbol>());
+            return new RelocationResults(
+                new List<ImageSymbol> {
+                    new ImageSymbol(addrLoad)
+                    {
+                        Type = SymbolType.Procedure
+                    }
+                },
+                BuildSymbols(program));
+        }
+
+        private SortedList<Address, ImageSymbol> BuildSymbols(Program program)
+        {
+            Func<string, Address> ParseAddress = sAddr =>
+             {
+                 Address addr;
+                 if (!program.Platform.TryParseAddress(sAddr, out addr))
+                     return null;
+                 return addr;
+             };
+            var procs = program.Platform.MemoryMap.Segments
+                .SelectMany(s => s.Procedures)
+                .OfType<Procedure_v1>()
+                .Select(p => new ImageSymbol(ParseAddress(p.Address))
+                {
+                    Name = p.Name,
+                    Type = SymbolType.Procedure,
+                    NoDecompile = !p.Decompile
+                });
+            return procs.ToSortedList(k => k.Address, k => k);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -423,7 +423,7 @@ namespace Reko.Core.Expressions
             var dt = unary.Expression.Accept(this);
             if (unary.Operator == Operator.AddrOf)
             {
-                dt = unary.DataType;
+                dt = factory.CreatePointer(dt, unary.DataType.Size);
             }
             return RecordDataType(dt, unary);
         }

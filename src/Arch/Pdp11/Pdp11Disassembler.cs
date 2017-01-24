@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -296,12 +296,9 @@ namespace Reko.Arch.Pdp11
                 {
                 case 0: op = DecodeOperand(opcode & 7); oc = Opcode.rts; break;
                 case 3: op = DecodeOperand(opcode); oc = Opcode.spl; break;
-                case 4:
-                case 5:
-                case 6:
-                case 7:
+                case 0x20:
+                case 0x30:
                     return DecodeCondCode(opcode);
-                case 0x20: op = null;  oc = Opcode.nop; break;
                 }
                 break;
             case 0x003:
@@ -420,6 +417,13 @@ namespace Reko.Arch.Pdp11
 
         private Pdp11Instruction DecodeCondCode(ushort opcode)
         {
+            if ((opcode & 0x1F) == 0)
+            {
+                return new Pdp11Instruction
+                {
+                    Opcode = Opcode.nop,
+                };
+            } 
             return new Pdp11Instruction
             {
                 Opcode = ((opcode & 0x10) != 0) ? Opcode.setflags : Opcode.clrflags,

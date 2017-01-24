@@ -87,6 +87,7 @@ l00000001400010D0:
 	call _acrt_iob_func (retsize: 4; depth: 64)
 		uses: C_26,dwLoc04_12,dwLoc08_15,dwLoc0C_18,ecx_24,qwLoc0C_20,r8,r9,rbx,rcx,rdi_22,rdx,rsi_23,rsp_21,SZO_25
 		defs: C_38,ecx_36,r8_30,r9_31,r9d_40,rax_39,rbx_32,rcx_28,rdi_34,rdx_29,rsi_33,rsp_27,SCZO_35,SZO_37
+	word64 rax_43 = fn00000001400010C0()
 	word64 rsp_52
 	word64 rcx_53
 	word64 rdx_54
@@ -172,6 +173,7 @@ l0000000140001140:
 	call _acrt_iob_func (retsize: 4; depth: 64)
 		uses: dwLoc04_12,dwLoc08_15,dwLoc0C_18,ecx_25,qwLoc0C_20,r8,r9,rbx,rcx,rdi_23,rdx,rsi_24,rsp_21,SCZO_22
 		defs: C_39,ecx_35,r8_29,r9_30,r9d_37,rax_36,rbx_31,rcx_27,rdi_33,rdx_28,rsi_32,rsp_26,SCZO_34,SZO_38
+	word64 rax_42 = fn0000000140001130()
 	word64 rsp_51
 	word64 rcx_52
 	word64 rdx_53
@@ -909,6 +911,7 @@ fn0000000140001448_entry:
 l0000000140001448:
 	SetUnhandledExceptionFilter(tLoc20)
 	UnhandledExceptionFilter(tLoc20)
+	word32 eax_14 = GetCurrentProcess()
 	word64 rsp_24
 	word64 rbx_25
 	byte SCZO_26

@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using TextWriter = System.IO.TextWriter;
 using StringWriter = System.IO.StringWriter;
+using Reko.Core.Services;
 
 namespace Reko.Analysis
 {
@@ -45,6 +46,7 @@ namespace Reko.Analysis
 		private Stack<Node> stack;
 		private int iDFS;
 		private Dictionary<Identifier,Node> nodes;
+        private DecompilerEventListener listener;
 
 		private static Constant zero;
 		private static TraceSwitch trace = new TraceSwitch("ValueNumbering", "Follows the flow of value numbering");
@@ -58,13 +60,13 @@ namespace Reko.Analysis
 			}
 		}
 
-		public ValueNumbering(SsaIdentifierCollection ssaIds)
+		public ValueNumbering(SsaIdentifierCollection ssaIds, DecompilerEventListener listener)
 		{
 			this.ssaIds = ssaIds;
             optimistic = new Dictionary<Expression, Expression>();
 			valid = new Dictionary<Expression,Expression>();
 			stack = new Stack<Node>();
-
+            this.listener = listener;
 
 			// Set initial value numbers for all nodes (SSA identifiers). 
 			// Value numbers for the original values at procedure entry are just the
@@ -196,7 +198,7 @@ namespace Reko.Analysis
 		/// <returns></returns>
 		private bool AssignValueNumber(Node n, Dictionary<Expression,Expression> table)
 		{
-            var  simp = new ExpressionSimplifier(new ValueNumberingContext(table));
+            var  simp = new ExpressionSimplifier(new ValueNumberingContext(table), listener);
 			Expression expr;
 			if (n.definingExpr == null)
 			{

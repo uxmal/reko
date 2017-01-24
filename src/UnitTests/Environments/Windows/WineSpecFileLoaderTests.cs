@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,10 +21,13 @@
 using NUnit.Framework;
 using Reko.Arch.X86;
 using Reko.Core;
+using Reko.Core.Services;
 using Reko.Core.Types;
 using Reko.Environments.Windows;
+using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 
@@ -35,19 +38,31 @@ namespace Reko.UnitTests.Environments.Windows
     {
         private static string nl = Environment.NewLine;
 
+        private MockRepository mr;
         private IPlatform platform;
         private WineSpecFileLoader wsfl;
+        private ServiceContainer sc;
+        private DecompilerEventListener listener;
+
+        [SetUp]
+        public void Setup()
+        {
+            this.mr = new MockRepository();
+            this.sc = new ServiceContainer();
+            this.listener = mr.Stub<DecompilerEventListener>();
+            this.sc.AddService<DecompilerEventListener>(listener);
+        }
 
         private void Given_WineSpecLoader_16(string filename, string contents)
         {
-            this.platform = new Win16Platform(null, new X86ArchitectureProtected16());
-            wsfl = new WineSpecFileLoader(null, filename, Encoding.ASCII.GetBytes(contents));
+            this.platform = new Win16Platform(sc, new X86ArchitectureProtected16());
+            wsfl = new WineSpecFileLoader(sc, filename, Encoding.ASCII.GetBytes(contents));
         }
 
         private void Given_WineSpecLoader_32(string filename, string contents)
         {
-            this.platform = new Win32Platform(null, new X86ArchitectureFlat32());
-            wsfl = new WineSpecFileLoader(null, filename, Encoding.ASCII.GetBytes(contents));
+            this.platform = new Win32Platform(sc, new X86ArchitectureFlat32());
+            wsfl = new WineSpecFileLoader(sc, filename, Encoding.ASCII.GetBytes(contents));
         }
 
         [Test]
@@ -55,6 +70,8 @@ namespace Reko.UnitTests.Environments.Windows
         {
             Given_WineSpecLoader_16("foo.spec",
                 " # comment");
+            mr.ReplayAll();
+
             var lib = wsfl.Load(platform, new TypeLibrary());
             Assert.AreEqual(0, lib.Modules.Count);
         }
@@ -64,6 +81,8 @@ namespace Reko.UnitTests.Environments.Windows
         {
             Given_WineSpecLoader_16("foo.spec",
                 " 624 pascal SetFastQueue(long long) SetFastQueue16\n");
+            mr.ReplayAll();
+
             var lib = wsfl.Load(platform, new TypeLibrary());
             var mod = lib.Modules["FOO.DLL"];
             Assert.AreEqual(1, mod.ServicesByVector.Count);
@@ -82,6 +101,8 @@ namespace Reko.UnitTests.Environments.Windows
                 " 2   pascal -ret16 ExitKernel() ExitKernel16\n" +
                 "3    pascal GetVersion() GetVersion16\n" +
                 "4   pascal -ret16 LocalInit(word word word) LocalInit16\n");
+            mr.ReplayAll();
+
             var lib = wsfl.Load(platform, new TypeLibrary());
             var mod = lib.Modules["FOO.DLL"];
             Assert.AreEqual(3, mod.ServicesByVector.Count);
@@ -101,6 +122,8 @@ namespace Reko.UnitTests.Environments.Windows
         {
             Given_WineSpecLoader_16("foo.spec",
                 " @ stdcall -arch=win32 -norelay SMapLS_IP_EBP_36()" + nl + "");
+            mr.ReplayAll();
+
             var lib = wsfl.Load(platform, new TypeLibrary());
             var mod = lib.Modules["FOO.DLL"];
             Assert.AreEqual(
@@ -113,6 +136,8 @@ namespace Reko.UnitTests.Environments.Windows
         {
             Given_WineSpecLoader_32("foo.spec",
                 "115 stdcall WSAStartup(long ptr)\n");
+            mr.ReplayAll();
+
             var lib = wsfl.Load(platform, new TypeLibrary());
             var mod = lib.Modules["FOO.DLL"];
             Assert.AreEqual(
@@ -125,6 +150,8 @@ namespace Reko.UnitTests.Environments.Windows
         {
             Given_WineSpecLoader_32("foo.spec",
                 "@ stdcall WSCEnableNSProvider(ptr long)\n");
+            mr.ReplayAll();
+
             var lib = wsfl.Load(platform, new TypeLibrary());
             var mod = lib.Modules["FOO.DLL"];
             Assert.AreEqual(
@@ -137,12 +164,48 @@ namespace Reko.UnitTests.Environments.Windows
         {
             Given_WineSpecLoader_32("msvcrt.spec",
                 " @ cdecl fgets(ptr long ptr) MSVCRT_fgets\n");
+            mr.ReplayAll();
+
             var lib = wsfl.Load(platform, new TypeLibrary());
             var mod = lib.Modules["MSVCRT.DLL"];
             Assert.AreEqual(
                 "void fgets(Stack ptr32 ptrArg04, Stack word32 dwArg08, Stack ptr32 ptrArg0C)" + nl +
                 "// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1" + nl,
                 mod.ServicesByName["fgets"].Signature.ToString("fgets", FunctionType.EmitFlags.AllDetails));
+        }
+
+        [Test]
+        public void Wsfl_WarnOnError()
+        {
+            Given_WineSpecLoader_32("foo.spec",
+                "@ stdcall flox($-@garbage fosforsyra $!garbage  \n" +
+                "@ stdcall foo(ptr ptr)\n");
+            listener.Expect(l => l.Warn(
+                Arg<ICodeLocation>.Is.NotNull,
+                Arg<string>.Is.NotNull,
+                Arg<object[]>.Is.NotNull));
+            mr.ReplayAll();
+
+            var lib = wsfl.Load(platform, new TypeLibrary());
+            var mod = lib.Modules["FOO.DLL"];
+            Assert.AreEqual(1, mod.ServicesByName.Count);
+            Assert.AreEqual("foo",mod.ServicesByName["foo"].Name);
+        }
+
+        [Test]
+        public void Wsfl_varags()
+        {
+            Given_WineSpecLoader_16("foo.spec",
+                "328 varargs -ret16 _DebugOutput(word str) _DebugOutput \n");
+            mr.ReplayAll();
+
+            var lib = wsfl.Load(platform, new TypeLibrary());
+            var mod = lib.Modules["FOO.DLL"];
+            var _DebugOutput = mod.ServicesByVector[328];
+            Assert.AreEqual(
+                "void _DebugOutput(Stack word16 wArg04, Stack (ptr char) ptrArg06, Stack <unknown> ...)" + nl +
+                "// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1" + nl,
+                _DebugOutput.Signature.ToString("_DebugOutput", FunctionType.EmitFlags.AllDetails));
         }
     }
 }

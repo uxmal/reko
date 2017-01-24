@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -121,7 +121,11 @@ namespace Reko.Core.Serialization
 
         public SerializedType VisitReference(ReferenceTo refTo)
         {
-            throw new NotImplementedException();
+            return new ReferenceType_v1
+            {
+                Referent = refTo.Referent.Accept(this),
+                Size = refTo.Size,
+            };
         }
 
         public SerializedType VisitString(StringType str)

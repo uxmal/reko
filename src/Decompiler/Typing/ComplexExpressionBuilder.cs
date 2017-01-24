@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -356,8 +356,11 @@ namespace Reko.Typing
         private Expression CreateDereference(DataType dt, Expression e)
         {
             this.dereferenceGenerated = true;
+            var unary = e as UnaryExpression;
             if (basePtr != null)
                 return new MemberPointerSelector(dt, new Dereference(dt, basePtr), e);
+            else if (unary != null && unary.Operator == Operator.AddrOf)
+                return unary.Expression;
             else if (e != null)
                 return new Dereference(dt, e);
             else

@@ -270,7 +270,7 @@ l03B2:
 	byte NZV_244
 	bcuiposr0 None_245
 	call v76_162 + 0x0002 (retsize: 4; depth: 4 FPU: 2;)
-		uses: C_184,N_52,None_17,NZ_227,NZV_105,NZVC_158,pc_25,r0_170,r1_26,r2_151,r3_178,r4_167,r5_35,sp_224,V_228,Z_182,ZC_152
+		uses: C_183,N_52,None_17,NZ_227,NZV_105,NZVC_158,pc_25,r0_170,r1_26,r2_151,r3_178,r4_167,r5_35,sp_224,V_228,Z_182,ZC_152
 		defs: C_238,N_239,None_245,NZ_231,NZV_244,NZVC_240,pc_233,r0_234,r1_230,r2_243,r3_242,r4_236,r5_237,sp_229,V_232,Z_235,ZC_241
 	return r0_234
 // DataOut: pc r0 r2 r3 r4 sp
@@ -296,7 +296,7 @@ l0370:
 	byte NZV_222
 	bcuiposr0 None_223
 	call Mem175[v76_162 + 0x0002:word16] (retsize: 4; depth: 4 FPU: 2;)
-		uses: C_184,N_52,None_17,NZ_181,NZV_105,NZVC_158,pc_25,r0_170,r1_26,r2_151,r3_178,r4_206,r5_35,sp_163,V_183,Z_182,ZC_152
+		uses: C_183,N_52,None_17,NZ_181,NZV_105,NZVC_158,pc_25,r0_170,r1_26,r2_151,r3_178,r4_206,r5_35,sp_163,V_184,Z_182,ZC_152
 		defs: C_216,N_217,None_223,NZ_209,NZV_222,NZVC_218,pc_211,r0_212,r1_208,r2_221,r3_220,r4_214,r5_215,sp_207,V_210,Z_213,ZC_219
 	return r0_212
 // DataOut: pc r0 r2 r3 r4 sp
@@ -335,13 +335,13 @@ l081E:
 	word16 sp_18
 	word16 r0_19
 	byte NZ_20
-	bool V_21
-	bool C_22
+	bool C_21
+	bool V_22
 	word16 pc_23
 	byte NZVC_24
 	call Mem0[0x53F0:word16] (retsize: 4; depth: 82 FPU: 2;)
-		uses: C_10,NZ_14,NZVC_12,r0_17,sp_11,V_15
-		defs: C_22,NZ_20,NZVC_24,pc_23,r0_19,sp_18,V_21
+		uses: C_9,NZ_14,NZVC_12,r0_17,sp_11,V_15
+		defs: C_21,NZ_20,NZVC_24,pc_23,r0_19,sp_18,V_22
 	return
 // DataOut: pc r0 r2 r3 r4 r5 sp
 // DataOut (flags): 
@@ -379,12 +379,12 @@ l0A6A:
 	word16 sp_16
 	word16 r0_17
 	byte NZ_18
-	bool V_19
-	bool C_20
+	bool C_19
+	bool V_20
 	word16 pc_21
 	call Mem0[0x5414:word16] (retsize: 4; depth: 4 FPU: 2;)
-		uses: C_10,NZ_12,r0_15,sp_1,V_13
-		defs: C_20,NZ_18,pc_21,r0_17,sp_16,V_19
+		uses: C_9,NZ_12,r0_15,sp_1,V_13
+		defs: C_19,NZ_18,pc_21,r0_17,sp_16,V_20
 	return
 // DataOut: pc r0 r2 sp
 // DataOut (flags): 
@@ -458,14 +458,14 @@ l0B22:
 	byte NZ_110
 	bool V_111
 	word16 pc_112
-	bool N_113
-	bool C_114
+	bool C_113
+	bool N_114
 	bool Z_115
 	byte NZVC_116
 	word16 r4_117
 	call wArg06 (retsize: 4; FPU: 2;)
 		uses: bLoc04_10,C_98,N,NZ_104,NZVC_19,pc,r3_93,r4,sp_107,V_105,wLoc02_4,wLoc04_22,Z_29
-		defs: C_114,N_113,NZ_110,NZVC_116,pc_112,r3_109,r4_117,sp_108,V_111,Z_115
+		defs: C_113,N_114,NZ_110,NZVC_116,pc_112,r3_109,r4_117,sp_108,V_111,Z_115
 	return r3_109
 // DataOut: pc r0 r2 r3 r4 r5 sp
 // DataOut (flags): 
@@ -479,27 +479,27 @@ l0B14:
 	byte NZ_68
 	bool V_69
 	word16 pc_70
-	bool N_71
-	bool C_72
+	bool C_71
+	bool N_72
 	bool Z_73
 	byte NZVC_74
 	word16 r4_75
 	call wArg04 (retsize: 2; FPU: 2;)
 		uses: bLoc04_10,C_49,N,NZ_58,NZVC_19,pc,r3_6,r4,sp_62,V_59,wLoc02_4,wLoc04_22,Z_29
-		defs: C_72,N_71,NZ_68,NZVC_74,pc_70,r3_67,r4_75,sp_66,V_69,Z_73
+		defs: C_71,N_72,NZ_68,NZVC_74,pc_70,r3_67,r4_75,sp_66,V_69,Z_73
 	word16 sp_78
 	word16 r3_79
 	byte NZ_80
 	bool V_81
 	word16 pc_82
-	bool N_83
-	bool C_84
+	bool C_83
+	bool N_84
 	bool Z_85
 	byte NZVC_86
 	word16 r4_87
 	call Mem56[r4_75:word16] (retsize: 4; FPU: 2;)
-		uses: bLoc04_10,C_72,N_71,NZ_68,NZVC_74,pc_70,r3_67,r4_77,sp_66,V_69,wLoc02_4,wLoc04_22,Z_73
-		defs: C_84,N_83,NZ_80,NZVC_86,pc_82,r3_79,r4_87,sp_78,V_81,Z_85
+		uses: bLoc04_10,C_71,N_72,NZ_68,NZVC_74,pc_70,r3_67,r4_77,sp_66,V_69,wLoc02_4,wLoc04_22,Z_73
+		defs: C_83,N_84,NZ_80,NZVC_86,pc_82,r3_79,r4_87,sp_78,V_81,Z_85
 	return r3_79
 // DataOut: pc r0 r2 r3 r4 r5 sp
 // DataOut (flags): 
@@ -594,15 +594,15 @@ l0BC6:
 	byte NZ_58
 	bool V_59
 	word16 pc_60
-	bool N_61
-	bool C_62
+	bool C_61
+	bool N_62
 	bool Z_63
 	byte NZVC_64
 	word16 r0_65
 	byte NZV_66
 	call Mem25[sp_119:word16] (retsize: 2; depth: 2 FPU: 2;)
-		uses: bLoc04_10,C_31,N,NZ_28,NZV,NZVC_19,pc,r0,r3_6,sp_51,V_30,wLoc02_4,wLoc04_47,Z_29
-		defs: C_62,N_61,NZ_58,NZV_66,NZVC_64,pc_60,r0_65,r3_57,sp_56,V_59,Z_63
+		uses: bLoc04_10,C_30,N,NZ_28,NZV,NZVC_19,pc,r0,r3_6,sp_51,V_31,wLoc02_4,wLoc04_47,Z_29
+		defs: C_61,N_62,NZ_58,NZV_66,NZVC_64,pc_60,r0_65,r3_57,sp_56,V_59,Z_63
 	Mem68[sp_56 - 0x0002:word16] = r3_57
 	Mem70[sp_56 - 0x0004:word16] = r0_65
 	word16 r3_71 = Mem70[0x5424:word16]
@@ -630,15 +630,15 @@ l0BE0:
 	byte NZ_95
 	bool V_96
 	word16 pc_97
-	bool N_98
-	bool C_99
+	bool C_98
+	bool N_99
 	bool Z_100
 	byte NZVC_101
 	word16 r0_102
 	byte NZV_103
 	call Mem85[sp_56 - 0x0002:word16] (retsize: 4; depth: 4 FPU: 2;)
-		uses: bLoc04_10,C_62,N_61,NZ_89,NZV_81,NZVC_75,pc_60,r0_78,r3_88,sp_92,V_90,wLoc02_4,wLoc04_47,Z_82
-		defs: C_99,N_98,NZ_95,NZV_103,NZVC_101,pc_97,r0_102,r3_94,sp_93,V_96,Z_100
+		uses: bLoc04_10,C_61,N_62,NZ_89,NZV_81,NZVC_75,pc_60,r0_78,r3_88,sp_92,V_90,wLoc02_4,wLoc04_47,Z_82
+		defs: C_98,N_99,NZ_95,NZV_103,NZVC_101,pc_97,r0_102,r3_94,sp_93,V_96,Z_100
 	return r0_102
 // DataOut: pc r0 r2 r3 r4 r5 sp
 // DataOut (flags): 
@@ -723,7 +723,7 @@ l0D9A:
 	word16 r3_31
 	byte NZVC_32
 	call wArg00 (retsize: 2; FPU: 2;)
-		uses: C_17,N_15,NZ_14,r0_11,r2_3,sp_20,V_16,Z_8
+		uses: C_16,N_15,NZ_14,r0_11,r2_3,sp_20,V_17,Z_8
 		defs: C_28,N_29,NZ_23,NZV_30,NZVC_32,pc_25,r0_27,r2_22,r3_31,sp_21,V_24,Z_26
 	Mem35[r3_31 + 0x0060:word16] = 0x0DAE
 	word16 v27_36 = Mem35[r0_27:word16] & 0x0200
@@ -823,7 +823,7 @@ l0DE4:
 	word16 r4_32
 	word16 r5_33
 	call wArg00 (retsize: 2; FPU: 2;)
-		uses: C_17,N_15,NZ_14,r0_11,r2_3,sp_20,V_16,Z_8
+		uses: C_16,N_15,NZ_14,r0_11,r2_3,sp_20,V_17,Z_8
 		defs: C_28,N_29,NZ_23,pc_25,r0_27,r1_31,r2_22,r3_30,r4_32,r5_33,sp_21,V_24,Z_26
 	Mem34[r3_30 + 0x0060:word16] = 0x17AE
 	word16 v24_35 = Mem34[r0_27:word16] & 0x0200
@@ -885,7 +885,7 @@ l1AE0:
 	word16 r4_62
 	word16 r5_63
 	call Mem36[r0_47 + 0x1CC2:ptr16] (retsize: 4; FPU: 2;)
-		uses: C_43,N_49,NZ_48,pc_25,r0_47,r1_46,r2_40,r3_30,r4_32,r5_45,sp_21,V_50,Z_44
+		uses: C_41,N_49,NZ_48,pc_25,r0_47,r1_46,r2_40,r3_30,r4_32,r5_45,sp_21,V_50,Z_44
 		defs: C_58,N_59,NZ_53,pc_55,r0_57,r1_61,r2_52,r3_60,r4_62,r5_63,sp_51,V_54,Z_56
 	return r0_57
 // DataOut: pc r0 r2 r3 r4 r5 sp
@@ -1018,15 +1018,15 @@ l0F34:
 	word16 r4_100
 	word16 pc_101
 	word16 r3_102
-	bool N_103
-	bool C_104
+	bool C_103
+	bool N_104
 	bool Z_105
 	word16 r5_106
 	word16 r2_107
 	byte NZV_108
 	call r4 + 0x0002 (retsize: 2; depth: 10 FPU: 2;)
 		uses: bLoc09,C_29,N,NZ_52,NZV_42,NZVC,pc,r0_45,r1_46,r2_43,r3_13,r4_11,r5_44,sp_49,V_54,wLoc01_17,wLoc03_19,wLoc05_23,wLoc07_27,wLoc09_32,Z_53
-		defs: C_104,N_103,NZ_96,NZV_108,NZVC_99,pc_101,r0_98,r1_95,r2_107,r3_102,r4_100,r5_106,sp_94,V_97,Z_105
+		defs: C_103,N_104,NZ_96,NZV_108,NZVC_99,pc_101,r0_98,r1_95,r2_107,r3_102,r4_100,r5_106,sp_94,V_97,Z_105
 	word16 r4_117 = Mem50[0x5424:word16]
 	*r4Out = r4_117
 	Mem121[r4_117:word16] = wLoc04
@@ -1047,15 +1047,15 @@ l0F32:
 	word16 r4_85
 	word16 pc_86
 	word16 r3_87
-	bool N_88
-	bool C_89
+	bool C_88
+	bool N_89
 	bool Z_90
 	word16 r5_91
 	word16 r2_92
 	byte NZV_93
 	call Mem50[r4 + 0x0002:word16] (retsize: 4; depth: 12 FPU: 2;)
 		uses: bLoc09,C_29,N,NZ_52,NZV_42,NZVC,pc,r0_45,r1_46,r2_43,r3_13,r4_75,r5_44,sp_49,V_54,wLoc01_17,wLoc03_19,wLoc05_23,wLoc07_27,wLoc09_32,Z_53
-		defs: C_89,N_88,NZ_81,NZV_93,NZVC_84,pc_86,r0_83,r1_80,r2_92,r3_87,r4_85,r5_91,sp_79,V_82,Z_90
+		defs: C_88,N_89,NZ_81,NZV_93,NZVC_84,pc_86,r0_83,r1_80,r2_92,r3_87,r4_85,r5_91,sp_79,V_82,Z_90
 	return r0_83
 // DataOut: pc r0 r2 r3 r4 r5 sp
 // DataOut (flags): 

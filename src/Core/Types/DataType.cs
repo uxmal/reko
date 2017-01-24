@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 
 using Reko.Core.Output;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Reko.Core.Types
@@ -52,9 +53,14 @@ namespace Reko.Core.Types
         public abstract int Size { get; set; }  // Size in bytes of the concrete datatype.
         public abstract void Accept(IDataTypeVisitor v);
         public abstract T Accept<T>(IDataTypeVisitor<T> v);
-        public abstract DataType Clone();
+        public abstract DataType Clone(IDictionary<DataType, DataType> clonedTypes);
         //public abstract int GetInferredSize();                  // Computes the size of an item.
         object ICloneable.Clone() { return Clone(); }
+
+        public DataType Clone()
+        {
+            return Clone(null);
+        }
 
         public T ResolveAs<T>() where T : DataType
         {

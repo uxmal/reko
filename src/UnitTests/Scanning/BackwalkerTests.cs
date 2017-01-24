@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,6 +50,7 @@ namespace Reko.UnitTests.Scanning
         private ProcessorState state;
         private ExpressionSimplifier expSimp;
         private IBackWalkHost host;
+        private FakeDecompilerEventListener listener;
 
         private class BackwalkerHost : IBackWalkHost
         {
@@ -106,7 +107,8 @@ namespace Reko.UnitTests.Scanning
             arch = new FakeArchitecture();
             m = new ProcedureBuilder();
             state = arch.CreateProcessorState();
-            expSimp = new ExpressionSimplifier(arch.CreateProcessorState());
+            listener = new FakeDecompilerEventListener();
+            expSimp = new ExpressionSimplifier(arch.CreateProcessorState(), listener);
             host = new BackwalkerHost(arch);
         }
 
