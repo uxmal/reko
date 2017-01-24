@@ -48,37 +48,46 @@ namespace Reko.UnitTests.Scanning
         private Program program;
         private FakeDecompilerEventListener listener;
         private ProcedureDetector prdet;
+        private Dictionary<uint, HeuristicBlock> mpIntBlock;
 
         [SetUp]
         public void Setup()
         {
             sr = new ScanResults
             {
-                ICFG = new DiGraph<Address>(),
+                ICFG = new DiGraph<HeuristicBlock>(),
                 DirectlyCalledAddresses = new Dictionary<Address, int>(),
             };
             this.program = new Program();
             this.listener = new FakeDecompilerEventListener();
+            this.mpIntBlock = new Dictionary<uint, HeuristicBlock>();
         }
 
-        private Address Addr(uint uAddr)
+        private HeuristicBlock Block(uint uAddr)
         {
-            return Address.Ptr32(uAddr);
+            HeuristicBlock block;
+            if (!this.mpIntBlock.TryGetValue(uAddr, out block))
+            {
+                var addr = Address.Ptr32(uAddr);
+                block = new HeuristicBlock(addr, addr.GenerateName("l", ""));
+                this.mpIntBlock.Add(uAddr, block);
+            }
+            return block;
         }
 
-        public void Given_Addresses(params uint [] addrs)
+        public void Given_Blocks(params uint [] addrs)
         {
-            sr.ICFG = new DiGraph<Address>();
+            sr.ICFG = new DiGraph<HeuristicBlock>();
             foreach (var uAddr in addrs)
             {
-                sr.ICFG.Nodes.Add(Addr(uAddr));
+                sr.ICFG.Nodes.Add(Block(uAddr));
             }
         }
 
         public void Given_Edge(uint from, uint to)
         {
-            var aFrom = Addr(from);
-            var aTo = Addr(to);
+            var aFrom = Block(from);
+            var aTo = Block(to);
             sr.ICFG.Nodes.Add(aFrom);
             sr.ICFG.Nodes.Add(aTo);
             sr.ICFG.AddEdge(aFrom, aTo);
@@ -86,9 +95,9 @@ namespace Reko.UnitTests.Scanning
 
         public void Given_DirectCall(uint from, uint to)
         {
-            var aFrom = Addr(from);
-            var aTo = Addr(to);
-            sr.DirectlyCalledAddresses.Add(aTo, 1);
+            var aFrom = Block(from);
+            var aTo = Block(to);
+            sr.DirectlyCalledAddresses.Add(aTo.Address, 1);
         }
 
         private void AssertCluster(
@@ -114,10 +123,10 @@ namespace Reko.UnitTests.Scanning
 
         private void WriteCluster(ProcedureDetector.Cluster cluster, StringWriter sw)
         {
-            foreach (var node in cluster.Blocks.OrderBy(n => n))
+            foreach (var node in cluster.Blocks.OrderBy(n => n.Address))
             {
-                sw.WriteLine("{0} {1}", cluster.Entries.Contains(node) ? "*" : " ", node);
-                var succs = sr.ICFG.Successors(node).OrderBy(n => n).ToList();
+                sw.WriteLine("{0} {1}", cluster.Entries.Contains(node) ? "*" : " ", node.Address);
+                var succs = sr.ICFG.Successors(node).OrderBy(n => n.Address).ToList();
                 if (succs.Count > 0)
                 {
                     sw.Write("     ");
@@ -129,7 +138,7 @@ namespace Reko.UnitTests.Scanning
                             // cross procedure tail call.
                             sw.Write("*");
                         }
-                        sw.Write(s);
+                        sw.Write(s.Address);
                     }
                     sw.WriteLine();
                 }
@@ -252,7 +261,7 @@ namespace Reko.UnitTests.Scanning
 
             var clusters = prdet.FindClusters();
             // Get the 'Odd' cluster and find its entries.
-            var clOdd = clusters.Single(c => c.Blocks.Contains(Addr(Odd)));
+            var clOdd = clusters.Single(c => c.Blocks.Contains(Block(Odd)));
             prdet.FindClusterEntries(clOdd);
 
             var sExp =
@@ -323,7 +332,7 @@ namespace Reko.UnitTests.Scanning
 
             prdet.RemoveJumpsToKnownProcedures();
 
-            Assert.False(sr.ICFG.ContainsEdge(Addr(4), Addr(10)), "Should have removed tail call to 10");
+            Assert.False(sr.ICFG.ContainsEdge(Block(4), Block(10)), "Should have removed tail call to 10");
         }
     }
 }

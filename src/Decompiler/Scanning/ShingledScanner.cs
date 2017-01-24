@@ -65,7 +65,7 @@ namespace Reko.Scanning
         private SortedList<Address, MachineInstruction> instructions;
         private HashSet<Address> indirectCalls;
         private HashSet<Address> indirectJumps;
-        private DiGraph<Address> icfg;
+        private DiGraph<HeuristicBlock> icfg;
 
         public ShingledScanner(Program program, IRewriterHost host, DecompilerEventListener eventListener)
         {
@@ -78,7 +78,7 @@ namespace Reko.Scanning
             this.instructions = new SortedList<Address, MachineInstruction>();
             this.indirectCalls = new HashSet<Address>();
             this.indirectJumps = new HashSet<Address>();
-            this.icfg = new DiGraph<Address>();
+            this.icfg = new DiGraph<HeuristicBlock>();
         }
 
         /// <summary>

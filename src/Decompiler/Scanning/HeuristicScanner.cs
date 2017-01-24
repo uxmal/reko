@@ -21,6 +21,7 @@
 using Reko.Core;
 using Reko.Core.Lib;
 using Reko.Core.Rtl;
+using Reko.Core.Serialization;
 using Reko.Core.Services;
 using Reko.Core.Types;
 using System;
@@ -71,7 +72,7 @@ namespace Reko.Scanning
         ///  - pointers to those candidates.
         /// Each time we find a call, we increase the score of the candidate.
         /// At the end we have a list of scored candidates.
-        public ScanResults ScanImageHeuristically()
+        public ScanResults ScanImage()
         {
             var sw = new Stopwatch();
             sw.Start();

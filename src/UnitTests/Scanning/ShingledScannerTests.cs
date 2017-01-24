@@ -64,9 +64,9 @@ namespace Reko.UnitTests.Scanning
         {
             var sw = new StringWriter();
             sw.WriteLine("ICFG");
-            foreach (var node in sr.ICFG.Nodes.OrderBy(n => n))
+            foreach (var node in sr.ICFG.Nodes.OrderBy(n => n.Address))
             {
-                sw.WriteLine("{0} {1}", sr.DirectlyCalledAddresses.ContainsKey(node) ? "C" : " ", node);
+                sw.WriteLine("{0} {1}", sr.DirectlyCalledAddresses.ContainsKey(node.Address) ? "C" : " ", node);
                 var succs = sr.ICFG.Successors(node).OrderBy(n => n).ToList();
                 if (succs.Count > 0)
                 {
@@ -74,7 +74,7 @@ namespace Reko.UnitTests.Scanning
                     foreach (var s in succs)
                     {
                         sw.Write(" ");
-                        if (!sr.DirectlyCalledAddresses.ContainsKey(s))
+                        if (!sr.DirectlyCalledAddresses.ContainsKey(s.Address))
                         {
                             // cross procedure tail call.
                             sw.Write("*");

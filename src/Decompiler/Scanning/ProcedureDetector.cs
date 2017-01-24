@@ -41,16 +41,16 @@ namespace Reko.Scanning
         private Program program;
         private ScanResults sr;
         private DecompilerEventListener listener;
-        private HashSet<Address> pseudoEntries;
         private HashSet<Address> knownProcedures;
+        private Dictionary<Address, HeuristicBlock> mpAddrToBlock;
 
         public ProcedureDetector(Program program, ScanResults sr, DecompilerEventListener listener)
         {
             this.program = program;
             this.sr = sr;
             this.listener = listener;
-            this.pseudoEntries = new HashSet<Address>();
             this.knownProcedures = CollectKnownProcedures();
+            this.mpAddrToBlock = sr.ICFG.Nodes.ToDictionary(de => de.Address);
         }
 
         public void DetectProcedures()
@@ -93,10 +93,11 @@ namespace Reko.Scanning
             {
                 if (listener.IsCanceled())
                     break;
-                var preds = sr.ICFG.Predecessors(calldest).ToList();
+                var node = mpAddrToBlock[calldest];
+                var preds = sr.ICFG.Predecessors(node).ToList();
                 foreach (var p in preds)
                 {
-                    sr.ICFG.RemoveEdge(p, calldest);
+                    sr.ICFG.RemoveEdge(p, node);
                 }
             }
         }
@@ -112,8 +113,18 @@ namespace Reko.Scanning
         /// </summary>
         public class Cluster
         {
-            public SortedSet<Address> Blocks = new SortedSet<Address>();
-            public SortedSet<Address> Entries = new SortedSet<Address>();
+            public SortedSet<HeuristicBlock> Blocks = new SortedSet<HeuristicBlock>(Cmp.Instance);
+            public SortedSet<HeuristicBlock> Entries = new SortedSet<HeuristicBlock>(Cmp.Instance);
+
+            private class Cmp : Comparer<HeuristicBlock>
+            {
+                public override int Compare(HeuristicBlock x, HeuristicBlock y)
+                {
+                    return x.Address.CompareTo(y.Address);
+                }
+
+                public static readonly Cmp Instance = new Cmp();
+            }
         }
 
         /// <summary>
@@ -124,7 +135,7 @@ namespace Reko.Scanning
         /// <returns></returns>
         public List<Cluster> FindClusters()
         {
-            var nodesLeft = new HashSet<Address>(sr.ICFG.Nodes);
+            var nodesLeft = new HashSet<HeuristicBlock>(sr.ICFG.Nodes);
             var clusters = new List<Cluster>();
             while (nodesLeft.Count > 0)
             {
@@ -146,30 +157,30 @@ namespace Reko.Scanning
         /// and we never follow successors that are marked directly called
         /// (tail calls).
         /// </summary>
-        /// <param name="addr"></param>
+        /// <param name="node"></param>
         /// <param name="cluster"></param>
         /// <param name="nodesLeft"></param>
-        private void BuildWCC(Address addr, Cluster cluster, HashSet<Address> nodesLeft)
+        private void BuildWCC(HeuristicBlock node, Cluster cluster, HashSet<HeuristicBlock> nodesLeft)
         {
-            nodesLeft.Remove(addr);
-            cluster.Blocks.Add(addr);
+            nodesLeft.Remove(node);
+            cluster.Blocks.Add(node);
 
-            foreach (var s in sr.ICFG.Successors(addr))
+            foreach (var s in sr.ICFG.Successors(node))
             {
                 if (nodesLeft.Contains(s))
                 {
                     // Only add if successor is not CALLed.
-                    if (!knownProcedures.Contains(s))
+                    if (!knownProcedures.Contains(s.Address))
                     {
                         BuildWCC(s, cluster, nodesLeft);
                     }
                 }
             }
-            if (!knownProcedures.Contains(addr))
+            if (!knownProcedures.Contains(node.Address))
             {
                 // Only backtrack through predecessors if the node
                 // is not CALLed.
-                foreach (var p in sr.ICFG.Predecessors(addr))
+                foreach (var p in sr.ICFG.Predecessors(node))
                 {
                     if (nodesLeft.Contains(p))
                     {
@@ -206,10 +217,10 @@ namespace Reko.Scanning
         /// <param name="cluster"></param>
         public void FindClusterEntries(Cluster cluster)
         {
-            var preds = new Dictionary<Address, int>();
+            var preds = new Dictionary<HeuristicBlock, int>();
             foreach (var block in cluster.Blocks)
             {
-                if (knownProcedures.Contains(block))
+                if (knownProcedures.Contains(block.Address))
                 {
                     cluster.Entries.Add(block);
                 }
@@ -292,11 +303,11 @@ namespace Reko.Scanning
             return procs;
         }
 
-        private HashSet<Address> DetachFusedTails(Cluster cluster)
+        private HashSet<HeuristicBlock> DetachFusedTails(Cluster cluster)
         {
-            var aps = new ArticulationPointFinder<Address>().FindArticulationPoints(sr.ICFG, cluster.Entries);
+            var aps = new ArticulationPointFinder<HeuristicBlock>().FindArticulationPoints(sr.ICFG, cluster.Entries);
             aps.IntersectWith(cluster.Blocks);
-            var fusedTails = new HashSet<Address>();
+            var fusedTails = new HashSet<HeuristicBlock>();
 
             foreach (var ap in aps)
             {
@@ -311,9 +322,9 @@ namespace Reko.Scanning
             return fusedTails;
         }
 
-        private Procedure BuildProcedure(Cluster cluster, Address entry)
+        private Procedure BuildProcedure(Cluster cluster, HeuristicBlock entry)
         {
-            return Procedure.Create(entry, new Frame(null));
+            return Procedure.Create(entry.Address, new Frame(null));
         }
     }
 }
