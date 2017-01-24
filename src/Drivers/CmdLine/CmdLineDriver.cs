@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,7 +37,10 @@ namespace Reko.CmdLine
     public class CmdLineDriver
     {
         private IServiceProvider services;
-        private RekoConfigurationService config;
+        private ILoader ldr;
+        private IDecompiler decompiler;
+        private IConfigurationService config;
+        private IDiagnosticsService diagnosticSvc;
 
         public static void Main(string[] args)
         {
@@ -51,14 +54,19 @@ namespace Reko.CmdLine
             services.AddService<IDiagnosticsService>(diagnosticSvc);
             services.AddService<IFileSystemService>(new FileSystemServiceImpl());
             services.AddService<DecompilerHost>(new CmdLineHost());
-            var driver = new CmdLineDriver(services, config);
+            var ldr = new Loader(services);
+            var decompiler = new DecompilerDriver(ldr, services);
+            var driver = new CmdLineDriver(services, ldr, decompiler);
             driver.Execute(args);
         }
 
-        public CmdLineDriver(IServiceProvider services, RekoConfigurationService config)
+        public CmdLineDriver(IServiceProvider services, ILoader ldr, IDecompiler decompiler)
         {
             this.services = services;
-            this.config = config;
+            this.ldr = ldr;
+            this.decompiler = decompiler;
+            this.config = services.RequireService<IConfigurationService>();
+            this.diagnosticSvc = services.RequireService<IDiagnosticsService>();
         }
 
         public void Execute(string[] args)
@@ -67,21 +75,18 @@ namespace Reko.CmdLine
             if (pArgs == null)
                 return;
 
-            var ldr = new Loader(services);
             object defaultTo;
             if (pArgs.TryGetValue("--default-to", out defaultTo))
             {
                 ldr.DefaultToFormat = (string)defaultTo;
             }
-            var dec = new DecompilerDriver(ldr, services);
-
             if (OverridesRequested(pArgs))
             {
-                DecompileRawImage(dec, pArgs);
+                DecompileRawImage(pArgs);
             }
             else if (pArgs.ContainsKey("filename"))
             {
-                dec.Decompile((string)pArgs["filename"]);
+                Decompile(pArgs);
             }
             else
             {
@@ -96,6 +101,8 @@ namespace Reko.CmdLine
                 pArgs.ContainsKey("--base") ||
                 pArgs.ContainsKey("--entry"))
             {
+                // User must supply these arguments for a meaningful
+                // decompilation.
                 if (pArgs.ContainsKey("--arch") &&
                     pArgs.ContainsKey("--base") &&
                     pArgs.ContainsKey("filename"))
@@ -113,46 +120,68 @@ namespace Reko.CmdLine
             }
         }
 
-        private void DecompileRawImage(DecompilerDriver dec, Dictionary<string, object> pArgs)
+        private void Decompile(Dictionary<string, object> pArgs)
         {
-            var arch = config.GetArchitecture((string)pArgs["--arch"]);
-            if (arch == null)
-                throw new ApplicationException(string.Format("Unknown architecture {0}", pArgs["--arch"]));
-
-            object sEnv;
-            pArgs.TryGetValue("--env", out sEnv);
-
-            Address addrBase;
-            Address addrEntry;
-            if (!arch.TryParseAddress((string)pArgs["--base"], out addrBase))
-                throw new ApplicationException(string.Format("'{0}' doesn't appear to be a valid address.", pArgs["--base"]));
-            if (pArgs.ContainsKey("--entry"))
+            object loader;
+            pArgs.TryGetValue("--loader", out loader);
+            try
             {
-                if (!arch.TryParseAddress((string)pArgs["--base"], out addrEntry))
+                decompiler.Load((string)pArgs["filename"], (string)loader);
+                decompiler.ScanPrograms();
+                decompiler.AnalyzeDataFlow();
+                decompiler.ReconstructTypes();
+                decompiler.StructureProgram();
+                decompiler.WriteDecompilerProducts();
+            }
+            catch (Exception ex)
+            {
+                diagnosticSvc.Error(ex, "An error occurred during decompilation.");
+            }
+        }
+
+        private void DecompileRawImage(Dictionary<string, object> pArgs)
+        {
+            try
+            {
+                var arch = config.GetArchitecture((string)pArgs["--arch"]);
+                if (arch == null)
+                    throw new ApplicationException(string.Format("Unknown architecture {0}", pArgs["--arch"]));
+
+                object sEnv;
+                pArgs.TryGetValue("--env", out sEnv);
+
+                Address addrBase;
+                object oAddrEntry;
+                if (!arch.TryParseAddress((string)pArgs["--base"], out addrBase))
                     throw new ApplicationException(string.Format("'{0}' doesn't appear to be a valid address.", pArgs["--base"]));
-            }
-            else
-                addrEntry = addrBase;
+                pArgs.TryGetValue("--entry", out oAddrEntry);
 
-
-            var state = CreateInitialState(arch, pArgs);
-            dec.LoadRawImage((string)pArgs["filename"], (string)pArgs["--arch"], (string) sEnv, addrBase);
-            dec.Project.Programs[0].EntryPoints.Add(
-                addrEntry,
-                new ImageSymbol(addrEntry)
+                object sLoader;
+                pArgs.TryGetValue("--loader", out sLoader);
+                var state = CreateInitialState(arch, pArgs);
+                var program = decompiler.LoadRawImage((string)pArgs["filename"], new LoadDetails
                 {
-                    ProcessorState = state
+                    LoaderName = (string)sLoader,
+                    ArchitectureName = (string)pArgs["--arch"],
+                    PlatformName = (string)sEnv,
+                    LoadAddress = (string)pArgs["--base"],
+                    EntryPoint = new EntryPointElement { Address = (string)oAddrEntry }
                 });
-            object oHeur;
-            if (pArgs.TryGetValue("heuristics", out oHeur))
-            {
-                dec.Project.Programs[0].User.Heuristics = ((string[])oHeur).ToSortedSet();
+                object oHeur;
+                if (pArgs.TryGetValue("heuristics", out oHeur))
+                {
+                    decompiler.Project.Programs[0].User.Heuristics = ((string[])oHeur).ToSortedSet();
+                }
+                decompiler.ScanPrograms();
+                decompiler.AnalyzeDataFlow();
+                decompiler.ReconstructTypes();
+                decompiler.StructureProgram();
+                decompiler.WriteDecompilerProducts();
             }
-            dec.ScanPrograms();
-            dec.AnalyzeDataFlow();
-            dec.ReconstructTypes();
-            dec.StructureProgram();
-            dec.WriteDecompilerProducts();
+            catch (Exception ex)
+            {
+                diagnosticSvc.Error(ex, "An error occurred during decompilation.");
+            }
         }
 
         private ProcessorState CreateInitialState(IProcessorArchitecture arch, Dictionary<string, object> args)
@@ -220,6 +249,11 @@ namespace Reko.CmdLine
                     if (i < args.Length - 1)
                         parsedArgs["--default-to"] = args[++i];
                 }
+                else if (args[i] == "-l" || args[i] == "--loader")
+                {
+                    if (i < args.Length - 1)
+                        parsedArgs["--loader"] = args[++i];
+                }
                 else if (args[i] == "--reg" || args[i] == "-r")
                 {
                     if (i < args.Length - 1)
@@ -275,6 +309,9 @@ namespace Reko.CmdLine
             w.WriteLine("Options:");
             w.WriteLine(" --version                Show version number and exit");
             w.WriteLine(" -h, --help               Show this message and exit");
+            w.WriteLine(" -l, --loader <ldr>       Use a custom loader where <ldr> is either the file name");
+            w.WriteLine("                          containing a loader script or the CLR type name of the");
+            w.WriteLine("                          loader.");
             w.WriteLine(" --arch <architecture>    Use an architecture from the following:");
             DumpArchitectures(config, w, "    {0,-25} {1}");
             w.WriteLine(" --env <environment>      Use an operating environment from the following:");
@@ -286,11 +323,13 @@ namespace Reko.CmdLine
             w.WriteLine(" --entry <address>        Use <address> as an entry point to the program");
             w.WriteLine(" --reg <regInit>          Set register to value, where regInit is formatted as");
             w.WriteLine("                          reg_name:value, e.g. sp:FF00");
-            w.WriteLine(" --heuristic <h1>[,<h2>...] Use one of the following heuristics to examine binary:");
+            w.WriteLine(" --heuristic <h1>[,<h2>...] Use one of the following heuristics to examine");
+            w.WriteLine("                          the binary:");
             w.WriteLine("    shingle               Use shingle assembler to discard data ");
+            //           01234567890123456789012345678901234567890123456789012345678901234567890123456789
         }
 
-        private static void DumpArchitectures(RekoConfigurationService config, TextWriter w, string fmtString)
+        private static void DumpArchitectures(IConfigurationService config, TextWriter w, string fmtString)
         {
             foreach (var arch in config.GetArchitectures()
                 .OfType<ArchitectureElement>()
@@ -300,7 +339,7 @@ namespace Reko.CmdLine
             }
         }
 
-        private static void DumpEnvironments(RekoConfigurationService config, TextWriter w, string fmtString)
+        private static void DumpEnvironments(IConfigurationService config, TextWriter w, string fmtString)
         {
             foreach (var arch in config.GetEnvironments()
                 .OfType<OperatingEnvironmentElement>()
@@ -310,7 +349,7 @@ namespace Reko.CmdLine
             }
         }
 
-        private static void DumpRawFiles(RekoConfigurationService config, TextWriter w, string fmtString)
+        private static void DumpRawFiles(IConfigurationService config, TextWriter w, string fmtString)
         {
             foreach (var raw in config.GetRawFiles()
                 .OfType<RawFileElement>()

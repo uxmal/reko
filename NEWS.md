@@ -1,10 +1,37 @@
 ## Recent versions of Reko
 
+### Version 0.6.2.0
+
+* Function previewer in the mixed-asm-data window
+* Added support for Wii and RT-11 platforms
+* Added support for RT-11 LDA and SAV files, and Nintendo DOL files.
+* Add support for custom loader. Users can provide their own front-
+  ends to Reko.
+* Support for parsing GCC symbols
+* Added support for Atmel AVR8, Risc-V, and Xtensa AVR8 processor architectures
+* Added [[reko::arg(fpu)]] C++-style attribute 
+* #213: more work on the jump table dialog
+
+### Version 0.6.1.0
+
+* Implemented a general varargs processing mechanism, and specific instances for standard
+  C printf and scanf function families, as well as the Py_BuildValue function from the 
+  Python runtime.
+* Early support for dealing with indirect function calls.
+* Improved ELF support for x86, x86-64, MIPS, PowerPC, ARM, and Sparc
+* Improved PE support for x86, x86-64, MIPS, and ARM
+* Added support for lifting more instructions in x86, M68k, VAX, Sparc, MIPS, Z80 architectures.
+* Beginning support for signature libraries.
+* The cancel button actually works now!
+* Support for "No decompile"
+* General bugfixes
+
 ### Version 0.6.0.0
+
 * Combined code and low-level viewer, to allow users to compare Reko's output
   with the original binary.
-* A graph viewer, to help users to visualize procedure call graph 
-* Image map view shows an overview of the image bytes as pixels 
+* A graph viewer, to help users to visualize procedure call graph
+* Image map view shows an overview of the image bytes as pixels
 * Allow user to specify the encoding used for text when displaying character data
 * New reko configuration and project file formats
 * Improvements in user-specified data types
@@ -13,9 +40,10 @@
 * Added initial support for DEC VAX processor architecture
 * Support for SEGA Genesis platform added
 * Much better support for ELF binaries, both executables and relocatable object files
-* Refactored central ImageMap class to support binaries with large address space "gaps" 
+* Refactored central ImageMap class to support binaries with large address space "gaps"
 
 ### Version 0.5.5.0
+
 * Shingled disassembler implementation, in preparation for heuristic discovery of code.
 * Support for WinCE / MIPS
 * Improved data type inference
@@ -24,6 +52,7 @@
 * Many many small bugfixes
 
 ### Version 0.5.4.0
+
 * Support for renaming decompiled procedures and changing their signatures.
   Changing signatures will affect following decompilation stages, as
   expected.
@@ -31,17 +60,19 @@
 * Implemented continuous integration using Travis CI
 
 ### Version 0.5.3.0
-* Support for the MIPS architecture, and MIPS support in the 
+
+* Support for the MIPS architecture, and MIPS support in the
   PE and ELF image format
 * TextViewer now supports free selection of text.
 
 ### Version 0.5.2.0
-* New structural analysis inspired by "Native x86 Decompilation Using 
-  Semantics-Preserving Structural Analysis and Iterative Control-Flow 
+
+* New structural analysis inspired by "Native x86 Decompilation Using
+  Semantics-Preserving Structural Analysis and Iterative Control-Flow
   Structuring" (Schwartz, Lee, Woo, Brumley) yields much improved
-  structured C-like code; the implementation itself is much simpler 
+  structured C-like code; the implementation itself is much simpler
   than the previous one.
-* C2Xml tool understands C++11 attributes, in particular the new 
+* C2Xml tool understands C++11 attributes, in particular the new
   [[reko::reg(<regname>)]] which permits specifying the register in
   which an argument is passed to or returned from a procedure.
 * Implemented navigation history for CodeView window.
@@ -49,36 +80,42 @@
 * Many bugs fixed and code refactored.
 
 ### Version 0.5.1.0
-* Integrated the Capstone.NET disassembler, now used for the ARM and 
+
+* Integrated the Capstone.NET disassembler, now used for the ARM and
   ARM Thumb architectures.
 * Support for Arm Thumb PE executables.
 * Bug fixes for #14 and #17.
 
 ### Version 0.5.0.0
+
 * Moved project from SourceForge
 * Renamed project to 'Reko'
 * Started implementation of heuristic static analysis.
 
-### Version 0.4.5.0 
+### Version 0.4.5.0
+
 * Command line interpreter supports --default-to option
 * More ARM instructions implemented
 * CP/M environment added
 * 64-bit Windows enviroment added
 
 ### Version 0.4.4.0
+
 * Mostly bugfixes
 
 ### Version 0.4.3.0
+
 * Beginnings of new tabbed GUI
 * Command line interpreter now understands a few switches; try typing
     decompile --help
 * More x86 and m68k instructions supported
 
-### Version 0.4.2.0 
+### Version 0.4.2.0
+
 * Added support for PS3 and System V ELF files.
 * For fun: a C64 BASIC "decompiler"!
 * Fixed the following submitted bugs
-#8: Can not load ELF or Amiga Hunk binaries 
+#8: Can not load ELF or Amiga Hunk binaries
 #9: Can not run the decompiler from the command line
 * Implemented more x86 and PowerPC instructions
 * Improvements in SSA transformation code in preparation for
@@ -86,14 +123,16 @@
 * ImageSegmentRenders allow viewing of the structured data
   in image segments.
 
-### Version 0.4.1.0 
+### Version 0.4.1.0
+
 * (Crude) support for loading 32- and 64-bit PowerPC ELF binaries
 * Many PowerPC opcodes supported.
 * User interface bugfixes (broken keyboard accelerators etc)
-* The Copy command (Ctrl+C) is supported in windows where it 
-  makes sense. 
+* The Copy command (Ctrl+C) is supported in windows where it
+  makes sense.
 
 ### Version 0.4.0.0
+
 * Support added for loading packed binaries using unpacker scripts
   written in OdbgScript.
 * Modest beginning of an X86 emulator added to the solution
@@ -101,6 +140,5 @@
 * More x86 opcodes supported.
 * Many bugs fixed.
 
-Special thanks to halsten, who assisted in the implementation and 
-testing of the OdbgScript loader. 
- 
+Special thanks to halsten, who assisted in the implementation and
+testing of the OdbgScript loader.

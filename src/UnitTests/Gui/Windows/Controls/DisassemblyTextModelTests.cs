@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,18 +52,44 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             };
         }
 
-        private ImageSegment Given_Image(int size)
+        private MemoryArea Given_MemoryArea(int size)
         {
             var bytes = Enumerable.Range(0, size).Select(b => (byte)b).ToArray();
             var mem = new MemoryArea(Address.Ptr32(0x1000000), bytes);
+            return mem;
+        }
+
+        private ImageSegment Given_Image(int size)
+        {
+            var mem = Given_MemoryArea(size);
             var seg = new ImageSegment(".text", mem, AccessMode.ReadExecute);
             program.SegmentMap = new SegmentMap(mem.BaseAddress, seg);
             return seg;
         }
 
-        private void Given_Model()
+        private ImageSegment Given_Image(int memSize, int segOffset, uint segSize)
         {
-            var seg = Given_Image(1000);
+            var mem = Given_MemoryArea(memSize);
+            var seg = new ImageSegment(
+                ".text",
+                mem.BaseAddress + segOffset,
+                mem,
+                AccessMode.ReadExecute)
+            {
+                Size = segSize
+            };
+            program.SegmentMap = new SegmentMap(mem.BaseAddress, seg);
+            return seg;
+        }
+
+        private void Given_Model(
+            int memSize = 1000,
+            int segOffset = 0,
+            uint segSize = 0)
+        {
+            var seg = (segSize == 0) ?
+                Given_Image(memSize) :
+                Given_Image(memSize, segOffset, segSize);
             model = new DisassemblyTextModel(program, seg);
         }
 
@@ -88,6 +114,20 @@ namespace Reko.UnitTests.Gui.Windows.Controls
             var items = model.GetLineSpans(3);
 
             Assert.AreEqual(3, items.Length);
+            mr.VerifyAll();
+        }
+
+        [Test]
+        public void Dtm_SetPositionAsFraction_SharedMemory()
+        {
+            Given_Model(1000, 2, 3);
+            Given_MachineInstructions(3);
+            Given_Disassembler();
+            mr.ReplayAll();
+
+            model.SetPositionAsFraction(3, 4);
+
+            Assert.AreEqual("01000004", model.CurrentPosition.ToString());
             mr.VerifyAll();
         }
 

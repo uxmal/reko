@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -219,14 +219,21 @@ namespace Reko.Core.Lib
         {
             T i1 = b1;
             T i2 = b2;
+            int c = 0;
             while (i1 != i2)
             {
                 while (reversePostOrder[i1] > reversePostOrder[i2])
                 {
+                    ++c;
+                    if (c > 100000)
+                        throw new ApplicationException("Dominator graph calculation timed out.");
                     i1 = postdoms[i1];
                 }
                 while (reversePostOrder[i2] > reversePostOrder[i1])
                 {
+                    ++c;
+                    if (c > 100000)
+                        throw new ApplicationException("Dominator graph calculation timed out.");
                     i2 = postdoms[i2];
                 }
             }

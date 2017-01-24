@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ using Reko.Core.Operators;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Reko.Analysis
 {
@@ -94,6 +95,14 @@ namespace Reko.Analysis
 				return false;
 			if (use.Instruction is UseInstruction)
 				return false;
+            // Do not replace call uses
+            //$TODO: remove this in analysis branch
+            var ci = use.Instruction as CallInstruction;
+            if (
+                ci != null
+                && ci.Uses.Select(u => u.Expression).Contains(sid.Identifier)
+            )
+                return false;
 
             //$PERFORMANCE: this loop might be slow and should be improved if possible.
             List<SsaIdentifier> sids;

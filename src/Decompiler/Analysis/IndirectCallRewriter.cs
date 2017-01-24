@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 Pavel Tomin.
+ * Copyright (C) 1999-2017 Pavel Tomin.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -152,7 +152,7 @@ namespace Reko.Analysis
 
         private void Use(Statement stm, Expression e)
         {
-            e.Accept(new ExpressionUseAdder(stm, ssa.Identifiers));
+            e.Accept(new InstructionUseAdder(stm, ssa.Identifiers));
         }
 
         private Statement InsertStatement(Statement stm, Instruction instr)

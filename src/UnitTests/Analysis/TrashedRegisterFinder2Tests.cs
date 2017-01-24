@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -83,7 +83,7 @@ namespace Reko.UnitTests.Analysis
                 importResolver, 
                 proc.CreateBlockDominatorGraph(),
                 new HashSet<RegisterStorage>());
-            var vp = new ValuePropagator(arch, sst.SsaState);
+            var vp = new ValuePropagator(arch, sst.SsaState, NullDecompilerEventListener.Instance);
             vp.Transform();
 
             sst.RenameFrameAccesses = true;

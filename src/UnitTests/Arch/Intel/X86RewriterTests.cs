@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -879,8 +879,8 @@ namespace Reko.UnitTests.Arch.Intel
             AssertCode(
                 "0|L--|0C00:0000(2): 4 instructions",
                 "1|L--|v5 = dx_ax",
-                "2|L--|dx = v5 % cx",
-                "3|L--|ax = v5 /u cx",
+                "2|L--|dx = (uint16) (v5 % cx)",
+                "3|L--|ax = (uint16) (v5 /u cx)",
                 "4|L--|SCZO = cond(ax)");
         }
 
@@ -894,8 +894,8 @@ namespace Reko.UnitTests.Arch.Intel
             AssertCode(
                     "0|L--|0C00:0000(2): 4 instructions",
                     "1|L--|v5 = dx_ax",
-                    "2|L--|dx = v5 % cx",
-                    "3|L--|ax = v5 / cx",
+                    "2|L--|dx = (int16) (v5 % cx)",
+                    "3|L--|ax = (int16) (v5 / cx)",
                     "4|L--|SCZO = cond(ax)");
         }
 
@@ -1433,8 +1433,8 @@ namespace Reko.UnitTests.Arch.Intel
             AssertCode(
                   "0|L--|10000000(4): 4 instructions",
                   "1|L--|v5 = edx_eax",
-                  "2|L--|edx = v5 % Mem0[esp + 0x00000004:word32]",
-                  "3|L--|eax = v5 / Mem0[esp + 0x00000004:word32]",
+                  "2|L--|edx = (int32) (v5 % Mem0[esp + 0x00000004:word32])",
+                  "3|L--|eax = (int32) (v5 / Mem0[esp + 0x00000004:word32])",
                   "4|L--|SCZO = cond(eax)");
         }
     }

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -67,11 +67,12 @@ namespace Reko.Core.Rtl
         /// <param name="condition"></param>
         /// <param name="target"></param>
         /// <param name="?"></param>
-        public void BranchInMiddleOfInstruction(Expression condition, Address target, RtlClass rtlClass)
+        public RtlBranch BranchInMiddleOfInstruction(Expression condition, Address target, RtlClass rtlClass)
         {
             var branch = new RtlBranch(condition, target, rtlClass);
             branch.NextStatementRequiresLabel = true;
             instrs.Add(branch);
+            return branch;
         }
 
         /// <summary>

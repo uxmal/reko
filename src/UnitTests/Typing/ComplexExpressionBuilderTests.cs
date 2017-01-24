@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -173,7 +173,27 @@ namespace Reko.UnitTests.Typing
 			Assert.AreEqual("ptr->dw0000", ceb.BuildComplex(true).ToString());
 		}
 
-		[Test]
+        [Test]
+        public void CEB_BuildAddrOfPointer()
+        {
+            var id = new Identifier("id", PrimitiveType.Word32, null);
+            var addrOf = m.AddrOf(id);
+            CreateTv(addrOf, Ptr32(Ptr32(PrimitiveType.Int32)), Ptr32(PrimitiveType.Word32));
+            var ceb = CreateBuilder(PrimitiveType.Word32, null, addrOf);
+            Assert.AreEqual("&id", ceb.BuildComplex(false).ToString());
+        }
+
+        [Test]
+        public void CEB_BuildAddrOfPointerFetch()
+        {
+            var id = new Identifier("id", PrimitiveType.Word32, null);
+            var addrOf = m.AddrOf(id);
+            CreateTv(addrOf, Ptr32(Ptr32(PrimitiveType.Int32)), Ptr32(PrimitiveType.Word32));
+            var ceb = CreateBuilder(PrimitiveType.Word32, null, addrOf);
+            Assert.AreEqual("id", ceb.BuildComplex(true).ToString());
+        }
+
+        [Test]
         public void CEB_BuildUnionFetch()
         {
             var ptr = new Identifier("ptr", PrimitiveType.Word32, null);

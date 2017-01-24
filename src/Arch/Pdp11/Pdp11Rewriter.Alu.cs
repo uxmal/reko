@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -95,6 +95,13 @@ namespace Reko.Arch.Pdp11
             SetFlags(tmp, FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF, 0, 0);
         }
 
+        private void RewriteCom(Pdp11Instruction instr)
+        {
+            var src = RewriteSrc(instr.op1);
+            var dst = RewriteDst(instr.op1, src, m.Comp);
+            SetFlags(dst, FlagM.NF | FlagM.ZF, FlagM.VF, FlagM.CF);
+        }
+    
         private void RewriteDiv(Pdp11Instruction instr)
         {
             var reg = ((RegisterOperand)instr.op2).Register;

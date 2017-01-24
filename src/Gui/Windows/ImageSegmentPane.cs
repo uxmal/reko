@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,10 +26,12 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.ComponentModel.Design;
+using System.IO;
 
 namespace Reko.Gui.Windows
 {
-    public class ImageSegmentPane : IWindowPane
+    public class ImageSegmentPane : IWindowPane, ICommandTarget
     {
         private ImageSegmentView segmentView;
         private IServiceProvider services;
@@ -84,6 +86,42 @@ namespace Reko.Gui.Windows
             {
 
             }
+        }
+
+        public bool QueryStatus(CommandID cmdId, CommandStatus status, CommandText text)
+        {
+            if (cmdId.Guid == CmdSets.GuidReko)
+            {
+                switch (cmdId.ID)
+                {
+                case CmdIds.EditCopy:
+                case CmdIds.EditSelectAll:
+                    status.Status = MenuStatus.Visible | MenuStatus.Enabled;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool Execute(CommandID cmdId)
+        {
+            if (cmdId.Guid == CmdSets.GuidReko)
+            {
+                switch (cmdId.ID)
+                {
+                case CmdIds.EditCopy:
+                    var ms = new MemoryStream();
+                    this.segmentView.TextView.Selection.Save(ms, DataFormats.UnicodeText);
+                    var text = new string(Encoding.Unicode.GetChars(ms.ToArray()));
+                    Clipboard.SetData(DataFormats.UnicodeText, text);
+                    return true;
+                case CmdIds.EditSelectAll:
+                    var tv = this.segmentView.TextView;
+                    tv.SelectAll();
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

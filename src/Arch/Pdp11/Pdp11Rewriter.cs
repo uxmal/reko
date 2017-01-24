@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,8 +59,6 @@ namespace Reko.Arch.Pdp11
                 this.rtlCluster = new RtlInstructionCluster(instr.Address, instr.Length);
                 this.rtlCluster.Class = RtlClass.Linear;
                 m = new RtlEmitter(rtlCluster.Instructions);
-                Expression src;
-                Expression dst;
                 switch (instr.Opcode)
                 {
                 default: throw new AddressCorrelatedException(
@@ -93,6 +91,7 @@ namespace Reko.Arch.Pdp11
                 case Opcode.clr: RewriteClr(instr, m.Word16(0)); break;
                 case Opcode.clrb: RewriteClr(instr, m.Byte(0)); break;
                 case Opcode.cmp: RewriteCmp(instr); break;
+                case Opcode.com: RewriteCom(instr); break;
                 case Opcode.dec: RewriteIncDec(instr, m.ISub); break;
                 case Opcode.div: RewriteDiv(instr); break;
                 case Opcode.emt: RewriteEmt(instr); break;
@@ -209,7 +208,12 @@ namespace Reko.Arch.Pdp11
             case AddressMode.IndexedDef:
                 if (memOp.Register == Registers.pc)
                 {
-                    throw new NotImplementedException();
+                    var offset = (short)memOp.EffectiveAddress;
+                    var addrBase = (long)rtlCluster.Address.ToLinear() + rtlCluster.Length;
+                    var addr = Constant.Word16((ushort) (addrBase + offset));
+                    return m.Load(
+                        PrimitiveType.Word16,
+                        addr);
                 }
                 else
                 {
@@ -219,7 +223,7 @@ namespace Reko.Arch.Pdp11
                 }
             }
             return tmp;
-        
+        /*
             var immOp = op as ImmediateOperand;
             if (immOp != null)
             {
@@ -231,6 +235,7 @@ namespace Reko.Arch.Pdp11
                 return addrOp.Address;
             }
             throw new NotImplementedException();
+            */
         }
 
         private Expression RewriteSrc(MachineOperand op)

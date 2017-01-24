@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -286,9 +286,10 @@ namespace Reko.Core
                         envName));
                 var tlSvc = Services.RequireService<ITypeLibraryLoaderService>();
                 this.Metadata = new TypeLibrary();
+
                 foreach (var tl in envCfg.TypeLibraries
                     .Where(t => t.Architecture == null ||
-                                t.Architecture == Architecture.Name)
+                                t.Architecture.Contains(Architecture.Name))
                     .OfType<ITypeLibraryElement>())
                 {
                     Metadata = tlSvc.LoadMetadataIntoLibrary(this, tl, Metadata); 

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -122,6 +122,30 @@ namespace Reko.UnitTests.Core.CLanguage
             Run(new[] { SType(CTokenType.Unsigned), SType(CTokenType.Short) },
                 new IdDeclarator { Name = "foo" });
             Assert.AreEqual("prim(UnsignedInt,2)", nt.DataType.ToString());
+        }
+
+        [Test(Description = "Verifies call convention.")]
+        public void NamedDataTypeExtractor_ptrchar_stdcall_fn()
+        {
+            Run(new[] { SType(CTokenType.Char) },
+                new PointerDeclarator()
+                {
+                    Pointee = new CallConventionDeclarator()
+                    {
+                        Convention = CTokenType.__Stdcall,
+                        Declarator = new FunctionDeclarator()
+                        {
+                            Declarator = new IdDeclarator()
+                            {
+                                Name = "test"
+                            },
+                            Parameters = new List<ParamDecl>()
+                        }
+                    }
+                });
+            Assert.AreEqual(
+                "fn(__stdcall,arg(ptr(prim(Character,1))),()",
+                nt.DataType.ToString());
         }
 
         [Test(Description = "If no reko attributes are present, don't explicitly state the kind, but let the ABI rules decide.")]

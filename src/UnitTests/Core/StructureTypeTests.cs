@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -74,5 +74,23 @@ namespace Reko.UnitTests.Core
             int off = StructureField.ToOffset(Constant.Word16(s));
             Assert.AreEqual(0xC004, off);
         }
-	}
+
+        [Test]
+        public void CloneSelfReferencingStructure()
+        {
+            var str = new StructureType("str", 12, true);
+            str.Fields.Add(0, PrimitiveType.Int32, "i");
+            str.Fields.Add(4, new Pointer(str, 4), "ptr");
+            str.Fields.Add(8, PrimitiveType.Real32, "f");
+
+            var clonedStr = (StructureType)str.Clone();
+            var field = clonedStr.Fields.AtOffset(4);
+            var nestedStr = ((Pointer)field.DataType).Pointee;
+            Assert.AreNotSame(clonedStr, str);
+            Assert.AreSame(clonedStr, nestedStr);
+            Assert.AreEqual(
+                "(struct \"str\" 000C (0 int32 i) (4 (ptr (struct \"str\" 000C)) ptr) (8 real32 f))",
+                clonedStr.ToString());
+        }
+    }
 }

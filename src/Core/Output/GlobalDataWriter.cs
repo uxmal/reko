@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,11 +42,13 @@ namespace Reko.Core.Output
         private Formatter formatter;
         private TypeReferenceFormatter tw;
         private Queue<StructureField> queue;
+        private DataTypeComparer cmp;
 
         public GlobalDataWriter(Program program, IServiceProvider services)
         {
             this.program = program;
             this.services = services;
+            this.cmp = new DataTypeComparer();
         }
 
         public void WriteGlobals(Formatter formatter)
@@ -230,7 +232,7 @@ namespace Reko.Core.Output
                 if (field == null)
                 {
                     // We've discovered a global variable! Create it!
-                    //$REVIEW: what about collisions and the usual merge crap?
+                    //$REVIEW: what about colissions and the usual merge crap?
                     var dt = ptr.Pointee;
                     //$REVIEW: that this is a pointer to a C-style null 
                     // terminated string is a wild-assed guess of course.
@@ -261,6 +263,7 @@ namespace Reko.Core.Output
             var offset = rdr.Offset;
             var s = rdr.ReadCString(str.ElementType, program.TextEncoding);
             var fmt = codeFormatter.InnerFormatter;
+            //$TODO: appropriate prefix for UTF16-encoded strings.
             fmt.Write('"');
             foreach (var ch in s.ToString())
             {
@@ -320,7 +323,27 @@ namespace Reko.Core.Output
 
         public CodeFormatter VisitUnion(UnionType ut)
         {
-            throw new NotImplementedException();
+            var fmt = codeFormatter.InnerFormatter;
+            fmt.Terminate();
+            fmt.Indent();
+            fmt.Write("{");
+            fmt.Terminate();
+            fmt.Indentation += fmt.TabSize;
+
+            // According to http://en.cppreference.com/w/c/language/struct_initialization
+            // union initializers use the first member of the union.
+            // It may be unstable as the first member may vary from run to run.
+            // Try tp pick the "best" alternative.
+            var alt = ut.Alternatives.Values.OrderBy(v => v.DataType, cmp).First();
+
+            fmt.Indent();
+            alt.DataType.Accept(this);
+            fmt.Terminate();
+
+            fmt.Indentation -= fmt.TabSize;
+            fmt.Indent();
+            fmt.Write("}");
+            return codeFormatter;
         }
 
         public CodeFormatter VisitUnknownType(UnknownType ut)

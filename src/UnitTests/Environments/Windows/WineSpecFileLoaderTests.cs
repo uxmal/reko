@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -190,6 +190,22 @@ namespace Reko.UnitTests.Environments.Windows
             var mod = lib.Modules["FOO.DLL"];
             Assert.AreEqual(1, mod.ServicesByName.Count);
             Assert.AreEqual("foo",mod.ServicesByName["foo"].Name);
+        }
+
+        [Test]
+        public void Wsfl_varags()
+        {
+            Given_WineSpecLoader_16("foo.spec",
+                "328 varargs -ret16 _DebugOutput(word str) _DebugOutput \n");
+            mr.ReplayAll();
+
+            var lib = wsfl.Load(platform, new TypeLibrary());
+            var mod = lib.Modules["FOO.DLL"];
+            var _DebugOutput = mod.ServicesByVector[328];
+            Assert.AreEqual(
+                "void _DebugOutput(Stack word16 wArg04, Stack (ptr char) ptrArg06, Stack <unknown> ...)" + nl +
+                "// stackDelta: 4; fpuStackDelta: 0; fpuMaxParam: -1" + nl,
+                _DebugOutput.Signature.ToString("_DebugOutput", FunctionType.EmitFlags.AllDetails));
         }
     }
 }

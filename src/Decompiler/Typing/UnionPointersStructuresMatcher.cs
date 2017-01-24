@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,6 +42,7 @@ namespace Reko.Typing
 
 		public bool Match(UnionType ut)
 		{
+            int structureSize = 0;
 			foreach (UnionAlternative a in ut.Alternatives.Values)
 			{
 				Pointer p = a.DataType as Pointer;
@@ -60,6 +61,11 @@ namespace Reko.Typing
 				StructureType s = eq.DataType as StructureType;
 				if (s == null)
 					return false;
+
+                if (structureSize == 0)
+                    structureSize = s.Size;
+                else if (structureSize != s.Size)
+                    return false;
 
 				eqClasses.Add(eq);
 				strs.Add(s);

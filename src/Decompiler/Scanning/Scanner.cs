@@ -1,6 +1,6 @@
 #region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -312,7 +312,7 @@ namespace Reko.Scanning
             if (program.Procedures.ContainsKey(addr))
                 return; // Already scanned. Do nothing.
             var proc = EnsureProcedure(addr, null);
-            proc.Signature = sig;
+            proc.Signature = (FunctionType)sig.Clone();
             queue.Enqueue(PriorityEntryPoint, new ProcedureWorkItem(this, program, addr, proc.Name));
         }
 

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -146,6 +146,11 @@ namespace Reko.Environments.Windows
                 while (LoadParameter(ssig, args))
                     ;
                 Expect(TokenType.RPAREN);
+            }
+            if (ssig.Convention == "varargs")
+            {
+                args.Add(new Argument_v1 { Name = "...", Type = new VoidType_v1() });
+                ssig.Convention = "__cdecl";
             }
             return args.ToArray();
         }

@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -81,6 +81,11 @@ namespace Reko.Core.Expressions
             return new Cast(dataType, expr);
         }
 
+        /// <summary>
+        /// Bitwise complement.
+        /// </summary>
+        /// <param name="expr"></param>
+        /// <returns></returns>
         public Expression Comp(Expression expr)
         {
             return new UnaryExpression(Operator.Comp, expr.DataType, expr); 
@@ -509,7 +514,7 @@ namespace Reko.Core.Expressions
             return ISub(left, Word(left.DataType.Size, right));
         }
 
-        public Slice Slice(PrimitiveType primitiveType, Identifier value, uint bitOffset)
+        public Slice Slice(PrimitiveType primitiveType, Expression value, uint bitOffset)
         {
             return new Slice(primitiveType, value, bitOffset);
         }

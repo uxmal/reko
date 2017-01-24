@@ -1,0 +1,70 @@
+// setup
+// Return size: 0
+void setup()
+setup_entry:
+	// succ:  l0090
+l0090:
+	Mem0 = fp
+setup_exit:
+
+
+// loop
+// Return size: 0
+void loop()
+loop_entry:
+	// succ:  l0092
+l0092:
+	Mem0 = fp
+loop_exit:
+
+
+// __vector_16
+// Return size: 0
+void __vector_16()
+__vector_16_entry:
+	// succ:  l00A0
+l00A0:
+	Mem0 = fp
+__vector_16_exit:
+
+
+// micros
+// Return size: 0
+void micros()
+micros_entry:
+	// succ:  l0130
+l0130:
+	Mem0 = fp
+micros_exit:
+
+
+// delay
+// Return size: 0
+void delay()
+delay_entry:
+	// succ:  l017C
+l017C:
+	Mem0 = fp
+delay_exit:
+
+
+// init
+// Return size: 0
+void init()
+init_entry:
+	// succ:  l01C8
+l01C8:
+	Mem0 = fp
+init_exit:
+
+
+// main
+// Return size: 0
+void main()
+main_entry:
+	// succ:  l023E
+l023E:
+	Mem0 = fp
+main_exit:
+
+

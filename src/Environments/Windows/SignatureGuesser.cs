@@ -1,6 +1,6 @@
 ﻿#region License
 /* 
- * Copyright (C) 1999-2016 John Källén.
+ * Copyright (C) 1999-2017 John Källén.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,7 +59,9 @@ namespace Reko.Environments.Windows
                 }
                 else
                 {
-                    var dt = field.Item2.Accept(loader);
+                    var dt = (field.Item2 == null) ?
+                        new UnknownType() :
+                        field.Item2.Accept(loader);
                     return Tuple.Create(field.Item1, dt, field.Item3);
                 }
             }
