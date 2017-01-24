@@ -191,6 +191,16 @@ namespace Reko.Gui.Windows
 
         #region DecompilerEventListener Members
 
+        public void Info(ICodeLocation location, string message)
+        {
+            diagnosticSvc.Inform(location, message);
+        }
+
+        public void Info(ICodeLocation location, string message, params object[] args)
+        {
+            diagnosticSvc.Inform(location, message, args);
+        }
+
         public void Warn(ICodeLocation location, string message)
         {
             diagnosticSvc.Warn(location, message);

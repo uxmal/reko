@@ -881,6 +881,12 @@ namespace Reko.ImageLoaders.Elf
             return new RelocationResults(entryPoints, symbols);
         }
 
+        /// <summary>
+        /// Locates the GOT and populates the provided <paramref name="symbols"/> collection
+        /// with entries found in the GOT.
+        /// </summary>
+        /// <param name="program"></param>
+        /// <param name="symbols"></param>
         public override void LocateGotPointers(Program program, SortedList<Address, ImageSymbol> symbols)
         {
             // Locate the GOT
@@ -888,11 +894,15 @@ namespace Reko.ImageLoaders.Elf
             // information.
             var got = program.SegmentMap.Segments.Values.FirstOrDefault(s => s.Name == ".got");
             if (got == null)
+            {
                 return;
+            }
 
             var rdr = program.CreateImageReader(got.Address);
             while (rdr.Address < got.EndAddress)
             {
+                // Read a 64-bit value and see if it corresponds
+                // to the address of a symbol.
                 var addrGot = rdr.Address;
                 ulong uAddrSym;
                 if (!rdr.TryReadUInt64(out uAddrSym))

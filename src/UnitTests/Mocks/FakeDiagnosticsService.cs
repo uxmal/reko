@@ -97,6 +97,16 @@ namespace Reko.UnitTests.Mocks
             Debug.WriteLine(message, args);
         }
 
+        public void Inform(ICodeLocation location, string message)
+        {
+            Debug.Print("{0}: {1}", location, message);
+        }
+
+        public void Inform(ICodeLocation location, string message, params object[] args)
+        {
+            Inform(location, string.Format(message, args));
+        }
+
         public void ClearDiagnostics()
         {
         }
