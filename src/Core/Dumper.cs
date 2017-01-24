@@ -130,23 +130,30 @@ namespace Reko.Core
 
 		public void DumpData(SegmentMap map, Address address, long cbBytes, Formatter stm)
 		{
-			ulong cSkip = address.ToLinear() & 0x0F;
+            const int BytesPerLine = 16;
+            var linAddr = address.ToLinear();
+            ulong cSkip = linAddr - BytesPerLine * (linAddr / BytesPerLine);
             ImageSegment segment;
             if (!map.TryFindSegment(address, out segment) || segment.MemoryArea == null)
                 return;
+            byte[] prevLine = null;
+            bool showEllipsis = true;
 			ImageReader rdr = arch.CreateImageReader(segment.MemoryArea, address);
 			while (cbBytes > 0)
 			{
 				StringBuilder sb = new StringBuilder(0x12);
+                var bytes = new List<byte>();
+                var sbBytes = new StringBuilder();
 				try 
 				{
-					stm.Write("{0} ", rdr.Address);
-					for (int i = 0; i < 16; ++i)
+					sbBytes.AppendFormat("{0} ", rdr.Address);
+					for (int i = 0; i < BytesPerLine; ++i)
 					{
 						if (cbBytes > 0 && cSkip == 0)
 						{
 							byte b = rdr.ReadByte();
-							stm.Write("{0:X2} ", b);
+                            bytes.Add(b);
+							sbBytes.AppendFormat("{0:X2} ", b);
 							sb.Append(0x20 <= b && b < 0x7F
 								? (char) b
 								: '.');
@@ -154,22 +161,51 @@ namespace Reko.Core
 						}
 						else
 						{
-							stm.Write("   ");
+							sbBytes.Append("   ");
 							if (cSkip > 0)
 								sb.Append(' ');
 							--cSkip;
 						}
 					}
-				} 
+                    var ab = bytes.ToArray();
+                    if (!HaveSameZeroBytes(prevLine, ab))
+                    {
+                        stm.Write(sbBytes.ToString());
+                        stm.WriteLine(sb.ToString());
+                        showEllipsis = true;
+                    }
+                    else
+                    {
+                        if (showEllipsis)
+                        {
+                            stm.WriteLine("; ...");
+                            showEllipsis = false;
+                        }
+                    }
+                    prevLine = ab;
+                } 
 				catch
 				{
 					stm.WriteLine();
 					stm.WriteLine(";;; ...end of image");
 					return;
 				}
-				stm.WriteLine(sb.ToString());
 			}
 		}
+
+        private bool HaveSameZeroBytes(byte[] prevLine, byte[] ab)
+        {
+            if (prevLine == null)
+                return false;
+            if (prevLine.Length != ab.Length)
+                return false;
+            for (int i = 0; i < ab.Length;++i)
+            {
+                if (prevLine[i] != ab[i] || ab[i] != 0)
+                    return false;
+            }
+            return true;
+        }
 
         public void DumpAssembler(SegmentMap map, Address addrStart, Address addrLast, Formatter formatter)
         {

@@ -272,6 +272,10 @@ namespace Reko.Core.Configuration
 
         [XmlElement("TrashedRegisters")]
         public string TrashedRegisters;
+
+        [XmlArray("TypeLibraries")]
+        [XmlArrayItem("TypeLibrary")]
+        public TypeLibraryReference_v1[] TypeLibraries;
     }
 
     public class BytePattern_v1

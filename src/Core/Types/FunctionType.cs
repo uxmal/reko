@@ -96,6 +96,13 @@ namespace Reko.Core.Types
                 .Select(p => new Identifier(p.Name, p.DataType.Clone(clonedTypes), p.Storage))
                 .ToArray();
             var ft = new FunctionType(ret, parameters);
+            ft.ParametersValid = ParametersValid;
+            ft.IsInstanceMetod = IsInstanceMetod;
+            ft.ReturnAddressOnStack = ReturnAddressOnStack;
+            ft.FpuStackDelta = FpuStackDelta;
+            ft.StackDelta = StackDelta;
+            ft.FpuStackArgumentMax = FpuStackArgumentMax;
+            ft.FpuStackOutArgumentMax = FpuStackOutArgumentMax;
             return ft;
 		}
 

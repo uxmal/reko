@@ -40,6 +40,7 @@ namespace Reko.CmdLine
         private ILoader ldr;
         private IDecompiler decompiler;
         private IConfigurationService config;
+        private IDiagnosticsService diagnosticSvc;
 
         public static void Main(string[] args)
         {
@@ -65,6 +66,7 @@ namespace Reko.CmdLine
             this.ldr = ldr;
             this.decompiler = decompiler;
             this.config = services.RequireService<IConfigurationService>();
+            this.diagnosticSvc = services.RequireService<IDiagnosticsService>();
         }
 
         public void Execute(string[] args)
@@ -122,50 +124,64 @@ namespace Reko.CmdLine
         {
             object loader;
             pArgs.TryGetValue("--loader", out loader);
-            decompiler.Load((string)pArgs["filename"], (string)loader);
-            decompiler.ScanPrograms();
-            decompiler.AnalyzeDataFlow();
-            decompiler.ReconstructTypes();
-            decompiler.StructureProgram();
-            decompiler.WriteDecompilerProducts();
+            try
+            {
+                decompiler.Load((string)pArgs["filename"], (string)loader);
+                decompiler.ScanPrograms();
+                decompiler.AnalyzeDataFlow();
+                decompiler.ReconstructTypes();
+                decompiler.StructureProgram();
+                decompiler.WriteDecompilerProducts();
+            }
+            catch (Exception ex)
+            {
+                diagnosticSvc.Error(ex, "An error occurred during decompilation.");
+            }
         }
 
         private void DecompileRawImage(Dictionary<string, object> pArgs)
         {
-            var arch = config.GetArchitecture((string)pArgs["--arch"]);
-            if (arch == null)
-                throw new ApplicationException(string.Format("Unknown architecture {0}", pArgs["--arch"]));
-
-            object sEnv;
-            pArgs.TryGetValue("--env", out sEnv);
-
-            Address addrBase;
-            object oAddrEntry;
-            if (!arch.TryParseAddress((string)pArgs["--base"], out addrBase))
-                throw new ApplicationException(string.Format("'{0}' doesn't appear to be a valid address.", pArgs["--base"]));
-            pArgs.TryGetValue("--entry", out oAddrEntry);
-
-            object sLoader;
-            pArgs.TryGetValue("--loader", out sLoader);
-            var state = CreateInitialState(arch, pArgs);
-            var program = decompiler.LoadRawImage((string)pArgs["filename"], new LoadDetails
+            try
             {
-                LoaderName = (string)sLoader,
-                ArchitectureName = (string)pArgs["--arch"],
-                PlatformName = (string)sEnv,
-                LoadAddress = (string)pArgs["--base"],
-                EntryPoint = new EntryPointElement { Address = (string)oAddrEntry }
-            });
-            object oHeur;
-            if (pArgs.TryGetValue("heuristics", out oHeur))
-            {
-                decompiler.Project.Programs[0].User.Heuristics = ((string[])oHeur).ToSortedSet();
+                var arch = config.GetArchitecture((string)pArgs["--arch"]);
+                if (arch == null)
+                    throw new ApplicationException(string.Format("Unknown architecture {0}", pArgs["--arch"]));
+
+                object sEnv;
+                pArgs.TryGetValue("--env", out sEnv);
+
+                Address addrBase;
+                object oAddrEntry;
+                if (!arch.TryParseAddress((string)pArgs["--base"], out addrBase))
+                    throw new ApplicationException(string.Format("'{0}' doesn't appear to be a valid address.", pArgs["--base"]));
+                pArgs.TryGetValue("--entry", out oAddrEntry);
+
+                object sLoader;
+                pArgs.TryGetValue("--loader", out sLoader);
+                var state = CreateInitialState(arch, pArgs);
+                var program = decompiler.LoadRawImage((string)pArgs["filename"], new LoadDetails
+                {
+                    LoaderName = (string)sLoader,
+                    ArchitectureName = (string)pArgs["--arch"],
+                    PlatformName = (string)sEnv,
+                    LoadAddress = (string)pArgs["--base"],
+                    EntryPoint = new EntryPointElement { Address = (string)oAddrEntry }
+                });
+                object oHeur;
+                if (pArgs.TryGetValue("heuristics", out oHeur))
+                {
+                    decompiler.Project.Programs[0].User.Heuristics = ((string[])oHeur).ToSortedSet();
+                }
+                decompiler.ScanPrograms();
+                decompiler.AnalyzeDataFlow();
+                decompiler.ReconstructTypes();
+                decompiler.StructureProgram();
+                decompiler.WriteDecompilerProducts();
             }
-            decompiler.ScanPrograms();
-            decompiler.AnalyzeDataFlow();
-            decompiler.ReconstructTypes();
-            decompiler.StructureProgram();
-            decompiler.WriteDecompilerProducts();
+            catch (Exception ex)
+            {
+                diagnosticSvc.Error(ex, "An error occurred during decompilation.");
+            }
         }
 
         private ProcessorState CreateInitialState(IProcessorArchitecture arch, Dictionary<string, object> args)

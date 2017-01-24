@@ -53,6 +53,7 @@ namespace Reko.Core.Serialization
         public TypeReference_v1(string[] scope, string typeName, SerializedType[] typeArgs)
         {
         }
+
         public TypeReference_v1(string [] scope, string typeName)
         {
             this.TypeName = typeName;

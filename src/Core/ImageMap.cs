@@ -158,7 +158,7 @@ namespace Reko.Core
                 item.Size -= itemNew.Size;
 
                 items.Add(addr, itemNew);
-                if (item.Size > 0)
+                if (item.Size > 0 && !items.ContainsKey(item.Address))
                 {
                     items.Add(item.Address, item);
                 }

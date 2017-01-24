@@ -23,6 +23,7 @@ using Reko.Core.Expressions;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Reko.Analysis
 {
@@ -32,16 +33,16 @@ namespace Reko.Analysis
 
 		public Web()
 		{
-			this.Members = new List<SsaIdentifier>();
-			this.Definitions = new List<Statement>();
+			this.Members = new HashSet<SsaIdentifier>();
+			this.Definitions = new HashSet<Statement>();
+			this.Uses = new HashSet<Statement>();
             this.DefExprs = new List<Expression>();
-			this.Uses = new List<Statement>();
 		}
 
         public Identifier Identifier { get; private set; }
-        public List<SsaIdentifier> Members { get; private set; }
-        public List<Statement> Uses { get; private set; }
-        public List<Statement> Definitions { get; private set; }
+        public HashSet<SsaIdentifier> Members { get; private set; }
+        public HashSet<Statement> Uses { get; private set; }
+        public HashSet<Statement> Definitions { get; private set; }
         public List<Expression> DefExprs { get; private set; }
 
         public void Add(SsaIdentifier sid)
@@ -93,7 +94,7 @@ namespace Reko.Analysis
 		public void Write(TextWriter writer)
 		{
 			writer.Write("{0}: {{ ", Identifier.Name);
-			foreach (SsaIdentifier m in Members)
+			foreach (SsaIdentifier m in Members.OrderBy(mm => mm.Identifier.Name))
 			{
 				writer.Write("{0} ", m.Identifier.Name);
 			}

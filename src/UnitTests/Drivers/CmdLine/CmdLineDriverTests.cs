@@ -22,6 +22,8 @@ using NUnit.Framework;
 using Reko.CmdLine;
 using Reko.Core;
 using Reko.Core.Configuration;
+using Reko.Core.Services;
+using Reko.UnitTests.Mocks;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
@@ -48,6 +50,7 @@ namespace Reko.UnitTests.Drivers.CmdLine
             this.ldr = mr.Stub<ILoader>();
             this.decompiler = mr.Stub<IDecompiler>();
             this.configSvc = mr.Stub<IConfigurationService>();
+            sc.AddService<IDiagnosticsService>(new FakeDiagnosticsService());
             sc.AddService<IConfigurationService>(configSvc);
         }
 
