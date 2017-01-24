@@ -63,6 +63,11 @@ namespace Reko.Environments.SysV
             {
                 foreach (var sArg in ss.Arguments)
                 {
+                    if (sArg.Name == "...")
+                    {
+                        argser.Deserialize(sArg);
+                        continue;
+                    }
                     var dt = sArg.Type.Accept(TypeLoader);
                     var sizeInWords = (dt.Size + 3) / 4;
 

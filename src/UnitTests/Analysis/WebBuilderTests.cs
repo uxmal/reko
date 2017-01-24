@@ -72,25 +72,25 @@ namespace Reko.UnitTests.Analysis
 			RunFileTest("Fragments/multiple/successivedecs.asm", "Analysis/WebSuccessiveDecs.txt");
 		}
 
-		private void Build(Program prog)
+		private void Build(Program program)
 		{
             var eventListener = new FakeDecompilerEventListener();
-            DataFlowAnalysis dfa = new DataFlowAnalysis(prog, null, eventListener);
+            DataFlowAnalysis dfa = new DataFlowAnalysis(program, null, eventListener);
 			dfa.UntangleProcedures();
-			foreach (Procedure proc in prog.Procedures.Values)
+			foreach (Procedure proc in program.Procedures.Values)
 			{
-				Aliases alias = new Aliases(proc, prog.Architecture);
+				Aliases alias = new Aliases(proc, program.Architecture);
 				alias.Transform();
 				var gr = proc.CreateBlockDominatorGraph();
 				SsaTransform sst = new SsaTransform(dfa.ProgramDataFlow, proc, null, gr, new HashSet<RegisterStorage>());
 				SsaState ssa = sst.SsaState;
 
-				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, prog.Platform);
+				ConditionCodeEliminator cce = new ConditionCodeEliminator(ssa, program.Platform);
 				cce.Transform();
 
 				DeadCode.Eliminate(proc, ssa);
 
-				var vp = new ValuePropagator(prog.Architecture, ssa, eventListener);
+				var vp = new ValuePropagator(program.Architecture, ssa, eventListener);
 				vp.Transform();
 
 				DeadCode.Eliminate(proc, ssa);
@@ -111,10 +111,10 @@ namespace Reko.UnitTests.Analysis
 
 		}
 
-		protected override void RunTest(Program prog, TextWriter writer)
+		protected override void RunTest(Program program, TextWriter writer)
 		{
-			Build(prog);
-			foreach (Procedure proc in prog.Procedures.Values)
+			Build(program);
+			foreach (Procedure proc in program.Procedures.Values)
 			{
 				proc.Write(false, writer);
 				writer.WriteLine();

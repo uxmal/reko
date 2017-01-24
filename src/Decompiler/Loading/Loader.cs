@@ -184,8 +184,6 @@ namespace Reko.Loading
             var arch = cfgSvc.GetArchitecture(rawFile.Architecture);
             var env = cfgSvc.GetEnvironment(rawFile.Environment);
             IPlatform platform;
-            Address baseAddr;
-            Address entryAddr = null;
             if (env != null)
             {
                 platform = env.Load(Services, arch);
@@ -194,8 +192,9 @@ namespace Reko.Loading
             {
                 platform = new DefaultPlatform(Services, arch);
             }
-            //ApplyMemoryMap(platform, image
 
+            Address entryAddr = null;
+            Address baseAddr;
             if (arch.TryParseAddress(rawFile.BaseAddress, out baseAddr))
             {
                 entryAddr = GetRawBinaryEntryAddress(rawFile, image, arch, baseAddr);

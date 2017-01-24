@@ -4,10 +4,10 @@
 
 #include "pySample.h"
 
-Eq_284 g_t10002098 = null;
-Eq_285 g_t1000209C = null;
-Eq_229 g_t100020A0 = null;
-Eq_230 g_t100020A8 = null;
+Eq_293 g_t10002098 = null;
+Eq_294 g_t1000209C = null;
+Eq_238 g_t100020A0 = null;
+Eq_239 g_t100020A8 = null;
 <anonymous> * g_ptr100020CC = null;
 char g_str100020E0[] = "fdiv(a, b) = a / b";
 char g_str100020F4[] = "fdiv";
@@ -27,7 +27,7 @@ char g_str1000216C[] = ":unused";
 char g_str10002174[] = "pySample";
 ui32 g_dw10003000 = 0xBB40E64E;
 ui32 g_dw10003004 = 0x44BF19B1;
-Eq_198 g_t10003008 = 0xFFFFFFFF;
+Eq_207 g_t10003008 = 0xFFFFFFFF;
 PyMethodDef g_methods[5] = 
 	{
 		
@@ -69,7 +69,7 @@ PyMethodDef g_methods[5] =
 int32 g_dw10003070 = 0;
 word32 g_dw100033A4 = 0x00000000;
 word32 g_dw100033A8 = 0x00000000;
-Eq_175 g_t100033AC = 0;
+Eq_184 g_t100033AC = 0;
 void * g_ptr100033B0 = null;
 void * g_ptr100033B4 = null;
 <anonymous> * g_ptr100033B8 = null;

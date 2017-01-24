@@ -69,10 +69,12 @@ namespace Reko.Arch.PowerPC
                 this.emitter = new RtlEmitter(cluster.Instructions);
                 switch (dasm.Current.Opcode)
                 {
-                default: throw new AddressCorrelatedException(
-                    instr.Address,
-                    "PowerPC instruction '{0}' is not supported yet.",
-                    instr);
+                default:
+                    host.Error(
+                        instr.Address, 
+                        string.Format("PowerPC instruction '{0}' is not supported yet.", instr));
+                    emitter.Invalid();
+                    break;
                 case Opcode.addi: RewriteAddi(); break;
                 case Opcode.addc: RewriteAddc(); break;
                 case Opcode.addic: RewriteAddic(); break;

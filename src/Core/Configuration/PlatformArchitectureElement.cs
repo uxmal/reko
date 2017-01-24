@@ -33,6 +33,7 @@ namespace Reko.Core.Configuration
     {
         string Name { get; }
         List<string> TrashedRegisters { get; }
+        List<ITypeLibraryElement> TypeLibraries { get; }
     }
 
     public class PlatformArchitectureElement : IPlatformArchitectureElement
@@ -40,9 +41,11 @@ namespace Reko.Core.Configuration
         public PlatformArchitectureElement()
         {
             this.TrashedRegisters = new List<string>();
+            this.TypeLibraries = new List<ITypeLibraryElement>();
         }
 
         public string Name { get; internal set; }
         public List<string> TrashedRegisters { get; internal set; }
+        public List<ITypeLibraryElement> TypeLibraries { get; internal set; }
     }
 }

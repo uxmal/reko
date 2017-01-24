@@ -614,7 +614,7 @@ T_112: (in Mem86[0x000013D0 + 0x00000000:word32] : word32)
   Class: Eq_108
   DataType: word32
   OrigDataType: word32
-T_113: (in CloseLibrary(*&globals->ptr13D0) : void)
+T_113: (in CloseLibrary(globals->ptr13D0) : void)
   Class: Eq_113
   DataType: void
   OrigDataType: void
@@ -2374,7 +2374,7 @@ T_552: (in Mem0[0x000013D0 + 0x00000000:word32] : word32)
   Class: Eq_108
   DataType: word32
   OrigDataType: word32
-T_553: (in CloseLibrary(*&globals->ptr13D0) : void)
+T_553: (in CloseLibrary(globals->ptr13D0) : void)
   Class: Eq_113
   DataType: void
   OrigDataType: void
