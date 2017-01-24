@@ -27,7 +27,7 @@ __divdf3: error: An error occurred while rewriting procedure to high-level langu
 fn0000000000015180: error: An error occurred during data flow analysis.
     The method or operation is not implemented.
        at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 354
+   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
    at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
    at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
@@ -41,7 +41,7 @@ fn0000000000015180: error: An error occurred during data flow analysis.
 fn0000000000015F64: error: An error occurred during data flow analysis.
     The method or operation is not implemented.
        at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 354
+   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
    at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
    at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
@@ -57,7 +57,7 @@ fn0000000000015F64: error: An error occurred during data flow analysis.
 fn0000000000015F94: error: An error occurred during data flow analysis.
     The method or operation is not implemented.
        at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 354
+   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
    at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
    at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
@@ -71,7 +71,7 @@ fn0000000000015F94: error: An error occurred during data flow analysis.
 fn0000000000015FCC: error: An error occurred during data flow analysis.
     The method or operation is not implemented.
        at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 354
+   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
    at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
    at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
@@ -85,7 +85,7 @@ fn0000000000015FCC: error: An error occurred during data flow analysis.
 fn00000000000163B0: error: An error occurred during data flow analysis.
     The method or operation is not implemented.
        at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 354
+   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
    at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
    at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
@@ -99,7 +99,7 @@ fn00000000000163B0: error: An error occurred during data flow analysis.
 fn000000000001654C: error: An error occurred during data flow analysis.
     The method or operation is not implemented.
        at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 354
+   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
    at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
    at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
@@ -113,7 +113,7 @@ fn000000000001654C: error: An error occurred during data flow analysis.
 fn0000000000016630: error: An error occurred during data flow analysis.
     The method or operation is not implemented.
        at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 354
+   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
    at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
    at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
@@ -127,7 +127,7 @@ fn0000000000016630: error: An error occurred during data flow analysis.
 fn00000000000166F4: error: An error occurred during data flow analysis.
     The method or operation is not implemented.
        at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 354
+   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
    at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
    at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
@@ -141,7 +141,7 @@ fn00000000000166F4: error: An error occurred during data flow analysis.
 fn0000000000016830: error: An error occurred during data flow analysis.
     The method or operation is not implemented.
        at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 354
+   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
    at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
    at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
@@ -163,7 +163,7 @@ fn0000000000016864: error: An error occurred during data flow analysis.
 fn00000000000168E4: error: An error occurred during data flow analysis.
     The method or operation is not implemented.
        at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 354
+   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
    at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
    at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
@@ -177,7 +177,7 @@ fn00000000000168E4: error: An error occurred during data flow analysis.
 fn00000000000169D8: error: An error occurred during data flow analysis.
     The method or operation is not implemented.
        at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 354
+   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
    at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
    at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
@@ -191,7 +191,7 @@ fn00000000000169D8: error: An error occurred during data flow analysis.
 fn0000000000016D74: error: An error occurred during data flow analysis.
     The method or operation is not implemented.
        at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 354
+   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
    at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
    at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
@@ -205,7 +205,7 @@ fn0000000000016D74: error: An error occurred during data flow analysis.
 fn000000000001730C: error: An error occurred during data flow analysis.
     The method or operation is not implemented.
        at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 354
+   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
    at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
    at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
@@ -219,7 +219,7 @@ fn000000000001730C: error: An error occurred during data flow analysis.
 fn00000000000173D4: error: An error occurred during data flow analysis.
     The method or operation is not implemented.
        at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 354
+   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
    at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
    at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
@@ -235,7 +235,7 @@ fn00000000000173D4: error: An error occurred during data flow analysis.
 fn00000000000175BC: error: An error occurred during data flow analysis.
     The method or operation is not implemented.
        at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 354
+   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
    at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
    at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
@@ -249,7 +249,7 @@ fn00000000000175BC: error: An error occurred during data flow analysis.
 fn0000000000017924: error: An error occurred during data flow analysis.
     The method or operation is not implemented.
        at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 354
+   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
    at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
    at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
@@ -263,7 +263,7 @@ fn0000000000017924: error: An error occurred during data flow analysis.
 fn0000000000017B40: error: An error occurred during data flow analysis.
     The method or operation is not implemented.
        at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 354
+   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
    at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
    at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
@@ -278,7 +278,7 @@ fn0000000000017B40: error: An error occurred during data flow analysis.
 fn0000000000017D10: error: An error occurred during data flow analysis.
     The method or operation is not implemented.
        at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 354
+   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
    at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
    at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
@@ -293,7 +293,7 @@ fn0000000000017D10: error: An error occurred during data flow analysis.
 fn0000000000017F04: error: An error occurred during data flow analysis.
     The method or operation is not implemented.
        at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 354
+   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
    at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
    at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67
@@ -307,7 +307,7 @@ fn0000000000017F04: error: An error occurred during data flow analysis.
 fn0000000000018118: error: An error occurred during data flow analysis.
     The method or operation is not implemented.
        at Reko.Arch.RiscV.RiscVArchitecture.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Arch\RiscV\RiscVArchitecture.cs:line 173
-   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 354
+   at Reko.Core.Platform.MakeAddressFromConstant(Constant c) in D:\dev\uxmal\reko\master\src\Core\Platform.cs:line 355
    at Reko.Core.ImportResolver.ResolveToImportedProcedureConstant(Statement stm, Constant c) in D:\dev\uxmal\reko\master\src\Core\ImportResolver.cs:line 161
    at Reko.Analysis.SsaTransform.VariableRenamer.VisitMemoryAccess(MemoryAccess access) in D:\dev\uxmal\reko\master\src\Decompiler\Analysis\SsaTransform.cs:line 762
    at Reko.Core.Expressions.MemoryAccess.Accept[T](ExpressionVisitor`1 v) in D:\dev\uxmal\reko\master\src\Core\Expressions\MemoryAccess.cs:line 67

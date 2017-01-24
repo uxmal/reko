@@ -149,7 +149,7 @@ namespace Reko.Environments.Windows
             }
             if (ssig.Convention == "varargs")
             {
-                args.Add(new Argument_v1 { Name = "..." });
+                args.Add(new Argument_v1 { Name = "...", Type = new VoidType_v1() });
                 ssig.Convention = "__cdecl";
             }
             return args.ToArray();

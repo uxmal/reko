@@ -66,7 +66,7 @@ namespace Reko.Arch.PowerPC
 
         public override Constant GetRegister(RegisterStorage reg)
         {
-            if ((valid[reg.Number] & reg.BitMask) == reg.BitMask)
+            if (reg.Number < valid.Length &&  (valid[reg.Number] & reg.BitMask) == reg.BitMask)
             {
                 var val = (regs[reg.Number] & reg.BitMask) >> (int)reg.BitAddress;
                 return Constant.Create(reg.DataType, val);
