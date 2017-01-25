@@ -57,6 +57,7 @@ namespace Reko.UnitTests.Scanning
             {
                 ICFG = new DiGraph<HeuristicBlock>(),
                 DirectlyCalledAddresses = new Dictionary<Address, int>(),
+                KnownProcedures = new HashSet<Address>(),
             };
             this.program = new Program();
             this.listener = new FakeDecompilerEventListener();
@@ -195,6 +196,26 @@ namespace Reko.UnitTests.Scanning
             Given_DirectCall(0x42, Fused3);
         }
 
+        public void Given_KnownProcedures()
+        {
+            // The set of known procedures is...
+            var knownProcedureAddresses = new HashSet<Address>();
+            // ...all procedures the loader was able to deduce
+            // from symbols and other metadata..
+            knownProcedureAddresses.UnionWith(
+                program.ImageSymbols.Values
+                    .Where(s => s.Type == SymbolType.Procedure)
+                    .Select(s => s.Address));
+            // ...all procedures the user has told us about...
+            knownProcedureAddresses.UnionWith(
+                program.User.Procedures.Keys);
+            // ...and all addresses that the Scanner was able to
+            //   detect as being called directly.
+            knownProcedureAddresses.UnionWith(
+                sr.DirectlyCalledAddresses.Keys);
+            this.sr.KnownProcedures = knownProcedureAddresses;
+        }
+
         [Test]
         public void Prdet_BuildCluster()
         {
@@ -202,6 +223,7 @@ namespace Reko.UnitTests.Scanning
             Given_Edge(1, 3);
             Given_Edge(2, 4);
             Given_Edge(3, 4);
+            Given_KnownProcedures();
 
             var prdet = new ProcedureDetector(this.program, this.sr, this.listener);
             var clusters = prdet.FindClusters();
@@ -225,6 +247,7 @@ namespace Reko.UnitTests.Scanning
         public void Prdet_FindClusters_EvenOdd()
         {
             Given_EvenOdd();
+            Given_KnownProcedures();
             Given_ProcedureDetector();
 
             var clusters = prdet.FindClusters();
@@ -257,6 +280,7 @@ namespace Reko.UnitTests.Scanning
         public void Prdet_FindEntries_EvenOdd()
         {
             Given_EvenOdd();
+            Given_KnownProcedures();
             Given_ProcedureDetector();
 
             var clusters = prdet.FindClusters();
@@ -280,6 +304,7 @@ namespace Reko.UnitTests.Scanning
         public void Prdet_FindEntries_FusedExit()
         {
             Given_FusedExitNode();
+            Given_KnownProcedures();
             Given_ProcedureDetector();
 
             var clusters = prdet.FindClusters();
@@ -328,6 +353,8 @@ namespace Reko.UnitTests.Scanning
             Given_DirectCall(99, 10);       // someone else (99) called 10.
 
             Given_FusedExitNode();
+            Given_KnownProcedures();
+
             Given_ProcedureDetector();
 
             prdet.RemoveJumpsToKnownProcedures();

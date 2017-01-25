@@ -53,9 +53,9 @@ namespace Reko.Scanning
 
         public void VisitArray(ArrayType at)
         {
-            if (at.Length == 0)
+            if (at.Length <= 0)
             {
-                scanner.Warn(Address, "User-specified arrays must have a non-zero size.");
+                scanner.Warn(Address, "User-specified arrays must have a positive size.");
                 return;
             }
             for (int i = 0; i < at.Length; ++i)

@@ -23,6 +23,7 @@ using Reko.Core.Lib;
 using Reko.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -49,15 +50,15 @@ namespace Reko.Scanning
             this.program = program;
             this.sr = sr;
             this.listener = listener;
-            this.knownProcedures = CollectKnownProcedures();
+            this.knownProcedures = sr.KnownProcedures;
             this.mpAddrToBlock = sr.ICFG.Nodes.ToDictionary(de => de.Address);
         }
 
-        public void DetectProcedures()
+        public List<Procedure> DetectProcedures()
         {
             PreprocessIcfg();
             var clusters = FindClusters();
-            BuildProcedures(clusters);
+            return BuildProcedures(clusters);
         }
 
         private void PreprocessIcfg()
@@ -65,26 +66,6 @@ namespace Reko.Scanning
             RemoveJumpsToKnownProcedures();
             //BuildDominatorTree();
             ProcessIndirectJumps();
-        }
-
-        public HashSet<Address> CollectKnownProcedures()
-        {
-            // The set of known procedures is...
-            var knownProcedureAddresses = new HashSet<Address>();
-            // ...all procedures the loader was able to deduce
-            // from symbols and other metadata..
-            knownProcedureAddresses.UnionWith(
-                program.ImageSymbols.Values
-                    .Where(s => s.Type == SymbolType.Procedure)
-                    .Select(s => s.Address));
-            // ...all procedures the user has told us about...
-            knownProcedureAddresses.UnionWith(
-                program.User.Procedures.Keys);
-            // ...and all addresses that the Scanner was able to
-            //   detect as being called directly.
-            knownProcedureAddresses.UnionWith(
-                sr.DirectlyCalledAddresses.Keys);
-            return knownProcedureAddresses;
         }
 
         public void RemoveJumpsToKnownProcedures()
@@ -160,7 +141,10 @@ namespace Reko.Scanning
         /// <param name="node"></param>
         /// <param name="cluster"></param>
         /// <param name="nodesLeft"></param>
-        private void BuildWCC(HeuristicBlock node, Cluster cluster, HashSet<HeuristicBlock> nodesLeft)
+        private void BuildWCC(
+            HeuristicBlock node,
+            Cluster cluster,
+            HashSet<HeuristicBlock> nodesLeft)
         {
             nodesLeft.Remove(node);
             cluster.Blocks.Add(node);
@@ -264,6 +248,7 @@ namespace Reko.Scanning
             // If the cluster has more than one entry, we have to try to pick it apart.
             if (entries.Count > 1)
             {
+                Debug.Print("Entries {0} share common code", string.Join(",", entries.Select(e => e.Name)));
                 var fusedTails = DetachFusedTails(cluster);
 
                 // for each Articulation point ap:

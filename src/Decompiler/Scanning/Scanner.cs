@@ -838,8 +838,8 @@ namespace Reko.Scanning
         /// </summary>
         public void ScanImageHeuristically()
         {
-            var heuristicScanner = new HeuristicScanner(program, this, eventListener);
-            heuristicScanner.ScanImage();
+            var heuristicScanner = new HeuristicScanner(Services, program, this, eventListener);
+            heuristicScanner.ScanImageHeuristically();
         }
 
         [Conditional("DEBUG")]

@@ -55,6 +55,12 @@ namespace Reko.Scanning
         public Dictionary<Address, ImageSymbol> KnownAddresses;
 
         /// <summary>
+        /// More specifically, these are addresses that are known to be
+        /// function entry points.
+        /// </summary>
+        public HashSet<Address> KnownProcedures;
+
+        /// <summary>
         /// Tally of occurrences of bitpatterns that look like addresses,
         /// excluding relocations which are known to be addresses.
         /// </summary>
@@ -73,6 +79,7 @@ namespace Reko.Scanning
         /// <summary>
         /// Addresses at which indirect calls happen
         /// </summary>
-        public HashSet<Address> IndirectCalls;  
+        public HashSet<Address> IndirectCalls;
+
     }
 }

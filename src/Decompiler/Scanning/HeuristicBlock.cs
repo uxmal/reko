@@ -33,7 +33,7 @@ namespace Reko.Scanning
         public HeuristicBlock(Address address, string name)
         {
             this.Address = address;
-            this.Name = name; // +"-" + (++cntr);
+            this.Name = name; 
             this.Instructions = new List<MachineInstruction>();
             this.IsValid = true;
         }

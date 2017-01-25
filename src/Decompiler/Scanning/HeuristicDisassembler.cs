@@ -69,6 +69,8 @@ namespace Reko.Scanning
             var dasm = program.CreateDisassembler(addr);
             foreach (var instr in dasm.TakeWhile(i => isAddrValid(i.Address)))
             {
+                //$TODO: if wandered into the image map, and that isn't a 
+                // code block, we are executing data, so we are invalid.
                 HeuristicBlock block;
                 if (blockMap.TryGetValue(instr.Address, out block))
                 {

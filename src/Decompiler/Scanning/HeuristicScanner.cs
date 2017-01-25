@@ -45,21 +45,25 @@ namespace Reko.Scanning
     /// University of California Santa Barbara
     /// {chris,wkr,fredrik,vigna}@cs.ucsb.edu
     /// </remarks>
-    public class HeuristicScanner
+    public class HeuristicScanner : IScanner
     {
         private Program program;
         private IRewriterHost host;
         private DecompilerEventListener eventListener;
 
         public HeuristicScanner(
+            IServiceProvider services,
             Program program, 
             IRewriterHost host, 
             DecompilerEventListener eventListener)
         {
+            this.Services = services;
             this.program = program;
             this.host = host;
             this.eventListener = eventListener;
         }
+
+        public IServiceProvider Services { get; private set; }
 
         /// Plan of attack:
         /// In each unscanned "hole", look for signatures of procedure entries.
@@ -72,7 +76,7 @@ namespace Reko.Scanning
         ///  - pointers to those candidates.
         /// Each time we find a call, we increase the score of the candidate.
         /// At the end we have a list of scored candidates.
-        public ScanResults ScanImage()
+        public ScanResults ScanImageHeuristically()
         {
             var sw = new Stopwatch();
             sw.Start();
@@ -80,10 +84,11 @@ namespace Reko.Scanning
             var ranges = FindUnscannedRanges();
             var fnRanges = FindPossibleFunctions(ranges).ToList();
             int n = 0;
+            var icfg = new DiGraph<HeuristicBlock>();
             foreach (var range in fnRanges)
             {
                 var hproc = DisassembleProcedure(range.Item1, range.Item2);
-                var hps = new HeuristicProcedureScanner(program, hproc.Cfg, hproc.IsValidAddress, host);
+                var hps = new HeuristicProcedureScanner(program, icfg, program.SegmentMap.IsValidAddress, host);
                 hps.BlockConflictResolution(hproc.BeginAddress);
                 DumpBlocks(hproc.Cfg.Nodes);
                 hps.GapResolution();
@@ -100,7 +105,58 @@ namespace Reko.Scanning
             list.ToString();
             return new ScanResults
             {
+                ICFG = icfg,
             };
+        }
+
+        public void ScanImage()
+        {
+            var sw = new Stopwatch();
+            sw.Start();
+            var list = new List<HeuristicBlock>();
+            //$TODO: scan user datas - may yield procedure addresses
+            //$TODO: scan image symbols
+
+            // At this point, we have some entries in the image map
+            // that are data, and unscanned ranges in betweeen. We
+            // have hopefully a bunch of procedure addresses to
+            // break up the unscanned ranges.
+
+            var ranges = FindUnscannedRanges();
+
+            var sr = new ScanResults
+            {
+                KnownProcedures = FindKnownProcedures(),
+                ICFG = new DiGraph<HeuristicBlock>()
+            };
+
+            foreach (var range in ranges)
+            {
+                DisassembleRange(range.Item2, range.Item3, sr);
+            }
+            var pd = new ProcedureDetector(program, sr, this.eventListener);
+            var procs = pd.DetectProcedures();
+            sw.Stop();
+            eventListener.Info(
+                new NullCodeLocation("Heuristics"),
+                string.Format("Scanned image in {0} seconds, finding {1} blocks.",
+                    sw.Elapsed.TotalSeconds, list.Count));
+        }
+
+        private HashSet<Address> FindKnownProcedures()
+        {
+            // Known procedures are...
+            var procs = new HashSet<Address>(
+                // ...all procedure symbols from the image metadata
+                program.ImageSymbols.Values
+                    .Where(s => s.Type == SymbolType.Procedure)
+                    .Select(s => s.Address)
+                // ...all entry points
+                .Concat(program.EntryPoints
+                    .Select(e => e.Key))
+                // ...and all user-specified metadata
+                .Concat(program.User.Procedures.Keys));
+            return procs;
         }
 
         private void AddBlocks(HeuristicProcedure hproc)
@@ -134,7 +190,10 @@ namespace Reko.Scanning
 
             return program.ImageMap.Items
                 .Where(de => de.Value.DataType is UnknownType)
-                .Select(de => Tuple.Create(this.program.SegmentMap.Segments[de.Key].MemoryArea, de.Key, de.Key + de.Value.Size));
+                .Select(de => Tuple.Create(
+                    this.program.SegmentMap.Segments[de.Key].MemoryArea,
+                    de.Key,
+                    de.Key + de.Value.Size));
 #else
             return program.SegmentMap.Segments.Values
                 .Where(s => (s.Access & AccessMode.Execute) != 0)
@@ -211,8 +270,8 @@ namespace Reko.Scanning
         }
 
         /// <summary>
-        /// Heuristically disassembles a procedure that has been assumed to 
-        /// be located between <paramref name="addrStart"/> and <paramref name="addrEnd"/>. 
+        /// Heuristically disassembles a range of addresses between 
+        /// <paramref name="addrStart"/> and <paramref name="addrEnd"/>. 
         /// </summary>
         /// <param name="addrStart"></param>
         /// <param name="addrEnd"></param>
@@ -237,6 +296,20 @@ namespace Reko.Scanning
             }
             DumpBlocks(proc.Cfg.Nodes);
             return proc;
+        }
+
+        public void DisassembleRange(Address addrStart, Address addrEnd, ScanResults sr)
+        {
+            var dasm = new HeuristicDisassembler(
+                program,
+                sr.ICFG,
+                program.SegmentMap.IsValidAddress,
+                host);
+            int instrByteGranularity = program.Architecture.InstructionBitSize / 8;
+            for (Address addr = addrStart; addr < addrEnd; addr = addr + instrByteGranularity)
+            {
+                dasm.Disassemble(addr);
+            }
         }
 
         // Partition memory into chunks betweeen each candidate.
@@ -284,6 +357,114 @@ namespace Reko.Scanning
                 }
                 Debug.Print(sb.ToString());
             }
+        }
+
+        // IScanner interface.
+
+
+        public void EnqueueImageSymbol(ImageSymbol sym, bool isEntryPoint)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void EnqueueProcedure(Address addr)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Block EnqueueJumpTarget(Address addrSrc, Address addrDst, Procedure proc, ProcessorState state)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void EnqueueUserProcedure(Procedure_v1 sp)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void EnqueueUserProcedure(Address addr, FunctionType sig)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void EnqueueUserGlobalData(Address addr, DataType dt)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IScanner.Warn(Address addr, string message)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IScanner.Warn(Address addr, string message, params object[] args)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IScanner.Error(Address addr, string message)
+        {
+            throw new NotImplementedException();
+        }
+
+        ProcedureBase IScanner.ScanProcedure(Address addr, string procedureName, ProcessorState state)
+        {
+            throw new NotImplementedException();
+        }
+
+        FunctionType IScanner.GetCallSignatureAtAddress(Address addrCallInstruction)
+        {
+            throw new NotImplementedException();
+        }
+
+        ExternalProcedure IScanner.GetImportedProcedure(Address addrImportThunk, Address addrInstruction)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IScanner.TerminateBlock(Block block, Address addrEnd)
+        {
+            throw new NotImplementedException();
+        }
+
+        Block IScanner.FindContainingBlock(Address addr)
+        {
+            throw new NotImplementedException();
+        }
+
+        Block IScanner.FindExactBlock(Address addr)
+        {
+            throw new NotImplementedException();
+        }
+
+        Block IScanner.SplitBlock(Block block, Address addr)
+        {
+            throw new NotImplementedException();
+        }
+
+        ImageReader IScanner.CreateReader(Address addr)
+        {
+            throw new NotImplementedException();
+        }
+
+        Block IScanner.CreateCallRetThunk(Address addrFrom, Procedure procOld, Procedure procNew)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IScanner.SetProcedureReturnAddressBytes(Procedure proc, int returnAddressBytes, Address address)
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerable<RtlInstructionCluster> IScanner.GetTrace(Address addrStart, ProcessorState state, Frame frame)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IScanner.ScanImageHeuristically()
+        {
+            throw new NotImplementedException();
         }
     }
 }
