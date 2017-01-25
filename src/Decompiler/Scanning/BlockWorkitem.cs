@@ -762,7 +762,7 @@ namespace Reko.Scanning
                 vector = builder.BuildAux(bw, addrSwitch, state);
                 if (vector.Count == 0)
                 {
-                    var rdr = scanner.CreateReader(bw.VectorAddress);
+                    var rdr = program.CreateImageReader(bw.VectorAddress);
                     if (!rdr.IsValid)
                         return false;
                     // Can't determine the size of the table, but surely it has one entry?

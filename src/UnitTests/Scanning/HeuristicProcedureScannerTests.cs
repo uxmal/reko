@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using Reko.Core.Types;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -33,6 +34,7 @@ namespace Reko.UnitTests.Scanning
     public class HeuristicProcedureScannerTests : HeuristicTestBase
     {
         private HeuristicProcedure proc;
+        private ScanResults sr;
 
         [SetUp]
         public override void Setup()
@@ -76,7 +78,7 @@ namespace Reko.UnitTests.Scanning
 
             When_DisassembleProcedure();
             var conflicts = HeuristicProcedureScanner.BuildConflictGraph(proc.Cfg.Nodes);
-            var sExp = 
+            var sExp =
 @"(l00010001-l00010002)
 (l00010002-l00010003)
 ";
@@ -141,13 +143,6 @@ l00010009:  // pred: l00010008
             AssertBlocks(sExp, proc.Cfg);
         }
 
-        private void Given_NoImportedProcedures()
-        {
-            host.Stub(h => h.GetImportedProcedure(null, null))
-                .IgnoreArguments()
-                .Return(null);
-        }
-
         [Test]
         public void HPSC_TrickyProc()
         {
@@ -186,7 +181,7 @@ l0001001B:  // pred: l00010019
 l0001001C:  // pred: l0001001B
     ret 
 ";
-#endregion
+            #endregion
             AssertBlocks(sExp, proc.Cfg);
         }
     }

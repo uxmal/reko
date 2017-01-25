@@ -50,6 +50,7 @@ namespace Reko.Scanning
         private Program program;
         private IRewriterHost host;
         private DecompilerEventListener eventListener;
+        private HeuristicBlock invalidBlock;
 
         public HeuristicScanner(
             IServiceProvider services,
@@ -61,6 +62,7 @@ namespace Reko.Scanning
             this.program = program;
             this.host = host;
             this.eventListener = eventListener;
+            this.invalidBlock = new HeuristicBlock(null, "<invalid>");
         }
 
         public IServiceProvider Services { get; private set; }
@@ -109,7 +111,7 @@ namespace Reko.Scanning
             };
         }
 
-        public void ScanImage()
+        public ScanResults ScanImage()
         {
             var sw = new Stopwatch();
             sw.Start();
@@ -117,23 +119,32 @@ namespace Reko.Scanning
             //$TODO: scan user datas - may yield procedure addresses
             //$TODO: scan image symbols
 
-            // At this point, we have some entries in the image map
-            // that are data, and unscanned ranges in betweeen. We
-            // have hopefully a bunch of procedure addresses to
-            // break up the unscanned ranges.
-
-            var ranges = FindUnscannedRanges();
-
             var sr = new ScanResults
             {
                 KnownProcedures = FindKnownProcedures(),
                 ICFG = new DiGraph<HeuristicBlock>()
             };
 
+            // Break up the image map along known procedure boundaries
+            foreach (var addr in sr.KnownProcedures)
+            {
+                program.ImageMap.AddItem(addr, new ImageMapItem());
+            }
+
+            // At this point, we have some entries in the image map
+            // that are data, and unscanned ranges in betweeen. We
+            // have hopefully a bunch of procedure addresses to
+            // break up the unscanned ranges.
+
+            var ranges = FindUnscannedRanges();
+           
             foreach (var range in ranges)
             {
                 DisassembleRange(range.Item2, range.Item3, sr);
             }
+
+            RemoveInvalidBlocks(sr);
+
             var pd = new ProcedureDetector(program, sr, this.eventListener);
             var procs = pd.DetectProcedures();
             sw.Stop();
@@ -141,6 +152,7 @@ namespace Reko.Scanning
                 new NullCodeLocation("Heuristics"),
                 string.Format("Scanned image in {0} seconds, finding {1} blocks.",
                     sw.Elapsed.TotalSeconds, list.Count));
+            return sr;
         }
 
         private HashSet<Address> FindKnownProcedures()
@@ -157,6 +169,39 @@ namespace Reko.Scanning
                 // ...and all user-specified metadata
                 .Concat(program.User.Procedures.Keys));
             return procs;
+        }
+
+        private void RemoveInvalidBlocks(ScanResults sr)
+        {
+            var revGraph = new DiGraph<HeuristicBlock>();
+            var invalid = new HeuristicBlock(null, "<invalid>");
+            revGraph.AddNode(invalid);
+            foreach (var b in sr.ICFG.Nodes)
+            {
+                revGraph.AddNode(b);
+            }
+            foreach (var b in sr.ICFG.Nodes)
+            {
+                foreach (var s in sr.ICFG.Successors(b))
+                {
+                    revGraph.AddEdge(s, b);
+                }
+                if (!b.IsValid)
+                {
+                    revGraph.AddEdge(invalid, b);
+                }
+            }
+
+            // Find the transitive closure of invalid nodes.
+
+            var invalidNodes = new DfsIterator<HeuristicBlock>(revGraph)
+                .PreOrder(invalid)
+                .ToList();
+            foreach (var n in invalidNodes)
+            {
+                sr.ICFG.RemoveNode(n);
+            }
+
         }
 
         private void AddBlocks(HeuristicProcedure hproc)
@@ -442,11 +487,6 @@ namespace Reko.Scanning
             throw new NotImplementedException();
         }
 
-        ImageReader IScanner.CreateReader(Address addr)
-        {
-            throw new NotImplementedException();
-        }
-
         Block IScanner.CreateCallRetThunk(Address addrFrom, Procedure procOld, Procedure procNew)
         {
             throw new NotImplementedException();
@@ -463,6 +503,11 @@ namespace Reko.Scanning
         }
 
         void IScanner.ScanImageHeuristically()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IScanner.ScanImage()
         {
             throw new NotImplementedException();
         }

@@ -75,8 +75,6 @@ namespace Reko.Scanning
         Block FindExactBlock(Address addr);
         Block SplitBlock(Block block, Address addr);
 
-        ImageReader CreateReader(Address addr);
-
         Block CreateCallRetThunk(Address addrFrom, Procedure procOld, Procedure procNew);
         void SetProcedureReturnAddressBytes(Procedure proc, int returnAddressBytes, Address address);
 
@@ -227,11 +225,6 @@ namespace Reko.Scanning
             eventListener.Error(eventListener.CreateAddressNavigator(program, addr), message);
         }
 
-        public ImageReader CreateReader(Address addr)
-        {
-            return program.CreateImageReader(addr);
-        }
-
         /// <summary>
         /// Creates a work item which will process code starting at the address
         /// <paramref name="addrStart"/>. The resulting block will belong to 
@@ -256,7 +249,7 @@ namespace Reko.Scanning
         public IEnumerable<RtlInstructionCluster> GetTrace(Address addrStart, ProcessorState state, Frame frame)
         {
             return program.Architecture.CreateRewriter(
-                CreateReader(addrStart),
+                program.CreateImageReader(addrStart),
                 state,
                 frame,
                 this);

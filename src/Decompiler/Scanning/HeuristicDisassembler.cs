@@ -28,6 +28,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Reko.Core.Lib;
+using Reko.Core.Types;
 
 namespace Reko.Scanning
 {
@@ -155,7 +156,13 @@ namespace Reko.Scanning
 
         private bool FallthroughToInvalid(MachineInstruction instr)
         {
-            return !isAddrValid(instr.Address + instr.Length);
+            var addrNextInstr = instr.Address + instr.Length;
+            if (!isAddrValid(addrNextInstr))
+                return true;
+            ImageMapItem item;
+            if (!program.ImageMap.TryFindItem(addrNextInstr, out item))
+                return false;
+            return !(item.DataType is UnknownType);
         }
 
         /// <summary>
@@ -186,7 +193,10 @@ namespace Reko.Scanning
         /// <returns></returns>
         private HeuristicBlock SplitBlock(HeuristicBlock block, Address addr)
         {
-            var newBlock = new HeuristicBlock(addr, string.Format("l{0:X}", addr));
+            var newBlock = new HeuristicBlock(addr, string.Format("l{0:X}", addr))
+            {
+                IsValid = block.IsValid
+            };
             cfg.Nodes.Add(newBlock);
             newBlock.Instructions.AddRange(
                 block.Instructions.Where(r => r.Address >= addr).OrderBy(r => r.Address));

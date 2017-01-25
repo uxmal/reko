@@ -29,16 +29,25 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using Reko.Core.Types;
 
 namespace Reko.UnitTests.Scanning
 {
     [TestFixture]
     public class HeuristicScannerTests : HeuristicTestBase
     {
+        private ScanResults sr;
+
         [SetUp]
         public override void Setup()
         {
             base.Setup();
+        }
+
+        private void When_ScanImage()
+        {
+            var hsc = new HeuristicScanner(null, program, host, eventListener);
+            this.sr = hsc.ScanImage();
         }
 
         [Test]
@@ -264,6 +273,64 @@ l0001001D:  // pred:
 ";
             #endregion
             AssertBlocks(sExp, proc.Cfg);
+        }
+
+        [Test(Description = "The NOP sled ends up running into data, so it can't be valid.")]
+        public void HPSC_ScanImage_FallIntoData()
+        {
+            Given_Image32(0x0010000, "90 90 90 90 00 00 00 00");
+            Given_x86_32();
+            Given_DataBlob(0x0010004, PrimitiveType.Int32, "c3 c3 c3 c3");
+            Given_RewriterHost();
+            Given_NoImportedProcedures();
+            mr.ReplayAll();
+
+            When_ScanImage();
+
+            AssertBlocks("", sr.ICFG);
+        }
+
+        [Test(Description = "The NOP sled ends with a ret instruction, so it's valid.")]
+        public void HPSC_ScanImage_NopSled()
+        {
+            Given_Image32(0x0010000, "90 90 90 c3 00 00 00 00");
+            Given_x86_32();
+            Given_RewriterHost();
+            Given_NoImportedProcedures();
+            mr.ReplayAll();
+
+            When_ScanImage();
+
+            var sExp =
+            #region Expected
+@"l00010000:  // pred:
+    nop 
+    nop 
+    nop 
+    ret 
+";
+            #endregion
+            AssertBlocks(sExp, sr.ICFG);
+        }
+
+        [Test(Description = "The NOP sled ends with a ret instruction, so it's valid.")]
+        public void HPSC_ScanImage_IntCall()
+        {
+            Given_Image32(0x0010000, "cd 21 00 00");
+            Given_x86_32();
+            Given_RewriterHost();
+            Given_NoImportedProcedures();
+            mr.ReplayAll();
+
+            When_ScanImage();
+
+            var sExp =
+            #region Expected
+@"l00010000:  // pred:
+    int 21
+";
+            #endregion
+            AssertBlocks(sExp, sr.ICFG);
         }
     }
 }

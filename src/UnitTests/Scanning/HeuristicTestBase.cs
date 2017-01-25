@@ -36,11 +36,20 @@ namespace Reko.UnitTests.Scanning
 {
     public class HeuristicTestBase
     {
+        protected const string TrickyProc =
+            "55 89 e5 e8 00 00 74 11 " +
+            "0a 05 3c 00 75 06 " +
+            "b0 00 " +
+            "eb 07 " +
+            "0a 05 a1 00 00 74 " +
+            "01 89 ec 5d c3 90";
+
         protected Program program;
         protected ImageSegment segment;
         protected MockRepository mr;
         protected IRewriterHost host;
         protected DecompilerEventListener eventListener;
+        private MemoryArea mem;
 
         public virtual void Setup()
         {
@@ -85,13 +94,34 @@ namespace Reko.UnitTests.Scanning
             segment = program.SegmentMap.Segments.Values.First();
         }
 
+        protected void Given_DataBlob(uint uAddr, DataType dt, string sBytes)
+        {
+            var bytes = HexStringToBytes(sBytes);
+            var addr = Address.Ptr32(uAddr);
+            var w = program.CreateImageWriter(addr);
+            w.WriteBytes(bytes);
+            program.ImageMap.AddItemWithSize(
+                addr,
+                new ImageMapItem((uint)dt.Size)
+                {
+                    DataType = dt
+                });
+        }
+
+        protected void Given_NoImportedProcedures()
+        {
+            host.Stub(h => h.GetImportedProcedure(null, null))
+                .IgnoreArguments()
+                .Return(null);
+        }
+
         private static byte[] HexStringToBytes(string sBytes)
         {
             int chunkSize = 2;
             var str = sBytes.Replace(" ", "");
 
             return Enumerable.Range(0, str.Length / chunkSize)
-                .Select(i =>  (byte)Convert.ToInt16(
+                .Select(i => (byte)Convert.ToInt16(
                     str.Substring(i * chunkSize, chunkSize),
                     16))
                 .ToArray();
@@ -103,7 +133,7 @@ namespace Reko.UnitTests.Scanning
             program.Platform = new DefaultPlatform(null, program.Architecture);
             program.Platform.Heuristics.ProcedurePrologs = new BytePattern[] {
                 new BytePattern
-                {   
+                {
                     Bytes = new byte[] {0x55, 0x8B, 0xEC },
                     Mask = new byte[] { 0xFF, 0xFF, 0xff }
                 }
@@ -155,14 +185,5 @@ namespace Reko.UnitTests.Scanning
                 Assert.AreEqual(sExpected, sActual);
             }
         }
-
-        protected const string TrickyProc =
-            "55 89 e5 e8 00 00 74 11 " +
-            "0a 05 3c 00 75 06 " +
-            "b0 00 " +
-            "eb 07 " +
-            "0a 05 a1 00 00 74 " +
-            "01 89 ec 5d c3 90";
-        private MemoryArea mem;
     }
 }

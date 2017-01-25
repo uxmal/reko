@@ -201,14 +201,17 @@ namespace Reko.Scanning
         /// <param name="cluster"></param>
         public void FindClusterEntries(Cluster cluster)
         {
-            var preds = new Dictionary<HeuristicBlock, int>();
+            var nopreds = new List<HeuristicBlock>();
             foreach (var block in cluster.Blocks)
             {
                 if (knownProcedures.Contains(block.Address))
                 {
                     cluster.Entries.Add(block);
                 }
-                preds[block] = sr.ICFG.Predecessors(block).Count;
+                if (sr.ICFG.Predecessors(block).Count == 0)
+                {
+                    nopreds.Add(block);
+                }
             }
 
             // If one or more nodes were the destination of a direct call,
@@ -217,9 +220,9 @@ namespace Reko.Scanning
                 return;
 
             // Otherwise, if one or more nodes has zero predecessors, pick it.
-            if (preds.Count > 0)
+            if (nopreds.Count > 0)
             {
-                cluster.Entries.UnionWith(preds.Keys);
+                cluster.Entries.UnionWith(nopreds);
                 return;
             }
 
@@ -309,7 +312,35 @@ namespace Reko.Scanning
 
         private Procedure BuildProcedure(Cluster cluster, HeuristicBlock entry)
         {
-            return Procedure.Create(entry.Address, new Frame(null));
+            FuseBlocks(cluster);
+            return Procedure.Create(entry.Address, program.Architecture.CreateFrame());
+        }
+
+        private void FuseBlocks(Cluster cluster)
+        {
+            foreach (var block in Enumerable.Reverse(cluster.Blocks).ToList())
+            {
+                var succs = sr.ICFG.Successors(block);
+                if (succs.Count == 1)
+                {
+                    var s = succs.First();
+                    var preds = sr.ICFG.Predecessors(s);
+                    if (preds.Count != 1 || preds.First() != block)
+                        continue;
+
+                    var lastInstr = block.Instructions.Last();
+                    if (lastInstr.Address + lastInstr.Length != s.Address)
+                        continue;
+                    var ss = sr.ICFG.Successors(s).ToList();
+                    sr.ICFG.RemoveEdge(block, s);
+                    block.Instructions.AddRange(s.Instructions);
+                    sr.ICFG.RemoveNode(s);
+                    foreach (var n in ss)
+                    {
+                        sr.ICFG.AddEdge(block, n);
+                    }
+                }
+            }
         }
     }
 }
