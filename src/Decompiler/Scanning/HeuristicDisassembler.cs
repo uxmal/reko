@@ -69,8 +69,6 @@ namespace Reko.Scanning
             var dasm = program.CreateDisassembler(addr);
             foreach (var instr in dasm.TakeWhile(i => isAddrValid(i.Address)))
             {
-                //$TODO: if wandered into the image map, and that isn't a 
-                // code block, we are executing data, so we are invalid.
                 HeuristicBlock block;
                 if (blockMap.TryGetValue(instr.Address, out block))
                 {
@@ -102,39 +100,82 @@ namespace Reko.Scanning
                     AddNode(current);
                     current.Instructions.Add(instr);
                     blockMap.Add(instr.Address, current);
-                    var op0 = instr.GetOperand(0);
-                    var addrOp = op0 as AddressOperand;
+                    var addrOp = DestinationAddress(instr);
                     switch (instr.InstructionClass)
                     {
                     case InstructionClass.Invalid:
                         current.IsValid = false;
                         return current;
+                    case InstructionClass.Linear:
+                    case InstructionClass.Linear | InstructionClass.Conditional:
+                        if (FallthroughToInvalid(instr))
+                        {
+                            current.IsValid = false;
+                            return current;
+                        }
+                        break;
                     case InstructionClass.Transfer | InstructionClass.Call:
+                        if (FallthroughToInvalid(instr))
+                        {
+                            current.IsValid = false;
+                            return current;
+                        }
                         // Calls may terminate, so stop scanning.
                         return current;
                     case InstructionClass.Transfer:
-                        if (addrOp != null && isAddrValid(addrOp.Address))
+                        if (addrOp != null && isAddrValid(addrOp))
                         {
-                            block = Disassemble(addrOp.Address);
+                            block = Disassemble(addrOp);
                             AddEdge(current, block);
                             return current;
                         }
                         return current;
                     case InstructionClass.Transfer | InstructionClass.Conditional:
-                        if (addrOp != null && program.SegmentMap.IsValidAddress(addrOp.Address))
+                        FallthroughToInvalid(instr);
+                        if (addrOp != null && program.SegmentMap.IsValidAddress(addrOp))
                         {
-                            block = Disassemble(addrOp.Address);
+                            block = Disassemble(addrOp);
                             Debug.Assert(cfg.Nodes.Contains(block));
                             AddEdge(current, block);
                         }
                         block = Disassemble(instr.Address + instr.Length);
                         AddEdge(current, block);
                         return current;
+                    default:
+                        throw new NotImplementedException(
+                            string.Format(
+                                "dasm instruction {0}.", 
+                                instr.InstructionClass));
                     }
                 }
             }
             AddNode(current);
             return current;
+        }
+
+        private bool FallthroughToInvalid(MachineInstruction instr)
+        {
+            return !isAddrValid(instr.Address + instr.Length);
+        }
+
+        /// <summary>
+        /// Find the constant destination of a transfer instruction.
+        /// </summary>
+        /// <param name="i"></param>
+        /// <returns></returns>
+        private Address DestinationAddress(MachineInstruction i)
+        {
+            var op = i.GetOperand(0) as AddressOperand;
+            if (op == null)
+            {
+                // Z80 has JP Z,<dest> instructions...
+                op = i.GetOperand(1) as AddressOperand;
+            }
+            if (op != null)
+            {
+                return op.Address;
+            }
+            return null;
         }
 
         /// <summary>
