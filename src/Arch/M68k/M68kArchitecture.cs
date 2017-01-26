@@ -59,7 +59,7 @@ namespace Reko.Arch.M68k
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
-            throw new NotImplementedException();
+            return new M68kInstructionComparer(norm);
         }
 
         public override ProcessorState CreateProcessorState()

@@ -32,7 +32,6 @@ namespace Reko.Arch.RiscV
 {
     public class RiscVArchitecture : ProcessorArchitecture
     {
-
         static string [] regnames = {
             "zero", "ra", "sp", "gp", "tp", "t0", "t1", "t2",
             "s0",   "s1", "a0", "a1", "a2", "a3", "a4", "a5",
@@ -105,7 +104,7 @@ namespace Reko.Arch.RiscV
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
-            throw new NotImplementedException();
+            return new RiscVInstructionComparer(norm);
         }
 
         public override IEnumerable<Address> CreatePointerScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags)
@@ -170,7 +169,8 @@ namespace Reko.Arch.RiscV
 
         public override Address MakeAddressFromConstant(Constant c)
         {
-            throw new NotImplementedException();
+            //$TODO: what if 32-bit?
+            return Address.Ptr64(c.ToUInt64());
         }
 
         public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
