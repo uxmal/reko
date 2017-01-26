@@ -49,6 +49,8 @@ namespace Reko.Scanning
         IServiceProvider Services { get; }
 
         void ScanImage();
+        void ScanImageHeuristically();
+
         ProcedureBase ScanProcedure(Address addr, string procedureName, ProcessorState state);
 
         void EnqueueImageSymbol(ImageSymbol sym, bool isEntryPoint);
@@ -61,7 +63,7 @@ namespace Reko.Scanning
         void Warn(Address addr, string message);
         void Warn(Address addr, string message, params object[] args);
         void Error(Address addr, string message);
-        FunctionType GetCallSignatureAtAddress(Address addrCallInstruction);
+
         ExternalProcedure GetImportedProcedure(Address addrImportThunk, Address addrInstruction);
         void TerminateBlock(Block block, Address addrEnd);
 
@@ -80,7 +82,6 @@ namespace Reko.Scanning
 
         IEnumerable<RtlInstructionCluster> GetTrace(Address addrStart, ProcessorState state, Frame frame);
 
-        void ScanImageHeuristically();
     }
 
     /// <summary>
@@ -910,14 +911,6 @@ namespace Reko.Scanning
                 new ProcedureConstant(program.Architecture.PointerType, ppp),
                 returnType,
                 args);
-        }
-
-        public FunctionType GetCallSignatureAtAddress(Address addrCallInstruction)
-        {
-            UserCallData call = null;
-            if (!program.User.Calls.TryGetValue(addrCallInstruction, out call))
-                return null;
-            return call.Signature;
         }
 
         public void SetAssumedRegisterValues(Address addr, ProcessorState st)

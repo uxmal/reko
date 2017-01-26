@@ -67,6 +67,14 @@ namespace Reko.Scanning
 
         public IServiceProvider Services { get; private set; }
 
+        IServiceProvider IScanner.Services
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         /// Plan of attack:
         /// In each unscanned "hole", look for signatures of procedure entries.
         /// These are procedure entry candidates. 
@@ -406,63 +414,22 @@ namespace Reko.Scanning
 
         // IScanner interface.
 
-
-        public void EnqueueImageSymbol(ImageSymbol sym, bool isEntryPoint)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void EnqueueProcedure(Address addr)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Block EnqueueJumpTarget(Address addrSrc, Address addrDst, Procedure proc, ProcessorState state)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void EnqueueUserProcedure(Procedure_v1 sp)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void EnqueueUserProcedure(Address addr, FunctionType sig)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void EnqueueUserGlobalData(Address addr, DataType dt)
-        {
-            throw new NotImplementedException();
-        }
-
         void IScanner.Warn(Address addr, string message)
         {
-            throw new NotImplementedException();
+            eventListener.Warn(eventListener.CreateAddressNavigator(program, addr), message);
         }
 
         void IScanner.Warn(Address addr, string message, params object[] args)
         {
-            throw new NotImplementedException();
+            eventListener.Warn(eventListener.CreateAddressNavigator(program, addr), message, args);
         }
 
         void IScanner.Error(Address addr, string message)
         {
-            throw new NotImplementedException();
+            eventListener.Error(eventListener.CreateAddressNavigator(program, addr), message);
         }
 
         ProcedureBase IScanner.ScanProcedure(Address addr, string procedureName, ProcessorState state)
-        {
-            throw new NotImplementedException();
-        }
-
-        FunctionType IScanner.GetCallSignatureAtAddress(Address addrCallInstruction)
-        {
-            throw new NotImplementedException();
-        }
-
-        ExternalProcedure IScanner.GetImportedProcedure(Address addrImportThunk, Address addrInstruction)
         {
             throw new NotImplementedException();
         }
@@ -508,6 +475,41 @@ namespace Reko.Scanning
         }
 
         void IScanner.ScanImage()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IScanner.EnqueueImageSymbol(ImageSymbol sym, bool isEntryPoint)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IScanner.EnqueueProcedure(Address addr)
+        {
+            throw new NotImplementedException();
+        }
+
+        Block IScanner.EnqueueJumpTarget(Address addrSrc, Address addrDst, Procedure proc, ProcessorState state)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IScanner.EnqueueUserProcedure(Procedure_v1 sp)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IScanner.EnqueueUserProcedure(Address addr, FunctionType sig)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IScanner.EnqueueUserGlobalData(Address addr, DataType dt)
+        {
+            throw new NotImplementedException();
+        }
+
+        ExternalProcedure IScanner.GetImportedProcedure(Address addrImportThunk, Address addrInstruction)
         {
             throw new NotImplementedException();
         }

@@ -115,7 +115,7 @@ namespace Reko.UnitTests.Scanning
                 return p;
             }
 
-            public Expression PseudoProcedure(string name, DataType returnType, params Expression [] args)
+            public Expression PseudoProcedure(string name, DataType returnType, params Expression[] args)
             {
                 var ppp = EnsurePseudoProcedure(name, returnType, args.Length);
                 return new Application(new ProcedureConstant(PrimitiveType.Pointer32, ppp), returnType, args);
@@ -222,8 +222,8 @@ namespace Reko.UnitTests.Scanning
                },
                new Dictionary<string, DataType>());
             var rw = arch.CreateRewriter(
-                lr.SegmentMap.Segments.Values.First().MemoryArea.CreateLeReader(addr), 
-                this.state, 
+                lr.SegmentMap.Segments.Values.First().MemoryArea.CreateLeReader(addr),
+                this.state,
                 proc.Frame,
                 host);
             this.program = new Program
@@ -252,7 +252,7 @@ namespace Reko.UnitTests.Scanning
         public void BwiX86_WalkX86ServiceCall()
         {
             // Checks to see if a sequence return value (es:bx) trashes the state appropriately.
-            BuildTest16(delegate(X86Assembler m)
+            BuildTest16(delegate (X86Assembler m)
             {
                 m.Int(0x21);
 
@@ -270,7 +270,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void BwiX86_WalkBswap()
         {
-            BuildTest32(delegate(X86Assembler m)
+            BuildTest32(delegate (X86Assembler m)
             {
                 m.Bswap(m.ebp);
             });
@@ -283,7 +283,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void BwiX86_WalkMovConst()
         {
-            BuildTest32(delegate(X86Assembler m)
+            BuildTest32(delegate (X86Assembler m)
             {
                 m.Mov(m.si, 0x606);
             });
@@ -295,7 +295,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void BwiX86_XorWithSelf()
         {
-            BuildTest32(delegate(X86Assembler m)
+            BuildTest32(delegate (X86Assembler m)
             {
                 m.Xor(m.eax, m.eax);
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x00010000))).Return(block);
@@ -309,7 +309,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void BwiX86_SubWithSelf()
         {
-            BuildTest32(delegate(X86Assembler m)
+            BuildTest32(delegate (X86Assembler m)
             {
                 m.Sub(m.eax, m.eax);
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Matches(addr => addr.Offset == 0x00010000))).Return(block);
@@ -322,7 +322,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void BwiX86_PseudoProcsShouldNukeRecipientRegister()
         {
-            BuildTest16(delegate(X86Assembler m)
+            BuildTest16(delegate (X86Assembler m)
             {
                 m.In(m.al, m.dx);
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
@@ -335,15 +335,19 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void BwiX86_RewriteIndirectCall()
         {
-            BuildTest16(delegate(X86Assembler m)
+            BuildTest16(delegate (X86Assembler m)
             {
-                scanner.Stub(x => x.GetCallSignatureAtAddress(Arg<Address>.Is.Anything)).Return(
-                    new FunctionType(
-                        Reg(Registers.ax),
-                        new Identifier[] { Reg(Registers.cx) }));
-
                 m.Call(m.MemW(Registers.cs, Registers.bx, 4));
             });
+            var uc = new UserCallData
+            {
+                Address = Address.SegPtr(0xC00, 0),
+                Signature = new FunctionType(
+                        Reg(Registers.ax),
+                        new Identifier[] { Reg(Registers.cx) })
+            };
+            program.User.Calls.Add(uc.Address, uc);
+
             wi.Process();
             var sw = new StringWriter();
             block.WriteStatements(sw);
@@ -505,7 +509,6 @@ namespace Reko.UnitTests.Scanning
 
                 m.Import("_GetDC", "GetDC", "user32.dll");
 
-                scanner.Stub(x => x.GetCallSignatureAtAddress(Arg<Address>.Is.Anything)).Return(null);
                 scanner.Stub(x => x.TerminateBlock(Arg<Block>.Is.Anything, Arg<Address>.Is.Anything));
                 scanner.Stub(x => x.FindContainingBlock(Arg<Address>.Is.Anything)).Return(block);
                 scanner.Stub(x => x.SetProcedureReturnAddressBytes(

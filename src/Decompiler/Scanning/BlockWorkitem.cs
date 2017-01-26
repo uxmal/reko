@@ -472,7 +472,7 @@ namespace Reko.Scanning
                 EmitCall(procCallee, sig, chr, site);
                 return OnAfterCall(sig, chr);
             }
-            sig = scanner.GetCallSignatureAtAddress(ric.Address);
+            sig = GetCallSignatureAtAddress(ric.Address);
             if (sig != null)
             {
                 EmitCall(call.Target, sig, chr, site);
@@ -604,6 +604,14 @@ namespace Reko.Scanning
                 }
             }
             return true;
+        }
+
+        private FunctionType GetCallSignatureAtAddress(Address addrCallInstruction)
+        {
+            UserCallData call = null;
+            if (!program.User.Calls.TryGetValue(addrCallInstruction, out call))
+                return null;
+            return call.Signature;
         }
 
         public bool VisitReturn(RtlReturn ret)
