@@ -130,7 +130,8 @@ namespace Reko.Scanning
             var sr = new ScanResults
             {
                 KnownProcedures = FindKnownProcedures(),
-                ICFG = new DiGraph<HeuristicBlock>()
+                ICFG = new DiGraph<HeuristicBlock>(),
+                DirectlyCalledAddresses = new Dictionary<Address, int>()
             };
 
             // Break up the image map along known procedure boundaries
@@ -151,7 +152,22 @@ namespace Reko.Scanning
                 DisassembleRange(range.Item2, range.Item3, sr);
             }
 
+            // Remove blocks that fall off the end of the segment
+            // or into data.
             RemoveInvalidBlocks(sr);
+
+            // On processors with variable length instructions,
+            // there may be many blocks that partially overlap the 
+            // "real" blocks that would actually have been executed
+            // by the processor. Starting with known "roots", try to
+            // remove as many invalid blocks as possible.
+
+            var hsc = new HeuristicProcedureScanner(
+                program,
+                sr.ICFG,
+                program.SegmentMap.IsValidAddress,
+                host);
+            hsc.ResolveBlockConflicts(sr.KnownProcedures.Concat(sr.DirectlyCalledAddresses.Keys));
 
             var pd = new ProcedureDetector(program, sr, this.eventListener);
             var procs = pd.DetectProcedures();
@@ -209,7 +225,6 @@ namespace Reko.Scanning
             {
                 sr.ICFG.RemoveNode(n);
             }
-
         }
 
         private void AddBlocks(HeuristicProcedure hproc)
@@ -337,10 +352,16 @@ namespace Reko.Scanning
                 EndAddress = addrEnd,
                 Frame = program.Architecture.CreateFrame()
             };
+            var sr = new ScanResults
+            {
+                ICFG = proc.Cfg,
+                DirectlyCalledAddresses = new Dictionary<Address, int>(),
+            };
             var dasm = new HeuristicDisassembler(
                 program, 
-                proc.Cfg, 
+                sr,
                 proc.IsValidAddress,
+                true,
                 host);
             int instrByteGranularity = program.Architecture.InstructionBitSize / 8;
             for (Address addr = addrStart; addr < addrEnd; addr = addr + instrByteGranularity)
@@ -355,8 +376,9 @@ namespace Reko.Scanning
         {
             var dasm = new HeuristicDisassembler(
                 program,
-                sr.ICFG,
+                sr,
                 program.SegmentMap.IsValidAddress,
+                false,
                 host);
             int instrByteGranularity = program.Architecture.InstructionBitSize / 8;
             for (Address addr = addrStart; addr < addrEnd; addr = addr + instrByteGranularity)

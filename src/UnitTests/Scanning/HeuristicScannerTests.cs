@@ -54,7 +54,7 @@ namespace Reko.UnitTests.Scanning
         public void HSC_x86_FindCallOpcode()
         {
             Given_Image32(
-                0x001000, 
+                0x001000,
                 "E8 03 00 00  00 00 00 00 " +
                 "C3");
             Given_x86_32();
@@ -87,7 +87,7 @@ namespace Reko.UnitTests.Scanning
                 Architecture = new X86ArchitectureFlat32(),
             };
 #else
-            Given_Image32(0x001000, 
+            Given_Image32(0x001000,
                 "E8 0B 00 00 00 E8 07 00 " +
                 "00 00 C3 00 00 00 00 00 " +
                 "C3 C3 ");                                     // 1010, 1011
@@ -129,7 +129,7 @@ namespace Reko.UnitTests.Scanning
         [Test]
         public void HSC_x86_16bitFarCall()
         {
-            Given_ImageSeg(0xC00, 0, 
+            Given_ImageSeg(0xC00, 0,
                "C3 90 9A 00 00 00 0C C3 ");
             Given_x86_16();
             Given_RewriterHost();
@@ -196,6 +196,11 @@ namespace Reko.UnitTests.Scanning
             Given_Image32(
                 0x10000,
                 TrickyProc);
+            program.SegmentMap.AddSegment(
+                new ImageSegment(
+                    "code",
+                    new MemoryArea(Address.Ptr32(0x11750008), new byte[0x10]),
+                    AccessMode.ReadExecute));
             Given_x86_32();
             Given_RewriterHost();
             host.Stub(h => h.GetImportedProcedure(null, null))
@@ -209,7 +214,7 @@ namespace Reko.UnitTests.Scanning
                 segment.MemoryArea.BaseAddress,
                 segment.MemoryArea.BaseAddress + segment.ContentSize);
             var sExp =
-                #region Expected
+            #region Expected
  @"l00010000:  // pred:
     push ebp
 l00010001:  // pred: l00010000
@@ -314,7 +319,7 @@ l0001001D:  // pred:
         }
 
         [Test(Description = "The NOP sled ends with a ret instruction, so it's valid.")]
-        public void HPSC_ScanImage_IntCall()
+        public void HSC_ScanImage_IntCall()
         {
             Given_Image32(0x0010000, "cd 21 00 00");
             Given_x86_32();
@@ -328,6 +333,36 @@ l0001001D:  // pred:
             #region Expected
 @"l00010000:  // pred:
     int 21
+";
+            #endregion
+            AssertBlocks(sExp, sr.ICFG);
+        }
+
+        [Test]
+        public void HSC_ScanImage_FallIntoCalledProcedure()
+        {
+            Given_Image32(0x001000,
+                "33 C0" +                   // xor eax,eax
+                "e8 05 00 00 00" +          // call fn100C
+                "a1 01 00 00 00" +          // mov eax,1; fall through to fn100C
+                "AB" +                      // stosb
+                "c3");                      // ret
+            Given_x86_32();
+            Given_RewriterHost();
+            Given_NoImportedProcedures();
+            mr.ReplayAll();
+
+            When_ScanImage();
+
+            var sExp =
+            #region Expected
+@"l00001000:  // pred:
+    xor eax,eax
+    call 0000100C
+    mov eax,[00000001]
+l0000100C:  // pred:
+    stosd 
+    ret 
 ";
             #endregion
             AssertBlocks(sExp, sr.ICFG);

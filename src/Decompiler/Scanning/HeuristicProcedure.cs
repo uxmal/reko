@@ -29,7 +29,7 @@ namespace Reko.Scanning
 {
     public class HeuristicProcedure
     {
-        public DirectedGraph<HeuristicBlock> Cfg = new DiGraph<HeuristicBlock>();
+        public DiGraph<HeuristicBlock> Cfg = new DiGraph<HeuristicBlock>();
         public Frame Frame;
 
         public Address BeginAddress;

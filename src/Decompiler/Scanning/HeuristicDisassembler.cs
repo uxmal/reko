@@ -41,18 +41,21 @@ namespace Reko.Scanning
         private Program program;
         private IRewriterHost host;
         private Dictionary<Address, HeuristicBlock> blockMap;
-        private DirectedGraph<HeuristicBlock> cfg;
+        private ScanResults sr;
         private Func<Address, bool> isAddrValid;
+        private bool assumeCallsDiverge;
 
         public HeuristicDisassembler(
             Program program,
-            DirectedGraph<HeuristicBlock> cfg,
+            ScanResults sr,
             Func<Address, bool> isAddrValid,
+            bool assumeCallsDiverge,
             IRewriterHost host)
         {
             this.program = program;
-            this.cfg = cfg;
+            this.sr = sr;
             this.isAddrValid = isAddrValid;
+            this.assumeCallsDiverge = assumeCallsDiverge;
             this.host = host;
             blockMap = new Dictionary<Address, HeuristicBlock>();
         }
@@ -87,7 +90,7 @@ namespace Reko.Scanning
                     {
                         // Fell into 'block' while disassembling
                         // 'current'. Create a fall-though edge
-                        if (!cfg.Nodes.Contains(current))
+                        if (!sr.ICFG.Nodes.Contains(current))
                         {
                             AddNode(current);
                         }
@@ -116,12 +119,32 @@ namespace Reko.Scanning
                         }
                         break;
                     case InstructionClass.Transfer | InstructionClass.Call:
+                        if (addrOp != null)
+                        {
+                            if (program.SegmentMap.IsValidAddress(addrOp))
+                            {
+                                int c;
+                                if (!sr.DirectlyCalledAddresses.TryGetValue(addrOp, out c))
+                                    c = 0;
+                                sr.DirectlyCalledAddresses[addrOp] = c + 1;
+                            }
+                            else
+                            {
+                                current.IsValid = false;
+                            }
+                        }
                         if (FallthroughToInvalid(instr))
                         {
                             current.IsValid = false;
                             return current;
                         }
-                        // Calls may terminate, so stop scanning.
+                        // If assume calls terminate, stop scanning.
+                        if (assumeCallsDiverge)
+                        {
+                            return current;
+                        }
+                        block = Disassemble(instr.Address + instr.Length);
+                        AddEdge(current, block);
                         return current;
                     case InstructionClass.Transfer:
                         if (addrOp != null && isAddrValid(addrOp))
@@ -136,7 +159,7 @@ namespace Reko.Scanning
                         if (addrOp != null && program.SegmentMap.IsValidAddress(addrOp))
                         {
                             block = Disassemble(addrOp);
-                            Debug.Assert(cfg.Nodes.Contains(block));
+                            Debug.Assert(sr.ICFG.Nodes.Contains(block));
                             AddEdge(current, block);
                         }
                         block = Disassemble(instr.Address + instr.Length);
@@ -197,7 +220,7 @@ namespace Reko.Scanning
             {
                 IsValid = block.IsValid
             };
-            cfg.Nodes.Add(newBlock);
+            sr.ICFG.Nodes.Add(newBlock);
             newBlock.Instructions.AddRange(
                 block.Instructions.Where(r => r.Address >= addr).OrderBy(r => r.Address));
             foreach (var de in blockMap.Where(d => d.Key >= addr && d.Value == block).ToList())
@@ -205,7 +228,7 @@ namespace Reko.Scanning
                 blockMap[de.Key] = newBlock;
             }
             block.Instructions.RemoveAll(r => r.Address >= addr);
-            var succs = cfg.Successors(block).ToArray();
+            var succs = sr.ICFG.Successors(block).ToArray();
             foreach (var s in succs)
             {
                 AddEdge(newBlock, s);
@@ -217,18 +240,18 @@ namespace Reko.Scanning
 
         private void AddEdge(HeuristicBlock from, HeuristicBlock to)
         {
-            cfg.AddEdge(from, to);
+            sr.ICFG.AddEdge(from, to);
         }
 
         private void AddNode(HeuristicBlock block)
         {
-            if (!cfg.Nodes.Contains(block))
-                cfg.Nodes.Add(block);
+            if (!sr.ICFG.Nodes.Contains(block))
+                sr.ICFG.Nodes.Add(block);
         }
 
         private void RemoveEdge(HeuristicBlock from, HeuristicBlock to)
         {
-            cfg.RemoveEdge(from, to);
+            sr.ICFG.RemoveEdge(from, to);
         }
     }
 }

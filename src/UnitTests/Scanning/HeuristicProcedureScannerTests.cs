@@ -27,6 +27,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Reko.Core.Types;
+using Reko.Core;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -61,9 +62,10 @@ namespace Reko.UnitTests.Scanning
         private void When_DisassembleProcedure()
         {
             var hsc = new HeuristicScanner(null, program, host, eventListener);
+            var mem = program.SegmentMap.Segments.Values.First().MemoryArea;
             this.proc = hsc.DisassembleProcedure(
-                program.ImageMap.BaseAddress,
-                program.ImageMap.BaseAddress + program.SegmentMap.GetExtent());
+                mem.BaseAddress,
+                mem.EndAddress);
         }
 
         [Test]
@@ -147,6 +149,10 @@ l00010009:  // pred: l00010008
         public void HPSC_TrickyProc()
         {
             Given_Image32(0x0010000, TrickyProc);
+            program.SegmentMap.AddSegment(new ImageSegment(
+                "code",
+                new MemoryArea(Address.Ptr32(0x11750000), new byte[100]),
+                AccessMode.ReadExecute));
             Given_x86_32();
             Given_RewriterHost();
             Given_NoImportedProcedures();

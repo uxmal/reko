@@ -50,7 +50,7 @@ namespace Reko.Scanning
             this.program = program;
             this.sr = sr;
             this.listener = listener;
-            this.knownProcedures = sr.KnownProcedures;
+            this.knownProcedures = sr.KnownProcedures.Concat(sr.DirectlyCalledAddresses.Keys).ToHashSet();
             this.mpAddrToBlock = sr.ICFG.Nodes.ToDictionary(de => de.Address);
         }
 

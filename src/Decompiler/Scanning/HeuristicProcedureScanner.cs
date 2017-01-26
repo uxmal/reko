@@ -56,13 +56,31 @@ namespace Reko.Scanning
             this.conflicts = BuildConflictGraph(blocks.Nodes);
         }
 
+        public void ResolveBlockConflicts(IEnumerable<Address> procedureStarts)
+        {
+            var reachable = TraceReachableBlocks(procedureStarts);
+            ComputeStatistics(reachable);
+            DumpGraph();
+            RemoveBlocksEndingWithInvalidInstruction();
+            DumpGraph();
+            RemoveBlocksConflictingWithValidBlocks(reachable);
+            DumpGraph();
+            RemoveParentsOfConflictingBlocks();
+            DumpGraph();
+            //RemoveBlocksWithFewPredecessors();
+            //DumpGraph();
+            RemoveBlocksWithFewSuccessors();
+            DumpGraph();
+            RemoveConflictsRandomly();
+        }
+
         /// <summary>
         /// Resolve all block conflicts.
         /// </summary>
         /// <param name="blocks"></param>
         public void BlockConflictResolution(Address addrProcedureStart)
         {
-            var valid = TraceReachableBlocks(addrProcedureStart);
+            var valid = TraceReachableBlocks(new[] { addrProcedureStart });
             ComputeStatistics(valid);
             DumpGraph();
             RemoveBlocksEndingWithInvalidInstruction();
@@ -79,18 +97,20 @@ namespace Reko.Scanning
         }
 
         /// <summary>
-        /// Trace the reachable blocks using DFS; call them 'valid'.
+        /// Trace the reachable blocks using DFS; call them 'reachable'.
         /// </summary>
         /// <returns>A set of blocks considered "valid".</returns>
-        private HashSet<HeuristicBlock> TraceReachableBlocks(Address addrProcStart)
+        private HashSet<HeuristicBlock> TraceReachableBlocks(IEnumerable<Address> procstarts)
         {
-            var entry = blocks.Nodes.Where(b => b.Address == addrProcStart).FirstOrDefault();
-            var valid = new DfsIterator<HeuristicBlock>(blocks).PreOrder(entry).ToHashSet();
-            foreach (var item in valid.OrderBy(i => i.Address))
+            var reachable = new HashSet<HeuristicBlock>();
+            foreach (var addrProcStart in procstarts)
             {
-                Debug.Print(" {0}", item.Address);
+                //$PERF: slow! need a map (address => block)
+                var entry = blocks.Nodes.Where(b => b.Address == addrProcStart).FirstOrDefault();
+                var r = new DfsIterator<HeuristicBlock>(blocks).PreOrder(entry).ToHashSet();
+                reachable.UnionWith(r);
             }
-            return valid;
+            return reachable;
         }
 
         /// <summary>
@@ -502,13 +522,10 @@ namespace Reko.Scanning
                 Debug.Print("  {0}", string.Join(" ", blocks.Predecessors(block)
                     .OrderBy(n => n.Address)
                     .Select(n => n.Address)));
-                var sb = new StringBuilder("  ");
-                var rdr = program.CreateImageReader(block.Address);
-                while (rdr.Address < addrEnd)
+                foreach (var instr in block.Instructions)
                 {
-                    sb.AppendFormat("{0:X2} ", (int)rdr.ReadByte());
+                    Debug.Print("  {0}", instr);
                 }
-                Debug.WriteLine(sb.ToString());
                 Debug.Print("  {0}", string.Join(" ", blocks.Successors(block)
                     .OrderBy(n => n.Address)
                     .Select(n => n.Address)));
