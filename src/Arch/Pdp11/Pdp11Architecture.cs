@@ -120,7 +120,7 @@ namespace Reko.Arch.Pdp11
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
-            throw new NotImplementedException();
+            return new Pdp11InstructionComparer(norm);
         }
 
         public override ProcessorState CreateProcessorState()
