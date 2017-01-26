@@ -184,5 +184,11 @@ namespace Reko.UnitTests.Arch.Pdp11
         {
             RunTest("setflags\t#04", 0x00B4);
         }
+
+        [Test]
+        public void Pdp11dis_regression1()
+        {
+            RunTest("mul\tr0,r3", 0xF0C0);
+        }
     }
 }
