@@ -269,6 +269,14 @@ namespace Reko.Core
             return true;
         }
 
+        public bool TryReadBeInt16(out short s)
+        {
+            if (!MemoryArea.TryReadBeInt16(bytes, (uint)off, out s))
+                return false;
+            off += 2;
+            return true;
+        }
+
         public ushort ReadBeUInt16()
         {
             ushort u = MemoryArea.ReadBeUInt16(bytes, (uint)off);
