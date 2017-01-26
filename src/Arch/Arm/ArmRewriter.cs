@@ -90,8 +90,6 @@ namespace Reko.Arch.Arm
         case Opcode.BFC:
         case Opcode.BFI:
         case Opcode.BKPT:
-        case Opcode.BLX:
-        case Opcode.BX:
         case Opcode.BXJ:
         case Opcode.CDP:
         case Opcode.CDP2:
@@ -498,6 +496,8 @@ namespace Reko.Arch.Arm
                 case Opcode.B: RewriteB(false); break;
                 case Opcode.BIC: RewriteBic(); break;
                 case Opcode.BL: RewriteB(true); break;
+                case Opcode.BLX: RewriteB(true); break;
+                case Opcode.BX: RewriteB(false); break;
                 case Opcode.CMN: RewriteCmn(); break;
                 case Opcode.CMP: RewriteCmp(); break;
                 case Opcode.LDR: RewriteLdr(PrimitiveType.Word32); break;
@@ -543,17 +543,25 @@ namespace Reko.Arch.Arm
 
         private void RewriteB(bool link)
         {
-            Address addr = Address.Ptr32((uint)Dst.ImmediateValue.Value);
+            Expression dst;
+            if (Dst.Type == ArmInstructionOperandType.Immediate)
+            {
+                dst = Address.Ptr32((uint)Dst.ImmediateValue.Value);
+            }
+            else
+            {
+                dst = Operand(Dst);
+            }
             if (link)
             {
                 ric.Class = RtlClass.Transfer;
                 if (instr.ArchitectureDetail.CodeCondition == ArmCodeCondition.AL)
                 {
-                    emitter.Call(addr, 0);
+                    emitter.Call(dst, 0);
                 }
                 else
                 {
-                    emitter.If(TestCond(instr.ArchitectureDetail.CodeCondition), new RtlCall(addr, 0, RtlClass.Transfer));
+                    emitter.If(TestCond(instr.ArchitectureDetail.CodeCondition), new RtlCall(dst, 0, RtlClass.Transfer));
                 }
             }
             else
@@ -561,12 +569,12 @@ namespace Reko.Arch.Arm
                 if (instr.ArchitectureDetail.CodeCondition == ArmCodeCondition.AL)
                 {
                     ric.Class = RtlClass.Transfer;
-                    emitter.Goto(addr);
+                    emitter.Goto(dst);
                 }
                 else
                 {
                     ric.Class = RtlClass.ConditionalTransfer;
-                    emitter.Branch(TestCond(instr.ArchitectureDetail.CodeCondition), addr, RtlClass.ConditionalTransfer);
+                    emitter.Branch(TestCond(instr.ArchitectureDetail.CodeCondition), (Address) dst, RtlClass.ConditionalTransfer);
                 }
             }
         }
