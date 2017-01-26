@@ -328,8 +328,7 @@ namespace Reko.Scanning
                     if (preds.Count != 1 || preds.First() != block)
                         continue;
 
-                    var lastInstr = block.Instructions.Last();
-                    if (lastInstr.Address + lastInstr.Length != s.Address)
+                    if (block.GetEndAddress() != s.Address)
                         continue;
                     var ss = sr.ICFG.Successors(s).ToList();
                     sr.ICFG.RemoveEdge(block, s);
@@ -339,6 +338,7 @@ namespace Reko.Scanning
                     {
                         sr.ICFG.AddEdge(block, n);
                     }
+                    Debug.Print("Fused {0} {1}", block.Address, s.Address);
                 }
             }
         }

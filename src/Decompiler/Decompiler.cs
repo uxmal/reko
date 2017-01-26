@@ -432,6 +432,10 @@ namespace Reko
                     else
                         scanner.EnqueueImageSymbol(sym, false);
                 }
+
+                var hsc = new HeuristicScanner(services, program, null, eventListener);
+                var sr = hsc.ScanImage();
+
                 scanner.ScanImage();
 
                 if (program.User.Heuristics.Contains("HeuristicScanning"))
@@ -495,7 +499,7 @@ namespace Reko
         private IScanner CreateScanner(Program program)
         {
             return new Scanner(
-                program, 
+                program,
                 new ImportResolver(project, program, eventListener),
                 services);
         }

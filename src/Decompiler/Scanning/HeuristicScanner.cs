@@ -254,19 +254,21 @@ namespace Reko.Scanning
         /// <returns></returns>
         public IEnumerable<Tuple<MemoryArea, Address, Address>> FindUnscannedRanges()
         {
-#if !NOT_USE_WHOLE_IMAGE
-
-            return program.ImageMap.Items
+            return this.program.ImageMap.Items
                 .Where(de => de.Value.DataType is UnknownType)
-                .Select(de => Tuple.Create(
-                    this.program.SegmentMap.Segments[de.Key].MemoryArea,
-                    de.Key,
-                    de.Key + de.Value.Size));
-#else
-            return program.SegmentMap.Segments.Values
-                .Where(s => (s.Access & AccessMode.Execute) != 0)
-                .Select(s => Tuple.Create(s.MemoryArea, s.Address, s.Address + s.ContentSize));
-#endif
+                .Select(de => CreateUnscannedArea(de))
+                .Where(tup => tup != null);
+        }
+
+        private Tuple<MemoryArea, Address, Address> CreateUnscannedArea(KeyValuePair<Address, ImageMapItem> de)
+        {
+            ImageSegment seg;
+            if (!this.program.SegmentMap.TryFindSegment(de.Key, out seg))
+                return null;
+            return Tuple.Create(
+                seg.MemoryArea,
+                de.Key,
+                de.Key + de.Value.Size);
         }
 
         /// <summary>
@@ -498,7 +500,7 @@ namespace Reko.Scanning
 
         void IScanner.ScanImage()
         {
-            throw new NotImplementedException();
+            this.ScanImage();
         }
 
         void IScanner.EnqueueImageSymbol(ImageSymbol sym, bool isEntryPoint)
