@@ -514,6 +514,7 @@ namespace Reko.Scanning
         [Conditional("DEBUG")]
         public void DumpGraph()
         {
+            return;     // This is horribly verbose, so only use it when debugging unit tests.
             Debug.Print("{0} nodes", blocks.Nodes.Count);
             foreach (var block in blocks.Nodes.OrderBy(n => n.Address))
             {
