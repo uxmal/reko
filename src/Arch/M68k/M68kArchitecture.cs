@@ -135,7 +135,7 @@ namespace Reko.Arch.M68k
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
-            throw new NotImplementedException();
+            return Registers.regsByName.TryGetValue(name, out reg);
         }
 
         public override FlagGroupStorage GetFlagGroup(uint grf)
