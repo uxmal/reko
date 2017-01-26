@@ -74,11 +74,17 @@ namespace Reko.Arch.RiscV
 
         public override bool IsValid { get { throw new NotImplementedException(); } }
 
-        public override int OpcodeAsInteger { get { throw new NotImplementedException(); } }
+        public override int OpcodeAsInteger { get { return (int)opcode; } }
 
         public override MachineOperand GetOperand(int i)
         {
-            throw new NotImplementedException();
+            if (i == 0)
+                return op1;
+            else if (i == 1)
+                return op2;
+            else if (i == 2)
+                return op3;
+            return null;
         }
 
         public override void Render(MachineInstructionWriter writer)
