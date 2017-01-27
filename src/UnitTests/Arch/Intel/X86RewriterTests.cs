@@ -772,7 +772,7 @@ namespace Reko.UnitTests.Arch.Intel
         private RtlInstruction SingleInstruction(IEnumerator<RtlInstructionCluster> e)
         {
             Assert.IsTrue(e.MoveNext());
-            Assert.AreEqual(1, e.Current.Instructions.Count);
+            Assert.AreEqual(1, e.Current.Instructions.Length);
             var instr = e.Current.Instructions[0];
             return instr;
         }

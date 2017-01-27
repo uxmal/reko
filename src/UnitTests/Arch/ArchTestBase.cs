@@ -127,7 +127,7 @@ namespace Reko.UnitTests.Arch
             {
                 Assert.AreEqual(expected[i], string.Format("{0}|{1}|{2}", i, RtlInstruction.FormatClass(rewriter.Current.Class),  rewriter.Current));
                 ++i;
-                var ee = rewriter.Current.Instructions.GetEnumerator();
+                var ee = rewriter.Current.Instructions.OfType<RtlInstruction>().GetEnumerator();
                 while (i < expected.Length && ee.MoveNext())
                 {
                     Assert.AreEqual(expected[i], string.Format("{0}|{1}|{2}", i, RtlInstruction.FormatClass(ee.Current.Class), ee.Current));

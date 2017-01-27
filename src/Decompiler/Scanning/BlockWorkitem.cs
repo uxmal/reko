@@ -263,7 +263,7 @@ namespace Reko.Scanning
                 : scanner.FindContainingBlock(ric.Address);
 
             if ((b.Class & RtlClass.Delay) != 0 &&
-                ricDelayed.Instructions.Count > 0)
+                ricDelayed.Instructions.Length > 0)
             {
                 // Introduce stubs for the delay slot, but only
                 // if the delay slot isn't empty.

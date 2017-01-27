@@ -121,7 +121,7 @@ namespace Reko.Environments.SysV
                 Architecture.CreateProcessorState(),
                 Architecture.CreateFrame(), host);
             var rtlc = rw.FirstOrDefault();
-            if (rtlc == null || rtlc.Instructions.Count == 0)
+            if (rtlc == null || rtlc.Instructions.Length == 0)
                 return null;
 
             // Match x86 pattern.
