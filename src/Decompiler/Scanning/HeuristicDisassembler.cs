@@ -39,6 +39,7 @@ namespace Reko.Scanning
     public class HeuristicDisassembler
     {
         private Program program;
+        private IStorageBinder binder;
         private IRewriterHost host;
         private Dictionary<Address, HeuristicBlock> blockMap;
         private ScanResults sr;
@@ -47,12 +48,14 @@ namespace Reko.Scanning
 
         public HeuristicDisassembler(
             Program program,
+            IStorageBinder binder,
             ScanResults sr,
             Func<Address, bool> isAddrValid,
             bool assumeCallsDiverge,
             IRewriterHost host)
         {
             this.program = program;
+            this.binder = binder;
             this.sr = sr;
             this.isAddrValid = isAddrValid;
             this.assumeCallsDiverge = assumeCallsDiverge;

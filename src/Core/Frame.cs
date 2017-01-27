@@ -62,7 +62,7 @@ namespace Reko.Core
     /// considered to be at offset 0.</para>
 	/// <para>In addition, support has to be provided for architectures that have separate FPU stacks.</para>
 	/// </remarks>
-	public class Frame
+	public class Frame : IStorageBinder
 	{
 		private List<Identifier> identifiers;	// Identifiers for each access.
 		

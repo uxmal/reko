@@ -363,6 +363,7 @@ namespace Reko.Scanning
             };
             var dasm = new HeuristicDisassembler(
                 program, 
+                frame,
                 sr,
                 proc.IsValidAddress,
                 true,
