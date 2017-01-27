@@ -519,13 +519,18 @@ namespace Reko.Scanning
             foreach (var block in blocks.Nodes.OrderBy(n => n.Address))
             {
                 var addrEnd = block.GetEndAddress();
-                Debug.Write(string.Format("{0}: ", block.Name));
-                Debug.Print("  {0}", string.Join(" ", blocks.Predecessors(block)
-                    .OrderBy(n => n.Address)
-                    .Select(n => n.Address)));
-                foreach (var instr in block.Instructions)
+                Debug.Print("{0}:  //  {1}",
+                    block.Name, 
+                    string.Join(" ", blocks.Predecessors(block)
+                        .OrderBy(n => n.Address)
+                        .Select(n => n.Address)));
+                foreach (var cluster in block.Instructions)
                 {
-                    Debug.Print("  {0}", instr);
+                    Debug.Print("  {0}", cluster);
+                    foreach (var instr in cluster.Instructions)
+                    {
+                        Debug.Print("    {0}", instr);
+                    }
                 }
                 Debug.Print("  {0}", string.Join(" ", blocks.Successors(block)
                     .OrderBy(n => n.Address)
