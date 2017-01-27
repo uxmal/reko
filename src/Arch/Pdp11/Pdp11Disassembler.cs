@@ -91,6 +91,8 @@ namespace Reko.Arch.Pdp11
                 case 'e': op = this.DecodeOperand(wOpcode >> 6); break;
                 case 'r': op = new RegisterOperand(arch.GetRegister((wOpcode >> 6) & 7)); break;
                 case 'I': op = Imm6(wOpcode); break;
+                case 'F': op = this.DecodeOperand(wOpcode, true); break;
+                case 'f': op = FpuAccumulator(wOpcode); break;
                 default: throw new NotImplementedException();
                 }
                 if (op == null)
@@ -146,6 +148,7 @@ namespace Reko.Arch.Pdp11
 
         private static OpRec[] decoders;
         private static OpRec[] extraDecoders;
+        private static OpRec[] fpu2Decoders;
 
         static Pdp11Disassembler()
         {
@@ -180,6 +183,42 @@ namespace Reko.Arch.Pdp11
                 new FormatOpRec("", Opcode.illegal),
                 new FormatOpRec("r,I", Opcode.sob )
             };
+
+            fpu2Decoders = new OpRec[16]
+            {
+                new FormatOpRec("", Opcode.illegal),
+                // 00 cfcc
+                // 01 setf
+                // 02 seti
+                // 09 setd
+                // 0A setl
+
+                new FormatOpRec("", Opcode.illegal),
+                // 01 - ldfps
+                // 02 - stfps
+                // 03 - stst
+                // 4 clrf
+                // 5 tstf
+                // 6 absf
+                //{  7, "F", Opcode.negf }, 
+                new FormatOpRec("F,f", Opcode.mulf),
+                new FormatOpRec("F,f", Opcode.modf),
+
+                new FormatOpRec("F,f", Opcode.addf),
+                new FormatOpRec("", Opcode.illegal),
+                new FormatOpRec("F,f", Opcode.subf),
+                new FormatOpRec("F,f", Opcode.cmpf),
+
+                new FormatOpRec("", Opcode.illegal),
+                new FormatOpRec("f,F", Opcode.divf),
+                new FormatOpRec("r,F", Opcode.stexp),
+                new FormatOpRec("f,F", Opcode.stcdi),
+
+                new FormatOpRec("f,F", Opcode.stcfd),
+                new FormatOpRec("F,f", Opcode.ldexp),
+                new FormatOpRec("F,f", Opcode.ldcid),
+                new FormatOpRec("F,f", Opcode.ldcfd),
+            };
         }
 
         private Pdp11Instruction Disassemble()
@@ -206,10 +245,17 @@ namespace Reko.Arch.Pdp11
             return new AddressOperand(rdr.Address - offset);
         }
 
+        private RegisterOperand FpuAccumulator(int opcode)
+        {
+            var freg= arch.GetFpuRegister(opcode & 0x7);
+            if (freg == null)
+                return null;
+            return new RegisterOperand(freg);
+        }
+
         private static Pdp11Instruction FpuArithmetic(ushort opcode, Pdp11Disassembler dasm)
         {
-            //$TODO: any volunteers?
-            return new Pdp11Instruction { Opcode = Opcode.illegal };
+            return fpu2Decoders[(opcode >> 8) & 0x0F].Decode(opcode, dasm);
         }
 
         private PrimitiveType DataWidthFromSizeBit(uint p)
@@ -431,7 +477,7 @@ namespace Reko.Arch.Pdp11
         /// </summary>
         /// <param name="operandBits"></param>
         /// <returns>A decoded operand, or null if invalid.</returns>
-        private MachineOperand DecodeOperand(int operandBits)
+        private MachineOperand DecodeOperand(int operandBits, bool fpuReg = false)
         {
             ushort u;
             var reg = this.arch.GetRegister(operandBits & 7);
@@ -440,7 +486,11 @@ namespace Reko.Arch.Pdp11
             {
                 switch ((operandBits >> 3) & 7)
                 {
-                case 0: return new RegisterOperand(reg);
+                case 0:
+                    if (fpuReg)
+                        return FpuAccumulator(operandBits & 7);
+                    else
+                        return new RegisterOperand(reg);
                 case 1: return new MemoryOperand(AddressMode.RegDef, this.dataWidth, reg);
                 case 2:
                     if (!this.rdr.TryReadLeUInt16(out u))

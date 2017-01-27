@@ -186,9 +186,15 @@ namespace Reko.UnitTests.Arch.Pdp11
         }
 
         [Test]
-        public void Pdp11dis_regression1()
+        public void Pdp11dis_mul2()
         {
             RunTest("mul\tr0,r3", 0xF0C0);
+        }
+
+        [Test]
+        public void Pdp11dis_stcdi()
+        {
+            RunTest("stcdi\tac4,@-(r4)", 0xFBAC);
         }
     }
 }
