@@ -51,6 +51,7 @@ namespace Reko.Scanning
         private IRewriterHost host;
         private DecompilerEventListener eventListener;
         private HeuristicBlock invalidBlock;
+        private Frame frame;
 
         public HeuristicScanner(
             IServiceProvider services,
@@ -63,6 +64,7 @@ namespace Reko.Scanning
             this.host = host;
             this.eventListener = eventListener;
             this.invalidBlock = new HeuristicBlock(null, "<invalid>");
+            this.frame = program.Architecture.CreateFrame();
         }
 
         public IServiceProvider Services { get; private set; }
@@ -378,6 +380,7 @@ namespace Reko.Scanning
         {
             var dasm = new HeuristicDisassembler(
                 program,
+                frame,
                 sr,
                 program.SegmentMap.IsValidAddress,
                 false,
