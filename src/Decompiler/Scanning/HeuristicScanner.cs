@@ -50,7 +50,7 @@ namespace Reko.Scanning
         private Program program;
         private IRewriterHost host;
         private DecompilerEventListener eventListener;
-        private HeuristicBlock invalidBlock;
+        private RtlBlock invalidBlock;
         private Frame frame;
 
         public HeuristicScanner(
@@ -63,7 +63,7 @@ namespace Reko.Scanning
             this.program = program;
             this.host = host;
             this.eventListener = eventListener;
-            this.invalidBlock = new HeuristicBlock(null, "<invalid>");
+            this.invalidBlock = new RtlBlock(null, "<invalid>");
             this.frame = program.Architecture.CreateFrame();
         }
 
@@ -92,11 +92,11 @@ namespace Reko.Scanning
         {
             var sw = new Stopwatch();
             sw.Start();
-            var list = new List<HeuristicBlock>();
+            var list = new List<RtlBlock>();
             var ranges = FindUnscannedRanges();
             var fnRanges = FindPossibleFunctions(ranges).ToList();
             int n = 0;
-            var icfg = new DiGraph<HeuristicBlock>();
+            var icfg = new DiGraph<RtlBlock>();
             foreach (var range in fnRanges)
             {
                 var hproc = DisassembleProcedure(range.Item1, range.Item2);
@@ -125,14 +125,14 @@ namespace Reko.Scanning
         {
             var sw = new Stopwatch();
             sw.Start();
-            var list = new List<HeuristicBlock>();
+            var list = new List<RtlBlock>();
             //$TODO: scan user datas - may yield procedure addresses
             //$TODO: scan image symbols
 
             var sr = new ScanResults
             {
                 KnownProcedures = FindKnownProcedures(),
-                ICFG = new DiGraph<HeuristicBlock>(),
+                ICFG = new DiGraph<RtlBlock>(),
                 DirectlyCalledAddresses = new Dictionary<Address, int>()
             };
 
@@ -199,8 +199,8 @@ namespace Reko.Scanning
 
         private void RemoveInvalidBlocks(ScanResults sr)
         {
-            var revGraph = new DiGraph<HeuristicBlock>();
-            var invalid = new HeuristicBlock(null, "<invalid>");
+            var revGraph = new DiGraph<RtlBlock>();
+            var invalid = new RtlBlock(null, "<invalid>");
             revGraph.AddNode(invalid);
             foreach (var b in sr.ICFG.Nodes)
             {
@@ -220,7 +220,7 @@ namespace Reko.Scanning
 
             // Find the transitive closure of invalid nodes.
 
-            var invalidNodes = new DfsIterator<HeuristicBlock>(revGraph)
+            var invalidNodes = new DfsIterator<RtlBlock>(revGraph)
                 .PreOrder(invalid)
                 .ToList();
             foreach (var n in invalidNodes)
@@ -422,7 +422,7 @@ namespace Reko.Scanning
         //link to the existing basic block in the control flow graph
 
         [Conditional("DEBUG")]
-        private void DumpBlocks(IEnumerable<HeuristicBlock> blocks)
+        private void DumpBlocks(IEnumerable<RtlBlock> blocks)
         {
             if (blocks != null)
                 return;

@@ -43,7 +43,7 @@ namespace Reko.Scanning
         private ScanResults sr;
         private DecompilerEventListener listener;
         private HashSet<Address> knownProcedures;
-        private Dictionary<Address, HeuristicBlock> mpAddrToBlock;
+        private Dictionary<Address, RtlBlock> mpAddrToBlock;
 
         public ProcedureDetector(Program program, ScanResults sr, DecompilerEventListener listener)
         {
@@ -94,12 +94,12 @@ namespace Reko.Scanning
         /// </summary>
         public class Cluster
         {
-            public SortedSet<HeuristicBlock> Blocks = new SortedSet<HeuristicBlock>(Cmp.Instance);
-            public SortedSet<HeuristicBlock> Entries = new SortedSet<HeuristicBlock>(Cmp.Instance);
+            public SortedSet<RtlBlock> Blocks = new SortedSet<RtlBlock>(Cmp.Instance);
+            public SortedSet<RtlBlock> Entries = new SortedSet<RtlBlock>(Cmp.Instance);
 
-            private class Cmp : Comparer<HeuristicBlock>
+            private class Cmp : Comparer<RtlBlock>
             {
-                public override int Compare(HeuristicBlock x, HeuristicBlock y)
+                public override int Compare(RtlBlock x, RtlBlock y)
                 {
                     return x.Address.CompareTo(y.Address);
                 }
@@ -116,7 +116,7 @@ namespace Reko.Scanning
         /// <returns></returns>
         public List<Cluster> FindClusters()
         {
-            var nodesLeft = new HashSet<HeuristicBlock>(sr.ICFG.Nodes);
+            var nodesLeft = new HashSet<RtlBlock>(sr.ICFG.Nodes);
             var clusters = new List<Cluster>();
             while (nodesLeft.Count > 0)
             {
@@ -142,9 +142,9 @@ namespace Reko.Scanning
         /// <param name="cluster"></param>
         /// <param name="nodesLeft"></param>
         private void BuildWCC(
-            HeuristicBlock node,
+            RtlBlock node,
             Cluster cluster,
-            HashSet<HeuristicBlock> nodesLeft)
+            HashSet<RtlBlock> nodesLeft)
         {
             nodesLeft.Remove(node);
             cluster.Blocks.Add(node);
@@ -201,7 +201,7 @@ namespace Reko.Scanning
         /// <param name="cluster"></param>
         public void FindClusterEntries(Cluster cluster)
         {
-            var nopreds = new List<HeuristicBlock>();
+            var nopreds = new List<RtlBlock>();
             foreach (var block in cluster.Blocks)
             {
                 if (knownProcedures.Contains(block.Address))
@@ -291,11 +291,11 @@ namespace Reko.Scanning
             return procs;
         }
 
-        private HashSet<HeuristicBlock> DetachFusedTails(Cluster cluster)
+        private HashSet<RtlBlock> DetachFusedTails(Cluster cluster)
         {
-            var aps = new ArticulationPointFinder<HeuristicBlock>().FindArticulationPoints(sr.ICFG, cluster.Entries);
+            var aps = new ArticulationPointFinder<RtlBlock>().FindArticulationPoints(sr.ICFG, cluster.Entries);
             aps.IntersectWith(cluster.Blocks);
-            var fusedTails = new HashSet<HeuristicBlock>();
+            var fusedTails = new HashSet<RtlBlock>();
 
             foreach (var ap in aps)
             {
@@ -310,7 +310,7 @@ namespace Reko.Scanning
             return fusedTails;
         }
 
-        private Procedure BuildProcedure(Cluster cluster, HeuristicBlock entry)
+        private Procedure BuildProcedure(Cluster cluster, RtlBlock entry)
         {
             FuseBlocks(cluster);
             return Procedure.Create(entry.Address, program.Architecture.CreateFrame());

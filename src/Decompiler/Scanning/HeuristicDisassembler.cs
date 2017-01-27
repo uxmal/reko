@@ -41,7 +41,7 @@ namespace Reko.Scanning
         private Program program;
         private IStorageBinder binder;
         private IRewriterHost host;
-        private Dictionary<Address, HeuristicBlock> blockMap;
+        private Dictionary<Address, RtlBlock> blockMap;
         private ScanResults sr;
         private Func<Address, bool> isAddrValid;
         private bool assumeCallsDiverge;
@@ -60,7 +60,7 @@ namespace Reko.Scanning
             this.isAddrValid = isAddrValid;
             this.assumeCallsDiverge = assumeCallsDiverge;
             this.host = host;
-            blockMap = new Dictionary<Address, HeuristicBlock>();
+            blockMap = new Dictionary<Address, RtlBlock>();
         }
 
         /// <summary>
@@ -70,13 +70,13 @@ namespace Reko.Scanning
         /// <param name="addr"></param>
         /// <param name="proc"></param>
         /// <returns></returns>
-        public HeuristicBlock Disassemble(Address addr)
+        public RtlBlock Disassemble(Address addr)
         {
-            var current = new HeuristicBlock(addr, string.Format("l{0:X}", addr));
+            var current = new RtlBlock(addr, string.Format("l{0:X}", addr));
             var dasm = program.CreateDisassembler(addr);
             foreach (var instr in dasm.TakeWhile(i => isAddrValid(i.Address)))
             {
-                HeuristicBlock block;
+                RtlBlock block;
                 if (blockMap.TryGetValue(instr.Address, out block))
                 {
                     // This instruction was already disassembled before.
@@ -217,9 +217,9 @@ namespace Reko.Scanning
         /// <param name="block"></param>
         /// <param name="addr"></param>
         /// <returns></returns>
-        private HeuristicBlock SplitBlock(HeuristicBlock block, Address addr)
+        private RtlBlock SplitBlock(RtlBlock block, Address addr)
         {
-            var newBlock = new HeuristicBlock(addr, string.Format("l{0:X}", addr))
+            var newBlock = new RtlBlock(addr, string.Format("l{0:X}", addr))
             {
                 IsValid = block.IsValid
             };
@@ -241,18 +241,18 @@ namespace Reko.Scanning
             return newBlock;
         }
 
-        private void AddEdge(HeuristicBlock from, HeuristicBlock to)
+        private void AddEdge(RtlBlock from, RtlBlock to)
         {
             sr.ICFG.AddEdge(from, to);
         }
 
-        private void AddNode(HeuristicBlock block)
+        private void AddNode(RtlBlock block)
         {
             if (!sr.ICFG.Nodes.Contains(block))
                 sr.ICFG.Nodes.Add(block);
         }
 
-        private void RemoveEdge(HeuristicBlock from, HeuristicBlock to)
+        private void RemoveEdge(RtlBlock from, RtlBlock to)
         {
             sr.ICFG.RemoveEdge(from, to);
         }

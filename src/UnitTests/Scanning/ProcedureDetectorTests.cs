@@ -48,29 +48,29 @@ namespace Reko.UnitTests.Scanning
         private Program program;
         private FakeDecompilerEventListener listener;
         private ProcedureDetector prdet;
-        private Dictionary<uint, HeuristicBlock> mpIntBlock;
+        private Dictionary<uint, RtlBlock> mpIntBlock;
 
         [SetUp]
         public void Setup()
         {
             sr = new ScanResults
             {
-                ICFG = new DiGraph<HeuristicBlock>(),
+                ICFG = new DiGraph<RtlBlock>(),
                 DirectlyCalledAddresses = new Dictionary<Address, int>(),
                 KnownProcedures = new HashSet<Address>(),
             };
             this.program = new Program();
             this.listener = new FakeDecompilerEventListener();
-            this.mpIntBlock = new Dictionary<uint, HeuristicBlock>();
+            this.mpIntBlock = new Dictionary<uint, RtlBlock>();
         }
 
-        private HeuristicBlock Block(uint uAddr)
+        private RtlBlock Block(uint uAddr)
         {
-            HeuristicBlock block;
+            RtlBlock block;
             if (!this.mpIntBlock.TryGetValue(uAddr, out block))
             {
                 var addr = Address.Ptr32(uAddr);
-                block = new HeuristicBlock(addr, addr.GenerateName("l", ""));
+                block = new RtlBlock(addr, addr.GenerateName("l", ""));
                 this.mpIntBlock.Add(uAddr, block);
             }
             return block;
@@ -78,7 +78,7 @@ namespace Reko.UnitTests.Scanning
 
         public void Given_Blocks(params uint [] addrs)
         {
-            sr.ICFG = new DiGraph<HeuristicBlock>();
+            sr.ICFG = new DiGraph<RtlBlock>();
             foreach (var uAddr in addrs)
             {
                 sr.ICFG.Nodes.Add(Block(uAddr));

@@ -158,7 +158,7 @@ namespace Reko.UnitTests.Scanning
             };
         }
 
-        protected void AssertBlocks(string sExpected, DirectedGraph<HeuristicBlock> cfg)
+        protected void AssertBlocks(string sExpected, DirectedGraph<RtlBlock> cfg)
         {
             var sb = new StringBuilder();
             foreach (var hblock in cfg.Nodes.OrderBy(hb => hb.Address))

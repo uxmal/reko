@@ -40,7 +40,7 @@ namespace Reko.Scanning
         /// direct calls and jumps. Each edge goes from a jump or a call
         /// to its destination. Branches have two destinations.
         /// </summary>
-        public DiGraph<HeuristicBlock> ICFG;
+        public DiGraph<RtlBlock> ICFG;
 
         /// <summary>
         /// Tally of how many times each address is called by a direct call

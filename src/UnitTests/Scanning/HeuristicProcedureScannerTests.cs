@@ -43,7 +43,7 @@ namespace Reko.UnitTests.Scanning
             base.Setup();
         }
 
-        private void AssertConflicts(string sExp, IEnumerable<Tuple<HeuristicBlock, HeuristicBlock>> conflicts)
+        private void AssertConflicts(string sExp, IEnumerable<Tuple<RtlBlock, RtlBlock>> conflicts)
         {
             var sActual = conflicts
                 .OrderBy(c => c.Item1.Address.ToLinear())

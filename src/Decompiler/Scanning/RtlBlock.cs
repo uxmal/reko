@@ -28,9 +28,9 @@ using System.Text;
 
 namespace Reko.Scanning
 {
-    public class HeuristicBlock
+    public class RtlBlock
     {
-        public HeuristicBlock(Address address, string name)
+        public RtlBlock(Address address, string name)
         {
             this.Address = address;
             this.Name = name; 
