@@ -23,6 +23,7 @@ using Reko.Core.Machine;
 using Reko.Core.Types;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Reko.Arch.M68k
@@ -64,6 +65,7 @@ namespace Reko.Arch.M68k
 
         internal static RegisterStorage[] regs;
         internal static int Max;
+        internal static readonly Dictionary<string, RegisterStorage> regsByName;
 
         static Registers()
         {
@@ -136,6 +138,8 @@ namespace Reko.Arch.M68k
                 pc,
                 fpsr,
             };
+
+            regsByName = regs.ToDictionary(r => r.Name, StringComparer.InvariantCultureIgnoreCase);
         }
 
         public static RegisterStorage GetRegister(int reg)
@@ -160,14 +164,13 @@ namespace Reko.Arch.M68k
 
         public static RegisterStorage GetRegister(string name)
         {
-            for (int i = 0; i < regs.Length; ++i)
+            RegisterStorage reg;
+            if (!regsByName.TryGetValue(name, out reg))
             {
-                if (regs[i] != null && String.Compare(regs[i].Name, name, true) == 0)
-                    return regs[i];
+                reg = RegisterStorage.None;
             }
-            return RegisterStorage.None;
+            return reg;
         }
-
     }
 
     [Flags]

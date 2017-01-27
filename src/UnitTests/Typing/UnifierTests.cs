@@ -229,6 +229,33 @@ namespace Reko.UnitTests.Typing
 			Assert.AreEqual("foo", st.Name);
 		}
 
+        [Test]
+        public void UnifyStructNamedStruct_DifferentNames()
+        {
+            var st1 = new StructureType("foo", 8, true)
+            {
+                Fields =
+                {
+                    { 0, PrimitiveType.Int32, "foo_00" },
+                    { 4, PrimitiveType.Real32, "foo_04" },
+                }
+            };
+            var st2 = new StructureType("bar", 8, true)
+            {
+                Fields =
+                {
+                    { 0, PrimitiveType.Real32, "bar_00" },
+                    { 4, PrimitiveType.Int32, "bar_04" },
+                }
+            };
+            var dt = un.Unify(st1, st2);
+            Assert.AreEqual(
+                "(union " +
+                "((struct \"foo\" 0008 (0 int32 foo_00) (4 real32 foo_04)) u0) " +
+                "((struct \"bar\" 0008 (0 real32 bar_00) (4 int32 bar_04)) u1))",
+                dt.ToString());
+        }
+
         // Ensures that if a named field of structure is unified with an unnamed one, the resulting structure keeps the field name.
         [Test]
         public void UnifyStructNamedField()

@@ -45,8 +45,14 @@ namespace Reko.UnitTests.Environments.RT11
         {
             Given_LdaFile(0x00, 0x00);
 
-            var program = ldaLdr.Load(Address.Ptr16(0));
-            Assert.AreEqual(1, program.SegmentMap.Segments.Count);
+            try
+            {
+                var program = ldaLdr.Load(Address.Ptr16(0));
+                Assert.Fail("Should have thrown an exception");
+            }
+            catch (BadImageFormatException)
+            {
+            }
         }
 
         [Test]
@@ -54,16 +60,21 @@ namespace Reko.UnitTests.Environments.RT11
         {
             Given_LdaFile(
                 0x01, 0x00,
-                0x02, 0x00,
+                0x08, 0x00,
                 0x00, 0x10,
                 0x12, 0x34,
+                0x00,
+
+                0x01, 0x00,
+                0x06, 0x00,
+                0x00, 0x10,
                 0x00);
 
             var program = ldaLdr.Load(Address.Ptr16(0));
             var seg = program.SegmentMap.Segments.Values.First();
-            Assert.AreEqual(0x12, seg.MemoryArea.Bytes[0x1000]);
-            Assert.AreEqual(0x34, seg.MemoryArea.Bytes[0x1001]);
+            Assert.AreEqual(0x1000ul, seg.MemoryArea.BaseAddress.ToLinear());
+            Assert.AreEqual(0x12, seg.MemoryArea.Bytes[0]);
+            Assert.AreEqual(0x34, seg.MemoryArea.Bytes[1]);
         }
-
     }
 }

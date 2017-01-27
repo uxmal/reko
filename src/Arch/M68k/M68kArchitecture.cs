@@ -59,7 +59,7 @@ namespace Reko.Arch.M68k
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
-            throw new NotImplementedException();
+            return new M68kInstructionComparer(norm);
         }
 
         public override ProcessorState CreateProcessorState()
@@ -135,7 +135,7 @@ namespace Reko.Arch.M68k
 
         public override bool TryGetRegister(string name, out RegisterStorage reg)
         {
-            throw new NotImplementedException();
+            return Registers.regsByName.TryGetValue(name, out reg);
         }
 
         public override FlagGroupStorage GetFlagGroup(uint grf)

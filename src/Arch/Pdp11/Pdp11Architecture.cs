@@ -45,6 +45,13 @@ namespace Reko.Arch.Pdp11
 
         public static FlagRegister psw = new FlagRegister("psw", 12, PrimitiveType.Word16);
 
+        public static RegisterStorage ac0 = new RegisterStorage("ac0", 16, 0, PrimitiveType.Real64);
+        public static RegisterStorage ac1 = new RegisterStorage("ac1", 17, 0, PrimitiveType.Real64);
+        public static RegisterStorage ac2 = new RegisterStorage("ac2", 18, 0, PrimitiveType.Real64);
+        public static RegisterStorage ac3 = new RegisterStorage("ac3", 19, 0, PrimitiveType.Real64);
+        public static RegisterStorage ac4 = new RegisterStorage("ac4", 20, 0, PrimitiveType.Real64);
+        public static RegisterStorage ac5 = new RegisterStorage("ac5", 21, 0, PrimitiveType.Real64);
+
         public static FlagGroupStorage N = new FlagGroupStorage(psw, 8, "N",PrimitiveType.Bool);
         public static FlagGroupStorage Z = new FlagGroupStorage(psw, 4, "Z",PrimitiveType.Bool);
         public static FlagGroupStorage V = new FlagGroupStorage(psw, 2, "V", PrimitiveType.Bool);
@@ -63,6 +70,7 @@ namespace Reko.Arch.Pdp11
     public class Pdp11Architecture : ProcessorArchitecture
     {
         private RegisterStorage[] regs;
+        private RegisterStorage[] fpuRegs;
         private FlagGroupStorage[] flagRegs;
         private Dictionary<uint, FlagGroupStorage> flagGroups;
 
@@ -70,7 +78,13 @@ namespace Reko.Arch.Pdp11
         {
             regs = new RegisterStorage[] { 
                 Registers.r0, Registers.r1, Registers.r2, Registers.r3, 
-                Registers.r4, Registers.r5, Registers.sp, Registers.pc, };
+                Registers.r4, Registers.r5, Registers.sp, Registers.pc,
+            };
+            fpuRegs = new RegisterStorage[]
+            {
+                Registers.ac0, Registers.ac1, Registers.ac2,Registers.ac3,
+                Registers.ac4, Registers.ac5, 
+            };
             flagRegs = new FlagGroupStorage[] 
             {
                 Registers.N, Registers.Z, Registers.V, Registers.C
@@ -120,7 +134,7 @@ namespace Reko.Arch.Pdp11
 
         public override IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm)
         {
-            throw new NotImplementedException();
+            return new Pdp11InstructionComparer(norm);
         }
 
         public override ProcessorState CreateProcessorState()
@@ -137,6 +151,13 @@ namespace Reko.Arch.Pdp11
         {
             return (0 <= i && i < regs.Length)
                 ? regs[i]
+                : null;
+        }
+
+        internal RegisterStorage GetFpuRegister(int i)
+        {
+            return (0 <= i && i < fpuRegs.Length)
+                ? fpuRegs[i]
                 : null;
         }
 

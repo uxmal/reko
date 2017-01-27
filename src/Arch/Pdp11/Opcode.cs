@@ -103,5 +103,17 @@ namespace Reko.Arch.Pdp11
         tstb,
         wait,
         xor,
+        mulf,
+        modf,
+        addf,
+        subf,
+        cmpf,
+        divf,
+        stexp,
+        stcdi,
+        stcfd,
+        ldexp,
+        ldcid,
+        ldcfd,
     }
 }

@@ -35,7 +35,7 @@ namespace Reko.Arch.Arm
 
         // If this instruction is NULL, then the instruction is invalid.
         // Callers need to be aware of this.
-        private CapstoneArmInstruction instruction;
+        internal CapstoneArmInstruction instruction;
         
         public Arm32Instruction(CapstoneArmInstruction instruction)
         {
