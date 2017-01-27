@@ -35,14 +35,14 @@ namespace Reko.Arch.Z80
     public class Z80Rewriter : IEnumerable<RtlInstructionCluster>
     {
         private Z80ProcessorArchitecture arch;
-        private Frame frame;
+        private IStorageBinder frame;
         private IRewriterHost host;
         private IEnumerator<Z80Instruction> dasm;
         private RtlClass rtlc;
         private List<RtlInstruction> rtlInstructions;
         private RtlEmitter m;
 
-        public Z80Rewriter(Z80ProcessorArchitecture arch, ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public Z80Rewriter(Z80ProcessorArchitecture arch, ImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             this.arch = arch;
             this.frame = frame;

@@ -41,7 +41,7 @@ namespace Reko.Arch.M68k
 
         // These fields are internal so that the OperandRewriter can use them.
         internal M68kArchitecture arch;
-        internal Frame frame;
+        internal IStorageBinder binder;
         internal M68kInstruction di;
         internal RtlEmitter m;
         private M68kState state;
@@ -51,11 +51,11 @@ namespace Reko.Arch.M68k
         private List<RtlInstruction> rtlInstructions;
         private OperandRewriter orw;
 
-        public Rewriter(M68kArchitecture m68kArchitecture, ImageReader rdr, M68kState m68kState, Frame frame, IRewriterHost host)
+        public Rewriter(M68kArchitecture m68kArchitecture, ImageReader rdr, M68kState m68kState, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = m68kArchitecture;
             this.state = m68kState;
-            this.frame = frame;
+            this.binder = binder;
             this.host = host;
             this.dasm = arch.CreateDisassemblerImpl(rdr).GetEnumerator();
         }
@@ -70,7 +70,7 @@ namespace Reko.Arch.M68k
                 rtlInstructions = new List<RtlInstruction>();
                 rtlc = RtlClass.Linear;
                 m = new RtlEmitter(rtlInstructions);
-                orw = new OperandRewriter(arch, this.m, this.frame, di.dataWidth);
+                orw = new OperandRewriter(arch, this.m, this.binder, di.dataWidth);
                 switch (di.code)
                 {
                 case Opcode.add: RewriteBinOp((s, d) => m.IAdd(d, s), FlagM.CVZNX); break;
@@ -186,7 +186,7 @@ VS Overflow Set 1001 V
                 case Opcode.suba: RewriteArithmetic((s, d) => m.ISub(d, s)); break;
                 case Opcode.subi: RewriteArithmetic((s, d) => m.ISub(d, s)); break;
                 case Opcode.subq: RewriteAddSubq((s, d) => m.ISub(d, s)); break;
-                case Opcode.subx: RewriteArithmetic((s, d) => m.ISub(m.ISub(d, s), frame.EnsureFlagGroup(Registers.ccr, (uint)FlagM.XF, "X", PrimitiveType.Bool))); break;
+                case Opcode.subx: RewriteArithmetic((s, d) => m.ISub(m.ISub(d, s), binder.EnsureFlagGroup(Registers.ccr, (uint)FlagM.XF, "X", PrimitiveType.Bool))); break;
                 case Opcode.swap: RewriteSwap(); break;
                 case Opcode.tst: RewriteTst(); break;
                 case Opcode.unlk: RewriteUnlk(); break;

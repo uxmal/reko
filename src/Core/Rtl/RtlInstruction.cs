@@ -87,9 +87,10 @@ namespace Reko.Core.Rtl
         Linear = 1,         // non-transfer instruction, e.g. ALU operation.
         Transfer = 2,       // transfer instruction.
         Conditional = 4,    // Instruction is gated on a condition.
-        Delay = 8,          // Next instruction is in the delay slot and may be executed.
-        Annul = 16,         // Next instruction is annulled (see SPARC architecture)
-        Invalid = 32,       // Invalid instruction
+        Call = 8,           // Instruction saves its continuation.
+        Delay = 16,         // Next instruction is in the delay slot and may be executed.
+        Annul = 32,         // Next instruction is annulled (see SPARC architecture)
+        Invalid = 64,       // Invalid instruction
         ConditionalTransfer = Conditional | Transfer,
     }
 

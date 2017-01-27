@@ -31,6 +31,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Reko.Core.Services;
+using Reko.Core.Expressions;
 
 namespace Reko.UnitTests.Scanning
 {
@@ -78,6 +79,19 @@ namespace Reko.UnitTests.Scanning
                 {
                     return new PseudoProcedure(n, dt, a);
                 }));
+            host.Stub(h => h.PseudoProcedure(
+                Arg<string>.Is.Anything,
+                Arg<DataType>.Is.Anything,
+                Arg<Expression[]>.Is.Anything))
+               .Do(new Func<string, DataType, Expression[], Expression>((n, dt, a) =>
+                {
+                    var fn = new FunctionType();
+                    var ppp = new PseudoProcedure(n, fn);
+                    return new Application(new ProcedureConstant(fn, ppp),
+                        dt,
+                        a);
+
+            }));
         }
 
         protected void Given_Image32(uint addr, string sBytes)
@@ -111,6 +125,9 @@ namespace Reko.UnitTests.Scanning
         protected void Given_NoImportedProcedures()
         {
             host.Stub(h => h.GetImportedProcedure(null, null))
+                .IgnoreArguments()
+                .Return(null);
+            host.Stub(h => h.GetImportedGlobal(null, null))
                 .IgnoreArguments()
                 .Return(null);
         }

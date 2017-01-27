@@ -152,7 +152,7 @@ namespace Reko.UnitTests.Scanning
                 arch.Stub(x => x.CreateRewriter(
                     Arg<ImageReader>.Is.Anything,
                     Arg<ProcessorState>.Is.Anything,
-                    Arg<Frame>.Is.Anything,
+                    Arg<IStorageBinder>.Is.Anything,
                     Arg<IRewriterHost>.Is.Anything)).Return(trace);
                 scanner.Stub(x => x.FindContainingBlock(
                     Arg<Address>.Is.Anything)).Return(block);
@@ -192,7 +192,7 @@ namespace Reko.UnitTests.Scanning
                 arch.Stub(x => x.CreateRewriter(
                     Arg<ImageReader>.Is.Anything,
                     Arg<ProcessorState>.Is.Anything,
-                    Arg<Frame>.Is.Anything,
+                    Arg<IStorageBinder>.Is.Anything,
                     Arg<IRewriterHost>.Is.Anything)).Return(trace);
                 scanner.Stub(x => x.FindContainingBlock(
                     Arg<Address>.Is.Anything)).Return(block);
@@ -230,7 +230,7 @@ namespace Reko.UnitTests.Scanning
                 arch.Stub(x => x.CreateRewriter(
                     Arg<ImageReader>.Is.Anything,
                     Arg<ProcessorState>.Is.Anything,
-                    Arg<Frame>.Is.Anything,
+                    Arg<IStorageBinder>.Is.Anything,
                     Arg<IRewriterHost>.Is.Anything)).Return(trace);
                 arch.Stub(x => x.PointerType).Return(PrimitiveType.Pointer32);
                 scanner.Stub(x => x.GetImportedProcedure(null, null)).IgnoreArguments().Return(null);

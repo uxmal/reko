@@ -49,8 +49,8 @@ namespace Reko.Arch.Mips
             Identifier from;
             switch (cpregFrom.Number)
             {
-            case 9: from = frame.CreateTemporary("__counter__", PrimitiveType.UInt32); break;
-            default: from = frame.CreateTemporary("__cp" + cpregFrom.Number, PrimitiveType.UInt32); break;
+            case 9: from = binder.CreateTemporary("__counter__", PrimitiveType.UInt32); break;
+            default: from = binder.CreateTemporary("__cp" + cpregFrom.Number, PrimitiveType.UInt32); break;
             }
             m.Assign(RewriteOperand(instr.op1), from);
         }

@@ -31,7 +31,7 @@ namespace Reko.Arch.Xtensa
 {
     public partial class XtensaRewriter : IEnumerable<RtlInstructionCluster>
     {
-        private Frame frame;
+        private IStorageBinder frame;
         private IRewriterHost host;
         private ImageReader rdr;
         private ProcessorState state;
@@ -42,7 +42,7 @@ namespace Reko.Arch.Xtensa
         private RtlEmitter m;
         private XtensaInstruction instr;
 
-        public XtensaRewriter(XtensaArchitecture arch, ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public XtensaRewriter(XtensaArchitecture arch, ImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             this.arch = arch;
             this.rdr = rdr;

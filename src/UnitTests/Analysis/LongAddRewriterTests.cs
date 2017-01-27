@@ -33,7 +33,7 @@ namespace Reko.UnitTests.Analysis
     [TestFixture]
     public class LongAddRewriterTests : AnalysisTestBase
     {
-        private Frame frame;
+        private IStorageBinder frame;
         private LongAddRewriter rw;
         private IProcessorArchitecture arch;
         private Identifier ax;

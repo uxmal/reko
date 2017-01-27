@@ -71,7 +71,7 @@ namespace Reko.UnitTests.Arch.Mips
             return image;
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
         {
             return new MipsRewriter(arch, dasm, frame, host);
         }

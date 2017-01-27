@@ -35,7 +35,7 @@ namespace Reko.Arch.Pdp11
         private Pdp11Architecture arch;
         private IEnumerator<Pdp11Instruction> dasm;
         private Pdp11Instruction instr;
-        private Frame frame;
+        private IStorageBinder binder;
         private RtlClass rtlc;
         private List<RtlInstruction> rtlInstructions;
         private RtlEmitter m;
@@ -44,12 +44,12 @@ namespace Reko.Arch.Pdp11
         public Pdp11Rewriter(
             Pdp11Architecture arch,
             IEnumerable<Pdp11Instruction> instrs,
-            Frame frame,
+            IStorageBinder binder,
             IRewriterHost host)
         {
             this.arch = arch;
             this.dasm = instrs.GetEnumerator();
-            this.frame = frame;
+            this.binder = binder;
             this.host = host;
         }
 
@@ -134,7 +134,7 @@ namespace Reko.Arch.Pdp11
             uint uChanged = (uint)changed;
             if (uChanged != 0)
             {
-                var grfChanged = frame.EnsureFlagGroup(this.arch.GetFlagGroup(uChanged));
+                var grfChanged = binder.EnsureFlagGroup(this.arch.GetFlagGroup(uChanged));
                 m.Assign(grfChanged, m.Cond(e));
             }
             uint grfMask = 1;
@@ -142,7 +142,7 @@ namespace Reko.Arch.Pdp11
             {
                 if ((grfMask & (uint)zeroed) != 0)
                 {
-                    var grfZeroed = frame.EnsureFlagGroup(this.arch.GetFlagGroup(grfMask));
+                    var grfZeroed = binder.EnsureFlagGroup(this.arch.GetFlagGroup(grfMask));
                     m.Assign(grfZeroed, 0);
                 }
                 grfMask <<= 1;
@@ -152,7 +152,7 @@ namespace Reko.Arch.Pdp11
             {
                 if ((grfMask & (uint)set) != 0)
                 {
-                    var grfZeroed = frame.EnsureFlagGroup(this.arch.GetFlagGroup(grfMask));
+                    var grfZeroed = binder.EnsureFlagGroup(this.arch.GetFlagGroup(grfMask));
                     m.Assign(grfZeroed, 1);
                 }
                 grfMask <<= 1;
@@ -169,8 +169,8 @@ namespace Reko.Arch.Pdp11
                       "Invalid addressing mode for transfer functions.",
                       memOp.Mode);
             }
-            var r = frame.EnsureRegister(memOp.Register);
-            var tmp = frame.CreateTemporary(op.Width);
+            var r = binder.EnsureRegister(memOp.Register);
+            var tmp = binder.CreateTemporary(op.Width);
             switch (memOp.Mode)
             {
             default:
@@ -249,8 +249,8 @@ namespace Reko.Arch.Pdp11
             var memOp = op as MemoryOperand;
             if (memOp != null)
             {
-                var r = frame.EnsureRegister(memOp.Register);
-                var tmp = frame.CreateTemporary(op.Width);
+                var r = binder.EnsureRegister(memOp.Register);
+                var tmp = binder.CreateTemporary(op.Width);
                 switch (memOp.Mode)
                 {
                 default:
@@ -305,7 +305,7 @@ namespace Reko.Arch.Pdp11
             var regOp = op as RegisterOperand;
             if (regOp != null)
             {
-                return frame.EnsureRegister(regOp.Register);
+                return binder.EnsureRegister(regOp.Register);
             }
             var immOp = op as ImmediateOperand;
             if (immOp != null)
@@ -332,7 +332,7 @@ namespace Reko.Arch.Pdp11
             var regOp = op as RegisterOperand;
             if (regOp != null)
             {
-                var dst = frame.EnsureRegister(regOp.Register);
+                var dst = binder.EnsureRegister(regOp.Register);
                 src = gen(src);
                 if (src.DataType.Size < dst.DataType.Size)
                 {
@@ -344,8 +344,8 @@ namespace Reko.Arch.Pdp11
             var memOp = op as MemoryOperand;
             if (memOp != null)
             {
-                var r = frame.EnsureRegister(memOp.Register);
-                var tmp = frame.CreateTemporary(dasm.Current.DataWidth);
+                var r = binder.EnsureRegister(memOp.Register);
+                var tmp = binder.CreateTemporary(dasm.Current.DataWidth);
                 switch (memOp.Mode)
                 {
                 default:
@@ -428,15 +428,15 @@ namespace Reko.Arch.Pdp11
             var regOp = op as RegisterOperand;
             if (regOp != null)
             {
-                var dst = frame.EnsureRegister(regOp.Register);
+                var dst = binder.EnsureRegister(regOp.Register);
                 m.Assign(dst, gen(dst, src));
                 return dst;
             }
             var memOp = op as MemoryOperand;
             if (memOp != null)
             {
-                var r = frame.EnsureRegister(memOp.Register);
-                var tmp = frame.CreateTemporary(dasm.Current.DataWidth);
+                var r = binder.EnsureRegister(memOp.Register);
+                var tmp = binder.CreateTemporary(dasm.Current.DataWidth);
                 switch (memOp.Mode)
                 {
                 default:

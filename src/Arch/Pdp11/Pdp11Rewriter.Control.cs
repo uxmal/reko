@@ -43,7 +43,7 @@ namespace Reko.Arch.Pdp11
         {
             this.rtlc = RtlClass.Transfer;
             m.Branch(
-                m.Test(cc, frame.EnsureFlagGroup(arch.GetFlagGroup((uint)flags))),
+                m.Test(cc, binder.EnsureFlagGroup(arch.GetFlagGroup((uint)flags))),
                 ((AddressOperand)instr.op1).Address,
                 RtlClass.ConditionalTransfer);
         }
@@ -98,9 +98,9 @@ namespace Reko.Arch.Pdp11
             }
             else
             {
-                var tmp = frame.CreateTemporary(regLink.Width);
-                var sp = frame.EnsureRegister(Registers.sp);
-                var reg = frame.EnsureRegister(regLink.Register);
+                var tmp = binder.CreateTemporary(regLink.Width);
+                var sp = binder.EnsureRegister(Registers.sp);
+                var reg = binder.EnsureRegister(regLink.Register);
                 m.Assign(tmp, reg);
                 m.Assign(reg, m.Load(regLink.Width, sp));
                 m.Assign(sp, m.IAdd(sp, reg.DataType.Size));

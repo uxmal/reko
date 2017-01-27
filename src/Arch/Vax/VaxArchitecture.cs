@@ -111,12 +111,12 @@ namespace Reko.Arch.Vax
             return new VaxProcessorState(this);
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             return new VaxRewriter(this, rdr, state, frame, host);
         }
 
-        public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        public override Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }

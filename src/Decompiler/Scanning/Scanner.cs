@@ -80,7 +80,7 @@ namespace Reko.Scanning
         Block CreateCallRetThunk(Address addrFrom, Procedure procOld, Procedure procNew);
         void SetProcedureReturnAddressBytes(Procedure proc, int returnAddressBytes, Address address);
 
-        IEnumerable<RtlInstructionCluster> GetTrace(Address addrStart, ProcessorState state, Frame frame);
+        IEnumerable<RtlInstructionCluster> GetTrace(Address addrStart, ProcessorState state, IStorageBinder frame);
 
     }
 
@@ -247,7 +247,7 @@ namespace Reko.Scanning
                 addrStart);
         }
 
-        public IEnumerable<RtlInstructionCluster> GetTrace(Address addrStart, ProcessorState state, Frame frame)
+        public IEnumerable<RtlInstructionCluster> GetTrace(Address addrStart, ProcessorState state, IStorageBinder frame)
         {
             return program.Architecture.CreateRewriter(
                 program.CreateImageReader(addrStart),
@@ -579,7 +579,7 @@ namespace Reko.Scanning
             st.SetInstructionPointer(addr);
             st.OnProcedureEntered();
             var sp = proc.Frame.EnsureRegister(program.Architecture.StackRegister);
-            st.SetValue(sp, proc.Frame.FramePointer);
+            st.SetValue((Identifier)sp, (Expression)proc.Frame.FramePointer);
             SetAssumedRegisterValues(addr, st);
         }
 
@@ -595,7 +595,7 @@ namespace Reko.Scanning
         {
             var bb = new StatementInjector(proc, proc.EntryBlock.Succ[0], addr);
             var sp = proc.Frame.EnsureRegister(program.Architecture.StackRegister);
-            bb.Assign(sp, proc.Frame.FramePointer);
+            bb.Assign((Identifier)sp, (Expression)proc.Frame.FramePointer);
             program.Platform.InjectProcedureEntryStatements(proc, addr, bb);
         }
 
@@ -935,14 +935,14 @@ namespace Reko.Scanning
             {
                 if (proc.Frame.ReturnAddressSize != returnAddressBytes)
                 {
-                    Warn(
+                    this.Warn(
                         address,
                         string.Format(
                             "Procedure {1} previously had a return address of {2} bytes on the stack, " +
                             "but now seems to have a return address of {0} bytes on the stack.",
                         returnAddressBytes,
                         proc.Name,
-                        proc.Frame.ReturnAddressSize));
+(object)proc.Frame.ReturnAddressSize));
                 }
             }
             else

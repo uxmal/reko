@@ -72,7 +72,7 @@ namespace Reko.UnitTests.Arch.Intel
             get { return baseAddr; }
         }
 
-        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(Frame frame, IRewriterHost host)
+        protected override IEnumerable<RtlInstructionCluster> GetInstructionStream(IStorageBinder frame, IRewriterHost host)
         {
             return arch.CreateRewriter(
                 new LeImageReader(image, 0),
@@ -493,7 +493,7 @@ namespace Reko.UnitTests.Arch.Intel
             AssertCode(
                 "0|L--|0C00:0000(3): 1 instructions",
                 "1|L--|ax = 0x4C00",
-                "2|L--|0C00:0003(2): 1 instructions",
+                "2|T--|0C00:0003(2): 1 instructions",
                 "3|L--|__syscall(0x21)");
         }
 

@@ -34,14 +34,14 @@ namespace Reko.Arch.RiscV
         private RiscVArchitecture arch;
         private IEnumerator<RiscVInstruction> dasm;
         private RtlEmitter m;
-        private Frame frame;
+        private IStorageBinder frame;
         private IRewriterHost host;
         private RiscVInstruction instr;
         private List<RtlInstruction> rtlInstructions;
         private RtlClass rtlc;
         private ProcessorState state;
 
-        public RiscVRewriter(RiscVArchitecture arch, ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public RiscVRewriter(RiscVArchitecture arch, ImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             this.arch = arch;
             this.dasm = new RiscVDisassembler(arch, rdr).GetEnumerator();

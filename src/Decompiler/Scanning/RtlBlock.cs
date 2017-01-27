@@ -28,19 +28,22 @@ using System.Text;
 
 namespace Reko.Scanning
 {
+    /// <summary>
+    /// A basic block of RTL clusters.
+    /// </summary>
     public class RtlBlock
     {
         public RtlBlock(Address address, string name)
         {
             this.Address = address;
             this.Name = name; 
-            this.Instructions = new List<MachineInstruction>();
+            this.Instructions = new List<RtlInstructionCluster>();
             this.IsValid = true;
         }
 
         public Address Address { get; private set; }
         public string Name { get; private set; }
-        public List<MachineInstruction> Instructions { get; private set; }
+        public List<RtlInstructionCluster> Instructions { get; private set; }
         public bool IsValid { get; set; }
 
         public Address GetEndAddress()

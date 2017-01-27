@@ -34,7 +34,7 @@ namespace Reko.Arch.Vax
 {
     public partial class VaxRewriter : IEnumerable<RtlInstructionCluster>
     {
-        private Frame frame;
+        private IStorageBinder frame;
         private IRewriterHost host;
         private ImageReader rdr;
         private ProcessorState state;
@@ -44,7 +44,7 @@ namespace Reko.Arch.Vax
         private RtlEmitter m;
         private IEnumerator<VaxInstruction> dasm;
 
-        public VaxRewriter(VaxArchitecture arch, ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public VaxRewriter(VaxArchitecture arch, ImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             this.arch = arch;
             this.rdr = rdr;

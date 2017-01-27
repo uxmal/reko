@@ -63,7 +63,7 @@ namespace Reko.Arch.Mips
             if (link)
             {
                 m.Assign(
-                    frame.EnsureRegister(Registers.ra),
+                    binder.EnsureRegister(Registers.ra),
                     instr.Address + 8);
             }
             var reg = RewriteOperand(instr.op1);

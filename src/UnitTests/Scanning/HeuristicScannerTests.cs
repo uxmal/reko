@@ -203,9 +203,7 @@ namespace Reko.UnitTests.Scanning
                     AccessMode.ReadExecute));
             Given_x86_32();
             Given_RewriterHost();
-            host.Stub(h => h.GetImportedProcedure(null, null))
-                .IgnoreArguments()
-                .Return(null);
+            Given_NoImportedProcedures();
             mr.ReplayAll();
 
             var segment = program.SegmentMap.Segments.Values.First();

@@ -255,7 +255,7 @@ namespace Reko.Scanning
             }
             var fallthruAddress = ric.Address + ric.Length;
 
-            var blockThen = BlockFromAddress(ric.Address, b.Target, proc, state.Clone());
+            var blockThen = BlockFromAddress(ric.Address, (Address) b.Target, proc, state.Clone());
 
             var blockElse = FallthroughBlock(ric.Address, proc, fallthruAddress);
             var branchingBlock = blockCur.IsSynthesized

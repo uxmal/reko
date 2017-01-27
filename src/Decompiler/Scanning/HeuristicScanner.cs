@@ -51,7 +51,7 @@ namespace Reko.Scanning
         private IRewriterHost host;
         private DecompilerEventListener eventListener;
         private RtlBlock invalidBlock;
-        private Frame frame;
+        private IStorageBinder frame;
 
         public HeuristicScanner(
             IServiceProvider services,
@@ -492,7 +492,7 @@ namespace Reko.Scanning
             throw new NotImplementedException();
         }
 
-        IEnumerable<RtlInstructionCluster> IScanner.GetTrace(Address addrStart, ProcessorState state, Frame frame)
+        IEnumerable<RtlInstructionCluster> IScanner.GetTrace(Address addrStart, ProcessorState state, IStorageBinder frame)
         {
             throw new NotImplementedException();
         }

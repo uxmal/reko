@@ -28,12 +28,12 @@ namespace Reko.UnitTests.Mocks
 {
     public class RtlStatementStream : ExpressionEmitter
     {
-        private Frame frame;
+        private IStorageBinder frame;
         private List<RtlInstructionCluster> stms;
         private IProcessorArchitecture arch;
         private uint linAddress;
 
-        public RtlStatementStream(uint address, Frame frame)
+        public RtlStatementStream(uint address, IStorageBinder frame)
         {
             this.linAddress = address;
             this.arch = new FakeArchitecture();

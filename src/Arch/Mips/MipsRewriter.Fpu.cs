@@ -37,7 +37,7 @@ namespace Reko.Arch.Mips
             var freg0 = ((RegisterOperand)op).Register;
             Debug.Assert(freg0.Number % 2 == 0);
             var freg1 = Registers.fpuRegs[1 + (freg0.Number & 0x1F)];
-            var seq = frame.EnsureSequence(
+            var seq = binder.EnsureSequence(
                 freg0,
                 freg1,
                 PrimitiveType.Real64);

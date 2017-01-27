@@ -117,12 +117,12 @@ namespace Reko.Arch.RiscV
             return new RiscVState(this);
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             return new RiscVRewriter(this, rdr, state, frame, host);
         }
 
-        public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        public override Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }

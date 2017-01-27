@@ -33,7 +33,7 @@ namespace Reko.Arch.Pdp11
     {
         private void RewriteAdc()
         {
-            var src = frame.EnsureFlagGroup(this.arch.GetFlagGroup((uint)FlagM.CF));
+            var src = binder.EnsureFlagGroup(this.arch.GetFlagGroup((uint)FlagM.CF));
             var dst = RewriteDst(instr.op1, src, m.IAdd);
             SetFlags(dst, FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF, 0, 0);
         }
@@ -90,7 +90,7 @@ namespace Reko.Arch.Pdp11
         {
             var src = RewriteSrc(instr.op1);
             var dst = RewriteSrc(instr.op2);
-            var tmp = frame.CreateTemporary(src.DataType);
+            var tmp = binder.CreateTemporary(src.DataType);
             m.Assign(tmp, m.ISub(dst, src));
             SetFlags(tmp, FlagM.NF | FlagM.ZF | FlagM.VF | FlagM.CF, 0, 0);
         }
@@ -106,11 +106,11 @@ namespace Reko.Arch.Pdp11
         {
             var reg = ((RegisterOperand)instr.op2).Register;
             var reg1 = arch.GetRegister(reg.Number | 1);
-            var reg_reg = frame.EnsureSequence(reg, reg1, PrimitiveType.Int32);
-            var dividend = frame.CreateTemporary(PrimitiveType.Int32);
+            var reg_reg = binder.EnsureSequence(reg, reg1, PrimitiveType.Int32);
+            var dividend = binder.CreateTemporary(PrimitiveType.Int32);
             var divisor = RewriteSrc(instr.op1);
-            var quotient = frame.EnsureRegister(reg);
-            var remainder = frame.EnsureRegister(reg1);
+            var quotient = binder.EnsureRegister(reg);
+            var remainder = binder.EnsureRegister(reg1);
             m.Assign(dividend, reg_reg);
             m.Assign(quotient, m.SDiv(dividend, divisor));
             m.Assign(remainder, m.Mod(dividend, divisor));
@@ -191,7 +191,7 @@ namespace Reko.Arch.Pdp11
 
         private void RewriteSxt()
         {
-            var n  = frame.EnsureFlagGroup(this.arch.GetFlagGroup((uint)FlagM.NF));
+            var n  = binder.EnsureFlagGroup(this.arch.GetFlagGroup((uint)FlagM.NF));
 
             var src = m.ISub(Constant.Int16(0), n);
             var dst = RewriteDst(instr.op1, src, s => s);
@@ -201,7 +201,7 @@ namespace Reko.Arch.Pdp11
         private void RewriteTst()
         {
             var src = RewriteSrc(instr.op1);
-            var tmp = frame.CreateTemporary(src.DataType);
+            var tmp = binder.CreateTemporary(src.DataType);
             m.Assign(tmp, src);
             m.Assign(tmp, m.And(tmp, tmp));
             SetFlags(tmp, FlagM.NF | FlagM.ZF, FlagM.VF | FlagM.CF, 0);

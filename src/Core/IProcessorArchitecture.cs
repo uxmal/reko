@@ -55,7 +55,7 @@ namespace Reko.Core
         /// machine-specific instructions and rewriting them into one or more machine-independent RtlInstructions codes. These are then 
         /// returned as clusters of RtlInstructions.
         /// </summary>
-        IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host);
+        IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host);
 
         /// <summary>
         /// Given a set of addresses, returns a set of address where something
@@ -145,7 +145,7 @@ namespace Reko.Core
         bool TryGetRegister(string name, out RegisterStorage reg); // Attempts to find a register with name <paramref>name</paramref>
         FlagGroupStorage GetFlagGroup(uint grf);		    // Returns flag group matching the bitflags.
 		FlagGroupStorage GetFlagGroup(string name);
-        Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType);
+        Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType);
         Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state);
         Address MakeSegmentedAddress(Constant seg, Constant offset);
 
@@ -212,8 +212,8 @@ namespace Reko.Core
         public abstract IEqualityComparer<MachineInstruction> CreateInstructionComparer(Normalize norm);
         public abstract ProcessorState CreateProcessorState();
         public abstract IEnumerable<Address> CreatePointerScanner(SegmentMap map, ImageReader rdr, IEnumerable<Address> knownAddresses, PointerScannerFlags flags);
-        public abstract IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host);
-        public abstract Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType);
+        public abstract IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host);
+        public abstract Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType);
 
         public virtual IEnumerable<RegisterStorage> GetAliases(RegisterStorage reg) { yield return reg; }
         public abstract RegisterStorage GetRegister(int i);

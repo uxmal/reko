@@ -73,7 +73,11 @@ namespace Reko.Scanning
         public RtlBlock Disassemble(Address addr)
         {
             var current = new RtlBlock(addr, string.Format("l{0:X}", addr));
-            var dasm = program.CreateDisassembler(addr);
+            var dasm = program.Architecture.CreateRewriter(
+                program.CreateImageReader(addr),
+                program.Architecture.CreateProcessorState(),    //$TODO: use state from user.
+                binder,
+                host);
             foreach (var instr in dasm.TakeWhile(i => isAddrValid(i.Address)))
             {
                 RtlBlock block;
@@ -107,21 +111,23 @@ namespace Reko.Scanning
                     AddNode(current);
                     current.Instructions.Add(instr);
                     blockMap.Add(instr.Address, current);
-                    var addrOp = DestinationAddress(instr);
-                    switch (instr.InstructionClass)
+                    Address addrOp;
+                    switch (instr.Class)
                     {
-                    case InstructionClass.Invalid:
+                    case RtlClass.Invalid:
+                    case RtlClass.None:
                         current.IsValid = false;
                         return current;
-                    case InstructionClass.Linear:
-                    case InstructionClass.Linear | InstructionClass.Conditional:
+                    case RtlClass.Linear:
+                    case RtlClass.Linear | RtlClass.Conditional:
                         if (FallthroughToInvalid(instr))
                         {
                             current.IsValid = false;
                             return current;
                         }
                         break;
-                    case InstructionClass.Transfer | InstructionClass.Call:
+                    case RtlClass.Transfer | RtlClass.Call:
+                        addrOp = DestinationAddress(instr);
                         if (addrOp != null)
                         {
                             if (program.SegmentMap.IsValidAddress(addrOp))
@@ -149,7 +155,8 @@ namespace Reko.Scanning
                         block = Disassemble(instr.Address + instr.Length);
                         AddEdge(current, block);
                         return current;
-                    case InstructionClass.Transfer:
+                    case RtlClass.Transfer:
+                        addrOp = DestinationAddress(instr);
                         if (addrOp != null && isAddrValid(addrOp))
                         {
                             block = Disassemble(addrOp);
@@ -157,8 +164,9 @@ namespace Reko.Scanning
                             return current;
                         }
                         return current;
-                    case InstructionClass.Transfer | InstructionClass.Conditional:
+                    case RtlClass.Transfer | RtlClass.Conditional:
                         FallthroughToInvalid(instr);
+                        addrOp = DestinationAddress(instr);
                         if (addrOp != null && program.SegmentMap.IsValidAddress(addrOp))
                         {
                             block = Disassemble(addrOp);
@@ -171,8 +179,8 @@ namespace Reko.Scanning
                     default:
                         throw new NotImplementedException(
                             string.Format(
-                                "dasm instruction {0}.", 
-                                instr.InstructionClass));
+                                "RTL class {0}.", 
+                                instr.Class));
                     }
                 }
             }
@@ -180,7 +188,7 @@ namespace Reko.Scanning
             return current;
         }
 
-        private bool FallthroughToInvalid(MachineInstruction instr)
+        private bool FallthroughToInvalid(RtlInstructionCluster instr)
         {
             var addrNextInstr = instr.Address + instr.Length;
             if (!isAddrValid(addrNextInstr))
@@ -196,19 +204,22 @@ namespace Reko.Scanning
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        private Address DestinationAddress(MachineInstruction i)
+        private Address DestinationAddress(RtlInstructionCluster i)
         {
-            var op = i.GetOperand(0) as AddressOperand;
-            if (op == null)
+            var last = i.Instructions[i.Instructions.Length - 1];
+            var xfer = last as RtlTransfer;
+            if (xfer == null)
             {
-                // Z80 has JP Z,<dest> instructions...
-                op = i.GetOperand(1) as AddressOperand;
+                var cond = last as RtlIf;
+                if (cond == null)
+                    return null;
+                xfer = cond.Instruction as RtlGoto;
+                if (xfer == null)
+                    return null;
             }
-            if (op != null)
-            {
-                return op.Address;
-            }
-            return null;
+
+            var addr = xfer.Target as Address;
+            return addr;
         }
 
         /// <summary>

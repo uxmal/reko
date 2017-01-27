@@ -107,7 +107,6 @@ namespace Reko.Arch.X86
                     }
                 }
                 m.Call(addr, (byte) opsize.Size);
-                rtlc = RtlClass.Transfer;
             }
             else
             {
@@ -115,8 +114,8 @@ namespace Reko.Arch.X86
                 if (target.DataType.Size == 2)
                     target = m.Seq(orw.AluRegister(Registers.cs), target);
                 m.Call(target, (byte) opsize.Size);
-                rtlc = RtlClass.Transfer;
             }
+            rtlc = RtlClass.Transfer | RtlClass.Call;
         }
 
         private void RewriteConditionalGoto(ConditionCode cc, MachineOperand op1)
@@ -128,6 +127,7 @@ namespace Reko.Arch.X86
         private void RewriteInt()
         {
             m.SideEffect(host.PseudoProcedure(PseudoProcedure.Syscall, VoidType.Instance, SrcOp(instrCur.op1)));
+            rtlc = RtlClass.Call | RtlClass.Transfer;
         }
 
         private void RewriteInto()

@@ -35,7 +35,7 @@ namespace Reko.Arch.Arm
     public partial class ThumbRewriter : IEnumerable<RtlInstructionCluster>
     {
         private IEnumerator<Arm32Instruction> instrs;
-        private Frame frame;
+        private IStorageBinder frame;
         private IRewriterHost host;
         private Instruction<ArmInstruction,ArmRegister,ArmInstructionGroup,ArmInstructionDetail> instr;
         private ArmInstructionOperand[] ops;
@@ -45,7 +45,7 @@ namespace Reko.Arch.Arm
         private int itState;
         private ArmCodeCondition itStateCondition;
 
-        public ThumbRewriter(ThumbProcessorArchitecture arch, ImageReader rdr, ArmProcessorState state, Frame frame, IRewriterHost host)
+        public ThumbRewriter(ThumbProcessorArchitecture arch, ImageReader rdr, ArmProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             this.instrs = CreateInstructionStream(rdr);
             this.frame = frame;

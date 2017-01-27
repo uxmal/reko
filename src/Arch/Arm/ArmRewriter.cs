@@ -38,7 +38,7 @@ namespace Reko.Arch.Arm
     {
         private Arm32ProcessorArchitecture arch;
         private IEnumerator<Arm32Instruction> instrs;
-        private Frame frame;
+        private IStorageBinder frame;
         private CapstoneArmInstruction instr;
         private ArmInstructionOperand [] ops;
         private RtlClass rtlc;
@@ -46,7 +46,7 @@ namespace Reko.Arch.Arm
         private RtlEmitter m;
         private IRewriterHost host;
 
-        public ArmRewriter(Arm32ProcessorArchitecture arch, ImageReader rdr, ArmProcessorState state, Frame frame, IRewriterHost host)
+        public ArmRewriter(Arm32ProcessorArchitecture arch, ImageReader rdr, ArmProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             this.arch = arch;
             this.instrs = CreateInstructionStream(rdr);

@@ -92,7 +92,7 @@ namespace Reko.Arch.Z80
             throw new NotImplementedException();
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             return new Z80Rewriter(this, rdr, state, frame, host);
         }
@@ -200,7 +200,7 @@ namespace Reko.Arch.Z80
             return GetFlagGroup((uint)flags);
         }
 
-        public override Core.Expressions.Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        public override Core.Expressions.Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }

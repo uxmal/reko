@@ -32,7 +32,7 @@ namespace Reko.Arch.Mos6502
     public class Rewriter : IEnumerable<RtlInstructionCluster>
     {
         private ProcessorState state;
-        private Frame frame;
+        private IStorageBinder frame;
         private IRewriterHost host;
         private Mos6502ProcessorArchitecture arch;
         private IEnumerable<Instruction> instrs;
@@ -41,7 +41,7 @@ namespace Reko.Arch.Mos6502
         private RtlClass rtlc;
         private RtlEmitter m;
 
-        public Rewriter(Mos6502ProcessorArchitecture arch, ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public Rewriter(Mos6502ProcessorArchitecture arch, ImageReader rdr, ProcessorState state, IStorageBinder frame, IRewriterHost host)
         {
             this.arch = arch;
             this.state = state;

@@ -38,17 +38,17 @@ namespace Reko.Arch.Mips
     public partial class MipsRewriter : IEnumerable<RtlInstructionCluster>
     {
         private IEnumerator<MipsInstruction> dasm;
-        private Frame frame;
+        private IStorageBinder binder;
         private RtlEmitter m;
         private RtlClass rtlc;
         private List<RtlInstruction> rtlInstructions;
         private MipsProcessorArchitecture arch;
         private IRewriterHost host;
 
-        public MipsRewriter(MipsProcessorArchitecture arch, IEnumerable<MipsInstruction> instrs, Frame frame, IRewriterHost host)
+        public MipsRewriter(MipsProcessorArchitecture arch, IEnumerable<MipsInstruction> instrs, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = arch;
-            this.frame = frame;
+            this.binder = binder;
             this.dasm = instrs.GetEnumerator();
             this.host = host;
         }
@@ -244,7 +244,7 @@ namespace Reko.Arch.Mips
             {
                 if (regOp.Register.Number == 0)
                     return Constant.Zero(regOp.Register.DataType);
-                return frame.EnsureRegister(regOp.Register);
+                return binder.EnsureRegister(regOp.Register);
             }
             var immOp = op as ImmediateOperand;
             if (immOp != null)
@@ -255,7 +255,7 @@ namespace Reko.Arch.Mips
             if (indOp != null)
             {
                 Expression ea;
-                Identifier baseReg = frame.EnsureRegister(indOp.Base);
+                Identifier baseReg = binder.EnsureRegister(indOp.Base);
                 if (indOp.Offset == 0)
                     ea = baseReg;
                 else if (indOp.Offset > 0)

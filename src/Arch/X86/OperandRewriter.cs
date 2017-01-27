@@ -36,10 +36,10 @@ namespace Reko.Arch.X86
     {
         protected readonly IntelArchitecture arch;
         private readonly ExpressionEmitter m;
-        private readonly Frame frame;
+        private readonly IStorageBinder frame;
         private readonly IRewriterHost host;
 
-        public OperandRewriter(IntelArchitecture arch, ExpressionEmitter emitter, Frame frame, IRewriterHost host)
+        public OperandRewriter(IntelArchitecture arch, ExpressionEmitter emitter, IStorageBinder frame, IRewriterHost host)
         {
             this.arch = arch;
             this.m = emitter;
@@ -258,7 +258,7 @@ namespace Reko.Arch.X86
 
     public class OperandRewriter16 : OperandRewriter
     {
-        public OperandRewriter16(IntelArchitecture arch, ExpressionEmitter m, Frame frame, IRewriterHost host) : base(arch, m, frame, host) { }
+        public OperandRewriter16(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder frame, IRewriterHost host) : base(arch, m, frame, host) { }
 
         public override bool IsSegmentedAccessRequired { get { return true; } }
 
@@ -275,7 +275,7 @@ namespace Reko.Arch.X86
 
     public class OperandRewriter32 : OperandRewriter
     {
-        public OperandRewriter32(IntelArchitecture arch, ExpressionEmitter m, Frame frame, IRewriterHost host) : base(arch,m, frame, host) { }
+        public OperandRewriter32(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder frame, IRewriterHost host) : base(arch,m, frame, host) { }
 
         public override Address ImmediateAsAddress(Address address, ImmediateOperand imm)
         {
@@ -285,7 +285,7 @@ namespace Reko.Arch.X86
 
     public class OperandRewriter64 : OperandRewriter
     {
-        public OperandRewriter64(IntelArchitecture arch, ExpressionEmitter m, Frame frame, IRewriterHost host) : base(arch, m, frame, host) { }
+        public OperandRewriter64(IntelArchitecture arch, ExpressionEmitter m, IStorageBinder frame, IRewriterHost host) : base(arch, m, frame, host) { }
 
         public override Address ImmediateAsAddress(Address address, ImmediateOperand imm)
         {

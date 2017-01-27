@@ -89,7 +89,8 @@ namespace Reko.Arch.PowerPC
                 var dst = frame.EnsureRegister(arch.lr);
                 if (updateLinkregister)
                 {
-                    m.If(m.Test(cc, cr), new RtlCall(dst, 0, RtlClass.ConditionalTransfer));
+                    rtlc |= RtlClass.Call;
+                    m.If(m.Test(cc, cr), new RtlCall(dst, 0, RtlClass.Call|RtlClass.Transfer));
                 }
                 else
                 {
@@ -101,6 +102,7 @@ namespace Reko.Arch.PowerPC
                 var dst = RewriteOperand(ccrOp != null ? instr.op2 : instr.op1);
                 if (updateLinkregister)
                 {
+                    rtlc |= RtlClass.Call;
                     m.If(m.Test(cc, cr), new RtlCall(dst, 0, RtlClass.ConditionalTransfer));
                 }
                 else

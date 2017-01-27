@@ -251,14 +251,14 @@ namespace Reko.Arch.Pdp11
 			return s.ToString();
 		}
 
-        public override Expression CreateStackAccess(Frame frame, int cbOffset, DataType dataType)
+        public override Expression CreateStackAccess(IStorageBinder frame, int cbOffset, DataType dataType)
         {
             throw new NotImplementedException();
         }
 
-        public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public override IEnumerable<RtlInstructionCluster> CreateRewriter(ImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
-            return new Pdp11Rewriter(this, new Pdp11Disassembler(rdr, this), frame, host);
+            return new Pdp11Rewriter(this, new Pdp11Disassembler(rdr, this), binder, host);
         }
 
         public override Address MakeAddressFromConstant(Constant c)

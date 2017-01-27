@@ -40,7 +40,7 @@ namespace Reko.Arch.X86
     {
         private IRewriterHost host;
         private IntelArchitecture arch;
-        private Frame frame;
+        private IStorageBinder frame;
         private LookaheadEnumerator<X86Instruction> dasm;
         private RtlEmitter m;
         private OperandRewriter orw;
@@ -55,7 +55,7 @@ namespace Reko.Arch.X86
             IRewriterHost host,
             X86State state,
             ImageReader rdr,
-            Frame frame)
+            IStorageBinder frame)
         {
             if (host == null)
                 throw new ArgumentNullException("host");

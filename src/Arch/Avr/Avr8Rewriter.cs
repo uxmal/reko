@@ -34,7 +34,7 @@ namespace Reko.Arch.Avr
     public class Avr8Rewriter : IEnumerable<RtlInstructionCluster>
     {
         private Avr8Architecture arch;
-        private Frame frame;
+        private IStorageBinder binder;
         private IRewriterHost host;
         private IEnumerator<AvrInstruction> dasm;
         private ProcessorState state;
@@ -44,12 +44,12 @@ namespace Reko.Arch.Avr
         private List<RtlInstructionCluster> clusters;
         private RtlEmitter m;
 
-        public Avr8Rewriter(Avr8Architecture arch, ImageReader rdr, ProcessorState state, Frame frame, IRewriterHost host)
+        public Avr8Rewriter(Avr8Architecture arch, ImageReader rdr, ProcessorState state, IStorageBinder binder, IRewriterHost host)
         {
             this.arch = arch;
             this.dasm = new Avr8Disassembler(arch, rdr).GetEnumerator();
             this.state = state;
-            this.frame = frame;
+            this.binder = binder;
             this.host = host;
         }
 
@@ -151,7 +151,7 @@ namespace Reko.Arch.Avr
         {
             if (mod != 0)
             {
-                var grf = frame.EnsureFlagGroup(arch.GetFlagGroup((uint)mod));
+                var grf = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)mod));
                 m.Assign(grf, m.Cond(e));
             }
             if (clr != 0)
@@ -161,7 +161,7 @@ namespace Reko.Arch.Avr
                 {
                     if ((grfMask & (uint)clr) != 0)
                     {
-                        var grf = frame.EnsureFlagGroup(arch.GetFlagGroup(grfMask));
+                        var grf = binder.EnsureFlagGroup(arch.GetFlagGroup(grfMask));
                         m.Assign(grf, 0);
                     }
                     grfMask <<= 1;
@@ -174,7 +174,7 @@ namespace Reko.Arch.Avr
                 {
                     if ((grfMask & (uint)set) != 0)
                     {
-                        var grf = frame.EnsureFlagGroup(arch.GetFlagGroup(grfMask));
+                        var grf = binder.EnsureFlagGroup(arch.GetFlagGroup(grfMask));
                         m.Assign(grf, 1);
                     }
                     grfMask <<= 1;
@@ -191,7 +191,7 @@ namespace Reko.Arch.Avr
         {
             var regN = ((RegisterOperand)operand).Register;
             var regN1 = arch.GetRegister(regN.Number + 1);
-            var regPair = frame.EnsureSequence(regN1, regN, PrimitiveType.Word16);
+            var regPair = binder.EnsureSequence(regN1, regN, PrimitiveType.Word16);
             return regPair;
         }
 
@@ -201,7 +201,7 @@ namespace Reko.Arch.Avr
             var port = ((ImmediateOperand)instr.operands[iPortOp]).Value.ToByte();
             if (port == 0x3F)
             {
-                var psreg = frame.EnsureRegister(arch.sreg);
+                var psreg = binder.EnsureRegister(arch.sreg);
                 if (read)
                 {
                     m.Assign(reg, psreg);
@@ -240,7 +240,7 @@ namespace Reko.Arch.Avr
                 throw new AddressCorrelatedException(instr.Address, "Invalid index register '{0}'", reg);
             var reglo = arch.GetRegister(ireg);
             var reghi = arch.GetRegister(ireg + 1);
-            return frame.EnsureSequence(reghi, reglo, PrimitiveType.Ptr16);
+            return binder.EnsureSequence(reghi, reglo, PrimitiveType.Ptr16);
         }
 
         private void RewriteBinOp(
@@ -271,7 +271,7 @@ namespace Reko.Arch.Avr
             var rop = op as RegisterOperand;
             if (rop != null)
             {
-                return frame.EnsureRegister(rop.Register);
+                return binder.EnsureRegister(rop.Register);
             }
             var iop = op as ImmediateOperand;
             if (iop != null)
@@ -290,7 +290,7 @@ namespace Reko.Arch.Avr
         {
             var op = instr.operands[iOp];
             var mop = (MemoryOperand)op;
-            var baseReg = frame.EnsureRegister(mop.Base);
+            var baseReg = binder.EnsureRegister(mop.Base);
             Expression ea = baseReg;
             if (mop.PreDecrement)
             {
@@ -316,7 +316,7 @@ namespace Reko.Arch.Avr
         {
             // We do not take the trouble of widening the CF to the word size
             // to simplify code analysis in later stages. 
-            var c = frame.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.CF));
+            var c = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.CF));
             var dst = RewriteOp(0);
             var src = RewriteOp(1);
             m.Assign(
@@ -346,7 +346,7 @@ namespace Reko.Arch.Avr
         private void RewriteBranch(ConditionCode cc, FlagM grfM)
         {
             rtlc = RtlClass.ConditionalTransfer;
-            var grf = frame.EnsureFlagGroup(arch.GetFlagGroup((uint)grfM));
+            var grf = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)grfM));
             var target = (Address)RewriteOp(0);
             m.Branch(m.Test(cc, grf), target, RtlClass.ConditionalTransfer);
         }
@@ -354,7 +354,7 @@ namespace Reko.Arch.Avr
         private void RewriteBranch(FlagM grfM, bool set)
         {
             rtlc = RtlClass.ConditionalTransfer;
-            Expression test = frame.EnsureFlagGroup(arch.GetFlagGroup((uint)grfM));
+            Expression test = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)grfM));
             if (!set)
                 test = m.Not(test);
             var target = (Address)RewriteOp(0);
@@ -390,7 +390,7 @@ namespace Reko.Arch.Avr
         {
             var left = RewriteOp(0);
             var right = RewriteOp(1);
-            var flags = frame.EnsureFlagGroup(arch.GetFlagGroup((uint)CmpFlags));
+            var flags = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)CmpFlags));
             m.Assign(flags, m.ISub(left, right));
         }
 
@@ -398,21 +398,21 @@ namespace Reko.Arch.Avr
         {
             var left = RewriteOp(0);
             var right = RewriteOp(1);
-            var c = frame.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.CF));
-            var flags = frame.EnsureFlagGroup(arch.GetFlagGroup((uint)CmpFlags));
+            var c = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.CF));
+            var flags = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)CmpFlags));
             m.Assign(flags, m.ISub(m.ISub(left, right), c));
         }
 
         private void RewriteDes()
         {
-            var h = frame.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.HF));
+            var h = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.HF));
             m.SideEffect(host.PseudoProcedure("__des", VoidType.Instance, RewriteOp(0), h));
         }
 
         private void RewriteIcall()
         {
             rtlc = RtlClass.Transfer;
-            var z = frame.EnsureRegister(arch.z);
+            var z = binder.EnsureRegister(arch.z);
             m.Call(z, 2);
         }
 
@@ -424,7 +424,7 @@ namespace Reko.Arch.Avr
         private void RewriteIjmp()
         {
             rtlc = RtlClass.Transfer;
-            var z = frame.EnsureRegister(arch.z);
+            var z = binder.EnsureRegister(arch.z);
             m.Goto(z);
         }
 
@@ -453,11 +453,11 @@ namespace Reko.Arch.Avr
 
         private void RewriteLpm()
         {
-            var codeSel = frame.EnsureRegister(arch.code);
+            var codeSel = binder.EnsureRegister(arch.code);
             if (instr.operands.Length == 0)
             {
-                var z = frame.EnsureRegister(arch.z);
-                var r0 = frame.EnsureRegister(arch.GetRegister(0));
+                var z = binder.EnsureRegister(arch.z);
+                var r0 = binder.EnsureRegister(arch.GetRegister(0));
                 m.Assign(r0, m.SegMemB(codeSel, z));
             }
             else
@@ -487,14 +487,14 @@ namespace Reko.Arch.Avr
 
         private void RewritePop()
         {
-            var sp = frame.EnsureRegister(arch.StackRegister);
+            var sp = binder.EnsureRegister(arch.StackRegister);
             m.Assign(RewriteOp(0), m.LoadB(sp));
             m.Assign(sp, m.IAdd(sp, Constant.Int16(1)));
         }
 
         private void RewritePush()
         {
-            var sp = frame.EnsureRegister(arch.StackRegister);
+            var sp = binder.EnsureRegister(arch.StackRegister);
             m.Assign(sp, m.ISub(sp, Constant.Int16(1)));
             m.Assign(m.LoadB(sp), RewriteOp(0));
         }
@@ -507,7 +507,7 @@ namespace Reko.Arch.Avr
 
         private void RewriteRor()
         {
-            var c = frame.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.CF));
+            var c = binder.EnsureFlagGroup(arch.GetFlagGroup((uint)FlagM.CF));
             var reg = RewriteOp(0);
             m.Assign(reg, host.PseudoProcedure(PseudoProcedure.RorC, PrimitiveType.Byte, reg, c));
             EmitFlags(reg, CmpFlags);
@@ -541,7 +541,7 @@ namespace Reko.Arch.Avr
 
         private void RewriteSetBit(FlagM grf, bool value)
         {
-            m.Assign(frame.EnsureFlagGroup(arch.GetFlagGroup((uint)grf)), Constant.Bool(value));
+            m.Assign(binder.EnsureFlagGroup(arch.GetFlagGroup((uint)grf)), Constant.Bool(value));
         }
 
         private void RewriteSt()
