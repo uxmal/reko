@@ -497,8 +497,8 @@ namespace Reko.Core.Types
 			if (a.Name != null)
 			{
 				if (b.Name != null && a.Name != b.Name)
-					throw new NotSupportedException("Both structures have names! Woo! Return null and make union of it?");
-				else
+                    return MakeUnion(a, b);
+                else
 					name = a.Name;
 			}
 			else

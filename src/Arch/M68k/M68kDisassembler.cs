@@ -280,10 +280,16 @@ namespace Reko.Arch.M68k
                     i = 3;
                 }
                 var opTranslator = new OperandFormatDecoder(dasm, i);
-                instr.op1 = opTranslator.GetOperand(dasm.rdr, args, instr.dataWidth);
-                instr.op2 = opTranslator.GetOperand(dasm.rdr, args, instr.dataWidth);
-                instr.op3 = opTranslator.GetOperand(dasm.rdr, args, instr.dataWidth);
-                return instr;
+                if (opTranslator.TryGetOperand(dasm.rdr, args, instr.dataWidth, out instr.op1) &&
+                    opTranslator.TryGetOperand(dasm.rdr, args, instr.dataWidth, out instr.op2) &&
+                    opTranslator.TryGetOperand(dasm.rdr, args, instr.dataWidth, out instr.op3))
+                {
+                    return instr;
+                }
+                else
+                {
+                    return new M68kInstruction { code = Opcode.illegal };
+                }
             }
         }
 
@@ -2450,7 +2456,11 @@ namespace Reko.Arch.M68k
             var opDecoder = new OperandFormatDecoder(dasm, 0);
             dasm.instr.code = BIT_B(extension) ? Opcode.muls : Opcode.mulu;
             dasm.instr.dataWidth = PrimitiveType.Word32;
-            dasm.instr.op1 = opDecoder.ParseOperand(dasm.instruction, 0, PrimitiveType.Word32, dasm.rdr);
+
+            if (!opDecoder.TryParseOperand(dasm.instruction, 0, PrimitiveType.Word32, dasm.rdr, out dasm.instr.op1))
+            {
+                return new M68kInstruction { code = Opcode.illegal };
+            }
             dasm.instr.op2 = op2;
             return dasm.instr;
         }

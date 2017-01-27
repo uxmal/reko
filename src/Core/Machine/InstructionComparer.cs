@@ -92,7 +92,14 @@ namespace Reko.Core.Machine
 
         public abstract int GetOperandsHash(MachineInstruction instr);
 
+        /// <summary>
+        /// If true, differences between constants will be ignored.
+        /// </summary>
         public bool NormalizeConstants { get { return (norm & Normalize.Constants) != 0; } }
+
+        /// <summary>
+        /// If true, register differences will be ignored.
+        /// </summary>
         public bool NormalizeRegisters { get { return (norm & Normalize.Registers) != 0; } }
     }
 }
