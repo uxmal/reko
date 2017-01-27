@@ -169,7 +169,8 @@ namespace Reko.Arch.RiscV
 
         public override Address MakeAddressFromConstant(Constant c)
         {
-            throw new NotImplementedException();
+            //$TODO: what about 32-bit? 
+            return Address.FromConstant(c);
         }
 
         public override Address ReadCodeAddress(int size, ImageReader rdr, ProcessorState state)
